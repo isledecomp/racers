@@ -11,7 +11,7 @@ jobs:
     name: Current MSVC
     runs-on: windows-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Setup cmake
         uses: jwlawson/actions-setup-cmake@v2
@@ -36,9 +36,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
 
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: isledecomp/MSVC600-8168
         path: msvc600
@@ -70,20 +70,20 @@ jobs:
     needs: [build, fetch-deps]
     runs-on: windows-latest
     steps:
-    - uses: actions/checkout@main
+    - uses: actions/checkout@v6
 
-    - uses: actions/setup-python@v5
+    - uses: actions/setup-python@v6
       with:
         python-version: '3.12'
 
-    - uses: actions/download-artifact@main
+    - uses: actions/download-artifact@v8
       with:
        name: Win32
        path: build
 
     - name: Restore cached original binaries
       id: cache-original-binaries
-      uses: actions/cache/restore@v4
+      uses: actions/cache/restore@v5
       with:
         enableCrossOsArchive: true
         path: racersbin
@@ -146,16 +146,16 @@ jobs:
       pages: write
       id-token: write
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
       with:
         repository: probonopd/uploadtool
 
-    - uses: actions/download-artifact@main
+    - uses: actions/download-artifact@v8
       with:
        name: Win32
        path: build
 
-    - uses: actions/download-artifact@main
+    - uses: actions/download-artifact@v8
       with:
         name: Accuracy Report
 
@@ -180,4 +180,42 @@ jobs:
         path: progress/
 
     - name: Deploy to GitHub Pages
-      uses: actions/deploy-pages@v4
+      uses: actions/deploy-pages@v5
+
+  decomplint:
+    name: ${{ matrix.target }} annotations
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        target:
+          - LEGORACERS
+          - GOLDP
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install python libraries
+        run: |
+          pip install -r tools/requirements.txt
+
+      - name: Run decomplint
+        run: |
+          reccmp-decomplint ${{ matrix.target }} --module ${{ matrix.target }} --warnfail
+
+  clang-format:
+    name: c++ clang-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Run clang-format
+        run: |
+          find LEGORacers GolDP -iname '*.h' -o -iname '*.cpp' | xargs \
+          pipx run "clang-format>=17,<18" \
+            --style=file \
+            -i
+          git diff --color --exit-code

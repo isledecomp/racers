@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.15...4.2 FATAL_ERROR)
 
 # MSVC runtime library flags are selected by an abstraction
 cmake_policy(SET CMP0091 NEW)
@@ -57,85 +57,64 @@ endfunction()
 message(STATUS "MSVC for decompilation: ${MSVC_FOR_DECOMP}")
 
 option(RACERS_WERROR "Treat warnings as errors" OFF)
-option(RACERS_BUILD_APP "Build LEGORacers.exe application" ON)
-option(RACERS_BUILD_GOLDP "Build GolDP.dll library" ON)
 option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 
 add_cxx_warning(parentheses)
 
 # --- GolDP.dll target ---
-if (RACERS_BUILD_GOLDP)
-  add_library(goldp SHARED
-    GolDP/src/unk0x10056440.cpp
-    GolDP/main.cpp
-  )
-  reccmp_add_target(goldp ID GOLDP)
+add_library(goldp SHARED
+  GolDP/src/unk0x10056440.cpp
+  GolDP/main.cpp
+)
+reccmp_add_target(goldp ID GOLDP)
 
-  if (MSVC)
-    target_sources(goldp PRIVATE GolDP/GolDP.def)
-  endif()
-
-  target_include_directories(goldp PRIVATE
-    "${PROJECT_SOURCE_DIR}/GolDP/include"
-    "${PROJECT_SOURCE_DIR}/GolDP"
-    "${PROJECT_SOURCE_DIR}/util"
-  )
-
-  set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
-  set_property(TARGET goldp PROPERTY PREFIX "")
-  set_property(TARGET goldp PROPERTY SUFFIX ".dll")
+if (MSVC)
+  target_sources(goldp PRIVATE GolDP/GolDP.def)
 endif()
+
+target_include_directories(goldp PRIVATE
+  "${PROJECT_SOURCE_DIR}/GolDP/include"
+  "${PROJECT_SOURCE_DIR}/GolDP"
+  "${PROJECT_SOURCE_DIR}/util"
+)
+
+set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
+set_property(TARGET goldp PROPERTY PREFIX "")
+set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
 # --- LEGORacers.exe target ---
-if (RACERS_BUILD_APP)
-  add_executable(legoracers WIN32
-    LEGORacers/main.cpp
-  )
-  reccmp_add_target(legoracers ID LEGORACERS)
+add_executable(legoracers WIN32
+  LEGORacers/main.cpp
+)
+reccmp_add_target(legoracers ID LEGORACERS)
 
-  target_include_directories(legoracers PRIVATE
-    "${PROJECT_SOURCE_DIR}/LEGORacers"
-    "${PROJECT_SOURCE_DIR}/util"
-  )
+target_include_directories(legoracers PRIVATE
+  "${PROJECT_SOURCE_DIR}/LEGORacers"
+  "${PROJECT_SOURCE_DIR}/util"
+)
 
-  target_link_libraries(legoracers PRIVATE
-    ole32
-    winmm
-  )
+target_link_libraries(legoracers PRIVATE
+  ole32
+  winmm
+)
 
-  set_property(TARGET legoracers PROPERTY OUTPUT_NAME "LEGORacers")
-  set_property(TARGET legoracers PROPERTY SUFFIX ".exe")
-endif()
+set_property(TARGET legoracers PROPERTY OUTPUT_NAME "LEGORacers")
+set_property(TARGET legoracers PROPERTY SUFFIX ".exe")
 
 # --- Modern compiler compatibility ---
 if (MSVC)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15")
-    if (TARGET goldp)
-      target_compile_definitions(goldp PRIVATE "_CRT_SECURE_NO_WARNINGS")
-    endif()
-    if (TARGET legoracers)
-      target_compile_definitions(legoracers PRIVATE "_CRT_SECURE_NO_WARNINGS")
-    endif()
+    set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
   endif()
   # Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.14.26428")
-    if (TARGET goldp)
-      target_compile_options(goldp PRIVATE "-Zc:__cplusplus")
-    endif()
-    if (TARGET legoracers)
-      target_compile_options(legoracers PRIVATE "-Zc:__cplusplus")
-    endif()
+    set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_OPTIONS "-Zc:__cplusplus")
   endif()
 endif()
 
 if (RACERS_DECOMP_ASSERT)
   message(STATUS "Decomp asserts enabled")
-  if (TARGET goldp)
-    target_compile_definitions(goldp PRIVATE "ENABLE_DECOMP_ASSERTS")
-  endif()
-  if (TARGET legoracers)
-    target_compile_definitions(legoracers PRIVATE "ENABLE_DECOMP_ASSERTS")
-  endif()
+  set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_DEFINITIONS "ENABLE_DECOMP_ASSERTS")
 endif()
 
 if (MSVC_FOR_DECOMP)

@@ -85,6 +85,7 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
   LEGORacers/main.cpp
+  LEGORacers/racers.rc
 )
 reccmp_add_target(legoracers ID LEGORACERS)
 
@@ -100,6 +101,8 @@ target_link_libraries(legoracers PRIVATE
 
 set_property(TARGET legoracers PROPERTY OUTPUT_NAME "LEGORacers")
 set_property(TARGET legoracers PROPERTY SUFFIX ".exe")
+
+set_property(SOURCE LEGORacers/racers.rc APPEND PROPERTY OBJECT_DEPENDS "${PROJECT_SOURCE_DIR}/LEGORacers/resources/racers.ico")
 
 # --- Modern compiler compatibility ---
 if (MSVC)

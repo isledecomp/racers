@@ -113,8 +113,8 @@ jobs:
         curl -fLSs -o LEGORACERSPROGRESS-old.json $RELEASE_URL/LEGORACERSPROGRESS.json || echo "" >LEGORACERSPROGRESS-old.json
         curl -fLSs -o GOLDPPROGRESS-old.json $RELEASE_URL/GOLDPPROGRESS.json || echo "" >GOLDPPROGRESS-old.json
 
-        reccmp-reccmp --target LEGORACERS --diff LEGORACERSPROGRESS-old.json || echo "Current master not found"
-        reccmp-reccmp --target GOLDP --diff GOLDPPROGRESS-old.json || echo "Current master not found"
+        reccmp-reccmp --target LEGORACERS --nolib --diff LEGORACERSPROGRESS-old.json || echo "Current master not found"
+        reccmp-reccmp --target GOLDP --nolib --diff GOLDPPROGRESS-old.json || echo "Current master not found"
 
     - name: Check Vtables
       shell: bash

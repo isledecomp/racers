@@ -3,11 +3,11 @@
 #include <mmsystem.h>
 // clang-format on
 
+#include "types.h"
+
 #include <objbase.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "types.h"
 
 // GLOBAL: LEGORACERS 0x4c47e4
 HINSTANCE g_hInstance;

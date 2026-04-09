@@ -27,7 +27,7 @@ LegoChar g_commandLine[256];
 CommandLineArgs g_commandLineArgs;
 
 // STUB: LEGORACERS 0x42f870
-LegoS32 FUN_0042f870(LegoS32 p_argc, LegoS32 p_argv)
+LegoS32 FUN_0042f870(LegoS32 p_argc, LegoChar** p_argv)
 {
 	// TODO
 	return 0;
@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpC
 	strncpy(g_commandLine, p_lpCmdLine, sizeof(g_commandLine));
 	g_commandLine[sizeof(g_commandLine) - 1] = '\0';
 	ParseCommandLine();
-	result = FUN_0042f870(g_commandLineArgs.m_argc, (int) g_commandLineArgs.m_argv);
+	result = FUN_0042f870(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
 	CoUninitialize();
 
 	return result;

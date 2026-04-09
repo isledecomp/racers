@@ -44,7 +44,7 @@ void ParseCommandLine()
 	}
 
 	LegoS32 i;
-	for (; g_commandLineArgs.m_argc < 32; offset += i, g_commandLineArgs.m_argc++) {
+	for (; g_commandLineArgs.m_argc < sizeOfArray(g_commandLineArgs.m_argv); offset += i, g_commandLineArgs.m_argc++) {
 		LegoChar* arg = &g_commandLine[offset];
 
 		for (i = 0; arg[i] && arg[i] != ' '; i++) {

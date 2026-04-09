@@ -93,6 +93,18 @@ Same as LEGO Island (NCC):
 - All parameters: `p_` prefix, all members: `m_` prefix, all globals: `g_` prefix
 - Variable names should match across prefixes when assigned: `m_hInstance = p_hInstance`, never `m_hInstance = p_something`
 
+## Types
+
+Use Lego types from `util/types.h` (`#include "types.h"`) instead of primitive C types:
+- `LegoS8`, `LegoU8` instead of `char`, `unsigned char`
+- `LegoS16`, `LegoU16` instead of `short`, `unsigned short`
+- `LegoS32`, `LegoU32` instead of `int`, `unsigned int`
+- `LegoFloat` instead of `float`
+- `LegoChar` instead of `char` (for character data)
+- `LegoBool` for booleans
+
+When a variable's type is dictated by an external interface (Windows API return types, parameters of WinMain/DllMain, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries.
+
 ## Project Structure
 
 ```
@@ -102,7 +114,7 @@ GolDP/               # GolDP.dll source
   src/               # Source files
   GolDP.def          # DLL exports (GolEntry, GolExit)
   library_msvc.h     # CRT library annotations
-util/                # decomp.h, compat.h
+util/                # decomp.h, compat.h, types.h
 cmake/               # reccmp CMake integration
 data/                # IDA dumps (gitignored)
 ```

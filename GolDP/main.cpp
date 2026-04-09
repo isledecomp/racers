@@ -2,11 +2,13 @@
 
 #include <windows.h>
 
+#include "types.h"
+
 // GLOBAL: GOLDP 0x10063148
 Unk0x10056440* g_unk0x10063148;
 
 // STUB: GOLDP 0x10006ff0
-int* GolEntry(int* p_a1)
+LegoS32* GolEntry(LegoS32* p_a1)
 {
 	// TODO
 	return 0;

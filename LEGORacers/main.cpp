@@ -7,6 +7,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "types.h"
+
 // GLOBAL: LEGORACERS 0x4c47e4
 HINSTANCE g_hInstance;
 
@@ -14,23 +16,23 @@ HINSTANCE g_hInstance;
 HINSTANCE g_hPrevInstance;
 
 // GLOBAL: LEGORACERS 0x4c6ee8
-char g_commandLine[256];
+LegoChar g_commandLine[256];
 
 // GLOBAL: LEGORACERS 0x4c6fe8
-int g_unk0x4c6fe8;
+LegoS32 g_unk0x4c6fe8;
 
 // GLOBAL: LEGORACERS 0x4c6fec
-int g_unk0x4c6fec[32];
+LegoChar* g_unk0x4c6fec[32];
 
 // STUB: LEGORACERS 0x42f870
-int FUN_0042f870(int p_a1, int p_a2)
+LegoS32 FUN_0042f870(LegoS32 p_a1, LegoS32 p_a2)
 {
 	// TODO
 	return 0;
 }
 
 // STUB: LEGORACERS 0x449ce0
-char FUN_00449ce0()
+LegoS8 FUN_00449ce0()
 {
 	// TODO
 	return 0;

@@ -1,10 +1,10 @@
 #include "types.h"
-#include "unk0x10056440.h"
+#include "velvetthunder821960.h"
 
 #include <windows.h>
 
 // GLOBAL: GOLDP 0x10063148
-Unk0x10056440* g_unk0x10063148;
+VelvetThunder821960* g_unk0x10063148;
 
 // STUB: GOLDP 0x10006ff0
 LegoS32* GolEntry(LegoS32* p_a1)

@@ -60,13 +60,13 @@ Functions in a compilation unit must be ordered by address (ascending).
 // header:
 // VTABLE: GOLDP 0x10056440
 // SIZE 0xc8ac8
-class Unk0x10056440 : public Unk0x100564b0 {
+class VelvetThunder821960 : public PixelDust4 {
 public:
-    virtual ~Unk0x10056440();    // vtable+0x00
-    virtual void VTable0x04();   // vtable+0x04
+    virtual ~VelvetThunder821960();    // vtable+0x00
+    virtual void VTable0x04();         // vtable+0x04
 
     // SYNTHETIC: GOLDP 0x10007040
-    // Unk0x10056440::`scalar deleting destructor'
+    // VelvetThunder821960::`scalar deleting destructor'
 
 private:
     int m_unk0x04;               // 0x04
@@ -75,19 +75,19 @@ private:
 };
 
 // source:
-DECOMP_SIZE_ASSERT(Unk0x10056440, 0xc8ac8)
+DECOMP_SIZE_ASSERT(VelvetThunder821960, 0xc8ac8)
 ```
 
 Member offset comments (`// 0xNN`) and vtable offset comments (`// vtable+0xNN`) are required.
 
 ## Naming Conventions
 
-Same as LEGO Island (NCC):
+Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
 - Functions: `FUN_XXXXXXXX` (8 hex digits, lowercase)
 - Globals: `g_unk0xXXXXXXXX`
 - Members: `m_unk0xXX` (by offset)
 - Parameters: `p_unk0xXX`
-- Classes: `Unk0xXXXXXXXX` (by vtable address)
+- Unknown classes: `RandomNameSize` (random PascalCase name + decimal size suffix, e.g. `NeonCactus7532`, `VelvetThunder821960`)
 - Virtual methods: `VTable0xXX` (by vtable offset)
 - Enum constants: `c_` prefix
 - All parameters: `p_` prefix, all members: `m_` prefix, all globals: `g_` prefix
@@ -105,6 +105,22 @@ Use Lego types from `util/types.h` (`#include "types.h"`) instead of primitive C
 
 When a variable's type is dictated by an external interface (Windows API return types, parameters of WinMain/DllMain, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries.
 
+## Decompiling a New Function
+
+1. **Find the decompilation** for the target address. Read the function body and note all called functions and global references.
+
+2. **Check calling conventions** carefully. Per-call-site guessed types may differ from the actual function definition. Cross-reference: find the called function's own definition to confirm `__thiscall` vs `__cdecl` vs `__stdcall`. If a function is `__thiscall`, it is a class member — look for the object it operates on.
+
+3. **Identify classes from `__thiscall` patterns.** When a function is called with a global address and `__thiscall` convention, that global is a class instance. Create a class with `undefined m_unk0x00[size]` for unknown internals.
+
+4. **Create STUBs for all unknown called functions.** Every function your implementation calls must exist (even as a stub) for the build to succeed and reccmp to compare. Order stubs by address ascending within each file.
+
+5. **Watch for COMDAT folding.** MSVC 6.0's linker may merge identical stub functions (e.g. two empty `void` methods), causing reccmp to report a mismatch on the call target. Fix by giving stubs different signatures or return types.
+
+6. **Write clean C++, not pseudocode.** Translate raw pointer arithmetic (`*(_DWORD*)(this + 4)`) into proper member access, method calls, and named variables. Refer to existing `// FUNCTION:` implementations (not STUBs) in the codebase for the expected style.
+
+7. **Build with double `cmake --build`**, then compare: `reccmp-reccmp --target LEGORACERS --verbose 0xADDRESS --print-rec-addr`. Iterate until 100%.
+
 ## Project Structure
 
 ```
@@ -116,5 +132,5 @@ GolDP/               # GolDP.dll source
   library_msvc.h     # CRT library annotations
 util/                # decomp.h, compat.h, types.h
 cmake/               # reccmp CMake integration
-data/                # IDA dumps (gitignored)
+data/                # Original binaries and decompilation data (gitignored)
 ```

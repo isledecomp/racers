@@ -219,3 +219,36 @@ jobs:
             --style=file \
             -i
           git diff --color --exit-code
+
+  naming:
+    name: Naming conventions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Install LLVM and Clang
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: '16'
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install python libraries
+        run: |
+          pip install clang==16.* pyyaml
+
+      - name: Run ncc
+        run: |
+          python3 tools/ncc/ncc.py \
+            --clang-lib ${{ env.LLVM_PATH }}/lib/libclang.so \
+            --recurse \
+            --style tools/ncc/ncc.style \
+            --definition WINAPI FAR BOOL CALLBACK HWND__=HWND \
+            --include \
+              util \
+              LEGORacers \
+              GolDP/include \
+              GolDP \
+            --path LEGORacers GolDP

@@ -6,6 +6,7 @@
 #include "main.h"
 
 #include "decomp.h"
+#include "neoncactus7532.h"
 #include "types.h"
 
 #include <objbase.h>
@@ -20,16 +21,24 @@ HINSTANCE g_hInstance;
 // GLOBAL: LEGORACERS 0x4c47e8
 HINSTANCE g_hPrevInstance;
 
+// GLOBAL: LEGORACERS 0x4c4a38
+NeonCactus7532 g_unk0x4c4a38;
+
 // GLOBAL: LEGORACERS 0x4c6ee8
 LegoChar g_commandLine[256];
 
 // GLOBAL: LEGORACERS 0x4c6fe8
 CommandLineArgs g_commandLineArgs;
 
-// STUB: LEGORACERS 0x42f870
-LegoS32 FUN_0042f870(LegoS32 p_argc, LegoChar** p_argv)
+// FUNCTION: LEGORACERS 0x42f870
+LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 {
-	// TODO
+	if (!g_unk0x4c4a38.FUN_0042bbb0(p_argc, p_argv)) {
+		return 1;
+	}
+
+	g_unk0x4c4a38.FUN_0042bc40();
+	g_unk0x4c4a38.FUN_0042bc20();
 	return 0;
 }
 
@@ -74,7 +83,7 @@ int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpC
 	strncpy(g_commandLine, p_lpCmdLine, sizeof(g_commandLine));
 	g_commandLine[sizeof(g_commandLine) - 1] = '\0';
 	SplitCommand();
-	result = FUN_0042f870(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
+	result = GameMain(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
 	CoUninitialize();
 
 	return result;

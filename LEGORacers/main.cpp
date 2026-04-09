@@ -34,7 +34,7 @@ LegoS32 FUN_0042f870(LegoS32 p_argc, LegoChar** p_argv)
 }
 
 // FUNCTION: LEGORACERS 0x449ce0
-void ParseCommandLine()
+void SplitCommand()
 {
 	LegoS32 offset = 0;
 	g_commandLineArgs.m_argc = 0;
@@ -73,7 +73,7 @@ int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpC
 	srand((unsigned int) timeGetTime);
 	strncpy(g_commandLine, p_lpCmdLine, sizeof(g_commandLine));
 	g_commandLine[sizeof(g_commandLine) - 1] = '\0';
-	ParseCommandLine();
+	SplitCommand();
 	result = FUN_0042f870(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
 	CoUninitialize();
 

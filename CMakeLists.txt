@@ -84,6 +84,7 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
+  util/decomp.cpp
   LEGORacers/main.cpp
   LEGORacers/neoncactus7532.cpp
   LEGORacers/ironflame2372.cpp
@@ -129,7 +130,7 @@ if (MSVC_FOR_DECOMP)
   # game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
   # They ensure a recompilation that can be byte/instruction accurate to the original binaries.
   if (TARGET legoracers)
-    target_link_options(legoracers PRIVATE "/OPT:NOREF")
+    target_link_options(legoracers PRIVATE "/OPT:NOREF,ICF")
   endif()
   if (TARGET goldp)
     target_link_options(goldp PRIVATE "/OPT:NOREF")

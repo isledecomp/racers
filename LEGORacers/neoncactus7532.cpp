@@ -27,83 +27,82 @@ void NeonCactus7532::FUN_0042bc20()
 void NeonCactus7532::FUN_0042bc40()
 {
 	// TODO
+	STUB(0x42bc40);
 }
 
 // STUB: LEGORACERS 0x42bd00
 void NeonCactus7532::FUN_0042bd00()
 {
 	// TODO
+	STUB(0x42bd00);
 }
 
 // STUB: LEGORACERS 0x42be90
 void NeonCactus7532::FUN_0042be90()
 {
 	// TODO
+	STUB(0x42be90);
 }
 
-// Virtual functions below are COMDAT-folded in the original binary.
-// Address annotations are commented out because reccmp does not support
-// duplicate addresses, and these belong to different address ranges.
-
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x00()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x04()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x08()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x0c()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x10()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x14()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x18()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x28()
 {
 }
 
-// Folded into nullsub_1 at 0x4164c0
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void NeonCactus7532::VTable0x2c()
 {
 }
 
-// Folded to 0x4513d0
-void NeonCactus7532::VTable0x1c()
+// FUNCTION: LEGORACERS 0x4513d0 FOLDED
+void NeonCactus7532::VTable0x1c(undefined4)
 {
 	// TODO
 }
 
-// Folded to 0x4513d0
-void NeonCactus7532::VTable0x20()
+// FUNCTION: LEGORACERS 0x4513d0 FOLDED
+void NeonCactus7532::VTable0x20(undefined4)
 {
 	// TODO
 }
 
-// Folded to 0x46c9f0
-void NeonCactus7532::VTable0x24()
+// FUNCTION: LEGORACERS 0x46c9f0 FOLDED
+void NeonCactus7532::VTable0x24(undefined4, undefined4)
 {
 	// TODO
 }

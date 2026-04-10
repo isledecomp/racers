@@ -9,24 +9,21 @@
 
 // VTABLE: LEGORACERS 0x4b0568
 // SIZE 0x1d6c
-// vtable+0x00..0x18,0x28,0x2c are COMDAT-folded to nullsub_1 (0x4164c0).
-// vtable+0x1c,0x20 are COMDAT-folded to 0x4513d0.
-// reccmp cannot annotate duplicate addresses, so vtable match is partial.
 class NeonCactus7532 {
 public:
-	virtual void VTable0x00(); // vtable+0x00
-	virtual void VTable0x04(); // vtable+0x04
-	virtual void VTable0x08(); // vtable+0x08
-	virtual void VTable0x0c(); // vtable+0x0c
-	virtual void VTable0x10(); // vtable+0x10
-	virtual void VTable0x14(); // vtable+0x14
-	virtual void VTable0x18(); // vtable+0x18
-	virtual void VTable0x1c(); // vtable+0x1c
-	virtual void VTable0x20(); // vtable+0x20
-	virtual void VTable0x24(); // vtable+0x24
-	virtual void VTable0x28(); // vtable+0x28
-	virtual void VTable0x2c(); // vtable+0x2c
-	virtual ~NeonCactus7532(); // vtable+0x30
+	virtual void VTable0x00();                       // vtable+0x00
+	virtual void VTable0x04();                       // vtable+0x04
+	virtual void VTable0x08();                       // vtable+0x08
+	virtual void VTable0x0c();                       // vtable+0x0c
+	virtual void VTable0x10();                       // vtable+0x10
+	virtual void VTable0x14();                       // vtable+0x14
+	virtual void VTable0x18();                       // vtable+0x18
+	virtual void VTable0x1c(undefined4);             // vtable+0x1c
+	virtual void VTable0x20(undefined4);             // vtable+0x20
+	virtual void VTable0x24(undefined4, undefined4); // vtable+0x24
+	virtual void VTable0x28();                       // vtable+0x28
+	virtual void VTable0x2c();                       // vtable+0x2c
+	virtual ~NeonCactus7532();                       // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x42bb20
 	// NeonCactus7532::`scalar deleting destructor'

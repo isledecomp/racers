@@ -27,4 +27,8 @@ typedef unsigned char undefined;
 typedef unsigned short undefined2;
 typedef unsigned int undefined4;
 
+extern undefined4 g_foldingDummyVariable;
+
+#define STUB(val)  (g_foldingDummyVariable = val);
+
 #endif // DECOMP_H

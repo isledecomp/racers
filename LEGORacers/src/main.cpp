@@ -6,7 +6,7 @@
 #include "main.h"
 
 #include "decomp.h"
-#include "neoncactus7532.h"
+#include "neoncactus0x1d6c.h"
 #include "types.h"
 
 #include <objbase.h>
@@ -22,7 +22,7 @@ HINSTANCE g_hInstance;
 HINSTANCE g_hPrevInstance;
 
 // GLOBAL: LEGORACERS 0x4c4a38
-NeonCactus7532 g_unk0x4c4a38;
+NeonCactus0x1d6c g_unk0x4c4a38;
 
 // GLOBAL: LEGORACERS 0x4c6ee8
 LegoChar g_commandLine[256];

@@ -1,14 +1,14 @@
-#ifndef COBALTMIST48_H
-#define COBALTMIST48_H
+#ifndef COBALTMIST0X30_H
+#define COBALTMIST0X30_H
 
 #include "decomp.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x4afc6c
 // SIZE 0x30
-class CobaltMist48 {
+class CobaltMist0x30 {
 public:
-	virtual ~CobaltMist48();                   // vtable+0x00
+	virtual ~CobaltMist0x30();                 // vtable+0x00
 	virtual undefined4 VTable0x04(undefined4); // vtable+0x04
 	virtual void VTable0x08();                 // vtable+0x08
 	virtual void VTable0x0c();                 // vtable+0x0c
@@ -21,7 +21,7 @@ public:
 	virtual void VTable0x28(undefined4);       // vtable+0x28
 
 	// SYNTHETIC: LEGORACERS 0x41bce0
-	// CobaltMist48::`scalar deleting destructor'
+	// CobaltMist0x30::`scalar deleting destructor'
 
 private:
 	undefined4 m_unk0x04;      // 0x04
@@ -34,4 +34,4 @@ private:
 	undefined m_unk0x28[0x08]; // 0x28
 };
 
-#endif // COBALTMIST48_H
+#endif // COBALTMIST0X30_H

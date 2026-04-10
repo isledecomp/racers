@@ -24,10 +24,17 @@ jobs:
         with:
           arch: amd64_x86
 
+      - name: Install LLVM
+        uses: KyleMayes/install-llvm-action@v2
+        with:
+          version: '16'
+
       - name: Build
         run: |
           cmake -S . -B build -GNinja `
+            -DCMAKE_CXX_COMPILER=cl `
             -DCMAKE_BUILD_TYPE=Debug `
+            -DENABLE_CLANG_TIDY=ON `
             -Werror=dev
           cmake --build build -- -k0
 
@@ -248,6 +255,7 @@ jobs:
             --definition WINAPI FAR BOOL CALLBACK HWND__=HWND \
             --include \
               util \
+              LEGORacers/include \
               LEGORacers \
               GolDP/include \
               GolDP \

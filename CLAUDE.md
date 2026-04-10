@@ -63,13 +63,13 @@ Functions in a compilation unit must be ordered by address (ascending).
 // header:
 // VTABLE: GOLDP 0x10056440
 // SIZE 0xc8ac8
-class VelvetThunder821960 : public PixelDust4 {
+class VelvetThunder0xc8ac8 : public PixelDust0x4 {
 public:
-    virtual ~VelvetThunder821960();    // vtable+0x00
-    virtual void VTable0x04();         // vtable+0x04
+    virtual ~VelvetThunder0xc8ac8();    // vtable+0x00
+    virtual void VTable0x04();          // vtable+0x04
 
     // SYNTHETIC: GOLDP 0x10007040
-    // VelvetThunder821960::`scalar deleting destructor'
+    // VelvetThunder0xc8ac8::`scalar deleting destructor'
 
 private:
     int m_unk0x04;               // 0x04
@@ -78,7 +78,7 @@ private:
 };
 
 // source:
-DECOMP_SIZE_ASSERT(VelvetThunder821960, 0xc8ac8)
+DECOMP_SIZE_ASSERT(VelvetThunder0xc8ac8, 0xc8ac8)
 ```
 
 Member offset comments (`// 0xNN`) and vtable offset comments (`// vtable+0xNN`) are required.
@@ -90,11 +90,12 @@ Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
 - Globals: `g_unk0xXXXXXXXX`
 - Members: `m_unk0xXX` (by offset)
 - Parameters: `p_unk0xXX`
-- Unknown classes: `RandomNameSize` (random PascalCase name + decimal size suffix, e.g. `NeonCactus7532`, `VelvetThunder821960`)
+- Unknown classes: `RandomName0xSize` (random PascalCase name + `0x` + hex size suffix, e.g. `NeonCactus0x1d6c`, `VelvetThunder0xc8ac8`)
 - Virtual methods: `VTable0xXX` (by vtable offset)
 - Enum constants: `c_` prefix
 - All parameters: `p_` prefix, all members: `m_` prefix, all globals: `g_` prefix
 - Variable names should match across prefixes when assigned: `m_hInstance = p_hInstance`, never `m_hInstance = p_something`
+- **Unused parameters** must be unnamed (omit the parameter name in the definition)
 
 ## Types
 
@@ -107,6 +108,8 @@ Use Lego types from `util/types.h` (`#include "types.h"`) instead of primitive C
 - `LegoBool` for booleans
 
 When a variable's type is dictated by an external interface (Windows API return types, parameters of WinMain/DllMain, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries.
+
+**Unknown/unproven types:** When a variable's type has not been confirmed, use `undefined` types (`undefined`, `undefined2`, `undefined4` from `decomp.h`). Use `undefined4*` for pointers to unknown data. Do not guess concrete types (e.g. `int`, `float`, `void*`) until the type is proven by usage context or reccmp comparison.
 
 ## Decompiling a New Function
 
@@ -134,6 +137,8 @@ When a variable's type is dictated by an external interface (Windows API return 
 
 ```
 LEGORacers/          # LEGORacers.exe source
+  include/           # Headers
+  src/               # Source files
 GolDP/               # GolDP.dll source
   include/           # Headers
   src/               # Source files

@@ -1,22 +1,23 @@
-#include "neoncactus7532.h"
+#include "neoncactus0x1d6c.h"
 
-DECOMP_SIZE_ASSERT(NeonCactus7532, 0x1d6c)
+DECOMP_SIZE_ASSERT(NeonCactus0x1d6c, 0x1d6c)
 
 // FUNCTION: LEGORACERS 0x42bb40
-NeonCactus7532::~NeonCactus7532()
+NeonCactus0x1d6c::~NeonCactus0x1d6c()
 {
 	FUN_0042bc20();
 }
 
 // STUB: LEGORACERS 0x42bbb0
-LegoS32 NeonCactus7532::FUN_0042bbb0(LegoS32 p_argc, LegoChar** p_argv)
+LegoS32 NeonCactus0x1d6c::FUN_0042bbb0(LegoS32 p_argc, LegoChar** p_argv)
 {
 	// TODO
+	STUB(0x42bbb0);
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x42bc20
-void NeonCactus7532::FUN_0042bc20()
+void NeonCactus0x1d6c::FUN_0042bc20()
 {
 	FUN_0042bd00();
 	FUN_0042be90();
@@ -24,21 +25,21 @@ void NeonCactus7532::FUN_0042bc20()
 }
 
 // STUB: LEGORACERS 0x42bc40
-void NeonCactus7532::FUN_0042bc40()
+void NeonCactus0x1d6c::FUN_0042bc40()
 {
 	// TODO
 	STUB(0x42bc40);
 }
 
 // STUB: LEGORACERS 0x42bd00
-void NeonCactus7532::FUN_0042bd00()
+void NeonCactus0x1d6c::FUN_0042bd00()
 {
 	// TODO
 	STUB(0x42bd00);
 }
 
 // FUNCTION: LEGORACERS 0x42be90
-void NeonCactus7532::FUN_0042be90()
+void NeonCactus0x1d6c::FUN_0042be90()
 {
 	m_unk0x948.VTable0x08();
 	m_unk0x9e0.VTable0x08();
@@ -46,64 +47,64 @@ void NeonCactus7532::FUN_0042be90()
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x00()
+void NeonCactus0x1d6c::VTable0x00()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x04()
+void NeonCactus0x1d6c::VTable0x04()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x08()
+void NeonCactus0x1d6c::VTable0x08()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x0c()
+void NeonCactus0x1d6c::VTable0x0c()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x10()
+void NeonCactus0x1d6c::VTable0x10()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x14()
+void NeonCactus0x1d6c::VTable0x14()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x18()
+void NeonCactus0x1d6c::VTable0x18()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x28()
+void NeonCactus0x1d6c::VTable0x28()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void NeonCactus7532::VTable0x2c()
+void NeonCactus0x1d6c::VTable0x2c()
 {
 }
 
 // FUNCTION: LEGORACERS 0x4513d0 FOLDED
-void NeonCactus7532::VTable0x1c(undefined4)
+void NeonCactus0x1d6c::VTable0x1c(undefined4)
 {
 	// TODO
 }
 
 // FUNCTION: LEGORACERS 0x4513d0 FOLDED
-void NeonCactus7532::VTable0x20(undefined4)
+void NeonCactus0x1d6c::VTable0x20(undefined4)
 {
 	// TODO
 }
 
 // FUNCTION: LEGORACERS 0x46c9f0 FOLDED
-void NeonCactus7532::VTable0x24(undefined4, undefined4)
+void NeonCactus0x1d6c::VTable0x24(undefined4, undefined4)
 {
 	// TODO
 }

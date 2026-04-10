@@ -63,8 +63,9 @@ add_cxx_warning(parentheses)
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
-  GolDP/src/velvetthunder821960.cpp
-  GolDP/main.cpp
+  util/decomp.cpp
+  GolDP/src/velvetthunder0xc8ac8.cpp
+  GolDP/src/main.cpp
 )
 reccmp_add_target(goldp ID GOLDP)
 
@@ -85,16 +86,17 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
   util/decomp.cpp
-  LEGORacers/main.cpp
-  LEGORacers/neoncactus7532.cpp
-  LEGORacers/ironflame2372.cpp
-  LEGORacers/amberwolf152.cpp
-  LEGORacers/cobaltmist48.cpp
+  LEGORacers/src/main.cpp
+  LEGORacers/src/neoncactus0x1d6c.cpp
+  LEGORacers/src/ironflame0x944.cpp
+  LEGORacers/src/amberwolf0x98.cpp
+  LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/racers.rc
 )
 reccmp_add_target(legoracers ID LEGORACERS)
 
 target_include_directories(legoracers PRIVATE
+  "${PROJECT_SOURCE_DIR}/LEGORacers/include"
   "${PROJECT_SOURCE_DIR}/LEGORacers"
   "${PROJECT_SOURCE_DIR}/util"
 )

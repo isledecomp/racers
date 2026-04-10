@@ -1,5 +1,5 @@
-#ifndef LEGOTYPES_H
-#define LEGOTYPES_H
+#ifndef TYPES_H
+#define TYPES_H
 
 #ifndef TRUE
 #define TRUE 1
@@ -20,4 +20,4 @@ typedef char LegoChar;
 
 typedef LegoU8 LegoBool;
 
-#endif // LEGOTYPES_H
+#endif // TYPES_H

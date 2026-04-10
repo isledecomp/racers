@@ -1,6 +1,14 @@
 #ifndef LEGOTYPES_H
 #define LEGOTYPES_H
 
+#ifndef TRUE
+#define TRUE 1
+#endif
+
+#ifndef FALSE
+#define FALSE 0
+#endif
+
 typedef char LegoS8;
 typedef unsigned char LegoU8;
 typedef short LegoS16;

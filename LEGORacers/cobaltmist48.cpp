@@ -1,6 +1,15 @@
 #include "cobaltmist48.h"
 
+#include "types.h"
+
 DECOMP_SIZE_ASSERT(CobaltMist48, 0x30)
+
+// STUB: LEGORACERS 0x418f20
+void CobaltMist48::VTable0x28(undefined4)
+{
+	// TODO
+	STUB(0x418f20);
+}
 
 // STUB: LEGORACERS 0x41bd00
 CobaltMist48::~CobaltMist48()
@@ -14,9 +23,75 @@ undefined4 CobaltMist48::VTable0x04(undefined4)
 	return 1;
 }
 
-// STUB: LEGORACERS 0x41bd60
+// FUNCTION: LEGORACERS 0x41bd60
 void CobaltMist48::VTable0x08()
 {
+	while (TRUE) {
+		if (!*m_unk0x18 || !m_unk0x18) {
+			break;
+		}
+
+		VTable0x18(m_unk0x18 - 2);
+	}
+
+	while (TRUE) {
+		if (!*m_unk0x24 || !m_unk0x24) {
+			break;
+		}
+
+		VTable0x20(m_unk0x24 - 1);
+	}
+
+	while (m_unk0x0c) {
+		VTable0x28(m_unk0x0c);
+	}
+
+	while (m_unk0x08) {
+		VTable0x28(m_unk0x08);
+	}
+}
+
+// STUB: LEGORACERS 0x41bdd0
+void CobaltMist48::VTable0x14()
+{
 	// TODO
-	STUB(0x41bd60);
+	STUB(0x41bdd0);
+}
+
+// STUB: LEGORACERS 0x41be50
+void CobaltMist48::VTable0x18(undefined4*)
+{
+	// TODO
+	STUB(0x41be50);
+}
+
+// STUB: LEGORACERS 0x41be80
+void CobaltMist48::VTable0x1c()
+{
+	// TODO
+	STUB(0x41be80);
+}
+
+// STUB: LEGORACERS 0x41bf00
+void CobaltMist48::VTable0x20(undefined4*)
+{
+	// TODO
+	STUB(0x41bf00);
+}
+
+// STUB: LEGORACERS 0x41bf30
+void CobaltMist48::VTable0x24()
+{
+	// TODO
+	STUB(0x41bf30);
+}
+
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
+void CobaltMist48::VTable0x0c()
+{
+}
+
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED
+void CobaltMist48::VTable0x10()
+{
 }

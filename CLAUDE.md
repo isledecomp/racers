@@ -33,9 +33,9 @@ reccmp-reccmp --target GOLDP --verbose 0x100070b0 --print-rec-addr
 reccmp-reccmp --target LEGORACERS --total 3986 --nolib -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png
 reccmp-reccmp --target GOLDP --total 1071 --nolib -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png
 
-# Lint annotations
-reccmp-decomplint LEGORACERS --module LEGORACERS --warnfail
-reccmp-decomplint GOLDP --module GOLDP --warnfail
+# Lint annotations (pass source dir to avoid scanning gitignored files)
+reccmp-decomplint --module LEGORACERS --warnfail <path-to-LEGORacers>
+reccmp-decomplint --module GOLDP --warnfail <path-to-GolDP>
 ```
 
 `reccmp-user.yml` (gitignored) points to original binaries for local comparison.
@@ -46,6 +46,7 @@ Functions in a compilation unit must be ordered by address (ascending).
 
 ```cpp
 // FUNCTION: LEGORACERS 0x449d50    — complete, compared by reccmp
+// FUNCTION: LEGORACERS 0x4164c0 FOLDED — identical code merged by linker (see below)
 // STUB: GOLDP 0x10006ff0           — incomplete, skipped by reccmp
 // LIBRARY: GOLDP 0x1004b356        — CRT/3rd-party (in library_msvc.h, inside #ifdef 0)
 // SYNTHETIC: GOLDP 0x10007040      — compiler-generated (scalar deleting destructors)
@@ -53,6 +54,8 @@ Functions in a compilation unit must be ordered by address (ascending).
 // VTABLE: GOLDP 0x10056440         — virtual function table
 // SIZE 0xc8ac8                      — struct/class size assertion
 ```
+
+**FOLDED functions:** MSVC 6.0's linker merges functions with identical compiled code (Identical COMDAT Folding). Multiple distinct functions end up sharing one address in the original binary. Annotate each with `// FUNCTION: MODULE 0xADDRESS FOLDED` where the address is the single copy the linker kept. All folded functions share the same address. Functions that fold together have the same signature and body (e.g. all empty `void` methods fold to one address, all empty `void(undefined4)` methods fold to a different address). FOLDED functions are exempt from the address-ascending ordering rule and do not need the `STUB()` anti-folding macro.
 
 ## Class Pattern
 
@@ -115,11 +118,17 @@ When a variable's type is dictated by an external interface (Windows API return 
 
 4. **Create STUBs for all unknown called functions.** Every function your implementation calls must exist (even as a stub) for the build to succeed and reccmp to compare. Order stubs by address ascending within each file.
 
-5. **Watch for COMDAT folding.** MSVC 6.0's linker may merge identical stub functions (e.g. two empty `void` methods), causing reccmp to report a mismatch on the call target. Fix by giving stubs different signatures or return types.
+5. **Watch for COMDAT folding.** MSVC 6.0's linker may merge identical stub functions (e.g. two empty `void` methods), causing reccmp to report a mismatch on the call target. Use the `STUB(0xADDRESS)` macro (from `decomp.h`) in every stub body — it assigns a unique value to `g_foldingDummyVariable`, giving each stub a distinct body so the linker won't fold them. Use the function's real address as the value. Empty destructors are an exception: they have distinct compiler-generated code and don't need the macro.
 
 6. **Write clean C++, not pseudocode.** Translate raw pointer arithmetic (`*(_DWORD*)(this + 4)`) into proper member access, method calls, and named variables. Refer to existing `// FUNCTION:` implementations (not STUBs) in the codebase for the expected style.
 
 7. **Build with double `cmake --build`**, then compare: `reccmp-reccmp --target LEGORACERS --verbose 0xADDRESS --print-rec-addr`. Iterate until 100%.
+
+8. **Validate vtables.** After adding or modifying virtual methods, always verify the vtable matches: `reccmp-reccmp --target LEGORACERS --verbose 0xVTABLE_ADDR --print-rec-addr`. Every virtual method declared in a class header must have a corresponding `// STUB:` annotation with its real address from the original binary. Read the vtable data from the original binary to find the function address at each vtable slot.
+
+9. **Check for regressions.** After any change, re-verify all previously matched `// FUNCTION:` implementations that touch the same classes, especially functions that make virtual calls on modified classes.
+
+10. **Lint annotations.** Run `reccmp-decomplint` from the `build/` directory (see example commands in the reccmp section above). Always pass the source directory as a path argument to avoid scanning gitignored data files.
 
 ## Project Structure
 

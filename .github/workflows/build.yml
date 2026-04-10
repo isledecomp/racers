@@ -119,8 +119,8 @@ jobs:
     - name: Check Vtables
       shell: bash
       run: |
-        reccmp-vtable --target LEGORACERS || echo "LEGORACERS vtable mismatch (non-fatal)"
-        reccmp-vtable --target GOLDP || echo "GOLDP vtable mismatch (non-fatal)"
+        reccmp-vtable --target LEGORACERS
+        reccmp-vtable --target GOLDP
 
     - name: Check Variables
       shell: bash

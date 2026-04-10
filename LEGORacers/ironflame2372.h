@@ -15,6 +15,10 @@ public:
 	virtual void VTable0x14(); // vtable+0x14
 	virtual void VTable0x18(); // vtable+0x18
 	virtual void VTable0x1c(); // vtable+0x1c
+	virtual void VTable0x20(); // vtable+0x20
+	virtual void VTable0x24(); // vtable+0x24
+	virtual void VTable0x28(); // vtable+0x28
+	virtual void VTable0x2c(); // vtable+0x2c
 
 	// SYNTHETIC: LEGORACERS 0x416560
 	// IronFlame2372::`scalar deleting destructor'

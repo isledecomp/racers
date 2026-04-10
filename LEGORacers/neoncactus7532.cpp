@@ -37,11 +37,12 @@ void NeonCactus7532::FUN_0042bd00()
 	STUB(0x42bd00);
 }
 
-// STUB: LEGORACERS 0x42be90
+// FUNCTION: LEGORACERS 0x42be90
 void NeonCactus7532::FUN_0042be90()
 {
-	// TODO
-	STUB(0x42be90);
+	m_unk0x948.VTable0x08();
+	m_unk0x9e0.VTable0x08();
+	m_unk0x04.VTable0x2c();
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED

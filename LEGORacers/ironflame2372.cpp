@@ -21,6 +21,13 @@ void IronFlame2372::VTable0x0c()
 	STUB(0x4165e0);
 }
 
+// STUB: LEGORACERS 0x4167b0
+void IronFlame2372::VTable0x2c()
+{
+	// TODO
+	STUB(0x4167b0);
+}
+
 // STUB: LEGORACERS 0x4167e0
 void IronFlame2372::VTable0x10()
 {
@@ -47,6 +54,27 @@ void IronFlame2372::VTable0x1c()
 {
 	// TODO
 	STUB(0x416a90);
+}
+
+// STUB: LEGORACERS 0x416ab0
+void IronFlame2372::VTable0x20()
+{
+	// TODO
+	STUB(0x416ab0);
+}
+
+// STUB: LEGORACERS 0x416ac0
+void IronFlame2372::VTable0x28()
+{
+	// TODO
+	STUB(0x416ac0);
+}
+
+// STUB: LEGORACERS 0x416b00
+void IronFlame2372::VTable0x24()
+{
+	// TODO
+	STUB(0x416b00);
 }
 
 // STUB: LEGORACERS 0x417900

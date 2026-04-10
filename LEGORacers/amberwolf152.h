@@ -1,0 +1,16 @@
+#ifndef AMBERWOLF152_H
+#define AMBERWOLF152_H
+
+#include "decomp.h"
+
+// VTABLE: LEGORACERS 0x4afaf0
+// SIZE 0x98
+class AmberWolf152 {
+public:
+	virtual ~AmberWolf152(); // vtable+0x00
+
+private:
+	undefined m_unk0x04[0x94]; // 0x04
+};
+
+#endif // AMBERWOLF152_H

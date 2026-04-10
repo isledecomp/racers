@@ -1,6 +1,9 @@
 #ifdef 0
 // For LEGORACERS symbols only
 
+// LIBRARY: LEGORACERS 0x4a84a4
+// ??3@YAXPAX@Z
+
 // LIBRARY: LEGORACERS 0x4a867c
 // _WinMainCRTStartup
 

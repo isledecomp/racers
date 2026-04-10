@@ -86,6 +86,9 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 add_executable(legoracers WIN32
   LEGORacers/main.cpp
   LEGORacers/neoncactus7532.cpp
+  LEGORacers/ironflame2372.cpp
+  LEGORacers/amberwolf152.cpp
+  LEGORacers/cobaltmist48.cpp
   LEGORacers/racers.rc
 )
 reccmp_add_target(legoracers ID LEGORACERS)

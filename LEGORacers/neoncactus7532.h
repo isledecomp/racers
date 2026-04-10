@@ -14,19 +14,19 @@
 // reccmp cannot annotate duplicate addresses, so vtable match is partial.
 class NeonCactus7532 {
 public:
-	virtual void VTable0x00();   // vtable+0x00
-	virtual void VTable0x04();   // vtable+0x04
-	virtual void VTable0x08();   // vtable+0x08
-	virtual void VTable0x0c();   // vtable+0x0c
-	virtual void VTable0x10();   // vtable+0x10
-	virtual void VTable0x14();   // vtable+0x14
-	virtual void VTable0x18();   // vtable+0x18
-	virtual void VTable0x1c();   // vtable+0x1c
-	virtual void VTable0x20();   // vtable+0x20
-	virtual void VTable0x24();   // vtable+0x24
-	virtual void VTable0x28();   // vtable+0x28
-	virtual void VTable0x2c();   // vtable+0x2c
-	virtual ~NeonCactus7532();   // vtable+0x30
+	virtual void VTable0x00(); // vtable+0x00
+	virtual void VTable0x04(); // vtable+0x04
+	virtual void VTable0x08(); // vtable+0x08
+	virtual void VTable0x0c(); // vtable+0x0c
+	virtual void VTable0x10(); // vtable+0x10
+	virtual void VTable0x14(); // vtable+0x14
+	virtual void VTable0x18(); // vtable+0x18
+	virtual void VTable0x1c(); // vtable+0x1c
+	virtual void VTable0x20(); // vtable+0x20
+	virtual void VTable0x24(); // vtable+0x24
+	virtual void VTable0x28(); // vtable+0x28
+	virtual void VTable0x2c(); // vtable+0x2c
+	virtual ~NeonCactus7532(); // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x42bb20
 	// NeonCactus7532::`scalar deleting destructor'
@@ -40,7 +40,7 @@ public:
 private:
 	IronFlame2372 m_unk0x04;              // 0x04
 	AmberWolf152 m_unk0x948;              // 0x948
-	CobaltMist48 m_unk0x9e0;             // 0x9e0
+	CobaltMist48 m_unk0x9e0;              // 0x9e0
 	undefined m_unk0xa10[0x1d6c - 0xa10]; // 0xa10
 };
 

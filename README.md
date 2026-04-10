@@ -41,6 +41,25 @@ cmake <path-to-source> -G "NMake Makefiles" -DCMAKE_BUILD_TYPE=RelWithDebInfo
 1. When this is done, there should be a recompiled `LEGORacers.exe` and `GolDP.dll` in the build folder.
 1. Note that `nmake` must be run twice under certain conditions, so it is advisable to always (re-)compile using `nmake && nmake`.
 
+### Docker
+
+Alternatively, we support Docker as a method of compilation. This is ideal for users on Linux and macOS who do not wish to manually configure a Wine environment for compiling this project.
+
+Compilation should be as simple as configuring and running the following command:
+
+```
+docker run -d \
+	-e CMAKE_FLAGS="-DCMAKE_BUILD_TYPE=RelWithDebInfo" \
+	-v <path-to-source>:/racers:rw \
+	-v <build-folder>:/build:rw \
+	ghcr.io/isledecomp/racers:latest
+```
+
+`<path-to-source>` should be replaced with the path to the source code directory (ie: the root of this repository).
+`<build-folder>` should be replaced with the path to the build folder you'd like CMake to use during compilation.
+
+You can pass as many CMake flags as you'd like in the `CMAKE_FLAGS` environment variable, but the default configuration provided in the command is already ideal for building highly-accurate binaries.
+
 ### Verification
 
 To verify your build against the original binaries, install the [reccmp](https://github.com/isledecomp/reccmp) tooling:

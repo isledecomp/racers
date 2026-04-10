@@ -7,11 +7,11 @@ CobaltMist48::~CobaltMist48()
 {
 }
 
-// STUB: LEGORACERS 0x41bd50
-void CobaltMist48::VTable0x04()
+// FUNCTION: LEGORACERS 0x41bd50
+undefined4 CobaltMist48::VTable0x04(undefined4)
 {
-	// TODO
-	STUB(0x41bd50);
+	VTable0x08();
+	return 1;
 }
 
 // STUB: LEGORACERS 0x41bd60

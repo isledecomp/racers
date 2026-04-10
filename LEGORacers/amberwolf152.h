@@ -9,6 +9,9 @@ class AmberWolf152 {
 public:
 	virtual ~AmberWolf152(); // vtable+0x00
 
+	// SYNTHETIC: LEGORACERS 0x418680
+	// AmberWolf152::`scalar deleting destructor'
+
 private:
 	undefined m_unk0x04[0x94]; // 0x04
 };

@@ -5,7 +5,7 @@
 #include "types.h"
 #include "util/list.h"
 
-class CobaltMist0x30;
+class IndigoStar0x18;
 
 // SIZE 0x28
 class CoralBreeze0x28 : public ListLink {
@@ -15,8 +15,10 @@ public:
 	virtual undefined4 VTable0x00(undefined4) = 0; // vtable+0x00
 	virtual undefined4 VTable0x04() = 0;           // vtable+0x04
 
+	void SetUnk0x0c(IndigoStar0x18* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
+
 protected:
-	CobaltMist0x30* m_unk0x0c; // 0x0c
+	IndigoStar0x18* m_unk0x0c; // 0x0c
 	ListHead m_unk0x10;        // 0x10
 	ListHead m_unk0x1c;        // 0x1c
 };

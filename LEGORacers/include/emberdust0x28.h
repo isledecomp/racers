@@ -13,8 +13,6 @@ public:
 	~EmberDust0x28();
 	undefined4 VTable0x00(undefined4) override; // vtable+0x00
 	undefined4 VTable0x04() override;           // vtable+0x04
-
-	void SetUnk0x0c(CobaltMist0x30* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 };
 
 #endif // EMBERDUST0X28_H

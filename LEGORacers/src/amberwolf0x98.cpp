@@ -2,6 +2,8 @@
 
 #include "crimsonray0x20.h"
 #include "emberdust0x28.h"
+#include "frostpetal0x34.h"
+#include "goldenoak0x128.h"
 #include "silvernode0x50.h"
 #include "types.h"
 
@@ -83,18 +85,42 @@ void AmberWolf0x98::VTable0x10()
 	}
 }
 
-// STUB: LEGORACERS 0x418d80
+// FUNCTION: LEGORACERS 0x418d80
 CrimsonRay0x20* AmberWolf0x98::VTable0x14()
 {
-	STUB(0x418d80);
-	return NULL;
+	GoldenOak0x128* node = new GoldenOak0x128();
+
+	if (node) {
+		node->SetUnk0x10(this);
+
+		ListLink* link = node;
+		link->m_prev = m_unk0x3c.m_first;
+		link->m_next = (ListLink*) &m_unk0x3c.m_first;
+		m_unk0x3c.m_first->m_next = link;
+		m_unk0x3c.m_first = link;
+	}
+
+	// TODO: GoldenOak0x128 does not inherit from CrimsonRay0x20
+	return (CrimsonRay0x20*) node;
 }
 
-// STUB: LEGORACERS 0x418e00
+// FUNCTION: LEGORACERS 0x418e00
 EmberDust0x28* AmberWolf0x98::VTable0x1c()
 {
-	STUB(0x418e00);
-	return NULL;
+	FrostPetal0x34* node = new FrostPetal0x34();
+
+	if (node) {
+		node->SetUnk0x0c(this);
+
+		ListLink* link = node;
+		link->m_prev = m_unk0x48.m_first;
+		link->m_next = (ListLink*) &m_unk0x48.m_first;
+		m_unk0x48.m_first->m_next = link;
+		m_unk0x48.m_first = link;
+	}
+
+	// TODO: FrostPetal0x34 does not inherit from EmberDust0x28
+	return (EmberDust0x28*) node;
 }
 
 // STUB: LEGORACERS 0x418e80

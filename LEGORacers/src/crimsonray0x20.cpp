@@ -5,13 +5,13 @@
 DECOMP_SIZE_ASSERT(OpalStar0x20, 0x20)
 DECOMP_SIZE_ASSERT(CrimsonRay0x20, 0x20)
 
-// FUNCTION: LEGORACERS 0x41a9d0
+// FUNCTION: LEGORACERS 0x41a9d0 FOLDED
 void CrimsonRay0x20::VTable0x14(AmberLeaf0x10* p_node)
 {
 	delete p_node;
 }
 
-// FUNCTION: LEGORACERS 0x41a9f0
+// FUNCTION: LEGORACERS 0x41a9f0 FOLDED
 void* CrimsonRay0x20::VTable0x18()
 {
 	return m_unk0x10;
@@ -20,7 +20,7 @@ void* CrimsonRay0x20::VTable0x18()
 // FUNCTION: LEGORACERS 0x41c010
 CrimsonRay0x20::CrimsonRay0x20()
 {
-	m_unk0x10 = 0;
+	m_unk0x10 = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x41c070

@@ -147,6 +147,21 @@ When a variable's type is dictated by an external interface (Windows API return 
 - **Validate with `reccmp-vtable`** in addition to `reccmp-reccmp`. Vtable mismatches reveal missing/wrong virtual method declarations even when individual functions appear correct.
 - **Inline base constructors affect layout.** If a base class constructor is small enough, MSVC 6.0 inlines it. The inlined code appears between the outer base constructor call and the derived vtable set. Recognize this pattern to identify intermediate base classes.
 
+## Prioritize Constructors, Destructors, and Scalar Deleting Destructors
+
+When decompiling a new class, focus on matching its **constructor**, **destructor**, and **scalar deleting destructor** first. These functions directly verify the class layout:
+- Constructors reveal member initialization order, base class chain (via vtable sets), and member types.
+- Destructors reveal cleanup order and virtual method calls, confirming the vtable layout.
+- Scalar deleting destructors are compiler-generated and verify the class size and destructor linkage.
+
+Matching these three functions provides high confidence that the class header (size, inheritance, vtable, members) is correct before attempting more complex methods.
+
+## MSVC 6.0 Codegen Patterns
+
+- **Return types affect register allocation.** Changing a function from `void` to returning a pointer/int can significantly change which registers the compiler assigns to local variables and parameters. If register allocation doesn't match, check whether the original function returns a value (IDA's guessed return type is a hint).
+- **Float literal assignments may compile to integer `mov`.** MSVC 6.0 with `/O2` optimizes `float_member = 1.0f` to `mov dword ptr [offset], 0x3F800000` (an integer immediate store) rather than `fld`/`fstp`. Using `LegoFloat` members with float literals still produces the correct integer stores.
+- **Write human-readable code, not IDA pseudocode.** The decompiled code should look like it was written by a human programmer. Avoid `goto` patterns, raw integer bit patterns for floats, and other artifacts of decompilation. Use proper types, named variables, and clean control flow. Iterate with reccmp to ensure the clean version still matches.
+
 ## Project Structure
 
 ```

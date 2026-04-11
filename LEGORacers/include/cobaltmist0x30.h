@@ -6,6 +6,7 @@
 #include "decomp.h"
 #include "emberdust0x28.h"
 #include "indigostar0x18.h"
+#include "silvernode0x50.h"
 #include "types.h"
 #include "util/list.h"
 
@@ -22,8 +23,8 @@ public:
 	void VTable0x18(CrimsonRay0x20*) override;  // vtable+0x18
 	EmberDust0x28* VTable0x1c() override;       // vtable+0x1c
 	void VTable0x20(EmberDust0x28*) override;   // vtable+0x20
-	void VTable0x24() override;                 // vtable+0x24
-	void VTable0x28(undefined4) override;       // vtable+0x28
+	SilverNode0x50* VTable0x24() override;      // vtable+0x24
+	void VTable0x28(SilverNode0x50*) override;  // vtable+0x28
 	void VTable0x34(undefined4) override;       // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x41bce0

@@ -1,6 +1,7 @@
 #include "amberwolf0x98.h"
 
 #include "crimsonray0x20.h"
+#include "silvernode0x50.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(AmberWolf0x98, 0x98)
@@ -38,10 +39,13 @@ void AmberWolf0x98::VTable0x0c()
 	STUB(0x418cc0);
 }
 
-// STUB: LEGORACERS 0x418d60
+// FUNCTION: LEGORACERS 0x418d60
 void AmberWolf0x98::VTable0x10()
 {
-	STUB(0x418d60);
+	if (m_unk0x24) {
+		m_unk0x18 = 0;
+		VTable0x34(0);
+	}
 }
 
 // STUB: LEGORACERS 0x418d80
@@ -64,14 +68,20 @@ void AmberWolf0x98::VTable0x20(EmberDust0x28* p_node)
 	STUB(0x418e80);
 }
 
-// STUB: LEGORACERS 0x418eb0
-void AmberWolf0x98::VTable0x24()
+// FUNCTION: LEGORACERS 0x418eb0
+SilverNode0x50* AmberWolf0x98::VTable0x24()
 {
-	STUB(0x418eb0);
+	SilverNode0x50* node = new SilverNode0x50();
+
+	if (node) {
+		FUN_00417ab0(node);
+	}
+
+	return node;
 }
 
 // STUB: LEGORACERS 0x418f20 FOLDED
-void AmberWolf0x98::VTable0x28(undefined4)
+void AmberWolf0x98::VTable0x28(SilverNode0x50*)
 {
 	STUB(0x418f20);
 }

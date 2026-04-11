@@ -1,0 +1,33 @@
+#ifndef SILVERNODE0X50_H
+#define SILVERNODE0X50_H
+
+#include "decomp.h"
+#include "types.h"
+
+// SIZE 0x50
+struct SilverNode0x50 {
+	SilverNode0x50();
+
+	undefined4 m_unk0x00;      // 0x00
+	undefined4 m_unk0x04;      // 0x04
+	undefined4 m_unk0x08;      // 0x08
+	undefined4 m_unk0x0c;      // 0x0c
+	undefined4 m_unk0x10;      // 0x10
+	undefined4 m_unk0x14;      // 0x14
+	LegoFloat m_unk0x18;       // 0x18
+	undefined4 m_unk0x1c;      // 0x1c
+	undefined4 m_unk0x20;      // 0x20
+	undefined4 m_unk0x24;      // 0x24
+	undefined4 m_unk0x28;      // 0x28
+	LegoFloat m_unk0x2c;       // 0x2c
+	undefined4 m_unk0x30;      // 0x30
+	LegoFloat m_unk0x34;       // 0x34
+	undefined4 m_unk0x38;      // 0x38
+	LegoFloat m_unk0x3c;       // 0x3c
+	LegoFloat m_unk0x40;       // 0x40
+	undefined4 m_unk0x44;      // 0x44
+	SilverNode0x50* m_unk0x48; // 0x48
+	SilverNode0x50* m_unk0x4c; // 0x4c
+};
+
+#endif // SILVERNODE0X50_H

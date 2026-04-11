@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(ListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
 // STUB: LEGORACERS 0x418f20 FOLDED
-void CobaltMist0x30::VTable0x28(undefined4)
+void CobaltMist0x30::VTable0x28(SilverNode0x50*)
 {
 	STUB(0x418f20);
 }
@@ -105,11 +105,16 @@ void CobaltMist0x30::VTable0x20(EmberDust0x28* p_node)
 	delete p_node;
 }
 
-// STUB: LEGORACERS 0x41bf30
-void CobaltMist0x30::VTable0x24()
+// FUNCTION: LEGORACERS 0x41bf30
+SilverNode0x50* CobaltMist0x30::VTable0x24()
 {
-	// TODO
-	STUB(0x41bf30);
+	SilverNode0x50* node = new SilverNode0x50();
+
+	if (node) {
+		FUN_00417ab0(node);
+	}
+
+	return node;
 }
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED

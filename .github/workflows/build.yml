@@ -27,7 +27,7 @@ jobs:
       - name: Install LLVM
         uses: KyleMayes/install-llvm-action@v2
         with:
-          version: '16'
+          version: '21'
 
       - name: Build
         run: |
@@ -236,7 +236,7 @@ jobs:
       - name: Install LLVM and Clang
         uses: KyleMayes/install-llvm-action@v2
         with:
-          version: '16'
+          version: '21'
 
       - uses: actions/setup-python@v6
         with:
@@ -244,7 +244,7 @@ jobs:
 
       - name: Install python libraries
         run: |
-          pip install clang==16.* pyyaml
+          pip install clang==21.* pyyaml
 
       - name: Run ncc
         run: |

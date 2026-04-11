@@ -32,6 +32,7 @@ public:
 	// IndigoStar0x18::`scalar deleting destructor'
 
 	SilverNode0x50* FUN_00417ab0(SilverNode0x50* p_node);
+	SilverNode0x50* FUN_00417ae0(SilverNode0x50* p_node);
 
 protected:
 	undefined4 m_unk0x04;      // 0x04

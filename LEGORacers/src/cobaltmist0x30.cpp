@@ -6,10 +6,12 @@ DECOMP_SIZE_ASSERT(ListLink, 0x08)
 DECOMP_SIZE_ASSERT(ListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
-// STUB: LEGORACERS 0x418f20 FOLDED
-void CobaltMist0x30::VTable0x28(SilverNode0x50*)
+// FUNCTION: LEGORACERS 0x418f20 FOLDED
+void CobaltMist0x30::VTable0x28(SilverNode0x50* p_node)
 {
-	STUB(0x418f20);
+	VTable0x30(p_node);
+	FUN_00417ae0(p_node);
+	delete p_node;
 }
 
 // FUNCTION: LEGORACERS 0x41bd00

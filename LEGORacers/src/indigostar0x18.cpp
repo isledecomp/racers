@@ -56,6 +56,43 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ab0(SilverNode0x50* p_node)
 	return result;
 }
 
+// FUNCTION: LEGORACERS 0x417ae0
+SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
+{
+	SilverNode0x50* prev = m_unk0x08;
+
+	if (prev) {
+		if (prev == p_node) {
+			m_unk0x08 = p_node->m_unk0x48;
+			p_node->m_unk0x48 = NULL;
+			return p_node;
+		}
+
+		SilverNode0x50* current = prev->m_unk0x48;
+
+		if (current) {
+			while (TRUE) {
+				if (current == p_node) {
+					break;
+				}
+
+				prev = current;
+				current = current->m_unk0x48;
+
+				if (!current) {
+					return NULL;
+				}
+			}
+
+			prev->m_unk0x48 = current->m_unk0x48;
+			p_node->m_unk0x48 = NULL;
+			return p_node;
+		}
+	}
+
+	return NULL;
+}
+
 // FUNCTION: LEGORACERS 0x417b30
 SilverNode0x50* IndigoStar0x18::VTable0x2c(SilverNode0x50* p_node)
 {

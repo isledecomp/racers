@@ -5,6 +5,9 @@
 #include "decomp.h"
 #include "indigostar0x18.h"
 #include "silvernode0x50.h"
+#include "util/list.h"
+
+#include <objbase.h>
 
 // VTABLE: LEGORACERS 0x4afaf0
 // SIZE 0x98
@@ -29,8 +32,15 @@ public:
 private:
 	undefined4 m_unk0x18;      // 0x18
 	undefined m_unk0x1c[0x08]; // 0x1c
-	undefined4 m_unk0x24;      // 0x24
-	undefined m_unk0x28[0x70]; // 0x28
+	IUnknown* m_unk0x24;       // 0x24
+	undefined m_unk0x28[0x08]; // 0x28
+	IUnknown* m_unk0x30;       // 0x30
+	undefined m_unk0x34[0x08]; // 0x34
+	ListHead m_unk0x3c;        // 0x3c
+	ListHead m_unk0x48;        // 0x48
+	undefined4 m_unk0x54;      // 0x54
+	undefined4 m_unk0x58;      // 0x58
+	undefined m_unk0x5c[0x3c]; // 0x5c
 };
 
 #endif // AMBERWOLF0X98_H

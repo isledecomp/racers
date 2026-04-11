@@ -1,6 +1,7 @@
 #include "amberwolf0x98.h"
 
 #include "crimsonray0x20.h"
+#include "emberdust0x28.h"
 #include "silvernode0x50.h"
 #include "types.h"
 
@@ -20,11 +21,45 @@ undefined4 AmberWolf0x98::VTable0x04(undefined4)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x4188b0
+// FUNCTION: LEGORACERS 0x4188b0
 void AmberWolf0x98::VTable0x08()
 {
-	// TODO
-	STUB(0x4188b0);
+	while (TRUE) {
+		if (!m_unk0x3c.m_first->m_prev || !m_unk0x3c.m_first) {
+			break;
+		}
+
+		VTable0x18((CrimsonRay0x20*) m_unk0x3c.m_first);
+	}
+
+	while (TRUE) {
+		if (!m_unk0x48.m_first->m_prev || !m_unk0x48.m_first) {
+			break;
+		}
+
+		VTable0x20((EmberDust0x28*) m_unk0x48.m_first);
+	}
+
+	while (m_unk0x0c) {
+		VTable0x28(m_unk0x0c);
+	}
+
+	while (m_unk0x08) {
+		VTable0x28(m_unk0x08);
+	}
+
+	if (m_unk0x30) {
+		m_unk0x30->Release();
+		m_unk0x30 = NULL;
+	}
+
+	if (m_unk0x24) {
+		m_unk0x24->Release();
+		m_unk0x24 = NULL;
+	}
+
+	m_unk0x58 = 0;
+	m_unk0x54 = 0;
 }
 
 // STUB: LEGORACERS 0x418940

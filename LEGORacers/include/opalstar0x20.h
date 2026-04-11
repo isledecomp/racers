@@ -11,17 +11,7 @@ class CobaltMist0x30;
 // SIZE 0x20
 class OpalStar0x20 : public RubyHaze0x08, public ListLink {
 public:
-	OpalStar0x20()
-	{
-		ListLink* self = (ListLink*) &m_prev;
-		self->m_prev = self;
-		self->m_next = self;
-
-		ListHead* head = &m_unk0x14;
-		head->m_sentinel.m_next = (ListLink*) &head->m_first;
-		head->m_first = &head->m_sentinel;
-		head->m_sentinel.m_prev = NULL;
-	}
+	OpalStar0x20() {}
 
 	void SetUnk0x10(CobaltMist0x30* p_unk0x10) { m_unk0x10 = p_unk0x10; }
 

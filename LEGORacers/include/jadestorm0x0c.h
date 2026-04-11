@@ -8,12 +8,7 @@
 // SIZE 0x0c
 class JadeStorm0x0c : public ListLink {
 public:
-	JadeStorm0x0c()
-	{
-		ListLink* self = (ListLink*) &m_prev;
-		self->m_prev = self;
-		self->m_next = self;
-	}
+	JadeStorm0x0c() {}
 
 	virtual ~JadeStorm0x0c();                      // vtable+0x00
 	virtual undefined4 VTable0x04(undefined4) = 0; // vtable+0x04

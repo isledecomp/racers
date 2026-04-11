@@ -2,6 +2,7 @@
 #define NEONCACTUS0X1D6C_H
 
 #include "amberwolf0x98.h"
+#include "cactusinterface0x4.h"
 #include "cobaltmist0x30.h"
 #include "decomp.h"
 #include "ironflame0x944.h"
@@ -9,21 +10,21 @@
 
 // VTABLE: LEGORACERS 0x4b0568
 // SIZE 0x1d6c
-class NeonCactus0x1d6c {
+class NeonCactus0x1d6c : public CactusInterface0x4 {
 public:
-	virtual void VTable0x00();                       // vtable+0x00
-	virtual void VTable0x04();                       // vtable+0x04
-	virtual void VTable0x08();                       // vtable+0x08
-	virtual void VTable0x0c();                       // vtable+0x0c
-	virtual void VTable0x10();                       // vtable+0x10
-	virtual void VTable0x14();                       // vtable+0x14
-	virtual void VTable0x18();                       // vtable+0x18
-	virtual void VTable0x1c(undefined4);             // vtable+0x1c
-	virtual void VTable0x20(undefined4);             // vtable+0x20
-	virtual void VTable0x24(undefined4, undefined4); // vtable+0x24
-	virtual void VTable0x28();                       // vtable+0x28
-	virtual void VTable0x2c();                       // vtable+0x2c
-	virtual ~NeonCactus0x1d6c();                     // vtable+0x30
+	virtual void VTable0x00() override;                       // vtable+0x00
+	virtual void VTable0x04() override;                       // vtable+0x04
+	virtual void VTable0x08() override;                       // vtable+0x08
+	virtual void VTable0x0c() override;                       // vtable+0x0c
+	virtual void VTable0x10() override;                       // vtable+0x10
+	virtual void VTable0x14() override;                       // vtable+0x14
+	virtual void VTable0x18() override;                       // vtable+0x18
+	virtual void VTable0x1c(undefined4) override;             // vtable+0x1c
+	virtual void VTable0x20(undefined4) override;             // vtable+0x20
+	virtual void VTable0x24(undefined4, undefined4) override; // vtable+0x24
+	virtual void VTable0x28() override;                       // vtable+0x28
+	virtual void VTable0x2c() override;                       // vtable+0x2c
+	virtual ~NeonCactus0x1d6c();                              // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x42bb20
 	// NeonCactus0x1d6c::`scalar deleting destructor'

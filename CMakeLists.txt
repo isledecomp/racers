@@ -87,6 +87,7 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 add_executable(legoracers WIN32
   util/decomp.cpp
   LEGORacers/src/main.cpp
+  LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/neoncactus0x1d6c.cpp
   LEGORacers/src/ironflame0x944.cpp
   LEGORacers/src/amberwolf0x98.cpp

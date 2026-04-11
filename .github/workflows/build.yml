@@ -221,8 +221,8 @@ jobs:
 
       - name: Run clang-format
         run: |
-          find LEGORacers GolDP -iname '*.h' -o -iname '*.cpp' | xargs \
-          pipx run "clang-format>=17,<18" \
+          find LEGORacers GolDP tools -iname '*.h' -o -iname '*.cpp' | xargs \
+          pipx run "clang-format>=21,<22" \
             --style=file \
             -i
           git diff --color --exit-code

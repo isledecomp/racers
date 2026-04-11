@@ -12,19 +12,7 @@
 // SIZE 0x1d6c
 class NeonCactus0x1d6c : public CactusInterface0x4 {
 public:
-	void VTable0x00() override;                       // vtable+0x00
-	void VTable0x04() override;                       // vtable+0x04
-	void VTable0x08() override;                       // vtable+0x08
-	void VTable0x0c() override;                       // vtable+0x0c
-	void VTable0x10() override;                       // vtable+0x10
-	void VTable0x14() override;                       // vtable+0x14
-	void VTable0x18() override;                       // vtable+0x18
-	void VTable0x1c(undefined4) override;             // vtable+0x1c
-	void VTable0x20(undefined4) override;             // vtable+0x20
-	void VTable0x24(undefined4, undefined4) override; // vtable+0x24
-	void VTable0x28() override;                       // vtable+0x28
-	void VTable0x2c() override;                       // vtable+0x2c
-	virtual ~NeonCactus0x1d6c();                      // vtable+0x30
+	virtual ~NeonCactus0x1d6c(); // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x42bb20
 	// NeonCactus0x1d6c::`scalar deleting destructor'

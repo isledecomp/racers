@@ -6,16 +6,16 @@ DECOMP_SIZE_ASSERT(ListLink, 0x08)
 DECOMP_SIZE_ASSERT(ListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
-// STUB: LEGORACERS 0x418f20
+// STUB: LEGORACERS 0x418f20 FOLDED
 void CobaltMist0x30::VTable0x28(undefined4)
 {
-	// TODO
 	STUB(0x418f20);
 }
 
-// STUB: LEGORACERS 0x41bd00
+// FUNCTION: LEGORACERS 0x41bd00
 CobaltMist0x30::~CobaltMist0x30()
 {
+	VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x41bd50
@@ -53,14 +53,25 @@ void CobaltMist0x30::VTable0x08()
 	}
 }
 
-// STUB: LEGORACERS 0x41bdd0
-void CobaltMist0x30::VTable0x14()
+// FUNCTION: LEGORACERS 0x41bdd0
+CrimsonRay0x20* CobaltMist0x30::VTable0x14()
 {
-	// TODO
-	STUB(0x41bdd0);
+	CrimsonRay0x20* node = new CrimsonRay0x20();
+
+	if (node) {
+		node->SetUnk0x10(this);
+
+		ListLink* link = node;
+		link->m_prev = m_unk0x18.m_first;
+		link->m_next = (ListLink*) &m_unk0x18.m_first;
+		m_unk0x18.m_first->m_next = link;
+		m_unk0x18.m_first = link;
+	}
+
+	return node;
 }
 
-// FUNCTION: LEGORACERS 0x41be50
+// FUNCTION: LEGORACERS 0x41be50 FOLDED
 void CobaltMist0x30::VTable0x18(CrimsonRay0x20* p_node)
 {
 	p_node->m_next->m_prev = p_node->m_prev;
@@ -68,11 +79,22 @@ void CobaltMist0x30::VTable0x18(CrimsonRay0x20* p_node)
 	delete p_node;
 }
 
-// STUB: LEGORACERS 0x41be80
-void CobaltMist0x30::VTable0x1c()
+// FUNCTION: LEGORACERS 0x41be80
+EmberDust0x28* CobaltMist0x30::VTable0x1c()
 {
-	// TODO
-	STUB(0x41be80);
+	EmberDust0x28* node = new EmberDust0x28();
+
+	if (node) {
+		node->SetUnk0x0c(this);
+
+		ListLink* link = node;
+		link->m_prev = m_unk0x24.m_first;
+		link->m_next = (ListLink*) &m_unk0x24.m_first;
+		m_unk0x24.m_first->m_next = link;
+		m_unk0x24.m_first = link;
+	}
+
+	return node;
 }
 
 // FUNCTION: LEGORACERS 0x41bf00
@@ -97,5 +119,10 @@ void CobaltMist0x30::VTable0x0c()
 
 // FUNCTION: LEGORACERS 0x4164c0 FOLDED
 void CobaltMist0x30::VTable0x10()
+{
+}
+
+// FUNCTION: LEGORACERS 0x4513d0 FOLDED
+void CobaltMist0x30::VTable0x34(undefined4)
 {
 }

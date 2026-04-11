@@ -11,13 +11,13 @@
 class CrimsonRay0x20 : public OpalStar0x20 {
 public:
 	CrimsonRay0x20();
-	~CrimsonRay0x20() override;                // vtable+0x00
-	ListLink* VTable0x04(undefined4) override; // vtable+0x04
-	ListLink* VTable0x08() override;           // vtable+0x08
-	void VTable0x0c() override;                // vtable+0x0c
-	void VTable0x10() override;                // vtable+0x10
-	void VTable0x14(AmberLeaf0x10*) override;  // vtable+0x14
-	undefined4 VTable0x18() override;          // vtable+0x18
+	~CrimsonRay0x20() override;                     // vtable+0x00
+	ListLink* VTable0x04(undefined4) override;      // vtable+0x04
+	ListLink* VTable0x08() override;                // vtable+0x08
+	undefined4 VTable0x0c() override;               // vtable+0x0c
+	AmberLeaf0x10* VTable0x10(undefined4) override; // vtable+0x10
+	void VTable0x14(AmberLeaf0x10*) override;       // vtable+0x14
+	void* VTable0x18() override;                    // vtable+0x18
 
 	// SYNTHETIC: LEGORACERS 0x41c050
 	// CrimsonRay0x20::`scalar deleting destructor'

@@ -12,7 +12,7 @@ void CrimsonRay0x20::VTable0x14(AmberLeaf0x10* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x41a9f0
-undefined4 CrimsonRay0x20::VTable0x18()
+void* CrimsonRay0x20::VTable0x18()
 {
 	return m_unk0x10;
 }
@@ -54,16 +54,26 @@ ListLink* CrimsonRay0x20::VTable0x08()
 	return result;
 }
 
-// STUB: LEGORACERS 0x44a1e0
-void CrimsonRay0x20::VTable0x0c()
+// FUNCTION: LEGORACERS 0x41c100
+AmberLeaf0x10* CrimsonRay0x20::VTable0x10(undefined4)
 {
-	// TODO
-	STUB(0x44a1e0);
+	AmberLeaf0x10* node = new AmberLeaf0x10();
+
+	if (node) {
+		node->SetUnk0x0c(this);
+
+		ListLink* link = node;
+		link->m_prev = m_unk0x14.m_first;
+		link->m_next = (ListLink*) &m_unk0x14.m_first;
+		m_unk0x14.m_first->m_next = link;
+		m_unk0x14.m_first = link;
+	}
+
+	return node;
 }
 
-// STUB: LEGORACERS 0x41c100
-void CrimsonRay0x20::VTable0x10()
+// FUNCTION: LEGORACERS 0x44a1e0
+undefined4 CrimsonRay0x20::VTable0x0c()
 {
-	// TODO
-	STUB(0x41c100);
+	return 1;
 }

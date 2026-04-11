@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+DECOMP_SIZE_ASSERT(ListLink, 0x08)
+DECOMP_SIZE_ASSERT(ListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
 // STUB: LEGORACERS 0x418f20
@@ -27,19 +29,19 @@ undefined4 CobaltMist0x30::VTable0x04(undefined4)
 void CobaltMist0x30::VTable0x08()
 {
 	while (TRUE) {
-		if (!*m_unk0x18 || !m_unk0x18) {
+		if (!m_unk0x18.m_first->m_prev || !m_unk0x18.m_first) {
 			break;
 		}
 
-		VTable0x18(m_unk0x18 - 2);
+		VTable0x18((CrimsonRay0x20*) m_unk0x18.m_first);
 	}
 
 	while (TRUE) {
-		if (!*m_unk0x24 || !m_unk0x24) {
+		if (!m_unk0x24.m_first->m_prev || !m_unk0x24.m_first) {
 			break;
 		}
 
-		VTable0x20(m_unk0x24 - 1);
+		VTable0x20((EmberDust0x28*) m_unk0x24.m_first);
 	}
 
 	while (m_unk0x0c) {
@@ -58,11 +60,12 @@ void CobaltMist0x30::VTable0x14()
 	STUB(0x41bdd0);
 }
 
-// STUB: LEGORACERS 0x41be50
-void CobaltMist0x30::VTable0x18(undefined4*)
+// FUNCTION: LEGORACERS 0x41be50
+void CobaltMist0x30::VTable0x18(CrimsonRay0x20* p_node)
 {
-	// TODO
-	STUB(0x41be50);
+	p_node->m_next->m_prev = p_node->m_prev;
+	p_node->m_prev->m_next = p_node->m_next;
+	delete p_node;
 }
 
 // STUB: LEGORACERS 0x41be80
@@ -72,11 +75,12 @@ void CobaltMist0x30::VTable0x1c()
 	STUB(0x41be80);
 }
 
-// STUB: LEGORACERS 0x41bf00
-void CobaltMist0x30::VTable0x20(undefined4*)
+// FUNCTION: LEGORACERS 0x41bf00
+void CobaltMist0x30::VTable0x20(EmberDust0x28* p_node)
 {
-	// TODO
-	STUB(0x41bf00);
+	p_node->m_next->m_prev = p_node->m_prev;
+	p_node->m_prev->m_next = p_node->m_next;
+	delete p_node;
 }
 
 // STUB: LEGORACERS 0x41bf30

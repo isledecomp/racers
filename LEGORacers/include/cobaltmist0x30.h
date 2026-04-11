@@ -1,8 +1,11 @@
 #ifndef COBALTMIST0X30_H
 #define COBALTMIST0X30_H
 
+#include "crimsonray0x20.h"
 #include "decomp.h"
+#include "emberdust0x28.h"
 #include "types.h"
+#include "util/list.h"
 
 // VTABLE: LEGORACERS 0x4afc6c
 // SIZE 0x30
@@ -14,9 +17,9 @@ public:
 	virtual void VTable0x0c();                 // vtable+0x0c
 	virtual void VTable0x10();                 // vtable+0x10
 	virtual void VTable0x14();                 // vtable+0x14
-	virtual void VTable0x18(undefined4*);      // vtable+0x18
+	virtual void VTable0x18(CrimsonRay0x20*);  // vtable+0x18
 	virtual void VTable0x1c();                 // vtable+0x1c
-	virtual void VTable0x20(undefined4*);      // vtable+0x20
+	virtual void VTable0x20(EmberDust0x28*);   // vtable+0x20
 	virtual void VTable0x24();                 // vtable+0x24
 	virtual void VTable0x28(undefined4);       // vtable+0x28
 
@@ -24,14 +27,13 @@ public:
 	// CobaltMist0x30::`scalar deleting destructor'
 
 private:
-	undefined4 m_unk0x04;      // 0x04
-	undefined4 m_unk0x08;      // 0x08
-	undefined4 m_unk0x0c;      // 0x0c
-	undefined m_unk0x10[0x08]; // 0x10
-	undefined4* m_unk0x18;     // 0x18
-	undefined m_unk0x1c[0x08]; // 0x1c
-	undefined4* m_unk0x24;     // 0x24
-	undefined m_unk0x28[0x08]; // 0x28
+	undefined4 m_unk0x04; // 0x04
+	undefined4 m_unk0x08; // 0x08
+	undefined4 m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10; // 0x10
+	undefined4 m_unk0x14; // 0x14
+	ListHead m_unk0x18;   // 0x18
+	ListHead m_unk0x24;   // 0x24
 };
 
 #endif // COBALTMIST0X30_H

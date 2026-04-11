@@ -3,6 +3,7 @@
 
 #include "decomp.h"
 #include "rubyhaze0x08.h"
+#include "types.h"
 #include "util/list.h"
 
 // SIZE 0x20
@@ -17,7 +18,7 @@ public:
 		ListHead* head = &m_unk0x14;
 		head->m_sentinel.m_next = (ListLink*) &head->m_first;
 		head->m_first = &head->m_sentinel;
-		head->m_sentinel.m_prev = 0;
+		head->m_sentinel.m_prev = NULL;
 	}
 
 protected:

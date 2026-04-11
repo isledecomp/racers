@@ -9,6 +9,10 @@
 #define FALSE 0
 #endif
 
+#ifndef NULL
+#define NULL 0
+#endif
+
 typedef char LegoS8;
 typedef unsigned char LegoU8;
 typedef short LegoS16;

@@ -83,6 +83,8 @@ DECOMP_SIZE_ASSERT(VelvetThunder0xc8ac8, 0xc8ac8)
 
 Member offset comments (`// 0xNN`) and vtable offset comments (`// vtable+0xNN`) are required.
 
+**Overrides:** When a derived class overrides a virtual method from a base class, use `override` instead of `virtual` (e.g. `void VTable0x04() override;`). Include `compat.h` which defines `override` as empty for MSVC 6.0 compatibility.
+
 ## Naming Conventions
 
 Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
@@ -132,6 +134,18 @@ When a variable's type is dictated by an external interface (Windows API return 
 9. **Check for regressions.** After any change, re-verify all previously matched `// FUNCTION:` implementations that touch the same classes, especially functions that make virtual calls on modified classes.
 
 10. **Lint annotations.** Run `reccmp-decomplint` from the `build/` directory (see example commands in the reccmp section above). Always pass the source directory as a path argument to avoid scanning gitignored data files.
+
+## Decompilation Principles
+
+- **Every type must be corroborated by matched code.** Do not assign concrete member types based solely on IDA/Ghidra analysis. A type is only proven when a `// FUNCTION:` annotation using that type achieves 100% reccmp match. Until then, use `undefined`/`undefined4`.
+- **Vtable set position proves class hierarchy.** In MSVC 6.0, the vtable is set at the start of the constructor body, after all base constructors. If the vtable set appears AFTER some member initialization, that initialization belongs to a base class constructor (possibly inlined). Use this to determine inheritance structure.
+- **Multiple inheritance is real.** When a C-style cast compiles to a pointer subtraction, it's a cross-cast from a second base class. Define proper inheritance so the compiler generates the adjustment — never use raw pointer arithmetic to fake it.
+- **No raw pointer arithmetic as a substitute for types.** If you find yourself writing pointer casts and subtractions, the types are wrong. Find the actual class type so the cast is a legitimate C++ conversion.
+- **Read the original binary directly** (via Python/struct) to determine vtable entries, call targets, and function addresses when IDA/Ghidra mislabels or hides them.
+- **Every annotation must have the real address.** No placeholders, no guesses. Read the vtable data or compute call targets from the binary to get exact addresses.
+- **Functions marked `// FUNCTION:` must be 100% match.** If reccmp shows any diff, the code is wrong — do not accept partial matches or mark as FUNCTION. Investigate the diff to find the root cause (wrong class layout, wrong types, missing base class, etc.).
+- **Validate with `reccmp-vtable`** in addition to `reccmp-reccmp`. Vtable mismatches reveal missing/wrong virtual method declarations even when individual functions appear correct.
+- **Inline base constructors affect layout.** If a base class constructor is small enough, MSVC 6.0 inlines it. The inlined code appears between the outer base constructor call and the derived vtable set. Recognize this pattern to identify intermediate base classes.
 
 ## Project Structure
 

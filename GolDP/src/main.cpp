@@ -1,26 +1,33 @@
+#include "adapter.h"
+#include "gol.h"
+#include "goldpexport.h"
 #include "types.h"
-#include "velvetthunder0xc8ac8.h"
 
 #include <windows.h>
 
 // GLOBAL: GOLDP 0x10063148
-VelvetThunder0xc8ac8* g_unk0x10063148;
+GolDPExport* g_golDPExport;
 
-// STUB: GOLDP 0x10006ff0
-LegoS32* GolEntry(LegoS32*)
+// GLOBAL: GOLDP 0x1006314c
+FatalErrorCBFN* g_fatalError;
+
+// FUNCTION: GOLDP 0x10006ff0
+GolExport* GolEntry(GolImport* p_import)
 {
-	// TODO
-	return 0;
+	SetGolImport(p_import);
+	g_fatalError = p_import->m_fatalError;
+	g_golDPExport = new GolDPExport;
+	return g_golDPExport;
 }
 
 // FUNCTION: GOLDP 0x100070b0
 void GolExit()
 {
-	if (g_unk0x10063148) {
-		delete g_unk0x10063148;
+	if (g_golDPExport) {
+		delete g_golDPExport;
 	}
 
-	g_unk0x10063148 = NULL;
+	g_golDPExport = NULL;
 }
 
 // This function only seems to match with /O1 (minimize size)

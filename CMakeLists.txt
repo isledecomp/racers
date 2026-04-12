@@ -64,7 +64,8 @@ add_cxx_warning(parentheses)
 # --- GolDP.dll target ---
 add_library(goldp SHARED
   util/decomp.cpp
-  GolDP/src/velvetthunder0xc8ac8.cpp
+  GolDP/src/adapter.cpp
+  GolDP/src/goldpexport.cpp
   GolDP/src/main.cpp
 )
 reccmp_add_target(goldp ID GOLDP)
@@ -124,6 +125,7 @@ target_link_libraries(legoracers PRIVATE
   ole32
   winmm
 )
+add_dependencies(legoracers goldp)
 
 set_property(TARGET legoracers PROPERTY OUTPUT_NAME "LEGORacers")
 set_property(TARGET legoracers PROPERTY SUFFIX ".exe")
@@ -154,7 +156,7 @@ if (MSVC_FOR_DECOMP)
     target_link_options(legoracers PRIVATE "/OPT:NOREF,ICF")
   endif()
   if (TARGET goldp)
-    target_link_options(goldp PRIVATE "/OPT:NOREF")
+    target_link_options(goldp PRIVATE "/OPT:NOREF,ICF")
   endif()
 
   set_property(TARGET legoracers goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")

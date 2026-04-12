@@ -5,6 +5,9 @@
 // LIBRARY: GOLDP 0x1004b356
 // ??3@YAXPAX@Z
 
+// LIBRARY: GOLDP 0x1004b7fe
+// __purecall
+
 // LIBRARY: GOLDP 0x1004c5c7
 // __CRT_INIT@12
 

@@ -197,9 +197,9 @@ jobs:
       matrix:
         include:
           - module: LEGORACERS
-            path: LEGORacers
+            path: LEGORacers common
           - module: GOLDP
-            path: GolDP
+            path: GolDP common
     steps:
       - uses: actions/checkout@v6
 
@@ -223,7 +223,7 @@ jobs:
 
       - name: Run clang-format
         run: |
-          find LEGORacers GolDP tools -iname '*.h' -o -iname '*.cpp' | xargs \
+          find LEGORacers GolDP common tools -iname '*.h' -o -iname '*.cpp' | xargs \
           pipx run "clang-format>=21,<22" \
             --style=file \
             -i
@@ -261,4 +261,6 @@ jobs:
               LEGORacers \
               GolDP/include \
               GolDP \
-            --path LEGORacers GolDP
+              common/include \
+              common \
+            --path LEGORacers GolDP common

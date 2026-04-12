@@ -2,7 +2,7 @@
 #define JADESTORM0X0C_H
 
 #include "decomp.h"
-#include "util/gollist.h"
+#include "gollist.h"
 
 // VTABLE: LEGORACERS 0x4afa40
 // SIZE 0x0c

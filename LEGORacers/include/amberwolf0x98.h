@@ -3,9 +3,9 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "gollist.h"
 #include "indigostar0x18.h"
 #include "silvernode0x50.h"
-#include "util/gollist.h"
 
 #include <objbase.h>
 

@@ -1,7 +1,7 @@
-#include "util/golstream.h"
+#include "golstream.h"
 
+#include "golfilesource.h"
 #include "types.h"
-#include "util/golfilesource.h"
 
 #include <string.h>
 

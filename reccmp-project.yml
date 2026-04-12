@@ -9,6 +9,6 @@ targets:
       - reccmp/lego-racers-floats.csv
   GOLDP:
     filename: GolDP.dll
-    source-root: GolDP
+    source-root: .
     hash:
       sha256: 37856363c936c6baeb3bdbed69de182d9ecb92752b36e6db444369117e80fdba

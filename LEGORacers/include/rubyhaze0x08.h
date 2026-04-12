@@ -2,7 +2,7 @@
 #define RUBYHAZE0X08_H
 
 #include "decomp.h"
-#include "util/gollist.h"
+#include "gollist.h"
 
 class AmberLeaf0x10;
 

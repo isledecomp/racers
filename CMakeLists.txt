@@ -61,9 +61,17 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 
 add_cxx_warning(parentheses)
 
+set(COMMON_SOURCES
+  common/src/golfile.cpp
+  common/src/golstream.cpp
+  common/src/golfilesource.cpp
+  common/src/azureclip0x24.cpp
+)
+
 # --- GolDP.dll target ---
 add_library(goldp SHARED
   util/decomp.cpp
+  ${COMMON_SOURCES}
   GolDP/src/adapter.cpp
   GolDP/src/goldpexport.cpp
   GolDP/src/main.cpp
@@ -77,6 +85,7 @@ endif()
 target_include_directories(goldp PRIVATE
   "${PROJECT_SOURCE_DIR}/GolDP/include"
   "${PROJECT_SOURCE_DIR}/GolDP"
+  "${PROJECT_SOURCE_DIR}/common/include"
   "${PROJECT_SOURCE_DIR}/util"
 )
 
@@ -103,10 +112,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/tealpulse0x24.cpp
   LEGORacers/src/crimsonforge0x800.cpp
-  LEGORacers/src/util/golfile.cpp
-  LEGORacers/src/util/golstream.cpp
-  LEGORacers/src/util/golfilesource.cpp
-  LEGORacers/src/azureclip0x24.cpp
+  ${COMMON_SOURCES}
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
   LEGORacers/src/silvernode0x50.cpp
@@ -118,6 +124,7 @@ reccmp_add_target(legoracers ID LEGORACERS)
 target_include_directories(legoracers PRIVATE
   "${PROJECT_SOURCE_DIR}/LEGORacers/include"
   "${PROJECT_SOURCE_DIR}/LEGORacers"
+  "${PROJECT_SOURCE_DIR}/common/include"
   "${PROJECT_SOURCE_DIR}/util"
 )
 
@@ -198,6 +205,8 @@ if(EXISTS "${CLANGFORMAT_BIN}")
         "${PROJECT_SOURCE_DIR}/LEGORacers/*.h"
         "${PROJECT_SOURCE_DIR}/GolDP/*.cpp"
         "${PROJECT_SOURCE_DIR}/GolDP/*.h"
+        "${PROJECT_SOURCE_DIR}/common/*.cpp"
+        "${PROJECT_SOURCE_DIR}/common/*.h"
       )
       string(REPLACE ";" "\n" racers_sources_lines "${racers_sources}")
       file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/racers_sources.txt" "${racers_sources_lines}\n")

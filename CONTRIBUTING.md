@@ -18,6 +18,7 @@ This repository currently has only one goal: accuracy to the original executable
 
 * [`LEGORacers`](/LEGORacers): Decompilation of `LEGORacers.exe`.
 * [`GolDP`](/GolDP): Decompilation of `GolDP.dll`.
+* [`common`](/common): Shared classes used by both LEGORacers and GolDP.
 * [`util`](/util): Utility headers aiding in the decompilation effort.
 
 ## Code Style

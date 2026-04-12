@@ -1,4 +1,4 @@
-#include "util/golfile.h"
+#include "golfile.h"
 
 #include "types.h"
 

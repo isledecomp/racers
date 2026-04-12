@@ -2,9 +2,9 @@
 #define OPALSTAR0X20_H
 
 #include "decomp.h"
+#include "gollist.h"
 #include "rubyhaze0x08.h"
 #include "types.h"
-#include "util/gollist.h"
 
 class IndigoStar0x18;
 

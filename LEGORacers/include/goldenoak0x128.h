@@ -3,8 +3,8 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "gollist.h"
 #include "rubyhaze0x08.h"
-#include "util/gollist.h"
 
 class AmberLeaf0x10;
 class IndigoStar0x18;

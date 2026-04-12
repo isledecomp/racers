@@ -1,6 +1,6 @@
-#include "util/golfilesource.h"
+#include "golfilesource.h"
 
-#include "util/golstream.h"
+#include "golstream.h"
 
 DECOMP_SIZE_ASSERT(GolFileSource, 0x34)
 

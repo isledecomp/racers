@@ -2,10 +2,10 @@
 #define CRIMSONFORGE0X800_H
 
 #include "decomp.h"
+#include "golfile.h"
+#include "golfilesource.h"
 #include "tealpulse0x24.h"
 #include "types.h"
-#include "util/golfile.h"
-#include "util/golfilesource.h"
 
 // VTABLE: LEGORACERS 0x4af9a8
 // SIZE 0x800

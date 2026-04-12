@@ -2,8 +2,8 @@
 #define FROSTPETAL0X34_H
 
 #include "decomp.h"
+#include "gollist.h"
 #include "types.h"
-#include "util/gollist.h"
 
 class IndigoStar0x18;
 

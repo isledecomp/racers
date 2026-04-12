@@ -5,10 +5,10 @@
 #include "crimsonray0x20.h"
 #include "decomp.h"
 #include "emberdust0x28.h"
+#include "gollist.h"
 #include "indigostar0x18.h"
 #include "silvernode0x50.h"
 #include "types.h"
-#include "util/gollist.h"
 
 // VTABLE: LEGORACERS 0x4afc6c
 // SIZE 0x30

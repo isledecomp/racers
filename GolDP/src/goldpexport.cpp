@@ -13,6 +13,14 @@ void FUN_10001110(LegoS32)
 	STUB(0x10001110);
 }
 
+// STUB: GOLDP 0x100016f0
+undefined4 GolDPExport::VTable0x24()
+{
+	// TODO
+	STUB(0x100016f0);
+	return NULL;
+}
+
 // STUB: GOLDP 0x10007060
 GolDPExport::~GolDPExport()
 {
@@ -80,14 +88,6 @@ undefined4* GolDPExport::VTable0x20()
 {
 	// TODO
 	STUB(0x10015340);
-	return NULL;
-}
-
-// STUB: GOLDP 0x100016f0
-undefined4 GolDPExport::VTable0x24()
-{
-	// TODO
-	STUB(0x100016f0);
 	return NULL;
 }
 
@@ -180,13 +180,6 @@ void GolDPExport::VTable0x54(undefined4*)
 	STUB(0x10015640);
 }
 
-// STUB: GOLDP 0x1002c020
-void GolDPExport::VTable0x58(undefined4*)
-{
-	// TODO
-	STUB(0x1002c020);
-}
-
 // STUB: GOLDP 0x10015660
 void GolDPExport::VTable0x5c(undefined4*)
 {
@@ -206,6 +199,13 @@ void GolDPExport::VTable0x64(undefined4*)
 {
 	// TODO
 	STUB(0x100156a0);
+}
+
+// STUB: GOLDP 0x1002c020
+void GolDPExport::VTable0x58(undefined4*)
+{
+	// TODO
+	STUB(0x1002c020);
 }
 
 // STUB: GOLDP 0x10015600 FOLDED

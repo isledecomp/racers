@@ -2,86 +2,22 @@
 
 DECOMP_SIZE_ASSERT(ImaginaryWrench0x23bc, 0x23bc)
 
-// FUNCTION: LEGORACERS 0x4164c0 FOLDED
-void ImaginaryWrench0x23bc::VTable0x80()
-{
-}
-
-// FUNCTION: LEGORACERS 0x44a1e0 FOLDED
-undefined4 ImaginaryWrench0x23bc::VTable0x50()
-{
-	return 1;
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x00()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x04()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x08()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x0c()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x10()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x20()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x24()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x2c()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x30()
-{
-	// TODO
-	STUB(0x44f590);
-}
-
-// STUB: LEGORACERS 0x44f590 FOLDED
-void ImaginaryWrench0x23bc::VTable0x48()
-{
-	// TODO
-	STUB(0x44f590);
-}
+// GLOBAL: LEGORACERS 0x4c1ff4
+const char* g_cheatNames[] = {
+	"NSLWJ",
+	"FLYSKYHGH",
+	"PGLLRD",
+	"PGLLYLL",
+	"PGLLGRN",
+	"LNFRRRM",
+	"RPCRNLY",
+	"MXPMX",
+	"FSTFRWRD",
+	"NWHLS",
+	"NCHSSS",
+	"NDRVR",
+	"NMRCHTS"
+};
 
 // FUNCTION: LEGORACERS 0x4513d0 FOLDED
 void ImaginaryWrench0x23bc::VTable0x44(undefined4)
@@ -91,62 +27,6 @@ void ImaginaryWrench0x23bc::VTable0x44(undefined4)
 // FUNCTION: LEGORACERS 0x4513d0 FOLDED
 void ImaginaryWrench0x23bc::VTable0x94(undefined4)
 {
-}
-
-// STUB: LEGORACERS 0x46b500
-void ImaginaryWrench0x23bc::VTable0x70()
-{
-	// TODO
-	STUB(0x46b500);
-}
-
-// STUB: LEGORACERS 0x46b890
-void ImaginaryWrench0x23bc::VTable0x58()
-{
-	// TODO
-	STUB(0x46b890);
-}
-
-// STUB: LEGORACERS 0x46c7e0
-void ImaginaryWrench0x23bc::VTable0x7c()
-{
-	// TODO
-	STUB(0x46c7e0);
-}
-
-// STUB: LEGORACERS 0x46c820
-void ImaginaryWrench0x23bc::VTable0x60()
-{
-	// TODO
-	STUB(0x46c820);
-}
-
-// STUB: LEGORACERS 0x46c860 FOLDED
-void ImaginaryWrench0x23bc::VTable0x14()
-{
-	// TODO
-	STUB(0x46c860);
-}
-
-// STUB: LEGORACERS 0x46c860 FOLDED
-void ImaginaryWrench0x23bc::VTable0x28()
-{
-	// TODO
-	STUB(0x46c860);
-}
-
-// STUB: LEGORACERS 0x474bf0
-void ImaginaryWrench0x23bc::VTable0x5c()
-{
-	// TODO
-	STUB(0x474bf0);
-}
-
-// STUB: LEGORACERS 0x474c00
-void ImaginaryWrench0x23bc::VTable0x64()
-{
-	// TODO
-	STUB(0x474c00);
 }
 
 // STUB: LEGORACERS 0x47af30
@@ -170,7 +50,7 @@ void ImaginaryWrench0x23bc::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x47b300
-void ImaginaryWrench0x23bc::VTable0x4c()
+void ImaginaryWrench0x23bc::VTable0x4c(undefined4)
 {
 	// TODO
 	STUB(0x47b300);
@@ -198,21 +78,21 @@ void ImaginaryWrench0x23bc::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x47b850
-void ImaginaryWrench0x23bc::VTable0x38()
+void ImaginaryWrench0x23bc::VTable0x38(undefined4)
 {
 	// TODO
 	STUB(0x47b850);
 }
 
 // STUB: LEGORACERS 0x47b9c0
-void ImaginaryWrench0x23bc::VTable0x40()
+void ImaginaryWrench0x23bc::VTable0x40(undefined4)
 {
 	// TODO
 	STUB(0x47b9c0);
 }
 
 // STUB: LEGORACERS 0x47b9e0
-void ImaginaryWrench0x23bc::VTable0x3c()
+void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
 {
 	// TODO
 	STUB(0x47b9e0);
@@ -227,50 +107,8 @@ void ImaginaryWrench0x23bc::FUN_0047ba00()
 }
 
 // STUB: LEGORACERS 0x47bbf0
-void ImaginaryWrench0x23bc::VTable0x90()
+void ImaginaryWrench0x23bc::VTable0x90(undefined4)
 {
 	// TODO
 	STUB(0x47bbf0);
-}
-
-// STUB: LEGORACERS 0x4803c0
-void ImaginaryWrench0x23bc::VTable0x6c()
-{
-	// TODO
-	STUB(0x4803c0);
-}
-
-// STUB: LEGORACERS 0x480420
-void ImaginaryWrench0x23bc::VTable0x88()
-{
-	// TODO
-	STUB(0x480420);
-}
-
-// STUB: LEGORACERS 0x4804f0 FOLDED
-void ImaginaryWrench0x23bc::VTable0x18()
-{
-	// TODO
-	STUB(0x4804f0);
-}
-
-// STUB: LEGORACERS 0x4804f0 FOLDED
-void ImaginaryWrench0x23bc::VTable0x1c()
-{
-	// TODO
-	STUB(0x4804f0);
-}
-
-// STUB: LEGORACERS 0x480500
-void ImaginaryWrench0x23bc::VTable0x34()
-{
-	// TODO
-	STUB(0x480500);
-}
-
-// STUB: LEGORACERS 0x480520
-void ImaginaryWrench0x23bc::VTable0x78()
-{
-	// TODO
-	STUB(0x480520);
 }

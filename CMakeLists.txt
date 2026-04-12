@@ -110,6 +110,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
   LEGORacers/src/silvernode0x50.cpp
+  LEGORacers/src/imaginarynotion0x280.cpp
+  LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/racers.rc
 )

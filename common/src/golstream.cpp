@@ -9,8 +9,17 @@
 
 DECOMP_SIZE_ASSERT(GolStream, 0x30)
 
+// GLOBAL: LEGORACERS 0x4c7284
+LegoChar g_unk0x4c7284[256];
+
+// GLOBAL: LEGORACERS 0x4c7384
+LegoChar* g_unk0x4c7384[4];
+
 // GLOBAL: LEGORACERS 0x4c7394
 GolFileSource* g_fileSources;
+
+// GLOBAL: LEGORACERS 0x4c739c
+LegoU32 g_unk0x4c739c;
 
 // FUNCTION: LEGORACERS 0x44c920
 GolStream::GolStream()
@@ -44,18 +53,104 @@ void GolStream::Init()
 	m_buffer = NULL;
 }
 
-// STUB: LEGORACERS 0x44cb30
-LegoS32 GolStream::BufferedOpen(LegoChar*, LegoS32, LegoU32)
+// STUB: LEGORACERS 0x44caa0
+LegoS32 GolStream::FUN_0044caa0()
 {
-	// TODO: needs path helper functions and search path globals
-	STUB(0x44cb30);
+	STUB(0x44caa0);
 	return 0;
+}
+
+// FUNCTION: LEGORACERS 0x44cb30
+LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize)
+{
+	if (m_flags & c_flagOpen) {
+		Dispose();
+	}
+
+	GolFsLock();
+
+	m_mode = p_mode;
+	m_flags = 0;
+	m_unk0x10 = 0;
+	m_bufferStart = 0;
+	m_bufferEnd = 0;
+	m_position = 0;
+
+	LegoS32 isAbsolute = IsAbsolutePath(p_fileName);
+	LegoS32 result;
+
+	if (!isAbsolute) {
+		FUN_0044d190(NULL, p_fileName);
+		result = FUN_0044caa0();
+
+		if (result != e_ioFileNotFound) {
+			m_flags |= result == 0;
+			GolFsUnlock();
+			return result;
+		}
+	}
+
+	if (!g_unk0x4c739c || isAbsolute) {
+		FUN_0044d190(NULL, p_fileName);
+		result = Open(g_unk0x4c7284);
+	}
+	else {
+		LegoU32 i = 0;
+		result = e_ioFileNotFound;
+
+		while (TRUE) {
+			if (i >= g_unk0x4c739c) {
+				break;
+			}
+
+			FUN_0044d190(g_unk0x4c7384[i], p_fileName);
+			result = Open(g_unk0x4c7284);
+			++i;
+
+			if (result != e_ioFileNotFound) {
+				break;
+			}
+		}
+	}
+
+	if (result) {
+		GolFsUnlock();
+		return result;
+	}
+
+	m_flags = c_flagOpen;
+
+	if (!(p_mode & c_modeKeepBuffer) || !m_buffer) {
+		if (m_buffer) {
+			delete m_buffer;
+			m_buffer = NULL;
+		}
+
+		LegoU32 bufSize = p_bufferSize;
+
+		if (bufSize) {
+			bufSize = (bufSize & 1) + bufSize;
+			LegoU8* newBuf = new LegoU8[bufSize];
+			m_buffer = newBuf;
+
+			if (!newBuf) {
+				Dispose();
+				GolFsUnlock();
+				return e_ioOutOfMemory;
+			}
+		}
+
+		m_bufferCapacity = bufSize;
+	}
+
+	GolFsUnlock();
+	return e_ioSuccess;
 }
 
 // FUNCTION: LEGORACERS 0x44cc90
 LegoS32 GolStream::Dispose()
 {
-	if ((m_flags & c_flagMapped) != 0) {
+	if (m_flags & c_flagMapped) {
 		LegoS32 result = g_fileSources[m_handle].Close();
 		m_handle = -1;
 		m_mode = 0;
@@ -65,7 +160,7 @@ LegoS32 GolStream::Dispose()
 	else {
 		Close();
 
-		if ((m_mode & c_modeKeepBuffer) == 0) {
+		if (!(m_mode & c_modeKeepBuffer)) {
 			if (m_buffer) {
 				delete[] m_buffer;
 				m_buffer = NULL;
@@ -87,7 +182,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	LegoS32* lenRead = p_lenRead;
 	*lenRead = 0;
 
-	if ((m_flags & c_flagOpen) == 0) {
+	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
 	}
 
@@ -120,7 +215,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	}
 
 	LegoS32 flags = m_flags;
-	if ((flags & c_flagMapped) != 0) {
+	if (flags & c_flagMapped) {
 		if (offset >= (LegoU32) m_size) {
 			return e_ioEndOfFile;
 		}
@@ -137,7 +232,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 		return result;
 	}
 
-	if ((flags & c_flagCached) != 0) {
+	if (flags & c_flagCached) {
 		if (offset >= m_bufferStart && offset < m_bufferEnd) {
 			LegoU8* src = m_buffer + offset - m_bufferStart;
 
@@ -278,7 +373,7 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 		while (TRUE) {
 			LegoU32 pos = m_position;
 
-			if ((m_flags & c_flagCached) != 0) {
+			if (m_flags & c_flagCached) {
 				LegoU32 start = m_bufferStart;
 
 				if (pos >= start && pos < m_bufferEnd) {
@@ -338,8 +433,14 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 	return result;
 }
 
+// STUB: LEGORACERS 0x44d190
+void GolStream::FUN_0044d190(const LegoChar*, const LegoChar*)
+{
+	STUB(0x44d190);
+}
+
 // FUNCTION: LEGORACERS 0x44d530
-LegoS32 GolIsAbsolutePath(LegoChar* p_path)
+LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 {
 	if (p_path[0] == '\\' && p_path[1] == '\\') {
 		return TRUE;
@@ -351,12 +452,12 @@ LegoS32 GolIsAbsolutePath(LegoChar* p_path)
 // FUNCTION: LEGORACERS 0x44d570
 LegoS32 GolStream::BufferedWrite(LegoS32 p_offset, const void* p_buf, LegoU32 p_size)
 {
-	if ((m_flags & c_flagOpen) == 0) {
+	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
 	}
 
 	if (m_buffer && p_size <= m_bufferCapacity) {
-		if ((m_flags & c_flagDirty) != 0) {
+		if (m_flags & c_flagDirty) {
 			LegoS32 bufferUsed = m_bufferEnd - m_bufferStart;
 
 			if ((LegoU32) bufferUsed + p_size <= m_bufferCapacity && p_offset == (LegoS32) m_bufferEnd) {
@@ -411,12 +512,12 @@ LegoS32 GolStream::WriteLine(const void* p_buf, LegoU32 p_size)
 {
 	LegoU8 newline = '\n';
 
-	if ((m_flags & c_flagOpen) == 0) {
+	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
 	}
 
 	if (m_buffer && p_size + 1 <= m_bufferCapacity) {
-		if ((m_flags & c_flagDirty) != 0 && p_size + 1 > m_bufferCapacity + m_bufferStart - m_bufferEnd) {
+		if (m_flags & c_flagDirty && p_size + 1 > m_bufferCapacity + m_bufferStart - m_bufferEnd) {
 			FlushWriteBuffer();
 		}
 
@@ -428,7 +529,7 @@ LegoS32 GolStream::WriteLine(const void* p_buf, LegoU32 p_size)
 		return e_ioSuccess;
 	}
 	else {
-		if ((m_flags & c_flagDirty) != 0) {
+		if (m_flags & c_flagDirty) {
 			FlushWriteBuffer();
 		}
 
@@ -444,18 +545,18 @@ LegoS32 GolStream::WriteLine(const void* p_buf, LegoU32 p_size)
 // FUNCTION: LEGORACERS 0x44d780
 LegoS32 GolStream::FlushWriteBuffer()
 {
-	if ((m_flags & c_flagOpen) == 0) {
+	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
 	}
 
 	LegoS32 start = m_bufferStart;
 	LegoS32 size = m_bufferEnd - start;
 
-	if (!m_buffer || (m_flags & c_flagDirty) == 0 || !size) {
+	if (!m_buffer || !(m_flags & c_flagDirty) || !size) {
 		return e_ioSuccess;
 	}
 
-	if ((m_mode & c_modeTextAppend) == 0 && m_position != start) {
+	if (!(m_mode & c_modeTextAppend) && m_position != start) {
 		if (Seek(m_bufferStart)) {
 			return e_ioSeekError;
 		}
@@ -465,7 +566,7 @@ LegoS32 GolStream::FlushWriteBuffer()
 
 	LegoS32 result = Write(m_buffer, size);
 	if (!result) {
-		if ((m_mode & c_modeTextAppend) != 0) {
+		if (m_mode & c_modeTextAppend) {
 			m_bufferEnd = m_bufferStart;
 		}
 		else {

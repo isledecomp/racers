@@ -29,16 +29,16 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 	int result = e_ioFileNotFound;
 	int mode = m_mode;
 
-	if ((mode & c_modeRead) != 0) {
-		if ((mode & c_modeWrite) != 0) {
+	if (mode & c_modeRead) {
+		if (mode & c_modeWrite) {
 			result = e_ioBadParameter;
 		}
 	}
 	else {
-		openFlags = (mode & c_modeWrite) != 0 ? _O_WRONLY : _O_RDWR;
+		openFlags = mode & c_modeWrite ? _O_WRONLY : _O_RDWR;
 	}
 
-	if ((mode & c_modeTextAppend) != 0) {
+	if (mode & c_modeTextAppend) {
 		openFlags |= _O_TEXT | _O_APPEND;
 
 		if ((mode & (c_modeRead | c_modeWrite)) == 0) {
@@ -49,10 +49,10 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 		openFlags |= _O_BINARY;
 	}
 
-	if ((mode & c_modeCreate) != 0) {
+	if (mode & c_modeCreate) {
 		openFlags |= _O_CREAT;
 
-		if ((mode & c_modeExclusive) != 0) {
+		if (mode & c_modeExclusive) {
 			openFlags |= _O_EXCL;
 		}
 		else {
@@ -93,11 +93,11 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 // FUNCTION: LEGORACERS 0x450c90
 LegoS32 GolFile::Close()
 {
-	if ((m_flags & c_flagOpen) == 0) {
+	if (!(m_flags & c_flagOpen)) {
 		return e_ioNotOpen;
 	}
 
-	if ((m_flags & c_flagDirty) != 0) {
+	if (m_flags & c_flagDirty) {
 		FlushWriteBuffer();
 	}
 

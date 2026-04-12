@@ -68,6 +68,10 @@ public:
 	// GolStream::`scalar deleting destructor'
 
 	void Init();
+	LegoS32 FUN_0044caa0();
+
+	static LegoS32 IsAbsolutePath(LegoChar* p_path);
+	static void FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path);
 
 protected:
 	LegoU32 m_mode;           // 0x04

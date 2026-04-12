@@ -105,6 +105,12 @@ undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c (gap until end of class at 0x944)
 
 **Overrides:** When a derived class overrides a virtual method from a base class, use `override` instead of `virtual` (e.g. `void VTable0x04() override;`). Include `compat.h` which defines `override` as empty for MSVC 6.0 compatibility.
 
+## Code Style
+
+**Bit tests:** Use concise style without explicit comparison to zero:
+- `if (flags & c_flagCached)` — not `if ((flags & c_flagCached) != 0)`
+- `if (!(flags & c_flagCached))` — not `if ((flags & c_flagCached) == 0)`
+
 ## Naming Conventions
 
 Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:

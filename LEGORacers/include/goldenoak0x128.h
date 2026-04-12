@@ -4,19 +4,19 @@
 #include "compat.h"
 #include "decomp.h"
 #include "rubyhaze0x08.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 class AmberLeaf0x10;
 class IndigoStar0x18;
 
 // VTABLE: LEGORACERS 0x4afbc8
 // SIZE 0x128
-class GoldenOak0x128 : public RubyHaze0x08, public ListLink {
+class GoldenOak0x128 : public RubyHaze0x08, public GolListLink {
 public:
 	GoldenOak0x128();
 	~GoldenOak0x128() override;                     // vtable+0x00
-	ListLink* VTable0x04(undefined4) override;      // vtable+0x04
-	ListLink* VTable0x08() override;                // vtable+0x08
+	GolListLink* VTable0x04(undefined4) override;   // vtable+0x04
+	GolListLink* VTable0x08() override;             // vtable+0x08
 	undefined4 VTable0x0c() override;               // vtable+0x0c
 	AmberLeaf0x10* VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(AmberLeaf0x10*) override;       // vtable+0x14
@@ -29,7 +29,7 @@ public:
 
 private:
 	IndigoStar0x18* m_unk0x10;         // 0x10
-	ListHead m_unk0x14;                // 0x14
+	GolListHead m_unk0x14;             // 0x14
 	undefined m_unk0x20;               // 0x20
 	undefined m_unk0x21[0x124 - 0x21]; // 0x21
 	undefined4 m_unk0x124;             // 0x124

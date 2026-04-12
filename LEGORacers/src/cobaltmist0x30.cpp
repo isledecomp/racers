@@ -2,8 +2,8 @@
 
 #include "types.h"
 
-DECOMP_SIZE_ASSERT(ListLink, 0x08)
-DECOMP_SIZE_ASSERT(ListHead, 0x0c)
+DECOMP_SIZE_ASSERT(GolListLink, 0x08)
+DECOMP_SIZE_ASSERT(GolListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
 // FUNCTION: LEGORACERS 0x418f20 FOLDED
@@ -63,9 +63,9 @@ CrimsonRay0x20* CobaltMist0x30::VTable0x14()
 	if (node) {
 		node->SetUnk0x10(this);
 
-		ListLink* link = node;
+		GolListLink* link = node;
 		link->m_prev = m_unk0x18.m_first;
-		link->m_next = (ListLink*) &m_unk0x18.m_first;
+		link->m_next = (GolListLink*) &m_unk0x18.m_first;
 		m_unk0x18.m_first->m_next = link;
 		m_unk0x18.m_first = link;
 	}
@@ -89,9 +89,9 @@ EmberDust0x28* CobaltMist0x30::VTable0x1c()
 	if (node) {
 		node->SetUnk0x0c(this);
 
-		ListLink* link = node;
+		GolListLink* link = node;
 		link->m_prev = m_unk0x24.m_first;
-		link->m_next = (ListLink*) &m_unk0x24.m_first;
+		link->m_next = (GolListLink*) &m_unk0x24.m_first;
 		m_unk0x24.m_first->m_next = link;
 		m_unk0x24.m_first = link;
 	}

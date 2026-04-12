@@ -30,15 +30,15 @@ CrimsonRay0x20::~CrimsonRay0x20()
 }
 
 // FUNCTION: LEGORACERS 0x41c0c0
-ListLink* CrimsonRay0x20::VTable0x04(undefined4)
+GolListLink* CrimsonRay0x20::VTable0x04(undefined4)
 {
 	return VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x41c0d0
-ListLink* CrimsonRay0x20::VTable0x08()
+GolListLink* CrimsonRay0x20::VTable0x08()
 {
-	ListLink* result;
+	GolListLink* result;
 
 	while (TRUE) {
 		result = m_unk0x14.m_first;
@@ -62,9 +62,9 @@ AmberLeaf0x10* CrimsonRay0x20::VTable0x10(undefined4)
 	if (node) {
 		node->SetUnk0x0c(this);
 
-		ListLink* link = node;
+		GolListLink* link = node;
 		link->m_prev = m_unk0x14.m_first;
-		link->m_next = (ListLink*) &m_unk0x14.m_first;
+		link->m_next = (GolListLink*) &m_unk0x14.m_first;
 		m_unk0x14.m_first->m_next = link;
 		m_unk0x14.m_first = link;
 	}

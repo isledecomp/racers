@@ -2,11 +2,11 @@
 #define JADESTORM0X0C_H
 
 #include "decomp.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 // VTABLE: LEGORACERS 0x4afa40
 // SIZE 0x0c
-class JadeStorm0x0c : public ListLink {
+class JadeStorm0x0c : public GolListLink {
 public:
 	JadeStorm0x0c() {}
 

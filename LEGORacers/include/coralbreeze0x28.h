@@ -3,12 +3,12 @@
 
 #include "decomp.h"
 #include "types.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 class IndigoStar0x18;
 
 // SIZE 0x28
-class CoralBreeze0x28 : public ListLink {
+class CoralBreeze0x28 : public GolListLink {
 public:
 	CoralBreeze0x28() {}
 
@@ -19,8 +19,8 @@ public:
 
 protected:
 	IndigoStar0x18* m_unk0x0c; // 0x0c
-	ListHead m_unk0x10;        // 0x10
-	ListHead m_unk0x1c;        // 0x1c
+	GolListHead m_unk0x10;     // 0x10
+	GolListHead m_unk0x1c;     // 0x1c
 };
 
 #endif // CORALBREEZE0X28_H

@@ -8,7 +8,7 @@
 #include "indigostar0x18.h"
 #include "silvernode0x50.h"
 #include "types.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 // VTABLE: LEGORACERS 0x4afc6c
 // SIZE 0x30
@@ -31,8 +31,8 @@ public:
 	// CobaltMist0x30::`scalar deleting destructor'
 
 private:
-	ListHead m_unk0x18; // 0x18
-	ListHead m_unk0x24; // 0x24
+	GolListHead m_unk0x18; // 0x18
+	GolListHead m_unk0x24; // 0x24
 };
 
 #endif // COBALTMIST0X30_H

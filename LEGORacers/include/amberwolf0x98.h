@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "indigostar0x18.h"
 #include "silvernode0x50.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 #include <objbase.h>
 
@@ -42,15 +42,15 @@ private:
 	undefined m_unk0x35;              // 0x35
 	undefined m_unk0x36[0x38 - 0x36]; // 0x36
 	undefined4 m_unk0x38;             // 0x38
-	ListHead m_unk0x3c;               // 0x3c
-	ListHead m_unk0x48;               // 0x48
+	GolListHead m_unk0x3c;            // 0x3c
+	GolListHead m_unk0x48;            // 0x48
 	undefined4 m_unk0x54;             // 0x54
 	undefined4 m_unk0x58;             // 0x58
-	ListHead m_unk0x5c;               // 0x5c
-	ListHead m_unk0x68;               // 0x68
-	ListHead m_unk0x74;               // 0x74
-	ListHead m_unk0x80;               // 0x80
-	ListHead m_unk0x8c;               // 0x8c
+	GolListHead m_unk0x5c;            // 0x5c
+	GolListHead m_unk0x68;            // 0x68
+	GolListHead m_unk0x74;            // 0x74
+	GolListHead m_unk0x80;            // 0x80
+	GolListHead m_unk0x8c;            // 0x8c
 };
 
 #endif // AMBERWOLF0X98_H

@@ -4,12 +4,12 @@
 #include "decomp.h"
 #include "rubyhaze0x08.h"
 #include "types.h"
-#include "util/list.h"
+#include "util/gollist.h"
 
 class IndigoStar0x18;
 
 // SIZE 0x20
-class OpalStar0x20 : public RubyHaze0x08, public ListLink {
+class OpalStar0x20 : public RubyHaze0x08, public GolListLink {
 public:
 	OpalStar0x20() {}
 
@@ -17,7 +17,7 @@ public:
 
 protected:
 	IndigoStar0x18* m_unk0x10; // 0x10
-	ListHead m_unk0x14;        // 0x14
+	GolListHead m_unk0x14;     // 0x14
 };
 
 #endif // OPALSTAR0X20_H

@@ -110,9 +110,9 @@ CrimsonRay0x20* AmberWolf0x98::VTable0x14()
 	if (node) {
 		node->SetUnk0x10(this);
 
-		ListLink* link = node;
+		GolListLink* link = node;
 		link->m_prev = m_unk0x3c.m_first;
-		link->m_next = (ListLink*) &m_unk0x3c.m_first;
+		link->m_next = (GolListLink*) &m_unk0x3c.m_first;
 		m_unk0x3c.m_first->m_next = link;
 		m_unk0x3c.m_first = link;
 	}
@@ -129,9 +129,9 @@ EmberDust0x28* AmberWolf0x98::VTable0x1c()
 	if (node) {
 		node->SetUnk0x0c(this);
 
-		ListLink* link = node;
+		GolListLink* link = node;
 		link->m_prev = m_unk0x48.m_first;
-		link->m_next = (ListLink*) &m_unk0x48.m_first;
+		link->m_next = (GolListLink*) &m_unk0x48.m_first;
 		m_unk0x48.m_first->m_next = link;
 		m_unk0x48.m_first = link;
 	}

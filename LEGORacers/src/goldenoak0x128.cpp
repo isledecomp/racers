@@ -19,14 +19,14 @@ GoldenOak0x128::~GoldenOak0x128()
 }
 
 // STUB: LEGORACERS 0x41a700
-ListLink* GoldenOak0x128::VTable0x04(undefined4)
+GolListLink* GoldenOak0x128::VTable0x04(undefined4)
 {
 	STUB(0x41a700);
 	return NULL;
 }
 
 // STUB: LEGORACERS 0x41a850
-ListLink* GoldenOak0x128::VTable0x08()
+GolListLink* GoldenOak0x128::VTable0x08()
 {
 	STUB(0x41a850);
 	return NULL;

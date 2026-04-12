@@ -1,9 +1,11 @@
 #ifndef CRIMSONFORGE0X800_H
 #define CRIMSONFORGE0X800_H
 
+#include "coralbeam0x30.h"
 #include "decomp.h"
 #include "tealpulse0x24.h"
 #include "types.h"
+#include "violetshard0x34.h"
 
 // VTABLE: LEGORACERS 0x4af9a8
 // SIZE 0x800
@@ -31,10 +33,15 @@ public:
 	LegoU8 GetUnk0x04() { return m_unk0x04; }
 	TealPulse0x24& GetUnk0x7dc() { return m_unk0x7dc; }
 
+	void FUN_004162c0();
+
 protected:
-	LegoU8 m_unk0x04;                  // 0x04
-	undefined m_unk0x05[0x7dc - 0x05]; // 0x05
-	TealPulse0x24 m_unk0x7dc;          // 0x7dc
+	LegoU8 m_unk0x04;                    // 0x04
+	undefined m_unk0x05[0x08 - 0x05];    // 0x05
+	CoralBeam0x30 m_unk0x08[20];         // 0x08
+	VioletShard0x34 m_unk0x3c8[20];      // 0x3c8
+	undefined m_unk0x7d8[0x7dc - 0x7d8]; // 0x7d8
+	TealPulse0x24 m_unk0x7dc;            // 0x7dc
 };
 
 #endif // CRIMSONFORGE0X800_H

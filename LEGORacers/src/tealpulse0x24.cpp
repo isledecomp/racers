@@ -2,15 +2,28 @@
 
 DECOMP_SIZE_ASSERT(TealPulse0x24, 0x24)
 
-// STUB: LEGORACERS 0x44c570
+// FUNCTION: LEGORACERS 0x44c570
 TealPulse0x24::TealPulse0x24()
 {
-	STUB(0x44c570);
+	m_unk0x04 = 0;
+	FUN_0044c5a0();
 }
 
-// STUB: LEGORACERS 0x44c590
+// FUNCTION: LEGORACERS 0x44c590
 TealPulse0x24::~TealPulse0x24()
 {
+	VTable0x0c();
+}
+
+// FUNCTION: LEGORACERS 0x44c5a0
+void TealPulse0x24::FUN_0044c5a0()
+{
+	m_unk0x20 = 0;
+	m_unk0x08 = 0;
+	m_unk0x0c = 0;
+	m_unk0x10 = 0;
+	m_unk0x14 = 0;
+	m_unk0x1c = 0;
 }
 
 // STUB: LEGORACERS 0x44c5c0

@@ -59,17 +59,14 @@ Functions in a compilation unit must be ordered by address (ascending).
 // SIZE 0xc8ac8                      — struct/class size assertion
 ```
 
-**GLOBAL variables** have a pointer address and may point to initialized data. A `// GLOBAL:` annotation marks the address of the pointer variable itself. If the variable is a `char*` pointing to a string literal, add a `// STRING:` annotation with the address where the string data lives in the original binary. These are two different addresses: the GLOBAL is where the pointer is, the STRING is where the string content is.
+**GLOBAL variables** have a pointer address and may point to initialized data. A `// GLOBAL:` annotation marks the address of the pointer variable itself. If the variable is a `char*` pointing to a string literal, the address of where the string data lives should be in `reccmp/lego-racers-ascii.csv`
 
 ```cpp
 // GLOBAL: LEGORACERS 0x4be8d8      — address of the pointer variable
-// STRING: LEGORACERS 0x4bea88      — address of the string data it points to
 LegoChar* g_jamFile = "lego.jam";
 ```
 
 When adding or modifying globals, always run `reccmp-datacmp` to verify the initial values match the original binary. Global variables with non-zero initial values (strings, pointers, constants) must be initialized to match.
-
-**STRING annotation caveat:** The reccmp parser expects the full string literal on the same line as the variable declaration. Multi-line string concatenation breaks the STRING annotation — use `// clang-format off` / `// clang-format on` to prevent the formatter from splitting long strings.
 
 **FOLDED functions:** MSVC 6.0's linker merges functions with identical compiled code (Identical COMDAT Folding). Multiple distinct functions end up sharing one address in the original binary. Annotate each with `// FUNCTION: MODULE 0xADDRESS FOLDED` where the address is the single copy the linker kept. All folded functions share the same address. Functions that fold together have the same signature and body (e.g. all empty `void` methods fold to one address, all empty `void(undefined4)` methods fold to a different address). FOLDED functions are exempt from the address-ascending ordering rule and do not need the `STUB()` anti-folding macro.
 

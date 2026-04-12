@@ -17,6 +17,8 @@ public:
 	// SYNTHETIC: LEGORACERS 0x44c880
 	// TealPulse0x24::`scalar deleting destructor'
 
+	void FUN_0044c5a0();
+
 private:
 	undefined4 m_unk0x04; // 0x04
 	undefined4 m_unk0x08; // 0x08

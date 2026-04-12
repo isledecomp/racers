@@ -234,12 +234,108 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	return result;
 }
 
-// STUB: LEGORACERS 0x44cff0
-LegoS32 GolStream::ReadLine(void*, LegoU32)
+// FUNCTION: LEGORACERS 0x44cff0
+LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 {
-	// TODO: complex line reader with cache and provider support
-	STUB(0x44cff0);
-	return 0;
+	LegoS32 flags = m_flags;
+
+	if (!(flags & c_flagOpen)) {
+		return e_ioNotOpen;
+	}
+
+	LegoU32 maxSize = p_size;
+
+	if (!maxSize) {
+		return e_ioBadParameter;
+	}
+
+	LegoS32 result;
+	LegoS32 bytesRead;
+
+	if (flags & c_flagMapped) {
+		LegoU32 pos = m_unk0x10;
+		LegoU32 size = m_size;
+
+		if (pos >= size) {
+			return e_ioEndOfFile;
+		}
+
+		if (pos + p_size > size) {
+			p_size = size - pos;
+		}
+
+		result = g_fileSources[m_handle].Read(pos + m_position, p_buf, p_size, maxSize, (LegoS32*) &p_buf);
+
+		if (!result) {
+			m_unk0x10 += (LegoS32) p_buf;
+			return e_ioSuccess;
+		}
+	}
+	else {
+		LegoU8* buf = (LegoU8*) p_buf;
+		LegoU32 written = 0;
+
+		while (TRUE) {
+			LegoU32 pos = m_position;
+
+			if ((m_flags & c_flagCached) != 0) {
+				LegoU32 start = m_bufferStart;
+
+				if (pos >= start && pos < m_bufferEnd) {
+					LegoU32 offset = pos - start;
+
+					while (TRUE) {
+						LegoU8 ch = m_buffer[offset];
+
+						if (ch == '\n') {
+							buf[written] = 0;
+
+							if (written > 0 && buf[written - 1] == '\r') {
+								buf[written - 1] = 0;
+							}
+
+							result = e_ioSuccess;
+							m_position = m_bufferStart + offset + 1;
+							return result;
+						}
+
+						if (written >= p_size) {
+							buf[p_size - 1] = 0;
+							m_position = offset + m_bufferStart;
+							return e_ioSuccess;
+						}
+
+						buf[written] = ch;
+						++written;
+						++offset;
+
+						if (++pos >= m_bufferEnd) {
+							m_position = pos;
+							break;
+						}
+					}
+				}
+			}
+
+			m_flags &= ~c_flagCached;
+			result = Read(m_buffer, m_bufferCapacity, &bytesRead);
+
+			if (result) {
+				if (result == e_ioEndOfFile && written) {
+					buf[written] = 0;
+					return e_ioSuccess;
+				}
+
+				return result;
+			}
+
+			m_flags |= c_flagCached;
+			m_bufferStart = m_position;
+			m_bufferEnd = bytesRead + m_position;
+		}
+	}
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x44d530

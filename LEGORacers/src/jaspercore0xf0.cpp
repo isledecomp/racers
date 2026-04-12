@@ -2,13 +2,13 @@
 
 DECOMP_SIZE_ASSERT(JasperCore0xf0, 0xf0)
 
-// STUB: LEGORACERS 0x44bf20
+// FUNCTION: LEGORACERS 0x44bf20
 JasperCore0xf0::JasperCore0xf0()
 {
-	STUB(0x44bf20);
+	VTable0x00();
 }
 
-// STUB: LEGORACERS 0x44bf60
+// FUNCTION: LEGORACERS 0x44bf60
 JasperCore0xf0::~JasperCore0xf0()
 {
 }

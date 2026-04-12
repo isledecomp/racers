@@ -190,14 +190,16 @@ jobs:
       uses: actions/deploy-pages@v5
 
   decomplint:
-    name: ${{ matrix.target }} annotations
+    name: ${{ matrix.module }} annotations
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        target:
-          - LEGORACERS
-          - GOLDP
+        include:
+          - module: LEGORACERS
+            path: LEGORacers
+          - module: GOLDP
+            path: GolDP
     steps:
       - uses: actions/checkout@v6
 
@@ -211,7 +213,7 @@ jobs:
 
       - name: Run decomplint
         run: |
-          reccmp-decomplint ${{ matrix.target }} --module ${{ matrix.target }} --warnfail
+          reccmp-decomplint ${{ matrix.path }} --module ${{ matrix.module }} --warnfail
 
   clang-format:
     name: c++ clang-format

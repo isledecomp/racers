@@ -2,15 +2,16 @@
 
 DECOMP_SIZE_ASSERT(CoralBeam0x30, 0x30)
 
-// STUB: LEGORACERS 0x450a90
+// FUNCTION: LEGORACERS 0x450a90
 CoralBeam0x30::CoralBeam0x30()
 {
-	STUB(0x450a90);
+	m_unk0x2c = 0xffffffff;
 }
 
-// STUB: LEGORACERS 0x450ad0
+// FUNCTION: LEGORACERS 0x450ad0
 CoralBeam0x30::~CoralBeam0x30()
 {
+	FUN_0044cc90();
 }
 
 // STUB: LEGORACERS 0x450b50

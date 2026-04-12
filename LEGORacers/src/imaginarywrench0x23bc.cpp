@@ -135,12 +135,6 @@ void ImaginaryWrench0x23bc::VTable0x28()
 	STUB(0x46c860);
 }
 
-// STUB: LEGORACERS 0x47af30
-ImaginaryWrench0x23bc::ImaginaryWrench0x23bc()
-{
-	// TODO
-}
-
 // STUB: LEGORACERS 0x474bf0
 void ImaginaryWrench0x23bc::VTable0x5c()
 {
@@ -153,6 +147,12 @@ void ImaginaryWrench0x23bc::VTable0x64()
 {
 	// TODO
 	STUB(0x474c00);
+}
+
+// STUB: LEGORACERS 0x47af30
+ImaginaryWrench0x23bc::ImaginaryWrench0x23bc()
+{
+	// TODO
 }
 
 // STUB: LEGORACERS 0x47b070

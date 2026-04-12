@@ -16,8 +16,14 @@
 // LIBRARY: LEGORACERS 0x4a8544
 // ??_M@YGXPAXIHP6EX0@Z@Z
 
+// LIBRARY: LEGORACERS 0x4a85c4
+// ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
+
 // LIBRARY: LEGORACERS 0x4a867c
 // _WinMainCRTStartup
+
+// LIBRARY: LEGORACERS 0x4a87da
+// __except_handler3
 
 // LIBRARY: LEGORACERS 0x4a87ec
 // __XcptFilter

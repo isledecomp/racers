@@ -1,0 +1,15 @@
+#include "azureclip0x24.h"
+
+DECOMP_SIZE_ASSERT(AzureClip0x24, 0x24)
+
+// FUNCTION: LEGORACERS 0x44dbe0
+AzureClip0x24::AzureClip0x24()
+{
+	m_unk0x00 = 0;
+	m_unk0x0c = 0;
+	m_unk0x10 = 4;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+}

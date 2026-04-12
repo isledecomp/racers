@@ -30,6 +30,7 @@ char g_cpuManufacturer[13];
 // STUB: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
+	STUB(0x10032b80)
 	// TODO
 }
 
@@ -49,7 +50,7 @@ void ReleaseGlobalMutex()
 	}
 }
 
-#if defined(_M_IX86) && defined(_M_IX86)
+#if defined(_MSC_VER) && defined(_M_IX86)
 #define NAKED __declspec(naked)
 #else
 #define NAKED

@@ -71,10 +71,13 @@ set(COMMON_SOURCES
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
+  GolDP/src/goldrawdpstate.cpp
   util/decomp.cpp
   ${COMMON_SOURCES}
   GolDP/src/adapter.cpp
   GolDP/src/goldpexport.cpp
+  GolDP/src/goldrawstate.cpp
+  GolDP/src/golcommondrawstate.cpp
   GolDP/src/main.cpp
 )
 reccmp_add_target(goldp ID GOLDP)
@@ -129,6 +132,7 @@ target_include_directories(legoracers PRIVATE
   "${PROJECT_SOURCE_DIR}/LEGORacers"
   "${PROJECT_SOURCE_DIR}/common/include"
   "${PROJECT_SOURCE_DIR}/util"
+  "${PROJECT_SOURCE_DIR}/GolDP/include"
 )
 
 target_link_libraries(legoracers PRIVATE

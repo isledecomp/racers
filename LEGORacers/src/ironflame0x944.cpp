@@ -24,7 +24,7 @@ IronFlame0x944::~IronFlame0x944()
 }
 
 // STUB: LEGORACERS 0x4165e0
-void IronFlame0x944::VTable0x0c(LegoChar*, LegoChar*)
+void IronFlame0x944::VTable0x0c(const LegoChar*, const LegoChar*)
 {
 	// TODO
 	STUB(0x4165e0);

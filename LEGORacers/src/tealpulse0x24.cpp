@@ -46,3 +46,11 @@ void TealPulse0x24::VTable0x00()
 	// TODO
 	STUB(0x44c6e0);
 }
+
+// STUB: LEGORACERS 0x44c880
+undefined4* TealPulse0x24::VTable0x04(undefined4*, const LegoChar*)
+{
+	// TODO
+	STUB(0x44c880);
+	return NULL;
+}

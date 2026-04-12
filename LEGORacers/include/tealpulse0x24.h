@@ -9,13 +9,12 @@
 class TealPulse0x24 {
 public:
 	TealPulse0x24();
-	virtual void VTable0x00();                       // vtable+0x00
-	virtual ~TealPulse0x24();                        // vtable+0x04
-	virtual void VTable0x08(undefined4, undefined4); // vtable+0x08
-	virtual void VTable0x0c();                       // vtable+0x0c
+	~TealPulse0x24();
 
-	// SYNTHETIC: LEGORACERS 0x44c880
-	// TealPulse0x24::`scalar deleting destructor'
+	virtual void VTable0x00();                                    // vtable+0x00
+	virtual undefined4* VTable0x04(undefined4*, const LegoChar*); // vtable+0x04
+	virtual void VTable0x08(undefined4, undefined4);              // vtable+0x08
+	virtual void VTable0x0c();                                    // vtable+0x0c
 
 	void FUN_0044c5a0();
 

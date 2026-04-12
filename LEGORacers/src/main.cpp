@@ -33,7 +33,7 @@ CommandLineArgs g_commandLineArgs;
 // FUNCTION: LEGORACERS 0x42f870
 LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 {
-	if (!g_unk0x4c4a38.FUN_0042bbb0(p_argc, p_argv)) {
+	if (!g_unk0x4c4a38.Init(p_argc, p_argv)) {
 		return 1;
 	}
 

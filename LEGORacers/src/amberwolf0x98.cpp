@@ -9,6 +9,23 @@
 
 DECOMP_SIZE_ASSERT(AmberWolf0x98, 0x98)
 
+// FUNCTION: LEGORACERS 0x4185d0
+AmberWolf0x98::AmberWolf0x98()
+{
+	m_unk0x28 = 2;
+	m_unk0x34 = 2;
+	m_unk0x20 = 0;
+	m_unk0x1c = 0;
+	m_unk0x24 = NULL;
+	m_unk0x2c = 0;
+	m_unk0x30 = NULL;
+	m_unk0x38 = 22050;
+	m_unk0x35 = 16;
+	m_unk0x18 = 0;
+	m_unk0x58 = 0;
+	m_unk0x54 = 0;
+}
+
 // FUNCTION: LEGORACERS 0x4186a0
 AmberWolf0x98::~AmberWolf0x98()
 {

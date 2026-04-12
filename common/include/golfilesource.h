@@ -1,8 +1,8 @@
 #ifndef GOLFILESOURCE_H
 #define GOLFILESOURCE_H
 
-#include "azureclip0x24.h"
 #include "decomp.h"
+#include "goldirentry.h"
 #include "types.h"
 
 class GolStream;
@@ -32,10 +32,10 @@ public:
 	void Reset();
 
 private:
-	GolStream* m_stream;     // 0x04
-	LegoU32 m_state;         // 0x08
-	AzureClip0x24 m_unk0x0c; // 0x0c
-	LegoU32 m_unk0x30;       // 0x30
+	GolStream* m_stream;                  // 0x04
+	LegoU32 m_state;                      // 0x08
+	GolDirEntry m_rootDir;                // 0x0c
+	GolDirEntry::FileEntry* m_foundEntry; // 0x30
 };
 
 #endif // GOLFILESOURCE_H

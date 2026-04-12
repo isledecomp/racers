@@ -63,9 +63,10 @@ add_cxx_warning(parentheses)
 
 set(COMMON_SOURCES
   common/src/golfile.cpp
+  common/src/golfsutil.cpp
   common/src/golstream.cpp
   common/src/golfilesource.cpp
-  common/src/azureclip0x24.cpp
+  common/src/goldirentry.cpp
 )
 
 # --- GolDP.dll target ---

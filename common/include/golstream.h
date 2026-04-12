@@ -9,6 +9,12 @@
 class GolStream {
 public:
 	enum {
+		c_dosEof = 0x1a,
+		c_lineReadChunkSize = 0x40,
+		c_maxReadChunkSize = 0x100000
+	};
+
+	enum {
 		c_modeCreate = 0x01,
 		c_modeRead = 0x02,
 		c_modeWrite = 0x04,
@@ -29,6 +35,7 @@ public:
 		e_ioGenericError = 1,
 		e_ioBadParameter = 3,
 		e_ioOutOfMemory = 4,
+		e_ioNameTooLong = 6,
 		e_ioNotOpen = 7,
 		e_ioFileNotFound = 8,
 		e_ioAccessDenied = 9,

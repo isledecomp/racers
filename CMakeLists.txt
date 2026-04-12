@@ -101,6 +101,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/emberdust0x28.cpp
   LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/tealpulse0x24.cpp
+  LEGORacers/src/crimsonforge0x800.cpp
+  LEGORacers/src/opalvault0xf0.cpp
   LEGORacers/src/silvernode0x50.cpp
   LEGORacers/racers.rc
 )

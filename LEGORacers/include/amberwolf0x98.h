@@ -13,6 +13,7 @@
 // SIZE 0x98
 class AmberWolf0x98 : public IndigoStar0x18 {
 public:
+	AmberWolf0x98();
 	~AmberWolf0x98() override;                  // vtable+0x00
 	undefined4 VTable0x04(undefined4) override; // vtable+0x04
 	void VTable0x08() override;                 // vtable+0x08
@@ -31,16 +32,25 @@ public:
 
 private:
 	undefined4 m_unk0x18;             // 0x18
-	undefined m_unk0x1c[0x24 - 0x1c]; // 0x1c
+	undefined4 m_unk0x1c;             // 0x1c
+	undefined4 m_unk0x20;             // 0x20
 	IUnknown* m_unk0x24;              // 0x24
-	undefined m_unk0x28[0x30 - 0x28]; // 0x28
+	undefined4 m_unk0x28;             // 0x28
+	undefined4 m_unk0x2c;             // 0x2c
 	IUnknown* m_unk0x30;              // 0x30
-	undefined m_unk0x34[0x3c - 0x34]; // 0x34
+	undefined m_unk0x34;              // 0x34
+	undefined m_unk0x35;              // 0x35
+	undefined m_unk0x36[0x38 - 0x36]; // 0x36
+	undefined4 m_unk0x38;             // 0x38
 	ListHead m_unk0x3c;               // 0x3c
 	ListHead m_unk0x48;               // 0x48
 	undefined4 m_unk0x54;             // 0x54
 	undefined4 m_unk0x58;             // 0x58
-	undefined m_unk0x5c[0x98 - 0x5c]; // 0x5c
+	ListHead m_unk0x5c;               // 0x5c
+	ListHead m_unk0x68;               // 0x68
+	ListHead m_unk0x74;               // 0x74
+	ListHead m_unk0x80;               // 0x80
+	ListHead m_unk0x8c;               // 0x8c
 };
 
 #endif // AMBERWOLF0X98_H

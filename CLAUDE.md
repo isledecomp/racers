@@ -29,6 +29,10 @@ pip install -r tools/requirements.txt
 reccmp-reccmp --target LEGORACERS --print-rec-addr
 reccmp-reccmp --target GOLDP --verbose 0x100070b0 --print-rec-addr
 
+# Compare global variable data values
+reccmp-datacmp --target LEGORACERS --verbose --print-rec-addr
+reccmp-datacmp --target GOLDP --verbose --print-rec-addr
+
 # Progress SVGs
 reccmp-reccmp --target LEGORACERS --total 3986 --nolib -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png
 reccmp-reccmp --target GOLDP --total 1071 --nolib -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png
@@ -54,6 +58,18 @@ Functions in a compilation unit must be ordered by address (ascending).
 // VTABLE: GOLDP 0x10056440         — virtual function table
 // SIZE 0xc8ac8                      — struct/class size assertion
 ```
+
+**GLOBAL variables** have a pointer address and may point to initialized data. A `// GLOBAL:` annotation marks the address of the pointer variable itself. If the variable is a `char*` pointing to a string literal, add a `// STRING:` annotation with the address where the string data lives in the original binary. These are two different addresses: the GLOBAL is where the pointer is, the STRING is where the string content is.
+
+```cpp
+// GLOBAL: LEGORACERS 0x4be8d8      — address of the pointer variable
+// STRING: LEGORACERS 0x4bea88      — address of the string data it points to
+LegoChar* g_jamFile = "lego.jam";
+```
+
+When adding or modifying globals, always run `reccmp-datacmp` to verify the initial values match the original binary. Global variables with non-zero initial values (strings, pointers, constants) must be initialized to match.
+
+**STRING annotation caveat:** The reccmp parser expects the full string literal on the same line as the variable declaration. Multi-line string concatenation breaks the STRING annotation — use `// clang-format off` / `// clang-format on` to prevent the formatter from splitting long strings.
 
 **FOLDED functions:** MSVC 6.0's linker merges functions with identical compiled code (Identical COMDAT Folding). Multiple distinct functions end up sharing one address in the original binary. Annotate each with `// FUNCTION: MODULE 0xADDRESS FOLDED` where the address is the single copy the linker kept. All folded functions share the same address. Functions that fold together have the same signature and body (e.g. all empty `void` methods fold to one address, all empty `void(undefined4)` methods fold to a different address). FOLDED functions are exempt from the address-ascending ordering rule and do not need the `STUB()` anti-folding macro.
 
@@ -82,6 +98,13 @@ DECOMP_SIZE_ASSERT(VelvetThunder0xc8ac8, 0xc8ac8)
 ```
 
 Member offset comments (`// 0xNN`) and vtable offset comments (`// vtable+0xNN`) are required.
+
+**Gap members:** When declaring `undefined` arrays to fill gaps between typed members, use a subtraction expression rather than a hardcoded size. This makes the size self-documenting and avoids manual recalculation when members are added:
+
+```cpp
+undefined m_unk0x05[0x7dc - 0x05];   // 0x05  (gap until next member at 0x7dc)
+undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c (gap until end of class at 0x944)
+```
 
 **Overrides:** When a derived class overrides a virtual method from a base class, use `override` instead of `virtual` (e.g. `void VTable0x04() override;`). Include `compat.h` which defines `override` as empty for MSVC 6.0 compatibility.
 
@@ -129,6 +152,8 @@ When a variable's type is dictated by an external interface (Windows API return 
 
 7. **Build with double `cmake --build`**, then compare: `reccmp-reccmp --target LEGORACERS --verbose 0xADDRESS --print-rec-addr`. Iterate until 100%.
 
+7b. **Verify global data** with `reccmp-datacmp --target LEGORACERS --verbose --print-rec-addr`. Any `// GLOBAL:` variable with non-zero initial data must match the original binary. This catches uninitialized globals that should have string pointers, default values, etc.
+
 8. **Validate vtables.** After adding or modifying virtual methods, always verify the vtable matches: `reccmp-reccmp --target LEGORACERS --verbose 0xVTABLE_ADDR --print-rec-addr`. Every virtual method declared in a class header must have a corresponding `// STUB:` annotation with its real address from the original binary. Read the vtable data from the original binary to find the function address at each vtable slot.
 
 9. **Check for regressions.** After any change, re-verify all previously matched `// FUNCTION:` implementations that touch the same classes, especially functions that make virtual calls on modified classes.
@@ -160,6 +185,7 @@ Matching these three functions provides high confidence that the class header (s
 
 - **Return types affect register allocation.** Changing a function from `void` to returning a pointer/int can significantly change which registers the compiler assigns to local variables and parameters. If register allocation doesn't match, check whether the original function returns a value (IDA's guessed return type is a hint).
 - **Float literal assignments may compile to integer `mov`.** MSVC 6.0 with `/O2` optimizes `float_member = 1.0f` to `mov dword ptr [offset], 0x3F800000` (an integer immediate store) rather than `fld`/`fstp`. Using `LegoFloat` members with float literals still produces the correct integer stores.
+- **Inline getters/setters produce matching code for cross-object member access.** When a function accesses internal members of a composed sub-object (e.g. `NeonCactus` accessing `IronFlame`'s private members), use public inline getters/setters on the sub-object class. MSVC 6.0 with `/O2` inlines these, producing identical code to direct member access — and can even improve register scheduling to match the original binary more closely than making members public.
 - **Write human-readable code, not IDA pseudocode.** The decompiled code should look like it was written by a human programmer. Avoid `goto` patterns, raw integer bit patterns for floats, and other artifacts of decompilation. Use proper types, named variables, and clean control flow. Iterate with reccmp to ensure the clean version still matches.
 
 ## Project Structure

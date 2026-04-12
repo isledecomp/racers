@@ -28,11 +28,11 @@ public:
 	// GoldenOak0x128::`scalar deleting destructor'
 
 private:
-	IndigoStar0x18* m_unk0x10;  // 0x10
-	ListHead m_unk0x14;         // 0x14
-	undefined m_unk0x20;        // 0x20
-	undefined m_unk0x21[0x103]; // 0x21
-	undefined4 m_unk0x124;      // 0x124
+	IndigoStar0x18* m_unk0x10;         // 0x10
+	ListHead m_unk0x14;                // 0x14
+	undefined m_unk0x20;               // 0x20
+	undefined m_unk0x21[0x124 - 0x21]; // 0x21
+	undefined4 m_unk0x124;             // 0x124
 };
 
 #endif // GOLDENOAK0X128_H

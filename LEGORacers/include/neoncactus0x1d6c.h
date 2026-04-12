@@ -17,17 +17,20 @@ public:
 	// SYNTHETIC: LEGORACERS 0x42bb20
 	// NeonCactus0x1d6c::`scalar deleting destructor'
 
-	LegoS32 FUN_0042bbb0(LegoS32 p_argc, LegoChar** p_argv);
+	LegoS32 Init(LegoS32 p_argc, LegoChar** p_argv);
 	void FUN_0042bc20();
 	void FUN_0042bc40();
 	void FUN_0042bd00();
 	void FUN_0042be90();
+	LegoS32 FUN_0042bee0(LegoS32 p_argc, LegoChar** p_argv);
 
 private:
 	IronFlame0x944 m_unk0x04;             // 0x04
 	AmberWolf0x98 m_unk0x948;             // 0x948
 	CobaltMist0x30 m_unk0x9e0;            // 0x9e0
-	undefined m_unk0xa10[0x1d6c - 0xa10]; // 0xa10
+	undefined m_unk0xa10[0xa14 - 0xa10];  // 0xa10
+	undefined4 m_unk0xa14;                // 0xa14
+	undefined m_unk0xa18[0x1d6c - 0xa18]; // 0xa18
 };
 
 #endif // NEONCACTUS0X1D6C_H

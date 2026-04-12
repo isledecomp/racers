@@ -1,0 +1,31 @@
+#ifndef TEALPULSE0X24_H
+#define TEALPULSE0X24_H
+
+#include "decomp.h"
+#include "types.h"
+
+// VTABLE: LEGORACERS 0x4b0f28
+// SIZE 0x24
+class TealPulse0x24 {
+public:
+	TealPulse0x24();
+	virtual void VTable0x00();                       // vtable+0x00
+	virtual ~TealPulse0x24();                        // vtable+0x04
+	virtual void VTable0x08(undefined4, undefined4); // vtable+0x08
+	virtual void VTable0x0c();                       // vtable+0x0c
+
+	// SYNTHETIC: LEGORACERS 0x44c880
+	// TealPulse0x24::`scalar deleting destructor'
+
+private:
+	undefined4 m_unk0x04; // 0x04
+	undefined4 m_unk0x08; // 0x08
+	undefined4 m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10; // 0x10
+	undefined4 m_unk0x14; // 0x14
+	undefined4 m_unk0x18; // 0x18
+	undefined4 m_unk0x1c; // 0x1c
+	undefined m_unk0x20;  // 0x20
+};
+
+#endif // TEALPULSE0X24_H

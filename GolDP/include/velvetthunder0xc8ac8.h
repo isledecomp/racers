@@ -23,7 +23,7 @@ public:
 	// VelvetThunder0xc8ac8::`scalar deleting destructor'
 
 private:
-	undefined m_unk0x04[0xc8ac4]; // 0x04
+	undefined m_unk0x04[0xc8ac8 - 0x04]; // 0x04
 };
 
 #endif // VELVETTHUNDER0XC8AC8_H

@@ -72,7 +72,7 @@ AmberLeaf0x10* CrimsonRay0x20::VTable0x10(undefined4)
 	return node;
 }
 
-// FUNCTION: LEGORACERS 0x44a1e0
+// FUNCTION: LEGORACERS 0x44a1e0 FOLDED
 undefined4 CrimsonRay0x20::VTable0x0c()
 {
 	return 1;

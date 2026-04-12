@@ -102,6 +102,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/tealpulse0x24.cpp
   LEGORacers/src/silvernode0x50.cpp
+  LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/racers.rc
 )
 reccmp_add_target(legoracers ID LEGORACERS)

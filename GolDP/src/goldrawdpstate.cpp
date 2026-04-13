@@ -4,7 +4,8 @@ DECOMP_SIZE_ASSERT(GolDrawDPState, 0xc8ac4)
 
 // STUB: GOLDP 0x10001000
 GolDrawDPState::GolDrawDPState()
-{ // TODO
+{
+	// TODO
 	STUB(0x10001000);
 }
 

@@ -20,7 +20,8 @@ public:
 		c_modeWrite = 0x04,
 		c_modeTextAppend = 0x08,
 		c_modeExclusive = 0x10,
-		c_modeKeepBuffer = 0x20
+		c_modeKeepBuffer = 0x20,
+		c_unk0x40 = 0x40
 	};
 
 	enum {
@@ -68,7 +69,7 @@ public:
 	// GolStream::`scalar deleting destructor'
 
 	void Init();
-	LegoS32 FUN_0044caa0();
+	LegoS32 OpenFileSource();
 
 	static LegoS32 IsAbsolutePath(LegoChar* p_path);
 	static void FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path);

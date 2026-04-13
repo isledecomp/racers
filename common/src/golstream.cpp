@@ -10,13 +10,16 @@
 DECOMP_SIZE_ASSERT(GolStream, 0x30)
 
 // GLOBAL: LEGORACERS 0x4c7284
-LegoChar g_unk0x4c7284[256];
+LegoChar g_pathBuffer[256];
 
 // GLOBAL: LEGORACERS 0x4c7384
 LegoChar* g_unk0x4c7384[4];
 
 // GLOBAL: LEGORACERS 0x4c7394
 GolFileSource* g_fileSources;
+
+// GLOBAL: LEGORACERS 0x4c7398
+LegoU32 g_fileSourceCount;
 
 // GLOBAL: LEGORACERS 0x4c739c
 LegoU32 g_unk0x4c739c;
@@ -53,11 +56,29 @@ void GolStream::Init()
 	m_buffer = NULL;
 }
 
-// STUB: LEGORACERS 0x44caa0
-LegoS32 GolStream::FUN_0044caa0()
+// FUNCTION: LEGORACERS 0x44caa0
+LegoS32 GolStream::OpenFileSource()
 {
-	STUB(0x44caa0);
-	return 0;
+	LegoS32 result = e_ioFileNotFound;
+
+	if (!g_fileSources) {
+		return result;
+	}
+
+	if (m_mode & (c_modeCreate | c_modeWrite | c_unk0x40)) {
+		return result;
+	}
+
+	for (LegoU32 i = 0; i < g_fileSourceCount; i++) {
+		result = g_fileSources[i].Open(g_pathBuffer, &m_position, &m_size);
+		if (result == e_ioSuccess) {
+			m_handle = i;
+			m_flags = c_flagOpen | c_flagMapped;
+			break;
+		}
+	}
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x44cb30
@@ -81,7 +102,7 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 
 	if (!isAbsolute) {
 		FUN_0044d190(NULL, p_fileName);
-		result = FUN_0044caa0();
+		result = OpenFileSource();
 
 		if (result != e_ioFileNotFound) {
 			m_flags |= result == 0;
@@ -92,7 +113,7 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 
 	if (!g_unk0x4c739c || isAbsolute) {
 		FUN_0044d190(NULL, p_fileName);
-		result = Open(g_unk0x4c7284);
+		result = Open(g_pathBuffer);
 	}
 	else {
 		LegoU32 i = 0;
@@ -104,7 +125,7 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 			}
 
 			FUN_0044d190(g_unk0x4c7384[i], p_fileName);
-			result = Open(g_unk0x4c7284);
+			result = Open(g_pathBuffer);
 			++i;
 
 			if (result != e_ioFileNotFound) {

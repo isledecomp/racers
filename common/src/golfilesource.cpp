@@ -73,7 +73,7 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 	*p_position = entry->m_position;
 	*p_size = entry->m_size;
 	m_state = 1;
-	return 0;
+	return GolStream::e_ioSuccess;
 }
 
 // FUNCTION: LEGORACERS 0x44d9c0

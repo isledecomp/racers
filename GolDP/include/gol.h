@@ -63,8 +63,16 @@ public:
 typedef GolExport* GolEntryCBFN(GolImport*);
 typedef void GolExitCBFN();
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern GolExport* GolEntry(GolImport* p_import);
 
 extern void GolExit();
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
 
 #endif // GOLDP_GOL_H

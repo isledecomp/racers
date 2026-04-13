@@ -1,4 +1,3 @@
-
 #include "tealpulse0x24.h"
 
 #include "decomp.h"

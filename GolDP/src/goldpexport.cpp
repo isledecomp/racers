@@ -5,34 +5,22 @@
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
 DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
 
-// Destructor of sub-object at m_unk0x04 (called as __thiscall in original).
-// STUB: GOLDP 0x10001110
-void FUN_10001110(LegoS32)
-{
-	// TODO
-	STUB(0x10001110);
-}
-
-// STUB: GOLDP 0x100016f0
+// STUB: GOLDP 0x100016f0 FOLDED
 undefined4 GolDPExport::VTable0x24()
 {
-	// TODO
 	STUB(0x100016f0);
-	return NULL;
+	return 0;
 }
 
 // STUB: GOLDP 0x10007060
 GolDPExport::~GolDPExport()
 {
-	FUN_10001110((LegoS32) &m_unk0x04);
 }
 
-// STUB: GOLDP 0x10015090
-undefined4* GolDPExport::VTable0x04()
+// FUNCTION: GOLDP 0x10015090
+GolDrawState* GolDPExport::VTable0x04()
 {
-	// TODO
-	STUB(0x10015090);
-	return NULL;
+	return &this->m_state;
 }
 
 // STUB: GOLDP 0x100150a0

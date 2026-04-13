@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "gol.h"
+#include "goldrawdpstate.h"
 
 // VTABLE: GOLDP 0x10056440
 // SIZE 0xc8ac8
@@ -14,36 +15,36 @@ public:
 	// SYNTHETIC: GOLDP 0x10007040
 	// GolDPExport::`scalar deleting destructor'
 
-	undefined4* VTable0x04() override;
-	undefined4* VTable0x08() override;
-	undefined4* VTable0x0c() override;
-	undefined4* VTable0x10() override;
-	undefined4* VTable0x14() override;
-	undefined4* VTable0x18() override;
-	undefined4* VTable0x1c() override;
-	undefined4* VTable0x20() override;
-	undefined4 VTable0x24() override;
-	undefined4* VTable0x28() override;
-	undefined4* VTable0x2c() override;
-	undefined4* VTable0x30() override;
-	undefined4* VTable0x34() override;
-	undefined4* VTable0x38() override;
-	void VTable0x3c(undefined4*) override;
-	void VTable0x40(undefined4*) override;
-	void VTable0x44(undefined4*) override;
-	void VTable0x48(undefined4*) override;
-	void VTable0x4c(undefined4*) override;
-	void VTable0x50(undefined4*) override;
-	void VTable0x54(undefined4*) override;
-	void VTable0x58(undefined4*) override;
-	void VTable0x5c(undefined4*) override;
-	void VTable0x60(undefined4*) override;
-	void VTable0x64(undefined4*) override;
-	void VTable0x68(undefined4*) override;
-	void VTable0x6c(undefined4*) override;
+	GolDrawState* VTable0x04() override;   // vtable+0x04
+	undefined4* VTable0x08() override;     // vtable+0x08
+	undefined4* VTable0x0c() override;     // vtable+0x0c
+	undefined4* VTable0x10() override;     // vtable+0x10
+	undefined4* VTable0x14() override;     // vtable+0x14
+	undefined4* VTable0x18() override;     // vtable+0x18
+	undefined4* VTable0x1c() override;     // vtable+0x1c
+	undefined4* VTable0x20() override;     // vtable+0x20
+	undefined4 VTable0x24() override;      // vtable+0x24
+	undefined4* VTable0x28() override;     // vtable+0x28
+	undefined4* VTable0x2c() override;     // vtable+0x2c
+	undefined4* VTable0x30() override;     // vtable+0x30
+	undefined4* VTable0x34() override;     // vtable+0x34
+	undefined4* VTable0x38() override;     // vtable+0x38
+	void VTable0x3c(undefined4*) override; // vtable+0x3c
+	void VTable0x40(undefined4*) override; // vtable+0x40
+	void VTable0x44(undefined4*) override; // vtable+0x44
+	void VTable0x48(undefined4*) override; // vtable+0x48
+	void VTable0x4c(undefined4*) override; // vtable+0x4c
+	void VTable0x50(undefined4*) override; // vtable+0x50
+	void VTable0x54(undefined4*) override; // vtable+0x54
+	void VTable0x58(undefined4*) override; // vtable+0x58
+	void VTable0x5c(undefined4*) override; // vtable+0x5c
+	void VTable0x60(undefined4*) override; // vtable+0x60
+	void VTable0x64(undefined4*) override; // vtable+0x64
+	void VTable0x68(undefined4*) override; // vtable+0x68
+	void VTable0x6c(undefined4*) override; // vtable+0x6c
 
 private:
-	undefined m_unk0x04[0xc8ac8 - 0x4]; // 0x04
+	GolDrawDPState m_state; // 0x04
 };
 
 #endif // GolDPExport_H

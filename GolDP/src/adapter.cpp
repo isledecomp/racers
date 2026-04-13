@@ -25,12 +25,13 @@ int g_maxCPUID;
 BOOL g_CPU_supports_MMX;
 
 // GLOBAL: GOLDP 0x10065ee4
-char g_cpuManufacturer[13];
+char g_cpuManufacturer[16];
 
 // STUB: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
 	// TODO
+	STUB(0x10032b80);
 }
 
 // FUNCTION: GOLDP 0x10032bf0
@@ -49,7 +50,7 @@ void ReleaseGlobalMutex()
 	}
 }
 
-#if defined(_M_IX86) && defined(_M_IX86)
+#if defined(_MSC_VER) && defined(_M_IX86)
 #define NAKED __declspec(naked)
 #else
 #define NAKED
@@ -61,43 +62,43 @@ NAKED void DetectCPU()
 #ifdef _MSC_VER
 #ifdef _M_IX86
 	__asm {
-		push			ebx								; Save ebx register (eax, ecx, edx are caller saved)
-		pushfd											; Push EFLAGS register on the stack
-		pop				eax								; EAX = EFLAGS value
-		mov 			edx, eax						; EDX = EAX = EFLAGS value
-		xor 			eax, 0x200000					; EDX = EFLAGS value, EAX = EFLAGS ^ 0x200000
-		push			eax								; Push modified EFLAGS value to the stack
-		popfd											; Set the EFLAGS register to the modified value
-		pushfd											; Push EFLAGS regsiter on the stack (again)
-		pop eax											; EAX = current EFLAGS value; EDX = previous EFLAGS value
-		cmp eax,		edx								; Compre current and modified EFLAGS value
-		jz no_cpuid										; If they are identical, then the CPU does not support CPUID
+		push			ebx									; Save ebx register (eax, ecx, edx are caller saved)
+		pushfd												; Push EFLAGS register on the stack
+		pop				eax									; EAX = EFLAGS value
+		mov 			edx, eax							; EDX = EAX = EFLAGS value
+		xor 			eax, 0x200000						; EDX = EFLAGS value, EAX = EFLAGS ^ 0x200000
+		push			eax									; Push modified EFLAGS value to the stack
+		popfd												; Set the EFLAGS register to the modified value
+		pushfd												; Push EFLAGS regsiter on the stack (again)
+		pop eax												; EAX = current EFLAGS value; EDX = previous EFLAGS value
+		cmp eax,		edx									; Compre current and modified EFLAGS value
+		jz no_cpuid											; If they are identical, then the CPU does not support CPUID
 
-		xor				eax, eax						; EAX=0: Highest Function Parameter and Manufacturer ID
+		xor				eax, eax							; EAX=0: Highest Function Parameter and Manufacturer ID
 #if _MSC_VER > 1300
-		cpuid											; Run CPUID(0) [Highest Function Parameter and Manufacturer ID]
+		cpuid												; Run CPUID(0) [Highest Function Parameter and Manufacturer ID]
 #else
 		__emit 		0x0f
 		__emit 		0xa2
 #endif
-		mov			[g_maxCPUID],eax					; CPUID(0) -> EAX = Highest Function Parameter (=maximum EAX for CPUID)
-		mov			dword ptr 0[g_cpuManufacturer],ebx	; CPUID(0) -> EBX = characters [0,3] of manufacturer ID
-		xor			eax,eax								; EAX = 0
-		mov			dword ptr 4[g_cpuManufacturer],edx	; CPUID(0) -> EDX = characters [4,7] of manufacturer ID
-		mov			12[g_cpuManufacturer], al			; Set terminating zero
-		inc			eax									; EAX = 1
-		mov			dword ptr 8[g_cpuManufacturer],ecx	; CPUID(0) -> ECX = characters [8,12] of manufacturer ID
-		mov			[g_CPUID_detected],eax				; Store we succesfully detected cpuid
+		mov			[g_maxCPUID],eax						; CPUID(0) -> EAX = Highest Function Parameter (=maximum EAX for CPUID)
+		mov			dword ptr 0[g_cpuManufacturer],ebx		; CPUID(0) -> EBX = characters [0,3] of manufacturer ID
+		xor			eax,eax									; EAX = 0
+		mov			dword ptr 4[g_cpuManufacturer],edx		; CPUID(0) -> EDX = characters [4,7] of manufacturer ID
+		mov			dword ptr 12[g_cpuManufacturer], eax	;Set terminating zero
+		inc			eax										; EAX = 1
+		mov			dword ptr 8[g_cpuManufacturer],ecx		; CPUID(0) -> ECX = characters [8,12] of manufacturer ID
+		mov			[g_CPUID_detected],eax					; Store we succesfully detected cpuid
 
 #if _MSC_VER > 1300
-		cpuid											; Run CPUID(1) [Processor Info and Feature Bits]
+		cpuid												; Run CPUID(1) [Processor Info and Feature Bits]
 #else
 		__emit 		0x0f
 		__emit 		0xa2
 #endif
-		and			edx,0x800000						; Mask bit 23 of EDX: mmx feature (=64-bit SIMD)
-		shr			edx,0x17							; Convert mmx feature bit to boolean
-		mov			dword ptr [g_CPU_supports_MMX],edx	; Store MMX feature
+		and			edx,0x800000							; Mask bit 23 of EDX: mmx feature (=64-bit SIMD)
+		shr			edx,0x17								; Convert mmx feature bit to boolean
+		mov			dword ptr [g_CPU_supports_MMX],edx		; Store MMX feature
 
 	no_cpuid:
 		pop			ebx									; Restore EBX

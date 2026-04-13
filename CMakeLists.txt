@@ -5,7 +5,12 @@ cmake_policy(SET CMP0091 NEW)
 
 project(racers CXX)
 
+if (NOT WIN32)
+  message(FATAL_ERROR "Windows is the only supported platform (for now...)")
+endif()
+
 include(CheckCXXSourceCompiles)
+include(CMakeDependentOption)
 include(CMakePushCheckState)
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/reccmp.cmake")
 
@@ -21,6 +26,16 @@ math(EXPR bits "8 * ${CMAKE_SIZEOF_VOID_P}")
 message(STATUS "Building ${bits}-bit LEGO Racers")
 if (NOT bits EQUAL 32)
   message(WARNING "Only 32-bit executables are supported")
+endif()
+
+cmake_dependent_option(RACERS_USE_DX6 "Build with internal DirectX 5 SDK" ON "CMAKE_SIZEOF_VOID_P EQUAL 4" OFF)
+if(RACERS_USE_DX6)
+  include_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/inc")
+  link_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib")
+  foreach(name d3dim d3drm d3dxof ddraw ddraw16 dinput dplayx dsetup dsound dxguid)
+    add_library(${name} IMPORTED UNKNOWN)
+    set_property(TARGET ${name} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib/${name}.lib")
+  endforeach()
 endif()
 
 set(MSVC_FOR_DECOMP FALSE)
@@ -93,6 +108,9 @@ target_include_directories(goldp PRIVATE
   "${PROJECT_SOURCE_DIR}/common/include"
   "${PROJECT_SOURCE_DIR}/util"
 )
+target_link_libraries(goldp PRIVATE
+    ddraw
+)
 
 set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
 set_property(TARGET goldp PROPERTY PREFIX "")
@@ -137,6 +155,7 @@ target_include_directories(legoracers PRIVATE
 )
 
 target_link_libraries(legoracers PRIVATE
+  dinput
   ole32
   winmm
 )

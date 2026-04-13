@@ -64,12 +64,13 @@ typedef GolExport* GolEntryCBFN(GolImport*);
 typedef void GolExitCBFN();
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-extern GolExport* GolEntry(GolImport* p_import);
+	extern GolExport* GolEntry(GolImport* p_import);
 
-extern void GolExit();
+	extern void GolExit();
 
 #ifdef __cplusplus
 } // extern "C"

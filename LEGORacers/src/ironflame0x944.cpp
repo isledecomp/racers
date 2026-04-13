@@ -1,12 +1,19 @@
 #include "ironflame0x944.h"
 
+#include "../../GolDP/include/gol.h"
+#include "gol.h"
+#include "golerror.h"
+#include "golinterface.h"
+
+#include <stdio.h>
+
 DECOMP_SIZE_ASSERT(IronFlame0x944, 0x944)
 
 // FUNCTION: LEGORACERS 0x4164d0
 IronFlame0x944::IronFlame0x944()
 {
-	m_unk0x830 = 0;
-	m_unk0x800 = 0;
+	m_golLibrary = NULL;
+	m_golExport = NULL;
 	m_unk0x924 = 0;
 	m_unk0x928 = 0;
 	m_unk0x92c = 0;
@@ -44,11 +51,39 @@ void IronFlame0x944::VTable0x10()
 	STUB(0x4167e0);
 }
 
-// STUB: LEGORACERS 0x416960
+// FUNCTION: LEGORACERS 0x416960
 void IronFlame0x944::VTable0x14()
 {
-	// TODO
-	STUB(0x416960);
+	char buffer[100];
+	// const char *dllname;
+	GolImport gol_import;
+
+	if (m_unk0x928 & 0x2) {
+		m_golLibrary = LoadLibraryA("GolGlide.DLL");
+	}
+	else if (m_unk0x928 & 0x1) {
+		m_golLibrary = LoadLibraryA("GolSoft.DLL");
+	}
+	else if (m_unk0x928 & 0x4) {
+		m_golLibrary = LoadLibraryA("GolD3D.DLL");
+		// dllname = "GolD3D.DLL";
+	}
+	else {
+		m_golLibrary = LoadLibraryA("GolDP.DLL");
+		// dllname = "GolDP.DLL";
+	}
+	if (m_golLibrary == NULL) {
+		sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());
+		GOL_FATALERROR_MESSAGE(buffer);
+	}
+	GolEntryCBFN* golEntry = (GolEntryCBFN*) GetProcAddress(m_golLibrary, "GolEntry");
+	if (golEntry == NULL) {
+		GOL_FATALERROR_MESSAGE("Invalid Gol DLL - cannot call entry procedure");
+	}
+	CreateGolImport(&gol_import);
+	gol_import.m_fatalErrorMessage = GolFatalErrorMessage;
+	m_golExport = golEntry(&gol_import);
+	m_golDrawState = m_golExport->VTable0x04();
 }
 
 // STUB: LEGORACERS 0x416a30

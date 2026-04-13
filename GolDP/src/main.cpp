@@ -9,13 +9,13 @@
 GolDPExport* g_golDPExport;
 
 // GLOBAL: GOLDP 0x1006314c
-FatalErrorCBFN* g_fatalError;
+FatalErrorMessageCBFN* g_fatalErrorMessage;
 
 // FUNCTION: GOLDP 0x10006ff0
 GolExport* GolEntry(GolImport* p_import)
 {
 	SetGolImport(p_import);
-	g_fatalError = p_import->m_fatalError;
+	g_fatalErrorMessage = p_import->m_fatalErrorMessage;
 	g_golDPExport = new GolDPExport;
 	return g_golDPExport;
 }

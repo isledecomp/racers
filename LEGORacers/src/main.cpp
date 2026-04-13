@@ -6,6 +6,7 @@
 #include "main.h"
 
 #include "decomp.h"
+#include "golerror.h"
 #include "neoncactus0x1d6c.h"
 #include "types.h"
 
@@ -40,6 +41,15 @@ LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 	g_unk0x4c4a38.FUN_0042bc40();
 	g_unk0x4c4a38.FUN_0042bc20();
 	return 0;
+}
+
+// FUNCTION: LEGORACERS 0x0042f8b0
+void GolFatalErrorMessage(const char* p_message, const char* p_file, int p_line)
+{
+	g_unk0x4c4a38.FUN_0042be90();
+	MessageBox(NULL, p_message, "Fatal Error", MB_TOPMOST | MB_SETFOREGROUND | MB_ICONWARNING);
+	g_unk0x4c4a38.FUN_0042bc20();
+	exit(1);
 }
 
 // FUNCTION: LEGORACERS 0x449ce0

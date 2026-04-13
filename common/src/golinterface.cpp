@@ -1,4 +1,4 @@
-#include "gol.h"
+#include "golinterface.h"
 
 #include <windows.h>
 
@@ -6,13 +6,8 @@
 #include <cpuid.h>
 #endif
 
-// #ifdef _MSC_VER
-// #if _MSC_VER < 1300
-// #define cpuid __emit 0x0f __emit 0xa2
-// #endif
-// #endif
-
 // GLOBAL: GOLDP 0x10065ed4
+// GLOBAL: LEGORACE 0x004c73f0
 HANDLE g_globalMutex;
 
 // GLOBAL: GOLDP 0x10065ed8
@@ -27,14 +22,26 @@ BOOL g_CPU_supports_MMX;
 // GLOBAL: GOLDP 0x10065ee4
 char g_cpuManufacturer[16];
 
+#ifdef BUILDING_LEGORACERS
+void CreateGolImport(GolImport* p_import)
+{
+	// TODO
+	// result.m_unk0x1c = ;
+	p_import->m_mutex = g_globalMutex;
+}
+#endif
+
+#ifdef BUILDING_GOL
 // STUB: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
 	// TODO
 	STUB(0x10032b80);
 }
+#endif
 
 // FUNCTION: GOLDP 0x10032bf0
+// FUNCTION: LEGORACE 0x00450df0
 void LockGlobalMutex()
 {
 	if (g_globalMutex != NULL) {
@@ -43,6 +50,7 @@ void LockGlobalMutex()
 }
 
 // FUNCTION: GOLDP 0x10032c10
+// FUNCTION: LEGORACE 0x00450e10
 void ReleaseGlobalMutex()
 {
 	if (g_globalMutex != NULL) {

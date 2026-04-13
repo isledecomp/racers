@@ -4,8 +4,11 @@
 #include "compat.h"
 #include "crimsonforge0x800.h"
 #include "decomp.h"
+#include "gol.h"
 #include "opalvault0xf0.h"
 #include "types.h"
+
+#include <windows.h>
 
 // VTABLE: LEGORACERS 0x4af9f4
 // SIZE 0x944
@@ -33,9 +36,10 @@ public:
 	void SetUnk0x928(undefined4 p_unk0x928) { m_unk0x928 = p_unk0x928; }
 
 private:
-	undefined4 m_unk0x800;               // 0x800
-	undefined m_unk0x804[0x830 - 0x804]; // 0x804
-	undefined4 m_unk0x830;               // 0x830
+	GolExport* m_golExport;              // 0x800
+	GolDrawState* m_golDrawState;        // 0x804
+	undefined m_unk0x808[0x830 - 0x808]; // 0x808
+	HMODULE m_golLibrary;                // 0x830
 	OpalVault0xf0 m_unk0x834;            // 0x834
 	undefined4 m_unk0x924;               // 0x924
 	undefined4 m_unk0x928;               // 0x928

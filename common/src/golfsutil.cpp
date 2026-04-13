@@ -1,9 +1,8 @@
 #include "golfsutil.h"
 
 #include "decomp.h"
-#include "types.h"
-
 #include "gol.h"
+#include "types.h"
 
 #if (defined(_MSC_VER) && defined(_M_X64)) || (defined(__GNUC__) && (defined(__i386__) || defined(__x86_64)))
 #include <cpuid.h>

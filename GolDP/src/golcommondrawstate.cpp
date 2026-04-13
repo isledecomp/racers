@@ -13,7 +13,7 @@ GolCommonDrawState::GolCommonDrawState()
 undefined4 GolCommonDrawState::VTable0x44(undefined4 p_width, undefined4 p_height, undefined4 p_bpp, undefined4 p_flags)
 {
 	// TODO
-	STUB(0x100184e0)
+	STUB(0x100184e0);
 	return 0;
 }
 
@@ -21,19 +21,21 @@ undefined4 GolCommonDrawState::VTable0x44(undefined4 p_width, undefined4 p_heigh
 void GolCommonDrawState::VTable0x48()
 {
 	// TODO
-	STUB(0x10018510)
+	STUB(0x10018510);
 }
 
 // STUB: GOLDP 0x10018540
 void GolCommonDrawState::VTable0x50()
 {
 	// TODO
-	STUB(0x10018540)
+	STUB(0x10018540);
 }
 
 // STUB: GOLDP 0x10018570
-void GolCommonDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4){// TODO
-																					STUB(0x10018570)
+void GolCommonDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4)
+{
+	STUB(0x10018570);
+	// TODO
 }
 
 // FUNCTION: GOLDP 0x10018620

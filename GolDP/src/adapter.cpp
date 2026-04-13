@@ -30,8 +30,8 @@ char g_cpuManufacturer[16];
 // STUB: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
-	STUB(0x10032b80)
 	// TODO
+	STUB(0x10032b80);
 }
 
 // FUNCTION: GOLDP 0x10032bf0

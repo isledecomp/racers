@@ -29,6 +29,6 @@ typedef unsigned int undefined4;
 
 extern undefined4 g_foldingDummyVariable;
 
-#define STUB(val)  (g_foldingDummyVariable = val);
+#define STUB(val)  do { g_foldingDummyVariable = val; } while (0)
 
 #endif // DECOMP_H

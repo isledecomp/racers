@@ -2,6 +2,7 @@
 
 #include "decomp.h"
 #include "gol.h"
+#include "golstream.h"
 #include "types.h"
 
 #if (defined(_MSC_VER) && defined(_M_X64)) || (defined(__GNUC__) && (defined(__i386__) || defined(__x86_64)))
@@ -27,21 +28,33 @@ BOOL g_CPU_supports_MMX;
 char g_cpuManufacturer[16];
 
 #ifdef BUILDING_LEGORACERS
-// STUB: LEGORACERS 0x00450d80
+// FUNCTION: LEGORACERS 0x00450d80
 void CreateGolImport(GolImport* p_import)
 {
-	// TODO
-	// result.m_unk0x1c = ;
+	p_import->m_fileSources = g_fileSources;
+	p_import->m_fileSourceCount = g_fileSourceCount;
+	p_import->m_unk0x18 = g_unk0x4c739c;
+	for (LegoU32 i = 0; i < p_import->m_unk0x18; i++) {
+		p_import->m_unk0x8[i] = g_unk0x4c7384[i];
+	}
+	p_import->m_unk0x1c = g_unk0x4c73a0;
 	p_import->m_mutex = g_hMutex;
 }
 #endif
 
 #ifdef BUILDING_GOL
-// STUB: GOLDP 0x10032b80
+
+// FUNCTION: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
-	// TODO
-	STUB(0x10032b80);
+	g_fileSourceCount = p_import->m_fileSourceCount;
+	g_fileSources = p_import->m_fileSources;
+	GolStream::FUN_100320d0();
+	for (LegoU32 i = 0; i < p_import->m_unk0x18; i++) {
+		GolStream::FUN_10032110(p_import->m_unk0x8[i]);
+	}
+	g_unk0x4c73a0 = p_import->m_unk0x1c;
+	g_hMutex = p_import->m_mutex;
 }
 #endif
 

@@ -69,23 +69,6 @@ void NeonCactus0x1d6c::FUN_0042be90()
 // STUB: LEGORACERS 0x42bee0
 LegoS32 NeonCactus0x1d6c::FUN_0042bee0(LegoS32 p_argc, LegoChar** p_argv)
 {
-#if 0
-	for (int i = 0; i < p_argc; i++) {
-		if (strcmp(p_argv[i], "-novideo") == 0) {
-			m_unk0xa18 = 0;
-		} else if (strcmp(p_argv[i], "-primary") == 0) {
-			m_unk0xab8 |= 0x80;
-		} else if (strcmp(p_argv[i], "-select3d") == 0) {
-			m_unk0xab8 |= 0x200;
-		} else if (strcmp(p_argv[i], "-window") == 0) {
-			m_unk0xab8 &= ~0x8;
-		} else if (strcmp(p_argv[i], "-alphatrans") == 0) {
-			m_unk0xab8 |= 0x8000;
-		} else if (strcmp(p_argv[i], "-horzres") == 0) {
-			if (i  p_argcg_horzRes = m_unk0xab8 |= 0x8000;
-		}
-	}
-#endif
 	// TODO
 	STUB(0x42bee0);
 	return 0;

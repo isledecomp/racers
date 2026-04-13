@@ -62,6 +62,7 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 add_cxx_warning(parentheses)
 
 set(COMMON_SOURCES
+  common/src/golerror.cpp
   common/src/golfile.cpp
   common/src/golfsutil.cpp
   common/src/golstream.cpp

@@ -32,11 +32,10 @@ GolListLink* GoldenOak0x128::VTable0x08()
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x41a890
+// FUNCTION: LEGORACERS 0x41a890
 undefined4 GoldenOak0x128::VTable0x0c()
 {
-	STUB(0x41a890);
-	return 0;
+	return m_unk0x04 != 0;
 }
 
 // STUB: LEGORACERS 0x41a8a0

@@ -11,17 +11,17 @@
 class OpalVault0xf0 : public JasperCore0xf0 {
 public:
 	OpalVault0xf0();
-	void VTable0x00() override; // vtable+0x00
-	~OpalVault0xf0() override;  // vtable+0x04
-	void VTable0x08() override; // vtable+0x08
-	void VTable0x0c() override; // vtable+0x0c
-	void VTable0x10() override; // vtable+0x10
-	void VTable0x14() override; // vtable+0x14
-	void VTable0x18() override; // vtable+0x18
-	void VTable0x1c() override; // vtable+0x1c
-	void VTable0x20() override; // vtable+0x20
-	void VTable0x24() override; // vtable+0x24
-	virtual void VTable0x28();  // vtable+0x28
+	LegoS32 VTable0x00() override; // vtable+0x00
+	~OpalVault0xf0() override;     // vtable+0x04
+	void VTable0x08() override;    // vtable+0x08
+	void VTable0x0c() override;    // vtable+0x0c
+	void VTable0x10() override;    // vtable+0x10
+	void VTable0x14() override;    // vtable+0x14
+	void VTable0x18() override;    // vtable+0x18
+	void VTable0x1c() override;    // vtable+0x1c
+	void VTable0x20() override;    // vtable+0x20
+	void VTable0x24() override;    // vtable+0x24
+	virtual void VTable0x28();     // vtable+0x28
 
 	// SYNTHETIC: LEGORACERS 0x450350
 	// OpalVault0xf0::`scalar deleting destructor'

@@ -14,11 +14,12 @@ OpalVault0xf0::~OpalVault0xf0()
 	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x4503c0
-void OpalVault0xf0::VTable0x00()
+// FUNCTION: LEGORACERS 0x4503c0
+LegoS32 OpalVault0xf0::VTable0x00()
 {
-	// TODO
-	STUB(0x4503c0);
+	m_unk0xe4 = 0;
+	m_unk0xec = 0;
+	return JasperCore0xf0::VTable0x00();
 }
 
 // STUB: LEGORACERS 0x450460

@@ -9,7 +9,7 @@
 class JasperCore0xf0 {
 public:
 	JasperCore0xf0();
-	virtual void VTable0x00();     // vtable+0x00
+	virtual LegoS32 VTable0x00();  // vtable+0x00
 	virtual ~JasperCore0xf0();     // vtable+0x04
 	virtual void VTable0x08() = 0; // vtable+0x08
 	virtual void VTable0x0c() = 0; // vtable+0x0c
@@ -24,7 +24,20 @@ public:
 	// JasperCore0xf0::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x04[0xf0 - 0x04]; // 0x04
+	undefined m_unk0x04[0x40];        // 0x04
+	undefined4 m_unk0x44;             // 0x44
+	undefined4 m_unk0x48;             // 0x48
+	undefined m_unk0x4c[0x40];        // 0x4c
+	undefined4 m_unk0x8c;             // 0x8c
+	undefined4 m_unk0x90;             // 0x90
+	undefined4 m_unk0x94;             // 0x94
+	undefined4 m_unk0x98;             // 0x98
+	undefined4 m_unk0x9c;             // 0x9c
+	undefined4 m_unk0xa0;             // 0xa0
+	undefined m_unk0xa4[0x40];        // 0xa4
+	undefined4 m_unk0xe4;             // 0xe4
+	undefined m_unk0xe8[0xec - 0xe8]; // 0xe8
+	undefined4 m_unk0xec;             // 0xec
 };
 
 #endif // JASPERCORE0XF0_H

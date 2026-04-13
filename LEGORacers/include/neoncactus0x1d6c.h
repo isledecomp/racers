@@ -22,7 +22,14 @@ public:
 	void FUN_0042bc40();
 	void FUN_0042bd00();
 	void FUN_0042be90();
-	LegoS32 FUN_0042bee0(LegoS32 p_argc, LegoChar** p_argv);
+	LegoS32 ParseArguments(LegoS32 p_argc, LegoChar** p_argv);
+
+	enum {
+		c_videoPrimaryDriver = 0x80,
+		c_videoSelect3D = 0x200,
+		c_videoFullScreen = 0x8,
+		c_videoAlphaTrans = 0x8000,
+	};
 
 private:
 	IronFlame0x944 m_unk0x04;             // 0x04
@@ -30,7 +37,10 @@ private:
 	CobaltMist0x30 m_unk0x9e0;            // 0x9e0
 	undefined m_unk0xa10[0xa14 - 0xa10];  // 0xa10
 	LegoU32 m_golBackendType;             // 0xa14
-	undefined m_unk0xa18[0x1d6c - 0xa18]; // 0xa18
+	LegoBool32 m_cutscenes;               // 0xa18
+	undefined m_unk0xa1c[0xab8 - 0xa1c];  // 0xa1c
+	LegoU32 m_videoFlags;                 // 0xab8
+	undefined m_unk0xabc[0x1d6c - 0xabc]; // 0xabc
 };
 
 #endif // NEONCACTUS0X1D6C_H

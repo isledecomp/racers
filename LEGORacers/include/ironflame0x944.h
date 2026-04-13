@@ -13,6 +13,7 @@
 // VTABLE: LEGORACERS 0x4af9f4
 // SIZE 0x944
 class IronFlame0x944 : public CrimsonForge0x800 {
+
 public:
 	IronFlame0x944();
 	void VTable0x00() override;                                 // vtable+0x00
@@ -29,11 +30,18 @@ public:
 	void VTable0x30() override;                                 // vtable+0x30
 	void VTable0x34() override;                                 // vtable+0x34
 
+	enum {
+		c_golBackendDP = 0x0,
+		c_golBackendSoft = 0x1,
+		c_golBackendGlide = 0x2,
+		c_golBackendD3D = 0x4,
+	};
+
 	// SYNTHETIC: LEGORACERS 0x416560
 	// IronFlame0x944::`scalar deleting destructor'
 
-	undefined4 GetUnk0x928() { return m_unk0x928; }
-	void SetUnk0x928(undefined4 p_unk0x928) { m_unk0x928 = p_unk0x928; }
+	LegoU32 GetGolBackendType() { return m_golBackendType; }
+	void SetGolBackendType(LegoU32 p_golBackendType) { m_golBackendType = p_golBackendType; }
 
 private:
 	GolExport* m_golExport;              // 0x800
@@ -42,7 +50,7 @@ private:
 	HMODULE m_golLibrary;                // 0x830
 	OpalVault0xf0 m_unk0x834;            // 0x834
 	undefined4 m_unk0x924;               // 0x924
-	undefined4 m_unk0x928;               // 0x928
+	LegoU32 m_golBackendType;            // 0x928
 	undefined4 m_unk0x92c;               // 0x92c
 	undefined4 m_unk0x930;               // 0x930
 	undefined4 m_unk0x934;               // 0x934

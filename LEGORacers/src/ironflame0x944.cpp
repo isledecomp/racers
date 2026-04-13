@@ -15,7 +15,7 @@ IronFlame0x944::IronFlame0x944()
 	m_golLibrary = NULL;
 	m_golExport = NULL;
 	m_unk0x924 = 0;
-	m_unk0x928 = 0;
+	m_golBackendType = c_golBackendDP;
 	m_unk0x92c = 0;
 	m_unk0x934 = 0;
 	m_unk0x93c = 0;
@@ -55,22 +55,19 @@ void IronFlame0x944::VTable0x10()
 void IronFlame0x944::VTable0x14()
 {
 	char buffer[100];
-	// const char *dllname;
 	GolImport gol_import;
 
-	if (m_unk0x928 & 0x2) {
+	if (m_golBackendType & c_golBackendGlide) {
 		m_golLibrary = LoadLibraryA("GolGlide.DLL");
 	}
-	else if (m_unk0x928 & 0x1) {
+	else if (m_golBackendType & c_golBackendSoft) {
 		m_golLibrary = LoadLibraryA("GolSoft.DLL");
 	}
-	else if (m_unk0x928 & 0x4) {
+	else if (m_golBackendType & c_golBackendD3D) {
 		m_golLibrary = LoadLibraryA("GolD3D.DLL");
-		// dllname = "GolD3D.DLL";
 	}
 	else {
 		m_golLibrary = LoadLibraryA("GolDP.DLL");
-		// dllname = "GolDP.DLL";
 	}
 	if (m_golLibrary == NULL) {
 		sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());

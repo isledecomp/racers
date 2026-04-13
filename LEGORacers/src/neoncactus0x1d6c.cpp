@@ -31,7 +31,7 @@ LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 	}
 
 	m_unk0x04.GetUnk0x7dc().VTable0x08(100, 4096);
-	m_unk0x04.SetUnk0x928(m_unk0xa14);
+	m_unk0x04.SetGolBackendType(m_golBackendType);
 	m_unk0x04.VTable0x0c("LEGO Racers", g_jamFile);
 	return 1;
 }

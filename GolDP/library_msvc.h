@@ -5,6 +5,10 @@
 // LIBRARY: GOLDP 0x1004b356
 // ??3@YAXPAX@Z
 
+// aka `operator new`
+// LIBRARY: GOLDP 0x1004b3b3
+// ??2@YAPAXI@Z
+
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
 

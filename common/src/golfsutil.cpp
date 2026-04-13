@@ -27,6 +27,7 @@ BOOL g_CPU_supports_MMX;
 char g_cpuManufacturer[16];
 
 #ifdef BUILDING_LEGORACERS
+// STUB: LEGORACERS 0x00450d80
 void CreateGolImport(GolImport* p_import)
 {
 	// TODO

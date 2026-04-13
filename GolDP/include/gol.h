@@ -7,18 +7,20 @@
 
 #include <windows.h>
 
-typedef void FatalErrorCBFN(const char* p_message);
+typedef void FatalErrorMessageCBFN(const char* p_message, const char* p_file, int p_line);
 typedef void GolExitCBFN();
 
+class GolFileSource;
+
 struct GolImport {
-	undefined4* m_unk0x0;             // 0x00
-	undefined4* m_unk0x4;             // 0x04
-	undefined4* m_unk0x8[4];          // 0x08
-	LegoU32 m_unk0x18;                // 0x18
-	undefined4* m_unk0x1c;            // 0x1c
-	HANDLE m_mutex;                   // 0x20
-	undefined m_unk0x24[0x28 - 0x24]; // 0x24
-	FatalErrorCBFN* m_fatalError;     // 0x28
+	GolFileSource* m_fileSources;               // 0x00
+	LegoU32 m_fileSourceCount;                  // 0x04
+	LegoChar* m_unk0x8[4];                      // 0x08
+	LegoU32 m_unk0x18;                          // 0x18
+	undefined4* m_unk0x1c;                      // 0x1c
+	HANDLE m_mutex;                             // 0x20
+	undefined m_unk0x24[0x28 - 0x24];           // 0x24
+	FatalErrorMessageCBFN* m_fatalErrorMessage; // 0x28
 };
 
 // VTABLE: GOLDP 0x100564b0

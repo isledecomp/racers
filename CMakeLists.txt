@@ -5,7 +5,12 @@ cmake_policy(SET CMP0091 NEW)
 
 project(racers CXX)
 
+if (NOT WIN32)
+  message(FATAL_ERROR "Windows is the only supported platform (for now...)")
+endif()
+
 include(CheckCXXSourceCompiles)
+include(CMakeDependentOption)
 include(CMakePushCheckState)
 include("${CMAKE_CURRENT_LIST_DIR}/cmake/reccmp.cmake")
 
@@ -21,6 +26,16 @@ math(EXPR bits "8 * ${CMAKE_SIZEOF_VOID_P}")
 message(STATUS "Building ${bits}-bit LEGO Racers")
 if (NOT bits EQUAL 32)
   message(WARNING "Only 32-bit executables are supported")
+endif()
+
+cmake_dependent_option(RACERS_USE_DX6 "Build with internal DirectX 6 SDK" ON "CMAKE_SIZEOF_VOID_P EQUAL 4" OFF)
+if(RACERS_USE_DX6)
+  include_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/inc")
+  link_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib")
+  foreach(name d3dim d3drm d3dxof ddraw ddraw16 dinput dplayx dsetup dsound dxguid)
+    add_library(${name} IMPORTED UNKNOWN)
+    set_property(TARGET ${name} PROPERTY IMPORTED_LOCATION "${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib/${name}.lib")
+  endforeach()
 endif()
 
 set(MSVC_FOR_DECOMP FALSE)
@@ -74,7 +89,6 @@ set(COMMON_SOURCES
 # --- GolDP.dll target ---
 add_library(goldp SHARED
   GolDP/src/goldrawdpstate.cpp
-  GolDP/src/adapter.cpp
   GolDP/src/goldpexport.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/golcommondrawstate.cpp
@@ -82,6 +96,7 @@ add_library(goldp SHARED
   util/decomp.cpp
   ${COMMON_SOURCES}
 )
+target_compile_definitions(goldp PRIVATE BUILDING_GOL)
 reccmp_add_target(goldp ID GOLDP)
 
 if (MSVC)
@@ -93,6 +108,9 @@ target_include_directories(goldp PRIVATE
   "${PROJECT_SOURCE_DIR}/GolDP"
   "${PROJECT_SOURCE_DIR}/common/include"
   "${PROJECT_SOURCE_DIR}/util"
+)
+target_link_libraries(goldp PRIVATE
+    ddraw
 )
 
 set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
@@ -127,6 +145,7 @@ add_executable(legoracers WIN32
   util/decomp.cpp
   ${COMMON_SOURCES}
 )
+target_compile_definitions(legoracers PRIVATE BUILDING_LEGORACERS)
 reccmp_add_target(legoracers ID LEGORACERS)
 
 target_include_directories(legoracers PRIVATE
@@ -138,15 +157,17 @@ target_include_directories(legoracers PRIVATE
 )
 
 target_link_libraries(legoracers PRIVATE
+  dinput
   ole32
   winmm
 )
-add_dependencies(legoracers goldp)
 
 set_property(TARGET legoracers PROPERTY OUTPUT_NAME "LEGORacers")
 set_property(TARGET legoracers PROPERTY SUFFIX ".exe")
 
 set_property(SOURCE LEGORacers/racers.rc APPEND PROPERTY OBJECT_DEPENDS "${PROJECT_SOURCE_DIR}/LEGORacers/resources/racers.ico")
+
+add_custom_target(game DEPENDS legoracers goldp)
 
 # --- Modern compiler compatibility ---
 if (MSVC)

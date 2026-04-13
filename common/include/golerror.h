@@ -3,6 +3,14 @@
 
 #include "types.h"
 
+#define GOL_FATALERROR_MESSAGE(MESSAGE) GolFatalErrorMessage(MESSAGE, NULL, 0)
+
+#ifdef BUILDING_GOL
+#include "gol.h"
+
+extern FatalErrorMessageCBFN* g_fatalErrorMessage;
+#endif
+
 enum GolErrorCode {
 	c_golErrorAssertion = -7,
 	c_golErrorCriticalResource = -5,
@@ -13,6 +21,8 @@ enum GolErrorCode {
 	c_golErrorInvalidCondition = 0
 };
 
-void GolFatalError(LegoS32, LegoS32, LegoS32);
+extern void GolFatalErrorMessage(const char* p_message, const char* p_file, int p_line);
+
+extern void GolFatalError(GolErrorCode p_code, const char* p_file, int p_line);
 
 #endif // GOLERROR_H

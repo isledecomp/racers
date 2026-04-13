@@ -6,6 +6,7 @@
 #include "main.h"
 
 #include "decomp.h"
+#include "golerror.h"
 #include "neoncactus0x1d6c.h"
 #include "types.h"
 

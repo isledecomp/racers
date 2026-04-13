@@ -1,6 +1,7 @@
 #include "adapter.h"
 #include "gol.h"
 #include "goldpexport.h"
+#include "golerror.h"
 #include "types.h"
 
 #include <windows.h>
@@ -8,14 +9,11 @@
 // GLOBAL: GOLDP 0x10063148
 GolDPExport* g_golDPExport;
 
-// GLOBAL: GOLDP 0x1006314c
-FatalErrorCBFN* g_fatalError;
-
 // FUNCTION: GOLDP 0x10006ff0
 GolExport* GolEntry(GolImport* p_import)
 {
 	SetGolImport(p_import);
-	g_fatalError = p_import->m_fatalError;
+	g_fatalErrorMessage = p_import->m_fatalErrorMessage;
 	g_golDPExport = new GolDPExport;
 	return g_golDPExport;
 }

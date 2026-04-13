@@ -9,20 +9,52 @@
 
 DECOMP_SIZE_ASSERT(GolStream, 0x30)
 
+// GLOBAL: GOLDP 0x10065d68
 // GLOBAL: LEGORACERS 0x4c7284
 LegoChar g_pathBuffer[256];
 
+// GLOBAL: GOLDP 0x10065e68
 // GLOBAL: LEGORACERS 0x4c7384
 LegoChar* g_unk0x4c7384[4];
 
+// GLOBAL: GOLDP 0x10065e78
 // GLOBAL: LEGORACERS 0x4c7394
 GolFileSource* g_fileSources;
 
+// GLOBAL: GOLDP 0x10065e7c
 // GLOBAL: LEGORACERS 0x4c7398
 LegoU32 g_fileSourceCount;
 
+// GLOBAL: GOLDP 0x10065e80
 // GLOBAL: LEGORACERS 0x4c739c
 LegoU32 g_unk0x4c739c;
+
+// GLOBAL: GOLDP 0x10065e84
+// GLOBAL: LEGORACERS 0x004c73a0
+undefined4* g_unk0x4c73a0;
+
+// GLOBAL: GOLDP 0x1005f04c
+// GLOBAL: LEGORACERS 0x004c1848
+static const char* const g_errorCodeStrings[] = {
+	"Not a error",
+	"General I/O error",
+	"Invalid parameter",
+	"Invalid value",
+	"Out of memory error",
+	"I/O Busy error",
+	"Operation not supported",
+	"File not open",
+	"File not found",
+	"Access denied",
+	"File already exists",
+	"Exceeded maximum files open",
+	"Invalid name",
+	"Unable to read",
+	"Unable to write",
+	"Unable to seek",
+	"Attempt to read past file end",
+	"Invalid character encoutered"
+};
 
 // FUNCTION: LEGORACERS 0x44c920
 GolStream::GolStream()
@@ -54,6 +86,14 @@ void GolStream::Init()
 	m_bufferStart = 0;
 	m_bufferEnd = 0;
 	m_buffer = NULL;
+}
+
+// STUB: LEGORACERS 0x0044c9c0
+undefined4 GolStream::FUN_0044c9c0(const LegoChar* p_arg1)
+{
+	// TODO
+	STUB(0x0044c9c0);
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x44caa0
@@ -454,10 +494,28 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 	return result;
 }
 
+// FUNCTION: GOLDP 0x10031c80
+// FUNCTION: LEGORACERS 0x0044d180
+const char* GolStream::ErrorCodeToString(int p_code)
+{
+
+	return g_errorCodeStrings[p_code];
+}
+
 // STUB: LEGORACERS 0x44d190
 void GolStream::FUN_0044d190(const LegoChar*, const LegoChar*)
 {
 	STUB(0x44d190);
+}
+
+// FUNCTION: LEGORACERS 0x0044d4f0
+void GolStream::TransformToUpper(char* p_str)
+{
+	size_t i;
+
+	for (i = 0; *p_str != '\0' && i < 256; i++, p_str++) {
+		*p_str = toupper(*p_str);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x44d530
@@ -470,6 +528,25 @@ LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 	return isalpha(p_path[0]) && p_path[1] == ':';
 }
 
+#ifdef BUILDING_GOL
+
+// STUB: GOLDP 0x100320d0
+undefined4 GolStream::FUN_100320d0()
+{
+	// TODO
+	STUB(0x100320d0);
+	return 0;
+}
+
+// STUB: GOLDP 0x10032110
+void GolStream::FUN_10032110(const char* p_arg1)
+{
+	// FIXME
+	STUB(0x10032110);
+}
+#endif
+
+// FUNCTION: GOLDP 0x10032190
 // FUNCTION: LEGORACERS 0x44d570
 LegoS32 GolStream::BufferedWrite(LegoS32 p_offset, const void* p_buf, LegoU32 p_size)
 {
@@ -528,6 +605,7 @@ LegoS32 GolStream::BufferedWrite(LegoS32 p_offset, const void* p_buf, LegoU32 p_
 	}
 }
 
+// FUNCTION: GOLDP 0x100322c0
 // FUNCTION: LEGORACERS 0x44d6a0
 LegoS32 GolStream::WriteLine(const void* p_buf, LegoU32 p_size)
 {
@@ -563,6 +641,7 @@ LegoS32 GolStream::WriteLine(const void* p_buf, LegoU32 p_size)
 	}
 }
 
+// FUNCTION: GOLDP 0x100323a0
 // FUNCTION: LEGORACERS 0x44d780
 LegoS32 GolStream::FlushWriteBuffer()
 {

@@ -4,6 +4,18 @@
 #include "decomp.h"
 #include "types.h"
 
+class GolFileSource;
+
+extern LegoChar* g_unk0x4c7384[4];
+
+extern GolFileSource* g_fileSources;
+
+extern LegoU32 g_fileSourceCount;
+
+extern LegoU32 g_unk0x4c739c;
+
+extern undefined4* g_unk0x4c73a0;
+
 // VTABLE: LEGORACERS 0x4b0f38
 // SIZE 0x30
 class GolStream {
@@ -71,6 +83,14 @@ public:
 	void Init();
 	LegoS32 OpenFileSource();
 
+	undefined4 FUN_0044c9c0(const LegoChar* p_arg1);
+#ifdef BUILDING_GOL
+	static undefined4 FUN_100320d0();
+	static void FUN_10032110(const char* p_arg1);
+#endif
+
+	static const char* ErrorCodeToString(int p_code);
+	static void TransformToUpper(char* p_str);
 	static LegoS32 IsAbsolutePath(LegoChar* p_path);
 	static void FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path);
 

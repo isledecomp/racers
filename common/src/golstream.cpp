@@ -35,7 +35,7 @@ undefined4* g_unk0x4c73a0;
 
 // GLOBAL: GOLDP 0x1005f04c
 // GLOBAL: LEGORACERS 0x004c1848
-static const char* const s_errorCodeStrings[] = {
+static const char* const g_errorCodeStrings[] = {
 	"Not a error",
 	"General I/O error",
 	"Invalid parameter",
@@ -88,7 +88,6 @@ void GolStream::Init()
 	m_buffer = NULL;
 }
 
-// STUB: GOLDP 0x10031c90
 // STUB: LEGORACERS 0x0044c9c0
 undefined4 GolStream::FUN_0044c9c0(const LegoChar* p_arg1)
 {
@@ -96,16 +95,6 @@ undefined4 GolStream::FUN_0044c9c0(const LegoChar* p_arg1)
 	STUB(0x0044c9c0);
 	return 0;
 }
-
-#ifdef BUILDING_GOL
-// STUB: GOLDP 0x100320d0
-undefined4 GolStream::FUN_100320d0()
-{
-	// TODO
-	STUB(0x100320d0);
-	return 0;
-}
-#endif
 
 // FUNCTION: LEGORACERS 0x44caa0
 LegoS32 GolStream::OpenFileSource()
@@ -505,18 +494,18 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 	return result;
 }
 
-// STUB: LEGORACERS 0x44d190
-void GolStream::FUN_0044d190(const LegoChar*, const LegoChar*)
-{
-	STUB(0x44d190);
-}
-
 // FUNCTION: GOLDP 0x10031c80
 // FUNCTION: LEGORACERS 0x0044d180
 const char* GolStream::ErrorCodeToString(int p_code)
 {
 
-	return s_errorCodeStrings[p_code];
+	return g_errorCodeStrings[p_code];
+}
+
+// STUB: LEGORACERS 0x44d190
+void GolStream::FUN_0044d190(const LegoChar*, const LegoChar*)
+{
+	STUB(0x44d190);
 }
 
 // FUNCTION: LEGORACERS 0x0044d4f0
@@ -540,6 +529,15 @@ LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 }
 
 #ifdef BUILDING_GOL
+
+// STUB: GOLDP 0x100320d0
+undefined4 GolStream::FUN_100320d0()
+{
+	// TODO
+	STUB(0x100320d0);
+	return 0;
+}
+
 // STUB: GOLDP 0x10032110
 void GolStream::FUN_10032110(const char* p_arg1)
 {

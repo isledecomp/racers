@@ -1,15 +1,13 @@
 #include "adapter.h"
 #include "gol.h"
 #include "goldpexport.h"
+#include "golerror.h"
 #include "types.h"
 
 #include <windows.h>
 
 // GLOBAL: GOLDP 0x10063148
 GolDPExport* g_golDPExport;
-
-// GLOBAL: GOLDP 0x1006314c
-FatalErrorMessageCBFN* g_fatalErrorMessage;
 
 // FUNCTION: GOLDP 0x10006ff0
 GolExport* GolEntry(GolImport* p_import)

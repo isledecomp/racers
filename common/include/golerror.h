@@ -5,6 +5,12 @@
 
 #define GOL_FATALERROR_MESSAGE(MESSAGE) GolFatalErrorMessage(MESSAGE, NULL, 0)
 
+#ifdef BUILDING_GOL
+#include "gol.h"
+
+extern FatalErrorMessageCBFN* g_fatalErrorMessage;
+#endif
+
 enum GolErrorCode {
 	c_golErrorAssertion = -7,
 	c_golErrorCriticalResource = -5,

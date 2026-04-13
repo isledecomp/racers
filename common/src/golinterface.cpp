@@ -7,7 +7,7 @@
 #endif
 
 // GLOBAL: GOLDP 0x10065ed4
-// GLOBAL: LEGORACE 0x004c73f0
+// GLOBAL: LEGORACERS 0x004c73f0
 HANDLE g_globalMutex;
 
 // GLOBAL: GOLDP 0x10065ed8
@@ -41,7 +41,7 @@ void SetGolImport(GolImport* p_import)
 #endif
 
 // FUNCTION: GOLDP 0x10032bf0
-// FUNCTION: LEGORACE 0x00450df0
+// FUNCTION: LEGORACERS 0x00450df0
 void LockGlobalMutex()
 {
 	if (g_globalMutex != NULL) {
@@ -50,7 +50,7 @@ void LockGlobalMutex()
 }
 
 // FUNCTION: GOLDP 0x10032c10
-// FUNCTION: LEGORACE 0x00450e10
+// FUNCTION: LEGORACERS 0x00450e10
 void ReleaseGlobalMutex()
 {
 	if (g_globalMutex != NULL) {

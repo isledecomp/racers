@@ -28,7 +28,7 @@ if (NOT bits EQUAL 32)
   message(WARNING "Only 32-bit executables are supported")
 endif()
 
-cmake_dependent_option(RACERS_USE_DX6 "Build with internal DirectX 5 SDK" ON "CMAKE_SIZEOF_VOID_P EQUAL 4" OFF)
+cmake_dependent_option(RACERS_USE_DX6 "Build with internal DirectX 6 SDK" ON "CMAKE_SIZEOF_VOID_P EQUAL 4" OFF)
 if(RACERS_USE_DX6)
   include_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/inc")
   link_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib")

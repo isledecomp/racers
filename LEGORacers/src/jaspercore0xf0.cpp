@@ -41,22 +41,25 @@ void JasperCore0xf0::VTable0x24()
 }
 
 // STUB: LEGORACERS 0x44c430
-void JasperCore0xf0::VTable0x18()
+LegoS32 JasperCore0xf0::VTable0x18()
 {
 	// TODO
 	STUB(0x44c430);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x44c4a0
-void JasperCore0xf0::VTable0x1c()
+LegoS32 JasperCore0xf0::VTable0x1c()
 {
 	// TODO
 	STUB(0x44c4a0);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x44c510
-void JasperCore0xf0::VTable0x20()
+LegoS32 JasperCore0xf0::VTable0x20()
 {
 	// TODO
 	STUB(0x44c510);
+	return 0;
 }

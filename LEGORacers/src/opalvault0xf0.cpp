@@ -23,17 +23,24 @@ LegoS32 OpalVault0xf0::VTable0x00()
 }
 
 // STUB: LEGORACERS 0x450460
-void OpalVault0xf0::VTable0x08()
+LegoS32 OpalVault0xf0::VTable0x08()
 {
 	// TODO
 	STUB(0x450460);
+	return 0;
 }
 
-// STUB: LEGORACERS 0x450490
-void OpalVault0xf0::VTable0x0c()
+// FUNCTION: LEGORACERS 0x450490
+LegoS32 OpalVault0xf0::VTable0x0c()
 {
-	// TODO
-	STUB(0x450490);
+	VTable0x24();
+
+	if (VTable0x18() && VTable0x1c() && VTable0x20()) {
+		return 1;
+	}
+
+	VTable0x08();
+	return 0;
 }
 
 // STUB: LEGORACERS 0x450510
@@ -44,24 +51,27 @@ void OpalVault0xf0::VTable0x28()
 }
 
 // STUB: LEGORACERS 0x4506a0
-void OpalVault0xf0::VTable0x18()
+LegoS32 OpalVault0xf0::VTable0x18()
 {
 	// TODO
 	STUB(0x4506a0);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x450790
-void OpalVault0xf0::VTable0x1c()
+LegoS32 OpalVault0xf0::VTable0x1c()
 {
 	// TODO
 	STUB(0x450790);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x450880
-void OpalVault0xf0::VTable0x20()
+LegoS32 OpalVault0xf0::VTable0x20()
 {
 	// TODO
 	STUB(0x450880);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x4508d0
@@ -72,15 +82,17 @@ void OpalVault0xf0::VTable0x24()
 }
 
 // STUB: LEGORACERS 0x450990
-void OpalVault0xf0::VTable0x10()
+LegoS32 OpalVault0xf0::VTable0x10()
 {
 	// TODO
 	STUB(0x450990);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x450a20
-void OpalVault0xf0::VTable0x14()
+LegoS32 OpalVault0xf0::VTable0x14()
 {
 	// TODO
 	STUB(0x450a20);
+	return 0;
 }

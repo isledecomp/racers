@@ -68,7 +68,6 @@ set(COMMON_SOURCES
   common/src/golstream.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
-  common/src/golinterface.cpp
 )
 
 # --- GolDP.dll target ---

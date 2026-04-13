@@ -3,7 +3,7 @@
 #include "../../GolDP/include/gol.h"
 #include "gol.h"
 #include "golerror.h"
-#include "golinterface.h"
+#include "golfsutil.h"
 
 #include <stdio.h>
 
@@ -55,7 +55,7 @@ void IronFlame0x944::VTable0x10()
 void IronFlame0x944::VTable0x14()
 {
 	char buffer[100];
-	GolImport gol_import;
+	GolImport golImport;
 
 	if (m_golBackendType & c_golBackendGlide) {
 		m_golLibrary = LoadLibraryA("GolGlide.DLL");
@@ -77,9 +77,9 @@ void IronFlame0x944::VTable0x14()
 	if (golEntry == NULL) {
 		GOL_FATALERROR_MESSAGE("Invalid Gol DLL - cannot call entry procedure");
 	}
-	CreateGolImport(&gol_import);
-	gol_import.m_fatalErrorMessage = GolFatalErrorMessage;
-	m_golExport = golEntry(&gol_import);
+	CreateGolImport(&golImport);
+	golImport.m_fatalErrorMessage = GolFatalErrorMessage;
+	m_golExport = golEntry(&golImport);
 	m_golDrawState = m_golExport->VTable0x04();
 }
 

@@ -73,13 +73,13 @@ set(COMMON_SOURCES
 # --- GolDP.dll target ---
 add_library(goldp SHARED
   GolDP/src/goldrawdpstate.cpp
-  util/decomp.cpp
-  ${COMMON_SOURCES}
   GolDP/src/adapter.cpp
   GolDP/src/goldpexport.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/main.cpp
+  util/decomp.cpp
+  ${COMMON_SOURCES}
 )
 reccmp_add_target(goldp ID GOLDP)
 
@@ -100,7 +100,6 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
-  util/decomp.cpp
   LEGORacers/src/main.cpp
   LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/neoncactus0x1d6c.cpp
@@ -117,7 +116,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/tealpulse0x24.cpp
   LEGORacers/src/crimsonforge0x800.cpp
-  ${COMMON_SOURCES}
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
   LEGORacers/src/silvernode0x50.cpp
@@ -125,6 +123,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/racers.rc
+  util/decomp.cpp
+  ${COMMON_SOURCES}
 )
 reccmp_add_target(legoracers ID LEGORACERS)
 

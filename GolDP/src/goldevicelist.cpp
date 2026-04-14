@@ -27,7 +27,7 @@ typedef unsigned int uintptr_t;
 #define GWLP_HINSTANCE_COMPAT GWLP_HINSTANCE
 #endif
 
-#define ALIGN(PTR, A) ((uintptr_t) (reinterpret_cast<char*>(PTR) + ((A) -1)) & ~((A) -1))
+#define ALIGN(PTR, A) ((uintptr_t) (reinterpret_cast<char*>(PTR) + ((A) - 1)) & ~((A) - 1))
 
 // GLOBAL: GOLDP 0x10063550
 GolDeviceList* GolDeviceList::g_dialogDeviceList;
@@ -227,7 +227,8 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 
 		return NULL;
 	}
-	else if ((p_flags & GolDrawState::c_flagBit9) && !(p_flags & (GolDrawState::c_flagBit13 | GolDrawState::c_flagBit11))) {
+	else if ((p_flags & GolDrawState::c_flagBit9) &&
+			 !(p_flags & (GolDrawState::c_flagBit13 | GolDrawState::c_flagBit11))) {
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
 			if (!driver->m_unk0x00 && driver->m_accelerated) {

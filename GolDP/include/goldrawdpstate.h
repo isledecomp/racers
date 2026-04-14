@@ -78,7 +78,7 @@ private:
 	GolDeviceList m_deviceList;                // 0x2e4
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
-	undefined m_unk0x2fc[0xc8ac4 - 0x2fc];     // 0x30
+	undefined m_unk0x2fc[0xc8ac4 - 0x2fc];     // 0x2fc
 };
 
 #endif // GOLDP_GOLDPSTATE_H

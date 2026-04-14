@@ -12,6 +12,13 @@
 // SIZE 0x1d6c
 class NeonCactus0x1d6c : public CactusInterface0x4 {
 public:
+	enum {
+		c_videoFullScreen = 0x08,
+		c_videoPrimaryDriver = 0x80,
+		c_videoSelect3D = 0x200,
+		c_videoAlphaTrans = 0x8000,
+	};
+
 	virtual ~NeonCactus0x1d6c(); // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x0042bb20
@@ -23,13 +30,7 @@ public:
 	void FUN_0042bd00();
 	void FUN_0042be90();
 	LegoS32 ParseArguments(LegoS32 p_argc, LegoChar** p_argv);
-
-	enum {
-		c_videoPrimaryDriver = 0x80,
-		c_videoSelect3D = 0x200,
-		c_videoFullScreen = 0x8,
-		c_videoAlphaTrans = 0x8000,
-	};
+	void ShowUsage();
 
 private:
 	IronFlame0x944 m_unk0x04;             // 0x04

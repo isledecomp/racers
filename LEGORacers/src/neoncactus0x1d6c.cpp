@@ -73,7 +73,7 @@ void NeonCactus0x1d6c::FUN_0042be90()
 }
 
 // FUNCTION: LEGORACERS 0x0042bec0
-static void ShowUsage()
+void NeonCactus0x1d6c::ShowUsage()
 {
 	MessageBoxA(NULL, g_usage, "LEGO Racers Usage:", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
 }
@@ -81,12 +81,11 @@ static void ShowUsage()
 // FUNCTION: LEGORACERS 0x0042bee0
 LegoS32 NeonCactus0x1d6c::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 {
-	int i;
-
 	if (p_argc < 1) {
 		return 1;
 	}
-	for (i = 0; i < p_argc; i++) {
+
+	for (LegoS32 i = 0; i < p_argc; i++) {
 		if (strcmp(p_argv[i], "-novideo") == 0) {
 			m_cutscenes = 0;
 		}
@@ -118,6 +117,11 @@ LegoS32 NeonCactus0x1d6c::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 			++i;
 			g_verticalResolution = atoi(p_argv[i]);
 		}
+		else {
+			ShowUsage();
+			return 0;
+		}
 	}
+
 	return 1;
 }

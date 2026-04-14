@@ -5,7 +5,7 @@
 #include <ctype.h>
 #include <memory.h>
 
-// FUNCTION: LEGORACERS 0x449dc0
+// FUNCTION: LEGORACERS 0x00449dc0
 LegoS32 AzureTorus0x0a::FUN_00449dc0(undefined2* p_string)
 {
 	// real strlen?
@@ -19,28 +19,28 @@ LegoS32 AzureTorus0x0a::FUN_00449dc0(undefined2* p_string)
 }
 
 // FUNCTION: GOLDP 0x1002f950
-// FUNCTION: LEGORACERS 0x449e10
+// FUNCTION: LEGORACERS 0x00449e10
 AzureTorus0x0a::AzureTorus0x0a()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002f970
-// FUNCTION: LEGORACERS 0x449e30
+// FUNCTION: LEGORACERS 0x00449e30
 AzureTorus0x0a::~AzureTorus0x0a()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002f990
-// FUNCTION: LEGORACERS 0x449e50
+// FUNCTION: LEGORACERS 0x00449e50
 undefined2* AzureTorus0x0a::FUN_00449e50(undefined4 p_param)
 {
 	return &m_unk0x00[m_unk0x06 + p_param];
 }
 
 // FUNCTION: GOLDP 0x1002f9b0
-// FUNCTION: LEGORACERS 0x449e70
+// FUNCTION: LEGORACERS 0x00449e70
 undefined4 AzureTorus0x0a::FUN_00449e70(undefined2* p_buf, LegoS32 p_count)
 {
 	m_unk0x08 = 0;
@@ -63,7 +63,7 @@ undefined4 AzureTorus0x0a::FUN_00449e70(undefined2* p_buf, LegoS32 p_count)
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x449ed0
+// FUNCTION: LEGORACERS 0x00449ed0
 undefined4 AzureTorus0x0a::FUN_00449ed0(AzureTorus0x0a* p_torus)
 {
 	Reset();
@@ -73,7 +73,7 @@ undefined4 AzureTorus0x0a::FUN_00449ed0(AzureTorus0x0a* p_torus)
 	return 1;
 }
 
-// FUNCTION: LEGORACERS 0x449f00
+// FUNCTION: LEGORACERS 0x00449f00
 void AzureTorus0x0a::FUN_00449f00()
 {
 	// Seek to end?
@@ -85,7 +85,7 @@ void AzureTorus0x0a::FUN_00449f00()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x449f30
+// FUNCTION: LEGORACERS 0x00449f30
 void AzureTorus0x0a::FUN_00449f30()
 {
 	// read line?
@@ -101,7 +101,7 @@ void AzureTorus0x0a::FUN_00449f30()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x449f70
+// FUNCTION: LEGORACERS 0x00449f70
 void AzureTorus0x0a::FUN_00449f70()
 {
 	if (!m_unk0x00[m_unk0x08]) {
@@ -120,7 +120,7 @@ void AzureTorus0x0a::FUN_00449f70()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x449fc0
+// FUNCTION: LEGORACERS 0x00449fc0
 undefined4 AzureTorus0x0a::FUN_00449fc0(AzureTorus0x0a* p_torus)
 {
 	// strcmp?
@@ -138,7 +138,7 @@ undefined4 AzureTorus0x0a::FUN_00449fc0(AzureTorus0x0a* p_torus)
 	return 1;
 }
 
-// FUNCTION: LEGORACERS 0x44a020
+// FUNCTION: LEGORACERS 0x0044a020
 undefined4 AzureTorus0x0a::FUN_0044a020(AzureTorus0x0a* p_torus)
 {
 	LegoS32 len = FUN_00449dc0(p_torus->m_unk0x00);
@@ -153,7 +153,7 @@ undefined4 AzureTorus0x0a::FUN_0044a020(AzureTorus0x0a* p_torus)
 	return 1;
 }
 
-// FUNCTION: LEGORACERS 0x44a080
+// FUNCTION: LEGORACERS 0x0044a080
 undefined4 AzureTorus0x0a::FUN_0044a080(undefined2* p_string)
 {
 	LegoS32 len = FUN_00449dc0(p_string);
@@ -168,7 +168,7 @@ undefined4 AzureTorus0x0a::FUN_0044a080(undefined2* p_string)
 	return 1;
 }
 
-// FUNCTION: LEGORACERS 0x44a0d0
+// FUNCTION: LEGORACERS 0x0044a0d0
 void AzureTorus0x0a::ToUpperCase()
 {
 	LegoS32 i = EightMinusSix();
@@ -180,7 +180,7 @@ void AzureTorus0x0a::ToUpperCase()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x44a130
+// FUNCTION: LEGORACERS 0x0044a130
 void AzureTorus0x0a::FUN_0044a130(char* p_string)
 {
 	LegoS32 i = EightMinusSix();
@@ -191,7 +191,7 @@ void AzureTorus0x0a::FUN_0044a130(char* p_string)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x44a160
+// FUNCTION: LEGORACERS 0x0044a160
 void AzureTorus0x0a::FUN_0044a160(char* p_buf)
 {
 	LegoS32 i = EightMinusSix();
@@ -203,7 +203,7 @@ void AzureTorus0x0a::FUN_0044a160(char* p_buf)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x44a1a0
+// FUNCTION: LEGORACERS 0x0044a1a0
 LegoS32 AzureTorus0x0a::FUN_0044a1a0()
 {
 	LegoS32 i = FUN_00449dc0(m_unk0x00);

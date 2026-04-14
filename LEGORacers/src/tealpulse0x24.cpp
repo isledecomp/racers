@@ -8,20 +8,20 @@
 
 DECOMP_SIZE_ASSERT(TealPulse0x24, 0x24)
 
-// FUNCTION: LEGORACERS 0x44c570
+// FUNCTION: LEGORACERS 0x0044c570
 TealPulse0x24::TealPulse0x24()
 {
 	m_unk0x04 = 0;
 	FUN_0044c5a0();
 }
 
-// FUNCTION: LEGORACERS 0x44c590
+// FUNCTION: LEGORACERS 0x0044c590
 TealPulse0x24::~TealPulse0x24()
 {
 	VTable0x0c();
 }
 
-// FUNCTION: LEGORACERS 0x44c5a0
+// FUNCTION: LEGORACERS 0x0044c5a0
 void TealPulse0x24::FUN_0044c5a0()
 {
 	m_unk0x20 = 0;
@@ -32,7 +32,7 @@ void TealPulse0x24::FUN_0044c5a0()
 	m_unk0x1c = 0;
 }
 
-// FUNCTION: LEGORACERS 0x44c5c0
+// FUNCTION: LEGORACERS 0x0044c5c0
 LegoS32 TealPulse0x24::VTable0x08(LegoS32 p_unk0x14, LegoU32 p_unk0x18)
 {
 	if (m_unk0x20) {
@@ -56,7 +56,7 @@ LegoS32 TealPulse0x24::VTable0x08(LegoS32 p_unk0x14, LegoU32 p_unk0x18)
 	return 1;
 }
 
-// FUNCTION: LEGORACERS 0x44c670
+// FUNCTION: LEGORACERS 0x0044c670
 LegoS32 TealPulse0x24::VTable0x0c()
 {
 	if (m_unk0x20) {
@@ -80,7 +80,7 @@ LegoS32 TealPulse0x24::VTable0x0c()
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x44c6e0
+// FUNCTION: LEGORACERS 0x0044c6e0
 void TealPulse0x24::VTable0x00()
 {
 	WaitForSingleObject(m_unk0x04, INFINITE);
@@ -102,7 +102,7 @@ void TealPulse0x24::VTable0x00()
 	ReleaseMutex(m_unk0x04);
 }
 
-// FUNCTION: LEGORACERS 0x44c880
+// FUNCTION: LEGORACERS 0x0044c880
 TealPulse0x24::Entry* TealPulse0x24::VTable0x04(Entry** p_bucket, const LegoChar* p_string)
 {
 	Entry* entry = new Entry;

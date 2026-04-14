@@ -10,7 +10,7 @@ public:
 	GolDrawDPState();
 	~GolDrawDPState() override;
 
-	int VTable0x00() override;
+	LegoS32 VTable0x00() override;
 	void VTable0x08(HWND p_hWnd) override;                          // vtable+0x08
 	void VTable0x0c(undefined4, undefined4) override;               // vtable+0x0c
 	undefined4 VTable0x10() override;                               // vtable+0x10

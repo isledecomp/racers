@@ -15,7 +15,7 @@ FatalErrorMessageCBFN* g_fatalErrorMessage;
 
 // FUNCTION: GOLDP 0x100070d0
 // FUNCTION: LEGORACERS 0x0042f8b0
-void GolFatalErrorMessage(const char* p_message, const char* p_file, int p_line)
+void GolFatalErrorMessage(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line)
 {
 #ifdef BUILDING_LEGORACERS
 	g_unk0x4c4a38.FUN_0042be90();
@@ -28,8 +28,8 @@ void GolFatalErrorMessage(const char* p_message, const char* p_file, int p_line)
 }
 
 // STUB: GOLDP 0x100070f0
-// STUB: LEGORACERS 0x42f8f0
-void GolFatalError(GolErrorCode p_code, const char* p_file, int p_line)
+// STUB: LEGORACERS 0x0042f8f0
+void GolFatalError(GolErrorCode p_code, const LegoChar* p_file, LegoS32 p_line)
 {
 	// TODO
 	STUB(0x42f8f0);

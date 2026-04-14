@@ -16,7 +16,7 @@ extern LegoU32 g_unk0x4c739c;
 
 extern undefined4* g_unk0x4c73a0;
 
-// VTABLE: LEGORACERS 0x4b0f38
+// VTABLE: LEGORACERS 0x004b0f38
 // SIZE 0x30
 class GolStream {
 public:
@@ -77,7 +77,7 @@ public:
 	virtual LegoS32 WriteLine(const void* p_buf, LegoU32 p_size);                                    // vtable+0x30
 	virtual LegoS32 FlushWriteBuffer();                                                              // vtable+0x34
 
-	// SYNTHETIC: LEGORACERS 0x44c940
+	// SYNTHETIC: LEGORACERS 0x0044c940
 	// GolStream::`scalar deleting destructor'
 
 	void Init();
@@ -86,11 +86,11 @@ public:
 	undefined4 FUN_0044c9c0(const LegoChar* p_arg1);
 #ifdef BUILDING_GOL
 	static undefined4 FUN_100320d0();
-	static void FUN_10032110(const char* p_arg1);
+	static void FUN_10032110(const LegoChar* p_arg1);
 #endif
 
-	static const char* ErrorCodeToString(int p_code);
-	static void TransformToUpper(char* p_str);
+	static const LegoChar* ErrorCodeToString(LegoS32 p_code);
+	static void TransformToUpper(LegoChar* p_str);
 	static LegoS32 IsAbsolutePath(LegoChar* p_path);
 	static void FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path);
 

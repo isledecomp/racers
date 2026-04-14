@@ -6,7 +6,7 @@
 
 #include <windows.h>
 
-// VTABLE: LEGORACERS 0x4b0f28
+// VTABLE: LEGORACERS 0x004b0f28
 // SIZE 0x24
 class TealPulse0x24 {
 public:

@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4b0f00
+// VTABLE: LEGORACERS 0x004b0f00
 // SIZE 0xf0
 class JasperCore0xf0 {
 public:
@@ -20,7 +20,7 @@ public:
 	virtual LegoS32 VTable0x20();     // vtable+0x20
 	virtual void VTable0x24();        // vtable+0x24
 
-	// SYNTHETIC: LEGORACERS 0x44bf40
+	// SYNTHETIC: LEGORACERS 0x0044bf40
 	// JasperCore0xf0::`scalar deleting destructor'
 
 protected:

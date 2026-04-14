@@ -6,7 +6,7 @@
 #include "decomp.h"
 #include "opalstar0x20.h"
 
-// VTABLE: LEGORACERS 0x4afcc8
+// VTABLE: LEGORACERS 0x004afcc8
 // SIZE 0x20
 class CrimsonRay0x20 : public OpalStar0x20 {
 public:
@@ -19,7 +19,7 @@ public:
 	void VTable0x14(AmberLeaf0x10*) override;       // vtable+0x14
 	void* VTable0x18() override;                    // vtable+0x18
 
-	// SYNTHETIC: LEGORACERS 0x41c050
+	// SYNTHETIC: LEGORACERS 0x0041c050
 	// CrimsonRay0x20::`scalar deleting destructor'
 };
 

@@ -5,7 +5,7 @@
 DECOMP_SIZE_ASSERT(GolDirEntry, 0x24)
 DECOMP_SIZE_ASSERT(GolDirEntry::FileEntry, 0x14)
 
-// FUNCTION: LEGORACERS 0x44dbe0
+// FUNCTION: LEGORACERS 0x0044dbe0
 GolDirEntry::GolDirEntry()
 {
 	m_name[0] = '\0';
@@ -17,7 +17,7 @@ GolDirEntry::GolDirEntry()
 	m_dirs = NULL;
 }
 
-// FUNCTION: LEGORACERS 0x44dc00
+// FUNCTION: LEGORACERS 0x0044dc00
 void GolDirEntry::DeleteChildren()
 {
 	m_loaded = 0;
@@ -39,7 +39,7 @@ void GolDirEntry::DeleteChildren()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x44dc60
+// FUNCTION: LEGORACERS 0x0044dc60
 GolDirEntry* GolDirEntry::FindDir(LegoChar* p_name, GolStream* p_stream)
 {
 	if (!m_loaded) {
@@ -55,7 +55,7 @@ GolDirEntry* GolDirEntry::FindDir(LegoChar* p_name, GolStream* p_stream)
 	return NULL;
 }
 
-// FUNCTION: LEGORACERS 0x44dcc0
+// FUNCTION: LEGORACERS 0x0044dcc0
 GolDirEntry::FileEntry* GolDirEntry::FindFile(LegoChar* p_name, GolStream* p_stream)
 {
 	if (!m_loaded) {
@@ -71,7 +71,7 @@ GolDirEntry::FileEntry* GolDirEntry::FindFile(LegoChar* p_name, GolStream* p_str
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x44dd20
+// STUB: LEGORACERS 0x0044dd20
 void GolDirEntry::Load(GolStream*)
 {
 	// TODO: load directory/file entries from stream

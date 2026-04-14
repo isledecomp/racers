@@ -4,10 +4,10 @@
 
 DECOMP_SIZE_ASSERT(IndigoStar0x18, 0x18)
 
-// GLOBAL: LEGORACERS 0x4afa3c
+// GLOBAL: LEGORACERS 0x004afa3c
 LegoFloat g_unk0x4afa3c = 1.0f;
 
-// FUNCTION: LEGORACERS 0x417a30
+// FUNCTION: LEGORACERS 0x00417a30
 IndigoStar0x18::IndigoStar0x18()
 {
 	m_unk0x04 = 0;
@@ -17,13 +17,13 @@ IndigoStar0x18::IndigoStar0x18()
 	m_unk0x14 = g_unk0x4afa3c;
 }
 
-// FUNCTION: LEGORACERS 0x417a80
+// FUNCTION: LEGORACERS 0x00417a80
 IndigoStar0x18::~IndigoStar0x18()
 {
 	VTable0x08();
 }
 
-// FUNCTION: LEGORACERS 0x417a90
+// FUNCTION: LEGORACERS 0x00417a90
 void IndigoStar0x18::VTable0x08()
 {
 	m_unk0x04 = 0;
@@ -32,7 +32,7 @@ void IndigoStar0x18::VTable0x08()
 	m_unk0x14 = g_unk0x4afa3c;
 }
 
-// FUNCTION: LEGORACERS 0x417ab0
+// FUNCTION: LEGORACERS 0x00417ab0
 SilverNode0x50* IndigoStar0x18::FUN_00417ab0(SilverNode0x50* p_node)
 {
 	SilverNode0x50* result = m_unk0x08;
@@ -56,7 +56,7 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ab0(SilverNode0x50* p_node)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x417ae0
+// FUNCTION: LEGORACERS 0x00417ae0
 SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
 {
 	SilverNode0x50* prev = m_unk0x08;
@@ -93,7 +93,7 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
 	return NULL;
 }
 
-// FUNCTION: LEGORACERS 0x417b30
+// FUNCTION: LEGORACERS 0x00417b30
 SilverNode0x50* IndigoStar0x18::VTable0x2c(SilverNode0x50* p_node)
 {
 	SilverNode0x50* result = m_unk0x0c;
@@ -117,7 +117,7 @@ SilverNode0x50* IndigoStar0x18::VTable0x2c(SilverNode0x50* p_node)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x417b60
+// FUNCTION: LEGORACERS 0x00417b60
 SilverNode0x50* IndigoStar0x18::VTable0x30(SilverNode0x50* p_node)
 {
 	SilverNode0x50* result = m_unk0x0c;

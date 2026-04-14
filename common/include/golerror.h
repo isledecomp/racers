@@ -21,8 +21,8 @@ enum GolErrorCode {
 	c_golErrorInvalidCondition = 0
 };
 
-extern void GolFatalErrorMessage(const char* p_message, const char* p_file, int p_line);
+extern void GolFatalErrorMessage(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line);
 
-extern void GolFatalError(GolErrorCode p_code, const char* p_file, int p_line);
+extern void GolFatalError(GolErrorCode p_code, const LegoChar* p_file, LegoS32 p_line);
 
 #endif // GOLERROR_H

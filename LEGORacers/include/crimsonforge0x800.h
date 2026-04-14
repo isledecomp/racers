@@ -7,7 +7,7 @@
 #include "tealpulse0x24.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4af9a8
+// VTABLE: LEGORACERS 0x004af9a8
 // SIZE 0x800
 class CrimsonForge0x800 {
 public:
@@ -27,7 +27,7 @@ public:
 	virtual void VTable0x30() = 0;                                 // vtable+0x30
 	virtual void VTable0x34() = 0;                                 // vtable+0x34
 
-	// SYNTHETIC: LEGORACERS 0x4163b0
+	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'
 
 	LegoU8 GetUnk0x04() { return m_unk0x04; }

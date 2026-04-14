@@ -7,7 +7,7 @@
 
 #include <windows.h>
 
-typedef void FatalErrorMessageCBFN(const char* p_message, const char* p_file, int p_line);
+typedef void FatalErrorMessageCBFN(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line);
 typedef void GolExitCBFN();
 
 class GolFileSource;

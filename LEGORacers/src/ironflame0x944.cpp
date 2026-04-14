@@ -9,7 +9,7 @@
 
 DECOMP_SIZE_ASSERT(IronFlame0x944, 0x944)
 
-// FUNCTION: LEGORACERS 0x4164d0
+// FUNCTION: LEGORACERS 0x004164d0
 IronFlame0x944::IronFlame0x944()
 {
 	m_golLibrary = NULL;
@@ -24,37 +24,37 @@ IronFlame0x944::IronFlame0x944()
 	m_unk0x938 = 1;
 }
 
-// FUNCTION: LEGORACERS 0x416580
+// FUNCTION: LEGORACERS 0x00416580
 IronFlame0x944::~IronFlame0x944()
 {
 	VTable0x10();
 }
 
-// STUB: LEGORACERS 0x4165e0
+// STUB: LEGORACERS 0x004165e0
 void IronFlame0x944::VTable0x0c(const LegoChar*, const LegoChar*)
 {
 	// TODO
 	STUB(0x4165e0);
 }
 
-// STUB: LEGORACERS 0x4167b0
+// STUB: LEGORACERS 0x004167b0
 void IronFlame0x944::VTable0x2c()
 {
 	// TODO
 	STUB(0x4167b0);
 }
 
-// STUB: LEGORACERS 0x4167e0
+// STUB: LEGORACERS 0x004167e0
 void IronFlame0x944::VTable0x10()
 {
 	// TODO
 	STUB(0x4167e0);
 }
 
-// FUNCTION: LEGORACERS 0x416960
+// FUNCTION: LEGORACERS 0x00416960
 void IronFlame0x944::VTable0x14()
 {
-	char buffer[100];
+	LegoChar buffer[100];
 	GolImport golImport;
 
 	if (m_golBackendType & c_golBackendGlide) {
@@ -83,56 +83,56 @@ void IronFlame0x944::VTable0x14()
 	m_golDrawState = m_golExport->VTable0x04();
 }
 
-// STUB: LEGORACERS 0x416a30
+// STUB: LEGORACERS 0x00416a30
 void IronFlame0x944::VTable0x18()
 {
 	// TODO
 	STUB(0x416a30);
 }
 
-// STUB: LEGORACERS 0x416a90
+// STUB: LEGORACERS 0x00416a90
 void IronFlame0x944::VTable0x1c()
 {
 	// TODO
 	STUB(0x416a90);
 }
 
-// STUB: LEGORACERS 0x416ab0
+// STUB: LEGORACERS 0x00416ab0
 void IronFlame0x944::VTable0x20()
 {
 	// TODO
 	STUB(0x416ab0);
 }
 
-// STUB: LEGORACERS 0x416ac0
+// STUB: LEGORACERS 0x00416ac0
 void IronFlame0x944::VTable0x28()
 {
 	// TODO
 	STUB(0x416ac0);
 }
 
-// STUB: LEGORACERS 0x416b00
+// STUB: LEGORACERS 0x00416b00
 void IronFlame0x944::VTable0x24()
 {
 	// TODO
 	STUB(0x416b00);
 }
 
-// STUB: LEGORACERS 0x416cd0
+// STUB: LEGORACERS 0x00416cd0
 void IronFlame0x944::VTable0x30()
 {
 	// TODO
 	STUB(0x416cd0);
 }
 
-// STUB: LEGORACERS 0x416ef0
+// STUB: LEGORACERS 0x00416ef0
 void IronFlame0x944::VTable0x34()
 {
 	// TODO
 	STUB(0x416ef0);
 }
 
-// STUB: LEGORACERS 0x417900
+// STUB: LEGORACERS 0x00417900
 void IronFlame0x944::VTable0x00()
 {
 	// TODO

@@ -9,7 +9,7 @@
 
 #include <objbase.h>
 
-// VTABLE: LEGORACERS 0x4afaf0
+// VTABLE: LEGORACERS 0x004afaf0
 // SIZE 0x98
 class AmberWolf0x98 : public IndigoStar0x18 {
 public:
@@ -27,7 +27,7 @@ public:
 	void VTable0x28(SilverNode0x50*) override;  // vtable+0x28
 	void VTable0x34(undefined4) override;       // vtable+0x34
 
-	// SYNTHETIC: LEGORACERS 0x418680
+	// SYNTHETIC: LEGORACERS 0x00418680
 	// AmberWolf0x98::`scalar deleting destructor'
 
 private:

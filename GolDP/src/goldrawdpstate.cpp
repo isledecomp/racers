@@ -37,7 +37,7 @@ void GolDrawDPState::VTable0x50()
 }
 
 // STUB: GOLDP 0x100012d0
-int GolDrawDPState::VTable0x00()
+LegoS32 GolDrawDPState::VTable0x00()
 {
 	// TODO
 	STUB(0x100012d0);

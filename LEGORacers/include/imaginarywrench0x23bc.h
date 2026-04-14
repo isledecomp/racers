@@ -6,7 +6,7 @@
 #include "decomp.h"
 #include "imaginarytool0x368.h"
 
-// VTABLE: LEGORACERS 0x4b31f8
+// VTABLE: LEGORACERS 0x004b31f8
 // SIZE 0x23bc
 class ImaginaryWrench0x23bc : public ImaginaryTool0x368 {
 public:

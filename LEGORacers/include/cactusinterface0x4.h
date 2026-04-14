@@ -8,7 +8,7 @@
 #include "ironflame0x944.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4affa4
+// VTABLE: LEGORACERS 0x004affa4
 // SIZE 0x4
 class CactusInterface0x4 {
 public:

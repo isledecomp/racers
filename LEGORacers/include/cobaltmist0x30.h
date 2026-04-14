@@ -10,7 +10,7 @@
 #include "silvernode0x50.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4afc6c
+// VTABLE: LEGORACERS 0x004afc6c
 // SIZE 0x30
 class CobaltMist0x30 : public IndigoStar0x18 {
 public:
@@ -27,7 +27,7 @@ public:
 	void VTable0x28(SilverNode0x50*) override;  // vtable+0x28
 	void VTable0x34(undefined4) override;       // vtable+0x34
 
-	// SYNTHETIC: LEGORACERS 0x41bce0
+	// SYNTHETIC: LEGORACERS 0x0041bce0
 	// CobaltMist0x30::`scalar deleting destructor'
 
 private:

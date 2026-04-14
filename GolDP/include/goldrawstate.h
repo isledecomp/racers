@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "types.h"
 
 #include <windows.h>
 
@@ -13,7 +14,7 @@ protected:
 	GolDrawState();
 
 public:
-	virtual int VTable0x00() = 0;                                  // vtable+0x00
+	virtual LegoS32 VTable0x00() = 0;                              // vtable+0x00
 	virtual ~GolDrawState() {}                                     // vtable+04
 	virtual void VTable0x08(HWND p_hWnd) = 0;                      // vtable+08
 	virtual void VTable0x0c(undefined4, undefined4);               // vtable+0c

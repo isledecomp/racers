@@ -10,10 +10,9 @@
 
 #include <windows.h>
 
-// VTABLE: LEGORACERS 0x4af9f4
+// VTABLE: LEGORACERS 0x004af9f4
 // SIZE 0x944
 class IronFlame0x944 : public CrimsonForge0x800 {
-
 public:
 	IronFlame0x944();
 	void VTable0x00() override;                                 // vtable+0x00
@@ -37,7 +36,7 @@ public:
 		c_golBackendD3D = 0x4,
 	};
 
-	// SYNTHETIC: LEGORACERS 0x416560
+	// SYNTHETIC: LEGORACERS 0x00416560
 	// IronFlame0x944::`scalar deleting destructor'
 
 	LegoU32 GetGolBackendType() { return m_golBackendType; }

@@ -9,7 +9,7 @@
 
 DECOMP_SIZE_ASSERT(AmberWolf0x98, 0x98)
 
-// FUNCTION: LEGORACERS 0x4185d0
+// FUNCTION: LEGORACERS 0x004185d0
 AmberWolf0x98::AmberWolf0x98()
 {
 	m_unk0x28 = 2;
@@ -26,13 +26,13 @@ AmberWolf0x98::AmberWolf0x98()
 	m_unk0x54 = 0;
 }
 
-// FUNCTION: LEGORACERS 0x4186a0
+// FUNCTION: LEGORACERS 0x004186a0
 AmberWolf0x98::~AmberWolf0x98()
 {
 	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x4186f0
+// STUB: LEGORACERS 0x004186f0
 undefined4 AmberWolf0x98::VTable0x04(undefined4)
 {
 	// TODO
@@ -40,7 +40,7 @@ undefined4 AmberWolf0x98::VTable0x04(undefined4)
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x4188b0
+// FUNCTION: LEGORACERS 0x004188b0
 void AmberWolf0x98::VTable0x08()
 {
 	while (TRUE) {
@@ -81,19 +81,19 @@ void AmberWolf0x98::VTable0x08()
 	m_unk0x54 = 0;
 }
 
-// STUB: LEGORACERS 0x418940
+// STUB: LEGORACERS 0x00418940
 void AmberWolf0x98::VTable0x34(undefined4)
 {
 	STUB(0x418940);
 }
 
-// STUB: LEGORACERS 0x418cc0
+// STUB: LEGORACERS 0x00418cc0
 void AmberWolf0x98::VTable0x0c()
 {
 	STUB(0x418cc0);
 }
 
-// FUNCTION: LEGORACERS 0x418d60
+// FUNCTION: LEGORACERS 0x00418d60
 void AmberWolf0x98::VTable0x10()
 {
 	if (m_unk0x24) {
@@ -102,7 +102,7 @@ void AmberWolf0x98::VTable0x10()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x418d80
+// FUNCTION: LEGORACERS 0x00418d80
 CrimsonRay0x20* AmberWolf0x98::VTable0x14()
 {
 	GoldenOak0x128* node = new GoldenOak0x128();
@@ -121,7 +121,7 @@ CrimsonRay0x20* AmberWolf0x98::VTable0x14()
 	return (CrimsonRay0x20*) node;
 }
 
-// FUNCTION: LEGORACERS 0x418e00
+// FUNCTION: LEGORACERS 0x00418e00
 EmberDust0x28* AmberWolf0x98::VTable0x1c()
 {
 	FrostPetal0x34* node = new FrostPetal0x34();
@@ -140,13 +140,13 @@ EmberDust0x28* AmberWolf0x98::VTable0x1c()
 	return (EmberDust0x28*) node;
 }
 
-// STUB: LEGORACERS 0x418e80
+// STUB: LEGORACERS 0x00418e80
 void AmberWolf0x98::VTable0x20(EmberDust0x28* p_node)
 {
 	STUB(0x418e80);
 }
 
-// FUNCTION: LEGORACERS 0x418eb0
+// FUNCTION: LEGORACERS 0x00418eb0
 SilverNode0x50* AmberWolf0x98::VTable0x24()
 {
 	SilverNode0x50* node = new SilverNode0x50();
@@ -158,7 +158,7 @@ SilverNode0x50* AmberWolf0x98::VTable0x24()
 	return node;
 }
 
-// FUNCTION: LEGORACERS 0x418f20 FOLDED
+// FUNCTION: LEGORACERS 0x00418f20 FOLDED
 void AmberWolf0x98::VTable0x28(SilverNode0x50* p_node)
 {
 	VTable0x30(p_node);
@@ -166,7 +166,7 @@ void AmberWolf0x98::VTable0x28(SilverNode0x50* p_node)
 	delete p_node;
 }
 
-// FUNCTION: LEGORACERS 0x41be50 FOLDED
+// FUNCTION: LEGORACERS 0x0041be50 FOLDED
 void AmberWolf0x98::VTable0x18(CrimsonRay0x20* p_node)
 {
 	p_node->m_next->m_prev = p_node->m_prev;

@@ -8,13 +8,13 @@
 #include "ironflame0x944.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4b0568
+// VTABLE: LEGORACERS 0x004b0568
 // SIZE 0x1d6c
 class NeonCactus0x1d6c : public CactusInterface0x4 {
 public:
 	virtual ~NeonCactus0x1d6c(); // vtable+0x30
 
-	// SYNTHETIC: LEGORACERS 0x42bb20
+	// SYNTHETIC: LEGORACERS 0x0042bb20
 	// NeonCactus0x1d6c::`scalar deleting destructor'
 
 	LegoS32 Init(LegoS32 p_argc, LegoChar** p_argv);

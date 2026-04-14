@@ -49,20 +49,20 @@ reccmp-decomplint --module GOLDP --warnfail <path-to-GolDP>
 Functions in a compilation unit must be ordered by address (ascending).
 
 ```cpp
-// FUNCTION: LEGORACERS 0x449d50    — complete, compared by reccmp
-// FUNCTION: LEGORACERS 0x4164c0 FOLDED — identical code merged by linker (see below)
-// STUB: GOLDP 0x10006ff0           — incomplete, skipped by reccmp
-// LIBRARY: GOLDP 0x1004b356        — CRT/3rd-party (in library_msvc.h, inside #ifdef 0)
-// SYNTHETIC: GOLDP 0x10007040      — compiler-generated (scalar deleting destructors)
-// GLOBAL: LEGORACERS 0x4c47e4      — global variable
-// VTABLE: GOLDP 0x10056440         — virtual function table
-// SIZE 0xc8ac8                      — struct/class size assertion
+// FUNCTION: LEGORACERS 0x00449d50    — complete, compared by reccmp
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED — identical code merged by linker (see below)
+// STUB: GOLDP 0x10006ff0             — incomplete, skipped by reccmp
+// LIBRARY: GOLDP 0x1004b356          — CRT/3rd-party (in library_msvc.h, inside #ifdef 0)
+// SYNTHETIC: GOLDP 0x10007040        — compiler-generated (scalar deleting destructors)
+// GLOBAL: LEGORACERS 0x004c47e4      — global variable
+// VTABLE: GOLDP 0x10056440           — virtual function table
+// SIZE 0xc8ac8                        — struct/class size assertion
 ```
 
 **GLOBAL variables** have a pointer address and may point to initialized data. A `// GLOBAL:` annotation marks the address of the pointer variable itself. If the variable is a `char*` pointing to a string literal, the address of where the string data lives should be in `reccmp/lego-racers-ascii.csv`
 
 ```cpp
-// GLOBAL: LEGORACERS 0x4be8d8      — address of the pointer variable
+// GLOBAL: LEGORACERS 0x004be8d8      — address of the pointer variable
 LegoChar* g_jamFile = "lego.jam";
 ```
 
@@ -111,6 +111,10 @@ undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c (gap until end of class at 0x944)
 - `if (flags & c_flagCached)` — not `if ((flags & c_flagCached) != 0)`
 - `if (!(flags & c_flagCached))` — not `if ((flags & c_flagCached) == 0)`
 
+**Address padding:** All annotation addresses (not sizes) must be zero-padded to 8 hex digits: `0x00449d50`, not `0x449d50`.
+
+**Annotation ordering:** When a function or entity has annotations for both GOLDP and LEGORACERS, the GOLDP annotation must come first.
+
 ## Naming Conventions
 
 Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
@@ -135,7 +139,7 @@ Use Lego types from `util/types.h` (`#include "types.h"`) instead of primitive C
 - `LegoChar` instead of `char` (for character data)
 - `LegoBool` for booleans
 
-When a variable's type is dictated by an external interface (Windows API return types, parameters of WinMain/DllMain, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries.
+When a variable's type is dictated by an external interface (Windows API, DirectX, CRT, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries. `void*` can remain.
 
 **Unknown/unproven types:** When a variable's type has not been confirmed, use `undefined` types (`undefined`, `undefined2`, `undefined4` from `decomp.h`). Use `undefined4*` for pointers to unknown data. Do not guess concrete types (e.g. `int`, `float`, `void*`) until the type is proven by usage context or reccmp comparison.
 

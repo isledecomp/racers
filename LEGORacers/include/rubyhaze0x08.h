@@ -6,7 +6,7 @@
 
 class AmberLeaf0x10;
 
-// VTABLE: LEGORACERS 0x4afa9c
+// VTABLE: LEGORACERS 0x004afa9c
 // SIZE 0x08
 class RubyHaze0x08 {
 public:
@@ -19,7 +19,7 @@ public:
 	virtual void VTable0x14(AmberLeaf0x10*) = 0;       // vtable+0x14
 	virtual void* VTable0x18() = 0;                    // vtable+0x18
 
-	// SYNTHETIC: LEGORACERS 0x417bc0
+	// SYNTHETIC: LEGORACERS 0x00417bc0
 	// RubyHaze0x08::`scalar deleting destructor'
 
 protected:

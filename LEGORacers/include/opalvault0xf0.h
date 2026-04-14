@@ -6,7 +6,7 @@
 #include "jaspercore0xf0.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x4b1224
+// VTABLE: LEGORACERS 0x004b1224
 // SIZE 0xf0
 class OpalVault0xf0 : public JasperCore0xf0 {
 public:
@@ -23,7 +23,7 @@ public:
 	void VTable0x24() override;    // vtable+0x24
 	virtual void VTable0x28();     // vtable+0x28
 
-	// SYNTHETIC: LEGORACERS 0x450350
+	// SYNTHETIC: LEGORACERS 0x00450350
 	// OpalVault0xf0::`scalar deleting destructor'
 };
 

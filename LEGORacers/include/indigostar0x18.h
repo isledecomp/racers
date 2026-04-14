@@ -8,7 +8,7 @@ class CrimsonRay0x20;
 class EmberDust0x28;
 struct SilverNode0x50;
 
-// VTABLE: LEGORACERS 0x4afa64
+// VTABLE: LEGORACERS 0x004afa64
 // SIZE 0x18
 class IndigoStar0x18 {
 public:
@@ -28,7 +28,7 @@ public:
 	virtual SilverNode0x50* VTable0x30(SilverNode0x50*); // vtable+0x30
 	virtual void VTable0x34(undefined4) = 0;             // vtable+0x34
 
-	// SYNTHETIC: LEGORACERS 0x417a60
+	// SYNTHETIC: LEGORACERS 0x00417a60
 	// IndigoStar0x18::`scalar deleting destructor'
 
 	SilverNode0x50* FUN_00417ab0(SilverNode0x50* p_node);

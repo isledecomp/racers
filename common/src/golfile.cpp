@@ -10,24 +10,24 @@
 
 DECOMP_SIZE_ASSERT(GolFile, 0x30)
 
-// FUNCTION: LEGORACERS 0x450a90
+// FUNCTION: LEGORACERS 0x00450a90
 GolFile::GolFile()
 {
 	m_fd = -1;
 }
 
-// FUNCTION: LEGORACERS 0x450ad0
+// FUNCTION: LEGORACERS 0x00450ad0
 GolFile::~GolFile()
 {
 	GolStream::Dispose();
 }
 
-// FUNCTION: LEGORACERS 0x450b50
+// FUNCTION: LEGORACERS 0x00450b50
 LegoS32 GolFile::Open(LegoChar* p_fileName)
 {
-	int openFlags = 0;
-	int result = e_ioFileNotFound;
-	int mode = m_mode;
+	LegoS32 openFlags = 0;
+	LegoS32 result = e_ioFileNotFound;
+	LegoS32 mode = m_mode;
 
 	if (mode & c_modeRead) {
 		if (mode & c_modeWrite) {
@@ -90,7 +90,7 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x450c90
+// FUNCTION: LEGORACERS 0x00450c90
 LegoS32 GolFile::Close()
 {
 	if (!(m_flags & c_flagOpen)) {
@@ -106,7 +106,7 @@ LegoS32 GolFile::Close()
 	return e_ioSuccess;
 }
 
-// FUNCTION: LEGORACERS 0x450cd0
+// FUNCTION: LEGORACERS 0x00450cd0
 LegoS32 GolFile::Seek(LegoS32 p_offset)
 {
 	if (_lseek(m_fd, p_offset, SEEK_SET) < 0) {
@@ -117,7 +117,7 @@ LegoS32 GolFile::Seek(LegoS32 p_offset)
 	return e_ioSuccess;
 }
 
-// FUNCTION: LEGORACERS 0x450d00
+// FUNCTION: LEGORACERS 0x00450d00
 LegoS32 GolFile::Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
 	LegoS32 result = _read(m_fd, p_buf, p_size);
@@ -130,13 +130,13 @@ LegoS32 GolFile::Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 	return result != 0 ? e_ioSuccess : e_ioEndOfFile;
 }
 
-// FUNCTION: LEGORACERS 0x450d40
+// FUNCTION: LEGORACERS 0x00450d40
 LegoS32 GolFile::Write(void* p_buf, LegoU32 p_size)
 {
 	return _write(m_fd, p_buf, p_size) < 0 ? e_ioWriteError : e_ioSuccess;
 }
 
-// FUNCTION: LEGORACERS 0x450d70
+// FUNCTION: LEGORACERS 0x00450d70
 LegoS32 GolFile::Flush()
 {
 	_commit(m_fd);

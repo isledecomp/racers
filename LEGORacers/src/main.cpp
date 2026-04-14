@@ -16,22 +16,22 @@
 
 DECOMP_SIZE_ASSERT(CommandLineArgs, 0x84)
 
-// GLOBAL: LEGORACERS 0x4c47e4
+// GLOBAL: LEGORACERS 0x004c47e4
 HINSTANCE g_hInstance;
 
-// GLOBAL: LEGORACERS 0x4c47e8
+// GLOBAL: LEGORACERS 0x004c47e8
 HINSTANCE g_hPrevInstance;
 
-// GLOBAL: LEGORACERS 0x4c4a38
+// GLOBAL: LEGORACERS 0x004c4a38
 NeonCactus0x1d6c g_unk0x4c4a38;
 
-// GLOBAL: LEGORACERS 0x4c6ee8
+// GLOBAL: LEGORACERS 0x004c6ee8
 LegoChar g_commandLine[256];
 
-// GLOBAL: LEGORACERS 0x4c6fe8
+// GLOBAL: LEGORACERS 0x004c6fe8
 CommandLineArgs g_commandLineArgs;
 
-// FUNCTION: LEGORACERS 0x42f870
+// FUNCTION: LEGORACERS 0x0042f870
 LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 {
 	if (!g_unk0x4c4a38.Init(p_argc, p_argv)) {
@@ -43,7 +43,7 @@ LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x449ce0
+// FUNCTION: LEGORACERS 0x00449ce0
 void SplitCommand()
 {
 	LegoS32 offset = 0;
@@ -72,7 +72,7 @@ void SplitCommand()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x449d50
+// FUNCTION: LEGORACERS 0x00449d50
 int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpCmdLine, int p_nShowCmd)
 {
 	int result;

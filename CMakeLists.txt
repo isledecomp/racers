@@ -83,6 +83,7 @@ set(COMMON_SOURCES
   common/src/golstream.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
+  common/src/golhashtable.cpp
 )
 
 # --- GolDP.dll target ---
@@ -123,7 +124,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/neoncactus0x1d6c.cpp
   LEGORacers/src/ironflame0x944.cpp
   LEGORacers/src/indigostar0x18.cpp
-  LEGORacers/src/amberwolf0x98.cpp
+  LEGORacers/src/soundmanager.cpp
   LEGORacers/src/jadestorm0x0c.cpp
   LEGORacers/src/amberleaf0x10.cpp
   LEGORacers/src/rubyhaze0x08.cpp
@@ -132,11 +133,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/frostpetal0x34.cpp
   LEGORacers/src/emberdust0x28.cpp
   LEGORacers/src/cobaltmist0x30.cpp
-  LEGORacers/src/tealpulse0x24.cpp
   LEGORacers/src/crimsonforge0x800.cpp
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
-  LEGORacers/src/silvernode0x50.cpp
+  LEGORacers/src/soundnode.cpp
   LEGORacers/src/imaginarynotion0x280.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp

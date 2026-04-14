@@ -11,10 +11,10 @@
 class OpalVault0xf0 : public JasperCore0xf0 {
 public:
 	OpalVault0xf0();
-	LegoS32 VTable0x00() override; // vtable+0x00
+	LegoS32 Reset() override;      // vtable+0x00
 	~OpalVault0xf0() override;     // vtable+0x04
-	LegoS32 VTable0x08() override; // vtable+0x08
-	LegoS32 VTable0x0c() override; // vtable+0x0c
+	LegoS32 Shutdown() override;   // vtable+0x08
+	LegoS32 Init() override;       // vtable+0x0c
 	LegoS32 VTable0x10() override; // vtable+0x10
 	LegoS32 VTable0x14() override; // vtable+0x14
 	LegoS32 VTable0x18() override; // vtable+0x18

@@ -20,7 +20,7 @@ void GolFatalErrorMessage(const LegoChar* p_message, const LegoChar* p_file, Leg
 #ifdef BUILDING_LEGORACERS
 	g_unk0x4c4a38.FUN_0042be90();
 	MessageBox(NULL, p_message, "Fatal Error", MB_TOPMOST | MB_SETFOREGROUND | MB_ICONWARNING);
-	g_unk0x4c4a38.FUN_0042bc20();
+	g_unk0x4c4a38.Shutdown();
 	exit(1);
 #elif defined(BUILDING_GOL)
 	g_fatalErrorMessage(p_message, p_file, p_line);

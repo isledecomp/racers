@@ -1,11 +1,11 @@
 #ifndef CACTUSINTERFACE0x4_H
 #define CACTUSINTERFACE0x4_H
 
-#include "amberwolf0x98.h"
 #include "cactusinterface0x4.h"
 #include "cobaltmist0x30.h"
 #include "decomp.h"
 #include "ironflame0x944.h"
+#include "soundmanager.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004affa4

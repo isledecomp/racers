@@ -19,8 +19,8 @@ public:
 	~IronFlame0x944() override;                                 // vtable+0x04
 	void VTable0x0c(const LegoChar*, const LegoChar*) override; // vtable+0x0c
 	void VTable0x10() override;                                 // vtable+0x10
-	void VTable0x14() override;                                 // vtable+0x14
-	void VTable0x18() override;                                 // vtable+0x18
+	void LoadGolLibrary() override;                             // vtable+0x14
+	void UnloadGolLibrary() override;                           // vtable+0x18
 	void VTable0x1c() override;                                 // vtable+0x1c
 	void VTable0x20() override;                                 // vtable+0x20
 	void VTable0x24() override;                                 // vtable+0x24

@@ -7,7 +7,7 @@
 #include "emberdust0x28.h"
 #include "gollist.h"
 #include "indigostar0x18.h"
-#include "silvernode0x50.h"
+#include "soundnode.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004afc6c
@@ -16,15 +16,15 @@ class CobaltMist0x30 : public IndigoStar0x18 {
 public:
 	~CobaltMist0x30() override;                 // vtable+0x00
 	undefined4 VTable0x04(undefined4) override; // vtable+0x04
-	void VTable0x08() override;                 // vtable+0x08
+	void Shutdown() override;                   // vtable+0x08
 	void VTable0x0c() override;                 // vtable+0x0c
 	void VTable0x10() override;                 // vtable+0x10
 	CrimsonRay0x20* VTable0x14() override;      // vtable+0x14
 	void VTable0x18(CrimsonRay0x20*) override;  // vtable+0x18
 	EmberDust0x28* VTable0x1c() override;       // vtable+0x1c
 	void VTable0x20(EmberDust0x28*) override;   // vtable+0x20
-	SilverNode0x50* VTable0x24() override;      // vtable+0x24
-	void VTable0x28(SilverNode0x50*) override;  // vtable+0x28
+	SoundNode* VTable0x24() override;           // vtable+0x24
+	void VTable0x28(SoundNode*) override;       // vtable+0x28
 	void VTable0x34(undefined4) override;       // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x0041bce0

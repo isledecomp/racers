@@ -1,6 +1,6 @@
-#include "silvernode0x50.h"
+#include "soundnode.h"
 
-DECOMP_SIZE_ASSERT(SilverNode0x50, 0x50)
+DECOMP_SIZE_ASSERT(SoundNode, 0x50)
 
 // GLOBAL: LEGORACERS 0x004af58c
 LegoFloat g_unk0x4af58c = 0.5f;
@@ -9,7 +9,7 @@ LegoFloat g_unk0x4af58c = 0.5f;
 LegoFloat g_unk0x4afa38 = 343.0f;
 
 // FUNCTION: LEGORACERS 0x004179a0
-SilverNode0x50::SilverNode0x50()
+SoundNode::SoundNode()
 {
 	m_unk0x00 = 0;
 	m_unk0x04 = 0;

@@ -39,7 +39,7 @@ LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 	}
 
 	g_unk0x4c4a38.FUN_0042bc40();
-	g_unk0x4c4a38.FUN_0042bc20();
+	g_unk0x4c4a38.Shutdown();
 	return 0;
 }
 

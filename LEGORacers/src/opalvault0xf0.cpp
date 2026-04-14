@@ -5,33 +5,41 @@ DECOMP_SIZE_ASSERT(OpalVault0xf0, 0xf0)
 // FUNCTION: LEGORACERS 0x00450300
 OpalVault0xf0::OpalVault0xf0()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00450370
 OpalVault0xf0::~OpalVault0xf0()
 {
-	VTable0x08();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x004503c0
-LegoS32 OpalVault0xf0::VTable0x00()
+LegoS32 OpalVault0xf0::Reset()
 {
-	m_unk0xe4 = 0;
+	m_directInput = 0;
 	m_unk0xec = 0;
-	return JasperCore0xf0::VTable0x00();
+	return JasperCore0xf0::Reset();
 }
 
-// STUB: LEGORACERS 0x00450460
-LegoS32 OpalVault0xf0::VTable0x08()
+// FUNCTION: LEGORACERS 0x00450460
+LegoS32 OpalVault0xf0::Shutdown()
 {
-	// TODO
-	STUB(0x450460);
-	return 0;
+	if (m_unk0x8c) {
+		VTable0x24();
+
+		if (m_directInput) {
+			m_directInput->Release();
+		}
+
+		Reset();
+	}
+
+	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x00450490
-LegoS32 OpalVault0xf0::VTable0x0c()
+LegoS32 OpalVault0xf0::Init()
 {
 	VTable0x24();
 
@@ -39,7 +47,7 @@ LegoS32 OpalVault0xf0::VTable0x0c()
 		return 1;
 	}
 
-	VTable0x08();
+	Shutdown();
 	return 0;
 }
 

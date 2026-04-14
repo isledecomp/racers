@@ -7,28 +7,28 @@ DECOMP_SIZE_ASSERT(GolListHead, 0x0c)
 DECOMP_SIZE_ASSERT(CobaltMist0x30, 0x30)
 
 // FUNCTION: LEGORACERS 0x00418f20 FOLDED
-void CobaltMist0x30::VTable0x28(SilverNode0x50* p_node)
+void CobaltMist0x30::VTable0x28(SoundNode* p_node)
 {
 	VTable0x30(p_node);
-	FUN_00417ae0(p_node);
+	RemoveNode(p_node);
 	delete p_node;
 }
 
 // FUNCTION: LEGORACERS 0x0041bd00
 CobaltMist0x30::~CobaltMist0x30()
 {
-	VTable0x08();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0041bd50
 undefined4 CobaltMist0x30::VTable0x04(undefined4)
 {
-	VTable0x08();
+	Shutdown();
 	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x0041bd60
-void CobaltMist0x30::VTable0x08()
+void CobaltMist0x30::Shutdown()
 {
 	while (TRUE) {
 		if (!m_unk0x18.m_first->m_prev || !m_unk0x18.m_first) {
@@ -108,12 +108,12 @@ void CobaltMist0x30::VTable0x20(EmberDust0x28* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x0041bf30
-SilverNode0x50* CobaltMist0x30::VTable0x24()
+SoundNode* CobaltMist0x30::VTable0x24()
 {
-	SilverNode0x50* node = new SilverNode0x50();
+	SoundNode* node = new SoundNode();
 
 	if (node) {
-		FUN_00417ab0(node);
+		AddNode(node);
 	}
 
 	return node;

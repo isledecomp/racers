@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(JasperCore0xf0, 0xf0)
 // FUNCTION: LEGORACERS 0x0044bf20
 JasperCore0xf0::JasperCore0xf0()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0044bf60
@@ -16,7 +16,7 @@ JasperCore0xf0::~JasperCore0xf0()
 }
 
 // FUNCTION: LEGORACERS 0x0044bf70
-LegoS32 JasperCore0xf0::VTable0x00()
+LegoS32 JasperCore0xf0::Reset()
 {
 	LegoS32 result = 0;
 	m_unk0x8c = 0;

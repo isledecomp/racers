@@ -4,15 +4,17 @@
 #include "decomp.h"
 #include "types.h"
 
+#include <dinput.h>
+
 // VTABLE: LEGORACERS 0x004b0f00
 // SIZE 0xf0
 class JasperCore0xf0 {
 public:
 	JasperCore0xf0();
-	virtual LegoS32 VTable0x00();     // vtable+0x00
+	virtual LegoS32 Reset();          // vtable+0x00
 	virtual ~JasperCore0xf0();        // vtable+0x04
-	virtual LegoS32 VTable0x08() = 0; // vtable+0x08
-	virtual LegoS32 VTable0x0c() = 0; // vtable+0x0c
+	virtual LegoS32 Shutdown() = 0;   // vtable+0x08
+	virtual LegoS32 Init() = 0;       // vtable+0x0c
 	virtual LegoS32 VTable0x10() = 0; // vtable+0x10
 	virtual LegoS32 VTable0x14() = 0; // vtable+0x14
 	virtual LegoS32 VTable0x18();     // vtable+0x18
@@ -35,7 +37,7 @@ protected:
 	undefined4 m_unk0x9c;             // 0x9c
 	undefined4 m_unk0xa0;             // 0xa0
 	undefined m_unk0xa4[0x40];        // 0xa4
-	undefined4 m_unk0xe4;             // 0xe4
+	LPDIRECTINPUT m_directInput;      // 0xe4
 	undefined m_unk0xe8[0xec - 0xe8]; // 0xe8
 	undefined4 m_unk0xec;             // 0xec
 };

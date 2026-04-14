@@ -52,7 +52,7 @@ void IronFlame0x944::VTable0x10()
 }
 
 // FUNCTION: LEGORACERS 0x00416960
-void IronFlame0x944::VTable0x14()
+void IronFlame0x944::LoadGolLibrary()
 {
 	LegoChar buffer[100];
 	GolImport golImport;
@@ -83,11 +83,22 @@ void IronFlame0x944::VTable0x14()
 	m_golDrawState = m_golExport->VTable0x04();
 }
 
-// STUB: LEGORACERS 0x00416a30
-void IronFlame0x944::VTable0x18()
+// FUNCTION: LEGORACERS 0x00416a30
+void IronFlame0x944::UnloadGolLibrary()
 {
-	// TODO
-	STUB(0x416a30);
+	m_golDrawState = NULL;
+
+	if (m_golLibrary) {
+		GolExitCBFN* golExit = (GolExitCBFN*) GetProcAddress(m_golLibrary, "GolExit");
+
+		if (golExit == NULL) {
+			GOL_FATALERROR_MESSAGE("Invalid Gol DLL - cannot call exit procedure");
+		}
+
+		golExit();
+		FreeLibrary(m_golLibrary);
+		m_golLibrary = NULL;
+	}
 }
 
 // STUB: LEGORACERS 0x00416a90

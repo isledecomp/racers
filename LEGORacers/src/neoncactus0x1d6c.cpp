@@ -15,14 +15,14 @@ const LegoChar* g_usage = "Usage: LEGORacers [options]\n\t[options] include:\n\t
 // FUNCTION: LEGORACERS 0x0042bb40
 NeonCactus0x1d6c::~NeonCactus0x1d6c()
 {
-	FUN_0042bc20();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0042bbb0
 LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 {
 	if (m_unk0x04.GetUnk0x04() & 1) {
-		FUN_0042bc20();
+		Shutdown();
 	}
 
 	LegoS32 result = FUN_0042bee0(p_argc, p_argv);
@@ -30,14 +30,14 @@ LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 		return result;
 	}
 
-	m_unk0x04.GetUnk0x7dc().VTable0x08(100, 4096);
+	m_unk0x04.GetHashTable().Init(100, 4096);
 	m_unk0x04.SetGolBackendType(m_golBackendType);
 	m_unk0x04.VTable0x0c("LEGO Racers", g_jamFile);
 	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042bc20
-void NeonCactus0x1d6c::FUN_0042bc20()
+void NeonCactus0x1d6c::Shutdown()
 {
 	FUN_0042bd00();
 	FUN_0042be90();
@@ -61,8 +61,8 @@ void NeonCactus0x1d6c::FUN_0042bd00()
 // FUNCTION: LEGORACERS 0x0042be90
 void NeonCactus0x1d6c::FUN_0042be90()
 {
-	m_unk0x948.VTable0x08();
-	m_unk0x9e0.VTable0x08();
+	m_soundManager.Shutdown();
+	m_unk0x9e0.Shutdown();
 	m_unk0x04.VTable0x2c();
 }
 

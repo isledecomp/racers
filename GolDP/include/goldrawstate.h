@@ -45,11 +45,33 @@ public:
 	// SYNTHETIC: GOLDP 0x1001d590
 	// GolDrawState::`scalar deleting destructor'
 
+	enum {
+		c_flagBit9 = 1 << 9,
+		c_flagBit10 = 1 << 10,
+		c_flagBit11 = 1 << 11,
+		c_flagBit13 = 1 << 13,
+		c_flagBit14 = 1 << 14,
+		c_flagBit15 = 1 << 15,
+		c_flagBit16 = 1 << 16,
+		c_flagBit17 = 1 << 17,
+		c_flagBit18 = 1 << 18,
+		c_flagBit19 = 1 << 19,
+	};
+
+protected:
+	LegoU32 GetFlags() const { return m_flags; }
+	void SetFlags(LegoU32 p_flags) { m_flags = p_flags; }
+	void SetBitsPerPixel(LegoU32 p_bpp) { m_bpp = p_bpp; }
+	LegoU32 GetBitsPerPixel() const { return m_bpp; }
+
+	undefined4 GetWidth() const { return m_width; }
+	undefined4 GetHeight() const { return m_height; }
+
 private:
 	undefined4 m_width;   // 0x04
 	undefined4 m_height;  // 0x08
 	undefined4 m_bpp;     // 0x0c
-	undefined4 m_flags;   // 0x10
+	LegoU32 m_flags;      // 0x10
 	undefined4 m_unk0x14; // 0x14
 };
 

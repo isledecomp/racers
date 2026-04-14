@@ -2,6 +2,9 @@
 #define GOLDP_GOLDPSTATE_H
 
 #include "golcommondrawstate.h"
+#include "goldevicelist.h"
+
+#include <ddraw.h>
 
 // VTABLE: GOLDP 0x10056140
 // SIZE 0xc8ac4
@@ -52,13 +55,30 @@ public:
 	undefined4 VTable0xb0() override; // vtable+0xb0
 	undefined4 VTable0xb4() override; // vtable+0xb4
 
+	const LegoChar* GetDriverName() const { return m_driverName; }
+	const LegoChar* GetDeviceName() const { return m_deviceName; }
+
 	// SYNTHETIC: GOLDP 0x100010e0
 	// GolDrawDPState::`scalar deleting destructor'
 
 private:
-	undefined m_unk0x20[0x2c - 0x20];    // 0x20
-	HWND m_hWnd;                         // 0x2c
-	undefined m_unk0x30[0xc8ac4 - 0x30]; // 0x30
+	void ReleaseDDraw();
+
+	LPDIRECTDRAW m_ddraw;                      // 0x20
+	LPDIRECTDRAW4 m_ddraw4;                    // 0x24
+	LPDIRECT3D3 m_d3d3;                        // 0x28
+	HWND m_hWnd;                               // 0x2c
+	DDCAPS m_ddrawCaps;                        // 0x30
+	D3DDEVICEDESC m_deviceDesc;                // 0x1ac
+	GolDeviceList::GolD3DDeviceInfo* m_device; // 0x2a8
+	GUID m_deviceGuid;                         // 0x2ac
+	LegoBool32 m_validGuid;                    // 0x2bc
+	undefined4 m_unk0x2c0;                     // 0x2c0
+	undefined m_unk0x2c4[0x2e4 - 0x2c4];       // 0x2c4
+	GolDeviceList m_deviceList;                // 0x2e4
+	LegoChar* m_driverName;                    // 0x2f4
+	LegoChar* m_deviceName;                    // 0x2f8
+	undefined m_unk0x2fc[0xc8ac4 - 0x2fc];     // 0x30
 };
 
 #endif // GOLDP_GOLDPSTATE_H

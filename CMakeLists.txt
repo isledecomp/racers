@@ -90,6 +90,7 @@ set(COMMON_SOURCES
 add_library(goldp SHARED
   GolDP/src/goldrawdpstate.cpp
   GolDP/src/goldpexport.cpp
+  GolDP/src/goldevicelist.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/main.cpp
@@ -111,6 +112,7 @@ target_include_directories(goldp PRIVATE
 )
 target_link_libraries(goldp PRIVATE
     ddraw
+    dxguid
 )
 
 set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")

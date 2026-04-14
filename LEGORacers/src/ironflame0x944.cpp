@@ -70,7 +70,7 @@ void IronFlame0x944::LoadGolLibrary()
 		m_golLibrary = LoadLibraryA("GolDP.DLL");
 	}
 	if (m_golLibrary == NULL) {
-		sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());
+		::sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
 	GolEntryCBFN* golEntry = (GolEntryCBFN*) GetProcAddress(m_golLibrary, "GolEntry");

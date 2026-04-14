@@ -5,6 +5,9 @@
 // LIBRARY: GOLDP 0x1004b356
 // ??3@YAXPAX@Z
 
+// LIBRARY: GOLDP 0x1004b361
+// sprintf
+
 // aka `operator new`
 // LIBRARY: GOLDP 0x1004b3b3
 // ??2@YAPAXI@Z
@@ -17,6 +20,15 @@
 
 // LIBRARY: GOLDP 0x1004c6a0
 // __DllMainCRTStartup@12
+
+// GLOBAL: GOLDP 0x10058098
+// IID_IDirectDraw4
+
+// GLOBAL: GOLDP 0x100580a8
+// IID_IDirectDrawSurface
+
+// GLOBAL: GOLDP 0x100583b8
+// IID_IDirect3D3
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain

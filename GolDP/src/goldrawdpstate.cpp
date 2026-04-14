@@ -1,5 +1,9 @@
 #include "goldrawdpstate.h"
 
+#include "golerror.h"
+
+#include <stdio.h>
+
 DECOMP_SIZE_ASSERT(GolDrawDPState, 0xc8ac4)
 
 // STUB: GOLDP 0x10001000
@@ -29,6 +33,32 @@ void GolDrawDPState::VTable0x48()
 	STUB(0x100011f0);
 }
 
+// FUNCTION: GOLDP 0x10001210
+void GolDrawDPState::ReleaseDDraw()
+{
+	if (m_d3d3 != NULL) {
+		m_d3d3->Release();
+	}
+	if (m_ddraw4 != NULL) {
+		if (m_hWnd != NULL) {
+			m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_NORMAL);
+		}
+		m_ddraw4->Release();
+	}
+	if (m_ddraw != NULL) {
+		m_ddraw->Release();
+	}
+	m_deviceList.Clear();
+	m_ddraw = NULL;
+	m_ddraw4 = NULL;
+	m_d3d3 = NULL;
+	::memset(&m_ddrawCaps, 0, sizeof(m_ddrawCaps));
+	m_ddrawCaps.dwSize = sizeof(m_ddrawCaps);
+	::memset(&m_deviceDesc, 0, sizeof(m_deviceDesc));
+	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
+	m_unk0x2c0 = 0;
+}
+
 // STUB: GOLDP 0x100012b0
 void GolDrawDPState::VTable0x50()
 {
@@ -36,11 +66,101 @@ void GolDrawDPState::VTable0x50()
 	STUB(0x100012b0);
 }
 
-// STUB: GOLDP 0x100012d0
+// FUNCTION: GOLDP 0x100012d0
 LegoS32 GolDrawDPState::VTable0x00()
 {
-	// TODO
-	STUB(0x100012d0);
+	DDCAPS helCaps;
+	char buffer[100];
+	DDSURFACEDESC displayMode;
+
+	if (GetFlags() & (c_flagBit16 | c_flagBit17)) {
+		SetFlags(GetFlags() | c_flagBit11 | c_flagBit13);
+	}
+	else {
+		SetFlags(GetFlags() & ~c_flagBit19);
+	}
+	if ((GetFlags() & c_flagBit16) && (GetFlags() & c_flagBit18)) {
+		SetBitsPerPixel(8);
+	}
+	if (!(GetFlags() & c_flagBit9)) {
+		if (DirectDrawCreate(NULL, &m_ddraw, NULL) != DD_OK) {
+			GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
+		}
+		::memset(&displayMode, 0, sizeof(displayMode));
+		displayMode.dwSize = sizeof(DDSURFACEDESC);
+		if (m_ddraw->GetDisplayMode(&displayMode) != DD_OK) {
+			GOL_FATALERROR_MESSAGE("Unable to get current display mode");
+		}
+		if (displayMode.ddpfPixelFormat.dwRGBBitCount != GetBitsPerPixel()) {
+			SetFlags(GetFlags() | c_flagBit9);
+		}
+		m_ddraw->Release();
+	}
+	m_deviceList.DetectDevices();
+	GolDeviceList::GolD3DDeviceInfo* device =
+		m_deviceList.SelectDevice(m_hWnd, GetFlags(), GetDriverName(), GetDeviceName());
+	if (device == NULL) {
+		GOL_FATALERROR_MESSAGE("Unable to find a 3D device that meets base requirements");
+	}
+	GolDeviceList::GolD3DDriverInfo* driver = device->m_driver;
+	if (DirectDrawCreate(driver->m_unk0x08 ? &driver->m_guid : NULL, &m_ddraw, NULL) != DD_OK) {
+		GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
+	}
+	HRESULT hResult = m_ddraw->QueryInterface(IID_IDirectDraw4, reinterpret_cast<LPVOID*>(&m_ddraw4));
+	if (hResult != DD_OK) {
+		::sprintf(buffer, "DirectDraw QueryInterface() error\nerror code = 0x%x", hResult);
+		this->VTable0x48();
+		GOL_FATALERROR_MESSAGE(buffer);
+	}
+	m_device = device;
+	::memset(&m_ddrawCaps, 0, sizeof(m_ddrawCaps));
+	::memset(&helCaps, 0, sizeof(helCaps));
+	m_ddrawCaps.dwSize = sizeof(m_ddrawCaps);
+	helCaps.dwSize = sizeof(helCaps);
+	if (m_ddraw->GetCaps(&m_ddrawCaps, &helCaps) != DD_OK) {
+		GOL_FATALERROR_MESSAGE("Unable to get DirectDraw capabilities");
+	}
+	if (driver->m_unk0x00) {
+		SetFlags(GetFlags() | c_flagBit13);
+	}
+	else {
+		SetFlags((GetFlags() & ~c_flagBit13) | c_flagBit9);
+	}
+	if (!((GetFlags() & c_flagBit11) || (GetFlags() & c_flagBit16) || (GetFlags() & c_flagBit17)) &&
+		(m_ddrawCaps.dwCaps & DDCAPS_3D) && m_device->m_hwAccelerated) {
+		m_unk0x2c0 = TRUE;
+		SetFlags(GetFlags() & ~c_flagBit11);
+	}
+	else {
+		m_unk0x2c0 = FALSE;
+		SetFlags(GetFlags() | c_flagBit11);
+		if (!(GetFlags() & c_flagBit17)) {
+			SetFlags(GetFlags() | c_flagBit11 | c_flagBit16);
+		}
+	}
+	if (GetFlags() & c_flagBit9) {
+		SetFlags(GetFlags() | c_flagBit10);
+		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
+	}
+	else if (GetFlags() & c_flagBit10) {
+		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_EXCLUSIVE);
+	}
+	else {
+		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_NORMAL);
+	}
+	if (hResult != DD_OK) {
+		return -1;
+	}
+	if (GetFlags() & c_flagBit9) {
+		hResult = m_ddraw4->SetDisplayMode(GetWidth(), GetHeight(), GetBitsPerPixel(), 0, 0);
+		if (hResult != DD_OK) {
+			ReleaseDDraw();
+			return -1;
+		}
+	}
+	m_validGuid = device->m_validGuid;
+	m_deviceGuid = device->m_guid;
+	m_deviceDesc = device->m_deviceDesc;
 	return 0;
 }
 

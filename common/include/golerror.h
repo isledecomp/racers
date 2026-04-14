@@ -3,6 +3,7 @@
 
 #include "types.h"
 
+#define GOL_FATALERROR(CODE) GolFatalError(CODE, NULL, 0)
 #define GOL_FATALERROR_MESSAGE(MESSAGE) GolFatalErrorMessage(MESSAGE, NULL, 0)
 
 #ifdef BUILDING_GOL

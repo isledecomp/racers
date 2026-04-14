@@ -1,6 +1,7 @@
 #ifndef GOL_DEVICELIST_H
 #define GOL_DEVICELIST_H
 
+#include "golvector.h"
 #include "types.h"
 
 #include <d3d.h>
@@ -11,26 +12,6 @@
 #else
 #define INT_PTR_COMPAT INT_PTR
 #endif
-
-template <typename T>
-class GolVector {
-	GolVector()
-	{
-		m_size = 0;
-		m_data = NULL;
-	}
-	~GolVector() { Clear(); }
-	void Clear()
-	{
-		LegoU32 i;
-
-		for (i = 0; i < m_size; i++) {
-			m_data[i].Clear();
-		}
-	}
-	LegoU32 m_size;
-	T* m_data;
-};
 
 // SIZE 0x10
 class GolDeviceList {

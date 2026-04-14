@@ -27,7 +27,7 @@ typedef unsigned int uintptr_t;
 #define GWLP_HINSTANCE_COMPAT GWLP_HINSTANCE
 #endif
 
-#define ALIGN(PTR, A) ((uintptr_t) (reinterpret_cast<char*>(PTR) + ((A) - 1)) & ~((A) - 1))
+#define ALIGN(PTR, A) ((uintptr_t) (reinterpret_cast<char*>(PTR) + ((A) -1)) & ~((A) -1))
 
 // GLOBAL: GOLDP 0x10063550
 GolDeviceList* GolDeviceList::g_dialogDeviceList;
@@ -38,13 +38,17 @@ void GolDeviceList::DetectDevices()
 	if (m_countDrivers > 0) {
 		Clear();
 	}
+
 	LegoU32 countDrivers = 0;
 	DirectDrawEnumerateA(CountDirectDrawDriversCallback, &countDrivers);
+
 	if (countDrivers >= 1) {
 		m_drivers = new GolD3DDriverInfo[countDrivers];
+
 		if (m_drivers == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
+
 		m_countDrivers = 0;
 		DirectDrawEnumerateA(EnumerateDirectDrawDriversCallback, this);
 	}
@@ -57,10 +61,11 @@ void GolDeviceList::Clear()
 	LegoU32 deviceIndex;
 	GolD3DDriverInfo* driver;
 	GolD3DDeviceInfo* device;
-	if (m_drivers != NULL) {
 
+	if (m_drivers != NULL) {
 		for (driverIndex = 0; driverIndex < m_countDrivers; driverIndex++) {
 			driver = &m_drivers[driverIndex];
+
 			if (driver->m_devices != NULL) {
 				for (deviceIndex = 0; deviceIndex < driver->m_countDevices; deviceIndex++) {
 					device = &driver->m_devices[deviceIndex];
@@ -73,13 +78,16 @@ void GolDeviceList::Clear()
 				}
 				delete[] driver->m_devices;
 			}
+
 			if (driver->m_description) {
 				delete[] driver->m_description;
 			}
+
 			if (driver->m_name) {
 				delete[] driver->m_name;
 			}
 		}
+
 		delete[] m_drivers;
 		m_drivers = NULL;
 	}
@@ -120,8 +128,8 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 )
 {
 	GolDeviceList::GolD3DDeviceInfo* device;
-
 	device = FindMatchingDevice(p_flags, p_driverDescription, p_deviceName);
+
 	if (p_flags & GolDrawState::c_flagBit15) {
 		HINSTANCE hInstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtrA_COMPAT(p_hWnd, GWLP_HINSTANCE_COMPAT));
 		LPDLGTEMPLATE dialogTemplate = reinterpret_cast<LPDLGTEMPLATE>(new LegoChar[TEMPLATE_SIZE]);
@@ -134,6 +142,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 		dialogTemplate->y = 0;
 		dialogTemplate->cx = 179;
 		dialogTemplate->cy = 84;
+
 		LegoU8* writePtr = reinterpret_cast<LegoU8*>(dialogTemplate + 1);
 		// No menu
 		*reinterpret_cast<wchar_t*>(writePtr) = L'\0';
@@ -172,6 +181,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 			"COMBOBOX",
 			""
 		);
+
 		StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");
 		StoreDialogItem(&writePtr, SS_LEFT, 5, 24, 29, 13, -1, "STATIC", "Device:");
 		int result = DialogBoxIndirectParamA(
@@ -181,11 +191,14 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 			SelectDeviceDlgProc,
 			reinterpret_cast<LPARAM>(this)
 		);
+
 		delete[] dialogTemplate;
+
 		if (result == IDOK) {
 			device = &m_drivers[m_driverIndex].m_devices[m_deviceIndex];
 		}
 	}
+
 	return device;
 }
 
@@ -198,6 +211,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 {
 	GolD3DDriverInfo* driver;
 	GolD3DDeviceInfo* device;
+
 	if (p_flags & GolDrawState::c_flagBit14) {
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
@@ -210,10 +224,10 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 				}
 			}
 		}
+
 		return NULL;
 	}
-	else if ((p_flags & GolDrawState::c_flagBit9) &&
-			 !(p_flags & (GolDrawState::c_flagBit13 | GolDrawState::c_flagBit11))) {
+	else if ((p_flags & GolDrawState::c_flagBit9) && !(p_flags & (GolDrawState::c_flagBit13 | GolDrawState::c_flagBit11))) {
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
 			if (!driver->m_unk0x00 && driver->m_accelerated) {
@@ -228,6 +242,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 				}
 			}
 		}
+
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
 			if (driver->m_accelerated) {
@@ -260,7 +275,6 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 		}
 	}
 	else {
-
 		for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 			driver = &m_drivers[m_driverIndex];
 			if (driver->m_unk0x00) {
@@ -276,6 +290,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 			}
 		}
 	}
+
 	for (m_driverIndex = 0; m_driverIndex < m_countDrivers; m_driverIndex++) {
 		driver = &m_drivers[m_driverIndex];
 		for (m_deviceIndex = 0; m_deviceIndex < driver->m_countDevices; m_deviceIndex++) {
@@ -286,6 +301,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 			}
 		}
 	}
+
 	m_driverIndex = 0;
 	m_deviceIndex = 0;
 	return NULL;
@@ -305,6 +321,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 			0,
 			reinterpret_cast<LPARAM>(m_drivers[driverIndex].m_name)
 		);
+
 		SendDlgItemMessageA(
 			p_hWnd,
 			IDC_DRIVERS_COMBOBOX,
@@ -312,6 +329,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 			comboBoxIndex,
 			reinterpret_cast<LPARAM>(&m_drivers[driverIndex])
 		);
+
 		if (driverIndex == m_driverIndex) {
 			SendDlgItemMessageA(p_hWnd, IDC_DRIVERS_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
 		}
@@ -326,6 +344,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 			0,
 			reinterpret_cast<LPARAM>(device->m_description)
 		);
+
 		if (deviceIndex == m_driverIndex) { // FIXME: should compare against m_deviceIndex
 			SendDlgItemMessageA(p_hWnd, IDC_DEVICES_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
 		}
@@ -349,6 +368,7 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 {
 	GolD3DDriverInfo* const driver =
 		&static_cast<GolDeviceList*>(p_context)->m_drivers[static_cast<GolDeviceList*>(p_context)->m_countDrivers++];
+
 	if (p_guid == NULL) {
 		driver->m_unk0x00 = TRUE;
 		driver->m_unk0x08 = FALSE;
@@ -359,24 +379,32 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 		driver->m_unk0x08 = TRUE;
 		::memcpy(&driver->m_guid, p_guid, sizeof(*p_guid));
 	}
+
 	driver->m_description = new LegoChar[strlen(p_description) + 1];
+
 	if (driver->m_description == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::strcpy(driver->m_description, p_description);
 	driver->m_name = new LegoChar[strlen(p_name) + 1];
+
 	if (driver->m_name == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::strcpy(driver->m_name, p_name);
+
 	LPDIRECTDRAW ddraw;
 	if (DirectDrawCreate(p_guid, &ddraw, NULL) == DD_OK) {
 		DDCAPS hwCaps;
 		::memset(&hwCaps, 0, sizeof(hwCaps));
 		hwCaps.dwSize = sizeof(hwCaps);
+
 		DDCAPS helCaps;
 		::memset(&helCaps, 0, sizeof(helCaps));
 		helCaps.dwSize = sizeof(hwCaps);
+
 		if (ddraw->GetCaps(&hwCaps, &helCaps) != DD_OK) {
 			ddraw->Release();
 			return TRUE;
@@ -388,9 +416,11 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 		else {
 			driver->m_accelerated = FALSE;
 		}
+
 		LPDIRECT3D3 d3d;
 		if (ddraw->QueryInterface(IID_IDirect3D3, reinterpret_cast<LPVOID*>(&d3d)) == DD_OK) {
 			LegoU32 countDevices = 0;
+
 			if (d3d->EnumDevices(CountDirect3DDevicesCallback, &countDevices) == D3D_OK) {
 				driver->m_devices = new GolD3DDeviceInfo[countDevices];
 				if (driver->m_devices == NULL) {
@@ -401,10 +431,13 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 				driver->m_countDevices = 0;
 				d3d->EnumDevices(EnumerateDirect3DDevicesCallback, driver);
 			}
+
 			d3d->Release();
 		}
+
 		ddraw->Release();
 	}
+
 	return TRUE;
 }
 
@@ -436,14 +469,18 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 	GolD3DDeviceInfo* const device = &driver->m_devices[driver->m_countDevices++];
 	device->m_driver = driver;
 	device->m_name = new LegoChar[strlen(p_name) + 1];
+
 	if (device->m_name == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::strcpy(device->m_name, p_name);
 	device->m_description = new LegoChar[strlen(p_description) + 1];
+
 	if (device->m_description == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::strcpy(device->m_description, p_description);
 	if (p_guid != NULL) {
 		device->m_validGuid = TRUE;
@@ -460,6 +497,7 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 		device->m_deviceDesc = *p_helDesc;
 		device->m_hwAccelerated = FALSE;
 	}
+
 	return TRUE;
 }
 
@@ -526,21 +564,27 @@ INT_PTR_COMPAT GolDeviceList::SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPAR
 		g_dialogDeviceList->UpdateDialog(p_hWnd);
 		return 1;
 	}
+
 	if (g_dialogDeviceList != NULL) {
 		if (p_uMsg == WM_COMMAND) {
 			if (LOWORD(p_wParam) == IDOK) {
 				EndDialog(p_hWnd, IDOK);
 				return 1;
 			}
+
 			if (LOWORD(p_wParam) == IDCANCEL) {
 				EndDialog(p_hWnd, IDCANCEL);
 				return 1;
 			}
-			if (HIWORD(p_wParam) == CBN_SELENDOK) {
+
+			LegoS16 hiWord = HIWORD(p_wParam);
+			if (hiWord == CBN_SELENDOK) {
 				int index = SendMessage(reinterpret_cast<HWND>(p_lParam), CB_GETCURSEL, 0, 0);
+
 				if (index == -1) {
 					return 1;
 				}
+
 				switch (LOWORD(p_wParam)) {
 				case IDC_DRIVERS_COMBOBOX:
 					g_dialogDeviceList->m_driverIndex = index;
@@ -549,11 +593,13 @@ INT_PTR_COMPAT GolDeviceList::SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPAR
 					g_dialogDeviceList->m_deviceIndex = index;
 					break;
 				}
+
 				g_dialogDeviceList->UpdateDialog(p_hWnd);
 				return 1;
 			}
 		}
 	}
+
 	return 0;
 }
 

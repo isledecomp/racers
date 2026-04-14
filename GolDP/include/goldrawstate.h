@@ -14,6 +14,19 @@ protected:
 	GolDrawState();
 
 public:
+	enum {
+		c_flagBit9 = 1 << 9,
+		c_flagBit10 = 1 << 10,
+		c_flagBit11 = 1 << 11,
+		c_flagBit13 = 1 << 13,
+		c_flagBit14 = 1 << 14,
+		c_flagBit15 = 1 << 15,
+		c_flagBit16 = 1 << 16,
+		c_flagBit17 = 1 << 17,
+		c_flagBit18 = 1 << 18,
+		c_flagBit19 = 1 << 19,
+	};
+
 	virtual LegoS32 VTable0x00() = 0;                              // vtable+0x00
 	virtual ~GolDrawState() {}                                     // vtable+04
 	virtual void VTable0x08(HWND p_hWnd) = 0;                      // vtable+08
@@ -44,19 +57,6 @@ public:
 
 	// SYNTHETIC: GOLDP 0x1001d590
 	// GolDrawState::`scalar deleting destructor'
-
-	enum {
-		c_flagBit9 = 1 << 9,
-		c_flagBit10 = 1 << 10,
-		c_flagBit11 = 1 << 11,
-		c_flagBit13 = 1 << 13,
-		c_flagBit14 = 1 << 14,
-		c_flagBit15 = 1 << 15,
-		c_flagBit16 = 1 << 16,
-		c_flagBit17 = 1 << 17,
-		c_flagBit18 = 1 << 18,
-		c_flagBit19 = 1 << 19,
-	};
 
 protected:
 	LegoU32 GetFlags() const { return m_flags; }

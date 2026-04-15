@@ -76,6 +76,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 	char buffer[100];
 	DDSURFACEDESC displayMode;
 
+	m_ddraw = NULL;
 	if (GetFlags() & (c_flagBit16 | c_flagBit17)) {
 		SetFlags(GetFlags() | c_flagBit11 | c_flagBit13);
 	}
@@ -141,8 +142,8 @@ LegoS32 GolDrawDPState::VTable0x00()
 		SetFlags((GetFlags() & ~c_flagBit13) | c_flagBit9);
 	}
 
-	if (!((GetFlags() & c_flagBit11) || (GetFlags() & c_flagBit16) || (GetFlags() & c_flagBit17)) &&
-		(m_ddrawCaps.dwCaps & DDCAPS_3D) && m_device->m_hwAccelerated) {
+	if (!(GetFlags() & (c_flagBit11 | c_flagBit16 | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
+		device->m_hwAccelerated) {
 		m_unk0x2c0 = TRUE;
 		SetFlags(GetFlags() & ~c_flagBit11);
 	}
@@ -150,7 +151,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 		m_unk0x2c0 = FALSE;
 		SetFlags(GetFlags() | c_flagBit11);
 		if (!(GetFlags() & c_flagBit17)) {
-			SetFlags(GetFlags() | c_flagBit11 | c_flagBit16);
+			SetFlags(GetFlags() | c_flagBit16);
 		}
 	}
 

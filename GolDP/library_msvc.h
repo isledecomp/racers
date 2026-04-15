@@ -6,7 +6,7 @@
 // ??3@YAXPAX@Z
 
 // LIBRARY: GOLDP 0x1004b361
-// sprintf
+// _sprintf
 
 // aka `operator new`
 // LIBRARY: GOLDP 0x1004b3b3

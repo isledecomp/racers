@@ -20,7 +20,9 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 	if (m_flags & c_flagBit0) {
 		VTable0x48();
 	}
+
 	m_flags |= c_flagBit1;
+
 	if (p_width == 0) {
 		p_width = 640;
 	}
@@ -30,14 +32,17 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 	if (p_bpp == 0) {
 		p_bpp = 16;
 	}
+
 	m_bpp = p_bpp;
 	m_height = p_height;
 	m_flags = p_flags;
 	m_width = p_width;
+
 	LegoS32 result = VTable0x00();
 	if (result) {
 		return result;
 	}
+
 	// MISSING xxxxxxx
 	STUB(0x1001d5c0);
 

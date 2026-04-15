@@ -16,6 +16,7 @@ LegoS32 GolCommonDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU3
 	if (!result) {
 		result = VTable0x58();
 	}
+
 	return result;
 }
 

@@ -32,6 +32,9 @@ typedef unsigned int uintptr_t;
 // GLOBAL: GOLDP 0x10063550
 GolDeviceList* GolDeviceList::g_dialogDeviceList;
 
+// GLOBAL: GOLDP 0x10063554
+LegoChar g_unk0x10063554[] = "";
+
 // FUNCTION: GOLDP 0x10013820
 void GolDeviceList::DetectDevices()
 {
@@ -169,7 +172,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 				45,
 				IDC_DRIVERS_COMBOBOX,
 				"COMBOBOX",
-				""
+				g_unk0x10063554
 			);
 			STORE_DIALOG_ITEM(
 				&writePtr,
@@ -180,7 +183,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 				45,
 				IDC_DEVICES_COMBOBOX,
 				"COMBOBOX",
-				""
+				g_unk0x10063554
 			);
 
 			StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");

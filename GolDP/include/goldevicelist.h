@@ -1,7 +1,6 @@
 #ifndef GOL_DEVICELIST_H
 #define GOL_DEVICELIST_H
 
-#include "golvector.h"
 #include "types.h"
 
 #include <d3d.h>

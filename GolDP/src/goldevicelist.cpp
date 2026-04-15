@@ -133,69 +133,71 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 	if (p_flags & GolDrawState::c_flagBit15) {
 		HINSTANCE hInstance = reinterpret_cast<HINSTANCE>(GetWindowLongPtrA_COMPAT(p_hWnd, GWLP_HINSTANCE_COMPAT));
 		LPDLGTEMPLATE dialogTemplate = reinterpret_cast<LPDLGTEMPLATE>(new LegoChar[TEMPLATE_SIZE]);
-		::memset(dialogTemplate, 0, TEMPLATE_SIZE);
-		dialogTemplate->style = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND |
-								DS_NOIDLEMSG | DS_MODALFRAME | DS_SETFONT | DS_3DLOOK;
-		dialogTemplate->dwExtendedStyle = 0x0;
-		dialogTemplate->cdit = 6;
-		dialogTemplate->x = 0;
-		dialogTemplate->y = 0;
-		dialogTemplate->cx = 179;
-		dialogTemplate->cy = 84;
+		if (dialogTemplate != NULL) {
+			::memset(dialogTemplate, 0, TEMPLATE_SIZE);
+			dialogTemplate->style = WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU | DS_CENTER | DS_SETFOREGROUND |
+									DS_NOIDLEMSG | DS_MODALFRAME | DS_SETFONT | DS_3DLOOK;
+			dialogTemplate->dwExtendedStyle = 0x0;
+			dialogTemplate->cdit = 6;
+			dialogTemplate->x = 0;
+			dialogTemplate->y = 0;
+			dialogTemplate->cx = 179;
+			dialogTemplate->cy = 84;
 
-		LegoU8* writePtr = reinterpret_cast<LegoU8*>(dialogTemplate + 1);
-		// No menu
-		*reinterpret_cast<wchar_t*>(writePtr) = L'\0';
-		writePtr += 2;
-		// Default window class
-		*reinterpret_cast<wchar_t*>(writePtr) = L'\0';
-		writePtr += 2;
-		// Title
-		STORE_DIALOG_ITEM_TEXT(&writePtr, "Select Direct3D Device");
+			LegoU8* writePtr = reinterpret_cast<LegoU8*>(dialogTemplate + 1);
+			// No menu
+			*reinterpret_cast<wchar_t*>(writePtr) = L'\0';
+			writePtr += 2;
+			// Default window class
+			*reinterpret_cast<wchar_t*>(writePtr) = L'\0';
+			writePtr += 2;
+			// Title
+			STORE_DIALOG_ITEM_TEXT(&writePtr, "Select Direct3D Device");
 
-		*reinterpret_cast<LegoU16*>(writePtr) = 8;
-		writePtr += 2;
+			*reinterpret_cast<LegoU16*>(writePtr) = 8;
+			writePtr += 2;
 
-		STORE_DIALOG_ITEM_TEXT(&writePtr, "Arial");
-		STORE_DIALOG_ITEM(&writePtr, WS_TABSTOP, 65, 65, 51, 14, IDOK, "BUTTON", "OK");
-		STORE_DIALOG_ITEM(&writePtr, WS_TABSTOP, 123, 65, 51, 14, IDCANCEL, "BUTTON", "Cancel");
-		STORE_DIALOG_ITEM(
-			&writePtr,
-			WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST,
-			36,
-			5,
-			138,
-			45,
-			IDC_DRIVERS_COMBOBOX,
-			"COMBOBOX",
-			""
-		);
-		STORE_DIALOG_ITEM(
-			&writePtr,
-			WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST,
-			36,
-			24,
-			138,
-			45,
-			IDC_DEVICES_COMBOBOX,
-			"COMBOBOX",
-			""
-		);
+			STORE_DIALOG_ITEM_TEXT(&writePtr, "Arial");
+			STORE_DIALOG_ITEM(&writePtr, WS_TABSTOP, 65, 65, 51, 14, IDOK, "BUTTON", "OK");
+			STORE_DIALOG_ITEM(&writePtr, WS_TABSTOP, 123, 65, 51, 14, IDCANCEL, "BUTTON", "Cancel");
+			STORE_DIALOG_ITEM(
+				&writePtr,
+				WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST,
+				36,
+				5,
+				138,
+				45,
+				IDC_DRIVERS_COMBOBOX,
+				"COMBOBOX",
+				""
+			);
+			STORE_DIALOG_ITEM(
+				&writePtr,
+				WS_VSCROLL | WS_TABSTOP | CBS_DROPDOWNLIST,
+				36,
+				24,
+				138,
+				45,
+				IDC_DEVICES_COMBOBOX,
+				"COMBOBOX",
+				""
+			);
 
-		StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");
-		StoreDialogItem(&writePtr, SS_LEFT, 5, 24, 29, 13, -1, "STATIC", "Device:");
-		int result = DialogBoxIndirectParamA(
-			hInstance,
-			dialogTemplate,
-			p_hWnd,
-			SelectDeviceDlgProc,
-			reinterpret_cast<LPARAM>(this)
-		);
+			StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");
+			StoreDialogItem(&writePtr, SS_LEFT, 5, 24, 25, 13, -1, "STATIC", "Device:");
+			int result = DialogBoxIndirectParamA(
+				hInstance,
+				dialogTemplate,
+				p_hWnd,
+				SelectDeviceDlgProc,
+				reinterpret_cast<LPARAM>(this)
+			);
 
-		delete[] dialogTemplate;
+			delete[] dialogTemplate;
 
-		if (result == IDOK) {
-			device = &m_drivers[m_driverIndex].m_devices[m_deviceIndex];
+			if (result == IDOK) {
+				device = &m_drivers[m_driverIndex].m_devices[m_deviceIndex];
+			}
 		}
 	}
 
@@ -336,8 +338,8 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 		}
 	}
 
-	for (LegoU32 deviceIndex = 0; deviceIndex < m_drivers[m_driverIndex].m_countDevices; deviceIndex++) {
-		GolD3DDeviceInfo* device = &m_drivers[m_driverIndex].m_devices[deviceIndex];
+	GolD3DDeviceInfo* device = m_drivers[m_driverIndex].m_devices;
+	for (LegoU32 deviceIndex = 0; deviceIndex < m_drivers[m_driverIndex].m_countDevices; deviceIndex++, device++) {
 		LegoU32 comboBoxIndex = SendDlgItemMessageA(
 			p_hWnd,
 			IDC_DEVICES_COMBOBOX,
@@ -346,7 +348,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 			reinterpret_cast<LPARAM>(device->m_description)
 		);
 
-		if (deviceIndex == m_driverIndex) { // FIXME: should compare against m_deviceIndex
+		if (deviceIndex == m_driverIndex) {
 			SendDlgItemMessageA(p_hWnd, IDC_DEVICES_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
 		}
 	}
@@ -578,8 +580,8 @@ INT_PTR_COMPAT GolDeviceList::SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPAR
 				return 1;
 			}
 
-			LegoS16 hiWord = HIWORD(p_wParam);
-			if (hiWord == CBN_SELENDOK) {
+			LegoS16 notificationCode = HIWORD(p_wParam);
+			if (notificationCode == CBN_SELENDOK) {
 				int index = SendMessage(reinterpret_cast<HWND>(p_lParam), CB_GETCURSEL, 0, 0);
 
 				if (index == -1) {

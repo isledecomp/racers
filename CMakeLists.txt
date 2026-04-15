@@ -88,10 +88,10 @@ set(COMMON_SOURCES
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
+  GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
   GolDP/src/goldpexport.cpp
   GolDP/src/goldevicelist.cpp
-  GolDP/src/goldrawstate.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/main.cpp
   util/decomp.cpp

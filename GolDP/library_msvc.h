@@ -21,6 +21,21 @@
 // LIBRARY: GOLDP 0x1004c6a0
 // __DllMainCRTStartup@12
 
+// LIBRARY: GOLDP 0x1004c73d
+// __amsg_exit
+
+// LIBRARY: GOLDP 0x1004d21f
+// _free
+
+// LIBRARY: GOLDP 0x1004d308
+// __flsbuf
+
+// LIBRARY: GOLDP 0x1004d420
+// __output
+
+// LIBRARY: GOLDP 0x1004dc3c
+// __nh_malloc
+
 // GLOBAL: GOLDP 0x10058098
 // IID_IDirectDraw4
 

@@ -142,7 +142,7 @@ undefined4 GolString::GolStrcpy(GolString* p_string)
 		return 0;
 	}
 
-	memcpy(m_chars, p_string->m_chars, 2 * len);
+	memcpy(m_chars, p_string->m_chars, len << 1);
 	m_cursorStart = p_string->m_cursorStart;
 	m_cursorEnd = p_string->m_cursorEnd;
 
@@ -157,7 +157,7 @@ undefined4 GolString::GolStrcpy(undefined2* p_string)
 		return 0;
 	}
 
-	memcpy(m_chars, p_string, 2 * len);
+	memcpy(m_chars, p_string, len << 1);
 	m_chars[len] = 0;
 	m_cursorEnd = len;
 

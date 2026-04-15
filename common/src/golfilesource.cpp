@@ -4,10 +4,10 @@
 
 DECOMP_SIZE_ASSERT(GolFileSource, 0x34)
 
-// GLOBAL: LEGORACERS 0x4c73a4
+// GLOBAL: LEGORACERS 0x004c73a4
 LegoChar g_nameBuffer[GOL_NAME_LENGTH];
 
-// FUNCTION: LEGORACERS 0x44d820
+// FUNCTION: LEGORACERS 0x0044d820
 GolFileSource::GolFileSource()
 {
 	m_stream = NULL;
@@ -15,13 +15,13 @@ GolFileSource::GolFileSource()
 	m_foundEntry = NULL;
 }
 
-// FUNCTION: LEGORACERS 0x44d860
+// FUNCTION: LEGORACERS 0x0044d860
 GolFileSource::~GolFileSource()
 {
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x44d8e0
+// FUNCTION: LEGORACERS 0x0044d8e0
 void GolFileSource::Reset()
 {
 	m_rootDir.DeleteChildren();
@@ -29,7 +29,7 @@ void GolFileSource::Reset()
 	m_state = 0;
 }
 
-// FUNCTION: LEGORACERS 0x44d900
+// FUNCTION: LEGORACERS 0x0044d900
 LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* p_size)
 {
 	GolDirEntry* node = &m_rootDir;
@@ -76,7 +76,7 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 	return GolStream::e_ioSuccess;
 }
 
-// FUNCTION: LEGORACERS 0x44d9c0
+// FUNCTION: LEGORACERS 0x0044d9c0
 LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 {
 	GolDirEntry* node = &m_rootDir;
@@ -121,14 +121,14 @@ LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x44da60
+// FUNCTION: LEGORACERS 0x0044da60
 LegoS32 GolFileSource::Close()
 {
 	m_state = 0;
 	return 0;
 }
 
-// FUNCTION: LEGORACERS 0x44da70
+// FUNCTION: LEGORACERS 0x0044da70
 LegoS32 GolFileSource::Read(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoU32 p_maxSize, LegoS32* p_lenRead)
 {
 	*p_lenRead = 0;
@@ -211,7 +211,7 @@ LegoS32 GolFileSource::Read(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoU
 	}
 }
 
-// FUNCTION: LEGORACERS 0x44dbb0
+// FUNCTION: LEGORACERS 0x0044dbb0
 LegoS32 GolFileSource::ForwardRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
 	return m_stream->BufferedRead(p_offset, p_buf, p_size, p_lenRead);

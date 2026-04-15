@@ -1,13 +1,13 @@
 #include "indigostar0x18.h"
 
-#include "silvernode0x50.h"
+#include "soundnode.h"
 
 DECOMP_SIZE_ASSERT(IndigoStar0x18, 0x18)
 
-// GLOBAL: LEGORACERS 0x4afa3c
+// GLOBAL: LEGORACERS 0x004afa3c
 LegoFloat g_unk0x4afa3c = 1.0f;
 
-// FUNCTION: LEGORACERS 0x417a30
+// FUNCTION: LEGORACERS 0x00417a30
 IndigoStar0x18::IndigoStar0x18()
 {
 	m_unk0x04 = 0;
@@ -17,14 +17,14 @@ IndigoStar0x18::IndigoStar0x18()
 	m_unk0x14 = g_unk0x4afa3c;
 }
 
-// FUNCTION: LEGORACERS 0x417a80
+// FUNCTION: LEGORACERS 0x00417a80
 IndigoStar0x18::~IndigoStar0x18()
 {
-	VTable0x08();
+	Shutdown();
 }
 
-// FUNCTION: LEGORACERS 0x417a90
-void IndigoStar0x18::VTable0x08()
+// FUNCTION: LEGORACERS 0x00417a90
+void IndigoStar0x18::Shutdown()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = NULL;
@@ -32,10 +32,10 @@ void IndigoStar0x18::VTable0x08()
 	m_unk0x14 = g_unk0x4afa3c;
 }
 
-// FUNCTION: LEGORACERS 0x417ab0
-SilverNode0x50* IndigoStar0x18::FUN_00417ab0(SilverNode0x50* p_node)
+// FUNCTION: LEGORACERS 0x00417ab0
+SoundNode* IndigoStar0x18::AddNode(SoundNode* p_node)
 {
-	SilverNode0x50* result = m_unk0x08;
+	SoundNode* result = m_unk0x08;
 
 	if (result) {
 		while (TRUE) {
@@ -56,10 +56,10 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ab0(SilverNode0x50* p_node)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x417ae0
-SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
+// FUNCTION: LEGORACERS 0x00417ae0
+SoundNode* IndigoStar0x18::RemoveNode(SoundNode* p_node)
 {
-	SilverNode0x50* prev = m_unk0x08;
+	SoundNode* prev = m_unk0x08;
 
 	if (prev) {
 		if (prev == p_node) {
@@ -68,7 +68,7 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
 			return p_node;
 		}
 
-		SilverNode0x50* current = prev->m_unk0x48;
+		SoundNode* current = prev->m_unk0x48;
 
 		if (current) {
 			while (TRUE) {
@@ -93,10 +93,10 @@ SilverNode0x50* IndigoStar0x18::FUN_00417ae0(SilverNode0x50* p_node)
 	return NULL;
 }
 
-// FUNCTION: LEGORACERS 0x417b30
-SilverNode0x50* IndigoStar0x18::VTable0x2c(SilverNode0x50* p_node)
+// FUNCTION: LEGORACERS 0x00417b30
+SoundNode* IndigoStar0x18::VTable0x2c(SoundNode* p_node)
 {
-	SilverNode0x50* result = m_unk0x0c;
+	SoundNode* result = m_unk0x0c;
 
 	if (result) {
 		while (TRUE) {
@@ -117,10 +117,10 @@ SilverNode0x50* IndigoStar0x18::VTable0x2c(SilverNode0x50* p_node)
 	return result;
 }
 
-// FUNCTION: LEGORACERS 0x417b60
-SilverNode0x50* IndigoStar0x18::VTable0x30(SilverNode0x50* p_node)
+// FUNCTION: LEGORACERS 0x00417b60
+SoundNode* IndigoStar0x18::VTable0x30(SoundNode* p_node)
 {
-	SilverNode0x50* result = m_unk0x0c;
+	SoundNode* result = m_unk0x0c;
 
 	if (result) {
 		if (result == p_node) {
@@ -129,7 +129,7 @@ SilverNode0x50* IndigoStar0x18::VTable0x30(SilverNode0x50* p_node)
 			p_node->m_unk0x4c = NULL;
 		}
 		else {
-			SilverNode0x50* prev = m_unk0x0c;
+			SoundNode* prev = m_unk0x0c;
 			result = result->m_unk0x4c;
 
 			if (result) {

@@ -5,7 +5,7 @@
 #include "coralbreeze0x28.h"
 #include "decomp.h"
 
-// VTABLE: LEGORACERS 0x4afd04
+// VTABLE: LEGORACERS 0x004afd04
 // SIZE 0x28
 class EmberDust0x28 : public CoralBreeze0x28 {
 public:

@@ -9,7 +9,7 @@
 class AmberLeaf0x10;
 class IndigoStar0x18;
 
-// VTABLE: LEGORACERS 0x4afbc8
+// VTABLE: LEGORACERS 0x004afbc8
 // SIZE 0x128
 class GoldenOak0x128 : public RubyHaze0x08, public GolListLink {
 public:
@@ -24,7 +24,7 @@ public:
 
 	void SetUnk0x10(IndigoStar0x18* p_unk0x10) { m_unk0x10 = p_unk0x10; }
 
-	// SYNTHETIC: LEGORACERS 0x41a690
+	// SYNTHETIC: LEGORACERS 0x0041a690
 	// GoldenOak0x128::`scalar deleting destructor'
 
 private:

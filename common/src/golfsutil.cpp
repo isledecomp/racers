@@ -12,20 +12,20 @@
 #include <windows.h>
 
 // GLOBAL: GOLDP 0x10065ed4
-// GLOBAL: LEGORACERS 0x4c73f0
+// GLOBAL: LEGORACERS 0x004c73f0
 HANDLE g_hMutex;
 
 // GLOBAL: GOLDP 0x10065ed8
 BOOL g_CPUID_detected;
 
 // GLOBAL: GOLDP 0x10065edc
-int g_maxCPUID;
+LegoS32 g_maxCPUID;
 
 // GLOBAL: GOLDP 0x10065ee0
 BOOL g_CPU_supports_MMX;
 
 // GLOBAL: GOLDP 0x10065ee4
-char g_cpuManufacturer[16];
+LegoChar g_cpuManufacturer[16];
 
 #ifdef BUILDING_LEGORACERS
 // FUNCTION: LEGORACERS 0x00450d80
@@ -59,7 +59,7 @@ void SetGolImport(GolImport* p_import)
 #endif
 
 // FUNCTION: GOLDP 0x10032bf0
-// FUNCTION: LEGORACERS 0x450df0
+// FUNCTION: LEGORACERS 0x00450df0
 void GolFsLock()
 {
 	if (g_hMutex) {
@@ -68,7 +68,7 @@ void GolFsLock()
 }
 
 // FUNCTION: GOLDP 0x10032c10
-// FUNCTION: LEGORACERS 0x450e10
+// FUNCTION: LEGORACERS 0x00450e10
 void GolFsUnlock()
 {
 	if (g_hMutex) {

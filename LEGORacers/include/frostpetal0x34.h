@@ -7,7 +7,7 @@
 
 class IndigoStar0x18;
 
-// VTABLE: LEGORACERS 0x4afc08
+// VTABLE: LEGORACERS 0x004afc08
 // SIZE 0x34
 class FrostPetal0x34 : public GolListLink {
 public:

@@ -7,7 +7,7 @@
 
 class CrimsonRay0x20;
 
-// VTABLE: LEGORACERS 0x4afca4
+// VTABLE: LEGORACERS 0x004afca4
 // SIZE 0x10
 class AmberLeaf0x10 : public JadeStorm0x0c {
 public:
@@ -19,7 +19,7 @@ public:
 
 	void SetUnk0x0c(CrimsonRay0x20* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 
-	// SYNTHETIC: LEGORACERS 0x41bfc0
+	// SYNTHETIC: LEGORACERS 0x0041bfc0
 	// AmberLeaf0x10::`scalar deleting destructor'
 
 private:

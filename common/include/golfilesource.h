@@ -7,7 +7,7 @@
 
 class GolStream;
 
-// VTABLE: LEGORACERS 0x4b0f70
+// VTABLE: LEGORACERS 0x004b0f70
 // SIZE 0x34
 class GolFileSource {
 public:
@@ -26,7 +26,7 @@ public:
 	virtual ~GolFileSource();                                                                       // vtable+0x10
 	virtual LegoS32 Find(LegoChar* p_fileName);                                                     // vtable+0x14
 
-	// SYNTHETIC: LEGORACERS 0x44d840
+	// SYNTHETIC: LEGORACERS 0x0044d840
 	// GolFileSource::`scalar deleting destructor'
 
 	void Reset();

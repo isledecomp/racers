@@ -84,13 +84,15 @@ set(COMMON_SOURCES
   common/src/golstring.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
+  common/src/golhashtable.cpp
 )
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
+  GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
   GolDP/src/goldpexport.cpp
-  GolDP/src/goldrawstate.cpp
+  GolDP/src/goldevicelist.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/main.cpp
   util/decomp.cpp
@@ -111,6 +113,7 @@ target_include_directories(goldp PRIVATE
 )
 target_link_libraries(goldp PRIVATE
     ddraw
+    dxguid
 )
 
 set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
@@ -124,7 +127,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/neoncactus0x1d6c.cpp
   LEGORacers/src/ironflame0x944.cpp
   LEGORacers/src/indigostar0x18.cpp
-  LEGORacers/src/amberwolf0x98.cpp
+  LEGORacers/src/soundmanager.cpp
   LEGORacers/src/jadestorm0x0c.cpp
   LEGORacers/src/amberleaf0x10.cpp
   LEGORacers/src/rubyhaze0x08.cpp
@@ -133,11 +136,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/frostpetal0x34.cpp
   LEGORacers/src/emberdust0x28.cpp
   LEGORacers/src/cobaltmist0x30.cpp
-  LEGORacers/src/tealpulse0x24.cpp
   LEGORacers/src/crimsonforge0x800.cpp
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
-  LEGORacers/src/silvernode0x50.cpp
+  LEGORacers/src/soundnode.cpp
   LEGORacers/src/imaginarynotion0x280.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
@@ -196,7 +198,8 @@ if (MSVC_FOR_DECOMP)
     target_link_options(goldp PRIVATE "/OPT:NOREF,ICF")
   endif()
 
-  set_property(TARGET legoracers goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
   set(CMAKE_CXX_FLAGS "/W3 /GX /D \"WIN32\" /D \"_WINDOWS\"")
   set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Zi /Od /D \"_DEBUG\"")

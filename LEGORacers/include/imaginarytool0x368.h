@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "imaginarynotion0x280.h"
 
-// VTABLE: LEGORACERS 0x4b3518
+// VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368
 class ImaginaryTool0x368 : public ImaginaryNotion0x280 {
 public:

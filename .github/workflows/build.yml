@@ -254,7 +254,7 @@ jobs:
             --clang-lib ${{ env.LLVM_PATH }}/lib/libclang.so \
             --recurse \
             --style tools/ncc/ncc.style \
-            --definition WINAPI FAR BOOL CALLBACK HWND__=HWND \
+            --definition PASCAL WINAPI FAR BOOL CALLBACK HWND__=HWND \
             --include \
               util \
               LEGORacers/include \

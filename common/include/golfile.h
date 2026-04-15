@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "golstream.h"
 
-// VTABLE: LEGORACERS 0x4b1250
+// VTABLE: LEGORACERS 0x004b1250
 // SIZE 0x30
 class GolFile : public GolStream {
 public:
@@ -19,7 +19,7 @@ public:
 	LegoS32 Write(void* p_buf, LegoU32 p_size) override;                    // vtable+0x10
 	LegoS32 Flush() override;                                               // vtable+0x14
 
-	// SYNTHETIC: LEGORACERS 0x450ab0
+	// SYNTHETIC: LEGORACERS 0x00450ab0
 	// GolFile::`scalar deleting destructor'
 };
 

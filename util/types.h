@@ -23,5 +23,6 @@ typedef float LegoFloat;
 typedef char LegoChar;
 
 typedef LegoU8 LegoBool;
+typedef LegoU32 LegoBool32;
 
 #endif // TYPES_H

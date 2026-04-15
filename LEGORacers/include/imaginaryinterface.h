@@ -3,7 +3,7 @@
 
 #include "decomp.h"
 
-// VTABLE: LEGORACERS 0x4b2388
+// VTABLE: LEGORACERS 0x004b2388
 class ImaginaryInterface {
 	virtual void VTable0x00(undefined4) = 0;                                           // vtable+0x00
 	virtual void VTable0x04(undefined4) = 0;                                           // vtable+0x04

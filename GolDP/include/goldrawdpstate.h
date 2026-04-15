@@ -55,9 +55,6 @@ public:
 	undefined4 VTable0xb0() override; // vtable+0xb0
 	undefined4 VTable0xb4() override; // vtable+0xb4
 
-	const LegoChar* GetDriverName() const { return m_driverName; }
-	const LegoChar* GetDeviceName() const { return m_deviceName; }
-
 	// SYNTHETIC: GOLDP 0x100010e0
 	// GolDrawDPState::`scalar deleting destructor'
 

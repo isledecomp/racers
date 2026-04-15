@@ -75,18 +75,17 @@ LegoS32 GolDrawDPState::VTable0x00()
 	DDCAPS helCaps;
 	char buffer[100];
 	DDSURFACEDESC displayMode;
-
 	m_ddraw = NULL;
-	if (GetFlags() & (c_flagBit16 | c_flagBit17)) {
-		SetFlags(GetFlags() | c_flagBit11 | c_flagBit13);
+	if (m_flags & (c_flagBit16 | c_flagBit17)) {
+		m_flags |= c_flagBit11 | c_flagBit13;
 	}
 	else {
-		SetFlags(GetFlags() & ~c_flagBit19);
+		m_flags &= ~c_flagBit19;
 	}
-	if ((GetFlags() & c_flagBit16) && (GetFlags() & c_flagBit18)) {
-		SetBitsPerPixel(8);
+	if ((m_flags & c_flagBit16) && (m_flags & c_flagBit18)) {
+		m_bpp = 8;
 	}
-	if (!(GetFlags() & c_flagBit9)) {
+	if (!(m_flags & c_flagBit9)) {
 		if (DirectDrawCreate(NULL, &m_ddraw, NULL) != DD_OK) {
 			GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
 		}
@@ -98,8 +97,8 @@ LegoS32 GolDrawDPState::VTable0x00()
 			GOL_FATALERROR_MESSAGE("Unable to get current display mode");
 		}
 
-		if (displayMode.ddpfPixelFormat.dwRGBBitCount != GetBitsPerPixel()) {
-			SetFlags(GetFlags() | c_flagBit9);
+		if (displayMode.ddpfPixelFormat.dwRGBBitCount != m_bpp) {
+			m_flags |= c_flagBit9;
 		}
 
 		m_ddraw->Release();
@@ -107,8 +106,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 
 	m_deviceList.DetectDevices();
 
-	GolDeviceList::GolD3DDeviceInfo* device =
-		m_deviceList.SelectDevice(m_hWnd, GetFlags(), GetDriverName(), GetDeviceName());
+	GolDeviceList::GolD3DDeviceInfo* device = m_deviceList.SelectDevice(m_hWnd, m_flags, m_driverName, m_deviceName);
 	if (device == NULL) {
 		GOL_FATALERROR_MESSAGE("Unable to find a 3D device that meets base requirements");
 	}
@@ -118,7 +116,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 		GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
 	}
 
-	HRESULT hResult = m_ddraw->QueryInterface(IID_IDirectDraw4, reinterpret_cast<LPVOID*>(&m_ddraw4));
+	HRESULT hResult = m_ddraw->QueryInterface(IID_IDirectDraw4, (LPVOID*) &m_ddraw4);
 	if (hResult != DD_OK) {
 		::sprintf(buffer, "DirectDraw QueryInterface() error\nerror code = 0x%x", hResult);
 		this->VTable0x48();
@@ -136,30 +134,30 @@ LegoS32 GolDrawDPState::VTable0x00()
 	}
 
 	if (driver->m_unk0x00) {
-		SetFlags(GetFlags() | c_flagBit13);
+		m_flags |= c_flagBit13;
 	}
 	else {
-		SetFlags((GetFlags() & ~c_flagBit13) | c_flagBit9);
+		m_flags = (m_flags & ~c_flagBit13) | c_flagBit9;
 	}
 
-	if (!(GetFlags() & (c_flagBit11 | c_flagBit16 | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
+	if (!(m_flags & (c_flagBit11 | c_flagBit16 | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
 		device->m_hwAccelerated) {
+		m_flags &= ~c_flagBit11;
 		m_unk0x2c0 = TRUE;
-		SetFlags(GetFlags() & ~c_flagBit11);
 	}
 	else {
 		m_unk0x2c0 = FALSE;
-		SetFlags(GetFlags() | c_flagBit11);
-		if (!(GetFlags() & c_flagBit17)) {
-			SetFlags(GetFlags() | c_flagBit16);
+		m_flags |= c_flagBit11;
+		if (!(m_flags & c_flagBit17)) {
+			m_flags |= c_flagBit16;
 		}
 	}
 
-	if (GetFlags() & c_flagBit9) {
-		SetFlags(GetFlags() | c_flagBit10);
+	if (m_flags & c_flagBit9) {
+		m_flags |= c_flagBit10;
 		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_EXCLUSIVE | DDSCL_FULLSCREEN);
 	}
-	else if (GetFlags() & c_flagBit10) {
+	else if (m_flags & c_flagBit10) {
 		hResult = m_ddraw4->SetCooperativeLevel(m_hWnd, DDSCL_FPUSETUP | DDSCL_EXCLUSIVE);
 	}
 	else {
@@ -170,8 +168,8 @@ LegoS32 GolDrawDPState::VTable0x00()
 		return -1;
 	}
 
-	if (GetFlags() & c_flagBit9) {
-		hResult = m_ddraw4->SetDisplayMode(GetWidth(), GetHeight(), GetBitsPerPixel(), 0, 0);
+	if (m_flags & c_flagBit9) {
+		hResult = m_ddraw4->SetDisplayMode(m_width, m_height, m_bpp, 0, 0);
 		if (hResult != DD_OK) {
 			ReleaseDDraw();
 			return -1;

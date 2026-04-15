@@ -59,15 +59,6 @@ public:
 	// GolDrawState::`scalar deleting destructor'
 
 protected:
-	LegoU32 GetFlags() const { return m_flags; }
-	void SetFlags(LegoU32 p_flags) { m_flags = p_flags; }
-	void SetBitsPerPixel(LegoU32 p_bpp) { m_bpp = p_bpp; }
-	LegoU32 GetBitsPerPixel() const { return m_bpp; }
-
-	undefined4 GetWidth() const { return m_width; }
-	undefined4 GetHeight() const { return m_height; }
-
-private:
 	undefined4 m_width;   // 0x04
 	undefined4 m_height;  // 0x08
 	undefined4 m_bpp;     // 0x0c

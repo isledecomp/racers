@@ -15,20 +15,44 @@ GolDrawState::GolDrawState()
 }
 
 // STUB: GOLDP 0x1001d5c0
-undefined4 GolDrawState::VTable0x44(undefined4 p_width, undefined4 p_height, undefined4 p_bpp, undefined4 p_flags)
+LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
-	// TODO
+	if (m_flags & c_flagBit0) {
+		VTable0x48();
+	}
+	m_flags |= c_flagBit1;
+	if (p_width == 0) {
+		p_width = 640;
+	}
+	if (p_height == 0) {
+		p_height = 480;
+	}
+	if (p_bpp == 0) {
+		p_bpp = 16;
+	}
+	m_bpp = p_bpp;
+	m_height = p_height;
+	m_flags = p_flags;
+	m_width = p_width;
+	LegoS32 result = VTable0x00();
+	if (result) {
+		return result;
+	}
+	// MISSING xxxxxxx
 	STUB(0x1001d5c0);
+
+	m_flags &= ~c_flagBit1;
+	m_flags |= c_flagBit0;
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolDrawState::VTable0x0c(undefined4, undefined4)
+void GolDrawState::VTable0x0c(const char* p_driverName, const char* p_deviceName)
 {
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-undefined4 GolDrawState::VTable0x10()
+LegoU32 GolDrawState::VTable0x10()
 {
 	STUB(0x100016f0);
 	return 0;
@@ -63,60 +87,60 @@ void GolDrawState::VTable0x48()
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
-undefined4 GolDrawState::VTable0x14(undefined4)
+const LegoChar* GolDrawState::VTable0x14(LegoU32 p_index)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
-undefined4 GolDrawState::VTable0x18(undefined4)
+const LegoChar* GolDrawState::VTable0x18(LegoU32 p_index)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
-undefined4 GolDrawState::VTable0x1c(undefined4)
+LegoU32 GolDrawState::VTable0x1c(LegoU32 p_index)
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1001d710
-void GolDrawState::VTable0x2c(undefined4, undefined4* p_arg2, undefined4* p_arg3)
+void GolDrawState::VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex)
 {
-	*p_arg2 = 0;
-	*p_arg3 = 0;
+	*p_driverIndex = 0;
+	*p_deviceIndex = 0;
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
-undefined4 GolDrawState::VTable0x20(undefined4, undefined4)
+const LegoChar* GolDrawState::VTable0x20(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
-undefined4 GolDrawState::VTable0x24(undefined4, undefined4)
+const LegoChar* GolDrawState::VTable0x24(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
-undefined4 GolDrawState::VTable0x28(undefined4, undefined4)
+LegoBool32 GolDrawState::VTable0x28(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolDrawState::VTable0x30(undefined4, undefined4*)
+void GolDrawState::VTable0x30(LegoU32 p_driverIndex, GUID* p_guid)
 {
 }
 
 // FUNCTION: GOLDP 0x100294f0
-void GolDrawState::VTable0x34(undefined4, undefined4, undefined4*)
+void GolDrawState::VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid)
 {
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-undefined4 GolDrawState::VTable0x38()
+GUID* GolDrawState::VTable0x38() const
 {
 	STUB(0x100016f0);
 	return 0;

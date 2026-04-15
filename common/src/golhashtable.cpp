@@ -46,7 +46,7 @@ LegoS32 GolHashTable::Init(LegoS32 p_numBuckets, LegoU32 p_bufferSize)
 	m_mutex = CreateMutexA(NULL, FALSE, NULL);
 
 	if (!m_buckets || !m_buffer) {
-		GolFatalError(c_golErrorOutOfMemory, 0, 0);
+		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	memset(m_buckets, 0, 4 * p_numBuckets);
@@ -108,7 +108,7 @@ GolHashTable::Entry* GolHashTable::AddEntry(Entry** p_bucket, const LegoChar* p_
 	Entry* entry = new Entry;
 
 	if (!entry) {
-		GolFatalError(c_golErrorOutOfMemory, 0, 0);
+		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	entry->m_data = m_bufferCursor;

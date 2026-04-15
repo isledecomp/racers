@@ -37,6 +37,8 @@ public:
 		LegoChar* m_name;            // 0x20
 		LegoU32 m_countDevices;      // 0x24
 		GolD3DDeviceInfo* m_devices; // 0x28
+
+		const GolD3DDeviceInfo* GetDevices() const { return m_devices; }
 	};
 
 	GolDeviceList();
@@ -92,7 +94,7 @@ private:
 	);
 	static INT_PTR_COMPAT CALLBACK SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPARAM p_wParam, LPARAM p_lParam);
 
-	// GolVector<GolD3DDriverInfo> m_drivers;
+public:
 	LegoU32 m_countDrivers;
 	GolD3DDriverInfo* m_drivers;
 	LegoU32 m_driverIndex;

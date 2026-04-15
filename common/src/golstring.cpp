@@ -1,4 +1,4 @@
-#include "azuretorus0x0a.h"
+#include "golstring.h"
 
 #include "types.h"
 
@@ -6,7 +6,7 @@
 #include <memory.h>
 
 // FUNCTION: LEGORACERS 0x00449dc0
-LegoS32 AzureTorus0x0a::AzureStrlen(undefined2* p_string)
+LegoS32 GolString::GolStrlen(undefined2* p_string)
 {
 	LegoS32 len = 0;
 
@@ -19,28 +19,28 @@ LegoS32 AzureTorus0x0a::AzureStrlen(undefined2* p_string)
 
 // FUNCTION: GOLDP 0x1002f950
 // FUNCTION: LEGORACERS 0x00449e10
-AzureTorus0x0a::AzureTorus0x0a()
+GolString::GolString()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002f970
 // FUNCTION: LEGORACERS 0x00449e30
-AzureTorus0x0a::~AzureTorus0x0a()
+GolString::~GolString()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002f990
 // FUNCTION: LEGORACERS 0x00449e50
-undefined2* AzureTorus0x0a::FromCursor(undefined4 p_index)
+undefined2* GolString::FromCursor(undefined4 p_index)
 {
 	return &m_chars[m_cursorStart + p_index];
 }
 
 // FUNCTION: GOLDP 0x1002f9b0
 // FUNCTION: LEGORACERS 0x00449e70
-undefined4 AzureTorus0x0a::FUN_00449e70(undefined2* p_buf, LegoS32 p_count)
+undefined4 GolString::CopyFromBufSelection(undefined2* p_buf, LegoS32 p_count)
 {
 	m_cursorEnd = 0;
 	m_cursorStart = 0;
@@ -63,17 +63,17 @@ undefined4 AzureTorus0x0a::FUN_00449e70(undefined2* p_buf, LegoS32 p_count)
 }
 
 // FUNCTION: LEGORACERS 0x00449ed0
-undefined4 AzureTorus0x0a::FUN_00449ed0(AzureTorus0x0a* p_torus)
+undefined4 GolString::CopyFromGolString(GolString* p_string)
 {
 	Reset();
-	m_chars = p_torus->m_chars;
-	m_maxLen = p_torus->m_maxLen;
+	m_chars = p_string->m_chars;
+	m_maxLen = p_string->m_maxLen;
 	ResetCursors();
 	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x00449f00
-void AzureTorus0x0a::ResetCursors()
+void GolString::ResetCursors()
 {
 	m_cursorEnd = 0;
 	m_cursorStart = 0;
@@ -84,7 +84,7 @@ void AzureTorus0x0a::ResetCursors()
 }
 
 // FUNCTION: LEGORACERS 0x00449f30
-void AzureTorus0x0a::FirstLine()
+void GolString::FirstLine()
 {
 	m_cursorEnd = 0;
 	m_cursorStart = 0;
@@ -99,7 +99,7 @@ void AzureTorus0x0a::FirstLine()
 }
 
 // FUNCTION: LEGORACERS 0x00449f70
-void AzureTorus0x0a::NextLine()
+void GolString::NextLine()
 {
 	if (!m_chars[m_cursorEnd]) {
 		return;
@@ -118,15 +118,15 @@ void AzureTorus0x0a::NextLine()
 }
 
 // FUNCTION: LEGORACERS 0x00449fc0
-undefined4 AzureTorus0x0a::TorusStrcmp(AzureTorus0x0a* p_torus)
+undefined4 GolString::GolStrcmp(GolString* p_string)
 {
 	LegoS32 len = SelectionLength();
-	if (len != p_torus->SelectionLength()) {
+	if (len != p_string->SelectionLength()) {
 		return 0;
 	}
 
 	while (--len >= 0) {
-		if (m_chars[len] != *p_torus->FromCursor(len)) {
+		if (m_chars[len] != *p_string->FromCursor(len)) {
 			return 0;
 		}
 	}
@@ -135,24 +135,24 @@ undefined4 AzureTorus0x0a::TorusStrcmp(AzureTorus0x0a* p_torus)
 }
 
 // FUNCTION: LEGORACERS 0x0044a020
-undefined4 AzureTorus0x0a::TorusStrcpy(AzureTorus0x0a* p_torus)
+undefined4 GolString::GolStrcpy(GolString* p_string)
 {
-	LegoS32 len = AzureStrlen(p_torus->m_chars);
+	LegoS32 len = GolStrlen(p_string->m_chars);
 	if (len >= m_maxLen) {
 		return 0;
 	}
 
-	memcpy(m_chars, p_torus->m_chars, 2 * len);
-	m_cursorStart = p_torus->m_cursorStart;
-	m_cursorEnd = p_torus->m_cursorEnd;
+	memcpy(m_chars, p_string->m_chars, 2 * len);
+	m_cursorStart = p_string->m_cursorStart;
+	m_cursorEnd = p_string->m_cursorEnd;
 
 	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x0044a080
-undefined4 AzureTorus0x0a::AzureStrcpy(undefined2* p_string)
+undefined4 GolString::GolStrcpy(undefined2* p_string)
 {
-	LegoS32 len = AzureStrlen(p_string);
+	LegoS32 len = GolStrlen(p_string);
 	if (len >= m_maxLen) {
 		return 0;
 	}
@@ -165,7 +165,7 @@ undefined4 AzureTorus0x0a::AzureStrcpy(undefined2* p_string)
 }
 
 // FUNCTION: LEGORACERS 0x0044a0d0
-void AzureTorus0x0a::ToUpperCase()
+void GolString::ToUpperCase()
 {
 	LegoS32 i = SelectionLength();
 	while (--i >= 0) {
@@ -177,7 +177,7 @@ void AzureTorus0x0a::ToUpperCase()
 }
 
 // FUNCTION: LEGORACERS 0x0044a130
-void AzureTorus0x0a::CopyToString(LegoChar* p_string)
+void GolString::CopyToString(LegoChar* p_string)
 {
 	LegoS32 i = SelectionLength();
 	p_string[i] = '\0';
@@ -188,7 +188,7 @@ void AzureTorus0x0a::CopyToString(LegoChar* p_string)
 }
 
 // FUNCTION: LEGORACERS 0x0044a160
-void AzureTorus0x0a::CopyToBuf8(LegoChar* p_buf)
+void GolString::CopyToBuf8(LegoChar* p_buf)
 {
 	LegoS32 i = SelectionLength();
 	memset(p_buf, 0, 8);
@@ -200,9 +200,9 @@ void AzureTorus0x0a::CopyToBuf8(LegoChar* p_buf)
 }
 
 // FUNCTION: LEGORACERS 0x0044a1a0
-LegoS32 AzureTorus0x0a::CountLines()
+LegoS32 GolString::CountLines()
 {
-	LegoS32 i = AzureStrlen(m_chars);
+	LegoS32 i = GolStrlen(m_chars);
 	LegoS32 count = 1;
 	while (--i >= 0) {
 		if (m_chars[i] == '\n') {

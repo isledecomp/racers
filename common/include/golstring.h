@@ -1,25 +1,25 @@
-#ifndef AZURETORUS0X0A
-#define AZURETORUS0X0A
+#ifndef GOLSTRING_H
+#define GOLSTRING_H
 
 #include "decomp.h"
 #include "types.h"
 
 // SIZE 0x0a
-class AzureTorus0x0a {
+class GolString {
 public:
-	AzureTorus0x0a();
-	~AzureTorus0x0a();
+	GolString();
+	~GolString();
 
-	static LegoS32 AzureStrlen(undefined2* p_string);
+	static LegoS32 GolStrlen(undefined2* p_string);
 	undefined2* FromCursor(undefined4 p_param);
-	undefined4 FUN_00449e70(undefined2* p_buf, LegoS32 p_count);
-	undefined4 FUN_00449ed0(AzureTorus0x0a* p_torus);
+	undefined4 CopyFromBufSelection(undefined2* p_buf, LegoS32 p_count);
+	undefined4 CopyFromGolString(GolString* p_string);
 	void ResetCursors();
 	void FirstLine();
 	void NextLine();
-	undefined4 TorusStrcmp(AzureTorus0x0a* p_torus);
-	undefined4 TorusStrcpy(AzureTorus0x0a* p_torus);
-	undefined4 AzureStrcpy(undefined2* p_string);
+	undefined4 GolStrcmp(GolString* p_string);
+	undefined4 GolStrcpy(GolString* p_string);
+	undefined4 GolStrcpy(undefined2* p_string);
 	void ToUpperCase();
 	void CopyToString(LegoChar* p_string);
 	void CopyToBuf8(LegoChar* p_buf);
@@ -42,4 +42,4 @@ protected:
 	undefined2 m_cursorEnd;   // 0x08
 };
 
-#endif // AZURETORUS0X0A
+#endif // GOLSTRING_H

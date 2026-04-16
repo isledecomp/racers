@@ -89,7 +89,6 @@ set(COMMON_SOURCES
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
-  GolDP/src/azureridge0x38.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
@@ -99,6 +98,7 @@ add_library(goldp SHARED
   GolDP/src/pearldew0x0c.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/slatepeak0x58.cpp
+  GolDP/src/azureridge0x38.cpp
   util/decomp.cpp
   ${COMMON_SOURCES}
 )

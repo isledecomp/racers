@@ -21,11 +21,6 @@ SilverDune0x30::SilverDune0x30()
 	m_unk0x2c = 0;
 }
 
-// FUNCTION: GOLDP 0x1001cf60
-SilverDune0x30::~SilverDune0x30()
-{
-}
-
 // STUB: GOLDP 0x1001cf70
 void SilverDune0x30::VTable0x04(undefined4*, undefined4*, undefined4)
 {

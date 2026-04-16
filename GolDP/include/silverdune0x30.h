@@ -9,7 +9,10 @@
 class SilverDune0x30 {
 public:
 	SilverDune0x30();
-	virtual ~SilverDune0x30();                                                            // vtable+0x00
+
+	// FUNCTION: GOLDP 0x1001cf60
+	virtual ~SilverDune0x30() {} // vtable+0x00
+
 	virtual void VTable0x04(undefined4*, undefined4*, undefined4);                        // vtable+0x04
 	virtual void VTable0x08();                                                            // vtable+0x08
 	virtual void VTable0x0c(undefined4*, undefined4*, undefined4);                        // vtable+0x0c

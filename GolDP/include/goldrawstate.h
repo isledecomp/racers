@@ -1,6 +1,7 @@
 #ifndef GOLDP_GOLSTATE_H
 #define GOLDP_GOLSTATE_H
 
+#include "azureridge0x38.h"
 #include "compat.h"
 #include "decomp.h"
 #include "types.h"
@@ -59,11 +60,11 @@ public:
 	// GolDrawState::`scalar deleting destructor'
 
 protected:
-	undefined4 m_width;   // 0x04
-	undefined4 m_height;  // 0x08
-	undefined4 m_bpp;     // 0x0c
-	LegoU32 m_flags;      // 0x10
-	undefined4 m_unk0x14; // 0x14
+	undefined4 m_width;        // 0x04
+	undefined4 m_height;       // 0x08
+	undefined4 m_bpp;          // 0x0c
+	LegoU32 m_flags;           // 0x10
+	AzureRidge0x38* m_unk0x14; // 0x14
 };
 
 #endif // GOLDP_GOLSTATE_H

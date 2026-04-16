@@ -14,37 +14,40 @@ GolDrawState::GolDrawState()
 	m_unk0x14 = NULL;
 }
 
-// STUB: GOLDP 0x1001d5c0
+// FUNCTION: GOLDP 0x1001d5c0
 LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
 	if (m_flags & c_flagBit0) {
 		VTable0x48();
 	}
 
-	m_flags |= c_flagBit1;
+	LegoU32 flags = m_flags | c_flagBit1;
+	LegoU32 bpp = p_bpp;
+	LegoU32 height = p_height;
+	m_flags = flags;
+	LegoU32 width = p_width;
 
-	if (p_width == 0) {
-		p_width = 640;
+	if (!width) {
+		width = 640;
 	}
-	if (p_height == 0) {
-		p_height = 480;
+	if (!height) {
+		height = 480;
 	}
-	if (p_bpp == 0) {
-		p_bpp = 16;
+	if (!bpp) {
+		bpp = 16;
 	}
 
-	m_bpp = p_bpp;
-	m_height = p_height;
+	m_bpp = bpp;
+	m_height = height;
 	m_flags = p_flags;
-	m_width = p_width;
+	m_width = width;
 
 	LegoS32 result = VTable0x00();
 	if (result) {
 		return result;
 	}
 
-	// MISSING xxxxxxx
-	STUB(0x1001d5c0);
+	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
 
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;

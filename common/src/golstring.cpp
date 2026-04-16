@@ -169,8 +169,8 @@ void GolString::ToUpperCase()
 {
 	LegoS32 i = SelectionLength();
 	while (--i >= 0) {
-		undefined2 c = m_chars[i];
-		if ((c >= 0x80 && c <= 0xe0) || islower(c)) {
+		undefined2 c = m_chars[i] & 0xFF;
+		if ((c >= 128u && c >= 224u) || islower(c)) {
 			m_chars[i] = c + ('A' - 'a');
 		}
 	}

@@ -215,6 +215,10 @@ jobs:
         run: |
           reccmp-decomplint ${{ matrix.path }} --module ${{ matrix.module }} --warnfail
 
+      - name: Check address padding
+        run: |
+          python tools/reccmp_addr_padding.py
+
   clang-format:
     name: c++ clang-format
     runs-on: ubuntu-latest

@@ -102,6 +102,7 @@ jobs:
         pip install -r tools/requirements.txt
 
     - name: Detect binaries
+      id: detection
       run: |
         reccmp-project detect --what original   --search-path racersbin
         reccmp-project detect --what recompiled --search-path build
@@ -124,12 +125,14 @@ jobs:
         reccmp-reccmp --target GOLDP --nolib --diff GOLDPPROGRESS-old.json || echo "Current master not found"
 
     - name: Check Vtables
+      if: ${{ steps.detection.conclusion == 'success' && always() }}
       shell: bash
       run: |
         reccmp-vtable --target LEGORACERS
         reccmp-vtable --target GOLDP
 
     - name: Check Variables
+      if: ${{ steps.detection.conclusion == 'success' && always() }}
       shell: bash
       run: |
         reccmp-datacmp --target LEGORACERS

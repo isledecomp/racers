@@ -69,7 +69,20 @@ public:
 	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0;                       // vtable+0x0c
 	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                                              // vtable+0x10
 	virtual LegoS32 Flush();                                                                         // vtable+0x14
+#ifdef BUILDING_GOL
+	// FUNCTION: GOLDP 0x10031530
+	virtual ~GolStream()
+	{
+		if (m_buffer) {
+			delete[] m_buffer;
+			m_buffer = NULL;
+		}
+
+		Init();
+	}                                                                                                // vtable+0x18
+#else
 	virtual ~GolStream();                                                                            // vtable+0x18
+#endif
 	virtual LegoS32 BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);        // vtable+0x1c
 	virtual LegoS32 Dispose();                                                                       // vtable+0x20
 	virtual LegoS32 BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead); // vtable+0x24
@@ -82,7 +95,23 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0044c940
 	// GolStream::`scalar deleting destructor'
 
+#ifdef BUILDING_GOL
+	void Init()
+	{
+		m_handle = -1;
+		m_mode = 0;
+		m_flags = 0;
+		m_position = 0;
+		m_size = 0;
+		m_unk0x10 = 0;
+		m_bufferCapacity = 0;
+		m_bufferStart = 0;
+		m_bufferEnd = 0;
+		m_buffer = NULL;
+	}
+#else
 	void Init();
+#endif
 	LegoS32 OpenFileSource();
 
 	undefined4 FUN_0044c9c0(const LegoChar* p_arg1);

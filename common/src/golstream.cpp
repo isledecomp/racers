@@ -64,7 +64,7 @@ GolStream::GolStream()
 	Init();
 }
 
-// FUNCTION: GOLDP 0x10031530
+#ifndef BUILDING_GOL
 // FUNCTION: LEGORACERS 0x0044c960
 GolStream::~GolStream()
 {
@@ -90,6 +90,7 @@ void GolStream::Init()
 	m_bufferEnd = 0;
 	m_buffer = NULL;
 }
+#endif
 
 // STUB: LEGORACERS 0x0044c9c0
 undefined4 GolStream::FUN_0044c9c0(const LegoChar* p_arg1)

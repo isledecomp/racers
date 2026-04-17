@@ -270,6 +270,40 @@ This keeps the SDD's inlined-destructor match AND the outer destructor's call-ba
 
 The original likely used some combination of source-level choices (inline vs. out-of-line definition placement, header layout, compiler flags, build-time codegen settings) that biased MSVC 6.0's inliner the right way without needing a pragma. Prefer discovering that configuration over propagating the pragma. When you add a new `#pragma inline_depth(0)`, include the TODO comment verbatim so it's easy to grep for and revisit.
 
+## Per-target Inline Definition Placement
+
+A common-layer function (in `common/src/`) can need different inlining decisions between the LEGORACERS and GOLDP targets — e.g. a small `Init()` helper that the compiler inlines into all callers in one target but calls as a function in the other. If the asm shows the helper *expanded* inside caller A and *called* from caller B, split the definition by target:
+
+```cpp
+// header
+class Class {
+#ifdef BUILDING_GOL
+    // FUNCTION: GOLDP 0xADDR
+    virtual ~Class()
+    {
+        // body, inlined by every TU that compiles for GOLDP — so the GOLDP SDD
+        // and anything else that wants the inlined form picks it up.
+    }
+#else
+    virtual ~Class();
+#endif
+};
+```
+
+```cpp
+// .cpp
+#ifndef BUILDING_GOL
+// FUNCTION: LEGORACERS 0xADDR
+Class::~Class()
+{
+    // same body, but out-of-line in LEGORACERS — so LEGORACERS call sites
+    // (constructor, SDD, other destructors) emit a real `call` and match.
+}
+#endif
+```
+
+The function body is duplicated, which is the downside; both copies must stay in sync. In return you get per-target inline control without any pragmas. Apply the same pattern to any helper (not just destructors) when the targets disagree on inlining.
+
 ## Naming Members from Matched Code
 
 A member name is proven as soon as a matched function uses that member in a way that forces a specific semantic interpretation — e.g., a member that is both the subject of `count++` inside a loop bounded at 20 AND later stored into a global `g_fileSourceCount` is unambiguously a "file source count", even without external evidence. Rename `m_unk0xNN` gap placeholders to their proven semantic names once a `// FUNCTION:` match corroborates the usage. Member types still follow the `undefined`/`undefined4` rule until proven.

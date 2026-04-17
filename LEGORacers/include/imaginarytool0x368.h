@@ -32,7 +32,7 @@ public:
 	virtual void VTable0x80();                                                      // vtable+0x80
 	virtual void VTable0x84() = 0;                                                  // vtable+0x84
 	virtual void VTable0x88();                                                      // vtable+0x88
-	virtual void VTable0x8c();                                                      // vtable+0x8c
+	virtual void VTable0x8c(undefined4, undefined4);                                // vtable+0x8c
 	virtual void VTable0x90(undefined4);                                            // vtable+0x90
 	virtual void VTable0x94(undefined4);                                            // vtable+0x94
 

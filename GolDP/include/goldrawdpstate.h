@@ -3,6 +3,7 @@
 
 #include "golcommondrawstate.h"
 #include "goldevicelist.h"
+#include "slatepeak0x58.h"
 
 #include <ddraw.h>
 
@@ -76,7 +77,8 @@ private:
 	GolDeviceList m_deviceList;                // 0x2e4
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
-	undefined m_unk0x2fc[0xc8ac4 - 0x2fc];     // 0x2fc
+	SlatePeak0x58 m_unk0x2fc;                  // 0x2fc
+	undefined m_unk0x354[0xc8ac4 - 0x354];     // 0x354
 };
 
 #endif // GOLDP_GOLDPSTATE_H

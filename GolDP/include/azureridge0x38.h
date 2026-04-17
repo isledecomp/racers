@@ -18,10 +18,8 @@ public:
 		undefined4 p_width,
 		undefined4 p_height,
 		undefined4 p_bpp
-	);                                   // vtable+0x30
-	virtual void VTable0x34();           // vtable+0x34
-	virtual void VTable0x38(undefined4); // vtable+0x38
-	virtual void VTable0x3c() = 0;       // vtable+0x3c
+	);                         // vtable+0x30
+	virtual void VTable0x34(); // vtable+0x34
 
 	// SYNTHETIC: GOLDP 0x1001d750
 	// AzureRidge0x38::`scalar deleting destructor'

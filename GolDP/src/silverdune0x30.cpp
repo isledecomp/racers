@@ -64,7 +64,7 @@ void SilverDune0x30::VTable0x20(undefined4, undefined4, undefined4)
 }
 
 // STUB: GOLDP 0x1001d240
-void SilverDune0x30::VTable0x24(undefined4, undefined4, undefined4, undefined4, undefined4*)
+void SilverDune0x30::VTable0x24(undefined4, undefined4, undefined4*, undefined4*, undefined4*)
 {
 	STUB(0x1001d240);
 }

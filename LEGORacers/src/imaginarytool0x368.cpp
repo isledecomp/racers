@@ -66,7 +66,7 @@ void ImaginaryTool0x368::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x0047fc20
-void ImaginaryTool0x368::VTable0x8c()
+void ImaginaryTool0x368::VTable0x8c(undefined4, undefined4)
 {
 	// TODO
 	STUB(0x47fc20);

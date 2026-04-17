@@ -16,6 +16,7 @@ extern LegoU32 g_unk0x4c739c;
 
 extern undefined4* g_unk0x4c73a0;
 
+// VTABLE: GOLDP 0x10057884
 // VTABLE: LEGORACERS 0x004b0f38
 // SIZE 0x30
 class GolStream {
@@ -77,6 +78,7 @@ public:
 	virtual LegoS32 WriteLine(const void* p_buf, LegoU32 p_size);                                    // vtable+0x30
 	virtual LegoS32 FlushWriteBuffer();                                                              // vtable+0x34
 
+	// SYNTHETIC: GOLDP 0x100314d0
 	// SYNTHETIC: LEGORACERS 0x0044c940
 	// GolStream::`scalar deleting destructor'
 
@@ -85,7 +87,7 @@ public:
 
 	undefined4 FUN_0044c9c0(const LegoChar* p_arg1);
 #ifdef BUILDING_GOL
-	static undefined4 FUN_100320d0();
+	static void FUN_100320d0();
 	static void FUN_10032110(const LegoChar* p_arg1);
 #endif
 

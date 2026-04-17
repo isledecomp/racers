@@ -1,5 +1,6 @@
 #include "golstream.h"
 
+#include "golerror.h"
 #include "golfilesource.h"
 #include "golfsutil.h"
 #include "types.h"
@@ -56,12 +57,14 @@ static const LegoChar* const g_errorCodeStrings[] = {
 	"Invalid character encoutered"
 };
 
+// STUB: GOLDP 0x100314a0
 // FUNCTION: LEGORACERS 0x0044c920
 GolStream::GolStream()
 {
 	Init();
 }
 
+// FUNCTION: GOLDP 0x10031530
 // FUNCTION: LEGORACERS 0x0044c960
 GolStream::~GolStream()
 {
@@ -121,6 +124,7 @@ LegoS32 GolStream::OpenFileSource()
 	return result;
 }
 
+// FUNCTION: GOLDP 0x10031580
 // FUNCTION: LEGORACERS 0x0044cb30
 LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize)
 {
@@ -208,6 +212,7 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 	return e_ioSuccess;
 }
 
+// FUNCTION: GOLDP 0x10031790
 // FUNCTION: LEGORACERS 0x0044cc90
 LegoS32 GolStream::Dispose()
 {
@@ -237,6 +242,7 @@ LegoS32 GolStream::Dispose()
 	}
 }
 
+// FUNCTION: GOLDP 0x10031800
 // FUNCTION: LEGORACERS 0x0044cd00
 LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
@@ -390,6 +396,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	return result;
 }
 
+// FUNCTION: GOLDP 0x10031af0
 // FUNCTION: LEGORACERS 0x0044cff0
 LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 {
@@ -502,8 +509,9 @@ const LegoChar* GolStream::ErrorCodeToString(LegoS32 p_code)
 	return g_errorCodeStrings[p_code];
 }
 
+// STUB: GOLDP 0x10031c90
 // STUB: LEGORACERS 0x0044d190
-void GolStream::FUN_0044d190(const LegoChar*, const LegoChar*)
+void GolStream::FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path)
 {
 	STUB(0x44d190);
 }
@@ -513,7 +521,7 @@ void GolStream::TransformToUpper(LegoChar* p_str)
 {
 	size_t i;
 
-	for (i = 0; *p_str != '\0' && i < 256; i++, p_str++) {
+	for (i = 0; *p_str != '\0' && i < sizeOfArray(g_pathBuffer); i++, p_str++) {
 		*p_str = toupper(*p_str);
 	}
 }
@@ -530,19 +538,30 @@ LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 
 #ifdef BUILDING_GOL
 
-// STUB: GOLDP 0x100320d0
-undefined4 GolStream::FUN_100320d0()
+// FUNCTION: GOLDP 0x100320d0
+void GolStream::FUN_100320d0()
 {
-	// TODO
-	STUB(0x100320d0);
-	return 0;
+	LegoU32 i;
+
+	for (i = 0; i < g_unk0x4c739c; i++) {
+		if (g_unk0x4c7384[i] != NULL) {
+			delete[] g_unk0x4c7384[i];
+			g_unk0x4c7384[i] = NULL;
+		}
+	}
 }
 
-// STUB: GOLDP 0x10032110
+// FUNCTION: GOLDP 0x10032110
 void GolStream::FUN_10032110(const LegoChar* p_arg1)
 {
-	// FIXME
-	STUB(0x10032110);
+	if (g_unk0x4c739c < sizeOfArray(g_unk0x4c7384)) {
+		g_unk0x4c7384[g_unk0x4c739c] = new LegoChar[::strlen(p_arg1) + 1];
+		if (g_unk0x4c7384[g_unk0x4c739c] == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+		strcpy(g_unk0x4c7384[g_unk0x4c739c], p_arg1);
+		g_unk0x4c739c++;
+	}
 }
 #endif
 

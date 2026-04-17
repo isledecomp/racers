@@ -91,15 +91,3 @@ void SlatePeak0x58::VTable0x2c()
 {
 	STUB(0x10003e90);
 }
-
-// STUB: GOLDP 0x10003fd0
-void SlatePeak0x58::VTable0x38(undefined4)
-{
-	STUB(0x10003fd0);
-}
-
-// STUB: GOLDP 0x10028250 FOLDED
-void SlatePeak0x58::VTable0x3c()
-{
-	STUB(0x10028250);
-}

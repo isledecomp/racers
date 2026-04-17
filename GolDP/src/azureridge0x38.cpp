@@ -33,9 +33,3 @@ void AzureRidge0x38::VTable0x34()
 {
 	STUB(0x1001d7c0);
 }
-
-// STUB: GOLDP 0x1001d7e0
-void AzureRidge0x38::VTable0x38(undefined4)
-{
-	STUB(0x1001d7e0);
-}

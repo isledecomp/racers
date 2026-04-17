@@ -1,5 +1,7 @@
 #include "goldpexport.h"
 
+#include "fluffygloomkins0x118.h"
+#include "golerror.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
@@ -23,12 +25,14 @@ GolDrawState* GolDPExport::VTable0x04()
 	return &this->m_state;
 }
 
-// STUB: GOLDP 0x100150a0
-undefined4* GolDPExport::VTable0x08()
+// FUNCTION: GOLDP 0x100150a0
+ZoweeBlubberworth0xf0* GolDPExport::VTable0x08()
 {
-	// TODO
-	STUB(0x100150a0);
-	return NULL;
+	ZoweeBlubberworth0xf0* obj = new FluffyGloomkins;
+	if (obj == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return obj;
 }
 
 // STUB: GOLDP 0x10015110

@@ -26,10 +26,8 @@ public:
 		undefined4 p_width,
 		undefined4 p_height,
 		undefined4 p_bpp
-	) override;                           // vtable+0x30
-	void VTable0x34() override;           // vtable+0x34
-	void VTable0x38(undefined4) override; // vtable+0x38
-	void VTable0x3c() override;           // vtable+0x3c
+	) override;                 // vtable+0x30
+	void VTable0x34() override; // vtable+0x34
 
 	// SYNTHETIC: GOLDP 0x10003170
 	// SlatePeak0x58::`scalar deleting destructor'

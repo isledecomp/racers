@@ -93,10 +93,13 @@ add_library(goldp SHARED
   GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
   GolDP/src/goldpexport.cpp
+  GolDP/src/fluffygloomkins0x118.cpp
   GolDP/src/goldevicelist.cpp
   GolDP/src/main.cpp
   GolDP/src/pearldew0x0c.cpp
+  GolDP/src/zoweeblubberworth0xf0.cpp
   GolDP/src/silverdune0x30.cpp
+  GolDP/src/smallcocoon0xc.cpp
   GolDP/src/slatepeak0x58.cpp
   GolDP/src/azureridge0x38.cpp
   util/decomp.cpp

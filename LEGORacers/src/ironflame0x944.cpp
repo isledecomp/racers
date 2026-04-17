@@ -4,9 +4,11 @@
 #include "gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
+#include "golstream.h"
 
 #include <mmsystem.h>
 #include <stdio.h>
+#include <string.h>
 
 extern HINSTANCE g_hInstance;
 extern HINSTANCE g_hPrevInstance;
@@ -31,7 +33,7 @@ IronFlame0x944::IronFlame0x944()
 // FUNCTION: LEGORACERS 0x00416580
 IronFlame0x944::~IronFlame0x944()
 {
-	VTable0x10();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004165e0
@@ -40,7 +42,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	LegoChar buffer[64];
 
 	if (m_unk0x04 & c_flagInitialized) {
-		VTable0x10();
+		Destroy();
 	}
 
 	if (!g_hPrevInstance) {
@@ -98,7 +100,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	}
 
 	LoadGolLibrary();
-	VTable0x1c();
+	InitInput();
 	m_golDrawState->VTable0x08(m_hWnd);
 	SetWindowLong(m_hWnd, 0, (LONG) this);
 	ShowWindow(m_hWnd, SW_SHOW);
@@ -114,18 +116,72 @@ void IronFlame0x944::VTable0x2c()
 	STUB(0x4167b0);
 }
 
-// STUB: LEGORACERS 0x004167e0
-void IronFlame0x944::VTable0x10()
+// FUNCTION: LEGORACERS 0x004167e0
+void IronFlame0x944::Destroy()
 {
-	// TODO
-	STUB(0x4167e0);
+	m_golBackendType = c_golBackendDP;
+	VTable0x2c();
+
+	if (m_hWnd) {
+		DestroyWindow(m_hWnd);
+		m_hWnd = 0;
+	}
+
+	for (LegoU32 i = 0; i < sizeOfArray(m_fileSources); i++) {
+		if (m_fileSources[i].GetStream()) {
+			m_fileSources[i].Reset();
+			m_files[i].Dispose();
+		}
+	}
+
+	m_unk0x834.Shutdown();
+	UnloadGolLibrary();
+
+	m_unk0x92c = 0;
+	m_unk0x04 = 0;
 }
 
-// STUB: LEGORACERS 0x00416860
-void IronFlame0x944::FUN_00416860(const LegoChar*)
+// FUNCTION: LEGORACERS 0x00416860
+void IronFlame0x944::FUN_00416860(const LegoChar* p_fileList)
 {
-	// TODO
-	STUB(0x416860);
+	if (!p_fileList) {
+		return;
+	}
+
+	LegoChar* buffer = new LegoChar[strlen(p_fileList) + 1];
+	LegoChar* saved = buffer;
+
+	if (buffer) {
+		strcpy(buffer, p_fileList);
+
+		while (buffer) {
+			if (m_fileSourceCount >= sizeOfArray(m_fileSources)) {
+				break;
+			}
+
+			LegoChar* newline = strchr(buffer, '\n');
+			if (newline) {
+				*newline = '\0';
+			}
+
+			if (!m_files[m_fileSourceCount].BufferedOpen(buffer, GolStream::c_modeRead, 0x8000)) {
+				m_fileSources[m_fileSourceCount].FUN_0044d870(&m_files[m_fileSourceCount]);
+				m_fileSourceCount++;
+			}
+
+			if (!newline) {
+				break;
+			}
+			buffer = newline + 1;
+		}
+
+		if (m_fileSourceCount > 0) {
+			g_fileSourceCount = m_fileSourceCount;
+			g_fileSources = m_fileSources;
+		}
+
+		delete[] saved;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00416960
@@ -178,11 +234,10 @@ void IronFlame0x944::UnloadGolLibrary()
 	}
 }
 
-// STUB: LEGORACERS 0x00416a90
-void IronFlame0x944::VTable0x1c()
+// FUNCTION: LEGORACERS 0x00416a90
+void IronFlame0x944::InitInput()
 {
-	// TODO
-	STUB(0x416a90);
+	m_unk0x834.FUN_004503e0(g_hInstance, m_hWnd);
 }
 
 // STUB: LEGORACERS 0x00416ab0

@@ -47,7 +47,7 @@ void NeonCactus0x1d6c::Shutdown()
 {
 	FUN_0042bd00();
 	FUN_0042be90();
-	m_unk0x04.VTable0x10();
+	m_unk0x04.Destroy();
 }
 
 // STUB: LEGORACERS 0x0042bc40

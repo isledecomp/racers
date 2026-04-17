@@ -19,10 +19,10 @@ public:
 	void VTable0x00() override;                           // vtable+0x00
 	~IronFlame0x944() override;                           // vtable+0x04
 	void Init(const LegoChar*, const LegoChar*) override; // vtable+0x0c
-	void VTable0x10() override;                           // vtable+0x10
+	void Destroy() override;                              // vtable+0x10
 	void LoadGolLibrary() override;                       // vtable+0x14
 	void UnloadGolLibrary() override;                     // vtable+0x18
-	void VTable0x1c() override;                           // vtable+0x1c
+	void InitInput() override;                            // vtable+0x1c
 	void VTable0x20() override;                           // vtable+0x20
 	void VTable0x24() override;                           // vtable+0x24
 	void VTable0x28() override;                           // vtable+0x28

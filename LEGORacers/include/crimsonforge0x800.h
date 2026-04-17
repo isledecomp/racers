@@ -20,10 +20,10 @@ public:
 	virtual ~CrimsonForge0x800();                            // vtable+0x04
 	virtual void VTable0x08();                               // vtable+0x08
 	virtual void Init(const LegoChar*, const LegoChar*) = 0; // vtable+0x0c
-	virtual void VTable0x10() = 0;                           // vtable+0x10
+	virtual void Destroy() = 0;                              // vtable+0x10
 	virtual void LoadGolLibrary() = 0;                       // vtable+0x14
 	virtual void UnloadGolLibrary() = 0;                     // vtable+0x18
-	virtual void VTable0x1c() = 0;                           // vtable+0x1c
+	virtual void InitInput() = 0;                            // vtable+0x1c
 	virtual void VTable0x20() = 0;                           // vtable+0x20
 	virtual void VTable0x24() = 0;                           // vtable+0x24
 	virtual void VTable0x28();                               // vtable+0x28
@@ -40,11 +40,11 @@ public:
 	void Reset();
 
 protected:
-	undefined4 m_unk0x04;                // 0x04
-	GolFile m_unk0x08[20];               // 0x08
-	GolFileSource m_unk0x3c8[20];        // 0x3c8
-	undefined m_unk0x7d8[0x7dc - 0x7d8]; // 0x7d8
-	GolHashTable m_hashTable;            // 0x7dc
+	undefined4 m_unk0x04;            // 0x04
+	GolFile m_files[20];             // 0x08
+	GolFileSource m_fileSources[20]; // 0x3c8
+	LegoU32 m_fileSourceCount;       // 0x7d8
+	GolHashTable m_hashTable;        // 0x7dc
 };
 
 #endif // CRIMSONFORGE0X800_H

@@ -29,6 +29,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0044d840
 	// GolFileSource::`scalar deleting destructor'
 
+	GolStream* GetStream() { return m_stream; }
+
+	void FUN_0044d870(GolStream* p_unk0x04);
 	void Reset();
 
 private:

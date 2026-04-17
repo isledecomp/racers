@@ -21,6 +21,13 @@ GolFileSource::~GolFileSource()
 	Reset();
 }
 
+// STUB: LEGORACERS 0x0044d870
+void GolFileSource::FUN_0044d870(GolStream*)
+{
+	// TODO
+	STUB(0x0044d870);
+}
+
 // FUNCTION: LEGORACERS 0x0044d8e0
 void GolFileSource::Reset()
 {

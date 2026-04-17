@@ -22,6 +22,13 @@ LegoS32 OpalVault0xf0::Reset()
 	return JasperCore0xf0::Reset();
 }
 
+// STUB: LEGORACERS 0x004503e0
+void OpalVault0xf0::FUN_004503e0(HINSTANCE, HWND)
+{
+	// TODO
+	STUB(0x004503e0);
+}
+
 // FUNCTION: LEGORACERS 0x00450460
 LegoS32 OpalVault0xf0::Shutdown()
 {

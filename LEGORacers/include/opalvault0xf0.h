@@ -25,6 +25,8 @@ public:
 
 	// SYNTHETIC: LEGORACERS 0x00450350
 	// OpalVault0xf0::`scalar deleting destructor'
+
+	void FUN_004503e0(HINSTANCE p_unk0x04, HWND p_unk0x08);
 };
 
 #endif // OPALVAULT0XF0_H

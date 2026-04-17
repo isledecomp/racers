@@ -61,10 +61,12 @@ GolFileParser::~GolFileParser()
 LegoS32 GolFileParser::Dispose()
 {
 	LegoS32 result = GolStream::Dispose();
+
 	if (m_filePath != NULL && m_filePath != m_unk0x1a8) {
 		delete[] m_filePath;
 		m_filePath = NULL;
 	}
+
 	return result;
 }
 
@@ -72,9 +74,10 @@ LegoS32 GolFileParser::Dispose()
 // FUNCTION: LEGORACERS 0x0044e690
 const LegoChar* GolFileParser::ParserErrorCodeToString(LegoS32 p_code)
 {
-	if (p_code >= (int) sizeOfArray(g_parserErrorStrings)) {
+	if (p_code >= (LegoS32) sizeOfArray(g_parserErrorStrings)) {
 		GOL_FATALERROR_MESSAGE("Unknown error.");
 	}
+
 	return g_parserErrorStrings[p_code];
 }
 
@@ -86,14 +89,16 @@ void GolFileParser::FUN_10032580(LegoS32 p_code)
 		GOL_FATALERROR_MESSAGE(ErrorCodeToString(p_code));
 		return;
 	}
-	LegoChar* buffer = m_unk0xa4;
-	buffer[0] = '\0';
-	if (::strlen(ErrorCodeToString(p_code)) + ::strlen(m_filePath) + ::strlen(g_ioErrorOccurredFormatStr) - 3 + 1 <
-		255) {
-		::sprintf(buffer, g_ioErrorOccurredFormatStr, m_filePath);
+
+	int totalLen = ::strlen(ErrorCodeToString(p_code)) + ::strlen(m_filePath) + ::strlen(g_ioErrorOccurredFormatStr);
+	m_unk0xa4[0] = '\0';
+
+	if (totalLen < 255) {
+		::sprintf(m_unk0xa4, g_ioErrorOccurredFormatStr, m_filePath);
 	}
-	::strcat(buffer, ErrorCodeToString(p_code));
-	GOL_FATALERROR_MESSAGE(buffer);
+
+	::strcat(m_unk0xa4, ErrorCodeToString(p_code));
+	GOL_FATALERROR_MESSAGE(m_unk0xa4);
 }
 
 // FUNCTION: GOLDP 0x10032650
@@ -103,6 +108,7 @@ const LegoChar* GolFileParser::GetSuffix()
 	if (m_suffix[0] == '\0') {
 		return ".txt";
 	}
+
 	return m_suffix;
 }
 
@@ -143,16 +149,18 @@ undefined4 GolFileParser::FUN_100326a0()
 	if (VTable0x44() != e_expectedInt) {
 		VTable0x40(e_expectedInt);
 	}
+
 	return m_unk0x38;
 }
 
 // FUNCTION: GOLDP 0x100326c0
 // FUNCTION: LEGORACERS 0x0044e820
-float GolFileParser::FUN_100326c0()
+LegoFloat GolFileParser::FUN_100326c0()
 {
 	if (VTable0x44() != e_expectedFloat) {
 		VTable0x40(e_expectedFloat);
 	}
+
 	return m_unk0x40;
 }
 
@@ -163,6 +171,7 @@ LegoChar* GolFileParser::FUN_100326e0()
 	if (VTable0x44() != e_expectedString) {
 		VTable0x40(e_expectedString);
 	}
+
 	return m_unk0x44;
 }
 
@@ -173,9 +182,11 @@ LegoChar* GolFileParser::FUN_10032700(size_t p_len)
 	if (VTable0x44() != e_expectedString) {
 		VTable0x40(e_expectedString);
 	}
+
 	if (::strlen(m_unk0x44) > p_len) {
 		VTable0x40(e_invalidString);
 	}
+
 	return m_unk0x44;
 }
 
@@ -193,7 +204,6 @@ void GolFileParser::FUN_10032740(undefined4 p_expected)
 void GolFileParser::FUN_10032760()
 {
 	if (VTable0x44() != e_expectedLeftBracket) {
-
 		VTable0x40(e_expectedLeftBracket);
 	}
 }
@@ -232,14 +242,18 @@ undefined4 GolFileParser::FUN_100327e0()
 	if (VTable0x44() != e_expectedLeftBracket) {
 		VTable0x40(e_expectedLeftBracket);
 	}
+
 	if (VTable0x44() != e_expectedInt) {
 		VTable0x40(e_expectedInt);
 	}
+
 	if (VTable0x44() != e_expectedRightBracket) {
 		VTable0x40(e_expectedRightBracket);
 	}
+
 	if (VTable0x44() != e_expectedLeftCurly) {
 		VTable0x40(e_expectedLeftCurly);
 	}
+
 	return m_unk0x38;
 }

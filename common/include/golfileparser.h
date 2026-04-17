@@ -57,7 +57,7 @@ public:
 	void FUN_10032580(LegoS32 p_code);
 	void FUN_10032670(const LegoChar* p_suffix);
 	undefined4 FUN_100326a0();
-	float FUN_100326c0();
+	LegoFloat FUN_100326c0();
 	LegoChar* FUN_100326e0();
 	LegoChar* FUN_10032700(size_t p_len);
 	void FUN_10032740(undefined4 p_expected);
@@ -78,11 +78,10 @@ private:
 	undefined4 m_unk0x34;               // 0x34
 	undefined4 m_unk0x38;               // 0x38
 	undefined m_unk0x3c[0x40 - 0x3c];   // 0x3c
-	float m_unk0x40;                    // 0x40
+	LegoFloat m_unk0x40;                // 0x40
 	LegoChar m_unk0x44[0x84 - 0x44];    // 0x44
 	undefined m_unk0x84[0xa4 - 0x84];   // 0x84
-	LegoChar* m_unk0xa4;                // 0xa4
-	undefined m_unk0xa8[0x1a4 - 0xa8];  // 0xa8
+	LegoChar m_unk0xa4[0x1a4 - 0xa4];   // 0xa4
 	LegoChar* m_filePath;               // 0x1a4
 	LegoChar m_unk0x1a8[0x1e8 - 0x1a8]; // 0x1a8
 	LegoChar m_suffix[5];               // 0x1a8

@@ -63,12 +63,12 @@ public:
 
 	GolStream();
 
-	virtual LegoS32 Open(LegoChar* p_fileName) = 0;                                                  // vtable+0x00
-	virtual LegoS32 Close() = 0;                                                                     // vtable+0x04
-	virtual LegoS32 Seek(LegoS32 p_offset) = 0;                                                      // vtable+0x08
-	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0;                       // vtable+0x0c
-	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                                              // vtable+0x10
-	virtual LegoS32 Flush();                                                                         // vtable+0x14
+	virtual LegoS32 Open(LegoChar* p_fileName) = 0;                            // vtable+0x00
+	virtual LegoS32 Close() = 0;                                               // vtable+0x04
+	virtual LegoS32 Seek(LegoS32 p_offset) = 0;                                // vtable+0x08
+	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0; // vtable+0x0c
+	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                        // vtable+0x10
+	virtual LegoS32 Flush();                                                   // vtable+0x14
 #ifdef BUILDING_GOL
 	// FUNCTION: GOLDP 0x10031530
 	virtual ~GolStream()
@@ -79,9 +79,9 @@ public:
 		}
 
 		Init();
-	}                                                                                                // vtable+0x18
+	} // vtable+0x18
 #else
-	virtual ~GolStream();                                                                            // vtable+0x18
+	virtual ~GolStream(); // vtable+0x18
 #endif
 	virtual LegoS32 BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);        // vtable+0x1c
 	virtual LegoS32 Dispose();                                                                       // vtable+0x20

@@ -51,8 +51,9 @@ void SmallCocoon0xc::AddName(const LegoChar* p_str, undefined4* p_arg2)
 {
 	LegoU32 startIndex = 0;
 	LegoU32 shift = 0;
+	LegoU32 i;
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_data[0].m_key); i++) {
+	for (i = 0; i < sizeOfArray(m_data[0].m_key); i++) {
 		LegoChar c = p_str[i];
 		if (c == '\0') {
 			break;
@@ -91,8 +92,9 @@ undefined4* SmallCocoon0xc::GetName(const LegoChar* p_str) const
 {
 	LegoU32 startIndex = 0;
 	LegoU32 shift = 0;
+	LegoU32 i;
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_data[0].m_key); i++) {
+	for (i = 0; i < sizeOfArray(m_data[0].m_key); i++) {
 		LegoChar c = p_str[i];
 
 		if (c == '\0') {

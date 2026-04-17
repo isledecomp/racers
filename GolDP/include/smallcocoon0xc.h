@@ -1,5 +1,5 @@
-#ifndef GOL_SmallCocoon0xc_H
-#define GOL_SmallCocoon0xc_H
+#ifndef GOL_SMALLCOCOON0xC_H
+#define GOL_SMALLCOCOON0xC_H
 
 #include "decomp.h"
 #include "types.h"
@@ -39,4 +39,4 @@ private:
 	undefined4 m_size; // 0x08
 };
 
-#endif // GOL_SmallCocoon0xc_H
+#endif // GOL_SMALLCOCOON0xC_H

@@ -14,16 +14,6 @@ SmallCocoon0xc::SmallCocoon0xc()
 	m_size = 0;
 }
 
-// FUNCTION: GOLDP 0x10028220
-SmallCocoon0xc::~SmallCocoon0xc()
-{
-	// inlined VTable0x08() ?
-	if (m_data != NULL) {
-		delete[] m_data;
-		m_data = NULL;
-	}
-}
-
 // FUNCTION: GOLDP 0x10028250 FOLDED
 void SmallCocoon0xc::VTable0x04(LegoU32 p_size)
 {

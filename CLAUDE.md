@@ -199,6 +199,76 @@ Matching these three functions provides high confidence that the class header (s
 - **Use `sizeOfArray(m_member)` for array-size loop bounds.** When iterating a class member array, prefer `sizeOfArray(m_files)` over the hard-coded count (e.g. `20`). `sizeOfArray` is compile-time evaluated to the same immediate, so codegen is identical, but the source is self-documenting and robust to array resizes.
 - **Write human-readable code, not IDA pseudocode.** The decompiled code should look like it was written by a human programmer. Avoid `goto` patterns, raw integer bit patterns for floats, and other artifacts of decompilation. Use proper types, named variables, and clean control flow. Iterate with reccmp to ensure the clean version still matches.
 - **Decomposing `if/else if` from asm.** A redundant-looking second conditional jump whose flags come from a much earlier `cmp` — e.g. `cmp ebp, 0xc ; jae label ; ... ; label: jne skip ; body ; skip:` — reveals an `else if` chain in the source. The correct form is usually `if (x < N) { main } else if (x == N) { body }`, NOT the reversed `if (x >= N) { body } else { main }` that IDA often shows. The `else if` branch body ends up physically at the end of the enclosing block, reached by a forward jump from the outer test. This restructuring often also unlocks different register allocation (e.g. pointer-walk vs index-form loops), because it changes how the compiler accounts for uses of the loop counter.
+- **Byte-loop hash accumulator pattern.** For a hash loop reading bytes from a string, prefer loading the byte into a local (`LegoChar c = p_str[i];`) and folding the shift directly into the accumulator (`acc += c << shift;`) rather than extracting a separate temp (`int v = p_str[i] << shift; acc += v;`). The temp pattern changes register allocation — the accumulator lands in a caller-saved register (`eax`) instead of callee-saved (`esi`) — which cascades to `this`/`p_str` register choices and stack-frame size.
+- **Loop-index variable scoping.** Declare `LegoU32 i;` before the first `for` loop, not inside the init. MSVC 6.0's legacy for-scoping lets `i` leak into the enclosing block (so a second `for (i = ...)` reusing the same variable compiles), but CI runs clang-tidy under modern ANSI scoping where the second loop sees `i` as undeclared. The compatible form is `LegoU32 i;` at function scope + `for (i = 0; ...; i++) { ... }`.
+
+## COMDAT Folding Across Targets
+
+A function in `common/src/` that is compiled into both `legoracers.exe` and `goldp.dll` can need different COMDAT fold groups in each target — e.g. a trivial `return 0;` function that folds with a group of empty STUBs in one target but stays independent in the other.
+
+To achieve a different fold behavior per target, wrap the `STUB(0xADDRESS)` macro in `#ifdef BUILDING_GOL` and annotate both targets:
+
+```cpp
+// FUNCTION: GOLDP 0xAAAAAAAA FOLDED
+// FUNCTION: LEGORACERS 0xBBBBBBBB
+LegoS32 Class::Method()
+{
+#ifdef BUILDING_GOL
+    STUB(0xAAAAAAAA);
+#endif
+    return c_successCode;
+}
+```
+
+In GOLDP the `STUB(...)` write to `g_foldingDummyVariable` makes the body identical to other `STUB(0xAAAAAAAA)` stubs and they fold together; in LEGORACERS the macro is gone and the function compiles to the standalone `xor eax, eax; ret` that LEGORACERS matches at its own address.
+
+## Vtable annotation syntax
+
+Class-header annotations require the colon: `// VTABLE: MODULE 0xADDRESS`, not `// VTABLE MODULE 0xADDRESS`. reccmp silently ignores the colonless form, and vtable set sites inside destructors/constructors then show up in the diff as `<OFFSET2>` instead of the resolved `ClassName::vftable`, costing the 5–10% match. Same rule for `// FUNCTION:`, `// STUB:`, `// GLOBAL:`, `// SYNTHETIC:`, `// SIZE` (size is an exception — no colon, per the existing convention).
+
+## Scalar Deleting Destructor Inlining
+
+For small classes, MSVC 6.0 inlines the destructor body directly into the compiler-synthesized *scalar deleting destructor* (SDD) rather than calling the destructor. If the SDD is <40% match while the destructor itself is 100%, the asm likely shows the destructor body inlined (e.g. setting the vftable, deleting a member, clearing a field) immediately followed by the standard `test byte [esp+N], 1 / je / delete this / ret 4` tail — whereas your build emits a plain `call Class::~Class` before that tail.
+
+To get the SDD to inline, move the destructor body into the class declaration in the header (implicit inline):
+
+```cpp
+class Small {
+public:
+    // FUNCTION: MODULE 0xADDR  (keep the annotation on the inline definition)
+    virtual ~Small()
+    {
+        if (m_data != NULL) {
+            delete[] m_data;
+            m_data = NULL;
+        }
+    }
+};
+```
+
+This pushes every translation unit that includes the header toward inlining the destructor, which is exactly what you want inside the SDD. But it also causes *inlining at unwanted call sites* — notably, a containing class's destructor that must emit 5 distinct calls to `~Small()` for five `Small` members will inline the body five times instead, breaking that containing destructor's match.
+
+Guard against that with `#pragma inline_depth(0)` around the containing destructor definition:
+
+```cpp
+// TODO: Temporary workaround until we figure out how the original code was written.
+#pragma inline_depth(0)
+OuterClass::~OuterClass()
+{
+    // compiler-emitted member destructor calls stay as calls
+}
+#pragma inline_depth()
+```
+
+This keeps the SDD's inlined-destructor match AND the outer destructor's call-based match. The pragma only affects the single function definition it wraps.
+
+**`#pragma inline_depth(0)` is a temporary workaround.** It is not how the original developers wrote their code — they got matching codegen without the pragma. Every use of this pragma carries a standard TODO comment:
+
+```cpp
+// TODO: Temporary workaround until we figure out how the original code was written.
+```
+
+The original likely used some combination of source-level choices (inline vs. out-of-line definition placement, header layout, compiler flags, build-time codegen settings) that biased MSVC 6.0's inliner the right way without needing a pragma. Prefer discovering that configuration over propagating the pragma. When you add a new `#pragma inline_depth(0)`, include the TODO comment verbatim so it's easy to grep for and revisit.
 
 ## Naming Members from Matched Code
 

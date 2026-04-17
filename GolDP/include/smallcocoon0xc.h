@@ -15,7 +15,15 @@ public:
 
 	SmallCocoon0xc();
 
-	virtual ~SmallCocoon0xc();               // vtable+0x00
+	// FUNCTION: GOLDP 0x10028220
+	virtual ~SmallCocoon0xc()
+	{
+		if (m_data != NULL) {
+			delete[] m_data;
+			m_data = NULL;
+		}
+	} // vtable+0x00
+
 	virtual void VTable0x04(LegoU32 p_size); // vtable+0x04
 	virtual void VTable0x08();               // vtable+0x08
 

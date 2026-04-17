@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.15...4.2 FATAL_ERROR)
+cmake_minimum_required(VERSION 3.25...4.2 FATAL_ERROR)
 
 # MSVC runtime library flags are selected by an abstraction
 cmake_policy(SET CMP0091 NEW)
@@ -205,13 +205,17 @@ if (MSVC_FOR_DECOMP)
     target_link_options(goldp PRIVATE "/OPT:NOREF,ICF")
   endif()
 
+  # LegoRacers.exe links to MSVCRT.dll (/MD), GolDP.dll has embedded its runtime library (/MT)
   set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
   set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
+  # Embed debug information (/Z7) for Debug and RelWithDebInfo configuration type
+  set_property(TARGET goldp legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
+
   set(CMAKE_CXX_FLAGS "/W3 /GX /D \"WIN32\" /D \"_WINDOWS\"")
-  set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Zi /Od /D \"_DEBUG\"")
+  set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Od /D \"_DEBUG\"")
   set(CMAKE_CXX_FLAGS_RELEASE "/O2 /D \"NDEBUG\"")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/Zi /O2 /D \"NDEBUG\"")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /D \"NDEBUG\"")
   set(CMAKE_CXX_FLAGS_MINSIZEREL "/Os /D \"NDEBUG\"")
 
   set(CMAKE_EXE_LINKER_FLAGS "/machine:I386")

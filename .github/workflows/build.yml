@@ -53,7 +53,7 @@ jobs:
     - name: Setup cmake
       uses: jwlawson/actions-setup-cmake@v2
       with:
-        cmake-version: '3.15.x'
+        cmake-version: '3.25.x'
 
     - name: Build
       shell: cmd

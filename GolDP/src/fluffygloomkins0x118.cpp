@@ -96,17 +96,19 @@ undefined4* FluffyGloomkins::Vtable0x50(undefined4)
 }
 
 // STUB: GOLDP 0x10017390
-void FluffyGloomkins::Vtable0x08()
+undefined4* FluffyGloomkins::Vtable0x08()
 {
 	// TODO
 	STUB(0x10017390);
+	return NULL;
 }
 
 // STUB: GOLDP 0x10017ac0
-void FluffyGloomkins::Vtable0x0c()
+undefined4* FluffyGloomkins::Vtable0x0c()
 {
 	// TODO
 	STUB(0x10017ac0);
+	return NULL;
 }
 
 // STUB: GOLDP 0x100180a0

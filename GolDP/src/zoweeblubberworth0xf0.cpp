@@ -77,6 +77,13 @@ void ZoweeBlubberworth0xf0::FUN_1002c9f0(undefined4*)
 	STUB(0x1002c9f0);
 }
 
+// STUB: GOLDP 0x1002ca80
+void ZoweeBlubberworth0xf0::FUN_1002ca80(undefined4*)
+{
+	// TODO
+	STUB(0x1002ca80);
+}
+
 // STUB: GOLDP 0x1002cb10
 void ZoweeBlubberworth0xf0::FUN_1002cb10(undefined4*)
 {

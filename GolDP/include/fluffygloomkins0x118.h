@@ -11,8 +11,8 @@ class FluffyGloomkins : public ZoweeBlubberworth0xf0 {
 public:
 	FluffyGloomkins();
 	~FluffyGloomkins() override;
-	void Vtable0x08(void) override;              // vtable+0x08
-	void Vtable0x0c(void) override;              // vtable+0x0c
+	undefined4* Vtable0x08(void) override;       // vtable+0x08
+	undefined4* Vtable0x0c(void) override;       // vtable+0x0c
 	void Vtable0x18(void) override;              // vtable+0x1c
 	void Vtable0x1c(undefined4*) override;       // vtable+0x1c
 	void Vtable0x20(undefined4) override;        // vtable+0x20

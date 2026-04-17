@@ -10,8 +10,8 @@ public:
 	ZoweeBlubberworth0xf0();
 	virtual void Vtable0x00(void);                                           // vtable+0x00
 	virtual void Vtable0x04(void);                                           // vtable+0x04
-	virtual void Vtable0x08(void) = 0;                                       // vtable+0x08
-	virtual void Vtable0x0c(void) = 0;                                       // vtable+0x0c
+	virtual undefined4* Vtable0x08(void) = 0;                                // vtable+0x08
+	virtual undefined4* Vtable0x0c(void) = 0;                                // vtable+0x0c
 	virtual ~ZoweeBlubberworth0xf0(void);                                    // vtable+0x10
 	virtual void Vtable0x14(undefined4, undefined4, undefined4, undefined4); // vtable+0x14
 	virtual void Vtable0x18(void);                                           // vtable+0x18

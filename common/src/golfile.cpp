@@ -10,18 +10,21 @@
 
 DECOMP_SIZE_ASSERT(GolFile, 0x30)
 
+// FUNCTION: GOLDP 0x100328c0
 // FUNCTION: LEGORACERS 0x00450a90
 GolFile::GolFile()
 {
 	m_fd = -1;
 }
 
+// FUNCTION: GOLDP 0x10032900
 // FUNCTION: LEGORACERS 0x00450ad0
 GolFile::~GolFile()
 {
 	GolStream::Dispose();
 }
 
+// FUNCTION: GOLDP 0x10032950
 // FUNCTION: LEGORACERS 0x00450b50
 LegoS32 GolFile::Open(LegoChar* p_fileName)
 {
@@ -90,6 +93,7 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 	return result;
 }
 
+// FUNCTION: GOLDP 0x10032a90
 // FUNCTION: LEGORACERS 0x00450c90
 LegoS32 GolFile::Close()
 {
@@ -106,6 +110,7 @@ LegoS32 GolFile::Close()
 	return e_ioSuccess;
 }
 
+// FUNCTION: GOLDP 0x10032ad0
 // FUNCTION: LEGORACERS 0x00450cd0
 LegoS32 GolFile::Seek(LegoS32 p_offset)
 {
@@ -117,6 +122,7 @@ LegoS32 GolFile::Seek(LegoS32 p_offset)
 	return e_ioSuccess;
 }
 
+// FUNCTION: GOLDP 0x10032b00
 // FUNCTION: LEGORACERS 0x00450d00
 LegoS32 GolFile::Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
@@ -130,12 +136,14 @@ LegoS32 GolFile::Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 	return result != 0 ? e_ioSuccess : e_ioEndOfFile;
 }
 
+// FUNCTION: GOLDP 0x10032b40
 // FUNCTION: LEGORACERS 0x00450d40
 LegoS32 GolFile::Write(void* p_buf, LegoU32 p_size)
 {
 	return _write(m_fd, p_buf, p_size) < 0 ? e_ioWriteError : e_ioSuccess;
 }
 
+// FUNCTION: GOLDP 0x10032b70
 // FUNCTION: LEGORACERS 0x00450d70
 LegoS32 GolFile::Flush()
 {

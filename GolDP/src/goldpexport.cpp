@@ -195,7 +195,7 @@ void GolDPExport::VTable0x64(undefined4*)
 	STUB(0x100156a0);
 }
 
-// STUB: GOLDP 0x1002c020
+// STUB: GOLDP 0x1002c020 FOLDED
 void GolDPExport::VTable0x58(undefined4*)
 {
 	// TODO

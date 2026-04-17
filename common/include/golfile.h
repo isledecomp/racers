@@ -19,6 +19,7 @@ public:
 	LegoS32 Write(void* p_buf, LegoU32 p_size) override;                    // vtable+0x10
 	LegoS32 Flush() override;                                               // vtable+0x14
 
+	// SYNTHETIC: GOLDP 0x100328e0
 	// SYNTHETIC: LEGORACERS 0x00450ab0
 	// GolFile::`scalar deleting destructor'
 };

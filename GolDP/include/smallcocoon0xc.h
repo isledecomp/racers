@@ -16,8 +16,8 @@ public:
 	SmallCocoon0xc();
 
 	virtual ~SmallCocoon0xc();              //  vtable+0x00
-	virtual void Vtable0x4(LegoU32 p_size); //  vtable+0x04
-	virtual void Vtable0x8();               //  vtable+0x08
+	virtual void VTable0x04(LegoU32 p_size); // vtable+0x04
+	virtual void VTable0x08();               // vtable+0x08
 
 	void AddName(const LegoChar* p_arg1, undefined4* p_arg2);
 	undefined4* GetName(const LegoChar* p_str) const;

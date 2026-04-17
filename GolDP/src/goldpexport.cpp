@@ -29,9 +29,11 @@ GolDrawState* GolDPExport::VTable0x04()
 ZoweeBlubberworth0xf0* GolDPExport::VTable0x08()
 {
 	ZoweeBlubberworth0xf0* obj = new FluffyGloomkins;
+
 	if (obj == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	return obj;
 }
 

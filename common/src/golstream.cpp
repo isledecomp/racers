@@ -541,9 +541,7 @@ LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 // FUNCTION: GOLDP 0x100320d0
 void GolStream::FUN_100320d0()
 {
-	LegoU32 i;
-
-	for (i = 0; i < g_unk0x4c739c; i++) {
+	for (LegoU32 i = 0; i < g_unk0x4c739c; i++) {
 		if (g_unk0x4c7384[i] != NULL) {
 			delete[] g_unk0x4c7384[i];
 			g_unk0x4c7384[i] = NULL;
@@ -556,9 +554,11 @@ void GolStream::FUN_10032110(const LegoChar* p_arg1)
 {
 	if (g_unk0x4c739c < sizeOfArray(g_unk0x4c7384)) {
 		g_unk0x4c7384[g_unk0x4c739c] = new LegoChar[::strlen(p_arg1) + 1];
+
 		if (g_unk0x4c7384[g_unk0x4c739c] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
+
 		strcpy(g_unk0x4c7384[g_unk0x4c739c], p_arg1);
 		g_unk0x4c739c++;
 	}

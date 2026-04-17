@@ -18,25 +18,25 @@ void ZoweeBlubberworth0xf0::FUN_1002c0e0()
 // FUNCTION: GOLDP 0x1002c1a0
 ZoweeBlubberworth0xf0::~ZoweeBlubberworth0xf0()
 {
-	Vtable0x18();
+	VTable0x18();
 }
 
 // STUB: GOLDP 0x1002c240
-void ZoweeBlubberworth0xf0::Vtable0x14(undefined4, undefined4, undefined4, undefined4)
+void ZoweeBlubberworth0xf0::VTable0x14(undefined4, undefined4, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x1002c240);
 }
 
 // STUB: GOLDP 0x1002c4d0
-void ZoweeBlubberworth0xf0::Vtable0x00()
+void ZoweeBlubberworth0xf0::VTable0x00()
 {
 	// TODO
 	STUB(0x1002c240);
 }
 
 // STUB: GOLDP 0x1002c6b0
-void ZoweeBlubberworth0xf0::Vtable0x18()
+void ZoweeBlubberworth0xf0::VTable0x18()
 {
 	// TODO
 	STUB(0x1002c6b0);
@@ -175,7 +175,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e250(undefined4*, undefined4*)
 }
 
 // STUB: GOLDP 0x1002e2c0
-void ZoweeBlubberworth0xf0::Vtable0x04()
+void ZoweeBlubberworth0xf0::VTable0x04()
 {
 	// TODO
 	STUB(0x1002e2c0);
@@ -196,7 +196,7 @@ void ZoweeBlubberworth0xf0::FUN_1002f210(undefined4, undefined4*)
 }
 
 // STUB: GOLDP 0x1002f350
-void ZoweeBlubberworth0xf0::Vtable0x54()
+void ZoweeBlubberworth0xf0::VTable0x54()
 {
 	// TODO
 	STUB(0x1002f350);

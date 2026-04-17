@@ -8,28 +8,28 @@
 class ZoweeBlubberworth0xf0 {
 public:
 	ZoweeBlubberworth0xf0();
-	virtual void Vtable0x00(void);                                           // vtable+0x00
-	virtual void Vtable0x04(void);                                           // vtable+0x04
-	virtual undefined4* Vtable0x08(void) = 0;                                // vtable+0x08
-	virtual undefined4* Vtable0x0c(void) = 0;                                // vtable+0x0c
+	virtual void VTable0x00(void);                                           // vtable+0x00
+	virtual void VTable0x04(void);                                           // vtable+0x04
+	virtual undefined4* VTable0x08(void) = 0;                                // vtable+0x08
+	virtual undefined4* VTable0x0c(void) = 0;                                // vtable+0x0c
 	virtual ~ZoweeBlubberworth0xf0(void);                                    // vtable+0x10
-	virtual void Vtable0x14(undefined4, undefined4, undefined4, undefined4); // vtable+0x14
-	virtual void Vtable0x18(void);                                           // vtable+0x18
-	virtual void Vtable0x1c(undefined4*) = 0;                                // vtable+0x1c
-	virtual void Vtable0x20(undefined4) = 0;                                 // vtable+0x20
-	virtual void Vtable0x24(undefined4) = 0;                                 // vtable+0x24
-	virtual void Vtable0x28(undefined4*) = 0;                                // vtable+0x28
-	virtual undefined4* Vtable0x2c(undefined4) = 0;                          // vtable+0x2c
-	virtual undefined4* Vtable0x30(undefined4) = 0;                          // vtable+0x30
-	virtual undefined4* Vtable0x34(undefined4) = 0;                          // vtable+0x34
-	virtual undefined4* Vtable0x38(undefined4) = 0;                          // vtable+0x38
-	virtual undefined4* Vtable0x3c(undefined4) = 0;                          // vtable+0x3c
-	virtual undefined4* Vtable0x40(undefined4) = 0;                          // vtable+0x40
-	virtual undefined4* Vtable0x44(undefined4) = 0;                          // vtable+0x44
-	virtual undefined4* Vtable0x48(undefined4) = 0;                          // vtable+0x48
-	virtual undefined4* Vtable0x4c(undefined4) = 0;                          // vtable+0x4c
-	virtual undefined4* Vtable0x50(undefined4) = 0;                          // vtable+0x50
-	virtual void Vtable0x54(void);                                           // vtable+0x54
+	virtual void VTable0x14(undefined4, undefined4, undefined4, undefined4); // vtable+0x14
+	virtual void VTable0x18(void);                                           // vtable+0x18
+	virtual void VTable0x1c(undefined4*) = 0;                                // vtable+0x1c
+	virtual void VTable0x20(undefined4) = 0;                                 // vtable+0x20
+	virtual void VTable0x24(undefined4) = 0;                                 // vtable+0x24
+	virtual void VTable0x28(undefined4*) = 0;                                // vtable+0x28
+	virtual undefined4* VTable0x2c(undefined4) = 0;                          // vtable+0x2c
+	virtual undefined4* VTable0x30(undefined4) = 0;                          // vtable+0x30
+	virtual undefined4* VTable0x34(undefined4) = 0;                          // vtable+0x34
+	virtual undefined4* VTable0x38(undefined4) = 0;                          // vtable+0x38
+	virtual undefined4* VTable0x3c(undefined4) = 0;                          // vtable+0x3c
+	virtual undefined4* VTable0x40(undefined4) = 0;                          // vtable+0x40
+	virtual undefined4* VTable0x44(undefined4) = 0;                          // vtable+0x44
+	virtual undefined4* VTable0x48(undefined4) = 0;                          // vtable+0x48
+	virtual undefined4* VTable0x4c(undefined4) = 0;                          // vtable+0x4c
+	virtual undefined4* VTable0x50(undefined4) = 0;                          // vtable+0x50
+	virtual void VTable0x54(void);                                           // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
 	// ZoweeBlubberworth0xf0::`scalar deleting destructor'

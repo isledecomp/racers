@@ -617,7 +617,7 @@ def do_validate(options, filename):
 
 if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s',
-                        filename='log.txt', filemode='w')
+                        filemode='w')
 
     """ Parse all command line arguments and validate """
     op = Options()

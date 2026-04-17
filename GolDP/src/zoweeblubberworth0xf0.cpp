@@ -8,11 +8,53 @@ ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()
 	FUN_1002c0e0();
 }
 
-// STUB: GOLDP 0x1002c0e0
+// FUNCTION: GOLDP 0x1002c0e0
 void ZoweeBlubberworth0xf0::FUN_1002c0e0()
 {
-	// TODO
-	STUB(0x1002c0e0);
+	m_unk0x94 = 1.0;
+	m_unk0x04 = 0;
+	m_unk0x0c = 0;
+	m_unk0x10 = 0;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = 0;
+	m_unk0x2c = 0;
+	m_unk0x30 = 0;
+	m_unk0x34 = 0;
+	m_unk0x38 = 0;
+	m_unk0x3c = 0;
+	m_unk0x40 = 0;
+	m_unk0x44 = 0;
+	m_unk0x48 = 0;
+	m_unk0x4c = 0;
+	m_unk0x50 = 0;
+	m_unk0x54 = 0;
+	m_unk0x58 = 0;
+	m_unk0x5c = 0;
+	m_unk0x60 = 0;
+	m_unk0x64 = 0;
+	m_unk0x68 = 0;
+	m_unk0x6c = 0;
+	m_unk0x70 = 0;
+	m_unk0x74 = 0;
+	m_unk0x78 = 0;
+	m_unk0x7c = 0;
+	m_unk0x80 = 0;
+	m_unk0x84 = 0;
+	m_unk0x88 = 0;
+	m_unk0x8c = 0;
+	m_unk0x90 = 0;
+	m_unk0x08 = 0;
+	m_unk0x98 = 0;
+	m_unk0x9c = 0;
+	m_unk0xa0 = 0;
+	m_unk0xa4 = 0;
+	m_unk0xa8 = 0;
+	m_unk0xac = 0;
+	m_unk0xb0 = 0;
 }
 
 // FUNCTION: GOLDP 0x1002c1a0
@@ -22,8 +64,15 @@ ZoweeBlubberworth0xf0::~ZoweeBlubberworth0xf0()
 }
 
 // STUB: GOLDP 0x1002c240
-void ZoweeBlubberworth0xf0::Vtable0x14(undefined4, undefined4, undefined4, undefined4)
+void ZoweeBlubberworth0xf0::Vtable0x14(undefined4 p_arg1, undefined4, undefined4 p_arg3, float p_arg4)
 {
+	if (m_unk0x04) {
+		Vtable0x18();
+	}
+	if (!p_arg3) {
+	}
+	m_unk0x04 = p_arg1;
+	m_unk0x94 = p_arg4;
 	// TODO
 	STUB(0x1002c240);
 }

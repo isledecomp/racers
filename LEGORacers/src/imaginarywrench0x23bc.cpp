@@ -103,81 +103,66 @@ void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
 // FUNCTION: LEGORACERS 0x0047ba00
 void ImaginaryWrench0x23bc::FUN_0047ba00()
 {
-	// TODO
-	char buf[12];
+	LegoChar buf[14];
 	m_unk0x23a8.CopyToString(buf);
-	buf[11] = '\0'; // ?
+	buf[13] = '\0';
 
-	for (LegoS32 i = 0; i < sizeOfArray(g_cheatNames); i++) {
-		if (strcmp(buf, g_cheatNames[i]) == 0) {
-			LegoU32 flag = 1 << i;
+	for (LegoU32 i = 0; i < sizeOfArray(g_cheatNames); ++i) {
+		if (strcmp(g_cheatNames[i], buf) == 0) {
+			if (i < sizeOfArray(g_cheatNames) - 1) {
+				LegoU32 flag = 1 << i;
+				LegoU32 current = (*m_unk0x354)->m_unk0x20;
 
-			if ((*m_unk0x354)->m_unk0x20 & flag) {
-				(*m_unk0x354)->m_unk0x20 &= ~flag;
-				continue;
+				if (current & flag) {
+					(*m_unk0x354)->m_unk0x20 = current & ~flag;
+				}
+				else {
+					(*m_unk0x354)->m_unk0x20 = current | flag;
+
+					switch (flag) {
+					case c_pgllrd:
+						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllyll | c_pgllgrn | c_rpcrnly);
+						break;
+					case c_pgllyll:
+						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllgrn | c_rpcrnly);
+						break;
+					case c_pgllgrn:
+						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_rpcrnly);
+						break;
+					case c_rpcrnly:
+						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_pgllgrn | c_mxpmx);
+						break;
+					case c_mxpmx:
+						(*m_unk0x354)->m_unk0x20 &= ~c_rpcrnly;
+						break;
+					case c_nwhls: {
+						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						if ((v & c_nchsss) && (v & c_ndrvr)) {
+							(*m_unk0x354)->m_unk0x20 = v & ~c_ndrvr;
+						}
+						break;
+					}
+					case c_nchsss: {
+						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						if ((v & c_nwhls) && (v & c_ndrvr)) {
+							(*m_unk0x354)->m_unk0x20 = v & ~c_nwhls;
+						}
+						break;
+					}
+					case c_ndrvr: {
+						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						if ((v & c_nchsss) && (v & c_nwhls)) {
+							(*m_unk0x354)->m_unk0x20 = v & ~c_nchsss;
+						}
+						break;
+					}
+					}
+				}
 			}
-
-			(*m_unk0x354)->m_unk0x20 |= flag;
-
-			switch (flag) {
-			case 1:
-				break;
-
-			case 2:
-				break;
-
-			case 4:
-				(*m_unk0x354)->m_unk0x20 &= 0xffffffa7;
-				break;
-
-			case 8:
-				(*m_unk0x354)->m_unk0x20 &= 0xffffffab;
-				break;
-
-			case 16:
-				(*m_unk0x354)->m_unk0x20 &= 0xffffffb3;
-				break;
-
-			case 32:
-				break;
-
-			case 64:
-				(*m_unk0x354)->m_unk0x20 &= 0xffffff63;
-				break;
-
-			case 128:
-				(*m_unk0x354)->m_unk0x20 &= 0xffffffbf;
-				break;
-
-			case 256:
-				break;
-
-			case 512:
-				if (((*m_unk0x354)->m_unk0x20 & 1024)) {
-					break;
-				}
-				if ((*m_unk0x354)->m_unk0x20 & 2048) {
-					break;
-				}
-
-				(*m_unk0x354)->m_unk0x20 &= 0xfffff7ff;
-				break;
-
-			case 1024:
-				if (((*m_unk0x354)->m_unk0x20 & 512) == 0 && ((*m_unk0x354)->m_unk0x20 & 2048) == 0) {
-					(*m_unk0x354)->m_unk0x20 &= 0xfffffdff;
-				}
-				break;
-
-			case 2048:
-				if (((*m_unk0x354)->m_unk0x20 & 1024) == 0 && ((*m_unk0x354)->m_unk0x20 & 512) == 0) {
-					(*m_unk0x354)->m_unk0x20 &= 0xfffffbff;
-				}
-				break;
+			else if (i == sizeOfArray(g_cheatNames) - 1) {
+				(*m_unk0x354)->m_unk0x20 = 0;
 			}
 		}
-
-		(*m_unk0x354)->m_unk0x20 = 0;
 	}
 }
 

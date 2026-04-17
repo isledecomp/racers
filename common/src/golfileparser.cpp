@@ -90,10 +90,11 @@ void GolFileParser::FUN_10032580(LegoS32 p_code)
 		return;
 	}
 
-	int totalLen = ::strlen(ErrorCodeToString(p_code)) + ::strlen(m_filePath) + ::strlen(g_ioErrorOccurredFormatStr);
+	LegoS32 totalLen =
+		::strlen(ErrorCodeToString(p_code)) + ::strlen(m_filePath) + ::strlen(g_ioErrorOccurredFormatStr);
 	m_unk0xa4[0] = '\0';
 
-	if (totalLen < 255) {
+	if (totalLen < (LegoS32) sizeOfArray(m_unk0xa4) - 1) {
 		::sprintf(m_unk0xa4, g_ioErrorOccurredFormatStr, m_filePath);
 	}
 

@@ -27,7 +27,7 @@ NeonCactus0x1d6c::~NeonCactus0x1d6c()
 // FUNCTION: LEGORACERS 0x0042bbb0
 LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 {
-	if (m_unk0x04.GetUnk0x04() & 1) {
+	if (m_unk0x04.GetUnk0x04() & CrimsonForge0x800::c_flagInitialized) {
 		Shutdown();
 	}
 
@@ -38,7 +38,7 @@ LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 
 	m_unk0x04.GetHashTable().Init(100, 4096);
 	m_unk0x04.SetGolBackendType(m_golBackendType);
-	m_unk0x04.VTable0x0c("LEGO Racers", g_jamFile);
+	m_unk0x04.Init("LEGO Racers", g_jamFile);
 	return 1;
 }
 

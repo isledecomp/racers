@@ -6,6 +6,7 @@
 #include "decomp.h"
 #include "gol.h"
 #include "opalvault0xf0.h"
+#include "racers_resource.h"
 #include "types.h"
 
 #include <windows.h>
@@ -15,19 +16,19 @@
 class IronFlame0x944 : public CrimsonForge0x800 {
 public:
 	IronFlame0x944();
-	void VTable0x00() override;                                 // vtable+0x00
-	~IronFlame0x944() override;                                 // vtable+0x04
-	void VTable0x0c(const LegoChar*, const LegoChar*) override; // vtable+0x0c
-	void VTable0x10() override;                                 // vtable+0x10
-	void LoadGolLibrary() override;                             // vtable+0x14
-	void UnloadGolLibrary() override;                           // vtable+0x18
-	void VTable0x1c() override;                                 // vtable+0x1c
-	void VTable0x20() override;                                 // vtable+0x20
-	void VTable0x24() override;                                 // vtable+0x24
-	void VTable0x28() override;                                 // vtable+0x28
-	void VTable0x2c() override;                                 // vtable+0x2c
-	void VTable0x30() override;                                 // vtable+0x30
-	void VTable0x34() override;                                 // vtable+0x34
+	void VTable0x00() override;                           // vtable+0x00
+	~IronFlame0x944() override;                           // vtable+0x04
+	void Init(const LegoChar*, const LegoChar*) override; // vtable+0x0c
+	void VTable0x10() override;                           // vtable+0x10
+	void LoadGolLibrary() override;                       // vtable+0x14
+	void UnloadGolLibrary() override;                     // vtable+0x18
+	void VTable0x1c() override;                           // vtable+0x1c
+	void VTable0x20() override;                           // vtable+0x20
+	void VTable0x24() override;                           // vtable+0x24
+	void VTable0x28() override;                           // vtable+0x28
+	void VTable0x2c() override;                           // vtable+0x2c
+	void VTable0x30() override;                           // vtable+0x30
+	void VTable0x34() override;                           // vtable+0x34
 
 	enum {
 		c_golBackendDP = 0x0,
@@ -42,13 +43,17 @@ public:
 	LegoU32 GetGolBackendType() { return m_golBackendType; }
 	void SetGolBackendType(LegoU32 p_golBackendType) { m_golBackendType = p_golBackendType; }
 
+	void FUN_00416860(const LegoChar* p_unk0x04);
+
 private:
 	GolExport* m_golExport;              // 0x800
 	GolDrawState* m_golDrawState;        // 0x804
-	undefined m_unk0x808[0x830 - 0x808]; // 0x808
+	undefined m_unk0x808[0x820 - 0x808]; // 0x808
+	DWORD m_unk0x820;                    // 0x820
+	undefined m_unk0x824[0x830 - 0x824]; // 0x824
 	HMODULE m_golLibrary;                // 0x830
 	OpalVault0xf0 m_unk0x834;            // 0x834
-	undefined4 m_unk0x924;               // 0x924
+	HWND m_hWnd;                         // 0x924
 	LegoU32 m_golBackendType;            // 0x928
 	undefined4 m_unk0x92c;               // 0x92c
 	undefined4 m_unk0x930;               // 0x930
@@ -57,5 +62,7 @@ private:
 	undefined4 m_unk0x93c;               // 0x93c
 	undefined4 m_unk0x940;               // 0x940
 };
+
+LRESULT CALLBACK AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam);
 
 #endif // IRONFLAME0X944_H

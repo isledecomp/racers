@@ -5,7 +5,11 @@
 #include "golerror.h"
 #include "golfsutil.h"
 
+#include <mmsystem.h>
 #include <stdio.h>
+
+extern HINSTANCE g_hInstance;
+extern HINSTANCE g_hPrevInstance;
 
 DECOMP_SIZE_ASSERT(IronFlame0x944, 0x944)
 
@@ -14,7 +18,7 @@ IronFlame0x944::IronFlame0x944()
 {
 	m_golLibrary = NULL;
 	m_golExport = NULL;
-	m_unk0x924 = 0;
+	m_hWnd = 0;
 	m_golBackendType = c_golBackendDP;
 	m_unk0x92c = 0;
 	m_unk0x934 = 0;
@@ -30,11 +34,77 @@ IronFlame0x944::~IronFlame0x944()
 	VTable0x10();
 }
 
-// STUB: LEGORACERS 0x004165e0
-void IronFlame0x944::VTable0x0c(const LegoChar*, const LegoChar*)
+// FUNCTION: LEGORACERS 0x004165e0
+void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileName)
 {
-	// TODO
-	STUB(0x4165e0);
+	LegoChar buffer[64];
+
+	if (m_unk0x04 & c_flagInitialized) {
+		VTable0x10();
+	}
+
+	if (!g_hPrevInstance) {
+		WNDCLASS wndClass;
+		wndClass.style = CS_HREDRAW | CS_VREDRAW;
+		wndClass.lpfnWndProc = AppWndProc;
+		wndClass.cbClsExtra = 0;
+		wndClass.cbWndExtra = 4;
+		wndClass.hInstance = g_hInstance;
+		wndClass.hIcon = LoadIcon(g_hInstance, MAKEINTRESOURCE(ICON_RACERS));
+
+		if (!wndClass.hIcon) {
+			::sprintf(buffer, "Unable to load app icon\nError = 0x%x", GetLastError());
+			GOL_FATALERROR_MESSAGE(buffer);
+		}
+
+		wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
+		wndClass.hbrBackground = (HBRUSH) GetStockObject(BLACK_BRUSH);
+		wndClass.lpszMenuName = NULL;
+		wndClass.lpszClassName = "AolAppWinClass";
+
+		if (!RegisterClass(&wndClass)) {
+			::sprintf(buffer, "Unable to register app window class\nError = 0x%x", GetLastError());
+			GOL_FATALERROR_MESSAGE(buffer);
+		}
+
+		g_hPrevInstance = g_hInstance;
+	}
+
+	g_unk0x4c73a0 = (undefined4*) &m_hashTable;
+
+	if (p_fileName) {
+		FUN_00416860(p_fileName);
+	}
+
+	m_unk0x93c = WS_POPUP | WS_CLIPCHILDREN;
+	m_unk0x940 = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN;
+	m_hWnd = CreateWindowEx(
+		0,
+		"AolAppWinClass",
+		p_windowName,
+		WS_POPUP | WS_CLIPCHILDREN,
+		0,
+		0,
+		0,
+		0,
+		NULL,
+		NULL,
+		g_hInstance,
+		NULL
+	);
+
+	if (!m_hWnd) {
+		GOL_FATALERROR_MESSAGE("Unable to create application window");
+	}
+
+	LoadGolLibrary();
+	VTable0x1c();
+	m_golDrawState->VTable0x08(m_hWnd);
+	SetWindowLong(m_hWnd, 0, (LONG) this);
+	ShowWindow(m_hWnd, SW_SHOW);
+	m_unk0x820 = timeGetTime();
+	m_unk0x92c = 0;
+	m_unk0x04 |= c_flagInitialized;
 }
 
 // STUB: LEGORACERS 0x004167b0
@@ -49,6 +119,13 @@ void IronFlame0x944::VTable0x10()
 {
 	// TODO
 	STUB(0x4167e0);
+}
+
+// STUB: LEGORACERS 0x00416860
+void IronFlame0x944::FUN_00416860(const LegoChar*)
+{
+	// TODO
+	STUB(0x416860);
 }
 
 // FUNCTION: LEGORACERS 0x00416960
@@ -141,6 +218,14 @@ void IronFlame0x944::VTable0x34()
 {
 	// TODO
 	STUB(0x416ef0);
+}
+
+// STUB: LEGORACERS 0x00417330
+LRESULT CALLBACK AppWndProc(HWND, UINT, WPARAM, LPARAM)
+{
+	// TODO
+	STUB(0x417330);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x00417900

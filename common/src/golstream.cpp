@@ -699,9 +699,13 @@ LegoS32 GolStream::FlushWriteBuffer()
 	return result;
 }
 
+// FUNCTION: GOLDP 0x100016f0 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7e0
 LegoS32 GolStream::Flush()
 {
+#ifdef BUILDING_GOL
+	STUB(0x100016f0);
+#endif
 	return e_ioSuccess;
 }
 

@@ -1,5 +1,7 @@
 #include "imaginarywrench0x23bc.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(ImaginaryWrench0x23bc, 0x23bc)
 
 // GLOBAL: LEGORACERS 0x004c1ff4
@@ -98,12 +100,85 @@ void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
 	STUB(0x47b9e0);
 }
 
-// STUB: LEGORACERS 0x0047ba00
+// FUNCTION: LEGORACERS 0x0047ba00
 void ImaginaryWrench0x23bc::FUN_0047ba00()
 {
 	// TODO
-	// This function checks the array of cheat strings at 0x4c1ff4.
-	STUB(0x47ba00);
+	char buf[12];
+	m_unk0x23a8.CopyToString(buf);
+	buf[11] = '\0'; // ?
+
+	for (LegoS32 i = 0; i < sizeOfArray(g_cheatNames); i++) {
+		if (strcmp(buf, g_cheatNames[i]) == 0) {
+			LegoU32 flag = 1 << i;
+
+			if ((*m_unk0x354)->m_unk0x20 & flag) {
+				(*m_unk0x354)->m_unk0x20 &= ~flag;
+				continue;
+			}
+
+			(*m_unk0x354)->m_unk0x20 |= flag;
+
+			switch (flag) {
+			case 1:
+				break;
+
+			case 2:
+				break;
+
+			case 4:
+				(*m_unk0x354)->m_unk0x20 &= 0xffffffa7;
+				break;
+
+			case 8:
+				(*m_unk0x354)->m_unk0x20 &= 0xffffffab;
+				break;
+
+			case 16:
+				(*m_unk0x354)->m_unk0x20 &= 0xffffffb3;
+				break;
+
+			case 32:
+				break;
+
+			case 64:
+				(*m_unk0x354)->m_unk0x20 &= 0xffffff63;
+				break;
+
+			case 128:
+				(*m_unk0x354)->m_unk0x20 &= 0xffffffbf;
+				break;
+
+			case 256:
+				break;
+
+			case 512:
+				if (((*m_unk0x354)->m_unk0x20 & 1024)) {
+					break;
+				}
+				if ((*m_unk0x354)->m_unk0x20 & 2048) {
+					break;
+				}
+
+				(*m_unk0x354)->m_unk0x20 &= 0xfffff7ff;
+				break;
+
+			case 1024:
+				if (((*m_unk0x354)->m_unk0x20 & 512) == 0 && ((*m_unk0x354)->m_unk0x20 & 2048) == 0) {
+					(*m_unk0x354)->m_unk0x20 &= 0xfffffdff;
+				}
+				break;
+
+			case 2048:
+				if (((*m_unk0x354)->m_unk0x20 & 1024) == 0 && ((*m_unk0x354)->m_unk0x20 & 512) == 0) {
+					(*m_unk0x354)->m_unk0x20 &= 0xfffffbff;
+				}
+				break;
+			}
+		}
+
+		(*m_unk0x354)->m_unk0x20 = 0;
+	}
 }
 
 // STUB: LEGORACERS 0x0047bbf0

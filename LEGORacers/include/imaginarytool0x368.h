@@ -11,6 +11,12 @@ class ImaginaryTool0x368 : public ImaginaryNotion0x280 {
 public:
 	ImaginaryTool0x368();
 
+	class HelperAt0x354 {
+	public:
+		undefined m_unk0x00[32]; // 0x00
+		undefined4 m_unk0x20;    // 0x20
+	};
+
 	undefined4 VTable0x18(undefined4, undefined4, undefined4, undefined4) override; // vtable+0x18
 	undefined4 VTable0x1c(undefined4, undefined4, undefined4, undefined4) override; // vtable+0x1c
 	void VTable0x34(undefined4) override;                                           // vtable+0x34
@@ -31,7 +37,9 @@ public:
 	virtual void VTable0x94(undefined4);                                            // vtable+0x94
 
 protected:
-	undefined m_unk0x280[0x368 - 0x280]; // 0x280
+	undefined m_unk0x280[0x354 - 0x280]; // 0x280
+	HelperAt0x354** m_unk0x354;          // 0x354
+	undefined m_unk0x3d8[0x368 - 0x358]; // 0x358
 };
 
 #endif // IMAGINARYTOOL0X368_H

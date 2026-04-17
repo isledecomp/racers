@@ -6,7 +6,7 @@
 #include "zoweeblubberworth0xf0.h"
 
 // SIZE 0x118
-// VTABLE GOLDP 0x1005690c
+// VTABLE: GOLDP 0x1005690c
 class FluffyGloomkins : public ZoweeBlubberworth0xf0 {
 public:
 	FluffyGloomkins();

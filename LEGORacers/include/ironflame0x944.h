@@ -26,8 +26,8 @@ public:
 	void UnloadGolLibrary() override;                     // vtable+0x18
 	void InitInput() override;                            // vtable+0x1c
 	void VTable0x20() override;                           // vtable+0x20
-	void VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
-					LegoU32 p_flags) override; // vtable+0x24
+	LegoS32 VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
+					   LegoU32 p_flags) override; // vtable+0x24
 	void VTable0x28(
 		LegoU32 p_width,
 		LegoU32 p_height,
@@ -39,6 +39,9 @@ public:
 	void VTable0x2c() override;                            // vtable+0x2c
 	void VTable0x30() override;                            // vtable+0x30
 	LegoS32 Tick(CactusInterface0x4* p_unk0x81c) override; // vtable+0x34
+	OpalVault0xf0* VTable0x38() override;                  // vtable+0x38
+	virtual void VTable0x3c();                             // vtable+0x3c
+	virtual void VTable0x40();                             // vtable+0x40
 
 	enum {
 		c_golBackendDP = 0x0,
@@ -67,9 +70,9 @@ private:
 	GolDrawState* m_golDrawState;   // 0x804
 	undefined4 m_unk0x808;          // 0x808
 	undefined4 m_unk0x80c;          // 0x80c
-	undefined4 m_unk0x810;          // 0x810
-	undefined4 m_unk0x814;          // 0x814
-	undefined4 m_unk0x818;          // 0x818
+	LegoU32 m_width;                // 0x810
+	LegoU32 m_height;               // 0x814
+	LegoU32 m_bpp;                  // 0x818
 	CactusInterface0x4* m_unk0x81c; // 0x81c
 	DWORD m_lastFrameTimeMs;        // 0x820
 	LegoU32 m_frameDeltaMs;         // 0x824

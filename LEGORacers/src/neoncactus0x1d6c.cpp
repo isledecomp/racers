@@ -27,7 +27,7 @@ NeonCactus0x1d6c::~NeonCactus0x1d6c()
 // FUNCTION: LEGORACERS 0x0042bbb0
 LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 {
-	if (m_unk0x04.GetUnk0x04() & CrimsonForge0x800::c_flagInitialized) {
+	if (m_unk0x04.GetFlags() & CrimsonForge0x800::c_flagInitialized) {
 		Shutdown();
 	}
 

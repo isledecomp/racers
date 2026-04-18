@@ -1,11 +1,13 @@
 #include "ironflame0x944.h"
 
 #include "../../GolDP/include/gol.h"
+#include "../../GolDP/include/golcommondrawstate.h"
 #include "cactusinterface0x4.h"
 #include "gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
 #include "golstream.h"
+#include "opalvault0xf0.h"
 
 #include <mmsystem.h>
 #include <stdio.h>
@@ -42,7 +44,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 {
 	LegoChar buffer[64];
 
-	if (m_unk0x04 & c_flagInitialized) {
+	if (m_flags & c_flagInitialized) {
 		Destroy();
 	}
 
@@ -107,7 +109,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	ShowWindow(m_hWnd, SW_SHOW);
 	m_lastFrameTimeMs = timeGetTime();
 	m_unk0x92c = 0;
-	m_unk0x04 |= c_flagInitialized;
+	m_flags |= c_flagInitialized;
 }
 
 // FUNCTION: LEGORACERS 0x004167b0
@@ -121,7 +123,7 @@ void IronFlame0x944::VTable0x2c()
 		drawState->VTable0x48();
 	}
 
-	m_unk0x04 &= ~c_flagDisplayActive;
+	m_flags &= ~c_flagDisplayActive;
 }
 
 // FUNCTION: LEGORACERS 0x004167e0
@@ -146,7 +148,7 @@ void IronFlame0x944::Destroy()
 	UnloadGolLibrary();
 
 	m_unk0x92c = 0;
-	m_unk0x04 = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00416860
@@ -268,11 +270,84 @@ void IronFlame0x944::VTable0x28(
 	VTable0x24(p_width, p_height, p_bpp, p_flags | c_flagBit2);
 }
 
-// STUB: LEGORACERS 0x00416b00
-void IronFlame0x944::VTable0x24(LegoU32, LegoU32, LegoU32, LegoU32)
+// FUNCTION: LEGORACERS 0x00416b00
+LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
-	// TODO
-	STUB(0x416b00);
+	if (m_flags & c_flagDisplayActive) {
+		VTable0x2c();
+	}
+
+	m_width = p_width;
+	m_height = p_height;
+	m_bpp = p_bpp;
+	m_flags = p_flags;
+	m_unk0x930 = 1;
+
+	LegoU32 drawFlags = VTable0x00(p_flags);
+	LegoS32 result = m_golDrawState->VTable0x44(p_width, p_height, p_bpp, drawFlags);
+	if (result) {
+		return result;
+	}
+
+	GolCommonDrawState* commonState = static_cast<GolCommonDrawState*>(m_golDrawState);
+	m_unk0x80c = commonState->m_unk0x1c;
+	m_unk0x808 = (undefined4) m_golDrawState->m_unk0x14;
+
+	if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {
+		m_flags |= c_flagBit3;
+	}
+
+	if (!(m_flags & c_flagBit3)) {
+		m_unk0x92c = 2;
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x940);
+
+		RECT rect;
+		rect.left = 0;
+		rect.right = p_width;
+		rect.top = 0;
+		rect.bottom = p_height;
+		AdjustWindowRect(&rect, m_unk0x940, FALSE);
+
+		LegoS32 w = rect.right - rect.left;
+		LegoS32 h = rect.bottom - rect.top;
+		LegoS32 screenW = GetSystemMetrics(SM_CXSCREEN);
+		LegoS32 screenH = GetSystemMetrics(SM_CYSCREEN);
+		if (w > screenW) {
+			w = screenW;
+		}
+		if (h > screenH) {
+			h = screenH;
+		}
+		SetWindowPos(m_hWnd, NULL, 0, 0, w, h, SWP_SHOWWINDOW);
+	}
+	else {
+		m_unk0x92c = 1;
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+
+		if (m_flags & c_flagBit8) {
+			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
+		}
+		else {
+			VTable0x38()->GetUnk0xa0()->VTable0x44();
+			SetWindowPos(
+				m_hWnd,
+				NULL,
+				0,
+				0,
+				GetSystemMetrics(SM_CXSCREEN),
+				GetSystemMetrics(SM_CYSCREEN),
+				SWP_SHOWWINDOW
+			);
+		}
+	}
+
+	SetWindowLong(m_hWnd, 0, (LONG) this);
+	UpdateWindow(m_hWnd);
+	SetFocus(m_hWnd);
+
+	m_unk0x930 = 0;
+	m_flags |= c_flagDisplayActive;
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00416cd0
@@ -281,7 +356,7 @@ void IronFlame0x944::VTable0x30()
 	if (m_golDrawState->GetFlags() & GolDrawState::c_flagBit0) {
 		OutputDebugString("Toggling full-screen mode\n");
 
-		if (m_unk0x04 & c_flagBit3) {
+		if (m_flags & c_flagBit3) {
 			OutputDebugString("--to windowed\n");
 			FUN_00417000(2);
 		}
@@ -419,4 +494,22 @@ LegoU32 IronFlame0x944::VTable0x00(LegoU32 p_flags)
 		result |= GolDrawState::c_flagBit21;
 	}
 	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00417980
+OpalVault0xf0* IronFlame0x944::VTable0x38()
+{
+	return &m_unk0x834;
+}
+
+// STUB: LEGORACERS 0x00417990 FOLDED
+void IronFlame0x944::VTable0x3c()
+{
+	STUB(0x00417990);
+}
+
+// STUB: LEGORACERS 0x00417990 FOLDED
+void IronFlame0x944::VTable0x40()
+{
+	STUB(0x00417990);
 }

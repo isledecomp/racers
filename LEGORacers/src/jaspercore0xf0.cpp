@@ -23,7 +23,7 @@ LegoS32 JasperCore0xf0::Reset()
 	m_unk0x98 = 0;
 	m_unk0x94 = 0;
 	m_unk0x90 = 0;
-	m_unk0xa0 = 0;
+	m_unk0xa0 = NULL;
 	m_unk0x9c = 0;
 	memset(m_unk0xa4, 0, sizeof(m_unk0xa4));
 	memset(m_unk0x04, 0, sizeof(m_unk0x04));

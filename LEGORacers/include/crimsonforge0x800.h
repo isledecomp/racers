@@ -8,6 +8,7 @@
 #include "types.h"
 
 class CactusInterface0x4;
+class OpalVault0xf0;
 
 // VTABLE: LEGORACERS 0x004af9a8
 // SIZE 0x800
@@ -22,6 +23,7 @@ public:
 		c_flagBit5 = 1 << 5,
 		c_flagBit6 = 1 << 6,
 		c_flagBit7 = 1 << 7,
+		c_flagBit8 = 1 << 8,
 		c_flagBit9 = 1 << 9,
 		c_flagBit10 = 1 << 10,
 		c_flagBit12 = 1 << 12,
@@ -40,8 +42,8 @@ public:
 	virtual void UnloadGolLibrary() = 0;                     // vtable+0x18
 	virtual void InitInput() = 0;                            // vtable+0x1c
 	virtual void VTable0x20() = 0;                           // vtable+0x20
-	virtual void VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
-							LegoU32 p_flags) = 0; // vtable+0x24
+	virtual LegoS32 VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
+							   LegoU32 p_flags) = 0; // vtable+0x24
 	virtual void VTable0x28(
 		LegoU32 p_width,
 		LegoU32 p_height,
@@ -53,17 +55,18 @@ public:
 	virtual void VTable0x2c() = 0;                            // vtable+0x2c
 	virtual void VTable0x30() = 0;                            // vtable+0x30
 	virtual LegoS32 Tick(CactusInterface0x4* p_unk0x81c) = 0; // vtable+0x34
+	virtual OpalVault0xf0* VTable0x38() = 0;                  // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'
 
-	undefined4 GetUnk0x04() { return m_unk0x04; }
+	LegoU32 GetFlags() { return m_flags; }
 	GolHashTable& GetHashTable() { return m_hashTable; }
 
 	void Reset();
 
 protected:
-	undefined4 m_unk0x04;            // 0x04
+	LegoU32 m_flags;                 // 0x04
 	GolFile m_files[20];             // 0x08
 	GolFileSource m_fileSources[20]; // 0x3c8
 	LegoU32 m_fileSourceCount;       // 0x7d8

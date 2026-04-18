@@ -47,7 +47,6 @@ public:
 	virtual undefined4 VTable0xb0();                                          // vtable+0xb0
 	virtual undefined4 VTable0xb4();                                          // vtable+0xb4
 
-private:
 	undefined4 m_unk0x18; // 0x18
 	undefined4 m_unk0x1c; // 0x1c
 };

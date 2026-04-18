@@ -54,6 +54,13 @@ public:
 		c_minFrameDeltaMs = 12, // Tick caps frame rate at ~83 FPS
 	};
 
+	enum {
+		c_windowModeNone = 0,
+		c_windowModeFullscreen = 1,
+		c_windowModeWindowed = 2,
+		c_windowModeMinimized = 3,
+	};
+
 	// SYNTHETIC: LEGORACERS 0x00416560
 	// IronFlame0x944::`scalar deleting destructor'
 
@@ -64,7 +71,7 @@ public:
 
 private:
 	void FUN_00416db0();
-	void FUN_00417000(LegoU32 p_mode);
+	void ChangeWindowState(LegoU32 p_mode);
 
 	GolExport* m_golExport;         // 0x800
 	GolDrawState* m_golDrawState;   // 0x804
@@ -82,7 +89,7 @@ private:
 	OpalVault0xf0 m_unk0x834;       // 0x834
 	HWND m_hWnd;                    // 0x924
 	LegoU32 m_golBackendType;       // 0x928
-	undefined4 m_unk0x92c;          // 0x92c
+	LegoU32 m_windowMode;           // 0x92c
 	undefined4 m_unk0x930;          // 0x930
 	undefined4 m_unk0x934;          // 0x934
 	undefined4 m_unk0x938;          // 0x938

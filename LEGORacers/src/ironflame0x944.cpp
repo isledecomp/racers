@@ -25,7 +25,7 @@ IronFlame0x944::IronFlame0x944()
 	m_golExport = NULL;
 	m_hWnd = 0;
 	m_golBackendType = c_golBackendDP;
-	m_unk0x92c = 0;
+	m_windowMode = c_windowModeNone;
 	m_unk0x934 = 0;
 	m_unk0x93c = 0;
 	m_unk0x940 = 0;
@@ -108,7 +108,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	SetWindowLong(m_hWnd, 0, (LONG) this);
 	ShowWindow(m_hWnd, SW_SHOW);
 	m_lastFrameTimeMs = timeGetTime();
-	m_unk0x92c = 0;
+	m_windowMode = c_windowModeNone;
 	m_flags |= c_flagInitialized;
 }
 
@@ -147,7 +147,7 @@ void IronFlame0x944::Destroy()
 	m_unk0x834.Shutdown();
 	UnloadGolLibrary();
 
-	m_unk0x92c = 0;
+	m_windowMode = c_windowModeNone;
 	m_flags = 0;
 }
 
@@ -298,7 +298,7 @@ LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_
 	}
 
 	if (!(m_flags & c_flagBit3)) {
-		m_unk0x92c = 2;
+		m_windowMode = c_windowModeWindowed;
 		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x940);
 
 		RECT rect;
@@ -321,7 +321,7 @@ LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_
 		SetWindowPos(m_hWnd, NULL, 0, 0, w, h, SWP_SHOWWINDOW);
 	}
 	else {
-		m_unk0x92c = 1;
+		m_windowMode = c_windowModeFullscreen;
 		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
 
 		if (m_flags & c_flagBit8) {
@@ -358,11 +358,11 @@ void IronFlame0x944::VTable0x30()
 
 		if (m_flags & c_flagBit3) {
 			OutputDebugString("--to windowed\n");
-			FUN_00417000(2);
+			ChangeWindowState(c_windowModeWindowed);
 		}
 		else {
 			OutputDebugString("--to full screen\n");
-			FUN_00417000(1);
+			ChangeWindowState(c_windowModeFullscreen);
 		}
 	}
 }
@@ -372,7 +372,7 @@ void IronFlame0x944::FUN_00416db0()
 {
 	m_unk0x81c->VTable0x28();
 
-	if (m_unk0x92c == 2) {
+	if (m_windowMode == c_windowModeWindowed) {
 		RECT rect;
 		POINT topLeft;
 		POINT bottomRight;
@@ -438,11 +438,132 @@ LegoS32 IronFlame0x944::Tick(CactusInterface0x4* p_unk0x81c)
 	return 1;
 }
 
-// STUB: LEGORACERS 0x00417000
-void IronFlame0x944::FUN_00417000(LegoU32)
+// FUNCTION: LEGORACERS 0x00417000
+void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 {
-	// TODO
-	STUB(0x417000);
+	if (m_unk0x930) {
+		return;
+	}
+	if (!m_golDrawState) {
+		return;
+	}
+	if (!(m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+		return;
+	}
+	if (p_mode == m_windowMode) {
+		return;
+	}
+
+	m_unk0x930 = 1;
+
+	if (m_unk0x81c) {
+		m_unk0x81c->VTable0x0c();
+	}
+	m_golDrawState->VTable0x50();
+	LegoU32 drawFlags = VTable0x00(m_flags) & ~GolDrawState::c_flagBit15;
+
+	OutputDebugString("Changing window state\n");
+
+	if (p_mode == c_windowModeWindowed) {
+		OutputDebugString("--to windowed\n");
+		m_golDrawState
+			->VTable0x54(m_width, m_height, m_bpp, drawFlags & ~(GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10));
+
+		if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {
+			OutputDebugString("--from full screen\n");
+			m_flags |= c_flagBit3;
+			m_windowMode = c_windowModeFullscreen;
+			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+			if (m_flags & c_flagBit8) {
+				SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
+			}
+			else {
+				VTable0x38()->GetUnk0xa0()->VTable0x44();
+				SetWindowPos(
+					m_hWnd,
+					NULL,
+					0,
+					0,
+					GetSystemMetrics(SM_CXSCREEN),
+					GetSystemMetrics(SM_CYSCREEN),
+					SWP_SHOWWINDOW
+				);
+			}
+		}
+		else {
+			m_flags &= ~c_flagBit3;
+			m_windowMode = c_windowModeWindowed;
+			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x940);
+
+			RECT rect;
+			rect.left = 0;
+			rect.right = m_width;
+			rect.top = 0;
+			rect.bottom = m_height;
+			AdjustWindowRect(&rect, m_unk0x940, FALSE);
+
+			LegoS32 w = rect.right - rect.left;
+			LegoS32 h = rect.bottom - rect.top;
+			LegoS32 screenW = GetSystemMetrics(SM_CXSCREEN);
+			LegoS32 screenH = GetSystemMetrics(SM_CYSCREEN);
+			LegoS32 x, y;
+			if (w > screenW) {
+				w = screenW;
+				x = 0;
+			}
+			else {
+				x = (screenW - w) >> 1;
+			}
+			if (h > screenH) {
+				h = screenH;
+				y = 0;
+			}
+			else {
+				y = (screenH - h) >> 1;
+			}
+			SetWindowPos(m_hWnd, NULL, x, y, w, h, SWP_SHOWWINDOW);
+		}
+
+		if (m_unk0x81c) {
+			m_unk0x81c->VTable0x10();
+		}
+	}
+	else if (p_mode == c_windowModeFullscreen) {
+		OutputDebugString("--to full screen\n");
+		m_flags |= c_flagBit3;
+		LegoU32 fullscreenFlags = drawFlags | (GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10);
+		m_windowMode = c_windowModeFullscreen;
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+		if (m_flags & c_flagBit8) {
+			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
+		}
+		else {
+			VTable0x38()->GetUnk0xa0()->VTable0x44();
+			SetWindowPos(
+				m_hWnd,
+				NULL,
+				0,
+				0,
+				GetSystemMetrics(SM_CXSCREEN),
+				GetSystemMetrics(SM_CYSCREEN),
+				SWP_SHOWWINDOW
+			);
+		}
+		m_golDrawState->VTable0x54(m_width, m_height, m_bpp, fullscreenFlags);
+
+		if (m_unk0x81c) {
+			m_unk0x81c->VTable0x10();
+		}
+	}
+	else if (p_mode == c_windowModeMinimized) {
+		OutputDebugString("--to minimized\n");
+		ShowWindow(m_hWnd, SW_SHOWMINNOACTIVE);
+		m_windowMode = c_windowModeMinimized;
+	}
+
+	UpdateWindow(m_hWnd);
+	SetFocus(m_hWnd);
+	m_unk0x930 = 0;
 }
 
 // STUB: LEGORACERS 0x00417330

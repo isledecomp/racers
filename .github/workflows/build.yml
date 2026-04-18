@@ -138,6 +138,13 @@ jobs:
         reccmp-datacmp --target LEGORACERS
         reccmp-datacmp --target GOLDP
 
+    - name: Check Folding
+      if: ${{ steps.detection.conclusion == 'success' && always() }}
+      shell: bash
+      run: |
+        python tools/check_folded.py --target LEGORACERS
+        python tools/check_folded.py --target GOLDP
+
     - name: Upload Artifact
       uses: actions/upload-artifact@main
       with:

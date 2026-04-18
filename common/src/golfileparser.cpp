@@ -124,7 +124,9 @@ void GolFileParser::VTable0x38(undefined4)
 undefined4 GolFileParser::VTable0x44()
 {
 	// TODO
+#ifdef BUILDING_GOL
 	STUB(0x100016f0);
+#endif
 	return 0;
 }
 

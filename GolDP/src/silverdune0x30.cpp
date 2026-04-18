@@ -39,10 +39,9 @@ void SilverDune0x30::VTable0x10()
 	STUB(0x1001d010);
 }
 
-// STUB: GOLDP 0x1002c020 FOLDED
+// FUNCTION: GOLDP 0x1002c020 FOLDED
 void SilverDune0x30::VTable0x14(undefined4*)
 {
-	STUB(0x1002c020);
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

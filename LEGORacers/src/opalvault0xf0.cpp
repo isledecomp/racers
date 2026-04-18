@@ -97,7 +97,7 @@ void OpalVault0xf0::VTable0x24()
 }
 
 // STUB: LEGORACERS 0x00450990
-LegoS32 OpalVault0xf0::VTable0x10()
+LegoS32 OpalVault0xf0::VTable0x10(LegoS32)
 {
 	// TODO
 	STUB(0x450990);

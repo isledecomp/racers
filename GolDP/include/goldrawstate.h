@@ -30,6 +30,7 @@ public:
 		c_flagBit17 = 1 << 17,
 		c_flagBit18 = 1 << 18,
 		c_flagBit19 = 1 << 19,
+		c_flagBit21 = 1 << 21,
 	};
 
 	virtual LegoS32 VTable0x00() = 0;                                                         // vtable+0x00

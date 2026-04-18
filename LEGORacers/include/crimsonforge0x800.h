@@ -15,10 +15,21 @@ public:
 		c_flagInitialized = 1 << 0,
 		c_flagDisplayActive = 1 << 1,
 		c_flagBit2 = 1 << 2,
+		c_flagBit3 = 1 << 3,
+		c_flagBit4 = 1 << 4,
+		c_flagBit5 = 1 << 5,
+		c_flagBit6 = 1 << 6,
+		c_flagBit7 = 1 << 7,
+		c_flagBit9 = 1 << 9,
+		c_flagBit10 = 1 << 10,
+		c_flagBit12 = 1 << 12,
+		c_flagBit13 = 1 << 13,
+		c_flagBit15 = 1 << 15,
+		c_flagBit17 = 1 << 17,
 	};
 
 	CrimsonForge0x800();
-	virtual void VTable0x00() = 0;                           // vtable+0x00
+	virtual LegoU32 VTable0x00(LegoU32) = 0;                 // vtable+0x00
 	virtual ~CrimsonForge0x800();                            // vtable+0x04
 	virtual void VTable0x08();                               // vtable+0x08
 	virtual void Init(const LegoChar*, const LegoChar*) = 0; // vtable+0x0c
@@ -36,10 +47,10 @@ public:
 		LegoU32 p_flags,
 		const LegoChar* p_driverName,
 		const LegoChar* p_deviceName
-	);                             // vtable+0x28
-	virtual void VTable0x2c() = 0; // vtable+0x2c
-	virtual void VTable0x30() = 0; // vtable+0x30
-	virtual void VTable0x34() = 0; // vtable+0x34
+	);                                            // vtable+0x28
+	virtual void VTable0x2c() = 0;                // vtable+0x2c
+	virtual void VTable0x30() = 0;                // vtable+0x30
+	virtual LegoS32 Tick(LegoS32 p_unk0x81c) = 0; // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'

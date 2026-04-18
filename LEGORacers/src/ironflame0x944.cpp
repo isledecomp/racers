@@ -104,7 +104,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	m_golDrawState->VTable0x08(m_hWnd);
 	SetWindowLong(m_hWnd, 0, (LONG) this);
 	ShowWindow(m_hWnd, SW_SHOW);
-	m_unk0x820 = timeGetTime();
+	m_lastFrameTimeMs = timeGetTime();
 	m_unk0x92c = 0;
 	m_unk0x04 |= c_flagInitialized;
 }
@@ -274,18 +274,70 @@ void IronFlame0x944::VTable0x24(LegoU32, LegoU32, LegoU32, LegoU32)
 	STUB(0x416b00);
 }
 
-// STUB: LEGORACERS 0x00416cd0
+// FUNCTION: LEGORACERS 0x00416cd0
 void IronFlame0x944::VTable0x30()
 {
-	// TODO
-	STUB(0x416cd0);
+	if (m_golDrawState->GetFlags() & GolDrawState::c_flagBit0) {
+		OutputDebugString("Toggling full-screen mode\n");
+
+		if (m_unk0x04 & c_flagBit3) {
+			OutputDebugString("--to windowed\n");
+			FUN_00417000(2);
+		}
+		else {
+			OutputDebugString("--to full screen\n");
+			FUN_00417000(1);
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x00416ef0
-void IronFlame0x944::VTable0x34()
+// STUB: LEGORACERS 0x00416db0
+void IronFlame0x944::FUN_00416db0()
 {
 	// TODO
-	STUB(0x416ef0);
+	STUB(0x416db0);
+}
+
+// FUNCTION: LEGORACERS 0x00416ef0
+LegoS32 IronFlame0x944::Tick(LegoS32 p_unk0x81c)
+{
+	m_unk0x81c = p_unk0x81c;
+	FUN_00416db0();
+
+	MSG msg;
+	while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+		if (msg.message == WM_QUIT) {
+			SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+			return 0;
+		}
+		TranslateMessage(&msg);
+		DispatchMessage(&msg);
+	}
+
+	DWORD time = timeGetTime();
+	m_frameDeltaMs = time - m_lastFrameTimeMs;
+	if (m_frameDeltaMs > m_maxFrameDeltaMs) {
+		m_frameDeltaMs = m_maxFrameDeltaMs;
+	}
+	else if (m_frameDeltaMs < c_minFrameDeltaMs) {
+		Sleep(c_minFrameDeltaMs - m_frameDeltaMs);
+		time = timeGetTime();
+		m_frameDeltaMs = time - m_lastFrameTimeMs;
+	}
+	m_lastFrameTimeMs = time;
+
+	if (m_unk0x938) {
+		m_unk0x834.VTable0x10(m_frameDeltaMs);
+	}
+	m_unk0x81c = 0;
+	return 1;
+}
+
+// STUB: LEGORACERS 0x00417000
+void IronFlame0x944::FUN_00417000(LegoU32)
+{
+	// TODO
+	STUB(0x417000);
 }
 
 // STUB: LEGORACERS 0x00417330
@@ -296,9 +348,45 @@ LRESULT CALLBACK AppWndProc(HWND, UINT, WPARAM, LPARAM)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00417900
-void IronFlame0x944::VTable0x00()
+// FUNCTION: LEGORACERS 0x00417900
+LegoU32 IronFlame0x944::VTable0x00(LegoU32 p_flags)
 {
-	// TODO
-	STUB(0x417900);
+	LegoU32 result = 0;
+	if (p_flags & c_flagBit3) {
+		result |= GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10;
+	}
+	if (p_flags & c_flagBit5) {
+		result |= GolDrawState::c_flagBit11;
+	}
+	if (p_flags & c_flagBit4) {
+		result |= GolDrawState::c_flagBit12;
+	}
+	if (p_flags & c_flagBit6) {
+		result |= GolDrawState::c_flagBit3;
+	}
+	if (p_flags & c_flagBit7) {
+		result |= GolDrawState::c_flagBit13;
+	}
+	if (p_flags & c_flagBit9) {
+		result |= GolDrawState::c_flagBit15;
+	}
+	if (p_flags & c_flagBit10) {
+		result |= GolDrawState::c_flagBit16;
+	}
+	if (p_flags & c_flagBit17) {
+		result |= GolDrawState::c_flagBit17;
+	}
+	if (p_flags & c_flagBit2) {
+		result |= GolDrawState::c_flagBit14;
+	}
+	if (p_flags & c_flagBit12) {
+		result |= GolDrawState::c_flagBit18;
+	}
+	if (p_flags & c_flagBit13) {
+		result |= GolDrawState::c_flagBit19;
+	}
+	if (p_flags & c_flagBit15) {
+		result |= GolDrawState::c_flagBit21;
+	}
+	return result;
 }

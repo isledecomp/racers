@@ -109,11 +109,18 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 	m_unk0x04 |= c_flagInitialized;
 }
 
-// STUB: LEGORACERS 0x004167b0
+// FUNCTION: LEGORACERS 0x004167b0
 void IronFlame0x944::VTable0x2c()
 {
-	// TODO
-	STUB(0x4167b0);
+	GolDrawState* drawState = m_golDrawState;
+	m_unk0x808 = 0;
+	m_unk0x80c = 0;
+
+	if (drawState && (drawState->GetFlags() & GolDrawState::c_flagBit0)) {
+		drawState->VTable0x48();
+	}
+
+	m_unk0x04 &= ~c_flagDisplayActive;
 }
 
 // FUNCTION: LEGORACERS 0x004167e0
@@ -240,22 +247,28 @@ void IronFlame0x944::InitInput()
 	m_unk0x834.FUN_004503e0(g_hInstance, m_hWnd);
 }
 
-// STUB: LEGORACERS 0x00416ab0
+// FUNCTION: LEGORACERS 0x00416ab0
 void IronFlame0x944::VTable0x20()
 {
-	// TODO
-	STUB(0x416ab0);
+	m_unk0x834.Shutdown();
 }
 
-// STUB: LEGORACERS 0x00416ac0
-void IronFlame0x944::VTable0x28()
+// FUNCTION: LEGORACERS 0x00416ac0
+void IronFlame0x944::VTable0x28(
+	LegoU32 p_width,
+	LegoU32 p_height,
+	LegoU32 p_bpp,
+	LegoU32 p_flags,
+	const LegoChar* p_driverName,
+	const LegoChar* p_deviceName
+)
 {
-	// TODO
-	STUB(0x416ac0);
+	m_golDrawState->VTable0x0c(p_driverName, p_deviceName);
+	VTable0x24(p_width, p_height, p_bpp, p_flags | c_flagBit2);
 }
 
 // STUB: LEGORACERS 0x00416b00
-void IronFlame0x944::VTable0x24()
+void IronFlame0x944::VTable0x24(LegoU32, LegoU32, LegoU32, LegoU32)
 {
 	// TODO
 	STUB(0x416b00);

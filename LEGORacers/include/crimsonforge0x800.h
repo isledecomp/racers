@@ -12,7 +12,9 @@
 class CrimsonForge0x800 {
 public:
 	enum {
-		c_flagInitialized = 0x01,
+		c_flagInitialized = 1 << 0,
+		c_flagDisplayActive = 1 << 1,
+		c_flagBit2 = 1 << 2,
 	};
 
 	CrimsonForge0x800();
@@ -25,11 +27,19 @@ public:
 	virtual void UnloadGolLibrary() = 0;                     // vtable+0x18
 	virtual void InitInput() = 0;                            // vtable+0x1c
 	virtual void VTable0x20() = 0;                           // vtable+0x20
-	virtual void VTable0x24() = 0;                           // vtable+0x24
-	virtual void VTable0x28();                               // vtable+0x28
-	virtual void VTable0x2c() = 0;                           // vtable+0x2c
-	virtual void VTable0x30() = 0;                           // vtable+0x30
-	virtual void VTable0x34() = 0;                           // vtable+0x34
+	virtual void VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
+							LegoU32 p_flags) = 0; // vtable+0x24
+	virtual void VTable0x28(
+		LegoU32 p_width,
+		LegoU32 p_height,
+		LegoU32 p_bpp,
+		LegoU32 p_flags,
+		const LegoChar* p_driverName,
+		const LegoChar* p_deviceName
+	);                             // vtable+0x28
+	virtual void VTable0x2c() = 0; // vtable+0x2c
+	virtual void VTable0x30() = 0; // vtable+0x30
+	virtual void VTable0x34() = 0; // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'

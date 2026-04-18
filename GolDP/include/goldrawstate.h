@@ -59,6 +59,8 @@ public:
 	// SYNTHETIC: GOLDP 0x1001d590
 	// GolDrawState::`scalar deleting destructor'
 
+	LegoU32 GetFlags() const { return m_flags; }
+
 protected:
 	undefined4 m_width;        // 0x04
 	undefined4 m_height;       // 0x08

@@ -29,7 +29,7 @@ void CrimsonForge0x800::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x00416470
-void CrimsonForge0x800::VTable0x28()
+void CrimsonForge0x800::VTable0x28(LegoU32, LegoU32, LegoU32, LegoU32, const LegoChar*, const LegoChar*)
 {
 	// TODO
 	STUB(0x416470);

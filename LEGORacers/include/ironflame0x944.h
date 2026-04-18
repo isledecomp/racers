@@ -24,11 +24,19 @@ public:
 	void UnloadGolLibrary() override;                     // vtable+0x18
 	void InitInput() override;                            // vtable+0x1c
 	void VTable0x20() override;                           // vtable+0x20
-	void VTable0x24() override;                           // vtable+0x24
-	void VTable0x28() override;                           // vtable+0x28
-	void VTable0x2c() override;                           // vtable+0x2c
-	void VTable0x30() override;                           // vtable+0x30
-	void VTable0x34() override;                           // vtable+0x34
+	void VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
+					LegoU32 p_flags) override; // vtable+0x24
+	void VTable0x28(
+		LegoU32 p_width,
+		LegoU32 p_height,
+		LegoU32 p_bpp,
+		LegoU32 p_flags,
+		const LegoChar* p_driverName,
+		const LegoChar* p_deviceName
+	) override;                 // vtable+0x28
+	void VTable0x2c() override; // vtable+0x2c
+	void VTable0x30() override; // vtable+0x30
+	void VTable0x34() override; // vtable+0x34
 
 	enum {
 		c_golBackendDP = 0x0,
@@ -48,7 +56,9 @@ public:
 private:
 	GolExport* m_golExport;              // 0x800
 	GolDrawState* m_golDrawState;        // 0x804
-	undefined m_unk0x808[0x820 - 0x808]; // 0x808
+	undefined4 m_unk0x808;               // 0x808
+	undefined4 m_unk0x80c;               // 0x80c
+	undefined m_unk0x810[0x820 - 0x810]; // 0x810
 	DWORD m_unk0x820;                    // 0x820
 	undefined m_unk0x824[0x830 - 0x824]; // 0x824
 	HMODULE m_golLibrary;                // 0x830

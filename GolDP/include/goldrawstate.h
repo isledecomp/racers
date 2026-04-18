@@ -62,9 +62,10 @@ public:
 
 	LegoU32 GetFlags() const { return m_flags; }
 
+	LegoS32 m_width;  // 0x04
+	LegoS32 m_height; // 0x08
+
 protected:
-	undefined4 m_width;        // 0x04
-	undefined4 m_height;       // 0x08
 	undefined4 m_bpp;          // 0x0c
 	LegoU32 m_flags;           // 0x10
 	AzureRidge0x38* m_unk0x14; // 0x14

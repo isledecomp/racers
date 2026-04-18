@@ -7,6 +7,8 @@
 #include "golhashtable.h"
 #include "types.h"
 
+class CactusInterface0x4;
+
 // VTABLE: LEGORACERS 0x004af9a8
 // SIZE 0x800
 class CrimsonForge0x800 {
@@ -47,10 +49,10 @@ public:
 		LegoU32 p_flags,
 		const LegoChar* p_driverName,
 		const LegoChar* p_deviceName
-	);                                            // vtable+0x28
-	virtual void VTable0x2c() = 0;                // vtable+0x2c
-	virtual void VTable0x30() = 0;                // vtable+0x30
-	virtual LegoS32 Tick(LegoS32 p_unk0x81c) = 0; // vtable+0x34
+	);                                                        // vtable+0x28
+	virtual void VTable0x2c() = 0;                            // vtable+0x2c
+	virtual void VTable0x30() = 0;                            // vtable+0x30
+	virtual LegoS32 Tick(CactusInterface0x4* p_unk0x81c) = 0; // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'

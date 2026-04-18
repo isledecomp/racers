@@ -1,6 +1,7 @@
 #include "ironflame0x944.h"
 
 #include "../../GolDP/include/gol.h"
+#include "cactusinterface0x4.h"
 #include "gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
@@ -291,15 +292,44 @@ void IronFlame0x944::VTable0x30()
 	}
 }
 
-// STUB: LEGORACERS 0x00416db0
+// FUNCTION: LEGORACERS 0x00416db0
 void IronFlame0x944::FUN_00416db0()
 {
-	// TODO
-	STUB(0x416db0);
+	m_unk0x81c->VTable0x28();
+
+	if (m_unk0x92c == 2) {
+		RECT rect;
+		POINT topLeft;
+		POINT bottomRight;
+		POINT cursorPos;
+
+		GetClientRect(m_hWnd, &rect);
+		topLeft.x = rect.left;
+		topLeft.y = rect.top;
+		bottomRight.x = rect.right;
+		bottomRight.y = rect.bottom;
+		ClientToScreen(m_hWnd, &topLeft);
+		ClientToScreen(m_hWnd, &bottomRight);
+		GetCursorPos(&cursorPos);
+
+		if (cursorPos.x < topLeft.x || cursorPos.x >= bottomRight.x || cursorPos.y < topLeft.y ||
+			cursorPos.y >= bottomRight.y) {
+			m_unk0x81c->VTable0x2c();
+		}
+		else {
+			LegoFloat xScale = (LegoFloat) (bottomRight.x - topLeft.x) / m_golDrawState->m_width;
+			LegoFloat yScale = (LegoFloat) (bottomRight.y - topLeft.y) / m_golDrawState->m_height;
+			cursorPos.x -= topLeft.x;
+			cursorPos.y -= topLeft.y;
+			cursorPos.x /= xScale;
+			cursorPos.y /= yScale;
+			m_unk0x81c->VTable0x24(cursorPos.x, cursorPos.y);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00416ef0
-LegoS32 IronFlame0x944::Tick(LegoS32 p_unk0x81c)
+LegoS32 IronFlame0x944::Tick(CactusInterface0x4* p_unk0x81c)
 {
 	m_unk0x81c = p_unk0x81c;
 	FUN_00416db0();

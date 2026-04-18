@@ -142,7 +142,7 @@ void GolDrawState::VTable0x30(LegoU32 p_driverIndex, GUID* p_guid)
 {
 }
 
-// FUNCTION: GOLDP 0x100294f0
+// FUNCTION: GOLDP 0x100294f0 FOLDED
 void GolDrawState::VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid)
 {
 }

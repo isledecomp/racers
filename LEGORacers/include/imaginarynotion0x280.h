@@ -9,10 +9,10 @@
 #include "obscureicon0x1a8.h"
 
 // VTABLE: LEGORACERS 0x004b2308
-// SIZE 0x280
-class ImaginaryNotion0x280 : public ImaginaryInterface {
+// SIZE 0x290
+class ImaginaryNotion0x290 : public ImaginaryInterface {
 public:
-	ImaginaryNotion0x280();
+	ImaginaryNotion0x290();
 
 	void VTable0x00(undefined4) override;                                           // vtable+0x00
 	void VTable0x04(undefined4) override;                                           // vtable+0x04
@@ -40,7 +40,7 @@ public:
 	virtual void VTable0x5c();                                                      // vtable+0x5c
 	virtual void VTable0x60();                                                      // vtable+0x60
 	virtual void VTable0x64();                                                      // vtable+0x64
-	virtual ~ImaginaryNotion0x280();                                                // vtable+0x68
+	virtual ~ImaginaryNotion0x290();                                                // vtable+0x68
 	virtual void VTable0x6c();                                                      // vtable+0x6c
 	virtual void VTable0x70();                                                      // vtable+0x70
 	virtual void VTable0x74();                                                      // vtable+0x74
@@ -48,14 +48,28 @@ public:
 	virtual void VTable0x7c();                                                      // vtable+0x7c
 
 	// SYNTHETIC: LEGORACERS 0x0046b3f0
-	// ImaginaryNotion0x280::`scalar deleting destructor'
+	// ImaginaryNotion0x290::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x04[4];           // 0x04
-	CeruleanEmperor0x50 m_unk0x08;    // 0x08
-	CeruleanQueen0x58 m_unk0x58;      // 0x58
-	undefined m_unk0xb0[0xd8 - 0xb0]; // 0xb0
-	ObscureIcon0x1a8 m_unk0xd8;       // 0xd8
+	undefined4 m_unk0x04;          // 0x004
+	CeruleanEmperor0x4c m_unk0x08; // 0x008
+	undefined4 m_unk0x54;		   // 0x054
+	CeruleanQueen0x58 m_unk0x58;   // 0x058
+	undefined4 m_unk0xb0;          // 0x0b0
+	undefined4 m_unk0xb4;          // 0x0b4
+	undefined4 m_unk0xb8;          // 0x0b8
+	undefined4 m_unk0xbc;          // 0x0bc
+	undefined4 m_unk0xc0;          // 0x0c0
+	undefined4 m_unk0xc4;          // 0x0c4
+	undefined4 m_unk0xc8;          // 0x0c8
+	undefined4 m_unk0xcc;          // 0x0cc
+	undefined4 m_unk0xd0;          // 0x0d0
+	undefined4 m_unk0xd4;          // 0x0d4
+	ObscureIcon0x1a8 m_unk0xd8;    // 0x0d8
+	undefined4 m_unk0x280;         // 0x280
+	undefined4 m_unk0x284;         // 0x284
+	undefined4 m_unk0x288;         // 0x288
+	undefined2 m_unk0x28c;         // 0x28c
 };
 
 #endif // IMAGINARYNOTION0X280_H

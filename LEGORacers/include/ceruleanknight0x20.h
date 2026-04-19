@@ -4,6 +4,7 @@
 #include "ceruleansubject0x0c.h"
 #include "compat.h"
 #include "decomp.h"
+#include "golfileparser.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b2210
@@ -21,11 +22,11 @@ public:
 	// CeruleanKnight0x20::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x0c;  // 0x0c
-	undefined4 m_unk0x10; // 0x10
-	undefined4 m_unk0x14; // 0x10
-	undefined4 m_unk0x18; // 0x10
-	undefined4 m_unk0x1c; // 0x10
+	undefined m_unk0x0c;      // 0x0c
+	GolFileParser* m_unk0x10; // 0x10
+	undefined4 m_unk0x14;     // 0x10
+	undefined4 m_unk0x18;     // 0x10
+	undefined4 m_unk0x1c;     // 0x10
 };
 
 #endif // CERULEANKNIGHT0X20_H

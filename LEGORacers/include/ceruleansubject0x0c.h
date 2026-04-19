@@ -18,7 +18,7 @@ public:
 	// CeruleanSubject0x0c::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x04; // 0x04
+	undefined* m_unk0x04; // 0x04
 	undefined4 m_unk0x08; // 0x08
 };
 

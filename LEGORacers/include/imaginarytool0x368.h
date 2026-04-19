@@ -7,7 +7,7 @@
 
 // VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368
-class ImaginaryTool0x368 : public ImaginaryNotion0x280 {
+class ImaginaryTool0x368 : public ImaginaryNotion0x290 {
 public:
 	ImaginaryTool0x368();
 
@@ -40,7 +40,7 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x280[0x354 - 0x280]; // 0x280
+	undefined m_unk0x290[0x354 - 0x290]; // 0x290
 	HelperAt0x354** m_unk0x354;          // 0x354
 	undefined m_unk0x3d8[0x368 - 0x358]; // 0x358
 };

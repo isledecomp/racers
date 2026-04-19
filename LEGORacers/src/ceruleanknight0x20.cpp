@@ -8,10 +8,10 @@ CeruleanKnight0x20::CeruleanKnight0x20()
 	VTable0x0c();
 }
 
-// STUB: LEGORACERS 0x0046b090
+// FUNCTION: LEGORACERS 0x0046b090
 CeruleanKnight0x20::~CeruleanKnight0x20()
 {
-	// TODO
+	VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x0046b0e0
@@ -24,9 +24,11 @@ void CeruleanKnight0x20::VTable0x0c()
 	m_unk0x0c = 0;
 }
 
-// STUB: LEGORACERS 0x0046b110
+// FUNCTION: LEGORACERS 0x0046b110
 void CeruleanKnight0x20::VTable0x08()
 {
-	// TODO
-	STUB(0x0046b110);
+	if (m_unk0x04) {
+		CeruleanSubject0x0c::VTable0x08();
+		VTable0x0c();
+	}
 }

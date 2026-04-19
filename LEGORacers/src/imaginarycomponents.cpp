@@ -19,7 +19,7 @@ CeruleanSubject::~CeruleanSubject()
 }
 
 // STUB: LEGORACERS 0x00411800
-void CeruleanSubject::VTable0x04()
+void CeruleanSubject::VTable0x04(undefined4)
 {
 	// TODO
 	STUB(0x00411800);
@@ -72,14 +72,14 @@ void CeruleanQueen::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x00469810
-void CeruleanQueen::VTable0x10()
+void CeruleanQueen::VTable0x10(undefined4)
 {
 	// TODO
 	STUB(0x00469810);
 }
 
 // STUB: LEGORACERS 0x00469950
-void CeruleanQueen::VTable0x14()
+void CeruleanQueen::VTable0x14(undefined4)
 {
 	// TODO
 	STUB(0x00469950);
@@ -150,14 +150,14 @@ void CeruleanEmperor::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x0046fc40
-void CeruleanEmperor::VTable0x10()
+void CeruleanEmperor::VTable0x10(undefined4)
 {
 	// TODO
 	STUB(0x0046fc40);
 }
 
 // STUB: LEGORACERS 0x0046fd80
-void CeruleanEmperor::VTable0x14()
+void CeruleanEmperor::VTable0x14(undefined4)
 {
 	// TODO
 	STUB(0x0046fd80);

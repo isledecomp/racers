@@ -11,8 +11,8 @@ class CeruleanSubject {
 public:
 	CeruleanSubject();
 	virtual ~CeruleanSubject();
-	virtual void VTable0x04(); // vtable+0x04
-	virtual void VTable0x08(); // vtable+0x08
+	virtual void VTable0x04(undefined4); // vtable+0x04
+	virtual void VTable0x08();           // vtable+0x08
 
 	// SYNTHETIC: LEGORACERS 0x004117d0
 	// CeruleanSubject::`scalar deleting destructor'
@@ -28,10 +28,10 @@ class CeruleanKnight : public CeruleanSubject {
 public:
 	CeruleanKnight();
 	~CeruleanKnight() override;
-	void VTable0x08() override;    // vtable+0x08
-	virtual void VTable0x0c();     // vtable+0x0c
-	virtual void VTable0x10() = 0; // vtable+0x10
-	virtual void VTable0x14() = 0; // vtable+0x14
+	void VTable0x08() override;              // vtable+0x08
+	virtual void VTable0x0c();               // vtable+0x0c
+	virtual void VTable0x10(undefined4) = 0; // vtable+0x10
+	virtual void VTable0x14(undefined4) = 0; // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x0046b070
 	// CeruleanKnight::`scalar deleting destructor'
@@ -50,10 +50,10 @@ class CeruleanQueen : public CeruleanKnight {
 public:
 	CeruleanQueen();
 	~CeruleanQueen() override;
-	void VTable0x08() override; // vtable+0x08
-	void VTable0x0c() override; // vtable+0x0c
-	void VTable0x10() override; // vtable+0x10
-	void VTable0x14() override; // vtable+0x14
+	void VTable0x08() override;           // vtable+0x08
+	void VTable0x0c() override;           // vtable+0x0c
+	void VTable0x10(undefined4) override; // vtable+0x10
+	void VTable0x14(undefined4) override; // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x00469600
 	// CeruleanQueen::`scalar deleting destructor'
@@ -81,10 +81,10 @@ class CeruleanEmperor : public CeruleanKnight {
 public:
 	CeruleanEmperor();
 	~CeruleanEmperor() override;
-	void VTable0x08() override; // vtable+0x08
-	void VTable0x0c() override; // vtable+0x0c
-	void VTable0x10() override; // vtable+0x10
-	void VTable0x14() override; // vtable+0x14
+	void VTable0x08() override;           // vtable+0x08
+	void VTable0x0c() override;           // vtable+0x0c
+	void VTable0x10(undefined4) override; // vtable+0x10
+	void VTable0x14(undefined4) override; // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x0046faa0
 	// CeruleanEmperor::`scalar deleting destructor'

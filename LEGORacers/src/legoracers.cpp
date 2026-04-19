@@ -1,8 +1,10 @@
-#include "neoncactus0x1d6c.h"
+#include "legoracers.h"
+
+#include "videoplayer.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(NeonCactus0x1d6c, 0x1d6c)
+DECOMP_SIZE_ASSERT(LegoRacers, 0x1d6c)
 
 // GLOBAL: LEGORACERS 0x004be8d8
 const LegoChar* g_jamFile = "lego.jam";
@@ -19,16 +21,16 @@ LegoS32 g_horizontalResolution = 640;
 LegoS32 g_verticalResolution = 480;
 
 // FUNCTION: LEGORACERS 0x0042bb40
-NeonCactus0x1d6c::~NeonCactus0x1d6c()
+LegoRacers::~LegoRacers()
 {
-	Shutdown();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042bbb0
-LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
+LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 {
 	if (m_unk0x04.GetFlags() & CrimsonForge0x800::c_flagInitialized) {
-		Shutdown();
+		Destroy();
 	}
 
 	LegoS32 result = ParseArguments(p_argc, p_argv);
@@ -43,29 +45,72 @@ LegoS32 NeonCactus0x1d6c::Init(LegoS32 p_argc, LegoChar** p_argv)
 }
 
 // FUNCTION: LEGORACERS 0x0042bc20
-void NeonCactus0x1d6c::Shutdown()
+void LegoRacers::Destroy()
 {
 	FUN_0042bd00();
-	FUN_0042be90();
+	Shutdown();
 	m_unk0x04.Destroy();
 }
 
-// STUB: LEGORACERS 0x0042bc40
-void NeonCactus0x1d6c::FUN_0042bc40()
+// FUNCTION: LEGORACERS 0x0042bc40
+void LegoRacers::Run()
 {
-	// TODO
-	STUB(0x42bc40);
+	if (!(m_unk0x04.GetFlags() & CrimsonForge0x800::c_flagInitialized)) {
+		return;
+	}
+
+	CactusInterface0x4::VTable0x00();
+
+	if (m_cutscenes) {
+		VideoPlayer::FUN_004a60c0(&m_unk0x04, 640, 480);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "lmicmp.avi", 0, 0);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "hvscmp.avi", 1, 0);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "introcmp.avi", 1, 0);
+		VideoPlayer::FUN_004a61e0(&m_unk0x04);
+	}
+
+	FUN_0042be00();
+
+	while (m_unk0xabc) {
+		FUN_0042bdc0();
+		if (!m_unk0xabc) {
+			break;
+		}
+		FUN_0042bde0();
+	}
+
+	FUN_0042bd00();
+	Shutdown();
+	ResetDisplay();
 }
 
 // STUB: LEGORACERS 0x0042bd00
-void NeonCactus0x1d6c::FUN_0042bd00()
+void LegoRacers::FUN_0042bd00()
 {
 	// TODO
 	STUB(0x42bd00);
 }
 
+// STUB: LEGORACERS 0x0042bdc0
+void LegoRacers::FUN_0042bdc0()
+{
+	STUB(0x42bdc0);
+}
+
+// STUB: LEGORACERS 0x0042bde0
+void LegoRacers::FUN_0042bde0()
+{
+	STUB(0x42bde0);
+}
+
+// STUB: LEGORACERS 0x0042be00
+void LegoRacers::FUN_0042be00()
+{
+	STUB(0x42be00);
+}
+
 // FUNCTION: LEGORACERS 0x0042be90
-void NeonCactus0x1d6c::FUN_0042be90()
+void LegoRacers::Shutdown()
 {
 	m_soundManager.Shutdown();
 	m_unk0x9e0.Shutdown();
@@ -73,13 +118,13 @@ void NeonCactus0x1d6c::FUN_0042be90()
 }
 
 // FUNCTION: LEGORACERS 0x0042bec0
-void NeonCactus0x1d6c::ShowUsage()
+void LegoRacers::ShowUsage()
 {
 	MessageBox(NULL, g_usage, "LEGO Racers Usage:", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 // FUNCTION: LEGORACERS 0x0042bee0
-LegoS32 NeonCactus0x1d6c::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
+LegoS32 LegoRacers::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 {
 	if (p_argc < 1) {
 		return 1;
@@ -124,4 +169,10 @@ LegoS32 NeonCactus0x1d6c::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 	}
 
 	return 1;
+}
+
+// FUNCTION: LEGORACERS 0x0042c1a0
+LONG LegoRacers::ResetDisplay()
+{
+	return ChangeDisplaySettings(NULL, NULL);
 }

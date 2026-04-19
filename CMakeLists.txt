@@ -135,7 +135,7 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 add_executable(legoracers WIN32
   LEGORacers/src/main.cpp
   LEGORacers/src/cactusinterface0x4.cpp
-  LEGORacers/src/neoncactus0x1d6c.cpp
+  LEGORacers/src/legoracers.cpp
   LEGORacers/src/ironflame0x944.cpp
   LEGORacers/src/indigostar0x18.cpp
   LEGORacers/src/soundmanager.cpp
@@ -160,6 +160,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarynotion0x280.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
+  LEGORacers/src/videoplayer.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
   ${COMMON_SOURCES}

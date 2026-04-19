@@ -1,7 +1,7 @@
 #ifndef MAIN_H
 #define MAIN_H
 
-#include "neoncactus0x1d6c.h"
+#include "legoracers.h"
 #include "types.h"
 
 // SIZE 0x84
@@ -10,6 +10,6 @@ struct CommandLineArgs {
 	LegoChar* m_argv[32]; // 0x04
 };
 
-extern NeonCactus0x1d6c g_unk0x4c4a38;
+extern LegoRacers g_racers;
 
 #endif // MAIN_H

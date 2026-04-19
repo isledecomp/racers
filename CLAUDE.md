@@ -115,6 +115,10 @@ undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c (gap until end of class at 0x944)
 
 **Annotation ordering:** When a function or entity has annotations for both GOLDP and LEGORACERS, the GOLDP annotation must come first.
 
+**Win32 API: prefer un-suffixed names.** Use `ChangeDisplaySettings`, `MessageBox`, `RegisterClass`, `CreateWindowEx`, `LoadIcon`, etc. — NOT the explicit `A`/`W` variants like `ChangeDisplaySettingsA`, `MessageBoxA`. The un-suffixed names are macros from `<windows.h>` that resolve to the `A` form when `UNICODE` is undefined (the project default), so the compiled binary still imports `ChangeDisplaySettingsA`. The original game source used the macros; matching that style keeps the source readable and consistent. IDA pseudocode shows the resolved `*A` symbol — translate it back to the macro when transcribing.
+
+**No redundant `this->`.** Inside a member function, write `m_member`, `Method()`, and `BaseClass::VirtualMethod()` directly — don't prefix with `this->`. The implicit `this` is enough. The one place you might *think* you need it — calling a base-class virtual non-virtually (`this->Base::Foo()`) — also doesn't need the prefix; `Base::Foo()` from inside a derived member compiles to the same direct call.
+
 ## Naming Conventions
 
 Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
@@ -201,6 +205,8 @@ Matching these three functions provides high confidence that the class header (s
 - **Decomposing `if/else if` from asm.** A redundant-looking second conditional jump whose flags come from a much earlier `cmp` — e.g. `cmp ebp, 0xc ; jae label ; ... ; label: jne skip ; body ; skip:` — reveals an `else if` chain in the source. The correct form is usually `if (x < N) { main } else if (x == N) { body }`, NOT the reversed `if (x >= N) { body } else { main }` that IDA often shows. The `else if` branch body ends up physically at the end of the enclosing block, reached by a forward jump from the outer test. This restructuring often also unlocks different register allocation (e.g. pointer-walk vs index-form loops), because it changes how the compiler accounts for uses of the loop counter.
 - **Byte-loop hash accumulator pattern.** For a hash loop reading bytes from a string, prefer loading the byte into a local (`LegoChar c = p_str[i];`) and folding the shift directly into the accumulator (`acc += c << shift;`) rather than extracting a separate temp (`int v = p_str[i] << shift; acc += v;`). The temp pattern changes register allocation — the accumulator lands in a caller-saved register (`eax`) instead of callee-saved (`esi`) — which cascades to `this`/`p_str` register choices and stack-frame size.
 - **Loop-index variable scoping.** Declare `LegoU32 i;` before the first `for` loop, not inside the init. MSVC 6.0's legacy for-scoping lets `i` leak into the enclosing block (so a second `for (i = ...)` reusing the same variable compiles), but CI runs clang-tidy under modern ANSI scoping where the second loop sees `i` as undeclared. The compatible form is `LegoU32 i;` at function scope + `for (i = 0; ...; i++) { ... }`.
+- **`mov ecx, X; call F` indicates `__thiscall`** — even when `F`'s body never reads `this`. The `mov ecx` only makes sense if the call expects `this` in `ecx`. Source-side, declare `F` as a non-static member of the class whose pointer is in `ecx`; the body can ignore `this` (e.g. a wrapper around a Win32 call). Declaring it as a free function would emit just `call F` without the preceding `mov ecx`, and the caller's match would break. Conversely, if there's NO `mov ecx, X` before `call F`, F is NOT `__thiscall` (it's `__cdecl`/`__stdcall`/static).
+- **Direct call to a folded empty method = explicit base-scope call.** A direct `call <addr>` (opcode `e8`) where `<addr>` is the COMDAT-folded landing pad for empty `void f()` thiscalls (e.g. `0x4164C0` in LEGORacers, where every empty `void Class::Method()` body lands) reproduces from a non-virtual call to a base-class virtual: `BaseClass::VTable0xNN();` inside a derived member function. The explicit `BaseClass::` qualifier suppresses virtual dispatch and emits a direct call; the linker resolves it to the folded address. A virtual call (`this->VTable0xNN()` or just `VTable0xNN()` on a virtual method) would instead emit `mov eax, [ecx]; call dword ptr [eax+N]` — completely different bytes. Use this pattern when you see a stray `call <folded_empty_addr>` that isn't accounted for by any non-virtual member.
 
 ## COMDAT Folding Across Targets
 
@@ -319,6 +325,16 @@ When the functionality of a matched function is clearly obvious from the impleme
 Do **not** rename on weak evidence. If multiple plausible names exist with no way to choose (e.g. `OpenFileSources` vs. `LoadFileSources` vs. `RegisterFileSources`), keep the placeholder `FUN_XXXXXXXX` and wait for a caller, a nearby string literal, or a symmetric counterpart to break the tie. A misleading semantic name is worse than a neutral placeholder.
 
 Renaming a virtual method does not affect codegen — the vtable is slot-indexed by the compiler regardless of method name — so renaming is safe as long as all call sites and overrides are updated together. Verify the match still holds after the rename.
+
+**Lifecycle method conventions across classes.** The codebase uses a consistent set of method names for object lifecycle steps. Match these when naming new methods so all classes use the same vocabulary:
+
+- `Init()` — explicit initialization (separate from the constructor; the ctor zeroes fields, `Init` allocates resources/loads files/registers callbacks).
+- `Run()` — the main loop / per-instance driver (used on the top-level app/game class).
+- `Shutdown()` — release live resources (close handles, stop sound, free buffers) but leave the object reusable. Subsystem classes (`SoundManager`, `CobaltMist0x30`, `OpalVault0xf0`, `IndigoStar0x18`, `GolHashTable`) all use this name.
+- `Destroy()` — full teardown: invokes `Shutdown` (and any other cleanup), then releases anything `Shutdown` left, leaving the object in its post-construction state.
+- `Reset()` — return the object to a pristine zero-state (used inside constructors and destructors as a shared body, e.g. `CrimsonForge0x800::Reset`).
+
+When you find a method that wraps subsystem teardown in a class that also has a "full destroy" wrapper, the small one is `Shutdown` and the bigger one is `Destroy` — even if it means renaming a previously-named `Shutdown` to `Destroy` to free up the name. Don't invent new terms (`Cleanup`, `Teardown`, `StopServices`) when one of the established names fits — consistency across classes is more valuable than naming creativity.
 
 ## Project Structure
 

@@ -7,7 +7,7 @@
 
 #include "decomp.h"
 #include "golerror.h"
-#include "neoncactus0x1d6c.h"
+#include "legoracers.h"
 #include "types.h"
 
 #include <objbase.h>
@@ -23,7 +23,7 @@ HINSTANCE g_hInstance;
 HINSTANCE g_hPrevInstance;
 
 // GLOBAL: LEGORACERS 0x004c4a38
-NeonCactus0x1d6c g_unk0x4c4a38;
+LegoRacers g_racers;
 
 // GLOBAL: LEGORACERS 0x004c6ee8
 LegoChar g_commandLine[256];
@@ -34,12 +34,12 @@ CommandLineArgs g_commandLineArgs;
 // FUNCTION: LEGORACERS 0x0042f870
 LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
 {
-	if (!g_unk0x4c4a38.Init(p_argc, p_argv)) {
+	if (!g_racers.Init(p_argc, p_argv)) {
 		return 1;
 	}
 
-	g_unk0x4c4a38.FUN_0042bc40();
-	g_unk0x4c4a38.Shutdown();
+	g_racers.Run();
+	g_racers.Destroy();
 	return 0;
 }
 

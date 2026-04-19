@@ -1,7 +1,7 @@
-#ifndef IMAGINARYNOTION0X280_H
-#define IMAGINARYNOTION0X280_H
+#ifndef IMAGINARYNOTION0X290_H
+#define IMAGINARYNOTION0X290_H
 
-#include "ceruleanemperor0x50.h"
+#include "ceruleanemperor0x4c.h"
 #include "ceruleanqueen0x58.h"
 #include "compat.h"
 #include "decomp.h"
@@ -72,4 +72,4 @@ protected:
 	undefined2 m_unk0x28c;         // 0x28c
 };
 
-#endif // IMAGINARYNOTION0X280_H
+#endif // IMAGINARYNOTION0X290_H

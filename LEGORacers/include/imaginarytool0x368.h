@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "imaginarynotion0x280.h"
+#include "imaginarynotion0x290.h"
 
 // VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368

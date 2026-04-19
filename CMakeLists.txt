@@ -156,10 +156,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/ceruleansubject0x0c.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
-  LEGORacers/src/ceruleanemperor0x50.cpp
+  LEGORacers/src/ceruleanemperor0x4c.cpp
   LEGORacers/src/obscurevantage0x58.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
-  LEGORacers/src/imaginarynotion0x280.cpp
+  LEGORacers/src/imaginarynotion0x290.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/videoplayer.cpp

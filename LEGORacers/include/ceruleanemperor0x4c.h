@@ -1,5 +1,5 @@
-#ifndef CERULEANEMPEROR0X50_H
-#define CERULEANEMPEROR0X50_H
+#ifndef CERULEANEMPEROR0X4C_H
+#define CERULEANEMPEROR0X4C_H
 
 #include "ceruleanknight0x20.h"
 #include "compat.h"
@@ -34,4 +34,4 @@ protected:
 	undefined* m_unk0x48; // 0x48
 };
 
-#endif // CERULEANEMPEROR0X50_H
+#endif // CERULEANEMPEROR0X4C_H

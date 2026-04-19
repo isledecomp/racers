@@ -66,6 +66,9 @@ public:
 
 	LegoU32 GetGolBackendType() { return m_golBackendType; }
 	void SetGolBackendType(LegoU32 p_golBackendType) { m_golBackendType = p_golBackendType; }
+	HWND GetHwnd() { return m_hWnd; }
+	LegoU32 GetWindowMode() { return m_windowMode; }
+	LegoBool32 IsDisabled() { return m_disabled; }
 
 	void FUN_00416460();
 	void FUN_00416860(const LegoChar* p_unk0x04);

@@ -4,6 +4,7 @@
 #include "golerror.h"
 
 #include <control.h>
+#include <evcode.h>
 #include <stdio.h>
 #include <string.h>
 #include <uuids.h>
@@ -12,10 +13,10 @@
 DECOMP_SIZE_ASSERT(VideoPlayer::Graph, 0x18)
 
 // GLOBAL: LEGORACERS 0x004cebd0
-DEVMODEA g_devModeApply;
+DEVMODE g_devModeApply;
 
 // GLOBAL: LEGORACERS 0x004cec68
-DEVMODEA g_devModeCurrent;
+DEVMODE g_devModeCurrent;
 
 // GLOBAL: LEGORACERS 0x004cecfc
 LegoU32 g_savedWindowMode;
@@ -29,38 +30,100 @@ LegoChar g_buffer[256];
 // GLOBAL: LEGORACERS 0x004cee04
 WCHAR g_wideCharStr[256];
 
-// STUB: LEGORACERS 0x004a5fe0
-LegoS32 VideoPlayer::PlayImpl(IronFlame0x944*, LPCSTR, LegoBool32, LegoBool32)
+// FUNCTION: LEGORACERS 0x004a5fe0
+LegoS32 VideoPlayer::Play(
+	IronFlame0x944* p_unk0x04,
+	LPCSTR p_filename,
+	LegoBool32 p_abortableOnKey,
+	LegoBool32 p_autoRewind
+)
 {
-	STUB(0x4a5fe0);
-	return 0;
+	Graph g;
+	LegoS32 result = 0;
+
+	if (GetDeviceCaps(GetDC(p_unk0x04->GetHwnd()), BITSPIXEL) == 4) {
+		return 0;
+	}
+
+	if (g.LoadFile(p_filename)) {
+		g.m_hwnd = p_unk0x04->GetHwnd();
+		g.StartPlayback(TRUE, p_autoRewind);
+		g.RunMessageLoop(p_abortableOnKey);
+		g.m_hwnd = NULL;
+		g.Destroy();
+		result = 1;
+	}
+
+	return result;
 }
 
-// STUB: LEGORACERS 0x004a60c0
-int VideoPlayer::FUN_004a60c0(IronFlame0x944*, DWORD, DWORD)
+// FUNCTION: LEGORACERS 0x004a60c0
+int VideoPlayer::Begin(IronFlame0x944* p_unk0x04, DWORD p_width, DWORD p_height)
 {
-	STUB(0x4a60c0);
+	RevertDisplay();
+	ShowCursor(FALSE);
+
+	g_savedWindowMode = p_unk0x04->GetWindowMode();
+	HWND hWnd = p_unk0x04->GetHwnd();
+	ShowWindow(hWnd, SW_MAXIMIZE);
+	BringWindowToTop(hWnd);
+
+	g_devModeCurrent.dmSize = sizeof(DEVMODE);
+	g_devModeCurrent.dmDriverExtra = 0;
+
+	if (EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &g_devModeCurrent)) {
+		memcpy(&g_devModeApply, &g_devModeCurrent, sizeof(DEVMODE));
+		g_devModeApply.dmBitsPerPel = 16;
+		g_devModeApply.dmPelsWidth = p_width;
+		g_devModeApply.dmPelsHeight = p_height;
+		g_devModeApply.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+
+		if (ChangeDisplaySettings(&g_devModeApply, CDS_FULLSCREEN | CDS_RESET) == DISP_CHANGE_SUCCESSFUL) {
+			g_displayChanged = TRUE;
+		}
+	}
+
+	ShowWindow(hWnd, SW_MAXIMIZE);
+	BringWindowToTop(hWnd);
 	return 1;
 }
 
-// STUB: LEGORACERS 0x004a6190
+// FUNCTION: LEGORACERS 0x004a6190
 void VideoPlayer::RevertDisplay()
 {
-	STUB(0x4a6190);
+	if (g_displayChanged) {
+		g_displayChanged = FALSE;
+		g_devModeCurrent.dmFields = DM_BITSPERPEL | DM_PELSWIDTH | DM_PELSHEIGHT;
+		ChangeDisplaySettings(&g_devModeCurrent, CDS_RESET);
+	}
 }
 
-// STUB: LEGORACERS 0x004a61c0
-int VideoPlayer::FUN_004a61c0(IronFlame0x944*, LPCSTR, int, int)
+// FUNCTION: LEGORACERS 0x004a61c0
+int VideoPlayer::Play(IronFlame0x944* p_unk0x04, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind)
 {
-	STUB(0x4a61c0);
-	return 0;
+	return Play(p_unk0x04, p_filename, (LegoBool32) p_abortableOnKey, (LegoBool32) p_autoRewind);
 }
 
-// STUB: LEGORACERS 0x004a61e0
-int VideoPlayer::FUN_004a61e0(IronFlame0x944*)
+// FUNCTION: LEGORACERS 0x004a61e0
+int VideoPlayer::End(IronFlame0x944* p_unk0x04)
 {
-	STUB(0x4a61e0);
-	return 1;
+	RevertDisplay();
+
+	if (p_unk0x04->IsDisabled()) {
+		p_unk0x04->ChangeWindowState(g_savedWindowMode);
+
+		if (p_unk0x04->GetFlags() & IronFlame0x944::c_flagBit3) {
+			ShowWindow(p_unk0x04->GetHwnd(), SW_MAXIMIZE);
+		}
+		else {
+			ShowWindow(p_unk0x04->GetHwnd(), SW_RESTORE);
+		}
+	}
+	else {
+		ShowWindow(p_unk0x04->GetHwnd(), SW_MAXIMIZE);
+	}
+
+	return ShowCursor(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x004a6260
@@ -189,7 +252,7 @@ void VideoPlayer::Graph::StartPlayback(LegoBool32 p_fullscreen, LegoBool32)
 
 	long style = 0;
 	videoWindow->get_WindowStyle(&style);
-	style &= 0xFF33FFFF;
+	style &= ~(WS_CAPTION | WS_SYSMENU | WS_THICKFRAME);
 	videoWindow->put_WindowStyle(style);
 	videoWindow->SetWindowPosition(0, 0, GetSystemMetrics(SM_CXSCREEN), GetSystemMetrics(SM_CYSCREEN));
 	videoWindow->HideCursor(-1);
@@ -212,26 +275,159 @@ void VideoPlayer::Graph::StartPlayback(LegoBool32 p_fullscreen, LegoBool32)
 	m_running = TRUE;
 }
 
-// STUB: LEGORACERS 0x004a65a0
+// FUNCTION: LEGORACERS 0x004a65a0
 void VideoPlayer::Graph::StopPlayback()
 {
-	STUB(0x4a65a0);
+	if (!m_graph) {
+		return;
+	}
+
+	IMediaControl* mediaControl;
+	if (FAILED(m_graph->QueryInterface(IID_IMediaControl, (void**) &mediaControl))) {
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to get ActiveMovie media control");
+	}
+
+	HRESULT stopHr = mediaControl->Stop();
+	mediaControl->Release();
+
+	if (FAILED(stopHr)) {
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to stop ActiveMovie");
+	}
+
+	if (m_hasVideoWindow) {
+		IVideoWindow* videoWindow;
+		if (FAILED(m_graph->QueryInterface(IID_IVideoWindow, (void**) &videoWindow))) {
+			Release();
+			GOL_FATALERROR_MESSAGE("Unable to get ActiveMovie video window control");
+		}
+		videoWindow->put_FullScreenMode(0);
+		videoWindow->Release();
+	}
+
+	if (m_hwnd && m_hasVideoWindow) {
+		HBRUSH brush = CreateSolidBrush(0);
+		SetWindowPos(m_hwnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+
+		HDC hdc = GetDC(m_hwnd);
+		RECT rect;
+		GetClientRect(m_hwnd, &rect);
+		FillRect(hdc, &rect, brush);
+		ReleaseDC(m_hwnd, hdc);
+
+		HDC screenDc = GetDC(NULL);
+		rect.left = 0;
+		rect.right = GetSystemMetrics(SM_CXSCREEN);
+		rect.top = 0;
+		rect.bottom = GetSystemMetrics(SM_CXSCREEN);
+		FillRect(screenDc, &rect, brush);
+		ReleaseDC(NULL, screenDc);
+		DeleteObject(brush);
+	}
+
+	m_running = FALSE;
 }
 
-// STUB: LEGORACERS 0x004a6720
+// FUNCTION: LEGORACERS 0x004a6720
 void VideoPlayer::Graph::ResetPosition()
 {
-	STUB(0x4a6720);
+	if (!m_graph) {
+		return;
+	}
+
+	IMediaPosition* mediaPosition;
+	if (FAILED(m_graph->QueryInterface(IID_IMediaPosition, (void**) &mediaPosition))) {
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to get ActiveMovie media position control");
+	}
+
+	REFTIME duration;
+	if (FAILED(mediaPosition->get_Duration(&duration))) {
+		mediaPosition->Release();
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to get ActiveMovie media length");
+	}
+
+	REFTIME position;
+	if (FAILED(mediaPosition->get_CurrentPosition(&position))) {
+		mediaPosition->Release();
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to get ActiveMovie media current position");
+	}
+
+	mediaPosition->put_CurrentPosition(0.0);
+	mediaPosition->Release();
 }
 
-// STUB: LEGORACERS 0x004a67f0
-void VideoPlayer::Graph::RunMessageLoop(LegoBool32)
+// FUNCTION: LEGORACERS 0x004a67f0
+void VideoPlayer::Graph::RunMessageLoop(LegoBool32 p_abortableOnKey)
 {
-	STUB(0x4a67f0);
+	if (!m_graph || !m_running) {
+		return;
+	}
+
+	MSG msg;
+	while (m_running) {
+		HANDLE pHandles = m_eventHandle;
+		if (!pHandles) {
+			WaitMessage();
+		}
+		else if (MsgWaitForMultipleObjects(1, &pHandles, FALSE, INFINITE, QS_ALLINPUT) == 0) {
+			ProcessEvent();
+			continue;
+		}
+
+		while (PeekMessage(&msg, NULL, 0, 0, PM_REMOVE)) {
+			if (msg.message == WM_QUIT) {
+				return;
+			}
+			if (p_abortableOnKey && msg.message == WM_KEYUP) {
+				StopPlayback();
+			}
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x004a68c0
+// FUNCTION: LEGORACERS 0x004a68c0
 void VideoPlayer::Graph::ProcessEvent()
 {
-	STUB(0x4a68c0);
+	if (!m_graph) {
+		return;
+	}
+
+	IMediaEvent* mediaEvent;
+	if (FAILED(m_graph->QueryInterface(IID_IMediaEvent, (void**) &mediaEvent))) {
+		Release();
+		GOL_FATALERROR_MESSAGE("Unable to initialize ActiveMovie media event interface");
+	}
+
+	long code;
+	long lParam1;
+	long lParam2;
+	if (FAILED(mediaEvent->GetEvent(&code, &lParam1, &lParam2, 0))) {
+		mediaEvent->Release();
+		return;
+	}
+
+	switch (code) {
+	case EC_COMPLETE:
+		if (m_autoRewind) {
+			ResetPosition();
+			mediaEvent->Release();
+			return;
+		}
+		break;
+	case EC_USERABORT:
+	case EC_ERRORABORT:
+		break;
+	default:
+		mediaEvent->Release();
+		return;
+	}
+
+	StopPlayback();
+	mediaEvent->Release();
 }

@@ -4,8 +4,16 @@
 #include "ironflame0x944.h"
 #include "types.h"
 
-#include <strmif.h>
 #include <windows.h>
+
+// Forward declarations for DirectDraw7 types referenced by modern strmif.h
+// (MSVC 6.0's strmif.h doesn't require these)
+struct IDirectDraw7;
+struct IDirectDrawSurface7;
+typedef struct IDirectDraw7* LPDIRECTDRAW7;
+typedef struct IDirectDrawSurface7* LPDIRECTDRAWSURFACE7;
+
+#include <strmif.h>
 
 class VideoPlayer {
 public:
@@ -34,15 +42,15 @@ public:
 		LegoBool32 m_autoRewind;     // 0x14
 	};
 
-	static int FUN_004a60c0(IronFlame0x944* p_unk0x04, DWORD p_width, DWORD p_height);
-	static int FUN_004a61c0(IronFlame0x944* p_unk0x04, LPCSTR p_filename, int p_unk0x08, int p_unk0x0c);
-	static int FUN_004a61e0(IronFlame0x944* p_unk0x04);
+	static int Begin(IronFlame0x944* p_unk0x04, DWORD p_width, DWORD p_height);
+	static int Play(IronFlame0x944* p_unk0x04, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind);
+	static int End(IronFlame0x944* p_unk0x04);
 
 private:
-	static LegoS32 PlayImpl(
+	static LegoS32 Play(
 		IronFlame0x944* p_unk0x04,
 		LPCSTR p_filename,
-		LegoBool32 p_fullscreen,
+		LegoBool32 p_abortableOnKey,
 		LegoBool32 p_autoRewind
 	);
 	static void RevertDisplay();

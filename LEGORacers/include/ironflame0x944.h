@@ -79,8 +79,6 @@ public:
 	LegoBool32 FUN_00416d20(HWND p_hWnd);
 	void ChangeWindowState(LegoU32 p_mode);
 
-	HWND GetHWND() { return m_hWnd; }
-
 private:
 	static LRESULT CALLBACK AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam);
 

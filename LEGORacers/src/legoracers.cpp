@@ -148,7 +148,7 @@ void LegoRacers::FUN_0042be00()
 	LegoS32 initDisplayResult =
 		m_unk0x04.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
 
-	m_soundManager.FUN_00418f50(m_unk0x04.GetHWND());
+	m_soundManager.FUN_00418f50(m_unk0x04.GetHwnd());
 
 	if (m_soundManager.VTable0x04(0x20)) {
 		m_unk0xa10 = &m_soundManager;

@@ -148,7 +148,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/jaspercore0xf0.cpp
   LEGORacers/src/opalvault0xf0.cpp
   LEGORacers/src/soundnode.cpp
-  LEGORacers/src/imaginarycomponents.cpp
+  LEGORacers/src/ceruleansubject0x0c.cpp
+  LEGORacers/src/ceruleanknight0x20.cpp
+  LEGORacers/src/ceruleanqueen0x58.cpp
+  LEGORacers/src/ceruleanemperor0x50.cpp
   LEGORacers/src/obscurevantage0x58.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
   LEGORacers/src/imaginarynotion0x280.cpp

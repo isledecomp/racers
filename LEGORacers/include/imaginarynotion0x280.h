@@ -1,9 +1,10 @@
 #ifndef IMAGINARYNOTION0X280_H
 #define IMAGINARYNOTION0X280_H
 
+#include "ceruleanemperor0x50.h"
+#include "ceruleanqueen0x58.h"
 #include "compat.h"
 #include "decomp.h"
-#include "imaginarycomponents.h"
 #include "imaginaryinterface.h"
 #include "obscureicon0x1a8.h"
 
@@ -49,8 +50,8 @@ public:
 
 protected:
 	undefined m_unk0x04[4];           // 0x04
-	CeruleanEmperor m_unk0x08;        // 0x08
-	CeruleanQueen m_unk0x58;          // 0x58
+	CeruleanEmperor0x50 m_unk0x08;    // 0x08
+	CeruleanQueen0x58 m_unk0x58;      // 0x58
 	undefined m_unk0xb0[0xd8 - 0xb0]; // 0xb0
 	ObscureIcon0x1a8 m_unk0xd8;       // 0xd8
 };

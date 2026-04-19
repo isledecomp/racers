@@ -145,7 +145,7 @@ void LegoRacers::FUN_0042bde0()
 // FUNCTION: LEGORACERS 0x0042be00
 void LegoRacers::FUN_0042be00()
 {
-	LegoS32 init_result =
+	LegoS32 initDisplayResult =
 		m_unk0x04.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
 
 	m_soundManager.FUN_00418f50(m_unk0x04.GetHWND());
@@ -159,7 +159,7 @@ void LegoRacers::FUN_0042be00()
 
 	m_unk0xac4 = m_unk0xa10;
 
-	if (init_result) {
+	if (initDisplayResult) {
 		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);
 	}
 	return;

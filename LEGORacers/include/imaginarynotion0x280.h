@@ -48,11 +48,11 @@ public:
 	virtual void VTable0x7c();                                                      // vtable+0x7c
 
 protected:
-	undefined m_unk0x04[4];            // 0x04
-	CeruleanEmperor m_unk0x08;         // 0x08
-	CeruleanQueen m_unk0x58;           // 0x58
-	undefined m_unk0xb0[0xd8 - 0xb0];  // 0xb0
-	ObscureIcon m_unk0xd8;			   // 0xd8
+	undefined m_unk0x04[4];           // 0x04
+	CeruleanEmperor m_unk0x08;        // 0x08
+	CeruleanQueen m_unk0x58;          // 0x58
+	undefined m_unk0xb0[0xd8 - 0xb0]; // 0xb0
+	ObscureIcon m_unk0xd8;            // 0xd8
 };
 
 #endif // IMAGINARYNOTION0X280_H

@@ -52,7 +52,7 @@ public:
 	virtual void VTable0x68() = 0;                         // vtable+0x68
 	virtual void VTable0x6c() = 0;                         // vtable+0x6c
 	virtual void VTable0x70() = 0;                         // vtable+0x70
-	virtual void VTable0x74() = 0;                         // vtable+0x74
+	virtual void VTable0x74(undefined4) = 0;               // vtable+0x74
 
 	void FUN_10032580(LegoS32 p_code);
 	void FUN_10032670(const LegoChar* p_suffix);
@@ -73,7 +73,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0044e5c0
 	// GolFileParser::`scalar deleting destructor'
 
-private:
+protected:
 	undefined4 m_unk0x30;               // 0x30
 	undefined4 m_unk0x34;               // 0x34
 	undefined4 m_unk0x38;               // 0x38

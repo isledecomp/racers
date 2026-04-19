@@ -27,6 +27,8 @@ public:
 	void VTable0x28(SoundNode*) override;       // vtable+0x28
 	void VTable0x34(undefined4) override;       // vtable+0x34
 
+	void FUN_00418f50(HWND p_hwnd);
+
 	// SYNTHETIC: LEGORACERS 0x00418680
 	// SoundManager::`scalar deleting destructor'
 

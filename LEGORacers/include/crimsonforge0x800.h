@@ -42,8 +42,12 @@ public:
 	virtual void UnloadGolLibrary() = 0;                     // vtable+0x18
 	virtual void InitInput() = 0;                            // vtable+0x1c
 	virtual void VTable0x20() = 0;                           // vtable+0x20
-	virtual LegoS32 VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
-							   LegoU32 p_flags) = 0; // vtable+0x24
+	virtual LegoS32 InitializeDisplay(
+		LegoU32 p_width,
+		LegoU32 p_height,
+		LegoU32 p_bpp,
+		LegoU32 p_flags
+	) = 0; // vtable+0x24
 	virtual void VTable0x28(
 		LegoU32 p_width,
 		LegoU32 p_height,

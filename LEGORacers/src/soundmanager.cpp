@@ -166,6 +166,12 @@ void SoundManager::VTable0x28(SoundNode* p_node)
 	delete p_node;
 }
 
+// STUB: LEGORACERS 0x00418f50
+void SoundManager::FUN_00418f50(HWND p_hwnd)
+{
+	STUB(0x418f50);
+}
+
 // FUNCTION: LEGORACERS 0x0041be50 FOLDED
 void SoundManager::VTable0x18(CrimsonRay0x20* p_node)
 {

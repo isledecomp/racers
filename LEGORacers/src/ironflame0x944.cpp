@@ -275,11 +275,11 @@ void IronFlame0x944::VTable0x28(
 )
 {
 	m_golDrawState->VTable0x0c(p_driverName, p_deviceName);
-	VTable0x24(p_width, p_height, p_bpp, p_flags | c_flagBit2);
+	InitializeDisplay(p_width, p_height, p_bpp, p_flags | c_flagBit2);
 }
 
 // FUNCTION: LEGORACERS 0x00416b00
-LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
+LegoS32 IronFlame0x944::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {
 	if (m_flags & c_flagDisplayActive) {
 		VTable0x2c();

@@ -2,6 +2,7 @@
 
 #include "videoplayer.h"
 
+#include <golerror.h>
 #include <stddef.h>
 #include <string.h>
 
@@ -141,10 +142,27 @@ void LegoRacers::FUN_0042bde0()
 	STUB(0x42bde0);
 }
 
-// STUB: LEGORACERS 0x0042be00
+// FUNCTION: LEGORACERS 0x0042be00
 void LegoRacers::FUN_0042be00()
 {
-	STUB(0x42be00);
+	LegoS32 init_result =
+		m_unk0x04.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
+
+	m_soundManager.FUN_00418f50(m_unk0x04.GetHWND());
+
+	if (m_soundManager.VTable0x04(0x20)) {
+		m_unk0xa10 = &m_soundManager;
+	}
+	else {
+		m_unk0xa10 = &m_unk0x9e0;
+	}
+
+	m_unk0xac4 = m_unk0xa10;
+
+	if (init_result) {
+		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);
+	}
+	return;
 }
 
 // FUNCTION: LEGORACERS 0x0042be90

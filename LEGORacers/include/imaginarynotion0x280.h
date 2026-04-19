@@ -13,7 +13,6 @@
 class ImaginaryNotion0x280 : public ImaginaryInterface {
 public:
 	ImaginaryNotion0x280();
-	~ImaginaryNotion0x280();
 
 	void VTable0x00(undefined4) override;                                           // vtable+0x00
 	void VTable0x04(undefined4) override;                                           // vtable+0x04
@@ -41,12 +40,15 @@ public:
 	virtual void VTable0x5c();                                                      // vtable+0x5c
 	virtual void VTable0x60();                                                      // vtable+0x60
 	virtual void VTable0x64();                                                      // vtable+0x64
-	virtual void VTable0x68();                                                      // vtable+0x68
+	virtual ~ImaginaryNotion0x280();                                                // vtable+0x68
 	virtual void VTable0x6c();                                                      // vtable+0x6c
 	virtual void VTable0x70();                                                      // vtable+0x70
 	virtual void VTable0x74();                                                      // vtable+0x74
 	virtual void VTable0x78();                                                      // vtable+0x78
 	virtual void VTable0x7c();                                                      // vtable+0x7c
+
+	// SYNTHETIC: LEGORACERS 0x0046b3f0
+	// ImaginaryNotion0x280::`scalar deleting destructor'
 
 protected:
 	undefined m_unk0x04[4];           // 0x04

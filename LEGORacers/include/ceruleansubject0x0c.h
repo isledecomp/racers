@@ -10,7 +10,7 @@
 class CeruleanSubject0x0c {
 public:
 	CeruleanSubject0x0c();
-	virtual ~CeruleanSubject0x0c();
+	virtual ~CeruleanSubject0x0c();      // vtable+0x00
 	virtual void VTable0x04(undefined4); // vtable+0x04
 	virtual void VTable0x08();           // vtable+0x08
 

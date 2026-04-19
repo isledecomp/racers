@@ -37,11 +37,10 @@ ImaginaryWrench0x23bc::ImaginaryWrench0x23bc()
 	// TODO
 }
 
-// STUB: LEGORACERS 0x0047b070
-void ImaginaryWrench0x23bc::VTable0x68()
+// STUB: LEGORACERS 0x0047b090
+ImaginaryWrench0x23bc::~ImaginaryWrench0x23bc()
 {
 	// TODO
-	STUB(0x47b070);
 }
 
 // STUB: LEGORACERS 0x0047b1d0

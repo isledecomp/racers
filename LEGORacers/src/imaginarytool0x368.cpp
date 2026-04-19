@@ -52,11 +52,10 @@ ImaginaryTool0x368::ImaginaryTool0x368()
 	// TODO
 }
 
-// STUB: LEGORACERS 0x0047fb60
-void ImaginaryTool0x368::VTable0x68()
+// STUB: LEGORACERS 0x0047fb80
+ImaginaryTool0x368::~ImaginaryTool0x368()
 {
 	// TODO
-	STUB(0x47fb60);
 }
 
 // STUB: LEGORACERS 0x0047fbf0 FOLDED

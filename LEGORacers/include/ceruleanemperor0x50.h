@@ -11,7 +11,7 @@
 class CeruleanEmperor0x50 : public CeruleanKnight0x20 {
 public:
 	CeruleanEmperor0x50();
-	~CeruleanEmperor0x50() override;
+	~CeruleanEmperor0x50() override;      // vtable+0x00
 	void VTable0x08() override;           // vtable+0x08
 	void VTable0x0c() override;           // vtable+0x0c
 	void VTable0x10(undefined4) override; // vtable+0x10

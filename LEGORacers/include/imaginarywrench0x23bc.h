@@ -19,7 +19,7 @@ public:
 	void VTable0x44(undefined4) override;             // vtable+0x44
 	void VTable0x4c(undefined4) override;             // vtable+0x4c
 	void VTable0x54() override;                       // vtable+0x54
-	void VTable0x68() override;                       // vtable+0x68
+	~ImaginaryWrench0x23bc() override;                // vtable+0x68
 	void VTable0x74() override;                       // vtable+0x74
 	void VTable0x84() override;                       // vtable+0x84
 	void VTable0x8c(undefined4, undefined4) override; // vtable+0x8c
@@ -27,6 +27,9 @@ public:
 	void VTable0x94(undefined4) override;             // vtable+0x94
 
 	void FUN_0047ba00();
+
+	// SYNTHETIC: LEGORACERS 0x0047b070
+	// ImaginaryWrench0x23bc::`scalar deleting destructor'
 
 protected:
 	enum {

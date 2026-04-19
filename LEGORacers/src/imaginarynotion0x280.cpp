@@ -119,13 +119,6 @@ ImaginaryNotion0x280::ImaginaryNotion0x280()
 	VTable0x54();
 }
 
-// STUB: LEGORACERS 0x0046b3f0
-void ImaginaryNotion0x280::VTable0x68()
-{
-	// TODO
-	STUB(0x46b3f0);
-}
-
 // STUB: LEGORACERS 0x0046b410
 ImaginaryNotion0x280::~ImaginaryNotion0x280()
 {

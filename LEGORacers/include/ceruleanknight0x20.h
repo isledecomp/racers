@@ -11,7 +11,7 @@
 class CeruleanKnight0x20 : public CeruleanSubject0x0c {
 public:
 	CeruleanKnight0x20();
-	~CeruleanKnight0x20() override;
+	~CeruleanKnight0x20() override;          // vtable+0x00
 	void VTable0x08() override;              // vtable+0x08
 	virtual void VTable0x0c();               // vtable+0x0c
 	virtual void VTable0x10(undefined4) = 0; // vtable+0x10

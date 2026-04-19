@@ -25,7 +25,7 @@ public:
 	void VTable0x54() override;                                                     // vtable+0x54
 	void VTable0x5c() override;                                                     // vtable+0x5c
 	void VTable0x64() override;                                                     // vtable+0x64
-	void VTable0x68() override;                                                     // vtable+0x68
+	~ImaginaryTool0x368() override;                                                 // vtable+0x68
 	void VTable0x6c() override;                                                     // vtable+0x6c
 	void VTable0x74() override;                                                     // vtable+0x74
 	void VTable0x78() override;                                                     // vtable+0x78
@@ -35,6 +35,9 @@ public:
 	virtual void VTable0x8c(undefined4, undefined4);                                // vtable+0x8c
 	virtual void VTable0x90(undefined4);                                            // vtable+0x90
 	virtual void VTable0x94(undefined4);                                            // vtable+0x94
+
+	// SYNTHETIC: LEGORACERS 0x0047fb60
+	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
 	undefined m_unk0x280[0x354 - 0x280]; // 0x280

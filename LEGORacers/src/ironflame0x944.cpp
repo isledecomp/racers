@@ -7,6 +7,7 @@
 #include "golerror.h"
 #include "golfsutil.h"
 #include "golstream.h"
+#include "mousedevice.h"
 #include "opalvault0xf0.h"
 
 #include <mmsystem.h>
@@ -336,7 +337,7 @@ LegoS32 IronFlame0x944::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, Leg
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			VTable0x38()->GetUnk0xa0()->VTable0x44();
+			VTable0x38()->GetMouse()->VTable0x44();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -506,7 +507,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 				SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				VTable0x38()->GetUnk0xa0()->VTable0x44();
+				VTable0x38()->GetMouse()->VTable0x44();
 				SetWindowPos(
 					m_hWnd,
 					NULL,
@@ -566,7 +567,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			VTable0x38()->GetUnk0xa0()->VTable0x44();
+			VTable0x38()->GetMouse()->VTable0x44();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -690,7 +691,7 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 				SetWindowPos(p_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				self->VTable0x38()->GetUnk0xa0()->VTable0x44();
+				self->VTable0x38()->GetMouse()->VTable0x44();
 				SetWindowPos(
 					p_hWnd,
 					NULL,

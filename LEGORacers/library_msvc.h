@@ -1,6 +1,9 @@
 #ifdef 0
 // For LEGORACERS symbols only
 
+// LIBRARY: LEGORACERS 0x004a83f0
+// c_dfDIKeyboard
+
 // LIBRARY: LEGORACERS 0x004a849e
 // __purecall
 
@@ -42,6 +45,9 @@
 
 // LIBRARY: LEGORACERS 0x004a880d
 // __setargv
+
+// LIBRARY: LEGORACERS 0x004a8498
+// _DirectInputCreateA@16
 
 // GLOBAL: LEGORACERS 0x004be000
 // ___xc_a

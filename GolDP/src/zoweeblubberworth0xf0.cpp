@@ -1,6 +1,6 @@
 #include "zoweeblubberworth0xf0.h"
 
-DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0);
+DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0)
 
 // FUNCTION: GOLDP 0x1002c030
 ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()

@@ -4,8 +4,8 @@
 
 #include <stdlib.h>
 
-DECOMP_SIZE_ASSERT(SmallCocoon0xc, 0xc);
-DECOMP_SIZE_ASSERT(SmallCocoon0xc::Item, 0xc);
+DECOMP_SIZE_ASSERT(SmallCocoon0xc, 0xc)
+DECOMP_SIZE_ASSERT(SmallCocoon0xc::Item, 0xc)
 
 // FUNCTION: GOLDP 0x100281c0
 SmallCocoon0xc::SmallCocoon0xc()

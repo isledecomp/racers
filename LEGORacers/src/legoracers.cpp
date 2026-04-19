@@ -263,5 +263,5 @@ LegoS32 LegoRacers::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 // FUNCTION: LEGORACERS 0x0042c1a0
 LONG LegoRacers::ResetDisplay()
 {
-	return ChangeDisplaySettings(NULL, NULL);
+	return ChangeDisplaySettings(NULL, 0);
 }

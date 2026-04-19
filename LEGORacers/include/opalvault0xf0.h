@@ -11,22 +11,26 @@
 class OpalVault0xf0 : public JasperCore0xf0 {
 public:
 	OpalVault0xf0();
-	LegoS32 Reset() override;             // vtable+0x00
-	~OpalVault0xf0() override;            // vtable+0x04
-	LegoS32 Shutdown() override;          // vtable+0x08
-	LegoS32 Init() override;              // vtable+0x0c
-	LegoS32 VTable0x10(LegoS32) override; // vtable+0x10
-	LegoS32 VTable0x14() override;        // vtable+0x14
-	LegoS32 VTable0x18() override;        // vtable+0x18
-	LegoS32 VTable0x1c() override;        // vtable+0x1c
-	LegoS32 VTable0x20() override;        // vtable+0x20
-	void VTable0x24() override;           // vtable+0x24
-	virtual void VTable0x28();            // vtable+0x28
+	LegoS32 Reset() override;                                             // vtable+0x00
+	~OpalVault0xf0() override;                                            // vtable+0x04
+	LegoS32 Shutdown() override;                                          // vtable+0x08
+	LegoS32 Init() override;                                              // vtable+0x0c
+	LegoS32 VTable0x10(LegoS32) override;                                 // vtable+0x10
+	LegoS32 DetectNewJoysticks() override;                                // vtable+0x14
+	virtual LegoBool32 DetectKeyboard();                                  // vtable+0x18
+	virtual LegoBool32 DetectMouse();                                     // vtable+0x1c
+	virtual LegoBool32 DetectJoysticks();                                 // vtable+0x20
+	virtual void DestroyDevices();                                        // vtable+0x24
+	virtual LegoBool32 VTable0x28(LPCDIDEVICEINSTANCE p_devinceInstance); // vtable+0x28
 
 	// SYNTHETIC: LEGORACERS 0x00450350
 	// OpalVault0xf0::`scalar deleting destructor'
 
-	void FUN_004503e0(HINSTANCE p_unk0x04, HWND p_unk0x08);
+	LegoBool32 FUN_004503e0(HINSTANCE p_hInstance, HWND p_hWnd);
+	LegoBool32 FUN_00450630(LPCDIDEVICEINSTANCE p_deviceInfo);
+
+	static BOOL CALLBACK AddAtachedInputDeviceCallback(LPCDIDEVICEINSTANCE, LPVOID);
+	static BOOL CALLBACK AddAttachedForceFeedbackInputDeviceCallback(LPCDIDEVICEINSTANCE, LPVOID);
 };
 
 #endif // OPALVAULT0XF0_H

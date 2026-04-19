@@ -218,14 +218,17 @@ jobs:
           python-version: '3.12'
 
       - name: Install python libraries
+        id: install
         run: |
           pip install -r tools/requirements.txt
 
       - name: Run decomplint
+        if: ${{ steps.install.conclusion == 'success' && always() }}
         run: |
           reccmp-decomplint ${{ matrix.path }} --module ${{ matrix.module }} --warnfail
 
       - name: Check address padding
+        if: ${{ steps.install.conclusion == 'success' && always() }}
         run: |
           python tools/reccmp_addr_padding.py
 
@@ -269,7 +272,7 @@ jobs:
             --recurse \
             --style tools/ncc/ncc.style \
             --skip tools/ncc/skip.yml \
-            --definition PASCAL WINAPI FAR BOOL CALLBACK HWND__=HWND \
+            --definition DEFINE_GUID PASCAL WINAPI FAR BOOL CALLBACK HWND__=HWND \
             --include \
               util \
               LEGORacers/include \

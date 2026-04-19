@@ -125,8 +125,8 @@ target_include_directories(goldp PRIVATE
   "${PROJECT_SOURCE_DIR}/util"
 )
 target_link_libraries(goldp PRIVATE
-    ddraw
-    dxguid
+  ddraw
+  dxguid
 )
 
 set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
@@ -171,11 +171,18 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/videoplayer.cpp
+  LEGORacers/src/joystickdevice.cpp
+  LEGORacers/src/keyboarddevice.cpp
+  LEGORacers/src/mousedevice.cpp
+  LEGORacers/src/directinputdevice.cpp
+  LEGORacers/src/inputdevice.cpp
+  LEGORacers/src/guids.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
   ${COMMON_SOURCES}
 )
 target_compile_definitions(legoracers PRIVATE BUILDING_LEGORACERS)
+target_compile_definitions(legoracers PRIVATE DIRECTINPUT_VERSION=0x500)
 reccmp_add_target(legoracers ID LEGORACERS)
 
 target_include_directories(legoracers PRIVATE
@@ -190,7 +197,6 @@ target_link_libraries(legoracers PRIVATE
   dinput
   dsound
   ole32
-  strmiids
   winmm
 )
 

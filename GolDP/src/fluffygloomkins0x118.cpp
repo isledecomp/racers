@@ -1,6 +1,6 @@
 #include "fluffygloomkins0x118.h"
 
-DECOMP_SIZE_ASSERT(FluffyGloomkins, 0x118);
+DECOMP_SIZE_ASSERT(FluffyGloomkins, 0x118)
 
 // STUB: GOLDP 0x10017190
 FluffyGloomkins::FluffyGloomkins()

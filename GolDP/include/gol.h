@@ -46,7 +46,7 @@ public:
 	virtual undefined4 VTable0x24() = 0;             // vtable+0x24
 	virtual undefined4* VTable0x28() = 0;            // vtable+0x28
 	virtual undefined4* VTable0x2c() = 0;            // vtable+0x2c
-	virtual FloatyBoat0x28* VTable0x30() = 0;            // vtable+0x30
+	virtual FloatyBoat0x28* VTable0x30() = 0;        // vtable+0x30
 	virtual undefined4* VTable0x34() = 0;            // vtable+0x34
 	virtual undefined4* VTable0x38() = 0;            // vtable+0x38
 	virtual void VTable0x3c(undefined4*) = 0;        // vtable+0x3c

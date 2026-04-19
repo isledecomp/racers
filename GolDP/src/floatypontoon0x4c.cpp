@@ -67,7 +67,7 @@ void FloatyPontoon0x4c::VTable0x14(FloatyVec0xc* p_arg1, undefined4* p_arg2)
 	STUB(0x10029ee0);
 }
 
-// STUB: GOLDP 0x10026fa0
+// STUB: GOLDP 0x10026fa0 FOLDED
 undefined4 FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_arg1)
 {
 	// TODO
@@ -96,10 +96,4 @@ undefined4 FloatyPontoon0x4c::VTable0x20()
 	// TODO
 	STUB(0x1002a060);
 	return 0;
-}
-
-// FUNCTION: GOLDP 0x100156c0
-void FloatyPontoon0x4c::VTable0x08(const FloatyVec0xc& p_v)
-{
-	FloatyBoat0x28::VTable0x08(p_v);
 }

@@ -26,7 +26,7 @@ public:
 	undefined4 VTable0x24() override;             // vtable+0x24
 	undefined4* VTable0x28() override;            // vtable+0x28
 	undefined4* VTable0x2c() override;            // vtable+0x2c
-	FloatyBoat0x28* VTable0x30() override;            // vtable+0x30
+	FloatyBoat0x28* VTable0x30() override;        // vtable+0x30
 	undefined4* VTable0x34() override;            // vtable+0x34
 	undefined4* VTable0x38() override;            // vtable+0x38
 	void VTable0x3c(undefined4*) override;        // vtable+0x3c

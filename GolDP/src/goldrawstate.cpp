@@ -161,13 +161,9 @@ GUID* GolDrawState::VTable0x38() const
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void GolDrawState::VTable0x3c()
 {
-	// TODO (EMPTY)
-	STUB(0x10029920);
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void GolDrawState::VTable0x40()
 {
-	// TODO (EMPTY)
-	STUB(0x10029920);
 }

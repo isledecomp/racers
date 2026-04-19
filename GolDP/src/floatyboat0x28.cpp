@@ -171,8 +171,6 @@ void FloatyBoat0x28::VTable0x44(undefined4*) const
 // STUB: GOLDP 0x10029920 FOLDED
 void FloatyBoat0x28::VTable0x28()
 {
-	// TODO (empty)
-	STUB(0x10029920);
 }
 
 // STUB: GOLDP 0x1002c010 FOLDED

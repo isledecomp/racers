@@ -1,12 +1,12 @@
 #include "floatypontoon0x4c.h"
 
-#include <limits>
+#include <float.h>
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(FloatyPontoon0x4c, 0x4c)
 
 // GLOBAL: GOLDP 0x100574fc
-float g_pontoonMaxFloat = std::numeric_limits<float>::max();
+float g_pontoonMaxFloat = FLT_MAX;
 
 // FUNCTION: GOLDP 0x10029df0
 FloatyPontoon0x4c::FloatyPontoon0x4c()

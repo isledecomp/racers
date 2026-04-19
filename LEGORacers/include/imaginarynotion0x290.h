@@ -53,7 +53,7 @@ public:
 protected:
 	undefined4 m_unk0x04;          // 0x004
 	CeruleanEmperor0x4c m_unk0x08; // 0x008
-	undefined4 m_unk0x54;		   // 0x054
+	undefined4 m_unk0x54;          // 0x054
 	CeruleanQueen0x58 m_unk0x58;   // 0x058
 	undefined4 m_unk0xb0;          // 0x0b0
 	undefined4 m_unk0xb4;          // 0x0b4

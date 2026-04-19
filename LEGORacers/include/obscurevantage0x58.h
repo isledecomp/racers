@@ -10,8 +10,8 @@
 class ObscureVantage0x58 {
 public:
 	ObscureVantage0x58();
-	virtual void VTable0x00(); // vtable+0x00
-	virtual ~ObscureVantage0x58();
+	virtual void VTable0x00();                                         // vtable+0x00
+	virtual ~ObscureVantage0x58();                                     // vtable+0x04
 	virtual void VTable0x08();                                         // vtable+0x08
 	virtual void VTable0x0c(undefined4);                               // vtable+0x0c
 	virtual void VTable0x10(undefined4);                               // vtable+0x10

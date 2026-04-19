@@ -11,8 +11,8 @@
 class ObscureIcon0x1a8 : public ObscureVantage0x58 {
 public:
 	ObscureIcon0x1a8();
-	void VTable0x00() override; // vtable+0x00
-	~ObscureIcon0x1a8() override;
+	void VTable0x00() override;                                         // vtable+0x00
+	~ObscureIcon0x1a8() override;                                       // vtable+0x04
 	void VTable0x08() override;                                         // vtable+0x08
 	void VTable0x10(undefined4) override;                               // vtable+0x10
 	undefined4 VTable0x2c(undefined4, undefined4, undefined4) override; // vtable+0x2c

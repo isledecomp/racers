@@ -1,5 +1,6 @@
 #include "goldpexport.h"
 
+#include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
 #include "golerror.h"
 #include "types.h"
@@ -101,12 +102,14 @@ undefined4* GolDPExport::VTable0x2c()
 	return NULL;
 }
 
-// STUB: GOLDP 0x10015490
-undefined4* GolDPExport::VTable0x30()
+// FUNCTION: GOLDP 0x10015490
+FloatyBoat0x28* GolDPExport::VTable0x30()
 {
-	// TODO
-	STUB(0x10015490);
-	return NULL;
+	FloatyBoat0x28* result = new FloatyBarge0x4c;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return result;
 }
 
 // STUB: GOLDP 0x10015500

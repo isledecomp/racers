@@ -101,6 +101,9 @@ add_library(goldp SHARED
   GolDP/src/zoweeblubberworth0xf0.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/smallcocoon0xc.cpp
+  GolDP/src/floatyboat0x28.cpp
+  GolDP/src/floatypontoon0x4c.cpp
+  GolDP/src/floatybarge0x4c.cpp
   GolDP/src/slatepeak0x58.cpp
   GolDP/src/azureridge0x38.cpp
   util/decomp.cpp

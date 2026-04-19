@@ -70,12 +70,12 @@ public:
 	void FUN_00416460();
 	void FUN_00416860(const LegoChar* p_unk0x04);
 	LegoBool32 FUN_00416d20(HWND p_hWnd);
+	void ChangeWindowState(LegoU32 p_mode);
 
 private:
 	static LRESULT CALLBACK AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam);
 
 	void FUN_00416db0();
-	void ChangeWindowState(LegoU32 p_mode);
 
 	GolExport* m_golExport;         // 0x800
 	GolDrawState* m_golDrawState;   // 0x804

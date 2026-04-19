@@ -1,0 +1,7 @@
+address,type,size,name
+0x4b6450,global,16,CLSID_FilterGraph
+0x4b6460,global,16,IID_IGraphBuilder
+0x4b6470,global,16,IID_IMediaEvent
+0x4b6480,global,16,IID_IMediaControl
+0x4b6490,global,16,IID_IVideoWindow
+0x4b64a0,global,16,IID_IMediaPosition

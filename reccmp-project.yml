@@ -7,6 +7,7 @@ targets:
     data-sources:
       - reccmp/lego-racers-ascii.csv
       - reccmp/lego-racers-floats.csv
+      - reccmp/lego-racers-directshow.csv
   GOLDP:
     filename: GolDP.dll
     source-root: .

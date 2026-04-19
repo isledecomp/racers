@@ -63,9 +63,9 @@ void LegoRacers::Run()
 
 	if (m_cutscenes) {
 		VideoPlayer::FUN_004a60c0(&m_unk0x04, 640, 480);
-		VideoPlayer::FUN_004a61c0(&m_unk0x04, "lmicmp.avi", 0, 0);
-		VideoPlayer::FUN_004a61c0(&m_unk0x04, "hvscmp.avi", 1, 0);
-		VideoPlayer::FUN_004a61c0(&m_unk0x04, "introcmp.avi", 1, 0);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "lmicmp.avi", FALSE, FALSE);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "hvscmp.avi", TRUE, FALSE);
+		VideoPlayer::FUN_004a61c0(&m_unk0x04, "introcmp.avi", TRUE, FALSE);
 		VideoPlayer::FUN_004a61e0(&m_unk0x04);
 	}
 

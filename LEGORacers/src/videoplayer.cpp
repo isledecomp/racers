@@ -1,5 +1,6 @@
 #include "videoplayer.h"
 
+#include "compat.h"
 #include "decomp.h"
 #include "golerror.h"
 
@@ -9,6 +10,10 @@
 #include <string.h>
 #include <uuids.h>
 #include <windows.h>
+
+#ifndef COMPAT_MODE
+typedef long LONG_PTR;
+#endif
 
 DECOMP_SIZE_ASSERT(VideoPlayer::Graph, 0x18)
 
@@ -405,8 +410,8 @@ void VideoPlayer::Graph::ProcessEvent()
 	}
 
 	long code;
-	long lParam1;
-	long lParam2;
+	LONG_PTR lParam1;
+	LONG_PTR lParam2;
 	if (FAILED(mediaEvent->GetEvent(&code, &lParam1, &lParam2, 0))) {
 		mediaEvent->Release();
 		return;

@@ -3,7 +3,9 @@
 
 // Various macros to enable compiling with other/newer compilers.
 
-#if defined(__MINGW32__) || (defined(_MSC_VER) && _MSC_VER >= 1100)
+#define MSVC600_VERSION 1200
+
+#if defined(__MINGW32__) || (defined(_MSC_VER) && _MSC_VER > MSVC600_VERSION)
 #define COMPAT_MODE
 #endif
 
@@ -11,8 +13,6 @@
 // Impossible to avoid this if using STL map or set.
 // This removes most (but not all) occurrences of the warning.
 #pragma warning(disable : 4786)
-
-#define MSVC600_VERSION 1200
 
 // We use `override` so newer compilers can tell us our vtables are valid,
 // however this keyword was added in C++11, so we define it as empty for

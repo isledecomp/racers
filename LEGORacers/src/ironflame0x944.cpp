@@ -16,7 +16,17 @@
 extern HINSTANCE g_hInstance;
 extern HINSTANCE g_hPrevInstance;
 
+#define WM_UNKNOWN_0X30F 0x30f
+
 DECOMP_SIZE_ASSERT(IronFlame0x944, 0x944)
+
+// FUNCTION: LEGORACERS 0x00416460
+void IronFlame0x944::FUN_00416460()
+{
+	if (m_unk0x81c) {
+		m_unk0x81c->VTable0x00();
+	}
+}
 
 // FUNCTION: LEGORACERS 0x004164d0
 IronFlame0x944::IronFlame0x944()
@@ -26,9 +36,9 @@ IronFlame0x944::IronFlame0x944()
 	m_hWnd = 0;
 	m_golBackendType = c_golBackendDP;
 	m_windowMode = c_windowModeNone;
-	m_unk0x934 = 0;
-	m_unk0x93c = 0;
-	m_unk0x940 = 0;
+	m_hCursor = 0;
+	m_fullscreenStyle = 0;
+	m_windowedStyle = 0;
 	m_unk0x930 = 0;
 	m_unk0x938 = 1;
 }
@@ -81,8 +91,8 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 		FUN_00416860(p_fileName);
 	}
 
-	m_unk0x93c = WS_POPUP | WS_CLIPCHILDREN;
-	m_unk0x940 = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN;
+	m_fullscreenStyle = WS_POPUP | WS_CLIPCHILDREN;
+	m_windowedStyle = WS_OVERLAPPEDWINDOW | WS_CLIPCHILDREN;
 	m_hWnd = CreateWindowEx(
 		0,
 		"AolAppWinClass",
@@ -299,14 +309,14 @@ LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_
 
 	if (!(m_flags & c_flagBit3)) {
 		m_windowMode = c_windowModeWindowed;
-		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x940);
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_windowedStyle);
 
 		RECT rect;
 		rect.left = 0;
 		rect.right = p_width;
 		rect.top = 0;
 		rect.bottom = p_height;
-		AdjustWindowRect(&rect, m_unk0x940, FALSE);
+		AdjustWindowRect(&rect, m_windowedStyle, FALSE);
 
 		LegoS32 w = rect.right - rect.left;
 		LegoS32 h = rect.bottom - rect.top;
@@ -322,7 +332,7 @@ LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_
 	}
 	else {
 		m_windowMode = c_windowModeFullscreen;
-		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_fullscreenStyle);
 
 		if (m_flags & c_flagBit8) {
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
@@ -365,6 +375,26 @@ void IronFlame0x944::VTable0x30()
 			ChangeWindowState(c_windowModeFullscreen);
 		}
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00416d20
+LegoBool32 IronFlame0x944::FUN_00416d20(HWND p_hWnd)
+{
+	RECT rect;
+	POINT topLeft;
+	POINT bottomRight;
+	POINT cursor;
+
+	GetClientRect(p_hWnd, &rect);
+	topLeft.x = rect.left;
+	topLeft.y = rect.top;
+	bottomRight.x = rect.right;
+	bottomRight.y = rect.bottom;
+	ClientToScreen(p_hWnd, &topLeft);
+	ClientToScreen(p_hWnd, &bottomRight);
+	GetCursorPos(&cursor);
+
+	return cursor.x >= topLeft.x && cursor.x < bottomRight.x && cursor.y >= topLeft.y && cursor.y < bottomRight.y;
 }
 
 // FUNCTION: LEGORACERS 0x00416db0
@@ -473,7 +503,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 			OutputDebugString("--from full screen\n");
 			m_flags |= c_flagBit3;
 			m_windowMode = c_windowModeFullscreen;
-			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_fullscreenStyle);
 			if (m_flags & c_flagBit8) {
 				SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
@@ -493,14 +523,14 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 		else {
 			m_flags &= ~c_flagBit3;
 			m_windowMode = c_windowModeWindowed;
-			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x940);
+			SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_windowedStyle);
 
 			RECT rect;
 			rect.left = 0;
 			rect.right = m_width;
 			rect.top = 0;
 			rect.bottom = m_height;
-			AdjustWindowRect(&rect, m_unk0x940, FALSE);
+			AdjustWindowRect(&rect, m_windowedStyle, FALSE);
 
 			LegoS32 w = rect.right - rect.left;
 			LegoS32 h = rect.bottom - rect.top;
@@ -533,7 +563,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 		m_flags |= c_flagBit3;
 		LegoU32 fullscreenFlags = drawFlags | (GolDrawState::c_flagBit9 | GolDrawState::c_flagBit10);
 		m_windowMode = c_windowModeFullscreen;
-		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_unk0x93c);
+		SetWindowLong(m_hWnd, GWL_STYLE, (LONG) m_fullscreenStyle);
 		if (m_flags & c_flagBit8) {
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
@@ -566,12 +596,192 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 	m_unk0x930 = 0;
 }
 
-// STUB: LEGORACERS 0x00417330
-LRESULT CALLBACK AppWndProc(HWND, UINT, WPARAM, LPARAM)
+// FUNCTION: LEGORACERS 0x00417330
+LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam)
 {
-	// TODO
-	STUB(0x417330);
-	return 0;
+	IronFlame0x944* self = (IronFlame0x944*) GetWindowLong(p_hWnd, 0);
+	if (!self) {
+		return DefWindowProc(p_hWnd, p_msg, p_wParam, p_lParam);
+	}
+
+	switch (p_msg) {
+	case WM_ACTIVATE:
+		if (!(self->m_flags & IronFlame0x944::c_flagDisplayActive)) {
+			return 0;
+		}
+
+		if (!LOWORD(p_wParam)) {
+			OutputDebugString("Deactivate Window\n");
+			if (self->m_disabled) {
+				return 0;
+			}
+
+			OutputDebugString("--App was enabled\n");
+			self->VTable0x3c();
+			if (self->m_unk0x81c) {
+				self->m_unk0x81c->VTable0x04();
+			}
+
+			return 0;
+		}
+
+		OutputDebugString("Activate Window\n");
+		if (self->m_disabled) {
+			OutputDebugString("--App was disabled\n");
+			return 0;
+		}
+
+		OutputDebugString("--App was enabled\n");
+		if (self->m_flags & IronFlame0x944::c_flagBit3) {
+			OutputDebugString("--Telling the window to maximize\n");
+			ShowWindow(self->m_hWnd, SW_MAXIMIZE);
+		}
+		return 0;
+	case WM_CLOSE:
+		self->FUN_00416460();
+		return 0;
+	case WM_DESTROY:
+		SetWindowLong(p_hWnd, 0, 0);
+		self->FUN_00416460();
+		SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+		PostQuitMessage(0);
+		return 0;
+	case WM_MOVE:
+	case WM_SETFOCUS:
+	case WM_KILLFOCUS:
+		return 0;
+	case WM_SIZE:
+		if (self->m_flags & IronFlame0x944::c_flagDisplayActive) {
+			if (p_wParam == SIZE_MAXIMIZED || p_wParam == SIZE_RESTORED) {
+				OutputDebugString("Maximizing App\n");
+				if (self->m_disabled) {
+					OutputDebugString("--App was disabled\n");
+					self->VTable0x40();
+					self->m_disabled = FALSE;
+					self->m_unk0x938 = 1;
+					self->m_unk0x834.FUN_0044bfd0();
+					SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
+					if (self->m_flags & IronFlame0x944::c_flagBit3) {
+						OutputDebugString("--Telling the window to maximize\n");
+						ShowWindow(self->m_hWnd, SW_MAXIMIZE);
+					}
+				}
+
+				if (self->m_unk0x81c) {
+					self->m_unk0x81c->VTable0x08();
+				}
+
+				if (self->m_windowMode == IronFlame0x944::c_windowModeMinimized ||
+					self->m_windowMode == IronFlame0x944::c_windowModeNone) {
+					OutputDebugString("--App was minimized.  Resetting.\n");
+					if (self->m_flags & IronFlame0x944::c_flagBit3) {
+						self->ChangeWindowState(IronFlame0x944::c_windowModeFullscreen);
+					}
+					else {
+						self->ChangeWindowState(IronFlame0x944::c_windowModeWindowed);
+					}
+				}
+			}
+			else if (p_wParam == SIZE_MINIMIZED) {
+				OutputDebugString("Minimizing App\n");
+			}
+		}
+	case WM_SIZING:
+	case WM_MOVING:
+		if ((self->m_flags & IronFlame0x944::c_flagDisplayActive) &&
+			self->m_windowMode == IronFlame0x944::c_windowModeFullscreen) {
+			if (self->m_flags & IronFlame0x944::c_flagBit8) {
+				SetWindowPos(p_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
+			}
+			else {
+				self->VTable0x38()->GetUnk0xa0()->VTable0x44();
+				SetWindowPos(
+					p_hWnd,
+					NULL,
+					0,
+					0,
+					GetSystemMetrics(SM_CXSCREEN),
+					GetSystemMetrics(SM_CYSCREEN),
+					SWP_SHOWWINDOW
+				);
+			}
+		}
+		return 0;
+	case WM_PAINT: {
+		RECT rect;
+		PAINTSTRUCT paint;
+
+		if (!GetUpdateRect(p_hWnd, &rect, FALSE)) {
+			return 0;
+		}
+
+		HDC hdc = BeginPaint(p_hWnd, &paint);
+		if (!(self->m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+			FillRect(hdc, &rect, (HBRUSH) GetStockObject(BLACK_BRUSH));
+		}
+
+		EndPaint(p_hWnd, &paint);
+		return 0;
+	}
+	case WM_ACTIVATEAPP:
+		if (self->m_flags & IronFlame0x944::c_flagDisplayActive) {
+			if (!p_wParam) {
+				OutputDebugString("Deactivate App\n");
+				if (!self->m_disabled) {
+					OutputDebugString("--App was enabled\n");
+					self->VTable0x3c();
+					if (self->m_unk0x81c) {
+						self->m_unk0x81c->VTable0x04();
+					}
+					self->ChangeWindowState(IronFlame0x944::c_windowModeMinimized);
+					self->m_disabled = TRUE;
+					self->m_unk0x938 = 0;
+					self->m_unk0x834.FUN_0044c040();
+					SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
+				}
+
+				return 0;
+			}
+
+			OutputDebugString("Activate App\n");
+			if (self->m_disabled) {
+				OutputDebugString("--App was disabled\n");
+				return 0;
+			}
+		}
+
+		return 0;
+	case WM_CHAR:
+		if (!self->m_unk0x81c) {
+			return 0;
+		}
+
+		self->m_unk0x81c->VTable0x1c(p_wParam);
+		self->m_unk0x81c->VTable0x20(p_wParam);
+		return 0;
+	case WM_SETCURSOR:
+		if (self->FUN_00416d20(p_hWnd)) {
+			SetCursor(self->m_hCursor);
+		}
+
+		return 1;
+	case WM_SYSCOMMAND:
+		if (p_wParam != SC_SCREENSAVE) {
+			return DefWindowProc(p_hWnd, WM_SYSCOMMAND, p_wParam, p_lParam);
+		}
+
+		return 0;
+	case WM_SYSKEYDOWN:
+		return 0;
+	case WM_SYSKEYUP:
+		return 0;
+	case WM_COMMAND:
+		return 0;
+	case WM_UNKNOWN_0X30F:
+		return 0;
+	default:
+		return DefWindowProc(p_hWnd, p_msg, p_wParam, p_lParam);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00417900

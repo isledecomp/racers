@@ -67,9 +67,13 @@ public:
 	LegoU32 GetGolBackendType() { return m_golBackendType; }
 	void SetGolBackendType(LegoU32 p_golBackendType) { m_golBackendType = p_golBackendType; }
 
+	void FUN_00416460();
 	void FUN_00416860(const LegoChar* p_unk0x04);
+	LegoBool32 FUN_00416d20(HWND p_hWnd);
 
 private:
+	static LRESULT CALLBACK AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam);
+
 	void FUN_00416db0();
 	void ChangeWindowState(LegoU32 p_mode);
 
@@ -84,19 +88,17 @@ private:
 	DWORD m_lastFrameTimeMs;        // 0x820
 	LegoU32 m_frameDeltaMs;         // 0x824
 	LegoU32 m_maxFrameDeltaMs;      // 0x828
-	undefined4 m_unk0x82c;          // 0x82c
+	LegoBool32 m_disabled;          // 0x82c
 	HMODULE m_golLibrary;           // 0x830
 	OpalVault0xf0 m_unk0x834;       // 0x834
 	HWND m_hWnd;                    // 0x924
 	LegoU32 m_golBackendType;       // 0x928
 	LegoU32 m_windowMode;           // 0x92c
 	undefined4 m_unk0x930;          // 0x930
-	undefined4 m_unk0x934;          // 0x934
+	HCURSOR m_hCursor;              // 0x934
 	undefined4 m_unk0x938;          // 0x938
-	undefined4 m_unk0x93c;          // 0x93c
-	undefined4 m_unk0x940;          // 0x940
+	DWORD m_fullscreenStyle;        // 0x93c
+	DWORD m_windowedStyle;          // 0x940
 };
-
-LRESULT CALLBACK AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wParam, LPARAM p_lParam);
 
 #endif // IRONFLAME0X944_H

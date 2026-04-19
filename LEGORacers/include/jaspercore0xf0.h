@@ -28,6 +28,9 @@ public:
 
 	JasperAuxInterface* GetUnk0xa0() { return m_unk0xa0; }
 
+	void FUN_0044bfd0();
+	void FUN_0044c040();
+
 protected:
 	undefined m_unk0x04[0x40];     // 0x04
 	undefined4 m_unk0x44;          // 0x44

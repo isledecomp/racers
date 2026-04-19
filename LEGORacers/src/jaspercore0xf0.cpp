@@ -33,6 +33,20 @@ LegoS32 JasperCore0xf0::Reset()
 	return result;
 }
 
+// STUB: LEGORACERS 0x0044bfd0
+void JasperCore0xf0::FUN_0044bfd0()
+{
+	// TODO
+	STUB(0x44bfd0);
+}
+
+// STUB: LEGORACERS 0x0044c040
+void JasperCore0xf0::FUN_0044c040()
+{
+	// TODO
+	STUB(0x44c040);
+}
+
 // STUB: LEGORACERS 0x0044c120
 void JasperCore0xf0::VTable0x24()
 {

@@ -5,7 +5,7 @@
 #include "floatyboat0x28.h"
 
 // VTABLE: GOLDP 0x10057500
-// SIZE: 0x4c
+// SIZE 0x4c
 class FloatyPontoon0x4c : public FloatyBoat0x28 {
 public:
 	FloatyPontoon0x4c();

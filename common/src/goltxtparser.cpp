@@ -96,6 +96,7 @@ undefined4 GolTxtParser::VTable0x48(undefined4, undefined4)
 	return 1;
 }
 
+// STUB: GOLDP 0x1002fd50 FOLDED
 // STUB: LEGORACERS 0x0044b570 FOLDED
 void GolTxtParser::VTable0x5c()
 {

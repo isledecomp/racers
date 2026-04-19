@@ -16,8 +16,6 @@
 extern HINSTANCE g_hInstance;
 extern HINSTANCE g_hPrevInstance;
 
-#define WM_UNKNOWN_0X30F 0x30f
-
 DECOMP_SIZE_ASSERT(IronFlame0x944, 0x944)
 
 // FUNCTION: LEGORACERS 0x00416460
@@ -610,31 +608,29 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 			return 0;
 		}
 
-		if (!LOWORD(p_wParam)) {
+		if (LOWORD(p_wParam) == WA_INACTIVE) {
 			OutputDebugString("Deactivate Window\n");
-			if (self->m_disabled) {
-				return 0;
+			if (!self->m_disabled) {
+				OutputDebugString("--App was enabled\n");
+				self->VTable0x3c();
+				if (self->m_unk0x81c) {
+					self->m_unk0x81c->VTable0x04();
+					return 0;
+				}
 			}
-
-			OutputDebugString("--App was enabled\n");
-			self->VTable0x3c();
-			if (self->m_unk0x81c) {
-				self->m_unk0x81c->VTable0x04();
+		}
+		else {
+			OutputDebugString("Activate Window\n");
+			if (!self->m_disabled) {
+				OutputDebugString("--App was enabled\n");
+				if (self->m_flags & IronFlame0x944::c_flagBit3) {
+					OutputDebugString("--Telling the window to maximize\n");
+					ShowWindow(self->m_hWnd, SW_MAXIMIZE);
+				}
 			}
-
-			return 0;
-		}
-
-		OutputDebugString("Activate Window\n");
-		if (self->m_disabled) {
-			OutputDebugString("--App was disabled\n");
-			return 0;
-		}
-
-		OutputDebugString("--App was enabled\n");
-		if (self->m_flags & IronFlame0x944::c_flagBit3) {
-			OutputDebugString("--Telling the window to maximize\n");
-			ShowWindow(self->m_hWnd, SW_MAXIMIZE);
+			else {
+				OutputDebugString("--App was disabled\n");
+			}
 		}
 		return 0;
 	case WM_CLOSE:
@@ -777,7 +773,7 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 		return 0;
 	case WM_COMMAND:
 		return 0;
-	case WM_UNKNOWN_0X30F:
+	case WM_QUERYNEWPALETTE:
 		return 0;
 	default:
 		return DefWindowProc(p_hWnd, p_msg, p_wParam, p_lParam);

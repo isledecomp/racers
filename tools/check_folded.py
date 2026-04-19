@@ -1,6 +1,11 @@
+#!/usr/bin/env python3
+
 import argparse
 import logging
 from reccmp.compare import Compare
+from reccmp.formats import PEImage
+from reccmp.types import ImageId
+from reccmp.cvdump.symbols import SymbolsEntry
 from reccmp.parser import DecompCodebase
 from reccmp.parser.node import ParserFunction
 from reccmp.project.detect import (
@@ -17,11 +22,39 @@ logger = logging.getLogger()
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="folded")
+    parser.add_argument("--list", action="store_true")
     argparse_add_project_target_args(parser)
     return parser.parse_args()
 
 
+def get_folded_functions(compare: Compare) -> dict[int, list[SymbolsEntry]]:
+    # mypy: Required for get_abs_addr
+    assert isinstance(compare.recomp_bin, PEImage)
+    lookup: dict[int, list[SymbolsEntry]] = {}
+
+    for sym in compare.cvdump_analysis.parser.symbols:
+        addr = compare.recomp_bin.get_abs_addr(sym.section, sym.offset)
+        lookup.setdefault(addr, []).append(sym)
+
+    return {key: value for key, value in lookup.items() if len(value) > 1}
+
+
+def display_folded_functions(compare: Compare):
+    folded = get_folded_functions(compare)
+    for addr, syms in folded.items():
+        # pylint: disable=protected-access
+        ent = compare._db.get(ImageId.RECOMP, addr)
+        orig_addr = ent.orig_addr if ent is not None else None
+
+        print(f"Orig {orig_addr or -1:#8x}, Recomp {addr:#8x} : ({len(syms)})")
+        for sym in syms:
+            print(f"    {sym.name}")
+
+        print()
+
+
 def main():
+    # pylint: disable=too-many-locals
     args = parse_args()
     try:
         target = argparse_parse_project_target(args=args)
@@ -32,6 +65,10 @@ def main():
     print(f"Checking identical code folding in: {target.target_id}")
 
     compare = Compare.from_target(target)
+
+    # Show the (user) functions that have been folded in recomp.
+    if args.list:
+        display_folded_functions(compare)
 
     codebase = DecompCodebase(compare.code_files, compare.target_id)
     codebase.prune_invalid_addrs(compare.orig_bin.is_valid_vaddr)
@@ -54,7 +91,11 @@ def main():
             failed = True
             print(f"{addr:#8x}: Some annotations are folded, some not.")
 
-    folds = {key: [f for f in value if f.is_folded] for key, value in functions.items()}
+    # Ignore nameref annotations (e.g. scalar dtors) for this check.
+    folds = {
+        key: [f for f in value if not f.is_nameref() and f.is_folded]
+        for key, value in functions.items()
+    }
 
     for addr, folded in folds.items():
         if not folded:

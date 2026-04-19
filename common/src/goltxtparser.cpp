@@ -82,12 +82,14 @@ void GolTxtParser::VTable0x40(undefined4)
 {
 }
 
+// FUNCTION: GOLDP 0x1002fa30 FOLDED
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
 undefined4 GolTxtParser::VTable0x44()
 {
 	return 1;
 }
 
+// FUNCTION: GOLDP 0x1002fa40 FOLDED
 // FUNCTION: LEGORACERS 0x0044b1d0 FOLDED
 undefined4 GolTxtParser::VTable0x48(undefined4, undefined4)
 {

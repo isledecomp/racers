@@ -13,6 +13,7 @@ void GolBinParser::FUN_0044a830()
 	STUB(0x0044a830);
 }
 
+// STUB: GOLDP 0x10030070
 // STUB: LEGORACERS 0x0044a890
 void GolBinParser::VTable0x38(undefined4)
 {
@@ -20,6 +21,7 @@ void GolBinParser::VTable0x38(undefined4)
 	STUB(0x0044a890);
 }
 
+// FUNCTION: GOLDP 0x10030280
 // FUNCTION: LEGORACERS 0x0044aaa0
 LegoS32 GolBinParser::Dispose()
 {
@@ -35,6 +37,7 @@ const LegoChar* GolBinParser::GetSuffix()
 	return *m_suffix ? m_suffix : ".bin";
 }
 
+// STUB: GOLDP 0x10030300
 // STUB: LEGORACERS 0x0044aae0
 undefined4 GolBinParser::VTable0x44()
 {
@@ -43,12 +46,14 @@ undefined4 GolBinParser::VTable0x44()
 	return 0;
 }
 
+// FUNCTION: GOLDP 0x1002fa40 FOLDED
 // FUNCTION: LEGORACERS 0x0044b1d0 FOLDED
 undefined4 GolBinParser::VTable0x48(undefined4, undefined4)
 {
 	return 1;
 }
 
+// STUB: GOLDP 0x10030e40
 // STUB: LEGORACERS 0x0044b1e0
 void GolBinParser::VTable0x40(undefined4)
 {
@@ -56,6 +61,7 @@ void GolBinParser::VTable0x40(undefined4)
 	STUB(0x0044b1e0);
 }
 
+// STUB: GOLDP 0x10030f10
 // STUB: LEGORACERS 0x0044b2b0
 void GolBinParser::VTable0x4c()
 {
@@ -63,6 +69,7 @@ void GolBinParser::VTable0x4c()
 	STUB(0x0044b2b0);
 }
 
+// STUB: GOLDP 0x10031070
 // STUB: LEGORACERS 0x0044b410
 void GolBinParser::VTable0x50()
 {
@@ -70,6 +77,7 @@ void GolBinParser::VTable0x50()
 	STUB(0x0044b410);
 }
 
+// STUB: GOLDP 0x10031100
 // STUB: LEGORACERS 0x0044b4a0
 void GolBinParser::VTable0x54()
 {
@@ -77,6 +85,7 @@ void GolBinParser::VTable0x54()
 	STUB(0x0044b4a0);
 }
 
+// STUB: GOLDP 0x10031140
 // STUB: LEGORACERS 0x0044b4e0
 void GolBinParser::VTable0x58()
 {
@@ -84,13 +93,15 @@ void GolBinParser::VTable0x58()
 	STUB(0x0044b4e0);
 }
 
-// STUB: LEGORACERS 0x0044b570
+// STUB: GOLDP 0x1002fd50 FOLDED
+// STUB: LEGORACERS 0x0044b570 FOLDED
 void GolBinParser::VTable0x5c()
 {
 	// TODO
 	STUB(0x0044b570);
 }
 
+// STUB: GOLDP 0x100311d0
 // STUB: LEGORACERS 0x0044b580
 void GolBinParser::VTable0x60()
 {
@@ -98,6 +109,7 @@ void GolBinParser::VTable0x60()
 	STUB(0x0044b580);
 }
 
+// STUB: GOLDP 0x10031260
 // STUB: LEGORACERS 0x0044b610
 void GolBinParser::VTable0x64()
 {

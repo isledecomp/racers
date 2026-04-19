@@ -32,6 +32,7 @@ public:
 
 	void FUN_0044a830();
 
+	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
 	// GolBinParser::`scalar deleting destructor'
 

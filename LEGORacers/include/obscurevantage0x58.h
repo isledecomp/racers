@@ -1,5 +1,5 @@
-#ifndef OBSCURECOMPONENTS_H
-#define OBSCURECOMPONENTS_H
+#ifndef OBSCUREVANTAGE0X58_H
+#define OBSCUREVANTAGE0X58_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -7,11 +7,11 @@
 
 // VTABLE: LEGORACERS 0x004b29b4
 // SIZE 0x58
-class ObscureVantage {
+class ObscureVantage0x58 {
 public:
-	ObscureVantage();
+	ObscureVantage0x58();
 	virtual void VTable0x00(); // vtable+0x00
-	virtual ~ObscureVantage();
+	virtual ~ObscureVantage0x58();
 	virtual void VTable0x08();                                         // vtable+0x08
 	virtual void VTable0x0c(undefined4);                               // vtable+0x0c
 	virtual void VTable0x10(undefined4);                               // vtable+0x10
@@ -28,7 +28,7 @@ public:
 	virtual undefined4 VTable0x3c(undefined4);                         // vtable+0x3c
 
 	// SYNTHETIC: LEGORACERS 0x004729d0
-	// ObscureVantage::`scalar deleting destructor'
+	// ObscureVantage0x58::`scalar deleting destructor'
 
 protected:
 	// SIZE 0x10
@@ -60,26 +60,4 @@ protected:
 	undefined m_unk0x54;  // 0x54
 };
 
-// VTABLE: LEGORACERS 0x004b2944
-// SIZE 0x1a8
-class ObscureIcon : public ObscureVantage {
-public:
-	ObscureIcon();
-	void VTable0x00() override; // vtable+0x00
-	~ObscureIcon() override;
-	void VTable0x08() override;                                         // vtable+0x08
-	void VTable0x10(undefined4) override;                               // vtable+0x10
-	undefined4 VTable0x2c(undefined4, undefined4, undefined4) override; // vtable+0x2c
-	undefined4 VTable0x30(undefined4, undefined4, undefined4) override; // vtable+0x30
-	undefined4 VTable0x34(undefined4, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x38(undefined4, undefined4) override;             // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;                         // vtable+0x3c
-
-	// SYNTHETIC: LEGORACERS 0x00471c80
-	// ObscureIcon::`scalar deleting destructor'
-
-protected:
-	undefined m_unk0x58[0x1a8 - 0x58]; // 0x58
-};
-
-#endif // OBSCURECOMPONENTS_H
+#endif // OBSCUREVANTAGE0X58_H

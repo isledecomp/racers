@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "imaginarycomponents.h"
 #include "imaginaryinterface.h"
-#include "obscurecomponents.h"
+#include "obscureicon0x1a8.h"
 
 // VTABLE: LEGORACERS 0x004b2308
 // SIZE 0x280
@@ -52,7 +52,7 @@ protected:
 	CeruleanEmperor m_unk0x08;        // 0x08
 	CeruleanQueen m_unk0x58;          // 0x58
 	undefined m_unk0xb0[0xd8 - 0xb0]; // 0xb0
-	ObscureIcon m_unk0xd8;            // 0xd8
+	ObscureIcon0x1a8 m_unk0xd8;       // 0xd8
 };
 
 #endif // IMAGINARYNOTION0X280_H

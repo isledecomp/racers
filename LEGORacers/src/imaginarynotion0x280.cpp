@@ -116,7 +116,7 @@ void ImaginaryNotion0x280::VTable0x48(undefined4)
 // FUNCTION: LEGORACERS 0x0046b380
 ImaginaryNotion0x280::ImaginaryNotion0x280()
 {
-	// TODO
+	VTable0x54();
 }
 
 // STUB: LEGORACERS 0x0046b3f0

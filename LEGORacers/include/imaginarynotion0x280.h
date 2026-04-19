@@ -49,7 +49,7 @@ public:
 protected:
 	undefined m_unk0x04[4];            // 0x04
 	CeruleanEmperor m_unk0x08;         // 0x08
-	CeruleanQueen m_unk0x58;		   // 0x58
+	CeruleanQueen m_unk0x58;           // 0x58
 	undefined m_unk0xae[0x280 - 0xb0]; // 0xb0
 };
 

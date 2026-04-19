@@ -2,7 +2,7 @@
 
 DECOMP_SIZE_ASSERT(AmberLeaf0x10, 0x10)
 
-// FUNCTION: LEGORACERS 0x004113b0
+// FUNCTION: LEGORACERS 0x004113b0 FOLDED
 undefined4 AmberLeaf0x10::VTable0x04(undefined4)
 {
 	return 0;

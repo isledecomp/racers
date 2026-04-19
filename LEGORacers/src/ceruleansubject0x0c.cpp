@@ -23,12 +23,12 @@ CeruleanSubject0x0c::~CeruleanSubject0x0c()
 void CeruleanSubject0x0c::VTable0x04(undefined4 p_param)
 {
 	m_unk0x08 = p_param;
-	m_unk0x04 = new undefined[10 * p_param];
+	m_unk0x04 = new undefined[12 * p_param];
 	if (!m_unk0x04) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	memset(m_unk0x04, 10 * m_unk0x08, 0);
+	memset(m_unk0x04, 0, 12 * m_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x00411850

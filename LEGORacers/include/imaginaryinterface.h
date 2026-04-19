@@ -24,7 +24,6 @@ class ImaginaryInterface {
 	virtual void VTable0x40(undefined4) = 0;                                           // vtable+0x40
 	virtual void VTable0x44(undefined4) = 0;                                           // vtable+0x44
 	virtual void VTable0x48(undefined4) = 0;                                           // vtable+0x48
-	virtual void VTable0x4c(undefined4) = 0;                                           // vtable+0x4c
 };
 
 #endif // IMAGINARYINTERFACE_H

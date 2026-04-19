@@ -41,16 +41,16 @@ private:
 	IronFlame0x944 m_unk0x04;             // 0x04
 	SoundManager m_soundManager;          // 0x948
 	CobaltMist0x30 m_unk0x9e0;            // 0x9e0
-	CobaltMist0x30* m_unk0xa10;           // 0xa10
+	IndigoStar0x18* m_unk0xa10;           // 0xa10
 	LegoU32 m_golBackendType;             // 0xa14
 	LegoBool32 m_cutscenes;               // 0xa18
 	undefined4 m_unk0xa1c;                // 0xa1c
 	undefined m_unk0xa20[0xab4 - 0xa20];  // 0xa20
-	undefined4 m_unk0xab4;                // 0xab4
+	undefined4 m_bpp;                     // 0xab4
 	LegoU32 m_videoFlags;                 // 0xab8
 	LegoBool32 m_unk0xabc;                // 0xabc
 	IronFlame0x944* m_unk0xac0;           // 0xac0
-	CobaltMist0x30* m_unk0xac4;           // 0xac4
+	IndigoStar0x18* m_unk0xac4;           // 0xac4
 	LegoFloat m_unk0xac8;                 // 0xac8
 	LegoFloat m_unk0xacc;                 // 0xacc
 	LegoFloat m_unk0xad0;                 // 0xad0

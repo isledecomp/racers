@@ -14,6 +14,11 @@ void CobaltMist0x30::VTable0x28(SoundNode* p_node)
 	delete p_node;
 }
 
+// FUNCTION: LEGORACERS 0x0041bca0
+CobaltMist0x30::CobaltMist0x30()
+{
+}
+
 // FUNCTION: LEGORACERS 0x0041bd00
 CobaltMist0x30::~CobaltMist0x30()
 {

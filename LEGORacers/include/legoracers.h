@@ -19,6 +19,7 @@ public:
 		c_videoAlphaTrans = 0x8000,
 	};
 
+	LegoRacers();
 	virtual ~LegoRacers(); // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x0042bb20
@@ -40,13 +41,35 @@ private:
 	IronFlame0x944 m_unk0x04;             // 0x04
 	SoundManager m_soundManager;          // 0x948
 	CobaltMist0x30 m_unk0x9e0;            // 0x9e0
-	undefined m_unk0xa10[0xa14 - 0xa10];  // 0xa10
+	CobaltMist0x30* m_unk0xa10;           // 0xa10
 	LegoU32 m_golBackendType;             // 0xa14
 	LegoBool32 m_cutscenes;               // 0xa18
-	undefined m_unk0xa1c[0xab8 - 0xa1c];  // 0xa1c
+	undefined4 m_unk0xa1c;                // 0xa1c
+	undefined m_unk0xa20[0xab4 - 0xa20];  // 0xa20
+	undefined4 m_unk0xab4;                // 0xab4
 	LegoU32 m_videoFlags;                 // 0xab8
-	undefined4 m_unk0xabc;                // 0xabc
-	undefined m_unk0xac0[0x1d6c - 0xac0]; // 0xac0
+	LegoBool32 m_unk0xabc;                // 0xabc
+	IronFlame0x944* m_unk0xac0;           // 0xac0
+	CobaltMist0x30* m_unk0xac4;           // 0xac4
+	LegoFloat m_unk0xac8;                 // 0xac8
+	LegoFloat m_unk0xacc;                 // 0xacc
+	LegoFloat m_unk0xad0;                 // 0xad0
+	undefined4 m_unk0xad4;                // 0xad4
+	LegoU16 m_unk0xad8;                   // 0xad8
+	undefined m_unk0xada[0xae0 - 0xada];  // 0xada
+	undefined4 m_unk0xae0;                // 0xae0
+	undefined m_unk0xae4[0xae9 - 0xae4];  // 0xae4
+	LegoChar m_unk0xae9[8];               // 0xae9
+	undefined m_unk0xaf1[0xaf4 - 0xaf1];  // 0xaf1
+	undefined4 m_unk0xaf4;                // 0xaf4
+	undefined m_unk0xaf8[0xafc - 0xaf8];  // 0xaf8
+	LegoChar m_unk0xafc[8];               // 0xafc
+	LegoChar m_unk0xb04[8];               // 0xb04
+	undefined m_unk0xb0c[0xde8 - 0xb0c];  // 0xb0c
+	undefined4 m_unk0xde8;                // 0xde8
+	undefined m_unk0xdec[0xe54 - 0xdec];  // 0xdec
+	undefined4 m_unk0xe54;                // 0xe54
+	undefined m_unk0xe58[0x1d6c - 0xe58]; // 0xe58
 };
 
 #endif // LEGORACERS_H

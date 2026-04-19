@@ -2,6 +2,7 @@
 
 #include "videoplayer.h"
 
+#include <stddef.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(LegoRacers, 0x1d6c)
@@ -19,6 +20,43 @@ LegoS32 g_horizontalResolution = 640;
 
 // GLOBAL: LEGORACERS 0x004be8e4
 LegoS32 g_verticalResolution = 480;
+
+// GLOBAL: LEGORACERS 0x004b055c
+LegoFloat g_unk0x4b055c = 65.0f;
+
+// GLOBAL: LEGORACERS 0x004b0560
+LegoFloat g_unk0x4b0560 = 5.0f;
+
+// GLOBAL: LEGORACERS 0x004b0564
+LegoFloat g_unk0x4b0564 = 800.0f;
+
+// FUNCTION: LEGORACERS 0x0042b9d0
+LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
+{
+	m_golBackendType = IronFlame0x944::c_golBackendDP;
+	m_cutscenes = TRUE;
+	m_unk0xa1c = 0;
+	m_videoFlags = 24;
+	m_unk0xab4 = 16;
+
+	memset(&m_unk0xabc, 0, sizeof(LegoRacers) - offsetof(LegoRacers, m_unk0xabc));
+
+	m_unk0xabc = TRUE;
+	m_unk0xac0 = &m_unk0x04;
+	m_unk0xac4 = m_unk0xa10;
+	m_unk0xac8 = g_unk0x4b055c;
+	m_unk0xacc = g_unk0x4b0560;
+	m_unk0xad0 = g_unk0x4b0564;
+	m_unk0xae0 = 1;
+	m_unk0xde8 = 1;
+	m_unk0xad8 = 40;
+	m_unk0xe54 = 0;
+	m_unk0xaf4 = 1;
+	strncpy(m_unk0xafc, "racec0r0", sizeof(m_unk0xafc));
+	strncpy(m_unk0xb04, "racec0r0", sizeof(m_unk0xb04));
+	strncpy(m_unk0xae9, "c0", sizeof(m_unk0xae9));
+	m_unk0xad4 = 1;
+}
 
 // FUNCTION: LEGORACERS 0x0042bb40
 LegoRacers::~LegoRacers()

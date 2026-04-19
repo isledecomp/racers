@@ -14,6 +14,7 @@
 // SIZE 0x30
 class CobaltMist0x30 : public IndigoStar0x18 {
 public:
+	CobaltMist0x30();
 	~CobaltMist0x30() override;                 // vtable+0x00
 	undefined4 VTable0x04(undefined4) override; // vtable+0x04
 	void Shutdown() override;                   // vtable+0x08

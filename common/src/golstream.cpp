@@ -32,7 +32,7 @@ LegoU32 g_unk0x4c739c;
 
 // GLOBAL: GOLDP 0x10065e84
 // GLOBAL: LEGORACERS 0x004c73a0
-undefined4* g_unk0x4c73a0;
+GolHashTable* g_hashTable;
 
 // GLOBAL: GOLDP 0x1005f04c
 // GLOBAL: LEGORACERS 0x004c1848

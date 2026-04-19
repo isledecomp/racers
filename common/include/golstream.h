@@ -4,17 +4,14 @@
 #include "decomp.h"
 #include "types.h"
 
+class GolHashTable;
 class GolFileSource;
 
 extern LegoChar* g_unk0x4c7384[4];
-
 extern GolFileSource* g_fileSources;
-
 extern LegoU32 g_fileSourceCount;
-
 extern LegoU32 g_unk0x4c739c;
-
-extern undefined4* g_unk0x4c73a0;
+extern GolHashTable* g_hashTable;
 
 // VTABLE: GOLDP 0x10057884
 // VTABLE: LEGORACERS 0x004b0f38

@@ -75,7 +75,7 @@ void NeonCactus0x1d6c::FUN_0042be90()
 // FUNCTION: LEGORACERS 0x0042bec0
 void NeonCactus0x1d6c::ShowUsage()
 {
-	MessageBoxA(NULL, g_usage, "LEGO Racers Usage:", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
+	MessageBox(NULL, g_usage, "LEGO Racers Usage:", MB_ICONWARNING | MB_SETFOREGROUND | MB_TOPMOST);
 }
 
 // FUNCTION: LEGORACERS 0x0042bee0

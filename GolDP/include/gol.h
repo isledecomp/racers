@@ -11,6 +11,7 @@
 typedef void FatalErrorMessageCBFN(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line);
 typedef void GolExitCBFN();
 
+class GolHashTable;
 class GolFileSource;
 
 struct GolImport {
@@ -18,7 +19,7 @@ struct GolImport {
 	LegoU32 m_fileSourceCount;                  // 0x04
 	LegoChar* m_unk0x8[4];                      // 0x08
 	LegoU32 m_unk0x18;                          // 0x18
-	undefined4* m_unk0x1c;                      // 0x1c
+	GolHashTable* m_hashTable;                  // 0x1c
 	HANDLE m_mutex;                             // 0x20
 	undefined m_unk0x24[0x28 - 0x24];           // 0x24
 	FatalErrorMessageCBFN* m_fatalErrorMessage; // 0x28

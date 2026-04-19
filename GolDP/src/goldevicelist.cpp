@@ -43,7 +43,7 @@ void GolDeviceList::DetectDevices()
 	}
 
 	LegoU32 countDrivers = 0;
-	DirectDrawEnumerateA(CountDirectDrawDriversCallback, &countDrivers);
+	DirectDrawEnumerate(CountDirectDrawDriversCallback, &countDrivers);
 
 	if (countDrivers >= 1) {
 		m_drivers = new GolD3DDriverInfo[countDrivers];
@@ -53,7 +53,7 @@ void GolDeviceList::DetectDevices()
 		}
 
 		m_countDrivers = 0;
-		DirectDrawEnumerateA(EnumerateDirectDrawDriversCallback, this);
+		DirectDrawEnumerate(EnumerateDirectDrawDriversCallback, this);
 	}
 }
 
@@ -98,7 +98,7 @@ void GolDeviceList::Clear()
 
 #define STORE_DIALOG_ITEM_TEXT(WRITE_PTR, TEXT)                                                                        \
 	do {                                                                                                               \
-		int lenText = lstrlenA(TEXT);                                                                                  \
+		int lenText = lstrlen(TEXT);                                                                                   \
 		wchar_t* wideText = reinterpret_cast<wchar_t*>(*(WRITE_PTR));                                                  \
 		int lenWideText = MultiByteToWideChar(0, 0, TEXT, lenText, wideText, lenText);                                 \
 		wideText[lenWideText] = L'\0';                                                                                 \
@@ -188,7 +188,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 
 			StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");
 			StoreDialogItem(&writePtr, SS_LEFT, 5, 24, 25, 13, -1, "STATIC", "Device:");
-			int result = DialogBoxIndirectParamA(
+			int result = DialogBoxIndirectParam(
 				hInstance,
 				dialogTemplate,
 				p_hWnd,
@@ -316,11 +316,11 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::FindMatchingDevice(
 // FUNCTION: GOLDP 0x10013ff0
 void GolDeviceList::UpdateDialog(HWND p_hWnd)
 {
-	SendDlgItemMessageA(p_hWnd, IDC_DRIVERS_COMBOBOX, CB_RESETCONTENT, 0, 0);
-	SendDlgItemMessageA(p_hWnd, IDC_DEVICES_COMBOBOX, CB_RESETCONTENT, 0, 0);
+	SendDlgItemMessage(p_hWnd, IDC_DRIVERS_COMBOBOX, CB_RESETCONTENT, 0, 0);
+	SendDlgItemMessage(p_hWnd, IDC_DEVICES_COMBOBOX, CB_RESETCONTENT, 0, 0);
 
 	for (LegoU32 driverIndex = 0; driverIndex < m_countDrivers; driverIndex++) {
-		LegoU32 comboBoxIndex = SendDlgItemMessageA(
+		LegoU32 comboBoxIndex = SendDlgItemMessage(
 			p_hWnd,
 			IDC_DRIVERS_COMBOBOX,
 			CB_ADDSTRING,
@@ -328,7 +328,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 			reinterpret_cast<LPARAM>(m_drivers[driverIndex].m_name)
 		);
 
-		SendDlgItemMessageA(
+		SendDlgItemMessage(
 			p_hWnd,
 			IDC_DRIVERS_COMBOBOX,
 			CB_SETITEMDATA,
@@ -337,13 +337,13 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 		);
 
 		if (driverIndex == m_driverIndex) {
-			SendDlgItemMessageA(p_hWnd, IDC_DRIVERS_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
+			SendDlgItemMessage(p_hWnd, IDC_DRIVERS_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
 		}
 	}
 
 	GolD3DDeviceInfo* device = m_drivers[m_driverIndex].m_devices;
 	for (LegoU32 deviceIndex = 0; deviceIndex < m_drivers[m_driverIndex].m_countDevices; deviceIndex++, device++) {
-		LegoU32 comboBoxIndex = SendDlgItemMessageA(
+		LegoU32 comboBoxIndex = SendDlgItemMessage(
 			p_hWnd,
 			IDC_DEVICES_COMBOBOX,
 			CB_ADDSTRING,
@@ -352,7 +352,7 @@ void GolDeviceList::UpdateDialog(HWND p_hWnd)
 		);
 
 		if (deviceIndex == m_driverIndex) {
-			SendDlgItemMessageA(p_hWnd, IDC_DEVICES_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
+			SendDlgItemMessage(p_hWnd, IDC_DEVICES_COMBOBOX, CB_SETCURSEL, comboBoxIndex, 0);
 		}
 	}
 }
@@ -517,7 +517,7 @@ void GolDeviceList::StoreDialogWord(LegoU8** p_ptrStorage, LegoU16 p_word)
 // FUNCTION: GOLDP 0x100144b0
 void GolDeviceList::StoreDialogItemText(LegoU8** p_ptrStorage, const char* p_text)
 {
-	int lenText = lstrlenA(p_text);
+	int lenText = lstrlen(p_text);
 	wchar_t* wideText = reinterpret_cast<wchar_t*>(*p_ptrStorage);
 	int lenWideText = MultiByteToWideChar(0, 0, p_text, lenText, wideText, lenText);
 	wideText[lenWideText] = L'\0';
@@ -548,13 +548,13 @@ void GolDeviceList::StoreDialogItem(
 	itemTemplate->id = p_id;
 	*p_ptrStorage = reinterpret_cast<LegoU8*>(itemTemplate + 1);
 
-	int lenText = lstrlenA(p_type);
+	int lenText = lstrlen(p_type);
 	wchar_t* wideText = reinterpret_cast<wchar_t*>(*p_ptrStorage);
 	int lenWideText = MultiByteToWideChar(0, 0, p_type, lenText, wideText, lenText);
 	wideText[lenWideText] = L'\0';
 	*p_ptrStorage += sizeof(wchar_t) * (lenWideText + 1);
 
-	lenText = lstrlenA(p_text);
+	lenText = lstrlen(p_text);
 	wideText = reinterpret_cast<wchar_t*>(*p_ptrStorage);
 	lenWideText = MultiByteToWideChar(0, 0, p_text, lenText, wideText, lenText);
 	wideText[lenWideText] = L'\0';

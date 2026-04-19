@@ -83,7 +83,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 		g_hPrevInstance = g_hInstance;
 	}
 
-	g_unk0x4c73a0 = (undefined4*) &m_hashTable;
+	g_hashTable = &GetHashTable();
 
 	if (p_fileName) {
 		FUN_00416860(p_fileName);
@@ -125,7 +125,7 @@ void IronFlame0x944::VTable0x2c()
 {
 	GolDrawState* drawState = m_golDrawState;
 	m_unk0x808 = 0;
-	m_unk0x80c = 0;
+	m_hashTable = NULL;
 
 	if (drawState && (drawState->GetFlags() & GolDrawState::c_flagBit0)) {
 		drawState->VTable0x48();
@@ -209,16 +209,16 @@ void IronFlame0x944::LoadGolLibrary()
 	GolImport golImport;
 
 	if (m_golBackendType & c_golBackendGlide) {
-		m_golLibrary = LoadLibraryA("GolGlide.DLL");
+		m_golLibrary = LoadLibrary("GolGlide.DLL");
 	}
 	else if (m_golBackendType & c_golBackendSoft) {
-		m_golLibrary = LoadLibraryA("GolSoft.DLL");
+		m_golLibrary = LoadLibrary("GolSoft.DLL");
 	}
 	else if (m_golBackendType & c_golBackendD3D) {
-		m_golLibrary = LoadLibraryA("GolD3D.DLL");
+		m_golLibrary = LoadLibrary("GolD3D.DLL");
 	}
 	else {
-		m_golLibrary = LoadLibraryA("GolDP.DLL");
+		m_golLibrary = LoadLibrary("GolDP.DLL");
 	}
 	if (m_golLibrary == NULL) {
 		::sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());
@@ -298,7 +298,7 @@ LegoS32 IronFlame0x944::VTable0x24(LegoU32 p_width, LegoU32 p_height, LegoU32 p_
 	}
 
 	GolCommonDrawState* commonState = static_cast<GolCommonDrawState*>(m_golDrawState);
-	m_unk0x80c = commonState->m_unk0x1c;
+	IronFlame0x944::m_hashTable = commonState->m_hashTable;
 	m_unk0x808 = (undefined4) m_golDrawState->m_unk0x14;
 
 	if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {

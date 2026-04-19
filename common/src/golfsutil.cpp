@@ -37,7 +37,7 @@ void CreateGolImport(GolImport* p_import)
 	for (LegoU32 i = 0; i < p_import->m_unk0x18; i++) {
 		p_import->m_unk0x8[i] = g_unk0x4c7384[i];
 	}
-	p_import->m_unk0x1c = g_unk0x4c73a0;
+	p_import->m_hashTable = g_hashTable;
 	p_import->m_mutex = g_hMutex;
 }
 #endif
@@ -53,7 +53,7 @@ void SetGolImport(GolImport* p_import)
 	for (LegoU32 i = 0; i < p_import->m_unk0x18; i++) {
 		GolStream::FUN_10032110(p_import->m_unk0x8[i]);
 	}
-	g_unk0x4c73a0 = p_import->m_unk0x1c;
+	g_hashTable = p_import->m_hashTable;
 	g_hMutex = p_import->m_mutex;
 }
 #endif

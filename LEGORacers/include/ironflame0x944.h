@@ -80,7 +80,7 @@ private:
 	GolExport* m_golExport;         // 0x800
 	GolDrawState* m_golDrawState;   // 0x804
 	undefined4 m_unk0x808;          // 0x808
-	undefined4 m_unk0x80c;          // 0x80c
+	GolHashTable* m_hashTable;      // 0x80c
 	LegoU32 m_width;                // 0x810
 	LegoU32 m_height;               // 0x814
 	LegoU32 m_bpp;                  // 0x818

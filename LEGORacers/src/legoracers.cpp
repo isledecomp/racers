@@ -162,7 +162,6 @@ void LegoRacers::FUN_0042be00()
 	if (initDisplayResult) {
 		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);
 	}
-	return;
 }
 
 // FUNCTION: LEGORACERS 0x0042be90

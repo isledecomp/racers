@@ -9,7 +9,9 @@ SilverHollow0xb8::SilverHollow0xb8()
 	STUB(0x411150);
 }
 
-// FUNCTION: LEGORACERS 0x004164c0 FOLDED
+// STUB: LEGORACERS 0x004113c0
 void SilverHollow0xb8::VTable0x00()
 {
+	// TODO
+	STUB(0x4113c0);
 }

@@ -143,6 +143,14 @@ add_executable(legoracers WIN32
   LEGORacers/src/soundmanager.cpp
   LEGORacers/src/jadestorm0x0c.cpp
   LEGORacers/src/amberleaf0x10.cpp
+  LEGORacers/src/amethystwake0x4dd4.cpp
+  LEGORacers/src/aquacoral0x37b8.cpp
+  LEGORacers/src/glassblock0x3368.cpp
+  LEGORacers/src/glassshard0x3b8.cpp
+  LEGORacers/src/glassstream0x94.cpp
+  LEGORacers/src/celestialforge0x90.cpp
+  LEGORacers/src/opalhaven0xf4.cpp
+  LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/rubyhaze0x08.cpp
   LEGORacers/src/crimsonray0x20.cpp
   LEGORacers/src/goldenoak0x128.cpp

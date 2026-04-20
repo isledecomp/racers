@@ -68,6 +68,7 @@ public:
 	GolHashTable& GetHashTable() { return m_hashTable; }
 
 	void Reset();
+	LegoU32 FUN_00416490();
 
 protected:
 	LegoU32 m_flags;                 // 0x04

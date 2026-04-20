@@ -1,5 +1,7 @@
 #include "legoracers.h"
 
+#include "amethystwake0x4dd4.h"
+#include "aquacoral0x37b8.h"
 #include "videoplayer.h"
 
 #include <golerror.h>
@@ -130,16 +132,18 @@ void LegoRacers::FUN_0042bd00()
 	STUB(0x42bd00);
 }
 
-// STUB: LEGORACERS 0x0042bdc0
+// FUNCTION: LEGORACERS 0x0042bdc0
 void LegoRacers::FUN_0042bdc0()
 {
-	STUB(0x42bdc0);
+	AmethystWake0x4dd4::FUN_0042b1e0(&m_unk0xabc);
+	m_unk0x04.FUN_00416490();
 }
 
-// STUB: LEGORACERS 0x0042bde0
+// FUNCTION: LEGORACERS 0x0042bde0
 void LegoRacers::FUN_0042bde0()
 {
-	STUB(0x42bde0);
+	AquaCoral0x37b8::FUN_0042b130(&m_unk0xabc);
+	m_unk0x04.FUN_00416490();
 }
 
 // FUNCTION: LEGORACERS 0x0042be00

@@ -1,0 +1,22 @@
+#ifndef GLASSBLOCK0X3368_H
+#define GLASSBLOCK0X3368_H
+
+#include "cactusinterface0x4.h"
+#include "compat.h"
+#include "decomp.h"
+#include "types.h"
+
+// VTABLE: LEGORACERS 0x004b07f4
+// SIZE 0x3368
+class GlassBlock0x3368 : public CactusInterface0x4 {
+public:
+	GlassBlock0x3368();
+	~GlassBlock0x3368();
+	void VTable0x00() override; // vtable+0x00
+	virtual void VTable0x30();  // vtable+0x30
+
+private:
+	undefined m_unk0x04[0x3368 - 0x04]; // 0x04
+};
+
+#endif // GLASSBLOCK0X3368_H

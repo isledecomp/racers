@@ -34,3 +34,11 @@ void CrimsonForge0x800::VTable0x28(LegoU32, LegoU32, LegoU32, LegoU32, const Leg
 	// TODO
 	STUB(0x416470);
 }
+
+// STUB: LEGORACERS 0x00416490
+LegoU32 CrimsonForge0x800::FUN_00416490()
+{
+	// TODO
+	STUB(0x416490);
+	return 0;
+}

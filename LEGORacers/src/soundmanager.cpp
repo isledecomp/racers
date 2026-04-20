@@ -170,12 +170,13 @@ void SoundManager::VTable0x28(SoundNode* p_node)
 // FUNCTION: LEGORACERS 0x00418f50
 void SoundManager::FUN_00418f50(HWND p_hwnd)
 {
-	DWORD hwndProcessId;
 
 	if (m_directSound) {
 		if (m_unk0x1c != p_hwnd) {
 			if (p_hwnd) {
+				DWORD hwndProcessId;
 				GetWindowThreadProcessId(p_hwnd, &hwndProcessId);
+
 				if (hwndProcessId == GetCurrentProcessId()) {
 					m_unk0x1c = p_hwnd;
 					m_directSound->SetCooperativeLevel(p_hwnd, m_cooperativeLevel);

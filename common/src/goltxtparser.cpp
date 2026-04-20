@@ -18,13 +18,40 @@ void GolTxtParser::VTable0x4c()
 	STUB(0x0044a1f0);
 }
 
-// STUB: LEGORACERS 0x0044a340
-void GolTxtParser::VTable0x50()
+// FUNCTION: GOLDP 0x1002fba0
+// FUNCTION: LEGORACERS 0x0044a340
+void GolTxtParser::VTable0x50(undefined4 p_token)
 {
-	// TODO
-	STUB(0x0044a340);
+	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	switch (p_token) {
+	case 5:
+		m_unk0xa4[m_unk0x1f4++] = '{';
+		break;
+	case 6:
+		m_unk0xa4[m_unk0x1f4++] = '}';
+		break;
+	case 7:
+		m_unk0xa4[m_unk0x1f4++] = '[';
+		break;
+	case 8:
+		m_unk0xa4[m_unk0x1f4++] = ']';
+		break;
+	case 9:
+		m_unk0xa4[m_unk0x1f4++] = ',';
+		break;
+	case 10:
+		m_unk0xa4[m_unk0x1f4++] = ';';
+		break;
+	default:
+		VTable0x54(p_token);
+		break;
+	}
 }
 
+// FUNCTION: GOLDP 0x1002fcb0
 // FUNCTION: LEGORACERS 0x0044a450
 void GolTxtParser::VTable0x54(undefined4 p_param)
 {
@@ -33,6 +60,7 @@ void GolTxtParser::VTable0x54(undefined4 p_param)
 	}
 }
 
+// FUNCTION: GOLDP 0x1002fcd0
 // FUNCTION: LEGORACERS 0x0044a470
 void GolTxtParser::WriteFloat(LegoFloat p_param)
 {
@@ -47,6 +75,7 @@ void GolTxtParser::WriteFloat(LegoFloat p_param)
 	m_unk0x1f4 += len;
 }
 
+// FUNCTION: GOLDP 0x1002fd60
 // FUNCTION: LEGORACERS 0x0044a4f0
 void GolTxtParser::WriteInt4(undefined4 p_param)
 {
@@ -61,6 +90,7 @@ void GolTxtParser::WriteInt4(undefined4 p_param)
 	m_unk0x1f4 += len;
 }
 
+// FUNCTION: GOLDP 0x1002fdd0
 // FUNCTION: LEGORACERS 0x0044a570
 void GolTxtParser::WriteString(LegoChar* p_str)
 {
@@ -76,6 +106,7 @@ void GolTxtParser::WriteString(LegoChar* p_str)
 	m_unk0xa4[m_unk0x1f4++] = '"';
 }
 
+// FUNCTION: GOLDP 0x1002fe60
 // FUNCTION: LEGORACERS 0x0044a600
 void GolTxtParser::VTable0x68()
 {
@@ -88,20 +119,31 @@ void GolTxtParser::VTable0x68()
 	m_unk0x1f4 = 0;
 }
 
-// STUB: LEGORACERS 0x0044a640
+// FUNCTION: GOLDP 0x1002fea0
+// FUNCTION: LEGORACERS 0x0044a640
 void GolTxtParser::VTable0x6c()
 {
-	// TODO
-	STUB(0x0044a640);
+	if (m_unk0x1f4 + 2 >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	m_unk0xa4[m_unk0x1f4] = ' ';
+	m_unk0x1f4++;
 }
 
-// STUB: LEGORACERS 0x0044a680
+// FUNCTION: GOLDP 0x1002fee0
+// FUNCTION: LEGORACERS 0x0044a680
 void GolTxtParser::VTable0x70()
 {
-	// TODO
-	STUB(0x0044a680);
+	if (m_unk0x1f4 + 2 >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	m_unk0xa4[m_unk0x1f4] = '\t';
+	m_unk0x1f4++;
 }
 
+// FUNCTION: GOLDP 0x1002ff20
 // FUNCTION: LEGORACERS 0x0044a6c0
 void GolTxtParser::VTable0x74(undefined4 p_param)
 {

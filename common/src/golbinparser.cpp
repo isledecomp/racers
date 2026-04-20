@@ -1,5 +1,13 @@
 #include "golbinparser.h"
 
+#include "golerror.h"
+
+#include <stdio.h>
+
+// GLOBAL: GOLDP 0x1005f030
+// GLOBAL: LEGORACERS 0x004c182c
+const LegoChar* g_fileFormatStr = "file: %s\n";
+
 // STUB: LEGORACERS 0x0044a7e0
 GolBinParser::GolBinParser()
 {
@@ -52,12 +60,24 @@ undefined4 GolBinParser::VTable0x48(undefined4, undefined4)
 	return 1;
 }
 
-// STUB: GOLDP 0x10030e40
-// STUB: LEGORACERS 0x0044b1e0
-void GolBinParser::VTable0x40(undefined4)
+// FUNCTION: GOLDP 0x10030e40
+// FUNCTION: LEGORACERS 0x0044b1e0
+void GolBinParser::VTable0x40(undefined4 p_code)
 {
-	// TODO
-	STUB(0x0044b1e0);
+	if (m_filePath == NULL) {
+		GOL_FATALERROR_MESSAGE(ParserErrorCodeToString(p_code));
+		return;
+	}
+
+	LegoS32 totalLen = strlen(ParserErrorCodeToString(p_code)) + strlen(m_filePath) + strlen(g_fileFormatStr);
+	m_unk0xa4[0] = '\0';
+
+	if (totalLen < (LegoS32) sizeOfArray(m_unk0xa4) - 1) {
+		sprintf(m_unk0xa4, g_fileFormatStr, m_filePath);
+	}
+
+	strcat(m_unk0xa4, ParserErrorCodeToString(p_code));
+	GOL_FATALERROR_MESSAGE(m_unk0xa4);
 }
 
 // STUB: GOLDP 0x10030f10
@@ -70,7 +90,7 @@ void GolBinParser::VTable0x4c()
 
 // STUB: GOLDP 0x10031070
 // STUB: LEGORACERS 0x0044b410
-void GolBinParser::VTable0x50()
+void GolBinParser::VTable0x50(undefined4)
 {
 	// TODO
 	STUB(0x0044b410);

@@ -22,11 +22,11 @@ public:
 	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
 	void VTable0x4c() override;                             // vtable+0x4c
 	void VTable0x50() override;                             // vtable+0x50
-	void VTable0x54() override;                             // vtable+0x54
-	void VTable0x58() override;                             // vtable+0x58
+	void VTable0x54(undefined4) override;                   // vtable+0x54
+	void WriteFloat(LegoFloat) override;                    // vtable+0x58
 	void VTable0x5c() override;                             // vtable+0x5c
-	void VTable0x60() override;                             // vtable+0x60
-	void VTable0x64() override;                             // vtable+0x64
+	void WriteInt4(undefined4) override;                    // vtable+0x60
+	void WriteString(LegoChar*) override;                   // vtable+0x64
 	void VTable0x68() override;                             // vtable+0x68
 	void VTable0x6c() override;                             // vtable+0x6c
 	void VTable0x70() override;                             // vtable+0x70

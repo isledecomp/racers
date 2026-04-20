@@ -1,5 +1,9 @@
 #include "goltxtparser.h"
 
+#include "golerror.h"
+
+#include <stdio.h>
+
 // FUNCTION: GOLDP 0x1002fa20
 // FUNCTION: LEGORACERS 0x0044a1d0
 const LegoChar* GolTxtParser::GetSuffix()
@@ -21,39 +25,67 @@ void GolTxtParser::VTable0x50()
 	STUB(0x0044a340);
 }
 
-// STUB: LEGORACERS 0x0044a450
-void GolTxtParser::VTable0x54()
+// FUNCTION: LEGORACERS 0x0044a450
+void GolTxtParser::VTable0x54(undefined4 p_param)
 {
-	// TODO
-	STUB(0x0044a450);
+	if (p_param) {
+		GOL_FATALERROR_MESSAGE("Cannot write invalid token");
+	}
 }
 
-// STUB: LEGORACERS 0x0044a470
-void GolTxtParser::VTable0x58()
+// FUNCTION: LEGORACERS 0x0044a470
+void GolTxtParser::WriteFloat(LegoFloat p_param)
 {
-	// TODO
-	STUB(0x0044a470);
+	// TODO: style fix?
+	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	sprintf(m_unk0x84, "%f", p_param);
+	LegoS32 len = strlen(m_unk0x84);
+	memcpy(&m_unk0xa4[m_unk0x1f4], m_unk0x84, len);
+	m_unk0x1f4 += len;
 }
 
-// STUB: LEGORACERS 0x0044a4f0
-void GolTxtParser::VTable0x60()
+// FUNCTION: LEGORACERS 0x0044a4f0
+void GolTxtParser::WriteInt4(undefined4 p_param)
 {
-	// TODO
-	STUB(0x0044a4f0);
+	// TODO: style fix?
+	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	sprintf(m_unk0x84, "%d", p_param);
+	LegoS32 len = strlen(m_unk0x84);
+	memcpy(&m_unk0xa4[m_unk0x1f4], m_unk0x84, len);
+	m_unk0x1f4 += len;
 }
 
-// STUB: LEGORACERS 0x0044a570
-void GolTxtParser::VTable0x64()
+// FUNCTION: LEGORACERS 0x0044a570
+void GolTxtParser::WriteString(LegoChar* p_str)
 {
-	// TODO
-	STUB(0x0044a570);
+	LegoS32 len = strlen(p_str);
+	// TODO: style fix?
+	if (len + 4 >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	m_unk0xa4[m_unk0x1f4++] = '"';
+	memcpy(&m_unk0xa4[m_unk0x1f4], p_str, len);
+	m_unk0x1f4 += len;
+	m_unk0xa4[m_unk0x1f4++] = '"';
 }
 
-// STUB: LEGORACERS 0x0044a600
+// FUNCTION: LEGORACERS 0x0044a600
 void GolTxtParser::VTable0x68()
 {
-	// TODO
-	STUB(0x0044a600);
+	LegoS32 code = WriteLine(m_unk0xa4, m_unk0x1f4);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
+	m_unk0x1f4 = 0;
 }
 
 // STUB: LEGORACERS 0x0044a640
@@ -70,11 +102,19 @@ void GolTxtParser::VTable0x70()
 	STUB(0x0044a680);
 }
 
-// STUB: LEGORACERS 0x0044a6c0
-void GolTxtParser::VTable0x74(undefined4)
+// FUNCTION: LEGORACERS 0x0044a6c0
+void GolTxtParser::VTable0x74(undefined4 p_param)
 {
-	// TODO
-	STUB(0x0044a6c0);
+	// TODO: style fix?
+	if (p_param + m_unk0x1f4 + 1 >= sizeof(m_unk0xa4) - 1) {
+		VTable0x68();
+	}
+
+	while (p_param > 0) {
+		m_unk0xa4[m_unk0x1f4] = '\t';
+		m_unk0x1f4++;
+		p_param--;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED

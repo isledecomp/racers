@@ -76,20 +76,44 @@ void GolBinParser::VTable0x50()
 	STUB(0x0044b410);
 }
 
-// STUB: GOLDP 0x10031100
-// STUB: LEGORACERS 0x0044b4a0
-void GolBinParser::VTable0x54()
+// FUNCTION: GOLDP 0x10031100
+// FUNCTION: LEGORACERS 0x0044b4a0
+void GolBinParser::VTable0x54(undefined4 p_param)
 {
-	// TODO
-	STUB(0x0044b4a0);
+	*m_unk0xa4 = p_param;
+	LegoS32 code = BufferedWrite(m_unk0x1f0, m_unk0xa4, 1);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
 }
 
-// STUB: GOLDP 0x10031140
-// STUB: LEGORACERS 0x0044b4e0
-void GolBinParser::VTable0x58()
+// FUNCTION: GOLDP 0x10031140
+// FUNCTION: LEGORACERS 0x0044b4e0
+void GolBinParser::WriteFloat(LegoFloat p_param)
 {
-	// TODO
-	STUB(0x0044b4e0);
+	*m_unk0xa4 = 3;
+	LegoS32 code = BufferedWrite(m_unk0x1f0, m_unk0xa4, 1);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
+
+	LegoU32 buf;
+	memcpy(&buf, &p_param, sizeof(buf));
+	m_unk0xa4[0] = (LegoU8) buf;
+	m_unk0xa4[1] = (LegoU8) (buf >> 8);
+	m_unk0xa4[2] = (LegoU8) (buf >> 16);
+	m_unk0xa4[3] = (LegoU8) (buf >> 24);
+
+	code = BufferedWrite(m_unk0x1f0, m_unk0xa4, sizeof(p_param));
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0 += 4;
 }
 
 // STUB: GOLDP 0x1002fd50 FOLDED
@@ -100,20 +124,64 @@ void GolBinParser::VTable0x5c()
 	STUB(0x0044b570);
 }
 
-// STUB: GOLDP 0x100311d0
-// STUB: LEGORACERS 0x0044b580
-void GolBinParser::VTable0x60()
+// FUNCTION: GOLDP 0x100311d0
+// FUNCTION: LEGORACERS 0x0044b580
+void GolBinParser::WriteInt4(undefined4 p_param)
 {
-	// TODO
-	STUB(0x0044b580);
+	*m_unk0xa4 = 4;
+	LegoS32 code = BufferedWrite(m_unk0x1f0, m_unk0xa4, 1);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
+
+	m_unk0xa4[0] = (LegoU8) p_param;
+	m_unk0xa4[1] = (LegoU8) (p_param >> 8);
+	m_unk0xa4[2] = (LegoU8) (p_param >> 16);
+	m_unk0xa4[3] = (LegoU8) (p_param >> 24);
+
+	code = BufferedWrite(m_unk0x1f0, m_unk0xa4, sizeof(p_param));
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0 += 4;
 }
 
-// STUB: GOLDP 0x10031260
-// STUB: LEGORACERS 0x0044b610
-void GolBinParser::VTable0x64()
+// FUNCTION: GOLDP 0x10031260
+// FUNCTION: LEGORACERS 0x0044b610
+void GolBinParser::WriteString(LegoChar* p_str)
 {
-	// TODO
-	STUB(0x0044b610);
+	*m_unk0xa4 = 2;
+	LegoS32 code = BufferedWrite(m_unk0x1f0, m_unk0xa4, 1);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
+
+	LegoS32 len = strlen(p_str);
+	if (len >= 63) {
+		len = 63;
+	}
+
+	memcpy(m_unk0xa4, p_str, len);
+
+	code = BufferedWrite(m_unk0x1f0, m_unk0xa4, len);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0 += len;
+
+	*m_unk0xa4 = 2;
+	code = BufferedWrite(m_unk0x1f0, m_unk0xa4, 1);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_unk0x1f0++;
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED

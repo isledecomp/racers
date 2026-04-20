@@ -44,11 +44,11 @@ public:
 	virtual undefined4 VTable0x48(undefined4, undefined4); // vtable+0x48
 	virtual void VTable0x4c() = 0;                         // vtable+0x4c
 	virtual void VTable0x50() = 0;                         // vtable+0x50
-	virtual void VTable0x54() = 0;                         // vtable+0x54
-	virtual void VTable0x58() = 0;                         // vtable+0x58
+	virtual void VTable0x54(undefined4) = 0;               // vtable+0x54
+	virtual void WriteFloat(LegoFloat) = 0;                // vtable+0x58
 	virtual void VTable0x5c() = 0;                         // vtable+0x5c
-	virtual void VTable0x60() = 0;                         // vtable+0x60
-	virtual void VTable0x64() = 0;                         // vtable+0x64
+	virtual void WriteInt4(undefined4) = 0;                // vtable+0x60
+	virtual void WriteString(LegoChar*) = 0;               // vtable+0x64
 	virtual void VTable0x68() = 0;                         // vtable+0x68
 	virtual void VTable0x6c() = 0;                         // vtable+0x6c
 	virtual void VTable0x70() = 0;                         // vtable+0x70
@@ -80,7 +80,7 @@ protected:
 	undefined m_unk0x3c[0x40 - 0x3c];   // 0x3c
 	LegoFloat m_unk0x40;                // 0x40
 	LegoChar m_unk0x44[0x84 - 0x44];    // 0x44
-	undefined m_unk0x84[0xa4 - 0x84];   // 0x84
+	LegoChar m_unk0x84[0xa4 - 0x84];    // 0x84
 	LegoChar m_unk0xa4[256];            // 0xa4
 	LegoChar* m_filePath;               // 0x1a4
 	LegoChar m_unk0x1a8[0x1e8 - 0x1a8]; // 0x1a8

@@ -7,6 +7,7 @@
 #include "indigostar0x18.h"
 #include "soundnode.h"
 
+#include <dsound.h>
 #include <objbase.h>
 
 // VTABLE: LEGORACERS 0x004afaf0
@@ -34,11 +35,11 @@ public:
 
 private:
 	undefined4 m_unk0x18;             // 0x18
-	undefined4 m_unk0x1c;             // 0x1c
-	undefined4 m_unk0x20;             // 0x20
-	IUnknown* m_unk0x24;              // 0x24
-	undefined4 m_unk0x28;             // 0x28
-	undefined4 m_unk0x2c;             // 0x2c
+	HWND m_unk0x1c;                   // 0x1c
+	HWND m_unk0x20;                   // 0x20
+	LPDIRECTSOUND m_directSound;      // 0x24
+	DWORD m_cooperativeLevel;         // 0x28
+	LPGUID m_unk0x2c;                 // 0x2c
 	IUnknown* m_unk0x30;              // 0x30
 	undefined m_unk0x34;              // 0x34
 	undefined m_unk0x35;              // 0x35

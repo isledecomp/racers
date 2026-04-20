@@ -12,11 +12,11 @@ DECOMP_SIZE_ASSERT(SoundManager, 0x98)
 // FUNCTION: LEGORACERS 0x004185d0
 SoundManager::SoundManager()
 {
-	m_unk0x28 = 2;
+	m_cooperativeLevel = DSSCL_PRIORITY;
 	m_unk0x34 = 2;
 	m_unk0x20 = 0;
 	m_unk0x1c = 0;
-	m_unk0x24 = NULL;
+	m_directSound = NULL;
 	m_unk0x2c = 0;
 	m_unk0x30 = NULL;
 	m_unk0x38 = 22050;
@@ -35,6 +35,7 @@ SoundManager::~SoundManager()
 // STUB: LEGORACERS 0x004186f0
 undefined4 SoundManager::VTable0x04(undefined4)
 {
+	// HRESULT result = DirectSoundCreate(m_unk0x2c, &m_directSound, NULL);
 	// TODO
 	STUB(0x4186f0);
 	return 0;
@@ -72,9 +73,9 @@ void SoundManager::Shutdown()
 		m_unk0x30 = NULL;
 	}
 
-	if (m_unk0x24) {
-		m_unk0x24->Release();
-		m_unk0x24 = NULL;
+	if (m_directSound) {
+		m_directSound->Release();
+		m_directSound = NULL;
 	}
 
 	m_unk0x58 = 0;
@@ -96,7 +97,7 @@ void SoundManager::VTable0x0c()
 // FUNCTION: LEGORACERS 0x00418d60
 void SoundManager::VTable0x10()
 {
-	if (m_unk0x24) {
+	if (m_directSound) {
 		m_unk0x18 = 0;
 		VTable0x34(0);
 	}
@@ -166,10 +167,29 @@ void SoundManager::VTable0x28(SoundNode* p_node)
 	delete p_node;
 }
 
-// STUB: LEGORACERS 0x00418f50
+// FUNCTION: LEGORACERS 0x00418f50
 void SoundManager::FUN_00418f50(HWND p_hwnd)
 {
-	STUB(0x418f50);
+	DWORD hwndProcessId;
+
+	if (m_directSound) {
+		if (m_unk0x1c != p_hwnd) {
+			if (p_hwnd) {
+				GetWindowThreadProcessId(p_hwnd, &hwndProcessId);
+				if (hwndProcessId == GetCurrentProcessId()) {
+					m_unk0x1c = p_hwnd;
+					m_directSound->SetCooperativeLevel(p_hwnd, m_cooperativeLevel);
+				}
+			}
+			else {
+				m_unk0x1c = NULL;
+			}
+		}
+	}
+	else {
+		m_unk0x1c = p_hwnd;
+		m_unk0x20 = p_hwnd;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0041be50 FOLDED

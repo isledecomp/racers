@@ -39,7 +39,7 @@ LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
 	m_golBackendType = IronFlame0x944::c_golBackendDP;
 	m_cutscenes = TRUE;
 	m_unk0xa1c = 0;
-	m_videoFlags = 24;
+	m_videoFlags = c_videoFullScreen | c_videoBit4;
 	m_bpp = 16;
 
 	memset(&m_unk0xabc, 0, sizeof(LegoRacers) - offsetof(LegoRacers, m_unk0xabc));

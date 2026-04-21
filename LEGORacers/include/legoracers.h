@@ -14,6 +14,7 @@ class LegoRacers : public CactusInterface0x4 {
 public:
 	enum {
 		c_videoFullScreen = 0x08,
+		c_videoBit4 = 0x10,
 		c_videoPrimaryDriver = 0x80,
 		c_videoSelect3D = 0x200,
 		c_videoAlphaTrans = 0x8000,

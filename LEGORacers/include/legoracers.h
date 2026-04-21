@@ -5,6 +5,7 @@
 #include "cobaltmist0x30.h"
 #include "decomp.h"
 #include "ironflame0x944.h"
+#include "scarletnova0x5c.h"
 #include "soundmanager.h"
 #include "types.h"
 
@@ -66,7 +67,9 @@ private:
 	undefined m_unk0xaf8[0xafc - 0xaf8];  // 0xaf8
 	LegoChar m_unk0xafc[8];               // 0xafc
 	LegoChar m_unk0xb04[8];               // 0xb04
-	undefined m_unk0xb0c[0xde8 - 0xb0c];  // 0xb0c
+	undefined m_unk0xb0c[0xbc4 - 0xb0c];  // 0xb0c
+	ScarletNova0x5c m_unk0xbc4[5];        // 0xbc4
+	undefined m_unk0xd90[0xde8 - 0xd90];  // 0xd90
 	undefined4 m_unk0xde8;                // 0xde8
 	undefined m_unk0xdec[0xe54 - 0xdec];  // 0xdec
 	undefined4 m_unk0xe54;                // 0xe54

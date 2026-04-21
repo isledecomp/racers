@@ -125,11 +125,41 @@ void LegoRacers::Run()
 	ResetDisplay();
 }
 
-// STUB: LEGORACERS 0x0042bd00
+// FUNCTION: LEGORACERS 0x0042bd00
 void LegoRacers::FUN_0042bd00()
 {
-	// TODO
-	STUB(0x42bd00);
+	GolExport* golExport = m_unk0xac0->GetGolExport();
+
+	for (LegoU32 i = 0; i < m_unk0xde8; i++) {
+		ScarletNova0x5c& slot = m_unk0xbc4[i];
+
+		if (slot.m_flag) {
+			if (slot.m_unk0x20[0]) {
+				golExport->VTable0x48(slot.m_unk0x20[0]);
+				slot.m_unk0x20[0] = NULL;
+			}
+			if (slot.m_unk0x20[1]) {
+				golExport->VTable0x44(slot.m_unk0x20[1]);
+				slot.m_unk0x20[1] = NULL;
+			}
+			if (slot.m_unk0x20[2]) {
+				golExport->VTable0x40(slot.m_unk0x20[2]);
+				slot.m_unk0x20[2] = NULL;
+			}
+			if (slot.m_unk0x20[9]) {
+				golExport->VTable0x48(slot.m_unk0x20[9]);
+				slot.m_unk0x20[9] = NULL;
+			}
+			if (slot.m_unk0x20[10]) {
+				golExport->VTable0x44(slot.m_unk0x20[10]);
+				slot.m_unk0x20[10] = NULL;
+			}
+			if (slot.m_unk0x20[11]) {
+				golExport->VTable0x40(slot.m_unk0x20[11]);
+				slot.m_unk0x20[11] = NULL;
+			}
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042bdc0

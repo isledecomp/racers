@@ -59,11 +59,11 @@ void DirectInputDevice::FUN_0044fb30()
 	}
 	::memset(m_stringBuffer, 0, m_unk0x5c * sizeof(wchar_t));
 
-	m_nameIndices = new LegoS16[VTable0x1c()];
+	m_nameIndices = new LegoU16[VTable0x1c()];
 	if (m_nameIndices == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_nameIndices, 0, sizeof(LegoS16) * VTable0x1c());
+	::memset(m_nameIndices, 0, sizeof(LegoU16) * VTable0x1c());
 	if (VTable0x20() != 0) {
 		m_unk0xc8 = new undefined2[VTable0x20()];
 		if (m_unk0xc8 == NULL) {

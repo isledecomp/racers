@@ -77,7 +77,7 @@ protected:
 	undefined4 m_unk0xac;           // 0xac
 	GUID m_deviceGuid;              // 0xb0
 	DWORD m_cooperativeLevel;       // 0xc0
-	LegoS16* m_nameIndices;         // 0xc4
+	LegoU16* m_nameIndices;         // 0xc4
 	undefined2* m_unk0xc8;          // 0xc8
 };
 

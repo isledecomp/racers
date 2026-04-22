@@ -275,7 +275,7 @@ LegoFloat JoystickInputDevice::VTable0x30(undefined4 p_arg)
 }
 
 // STUB: LEGORACERS 0x0044f120
-void JoystickInputDevice::VTable0x04(undefined4, LegoBool p_arg2, LegoBool32)
+void JoystickInputDevice::VTable0x04(undefined4, LegoU8, LegoBool32)
 {
 	// TODO
 	STUB(0x0044f120);

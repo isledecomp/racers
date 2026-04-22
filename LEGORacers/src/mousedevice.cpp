@@ -123,7 +123,7 @@ void MouseInputDevice::VTable0x68(const DIDEVICEOBJECTDATA& p_data)
 		break;
 	}
 
-	VTable0x04(LOWORD(event) | c_sourceMouse, static_cast<LegoBool>(p_data.dwData), TRUE);
+	VTable0x04(LOWORD(event) | c_sourceMouse, static_cast<LegoU8>(p_data.dwData), TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x0044f850
@@ -172,25 +172,29 @@ void MouseInputDevice::VTable0x08(undefined4 p_arg1, LegoFloat p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x0044f910
-void MouseInputDevice::VTable0x04(undefined4 p_scancode, LegoBool p_arg2, LegoBool32 p_arg3)
+void MouseInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
-	undefined4 scanCode = p_scancode & 0xffff;
-	undefined4 origin = GetKeySource(p_scancode);
-	char buttonState = p_arg2 ? 0x80 : 0;
+	undefined4 source = p_event & c_sourceMask;
+	undefined4 button = p_event & c_keyCodeMask;
 
-	if (scanCode < sizeOfArray(m_unk0xd8)) {
-		m_unk0xd8[scanCode] = buttonState;
-		scanCode = origin | m_unk0x2c[scanCode];
+	if (p_state) {
+		p_state = c_pressed;
+	}
 
-		if (p_arg3 && m_callback != NULL) {
-			if (buttonState) {
-				m_callback->OnKeyDown(*this, scanCode, m_unk0x34);
+	if (button < sizeOfArray(m_unk0xd8)) {
+		undefined2* map = m_unk0x2c;
+		m_unk0xd8[button] = p_state;
+		source |= map[button];
+
+		if (p_notify && m_callback != NULL) {
+			if (p_state) {
+				m_callback->OnKeyDown(*this, source, m_unk0x34);
 			}
 			else {
-				m_callback->OnKeyUp(*this, scanCode, m_unk0x34);
+				m_callback->OnKeyUp(*this, source, m_unk0x34);
 			}
 		}
 
-		InputDevice::VTable0x04(p_scancode, buttonState, p_arg3);
+		InputDevice::VTable0x04(p_event, p_state, p_notify);
 	}
 }

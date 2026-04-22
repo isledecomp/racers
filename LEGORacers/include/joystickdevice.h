@@ -11,19 +11,19 @@ class JoystickInputDevice : public DirectInputDevice {
 public:
 	JoystickInputDevice();
 
-	void Init() override;                                                      // vtable+0x00
-	void VTable0x04(undefined4, LegoBool p_arg2, LegoBool32) override;         // vtable+0x04
-	void VTable0x08(undefined4, LegoFloat) override;                           // vtable+0x08
-	~JoystickInputDevice() override;                                           // vtable+0x0c
-	undefined4 VTable0x14(undefined4) override;                                // vtable+0x14
-	LegoS32 VTable0x1c() override;                                             // vtable+0x1c
-	undefined4 VTable0x20() override;                                          // vtable+0x20
-	void VTable0x28(undefined4) override;                                      // vtable+0x28
-	LegoFloat VTable0x2c(undefined4) override;                                 // vtable+0x2c
-	LegoFloat VTable0x30(undefined4) override;                                 // vtable+0x30
-	undefined4 VTable0x34(undefined4) override;                                // vtable+0x34
-	LegoBool32 CreateDevice(CreateDirectInputDeviceParams* p_params) override; // vtable+0x64
-	void VTable0x68(const DIDEVICEOBJECTDATA& p_data) override;                // vtable+0x68
+	void Init() override;                                                              // vtable+0x00
+	void VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify) override; // vtable+0x04
+	void VTable0x08(undefined4, LegoFloat) override;                                   // vtable+0x08
+	~JoystickInputDevice() override;                                                   // vtable+0x0c
+	undefined4 VTable0x14(undefined4) override;                                        // vtable+0x14
+	LegoS32 VTable0x1c() override;                                                     // vtable+0x1c
+	undefined4 VTable0x20() override;                                                  // vtable+0x20
+	void VTable0x28(undefined4) override;                                              // vtable+0x28
+	LegoFloat VTable0x2c(undefined4) override;                                         // vtable+0x2c
+	LegoFloat VTable0x30(undefined4) override;                                         // vtable+0x30
+	undefined4 VTable0x34(undefined4) override;                                        // vtable+0x34
+	LegoBool32 CreateDevice(CreateDirectInputDeviceParams* p_params) override;         // vtable+0x64
+	void VTable0x68(const DIDEVICEOBJECTDATA& p_data) override;                        // vtable+0x68
 
 	// SYNTHETIC: LEGORACERS 0x0044ea70
 	// JoystickInputDevice::`scalar deleting destructor'

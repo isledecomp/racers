@@ -188,9 +188,9 @@ void InputDevice::FUN_0044bda0()
 }
 
 // FUNCTION: LEGORACERS 0x0044bdd0
-void InputDevice::VTable0x04(undefined4, LegoBool p_arg2, LegoBool32)
+void InputDevice::VTable0x04(undefined4, LegoU8 p_state, LegoBool32)
 {
-	if (p_arg2) {
+	if (p_state) {
 		m_unk0x44 = m_unk0x3c;
 	}
 }

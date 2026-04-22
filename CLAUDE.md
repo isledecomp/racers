@@ -353,6 +353,84 @@ Renaming a virtual method does not affect codegen — the vtable is slot-indexed
 
 When you find a method that wraps subsystem teardown in a class that also has a "full destroy" wrapper, the small one is `Shutdown` and the bigger one is `Destroy` — even if it means renaming a previously-named `Shutdown` to `Destroy` to free up the name. Don't invent new terms (`Cleanup`, `Teardown`, `StopServices`) when one of the established names fits — consistency across classes is more valuable than naming creativity.
 
+## `__purecall` in a derived vtable ⇒ re-pure-virtualize
+
+A derived class can redeclare a concrete base virtual as pure (`override = 0`),
+putting `__purecall` in the derived slot while keeping the base body reachable
+via explicit `Base::Method()`. When the derived vtable shows `__purecall` at a
+slot where the base has a concrete body, redeclare in the derived header.
+
+## `mov eax, <lit>` in the epilogue ⇒ non-void return
+
+A function whose epilogue includes `mov eax, <literal>` before `ret` is
+returning that value. If you declared it `void`, the bytes have no home and
+the function mismatches. Change the return type (often `LegoS32` returning a
+success sentinel) and add the `return`.
+
+## Preventing unwanted ICF with `#pragma code_seg` (temporary hack)
+
+Symptom: reccmp "Failed to find function symbol" plus a derived vtable slot
+pointing to a fold survivor — our `/OPT:ICF` build folds two byte-identical
+functions that are at distinct addresses in the original. Workaround: wrap each
+affected function in a uniquely-named code section:
+
+```cpp
+// TODO: Temporary workaround until we figure out how the original code was written.
+#pragma code_seg(".text$unique_suffix")
+RetType Class::Method() { ... }
+#pragma code_seg()
+```
+
+The pragma is a hack; the original likely used a different mechanism. Do NOT
+use this for functions the original itself folds — those stay `FOLDED`.
+
+## Fused memset across adjacent members of different types
+
+When the original emits one contiguous zero store spanning two adjacent members
+of incompatible types, two separate `memset` calls usually won't fuse. Use one
+call sized `sizeof(first) + sizeof(second)` with a short comment about the
+contiguity. Alternatively merge the members into a nested struct so one
+`sizeof(whole)` covers the block.
+
+## Branch-free select patterns that resist forcing
+
+A ternary that selects between a small literal and zero is preferentially
+emitted as branch-free `neg; sbb; and` by MSVC 6.0 /O2, even when the original
+used a branch-based pattern. No conventional source formulation (if/else,
+explicit assignments, volatile) forces the branch-based form reliably. Accept
+partial match when the difference is only this pattern. Using `char` storage
+instead of a wider int still recovers the `movsx` sign-extending store half of
+the match.
+
+## Inferring signatures from push sequence
+
+A call's arg count is decoded from the `push <reg>` sequence before the
+`call`/`call [vtable+N]` — right-to-left push order = first-to-last arg. A
+signature with fewer args than the original's pushes shows up as a caller push
+with no matching parameter in your declaration. Count pushes before the call,
+update the signature, propagate. For callback interfaces tightly coupled to one
+outer class, prefer a nested class (`Outer::Callback`).
+
+## Derived-override tail calls to the base: trace the spill
+
+When a derived override ends in `Base::Method(...)`, check which register/slot
+the original pushes. If it pushes a stack-spilled local (not a literal), your
+source must pass the same local — a literal `FALSE`/`0` at the source position
+collapses the match at the push site.
+
+## Code style
+
+- Separate declarations / setup / main work / return with single blank lines
+  inside functions. Put blank lines around if/else chains. Switch cases stay
+  tightly packed. Terse one-liner bodies don't need internal spacing.
+- Hoist sets of magic numbers that form a fixed enumeration (flag bits, event
+  tags, state codes) into a named `enum` at class or namespace scope. Use
+  `c_camelCase` per NCC.
+- Prefer `LegoS32`/`LegoU32` etc. over bare `int`/`unsigned` for game-code
+  casts; keep API-boundary types (HRESULT, DWORD) unchanged.
+- Don't put leading `const` on return-by-value (`const RetType Get() const` —
+  the leading const is meaningless and triggers NCC).
+
 ## Project Structure
 
 ```

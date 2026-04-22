@@ -19,6 +19,7 @@ InputDevice::InputDevice()
 	for (i = 0, writePtr = g_defaultMapping; i < sizeOfArray(g_defaultMapping); i++, writePtr++) {
 		*writePtr = i;
 	}
+
 	Init();
 }
 
@@ -31,7 +32,6 @@ InputDevice::~InputDevice()
 // FUNCTION: LEGORACERS 0x0044b950
 void InputDevice::Init()
 {
-	// = g_defaultMapping;
 	m_unk0x28 = 0;
 	m_unk0x24 = 0;
 	m_unk0x20 = 0;
@@ -63,6 +63,7 @@ LegoBool32 InputDevice::Destroy()
 	if (!m_unk0x18) {
 		return true;
 	}
+
 	Init();
 	return !m_unk0x18;
 }
@@ -71,18 +72,20 @@ LegoBool32 InputDevice::Destroy()
 void InputDevice::FUN_0044b9f0()
 {
 	LegoU32 flag = 0;
+
 	switch (m_devType) {
 	case DIDEVTYPE_MOUSE:
-		flag = c_source_mouse;
+		flag = c_sourceMouse;
 		break;
 	case DIDEVTYPE_KEYBOARD:
-		flag = c_source_keyboard;
+		flag = c_sourceKeyboard;
 		break;
 	case DIDEVTYPE_JOYSTICK:
-		flag = c_source_joystick1;
+		flag = c_sourceJoystick1;
 		break;
 	}
-	int i;
+
+	LegoS32 i;
 	for (i = 0; i < VTable0x1c(); i++) {
 		if (VTable0x34(i | flag)) {
 			VTable0x04(i | flag, FALSE, TRUE);
@@ -93,13 +96,15 @@ void InputDevice::FUN_0044b9f0()
 // STUB: LEGORACERS 0x0044ba60
 undefined4 InputDevice::VTable0x14(undefined4 p_arg)
 {
-	int i;
+	LegoS32 i;
 
 	m_unk0x34 += p_arg;
+
 	for (i = 0; i < m_unk0x50; i++) {
 		// TODO
 		STUB(0x0044ba60);
 	}
+
 	FUN_0044bc60(p_arg);
 	return 0;
 }
@@ -126,10 +131,13 @@ void InputDevice::FUN_0044baf0(undefined2* p_arg1, undefined2* p_arg2)
 	if (p_arg1 == NULL) {
 		p_arg1 = g_defaultMapping;
 	}
+
 	m_unk0x2c = p_arg1;
+
 	if (p_arg2 == NULL) {
 		p_arg2 = g_defaultMapping;
 	}
+
 	m_unk0x30 = p_arg2;
 }
 
@@ -171,6 +179,7 @@ void InputDevice::FUN_0044bda0()
 	LegoU32 flag = 0x1;
 	LegoU32 bits = m_unk0x38;
 	LegoS32 i;
+
 	for (i = 16; i != 0; flag <<= 1, i--) {
 		if (bits & flag) {
 			VTable0x08(flag, 0.0f);
@@ -181,7 +190,6 @@ void InputDevice::FUN_0044bda0()
 // FUNCTION: LEGORACERS 0x0044bdd0
 void InputDevice::VTable0x04(undefined4, LegoBool p_arg2, LegoBool32)
 {
-
 	if (p_arg2) {
 		m_unk0x44 = m_unk0x3c;
 	}
@@ -198,36 +206,45 @@ void InputDevice::FUN_0044bdf0(undefined4 p_arg)
 LegoBool32 InputDevice::FUN_0044be10(undefined4 p_arg)
 {
 	LegoS32 i;
+
 	for (i = 0; i < m_unk0x50; i++) {
 		if (m_unk0x04[i] == p_arg) {
-			while (i < (int) sizeOfArray(m_unk0x04)) {
+			while (i < (LegoS32) sizeOfArray(m_unk0x04)) {
 				m_unk0x04[i] = m_unk0x04[i + 1];
 				i++;
 			}
+
 			m_unk0x50 -= 1;
 			return TRUE;
 		}
 	}
+
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0044be70
 LegoS16 InputDevice::StoreString(const LegoChar* p_str)
 {
+	wchar_t* ptr = m_stringBuffer;
+
 	if (m_stringBuffer == NULL) {
 		return -1;
 	}
-	wchar_t* ptr = m_stringBuffer;
+
 	while (ptr[0] != L'\0' || ptr[1] != L'\0') {
 		ptr += 1;
 	}
+
 	if (m_stringBuffer != ptr) {
 		ptr += 1;
 	}
-	LegoS16 result = ptr - m_stringBuffer;
+
+	LegoS16 result = (LegoS16) ((LegoU16) ((LegoU16) (LegoU32) ptr - (LegoU16) (LegoU32) m_stringBuffer) >> 1);
+
 	while (*p_str != '\0') {
 		*ptr++ = (LegoU8) *p_str++;
 	}
+
 	return result;
 }
 

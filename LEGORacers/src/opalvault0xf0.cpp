@@ -34,16 +34,20 @@ LegoBool32 OpalVault0xf0::FUN_004503e0(HINSTANCE p_hInstance, HWND p_hWnd)
 {
 	Shutdown();
 	m_hWnd = p_hWnd;
+
 	if (p_hInstance == NULL || p_hWnd == NULL) {
 		return FALSE;
 	}
+
 	if (DirectInputCreate(p_hInstance, DIRECTINPUT_VERSION, &m_directInput, NULL) != DI_OK) {
 		return FALSE;
 	}
+
 	if (!(DetectKeyboard() && DetectMouse() && DetectJoysticks())) {
 		Shutdown();
 		return FALSE;
 	}
+
 	m_unk0x8c = 1;
 	return TRUE;
 }
@@ -78,9 +82,9 @@ LegoS32 OpalVault0xf0::Init()
 }
 
 // FUNCTION: LEGORACERS 0x004504d0
-BOOL OpalVault0xf0::AddAtachedInputDeviceCallback(LPCDIDEVICEINSTANCE p_devinceInstance, LPVOID p_context)
+BOOL OpalVault0xf0::AddAttachedInputDeviceCallback(LPCDIDEVICEINSTANCE p_deviceInstance, LPVOID p_context)
 {
-	return static_cast<OpalVault0xf0*>(p_context)->VTable0x28(p_devinceInstance);
+	return static_cast<OpalVault0xf0*>(p_context)->VTable0x28(p_deviceInstance);
 }
 
 // FUNCTION: LEGORACERS 0x004504f0
@@ -90,7 +94,7 @@ BOOL OpalVault0xf0::AddAttachedForceFeedbackInputDeviceCallback(LPCDIDEVICEINSTA
 }
 
 // STUB: LEGORACERS 0x00450510
-LegoBool32 OpalVault0xf0::VTable0x28(LPCDIDEVICEINSTANCE p_devinceInstance)
+LegoBool32 OpalVault0xf0::VTable0x28(LPCDIDEVICEINSTANCE p_deviceInstance)
 {
 	// TODO
 	STUB(0x450510);
@@ -111,6 +115,7 @@ LegoBool32 OpalVault0xf0::FUN_00450630(const LPCDIDEVICEINSTANCE p_deviceInfo)
 			}
 		}
 	}
+
 	return TRUE;
 }
 
@@ -118,19 +123,23 @@ LegoBool32 OpalVault0xf0::FUN_00450630(const LPCDIDEVICEINSTANCE p_deviceInfo)
 LegoBool32 OpalVault0xf0::DetectKeyboard()
 {
 	KeyboardInputDevice* keyboard = new KeyboardInputDevice;
+
 	if (keyboard == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	CreateDirectInputDeviceParams params;
 	::memset(&params, 0, sizeof(params));
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;
 	params.m_guid = &GUID_SysKeyboard;
 	params.m_opalVault = this;
+
 	if (!keyboard->CreateDevice(&params)) {
 		delete keyboard;
 		return FALSE;
 	}
+
 	keyboard->FUN_0044ff50(50);
 	m_keyboard = keyboard;
 	m_keyboardAvailable = TRUE;
@@ -141,19 +150,23 @@ LegoBool32 OpalVault0xf0::DetectKeyboard()
 LegoBool32 OpalVault0xf0::DetectMouse()
 {
 	MouseInputDevice* mouse = new MouseInputDevice;
+
 	if (mouse == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	CreateDirectInputDeviceParams params;
 	::memset(&params, 0, sizeof(params));
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;
 	params.m_guid = &GUID_SysMouse;
 	params.m_opalVault = this;
+
 	if (!mouse->CreateDevice(&params)) {
 		delete mouse;
 		return FALSE;
 	}
+
 	mouse->FUN_0044ff50(100);
 	m_mouse = mouse;
 	m_mouseAvailable = TRUE;
@@ -164,7 +177,7 @@ LegoBool32 OpalVault0xf0::DetectMouse()
 LegoBool32 OpalVault0xf0::DetectJoysticks()
 {
 	if (FAILED(
-			m_directInput->EnumDevices(DIDEVTYPE_JOYSTICK, AddAtachedInputDeviceCallback, this, DIEDFL_ATTACHEDONLY)
+			m_directInput->EnumDevices(DIDEVTYPE_JOYSTICK, AddAttachedInputDeviceCallback, this, DIEDFL_ATTACHEDONLY)
 		)) {
 		return FALSE;
 	}
@@ -179,29 +192,35 @@ LegoBool32 OpalVault0xf0::DetectJoysticks()
 }
 
 // FUNCTION: LEGORACERS 0x004508d0
-void OpalVault0xf0::DestroyDevices()
+LegoS32 OpalVault0xf0::DestroyDevices()
 {
 	LegoS32 i;
+
 	if (m_keyboardAvailable) {
 		m_keyboard->Destroy();
 		delete m_keyboard;
 		m_keyboard = NULL;
 		m_keyboardAvailable = FALSE;
 	}
+
 	if (m_mouseAvailable) {
 		m_mouse->Destroy();
 		delete m_mouse;
 		m_mouse = NULL;
 		m_mouseAvailable = FALSE;
 	}
+
 	if (m_countJoysticks != 0) {
 		for (i = 0; i < m_countJoysticks; i++) {
 			m_joysticks[i]->Destroy();
 			delete m_joysticks[i];
 			m_joysticks[i] = NULL;
 		}
+
 		m_countJoysticks = 0;
 	}
+
+	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x00450990
@@ -209,12 +228,14 @@ LegoS32 OpalVault0xf0::VTable0x10(LegoS32 p_arg)
 {
 	LegoS32 i;
 	LegoS32 result;
+
 	if (m_keyboardAvailable) {
 		result = m_keyboard->VTable0x14(p_arg);
 		if (result) {
 			return result;
 		}
 	}
+
 	if (m_mouseAvailable) {
 		m_mouse->FUN_0044bda0();
 		result = m_mouse->VTable0x14(p_arg);
@@ -222,6 +243,7 @@ LegoS32 OpalVault0xf0::VTable0x10(LegoS32 p_arg)
 			return result;
 		}
 	}
+
 	if (m_countJoysticks != 0) {
 		for (i = 0; i < m_countJoysticks; i++) {
 			result = m_joysticks[i]->VTable0x14(p_arg);
@@ -230,6 +252,7 @@ LegoS32 OpalVault0xf0::VTable0x10(LegoS32 p_arg)
 			}
 		}
 	}
+
 	return 0;
 }
 
@@ -239,8 +262,9 @@ LegoS32 OpalVault0xf0::DetectNewJoysticks()
 	LegoS32 originalCountJoysticks = m_countJoysticks;
 	LegoS32 i;
 	LegoS32 count = 0;
+
 	::memset(m_unk0x4c, 0, sizeof(m_unk0x4c));
-	m_directInput->EnumDevices(DIDEVTYPE_JOYSTICK, AddAtachedInputDeviceCallback, this, DIEDFL_ATTACHEDONLY);
+	m_directInput->EnumDevices(DIDEVTYPE_JOYSTICK, AddAttachedInputDeviceCallback, this, DIEDFL_ATTACHEDONLY);
 
 	if (m_countJoysticks > 0) {
 		for (i = 0; i < m_countJoysticks; i++) {
@@ -248,9 +272,11 @@ LegoS32 OpalVault0xf0::DetectNewJoysticks()
 				count -= 1;
 			}
 		}
+
 		if (count != 0) {
 			return 1;
 		}
 	}
+
 	return m_countJoysticks - originalCountJoysticks;
 }

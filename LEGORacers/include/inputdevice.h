@@ -8,24 +8,22 @@
 
 class OpalVault0xf0;
 
-class InputDevice;
-
-class InputCallback {
-public:
-	virtual void OnKeyDown(InputDevice& p_device, undefined2 p_keyCode) = 0; // vtable+0x00
-	virtual void OnKeyUp(InputDevice& p_device, undefined2 p_keyCode) = 0;   // vtable+0x04
-};
-
 // VTABLE: LEGORACERS 0x004b0e9c
 // SIZE 0x9c
 class InputDevice {
 public:
+	class Callback {
+	public:
+		virtual void OnKeyDown(InputDevice& p_device, undefined2 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
+		virtual void OnKeyUp(InputDevice& p_device, undefined2 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
+	};
+
 	enum {
-		c_source_keyboard = 0x10000000,
-		c_source_mouse = 0x20000000,
-		c_source_joystick1 = 0x30000000,
-		c_source_joystick2 = 0x40000000,
-		c_source_mask = 0xf0000000,
+		c_sourceKeyboard = 0x10000000,
+		c_sourceMouse = 0x20000000,
+		c_sourceJoystick1 = 0x30000000,
+		c_sourceJoystick2 = 0x40000000,
+		c_sourceMask = 0xf0000000,
 	};
 
 	InputDevice();
@@ -68,11 +66,11 @@ public:
 	LegoBool32 FUN_0044be10(undefined4);
 	LegoS16 StoreString(const LegoChar*);
 
-	static LegoU32 GetKeySource(LegoU32 p_event) { return p_event & c_source_mask; }
+	static LegoU32 GetKeySource(LegoU32 p_event) { return p_event & c_sourceMask; }
 
 	static LegoU32 MakeEvent(LegoU32 p_source, LegoU32 p_value) { return p_source | p_value; }
 
-	const LegoBool32 GetUnk0x18() const { return m_unk0x18; }
+	LegoBool32 GetUnk0x18() const { return m_unk0x18; }
 	void SetUnk0x28(undefined4 p_arg) { m_unk0x28 = p_arg; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b920
@@ -103,7 +101,7 @@ protected:
 	undefined m_unk0x80[0x90 - 0x80]; // 0x80
 	undefined4 m_unk0x90;             // 0x90
 	wchar_t* m_stringBuffer;          // 0x94
-	InputCallback* m_callback;        // 0x98
+	Callback* m_callback;             // 0x98
 };
 
 #include "compat.h"

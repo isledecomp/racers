@@ -20,33 +20,43 @@ struct CreateDirectInputDeviceParams {
 // SIZE 0xcc
 class DirectInputDevice : public InputDevice {
 public:
+	enum {
+		c_axisX = 0x01,
+		c_axisY = 0x02,
+		c_axisZ = 0x04,
+		c_axisRx = 0x08,
+		c_axisRy = 0x10,
+		c_axisRz = 0x20,
+		c_axisSlider = 0x40,
+	};
+
 	DirectInputDevice();
 
-	void Init() override;                       // vtable+0x00
-	~DirectInputDevice() override;              // vtable+0x0c
-	LegoBool32 Destroy() override;              // vtable+0x10
-	undefined4 VTable0x14(undefined4) override; // vtable+0x14
-
-	// FIXME: VTable0x1c and VTable0x20:
-	// - have implementation in InputDevice
-	// - are pure virtual in DirectInputDevice child
+	void Init() override;                           // vtable+0x00
+	~DirectInputDevice() override;                  // vtable+0x0c
+	LegoBool32 Destroy() override;                  // vtable+0x10
+	undefined4 VTable0x14(undefined4) override;     // vtable+0x14
+	LegoS32 VTable0x1c() override = 0;              // vtable+0x1c
+	undefined4 VTable0x20() override = 0;           // vtable+0x20
 	const wchar_t* VTable0x24(undefined4) override; // vtable+0x24
 	LegoFloat VTable0x2c(undefined4) override;      // vtable+0x2c
 	undefined4 VTable0x38() override;               // vtable+0x38
 	undefined4 VTable0x3c() override;               // vtable+0x3c
 	undefined4 VTable0x40() override;               // vtable+0x40
 	undefined4 VTable0x44() override;               // vtable+0x44
+
 	// FUNCTION: LEGORACERS 0x0044f220 FOLDED
 	undefined4 VTable0x48() override // vtable+0x48
 	{
 		return m_cooperativeLevel & DISCL_BACKGROUND;
-	} // vtable+0x
+	}
 
 	// FUNCTION: LEGORACERS 0x0044f230 FOLDED
 	undefined4 VTable0x4c() override // vtable+0x4c
 	{
 		return m_cooperativeLevel & DISCL_EXCLUSIVE;
 	}
+
 	undefined4 VTable0x50() override;                                         // vtable+0x50
 	undefined4 VTable0x54() override;                                         // vtable+0x54
 	LegoBool32 VTable0x58() override;                                         // vtable+0x58
@@ -55,10 +65,10 @@ public:
 	virtual LegoBool32 CreateDevice(CreateDirectInputDeviceParams* p_params); // vtable+0x64
 	virtual void VTable0x68(const DIDEVICEOBJECTDATA& p_data) = 0;            // vtable+0x68
 
-	void FUN_0044ff50(undefined4);
-
 	// SYNTHETIC: LEGORACERS 0x0044f9e0
 	// DirectInputDevice::`scalar deleting destructor'
+
+	void FUN_0044ff50(undefined4);
 
 	const GUID& GetGuid() const { return m_deviceGuid; }
 

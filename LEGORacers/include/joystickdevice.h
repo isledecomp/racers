@@ -36,8 +36,8 @@ public:
 	void FUN_0044ef60(const DIJOYSTATE2& p_state);
 
 private:
-	DIJOYSTATE2 m_joyState;   // 0x23c
-	LegoFloat m_unk0x1dc[16]; // 0x1cd
+	DIJOYSTATE2 m_joyState;   // 0xcc
+	LegoFloat m_unk0x1dc[16]; // 0x1dc
 	undefined m_unk0x21c[32]; // 0x21c
 };
 

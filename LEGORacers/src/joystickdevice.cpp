@@ -214,18 +214,22 @@ void JoystickInputDevice::FUN_0044ef60(const DIJOYSTATE2& p_state)
 undefined4 JoystickInputDevice::VTable0x14(undefined4 p_arg)
 {
 	DIJOYSTATE2 joyState;
+
 	if (m_unk0x18 && VTable0x18()) {
 		m_device->Poll();
 		HRESULT result = m_device->GetDeviceState(sizeof(joyState), &joyState);
+
 		if (FUN_00450170(result)) {
 			return FUN_00450170(result);
 		}
+
 		FUN_0044ef60(joyState);
 		FUN_0044eda0(joyState);
 		m_joyState = joyState;
 		InputDevice::VTable0x14(p_arg);
 		return 0;
 	}
+
 	return 0;
 }
 
@@ -235,6 +239,7 @@ undefined4 JoystickInputDevice::VTable0x34(undefined4 p_key)
 	if (!m_unk0x18) {
 		return 0;
 	}
+
 	switch (GetKeySource(p_key)) {
 	case c_sourceJoystick1:
 		// BUG: should be "< sizeOfArray(m_joyState.rgbButtons))"
@@ -248,13 +253,15 @@ undefined4 JoystickInputDevice::VTable0x34(undefined4 p_key)
 		}
 		break;
 	}
+
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0044f0e0
 LegoFloat JoystickInputDevice::VTable0x30(undefined4 p_arg)
 {
-	LegoU32 flag = 0x1;
+	LegoU32 flag = 0x01;
+
 	if (m_unk0x18) {
 		LegoS32 i;
 		for (i = 0; i < 7; i++, flag <<= 1) {
@@ -263,6 +270,7 @@ LegoFloat JoystickInputDevice::VTable0x30(undefined4 p_arg)
 			}
 		}
 	}
+
 	return 0.0f;
 }
 
@@ -276,7 +284,8 @@ void JoystickInputDevice::VTable0x04(undefined4, LegoBool p_arg2, LegoBool32)
 // FUNCTION: LEGORACERS 0x0044f1e0
 void JoystickInputDevice::VTable0x08(undefined4 p_arg1, LegoFloat p_arg2)
 {
-	LegoU32 flag = 0x1;
+	LegoU32 flag = 0x01;
+
 	if (m_unk0x18) {
 		LegoU32 i;
 		for (i = 0; i < 7; i++, flag <<= 1) {

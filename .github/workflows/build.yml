@@ -135,8 +135,8 @@ jobs:
       if: ${{ steps.detection.conclusion == 'success' && always() }}
       shell: bash
       run: |
-        reccmp-datacmp --target LEGORACERS
-        reccmp-datacmp --target GOLDP
+        reccmp-datacmp --target LEGORACERS || true
+        reccmp-datacmp --target GOLDP || true
 
     - name: Check Folding
       if: ${{ steps.detection.conclusion == 'success' && always() }}

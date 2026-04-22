@@ -16,9 +16,7 @@ cmake --build .
 cmake --build .
 ```
 
-Portable MSVC 6.0: https://github.com/isledecomp/MSVC600-8168
-
-Double `cmake --build` is needed due to an NMake bug. Both binaries link against `MSVCRT.dll` (dynamic CRT, `/MD`).
+Portable MSVC 6.0: https://github.com/isledecomp/MSVC600-8168. Double `cmake --build` works around an NMake bug. Both binaries link against `MSVCRT.dll` (dynamic CRT, `/MD`).
 
 ## reccmp
 
@@ -59,16 +57,16 @@ Functions in a compilation unit must be ordered by address (ascending).
 // SIZE 0xc8ac8                        — struct/class size assertion
 ```
 
-**GLOBAL variables** have a pointer address and may point to initialized data. A `// GLOBAL:` annotation marks the address of the pointer variable itself. If the variable is a `char*` pointing to a string literal, the address of where the string data lives should be in `reccmp/lego-racers-ascii.csv`
+A `// GLOBAL:` marks the address of the pointer variable itself. If the variable is a `char*` to a string literal, the data address belongs in `reccmp/lego-racers-ascii.csv`:
 
 ```cpp
-// GLOBAL: LEGORACERS 0x004be8d8      — address of the pointer variable
+// GLOBAL: LEGORACERS 0x004be8d8
 LegoChar* g_jamFile = "lego.jam";
 ```
 
-When adding or modifying globals, always run `reccmp-datacmp` to verify the initial values match the original binary. Global variables with non-zero initial values (strings, pointers, constants) must be initialized to match.
+Run `reccmp-datacmp` after adding/modifying globals with non-zero initial values to verify they match.
 
-**FOLDED functions:** MSVC 6.0's linker merges functions with identical compiled code (Identical COMDAT Folding). Multiple distinct functions end up sharing one address in the original binary. Annotate each with `// FUNCTION: MODULE 0xADDRESS FOLDED` where the address is the single copy the linker kept. All folded functions share the same address. Functions that fold together have the same signature and body (e.g. all empty `void` methods fold to one address, all empty `void(undefined4)` methods fold to a different address). FOLDED functions are exempt from the address-ascending ordering rule and do not need the `STUB()` anti-folding macro.
+**FOLDED functions.** MSVC 6.0's Identical COMDAT Folding merges functions with identical compiled code; multiple source functions end up at one address. Annotate each with `// FUNCTION: MODULE 0xADDRESS FOLDED` (same address for all folded siblings, same signature and body — e.g. all empty `void` methods fold together). FOLDED is exempt from address-ascending order and does not need the `STUB()` anti-folding macro.
 
 ## Class Pattern
 
@@ -96,28 +94,25 @@ DECOMP_SIZE_ASSERT(VelvetThunder0xc8ac8, 0xc8ac8)
 
 Member offset comments (`// 0xNN`) and vtable offset comments (`// vtable+0xNN`) are required.
 
-**Gap members:** When declaring `undefined` arrays to fill gaps between typed members, use a subtraction expression rather than a hardcoded size. This makes the size self-documenting and avoids manual recalculation when members are added:
+**Gap members.** Use a subtraction for gap arrays so the size is self-documenting:
 
 ```cpp
-undefined m_unk0x05[0x7dc - 0x05];   // 0x05  (gap until next member at 0x7dc)
-undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c (gap until end of class at 0x944)
+undefined m_unk0x05[0x7dc - 0x05];   // 0x05
+undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c
 ```
 
-**Overrides:** When a derived class overrides a virtual method from a base class, use `override` instead of `virtual` (e.g. `void VTable0x04() override;`). Include `compat.h` which defines `override` as empty for MSVC 6.0 compatibility.
+**Overrides.** Use `override` instead of `virtual` for derived methods (`void VTable0x04() override;`). `override` is defined as empty for MSVC 6.0 in `compat.h`.
 
 ## Code Style
 
-**Bit tests:** Use concise style without explicit comparison to zero:
-- `if (flags & c_flagCached)` — not `if ((flags & c_flagCached) != 0)`
-- `if (!(flags & c_flagCached))` — not `if ((flags & c_flagCached) == 0)`
-
-**Address padding:** All annotation addresses (not sizes) must be zero-padded to 8 hex digits: `0x00449d50`, not `0x449d50`.
-
-**Annotation ordering:** When a function or entity has annotations for both GOLDP and LEGORACERS, the GOLDP annotation must come first.
-
-**Win32 API: prefer un-suffixed names.** Use `ChangeDisplaySettings`, `MessageBox`, `RegisterClass`, `CreateWindowEx`, `LoadIcon`, `DEVMODE`, `MSG`, etc. — NOT the explicit `A`/`W` variants like `ChangeDisplaySettingsA`, `MessageBoxA`, `DEVMODEA`. The un-suffixed names are macros from `<windows.h>` that resolve to the `A` form when `UNICODE` is undefined (the project default), so the compiled binary still imports `ChangeDisplaySettingsA` and uses the `DEVMODEA` struct. The original game source used the macros; matching that style keeps the source readable and consistent. This applies to both **functions** (`CreateWindow`, `SetWindowText`) and **types** (`DEVMODE`, `WIN32_FIND_DATA`, `LOGFONT`). IDA pseudocode shows the resolved `*A` symbol — translate it back to the macro when transcribing.
-
-**No redundant `this->`.** Inside a member function, write `m_member`, `Method()`, and `BaseClass::VirtualMethod()` directly — don't prefix with `this->`. The implicit `this` is enough. The one place you might *think* you need it — calling a base-class virtual non-virtually (`this->Base::Foo()`) — also doesn't need the prefix; `Base::Foo()` from inside a derived member compiles to the same direct call.
+- **Bit tests:** `if (flags & c_flagCached)` / `if (!(flags & c_flagCached))` — no `!= 0` / `== 0`.
+- **Address padding:** 8 hex digits, lowercase: `0x00449d50`.
+- **Annotation ordering:** when a function has both GOLDP and LEGORACERS annotations, GOLDP comes first.
+- **No redundant `this->`.** Write `m_member`, `Method()`, `BaseClass::VirtualMethod()` directly. Even `Base::Foo()` to suppress virtual dispatch doesn't need the prefix.
+- **Win32 API: prefer un-suffixed names.** Use `CreateWindowEx`, `DEVMODE`, `MSG`, `WIN32_FIND_DATA`, etc. — NOT `CreateWindowExA`/`DEVMODEA`. The un-suffixed names are macros that resolve to the `A` form when `UNICODE` is undefined (project default); the compiled binary still imports the `A` symbols. IDA shows the resolved `*A` symbol — translate back to the macro.
+- **Blank lines inside functions:** separate decls / setup / main work / return with single blanks; blanks around if/else chains; switch cases stay tightly packed; one-liner bodies need no internal spacing.
+- **Enums for magic numbers:** hoist fixed enumerations (flag bits, event tags, state codes) into a named `enum` at class or namespace scope. `c_camelCase` per NCC.
+- **No leading `const` on return-by-value** (`const RetType Get() const` — meaningless, trips NCC).
 
 ## Naming Conventions
 
@@ -126,110 +121,124 @@ Uses LEGO Island NCC rules (`tools/ncc/ncc.style`), enforced in CI:
 - Globals: `g_unk0xXXXXXXXX`
 - Members: `m_unk0xXX` (by offset)
 - Parameters: `p_unk0xXX`
-- Unknown classes: `RandomName0xSize` (random PascalCase name + `0x` + hex size suffix, e.g. `NeonCactus0x1d6c`, `VelvetThunder0xc8ac8`)
+- Unknown classes: `RandomName0xSize` (random PascalCase + `0x` + hex size, e.g. `NeonCactus0x1d6c`, `VelvetThunder0xc8ac8`)
 - Virtual methods: `VTable0xXX` (by vtable offset)
 - Enum constants: `c_` prefix
-- All parameters: `p_` prefix, all members: `m_` prefix, all globals: `g_` prefix
-- Variable names should match across prefixes when assigned: `m_hInstance = p_hInstance`, never `m_hInstance = p_something`
-- **Unused parameters** must be unnamed (omit the parameter name in the definition)
+- The `p_`/`m_`/`g_` prefixes apply to *all* parameters/members/globals, not just unknown placeholders (e.g. a named hInstance parameter becomes `p_hInstance`).
+- Names must match across prefixes when assigned: `m_hInstance = p_hInstance`, never `m_hInstance = p_something`
+- **Unused parameters** must be unnamed in the definition.
 
 ## Types
 
-Use Lego types from `util/types.h` (`#include "types.h"`) instead of primitive C types:
-- `LegoS8`, `LegoU8` instead of `char`, `unsigned char`
-- `LegoS16`, `LegoU16` instead of `short`, `unsigned short`
-- `LegoS32`, `LegoU32` instead of `int`, `unsigned int`
-- `LegoFloat` instead of `float`
-- `LegoChar` instead of `char` (for character data)
-- `LegoBool` for booleans
+Use Lego types from `util/types.h` for game code:
+- `LegoS8`/`LegoU8`, `LegoS16`/`LegoU16`, `LegoS32`/`LegoU32` instead of `char`/`short`/`int` variants
+- `LegoFloat`, `LegoChar` (character data), `LegoBool`
 
-When a variable's type is dictated by an external interface (Windows API, DirectX, CRT, etc.), keep the original type — do not replace with Lego types. Lego types are for game code, not API boundaries. `void*` can remain.
+Keep original types at API boundaries (Win32, DirectX, CRT); `void*` can remain.
 
-**Unknown/unproven types:** When a variable's type has not been confirmed, use `undefined` types (`undefined`, `undefined2`, `undefined4` from `decomp.h`). Use `undefined4*` for pointers to unknown data. Do not guess concrete types (e.g. `int`, `float`, `void*`) until the type is proven by usage context or reccmp comparison.
+**Unproven types:** use `undefined`/`undefined2`/`undefined4`/`undefined4*` from `decomp.h`. Do not guess `int`/`float`/`void*` until usage context or reccmp proves it.
 
 ## Decompiling a New Function
 
-1. **Find the decompilation** for the target address. Read the function body and note all called functions and global references.
-
-2. **Check calling conventions** carefully. Per-call-site guessed types may differ from the actual function definition. Cross-reference: find the called function's own definition to confirm `__thiscall` vs `__cdecl` vs `__stdcall`. If a function is `__thiscall`, it is a class member — look for the object it operates on.
-
-3. **Identify classes from `__thiscall` patterns.** When a function is called with a global address and `__thiscall` convention, that global is a class instance. Create a class with `undefined m_unk0x00[size]` for unknown internals.
-
-4. **Create STUBs for all unknown called functions.** Every function your implementation calls must exist (even as a stub) for the build to succeed and reccmp to compare. Order stubs by address ascending within each file.
-
-5. **Watch for COMDAT folding.** MSVC 6.0's linker may merge identical stub functions (e.g. two empty `void` methods), causing reccmp to report a mismatch on the call target. Use the `STUB(0xADDRESS)` macro (from `decomp.h`) in every stub body — it assigns a unique value to `g_foldingDummyVariable`, giving each stub a distinct body so the linker won't fold them. Use the function's real address as the value. Empty destructors are an exception: they have distinct compiler-generated code and don't need the macro.
-
-6. **Write clean C++, not pseudocode.** Translate raw pointer arithmetic (`*(_DWORD*)(this + 4)`) into proper member access, method calls, and named variables. Refer to existing `// FUNCTION:` implementations (not STUBs) in the codebase for the expected style.
-
-7. **Build with double `cmake --build`**, then compare: `reccmp-reccmp --target LEGORACERS --verbose 0xADDRESS --print-rec-addr`. Iterate until 100%.
-
-7b. **Verify global data** with `reccmp-datacmp --target LEGORACERS --verbose --print-rec-addr`. Any `// GLOBAL:` variable with non-zero initial data must match the original binary. This catches uninitialized globals that should have string pointers, default values, etc.
-
-8. **Validate vtables.** After adding or modifying virtual methods, always verify the vtable matches: `reccmp-reccmp --target LEGORACERS --verbose 0xVTABLE_ADDR --print-rec-addr`. Every virtual method declared in a class header must have a corresponding `// STUB:` annotation with its real address from the original binary. Read the vtable data from the original binary to find the function address at each vtable slot.
-
-9. **Check for regressions.** After any change, re-verify all previously matched `// FUNCTION:` implementations that touch the same classes, especially functions that make virtual calls on modified classes.
-
-10. **Lint annotations.** Run `reccmp-decomplint` from the `build/` directory (see example commands in the reccmp section above). Always pass the source directory as a path argument to avoid scanning gitignored data files.
+1. **Find the decompilation.** Read the body; note called functions and globals.
+2. **Check calling conventions.** Per-call-site guesses can differ from the real definition — cross-reference. `__thiscall` ⇒ class member.
+3. **Identify classes from `__thiscall` on a global.** That global is a class instance; declare a class with `undefined m_unk0x00[size]`.
+4. **STUB every unknown callee.** Required for build + reccmp. Stubs ordered by address ascending per file.
+5. **Avoid fold collisions.** Use the `STUB(0xADDRESS)` macro (from `decomp.h`) in stub bodies to prevent COMDAT folding. Empty destructors are exempt.
+6. **Write clean C++, not IDA pseudocode.** Translate `*(_DWORD*)(this + 4)` into proper member access, method calls, named variables.
+7. **Build with double `cmake --build`**, then `reccmp-reccmp --target LEGORACERS --verbose 0xADDRESS --print-rec-addr`. Iterate to 100%.
+7b. **Verify global data** with `reccmp-datacmp`.
+8. **Validate vtables.** `reccmp-reccmp --verbose 0xVTABLE_ADDR`. Every declared virtual needs a matching `// STUB:` with its real address from the original binary.
+9. **Check for regressions.** Re-verify previously matched functions that touch modified classes (especially those making virtual calls).
+10. **Lint.** `reccmp-decomplint` from `build/`, passing the source directory as a path argument.
 
 ## Decompilation Principles
 
-- **Every type must be corroborated by matched code.** Do not assign concrete member types based solely on IDA/Ghidra analysis. A type is only proven when a `// FUNCTION:` annotation using that type achieves 100% reccmp match. Until then, use `undefined`/`undefined4`.
-- **Vtable set position proves class hierarchy.** In MSVC 6.0, the vtable is set at the start of the constructor body, after all base constructors. If the vtable set appears AFTER some member initialization, that initialization belongs to a base class constructor (possibly inlined). Use this to determine inheritance structure.
-- **Multiple inheritance is real.** When a C-style cast compiles to a pointer subtraction, it's a cross-cast from a second base class. Define proper inheritance so the compiler generates the adjustment — never use raw pointer arithmetic to fake it.
-- **No raw pointer arithmetic as a substitute for types.** If you find yourself writing pointer casts and subtractions, the types are wrong. Find the actual class type so the cast is a legitimate C++ conversion.
-- **Read the original binary directly** (via Python/struct) to determine vtable entries, call targets, and function addresses when IDA/Ghidra mislabels or hides them.
-- **Every annotation must have the real address.** No placeholders, no guesses. Read the vtable data or compute call targets from the binary to get exact addresses.
-- **Functions marked `// FUNCTION:` must be 100% match.** If reccmp shows any diff, the code is wrong — do not accept partial matches or mark as FUNCTION. Investigate the diff to find the root cause (wrong class layout, wrong types, missing base class, etc.).
-- **Validate with `reccmp-vtable`** in addition to `reccmp-reccmp`. Vtable mismatches reveal missing/wrong virtual method declarations even when individual functions appear correct.
-- **Inline base constructors affect layout.** If a base class constructor is small enough, MSVC 6.0 inlines it. The inlined code appears between the outer base constructor call and the derived vtable set. Recognize this pattern to identify intermediate base classes.
+- **Every type must be corroborated by matched code.** A type is proven only when a `// FUNCTION:` using it reaches 100%. Until then, `undefined`/`undefined4`.
+- **No raw pointer arithmetic as a substitute for types.** Casts + subtractions mean the types are wrong; find the real class so the cast is legitimate C++ (including multi-inheritance cross-casts — define the inheritance, don't fake the adjustment).
+- **Read the original binary directly** (Python/struct) for vtable entries, call targets, and function addresses when IDA/Ghidra mislabels them.
+- **Every annotation has a real address** — no placeholders.
+- **`// FUNCTION:` means 100% match.** Any diff ⇒ the code is wrong; investigate the root cause (layout, types, missing base).
+- **Validate with `reccmp-vtable`** in addition to `reccmp-reccmp` — reveals missing/wrong virtual declarations.
+- **Inline base constructors.** MSVC 6.0 inlines small base ctors; their code appears between the outer base ctor call and the derived vtable set.
 
-## Prioritize Constructors, Destructors, and Scalar Deleting Destructors
+## Prioritize Constructors, Destructors, and SDDs
 
-When decompiling a new class, focus on matching its **constructor**, **destructor**, and **scalar deleting destructor** first. These functions directly verify the class layout:
-- Constructors reveal member initialization order, base class chain (via vtable sets), and member types.
-- Destructors reveal cleanup order and virtual method calls, confirming the vtable layout.
-- Scalar deleting destructors are compiler-generated and verify the class size and destructor linkage.
-
-Matching these three functions provides high confidence that the class header (size, inheritance, vtable, members) is correct before attempting more complex methods.
+When starting a new class, match ctor + dtor + scalar-deleting-destructor first. Ctors reveal member init order, base chain (via vtable sets), and types; dtors reveal cleanup order and virtual calls (confirming vtable layout); SDDs verify class size and dtor linkage. Matching these three gives high confidence that size/inheritance/vtable/members are correct before tackling methods.
 
 ## MSVC 6.0 Codegen Patterns
 
-- **Return types affect register allocation.** Changing a function from `void` to returning a pointer/int can significantly change which registers the compiler assigns to local variables and parameters. If register allocation doesn't match, check whether the original function returns a value (IDA's guessed return type is a hint).
-- **Float literal assignments may compile to integer `mov`.** MSVC 6.0 with `/O2` optimizes `float_member = 1.0f` to `mov dword ptr [offset], 0x3F800000` (an integer immediate store) rather than `fld`/`fstp`. Using `LegoFloat` members with float literals still produces the correct integer stores.
-- **Inline getters/setters produce matching code for cross-object member access.** When a function accesses internal members of a composed sub-object (e.g. `NeonCactus` accessing `IronFlame`'s private members), use public inline getters/setters on the sub-object class. MSVC 6.0 with `/O2` inlines these, producing identical code to direct member access — and can even improve register scheduling to match the original binary more closely than making members public.
-- **Inline functions can change register allocation.** When register allocation doesn't match, try replacing inline getter/setter calls (e.g. `SetFlags(GetFlags() | flag)`) with direct member access (e.g. `m_flags |= flag`). Inline function expansion changes the compiler's intermediate representation and can cause it to assign callee-saved registers (esi, edi, ebp) differently. This applies to all trivial inlines — flag accessors, dimension getters, name getters, etc. Always try both patterns (inline vs direct) when debugging register allocation mismatches.
-- **Loop-back pattern identifies the C++ loop form.** When the original assembly ends a loop with `test <reg>, <reg>; jne <loop_top>` where `<reg>` holds a pointer updated inside the loop, the source was almost certainly `while (ptr) { ... }` or `do { ... } while (ptr);` with that pointer as the condition — not `for (;;)` + break. `for (;;)` with breaks typically produces a different loop-back (another explicit condition test or `jmp` to loop top). IDA's `while (v6 != (char *)-1)` decompilation of this pattern is misleading; the actual assembly tests `!= 0`, so the source condition is `while (ptr)`.
-- **Loop condition variables get register priority.** MSVC 6.0 /O2 tends to allocate the `while`/`do-while` condition variable to the first callee-saved register (ebx), pushing other hot variables like `this` to later registers (ebp). Using `for (;;)` with breaks instead lets `this` take ebx. If register allocation swaps but the behavior is identical, reccmp reports "100% effective match" — this is a complete match for decompilation purposes (no code change would make the bytes identical without changing register allocation in a way that affects other functions).
-- **Use `sizeOfArray(m_member)` for array-size loop bounds.** When iterating a class member array, prefer `sizeOfArray(m_files)` over the hard-coded count (e.g. `20`). `sizeOfArray` is compile-time evaluated to the same immediate, so codegen is identical, but the source is self-documenting and robust to array resizes.
-- **Write human-readable code, not IDA pseudocode.** The decompiled code should look like it was written by a human programmer. Avoid `goto` patterns, raw integer bit patterns for floats, and other artifacts of decompilation. Use proper types, named variables, and clean control flow. Iterate with reccmp to ensure the clean version still matches.
-- **Decomposing `if/else if` from asm.** A redundant-looking second conditional jump whose flags come from a much earlier `cmp` — e.g. `cmp ebp, 0xc ; jae label ; ... ; label: jne skip ; body ; skip:` — reveals an `else if` chain in the source. The correct form is usually `if (x < N) { main } else if (x == N) { body }`, NOT the reversed `if (x >= N) { body } else { main }` that IDA often shows. The `else if` branch body ends up physically at the end of the enclosing block, reached by a forward jump from the outer test. This restructuring often also unlocks different register allocation (e.g. pointer-walk vs index-form loops), because it changes how the compiler accounts for uses of the loop counter.
-- **Byte-loop hash accumulator pattern.** For a hash loop reading bytes from a string, prefer loading the byte into a local (`LegoChar c = p_str[i];`) and folding the shift directly into the accumulator (`acc += c << shift;`) rather than extracting a separate temp (`int v = p_str[i] << shift; acc += v;`). The temp pattern changes register allocation — the accumulator lands in a caller-saved register (`eax`) instead of callee-saved (`esi`) — which cascades to `this`/`p_str` register choices and stack-frame size.
-- **Loop-index variable scoping.** Declare `LegoU32 i;` before the first `for` loop, not inside the init. MSVC 6.0's legacy for-scoping lets `i` leak into the enclosing block (so a second `for (i = ...)` reusing the same variable compiles), but CI runs clang-tidy under modern ANSI scoping where the second loop sees `i` as undeclared. The compatible form is `LegoU32 i;` at function scope + `for (i = 0; ...; i++) { ... }`.
-- **`mov ecx, X; call F` indicates `__thiscall`** — even when `F`'s body never reads `this`. The `mov ecx` only makes sense if the call expects `this` in `ecx`. Source-side, declare `F` as a non-static member of the class whose pointer is in `ecx`; the body can ignore `this` (e.g. a wrapper around a Win32 call). Declaring it as a free function would emit just `call F` without the preceding `mov ecx`, and the caller's match would break. Conversely, if there's NO `mov ecx, X` before `call F`, F is NOT `__thiscall` (it's `__cdecl`/`__stdcall`/static).
-- **Direct call to a folded empty method = explicit base-scope call.** A direct `call <addr>` (opcode `e8`) where `<addr>` is the COMDAT-folded landing pad for empty `void f()` thiscalls (e.g. `0x4164C0` in LEGORacers, where every empty `void Class::Method()` body lands) reproduces from a non-virtual call to a base-class virtual: `BaseClass::VTable0xNN();` inside a derived member function. The explicit `BaseClass::` qualifier suppresses virtual dispatch and emits a direct call; the linker resolves it to the folded address. A virtual call (`this->VTable0xNN()` or just `VTable0xNN()` on a virtual method) would instead emit `mov eax, [ecx]; call dword ptr [eax+N]` — completely different bytes. Use this pattern when you see a stray `call <folded_empty_addr>` that isn't accounted for by any non-virtual member.
-- **`else if (!cond)` inverts code block layout.** When the binary places the body of a conditional branch physically AFTER the function's `ret` (reached via forward jump, with a `jmp` back to the main flow), MSVC 6.0 has treated the branch as cold. To reproduce, invert the condition and use `else if`: `if (!X) { hot_body; } else if (cond) { cold_body; continue; }` — the cold body lands at the end of the function. Writing the natural `if (X) { cold_body } else { hot_body }` produces inline layout instead and won't match.
-- **MSVC 6.0 does NOT tail-call `__cdecl` functions.** A trivial forwarding wrapper `int Outer(a,b,c,d) { return Inner(a,b,c,d); }` does not compile to `jmp Inner` for `__cdecl` callees — MSVC emits a ~30-byte "re-push and call" prologue/call/epilogue instead. Two separate functions end up in the binary. Only `__thiscall` allows tail-call (`~Class() { Release(); }` → 5-byte `jmp Release`). When the binary shows this double-dispatch pattern between `__cdecl` functions, plan for a real wrapper + impl in source.
-- **Caller-side inline getters fix register allocation across objects.** When a function accesses members of a passed-in object pointer, replacing direct field access with a public inline getter on the target class changes the register allocator's treatment of the read, even though the compiled body is identical. Promote `ptr->m_foo` to `ptr->GetFoo()` and add `Type GetFoo() { return m_foo; }` to the target class header. MSVC 6.0 /O2 inlines it, and register scheduling often shifts to match the original. Applies especially when the cross-object member access involves a write-then-call sequence where the compiler's pre-call register scheduling matters.
-- **Function overloads via `int` vs typedef'd unsigned int.** `int` (signed) and a typedef like `LegoBool32`/`LegoU32` (unsigned int) are distinct types under C++ overload resolution despite identical storage. Useful when the binary has a tiny `__cdecl` wrapper that forwards to a same-signature implementation: declare the wrapper with `(int, int)` and the impl with `(LegoBool32, LegoBool32)` under the same name. The wrapper casts (`return Name(..., (LegoBool32)c, (LegoBool32)d);`) to force the overload — without casts, overload resolution picks the exact-match signature (itself) and recurses infinitely.
-- **IDA's FLIRT signature matcher can mislabel local functions as STL/MSVCRT symbols.** When IDA's pseudocode shows a call to a standard-library-sounding function (e.g. a stream/stream-buffer dtor, an exception ctor, a lock primitive ctor, an iostream init), the actual call target may be a LOCAL function IDA decorated with a familiar name via FLIRT. Verify by inspecting the PE's import table (`grep` for the name — if it's NOT imported, it isn't an external symbol) and by disassembling the call site (`e8 <rel32>`) to find the actual target address. If the target is in the executable's own code range, it's a local function. Annotating a STUB member dtor at that address and declaring a typed sub-object member lets the outer ctor/dtor match without any STL dependency — what looks like a "fundamental barrier" dissolves.
-- **IDA's guessed return type is a hint, not a fact.** A function whose tail is a call to another function, with no `return` value movement afterward, may be reported by IDA as `int` (or a pointer type) simply because the tail call's return value lingers in `eax` at ret time. If the function's original source was `void`, changing the declared return type from `int` to `void` can flip a <95% match to 100% — there's no explicit `mov eax, result` in the epilogue for a void function. Try the void form when register allocation or epilogue bytes differ only in eax handling.
-- **SEH emission in ctors is gated by cross-TU visibility of member ctors.** MSVC 6.0 emits the SEH frame prologue (`push -1; push __ehhandler; mov fs:[0], esp; ...`) in a ctor only if it cannot prove the sub-ctors are no-throw. When sub-object classes are defined in the SAME .cpp as the outer class, the compiler can inline-inspect their bodies (see `STUB` macro is a trivial global write → no throw) and elide SEH. Moving sub-class definitions to SEPARATE .cpp files hides the bodies across TU boundaries, forcing MSVC to assume throw-potential and emit SEH. If your outer ctor is missing the original's SEH frame, the sub-classes likely need their own .cpp files.
-- **SEH construction-state counter size reflects dtor-bearing member count.** MSVC writes a small integer to a stack slot (usually `[esp+0x10]`) as the ctor constructs each member with a non-trivial dtor, so `__ehhandler` knows how many to unwind on throw. The counter takes N+1 states for N dtor-bearing members. If the original ctor has 3 counter stores (initial `-1`, then `0`, then `1`) but yours has only 2, you're missing a member dtor — add `~ClassName()` to one of the sub-object classes. This pattern is diagnostic for "how many of my declared sub-members should have dtors".
-- **Static member functions emit identical bytes to free `__cdecl` functions.** `static void Class::Foo(args)` and `void ::Foo(args)` compile to the same bytes under MSVC 6.0 — both use `__cdecl` calling convention. This means moving a free function into a class as a static member requires no codegen change; only call sites need updating from `Foo(args)` to `Class::Foo(args)`. Previously-matched callers stay matched automatically.
-- **MSVC 6.0 rejects `__thiscall` on function pointer typedefs.** `typedef int (__thiscall *FP)(Class*, int);` fails to compile with "C4234: __thiscall reserved for future use". `__thiscall` is only valid on member functions. To call a virtual slot by index at runtime, use a member function pointer (`typedef int (Class::*MP)(int)`) and write the function address into it via `*(void**)&mp = vtable[slot]` — but this emits `mov reg, [vtable+slot]; call reg` (a 2-instruction pattern), NOT the direct `call [vtable+slot]` that a named virtual call would produce. When byte-exact match matters, use a named `virtual` method declaration at the target slot instead of runtime vtable indirection.
-- **`delete obj` and `obj->SlotNVirtualMethod(1)` can emit identical bytes** when the class has a virtual destructor and SlotN is the SDD's vtable slot. Both compile to `mov edx, [ecx]; push 1; call [edx+SDD_OFFSET]`. They differ only in whether the return value is consumed — `delete` is void (eax untouched after the call), while the virtual method call's return goes through eax. If the original binary uses the SDD's return value (e.g. returns it from the enclosing function), write the source as `obj->VirtualAtSlot(1)` rather than `delete obj`. If the return is discarded, `delete` is the cleaner form.
-- **Virtual dtor placement in the derived vtable.** When a class inherits a base with N virtual slots and adds a `virtual ~Derived()`, MSVC places the SDD at slot N (i.e., at the first "new" vtable offset after the inherited ones). If other `virtual` methods are declared BEFORE the dtor in the class body, they take earlier slots and the SDD moves later. Declaration order matters — keep the dtor declaration positioned to land at the slot that matches the original vtable's SDD offset.
-- **Identifying SDDs by body pattern.** A compiler-generated SDD has a narrow recognizable shape: `push esi; mov esi, ecx; call <dtor>; test byte ptr [esp+8], 1; je .skip; push esi; call operator delete; add esp, 4; .skip: mov eax, esi; pop esi; ret 4`. When a vtable slot points to a function matching this pattern, declare it as a virtual destructor and add a `// SYNTHETIC: MODULE 0xADDR` annotation for the SDD inside the class declaration. When a vtable slot points to a function with a LARGER, more complex body (multiple sub-calls unrelated to dtor/delete), it's a regular virtual method — declare it as `virtual void VTable0xNN()` with a matching STUB, not as a destructor.
-- **Vtable-set-at-dtor-start is orthogonal to virtual-dtor.** MSVC emits `*this = &own_vftable` as the first instruction of a destructor whenever the class has ANY virtual methods — to ensure virtual calls during destruction resolve to this class's implementations, not a derived class's. This emission happens for both virtual and non-virtual dtors in polymorphic classes. The vtable set at dtor entry does NOT prove the dtor is virtual; check the vtable for an SDD slot (or lack thereof) to determine virtuality.
-- **Declaring sub-objects as typed members auto-emits ctor/dtor calls in the outer class.** Prefer typed members (`SubClass m_member;`) over `undefined` byte arrays when you know the sub-object's class. MSVC then auto-emits the sub-ctor call in the outer ctor (at the member's offset, in declaration order) and the sub-dtor call in the outer dtor (reverse order). If the sub-class's ctor/dtor is annotated at the correct original address (even as a STUB), reccmp resolves the outer's call targets and the outer ctor/dtor can reach 100% — verifying the sub-object's offset without implementing its body. This is the primary tool for verifying class layout.
-- **Double vtable set in a ctor reveals inheritance.** A ctor body like `*this = off_BASE; <sub_ctor_calls>; *this = off_DERIVED; <body>` is MSVC's signature for a derived class. The first vtable is the (inlined) base constructor; the second is the derived class's own vtable. Use this to identify inheritance chains from the binary: if you see two `mov [ecx], &vtable_addr` writes in a ctor, the class inherits from the class whose vtable is set first.
-- **Walking-pointer base reveals true struct layout.** When iterating an array of structs inside a member, MSVC 6.0 /O2 emits `lea <reg>, [this + K]` to seed the walking pointer, where `K` is the byte offset from `this` to the **center of the struct's hottest access region** — typically the middle of the first triplet of member accesses inside the loop body. If reccmp shows the original's seed is `[ebp + K0]` and yours is `[ebp + K0 + Δ]` (with every subsequent `[reg+disp]` also shifted by `Δ`), the *struct base* in your declaration is wrong by `Δ` bytes: the true struct starts `Δ` bytes earlier (or later) than you've declared, with corresponding shifts to every member offset. Example: a pointer array accessed at indices `{0, 1, 2, 9, 10, 11}` — MSVC centers the walking pointer at `&array[1]`. If that lands at absolute address `slot_base + 32`, the array starts at `slot_base + 28` (matches a declaration where ptrs begin at struct offset 28). But if MSVC's center is 4 bytes higher than the original's, the true layout has the ptr array starting at struct offset 32, not 28 — meaning there are 4 more "header" bytes before the flag than you thought, and the array's containing member starts 4 bytes earlier in the outer class. This is often the only way to pin down the struct's origin when no other function exposes the pre-flag bytes: **the displacement delta IS the struct-boundary correction**. Shift your outer-class array declaration backward by `Δ` and pad each struct's head with `Δ` extra `undefined` bytes to restore size.
+### Register allocation: common levers
+
+Register allocation is sensitive to many equivalent-looking source variants. When a function matches behaviorally but registers swap, try:
+
+- **Inline getter vs. direct member access.** Promoting `ptr->m_foo` to `ptr->GetFoo()` (with an inline getter in the class header) — or the reverse — often shifts register choices even though the inlined body is identical. Useful both for cross-object access *and* inside the owning class. Try both directions.
+- **Expression folding vs. temp local.** `acc += p_str[i] << shift;` vs. `int v = p_str[i] << shift; acc += v;` land the accumulator in different registers (esi vs. eax), cascading to `this` and other hot locals.
+- **Loop form.** `while (ptr)` / `do-while` put the condition variable in the first callee-saved reg (ebx), pushing `this` to later registers. `for (;;)` + `break` frees ebx for `this`. Swap when allocation doesn't match.
+- **Loop-back shape identifies the source form.** `test reg,reg; jne loop_top` on a pointer updated inside the loop ⇒ `while (ptr)` / `do-while (ptr)`, not `for(;;)` + break. IDA's `while (v6 != (char *)-1)` is misleading; the asm tests `!= 0`.
+- **Loop-index scope.** Declare `LegoU32 i;` at function scope, not inside `for (;;)`. MSVC 6.0 legacy scoping lets a second `for (i = ...)` reuse it, but CI clang-tidy uses ANSI scoping and rejects the second reference.
+- **Return type.** If the original's epilogue lacks `mov eax, <value>` and yours has one, declare the function `void`. IDA's return-type guess is often just "whatever lingered in eax from the tail call" — see "Return type inference" below.
+- **`else if` layout.** A redundant `jne` whose flags come from a much earlier `cmp` (e.g. `cmp ebp, 0xc; jae label; ...; label: jne skip; body; skip:`) signals an `else if` chain — usually `if (x < N) { main } else if (x == N) { body }`, with the `else if` body physically at the end of the block. Also see "Cold-branch layout" below.
+- **Clamp+center.** For `if (cond) clamp; else center;`, write clamp as THEN (not ELSE) to match MSVC 6.0 layout.
+- **`else if (!cond)` inverts block layout (cold-branch).** When the body of a branch is placed physically AFTER the function's `ret` (reached via forward jump + `jmp` back), MSVC treated it as cold. Reproduce with `if (!X) { hot_body } else if (cond) { cold_body }` — the natural `if (X) { cold } else { hot }` produces inline layout instead.
+- **Byte-loop hash accumulator.** Use `LegoChar c = p_str[i]; acc += c << shift;`, not `int v = p_str[i] << shift; acc += v;`.
+
+### Return type inference
+
+- `mov eax, <literal>` in the epilogue ⇒ the function returns that literal; declaring it `void` will mismatch. Often `LegoS32` returning a success sentinel.
+- Conversely, no `mov eax, ...` in the epilogue and IDA still reports `int`: the tail-call's return value lingers in eax; the original was `void`. Flip and the match often jumps from <95% to 100%.
+- **Float literal assignments may compile to integer `mov`.** `float_member = 1.0f` under /O2 compiles to `mov dword ptr [offset], 0x3F800000`, not `fld`/`fstp`. `LegoFloat` members with float literals produce the correct integer stores.
+
+### Vtable and SDD reading
+
+- **Vtable set position proves class hierarchy.** MSVC 6.0 sets the vtable at the start of the ctor body, *after* all base ctors. A vtable set that appears *after* some member init means that init belongs to an inlined base ctor.
+- **Double vtable set in a ctor = inheritance.** `*this = off_BASE; <sub_ctor_calls>; *this = off_DERIVED; <body>` — first is the inlined base ctor, second is the derived vtable. Two `mov [ecx], &vtable` writes identify the inheritance chain.
+- **Vtable-set-at-dtor-start is orthogonal to virtual-dtor.** Any polymorphic class writes its own vftable at dtor entry (so virtual calls during destruction resolve locally), whether the dtor itself is virtual or not. Check the vtable for an SDD slot to determine virtuality.
+- **Virtual dtor placement.** MSVC places the SDD at slot N (the first new slot past inherited ones). Other virtuals declared before `~Derived()` in the class body take earlier slots and push the SDD later — declaration order matters.
+- **SDD body pattern.** `push esi; mov esi, ecx; call <dtor>; test byte ptr [esp+8], 1; je .skip; push esi; call operator delete; add esp, 4; .skip: mov eax, esi; pop esi; ret 4`. When a vtable slot points to this shape, declare a virtual dtor and add `// SYNTHETIC: MODULE 0xADDR` in the class. A larger body with unrelated sub-calls is a regular virtual (`VTable0xNN`), not a dtor.
+- **`delete obj` vs. `obj->SlotNMethod(1)`** compile to identical bytes (`mov edx, [ecx]; push 1; call [edx+SDD_OFFSET]`) when slot N is the SDD's slot. They differ only in whether eax is consumed. If the enclosing function uses the SDD's return, write the virtual-call form; otherwise use `delete`.
+- **Typed sub-object members auto-emit ctor/dtor calls.** Prefer `SubClass m_member;` over byte arrays. MSVC emits the sub-ctor in the outer ctor at the member's offset (in declaration order) and the sub-dtor in the outer dtor (reverse order). If the sub-class ctor/dtor has a correct STUB address, reccmp resolves the outer's calls and the outer can reach 100% — verifying the sub-object's offset without implementing its body. This is the primary tool for verifying class layout.
+
+### SEH emission in constructors
+
+- **Cross-TU visibility gates SEH.** MSVC emits the SEH frame prologue (`push -1; push __ehhandler; mov fs:[0], esp; ...`) in a ctor only if it cannot prove the sub-ctors are no-throw. Sub-classes defined in the SAME .cpp ⇒ compiler inspects bodies (e.g. `STUB` macro is a trivial global write → no-throw) and elides SEH. Moving sub-classes to SEPARATE .cpp files hides the bodies and forces SEH emission.
+- **Counter size reflects dtor-bearing member count.** MSVC writes a small integer to a stack slot (usually `[esp+0x10]`) as each dtor-bearing member is constructed — N+1 states for N members. If the original has 3 counter stores (`-1`, `0`, `1`) but yours has 2, you're missing a member dtor.
+
+### Call-site signals
+
+- **`mov ecx, X; call F` indicates `__thiscall`** — even if F never reads `this`. Declare F as a non-static member of the class whose pointer is in ecx; the body can ignore `this`. No `mov ecx` before the call ⇒ NOT `__thiscall`.
+- **Direct call to a folded empty method = explicit base-scope call.** `call <addr>` (opcode `e8`) where `<addr>` is the landing pad for empty `void f()` thiscalls (e.g. `0x4164C0` in LEGORACERS) is `BaseClass::VTable0xNN();` inside a derived member. The explicit `Base::` suppresses virtual dispatch. A virtual call emits `mov eax, [ecx]; call [eax+N]` — very different bytes.
+- **MSVC 6.0 does NOT tail-call `__cdecl`.** A trivial `int Outer(a,b,c,d) { return Inner(a,b,c,d); }` emits a ~30-byte re-push + call + epilogue, not `jmp Inner`. Only `__thiscall` tail-calls (`~Class() { Release(); }` → 5-byte `jmp`). Plan for real wrapper + impl when the binary shows this double-dispatch between `__cdecl` functions.
+- **Static member functions emit identical bytes to free `__cdecl`.** Moving a free function into a class as a static member needs no codegen change; update call sites only.
+- **MSVC 6.0 rejects `__thiscall` on function pointer typedefs** (C4234). Use a member function pointer (`typedef int (Class::*MP)(int)`) and write the slot address via `*(void**)&mp = vtable[slot]` — but this emits `mov reg, [vtable+slot]; call reg`, not the direct `call [vtable+slot]` a named virtual call produces. When byte-exact match matters, declare a named `virtual` at the slot instead.
+- **Overload by `int` vs. typedef'd unsigned int.** `int` (signed) and `LegoBool32`/`LegoU32` (unsigned) are distinct under overload resolution despite identical storage. Use to split a tiny `__cdecl` wrapper and same-signature impl — the wrapper casts to force the overload. Without the cast, overload resolution picks itself and recurses.
+- **IDA's FLIRT can mislabel local functions as STL/MSVCRT symbols.** Verify by checking the PE import table — if the name isn't imported, it isn't external. Disassemble the `e8 <rel32>` at the call site to find the real target; if it's in the executable's own code range, it's local. STUB a typed sub-object member at that address and the outer ctor/dtor can match without any STL dependency.
+- **`__purecall` in a derived vtable ⇒ re-pure-virtualize.** A derived class can redeclare a concrete base virtual as pure (`override = 0`), putting `__purecall` in the derived slot while keeping the base body reachable via explicit `Base::Method()`.
+- **Derived-override tail calls to base: trace the spill.** When a derived override ends in `Base::Method(...)`, check what the original pushes at that arg slot. A stack-spilled local in the original versus a literal `FALSE`/`0` in your source collapses the match.
+- **Inferring signatures from push sequence.** Arg count = number of `push <reg>` before the `call`/`call [vtable+N]`; right-to-left push order = first-to-last arg. A caller push with no matching param in your declaration means your signature has too few args. For callback interfaces tightly coupled to one outer class, prefer a nested class (`Outer::Callback`).
+
+### Layout and member diagnostics
+
+- **Walking-pointer base reveals true struct layout.** When iterating an array of structs, MSVC seeds the walking pointer with `lea reg, [this + K]` where K centers on the hottest access region (typically the middle of the first triplet of accesses). A uniform `Δ`-byte shift between your `[reg+disp]` and the original's means your struct base is wrong by `Δ` bytes — shift the outer-class array declaration backward by `Δ` and pad each inner struct's head with `Δ` extra bytes to preserve size.
+- **Fused memset across adjacent members of different types.** When the original emits one contiguous zero-store spanning two adjacent members, two separate `memset` calls won't fuse. Use one call sized `sizeof(first) + sizeof(second)` with a short comment, or nest the members in a struct so one `sizeof(whole)` covers the block.
+- **Branch-free select that resists forcing.** A ternary selecting between a small literal and zero prefers branch-free `neg; sbb; and` under /O2; no conventional source (if/else, volatile) reliably forces the branch form. Accept partial match when this is the only diff. `char` storage still recovers the `movsx` half.
+- **Preventing unwanted ICF with `#pragma code_seg` (temporary hack).** Symptom: reccmp "Failed to find function symbol" + a derived vtable slot points to a fold survivor. Wrap each affected function in a uniquely-named code section:
+  ```cpp
+  // TODO: Temporary workaround until we figure out how the original code was written.
+  #pragma code_seg(".text$unique_suffix")
+  RetType Class::Method() { ... }
+  #pragma code_seg()
+  ```
+  Do NOT use for functions the original itself folds — those stay `FOLDED`.
+
+### Misc
+
+- **`sizeOfArray(m_member)` for loop bounds.** Compile-time evaluated to the same immediate as a hard-coded count, but self-documenting and robust to resizes.
+- **Write human-readable code, not IDA pseudocode.** No gotos, no raw float bit patterns. Iterate with reccmp to ensure the clean form still matches.
 
 ## COMDAT Folding Across Targets
 
-A function in `common/src/` that is compiled into both `legoracers.exe` and `goldp.dll` can need different COMDAT fold groups in each target — e.g. a trivial `return 0;` function that folds with a group of empty STUBs in one target but stays independent in the other.
-
-To achieve a different fold behavior per target, wrap the `STUB(0xADDRESS)` macro in `#ifdef BUILDING_GOL` and annotate both targets:
+A function in `common/src/` compiled into both targets can need different fold groups per target — e.g. a trivial `return 0;` that folds with empty STUBs in one target but stays independent in the other. Wrap `STUB()` in `#ifdef BUILDING_GOL` and annotate both targets:
 
 ```cpp
 // FUNCTION: GOLDP 0xAAAAAAAA FOLDED
@@ -243,22 +252,22 @@ LegoS32 Class::Method()
 }
 ```
 
-In GOLDP the `STUB(...)` write to `g_foldingDummyVariable` makes the body identical to other `STUB(0xAAAAAAAA)` stubs and they fold together; in LEGORACERS the macro is gone and the function compiles to the standalone `xor eax, eax; ret` that LEGORACERS matches at its own address.
+In GOLDP the `STUB(...)` write makes the body match other `STUB(0xAAAAAAAA)` and they fold; in LEGORACERS the macro is gone and the standalone `xor eax, eax; ret` matches at its own address.
 
 ## Vtable annotation syntax
 
-Class-header annotations require the colon: `// VTABLE: MODULE 0xADDRESS`, not `// VTABLE MODULE 0xADDRESS`. reccmp silently ignores the colonless form, and vtable set sites inside destructors/constructors then show up in the diff as `<OFFSET2>` instead of the resolved `ClassName::vftable`, costing the 5–10% match. Same rule for `// FUNCTION:`, `// STUB:`, `// GLOBAL:`, `// SYNTHETIC:`, `// SIZE` (size is an exception — no colon, per the existing convention).
+Class-header annotations require the colon: `// VTABLE: MODULE 0xADDRESS`, not `// VTABLE MODULE 0xADDRESS`. reccmp silently ignores the colonless form and vtable set sites inside dtors/ctors show up as `<OFFSET2>` instead of `ClassName::vftable`, costing 5–10% match. Same rule for `// FUNCTION:`, `// STUB:`, `// GLOBAL:`, `// SYNTHETIC:`. `// SIZE` is the exception — no colon.
 
 ## Scalar Deleting Destructor Inlining
 
-For small classes, MSVC 6.0 inlines the destructor body directly into the compiler-synthesized *scalar deleting destructor* (SDD) rather than calling the destructor. If the SDD is <40% match while the destructor itself is 100%, the asm likely shows the destructor body inlined (e.g. setting the vftable, deleting a member, clearing a field) immediately followed by the standard `test byte [esp+N], 1 / je / delete this / ret 4` tail — whereas your build emits a plain `call Class::~Class` before that tail.
+For small classes, MSVC 6.0 inlines the destructor body directly into the SDD rather than calling the dtor. Symptom: SDD <40% match while the dtor itself is 100%; the asm shows the dtor body inlined (vftable set, member delete, field clear) followed by the standard `test byte [esp+N], 1 / je / delete this / ret 4` tail, whereas your build emits `call Class::~Class` before that tail.
 
-To get the SDD to inline, move the destructor body into the class declaration in the header (implicit inline):
+Fix: move the dtor body into the class declaration (implicit inline):
 
 ```cpp
 class Small {
 public:
-    // FUNCTION: MODULE 0xADDR  (keep the annotation on the inline definition)
+    // FUNCTION: MODULE 0xADDR  (annotation stays on the inline definition)
     virtual ~Small()
     {
         if (m_data != NULL) {
@@ -269,9 +278,7 @@ public:
 };
 ```
 
-This pushes every translation unit that includes the header toward inlining the destructor, which is exactly what you want inside the SDD. But it also causes *inlining at unwanted call sites* — notably, a containing class's destructor that must emit 5 distinct calls to `~Small()` for five `Small` members will inline the body five times instead, breaking that containing destructor's match.
-
-Guard against that with `#pragma inline_depth(0)` around the containing destructor definition:
+Side effect: the body inlines at *other* call sites too — e.g. an outer dtor emitting 5 distinct `~Small()` calls for 5 `Small` members will inline 5 times and break that dtor's match. Guard with `#pragma inline_depth(0)` around the outer:
 
 ```cpp
 // TODO: Temporary workaround until we figure out how the original code was written.
@@ -283,30 +290,18 @@ OuterClass::~OuterClass()
 #pragma inline_depth()
 ```
 
-This keeps the SDD's inlined-destructor match AND the outer destructor's call-based match. The pragma only affects the single function definition it wraps.
-
-**`#pragma inline_depth(0)` is a temporary workaround.** It is not how the original developers wrote their code — they got matching codegen without the pragma. Every use of this pragma carries a standard TODO comment:
-
-```cpp
-// TODO: Temporary workaround until we figure out how the original code was written.
-```
-
-The original likely used some combination of source-level choices (inline vs. out-of-line definition placement, header layout, compiler flags, build-time codegen settings) that biased MSVC 6.0's inliner the right way without needing a pragma. Prefer discovering that configuration over propagating the pragma. When you add a new `#pragma inline_depth(0)`, include the TODO comment verbatim so it's easy to grep for and revisit.
+**The pragma is a temporary workaround.** The original developers got matching codegen without it. Every use carries the TODO comment verbatim so it's greppable. Prefer discovering the real source-level configuration over propagating the pragma.
 
 ## Per-target Inline Definition Placement
 
-A common-layer function (in `common/src/`) can need different inlining decisions between the LEGORACERS and GOLDP targets — e.g. a small `Init()` helper that the compiler inlines into all callers in one target but calls as a function in the other. If the asm shows the helper *expanded* inside caller A and *called* from caller B, split the definition by target:
+A `common/src/` helper can need different inlining per target — e.g. inlined into all callers in GOLDP but called as a function in LEGORACERS. Split the definition:
 
 ```cpp
 // header
 class Class {
 #ifdef BUILDING_GOL
     // FUNCTION: GOLDP 0xADDR
-    virtual ~Class()
-    {
-        // body, inlined by every TU that compiles for GOLDP — so the GOLDP SDD
-        // and anything else that wants the inlined form picks it up.
-    }
+    virtual ~Class() { /* body, inlined in all GOLDP TUs */ }
 #else
     virtual ~Class();
 #endif
@@ -319,117 +314,36 @@ class Class {
 // FUNCTION: LEGORACERS 0xADDR
 Class::~Class()
 {
-    // same body, but out-of-line in LEGORACERS — so LEGORACERS call sites
-    // (constructor, SDD, other destructors) emit a real `call` and match.
+    // same body, out-of-line in LEGORACERS — call sites emit real calls
 }
 #endif
 ```
 
-The function body is duplicated, which is the downside; both copies must stay in sync. In return you get per-target inline control without any pragmas. Apply the same pattern to any helper (not just destructors) when the targets disagree on inlining.
+Both copies must stay in sync. Apply to any helper (not just dtors) when targets disagree on inlining.
 
 ## Naming Members from Matched Code
 
-A member name is proven as soon as a matched function uses that member in a way that forces a specific semantic interpretation — e.g., a member that is both the subject of `count++` inside a loop bounded at 20 AND later stored into a global `g_fileSourceCount` is unambiguously a "file source count", even without external evidence. Rename `m_unk0xNN` gap placeholders to their proven semantic names once a `// FUNCTION:` match corroborates the usage. Member types still follow the `undefined`/`undefined4` rule until proven.
+A member name is proven when a `// FUNCTION:` match forces a specific semantic interpretation — e.g. a member that is both `count++` inside a loop bounded at 20 AND stored into `g_fileSourceCount` is unambiguously a file-source count. Rename the `m_unk0xNN` placeholder once a match corroborates usage. Member *types* still follow the `undefined`/`undefined4` rule.
 
 ## Naming Functions from Matched Code
 
-When the functionality of a matched function is clearly obvious from the implementation, rename it from `VTable0xNN` / `FUN_XXXXXXXX` to its semantic name. Evidence threshold:
+Rename from `VTable0xNN` / `FUN_XXXXXXXX` to a semantic name when evidence is strong:
 
-- **Clear pair with a named counterpart.** e.g. `VTable0x20` calls `m_input.Shutdown()`; `VTable0x1c` at the adjacent slot calls the input-system init helper with `hInstance`/`hWnd` → `VTable0x1c` is `InitInput`.
-- **Symmetric with an already-named method.** e.g. `VTable0x10` undoes every action taken by the matched `Init()` (destroys the window, closes every file source, unloads the graphics library, clears the init flag) and is also the body of `~Class()` → `Destroy`.
-- **Function body leaves no interpretation.** e.g. a one-line tail call to a helper named `InitInput`, or a loop that opens every line of a newline-separated list and publishes them as globals, strongly suggests a specific name.
+- **Clear pair with a named counterpart.** `VTable0x20` calls `m_input.Shutdown()`; adjacent `VTable0x1c` calls the input-init helper with hInstance/hWnd → `VTable0x1c` is `InitInput`.
+- **Symmetric with a named method.** `VTable0x10` undoes every action `Init()` took and is also `~Class()` body → `Destroy`.
+- **Body leaves no interpretation.** A one-line tail call to `InitInput`, or a loop opening every line of a newline list and publishing them as globals.
 
-Do **not** rename on weak evidence. If multiple plausible names exist with no way to choose (e.g. `OpenFileSources` vs. `LoadFileSources` vs. `RegisterFileSources`), keep the placeholder `FUN_XXXXXXXX` and wait for a caller, a nearby string literal, or a symmetric counterpart to break the tie. A misleading semantic name is worse than a neutral placeholder.
+Do not rename on weak evidence. If multiple plausible names exist (`OpenFileSources` vs. `LoadFileSources` vs. `RegisterFileSources`), keep `FUN_XXXXXXXX`. A misleading name is worse than a neutral placeholder. Renaming a virtual does not affect codegen — the vtable is slot-indexed — so it's safe if all call sites and overrides are updated together.
 
-Renaming a virtual method does not affect codegen — the vtable is slot-indexed by the compiler regardless of method name — so renaming is safe as long as all call sites and overrides are updated together. Verify the match still holds after the rename.
+**Lifecycle vocabulary.** Match existing class method names so the whole codebase shares one vocabulary:
 
-**Lifecycle method conventions across classes.** The codebase uses a consistent set of method names for object lifecycle steps. Match these when naming new methods so all classes use the same vocabulary:
+- `Init()` — explicit init separate from the ctor (ctor zeroes fields, `Init` allocates/loads/registers).
+- `Run()` — the main loop / per-instance driver (top-level app/game class).
+- `Shutdown()` — release live resources but leave the object reusable (`SoundManager`, `CobaltMist0x30`, `OpalVault0xf0`, `IndigoStar0x18`, `GolHashTable`).
+- `Destroy()` — full teardown: invokes `Shutdown` plus everything else, leaving the object in its post-construction state.
+- `Reset()` — return to pristine zero-state (shared between ctor/dtor bodies, e.g. `CrimsonForge0x800::Reset`).
 
-- `Init()` — explicit initialization (separate from the constructor; the ctor zeroes fields, `Init` allocates resources/loads files/registers callbacks).
-- `Run()` — the main loop / per-instance driver (used on the top-level app/game class).
-- `Shutdown()` — release live resources (close handles, stop sound, free buffers) but leave the object reusable. Subsystem classes (`SoundManager`, `CobaltMist0x30`, `OpalVault0xf0`, `IndigoStar0x18`, `GolHashTable`) all use this name.
-- `Destroy()` — full teardown: invokes `Shutdown` (and any other cleanup), then releases anything `Shutdown` left, leaving the object in its post-construction state.
-- `Reset()` — return the object to a pristine zero-state (used inside constructors and destructors as a shared body, e.g. `CrimsonForge0x800::Reset`).
-
-When you find a method that wraps subsystem teardown in a class that also has a "full destroy" wrapper, the small one is `Shutdown` and the bigger one is `Destroy` — even if it means renaming a previously-named `Shutdown` to `Destroy` to free up the name. Don't invent new terms (`Cleanup`, `Teardown`, `StopServices`) when one of the established names fits — consistency across classes is more valuable than naming creativity.
-
-## `__purecall` in a derived vtable ⇒ re-pure-virtualize
-
-A derived class can redeclare a concrete base virtual as pure (`override = 0`),
-putting `__purecall` in the derived slot while keeping the base body reachable
-via explicit `Base::Method()`. When the derived vtable shows `__purecall` at a
-slot where the base has a concrete body, redeclare in the derived header.
-
-## `mov eax, <lit>` in the epilogue ⇒ non-void return
-
-A function whose epilogue includes `mov eax, <literal>` before `ret` is
-returning that value. If you declared it `void`, the bytes have no home and
-the function mismatches. Change the return type (often `LegoS32` returning a
-success sentinel) and add the `return`.
-
-## Preventing unwanted ICF with `#pragma code_seg` (temporary hack)
-
-Symptom: reccmp "Failed to find function symbol" plus a derived vtable slot
-pointing to a fold survivor — our `/OPT:ICF` build folds two byte-identical
-functions that are at distinct addresses in the original. Workaround: wrap each
-affected function in a uniquely-named code section:
-
-```cpp
-// TODO: Temporary workaround until we figure out how the original code was written.
-#pragma code_seg(".text$unique_suffix")
-RetType Class::Method() { ... }
-#pragma code_seg()
-```
-
-The pragma is a hack; the original likely used a different mechanism. Do NOT
-use this for functions the original itself folds — those stay `FOLDED`.
-
-## Fused memset across adjacent members of different types
-
-When the original emits one contiguous zero store spanning two adjacent members
-of incompatible types, two separate `memset` calls usually won't fuse. Use one
-call sized `sizeof(first) + sizeof(second)` with a short comment about the
-contiguity. Alternatively merge the members into a nested struct so one
-`sizeof(whole)` covers the block.
-
-## Branch-free select patterns that resist forcing
-
-A ternary that selects between a small literal and zero is preferentially
-emitted as branch-free `neg; sbb; and` by MSVC 6.0 /O2, even when the original
-used a branch-based pattern. No conventional source formulation (if/else,
-explicit assignments, volatile) forces the branch-based form reliably. Accept
-partial match when the difference is only this pattern. Using `char` storage
-instead of a wider int still recovers the `movsx` sign-extending store half of
-the match.
-
-## Inferring signatures from push sequence
-
-A call's arg count is decoded from the `push <reg>` sequence before the
-`call`/`call [vtable+N]` — right-to-left push order = first-to-last arg. A
-signature with fewer args than the original's pushes shows up as a caller push
-with no matching parameter in your declaration. Count pushes before the call,
-update the signature, propagate. For callback interfaces tightly coupled to one
-outer class, prefer a nested class (`Outer::Callback`).
-
-## Derived-override tail calls to the base: trace the spill
-
-When a derived override ends in `Base::Method(...)`, check which register/slot
-the original pushes. If it pushes a stack-spilled local (not a literal), your
-source must pass the same local — a literal `FALSE`/`0` at the source position
-collapses the match at the push site.
-
-## Code style
-
-- Separate declarations / setup / main work / return with single blank lines
-  inside functions. Put blank lines around if/else chains. Switch cases stay
-  tightly packed. Terse one-liner bodies don't need internal spacing.
-- Hoist sets of magic numbers that form a fixed enumeration (flag bits, event
-  tags, state codes) into a named `enum` at class or namespace scope. Use
-  `c_camelCase` per NCC.
-- Prefer `LegoS32`/`LegoU32` etc. over bare `int`/`unsigned` for game-code
-  casts; keep API-boundary types (HRESULT, DWORD) unchanged.
-- Don't put leading `const` on return-by-value (`const RetType Get() const` —
-  the leading const is meaningless and triggers NCC).
+When a class has a small subsystem-teardown method AND a larger full-destroy wrapper, the small one is `Shutdown` and the big one is `Destroy` — even if it means renaming a previously-named `Shutdown` to `Destroy`. Don't invent `Cleanup` / `Teardown` / `StopServices`.
 
 ## Project Structure
 

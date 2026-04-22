@@ -12,7 +12,9 @@ class IndigoStar0x18;
 class FrostPetal0x34 : public GolListLink {
 public:
 	FrostPetal0x34();
+	~FrostPetal0x34();
 	virtual void VTable0x00(LegoChar*); // vtable+0x00
+	virtual void VTable0x04();          // vtable+0x04
 
 	void SetUnk0x0c(IndigoStar0x18* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 

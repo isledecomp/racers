@@ -61,11 +61,11 @@ void AmethystWake0x4dd4::FUN_0042d510()
 	STUB(0x42d510);
 }
 
-// STUB: LEGORACERS 0x0042e700
+// FUNCTION: LEGORACERS 0x0042e700
 void AmethystWake0x4dd4::VTable0x00()
 {
-	// TODO
-	STUB(0x42e700);
+	m_unk0x4dd0 = 0;
+	*m_unk0x04 = 0;
 }
 
 // STUB: LEGORACERS 0x0042e810
@@ -75,23 +75,21 @@ void AmethystWake0x4dd4::VTable0x1c(undefined4)
 	STUB(0x42e810);
 }
 
-// STUB: LEGORACERS 0x0042e830
+// FUNCTION: LEGORACERS 0x0042e830
 void AmethystWake0x4dd4::VTable0x28()
 {
-	// TODO
-	STUB(0x42e830);
+	m_unk0x4cc4 = 1;
 }
 
-// STUB: LEGORACERS 0x0042e840
+// FUNCTION: LEGORACERS 0x0042e840
 void AmethystWake0x4dd4::VTable0x2c()
 {
-	// TODO
-	STUB(0x42e840);
+	m_unk0x4cc4 = 0;
 }
 
-// STUB: LEGORACERS 0x0042e850
-void AmethystWake0x4dd4::VTable0x24(undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x0042e850
+void AmethystWake0x4dd4::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
 {
-	// TODO
-	STUB(0x42e850);
+	m_unk0x4cb4 = p_arg1 - m_unk0x4cbc;
+	m_unk0x4cb8 = p_arg2 - m_unk0x4cc0;
 }

@@ -2,16 +2,16 @@
 
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58, 0x58)
 
-// STUB: LEGORACERS 0x004695b0
+// FUNCTION: LEGORACERS 0x004695b0
 CeruleanQueen0x58::CeruleanQueen0x58()
 {
-	// TODO
+	VTable0x0c();
 }
 
-// STUB: LEGORACERS 0x00469620
+// FUNCTION: LEGORACERS 0x00469620
 CeruleanQueen0x58::~CeruleanQueen0x58()
 {
-	// TODO
+	VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x00469670

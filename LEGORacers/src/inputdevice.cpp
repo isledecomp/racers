@@ -239,7 +239,7 @@ LegoS16 InputDevice::StoreString(const LegoChar* p_str)
 		ptr += 1;
 	}
 
-	LegoS16 result = (LegoS16) ((LegoU16) ((LegoU16) (LegoU32) ptr - (LegoU16) (LegoU32) m_stringBuffer) >> 1);
+	LegoS16 result = ((LegoU16)((char *)ptr - (char*)m_stringBuffer)) / (sizeof(wchar_t));
 
 	while (*p_str != '\0') {
 		*ptr++ = (LegoU8) *p_str++;

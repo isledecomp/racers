@@ -16,11 +16,11 @@ GlassBlock0x3368::~GlassBlock0x3368()
 	STUB(0x431990);
 }
 
-// STUB: LEGORACERS 0x00432520
+// FUNCTION: LEGORACERS 0x00432520
 void GlassBlock0x3368::VTable0x00()
 {
-	// TODO
-	STUB(0x432520);
+	m_unk0x3334 = 0;
+	*m_unk0x04 = 0;
 }
 
 // STUB: LEGORACERS 0x00435220

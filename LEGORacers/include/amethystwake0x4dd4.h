@@ -28,7 +28,15 @@ public:
 	void FUN_0042d510();
 
 private:
-	undefined m_unk0x04[0x4dd4 - 0x04]; // 0x04
+	undefined4* m_unk0x04;                  // 0x04
+	undefined m_unk0x08[0x4cb4 - 0x08];     // 0x08
+	undefined4 m_unk0x4cb4;                 // 0x4cb4
+	undefined4 m_unk0x4cb8;                 // 0x4cb8
+	undefined4 m_unk0x4cbc;                 // 0x4cbc
+	undefined4 m_unk0x4cc0;                 // 0x4cc0
+	LegoU8 m_unk0x4cc4;                     // 0x4cc4
+	undefined m_unk0x4cc5[0x4dd0 - 0x4cc5]; // 0x4cc5
+	undefined4 m_unk0x4dd0;                 // 0x4dd0
 };
 
 #endif // AMETHYSTWAKE0X4DD4_H

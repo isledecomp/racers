@@ -6,19 +6,19 @@
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
 
-// STUB: LEGORACERS 0x0046fa50
+// FUNCTION: LEGORACERS 0x0046fa50
 CeruleanEmperor0x4c::CeruleanEmperor0x4c()
 {
 	VTable0x0c();
 }
 
-// STUB: LEGORACERS 0x0046fac0
+// FUNCTION: LEGORACERS 0x0046fac0
 CeruleanEmperor0x4c::~CeruleanEmperor0x4c()
 {
-	// TODO
+	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x0046fb10
+// FUNCTION: LEGORACERS 0x0046fb10
 void CeruleanEmperor0x4c::VTable0x0c()
 {
 	m_unk0x20 = 0;
@@ -32,6 +32,8 @@ void CeruleanEmperor0x4c::VTable0x0c()
 	m_unk0x40 = NULL;
 	m_unk0x44 = NULL;
 	m_unk0x48 = NULL;
+
+	CeruleanKnight0x20::VTable0x0c();
 }
 
 // FUNCTION: LEGORACERS 0x0046fb80

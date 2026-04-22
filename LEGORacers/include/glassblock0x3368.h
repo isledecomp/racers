@@ -16,7 +16,10 @@ public:
 	virtual void VTable0x30();  // vtable+0x30
 
 private:
-	undefined m_unk0x04[0x3368 - 0x04]; // 0x04
+	undefined4* m_unk0x04;                  // 0x04
+	undefined m_unk0x08[0x3334 - 0x08];     // 0x08
+	undefined4 m_unk0x3334;                 // 0x3334
+	undefined m_unk0x3338[0x3368 - 0x3338]; // 0x3338
 };
 
 #endif // GLASSBLOCK0X3368_H

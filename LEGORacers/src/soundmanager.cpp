@@ -141,10 +141,12 @@ EmberDust0x28* SoundManager::VTable0x1c()
 	return (EmberDust0x28*) node;
 }
 
-// STUB: LEGORACERS 0x00418e80
+// FUNCTION: LEGORACERS 0x00418e80
 void SoundManager::VTable0x20(EmberDust0x28* p_node)
 {
-	STUB(0x418e80);
+	p_node->m_next->m_prev = p_node->m_prev;
+	p_node->m_prev->m_next = p_node->m_next;
+	delete (FrostPetal0x34*) p_node;
 }
 
 // FUNCTION: LEGORACERS 0x00418eb0
@@ -170,7 +172,6 @@ void SoundManager::VTable0x28(SoundNode* p_node)
 // FUNCTION: LEGORACERS 0x00418f50
 void SoundManager::FUN_00418f50(HWND p_hwnd)
 {
-
 	if (m_directSound) {
 		if (m_unk0x1c != p_hwnd) {
 			if (p_hwnd) {

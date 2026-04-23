@@ -13,6 +13,39 @@
 // SIZE 0x1d6c
 class LegoRacers : public CactusInterface0x4 {
 public:
+	// SIZE 0x12b0
+	class Context {
+	public:
+		LegoBool32 m_unk0x00;                 // 0x00
+		IronFlame0x944* m_unk0x04;            // 0x04
+		IndigoStar0x18* m_unk0x08;            // 0x08
+		LegoFloat m_unk0x0c;                  // 0x0c
+		LegoFloat m_unk0x10;                  // 0x10
+		LegoFloat m_unk0x14;                  // 0x14
+		undefined4 m_unk0x18;                 // 0x18
+		LegoU16 m_unk0x1c;                    // 0x1c
+		undefined m_unk0x1e;                  // 0x1e
+		undefined m_unk0x1f;                  // 0x1f
+		undefined m_unk0x20[0x24 - 0x20];     // 0x20
+		undefined4 m_unk0x24;                 // 0x24
+		undefined m_unk0x28[0x2d - 0x28];     // 0x28
+		LegoChar m_unk0x2d[8];                // 0x2d
+		undefined m_unk0x35[0x38 - 0x35];     // 0x35
+		undefined4 m_unk0x38;                 // 0x38
+		undefined4 m_unk0x3c;                 // 0x3c
+		LegoChar m_unk0x40[8];                // 0x40
+		LegoChar m_unk0x48[8];                // 0x48
+		undefined m_unk0x50[0xd8 - 0x50];     // 0x50
+		undefined4 m_unk0xd8;                 // 0xd8
+		undefined m_unk0xdc[0x108 - 0xdc];    // 0xdc
+		ScarletNova0x5c m_unk0x108[5];        // 0x108
+		undefined m_unk0x2d4[0x32c - 0x2d4];  // 0x2d4
+		undefined4 m_unk0x32c;                // 0x32c
+		undefined m_unk0x330[0x398 - 0x330];  // 0x330
+		undefined4 m_unk0x398;                // 0x398
+		undefined m_unk0x39c[0x12b0 - 0x39c]; // 0x39c
+	};
+
 	enum {
 		c_videoFullScreen = 0x08,
 		c_videoBit4 = 0x10,
@@ -40,40 +73,17 @@ public:
 	LONG ResetDisplay();
 
 private:
-	IronFlame0x944 m_unk0x04;             // 0x04
-	SoundManager m_soundManager;          // 0x948
-	CobaltMist0x30 m_unk0x9e0;            // 0x9e0
-	IndigoStar0x18* m_unk0xa10;           // 0xa10
-	LegoU32 m_golBackendType;             // 0xa14
-	LegoBool32 m_cutscenes;               // 0xa18
-	undefined4 m_unk0xa1c;                // 0xa1c
-	undefined m_unk0xa20[0xab4 - 0xa20];  // 0xa20
-	undefined4 m_bpp;                     // 0xab4
-	LegoU32 m_videoFlags;                 // 0xab8
-	LegoBool32 m_unk0xabc;                // 0xabc
-	IronFlame0x944* m_unk0xac0;           // 0xac0
-	IndigoStar0x18* m_unk0xac4;           // 0xac4
-	LegoFloat m_unk0xac8;                 // 0xac8
-	LegoFloat m_unk0xacc;                 // 0xacc
-	LegoFloat m_unk0xad0;                 // 0xad0
-	undefined4 m_unk0xad4;                // 0xad4
-	LegoU16 m_unk0xad8;                   // 0xad8
-	undefined m_unk0xada[0xae0 - 0xada];  // 0xada
-	undefined4 m_unk0xae0;                // 0xae0
-	undefined m_unk0xae4[0xae9 - 0xae4];  // 0xae4
-	LegoChar m_unk0xae9[8];               // 0xae9
-	undefined m_unk0xaf1[0xaf4 - 0xaf1];  // 0xaf1
-	undefined4 m_unk0xaf4;                // 0xaf4
-	undefined m_unk0xaf8[0xafc - 0xaf8];  // 0xaf8
-	LegoChar m_unk0xafc[8];               // 0xafc
-	LegoChar m_unk0xb04[8];               // 0xb04
-	undefined m_unk0xb0c[0xbc4 - 0xb0c];  // 0xb0c
-	ScarletNova0x5c m_unk0xbc4[5];        // 0xbc4
-	undefined m_unk0xd90[0xde8 - 0xd90];  // 0xd90
-	undefined4 m_unk0xde8;                // 0xde8
-	undefined m_unk0xdec[0xe54 - 0xdec];  // 0xdec
-	undefined4 m_unk0xe54;                // 0xe54
-	undefined m_unk0xe58[0x1d6c - 0xe58]; // 0xe58
+	IronFlame0x944 m_unk0x04;            // 0x04
+	SoundManager m_soundManager;         // 0x948
+	CobaltMist0x30 m_unk0x9e0;           // 0x9e0
+	IndigoStar0x18* m_unk0xa10;          // 0xa10
+	LegoU32 m_golBackendType;            // 0xa14
+	LegoBool32 m_cutscenes;              // 0xa18
+	undefined4 m_unk0xa1c;               // 0xa1c
+	undefined m_unk0xa20[0xab4 - 0xa20]; // 0xa20
+	undefined4 m_bpp;                    // 0xab4
+	LegoU32 m_videoFlags;                // 0xab8
+	Context m_context;                   // 0xabc
 };
 
 #endif // LEGORACERS_H

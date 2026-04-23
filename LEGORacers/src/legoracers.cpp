@@ -5,10 +5,10 @@
 #include "videoplayer.h"
 
 #include <golerror.h>
-#include <stddef.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(LegoRacers, 0x1d6c)
+DECOMP_SIZE_ASSERT(LegoRacers::Context, 0x12b0)
 
 // GLOBAL: LEGORACERS 0x004be8d8
 const LegoChar* g_jamFile = "lego.jam";
@@ -42,23 +42,23 @@ LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
 	m_videoFlags = c_videoFullScreen | c_videoBit4;
 	m_bpp = 16;
 
-	memset(&m_unk0xabc, 0, sizeof(LegoRacers) - offsetof(LegoRacers, m_unk0xabc));
+	memset(&m_context, 0, sizeof(m_context));
 
-	m_unk0xabc = TRUE;
-	m_unk0xac0 = &m_unk0x04;
-	m_unk0xac4 = m_unk0xa10;
-	m_unk0xac8 = g_unk0x4b055c;
-	m_unk0xacc = g_unk0x4b0560;
-	m_unk0xad0 = g_unk0x4b0564;
-	m_unk0xae0 = 1;
-	m_unk0xde8 = 1;
-	m_unk0xad8 = 40;
-	m_unk0xe54 = 0;
-	m_unk0xaf4 = 1;
-	strncpy(m_unk0xafc, "racec0r0", sizeof(m_unk0xafc));
-	strncpy(m_unk0xb04, "racec0r0", sizeof(m_unk0xb04));
-	strncpy(m_unk0xae9, "c0", sizeof(m_unk0xae9));
-	m_unk0xad4 = 1;
+	m_context.m_unk0x00 = TRUE;
+	m_context.m_unk0x04 = &m_unk0x04;
+	m_context.m_unk0x08 = m_unk0xa10;
+	m_context.m_unk0x0c = g_unk0x4b055c;
+	m_context.m_unk0x10 = g_unk0x4b0560;
+	m_context.m_unk0x14 = g_unk0x4b0564;
+	m_context.m_unk0x24 = 1;
+	m_context.m_unk0x32c = 1;
+	m_context.m_unk0x1c = 40;
+	m_context.m_unk0x398 = 0;
+	m_context.m_unk0x38 = 1;
+	strncpy(m_context.m_unk0x40, "racec0r0", sizeof(m_context.m_unk0x40));
+	strncpy(m_context.m_unk0x48, "racec0r0", sizeof(m_context.m_unk0x48));
+	strncpy(m_context.m_unk0x2d, "c0", sizeof(m_context.m_unk0x2d));
+	m_context.m_unk0x18 = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042bb40
@@ -79,7 +79,7 @@ LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 		return result;
 	}
 
-	m_unk0x04.GetHashTable().Init(100, 4096);
+	m_unk0x04.CrimsonForge0x800::GetHashTable().Init(100, 4096);
 	m_unk0x04.SetGolBackendType(m_golBackendType);
 	m_unk0x04.Init("LEGO Racers", g_jamFile);
 	return 1;
@@ -112,9 +112,9 @@ void LegoRacers::Run()
 
 	FUN_0042be00();
 
-	while (m_unk0xabc) {
+	while (m_context.m_unk0x00) {
 		FUN_0042bdc0();
-		if (!m_unk0xabc) {
+		if (!m_context.m_unk0x00) {
 			break;
 		}
 		FUN_0042bde0();
@@ -128,10 +128,10 @@ void LegoRacers::Run()
 // FUNCTION: LEGORACERS 0x0042bd00
 void LegoRacers::FUN_0042bd00()
 {
-	GolExport* golExport = m_unk0xac0->GetGolExport();
+	GolExport* golExport = m_context.m_unk0x04->GetGolExport();
 
-	for (LegoU32 i = 0; i < m_unk0xde8; i++) {
-		ScarletNova0x5c& slot = m_unk0xbc4[i];
+	for (LegoU32 i = 0; i < m_context.m_unk0x32c; i++) {
+		ScarletNova0x5c& slot = m_context.m_unk0x108[i];
 
 		if (slot.m_flag) {
 			if (slot.m_unk0x20[0]) {
@@ -165,14 +165,14 @@ void LegoRacers::FUN_0042bd00()
 // FUNCTION: LEGORACERS 0x0042bdc0
 void LegoRacers::FUN_0042bdc0()
 {
-	AmethystWake0x4dd4::FUN_0042b1e0(&m_unk0xabc);
+	AmethystWake0x4dd4::FUN_0042b1e0(&m_context);
 	m_unk0x04.FUN_00416490();
 }
 
 // FUNCTION: LEGORACERS 0x0042bde0
 void LegoRacers::FUN_0042bde0()
 {
-	AquaCoral0x37b8::FUN_0042b130(&m_unk0xabc);
+	AquaCoral0x37b8::FUN_0042b130(&m_context);
 	m_unk0x04.FUN_00416490();
 }
 
@@ -191,7 +191,7 @@ void LegoRacers::FUN_0042be00()
 		m_unk0xa10 = &m_unk0x9e0;
 	}
 
-	m_unk0xac4 = m_unk0xa10;
+	m_context.m_unk0x08 = m_unk0xa10;
 
 	if (initDisplayResult) {
 		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);

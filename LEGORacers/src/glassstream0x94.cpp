@@ -21,6 +21,14 @@ void GlassStream0x94::FUN_0041ece0()
 	STUB(0x41ece0);
 }
 
+// STUB: LEGORACERS 0x0041ed10
+LegoS32 GlassStream0x94::FUN_0041ed10(LegoRacers::Context*, GlassBlock0x3368*)
+{
+	// TODO
+	STUB(0x41ed10);
+	return 0;
+}
+
 // STUB: LEGORACERS 0x0041ed60
 void GlassStream0x94::FUN_0041ed60()
 {

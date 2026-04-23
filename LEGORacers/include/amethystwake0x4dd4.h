@@ -4,6 +4,7 @@
 #include "cactusinterface0x4.h"
 #include "compat.h"
 #include "decomp.h"
+#include "legoracers.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b05a4
@@ -21,14 +22,14 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0042c7c0
 	// AmethystWake0x4dd4::`scalar deleting destructor'
 
-	static void FUN_0042b1e0(LegoBool32* p_unk0x00);
+	static void FUN_0042b1e0(LegoRacers::Context* p_context);
 
-	void FUN_0042cb90(LegoBool32* p_unk0x00);
+	void FUN_0042cb90(LegoRacers::Context* p_context);
 	LegoS32 FUN_0042ccc0();
 	void FUN_0042d510();
 
 private:
-	undefined4* m_unk0x04;                  // 0x04
+	LegoRacers::Context* m_context;         // 0x04
 	undefined m_unk0x08[0x4cb4 - 0x08];     // 0x08
 	undefined4 m_unk0x4cb4;                 // 0x4cb4
 	undefined4 m_unk0x4cb8;                 // 0x4cb8

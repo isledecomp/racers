@@ -84,7 +84,7 @@ void IronFlame0x944::Init(const LegoChar* p_windowName, const LegoChar* p_fileNa
 		g_hPrevInstance = g_hInstance;
 	}
 
-	g_hashTable = &GetHashTable();
+	g_hashTable = &CrimsonForge0x800::GetHashTable();
 
 	if (p_fileName) {
 		FUN_00416860(p_fileName);

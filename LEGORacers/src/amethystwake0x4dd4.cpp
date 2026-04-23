@@ -9,14 +9,14 @@ DECOMP_SIZE_ASSERT(AmethystWake0x4dd4, 0x4dd4)
 AmethystWake0x4dd4* g_unk0x4c4918 = NULL;
 
 // FUNCTION: LEGORACERS 0x0042b1e0
-void AmethystWake0x4dd4::FUN_0042b1e0(LegoBool32* p_unk0x00)
+void AmethystWake0x4dd4::FUN_0042b1e0(LegoRacers::Context* p_context)
 {
 	g_unk0x4c4918 = new AmethystWake0x4dd4();
 	if (!g_unk0x4c4918) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	g_unk0x4c4918->FUN_0042cb90(p_unk0x00);
+	g_unk0x4c4918->FUN_0042cb90(p_context);
 	g_unk0x4c4918->FUN_0042d510();
 	g_unk0x4c4918->FUN_0042ccc0();
 
@@ -40,7 +40,7 @@ AmethystWake0x4dd4::~AmethystWake0x4dd4()
 }
 
 // STUB: LEGORACERS 0x0042cb90
-void AmethystWake0x4dd4::FUN_0042cb90(LegoBool32*)
+void AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context*)
 {
 	// TODO
 	STUB(0x42cb90);
@@ -65,7 +65,7 @@ void AmethystWake0x4dd4::FUN_0042d510()
 void AmethystWake0x4dd4::VTable0x00()
 {
 	m_unk0x4dd0 = 0;
-	*m_unk0x04 = 0;
+	m_context->m_unk0x00 = FALSE;
 }
 
 // STUB: LEGORACERS 0x0042e810

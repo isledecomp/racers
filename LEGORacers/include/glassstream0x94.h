@@ -5,7 +5,10 @@
 #include "celestialforge0x90.h"
 #include "compat.h"
 #include "decomp.h"
+#include "legoracers.h"
 #include "types.h"
+
+class GlassBlock0x3368;
 
 // VTABLE: LEGORACERS 0x004aff70
 // SIZE 0x94
@@ -18,6 +21,7 @@ public:
 	// GlassStream0x94::`scalar deleting destructor'
 
 	void FUN_0041ece0();
+	LegoS32 FUN_0041ed10(LegoRacers::Context* p_context, GlassBlock0x3368* p_unk0x08);
 	void FUN_0041ed60();
 
 private:

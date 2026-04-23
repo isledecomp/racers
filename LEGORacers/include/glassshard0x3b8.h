@@ -7,6 +7,9 @@
 #include "silverhollow0xb8.h"
 #include "types.h"
 
+class GolExport;
+class GolHashTable;
+
 // VTABLE: LEGORACERS 0x004b01a0
 // SIZE 0x3b8
 class GlassShard0x3b8 {
@@ -18,6 +21,7 @@ public:
 	// GlassShard0x3b8::`scalar deleting destructor'
 
 	void FUN_004223c0();
+	void FUN_00422420(GolHashTable* p_unk0x04, GolExport* p_unk0x08, undefined4 p_unk0x0c, undefined4 p_unk0x10);
 	void FUN_00422670();
 
 private:

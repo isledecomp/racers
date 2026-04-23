@@ -24,6 +24,9 @@ public:
 	virtual LegoS32 Shutdown();                                       // vtable+0x0c
 
 	void Reset();
+	undefined4 FUN_0044c810(const LegoChar* p_unk0x04);
+
+	void SetUnk0x1c(undefined4 p_unk0x1c) { m_unk0x1c = p_unk0x1c; }
 
 private:
 	HANDLE m_mutex;           // 0x04

@@ -102,6 +102,14 @@ void GolHashTable::ClearEntries()
 	ReleaseMutex(m_mutex);
 }
 
+// STUB: LEGORACERS 0x0044c810
+undefined4 GolHashTable::FUN_0044c810(const LegoChar*)
+{
+	// TODO
+	STUB(0x44c810);
+	return 0;
+}
+
 // FUNCTION: LEGORACERS 0x0044c880
 GolHashTable::Entry* GolHashTable::AddEntry(Entry** p_bucket, const LegoChar* p_string)
 {

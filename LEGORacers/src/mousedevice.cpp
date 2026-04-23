@@ -174,27 +174,28 @@ void MouseInputDevice::VTable0x08(undefined4 p_arg1, LegoFloat p_arg2)
 // FUNCTION: LEGORACERS 0x0044f910
 void MouseInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
-	undefined4 source = p_event & c_sourceMask;
-	undefined4 button = p_event & c_keyCodeMask;
+	undefined4 keyCode = p_event & c_sourceMask;
+	undefined4 originalEvent = p_event;
+
+	p_event &= c_keyCodeMask;
 
 	if (p_state) {
 		p_state = c_pressed;
 	}
 
-	if (button < sizeOfArray(m_unk0xd8)) {
-		undefined2* map = m_unk0x2c;
-		m_unk0xd8[button] = p_state;
-		source |= map[button];
+	if (p_event < sizeOfArray(m_unk0xd8)) {
+		m_unk0xd8[p_event] = p_state;
+		keyCode |= m_unk0x2c[p_event];
 
 		if (p_notify && m_callback != NULL) {
 			if (p_state) {
-				m_callback->OnKeyDown(*this, source, m_unk0x34);
+				m_callback->OnKeyDown(*this, keyCode, m_unk0x34);
 			}
 			else {
-				m_callback->OnKeyUp(*this, source, m_unk0x34);
+				m_callback->OnKeyUp(*this, keyCode, m_unk0x34);
 			}
 		}
 
-		InputDevice::VTable0x04(p_event, p_state, p_notify);
+		InputDevice::VTable0x04(originalEvent, p_state, p_notify);
 	}
 }

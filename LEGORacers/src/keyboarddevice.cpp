@@ -108,28 +108,29 @@ undefined4 KeyboardInputDevice::VTable0x34(undefined4 p_key)
 // FUNCTION: LEGORACERS 0x0044f4a0
 void KeyboardInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
-	undefined4 source = p_event & c_sourceMask;
-	undefined4 key = p_event & c_keyCodeMask;
+	undefined4 keyCode = p_event & c_sourceMask;
+	undefined4 originalEvent = p_event;
+
+	p_event &= c_keyCodeMask;
 
 	if (p_state) {
 		p_state = c_pressed;
 	}
 
-	if (key < sizeOfArray(m_unk0xcc)) {
-		undefined2* map = m_unk0x2c;
-		m_unk0xcc[key] = static_cast<LegoS8>(p_state);
-		source |= map[key];
+	if (p_event < sizeOfArray(m_unk0xcc)) {
+		m_unk0xcc[p_event] = static_cast<LegoS8>(p_state);
+		keyCode |= m_unk0x2c[p_event];
 
 		if (p_notify && m_callback != NULL) {
 			if (p_state) {
-				m_callback->OnKeyDown(*this, source, m_unk0x34);
+				m_callback->OnKeyDown(*this, keyCode, m_unk0x34);
 			}
 			else {
-				m_callback->OnKeyUp(*this, source, m_unk0x34);
+				m_callback->OnKeyUp(*this, keyCode, m_unk0x34);
 			}
 		}
 
-		InputDevice::VTable0x04(p_event, p_state, p_notify);
+		InputDevice::VTable0x04(originalEvent, p_state, p_notify);
 	}
 }
 

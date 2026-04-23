@@ -44,7 +44,7 @@ AquaCoral0x37b8::~AquaCoral0x37b8()
 LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
-	p_context->m_unk0x1e &= ~8;
+	m_context->m_unk0x1e &= ~8;
 
 	if (p_context->m_unk0x24 == 2) {
 		GolHashTable* hashTable = g_hashTable;

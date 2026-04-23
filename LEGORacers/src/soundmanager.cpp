@@ -33,7 +33,7 @@ SoundManager::~SoundManager()
 }
 
 // FUNCTION: LEGORACERS 0x004186f0
-undefined4 SoundManager::VTable0x04(undefined4)
+undefined4 SoundManager::VTable0x04(undefined4 p_unk0x04)
 {
 	Shutdown();
 
@@ -52,14 +52,14 @@ undefined4 SoundManager::VTable0x04(undefined4)
 	}
 
 	WAVEFORMATEX waveformat;
-	waveformat.wBitsPerSample = m_bitsPerSample;
 	waveformat.nChannels = m_nChannels;
+	waveformat.wBitsPerSample = m_bitsPerSample;
 	waveformat.nSamplesPerSec = m_nSamplesPerSec;
 	// LINE: LEGORACERS 0x0041874b
-	waveformat.nBlockAlign = ((waveformat.wBitsPerSample + 7) >> 3) * waveformat.nChannels;
+	waveformat.nBlockAlign = (static_cast<LegoS32>(waveformat.wBitsPerSample) + 7) / 8 * waveformat.nChannels;
 	// LINE: LEGORACERS 0x00418779
-	waveformat.nAvgBytesPerSec = waveformat.nBlockAlign * waveformat.nSamplesPerSec;
 	waveformat.wFormatTag = 1;
+	waveformat.nAvgBytesPerSec = m_nSamplesPerSec * waveformat.nBlockAlign;
 	waveformat.cbSize = 0;
 
 	if (DirectSoundCreate(m_unk0x2c, &m_directSound, NULL)) {
@@ -77,11 +77,10 @@ undefined4 SoundManager::VTable0x04(undefined4)
 		FUN_00418f50(activeWindow);
 	}
 
-	DSBUFFERDESC bufferDesc = {sizeof(DSBUFFERDESC)};
+	DSBUFFERDESC bufferDesc;
+	ZeroMemory(&bufferDesc, sizeof(bufferDesc));
+	bufferDesc.dwSize = sizeof(DSBUFFERDESC);
 	bufferDesc.dwFlags = DSBCAPS_CTRL3D | DSBCAPS_PRIMARYBUFFER;
-	bufferDesc.dwBufferBytes = 0;
-	bufferDesc.dwReserved = 0;
-	bufferDesc.lpwfxFormat = NULL;
 
 	if (m_directSound->CreateSoundBuffer(&bufferDesc, &m_directSoundBuffer, NULL)) {
 		Shutdown();
@@ -102,8 +101,8 @@ undefined4 SoundManager::VTable0x04(undefined4)
 	m_directSoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
 
 	m_unk0x18 = 0;
-	m_unk0x58 = caps.dwPlayCpuOverhead;
-	m_unk0x54 = caps.dwPlayCpuOverhead;
+	m_unk0x58 = p_unk0x04;
+	m_unk0x54 = p_unk0x04;
 
 	return 1;
 }

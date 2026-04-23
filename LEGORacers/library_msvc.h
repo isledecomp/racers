@@ -1,6 +1,9 @@
 #ifdef 0
 // For LEGORACERS symbols only
 
+// LIBRARY: LEGORACERS 0x004a6980
+// _DirectSoundCreate@12
+
 // LIBRARY: LEGORACERS 0x004a83f0
 // c_dfDIKeyboard
 

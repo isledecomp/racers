@@ -15,18 +15,18 @@
 class SoundManager : public IndigoStar0x18 {
 public:
 	SoundManager();
-	~SoundManager() override;                   // vtable+0x00
-	undefined4 VTable0x04(undefined4) override; // vtable+0x04
-	void Shutdown() override;                   // vtable+0x08
-	void VTable0x0c() override;                 // vtable+0x0c
-	void VTable0x10() override;                 // vtable+0x10
-	CrimsonRay0x20* VTable0x14() override;      // vtable+0x14
-	void VTable0x18(CrimsonRay0x20*) override;  // vtable+0x18
-	EmberDust0x28* VTable0x1c() override;       // vtable+0x1c
-	void VTable0x20(EmberDust0x28*) override;   // vtable+0x20
-	SoundNode* VTable0x24() override;           // vtable+0x24
-	void VTable0x28(SoundNode*) override;       // vtable+0x28
-	void VTable0x34(undefined4) override;       // vtable+0x34
+	~SoundManager() override;                             // vtable+0x00
+	undefined4 VTable0x04(undefined4 p_unk0x04) override; // vtable+0x04
+	void Shutdown() override;                             // vtable+0x08
+	void VTable0x0c() override;                           // vtable+0x0c
+	void VTable0x10() override;                           // vtable+0x10
+	CrimsonRay0x20* VTable0x14() override;                // vtable+0x14
+	void VTable0x18(CrimsonRay0x20*) override;            // vtable+0x18
+	EmberDust0x28* VTable0x1c() override;                 // vtable+0x1c
+	void VTable0x20(EmberDust0x28*) override;             // vtable+0x20
+	SoundNode* VTable0x24() override;                     // vtable+0x24
+	void VTable0x28(SoundNode*) override;                 // vtable+0x28
+	void VTable0x34(undefined4) override;                 // vtable+0x34
 
 	void FUN_00418f50(HWND p_hwnd);
 

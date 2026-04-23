@@ -182,6 +182,7 @@ Register allocation is sensitive to many equivalent-looking source variants. Whe
 - **Clamp+center.** For `if (cond) clamp; else center;`, write clamp as THEN (not ELSE) to match MSVC 6.0 layout.
 - **`else if (!cond)` inverts block layout (cold-branch).** When the body of a branch is placed physically AFTER the function's `ret` (reached via forward jump + `jmp` back), MSVC treated it as cold. Reproduce with `if (!X) { hot_body } else if (cond) { cold_body }` — the natural `if (X) { cold } else { hot }` produces inline layout instead.
 - **Byte-loop hash accumulator.** Use `LegoChar c = p_str[i]; acc += c << shift;`, not `int v = p_str[i] << shift; acc += v;`.
+- **Mutate the parameter; save the original.** When a function needs both `p_arg & MASK` (the hot value, used for indexing and comparison) and the unmasked `p_arg` (cold, used once — e.g. a tail call to `Base::Method`), write `undefined4 saved = p_arg; p_arg &= MASK;` and pass `saved` to the base. The mirror form (`undefined4 masked = p_arg & MASK; ... Base::Method(p_arg, ...)`) regresses ~16pp because MSVC 6.0 pins the parameter register (typically ebp) to the incoming value, so introducing a new local for the masked value forces a second register allocation and inverts scratch-register choices around adjacent indexed member loads (e.g. ecx ↔ edi swap on `m_member[idx]`). Diagnostic: if you're stuck near 80–85% with the diff concentrated on register roles around an indexed access, this is the first variant to try.
 
 ### Return type inference
 

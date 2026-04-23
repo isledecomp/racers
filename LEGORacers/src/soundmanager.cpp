@@ -13,14 +13,14 @@ DECOMP_SIZE_ASSERT(SoundManager, 0x98)
 SoundManager::SoundManager()
 {
 	m_cooperativeLevel = DSSCL_PRIORITY;
-	m_unk0x34 = 2;
+	m_nChannels = 2;
 	m_unk0x20 = 0;
 	m_unk0x1c = 0;
 	m_directSound = NULL;
 	m_unk0x2c = 0;
-	m_unk0x30 = NULL;
-	m_unk0x38 = 22050;
-	m_unk0x35 = 16;
+	m_directSoundBuffer = NULL;
+	m_nSamplesPerSec = 22050;
+	m_bitsPerSample = 16;
 	m_unk0x18 = 0;
 	m_unk0x58 = 0;
 	m_unk0x54 = 0;
@@ -32,13 +32,80 @@ SoundManager::~SoundManager()
 	Shutdown();
 }
 
-// STUB: LEGORACERS 0x004186f0
+// FUNCTION: LEGORACERS 0x004186f0
 undefined4 SoundManager::VTable0x04(undefined4)
 {
-	// HRESULT result = DirectSoundCreate(m_unk0x2c, &m_directSound, NULL);
-	// TODO
-	STUB(0x4186f0);
-	return 0;
+	Shutdown();
+
+	if (!m_unk0x20) {
+		HWND pHVar4 = GetForegroundWindow();
+		DWORD hwndProcessId;
+		GetWindowThreadProcessId(pHVar4, &hwndProcessId);
+
+		if (hwndProcessId == GetCurrentProcessId()) {
+			FUN_00418f50(pHVar4);
+		}
+
+		if (!m_unk0x20) {
+			return 0;
+		}
+	}
+
+	WAVEFORMATEX waveformat;
+	waveformat.wBitsPerSample = m_bitsPerSample;
+	waveformat.nChannels = m_nChannels;
+	waveformat.nSamplesPerSec = m_nSamplesPerSec;
+	// LINE: LEGORACERS 0x41874b
+	waveformat.nBlockAlign = ((waveformat.wBitsPerSample + 7) >> 3) * waveformat.nChannels;
+	// LINE: LEGORACERS 0x418779
+	waveformat.nAvgBytesPerSec = waveformat.nBlockAlign * waveformat.nSamplesPerSec;
+	waveformat.wFormatTag = 1;
+	waveformat.cbSize = 0;
+
+	if (DirectSoundCreate(m_unk0x2c, &m_directSound, NULL)) {
+		m_directSound = NULL;
+		return 0;
+	}
+
+	if (m_directSound->SetCooperativeLevel(m_unk0x20, m_cooperativeLevel)) {
+		Shutdown();
+		return 0;
+	}
+
+	HWND activeWindow = GetActiveWindow();
+	if (m_unk0x20 != activeWindow) {
+		FUN_00418f50(activeWindow);
+	}
+
+	DSBUFFERDESC bufferDesc = {sizeof(DSBUFFERDESC)};
+	bufferDesc.dwFlags = DSBCAPS_CTRL3D | DSBCAPS_PRIMARYBUFFER;
+	bufferDesc.dwBufferBytes = 0;
+	bufferDesc.dwReserved = 0;
+	bufferDesc.lpwfxFormat = NULL;
+
+	if (m_directSound->CreateSoundBuffer(&bufferDesc, &m_directSoundBuffer, NULL)) {
+		Shutdown();
+		return 0;
+	}
+
+	if (m_cooperativeLevel >= DSSCL_PRIORITY) {
+		if (m_directSoundBuffer->SetFormat(&waveformat)) {
+			Shutdown();
+			return 0;
+		}
+	}
+
+	DSBCAPS caps;
+	caps.dwSize = sizeof(DSBCAPS);
+
+	m_directSoundBuffer->GetCaps(&caps);
+	m_directSoundBuffer->Play(0, 0, DSBPLAY_LOOPING);
+
+	m_unk0x18 = 0;
+	m_unk0x58 = caps.dwPlayCpuOverhead;
+	m_unk0x54 = caps.dwPlayCpuOverhead;
+
+	return 1;
 }
 
 // FUNCTION: LEGORACERS 0x004188b0
@@ -68,9 +135,9 @@ void SoundManager::Shutdown()
 		VTable0x28(m_unk0x08);
 	}
 
-	if (m_unk0x30) {
-		m_unk0x30->Release();
-		m_unk0x30 = NULL;
+	if (m_directSoundBuffer) {
+		m_directSoundBuffer->Release();
+		m_directSoundBuffer = NULL;
 	}
 
 	if (m_directSound) {

@@ -34,26 +34,26 @@ public:
 	// SoundManager::`scalar deleting destructor'
 
 private:
-	undefined4 m_unk0x18;             // 0x18
-	HWND m_unk0x1c;                   // 0x1c
-	HWND m_unk0x20;                   // 0x20
-	LPDIRECTSOUND m_directSound;      // 0x24
-	DWORD m_cooperativeLevel;         // 0x28
-	LPGUID m_unk0x2c;                 // 0x2c
-	IUnknown* m_unk0x30;              // 0x30
-	undefined m_unk0x34;              // 0x34
-	undefined m_unk0x35;              // 0x35
-	undefined m_unk0x36[0x38 - 0x36]; // 0x36
-	undefined4 m_unk0x38;             // 0x38
-	GolListHead m_unk0x3c;            // 0x3c
-	GolListHead m_unk0x48;            // 0x48
-	undefined4 m_unk0x54;             // 0x54
-	undefined4 m_unk0x58;             // 0x58
-	GolListHead m_unk0x5c;            // 0x5c
-	GolListHead m_unk0x68;            // 0x68
-	GolListHead m_unk0x74;            // 0x74
-	GolListHead m_unk0x80;            // 0x80
-	GolListHead m_unk0x8c;            // 0x8c
+	undefined4 m_unk0x18;                    // 0x18
+	HWND m_unk0x1c;                          // 0x1c
+	HWND m_unk0x20;                          // 0x20
+	LPDIRECTSOUND m_directSound;             // 0x24
+	LegoS32 m_cooperativeLevel;              // 0x28
+	LPGUID m_unk0x2c;                        // 0x2c
+	LPDIRECTSOUNDBUFFER m_directSoundBuffer; // 0x30
+	LegoU8 m_nChannels;                      // 0x34
+	LegoU8 m_bitsPerSample;                  // 0x35
+	undefined m_unk0x36[0x38 - 0x36];        // 0x36
+	LegoU32 m_nSamplesPerSec;                // 0x38
+	GolListHead m_unk0x3c;                   // 0x3c
+	GolListHead m_unk0x48;                   // 0x48
+	undefined4 m_unk0x54;                    // 0x54
+	undefined4 m_unk0x58;                    // 0x58
+	GolListHead m_unk0x5c;                   // 0x5c
+	GolListHead m_unk0x68;                   // 0x68
+	GolListHead m_unk0x74;                   // 0x74
+	GolListHead m_unk0x80;                   // 0x80
+	GolListHead m_unk0x8c;                   // 0x8c
 };
 
 #endif // SOUNDMANAGER_H

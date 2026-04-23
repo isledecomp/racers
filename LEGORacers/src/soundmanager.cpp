@@ -55,9 +55,9 @@ undefined4 SoundManager::VTable0x04(undefined4)
 	waveformat.wBitsPerSample = m_bitsPerSample;
 	waveformat.nChannels = m_nChannels;
 	waveformat.nSamplesPerSec = m_nSamplesPerSec;
-	// LINE: LEGORACERS 0x41874b
+	// LINE: LEGORACERS 0x0041874b
 	waveformat.nBlockAlign = ((waveformat.wBitsPerSample + 7) >> 3) * waveformat.nChannels;
-	// LINE: LEGORACERS 0x418779
+	// LINE: LEGORACERS 0x00418779
 	waveformat.nAvgBytesPerSec = waveformat.nBlockAlign * waveformat.nSamplesPerSec;
 	waveformat.wFormatTag = 1;
 	waveformat.cbSize = 0;

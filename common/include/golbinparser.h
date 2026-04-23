@@ -20,11 +20,11 @@ public:
 	void VTable0x40(undefined4) override;                   // vtable+0x40
 	undefined4 VTable0x44() override;                       // vtable+0x44
 	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
-	void VTable0x4c() override;                             // vtable+0x4c
+	void OpenFile(LegoChar*) override;                      // vtable+0x4c
 	void VTable0x50(undefined4) override;                   // vtable+0x50
 	void VTable0x54(undefined4) override;                   // vtable+0x54
 	void WriteFloat(LegoFloat) override;                    // vtable+0x58
-	void VTable0x5c() override;                             // vtable+0x5c
+	void VTable0x5c(LegoFloat) override;                    // vtable+0x5c
 	void WriteInt4(undefined4) override;                    // vtable+0x60
 	void WriteString(LegoChar*) override;                   // vtable+0x64
 	void VTable0x68() override;                             // vtable+0x68

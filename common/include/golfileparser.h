@@ -42,11 +42,11 @@ public:
 	virtual void VTable0x40(undefined4) = 0;               // vtable+0x40
 	virtual undefined4 VTable0x44();                       // vtable+0x44
 	virtual undefined4 VTable0x48(undefined4, undefined4); // vtable+0x48
-	virtual void VTable0x4c() = 0;                         // vtable+0x4c
+	virtual void OpenFile(LegoChar*) = 0;                  // vtable+0x4c
 	virtual void VTable0x50(undefined4) = 0;               // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;               // vtable+0x54
 	virtual void WriteFloat(LegoFloat) = 0;                // vtable+0x58
-	virtual void VTable0x5c() = 0;                         // vtable+0x5c
+	virtual void VTable0x5c(LegoFloat) = 0;                // vtable+0x5c
 	virtual void WriteInt4(undefined4) = 0;                // vtable+0x60
 	virtual void WriteString(LegoChar*) = 0;               // vtable+0x64
 	virtual void VTable0x68() = 0;                         // vtable+0x68
@@ -55,7 +55,7 @@ public:
 	virtual void VTable0x74(undefined4) = 0;               // vtable+0x74
 
 	void FUN_10032580(LegoS32 p_code);
-	void FUN_10032670(const LegoChar* p_suffix);
+	void SetSuffix(const LegoChar* p_suffix);
 	undefined4 FUN_100326a0();
 	LegoFloat FUN_100326c0();
 	LegoChar* FUN_100326e0();

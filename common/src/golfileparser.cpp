@@ -139,7 +139,7 @@ undefined4 GolFileParser::VTable0x48(undefined4, undefined4)
 
 // FUNCTION: GOLDP 0x10032670
 // FUNCTION: LEGORACERS 0x0044e7b0
-void GolFileParser::FUN_10032670(const LegoChar* p_suffix)
+void GolFileParser::SetSuffix(const LegoChar* p_suffix)
 {
 	::strncpy(m_suffix, p_suffix, sizeOfArray(m_suffix));
 	m_suffix[sizeOfArray(m_suffix) - 1] = '\0';

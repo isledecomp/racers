@@ -87,7 +87,7 @@ void CeruleanEmperor0x4c::VTable0x10(undefined4 p_param)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_unk0x10->FUN_10032670(".msb");
+		m_unk0x10->SetSuffix(".msb");
 		return;
 	}
 

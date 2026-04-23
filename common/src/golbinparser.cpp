@@ -80,12 +80,48 @@ void GolBinParser::VTable0x40(undefined4 p_code)
 	GOL_FATALERROR_MESSAGE(m_unk0xa4);
 }
 
-// STUB: GOLDP 0x10030f10
-// STUB: LEGORACERS 0x0044b2b0
-void GolBinParser::VTable0x4c()
+// FUNCTION: GOLDP 0x10030f10
+// FUNCTION: LEGORACERS 0x0044b2b0
+void GolBinParser::OpenFile(LegoChar* p_param)
 {
-	// TODO
-	STUB(0x0044b2b0);
+	if (m_flags & c_flagOpen) {
+		Dispose();
+	}
+
+	LegoS32 dotpos = -1;
+	LegoS32 len = 0;
+
+	while (p_param[len] != '\0') {
+		if (p_param[len] == '.') {
+			dotpos = len;
+		}
+		len++;
+	}
+
+	if (dotpos < 0) {
+		const LegoChar* suffix = GetSuffix();
+		len += strlen(suffix);
+		m_filePath = (len < 64) ? m_unk0x1a8 : new LegoChar[len + 1];
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_param);
+		strcat(m_filePath, suffix);
+	}
+	else {
+		m_filePath = (len < 64) ? m_unk0x1a8 : new LegoChar[len + 1];
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_param);
+	}
+
+	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeWrite | c_modeCreate, 0x1000);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
 }
 
 // STUB: GOLDP 0x10031070
@@ -136,12 +172,11 @@ void GolBinParser::WriteFloat(LegoFloat p_param)
 	m_unk0x1f0 += 4;
 }
 
-// STUB: GOLDP 0x1002fd50 FOLDED
-// STUB: LEGORACERS 0x0044b570 FOLDED
-void GolBinParser::VTable0x5c()
+// FUNCTION: GOLDP 0x1002fd50 FOLDED
+// FUNCTION: LEGORACERS 0x0044b570 FOLDED
+void GolBinParser::VTable0x5c(LegoFloat p_param)
 {
-	// TODO
-	STUB(0x0044b570);
+	WriteFloat(p_param);
 }
 
 // FUNCTION: GOLDP 0x100311d0

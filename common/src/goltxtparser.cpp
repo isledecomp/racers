@@ -11,11 +11,47 @@ const LegoChar* GolTxtParser::GetSuffix()
 	return ".txt";
 }
 
-// STUB: LEGORACERS 0x0044a1f0
-void GolTxtParser::VTable0x4c()
+// FUNCTION: LEGORACERS 0x0044a1f0
+void GolTxtParser::OpenFile(LegoChar* p_param)
 {
-	// TODO
-	STUB(0x0044a1f0);
+	if (m_flags & c_flagOpen) {
+		Dispose();
+	}
+
+	LegoS32 dotpos = -1;
+	LegoS32 len = 0;
+
+	while (p_param[len] != '\0') {
+		if (p_param[len] == '.') {
+			dotpos = len;
+		}
+		len++;
+	}
+
+	if (dotpos < 0) {
+		const LegoChar* suffix = GetSuffix();
+		len += strlen(suffix);
+		m_filePath = new LegoChar[len + 1];
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_param);
+		strcat(m_filePath, suffix);
+	}
+	else {
+		m_filePath = new LegoChar[len + 1];
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_param);
+	}
+
+	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeTextAppend | c_modeWrite | c_modeCreate, 0x1000);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
 }
 
 // FUNCTION: GOLDP 0x1002fba0
@@ -179,10 +215,9 @@ undefined4 GolTxtParser::VTable0x48(undefined4, undefined4)
 	return 1;
 }
 
-// STUB: GOLDP 0x1002fd50 FOLDED
-// STUB: LEGORACERS 0x0044b570 FOLDED
-void GolTxtParser::VTable0x5c()
+// FUNCTION: GOLDP 0x1002fd50 FOLDED
+// FUNCTION: LEGORACERS 0x0044b570 FOLDED
+void GolTxtParser::VTable0x5c(LegoFloat p_param)
 {
-	// TODO
-	STUB(0x0044b570);
+	WriteFloat(p_param);
 }

@@ -82,7 +82,7 @@ void GolBinParser::VTable0x40(undefined4 p_code)
 
 // FUNCTION: GOLDP 0x10030f10
 // FUNCTION: LEGORACERS 0x0044b2b0
-void GolBinParser::OpenFile(LegoChar* p_param)
+void GolBinParser::OpenFile(LegoChar* p_fileName)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();
@@ -91,8 +91,8 @@ void GolBinParser::OpenFile(LegoChar* p_param)
 	LegoS32 dotpos = -1;
 	LegoS32 len = 0;
 
-	while (p_param[len] != '\0') {
-		if (p_param[len] == '.') {
+	while (p_fileName[len] != '\0') {
+		if (p_fileName[len] == '.') {
 			dotpos = len;
 		}
 		len++;
@@ -101,27 +101,40 @@ void GolBinParser::OpenFile(LegoChar* p_param)
 	if (dotpos < 0) {
 		const LegoChar* suffix = GetSuffix();
 		len += strlen(suffix);
-		m_filePath = (len < 64) ? m_unk0x1a8 : new LegoChar[len + 1];
+		if (len < 64) {
+			m_filePath = m_unk0x1a8;
+		}
+		else {
+			m_filePath = new LegoChar[len + 1];
+		}
 		if (!m_filePath) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		strcpy(m_filePath, p_param);
+		strcpy(m_filePath, p_fileName);
 		strcat(m_filePath, suffix);
 	}
 	else {
-		m_filePath = (len < 64) ? m_unk0x1a8 : new LegoChar[len + 1];
+		if (len < 64) {
+			m_filePath = m_unk0x1a8;
+		}
+		else {
+			m_filePath = new LegoChar[len + 1];
+		}
 		if (!m_filePath) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		strcpy(m_filePath, p_param);
+		strcpy(m_filePath, p_fileName);
 	}
 
 	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeWrite | c_modeCreate, 0x1000);
 	if (code != e_ioSuccess) {
 		FUN_10032580(code);
 	}
+
+	m_unk0x1f0 = 0;
+	m_unk0x1f4 = 0;
 }
 
 // STUB: GOLDP 0x10031070

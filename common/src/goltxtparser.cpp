@@ -12,7 +12,7 @@ const LegoChar* GolTxtParser::GetSuffix()
 }
 
 // FUNCTION: LEGORACERS 0x0044a1f0
-void GolTxtParser::OpenFile(LegoChar* p_param)
+void GolTxtParser::OpenFile(LegoChar* p_fileName)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();
@@ -21,8 +21,8 @@ void GolTxtParser::OpenFile(LegoChar* p_param)
 	LegoS32 dotpos = -1;
 	LegoS32 len = 0;
 
-	while (p_param[len] != '\0') {
-		if (p_param[len] == '.') {
+	while (p_fileName[len] != '\0') {
+		if (p_fileName[len] == '.') {
 			dotpos = len;
 		}
 		len++;
@@ -36,7 +36,7 @@ void GolTxtParser::OpenFile(LegoChar* p_param)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		strcpy(m_filePath, p_param);
+		strcpy(m_filePath, p_fileName);
 		strcat(m_filePath, suffix);
 	}
 	else {
@@ -45,13 +45,17 @@ void GolTxtParser::OpenFile(LegoChar* p_param)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		strcpy(m_filePath, p_param);
+		strcpy(m_filePath, p_fileName);
 	}
 
 	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeTextAppend | c_modeWrite | c_modeCreate, 0x1000);
 	if (code != e_ioSuccess) {
 		FUN_10032580(code);
 	}
+
+	m_unk0x1f0 = 0;
+	m_unk0x1f4 = 0;
+	m_unk0x1f8 = 0;
 }
 
 // FUNCTION: GOLDP 0x1002fba0

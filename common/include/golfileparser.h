@@ -42,7 +42,7 @@ public:
 	virtual void VTable0x40(undefined4) = 0;               // vtable+0x40
 	virtual undefined4 VTable0x44();                       // vtable+0x44
 	virtual undefined4 VTable0x48(undefined4, undefined4); // vtable+0x48
-	virtual void OpenFile(LegoChar*) = 0;                  // vtable+0x4c
+	virtual void OpenFile(LegoChar* p_fileName) = 0;       // vtable+0x4c
 	virtual void VTable0x50(undefined4) = 0;               // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;               // vtable+0x54
 	virtual void WriteFloat(LegoFloat) = 0;                // vtable+0x58

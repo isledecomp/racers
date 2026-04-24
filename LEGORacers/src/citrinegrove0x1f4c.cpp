@@ -1,24 +1,29 @@
 #include "citrinegrove0x1f4c.h"
 
 DECOMP_SIZE_ASSERT(CitrineGrove0x1f4c, 0x1f4c)
+DECOMP_SIZE_ASSERT(MarigoldTrail0x108, 0x108)
 
-// STUB: LEGORACERS 0x00443120
+// FUNCTION: LEGORACERS 0x00443120
 CitrineGrove0x1f4c::CitrineGrove0x1f4c()
 {
-	// TODO
-	STUB(0x443120);
+	FUN_004432d0();
 }
 
-// STUB: LEGORACERS 0x00443210
+// FUNCTION: LEGORACERS 0x00443210
 CitrineGrove0x1f4c::~CitrineGrove0x1f4c()
 {
-	// TODO
-	STUB(0x443210);
+	FUN_004436e0();
 }
 
-// STUB: LEGORACERS 0x00451040
-void CitrineGrove0x1f4c::VTable0x00()
+// FUNCTION: LEGORACERS 0x004432d0
+void CitrineGrove0x1f4c::FUN_004432d0()
+{
+	m_unk0x18c0 = 0;
+}
+
+// STUB: LEGORACERS 0x004436e0
+void CitrineGrove0x1f4c::FUN_004436e0()
 {
 	// TODO
-	STUB(0x451040);
+	STUB(0x4436e0);
 }

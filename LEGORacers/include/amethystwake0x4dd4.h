@@ -32,6 +32,7 @@
 #include "verdanttide0x38.h"
 
 class GolExport;
+class ImaginaryTool0x368;
 
 // VTABLE: LEGORACERS 0x004b05a4
 // SIZE 0x4dd4
@@ -64,7 +65,7 @@ public:
 	void FUN_0042d3e0(LegoU16 p_unk0x04);
 	void FUN_0042d510();
 	void FUN_0042e1f0();
-	LegoS32 FUN_0042e450();
+	LegoBool32 FUN_0042e450();
 	LegoS32 FUN_0042e490();
 	LegoS32 FUN_0042e680();
 
@@ -113,7 +114,8 @@ private:
 	DiamondCloud0xc m_unk0x4d3c;            // 0x4d3c
 	PorcelainVeil0x50 m_unk0x4d48;          // 0x4d48
 	undefined4 m_unk0x4d98[0x30 / 4];       // 0x4d98
-	undefined m_unk0x4dc8[0x4dd0 - 0x4dc8]; // 0x4dc8
+	ImaginaryTool0x368* m_unk0x4dc8;        // 0x4dc8
+	undefined4 m_unk0x4dcc;                 // 0x4dcc
 	undefined4 m_unk0x4dd0;                 // 0x4dd0
 };
 

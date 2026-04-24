@@ -2,6 +2,7 @@
 
 #include "golhashtable.h"
 #include "golstream.h"
+#include "imaginarytool0x368.h"
 
 #include <golerror.h>
 #include <stddef.h>
@@ -182,11 +183,17 @@ void AmethystWake0x4dd4::FUN_0042e1f0()
 	STUB(0x42e1f0);
 }
 
-// STUB: LEGORACERS 0x0042e450
-LegoS32 AmethystWake0x4dd4::FUN_0042e450()
+// FUNCTION: LEGORACERS 0x0042e450
+LegoBool32 AmethystWake0x4dd4::FUN_0042e450()
 {
-	// TODO
-	STUB(0x42e450);
+	PeridotTrace0x4e0* entry = m_unk0x04.m_unk0x258.GetUnk0xa58();
+
+	for (LegoU32 i = 0; i < m_unk0x04.m_unk0x258.GetUnk0x18c0(); i++, entry++) {
+		if (entry->HasUnk0x4b4Flag0x01()) {
+			return TRUE;
+		}
+	}
+
 	return FALSE;
 }
 
@@ -213,11 +220,12 @@ void AmethystWake0x4dd4::VTable0x00()
 	m_unk0x04.m_context->m_unk0x00 = FALSE;
 }
 
-// STUB: LEGORACERS 0x0042e810
-void AmethystWake0x4dd4::VTable0x1c(undefined4)
+// FUNCTION: LEGORACERS 0x0042e810
+void AmethystWake0x4dd4::VTable0x1c(undefined4 p_unk0x04)
 {
-	// TODO
-	STUB(0x42e810);
+	if (m_unk0x4dc8) {
+		m_unk0x4dc8->VTable0x90(p_unk0x04);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042e830

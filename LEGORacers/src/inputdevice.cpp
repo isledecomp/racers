@@ -280,7 +280,7 @@ undefined4 InputDevice::VTable0x54()
 	return m_unk0x1c;
 }
 
-// FUNCTION: LEGORACERS 0x00451080
+// FUNCTION: LEGORACERS 0x00451080 FOLDED
 undefined4 InputDevice::VTable0x20()
 {
 	return 16;

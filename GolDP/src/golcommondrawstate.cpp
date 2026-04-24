@@ -6,7 +6,7 @@ DECOMP_SIZE_ASSERT(GolCommonDrawState, 0x20)
 GolCommonDrawState::GolCommonDrawState()
 {
 	m_unk0x18 = 0;
-	m_hashTable = NULL;
+	m_unk0x1c = NULL;
 }
 
 // FUNCTION: GOLDP 0x100184e0

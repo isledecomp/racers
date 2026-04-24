@@ -108,6 +108,7 @@ add_library(goldp SHARED
   GolDP/src/floatybarge0x4c.cpp
   GolDP/src/slatepeak0x58.cpp
   GolDP/src/azureridge0x38.cpp
+  GolDP/src/bronzefalcon0xc8770.cpp
   util/decomp.cpp
   ${COMMON_SOURCES}
 )
@@ -145,6 +146,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/amberleaf0x10.cpp
   LEGORacers/src/amethystwake0x4dd4.cpp
   LEGORacers/src/aquacoral0x37b8.cpp
+  LEGORacers/src/azurespark0x0c.cpp
+  LEGORacers/src/crimsonsun0xa4.cpp
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp
   LEGORacers/src/glassstream0x94.cpp

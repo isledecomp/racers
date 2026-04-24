@@ -1,11 +1,10 @@
 #ifndef GOLDP_GOLCOMMONSTATE_H
 #define GOLDP_GOLCOMMONSTATE_H
 
+#include "bronzefalcon0xc8770.h"
 #include "compat.h"
 #include "decomp.h"
 #include "goldrawstate.h"
-
-class GolHashTable;
 
 // VTABLE: GOLDP 0x10056994
 // SIZE 0x20
@@ -49,8 +48,8 @@ public:
 	virtual undefined4 VTable0xb0();                                          // vtable+0xb0
 	virtual undefined4 VTable0xb4();                                          // vtable+0xb4
 
-	undefined4 m_unk0x18;      // 0x18
-	GolHashTable* m_hashTable; // 0x1c
+	undefined4 m_unk0x18;           // 0x18
+	BronzeFalcon0xc8770* m_unk0x1c; // 0x1c
 };
 
 #endif // GOLDP_GOLCOMMONSTATE_H

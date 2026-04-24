@@ -22,7 +22,7 @@ void GlassShard0x3b8::FUN_004223c0()
 }
 
 // STUB: LEGORACERS 0x00422420
-void GlassShard0x3b8::FUN_00422420(GolHashTable*, GolExport*, undefined4, undefined4)
+void GlassShard0x3b8::FUN_00422420(BronzeFalcon0xc8770*, GolExport*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x422420);

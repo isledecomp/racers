@@ -52,7 +52,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 			hashTable->SetUnk0x1c(hashTable->FUN_0044c810("GAMEDATA\\COMMON"));
 		}
 		m_unk0x3400.FUN_00422420(
-			p_context->m_unk0x04->GetHashTable(),
+			p_context->m_unk0x04->GetUnk0x80c(),
 			p_context->m_unk0x04->GetGolExport(),
 			p_context->m_unk0x18,
 			p_context->m_unk0x3c

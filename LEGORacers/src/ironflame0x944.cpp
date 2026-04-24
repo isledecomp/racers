@@ -126,7 +126,7 @@ void IronFlame0x944::VTable0x2c()
 {
 	GolDrawState* drawState = m_golDrawState;
 	m_unk0x808 = 0;
-	m_hashTable = NULL;
+	m_unk0x80c = NULL;
 
 	if (drawState && (drawState->GetFlags() & GolDrawState::c_flagBit0)) {
 		drawState->VTable0x48();
@@ -299,7 +299,7 @@ LegoS32 IronFlame0x944::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, Leg
 	}
 
 	GolCommonDrawState* commonState = static_cast<GolCommonDrawState*>(m_golDrawState);
-	IronFlame0x944::m_hashTable = commonState->m_hashTable;
+	IronFlame0x944::m_unk0x80c = commonState->m_unk0x1c;
 	m_unk0x808 = (undefined4) m_golDrawState->m_unk0x14;
 
 	if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {

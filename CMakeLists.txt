@@ -146,7 +146,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/amberleaf0x10.cpp
   LEGORacers/src/amethystwake0x4dd4.cpp
   LEGORacers/src/aquacoral0x37b8.cpp
-  LEGORacers/src/azurespark0x0c.cpp
+  LEGORacers/src/stackoflegou16.cpp
   LEGORacers/src/crimsonsun0xa4.cpp
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp

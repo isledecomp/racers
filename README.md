@@ -6,7 +6,7 @@ This project is modeled after the [LEGO Island decompilation](https://github.com
 
 ## Status
 
-<img src="https://isledecomp.github.io/racers/LEGORACERSPROGRESS.SVG" width="50%"><img src="https://isledecomp.github.io/racers/GOLDPPROGRESS.SVG" width="50%">
+<a href="https://isledecomp.github.io/racers/LEGORACERSPROGRESS.HTML"><img src="https://isledecomp.github.io/racers/LEGORACERSPROGRESS.SVG" width="50%"></a><a href="https://isledecomp.github.io/racers/GOLDPPROGRESS.HTML"><img src="https://isledecomp.github.io/racers/GOLDPPROGRESS.SVG" width="50%"></a>
 
 This project is in its early stages. `LEGORacers.exe` and `GolDP.dll` are being decompiled with the goal of eventually reaching full accuracy against the original binaries. Contributions are welcome.
 

@@ -110,8 +110,8 @@ jobs:
     - name: Summarize Accuracy
       shell: bash
       run: |
-        reccmp-reccmp -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png --target LEGORACERS --total 3986 --nolib --json LEGORACERSPROGRESS.json
-        reccmp-reccmp -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png --target GOLDP --total 1071 --nolib --json GOLDPPROGRESS.json
+        reccmp-reccmp -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png --target LEGORACERS --total 3986 --nolib --json LEGORACERSPROGRESS.json --html LEGORACERSPROGRESS.HTML
+        reccmp-reccmp -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png --target GOLDP --total 1071 --nolib --json GOLDPPROGRESS.json --html GOLDPPROGRESS.HTML
 
     - name: Compare Accuracy With Current Master
       shell: bash
@@ -192,6 +192,8 @@ jobs:
         mkdir -p progress
         cp LEGORACERSPROGRESS.SVG progress/
         cp GOLDPPROGRESS.SVG progress/
+        cp LEGORACERSPROGRESS.HTML progress/
+        cp GOLDPPROGRESS.HTML progress/
 
     - uses: actions/upload-pages-artifact@v3
       with:

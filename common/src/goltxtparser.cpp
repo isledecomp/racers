@@ -58,7 +58,7 @@ void GolTxtParser::OpenFile(LegoChar* p_param)
 // FUNCTION: LEGORACERS 0x0044a340
 void GolTxtParser::VTable0x50(undefined4 p_token)
 {
-	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -100,8 +100,7 @@ void GolTxtParser::VTable0x54(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x0044a470
 void GolTxtParser::WriteFloat(LegoFloat p_param)
 {
-	// TODO: style fix?
-	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -115,8 +114,7 @@ void GolTxtParser::WriteFloat(LegoFloat p_param)
 // FUNCTION: LEGORACERS 0x0044a4f0
 void GolTxtParser::WriteInt4(undefined4 p_param)
 {
-	// TODO: style fix?
-	if (m_unk0x1f4 + sizeof(m_unk0x84) >= sizeof(m_unk0xa4) - 1) {
+	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -131,8 +129,7 @@ void GolTxtParser::WriteInt4(undefined4 p_param)
 void GolTxtParser::WriteString(LegoChar* p_str)
 {
 	LegoS32 len = strlen(p_str);
-	// TODO: style fix?
-	if (len + 4 >= sizeof(m_unk0xa4) - 1) {
+	if (len + 4 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -159,7 +156,7 @@ void GolTxtParser::VTable0x68()
 // FUNCTION: LEGORACERS 0x0044a640
 void GolTxtParser::VTable0x6c()
 {
-	if (m_unk0x1f4 + 2 >= sizeof(m_unk0xa4) - 1) {
+	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -171,7 +168,7 @@ void GolTxtParser::VTable0x6c()
 // FUNCTION: LEGORACERS 0x0044a680
 void GolTxtParser::VTable0x70()
 {
-	if (m_unk0x1f4 + 2 >= sizeof(m_unk0xa4) - 1) {
+	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 
@@ -183,8 +180,7 @@ void GolTxtParser::VTable0x70()
 // FUNCTION: LEGORACERS 0x0044a6c0
 void GolTxtParser::VTable0x74(undefined4 p_param)
 {
-	// TODO: style fix?
-	if (p_param + m_unk0x1f4 + 1 >= sizeof(m_unk0xa4) - 1) {
+	if (p_param + m_unk0x1f4 + 1 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();
 	}
 

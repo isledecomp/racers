@@ -32,7 +32,7 @@ public:
 
 protected:
 	undefined4 m_unk0x1f0; // 0x1f0
-	undefined4 m_unk0x1f4; // 0x1f4
+	LegoS32 m_unk0x1f4;    // 0x1f4
 	undefined4 m_unk0x1f8; // 0x1f8
 };
 

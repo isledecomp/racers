@@ -2,7 +2,6 @@
 #define AMETHYSTWAKE0X4DD4_H
 
 #include "aquamarinespirit0x3c.h"
-#include "azurespark0x0c.h"
 #include "bronzefalcon0xc8770.h"
 #include "cactusinterface0x4.h"
 #include "chromespike0x4.h"
@@ -25,6 +24,7 @@
 #include "porcelainveil0x50.h"
 #include "rosequartzshine0x14.h"
 #include "sapphirereef0x2030.h"
+#include "stackoflegou16.h"
 #include "tanzanitewisp0x88.h"
 #include "topazburst0x14.h"
 #include "turquoiseglow0x80.h"
@@ -74,7 +74,7 @@ private:
 	class VioletCurrent0x4bc8 {
 	public:
 		LegoRacers::Context* m_context;   // 0x00
-		AzureSpark0x0c m_unk0x04;         // 0x04
+		StackOfLegoU16 m_unk0x04;         // 0x04
 		OnyxBreeze0x248 m_unk0x10;        // 0x10
 		CitrineGrove0x1f4c m_unk0x258;    // 0x258
 		TopazBurst0x14 m_unk0x21a4;       // 0x21a4

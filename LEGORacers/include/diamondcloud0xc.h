@@ -2,6 +2,7 @@
 #define DIAMONDCLOUD0XC_H
 
 #include "decomp.h"
+#include "types.h"
 
 // SIZE 0xc
 class DiamondCloud0xc {
@@ -10,7 +11,12 @@ public:
 	~DiamondCloud0xc();
 
 private:
-	undefined m_unk0x00[0xc - 0x00]; // 0x00
+	void Reset();
+	LegoBool32 FUN_0046e950();
+
+	undefined4 m_unk0x00; // 0x00
+	undefined4 m_unk0x04; // 0x04
+	undefined4 m_unk0x08; // 0x08
 };
 
 #endif // DIAMONDCLOUD0XC_H

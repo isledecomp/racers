@@ -173,6 +173,26 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarynotion0x290.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
+  LEGORacers/src/onyxbreeze0x248.cpp
+  LEGORacers/src/citrinegrove0x1f4c.cpp
+  LEGORacers/src/topazburst0x14.cpp
+  LEGORacers/src/moonstoneglade0x3c.cpp
+  LEGORacers/src/sapphirereef0x2030.cpp
+  LEGORacers/src/verdanttide0x38.cpp
+  LEGORacers/src/turquoiseglow0x80.cpp
+  LEGORacers/src/aquamarinespirit0x3c.cpp
+  LEGORacers/src/malachitecrown0x34.cpp
+  LEGORacers/src/lapissigil0x14.cpp
+  LEGORacers/src/rosequartzshine0x14.cpp
+  LEGORacers/src/mithrilchain0x8.cpp
+  LEGORacers/src/lavendervault0x764.cpp
+  LEGORacers/src/garnetflare0x60.cpp
+  LEGORacers/src/tanzanitewisp0x88.cpp
+  LEGORacers/src/chromespike0x4.cpp
+  LEGORacers/src/coppercrest0x40.cpp
+  LEGORacers/src/corundumpeak0x14.cpp
+  LEGORacers/src/diamondcloud0xc.cpp
+  LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/joystickdevice.cpp
   LEGORacers/src/keyboarddevice.cpp

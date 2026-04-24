@@ -8,6 +8,7 @@
 class AzureSpark0x0c {
 public:
 	AzureSpark0x0c();
+	~AzureSpark0x0c();
 
 	LegoS32 Reset();
 	LegoS32 FUN_0047fa00(LegoS32 p_capacity);

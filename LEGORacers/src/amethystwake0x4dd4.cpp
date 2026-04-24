@@ -31,25 +31,30 @@ void AmethystWake0x4dd4::FUN_0042b1e0(LegoRacers::Context* p_context)
 	}
 }
 
-// STUB: LEGORACERS 0x0042c5d0
+// FUNCTION: LEGORACERS 0x0042c5d0
 AmethystWake0x4dd4::AmethystWake0x4dd4()
 {
-	// TODO
-	STUB(0x42c5d0);
+	FUN_0042cb00();
 }
 
-// STUB: LEGORACERS 0x0042c910
+// FUNCTION: LEGORACERS 0x0042c910
 AmethystWake0x4dd4::~AmethystWake0x4dd4()
 {
+	FUN_0042ccc0();
+}
+
+// STUB: LEGORACERS 0x0042cb00
+void AmethystWake0x4dd4::FUN_0042cb00()
+{
 	// TODO
-	STUB(0x42c910);
+	STUB(0x42cb00);
 }
 
 // FUNCTION: LEGORACERS 0x0042cb90
 LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 {
 	LegoBool32 flag = FALSE;
-	m_context = p_context;
+	m_unk0x04.m_context = p_context;
 	m_unk0x4cd4 = p_context->m_unk0x04->GetGolExport();
 	m_unk0x4cd8 = p_context->m_unk0x04->GetUnk0x80c();
 
@@ -60,7 +65,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 
 	FUN_0042d020();
 	FUN_0042d0e0();
-	FUN_0042d300(m_unk0x1b42, TRUE);
+	FUN_0042d300(m_unk0x04.m_unk0x258.GetUnk0x18e6(), TRUE);
 	FUN_0042d1e0();
 	FUN_0042e1f0();
 	FUN_0042cde0();
@@ -77,17 +82,17 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 
 	m_unk0x4cd8->VTable0x34(7, g_unk0x4beb78);
 
-	m_unk0x08.FUN_0047fa00(10);
-	m_unk0x08.FUN_0047fa70(m_context->m_unk0x1c);
+	m_unk0x04.m_unk0x04.FUN_0047fa00(10);
+	m_unk0x04.m_unk0x04.FUN_0047fa70(m_unk0x04.m_context->m_unk0x1c);
 
 	if (flag && FUN_0042e450()) {
-		m_unk0x08.FUN_0047fa70(48);
+		m_unk0x04.m_unk0x04.FUN_0047fa70(48);
 	}
 
-	LegoU16 top = m_unk0x08.FUN_0047fac0();
+	LegoU16 top = m_unk0x04.m_unk0x04.FUN_0047fac0();
 	FUN_0042d3e0(top);
 
-	m_unk0x4bd0.FUN_00468af0(m_unk0x4d98, 2, m_unk0x4c74);
+	m_unk0x4bd0.FUN_00468af0(m_unk0x4d98, 2, &m_unk0x4c74);
 	return 1;
 }
 
@@ -205,7 +210,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042e680()
 void AmethystWake0x4dd4::VTable0x00()
 {
 	m_unk0x4dd0 = 0;
-	m_context->m_unk0x00 = FALSE;
+	m_unk0x04.m_context->m_unk0x00 = FALSE;
 }
 
 // STUB: LEGORACERS 0x0042e810

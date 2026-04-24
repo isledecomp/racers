@@ -9,6 +9,13 @@ AzureSpark0x0c::AzureSpark0x0c()
 	STUB(0x47f9d0);
 }
 
+// STUB: LEGORACERS 0x0047f9e0
+AzureSpark0x0c::~AzureSpark0x0c()
+{
+	// TODO
+	STUB(0x47f9e0);
+}
+
 // STUB: LEGORACERS 0x0047f9f0
 LegoS32 AzureSpark0x0c::Reset()
 {

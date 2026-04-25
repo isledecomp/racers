@@ -28,12 +28,9 @@ void GolFatalErrorMessage(const LegoChar* p_message, const LegoChar* p_file, Leg
 }
 
 // FUNCTION: GOLDP 0x100070f0
-// STUB: LEGORACERS 0x0042f8f0
+// FUNCTION: LEGORACERS 0x0042f8f0
 void GolFatalError(GolErrorCode p_code, const LegoChar* p_file, LegoS32 p_line)
 {
-#ifdef BUILDING_LEGORACERS
-	STUB(0x42f8f0);
-#elif defined(BUILDING_GOL)
 	const LegoChar* message;
 
 	switch (p_code) {
@@ -55,11 +52,19 @@ void GolFatalError(GolErrorCode p_code, const LegoChar* p_file, LegoS32 p_line)
 	case c_golErrorCriticalResource:
 		message = "Critical resource busy";
 		break;
+#ifdef BUILDING_LEGORACERS
+	case c_golErrorAssertion:
+		message = "Assertion Failed";
+		break;
+#endif
 	default:
 		message = "Unknown error condition occured";
 		break;
 	}
 
+#ifdef BUILDING_LEGORACERS
+	GolFatalErrorMessage(message, p_file, p_line);
+#elif defined(BUILDING_GOL)
 	g_fatalErrorMessage(message, p_file, p_line);
 #endif
 }

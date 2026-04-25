@@ -70,7 +70,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 	p_context->m_golApp->ClearFileSourceDirectoryCaches();
 
 	if (!p_context->m_unk0x24) {
-		return m_unk0x04.FUN_0041ed10(m_context, &m_unk0x98);
+		return m_unk0x04.Initialize(m_context, &m_unk0x98);
 	}
 
 	return FUN_0042c4e0();

@@ -151,7 +151,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp
   LEGORacers/src/glassstream0x94.cpp
-  LEGORacers/src/celestialforge0x90.cpp
+  LEGORacers/src/celestialforge0x48.cpp
   LEGORacers/src/opalhaven0xf4.cpp
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/rubyhaze0x08.cpp

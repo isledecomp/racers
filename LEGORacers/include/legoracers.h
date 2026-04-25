@@ -16,34 +16,35 @@ public:
 	// SIZE 0x12b0
 	class Context {
 	public:
-		LegoBool32 m_unk0x00;                 // 0x00
-		Win32GolApp* m_golApp;                // 0x04
-		IndigoStar0x18* m_unk0x08;            // 0x08
-		LegoFloat m_unk0x0c;                  // 0x0c
-		LegoFloat m_unk0x10;                  // 0x10
-		LegoFloat m_unk0x14;                  // 0x14
-		undefined4 m_unk0x18;                 // 0x18
-		LegoU16 m_unk0x1c;                    // 0x1c
-		undefined m_unk0x1e;                  // 0x1e
-		undefined m_unk0x1f;                  // 0x1f
-		undefined m_unk0x20[0x24 - 0x20];     // 0x20
-		undefined4 m_unk0x24;                 // 0x24
-		undefined m_unk0x28[0x2d - 0x28];     // 0x28
-		LegoChar m_unk0x2d[8];                // 0x2d
-		undefined m_unk0x35[0x38 - 0x35];     // 0x35
-		undefined4 m_unk0x38;                 // 0x38
-		undefined4 m_unk0x3c;                 // 0x3c
-		LegoChar m_unk0x40[8];                // 0x40
-		LegoChar m_unk0x48[8];                // 0x48
-		undefined m_unk0x50[0xd8 - 0x50];     // 0x50
-		undefined4 m_unk0xd8;                 // 0xd8
-		undefined m_unk0xdc[0x108 - 0xdc];    // 0xdc
-		ScarletNova0x5c m_unk0x108[5];        // 0x108
-		undefined m_unk0x2d4[0x32c - 0x2d4];  // 0x2d4
-		undefined4 m_unk0x32c;                // 0x32c
-		undefined m_unk0x330[0x398 - 0x330];  // 0x330
-		undefined4 m_unk0x398;                // 0x398
-		undefined m_unk0x39c[0x12b0 - 0x39c]; // 0x39c
+		LegoBool32 m_unk0x00;                       // 0x00
+		Win32GolApp* m_golApp;                      // 0x04
+		IndigoStar0x18* m_unk0x08;                  // 0x08
+		LegoFloat m_unk0x0c;                        // 0x0c
+		LegoFloat m_unk0x10;                        // 0x10
+		LegoFloat m_unk0x14;                        // 0x14
+		undefined4 m_unk0x18;                       // 0x18
+		LegoU16 m_unk0x1c;                          // 0x1c
+		undefined m_unk0x1e;                        // 0x1e
+		undefined m_unk0x1f;                        // 0x1f
+		undefined m_unk0x20[0x24 - 0x20];           // 0x20
+		undefined4 m_unk0x24;                       // 0x24
+		undefined m_unk0x28[0x2d - 0x28];           // 0x28
+		LegoChar m_unk0x2d[8];                      // 0x2d
+		undefined m_unk0x35[0x38 - 0x35];           // 0x35
+		undefined4 m_unk0x38;                       // 0x38
+		undefined4 m_unk0x3c;                       // 0x3c
+		LegoChar m_unk0x40[8];                      // 0x40
+		LegoChar m_unk0x48[8];                      // 0x48
+		undefined m_unk0x50[0xd8 - 0x50];           // 0x50
+		undefined4 m_unk0xd8;                       // 0xd8
+		undefined m_unk0xdc[0xee - 0xdc];           // 0xdc
+		LegoChar m_gameDataDirectory[0x108 - 0xee]; // 0xee
+		ScarletNova0x5c m_unk0x108[5];              // 0x108
+		undefined m_unk0x2d4[0x32c - 0x2d4];        // 0x2d4
+		undefined4 m_unk0x32c;                      // 0x32c
+		undefined m_unk0x330[0x398 - 0x330];        // 0x330
+		undefined4 m_unk0x398;                      // 0x398
+		undefined m_unk0x39c[0x12b0 - 0x39c];       // 0x39c
 	};
 
 	enum {

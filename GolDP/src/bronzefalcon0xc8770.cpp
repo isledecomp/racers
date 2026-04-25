@@ -105,6 +105,11 @@ void BronzeFalcon0xc8770::FUN_10028ae0(SmallCocoon0xc* p_param)
 	STUB(0x10028ae0);
 }
 
+// FUNCTION: GOLDP 0x10029920 FOLDED
+void BronzeFalcon0xc8770::VTable0x38()
+{
+}
+
 // STUB: GOLDP 0x10029970
 void BronzeFalcon0xc8770::VTable0x24()
 {

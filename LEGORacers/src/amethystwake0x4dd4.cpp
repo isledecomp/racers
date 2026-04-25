@@ -25,7 +25,7 @@ void AmethystWake0x4dd4::FUN_0042b1e0(LegoRacers::Context* p_context)
 
 	g_unk0x4c4918->FUN_0042cb90(p_context);
 	g_unk0x4c4918->FUN_0042d510();
-	g_unk0x4c4918->FUN_0042ccc0();
+	g_unk0x4c4918->Shutdown();
 
 	if (g_unk0x4c4918) {
 		delete g_unk0x4c4918;
@@ -41,7 +41,7 @@ AmethystWake0x4dd4::AmethystWake0x4dd4()
 // FUNCTION: LEGORACERS 0x0042c910
 AmethystWake0x4dd4::~AmethystWake0x4dd4()
 {
-	FUN_0042ccc0();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0042cb00
@@ -107,12 +107,34 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 	return 1;
 }
 
-// STUB: LEGORACERS 0x0042ccc0
-LegoS32 AmethystWake0x4dd4::FUN_0042ccc0()
+// FUNCTION: LEGORACERS 0x0042ccc0
+LegoS32 AmethystWake0x4dd4::Shutdown()
 {
-	// TODO
-	STUB(0x42ccc0);
-	return 0;
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(NULL);
+	}
+
+	if (m_unk0x04.m_context) {
+		if (m_unk0x4dc8) {
+			m_unk0x4dc8->VTable0x74();
+
+			if (m_unk0x4dc8) {
+				delete m_unk0x4dc8;
+			}
+		}
+
+		m_unk0x4c74.VTable0x0c();
+		m_unk0x4bd0.FUN_00468ab0();
+		FUN_0042d260();
+		FUN_0042ceb0();
+		FUN_0042cef0();
+		FUN_0042cf90();
+		FUN_0042d080();
+		m_unk0x4cd8->VTable0x38();
+		Reset();
+	}
+
+	return m_unk0x04.m_context == NULL;
 }
 
 // STUB: LEGORACERS 0x0042cd60
@@ -129,6 +151,13 @@ void AmethystWake0x4dd4::FUN_0042cde0()
 	STUB(0x42cde0);
 }
 
+// STUB: LEGORACERS 0x0042ceb0
+void AmethystWake0x4dd4::FUN_0042ceb0()
+{
+	// TODO
+	STUB(0x42ceb0);
+}
+
 // STUB: LEGORACERS 0x0042ced0
 void AmethystWake0x4dd4::FUN_0042ced0()
 {
@@ -136,11 +165,25 @@ void AmethystWake0x4dd4::FUN_0042ced0()
 	STUB(0x42ced0);
 }
 
+// STUB: LEGORACERS 0x0042cef0
+void AmethystWake0x4dd4::FUN_0042cef0()
+{
+	// TODO
+	STUB(0x42cef0);
+}
+
 // STUB: LEGORACERS 0x0042cf00
 void AmethystWake0x4dd4::FUN_0042cf00()
 {
 	// TODO
 	STUB(0x42cf00);
+}
+
+// STUB: LEGORACERS 0x0042cf90
+void AmethystWake0x4dd4::FUN_0042cf90()
+{
+	// TODO
+	STUB(0x42cf90);
 }
 
 // FUNCTION: LEGORACERS 0x0042d020
@@ -157,6 +200,13 @@ void AmethystWake0x4dd4::FUN_0042d020()
 	m_unk0x4cdc->VTable0x18(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
 }
 
+// STUB: LEGORACERS 0x0042d080
+void AmethystWake0x4dd4::FUN_0042d080()
+{
+	// TODO
+	STUB(0x42d080);
+}
+
 // STUB: LEGORACERS 0x0042d0e0
 void AmethystWake0x4dd4::FUN_0042d0e0()
 {
@@ -169,6 +219,13 @@ void AmethystWake0x4dd4::FUN_0042d1e0()
 {
 	// TODO
 	STUB(0x42d1e0);
+}
+
+// STUB: LEGORACERS 0x0042d260
+void AmethystWake0x4dd4::FUN_0042d260()
+{
+	// TODO
+	STUB(0x42d260);
 }
 
 // STUB: LEGORACERS 0x0042d300

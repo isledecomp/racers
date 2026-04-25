@@ -53,7 +53,7 @@ public:
 
 	void Reset();
 	LegoS32 FUN_0042cb90(LegoRacers::Context* p_context);
-	LegoS32 FUN_0042ccc0();
+	LegoS32 Shutdown();
 	void FUN_0042cd60();
 	void FUN_0042cde0();
 	void FUN_0042ced0();
@@ -91,6 +91,12 @@ private:
 		GarnetFlare0x60 m_unk0x4ae0;      // 0x4ae0
 		TanzaniteWisp0x88 m_unk0x4b40;    // 0x4b40
 	};
+
+	void FUN_0042ceb0();
+	void FUN_0042cef0();
+	void FUN_0042cf90();
+	void FUN_0042d080();
+	void FUN_0042d260();
 
 	VioletCurrent0x4bc8 m_unk0x04;          // 0x04
 	ChromeSpike0x4 m_unk0x4bcc;             // 0x4bcc

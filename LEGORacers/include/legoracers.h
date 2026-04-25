@@ -16,6 +16,12 @@ public:
 	// SIZE 0x12b0
 	class Context {
 	public:
+		enum {
+			c_flagBit1 = 1 << 1,
+			c_flagBit3 = 1 << 3,
+			c_flagBit7 = 1 << 7,
+		};
+
 		LegoBool32 m_unk0x00;                       // 0x00
 		Win32GolApp* m_golApp;                      // 0x04
 		IndigoStar0x18* m_unk0x08;                  // 0x08

@@ -27,10 +27,39 @@ void GolFatalErrorMessage(const LegoChar* p_message, const LegoChar* p_file, Leg
 #endif
 }
 
-// STUB: GOLDP 0x100070f0
+// FUNCTION: GOLDP 0x100070f0
 // STUB: LEGORACERS 0x0042f8f0
 void GolFatalError(GolErrorCode p_code, const LegoChar* p_file, LegoS32 p_line)
 {
-	// TODO
+#ifdef BUILDING_LEGORACERS
 	STUB(0x42f8f0);
+#elif defined(BUILDING_GOL)
+	const LegoChar* message;
+
+	switch (p_code) {
+	case c_golErrorInvalidCondition:
+		message = "Invalid error condition";
+		break;
+	case c_golErrorGeneral:
+		message = "General error occurred";
+		break;
+	case c_golErrorInvalidParameter:
+		message = "Invalid parameter detected";
+		break;
+	case c_golErrorInvalidValue:
+		message = "Invalid value detected";
+		break;
+	case c_golErrorOutOfMemory:
+		message = "Out of memory error occured";
+		break;
+	case c_golErrorCriticalResource:
+		message = "Critical resource busy";
+		break;
+	default:
+		message = "Unknown error condition occured";
+		break;
+	}
+
+	g_fatalErrorMessage(message, p_file, p_line);
+#endif
 }

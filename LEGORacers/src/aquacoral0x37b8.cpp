@@ -20,7 +20,7 @@ void AquaCoral0x37b8::FUN_0042b130(LegoRacers::Context* p_context)
 	}
 
 	g_unk0x4c4914->FUN_0042c280(p_context);
-	g_unk0x4c4914->FUN_0042c330();
+	g_unk0x4c4914->Run();
 	g_unk0x4c4914->FUN_0042c380();
 
 	if (g_unk0x4c4914) {
@@ -44,7 +44,7 @@ AquaCoral0x37b8::~AquaCoral0x37b8()
 LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
-	m_context->m_unk0x1e &= ~8;
+	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit3;
 
 	if (p_context->m_unk0x24 == 2) {
 		GolHashTable* hashTable = g_hashTable;
@@ -59,7 +59,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 		);
 	}
 
-	if (p_context->m_unk0x1e & 2) {
+	if (p_context->m_unk0x1e & LegoRacers::Context::c_flagBit1) {
 		p_context->m_unk0x1c = 3;
 	}
 	else {
@@ -76,11 +76,18 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 	return FUN_0042c4e0();
 }
 
-// STUB: LEGORACERS 0x0042c330
-void AquaCoral0x37b8::FUN_0042c330()
+// FUNCTION: LEGORACERS 0x0042c330
+void AquaCoral0x37b8::Run()
 {
-	// TODO
-	STUB(0x42c330);
+	if (!m_context->m_unk0x24) {
+		m_unk0x04.Run();
+		m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
+		return;
+	}
+
+	m_unk0x98.Run();
+	m_unk0x3400.FUN_00422670();
+	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
 }
 
 // STUB: LEGORACERS 0x0042c380

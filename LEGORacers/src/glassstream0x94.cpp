@@ -49,3 +49,10 @@ void GlassStream0x94::Shutdown()
 	m_unk0x04.FUN_004402a0();
 	Reset();
 }
+
+// STUB: LEGORACERS 0x0041ed80
+void GlassStream0x94::Run()
+{
+	// TODO
+	STUB(0x41ed80);
+}

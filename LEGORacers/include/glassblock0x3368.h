@@ -13,7 +13,8 @@ public:
 	GlassBlock0x3368();
 	~GlassBlock0x3368();
 	void VTable0x00() override; // vtable+0x00
-	virtual void VTable0x30();  // vtable+0x30
+	void Run();
+	virtual void VTable0x30(); // vtable+0x30
 
 private:
 	undefined4* m_unk0x04;                  // 0x04

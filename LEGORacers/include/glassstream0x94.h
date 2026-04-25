@@ -23,6 +23,7 @@ public:
 	void Reset();
 	LegoS32 Initialize(LegoRacers::Context* p_context, GlassBlock0x3368* p_block);
 	void Shutdown();
+	void Run();
 
 private:
 	CelestialForge0x48 m_unk0x04;   // 0x04

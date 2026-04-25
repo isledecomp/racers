@@ -17,7 +17,7 @@ public:
 	static void FUN_0042b130(LegoRacers::Context* p_context);
 
 	LegoS32 FUN_0042c280(LegoRacers::Context* p_context);
-	void FUN_0042c330();
+	void Run();
 	void FUN_0042c380();
 
 private:

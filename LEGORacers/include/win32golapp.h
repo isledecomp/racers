@@ -4,9 +4,9 @@
 #include "bronzefalcon0xc8770.h"
 #include "compat.h"
 #include "decomp.h"
-#include "directinputmanager.h"
 #include "gol.h"
 #include "golapp.h"
+#include "input/directinputmanager.h"
 #include "racers_resource.h"
 #include "types.h"
 

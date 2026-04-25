@@ -1,8 +1,8 @@
-#include "inputmanager.h"
+#include "input/inputmanager.h"
 
-#include "joystickdevice.h"
-#include "keyboarddevice.h"
-#include "mousedevice.h"
+#include "input/joystickdevice.h"
+#include "input/keyboarddevice.h"
+#include "input/mousedevice.h"
 
 #include <string.h>
 
@@ -42,16 +42,16 @@ void InputManager::RestoreSuspendedDevices()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_suspendedJoysticks); i++) {
 		if (m_suspendedJoysticks[i]) {
-			m_suspendedJoysticks[i] = !m_joysticks[i]->VTable0x50();
+			m_suspendedJoysticks[i] = !m_joysticks[i]->Acquire();
 		}
 	}
 
 	if (m_keyboardSuspended && m_keyboard) {
-		m_keyboardSuspended = !m_keyboard->VTable0x50();
+		m_keyboardSuspended = !m_keyboard->Acquire();
 	}
 
 	if (m_mouseSuspended && m_mouse) {
-		m_mouseSuspended = !m_mouse->VTable0x50();
+		m_mouseSuspended = !m_mouse->Acquire();
 	}
 }
 
@@ -59,19 +59,19 @@ void InputManager::RestoreSuspendedDevices()
 void InputManager::SuspendActiveDevices()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_joysticks); i++) {
-		if (m_joysticks[i] && m_joysticks[i]->VTable0x18()) {
+		if (m_joysticks[i] && m_joysticks[i]->IsAcquired()) {
 			m_suspendedJoysticks[i] = TRUE;
-			m_joysticks[i]->VTable0x54();
+			m_joysticks[i]->Unacquire();
 		}
 	}
 
-	if (m_keyboard && m_keyboard->VTable0x18()) {
+	if (m_keyboard && m_keyboard->IsAcquired()) {
 		m_keyboardSuspended = TRUE;
-		m_keyboard->VTable0x54();
+		m_keyboard->Unacquire();
 	}
 
-	if (m_mouse && m_mouse->VTable0x18()) {
+	if (m_mouse && m_mouse->IsAcquired()) {
 		m_mouseSuspended = TRUE;
-		m_mouse->VTable0x54();
+		m_mouse->Unacquire();
 	}
 }

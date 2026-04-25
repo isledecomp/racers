@@ -1,4 +1,4 @@
-#include "mousedevice.h"
+#include "input/mousedevice.h"
 
 DECOMP_SIZE_ASSERT(MouseInputDevice, 0xe8)
 
@@ -9,13 +9,13 @@ MouseInputDevice::MouseInputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044f570
-LegoS32 MouseInputDevice::VTable0x1c()
+LegoS32 MouseInputDevice::GetButtonCount()
 {
 	return 4;
 }
 
 // FUNCTION: LEGORACERS 0x0044f580
-undefined4 MouseInputDevice::VTable0x20()
+LegoS32 MouseInputDevice::GetAxisCount()
 {
 	return 3;
 }
@@ -36,9 +36,9 @@ MouseInputDevice::~MouseInputDevice()
 void MouseInputDevice::Init()
 {
 	DirectInputDevice::Init();
-	// m_unk0xcc and m_unk0xd8 are contiguous; zero both in a single call so MSVC fuses the stores.
-	::memset(m_unk0xcc, 0, sizeof(m_unk0xcc) + sizeof(m_unk0xd8));
-	::memset(m_unk0xdc, 0, sizeof(m_unk0xdc));
+	// These arrays are contiguous; zero both in a single call so MSVC fuses the stores.
+	::memset(m_rawAxisValues, 0, sizeof(m_rawAxisValues) + sizeof(m_buttonStates));
+	::memset(m_axisValues, 0, sizeof(m_axisValues));
 }
 
 // FUNCTION: LEGORACERS 0x0044f640
@@ -48,12 +48,12 @@ LegoBool32 MouseInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_param
 	p_params->m_dataFormat = &c_dfDIMouse;
 
 	if (DirectInputDevice::CreateDevice(p_params)) {
-		m_unk0x90 = 0x65;
+		m_deviceId = 0x65;
 
-		HRESULT result1 = m_device->EnumObjects(FUN_0044f6d0, this, DIDFT_PSHBUTTON | DIDFT_TGLBUTTON);
-		HRESULT result2 = m_device->EnumObjects(FUN_0044f700, this, DIDFT_RELAXIS | DIDFT_ABSAXIS);
+		HRESULT result1 = m_device->EnumObjects(StoreButtonNameCallback, this, DIDFT_PSHBUTTON | DIDFT_TGLBUTTON);
+		HRESULT result2 = m_device->EnumObjects(StoreAxisNameCallback, this, DIDFT_RELAXIS | DIDFT_ABSAXIS);
 
-		if (!FUN_00450170(result1) && !FUN_00450170(result2)) {
+		if (!TranslateDirectInputResult(result1) && !TranslateDirectInputResult(result2)) {
 			return TRUE;
 		}
 	}
@@ -62,62 +62,62 @@ LegoBool32 MouseInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_param
 }
 
 // FUNCTION: LEGORACERS 0x0044f6d0
-BOOL MouseInputDevice::FUN_0044f6d0(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL MouseInputDevice::StoreButtonNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
 	MouseInputDevice* mouse = static_cast<MouseInputDevice*>(p_context);
 	DWORD offset = p_object->dwOfs - DIMOFS_BUTTON0;
 
-	mouse->m_nameIndices[offset] = mouse->StoreString(p_object->tszName);
+	mouse->m_buttonNameIndices[offset] = mouse->StoreString(p_object->tszName);
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0044f700
-BOOL MouseInputDevice::FUN_0044f700(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
+BOOL MouseInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOID p_context)
 {
 	MouseInputDevice* mouse = static_cast<MouseInputDevice*>(p_context);
-	undefined4 mask = mouse->FUN_0044fda0(p_object->guidType);
+	undefined4 mask = mouse->GetAxisMask(p_object->guidType);
 	DWORD offset = static_cast<LegoS32>(p_object->dwOfs) >> 2;
 	LegoS16 v = mouse->StoreString(p_object->tszName);
 
-	mouse->m_unk0x38 |= mask;
-	mouse->m_unk0xc8[offset] = v;
+	mouse->m_axisMask |= mask;
+	mouse->m_axisNameIndices[offset] = v;
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0044f750
-void MouseInputDevice::VTable0x68(const DIDEVICEOBJECTDATA& p_data)
+void MouseInputDevice::ProcessDeviceData(const DIDEVICEOBJECTDATA& p_data)
 {
 	undefined4 event;
 
 	switch (p_data.dwOfs) {
 	case DIMOFS_X:
-		m_unk0xcc[0] = p_data.dwData;
-		m_unk0xdc[0] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
+		m_rawAxisValues[0] = p_data.dwData;
+		m_axisValues[0] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
 		return;
 	case DIMOFS_Y:
-		m_unk0xcc[1] = p_data.dwData;
-		m_unk0xdc[1] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
+		m_rawAxisValues[1] = p_data.dwData;
+		m_axisValues[1] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
 		return;
 	case DIMOFS_Z:
-		m_unk0xcc[2] = p_data.dwData;
-		m_unk0xdc[2] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
+		m_rawAxisValues[2] = p_data.dwData;
+		m_axisValues[2] += static_cast<LegoFloat>((LegoS32) p_data.dwData);
 		return;
 	default:
 		return;
 	case DIMOFS_BUTTON0:
-		m_unk0xd8[0] = static_cast<undefined>(p_data.dwData);
+		m_buttonStates[0] = static_cast<undefined>(p_data.dwData);
 		event = c_sourceMouse | 0x0;
 		break;
 	case DIMOFS_BUTTON1:
-		m_unk0xd8[1] = static_cast<undefined>(p_data.dwData);
+		m_buttonStates[1] = static_cast<undefined>(p_data.dwData);
 		event = c_sourceMouse | 0x1;
 		break;
 	case DIMOFS_BUTTON2:
-		m_unk0xd8[2] = static_cast<undefined>(p_data.dwData);
+		m_buttonStates[2] = static_cast<undefined>(p_data.dwData);
 		event = c_sourceMouse | 0x2;
 		break;
 	case DIMOFS_BUTTON3:
-		m_unk0xd8[3] = static_cast<undefined>(p_data.dwData);
+		m_buttonStates[3] = static_cast<undefined>(p_data.dwData);
 		event = c_sourceMouse | 0x3;
 		break;
 	}
@@ -126,13 +126,13 @@ void MouseInputDevice::VTable0x68(const DIDEVICEOBJECTDATA& p_data)
 }
 
 // FUNCTION: LEGORACERS 0x0044f850
-undefined4 MouseInputDevice::VTable0x34(undefined4 p_key)
+undefined4 MouseInputDevice::GetButtonState(undefined4 p_key)
 {
 	if (GetKeySource(p_key) == c_sourceMouse) {
 		LegoU32 index = p_key & 0xffff;
 
-		if (index < sizeOfArray(m_unk0xd8)) {
-			return m_unk0xd8[index];
+		if (index < sizeOfArray(m_buttonStates)) {
+			return m_buttonStates[index];
 		}
 	}
 
@@ -140,32 +140,32 @@ undefined4 MouseInputDevice::VTable0x34(undefined4 p_key)
 }
 
 // FUNCTION: LEGORACERS 0x0044f890
-LegoFloat MouseInputDevice::VTable0x30(undefined4 p_arg)
+LegoFloat MouseInputDevice::GetAxisValue(undefined4 p_arg)
 {
 	switch (p_arg) {
 	case c_axisX:
-		return m_unk0xdc[0];
+		return m_axisValues[0];
 	case c_axisY:
-		return m_unk0xdc[1];
+		return m_axisValues[1];
 	case c_axisZ:
-		return m_unk0xdc[2];
+		return m_axisValues[2];
 	default:
 		return 0.0f;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0044f8d0
-void MouseInputDevice::VTable0x08(undefined4 p_arg1, LegoFloat p_arg2)
+void MouseInputDevice::SetAxisValue(undefined4 p_arg1, LegoFloat p_arg2)
 {
 	switch (p_arg1) {
 	case c_axisX:
-		m_unk0xdc[0] = p_arg2;
+		m_axisValues[0] = p_arg2;
 		break;
 	case c_axisY:
-		m_unk0xdc[1] = p_arg2;
+		m_axisValues[1] = p_arg2;
 		break;
 	case c_axisZ:
-		m_unk0xdc[2] = p_arg2;
+		m_axisValues[2] = p_arg2;
 		break;
 	}
 }
@@ -182,16 +182,16 @@ void MouseInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBo
 		p_state = c_pressed;
 	}
 
-	if (p_event < sizeOfArray(m_unk0xd8)) {
-		m_unk0xd8[p_event] = p_state;
-		keyCode |= m_unk0x2c[p_event];
+	if (p_event < sizeOfArray(m_buttonStates)) {
+		m_buttonStates[p_event] = p_state;
+		keyCode |= m_buttonMapping[p_event];
 
 		if (p_notify && m_callback != NULL) {
 			if (p_state) {
-				m_callback->OnKeyDown(*this, keyCode, m_unk0x34);
+				m_callback->OnKeyDown(*this, keyCode, m_currentTimeMs);
 			}
 			else {
-				m_callback->OnKeyUp(*this, keyCode, m_unk0x34);
+				m_callback->OnKeyUp(*this, keyCode, m_currentTimeMs);
 			}
 		}
 

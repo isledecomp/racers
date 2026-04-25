@@ -1,4 +1,4 @@
-#include "directinputdevice.h"
+#include "input/directinputdevice.h"
 
 #include "golerror.h"
 
@@ -24,60 +24,60 @@ void DirectInputDevice::Init()
 	m_hWnd = NULL;
 	m_effect = NULL;
 	m_unk0xac = 0;
-	m_nameIndices = NULL;
-	m_unk0xc8 = NULL;
+	m_buttonNameIndices = NULL;
+	m_axisNameIndices = NULL;
 	m_cooperativeLevel = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
 	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
 	InputDevice::Init();
 }
 
 // FUNCTION: LEGORACERS 0x0044faa0
-void DirectInputDevice::FUN_0044faa0()
+void DirectInputDevice::ReadDeviceInfo()
 {
 	DIDEVICEINSTANCE deviceInfo;
 	deviceInfo.dwSize = sizeof(deviceInfo);
-	FUN_00450170(m_device->GetDeviceInfo(&deviceInfo));
-	FUN_0044bad0(deviceInfo.tszProductName);
-	m_devType = deviceInfo.dwDevType & 0xff;
-	m_devSubType = (deviceInfo.dwDevType >> 8) & 0xff;
+	TranslateDirectInputResult(m_device->GetDeviceInfo(&deviceInfo));
+	SetDeviceName(deviceInfo.tszProductName);
+	m_deviceType = deviceInfo.dwDevType & 0xff;
+	m_deviceSubType = (deviceInfo.dwDevType >> 8) & 0xff;
 
 	DIDEVCAPS caps;
 	caps.dwSize = sizeof(caps);
-	FUN_00450170(m_device->GetCapabilities(&caps));
+	TranslateDirectInputResult(m_device->GetCapabilities(&caps));
 	m_buttonCount = caps.dwButtons;
 	m_axisCount = caps.dwAxes;
 }
 
 // FUNCTION: LEGORACERS 0x0044fb30
-void DirectInputDevice::FUN_0044fb30()
+void DirectInputDevice::AllocateControlNameBuffers()
 {
-	LegoS32 count = VTable0x1c() + 4 * VTable0x20();
+	LegoS32 count = GetButtonCount() + 4 * GetAxisCount();
 
-	m_unk0x5c = 4 * count;
-	m_stringBuffer = new wchar_t[m_unk0x5c];
+	m_stringBufferLength = 4 * count;
+	m_stringBuffer = new wchar_t[m_stringBufferLength];
 
 	if (m_stringBuffer == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(m_stringBuffer, 0, m_unk0x5c * sizeof(wchar_t));
+	::memset(m_stringBuffer, 0, m_stringBufferLength * sizeof(wchar_t));
 
-	m_nameIndices = new LegoU16[VTable0x1c()];
+	m_buttonNameIndices = new LegoU16[GetButtonCount()];
 
-	if (m_nameIndices == NULL) {
+	if (m_buttonNameIndices == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(m_nameIndices, 0, sizeof(LegoU16) * VTable0x1c());
+	::memset(m_buttonNameIndices, 0, sizeof(LegoU16) * GetButtonCount());
 
-	if (VTable0x20() != 0) {
-		m_unk0xc8 = new undefined2[VTable0x20()];
+	if (GetAxisCount() != 0) {
+		m_axisNameIndices = new undefined2[GetAxisCount()];
 
-		if (m_unk0xc8 == NULL) {
+		if (m_axisNameIndices == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		::memset(m_unk0xc8, 0, sizeof(undefined2) * VTable0x20());
+		::memset(m_axisNameIndices, 0, sizeof(undefined2) * GetAxisCount());
 	}
 }
 
@@ -86,7 +86,7 @@ LegoBool32 DirectInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_para
 {
 	Destroy();
 	m_hWnd = p_params->m_hWnd;
-	m_unk0x90 = p_params->m_unk0x10;
+	m_deviceId = p_params->m_deviceId;
 	m_inputManager = p_params->m_inputManager;
 	m_deviceGuid = *p_params->m_guid;
 
@@ -111,18 +111,18 @@ LegoBool32 DirectInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_para
 		return FALSE;
 	}
 
-	FUN_0044fef0();
-	FUN_0044faa0();
-	FUN_0044fb30();
+	ApplyCooperativeLevel();
+	ReadDeviceInfo();
+	AllocateControlNameBuffers();
 
-	m_unk0x18 = TRUE;
+	m_created = TRUE;
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0044fd10
 LegoBool32 DirectInputDevice::Destroy()
 {
-	if (!m_unk0x18) {
+	if (!m_created) {
 		return TRUE;
 	}
 
@@ -130,27 +130,27 @@ LegoBool32 DirectInputDevice::Destroy()
 		delete[] m_stringBuffer;
 	}
 
-	if (m_nameIndices != NULL) {
-		delete[] m_nameIndices;
+	if (m_buttonNameIndices != NULL) {
+		delete[] m_buttonNameIndices;
 	}
 
-	if (m_unk0xc8 != NULL) {
-		delete[] m_unk0xc8;
+	if (m_axisNameIndices != NULL) {
+		delete[] m_axisNameIndices;
 	}
 
 	if (m_device != NULL) {
-		if (VTable0x18()) {
-			VTable0x54();
+		if (IsAcquired()) {
+			Unacquire();
 		}
 
-		FUN_00450170(m_device->Release());
+		TranslateDirectInputResult(m_device->Release());
 	}
 
 	return InputDevice::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0044fda0
-undefined4 DirectInputDevice::FUN_0044fda0(const GUID& p_guid) const
+undefined4 DirectInputDevice::GetAxisMask(const GUID& p_guid) const
 {
 	if (p_guid == GUID_XAxis) {
 		return c_axisX;
@@ -178,99 +178,99 @@ undefined4 DirectInputDevice::FUN_0044fda0(const GUID& p_guid) const
 }
 
 // FUNCTION: LEGORACERS 0x0044fe70
-undefined4 DirectInputDevice::VTable0x50()
+undefined4 DirectInputDevice::Acquire()
 {
-	if (!m_unk0x18) {
+	if (!m_created) {
 		return 0;
 	}
 
 	if (m_device->Acquire() == DI_OK) {
-		FUN_0044b9f0();
-		InputDevice::VTable0x50();
+		ReleasePressedButtons();
+		InputDevice::Acquire();
 	}
 
-	return VTable0x18();
+	return IsAcquired();
 }
 
 // FUNCTION: LEGORACERS 0x0044feb0
-undefined4 DirectInputDevice::VTable0x54()
+undefined4 DirectInputDevice::Unacquire()
 {
-	if (!m_unk0x18) {
+	if (!m_created) {
 		return 0;
 	}
 
-	if (VTable0x18() == 0) {
+	if (IsAcquired() == 0) {
 		return 1;
 	}
 
 	if (m_device->Unacquire() == DI_OK) {
-		InputDevice::VTable0x54();
+		InputDevice::Unacquire();
 	}
 
-	return VTable0x18();
+	return IsAcquired();
 }
 
 // FUNCTION: LEGORACERS 0x0044fef0
-LegoBool32 DirectInputDevice::FUN_0044fef0()
+LegoBool32 DirectInputDevice::ApplyCooperativeLevel()
 {
-	undefined4 result = VTable0x18();
-	if (!m_unk0x18) {
+	undefined4 result = IsAcquired();
+	if (!m_created) {
 		return FALSE;
 	}
 
 	if (result) {
-		VTable0x54();
+		Unacquire();
 	}
 
-	FUN_00450170(m_device->SetCooperativeLevel(m_hWnd, m_cooperativeLevel));
+	TranslateDirectInputResult(m_device->SetCooperativeLevel(m_hWnd, m_cooperativeLevel));
 
 	if (result) {
-		VTable0x50();
+		Acquire();
 	}
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0044ff50
-void DirectInputDevice::FUN_0044ff50(undefined4 p_arg)
+void DirectInputDevice::SetBufferSize(undefined4 p_bufferSize)
 {
-	undefined4 r = VTable0x18();
-	if (r) {
-		VTable0x54();
+	undefined4 wasAcquired = IsAcquired();
+	if (wasAcquired) {
+		Unacquire();
 	}
 
 	DIPROPDWORD prop;
-	prop.dwData = p_arg;
+	prop.dwData = p_bufferSize;
 	prop.diph.dwSize = sizeof(prop);
 	prop.diph.dwHeaderSize = sizeof(prop.diph);
 	prop.diph.dwObj = 0;
 	prop.diph.dwHow = DIPH_DEVICE;
-	FUN_00450170(m_device->SetProperty(DIPROP_BUFFERSIZE, &prop.diph));
+	TranslateDirectInputResult(m_device->SetProperty(DIPROP_BUFFERSIZE, &prop.diph));
 
-	if (r) {
-		VTable0x50();
+	if (wasAcquired) {
+		Acquire();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0044ffc0
-const wchar_t* DirectInputDevice::VTable0x24(undefined4 p_arg)
+const wchar_t* DirectInputDevice::GetControlName(undefined4 p_arg)
 {
 	switch (GetKeySource(p_arg)) {
 	case c_sourceKeyboard:
 	case c_sourceMouse:
 	case c_sourceJoystick1:
-		return &m_stringBuffer[m_nameIndices[LOWORD(p_arg)]];
+		return &m_stringBuffer[m_buttonNameIndices[LOWORD(p_arg)]];
 	case c_sourceJoystick2:
-		return &m_stringBuffer[m_unk0xc8[p_arg & 0xfffe]];
+		return &m_stringBuffer[m_axisNameIndices[p_arg & 0xfffe]];
 	default:
 		return NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00450030
-undefined4 DirectInputDevice::VTable0x14(undefined4 p_arg)
+undefined4 DirectInputDevice::Poll(LegoS32 p_elapsedMs)
 {
-	undefined4 result = FUN_00450170(m_device->Poll());
+	undefined4 result = TranslateDirectInputResult(m_device->Poll());
 
 	if (result != 0) {
 		return result;
@@ -278,25 +278,26 @@ undefined4 DirectInputDevice::VTable0x14(undefined4 p_arg)
 
 	DIDEVICEOBJECTDATA deviceData;
 	DWORD count = 1;
-	result = FUN_00450170(m_device->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &deviceData, &count, 0));
+	result = TranslateDirectInputResult(m_device->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &deviceData, &count, 0));
 
 	if (result == 0) {
 		while (result == 0 && count != 0) {
-			VTable0x68(deviceData);
+			ProcessDeviceData(deviceData);
 
 			if (count == 0) {
 				break;
 			}
 
 			count = 1;
-			result = FUN_00450170(m_device->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &deviceData, &count, 0));
+			result =
+				TranslateDirectInputResult(m_device->GetDeviceData(sizeof(DIDEVICEOBJECTDATA), &deviceData, &count, 0));
 
 			if (result != 0) {
 				return result;
 			}
 		}
 
-		InputDevice::VTable0x14(p_arg);
+		InputDevice::Poll(p_elapsedMs);
 		return 0;
 	}
 
@@ -304,13 +305,13 @@ undefined4 DirectInputDevice::VTable0x14(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0044f2c0 FOLDED
-LegoFloat DirectInputDevice::VTable0x2c(undefined4)
+LegoFloat DirectInputDevice::GetAxisValueByIndex(undefined4)
 {
 	return 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x004500f0
-undefined4 DirectInputDevice::VTable0x38()
+undefined4 DirectInputDevice::SetBackgroundMode()
 {
 	if (m_cooperativeLevel & DISCL_BACKGROUND) {
 		return TRUE;
@@ -318,11 +319,11 @@ undefined4 DirectInputDevice::VTable0x38()
 
 	m_cooperativeLevel &= ~DISCL_FOREGROUND;
 	m_cooperativeLevel |= DISCL_BACKGROUND;
-	return FUN_0044fef0();
+	return ApplyCooperativeLevel();
 }
 
 // FUNCTION: LEGORACERS 0x00450110
-undefined4 DirectInputDevice::VTable0x3c()
+undefined4 DirectInputDevice::SetForegroundMode()
 {
 	if (m_cooperativeLevel & DISCL_FOREGROUND) {
 		return TRUE;
@@ -330,11 +331,11 @@ undefined4 DirectInputDevice::VTable0x3c()
 
 	m_cooperativeLevel &= ~DISCL_BACKGROUND;
 	m_cooperativeLevel |= DISCL_FOREGROUND;
-	return FUN_0044fef0();
+	return ApplyCooperativeLevel();
 }
 
 // FUNCTION: LEGORACERS 0x00450130
-undefined4 DirectInputDevice::VTable0x40()
+undefined4 DirectInputDevice::SetExclusiveMode()
 {
 	if (m_cooperativeLevel & DISCL_EXCLUSIVE) {
 		return TRUE;
@@ -342,11 +343,11 @@ undefined4 DirectInputDevice::VTable0x40()
 
 	m_cooperativeLevel &= ~DISCL_NONEXCLUSIVE;
 	m_cooperativeLevel |= DISCL_EXCLUSIVE;
-	return FUN_0044fef0();
+	return ApplyCooperativeLevel();
 }
 
 // FUNCTION: LEGORACERS 0x00450150
-undefined4 DirectInputDevice::VTable0x44()
+undefined4 DirectInputDevice::SetNonExclusiveMode()
 {
 	if (m_cooperativeLevel & DISCL_NONEXCLUSIVE) {
 		return TRUE;
@@ -354,11 +355,11 @@ undefined4 DirectInputDevice::VTable0x44()
 
 	m_cooperativeLevel &= ~DISCL_EXCLUSIVE;
 	m_cooperativeLevel |= DISCL_NONEXCLUSIVE;
-	return FUN_0044fef0();
+	return ApplyCooperativeLevel();
 }
 
 // FUNCTION: LEGORACERS 0x00450170
-undefined4 DirectInputDevice::FUN_00450170(HRESULT p_hResult)
+undefined4 DirectInputDevice::TranslateDirectInputResult(HRESULT p_hResult)
 {
 	if (SUCCEEDED(p_hResult)) {
 		return 0;
@@ -366,10 +367,10 @@ undefined4 DirectInputDevice::FUN_00450170(HRESULT p_hResult)
 
 	switch (p_hResult) {
 	case DIERR_NOTACQUIRED:
-		return VTable0x18() ? 1 : 2;
+		return IsAcquired() ? 1 : 2;
 	case DIERR_INPUTLOST:
-		if (VTable0x18()) {
-			VTable0x50();
+		if (IsAcquired()) {
+			Acquire();
 		}
 		return 1;
 	default:
@@ -378,23 +379,22 @@ undefined4 DirectInputDevice::FUN_00450170(HRESULT p_hResult)
 }
 
 // FUNCTION: LEGORACERS 0x004501d0
-LegoBool32 DirectInputDevice::VTable0x58()
+LegoBool32 DirectInputDevice::CreateForceFeedbackEffect()
 {
-	if (!m_unk0x28) {
+	if (!m_forceFeedbackAvailable) {
 		return TRUE;
 	}
 
-	LONG direction[2] = {0, 0};
 	DWORD axes[2] = {DIJOFS_X, DIJOFS_Y};
+	LONG direction[2] = {0, 0};
 
-	VTable0x40();
+	SetExclusiveMode();
 
 	DIPERIODIC periodicParams;
 	DIEFFECT effectParams;
 
 	effectParams.dwDuration = INFINITE;
 	effectParams.dwTriggerButton = DIEB_NOTRIGGER;
-	effectParams.rgdwAxes = axes;
 
 	periodicParams.dwMagnitude = 3000;
 	periodicParams.lOffset = 0;
@@ -407,6 +407,7 @@ LegoBool32 DirectInputDevice::VTable0x58()
 	effectParams.dwGain = 10000;
 	effectParams.dwTriggerRepeatInterval = 0;
 	effectParams.cAxes = sizeOfArray(axes);
+	effectParams.rgdwAxes = axes;
 	effectParams.rglDirection = direction;
 	effectParams.lpEnvelope = NULL;
 	effectParams.cbTypeSpecificParams = sizeof(periodicParams);
@@ -421,9 +422,9 @@ LegoBool32 DirectInputDevice::VTable0x58()
 }
 
 // FUNCTION: LEGORACERS 0x004502b0
-LegoS32 DirectInputDevice::VTable0x5c()
+LegoS32 DirectInputDevice::StartForceFeedbackEffect()
 {
-	if (m_unk0x28 && m_effect != NULL) {
+	if (m_forceFeedbackAvailable && m_effect != NULL) {
 		m_effect->Start(1, 0);
 		return 0;
 	}
@@ -432,9 +433,9 @@ LegoS32 DirectInputDevice::VTable0x5c()
 }
 
 // FUNCTION: LEGORACERS 0x004502e0
-LegoBool32 DirectInputDevice::VTable0x60()
+LegoBool32 DirectInputDevice::StopForceFeedbackEffect()
 {
-	if (m_unk0x28 && m_effect != NULL) {
+	if (m_forceFeedbackAvailable && m_effect != NULL) {
 		m_effect->Stop();
 		return 0;
 	}

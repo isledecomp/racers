@@ -155,6 +155,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/audio/soundmanager.cpp
   LEGORacers/src/audio/soundnode.cpp
   LEGORacers/src/audio/streamingsoundinstance.cpp
+  LEGORacers/src/input/inputmanager.cpp
+  LEGORacers/src/input/directinputmanager.cpp
+  LEGORacers/src/input/joystickdevice.cpp
+  LEGORacers/src/input/keyboarddevice.cpp
+  LEGORacers/src/input/mousedevice.cpp
+  LEGORacers/src/input/directinputdevice.cpp
+  LEGORacers/src/input/inputdevice.cpp
   LEGORacers/src/jadestorm0x0c.cpp
   LEGORacers/src/amethystwake0x4dd4.cpp
   LEGORacers/src/aquacoral0x37b8.cpp
@@ -167,8 +174,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/opalhaven0xf4.cpp
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
-  LEGORacers/src/inputmanager.cpp
-  LEGORacers/src/directinputmanager.cpp
   LEGORacers/src/ceruleansubject0x0c.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
@@ -201,11 +206,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/diamondcloud0xc.cpp
   LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
-  LEGORacers/src/joystickdevice.cpp
-  LEGORacers/src/keyboarddevice.cpp
-  LEGORacers/src/mousedevice.cpp
-  LEGORacers/src/directinputdevice.cpp
-  LEGORacers/src/inputdevice.cpp
   LEGORacers/src/guids.cpp
   LEGORacers/racers.rc
   util/decomp.cpp

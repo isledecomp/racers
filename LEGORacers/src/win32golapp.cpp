@@ -3,12 +3,12 @@
 #include "../../GolDP/include/gol.h"
 #include "../../GolDP/include/golcommondrawstate.h"
 #include "cactusinterface0x4.h"
-#include "directinputmanager.h"
 #include "gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
 #include "golstream.h"
-#include "mousedevice.h"
+#include "input/directinputmanager.h"
+#include "input/mousedevice.h"
 
 #include <mmsystem.h>
 #include <stdio.h>
@@ -329,7 +329,7 @@ LegoS32 Win32GolApp::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, LegoU3
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			GetInputManager()->GetMouse()->VTable0x44();
+			GetInputManager()->GetMouse()->SetNonExclusiveMode();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -499,7 +499,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 				SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				GetInputManager()->GetMouse()->VTable0x44();
+				GetInputManager()->GetMouse()->SetNonExclusiveMode();
 				SetWindowPos(
 					m_hWnd,
 					NULL,
@@ -559,7 +559,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			GetInputManager()->GetMouse()->VTable0x44();
+			GetInputManager()->GetMouse()->SetNonExclusiveMode();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -683,7 +683,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 				SetWindowPos(p_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				self->GetInputManager()->GetMouse()->VTable0x44();
+				self->GetInputManager()->GetMouse()->SetNonExclusiveMode();
 				SetWindowPos(
 					p_hWnd,
 					NULL,

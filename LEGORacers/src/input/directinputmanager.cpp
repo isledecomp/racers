@@ -1,9 +1,9 @@
-#include "directinputmanager.h"
+#include "input/directinputmanager.h"
 
 #include "golerror.h"
-#include "joystickdevice.h"
-#include "keyboarddevice.h"
-#include "mousedevice.h"
+#include "input/joystickdevice.h"
+#include "input/keyboarddevice.h"
+#include "input/mousedevice.h"
 
 #include <dinput.h>
 
@@ -120,7 +120,7 @@ LegoBool32 DirectInputManager::AddJoystickDevice(LPCDIDEVICEINSTANCE p_deviceIns
 	params.m_dinput = m_directInput;
 	params.m_hWnd = m_hWnd;
 	params.m_guid = &p_deviceInstance->guidInstance;
-	params.m_unk0x10 = m_joystickCount;
+	params.m_deviceId = m_joystickCount;
 	m_joystickCount++;
 	params.m_inputManager = this;
 
@@ -136,9 +136,9 @@ LegoBool32 DirectInputManager::MarkForceFeedbackJoystick(const LPCDIDEVICEINSTAN
 
 	for (i = 0; i < m_joystickCount; i++) {
 		joystick = m_joysticks[i];
-		if (joystick != NULL && joystick->GetUnk0x18()) {
+		if (joystick != NULL && joystick->IsCreated()) {
 			if (p_deviceInfo->guidInstance == joystick->GetGuid()) {
-				joystick->SetUnk0x28(TRUE);
+				joystick->SetForceFeedbackAvailable(TRUE);
 			}
 		}
 	}
@@ -167,7 +167,7 @@ LegoBool32 DirectInputManager::DetectKeyboard()
 		return FALSE;
 	}
 
-	keyboard->FUN_0044ff50(50);
+	keyboard->SetBufferSize(50);
 	m_keyboard = keyboard;
 	m_keyboardAvailable = TRUE;
 	return TRUE;
@@ -194,7 +194,7 @@ LegoBool32 DirectInputManager::DetectMouse()
 		return FALSE;
 	}
 
-	mouse->FUN_0044ff50(100);
+	mouse->SetBufferSize(100);
 	m_mouse = mouse;
 	m_mouseAvailable = TRUE;
 	return TRUE;
@@ -251,21 +251,21 @@ LegoS32 DirectInputManager::DestroyDevices()
 }
 
 // FUNCTION: LEGORACERS 0x00450990
-LegoS32 DirectInputManager::PollDevices(LegoS32 p_arg)
+LegoS32 DirectInputManager::PollDevices(LegoS32 p_elapsedMs)
 {
 	LegoS32 i;
 	LegoS32 result;
 
 	if (m_keyboardAvailable) {
-		result = m_keyboard->VTable0x14(p_arg);
+		result = m_keyboard->Poll(p_elapsedMs);
 		if (result) {
 			return result;
 		}
 	}
 
 	if (m_mouseAvailable) {
-		m_mouse->FUN_0044bda0();
-		result = m_mouse->VTable0x14(p_arg);
+		m_mouse->ResetAxisValues();
+		result = m_mouse->Poll(p_elapsedMs);
 		if (result) {
 			return result;
 		}
@@ -273,7 +273,7 @@ LegoS32 DirectInputManager::PollDevices(LegoS32 p_arg)
 
 	if (m_joystickCount != 0) {
 		for (i = 0; i < m_joystickCount; i++) {
-			result = m_joysticks[i]->VTable0x14(p_arg);
+			result = m_joysticks[i]->Poll(p_elapsedMs);
 			if (result) {
 				return result;
 			}

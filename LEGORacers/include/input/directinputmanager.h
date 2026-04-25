@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "inputmanager.h"
+#include "input/inputmanager.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b1224
@@ -15,7 +15,7 @@ public:
 	~DirectInputManager() override;                                             // vtable+0x04
 	LegoS32 Shutdown() override;                                                // vtable+0x08
 	LegoS32 Init() override;                                                    // vtable+0x0c
-	LegoS32 PollDevices(LegoS32) override;                                      // vtable+0x10
+	LegoS32 PollDevices(LegoS32 p_elapsedMs) override;                          // vtable+0x10
 	LegoS32 DetectNewJoysticks() override;                                      // vtable+0x14
 	virtual LegoBool32 DetectKeyboard();                                        // vtable+0x18
 	virtual LegoBool32 DetectMouse();                                           // vtable+0x1c

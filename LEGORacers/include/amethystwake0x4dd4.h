@@ -56,7 +56,7 @@ public:
 	LegoS32 Shutdown();
 	void FUN_0042cd60();
 	void FUN_0042cde0();
-	void FUN_0042ced0();
+	void InitializeInputBindings();
 	void FUN_0042cf00();
 	void FUN_0042d020();
 	void FUN_0042d0e0();
@@ -75,7 +75,7 @@ private:
 	public:
 		LegoRacers::Context* m_context;   // 0x00
 		StackOfLegoU16 m_unk0x04;         // 0x04
-		OnyxBreeze0x248 m_unk0x10;        // 0x10
+		OnyxBreeze0x248 m_inputBindings;  // 0x10
 		CitrineGrove0x1f4c m_unk0x258;    // 0x258
 		TopazBurst0x14 m_unk0x21a4;       // 0x21a4
 		MoonstoneGlade0x3c m_unk0x21b8;   // 0x21b8
@@ -93,7 +93,7 @@ private:
 	};
 
 	void FUN_0042ceb0();
-	void FUN_0042cef0();
+	void ShutdownInputBindings();
 	void FUN_0042cf90();
 	void FUN_0042d080();
 	void FUN_0042d260();

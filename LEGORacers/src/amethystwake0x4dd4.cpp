@@ -80,7 +80,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 	FUN_0042d1e0();
 	FUN_0042e1f0();
 	FUN_0042cde0();
-	FUN_0042ced0();
+	InitializeInputBindings();
 	FUN_0042cf00();
 	FUN_0042cd60();
 
@@ -127,7 +127,7 @@ LegoS32 AmethystWake0x4dd4::Shutdown()
 		m_unk0x4bd0.FUN_00468ab0();
 		FUN_0042d260();
 		FUN_0042ceb0();
-		FUN_0042cef0();
+		ShutdownInputBindings();
 		FUN_0042cf90();
 		FUN_0042d080();
 		m_unk0x4cd8->VTable0x38();
@@ -158,18 +158,16 @@ void AmethystWake0x4dd4::FUN_0042ceb0()
 	STUB(0x42ceb0);
 }
 
-// STUB: LEGORACERS 0x0042ced0
-void AmethystWake0x4dd4::FUN_0042ced0()
+// FUNCTION: LEGORACERS 0x0042ced0
+void AmethystWake0x4dd4::InitializeInputBindings()
 {
-	// TODO
-	STUB(0x42ced0);
+	m_unk0x04.m_inputBindings.Initialize(m_unk0x04.m_context->m_golApp->GetInputManager());
 }
 
-// STUB: LEGORACERS 0x0042cef0
-void AmethystWake0x4dd4::FUN_0042cef0()
+// FUNCTION: LEGORACERS 0x0042cef0
+void AmethystWake0x4dd4::ShutdownInputBindings()
 {
-	// TODO
-	STUB(0x42cef0);
+	m_unk0x04.m_inputBindings.Shutdown();
 }
 
 // STUB: LEGORACERS 0x0042cf00

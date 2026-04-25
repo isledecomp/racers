@@ -21,9 +21,8 @@ undefined4 MouseInputDevice::VTable0x20()
 }
 
 // STUB: LEGORACERS 0x0044f590 FOLDED
-void MouseInputDevice::VTable0x28(undefined4)
+void MouseInputDevice::SetDeadZonePercent(LegoU32)
 {
-	// TODO
 	STUB(0x44f590);
 }
 
@@ -123,7 +122,7 @@ void MouseInputDevice::VTable0x68(const DIDEVICEOBJECTDATA& p_data)
 		break;
 	}
 
-	VTable0x04(LOWORD(event) | c_sourceMouse, static_cast<LegoU8>(p_data.dwData), TRUE);
+	SetButtonState(LOWORD(event) | c_sourceMouse, static_cast<LegoU8>(p_data.dwData), TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x0044f850
@@ -172,7 +171,7 @@ void MouseInputDevice::VTable0x08(undefined4 p_arg1, LegoFloat p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x0044f910
-void MouseInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
+void MouseInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
 	undefined4 keyCode = p_event & c_sourceMask;
 	undefined4 originalEvent = p_event;
@@ -196,6 +195,6 @@ void MouseInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32
 			}
 		}
 
-		InputDevice::VTable0x04(originalEvent, p_state, p_notify);
+		InputDevice::SetButtonState(originalEvent, p_state, p_notify);
 	}
 }

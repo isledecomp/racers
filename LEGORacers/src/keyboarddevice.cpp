@@ -89,7 +89,7 @@ void KeyboardInputDevice::VTable0x68(const DIDEVICEOBJECTDATA& p_data)
 	m_unk0xcc[p_data.dwOfs] = static_cast<undefined2>(p_data.dwData);
 
 	if (m_callback != NULL) {
-		VTable0x04(p_data.dwOfs | c_sourceKeyboard, static_cast<LegoU8>(p_data.dwData), TRUE);
+		SetButtonState(p_data.dwOfs | c_sourceKeyboard, static_cast<LegoU8>(p_data.dwData), TRUE);
 	}
 }
 
@@ -106,7 +106,7 @@ undefined4 KeyboardInputDevice::VTable0x34(undefined4 p_key)
 }
 
 // FUNCTION: LEGORACERS 0x0044f4a0
-void KeyboardInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
+void KeyboardInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
 	undefined4 keyCode = p_event & c_sourceMask;
 	undefined4 originalEvent = p_event;
@@ -130,13 +130,12 @@ void KeyboardInputDevice::VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBoo
 			}
 		}
 
-		InputDevice::VTable0x04(originalEvent, p_state, p_notify);
+		InputDevice::SetButtonState(originalEvent, p_state, p_notify);
 	}
 }
 
 // STUB: LEGORACERS 0x0044f590 FOLDED
-void KeyboardInputDevice::VTable0x28(undefined4)
+void KeyboardInputDevice::SetDeadZonePercent(LegoU32)
 {
-	// TODO
 	STUB(0x44f590);
 }

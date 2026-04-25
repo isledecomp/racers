@@ -28,15 +28,17 @@ LegoBool32 JoystickInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_pa
 {
 	Destroy();
 	p_params->m_dataFormat = &c_dfDIJoystick2;
+
 	if (DirectInputDevice::CreateDevice(p_params)) {
 		HRESULT result1 = m_device->EnumObjects(FUN_0044ebb0, this, DIDFT_PSHBUTTON | DIDFT_TGLBUTTON);
 		HRESULT result2 = m_device->EnumObjects(FUN_0044ebe0, this, DIDFT_RELAXIS | DIDFT_ABSAXIS);
 		if (!FUN_00450170(result1) && !FUN_00450170(result2)) {
-			VTable0x28(0x23);
+			SetDeadZonePercent(c_defaultDeadZonePercent);
 			return m_unk0x18;
 		}
 		Destroy();
 	}
+
 	return FALSE;
 }
 
@@ -68,7 +70,7 @@ BOOL JoystickInputDevice::FUN_0044ebe0(LPCDIDEVICEOBJECTINSTANCE p_object, LPVOI
 }
 
 // FUNCTION: LEGORACERS 0x0044ec30
-void JoystickInputDevice::FUN_0044ec30(DWORD p_object, undefined4 p_deadZone)
+void JoystickInputDevice::SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZone)
 {
 	undefined4 result = VTable0x18();
 	if (result) {
@@ -98,40 +100,40 @@ void JoystickInputDevice::FUN_0044ec30(DWORD p_object, undefined4 p_deadZone)
 }
 
 // FUNCTION: LEGORACERS 0x0044ecf0
-void JoystickInputDevice::VTable0x28(undefined4 p_deadZone)
+void JoystickInputDevice::SetDeadZonePercent(LegoU32 p_deadZonePercent)
 {
 	undefined4 result = VTable0x18();
-	undefined4 deadZone = 100 * p_deadZone;
+	DWORD deadZone = p_deadZonePercent * c_directInputDeadZoneScale;
 	if (result) {
 		VTable0x54();
 	}
 
 	if (m_unk0x38 & c_axisX) {
-		FUN_0044ec30(DIJOFS_X, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_X, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisY) {
-		FUN_0044ec30(DIJOFS_Y, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_Y, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisZ) {
-		FUN_0044ec30(DIJOFS_Z, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_Z, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisRx) {
-		FUN_0044ec30(DIJOFS_RX, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_RX, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisRy) {
-		FUN_0044ec30(DIJOFS_RY, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_RY, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisRz) {
-		FUN_0044ec30(DIJOFS_RZ, deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_RZ, deadZone);
 	}
 
 	if (m_unk0x38 & c_axisSlider) {
-		FUN_0044ec30(DIJOFS_SLIDER(0), deadZone);
+		SetAxisRangeAndDeadZone(DIJOFS_SLIDER(0), deadZone);
 	}
 
 	if (result) {
@@ -172,7 +174,7 @@ void JoystickInputDevice::FUN_0044eda0(const DIJOYSTATE2& p_state)
 }
 
 // FUNCTION: LEGORACERS 0x0044ee40
-void JoystickInputDevice::FUN_0044ee40(const DIJOYSTATE2& p_state)
+void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 {
 	if (m_unk0x38 & c_axisX) {
 		FUN_0044bb60(static_cast<LegoFloat>(p_state.lX) / 1000.0f, m_unk0x1dc[0], c_sourceJoystick2 | 0x0);
@@ -203,11 +205,20 @@ void JoystickInputDevice::FUN_0044ee40(const DIJOYSTATE2& p_state)
 	}
 }
 
-// STUB: LEGORACERS 0x0044ef60
-void JoystickInputDevice::FUN_0044ef60(const DIJOYSTATE2& p_state)
+// FUNCTION: LEGORACERS 0x0044ef60
+void JoystickInputDevice::DispatchPolledStateChanges(const DIJOYSTATE2& p_state)
 {
-	// STUB
-	STUB(0x0044ef60);
+	if (m_callback != NULL) {
+		for (LegoS32 i = 0; i < m_buttonCount; i++) {
+			if (p_state.rgbButtons[i] != m_joyState.rgbButtons[i]) {
+				SetButtonState(i | c_sourceJoystick1, p_state.rgbButtons[i], TRUE);
+			}
+		}
+
+		if (m_unk0x24) {
+			DispatchPolledAxisChanges(p_state);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0044efc0
@@ -223,7 +234,7 @@ undefined4 JoystickInputDevice::VTable0x14(undefined4 p_arg)
 			return FUN_00450170(result);
 		}
 
-		FUN_0044ef60(joyState);
+		DispatchPolledStateChanges(joyState);
 		FUN_0044eda0(joyState);
 		m_joyState = joyState;
 		InputDevice::VTable0x14(p_arg);
@@ -274,11 +285,46 @@ LegoFloat JoystickInputDevice::VTable0x30(undefined4 p_arg)
 	return 0.0f;
 }
 
-// STUB: LEGORACERS 0x0044f120
-void JoystickInputDevice::VTable0x04(undefined4, LegoU8, LegoBool32)
+// FUNCTION: LEGORACERS 0x0044f120
+void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify)
 {
-	// TODO
-	STUB(0x0044f120);
+	undefined4 keyCode = p_event & c_sourceMask;
+	undefined4 originalEvent = p_event;
+
+	if (!m_unk0x18) {
+		return;
+	}
+
+	if (p_state) {
+		p_state = c_pressed;
+	}
+
+	p_event &= c_keyCodeMask;
+
+	if (keyCode != c_sourceJoystick1) {
+		if (keyCode == c_sourceJoystick2 && p_event < sizeOfArray(m_unk0x21c)) {
+			keyCode = m_unk0x30[p_event] | c_sourceJoystick2;
+			m_unk0x21c[p_event] = p_state;
+		}
+	}
+	else {
+		// BUG: should be "< sizeOfArray(m_joyState.rgbButtons))"
+		if (p_event < 256) {
+			m_joyState.rgbButtons[p_event] = p_state;
+			keyCode = m_unk0x2c[p_event] | c_sourceJoystick1;
+		}
+	}
+
+	if (p_notify && m_callback != NULL) {
+		if (p_state) {
+			m_callback->OnKeyDown(*this, keyCode, m_unk0x34);
+		}
+		else {
+			m_callback->OnKeyUp(*this, keyCode, m_unk0x34);
+		}
+	}
+
+	InputDevice::SetButtonState(originalEvent, p_state, p_notify);
 }
 
 // FUNCTION: LEGORACERS 0x0044f1e0

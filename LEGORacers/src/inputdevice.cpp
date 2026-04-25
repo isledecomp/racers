@@ -88,7 +88,7 @@ void InputDevice::FUN_0044b9f0()
 	LegoS32 i;
 	for (i = 0; i < VTable0x1c(); i++) {
 		if (VTable0x34(i | flag)) {
-			VTable0x04(i | flag, FALSE, TRUE);
+			SetButtonState(i | flag, FALSE, TRUE);
 		}
 	}
 }
@@ -188,7 +188,7 @@ void InputDevice::FUN_0044bda0()
 }
 
 // FUNCTION: LEGORACERS 0x0044bdd0
-void InputDevice::VTable0x04(undefined4, LegoU8 p_state, LegoBool32)
+void InputDevice::SetButtonState(undefined4, LegoU8 p_state, LegoBool32)
 {
 	if (p_state) {
 		m_unk0x44 = m_unk0x3c;

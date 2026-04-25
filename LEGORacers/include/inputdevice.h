@@ -29,31 +29,31 @@ public:
 	};
 
 	InputDevice();
-	virtual void Init();                                                              // vtable+0x00
-	virtual void VTable0x04(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify); // vtable+0x04
-	virtual void VTable0x08(undefined4, LegoFloat) = 0;                               // vtable+0x08
-	virtual ~InputDevice();                                                           // vtable+0x0c
-	virtual LegoBool32 Destroy();                                                     // vtable+0x10
-	virtual undefined4 VTable0x14(undefined4);                                        // vtable+0x14
-	virtual undefined4 VTable0x18();                                                  // vtable+0x18
-	virtual LegoS32 VTable0x1c();                                                     // vtable+0x1c
-	virtual undefined4 VTable0x20();                                                  // vtable+0x20
-	virtual const wchar_t* VTable0x24(undefined4);                                    // vtable+0x24
-	virtual void VTable0x28(undefined4) = 0;                                          // vtable+0x28
-	virtual LegoFloat VTable0x2c(undefined4) = 0;                                     // vtable+0x2c
-	virtual LegoFloat VTable0x30(undefined4) = 0;                                     // vtable+0x30
-	virtual undefined4 VTable0x34(undefined4) = 0;                                    // vtable+0x34
-	virtual undefined4 VTable0x38() = 0;                                              // vtable+0x38
-	virtual undefined4 VTable0x3c() = 0;                                              // vtable+0x3c
-	virtual undefined4 VTable0x40() = 0;                                              // vtable+0x40
-	virtual undefined4 VTable0x44() = 0;                                              // vtable+0x44
-	virtual undefined4 VTable0x48() = 0;                                              // vtable+0x48
-	virtual undefined4 VTable0x4c() = 0;                                              // vtable+0x4c
-	virtual undefined4 VTable0x50();                                                  // vtable+0x50
-	virtual undefined4 VTable0x54();                                                  // vtable+0x54
-	virtual LegoBool32 VTable0x58() = 0;                                              // vtable+0x58
-	virtual LegoS32 VTable0x5c() = 0;                                                 // vtable+0x5c
-	virtual LegoBool32 VTable0x60() = 0;                                              // vtable+0x60
+	virtual void Init();                                                                  // vtable+0x00
+	virtual void SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify); // vtable+0x04
+	virtual void VTable0x08(undefined4, LegoFloat) = 0;                                   // vtable+0x08
+	virtual ~InputDevice();                                                               // vtable+0x0c
+	virtual LegoBool32 Destroy();                                                         // vtable+0x10
+	virtual undefined4 VTable0x14(undefined4);                                            // vtable+0x14
+	virtual undefined4 VTable0x18();                                                      // vtable+0x18
+	virtual LegoS32 VTable0x1c();                                                         // vtable+0x1c
+	virtual undefined4 VTable0x20();                                                      // vtable+0x20
+	virtual const wchar_t* VTable0x24(undefined4);                                        // vtable+0x24
+	virtual void SetDeadZonePercent(LegoU32) = 0;                                         // vtable+0x28
+	virtual LegoFloat VTable0x2c(undefined4) = 0;                                         // vtable+0x2c
+	virtual LegoFloat VTable0x30(undefined4) = 0;                                         // vtable+0x30
+	virtual undefined4 VTable0x34(undefined4) = 0;                                        // vtable+0x34
+	virtual undefined4 VTable0x38() = 0;                                                  // vtable+0x38
+	virtual undefined4 VTable0x3c() = 0;                                                  // vtable+0x3c
+	virtual undefined4 VTable0x40() = 0;                                                  // vtable+0x40
+	virtual undefined4 VTable0x44() = 0;                                                  // vtable+0x44
+	virtual undefined4 VTable0x48() = 0;                                                  // vtable+0x48
+	virtual undefined4 VTable0x4c() = 0;                                                  // vtable+0x4c
+	virtual undefined4 VTable0x50();                                                      // vtable+0x50
+	virtual undefined4 VTable0x54();                                                      // vtable+0x54
+	virtual LegoBool32 VTable0x58() = 0;                                                  // vtable+0x58
+	virtual LegoS32 VTable0x5c() = 0;                                                     // vtable+0x5c
+	virtual LegoBool32 VTable0x60() = 0;                                                  // vtable+0x60
 
 	void FUN_0044b9f0();
 	void FUN_0044bab0(undefined4 p_arg1, undefined4 p_arg2);
@@ -93,8 +93,8 @@ protected:
 	undefined4 m_unk0x3c;             // 0x3c
 	undefined4 m_unk0x40;             // 0x40
 	undefined4 m_unk0x44;             // 0x44
-	undefined4 m_buttonCount;         // 0x48
-	undefined4 m_axisCount;           // 0x4c
+	LegoS32 m_buttonCount;            // 0x48
+	LegoS32 m_axisCount;              // 0x4c
 	LegoS32 m_unk0x50;                // 0x50
 	undefined4 m_devSubType;          // 0x54
 	undefined4 m_devType;             // 0x58

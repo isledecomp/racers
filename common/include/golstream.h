@@ -4,9 +4,12 @@
 #include "decomp.h"
 #include "types.h"
 
+#include <ctype.h>
+
 class GolHashTable;
 class GolFileSource;
 
+extern LegoChar g_pathBuffer[256];
 extern LegoChar* g_searchPaths[4];
 extern GolFileSource* g_fileSources;
 extern LegoU32 g_fileSourceCount;
@@ -118,7 +121,18 @@ public:
 #endif
 
 	static const LegoChar* ErrorCodeToString(LegoS32 p_code);
+#ifdef BUILDING_GOL
+	static void TransformToUpper(LegoChar* p_str)
+	{
+		size_t i;
+
+		for (i = 0; *p_str != '\0' && i < sizeOfArray(g_pathBuffer); i++, p_str++) {
+			*p_str = toupper(*p_str);
+		}
+	}
+#else
 	static void TransformToUpper(LegoChar* p_str);
+#endif
 	static LegoS32 IsAbsolutePath(LegoChar* p_path);
 	static void BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path);
 

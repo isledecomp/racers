@@ -142,6 +142,7 @@ GolHashTable::Entry* GolHashTable::FindEntry(const LegoChar* p_string)
 	return entry;
 }
 
+// STUB: GOLDP 0x10031340
 // FUNCTION: LEGORACERS 0x0044c810
 GolHashTable::Entry* GolHashTable::AddString(const LegoChar* p_string)
 {

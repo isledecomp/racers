@@ -12,6 +12,15 @@
 // LIBRARY: GOLDP 0x1004b3b3
 // ??2@YAPAXI@Z
 
+// LIBRARY: GOLDP 0x1004ba3b
+// _isalpha
+
+// LIBRARY: GOLDP 0x1004ba70
+// _strrchr
+
+// LIBRARY: GOLDP 0x1004ba97
+// _toupper
+
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
 

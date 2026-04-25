@@ -681,6 +681,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	TransformToUpper(g_pathBuffer);
 }
 
+#ifndef BUILDING_GOL
 // FUNCTION: LEGORACERS 0x0044d4f0
 void GolStream::TransformToUpper(LegoChar* p_str)
 {
@@ -690,6 +691,7 @@ void GolStream::TransformToUpper(LegoChar* p_str)
 		*p_str = toupper(*p_str);
 	}
 }
+#endif
 
 // FUNCTION: LEGORACERS 0x0044d530
 LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)

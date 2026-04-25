@@ -29,7 +29,7 @@ void GolHashTable::Reset()
 	m_buffer = 0;
 	m_bufferCursor = 0;
 	m_numBuckets = 0;
-	m_unk0x1c = 0;
+	m_currentEntry = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0044c5c0
@@ -102,12 +102,63 @@ void GolHashTable::ClearEntries()
 	ReleaseMutex(m_mutex);
 }
 
-// STUB: LEGORACERS 0x0044c810
-undefined4 GolHashTable::FUN_0044c810(const LegoChar*)
+// FUNCTION: LEGORACERS 0x0044c740
+LegoU32 GolHashTable::HashString(const LegoChar* p_string)
 {
-	// TODO
-	STUB(0x44c810);
-	return 0;
+	LegoU32 hash = 0;
+
+	while (*p_string) {
+		hash = (hash << 4) + *p_string++;
+
+		LegoU32 highBits = hash & 0xf0000000;
+		if (highBits) {
+			hash ^= highBits >> 24;
+		}
+		hash &= ~highBits;
+	}
+
+	return hash % m_numBuckets;
+}
+
+// FUNCTION: LEGORACERS 0x0044c780
+GolHashTable::Entry* GolHashTable::FindEntry(const LegoChar* p_string)
+{
+	if (!m_initialized || !p_string || !p_string[0]) {
+		return NULL;
+	}
+
+	WaitForSingleObject(m_mutex, INFINITE);
+
+	Entry* entry = m_buckets[HashString(p_string)];
+	while (entry) {
+		if (!strcmp(entry->m_data, p_string)) {
+			break;
+		}
+
+		entry = entry->m_next;
+	}
+
+	ReleaseMutex(m_mutex);
+	return entry;
+}
+
+// FUNCTION: LEGORACERS 0x0044c810
+GolHashTable::Entry* GolHashTable::AddString(const LegoChar* p_string)
+{
+	if (!m_initialized || !p_string || !p_string[0]) {
+		return NULL;
+	}
+
+	WaitForSingleObject(m_mutex, INFINITE);
+
+	Entry* entry = FindEntry(p_string);
+	if (!entry) {
+		LegoU32 bucket = HashString(p_string);
+		entry = AddEntry(&m_buckets[bucket], p_string);
+	}
+
+	ReleaseMutex(m_mutex);
+	return entry;
 }
 
 // FUNCTION: LEGORACERS 0x0044c880

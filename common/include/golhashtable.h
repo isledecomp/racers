@@ -24,9 +24,11 @@ public:
 	virtual LegoS32 Shutdown();                                       // vtable+0x0c
 
 	void Reset();
-	undefined4 FUN_0044c810(const LegoChar* p_unk0x04);
+	LegoU32 HashString(const LegoChar* p_string);
+	Entry* FindEntry(const LegoChar* p_string);
+	Entry* AddString(const LegoChar* p_string);
 
-	void SetUnk0x1c(undefined4 p_unk0x1c) { m_unk0x1c = p_unk0x1c; }
+	void SetCurrentEntry(Entry* p_currentEntry) { m_currentEntry = p_currentEntry; }
 
 private:
 	HANDLE m_mutex;           // 0x04
@@ -35,7 +37,7 @@ private:
 	LegoChar* m_bufferCursor; // 0x10
 	LegoS32 m_numBuckets;     // 0x14
 	LegoU32 m_bufferSize;     // 0x18
-	undefined4 m_unk0x1c;     // 0x1c
+	Entry* m_currentEntry;    // 0x1c
 	undefined m_initialized;  // 0x20
 };
 

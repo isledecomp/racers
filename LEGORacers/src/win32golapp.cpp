@@ -176,7 +176,7 @@ void Win32GolApp::AddFileSourcesFromList(const LegoChar* p_fileList)
 			}
 
 			if (!m_files[m_fileSourceCount].BufferedOpen(buffer, GolStream::c_modeRead, 0x8000)) {
-				m_fileSources[m_fileSourceCount].FUN_0044d870(&m_files[m_fileSourceCount]);
+				m_fileSources[m_fileSourceCount].AttachStream(&m_files[m_fileSourceCount]);
 				m_fileSourceCount++;
 			}
 

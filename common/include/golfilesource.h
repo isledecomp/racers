@@ -31,7 +31,7 @@ public:
 
 	GolStream* GetStream() { return m_stream; }
 
-	void FUN_0044d870(GolStream* p_unk0x04);
+	void AttachStream(GolStream* p_stream);
 	void Reset();
 	void ClearDirectoryTree();
 

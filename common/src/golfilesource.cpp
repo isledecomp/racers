@@ -1,11 +1,23 @@
 #include "golfilesource.h"
 
+#include "golerror.h"
 #include "golstream.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFileSource, 0x34)
 
+// GLOBAL: LEGORACERS 0x004c1a3c
+const LegoChar* g_jamReadError = "Error reading JAM file.";
+
+// GLOBAL: LEGORACERS 0x004c1a58
+LegoChar g_jamSignature[] = "LJAM";
+
 // GLOBAL: LEGORACERS 0x004c73a4
 LegoChar g_nameBuffer[GOL_NAME_LENGTH];
+
+// GLOBAL: LEGORACERS 0x004c73b0
+LegoChar g_jamHeader[sizeof(g_jamSignature) - 1];
 
 // FUNCTION: LEGORACERS 0x0044d820
 GolFileSource::GolFileSource()
@@ -21,11 +33,20 @@ GolFileSource::~GolFileSource()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0044d870
-void GolFileSource::FUN_0044d870(GolStream*)
+// FUNCTION: LEGORACERS 0x0044d870
+void GolFileSource::AttachStream(GolStream* p_stream)
 {
-	// TODO
-	STUB(0x0044d870);
+	m_stream = p_stream;
+	m_state = 0;
+
+	LegoS32 bytesRead;
+	if (p_stream->BufferedRead(0, g_jamHeader, sizeof(g_jamHeader), &bytesRead)) {
+		GOL_FATALERROR_MESSAGE(g_jamReadError);
+	}
+
+	if (memcmp(g_jamHeader, g_jamSignature, sizeof(g_jamHeader))) {
+		GOL_FATALERROR_MESSAGE(g_jamReadError);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0044d8e0

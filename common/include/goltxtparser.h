@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "golfileparser.h"
 
+// VTABLE: GOLDP 0x10056f4c
 // VTABLE: LEGORACERS 0x004b27e4
 // SIZE 0x1fc
 class GolTxtParser : public GolFileParser {
@@ -27,6 +28,7 @@ public:
 	void VTable0x70() override;                             // vtable+0x70
 	void VTable0x74(undefined4) override;                   // vtable+0x74
 
+	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
 	// GolTxtParser::`scalar deleting destructor'
 

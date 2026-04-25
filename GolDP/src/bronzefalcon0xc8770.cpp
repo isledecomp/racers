@@ -93,6 +93,12 @@ void BronzeFalcon0xc8770::VTable0x00()
 	STUB(0x10028a10);
 }
 
+// STUB: GOLDP 0x10028ad0
+void BronzeFalcon0xc8770::FUN_10028ad0(SmallCocoon0xc* p_param)
+{
+	STUB(0x10028ad0);
+}
+
 // STUB: GOLDP 0x10028ae0
 void BronzeFalcon0xc8770::FUN_10028ae0(SmallCocoon0xc* p_param)
 {

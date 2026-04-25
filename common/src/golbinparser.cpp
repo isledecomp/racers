@@ -8,6 +8,7 @@
 // GLOBAL: LEGORACERS 0x004c182c
 const LegoChar* g_fileFormatStr = "file %s\n";
 
+// STUB: GOLDP 0x1002fff0
 // STUB: LEGORACERS 0x0044a7e0
 GolBinParser::GolBinParser()
 {

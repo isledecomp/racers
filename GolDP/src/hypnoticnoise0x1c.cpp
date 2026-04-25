@@ -1,8 +1,12 @@
 #include "hypnoticnoise0x1c.h"
 
 #include "bronzefalcon0xc8770.h"
+#include "golbinparser.h"
+#include "golerror.h"
+#include "goltxtparser.h"
 
 DECOMP_SIZE_ASSERT(HypnoticNoise0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(HypnoticNoise0x1cInner, 0xa4)
 
 // FUNCTION: GOLDP 0x10022fa0
 HypnoticNoise0x1c::HypnoticNoise0x1c()
@@ -34,19 +38,55 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 // STUB: GOLDP 0x10023060
 void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2, undefined4 p_param3)
 {
-	if (m_unk0x14) {
+	if (m_unk0x14 > 0) {
 		VTable0x08();
 	}
 
 	m_unk0x0c = p_param1;
+	m_unk0x0c->FUN_10028ad0(this);
 
-	STUB(0x10023060);
+	GolFileParser* parser;
+
+	if (p_param3) {
+		parser = new GolBinParser();
+
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+
+		parser->SetSuffix(".idb");
+	}
+	else {
+		parser = new GolTxtParser();
+
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+	}
+
+	parser->VTable0x38((undefined4) p_param2);
+	parser->FUN_10032740(0x27);
+	m_unk0x14 = parser->FUN_100327e0();
+
+	// TODO: Incomplete
 }
 
-// STUB: GOLDP 0x100233a0
-void HypnoticNoise0x1c::VTable0x1c()
+// FUNCTION: GOLDP 0x100233a0
+void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_param2)
 {
-	STUB(0x100233a0);
+	if (m_unk0x14 > 0) {
+		VTable0x08();
+	}
+
+	m_unk0x0c = p_param1;
+	m_unk0x0c->FUN_10028ad0(this);
+	m_unk0x14 = p_param2;
+
+	VTable0x0c();
+
+	for (int i = 0; i < p_param2; i++) {
+		VTable0x20(i)->m_unk0x24 = p_param1;
+	}
 }
 
 // FUNCTION: GOLDP 0x100233f0

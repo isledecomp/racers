@@ -27,10 +27,10 @@ void AwakeKite0x20::VTable0x08()
 	STUB(0x10005ec0);
 }
 
-// STUB: GOLDP 0x10005ef0
-void AwakeKite0x20::VTable0x20()
+// FUNCTION: GOLDP 0x10005ef0
+HypnoticNoise0x1cInner* AwakeKite0x20::VTable0x20(undefined4 p_index)
 {
-	STUB(0x10005ef0);
+	return &m_unk0x1c[p_index];
 }
 
 // STUB: GOLDP 0x10005f10

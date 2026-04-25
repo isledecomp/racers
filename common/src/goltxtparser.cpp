@@ -11,6 +11,7 @@ const LegoChar* GolTxtParser::GetSuffix()
 	return ".txt";
 }
 
+// FUNCTION: GOLDP 0x1002fa50
 // FUNCTION: LEGORACERS 0x0044a1f0
 void GolTxtParser::OpenFile(LegoChar* p_fileName)
 {

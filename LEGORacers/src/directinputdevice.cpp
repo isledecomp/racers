@@ -87,7 +87,7 @@ LegoBool32 DirectInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_para
 	Destroy();
 	m_hWnd = p_params->m_hWnd;
 	m_unk0x90 = p_params->m_unk0x10;
-	m_opalVault = p_params->m_opalVault;
+	m_inputManager = p_params->m_inputManager;
 	m_deviceGuid = *p_params->m_guid;
 
 	LPDIRECTINPUTDEVICE device;

@@ -161,8 +161,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/emberdust0x28.cpp
   LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/crimsonforge0x800.cpp
-  LEGORacers/src/jaspercore0xf0.cpp
-  LEGORacers/src/opalvault0xf0.cpp
+  LEGORacers/src/inputmanager.cpp
+  LEGORacers/src/directinputmanager.cpp
   LEGORacers/src/soundnode.cpp
   LEGORacers/src/ceruleansubject0x0c.cpp
   LEGORacers/src/ceruleanknight0x20.cpp

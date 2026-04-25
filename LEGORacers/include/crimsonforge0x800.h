@@ -8,7 +8,7 @@
 #include "types.h"
 
 class CactusInterface0x4;
-class OpalVault0xf0;
+class InputManager;
 
 // VTABLE: LEGORACERS 0x004af9a8
 // SIZE 0x800
@@ -59,7 +59,7 @@ public:
 	virtual void VTable0x2c() = 0;                            // vtable+0x2c
 	virtual void VTable0x30() = 0;                            // vtable+0x30
 	virtual LegoS32 Tick(CactusInterface0x4* p_unk0x81c) = 0; // vtable+0x34
-	virtual OpalVault0xf0* VTable0x38() = 0;                  // vtable+0x38
+	virtual InputManager* GetInputManager() = 0;              // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
 	// CrimsonForge0x800::`scalar deleting destructor'

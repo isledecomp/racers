@@ -3,12 +3,12 @@
 #include "../../GolDP/include/gol.h"
 #include "../../GolDP/include/golcommondrawstate.h"
 #include "cactusinterface0x4.h"
+#include "directinputmanager.h"
 #include "gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
 #include "golstream.h"
 #include "mousedevice.h"
-#include "opalvault0xf0.h"
 
 #include <mmsystem.h>
 #include <stdio.h>
@@ -153,7 +153,7 @@ void IronFlame0x944::Destroy()
 		}
 	}
 
-	m_unk0x834.Shutdown();
+	m_inputManager.Shutdown();
 	UnloadGolLibrary();
 
 	m_windowMode = c_windowModeNone;
@@ -256,13 +256,13 @@ void IronFlame0x944::UnloadGolLibrary()
 // FUNCTION: LEGORACERS 0x00416a90
 void IronFlame0x944::InitInput()
 {
-	m_unk0x834.FUN_004503e0(g_hInstance, m_hWnd);
+	m_inputManager.Initialize(g_hInstance, m_hWnd);
 }
 
 // FUNCTION: LEGORACERS 0x00416ab0
 void IronFlame0x944::VTable0x20()
 {
-	m_unk0x834.Shutdown();
+	m_inputManager.Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00416ac0
@@ -337,7 +337,7 @@ LegoS32 IronFlame0x944::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, Leg
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			VTable0x38()->GetMouse()->VTable0x44();
+			GetInputManager()->GetMouse()->VTable0x44();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -461,7 +461,7 @@ LegoS32 IronFlame0x944::Tick(CactusInterface0x4* p_unk0x81c)
 	m_lastFrameTimeMs = time;
 
 	if (m_unk0x938) {
-		m_unk0x834.VTable0x10(m_frameDeltaMs);
+		m_inputManager.PollDevices(m_frameDeltaMs);
 	}
 	m_unk0x81c = 0;
 	return 1;
@@ -507,7 +507,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 				SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				VTable0x38()->GetMouse()->VTable0x44();
+				GetInputManager()->GetMouse()->VTable0x44();
 				SetWindowPos(
 					m_hWnd,
 					NULL,
@@ -567,7 +567,7 @@ void IronFlame0x944::ChangeWindowState(LegoU32 p_mode)
 			SetWindowPos(m_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 		}
 		else {
-			VTable0x38()->GetMouse()->VTable0x44();
+			GetInputManager()->GetMouse()->VTable0x44();
 			SetWindowPos(
 				m_hWnd,
 				NULL,
@@ -656,7 +656,7 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 					self->VTable0x40();
 					self->m_disabled = FALSE;
 					self->m_unk0x938 = 1;
-					self->m_unk0x834.FUN_0044bfd0();
+					self->m_inputManager.RestoreSuspendedDevices();
 					SetPriorityClass(GetCurrentProcess(), HIGH_PRIORITY_CLASS);
 					if (self->m_flags & IronFlame0x944::c_flagBit3) {
 						OutputDebugString("--Telling the window to maximize\n");
@@ -691,7 +691,7 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 				SetWindowPos(p_hWnd, NULL, 0, 0, 0, 0, SWP_SHOWWINDOW);
 			}
 			else {
-				self->VTable0x38()->GetMouse()->VTable0x44();
+				self->GetInputManager()->GetMouse()->VTable0x44();
 				SetWindowPos(
 					p_hWnd,
 					NULL,
@@ -733,7 +733,7 @@ LRESULT CALLBACK IronFlame0x944::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wP
 					self->ChangeWindowState(IronFlame0x944::c_windowModeMinimized);
 					self->m_disabled = TRUE;
 					self->m_unk0x938 = 0;
-					self->m_unk0x834.FUN_0044c040();
+					self->m_inputManager.SuspendActiveDevices();
 					SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
 				}
 
@@ -825,9 +825,9 @@ LegoU32 IronFlame0x944::VTable0x00(LegoU32 p_flags)
 }
 
 // FUNCTION: LEGORACERS 0x00417980
-OpalVault0xf0* IronFlame0x944::VTable0x38()
+InputManager* IronFlame0x944::GetInputManager()
 {
-	return &m_unk0x834;
+	return &m_inputManager;
 }
 
 // STUB: LEGORACERS 0x00417990 FOLDED

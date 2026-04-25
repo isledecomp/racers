@@ -6,7 +6,7 @@
 
 #include <stddef.h> /// wchar_t
 
-class OpalVault0xf0;
+class InputManager;
 
 // VTABLE: LEGORACERS 0x004b0e9c
 // SIZE 0x9c
@@ -80,7 +80,7 @@ public:
 
 protected:
 	undefined4 m_unk0x04[4];          // 0x04
-	OpalVault0xf0* m_opalVault;       // 0x14
+	InputManager* m_inputManager;     // 0x14
 	LegoBool32 m_unk0x18;             // 0x18
 	undefined4 m_unk0x1c;             // 0x1c
 	undefined4 m_unk0x20;             // 0x20

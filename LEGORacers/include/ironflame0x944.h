@@ -5,8 +5,8 @@
 #include "compat.h"
 #include "crimsonforge0x800.h"
 #include "decomp.h"
+#include "directinputmanager.h"
 #include "gol.h"
-#include "opalvault0xf0.h"
 #include "racers_resource.h"
 #include "types.h"
 
@@ -44,7 +44,7 @@ public:
 	void VTable0x2c() override;                            // vtable+0x2c
 	void VTable0x30() override;                            // vtable+0x30
 	LegoS32 Tick(CactusInterface0x4* p_unk0x81c) override; // vtable+0x34
-	OpalVault0xf0* VTable0x38() override;                  // vtable+0x38
+	InputManager* GetInputManager() override;              // vtable+0x38
 	virtual void VTable0x3c();                             // vtable+0x3c
 	virtual void VTable0x40();                             // vtable+0x40
 
@@ -87,28 +87,28 @@ private:
 
 	void FUN_00416db0();
 
-	GolExport* m_golExport;          // 0x800
-	GolDrawState* m_golDrawState;    // 0x804
-	undefined4 m_unk0x808;           // 0x808
-	BronzeFalcon0xc8770* m_unk0x80c; // 0x80c
-	LegoU32 m_width;                 // 0x810
-	LegoU32 m_height;                // 0x814
-	LegoU32 m_bpp;                   // 0x818
-	CactusInterface0x4* m_unk0x81c;  // 0x81c
-	DWORD m_lastFrameTimeMs;         // 0x820
-	LegoU32 m_frameDeltaMs;          // 0x824
-	LegoU32 m_maxFrameDeltaMs;       // 0x828
-	LegoBool32 m_disabled;           // 0x82c
-	HMODULE m_golLibrary;            // 0x830
-	OpalVault0xf0 m_unk0x834;        // 0x834
-	HWND m_hWnd;                     // 0x924
-	LegoU32 m_golBackendType;        // 0x928
-	LegoU32 m_windowMode;            // 0x92c
-	undefined4 m_unk0x930;           // 0x930
-	HCURSOR m_hCursor;               // 0x934
-	undefined4 m_unk0x938;           // 0x938
-	DWORD m_fullscreenStyle;         // 0x93c
-	DWORD m_windowedStyle;           // 0x940
+	GolExport* m_golExport;            // 0x800
+	GolDrawState* m_golDrawState;      // 0x804
+	undefined4 m_unk0x808;             // 0x808
+	BronzeFalcon0xc8770* m_unk0x80c;   // 0x80c
+	LegoU32 m_width;                   // 0x810
+	LegoU32 m_height;                  // 0x814
+	LegoU32 m_bpp;                     // 0x818
+	CactusInterface0x4* m_unk0x81c;    // 0x81c
+	DWORD m_lastFrameTimeMs;           // 0x820
+	LegoU32 m_frameDeltaMs;            // 0x824
+	LegoU32 m_maxFrameDeltaMs;         // 0x828
+	LegoBool32 m_disabled;             // 0x82c
+	HMODULE m_golLibrary;              // 0x830
+	DirectInputManager m_inputManager; // 0x834
+	HWND m_hWnd;                       // 0x924
+	LegoU32 m_golBackendType;          // 0x928
+	LegoU32 m_windowMode;              // 0x92c
+	undefined4 m_unk0x930;             // 0x930
+	HCURSOR m_hCursor;                 // 0x934
+	undefined4 m_unk0x938;             // 0x938
+	DWORD m_fullscreenStyle;           // 0x93c
+	DWORD m_windowedStyle;             // 0x940
 };
 
 #endif // IRONFLAME0X944_H

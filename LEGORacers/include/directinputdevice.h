@@ -13,7 +13,7 @@ struct CreateDirectInputDeviceParams {
 	HWND m_hWnd;                  // 0x08
 	const GUID* m_guid;           // 0x0c
 	undefined4 m_unk0x10;         // 0x10
-	OpalVault0xf0* m_opalVault;   // 0x14
+	InputManager* m_inputManager; // 0x14
 };
 
 // VTABLE: LEGORACERS 0x004b11b8

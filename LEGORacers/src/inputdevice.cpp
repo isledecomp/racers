@@ -41,7 +41,7 @@ void InputDevice::Init()
 	m_unk0x2c = g_defaultMapping;
 	::memset(&m_unk0x04, 0, sizeof(m_unk0x04));
 	m_unk0x5c = 0;
-	m_opalVault = NULL;
+	m_inputManager = NULL;
 	m_buttonCount = 0;
 	m_axisCount = 0;
 	m_unk0x50 = 0;

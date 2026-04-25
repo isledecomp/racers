@@ -84,7 +84,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_para
 
 	VTable0x0c();
 
-	for (int i = 0; i < p_param2; i++) {
+	for (LegoU32 i = 0; i < p_param2; i++) {
 		VTable0x20(i)->m_unk0x24 = p_param1;
 	}
 }

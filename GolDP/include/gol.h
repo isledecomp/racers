@@ -19,8 +19,8 @@ class GolFileSource;
 struct GolImport {
 	GolFileSource* m_fileSources;               // 0x00
 	LegoU32 m_fileSourceCount;                  // 0x04
-	LegoChar* m_unk0x8[4];                      // 0x08
-	LegoU32 m_unk0x18;                          // 0x18
+	LegoChar* m_searchPaths[4];                 // 0x08
+	LegoU32 m_searchPathCount;                  // 0x18
 	GolHashTable* m_hashTable;                  // 0x1c
 	HANDLE m_mutex;                             // 0x20
 	undefined m_unk0x24[0x28 - 0x24];           // 0x24

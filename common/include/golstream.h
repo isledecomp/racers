@@ -7,10 +7,10 @@
 class GolHashTable;
 class GolFileSource;
 
-extern LegoChar* g_unk0x4c7384[4];
+extern LegoChar* g_searchPaths[4];
 extern GolFileSource* g_fileSources;
 extern LegoU32 g_fileSourceCount;
-extern LegoU32 g_unk0x4c739c;
+extern LegoU32 g_searchPathCount;
 extern GolHashTable* g_hashTable;
 
 // VTABLE: GOLDP 0x10057884
@@ -111,7 +111,7 @@ public:
 #endif
 	LegoS32 OpenFileSource();
 
-	undefined4 FUN_0044c9c0(const LegoChar* p_arg1);
+	static LegoS32 FindFile(const LegoChar* p_fileName);
 #ifdef BUILDING_GOL
 	static void FUN_100320d0();
 	static void FUN_10032110(const LegoChar* p_arg1);
@@ -120,7 +120,7 @@ public:
 	static const LegoChar* ErrorCodeToString(LegoS32 p_code);
 	static void TransformToUpper(LegoChar* p_str);
 	static LegoS32 IsAbsolutePath(LegoChar* p_path);
-	static void FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path);
+	static void BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path);
 
 protected:
 	LegoU32 m_mode;           // 0x04

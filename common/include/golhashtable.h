@@ -28,6 +28,7 @@ public:
 	Entry* FindEntry(const LegoChar* p_string);
 	Entry* AddString(const LegoChar* p_string);
 
+	Entry* GetCurrentEntry() const { return m_currentEntry; }
 	void SetCurrentEntry(Entry* p_currentEntry) { m_currentEntry = p_currentEntry; }
 	void SetCurrentEntryFromString(const LegoChar* p_string) { m_currentEntry = AddString(p_string); }
 

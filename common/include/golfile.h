@@ -12,6 +12,8 @@ public:
 	GolFile();
 	~GolFile() override;
 
+	static LegoS32 Exists(const LegoChar* p_fileName);
+
 	LegoS32 Open(LegoChar* p_fileName) override;                            // vtable+0x00
 	LegoS32 Close() override;                                               // vtable+0x04
 	LegoS32 Seek(LegoS32 p_offset) override;                                // vtable+0x08

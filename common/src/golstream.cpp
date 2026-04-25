@@ -1,8 +1,10 @@
 #include "golstream.h"
 
 #include "golerror.h"
+#include "golfile.h"
 #include "golfilesource.h"
 #include "golfsutil.h"
+#include "golhashtable.h"
 #include "types.h"
 
 #include <ctype.h>
@@ -16,7 +18,7 @@ LegoChar g_pathBuffer[256];
 
 // GLOBAL: GOLDP 0x10065e68
 // GLOBAL: LEGORACERS 0x004c7384
-LegoChar* g_unk0x4c7384[4];
+LegoChar* g_searchPaths[4];
 
 // GLOBAL: GOLDP 0x10065e78
 // GLOBAL: LEGORACERS 0x004c7394
@@ -28,7 +30,7 @@ LegoU32 g_fileSourceCount;
 
 // GLOBAL: GOLDP 0x10065e80
 // GLOBAL: LEGORACERS 0x004c739c
-LegoU32 g_unk0x4c739c;
+LegoU32 g_searchPathCount;
 
 // GLOBAL: GOLDP 0x10065e84
 // GLOBAL: LEGORACERS 0x004c73a0
@@ -56,6 +58,17 @@ static const LegoChar* const g_errorCodeStrings[] = {
 	"Attempt to read past file end",
 	"Invalid character encoutered"
 };
+
+// FUNCTION: GOLDP 0x10031480
+// FUNCTION: LEGORACERS 0x0044c900
+static const LegoChar* __stdcall GetHashEntryPath(GolHashTable::Entry* p_entry)
+{
+	if (p_entry) {
+		return p_entry->m_data;
+	}
+
+	return "\\";
+}
 
 // STUB: GOLDP 0x100314a0
 // FUNCTION: LEGORACERS 0x0044c920
@@ -92,12 +105,54 @@ void GolStream::Init()
 }
 #endif
 
-// STUB: LEGORACERS 0x0044c9c0
-undefined4 GolStream::FUN_0044c9c0(const LegoChar* p_arg1)
+// FUNCTION: LEGORACERS 0x0044c9c0
+LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
 {
-	// TODO
-	STUB(0x0044c9c0);
-	return 0;
+	LegoS32 result = e_ioFileNotFound;
+	LegoS32 isAbsolute = IsAbsolutePath((LegoChar*) p_fileName);
+
+	GolFsLock();
+
+	if (!isAbsolute) {
+		BuildPathname(NULL, p_fileName);
+
+		LegoU32 i = 0;
+		while (i < g_fileSourceCount && result == e_ioFileNotFound) {
+			result = g_fileSources[i].Find(g_pathBuffer);
+			i++;
+		}
+
+		if (result != e_ioFileNotFound) {
+			GolFsUnlock();
+			return result;
+		}
+	}
+
+	if (g_searchPathCount && !isAbsolute) {
+		result = e_ioFileNotFound;
+		LegoU32 i = 0;
+
+		while (TRUE) {
+			if (i >= g_searchPathCount) {
+				break;
+			}
+
+			BuildPathname(g_searchPaths[i], p_fileName);
+			result = GolFile::Exists(g_pathBuffer);
+			i++;
+
+			if (result != e_ioFileNotFound) {
+				break;
+			}
+		}
+	}
+	else {
+		BuildPathname(NULL, p_fileName);
+		result = GolFile::Exists(g_pathBuffer);
+	}
+
+	GolFsUnlock();
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0044caa0
@@ -146,7 +201,7 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 	LegoS32 result;
 
 	if (!isAbsolute) {
-		FUN_0044d190(NULL, p_fileName);
+		BuildPathname(NULL, p_fileName);
 		result = OpenFileSource();
 
 		if (result != e_ioFileNotFound) {
@@ -156,8 +211,8 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 		}
 	}
 
-	if (!g_unk0x4c739c || isAbsolute) {
-		FUN_0044d190(NULL, p_fileName);
+	if (!g_searchPathCount || isAbsolute) {
+		BuildPathname(NULL, p_fileName);
 		result = Open(g_pathBuffer);
 	}
 	else {
@@ -165,11 +220,11 @@ LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_
 		result = e_ioFileNotFound;
 
 		while (TRUE) {
-			if (i >= g_unk0x4c739c) {
+			if (i >= g_searchPathCount) {
 				break;
 			}
 
-			FUN_0044d190(g_unk0x4c7384[i], p_fileName);
+			BuildPathname(g_searchPaths[i], p_fileName);
 			result = Open(g_pathBuffer);
 			++i;
 
@@ -510,11 +565,120 @@ const LegoChar* GolStream::ErrorCodeToString(LegoS32 p_code)
 	return g_errorCodeStrings[p_code];
 }
 
-// STUB: GOLDP 0x10031c90
-// STUB: LEGORACERS 0x0044d190
-void GolStream::FUN_0044d190(const LegoChar* p_prefix, const LegoChar* p_path)
+// FUNCTION: GOLDP 0x10031c90
+// FUNCTION: LEGORACERS 0x0044d190
+void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 {
-	STUB(0x44d190);
+	g_pathBuffer[0] = '\0';
+
+	LegoU32 pathLength = strlen(p_path);
+	if (pathLength >= sizeOfArray(g_pathBuffer)) {
+		GOL_FATALERROR_MESSAGE("Unable to build pathname, too many chars");
+	}
+
+	LegoU32 prefixLength = 0;
+	LegoBool32 isAbsolutePath = FALSE;
+	if (p_path[0] == '\\' && p_path[1] == '\\') {
+		p_path++;
+		isAbsolutePath = TRUE;
+	}
+	else if (isalpha(p_path[0]) && p_path[1] == ':') {
+		isAbsolutePath = TRUE;
+	}
+	else if (p_prefix) {
+		prefixLength = strlen(p_prefix);
+		if (pathLength + prefixLength + 1 >= sizeOfArray(g_pathBuffer)) {
+			GOL_FATALERROR_MESSAGE("Unable to build pathname, too many chars");
+		}
+
+		strcpy(g_pathBuffer, p_prefix);
+		if (g_pathBuffer[prefixLength - 1] != '\\') {
+			g_pathBuffer[prefixLength] = '\\';
+			g_pathBuffer[prefixLength + 1] = '\0';
+			prefixLength++;
+		}
+	}
+
+	if (!g_hashTable) {
+		if (p_path[0] == '\\' && prefixLength) {
+			p_path++;
+		}
+
+		strcat(g_pathBuffer, p_path);
+		TransformToUpper(g_pathBuffer);
+		return;
+	}
+
+	LegoChar* slash = strrchr((LegoChar*) p_path, '\\');
+	if (isAbsolutePath) {
+		strcpy(g_pathBuffer, p_path);
+		TransformToUpper(g_pathBuffer);
+
+		if (slash) {
+			LegoU32 slashOffset = slash - p_path;
+			g_pathBuffer[slashOffset] = '\0';
+			g_hashTable->AddString(g_pathBuffer);
+			g_pathBuffer[slashOffset] = '\\';
+		}
+		return;
+	}
+
+	const LegoChar* currentEntryPath = NULL;
+	if (g_hashTable) {
+		GolHashTable::Entry* currentEntry = g_hashTable->GetCurrentEntry();
+		if (currentEntry) {
+			currentEntryPath = GetHashEntryPath(currentEntry);
+		}
+	}
+
+	if (slash) {
+		LegoU32 directoryEnd;
+		if (p_path[0] != '\\' && currentEntryPath) {
+			LegoU32 currentEntryLength = strlen(currentEntryPath);
+			if (pathLength + currentEntryLength + prefixLength + 1 >= sizeOfArray(g_pathBuffer)) {
+				GOL_FATALERROR_MESSAGE("Unable to build pathname, too many chars");
+			}
+
+			if (currentEntryPath[0] == '\\') {
+				currentEntryPath++;
+			}
+
+			strcat(g_pathBuffer, currentEntryPath);
+			directoryEnd = strlen(g_pathBuffer);
+			if (g_pathBuffer[directoryEnd - 1] != '\\') {
+				g_pathBuffer[directoryEnd] = '\\';
+				g_pathBuffer[directoryEnd + 1] = '\0';
+				directoryEnd++;
+			}
+		}
+		else if (p_path[0] == '\\') {
+			directoryEnd = prefixLength;
+			p_path++;
+		}
+		else {
+			directoryEnd = prefixLength;
+		}
+
+		strcat(g_pathBuffer, p_path);
+		TransformToUpper(g_pathBuffer);
+
+		if (slash > p_path) {
+			directoryEnd += slash - p_path;
+			LegoChar* entryPath = g_pathBuffer + prefixLength;
+			g_pathBuffer[directoryEnd] = '\0';
+			g_hashTable->AddString(entryPath);
+			g_pathBuffer[directoryEnd] = '\\';
+		}
+		return;
+	}
+
+	if (currentEntryPath && currentEntryPath[0]) {
+		strcat(g_pathBuffer, currentEntryPath);
+		strcat(g_pathBuffer, "\\");
+	}
+
+	strcat(g_pathBuffer, p_path);
+	TransformToUpper(g_pathBuffer);
 }
 
 // FUNCTION: LEGORACERS 0x0044d4f0
@@ -542,10 +706,10 @@ LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
 // FUNCTION: GOLDP 0x100320d0
 void GolStream::FUN_100320d0()
 {
-	for (LegoU32 i = 0; i < g_unk0x4c739c; i++) {
-		if (g_unk0x4c7384[i] != NULL) {
-			delete[] g_unk0x4c7384[i];
-			g_unk0x4c7384[i] = NULL;
+	for (LegoU32 i = 0; i < g_searchPathCount; i++) {
+		if (g_searchPaths[i] != NULL) {
+			delete[] g_searchPaths[i];
+			g_searchPaths[i] = NULL;
 		}
 	}
 }
@@ -553,15 +717,15 @@ void GolStream::FUN_100320d0()
 // FUNCTION: GOLDP 0x10032110
 void GolStream::FUN_10032110(const LegoChar* p_arg1)
 {
-	if (g_unk0x4c739c < sizeOfArray(g_unk0x4c7384)) {
-		g_unk0x4c7384[g_unk0x4c739c] = new LegoChar[::strlen(p_arg1) + 1];
+	if (g_searchPathCount < sizeOfArray(g_searchPaths)) {
+		g_searchPaths[g_searchPathCount] = new LegoChar[::strlen(p_arg1) + 1];
 
-		if (g_unk0x4c7384[g_unk0x4c739c] == NULL) {
+		if (g_searchPaths[g_searchPathCount] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		strcpy(g_unk0x4c7384[g_unk0x4c739c], p_arg1);
-		g_unk0x4c739c++;
+		strcpy(g_searchPaths[g_searchPathCount], p_arg1);
+		g_searchPathCount++;
 	}
 }
 #endif

@@ -24,6 +24,12 @@ GolFile::~GolFile()
 	GolStream::Dispose();
 }
 
+// FUNCTION: LEGORACERS 0x00450b20
+LegoS32 GolFile::Exists(const LegoChar* p_fileName)
+{
+	return _access(p_fileName, 0) >= 0 ? GolStream::e_ioSuccess : GolStream::e_ioFileNotFound;
+}
+
 // FUNCTION: GOLDP 0x10032950
 // FUNCTION: LEGORACERS 0x00450b50
 LegoS32 GolFile::Open(LegoChar* p_fileName)

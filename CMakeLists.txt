@@ -109,6 +109,8 @@ add_library(goldp SHARED
   GolDP/src/slatepeak0x58.cpp
   GolDP/src/azureridge0x38.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
+  GolDP/src/awakekite0x20.cpp
+  GolDP/src/hypnoticnoise0x1c.cpp
   util/decomp.cpp
   ${COMMON_SOURCES}
 )

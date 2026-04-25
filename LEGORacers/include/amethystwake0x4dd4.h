@@ -104,7 +104,7 @@ private:
 	undefined m_unk0x4cc5[0x4cd4 - 0x4cc5]; // 0x4cc5
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
-	undefined4* m_unk0x4cdc;                // 0x4cdc
+	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
 	undefined4* m_unk0x4ce0;                // 0x4ce0
 	CorundumPeak0x14 m_unk0x4ce4;           // 0x4ce4
 	CorundumPeak0x14 m_unk0x4cf8;           // 0x4cf8

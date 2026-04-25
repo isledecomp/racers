@@ -1,6 +1,7 @@
 #ifndef GOLDP_GOL_H
 #define GOLDP_GOL_H
 
+#include "awakekite0x20.h"
 #include "decomp.h"
 #include "floatyboat0x28.h"
 #include "goldrawstate.h"
@@ -48,7 +49,7 @@ public:
 	virtual undefined4* VTable0x28() = 0;            // vtable+0x28
 	virtual undefined4* VTable0x2c() = 0;            // vtable+0x2c
 	virtual FloatyBoat0x28* VTable0x30() = 0;        // vtable+0x30
-	virtual undefined4* VTable0x34() = 0;            // vtable+0x34
+	virtual AwakeKite0x20* VTable0x34() = 0;         // vtable+0x34
 	virtual undefined4* VTable0x38() = 0;            // vtable+0x38
 	virtual void VTable0x3c(undefined4*) = 0;        // vtable+0x3c
 	virtual void VTable0x40(undefined4*) = 0;        // vtable+0x40

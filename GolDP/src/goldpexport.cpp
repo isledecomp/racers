@@ -1,5 +1,6 @@
 #include "goldpexport.h"
 
+#include "awakekite0x20.h"
 #include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
 #include "golerror.h"
@@ -112,12 +113,14 @@ FloatyBoat0x28* GolDPExport::VTable0x30()
 	return result;
 }
 
-// STUB: GOLDP 0x10015500
-undefined4* GolDPExport::VTable0x34()
+// FUNCTION: GOLDP 0x10015500
+AwakeKite0x20* GolDPExport::VTable0x34()
 {
-	// TODO
-	STUB(0x10015500);
-	return NULL;
+	AwakeKite0x20* result = new AwakeKite0x20;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return result;
 }
 
 // STUB: GOLDP 0x10015570

@@ -30,3 +30,4 @@ GolDP.dll
 /data/
 
 .DS_Store
+*.log

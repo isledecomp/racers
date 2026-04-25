@@ -9,19 +9,20 @@
 
 class FrostPetal0x34;
 class SoundBuffer;
+struct SoundNode;
 
 // VTABLE: LEGORACERS 0x004afbe4
 // SIZE 0x48
 class StreamingSoundInstance : public SoundInstanceBase0x38, public GolListLink {
 public:
 	StreamingSoundInstance();
-	~StreamingSoundInstance() override;   // vtable+0x00
-	void VTable0x04(undefined4) override; // vtable+0x04
-	void VTable0x08() override;           // vtable+0x08
-	undefined4 VTable0x0c() override;     // vtable+0x0c
-	undefined4 VTable0x10() override;     // vtable+0x10
-	void VTable0x14(undefined4) override; // vtable+0x14
-	void VTable0x18(undefined4) override; // vtable+0x18
+	~StreamingSoundInstance() override;             // vtable+0x00
+	void Play(LegoBool32 p_loop) override;          // vtable+0x04
+	void Stop() override;                           // vtable+0x08
+	LegoBool32 IsPlaying() override;                // vtable+0x0c
+	FrostPetal0x34* VTable0x10() override;          // vtable+0x10
+	void VTable0x14(undefined4) override;           // vtable+0x14
+	void UpdateSpatial(SoundNode* p_node) override; // vtable+0x18
 
 	// SYNTHETIC: LEGORACERS 0x0041ace0
 	// StreamingSoundInstance::`scalar deleting destructor'

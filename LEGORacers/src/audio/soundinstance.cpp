@@ -79,9 +79,11 @@ void SoundInstance::SetPriority(LegoS32 p_priority)
 	m_soundBuffer->SetPriority(p_priority);
 }
 
-// STUB: LEGORACERS 0x0041b5c0
+#pragma code_seg(".text$soundinstance_getowner")
+// TODO: Temporary workaround until we figure out how the original code was written.
+// FUNCTION: LEGORACERS 0x0041b5c0
 FrostPetal0x34* SoundInstance::GetOwner()
 {
-	STUB(0x0041b5c0);
-	return NULL;
+	return m_owner;
 }
+#pragma code_seg()

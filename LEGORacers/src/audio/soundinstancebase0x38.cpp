@@ -12,26 +12,26 @@ LegoFloat g_unk0x4afabc = 0.0f;
 LegoFloat g_unk0x4afac0 = 1.0f;
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void SoundInstanceBase0x38::VTable0x08()
+void SoundInstanceBase0x38::Stop()
 {
 }
 
 // FUNCTION: LEGORACERS 0x00417bf0
 SoundInstanceBase0x38::SoundInstanceBase0x38()
 {
-	m_unk0x04 = g_unk0x4afab8;
-	m_unk0x08 = g_unk0x4afac0;
-	m_unk0x0c = g_unk0x4afab8;
-	m_unk0x10 = g_unk0x4afabc;
-	m_unk0x14 = g_unk0x4afac0;
-	m_unk0x18 = 0.0f;
-	m_unk0x1c = 0.0f;
-	m_unk0x20 = 0.0f;
-	m_unk0x24 = 0.0f;
-	m_unk0x28 = 0.0f;
-	m_unk0x2c = 0.0f;
-	m_unk0x30 = 8.0f;
-	m_unk0x34 = 1024.0f;
+	m_volume = g_unk0x4afab8;
+	m_frequencyScale = g_unk0x4afac0;
+	m_spatialVolume = g_unk0x4afab8;
+	m_spatialPan = g_unk0x4afabc;
+	m_spatialFrequencyScale = g_unk0x4afac0;
+	m_positionX = 0.0f;
+	m_positionY = 0.0f;
+	m_positionZ = 0.0f;
+	m_velocityX = 0.0f;
+	m_velocityY = 0.0f;
+	m_velocityZ = 0.0f;
+	m_minDistanceSquared = 8.0f;
+	m_maxDistanceSquared = 1024.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00417c70
@@ -40,25 +40,25 @@ SoundInstanceBase0x38::~SoundInstanceBase0x38()
 }
 
 // STUB: LEGORACERS 0x00417ff0
-void SoundInstanceBase0x38::VTable0x18(undefined4)
+void SoundInstanceBase0x38::UpdateSpatial(SoundNode*)
 {
 	STUB(0x417ff0);
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 SoundInstanceBase0x38::VTable0x0c()
+LegoBool32 SoundInstanceBase0x38::IsPlaying()
 {
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 SoundInstanceBase0x38::VTable0x10()
+FrostPetal0x34* SoundInstanceBase0x38::VTable0x10()
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void SoundInstanceBase0x38::VTable0x04(undefined4)
+void SoundInstanceBase0x38::Play(LegoBool32)
 {
 }
 

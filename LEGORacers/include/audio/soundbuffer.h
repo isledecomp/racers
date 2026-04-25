@@ -54,6 +54,7 @@ public:
 	GolListLink& GetLink() { return m_link; }
 	LegoU8 GetPlaybackState() { return m_playbackState; }
 	LegoBool ShouldStopWhenPaused() { return m_stopWhenPaused; }
+	LegoFloat GetVolume() { return m_volume; }
 	void ClearSoundInstance() { m_soundInstance = NULL; }
 	void SetPlaybackState(LegoU8 p_playbackState) { m_playbackState = p_playbackState; }
 	template <class TList>

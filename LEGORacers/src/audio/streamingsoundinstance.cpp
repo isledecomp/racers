@@ -5,6 +5,9 @@
 
 DECOMP_SIZE_ASSERT(StreamingSoundInstance, 0x48)
 
+// GLOBAL: LEGORACERS 0x004afc00
+LegoFloat g_streamingSoundPriorityScale = 2048.0f;
+
 // FUNCTION: LEGORACERS 0x0041acb0
 StreamingSoundInstance::StreamingSoundInstance()
 {
@@ -30,36 +33,42 @@ StreamingSoundInstance::~StreamingSoundInstance()
 	}
 }
 
-// STUB: LEGORACERS 0x0041ad80
-void StreamingSoundInstance::VTable0x04(undefined4)
+// FUNCTION: LEGORACERS 0x0041ad80
+void StreamingSoundInstance::Play(LegoBool32 p_loop)
 {
-	STUB(0x41ad80);
+	m_soundBuffer->Play(p_loop);
 }
 
-// STUB: LEGORACERS 0x0041ad90
-void StreamingSoundInstance::VTable0x08()
+// FUNCTION: LEGORACERS 0x0041ad90
+void StreamingSoundInstance::Stop()
 {
-	STUB(0x41ad90);
+	m_soundBuffer->StopOrRelease();
 }
 
-// STUB: LEGORACERS 0x0041ada0
-undefined4 StreamingSoundInstance::VTable0x0c()
+// FUNCTION: LEGORACERS 0x0041ada0
+LegoBool32 StreamingSoundInstance::IsPlaying()
 {
-	STUB(0x41ada0);
-	return 0;
+	if (m_soundBuffer) {
+		return m_soundBuffer->IsPlaying();
+	}
+
+	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0041adb0
-void StreamingSoundInstance::VTable0x18(undefined4)
+// FUNCTION: LEGORACERS 0x0041adb0
+void StreamingSoundInstance::UpdateSpatial(SoundNode* p_node)
 {
-	STUB(0x41adb0);
+	SoundInstanceBase0x38::UpdateSpatial(p_node);
+	m_soundBuffer->SetVolume(m_spatialVolume);
+	m_soundBuffer->SetPan(m_spatialPan);
+	m_soundBuffer->SetFrequencyScale(m_spatialFrequencyScale);
+	m_soundBuffer->SetPriority((LegoS32) (m_soundBuffer->GetVolume() * g_streamingSoundPriorityScale));
 }
 
-// STUB: LEGORACERS 0x0041ae00
-undefined4 StreamingSoundInstance::VTable0x10()
+// FUNCTION: LEGORACERS 0x0041ae00
+FrostPetal0x34* StreamingSoundInstance::VTable0x10()
 {
-	STUB(0x41ae00);
-	return 0;
+	return m_owner;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED

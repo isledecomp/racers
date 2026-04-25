@@ -4,10 +4,10 @@
 #include "cactusinterface0x4.h"
 #include "cobaltmist0x30.h"
 #include "decomp.h"
-#include "ironflame0x944.h"
 #include "scarletnova0x5c.h"
 #include "soundmanager.h"
 #include "types.h"
+#include "win32golapp.h"
 
 // VTABLE: LEGORACERS 0x004b0568
 // SIZE 0x1d6c
@@ -17,7 +17,7 @@ public:
 	class Context {
 	public:
 		LegoBool32 m_unk0x00;                 // 0x00
-		IronFlame0x944* m_unk0x04;            // 0x04
+		Win32GolApp* m_golApp;                // 0x04
 		IndigoStar0x18* m_unk0x08;            // 0x08
 		LegoFloat m_unk0x0c;                  // 0x0c
 		LegoFloat m_unk0x10;                  // 0x10
@@ -73,7 +73,7 @@ public:
 	LONG ResetDisplay();
 
 private:
-	IronFlame0x944 m_unk0x04;            // 0x04
+	Win32GolApp m_golApp;                // 0x04
 	SoundManager m_soundManager;         // 0x948
 	CobaltMist0x30 m_unk0x9e0;           // 0x9e0
 	IndigoStar0x18* m_unk0xa10;          // 0xa10

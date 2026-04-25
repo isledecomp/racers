@@ -223,3 +223,9 @@ LegoS32 GolFileSource::ForwardRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size
 {
 	return m_stream->BufferedRead(p_offset, p_buf, p_size, p_lenRead);
 }
+
+// FUNCTION: LEGORACERS 0x0044dbd0
+void GolFileSource::ClearDirectoryTree()
+{
+	m_rootDir.DeleteChildren();
+}

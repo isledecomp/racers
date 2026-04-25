@@ -1,8 +1,8 @@
 #ifndef VIDEOPLAYER_H
 #define VIDEOPLAYER_H
 
-#include "ironflame0x944.h"
 #include "types.h"
+#include "win32golapp.h"
 
 #include <windows.h>
 
@@ -42,17 +42,12 @@ public:
 		LegoBool32 m_autoRewind;     // 0x14
 	};
 
-	static int Begin(IronFlame0x944* p_unk0x04, DWORD p_width, DWORD p_height);
-	static int Play(IronFlame0x944* p_unk0x04, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind);
-	static int End(IronFlame0x944* p_unk0x04);
+	static int Begin(Win32GolApp* p_golApp, DWORD p_width, DWORD p_height);
+	static int Play(Win32GolApp* p_golApp, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind);
+	static int End(Win32GolApp* p_golApp);
 
 private:
-	static LegoS32 Play(
-		IronFlame0x944* p_unk0x04,
-		LPCSTR p_filename,
-		LegoBool32 p_abortableOnKey,
-		LegoBool32 p_autoRewind
-	);
+	static LegoS32 Play(Win32GolApp* p_golApp, LPCSTR p_filename, LegoBool32 p_abortableOnKey, LegoBool32 p_autoRewind);
 	static void RevertDisplay();
 };
 

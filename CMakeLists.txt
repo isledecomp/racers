@@ -139,7 +139,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/main.cpp
   LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/legoracers.cpp
-  LEGORacers/src/ironflame0x944.cpp
+  LEGORacers/src/win32golapp.cpp
   LEGORacers/src/indigostar0x18.cpp
   LEGORacers/src/soundmanager.cpp
   LEGORacers/src/jadestorm0x0c.cpp
@@ -160,7 +160,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/frostpetal0x34.cpp
   LEGORacers/src/emberdust0x28.cpp
   LEGORacers/src/cobaltmist0x30.cpp
-  LEGORacers/src/crimsonforge0x800.cpp
+  LEGORacers/src/golapp.cpp
   LEGORacers/src/inputmanager.cpp
   LEGORacers/src/directinputmanager.cpp
   LEGORacers/src/soundnode.cpp

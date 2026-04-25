@@ -1,7 +1,7 @@
 #include "aquacoral0x37b8.h"
 
 #include "golhashtable.h"
-#include "ironflame0x944.h"
+#include "win32golapp.h"
 
 #include <golerror.h>
 #include <golstream.h>
@@ -52,8 +52,8 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 			hashTable->SetUnk0x1c(hashTable->FUN_0044c810("GAMEDATA\\COMMON"));
 		}
 		m_unk0x3400.FUN_00422420(
-			p_context->m_unk0x04->GetUnk0x80c(),
-			p_context->m_unk0x04->GetGolExport(),
+			p_context->m_golApp->GetRenderer(),
+			p_context->m_golApp->GetGolExport(),
 			p_context->m_unk0x18,
 			p_context->m_unk0x3c
 		);
@@ -67,7 +67,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 	}
 
 	p_context->m_unk0xd8 = 0;
-	p_context->m_unk0x04->FUN_00416490();
+	p_context->m_golApp->ClearFileSourceDirectoryCaches();
 
 	if (!p_context->m_unk0x24) {
 		return m_unk0x04.FUN_0041ed10(m_context, &m_unk0x98);

@@ -36,7 +36,7 @@ LegoFloat g_unk0x4b0564 = 800.0f;
 // FUNCTION: LEGORACERS 0x0042b9d0
 LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
 {
-	m_golBackendType = IronFlame0x944::c_golBackendDP;
+	m_golBackendType = Win32GolApp::c_golBackendDP;
 	m_cutscenes = TRUE;
 	m_unk0xa1c = 0;
 	m_videoFlags = c_videoFullScreen | c_videoBit4;
@@ -45,7 +45,7 @@ LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
 	memset(&m_context, 0, sizeof(m_context));
 
 	m_context.m_unk0x00 = TRUE;
-	m_context.m_unk0x04 = &m_unk0x04;
+	m_context.m_golApp = &m_golApp;
 	m_context.m_unk0x08 = m_unk0xa10;
 	m_context.m_unk0x0c = g_unk0x4b055c;
 	m_context.m_unk0x10 = g_unk0x4b0560;
@@ -70,7 +70,7 @@ LegoRacers::~LegoRacers()
 // FUNCTION: LEGORACERS 0x0042bbb0
 LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 {
-	if (m_unk0x04.GetFlags() & CrimsonForge0x800::c_flagInitialized) {
+	if (m_golApp.GetFlags() & GolApp::c_flagInitialized) {
 		Destroy();
 	}
 
@@ -79,9 +79,9 @@ LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 		return result;
 	}
 
-	m_unk0x04.CrimsonForge0x800::GetHashTable().Init(100, 4096);
-	m_unk0x04.SetGolBackendType(m_golBackendType);
-	m_unk0x04.Init("LEGO Racers", g_jamFile);
+	m_golApp.GolApp::GetHashTable().Init(100, 4096);
+	m_golApp.SetGolBackendType(m_golBackendType);
+	m_golApp.Init("LEGO Racers", g_jamFile);
 	return 1;
 }
 
@@ -90,24 +90,24 @@ void LegoRacers::Destroy()
 {
 	FUN_0042bd00();
 	Shutdown();
-	m_unk0x04.Destroy();
+	m_golApp.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042bc40
 void LegoRacers::Run()
 {
-	if (!(m_unk0x04.GetFlags() & CrimsonForge0x800::c_flagInitialized)) {
+	if (!(m_golApp.GetFlags() & GolApp::c_flagInitialized)) {
 		return;
 	}
 
 	CactusInterface0x4::VTable0x00();
 
 	if (m_cutscenes) {
-		VideoPlayer::Begin(&m_unk0x04, 640, 480);
-		VideoPlayer::Play(&m_unk0x04, "lmicmp.avi", FALSE, FALSE);
-		VideoPlayer::Play(&m_unk0x04, "hvscmp.avi", TRUE, FALSE);
-		VideoPlayer::Play(&m_unk0x04, "introcmp.avi", TRUE, FALSE);
-		VideoPlayer::End(&m_unk0x04);
+		VideoPlayer::Begin(&m_golApp, 640, 480);
+		VideoPlayer::Play(&m_golApp, "lmicmp.avi", FALSE, FALSE);
+		VideoPlayer::Play(&m_golApp, "hvscmp.avi", TRUE, FALSE);
+		VideoPlayer::Play(&m_golApp, "introcmp.avi", TRUE, FALSE);
+		VideoPlayer::End(&m_golApp);
 	}
 
 	FUN_0042be00();
@@ -128,7 +128,7 @@ void LegoRacers::Run()
 // FUNCTION: LEGORACERS 0x0042bd00
 void LegoRacers::FUN_0042bd00()
 {
-	GolExport* golExport = m_context.m_unk0x04->GetGolExport();
+	GolExport* golExport = m_context.m_golApp->GetGolExport();
 
 	for (LegoU32 i = 0; i < m_context.m_unk0x32c; i++) {
 		ScarletNova0x5c& slot = m_context.m_unk0x108[i];
@@ -166,23 +166,23 @@ void LegoRacers::FUN_0042bd00()
 void LegoRacers::FUN_0042bdc0()
 {
 	AmethystWake0x4dd4::FUN_0042b1e0(&m_context);
-	m_unk0x04.FUN_00416490();
+	m_golApp.ClearFileSourceDirectoryCaches();
 }
 
 // FUNCTION: LEGORACERS 0x0042bde0
 void LegoRacers::FUN_0042bde0()
 {
 	AquaCoral0x37b8::FUN_0042b130(&m_context);
-	m_unk0x04.FUN_00416490();
+	m_golApp.ClearFileSourceDirectoryCaches();
 }
 
 // FUNCTION: LEGORACERS 0x0042be00
 void LegoRacers::FUN_0042be00()
 {
 	LegoS32 initDisplayResult =
-		m_unk0x04.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
+		m_golApp.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
 
-	m_soundManager.FUN_00418f50(m_unk0x04.GetHwnd());
+	m_soundManager.FUN_00418f50(m_golApp.GetHwnd());
 
 	if (m_soundManager.VTable0x04(0x20)) {
 		m_unk0xa10 = &m_soundManager;
@@ -203,7 +203,7 @@ void LegoRacers::Shutdown()
 {
 	m_soundManager.Shutdown();
 	m_unk0x9e0.Shutdown();
-	m_unk0x04.VTable0x2c();
+	m_golApp.ShutdownDisplay();
 }
 
 // FUNCTION: LEGORACERS 0x0042bec0

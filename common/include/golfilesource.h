@@ -33,6 +33,7 @@ public:
 
 	void FUN_0044d870(GolStream* p_unk0x04);
 	void Reset();
+	void ClearDirectoryTree();
 
 private:
 	GolStream* m_stream;                  // 0x04

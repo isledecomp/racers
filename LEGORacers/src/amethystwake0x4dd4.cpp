@@ -56,8 +56,8 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 {
 	LegoBool32 flag = FALSE;
 	m_unk0x04.m_context = p_context;
-	m_unk0x4cd4 = p_context->m_unk0x04->GetGolExport();
-	m_unk0x4cd8 = p_context->m_unk0x04->GetUnk0x80c();
+	m_unk0x4cd4 = p_context->m_golApp->GetGolExport();
+	m_unk0x4cd8 = p_context->m_golApp->GetRenderer();
 
 	if (g_hashTable) {
 		GolHashTable* hashTable = g_hashTable;

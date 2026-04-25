@@ -37,7 +37,7 @@ WCHAR g_wideCharStr[256];
 
 // FUNCTION: LEGORACERS 0x004a5fe0
 LegoS32 VideoPlayer::Play(
-	IronFlame0x944* p_unk0x04,
+	Win32GolApp* p_golApp,
 	LPCSTR p_filename,
 	LegoBool32 p_abortableOnKey,
 	LegoBool32 p_autoRewind
@@ -46,12 +46,12 @@ LegoS32 VideoPlayer::Play(
 	Graph g;
 	LegoS32 result = 0;
 
-	if (GetDeviceCaps(GetDC(p_unk0x04->GetHwnd()), BITSPIXEL) == 4) {
+	if (GetDeviceCaps(GetDC(p_golApp->GetHwnd()), BITSPIXEL) == 4) {
 		return 0;
 	}
 
 	if (g.LoadFile(p_filename)) {
-		g.m_hwnd = p_unk0x04->GetHwnd();
+		g.m_hwnd = p_golApp->GetHwnd();
 		g.StartPlayback(TRUE, p_autoRewind);
 		g.RunMessageLoop(p_abortableOnKey);
 		g.m_hwnd = NULL;
@@ -63,13 +63,13 @@ LegoS32 VideoPlayer::Play(
 }
 
 // FUNCTION: LEGORACERS 0x004a60c0
-int VideoPlayer::Begin(IronFlame0x944* p_unk0x04, DWORD p_width, DWORD p_height)
+int VideoPlayer::Begin(Win32GolApp* p_golApp, DWORD p_width, DWORD p_height)
 {
 	RevertDisplay();
 	ShowCursor(FALSE);
 
-	g_savedWindowMode = p_unk0x04->GetWindowMode();
-	HWND hWnd = p_unk0x04->GetHwnd();
+	g_savedWindowMode = p_golApp->GetWindowMode();
+	HWND hWnd = p_golApp->GetHwnd();
 	ShowWindow(hWnd, SW_MAXIMIZE);
 	BringWindowToTop(hWnd);
 
@@ -104,28 +104,28 @@ void VideoPlayer::RevertDisplay()
 }
 
 // FUNCTION: LEGORACERS 0x004a61c0
-int VideoPlayer::Play(IronFlame0x944* p_unk0x04, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind)
+int VideoPlayer::Play(Win32GolApp* p_golApp, LPCSTR p_filename, int p_abortableOnKey, int p_autoRewind)
 {
-	return Play(p_unk0x04, p_filename, (LegoBool32) p_abortableOnKey, (LegoBool32) p_autoRewind);
+	return Play(p_golApp, p_filename, (LegoBool32) p_abortableOnKey, (LegoBool32) p_autoRewind);
 }
 
 // FUNCTION: LEGORACERS 0x004a61e0
-int VideoPlayer::End(IronFlame0x944* p_unk0x04)
+int VideoPlayer::End(Win32GolApp* p_golApp)
 {
 	RevertDisplay();
 
-	if (p_unk0x04->IsDisabled()) {
-		p_unk0x04->ChangeWindowState(g_savedWindowMode);
+	if (p_golApp->IsDisabled()) {
+		p_golApp->ChangeWindowState(g_savedWindowMode);
 
-		if (p_unk0x04->GetFlags() & IronFlame0x944::c_flagBit3) {
-			ShowWindow(p_unk0x04->GetHwnd(), SW_MAXIMIZE);
+		if (p_golApp->GetFlags() & Win32GolApp::c_flagFullscreen) {
+			ShowWindow(p_golApp->GetHwnd(), SW_MAXIMIZE);
 		}
 		else {
-			ShowWindow(p_unk0x04->GetHwnd(), SW_RESTORE);
+			ShowWindow(p_golApp->GetHwnd(), SW_RESTORE);
 		}
 	}
 	else {
-		ShowWindow(p_unk0x04->GetHwnd(), SW_MAXIMIZE);
+		ShowWindow(p_golApp->GetHwnd(), SW_MAXIMIZE);
 	}
 
 	return ShowCursor(TRUE);

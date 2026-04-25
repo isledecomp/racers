@@ -76,8 +76,12 @@ public:
 	PeridotTraceBuffer0x250();
 	~PeridotTraceBuffer0x250();
 
+	void Reset() { m_unk0x244 = 0; }
+
 private:
-	undefined m_unk0x00[0x250]; // 0x00
+	undefined m_unk0x00[0x244 - 0x00];   // 0x00
+	undefined4 m_unk0x244;               // 0x244
+	undefined m_unk0x248[0x250 - 0x248]; // 0x248
 };
 
 #endif // PERIDOTTRACE0X4E0_H

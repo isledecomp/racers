@@ -35,7 +35,7 @@ void AmethystWake0x4dd4::FUN_0042b1e0(LegoRacers::Context* p_context)
 // FUNCTION: LEGORACERS 0x0042c5d0
 AmethystWake0x4dd4::AmethystWake0x4dd4()
 {
-	FUN_0042cb00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0042c910
@@ -44,11 +44,22 @@ AmethystWake0x4dd4::~AmethystWake0x4dd4()
 	FUN_0042ccc0();
 }
 
-// STUB: LEGORACERS 0x0042cb00
-void AmethystWake0x4dd4::FUN_0042cb00()
+// FUNCTION: LEGORACERS 0x0042cb00
+void AmethystWake0x4dd4::Reset()
 {
-	// TODO
-	STUB(0x42cb00);
+	m_unk0x04.m_context = NULL;
+	m_unk0x04.m_unk0x258.GetUnk0x1cfc().Reset();
+	m_unk0x04.m_unk0x4b40.Reset();
+	m_unk0x4cd4 = NULL;
+	m_unk0x4cd8 = NULL;
+	m_unk0x4d20 = 0;
+	m_unk0x4dc8 = NULL;
+	m_unk0x4cdc = NULL;
+	m_unk0x4ce0 = NULL;
+	m_unk0x4dd0 = 0;
+	m_unk0x4d24.Reset();
+	m_unk0x4d30.Reset();
+	m_unk0x4d48.VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x0042cb90

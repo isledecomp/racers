@@ -51,7 +51,7 @@ public:
 
 	static void FUN_0042b1e0(LegoRacers::Context* p_context);
 
-	void FUN_0042cb00();
+	void Reset();
 	LegoS32 FUN_0042cb90(LegoRacers::Context* p_context);
 	LegoS32 FUN_0042ccc0();
 	void FUN_0042cd60();
@@ -104,11 +104,12 @@ private:
 	undefined m_unk0x4cc5[0x4cd4 - 0x4cc5]; // 0x4cc5
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
-	undefined m_unk0x4cdc[0x4ce4 - 0x4cdc]; // 0x4cdc
+	undefined4* m_unk0x4cdc;                // 0x4cdc
+	undefined4* m_unk0x4ce0;                // 0x4ce0
 	CorundumPeak0x14 m_unk0x4ce4;           // 0x4ce4
 	CorundumPeak0x14 m_unk0x4cf8;           // 0x4cf8
 	CorundumPeak0x14 m_unk0x4d0c;           // 0x4d0c
-	undefined m_unk0x4d20[0x4d24 - 0x4d20]; // 0x4d20
+	undefined4 m_unk0x4d20;                 // 0x4d20
 	GolString m_unk0x4d24;                  // 0x4d24
 	GolString m_unk0x4d30;                  // 0x4d30
 	DiamondCloud0xc m_unk0x4d3c;            // 0x4d3c

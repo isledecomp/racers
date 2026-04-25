@@ -4,6 +4,8 @@
 #include "decomp.h"
 #include "types.h"
 
+class SmallCocoon0xc;
+
 // VTABLE: GOLDP 0x100565b8
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 {
@@ -25,7 +27,7 @@ public:
 	virtual void VTable0x30(undefined4);                                    // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
 
-	void FUN_10028ae0(undefined* p_param);
+	void FUN_10028ae0(SmallCocoon0xc* p_param);
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'

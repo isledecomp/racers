@@ -13,11 +13,23 @@ HypnoticNoise0x1c::HypnoticNoise0x1c()
 	m_unk0x18 = 0;
 }
 
-// STUB: GOLDP 0x10022fe0
+// TODO: Temporary workaround until we figure out how the original code was written.
+// FUNCTION: GOLDP 0x10022fe0
+#pragma inline_depth(0)
 HypnoticNoise0x1c::~HypnoticNoise0x1c()
 {
-	// TODO
+	m_unk0x14 = 0;
+
+	if (m_unk0x0c) {
+		m_unk0x0c->FUN_10028ae0(this);
+		m_unk0x0c = 0;
+	}
+
+	if (m_data) {
+		SmallCocoon0xc::VTable0x08();
+	}
 }
+#pragma inline_depth()
 
 // STUB: GOLDP 0x10023060
 void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2, undefined4 p_param3)
@@ -42,7 +54,7 @@ void HypnoticNoise0x1c::VTable0x08()
 {
 	m_unk0x14 = 0;
 	if (m_unk0x0c) {
-		m_unk0x0c->FUN_10028ae0((undefined*) this);
+		m_unk0x0c->FUN_10028ae0(this);
 		m_unk0x0c = 0;
 	}
 

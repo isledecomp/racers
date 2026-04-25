@@ -29,6 +29,7 @@ public:
 	Entry* AddString(const LegoChar* p_string);
 
 	void SetCurrentEntry(Entry* p_currentEntry) { m_currentEntry = p_currentEntry; }
+	void SetCurrentEntryFromString(const LegoChar* p_string) { m_currentEntry = AddString(p_string); }
 
 private:
 	HANDLE m_mutex;           // 0x04

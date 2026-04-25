@@ -56,7 +56,7 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 	m_context.m_unk0x398 = 0;
 	m_context.m_unk0x38 = 1;
 	strncpy(m_context.m_unk0x40, "racec0r0", sizeof(m_context.m_unk0x40));
-	strncpy(m_context.m_unk0x48, "racec0r0", sizeof(m_context.m_unk0x48));
+	strncpy(m_context.m_raceName, "racec0r0", sizeof(m_context.m_raceName));
 	strncpy(m_context.m_unk0x2d, "c0", sizeof(m_context.m_unk0x2d));
 	m_context.m_unk0x18 = 1;
 }

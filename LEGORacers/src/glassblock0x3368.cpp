@@ -16,6 +16,14 @@ GlassBlock0x3368::~GlassBlock0x3368()
 	STUB(0x431990);
 }
 
+// STUB: LEGORACERS 0x00431e00
+LegoS32 GlassBlock0x3368::Initialize(LegoRacers::Context*, const LegoChar*, undefined4, GlassShard0x3b8*)
+{
+	// TODO
+	STUB(0x431e00);
+	return 0;
+}
+
 // FUNCTION: LEGORACERS 0x00432520
 void GlassBlock0x3368::VTable0x00()
 {
@@ -28,6 +36,13 @@ void GlassBlock0x3368::Run()
 {
 	// TODO
 	STUB(0x432540);
+}
+
+// STUB: LEGORACERS 0x00432790
+void GlassBlock0x3368::Shutdown()
+{
+	// TODO
+	STUB(0x432790);
 }
 
 // STUB: LEGORACERS 0x00435220

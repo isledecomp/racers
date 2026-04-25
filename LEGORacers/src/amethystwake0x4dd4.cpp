@@ -71,8 +71,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 	m_unk0x4cd8 = p_context->m_golApp->GetRenderer();
 
 	if (g_hashTable) {
-		GolHashTable* hashTable = g_hashTable;
-		hashTable->SetCurrentEntry(hashTable->AddString("MENUDATA"));
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
 	FUN_0042d020();

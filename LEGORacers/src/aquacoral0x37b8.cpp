@@ -5,11 +5,16 @@
 
 #include <golerror.h>
 #include <golstream.h>
+#include <stdio.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(AquaCoral0x37b8, 0x37b8)
 
 // GLOBAL: LEGORACERS 0x004c4914
 AquaCoral0x37b8* g_unk0x4c4914 = NULL;
+
+// GLOBAL: LEGORACERS 0x004c491c
+LegoChar g_raceNameBuffer[9];
 
 // FUNCTION: LEGORACERS 0x0042b130
 void AquaCoral0x37b8::FUN_0042b130(LegoRacers::Context* p_context)
@@ -21,7 +26,7 @@ void AquaCoral0x37b8::FUN_0042b130(LegoRacers::Context* p_context)
 
 	g_unk0x4c4914->FUN_0042c280(p_context);
 	g_unk0x4c4914->Run();
-	g_unk0x4c4914->FUN_0042c380();
+	g_unk0x4c4914->Shutdown();
 
 	if (g_unk0x4c4914) {
 		delete g_unk0x4c4914;
@@ -37,7 +42,7 @@ AquaCoral0x37b8::AquaCoral0x37b8()
 // FUNCTION: LEGORACERS 0x0042c210
 AquaCoral0x37b8::~AquaCoral0x37b8()
 {
-	FUN_0042c380();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0042c280
@@ -47,9 +52,8 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit3;
 
 	if (p_context->m_unk0x24 == 2) {
-		GolHashTable* hashTable = g_hashTable;
-		if (hashTable) {
-			hashTable->SetCurrentEntry(hashTable->AddString("GAMEDATA\\COMMON"));
+		if (g_hashTable) {
+			g_hashTable->SetCurrentEntryFromString("GAMEDATA\\COMMON");
 		}
 		m_unk0x3400.FUN_00422420(
 			p_context->m_golApp->GetRenderer(),
@@ -73,7 +77,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 		return m_unk0x04.Initialize(m_context, &m_unk0x98);
 	}
 
-	return FUN_0042c4e0();
+	return InitializeRaceScene();
 }
 
 // FUNCTION: LEGORACERS 0x0042c330
@@ -90,17 +94,78 @@ void AquaCoral0x37b8::Run()
 	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
 }
 
-// STUB: LEGORACERS 0x0042c380
-void AquaCoral0x37b8::FUN_0042c380()
+// FUNCTION: LEGORACERS 0x0042c380
+void AquaCoral0x37b8::Shutdown()
 {
-	// TODO
-	STUB(0x42c380);
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(NULL);
+	}
+
+	m_unk0x3400.FUN_00422670();
+	m_unk0x04.Shutdown();
+	m_unk0x98.Shutdown();
+	ReleaseContextAssets();
+	m_context = NULL;
 }
 
-// STUB: LEGORACERS 0x0042c4e0
-LegoS32 AquaCoral0x37b8::FUN_0042c4e0()
+// FUNCTION: LEGORACERS 0x0042c3d0
+void AquaCoral0x37b8::ReleaseContextAssets()
 {
-	// TODO
-	STUB(0x42c4e0);
-	return 0;
+	if (!m_context) {
+		return;
+	}
+
+	GolExport* golExport = m_context->m_golApp->GetGolExport();
+
+	for (LegoU32 i = 0; i < m_context->m_unk0x32c; i++) {
+		ScarletNova0x5c& slot = m_context->m_unk0x108[i];
+
+		if (slot.m_flag) {
+			if (slot.m_unk0x20[0]) {
+				golExport->VTable0x48(slot.m_unk0x20[0]);
+				slot.m_unk0x20[0] = NULL;
+			}
+			if (slot.m_unk0x20[1]) {
+				golExport->VTable0x44(slot.m_unk0x20[1]);
+				slot.m_unk0x20[1] = NULL;
+			}
+			if (slot.m_unk0x20[2]) {
+				golExport->VTable0x40(slot.m_unk0x20[2]);
+				slot.m_unk0x20[2] = NULL;
+			}
+			if (slot.m_unk0x20[9]) {
+				golExport->VTable0x48(slot.m_unk0x20[9]);
+				slot.m_unk0x20[9] = NULL;
+			}
+			if (slot.m_unk0x20[10]) {
+				golExport->VTable0x44(slot.m_unk0x20[10]);
+				slot.m_unk0x20[10] = NULL;
+			}
+			if (slot.m_unk0x20[11]) {
+				golExport->VTable0x40(slot.m_unk0x20[11]);
+				slot.m_unk0x20[11] = NULL;
+			}
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042c4e0
+LegoS32 AquaCoral0x37b8::InitializeRaceScene()
+{
+	sprintf(m_context->m_commonDataDirectory, "GAMEDATA\\COMMON");
+	strcpy(m_context->m_gameDataDirectory, "GAMEDATA\\");
+	memcpy(g_raceNameBuffer, m_context->m_raceName, sizeof(m_context->m_raceName));
+	g_raceNameBuffer[sizeof(m_context->m_raceName)] = '\0';
+	strcat(m_context->m_gameDataDirectory, g_raceNameBuffer);
+
+	LegoChar* gameDataDirectory = m_context->m_gameDataDirectory;
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(gameDataDirectory);
+	}
+
+	if (m_unk0x3400.GetUnk0x14()) {
+		return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_unk0x3c, &m_unk0x3400);
+	}
+
+	return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_unk0x3c, NULL);
 }

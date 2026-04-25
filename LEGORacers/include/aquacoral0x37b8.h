@@ -18,10 +18,11 @@ public:
 
 	LegoS32 FUN_0042c280(LegoRacers::Context* p_context);
 	void Run();
-	void FUN_0042c380();
+	void Shutdown();
 
 private:
-	LegoS32 FUN_0042c4e0();
+	void ReleaseContextAssets();
+	LegoS32 InitializeRaceScene();
 
 	LegoRacers::Context* m_context; // 0x00
 	GlassStream0x94 m_unk0x04;      // 0x04

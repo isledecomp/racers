@@ -39,7 +39,7 @@ LegoS32 GlassStream0x94::Initialize(LegoRacers::Context* p_context, GlassBlock0x
 
 	m_context = p_context;
 	m_unk0x50 = p_block;
-	sprintf(p_context->m_gameDataDirectory, "GAMEDATA\\COMMON");
+	sprintf(p_context->m_commonDataDirectory, "GAMEDATA\\COMMON");
 	return m_unk0x04.SetContext(m_context);
 }
 

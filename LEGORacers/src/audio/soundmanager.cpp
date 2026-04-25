@@ -5,7 +5,7 @@
 DECOMP_SIZE_ASSERT(SoundManager, 0x18)
 
 // GLOBAL: LEGORACERS 0x004afa3c
-LegoFloat g_unk0x4afa3c = 1.0f;
+LegoFloat g_defaultSoundManagerVolumeScale = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00417a30
 SoundManager::SoundManager()
@@ -13,8 +13,8 @@ SoundManager::SoundManager()
 	m_unk0x04 = 0;
 	m_unk0x0c = NULL;
 	m_unk0x08 = NULL;
-	m_unk0x10 = g_unk0x4afa3c;
-	m_unk0x14 = g_unk0x4afa3c;
+	m_volumeScale = g_defaultSoundManagerVolumeScale;
+	m_unk0x14 = g_defaultSoundManagerVolumeScale;
 }
 
 // FUNCTION: LEGORACERS 0x00417a80
@@ -28,8 +28,8 @@ void SoundManager::Shutdown()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = NULL;
-	m_unk0x10 = g_unk0x4afa3c;
-	m_unk0x14 = g_unk0x4afa3c;
+	m_volumeScale = g_defaultSoundManagerVolumeScale;
+	m_unk0x14 = g_defaultSoundManagerVolumeScale;
 }
 
 // FUNCTION: LEGORACERS 0x00417ab0

@@ -33,13 +33,14 @@ public:
 
 	SoundNode* AddNode(SoundNode* p_node);
 	SoundNode* RemoveNode(SoundNode* p_node);
+	LegoFloat GetVolumeScale() { return m_volumeScale; }
 
 protected:
-	undefined4 m_unk0x04; // 0x04
-	SoundNode* m_unk0x08; // 0x08
-	SoundNode* m_unk0x0c; // 0x0c
-	LegoFloat m_unk0x10;  // 0x10
-	LegoFloat m_unk0x14;  // 0x14
+	undefined4 m_unk0x04;    // 0x04
+	SoundNode* m_unk0x08;    // 0x08
+	SoundNode* m_unk0x0c;    // 0x0c
+	LegoFloat m_volumeScale; // 0x10
+	LegoFloat m_unk0x14;     // 0x14
 };
 
 #endif // SOUNDMANAGER_H

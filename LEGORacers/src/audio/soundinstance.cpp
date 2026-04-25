@@ -2,6 +2,7 @@
 
 #include "audio/frostpetal0x34.h"
 #include "audio/soundbuffer.h"
+#include "audio/soundmanager.h"
 
 DECOMP_SIZE_ASSERT(SoundInstance, 0x14)
 
@@ -31,52 +32,56 @@ SoundInstance::~SoundInstance()
 	}
 }
 
-// STUB: LEGORACERS 0x0041b530
-void SoundInstance::VTable0x00(undefined4)
+// FUNCTION: LEGORACERS 0x0041b530
+LegoBool32 SoundInstance::Play(LegoBool32 p_loop)
 {
-	STUB(0x41b530);
+	return m_soundBuffer->Play(p_loop);
 }
 
-// STUB: LEGORACERS 0x0041b540
-void SoundInstance::VTable0x04()
+// FUNCTION: LEGORACERS 0x0041b540
+void SoundInstance::Stop()
 {
-	STUB(0x41b540);
+	m_soundBuffer->StopOrRelease();
 }
 
-// STUB: LEGORACERS 0x0041b550
-LegoBool32 SoundInstance::VTable0x08()
+// FUNCTION: LEGORACERS 0x0041b550
+LegoBool32 SoundInstance::IsPlaying()
 {
-	STUB(0x41b550);
+	if (m_soundBuffer) {
+		return m_soundBuffer->IsPlaying();
+	}
+
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0041b560
-void SoundInstance::VTable0x0c(LegoFloat)
+// FUNCTION: LEGORACERS 0x0041b560
+void SoundInstance::SetVolume(LegoFloat p_volume)
 {
-	STUB(0x41b560);
+	SoundManager* soundManager = GetOwner()->GetSoundManager();
+	m_soundBuffer->SetVolume(soundManager->GetVolumeScale() * p_volume);
 }
 
-// STUB: LEGORACERS 0x0041b590
-void SoundInstance::VTable0x10(LegoFloat)
+// FUNCTION: LEGORACERS 0x0041b590
+void SoundInstance::SetPan(LegoFloat p_pan)
 {
-	STUB(0x41b590);
+	m_soundBuffer->SetPan(p_pan);
 }
 
-// STUB: LEGORACERS 0x0041b5a0
-void SoundInstance::VTable0x14(LegoFloat)
+// FUNCTION: LEGORACERS 0x0041b5a0
+void SoundInstance::SetFrequencyScale(LegoFloat p_scale)
 {
-	STUB(0x41b5a0);
+	m_soundBuffer->SetFrequencyScale(p_scale);
 }
 
-// STUB: LEGORACERS 0x0041b5b0
-void SoundInstance::VTable0x18(LegoS32)
+// FUNCTION: LEGORACERS 0x0041b5b0
+void SoundInstance::SetPriority(LegoS32 p_priority)
 {
-	STUB(0x41b5b0);
+	m_soundBuffer->SetPriority(p_priority);
 }
 
 // STUB: LEGORACERS 0x0041b5c0
-undefined4 SoundInstance::VTable0x1c()
+FrostPetal0x34* SoundInstance::GetOwner()
 {
-	STUB(0x41b5c0);
-	return 0;
+	STUB(0x0041b5c0);
+	return NULL;
 }

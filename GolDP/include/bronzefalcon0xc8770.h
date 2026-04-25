@@ -34,8 +34,12 @@ public:
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
+	undefined4* GetUnk0x0c() { return m_unk0x0c; }
+
 private:
-	undefined m_unk0x04[0xc8770 - 0x04]; // 0x04
+	undefined m_unk0x04[0x0c - 0x04];    // 0x04
+	undefined4* m_unk0x0c;               // 0x0c
+	undefined m_unk0x10[0xc8770 - 0x10]; // 0x10
 };
 
 #endif // BRONZEFALCON0XC8770_H

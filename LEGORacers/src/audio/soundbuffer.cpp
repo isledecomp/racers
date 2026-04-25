@@ -69,7 +69,7 @@ SoundBuffer::~SoundBuffer()
 		if (sound) {
 			sound->SetSoundBuffer(NULL);
 			sound = m_soundInstance;
-			FrostPetal0x34* owner = sound->GetOwner();
+			FrostPetal0x34* owner = sound->GetOwnerDirect();
 			if (owner) {
 				owner->DestroySoundInstance(sound);
 			}
@@ -108,6 +108,35 @@ void SoundBuffer::ReleaseDirectSoundBuffer()
 	if (m_directSoundBuffer) {
 		m_directSoundBuffer->Release();
 		m_directSoundBuffer = NULL;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0041b9e0
+LegoBool32 SoundBuffer::IsPlaying()
+{
+	DWORD status;
+
+	if (m_directSoundBuffer) {
+		m_directSoundBuffer->GetStatus(&status);
+
+		if (status & DSBSTATUS_PLAYING) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x0041ba10
+void SoundBuffer::SetPriority(LegoS32 p_priority)
+{
+	if (!m_streaming) {
+		if (m_playbackState == c_playbackStateIdle) {
+			m_priority = c_defaultPriority + p_priority;
+		}
+	}
+	else {
+		m_priority = p_priority;
 	}
 }
 
@@ -154,6 +183,13 @@ void SoundBuffer::ResetSoundSettings()
 	SetVolume(g_defaultSoundVolume);
 	SetPan(g_defaultSoundPan);
 	SetFrequencyScale(g_defaultSoundFrequencyScale);
+}
+
+// STUB: LEGORACERS 0x0041bb30
+LegoBool32 SoundBuffer::Play(LegoBool32)
+{
+	STUB(0x0041bb30);
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0041bc10

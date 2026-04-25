@@ -126,7 +126,7 @@ LegoS32 AmethystWake0x4dd4::Shutdown()
 		m_unk0x4c74.VTable0x0c();
 		m_unk0x4bd0.FUN_00468ab0();
 		FUN_0042d260();
-		FUN_0042ceb0();
+		ReleaseRendererObject();
 		ShutdownInputBindings();
 		FUN_0042cf90();
 		FUN_0042d080();
@@ -151,11 +151,13 @@ void AmethystWake0x4dd4::FUN_0042cde0()
 	STUB(0x42cde0);
 }
 
-// STUB: LEGORACERS 0x0042ceb0
-void AmethystWake0x4dd4::FUN_0042ceb0()
+// FUNCTION: LEGORACERS 0x0042ceb0
+void AmethystWake0x4dd4::ReleaseRendererObject()
 {
-	// TODO
-	STUB(0x42ceb0);
+	undefined4* object = m_unk0x4cd8->GetUnk0x0c();
+	if (object) {
+		m_unk0x4cd4->VTable0x54(object);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042ced0

@@ -25,12 +25,12 @@ public:
 	virtual void DestroySoundInstance(SoundInstance*);                                        // vtable+0x1c
 	virtual StreamingSoundInstance* VTable0x20(undefined4);                                   // vtable+0x20
 	virtual void DestroyStreamingSoundInstance(StreamingSoundInstance*);                      // vtable+0x24
-	virtual SoundManager* VTable0x28();                                                       // vtable+0x28
+	virtual SoundManager* GetSoundManager();                                                  // vtable+0x28
 
-	void SetUnk0x0c(SoundManager* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
+	void SetSoundManager(SoundManager* p_soundManager) { m_soundManager = p_soundManager; }
 
 private:
-	SoundManager* m_unk0x0c;                   // 0x0c
+	SoundManager* m_soundManager;              // 0x0c
 	undefined4 m_unk0x10;                      // 0x10
 	undefined4 m_unk0x14;                      // 0x14
 	undefined4 m_unk0x18;                      // 0x18

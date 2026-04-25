@@ -8,7 +8,7 @@ DECOMP_SIZE_ASSERT(FrostPetal0x34, 0x34)
 // FUNCTION: LEGORACERS 0x0041ae10
 FrostPetal0x34::FrostPetal0x34()
 {
-	m_unk0x0c = NULL;
+	m_soundManager = NULL;
 	m_unk0x14 = 0;
 	m_unk0x10 = 0;
 	m_unk0x18 = 0;
@@ -91,7 +91,7 @@ void FrostPetal0x34::DestroyStreamingSoundInstance(StreamingSoundInstance* p_sou
 }
 
 // FUNCTION: LEGORACERS 0x0041b4a0
-SoundManager* FrostPetal0x34::VTable0x28()
+SoundManager* FrostPetal0x34::GetSoundManager()
 {
-	return m_unk0x0c;
+	return m_soundManager;
 }

@@ -56,6 +56,7 @@ public:
 	LegoS32 Shutdown();
 	void FUN_0042cd60();
 	void FUN_0042cde0();
+	void ReleaseRendererObject();
 	void InitializeInputBindings();
 	void FUN_0042cf00();
 	void FUN_0042d020();
@@ -92,7 +93,6 @@ private:
 		TanzaniteWisp0x88 m_unk0x4b40;    // 0x4b40
 	};
 
-	void FUN_0042ceb0();
 	void ShutdownInputBindings();
 	void FUN_0042cf90();
 	void FUN_0042d080();

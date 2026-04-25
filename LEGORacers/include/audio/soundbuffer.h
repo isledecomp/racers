@@ -43,6 +43,9 @@ public:
 	void StopOrRelease();
 	void StopDirectSoundBuffer();
 	void ReleaseBufferPlayback();
+	LegoBool32 Play(LegoBool32 p_loop);
+	LegoBool32 IsPlaying();
+	void SetPriority(LegoS32 p_priority);
 	void ResetSoundSettings();
 	void SetVolume(LegoFloat p_volume);
 	void SetPan(LegoFloat p_pan);

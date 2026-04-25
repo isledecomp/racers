@@ -222,7 +222,7 @@ EmberDust0x28* DirectSoundManager::VTable0x1c()
 	FrostPetal0x34* node = new FrostPetal0x34();
 
 	if (node) {
-		node->SetUnk0x0c(this);
+		node->SetSoundManager(this);
 		m_unk0x48.Append(node);
 	}
 

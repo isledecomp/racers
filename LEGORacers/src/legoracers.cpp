@@ -34,7 +34,7 @@ LegoFloat g_unk0x4b0560 = 5.0f;
 LegoFloat g_unk0x4b0564 = 800.0f;
 
 // FUNCTION: LEGORACERS 0x0042b9d0
-LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
+LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 {
 	m_golBackendType = Win32GolApp::c_golBackendDP;
 	m_cutscenes = TRUE;
@@ -46,7 +46,7 @@ LegoRacers::LegoRacers() : m_unk0xa10(&m_unk0x9e0)
 
 	m_context.m_unk0x00 = TRUE;
 	m_context.m_golApp = &m_golApp;
-	m_context.m_unk0x08 = m_unk0xa10;
+	m_context.m_unk0x08 = m_soundManager;
 	m_context.m_unk0x0c = g_unk0x4b055c;
 	m_context.m_unk0x10 = g_unk0x4b0560;
 	m_context.m_unk0x14 = g_unk0x4b0564;
@@ -182,16 +182,16 @@ void LegoRacers::FUN_0042be00()
 	LegoS32 initDisplayResult =
 		m_golApp.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);
 
-	m_soundManager.FUN_00418f50(m_golApp.GetHwnd());
+	m_directSoundManager.SetCooperativeWindow(m_golApp.GetHwnd());
 
-	if (m_soundManager.VTable0x04(0x20)) {
-		m_unk0xa10 = &m_soundManager;
+	if (m_directSoundManager.Initialize(DirectSoundManager::c_defaultActiveSoundCount)) {
+		m_soundManager = &m_directSoundManager;
 	}
 	else {
-		m_unk0xa10 = &m_unk0x9e0;
+		m_soundManager = &m_nullSoundManager;
 	}
 
-	m_context.m_unk0x08 = m_unk0xa10;
+	m_context.m_unk0x08 = m_soundManager;
 
 	if (initDisplayResult) {
 		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);
@@ -201,8 +201,8 @@ void LegoRacers::FUN_0042be00()
 // FUNCTION: LEGORACERS 0x0042be90
 void LegoRacers::Shutdown()
 {
-	m_soundManager.Shutdown();
-	m_unk0x9e0.Shutdown();
+	m_directSoundManager.Shutdown();
+	m_nullSoundManager.Shutdown();
 	m_golApp.ShutdownDisplay();
 }
 
@@ -221,7 +221,7 @@ LegoS32 LegoRacers::ParseArguments(LegoS32 p_argc, LegoChar** p_argv)
 
 	for (LegoS32 i = 0; i < p_argc; i++) {
 		if (strcmp(p_argv[i], "-novideo") == 0) {
-			m_cutscenes = 0;
+			m_cutscenes = FALSE;
 		}
 		else if (strcmp(p_argv[i], "-primary") == 0) {
 			m_videoFlags |= c_videoPrimaryDriver;

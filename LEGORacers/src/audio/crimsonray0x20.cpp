@@ -1,4 +1,4 @@
-#include "crimsonray0x20.h"
+#include "audio/crimsonray0x20.h"
 
 #include "types.h"
 
@@ -41,13 +41,13 @@ GolListLink* CrimsonRay0x20::VTable0x08()
 	GolListLink* result;
 
 	while (TRUE) {
-		result = m_unk0x14.m_first;
+		result = m_unk0x14.LastLink();
 
-		if (!result->m_prev || !result) {
+		if (!m_unk0x14.IsValidLastLink(result)) {
 			break;
 		}
 
-		VTable0x14((AmberLeaf0x10*) result);
+		VTable0x14(&m_unk0x14.GetItem(*result));
 	}
 
 	m_unk0x04 = 0;
@@ -61,12 +61,7 @@ AmberLeaf0x10* CrimsonRay0x20::VTable0x10(undefined4)
 
 	if (node) {
 		node->SetUnk0x0c(this);
-
-		GolListLink* link = node;
-		link->m_prev = m_unk0x14.m_first;
-		link->m_next = (GolListLink*) &m_unk0x14.m_first;
-		m_unk0x14.m_first->m_next = link;
-		m_unk0x14.m_first = link;
+		m_unk0x14.Append(node);
 	}
 
 	return node;

@@ -1,12 +1,8 @@
 #ifndef CACTUSINTERFACE0x4_H
 #define CACTUSINTERFACE0x4_H
 
-#include "cactusinterface0x4.h"
-#include "cobaltmist0x30.h"
 #include "decomp.h"
-#include "soundmanager.h"
 #include "types.h"
-#include "win32golapp.h"
 
 // VTABLE: LEGORACERS 0x004affa4
 // SIZE 0x4

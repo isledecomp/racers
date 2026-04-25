@@ -1,4 +1,4 @@
-#include "rubyhaze0x08.h"
+#include "audio/rubyhaze0x08.h"
 
 DECOMP_SIZE_ASSERT(RubyHaze0x08, 0x08)
 

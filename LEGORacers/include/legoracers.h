@@ -1,11 +1,11 @@
 #ifndef LEGORACERS_H
 #define LEGORACERS_H
 
+#include "audio/directsoundmanager.h"
+#include "audio/nullsoundmanager.h"
 #include "cactusinterface0x4.h"
-#include "cobaltmist0x30.h"
 #include "decomp.h"
 #include "scarletnova0x5c.h"
-#include "soundmanager.h"
 #include "types.h"
 #include "win32golapp.h"
 
@@ -24,7 +24,7 @@ public:
 
 		LegoBool32 m_unk0x00;                       // 0x00
 		Win32GolApp* m_golApp;                      // 0x04
-		IndigoStar0x18* m_unk0x08;                  // 0x08
+		SoundManager* m_unk0x08;                    // 0x08
 		LegoFloat m_unk0x0c;                        // 0x0c
 		LegoFloat m_unk0x10;                        // 0x10
 		LegoFloat m_unk0x14;                        // 0x14
@@ -80,17 +80,17 @@ public:
 	LONG ResetDisplay();
 
 private:
-	Win32GolApp m_golApp;                // 0x04
-	SoundManager m_soundManager;         // 0x948
-	CobaltMist0x30 m_unk0x9e0;           // 0x9e0
-	IndigoStar0x18* m_unk0xa10;          // 0xa10
-	LegoU32 m_golBackendType;            // 0xa14
-	LegoBool32 m_cutscenes;              // 0xa18
-	undefined4 m_unk0xa1c;               // 0xa1c
-	undefined m_unk0xa20[0xab4 - 0xa20]; // 0xa20
-	undefined4 m_bpp;                    // 0xab4
-	LegoU32 m_videoFlags;                // 0xab8
-	Context m_context;                   // 0xabc
+	Win32GolApp m_golApp;                    // 0x04
+	DirectSoundManager m_directSoundManager; // 0x948
+	NullSoundManager m_nullSoundManager;     // 0x9e0
+	SoundManager* m_soundManager;            // 0xa10
+	LegoU32 m_golBackendType;                // 0xa14
+	LegoBool32 m_cutscenes;                  // 0xa18
+	undefined4 m_unk0xa1c;                   // 0xa1c
+	undefined m_unk0xa20[0xab4 - 0xa20];     // 0xa20
+	undefined4 m_bpp;                        // 0xab4
+	LegoU32 m_videoFlags;                    // 0xab8
+	Context m_context;                       // 0xabc
 };
 
 #endif // LEGORACERS_H

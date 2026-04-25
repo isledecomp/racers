@@ -1,6 +1,6 @@
-#include "goldenoak0x128.h"
+#include "audio/goldenoak0x128.h"
 
-#include "amberleaf0x10.h"
+#include "audio/amberleaf0x10.h"
 
 DECOMP_SIZE_ASSERT(GoldenOak0x128, 0x128)
 

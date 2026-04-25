@@ -1,4 +1,4 @@
-#include "amberleaf0x10.h"
+#include "audio/amberleaf0x10.h"
 
 DECOMP_SIZE_ASSERT(AmberLeaf0x10, 0x10)
 
@@ -18,8 +18,7 @@ AmberLeaf0x10::AmberLeaf0x10()
 AmberLeaf0x10::~AmberLeaf0x10()
 {
 	if (m_unk0x0c) {
-		m_next->m_prev = m_prev;
-		m_prev->m_next = m_next;
+		Remove();
 	}
 }
 

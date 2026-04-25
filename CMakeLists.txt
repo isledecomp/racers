@@ -140,10 +140,22 @@ add_executable(legoracers WIN32
   LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/legoracers.cpp
   LEGORacers/src/win32golapp.cpp
-  LEGORacers/src/indigostar0x18.cpp
-  LEGORacers/src/soundmanager.cpp
+  LEGORacers/src/audio/amberleaf0x10.cpp
+  LEGORacers/src/audio/crimsonray0x20.cpp
+  LEGORacers/src/audio/directsoundmanager.cpp
+  LEGORacers/src/audio/directsoundconversions.cpp
+  LEGORacers/src/audio/emberdust0x28.cpp
+  LEGORacers/src/audio/frostpetal0x34.cpp
+  LEGORacers/src/audio/goldenoak0x128.cpp
+  LEGORacers/src/audio/nullsoundmanager.cpp
+  LEGORacers/src/audio/rubyhaze0x08.cpp
+  LEGORacers/src/audio/soundbuffer.cpp
+  LEGORacers/src/audio/soundinstance.cpp
+  LEGORacers/src/audio/soundinstancebase0x38.cpp
+  LEGORacers/src/audio/soundmanager.cpp
+  LEGORacers/src/audio/soundnode.cpp
+  LEGORacers/src/audio/streamingsoundinstance.cpp
   LEGORacers/src/jadestorm0x0c.cpp
-  LEGORacers/src/amberleaf0x10.cpp
   LEGORacers/src/amethystwake0x4dd4.cpp
   LEGORacers/src/aquacoral0x37b8.cpp
   LEGORacers/src/stackoflegou16.cpp
@@ -154,16 +166,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/celestialforge0x48.cpp
   LEGORacers/src/opalhaven0xf4.cpp
   LEGORacers/src/silverhollow0xb8.cpp
-  LEGORacers/src/rubyhaze0x08.cpp
-  LEGORacers/src/crimsonray0x20.cpp
-  LEGORacers/src/goldenoak0x128.cpp
-  LEGORacers/src/frostpetal0x34.cpp
-  LEGORacers/src/emberdust0x28.cpp
-  LEGORacers/src/cobaltmist0x30.cpp
   LEGORacers/src/golapp.cpp
   LEGORacers/src/inputmanager.cpp
   LEGORacers/src/directinputmanager.cpp
-  LEGORacers/src/soundnode.cpp
   LEGORacers/src/ceruleansubject0x0c.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp

@@ -1,14 +1,14 @@
-#include "indigostar0x18.h"
+#include "audio/soundmanager.h"
 
-#include "soundnode.h"
+#include "audio/soundnode.h"
 
-DECOMP_SIZE_ASSERT(IndigoStar0x18, 0x18)
+DECOMP_SIZE_ASSERT(SoundManager, 0x18)
 
 // GLOBAL: LEGORACERS 0x004afa3c
 LegoFloat g_unk0x4afa3c = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00417a30
-IndigoStar0x18::IndigoStar0x18()
+SoundManager::SoundManager()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = NULL;
@@ -18,13 +18,13 @@ IndigoStar0x18::IndigoStar0x18()
 }
 
 // FUNCTION: LEGORACERS 0x00417a80
-IndigoStar0x18::~IndigoStar0x18()
+SoundManager::~SoundManager()
 {
 	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00417a90
-void IndigoStar0x18::Shutdown()
+void SoundManager::Shutdown()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = NULL;
@@ -33,7 +33,7 @@ void IndigoStar0x18::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00417ab0
-SoundNode* IndigoStar0x18::AddNode(SoundNode* p_node)
+SoundNode* SoundManager::AddNode(SoundNode* p_node)
 {
 	SoundNode* result = m_unk0x08;
 
@@ -57,7 +57,7 @@ SoundNode* IndigoStar0x18::AddNode(SoundNode* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x00417ae0
-SoundNode* IndigoStar0x18::RemoveNode(SoundNode* p_node)
+SoundNode* SoundManager::RemoveNode(SoundNode* p_node)
 {
 	SoundNode* prev = m_unk0x08;
 
@@ -94,7 +94,7 @@ SoundNode* IndigoStar0x18::RemoveNode(SoundNode* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x00417b30
-SoundNode* IndigoStar0x18::VTable0x2c(SoundNode* p_node)
+SoundNode* SoundManager::VTable0x2c(SoundNode* p_node)
 {
 	SoundNode* result = m_unk0x0c;
 
@@ -118,7 +118,7 @@ SoundNode* IndigoStar0x18::VTable0x2c(SoundNode* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x00417b60
-SoundNode* IndigoStar0x18::VTable0x30(SoundNode* p_node)
+SoundNode* SoundManager::VTable0x30(SoundNode* p_node)
 {
 	SoundNode* result = m_unk0x0c;
 

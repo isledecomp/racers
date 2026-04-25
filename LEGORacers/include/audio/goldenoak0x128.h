@@ -1,13 +1,13 @@
 #ifndef GOLDENOAK0X128_H
 #define GOLDENOAK0X128_H
 
+#include "audio/rubyhaze0x08.h"
 #include "compat.h"
 #include "decomp.h"
 #include "gollist.h"
-#include "rubyhaze0x08.h"
 
 class AmberLeaf0x10;
-class IndigoStar0x18;
+class SoundManager;
 
 // VTABLE: LEGORACERS 0x004afbc8
 // SIZE 0x128
@@ -22,14 +22,14 @@ public:
 	void VTable0x14(AmberLeaf0x10*) override;       // vtable+0x14
 	void* VTable0x18() override;                    // vtable+0x18
 
-	void SetUnk0x10(IndigoStar0x18* p_unk0x10) { m_unk0x10 = p_unk0x10; }
+	void SetUnk0x10(SoundManager* p_unk0x10) { m_unk0x10 = p_unk0x10; }
 
 	// SYNTHETIC: LEGORACERS 0x0041a690
 	// GoldenOak0x128::`scalar deleting destructor'
 
 private:
-	IndigoStar0x18* m_unk0x10;         // 0x10
-	GolListHead m_unk0x14;             // 0x14
+	SoundManager* m_unk0x10;           // 0x10
+	GolList<AmberLeaf0x10> m_unk0x14;  // 0x14
 	undefined m_unk0x20;               // 0x20
 	undefined m_unk0x21[0x124 - 0x21]; // 0x21
 	undefined4 m_unk0x124;             // 0x124

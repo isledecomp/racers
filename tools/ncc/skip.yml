@@ -1,1 +1,5 @@
 LONG_PTR: 'Win32 SDK typedef shim for MSVC 6.0'
+m_sound: "Can't currently detect member in union"
+m_streamingSound: "Can't currently detect member in union"
+m_soundInstance: "Can't currently detect member in union"
+m_streamingSoundInstance: "Can't currently detect member in union"

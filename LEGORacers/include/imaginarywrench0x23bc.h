@@ -2,7 +2,6 @@
 #define IMAGINARYWRENCH0X23BC_H
 
 #include "compat.h"
-#include "crimsonray0x20.h"
 #include "decomp.h"
 #include "golstring.h"
 #include "imaginarytool0x368.h"

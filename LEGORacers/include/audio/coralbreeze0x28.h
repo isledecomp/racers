@@ -5,7 +5,9 @@
 #include "gollist.h"
 #include "types.h"
 
-class IndigoStar0x18;
+class SoundManager;
+class SoundInstance;
+class StreamingSoundInstance;
 
 // SIZE 0x28
 class CoralBreeze0x28 : public GolListLink {
@@ -15,12 +17,12 @@ public:
 	virtual undefined4 VTable0x00(undefined4) = 0; // vtable+0x00
 	virtual undefined4 VTable0x04() = 0;           // vtable+0x04
 
-	void SetUnk0x0c(IndigoStar0x18* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
+	void SetUnk0x0c(SoundManager* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 
 protected:
-	IndigoStar0x18* m_unk0x0c; // 0x0c
-	GolListHead m_unk0x10;     // 0x10
-	GolListHead m_unk0x1c;     // 0x1c
+	SoundManager* m_unk0x0c;                   // 0x0c
+	GolList<SoundInstance> m_unk0x10;          // 0x10
+	GolList<StreamingSoundInstance> m_unk0x1c; // 0x1c
 };
 
 #endif // CORALBREEZE0X28_H

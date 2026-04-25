@@ -1,10 +1,10 @@
 #ifndef CRIMSONRAY0X20_H
 #define CRIMSONRAY0X20_H
 
-#include "amberleaf0x10.h"
+#include "audio/amberleaf0x10.h"
+#include "audio/opalstar0x20.h"
 #include "compat.h"
 #include "decomp.h"
-#include "opalstar0x20.h"
 
 // VTABLE: LEGORACERS 0x004afcc8
 // SIZE 0x20

@@ -1,8 +1,8 @@
 #ifndef EMBERDUST0X28_H
 #define EMBERDUST0X28_H
 
+#include "audio/coralbreeze0x28.h"
 #include "compat.h"
-#include "coralbreeze0x28.h"
 #include "decomp.h"
 
 // VTABLE: LEGORACERS 0x004afd04

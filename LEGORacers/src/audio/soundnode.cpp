@@ -1,4 +1,4 @@
-#include "soundnode.h"
+#include "audio/soundnode.h"
 
 DECOMP_SIZE_ASSERT(SoundNode, 0x50)
 

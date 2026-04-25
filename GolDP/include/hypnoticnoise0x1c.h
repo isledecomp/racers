@@ -25,10 +25,10 @@ public:
 	virtual void VTable0x20() = 0;                                                               // vtable+0x20
 
 private:
-	undefined4 m_unk0x0c;
-	undefined4 m_unk0x10;
-	undefined4 m_unk0x14;
-	undefined4 m_unk0x18;
+	BronzeFalcon0xc8770* m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10;           // 0x10
+	undefined4 m_unk0x14;           // 0x14
+	undefined4 m_unk0x18;           // 0x18
 };
 
 #endif // GOLDP_HYPNOTICNOISE_H

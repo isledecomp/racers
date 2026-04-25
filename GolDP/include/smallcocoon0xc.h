@@ -34,7 +34,7 @@ public:
 	// SYNTHETIC: GOLDP 0x100281e0
 	// SmallCocoon0xc::`scalar deleting destructor'
 
-private:
+protected:
 	Item* m_data;      // 0x04
 	undefined4 m_size; // 0x08
 };

@@ -24,7 +24,7 @@ public:
 	void VTable0x20() override; // vtable+0x20
 
 private:
-	undefined4 m_unk0x1c;
+	undefined4 m_unk0x1c; // 0x1c
 };
 
 #endif // GOLDP_ AWAKEKITE0x20H

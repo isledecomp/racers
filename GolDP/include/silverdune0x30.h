@@ -4,45 +4,64 @@
 #include "decomp.h"
 #include "types.h"
 
+class PearlDew0x0c;
+
 // VTABLE: GOLDP 0x10056d3c
 // SIZE 0x30
 class SilverDune0x30 {
 public:
+	struct Rect {
+		LegoS32 m_left;   // 0x00
+		LegoS32 m_top;    // 0x04
+		LegoS32 m_right;  // 0x08
+		LegoS32 m_bottom; // 0x0c
+	};
+
+	enum {
+		c_lockRequestRead = 0x01,
+		c_lockRequestWrite = 0x02,
+		c_lockFlagLocked = 0x02,
+		c_lockFlagUnknown0x04 = 0x04,
+		c_lockFlagRead = 0x08,
+		c_lockFlagWrite = 0x10,
+		c_lockStateMask = c_lockFlagLocked | c_lockFlagRead | c_lockFlagWrite
+	};
+
 	SilverDune0x30();
 
 	// FUNCTION: GOLDP 0x1001cf60
 	virtual ~SilverDune0x30() {} // vtable+0x00
 
-	virtual void VTable0x04(undefined4*, undefined4*, undefined4);                          // vtable+0x04
-	virtual void VTable0x08();                                                              // vtable+0x08
-	virtual void VTable0x0c(undefined4*, undefined4*, undefined4);                          // vtable+0x0c
-	virtual void VTable0x10();                                                              // vtable+0x10
-	virtual void VTable0x14(undefined4*);                                                   // vtable+0x14
-	virtual void VTable0x18();                                                              // vtable+0x18
-	virtual undefined4 VTable0x1c();                                                        // vtable+0x1c
-	virtual void VTable0x20(undefined4, undefined4, undefined4);                            // vtable+0x20
-	virtual void VTable0x24(undefined4, undefined4, undefined4*, undefined4*, undefined4*); // vtable+0x24
-	virtual void VTable0x28(undefined4, undefined4, undefined4*);                           // vtable+0x28
-	virtual void VTable0x2c();                                                              // vtable+0x2c
+	virtual void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);             // vtable+0x04
+	virtual void UnlockPixels();                                                               // vtable+0x08
+	virtual void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);          // vtable+0x0c
+	virtual void UnlockAuxPixels();                                                            // vtable+0x10
+	virtual void VTable0x14(undefined4*);                                                      // vtable+0x14
+	virtual void VTable0x18();                                                                 // vtable+0x18
+	virtual PearlDew0x0c* GetPalette();                                                        // vtable+0x1c
+	virtual void Fill(LegoU32 p_color);                                                        // vtable+0x20
+	virtual void Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Rect* p_sourceRect); // vtable+0x24
+	virtual void VTable0x28(undefined4, undefined4, undefined4*);                              // vtable+0x28
+	virtual void VTable0x2c();                                                                 // vtable+0x2c
 
 	// SYNTHETIC: GOLDP 0x1001cf40
 	// SilverDune0x30::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x04; // 0x04
-	undefined4 m_unk0x08; // 0x08
-	undefined4 m_unk0x0c; // 0x0c
-	undefined4 m_unk0x10; // 0x10
-	undefined4 m_unk0x14; // 0x14
-	undefined2 m_unk0x18; // 0x18
-	undefined2 m_unk0x1a; // 0x1a
-	undefined4 m_unk0x1c; // 0x1c
-	undefined4 m_unk0x20; // 0x20
-	undefined2 m_unk0x24; // 0x24
-	undefined2 m_unk0x26; // 0x26
-	undefined2 m_unk0x28; // 0x28
-	undefined2 m_unk0x2a; // 0x2a
-	undefined2 m_unk0x2c; // 0x2c
+	undefined4 m_unk0x04;   // 0x04
+	undefined4 m_unk0x08;   // 0x08
+	undefined4 m_unk0x0c;   // 0x0c
+	undefined4 m_unk0x10;   // 0x10
+	undefined4 m_unk0x14;   // 0x14
+	LegoU16 m_usesPalette;  // 0x18
+	LegoU16 m_bitsPerPixel; // 0x1a
+	LegoU8* m_pixels;       // 0x1c
+	LegoU8* m_auxPixels;    // 0x20
+	LegoU16 m_pitch;        // 0x24
+	LegoU16 m_pixelFlags;   // 0x26
+	LegoU16 m_auxFlags;     // 0x28
+	LegoU16 m_width;        // 0x2a
+	LegoU16 m_height;       // 0x2c
 };
 
 #endif // GOLDP_SILVERDUNE0X30_H

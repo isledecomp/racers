@@ -16,11 +16,10 @@ BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
 	STUB(0x10007980);
 }
 
-// STUB: GOLDP 0x10007d80
-void BronzeFalcon0xc8770::VTable0x10()
+// FUNCTION: GOLDP 0x10007d80
+GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
 {
-	// TODO
-	STUB(0x10007d80);
+	return m_drawState;
 }
 
 // STUB: GOLDP 0x10008680

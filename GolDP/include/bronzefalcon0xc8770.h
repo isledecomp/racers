@@ -4,6 +4,7 @@
 #include "decomp.h"
 #include "types.h"
 
+class GolCommonDrawState;
 class SmallCocoon0xc;
 
 // VTABLE: GOLDP 0x100565b8
@@ -16,7 +17,7 @@ public:
 	virtual void VTable0x04();                                              // vtable+0x04
 	virtual ~BronzeFalcon0xc8770();                                         // vtable+0x08
 	virtual void VTable0x0c(undefined4, undefined4, undefined4);            // vtable+0x0c
-	virtual void VTable0x10();                                              // vtable+0x10
+	virtual GolCommonDrawState* GetDrawState();                             // vtable+0x10
 	virtual void VTable0x14();                                              // vtable+0x14
 	virtual void VTable0x18();                                              // vtable+0x18
 	virtual void VTable0x1c(undefined4);                                    // vtable+0x1c
@@ -37,9 +38,15 @@ public:
 	undefined4* GetUnk0x0c() { return m_unk0x0c; }
 
 private:
-	undefined m_unk0x04[0x0c - 0x04];    // 0x04
-	undefined4* m_unk0x0c;               // 0x0c
-	undefined m_unk0x10[0xc8770 - 0x10]; // 0x10
+	friend class GolCommonDrawState;
+
+	undefined m_unk0x04[0x0c - 0x04];             // 0x04
+	undefined4* m_unk0x0c;                        // 0x0c
+	undefined m_unk0x10[0x48 - 0x10];             // 0x10
+	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
+	undefined m_unk0x4c[0x140 - 0x4c];            // 0x4c
+	GolCommonDrawState* m_drawState;              // 0x140
+	undefined m_unk0x144[0xc8770 - 0x144];        // 0x144
 };
 
 #endif // BRONZEFALCON0XC8770_H

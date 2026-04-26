@@ -290,7 +290,7 @@ LegoS32 Win32GolApp::InitializeDisplay(LegoU32 p_width, LegoU32 p_height, LegoU3
 	}
 
 	GolCommonDrawState* commonState = static_cast<GolCommonDrawState*>(m_golDrawState);
-	Win32GolApp::m_renderer = commonState->m_unk0x1c;
+	Win32GolApp::m_renderer = commonState->m_currentRenderer;
 	m_unk0x808 = (undefined4) m_golDrawState->m_unk0x14;
 
 	if (m_golDrawState->m_flags & GolDrawState::c_flagBit9) {

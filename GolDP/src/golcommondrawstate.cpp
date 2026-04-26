@@ -5,8 +5,8 @@ DECOMP_SIZE_ASSERT(GolCommonDrawState, 0x20)
 // FUNCTION: GOLDP 0x100184a0
 GolCommonDrawState::GolCommonDrawState()
 {
-	m_unk0x18 = 0;
-	m_unk0x1c = NULL;
+	m_rendererList = NULL;
+	m_currentRenderer = NULL;
 }
 
 // FUNCTION: GOLDP 0x100184e0
@@ -20,25 +20,86 @@ LegoS32 GolCommonDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU3
 	return result;
 }
 
-// STUB: GOLDP 0x10018510
+// FUNCTION: GOLDP 0x10018510
 void GolCommonDrawState::VTable0x48()
 {
-	// TODO
-	STUB(0x10018510);
+	BronzeFalcon0xc8770* next;
+	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = next) {
+		next = renderer->m_nextDrawStateRenderer;
+		renderer->VTable0x18();
+	}
+
+	GolDrawState::VTable0x48();
 }
 
-// STUB: GOLDP 0x10018540
+// FUNCTION: GOLDP 0x10018540
 void GolCommonDrawState::VTable0x50()
 {
-	// TODO
-	STUB(0x10018540);
+	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
+		renderer->VTable0x04();
+	}
+
+	GolDrawState::VTable0x50();
 }
 
-// STUB: GOLDP 0x10018570
-void GolCommonDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10018570
+LegoS32 GolCommonDrawState::VTable0x54(
+	undefined4 p_unk0x04,
+	undefined4 p_unk0x08,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10
+)
 {
-	STUB(0x10018570);
-	// TODO
+	GolDrawState::VTable0x54(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
+	LegoS32 result = VTable0x58();
+	if (!result) {
+		for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
+			if (renderer != m_currentRenderer) {
+				renderer->VTable0x00();
+			}
+		}
+
+		return 0;
+	}
+
+	return result;
+}
+
+// FUNCTION: GOLDP 0x100185c0
+BronzeFalcon0xc8770* GolCommonDrawState::AddRenderer(BronzeFalcon0xc8770* p_renderer)
+{
+	p_renderer->m_nextDrawStateRenderer = m_rendererList;
+	m_rendererList = p_renderer;
+	return p_renderer;
+}
+
+// FUNCTION: GOLDP 0x100185d0
+BronzeFalcon0xc8770* GolCommonDrawState::RemoveRenderer(BronzeFalcon0xc8770* p_renderer)
+{
+	BronzeFalcon0xc8770* result = m_rendererList;
+	if (result) {
+		if (p_renderer == result) {
+			result = result->m_nextDrawStateRenderer;
+			m_rendererList = result;
+		}
+		else {
+			BronzeFalcon0xc8770* previous = m_rendererList;
+			result = result->m_nextDrawStateRenderer;
+			while (result) {
+				if (result == p_renderer) {
+					previous->m_nextDrawStateRenderer = result->m_nextDrawStateRenderer;
+					result->m_nextDrawStateRenderer = NULL;
+					break;
+				}
+				else {
+					previous = result;
+					result = result->m_nextDrawStateRenderer;
+				}
+			}
+		}
+	}
+
+	return result;
 }
 
 // FUNCTION: GOLDP 0x10018620

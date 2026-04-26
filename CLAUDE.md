@@ -110,6 +110,7 @@ undefined m_unk0x92c[0x944 - 0x92c]; // 0x92c
 - **Annotation ordering:** when a function has both GOLDP and LEGORACERS annotations, GOLDP comes first.
 - **No redundant `this->`.** Write `m_member`, `Method()`, `BaseClass::VirtualMethod()` directly. Even `Base::Foo()` to suppress virtual dispatch doesn't need the prefix.
 - **Win32 API: prefer un-suffixed names.** Use `CreateWindowEx`, `DEVMODE`, `MSG`, `WIN32_FIND_DATA`, etc. — NOT `CreateWindowExA`/`DEVMODEA`. The un-suffixed names are macros that resolve to the `A` form when `UNICODE` is undefined (project default); the compiled binary still imports the `A` symbols. IDA shows the resolved `*A` symbol — translate back to the macro.
+- **Pointer/bool constants:** use `NULL` for null pointer assignments/returns, `TRUE`/`FALSE` for `LegoBool`/`LegoBool32`, and plain `0` only for scalar values and status codes.
 - **Blank lines inside functions:** separate decls / setup / main work / return with single blanks; blanks around if/else chains; switch cases stay tightly packed; one-liner bodies need no internal spacing.
 - **Enums for magic numbers:** hoist fixed enumerations (flag bits, event tags, state codes) into a named `enum` at class or namespace scope. `c_camelCase` per NCC.
 - **No leading `const` on return-by-value** (`const RetType Get() const` — meaningless, trips NCC).
@@ -156,6 +157,7 @@ Keep original types at API boundaries (Win32, DirectX, CRT); `void*` can remain.
 
 - **Every type must be corroborated by matched code.** A type is proven only when a `// FUNCTION:` using it reaches 100%. Until then, `undefined`/`undefined4`.
 - **No raw pointer arithmetic as a substitute for types.** Casts + subtractions mean the types are wrong; find the real class so the cast is legitimate C++ (including multi-inheritance cross-casts — define the inheritance, don't fake the adjustment).
+- **Nest one-owner helper classes.** If a helper type is only meaningful as part of one owning class, declare it as a nested class instead of adding another root-level random class to the same header.
 - **Read the original binary directly** (Python/struct) for vtable entries, call targets, and function addresses when IDA/Ghidra mislabels them.
 - **Every annotation has a real address** — no placeholders.
 - **`// FUNCTION:` means 100% match.** Any diff ⇒ the code is wrong; investigate the root cause (layout, types, missing base).
@@ -175,6 +177,7 @@ Register allocation is sensitive to many equivalent-looking source variants. Whe
 - **Inline getter vs. direct member access.** Promoting `ptr->m_foo` to `ptr->GetFoo()` (with an inline getter in the class header) — or the reverse — often shifts register choices even though the inlined body is identical. Useful both for cross-object access *and* inside the owning class. Try both directions.
 - **Redundant member-pointer aliases.** If a local pointer is assigned directly from a member and then only null-checked or immediately dereferenced (`T* tmp = m_member; if (tmp) tmp->Call();`), first try direct member access (`if (m_member) m_member->Call();`). MSVC 6.0 often emits the same code, and the direct form better reflects human source. Keep the local when it is a real snapshot before mutation, an iterator, a return value, or must be addressable.
 - **Expression folding vs. temp local.** `acc += p_str[i] << shift;` vs. `int v = p_str[i] << shift; acc += v;` land the accumulator in different registers (esi vs. eax), cascading to `this` and other hot locals.
+- **Clean argument locals can fix scratch-register diffs.** Around COM/virtual calls, introducing a named local for a member argument (`LPDIRECTDRAWSURFACE surface = p_depthBuffer->m_surface;`) can move the same value through the original scratch register without casts, volatility, or assembly.
 - **Loop form.** `while (ptr)` / `do-while` put the condition variable in the first callee-saved reg (ebx), pushing `this` to later registers. `for (;;)` + `break` frees ebx for `this`. Swap when allocation doesn't match.
 - **Loop-back shape identifies the source form.** `test reg,reg; jne loop_top` on a pointer updated inside the loop ⇒ `while (ptr)` / `do-while (ptr)`, not `for(;;)` + break. IDA's `while (v6 != (char *)-1)` is misleading; the asm tests `!= 0`.
 - **Loop-index scope.** Declare `LegoU32 i;` at function scope, not inside `for (;;)`. MSVC 6.0 legacy scoping lets a second `for (i = ...)` reuse it, but CI clang-tidy uses ANSI scoping and rejects the second reference.

@@ -9,18 +9,30 @@
 // SIZE 0x58
 class SlatePeak0x58 : public AzureRidge0x38 {
 public:
+	// SIZE 0x38
+	class DepthBuffer0x38 : public SilverDune0x30 {
+	public:
+		void Release();
+
+	private:
+		friend class SlatePeak0x58;
+
+		SlatePeak0x58* m_attachedSurface; // 0x30
+		LPDIRECTDRAWSURFACE m_surface;    // 0x34
+	};
+
 	SlatePeak0x58();
-	~SlatePeak0x58() override;                                      // vtable+0x00
-	void VTable0x04(undefined4*, undefined4*, undefined4) override; // vtable+0x04
-	void VTable0x08() override;                                     // vtable+0x08
-	void VTable0x0c(undefined4*, undefined4*, undefined4) override; // vtable+0x0c
-	void VTable0x10() override;                                     // vtable+0x10
-	void VTable0x14(undefined4*) override;                          // vtable+0x14
-	void VTable0x18() override;                                     // vtable+0x18
-	undefined4 VTable0x1c() override;                               // vtable+0x1c
-	void VTable0x20(undefined4, undefined4, undefined4) override;   // vtable+0x20
-	void VTable0x28(undefined4, undefined4, undefined4*) override;  // vtable+0x28
-	void VTable0x2c() override;                                     // vtable+0x2c
+	~SlatePeak0x58() override;                                                         // vtable+0x00
+	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;    // vtable+0x04
+	void UnlockPixels() override;                                                      // vtable+0x08
+	void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x0c
+	void UnlockAuxPixels() override;                                                   // vtable+0x10
+	void VTable0x14(undefined4*) override;                                             // vtable+0x14
+	void VTable0x18() override;                                                        // vtable+0x18
+	PearlDew0x0c* GetPalette() override;                                               // vtable+0x1c
+	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
+	void VTable0x28(undefined4, undefined4, undefined4*) override;                     // vtable+0x28
+	void VTable0x2c() override;                                                        // vtable+0x2c
 	void VTable0x30(
 		GolDrawState* p_drawState,
 		undefined4 p_width,
@@ -33,12 +45,17 @@ public:
 	// SlatePeak0x58::`scalar deleting destructor'
 
 private:
-	PearlDew0x0c m_unk0x38; // 0x38
-	undefined4 m_unk0x44;   // 0x44
-	undefined4 m_unk0x48;   // 0x48
-	undefined4 m_unk0x4c;   // 0x4c
-	undefined4 m_unk0x50;   // 0x50
-	undefined4 m_unk0x54;   // 0x54
+	friend class DepthBuffer0x38;
+
+	LegoS32 AttachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
+	void DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
+
+	PearlDew0x0c m_palette;               // 0x38
+	GolDrawState* m_drawState;            // 0x44
+	LPDIRECTDRAWSURFACE m_displaySurface; // 0x48
+	LPDIRECTDRAWSURFACE m_renderSurface;  // 0x4c
+	LPDIRECTDRAWCLIPPER m_clipper;        // 0x50
+	DepthBuffer0x38* m_depthBuffer;       // 0x54
 };
 
 #endif // GOLDP_SLATEPEAK0X58_H

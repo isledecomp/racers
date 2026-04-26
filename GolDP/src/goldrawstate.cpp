@@ -76,10 +76,11 @@ void GolDrawState::VTable0x50()
 }
 
 // STUB: GOLDP 0x1001d660
-void GolDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4)
+LegoS32 GolDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x1001d660);
+	return 0;
 }
 
 // STUB: GOLDP 0x1001d6d0

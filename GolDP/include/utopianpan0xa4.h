@@ -31,8 +31,7 @@ public:
 	LegoU8 m_unk0x3c;                 // 0x3c
 	undefined m_unk0x3d[0x40 - 0x3d]; // 0x3d
 	undefined2 m_unk0x40;             // 0x40
-	FourBytes m_unk0x42;              // 0x42
-	FourBytes m_unk0x46;              // 0x46
+	FourBytes m_name[2];              // 0x42
 	FourBytes m_unk0x4a;              // 0x4a
 	undefined m_unk0x4e[0xa4 - 0x4e]; // 0x46
 };

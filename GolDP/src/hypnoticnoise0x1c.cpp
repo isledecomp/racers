@@ -65,7 +65,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	}
 
 	parser->VTable0x38((undefined4) p_param2);
-	parser->AssertNextTokenIs(0x27);
+	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	m_numItems = parser->FUN_100327e0();
 
 	if (!m_numItems) {
@@ -84,7 +84,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		local30.m_bytes[3] = -1;
 		local34.m_bytes[3] = -1;
 
-		parser->AssertNextTokenIs(0x27);
+		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 		UtopianPan0xa4* item = VTable0x20(i);
 
 		FourBytes name[2];
@@ -103,28 +103,28 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		local34.m_bytes[1] = -1;
 		local34.m_bytes[2] = -1;
 
-		GolFileParser::ParserTokenType val3 = parser->GetNextToken();
+		GolFileParser::ParserTokenType token = parser->GetNextToken();
 
-		while (val3 != GolFileParser::e_rightCurly) {
-			switch (val3) {
-			case 0x28:
+		while (token != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x28:
 				flags |= 4;
 				break;
-			case 0x29:
+			case GolFileParser::e_unknown0x29:
 				flags &= 0xffef;
 				flags |= 0x08;
 				break;
-			case 0x2a:
+			case GolFileParser::e_unknown0x2a:
 				flags &= 0xfff7;
 				flags |= 0x10;
 				break;
-			case 0x2b:
+			case GolFileParser::e_unknown0x2b:
 				flags |= 0x20;
 				local30.m_bytes[0] = parser->ReadInteger();
 				local30.m_bytes[1] = parser->ReadInteger();
 				local30.m_bytes[2] = parser->ReadInteger();
 				break;
-			case 0x2c:
+			case GolFileParser::e_unknown0x2c:
 				local34.m_bytes[0] = parser->ReadInteger();
 				local34.m_bytes[1] = parser->ReadInteger();
 				local34.m_bytes[2] = parser->ReadInteger();
@@ -133,11 +133,11 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			}
 
-			val3 = parser->GetNextToken();
+			token = parser->GetNextToken();
 		}
 
-		item->m_unk0x42 = name[0];
-		item->m_unk0x46 = name[1];
+		item->m_name[0] = name[0];
+		item->m_name[1] = name[1];
 
 		if (p_param1->VTable0x110()) {
 			flags = flags | 0x40;

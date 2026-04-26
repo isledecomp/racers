@@ -195,7 +195,7 @@ LegoChar* GolFileParser::ReadStringWithMaxLength(size_t p_len)
 
 // FUNCTION: GOLDP 0x10032740
 // FUNCTION: LEGORACERS 0x0044e8a0
-void GolFileParser::AssertNextTokenIs(undefined4 p_expected)
+void GolFileParser::AssertNextTokenIs(ParserTokenType p_expected)
 {
 	if (GetNextToken() != p_expected) {
 		HandleUnexpectedToken(e_expectedKeyword);

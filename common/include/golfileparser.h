@@ -32,6 +32,12 @@ public:
 		e_unsuportedKeyword = 18,
 		e_expectedKeyword = 19,
 		//
+		e_unknown0x27 = 0x27,
+		e_unknown0x28 = 0x28,
+		e_unknown0x29 = 0x29,
+		e_unknown0x2a = 0x2a,
+		e_unknown0x2b = 0x2b,
+		e_unknown0x2c = 0x2c,
 	};
 
 	GolFileParser();
@@ -61,7 +67,7 @@ public:
 	LegoFloat ReadFloat();
 	LegoChar* ReadString();
 	LegoChar* ReadStringWithMaxLength(size_t p_len);
-	void AssertNextTokenIs(undefined4 p_expected);
+	void AssertNextTokenIs(ParserTokenType p_expected);
 	void ReadLeftBracket();
 	void ReadRightBracket();
 	void ReadLeftCurly();

@@ -26,7 +26,7 @@ void PorcelainVeil0x50::VTable0x0c()
 // FUNCTION: LEGORACERS 0x00480620
 void PorcelainVeil0x50::VTable0x08()
 {
-	if (m_unk0x04) {
+	if (m_data) {
 		if (m_unk0x4c) {
 			delete[] m_unk0x4c;
 		}

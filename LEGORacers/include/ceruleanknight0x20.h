@@ -1,15 +1,15 @@
 #ifndef CERULEANKNIGHT0X20_H
 #define CERULEANKNIGHT0X20_H
 
-#include "ceruleansubject0x0c.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golfileparser.h"
+#include "smallcocoon0xc.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b2210
 // SIZE 0x20
-class CeruleanKnight0x20 : public CeruleanSubject0x0c {
+class CeruleanKnight0x20 : public SmallCocoon0xc {
 public:
 	CeruleanKnight0x20();
 	~CeruleanKnight0x20() override;          // vtable+0x00

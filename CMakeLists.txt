@@ -77,6 +77,7 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 add_cxx_warning(parentheses)
 
 set(COMMON_SOURCES
+  common/src/smallcocoon0xc.cpp
   common/src/golerror.cpp
   common/src/golfile.cpp
   common/src/golfsutil.cpp
@@ -102,7 +103,6 @@ add_library(goldp SHARED
   GolDP/src/pearldew0x0c.cpp
   GolDP/src/zoweeblubberworth0xf0.cpp
   GolDP/src/silverdune0x30.cpp
-  GolDP/src/smallcocoon0xc.cpp
   GolDP/src/floatyboat0x28.cpp
   GolDP/src/floatypontoon0x4c.cpp
   GolDP/src/floatybarge0x4c.cpp
@@ -177,7 +177,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/opalhaven0xf4.cpp
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
-  LEGORacers/src/ceruleansubject0x0c.cpp
   LEGORacers/src/bronzefalcon0xc8770.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp

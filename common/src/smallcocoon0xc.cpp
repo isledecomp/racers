@@ -3,18 +3,28 @@
 #include "golerror.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(SmallCocoon0xc, 0xc)
 DECOMP_SIZE_ASSERT(SmallCocoon0xc::Item, 0xc)
 
 // FUNCTION: GOLDP 0x100281c0
+// FUNCTION: LEGORACERS 0x004117b0
 SmallCocoon0xc::SmallCocoon0xc()
 {
 	m_data = NULL;
 	m_size = 0;
 }
 
+// FUNCTION: GOLDP 0x10028220
+// FUNCTION: LEGORACERS 0x004117f0
+SmallCocoon0xc::~SmallCocoon0xc()
+{
+	VTable0x08();
+}
+
 // FUNCTION: GOLDP 0x10028250 FOLDED
+// FUNCTION: LEGORACERS 0x00411800
 void SmallCocoon0xc::VTable0x04(LegoU32 p_size)
 {
 	m_size = p_size;
@@ -28,6 +38,7 @@ void SmallCocoon0xc::VTable0x04(LegoU32 p_size)
 }
 
 // FUNCTION: GOLDP 0x100282a0
+// FUNCTION: LEGORACERS 0x00411850
 void SmallCocoon0xc::VTable0x08()
 {
 	if (m_data != NULL) {
@@ -37,6 +48,7 @@ void SmallCocoon0xc::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x100282c0
+// FUNCTION: LEGORACERS 0x00411870
 void SmallCocoon0xc::AddName(const LegoChar* p_str, UtopianPan0xa4* p_arg2)
 {
 	LegoU32 startIndex = 0;

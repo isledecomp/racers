@@ -27,8 +27,8 @@ void CeruleanKnight0x20::VTable0x0c()
 // FUNCTION: LEGORACERS 0x0046b110
 void CeruleanKnight0x20::VTable0x08()
 {
-	if (m_unk0x04) {
-		CeruleanSubject0x0c::VTable0x08();
+	if (m_data) {
+		SmallCocoon0xc::VTable0x08();
 		VTable0x0c();
 	}
 }

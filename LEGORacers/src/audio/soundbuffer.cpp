@@ -64,32 +64,26 @@ SoundBuffer::~SoundBuffer()
 	ReleaseDirectSoundBuffer();
 
 	if (!m_streaming) {
-		SoundInstance* sound = m_soundInstance;
-
-		if (sound) {
-			sound->SetSoundBuffer(NULL);
-			sound = m_soundInstance;
-			FrostPetal0x34* owner = sound->GetOwnerDirect();
+		if (m_soundInstance) {
+			m_soundInstance->SetSoundBuffer(NULL);
+			FrostPetal0x34* owner = m_soundInstance->GetOwnerDirect();
 			if (owner) {
-				owner->DestroySoundInstance(sound);
+				owner->DestroySoundInstance(m_soundInstance);
 			}
 			else {
-				delete sound;
+				delete m_soundInstance;
 			}
 		}
 	}
 	else {
-		StreamingSoundInstance* sound = m_streamingSoundInstance;
-
-		if (sound) {
-			sound->SetSoundBuffer(NULL);
-			sound = m_streamingSoundInstance;
-			FrostPetal0x34* owner = sound->GetOwner();
+		if (m_streamingSoundInstance) {
+			m_streamingSoundInstance->SetSoundBuffer(NULL);
+			FrostPetal0x34* owner = m_streamingSoundInstance->GetOwner();
 			if (owner) {
-				owner->DestroyStreamingSoundInstance(sound);
+				owner->DestroyStreamingSoundInstance(m_streamingSoundInstance);
 			}
 			else {
-				delete sound;
+				delete m_streamingSoundInstance;
 			}
 		}
 	}
@@ -177,6 +171,16 @@ void SoundBuffer::SetFrequencyScale(LegoFloat p_frequencyScale)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0041bad0
+void SoundBuffer::ApplyDirectSoundSettings()
+{
+	if (m_directSoundBuffer) {
+		m_directSoundBuffer->SetVolume(m_directSoundVolume);
+		m_directSoundBuffer->SetPan(m_directSoundPan);
+		m_directSoundBuffer->SetFrequency(m_directSoundFrequency);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0041bb00
 void SoundBuffer::ResetSoundSettings()
 {
@@ -196,10 +200,8 @@ LegoBool32 SoundBuffer::Play(LegoBool32)
 void SoundBuffer::StopOrRelease()
 {
 	if (m_playbackState != c_playbackStateIdle) {
-		LPDIRECTSOUNDBUFFER buffer = m_directSoundBuffer;
-
-		if (buffer) {
-			buffer->Stop();
+		if (m_directSoundBuffer) {
+			m_directSoundBuffer->Stop();
 		}
 
 		m_soundManager->MoveSoundToIdle(*this);
@@ -209,19 +211,15 @@ void SoundBuffer::StopOrRelease()
 // FUNCTION: LEGORACERS 0x0041bc40
 void SoundBuffer::StopDirectSoundBuffer()
 {
-	LPDIRECTSOUNDBUFFER buffer = m_directSoundBuffer;
-
-	if (buffer) {
-		buffer->Stop();
+	if (m_directSoundBuffer) {
+		m_directSoundBuffer->Stop();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041bc50
 void SoundBuffer::ReleaseBufferPlayback()
 {
-	LPDIRECTSOUNDBUFFER buffer = m_directSoundBuffer;
-
-	if (buffer) {
-		buffer->SetCurrentPosition(0);
+	if (m_directSoundBuffer) {
+		m_directSoundBuffer->SetCurrentPosition(0);
 	}
 }

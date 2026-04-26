@@ -116,12 +116,11 @@ void Win32GolApp::Init(const LegoChar* p_windowName, const LegoChar* p_fileName)
 // FUNCTION: LEGORACERS 0x004167b0
 void Win32GolApp::ShutdownDisplay()
 {
-	GolDrawState* drawState = m_golDrawState;
 	m_unk0x808 = 0;
 	m_renderer = NULL;
 
-	if (drawState && (drawState->GetFlags() & GolDrawState::c_flagBit0)) {
-		drawState->VTable0x48();
+	if (m_golDrawState && (m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+		m_golDrawState->VTable0x48();
 	}
 
 	m_flags &= ~c_flagDisplayActive;

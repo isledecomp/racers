@@ -17,7 +17,7 @@ LegoChar g_jamSignature[] = "LJAM";
 LegoChar g_nameBuffer[GOL_NAME_LENGTH];
 
 // GLOBAL: LEGORACERS 0x004c73b0
-LegoChar g_jamHeader[sizeof(g_jamSignature) - 1];
+LegoChar g_jamReadBuffer[20];
 
 // FUNCTION: LEGORACERS 0x0044d820
 GolFileSource::GolFileSource()
@@ -40,11 +40,11 @@ void GolFileSource::AttachStream(GolStream* p_stream)
 	m_state = 0;
 
 	LegoS32 bytesRead;
-	if (p_stream->BufferedRead(0, g_jamHeader, sizeof(g_jamHeader), &bytesRead)) {
+	if (p_stream->BufferedRead(0, g_jamReadBuffer, sizeof(g_jamSignature) - 1, &bytesRead)) {
 		GOL_FATALERROR_MESSAGE(g_jamReadError);
 	}
 
-	if (memcmp(g_jamHeader, g_jamSignature, sizeof(g_jamHeader))) {
+	if (memcmp(g_jamReadBuffer, g_jamSignature, sizeof(g_jamSignature) - 1)) {
 		GOL_FATALERROR_MESSAGE(g_jamReadError);
 	}
 }

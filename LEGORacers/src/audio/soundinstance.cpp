@@ -16,14 +16,11 @@ SoundInstance::SoundInstance()
 // FUNCTION: LEGORACERS 0x0041b4f0
 SoundInstance::~SoundInstance()
 {
-	SoundBuffer* soundBuffer = m_soundBuffer;
+	if (m_soundBuffer) {
+		m_soundBuffer->ClearSoundInstance();
 
-	if (soundBuffer) {
-		soundBuffer->ClearSoundInstance();
-		soundBuffer = m_soundBuffer;
-
-		if (soundBuffer) {
-			delete soundBuffer;
+		if (m_soundBuffer) {
+			delete m_soundBuffer;
 		}
 	}
 

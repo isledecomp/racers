@@ -17,14 +17,11 @@ StreamingSoundInstance::StreamingSoundInstance()
 // FUNCTION: LEGORACERS 0x0041ad00
 StreamingSoundInstance::~StreamingSoundInstance()
 {
-	SoundBuffer* soundBuffer = m_soundBuffer;
+	if (m_soundBuffer) {
+		m_soundBuffer->ClearSoundInstance();
 
-	if (soundBuffer) {
-		soundBuffer->ClearSoundInstance();
-		soundBuffer = m_soundBuffer;
-
-		if (soundBuffer) {
-			delete soundBuffer;
+		if (m_soundBuffer) {
+			delete m_soundBuffer;
 		}
 	}
 

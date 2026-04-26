@@ -37,7 +37,7 @@ void SmallCocoon0xc::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x100282c0
-void SmallCocoon0xc::AddName(const LegoChar* p_str, undefined4* p_arg2)
+void SmallCocoon0xc::AddName(const LegoChar* p_str, UtopianPan0xa4* p_arg2)
 {
 	LegoU32 startIndex = 0;
 	LegoU32 shift = 0;
@@ -78,7 +78,7 @@ void SmallCocoon0xc::AddName(const LegoChar* p_str, undefined4* p_arg2)
 }
 
 // FUNCTION: GOLDP 0x100283e0
-undefined4* SmallCocoon0xc::GetName(const LegoChar* p_str) const
+UtopianPan0xa4* SmallCocoon0xc::GetName(const LegoChar* p_str) const
 {
 	LegoU32 startIndex = 0;
 	LegoU32 shift = 0;
@@ -117,7 +117,7 @@ undefined4* SmallCocoon0xc::GetName(const LegoChar* p_str) const
 }
 
 // FUNCTION: GOLDP 0x10028470
-void SmallCocoon0xc::FUN_10028470(const undefined4* p_needle, LegoChar* p_buffer) const
+void SmallCocoon0xc::FUN_10028470(const UtopianPan0xa4* p_needle, LegoChar* p_buffer) const
 {
 	for (LegoU32 i = 0; i < m_size; i++) {
 		if (m_data[i].m_unk0x8 == p_needle) {

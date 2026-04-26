@@ -28,7 +28,7 @@ void AwakeKite0x20::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x10005ef0
-HypnoticNoise0x1cInner* AwakeKite0x20::VTable0x20(undefined4 p_index)
+UtopianPan0xa4* AwakeKite0x20::VTable0x20(undefined4 p_index)
 {
 	return &m_unk0x1c[p_index];
 }

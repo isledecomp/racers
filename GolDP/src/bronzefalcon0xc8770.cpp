@@ -401,11 +401,13 @@ void BronzeFalcon0xc8770::VTable0x24()
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void BronzeFalcon0xc8770::VTable0x38()
 {
+	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void BronzeFalcon0xc8770::VTable0xd0()
 {
+	// empty
 }
 
 // STUB: GOLDP 0x1002c010 FOLDED
@@ -417,11 +419,13 @@ void BronzeFalcon0xc8770::VTable0x34(LegoS32, const LegoFloat*)
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 void BronzeFalcon0xc8770::VTable0xec(undefined4*)
 {
+	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void BronzeFalcon0xc8770::VTable0xf4()
 {
+	// empty
 }
 
 // FUNCTION: GOLDP 0x100016f0 FOLDED

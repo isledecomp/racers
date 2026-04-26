@@ -3,17 +3,17 @@
 #include "bronzefalcon0xc8770.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golfileparser.h"
 #include "goltxtparser.h"
 
 DECOMP_SIZE_ASSERT(HypnoticNoise0x1c, 0x1c)
-DECOMP_SIZE_ASSERT(HypnoticNoise0x1cInner, 0xa4)
 
 // FUNCTION: GOLDP 0x10022fa0
 HypnoticNoise0x1c::HypnoticNoise0x1c()
 {
 	m_unk0x0c = NULL;
 	m_unk0x10 = 0;
-	m_unk0x14 = 0;
+	m_numItems = 0;
 	m_unk0x18 = NULL;
 }
 
@@ -22,7 +22,7 @@ HypnoticNoise0x1c::HypnoticNoise0x1c()
 #pragma inline_depth(0)
 HypnoticNoise0x1c::~HypnoticNoise0x1c()
 {
-	m_unk0x14 = 0;
+	m_numItems = 0;
 
 	if (m_unk0x0c) {
 		m_unk0x0c->FUN_10028ae0(this);
@@ -38,9 +38,7 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 // FUNCTION: GOLDP 0x10023060
 void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2, undefined4 p_param3)
 {
-	// undefined4 local18;
-
-	if (m_unk0x14 > 0) {
+	if (m_numItems > 0) {
 		VTable0x08();
 	}
 
@@ -68,69 +66,68 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 
 	parser->VTable0x38((undefined4) p_param2);
 	parser->FUN_10032740(0x27);
-	m_unk0x14 = parser->FUN_100327e0();
+	m_numItems = parser->FUN_100327e0();
 
-	if (!m_unk0x14) {
+	if (!m_numItems) {
 		parser->Dispose();
 		delete parser;
 		return;
 	}
 
-	// TODO: m_unk0x14 could be a size
-	SmallCocoon0xc::VTable0x04(m_unk0x14);
-
+	SmallCocoon0xc::VTable0x04(m_numItems);
 	m_unk0x18 = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
-
 	VTable0x0c();
 
-	for (LegoU32 i = 0; i < m_unk0x14; i++) {
-		FourBytes esp0x30;
-		FourBytes esp0x34;
-		esp0x30.bytes[3] = -1;
-		esp0x34.bytes[3] = -1;
+	for (LegoU32 i = 0; i < m_numItems; i++) {
+		FourBytes local30;
+		FourBytes local34;
+		local30.bytes[3] = -1;
+		local34.bytes[3] = -1;
 
 		parser->FUN_10032740(0x27);
-		HypnoticNoise0x1cInner* val1 = VTable0x20(i);
+		UtopianPan0xa4* item = VTable0x20(i);
 
-		FourBytes name[2]; // TODO restore to 8
+		FourBytes name[2];
 		strncpy(&name[0].bytes[0], parser->FUN_10032700(8), 8);
-		AddName(&name[0].bytes[0], (undefined4*) val1); // TODO: Get rid of typecast once matched
+		AddName(&name[0].bytes[0], item);
 
 		parser->FUN_100327a0();
 
-		undefined4 val4 = 0;
+		LegoU32 flags = 0;
 
-		esp0x30.bytes[0] = 0;
-		esp0x30.bytes[1] = 0;
-		esp0x30.bytes[2] = 0;
+		local30.bytes[0] = 0;
+		local30.bytes[1] = 0;
+		local30.bytes[2] = 0;
 
-		esp0x34.bytes[0] = -1;
-		esp0x34.bytes[1] = -1;
-		esp0x34.bytes[2] = -1;
+		local34.bytes[0] = -1;
+		local34.bytes[1] = -1;
+		local34.bytes[2] = -1;
 
-		undefined4 val3 = parser->VTable0x44();
+		LegoU32 val3 = parser->VTable0x44();
 
-		while (val3 != 6) {
+		while (val3 != GolFileParser::e_expectedRightCurly) {
 			switch (val3) {
 			case 0x28:
-				val4 = val4 | 4;
+				flags |= 4;
 				break;
 			case 0x29:
-				val4 = (val4 & 0xffe7) | 0x08;
+				flags &= 0xffef;
+				flags |= 0x08;
 				break;
 			case 0x2a:
-				val4 = (val4 & 0xfff7) | 0x10;
+				flags &= 0xfff7;
+				flags |= 0x10;
 				break;
 			case 0x2b:
-				val4 = val4 | 0x20;
-				esp0x30.bytes[0] = parser->FUN_100326a0();
-				esp0x30.bytes[1] = parser->FUN_100326a0();
-				esp0x30.bytes[2] = parser->FUN_100326a0();
+				flags |= 0x20;
+				local30.bytes[0] = parser->FUN_100326a0();
+				local30.bytes[1] = parser->FUN_100326a0();
+				local30.bytes[2] = parser->FUN_100326a0();
 				break;
 			case 0x2c:
-				esp0x34.bytes[0] = parser->FUN_100326a0();
-				esp0x34.bytes[1] = parser->FUN_100326a0();
-				esp0x34.bytes[2] = parser->FUN_100326a0();
+				local34.bytes[0] = parser->FUN_100326a0();
+				local34.bytes[1] = parser->FUN_100326a0();
+				local34.bytes[2] = parser->FUN_100326a0();
 				break;
 			default:
 				parser->VTable0x40(0);
@@ -139,31 +136,26 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 			val3 = parser->VTable0x44();
 		}
 
-		// this->m_unk0x14 = i; // FIXME: experiment to see if reference is correct
-		val1->m_unk0x42 = name[0];
-		val1->m_unk0x46 = name[1];
-
-		// TODO: Most likely wrong; this is the vtable+0x110 I am afraid of
-		// int ivar4;
-		// /* int ivar4 = */ p_param1->VTable0x110();
+		item->m_unk0x42 = name[0];
+		item->m_unk0x46 = name[1];
 
 		if (p_param1->VTable0x110()) {
-			val4 = val4 | 0x40;
+			flags = flags | 0x40;
 		}
 
-		if ((val4 & 0x20) && (p_param1->GetUnk0x04() & 0x200)) {
-			val4 = val4 | 0x80;
+		if ((flags & 0x20) && (p_param1->GetUnk0x04() & 0x200)) {
+			flags = flags | 0x80;
 		}
 
-		val1->m_unk0x40 = val4;
-		// val1->m_unk0x4a.dword = esp0x34.dword;
-		val1->m_unk0x4a = esp0x34;
-		if (val4 & 0x20) {
-			val1->m_unk0x28 = esp0x30;
-			val1->m_unk0x40 = val4 | 0x800;
+		item->m_unk0x40 = flags;
+		item->m_unk0x4a = local34;
+
+		if (flags & 0x20) {
+			item->m_unk0x28 = local30;
+			item->m_unk0x40 = flags | 0x800;
 		}
 
-		val1->m_unk0x24 = p_param1; // wild guess, most likely wrong
+		item->m_unk0x24 = p_param1;
 	}
 
 	parser->FUN_100327c0();
@@ -174,8 +166,8 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		g_hashTable->SetCurrentEntry(m_unk0x18);
 	}
 
-	for (LegoU32 j = 0; j < m_unk0x14; j++) {
-		HypnoticNoise0x1cInner* entry = VTable0x20(j);
+	for (LegoU32 j = 0; j < m_numItems; j++) {
+		UtopianPan0xa4* entry = VTable0x20(j);
 		if ((entry->m_unk0x3c & 1) == 0) {
 			entry->VTable0x10();
 		}
@@ -185,13 +177,13 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 // FUNCTION: GOLDP 0x100233a0
 void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_param2)
 {
-	if (m_unk0x14 > 0) {
+	if (m_numItems > 0) {
 		VTable0x08();
 	}
 
 	m_unk0x0c = p_param1;
 	m_unk0x0c->FUN_10028ad0(this);
-	m_unk0x14 = p_param2;
+	m_numItems = p_param2;
 
 	VTable0x0c();
 
@@ -203,7 +195,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_para
 // FUNCTION: GOLDP 0x100233f0
 void HypnoticNoise0x1c::VTable0x08()
 {
-	m_unk0x14 = 0;
+	m_numItems = 0;
 	if (m_unk0x0c) {
 		m_unk0x0c->FUN_10028ae0(this);
 		m_unk0x0c = 0;

@@ -1,6 +1,7 @@
 #include "coppercrest0x40.h"
 
 DECOMP_SIZE_ASSERT(CopperCrest0x40, 0x40)
+DECOMP_SIZE_ASSERT(CopperCrest0x40::InitStruct, 0x18)
 
 // STUB: LEGORACERS 0x00468ec0
 CopperCrest0x40::CopperCrest0x40()
@@ -21,6 +22,14 @@ LegoS32 CopperCrest0x40::VTable0x00()
 {
 	// TODO
 	STUB(0x468f80);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x00469040
+LegoS32 CopperCrest0x40::FUN_00469040(InitStruct*)
+{
+	// TODO
+	STUB(0x469040);
 	return 0;
 }
 

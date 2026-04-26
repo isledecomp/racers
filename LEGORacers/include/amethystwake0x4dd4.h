@@ -71,6 +71,10 @@ public:
 	LegoS32 FUN_0042e680();
 
 private:
+	enum {
+		c_menuTextRendererObjectName = 0x36,
+	};
+
 	// SIZE 0x4bc8
 	class VioletCurrent0x4bc8 {
 	public:

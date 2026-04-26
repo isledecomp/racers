@@ -3,6 +3,7 @@
 #include "golhashtable.h"
 #include "golstream.h"
 #include "imaginarytool0x368.h"
+#include "input/inputmanager.h"
 
 #include <golerror.h>
 #include <stddef.h>
@@ -137,11 +138,22 @@ LegoS32 AmethystWake0x4dd4::Shutdown()
 	return m_unk0x04.m_context == NULL;
 }
 
-// STUB: LEGORACERS 0x0042cd60
+// FUNCTION: LEGORACERS 0x0042cd60
 void AmethystWake0x4dd4::FUN_0042cd60()
 {
-	// TODO
-	STUB(0x42cd60);
+	LegoChar name[8];
+	CopperCrest0x40::InitStruct initStruct;
+
+	m_unk0x4ce4.FUN_0044e500(&m_unk0x4d24, c_menuTextRendererObjectName);
+	m_unk0x4d24.CopyToBuf8(name);
+
+	initStruct.m_golExport = m_unk0x4cd4;
+	initStruct.m_renderer = m_unk0x4cd8;
+	initStruct.m_rendererObject = m_unk0x4cd8->FUN_004131a0(name);
+	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
+	initStruct.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
+
+	m_unk0x4c74.FUN_00469040(&initStruct);
 }
 
 // STUB: LEGORACERS 0x0042cde0

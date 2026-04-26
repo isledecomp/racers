@@ -31,6 +31,7 @@ public:
 
 	void FUN_10028ad0(SmallCocoon0xc* p_param);
 	void FUN_10028ae0(SmallCocoon0xc* p_param);
+	undefined4* FUN_004131a0(const LegoChar* p_name);
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'

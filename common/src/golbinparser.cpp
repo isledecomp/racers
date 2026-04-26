@@ -17,7 +17,7 @@ GolBinParser::GolBinParser()
 
 // STUB: GOLDP 0x10030070
 // STUB: LEGORACERS 0x0044a890
-void GolBinParser::VTable0x38(undefined4)
+void GolBinParser::VTable0x38(const LegoChar*)
 {
 	// TODO
 	STUB(0x0044a890);

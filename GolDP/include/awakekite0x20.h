@@ -18,13 +18,13 @@ public:
 	// SYNTHETIC: GOLDP 0x10005d30
 	// AwakeKite0x20::`scalar deleting destructor'
 
-	void VTable0x0c() override;                              // vtable+0x0c
-	void VTable0x10() override;                              // vtable+0x10
-	void VTable0x14() override;                              // vtable+0x14
-	UtopianPan0xa4* VTable0x20(undefined4 p_index) override; // vtable+0x20
+	void VTable0x0c() override;                           // vtable+0x0c
+	void VTable0x10() override;                           // vtable+0x10
+	void VTable0x14() override;                           // vtable+0x14
+	UtopianPan0xa4* GetItem(undefined4 p_index) override; // vtable+0x20
 
 private:
-	UtopianPan0xa4* m_unk0x1c; // 0x1c
+	UtopianPan0xa4* m_items; // 0x1c
 };
 
-#endif // GOLDP_ AWAKEKITE0x20H
+#endif // GOLDP_AWAKEKITE0x20_H

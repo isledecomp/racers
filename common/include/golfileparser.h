@@ -44,7 +44,7 @@ public:
 	~GolFileParser() override;
 
 	LegoS32 Dispose() override;                              // vtable+0x20
-	virtual void VTable0x38(undefined4);                     // vtable+0x38
+	virtual void VTable0x38(const LegoChar*);                // vtable+0x38
 	virtual const LegoChar* GetSuffix();                     // vtable+0x3c
 	virtual void HandleUnexpectedToken(ParserTokenType) = 0; // vtable+0x40
 	virtual ParserTokenType GetNextToken();                  // vtable+0x44

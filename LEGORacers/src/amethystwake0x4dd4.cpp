@@ -210,7 +210,7 @@ void AmethystWake0x4dd4::FUN_0042d020()
 		m_unk0x4ce0 = m_unk0x4cd4->VTable0x38();
 	}
 
-	m_unk0x4cdc->VTable0x18(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
+	m_unk0x4cdc->LoadMaterialDefinitions(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
 }
 
 // STUB: LEGORACERS 0x0042d080

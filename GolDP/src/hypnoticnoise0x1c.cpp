@@ -84,23 +84,17 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	VTable0x0c();
 
 	for (LegoU32 i = 0; i < m_unk0x14; i++) {
-		union {
-			char bytes[4];
-			undefined4 dword;
-		} esp0x30;
-		union {
-			char bytes[4];
-			undefined4 dword;
-		} esp0x34;
+		FourBytes esp0x30;
+		FourBytes esp0x34;
 		esp0x30.bytes[3] = -1;
 		esp0x34.bytes[3] = -1;
 
 		parser->FUN_10032740(0x27);
 		HypnoticNoise0x1cInner* val1 = VTable0x20(i);
 
-		LegoChar nameCopy[4]; // TODO restore to 8
-		strncpy(nameCopy, parser->FUN_10032700(8), 8);
-		AddName(nameCopy, (undefined4*) val1); // TODO: Get rid of typecast once matched
+		FourBytes name[2]; // TODO restore to 8
+		strncpy(&name[0].bytes[0], parser->FUN_10032700(8), 8);
+		AddName(&name[0].bytes[0], (undefined4*) val1); // TODO: Get rid of typecast once matched
 
 		parser->FUN_100327a0();
 
@@ -149,49 +143,35 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 			default:
 				parser->VTable0x40(0);
 			}
+
+			val3 = parser->VTable0x44();
 		} while (val3 != 6);
 
-		val1->m_unk0x40 = i;
-		val1->m_unk0x44 = 0;
+		// this->m_unk0x14 = i; // FIXME: experiment to see if reference is correct
+		val1->m_unk0x42 = name[0];
+		val1->m_unk0x46 = name[1];
 
 		// TODO: Most likely wrong; this is the vtable+0x110 I am afraid of
-		int ivar4;
-		/* int ivar4 = */ p_param1->VTable0x24();
+		// int ivar4;
+		// /* int ivar4 = */ p_param1->VTable0x110();
 
-		if (ivar4) {
+		if ( p_param1->VTable0x110()) {
 			val4 = val4 | 0x40;
 		}
 
-		if ((val4 & 0x20) && val1->m_unk0x04 & 2) {
+		if ((val4 & 0x20) && (p_param1->GetUnk0x04() & 2)) {
 			val4 = val4 | 0x80;
 		}
 
-		val1->m_unk0x08 = val4;
-		val1->m_unk0x48 = esp0x34.dword;
+		val1->m_unk0x40 = val4;
+		// val1->m_unk0x4a.dword = esp0x34.dword;
+		val1->m_unk0x4a = esp0x34;
 		if (val4 & 0x20) {
-			val1->m_unk0x28 = esp0x30.dword;
-			val1->m_unk0x08 = val4 | 0x800;
+			val1->m_unk0x28 = esp0x30;
+			val1->m_unk0x40 = val4 | 0x800;
 		}
 
 		val1->m_unk0x24 = m_unk0x0c; // wild guess, most likely wrong
-									 // TODO
-									 // *(uint*) ((int) p_arg2 + 0x42) = uStack_18;
-									 // *(undefined4*) ((int) p_arg2 + 0x46) = uStack_14;
-
-		// iVar6 = (**(code**) (*unaff_retaddr + 0x110))();
-		// if (iVar6 != 0) {
-		// 	uVar10 = uVar10 | 0x40;
-		// }
-		// if (((uVar10 & 0x20) != 0) && ((*(uint*) pBVar2->m_unk0x04 & 0x200) != 0)) {
-		// 	uVar10 = uVar10 | 0x80;
-		// }
-		// *(ushort*) (p_arg2 + 0x10) = uVar10;
-		// *(uint*) ((int) p_arg2 + 0x4a) = p_param3;
-		// if ((uVar10 & 0x20) != 0) {
-		// 	p_arg2[10] = (uint) pcVar3;
-		// 	*(ushort*) (p_arg2 + 0x10) = uVar10 | 0x800;
-		// p_arg2[9] = (uint) pBVar2;
-		// uStack_18 = uStack_18 + 1;
 	}
 
 	parser->FUN_100327c0();
@@ -204,7 +184,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 
 	for (LegoU32 j = 0; j < m_unk0x14; j++) {
 		HypnoticNoise0x1cInner* entry = VTable0x20(j);
-		if ((entry->m_unk0x08 & 1) == 0) {
+		if ((entry->m_unk0x3c & 1) == 0) {
 			entry->VTable0x10();
 		}
 	}

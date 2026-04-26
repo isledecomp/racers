@@ -7,6 +7,12 @@
 
 class BronzeFalcon0xc8770;
 
+// TODO: Maybe a struct will also work
+typedef union {
+		char bytes[4];
+		// undefined4 dword;
+} FourBytes;
+
 class HypnoticNoise0x1cInner {
 public:
 	// TODO: VTable is preliminary
@@ -20,15 +26,17 @@ public:
 	undefined4 m_unk0x08;
 	undefined m_unk0x0c[0x24 - 0x0c]; // 0x06
 	BronzeFalcon0xc8770* m_unk0x24;   // 0x24
-	undefined4 m_unk0x28;             // 0x28
+	FourBytes m_unk0x28;             // 0x28
 	undefined m_unk0x2c[0x3c - 0x2c]; // 0x28
 	LegoU8 m_unk0x3c;                 // 0x3c
 	// undefined m_unk0x3d[0x40 - 0x3d]; // 0x28
 	// Likely wrong because unaligned, but we'll see
-	undefined4 m_unk0x40;
-	undefined4 m_unk0x44; // 0x46
-	undefined4 m_unk0x48;
-	undefined m_unk0x4v[0xa4 - 0x4c]; // 0x46
+	undefined m_unk0x3d[0x40-0x3d];
+	undefined2 m_unk0x40;
+	FourBytes m_unk0x42;
+	FourBytes m_unk0x46; // 0x46
+	FourBytes m_unk0x4a;
+	undefined m_unk0x4e[0xa4 - 0x4e]; // 0x46
 };
 
 // const x = sizeof(HypnoticNoise0x1cInner);

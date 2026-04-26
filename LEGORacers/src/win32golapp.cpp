@@ -597,7 +597,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 	switch (p_msg) {
 	case WM_ACTIVATE:
 		if (!(self->m_flags & Win32GolApp::c_flagDisplayActive)) {
-			return 0;
+			break;
 		}
 
 		if (LOWORD(p_wParam) == WA_INACTIVE) {
@@ -607,37 +607,36 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 				self->OnAppDeactivated();
 				if (self->m_eventHandler) {
 					self->m_eventHandler->VTable0x04();
-					return 0;
 				}
 			}
 		}
 		else {
 			OutputDebugString("Activate Window\n");
-			if (!self->m_disabled) {
+			if (self->m_disabled) {
+				OutputDebugString("--App was disabled\n");
+			}
+			else {
 				OutputDebugString("--App was enabled\n");
 				if (self->m_flags & Win32GolApp::c_flagFullscreen) {
 					OutputDebugString("--Telling the window to maximize\n");
 					ShowWindow(self->m_hWnd, SW_MAXIMIZE);
 				}
 			}
-			else {
-				OutputDebugString("--App was disabled\n");
-			}
 		}
-		return 0;
+		break;
 	case WM_CLOSE:
 		self->NotifyCloseRequested();
-		return 0;
+		break;
 	case WM_DESTROY:
 		SetWindowLong(p_hWnd, 0, 0);
 		self->NotifyCloseRequested();
 		SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
 		PostQuitMessage(0);
-		return 0;
+		break;
 	case WM_MOVE:
 	case WM_SETFOCUS:
 	case WM_KILLFOCUS:
-		return 0;
+		break;
 	case WM_SIZE:
 		if (self->m_flags & Win32GolApp::c_flagDisplayActive) {
 			if (p_wParam == SIZE_MAXIMIZED || p_wParam == SIZE_RESTORED) {
@@ -694,22 +693,21 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 				);
 			}
 		}
-		return 0;
+		break;
 	case WM_PAINT: {
 		RECT rect;
 		PAINTSTRUCT paint;
 
-		if (!GetUpdateRect(p_hWnd, &rect, FALSE)) {
-			return 0;
+		if (GetUpdateRect(p_hWnd, &rect, FALSE)) {
+			HDC hdc = BeginPaint(p_hWnd, &paint);
+			if (!(self->m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
+				FillRect(hdc, &rect, (HBRUSH) GetStockObject(BLACK_BRUSH));
+			}
+
+			EndPaint(p_hWnd, &paint);
 		}
 
-		HDC hdc = BeginPaint(p_hWnd, &paint);
-		if (!(self->m_golDrawState->GetFlags() & GolDrawState::c_flagBit0)) {
-			FillRect(hdc, &rect, (HBRUSH) GetStockObject(BLACK_BRUSH));
-		}
-
-		EndPaint(p_hWnd, &paint);
-		return 0;
+		break;
 	}
 	case WM_ACTIVATEAPP:
 		if (self->m_flags & Win32GolApp::c_flagDisplayActive) {
@@ -727,26 +725,23 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 					self->m_inputManager.SuspendActiveDevices();
 					SetPriorityClass(GetCurrentProcess(), NORMAL_PRIORITY_CLASS);
 				}
-
-				return 0;
 			}
-
-			OutputDebugString("Activate App\n");
-			if (self->m_disabled) {
-				OutputDebugString("--App was disabled\n");
-				return 0;
+			else {
+				OutputDebugString("Activate App\n");
+				if (self->m_disabled) {
+					OutputDebugString("--App was disabled\n");
+				}
 			}
 		}
 
-		return 0;
+		break;
 	case WM_CHAR:
-		if (!self->m_eventHandler) {
-			return 0;
+		if (self->m_eventHandler) {
+			self->m_eventHandler->VTable0x1c(p_wParam);
+			self->m_eventHandler->VTable0x20(p_wParam);
 		}
 
-		self->m_eventHandler->VTable0x1c(p_wParam);
-		self->m_eventHandler->VTable0x20(p_wParam);
-		return 0;
+		break;
 	case WM_SETCURSOR:
 		if (self->IsCursorInClientArea(p_hWnd)) {
 			SetCursor(self->m_hCursor);
@@ -758,18 +753,20 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 			return DefWindowProc(p_hWnd, WM_SYSCOMMAND, p_wParam, p_lParam);
 		}
 
-		return 0;
+		break;
 	case WM_SYSKEYDOWN:
-		return 0;
+		break;
 	case WM_SYSKEYUP:
-		return 0;
+		break;
 	case WM_COMMAND:
-		return 0;
+		break;
 	case WM_QUERYNEWPALETTE:
-		return 0;
+		break;
 	default:
 		return DefWindowProc(p_hWnd, p_msg, p_wParam, p_lParam);
 	}
+
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00417900

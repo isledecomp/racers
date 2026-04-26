@@ -35,8 +35,10 @@ void SilverDune0x30::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_f
 // FUNCTION: GOLDP 0x1001cfb0
 void SilverDune0x30::UnlockPixels()
 {
-	if (((LegoU8) m_pixelFlags) & c_lockFlagLocked) {
-		m_pixelFlags &= ~c_lockStateMask;
+	LegoU16 flags = m_pixelFlags;
+	if (((LegoU8) flags) & c_lockFlagLocked) {
+		flags &= ~c_lockStateMask;
+		m_pixelFlags = flags;
 	}
 }
 

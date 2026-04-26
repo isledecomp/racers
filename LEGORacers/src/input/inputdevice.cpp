@@ -146,6 +146,7 @@ undefined2* InputDevice::GetCustomButtonMapping()
 	if (m_buttonMapping == g_defaultMapping) {
 		return NULL;
 	}
+
 	return m_buttonMapping;
 }
 
@@ -155,14 +156,56 @@ undefined2* InputDevice::GetCustomAxisMapping()
 	if (m_axisMapping == g_defaultMapping) {
 		return NULL;
 	}
+
 	return m_axisMapping;
 }
 
-// STUB: LEGORACERS 0x0044bb60
-void InputDevice::DispatchAxisButtonStateChanges(float, float, undefined4)
+// FUNCTION: LEGORACERS 0x0044bb60
+void InputDevice::DispatchAxisButtonStateChanges(LegoFloat p_newValue, LegoFloat p_oldValue, LegoU32 p_positiveEvent)
 {
-	// TODO
-	STUB(0x0044bb60);
+	LegoU32 originalEvent = p_positiveEvent;
+	LegoS32 pressedEvent = -1;
+	LegoS32 releasedEvent = -1;
+	p_positiveEvent &= c_keyCodeMask;
+
+	if (p_newValue > 0.0f) {
+		if (p_oldValue <= 0.0f) {
+			pressedEvent = p_positiveEvent;
+		}
+
+		if (GetButtonState(originalEvent + 1)) {
+			releasedEvent = p_positiveEvent + 1;
+		}
+	}
+	else if (p_newValue < 0.0f) {
+		if (p_oldValue >= 0.0f) {
+			pressedEvent = p_positiveEvent + 1;
+		}
+
+		if (GetButtonState(originalEvent)) {
+			releasedEvent = p_positiveEvent;
+		}
+	}
+	else if (GetAxisValue((p_positiveEvent >> 1) + 1) > 0.0f) {
+		releasedEvent = p_positiveEvent;
+	}
+	else {
+		LegoU32 axisIndex = (p_positiveEvent >> 1) + 1;
+
+		if (GetAxisValue(axisIndex) >= 0.0f) {
+			return;
+		}
+
+		releasedEvent = p_positiveEvent + 1;
+	}
+
+	if (pressedEvent >= 0) {
+		SetButtonState(pressedEvent | c_sourceJoystick2, TRUE, TRUE);
+	}
+
+	if (releasedEvent >= 0) {
+		SetButtonState(releasedEvent | c_sourceJoystick2, FALSE, TRUE);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0044bc60

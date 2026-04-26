@@ -68,7 +68,7 @@ public:
 	void SetEventMappings(undefined2* p_buttonMapping, undefined2* p_axisMapping);
 	undefined2* GetCustomButtonMapping();
 	undefined2* GetCustomAxisMapping();
-	void DispatchAxisButtonStateChanges(float p_newValue, float p_oldValue, undefined4 p_event);
+	void DispatchAxisButtonStateChanges(LegoFloat p_newValue, LegoFloat p_oldValue, LegoU32 p_positiveEvent);
 	void DispatchRepeatEvents(LegoS32 p_elapsedMs);
 	void ResetAxisValues();
 	void AddTimedTrigger(TimedTrigger* p_trigger);

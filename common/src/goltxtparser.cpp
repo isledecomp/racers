@@ -198,15 +198,15 @@ void GolTxtParser::VTable0x74(undefined4 p_param)
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolTxtParser::VTable0x40(undefined4)
+void GolTxtParser::HandleUnexpectedToken(ParserTokenType)
 {
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
-undefined4 GolTxtParser::VTable0x44()
+GolFileParser::ParserTokenType GolTxtParser::GetNextToken()
 {
-	return 1;
+	return e_numericTooLong;
 }
 
 // FUNCTION: GOLDP 0x1002fa40 FOLDED

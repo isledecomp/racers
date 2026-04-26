@@ -17,8 +17,8 @@ public:
 	LegoS32 Dispose() override;                             // vtable+0x20
 	void VTable0x38(undefined4) override;                   // vtable+0x38
 	const LegoChar* GetSuffix() override;                   // vtable+0x3c
-	void VTable0x40(undefined4) override;                   // vtable+0x40
-	undefined4 VTable0x44() override;                       // vtable+0x44
+	void HandleUnexpectedToken(ParserTokenType) override;   // vtable+0x40
+	ParserTokenType GetNextToken() override;                // vtable+0x44
 	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
 	void OpenFile(LegoChar* p_fileName) override;           // vtable+0x4c
 	void VTable0x50(undefined4) override;                   // vtable+0x50

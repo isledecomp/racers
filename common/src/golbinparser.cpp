@@ -47,11 +47,11 @@ const LegoChar* GolBinParser::GetSuffix()
 
 // STUB: GOLDP 0x10030300
 // STUB: LEGORACERS 0x0044aae0
-undefined4 GolBinParser::VTable0x44()
+GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 {
 	// TODO
 	STUB(0x0044aae0);
-	return 0;
+	return e_syntaxerror;
 }
 
 // FUNCTION: GOLDP 0x1002fa40 FOLDED
@@ -63,7 +63,7 @@ undefined4 GolBinParser::VTable0x48(undefined4, undefined4)
 
 // FUNCTION: GOLDP 0x10030e40
 // FUNCTION: LEGORACERS 0x0044b1e0
-void GolBinParser::VTable0x40(undefined4 p_code)
+void GolBinParser::HandleUnexpectedToken(ParserTokenType p_code)
 {
 	if (m_filePath == NULL) {
 		GOL_FATALERROR_MESSAGE(ParserErrorCodeToString(p_code));

@@ -121,13 +121,13 @@ void GolFileParser::VTable0x38(undefined4)
 
 // STUB: GOLDP 0x100016f0 FOLDED
 // STUB: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 GolFileParser::VTable0x44()
+GolFileParser::ParserTokenType GolFileParser::GetNextToken()
 {
 	// TODO
 #ifdef BUILDING_GOL
 	STUB(0x100016f0);
 #endif
-	return 0;
+	return e_syntaxerror;
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
@@ -147,10 +147,10 @@ void GolFileParser::SetSuffix(const LegoChar* p_suffix)
 
 // FUNCTION: GOLDP 0x100326a0
 // FUNCTION: LEGORACERS 0x0044e800
-undefined4 GolFileParser::FUN_100326a0()
+undefined4 GolFileParser::ReadInteger()
 {
-	if (VTable0x44() != e_expectedInt) {
-		VTable0x40(e_expectedInt);
+	if (GetNextToken() != e_int) {
+		HandleUnexpectedToken(e_int);
 	}
 
 	return m_unk0x38;
@@ -158,10 +158,10 @@ undefined4 GolFileParser::FUN_100326a0()
 
 // FUNCTION: GOLDP 0x100326c0
 // FUNCTION: LEGORACERS 0x0044e820
-LegoFloat GolFileParser::FUN_100326c0()
+LegoFloat GolFileParser::ReadFloat()
 {
-	if (VTable0x44() != e_expectedFloat) {
-		VTable0x40(e_expectedFloat);
+	if (GetNextToken() != e_float) {
+		HandleUnexpectedToken(e_float);
 	}
 
 	return m_unk0x40;
@@ -169,10 +169,10 @@ LegoFloat GolFileParser::FUN_100326c0()
 
 // FUNCTION: GOLDP 0x100326e0
 // FUNCTION: LEGORACERS 0x0044e840
-LegoChar* GolFileParser::FUN_100326e0()
+LegoChar* GolFileParser::ReadString()
 {
-	if (VTable0x44() != e_expectedString) {
-		VTable0x40(e_expectedString);
+	if (GetNextToken() != e_string) {
+		HandleUnexpectedToken(e_string);
 	}
 
 	return m_unk0x44;
@@ -180,14 +180,14 @@ LegoChar* GolFileParser::FUN_100326e0()
 
 // FUNCTION: GOLDP 0x10032700
 // FUNCTION: LEGORACERS 0x0044e860
-LegoChar* GolFileParser::FUN_10032700(size_t p_len)
+LegoChar* GolFileParser::ReadStringWithMaxLength(size_t p_len)
 {
-	if (VTable0x44() != e_expectedString) {
-		VTable0x40(e_expectedString);
+	if (GetNextToken() != e_string) {
+		HandleUnexpectedToken(e_string);
 	}
 
 	if (::strlen(m_unk0x44) > p_len) {
-		VTable0x40(e_invalidString);
+		HandleUnexpectedToken(e_invalidString);
 	}
 
 	return m_unk0x44;
@@ -195,46 +195,46 @@ LegoChar* GolFileParser::FUN_10032700(size_t p_len)
 
 // FUNCTION: GOLDP 0x10032740
 // FUNCTION: LEGORACERS 0x0044e8a0
-void GolFileParser::FUN_10032740(undefined4 p_expected)
+void GolFileParser::AssertNextTokenIs(undefined4 p_expected)
 {
-	if (VTable0x44() != p_expected) {
-		VTable0x40(e_expectedKeyword);
+	if (GetNextToken() != p_expected) {
+		HandleUnexpectedToken(e_expectedKeyword);
 	}
 }
 
 // FUNCTION: GOLDP 0x10032760
 // FUNCTION: LEGORACERS 0x0044e8c0
-void GolFileParser::FUN_10032760()
+void GolFileParser::ReadLeftBracket()
 {
-	if (VTable0x44() != e_expectedLeftBracket) {
-		VTable0x40(e_expectedLeftBracket);
+	if (GetNextToken() != e_leftBracket) {
+		HandleUnexpectedToken(e_leftBracket);
 	}
 }
 
 // FUNCTION: GOLDP 0x10032780
 // FUNCTION: LEGORACERS 0x0044e8e0
-void GolFileParser::FUN_10032780()
+void GolFileParser::ReadRightBracket()
 {
-	if (VTable0x44() != e_expectedRightBracket) {
-		VTable0x40(e_expectedRightBracket);
+	if (GetNextToken() != e_rightBracket) {
+		HandleUnexpectedToken(e_rightBracket);
 	}
 }
 
 // FUNCTION: GOLDP 0x100327a0
 // FUNCTION: LEGORACERS 0x0044e900
-void GolFileParser::FUN_100327a0()
+void GolFileParser::ReadLeftCurly()
 {
-	if (VTable0x44() != e_expectedLeftCurly) {
-		VTable0x40(e_expectedLeftCurly);
+	if (GetNextToken() != e_leftCurly) {
+		HandleUnexpectedToken(e_leftCurly);
 	}
 }
 
 // FUNCTION: GOLDP 0x100327c0
 // FUNCTION: LEGORACERS 0x0044e920
-void GolFileParser::FUN_100327c0()
+void GolFileParser::ReadRightCurly()
 {
-	if (VTable0x44() != e_expectedRightCurly) {
-		VTable0x40(e_expectedRightCurly);
+	if (GetNextToken() != e_rightCurly) {
+		HandleUnexpectedToken(e_rightCurly);
 	}
 }
 
@@ -242,20 +242,20 @@ void GolFileParser::FUN_100327c0()
 // FUNCTION: LEGORACERS 0x0044e940
 undefined4 GolFileParser::FUN_100327e0()
 {
-	if (VTable0x44() != e_expectedLeftBracket) {
-		VTable0x40(e_expectedLeftBracket);
+	if (GetNextToken() != e_leftBracket) {
+		HandleUnexpectedToken(e_leftBracket);
 	}
 
-	if (VTable0x44() != e_expectedInt) {
-		VTable0x40(e_expectedInt);
+	if (GetNextToken() != e_int) {
+		HandleUnexpectedToken(e_int);
 	}
 
-	if (VTable0x44() != e_expectedRightBracket) {
-		VTable0x40(e_expectedRightBracket);
+	if (GetNextToken() != e_rightBracket) {
+		HandleUnexpectedToken(e_rightBracket);
 	}
 
-	if (VTable0x44() != e_expectedLeftCurly) {
-		VTable0x40(e_expectedLeftCurly);
+	if (GetNextToken() != e_leftCurly) {
+		HandleUnexpectedToken(e_leftCurly);
 	}
 
 	return m_unk0x38;

@@ -65,7 +65,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	}
 
 	parser->VTable0x38((undefined4) p_param2);
-	parser->FUN_10032740(0x27);
+	parser->AssertNextTokenIs(0x27);
 	m_numItems = parser->FUN_100327e0();
 
 	if (!m_numItems) {
@@ -84,14 +84,14 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		local30.m_bytes[3] = -1;
 		local34.m_bytes[3] = -1;
 
-		parser->FUN_10032740(0x27);
+		parser->AssertNextTokenIs(0x27);
 		UtopianPan0xa4* item = VTable0x20(i);
 
 		FourBytes name[2];
-		strncpy(&name[0].m_bytes[0], parser->FUN_10032700(8), 8);
+		strncpy(&name[0].m_bytes[0], parser->ReadStringWithMaxLength(8), 8);
 		AddName(&name[0].m_bytes[0], item);
 
-		parser->FUN_100327a0();
+		parser->ReadLeftCurly();
 
 		LegoU32 flags = 0;
 
@@ -103,9 +103,9 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		local34.m_bytes[1] = -1;
 		local34.m_bytes[2] = -1;
 
-		LegoU32 val3 = parser->VTable0x44();
+		GolFileParser::ParserTokenType val3 = parser->GetNextToken();
 
-		while (val3 != GolFileParser::e_expectedRightCurly) {
+		while (val3 != GolFileParser::e_rightCurly) {
 			switch (val3) {
 			case 0x28:
 				flags |= 4;
@@ -120,20 +120,20 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 				break;
 			case 0x2b:
 				flags |= 0x20;
-				local30.m_bytes[0] = parser->FUN_100326a0();
-				local30.m_bytes[1] = parser->FUN_100326a0();
-				local30.m_bytes[2] = parser->FUN_100326a0();
+				local30.m_bytes[0] = parser->ReadInteger();
+				local30.m_bytes[1] = parser->ReadInteger();
+				local30.m_bytes[2] = parser->ReadInteger();
 				break;
 			case 0x2c:
-				local34.m_bytes[0] = parser->FUN_100326a0();
-				local34.m_bytes[1] = parser->FUN_100326a0();
-				local34.m_bytes[2] = parser->FUN_100326a0();
+				local34.m_bytes[0] = parser->ReadInteger();
+				local34.m_bytes[1] = parser->ReadInteger();
+				local34.m_bytes[2] = parser->ReadInteger();
 				break;
 			default:
-				parser->VTable0x40(0);
+				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			}
 
-			val3 = parser->VTable0x44();
+			val3 = parser->GetNextToken();
 		}
 
 		item->m_unk0x42 = name[0];
@@ -158,7 +158,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		item->m_unk0x24 = p_param1;
 	}
 
-	parser->FUN_100327c0();
+	parser->ReadRightCurly();
 	parser->Dispose();
 	delete parser;
 

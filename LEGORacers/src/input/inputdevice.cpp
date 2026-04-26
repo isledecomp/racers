@@ -6,6 +6,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(InputDevice, 0x9c)
+DECOMP_SIZE_ASSERT(InputDevice::DirectionalTrigger, 0x24)
 
 // GLOBAL: LEGORACERS 0x004c7080
 undefined2 g_defaultMapping[256];
@@ -39,12 +40,12 @@ void InputDevice::Init()
 	m_created = FALSE;
 	m_axisMapping = g_defaultMapping;
 	m_buttonMapping = g_defaultMapping;
-	::memset(&m_timedTriggers, 0, sizeof(m_timedTriggers));
+	::memset(&m_directionalTriggers, 0, sizeof(m_directionalTriggers));
 	m_stringBufferLength = 0;
 	m_inputManager = NULL;
 	m_buttonCount = 0;
 	m_axisCount = 0;
-	m_timedTriggerCount = 0;
+	m_directionalTriggerCount = 0;
 	m_deviceType = 0;
 	m_deviceSubType = 0;
 	m_axisMask = 0;
@@ -100,8 +101,8 @@ undefined4 InputDevice::Poll(LegoS32 p_elapsedMs)
 
 	m_currentTimeMs += p_elapsedMs;
 
-	for (i = 0; i < m_timedTriggerCount; i++) {
-		m_timedTriggers[i]->FUN_0044c1c0(m_currentTimeMs, this);
+	for (i = 0; i < m_directionalTriggerCount; i++) {
+		m_directionalTriggers[i]->DispatchDelayedStateChange(m_currentTimeMs, this);
 	}
 
 	DispatchRepeatEvents(p_elapsedMs);
@@ -252,8 +253,8 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 
 	m_repeatTimerMs = repeatCount ? m_repeatDelayMs : m_initialRepeatDelayMs;
 
-	for (i = 0; i < m_timedTriggerCount; i++) {
-		m_timedTriggers[i]->FUN_0044c280(m_currentTimeMs, this);
+	for (i = 0; i < m_directionalTriggerCount; i++) {
+		m_directionalTriggers[i]->DispatchRepeatEvent(m_currentTimeMs, this);
 	}
 }
 
@@ -280,25 +281,25 @@ void InputDevice::SetButtonState(undefined4, LegoU8 p_state, LegoBool32)
 }
 
 // FUNCTION: LEGORACERS 0x0044bdf0
-void InputDevice::AddTimedTrigger(TimedTrigger* p_trigger)
+void InputDevice::AddDirectionalTrigger(DirectionalTrigger* p_trigger)
 {
-	m_timedTriggers[m_timedTriggerCount] = p_trigger;
-	m_timedTriggerCount += 1;
+	m_directionalTriggers[m_directionalTriggerCount] = p_trigger;
+	m_directionalTriggerCount += 1;
 }
 
 // FUNCTION: LEGORACERS 0x0044be10
-LegoBool32 InputDevice::RemoveTimedTrigger(TimedTrigger* p_trigger)
+LegoBool32 InputDevice::RemoveDirectionalTrigger(DirectionalTrigger* p_trigger)
 {
 	LegoS32 i;
 
-	for (i = 0; i < m_timedTriggerCount; i++) {
-		if (m_timedTriggers[i] == p_trigger) {
-			while (i < (LegoS32) sizeOfArray(m_timedTriggers)) {
-				m_timedTriggers[i] = m_timedTriggers[i + 1];
+	for (i = 0; i < m_directionalTriggerCount; i++) {
+		if (m_directionalTriggers[i] == p_trigger) {
+			while (i < (LegoS32) sizeOfArray(m_directionalTriggers)) {
+				m_directionalTriggers[i] = m_directionalTriggers[i + 1];
 				i++;
 			}
 
-			m_timedTriggerCount -= 1;
+			m_directionalTriggerCount -= 1;
 			return TRUE;
 		}
 	}
@@ -364,17 +365,201 @@ undefined4 InputDevice::Unacquire()
 	return m_acquired;
 }
 
-// STUB: LEGORACERS 0x0044c1c0
-LegoBool32 InputDevice::TimedTrigger::FUN_0044c1c0(LegoS32, InputDevice*)
+// FUNCTION: LEGORACERS 0x0044c100
+InputDevice::DirectionalTrigger::DirectionalTrigger()
 {
-	STUB(0x0044c1c0);
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0044c140
+InputDevice::DirectionalTrigger::~DirectionalTrigger()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x0044c150
+void InputDevice::DirectionalTrigger::Reset()
+{
+	m_active = FALSE;
+	m_currentDirection = 0;
+	m_nextDispatchTimeMs = 0;
+
+	memset(&m_directionEvents, 0, sizeof(m_directionEvents));
+}
+
+// FUNCTION: LEGORACERS 0x0044c170
+LegoBool32 InputDevice::DirectionalTrigger::Configure(
+	LegoU32 p_sourceId,
+	LegoU32 p_directionEvent1,
+	LegoU32 p_directionEvent2,
+	LegoU32 p_directionEvent3,
+	LegoU32 p_directionEvent4
+)
+{
+	m_sourceId = p_sourceId;
+	m_directionEvents[0] = p_directionEvent1;
+	m_directionEvents[1] = p_directionEvent2;
+	m_directionEvents[2] = p_directionEvent3;
+	m_directionEvents[3] = p_directionEvent4;
+	m_active = TRUE;
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0044c280
-LegoBool32 InputDevice::TimedTrigger::FUN_0044c280(LegoS32, InputDevice*)
+// FUNCTION: LEGORACERS 0x0044c1a0
+LegoBool32 InputDevice::DirectionalTrigger::Destroy()
 {
-	STUB(0x0044c280);
+	if (m_active) {
+		Reset();
+	}
+
+	return !m_active;
+}
+
+// FUNCTION: LEGORACERS 0x0044c1c0
+LegoBool32 InputDevice::DirectionalTrigger::DispatchDelayedStateChange(LegoU32 p_time, InputDevice* p_device)
+{
+	if (m_nextDispatchTimeMs) {
+		if (m_nextDispatchTimeMs > p_time) {
+			return TRUE;
+		}
+
+		LegoS32 previousDirection = m_currentDirection;
+		m_nextDispatchTimeMs = 0;
+		m_currentDirection = GetPressedDirection(p_device);
+
+		if (p_device->m_callback) {
+			if (previousDirection) {
+				p_device->m_callback->OnKeyUp(*p_device, MakeDirectionEvent(previousDirection), p_time);
+			}
+
+			if (m_currentDirection) {
+				p_device->m_callback->OnKeyDown(*p_device, MakeDirectionEvent(m_currentDirection), p_time);
+			}
+		}
+	}
+	else if (m_currentDirection != GetPressedDirection(p_device)) {
+		m_nextDispatchTimeMs = p_time + c_directionChangeDelayMs;
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0044c260
+LegoS32 InputDevice::DirectionalTrigger::WrapDirectionIndex(LegoS32 p_index)
+{
+	if (p_index >= 0) {
+		p_index %= c_directionCount;
+	}
+	else {
+		p_index += c_directionCount;
+	}
+
+	return p_index;
+}
+
+// FUNCTION: LEGORACERS 0x0044c280
+LegoBool32 InputDevice::DirectionalTrigger::DispatchRepeatEvent(LegoU32 p_time, InputDevice* p_device)
+{
+	if (m_currentDirection) {
+		Callback* callback = p_device->m_callback;
+		callback->OnKeyRepeat(*p_device, MakeDirectionEvent(m_currentDirection), p_time);
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0044c2d0
+LegoS32 InputDevice::DirectionalTrigger::GetPressedDirection(InputDevice* p_device)
+{
+	LegoS32 direction = 0;
+	LegoS32 i;
+
+	for (i = 0; i < c_directionCount; i++) {
+		if (p_device->GetButtonState(m_directionEvents[i])) {
+			direction = (i * 2) + 1;
+
+			if (p_device->GetButtonState(m_directionEvents[WrapDirectionIndex(i - 1)])) {
+				direction--;
+			}
+
+			if (p_device->GetButtonState(m_directionEvents[WrapDirectionIndex(i + 1)])) {
+				direction++;
+			}
+		}
+	}
+
+	return direction;
+}
+
+// FUNCTION: LEGORACERS 0x0044c380
+LegoS32 InputDevice::DirectionalTrigger::GetDirectionForEvent(InputDevice* p_device, LegoU32 p_event)
+{
+	LegoS32 direction = 0;
+	LegoS32 i;
+
+	for (i = 0; i < c_directionCount; i++) {
+		if (p_event == m_directionEvents[i]) {
+			direction = (i * 2) + 1;
+
+			if (p_device->GetButtonState(m_directionEvents[WrapDirectionIndex(i - 1)])) {
+				direction--;
+			}
+
+			if (p_device->GetButtonState(m_directionEvents[WrapDirectionIndex(i + 1)])) {
+				direction++;
+			}
+		}
+	}
+
+	return direction;
+}
+
+// FUNCTION: LEGORACERS 0x0044c430
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time)
+{
+	LegoS32 direction = GetDirectionForEvent(&p_device, p_keyCode);
+
+	if (direction && direction != m_currentDirection) {
+		if (p_device.m_callback) {
+			p_device.m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+			p_device.m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
+		}
+
+		m_currentDirection = direction;
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0044c4a0
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyUp(InputDevice& p_device, undefined4, undefined4 p_time)
+{
+	LegoS32 direction = GetPressedDirection(&p_device);
+
+	if (direction != m_currentDirection && p_device.m_callback) {
+		if (m_currentDirection) {
+			p_device.m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+		}
+
+		if (direction) {
+			p_device.m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
+		}
+
+		m_currentDirection = direction;
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0044c510
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyRepeat(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time)
+{
+	LegoS32 direction = GetDirectionForEvent(&p_device, p_keyCode);
+
+	if (direction == m_currentDirection && p_device.m_callback) {
+		p_device.m_callback->OnKeyRepeat(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+	}
+
 	return TRUE;
 }
 

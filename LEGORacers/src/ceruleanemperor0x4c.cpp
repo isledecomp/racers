@@ -39,7 +39,7 @@ void CeruleanEmperor0x4c::VTable0x0c()
 // FUNCTION: LEGORACERS 0x0046fb80
 void CeruleanEmperor0x4c::VTable0x08()
 {
-	if (m_unk0x04 == NULL) {
+	if (m_data == NULL) {
 		return;
 	}
 

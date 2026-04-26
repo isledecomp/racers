@@ -45,11 +45,17 @@ RoseQuartzShine0x14::RoseQuartzShine0x14()
 	m_unk0x10 = 0;
 }
 
+#ifdef BUILDING_LEGORACERS
+#pragma inline_depth(0)
+#endif
 // FUNCTION: LEGORACERS 0x004366a0
 RoseQuartzShine0x14::~RoseQuartzShine0x14()
 {
 	VTable0x08();
 }
+#ifdef BUILDING_LEGORACERS
+#pragma inline_depth()
+#endif
 
 // FUNCTION: LEGORACERS 0x004368f0
 void RoseQuartzShine0x14::VTable0x08()

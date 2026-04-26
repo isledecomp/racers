@@ -194,6 +194,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 	}
 }
 
+#pragma inline_depth(0)
 // FUNCTION: GOLDP 0x100233f0
 void HypnoticNoise0x1c::VTable0x08()
 {
@@ -207,6 +208,7 @@ void HypnoticNoise0x1c::VTable0x08()
 		SmallCocoon0xc::VTable0x08();
 	}
 }
+#pragma inline_depth()
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void HypnoticNoise0x1c::VTable0x10()

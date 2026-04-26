@@ -1,14 +1,14 @@
 #ifndef ROSEQUARTZSHINE0X14_H
 #define ROSEQUARTZSHINE0X14_H
 
-#include "ceruleansubject0x0c.h"
 #include "compat.h"
 #include "decomp.h"
+#include "smallcocoon0xc.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b08c4
 // SIZE 0x14
-class RoseQuartzShine0x14 : public CeruleanSubject0x0c {
+class RoseQuartzShine0x14 : public SmallCocoon0xc {
 public:
 	// SIZE 0x38
 	class Struct0x38 {

@@ -2,15 +2,36 @@
 #define GOLDP_HYPNOTICNOISE_H
 
 #include "floatypontoon0x4c.h"
+#include "golhashtable.h"
 #include "smallcocoon0xc.h"
 
 class BronzeFalcon0xc8770;
 
-struct HypnoticNoise0x1cInner {
-	undefined m_unk0x00[0x24 - 0x00]; // 0x00
+class HypnoticNoise0x1cInner {
+public:
+	// TODO: VTable is preliminary
+	virtual void VTable0x00() = 0;
+	virtual void VTable0x04() = 0;
+	virtual void VTable0x08() = 0;
+	virtual void VTable0x0c() = 0;
+	virtual void VTable0x10() = 0;
+
+	undefined2 m_unk0x04; // 0x04
+	undefined4 m_unk0x08;
+	undefined m_unk0x0c[0x24 - 0x0c]; // 0x06
 	BronzeFalcon0xc8770* m_unk0x24;   // 0x24
-	undefined m_unk0x28[0xa4 - 0x28]; // 0x28
+	undefined4 m_unk0x28;             // 0x28
+	undefined m_unk0x2c[0x3c - 0x2c]; // 0x28
+	LegoU8 m_unk0x3c;                 // 0x3c
+	// undefined m_unk0x3d[0x40 - 0x3d]; // 0x28
+	// Likely wrong because unaligned, but we'll see
+	undefined4 m_unk0x40;
+	undefined4 m_unk0x44; // 0x46
+	undefined4 m_unk0x48;
+	undefined m_unk0x4v[0xa4 - 0x4c]; // 0x46
 };
+
+// const x = sizeof(HypnoticNoise0x1cInner);
 
 // VTABLE: GOLDP 0x10056f28
 class HypnoticNoise0x1c : public SmallCocoon0xc {
@@ -34,7 +55,7 @@ private:
 	BronzeFalcon0xc8770* m_unk0x0c; // 0x0c
 	undefined4 m_unk0x10;           // 0x10
 	LegoU32 m_unk0x14;              // 0x14
-	undefined4 m_unk0x18;           // 0x18
+	GolHashTable::Entry* m_unk0x18; // 0x18
 };
 
 #endif // GOLDP_HYPNOTICNOISE_H

@@ -11,6 +11,11 @@ class SmallCocoon0xc;
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 {
 public:
+	// SIZE 0x4
+	struct JasperRipple0x4 {
+		undefined m_unk0x00[0x4 - 0x00]; // 0x00
+	};
+
 	BronzeFalcon0xc8770();
 
 	virtual void VTable0x00();                                              // vtable+0x00
@@ -20,7 +25,7 @@ public:
 	virtual GolCommonDrawState* GetDrawState();                             // vtable+0x10
 	virtual void VTable0x14();                                              // vtable+0x14
 	virtual void VTable0x18();                                              // vtable+0x18
-	virtual void VTable0x1c(undefined4);                                    // vtable+0x1c
+	virtual void VTable0x1c(JasperRipple0x4*);                              // vtable+0x1c
 	virtual void VTable0x20(undefined4);                                    // vtable+0x20
 	virtual void VTable0x24();                                              // vtable+0x24
 	virtual void VTable0x28();                                              // vtable+0x28
@@ -34,7 +39,7 @@ public:
 	virtual void VTable0x48();                                              // vtable+0x48
 	virtual void VTable0x4c();                                              // vtable+0x4c
 	virtual void VTable0x50();                                              // vtable+0x50
-	virtual void VTable0x54();                                              // vtable+0x54
+	virtual void VTable0x54(undefined4);                                    // vtable+0x54
 	virtual void VTable0x58();                                              // vtable+0x58
 	virtual void VTable0x5c();                                              // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
@@ -71,8 +76,8 @@ public:
 	virtual void VTable0xdc();                                              // vtable+0xdc
 	virtual void VTable0xe0();                                              // vtable+0xe0
 	virtual void VTable0xe4();                                              // vtable+0xe4
-	virtual void VTable0xe8();                                              // vtable+0xe8
-	virtual void VTable0xec(undefined4*);                                   // vtable+0xec
+	virtual void VTable0xe8(undefined4);                                    // vtable+0xe8
+	virtual void VTable0xec(undefined4);                                    // vtable+0xec
 	virtual void VTable0xf0();                                              // vtable+0xf0
 	virtual void VTable0xf4();                                              // vtable+0xf4
 	virtual void VTable0xf8();                                              // vtable+0xf8

@@ -1,6 +1,7 @@
 #include "bronzefalcon0xc8770.h"
 
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
 
 // STUB: GOLDP 0x100078e0
 BronzeFalcon0xc8770::BronzeFalcon0xc8770()
@@ -99,7 +100,7 @@ void BronzeFalcon0xc8770::VTable0x90()
 }
 
 // STUB: GOLDP 0x10009420
-void BronzeFalcon0xc8770::VTable0x54()
+void BronzeFalcon0xc8770::VTable0x54(undefined4)
 {
 	STUB(0x10009420);
 }
@@ -111,7 +112,7 @@ void BronzeFalcon0xc8770::VTable0xf0()
 }
 
 // STUB: GOLDP 0x10009640
-void BronzeFalcon0xc8770::VTable0x1c(undefined4)
+void BronzeFalcon0xc8770::VTable0x1c(JasperRipple0x4*)
 {
 	STUB(0x10009640);
 }
@@ -147,7 +148,7 @@ void BronzeFalcon0xc8770::VTable0xe4()
 }
 
 // STUB: GOLDP 0x100098d0
-void BronzeFalcon0xc8770::VTable0xe8()
+void BronzeFalcon0xc8770::VTable0xe8(undefined4)
 {
 	STUB(0x100098d0);
 }
@@ -417,7 +418,7 @@ void BronzeFalcon0xc8770::VTable0x34(LegoS32, const LegoFloat*)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void BronzeFalcon0xc8770::VTable0xec(undefined4*)
+void BronzeFalcon0xc8770::VTable0xec(undefined4)
 {
 	// empty
 }

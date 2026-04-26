@@ -70,3 +70,10 @@ LegoS32 CopperCrest0x40::VTable0x10(undefined4)
 	STUB(0x4694b0);
 	return 0;
 }
+
+// STUB: LEGORACERS 0x00469550
+void CopperCrest0x40::FUN_00469550()
+{
+	// TODO
+	STUB(0x469550);
+}

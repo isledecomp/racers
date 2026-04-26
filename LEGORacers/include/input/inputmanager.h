@@ -26,6 +26,7 @@ public:
 	// InputManager::`scalar deleting destructor'
 
 	MouseInputDevice* GetMouse() { return m_mouse; }
+	KeyboardInputDevice* GetKeyboard() { return m_keyboard; }
 
 	void RestoreSuspendedDevices();
 	void SuspendActiveDevices();

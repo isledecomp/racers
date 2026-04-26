@@ -15,3 +15,17 @@ MithrilChain0x8::~MithrilChain0x8()
 	// TODO
 	STUB(0x494d90);
 }
+
+// STUB: LEGORACERS 0x00494f60
+void MithrilChain0x8::FUN_00494f60(LegoU32)
+{
+	// TODO
+	STUB(0x494f60);
+}
+
+// STUB: LEGORACERS 0x00494fa0
+void MithrilChain0x8::FUN_00494fa0(BronzeFalcon0xc8770*)
+{
+	// TODO
+	STUB(0x494fa0);
+}

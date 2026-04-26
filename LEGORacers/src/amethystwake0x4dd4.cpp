@@ -4,6 +4,7 @@
 #include "golstream.h"
 #include "imaginarytool0x368.h"
 #include "input/inputmanager.h"
+#include "input/keyboarddevice.h"
 
 #include <golerror.h>
 #include <stddef.h>
@@ -57,7 +58,7 @@ void AmethystWake0x4dd4::Reset()
 	m_unk0x4dc8 = NULL;
 	m_unk0x4cdc = NULL;
 	m_unk0x4ce0 = NULL;
-	m_unk0x4dd0 = 0;
+	m_unk0x4dd0 = FALSE;
 	m_unk0x4d24.Reset();
 	m_unk0x4d30.Reset();
 	m_unk0x4d48.VTable0x08();
@@ -255,11 +256,97 @@ void AmethystWake0x4dd4::FUN_0042d3e0(LegoU16)
 	STUB(0x42d3e0);
 }
 
-// STUB: LEGORACERS 0x0042d510
+// FUNCTION: LEGORACERS 0x0042d510
 void AmethystWake0x4dd4::FUN_0042d510()
 {
+	BronzeFalcon0xc8770::JasperRipple0x4 rendererState;
+	Win32GolApp* golApp = m_unk0x04.m_context->m_golApp;
+	StackOfLegoU16* stack;
+	MithrilChain0x8* chain;
+	LegoU32 frameDeltaMs;
+	LegoU16 previousMenu;
+
+	rendererState.m_unk0x00[0] = 0;
+	rendererState.m_unk0x00[1] = 0;
+	rendererState.m_unk0x00[2] = 0;
+	rendererState.m_unk0x00[3] = 0;
+	m_unk0x4cd8->VTable0x1c(&rendererState);
+	m_unk0x4dd0 = TRUE;
+
+	while (m_unk0x4dd0) {
+		if (!golApp->Tick(this) || !m_unk0x4dd0) {
+			m_unk0x04.m_context->m_unk0x00 = FALSE;
+			break;
+		}
+
+		frameDeltaMs = golApp->GetFrameDeltaMs();
+		m_unk0x04.m_context->m_unk0x08->VTable0x34(frameDeltaMs);
+
+		if (!golApp->IsDisabled()) {
+			stack = &m_unk0x04.m_unk0x04;
+			previousMenu = stack->Peek();
+			m_unk0x04.m_context->m_unk0x00 = m_unk0x4c74.VTable0x10(frameDeltaMs);
+
+			if (m_unk0x4bd0.GetUnk0x9c() > 0) {
+				m_unk0x4bd0.FUN_00468da0(frameDeltaMs);
+			}
+			else {
+				if (m_unk0x4dc8->VTable0x78(frameDeltaMs)) {
+					m_unk0x04.m_context->m_unk0x00 = FALSE;
+				}
+				if (!m_unk0x04.m_context->m_unk0x00 || !m_unk0x04.m_unk0x04.GetSize()) {
+					break;
+				}
+
+				if (previousMenu != stack->Peek()) {
+					FUN_0042d3e0(stack->Peek());
+				}
+			}
+
+			chain = &m_unk0x04.m_unk0x4374;
+			chain->FUN_00494f60(frameDeltaMs);
+			m_unk0x4cd8->VTable0x54(TRUE);
+			m_unk0x4cd8->VTable0xec(6);
+			m_unk0x4cd8->VTable0xe8(TRUE);
+
+			if (m_unk0x4bd0.GetUnk0x9c() > 0) {
+				m_unk0x4bd0.FUN_00468e20();
+			}
+			else {
+				m_unk0x4c74.FUN_00469550();
+			}
+
+			chain->FUN_00494fa0(m_unk0x4cd8);
+			m_unk0x4cd8->VTable0xe4();
+			m_unk0x4cd8->VTable0xf0();
+
+			if (golApp->GetInputManager()->GetKeyboard()->GetButtonState(
+					InputDevice::MakeEvent(InputDevice::c_sourceKeyboard, 0xb7)
+				)) {
+				FUN_0042e720();
+			}
+
+			golApp->PresentFrame();
+		}
+	}
+
+	m_unk0x4cd8->VTable0xf4();
+	if (m_unk0x4dc8) {
+		m_unk0x4dc8->VTable0x74();
+		delete m_unk0x4dc8;
+		m_unk0x4dc8 = NULL;
+	}
+
+	if (m_unk0x04.m_context->m_unk0x00) {
+		FUN_0042d730();
+	}
+}
+
+// STUB: LEGORACERS 0x0042d730
+void AmethystWake0x4dd4::FUN_0042d730()
+{
 	// TODO
-	STUB(0x42d510);
+	STUB(0x42d730);
 }
 
 // STUB: LEGORACERS 0x0042e1f0
@@ -302,8 +389,15 @@ LegoS32 AmethystWake0x4dd4::FUN_0042e680()
 // FUNCTION: LEGORACERS 0x0042e700
 void AmethystWake0x4dd4::VTable0x00()
 {
-	m_unk0x4dd0 = 0;
+	m_unk0x4dd0 = FALSE;
 	m_unk0x04.m_context->m_unk0x00 = FALSE;
+}
+
+// STUB: LEGORACERS 0x0042e720
+void AmethystWake0x4dd4::FUN_0042e720()
+{
+	// TODO
+	STUB(0x42e720);
 }
 
 // FUNCTION: LEGORACERS 0x0042e810

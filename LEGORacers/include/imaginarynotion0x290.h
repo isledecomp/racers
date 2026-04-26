@@ -7,6 +7,7 @@
 #include "decomp.h"
 #include "imaginaryinterface.h"
 #include "obscureicon0x1a8.h"
+#include "types.h"
 
 // VTABLE: LEGORACERS 0x004b2308
 // SIZE 0x290
@@ -44,7 +45,7 @@ public:
 	virtual void VTable0x6c();                                                      // vtable+0x6c
 	virtual void VTable0x70();                                                      // vtable+0x70
 	virtual void VTable0x74();                                                      // vtable+0x74
-	virtual void VTable0x78();                                                      // vtable+0x78
+	virtual LegoBool32 VTable0x78(undefined4);                                      // vtable+0x78
 	virtual void VTable0x7c();                                                      // vtable+0x7c
 
 	// SYNTHETIC: LEGORACERS 0x0046b3f0

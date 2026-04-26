@@ -28,7 +28,7 @@ public:
 	~ImaginaryTool0x368() override;                                                 // vtable+0x68
 	void VTable0x6c() override;                                                     // vtable+0x6c
 	void VTable0x74() override;                                                     // vtable+0x74
-	void VTable0x78() override;                                                     // vtable+0x78
+	LegoBool32 VTable0x78(undefined4) override;                                     // vtable+0x78
 	virtual void VTable0x80();                                                      // vtable+0x80
 	virtual void VTable0x84() = 0;                                                  // vtable+0x84
 	virtual void VTable0x88();                                                      // vtable+0x88

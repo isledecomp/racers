@@ -107,10 +107,11 @@ void ImaginaryTool0x368::VTable0x3c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00480520
-void ImaginaryTool0x368::VTable0x78()
+LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 {
 	// TODO
 	STUB(0x480520);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00487d30 FOLDED

@@ -35,6 +35,7 @@ public:
 	// CopperCrest0x40::`scalar deleting destructor'
 
 	LegoS32 FUN_00469040(InitStruct* p_initStruct);
+	void FUN_00469550();
 
 private:
 	undefined m_unk0x04[0x40 - 0x04]; // 0x04

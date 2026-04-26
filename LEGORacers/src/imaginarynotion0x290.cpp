@@ -168,10 +168,11 @@ void ImaginaryNotion0x290::VTable0x58()
 }
 
 // STUB: LEGORACERS 0x0046c7d0
-void ImaginaryNotion0x290::VTable0x78()
+LegoBool32 ImaginaryNotion0x290::VTable0x78(undefined4)
 {
 	// TODO
 	STUB(0x46c7d0);
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x0046c7e0 FOLDED

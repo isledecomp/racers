@@ -69,6 +69,7 @@ public:
 	LegoBool32 FUN_0042e450();
 	LegoS32 FUN_0042e490();
 	LegoS32 FUN_0042e680();
+	void FUN_0042e720();
 
 private:
 	enum {
@@ -101,6 +102,7 @@ private:
 	void FUN_0042cf90();
 	void FUN_0042d080();
 	void FUN_0042d260();
+	void FUN_0042d730();
 
 	VioletCurrent0x4bc8 m_unk0x04;          // 0x04
 	ChromeSpike0x4 m_unk0x4bcc;             // 0x4bcc
@@ -127,7 +129,7 @@ private:
 	undefined4 m_unk0x4d98[0x30 / 4];       // 0x4d98
 	ImaginaryTool0x368* m_unk0x4dc8;        // 0x4dc8
 	undefined4 m_unk0x4dcc;                 // 0x4dcc
-	undefined4 m_unk0x4dd0;                 // 0x4dd0
+	LegoBool32 m_unk0x4dd0;                 // 0x4dd0
 };
 
 #endif // AMETHYSTWAKE0X4DD4_H

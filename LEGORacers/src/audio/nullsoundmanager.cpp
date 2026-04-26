@@ -6,9 +6,9 @@ DECOMP_SIZE_ASSERT(GolListLink, 0x08)
 DECOMP_SIZE_ASSERT(NullSoundManager, 0x30)
 
 // FUNCTION: LEGORACERS 0x00418f20 FOLDED
-void NullSoundManager::VTable0x28(SoundNode* p_node)
+void NullSoundManager::DestroySoundNode(SoundNode* p_node)
 {
-	VTable0x30(p_node);
+	RemoveActiveSoundNode(p_node);
 	RemoveNode(p_node);
 	delete p_node;
 }
@@ -35,76 +35,76 @@ LegoBool32 NullSoundManager::Initialize(LegoS32)
 void NullSoundManager::Shutdown()
 {
 	while (TRUE) {
-		GolListLink* link = m_unk0x18.LastLink();
+		GolListLink* link = m_musicGroups.LastLink();
 
-		if (!m_unk0x18.IsValidLastLink(link)) {
+		if (!m_musicGroups.IsValidLastLink(link)) {
 			break;
 		}
 
-		VTable0x18(&m_unk0x18.GetItem(*link));
+		DestroyMusicGroup(&m_musicGroups.GetItem(*link));
 	}
 
 	while (TRUE) {
-		GolListLink* link = m_unk0x24.LastLink();
+		GolListLink* link = m_soundGroups.LastLink();
 
-		if (!m_unk0x24.IsValidLastLink(link)) {
+		if (!m_soundGroups.IsValidLastLink(link)) {
 			break;
 		}
 
-		VTable0x20(&m_unk0x24.GetItem(*link));
+		DestroySoundGroup(&m_soundGroups.GetItem(*link));
 	}
 
-	while (m_unk0x0c) {
-		VTable0x28(m_unk0x0c);
+	while (m_activeSoundNodes) {
+		DestroySoundNode(m_activeSoundNodes);
 	}
 
-	while (m_unk0x08) {
-		VTable0x28(m_unk0x08);
+	while (m_soundNodes) {
+		DestroySoundNode(m_soundNodes);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041bdd0
-CrimsonRay0x20* NullSoundManager::VTable0x14()
+MusicGroup* NullSoundManager::CreateMusicGroup()
 {
-	CrimsonRay0x20* node = new CrimsonRay0x20();
+	NullMusicGroup* node = new NullMusicGroup();
 
 	if (node) {
-		node->SetUnk0x10(this);
-		m_unk0x18.Append(node);
+		node->SetSoundManager(this);
+		m_musicGroups.Append(node);
 	}
 
 	return node;
 }
 
 // FUNCTION: LEGORACERS 0x0041be50 FOLDED
-void NullSoundManager::VTable0x18(CrimsonRay0x20* p_node)
+void NullSoundManager::DestroyMusicGroup(MusicGroup* p_node)
 {
 	p_node->Remove();
 	delete p_node;
 }
 
 // FUNCTION: LEGORACERS 0x0041be80
-EmberDust0x28* NullSoundManager::VTable0x1c()
+SoundGroup* NullSoundManager::CreateSoundGroup()
 {
-	EmberDust0x28* node = new EmberDust0x28();
+	NullSoundGroup* node = new NullSoundGroup();
 
 	if (node) {
-		node->SetUnk0x0c(this);
-		m_unk0x24.Append(node);
+		node->SetSoundManager(this);
+		m_soundGroups.Append(node);
 	}
 
 	return node;
 }
 
 // FUNCTION: LEGORACERS 0x0041bf00
-void NullSoundManager::VTable0x20(EmberDust0x28* p_node)
+void NullSoundManager::DestroySoundGroup(SoundGroup* p_node)
 {
 	p_node->Remove();
-	delete p_node;
+	delete static_cast<NullSoundGroup*>(p_node);
 }
 
 // FUNCTION: LEGORACERS 0x0041bf30
-SoundNode* NullSoundManager::VTable0x24()
+SoundNode* NullSoundManager::CreateSoundNode()
 {
 	SoundNode* node = new SoundNode();
 
@@ -126,6 +126,6 @@ void NullSoundManager::Resume()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void NullSoundManager::VTable0x34(undefined4)
+void NullSoundManager::Update(undefined4)
 {
 }

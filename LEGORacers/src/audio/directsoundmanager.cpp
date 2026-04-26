@@ -1,9 +1,8 @@
 #include "audio/directsoundmanager.h"
 
-#include "audio/crimsonray0x20.h"
-#include "audio/emberdust0x28.h"
-#include "audio/frostpetal0x34.h"
-#include "audio/goldenoak0x128.h"
+#include "audio/directmusicgroup.h"
+#include "audio/directsoundgroup.h"
+#include "audio/nullsoundgroup.h"
 #include "audio/soundbuffer.h"
 #include "audio/soundnode.h"
 #include "types.h"
@@ -15,10 +14,10 @@ DirectSoundManager::DirectSoundManager()
 {
 	m_cooperativeLevel = DSSCL_PRIORITY;
 	m_nChannels = c_defaultChannelCount;
-	m_unk0x20 = NULL;
-	m_unk0x1c = NULL;
+	m_cooperativeWindow = NULL;
+	m_currentCooperativeWindow = NULL;
 	m_directSound = NULL;
-	m_unk0x2c = NULL;
+	m_deviceGuid = NULL;
 	m_directSoundBuffer = NULL;
 	m_nSamplesPerSec = c_defaultSampleRate;
 	m_bitsPerSample = c_defaultBitsPerSample;
@@ -38,7 +37,7 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 {
 	Shutdown();
 
-	if (!m_unk0x20) {
+	if (!m_cooperativeWindow) {
 		HWND pHVar4 = GetForegroundWindow();
 		DWORD hwndProcessId;
 		GetWindowThreadProcessId(pHVar4, &hwndProcessId);
@@ -47,7 +46,7 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 			SetCooperativeWindow(pHVar4);
 		}
 
-		if (!m_unk0x20) {
+		if (!m_cooperativeWindow) {
 			return FALSE;
 		}
 	}
@@ -61,18 +60,18 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 	waveformat.nAvgBytesPerSec = m_nSamplesPerSec * waveformat.nBlockAlign;
 	waveformat.cbSize = 0;
 
-	if (DirectSoundCreate(m_unk0x2c, &m_directSound, NULL)) {
+	if (DirectSoundCreate(m_deviceGuid, &m_directSound, NULL)) {
 		m_directSound = NULL;
 		return FALSE;
 	}
 
-	if (m_directSound->SetCooperativeLevel(m_unk0x20, m_cooperativeLevel)) {
+	if (m_directSound->SetCooperativeLevel(m_cooperativeWindow, m_cooperativeLevel)) {
 		Shutdown();
 		return FALSE;
 	}
 
 	HWND activeWindow = GetActiveWindow();
-	if (m_unk0x20 != activeWindow) {
+	if (m_cooperativeWindow != activeWindow) {
 		SetCooperativeWindow(activeWindow);
 	}
 
@@ -110,31 +109,31 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 void DirectSoundManager::Shutdown()
 {
 	while (TRUE) {
-		GolListLink* link = m_unk0x3c.LastLink();
+		GolListLink* link = m_musicGroups.LastLink();
 
-		if (!m_unk0x3c.IsValidLastLink(link)) {
+		if (!m_musicGroups.IsValidLastLink(link)) {
 			break;
 		}
 
-		VTable0x18(&m_unk0x3c.GetItem(*link));
+		DestroyMusicGroup(&m_musicGroups.GetItem(*link));
 	}
 
 	while (TRUE) {
-		GolListLink* link = m_unk0x48.LastLink();
+		GolListLink* link = m_soundGroups.LastLink();
 
-		if (!m_unk0x48.IsValidLastLink(link)) {
+		if (!m_soundGroups.IsValidLastLink(link)) {
 			break;
 		}
 
-		VTable0x20(&m_unk0x48.GetItem(*link));
+		DestroySoundGroup(&m_soundGroups.GetItem(*link));
 	}
 
-	while (m_unk0x0c) {
-		VTable0x28(m_unk0x0c);
+	while (m_activeSoundNodes) {
+		DestroySoundNode(m_activeSoundNodes);
 	}
 
-	while (m_unk0x08) {
-		VTable0x28(m_unk0x08);
+	while (m_soundNodes) {
+		DestroySoundNode(m_soundNodes);
 	}
 
 	if (m_directSoundBuffer) {
@@ -152,7 +151,7 @@ void DirectSoundManager::Shutdown()
 }
 
 // STUB: LEGORACERS 0x00418940
-void DirectSoundManager::VTable0x34(undefined4)
+void DirectSoundManager::Update(undefined4)
 {
 	STUB(0x418940);
 }
@@ -189,7 +188,7 @@ void DirectSoundManager::Pause()
 			} while (link);
 		}
 
-		manager->VTable0x34(0);
+		manager->Update(0);
 	}
 }
 
@@ -198,47 +197,45 @@ void DirectSoundManager::Resume()
 {
 	if (m_directSound) {
 		m_paused = FALSE;
-		VTable0x34(0);
+		Update(0);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00418d80
-CrimsonRay0x20* DirectSoundManager::VTable0x14()
+MusicGroup* DirectSoundManager::CreateMusicGroup()
 {
-	GoldenOak0x128* node = new GoldenOak0x128();
-
-	if (node) {
-		node->SetUnk0x10(this);
-		m_unk0x3c.Append(node);
-	}
-
-	// TODO: GoldenOak0x128 does not inherit from CrimsonRay0x20
-	return (CrimsonRay0x20*) node;
-}
-
-// FUNCTION: LEGORACERS 0x00418e00
-EmberDust0x28* DirectSoundManager::VTable0x1c()
-{
-	FrostPetal0x34* node = new FrostPetal0x34();
+	DirectMusicGroup* node = new DirectMusicGroup();
 
 	if (node) {
 		node->SetSoundManager(this);
-		m_unk0x48.Append(node);
+		m_musicGroups.Append(node);
 	}
 
-	// TODO: FrostPetal0x34 does not inherit from EmberDust0x28
-	return (EmberDust0x28*) node;
+	return node;
+}
+
+// FUNCTION: LEGORACERS 0x00418e00
+SoundGroup* DirectSoundManager::CreateSoundGroup()
+{
+	DirectSoundGroup* node = new DirectSoundGroup();
+
+	if (node) {
+		node->SetSoundManager(this);
+		m_soundGroups.Append(node);
+	}
+
+	return node;
 }
 
 // FUNCTION: LEGORACERS 0x00418e80
-void DirectSoundManager::VTable0x20(EmberDust0x28* p_node)
+void DirectSoundManager::DestroySoundGroup(SoundGroup* p_node)
 {
 	p_node->Remove();
-	delete (FrostPetal0x34*) p_node;
+	delete static_cast<DirectSoundGroup*>(p_node);
 }
 
 // FUNCTION: LEGORACERS 0x00418eb0
-SoundNode* DirectSoundManager::VTable0x24()
+SoundNode* DirectSoundManager::CreateSoundNode()
 {
 	SoundNode* node = new SoundNode();
 
@@ -250,9 +247,9 @@ SoundNode* DirectSoundManager::VTable0x24()
 }
 
 // FUNCTION: LEGORACERS 0x00418f20 FOLDED
-void DirectSoundManager::VTable0x28(SoundNode* p_node)
+void DirectSoundManager::DestroySoundNode(SoundNode* p_node)
 {
-	VTable0x30(p_node);
+	RemoveActiveSoundNode(p_node);
 	RemoveNode(p_node);
 	delete p_node;
 }
@@ -261,24 +258,24 @@ void DirectSoundManager::VTable0x28(SoundNode* p_node)
 void DirectSoundManager::SetCooperativeWindow(HWND p_hwnd)
 {
 	if (m_directSound) {
-		if (m_unk0x1c != p_hwnd) {
+		if (m_currentCooperativeWindow != p_hwnd) {
 			if (p_hwnd) {
 				DWORD hwndProcessId;
 				GetWindowThreadProcessId(p_hwnd, &hwndProcessId);
 
 				if (hwndProcessId == GetCurrentProcessId()) {
-					m_unk0x1c = p_hwnd;
+					m_currentCooperativeWindow = p_hwnd;
 					m_directSound->SetCooperativeLevel(p_hwnd, m_cooperativeLevel);
 				}
 			}
 			else {
-				m_unk0x1c = NULL;
+				m_currentCooperativeWindow = NULL;
 			}
 		}
 	}
 	else {
-		m_unk0x1c = p_hwnd;
-		m_unk0x20 = p_hwnd;
+		m_currentCooperativeWindow = p_hwnd;
+		m_cooperativeWindow = p_hwnd;
 	}
 }
 
@@ -289,12 +286,12 @@ void DirectSoundManager::MoveSoundToIdle(SoundBuffer& p_sound)
 		m_availableSoundCount++;
 	}
 
-	SoundBufferList* idleSounds = &m_unk0x5c;
+	SoundBufferList* idleSounds = &m_idleSounds;
 	p_sound.MoveToList(*idleSounds, SoundBuffer::c_playbackStateIdle);
 }
 
 // FUNCTION: LEGORACERS 0x0041be50 FOLDED
-void DirectSoundManager::VTable0x18(CrimsonRay0x20* p_node)
+void DirectSoundManager::DestroyMusicGroup(MusicGroup* p_node)
 {
 	p_node->Remove();
 	delete p_node;

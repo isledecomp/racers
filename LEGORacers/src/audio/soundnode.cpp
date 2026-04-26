@@ -27,6 +27,7 @@ SoundNode::SoundNode()
 	m_unk0x34 = 1.0f;
 	m_unk0x38 = 0;
 	m_unk0x3c = g_unk0x4afa38;
-	m_unk0x40 = g_unk0x4afa38 * g_unk0x4af58c;
+	LegoFloat scaledDistance = g_unk0x4afa38;
+	m_unk0x40 = scaledDistance * g_unk0x4af58c;
 	m_unk0x44 = 1;
 }

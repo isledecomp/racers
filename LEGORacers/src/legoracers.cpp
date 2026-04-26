@@ -1,7 +1,7 @@
 #include "legoracers.h"
 
-#include "amethystwake0x4dd4.h"
 #include "aquacoral0x37b8.h"
+#include "menumanager.h"
 #include "videoplayer.h"
 
 #include <golerror.h>
@@ -46,7 +46,7 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 
 	m_context.m_unk0x00 = TRUE;
 	m_context.m_golApp = &m_golApp;
-	m_context.m_unk0x08 = m_soundManager;
+	m_context.m_soundManager = m_soundManager;
 	m_context.m_unk0x0c = g_unk0x4b055c;
 	m_context.m_unk0x10 = g_unk0x4b0560;
 	m_context.m_unk0x14 = g_unk0x4b0564;
@@ -165,7 +165,7 @@ void LegoRacers::FUN_0042bd00()
 // FUNCTION: LEGORACERS 0x0042bdc0
 void LegoRacers::FUN_0042bdc0()
 {
-	AmethystWake0x4dd4::FUN_0042b1e0(&m_context);
+	MenuManager::Run(&m_context);
 	m_golApp.ClearFileSourceDirectoryCaches();
 }
 
@@ -191,7 +191,7 @@ void LegoRacers::FUN_0042be00()
 		m_soundManager = &m_nullSoundManager;
 	}
 
-	m_context.m_unk0x08 = m_soundManager;
+	m_context.m_soundManager = m_soundManager;
 
 	if (initDisplayResult) {
 		GolFatalErrorMessage("Unable to initialize display - out of video memory", NULL, 0);

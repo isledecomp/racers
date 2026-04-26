@@ -1,6 +1,6 @@
 #include "audio/soundinstance.h"
 
-#include "audio/frostpetal0x34.h"
+#include "audio/directsoundgroup.h"
 #include "audio/soundbuffer.h"
 #include "audio/soundmanager.h"
 
@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(SoundInstance, 0x14)
 // FUNCTION: LEGORACERS 0x0041b4b0
 SoundInstance::SoundInstance()
 {
-	m_owner = NULL;
+	m_soundGroup = NULL;
 	m_soundBuffer = NULL;
 }
 
@@ -24,7 +24,7 @@ SoundInstance::~SoundInstance()
 		}
 	}
 
-	if (m_owner) {
+	if (m_soundGroup) {
 		Remove();
 	}
 }
@@ -54,7 +54,7 @@ LegoBool32 SoundInstance::IsPlaying()
 // FUNCTION: LEGORACERS 0x0041b560
 void SoundInstance::SetVolume(LegoFloat p_volume)
 {
-	SoundManager* soundManager = GetOwner()->GetSoundManager();
+	SoundManager* soundManager = GetSoundGroup()->GetSoundManager();
 	m_soundBuffer->SetVolume(soundManager->GetVolumeScale() * p_volume);
 }
 
@@ -76,11 +76,11 @@ void SoundInstance::SetPriority(LegoS32 p_priority)
 	m_soundBuffer->SetPriority(p_priority);
 }
 
-#pragma code_seg(".text$soundinstance_getowner")
+#pragma code_seg(".text$soundinstance_getsoundGroup")
 // TODO: Temporary workaround until we figure out how the original code was written.
 // FUNCTION: LEGORACERS 0x0041b5c0
-FrostPetal0x34* SoundInstance::GetOwner()
+DirectSoundGroup* SoundInstance::GetSoundGroup()
 {
-	return m_owner;
+	return m_soundGroup;
 }
 #pragma code_seg()

@@ -1,5 +1,8 @@
-#include "amethystwake0x4dd4.h"
+#include "menumanager.h"
 
+#include "audio/musicinstance.h"
+#include "audio/nullmusicgroup.h"
+#include "audio/nullsoundgroup.h"
 #include "golhashtable.h"
 #include "golstream.h"
 #include "imaginarytool0x368.h"
@@ -9,52 +12,52 @@
 #include <golerror.h>
 #include <stddef.h>
 
-DECOMP_SIZE_ASSERT(AmethystWake0x4dd4, 0x4dd4)
+DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
 
 // GLOBAL: LEGORACERS 0x004c4918
-AmethystWake0x4dd4* g_unk0x4c4918 = NULL;
+MenuManager* g_menuManager = NULL;
 
 // GLOBAL: LEGORACERS 0x004beb78
 LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
 
 // FUNCTION: LEGORACERS 0x0042b1e0
-void AmethystWake0x4dd4::FUN_0042b1e0(LegoRacers::Context* p_context)
+void MenuManager::Run(LegoRacers::Context* p_context)
 {
-	g_unk0x4c4918 = new AmethystWake0x4dd4();
-	if (!g_unk0x4c4918) {
+	g_menuManager = new MenuManager();
+	if (!g_menuManager) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	g_unk0x4c4918->FUN_0042cb90(p_context);
-	g_unk0x4c4918->FUN_0042d510();
-	g_unk0x4c4918->Shutdown();
+	g_menuManager->Initialize(p_context);
+	g_menuManager->Run();
+	g_menuManager->Shutdown();
 
-	if (g_unk0x4c4918) {
-		delete g_unk0x4c4918;
+	if (g_menuManager) {
+		delete g_menuManager;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042c5d0
-AmethystWake0x4dd4::AmethystWake0x4dd4()
+MenuManager::MenuManager()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0042c910
-AmethystWake0x4dd4::~AmethystWake0x4dd4()
+MenuManager::~MenuManager()
 {
 	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0042cb00
-void AmethystWake0x4dd4::Reset()
+void MenuManager::Reset()
 {
 	m_unk0x04.m_context = NULL;
 	m_unk0x04.m_unk0x258.GetUnk0x1cfc().Reset();
 	m_unk0x04.m_unk0x4b40.Reset();
 	m_unk0x4cd4 = NULL;
 	m_unk0x4cd8 = NULL;
-	m_unk0x4d20 = 0;
+	m_soundGroup = NULL;
 	m_unk0x4dc8 = NULL;
 	m_unk0x4cdc = NULL;
 	m_unk0x4ce0 = NULL;
@@ -65,7 +68,7 @@ void AmethystWake0x4dd4::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0042cb90
-LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
+LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 {
 	LegoBool32 flag = FALSE;
 	m_unk0x04.m_context = p_context;
@@ -76,14 +79,14 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	FUN_0042d020();
+	LoadMenuMaterials();
 	FUN_0042d0e0();
 	FUN_0042d300(m_unk0x04.m_unk0x258.GetUnk0x18e6(), TRUE);
 	FUN_0042d1e0();
 	FUN_0042e1f0();
 	FUN_0042cde0();
 	InitializeInputBindings();
-	FUN_0042cf00();
+	InitializeAudio();
 	FUN_0042cd60();
 
 	if (FUN_0042e490()) {
@@ -110,7 +113,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042cb90(LegoRacers::Context* p_context)
 }
 
 // FUNCTION: LEGORACERS 0x0042ccc0
-LegoS32 AmethystWake0x4dd4::Shutdown()
+LegoS32 MenuManager::Shutdown()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString(NULL);
@@ -130,7 +133,7 @@ LegoS32 AmethystWake0x4dd4::Shutdown()
 		FUN_0042d260();
 		ReleaseRendererObject();
 		ShutdownInputBindings();
-		FUN_0042cf90();
+		ShutdownAudio();
 		FUN_0042d080();
 		m_unk0x4cd8->VTable0x38();
 		Reset();
@@ -140,7 +143,7 @@ LegoS32 AmethystWake0x4dd4::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x0042cd60
-void AmethystWake0x4dd4::FUN_0042cd60()
+void MenuManager::FUN_0042cd60()
 {
 	LegoChar name[8];
 	CopperCrest0x40::InitStruct initStruct;
@@ -158,14 +161,14 @@ void AmethystWake0x4dd4::FUN_0042cd60()
 }
 
 // STUB: LEGORACERS 0x0042cde0
-void AmethystWake0x4dd4::FUN_0042cde0()
+void MenuManager::FUN_0042cde0()
 {
 	// TODO
 	STUB(0x42cde0);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0
-void AmethystWake0x4dd4::ReleaseRendererObject()
+void MenuManager::ReleaseRendererObject()
 {
 	undefined4* object = m_unk0x4cd8->GetUnk0x0c();
 	if (object) {
@@ -174,33 +177,64 @@ void AmethystWake0x4dd4::ReleaseRendererObject()
 }
 
 // FUNCTION: LEGORACERS 0x0042ced0
-void AmethystWake0x4dd4::InitializeInputBindings()
+void MenuManager::InitializeInputBindings()
 {
 	m_unk0x04.m_inputBindings.Initialize(m_unk0x04.m_context->m_golApp->GetInputManager());
 }
 
 // FUNCTION: LEGORACERS 0x0042cef0
-void AmethystWake0x4dd4::ShutdownInputBindings()
+void MenuManager::ShutdownInputBindings()
 {
 	m_unk0x04.m_inputBindings.Shutdown();
 }
 
-// STUB: LEGORACERS 0x0042cf00
-void AmethystWake0x4dd4::FUN_0042cf00()
+// FUNCTION: LEGORACERS 0x0042cf00
+void MenuManager::InitializeAudio()
 {
-	// TODO
-	STUB(0x42cf00);
+	m_unk0x04.m_unk0x4b40.m_musicGroup = m_unk0x04.m_context->m_soundManager->CreateMusicGroup();
+	if (!m_unk0x04.m_unk0x4b40.m_musicGroup) {
+		GOL_FATALERROR(c_golErrorGeneral);
+	}
+
+	m_unk0x04.m_unk0x4b40.m_musicGroup->Load("legomsc");
+	LegoRacers::Context* context = m_unk0x04.m_context;
+	m_unk0x04.m_unk0x4b40.m_musicInstance = NULL;
+	m_soundGroup = context->GetSoundManager()->CreateSoundGroup();
+	if (!m_soundGroup) {
+		GOL_FATALERROR(c_golErrorGeneral);
+	}
+
+	m_soundGroup->Load("genc0r0");
+	m_soundGroupBinding.SetSoundGroup(m_unk0x04.m_context->m_soundManager, m_soundGroup, FALSE);
 }
 
-// STUB: LEGORACERS 0x0042cf90
-void AmethystWake0x4dd4::FUN_0042cf90()
+// FUNCTION: LEGORACERS 0x0042cf90
+void MenuManager::ShutdownAudio()
 {
-	// TODO
-	STUB(0x42cf90);
+	if (m_unk0x04.m_unk0x4b40.m_musicInstance) {
+		m_unk0x04.m_unk0x4b40.m_musicInstance->Stop();
+		m_unk0x04.m_unk0x4b40.m_musicGroup->DestroyMusicInstance(m_unk0x04.m_unk0x4b40.m_musicInstance);
+	}
+
+	m_soundGroupBinding.ResetSoundGroup();
+	m_soundGroup->Unload();
+
+	if (m_unk0x04.m_unk0x4b40.m_musicGroup) {
+		m_unk0x04.m_unk0x4b40.m_musicGroup->Unload();
+	}
+
+	m_unk0x04.m_context->GetSoundManager()->DestroySoundGroup(m_soundGroup);
+
+	if (m_unk0x04.m_unk0x4b40.m_musicGroup) {
+		m_unk0x04.m_context->GetSoundManager()->DestroyMusicGroup(m_unk0x04.m_unk0x4b40.m_musicGroup);
+	}
+
+	m_unk0x04.m_unk0x4b40.m_musicGroup = NULL;
+	m_unk0x04.m_unk0x4b40.m_musicInstance = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0042d020
-void AmethystWake0x4dd4::FUN_0042d020()
+void MenuManager::LoadMenuMaterials()
 {
 	if (!m_unk0x4cdc) {
 		m_unk0x4cdc = m_unk0x4cd4->VTable0x34();
@@ -214,35 +248,35 @@ void AmethystWake0x4dd4::FUN_0042d020()
 }
 
 // STUB: LEGORACERS 0x0042d080
-void AmethystWake0x4dd4::FUN_0042d080()
+void MenuManager::FUN_0042d080()
 {
 	// TODO
 	STUB(0x42d080);
 }
 
 // STUB: LEGORACERS 0x0042d0e0
-void AmethystWake0x4dd4::FUN_0042d0e0()
+void MenuManager::FUN_0042d0e0()
 {
 	// TODO
 	STUB(0x42d0e0);
 }
 
 // STUB: LEGORACERS 0x0042d1e0
-void AmethystWake0x4dd4::FUN_0042d1e0()
+void MenuManager::FUN_0042d1e0()
 {
 	// TODO
 	STUB(0x42d1e0);
 }
 
 // STUB: LEGORACERS 0x0042d260
-void AmethystWake0x4dd4::FUN_0042d260()
+void MenuManager::FUN_0042d260()
 {
 	// TODO
 	STUB(0x42d260);
 }
 
 // STUB: LEGORACERS 0x0042d300
-LegoBool AmethystWake0x4dd4::FUN_0042d300(LegoU32, LegoBool)
+LegoBool MenuManager::FUN_0042d300(LegoU32, LegoBool)
 {
 	// TODO
 	STUB(0x42d300);
@@ -250,14 +284,14 @@ LegoBool AmethystWake0x4dd4::FUN_0042d300(LegoU32, LegoBool)
 }
 
 // STUB: LEGORACERS 0x0042d3e0
-void AmethystWake0x4dd4::FUN_0042d3e0(LegoU16)
+void MenuManager::FUN_0042d3e0(LegoU16)
 {
 	// TODO
 	STUB(0x42d3e0);
 }
 
 // FUNCTION: LEGORACERS 0x0042d510
-void AmethystWake0x4dd4::FUN_0042d510()
+void MenuManager::Run()
 {
 	BronzeFalcon0xc8770::JasperRipple0x4 rendererState;
 	Win32GolApp* golApp = m_unk0x04.m_context->m_golApp;
@@ -280,7 +314,7 @@ void AmethystWake0x4dd4::FUN_0042d510()
 		}
 
 		frameDeltaMs = golApp->GetFrameDeltaMs();
-		m_unk0x04.m_context->m_unk0x08->VTable0x34(frameDeltaMs);
+		m_unk0x04.m_context->GetSoundManager()->Update(frameDeltaMs);
 
 		if (!golApp->IsDisabled()) {
 			stack = &m_unk0x04.m_unk0x04;
@@ -343,21 +377,21 @@ void AmethystWake0x4dd4::FUN_0042d510()
 }
 
 // STUB: LEGORACERS 0x0042d730
-void AmethystWake0x4dd4::FUN_0042d730()
+void MenuManager::FUN_0042d730()
 {
 	// TODO
 	STUB(0x42d730);
 }
 
 // STUB: LEGORACERS 0x0042e1f0
-void AmethystWake0x4dd4::FUN_0042e1f0()
+void MenuManager::FUN_0042e1f0()
 {
 	// TODO
 	STUB(0x42e1f0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e450
-LegoBool32 AmethystWake0x4dd4::FUN_0042e450()
+LegoBool32 MenuManager::FUN_0042e450()
 {
 	PeridotTrace0x4e0* entry = m_unk0x04.m_unk0x258.GetUnk0xa58();
 
@@ -371,7 +405,7 @@ LegoBool32 AmethystWake0x4dd4::FUN_0042e450()
 }
 
 // STUB: LEGORACERS 0x0042e490
-LegoS32 AmethystWake0x4dd4::FUN_0042e490()
+LegoS32 MenuManager::FUN_0042e490()
 {
 	// TODO
 	STUB(0x42e490);
@@ -379,7 +413,7 @@ LegoS32 AmethystWake0x4dd4::FUN_0042e490()
 }
 
 // STUB: LEGORACERS 0x0042e680
-LegoS32 AmethystWake0x4dd4::FUN_0042e680()
+LegoS32 MenuManager::FUN_0042e680()
 {
 	// TODO
 	STUB(0x42e680);
@@ -387,21 +421,21 @@ LegoS32 AmethystWake0x4dd4::FUN_0042e680()
 }
 
 // FUNCTION: LEGORACERS 0x0042e700
-void AmethystWake0x4dd4::VTable0x00()
+void MenuManager::VTable0x00()
 {
 	m_unk0x4dd0 = FALSE;
 	m_unk0x04.m_context->m_unk0x00 = FALSE;
 }
 
 // STUB: LEGORACERS 0x0042e720
-void AmethystWake0x4dd4::FUN_0042e720()
+void MenuManager::FUN_0042e720()
 {
 	// TODO
 	STUB(0x42e720);
 }
 
 // FUNCTION: LEGORACERS 0x0042e810
-void AmethystWake0x4dd4::VTable0x1c(undefined4 p_unk0x04)
+void MenuManager::VTable0x1c(undefined4 p_unk0x04)
 {
 	if (m_unk0x4dc8) {
 		m_unk0x4dc8->VTable0x90(p_unk0x04);
@@ -409,19 +443,19 @@ void AmethystWake0x4dd4::VTable0x1c(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0042e830
-void AmethystWake0x4dd4::VTable0x28()
+void MenuManager::VTable0x28()
 {
 	m_unk0x4cc4 = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042e840
-void AmethystWake0x4dd4::VTable0x2c()
+void MenuManager::VTable0x2c()
 {
 	m_unk0x4cc4 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042e850
-void AmethystWake0x4dd4::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
+void MenuManager::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
 {
 	m_unk0x4cb4 = p_arg1 - m_unk0x4cbc;
 	m_unk0x4cb8 = p_arg2 - m_unk0x4cc0;

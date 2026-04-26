@@ -24,7 +24,7 @@ public:
 
 		LegoBool32 m_unk0x00;                 // 0x00
 		Win32GolApp* m_golApp;                // 0x04
-		SoundManager* m_unk0x08;              // 0x08
+		SoundManager* m_soundManager;         // 0x08
 		LegoFloat m_unk0x0c;                  // 0x0c
 		LegoFloat m_unk0x10;                  // 0x10
 		LegoFloat m_unk0x14;                  // 0x14
@@ -51,6 +51,8 @@ public:
 		undefined m_unk0x330[0x398 - 0x330];  // 0x330
 		undefined4 m_unk0x398;                // 0x398
 		undefined m_unk0x39c[0x12b0 - 0x39c]; // 0x39c
+
+		SoundManager* GetSoundManager() { return m_soundManager; }
 	};
 
 	enum {

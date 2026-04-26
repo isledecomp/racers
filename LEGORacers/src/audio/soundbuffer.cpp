@@ -1,8 +1,8 @@
 #include "audio/soundbuffer.h"
 
 #include "audio/directsoundconversions.h"
+#include "audio/directsoundgroup.h"
 #include "audio/directsoundmanager.h"
-#include "audio/frostpetal0x34.h"
 #include "audio/soundinstance.h"
 #include "audio/streamingsoundinstance.h"
 
@@ -66,9 +66,9 @@ SoundBuffer::~SoundBuffer()
 	if (!m_streaming) {
 		if (m_soundInstance) {
 			m_soundInstance->SetSoundBuffer(NULL);
-			FrostPetal0x34* owner = m_soundInstance->GetOwnerDirect();
-			if (owner) {
-				owner->DestroySoundInstance(m_soundInstance);
+			DirectSoundGroup* soundGroup = m_soundInstance->GetSoundGroupDirect();
+			if (soundGroup) {
+				soundGroup->DestroySoundInstance(m_soundInstance);
 			}
 			else {
 				delete m_soundInstance;
@@ -78,9 +78,9 @@ SoundBuffer::~SoundBuffer()
 	else {
 		if (m_streamingSoundInstance) {
 			m_streamingSoundInstance->SetSoundBuffer(NULL);
-			FrostPetal0x34* owner = m_streamingSoundInstance->GetOwner();
-			if (owner) {
-				owner->DestroyStreamingSoundInstance(m_streamingSoundInstance);
+			DirectSoundGroup* soundGroup = m_streamingSoundInstance->GetSoundGroupDirect();
+			if (soundGroup) {
+				soundGroup->DestroyStreamingSoundInstance(m_streamingSoundInstance);
 			}
 			else {
 				delete m_streamingSoundInstance;

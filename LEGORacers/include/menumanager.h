@@ -1,7 +1,8 @@
-#ifndef AMETHYSTWAKE0X4DD4_H
-#define AMETHYSTWAKE0X4DD4_H
+#ifndef MENUMANAGER_H
+#define MENUMANAGER_H
 
 #include "aquamarinespirit0x3c.h"
+#include "audio/soundgroupbinding.h"
 #include "bronzefalcon0xc8770.h"
 #include "cactusinterface0x4.h"
 #include "chromespike0x4.h"
@@ -11,7 +12,6 @@
 #include "corundumpeak0x14.h"
 #include "crimsonsun0xa4.h"
 #include "decomp.h"
-#include "diamondcloud0xc.h"
 #include "garnetflare0x60.h"
 #include "golstring.h"
 #include "lapissigil0x14.h"
@@ -33,38 +33,39 @@
 
 class GolExport;
 class ImaginaryTool0x368;
+class SoundGroup;
 
 // VTABLE: LEGORACERS 0x004b05a4
 // SIZE 0x4dd4
-class AmethystWake0x4dd4 : public CactusInterface0x4 {
+class MenuManager : public CactusInterface0x4 {
 public:
-	AmethystWake0x4dd4();
+	MenuManager();
 	void VTable0x00() override;                       // vtable+0x00
 	void VTable0x1c(undefined4) override;             // vtable+0x1c
 	void VTable0x24(undefined4, undefined4) override; // vtable+0x24
 	void VTable0x28() override;                       // vtable+0x28
 	void VTable0x2c() override;                       // vtable+0x2c
-	virtual ~AmethystWake0x4dd4();                    // vtable+0x30
+	virtual ~MenuManager();                           // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x0042c7c0
-	// AmethystWake0x4dd4::`scalar deleting destructor'
+	// MenuManager::`scalar deleting destructor'
 
-	static void FUN_0042b1e0(LegoRacers::Context* p_context);
+	static void Run(LegoRacers::Context* p_context);
 
 	void Reset();
-	LegoS32 FUN_0042cb90(LegoRacers::Context* p_context);
+	LegoS32 Initialize(LegoRacers::Context* p_context);
 	LegoS32 Shutdown();
 	void FUN_0042cd60();
 	void FUN_0042cde0();
 	void ReleaseRendererObject();
 	void InitializeInputBindings();
-	void FUN_0042cf00();
-	void FUN_0042d020();
+	void InitializeAudio();
+	void LoadMenuMaterials();
 	void FUN_0042d0e0();
 	void FUN_0042d1e0();
 	LegoBool FUN_0042d300(LegoU32 p_unk0x04, LegoBool p_unk0x08);
 	void FUN_0042d3e0(LegoU16 p_unk0x04);
-	void FUN_0042d510();
+	void Run();
 	void FUN_0042e1f0();
 	LegoBool32 FUN_0042e450();
 	LegoS32 FUN_0042e490();
@@ -99,7 +100,7 @@ private:
 	};
 
 	void ShutdownInputBindings();
-	void FUN_0042cf90();
+	void ShutdownAudio();
 	void FUN_0042d080();
 	void FUN_0042d260();
 	void FUN_0042d730();
@@ -121,10 +122,10 @@ private:
 	CorundumPeak0x14 m_unk0x4ce4;           // 0x4ce4
 	CorundumPeak0x14 m_unk0x4cf8;           // 0x4cf8
 	CorundumPeak0x14 m_unk0x4d0c;           // 0x4d0c
-	undefined4 m_unk0x4d20;                 // 0x4d20
+	SoundGroup* m_soundGroup;               // 0x4d20
 	GolString m_unk0x4d24;                  // 0x4d24
 	GolString m_unk0x4d30;                  // 0x4d30
-	DiamondCloud0xc m_unk0x4d3c;            // 0x4d3c
+	SoundGroupBinding m_soundGroupBinding;  // 0x4d3c
 	PorcelainVeil0x50 m_unk0x4d48;          // 0x4d48
 	undefined4 m_unk0x4d98[0x30 / 4];       // 0x4d98
 	ImaginaryTool0x368* m_unk0x4dc8;        // 0x4dc8
@@ -132,4 +133,4 @@ private:
 	LegoBool32 m_unk0x4dd0;                 // 0x4dd0
 };
 
-#endif // AMETHYSTWAKE0X4DD4_H
+#endif // MENUMANAGER_H

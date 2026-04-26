@@ -6,7 +6,7 @@
 #include "gollist.h"
 #include "types.h"
 
-class FrostPetal0x34;
+class DirectSoundGroup;
 class SoundBuffer;
 
 // VTABLE: LEGORACERS 0x004afc34
@@ -21,19 +21,19 @@ public:
 	virtual void SetPan(LegoFloat p_pan);              // vtable+0x10
 	virtual void SetFrequencyScale(LegoFloat p_scale); // vtable+0x14
 	virtual void SetPriority(LegoS32 p_priority);      // vtable+0x18
-	virtual FrostPetal0x34* GetOwner();                // vtable+0x1c
+	virtual DirectSoundGroup* GetSoundGroup();         // vtable+0x1c
 	virtual ~SoundInstance();                          // vtable+0x20
 
 	// SYNTHETIC: LEGORACERS 0x0041b4d0
 	// SoundInstance::`scalar deleting destructor'
 
-	void SetOwner(FrostPetal0x34* p_owner) { m_owner = p_owner; }
+	void SetSoundGroup(DirectSoundGroup* p_soundGroup) { m_soundGroup = p_soundGroup; }
 	void SetSoundBuffer(SoundBuffer* p_soundBuffer) { m_soundBuffer = p_soundBuffer; }
-	FrostPetal0x34* GetOwnerDirect() { return m_owner; }
+	DirectSoundGroup* GetSoundGroupDirect() { return m_soundGroup; }
 
 private:
-	FrostPetal0x34* m_owner;    // 0x0c
-	SoundBuffer* m_soundBuffer; // 0x10
+	DirectSoundGroup* m_soundGroup; // 0x0c
+	SoundBuffer* m_soundBuffer;     // 0x10
 };
 
 #endif // SOUNDINSTANCE_H

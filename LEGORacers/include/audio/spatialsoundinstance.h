@@ -1,28 +1,28 @@
-#ifndef SOUNDINSTANCEBASE0X38_H
-#define SOUNDINSTANCEBASE0X38_H
+#ifndef SPATIALSOUNDINSTANCE_H
+#define SPATIALSOUNDINSTANCE_H
 
 #include "compat.h"
 #include "decomp.h"
 #include "types.h"
 
 struct SoundNode;
-class FrostPetal0x34;
+class DirectSoundGroup;
 
 // VTABLE: LEGORACERS 0x004afad0
 // SIZE 0x38
-class SoundInstanceBase0x38 {
+class SpatialSoundInstance {
 public:
-	SoundInstanceBase0x38();
-	virtual ~SoundInstanceBase0x38();       // vtable+0x00
-	virtual void Play(LegoBool32 p_loop);   // vtable+0x04
-	virtual void Stop();                    // vtable+0x08
-	virtual LegoBool32 IsPlaying();         // vtable+0x0c
-	virtual FrostPetal0x34* VTable0x10();   // vtable+0x10
-	virtual void VTable0x14(undefined4);    // vtable+0x14
-	virtual void UpdateSpatial(SoundNode*); // vtable+0x18
+	SpatialSoundInstance();
+	virtual ~SpatialSoundInstance();           // vtable+0x00
+	virtual void Play(LegoBool32 p_loop);      // vtable+0x04
+	virtual void Stop();                       // vtable+0x08
+	virtual LegoBool32 IsPlaying();            // vtable+0x0c
+	virtual DirectSoundGroup* GetSoundGroup(); // vtable+0x10
+	virtual void VTable0x14(undefined4);       // vtable+0x14
+	virtual void UpdateSpatial(SoundNode*);    // vtable+0x18
 
 	// SYNTHETIC: LEGORACERS 0x00417c50
-	// SoundInstanceBase0x38::`scalar deleting destructor'
+	// SpatialSoundInstance::`scalar deleting destructor'
 
 protected:
 	LegoFloat m_volume;                // 0x04
@@ -40,4 +40,4 @@ protected:
 	LegoFloat m_maxDistanceSquared;    // 0x34
 };
 
-#endif // SOUNDINSTANCEBASE0X38_H
+#endif // SPATIALSOUNDINSTANCE_H

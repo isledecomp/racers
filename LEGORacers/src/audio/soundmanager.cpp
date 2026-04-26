@@ -11,8 +11,8 @@ LegoFloat g_defaultSoundManagerVolumeScale = 1.0f;
 SoundManager::SoundManager()
 {
 	m_unk0x04 = 0;
-	m_unk0x0c = NULL;
-	m_unk0x08 = NULL;
+	m_activeSoundNodes = NULL;
+	m_soundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
 	m_unk0x14 = g_defaultSoundManagerVolumeScale;
 }
@@ -27,7 +27,7 @@ SoundManager::~SoundManager()
 void SoundManager::Shutdown()
 {
 	m_unk0x04 = 0;
-	m_unk0x0c = NULL;
+	m_activeSoundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
 	m_unk0x14 = g_defaultSoundManagerVolumeScale;
 }
@@ -35,7 +35,7 @@ void SoundManager::Shutdown()
 // FUNCTION: LEGORACERS 0x00417ab0
 SoundNode* SoundManager::AddNode(SoundNode* p_node)
 {
-	SoundNode* result = m_unk0x08;
+	SoundNode* result = m_soundNodes;
 
 	if (result) {
 		while (TRUE) {
@@ -43,7 +43,7 @@ SoundNode* SoundManager::AddNode(SoundNode* p_node)
 				return result;
 			}
 
-			result = result->m_unk0x48;
+			result = result->m_nextSoundNode;
 
 			if (!result) {
 				break;
@@ -51,24 +51,24 @@ SoundNode* SoundManager::AddNode(SoundNode* p_node)
 		}
 	}
 
-	p_node->m_unk0x48 = m_unk0x08;
-	m_unk0x08 = p_node;
+	p_node->m_nextSoundNode = m_soundNodes;
+	m_soundNodes = p_node;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00417ae0
 SoundNode* SoundManager::RemoveNode(SoundNode* p_node)
 {
-	SoundNode* prev = m_unk0x08;
+	SoundNode* prev = m_soundNodes;
 
 	if (prev) {
 		if (prev == p_node) {
-			m_unk0x08 = p_node->m_unk0x48;
-			p_node->m_unk0x48 = NULL;
+			m_soundNodes = p_node->m_nextSoundNode;
+			p_node->m_nextSoundNode = NULL;
 			return p_node;
 		}
 
-		SoundNode* current = prev->m_unk0x48;
+		SoundNode* current = prev->m_nextSoundNode;
 
 		if (current) {
 			while (TRUE) {
@@ -77,15 +77,15 @@ SoundNode* SoundManager::RemoveNode(SoundNode* p_node)
 				}
 
 				prev = current;
-				current = current->m_unk0x48;
+				current = current->m_nextSoundNode;
 
 				if (!current) {
 					return NULL;
 				}
 			}
 
-			prev->m_unk0x48 = current->m_unk0x48;
-			p_node->m_unk0x48 = NULL;
+			prev->m_nextSoundNode = current->m_nextSoundNode;
+			p_node->m_nextSoundNode = NULL;
 			return p_node;
 		}
 	}
@@ -94,9 +94,9 @@ SoundNode* SoundManager::RemoveNode(SoundNode* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x00417b30
-SoundNode* SoundManager::VTable0x2c(SoundNode* p_node)
+SoundNode* SoundManager::AddActiveSoundNode(SoundNode* p_node)
 {
-	SoundNode* result = m_unk0x0c;
+	SoundNode* result = m_activeSoundNodes;
 
 	if (result) {
 		while (TRUE) {
@@ -104,7 +104,7 @@ SoundNode* SoundManager::VTable0x2c(SoundNode* p_node)
 				return result;
 			}
 
-			result = result->m_unk0x4c;
+			result = result->m_nextActiveSoundNode;
 
 			if (!result) {
 				break;
@@ -112,25 +112,25 @@ SoundNode* SoundManager::VTable0x2c(SoundNode* p_node)
 		}
 	}
 
-	p_node->m_unk0x4c = m_unk0x0c;
-	m_unk0x0c = p_node;
+	p_node->m_nextActiveSoundNode = m_activeSoundNodes;
+	m_activeSoundNodes = p_node;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00417b60
-SoundNode* SoundManager::VTable0x30(SoundNode* p_node)
+SoundNode* SoundManager::RemoveActiveSoundNode(SoundNode* p_node)
 {
-	SoundNode* result = m_unk0x0c;
+	SoundNode* result = m_activeSoundNodes;
 
 	if (result) {
 		if (result == p_node) {
-			result = p_node->m_unk0x4c;
-			m_unk0x0c = result;
-			p_node->m_unk0x4c = NULL;
+			result = p_node->m_nextActiveSoundNode;
+			m_activeSoundNodes = result;
+			p_node->m_nextActiveSoundNode = NULL;
 		}
 		else {
-			SoundNode* prev = m_unk0x0c;
-			result = result->m_unk0x4c;
+			SoundNode* prev = m_activeSoundNodes;
+			result = result->m_nextActiveSoundNode;
 
 			if (result) {
 				while (TRUE) {
@@ -139,16 +139,16 @@ SoundNode* SoundManager::VTable0x30(SoundNode* p_node)
 					}
 
 					prev = result;
-					result = result->m_unk0x4c;
+					result = result->m_nextActiveSoundNode;
 
 					if (!result) {
 						return result;
 					}
 				}
 
-				result = result->m_unk0x4c;
-				prev->m_unk0x4c = result;
-				p_node->m_unk0x4c = NULL;
+				result = result->m_nextActiveSoundNode;
+				prev->m_nextActiveSoundNode = result;
+				p_node->m_nextActiveSoundNode = NULL;
 			}
 		}
 	}

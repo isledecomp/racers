@@ -1,6 +1,6 @@
 #include "audio/streamingsoundinstance.h"
 
-#include "audio/frostpetal0x34.h"
+#include "audio/directsoundgroup.h"
 #include "audio/soundbuffer.h"
 
 DECOMP_SIZE_ASSERT(StreamingSoundInstance, 0x48)
@@ -11,7 +11,7 @@ LegoFloat g_streamingSoundPriorityScale = 2048.0f;
 // FUNCTION: LEGORACERS 0x0041acb0
 StreamingSoundInstance::StreamingSoundInstance()
 {
-	m_owner = NULL;
+	m_soundGroup = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041ad00
@@ -25,7 +25,7 @@ StreamingSoundInstance::~StreamingSoundInstance()
 		}
 	}
 
-	if (m_owner) {
+	if (m_soundGroup) {
 		Remove();
 	}
 }
@@ -55,7 +55,7 @@ LegoBool32 StreamingSoundInstance::IsPlaying()
 // FUNCTION: LEGORACERS 0x0041adb0
 void StreamingSoundInstance::UpdateSpatial(SoundNode* p_node)
 {
-	SoundInstanceBase0x38::UpdateSpatial(p_node);
+	SpatialSoundInstance::UpdateSpatial(p_node);
 	m_soundBuffer->SetVolume(m_spatialVolume);
 	m_soundBuffer->SetPan(m_spatialPan);
 	m_soundBuffer->SetFrequencyScale(m_spatialFrequencyScale);
@@ -63,9 +63,9 @@ void StreamingSoundInstance::UpdateSpatial(SoundNode* p_node)
 }
 
 // FUNCTION: LEGORACERS 0x0041ae00
-FrostPetal0x34* StreamingSoundInstance::VTable0x10()
+DirectSoundGroup* StreamingSoundInstance::GetSoundGroup()
 {
-	return m_owner;
+	return m_soundGroup;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED

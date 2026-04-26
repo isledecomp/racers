@@ -81,27 +81,27 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	for (LegoU32 i = 0; i < m_numItems; i++) {
 		FourBytes local30;
 		FourBytes local34;
-		local30.bytes[3] = -1;
-		local34.bytes[3] = -1;
+		local30.m_bytes[3] = -1;
+		local34.m_bytes[3] = -1;
 
 		parser->FUN_10032740(0x27);
 		UtopianPan0xa4* item = VTable0x20(i);
 
 		FourBytes name[2];
-		strncpy(&name[0].bytes[0], parser->FUN_10032700(8), 8);
-		AddName(&name[0].bytes[0], item);
+		strncpy(&name[0].m_bytes[0], parser->FUN_10032700(8), 8);
+		AddName(&name[0].m_bytes[0], item);
 
 		parser->FUN_100327a0();
 
 		LegoU32 flags = 0;
 
-		local30.bytes[0] = 0;
-		local30.bytes[1] = 0;
-		local30.bytes[2] = 0;
+		local30.m_bytes[0] = 0;
+		local30.m_bytes[1] = 0;
+		local30.m_bytes[2] = 0;
 
-		local34.bytes[0] = -1;
-		local34.bytes[1] = -1;
-		local34.bytes[2] = -1;
+		local34.m_bytes[0] = -1;
+		local34.m_bytes[1] = -1;
+		local34.m_bytes[2] = -1;
 
 		LegoU32 val3 = parser->VTable0x44();
 
@@ -120,14 +120,14 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 				break;
 			case 0x2b:
 				flags |= 0x20;
-				local30.bytes[0] = parser->FUN_100326a0();
-				local30.bytes[1] = parser->FUN_100326a0();
-				local30.bytes[2] = parser->FUN_100326a0();
+				local30.m_bytes[0] = parser->FUN_100326a0();
+				local30.m_bytes[1] = parser->FUN_100326a0();
+				local30.m_bytes[2] = parser->FUN_100326a0();
 				break;
 			case 0x2c:
-				local34.bytes[0] = parser->FUN_100326a0();
-				local34.bytes[1] = parser->FUN_100326a0();
-				local34.bytes[2] = parser->FUN_100326a0();
+				local34.m_bytes[0] = parser->FUN_100326a0();
+				local34.m_bytes[1] = parser->FUN_100326a0();
+				local34.m_bytes[2] = parser->FUN_100326a0();
 				break;
 			default:
 				parser->VTable0x40(0);

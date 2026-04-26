@@ -10,7 +10,7 @@ class BronzeFalcon0xc8770;
 // - instances of this type have component access like `char[4]`, but copy like an `int`,
 // - instances of this type are not aligned to 4 bytes.
 struct FourBytes {
-	LegoChar bytes[4];
+	LegoChar m_bytes[4];
 };
 
 class UtopianPan0xa4 {

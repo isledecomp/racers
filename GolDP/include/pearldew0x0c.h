@@ -10,6 +10,22 @@
 // SIZE 0x0c
 class PearlDew0x0c {
 public:
+	enum {
+		c_errorBufferSize = 128,
+		c_colorChannelMax = 0xff,
+		c_paletteEntryFlagsAll = 0xff,
+		c_systemPaletteEntries = 2,
+		c_paletteEntries2Bit = 4,
+		c_paletteEntries4Bit = 0x10,
+		c_paletteEntries8Bit = 0x100,
+		c_paletteEntries8BitUsable = c_paletteEntries8Bit - c_systemPaletteEntries,
+		c_332RedLevels = 8,
+		c_332GreenLevels = 8,
+		c_332BlueLevels = 4,
+		c_332GreenStride = c_332BlueLevels * sizeof(PALETTEENTRY),
+		c_332RedStride = c_332GreenLevels * c_332GreenStride
+	};
+
 	PearlDew0x0c();
 	~PearlDew0x0c();
 

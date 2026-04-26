@@ -7,12 +7,12 @@
 DECOMP_SIZE_ASSERT(PearlDew0x0c, 0x0c)
 
 // GLOBAL: GOLDP 0x10063150
-PALETTEENTRY g_paletteEntries[256];
+PALETTEENTRY g_paletteEntries[PearlDew0x0c::c_paletteEntries8Bit];
 
 // FUNCTION: GOLDP 0x10007190
 PearlDew0x0c::PearlDew0x0c()
 {
-	m_palette = 0;
+	m_palette = NULL;
 	m_firstEntry = 0;
 	m_entryCount = 0;
 }
@@ -22,8 +22,9 @@ PearlDew0x0c::~PearlDew0x0c()
 {
 	if (m_palette) {
 		m_palette->Release();
-		m_palette = 0;
+		m_palette = NULL;
 	}
+
 	m_firstEntry = 0;
 	m_entryCount = 0;
 }
@@ -33,7 +34,7 @@ void PearlDew0x0c::Release()
 {
 	if (m_palette) {
 		m_palette->Release();
-		m_palette = 0;
+		m_palette = NULL;
 	}
 
 	m_firstEntry = 0;
@@ -43,7 +44,7 @@ void PearlDew0x0c::Release()
 // FUNCTION: GOLDP 0x10007420
 void PearlDew0x0c::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
 	if (p_start < m_firstEntry) {
 		p_entries->peRed = 0;
@@ -56,10 +57,10 @@ void PearlDew0x0c::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 
 
 	if (p_start + p_count >= (LegoU32) (m_firstEntry + m_entryCount)) {
 		p_count--;
-		p_entries[p_count].peRed = 0xff;
-		p_entries[p_count].peGreen = 0xff;
-		p_entries[p_count].peBlue = 0xff;
-		p_entries[p_count].peFlags = 0xff;
+		p_entries[p_count].peRed = c_colorChannelMax;
+		p_entries[p_count].peGreen = c_colorChannelMax;
+		p_entries[p_count].peBlue = c_colorChannelMax;
+		p_entries[p_count].peFlags = c_paletteEntryFlagsAll;
 	}
 
 	if (p_count) {
@@ -80,7 +81,7 @@ void PearlDew0x0c::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 
 // FUNCTION: GOLDP 0x10007500
 void PearlDew0x0c::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
 	for (LegoU32 i = 0; i < p_count; i++) {
 		g_paletteEntries[i].peRed = p_entries[i].peRed;
@@ -100,7 +101,7 @@ void PearlDew0x0c::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 
 void PearlDew0x0c::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
 {
 	PALETTEENTRY entry;
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
 	HRESULT result = m_palette->GetEntries(0, p_index, 1, &entry);
 	if (result) {
@@ -111,14 +112,14 @@ void PearlDew0x0c::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
 	p_entry->peRed = entry.peRed;
 	p_entry->peGreen = entry.peGreen;
 	p_entry->peBlue = entry.peBlue;
-	p_entry->peFlags = 0xff;
+	p_entry->peFlags = c_paletteEntryFlagsAll;
 }
 
 // FUNCTION: GOLDP 0x10007620
 void PearlDew0x0c::CopyEntriesFrom(PearlDew0x0c* p_source)
 {
 	PALETTEENTRY entry;
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
 	m_entryCount = p_source->GetEntryCount();
 	for (LegoU32 i = 0; i < m_entryCount; i++) {
@@ -140,7 +141,7 @@ void PearlDew0x0c::CopyEntriesFrom(PearlDew0x0c* p_source)
 LegoS32 PearlDew0x0c::FindEntry(PALETTEENTRY* p_entry)
 {
 	DWORD caps;
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
 	HRESULT result = m_palette->GetCaps(&caps);
 	if (result) {
@@ -150,13 +151,13 @@ LegoS32 PearlDew0x0c::FindEntry(PALETTEENTRY* p_entry)
 
 	LegoU32 entryCount;
 	if (caps & DDPCAPS_8BIT) {
-		entryCount = 0x100;
+		entryCount = c_paletteEntries8Bit;
 	}
 	else if (caps & DDPCAPS_4BIT) {
-		entryCount = 0x10;
+		entryCount = c_paletteEntries4Bit;
 	}
 	else {
-		entryCount = (caps & DDPCAPS_2BIT) ? 4 : 2;
+		entryCount = (caps & DDPCAPS_2BIT) ? c_paletteEntries2Bit : c_systemPaletteEntries;
 	}
 
 	result = m_palette->GetEntries(0, 0, entryCount, g_paletteEntries);
@@ -190,18 +191,19 @@ LegoU32 PearlDew0x0c::GetEntryCount()
 // FUNCTION: GOLDP 0x100077d0
 LegoU32 PearlDew0x0c::GetPaletteSize()
 {
-	if (m_entryCount == 0xfe) {
-		return 0x100;
+	if (m_entryCount == c_paletteEntries8BitUsable) {
+		return c_paletteEntries8Bit;
 	}
+
 	return m_entryCount;
 }
 
 // STUB: GOLDP 0x100077f0
 void PearlDew0x0c::Set332PaletteEntries()
 {
-	LegoChar buffer[128];
+	LegoChar buffer[c_errorBufferSize];
 
-	if (m_entryCount > 0x10) {
+	if (m_entryCount > c_paletteEntries4Bit) {
 		LegoU32 red = 0;
 		LegoU8* redEntries = &g_paletteEntries[0].peGreen;
 		do {
@@ -213,7 +215,7 @@ void PearlDew0x0c::Set332PaletteEntries()
 			redValue |= red >> 1;
 
 			LegoU8* greenEntries = redEntries;
-			redEntries += 0x80;
+			redEntries += c_332RedStride;
 			do {
 				LegoU8 greenValue = green;
 				greenValue <<= 3;
@@ -222,7 +224,7 @@ void PearlDew0x0c::Set332PaletteEntries()
 				greenValue |= green >> 1;
 
 				LegoU8* entry = greenEntries;
-				greenEntries += 0x10;
+				greenEntries += c_332GreenStride;
 				LegoU32 blue = 0;
 				do {
 					entry[-1] = redValue;
@@ -238,15 +240,15 @@ void PearlDew0x0c::Set332PaletteEntries()
 					entry[-3] = blueValue;
 					entry[-2] = PC_NOCOLLAPSE;
 					blue++;
-				} while (blue < 4);
+				} while (blue < c_332BlueLevels);
 
 				green++;
-			} while (green < 8);
+			} while (green < c_332GreenLevels);
 
 			red++;
-		} while (red < 8);
+		} while (red < c_332RedLevels);
 
-		HRESULT result = m_palette->SetEntries(0, 0, 0x100, g_paletteEntries);
+		HRESULT result = m_palette->SetEntries(0, 0, c_paletteEntries8Bit, g_paletteEntries);
 		if (result) {
 			::sprintf(buffer, "Unable to set 332 palette entries\nerror number = %x", result);
 			GOL_FATALERROR_MESSAGE(buffer);

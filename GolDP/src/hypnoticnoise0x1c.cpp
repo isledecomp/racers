@@ -11,10 +11,10 @@ DECOMP_SIZE_ASSERT(HypnoticNoise0x1c, 0x1c)
 // FUNCTION: GOLDP 0x10022fa0
 HypnoticNoise0x1c::HypnoticNoise0x1c()
 {
-	m_unk0x0c = NULL;
+	m_renderer = NULL;
 	m_unk0x10 = 0;
 	m_numItems = 0;
-	m_unk0x18 = NULL;
+	m_currentHashEntry = NULL;
 }
 
 // TODO: Temporary workaround until we figure out how the original code was written.
@@ -24,9 +24,9 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 {
 	m_numItems = 0;
 
-	if (m_unk0x0c) {
-		m_unk0x0c->FUN_10028ae0(this);
-		m_unk0x0c = 0;
+	if (m_renderer) {
+		m_renderer->FUN_10028ae0(this);
+		m_renderer = NULL;
 	}
 
 	if (m_data) {
@@ -36,18 +36,22 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 #pragma inline_depth()
 
 // FUNCTION: GOLDP 0x10023060
-void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2, undefined4 p_param3)
+void HypnoticNoise0x1c::LoadMaterialDefinitions(
+	BronzeFalcon0xc8770* p_renderer,
+	const LegoChar* p_fileName,
+	LegoBool32 p_binary
+)
 {
 	if (m_numItems > 0) {
 		VTable0x08();
 	}
 
-	m_unk0x0c = p_param1;
-	m_unk0x0c->FUN_10028ad0(this);
+	m_renderer = p_renderer;
+	m_renderer->FUN_10028ad0(this);
 
 	GolFileParser* parser;
 
-	if (p_param3) {
+	if (p_binary) {
 		parser = new GolBinParser();
 
 		if (!parser) {
@@ -64,7 +68,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		}
 	}
 
-	parser->VTable0x38((undefined4) p_param2);
+	parser->VTable0x38(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	m_numItems = parser->FUN_100327e0();
 
@@ -75,7 +79,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	}
 
 	SmallCocoon0xc::VTable0x04(m_numItems);
-	m_unk0x18 = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
+	m_currentHashEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
 	VTable0x0c();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
@@ -85,15 +89,15 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		local34.m_bytes[3] = -1;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-		UtopianPan0xa4* item = VTable0x20(i);
+		UtopianPan0xa4* item = GetItem(i);
 
 		FourBytes name[2];
-		strncpy(&name[0].m_bytes[0], parser->ReadStringWithMaxLength(8), 8);
+		strncpy(&name[0].m_bytes[0], parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		AddName(&name[0].m_bytes[0], item);
 
 		parser->ReadLeftCurly();
 
-		LegoU32 flags = 0;
+		LegoU16 flags = 0;
 
 		local30.m_bytes[0] = 0;
 		local30.m_bytes[1] = 0;
@@ -108,18 +112,16 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				flags |= 4;
+				flags |= UtopianPan0xa4::c_flagBit2;
 				break;
 			case GolFileParser::e_unknown0x29:
-				flags &= 0xffef;
-				flags |= 0x08;
+				flags = (flags & UtopianPan0xa4::c_flagsWithoutBit4) | UtopianPan0xa4::c_flagBit3;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				flags &= 0xfff7;
-				flags |= 0x10;
+				flags = (flags & UtopianPan0xa4::c_flagsWithoutBit3) | UtopianPan0xa4::c_flagBit4;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				flags |= 0x20;
+				flags |= UtopianPan0xa4::c_flagBit5;
 				local30.m_bytes[0] = parser->ReadInteger();
 				local30.m_bytes[1] = parser->ReadInteger();
 				local30.m_bytes[2] = parser->ReadInteger();
@@ -139,23 +141,23 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		item->m_name[0] = name[0];
 		item->m_name[1] = name[1];
 
-		if (p_param1->VTable0x110()) {
-			flags = flags | 0x40;
+		if (p_renderer->VTable0x110()) {
+			flags = flags | UtopianPan0xa4::c_flagBit6;
 		}
 
-		if ((flags & 0x20) && (p_param1->GetUnk0x04() & 0x200)) {
-			flags = flags | 0x80;
+		if ((flags & UtopianPan0xa4::c_flagBit5) && (p_renderer->GetUnk0x04() & BronzeFalcon0xc8770::c_flagBit9)) {
+			flags = flags | UtopianPan0xa4::c_flagBit7;
 		}
 
-		item->m_unk0x40 = flags;
+		item->m_flags = flags;
 		item->m_unk0x4a = local34;
 
-		if (flags & 0x20) {
+		if (flags & UtopianPan0xa4::c_flagBit5) {
 			item->m_unk0x28 = local30;
-			item->m_unk0x40 = flags | 0x800;
+			item->m_flags = flags | UtopianPan0xa4::c_flagBit11;
 		}
 
-		item->m_unk0x24 = p_param1;
+		item->m_renderer = p_renderer;
 	}
 
 	parser->ReadRightCurly();
@@ -163,32 +165,32 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 	delete parser;
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntry(m_unk0x18);
+		g_hashTable->SetCurrentEntry(m_currentHashEntry);
 	}
 
 	for (LegoU32 j = 0; j < m_numItems; j++) {
-		UtopianPan0xa4* entry = VTable0x20(j);
-		if ((entry->m_unk0x3c & 1) == 0) {
+		UtopianPan0xa4* entry = GetItem(j);
+		if ((entry->m_unk0x3c & UtopianPan0xa4::c_stateFlagBit0) == 0) {
 			entry->VTable0x10();
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x100233a0
-void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_param2)
+void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_numItems)
 {
 	if (m_numItems > 0) {
 		VTable0x08();
 	}
 
-	m_unk0x0c = p_param1;
-	m_unk0x0c->FUN_10028ad0(this);
-	m_numItems = p_param2;
+	m_renderer = p_renderer;
+	m_renderer->FUN_10028ad0(this);
+	m_numItems = p_numItems;
 
 	VTable0x0c();
 
-	for (LegoU32 i = 0; i < p_param2; i++) {
-		VTable0x20(i)->m_unk0x24 = p_param1;
+	for (LegoU32 i = 0; i < p_numItems; i++) {
+		GetItem(i)->m_renderer = p_renderer;
 	}
 }
 
@@ -196,9 +198,9 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_param1, LegoU32 p_para
 void HypnoticNoise0x1c::VTable0x08()
 {
 	m_numItems = 0;
-	if (m_unk0x0c) {
-		m_unk0x0c->FUN_10028ae0(this);
-		m_unk0x0c = 0;
+	if (m_renderer) {
+		m_renderer->FUN_10028ae0(this);
+		m_renderer = NULL;
 	}
 
 	if (m_data) {

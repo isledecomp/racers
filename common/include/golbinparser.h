@@ -15,7 +15,7 @@ public:
 	GolBinParser();
 
 	LegoS32 Dispose() override;                             // vtable+0x20
-	void VTable0x38(undefined4) override;                   // vtable+0x38
+	void VTable0x38(const LegoChar*) override;              // vtable+0x38
 	const LegoChar* GetSuffix() override;                   // vtable+0x3c
 	void HandleUnexpectedToken(ParserTokenType) override;   // vtable+0x40
 	ParserTokenType GetNextToken() override;                // vtable+0x44

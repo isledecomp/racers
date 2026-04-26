@@ -11,6 +11,10 @@ class SmallCocoon0xc;
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 {
 public:
+	enum Flags {
+		c_flagBit9 = 0x0200
+	};
+
 	// SIZE 0x4
 	struct JasperRipple0x4 {
 		undefined m_unk0x00[0x4 - 0x00]; // 0x00

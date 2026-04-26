@@ -110,24 +110,16 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 
 		undefined4 val3 = parser->VTable0x44();
 
-		// uVar10 = 0;
-		// p_param1 = (BronzeFalcon0xc8770*) ((uint) p_param1 & 0xff000000);
-		// p_param2 = (char*) CONCAT13(p_param2._3_1_, 0xffffff);
-		// iVar6 = (**(code**) ((int) (this_00->base).base.vftable + 0x44))();
-		// pBVar2 = p_param1;
-		// pcVar3 = p_param2;
-
-		// while (val3 != 6) { // TODO restore
-		do {
+		while (val3 != 6) {
 			switch (val3) {
 			case 0x28:
 				val4 = val4 | 4;
 				break;
 			case 0x29:
-				val4 = val4 & 0xffef | 8;
+				val4 = (val4 & 0xffe7) | 0x08;
 				break;
 			case 0x2a:
-				val4 = val4 & 0xfff7 | 0x10;
+				val4 = (val4 & 0xfff7) | 0x10;
 				break;
 			case 0x2b:
 				val4 = val4 | 0x20;
@@ -145,7 +137,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 			}
 
 			val3 = parser->VTable0x44();
-		} while (val3 != 6);
+		}
 
 		// this->m_unk0x14 = i; // FIXME: experiment to see if reference is correct
 		val1->m_unk0x42 = name[0];
@@ -155,11 +147,11 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 		// int ivar4;
 		// /* int ivar4 = */ p_param1->VTable0x110();
 
-		if ( p_param1->VTable0x110()) {
+		if (p_param1->VTable0x110()) {
 			val4 = val4 | 0x40;
 		}
 
-		if ((val4 & 0x20) && (p_param1->GetUnk0x04() & 2)) {
+		if ((val4 & 0x20) && (p_param1->GetUnk0x04() & 0x200)) {
 			val4 = val4 | 0x80;
 		}
 
@@ -171,7 +163,7 @@ void HypnoticNoise0x1c::VTable0x18(BronzeFalcon0xc8770* p_param1, char* p_param2
 			val1->m_unk0x40 = val4 | 0x800;
 		}
 
-		val1->m_unk0x24 = m_unk0x0c; // wild guess, most likely wrong
+		val1->m_unk0x24 = p_param1; // wild guess, most likely wrong
 	}
 
 	parser->FUN_100327c0();

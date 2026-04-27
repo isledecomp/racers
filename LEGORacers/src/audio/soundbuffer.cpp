@@ -324,9 +324,10 @@ LegoBool32 SoundBuffer::Play(LegoBool32 p_loop)
 	LegoBool32 result = FALSE;
 
 	if (IsPlaying()) {
-		result = TRUE;
+		return TRUE;
 	}
-	else if (!m_streaming) {
+
+	if (!m_streaming) {
 		ReleaseBufferPlayback();
 		ApplyDirectSoundSettings();
 

@@ -227,10 +227,12 @@ void DirectSoundGroup::PlaySpatialSound(
 	StreamingSoundInstance* sound = CreateStreamingSoundInstance(p_index);
 
 	if (sound) {
+		LegoFloat minDistSq = p_minDistance * p_minDistance;
+		LegoFloat maxDistSq = p_maxDistance * p_maxDistance;
 		sound->GetSoundBuffer()->m_stopWhenPaused = TRUE;
 		sound->m_position = p_node->m_position;
-		sound->m_minDistanceSquared = p_minDistance * p_minDistance;
-		sound->m_maxDistanceSquared = p_maxDistance * p_maxDistance;
+		sound->m_minDistanceSquared = minDistSq;
+		sound->m_maxDistanceSquared = maxDistSq;
 		sound->SetVolume(p_volume);
 		sound->m_frequencyScale = p_frequencyScale;
 		sound->Play(FALSE);

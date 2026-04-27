@@ -27,7 +27,7 @@ public:
 
 	// FUNCTION: GOLDP 0x100282a0
 	// FUNCTION: LEGORACERS 0x00411850
-	virtual void SmallCocoon0xc::VTable0x08()
+	virtual void VTable0x08()
 	{
 		if (m_data != NULL) {
 			delete[] m_data;

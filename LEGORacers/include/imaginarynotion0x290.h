@@ -37,16 +37,41 @@ public:
 	virtual void VTable0x4c(undefined4) = 0;                                        // vtable+0x4c
 	virtual undefined4 VTable0x50();                                                // vtable+0x50
 	virtual void VTable0x54();                                                      // vtable+0x54
-	virtual void VTable0x58();                                                      // vtable+0x58
+	virtual void VTable0x58(undefined4*);                                           // vtable+0x58
 	virtual void VTable0x5c();                                                      // vtable+0x5c
 	virtual void VTable0x60();                                                      // vtable+0x60
 	virtual void VTable0x64();                                                      // vtable+0x64
 	virtual ~ImaginaryNotion0x290();                                                // vtable+0x68
 	virtual void VTable0x6c();                                                      // vtable+0x6c
-	virtual void VTable0x70();                                                      // vtable+0x70
+	virtual void VTable0x70(undefined4*);                                           // vtable+0x70
 	virtual void VTable0x74();                                                      // vtable+0x74
 	virtual LegoBool32 VTable0x78(undefined4);                                      // vtable+0x78
-	virtual void VTable0x7c();                                                      // vtable+0x7c
+	virtual LegoBool32 VTable0x7c(undefined4 p_arg1, undefined4 p_arg2);            // vtable+0x7c
+
+	undefined4 FUN_0046b630();
+	void FUN_0046b6e0();
+	void FUN_0046ba60(undefined4*);
+	void FUN_0046bb10(undefined4*);
+	void FUN_0046bb90(undefined4*, undefined4);
+	void FUN_0046bc90(undefined4*, undefined4);
+	void FUN_0046bd80(undefined4*, undefined4);
+	void FUN_0046be10(undefined4*, undefined2);
+	void FUN_0046bea0(undefined4*, undefined2);
+	undefined4 FUN_0046bef0(undefined4*, undefined2, undefined2);
+	undefined4 FUN_0046bf80(undefined4*, undefined2, undefined2, undefined2);
+	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
+	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
+	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
+	undefined4 FUN_0046c240(undefined4*, undefined2, undefined2);
+	void FUN_0046c2b0(undefined4*, undefined4, undefined2, undefined2);
+	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
+	void FUN_0046c480(undefined4*, undefined4, undefined2);
+	void FUN_0046c510(undefined4*, undefined4, undefined2);
+	void FUN_0046c5b0(undefined4*, undefined4, undefined2);
+	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
+	undefined4 FUN_0046c6f0(undefined4, undefined4, undefined2);
+	undefined4 FUN_0046c730(undefined4, undefined2);
+	void FUN_0046c760();
 
 	// SYNTHETIC: LEGORACERS 0x0046b3f0
 	// ImaginaryNotion0x290::`scalar deleting destructor'
@@ -59,12 +84,12 @@ protected:
 	undefined4 m_unk0xb0;          // 0x0b0
 	undefined4 m_unk0xb4;          // 0x0b4
 	undefined4 m_unk0xb8;          // 0x0b8
-	undefined4 m_unk0xbc;          // 0x0bc
+	undefined4* m_unk0xbc;         // 0x0bc
 	undefined4 m_unk0xc0;          // 0x0c0
 	undefined4 m_unk0xc4;          // 0x0c4
 	undefined4 m_unk0xc8;          // 0x0c8
 	undefined4 m_unk0xcc;          // 0x0cc
-	undefined4 m_unk0xd0;          // 0x0d0
+	undefined4* m_unk0xd0;         // 0x0d0
 	undefined4 m_unk0xd4;          // 0x0d4
 	ObscureIcon0x1a8 m_unk0xd8;    // 0x0d8
 	undefined4 m_unk0x280;         // 0x280

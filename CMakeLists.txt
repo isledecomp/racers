@@ -329,3 +329,29 @@ if(EXISTS "${CLANGFORMAT_BIN}")
 endif()
 
 reccmp_configure()
+
+set(RELEASE_URL "https://github.com/isledecomp/racers/releases/download/continuous")
+add_custom_target(download-master-progress)
+add_custom_target(show-progress)
+
+get_property(RECCMP_TARGETS GLOBAL PROPERTY RECCMP_TARGETS)
+foreach(target ${RECCMP_TARGETS})
+  get_property(reccmp_id TARGET "${target}" PROPERTY INTERFACE_RECCMP_ID)
+
+  set(progress_local "${PROJECT_BINARY_DIR}/${reccmp_id}-progress-master.json")
+  set(download_command COMMAND "${CMAKE_COMMAND}"
+    "-DURL=${RELEASE_URL}"
+    "-DFILENAME_ONLINE=${reccmp_id}PROGRESS.json"
+    "-DFILENAME_LOCAL=${progress_local}"
+    "-P" "${PROJECT_SOURCE_DIR}/cmake/download-file.cmake"
+  )
+  add_custom_target(download-master-progress-${reccmp_id} ${download_command})
+  add_dependencies(download-master-progress download-master-progress-${reccmp_id})
+  add_custom_command(OUTPUT "${progress_local}" COMMAND ${download_command})
+  add_custom_target(show-progress-${reccmp_id}
+    COMMENT "Compare progress of ${reccmp_id} with current git master"
+    COMMAND reccmp-reccmp --target ${reccmp_id} --nolib --diff "${progress_local}"
+    DEPENDS "${progress_local}"
+  )
+  add_dependencies(show-progress show-progress-${reccmp_id})
+endforeach()

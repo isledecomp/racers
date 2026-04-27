@@ -7,6 +7,7 @@
 #include "legoracers.h"
 #include "types.h"
 
+class CelestialForge0x48;
 class GlassShard0x3b8;
 
 // VTABLE: LEGORACERS 0x004b07f4
@@ -25,10 +26,13 @@ public:
 	void Shutdown();
 	void Run();
 	virtual void VTable0x30(); // vtable+0x30
+	void FUN_00432530(CelestialForge0x48* p_unk0x18) { m_unk0x18 = p_unk0x18; }
 
 private:
 	undefined4* m_unk0x04;                  // 0x04
-	undefined m_unk0x08[0x3334 - 0x08];     // 0x08
+	undefined m_unk0x08[0x18 - 0x08];       // 0x08
+	CelestialForge0x48* m_unk0x18;          // 0x18
+	undefined m_unk0x1c[0x3334 - 0x1c];     // 0x1c
 	undefined4 m_unk0x3334;                 // 0x3334
 	undefined m_unk0x3338[0x3368 - 0x3338]; // 0x3338
 };

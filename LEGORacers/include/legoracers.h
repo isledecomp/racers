@@ -13,12 +13,22 @@
 // SIZE 0x1d6c
 class LegoRacers : public CactusInterface0x4 {
 public:
+	// SIZE 0x18
+	struct RaceSlot {
+		undefined4 m_unk0x00;   // 0x00
+		undefined4 m_unk0x04;   // 0x04
+		LegoChar m_unk0x08[8];  // 0x08
+		LegoChar m_raceName[8]; // 0x10
+	};
+
 	// SIZE 0x12b0
 	class Context {
 	public:
 		enum {
 			c_flagBit1 = 1 << 1,
 			c_flagBit3 = 1 << 3,
+			c_flagBit5 = 1 << 5,
+			c_flagBit6 = 1 << 6,
 			c_flagBit7 = 1 << 7,
 		};
 
@@ -37,14 +47,13 @@ public:
 		undefined m_unk0x28[0x2d - 0x28];     // 0x28
 		LegoChar m_unk0x2d[8];                // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];     // 0x35
-		undefined4 m_unk0x38;                 // 0x38
-		undefined4 m_unk0x3c;                 // 0x3c
-		LegoChar m_unk0x40[8];                // 0x40
-		LegoChar m_raceName[8];               // 0x48
-		undefined m_unk0x50[0xd8 - 0x50];     // 0x50
+		RaceSlot m_raceSlots[4];              // 0x38
+		undefined m_unk0x98[0xd8 - 0x98];     // 0x98
 		undefined4 m_unk0xd8;                 // 0xd8
 		LegoChar m_gameDataDirectory[18];     // 0xdc
-		LegoChar m_commonDataDirectory[26];   // 0xee
+		LegoChar m_commonDataDirectory[18];   // 0xee
+		undefined4 m_unk0x100;                // 0x100
+		undefined m_unk0x104[0x108 - 0x104];  // 0x104
 		ScarletNova0x5c m_unk0x108[5];        // 0x108
 		undefined m_unk0x2d4[0x32c - 0x2d4];  // 0x2d4
 		undefined4 m_unk0x32c;                // 0x32c

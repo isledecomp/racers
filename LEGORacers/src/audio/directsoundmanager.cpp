@@ -5,6 +5,7 @@
 #include "audio/nullsoundgroup.h"
 #include "audio/soundbuffer.h"
 #include "audio/soundnode.h"
+#include "audio/streamingsoundinstance.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(DirectSoundManager, 0x98)
@@ -38,12 +39,12 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 	Shutdown();
 
 	if (!m_cooperativeWindow) {
-		HWND pHVar4 = GetForegroundWindow();
+		HWND hwnd = GetForegroundWindow();
 		DWORD hwndProcessId;
-		GetWindowThreadProcessId(pHVar4, &hwndProcessId);
+		GetWindowThreadProcessId(hwnd, &hwndProcessId);
 
 		if (hwndProcessId == GetCurrentProcessId()) {
-			SetCooperativeWindow(pHVar4);
+			SetCooperativeWindow(hwnd);
 		}
 
 		if (!m_cooperativeWindow) {
@@ -101,7 +102,6 @@ LegoBool32 DirectSoundManager::Initialize(LegoS32 p_maxActiveSoundCount)
 	m_paused = FALSE;
 	m_availableSoundCount = p_maxActiveSoundCount;
 	m_maxActiveSoundCount = p_maxActiveSoundCount;
-
 	return TRUE;
 }
 
@@ -150,10 +150,101 @@ void DirectSoundManager::Shutdown()
 	m_maxActiveSoundCount = 0;
 }
 
-// STUB: LEGORACERS 0x00418940
+// FUNCTION: LEGORACERS 0x00418940
 void DirectSoundManager::Update(undefined4)
 {
-	STUB(0x418940);
+	SoundBufferList spatialSounds;
+
+	ReleaseStoppedSounds();
+
+	GolListLink* link;
+	m_activeSpatialSounds.Swap(spatialSounds);
+
+	link = spatialSounds.FirstLink();
+	while (link && spatialSounds.IsValidLink(link)) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		link = spatialSounds.NextLink(link);
+
+		sound.GetLink().Remove();
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriority(m_activeSpatialSounds, sound);
+	}
+
+	m_queuedSpatialSounds.Swap(spatialSounds);
+
+	link = spatialSounds.FirstLink();
+	while (link && spatialSounds.IsValidLink(link)) {
+		SoundBuffer& sound = spatialSounds.GetItem(*link);
+		link = spatialSounds.NextLink(link);
+
+		sound.GetLink().Remove();
+		sound.m_streamingSoundInstance->UpdateSpatial(m_activeSoundNodes);
+		InsertByPriority(m_queuedSpatialSounds, sound);
+	}
+
+	link = m_activeSpatialSounds.FirstLink();
+	while (link && m_activeSpatialSounds.IsValidLink(link)) {
+		SoundBuffer& sound = m_activeSpatialSounds.GetItem(*link);
+		link = m_activeSpatialSounds.NextLink(link);
+
+		if (sound.m_priority) {
+			break;
+		}
+
+		if (sound.m_stopWhenPaused) {
+			sound.StopOrRelease();
+		}
+		else {
+			m_availableSoundCount++;
+			sound.StopDirectSoundBuffer();
+			sound.GetLink().Remove();
+			sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+			m_queuedSpatialSounds.Prepend(sound);
+		}
+	}
+
+	if (!m_paused) {
+		while (TRUE) {
+			SoundBuffer* queuedSound = NULL;
+			link = m_queuedSounds.FirstLink();
+			if (m_queuedSounds.IsValidLink(link)) {
+				queuedSound = &m_queuedSounds.GetItem(*link);
+			}
+
+			link = m_queuedSpatialSounds.FirstLink();
+			if (m_queuedSpatialSounds.IsValidLink(link)) {
+				SoundBuffer& queuedSpatialSound = m_queuedSpatialSounds.GetItem(*link);
+
+				if (!queuedSound || queuedSpatialSound.m_priority > queuedSound->m_priority) {
+					if (!queuedSpatialSound.m_priority || !MakeSoundAvailable(queuedSpatialSound.m_priority)) {
+						break;
+					}
+
+					m_availableSoundCount--;
+					queuedSpatialSound.GetLink().Remove();
+					InsertByPriority(m_activeSpatialSounds, queuedSpatialSound);
+					queuedSpatialSound.SetPlaybackState(SoundBuffer::c_playbackStateActive);
+					queuedSpatialSound.StartDirectSoundBuffer();
+					continue;
+				}
+			}
+			else if (!queuedSound) {
+				break;
+			}
+
+			if (!queuedSound || !MakeSoundAvailable(queuedSound->m_priority)) {
+				break;
+			}
+
+			m_availableSoundCount--;
+			queuedSound->GetLink().Remove();
+			InsertByPriority(m_activeSounds, *queuedSound);
+			queuedSound->SetPlaybackState(SoundBuffer::c_playbackStateActive);
+			queuedSound->StartDirectSoundBuffer();
+		}
+	}
+
+	DestroyPendingStoppedSounds();
 }
 
 // FUNCTION: LEGORACERS 0x00418cc0
@@ -166,11 +257,11 @@ void DirectSoundManager::Pause()
 		LegoBool32& paused = manager->m_paused;
 
 		paused = TRUE;
-		link = manager->m_activeSounds.FirstLink();
-		if (manager->m_activeSounds.IsValidLink(link)) {
+		link = manager->m_activeSpatialSounds.FirstLink();
+		if (manager->m_activeSpatialSounds.IsValidLink(link)) {
 			do {
-				SoundBuffer& sound = manager->m_activeSounds.GetItem(*link);
-				link = manager->m_activeSounds.NextLink(link);
+				SoundBuffer& sound = manager->m_activeSpatialSounds.GetItem(*link);
+				link = manager->m_activeSpatialSounds.NextLink(link);
 
 				if (sound.ShouldStopWhenPaused()) {
 					sound.StopOrRelease();
@@ -183,7 +274,7 @@ void DirectSoundManager::Pause()
 
 					sound.GetLink().Remove();
 					sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
-					manager->m_pausedSounds.Prepend(sound);
+					manager->m_queuedSpatialSounds.Prepend(sound);
 				}
 			} while (link);
 		}
@@ -279,6 +370,193 @@ void DirectSoundManager::SetCooperativeWindow(HWND p_hwnd)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00418fc0
+void DirectSoundManager::DestroyPendingStoppedSounds()
+{
+	GolListLink* link = m_idleSounds.LastLink();
+	if (m_idleSounds.IsValidLastLink(link)) {
+		do {
+			SoundBuffer& sound = m_idleSounds.GetItem(*link);
+			link = m_idleSounds.PrevLink(link);
+
+			if (sound.m_stopWhenPaused) {
+				DestroySoundBuffer(&sound);
+			}
+		} while (link);
+	}
+
+	link = m_queuedSpatialSounds.LastLink();
+	if (m_queuedSpatialSounds.IsValidLastLink(link)) {
+		do {
+			SoundBuffer& sound = m_queuedSpatialSounds.GetItem(*link);
+			link = m_queuedSpatialSounds.PrevLink(link);
+
+			if (sound.m_stopWhenPaused) {
+				DestroySoundBuffer(&sound);
+			}
+		} while (link);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00419030
+void DirectSoundManager::ReleaseStoppedSounds()
+{
+	GolListLink* link = m_activeSounds.LastLink();
+	if (m_activeSounds.IsValidLastLink(link)) {
+		do {
+			SoundBuffer& sound = m_activeSounds.GetItem(*link);
+			link = m_activeSounds.PrevLink(link);
+
+			if (!sound.IsPlaying()) {
+				sound.StopOrRelease();
+			}
+		} while (link);
+	}
+
+	link = m_activeSpatialSounds.LastLink();
+	if (m_activeSpatialSounds.IsValidLastLink(link)) {
+		do {
+			SoundBuffer& sound = m_activeSpatialSounds.GetItem(*link);
+			link = m_activeSpatialSounds.PrevLink(link);
+
+			if (!sound.IsPlaying()) {
+				sound.StopOrRelease();
+			}
+		} while (link);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004190a0
+LegoS32 DirectSoundManager::GetAvailableSoundCount()
+{
+	if (!m_availableSoundCount) {
+		ReleaseStoppedSounds();
+	}
+
+	return m_availableSoundCount;
+}
+
+// FUNCTION: LEGORACERS 0x004190c0
+LegoBool32 DirectSoundManager::CanPlaySound(LegoS32 p_priority)
+{
+	return MakeSoundAvailable(p_priority + SoundBuffer::c_defaultPriority);
+}
+
+// FUNCTION: LEGORACERS 0x004190e0
+LegoBool32 DirectSoundManager::MakeSoundAvailable(LegoS32 p_priority)
+{
+	if (!m_maxActiveSoundCount) {
+		return FALSE;
+	}
+
+	if (GetAvailableSoundCount()) {
+		return TRUE;
+	}
+
+	GolListLink* activeSpatialLink = m_activeSpatialSounds.FirstLink();
+	activeSpatialLink = activeSpatialLink->m_next ? activeSpatialLink : NULL;
+
+	GolListLink* activeSoundLink = m_activeSounds.FirstLink();
+	activeSoundLink = activeSoundLink->m_next ? activeSoundLink : NULL;
+
+	if (activeSoundLink && (!activeSpatialLink || m_activeSounds.GetItem(*activeSoundLink).m_priority <
+													  m_activeSpatialSounds.GetItem(*activeSpatialLink).m_priority)) {
+		SoundBuffer& activeSound = m_activeSounds.GetItem(*activeSoundLink);
+
+		if (p_priority > activeSound.m_priority) {
+			if (activeSound.m_stopWhenPaused) {
+				activeSound.StopOrRelease();
+				return m_availableSoundCount != 0;
+			}
+
+			m_availableSoundCount++;
+			activeSound.StopDirectSoundBuffer();
+			activeSound.GetLink().Remove();
+			activeSound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+			InsertByPriority(m_queuedSounds, activeSound);
+		}
+	}
+	else if (activeSpatialLink) {
+		SoundBuffer& activeSpatialSound = m_activeSpatialSounds.GetItem(*activeSpatialLink);
+
+		if (p_priority > activeSpatialSound.m_priority) {
+			if (activeSpatialSound.m_stopWhenPaused) {
+				activeSpatialSound.StopOrRelease();
+				return m_availableSoundCount != 0;
+			}
+
+			m_availableSoundCount++;
+			activeSpatialSound.StopDirectSoundBuffer();
+			activeSpatialSound.GetLink().Remove();
+			activeSpatialSound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+			InsertByPriority(m_queuedSpatialSounds, activeSpatialSound);
+		}
+	}
+
+	return m_availableSoundCount != 0;
+}
+
+// FUNCTION: LEGORACERS 0x004192b0
+SoundBuffer* DirectSoundManager::CreateSoundBuffer()
+{
+	SoundBuffer* sound = new SoundBuffer();
+
+	if (sound) {
+		sound->m_soundManager = this;
+		m_idleSounds.Append(*sound);
+	}
+
+	return sound;
+}
+
+// FUNCTION: LEGORACERS 0x00419330
+SoundBuffer* DirectSoundManager::CreateSoundBuffer(SoundData* p_data)
+{
+	SoundBuffer* sound = CreateSoundBuffer();
+
+	if (!sound || sound->LoadSoundData(p_data)) {
+		return sound;
+	}
+
+	DestroySoundBuffer(sound);
+	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x00419370
+SoundBuffer* DirectSoundManager::CreateStreamingSoundBuffer()
+{
+	SoundBuffer* sound = new SoundBuffer(TRUE);
+
+	if (sound) {
+		sound->m_soundManager = this;
+		m_idleSounds.Append(*sound);
+	}
+
+	return sound;
+}
+
+// FUNCTION: LEGORACERS 0x004193f0
+SoundBuffer* DirectSoundManager::CreateStreamingSoundBuffer(SoundData* p_data)
+{
+	SoundBuffer* sound = CreateStreamingSoundBuffer();
+
+	if (!sound || sound->LoadSoundData(p_data)) {
+		return sound;
+	}
+
+	DestroySoundBuffer(sound);
+	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x00419430
+void DirectSoundManager::DestroySoundBuffer(SoundBuffer* p_sound)
+{
+	p_sound->ReleaseDirectSoundBuffer();
+	p_sound->m_soundManager = NULL;
+	p_sound->GetLink().Remove();
+	delete p_sound;
+}
+
 // FUNCTION: LEGORACERS 0x00419470
 void DirectSoundManager::MoveSoundToIdle(SoundBuffer& p_sound)
 {
@@ -288,6 +566,38 @@ void DirectSoundManager::MoveSoundToIdle(SoundBuffer& p_sound)
 
 	SoundBufferList* idleSounds = &m_idleSounds;
 	p_sound.MoveToList(*idleSounds, SoundBuffer::c_playbackStateIdle);
+}
+
+// FUNCTION: LEGORACERS 0x004194b0
+LegoBool32 DirectSoundManager::QueueSound(SoundBuffer& p_sound)
+{
+	if (p_sound.m_playbackState == SoundBuffer::c_playbackStateActive) {
+		return TRUE;
+	}
+
+	if (!p_sound.m_streaming) {
+		if (MakeSoundAvailable(p_sound.m_priority)) {
+			p_sound.GetLink().Remove();
+			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateActive);
+			InsertByPriority(m_activeSounds, p_sound);
+			m_availableSoundCount--;
+		}
+		else {
+			p_sound.GetLink().Remove();
+			p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+			InsertByPriority(m_queuedSounds, p_sound);
+		}
+
+		return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;
+	}
+
+	if (p_sound.m_playbackState == SoundBuffer::c_playbackStateIdle) {
+		p_sound.GetLink().Remove();
+		p_sound.SetPlaybackState(SoundBuffer::c_playbackStateQueued);
+		InsertByPriority(m_queuedSpatialSounds, p_sound);
+	}
+
+	return p_sound.m_playbackState == SoundBuffer::c_playbackStateActive;
 }
 
 // FUNCTION: LEGORACERS 0x0041be50 FOLDED

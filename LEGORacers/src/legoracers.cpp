@@ -79,7 +79,7 @@ LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 		return result;
 	}
 
-	m_golApp.GolApp::GetHashTable().Init(100, 4096);
+	m_golApp.GetHashTable().Init(100, 4096);
 	m_golApp.SetGolBackendType(m_golBackendType);
 	m_golApp.Init("LEGO Racers", g_jamFile);
 	return 1;

@@ -1,5 +1,8 @@
 #include "audio/directsoundconversions.h"
 
+#include "audio/soundbuffer.h"
+#include "gollist.h"
+
 #include <dsound.h>
 
 // GLOBAL: LEGORACERS 0x004afaec
@@ -40,4 +43,36 @@ LegoS32 ConvertPanToDirectSound(LegoFloat p_pan)
 	LegoFloat scaledPan = p_pan;
 	scaledPan *= g_directSoundPanScale;
 	return (LegoS32) scaledPan;
+}
+
+// FUNCTION: LEGORACERS 0x004196c0
+GolListLink* GolListLink::InsertBefore(GolListLink* p_link)
+{
+	m_next = p_link;
+	m_prev = p_link->m_prev;
+	p_link->m_prev->m_next = this;
+	p_link->m_prev = this;
+	return p_link;
+}
+
+// FUNCTION: LEGORACERS 0x004196e0
+GolListLink* GolListLink::NextValid()
+{
+	if (m_next->m_next) {
+		return m_next;
+	}
+
+	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x004196f0
+template <>
+GolListLink* SoundBufferList::FirstValidLink()
+{
+	GolListLink* link = FirstLink();
+	if (link->m_next) {
+		return link;
+	}
+
+	return NULL;
 }

@@ -13,13 +13,13 @@ class SoundManager;
 class NullMusicGroup : public MusicGroup {
 public:
 	NullMusicGroup();
-	~NullMusicGroup() override;                              // vtable+0x00
-	GolListLink* Load(const LegoChar* p_name) override;      // vtable+0x04
-	GolListLink* Unload() override;                          // vtable+0x08
-	LegoBool32 IsLoaded() override;                          // vtable+0x0c
-	MusicInstance* CreateMusicInstance(undefined4) override; // vtable+0x10
-	void DestroyMusicInstance(MusicInstance*) override;      // vtable+0x14
-	SoundManager* GetSoundManager() override;                // vtable+0x18
+	~NullMusicGroup() override;                                   // vtable+0x00
+	void Load(const LegoChar* p_name) override;                   // vtable+0x04
+	void Unload() override;                                       // vtable+0x08
+	LegoBool32 IsLoaded() override;                               // vtable+0x0c
+	MusicInstance* CreateMusicInstance(LegoU32 p_index) override; // vtable+0x10
+	void DestroyMusicInstance(MusicInstance*) override;           // vtable+0x14
+	SoundManager* GetSoundManager() override;                     // vtable+0x18
 
 	void SetSoundManager(SoundManager* p_soundManager) { m_soundManager = p_soundManager; }
 

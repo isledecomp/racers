@@ -62,7 +62,7 @@ void StreamingSoundInstance::UpdateSpatial(SoundNode* p_node)
 	m_soundBuffer->SetPriority((LegoS32) (m_soundBuffer->GetVolume() * g_streamingSoundPriorityScale));
 }
 
-// FUNCTION: LEGORACERS 0x0041ae00
+// FUNCTION: LEGORACERS 0x0041ae00 FOLDED
 DirectSoundGroup* StreamingSoundInstance::GetSoundGroup()
 {
 	return m_soundGroup;

@@ -14,7 +14,7 @@ SoundManager::SoundManager()
 	m_activeSoundNodes = NULL;
 	m_soundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
-	m_unk0x14 = g_defaultSoundManagerVolumeScale;
+	m_musicVolumeScale = g_defaultSoundManagerVolumeScale;
 }
 
 // FUNCTION: LEGORACERS 0x00417a80
@@ -29,7 +29,7 @@ void SoundManager::Shutdown()
 	m_unk0x04 = 0;
 	m_activeSoundNodes = NULL;
 	m_volumeScale = g_defaultSoundManagerVolumeScale;
-	m_unk0x14 = g_defaultSoundManagerVolumeScale;
+	m_musicVolumeScale = g_defaultSoundManagerVolumeScale;
 }
 
 // FUNCTION: LEGORACERS 0x00417ab0

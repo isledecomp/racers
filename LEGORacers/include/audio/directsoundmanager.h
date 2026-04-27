@@ -14,6 +14,8 @@
 #include <dsound.h>
 #include <objbase.h>
 
+class SoundData;
+
 // VTABLE: LEGORACERS 0x004afaf0
 // SIZE 0x98
 class DirectSoundManager : public SoundManager {
@@ -41,6 +43,14 @@ public:
 
 	void SetCooperativeWindow(HWND p_hwnd);
 	void MoveSoundToIdle(SoundBuffer& p_sound);
+	SoundBuffer* CreateSoundBuffer();
+	SoundBuffer* CreateSoundBuffer(SoundData* p_data);
+	SoundBuffer* CreateStreamingSoundBuffer();
+	SoundBuffer* CreateStreamingSoundBuffer(SoundData* p_data);
+	void DestroySoundBuffer(SoundBuffer* p_sound);
+	LegoBool32 CanPlaySound(LegoS32 p_priority);
+	LegoBool32 QueueSound(SoundBuffer& p_sound);
+	LPDIRECTSOUND GetDirectSound() { return m_directSound; }
 
 	// SYNTHETIC: LEGORACERS 0x00418680
 	// DirectSoundManager::`scalar deleting destructor'
@@ -62,10 +72,31 @@ private:
 	LegoS32 m_maxActiveSoundCount;           // 0x54
 	LegoS32 m_availableSoundCount;           // 0x58
 	SoundBufferList m_idleSounds;            // 0x5c
-	SoundBufferList m_unk0x68;               // 0x68
-	SoundBufferList m_activeSounds;          // 0x74
-	SoundBufferList m_unk0x80;               // 0x80
-	SoundBufferList m_pausedSounds;          // 0x8c
+	SoundBufferList m_activeSounds;          // 0x68
+	SoundBufferList m_activeSpatialSounds;   // 0x74
+	SoundBufferList m_queuedSounds;          // 0x80
+	SoundBufferList m_queuedSpatialSounds;   // 0x8c
+
+	void DestroyPendingStoppedSounds();
+	void ReleaseStoppedSounds();
+	LegoS32 GetAvailableSoundCount();
+	LegoBool32 MakeSoundAvailable(LegoS32 p_priority);
+	void InsertByPriority(SoundBufferList& p_list, SoundBuffer& p_sound)
+	{
+		GolListLink* link = p_list.FirstLink();
+		while (link && p_list.IsValidLink(link)) {
+			SoundBuffer& currentSound = p_list.GetItem(*link);
+
+			if (p_sound.m_priority <= currentSound.m_priority) {
+				p_sound.GetLink().InsertBefore(link);
+				return;
+			}
+
+			link = link->NextValid();
+		}
+
+		p_list.Append(p_sound);
+	}
 };
 
 #endif // DIRECTSOUNDMANAGER_H

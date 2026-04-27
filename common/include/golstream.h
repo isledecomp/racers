@@ -83,7 +83,7 @@ public:
 #else
 	virtual ~GolStream(); // vtable+0x18
 #endif
-	virtual LegoS32 BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);        // vtable+0x1c
+	virtual LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);  // vtable+0x1c
 	virtual LegoS32 Dispose();                                                                       // vtable+0x20
 	virtual LegoS32 BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead); // vtable+0x24
 	virtual LegoS32 ReadLine(void* p_buf, LegoU32 p_size);                                           // vtable+0x28
@@ -133,8 +133,9 @@ public:
 #else
 	static void TransformToUpper(LegoChar* p_str);
 #endif
-	static LegoS32 IsAbsolutePath(LegoChar* p_path);
+	static LegoS32 IsAbsolutePath(const LegoChar* p_path);
 	static void BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path);
+	LegoS32 GetSize() { return m_size; }
 
 protected:
 	LegoU32 m_mode;           // 0x04

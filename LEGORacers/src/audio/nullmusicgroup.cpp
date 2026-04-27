@@ -1,5 +1,6 @@
 #include "audio/nullmusicgroup.h"
 
+#include "audio/nullmusicinstance.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(MusicGroup, 0x10)
@@ -30,38 +31,35 @@ NullMusicGroup::~NullMusicGroup()
 }
 
 // FUNCTION: LEGORACERS 0x0041c0c0
-GolListLink* NullMusicGroup::Load(const LegoChar*)
+void NullMusicGroup::Load(const LegoChar*)
 {
-	return Unload();
+	Unload();
 }
 
 // FUNCTION: LEGORACERS 0x0041c0d0
-GolListLink* NullMusicGroup::Unload()
+void NullMusicGroup::Unload()
 {
-	GolListLink* result;
-
 	while (TRUE) {
-		result = m_musicInstances.LastLink();
+		GolListLink* link = m_musicInstances.LastLink();
 
-		if (!m_musicInstances.IsValidLastLink(result)) {
+		if (!m_musicInstances.IsValidLastLink(link)) {
 			break;
 		}
 
-		DestroyMusicInstance(&m_musicInstances.GetItem(*result));
+		DestroyMusicInstance(&m_musicInstances.GetItem(*link));
 	}
 
-	m_unk0x04 = 0;
-	return result;
+	m_musicCount = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0041c100
-MusicInstance* NullMusicGroup::CreateMusicInstance(undefined4)
+MusicInstance* NullMusicGroup::CreateMusicInstance(LegoU32)
 {
-	MusicInstance* node = new MusicInstance();
+	NullMusicInstance* node = new NullMusicInstance();
 
 	if (node) {
 		node->SetMusicGroup(this);
-		m_musicInstances.Append(node);
+		m_musicInstances.Append(*node);
 	}
 
 	return node;
@@ -70,5 +68,5 @@ MusicInstance* NullMusicGroup::CreateMusicInstance(undefined4)
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
 LegoBool32 NullMusicGroup::IsLoaded()
 {
-	return 1;
+	return TRUE;
 }

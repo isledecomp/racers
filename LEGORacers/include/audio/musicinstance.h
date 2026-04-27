@@ -1,29 +1,28 @@
 #ifndef MUSICINSTANCE_H
 #define MUSICINSTANCE_H
 
-#include "audio/musicinstancebase.h"
-#include "compat.h"
 #include "decomp.h"
+#include "gollist.h"
+#include "types.h"
 
-class MusicGroup;
-
-// VTABLE: LEGORACERS 0x004afca4
-// SIZE 0x10
-class MusicInstance : public MusicInstanceBase {
+// VTABLE: LEGORACERS 0x004afa40
+// SIZE 0x0c
+class MusicInstance : public GolListLink {
 public:
-	MusicInstance();
-	~MusicInstance() override;                  // vtable+0x00
-	undefined4 VTable0x04(undefined4) override; // vtable+0x04
-	void Stop() override;                       // vtable+0x08
-	void VTable0x0c() override;                 // vtable+0x0c
+	MusicInstance() {}
 
-	void SetMusicGroup(MusicGroup* p_musicGroup) { m_musicGroup = p_musicGroup; }
+	virtual ~MusicInstance();                // vtable+0x00
+	virtual LegoBool32 Play(LegoBool32) = 0; // vtable+0x04
+	virtual void Stop() = 0;                 // vtable+0x08
+	virtual void Pause() = 0;                // vtable+0x0c
+	virtual void Resume() = 0;               // vtable+0x10
+	virtual LegoBool32 IsPlaying() = 0;      // vtable+0x14
+	virtual void SetVolume(LegoFloat) = 0;   // vtable+0x18
+	virtual void VTable0x1c(undefined4) = 0; // vtable+0x1c
+	virtual void VTable0x20(undefined4) = 0; // vtable+0x20
 
-	// SYNTHETIC: LEGORACERS 0x0041bfc0
+	// SYNTHETIC: LEGORACERS 0x00417a10
 	// MusicInstance::`scalar deleting destructor'
-
-private:
-	MusicGroup* m_musicGroup; // 0x0c
 };
 
 #endif // MUSICINSTANCE_H

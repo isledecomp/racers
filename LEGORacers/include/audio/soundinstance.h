@@ -30,6 +30,7 @@ public:
 	void SetSoundGroup(DirectSoundGroup* p_soundGroup) { m_soundGroup = p_soundGroup; }
 	void SetSoundBuffer(SoundBuffer* p_soundBuffer) { m_soundBuffer = p_soundBuffer; }
 	DirectSoundGroup* GetSoundGroupDirect() { return m_soundGroup; }
+	SoundBuffer* GetSoundBuffer() { return m_soundBuffer; }
 
 private:
 	DirectSoundGroup* m_soundGroup; // 0x0c

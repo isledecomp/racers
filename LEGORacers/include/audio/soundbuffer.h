@@ -11,6 +11,7 @@
 class DirectSoundManager;
 class SoundBuffer;
 class SoundInstance;
+class SoundData;
 class StreamingSoundInstance;
 struct SoundBufferListTraits;
 
@@ -25,7 +26,9 @@ public:
 		c_defaultPriority = 4096,
 		c_streamingPriority = 0,
 		c_playFlagNone = 0,
-		c_playFlagStreaming = DSBPLAY_LOOPING | (1 << 1),
+		c_playFlagDirectSoundLooping = DSBPLAY_LOOPING,
+		c_playFlagLooping = (1 << 1),
+		c_playFlagsLooping = c_playFlagDirectSoundLooping | c_playFlagLooping,
 		c_defaultSampleRate = 22050,
 		c_defaultChannelCount = 1,
 		c_defaultBitsPerSample = 16,
@@ -45,6 +48,9 @@ public:
 	void ReleaseBufferPlayback();
 	void ApplyDirectSoundSettings();
 	LegoBool32 Play(LegoBool32 p_loop);
+	LegoBool32 LoadSoundData(SoundData* p_data);
+	LegoBool32 CreateDirectSoundBuffer(LegoU32 p_bufferSize);
+	void StartDirectSoundBuffer();
 	LegoBool32 IsPlaying();
 	void SetPriority(LegoS32 p_priority);
 	void ResetSoundSettings();
@@ -67,6 +73,8 @@ public:
 	}
 
 private:
+	friend class DirectSoundGroup;
+	friend class DirectSoundManager;
 	friend struct SoundBufferListTraits;
 
 	GolListLink m_link;                 // 0x04
@@ -87,12 +95,12 @@ private:
 	LegoS32 m_directSoundPan;                // 0x2c
 	LegoS32 m_directSoundFrequency;          // 0x30
 	LegoFloat m_sampleRate;                  // 0x34
-	undefined4 m_unk0x38;                    // 0x38
+	SoundData* m_soundData;                  // 0x38
 	LPDIRECTSOUNDBUFFER m_directSoundBuffer; // 0x3c
 	LegoU8 m_channelCount;                   // 0x40
 	LegoU8 m_bitsPerSample;                  // 0x41
 	undefined m_unk0x42[0x44 - 0x42];        // 0x42
-	undefined4 m_unk0x44;                    // 0x44
+	LegoU32 m_directSoundBufferSize;         // 0x44
 };
 
 struct SoundBufferListTraits {

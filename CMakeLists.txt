@@ -144,14 +144,21 @@ add_executable(legoracers WIN32
   LEGORacers/src/legoracers.cpp
   LEGORacers/src/win32golapp.cpp
   LEGORacers/src/audio/musicinstance.cpp
+  LEGORacers/src/audio/nullmusicinstance.cpp
   LEGORacers/src/audio/nullmusicgroup.cpp
+  LEGORacers/src/audio/audiohelpers.cpp
   LEGORacers/src/audio/directsoundmanager.cpp
   LEGORacers/src/audio/directsoundconversions.cpp
+  LEGORacers/src/audio/directmusicinstance.cpp
+  LEGORacers/src/audio/musicinstancestate.cpp
+  LEGORacers/src/audio/nullstreamingsoundinstance.cpp
   LEGORacers/src/audio/nullsoundgroup.cpp
+  LEGORacers/src/audio/nullsoundinstance.cpp
   LEGORacers/src/audio/directsoundgroup.cpp
   LEGORacers/src/audio/directmusicgroup.cpp
   LEGORacers/src/audio/nullsoundmanager.cpp
-  LEGORacers/src/audio/musicgroupbase.cpp
+  LEGORacers/src/audio/musicgroupstate.cpp
+  LEGORacers/src/audio/sounddata.cpp
   LEGORacers/src/audio/soundbuffer.cpp
   LEGORacers/src/audio/soundgroupbinding.cpp
   LEGORacers/src/audio/soundinstance.cpp
@@ -166,7 +173,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/input/mousedevice.cpp
   LEGORacers/src/input/directinputdevice.cpp
   LEGORacers/src/input/inputdevice.cpp
-  LEGORacers/src/audio/musicinstancebase.cpp
   LEGORacers/src/menumanager.cpp
   LEGORacers/src/aquacoral0x37b8.cpp
   LEGORacers/src/stackoflegou16.cpp

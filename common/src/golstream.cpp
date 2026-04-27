@@ -109,7 +109,7 @@ void GolStream::Init()
 LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
 {
 	LegoS32 result = e_ioFileNotFound;
-	LegoS32 isAbsolute = IsAbsolutePath((LegoChar*) p_fileName);
+	LegoS32 isAbsolute = IsAbsolutePath(p_fileName);
 
 	GolFsLock();
 
@@ -182,7 +182,7 @@ LegoS32 GolStream::OpenFileSource()
 
 // FUNCTION: GOLDP 0x10031580
 // FUNCTION: LEGORACERS 0x0044cb30
-LegoS32 GolStream::BufferedOpen(LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize)
+LegoS32 GolStream::BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();
@@ -694,7 +694,7 @@ void GolStream::TransformToUpper(LegoChar* p_str)
 #endif
 
 // FUNCTION: LEGORACERS 0x0044d530
-LegoS32 GolStream::IsAbsolutePath(LegoChar* p_path)
+LegoS32 GolStream::IsAbsolutePath(const LegoChar* p_path)
 {
 	if (p_path[0] == '\\' && p_path[1] == '\\') {
 		return TRUE;

@@ -150,6 +150,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/audio/directsoundmanager.cpp
   LEGORacers/src/audio/directsoundconversions.cpp
   LEGORacers/src/audio/directmusicinstance.cpp
+  LEGORacers/src/audio/directmusicstream.cpp
   LEGORacers/src/audio/musicinstancestate.cpp
   LEGORacers/src/audio/nullstreamingsoundinstance.cpp
   LEGORacers/src/audio/nullsoundgroup.cpp

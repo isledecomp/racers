@@ -74,7 +74,7 @@ public:
 	void FUN_0046c760();
 
 	// SYNTHETIC: LEGORACERS 0x0046b3f0
-	// `scalar deleting destructor'
+	// ImaginaryNotion0x290::`scalar deleting destructor'
 
 protected:
 	undefined4 m_unk0x04;          // 0x004

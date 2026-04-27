@@ -13,7 +13,7 @@ public:
 	~FluffyGloomkins() override;
 	undefined4* VTable0x08(void) override;       // vtable+0x08
 	undefined4* VTable0x0c(void) override;       // vtable+0x0c
-	void VTable0x18(void) override;              // vtable+0x1c
+	void VTable0x18(void) override;              // vtable+0x18
 	void VTable0x1c(undefined4*) override;       // vtable+0x1c
 	void VTable0x20(undefined4) override;        // vtable+0x20
 	void VTable0x24(undefined4) override;        // vtable+0x24

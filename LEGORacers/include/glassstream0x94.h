@@ -26,6 +26,16 @@ public:
 	void Run();
 
 private:
+	enum {
+		c_firstScoreIndex = 0,
+		c_singleRaceCount = 1,
+		c_scoreThresholdStep = 10,
+		c_rank0Status = 22,
+		c_rank1Status = 23,
+		c_rank2Status = 24,
+		c_rankDefaultStatus = 25,
+	};
+
 	CelestialForge0x48 m_unk0x04;   // 0x04
 	LegoRacers::Context* m_context; // 0x4c
 	GlassBlock0x3368* m_unk0x50;    // 0x50

@@ -24,9 +24,9 @@ void CelestialForge0x48::Reset()
 	m_unk0x08 = 0;
 	m_unk0x0c = 0;
 
-	for (i = 0; i < sizeOfArray(m_unk0x10) / 2; i++) {
+	for (i = 0; i < sizeOfArray(m_unk0x10); i++) {
 		m_unk0x10[i] = 0;
-		m_unk0x10[i + sizeOfArray(m_unk0x10) / 2] = 0;
+		m_unk0x28[i] = 0;
 	}
 
 	m_unk0x40 = 0;
@@ -64,7 +64,7 @@ LegoS32 CelestialForge0x48::FUN_00440300(LegoU32 p_index)
 {
 	LegoS32 result = 0;
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x10) / 2; i++) {
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x10); i++) {
 		if (i != p_index && m_unk0x10[i] > m_unk0x10[p_index]) {
 			result++;
 		}
@@ -76,13 +76,12 @@ LegoS32 CelestialForge0x48::FUN_00440300(LegoU32 p_index)
 // FUNCTION: LEGORACERS 0x00440860
 undefined4* CelestialForge0x48::FUN_00440860()
 {
-	undefined4* result = &m_unk0x10[sizeOfArray(m_unk0x10) / 2];
+	undefined4* result = m_unk0x28;
 	undefined4 zero = 0;
-	LegoS32 i = sizeOfArray(m_unk0x10) / 2;
+	LegoS32 i = sizeOfArray(m_unk0x10);
 
-	// Clear the two halves of the table in parallel.
 	do {
-		undefined4* firstHalf = result - sizeOfArray(m_unk0x10) / 2;
+		undefined4* firstHalf = result - sizeOfArray(m_unk0x10);
 		*firstHalf = zero;
 		*result++ = zero;
 	} while (--i);

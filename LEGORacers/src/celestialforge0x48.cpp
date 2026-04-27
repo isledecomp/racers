@@ -52,3 +52,39 @@ void CelestialForge0x48::FUN_004402a0()
 {
 	Reset();
 }
+
+// FUNCTION: LEGORACERS 0x004402f0
+undefined4 CelestialForge0x48::FUN_004402f0(LegoU32 p_index)
+{
+	return m_unk0x10[p_index];
+}
+
+// FUNCTION: LEGORACERS 0x00440300
+LegoS32 CelestialForge0x48::FUN_00440300(LegoU32 p_index)
+{
+	LegoS32 result = 0;
+
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x10); i++) {
+		if (i != p_index && m_unk0x10[i] > m_unk0x10[p_index]) {
+			result++;
+		}
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00440860
+undefined4* CelestialForge0x48::FUN_00440860()
+{
+	undefined4* result = m_unk0x28;
+	undefined4 zero = 0;
+	LegoS32 i = sizeOfArray(m_unk0x10);
+
+	do {
+		undefined4* firstHalf = result - sizeOfArray(m_unk0x10);
+		*firstHalf = zero;
+		*result++ = zero;
+	} while (--i);
+
+	return result;
+}

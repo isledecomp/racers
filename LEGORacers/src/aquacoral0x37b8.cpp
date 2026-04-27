@@ -59,7 +59,7 @@ LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
 			p_context->m_golApp->GetRenderer(),
 			p_context->m_golApp->GetGolExport(),
 			p_context->m_unk0x18,
-			p_context->m_unk0x3c
+			p_context->m_raceSlots[0].m_unk0x04
 		);
 	}
 
@@ -154,8 +154,8 @@ LegoS32 AquaCoral0x37b8::InitializeRaceScene()
 {
 	sprintf(m_context->m_commonDataDirectory, "GAMEDATA\\COMMON");
 	strcpy(m_context->m_gameDataDirectory, "GAMEDATA\\");
-	memcpy(g_raceNameBuffer, m_context->m_raceName, sizeof(m_context->m_raceName));
-	g_raceNameBuffer[sizeof(m_context->m_raceName)] = '\0';
+	memcpy(g_raceNameBuffer, m_context->m_raceSlots[0].m_raceName, sizeof(m_context->m_raceSlots[0].m_raceName));
+	g_raceNameBuffer[sizeof(m_context->m_raceSlots[0].m_raceName)] = '\0';
 	strcat(m_context->m_gameDataDirectory, g_raceNameBuffer);
 
 	LegoChar* gameDataDirectory = m_context->m_gameDataDirectory;
@@ -164,8 +164,8 @@ LegoS32 AquaCoral0x37b8::InitializeRaceScene()
 	}
 
 	if (m_unk0x3400.GetUnk0x14()) {
-		return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_unk0x3c, &m_unk0x3400);
+		return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_unk0x04, &m_unk0x3400);
 	}
 
-	return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_unk0x3c, NULL);
+	return m_unk0x98.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_unk0x04, NULL);
 }

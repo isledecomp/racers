@@ -35,7 +35,16 @@ public:
 private:
 	void FUN_10017390();
 
-	undefined m_unk0xc0[0x118 - 0xf0];
+	undefined4* m_unk0xf0;  // 0xf0
+	undefined4* m_unk0xf4;  // 0xf4
+	undefined4* m_unk0xf8;  // 0xf8
+	undefined4* m_unk0xfc;  // 0xfc
+	undefined4* m_unk0x100; // 0x100
+	undefined4* m_unk0x104; // 0x104
+	undefined4* m_unk0x108; // 0x108
+	undefined4* m_unk0x10c; // 0x10c
+	undefined4* m_unk0x110; // 0x110
+	undefined4* m_unk0x114; // 0x114
 };
 
 #endif // FLUFFYGLOOMKINS0X118_H

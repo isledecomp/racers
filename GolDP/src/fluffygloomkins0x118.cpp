@@ -2,11 +2,19 @@
 
 DECOMP_SIZE_ASSERT(FluffyGloomkins, 0x118)
 
-// STUB: GOLDP 0x10017190
+// FUNCTION: GOLDP 0x10017190
 FluffyGloomkins::FluffyGloomkins()
 {
-	// TODO
-	STUB(0x10017190);
+	m_unk0xf0 = NULL;
+	m_unk0xf4 = NULL;
+	m_unk0x10c = NULL;
+	m_unk0xf8 = NULL;
+	m_unk0x104 = NULL;
+	m_unk0xfc = NULL;
+	m_unk0x110 = NULL;
+	m_unk0x100 = NULL;
+	m_unk0x108 = NULL;
+	m_unk0x114 = NULL;
 }
 
 // FUNCTION: GOLDP 0x10017200

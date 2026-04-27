@@ -74,17 +74,10 @@ LegoS32 CelestialForge0x48::FUN_00440300(LegoU32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00440860
-undefined4* CelestialForge0x48::FUN_00440860()
+void CelestialForge0x48::FUN_00440860()
 {
-	undefined4* result = m_unk0x28;
-	undefined4 zero = 0;
-	LegoS32 i = sizeOfArray(m_unk0x10);
-
-	do {
-		undefined4* firstHalf = result - sizeOfArray(m_unk0x10);
-		*firstHalf = zero;
-		*result++ = zero;
-	} while (--i);
-
-	return result;
+	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x10); i++) {
+		m_unk0x10[i] = 0;
+		m_unk0x28[i] = 0;
+	}
 }

@@ -16,7 +16,7 @@ public:
 	void FUN_004402a0();
 	undefined4 FUN_004402f0(LegoU32 p_index);
 	LegoS32 FUN_00440300(LegoU32 p_index);
-	undefined4* FUN_00440860();
+	void FUN_00440860();
 
 private:
 	undefined4 m_unk0x00;           // 0x00

@@ -21,6 +21,13 @@ static UINT g_directMusicTimerId;
 // GLOBAL: LEGORACERS 0x004c4800
 static HANDLE g_directMusicMutex;
 
+// Modern Windows SDKs use DWORD_PTR for multimedia timer callback payloads.
+#ifdef COMPAT_MODE
+typedef DWORD_PTR DirectMusicTimerCallbackData;
+#else
+typedef DWORD DirectMusicTimerCallbackData;
+#endif
+
 // FUNCTION: LEGORACERS 0x00419700
 DirectMusicInstance::DirectMusicInstance()
 {
@@ -507,7 +514,13 @@ LegoBool32 DirectMusicInstance::SetPath(const LegoChar* p_path)
 }
 
 // FUNCTION: LEGORACERS 0x0041a110
-static void CALLBACK DirectMusicTimerCallback(UINT, UINT, DWORD, DWORD, DWORD)
+static void CALLBACK DirectMusicTimerCallback(
+	UINT,
+	UINT,
+	DirectMusicTimerCallbackData,
+	DirectMusicTimerCallbackData,
+	DirectMusicTimerCallbackData
+)
 {
 	if (!WaitForSingleObject(g_directMusicMutex, 0)) {
 		GolListLink* link = g_directMusicStreams.LastLink();
@@ -609,8 +622,13 @@ LegoBool32 DirectMusicStream::Initialize()
 	WaitForSingleObject(g_directMusicMutex, INFINITE);
 
 	if (!g_directMusicTimerId) {
-		g_directMusicTimerId =
-			timeSetEvent(c_streamTimerDelay, c_streamTimerDelay, DirectMusicTimerCallback, (DWORD) this, TIME_PERIODIC);
+		g_directMusicTimerId = timeSetEvent(
+			c_streamTimerDelay,
+			c_streamTimerDelay,
+			DirectMusicTimerCallback,
+			(DirectMusicTimerCallbackData) this,
+			TIME_PERIODIC
+		);
 
 		if (!g_directMusicTimerId) {
 			ReleaseMutex(g_directMusicMutex);

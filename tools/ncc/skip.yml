@@ -3,6 +3,8 @@ m_sound: "Can't currently detect member in union"
 m_streamingSound: "Can't currently detect member in union"
 m_soundInstance: "Can't currently detect member in union"
 m_streamingSoundInstance: "Can't currently detect member in union"
+m_adpcmHeader: "Can't currently detect member in union"
+m_streamBuffer: "Can't currently detect member in union"
 c_332RedLevels: 'Allow constant'
 c_332GreenLevels: 'Allow constant'
 c_332BlueLevels: 'Allow constant'

@@ -1,5 +1,5 @@
-#ifndef GolDPExport_H
-#define GolDPExport_H
+#ifndef GOLDPEXPORT_H
+#define GOLDPEXPORT_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -22,7 +22,7 @@ public:
 	undefined4* VTable0x14() override;            // vtable+0x14
 	undefined4* VTable0x18() override;            // vtable+0x18
 	undefined4* VTable0x1c() override;            // vtable+0x1c
-	undefined4* VTable0x20() override;            // vtable+0x20
+	AmberLens0x344* VTable0x20() override;        // vtable+0x20
 	undefined4 VTable0x24() override;             // vtable+0x24
 	undefined4* VTable0x28() override;            // vtable+0x28
 	undefined4* VTable0x2c() override;            // vtable+0x2c
@@ -47,4 +47,4 @@ private:
 	GolDrawDPState m_state; // 0x04
 };
 
-#endif // GolDPExport_H
+#endif // GOLDPEXPORT_H

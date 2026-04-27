@@ -1,5 +1,6 @@
 #include "goldpexport.h"
 
+#include "amberlens0x344.h"
 #include "awakekite0x20.h"
 #include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
@@ -30,7 +31,7 @@ GolDrawState* GolDPExport::VTable0x04()
 // FUNCTION: GOLDP 0x100150a0
 ZoweeBlubberworth0xf0* GolDPExport::VTable0x08()
 {
-	ZoweeBlubberworth0xf0* obj = new FluffyGloomkins;
+	ZoweeBlubberworth0xf0* obj = new FluffyGloomkins0x118;
 
 	if (obj == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -79,12 +80,15 @@ undefined4* GolDPExport::VTable0x1c()
 	return NULL;
 }
 
-// STUB: GOLDP 0x10015340
-undefined4* GolDPExport::VTable0x20()
+// FUNCTION: GOLDP 0x10015340
+AmberLens0x344* GolDPExport::VTable0x20()
 {
-	// TODO
-	STUB(0x10015340);
-	return NULL;
+	AmberLens0x344* result = new AmberLens0x344;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	return result;
 }
 
 // STUB: GOLDP 0x100153b0

@@ -108,6 +108,10 @@ add_library(goldp SHARED
   GolDP/src/floatybarge0x4c.cpp
   GolDP/src/slatepeak0x58.cpp
   GolDP/src/azureridge0x38.cpp
+  GolDP/src/amberlensbase0x120.cpp
+  GolDP/src/amberlens0x344.cpp
+  GolDP/src/jadeorbit0x220.cpp
+  GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp

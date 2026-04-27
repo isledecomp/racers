@@ -5,12 +5,14 @@
 #include "decomp.h"
 #include "zoweeblubberworth0xf0.h"
 
+class AmberLensBase0x120;
+
 // SIZE 0x118
 // VTABLE: GOLDP 0x1005690c
-class FluffyGloomkins : public ZoweeBlubberworth0xf0 {
+class FluffyGloomkins0x118 : public ZoweeBlubberworth0xf0 {
 public:
-	FluffyGloomkins();
-	~FluffyGloomkins() override;
+	FluffyGloomkins0x118();
+	~FluffyGloomkins0x118() override;
 	undefined4* VTable0x08(void) override;       // vtable+0x08
 	undefined4* VTable0x0c(void) override;       // vtable+0x0c
 	void VTable0x18(void) override;              // vtable+0x18
@@ -30,21 +32,21 @@ public:
 	undefined4* VTable0x50(undefined4) override; // vtable+0x50
 
 	// SYNTHETIC: GOLDP 0x100171e0
-	// FluffyGloomkins::`scalar deleting destructor'
+	// FluffyGloomkins0x118::`scalar deleting destructor'
 
 private:
 	void FUN_10017390();
 
-	undefined4* m_unk0xf0;  // 0xf0
-	undefined4* m_unk0xf4;  // 0xf4
-	undefined4* m_unk0xf8;  // 0xf8
-	undefined4* m_unk0xfc;  // 0xfc
-	undefined4* m_unk0x100; // 0x100
-	undefined4* m_unk0x104; // 0x104
-	undefined4* m_unk0x108; // 0x108
-	undefined4* m_unk0x10c; // 0x10c
-	undefined4* m_unk0x110; // 0x110
-	undefined4* m_unk0x114; // 0x114
+	undefined4* m_unk0xf0;          // 0xf0
+	undefined4* m_unk0xf4;          // 0xf4
+	undefined4* m_unk0xf8;          // 0xf8
+	undefined4* m_unk0xfc;          // 0xfc
+	undefined4* m_unk0x100;         // 0x100
+	undefined4* m_unk0x104;         // 0x104
+	undefined4* m_unk0x108;         // 0x108
+	undefined4* m_unk0x10c;         // 0x10c
+	undefined4* m_unk0x110;         // 0x110
+	AmberLensBase0x120* m_unk0x114; // 0x114
 };
 
 #endif // FLUFFYGLOOMKINS0X118_H

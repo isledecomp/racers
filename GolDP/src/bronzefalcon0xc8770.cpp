@@ -34,7 +34,7 @@ void BronzeFalcon0xc8770::VTable0x18()
 }
 
 // STUB: GOLDP 0x100087b0
-void BronzeFalcon0xc8770::VTable0x20(undefined4)
+void BronzeFalcon0xc8770::VTable0x20(AmberLens0x344*)
 {
 	STUB(0x100087b0);
 }

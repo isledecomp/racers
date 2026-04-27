@@ -1,5 +1,6 @@
 #include "menumanager.h"
 
+#include "amberlens0x344.h"
 #include "audio/musicinstance.h"
 #include "audio/nullmusicgroup.h"
 #include "audio/nullsoundgroup.h"
@@ -13,6 +14,7 @@
 #include <stddef.h>
 
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
+DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 
 // GLOBAL: LEGORACERS 0x004c4918
 MenuManager* g_menuManager = NULL;
@@ -160,11 +162,36 @@ void MenuManager::FUN_0042cd60()
 	m_unk0x4c74.FUN_00469040(&initStruct);
 }
 
-// STUB: LEGORACERS 0x0042cde0
+// FUNCTION: LEGORACERS 0x0042cde0
 void MenuManager::FUN_0042cde0()
 {
-	// TODO
-	STUB(0x42cde0);
+	FloatyVec0xc position;
+	FloatyVec0xc forward;
+	FloatyVec0xc right;
+	AmberLens0x344* lens = m_unk0x4cd4->VTable0x20();
+
+	lens->m_unk0x08 = m_unk0x04.m_context->GetUnk0x0c();
+	lens->m_flags |= AmberLens0x344::c_flagBit1;
+	lens->m_unk0x10 = m_unk0x04.m_context->GetUnk0x10();
+	lens->m_flags |= AmberLens0x344::c_flagBit1;
+	lens->m_unk0x14 = m_unk0x04.m_context->GetUnk0x14();
+	lens->m_flags |= AmberLens0x344::c_flagBit1;
+
+	position.m_x = 0.0f;
+	position.m_y = 0.0f;
+	position.m_z = 0.0f;
+	forward.m_x = 0.0f;
+	forward.m_y = 0.0f;
+	forward.m_z = -1.0f;
+	right.m_x = 1.0f;
+	right.m_y = 0.0f;
+	right.m_z = 0.0f;
+
+	lens->GetUnk0x04()->VTable0x44(&position);
+	lens->m_flags |= AmberLens0x344::c_flagBit0;
+	lens->GetUnk0x04()->VTable0x24(&right, &forward);
+	lens->m_flags |= AmberLens0x344::c_flagBit0;
+	m_unk0x4cd8->VTable0x20(lens);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0

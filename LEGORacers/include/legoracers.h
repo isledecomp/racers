@@ -62,6 +62,9 @@ public:
 		undefined m_unk0x39c[0x12b0 - 0x39c]; // 0x39c
 
 		SoundManager* GetSoundManager() { return m_soundManager; }
+		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }
+		LegoFloat GetUnk0x10() const { return m_unk0x10; }
+		LegoFloat GetUnk0x14() const { return m_unk0x14; }
 	};
 
 	enum {

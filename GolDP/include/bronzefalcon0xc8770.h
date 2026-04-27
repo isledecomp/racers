@@ -5,6 +5,7 @@
 #include "types.h"
 
 class GolCommonDrawState;
+class AmberLens0x344;
 class SmallCocoon0xc;
 
 // VTABLE: GOLDP 0x100565b8
@@ -30,7 +31,7 @@ public:
 	virtual void VTable0x14();                                              // vtable+0x14
 	virtual void VTable0x18();                                              // vtable+0x18
 	virtual void VTable0x1c(JasperRipple0x4*);                              // vtable+0x1c
-	virtual void VTable0x20(undefined4);                                    // vtable+0x20
+	virtual void VTable0x20(AmberLens0x344*);                               // vtable+0x20
 	virtual void VTable0x24();                                              // vtable+0x24
 	virtual void VTable0x28();                                              // vtable+0x28
 	virtual void VTable0x2c(undefined4);                                    // vtable+0x2c

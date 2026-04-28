@@ -144,6 +144,7 @@ add_library(goldp SHARED
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golddune0x38.cpp
+  GolDP/src/bronzedunebag0xc.cpp
   GolDP/src/utopianpan0xa4.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>

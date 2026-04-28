@@ -821,11 +821,11 @@ InputManager* Win32GolApp::GetInputManager()
 // STUB: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppDeactivated()
 {
-	STUB(0x00417990);
+	MATCHING(0x00417990);
 }
 
 // STUB: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppActivated()
 {
-	STUB(0x00417990);
+	MATCHING(0x00417990);
 }

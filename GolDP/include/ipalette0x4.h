@@ -8,7 +8,7 @@
 class IPalette0x4 {
 public:
 	virtual void GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) = 0; // vtable+0x00
-	virtual void CopyEntriesFrom(IPalette0x4* p_source) = 0;                               // vtable+0x04
+	virtual void CopyEntriesFrom(IPalette0x4* p_source) = 0;                                // vtable+0x04
 	virtual void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) = 0; // vtable+0x08
 	virtual void GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index) = 0;                      // vtable+0x0c
 	virtual LegoS32 FindEntry(PALETTEENTRY* p_entry) = 0;                                   // vtable+0x10

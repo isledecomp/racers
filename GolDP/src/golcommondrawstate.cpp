@@ -43,14 +43,9 @@ void GolCommonDrawState::VTable0x50()
 }
 
 // FUNCTION: GOLDP 0x10018570
-LegoS32 GolCommonDrawState::VTable0x54(
-	undefined4 p_unk0x04,
-	undefined4 p_unk0x08,
-	undefined4 p_unk0x0c,
-	undefined4 p_unk0x10
-)
+LegoS32 GolCommonDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p_bp, LegoU32 p_flags)
 {
-	GolDrawState::VTable0x54(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10);
+	GolDrawState::VTable0x54(p_width, p_height, p_bp, p_flags);
 	LegoS32 result = VTable0x58();
 	if (!result) {
 		for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
@@ -201,7 +196,7 @@ undefined4 GolCommonDrawState::VTable0x94()
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolCommonDrawState::VTable0x98() const
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 
@@ -226,7 +221,7 @@ LegoBool32 GolCommonDrawState::VTable0xa4() const
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolCommonDrawState::VTable0xa8() const
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return FALSE;
 }
 

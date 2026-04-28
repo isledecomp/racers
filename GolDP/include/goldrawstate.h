@@ -55,8 +55,8 @@ public:
 	virtual void VTable0x48();                   // vtable+48
 	virtual void VTable0x4c();                   // vtable+4c
 	virtual void VTable0x50();                   // vtable+50
-	virtual LegoS32 VTable0x54(undefined4, undefined4, undefined4,
-							   undefined4); // vtable+54
+	virtual LegoS32 VTable0x54(LegoS32, LegoS32, undefined4,
+							   LegoU32); // vtable+54
 
 	// SYNTHETIC: GOLDP 0x1001d590
 	// GolDrawState::`scalar deleting destructor'

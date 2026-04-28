@@ -1,5 +1,7 @@
 #include "bronzedunebag0xc.h"
 
+DECOMP_SIZE_ASSERT(BronzeDuneBag0xc, 0xc)
+
 // FUNCTION: GOLDP 0x1002a090
 BronzeDuneBag0xc::BronzeDuneBag0xc()
 {

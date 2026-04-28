@@ -270,68 +270,17 @@ In GOLDP the `STUB(...)` write makes the body match other `STUB(0xAAAAAAAA)` and
 
 Class-header annotations require the colon: `// VTABLE: MODULE 0xADDRESS`, not `// VTABLE MODULE 0xADDRESS`. reccmp silently ignores the colonless form and vtable set sites inside dtors/ctors show up as `<OFFSET2>` instead of `ClassName::vftable`, costing 5–10% match. Same rule for `// FUNCTION:`, `// STUB:`, `// GLOBAL:`, `// SYNTHETIC:`. `// SIZE` is the exception — no colon.
 
-## Scalar Deleting Destructor Inlining
+## Shared Common Code Inlining
 
-For small classes, MSVC 6.0 inlines the destructor body directly into the SDD rather than calling the dtor. Symptom: SDD <40% match while the dtor itself is 100%; the asm shows the dtor body inlined (vftable set, member delete, field clear) followed by the standard `test byte [esp+N], 1 / je / delete this / ret 4` tail, whereas your build emits `call Class::~Class` before that tail.
+`common/src/` is compiled as separate object targets for GOLDP and LEGORACERS. This lets project-level compiler settings express target-specific codegen while keeping one idiomatic source implementation.
 
-Fix: move the dtor body into the class declaration (implicit inline):
+Current pattern:
 
-```cpp
-class Small {
-public:
-    // FUNCTION: MODULE 0xADDR  (annotation stays on the inline definition)
-    virtual ~Small()
-    {
-        if (m_data != NULL) {
-            delete[] m_data;
-            m_data = NULL;
-        }
-    }
-};
-```
+- `common_goldp` compiles `COMMON_SOURCES` with `BUILDING_GOL` and `/Ob2`.
+- `common_legoracers` compiles the same `COMMON_SOURCES` with `BUILDING_LEGORACERS` and the default inline behavior.
+- `goldp` and `legoracers` link the corresponding common object target.
 
-Side effect: the body inlines at *other* call sites too — e.g. an outer dtor emitting 5 distinct `~Small()` calls for 5 `Small` members will inline 5 times and break that dtor's match. Guard with `#pragma inline_depth(0)` around the outer:
-
-```cpp
-// TODO: Temporary workaround until we figure out how the original code was written.
-#pragma inline_depth(0)
-OuterClass::~OuterClass()
-{
-    // compiler-emitted member destructor calls stay as calls
-}
-#pragma inline_depth()
-```
-
-**The pragma is a temporary workaround.** The original developers got matching codegen without it. Every use carries the TODO comment verbatim so it's greppable. Prefer discovering the real source-level configuration over propagating the pragma.
-
-## Per-target Inline Definition Placement
-
-A `common/src/` helper can need different inlining per target — e.g. inlined into all callers in GOLDP but called as a function in LEGORACERS. Split the definition:
-
-```cpp
-// header
-class Class {
-#ifdef BUILDING_GOL
-    // FUNCTION: GOLDP 0xADDR
-    virtual ~Class() { /* body, inlined in all GOLDP TUs */ }
-#else
-    virtual ~Class();
-#endif
-};
-```
-
-```cpp
-// .cpp
-#ifndef BUILDING_GOL
-// FUNCTION: LEGORACERS 0xADDR
-Class::~Class()
-{
-    // same body, out-of-line in LEGORACERS — call sites emit real calls
-}
-#endif
-```
-
-Both copies must stay in sync. Apply to any helper (not just dtors) when targets disagree on inlining.
+Do not steer common-code matches by duplicating implementations, moving selected functions into headers, adding `.inl.h` files, or using `#pragma inline_depth`. If a common function differs between GOLDP and LEGORACERS because of inlining, first verify whether it belongs to this target-level common-source pattern.
 
 ## Naming Members from Matched Code
 

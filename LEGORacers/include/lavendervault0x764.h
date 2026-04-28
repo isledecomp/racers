@@ -36,13 +36,13 @@ private:
 	void FUN_00498e90(GolFileParser& p_parser);
 
 public:
-	void FUN_00498f50(LegoS32 p_index, LegoChar* p_buffer);
-	void FUN_00498f70(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2);
-	void FUN_00498fd0(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2);
-	void FUN_00499020(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2);
-	void FUN_00499070(LegoS32 p_index, LegoChar* p_buffer);
-	void FUN_00499090(LegoS32 p_index, LegoChar* p_buffer);
-	void FUN_004990b0(int p_index1, int p_index2, LegoChar* p_buffer);
+	void FUN_00498f50(LegoS32 p_index, LegoChar* p_buffer) const;
+	void FUN_00498f70(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
+	void FUN_00498fd0(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
+	void FUN_00499020(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
+	void FUN_00499070(LegoS32 p_index, LegoChar* p_buffer) const;
+	void FUN_00499090(LegoS32 p_index, LegoChar* p_buffer) const;
+	void FUN_004990b0(int p_index1, int p_index2, LegoChar* p_buffer) const;
 
 private:
 	LegoBool32 m_loaded;                 // 0x000

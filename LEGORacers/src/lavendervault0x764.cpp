@@ -281,13 +281,13 @@ void LavenderVault0x764::FUN_00498e90(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498f50
-void LavenderVault0x764::FUN_00498f50(LegoS32 p_index, LegoChar* p_buffer)
+void LavenderVault0x764::FUN_00498f50(LegoS32 p_index, LegoChar* p_buffer) const
 {
 	::strncpy(p_buffer, m_unk0x018[p_index], sizeof(m_unk0x018[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00498f70
-void LavenderVault0x764::FUN_00498f70(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2)
+void LavenderVault0x764::FUN_00498f70(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
 {
 	::strncpy(p_buffer1, m_unk0x180, sizeof(m_unk0x180));
 	::strcpy(p_buffer2, m_unk0x188[p_index]);
@@ -295,33 +295,33 @@ void LavenderVault0x764::FUN_00498f70(int p_index, LegoChar* p_buffer1, LegoChar
 }
 
 // FUNCTION: LEGORACERS 0x00498fd0
-void LavenderVault0x764::FUN_00498fd0(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2)
+void LavenderVault0x764::FUN_00498fd0(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
 {
 	::strncpy(p_buffer1, m_unk0x242[m_unk0x344[p_index]], sizeof(m_unk0x242[m_unk0x344[p_index]]));
 	::strncpy(p_buffer2, m_unk0x252[p_index], sizeof(m_unk0x252[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499020
-void LavenderVault0x764::FUN_00499020(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2)
+void LavenderVault0x764::FUN_00499020(int p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
 {
 	::strncpy(p_buffer1, m_unk0x3da[m_unk0x4dc[p_index]], sizeof(m_unk0x3da[m_unk0x4dc[p_index]]));
 	::strncpy(p_buffer2, m_unk0x3ea[p_index], sizeof(m_unk0x3ea[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499070
-void LavenderVault0x764::FUN_00499070(int p_index, LegoChar* p_buffer)
+void LavenderVault0x764::FUN_00499070(int p_index, LegoChar* p_buffer) const
 {
 	::strncpy(p_buffer, m_unk0x6b2[p_index], sizeof(m_unk0x6b2[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499090
-void LavenderVault0x764::FUN_00499090(int p_index, LegoChar* p_buffer)
+void LavenderVault0x764::FUN_00499090(int p_index, LegoChar* p_buffer) const
 {
 	::strncpy(p_buffer, m_unk0x572[p_index], sizeof(m_unk0x572[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x004990b0
-void LavenderVault0x764::FUN_004990b0(int p_index1, int p_index2, LegoChar* p_buffer)
+void LavenderVault0x764::FUN_004990b0(int p_index1, int p_index2, LegoChar* p_buffer) const
 {
 	::strcpy(p_buffer, m_unk0x188[p_index1]);
 	::strncpy(&p_buffer[3], m_unk0x200[p_index2], sizeOfArray(m_unk0x200[p_index2]) - 1);

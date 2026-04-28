@@ -19,16 +19,15 @@ public:
 	LegoU32 GetPaletteSize() override;                                                   // vtable+0x
 	virtual ~BronzeDuneBag0xc();                                                         // vtable+0x00
 
-	void FUN_1002a120(undefined4);
+	void FUN_1002a120(undefined4*);
 	void FUN_1002a1b0();
 
 	// SYNTHETIC: GOLDP 0x1002a0b0
 	// BronzeDuneBag0xc::`scalar deleting destructor'
 
 protected:
-	undefined4* m_unk0x4;
-	;                    // 0x4
-	undefined4 m_unk0x8; // 0x8
+	PALETTEENTRY* m_entries; // 0x4
+	LegoU32 m_size;          // 0x8
 };
 
 #endif // BRONZEDUNEBAG0XC_H

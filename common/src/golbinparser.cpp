@@ -95,7 +95,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			// LINE: LEGORACERS 0x0x44ab64
+			// LINE: LEGORACERS 0x0044ab64
 			m_unk0x1f8 = ((LegoU8) m_unk0xa4[0]) + ((LegoU8) m_unk0xa4[1] << 8);
 
 			if (!FUN_0044b0b0(1)) {
@@ -139,7 +139,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			continue;
 
 		case 0x16:
-			// LINE: LEGORACERS 0x0044ac351
+			// LINE: LEGORACERS 0x0044ac35
 			FUN_0044b020();
 			if (m_unk0x34 == e_syntaxerror) {
 				return e_syntaxerror;

@@ -5,6 +5,7 @@
 #include "types.h"
 
 class PearlDew0x0c;
+class IPalette0x4;
 
 // VTABLE: GOLDP 0x10056d3c
 // SIZE 0x30
@@ -36,7 +37,7 @@ public:
 	virtual void UnlockAuxPixels();                                                            // vtable+0x10
 	virtual void VTable0x14(undefined4*);                                                      // vtable+0x14
 	virtual void VTable0x18();                                                                 // vtable+0x18
-	virtual PearlDew0x0c* GetPalette();                                                        // vtable+0x1c
+	virtual IPalette0x4* GetPalette();                                                         // vtable+0x1c
 	virtual void Fill(LegoU32 p_color);                                                        // vtable+0x20
 	virtual void Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Rect* p_sourceRect); // vtable+0x24
 	virtual void VTable0x28(undefined4, undefined4, undefined4*);                              // vtable+0x28

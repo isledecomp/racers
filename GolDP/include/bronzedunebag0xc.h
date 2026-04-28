@@ -3,20 +3,21 @@
 
 #include "compat.h"
 #include "golddune0x38.h"
+#include "ipalette0x4.h"
 
 // VTABLE: GOLDP 0x10057554
-class BronzeDuneBag0xc {
+class BronzeDuneBag0xc : public IPalette0x4 {
 public:
 	BronzeDuneBag0xc();
-	virtual void VTable0x00(undefined4*, undefined4, undefined4); // vtable+0x
-	virtual void VTable0x04(undefined4*);                         // vtable+0x
-	virtual void VTable0x08(undefined4*, undefined4, undefined4); // vtable+0x
-	virtual void VTable0x0c(undefined4*, undefined4);             // vtable+0x
-	virtual void VTable0x10(undefined4*);                         // vtable+0x
-	virtual undefined4 VTable0x14();                              // vtable+0x
-	virtual undefined4 VTable0x18();                              // vtable+0x
-	virtual undefined4 VTable0x1c();                              // vtable+0x
-	virtual ~BronzeDuneBag0xc();                                  // vtable+0x00
+	void GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
+	void CopyEntriesFrom(IPalette0x4* p_source) override;                                // vtable+0x
+	void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
+	void GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index) override;                      // vtable+0x
+	LegoS32 FindEntry(PALETTEENTRY* p_entry) override;                                   // vtable+0x
+	LegoU32 GetFirstEntry() override;                                                    // vtable+0x
+	LegoU32 GetEntryCount() override;                                                    // vtable+0x
+	LegoU32 GetPaletteSize() override;                                                   // vtable+0x
+	virtual ~BronzeDuneBag0xc();                                                         // vtable+0x00
 
 	void FUN_1002a120(undefined4);
 	void FUN_1002a1b0();

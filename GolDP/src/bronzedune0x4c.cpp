@@ -33,6 +33,12 @@ void BronzeDune0x4c::VTable0x38()
 	STUB(0x1002a470);
 }
 
+// FUNCTION: GOLDP 0x1002a4a0
+IPalette0x4* BronzeDune0x4c::GetPalette()
+{
+	return &m_unk0x40;
+}
+
 // STUB: GOLDP 0x10004f80
 void BronzeDune0x4c::VTable0x30(undefined4*, undefined4*)
 {

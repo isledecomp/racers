@@ -11,6 +11,7 @@ class BronzeDune0x4c : public GoldDune0x38 {
 public:
 	BronzeDune0x4c();
 	~BronzeDune0x4c() override;                         // vtable+0x00
+	IPalette0x4* GetPalette() override;                 // vtable+0x1c
 	void VTable0x30(undefined4*, undefined4*) override; // vtable+0x30
 	void VTable0x34() override;                         // vtable+0x34
 	void VTable0x38() override;                         // vtable+0x38

@@ -34,55 +34,56 @@ void BronzeDuneBag0xc::FUN_1002a1b0()
 }
 
 // STUB: GOLDP 0x1002a1e0
-void BronzeDuneBag0xc::VTable0x00(undefined4*, undefined4, undefined4)
+void BronzeDuneBag0xc::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	// TODO
 	STUB(0x1002a1e0);
 }
 
 // STUB: GOLDP 0x1002a230
-void BronzeDuneBag0xc::VTable0x08(undefined4*, undefined4, undefined4)
+void BronzeDuneBag0xc::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	// TODO
 	STUB(0x1002a230);
 }
 
 // STUB: GOLDP 0x1002a290
-void BronzeDuneBag0xc::VTable0x0c(undefined4*, undefined4)
+void BronzeDuneBag0xc::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
 {
 	// TODO
 	STUB(0x1002a290);
 }
 
 // STUB: GOLDP 0x1002a2d0
-void BronzeDuneBag0xc::VTable0x04(undefined4*)
+void BronzeDuneBag0xc::CopyEntriesFrom(IPalette0x4* p_source)
 {
 	// TODO
 	STUB(0x1002a2d0);
 }
 
 // STUB: GOLDP 0x1002a300
-void BronzeDuneBag0xc::VTable0x10(undefined4*)
+LegoS32 BronzeDuneBag0xc::FindEntry(PALETTEENTRY* p_entry)
 {
 	// TODO
 	STUB(0x1002a300);
+	return 0;
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-undefined4 BronzeDuneBag0xc::VTable0x14()
+LegoU32 BronzeDuneBag0xc::GetFirstEntry()
 {
 	MATCHING(0x100016f0);
 	return 0;
 }
 
 // STUB: GOLDP 0x1002a350 FOLDED
-undefined4 BronzeDuneBag0xc::VTable0x18()
+LegoU32 BronzeDuneBag0xc::GetEntryCount()
 {
 	return m_unk0x8;
 }
 
 // STUB: GOLDP 0x1002a350 FOLDED
-undefined4 BronzeDuneBag0xc::VTable0x1c()
+LegoU32 BronzeDuneBag0xc::GetPaletteSize()
 {
 	return m_unk0x8;
 }

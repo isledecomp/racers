@@ -109,7 +109,7 @@ void SlatePeak0x58::DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer)
 }
 
 // FUNCTION: GOLDP 0x10003cd0
-PearlDew0x0c* SlatePeak0x58::GetPalette()
+IPalette0x4* SlatePeak0x58::GetPalette()
 {
 	if (m_palette.GetPalette()) {
 		return &m_palette;

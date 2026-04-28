@@ -98,6 +98,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
+  GolDP/src/whitebaffoon0x50.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})

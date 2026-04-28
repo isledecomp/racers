@@ -5,30 +5,7 @@ DECOMP_SIZE_ASSERT(WhiteBaffoon0x50, 0x50)
 // FUNCTION: GOLDP 0x1001f1e0
 WhiteBaffoon0x50::WhiteBaffoon0x50()
 {
-	// m_unk0x0c = 0;
-	// m_unk0x10 = 0;
-	// m_unk0x14 = 0;
-	// m_unk0x18 = 0;
-	// m_unk0x1c = 0;
-	// m_unk0x20 = 0;
-	// m_unk0x22 = 0;
-	m_renderer = NULL;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0;
-	m_unk0x38 = 0;
-	m_unk0x3c = 0x22;
-	m_flags = 0;
-	m_unk0x28.m_bytes[0] = '\0';
-	m_unk0x28.m_bytes[1] = '\0';
-	m_unk0x28.m_bytes[2] = '\0';
-	m_unk0x28.m_bytes[3] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[0] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[1] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[2] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[3] = (LegoChar) 0xff;
-	m_unk0x04 = 0;
-	m_unk0x08 = 0;
+	Reset();
 }
 
 // FUNCTION: GOLDP 0x1001f2a0

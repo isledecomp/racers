@@ -18,4 +18,3 @@ public:
 };
 
 #endif //  IPALETTE0x4_H
-

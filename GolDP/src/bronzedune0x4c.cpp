@@ -5,6 +5,13 @@ DECOMP_SIZE_ASSERT(BronzeDune0x4c, 0x4c)
 // GLOBAL: GOLDP 0x10063c50
 BronzeDune0x4c g_bronzeDune0x4c;
 
+// STUB: GOLDP 0x10004f80
+void BronzeDune0x4c::VTable0x30(undefined4*, undefined4*)
+{
+	// TODO
+	STUB(0x10004f80);
+}
+
 // STUB: GOLDP 0x1001de50
 BronzeDune0x4c::BronzeDune0x4c()
 {
@@ -37,11 +44,4 @@ void BronzeDune0x4c::VTable0x38()
 IPalette0x4* BronzeDune0x4c::GetPalette()
 {
 	return &m_unk0x40;
-}
-
-// STUB: GOLDP 0x10004f80
-void BronzeDune0x4c::VTable0x30(undefined4*, undefined4*)
-{
-	// TODO
-	STUB(0x10004f80);
 }

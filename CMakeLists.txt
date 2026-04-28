@@ -121,6 +121,7 @@ target_include_directories(common_legoracers PRIVATE
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
+  GolDP/src/bronzedunebag0xc.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
@@ -144,7 +145,7 @@ add_library(goldp SHARED
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golddune0x38.cpp
-  GolDP/src/bronzedunebag0xc.cpp
+  GolDP/src/bronzedune0x4c.cpp
   GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/utopianpan0xa4.cpp
   util/decomp.cpp

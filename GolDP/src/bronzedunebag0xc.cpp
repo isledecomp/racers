@@ -1,6 +1,6 @@
 #include "bronzedunebag0xc.h"
 
-DECOMP_SIZE_ASSERT(BronzeDuneBag0xc, 0xc)
+#include "decomp.h"
 
 // FUNCTION: GOLDP 0x1002a090
 BronzeDuneBag0xc::BronzeDuneBag0xc()
@@ -9,21 +9,28 @@ BronzeDuneBag0xc::BronzeDuneBag0xc()
 	m_unk0x8 = 0;
 }
 
-// STUB: GOLDP 0x1002a120
-void BronzeDuneBag0xc::FUN_1002a120(undefined4*)
-{
-	// TODO
-	STUB(0x1002a120);
-}
-
-// FUNCTION: GOLDP 0x1002a1b0
-void BronzeDuneBag0xc::FUN_1002a1b0()
+// FUNCTION: GOLDP 0x1002a0f0
+BronzeDuneBag0xc::~BronzeDuneBag0xc()
 {
 	m_unk0x8 = 0;
 	if (m_unk0x4 != NULL) {
 		delete[] m_unk0x4;
 		m_unk0x4 = NULL;
 	}
+}
+
+// STUB: GOLDP 0x1002a120
+void BronzeDuneBag0xc::FUN_1002a120(undefined4)
+{
+	// TODO
+	STUB(0x1002a120);
+}
+
+// STUB: GOLDP 0x1002a1b0
+void BronzeDuneBag0xc::FUN_1002a1b0()
+{
+	// TODO
+	STUB(0x1002a1b0);
 }
 
 // STUB: GOLDP 0x1002a1e0

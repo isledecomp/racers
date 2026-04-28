@@ -83,7 +83,7 @@ void SilverDune0x30::VTable0x18()
 // STUB: GOLDP 0x100016f0 FOLDED
 PearlDew0x0c* SilverDune0x30::GetPalette()
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 

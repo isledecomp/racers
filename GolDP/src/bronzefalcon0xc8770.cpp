@@ -432,6 +432,6 @@ void BronzeFalcon0xc8770::VTable0xf4()
 // FUNCTION: GOLDP 0x100016f0 FOLDED
 LegoBool32 BronzeFalcon0xc8770::VTable0x110() const
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return FALSE;
 }

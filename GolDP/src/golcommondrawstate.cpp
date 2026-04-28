@@ -184,7 +184,7 @@ LegoBool32 GolCommonDrawState::VTable0x90() const
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 GolCommonDrawState::VTable0x94()
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 

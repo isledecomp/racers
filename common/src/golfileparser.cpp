@@ -125,7 +125,7 @@ GolFileParser::ParserTokenType GolFileParser::GetNextToken()
 {
 	// TODO
 #ifdef BUILDING_GOL
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 #endif
 	return e_syntaxerror;
 }

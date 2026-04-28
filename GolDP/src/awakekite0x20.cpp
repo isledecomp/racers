@@ -1,6 +1,7 @@
 #include "awakekite0x20.h"
 
 #include "bronzefalcon0xc8770.h"
+#include "golerror.h"
 
 DECOMP_SIZE_ASSERT(AwakeKite0x20, 0x20)
 
@@ -15,10 +16,13 @@ AwakeKite0x20::~AwakeKite0x20()
 {
 }
 
-// STUB: GOLDP 0x10005dc0
+// FUNCTION: GOLDP 0x10005dc0
 void AwakeKite0x20::VTable0x0c()
 {
-	STUB(0x10005dc0);
+	m_items = new UtopianPan0xa4[m_numItems];
+	if (m_items == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 }
 
 // STUB: GOLDP 0x10005ec0

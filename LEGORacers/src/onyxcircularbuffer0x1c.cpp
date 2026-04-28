@@ -89,34 +89,28 @@ OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::FUN_0044b820(
 }
 
 // FUNCTION: LEGORACERS 0x0044b870
-LegoBool32 OnyxCircularBuffer0x1c::OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+void OnyxCircularBuffer0x1c::OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
 	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
 	if (item != NULL) {
 		item->m_unk0x0c = TRUE;
 	}
-	// FIXME: verify inheritance (should return void?)
-	return reinterpret_cast<LegoBool32>(item);
 }
 
 // FUNCTION: LEGORACERS 0x0044b890
-LegoBool32 OnyxCircularBuffer0x1c::OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+void OnyxCircularBuffer0x1c::OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
 	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
-	// FIXME: verify inheritance (should return void?)
-	return reinterpret_cast<LegoBool32>(item);
 }
 
 // FUNCTION: LEGORACERS 0x0044b8b0
-LegoBool32 OnyxCircularBuffer0x1c::OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+void OnyxCircularBuffer0x1c::OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
 	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
 	if (item != NULL) {
 		item->m_unk0x0c = TRUE;
 		item->m_unk0x0d = TRUE;
 	}
-	// FIXME: verify inheritance (should return void?)
-	return reinterpret_cast<LegoBool32>(item);
 }
 
 // FUNCTION: LEGORACERS 0x0044b8e0

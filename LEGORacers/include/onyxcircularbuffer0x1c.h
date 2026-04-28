@@ -20,19 +20,19 @@ public:
 		undefined m_unk0x0e[0x10 - 0xe]; // 0x0e
 	};
 
-	LegoBool32 OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;   // vtable+0x00
-	LegoBool32 OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;     // vtable+0x04
-	LegoBool32 OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override; // vtable+0x08
-	virtual ~OnyxCircularBuffer0x1c();                                                               // vtable+0x0c
-	virtual void Allocate(LegoS32 p_capacity);                                                       // vtable+0x10
-	virtual LegoBool32 Reset();                                                                      // vtable+0x14
+	void OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;   // vtable+0x00
+	void OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;     // vtable+0x04
+	void OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override; // vtable+0x08
+	virtual ~OnyxCircularBuffer0x1c();                                                         // vtable+0x0c
+	virtual void Allocate(LegoS32 p_capacity);                                                 // vtable+0x10
+	virtual LegoBool32 Reset();                                                                // vtable+0x14
 
 	void FUN_0044b740();
 	Item* FUN_0044b7f0();
 	Item* FUN_0044b820(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
 	void FUN_0044b8e0();
 
-	// SYNTHETIC: GOLDP 0x0044b710
+	// SYNTHETIC: LEGORACERS 0x0044b710
 	// OnyxCircularBuffer0x1c::`scalar deleting destructor'
 
 private:

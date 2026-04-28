@@ -281,10 +281,11 @@ void InputDevice::SetButtonState(undefined4, LegoU8 p_state, LegoBool32)
 }
 
 // FUNCTION: LEGORACERS 0x0044bdf0
-void InputDevice::AddDirectionalTrigger(DirectionalTrigger* p_trigger)
+LegoS32 InputDevice::AddDirectionalTrigger(DirectionalTrigger* p_trigger)
 {
 	m_directionalTriggers[m_directionalTriggerCount] = p_trigger;
 	m_directionalTriggerCount += 1;
+	return m_directionalTriggerCount;
 }
 
 // FUNCTION: LEGORACERS 0x0044be10

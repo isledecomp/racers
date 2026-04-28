@@ -42,6 +42,8 @@ public:
 
 	void SetAxisButtonEventsEnabled(LegoBool p_enabled) { m_axisButtonEventsEnabled = p_enabled; }
 
+	LegoS32 GetButtonCountFast() const { return m_buttonCount; }
+
 private:
 	DIJOYSTATE2 m_joyState;        // 0xcc
 	LegoFloat m_axisValues[16];    // 0x1dc

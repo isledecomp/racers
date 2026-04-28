@@ -48,9 +48,9 @@ void OnyxBreeze0x248::Initialize(InputManager* p_inputManager)
 		joystick->Acquire();
 		joystick->SetRepeatDelays(250, 500);
 		joystick->SetDeadZonePercent(60);
-		joystick->AddDirectionalTrigger(&m_unk0x224);
+		LegoS32 sourceId = joystick->AddDirectionalTrigger(&m_unk0x224);
 		m_unk0x224.Configure(
-			0,
+			sourceId,
 			InputDevice::c_sourceJoystick2 | 0x3,
 			InputDevice::c_sourceJoystick2 | 0x0,
 			InputDevice::c_sourceJoystick2 | 0x2,
@@ -108,7 +108,7 @@ void OnyxBreeze0x248::FUN_0041fac0()
 	for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
 		JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);
 		if (joystick != NULL) {
-			for (LegoS32 j = 0; j < joystick->GetButtonCount(); j++) {
+			for (LegoS32 j = 0; j < joystick->GetButtonCountFast(); j++) {
 				m_unk0x004[j] = 4;
 			}
 			joystick->SetEventMappings(m_unk0x004, NULL);

@@ -15,6 +15,21 @@ GolBinParser::GolBinParser()
 	FUN_0044a830();
 }
 
+// FUNCTION: LEGORACERS 0x0044a830
+void GolBinParser::FUN_0044a830()
+{
+	m_unk0x1f0 = 0;
+	m_unk0x1f4 = 0;
+	m_unk0x1f8 = 0;
+	m_unk0x1fc = 0;
+	m_unk0x200 = 0;
+	m_unk0x204 = 0;
+	m_unk0x208 = 0;
+	m_unk0x20c = 0;
+	memset(m_unk0x210, 0, sizeof(m_unk0x210));
+	memset(m_unk0x610, 0, sizeof(m_unk0x610));
+}
+
 // STUB: GOLDP 0x10030070
 // STUB: LEGORACERS 0x0044a890
 void GolBinParser::VTable0x38(const LegoChar*)
@@ -28,13 +43,7 @@ void GolBinParser::VTable0x38(const LegoChar*)
 LegoS32 GolBinParser::Dispose()
 {
 	LegoS32 result = GolFileParser::Dispose();
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth(0)
-#endif
 	FUN_0044a830();
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth()
-#endif
 	return result;
 }
 

@@ -59,25 +59,14 @@ static const LegoChar* const g_errorCodeStrings[] = {
 	"Invalid character encoutered"
 };
 
-// FUNCTION: GOLDP 0x10031480
-// FUNCTION: LEGORACERS 0x0044c900
-static const LegoChar* __stdcall GetHashEntryPath(GolHashTable::Entry* p_entry)
-{
-	if (p_entry) {
-		return p_entry->m_data;
-	}
-
-	return "\\";
-}
-
-// STUB: GOLDP 0x100314a0
+// FUNCTION: GOLDP 0x100314a0
 // FUNCTION: LEGORACERS 0x0044c920
 GolStream::GolStream()
 {
 	Init();
 }
 
-#ifndef BUILDING_GOL
+// FUNCTION: GOLDP 0x10031530
 // FUNCTION: LEGORACERS 0x0044c960
 GolStream::~GolStream()
 {
@@ -103,7 +92,6 @@ void GolStream::Init()
 	m_bufferEnd = 0;
 	m_buffer = NULL;
 }
-#endif
 
 // FUNCTION: LEGORACERS 0x0044c9c0
 LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
@@ -627,7 +615,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	if (g_hashTable) {
 		GolHashTable::Entry* currentEntry = g_hashTable->GetCurrentEntry();
 		if (currentEntry) {
-			currentEntryPath = GetHashEntryPath(currentEntry);
+			currentEntryPath = GolHashTable::GetEntryPath(currentEntry);
 		}
 	}
 
@@ -681,7 +669,6 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 	TransformToUpper(g_pathBuffer);
 }
 
-#ifndef BUILDING_GOL
 // FUNCTION: LEGORACERS 0x0044d4f0
 void GolStream::TransformToUpper(LegoChar* p_str)
 {
@@ -691,7 +678,6 @@ void GolStream::TransformToUpper(LegoChar* p_str)
 		*p_str = toupper(*p_str);
 	}
 }
-#endif
 
 // FUNCTION: LEGORACERS 0x0044d530
 LegoS32 GolStream::IsAbsolutePath(const LegoChar* p_path)

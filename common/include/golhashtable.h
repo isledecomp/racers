@@ -31,6 +31,7 @@ public:
 	Entry* GetCurrentEntry() const { return m_currentEntry; }
 	void SetCurrentEntry(Entry* p_currentEntry) { m_currentEntry = p_currentEntry; }
 	void SetCurrentEntryFromString(const LegoChar* p_string) { m_currentEntry = AddString(p_string); }
+	static const LegoChar* STDMETHODCALLTYPE GetEntryPath(Entry* p_entry);
 
 private:
 	HANDLE m_mutex;           // 0x04

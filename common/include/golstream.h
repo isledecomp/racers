@@ -63,26 +63,13 @@ public:
 
 	GolStream();
 
-	virtual LegoS32 Open(LegoChar* p_fileName) = 0;                            // vtable+0x00
-	virtual LegoS32 Close() = 0;                                               // vtable+0x04
-	virtual LegoS32 Seek(LegoS32 p_offset) = 0;                                // vtable+0x08
-	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0; // vtable+0x0c
-	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                        // vtable+0x10
-	virtual LegoS32 Flush();                                                   // vtable+0x14
-#ifdef BUILDING_GOL
-	// FUNCTION: GOLDP 0x10031530
-	virtual ~GolStream()
-	{
-		if (m_buffer) {
-			delete[] m_buffer;
-			m_buffer = NULL;
-		}
-
-		Init();
-	} // vtable+0x18
-#else
-	virtual ~GolStream(); // vtable+0x18
-#endif
+	virtual LegoS32 Open(LegoChar* p_fileName) = 0;                                                  // vtable+0x00
+	virtual LegoS32 Close() = 0;                                                                     // vtable+0x04
+	virtual LegoS32 Seek(LegoS32 p_offset) = 0;                                                      // vtable+0x08
+	virtual LegoS32 Read(void* p_buf, LegoU32 p_size, LegoS32* p_lenRead) = 0;                       // vtable+0x0c
+	virtual LegoS32 Write(void* p_buf, LegoU32 p_size);                                              // vtable+0x10
+	virtual LegoS32 Flush();                                                                         // vtable+0x14
+	virtual ~GolStream();                                                                            // vtable+0x18
 	virtual LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize);  // vtable+0x1c
 	virtual LegoS32 Dispose();                                                                       // vtable+0x20
 	virtual LegoS32 BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead); // vtable+0x24
@@ -95,23 +82,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0044c940
 	// GolStream::`scalar deleting destructor'
 
-#ifdef BUILDING_GOL
-	void Init()
-	{
-		m_handle = -1;
-		m_mode = 0;
-		m_flags = 0;
-		m_position = 0;
-		m_size = 0;
-		m_unk0x10 = 0;
-		m_bufferCapacity = 0;
-		m_bufferStart = 0;
-		m_bufferEnd = 0;
-		m_buffer = NULL;
-	}
-#else
 	void Init();
-#endif
 	LegoS32 OpenFileSource();
 
 	static LegoS32 FindFile(const LegoChar* p_fileName);
@@ -121,18 +92,7 @@ public:
 #endif
 
 	static const LegoChar* ErrorCodeToString(LegoS32 p_code);
-#ifdef BUILDING_GOL
-	static void TransformToUpper(LegoChar* p_str)
-	{
-		size_t i;
-
-		for (i = 0; *p_str != '\0' && i < sizeOfArray(g_pathBuffer); i++, p_str++) {
-			*p_str = toupper(*p_str);
-		}
-	}
-#else
 	static void TransformToUpper(LegoChar* p_str);
-#endif
 	static LegoS32 IsAbsolutePath(const LegoChar* p_path);
 	static void BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path);
 	LegoS32 GetSize() { return m_size; }

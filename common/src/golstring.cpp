@@ -47,15 +47,7 @@ undefined4 GolString::CopyFromBufSelection(undefined2* p_buf, undefined2 p_count
 	m_maxLen = 0;
 	m_chars = p_buf;
 
-	// TODO: This is a workaround to prevent ResetCursors from being inlined in LEGORACERS.
-	// GOLDP inlines it, LEGORACERS does not.
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth(0)
-#endif
 	ResetCursors();
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth()
-#endif
 
 	if (!p_count) {
 		p_count = SelectionLength() + 1;
@@ -76,17 +68,20 @@ undefined4 GolString::CopyFromGolString(GolString* p_string)
 	m_chars = p_string->m_chars;
 	m_maxLen = p_string->m_maxLen;
 
-	// TODO: This is a workaround to prevent ResetCursors from being inlined in LEGORACERS.
-	// GOLDP inlines it, LEGORACERS does not.
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth(0)
-#endif
 	ResetCursors();
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth()
-#endif
 
 	return 1;
+}
+
+// FUNCTION: LEGORACERS 0x00449f00
+void GolString::ResetCursors()
+{
+	m_cursorEnd = 0;
+	m_cursorStart = 0;
+
+	while (m_chars[m_cursorEnd]) {
+		m_cursorEnd++;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00449f30

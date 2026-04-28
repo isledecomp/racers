@@ -29,9 +29,7 @@ public:
 
 	SilverDune0x30();
 
-	// FUNCTION: GOLDP 0x1001cf60
-	virtual ~SilverDune0x30() {} // vtable+0x00
-
+	virtual ~SilverDune0x30();                                                                 // vtable+0x00
 	virtual void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);             // vtable+0x04
 	virtual void UnlockPixels();                                                               // vtable+0x08
 	virtual void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);          // vtable+0x0c

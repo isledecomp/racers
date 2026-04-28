@@ -1,6 +1,4 @@
-#define AMBERLENSBASE0X120_DECLARE_DTOR_ONLY
 #include "amberlens0x344.h"
-#undef AMBERLENSBASE0X120_DECLARE_DTOR_ONLY
 
 #include "bronzefalcon0xc8770.h"
 
@@ -13,16 +11,13 @@ AmberLens0x344::AmberLens0x344()
 	m_unk0x340 = NULL;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
 // FUNCTION: GOLDP 0x10001f00
-#pragma inline_depth(0)
 AmberLens0x344::~AmberLens0x344()
 {
 	if (m_unk0x340) {
 		m_unk0x340->VTable0x24();
 	}
 }
-#pragma inline_depth()
 
 // STUB: GOLDP 0x10002060
 void AmberLens0x344::VTable0x28()
@@ -76,9 +71,4 @@ void AmberLens0x344::VTable0x0c()
 void AmberLens0x344::VTable0x20(undefined4, undefined4)
 {
 	STUB(0x10002770);
-}
-
-// FUNCTION: GOLDP 0x1001bfb0
-AmberLensBase0x120::~AmberLensBase0x120()
-{
 }

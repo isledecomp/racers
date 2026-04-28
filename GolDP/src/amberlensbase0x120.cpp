@@ -23,6 +23,11 @@ AmberLensBase0x120::AmberLensBase0x120()
 	m_unk0x2c = 0;
 }
 
+// FUNCTION: GOLDP 0x1001bfb0
+AmberLensBase0x120::~AmberLensBase0x120()
+{
+}
+
 // STUB: GOLDP 0x1001c900
 void AmberLensBase0x120::VTable0x24(undefined4, undefined4, undefined4)
 {

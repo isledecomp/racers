@@ -8,17 +8,11 @@ CeruleanKnight0x20::CeruleanKnight0x20()
 	VTable0x0c();
 }
 
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth(0)
-#endif
 // FUNCTION: LEGORACERS 0x0046b090
 CeruleanKnight0x20::~CeruleanKnight0x20()
 {
 	VTable0x08();
 }
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth()
-#endif
 
 // FUNCTION: LEGORACERS 0x0046b0e0
 void CeruleanKnight0x20::VTable0x0c()
@@ -34,13 +28,7 @@ void CeruleanKnight0x20::VTable0x0c()
 void CeruleanKnight0x20::VTable0x08()
 {
 	if (m_data) {
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth(0)
-#endif
 		SmallCocoon0xc::VTable0x08();
-#ifdef BUILDING_LEGORACERS
-#pragma inline_depth()
-#endif
 		VTable0x0c();
 	}
 }

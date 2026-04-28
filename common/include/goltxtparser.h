@@ -32,6 +32,10 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
 	// GolTxtParser::`scalar deleting destructor'
 
+	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+	// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
+	// GolTxtParser::~GolTxtParser
+
 protected:
 	undefined4 m_unk0x1f0; // 0x1f0
 	LegoS32 m_unk0x1f4;    // 0x1f4

@@ -32,24 +32,15 @@ public:
 	void VTable0x70() override;                             // vtable+0x70
 	void VTable0x74(undefined4) override;                   // vtable+0x74
 
-	// FUNCTION: LEGORACERS 0x0044a830
-	void FUN_0044a830()
-	{
-		m_unk0x1f0 = 0;
-		m_unk0x1f4 = 0;
-		m_unk0x1f8 = 0;
-		m_unk0x1fc = 0;
-		m_unk0x200 = 0;
-		m_unk0x204 = 0;
-		m_unk0x208 = 0;
-		m_unk0x20c = 0;
-		memset(m_unk0x210, 0, sizeof(m_unk0x210));
-		memset(m_unk0x610, 0, sizeof(m_unk0x610));
-	}
-
 	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
 	// GolBinParser::`scalar deleting destructor'
+
+	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+	// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
+	// GolBinParser::~GolBinParser
+
+	void FUN_0044a830();
 
 protected:
 	undefined4 m_unk0x1f0;      // 0x1f0

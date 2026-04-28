@@ -17,6 +17,11 @@ SilverDune0x30::SilverDune0x30()
 	m_height = 0;
 }
 
+// FUNCTION: GOLDP 0x1001cf60
+SilverDune0x30::~SilverDune0x30()
+{
+}
+
 // FUNCTION: GOLDP 0x1001cf70
 void SilverDune0x30::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {

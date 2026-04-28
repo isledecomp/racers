@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "golstream.h"
 
+// VTABLE: GOLDP 0x10057934
 // VTABLE: LEGORACERS 0x004b1250
 // SIZE 0x30
 class GolFile : public GolStream {

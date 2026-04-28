@@ -81,14 +81,33 @@ set(COMMON_SOURCES
   common/src/golerror.cpp
   common/src/golfile.cpp
   common/src/golfsutil.cpp
+  common/src/golhashtable.cpp
   common/src/golstream.cpp
   common/src/golfileparser.cpp
   common/src/golbinparser.cpp
   common/src/goltxtparser.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
-  common/src/golhashtable.cpp
   common/src/golstring.cpp
+)
+
+add_library(common_goldp OBJECT ${COMMON_SOURCES})
+target_compile_definitions(common_goldp PRIVATE BUILDING_GOL)
+target_include_directories(common_goldp PRIVATE
+  "${PROJECT_SOURCE_DIR}/GolDP/include"
+  "${PROJECT_SOURCE_DIR}/GolDP"
+  "${PROJECT_SOURCE_DIR}/common/include"
+  "${PROJECT_SOURCE_DIR}/util"
+)
+
+add_library(common_legoracers OBJECT ${COMMON_SOURCES})
+target_compile_definitions(common_legoracers PRIVATE BUILDING_LEGORACERS)
+target_include_directories(common_legoracers PRIVATE
+  "${PROJECT_SOURCE_DIR}/LEGORacers/include"
+  "${PROJECT_SOURCE_DIR}/LEGORacers"
+  "${PROJECT_SOURCE_DIR}/common/include"
+  "${PROJECT_SOURCE_DIR}/util"
+  "${PROJECT_SOURCE_DIR}/GolDP/include"
 )
 
 # --- GolDP.dll target ---
@@ -117,7 +136,7 @@ add_library(goldp SHARED
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/utopianpan0xa4.cpp
   util/decomp.cpp
-  ${COMMON_SOURCES}
+  $<TARGET_OBJECTS:common_goldp>
 )
 target_compile_definitions(goldp PRIVATE BUILDING_GOL)
 reccmp_add_target(goldp ID GOLDP)
@@ -223,7 +242,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/guids.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
-  ${COMMON_SOURCES}
+  $<TARGET_OBJECTS:common_legoracers>
 )
 target_compile_definitions(legoracers PRIVATE BUILDING_LEGORACERS)
 target_compile_definitions(legoracers PRIVATE DIRECTINPUT_VERSION=0x500)
@@ -254,20 +273,22 @@ add_custom_target(game DEPENDS legoracers goldp)
 # --- Modern compiler compatibility ---
 if (MSVC)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15")
-    set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
+    set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
   endif()
   # Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.14.26428")
-    set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_OPTIONS "-Zc:__cplusplus")
+    set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_OPTIONS "-Zc:__cplusplus")
   endif()
 endif()
 
 if (RACERS_DECOMP_ASSERT)
   message(STATUS "Decomp asserts enabled")
-  set_property(TARGET goldp legoracers APPEND PROPERTY COMPILE_DEFINITIONS "ENABLE_DECOMP_ASSERTS")
+  set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_DEFINITIONS "ENABLE_DECOMP_ASSERTS")
 endif()
 
 if (MSVC_FOR_DECOMP)
+  target_compile_options(common_goldp PRIVATE "/Ob2")
+
   # These flags have been taken from the defaults for a Visual C++ 6.0 project (the compiler the
   # game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
   # They ensure a recompilation that can be byte/instruction accurate to the original binaries.
@@ -281,9 +302,11 @@ if (MSVC_FOR_DECOMP)
   # LegoRacers.exe links to MSVCRT.dll (/MD), GolDP.dll has embedded its runtime library (/MT)
   set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
   set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  set_property(TARGET common_legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  set_property(TARGET common_goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
   # Embed debug information (/Z7) for Debug and RelWithDebInfo configuration type
-  set_property(TARGET goldp legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
+  set_property(TARGET goldp legoracers common_goldp common_legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
   set(CMAKE_CXX_FLAGS "/W3 /GX /D \"WIN32\" /D \"_WINDOWS\"")
   set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Od /D \"_DEBUG\"")

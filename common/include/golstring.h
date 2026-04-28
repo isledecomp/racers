@@ -15,17 +15,7 @@ public:
 	undefined4 CopyFromBufSelection(undefined2* p_buf, undefined2 p_count);
 	undefined4 CopyFromGolString(GolString* p_string);
 
-	// FUNCTION: LEGORACERS 0x00449f00
-	void ResetCursors()
-	{
-		m_cursorEnd = 0;
-		m_cursorStart = 0;
-
-		while (m_chars[m_cursorEnd]) {
-			m_cursorEnd++;
-		}
-	}
-
+	void ResetCursors();
 	void FirstLine();
 	void NextLine();
 	undefined4 GolStrcmp(GolString* p_string);

@@ -10,15 +10,9 @@
 class AmberLensBase0x120 {
 public:
 	AmberLensBase0x120();
-	virtual void VTable0x00() = 0; // vtable+0x00
-	virtual void VTable0x04() = 0; // vtable+0x04
-
-#if defined(AMBERLENSBASE0X120_DECLARE_DTOR_ONLY) || defined(COMPAT_MODE)
-	virtual ~AmberLensBase0x120(); // vtable+0x08
-#else
-	virtual ~AmberLensBase0x120() {} // vtable+0x08
-#endif
-
+	virtual void VTable0x00() = 0;                                                             // vtable+0x00
+	virtual void VTable0x04() = 0;                                                             // vtable+0x04
+	virtual ~AmberLensBase0x120();                                                             // vtable+0x08
 	virtual void VTable0x0c() = 0;                                                             // vtable+0x0c
 	virtual void VTable0x10() = 0;                                                             // vtable+0x10
 	virtual void VTable0x14() = 0;                                                             // vtable+0x14

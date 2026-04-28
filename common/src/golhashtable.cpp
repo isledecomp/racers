@@ -131,7 +131,7 @@ GolHashTable::Entry* GolHashTable::FindEntry(const LegoChar* p_string)
 
 	Entry* entry = m_buckets[HashString(p_string)];
 	while (entry) {
-		if (!strcmp(entry->m_data, p_string)) {
+		if (!strcmp(p_string, entry->m_data)) {
 			break;
 		}
 
@@ -142,7 +142,7 @@ GolHashTable::Entry* GolHashTable::FindEntry(const LegoChar* p_string)
 	return entry;
 }
 
-// STUB: GOLDP 0x10031340
+// FUNCTION: GOLDP 0x10031340
 // FUNCTION: LEGORACERS 0x0044c810
 GolHashTable::Entry* GolHashTable::AddString(const LegoChar* p_string)
 {
@@ -184,4 +184,15 @@ GolHashTable::Entry* GolHashTable::AddEntry(Entry** p_bucket, const LegoChar* p_
 	strcpy(m_bufferCursor, p_string);
 	m_bufferCursor += strlen(p_string) + 1;
 	return entry;
+}
+
+// FUNCTION: GOLDP 0x10031480
+// FUNCTION: LEGORACERS 0x0044c900
+const LegoChar* STDMETHODCALLTYPE GolHashTable::GetEntryPath(Entry* p_entry)
+{
+	if (p_entry) {
+		return p_entry->m_data;
+	}
+
+	return "\\";
 }

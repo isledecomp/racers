@@ -57,14 +57,11 @@ void ZoweeBlubberworth0xf0::FUN_1002c0e0()
 	m_unk0xb0 = 0;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
 // FUNCTION: GOLDP 0x1002c1a0
-#pragma inline_depth(0)
 ZoweeBlubberworth0xf0::~ZoweeBlubberworth0xf0()
 {
 	VTable0x18();
 }
-#pragma inline_depth()
 
 // STUB: GOLDP 0x1002c240
 void ZoweeBlubberworth0xf0::VTable0x14(undefined4 p_arg1, undefined4, undefined4 p_arg3, float p_arg4)

@@ -17,9 +17,7 @@ HypnoticNoise0x1c::HypnoticNoise0x1c()
 	m_currentHashEntry = NULL;
 }
 
-// TODO: Temporary workaround until we figure out how the original code was written.
 // FUNCTION: GOLDP 0x10022fe0
-#pragma inline_depth(0)
 HypnoticNoise0x1c::~HypnoticNoise0x1c()
 {
 	m_numItems = 0;
@@ -33,7 +31,6 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 		SmallCocoon0xc::VTable0x08();
 	}
 }
-#pragma inline_depth()
 
 // FUNCTION: GOLDP 0x10023060
 void HypnoticNoise0x1c::LoadMaterialDefinitions(
@@ -194,7 +191,6 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 	}
 }
 
-#pragma inline_depth(0)
 // FUNCTION: GOLDP 0x100233f0
 void HypnoticNoise0x1c::VTable0x08()
 {
@@ -208,7 +204,6 @@ void HypnoticNoise0x1c::VTable0x08()
 		SmallCocoon0xc::VTable0x08();
 	}
 }
-#pragma inline_depth()
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void HypnoticNoise0x1c::VTable0x10()

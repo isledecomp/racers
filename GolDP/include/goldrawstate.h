@@ -34,7 +34,7 @@ public:
 	};
 
 	virtual LegoS32 VTable0x00() = 0;                                                         // vtable+0x00
-	virtual ~GolDrawState() {}                                                                // vtable+04
+	virtual ~GolDrawState();                                                                  // vtable+04
 	virtual void VTable0x08(HWND p_hWnd) = 0;                                                 // vtable+08
 	virtual void VTable0x0c(const char* p_driverName, const char* p_deviceName);              // vtable+0c
 	virtual LegoU32 VTable0x10();                                                             // vtable+10

@@ -14,6 +14,11 @@ GolDrawState::GolDrawState()
 	m_unk0x14 = NULL;
 }
 
+// FUNCTION: GOLDP 0x1001d5a0
+GolDrawState::~GolDrawState()
+{
+}
+
 // FUNCTION: GOLDP 0x1001d5c0
 LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp, LegoU32 p_flags)
 {

@@ -24,6 +24,12 @@
 // LIBRARY: GOLDP 0x1004ba97
 // _toupper
 
+// LIBRARY: GOLDP 0x1004bbd2
+// __tell
+
+// LIBRARY: GOLDP 0x1004bbe3
+// __lseek
+
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
 
@@ -32,6 +38,24 @@
 
 // LIBRARY: GOLDP 0x1004b930
 // _strncmp
+
+// LIBRARY: GOLDP 0x1004bd2e
+// __errno
+
+// LIBRARY: GOLDP 0x1004bd40
+// __open
+
+// LIBRARY: GOLDP 0x1004c026
+// __close
+
+// LIBRARY: GOLDP 0x1004c106
+// __read
+
+// LIBRARY: GOLDP 0x1004c344
+// __write
+
+// LIBRARY: GOLDP 0x1004c534
+// __commit
 
 // LIBRARY: GOLDP 0x1004c5c7
 // __CRT_INIT@12

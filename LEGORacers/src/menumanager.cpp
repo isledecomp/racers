@@ -374,7 +374,7 @@ void MenuManager::Run()
 			}
 
 			chain = &m_unk0x04.m_unk0x4374;
-			chain->FUN_00494f60(frameDeltaMs);
+			chain->Update(frameDeltaMs);
 			m_unk0x4cd8->VTable0x54(TRUE);
 			m_unk0x4cd8->VTable0xec(6);
 			m_unk0x4cd8->VTable0xe8(TRUE);
@@ -386,7 +386,7 @@ void MenuManager::Run()
 				m_unk0x4c74.FUN_00469550();
 			}
 
-			chain->FUN_00494fa0(m_unk0x4cd8);
+			chain->Draw(m_unk0x4cd8);
 			m_unk0x4cd8->VTable0xe4();
 			m_unk0x4cd8->VTable0xf0();
 

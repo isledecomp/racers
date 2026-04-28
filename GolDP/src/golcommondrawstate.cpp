@@ -103,11 +103,6 @@ LegoU32 GolCommonDrawState::VTable0x5c() const
 	return 16;
 }
 
-// FUNCTION: GOLDP 0x1001d5b0
-GolCommonDrawState::~GolCommonDrawState()
-{
-}
-
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
 undefined4 GolCommonDrawState::VTable0x60()
 {

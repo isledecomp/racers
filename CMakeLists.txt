@@ -91,6 +91,15 @@ set(COMMON_SOURCES
   common/src/golstring.cpp
 )
 
+# These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
+# This might represent another original static library or project grouping; keep the list
+# narrow until more source units show the same codegen fingerprint.
+set(GOLDP_INLINE_EXPANSION_SOURCES
+  GolDP/src/amberlensbase0x120.cpp
+  GolDP/src/goldrawstate.cpp
+  GolDP/src/silverdune0x30.cpp
+)
+
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
 target_compile_definitions(common_goldp PRIVATE BUILDING_GOL)
 target_include_directories(common_goldp PRIVATE
@@ -288,6 +297,11 @@ endif()
 
 if (MSVC_FOR_DECOMP)
   target_compile_options(common_goldp PRIVATE "/Ob2")
+
+  set_source_files_properties(
+    ${GOLDP_INLINE_EXPANSION_SOURCES}
+    PROPERTIES COMPILE_OPTIONS "/Ob2"
+  )
 
   # These flags have been taken from the defaults for a Visual C++ 6.0 project (the compiler the
   # game was originally built with) and tweaked slightly to produce more debugging info for reccmp.

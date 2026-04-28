@@ -13,8 +13,6 @@ protected:
 	GolCommonDrawState();
 
 public:
-	~GolCommonDrawState() override; // vtable+0x04
-
 	// SYNTHETIC: GOLDP 0x100184c0
 	// GolCommonDrawState::`scalar deleting destructor'
 

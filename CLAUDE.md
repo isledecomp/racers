@@ -279,6 +279,7 @@ Current pattern:
 - `common_goldp` compiles `COMMON_SOURCES` with `BUILDING_GOL` and `/Ob2`.
 - `common_legoracers` compiles the same `COMMON_SOURCES` with `BUILDING_LEGORACERS` and the default inline behavior.
 - `goldp` and `legoracers` link the corresponding common object target.
+- `GOLDP_INLINE_EXPANSION_SOURCES` is a small evidence-driven list of GOLDP-only source units compiled with `/Ob2`. Treat it as a placeholder for a possible original static library or project grouping; this is not proven yet. These units keep standalone functions while MSVC also inlines them into compiler-generated callers such as scalar deleting destructors. Keep the list narrow, and do not broaden `/Ob2` to the full `goldp` target because that changes unrelated GOLDP codegen.
 
 Do not steer common-code matches by duplicating implementations, moving selected functions into headers, adding `.inl.h` files, or using `#pragma inline_depth`. If a common function differs between GOLDP and LEGORACERS because of inlining, first verify whether it belongs to this target-level common-source pattern.
 

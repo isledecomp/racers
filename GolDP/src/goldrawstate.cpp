@@ -14,7 +14,7 @@ GolDrawState::GolDrawState()
 	m_unk0x14 = NULL;
 }
 
-// FUNCTION: GOLDP 0x1001d5a0
+// FUNCTION: GOLDP 0x1001d5b0
 GolDrawState::~GolDrawState()
 {
 }

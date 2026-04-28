@@ -57,44 +57,64 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 // STUB: GOLDP 0x1002c010 FOLDED
 void GolDrawState::VTable0x0c(const char* p_driverName, const char* p_deviceName)
 {
-	// TODO (empty)
-	STUB(0x1002c010);
+	MATCHING(0x1002c010);
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoU32 GolDrawState::VTable0x10()
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 
-// STUB: GOLDP 0x1001d640
+// FUNCTION: GOLDP 0x1001d640
 void GolDrawState::VTable0x50()
 {
-	// TODO
-	STUB(0x1001d640);
+	m_flags |= c_flagBit1;
+	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & SilverDune0x30::c_lockRequestRead)) {
+		m_unk0x14->VTable0x34();
+	}
 }
 
-// STUB: GOLDP 0x1001d660
-LegoS32 GolDrawState::VTable0x54(undefined4, undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1001d660
+LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p_bpp, LegoU32 p_flags)
 {
-	// TODO
-	STUB(0x1001d660);
+	if (p_width == 0) {
+		p_width = 640;
+	}
+	if (p_height == 0) {
+		p_height = 480;
+	}
+	if (p_bpp == 0) {
+		p_bpp = 16;
+	}
+	m_width = p_width;
+	m_bpp = p_bpp;
+	m_height = p_height;
+	m_flags = p_flags;
+	LegoS32 result = VTable0x00();
+	if (result != 0) {
+		return result;
+	}
+	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
+	m_flags &= ~c_flagBit1;
+	m_flags |= c_flagBit0;
 	return 0;
 }
 
-// STUB: GOLDP 0x1001d6d0
+// FUNCTION: GOLDP 0x1001d6d0
 void GolDrawState::VTable0x4c()
 {
-	// TODO
-	STUB(0x1001d6d0);
+	m_unk0x14->VTable0x14(NULL);
 }
 
-// STUB: GOLDP 0x1001d6e0
+// FUNCTION: GOLDP 0x1001d6e0
 void GolDrawState::VTable0x48()
 {
-	// TODO
-	STUB(0x1001d6e0);
+	m_flags &= ~c_flagBit0;
+	if (m_unk0x14 != NULL && (m_unk0x14->GetPixelFlags() & SilverDune0x30::c_lockRequestRead)) {
+		m_unk0x14->VTable0x34();
+	}
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
@@ -143,8 +163,7 @@ LegoBool32 GolDrawState::VTable0x28(LegoU32 p_driverIndex, LegoU32 p_deviceIndex
 // STUB: GOLDP 0x1002c010 FOLDED
 void GolDrawState::VTable0x30(LegoU32 p_driverIndex, GUID* p_guid)
 {
-	// TODO (empty)
-	STUB(0x1002c010);
+	MATCHING(0x1002c010);
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
@@ -155,8 +174,8 @@ void GolDrawState::VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID
 // STUB: GOLDP 0x100016f0 FOLDED
 GUID* GolDrawState::VTable0x38() const
 {
-	STUB(0x100016f0);
-	return 0;
+	MATCHING(0x100016f0);
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

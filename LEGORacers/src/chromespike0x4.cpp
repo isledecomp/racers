@@ -12,6 +12,5 @@ ChromeSpike0x4::~ChromeSpike0x4()
 // STUB: LEGORACERS 0x0049eb10
 ChromeSpike0x4::ChromeSpike0x4()
 {
-	// TODO
-	STUB(0x49eb10);
+	MATCHING(0x49eb10);
 }

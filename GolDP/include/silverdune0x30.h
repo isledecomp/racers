@@ -47,6 +47,8 @@ public:
 	// SYNTHETIC: GOLDP 0x1001cf40
 	// SilverDune0x30::`scalar deleting destructor'
 
+	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
+
 protected:
 	undefined4 m_unk0x04;   // 0x04
 	undefined4 m_unk0x08;   // 0x08

@@ -16,7 +16,7 @@
 DECOMP_SIZE_ASSERT(DirectSoundGroup, 0x34)
 
 // GLOBAL: LEGORACERS 0x004be7f4
-LegoChar* g_soundBankExtension = ".SBK";
+const LegoChar* g_soundBankExtension = ".SBK";
 
 // GLOBAL: LEGORACERS 0x004afc04
 LegoFloat g_defaultSoundInstanceVolume = 1.0f;

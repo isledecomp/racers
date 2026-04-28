@@ -15,10 +15,10 @@ class InputDevice {
 public:
 	class Callback {
 	public:
-		virtual LegoBool32 OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
-		virtual LegoBool32 OnKeyUp(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
+		virtual LegoBool32 OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
+		virtual LegoBool32 OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
 		virtual LegoBool32 OnKeyRepeat(
-			InputDevice& p_device,
+			InputDevice* p_device,
 			undefined4 p_keyCode,
 			undefined4 p_arg3
 		) = 0; // vtable+0x08
@@ -35,9 +35,9 @@ public:
 		};
 
 		DirectionalTrigger();
-		LegoBool32 OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override;   // vtable+0x00
-		LegoBool32 OnKeyUp(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override;     // vtable+0x04
-		LegoBool32 OnKeyRepeat(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override; // vtable+0x08
+		LegoBool32 OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time) override;   // vtable+0x00
+		LegoBool32 OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time) override;     // vtable+0x04
+		LegoBool32 OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time) override; // vtable+0x08
 		virtual ~DirectionalTrigger();                                                                   // vtable+0x0c
 
 		LegoBool32 Configure(
@@ -130,6 +130,8 @@ public:
 	{
 		m_forceFeedbackAvailable = p_forceFeedbackAvailable;
 	}
+	void SetCallback(Callback* p_callback) { m_callback = p_callback; }
+	void SetRepeatEnabled(LegoBool32 p_enabled) { m_repeatEnabled = p_enabled; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b920
 	// InputDevice::`scalar deleting destructor'

@@ -232,6 +232,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
+  LEGORacers/src/onyxcircularbuffer0x1c.cpp
   LEGORacers/src/peridottraceroot0x108.cpp
   LEGORacers/src/peridottrace0x4e0.cpp
   LEGORacers/src/citrinegrove0x1f4c.cpp

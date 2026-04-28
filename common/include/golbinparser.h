@@ -41,6 +41,9 @@ public:
 	// GolBinParser::~GolBinParser
 
 	void FUN_0044a830();
+	undefined FUN_0044b020();
+	undefined4 FUN_0044b0b0(LegoS32);
+	GolFileParser::ParserTokenType FUN_0044b130();
 
 protected:
 	undefined4 m_unk0x1f0;      // 0x1f0

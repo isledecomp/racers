@@ -95,11 +95,11 @@ void GolFileParser::FUN_10032580(LegoS32 p_code)
 	m_unk0xa4[0] = '\0';
 
 	if (totalLen < (LegoS32) sizeOfArray(m_unk0xa4) - 1) {
-		::sprintf(m_unk0xa4, g_ioErrorOccurredFormatStr, m_filePath);
+		::sprintf((LegoChar*) m_unk0xa4, g_ioErrorOccurredFormatStr, m_filePath);
 	}
 
-	::strcat(m_unk0xa4, ErrorCodeToString(p_code));
-	GOL_FATALERROR_MESSAGE(m_unk0xa4);
+	::strcat((LegoChar*) m_unk0xa4, ErrorCodeToString(p_code));
+	GOL_FATALERROR_MESSAGE((LegoChar*) m_unk0xa4);
 }
 
 // FUNCTION: GOLDP 0x10032650

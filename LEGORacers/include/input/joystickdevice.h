@@ -41,7 +41,6 @@ public:
 	void DispatchPolledStateChanges(const DIJOYSTATE2& p_state);
 
 	void SetAxisButtonEventsEnabled(LegoBool p_enabled) { m_axisButtonEventsEnabled = p_enabled; }
-
 	LegoS32 GetButtonCountFast() const { return m_buttonCount; }
 
 private:

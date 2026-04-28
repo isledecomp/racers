@@ -9,8 +9,6 @@
 // VTABLE: LEGORACERS 0x004b0e84
 class OnyxCircularBuffer0x1c : public InputDevice::Callback {
 public:
-	OnyxCircularBuffer0x1c();
-
 	struct Item {
 		InputDevice* m_device;           // 0x00
 		undefined4 m_keyCode;            // 0x04
@@ -20,11 +18,13 @@ public:
 		undefined m_unk0x0e[0x10 - 0xe]; // 0x0e
 	};
 
+	OnyxCircularBuffer0x1c();
+
 	void OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;   // vtable+0x00
 	void OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;     // vtable+0x04
 	void OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override; // vtable+0x08
 	virtual ~OnyxCircularBuffer0x1c();                                                         // vtable+0x0c
-	virtual void Allocate(LegoS32 p_capacity);                                                 // vtable+0x10
+	virtual LegoBool32 Allocate(LegoS32 p_capacity);                                           // vtable+0x10
 	virtual LegoBool32 Reset();                                                                // vtable+0x14
 
 	void FUN_0044b740();

@@ -25,6 +25,7 @@ public:
 	class Context {
 	public:
 		enum {
+			c_flagBit0 = 1 << 0,
 			c_flagBit1 = 1 << 1,
 			c_flagBit3 = 1 << 3,
 			c_flagBit5 = 1 << 5,

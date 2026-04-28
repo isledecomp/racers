@@ -47,6 +47,8 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00436680
 	// RoseQuartzShine0x14::`scalar deleting destructor'
 
+	LegoU32 FUN_00436930(LegoChar* p_unk0x04);
+
 private:
 	Struct0x38* m_unk0x0c; // 0x0c
 	LegoU32 m_unk0x10;     // 0x10

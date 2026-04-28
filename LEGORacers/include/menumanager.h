@@ -24,6 +24,7 @@
 #include "porcelainveil0x50.h"
 #include "rosequartzshine0x14.h"
 #include "sapphirereef0x2030.h"
+#include "smallcocoon0xc.h"
 #include "stackoflegou16.h"
 #include "tanzanitewisp0x88.h"
 #include "topazburst0x14.h"
@@ -69,7 +70,7 @@ public:
 	void FUN_0042e1f0();
 	LegoBool32 FUN_0042e450();
 	LegoS32 FUN_0042e490();
-	LegoS32 FUN_0042e680();
+	LegoBool32 FUN_0042e680();
 	void FUN_0042e720();
 
 private:
@@ -118,7 +119,7 @@ private:
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
 	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
-	undefined4* m_unk0x4ce0;                // 0x4ce0
+	SmallCocoon0xc* m_unk0x4ce0;            // 0x4ce0
 	CorundumPeak0x14 m_unk0x4ce4;           // 0x4ce4
 	CorundumPeak0x14 m_unk0x4cf8;           // 0x4cf8
 	CorundumPeak0x14 m_unk0x4d0c;           // 0x4d0c

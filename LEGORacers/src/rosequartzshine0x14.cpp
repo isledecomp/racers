@@ -61,3 +61,11 @@ void RoseQuartzShine0x14::VTable0x08()
 
 	m_unk0x10 = 0;
 }
+
+// STUB: LEGORACERS 0x00436930
+LegoU32 RoseQuartzShine0x14::FUN_00436930(LegoChar*)
+{
+	// TODO
+	STUB(0x436930);
+	return 0;
+}

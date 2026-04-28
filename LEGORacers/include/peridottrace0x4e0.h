@@ -62,12 +62,21 @@ public:
 	PeridotTraceState0x438();
 	~PeridotTraceState0x438();
 
+	void FUN_0042f200(LegoU8 p_unk0x04);
+	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
+	LegoBool32 FUN_0042f280() const;
+
 	LegoU8 GetUnk0x22() const { return m_unk0x22; }
 
 private:
-	undefined m_unk0x00[0x22 - 0x00];  // 0x00
+	undefined4 m_unk0x00;              // 0x00
+	undefined m_unk0x04[0x22 - 0x04];  // 0x04
 	LegoU8 m_unk0x22;                  // 0x22
-	undefined m_unk0x23[0x438 - 0x23]; // 0x23
+	undefined m_unk0x23;               // 0x23
+	LegoU8 m_unk0x24;                  // 0x24
+	LegoU8 m_unk0x25;                  // 0x25
+	LegoU16 m_unk0x26;                 // 0x26
+	undefined m_unk0x28[0x438 - 0x28]; // 0x28
 };
 
 // SIZE 0x250

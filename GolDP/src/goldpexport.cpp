@@ -128,7 +128,7 @@ AwakeKite0x20* GolDPExport::VTable0x34()
 }
 
 // STUB: GOLDP 0x10015570
-undefined4* GolDPExport::VTable0x38()
+SmallCocoon0xc* GolDPExport::VTable0x38()
 {
 	// TODO
 	STUB(0x10015570);
@@ -211,14 +211,14 @@ void GolDPExport::VTable0x58(undefined4*)
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x68(undefined4*)
+void GolDPExport::VTable0x68(AwakeKite0x20*)
 {
 	// TODO
 	STUB(0x10015600);
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x6c(undefined4*)
+void GolDPExport::VTable0x6c(SmallCocoon0xc*)
 {
 	// TODO
 	STUB(0x10015600);

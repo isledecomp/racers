@@ -35,6 +35,33 @@ PeridotTraceState0x438::~PeridotTraceState0x438()
 	STUB(0x42e890);
 }
 
+// FUNCTION: LEGORACERS 0x0042f200
+void PeridotTraceState0x438::FUN_0042f200(LegoU8 p_unk0x04)
+{
+	m_unk0x00 = 1;
+	m_unk0x24 |= p_unk0x04;
+}
+
+// FUNCTION: LEGORACERS 0x0042f250
+LegoBool32 PeridotTraceState0x438::FUN_0042f250(LegoU32 p_unk0x04)
+{
+	LegoBool32 result = FALSE;
+
+	if (!static_cast<LegoU16>(m_unk0x26 & p_unk0x04)) {
+		result = TRUE;
+		m_unk0x26 |= p_unk0x04;
+		m_unk0x00 = result;
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x0042f280
+LegoBool32 PeridotTraceState0x438::FUN_0042f280() const
+{
+	return m_unk0x26 == 0x0fff;
+}
+
 // STUB: LEGORACERS 0x00442660
 PeridotTrace0x4a8::PeridotTrace0x4a8()
 {

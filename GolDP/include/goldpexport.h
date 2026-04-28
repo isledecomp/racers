@@ -28,7 +28,7 @@ public:
 	undefined4* VTable0x2c() override;            // vtable+0x2c
 	FloatyBoat0x28* VTable0x30() override;        // vtable+0x30
 	AwakeKite0x20* VTable0x34() override;         // vtable+0x34
-	undefined4* VTable0x38() override;            // vtable+0x38
+	SmallCocoon0xc* VTable0x38() override;        // vtable+0x38
 	void VTable0x3c(undefined4*) override;        // vtable+0x3c
 	void VTable0x40(undefined4*) override;        // vtable+0x40
 	void VTable0x44(undefined4*) override;        // vtable+0x44
@@ -40,8 +40,8 @@ public:
 	void VTable0x5c(undefined4*) override;        // vtable+0x5c
 	void VTable0x60(undefined4*) override;        // vtable+0x60
 	void VTable0x64(undefined4*) override;        // vtable+0x64
-	void VTable0x68(undefined4*) override;        // vtable+0x68
-	void VTable0x6c(undefined4*) override;        // vtable+0x6c
+	void VTable0x68(AwakeKite0x20*) override;     // vtable+0x68
+	void VTable0x6c(SmallCocoon0xc*) override;    // vtable+0x6c
 
 private:
 	GolDrawDPState m_state; // 0x04

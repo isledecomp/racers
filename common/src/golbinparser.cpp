@@ -115,8 +115,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 			if (m_unk0x1fc >= 0x17 && m_unk0x1fc <= 0x26) {
 				m_unk0x208 = m_unk0x1fc - 0x17;
-				// TODO: 2d array?
-				if (m_unk0x210[64 * m_unk0x208] == 0) {
+				if (m_unk0x210[m_unk0x208][0] == 0) {
 					HandleUnexpectedToken(e_syntaxerror);
 				}
 
@@ -151,8 +150,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			// LINE: LEGORACERS 0x0044ac46
 			if (t >= 0x17 && t <= 0x26) {
 				m_unk0x208 = t - 0x17;
-				// TODO: 2d array?
-				if (m_unk0x210[64 * m_unk0x208] == 0) {
+				if (m_unk0x210[m_unk0x208][0] == 0) {
 					HandleUnexpectedToken(e_syntaxerror);
 				}
 
@@ -173,10 +171,12 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				if (code == e_ioEndOfFile) {
 					if (lenRead == 0) {
 						m_unk0x34 = 0;
+						return e_syntaxerror;
 					}
-					return e_syntaxerror;
 				}
-				FUN_10032580(code);
+				else {
+					FUN_10032580(code);
+				}
 			}
 
 			for (i = 0; i < lenRead; i++) {
@@ -324,10 +324,12 @@ undefined4 GolBinParser::FUN_0044b0b0(LegoS32 p_size)
 		if (code == e_ioEndOfFile) {
 			if (lenRead == 0) {
 				m_unk0x34 = 0;
+				return 0;
 			}
-			return 0;
 		}
-		FUN_10032580(code);
+		else {
+			FUN_10032580(code);
+		}
 	}
 
 	if (lenRead != p_size) {

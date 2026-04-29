@@ -9,11 +9,11 @@
 #include "citrinegrove0x1f4c.h"
 #include "compat.h"
 #include "coppercrest0x40.h"
-#include "corundumpeak0x14.h"
 #include "crimsonsun0xa4.h"
 #include "decomp.h"
 #include "garnetflare0x60.h"
 #include "golstring.h"
+#include "golstringtable.h"
 #include "lapissigil0x14.h"
 #include "lavendervault0x764.h"
 #include "legoracers.h"
@@ -120,9 +120,9 @@ private:
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
 	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
 	SmallCocoon0xc* m_unk0x4ce0;            // 0x4ce0
-	CorundumPeak0x14 m_unk0x4ce4;           // 0x4ce4
-	CorundumPeak0x14 m_unk0x4cf8;           // 0x4cf8
-	CorundumPeak0x14 m_unk0x4d0c;           // 0x4d0c
+	GolStringTable m_unk0x4ce4;             // 0x4ce4
+	GolStringTable m_unk0x4cf8;             // 0x4cf8
+	GolStringTable m_unk0x4d0c;             // 0x4d0c
 	SoundGroup* m_soundGroup;               // 0x4d20
 	GolString m_unk0x4d24;                  // 0x4d24
 	GolString m_unk0x4d30;                  // 0x4d30

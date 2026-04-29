@@ -89,6 +89,7 @@ set(COMMON_SOURCES
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
   common/src/golstring.cpp
+  common/src/golstringtable.cpp
 )
 
 # These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
@@ -238,6 +239,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/citrinegrove0x1f4c.cpp
   LEGORacers/src/topazburst0x14.cpp
   LEGORacers/src/moonstoneglade0x3c.cpp
+  LEGORacers/src/crimsonpebble0x228.cpp
   LEGORacers/src/sapphirereef0x2030.cpp
   LEGORacers/src/verdanttide0x38.cpp
   LEGORacers/src/turquoiseglow0x80.cpp
@@ -251,7 +253,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/tanzanitewisp0x88.cpp
   LEGORacers/src/chromespike0x4.cpp
   LEGORacers/src/coppercrest0x40.cpp
-  LEGORacers/src/corundumpeak0x14.cpp
   LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/guids.cpp

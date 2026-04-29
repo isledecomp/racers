@@ -150,7 +150,7 @@ void MenuManager::FUN_0042cd60()
 	LegoChar name[8];
 	CopperCrest0x40::InitStruct initStruct;
 
-	m_unk0x4ce4.FUN_0044e500(&m_unk0x4d24, c_menuTextRendererObjectName);
+	m_unk0x4ce4.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);
 	m_unk0x4d24.CopyToBuf8(name);
 
 	initStruct.m_golExport = m_unk0x4cd4;

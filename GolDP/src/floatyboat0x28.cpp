@@ -6,7 +6,7 @@ DECOMP_SIZE_ASSERT(FloatyBoat0x28, 0x28)
 undefined4 FloatyBoat0x28::VTable0x20()
 {
 	// TODO
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 

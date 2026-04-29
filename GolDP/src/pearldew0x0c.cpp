@@ -116,7 +116,7 @@ void PearlDew0x0c::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10007620
-void PearlDew0x0c::CopyEntriesFrom(PearlDew0x0c* p_source)
+void PearlDew0x0c::CopyEntriesFrom(IPalette0x4* p_source)
 {
 	PALETTEENTRY entry;
 	LegoChar buffer[c_errorBufferSize];

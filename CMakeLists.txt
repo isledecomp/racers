@@ -29,7 +29,7 @@ if (NOT bits EQUAL 32)
 endif()
 
 cmake_dependent_option(RACERS_USE_DX6 "Build with internal DirectX 6 SDK" ON "CMAKE_SIZEOF_VOID_P EQUAL 4" OFF)
-if(RACERS_USE_DX6)
+if (RACERS_USE_DX6)
   include_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/inc")
   link_directories("${PROJECT_SOURCE_DIR}/3rdparty/dx6/lib")
   foreach(name d3dim d3drm d3dxof ddraw ddraw16 dinput dplayx dsetup dsound dxguid)
@@ -47,7 +47,7 @@ if (MSVC)
 endif()
 
 function(add_cxx_warning WARNING)
-  if(RACERS_WERROR)
+  if (RACERS_WERROR)
     set(compiler_option "-Werror=${WARNING}")
   else()
     set(compiler_option "-W${WARNING}")
@@ -56,7 +56,7 @@ function(add_cxx_warning WARNING)
 
   cmake_push_check_state(RESET)
   set(CMAKE_REQUIRED_FLAGS "${compiler_option} ")
-  if(MSVC)
+  if (MSVC)
     string(APPEND CMAKE_REQUIRED_FLAGS "/WX")
   else()
     string(APPEND CMAKE_REQUIRED_FLAGS "-Werror")
@@ -64,7 +64,7 @@ function(add_cxx_warning WARNING)
   check_cxx_source_compiles("int main() { return 0; }" ${varname})
   cmake_pop_check_state()
 
-  if(${varname})
+  if (${varname})
     add_compile_options(${compiler_option})
   endif()
 endfunction()
@@ -89,6 +89,7 @@ set(COMMON_SOURCES
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
   common/src/golstring.cpp
+  common/src/golstringtable.cpp
 )
 
 # These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
@@ -98,6 +99,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
+  GolDP/src/whitebaffoon0x50.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -121,6 +123,7 @@ target_include_directories(common_legoracers PRIVATE
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
+  GolDP/src/bronzedunebag0xc.cpp
   GolDP/src/golcommondrawstate.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/goldrawdpstate.cpp
@@ -143,6 +146,9 @@ add_library(goldp SHARED
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
+  GolDP/src/golddune0x38.cpp
+  GolDP/src/bronzedune0x4c.cpp
+  GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/utopianpan0xa4.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
@@ -227,11 +233,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
+  LEGORacers/src/onyxcircularbuffer0x1c.cpp
   LEGORacers/src/peridottraceroot0x108.cpp
   LEGORacers/src/peridottrace0x4e0.cpp
   LEGORacers/src/citrinegrove0x1f4c.cpp
   LEGORacers/src/topazburst0x14.cpp
   LEGORacers/src/moonstoneglade0x3c.cpp
+  LEGORacers/src/crimsonpebble0x228.cpp
   LEGORacers/src/sapphirereef0x2030.cpp
   LEGORacers/src/verdanttide0x38.cpp
   LEGORacers/src/turquoiseglow0x80.cpp
@@ -245,7 +253,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/tanzanitewisp0x88.cpp
   LEGORacers/src/chromespike0x4.cpp
   LEGORacers/src/coppercrest0x40.cpp
-  LEGORacers/src/corundumpeak0x14.cpp
   LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/guids.cpp
@@ -282,11 +289,11 @@ add_custom_target(game DEPENDS legoracers goldp)
 # --- Modern compiler compatibility ---
 if (MSVC)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15")
-    set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_DEFINITIONS "_CRT_SECURE_NO_WARNINGS")
+    add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   endif()
   # Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.14.26428")
-    set_property(TARGET goldp legoracers common_goldp common_legoracers APPEND PROPERTY COMPILE_OPTIONS "-Zc:__cplusplus")
+    add_compile_options(-Zc:__cplusplus)
   endif()
 endif()
 
@@ -314,10 +321,8 @@ if (MSVC_FOR_DECOMP)
   endif()
 
   # LegoRacers.exe links to MSVCRT.dll (/MD), GolDP.dll has embedded its runtime library (/MT)
-  set_property(TARGET legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
-  set_property(TARGET goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
-  set_property(TARGET common_legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
-  set_property(TARGET common_goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  set_property(TARGET legoracers common_legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+  set_property(TARGET goldp common_goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
   # Embed debug information (/Z7) for Debug and RelWithDebInfo configuration type
   set_property(TARGET goldp legoracers common_goldp common_legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
@@ -344,17 +349,17 @@ if (MSVC_FOR_DECOMP)
 endif()
 
 find_program(CLANGFORMAT_BIN NAMES clang-format)
-if(EXISTS "${CLANGFORMAT_BIN}")
+if (EXISTS "${CLANGFORMAT_BIN}")
   execute_process(COMMAND "${CLANGFORMAT_BIN}" --version
     OUTPUT_VARIABLE "CLANGFORMAT_VERSION_OUTPUT"
     RESULT_VARIABLE "CLANGFORMAT_RESULT"
   )
-  if(CLANGFORMAT_RESULT EQUAL 0 AND CLANGFORMAT_VERSION_OUTPUT MATCHES "version ([0-9\\.]+)")
+  if (CLANGFORMAT_RESULT EQUAL 0 AND CLANGFORMAT_VERSION_OUTPUT MATCHES "version ([0-9\\.]+)")
     set(CLANGFORMAT_VERSION "${CMAKE_MATCH_1}")
     set(CLANGFORMAT_VERSION_REQUIRED "17.0")
     message(DEBUG "Found clang-format version ${CLANGFORMAT_VERSION} (needs ${CLANGFORMAT_VERSION_REQUIRED}")
-    if(CLANGFORMAT_VERSION VERSION_GREATER_EQUAL "${CLANGFORMAT_VERSION_REQUIRED}")
-      file(GLOB_RECURSE racers_sources
+    if (CLANGFORMAT_VERSION VERSION_GREATER_EQUAL "${CLANGFORMAT_VERSION_REQUIRED}")
+      file(GLOB_RECURSE racers_sources CONFIGURE_DEPENDS
         "${PROJECT_SOURCE_DIR}/LEGORacers/*.cpp"
         "${PROJECT_SOURCE_DIR}/LEGORacers/*.h"
         "${PROJECT_SOURCE_DIR}/GolDP/*.cpp"
@@ -367,6 +372,30 @@ if(EXISTS "${CLANGFORMAT_BIN}")
       add_custom_target(clang-format ${CLANGFORMAT_BIN} -i "--files=${CMAKE_CURRENT_BINARY_DIR}/racers_sources.txt")
     endif()
   endif()
+endif()
+
+find_library(CLANG_LIBRARY NAMES "clang" DOC "libclang from host (NOT target) system")
+find_package(Python3 COMPONENTS Interpreter QUIET)
+if (CLANG_LIBRARY AND TARGET Python3::Interpreter)
+  add_custom_target(ncc
+    Python3::Interpreter "${PROJECT_SOURCE_DIR}/tools/ncc/ncc.py"
+      --clang-lib "${CLANG_LIBRARY}"
+      --recurse
+      --style tools/ncc/ncc.style
+      --skip tools/ncc/skip.yml
+      --definition DEFINE_GUID PASCAL WINAPI FAR BOOL CALLBACK HWND__=HWND
+      --include
+        util
+        LEGORacers/include
+        LEGORacers
+        GolDP/include
+        GolDP
+        common/include
+        common
+      --path LEGORacers GolDP common
+    COMMENT "Verifying naming conventions (ncc)"
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+  )
 endif()
 
 reccmp_configure()

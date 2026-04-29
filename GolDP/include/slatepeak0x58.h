@@ -29,7 +29,7 @@ public:
 	void UnlockAuxPixels() override;                                                   // vtable+0x10
 	void VTable0x14(undefined4*) override;                                             // vtable+0x14
 	void VTable0x18() override;                                                        // vtable+0x18
-	PearlDew0x0c* GetPalette() override;                                               // vtable+0x1c
+	IPalette0x4* GetPalette() override;                                                // vtable+0x1c
 	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
 	void VTable0x28(undefined4, undefined4, undefined4*) override;                     // vtable+0x28
 	void VTable0x2c() override;                                                        // vtable+0x2c

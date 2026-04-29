@@ -90,6 +90,7 @@ void SmallCocoon0xc::AddName(const LegoChar* p_str, UtopianPan0xa4* p_arg2)
 }
 
 // FUNCTION: GOLDP 0x100283e0
+// FUNCTION: LEGORACERS 0x004119a0
 UtopianPan0xa4* SmallCocoon0xc::GetName(const LegoChar* p_str) const
 {
 	LegoU32 startIndex = 0;

@@ -236,7 +236,7 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 	for (i = 0; i < GetButtonCount(); i++) {
 		if (GetButtonState(i | source)) {
 			undefined4 keyCode = source | m_buttonMapping[i];
-			m_callback->OnKeyRepeat(*this, keyCode, m_currentTimeMs);
+			m_callback->OnKeyRepeat(this, keyCode, m_currentTimeMs);
 			repeatCount++;
 		}
 	}
@@ -245,7 +245,7 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 		for (i = 0; i < (LegoS32) (GetAxisCount() << 1); i++) {
 			if (GetButtonState(i | c_sourceJoystick2)) {
 				undefined4 keyCode = c_sourceJoystick2 | m_axisMapping[i];
-				m_callback->OnKeyRepeat(*this, keyCode, m_currentTimeMs);
+				m_callback->OnKeyRepeat(this, keyCode, m_currentTimeMs);
 				repeatCount++;
 			}
 		}
@@ -281,10 +281,11 @@ void InputDevice::SetButtonState(undefined4, LegoU8 p_state, LegoBool32)
 }
 
 // FUNCTION: LEGORACERS 0x0044bdf0
-void InputDevice::AddDirectionalTrigger(DirectionalTrigger* p_trigger)
+LegoS32 InputDevice::AddDirectionalTrigger(DirectionalTrigger* p_trigger)
 {
 	m_directionalTriggers[m_directionalTriggerCount] = p_trigger;
 	m_directionalTriggerCount += 1;
+	return m_directionalTriggerCount;
 }
 
 // FUNCTION: LEGORACERS 0x0044be10
@@ -429,11 +430,11 @@ LegoBool32 InputDevice::DirectionalTrigger::DispatchDelayedStateChange(LegoU32 p
 
 		if (p_device->m_callback) {
 			if (previousDirection) {
-				p_device->m_callback->OnKeyUp(*p_device, MakeDirectionEvent(previousDirection), p_time);
+				p_device->m_callback->OnKeyUp(p_device, MakeDirectionEvent(previousDirection), p_time);
 			}
 
 			if (m_currentDirection) {
-				p_device->m_callback->OnKeyDown(*p_device, MakeDirectionEvent(m_currentDirection), p_time);
+				p_device->m_callback->OnKeyDown(p_device, MakeDirectionEvent(m_currentDirection), p_time);
 			}
 		}
 	}
@@ -462,7 +463,7 @@ LegoBool32 InputDevice::DirectionalTrigger::DispatchRepeatEvent(LegoU32 p_time, 
 {
 	if (m_currentDirection) {
 		Callback* callback = p_device->m_callback;
-		callback->OnKeyRepeat(*p_device, MakeDirectionEvent(m_currentDirection), p_time);
+		callback->OnKeyRepeat(p_device, MakeDirectionEvent(m_currentDirection), p_time);
 	}
 
 	return TRUE;
@@ -515,14 +516,14 @@ LegoS32 InputDevice::DirectionalTrigger::GetDirectionForEvent(InputDevice* p_dev
 }
 
 // FUNCTION: LEGORACERS 0x0044c430
-LegoBool32 InputDevice::DirectionalTrigger::OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time)
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time)
 {
-	LegoS32 direction = GetDirectionForEvent(&p_device, p_keyCode);
+	LegoS32 direction = GetDirectionForEvent(p_device, p_keyCode);
 
 	if (direction && direction != m_currentDirection) {
-		if (p_device.m_callback) {
-			p_device.m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
-			p_device.m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
+		if (p_device->m_callback) {
+			p_device->m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+			p_device->m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
 		}
 
 		m_currentDirection = direction;
@@ -532,17 +533,17 @@ LegoBool32 InputDevice::DirectionalTrigger::OnKeyDown(InputDevice& p_device, und
 }
 
 // FUNCTION: LEGORACERS 0x0044c4a0
-LegoBool32 InputDevice::DirectionalTrigger::OnKeyUp(InputDevice& p_device, undefined4, undefined4 p_time)
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyUp(InputDevice* p_device, undefined4, undefined4 p_time)
 {
-	LegoS32 direction = GetPressedDirection(&p_device);
+	LegoS32 direction = GetPressedDirection(p_device);
 
-	if (direction != m_currentDirection && p_device.m_callback) {
+	if (direction != m_currentDirection && p_device->m_callback) {
 		if (m_currentDirection) {
-			p_device.m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+			p_device->m_callback->OnKeyUp(p_device, MakeDirectionEvent(m_currentDirection), p_time);
 		}
 
 		if (direction) {
-			p_device.m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
+			p_device->m_callback->OnKeyDown(p_device, MakeDirectionEvent(direction), p_time);
 		}
 
 		m_currentDirection = direction;
@@ -552,12 +553,12 @@ LegoBool32 InputDevice::DirectionalTrigger::OnKeyUp(InputDevice& p_device, undef
 }
 
 // FUNCTION: LEGORACERS 0x0044c510
-LegoBool32 InputDevice::DirectionalTrigger::OnKeyRepeat(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time)
+LegoBool32 InputDevice::DirectionalTrigger::OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time)
 {
-	LegoS32 direction = GetDirectionForEvent(&p_device, p_keyCode);
+	LegoS32 direction = GetDirectionForEvent(p_device, p_keyCode);
 
-	if (direction == m_currentDirection && p_device.m_callback) {
-		p_device.m_callback->OnKeyRepeat(p_device, MakeDirectionEvent(m_currentDirection), p_time);
+	if (direction == m_currentDirection && p_device->m_callback) {
+		p_device->m_callback->OnKeyRepeat(p_device, MakeDirectionEvent(m_currentDirection), p_time);
 	}
 
 	return TRUE;

@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 GolDPExport::VTable0x24()
 {
-	STUB(0x100016f0);
+	MATCHING(0x100016f0);
 	return 0;
 }
 
@@ -91,12 +91,14 @@ AmberLens0x344* GolDPExport::VTable0x20()
 	return result;
 }
 
-// STUB: GOLDP 0x100153b0
-undefined4* GolDPExport::VTable0x28()
+// FUNCTION: GOLDP 0x100153b0
+WhiteBaffoon0x50* GolDPExport::VTable0x28()
 {
-	// TODO
-	STUB(0x100153b0);
-	return NULL;
+	UtopianPan0xa4* result = new UtopianPan0xa4;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return result;
 }
 
 // STUB: GOLDP 0x10015420

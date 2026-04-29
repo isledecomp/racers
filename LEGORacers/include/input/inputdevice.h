@@ -15,18 +15,15 @@ class InputDevice {
 public:
 	class Callback {
 	public:
-		virtual LegoBool32 OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
-		virtual LegoBool32 OnKeyUp(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
-		virtual LegoBool32 OnKeyRepeat(
-			InputDevice& p_device,
-			undefined4 p_keyCode,
-			undefined4 p_arg3
-		) = 0; // vtable+0x08
+		virtual void OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
+		virtual void OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
+		virtual void OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode,
+								 undefined4 p_arg3) = 0; // vtable+0x08
 	};
 
 	// VTABLE: LEGORACERS 0x004b0f18
 	// SIZE 0x24
-	class DirectionalTrigger : public Callback {
+	class DirectionalTrigger {
 	public:
 		enum {
 			c_directionCount = 4,
@@ -35,10 +32,10 @@ public:
 		};
 
 		DirectionalTrigger();
-		LegoBool32 OnKeyDown(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override;   // vtable+0x00
-		LegoBool32 OnKeyUp(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override;     // vtable+0x04
-		LegoBool32 OnKeyRepeat(InputDevice& p_device, undefined4 p_keyCode, undefined4 p_time) override; // vtable+0x08
-		virtual ~DirectionalTrigger();                                                                   // vtable+0x0c
+		virtual LegoBool32 OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time);   // vtable+0x00
+		virtual LegoBool32 OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time);     // vtable+0x04
+		virtual LegoBool32 OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time); // vtable+0x08
+		virtual ~DirectionalTrigger();                                                                  // vtable+0x0c
 
 		LegoBool32 Configure(
 			LegoU32 p_sourceId,
@@ -117,7 +114,7 @@ public:
 	void DispatchAxisButtonStateChanges(LegoFloat p_newValue, LegoFloat p_oldValue, LegoU32 p_positiveEvent);
 	void DispatchRepeatEvents(LegoS32 p_elapsedMs);
 	void ResetAxisValues();
-	void AddDirectionalTrigger(DirectionalTrigger* p_trigger);
+	LegoS32 AddDirectionalTrigger(DirectionalTrigger* p_trigger);
 	LegoBool32 RemoveDirectionalTrigger(DirectionalTrigger* p_trigger);
 	LegoS16 StoreString(const LegoChar*);
 
@@ -130,6 +127,8 @@ public:
 	{
 		m_forceFeedbackAvailable = p_forceFeedbackAvailable;
 	}
+	void SetCallback(Callback* p_callback) { m_callback = p_callback; }
+	void SetRepeatEnabled(LegoBool32 p_enabled) { m_repeatEnabled = p_enabled; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b920
 	// InputDevice::`scalar deleting destructor'

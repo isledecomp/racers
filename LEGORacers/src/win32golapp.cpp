@@ -416,8 +416,8 @@ void Win32GolApp::UpdateMousePosition()
 			LegoFloat yScale = (LegoFloat) (bottomRight.y - topLeft.y) / m_golDrawState->m_height;
 			cursorPos.x -= topLeft.x;
 			cursorPos.y -= topLeft.y;
-			cursorPos.x /= xScale;
-			cursorPos.y /= yScale;
+			cursorPos.x = static_cast<LONG>(static_cast<LegoFloat>(cursorPos.x) / xScale);
+			cursorPos.y = static_cast<LONG>(static_cast<LegoFloat>(cursorPos.y) / yScale);
 			m_eventHandler->VTable0x24(cursorPos.x, cursorPos.y);
 		}
 	}
@@ -821,11 +821,11 @@ InputManager* Win32GolApp::GetInputManager()
 // STUB: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppDeactivated()
 {
-	STUB(0x00417990);
+	MATCHING(0x00417990);
 }
 
 // STUB: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppActivated()
 {
-	STUB(0x00417990);
+	MATCHING(0x00417990);
 }

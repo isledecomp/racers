@@ -30,7 +30,7 @@ public:
 	virtual void VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_numItems); // vtable+0x1c
 	virtual UtopianPan0xa4* GetItem(undefined4 p_index) = 0;                      // vtable+0x20
 
-private:
+protected:
 	BronzeFalcon0xc8770* m_renderer;         // 0x0c
 	undefined4 m_unk0x10;                    // 0x10
 	LegoU32 m_numItems;                      // 0x14

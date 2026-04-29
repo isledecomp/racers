@@ -81,10 +81,10 @@ void SilverDune0x30::VTable0x18()
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-PearlDew0x0c* SilverDune0x30::GetPalette()
+IPalette0x4* SilverDune0x30::GetPalette()
 {
-	STUB(0x100016f0);
-	return 0;
+	MATCHING(0x100016f0);
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d030
@@ -229,7 +229,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 	}
 
 	if (destSurface->m_usesPalette) {
-		PearlDew0x0c* palette = destSurface->GetPalette();
+		IPalette0x4* palette = destSurface->GetPalette();
 		palette->CopyEntriesFrom(p_source->GetPalette());
 	}
 

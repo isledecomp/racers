@@ -345,10 +345,10 @@ void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 
 	if (p_notify && m_callback != NULL) {
 		if (p_state) {
-			m_callback->OnKeyDown(*this, keyCode, m_currentTimeMs);
+			m_callback->OnKeyDown(this, keyCode, m_currentTimeMs);
 		}
 		else {
-			m_callback->OnKeyUp(*this, keyCode, m_currentTimeMs);
+			m_callback->OnKeyUp(this, keyCode, m_currentTimeMs);
 		}
 	}
 

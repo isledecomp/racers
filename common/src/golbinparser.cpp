@@ -114,7 +114,8 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 			if (m_unk0x1fc >= 0x17 && m_unk0x1fc <= 0x26) {
 				m_unk0x208 = m_unk0x1fc - 0x17;
-				if (m_unk0x210[m_unk0x208][0] == 0) {
+				// TODO: ???
+				if (&m_unk0x210[m_unk0x208][0] == 0) {
 					HandleUnexpectedToken(e_syntaxerror);
 				}
 
@@ -149,7 +150,8 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			// LINE: LEGORACERS 0x0044ac46
 			if (t >= 0x17 && t <= 0x26) {
 				m_unk0x208 = t - 0x17;
-				if (m_unk0x210[m_unk0x208][0] == 0) {
+				// TODO: ???
+				if (&m_unk0x210[m_unk0x208][0] == 0) {
 					HandleUnexpectedToken(e_syntaxerror);
 				}
 
@@ -220,8 +222,8 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
 			m_unk0x34 = e_int;
+			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xc:
@@ -250,8 +252,8 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
 			m_unk0x34 = e_int;
+			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xf:
@@ -260,7 +262,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = g_token0x0fconstant * (LegoU16) (m_unk0xa4[0] + ((m_unk0xa4[1] << 8)));
+			m_unk0x40 = g_token0x0fconstant * (LegoS16) (m_unk0xa4[0] + ((m_unk0xa4[1] << 8)));
 			m_unk0x34 = e_float;
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 

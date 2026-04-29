@@ -40,7 +40,7 @@ const LegoChar* const g_parserErrorStrings[] = {
 GolFileParser::GolFileParser()
 {
 	m_unk0x30 = 0;
-	m_unk0x34 = 0;
+	m_unk0x34 = e_syntaxerror;
 	m_unk0x44[0] = '\0';
 	m_unk0x84[0] = '\0';
 	m_filePath = NULL;

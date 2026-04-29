@@ -85,7 +85,7 @@ public:
 
 protected:
 	undefined4 m_unk0x30;               // 0x30
-	undefined4 m_unk0x34;               // 0x34
+	ParserTokenType m_unk0x34;          // 0x34
 	undefined4 m_unk0x38;               // 0x38
 	undefined m_unk0x3c[0x40 - 0x3c];   // 0x3c
 	LegoFloat m_unk0x40;                // 0x40

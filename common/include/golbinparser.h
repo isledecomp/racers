@@ -41,21 +41,21 @@ public:
 	// GolBinParser::~GolBinParser
 
 	void FUN_0044a830();
-	undefined FUN_0044b020();
+	void FUN_0044b020();
 	undefined4 FUN_0044b0b0(LegoS32);
 	GolFileParser::ParserTokenType FUN_0044b130();
 
 protected:
-	undefined4 m_unk0x1f0;         // 0x1f0
-	undefined4 m_unk0x1f4;         // 0x1f4
-	undefined4 m_unk0x1f8;         // 0x1f8
-	undefined4 m_unk0x1fc;         // 0x1fc
-	undefined4 m_unk0x200;         // 0x200
-	undefined4 m_unk0x204;         // 0x204
-	undefined4 m_unk0x208;         // 0x208
-	undefined4 m_unk0x20c;         // 0x20c
-	undefined4 m_unk0x210[16][16]; // 0x210
-	undefined m_unk0x610[64];      // 0x610
+	undefined4 m_unk0x1f0;      // 0x1f0
+	undefined4 m_unk0x1f4;      // 0x1f4
+	undefined4 m_unk0x1f8;      // 0x1f8
+	undefined4 m_unk0x1fc;      // 0x1fc
+	undefined4 m_unk0x200;      // 0x200
+	undefined4 m_unk0x204;      // 0x204
+	undefined4 m_unk0x208;      // 0x208
+	undefined4 m_unk0x20c;      // 0x20c
+	LegoU32 m_unk0x210[16][16]; // 0x210
+	LegoU32 m_unk0x610[16];     // 0x610
 };
 
 #endif // GOLBINPARSER_H

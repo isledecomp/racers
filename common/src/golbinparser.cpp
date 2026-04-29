@@ -4,18 +4,26 @@
 
 #include <stdio.h>
 
+// GLOBAL: GOLDP 0x10065b58
 // GLOBAL: LEGORACERS 0x004c7070
 const LegoFloat g_token0x0fconstant = 1.0f / 4096.0f;
 
+// GLOBAL: GOLDP 0x10065b60
 // GLOBAL: LEGORACERS 0x004c7078
 const LegoFloat g_token0x10constant = 1.0f / 32.0f;
 
+// GLOBAL: GOLDP 0x10065b64
 // GLOBAL: LEGORACERS 0x004c707c
 const LegoFloat g_token0x12constant = 1.0f / 127.0f;
 
 // GLOBAL: GOLDP 0x1005f030
 // GLOBAL: LEGORACERS 0x004c182c
 const LegoChar* g_fileFormatStr = "file %s\n";
+
+// GLOBAL: GOLDP 0x100577f8
+// GLOBAL: LEGORACERS 0x004b0df8
+const GolFileParser::ParserTokenType g_binParserBracketSequence[] =
+	{GolFileParser::e_leftBracket, GolFileParser::e_int, GolFileParser::e_rightBracket, GolFileParser::e_rightBracket};
 
 // STUB: GOLDP 0x1002fff0
 // STUB: LEGORACERS 0x0044a7e0
@@ -68,6 +76,7 @@ const LegoChar* GolBinParser::GetSuffix()
 GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 {
 	LegoU32 i;
+	ParserTokenType token;
 	LegoS32 code;
 	LegoS32 lenRead;
 
@@ -90,7 +99,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 		switch (t) {
 		case 0x14:
-			// LINE: LEGORACERS 0x0044ab3d
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
@@ -130,7 +138,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			break;
 
 		case 0x15:
-			// LINE: LEGORACERS 0x0044ac18
 			m_unk0x1f8 = 1;
 			m_unk0x200 = 1;
 			m_unk0x20c = 0;
@@ -138,7 +145,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			break;
 
 		case 0x16:
-			// LINE: LEGORACERS 0x0044ac35
 			FUN_0044b020();
 			if (m_unk0x34 == e_syntaxerror) {
 				return e_syntaxerror;
@@ -147,7 +153,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			break;
 
 		default:
-			// LINE: LEGORACERS 0x0044ac46
 			if (t >= 0x17 && t <= 0x26) {
 				m_unk0x208 = t - 0x17;
 				// TODO: ???
@@ -165,13 +170,12 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 2:
-			// LINE: LEGORACERS 0x0044ac8e
 			lenRead;
 			code = BufferedRead(m_unk0x1f0, m_unk0xa4, 63, &lenRead);
 			if (code != e_ioSuccess) {
 				if (code == e_ioEndOfFile) {
 					if (lenRead == 0) {
-						m_unk0x34 = 0;
+						m_unk0x34 = e_syntaxerror;
 						return e_syntaxerror;
 					}
 				}
@@ -194,40 +198,49 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			m_unk0x34 = (GolFileParser::ParserTokenType) t;
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
-		case 3:
-			// LINE: LEGORACERS 0x0044ad06
+		case 3: {
 			if (!FUN_0044b0b0(4)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = (LegoFloat) (m_unk0xa4[0] + (m_unk0xa4[1] << 8) + (m_unk0xa4[2] << 16) + (m_unk0xa4[3] << 24));
+			LegoU32 floatBits = (((LegoU32) m_unk0xa4[3] << 8) + (LegoU32) m_unk0xa4[2]);
+			floatBits = (floatBits << 8) + (LegoU32) m_unk0xa4[1];
+			floatBits = (floatBits << 8) + (LegoU32) m_unk0xa4[0];
+			m_unk0x40 = *(LegoFloat*) &floatBits;
 
 			m_unk0x34 = (GolFileParser::ParserTokenType) t;
 			return (GolFileParser::ParserTokenType) m_unk0x34;
+		}
 
-		case 4:
-			// LINE: LEGORACERS 0x0044ad5c
+		case 4: {
 			if (!FUN_0044b0b0(4)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x38 = (LegoU32) (m_unk0xa4[0] + (m_unk0xa4[1] << 8) + (m_unk0xa4[2] << 16) + (m_unk0xa4[3] << 24));
+			LegoU32 intBits = (((LegoU32) m_unk0xa4[3] << 8) + (LegoU32) m_unk0xa4[2]);
+			intBits = (intBits << 8) + (LegoU32) m_unk0xa4[1];
+			intBits = (intBits << 8) + (LegoU32) m_unk0xa4[0];
+			m_unk0x38 = intBits;
 
 			m_unk0x34 = (GolFileParser::ParserTokenType) t;
 			return (GolFileParser::ParserTokenType) m_unk0x34;
+		}
 
 		case 0xb:
-			// LINE: LEGORACERS 0x0044adac
 			if (!FUN_0044b0b0(1)) {
 				return e_syntaxerror;
 			}
 
+#ifdef BUILDING_GOL
+			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
+			m_unk0x34 = e_int;
+#else
 			m_unk0x34 = e_int;
 			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
+#endif
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xc:
-			// LINE: LEGORACERS 0x0044add7
 			if (!FUN_0044b0b0(1)) {
 				return e_syntaxerror;
 			}
@@ -237,7 +250,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xd:
-			// LINE: LEGORACERS 0x0044ae02
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
@@ -247,17 +259,20 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xe:
-			// LINE: LEGORACERS 0x0044ae3e
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
 
+#ifdef BUILDING_GOL
+			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
+			m_unk0x34 = e_int;
+#else
 			m_unk0x34 = e_int;
 			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
+#endif
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xf:
-			// LINE: LEGORACERS 0x0044ae7d
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
@@ -267,7 +282,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x10:
-			// LINE: LEGORACERS 0x0044aec7
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
@@ -277,7 +291,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x11:
-			// LINE: LEGORACERS 0x0044af11
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
@@ -287,7 +300,6 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x12:
-			// LINE: LEGORACERS 0x0044af55
 			if (!FUN_0044b0b0(1)) {
 				return e_syntaxerror;
 			}
@@ -296,24 +308,49 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			m_unk0x34 = e_float;
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
-		case 0x13:
-			// LINE: LEGORACERS 0x0044af8e
+		case 0x13: {
 			if (!FUN_0044b0b0(2)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x34 = (LegoU8) (m_unk0xa4[0]) + ((LegoU8) (m_unk0xa4[1]) << 8);
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			token = (ParserTokenType) ((LegoU8) m_unk0xa4[1]);
+			token = (ParserTokenType) ((LegoU32) token << 8);
+			token = (ParserTokenType) (token + (LegoU8) m_unk0xa4[0]);
+			m_unk0x34 = token;
+			return token;
+		}
 		}
 	}
 }
 
-// STUB: LEGORACERS 0x0044b020
-undefined GolBinParser::FUN_0044b020()
+// FUNCTION: GOLDP 0x10030c30
+// FUNCTION: LEGORACERS 0x0044b020
+void GolBinParser::FUN_0044b020()
 {
-	// TODO
-	STUB(0x0044b020);
-	return 0;
+	if (!FUN_0044b0b0(2)) {
+		return;
+	}
+
+	LegoU32 sequenceIndex = (LegoU8) m_unk0xa4[0] - 0x17;
+	LegoU32 count = (LegoU8) m_unk0xa4[1];
+	m_unk0x610[sequenceIndex] = count;
+
+	for (LegoU32 i = 0; i < count; i++) {
+		if (!FUN_0044b0b0(1)) {
+			return;
+		}
+
+		LegoU32 token = (LegoU8) m_unk0xa4[0];
+		if (token == 0x13) {
+			if (!FUN_0044b0b0(2)) {
+				return;
+			}
+
+			token = ((LegoU8) m_unk0xa4[1] << 8) + (LegoU8) m_unk0xa4[0];
+		}
+
+		m_unk0x210[sequenceIndex][i] = token;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0044b0b0
@@ -324,7 +361,7 @@ undefined4 GolBinParser::FUN_0044b0b0(LegoS32 p_size)
 	if (code != e_ioSuccess) {
 		if (code == e_ioEndOfFile) {
 			if (lenRead == 0) {
-				m_unk0x34 = 0;
+				m_unk0x34 = e_syntaxerror;
 				return 0;
 			}
 		}
@@ -341,12 +378,50 @@ undefined4 GolBinParser::FUN_0044b0b0(LegoS32 p_size)
 	return 1;
 }
 
+// STUB: GOLDP 0x10030da0
 // STUB: LEGORACERS 0x0044b130
 GolFileParser::ParserTokenType GolBinParser::FUN_0044b130()
 {
-	// TODO
-	STUB(0x0044b130);
-	return e_syntaxerror;
+	ParserTokenType token;
+
+	if (m_unk0x204) {
+		LegoU32 sequenceIndex = m_unk0x208;
+		LegoU32 tokenIndex = m_unk0x20c;
+
+		token = (ParserTokenType) m_unk0x210[sequenceIndex][tokenIndex++];
+		m_unk0x20c = tokenIndex;
+
+		if (tokenIndex < m_unk0x610[sequenceIndex]) {
+			return token;
+		}
+
+		m_unk0x20c = 0;
+	}
+	else if (m_unk0x200) {
+		LegoU32 tokenIndex = m_unk0x20c;
+
+		token = g_binParserBracketSequence[tokenIndex];
+		tokenIndex++;
+		m_unk0x20c = tokenIndex;
+
+		if (tokenIndex < sizeOfArray(g_binParserBracketSequence)) {
+			return token;
+		}
+
+		m_unk0x20c = 0;
+	}
+	else {
+		token = (ParserTokenType) m_unk0x1fc;
+	}
+
+	m_unk0x1f8--;
+
+	if (m_unk0x1f8 == 0) {
+		m_unk0x204 = 0;
+		m_unk0x200 = 0;
+	}
+
+	return token;
 }
 
 // FUNCTION: GOLDP 0x1002fa40 FOLDED

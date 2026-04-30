@@ -39,6 +39,7 @@ LegoS32 CeruleanKnight0x20::FUN_0046b130()
 	if (m_unk0x10->GetNextToken() != GolFileParser::e_unknown0x27) {
 		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
+
 	m_unk0x1c = m_unk0x10->ReadInteger();
 	GolNameTable::Allocate(m_unk0x1c);
 	return m_unk0x1c;
@@ -50,11 +51,13 @@ LegoS32 CeruleanKnight0x20::FUN_0046b170()
 	if (m_unk0x10->GetNextToken() != GolFileParser::e_leftBracket) {
 		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_leftBracket);
 	}
+
 	LegoS32 count = m_unk0x10->ReadInteger();
 	m_unk0x18 += count;
 	if (m_unk0x10->GetNextToken() != GolFileParser::e_rightBracket) {
 		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_rightBracket);
 	}
+
 	if (m_unk0x10->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
@@ -84,6 +87,7 @@ void CeruleanKnight0x20::FUN_0046b210(LegoS8* p_ints)
 void CeruleanKnight0x20::FUN_0046b250()
 {
 	GolFileParser::ParserTokenType token;
+
 	while ((token = m_unk0x10->GetNextToken()) != 0) {
 		VTable0x14(token);
 		token = m_unk0x10->GetNextToken();

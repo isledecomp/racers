@@ -11,7 +11,7 @@ CeruleanKnight0x20::CeruleanKnight0x20()
 // FUNCTION: LEGORACERS 0x0046b090
 CeruleanKnight0x20::~CeruleanKnight0x20()
 {
-	VTable0x08();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0046b0e0
@@ -25,10 +25,10 @@ void CeruleanKnight0x20::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x0046b110
-void CeruleanKnight0x20::VTable0x08()
+void CeruleanKnight0x20::Clear()
 {
-	if (m_data) {
-		SmallCocoon0xc::VTable0x08();
+	if (m_nameEntries) {
+		GolNameTable::Clear();
 		VTable0x0c();
 	}
 }

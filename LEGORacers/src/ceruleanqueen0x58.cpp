@@ -11,7 +11,7 @@ CeruleanQueen0x58::CeruleanQueen0x58()
 // FUNCTION: LEGORACERS 0x00469620
 CeruleanQueen0x58::~CeruleanQueen0x58()
 {
-	VTable0x08();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00469670
@@ -35,7 +35,7 @@ void CeruleanQueen0x58::VTable0x0c()
 }
 
 // STUB: LEGORACERS 0x004696f0
-void CeruleanQueen0x58::VTable0x08()
+void CeruleanQueen0x58::Clear()
 {
 	// TODO
 	STUB(0x004696f0);

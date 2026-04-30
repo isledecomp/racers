@@ -26,7 +26,7 @@ void AwakeKite0x20::VTable0x0c()
 }
 
 // STUB: GOLDP 0x10005ec0
-void AwakeKite0x20::VTable0x08()
+void AwakeKite0x20::Clear()
 {
 	STUB(0x10005ec0);
 }

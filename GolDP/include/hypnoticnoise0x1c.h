@@ -3,18 +3,18 @@
 
 #include "floatypontoon0x4c.h"
 #include "golhashtable.h"
-#include "smallcocoon0xc.h"
+#include "golnametable.h"
 #include "utopianpan0xa4.h"
 
 class BronzeFalcon0xc8770;
 
 // VTABLE: GOLDP 0x10056f28
-class HypnoticNoise0x1c : public SmallCocoon0xc {
+class HypnoticNoise0x1c : public GolNameTable {
 public:
 	HypnoticNoise0x1c();
 	~HypnoticNoise0x1c() override;
 
-	void VTable0x08() override; // vtable+0x08
+	void Clear() override; // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x10022fc0
 	// HypnoticNoise0x1c::`scalar deleting destructor'

@@ -66,7 +66,7 @@ void MenuManager::Reset()
 	m_unk0x4dd0 = FALSE;
 	m_unk0x4d24.Reset();
 	m_unk0x4d30.Reset();
-	m_unk0x4d48.VTable0x08();
+	m_unk0x4d48.Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0042cb90
@@ -278,13 +278,13 @@ void MenuManager::LoadMenuMaterials()
 void MenuManager::FUN_0042d080()
 {
 	if (m_unk0x4cdc) {
-		m_unk0x4cdc->VTable0x08();
+		m_unk0x4cdc->Clear();
 		m_unk0x4cd4->VTable0x68(m_unk0x4cdc);
 		m_unk0x4cdc = NULL;
 	}
 
 	if (m_unk0x4ce0) {
-		m_unk0x4ce0->VTable0x08();
+		m_unk0x4ce0->Clear();
 		m_unk0x4cd4->VTable0x6c(m_unk0x4ce0);
 		m_unk0x4ce0 = NULL;
 	}
@@ -460,7 +460,7 @@ LegoBool32 MenuManager::FUN_0042e680()
 	m_unk0x04.m_context->m_unk0x1e = flags & ~LegoRacers::Context::c_flagBit0;
 
 	PeridotTraceState0x438* state = &m_unk0x04.m_unk0x258.GetUnk0x18c4();
-	LegoU32 index = m_unk0x04.m_unk0x4360.FUN_00436930(m_unk0x04.m_context->m_raceSlots[0].m_unk0x08);
+	LegoU32 index = m_unk0x04.m_unk0x4360.GetEntryIndexByName(m_unk0x04.m_context->m_raceSlots[0].m_unk0x08);
 	if (index >= 12) {
 		return FALSE;
 	}

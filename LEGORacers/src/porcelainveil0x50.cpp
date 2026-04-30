@@ -24,14 +24,14 @@ void PorcelainVeil0x50::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00480620
-void PorcelainVeil0x50::VTable0x08()
+void PorcelainVeil0x50::Clear()
 {
-	if (m_data) {
+	if (m_nameEntries) {
 		if (m_unk0x4c) {
 			delete[] m_unk0x4c;
 		}
 
-		CeruleanEmperor0x4c::VTable0x08();
+		CeruleanEmperor0x4c::Clear();
 	}
 }
 

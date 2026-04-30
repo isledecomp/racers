@@ -6,7 +6,7 @@
 
 class GolCommonDrawState;
 class AmberLens0x344;
-class SmallCocoon0xc;
+class GolNameTable;
 
 // VTABLE: GOLDP 0x100565b8
 // SIZE 0xc8770
@@ -93,8 +93,8 @@ public:
 	virtual void VTable0x10c();                                             // vtable+0x10c
 	virtual LegoBool32 VTable0x110() const;                                 // vtable+0x110
 
-	void FUN_10028ad0(SmallCocoon0xc* p_param);
-	void FUN_10028ae0(SmallCocoon0xc* p_param);
+	void FUN_10028ad0(GolNameTable* p_param);
+	void FUN_10028ae0(GolNameTable* p_param);
 	undefined4* FUN_004131a0(const LegoChar* p_name);
 
 	// SYNTHETIC: GOLDP 0x10007960

@@ -12,7 +12,7 @@ class CeruleanQueen0x58 : public CeruleanKnight0x20 {
 public:
 	CeruleanQueen0x58();
 	~CeruleanQueen0x58() override;        // vtable+0x00
-	void VTable0x08() override;           // vtable+0x08
+	void Clear() override;                // vtable+0x08
 	void VTable0x0c() override;           // vtable+0x0c
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14

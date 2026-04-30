@@ -15,7 +15,7 @@ CeruleanEmperor0x4c::CeruleanEmperor0x4c()
 // FUNCTION: LEGORACERS 0x0046fac0
 CeruleanEmperor0x4c::~CeruleanEmperor0x4c()
 {
-	VTable0x08();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0046fb10
@@ -37,9 +37,9 @@ void CeruleanEmperor0x4c::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x0046fb80
-void CeruleanEmperor0x4c::VTable0x08()
+void CeruleanEmperor0x4c::Clear()
 {
-	if (m_data == NULL) {
+	if (m_nameEntries == NULL) {
 		return;
 	}
 
@@ -74,7 +74,7 @@ void CeruleanEmperor0x4c::VTable0x08()
 		delete[] m_unk0x48;
 	}
 
-	CeruleanKnight0x20::VTable0x08();
+	CeruleanKnight0x20::Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0046fc40

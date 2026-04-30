@@ -12,6 +12,7 @@
 #include "crimsonsun0xa4.h"
 #include "decomp.h"
 #include "garnetflare0x60.h"
+#include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
 #include "lapissigil0x14.h"
@@ -24,7 +25,6 @@
 #include "porcelainveil0x50.h"
 #include "rosequartzshine0x14.h"
 #include "sapphirereef0x2030.h"
-#include "smallcocoon0xc.h"
 #include "stackoflegou16.h"
 #include "tanzanitewisp0x88.h"
 #include "topazburst0x14.h"
@@ -119,7 +119,7 @@ private:
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
 	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
-	SmallCocoon0xc* m_unk0x4ce0;            // 0x4ce0
+	GolNameTable* m_unk0x4ce0;              // 0x4ce0
 	GolStringTable m_unk0x4ce4;             // 0x4ce4
 	GolStringTable m_unk0x4cf8;             // 0x4cf8
 	GolStringTable m_unk0x4d0c;             // 0x4d0c

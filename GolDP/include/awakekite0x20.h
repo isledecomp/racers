@@ -1,8 +1,8 @@
 #ifndef GOLDP_AWAKEKITE0x20_H
 #define GOLDP_AWAKEKITE0x20_H
 
+#include "golnametable.h"
 #include "hypnoticnoise0x1c.h"
-#include "smallcocoon0xc.h"
 
 class BronzeFalcon0xc8770;
 
@@ -13,7 +13,7 @@ public:
 	AwakeKite0x20();
 	~AwakeKite0x20() override;
 
-	void VTable0x08() override; // vtable+0x08
+	void Clear() override; // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x10005d30
 	// AwakeKite0x20::`scalar deleting destructor'

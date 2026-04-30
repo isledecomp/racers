@@ -27,8 +27,8 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 		m_renderer = NULL;
 	}
 
-	if (m_data) {
-		SmallCocoon0xc::VTable0x08();
+	if (m_nameEntries) {
+		GolNameTable::Clear();
 	}
 }
 
@@ -40,7 +40,7 @@ void HypnoticNoise0x1c::LoadMaterialDefinitions(
 )
 {
 	if (m_numItems > 0) {
-		VTable0x08();
+		Clear();
 	}
 
 	m_renderer = p_renderer;
@@ -75,7 +75,7 @@ void HypnoticNoise0x1c::LoadMaterialDefinitions(
 		return;
 	}
 
-	SmallCocoon0xc::VTable0x04(m_numItems);
+	GolNameTable::Allocate(m_numItems);
 	m_currentHashEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
 	VTable0x0c();
 
@@ -177,7 +177,7 @@ void HypnoticNoise0x1c::LoadMaterialDefinitions(
 void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_numItems)
 {
 	if (m_numItems > 0) {
-		VTable0x08();
+		Clear();
 	}
 
 	m_renderer = p_renderer;
@@ -192,7 +192,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 }
 
 // FUNCTION: GOLDP 0x100233f0
-void HypnoticNoise0x1c::VTable0x08()
+void HypnoticNoise0x1c::Clear()
 {
 	m_numItems = 0;
 	if (m_renderer) {
@@ -200,8 +200,8 @@ void HypnoticNoise0x1c::VTable0x08()
 		m_renderer = NULL;
 	}
 
-	if (m_data) {
-		SmallCocoon0xc::VTable0x08();
+	if (m_nameEntries) {
+		GolNameTable::Clear();
 	}
 }
 

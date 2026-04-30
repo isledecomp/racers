@@ -3,12 +3,12 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "smallcocoon0xc.h"
+#include "golnametable.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b08c4
 // SIZE 0x14
-class RoseQuartzShine0x14 : public SmallCocoon0xc {
+class RoseQuartzShine0x14 : public GolNameTable {
 public:
 	// SIZE 0x38
 	class Struct0x38 {
@@ -42,16 +42,16 @@ public:
 
 	RoseQuartzShine0x14();
 	~RoseQuartzShine0x14() override; // vtable+0x00
-	void VTable0x08() override;      // vtable+0x08
+	void Clear() override;           // vtable+0x08
 
 	// SYNTHETIC: LEGORACERS 0x00436680
 	// RoseQuartzShine0x14::`scalar deleting destructor'
 
-	LegoU32 FUN_00436930(LegoChar* p_unk0x04);
+	LegoU32 GetEntryIndexByName(LegoChar* p_name);
 
 private:
-	Struct0x38* m_unk0x0c; // 0x0c
-	LegoU32 m_unk0x10;     // 0x10
+	Struct0x38* m_entries; // 0x0c
+	LegoU32 m_entryCount;  // 0x10
 };
 
 #endif // ROSEQUARTZSHINE0X14_H

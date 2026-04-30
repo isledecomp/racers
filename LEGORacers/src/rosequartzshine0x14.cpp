@@ -41,31 +41,30 @@ void RoseQuartzShine0x14::Struct0x38::FUN_00436650()
 // FUNCTION: LEGORACERS 0x00436660
 RoseQuartzShine0x14::RoseQuartzShine0x14()
 {
-	m_unk0x0c = NULL;
-	m_unk0x10 = 0;
+	m_entries = NULL;
+	m_entryCount = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004366a0
 RoseQuartzShine0x14::~RoseQuartzShine0x14()
 {
-	VTable0x08();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x004368f0
-void RoseQuartzShine0x14::VTable0x08()
+void RoseQuartzShine0x14::Clear()
 {
-	if (m_unk0x0c) {
-		delete[] m_unk0x0c;
-		m_unk0x0c = NULL;
+	if (m_entries) {
+		delete[] m_entries;
+		m_entries = NULL;
 	}
 
-	m_unk0x10 = 0;
+	m_entryCount = 0;
 }
 
-// STUB: LEGORACERS 0x00436930
-LegoU32 RoseQuartzShine0x14::FUN_00436930(LegoChar*)
+// FUNCTION: LEGORACERS 0x00436930
+LegoU32 RoseQuartzShine0x14::GetEntryIndexByName(LegoChar* p_name)
 {
-	// TODO
-	STUB(0x436930);
-	return 0;
+	Struct0x38* entry = static_cast<Struct0x38*>(GetName(p_name));
+	return entry - m_entries;
 }

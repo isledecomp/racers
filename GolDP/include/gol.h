@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "floatyboat0x28.h"
 #include "goldrawstate.h"
-#include "smallcocoon0xc.h"
+#include "golnametable.h"
 #include "types.h"
 #include "zoweeblubberworth0xf0.h"
 
@@ -53,7 +53,7 @@ public:
 	virtual undefined4* VTable0x2c() = 0;            // vtable+0x2c
 	virtual FloatyBoat0x28* VTable0x30() = 0;        // vtable+0x30
 	virtual AwakeKite0x20* VTable0x34() = 0;         // vtable+0x34
-	virtual SmallCocoon0xc* VTable0x38() = 0;        // vtable+0x38
+	virtual GolNameTable* VTable0x38() = 0;          // vtable+0x38
 	virtual void VTable0x3c(undefined4*) = 0;        // vtable+0x3c
 	virtual void VTable0x40(undefined4*) = 0;        // vtable+0x40
 	virtual void VTable0x44(undefined4*) = 0;        // vtable+0x44
@@ -66,7 +66,7 @@ public:
 	virtual void VTable0x60(undefined4*) = 0;        // vtable+0x60
 	virtual void VTable0x64(undefined4*) = 0;        // vtable+0x64
 	virtual void VTable0x68(AwakeKite0x20*) = 0;     // vtable+0x68
-	virtual void VTable0x6c(SmallCocoon0xc*) = 0;    // vtable+0x6c
+	virtual void VTable0x6c(GolNameTable*) = 0;      // vtable+0x6c
 };
 
 typedef GolExport* GolEntryCBFN(GolImport*);

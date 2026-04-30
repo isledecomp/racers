@@ -13,6 +13,8 @@ public:
 	TanzaniteWisp0x88();
 	~TanzaniteWisp0x88();
 
+	void FUN_0049d140();
+
 	void Reset()
 	{
 		m_unk0x78 = 0;
@@ -27,7 +29,18 @@ public:
 private:
 	friend class MenuManager;
 
-	undefined m_unk0x00[0x78 - 0x00]; // 0x00
+	undefined4 m_unk0x00;             // 0x00
+	undefined4 m_unk0x04;             // 0x04
+	undefined4 m_unk0x08;             // 0x08
+	undefined4 m_unk0x0c;             // 0x0c
+	undefined4 m_unk0x10;             // 0x10
+	undefined4 m_unk0x14;             // 0x14
+	undefined4 m_unk0x18;             // 0x18
+	undefined4* m_unk0x1c;            // 0x1c
+	undefined4* m_unk0x20;            // 0x20
+	undefined m_unk0x24[0x38 - 0x24]; // 0x24
+	undefined4 m_unk0x38;             // 0x38
+	undefined m_unk0x3c[0x78 - 0x3c]; // 0x3c
 	undefined4 m_unk0x78;             // 0x78
 	MusicGroup* m_musicGroup;         // 0x7c
 	MusicInstance* m_musicInstance;   // 0x80

@@ -135,7 +135,7 @@ void ImaginaryNotion0x290::VTable0x54()
 	m_unk0xbc = NULL;
 	m_unk0xc0 = 0;
 	m_unk0x280 = 0;
-	m_unk0xcc = 0;
+	m_unk0xcc = NULL;
 	m_unk0x284 = 0;
 	m_unk0xc4 = 0;
 	m_unk0x54 = 0;

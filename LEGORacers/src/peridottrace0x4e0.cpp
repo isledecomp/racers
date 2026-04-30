@@ -1,5 +1,8 @@
 #include "peridottrace0x4e0.h"
 
+#include <string.h>
+
+DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
 DECOMP_SIZE_ASSERT(PeridotTrace0x4a8, 0x4a8)
 DECOMP_SIZE_ASSERT(PeridotTrace0x4e0, 0x4e0)
 DECOMP_SIZE_ASSERT(PeridotTraceActionBase0x34, 0x34)
@@ -21,6 +24,33 @@ PeridotTraceBuffer0x250::~PeridotTraceBuffer0x250()
 	STUB(0x42b2b0);
 }
 
+// STUB: LEGORACERS 0x0042b2f0
+void PeridotTraceBuffer0x250::FUN_0042b2f0(undefined4, undefined4, undefined4, undefined4)
+{
+	// TODO
+	STUB(0x0042b2f0);
+}
+
+// FUNCTION: LEGORACERS 0x0042b6e0
+PeridotTraceBase0x24::PeridotTraceBase0x24()
+{
+	Init();
+}
+
+// FUNCTION: LEGORACERS 0x0042b700
+void PeridotTraceBase0x24::Init()
+{
+	m_unk0x20 = 0;
+	m_unk0x00 = 0;
+	m_unk0x1c = 0;
+	m_unk0x04 = 0;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x08 = 0;
+	m_unk0x0c = 0;
+	m_unk0x10 = 0;
+}
+
 // STUB: LEGORACERS 0x0042e880
 PeridotTraceState0x438::PeridotTraceState0x438()
 {
@@ -35,6 +65,28 @@ PeridotTraceState0x438::~PeridotTraceState0x438()
 	STUB(0x42e890);
 }
 
+// STUB: LEGORACERS 0x0042e920
+void PeridotTraceState0x438::FUN_0042e920(undefined4*)
+{
+	// TODO
+	STUB(0x0042e920);
+}
+
+// STUB: LEGORACERS 0x0042eb60
+void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4e0*, undefined4)
+{
+	// TODO
+	STUB(0x0042eb60);
+}
+
+// STUB: LEGORACERS 0x0042ef80
+void PeridotTraceState0x438::FUN_0042ef80(PeridotTrace0x4a8*)
+{
+	// TODO
+	STUB(0x0042ef80);
+}
+
+void FUN_0042b2f0(undefined4, undefined4, undefined4, undefined4);
 // FUNCTION: LEGORACERS 0x0042f200
 void PeridotTraceState0x438::FUN_0042f200(LegoU8 p_unk0x04)
 {
@@ -62,11 +114,11 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f280() const
 	return m_unk0x26 == 0x0fff;
 }
 
-// STUB: LEGORACERS 0x00442660
+// FUNCTION: LEGORACERS 0x00442660
 PeridotTrace0x4a8::PeridotTrace0x4a8()
 {
-	// TODO
-	STUB(0x442660);
+	::memset(m_unk0x24, 0, sizeof(m_unk0x24));
+	m_unk0x4a4 = 0;
 }
 
 // STUB: LEGORACERS 0x00442680
@@ -74,6 +126,29 @@ PeridotTrace0x4a8::~PeridotTrace0x4a8()
 {
 	// TODO
 	STUB(0x442680);
+}
+
+// STUB: LEGORACERS 0x004426d0
+void PeridotTrace0x4a8::FUN_004426d0(undefined4, undefined4, undefined4)
+{
+	// TODO
+	STUB(0x004426d0);
+}
+
+// STUB: LEGORACERS 0x00442770
+undefined4 PeridotTrace0x4a8::FUN_00442770(GolFile& p_file)
+{
+	// TODO
+	STUB(0x00442770);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x004439b0
+undefined4 PeridotTrace0x4a8::FUN_004439b0()
+{
+	// TODO
+	STUB(0x004439b0);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x004437e0
@@ -95,6 +170,30 @@ void PeridotTrace0x4e0::FUN_004438e0()
 {
 	// TODO
 	STUB(0x4438e0);
+}
+
+// STUB: LEGORACERS 0x00443910
+undefined4 PeridotTrace0x4e0::FUN_00443910()
+{
+	// TODO
+	STUB(0x00443910);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x00443940
+undefined4 PeridotTrace0x4e0::FUN_00443940()
+{
+	// TODO
+	STUB(0x00443940);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x00443980
+undefined4 PeridotTrace0x4e0::FUN_00443980()
+{
+	// TODO
+	STUB(0x00443980);
+	return 0;
 }
 
 // STUB: LEGORACERS 0x0044e0a0

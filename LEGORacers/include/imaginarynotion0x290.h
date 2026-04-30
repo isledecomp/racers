@@ -88,7 +88,7 @@ protected:
 	undefined4 m_unk0xc0;          // 0x0c0
 	undefined4 m_unk0xc4;          // 0x0c4
 	undefined4 m_unk0xc8;          // 0x0c8
-	undefined4 m_unk0xcc;          // 0x0cc
+	undefined4* m_unk0xcc;         // 0x0cc
 	undefined4* m_unk0xd0;         // 0x0d0
 	undefined4 m_unk0xd4;          // 0x0d4
 	ObscureIcon0x1a8 m_unk0xd8;    // 0x0d8

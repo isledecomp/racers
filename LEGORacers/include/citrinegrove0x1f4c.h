@@ -19,7 +19,14 @@ public:
 	PeridotTraceBuffer0x250& GetUnk0x1cfc() { return m_unk0x1cfc; }
 
 	void FUN_004432d0();
+	void FUN_004432e0(undefined4* p_arg1, undefined4 p_arg2);
+	undefined4 FUN_00443420(undefined4, undefined4);
+	undefined4 FUN_004434a0(undefined4);
+	void FUN_00443520(undefined4);
+	void FUN_004435c0();
+	void FUN_00443620(const LegoChar*, PeridotTrace0x4a8*);
 	void FUN_004436e0();
+	void FUN_00450fc0(const LegoChar* p_path);
 
 private:
 	MarigoldTrail0x108 m_unk0x00;        // 0x00

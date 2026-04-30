@@ -11,7 +11,7 @@
 class GolFile : public GolStream {
 public:
 	GolFile();
-	~GolFile() override;
+	~GolFile() override; // vtable+0x18
 
 	static LegoS32 Exists(const LegoChar* p_fileName);
 

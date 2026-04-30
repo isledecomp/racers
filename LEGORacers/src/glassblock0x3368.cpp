@@ -1,5 +1,7 @@
 #include "glassblock0x3368.h"
 
+#include "golerror.h"
+
 DECOMP_SIZE_ASSERT(GlassBlock0x3368, 0x3368)
 
 // STUB: LEGORACERS 0x004316e0
@@ -17,8 +19,21 @@ GlassBlock0x3368::~GlassBlock0x3368()
 }
 
 // STUB: LEGORACERS 0x00431e00
-LegoS32 GlassBlock0x3368::Initialize(LegoRacers::Context*, const LegoChar*, undefined4, GlassShard0x3b8*)
+LegoS32 GlassBlock0x3368::Initialize(LegoRacers::Context* p_context, const LegoChar*, undefined4, GlassShard0x3b8*)
 {
+#if 0
+	if (p_context->m_unk0x18) {
+		parser = new GolBinParser;
+		if (parser == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	} else {
+		parser = new RabTxtParser;
+		if (parser == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+#endif
 	// TODO
 	STUB(0x431e00);
 	return 0;

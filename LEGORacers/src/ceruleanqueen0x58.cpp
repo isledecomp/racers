@@ -48,9 +48,144 @@ void CeruleanQueen0x58::VTable0x10(undefined4)
 	STUB(0x00469810);
 }
 
-// STUB: LEGORACERS 0x00469950
-void CeruleanQueen0x58::VTable0x14(undefined4)
+// FUNCTION: LEGORACERS 0x00469950
+void CeruleanQueen0x58::VTable0x14(undefined4 p_arg1)
+{
+	switch (p_arg1) {
+	case 0x37:
+		FUN_0046a750();
+		break;
+	case 0x38:
+		FUN_0046a800();
+		break;
+	case 0x39:
+		FUN_0046a8a0();
+		break;
+	case 0x3a:
+		FUN_0046a940();
+		break;
+	case 0x3b:
+		FUN_0046a9e0();
+		break;
+	case 0x3c:
+		FUN_0046aa90();
+		break;
+	case 0x3d:
+		FUN_0046ab40();
+		break;
+	case 0x3e:
+		FUN_0046abe0();
+		break;
+	case 0x3f:
+		FUN_0046ac90();
+		break;
+	case 0x40:
+		FUN_0046ad40();
+		break;
+	case 0x41:
+	case 0x44:
+	default:
+		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+		break;
+	case 0x42:
+		FUN_0046adf0();
+		break;
+	case 0x43:
+		FUN_0046af50();
+		break;
+	case 0x45:
+		FUN_0046aea0();
+		break;
+	}
+}
+
+// STUB: LEGORACERS 0x0046a750
+void CeruleanQueen0x58::FUN_0046a750()
 {
 	// TODO
-	STUB(0x00469950);
+	STUB(0x0046a750);
+}
+
+// STUB: LEGORACERS 0x0046a800
+void CeruleanQueen0x58::FUN_0046a800()
+{
+	// TODO
+	STUB(0x0046a800);
+}
+
+// STUB: LEGORACERS 0x0046a8a0
+void CeruleanQueen0x58::FUN_0046a8a0()
+{
+	// TODO
+	STUB(0x0046a8a0);
+}
+
+// STUB: LEGORACERS 0x0046a940
+void CeruleanQueen0x58::FUN_0046a940()
+{
+	// TODO
+	STUB(0x0046a940);
+}
+
+// STUB: LEGORACERS 0x0046a9e0
+void CeruleanQueen0x58::FUN_0046a9e0()
+{
+	// TODO
+	STUB(0x0046a9e0);
+}
+
+// STUB: LEGORACERS 0x0046aa90
+void CeruleanQueen0x58::FUN_0046aa90()
+{
+	// TODO
+	STUB(0x0046aa90);
+}
+
+// STUB: LEGORACERS 0x0046ab40
+void CeruleanQueen0x58::FUN_0046ab40()
+{
+	// TODO
+	STUB(0x0046ab40);
+}
+
+// STUB: LEGORACERS 0x0046abe0
+void CeruleanQueen0x58::FUN_0046abe0()
+{
+	// TODO
+	STUB(0x0046abe0);
+}
+
+// STUB: LEGORACERS 0x0046ac90
+void CeruleanQueen0x58::FUN_0046ac90()
+{
+	// TODO
+	STUB(0x0046ac90);
+}
+
+// STUB: LEGORACERS 0x0046ad40
+void CeruleanQueen0x58::FUN_0046ad40()
+{
+	// TODO
+	STUB(0x0046ad40);
+}
+
+// STUB: LEGORACERS 0x0046adf0
+void CeruleanQueen0x58::FUN_0046adf0()
+{
+	// TODO
+	STUB(0x0046adf0);
+}
+
+// STUB: LEGORACERS 0x0046af50
+void CeruleanQueen0x58::FUN_0046af50()
+{
+	// TODO
+	STUB(0x0046af50);
+}
+
+// STUB: LEGORACERS 0x0046aea0
+void CeruleanQueen0x58::FUN_0046aea0()
+{
+	// TODO
+	STUB(0x0046aea0);
 }

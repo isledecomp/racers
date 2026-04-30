@@ -20,6 +20,18 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0046faa0
 	// CeruleanEmperor0x4c::`scalar deleting destructor'
 
+private:
+	void FUN_004707e0();
+	void FUN_00470880();
+	void FUN_00470920();
+	void FUN_004709c0();
+	void FUN_00470a70();
+	void FUN_00470b10();
+	void FUN_00470bc0();
+	void FUN_00470c60();
+	void FUN_00470d10();
+	void FUN_00470dc0();
+
 protected:
 	undefined4 m_unk0x20; // 0x20
 	undefined* m_unk0x24; // 0x24

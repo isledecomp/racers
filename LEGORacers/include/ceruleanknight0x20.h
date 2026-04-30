@@ -22,6 +22,12 @@ public:
 	// CeruleanKnight0x20::`scalar deleting destructor'
 
 protected:
+	LegoS32 FUN_0046b130();
+	LegoS32 FUN_0046b170();
+	void FUN_0046b1d0(LegoS32* p_ints);
+	void FUN_0046b210(LegoS8* p_ints);
+	void FUN_0046b250();
+
 	undefined m_unk0x0c;      // 0x0c
 	GolFileParser* m_unk0x10; // 0x10
 	undefined4 m_unk0x14;     // 0x10

@@ -15,3 +15,10 @@ TurquoiseGlow0x80::~TurquoiseGlow0x80()
 	// TODO
 	STUB(0x420710);
 }
+
+// STUB: LEGORACERS 0x004207b0
+void TurquoiseGlow0x80::Clear()
+{
+	// TODO
+	STUB(0x004207b0);
+}

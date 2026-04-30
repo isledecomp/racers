@@ -20,6 +20,21 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00469600
 	// CeruleanQueen0x58::`scalar deleting destructor'
 
+private:
+	void FUN_0046a750();
+	void FUN_0046a800();
+	void FUN_0046a8a0();
+	void FUN_0046a940();
+	void FUN_0046a9e0();
+	void FUN_0046aa90();
+	void FUN_0046ab40();
+	void FUN_0046abe0();
+	void FUN_0046ac90();
+	void FUN_0046ad40();
+	void FUN_0046adf0();
+	void FUN_0046af50();
+	void FUN_0046aea0();
+
 protected:
 	undefined4 m_unk0x20; // 0x20
 	undefined4 m_unk0x24; // 0x24

@@ -97,9 +97,113 @@ void CeruleanEmperor0x4c::VTable0x10(undefined4 p_param)
 	}
 }
 
-// STUB: LEGORACERS 0x0046fd80
-void CeruleanEmperor0x4c::VTable0x14(undefined4)
+// FUNCTION: LEGORACERS 0x0046fd80
+void CeruleanEmperor0x4c::VTable0x14(undefined4 p_arg1)
+{
+	switch (p_arg1) {
+	case 0x32:
+		FUN_004707e0();
+		break;
+	case 0x33:
+		FUN_00470880();
+		break;
+	case 0x34:
+		FUN_00470920();
+		break;
+	case 0x35:
+		FUN_004709c0();
+		break;
+	case 0x36:
+		FUN_00470a70();
+		break;
+	case 0x37:
+		FUN_00470b10();
+		break;
+	case 0x38:
+		FUN_00470bc0();
+		break;
+	case 0x39:
+		FUN_00470c60();
+		break;
+	case 0x3a:
+	default:
+		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+		break;
+	case 0x3b:
+		FUN_00470d10();
+		break;
+	case 0x3d:
+		FUN_00470dc0();
+		break;
+	}
+}
+
+// STUB: LEGORACERS 0x004707e0
+void CeruleanEmperor0x4c::FUN_004707e0()
 {
 	// TODO
-	STUB(0x0046fd80);
+	STUB(0x004707e0);
+}
+
+// STUB: LEGORACERS 0x00470880
+void CeruleanEmperor0x4c::FUN_00470880()
+{
+	// TODO
+	STUB(0x00470880);
+}
+
+// STUB: LEGORACERS 0x00470920
+void CeruleanEmperor0x4c::FUN_00470920()
+{
+	// TODO
+	STUB(0x00470920);
+}
+
+// STUB: LEGORACERS 0x004709c0
+void CeruleanEmperor0x4c::FUN_004709c0()
+{
+	// TODO
+	STUB(0x004709c0);
+}
+
+// STUB: LEGORACERS 0x00470a70
+void CeruleanEmperor0x4c::FUN_00470a70()
+{
+	// TODO
+	STUB(0x00470a70);
+}
+
+// STUB: LEGORACERS 0x00470b10
+void CeruleanEmperor0x4c::FUN_00470b10()
+{
+	// TODO
+	STUB(0x00470b10);
+}
+
+// STUB: LEGORACERS 0x00470bc0
+void CeruleanEmperor0x4c::FUN_00470bc0()
+{
+	// TODO
+	STUB(0x00470bc0);
+}
+
+// STUB: LEGORACERS 0x00470c60
+void CeruleanEmperor0x4c::FUN_00470c60()
+{
+	// TODO
+	STUB(0x00470c60);
+}
+
+// STUB: LEGORACERS 0x00470d10
+void CeruleanEmperor0x4c::FUN_00470d10()
+{
+	// TODO
+	STUB(0x00470d10);
+}
+
+// STUB: LEGORACERS 0x00470dc0
+void CeruleanEmperor0x4c::FUN_00470dc0()
+{
+	// TODO00470dc0();
+	STUB(0x00470dc0);
 }

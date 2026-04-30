@@ -144,6 +144,7 @@ add_library(goldp SHARED
   GolDP/src/jadeorbit0x220.cpp
   GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
+  GolDP/src/bronzebabyfalcon.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golfonttable.cpp

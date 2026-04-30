@@ -1,7 +1,7 @@
 #include "bronzefalcon0xc8770.h"
 
-DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
-DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
+// DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
+// DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
 
 // STUB: GOLDP 0x100078e0
 BronzeFalcon0xc8770::BronzeFalcon0xc8770()
@@ -9,11 +9,11 @@ BronzeFalcon0xc8770::BronzeFalcon0xc8770()
 	STUB(0x100078e0);
 }
 
-// STUB: GOLDP 0x10007980
-BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
-{
-	STUB(0x10007980);
-}
+// // STUB: GOLDP 0x10007980
+// BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
+// {
+// 	STUB(0x10007980);
+// }
 
 // FUNCTION: GOLDP 0x10007d80
 GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
@@ -105,11 +105,11 @@ void BronzeFalcon0xc8770::VTable0x54(undefined4)
 	STUB(0x10009420);
 }
 
-// STUB: GOLDP 0x10009540
-void BronzeFalcon0xc8770::VTable0xf0()
-{
-	STUB(0x10009540);
-}
+// // STUB: GOLDP 0x10009540
+// void BronzeFalcon0xc8770::VTable0xf0()
+// {
+// 	STUB(0x10009540);
+// }
 
 // STUB: GOLDP 0x10009640
 void BronzeFalcon0xc8770::VTable0x1c(JasperRipple0x4*)
@@ -117,11 +117,11 @@ void BronzeFalcon0xc8770::VTable0x1c(JasperRipple0x4*)
 	STUB(0x10009640);
 }
 
-// STUB: GOLDP 0x10009780
-void BronzeFalcon0xc8770::VTable0xd8()
-{
-	STUB(0x10009780);
-}
+// // STUB: GOLDP 0x10009780
+// void BronzeFalcon0xc8770::VTable0xd8()
+// {
+// 	STUB(0x10009780);
+// }
 
 // STUB: GOLDP 0x100097c0
 void BronzeFalcon0xc8770::VTable0xd4()
@@ -351,11 +351,11 @@ void BronzeFalcon0xc8770::VTable0x58()
 	STUB(0x1000b3d0);
 }
 
-// STUB: GOLDP 0x10028a10
-void BronzeFalcon0xc8770::VTable0x00()
-{
-	STUB(0x10028a10);
-}
+// // STUB: GOLDP 0x10028a10
+// void BronzeFalcon0xc8770::VTable0x00()
+// {
+// 	STUB(0x10028a10);
+// }
 
 // STUB: GOLDP 0x10028ad0
 void BronzeFalcon0xc8770::FUN_10028ad0(GolNameTable* p_param)
@@ -369,34 +369,35 @@ void BronzeFalcon0xc8770::FUN_10028ae0(GolNameTable* p_param)
 	STUB(0x10028ae0);
 }
 
-// STUB: GOLDP 0x10029500
+// // STUB: GOLDP 0x10029500
 void BronzeFalcon0xc8770::VTable0xa4()
 {
-	STUB(0x10029500);
+	// STUB(0x10029500);
 }
 
-// STUB: GOLDP 0x10029680
+// // STUB: GOLDP 0x10029680
 void BronzeFalcon0xc8770::VTable0xa0()
 {
-	STUB(0x10029680);
+	// STUB(0x10029680);
 }
 
-// STUB: GOLDP 0x10029930
+// // STUB: GOLDP 0x10029930
 void BronzeFalcon0xc8770::VTable0x44()
 {
-	STUB(0x10029930);
+	// STUB(0x10029930);
 }
 
-// STUB: GOLDP 0x10029940
+// // STUB: GOLDP 0x10029940
 void BronzeFalcon0xc8770::VTable0x48()
 {
-	STUB(0x10029940);
+	// STUB(0x10029940);
 }
 
-// STUB: GOLDP 0x10029970
+// todo: folded
+// // STUB: GOLDP 0x10029970
 void BronzeFalcon0xc8770::VTable0x24()
 {
-	STUB(0x10029970);
+	// STUB(0x10029970);
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

@@ -3,16 +3,23 @@
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
 
-// STUB: GOLDP 0x100078e0
+// FUNCTION: GOLDP 0x100078e0
 BronzeFalcon0xc8770::BronzeFalcon0xc8770()
 {
-	STUB(0x100078e0);
+	Reset();
 }
 
-// STUB: GOLDP 0x10007980
+// FUNCTION: GOLDP 0x10007980
 BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
 {
-	STUB(0x10007980);
+	VTable0x18();
+}
+
+// STUB: GOLDP 0x10007a00
+void BronzeFalcon0xc8770::Reset()
+{
+	// TODO
+	STUB(0x10007a00);
 }
 
 // FUNCTION: GOLDP 0x10007d80
@@ -52,43 +59,43 @@ void BronzeFalcon0xc8770::VTable0x94()
 }
 
 // STUB: GOLDP 0x10008a50
-void BronzeFalcon0xc8770::VTable0xac()
+void BronzeFalcon0xc8770::VTable0xac(undefined4, undefined4)
 {
 	STUB(0x10008a50);
 }
 
 // STUB: GOLDP 0x10008c30
-void BronzeFalcon0xc8770::VTable0xb0()
+void BronzeFalcon0xc8770::VTable0xb0(undefined4, undefined4)
 {
 	STUB(0x10008c30);
 }
 
 // STUB: GOLDP 0x10008dd0
-void BronzeFalcon0xc8770::VTable0x8c()
+void BronzeFalcon0xc8770::VTable0x8c(undefined4, undefined4, undefined4)
 {
 	STUB(0x10008dd0);
 }
 
 // STUB: GOLDP 0x10008f70
-void BronzeFalcon0xc8770::VTable0xa8()
+void BronzeFalcon0xc8770::VTable0xa8(undefined4, undefined4, undefined4)
 {
 	STUB(0x10008f70);
 }
 
 // STUB: GOLDP 0x100090b0
-void BronzeFalcon0xc8770::VTable0x88()
+void BronzeFalcon0xc8770::VTable0x88(undefined4, undefined4, undefined4)
 {
 	STUB(0x100090b0);
 }
 
 // STUB: GOLDP 0x10009240
-void BronzeFalcon0xc8770::VTable0x9c()
+void BronzeFalcon0xc8770::VTable0x9c(undefined4, undefined4, undefined4)
 {
 	STUB(0x10009240);
 }
 
 // STUB: GOLDP 0x10009270
-void BronzeFalcon0xc8770::VTable0x98()
+void BronzeFalcon0xc8770::VTable0x98(undefined4, undefined4, undefined4)
 {
 	STUB(0x10009270);
 }
@@ -262,7 +269,7 @@ void BronzeFalcon0xc8770::VTable0x10c()
 }
 
 // STUB: GOLDP 0x1000aeb0
-void BronzeFalcon0xc8770::VTable0xb8()
+void BronzeFalcon0xc8770::VTable0xb8(undefined4, undefined4)
 {
 	STUB(0x1000aeb0);
 }
@@ -274,7 +281,7 @@ void BronzeFalcon0xc8770::VTable0xbc()
 }
 
 // STUB: GOLDP 0x1000af20
-void BronzeFalcon0xc8770::VTable0xc0()
+void BronzeFalcon0xc8770::VTable0xc0(undefined4)
 {
 	STUB(0x1000af20);
 }
@@ -322,7 +329,7 @@ void BronzeFalcon0xc8770::VTable0xcc()
 }
 
 // STUB: GOLDP 0x1000b280
-void BronzeFalcon0xc8770::VTable0x3c()
+void BronzeFalcon0xc8770::VTable0x3c(undefined4)
 {
 	STUB(0x1000b280);
 }
@@ -334,69 +341,22 @@ void BronzeFalcon0xc8770::VTable0x40()
 }
 
 // STUB: GOLDP 0x1000b2c0
-void BronzeFalcon0xc8770::VTable0x4c()
+undefined4 BronzeFalcon0xc8770::VTable0x4c(undefined4, undefined4)
 {
 	STUB(0x1000b2c0);
+	return 0;
 }
 
 // STUB: GOLDP 0x1000b350
-void BronzeFalcon0xc8770::VTable0x50()
+void BronzeFalcon0xc8770::VTable0x50(undefined4)
 {
 	STUB(0x1000b350);
 }
 
 // STUB: GOLDP 0x1000b3d0
-void BronzeFalcon0xc8770::VTable0x58()
+void BronzeFalcon0xc8770::VTable0x58(undefined4, undefined4)
 {
 	STUB(0x1000b3d0);
-}
-
-// STUB: GOLDP 0x10028a10
-void BronzeFalcon0xc8770::VTable0x00()
-{
-	STUB(0x10028a10);
-}
-
-// STUB: GOLDP 0x10028ad0
-void BronzeFalcon0xc8770::FUN_10028ad0(GolNameTable* p_param)
-{
-	STUB(0x10028ad0);
-}
-
-// STUB: GOLDP 0x10028ae0
-void BronzeFalcon0xc8770::FUN_10028ae0(GolNameTable* p_param)
-{
-	STUB(0x10028ae0);
-}
-
-// STUB: GOLDP 0x10029500
-void BronzeFalcon0xc8770::VTable0xa4()
-{
-	STUB(0x10029500);
-}
-
-// STUB: GOLDP 0x10029680
-void BronzeFalcon0xc8770::VTable0xa0()
-{
-	STUB(0x10029680);
-}
-
-// STUB: GOLDP 0x10029930
-void BronzeFalcon0xc8770::VTable0x44()
-{
-	STUB(0x10029930);
-}
-
-// STUB: GOLDP 0x10029940
-void BronzeFalcon0xc8770::VTable0x48()
-{
-	STUB(0x10029940);
-}
-
-// STUB: GOLDP 0x10029970
-void BronzeFalcon0xc8770::VTable0x24()
-{
-	STUB(0x10029970);
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

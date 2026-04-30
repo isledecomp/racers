@@ -1,5 +1,7 @@
 #include "utopianpan0xa4.h"
 
+#include "duskwindbananarelic0x30.h"
+
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
 
 // FUNCTION: GOLDP 0x10004fd0
@@ -63,6 +65,9 @@ void UtopianPan0xa4::VTable0x04()
 // STUB: GOLDP 0x100052e0
 void UtopianPan0xa4::VTable0x08()
 {
+	undefined4 count = m_unk0x30 * m_unk0x2c;
+	// ...
+	m_unk0x54 = new DuskwindBananaRelic0x30[count];
 	// TODO
 	STUB(0x100052e0);
 }

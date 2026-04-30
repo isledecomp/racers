@@ -1,0 +1,20 @@
+#ifndef MOLTENQUILLPHANTOM0X34_H
+#define MOLTENQUILLPHANTOM0X34_H
+
+#include "decomp.h"
+#include "silverdune0x30.h"
+
+// VTABLE: GOLDP 0x100577bc
+// SIZE 0x34
+class MoltenQuillPhantom0x34 : public SilverDune0x30 {
+public:
+	MoltenQuillPhantom0x34();
+
+	// SYNTHETIC: LEGORACERS 0x1002f380
+	// ImaginaryWrench0x23bc::`scalar deleting destructor'
+
+protected:
+	undefined4 m_unk0x30;
+};
+
+#endif // MOLTENQUILLPHANTOM0X34_H

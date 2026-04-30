@@ -166,4 +166,5 @@ void JadeOrbit0x220::VTable0x48()
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void JadeOrbit0x220::VTable0x00()
 {
+	// empty
 }

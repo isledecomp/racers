@@ -117,6 +117,7 @@ const LegoChar* GolFileParser::GetSuffix()
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void GolFileParser::OpenFileForRead(const LegoChar*)
 {
+	// empty
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED

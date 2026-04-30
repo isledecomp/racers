@@ -78,7 +78,7 @@ private:
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
 	SlatePeak0x58 m_unk0x2fc;                  // 0x2fc
-	undefined m_unk0x354[0xc8ac4 - 0x354];     // 0x354
+	BronzeFalcon0xc8770 m_unk0x354;            // 0x354
 };
 
 #endif // GOLDP_GOLDPSTATE_H

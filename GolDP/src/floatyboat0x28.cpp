@@ -168,9 +168,10 @@ void FloatyBoat0x28::VTable0x44(undefined4*) const
 	STUB(0x10028810);
 }
 
-// STUB: GOLDP 0x10029920 FOLDED
+// FUNCTION: GOLDP 0x10029920 FOLDED
 void FloatyBoat0x28::VTable0x28()
 {
+	// empty
 }
 
 // STUB: GOLDP 0x1002c010 FOLDED
@@ -180,17 +181,20 @@ void FloatyBoat0x28::VTable0x40(undefined4, undefined4)
 	STUB(0x1002c010);
 }
 
-// STUB: GOLDP 0x1002c020 FOLDED
+// FUNCTION: GOLDP 0x1002c020 FOLDED
 void FloatyBoat0x28::VTable0x1c(undefined4*)
 {
+	// empty
 }
 
-// STUB: GOLDP 0x1002c020 FOLDED
+// FUNCTION: GOLDP 0x1002c020 FOLDED
 void FloatyBoat0x28::VTable0x24(undefined4*)
 {
+	// empty
 }
 
-// STUB: GOLDP 0x1002c020 FOLDED
+// FUNCTION: GOLDP 0x1002c020 FOLDED
 void FloatyBoat0x28::VTable0x3c(undefined4*)
 {
+	// empty
 }

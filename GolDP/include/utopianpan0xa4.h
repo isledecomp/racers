@@ -6,6 +6,8 @@
 #include "types.h"
 #include "whitebaffoon0x50.h"
 
+class DuskwindBananaRelic0x30;
+
 // SIZE 0xa4
 // VTABLE: GOLDP 0x10056340
 class UtopianPan0xa4 : public WhiteBaffoon0x50 {
@@ -29,9 +31,9 @@ public:
 	// UtopianPan0xa4::`vector deleting destructor'
 
 protected:
-	undefined4 m_unk0x50;             // 0x50
-	undefined m_unk0x54[0x58 - 0x54]; // 0x54
-	BronzeDune0x4c m_unk0x58;         // 0x58
+	undefined4 m_unk0x50;               // 0x50
+	DuskwindBananaRelic0x30* m_unk0x54; // 0x54
+	BronzeDune0x4c m_unk0x58;           // 0x58
 };
 
 #endif // GOLDP_UTOPIANPAN_H

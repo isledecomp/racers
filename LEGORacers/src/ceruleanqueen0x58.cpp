@@ -176,16 +176,16 @@ void CeruleanQueen0x58::FUN_0046adf0()
 	STUB(0x0046adf0);
 }
 
-// STUB: LEGORACERS 0x0046af50
-void CeruleanQueen0x58::FUN_0046af50()
-{
-	// TODO
-	STUB(0x0046af50);
-}
-
 // STUB: LEGORACERS 0x0046aea0
 void CeruleanQueen0x58::FUN_0046aea0()
 {
 	// TODO
 	STUB(0x0046aea0);
+}
+
+// STUB: LEGORACERS 0x0046af50
+void CeruleanQueen0x58::FUN_0046af50()
+{
+	// TODO
+	STUB(0x0046af50);
 }

@@ -20,7 +20,7 @@ public:
 
 	void FUN_004432d0();
 	void FUN_004432e0(undefined4* p_arg1, undefined4 p_arg2);
-	undefined4 FUN_00443420(undefined4, undefined4);
+	undefined4 FUN_00443420(LegoU32 p_index, undefined4 p_arg2);
 	undefined4 FUN_004434a0(undefined4);
 	void FUN_00443520(undefined4);
 	void FUN_004435c0();

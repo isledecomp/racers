@@ -13,7 +13,7 @@ const LegoChar* GolTxtParser::GetSuffix()
 
 // FUNCTION: GOLDP 0x1002fa50
 // FUNCTION: LEGORACERS 0x0044a1f0
-void GolTxtParser::OpenFile(LegoChar* p_fileName)
+void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();
@@ -61,7 +61,7 @@ void GolTxtParser::OpenFile(LegoChar* p_fileName)
 
 // FUNCTION: GOLDP 0x1002fba0
 // FUNCTION: LEGORACERS 0x0044a340
-void GolTxtParser::VTable0x50(undefined4 p_token)
+void GolTxtParser::WriteToken(ParserTokenType p_token)
 {
 	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
 		VTable0x68();

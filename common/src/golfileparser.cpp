@@ -115,7 +115,7 @@ const LegoChar* GolFileParser::GetSuffix()
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolFileParser::VTable0x38(const LegoChar*)
+void GolFileParser::OpenFileForRead(const LegoChar*)
 {
 }
 

@@ -35,6 +35,7 @@ LegoBool32 LavenderVault0x764::FUN_00498740(const LegoChar* p_arg1, LegoBool32 p
 {
 	GolFileParser* parser;
 	Destroy();
+
 	if (p_binary) {
 		parser = new GolBinParser;
 		if (parser == NULL) {
@@ -48,11 +49,13 @@ LegoBool32 LavenderVault0x764::FUN_00498740(const LegoChar* p_arg1, LegoBool32 p
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
-	parser->VTable0x38(p_arg1);
+
+	parser->OpenFileForRead(p_arg1);
 	FUN_00498e90(*parser);
 	if (parser != NULL) {
 		delete parser;
 	}
+
 	m_loaded = TRUE;
 	return TRUE;
 }
@@ -113,12 +116,15 @@ void LavenderVault0x764::FUN_00498990(GolFileParser& p_parser)
 	if (m_countHats > static_cast<LegoS32>(sizeOfArray(m_unk0x018))) {
 		GOL_FATALERROR_MESSAGE("Too many hats!");
 	}
+
 	p_parser.ReadLeftCurly();
+
 	for (LegoS32 i = 0; i < m_countHats; i++) {
 		str = p_parser.ReadStringWithMaxLength(8);
 		::memcpy(m_unk0x018[i], str, sizeof(m_unk0x018[i]));
 		m_unk0x158[i] = p_parser.ReadInteger();
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -130,6 +136,7 @@ void LavenderVault0x764::FUN_00498a10(GolFileParser& p_parser)
 	if (m_countFaces > static_cast<LegoS32>(sizeOfArray(m_unk0x188))) {
 		GOL_FATALERROR_MESSAGE("Too many faces!");
 	}
+
 	p_parser.ReadLeftCurly();
 	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x180));
 	::memcpy(m_unk0x180, str, sizeof(m_unk0x180));
@@ -139,6 +146,7 @@ void LavenderVault0x764::FUN_00498a10(GolFileParser& p_parser)
 		::strcpy(m_unk0x188[i], str);
 		m_unk0x224[i] = p_parser.ReadInteger();
 	}
+
 	p_parser.ReadRightCurly();
 	::strcpy(m_unk0x200[0], "dflt");
 	::strcpy(m_unk0x200[1], "angry");
@@ -157,17 +165,20 @@ void LavenderVault0x764::FUN_00498bc0(GolFileParser& p_parser)
 	if (m_countTorsos > static_cast<LegoS32>(sizeOfArray(m_unk0x188))) {
 		GOL_FATALERROR_MESSAGE("Too many torsos");
 	}
+
 	p_parser.ReadLeftCurly();
 	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x242[0]));
 	::memcpy(&m_unk0x242[0], str, sizeof(m_unk0x242[0]));
 	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x242[1]));
 	::memcpy(&m_unk0x242[1], str, sizeof(m_unk0x242[1]));
+
 	for (LegoS32 i = 0; i < m_countTorsos; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x252[i]));
 		::memcpy(m_unk0x252[i], str, sizeof(m_unk0x252[i]));
 		m_unk0x344[i] = p_parser.ReadInteger();
 		m_unk0x3bc[i] = p_parser.ReadInteger();
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -180,17 +191,20 @@ void LavenderVault0x764::FUN_00498c90(GolFileParser& p_parser)
 	if (m_countLegs > static_cast<LegoS32>(sizeOfArray(m_unk0x3ea))) {
 		GOL_FATALERROR_MESSAGE("Too many legs!");
 	}
+
 	p_parser.ReadLeftCurly();
 	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x3da[0]));
 	::strncpy(m_unk0x3da[0], str, sizeof(m_unk0x3da[0]));
 	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x3da[1]));
 	::strncpy(m_unk0x3da[1], str, sizeof(m_unk0x3da[1]));
+
 	for (LegoS32 i = 0; i < m_countLegs; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x3ea[i]));
 		::strncpy(m_unk0x3ea[i], str, sizeof(m_unk0x3ea[i]));
 		m_unk0x4dc[i] = p_parser.ReadInteger();
 		m_unk0x554[i] = p_parser.ReadInteger();
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -203,11 +217,14 @@ void LavenderVault0x764::FUN_00498d70(GolFileParser& p_parser)
 	if (count > static_cast<LegoS32>(sizeOfArray(m_unk0x572))) {
 		GOL_FATALERROR_MESSAGE("Too many head hats!");
 	}
+
 	p_parser.ReadLeftCurly();
+
 	for (LegoS32 i = 0; i < count; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x572[i]));
 		::strncpy(m_unk0x572[i], str, sizeof(m_unk0x572[i]));
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -218,10 +235,12 @@ void LavenderVault0x764::FUN_00498de0(GolFileParser& p_parser)
 
 	m_unk0x014 = FUN_00498870(p_parser);
 	p_parser.ReadLeftCurly();
+
 	for (LegoS32 i = 0; i < m_unk0x014; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x6b2[i]));
 		::strncpy(m_unk0x6b2[i], str, sizeof(m_unk0x6b2[i]));
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -232,10 +251,12 @@ void LavenderVault0x764::FUN_00498e40(GolFileParser& p_parser)
 
 	LegoS32 count = FUN_00498870(p_parser);
 	p_parser.ReadLeftCurly();
+
 	for (LegoS32 i = 0; i < count; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x741[i]));
 		::strncpy(m_unk0x741[i], str, sizeof(m_unk0x741[i]));
 	}
+
 	p_parser.ReadRightCurly();
 }
 

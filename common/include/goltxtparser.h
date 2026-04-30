@@ -16,8 +16,8 @@ public:
 	void HandleUnexpectedToken(ParserTokenType) override;   // vtable+0x40
 	ParserTokenType GetNextToken() override;                // vtable+0x44
 	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
-	void OpenFile(LegoChar* p_fileName) override;           // vtable+0x4c
-	void VTable0x50(undefined4) override;                   // vtable+0x50
+	void OpenFileForWrite(LegoChar* p_fileName) override;   // vtable+0x4c
+	void WriteToken(ParserTokenType) override;              // vtable+0x50
 	void VTable0x54(undefined4) override;                   // vtable+0x54
 	void WriteFloat(LegoFloat) override;                    // vtable+0x58
 	void VTable0x5c(LegoFloat) override;                    // vtable+0x5c

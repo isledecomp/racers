@@ -19,7 +19,7 @@ AwakeKite0x20::~AwakeKite0x20()
 		m_items = NULL;
 	}
 
-	HypnoticNoise0x1c::VTable0x08();
+	HypnoticNoise0x1c::Clear();
 }
 
 // FUNCTION: GOLDP 0x10005dc0
@@ -39,7 +39,7 @@ void AwakeKite0x20::Clear()
 		m_items = NULL;
 	}
 
-	HypnoticNoise0x1c::VTable0x08();
+	HypnoticNoise0x1c::Clear();
 }
 
 // FUNCTION: GOLDP 0x10005ef0

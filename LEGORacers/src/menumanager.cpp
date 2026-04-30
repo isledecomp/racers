@@ -84,7 +84,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	LoadMenuMaterials();
 	FUN_0042d0e0();
 	FUN_0042d300(m_unk0x04.m_unk0x258.GetUnk0x18e6(), TRUE);
-	FUN_0042d1e0();
+	LoadMenuData();
 	FUN_0042e1f0();
 	FUN_0042cde0();
 	InitializeInputBindings();
@@ -150,7 +150,7 @@ void MenuManager::FUN_0042cd60()
 	LegoChar name[8];
 	CopperCrest0x40::InitStruct initStruct;
 
-	m_unk0x4ce4.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);
+	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);
 	m_unk0x4d24.CopyToBuf8(name);
 
 	initStruct.m_golExport = m_unk0x4cd4;
@@ -297,11 +297,20 @@ void MenuManager::FUN_0042d0e0()
 	STUB(0x42d0e0);
 }
 
-// STUB: LEGORACERS 0x0042d1e0
-void MenuManager::FUN_0042d1e0()
+// FUNCTION: LEGORACERS 0x0042d1e0
+void MenuManager::LoadMenuData()
 {
-	// TODO
-	STUB(0x42d1e0);
+	GolStringTable* raceStrings = &m_raceStrings;
+	LapisSigil0x14* raceList = &m_unk0x04.m_raceList;
+
+	raceList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_unk0x18);
+	m_unk0x04.m_raceNames.Load(raceStrings, raceList, "LEGORace", m_unk0x04.m_context->m_unk0x18);
+	m_unk0x4bcc.FUN_0047f4d0();
+	m_unk0x04.m_menuAnimations.Allocate(2);
+
+	GolStringTable* menuNameStrings = &m_menuNameStrings;
+	menuNameStrings->UseOwnedBuffers();
+	menuNameStrings->Load("menuname.srf");
 }
 
 // STUB: LEGORACERS 0x0042d260
@@ -373,7 +382,7 @@ void MenuManager::Run()
 				}
 			}
 
-			chain = &m_unk0x04.m_unk0x4374;
+			chain = &m_unk0x04.m_menuAnimations;
 			chain->Update(frameDeltaMs);
 			m_unk0x4cd8->VTable0x54(TRUE);
 			m_unk0x4cd8->VTable0xec(6);
@@ -460,7 +469,7 @@ LegoBool32 MenuManager::FUN_0042e680()
 	m_unk0x04.m_context->m_unk0x1e = flags & ~LegoRacers::Context::c_flagBit0;
 
 	PeridotTraceState0x438* state = &m_unk0x04.m_unk0x258.GetUnk0x18c4();
-	LegoU32 index = m_unk0x04.m_unk0x4360.GetEntryIndexByName(m_unk0x04.m_context->m_raceSlots[0].m_unk0x08);
+	LegoU32 index = m_unk0x04.m_raceNames.GetEntryIndexByName(m_unk0x04.m_context->m_raceSlots[0].m_unk0x08);
 	if (index >= 12) {
 		return FALSE;
 	}

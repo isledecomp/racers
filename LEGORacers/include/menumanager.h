@@ -63,7 +63,7 @@ public:
 	void InitializeAudio();
 	void LoadMenuMaterials();
 	void FUN_0042d0e0();
-	void FUN_0042d1e0();
+	void LoadMenuData();
 	LegoBool FUN_0042d300(LegoU32 p_unk0x04, LegoBool p_unk0x08);
 	void FUN_0042d3e0(LegoU16 p_unk0x04);
 	void Run();
@@ -92,9 +92,9 @@ private:
 		TurquoiseGlow0x80 m_unk0x425c;    // 0x425c
 		AquamarineSpirit0x3c m_unk0x42dc; // 0x42dc
 		MalachiteCrown0x34 m_unk0x4318;   // 0x4318
-		LapisSigil0x14 m_unk0x434c;       // 0x434c
-		RoseQuartzShine0x14 m_unk0x4360;  // 0x4360
-		MithrilChain0x8 m_unk0x4374;      // 0x4374
+		LapisSigil0x14 m_raceList;        // 0x434c
+		RoseQuartzShine0x14 m_raceNames;  // 0x4360
+		MithrilChain0x8 m_menuAnimations; // 0x4374
 		LavenderVault0x764 m_unk0x437c;   // 0x437c
 		GarnetFlare0x60 m_unk0x4ae0;      // 0x4ae0
 		TanzaniteWisp0x88 m_unk0x4b40;    // 0x4b40
@@ -120,9 +120,9 @@ private:
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
 	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
 	GolNameTable* m_unk0x4ce0;              // 0x4ce0
-	GolStringTable m_unk0x4ce4;             // 0x4ce4
+	GolStringTable m_menuNameStrings;       // 0x4ce4
 	GolStringTable m_unk0x4cf8;             // 0x4cf8
-	GolStringTable m_unk0x4d0c;             // 0x4d0c
+	GolStringTable m_raceStrings;           // 0x4d0c
 	SoundGroup* m_soundGroup;               // 0x4d20
 	GolString m_unk0x4d24;                  // 0x4d24
 	GolString m_unk0x4d30;                  // 0x4d30

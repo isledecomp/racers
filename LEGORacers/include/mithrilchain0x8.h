@@ -41,6 +41,7 @@ public:
 
 	MithrilChain0x8();
 	~MithrilChain0x8();
+	void Allocate(LegoU32 p_count);
 	void Update(LegoU32 p_elapsedMs);
 	void Draw(BronzeFalcon0xc8770* p_renderer);
 

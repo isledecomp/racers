@@ -1,7 +1,7 @@
 #include "bronzefalcon0xc8770.h"
 
-// DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
-// DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
 
 // STUB: GOLDP 0x100078e0
 BronzeFalcon0xc8770::BronzeFalcon0xc8770()
@@ -9,11 +9,11 @@ BronzeFalcon0xc8770::BronzeFalcon0xc8770()
 	STUB(0x100078e0);
 }
 
-// // STUB: GOLDP 0x10007980
-// BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
-// {
-// 	STUB(0x10007980);
-// }
+// STUB: GOLDP 0x10007980
+BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
+{
+	STUB(0x10007980);
+}
 
 // FUNCTION: GOLDP 0x10007d80
 GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
@@ -352,12 +352,6 @@ void BronzeFalcon0xc8770::VTable0x58()
 	STUB(0x1000b3d0);
 }
 
-// // STUB: GOLDP 0x10028a10
-// void BronzeFalcon0xc8770::VTable0x00()
-// {
-// 	STUB(0x10028a10);
-// }
-
 // STUB: GOLDP 0x10028ad0
 void BronzeFalcon0xc8770::FUN_10028ad0(GolNameTable* p_param)
 {
@@ -370,30 +364,6 @@ void BronzeFalcon0xc8770::FUN_10028ae0(GolNameTable* p_param)
 	STUB(0x10028ae0);
 }
 
-// // STUB: GOLDP 0x10029500
-// void BronzeFalcon0xc8770::VTable0xa4()
-// {
-// 	// STUB(0x10029500);
-// }
-
-// // // STUB: GOLDP 0x10029680
-// void BronzeFalcon0xc8770::VTable0xa0()
-// {
-// 	// STUB(0x10029680);
-// }
-
-// // // STUB: GOLDP 0x10029930
-// void BronzeFalcon0xc8770::VTable0x44()
-// {
-// 	// STUB(0x10029930);
-// }
-
-// // // STUB: GOLDP 0x10029940
-// void BronzeFalcon0xc8770::VTable0x48()
-// {
-// 	// STUB(0x10029940);
-// }
-
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void BronzeFalcon0xc8770::VTable0x38()
 {
@@ -405,12 +375,6 @@ void BronzeFalcon0xc8770::VTable0xd0()
 {
 	// empty
 }
-
-// // STUB: GOLDP 0x1002c010 FOLDED
-// void BronzeFalcon0xc8770::VTable0x34(LegoS32, const LegoFloat*)
-// {
-// 	STUB(0x1002c010);
-// }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 void BronzeFalcon0xc8770::VTable0xec(undefined4)

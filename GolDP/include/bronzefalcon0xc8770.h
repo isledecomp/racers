@@ -14,8 +14,9 @@ class GolNameTable;
 class BronzeFalcon0xc8770 : public BronzeBabyFalcon {
 public:
 	BronzeFalcon0xc8770();
+	~BronzeFalcon0xc8770();
 
-	// todo why is override not accepted?
+	// TODO: why is override not accepted?
 	void VTable0x04();                                   // vtable+0x04
 	void VTable0x0c(undefined4, undefined4, undefined4); // vtable+0x0c
 	GolCommonDrawState* GetDrawState();                  // vtable+0x10
@@ -29,8 +30,6 @@ public:
 	void VTable0x38();                                   // vtable+0x38
 	void VTable0x3c(undefined4);                         // vtable+0x3c
 	void VTable0x40();                                   // vtable+0x40
-	// void VTable0x44();                                   // vtable+0x44
-	// void VTable0x48();                                   // vtable+0x48
 	undefined4 VTable0x4c(undefined4, undefined4);       // vtable+0x4c
 	void VTable0x50(undefined4);                         // vtable+0x50
 	void VTable0x54(undefined4);                         // vtable+0x54
@@ -52,8 +51,6 @@ public:
 	void VTable0x94();                                   // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4); // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4); // vtable+0x9c
-	// void VTable0xa0();                                   // vtable+0xa0
-	// void VTable0xa4();                                   // vtable+0xa4
 	void VTable0xa8();                                   // vtable+0xa8
 	void VTable0xac(undefined4, undefined4);             // vtable+0xac
 	void VTable0xb0(undefined4, undefined4);             // vtable+0xb0
@@ -80,7 +77,7 @@ public:
 	void VTable0x104();                                  // vtable+0x104
 	void VTable0x108();                                  // vtable+0x108
 	void VTable0x10c();                                  // vtable+0x10c
-	LegoBool32 VTable0x110() const;
+	LegoBool32 VTable0x110() const;                      // vtable+0x110
 
 	void FUN_10028ad0(GolNameTable* p_param);
 	void FUN_10028ae0(GolNameTable* p_param);
@@ -89,20 +86,9 @@ public:
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
-	undefined4 GetUnk0x04() { return m_unk0x04; }
-	undefined4* GetUnk0x0c() { return m_unk0x0c; }
-
 private:
-	friend class GolCommonDrawState;
-
-	undefined4 m_unk0x04;                         // 0x04
-	undefined m_unk0x08[0x0c - 0x08];             // 0x08
-	undefined4* m_unk0x0c;                        // 0x0c
-	undefined m_unk0x10[0x48 - 0x10];             // 0x10
-	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
-	undefined m_unk0x4c[0x140 - 0x4c];            // 0x4c
-	GolCommonDrawState* m_drawState;              // 0x140
-	undefined m_unk0x144[0xc8770 - 0x144];        // 0x144
+	GolCommonDrawState* m_drawState;       // 0x140
+	undefined m_unk0x144[0xc8770 - 0x144]; // 0x144
 };
 
 #endif // BRONZEFALCON0XC8770_H

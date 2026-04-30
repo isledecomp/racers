@@ -1,6 +1,6 @@
 #include "bronzebabyfalcon.h"
 
-DECOMP_SIZE_ASSERT(BronzeBabyFalcon, 0xc8770)
+DECOMP_SIZE_ASSERT(BronzeBabyFalcon, 0x140) // based on constructor; not 100 % sure
 DECOMP_SIZE_ASSERT(BronzeBabyFalcon::JasperRipple0x4, 0x4)
 
 // STUB: GOLDP 0x10009540

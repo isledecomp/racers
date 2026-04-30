@@ -108,8 +108,6 @@ private:
 	undefined m_unk0x10[0x48 - 0x10];          // 0x10
 	BronzeBabyFalcon* m_nextDrawStateRenderer; // 0x48
 	undefined m_unk0x4c[0x140 - 0x4c];         // 0x4c
-	GolCommonDrawState* m_drawState;           // 0x140
-	undefined m_unk0x144[0xc8770 - 0x144];     // 0x144
 };
 
-#endif // BRONZEFALCON0XC8770_H
+#endif // BRONZEBABYFALCON_H

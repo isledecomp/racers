@@ -25,7 +25,7 @@ void GolCommonDrawState::VTable0x48()
 {
 	BronzeFalcon0xc8770* next;
 	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = next) {
-		next = renderer->m_nextDrawStateRenderer;
+		next = (BronzeFalcon0xc8770*) renderer->m_nextDrawStateRenderer;
 		renderer->VTable0x18();
 	}
 
@@ -35,7 +35,8 @@ void GolCommonDrawState::VTable0x48()
 // FUNCTION: GOLDP 0x10018540
 void GolCommonDrawState::VTable0x50()
 {
-	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
+	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer;
+		 renderer = (BronzeFalcon0xc8770*) renderer->m_nextDrawStateRenderer) {
 		renderer->VTable0x04();
 	}
 
@@ -48,7 +49,8 @@ LegoS32 GolCommonDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefi
 	GolDrawState::VTable0x54(p_width, p_height, p_bp, p_flags);
 	LegoS32 result = VTable0x58();
 	if (!result) {
-		for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
+		for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer;
+			 renderer = (BronzeFalcon0xc8770*) renderer->m_nextDrawStateRenderer) {
 			if (renderer != m_currentRenderer) {
 				renderer->VTable0x00();
 			}
@@ -74,12 +76,12 @@ BronzeFalcon0xc8770* GolCommonDrawState::RemoveRenderer(BronzeFalcon0xc8770* p_r
 	BronzeFalcon0xc8770* result = m_rendererList;
 	if (result) {
 		if (p_renderer == result) {
-			result = result->m_nextDrawStateRenderer;
+			result = (BronzeFalcon0xc8770*) result->m_nextDrawStateRenderer;
 			m_rendererList = result;
 		}
 		else {
 			BronzeFalcon0xc8770* previous = m_rendererList;
-			result = result->m_nextDrawStateRenderer;
+			result = (BronzeFalcon0xc8770*) result->m_nextDrawStateRenderer;
 			while (result) {
 				if (result == p_renderer) {
 					previous->m_nextDrawStateRenderer = result->m_nextDrawStateRenderer;
@@ -88,7 +90,7 @@ BronzeFalcon0xc8770* GolCommonDrawState::RemoveRenderer(BronzeFalcon0xc8770* p_r
 				}
 				else {
 					previous = result;
-					result = result->m_nextDrawStateRenderer;
+					result = (BronzeFalcon0xc8770*) result->m_nextDrawStateRenderer;
 				}
 			}
 		}

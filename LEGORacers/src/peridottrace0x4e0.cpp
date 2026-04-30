@@ -1,5 +1,8 @@
 #include "peridottrace0x4e0.h"
 
+#include "golhashtable.h"
+#include "golstream.h"
+
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
@@ -9,6 +12,10 @@ DECOMP_SIZE_ASSERT(PeridotTraceActionBase0x34, 0x34)
 DECOMP_SIZE_ASSERT(PeridotTraceAction0x34, 0x34)
 DECOMP_SIZE_ASSERT(PeridotTraceState0x438, 0x438)
 DECOMP_SIZE_ASSERT(PeridotTraceBuffer0x250, 0x250)
+
+// GLOBAL: LEGORACERS 0x004becd8
+const LegoChar* g_menuLanguageDirectories[9] =
+	{"english", "spanish", "french", "german", "italian", "danish", "swedish", "norwegi", "dutch"};
 
 // STUB: LEGORACERS 0x0042b290
 PeridotTraceBuffer0x250::PeridotTraceBuffer0x250()
@@ -86,7 +93,19 @@ void PeridotTraceState0x438::FUN_0042ef80(PeridotTrace0x4a8*)
 	STUB(0x0042ef80);
 }
 
-void FUN_0042b2f0(undefined4, undefined4, undefined4, undefined4);
+// FUNCTION: LEGORACERS 0x0042ef90
+void PeridotTraceState0x438::SetLanguageResourcePath()
+{
+	LegoChar path[24];
+
+	::strcpy(path, "MENUDATA\\");
+	::strcat(path, g_menuLanguageDirectories[m_languageIndex]);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(path);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0042f200
 void PeridotTraceState0x438::FUN_0042f200(LegoU8 p_unk0x04)
 {

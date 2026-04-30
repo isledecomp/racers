@@ -5,6 +5,7 @@
 #include "goltxtparser.h"
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::ResourceLoadParams, 0x10)
 
 // FUNCTION: LEGORACERS 0x0046fa50
 CeruleanEmperor0x4c::CeruleanEmperor0x4c()
@@ -34,6 +35,14 @@ void CeruleanEmperor0x4c::VTable0x0c()
 	m_unk0x48 = NULL;
 
 	CeruleanKnight0x20::VTable0x0c();
+}
+
+// STUB: LEGORACERS 0x0046fb40
+LegoBool32 CeruleanEmperor0x4c::Load(ResourceLoadParams*)
+{
+	// TODO
+	STUB(0x0046fb40);
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046fb80

@@ -146,6 +146,7 @@ add_library(goldp SHARED
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
+  GolDP/src/golfonttable.cpp
   GolDP/src/golddune0x38.cpp
   GolDP/src/bronzedune0x4c.cpp
   GolDP/src/whitebaffoon0x50.cpp

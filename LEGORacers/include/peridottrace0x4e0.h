@@ -93,6 +93,7 @@ public:
 	void FUN_0042e920(undefined4*);
 	void FUN_0042eb60(PeridotTrace0x4e0*, undefined4);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
+	void SetLanguageResourcePath();
 	void FUN_0042f200(LegoU8 p_unk0x04);
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;
@@ -100,13 +101,14 @@ public:
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	undefined4 GetUnk0x04() const { return m_unk0x04; }
-	LegoU8 GetUnk0x22() const { return m_unk0x22; }
+	LegoU8 GetLanguageIndex() const { return m_languageIndex; }
+	LegoU8 GetUnk0x22() const { return GetLanguageIndex(); }
 
 private:
 	undefined4 m_unk0x00;              // 0x00
 	undefined4 m_unk0x04;              // 0x04
 	undefined m_unk0x08[0x22 - 0x08];  // 0x08
-	LegoU8 m_unk0x22;                  // 0x22
+	LegoU8 m_languageIndex;            // 0x22
 	undefined m_unk0x23;               // 0x23
 	LegoU8 m_unk0x24;                  // 0x24
 	LegoU8 m_unk0x25;                  // 0x25

@@ -15,7 +15,8 @@ public:
 	PeridotTrace0x4e0* GetUnk0xa58() { return m_unk0xa58; }
 	LegoU32 GetUnk0x18c0() const { return m_unk0x18c0; }
 	PeridotTraceState0x438& GetUnk0x18c4() { return m_unk0x18c4; }
-	LegoU8 GetUnk0x18e6() const { return m_unk0x18c4.GetUnk0x22(); }
+	LegoU8 GetLanguageIndex() const { return m_unk0x18c4.GetLanguageIndex(); }
+	LegoU8 GetUnk0x18e6() const { return GetLanguageIndex(); }
 	PeridotTraceBuffer0x250& GetUnk0x1cfc() { return m_unk0x1cfc; }
 
 	void FUN_004432d0();

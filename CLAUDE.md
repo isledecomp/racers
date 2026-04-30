@@ -157,7 +157,9 @@ Keep original types at API boundaries (Win32, DirectX, CRT); `void*` can remain.
 
 - **Every type must be corroborated by matched code.** A type is proven only when a `// FUNCTION:` using it reaches 100%. Until then, `undefined`/`undefined4`.
 - **No raw pointer arithmetic as a substitute for types.** Casts + subtractions mean the types are wrong; find the real class so the cast is legitimate C++ (including multi-inheritance cross-casts — define the inheritance, don't fake the adjustment).
-- **Nest one-owner helper classes.** If a helper type is only meaningful as part of one owning class, declare it as a nested class instead of adding another root-level random class to the same header.
+- **One root type per header.** A header should define at most one top-level class or struct; forward declarations do not count. If a second concrete root type is needed, move it to its own header and include that header.
+- **Nest one-owner helper types.** Loader params, callback shims, small related records, and similar one-owner types belong inside the primary class that owns or consumes them instead of becoming top-level classes/structs.
+- **Ground polymorphic classes.** When a concrete polymorphic class is identified, add its `VTABLE`, ctor, dtor, and scalar-deleting-destructor annotations instead of leaving it as an unannotated interface shape.
 - **Read the original binary directly** (Python/struct) for vtable entries, call targets, and function addresses when IDA/Ghidra mislabels them.
 - **Every annotation has a real address** — no placeholders.
 - **`// FUNCTION:` means 100% match.** Any diff ⇒ the code is wrong; investigate the root cause (layout, types, missing base).

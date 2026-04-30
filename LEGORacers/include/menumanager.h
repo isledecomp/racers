@@ -12,6 +12,7 @@
 #include "crimsonsun0xa4.h"
 #include "decomp.h"
 #include "garnetflare0x60.h"
+#include "golfonttable.h"
 #include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
@@ -64,7 +65,7 @@ public:
 	void LoadMenuMaterials();
 	void FUN_0042d0e0();
 	void LoadMenuData();
-	LegoBool FUN_0042d300(LegoU32 p_unk0x04, LegoBool p_unk0x08);
+	LegoBool32 LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload);
 	void FUN_0042d3e0(LegoU16 p_unk0x04);
 	void Run();
 	void FUN_0042e1f0();
@@ -118,16 +119,16 @@ private:
 	undefined m_unk0x4cc5[0x4cd4 - 0x4cc5]; // 0x4cc5
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
-	AwakeKite0x20* m_unk0x4cdc;             // 0x4cdc
-	GolNameTable* m_unk0x4ce0;              // 0x4ce0
+	AwakeKite0x20* m_materialTable;         // 0x4cdc
+	GolFontTable* m_fontTable;              // 0x4ce0
 	GolStringTable m_menuNameStrings;       // 0x4ce4
-	GolStringTable m_unk0x4cf8;             // 0x4cf8
+	GolStringTable m_menuTextStrings;       // 0x4cf8
 	GolStringTable m_raceStrings;           // 0x4d0c
 	SoundGroup* m_soundGroup;               // 0x4d20
 	GolString m_unk0x4d24;                  // 0x4d24
 	GolString m_unk0x4d30;                  // 0x4d30
 	SoundGroupBinding m_soundGroupBinding;  // 0x4d3c
-	PorcelainVeil0x50 m_unk0x4d48;          // 0x4d48
+	PorcelainVeil0x50 m_menuStyles;         // 0x4d48
 	undefined4 m_unk0x4d98[0x30 / 4];       // 0x4d98
 	ImaginaryTool0x368* m_unk0x4dc8;        // 0x4dc8
 	undefined4 m_unk0x4dcc;                 // 0x4dcc

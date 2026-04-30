@@ -45,7 +45,8 @@ public:
 		undefined m_unk0x1f;                  // 0x1f
 		undefined m_unk0x20[0x24 - 0x20];     // 0x20
 		undefined4 m_unk0x24;                 // 0x24
-		undefined m_unk0x28[0x2d - 0x28];     // 0x28
+		LegoU32 m_languageIndex;              // 0x28
+		undefined m_unk0x2c;                  // 0x2c
 		LegoChar m_unk0x2d[8];                // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];     // 0x35
 		RaceSlot m_raceSlots[4];              // 0x38

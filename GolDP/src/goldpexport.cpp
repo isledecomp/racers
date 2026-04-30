@@ -5,6 +5,7 @@
 #include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
 #include "golerror.h"
+#include "golfonttable.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
@@ -129,12 +130,14 @@ AwakeKite0x20* GolDPExport::VTable0x34()
 	return result;
 }
 
-// STUB: GOLDP 0x10015570
-GolNameTable* GolDPExport::VTable0x38()
+// FUNCTION: GOLDP 0x10015570
+GolFontTable* GolDPExport::VTable0x38()
 {
-	// TODO
-	STUB(0x10015570);
-	return NULL;
+	GolFontTable* result = new GolFontTable;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return result;
 }
 
 // STUB: GOLDP 0x100155e0

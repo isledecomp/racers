@@ -13,7 +13,7 @@ const LegoChar* GolTxtParser::GetSuffix()
 
 // FUNCTION: GOLDP 0x1002fa50
 // FUNCTION: LEGORACERS 0x0044a1f0
-void GolTxtParser::OpenFile(LegoChar* p_fileName)
+void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();

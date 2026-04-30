@@ -14,23 +14,23 @@ class GolBinParser : public GolFileParser {
 public:
 	GolBinParser();
 
-	LegoS32 Dispose() override;                             // vtable+0x20
-	void VTable0x38(const LegoChar*) override;              // vtable+0x38
-	const LegoChar* GetSuffix() override;                   // vtable+0x3c
-	void HandleUnexpectedToken(ParserTokenType) override;   // vtable+0x40
-	ParserTokenType GetNextToken() override;                // vtable+0x44
-	undefined4 VTable0x48(undefined4, undefined4) override; // vtable+0x48
-	void OpenFile(LegoChar* p_fileName) override;           // vtable+0x4c
-	void WriteToken(ParserTokenType) override;              // vtable+0x50
-	void VTable0x54(undefined4) override;                   // vtable+0x54
-	void WriteFloat(LegoFloat) override;                    // vtable+0x58
-	void VTable0x5c(LegoFloat) override;                    // vtable+0x5c
-	void WriteInt4(undefined4) override;                    // vtable+0x60
-	void WriteString(LegoChar*) override;                   // vtable+0x64
-	void VTable0x68() override;                             // vtable+0x68
-	void VTable0x6c() override;                             // vtable+0x6c
-	void VTable0x70() override;                             // vtable+0x70
-	void VTable0x74(undefined4) override;                   // vtable+0x74
+	LegoS32 Dispose() override;                                // vtable+0x20
+	void OpenFileForRead(const LegoChar* p_fileName) override; // vtable+0x38
+	const LegoChar* GetSuffix() override;                      // vtable+0x3c
+	void HandleUnexpectedToken(ParserTokenType) override;      // vtable+0x40
+	ParserTokenType GetNextToken() override;                   // vtable+0x44
+	undefined4 VTable0x48(undefined4, undefined4) override;    // vtable+0x48
+	void OpenFileForWrite(LegoChar* p_fileName) override;      // vtable+0x4c
+	void WriteToken(ParserTokenType) override;                 // vtable+0x50
+	void VTable0x54(undefined4) override;                      // vtable+0x54
+	void WriteFloat(LegoFloat) override;                       // vtable+0x58
+	void VTable0x5c(LegoFloat) override;                       // vtable+0x5c
+	void WriteInt4(undefined4) override;                       // vtable+0x60
+	void WriteString(LegoChar*) override;                      // vtable+0x64
+	void VTable0x68() override;                                // vtable+0x68
+	void VTable0x6c() override;                                // vtable+0x6c
+	void VTable0x70() override;                                // vtable+0x70
+	void VTable0x74(undefined4) override;                      // vtable+0x74
 
 	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
@@ -40,10 +40,10 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
 	// GolBinParser::~GolBinParser
 
-	void FUN_0044a830();
-	void FUN_0044b020();
-	undefined4 FUN_0044b0b0(LegoS32);
-	GolFileParser::ParserTokenType FUN_0044b130();
+	void Reset();
+	void ReadTokenSequenceDefinition();
+	undefined4 ReadBytes(LegoS32 p_size);
+	GolFileParser::ParserTokenType GetExpandedToken();
 
 protected:
 	LegoU32 m_fileOffset;                  // 0x1f0

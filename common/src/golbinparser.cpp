@@ -25,15 +25,15 @@ const LegoChar* g_fileFormatStr = "file %s\n";
 const GolFileParser::ParserTokenType g_binParserBracketSequence[] =
 	{GolFileParser::e_leftBracket, GolFileParser::e_int, GolFileParser::e_rightBracket, GolFileParser::e_rightBracket};
 
-// STUB: GOLDP 0x1002fff0
-// STUB: LEGORACERS 0x0044a7e0
+// FUNCTION: GOLDP 0x1002fff0
+// FUNCTION: LEGORACERS 0x0044a7e0
 GolBinParser::GolBinParser()
 {
-	FUN_0044a830();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0044a830
-void GolBinParser::FUN_0044a830()
+void GolBinParser::Reset()
 {
 	m_fileOffset = 0;
 	m_unk0x1f4 = 0;
@@ -47,12 +47,79 @@ void GolBinParser::FUN_0044a830()
 	memset(m_tokenSequenceLengths, 0, sizeof(m_tokenSequenceLengths));
 }
 
-// STUB: GOLDP 0x10030070
-// STUB: LEGORACERS 0x0044a890
-void GolBinParser::VTable0x38(const LegoChar*)
+// FUNCTION: GOLDP 0x10030070
+// FUNCTION: LEGORACERS 0x0044a890
+void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 {
-	// TODO
-	STUB(0x0044a890);
+	if (m_flags & c_flagOpen) {
+		Dispose();
+	}
+
+	LegoS32 dotpos = -1;
+	LegoS32 len = 0;
+
+	while (p_fileName[len] != '\0') {
+		if (p_fileName[len] == '.') {
+			dotpos = len;
+		}
+		len++;
+	}
+
+	if (dotpos < 0) {
+		const LegoChar* suffix = GetSuffix();
+		len += strlen(suffix);
+		if (len < 64) {
+			m_filePath = m_unk0x1a8;
+		}
+		else {
+			m_filePath = new LegoChar[len + 1];
+		}
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_fileName);
+		strcat(m_filePath, suffix);
+	}
+	else if (*m_suffix) {
+		const LegoChar* suffix = GetSuffix();
+		len += strlen(suffix);
+		if (len < 64) {
+			m_filePath = m_unk0x1a8;
+		}
+		else {
+			m_filePath = new LegoChar[len + 1];
+		}
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_fileName);
+		strcpy(&m_filePath[dotpos], suffix);
+	}
+	else {
+		if (len < 64) {
+			m_filePath = m_unk0x1a8;
+		}
+		else {
+			m_filePath = new LegoChar[len + 1];
+		}
+		if (!m_filePath) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		strcpy(m_filePath, p_fileName);
+	}
+
+	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeRead, 0x1000);
+	if (code != e_ioSuccess) {
+		FUN_10032580(code);
+	}
+
+	m_fileOffset = 0;
+	m_unk0x1f4 = 0;
+	m_unk0x34 = e_syntaxerror;
+	m_unk0x30 = 0;
 }
 
 // FUNCTION: GOLDP 0x10030280
@@ -60,7 +127,7 @@ void GolBinParser::VTable0x38(const LegoChar*)
 LegoS32 GolBinParser::Dispose()
 {
 	LegoS32 result = GolFileParser::Dispose();
-	FUN_0044a830();
+	Reset();
 	return result;
 }
 
@@ -88,10 +155,10 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 	while (1) {
 		LegoU32 t;
 		if (m_expansionRepeatCount) {
-			t = FUN_0044b130();
+			t = GetExpandedToken();
 		}
 		else {
-			if (!FUN_0044b0b0(1)) {
+			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 			t = ((LegoU8) m_unk0xa4[0]);
@@ -99,19 +166,19 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 		switch (t) {
 		case 0x14:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
 			m_expansionRepeatCount = ((LegoU8) m_unk0xa4[0]) + ((LegoU8) m_unk0xa4[1] << 8);
 
-			if (!FUN_0044b0b0(1)) {
+			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
 			m_expansionToken = (LegoU8) m_unk0xa4[0];
 			if (m_expansionToken == 0x13) {
-				if (!FUN_0044b0b0(2)) {
+				if (!ReadBytes(2)) {
 					return e_syntaxerror;
 				}
 
@@ -145,7 +212,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			break;
 
 		case 0x16:
-			FUN_0044b020();
+			ReadTokenSequenceDefinition();
 			if (m_unk0x34 == e_syntaxerror) {
 				return e_syntaxerror;
 			}
@@ -199,7 +266,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 3: {
-			if (!FUN_0044b0b0(4)) {
+			if (!ReadBytes(4)) {
 				return e_syntaxerror;
 			}
 
@@ -213,7 +280,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 		}
 
 		case 4: {
-			if (!FUN_0044b0b0(4)) {
+			if (!ReadBytes(4)) {
 				return e_syntaxerror;
 			}
 
@@ -227,7 +294,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 		}
 
 		case 0xb:
-			if (!FUN_0044b0b0(1)) {
+			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
@@ -241,7 +308,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xc:
-			if (!FUN_0044b0b0(1)) {
+			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
@@ -250,7 +317,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xd:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -259,7 +326,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xe:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -273,7 +340,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0xf:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -282,7 +349,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x10:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -291,7 +358,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x11:
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -300,7 +367,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x12:
-			if (!FUN_0044b0b0(1)) {
+			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
@@ -309,7 +376,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			return (GolFileParser::ParserTokenType) m_unk0x34;
 
 		case 0x13: {
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
@@ -325,9 +392,9 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 // FUNCTION: GOLDP 0x10030c30
 // FUNCTION: LEGORACERS 0x0044b020
-void GolBinParser::FUN_0044b020()
+void GolBinParser::ReadTokenSequenceDefinition()
 {
-	if (!FUN_0044b0b0(2)) {
+	if (!ReadBytes(2)) {
 		return;
 	}
 
@@ -336,13 +403,13 @@ void GolBinParser::FUN_0044b020()
 	m_tokenSequenceLengths[sequenceIndex] = count;
 
 	for (LegoU32 i = 0; i < count; i++) {
-		if (!FUN_0044b0b0(1)) {
+		if (!ReadBytes(1)) {
 			return;
 		}
 
 		LegoU32 token = (LegoU8) m_unk0xa4[0];
 		if (token == 0x13) {
-			if (!FUN_0044b0b0(2)) {
+			if (!ReadBytes(2)) {
 				return;
 			}
 
@@ -354,7 +421,7 @@ void GolBinParser::FUN_0044b020()
 }
 
 // FUNCTION: LEGORACERS 0x0044b0b0
-undefined4 GolBinParser::FUN_0044b0b0(LegoS32 p_size)
+undefined4 GolBinParser::ReadBytes(LegoS32 p_size)
 {
 	LegoS32 lenRead;
 	LegoS32 code = BufferedRead(m_fileOffset, m_unk0xa4, p_size, &lenRead);
@@ -380,7 +447,7 @@ undefined4 GolBinParser::FUN_0044b0b0(LegoS32 p_size)
 
 // FUNCTION: GOLDP 0x10030da0
 // FUNCTION: LEGORACERS 0x0044b130
-GolFileParser::ParserTokenType GolBinParser::FUN_0044b130()
+GolFileParser::ParserTokenType GolBinParser::GetExpandedToken()
 {
 	ParserTokenType token;
 
@@ -451,7 +518,7 @@ void GolBinParser::HandleUnexpectedToken(ParserTokenType p_code)
 
 // FUNCTION: GOLDP 0x10030f10
 // FUNCTION: LEGORACERS 0x0044b2b0
-void GolBinParser::OpenFile(LegoChar* p_fileName)
+void GolBinParser::OpenFileForWrite(LegoChar* p_fileName)
 {
 	if (m_flags & c_flagOpen) {
 		Dispose();

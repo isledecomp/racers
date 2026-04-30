@@ -47,12 +47,12 @@ public:
 	~GolFileParser() override;
 
 	LegoS32 Dispose() override;                              // vtable+0x20
-	virtual void VTable0x38(const LegoChar*);                // vtable+0x38
+	virtual void OpenFileForRead(const LegoChar*);           // vtable+0x38
 	virtual const LegoChar* GetSuffix();                     // vtable+0x3c
 	virtual void HandleUnexpectedToken(ParserTokenType) = 0; // vtable+0x40
 	virtual ParserTokenType GetNextToken();                  // vtable+0x44
 	virtual undefined4 VTable0x48(undefined4, undefined4);   // vtable+0x48
-	virtual void OpenFile(LegoChar* p_fileName) = 0;         // vtable+0x4c
+	virtual void OpenFileForWrite(LegoChar* p_fileName) = 0; // vtable+0x4c
 	virtual void WriteToken(ParserTokenType) = 0;            // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;                 // vtable+0x54
 	virtual void WriteFloat(LegoFloat) = 0;                  // vtable+0x58

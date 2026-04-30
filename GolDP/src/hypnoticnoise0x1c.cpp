@@ -65,7 +65,7 @@ void HypnoticNoise0x1c::LoadMaterialDefinitions(
 		}
 	}
 
-	parser->VTable0x38(p_fileName);
+	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	m_numItems = parser->FUN_100327e0();
 

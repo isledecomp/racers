@@ -1,5 +1,7 @@
 #include "mithrilchain0x8.h"
 
+#include "golerror.h"
+
 DECOMP_SIZE_ASSERT(MithrilChain0x8, 0x8)
 DECOMP_SIZE_ASSERT(MithrilChain0x8::Entry, 0x18)
 
@@ -96,6 +98,23 @@ void MithrilChain0x8::Reset()
 	}
 
 	m_count = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00494e10
+void MithrilChain0x8::Allocate(LegoU32 p_count)
+{
+	if (m_entries) {
+		Reset();
+	}
+
+	if (p_count) {
+		m_entries = new Entry[p_count];
+		if (!m_entries) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_count = p_count;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00494f60

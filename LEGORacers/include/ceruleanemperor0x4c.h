@@ -6,16 +6,27 @@
 #include "decomp.h"
 #include "types.h"
 
+class BronzeFalcon0xc8770;
+
 // VTABLE: LEGORACERS 0x004b27cc
 // SIZE 0x50
 class CeruleanEmperor0x4c : public CeruleanKnight0x20 {
 public:
+	// SIZE 0x10
+	struct ResourceLoadParams {
+		BronzeFalcon0xc8770* m_renderer; // 0x00
+		undefined4 m_unk0x04;            // 0x04
+		const LegoChar* m_fileName;      // 0x08
+		undefined4 m_binary;             // 0x0c
+	};
+
 	CeruleanEmperor0x4c();
 	~CeruleanEmperor0x4c() override;      // vtable+0x00
 	void Clear() override;                // vtable+0x08
 	void VTable0x0c() override;           // vtable+0x0c
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14
+	LegoBool32 Load(ResourceLoadParams* p_params);
 
 	// SYNTHETIC: LEGORACERS 0x0046faa0
 	// CeruleanEmperor0x4c::`scalar deleting destructor'

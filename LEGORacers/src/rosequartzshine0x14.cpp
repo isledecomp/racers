@@ -51,6 +51,13 @@ RoseQuartzShine0x14::~RoseQuartzShine0x14()
 	Clear();
 }
 
+// STUB: LEGORACERS 0x004366f0
+void RoseQuartzShine0x14::Load(GolStringTable*, LapisSigil0x14*, const LegoChar*, undefined4)
+{
+	// TODO
+	STUB(0x4366f0);
+}
+
 // FUNCTION: LEGORACERS 0x004368f0
 void RoseQuartzShine0x14::Clear()
 {

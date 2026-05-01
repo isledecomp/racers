@@ -28,7 +28,7 @@ public:
 	undefined4* VTable0x2c() override;            // vtable+0x2c
 	FloatyBoat0x28* VTable0x30() override;        // vtable+0x30
 	AwakeKite0x20* VTable0x34() override;         // vtable+0x34
-	GolNameTable* VTable0x38() override;          // vtable+0x38
+	GolFontTable* VTable0x38() override;          // vtable+0x38
 	void VTable0x3c(undefined4*) override;        // vtable+0x3c
 	void VTable0x40(undefined4*) override;        // vtable+0x40
 	void VTable0x44(undefined4*) override;        // vtable+0x44

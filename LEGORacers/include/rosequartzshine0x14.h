@@ -6,6 +6,9 @@
 #include "golnametable.h"
 #include "types.h"
 
+class GolStringTable;
+class LapisSigil0x14;
+
 // VTABLE: LEGORACERS 0x004b08c4
 // SIZE 0x14
 class RoseQuartzShine0x14 : public GolNameTable {
@@ -48,6 +51,12 @@ public:
 	// RoseQuartzShine0x14::`scalar deleting destructor'
 
 	LegoU32 GetEntryIndexByName(LegoChar* p_name);
+	void Load(
+		GolStringTable* p_stringTable,
+		LapisSigil0x14* p_raceList,
+		const LegoChar* p_fileName,
+		undefined4 p_binary
+	);
 
 private:
 	Struct0x38* m_entries; // 0x0c

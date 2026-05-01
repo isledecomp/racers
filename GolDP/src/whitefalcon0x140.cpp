@@ -2,6 +2,7 @@
 
 #include "amberhaze0x1c.h"
 #include "cinderbasin0x28.h"
+#include "falcontextureformat.h"
 #include "hypnoticnoise0x1c.h"
 #include "magentaribbon0x20.h"
 
@@ -151,8 +152,8 @@ WhiteFalcon0x140::WhiteFalcon0x140()
 	m_unk0x20 = 0;
 	m_unk0x24 = 0;
 	m_unk0x28 = 0;
-	m_unk0x30 = 0;
-	m_unk0x34 = NULL;
+	m_countTextureFormats = 0;
+	m_textureFormats = NULL;
 	m_unk0x38 = NULL;
 	m_unk0x3c = NULL;
 	m_unk0x40 = NULL;
@@ -177,13 +178,13 @@ WhiteFalcon0x140::~WhiteFalcon0x140()
 // FUNCTION: GOLDP 0x100288f0
 void WhiteFalcon0x140::Destroy()
 {
-	if (m_unk0x34 != NULL) {
-		delete m_unk0x34;
-		m_unk0x34 = NULL;
+	if (m_textureFormats != NULL) {
+		delete[] m_textureFormats;
+		m_textureFormats = NULL;
 	}
 
 	AmberHaze0x1c* amberHaze = m_unk0x3c;
-	m_unk0x30 = 0;
+	m_countTextureFormats = 0;
 	m_unk0x10 = 0;
 	m_unk0x14 = 0;
 	m_unk0x18 = 0;
@@ -520,9 +521,9 @@ void WhiteFalcon0x140::VTable0x40()
 }
 
 // FUNCTION: GOLDP 0x10029950 FOLDED
-undefined4 WhiteFalcon0x140::VTable0x4c(undefined4, undefined4)
+SlatePeak0x58* WhiteFalcon0x140::VTable0x4c(undefined2, undefined2)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

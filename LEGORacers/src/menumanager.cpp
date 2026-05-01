@@ -197,7 +197,7 @@ void MenuManager::FUN_0042cde0()
 // FUNCTION: LEGORACERS 0x0042ceb0
 void MenuManager::ReleaseRendererObject()
 {
-	undefined4* object = m_unk0x4cd8->GetUnk0x0c();
+	AmberLens0x344* object = m_unk0x4cd8->GetUnk0x0c();
 	if (object) {
 		m_unk0x4cd4->VTable0x54(object);
 	}

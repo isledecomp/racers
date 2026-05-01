@@ -28,3 +28,10 @@ DuskwindBananaRelic0x30::~DuskwindBananaRelic0x30()
 	// TODO
 	STUB(0x100062a0);
 }
+
+// STUB: GOLDP 0x10006320
+void DuskwindBananaRelic0x30::FUN_10006320(BronzeFalcon0xc8770*)
+{
+	// TODO
+	STUB(0x10006320);
+}

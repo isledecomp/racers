@@ -183,7 +183,7 @@ void GolDPExport::VTable0x50(undefined4*)
 }
 
 // STUB: GOLDP 0x10015640
-void GolDPExport::VTable0x54(undefined4*)
+void GolDPExport::VTable0x54(AmberLens0x344*)
 {
 	// TODO
 	STUB(0x10015640);

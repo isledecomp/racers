@@ -15,6 +15,14 @@ WorkHorse0x58::WorkHorse0x58()
 	m_unk0x54 = 0;
 }
 
+// STUB: GOLDP 0x100416c0
+LegoBool WorkHorse0x58::Initialize(Pixelformat, undefined4)
+{
+	// TODO
+	STUB(0x100416c0);
+	return FALSE;
+}
+
 // FUNCTION: GOLDP 0x10041770
 WorkHorse0x58::~WorkHorse0x58()
 {

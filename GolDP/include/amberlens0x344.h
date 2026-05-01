@@ -37,6 +37,9 @@ public:
 
 	JadeOrbit0x220* GetUnk0x04() { return (JadeOrbit0x220*) m_unk0x04; }
 
+protected:
+	void FUN_10001f60(undefined*);
+
 	JadeOrbit0x220 m_unk0x120;       // 0x120
 	BronzeFalcon0xc8770* m_unk0x340; // 0x340
 };

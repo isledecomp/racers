@@ -19,6 +19,13 @@ AmberLens0x344::~AmberLens0x344()
 	}
 }
 
+// STUB: GOLDP 0x10001f60
+void AmberLens0x344::FUN_10001f60(undefined*)
+{
+	// TODO
+	STUB(0x10001f60);
+}
+
 // STUB: GOLDP 0x10002060
 void AmberLens0x344::VTable0x28()
 {

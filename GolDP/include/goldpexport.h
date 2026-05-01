@@ -35,7 +35,7 @@ public:
 	void VTable0x48(undefined4*) override;        // vtable+0x48
 	void VTable0x4c(undefined4*) override;        // vtable+0x4c
 	void VTable0x50(undefined4*) override;        // vtable+0x50
-	void VTable0x54(undefined4*) override;        // vtable+0x54
+	void VTable0x54(AmberLens0x344*) override;    // vtable+0x54
 	void VTable0x58(undefined4*) override;        // vtable+0x58
 	void VTable0x5c(undefined4*) override;        // vtable+0x5c
 	void VTable0x60(undefined4*) override;        // vtable+0x60

@@ -1,6 +1,5 @@
 #include "slatepeak0x58.h"
 
-DECOMP_SIZE_ASSERT(SlatePeak0x58::DepthBuffer0x38, 0x38)
 DECOMP_SIZE_ASSERT(SlatePeak0x58, 0x58)
 
 // FUNCTION: GOLDP 0x10003110
@@ -92,7 +91,7 @@ void SlatePeak0x58::VTable0x18()
 // FUNCTION: GOLDP 0x10003c70
 LegoS32 SlatePeak0x58::AttachDepthBuffer(DepthBuffer0x38* p_depthBuffer)
 {
-	LPDIRECTDRAWSURFACE surface = p_depthBuffer->m_surface;
+	LPDIRECTDRAWSURFACE4 surface = p_depthBuffer->m_surface;
 	if (m_renderSurface->AddAttachedSurface(surface)) {
 		return -1;
 	}
@@ -134,23 +133,4 @@ void SlatePeak0x58::VTable0x28(undefined4, undefined4, undefined4*)
 void SlatePeak0x58::VTable0x2c()
 {
 	STUB(0x10003e90);
-}
-
-// FUNCTION: GOLDP 0x10018460
-void SlatePeak0x58::DepthBuffer0x38::Release()
-{
-	if (m_attachedSurface) {
-		m_attachedSurface->DetachDepthBuffer(this);
-		m_attachedSurface = NULL;
-	}
-
-	if (m_surface) {
-		m_surface->Release();
-		m_surface = NULL;
-	}
-
-	m_pixelFlags = 0;
-	m_width = 0;
-	m_height = 0;
-	m_attachedSurface = NULL;
 }

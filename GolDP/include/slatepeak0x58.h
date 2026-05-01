@@ -3,24 +3,13 @@
 
 #include "azureridge0x38.h"
 #include "compat.h"
+#include "depthbuffer0x38.h"
 #include "pearldew0x0c.h"
 
 // VTABLE: GOLDP 0x1005627c
 // SIZE 0x58
 class SlatePeak0x58 : public AzureRidge0x38 {
 public:
-	// SIZE 0x38
-	class DepthBuffer0x38 : public SilverDune0x30 {
-	public:
-		void Release();
-
-	private:
-		friend class SlatePeak0x58;
-
-		SlatePeak0x58* m_attachedSurface; // 0x30
-		LPDIRECTDRAWSURFACE m_surface;    // 0x34
-	};
-
 	SlatePeak0x58();
 	~SlatePeak0x58() override;                                                         // vtable+0x00
 	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;    // vtable+0x04
@@ -46,16 +35,17 @@ public:
 
 private:
 	friend class DepthBuffer0x38;
+	friend class BronzeFalcon0xc8770;
 
 	LegoS32 AttachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
 	void DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
 
-	PearlDew0x0c m_palette;               // 0x38
-	GolDrawState* m_drawState;            // 0x44
-	LPDIRECTDRAWSURFACE m_displaySurface; // 0x48
-	LPDIRECTDRAWSURFACE m_renderSurface;  // 0x4c
-	LPDIRECTDRAWCLIPPER m_clipper;        // 0x50
-	DepthBuffer0x38* m_depthBuffer;       // 0x54
+	PearlDew0x0c m_palette;                // 0x38
+	GolDrawState* m_drawState;             // 0x44
+	LPDIRECTDRAWSURFACE4 m_displaySurface; // 0x48
+	LPDIRECTDRAWSURFACE4 m_renderSurface;  // 0x4c
+	LPDIRECTDRAWCLIPPER m_clipper;         // 0x50
+	DepthBuffer0x38* m_depthBuffer;        // 0x54
 };
 
 #endif // GOLDP_SLATEPEAK0X58_H

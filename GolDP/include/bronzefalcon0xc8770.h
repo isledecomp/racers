@@ -3,14 +3,17 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "depthbuffer0x38.h"
 #include "duskwindbananarelic0x30.h"
-#include "moltenquillphantom0x38.h"
 #include "types.h"
 #include "whitefalcon0x140.h"
 #include "workhorse0x58.h"
 
-class GolCommonDrawState;
+#include <d3d.h>
+
+class BronzeFalconSurface0x5c;
 class AmberLens0x344;
+class GolDrawDPState;
 
 // VTABLE: GOLDP 0x100565b8
 // SIZE 0xc8770
@@ -33,7 +36,7 @@ public:
 	void VTable0x38() override;                                              // vtable+0x38
 	void VTable0x3c(undefined4) override;                                    // vtable+0x3c
 	void VTable0x40() override;                                              // vtable+0x40
-	undefined4 VTable0x4c(undefined4, undefined4) override;                  // vtable+0x4c
+	SlatePeak0x58* VTable0x4c(undefined2, undefined2) override;              // vtable+0x4c
 	void VTable0x50(undefined4) override;                                    // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
 	void VTable0x58(undefined4, undefined4) override;                        // vtable+0x58
@@ -83,21 +86,56 @@ public:
 	LegoBool32 VTable0x110() const override;                                 // vtable+0x110
 
 	undefined4* FUN_004131a0(const LegoChar* p_name);
+	undefined4 FUN_10007e20(LegoU32 p_flags);
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
 private:
+	void FUN_100082e0();
+	void FUN_1000a2c0(undefined*);
+	void FUN_1000a950(undefined*);
+	void FUN_1000b4a0();
 	void Reset();
+	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
+	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 
-	GolCommonDrawState* m_drawState;          // 0x140
-	undefined m_unk0x144[0x2d4 - 0x144];      // 0x144
-	DuskwindBananaRelic0x30 m_unk0x2d4;       // 0x2d4
-	undefined m_unk0x304[0x310 - 0x304];      // 0x304
-	MoltenQuillPhantom0x38 m_unk0x310;        // 0x310
-	undefined m_unk0x348[0xc8698 - 0x348];    // 0x348
-	WorkHorse0x58 m_unk0xc8698;               // 0xc8698
-	undefined m_unk0x86f0[0xc8770 - 0xc86f0]; // 0xc86f0
+	struct Field0xc83b4 {
+		undefined4 m_unk0x00;
+		undefined4 m_unk0x04;
+		undefined4 m_unk0x08;
+		undefined4 m_unk0x0c;
+	};
+
+	GolDrawDPState* m_drawState;                           // 0x140
+	LPDIRECT3DDEVICE3 m_d3dDevice;                         // 0x144
+	D3DDEVICEDESC m_d3dDeviceDesc;                         // 0x148
+	LPDIRECT3DVIEWPORT3 m_d3dViewport;                     // 0x244
+	D3DVIEWPORT2 m_viewportParams;                         // 0x248
+	undefined m_unk0x274[0x2c4 - 0x274];                   // 0x274
+	LPDIRECT3DMATERIAL3 m_backgroundMaterial;              // 0x2c4
+	undefined m_unk0x2c8[0x2cc - 0x2c8];                   // 0x2c8
+	JasperRipple0x4 m_unk0x2cc;                            // 0x2cc
+	undefined m_unk0x2d0[0x2d4 - 0x2d0];                   // 0x2d0
+	DuskwindBananaRelic0x30 m_unk0x2d4;                    // 0x2d4
+	SlatePeak0x58* m_unk0x304;                             // 0x304
+	undefined m_unk0x308[0x30c - 0x308];                   // 0x308
+	BronzeFalconSurface0x5c* m_unk0x30c;                   // 0x30c
+	DepthBuffer0x38 m_depthBuffer;                         // 0x310
+	undefined m_unk0x348[0xc384c - 0x348];                 // 0x348
+	undefined4 m_unk0xc384c;                               // 0xc384c
+	undefined m_unk0xc3850[0xc83b4 - 0xc3850];             // 0xc3850
+	Field0xc83b4 m_unk0xc83b4;                             // 0xc83b4
+	undefined4 m_unk0xc83c4;                               // 0xc83c4
+	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];             // 0xc83c8
+	WorkHorse0x58 m_unk0xc8698;                            // 0xc8698
+	undefined m_unk0xc86f0[0xc8700 - 0xc86f0];             // 0xc86f0
+	undefined4 m_unk0xc8700;                               // 0xc8700
+	undefined m_unk0xc8704[0xc8708 - 0xc8704];             // 0xc8704
+	undefined4 m_unk0xc8708[11];                           // 0xc8708
+	undefined4 m_unk0xc8734[11];                           // 0xc8734
+	undefined m_unk0xc8760[0xc876c - 0xc8760];             // 0xc8760
+	void (BronzeFalcon0xc8770::*m_unk0xc876c)(undefined*); // 0xc876c
 };
 
 #endif // BRONZEFALCON0XC8770_H

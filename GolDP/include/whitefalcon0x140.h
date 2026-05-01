@@ -8,21 +8,33 @@ class AmberHaze0x1c;
 class AmberLens0x344;
 class BronzeFalcon0xc8770;
 class CinderBasin0x28;
+class FalconTextureFormat;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
 class MagentaRibbon0x20;
+class SlatePeak0x58;
 
 // VTABLE: GOLDP 0x10057338
 // SIZE 0x140
 class WhiteFalcon0x140 {
 public:
 	enum Flags {
+		c_flagBit0 = 1 << 0,
+		c_flagBit1 = 1 << 1,
+		c_flagBit5 = 1 << 5,
+		c_flagBit7 = 1 << 7,
+		c_flagBit8 = 1 << 8,
 		c_flagBit9 = 1 << 9,
+		c_flagBit11 = 1 << 11,
+		c_flagBit12 = 1 << 12,
 		c_flagBit14 = 1 << 14,
 		c_flagBit15 = 1 << 15,
+		c_flagBit16 = 1 << 16,
 		c_flagBit18 = 1 << 18,
-		c_flagBit19 = 1 << 19
+		c_flagBit19 = 1 << 19,
+		c_flagBit20 = 1 << 20,
+		c_flagBit24 = 1 << 24,
 	};
 
 	WhiteFalcon0x140();
@@ -51,7 +63,7 @@ public:
 	virtual void VTable0x40();                                                              // vtable+0x40
 	virtual void VTable0x44();                                                              // vtable+0x44
 	virtual void VTable0x48();                                                              // vtable+0x48
-	virtual undefined4 VTable0x4c(undefined4, undefined4);                                  // vtable+0x4c
+	virtual SlatePeak0x58* VTable0x4c(undefined2, undefined2);                              // vtable+0x4c
 	virtual void VTable0x50(undefined4);                                                    // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;                                                // vtable+0x54
 	virtual void VTable0x58(undefined4 p_param1, undefined4 p_param2);                      // vtable+0x58
@@ -118,15 +130,15 @@ public:
 	// WhiteFalcon0x140::`scalar deleting destructor'
 
 	undefined4 GetUnk0x04() { return m_unk0x04; }
-	undefined4* GetUnk0x0c() { return m_unk0x0c; }
+	AmberLens0x344* GetUnk0x0c() { return m_unk0x0c; }
 
-private:
+protected:
 	friend class GolCommonDrawState;
 
 	undefined4 m_unk0x04;                         // 0x04
 	undefined2 m_unk0x08;                         // 0x08
 	undefined2 m_unk0x0a;                         // 0x0a
-	undefined4* m_unk0x0c;                        // 0x0c
+	AmberLens0x344* m_unk0x0c;                    // 0x0c
 	undefined4 m_unk0x10;                         // 0x10
 	undefined4 m_unk0x14;                         // 0x14
 	undefined4 m_unk0x18;                         // 0x18
@@ -135,8 +147,8 @@ private:
 	undefined4 m_unk0x24;                         // 0x24
 	undefined4 m_unk0x28;                         // 0x28
 	undefined4 m_unk0x2c;                         // 0x2c
-	undefined4 m_unk0x30;                         // 0x30
-	undefined4* m_unk0x34;                        // 0x34
+	undefined4 m_countTextureFormats;             // 0x30
+	FalconTextureFormat* m_textureFormats;        // 0x34
 	MagentaRibbon0x20* m_unk0x38;                 // 0x38
 	AmberHaze0x1c* m_unk0x3c;                     // 0x3c
 	HypnoticNoise0x1c* m_unk0x40;                 // 0x40

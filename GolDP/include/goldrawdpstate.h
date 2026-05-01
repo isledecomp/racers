@@ -59,6 +59,9 @@ public:
 	// SYNTHETIC: GOLDP 0x100010e0
 	// GolDrawDPState::`scalar deleting destructor'
 
+	friend class DepthBuffer0x38;
+	friend class BronzeFalcon0xc8770;
+
 private:
 	void ReleaseDDraw();
 	static HRESULT CALLBACK FindmatchingDepthPixelformat(LPDDPIXELFORMAT p_pixelformat, LPVOID p_context);

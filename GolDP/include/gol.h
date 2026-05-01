@@ -61,7 +61,7 @@ public:
 	virtual void VTable0x48(undefined4*) = 0;        // vtable+0x48
 	virtual void VTable0x4c(undefined4*) = 0;        // vtable+0x4c
 	virtual void VTable0x50(undefined4*) = 0;        // vtable+0x50
-	virtual void VTable0x54(undefined4*) = 0;        // vtable+0x54
+	virtual void VTable0x54(AmberLens0x344*) = 0;    // vtable+0x54
 	virtual void VTable0x58(undefined4*) = 0;        // vtable+0x58
 	virtual void VTable0x5c(undefined4*) = 0;        // vtable+0x5c
 	virtual void VTable0x60(undefined4*) = 0;        // vtable+0x60

@@ -104,6 +104,9 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/whitefalcon0x140.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
+  GolDP/src/falcontextureformat.cpp
+  GolDP/src/falcondunebag0x10.cpp
+  GolDP/src/depthbuffer0x38.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -145,6 +148,7 @@ add_library(goldp SHARED
   GolDP/src/azureridge0x38.cpp
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/amberlens0x344.cpp
+  GolDP/src/falcontextureformat.cpp
   GolDP/src/jadeorbit0x220.cpp
   GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/amberhaze0x1c.cpp
@@ -154,6 +158,7 @@ add_library(goldp SHARED
   GolDP/src/whitefalcon0x140.cpp
   GolDP/src/whitefalconnode0x18.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
+  GolDP/src/bronzefalconsurface0x5c.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golfonttable.cpp
@@ -165,8 +170,9 @@ add_library(goldp SHARED
   GolDP/src/utopianpan0xa4.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
   GolDP/src/duskwindbananarelic0x30.cpp
-  GolDP/src/moltenquillphantom0x38.cpp
+  GolDP/src/depthbuffer0x38.cpp
   GolDP/src/workhorse0x58.cpp
+  GolDP/src/falcondunebag0x10.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

@@ -1,6 +1,7 @@
 #include "chromespike0x4.h"
 
 #include "golerror.h"
+#include "imaginaryaxe0x36c4.h"
 #include "imaginarybandsaw0x2228.h"
 #include "imaginarybrush0x6410.h"
 #include "imaginarydrill0x2450.h"
@@ -66,30 +67,30 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 		break;
 
 	case 0x11:
-		// 0x36c4
+		tool = new ImaginaryAxe0x36c4();
 		break;
 
 	case 0x0f:
-		// 0x4774
+		tool = new ImaginaryBolt0x4774();
 		break;
 
 	case 0x08:
-		// 0x6750
+		tool = new ImaginaryCrowbar0x6750();
 		break;
 
 	case 0x0a:
 	case 0x0b:
-		// 0x3360
+		tool = new ImaginaryRing0x3360();
 		break;
 
 	case 0x0c:
-		// 0x2548
+		tool = new ImaginaryBelt0x2548();
 		break;
 
 	case 0x13:
 	case 0x14:
 	case 0x15:
-		// 0x4c8c
+		tool = new ImaginaryGear0x4c8c();
 		break;
 
 	case 0x16:
@@ -100,7 +101,7 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 	case 0x1b:
 	case 0x1c:
 	case 0x25:
-		// 0x7b0
+		tool = new ImaginaryOrb0x7b0();
 		break;
 
 	case 0x1f:
@@ -113,15 +114,15 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 		break;
 
 	case 0x0e:
-		// 0x3c34
+		tool = new ImaginaryCube0x3c34();
 		break;
 
 	case 0x1e:
-		// 0x2cc4
+		tool = new ImaginarySpool0x2cc4();
 		break;
 
 	case 0x2c:
-		// 0x15ec
+		tool = new ImaginaryClaw0x15ec();
 		break;
 
 	case 0x2d:
@@ -129,7 +130,7 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 	case 0x2f:
 	case 0x30:
 	case 0x31:
-		// 0x1d7c
+		tool = new ImaginaryLever0x1d7c();
 		break;
 
 	case 0x90:

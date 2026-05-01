@@ -5,6 +5,7 @@
 #include "imaginarydrill0x2450.h"
 #include "imaginaryfeather0x658.h"
 #include "imaginaryhammer0x658.h"
+#include "imaginaryplate0x770.h"
 #include "imaginaryruler0x2e60.h"
 #include "imaginarywrench0x23bc.h"
 
@@ -56,6 +57,14 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 
 	case 0x10:
 		tool = new ImaginaryWrench0x23bc();
+		break;
+
+	case 0x90:
+		tool = new ImaginaryPlate0x770();
+		break;
+
+	default:
+		tool = NULL;
 		break;
 	}
 

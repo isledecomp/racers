@@ -419,22 +419,22 @@ void WhiteFalcon0x140::VTable0x9c(undefined4, undefined4, undefined4)
 	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void WhiteFalcon0x140::VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08)
 {
-	MATCHING(0x1002c010);
+	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void WhiteFalcon0x140::VTable0xac(undefined4, undefined4)
 {
-	MATCHING(0x1002c010);
+	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void WhiteFalcon0x140::VTable0xb0(undefined4, undefined4)
 {
-	MATCHING(0x1002c010);
+	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

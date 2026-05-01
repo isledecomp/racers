@@ -34,8 +34,8 @@ void AmberLensBase0x120::VTable0x24(undefined4, undefined4, undefined4)
 	STUB(0x1001c900);
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void AmberLensBase0x120::VTable0x20(undefined4, undefined4)
 {
-	STUB(0x1002c010);
+	// empty
 }

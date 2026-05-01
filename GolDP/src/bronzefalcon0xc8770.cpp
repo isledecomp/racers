@@ -371,10 +371,10 @@ void BronzeFalcon0xc8770::VTable0xd0()
 	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void BronzeFalcon0xc8770::VTable0x34(LegoS32, const LegoFloat*)
 {
-	STUB(0x1002c010);
+	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

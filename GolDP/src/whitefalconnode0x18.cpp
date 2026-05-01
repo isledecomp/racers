@@ -68,14 +68,14 @@ void WhiteFalconNode0x18::VTable0x24(undefined4)
 	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void WhiteFalconNode0x18::VTable0x28(undefined4, undefined4)
 {
-	MATCHING(0x1002c010);
+	// empty
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void WhiteFalconNode0x18::VTable0x2c(undefined4, undefined4)
 {
-	MATCHING(0x1002c010);
+	// empty
 }

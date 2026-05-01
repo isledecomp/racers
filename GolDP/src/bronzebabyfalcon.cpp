@@ -3,18 +3,6 @@
 DECOMP_SIZE_ASSERT(BronzeBabyFalcon, 0x140) // based on constructor; not 100 % sure
 DECOMP_SIZE_ASSERT(BronzeBabyFalcon::JasperRipple0x4, 0x4)
 
-// STUB: GOLDP 0x10009540
-void BronzeBabyFalcon::VTable0xf0()
-{
-	STUB(0x10009540);
-}
-
-// STUB: GOLDP 0x10009780
-void BronzeBabyFalcon::VTable0xd8()
-{
-	STUB(0x10009780);
-}
-
 // STUB: GOLDP 0x10028840
 BronzeBabyFalcon::BronzeBabyFalcon()
 {

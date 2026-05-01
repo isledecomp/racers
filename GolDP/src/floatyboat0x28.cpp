@@ -173,11 +173,10 @@ void FloatyBoat0x28::VTable0x28()
 {
 }
 
-// STUB: GOLDP 0x1002c010 FOLDED
+// FUNCTION: GOLDP 0x1002c010 FOLDED
 void FloatyBoat0x28::VTable0x40(undefined4, undefined4)
 {
-	// TODO (empty)
-	STUB(0x1002c010);
+	// empty
 }
 
 // STUB: GOLDP 0x1002c020 FOLDED

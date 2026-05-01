@@ -369,7 +369,7 @@ void MenuManager::Run()
 	BronzeFalcon0xc8770::JasperRipple0x4 rendererState;
 	Win32GolApp* golApp = m_unk0x04.m_context->m_golApp;
 	StackOfLegoU16* stack;
-	MithrilChain0x8* chain;
+	MenuAnimationList* menuAnimations;
 	LegoU32 frameDeltaMs;
 	LegoU16 previousMenu;
 
@@ -410,8 +410,8 @@ void MenuManager::Run()
 				}
 			}
 
-			chain = &m_unk0x04.m_menuAnimations;
-			chain->Update(frameDeltaMs);
+			menuAnimations = &m_unk0x04.m_menuAnimations;
+			menuAnimations->Update(frameDeltaMs);
 			m_unk0x4cd8->VTable0x54(TRUE);
 			m_unk0x4cd8->VTable0xec(6);
 			m_unk0x4cd8->VTable0xe8(TRUE);
@@ -423,7 +423,7 @@ void MenuManager::Run()
 				m_unk0x4c74.FUN_00469550();
 			}
 
-			chain->Draw(m_unk0x4cd8);
+			menuAnimations->Draw(m_unk0x4cd8);
 			m_unk0x4cd8->VTable0xe4();
 			m_unk0x4cd8->VTable0xf0();
 

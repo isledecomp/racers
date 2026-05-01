@@ -377,10 +377,10 @@ void BronzeFalcon0xc8770::VTable0xe8(undefined4)
 	STUB(0x100098d0);
 }
 
-// STUB: GOLDP 0x10009950
-void BronzeFalcon0xc8770::VTable0x14()
+// FUNCTION: GOLDP 0x10009950
+const WhiteFalcon0x140::RenderTargetInfo* BronzeFalcon0xc8770::GetRenderTargetInfo()
 {
-	STUB(0x10009950);
+	return m_renderTargetInfo;
 }
 
 // STUB: GOLDP 0x10009960
@@ -438,7 +438,13 @@ void BronzeFalcon0xc8770::VTable0x80()
 }
 
 // STUB: GOLDP 0x10009ce0
-void BronzeFalcon0xc8770::VTable0x84()
+void BronzeFalcon0xc8770::DrawTriangle(
+	const TexturedVertex*,
+	const TexturedVertex*,
+	const TexturedVertex*,
+	undefined4,
+	undefined4
+)
 {
 	STUB(0x10009ce0);
 }
@@ -486,13 +492,13 @@ void BronzeFalcon0xc8770::VTable0x10c()
 }
 
 // STUB: GOLDP 0x1000aeb0
-void BronzeFalcon0xc8770::VTable0xb8(undefined2 p_param1, undefined4 p_param2)
+void BronzeFalcon0xc8770::SetAlphaOverride(undefined4, undefined4)
 {
 	STUB(0x1000aeb0);
 }
 
 // STUB: GOLDP 0x1000aef0
-void BronzeFalcon0xc8770::VTable0xbc()
+void BronzeFalcon0xc8770::ClearAlphaOverride()
 {
 	STUB(0x1000aef0);
 }

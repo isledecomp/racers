@@ -53,7 +53,7 @@ void BronzeFalcon0xc8770::VTable0x5c()
 }
 
 // STUB: GOLDP 0x10008910
-void BronzeFalcon0xc8770::VTable0x94()
+void BronzeFalcon0xc8770::VTable0x94(undefined4)
 {
 	STUB(0x10008910);
 }
@@ -269,7 +269,7 @@ void BronzeFalcon0xc8770::VTable0x10c()
 }
 
 // STUB: GOLDP 0x1000aeb0
-void BronzeFalcon0xc8770::VTable0xb8(undefined4, undefined4)
+void BronzeFalcon0xc8770::VTable0xb8(undefined2 p_param1, undefined4 p_param2)
 {
 	STUB(0x1000aeb0);
 }
@@ -281,7 +281,7 @@ void BronzeFalcon0xc8770::VTable0xbc()
 }
 
 // STUB: GOLDP 0x1000af20
-void BronzeFalcon0xc8770::VTable0xc0(undefined4)
+void BronzeFalcon0xc8770::VTable0xc0(undefined4*)
 {
 	STUB(0x1000af20);
 }

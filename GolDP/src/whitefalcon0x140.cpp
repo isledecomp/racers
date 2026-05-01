@@ -424,55 +424,62 @@ void WhiteFalcon0x140::VTable0xa0()
 	STUB(0x10029680);
 }
 
-// STUB: GOLDP 0x10029840
-void WhiteFalcon0x140::VTable0xa8(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10029840
+void WhiteFalcon0x140::VTable0xa8(undefined4 p_param1, undefined4 p_param2, undefined4 p_param3)
 {
-	STUB(0x10029500);
+	VTable0x94(p_param1);
 }
 
-// STUB: GOLDP 0x10029850
-void WhiteFalcon0x140::VTable0xb8(undefined4, undefined4)
+// FUNCTION: GOLDP 0x10029850
+void WhiteFalcon0x140::VTable0xb8(undefined2 p_param1, undefined4 p_param2)
 {
-	STUB(0x10029850);
+	m_unk0x04 |= c_flagBit14;
+	m_unk0x0a = p_param1;
+	m_unk0x08 = p_param2;
 }
 
-// STUB: GOLDP 0x10029870
+// FUNCTION: GOLDP 0x10029870
 void WhiteFalcon0x140::VTable0xbc()
 {
-	STUB(0x10029870);
+	m_unk0x04 &= ~c_flagBit14;
 }
 
-// STUB: GOLDP 0x10029880
-void WhiteFalcon0x140::VTable0xc0(undefined4)
+// FUNCTION: GOLDP 0x10029880
+void WhiteFalcon0x140::VTable0xc0(undefined4* p_param)
 {
-	STUB(0x10029880);
+	m_unk0x118 = *p_param;
+	m_unk0x04 |= c_flagBit19;
 }
 
-// STUB: GOLDP 0x100298a0
+// FUNCTION: GOLDP 0x100298a0
 void WhiteFalcon0x140::VTable0xc4()
 {
-	STUB(0x100298a0);
+	m_unk0x04 &= ~c_flagBit19;
 }
 
-// STUB: GOLDP 0x100298b0
+// FUNCTION: GOLDP 0x100298b0
 void WhiteFalcon0x140::VTable0x28()
 {
-	STUB(0x100298b0);
+	m_unk0x04 &= ~c_flagBit15;
+	m_unk0x11c = 0;
+	m_unk0x120 = 0;
+	m_unk0x124[0] = 0;
 }
 
-// STUB: GOLDP 0x100298d0
-void WhiteFalcon0x140::VTable0x2c(undefined4)
+// FUNCTION: GOLDP 0x100298d0
+void WhiteFalcon0x140::VTable0x2c(undefined4 p_param)
 {
-	STUB(0x100298d0);
+	m_unk0x04 |= c_flagBit15;
+	m_unk0x120 = p_param;
 }
 
 // FUNCTION: GOLDP 0x100298f0
 void WhiteFalcon0x140::VTable0x30(undefined4 p_param)
 {
 	if (m_unk0x11c < 7) {
-		m_unk0x04 |= 0x8000;
+		m_unk0x04 |= c_flagBit15;
 		m_unk0x124[m_unk0x11c] = p_param;
-		m_unk0x11c = m_unk0x11c + 1;
+		m_unk0x11c++;
 	}
 }
 
@@ -489,7 +496,7 @@ void WhiteFalcon0x140::VTable0x48()
 }
 
 // FUNCTION: GOLDP 0x10029960
-void WhiteFalcon0x140::VTable0x58(undefined4, undefined4 p_param2)
+void WhiteFalcon0x140::VTable0x58(undefined4 p_param1, undefined4 p_param2)
 {
 	VTable0x54(p_param2);
 }

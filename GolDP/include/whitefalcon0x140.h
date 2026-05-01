@@ -4,10 +4,14 @@
 #include "decomp.h"
 #include "types.h"
 
+class AmberHaze0x1c;
 class AmberLens0x344;
 class BronzeFalcon0xc8770;
+class CinderBasin0x28;
 class GolCommonDrawState;
 class GolNameTable;
+class HypnoticNoise0x1c;
+class MagentaRibbon0x20;
 
 // VTABLE: GOLDP 0x10057338
 // SIZE 0x140
@@ -24,7 +28,6 @@ public:
 		undefined4 m_unk0x00;             // 0x00
 		undefined m_unk0x04[0x1c - 0x04]; // 0x04
 	};
-
 	virtual void VTable0x00();                                              // vtable+0x00
 	virtual void VTable0x04();                                              // vtable+0x04
 	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
@@ -96,16 +99,16 @@ public:
 	virtual LegoBool32 VTable0x110() const;
 
 	void Destroy();
-	void FUN_10028a70(undefined4);
-	void FUN_10028a80(undefined4);
-	void FUN_10028ad0(GolNameTable* p_param);
-	void FUN_10028ae0(GolNameTable* p_param);
-	void FUN_10028b30(undefined4);
-	void FUN_10028b40(undefined4);
-	void FUN_10028b90(const LegoChar*);
-	void FUN_10028bc0(undefined4);
-	void FUN_10028bd0(undefined4);
-	void FUN_10028c20(const LegoChar*);
+	void FUN_10028a70(CinderBasin0x28* p_param);
+	void FUN_10028a80(CinderBasin0x28* p_param);
+	void FUN_10028ad0(HypnoticNoise0x1c* p_param);
+	void FUN_10028ae0(HypnoticNoise0x1c* p_param);
+	void FUN_10028b30(MagentaRibbon0x20* p_param);
+	void FUN_10028b40(MagentaRibbon0x20* p_param);
+	void* FUN_10028b90(const LegoChar* p_name);
+	void FUN_10028bc0(AmberHaze0x1c* p_param);
+	void FUN_10028bd0(AmberHaze0x1c* p_param);
+	void* FUN_10028c20(const LegoChar* p_name);
 
 	// SYNTHETIC: GOLDP 0x100288b0
 	// WhiteFalcon0x140::`scalar deleting destructor'
@@ -130,10 +133,10 @@ private:
 	undefined4 m_unk0x2c;                         // 0x2c
 	undefined4 m_unk0x30;                         // 0x30
 	undefined4* m_unk0x34;                        // 0x34
-	undefined4* m_unk0x38;                        // 0x38
-	undefined4* m_unk0x3c;                        // 0x3c
-	undefined4* m_unk0x40;                        // 0x40
-	undefined4* m_unk0x44;                        // 0x44
+	MagentaRibbon0x20* m_unk0x38;                 // 0x38
+	AmberHaze0x1c* m_unk0x3c;                     // 0x3c
+	HypnoticNoise0x1c* m_unk0x40;                 // 0x40
+	CinderBasin0x28* m_unk0x44;                   // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
 	undefined m_unk0x4c[0x118 - 0x4c];            // 0x4c
 	undefined m_unk0x118[0x11c - 0x118];          // 0x118

@@ -101,6 +101,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/whitebaffoon0x50.cpp
+  GolDP/src/whitefalcon0x140.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
 )
 
@@ -145,7 +146,11 @@ add_library(goldp SHARED
   GolDP/src/amberlens0x344.cpp
   GolDP/src/jadeorbit0x220.cpp
   GolDP/src/jadeorbitbase0x10.cpp
+  GolDP/src/amberhaze0x1c.cpp
+  GolDP/src/cinderbasin0x28.cpp
+  GolDP/src/magentaribbon0x20.cpp
   GolDP/src/whitefalcon0x140.cpp
+  GolDP/src/whitefalconnode0x18.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp

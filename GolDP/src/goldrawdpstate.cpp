@@ -26,11 +26,21 @@ GolDrawDPState::GolDrawDPState()
 	m_unk0x14 = &m_unk0x2fc;
 }
 
-// STUB: GOLDP 0x10001110
+// FUNCTION: GOLDP 0x10001110
 GolDrawDPState::~GolDrawDPState()
 {
-	// TODO
-	STUB(0x10001110);
+	if (m_driverName != NULL) {
+		delete[] m_driverName;
+		m_driverName = NULL;
+	}
+
+	if (m_deviceName != NULL) {
+		delete[] m_deviceName;
+		m_deviceName = NULL;
+	}
+
+	GolCommonDrawState::VTable0x48();
+	ReleaseDDraw();
 }
 
 // STUB: GOLDP 0x100011e0

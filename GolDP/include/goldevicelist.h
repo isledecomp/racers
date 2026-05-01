@@ -42,6 +42,7 @@ public:
 	};
 
 	GolDeviceList();
+	~GolDeviceList();
 
 	void Clear();
 	GolD3DDeviceInfo* SelectDevice(

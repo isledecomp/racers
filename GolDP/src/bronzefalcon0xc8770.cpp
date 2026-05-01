@@ -198,7 +198,8 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 		m_d3dDevice = NULL;
 	}
 
-	m_unk0x04 = (m_unk0x04 & ~c_flagBit1) | c_flagBit9 | c_flagBit16;
+	m_unk0x04 &= ~c_flagBit1;
+	m_unk0x04 |= c_flagBit9 | c_flagBit16;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
 	m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a950;
@@ -570,7 +571,7 @@ SlatePeak0x58* BronzeFalcon0xc8770::VTable0x4c(undefined2 p_arg1, undefined2 p_a
 	if (surface == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	surface->FUN_10013600(p_arg1, p_arg2);
+	surface->FUN_10013600(this, p_arg1, p_arg2);
 	surface->m_next = m_unk0x30c;
 	m_unk0x30c = surface;
 	return surface;

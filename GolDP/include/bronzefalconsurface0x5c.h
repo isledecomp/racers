@@ -15,7 +15,7 @@ public:
 	void VTable0x14(undefined4*) override; // vtable+0x14
 	void VTable0x34() override;            // vtable+0x34
 
-	void FUN_10013600(undefined2, undefined2);
+	void FUN_10013600(BronzeFalcon0xc8770*, undefined2, undefined2);
 
 	friend class BronzeFalcon0xc8770;
 

@@ -14,7 +14,7 @@ BronzeFalconSurface0x5c::~BronzeFalconSurface0x5c()
 }
 
 // STUB: GOLDP 0x10013600
-void BronzeFalconSurface0x5c::FUN_10013600(undefined2, undefined2)
+void BronzeFalconSurface0x5c::FUN_10013600(BronzeFalcon0xc8770*, undefined2, undefined2)
 {
 	// TODO
 	STUB(0x10013600);

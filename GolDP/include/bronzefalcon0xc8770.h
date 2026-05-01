@@ -16,9 +16,6 @@ class AmberLens0x344;
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 : public WhiteFalcon0x140 {
 public:
-	enum Flags {
-		c_flagBit9 = 0x0200
-	};
 
 	BronzeFalcon0xc8770();
 

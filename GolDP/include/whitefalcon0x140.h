@@ -17,17 +17,18 @@ class MagentaRibbon0x20;
 // SIZE 0x140
 class WhiteFalcon0x140 {
 public:
+	enum Flags {
+		c_flagBit9 = 1 << 9,
+		c_flagBit18 = 1 << 18
+	};
+
 	WhiteFalcon0x140();
 
 	// SIZE 0x4
 	struct JasperRipple0x4 {
 		undefined m_unk0x00[0x4 - 0x00]; // 0x00
 	};
-	// SIZE 0x1c
-	struct WhiteFalconWing0x1c {
-		undefined4 m_unk0x00;             // 0x00
-		undefined m_unk0x04[0x1c - 0x04]; // 0x04
-	};
+
 	virtual void VTable0x00();                                              // vtable+0x00
 	virtual void VTable0x04();                                              // vtable+0x04
 	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
@@ -142,7 +143,7 @@ private:
 	undefined m_unk0x118[0x11c - 0x118];          // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
 	undefined4 m_unk0x120;                        // 0x120
-	WhiteFalconWing0x1c m_unk0x124;               // 0x124
+	undefined4 m_unk0x124[7];                     // 0x124
 };
 
 #endif // WHITEFALCON0x140_H

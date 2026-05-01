@@ -13,7 +13,10 @@ public:
 	virtual void VTable0x34() = 0;                     // vtable+0x34
 	virtual void VTable0x38() = 0;                     // vtable+0x38
 
-	// SYNTHETIC: GOLDP 0x1002f380
+	// SYNTHETIC: GOLDP 0x10004470 FOLDED
+	// GoldDune0x38::~GoldDune0x38
+
+	// SYNTHETIC: GOLDP 0x1002f380 FOLDED
 	// GoldDune0x38::`scalar deleting destructor'
 
 protected:

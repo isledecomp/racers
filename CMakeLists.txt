@@ -98,6 +98,7 @@ set(COMMON_SOURCES
 # narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
+  GolDP/src/golfontbase0x40.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/whitebaffoon0x50.cpp
@@ -157,13 +158,13 @@ add_library(goldp SHARED
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golfonttable.cpp
   GolDP/src/golfont0xa0.cpp
+  GolDP/src/moltenquillphantom0x34.cpp
   GolDP/src/golddune0x38.cpp
   GolDP/src/bronzedune0x4c.cpp
   GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/utopianpan0xa4.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
   GolDP/src/duskwindbananarelic0x30.cpp
-  GolDP/src/moltenquillphantom0x34.cpp
   GolDP/src/moltenquillphantom0x38.cpp
   GolDP/src/workhorse0x58.cpp
   util/decomp.cpp

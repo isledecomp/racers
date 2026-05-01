@@ -10,8 +10,11 @@ class MoltenQuillPhantom0x34 : public SilverDune0x30 {
 public:
 	MoltenQuillPhantom0x34();
 
-	// SYNTHETIC: LEGORACERS 0x1002f380
-	// ImaginaryWrench0x23bc::`scalar deleting destructor'
+	// SYNTHETIC: GOLDP 0x10004470 FOLDED
+	// MoltenQuillPhantom0x34::~MoltenQuillPhantom0x34
+
+	// SYNTHETIC: GOLDP 0x1002f380 FOLDED
+	// MoltenQuillPhantom0x34::`scalar deleting destructor'
 
 protected:
 	undefined4 m_unk0x30;

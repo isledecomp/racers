@@ -1,6 +1,7 @@
 #include "chromespike0x4.h"
 
 #include "golerror.h"
+#include "imaginarybandsaw0x2228.h"
 #include "imaginarydrill0x2450.h"
 #include "imaginaryhammer0x658.h"
 #include "imaginarywrench0x23bc.h"
@@ -36,6 +37,11 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 
 	case 0x02:
 		tool = new ImaginaryDrill0x2450();
+		break;
+
+	case 0x05:
+		tool = new ImaginaryBandsaw0x2228();
+		break;
 
 	case 0x10:
 		tool = new ImaginaryWrench0x23bc();

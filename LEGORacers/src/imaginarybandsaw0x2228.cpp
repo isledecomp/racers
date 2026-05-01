@@ -55,7 +55,7 @@ LegoBool32 ImaginaryBandsaw0x2228::VTable0x78(undefined4)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x004888f0
+// STUB: LEGORACERS 0x004888f0 FOLDED
 void ImaginaryBandsaw0x2228::VTable0x74()
 {
 	STUB(0x004888f0);

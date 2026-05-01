@@ -3,6 +3,7 @@
 #include "golerror.h"
 #include "imaginarybandsaw0x2228.h"
 #include "imaginarydrill0x2450.h"
+#include "imaginaryfeather0x658.h"
 #include "imaginaryhammer0x658.h"
 #include "imaginaryruler0x2e60.h"
 #include "imaginarywrench0x23bc.h"
@@ -34,6 +35,10 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 	case 0x28:
 	case 0x29:
 		tool = new ImaginaryHammer0x658();
+		break;
+
+	case 0x26:
+		tool = new ImaginaryFeather0x658();
 		break;
 
 	case 0x02:

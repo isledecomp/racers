@@ -18,7 +18,7 @@ void ImaginaryHammer0x658::VTable0x8c(undefined4, undefined4)
 	STUB(0x00488410);
 }
 
-// STUB: LEGORACERS 0x004884f0
+// STUB: LEGORACERS 0x004884f0 FOLDED
 void ImaginaryHammer0x658::VTable0x74()
 {
 	STUB(0x004884f0);

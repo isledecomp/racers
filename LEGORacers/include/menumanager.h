@@ -93,7 +93,7 @@ private:
 		TurquoiseGlow0x80 m_unk0x425c;      // 0x425c
 		AquamarineSpirit0x3c m_unk0x42dc;   // 0x42dc
 		MalachiteCrown0x34 m_unk0x4318;     // 0x4318
-		LapisSigil0x14 m_raceList;          // 0x434c
+		RaceDefinitionList m_raceList;      // 0x434c
 		RoseQuartzShine0x14 m_raceNames;    // 0x4360
 		MenuAnimationList m_menuAnimations; // 0x4374
 		LavenderVault0x764 m_unk0x437c;     // 0x437c

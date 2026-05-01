@@ -7,7 +7,7 @@
 #include "types.h"
 
 class GolStringTable;
-class LapisSigil0x14;
+class RaceDefinitionList;
 
 // VTABLE: LEGORACERS 0x004b08c4
 // SIZE 0x14
@@ -53,7 +53,7 @@ public:
 	LegoU32 GetEntryIndexByName(LegoChar* p_name);
 	void Load(
 		GolStringTable* p_stringTable,
-		LapisSigil0x14* p_raceList,
+		RaceDefinitionList* p_raceList,
 		const LegoChar* p_fileName,
 		undefined4 p_binary
 	);

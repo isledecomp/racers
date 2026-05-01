@@ -301,7 +301,7 @@ void MenuManager::FUN_0042d0e0()
 void MenuManager::LoadMenuData()
 {
 	GolStringTable* raceStrings = &m_raceStrings;
-	LapisSigil0x14* raceList = &m_unk0x04.m_raceList;
+	RaceDefinitionList* raceList = &m_unk0x04.m_raceList;
 
 	raceList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_unk0x18);
 	m_unk0x04.m_raceNames.Load(raceStrings, raceList, "LEGORace", m_unk0x04.m_context->m_unk0x18);

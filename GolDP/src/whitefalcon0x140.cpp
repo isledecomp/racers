@@ -139,6 +139,8 @@ LegoFloat g_arccosTable[1024] = {
 	0.16562952f, 0.15331803f, 0.13993669f, 0.12514272f, 0.108359076f, 0.088460378f, 0.06254073f, 0.0f,
 };
 
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::TexturedVertex, 0x18)
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::RenderTargetInfo, 0x2e)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
 // FUNCTION: GOLDP 0x10028840
@@ -431,15 +433,15 @@ void WhiteFalcon0x140::VTable0xa8(undefined4 p_param1, undefined4 p_param2, unde
 }
 
 // FUNCTION: GOLDP 0x10029850
-void WhiteFalcon0x140::VTable0xb8(undefined2 p_param1, undefined4 p_param2)
+void WhiteFalcon0x140::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 {
 	m_unk0x04 |= c_flagBit14;
-	m_unk0x0a = p_param1;
-	m_unk0x08 = p_param2;
+	m_unk0x0a = p_alpha;
+	m_unk0x08 = p_flags;
 }
 
 // FUNCTION: GOLDP 0x10029870
-void WhiteFalcon0x140::VTable0xbc()
+void WhiteFalcon0x140::ClearAlphaOverride()
 {
 	m_unk0x04 &= ~c_flagBit14;
 }

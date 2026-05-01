@@ -20,7 +20,7 @@
 #include "lavendervault0x764.h"
 #include "legoracers.h"
 #include "malachitecrown0x34.h"
-#include "mithrilchain0x8.h"
+#include "menuanimationlist.h"
 #include "moonstoneglade0x3c.h"
 #include "onyxbreeze0x248.h"
 #include "porcelainveil0x50.h"
@@ -82,23 +82,23 @@ private:
 	// SIZE 0x4bc8
 	class VioletCurrent0x4bc8 {
 	public:
-		LegoRacers::Context* m_context;   // 0x00
-		StackOfLegoU16 m_unk0x04;         // 0x04
-		OnyxBreeze0x248 m_inputBindings;  // 0x10
-		CitrineGrove0x1f4c m_unk0x258;    // 0x258
-		TopazBurst0x14 m_unk0x21a4;       // 0x21a4
-		MoonstoneGlade0x3c m_unk0x21b8;   // 0x21b8
-		SapphireReef0x2030 m_unk0x21f4;   // 0x21f4
-		VerdantTide0x38 m_unk0x4224;      // 0x4224
-		TurquoiseGlow0x80 m_unk0x425c;    // 0x425c
-		AquamarineSpirit0x3c m_unk0x42dc; // 0x42dc
-		MalachiteCrown0x34 m_unk0x4318;   // 0x4318
-		LapisSigil0x14 m_raceList;        // 0x434c
-		RoseQuartzShine0x14 m_raceNames;  // 0x4360
-		MithrilChain0x8 m_menuAnimations; // 0x4374
-		LavenderVault0x764 m_unk0x437c;   // 0x437c
-		GarnetFlare0x60 m_unk0x4ae0;      // 0x4ae0
-		TanzaniteWisp0x88 m_unk0x4b40;    // 0x4b40
+		LegoRacers::Context* m_context;     // 0x00
+		StackOfLegoU16 m_unk0x04;           // 0x04
+		OnyxBreeze0x248 m_inputBindings;    // 0x10
+		CitrineGrove0x1f4c m_unk0x258;      // 0x258
+		TopazBurst0x14 m_unk0x21a4;         // 0x21a4
+		MoonstoneGlade0x3c m_unk0x21b8;     // 0x21b8
+		SapphireReef0x2030 m_unk0x21f4;     // 0x21f4
+		VerdantTide0x38 m_unk0x4224;        // 0x4224
+		TurquoiseGlow0x80 m_unk0x425c;      // 0x425c
+		AquamarineSpirit0x3c m_unk0x42dc;   // 0x42dc
+		MalachiteCrown0x34 m_unk0x4318;     // 0x4318
+		LapisSigil0x14 m_raceList;          // 0x434c
+		RoseQuartzShine0x14 m_raceNames;    // 0x4360
+		MenuAnimationList m_menuAnimations; // 0x4374
+		LavenderVault0x764 m_unk0x437c;     // 0x437c
+		GarnetFlare0x60 m_unk0x4ae0;        // 0x4ae0
+		TanzaniteWisp0x88 m_unk0x4b40;      // 0x4b40
 	};
 
 	void ShutdownInputBindings();

@@ -264,7 +264,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/malachitecrown0x34.cpp
   LEGORacers/src/lapissigil0x14.cpp
   LEGORacers/src/rosequartzshine0x14.cpp
-  LEGORacers/src/mithrilchain0x8.cpp
+  LEGORacers/src/menuanimationlist.cpp
   LEGORacers/src/lavendervault0x764.cpp
   LEGORacers/src/garnetflare0x60.cpp
   LEGORacers/src/tanzanitewisp0x88.cpp

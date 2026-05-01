@@ -17,6 +17,31 @@ class MagentaRibbon0x20;
 // SIZE 0x140
 class WhiteFalcon0x140 {
 public:
+	// SIZE 0x4
+	struct JasperRipple0x4 {
+		undefined m_unk0x00[0x4 - 0x00]; // 0x00
+	};
+
+	// SIZE 0x18
+	struct TexturedVertex {
+		LegoFloat m_x;  // 0x00
+		LegoFloat m_y;  // 0x04
+		LegoFloat m_z;  // 0x08
+		LegoFloat m_u;  // 0x0c
+		LegoFloat m_v;  // 0x10
+		LegoU8 m_red;   // 0x14
+		LegoU8 m_green; // 0x15
+		LegoU8 m_blue;  // 0x16
+		LegoU8 m_alpha; // 0x17
+	};
+
+	// SIZE 0x2e
+	struct RenderTargetInfo {
+		undefined m_unk0x00[0x2a - 0x00]; // 0x00
+		LegoU16 m_width;                  // 0x2a
+		LegoU16 m_height;                 // 0x2c
+	};
+
 	enum Flags {
 		c_flagBit9 = 1 << 9,
 		c_flagBit14 = 1 << 14,
@@ -27,45 +52,46 @@ public:
 
 	WhiteFalcon0x140();
 
-	// SIZE 0x4
-	struct JasperRipple0x4 {
-		undefined m_unk0x00[0x4 - 0x00]; // 0x00
-	};
-
-	virtual void VTable0x00();                                                              // vtable+0x00
-	virtual void VTable0x04();                                                              // vtable+0x04
-	virtual ~WhiteFalcon0x140();                                                            // vtable+0x08
-	virtual void VTable0x0c(undefined4, undefined4, undefined4);                            // vtable+0x0c
-	virtual GolCommonDrawState* GetDrawState() = 0;                                         // vtable+0x10
-	virtual void VTable0x14() = 0;                                                          // vtable+0x14
-	virtual void VTable0x18() = 0;                                                          // vtable+0x18
-	virtual void VTable0x1c(JasperRipple0x4*) = 0;                                          // vtable+0x1c
-	virtual void VTable0x20(AmberLens0x344*) = 0;                                           // vtable+0x20
-	virtual void VTable0x24();                                                              // vtable+0x24
-	virtual void VTable0x28();                                                              // vtable+0x28
-	virtual void VTable0x2c(undefined4 p_param);                                            // vtable+0x2c
-	virtual void VTable0x30(undefined4 p_param);                                            // vtable+0x30
-	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08);                 // vtable+0x34
-	virtual void VTable0x38();                                                              // vtable+0x38
-	virtual void VTable0x3c(undefined4);                                                    // vtable+0x3c
-	virtual void VTable0x40();                                                              // vtable+0x40
-	virtual void VTable0x44();                                                              // vtable+0x44
-	virtual void VTable0x48();                                                              // vtable+0x48
-	virtual undefined4 VTable0x4c(undefined4, undefined4);                                  // vtable+0x4c
-	virtual void VTable0x50(undefined4);                                                    // vtable+0x50
-	virtual void VTable0x54(undefined4) = 0;                                                // vtable+0x54
-	virtual void VTable0x58(undefined4 p_param1, undefined4 p_param2);                      // vtable+0x58
-	virtual void VTable0x5c() = 0;                                                          // vtable+0x5c
-	virtual void VTable0x60();                                                              // vtable+0x60
-	virtual void VTable0x64() = 0;                                                          // vtable+0x64
-	virtual void VTable0x68() = 0;                                                          // vtable+0x68
-	virtual void VTable0x6c() = 0;                                                          // vtable+0x6c
-	virtual void VTable0x70() = 0;                                                          // vtable+0x70
-	virtual void VTable0x74() = 0;                                                          // vtable+0x74
-	virtual void VTable0x78() = 0;                                                          // vtable+0x78
-	virtual void VTable0x7c() = 0;                                                          // vtable+0x7c
-	virtual void VTable0x80() = 0;                                                          // vtable+0x80
-	virtual void VTable0x84() = 0;                                                          // vtable+0x84
+	virtual void VTable0x00();                                              // vtable+0x00
+	virtual void VTable0x04();                                              // vtable+0x04
+	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
+	virtual void VTable0x0c(undefined4, undefined4, undefined4);            // vtable+0x0c
+	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
+	virtual const RenderTargetInfo* GetRenderTargetInfo() = 0;              // vtable+0x14
+	virtual void VTable0x18() = 0;                                          // vtable+0x18
+	virtual void VTable0x1c(JasperRipple0x4*) = 0;                          // vtable+0x1c
+	virtual void VTable0x20(AmberLens0x344*) = 0;                           // vtable+0x20
+	virtual void VTable0x24();                                              // vtable+0x24
+	virtual void VTable0x28();                                              // vtable+0x28
+	virtual void VTable0x2c(undefined4 p_param);                            // vtable+0x2c
+	virtual void VTable0x30(undefined4 p_param);                            // vtable+0x30
+	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
+	virtual void VTable0x38();                                              // vtable+0x38
+	virtual void VTable0x3c(undefined4);                                    // vtable+0x3c
+	virtual void VTable0x40();                                              // vtable+0x40
+	virtual void VTable0x44();                                              // vtable+0x44
+	virtual void VTable0x48();                                              // vtable+0x48
+	virtual undefined4 VTable0x4c(undefined4, undefined4);                  // vtable+0x4c
+	virtual void VTable0x50(undefined4);                                    // vtable+0x50
+	virtual void VTable0x54(undefined4) = 0;                                // vtable+0x54
+	virtual void VTable0x58(undefined4 p_param1, undefined4 p_param2);      // vtable+0x58
+	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
+	virtual void VTable0x60();                                              // vtable+0x60
+	virtual void VTable0x64() = 0;                                          // vtable+0x64
+	virtual void VTable0x68() = 0;                                          // vtable+0x68
+	virtual void VTable0x6c() = 0;                                          // vtable+0x6c
+	virtual void VTable0x70() = 0;                                          // vtable+0x70
+	virtual void VTable0x74() = 0;                                          // vtable+0x74
+	virtual void VTable0x78() = 0;                                          // vtable+0x78
+	virtual void VTable0x7c() = 0;                                          // vtable+0x7c
+	virtual void VTable0x80() = 0;                                          // vtable+0x80
+	virtual void DrawTriangle(
+		const TexturedVertex* p_vertex0,
+		const TexturedVertex* p_vertex1,
+		const TexturedVertex* p_vertex2,
+		undefined4 p_material,
+		undefined4 p_flags
+	) = 0;                                                                                  // vtable+0x84
 	virtual void VTable0x88(undefined4, undefined4, undefined4);                            // vtable+0x88
 	virtual void VTable0x8c(undefined4, undefined4, undefined4);                            // vtable+0x8c
 	virtual void VTable0x90() = 0;                                                          // vtable+0x90
@@ -78,8 +104,8 @@ public:
 	virtual void VTable0xac(undefined4, undefined4);                                        // vtable+0xac
 	virtual void VTable0xb0(undefined4, undefined4);                                        // vtable+0xb0
 	virtual void VTable0xb4() = 0;                                                          // vtable+0xb4
-	virtual void VTable0xb8(undefined2 p_param1, undefined4 p_param2);                      // vtable+0xb8
-	virtual void VTable0xbc();                                                              // vtable+0xbc
+	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags);                  // vtable+0xb8
+	virtual void ClearAlphaOverride();                                                      // vtable+0xbc
 	virtual void VTable0xc0(undefined4* p_param);                                           // vtable+0xc0
 	virtual void VTable0xc4();                                                              // vtable+0xc4
 	virtual void VTable0xc8();                                                              // vtable+0xc8

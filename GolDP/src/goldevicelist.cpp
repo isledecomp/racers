@@ -35,6 +35,12 @@ GolDeviceList* GolDeviceList::g_dialogDeviceList;
 // GLOBAL: GOLDP 0x10063554
 LegoChar g_unk0x10063554[] = "";
 
+// FUNCTION: GOLDP 0x10013810
+GolDeviceList::~GolDeviceList()
+{
+	Clear();
+}
+
 // FUNCTION: GOLDP 0x10013820
 void GolDeviceList::DetectDevices()
 {

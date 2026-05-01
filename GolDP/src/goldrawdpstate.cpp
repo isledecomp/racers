@@ -6,18 +6,41 @@
 
 DECOMP_SIZE_ASSERT(GolDrawDPState, 0xc8ac4)
 
-// STUB: GOLDP 0x10001000
+// FUNCTION: GOLDP 0x10001000
 GolDrawDPState::GolDrawDPState()
 {
-	// TODO
-	STUB(0x10001000);
+	m_hWnd = NULL;
+	m_ddraw = NULL;
+	m_ddraw4 = NULL;
+	m_d3d3 = NULL;
+	m_driverName = NULL;
+	m_deviceName = NULL;
+	m_validGuid = FALSE;
+	::memset(&m_ddrawCaps, 0, sizeof(m_ddrawCaps));
+	m_ddrawCaps.dwSize = sizeof(m_ddrawCaps);
+	::memset(&m_deviceDesc, 0, sizeof(m_deviceDesc));
+	m_device = NULL;
+	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
+	m_unk0x2c0 = 0;
+	m_currentRenderer = &m_unk0x354;
+	m_unk0x14 = &m_unk0x2fc;
 }
 
-// STUB: GOLDP 0x10001110
+// FUNCTION: GOLDP 0x10001110
 GolDrawDPState::~GolDrawDPState()
 {
-	// TODO
-	STUB(0x10001110);
+	if (m_driverName != NULL) {
+		delete[] m_driverName;
+		m_driverName = NULL;
+	}
+
+	if (m_deviceName != NULL) {
+		delete[] m_deviceName;
+		m_deviceName = NULL;
+	}
+
+	GolCommonDrawState::VTable0x48();
+	ReleaseDDraw();
 }
 
 // STUB: GOLDP 0x100011e0
@@ -26,11 +49,11 @@ void GolDrawDPState::VTable0x08(HWND p_hWnd)
 	m_hWnd = p_hWnd;
 }
 
-// STUB: GOLDP 0x100011f0
+// FUNCTION: GOLDP 0x100011f0
 void GolDrawDPState::VTable0x48()
 {
-	// TODO
-	STUB(0x100011f0);
+	GolCommonDrawState::VTable0x48();
+	ReleaseDDraw();
 }
 
 // FUNCTION: GOLDP 0x10001210
@@ -62,11 +85,12 @@ void GolDrawDPState::ReleaseDDraw()
 	m_unk0x2c0 = 0;
 }
 
-// STUB: GOLDP 0x100012b0
+// FUNCTION: GOLDP 0x100012b0
 void GolDrawDPState::VTable0x50()
 {
-	// TODO
-	STUB(0x100012b0);
+	m_flags &= ~(c_flagBit12 | c_flagBit11 | c_flagBit10 | c_flagBit9);
+	GolCommonDrawState::VTable0x50();
+	ReleaseDDraw();
 }
 
 // FUNCTION: GOLDP 0x100012d0
@@ -182,12 +206,10 @@ LegoS32 GolDrawDPState::VTable0x00()
 	return 0;
 }
 
-// STUB: GOLDP 0x100015d0
+// FUNCTION: GOLDP 0x100015d0
 undefined4 GolDrawDPState::VTable0x60()
 {
-	// TODO
-	STUB(0x100015d0);
-	return 0;
+	return m_unk0x2c0;
 }
 
 // FUNCTION: GOLDP 0x100015e0

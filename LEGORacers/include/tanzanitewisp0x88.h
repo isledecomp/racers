@@ -2,7 +2,9 @@
 #define TANZANITEWISP0X88_H
 
 #include "decomp.h"
+#include "types.h"
 
+class GolExport;
 class MusicInstance;
 class MenuManager;
 class MusicGroup;
@@ -13,12 +15,13 @@ public:
 	TanzaniteWisp0x88();
 	~TanzaniteWisp0x88();
 
-	void FUN_0049d140();
+	void ResetMenuState();
+	LegoBool32 ReleaseMenuResources();
 
 	void Reset()
 	{
 		m_unk0x78 = 0;
-		m_musicInstance = 0;
+		m_musicInstance = NULL;
 	}
 
 	MusicGroup* GetMusicGroup() { return m_musicGroup; }
@@ -29,15 +32,15 @@ public:
 private:
 	friend class MenuManager;
 
-	undefined4 m_unk0x00;             // 0x00
+	undefined4 m_menuId;              // 0x00
 	undefined4 m_unk0x04;             // 0x04
 	undefined4 m_unk0x08;             // 0x08
 	undefined4 m_unk0x0c;             // 0x0c
 	undefined4 m_unk0x10;             // 0x10
-	undefined4 m_unk0x14;             // 0x14
+	GolExport* m_golExport;           // 0x14
 	undefined4 m_unk0x18;             // 0x18
-	undefined4* m_unk0x1c;            // 0x1c
-	undefined4* m_unk0x20;            // 0x20
+	undefined4* m_menuResource0;      // 0x1c
+	undefined4* m_menuResource1;      // 0x20
 	undefined m_unk0x24[0x38 - 0x24]; // 0x24
 	undefined4 m_unk0x38;             // 0x38
 	undefined m_unk0x3c[0x78 - 0x3c]; // 0x3c

@@ -81,6 +81,7 @@ set(COMMON_SOURCES
   common/src/golerror.cpp
   common/src/golfile.cpp
   common/src/golfsutil.cpp
+  common/src/golcpu.cpp
   common/src/golhashtable.cpp
   common/src/golstream.cpp
   common/src/golfileparser.cpp
@@ -97,9 +98,12 @@ set(COMMON_SOURCES
 # narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
+  GolDP/src/golfontbase0x40.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/whitebaffoon0x50.cpp
+  GolDP/src/whitefalcon0x140.cpp
+  GolDP/src/duskwindbananarelic0x24.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -143,14 +147,26 @@ add_library(goldp SHARED
   GolDP/src/amberlens0x344.cpp
   GolDP/src/jadeorbit0x220.cpp
   GolDP/src/jadeorbitbase0x10.cpp
+  GolDP/src/amberhaze0x1c.cpp
+  GolDP/src/cinderbasin0x28.cpp
+  GolDP/src/golfontbase0x40.cpp
+  GolDP/src/magentaribbon0x20.cpp
+  GolDP/src/whitefalcon0x140.cpp
+  GolDP/src/whitefalconnode0x18.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/awakekite0x20.cpp
   GolDP/src/hypnoticnoise0x1c.cpp
   GolDP/src/golfonttable.cpp
+  GolDP/src/golfont0xa0.cpp
+  GolDP/src/moltenquillphantom0x34.cpp
   GolDP/src/golddune0x38.cpp
   GolDP/src/bronzedune0x4c.cpp
   GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/utopianpan0xa4.cpp
+  GolDP/src/duskwindbananarelic0x24.cpp
+  GolDP/src/duskwindbananarelic0x30.cpp
+  GolDP/src/moltenquillphantom0x38.cpp
+  GolDP/src/workhorse0x58.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

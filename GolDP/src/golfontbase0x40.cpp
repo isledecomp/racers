@@ -1,0 +1,54 @@
+#include "golfontbase0x40.h"
+
+#include "decomp.h"
+
+DECOMP_SIZE_ASSERT(GolFontBase0x40, 0x40)
+
+// FUNCTION: GOLDP 0x1001dea0
+GolFontBase0x40::GolFontBase0x40()
+{
+	m_unk0x04 = 0;
+	m_unk0x1c = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = NULL;
+	m_unk0x18 = 0;
+	m_unk0x3c[0] = 0xff;
+	m_unk0x3c[1] = 0xff;
+	m_unk0x3c[2] = 0xff;
+	m_unk0x3c[3] = 0xff;
+	m_unk0x30 = 0;
+	m_unk0x2c = 0;
+	m_unk0x20 = 0;
+}
+
+// FUNCTION: GOLDP 0x1001df40
+GolFontBase0x40::~GolFontBase0x40()
+{
+	Clear();
+}
+
+// FUNCTION: GOLDP 0x1001e030
+void GolFontBase0x40::Clear()
+{
+	if (m_unk0x28 != NULL) {
+		delete m_unk0x28;
+		m_unk0x28 = NULL;
+	}
+
+	m_unk0x04 = 0;
+	m_unk0x1c = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = NULL;
+	m_unk0x18 = 0;
+	m_unk0x3c[0] = 0xff;
+	m_unk0x3c[1] = 0xff;
+	m_unk0x3c[2] = 0xff;
+	m_unk0x3c[3] = 0xff;
+}
+
+// STUB: GOLDP 0x1001e070
+void GolFontBase0x40::VTable0x00(undefined4, undefined4)
+{
+	// TODO
+	STUB(0x1001e070);
+}

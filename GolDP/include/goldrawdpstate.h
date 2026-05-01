@@ -12,9 +12,9 @@
 class GolDrawDPState : public GolCommonDrawState {
 public:
 	GolDrawDPState();
-	~GolDrawDPState() override;
+	~GolDrawDPState() override; // vtable+0x04
 
-	LegoS32 VTable0x00() override;
+	LegoS32 VTable0x00() override;                                                             // vtable+0x00
 	void VTable0x08(HWND p_hWnd) override;                                                     // vtable+0x08
 	void VTable0x0c(const char* p_driverName, const char* p_deviceName) override;              // vtable+0x0c
 	LegoU32 VTable0x10() override;                                                             // vtable+0x10
@@ -29,8 +29,8 @@ public:
 	void VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid) override;      // vtable+0x34
 	GUID* VTable0x38() const override;                                                         // vtable+0x38
 
-	void VTable0x48() override;             // vtable+0x4c
-	void VTable0x50() override;             // vtable+0x48
+	void VTable0x48() override;             // vtable+0x48
+	void VTable0x50() override;             // vtable+0x50
 	undefined4 VTable0x58() override;       // vtable+0x58
 	undefined4 VTable0x5c() const override; // vtable+0x5c
 	undefined4 VTable0x60() override;       // vtable+0x60
@@ -78,7 +78,7 @@ private:
 	LegoChar* m_driverName;                    // 0x2f4
 	LegoChar* m_deviceName;                    // 0x2f8
 	SlatePeak0x58 m_unk0x2fc;                  // 0x2fc
-	undefined m_unk0x354[0xc8ac4 - 0x354];     // 0x354
+	BronzeFalcon0xc8770 m_unk0x354;            // 0x354
 };
 
 #endif // GOLDP_GOLDPSTATE_H

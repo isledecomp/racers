@@ -213,6 +213,7 @@ void GolDPExport::VTable0x64(undefined4*)
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 void GolDPExport::VTable0x58(undefined4*)
 {
+	// empty
 }
 
 // STUB: GOLDP 0x10015600 FOLDED

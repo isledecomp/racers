@@ -8,8 +8,8 @@ DECOMP_SIZE_ASSERT(SilverDune0x30, 0x30)
 SilverDune0x30::SilverDune0x30()
 	: m_unk0x04(0), m_unk0x08(0), m_unk0x0c(0), m_unk0x10(0), m_unk0x14(0), m_usesPalette(0), m_bitsPerPixel(0)
 {
-	m_pixels = 0;
-	m_auxPixels = 0;
+	m_pixels = NULL;
+	m_auxPixels = NULL;
 	m_pitch = 0;
 	m_pixelFlags = 0;
 	m_auxFlags = 0;
@@ -73,11 +73,13 @@ void SilverDune0x30::UnlockAuxPixels()
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 void SilverDune0x30::VTable0x14(undefined4*)
 {
+	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void SilverDune0x30::VTable0x18()
 {
+	// empty
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
@@ -332,9 +334,11 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 void SilverDune0x30::VTable0x28(undefined4, undefined4, undefined4*)
 {
+	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void SilverDune0x30::VTable0x2c()
 {
+	// empty
 }

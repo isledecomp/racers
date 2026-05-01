@@ -12,7 +12,7 @@ DECOMP_SIZE_ASSERT(HypnoticNoise0x1c, 0x1c)
 HypnoticNoise0x1c::HypnoticNoise0x1c()
 {
 	m_renderer = NULL;
-	m_unk0x10 = 0;
+	m_next = NULL;
 	m_numItems = 0;
 	m_currentHashEntry = NULL;
 }

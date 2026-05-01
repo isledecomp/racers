@@ -15,18 +15,6 @@
 // GLOBAL: LEGORACERS 0x004c73f0
 HANDLE g_hMutex;
 
-// GLOBAL: GOLDP 0x10065ed8
-BOOL g_CPUID_detected;
-
-// GLOBAL: GOLDP 0x10065edc
-LegoS32 g_maxCPUID;
-
-// GLOBAL: GOLDP 0x10065ee0
-BOOL g_CPU_supports_MMX;
-
-// GLOBAL: GOLDP 0x10065ee4
-LegoChar g_cpuManufacturer[16];
-
 #ifdef BUILDING_LEGORACERS
 // FUNCTION: LEGORACERS 0x00450d80
 void CreateGolImport(GolImport* p_import)

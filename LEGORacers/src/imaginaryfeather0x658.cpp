@@ -32,7 +32,7 @@ void ImaginaryFeather0x658::VTable0x84()
 	STUB(0x00480b20);
 }
 
-// STUB: LEGORACERS 0x00480b50
+// STUB: LEGORACERS 0x00480b50 FOLDED
 LegoBool32 ImaginaryFeather0x658::VTable0x78(undefined4)
 {
 	STUB(0x00480b50);

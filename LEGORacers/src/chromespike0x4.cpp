@@ -8,6 +8,7 @@
 #include "imaginaryhammer0x658.h"
 #include "imaginaryplate0x770.h"
 #include "imaginaryruler0x2e60.h"
+#include "imaginaryspring0x658.h"
 #include "imaginarywrench0x23bc.h"
 
 DECOMP_SIZE_ASSERT(ChromeSpike0x4, 0x4)
@@ -108,7 +109,7 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 	case 0x22:
 	case 0x23:
 	case 0x24:
-		// 0x658
+		tool = new ImaginarySpring0x658();
 		break;
 
 	case 0x0e:

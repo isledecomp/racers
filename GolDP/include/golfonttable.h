@@ -1,15 +1,15 @@
 #ifndef GOLDP_GOLFONTTABLE_H
 #define GOLDP_GOLFONTTABLE_H
 
-#include "golhashtable.h"
-#include "golnametable.h"
+#include "cinderbasin0x28.h"
 #include "types.h"
 
 class BronzeFalcon0xc8770;
+class GolFont0xa0;
 
 // VTABLE: GOLDP 0x100562b4
 // SIZE 0x2c
-class GolFontTable : public GolNameTable {
+class GolFontTable : public CinderBasin0x28 {
 public:
 	GolFontTable();
 	~GolFontTable() override; // vtable+0x00
@@ -19,29 +19,22 @@ public:
 	// SYNTHETIC: GOLDP 0x10003fd0
 	// GolFontTable::`scalar deleting destructor'
 
-	virtual void VTable0x0c();                   // vtable+0x0c
-	virtual void VTable0x10(undefined4 p_index); // vtable+0x10
-	virtual void VTable0x14();                   // vtable+0x14
-	virtual void VTable0x18();                   // vtable+0x18
-	virtual void VTable0x1c();                   // vtable+0x1c
-	virtual LegoBool32 LoadFontDefinitions(
-		BronzeFalcon0xc8770* p_renderer,
-		const LegoChar* p_fileName,
-		LegoBool32 p_binary
-	);                                              // vtable+0x20
-	virtual undefined* GetFont(undefined4 p_index); // vtable+0x24
-	virtual void VTable0x28(undefined4 p_index);    // vtable+0x28
-	virtual void VTable0x2c(undefined4 p_index);    // vtable+0x2c
+	void VTable0x0c() override;                   // vtable+0x0c
+	void VTable0x10(undefined4 p_index) override; // vtable+0x10
+	void VTable0x14() override;                   // vtable+0x14
+	void VTable0x18() override;                   // vtable+0x18
+	void VTable0x1c() override;                   // vtable+0x1c
+	void* VTable0x24(LegoU32 p_index) override;   // vtable+0x24
 
-protected:
-	BronzeFalcon0xc8770* m_renderer;         // 0x0c
-	undefined4 m_unk0x10;                    // 0x10
-	LegoU32 m_numFonts;                      // 0x14
-	undefined* m_unk0x18;                    // 0x18
-	undefined** m_unk0x1c;                   // 0x1c
-	LegoU16* m_unk0x20;                      // 0x20
-	GolHashTable::Entry* m_currentHashEntry; // 0x24
-	undefined* m_fonts;                      // 0x28
+	void LoadFontDefinitions(BronzeFalcon0xc8770* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+	{
+		VTable0x20(p_renderer, p_fileName, p_binary);
+	}
+
+	GolFont0xa0* GetFont(LegoU32 p_index) { return static_cast<GolFont0xa0*>(VTable0x24(p_index)); }
+
+private:
+	GolFont0xa0* m_fonts; // 0x28
 };
 
 #endif // GOLDP_GOLFONTTABLE_H

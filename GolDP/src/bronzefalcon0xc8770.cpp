@@ -80,7 +80,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	if (!(p_flags & GolDrawState::c_flagBit16)) {
 		m_unk0xc384c = 0;
 		m_unk0xc83c4 = 0;
-		m_unk0xc876c = FUN_1000a2c0;
+		m_unk0xc876c = &FUN_1000a2c0;
 		if (m_unk0x04 & c_flagBit1 && !m_drawState->VTable0x98()) {
 			undefined4 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
 			if (r != 0) {
@@ -182,7 +182,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	m_unk0x04 |= c_flagBit9 | c_flagBit16;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
-	m_unk0xc876c = FUN_1000a950;
+	m_unk0xc876c = &FUN_1000a950;
 	::memcpy(&swTextureFormat, m_unk0x304, sizeof(swTextureFormat));
 	WorkHorse0x58::Pixelformat swPixelformat;
 	if (swTextureFormat.m_rgbBitCount == 8) {

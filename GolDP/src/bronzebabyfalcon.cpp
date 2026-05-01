@@ -3,10 +3,41 @@
 DECOMP_SIZE_ASSERT(BronzeBabyFalcon, 0x140) // based on constructor; not 100 % sure
 DECOMP_SIZE_ASSERT(BronzeBabyFalcon::JasperRipple0x4, 0x4)
 
-// STUB: GOLDP 0x10028840
+// FUNCTION: GOLDP 0x10028840
 BronzeBabyFalcon::BronzeBabyFalcon()
 {
-	STUB(0x10028840);
+	LegoS32 i;
+
+	m_unk0x10 = 0;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = 0;
+	m_unk0x30 = 0;
+	m_unk0x34 = 0;
+	m_unk0x38 = 0;
+	m_unk0x3c = 0;
+	m_unk0x40 = 0;
+	m_unk0x44 = 0;
+	m_nextDrawStateRenderer = NULL;
+	m_unk0x0c = 0;
+	m_unk0x04 = 0;
+	m_unk0x0a = 0;
+
+	for (i = 0; i < sizeOfArray(m_unk0x4c); i++) {
+		m_unk0x4c[i] = 0;
+	}
+
+	m_unk0x11c = 0;
+	m_unk0x120 = 0;
+
+	for (i = 0; i < sizeOfArray(m_unk0x124); i++) {
+		m_unk0x124[i] = 0;
+	}
+
+	m_unk0x124[0] = 0;
 }
 
 // STUB: GOLDP 0x100288f0

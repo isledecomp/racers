@@ -103,11 +103,29 @@ private:
 	friend class GolCommonDrawState;
 
 	undefined4 m_unk0x04;                      // 0x04
-	undefined m_unk0x08[0x0c - 0x08];          // 0x08
+	undefined m_unk0x08[0x0a - 0x08];          // 0x08
+	undefined2 m_unk0x0a;                      // 0x0a
 	undefined4* m_unk0x0c;                     // 0x0c
-	undefined m_unk0x10[0x48 - 0x10];          // 0x10
+	undefined4 m_unk0x10;                      // 0x10
+	undefined4 m_unk0x14;                      // 0x14
+	undefined4 m_unk0x18;                      // 0x18
+	undefined4 m_unk0x1c;                      // 0x1c
+	undefined4 m_unk0x20;                      // 0x20
+	undefined4 m_unk0x24;                      // 0x24
+	undefined4 m_unk0x28;                      // 0x28
+	undefined4 m_unk0x2c;                      // 0x2c
+	undefined4 m_unk0x30;                      // 0x30
+	undefined4 m_unk0x34;                      // 0x34
+	undefined4 m_unk0x38;                      // 0x38
+	undefined4 m_unk0x3c;                      // 0x3c
+	undefined4 m_unk0x40;                      // 0x40
+	undefined4 m_unk0x44;                      // 0x44
 	BronzeBabyFalcon* m_nextDrawStateRenderer; // 0x48
-	undefined m_unk0x4c[0x140 - 0x4c];         // 0x4c
+	undefined4 m_unk0x4c[51];                  // 0x4c
+	undefined m_unk0x118[0x11c - 0x118];       // 0x118
+	undefined4 m_unk0x11c;                     // 0x11c
+	undefined4 m_unk0x120;                     // 0x120
+	undefined4 m_unk0x124[7];                  // 0x124
 };
 
 #endif // BRONZEBABYFALCON_H

@@ -11,9 +11,13 @@ class ImaginaryBelt0x2548 : public ImaginaryTool0x368 {
 public:
 	ImaginaryBelt0x2548();
 
-	void VTable0x4c(undefined4) override{}; // vtable+0x4c
-	~ImaginaryBelt0x2548() override;        // vtable+0x68
-	void VTable0x84() override {}           // vtable+0x84
+	void VTable0x38(undefined4) override;             // vtable+0x38
+	void VTable0x4c(undefined4) override;             // vtable+0x4c
+	~ImaginaryBelt0x2548() override;                  // vtable+0x68
+	void VTable0x74() override;                       // vtable+0x74
+	LegoBool32 VTable0x78(undefined4) override;       // vtable+0x78
+	void VTable0x84() override;                       // vtable+0x84
+	void VTable0x8c(undefined4, undefined4) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00484800
 	// ImaginaryBelt0x2548::`scalar deleting destructor'

@@ -30,7 +30,7 @@ LegoBool32 ChromeSpike0x4::FUN_0047f4d0()
 }
 
 // FUNCTION: LEGORACERS 0x0047f4e0
-ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
+ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined2 p_param)
 {
 	ImaginaryTool0x368* tool;
 	switch (p_param) {

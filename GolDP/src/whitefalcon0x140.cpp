@@ -139,7 +139,6 @@ LegoFloat g_arccosTable[1024] = {
 	0.16562952f, 0.15331803f, 0.13993669f, 0.12514272f, 0.108359076f, 0.088460378f, 0.06254073f, 0.0f,
 };
 
-DECOMP_SIZE_ASSERT(WhiteFalcon0x140::WhiteFalconWing0x1c, 0x1c)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
 // FUNCTION: GOLDP 0x10028840
@@ -166,7 +165,7 @@ WhiteFalcon0x140::WhiteFalcon0x140()
 	m_unk0x11c = 0;
 	m_unk0x120 = 0;
 	::memset(&m_unk0x124, 0, sizeof(m_unk0x124));
-	m_unk0x124.m_unk0x00 = 0;
+	m_unk0x124[0] = 0;
 }
 
 // FUNCTION: GOLDP 0x100288e0
@@ -425,76 +424,87 @@ void WhiteFalcon0x140::VTable0xa0()
 	STUB(0x10029680);
 }
 
-// STUB: GOLDP 0x10029840
-void WhiteFalcon0x140::VTable0xa8(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10029840
+void WhiteFalcon0x140::VTable0xa8(undefined4 p_param1, undefined4 p_param2, undefined4 p_param3)
 {
-	STUB(0x10029500);
+	VTable0x94(p_param1);
 }
 
-// STUB: GOLDP 0x10029850
-void WhiteFalcon0x140::VTable0xb8(undefined4, undefined4)
+// FUNCTION: GOLDP 0x10029850
+void WhiteFalcon0x140::VTable0xb8(undefined2 p_param1, undefined4 p_param2)
 {
-	STUB(0x10029850);
+	m_unk0x04 |= c_flagBit14;
+	m_unk0x0a = p_param1;
+	m_unk0x08 = p_param2;
 }
 
-// STUB: GOLDP 0x10029870
+// FUNCTION: GOLDP 0x10029870
 void WhiteFalcon0x140::VTable0xbc()
 {
-	STUB(0x10029870);
+	m_unk0x04 &= ~c_flagBit14;
 }
 
-// STUB: GOLDP 0x10029880
-void WhiteFalcon0x140::VTable0xc0(undefined4)
+// FUNCTION: GOLDP 0x10029880
+void WhiteFalcon0x140::VTable0xc0(undefined4* p_param)
 {
-	STUB(0x10029880);
+	m_unk0x118 = *p_param;
+	m_unk0x04 |= c_flagBit19;
 }
 
-// STUB: GOLDP 0x100298a0
+// FUNCTION: GOLDP 0x100298a0
 void WhiteFalcon0x140::VTable0xc4()
 {
-	STUB(0x100298a0);
+	m_unk0x04 &= ~c_flagBit19;
 }
 
-// STUB: GOLDP 0x100298b0
+// FUNCTION: GOLDP 0x100298b0
 void WhiteFalcon0x140::VTable0x28()
 {
-	STUB(0x100298b0);
+	m_unk0x04 &= ~c_flagBit15;
+	m_unk0x11c = 0;
+	m_unk0x120 = 0;
+	m_unk0x124[0] = 0;
 }
 
-// STUB: GOLDP 0x100298d0
-void WhiteFalcon0x140::VTable0x2c(undefined4)
+// FUNCTION: GOLDP 0x100298d0
+void WhiteFalcon0x140::VTable0x2c(undefined4 p_param)
 {
-	STUB(0x100298d0);
+	m_unk0x04 |= c_flagBit15;
+	m_unk0x120 = p_param;
 }
 
-// STUB: GOLDP 0x100298f0
-void WhiteFalcon0x140::VTable0x30(undefined4)
+// FUNCTION: GOLDP 0x100298f0
+void WhiteFalcon0x140::VTable0x30(undefined4 p_param)
 {
-	STUB(0x100298f0);
+	if (m_unk0x11c < 7) {
+		m_unk0x04 |= c_flagBit15;
+		m_unk0x124[m_unk0x11c] = p_param;
+		m_unk0x11c++;
+	}
 }
 
-// STUB: GOLDP 0x10029930
+// FUNCTION: GOLDP 0x10029930
 void WhiteFalcon0x140::VTable0x44()
 {
-	STUB(0x10029930);
+	m_unk0x04 |= c_flagBit18;
 }
 
-// STUB: GOLDP 0x10029940
+// FUNCTION: GOLDP 0x10029940
 void WhiteFalcon0x140::VTable0x48()
 {
-	STUB(0x10029940);
+	m_unk0x04 &= ~c_flagBit18;
 }
 
-// STUB: GOLDP 0x10029960
-void WhiteFalcon0x140::VTable0x58(undefined4, undefined4)
+// FUNCTION: GOLDP 0x10029960
+void WhiteFalcon0x140::VTable0x58(undefined4 p_param1, undefined4 p_param2)
 {
-	STUB(0x10029960);
+	VTable0x54(p_param2);
 }
 
-// STUB: GOLDP 0x10029970
+// FUNCTION: GOLDP 0x10029970
 void WhiteFalcon0x140::VTable0x24()
 {
-	STUB(0x10029970);
+	m_unk0x0c = 0;
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

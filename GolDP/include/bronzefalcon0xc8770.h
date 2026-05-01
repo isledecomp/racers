@@ -16,10 +16,6 @@ class AmberLens0x344;
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 : public WhiteFalcon0x140 {
 public:
-	enum Flags {
-		c_flagBit9 = 0x0200
-	};
-
 	BronzeFalcon0xc8770();
 
 	void VTable0x04() override;                                              // vtable+0x04
@@ -55,16 +51,16 @@ public:
 	void VTable0x88(undefined4, undefined4, undefined4) override;            // vtable+0x88
 	void VTable0x8c(undefined4, undefined4, undefined4) override;            // vtable+0x8c
 	void VTable0x90() override;                                              // vtable+0x90
-	void VTable0x94() override;                                              // vtable+0x94
+	void VTable0x94(undefined4) override;                                    // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4) override;            // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4) override;            // vtable+0x9c
 	void VTable0xa8(undefined4, undefined4, undefined4) override;            // vtable+0xa8
 	void VTable0xac(undefined4, undefined4) override;                        // vtable+0xac
 	void VTable0xb0(undefined4, undefined4) override;                        // vtable+0xb0
 	void VTable0xb4() override;                                              // vtable+0xb4
-	void VTable0xb8(undefined4, undefined4) override;                        // vtable+0xb8
+	void VTable0xb8(undefined2 p_param1, undefined4 p_param2) override;      // vtable+0xb8
 	void VTable0xbc() override;                                              // vtable+0xbc
-	void VTable0xc0(undefined4) override;                                    // vtable+0xc0
+	void VTable0xc0(undefined4*) override;                                   // vtable+0xc0
 	void VTable0xc4() override;                                              // vtable+0xc4
 	void VTable0xc8() override;                                              // vtable+0xc8
 	void VTable0xcc() override;                                              // vtable+0xcc

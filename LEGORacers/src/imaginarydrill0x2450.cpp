@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryDrill0x2450, 0x2450)
 // STUB: LEGORACERS 0x00480b70
 ImaginaryDrill0x2450::ImaginaryDrill0x2450()
 {
+	STUB(0x00480b70);
 }
 
 // STUB: LEGORACERS 0x00480cd0
 ImaginaryDrill0x2450::~ImaginaryDrill0x2450()
 {
+	STUB(0x00480cd0);
 }
 
 // STUB: LEGORACERS 0x00480e10

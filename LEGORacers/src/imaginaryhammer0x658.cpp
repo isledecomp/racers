@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryHammer0x658, 0x658)
 // STUB: LEGORACERS 0x00488380
 ImaginaryHammer0x658::ImaginaryHammer0x658()
 {
+	STUB(0x00488380);
 }
 
 // STUB: LEGORACERS 0x004883c0
 ImaginaryHammer0x658::~ImaginaryHammer0x658()
 {
+	STUB(0x004883c0);
 }
 
 // STUB: LEGORACERS 0x00488410

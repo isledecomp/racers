@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryPlate0x770, 0x770)
 // STUB: LEGORACERS 0x00481fe0
 ImaginaryPlate0x770::ImaginaryPlate0x770()
 {
+	STUB(0x00481fe0);
 }
 
 // STUB: LEGORACERS 0x00482090
 ImaginaryPlate0x770::~ImaginaryPlate0x770()
 {
+	STUB(0x00482090);
 }
 
 // STUB: LEGORACERS 0x00482120

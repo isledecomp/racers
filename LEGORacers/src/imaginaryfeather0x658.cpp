@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryFeather0x658, 0x658)
 // STUB: LEGORACERS 0x004809b0
 ImaginaryFeather0x658::ImaginaryFeather0x658()
 {
+	STUB(0x004809b0);
 }
 
 // STUB: LEGORACERS 0x004809f0
 ImaginaryFeather0x658::~ImaginaryFeather0x658()
 {
+	STUB(0x004809f0);
 }
 
 // STUB: LEGORACERS 0x00480a40

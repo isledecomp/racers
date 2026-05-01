@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryBandsaw0x2228, 0x2228)
 // STUB: LEGORACERS 0x00479d70
 ImaginaryBandsaw0x2228::ImaginaryBandsaw0x2228()
 {
+	STUB(0x00479d70);
 }
 
 // STUB: LEGORACERS 0x00479e70
 ImaginaryBandsaw0x2228::~ImaginaryBandsaw0x2228()
 {
+	STUB(0x00479e70);
 }
 
 // STUB: LEGORACERS 0x00479f50

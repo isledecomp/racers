@@ -5,11 +5,13 @@ DECOMP_SIZE_ASSERT(ImaginaryRuler0x2e60, 0x2e60)
 // STUB: LEGORACERS 0x00487850
 ImaginaryRuler0x2e60::ImaginaryRuler0x2e60()
 {
+	STUB(0x00487850);
 }
 
 // STUB: LEGORACERS 0x004879b0
 ImaginaryRuler0x2e60::~ImaginaryRuler0x2e60()
 {
+	STUB(0x004879b0);
 }
 
 // STUB: LEGORACERS 0x00487ae0

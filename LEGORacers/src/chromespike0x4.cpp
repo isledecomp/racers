@@ -2,6 +2,7 @@
 
 #include "golerror.h"
 #include "imaginarybandsaw0x2228.h"
+#include "imaginarybrush0x6410.h"
 #include "imaginarydrill0x2450.h"
 #include "imaginaryfeather0x658.h"
 #include "imaginaryhammer0x658.h"
@@ -55,8 +56,79 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined4 p_param)
 		tool = new ImaginaryRuler0x2e60();
 		break;
 
+	case 0x03:
+		tool = new ImaginaryBrush0x6410();
+		break;
+
 	case 0x10:
 		tool = new ImaginaryWrench0x23bc();
+		break;
+
+	case 0x11:
+		// 0x36c4
+		break;
+
+	case 0x0f:
+		// 0x4774
+		break;
+
+	case 0x08:
+		// 0x6750
+		break;
+
+	case 0x0a:
+	case 0x0b:
+		// 0x3360
+		break;
+
+	case 0x0c:
+		// 0x2548
+		break;
+
+	case 0x13:
+	case 0x14:
+	case 0x15:
+		// 0x4c8c
+		break;
+
+	case 0x16:
+	case 0x17:
+	case 0x18:
+	case 0x19:
+	case 0x1a:
+	case 0x1b:
+	case 0x1c:
+	case 0x25:
+		// 0x7b0
+		break;
+
+	case 0x1f:
+	case 0x20:
+	case 0x21:
+	case 0x22:
+	case 0x23:
+	case 0x24:
+		// 0x658
+		break;
+
+	case 0x0e:
+		// 0x3c34
+		break;
+
+	case 0x1e:
+		// 0x2cc4
+		break;
+
+	case 0x2c:
+		// 0x15ec
+		break;
+
+	case 0x2d:
+	case 0x2e:
+	case 0x2f:
+	case 0x30:
+	case 0x31:
+		// 0x1d7c
 		break;
 
 	case 0x90:

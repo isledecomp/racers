@@ -84,6 +84,7 @@ LegoS32 BronzeDuneBag0xc::FindEntry(PALETTEENTRY* p_entry)
 			return i;
 		}
 	}
+
 	return -1;
 }
 

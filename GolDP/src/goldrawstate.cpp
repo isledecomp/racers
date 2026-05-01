@@ -30,6 +30,7 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 	LegoU32 bpp = p_bpp;
 	LegoU32 height = p_height;
 	m_flags = flags;
+
 	LegoU32 width = p_width;
 
 	if (!width) {
@@ -97,10 +98,12 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 	m_bpp = p_bpp;
 	m_height = p_height;
 	m_flags = p_flags;
+
 	LegoS32 result = VTable0x00();
 	if (result != 0) {
 		return result;
 	}
+
 	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;

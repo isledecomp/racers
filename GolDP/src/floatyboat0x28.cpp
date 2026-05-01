@@ -109,6 +109,7 @@ LegoFloat FloatyBoat0x28::FUN_10028710()
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
+
 	return m_v1.m_x;
 }
 

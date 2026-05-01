@@ -214,7 +214,6 @@ LegoBool32 DirectInputManager::DetectJoysticks()
 		this,
 		DIEDFL_FORCEFEEDBACK | DIEDFL_ATTACHEDONLY
 	);
-
 	return TRUE;
 }
 

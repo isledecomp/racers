@@ -135,6 +135,7 @@ void CitrineGrove0x1f4c::FUN_00443620(const LegoChar* p_fileName, PeridotTrace0x
 		if (file != NULL) {
 			delete file;
 		}
+
 		return;
 	}
 

@@ -211,6 +211,7 @@ LegoBool32 SoundBuffer::LoadSoundData(SoundData* p_data)
 
 	m_channelCount = p_data->GetChannelCount();
 	m_bitsPerSample = p_data->GetBitsPerSample();
+
 	LegoS32 sampleRate = p_data->GetSampleRate() << p_data->GetShift();
 	m_sampleRate = (LegoFloat) sampleRate;
 
@@ -267,6 +268,7 @@ void SoundBuffer::SetPriority(LegoS32 p_priority)
 void SoundBuffer::SetVolume(LegoFloat p_volume)
 {
 	m_volume = p_volume;
+
 	LegoS32 directSoundVolume = ConvertVolumeToDirectSound(p_volume);
 	m_directSoundVolume = directSoundVolume;
 
@@ -279,6 +281,7 @@ void SoundBuffer::SetVolume(LegoFloat p_volume)
 void SoundBuffer::SetPan(LegoFloat p_pan)
 {
 	m_pan = p_pan;
+
 	LegoS32 directSoundPan = ConvertPanToDirectSound(p_pan);
 	m_directSoundPan = directSoundPan;
 
@@ -291,6 +294,7 @@ void SoundBuffer::SetPan(LegoFloat p_pan)
 void SoundBuffer::SetFrequencyScale(LegoFloat p_frequencyScale)
 {
 	m_frequencyScale = p_frequencyScale;
+
 	LegoFloat directSoundFrequency = m_sampleRate;
 	directSoundFrequency *= p_frequencyScale;
 	m_directSoundFrequency = (LegoS32) directSoundFrequency;

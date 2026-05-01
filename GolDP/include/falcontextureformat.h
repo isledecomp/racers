@@ -31,8 +31,6 @@ public:
 	LegoU32 GetGreenBitShift() const;
 	LegoU32 GetAlphaBitShift() const;
 	LegoU32 MapRGBA(const PALETTEENTRY& p_rgba) const;
-	// LegoU32 FUN_1001cc10() const;
-	// LegoU32 FUN_1001cc40() const;
 
 	LegoU32 m_redBitMask;
 	LegoU32 m_grnBitMask;

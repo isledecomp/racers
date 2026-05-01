@@ -372,6 +372,7 @@ undefined4 DirectInputDevice::TranslateDirectInputResult(HRESULT p_hResult)
 		if (IsAcquired()) {
 			Acquire();
 		}
+
 		return 1;
 	default:
 		return 0;

@@ -69,7 +69,6 @@ undefined4 GolString::CopyFromGolString(GolString* p_string)
 	m_maxLen = p_string->m_maxLen;
 
 	ResetCursors();
-
 	return 1;
 }
 
@@ -146,7 +145,6 @@ undefined4 GolString::GolStrcpy(GolString* p_string)
 	memcpy(m_chars, p_string->m_chars, len << 1);
 	m_cursorStart = p_string->m_cursorStart;
 	m_cursorEnd = p_string->m_cursorEnd;
-
 	return 1;
 }
 
@@ -161,7 +159,6 @@ undefined4 GolString::GolStrcpy(undefined2* p_string)
 	memcpy(m_chars, p_string, len << 1);
 	m_chars[len] = 0;
 	m_cursorEnd = len;
-
 	return 1;
 }
 

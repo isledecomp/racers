@@ -227,6 +227,7 @@ LegoU32 GolDrawDPState::VTable0x5c() const
 	if (m_deviceDesc.dwDeviceZBufferBitDepth & DDBD_8) {
 		return 8;
 	}
+
 	return 0;
 }
 
@@ -451,6 +452,7 @@ LegoU32 GolDrawDPState::VTable0x10()
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	return m_deviceList.m_countDrivers;
 }
 
@@ -464,6 +466,7 @@ const LegoChar* GolDrawDPState::VTable0x14(LegoU32 p_index)
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
 	}
+
 	return m_deviceList.m_drivers[p_index].m_description;
 }
 
@@ -477,6 +480,7 @@ const LegoChar* GolDrawDPState::VTable0x18(LegoU32 p_index)
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
 	}
+
 	return m_deviceList.m_drivers[p_index].m_name;
 }
 
@@ -490,6 +494,7 @@ LegoU32 GolDrawDPState::VTable0x1c(LegoU32 p_index)
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
 	}
+
 	return m_deviceList.m_drivers[p_index].m_countDevices;
 }
 
@@ -508,6 +513,7 @@ const LegoChar* GolDrawDPState::VTable0x20(LegoU32 p_driverIndex, LegoU32 p_devi
 	if (p_deviceIndex > driver->m_countDevices) {
 		return NULL;
 	}
+
 	return driver->m_devices[p_deviceIndex].m_name;
 }
 
@@ -526,6 +532,7 @@ const LegoChar* GolDrawDPState::VTable0x24(LegoU32 p_driverIndex, LegoU32 p_devi
 	if (p_deviceIndex > driver->m_countDevices) {
 		return NULL;
 	}
+
 	return driver->m_devices[p_deviceIndex].m_description;
 }
 
@@ -538,6 +545,7 @@ GUID* GolDrawDPState::VTable0x38() const
 			return &driver->m_guid;
 		}
 	}
+
 	return NULL;
 }
 
@@ -584,6 +592,7 @@ LegoBool32 GolDrawDPState::VTable0x28(LegoU32 p_driverIndex, LegoU32 p_deviceInd
 	if (p_deviceIndex > driver->m_countDevices) {
 		return FALSE;
 	}
+
 	return driver->m_devices[p_deviceIndex].m_hwAccelerated;
 }
 
@@ -629,6 +638,7 @@ HRESULT GolDrawDPState::FindmatchingDepthPixelformat(LPDDPIXELFORMAT p_pixelform
 			return FALSE;
 		}
 	}
+
 	return TRUE;
 }
 

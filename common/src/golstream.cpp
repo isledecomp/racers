@@ -608,6 +608,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 			g_hashTable->AddString(g_pathBuffer);
 			g_pathBuffer[slashOffset] = '\\';
 		}
+
 		return;
 	}
 
@@ -657,6 +658,7 @@ void GolStream::BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path)
 			g_hashTable->AddString(entryPath);
 			g_pathBuffer[directoryEnd] = '\\';
 		}
+
 		return;
 	}
 

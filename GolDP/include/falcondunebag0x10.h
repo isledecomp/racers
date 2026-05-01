@@ -1,5 +1,5 @@
-#ifndef FALCONDUNEBAG0x10_H
-#define FALCONDUNEBAG0x10_H
+#ifndef FALCONDUNEBAG0X10_H
+#define FALCONDUNEBAG0X10_H
 
 #include "bronzedunebag0xc.h"
 #include "decomp.h"
@@ -12,7 +12,7 @@
 class FalconDuneBag0x10 : public BronzeDuneBag0xc {
 public:
 	FalconDuneBag0x10();
-	~FalconDuneBag0x10() override; // vtable 0x20
+	~FalconDuneBag0x10() override; // vtable+0x20
 
 	void CopyEntriesFrom(IPalette0x4* p_source) override;                                // vtable+0x04
 	void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
@@ -30,4 +30,4 @@ private:
 	static FalconTextureFormat g_textureFormat;
 };
 
-#endif //  FALCONDUNEBAG0x10_H
+#endif // FALCONDUNEBAG0X10_H

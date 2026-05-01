@@ -35,7 +35,6 @@ LegoBool32 SoundGroupBinding::SetSoundGroup(
 	m_soundManager = p_soundManager;
 	m_soundGroup = p_soundGroup;
 	m_unk0x08 = p_unk0x0c;
-
 	return TRUE;
 }
 

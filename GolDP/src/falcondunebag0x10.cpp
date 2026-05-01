@@ -36,8 +36,12 @@ void FalconDuneBag0x10::Destroy()
 void FalconDuneBag0x10::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	BronzeDuneBag0xc::SetEntries(p_entries, p_start, p_count);
-	for (LegoU32 i = 0; i != p_count; i++) { // p_count--) {
-		m_unk0x0c[i] = g_textureFormat.MapRGBA(p_entries[i]);
+
+	while (p_count > 0) {
+		m_unk0x0c[p_start] = g_textureFormat.MapRGBA(*p_entries);
+		p_start++;
+		p_entries++;
+		p_count--;
 	}
 }
 
@@ -48,7 +52,7 @@ void FalconDuneBag0x10::CopyEntriesFrom(IPalette0x4* p_source)
 	PALETTEENTRY entry;
 	BronzeDuneBag0xc::CopyEntriesFrom(p_source);
 	for (i = 0; i < m_size; i++) {
-		GetEntry(&entry, i);
+		p_source->GetEntry(&entry, i);
 		m_unk0x0c[i] = g_textureFormat.MapRGBA(entry);
 	}
 }

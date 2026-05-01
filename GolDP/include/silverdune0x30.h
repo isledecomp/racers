@@ -6,6 +6,7 @@
 
 class PearlDew0x0c;
 class IPalette0x4;
+class BronzeFalcon0xc8770;
 
 // VTABLE: GOLDP 0x10056d3c
 // SIZE 0x30
@@ -49,6 +50,8 @@ public:
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
 
 protected:
+	friend class BronzeFalcon0xc8770;
+
 	undefined4 m_unk0x04;   // 0x04
 	undefined4 m_unk0x08;   // 0x08
 	undefined4 m_unk0x0c;   // 0x0c

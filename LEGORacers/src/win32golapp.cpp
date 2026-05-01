@@ -383,7 +383,6 @@ LegoBool32 Win32GolApp::IsCursorInClientArea(HWND p_hWnd)
 	ClientToScreen(p_hWnd, &topLeft);
 	ClientToScreen(p_hWnd, &bottomRight);
 	GetCursorPos(&cursor);
-
 	return cursor.x >= topLeft.x && cursor.x < bottomRight.x && cursor.y >= topLeft.y && cursor.y < bottomRight.y;
 }
 
@@ -479,7 +478,9 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 	if (m_eventHandler) {
 		m_eventHandler->VTable0x0c();
 	}
+
 	m_golDrawState->VTable0x50();
+
 	LegoU32 drawFlags = BuildDrawStateFlags(m_flags) & ~GolDrawState::c_flagBit15;
 
 	OutputDebugString("Changing window state\n");
@@ -809,6 +810,7 @@ LegoU32 Win32GolApp::BuildDrawStateFlags(LegoU32 p_flags)
 	if (p_flags & c_flagAlphaTransparency) {
 		result |= GolDrawState::c_flagBit21;
 	}
+
 	return result;
 }
 

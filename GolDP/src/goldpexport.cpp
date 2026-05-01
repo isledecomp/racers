@@ -99,6 +99,7 @@ WhiteBaffoon0x50* GolDPExport::VTable0x28()
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	return result;
 }
 
@@ -117,6 +118,7 @@ FloatyBoat0x28* GolDPExport::VTable0x30()
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	return result;
 }
 
@@ -127,6 +129,7 @@ AwakeKite0x20* GolDPExport::VTable0x34()
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	return result;
 }
 
@@ -137,6 +140,7 @@ GolFontTable* GolDPExport::VTable0x38()
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	return result;
 }
 

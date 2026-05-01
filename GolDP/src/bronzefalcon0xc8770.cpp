@@ -70,6 +70,10 @@ GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
 undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 {
 	FalconTextureFormat swTextureFormat;
+	LegoU32 forceSoftware;
+	LegoChar errorMessage[64];
+	D3DDEVICEDESC helCaps;
+
 	m_unk0x04 = c_flagBit0 | c_flagBit5;
 	if (p_flags & GolDrawState::c_flagBit21) {
 		m_unk0x04 |= c_flagBit20;
@@ -77,39 +81,44 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	if (p_flags & GolDrawState::c_flagBit12) {
 		m_unk0x04 |= c_flagBit1;
 	}
-	if (!(p_flags & GolDrawState::c_flagBit16)) {
+
+	forceSoftware = p_flags & GolDrawState::c_flagBit16;
+	if (!forceSoftware) {
 		m_unk0xc384c = 0;
 		m_unk0xc83c4 = 0;
 		m_unk0xc876c = (void (BronzeFalcon0xc8770::*)(undefined*))FUN_1000a2c0;
+
 		if (m_unk0x04 & c_flagBit1 && !m_drawState->VTable0x98()) {
 			undefined4 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
 			if (r != 0) {
 				return r;
 			}
 		}
+
 		HRESULT hresult =
 			m_drawState->m_d3d3
 				->CreateDevice(m_drawState->m_deviceGuid, m_unk0x304->m_renderSurface, &m_d3dDevice, NULL);
 		if (hresult != D3D_OK) {
-			char buffer[128];
-			sprintf(buffer, "Unable to create Direct3D device\nerror %x", hresult);
-			GOL_FATALERROR_MESSAGE(buffer);
+			sprintf(errorMessage, "Unable to create Direct3D device\nerror %x", hresult);
+			GOL_FATALERROR_MESSAGE(errorMessage);
 		}
+
 		m_countTextureFormats = 0;
 		m_d3dDevice->EnumTextureFormats(CountTextureFormatsCallback, &m_countTextureFormats);
 		if (m_countTextureFormats != 0) {
 			LegoU32 i;
-			D3DDEVICEDESC helCaps;
+
 			::memset(&helCaps, 0, sizeof(helCaps));
 			helCaps.dwSize = sizeof(helCaps);
 			if (m_d3dDevice->GetCaps(&m_d3dDeviceDesc, &helCaps) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to query device capabilities");
 			}
+
 			if (!(m_d3dDeviceDesc.dwFlags & D3DDD_TRICAPS)) {
 				::memcpy(&m_d3dDeviceDesc, &helCaps, sizeof(helCaps));
 			}
+
 			for (i = 0; i < sizeOfArray(m_unk0xc8708); i++) {
-				// D3DPBLENDCAPS_DESTALPHA
 				if (m_d3dDeviceDesc.dpcTriCaps.dwSrcBlendCaps & g_blendCapsMasks[i]) {
 					m_unk0xc8708[i] = g_blendCapsShifts[i];
 				}
@@ -117,8 +126,8 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 					m_unk0xc8708[i] = 5;
 				}
 			}
+
 			for (i = 0; i < sizeOfArray(m_unk0xc8708); i++) {
-				// D3DPBLENDCAPS_DESTALPHA
 				if (m_d3dDeviceDesc.dpcTriCaps.dwDestBlendCaps & g_blendCapsMasks[i]) {
 					m_unk0xc8734[i] = g_blendCapsShifts[i];
 				}
@@ -126,7 +135,8 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 					m_unk0xc8734[i] = 6;
 				}
 			}
-			if ((m_unk0x04 & c_flagBit24) && (m_d3dDeviceDesc.dpcTriCaps.dwAlphaCmpCaps & D3DPCMPCAPS_GREATER)) {
+
+			if ((m_unk0x04 & c_flagBit20) && (m_d3dDeviceDesc.dpcTriCaps.dwAlphaCmpCaps & D3DPCMPCAPS_GREATER)) {
 				m_unk0x04 &= ~c_flagBit7;
 				m_unk0x04 |= c_flagBit8;
 			}
@@ -141,6 +151,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 				m_unk0x04 &= ~c_flagBit8;
 				m_unk0x04 |= c_flagBit7;
 			}
+
 			if (m_d3dDeviceDesc.dpcTriCaps.dwShadeCaps & D3DPSHADECAPS_ALPHAFLATBLEND) {
 				m_unk0x04 &= ~c_flagBit12;
 				m_unk0x04 |= c_flagBit11;
@@ -151,39 +162,48 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 			else {
 				m_unk0x04 &= ~c_flagBit12;
 			}
+
 			if (m_drawState->m_d3d3->CreateViewport(&m_d3dViewport, NULL) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to create viewport");
 			}
+
 			if (m_d3dDevice->AddViewport(m_d3dViewport) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to add viewport");
 			}
+
 			if (m_d3dViewport->SetViewport2(&m_viewportParams) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to configure viewport");
 			}
+
 			if (m_d3dDevice->SetCurrentViewport(m_d3dViewport) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to set viewport");
 			}
+
 			if (m_drawState->m_d3d3->CreateMaterial(&m_backgroundMaterial, NULL) != D3D_OK) {
 				GOL_FATALERROR_MESSAGE("Unable to create background material");
 			}
+
 			m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
 			if (m_textureFormats == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
+
 			m_unk0x2c = 0;
 			m_d3dDevice->EnumTextureFormats(EnumerateTextureFormatsCallback, this);
 			m_unk0xc8700 = 2;
 			goto rendererCreated;
 		}
+
 		m_d3dDevice->Release();
 		m_d3dDevice = NULL;
 	}
-	m_unk0x04 &= ~c_flagBit1;
-	m_unk0x04 |= c_flagBit9 | c_flagBit16;
+
+	m_unk0x04 = (m_unk0x04 & ~c_flagBit1) | c_flagBit9 | c_flagBit16;
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
 	m_unk0xc876c = (void (BronzeFalcon0xc8770::*)(undefined*))FUN_1000a950;
-	::memcpy(&swTextureFormat, m_unk0x304, sizeof(swTextureFormat));
+	::memcpy(&swTextureFormat, &m_unk0x304->m_unk0x04, sizeof(swTextureFormat));
+
 	WorkHorse0x58::Pixelformat swPixelformat;
 	if (swTextureFormat.m_rgbBitCount == 8) {
 		swPixelformat = WorkHorse0x58::Pixelformat::e_formatIndex8;
@@ -199,23 +219,28 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 																: WorkHorse0x58::Pixelformat::e_format555;
 		m_unk0xc8700 = 2;
 	}
+
 	FalconDuneBag0x10::SetTextureFormat(swTextureFormat);
 	if (!m_unk0xc8698.Initialize(swPixelformat, 16000)) {
 		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
 	}
+
 	m_unk0xc8698.SetUnk0x4c(m_unk0x348);
 	FUN_1000b4a0();
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
+
 rendererCreated:
 	VTable0x1c(&m_unk0x2cc);
 	FUN_100082e0();
 	if (m_unk0x0c != NULL) {
 		VTable0x20(m_unk0x0c);
 	}
+
 	m_unk0x2d4.FUN_10006320(this);
 	for (BronzeFalconSurface0x5c* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
 		surface->FUN_100136a0(this);
 	}
+
 	WhiteFalcon0x140::VTable0x00();
 	return 0;
 }
@@ -683,5 +708,6 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	else {
 		format->m_alpBitMask = 0;
 	}
+
 	return TRUE;
 }

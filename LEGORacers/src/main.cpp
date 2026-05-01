@@ -86,6 +86,5 @@ int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpC
 	SplitCommand();
 	result = GameMain(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
 	CoUninitialize();
-
 	return result;
 }

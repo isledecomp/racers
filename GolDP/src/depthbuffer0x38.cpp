@@ -22,31 +22,36 @@ DepthBuffer0x38::~DepthBuffer0x38()
 // FUNCTION: GOLDP 0x10018370
 LegoS32 DepthBuffer0x38::Create(GolDrawDPState* p_arg1, SlatePeak0x58* p_surface)
 {
+	LPDIRECTDRAW4 ddraw = p_arg1->m_ddraw4;
 	DDSURFACEDESC2 ddSurfaceDesc;
+
 	::memset(&ddSurfaceDesc, 0, sizeof(ddSurfaceDesc));
 	ddSurfaceDesc.dwHeight = p_surface->m_height;
-	ddSurfaceDesc.dwWidth = p_surface->m_width;
 	ddSurfaceDesc.dwSize = sizeof(ddSurfaceDesc);
 	ddSurfaceDesc.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT;
-	ddSurfaceDesc.ddsCaps.dwCaps = DDCAPS_READSCANLINE;
+	ddSurfaceDesc.dwWidth = p_surface->m_width;
+	ddSurfaceDesc.ddsCaps.dwCaps = DDSCAPS_ZBUFFER;
 	if (p_arg1->VTable0x60()) {
-		ddSurfaceDesc.ddsCaps.dwCaps |= DDCAPS_OVERLAYSTRETCH;
+		ddSurfaceDesc.ddsCaps.dwCaps |= DDSCAPS_VIDEOMEMORY;
 	}
 	else {
-		ddSurfaceDesc.ddsCaps.dwCaps |= DDCAPS_OVERLAY;
+		ddSurfaceDesc.ddsCaps.dwCaps |= DDSCAPS_SYSTEMMEMORY;
 	}
 	::memcpy(&ddSurfaceDesc.ddpfPixelFormat, &p_arg1->m_depthBufferPixelformat, sizeof(ddSurfaceDesc.ddpfPixelFormat));
-	if (p_arg1->m_ddraw4->CreateSurface(&ddSurfaceDesc, &m_surface, NULL) != DD_OK) {
+	if (ddraw->CreateSurface(&ddSurfaceDesc, &m_surface, NULL) != DD_OK) {
 		return -1;
 	}
+
 	m_pixelFlags = c_lockRequestRead;
 	m_width = p_surface->m_width;
 	m_height = p_surface->m_height;
-	m_bitsPerPixel = static_cast<LegoU16>(ddSurfaceDesc.ddckCKSrcBlt.dwColorSpaceLowValue);
+	m_bitsPerPixel = static_cast<LegoU16>(ddSurfaceDesc.ddpfPixelFormat.dwZBufferBitDepth);
+
 	LegoS32 result = p_surface->AttachDepthBuffer(this);
 	if (result == 0) {
 		m_attachedSurface = p_surface;
 	}
+
 	return result;
 }
 

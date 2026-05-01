@@ -4,10 +4,8 @@
 
 #if defined(_MSC_VER) && _MSC_VER < 1300
 #define DETECTCPU_ASSEMBLY 1
-#define NAKED __declspec(naked)
 #else
 #define DETECTCPU_ASSEMBLY 0
-#define NAKED
 #if defined(__i386__) || defined(_M_X86) || defined(_M_X64) || defined(__x86_64__)
 #ifdef _MSC_VER
 #include <intrin.h>
@@ -33,12 +31,11 @@ LegoBool32 g_cpuSupportsMMX;
 LegoChar g_cpuManufacturer[16];
 
 // FUNCTION: GOLDP 0x10032c30
-NAKED void DetectCPU()
+void DetectCPU()
 {
 #if DETECTCPU_ASSEMBLY
 	__asm {
 		// Verify cpuid instruction is supported (bit 21 of FLAGS register): Pentium+
-		push       ebx
 		pushfd
 		pop        eax
 		mov        edx, eax
@@ -66,8 +63,6 @@ NAKED void DetectCPU()
 		shr        edx, 0x17
 		mov        dword ptr [g_cpuSupportsMMX], edx
 	nocpuid:
-		pop        ebx
-		ret
 	}
 #else
 #if defined(__i386__) || defined(_M_X86) || defined(_M_X64) || defined(__x86_64__)

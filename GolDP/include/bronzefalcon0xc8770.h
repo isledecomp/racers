@@ -5,9 +5,9 @@
 #include "decomp.h"
 #include "depthbuffer0x38.h"
 #include "duskwindbananarelic0x30.h"
+#include "softwarerenderer0x58.h"
 #include "types.h"
 #include "whitefalcon0x140.h"
-#include "workhorse0x58.h"
 
 #include <d3d.h>
 
@@ -141,7 +141,7 @@ private:
 	Field0xc83b4 m_unk0xc83b4;                             // 0xc83b4
 	undefined4 m_unk0xc83c4;                               // 0xc83c4
 	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];             // 0xc83c8
-	WorkHorse0x58 m_unk0xc8698;                            // 0xc8698
+	SoftwareRenderer0x58 m_softwareRenderer;               // 0xc8698
 	undefined m_unk0xc86f0[0xc86fc - 0xc86f0];             // 0xc86f0
 	float m_unk0xc86fc;                                    // 0xc86fc
 	undefined4 m_unk0xc8700;                               // 0xc8700

@@ -172,7 +172,7 @@ add_library(goldp SHARED
   GolDP/src/duskwindbananarelic0x24.cpp
   GolDP/src/duskwindbananarelic0x30.cpp
   GolDP/src/depthbuffer0x38.cpp
-  GolDP/src/workhorse0x58.cpp
+  GolDP/src/softwarerenderer0x58.cpp
   GolDP/src/falcondunebag0x10.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>

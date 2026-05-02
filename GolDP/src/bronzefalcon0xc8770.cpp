@@ -232,9 +232,9 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a950;
 	::memcpy(&swTextureFormat, &m_unk0x304->m_textureFormat, sizeof(swTextureFormat));
 
-	WorkHorse0x58::Pixelformat swPixelformat;
+	SoftwareRenderer0x58::PixelFormat swPixelFormat;
 	if (swTextureFormat.m_bitsPerPixel == 8) {
-		swPixelformat = WorkHorse0x58::Pixelformat::e_formatIndex8;
+		swPixelFormat = SoftwareRenderer0x58::PixelFormat::e_formatIndex8;
 		if (m_drawState->m_flags & GolDrawState::c_flagBit18) {
 			m_unk0xc8700 = 1;
 		}
@@ -243,17 +243,17 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 		}
 	}
 	else {
-		swPixelformat = swTextureFormat.GetGreenBitCount() == 6 ? WorkHorse0x58::Pixelformat::e_format565
-																: WorkHorse0x58::Pixelformat::e_format555;
+		swPixelFormat = swTextureFormat.GetGreenBitCount() == 6 ? SoftwareRenderer0x58::PixelFormat::e_format565
+																: SoftwareRenderer0x58::PixelFormat::e_format555;
 		m_unk0xc8700 = 2;
 	}
 
 	FalconDuneBag0x10::SetTextureFormat(swTextureFormat);
-	if (!m_unk0xc8698.Initialize(swPixelformat, 16000)) {
+	if (!m_softwareRenderer.Initialize(swPixelFormat, 16000)) {
 		GOL_FATALERROR_MESSAGE("Unable to initialize software renderer");
 	}
 
-	m_unk0xc8698.SetUnk0x4c(m_unk0x348);
+	m_softwareRenderer.SetUnk0x4c(m_unk0x348);
 	FUN_1000b4a0();
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 

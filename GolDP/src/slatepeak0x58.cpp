@@ -1,5 +1,10 @@
 #include "slatepeak0x58.h"
 
+#include "golerror.h"
+
+#include <stdio.h>
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(SlatePeak0x58, 0x58)
 
 // FUNCTION: GOLDP 0x10003110
@@ -117,10 +122,32 @@ IPalette0x4* SlatePeak0x58::GetPalette()
 	return NULL;
 }
 
-// STUB: GOLDP 0x10003ce0
-void SlatePeak0x58::Fill(LegoU32)
+// FUNCTION: GOLDP 0x10003ce0
+void SlatePeak0x58::Fill(LegoU32 p_color)
 {
-	STUB(0x10003ce0);
+	DDBLTFX bltFx;
+	LegoChar errorMessage[100];
+
+	::memset(&bltFx, 0, sizeof(bltFx));
+	bltFx.dwSize = sizeof(bltFx);
+	bltFx.dwFillColor = p_color;
+
+	for (;;) {
+		LPDIRECTDRAWSURFACE4 renderSurface = m_renderSurface;
+		HRESULT result;
+
+		while ((result = renderSurface->Blt(NULL, NULL, NULL, DDBLT_COLORFILL, &bltFx)) == DDERR_SURFACEBUSY ||
+			   result == DDERR_WASSTILLDRAWING) {
+			::Sleep(1);
+		}
+
+		if (result == DD_OK || result == DDERR_SURFACELOST) {
+			return;
+		}
+
+		::sprintf(errorMessage, "Error filling display surface\nError code = %x", result);
+		GOL_FATALERROR_MESSAGE(errorMessage);
+	}
 }
 
 // STUB: GOLDP 0x10003d80

@@ -78,13 +78,12 @@ public:
 
 	MenuAnimationList();
 	~MenuAnimationList();
+	void Reset();
 	void Allocate(LegoU32 p_count);
 	void Update(LegoU32 p_elapsedMs);
 	void Draw(BronzeFalcon0xc8770* p_renderer);
 
 private:
-	void Reset();
-
 	Entry* m_entries; // 0x00
 	LegoU32 m_count;  // 0x04
 };

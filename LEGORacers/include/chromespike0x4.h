@@ -10,6 +10,7 @@ class ChromeSpike0x4 {
 public:
 	ChromeSpike0x4();
 	~ChromeSpike0x4();
+	LegoBool32 FUN_0044a1e0();
 	LegoBool32 FUN_0047f4d0();
 	ImaginaryTool0x368* FUN_0047f4e0(undefined2);
 

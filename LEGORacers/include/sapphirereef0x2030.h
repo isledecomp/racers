@@ -8,6 +8,7 @@ class SapphireReef0x2030 {
 public:
 	SapphireReef0x2030();
 	~SapphireReef0x2030();
+	void Destroy();
 
 private:
 	undefined m_unk0x00[0x2030 - 0x00]; // 0x00

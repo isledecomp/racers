@@ -15,3 +15,10 @@ SapphireReef0x2030::~SapphireReef0x2030()
 	// TODO
 	STUB(0x499e20);
 }
+
+// STUB: LEGORACERS 0x0049a0f0
+void SapphireReef0x2030::Destroy()
+{
+	// TODO
+	STUB(0x0049a0f0);
+}

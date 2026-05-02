@@ -65,6 +65,7 @@ public:
 	void LoadMenuImages();
 	void FUN_0042d0e0();
 	void LoadMenuData();
+	void UnloadMenuData();
 	LegoBool32 LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload);
 	void FUN_0042d3e0(LegoU16 p_unk0x04);
 	void Run();
@@ -104,7 +105,6 @@ private:
 	void ShutdownInputBindings();
 	void ShutdownAudio();
 	void FUN_0042d080();
-	void FUN_0042d260();
 	void FUN_0042d730();
 
 	VioletCurrent0x4bc8 m_unk0x04;          // 0x04

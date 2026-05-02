@@ -15,3 +15,10 @@ VerdantTide0x38::~VerdantTide0x38()
 	// TODO
 	STUB(0x4978a0);
 }
+
+// STUB: LEGORACERS 0x00497910
+void VerdantTide0x38::Destroy()
+{
+	// TODO
+	STUB(0x00497910);
+}

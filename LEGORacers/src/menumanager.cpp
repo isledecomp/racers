@@ -137,7 +137,7 @@ LegoS32 MenuManager::Shutdown()
 
 		m_unk0x4c74.VTable0x0c();
 		m_unk0x4bd0.FUN_00468ab0();
-		FUN_0042d260();
+		UnloadMenuData();
 		ReleaseRendererObject();
 		ShutdownInputBindings();
 		ShutdownAudio();
@@ -345,11 +345,21 @@ void MenuManager::LoadMenuData()
 	menuNameStrings->Load("menuname.srf");
 }
 
-// STUB: LEGORACERS 0x0042d260
-void MenuManager::FUN_0042d260()
+// FUNCTION: LEGORACERS 0x0042d260
+void MenuManager::UnloadMenuData()
 {
-	// TODO
-	STUB(0x42d260);
+	m_unk0x04.m_raceNames.Clear();
+	m_unk0x04.m_raceList.Clear();
+	m_raceStrings.ReleaseOwnedBuffers();
+	m_unk0x04.m_unk0x258.FUN_004436e0();
+	m_unk0x04.m_pieceLibrary.Destroy();
+	m_unk0x04.m_unk0x21f4.Destroy();
+	m_unk0x04.m_unk0x4224.Destroy();
+	m_unk0x04.m_unk0x4b40.ReleaseMenuResources();
+	m_unk0x04.m_unk0x4ae0.ReleaseResources();
+	m_unk0x04.m_unk0x437c.Destroy();
+	m_unk0x4bcc.FUN_0044a1e0();
+	m_unk0x04.m_menuAnimations.Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0042d300

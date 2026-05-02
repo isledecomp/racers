@@ -1,9 +1,12 @@
 #include "aquamarinespirit0x3c.h"
 
+#include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "opalhaven0xf4.h"
 
 DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c, 0x3c)
+DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c::Item0x104, 0x104)
 
 // FUNCTION: LEGORACERS 0x0041d8c0
 AquamarineSpirit0x3c::AquamarineSpirit0x3c()
@@ -34,55 +37,58 @@ void AquamarineSpirit0x3c::FUN_0041d980()
 	m_unk0x38 = 0;
 }
 
-// STUB: LEGORACERS 0x0041d9b0
+// FUNCTION: LEGORACERS 0x0041d9b0
 void AquamarineSpirit0x3c::Clear()
 {
-	STUB(0x0041d9b0);
-	// TODO
-#if 0
 	FUN_0041dae0();
+
 	if (m_unk0x28 != NULL) {
 		delete[] m_unk0x28;
 		m_unk0x28 = NULL;
 	}
+
 	if (m_unk0x24 != NULL) {
-		for (LegoS32 i = 0; i < m_unk0x34; i++) {
+		for (LegoU32 i = 0; i < m_unk0x34; i++) {
 			m_unk0x0c->VTable0x4c(m_unk0x24[i]);
 			m_unk0x24[i] = NULL;
 		}
 		delete[] m_unk0x24;
 		m_unk0x24 = NULL;
 	}
+
 	if (m_unk0x20 != NULL) {
-		for (LegoS32 i = 0; i < m_unk0x34; i++) {
+		for (LegoU32 i = 0; i < m_unk0x34; i++) {
 			m_unk0x0c->VTable0x44(m_unk0x20[i]);
 			m_unk0x20[i] = NULL;
 		}
 		delete[] m_unk0x20;
 		m_unk0x20 = NULL;
 	}
+
 	if (m_unk0x1c != NULL) {
-		for (LegoS32 i = 0; i < m_unk0x34; i++) {
+		for (LegoU32 i = 0; i < m_unk0x34; i++) {
 			m_unk0x0c->VTable0x40(m_unk0x1c[i]);
 			m_unk0x1c[i] = NULL;
 		}
 		delete[] m_unk0x1c;
 		m_unk0x1c = NULL;
 	}
+
 	if (m_unk0x18 != NULL) {
-		for (LegoS32 i = 0; i < m_unk0x34; i++) {
+		for (LegoU32 i = 0; i < m_unk0x34; i++) {
 			m_unk0x0c->VTable0x48(m_unk0x18[i]);
 			m_unk0x18[i] = NULL;
 		}
 		delete[] m_unk0x18;
 		m_unk0x18 = NULL;
 	}
+
 	if (m_unk0x2c != NULL) {
 		delete[] m_unk0x2c;
 		m_unk0x2c = NULL;
 	}
+
 	FUN_0041d980();
-#endif
 }
 
 // FUNCTION: LEGORACERS 0x0041dae0 FOLDED
@@ -100,6 +106,13 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 {
 	// TODO
 	STUB(0x0041db10);
+	// TODO: Replace this with the real array allocation at 0x0041e0b2 and construction at 0x0041e0de.
+	// Keep the expression visible here so MSVC emits CmbModelPart0x34's vector deleting destructor.
+	if (p_params == NULL) {
+		CmbModelPart0x34* parts = new CmbModelPart0x34[1];
+		delete[] parts;
+		return;
+	}
 #if 0
 	if (m_unk0x14 != NULL) {
 		VTable0x08();

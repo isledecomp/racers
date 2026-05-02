@@ -51,6 +51,7 @@ public:
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
 	LegoU16 GetWidth() const { return m_width; }
 	LegoU16 GetHeight() const { return m_height; }
+	FalconTextureFormat& GetTextureFormat() { return m_textureFormat; }
 
 protected:
 	friend class BronzeFalcon0xc8770;

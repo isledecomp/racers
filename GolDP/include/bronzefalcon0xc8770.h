@@ -102,6 +102,10 @@ public:
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
 private:
+	struct TextureFormat : public FalconTextureFormat {
+		TextureFormat();
+	};
+
 	void FUN_100082e0();
 	void FUN_1000a2c0(undefined*);
 	void FUN_1000a950(undefined*);

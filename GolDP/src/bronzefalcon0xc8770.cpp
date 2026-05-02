@@ -72,6 +72,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlateP
 	if (m_unk0x04 & c_flagBit0) {
 		VTable0x18();
 	}
+
 	m_drawState = p_drawState;
 	m_unk0x304 = p_parg2;
 	m_renderTargetInfo = p_parg2;
@@ -82,10 +83,12 @@ undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlateP
 	m_viewportParams.dwY = 0;
 	m_viewportParams.dwWidth = m_renderTargetInfo->m_width;
 	m_viewportParams.dwHeight = m_renderTargetInfo->m_height;
+
 	undefined4 result = FUN_10007e20(p_flags);
 	if (result != 0) {
 		return result;
 	}
+
 	VTable0x28();
 	return 0;
 }
@@ -370,9 +373,10 @@ void BronzeFalcon0xc8770::VTable0xf0()
 // FUNCTION: GOLDP 0x10009640
 void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 {
+	FalconTextureFormat textureFormat;
+
 	m_unk0x2cc = p_color;
 	if (m_unk0x04 & c_flagBit16) {
-		FalconTextureFormat textureFormat;
 		textureFormat = m_renderTargetInfo->m_textureFormat;
 		if (textureFormat.m_paletteMask != 0) {
 			m_unk0x2d0 = m_renderTargetInfo->GetPalette()->FindEntry(m_unk0x2cc);
@@ -393,6 +397,7 @@ void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 		m_materialParams.diffuse.b = c;
 		m_backgroundMaterial->SetMaterial(&m_materialParams);
 		m_backgroundMaterial->GetHandle(m_d3dDevice, &m_backgroundMaterialHandle);
+		m_d3dViewport->SetBackground(m_backgroundMaterialHandle);
 	}
 }
 
@@ -449,9 +454,11 @@ void BronzeFalcon0xc8770::VTable0xe4()
 		else {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE);
 		}
+
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, TRUE);
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZFUNC, D3DCMP_LESSEQUAL);
 	}
+
 	m_unk0x04 |= c_flagBit5;
 }
 
@@ -459,6 +466,7 @@ void BronzeFalcon0xc8770::VTable0xe4()
 void BronzeFalcon0xc8770::VTable0xe8(LegoBool32 p_arg)
 {
 	m_unk0x04 &= ~c_flagBit5;
+
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_FALSE);
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, FALSE);
@@ -692,6 +700,7 @@ SlatePeak0x58* BronzeFalcon0xc8770::VTable0x4c(undefined2 p_arg1, undefined2 p_a
 	if (surface == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	surface->FUN_10013600(this, p_arg1, p_arg2);
 	surface->m_next = m_unk0x30c;
 	m_unk0x30c = surface;
@@ -721,52 +730,65 @@ LegoBool32 BronzeFalcon0xc8770::VTable0x110() const
 void BronzeFalcon0xc8770::FUN_1000b4a0()
 {
 	switch (m_unk0xc8700) {
-	case 0:
+	case 0: {
 		m_countTextureFormats = 1;
-		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+
+		TextureFormat* textureFormats = new TextureFormat[m_countTextureFormats];
+		m_textureFormats = textureFormats;
 		if (m_textureFormats == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_textureFormats[0].m_redBitMask = 0x00;
-		m_textureFormats[0].m_grnBitMask = 0x00;
-		m_textureFormats[0].m_bluBitMask = 0x00;
-		m_textureFormats[0].m_alpBitMask = 0x00;
+
+		m_textureFormats[0].m_redBitMask = 0;
+		m_textureFormats[0].m_grnBitMask = 0;
+		m_textureFormats[0].m_bluBitMask = 0;
+		m_textureFormats[0].m_alpBitMask = 0;
 		m_textureFormats[0].m_paletteMask = 0xff;
 		m_textureFormats[0].m_unk0x10 = 0;
 		m_textureFormats[0].m_bitsPerPixel = 8;
 		break;
-	case 1:
+	}
+	case 1: {
 		m_countTextureFormats = 1;
-		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+
+		TextureFormat* textureFormats = new TextureFormat[m_countTextureFormats];
+		m_textureFormats = textureFormats;
 		if (m_textureFormats == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
+
 		m_textureFormats[0].m_redBitMask = 0xe0;
 		m_textureFormats[0].m_grnBitMask = 0x1c;
 		m_textureFormats[0].m_bluBitMask = 0x03;
-		m_textureFormats[0].m_alpBitMask = 0x00;
-		m_textureFormats[0].m_paletteMask = 0xff;
+		m_textureFormats[0].m_alpBitMask = 0;
+		m_textureFormats[0].m_paletteMask = 0;
 		m_textureFormats[0].m_unk0x10 = 0;
 		m_textureFormats[0].m_bitsPerPixel = 8;
 		break;
-	case 2:
+	}
+	case 2: {
 		m_countTextureFormats = 3;
-		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+
+		TextureFormat* textureFormats = new TextureFormat[m_countTextureFormats];
+		m_textureFormats = textureFormats;
 		if (m_textureFormats == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_textureFormats[1].m_redBitMask = 0x00;
-		m_textureFormats[1].m_grnBitMask = 0x00;
-		m_textureFormats[1].m_bluBitMask = 0x00;
-		m_textureFormats[1].m_alpBitMask = 0x00;
+
+		m_textureFormats[1].m_redBitMask = 0;
+		m_textureFormats[1].m_grnBitMask = 0;
+		m_textureFormats[1].m_bluBitMask = 0;
+		m_textureFormats[1].m_alpBitMask = 0;
 		m_textureFormats[1].m_paletteMask = 0xff;
 		m_textureFormats[1].m_unk0x10 = 0;
 		m_textureFormats[1].m_bitsPerPixel = 8;
-		if (m_renderTargetInfo->m_textureFormat.GetGreenBitCount() == 6) {
+
+		FalconTextureFormat& textureFormat = m_renderTargetInfo->GetTextureFormat();
+		if (textureFormat.GetGreenBitCount() == 6) {
 			m_textureFormats[0].m_redBitMask = 0xf800;
 			m_textureFormats[0].m_grnBitMask = 0x07e0;
 			m_textureFormats[0].m_bluBitMask = 0x001f;
-			m_textureFormats[0].m_alpBitMask = 0x0000;
+			m_textureFormats[0].m_alpBitMask = 0;
 			m_textureFormats[0].m_paletteMask = 0;
 			m_textureFormats[0].m_unk0x10 = 0;
 			m_textureFormats[0].m_bitsPerPixel = 16;
@@ -782,7 +804,7 @@ void BronzeFalcon0xc8770::FUN_1000b4a0()
 			m_textureFormats[0].m_redBitMask = 0x7c00;
 			m_textureFormats[0].m_grnBitMask = 0x03e0;
 			m_textureFormats[0].m_bluBitMask = 0x001f;
-			m_textureFormats[0].m_alpBitMask = 0x0000;
+			m_textureFormats[0].m_alpBitMask = 0;
 			m_textureFormats[0].m_paletteMask = 0;
 			m_textureFormats[0].m_unk0x10 = 0;
 			m_textureFormats[0].m_bitsPerPixel = 16;
@@ -796,6 +818,12 @@ void BronzeFalcon0xc8770::FUN_1000b4a0()
 		}
 		break;
 	}
+	}
+}
+
+// FUNCTION: GOLDP 0x1000b7c0
+BronzeFalcon0xc8770::TextureFormat::TextureFormat()
+{
 }
 
 // FUNCTION: GOLDP 0x1000b7e0
@@ -812,6 +840,7 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	BronzeFalcon0xc8770* self = static_cast<BronzeFalcon0xc8770*>(p_context);
 	FalconTextureFormat* format = &self->m_textureFormats[self->m_unk0x2c];
 	self->m_unk0x2c += 1;
+
 	if (p_format->dwFlags & DDPF_PALETTEINDEXED8) {
 		format->m_paletteMask = 0xff;
 		format->m_redBitMask = 0;

@@ -24,44 +24,58 @@ public:
 	// SIZE 0x12b0
 	class Context {
 	public:
+		// SIZE 0x22d
+		struct SaveRecord {
+			undefined m_data[0x22d]; // 0x00
+		};
+
+		// SIZE 0x42c
+		struct SaveState {
+			undefined m_data[0x42c]; // 0x00
+		};
+
 		enum {
 			c_flagBit0 = 1 << 0,
 			c_flagBit1 = 1 << 1,
+			c_flagBit2 = 1 << 2,
 			c_flagBit3 = 1 << 3,
 			c_flagBit5 = 1 << 5,
 			c_flagBit6 = 1 << 6,
 			c_flagBit7 = 1 << 7,
 		};
 
-		LegoBool32 m_unk0x00;                 // 0x00
-		Win32GolApp* m_golApp;                // 0x04
-		SoundManager* m_soundManager;         // 0x08
-		LegoFloat m_unk0x0c;                  // 0x0c
-		LegoFloat m_unk0x10;                  // 0x10
-		LegoFloat m_unk0x14;                  // 0x14
-		undefined4 m_unk0x18;                 // 0x18
-		LegoU16 m_unk0x1c;                    // 0x1c
-		undefined m_unk0x1e;                  // 0x1e
-		undefined m_unk0x1f;                  // 0x1f
-		undefined m_unk0x20[0x24 - 0x20];     // 0x20
-		undefined4 m_unk0x24;                 // 0x24
-		LegoU32 m_languageIndex;              // 0x28
-		undefined m_unk0x2c;                  // 0x2c
-		LegoChar m_unk0x2d[8];                // 0x2d
-		undefined m_unk0x35[0x38 - 0x35];     // 0x35
-		RaceSlot m_raceSlots[4];              // 0x38
-		undefined m_unk0x98[0xd8 - 0x98];     // 0x98
-		undefined4 m_unk0xd8;                 // 0xd8
-		LegoChar m_gameDataDirectory[18];     // 0xdc
-		LegoChar m_commonDataDirectory[18];   // 0xee
-		undefined4 m_unk0x100;                // 0x100
-		undefined m_unk0x104[0x108 - 0x104];  // 0x104
-		ScarletNova0x5c m_unk0x108[5];        // 0x108
-		undefined m_unk0x2d4[0x32c - 0x2d4];  // 0x2d4
-		undefined4 m_unk0x32c;                // 0x32c
-		undefined m_unk0x330[0x398 - 0x330];  // 0x330
-		undefined4 m_unk0x398;                // 0x398
-		undefined m_unk0x39c[0x12b0 - 0x39c]; // 0x39c
+		LegoBool32 m_unk0x00;                   // 0x00
+		Win32GolApp* m_golApp;                  // 0x04
+		SoundManager* m_soundManager;           // 0x08
+		LegoFloat m_unk0x0c;                    // 0x0c
+		LegoFloat m_unk0x10;                    // 0x10
+		LegoFloat m_unk0x14;                    // 0x14
+		undefined4 m_unk0x18;                   // 0x18
+		LegoU16 m_unk0x1c;                      // 0x1c
+		LegoU8 m_unk0x1e;                       // 0x1e
+		undefined m_unk0x1f;                    // 0x1f
+		undefined m_unk0x20[0x24 - 0x20];       // 0x20
+		undefined4 m_unk0x24;                   // 0x24
+		LegoU32 m_languageIndex;                // 0x28
+		undefined m_unk0x2c;                    // 0x2c
+		LegoChar m_unk0x2d[8];                  // 0x2d
+		undefined m_unk0x35[0x38 - 0x35];       // 0x35
+		RaceSlot m_raceSlots[4];                // 0x38
+		undefined m_unk0x98[0xd8 - 0x98];       // 0x98
+		undefined4 m_unk0xd8;                   // 0xd8
+		LegoChar m_gameDataDirectory[18];       // 0xdc
+		LegoChar m_commonDataDirectory[18];     // 0xee
+		undefined4 m_unk0x100;                  // 0x100
+		undefined m_unk0x104[0x108 - 0x104];    // 0x104
+		ScarletNova0x5c m_unk0x108[5];          // 0x108
+		undefined m_unk0x2d4[0x32c - 0x2d4];    // 0x2d4
+		undefined4 m_unk0x32c;                  // 0x32c
+		undefined m_unk0x330[0x398 - 0x330];    // 0x330
+		undefined4 m_unk0x398;                  // 0x398
+		LegoU32 m_saveRecordCount;              // 0x39c
+		SaveRecord m_saveRecords[5];            // 0x3a0
+		SaveState m_saveState;                  // 0xe81
+		undefined m_unk0x12ad[0x12b0 - 0x12ad]; // 0x12ad
 
 		SoundManager* GetSoundManager() { return m_soundManager; }
 		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }

@@ -70,6 +70,7 @@ public:
 	LegoU32 GetFlags() { return m_flags; }
 	LegoU32 GetFrameDeltaMs() { return m_frameDeltaMs; }
 	GolHashTable& GetHashTable() { return m_hashTable; }
+	GolDrawState* GetDrawState() { return m_golDrawState; }
 
 	void ResetRuntimeState();
 	void NotifyCloseRequested();

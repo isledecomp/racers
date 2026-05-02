@@ -4,14 +4,24 @@
 #include "decomp.h"
 #include "types.h"
 
+#include <windows.h>
+
 class GolFile;
+class InputManager;
 class PeridotTrace0x4e0;
 
 // SIZE 0x24
 class PeridotTraceBase0x24 {
 public:
+	// SIZE 0x241
+	struct Record {
+		undefined m_unk0x00[0x14]; // 0x00
+		undefined m_data[0x22d];   // 0x14
+	};
+
 	PeridotTraceBase0x24();
 
+	Record* FUN_0042b880();
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
 
@@ -35,6 +45,7 @@ public:
 	PeridotTrace0x4a8();
 	~PeridotTrace0x4a8();
 
+	undefined* GetUnk0x24() { return m_unk0x24; }
 	void FUN_004426d0(undefined4, undefined4, undefined4);
 	undefined4 FUN_00442770(GolFile& p_file);
 	undefined4 FUN_004439b0();
@@ -90,10 +101,13 @@ public:
 	PeridotTraceState0x438();
 	~PeridotTraceState0x438();
 
-	void FUN_0042e920(undefined4*);
-	void FUN_0042eb60(PeridotTrace0x4e0*, undefined4);
+	void FUN_0042e920(InputManager* p_inputManager);
+	void FUN_0042e950();
+	void FUN_0042e960(InputManager* p_inputManager);
+	void FUN_0042eb60(PeridotTrace0x4a8*, undefined4);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
 	void SetLanguageResourcePath();
+	void FUN_0042f020(const GUID* p_guid);
 	void FUN_0042f200(LegoU8 p_unk0x04);
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;
@@ -107,7 +121,8 @@ public:
 private:
 	undefined4 m_unk0x00;              // 0x00
 	undefined4 m_unk0x04;              // 0x04
-	undefined m_unk0x08[0x22 - 0x08];  // 0x08
+	InputManager* m_inputManager;      // 0x08
+	undefined m_unk0x0c[0x22 - 0x0c];  // 0x0c
 	LegoU8 m_languageIndex;            // 0x22
 	undefined m_unk0x23;               // 0x23
 	LegoU8 m_unk0x24;                  // 0x24

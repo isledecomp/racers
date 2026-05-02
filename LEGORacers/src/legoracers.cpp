@@ -10,6 +10,8 @@
 DECOMP_SIZE_ASSERT(LegoRacers, 0x1d6c)
 DECOMP_SIZE_ASSERT(LegoRacers::Context, 0x12b0)
 DECOMP_SIZE_ASSERT(LegoRacers::RaceSlot, 0x18)
+DECOMP_SIZE_ASSERT(LegoRacers::Context::SaveRecord, 0x22d)
+DECOMP_SIZE_ASSERT(LegoRacers::Context::SaveState, 0x42c)
 
 // GLOBAL: LEGORACERS 0x004be8d8
 const LegoChar* g_jamFile = "lego.jam";

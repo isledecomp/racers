@@ -6,6 +6,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
+DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::Record, 0x241)
 DECOMP_SIZE_ASSERT(PeridotTrace0x4a8, 0x4a8)
 DECOMP_SIZE_ASSERT(PeridotTrace0x4e0, 0x4e0)
 DECOMP_SIZE_ASSERT(PeridotTraceActionBase0x34, 0x34)
@@ -16,6 +17,8 @@ DECOMP_SIZE_ASSERT(PeridotTraceBuffer0x250, 0x250)
 // GLOBAL: LEGORACERS 0x004becd8
 const LegoChar* g_menuLanguageDirectories[9] =
 	{"english", "spanish", "french", "german", "italian", "danish", "swedish", "norwegi", "dutch"};
+
+extern GUID g_displayDriverGuid;
 
 // STUB: LEGORACERS 0x0042b290
 PeridotTraceBuffer0x250::PeridotTraceBuffer0x250()
@@ -58,6 +61,14 @@ void PeridotTraceBase0x24::Init()
 	m_unk0x10 = 0;
 }
 
+// STUB: LEGORACERS 0x0042b880
+PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b880()
+{
+	// TODO
+	STUB(0x0042b880);
+	return NULL;
+}
+
 // STUB: LEGORACERS 0x0042e880
 PeridotTraceState0x438::PeridotTraceState0x438()
 {
@@ -72,15 +83,32 @@ PeridotTraceState0x438::~PeridotTraceState0x438()
 	STUB(0x42e890);
 }
 
-// STUB: LEGORACERS 0x0042e920
-void PeridotTraceState0x438::FUN_0042e920(undefined4*)
+// FUNCTION: LEGORACERS 0x0042e920
+void PeridotTraceState0x438::FUN_0042e920(InputManager* p_inputManager)
+{
+	FUN_0042e950();
+	m_inputManager = p_inputManager;
+	FUN_0042e960(p_inputManager);
+	FUN_0042f020(&g_displayDriverGuid);
+	m_unk0x00 = 0;
+}
+
+// STUB: LEGORACERS 0x0042e950
+void PeridotTraceState0x438::FUN_0042e950()
 {
 	// TODO
-	STUB(0x0042e920);
+	STUB(0x0042e950);
+}
+
+// STUB: LEGORACERS 0x0042e960
+void PeridotTraceState0x438::FUN_0042e960(InputManager*)
+{
+	// TODO
+	STUB(0x0042e960);
 }
 
 // STUB: LEGORACERS 0x0042eb60
-void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4e0*, undefined4)
+void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4a8*, undefined4)
 {
 	// TODO
 	STUB(0x0042eb60);
@@ -104,6 +132,13 @@ void PeridotTraceState0x438::SetLanguageResourcePath()
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString(path);
 	}
+}
+
+// STUB: LEGORACERS 0x0042f020
+void PeridotTraceState0x438::FUN_0042f020(const GUID*)
+{
+	// TODO
+	STUB(0x0042f020);
 }
 
 // FUNCTION: LEGORACERS 0x0042f200

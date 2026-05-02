@@ -34,11 +34,11 @@ void CitrineGrove0x1f4c::FUN_004432d0()
 }
 
 // FUNCTION: LEGORACERS 0x004432e0
-void CitrineGrove0x1f4c::FUN_004432e0(undefined4* p_arg1, undefined4 p_arg2)
+void CitrineGrove0x1f4c::FUN_004432e0(InputManager* p_inputManager, LegoBool32 p_arg2)
 {
 	char path[128];
 
-	m_unk0x18c4.FUN_0042e920(p_arg1);
+	m_unk0x18c4.FUN_0042e920(p_inputManager);
 	if (g_searchPaths[0] != NULL) {
 		::strcpy(path, g_searchPaths[0]);
 		size_t len = strlen(path);

@@ -4,6 +4,7 @@
 #include "audio/musicinstance.h"
 #include "audio/nullmusicgroup.h"
 #include "audio/nullsoundgroup.h"
+#include "goldrawstate.h"
 #include "golhashtable.h"
 #include "golstream.h"
 #include "imaginarytool0x368.h"
@@ -12,12 +13,16 @@
 
 #include <golerror.h>
 #include <stddef.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
 DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 
 // GLOBAL: LEGORACERS 0x004c4918
 MenuManager* g_menuManager = NULL;
+
+// GLOBAL: LEGORACERS 0x004c4928
+GUID g_displayDriverGuid = {0};
 
 // GLOBAL: LEGORACERS 0x004beb78
 LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
@@ -290,11 +295,38 @@ void MenuManager::FUN_0042d080()
 	}
 }
 
-// STUB: LEGORACERS 0x0042d0e0
+// FUNCTION: LEGORACERS 0x0042d0e0
 void MenuManager::FUN_0042d0e0()
 {
-	// TODO
-	STUB(0x42d0e0);
+	const GUID* displayDriverGuid = m_unk0x04.m_context->m_golApp->GetDrawState()->VTable0x38();
+	GUID currentDisplayDriverGuid;
+
+	if (!displayDriverGuid) {
+		::memset(&currentDisplayDriverGuid, 0, sizeof(currentDisplayDriverGuid));
+	}
+	else {
+		currentDisplayDriverGuid = *displayDriverGuid;
+	}
+	g_displayDriverGuid = currentDisplayDriverGuid;
+
+	m_unk0x04.m_unk0x258.FUN_004432e0(m_unk0x04.m_context->m_golApp->GetInputManager(), FALSE);
+
+	if (m_unk0x04.m_context->m_unk0x1e & LegoRacers::Context::c_flagBit2) {
+		PeridotTrace0x4a8* trace = &m_unk0x04.m_unk0x258.GetUnk0x108();
+		::memcpy(
+			m_unk0x04.m_unk0x258.GetUnk0x108().GetUnk0x24(),
+			m_unk0x04.m_context->m_saveState.m_data,
+			sizeof(m_unk0x04.m_context->m_saveState.m_data)
+		);
+		m_unk0x04.m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit2;
+		m_unk0x04.m_unk0x258.GetUnk0x18c4().FUN_0042eb60(trace, m_unk0x04.m_unk0x258.GetUnk0x18c4().GetUnk0x04());
+	}
+
+	LegoRacers::Context::SaveRecord* saveRecord = m_unk0x04.m_context->m_saveRecords;
+	for (LegoU32 i = 0; i < m_unk0x04.m_context->m_saveRecordCount; i++, saveRecord++) {
+		PeridotTraceBase0x24::Record* record = m_unk0x04.m_unk0x258.GetUnk0x108().FUN_0042b880();
+		::memcpy(record->m_data, saveRecord->m_data, sizeof(LegoRacers::Context::SaveRecord));
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042d1e0

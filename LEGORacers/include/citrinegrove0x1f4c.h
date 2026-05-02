@@ -6,12 +6,15 @@
 #include "peridottrace0x4e0.h"
 #include "types.h"
 
+class InputManager;
+
 // SIZE 0x1f4c
 class CitrineGrove0x1f4c {
 public:
 	CitrineGrove0x1f4c();
 	~CitrineGrove0x1f4c();
 
+	PeridotTrace0x4a8& GetUnk0x108() { return m_unk0x108; }
 	PeridotTrace0x4e0* GetUnk0xa58() { return m_unk0xa58; }
 	LegoU32 GetUnk0x18c0() const { return m_unk0x18c0; }
 	PeridotTraceState0x438& GetUnk0x18c4() { return m_unk0x18c4; }
@@ -20,7 +23,7 @@ public:
 	PeridotTraceBuffer0x250& GetUnk0x1cfc() { return m_unk0x1cfc; }
 
 	void FUN_004432d0();
-	void FUN_004432e0(undefined4* p_arg1, undefined4 p_arg2);
+	void FUN_004432e0(InputManager* p_inputManager, LegoBool32 p_arg2);
 	undefined4 FUN_00443420(LegoU32 p_index, undefined4 p_arg2);
 	undefined4 FUN_004434a0(undefined4);
 	void FUN_00443520(undefined4);

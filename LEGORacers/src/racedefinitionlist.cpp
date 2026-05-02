@@ -1,4 +1,4 @@
-#include "lapissigil0x14.h"
+#include "racedefinitionlist.h"
 
 #include "golbinparser.h"
 #include "golerror.h"
@@ -32,7 +32,7 @@ void RaceDefinitionList::RaceDefinition::Clear()
 	::memset(m_name, 0, sizeof(m_name));
 	::memset(m_menuName, 0, sizeof(m_menuName));
 	::memset(m_courseNames, 0, sizeof(m_courseNames));
-	::memset(m_unk0x48, 0, sizeof(m_unk0x48));
+	::memset(m_raceNameEntries, 0, sizeof(m_raceNameEntries));
 }
 
 // FUNCTION: LEGORACERS 0x0041f030

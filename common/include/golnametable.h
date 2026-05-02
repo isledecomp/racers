@@ -25,6 +25,7 @@ public:
 	void AddName(const LegoChar* p_name, void* p_value);
 	void* GetName(const LegoChar* p_name) const;
 	LegoChar* GetNameByValue(const void* p_value, LegoChar* p_buffer) const;
+	Entry* GetNameEntries() const { return m_nameEntries; }
 
 	// SYNTHETIC: GOLDP 0x100281e0
 	// SYNTHETIC: LEGORACERS 0x004117d0

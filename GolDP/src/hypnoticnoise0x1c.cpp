@@ -33,7 +33,7 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 }
 
 // FUNCTION: GOLDP 0x10023060
-void HypnoticNoise0x1c::LoadMaterialDefinitions(
+void HypnoticNoise0x1c::LoadImageDefinitions(
 	BronzeFalcon0xc8770* p_renderer,
 	const LegoChar* p_fileName,
 	LegoBool32 p_binary

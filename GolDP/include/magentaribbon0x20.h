@@ -31,7 +31,6 @@ public:
 
 	MagentaRibbon0x20* GetNext() const { return m_next; }
 	void SetNext(MagentaRibbon0x20* p_next) { m_next = p_next; }
-	Entry* GetNameEntries() const { return m_nameEntries; }
 
 private:
 	BronzeFalcon0xc8770* m_renderer; // 0x0c

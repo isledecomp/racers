@@ -337,13 +337,13 @@ void WhiteFalcon0x140::FUN_10028b40(MagentaRibbon0x20* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028b90
-void* WhiteFalcon0x140::FUN_10028b90(const LegoChar* p_name)
+undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 {
 	MagentaRibbon0x20* node = m_unk0x38;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			void* value = node->GetName(p_name);
+			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}
@@ -390,13 +390,13 @@ void WhiteFalcon0x140::FUN_10028bd0(AmberHaze0x1c* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028c20
-void* WhiteFalcon0x140::FUN_10028c20(const LegoChar* p_name)
+undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 {
 	AmberHaze0x1c* node = m_unk0x3c;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			void* value = node->GetName(p_name);
+			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

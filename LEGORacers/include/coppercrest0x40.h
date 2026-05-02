@@ -8,6 +8,7 @@ class BronzeFalcon0xc8770;
 class GolExport;
 class InputManager;
 class OnyxCircularBuffer0x1c;
+class UtopianPan0xa4;
 
 // VTABLE: LEGORACERS 0x004b2164
 // SIZE 0x40
@@ -17,7 +18,7 @@ public:
 	struct InitStruct {
 		GolExport* m_golExport;                          // 0x00
 		BronzeFalcon0xc8770* m_renderer;                 // 0x04
-		undefined4* m_rendererObject;                    // 0x08
+		UtopianPan0xa4* m_rendererObject;                // 0x08
 		InputManager* m_inputManager;                    // 0x0c
 		OnyxCircularBuffer0x1c* m_inputBindingContainer; // 0x10
 		undefined4 m_unk0x14;                            // 0x14

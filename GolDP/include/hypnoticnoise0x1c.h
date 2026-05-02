@@ -22,7 +22,7 @@ public:
 	virtual void VTable0x0c() = 0; // vtable+0x0c
 	virtual void VTable0x10();     // vtable+0x10
 	virtual void VTable0x14();     // vtable+0x14
-	virtual void LoadMaterialDefinitions(
+	virtual void LoadImageDefinitions(
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary

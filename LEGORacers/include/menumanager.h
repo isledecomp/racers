@@ -62,7 +62,7 @@ public:
 	void ReleaseRendererObject();
 	void InitializeInputBindings();
 	void InitializeAudio();
-	void LoadMenuMaterials();
+	void LoadMenuImages();
 	void FUN_0042d0e0();
 	void LoadMenuData();
 	LegoBool32 LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload);
@@ -119,7 +119,7 @@ private:
 	undefined m_unk0x4cc5[0x4cd4 - 0x4cc5]; // 0x4cc5
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
-	AwakeKite0x20* m_materialTable;         // 0x4cdc
+	AwakeKite0x20* m_imageTable;            // 0x4cdc
 	GolFontTable* m_fontTable;              // 0x4ce0
 	GolStringTable m_menuNameStrings;       // 0x4ce4
 	GolStringTable m_menuTextStrings;       // 0x4cf8

@@ -11,11 +11,13 @@ class AmberLens0x344;
 class BronzeFalcon0xc8770;
 class CinderBasin0x28;
 class FalconTextureFormat;
+class GolFont0xa0;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
 class MagentaRibbon0x20;
 class SlatePeak0x58;
+class UtopianPan0xa4;
 
 // VTABLE: GOLDP 0x10057338
 // SIZE 0x140
@@ -137,10 +139,15 @@ public:
 	void FUN_10028ae0(HypnoticNoise0x1c* p_param);
 	void FUN_10028b30(MagentaRibbon0x20* p_param);
 	void FUN_10028b40(MagentaRibbon0x20* p_param);
-	void* FUN_10028b90(const LegoChar* p_name);
+	undefined4* FindTextureByName(const LegoChar* p_name);
 	void FUN_10028bc0(AmberHaze0x1c* p_param);
 	void FUN_10028bd0(AmberHaze0x1c* p_param);
-	void* FUN_10028c20(const LegoChar* p_name);
+	undefined4* FindMaterialByName(const LegoChar* p_name);
+
+#ifdef BUILDING_LEGORACERS
+	GolFont0xa0* FindFontByName(const LegoChar* p_name);
+	UtopianPan0xa4* FindImageByName(const LegoChar* p_name);
+#endif
 
 	// SYNTHETIC: GOLDP 0x100288b0
 	// WhiteFalcon0x140::`scalar deleting destructor'

@@ -91,7 +91,6 @@ public:
 	void VTable0x10c() override;                                            // vtable+0x10c
 	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
-	undefined4* FUN_004131a0(const LegoChar* p_name);
 	undefined4 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
 	undefined4 FUN_10007e20(LegoU32 p_flags);
 

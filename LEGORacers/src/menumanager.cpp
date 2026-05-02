@@ -61,7 +61,7 @@ void MenuManager::Reset()
 	m_unk0x4cd8 = NULL;
 	m_soundGroup = NULL;
 	m_unk0x4dc8 = NULL;
-	m_materialTable = NULL;
+	m_imageTable = NULL;
 	m_fontTable = NULL;
 	m_unk0x4dd0 = FALSE;
 	m_unk0x4d24.Reset();
@@ -81,7 +81,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	LoadMenuMaterials();
+	LoadMenuImages();
 	FUN_0042d0e0();
 	LoadLocalizedMenuResources(m_unk0x04.m_unk0x258.GetLanguageIndex(), TRUE);
 	LoadMenuData();
@@ -155,7 +155,7 @@ void MenuManager::FUN_0042cd60()
 
 	initStruct.m_golExport = m_unk0x4cd4;
 	initStruct.m_renderer = m_unk0x4cd8;
-	initStruct.m_rendererObject = m_unk0x4cd8->FUN_004131a0(name);
+	initStruct.m_rendererObject = m_unk0x4cd8->FindImageByName(name);
 	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
 	initStruct.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
 
@@ -261,26 +261,26 @@ void MenuManager::ShutdownAudio()
 }
 
 // FUNCTION: LEGORACERS 0x0042d020
-void MenuManager::LoadMenuMaterials()
+void MenuManager::LoadMenuImages()
 {
-	if (!m_materialTable) {
-		m_materialTable = m_unk0x4cd4->VTable0x34();
+	if (!m_imageTable) {
+		m_imageTable = m_unk0x4cd4->VTable0x34();
 	}
 
 	if (!m_fontTable) {
 		m_fontTable = m_unk0x4cd4->VTable0x38();
 	}
 
-	m_materialTable->LoadMaterialDefinitions(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
+	m_imageTable->LoadImageDefinitions(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
 }
 
 // FUNCTION: LEGORACERS 0x0042d080
 void MenuManager::FUN_0042d080()
 {
-	if (m_materialTable) {
-		m_materialTable->Clear();
-		m_unk0x4cd4->VTable0x68(m_materialTable);
-		m_materialTable = NULL;
+	if (m_imageTable) {
+		m_imageTable->Clear();
+		m_unk0x4cd4->VTable0x68(m_imageTable);
+		m_imageTable = NULL;
 	}
 
 	if (m_fontTable) {

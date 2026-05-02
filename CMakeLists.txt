@@ -286,7 +286,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/verdanttide0x38.cpp
   LEGORacers/src/turquoiseglow0x80.cpp
   LEGORacers/src/aquamarinespirit0x3c.cpp
-  LEGORacers/src/malachitecrown0x34.cpp
+  LEGORacers/src/championdefinitionlist.cpp
   LEGORacers/src/racedefinitionlist.cpp
   LEGORacers/src/racenamelist.cpp
   LEGORacers/src/menuanimationlist.cpp

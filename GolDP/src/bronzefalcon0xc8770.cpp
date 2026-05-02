@@ -9,7 +9,7 @@
 #include <stdio.h>
 
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
-DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::JasperRipple0x4, 0x4)
+DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
 
 // GLOBAL: GOLDP 0x10056560
 LegoU32 g_blendCapsMasks[11] = {
@@ -64,6 +64,30 @@ void BronzeFalcon0xc8770::Reset()
 GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
 {
 	return m_drawState;
+}
+
+// FUNCTION: GOLDP 0x10007d90
+undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlatePeak0x58* p_parg2, LegoU32 p_flags)
+{
+	if (m_unk0x04 & c_flagBit0) {
+		VTable0x18();
+	}
+	m_drawState = p_drawState;
+	m_unk0x304 = p_parg2;
+	m_renderTargetInfo = p_parg2;
+	m_unk0x0c = NULL;
+	p_drawState->AddRenderer(this);
+	m_unk0x04 |= c_flagBit0 | c_flagBit5;
+	m_viewportParams.dwX = 0;
+	m_viewportParams.dwY = 0;
+	m_viewportParams.dwWidth = m_renderTargetInfo->m_width;
+	m_viewportParams.dwHeight = m_renderTargetInfo->m_height;
+	undefined4 result = FUN_10007e20(p_flags);
+	if (result != 0) {
+		return result;
+	}
+	VTable0x28();
+	return 0;
 }
 
 // FUNCTION: GOLDP 0x10007e20
@@ -203,10 +227,10 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	m_unk0xc384c = -1;
 	m_unk0xc83c4 = 1;
 	m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a950;
-	::memcpy(&swTextureFormat, &m_unk0x304->m_unk0x04, sizeof(swTextureFormat));
+	::memcpy(&swTextureFormat, &m_unk0x304->m_textureFormat, sizeof(swTextureFormat));
 
 	WorkHorse0x58::Pixelformat swPixelformat;
-	if (swTextureFormat.m_rgbBitCount == 8) {
+	if (swTextureFormat.m_bitsPerPixel == 8) {
 		swPixelformat = WorkHorse0x58::Pixelformat::e_formatIndex8;
 		if (m_drawState->m_flags & GolDrawState::c_flagBit18) {
 			m_unk0xc8700 = 1;
@@ -231,7 +255,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
 
 rendererCreated:
-	VTable0x1c(&m_unk0x2cc);
+	VTable0x1c(m_unk0x2cc);
 	FUN_100082e0();
 	if (m_unk0x0c != NULL) {
 		VTable0x20(m_unk0x0c);
@@ -244,6 +268,13 @@ rendererCreated:
 
 	WhiteFalcon0x140::VTable0x00();
 	return 0;
+}
+
+// STUB: GOLDP 0x100082e0
+void BronzeFalcon0xc8770::FUN_100082e0()
+{
+	// TODO
+	STUB(0x100082e0);
 }
 
 // STUB: GOLDP 0x10008680
@@ -336,50 +367,126 @@ void BronzeFalcon0xc8770::VTable0xf0()
 	STUB(0x10009540);
 }
 
-// STUB: GOLDP 0x10009640
-void BronzeFalcon0xc8770::VTable0x1c(JasperRipple0x4*)
+// FUNCTION: GOLDP 0x10009640
+void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 {
-	STUB(0x10009640);
+	m_unk0x2cc = p_color;
+	if (m_unk0x04 & c_flagBit16) {
+		FalconTextureFormat textureFormat;
+		textureFormat = m_renderTargetInfo->m_textureFormat;
+		if (textureFormat.m_paletteMask != 0) {
+			m_unk0x2d0 = m_renderTargetInfo->GetPalette()->FindEntry(m_unk0x2cc);
+		}
+		else {
+			m_unk0x2d0 = textureFormat.MapRGBA(m_unk0x2cc);
+		}
+	}
+	else {
+		float c = static_cast<float>(p_color.m_red) / 255.0;
+		m_materialParams.ambient.r = c;
+		m_materialParams.diffuse.r = c;
+		c = static_cast<float>(p_color.m_grn) / 255.0;
+		m_materialParams.ambient.g = c;
+		m_materialParams.diffuse.g = c;
+		c = static_cast<float>(p_color.m_blu) / 255.0;
+		m_materialParams.ambient.b = c;
+		m_materialParams.diffuse.b = c;
+		m_backgroundMaterial->SetMaterial(&m_materialParams);
+		m_backgroundMaterial->GetHandle(m_d3dDevice, &m_backgroundMaterialHandle);
+	}
 }
 
-// STUB: GOLDP 0x10009780
+// FUNCTION: GOLDP 0x10009780
 void BronzeFalcon0xc8770::VTable0xd8()
 {
-	STUB(0x10009780);
+	if (!m_unk0xc83c4) {
+		if (!m_drawState->VTable0x60()) {
+			m_d3dDevice->SetRenderState(
+				D3DRENDERSTATE_TEXTUREPERSPECTIVE,
+				(m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_PERSPECTIVE) ? TRUE : FALSE
+			);
+		}
+	}
 }
 
-// STUB: GOLDP 0x100097c0
+// FUNCTION: GOLDP 0x100097c0
 void BronzeFalcon0xc8770::VTable0xd4()
 {
-	STUB(0x100097c0);
+	if (!m_unk0xc83c4) {
+		if (!m_drawState->VTable0x60()) {
+			m_d3dDevice->SetRenderState(D3DRENDERSTATE_TEXTUREPERSPECTIVE, FALSE);
+		}
+	}
 }
 
-// STUB: GOLDP 0x100097f0
+// FUNCTION: GOLDP 0x100097f0
 void BronzeFalcon0xc8770::VTable0xdc()
 {
-	STUB(0x100097f0);
+	if (!m_unk0xc83c4) {
+		m_d3dDevice->SetRenderState(
+			D3DRENDERSTATE_DITHERENABLE,
+			(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->VTable0x60() ? TRUE
+																										   : FALSE
+		);
+	}
 }
 
-// STUB: GOLDP 0x10009840
+// FUNCTION: GOLDP 0x10009840
 void BronzeFalcon0xc8770::VTable0xe0()
 {
-	STUB(0x10009840);
+	if (!m_unk0xc83c4) {
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_DITHERENABLE, FALSE);
+	}
 }
 
-// STUB: GOLDP 0x10009860
+// FUNCTION: GOLDP 0x10009860
 void BronzeFalcon0xc8770::VTable0xe4()
 {
-	STUB(0x10009860);
+	if (!m_unk0xc83c4 && (m_unk0x04 & c_flagBit1)) {
+		if (m_drawState->VTable0x94()) {
+			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_USEW);
+		}
+		else {
+			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE);
+		}
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, TRUE);
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZFUNC, D3DCMP_LESSEQUAL);
+	}
+	m_unk0x04 |= c_flagBit5;
 }
 
-// STUB: GOLDP 0x100098d0
-void BronzeFalcon0xc8770::VTable0xe8(undefined4)
+// FUNCTION: GOLDP 0x100098d0
+void BronzeFalcon0xc8770::VTable0xe8(LegoBool32 p_arg)
 {
-	STUB(0x100098d0);
+	m_unk0x04 &= ~c_flagBit5;
+	if (!m_unk0xc83c4) {
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_FALSE);
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, FALSE);
+	}
+	else {
+		if (p_arg == 0) {
+			m_unk0xc86fc = 0.0f;
+		}
+		else {
+			m_unk0xc86fc = 1.0f;
+		}
+	}
+}
+
+// FUNCTION: GOLDP 0x10009930
+LPDIRECT3D3 BronzeFalcon0xc8770::GetDirect3D3() const
+{
+	return m_drawState->m_d3d3;
+}
+
+// FUNCTION: GOLDP 0x10009940
+LPDIRECTDRAW4 BronzeFalcon0xc8770::GetDirectDraw4() const
+{
+	return m_drawState->m_ddraw4;
 }
 
 // FUNCTION: GOLDP 0x10009950
-const WhiteFalcon0x140::RenderTargetInfo* BronzeFalcon0xc8770::GetRenderTargetInfo()
+const SlatePeak0x58* BronzeFalcon0xc8770::GetRenderTargetInfo()
 {
 	return m_renderTargetInfo;
 }
@@ -492,6 +599,20 @@ void BronzeFalcon0xc8770::VTable0x10c()
 	STUB(0x1000a290);
 }
 
+// STUB: GOLDP 0x1000a2c0
+void BronzeFalcon0xc8770::FUN_1000a2c0(undefined*)
+{
+	// TODO
+	STUB(0x1000a2c0);
+}
+
+// STUB: GOLDP 0x1000a950
+void BronzeFalcon0xc8770::FUN_1000a950(undefined*)
+{
+	// TODO
+	STUB(0x1000a950);
+}
+
 // STUB: GOLDP 0x1000aeb0
 void BronzeFalcon0xc8770::SetAlphaOverride(undefined4, undefined4)
 {
@@ -589,6 +710,159 @@ void BronzeFalcon0xc8770::VTable0x58(undefined4, undefined4)
 	STUB(0x1000b3d0);
 }
 
+// FUNCTION: GOLDP 0x100016f0 FOLDED
+LegoBool32 BronzeFalcon0xc8770::VTable0x110() const
+{
+	MATCHING(0x100016f0);
+	return FALSE;
+}
+
+// FUNCTION: GOLDP 0x1000b4a0
+void BronzeFalcon0xc8770::FUN_1000b4a0()
+{
+	switch (m_unk0xc8700) {
+	case 0:
+		m_countTextureFormats = 1;
+		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+		if (m_textureFormats == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+		m_textureFormats[0].m_redBitMask = 0x00;
+		m_textureFormats[0].m_grnBitMask = 0x00;
+		m_textureFormats[0].m_bluBitMask = 0x00;
+		m_textureFormats[0].m_alpBitMask = 0x00;
+		m_textureFormats[0].m_paletteMask = 0xff;
+		m_textureFormats[0].m_unk0x10 = 0;
+		m_textureFormats[0].m_bitsPerPixel = 8;
+		break;
+	case 1:
+		m_countTextureFormats = 1;
+		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+		if (m_textureFormats == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+		m_textureFormats[0].m_redBitMask = 0xe0;
+		m_textureFormats[0].m_grnBitMask = 0x1c;
+		m_textureFormats[0].m_bluBitMask = 0x03;
+		m_textureFormats[0].m_alpBitMask = 0x00;
+		m_textureFormats[0].m_paletteMask = 0xff;
+		m_textureFormats[0].m_unk0x10 = 0;
+		m_textureFormats[0].m_bitsPerPixel = 8;
+		break;
+	case 2:
+		m_countTextureFormats = 3;
+		m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+		if (m_textureFormats == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+		m_textureFormats[1].m_redBitMask = 0x00;
+		m_textureFormats[1].m_grnBitMask = 0x00;
+		m_textureFormats[1].m_bluBitMask = 0x00;
+		m_textureFormats[1].m_alpBitMask = 0x00;
+		m_textureFormats[1].m_paletteMask = 0xff;
+		m_textureFormats[1].m_unk0x10 = 0;
+		m_textureFormats[1].m_bitsPerPixel = 8;
+		if (m_renderTargetInfo->m_textureFormat.GetGreenBitCount() == 6) {
+			m_textureFormats[0].m_redBitMask = 0xf800;
+			m_textureFormats[0].m_grnBitMask = 0x07e0;
+			m_textureFormats[0].m_bluBitMask = 0x001f;
+			m_textureFormats[0].m_alpBitMask = 0x0000;
+			m_textureFormats[0].m_paletteMask = 0;
+			m_textureFormats[0].m_unk0x10 = 0;
+			m_textureFormats[0].m_bitsPerPixel = 16;
+			m_textureFormats[2].m_redBitMask = 0xf8000000;
+			m_textureFormats[2].m_grnBitMask = 0x07e00000;
+			m_textureFormats[2].m_bluBitMask = 0x001f0000;
+			m_textureFormats[2].m_alpBitMask = 0x000003ff;
+			m_textureFormats[2].m_paletteMask = 0;
+			m_textureFormats[2].m_unk0x10 = 0;
+			m_textureFormats[2].m_bitsPerPixel = 32;
+		}
+		else {
+			m_textureFormats[0].m_redBitMask = 0x7c00;
+			m_textureFormats[0].m_grnBitMask = 0x03e0;
+			m_textureFormats[0].m_bluBitMask = 0x001f;
+			m_textureFormats[0].m_alpBitMask = 0x0000;
+			m_textureFormats[0].m_paletteMask = 0;
+			m_textureFormats[0].m_unk0x10 = 0;
+			m_textureFormats[0].m_bitsPerPixel = 16;
+			m_textureFormats[2].m_redBitMask = 0x7c000000;
+			m_textureFormats[2].m_grnBitMask = 0x03e00000;
+			m_textureFormats[2].m_bluBitMask = 0x001f0000;
+			m_textureFormats[2].m_alpBitMask = 0x000003ff;
+			m_textureFormats[2].m_paletteMask = 0;
+			m_textureFormats[2].m_unk0x10 = 0;
+			m_textureFormats[2].m_bitsPerPixel = 32;
+		}
+		break;
+	}
+}
+
+// FUNCTION: GOLDP 0x1000b7e0
+HRESULT BronzeFalcon0xc8770::CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context)
+{
+	LegoU32* count = static_cast<LegoU32*>(p_context);
+	*count += 1;
+	return TRUE;
+}
+
+// FUNCTION: GOLDP 0x1000b800
+HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context)
+{
+	BronzeFalcon0xc8770* self = static_cast<BronzeFalcon0xc8770*>(p_context);
+	FalconTextureFormat* format = &self->m_textureFormats[self->m_unk0x2c];
+	self->m_unk0x2c += 1;
+	if (p_format->dwFlags & DDPF_PALETTEINDEXED8) {
+		format->m_paletteMask = 0xff;
+		format->m_redBitMask = 0;
+		format->m_grnBitMask = 0;
+		format->m_bluBitMask = 0;
+		format->m_unk0x10 = 0;
+		format->m_bitsPerPixel = 8;
+	}
+	else if (p_format->dwFlags & DDPF_PALETTEINDEXED4) {
+		format->m_paletteMask = 0xf;
+		format->m_redBitMask = 0;
+		format->m_grnBitMask = 0;
+		format->m_bluBitMask = 0;
+		format->m_unk0x10 = 0;
+		format->m_bitsPerPixel = 4;
+	}
+	else if (p_format->dwFlags & DDPF_PALETTEINDEXED2) {
+		format->m_paletteMask = 0x3;
+		format->m_redBitMask = 0;
+		format->m_grnBitMask = 0;
+		format->m_bluBitMask = 0;
+		format->m_unk0x10 = 0;
+		format->m_bitsPerPixel = 2;
+	}
+	else if (p_format->dwFlags & DDPF_PALETTEINDEXED1) {
+		format->m_paletteMask = 0x1;
+		format->m_redBitMask = 0;
+		format->m_grnBitMask = 0;
+		format->m_bluBitMask = 0;
+		format->m_unk0x10 = 0;
+		format->m_bitsPerPixel = 1;
+	}
+	else {
+		format->m_redBitMask = p_format->dwRBitMask;
+		format->m_grnBitMask = p_format->dwGBitMask;
+		format->m_bluBitMask = p_format->dwBBitMask;
+		format->m_paletteMask = 0;
+		format->m_unk0x10 = 0;
+		LegoU32 bitCount = p_format->dwRGBBitCount;
+		format->m_bitsPerPixel = bitCount;
+	}
+	if (p_format->dwFlags & DDPF_ALPHAPIXELS) {
+		format->m_alpBitMask = p_format->dwRGBAlphaBitMask;
+	}
+	else {
+		format->m_alpBitMask = 0;
+	}
+
+	return TRUE;
+}
+
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void BronzeFalcon0xc8770::VTable0x38()
 {
@@ -617,104 +891,4 @@ void BronzeFalcon0xc8770::VTable0xec(undefined4)
 void BronzeFalcon0xc8770::VTable0xf4()
 {
 	// empty
-}
-
-// FUNCTION: GOLDP 0x100016f0 FOLDED
-LegoBool32 BronzeFalcon0xc8770::VTable0x110() const
-{
-	MATCHING(0x100016f0);
-	return FALSE;
-}
-
-// STUB: GOLDP 0x100082e0 FOLDED
-void BronzeFalcon0xc8770::FUN_100082e0()
-{
-	// TODO
-	STUB(0x100082e0);
-}
-
-// STUB: GOLDP 0x1000a2c0 FOLDED
-void BronzeFalcon0xc8770::FUN_1000a2c0(undefined*)
-{
-	// TODO
-	STUB(0x1000a2c0);
-}
-
-// STUB: GOLDP 0x1000a950 FOLDED
-void BronzeFalcon0xc8770::FUN_1000a950(undefined*)
-{
-	// TODO
-	STUB(0x1000a950);
-}
-
-// STUB: GOLDP 0x1000b4a0 FOLDED
-void BronzeFalcon0xc8770::FUN_1000b4a0()
-{
-	// TODO
-	STUB(0x1000b4a0);
-}
-
-// FUNCTION: GOLDP 0x1000b7e0
-HRESULT BronzeFalcon0xc8770::CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context)
-{
-	LegoU32* count = static_cast<LegoU32*>(p_context);
-	*count += 1;
-	return TRUE;
-}
-
-// FUNCTION: GOLDP 0x1000b800
-HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context)
-{
-	BronzeFalcon0xc8770* self = static_cast<BronzeFalcon0xc8770*>(p_context);
-	FalconTextureFormat* format = &self->m_textureFormats[self->m_unk0x2c];
-	self->m_unk0x2c += 1;
-	if (p_format->dwFlags & DDPF_PALETTEINDEXED8) {
-		format->m_unk0x14 = 0xff;
-		format->m_redBitMask = 0;
-		format->m_grnBitMask = 0;
-		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
-		format->m_rgbBitCount = 8;
-	}
-	else if (p_format->dwFlags & DDPF_PALETTEINDEXED4) {
-		format->m_unk0x14 = 0xf;
-		format->m_redBitMask = 0;
-		format->m_grnBitMask = 0;
-		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
-		format->m_rgbBitCount = 4;
-	}
-	else if (p_format->dwFlags & DDPF_PALETTEINDEXED2) {
-		format->m_unk0x14 = 0x3;
-		format->m_redBitMask = 0;
-		format->m_grnBitMask = 0;
-		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
-		format->m_rgbBitCount = 2;
-	}
-	else if (p_format->dwFlags & DDPF_PALETTEINDEXED1) {
-		format->m_unk0x14 = 0x1;
-		format->m_redBitMask = 0;
-		format->m_grnBitMask = 0;
-		format->m_bluBitMask = 0;
-		format->m_unk0x10 = 0;
-		format->m_rgbBitCount = 1;
-	}
-	else {
-		format->m_redBitMask = p_format->dwRBitMask;
-		format->m_grnBitMask = p_format->dwGBitMask;
-		format->m_bluBitMask = p_format->dwBBitMask;
-		format->m_unk0x14 = 0;
-		format->m_unk0x10 = 0;
-		LegoU32 bitCount = p_format->dwRGBBitCount;
-		format->m_rgbBitCount = bitCount;
-	}
-	if (p_format->dwFlags & DDPF_ALPHAPIXELS) {
-		format->m_alpBitMask = p_format->dwRGBAlphaBitMask;
-	}
-	else {
-		format->m_alpBitMask = 0;
-	}
-
-	return TRUE;
 }

@@ -9,15 +9,15 @@
 class BronzeDuneBag0xc : public IPalette0x4 {
 public:
 	BronzeDuneBag0xc();
-	void GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
-	void CopyEntriesFrom(IPalette0x4* p_source) override;                                // vtable+0x
-	void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
-	void GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index) override;                      // vtable+0x
-	LegoS32 FindEntry(PALETTEENTRY* p_entry) override;                                   // vtable+0x
-	LegoU32 GetFirstEntry() override;                                                    // vtable+0x
-	LegoU32 GetEntryCount() override;                                                    // vtable+0x
-	LegoU32 GetPaletteSize() override;                                                   // vtable+0x
-	virtual ~BronzeDuneBag0xc();                                                         // vtable+0x00
+	void GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
+	void CopyEntriesFrom(IPalette0x4* p_source) override;                             // vtable+0x
+	void SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x
+	void GetEntry(ColorRGBA* p_entry, LegoU32 p_index) override;                      // vtable+0x
+	LegoS32 FindEntry(const ColorRGBA& p_entry) override;                             // vtable+0x
+	LegoU32 GetFirstEntry() override;                                                 // vtable+0x
+	LegoU32 GetEntryCount() override;                                                 // vtable+0x
+	LegoU32 GetPaletteSize() override;                                                // vtable+0x
+	virtual ~BronzeDuneBag0xc();                                                      // vtable+0x00
 
 	void FUN_1002a120(undefined4*);
 	void FUN_1002a1b0();
@@ -26,8 +26,8 @@ public:
 	// BronzeDuneBag0xc::`scalar deleting destructor'
 
 protected:
-	PALETTEENTRY* m_entries; // 0x4
-	LegoU32 m_size;          // 0x8
+	ColorRGBA* m_entries; // 0x4
+	LegoU32 m_size;       // 0x8
 };
 
 #endif // BRONZEDUNEBAG0XC_H

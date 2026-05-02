@@ -45,7 +45,7 @@ LegoS32 DepthBuffer0x38::Create(GolDrawDPState* p_arg1, SlatePeak0x58* p_surface
 	m_pixelFlags = c_lockRequestRead;
 	m_width = p_surface->m_width;
 	m_height = p_surface->m_height;
-	m_bitsPerPixel = static_cast<LegoU16>(ddSurfaceDesc.ddpfPixelFormat.dwZBufferBitDepth);
+	m_textureFormat.m_bitsPerPixel = static_cast<LegoU16>(ddSurfaceDesc.ddpfPixelFormat.dwZBufferBitDepth);
 
 	LegoS32 result = p_surface->AttachDepthBuffer(this);
 	if (result == 0) {

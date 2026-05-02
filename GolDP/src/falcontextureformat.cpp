@@ -98,7 +98,7 @@ LegoU32 FalconTextureFormat::FUN_1001cc10() const
 // FUNCTION: GOLDP 0x1001cc40
 LegoU32 FalconTextureFormat::FUN_1001cc40() const
 {
-	LegoU16 mask = m_unk0x14;
+	LegoU16 mask = m_paletteMask;
 	if (mask == 0) {
 		return 0;
 	}
@@ -180,7 +180,7 @@ LegoU32 FalconTextureFormat::GetAlphaBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccf0
-LegoU32 FalconTextureFormat::MapRGBA(const PALETTEENTRY& p_rgba) const
+LegoU32 FalconTextureFormat::MapRGBA(const ColorRGBA& p_rgba) const
 {
 	LegoU32 redMask = m_redBitMask;
 	LegoU32 mask = redMask;
@@ -254,10 +254,10 @@ LegoU32 FalconTextureFormat::MapRGBA(const PALETTEENTRY& p_rgba) const
 	LegoU32 red;
 	LegoU32 grn;
 
-	red = p_rgba.peRed >> redRightShift;
-	grn = p_rgba.peGreen >> grnRightShift;
-	blu = p_rgba.peBlue >> mask;
-	LegoU32 alp = p_rgba.peFlags >> (8 - alpCount);
+	red = p_rgba.m_red >> redRightShift;
+	grn = p_rgba.m_grn >> grnRightShift;
+	blu = p_rgba.m_blu >> mask;
+	LegoU32 alp = p_rgba.m_alp >> (8 - alpCount);
 
 	{
 		LegoU32 shift = redMask;

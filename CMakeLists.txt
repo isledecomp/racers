@@ -105,6 +105,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/whitefalcon0x140.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
   GolDP/src/falcontextureformat.cpp
+  GolDP/src/bronzefalconsurface0x5c.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/depthbuffer0x38.cpp
 )

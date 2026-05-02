@@ -37,34 +37,34 @@ void BronzeDuneBag0xc::FUN_1002a1b0()
 }
 
 // FUNCTION: GOLDP 0x1002a1e0
-void BronzeDuneBag0xc::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
+void BronzeDuneBag0xc::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	for (LegoU32 i = 0; i < p_count; i++) {
-		p_entries[i].peRed = m_entries[p_start + i].peRed;
-		p_entries[i].peGreen = m_entries[p_start + i].peGreen;
-		p_entries[i].peBlue = m_entries[p_start + i].peBlue;
-		p_entries[i].peFlags = m_entries[p_start + i].peFlags;
+		p_entries[i].m_red = m_entries[p_start + i].m_red;
+		p_entries[i].m_grn = m_entries[p_start + i].m_grn;
+		p_entries[i].m_blu = m_entries[p_start + i].m_blu;
+		p_entries[i].m_alp = m_entries[p_start + i].m_alp;
 	}
 }
 
 // FUNCTION: GOLDP 0x1002a230
-void BronzeDuneBag0xc::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
+void BronzeDuneBag0xc::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	for (LegoU32 i = 0; i < p_count; i++) {
-		m_entries[p_start + i].peRed = p_entries[i].peRed;
-		m_entries[p_start + i].peGreen = p_entries[i].peGreen;
-		m_entries[p_start + i].peBlue = p_entries[i].peBlue;
-		m_entries[p_start + i].peFlags = p_entries[i].peFlags;
+		m_entries[p_start + i].m_red = p_entries[i].m_red;
+		m_entries[p_start + i].m_grn = p_entries[i].m_grn;
+		m_entries[p_start + i].m_blu = p_entries[i].m_blu;
+		m_entries[p_start + i].m_alp = p_entries[i].m_alp;
 	}
 }
 
 // FUNCTION: GOLDP 0x1002a290
-void BronzeDuneBag0xc::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
+void BronzeDuneBag0xc::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 {
-	p_entry->peRed = m_entries[p_index].peRed;
-	p_entry->peGreen = m_entries[p_index].peGreen;
-	p_entry->peBlue = m_entries[p_index].peBlue;
-	p_entry->peFlags = m_entries[p_index].peFlags;
+	p_entry->m_red = m_entries[p_index].m_red;
+	p_entry->m_grn = m_entries[p_index].m_grn;
+	p_entry->m_blu = m_entries[p_index].m_blu;
+	p_entry->m_alp = m_entries[p_index].m_alp;
 }
 
 // FUNCTION: GOLDP 0x1002a2d0
@@ -74,13 +74,13 @@ void BronzeDuneBag0xc::CopyEntriesFrom(IPalette0x4* p_source)
 }
 
 // FUNCTION: GOLDP 0x1002a300
-LegoS32 BronzeDuneBag0xc::FindEntry(PALETTEENTRY* p_entry)
+LegoS32 BronzeDuneBag0xc::FindEntry(const ColorRGBA& p_entry)
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_size; i++) {
-		if (m_entries[i].peRed == p_entry->peRed && m_entries[i].peGreen == p_entry->peGreen &&
-			m_entries[i].peBlue == p_entry->peBlue && m_entries[i].peFlags == p_entry->peFlags) {
+		if (m_entries[i].m_red == p_entry.m_red && m_entries[i].m_grn == p_entry.m_grn &&
+			m_entries[i].m_blu == p_entry.m_blu && m_entries[i].m_alp == p_entry.m_alp) {
 			return i;
 		}
 	}

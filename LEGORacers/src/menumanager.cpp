@@ -366,18 +366,18 @@ void MenuManager::FUN_0042d3e0(LegoU16)
 // FUNCTION: LEGORACERS 0x0042d510
 void MenuManager::Run()
 {
-	BronzeFalcon0xc8770::JasperRipple0x4 rendererState;
+	ColorRGBA rendererState;
 	Win32GolApp* golApp = m_unk0x04.m_context->m_golApp;
 	StackOfLegoU16* stack;
 	MenuAnimationList* menuAnimations;
 	LegoU32 frameDeltaMs;
 	LegoU16 previousMenu;
 
-	rendererState.m_unk0x00[0] = 0;
-	rendererState.m_unk0x00[1] = 0;
-	rendererState.m_unk0x00[2] = 0;
-	rendererState.m_unk0x00[3] = 0;
-	m_unk0x4cd8->VTable0x1c(&rendererState);
+	rendererState.m_red = 0;
+	rendererState.m_grn = 0;
+	rendererState.m_blu = 0;
+	rendererState.m_alp = 0;
+	m_unk0x4cd8->VTable0x1c(rendererState);
 	m_unk0x4dd0 = TRUE;
 
 	while (m_unk0x4dd0) {

@@ -141,7 +141,6 @@ LegoFloat g_arccosTable[1024] = {
 };
 
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::TexturedVertex, 0x18)
-DECOMP_SIZE_ASSERT(WhiteFalcon0x140::RenderTargetInfo, 0x2e)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
 // FUNCTION: GOLDP 0x10028840

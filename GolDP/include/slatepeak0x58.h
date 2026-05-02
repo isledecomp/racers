@@ -33,7 +33,7 @@ public:
 	// SYNTHETIC: GOLDP 0x10003170
 	// SlatePeak0x58::`scalar deleting destructor'
 
-private:
+protected:
 	friend class DepthBuffer0x38;
 	friend class BronzeFalcon0xc8770;
 

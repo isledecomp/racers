@@ -42,25 +42,25 @@ void PearlDew0x0c::Release()
 }
 
 // FUNCTION: GOLDP 0x10007420
-void PearlDew0x0c::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
+void PearlDew0x0c::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	LegoChar buffer[c_errorBufferSize];
 
 	if (p_start < m_firstEntry) {
-		p_entries->peRed = 0;
-		p_entries->peGreen = 0;
-		p_entries->peBlue = 0;
-		p_entries->peFlags = 0;
+		p_entries->m_red = 0;
+		p_entries->m_grn = 0;
+		p_entries->m_blu = 0;
+		p_entries->m_alp = 0;
 		p_count += p_start - m_firstEntry;
 		p_start = m_firstEntry;
 	}
 
 	if (p_start + p_count >= (LegoU32) (m_firstEntry + m_entryCount)) {
 		p_count--;
-		p_entries[p_count].peRed = c_colorChannelMax;
-		p_entries[p_count].peGreen = c_colorChannelMax;
-		p_entries[p_count].peBlue = c_colorChannelMax;
-		p_entries[p_count].peFlags = c_paletteEntryFlagsAll;
+		p_entries[p_count].m_red = c_colorChannelMax;
+		p_entries[p_count].m_grn = c_colorChannelMax;
+		p_entries[p_count].m_blu = c_colorChannelMax;
+		p_entries[p_count].m_alp = c_paletteEntryFlagsAll;
 	}
 
 	if (p_count) {
@@ -71,22 +71,22 @@ void PearlDew0x0c::GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 
 		}
 
 		for (LegoU32 i = 0; i < p_count; i++) {
-			p_entries[i].peRed = g_paletteEntries[i].peRed;
-			p_entries[i].peGreen = g_paletteEntries[i].peGreen;
-			p_entries[i].peBlue = g_paletteEntries[i].peBlue;
+			p_entries[i].m_red = g_paletteEntries[i].peRed;
+			p_entries[i].m_grn = g_paletteEntries[i].peGreen;
+			p_entries[i].m_blu = g_paletteEntries[i].peBlue;
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x10007500
-void PearlDew0x0c::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
+void PearlDew0x0c::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	LegoChar buffer[c_errorBufferSize];
 
 	for (LegoU32 i = 0; i < p_count; i++) {
-		g_paletteEntries[i].peRed = p_entries[i].peRed;
-		g_paletteEntries[i].peGreen = p_entries[i].peGreen;
-		g_paletteEntries[i].peBlue = p_entries[i].peBlue;
+		g_paletteEntries[i].peRed = p_entries[i].m_red;
+		g_paletteEntries[i].peGreen = p_entries[i].m_grn;
+		g_paletteEntries[i].peBlue = p_entries[i].m_blu;
 		g_paletteEntries[i].peFlags = PC_NOCOLLAPSE;
 	}
 
@@ -98,7 +98,7 @@ void PearlDew0x0c::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 
 }
 
 // FUNCTION: GOLDP 0x100075b0
-void PearlDew0x0c::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
+void PearlDew0x0c::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 {
 	PALETTEENTRY entry;
 	LegoChar buffer[c_errorBufferSize];
@@ -109,24 +109,24 @@ void PearlDew0x0c::GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index)
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
 
-	p_entry->peRed = entry.peRed;
-	p_entry->peGreen = entry.peGreen;
-	p_entry->peBlue = entry.peBlue;
-	p_entry->peFlags = c_paletteEntryFlagsAll;
+	p_entry->m_red = entry.peRed;
+	p_entry->m_grn = entry.peGreen;
+	p_entry->m_blu = entry.peBlue;
+	p_entry->m_alp = c_paletteEntryFlagsAll;
 }
 
 // FUNCTION: GOLDP 0x10007620
 void PearlDew0x0c::CopyEntriesFrom(IPalette0x4* p_source)
 {
-	PALETTEENTRY entry;
+	ColorRGBA entry;
 	LegoChar buffer[c_errorBufferSize];
 
 	m_entryCount = p_source->GetEntryCount();
 	for (LegoU32 i = 0; i < m_entryCount; i++) {
 		p_source->GetEntry(&entry, i);
-		g_paletteEntries[i].peRed = entry.peRed;
-		g_paletteEntries[i].peGreen = entry.peGreen;
-		g_paletteEntries[i].peBlue = entry.peBlue;
+		g_paletteEntries[i].peRed = entry.m_red;
+		g_paletteEntries[i].peGreen = entry.m_grn;
+		g_paletteEntries[i].peBlue = entry.m_blu;
 		g_paletteEntries[i].peFlags = PC_NOCOLLAPSE;
 	}
 
@@ -138,7 +138,7 @@ void PearlDew0x0c::CopyEntriesFrom(IPalette0x4* p_source)
 }
 
 // FUNCTION: GOLDP 0x100076d0
-LegoS32 PearlDew0x0c::FindEntry(PALETTEENTRY* p_entry)
+LegoS32 PearlDew0x0c::FindEntry(const ColorRGBA& p_entry)
 {
 	DWORD caps;
 	LegoChar buffer[c_errorBufferSize];
@@ -167,8 +167,8 @@ LegoS32 PearlDew0x0c::FindEntry(PALETTEENTRY* p_entry)
 	}
 
 	for (LegoU32 i = 0; i < entryCount; i++) {
-		if (g_paletteEntries[i].peRed == p_entry->peRed && g_paletteEntries[i].peGreen == p_entry->peGreen &&
-			g_paletteEntries[i].peBlue == p_entry->peBlue) {
+		if (g_paletteEntries[i].peRed == p_entry.m_red && g_paletteEntries[i].peGreen == p_entry.m_grn &&
+			g_paletteEntries[i].peBlue == p_entry.m_blu) {
 			return i;
 		}
 	}
@@ -234,7 +234,7 @@ void PearlDew0x0c::Set332PaletteEntries()
 					entry[0] = greenValue;
 					blueValue <<= 2;
 					blueValue |= blue;
-					entry += sizeof(PALETTEENTRY);
+					entry += sizeof(ColorRGBA);
 					blueValue <<= 2;
 					blueValue |= blue;
 					entry[-3] = blueValue;

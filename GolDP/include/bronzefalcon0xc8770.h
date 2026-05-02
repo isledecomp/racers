@@ -25,9 +25,9 @@ public:
 	~BronzeFalcon0xc8770() override;                                         // vtable+0x08
 	void VTable0x0c(undefined4, undefined4, undefined4) override;            // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10
-	const RenderTargetInfo* GetRenderTargetInfo() override;                  // vtable+0x14
+	const SlatePeak0x58* GetRenderTargetInfo() override;                     // vtable+0x14
 	void VTable0x18() override;                                              // vtable+0x18
-	void VTable0x1c(JasperRipple0x4*) override;                              // vtable+0x1c
+	void VTable0x1c(const ColorRGBA&) override;                              // vtable+0x1c
 	void VTable0x20(AmberLens0x344*) override;                               // vtable+0x20
 	void VTable0x28() override;                                              // vtable+0x28
 	void VTable0x2c(undefined4) override;                                    // vtable+0x2c
@@ -79,7 +79,7 @@ public:
 	void VTable0xdc() override;                                             // vtable+0xdc
 	void VTable0xe0() override;                                             // vtable+0xe0
 	void VTable0xe4() override;                                             // vtable+0xe4
-	void VTable0xe8(undefined4) override;                                   // vtable+0xe8
+	void VTable0xe8(LegoBool32 p_arg) override;                             // vtable+0xe8
 	void VTable0xec(undefined4) override;                                   // vtable+0xec
 	void VTable0xf0() override;                                             // vtable+0xf0
 	void VTable0xf4() override;                                             // vtable+0xf4
@@ -92,7 +92,11 @@ public:
 	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
 	undefined4* FUN_004131a0(const LegoChar* p_name);
+	undefined4 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
 	undefined4 FUN_10007e20(LegoU32 p_flags);
+
+	LPDIRECT3D3 GetDirect3D3() const;
+	LPDIRECTDRAW4 GetDirectDraw4() const;
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
@@ -118,14 +122,14 @@ private:
 	D3DDEVICEDESC m_d3dDeviceDesc;                         // 0x148
 	LPDIRECT3DVIEWPORT3 m_d3dViewport;                     // 0x244
 	D3DVIEWPORT2 m_viewportParams;                         // 0x248
-	undefined m_unk0x274[0x2c4 - 0x274];                   // 0x274
+	D3DMATERIAL m_materialParams;                          // 0x274
 	LPDIRECT3DMATERIAL3 m_backgroundMaterial;              // 0x2c4
-	undefined m_unk0x2c8[0x2cc - 0x2c8];                   // 0x2c8
-	JasperRipple0x4 m_unk0x2cc;                            // 0x2cc
-	undefined m_unk0x2d0[0x2d4 - 0x2d0];                   // 0x2d0
+	D3DMATERIALHANDLE m_backgroundMaterialHandle;          // 0x2c8
+	ColorRGBA m_unk0x2cc;                                  // 0x2cc
+	LegoU32 m_unk0x2d0;                                    // 0x2d0
 	DuskwindBananaRelic0x30 m_unk0x2d4;                    // 0x2d4
 	SlatePeak0x58* m_unk0x304;                             // 0x304
-	RenderTargetInfo* m_renderTargetInfo;                  // 0x308
+	SlatePeak0x58* m_renderTargetInfo;                     // 0x308
 	BronzeFalconSurface0x5c* m_unk0x30c;                   // 0x30c
 	DepthBuffer0x38 m_depthBuffer;                         // 0x310
 	undefined m_unk0x348[0xc384c - 0x348];                 // 0x348
@@ -135,7 +139,8 @@ private:
 	undefined4 m_unk0xc83c4;                               // 0xc83c4
 	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];             // 0xc83c8
 	WorkHorse0x58 m_unk0xc8698;                            // 0xc8698
-	undefined m_unk0xc86f0[0xc8700 - 0xc86f0];             // 0xc86f0
+	undefined m_unk0xc86f0[0xc86fc - 0xc86f0];             // 0xc86f0
+	float m_unk0xc86fc;                                    // 0xc86fc
 	undefined4 m_unk0xc8700;                               // 0xc8700
 	undefined m_unk0xc8704[0xc8708 - 0xc8704];             // 0xc8704
 	undefined4 m_unk0xc8708[11];                           // 0xc8708

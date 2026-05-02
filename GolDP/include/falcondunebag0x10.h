@@ -14,8 +14,8 @@ public:
 	FalconDuneBag0x10();
 	~FalconDuneBag0x10() override; // vtable+0x20
 
-	void CopyEntriesFrom(IPalette0x4* p_source) override;                                // vtable+0x04
-	void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
+	void CopyEntriesFrom(IPalette0x4* p_source) override;                             // vtable+0x04
+	void SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
 
 	void FUN_10014770(undefined4*);
 	void Destroy();

@@ -2,6 +2,7 @@
 #define GOLDP_SILVERDUNE0X30_H
 
 #include "decomp.h"
+#include "falcontextureformat.h"
 #include "types.h"
 
 class PearlDew0x0c;
@@ -48,24 +49,20 @@ public:
 	// SilverDune0x30::`scalar deleting destructor'
 
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
+	LegoU16 GetWidth() const { return m_width; }
+	LegoU16 GetHeight() const { return m_height; }
 
 protected:
 	friend class BronzeFalcon0xc8770;
 
-	undefined4 m_unk0x04;   // 0x04
-	undefined4 m_unk0x08;   // 0x08
-	undefined4 m_unk0x0c;   // 0x0c
-	undefined4 m_unk0x10;   // 0x10
-	undefined4 m_unk0x14;   // 0x14
-	LegoU16 m_usesPalette;  // 0x18
-	LegoU16 m_bitsPerPixel; // 0x1a
-	LegoU8* m_pixels;       // 0x1c
-	LegoU8* m_auxPixels;    // 0x20
-	LegoU16 m_pitch;        // 0x24
-	LegoU16 m_pixelFlags;   // 0x26
-	LegoU16 m_auxFlags;     // 0x28
-	LegoU16 m_width;        // 0x2a
-	LegoU16 m_height;       // 0x2c
+	FalconTextureFormat m_textureFormat; // 0x04
+	LegoU8* m_pixels;                    // 0x1c
+	LegoU8* m_auxPixels;                 // 0x20
+	LegoU16 m_pitch;                     // 0x24
+	LegoU16 m_pixelFlags;                // 0x26
+	LegoU16 m_auxFlags;                  // 0x28
+	LegoU16 m_width;                     // 0x2a
+	LegoU16 m_height;                    // 0x2c
 };
 
 #endif // GOLDP_SILVERDUNE0X30_H

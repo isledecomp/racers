@@ -24,7 +24,7 @@ public:
 		c_332RedLevels = 8,
 		c_332GreenLevels = 8,
 		c_332BlueLevels = 4,
-		c_332GreenStride = c_332BlueLevels * sizeof(PALETTEENTRY),
+		c_332GreenStride = c_332BlueLevels * sizeof(ColorRGBA),
 		c_332RedStride = c_332GreenLevels * c_332GreenStride
 	};
 
@@ -34,14 +34,14 @@ public:
 	void Release();
 	void Set332PaletteEntries();
 
-	void GetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x00
-	void CopyEntriesFrom(IPalette0x4* p_source) override;                                // vtable+0x04
-	void SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
-	void GetEntry(PALETTEENTRY* p_entry, LegoU32 p_index) override;                      // vtable+0x0c
-	LegoS32 FindEntry(PALETTEENTRY* p_entry) override;                                   // vtable+0x10
-	LegoU32 GetFirstEntry() override;                                                    // vtable+0x14
-	LegoU32 GetEntryCount() override;                                                    // vtable+0x18
-	LegoU32 GetPaletteSize() override;                                                   // vtable+0x1c
+	void GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x00
+	void CopyEntriesFrom(IPalette0x4* p_source) override;                             // vtable+0x04
+	void SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
+	void GetEntry(ColorRGBA* p_entry, LegoU32 p_index) override;                      // vtable+0x0c
+	LegoS32 FindEntry(const ColorRGBA& p_entry) override;                             // vtable+0x10
+	LegoU32 GetFirstEntry() override;                                                 // vtable+0x14
+	LegoU32 GetEntryCount() override;                                                 // vtable+0x18
+	LegoU32 GetPaletteSize() override;                                                // vtable+0x1c
 
 	LPDIRECTDRAWPALETTE GetPalette() const { return m_palette; }
 

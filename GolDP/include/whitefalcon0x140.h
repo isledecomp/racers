@@ -1,7 +1,9 @@
 #ifndef WHITEFALCON0x140_H
 #define WHITEFALCON0x140_H
 
+#include "color.h"
 #include "decomp.h"
+#include "falcontextureformat.h"
 #include "types.h"
 
 class AmberHaze0x1c;
@@ -19,11 +21,6 @@ class SlatePeak0x58;
 // SIZE 0x140
 class WhiteFalcon0x140 {
 public:
-	// SIZE 0x4
-	struct JasperRipple0x4 {
-		undefined m_unk0x00[0x4 - 0x00]; // 0x00
-	};
-
 	// SIZE 0x18
 	struct TexturedVertex {
 		LegoFloat m_x;  // 0x00
@@ -35,13 +32,6 @@ public:
 		LegoU8 m_green; // 0x15
 		LegoU8 m_blue;  // 0x16
 		LegoU8 m_alpha; // 0x17
-	};
-
-	// SIZE 0x2e
-	struct RenderTargetInfo {
-		undefined m_unk0x00[0x2a - 0x00]; // 0x00
-		LegoU16 m_width;                  // 0x2a
-		LegoU16 m_height;                 // 0x2c
 	};
 
 	enum Flags {
@@ -69,9 +59,9 @@ public:
 	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
 	virtual void VTable0x0c(undefined4, undefined4, undefined4);            // vtable+0x0c
 	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
-	virtual const RenderTargetInfo* GetRenderTargetInfo() = 0;              // vtable+0x14
+	virtual const SlatePeak0x58* GetRenderTargetInfo() = 0;                 // vtable+0x14
 	virtual void VTable0x18() = 0;                                          // vtable+0x18
-	virtual void VTable0x1c(JasperRipple0x4*) = 0;                          // vtable+0x1c
+	virtual void VTable0x1c(const ColorRGBA&) = 0;                          // vtable+0x1c
 	virtual void VTable0x20(AmberLens0x344*) = 0;                           // vtable+0x20
 	virtual void VTable0x24();                                              // vtable+0x24
 	virtual void VTable0x28();                                              // vtable+0x28
@@ -128,7 +118,7 @@ public:
 	virtual void VTable0xdc() = 0;                                                          // vtable+0xdc
 	virtual void VTable0xe0() = 0;                                                          // vtable+0xe0
 	virtual void VTable0xe4() = 0;                                                          // vtable+0xe4
-	virtual void VTable0xe8(undefined4) = 0;                                                // vtable+0xe8
+	virtual void VTable0xe8(LegoBool32 p_arg) = 0;                                          // vtable+0xe8
 	virtual void VTable0xec(undefined4);                                                    // vtable+0xec
 	virtual void VTable0xf0() = 0;                                                          // vtable+0xf0
 	virtual void VTable0xf4();                                                              // vtable+0xf4

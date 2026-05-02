@@ -6,7 +6,6 @@ DECOMP_SIZE_ASSERT(SilverDune0x30, 0x30)
 
 // FUNCTION: GOLDP 0x1001cf00
 SilverDune0x30::SilverDune0x30()
-	: m_unk0x04(0), m_unk0x08(0), m_unk0x0c(0), m_unk0x10(0), m_unk0x14(0), m_usesPalette(0), m_bitsPerPixel(0)
 {
 	m_pixels = NULL;
 	m_auxPixels = NULL;
@@ -109,7 +108,7 @@ void SilverDune0x30::Fill(LegoU32 p_color)
 	LegoU32 height = m_height;
 	LegoU32 width = m_width;
 
-	switch (m_bitsPerPixel) {
+	switch (m_textureFormat.m_bitsPerPixel) {
 	case 4:
 		p_color &= 0x0f;
 		width >>= 1;
@@ -194,7 +193,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 	LegoBool32 unlockDest;
 	LegoU8* sourcePixels;
 
-	if (destSurface->m_bitsPerPixel != p_source->m_bitsPerPixel) {
+	if (destSurface->m_textureFormat.m_bitsPerPixel != p_source->m_textureFormat.m_bitsPerPixel) {
 		return;
 	}
 
@@ -230,7 +229,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 		copyHeight = destHeight - p_y;
 	}
 
-	if (destSurface->m_usesPalette) {
+	if (destSurface->m_textureFormat.m_paletteMask) {
 		IPalette0x4* palette = destSurface->GetPalette();
 		palette->CopyEntriesFrom(p_source->GetPalette());
 	}
@@ -255,7 +254,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 		unlockSource = TRUE;
 	}
 
-	if (destSurface->m_bitsPerPixel == 4) {
+	if (destSurface->m_textureFormat.m_bitsPerPixel == 4) {
 		sourcePixels += sourcePitch * p_sourceRect->m_top;
 		destPixels += p_y * destPitch;
 
@@ -306,7 +305,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 		}
 	}
 	else {
-		LegoU32 bytesPerPixel = destSurface->m_bitsPerPixel >> 3;
+		LegoU32 bytesPerPixel = destSurface->m_textureFormat.m_bitsPerPixel >> 3;
 		sourcePixels += (sourcePitch * p_sourceRect->m_top) + (bytesPerPixel * p_sourceRect->m_left);
 		destPixels += (p_y * destPitch) + (p_x * bytesPerPixel);
 

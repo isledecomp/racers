@@ -2,6 +2,7 @@
 
 #include "bronzefalcon0xc8770.h"
 #include "golerror.h"
+#include "slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(MenuAnimationList, 0x8)
 DECOMP_SIZE_ASSERT(MenuAnimationList::Entry, 0x18)
@@ -111,10 +112,10 @@ void MenuAnimationList::Entry::Draw(BronzeFalcon0xc8770* p_renderer)
 	else {
 		scratch.m_rect.m_top = 0;
 		scratch.m_rect.m_left = 0;
-		const BronzeFalcon0xc8770::RenderTargetInfo* renderTargetInfo = p_renderer->GetRenderTargetInfo();
-		scratch.m_rect.m_bottom = renderTargetInfo->m_height;
+		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		scratch.m_rect.m_bottom = renderTargetInfo->GetHeight();
 		renderTargetInfo = p_renderer->GetRenderTargetInfo();
-		scratch.m_rect.m_right = renderTargetInfo->m_width;
+		scratch.m_rect.m_right = renderTargetInfo->GetWidth();
 	}
 
 	if (!(m_flags & c_flagFadeOut)) {

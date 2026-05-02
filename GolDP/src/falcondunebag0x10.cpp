@@ -33,7 +33,7 @@ void FalconDuneBag0x10::Destroy()
 }
 
 // FUNCTION: GOLDP 0x10014820
-void FalconDuneBag0x10::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, LegoU32 p_count)
+void FalconDuneBag0x10::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	BronzeDuneBag0xc::SetEntries(p_entries, p_start, p_count);
 
@@ -49,7 +49,7 @@ void FalconDuneBag0x10::SetEntries(PALETTEENTRY* p_entries, LegoU32 p_start, Leg
 void FalconDuneBag0x10::CopyEntriesFrom(IPalette0x4* p_source)
 {
 	LegoU32 i;
-	PALETTEENTRY entry;
+	ColorRGBA entry;
 	BronzeDuneBag0xc::CopyEntriesFrom(p_source);
 	for (i = 0; i < m_size; i++) {
 		p_source->GetEntry(&entry, i);

@@ -281,13 +281,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/peridottrace0x4e0.cpp
   LEGORacers/src/citrinegrove0x1f4c.cpp
   LEGORacers/src/topazburst0x14.cpp
-  LEGORacers/src/moonstoneglade0x3c.cpp
+  LEGORacers/src/legopiecelibrary.cpp
   LEGORacers/src/crimsonpebble0x228.cpp
   LEGORacers/src/sapphirereef0x2030.cpp
   LEGORacers/src/verdanttide0x38.cpp
   LEGORacers/src/turquoiseglow0x80.cpp
   LEGORacers/src/aquamarinespirit0x3c.cpp
-  LEGORacers/src/malachitecrown0x34.cpp
+  LEGORacers/src/championdefinitionlist.cpp
   LEGORacers/src/racedefinitionlist.cpp
   LEGORacers/src/racenamelist.cpp
   LEGORacers/src/menuanimationlist.cpp

@@ -85,7 +85,7 @@ void AquamarineSpirit0x3c::Clear()
 #endif
 }
 
-// FUNCTION: LEGORACERS 0x0041dae0
+// FUNCTION: LEGORACERS 0x0041dae0 FOLDED
 void AquamarineSpirit0x3c::FUN_0041dae0()
 {
 	GolNameTable::Clear();

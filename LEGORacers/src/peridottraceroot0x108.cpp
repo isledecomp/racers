@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(PeridotTraceRoot0x108, 0x108)
 // FUNCTION: LEGORACERS 0x00450eb0
 PeridotTraceRoot0x108::PeridotTraceRoot0x108()
 {
-	m_unk0x04 = NULL;
+	m_directoryPath = NULL;
 }
 
 // STUB: LEGORACERS 0x00450f10
@@ -27,31 +27,38 @@ PeridotTraceRootEntry0x10::~PeridotTraceRootEntry0x10()
 // FUNCTION: LEGORACERS 0x00450f60
 PeridotTraceRoot0x108::~PeridotTraceRoot0x108()
 {
-	VTable0x00();
+	Clear();
 }
 
-// STUB: LEGORACERS 0x00451040
-void PeridotTraceRoot0x108::VTable0x00()
+// FUNCTION: LEGORACERS 0x00451040
+void PeridotTraceRoot0x108::Clear()
 {
-	// TODO
-	STUB(0x451040);
+	if (m_directoryPath) {
+		delete[] m_directoryPath;
+		m_directoryPath = NULL;
+	}
+
+	PeridotTraceRootEntry0x10* entry = m_entries;
+	for (LegoS32 i = 0; i < sizeOfArray(m_entries); i++, entry++) {
+		entry->Reset();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00451080 FOLDED
-LegoU32 PeridotTraceRoot0x108::VTable0x04()
+LegoU32 PeridotTraceRoot0x108::GetEntryCount()
 {
 	return 16;
 }
 
 // FUNCTION: LEGORACERS 0x00451090
-PeridotTraceRootEntry0x10* PeridotTraceRoot0x108::VTable0x08(LegoU32 p_index)
+PeridotTraceRootEntry0x10* PeridotTraceRoot0x108::GetEntry(LegoU32 p_index)
 {
-	return &m_unk0x08[p_index];
+	return &m_entries[p_index];
 }
 
-// STUB: LEGORACERS 0x00451150
-void PeridotTraceRootEntry0x10::FUN_00451150()
+// FUNCTION: LEGORACERS 0x00451150
+void PeridotTraceRootEntry0x10::Reset()
 {
-	// TODO
-	STUB(0x451150);
+	m_root = NULL;
+	m_index = 0;
 }

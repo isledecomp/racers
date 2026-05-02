@@ -20,7 +20,7 @@
 #include "lavendervault0x764.h"
 #include "legoracers.h"
 #include "menuanimationlist.h"
-#include "moonstoneglade0x3c.h"
+#include "legopiecelibrary.h"
 #include "onyxbreeze0x248.h"
 #include "porcelainveil0x50.h"
 #include "racedefinitionlist.h"
@@ -87,7 +87,7 @@ private:
 		OnyxBreeze0x248 m_inputBindings;              // 0x10
 		CitrineGrove0x1f4c m_unk0x258;                // 0x258
 		TopazBurst0x14 m_unk0x21a4;                   // 0x21a4
-		MoonstoneGlade0x3c m_unk0x21b8;               // 0x21b8
+		LegoPieceLibrary m_pieceLibrary;              // 0x21b8
 		SapphireReef0x2030 m_unk0x21f4;               // 0x21f4
 		VerdantTide0x38 m_unk0x4224;                  // 0x4224
 		TurquoiseGlow0x80 m_unk0x425c;                // 0x425c

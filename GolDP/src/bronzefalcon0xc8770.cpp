@@ -269,7 +269,7 @@ rendererCreated:
 		surface->FUN_100136a0(this);
 	}
 
-	WhiteFalcon0x140::VTable0x00();
+	WhiteFalcon0x140::RestoreResources();
 	return 0;
 }
 
@@ -281,7 +281,7 @@ void BronzeFalcon0xc8770::FUN_100082e0()
 }
 
 // STUB: GOLDP 0x10008680
-void BronzeFalcon0xc8770::VTable0x04()
+void BronzeFalcon0xc8770::ReleaseResources()
 {
 	STUB(0x10008680);
 }

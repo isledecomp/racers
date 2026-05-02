@@ -10,7 +10,7 @@
 // FUNCTION: LEGORACERS 0x00413170
 GolFont0xa0* WhiteFalcon0x140::FindFontByName(const LegoChar* p_name)
 {
-	CinderBasin0x28* node = m_unk0x44;
+	CinderBasin0x28* node = m_fontLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -29,7 +29,7 @@ GolFont0xa0* WhiteFalcon0x140::FindFontByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x004131a0
 UtopianPan0xa4* WhiteFalcon0x140::FindImageByName(const LegoChar* p_name)
 {
-	HypnoticNoise0x1c* node = m_unk0x40;
+	HypnoticNoise0x1c* node = m_imageLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -48,7 +48,7 @@ UtopianPan0xa4* WhiteFalcon0x140::FindImageByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x004131d0
 undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 {
-	MagentaRibbon0x20* node = m_unk0x38;
+	MagentaRibbon0x20* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -67,7 +67,7 @@ undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x00413200
 undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 {
-	AmberHaze0x1c* node = m_unk0x3c;
+	AmberHaze0x1c* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {

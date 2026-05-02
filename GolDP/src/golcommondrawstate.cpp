@@ -36,7 +36,7 @@ void GolCommonDrawState::VTable0x48()
 void GolCommonDrawState::VTable0x50()
 {
 	for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
-		renderer->VTable0x04();
+		renderer->ReleaseResources();
 	}
 
 	GolDrawState::VTable0x50();
@@ -50,7 +50,7 @@ LegoS32 GolCommonDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefi
 	if (!result) {
 		for (BronzeFalcon0xc8770* renderer = m_rendererList; renderer; renderer = renderer->m_nextDrawStateRenderer) {
 			if (renderer != m_currentRenderer) {
-				renderer->VTable0x00();
+				renderer->RestoreResources();
 			}
 		}
 

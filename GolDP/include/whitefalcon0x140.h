@@ -56,8 +56,8 @@ public:
 
 	WhiteFalcon0x140();
 
-	virtual void VTable0x00();                                              // vtable+0x00
-	virtual void VTable0x04();                                              // vtable+0x04
+	virtual LegoS32 RestoreResources();                                     // vtable+0x00
+	virtual void ReleaseResources();                                        // vtable+0x04
 	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
 	virtual void VTable0x0c(undefined4, undefined4, undefined4);            // vtable+0x0c
 	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
@@ -133,15 +133,15 @@ public:
 	virtual LegoBool32 VTable0x110() const;
 
 	void Destroy();
-	void FUN_10028a70(CinderBasin0x28* p_param);
-	void FUN_10028a80(CinderBasin0x28* p_param);
-	void FUN_10028ad0(HypnoticNoise0x1c* p_param);
-	void FUN_10028ae0(HypnoticNoise0x1c* p_param);
-	void FUN_10028b30(MagentaRibbon0x20* p_param);
-	void FUN_10028b40(MagentaRibbon0x20* p_param);
+	void AddFontList(CinderBasin0x28* p_param);
+	void RemoveFontList(CinderBasin0x28* p_param);
+	void AddImageList(HypnoticNoise0x1c* p_param);
+	void RemoveImageList(HypnoticNoise0x1c* p_param);
+	void AddTextureList(MagentaRibbon0x20* p_param);
+	void RemoveTextureList(MagentaRibbon0x20* p_param);
 	undefined4* FindTextureByName(const LegoChar* p_name);
-	void FUN_10028bc0(AmberHaze0x1c* p_param);
-	void FUN_10028bd0(AmberHaze0x1c* p_param);
+	void AddMaterialList(AmberHaze0x1c* p_param);
+	void RemoveMaterialList(AmberHaze0x1c* p_param);
 	undefined4* FindMaterialByName(const LegoChar* p_name);
 
 #ifdef BUILDING_LEGORACERS
@@ -170,12 +170,12 @@ protected:
 	undefined4 m_unk0x24;                         // 0x24
 	undefined4 m_unk0x28;                         // 0x28
 	undefined4 m_unk0x2c;                         // 0x2c
-	undefined4 m_countTextureFormats;             // 0x30
+	LegoU32 m_countTextureFormats;                // 0x30
 	FalconTextureFormat* m_textureFormats;        // 0x34
-	MagentaRibbon0x20* m_unk0x38;                 // 0x38
-	AmberHaze0x1c* m_unk0x3c;                     // 0x3c
-	HypnoticNoise0x1c* m_unk0x40;                 // 0x40
-	CinderBasin0x28* m_unk0x44;                   // 0x44
+	MagentaRibbon0x20* m_textureLists;            // 0x38
+	AmberHaze0x1c* m_materialLists;               // 0x3c
+	HypnoticNoise0x1c* m_imageLists;              // 0x40
+	CinderBasin0x28* m_fontLists;                 // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
 	undefined m_unk0x4c[0x118 - 0x4c];            // 0x4c
 	undefined4 m_unk0x118;                        // 0x118

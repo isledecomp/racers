@@ -155,10 +155,10 @@ WhiteFalcon0x140::WhiteFalcon0x140()
 	m_unk0x28 = 0;
 	m_countTextureFormats = 0;
 	m_textureFormats = NULL;
-	m_unk0x38 = NULL;
-	m_unk0x3c = NULL;
-	m_unk0x40 = NULL;
-	m_unk0x44 = NULL;
+	m_textureLists = NULL;
+	m_materialLists = NULL;
+	m_imageLists = NULL;
+	m_fontLists = NULL;
 	m_nextDrawStateRenderer = NULL;
 	m_unk0x0c = NULL;
 	m_unk0x04 = 0;
@@ -184,7 +184,7 @@ void WhiteFalcon0x140::Destroy()
 		m_textureFormats = NULL;
 	}
 
-	AmberHaze0x1c* amberHaze = m_unk0x3c;
+	AmberHaze0x1c* amberHaze = m_materialLists;
 	m_countTextureFormats = 0;
 	m_unk0x10 = 0;
 	m_unk0x14 = 0;
@@ -200,21 +200,21 @@ void WhiteFalcon0x140::Destroy()
 		amberHaze = next;
 	}
 
-	MagentaRibbon0x20* magentaRibbon = m_unk0x38;
+	MagentaRibbon0x20* magentaRibbon = m_textureLists;
 	while (magentaRibbon != NULL) {
 		MagentaRibbon0x20* next = magentaRibbon->GetNext();
 		magentaRibbon->Clear();
 		magentaRibbon = next;
 	}
 
-	HypnoticNoise0x1c* hypnoticNoise = m_unk0x40;
+	HypnoticNoise0x1c* hypnoticNoise = m_imageLists;
 	while (hypnoticNoise != NULL) {
 		HypnoticNoise0x1c* next = hypnoticNoise->GetNext();
 		hypnoticNoise->Clear();
 		hypnoticNoise = next;
 	}
 
-	CinderBasin0x28* cinderBasin = m_unk0x44;
+	CinderBasin0x28* cinderBasin = m_fontLists;
 	while (cinderBasin != NULL) {
 		CinderBasin0x28* next = cinderBasin->GetNext();
 		cinderBasin->Clear();
@@ -222,33 +222,93 @@ void WhiteFalcon0x140::Destroy()
 	}
 }
 
-// STUB: GOLDP 0x10028980
-void WhiteFalcon0x140::VTable0x04()
+// FUNCTION: GOLDP 0x10028980
+void WhiteFalcon0x140::ReleaseResources()
 {
-	STUB(0x10028980);
+	if (m_textureFormats != NULL) {
+		delete[] m_textureFormats;
+		m_textureFormats = NULL;
+	}
+
+	AmberHaze0x1c* materialList = m_materialLists;
+	m_countTextureFormats = 0;
+	while (materialList != NULL) {
+		materialList->VTable0x0c();
+		materialList = materialList->GetNext();
+	}
+
+	MagentaRibbon0x20* textureList = m_textureLists;
+	while (textureList != NULL) {
+		textureList->VTable0x0c();
+		textureList = textureList->GetNext();
+	}
+
+	HypnoticNoise0x1c* imageList = m_imageLists;
+	while (imageList != NULL) {
+		imageList->VTable0x10();
+		imageList = imageList->GetNext();
+	}
+
+	CinderBasin0x28* fontList = m_fontLists;
+	while (fontList != NULL) {
+		fontList->VTable0x18();
+		fontList = fontList->GetNext();
+	}
+
+	m_unk0x10 = 0;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = 0;
 }
 
-// STUB: GOLDP 0x10028a10
-void WhiteFalcon0x140::VTable0x00()
+// FUNCTION: GOLDP 0x10028a10
+LegoS32 WhiteFalcon0x140::RestoreResources()
 {
-	STUB(0x10028a10);
+	HypnoticNoise0x1c* imageList = m_imageLists;
+	while (imageList != NULL) {
+		imageList->VTable0x14();
+		imageList = imageList->GetNext();
+	}
+
+	MagentaRibbon0x20* textureList = m_textureLists;
+	while (textureList != NULL) {
+		textureList->VTable0x10();
+		textureList = textureList->GetNext();
+	}
+
+	AmberHaze0x1c* materialList = m_materialLists;
+	while (materialList != NULL) {
+		materialList->VTable0x10();
+		materialList = materialList->GetNext();
+	}
+
+	CinderBasin0x28* fontList = m_fontLists;
+	while (fontList != NULL) {
+		fontList->VTable0x1c();
+		fontList = fontList->GetNext();
+	}
+
+	return 0;
 }
 
 // FUNCTION: GOLDP 0x10028a70
-void WhiteFalcon0x140::FUN_10028a70(CinderBasin0x28* p_param)
+void WhiteFalcon0x140::AddFontList(CinderBasin0x28* p_param)
 {
-	p_param->SetNext(m_unk0x44);
-	m_unk0x44 = p_param;
+	p_param->SetNext(m_fontLists);
+	m_fontLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028a80
-void WhiteFalcon0x140::FUN_10028a80(CinderBasin0x28* p_param)
+void WhiteFalcon0x140::RemoveFontList(CinderBasin0x28* p_param)
 {
-	CinderBasin0x28* node = m_unk0x44;
+	CinderBasin0x28* node = m_fontLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
-			m_unk0x44 = node->GetNext();
+			m_fontLists = node->GetNext();
 			return;
 		}
 
@@ -269,20 +329,20 @@ void WhiteFalcon0x140::FUN_10028a80(CinderBasin0x28* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028ad0
-void WhiteFalcon0x140::FUN_10028ad0(HypnoticNoise0x1c* p_param)
+void WhiteFalcon0x140::AddImageList(HypnoticNoise0x1c* p_param)
 {
-	p_param->SetNext(m_unk0x40);
-	m_unk0x40 = p_param;
+	p_param->SetNext(m_imageLists);
+	m_imageLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028ae0
-void WhiteFalcon0x140::FUN_10028ae0(HypnoticNoise0x1c* p_param)
+void WhiteFalcon0x140::RemoveImageList(HypnoticNoise0x1c* p_param)
 {
-	HypnoticNoise0x1c* node = m_unk0x40;
+	HypnoticNoise0x1c* node = m_imageLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
-			m_unk0x40 = node->GetNext();
+			m_imageLists = node->GetNext();
 			return;
 		}
 
@@ -303,20 +363,20 @@ void WhiteFalcon0x140::FUN_10028ae0(HypnoticNoise0x1c* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028b30
-void WhiteFalcon0x140::FUN_10028b30(MagentaRibbon0x20* p_param)
+void WhiteFalcon0x140::AddTextureList(MagentaRibbon0x20* p_param)
 {
-	p_param->SetNext(m_unk0x38);
-	m_unk0x38 = p_param;
+	p_param->SetNext(m_textureLists);
+	m_textureLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028b40
-void WhiteFalcon0x140::FUN_10028b40(MagentaRibbon0x20* p_param)
+void WhiteFalcon0x140::RemoveTextureList(MagentaRibbon0x20* p_param)
 {
-	MagentaRibbon0x20* node = m_unk0x38;
+	MagentaRibbon0x20* node = m_textureLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
-			m_unk0x38 = node->GetNext();
+			m_textureLists = node->GetNext();
 			return;
 		}
 
@@ -339,7 +399,7 @@ void WhiteFalcon0x140::FUN_10028b40(MagentaRibbon0x20* p_param)
 // FUNCTION: GOLDP 0x10028b90
 undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 {
-	MagentaRibbon0x20* node = m_unk0x38;
+	MagentaRibbon0x20* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -356,20 +416,20 @@ undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 }
 
 // FUNCTION: GOLDP 0x10028bc0
-void WhiteFalcon0x140::FUN_10028bc0(AmberHaze0x1c* p_param)
+void WhiteFalcon0x140::AddMaterialList(AmberHaze0x1c* p_param)
 {
-	p_param->SetNext(m_unk0x3c);
-	m_unk0x3c = p_param;
+	p_param->SetNext(m_materialLists);
+	m_materialLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028bd0
-void WhiteFalcon0x140::FUN_10028bd0(AmberHaze0x1c* p_param)
+void WhiteFalcon0x140::RemoveMaterialList(AmberHaze0x1c* p_param)
 {
-	AmberHaze0x1c* node = m_unk0x3c;
+	AmberHaze0x1c* node = m_materialLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
-			m_unk0x3c = node->GetNext();
+			m_materialLists = node->GetNext();
 			return;
 		}
 
@@ -392,7 +452,7 @@ void WhiteFalcon0x140::FUN_10028bd0(AmberHaze0x1c* p_param)
 // FUNCTION: GOLDP 0x10028c20
 undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 {
-	AmberHaze0x1c* node = m_unk0x3c;
+	AmberHaze0x1c* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {

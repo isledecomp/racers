@@ -20,7 +20,7 @@ MagentaRibbon0x20::~MagentaRibbon0x20()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028b40(this);
+		m_renderer->RemoveTextureList(this);
 		m_renderer = NULL;
 	}
 
@@ -53,7 +53,7 @@ void MagentaRibbon0x20::Clear()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028b40(this);
+		m_renderer->RemoveTextureList(this);
 		m_renderer = NULL;
 	}
 

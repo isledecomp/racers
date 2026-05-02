@@ -23,7 +23,7 @@ HypnoticNoise0x1c::~HypnoticNoise0x1c()
 	m_numItems = 0;
 
 	if (m_renderer) {
-		m_renderer->FUN_10028ae0(this);
+		m_renderer->RemoveImageList(this);
 		m_renderer = NULL;
 	}
 
@@ -44,7 +44,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 	}
 
 	m_renderer = p_renderer;
-	m_renderer->FUN_10028ad0(this);
+	m_renderer->AddImageList(this);
 
 	GolFileParser* parser;
 
@@ -181,7 +181,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 	}
 
 	m_renderer = p_renderer;
-	m_renderer->FUN_10028ad0(this);
+	m_renderer->AddImageList(this);
 	m_numItems = p_numItems;
 
 	VTable0x0c();
@@ -196,7 +196,7 @@ void HypnoticNoise0x1c::Clear()
 {
 	m_numItems = 0;
 	if (m_renderer) {
-		m_renderer->FUN_10028ae0(this);
+		m_renderer->RemoveImageList(this);
 		m_renderer = NULL;
 	}
 

@@ -19,7 +19,7 @@ AmberHaze0x1c::~AmberHaze0x1c()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028bd0(this);
+		m_renderer->RemoveMaterialList(this);
 		m_renderer = NULL;
 	}
 
@@ -46,7 +46,7 @@ void AmberHaze0x1c::Clear()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028bd0(this);
+		m_renderer->RemoveMaterialList(this);
 		m_renderer = NULL;
 	}
 

@@ -18,7 +18,7 @@ CinderBasin0x28::~CinderBasin0x28()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028a80(this);
+		m_renderer->RemoveFontList(this);
 		m_renderer = NULL;
 	}
 
@@ -39,7 +39,7 @@ void CinderBasin0x28::Clear()
 	m_numItems = 0;
 
 	if (m_renderer != NULL) {
-		m_renderer->FUN_10028a80(this);
+		m_renderer->RemoveFontList(this);
 		m_renderer = NULL;
 	}
 

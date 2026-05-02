@@ -21,7 +21,7 @@ class BronzeFalcon0xc8770 : public WhiteFalcon0x140 {
 public:
 	BronzeFalcon0xc8770();
 
-	void VTable0x04() override;                                              // vtable+0x04
+	void ReleaseResources() override;                                        // vtable+0x04
 	~BronzeFalcon0xc8770() override;                                         // vtable+0x08
 	void VTable0x0c(undefined4, undefined4, undefined4) override;            // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10

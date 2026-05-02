@@ -49,13 +49,13 @@ void CinderBasin0x28::Clear()
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void CinderBasin0x28::VTable0x18()
+void CinderBasin0x28::ReleaseFontSurfaces()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void CinderBasin0x28::VTable0x1c()
+void CinderBasin0x28::RefreshFontSurfaces()
 {
 	// empty
 }

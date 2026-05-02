@@ -16,11 +16,16 @@ GolFontTable::GolFontTable()
 	m_unk0x20 = NULL;
 }
 
-// STUB: GOLDP 0x10003ff0
+// FUNCTION: GOLDP 0x10003ff0
 GolFontTable::~GolFontTable()
 {
-	// TODO
-	STUB(0x10003ff0);
+	if (m_fonts != NULL) {
+		delete[] m_fonts;
+		m_fonts = NULL;
+	}
+
+	static_cast<CinderBasin0x28*>(this)->ReleaseDefinitionBuffers();
+	CinderBasin0x28::Clear();
 }
 
 // FUNCTION: GOLDP 0x10004060
@@ -64,12 +69,12 @@ void GolFontTable::Clear()
 		m_fonts = NULL;
 	}
 
-	VTable0x14();
+	ReleaseDefinitionBuffers();
 	CinderBasin0x28::Clear();
 }
 
 // FUNCTION: GOLDP 0x10004270
-void GolFontTable::VTable0x14()
+void GolFontTable::ReleaseDefinitionBuffers()
 {
 	if (m_unk0x18 != NULL) {
 		delete[] m_unk0x18;
@@ -98,16 +103,26 @@ void* GolFontTable::VTable0x24(LegoU32 p_index)
 	return &m_fonts[p_index];
 }
 
-// STUB: GOLDP 0x10004320
-void GolFontTable::VTable0x18()
+// FUNCTION: GOLDP 0x10004320
+void GolFontTable::ReleaseFontSurfaces()
 {
-	// TODO
-	STUB(0x10004320);
+	if (m_numItems > 0) {
+		for (LegoU32 i = 0; i < m_numItems; i++) {
+			if (m_fonts[i].HasLoadedData()) {
+				m_fonts[i].ReleaseSurfaces();
+			}
+		}
+	}
 }
 
-// STUB: GOLDP 0x10004360
-void GolFontTable::VTable0x1c()
+// FUNCTION: GOLDP 0x10004360
+void GolFontTable::RefreshFontSurfaces()
 {
-	// TODO
-	STUB(0x10004360);
+	if (m_numItems > 0) {
+		for (LegoU32 i = 0; i < m_numItems; i++) {
+			if (m_fonts[i].HasLoadedData()) {
+				m_fonts[i].RefreshSurfaces(m_renderer);
+			}
+		}
+	}
 }

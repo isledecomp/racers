@@ -24,6 +24,8 @@ public:
 	// SYNTHETIC: GOLDP 0x1001dee0
 	// GolFontBase0x40::`scalar deleting destructor'
 
+	LegoBool32 HasLoadedData() const { return m_unk0x28 != NULL; }
+
 protected:
 	undefined4 m_unk0x04;             // 0x04
 	undefined4 m_unk0x08;             // 0x08

@@ -21,9 +21,9 @@ public:
 
 	void VTable0x0c() override;                   // vtable+0x0c
 	void VTable0x10(undefined4 p_index) override; // vtable+0x10
-	void VTable0x14() override;                   // vtable+0x14
-	void VTable0x18() override;                   // vtable+0x18
-	void VTable0x1c() override;                   // vtable+0x1c
+	void ReleaseDefinitionBuffers() override;     // vtable+0x14
+	void ReleaseFontSurfaces() override;          // vtable+0x18
+	void RefreshFontSurfaces() override;          // vtable+0x1c
 	void* VTable0x24(LegoU32 p_index) override;   // vtable+0x24
 
 	void LoadFontDefinitions(BronzeFalcon0xc8770* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)

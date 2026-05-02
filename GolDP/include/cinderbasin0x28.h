@@ -16,9 +16,9 @@ public:
 
 	virtual void VTable0x0c() = 0;                   // vtable+0x0c
 	virtual void VTable0x10(undefined4 p_index) = 0; // vtable+0x10
-	virtual void VTable0x14() = 0;                   // vtable+0x14
-	virtual void VTable0x18();                       // vtable+0x18
-	virtual void VTable0x1c();                       // vtable+0x1c
+	virtual void ReleaseDefinitionBuffers() = 0;     // vtable+0x14
+	virtual void ReleaseFontSurfaces();              // vtable+0x18
+	virtual void RefreshFontSurfaces();              // vtable+0x1c
 	virtual void VTable0x20(
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,

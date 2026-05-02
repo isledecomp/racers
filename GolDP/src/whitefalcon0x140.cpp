@@ -251,7 +251,7 @@ void WhiteFalcon0x140::ReleaseResources()
 
 	CinderBasin0x28* fontList = m_fontLists;
 	while (fontList != NULL) {
-		fontList->VTable0x18();
+		fontList->ReleaseFontSurfaces();
 		fontList = fontList->GetNext();
 	}
 
@@ -287,7 +287,7 @@ LegoS32 WhiteFalcon0x140::RestoreResources()
 
 	CinderBasin0x28* fontList = m_fontLists;
 	while (fontList != NULL) {
-		fontList->VTable0x1c();
+		fontList->RefreshFontSurfaces();
 		fontList = fontList->GetNext();
 	}
 

@@ -5,21 +5,23 @@
 #include "decomp.h"
 #include "types.h"
 
+class WhiteFalcon0x140;
+
 // VTABLE: GOLDP 0x10056ea8
 // SIZE 0x40
 class GolFontBase0x40 {
 public:
 	GolFontBase0x40();
 
-	virtual void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08);     // vtable+0x00
-	virtual void VTable0x04(undefined4 p_unk0x04) = 0;                       // vtable+0x04
-	virtual undefined4* VTable0x08(LegoU32 p_index) = 0;                     // vtable+0x08
-	virtual void VTable0x0c(undefined4 p_unk0x04, undefined4 p_unk0x08) = 0; // vtable+0x0c
-	virtual void VTable0x10(LegoU32 p_index) = 0;                            // vtable+0x10
-	virtual void VTable0x14(undefined4 p_unk0x04, undefined4 p_unk0x08) = 0; // vtable+0x14
-	virtual void VTable0x18() = 0;                                           // vtable+0x18
-	virtual ~GolFontBase0x40();                                              // vtable+0x1c
-	virtual void Clear();                                                    // vtable+0x20
+	virtual void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08);            // vtable+0x00
+	virtual void VTable0x04(undefined4 p_unk0x04) = 0;                              // vtable+0x04
+	virtual undefined4* VTable0x08(LegoU32 p_index) = 0;                            // vtable+0x08
+	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, undefined4 p_unk0x08) = 0; // vtable+0x0c
+	virtual void VTable0x10(LegoU32 p_index) = 0;                                   // vtable+0x10
+	virtual void VTable0x14(undefined4 p_unk0x04, undefined4 p_unk0x08) = 0;        // vtable+0x14
+	virtual void VTable0x18() = 0;                                                  // vtable+0x18
+	virtual ~GolFontBase0x40();                                                     // vtable+0x1c
+	virtual void Clear();                                                           // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001dee0
 	// GolFontBase0x40::`scalar deleting destructor'

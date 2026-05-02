@@ -56,10 +56,14 @@ public:
 
 	WhiteFalcon0x140();
 
-	virtual LegoS32 RestoreResources();                                     // vtable+0x00
-	virtual void ReleaseResources();                                        // vtable+0x04
-	virtual ~WhiteFalcon0x140();                                            // vtable+0x08
-	virtual void VTable0x0c(undefined4, undefined4, undefined4);            // vtable+0x0c
+	virtual LegoS32 RestoreResources(); // vtable+0x00
+	virtual void ReleaseResources();    // vtable+0x04
+	virtual ~WhiteFalcon0x140();        // vtable+0x08
+	virtual void SelectTextureFormat(
+		const FalconTextureFormat& p_requestedTextureFormat,
+		FalconTextureFormat* p_actualTextureFormat,
+		LegoBool32
+	);                                                                      // vtable+0x0c
 	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
 	virtual const SlatePeak0x58* GetRenderTargetInfo() = 0;                 // vtable+0x14
 	virtual void VTable0x18() = 0;                                          // vtable+0x18
@@ -162,13 +166,13 @@ protected:
 	undefined2 m_unk0x08;                         // 0x08
 	undefined2 m_unk0x0a;                         // 0x0a
 	AmberLens0x344* m_unk0x0c;                    // 0x0c
-	undefined4 m_unk0x10;                         // 0x10
-	undefined4 m_unk0x14;                         // 0x14
-	undefined4 m_unk0x18;                         // 0x18
-	undefined4 m_unk0x1c;                         // 0x1c
-	undefined4 m_unk0x20;                         // 0x20
-	undefined4 m_unk0x24;                         // 0x24
-	undefined4 m_unk0x28;                         // 0x28
+	LegoU32 m_textureFormatIndex;                 // 0x10
+	undefined4 m_requestedRedBitCount;            // 0x14
+	undefined4 m_requestedGrnBitCount;            // 0x18
+	undefined4 m_requestedBluBitCount;            // 0x1c
+	undefined4 m_requestedAlpBitCount;            // 0x20
+	undefined4 m_requestedUnk0x10BitCount;        // 0x24
+	undefined4 m_requestedPaletteBitCount;        // 0x28
 	undefined4 m_unk0x2c;                         // 0x2c
 	LegoU32 m_countTextureFormats;                // 0x30
 	FalconTextureFormat* m_textureFormats;        // 0x34

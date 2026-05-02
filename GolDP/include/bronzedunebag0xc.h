@@ -19,7 +19,7 @@ public:
 	LegoU32 GetPaletteSize() override;                                                // vtable+0x
 	virtual ~BronzeDuneBag0xc();                                                      // vtable+0x00
 
-	void FUN_1002a120(undefined4*);
+	void FUN_1002a120(const FalconTextureFormat& p_textureFormat);
 	void FUN_1002a1b0();
 
 	// SYNTHETIC: GOLDP 0x1002a0b0

@@ -20,7 +20,7 @@ BronzeDuneBag0xc::~BronzeDuneBag0xc()
 }
 
 // STUB: GOLDP 0x1002a120
-void BronzeDuneBag0xc::FUN_1002a120(undefined4*)
+void BronzeDuneBag0xc::FUN_1002a120(const FalconTextureFormat& p_textureFormat)
 {
 	// TODO
 	STUB(0x1002a120);

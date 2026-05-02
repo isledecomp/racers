@@ -96,7 +96,7 @@ LegoU32 FalconTextureFormat::FUN_1001cc10() const
 }
 
 // FUNCTION: GOLDP 0x1001cc40
-LegoU32 FalconTextureFormat::FUN_1001cc40() const
+LegoU32 FalconTextureFormat::GetPaletteBitCount() const
 {
 	LegoU16 mask = m_paletteMask;
 	if (mask == 0) {

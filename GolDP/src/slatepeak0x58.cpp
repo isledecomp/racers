@@ -596,8 +596,58 @@ void SlatePeak0x58::VTable0x28(Rect* p_destRect, SilverDune0x30* p_source, Rect*
 	}
 }
 
-// STUB: GOLDP 0x10003e90
+// FUNCTION: GOLDP 0x10003e90
 void SlatePeak0x58::VTable0x2c()
 {
-	STUB(0x10003e90);
+	DDBLTFX bltFx;
+	RECT sourceRect;
+	LegoChar errorMessage[100];
+
+	::memset(&bltFx, 0, sizeof(bltFx));
+	bltFx.dwSize = sizeof(bltFx);
+
+	if (m_unk0x34 & c_surfaceFlagWindowed) {
+		HWND hWnd = static_cast<GolDrawDPState*>(m_drawState)->m_hWnd;
+		::GetClientRect(hWnd, &sourceRect);
+
+		LegoS32 width = sourceRect.right - sourceRect.left;
+		LegoS32 height = sourceRect.bottom - sourceRect.top;
+		POINT topLeft;
+		topLeft.y = 0;
+		topLeft.x = 0;
+		::ClientToScreen(hWnd, &topLeft);
+
+		sourceRect.left = topLeft.x;
+		sourceRect.top = topLeft.y;
+		sourceRect.right = topLeft.x + width;
+		sourceRect.bottom = topLeft.y + height;
+	}
+	else {
+		sourceRect.top = 0;
+		sourceRect.left = 0;
+		sourceRect.right = m_width;
+		sourceRect.bottom = m_height;
+	}
+
+	if (m_pixelFlags & c_lockFlagUnknown0x04) {
+		VTable0x18();
+	}
+
+	for (;;) {
+		LPDIRECTDRAWSURFACE4 displaySurface = m_displaySurface;
+		LPDIRECTDRAWSURFACE4 renderSurface = m_renderSurface;
+		HRESULT result;
+
+		while ((result = renderSurface->Blt(NULL, displaySurface, &sourceRect, 0, &bltFx)) == DDERR_SURFACEBUSY ||
+			   result == DDERR_WASSTILLDRAWING) {
+			::Sleep(1);
+		}
+
+		if (result == DD_OK || result == DDERR_SURFACELOST) {
+			return;
+		}
+
+		::sprintf(errorMessage, "Error in blit of display surface\nError code = %x", result);
+		GOL_FATALERROR_MESSAGE(errorMessage);
+	}
 }

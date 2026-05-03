@@ -25,7 +25,7 @@ public:
 	void VTable0x90(undefined4) override;             // vtable+0x90
 	void VTable0x94(undefined4) override;             // vtable+0x94
 
-	void FUN_0047ba00();
+	void ApplyCheatCode();
 
 	// SYNTHETIC: LEGORACERS 0x0047b070
 	// ImaginaryWrench0x23bc::`scalar deleting destructor'
@@ -47,9 +47,17 @@ protected:
 		c_nmrchts = 1 << 12
 	};
 
-	undefined m_unk0x04[0x23a8 - 0x368]; // 0x0004
-	GolString m_unk0x23a8;               // 0x23a8
-	undefined m_unk0x23b2[8];            // 0x23b2
+	enum {
+		c_cheatBufferLength = 14,
+		c_cheatBufferStorageLength = c_cheatBufferLength + 1
+	};
+
+	undefined m_unk0x368[0x221c - 0x368];                 // 0x0368
+	undefined2 m_cheatBuffer[c_cheatBufferStorageLength]; // 0x221c
+	undefined m_unk0x223a[0x23a8 - 0x223a];               // 0x223a
+	GolString m_cheatString;                              // 0x23a8
+	LegoBool32 m_unk0x23b4;                               // 0x23b4
+	LegoBool32 m_unk0x23b8;                               // 0x23b8
 };
 
 #endif // IMAGINARYWRENCH0X23BC_H

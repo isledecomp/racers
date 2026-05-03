@@ -45,11 +45,14 @@ ImaginaryWrench0x23bc::~ImaginaryWrench0x23bc()
 	STUB(0x0047b090);
 }
 
-// STUB: LEGORACERS 0x0047b1d0
+// FUNCTION: LEGORACERS 0x0047b1d0
 void ImaginaryWrench0x23bc::VTable0x54()
 {
-	// TODO
-	STUB(0x47b1d0);
+	memset(m_cheatBuffer, 0, sizeof(m_cheatBuffer));
+	m_cheatString.CopyFromBufSelection(m_cheatBuffer, c_cheatBufferLength);
+	m_unk0x23b4 = TRUE;
+	m_unk0x23b8 = FALSE;
+	ImaginaryTool0x368::VTable0x54();
 }
 
 // STUB: LEGORACERS 0x0047b300
@@ -102,10 +105,10 @@ void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0047ba00
-void ImaginaryWrench0x23bc::FUN_0047ba00()
+void ImaginaryWrench0x23bc::ApplyCheatCode()
 {
 	LegoChar buf[14];
-	m_unk0x23a8.CopyToString(buf);
+	m_cheatString.CopyToString(buf);
 	buf[13] = '\0';
 
 	for (LegoU32 i = 0; i < sizeOfArray(g_cheatNames); ++i) {

@@ -337,7 +337,7 @@ void MenuManager::LoadMenuData()
 
 	raceList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_unk0x18);
 	m_unk0x04.m_raceNames.Load(raceStrings, raceList, "LEGORace", m_unk0x04.m_context->m_unk0x18);
-	m_unk0x4bcc.FUN_0047f4d0();
+	m_unk0x4bcc.Init();
 	m_unk0x04.m_menuAnimations.Allocate(2);
 
 	GolStringTable* menuNameStrings = &m_menuNameStrings;
@@ -358,7 +358,7 @@ void MenuManager::UnloadMenuData()
 	m_unk0x04.m_unk0x4b40.ReleaseMenuResources();
 	m_unk0x04.m_unk0x4ae0.ReleaseResources();
 	m_unk0x04.m_unk0x437c.Destroy();
-	m_unk0x4bcc.FUN_0044a1e0();
+	m_unk0x4bcc.Shutdown();
 	m_unk0x04.m_menuAnimations.Reset();
 }
 

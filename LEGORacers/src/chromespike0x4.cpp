@@ -24,32 +24,30 @@
 
 DECOMP_SIZE_ASSERT(ChromeSpike0x4, 0x4)
 
-// STUB: LEGORACERS 0x0047f4c0
+// FUNCTION: LEGORACERS 0x0047f4c0
 ChromeSpike0x4::~ChromeSpike0x4()
 {
-	// TODO
-	STUB(0x47f4c0);
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
-LegoBool32 ChromeSpike0x4::FUN_0044a1e0()
+LegoBool32 ChromeSpike0x4::Shutdown()
 {
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0047f4d0
-LegoBool32 ChromeSpike0x4::FUN_0047f4d0()
+// FUNCTION: LEGORACERS 0x0047f4d0
+LegoBool32 ChromeSpike0x4::Init()
 {
-	// TODO
-	STUB(0x0047f4d0);
+	Shutdown();
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047f4e0
-ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined2 p_param)
+ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined2 p_unk0x04)
 {
 	ImaginaryTool0x368* tool;
-	switch (p_param) {
+	switch (p_unk0x04) {
 	case 0x01:
 	case 0x27:
 	case 0x28:
@@ -165,8 +163,7 @@ ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined2 p_param)
 	return tool;
 }
 
-// STUB: LEGORACERS 0x0049eb10
+// FUNCTION: LEGORACERS 0x0049eb10
 ChromeSpike0x4::ChromeSpike0x4()
 {
-	MATCHING(0x49eb10);
 }

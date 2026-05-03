@@ -61,11 +61,13 @@ LegoBool32 LavenderVault0x764::FUN_00498740(const LegoChar* p_arg1, LegoBool32 p
 }
 
 // FUNCTION: LEGORACERS 0x00498850
-void LavenderVault0x764::Destroy()
+LegoBool32 LavenderVault0x764::Destroy()
 {
-	if (!m_loaded) {
+	if (m_loaded) {
 		Reset();
 	}
+
+	return !m_loaded;
 }
 
 // FUNCTION: LEGORACERS 0x00498870

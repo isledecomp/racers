@@ -1,5 +1,7 @@
 #include "pearldew0x0c.h"
 
+#include "bronzefalcon0xc8770.h"
+#include "falcontextureformat.h"
 #include "golerror.h"
 
 #include <stdio.h>
@@ -27,6 +29,105 @@ PearlDew0x0c::~PearlDew0x0c()
 
 	m_firstEntry = 0;
 	m_entryCount = 0;
+}
+
+// FUNCTION: GOLDP 0x100071e0
+void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, FalconTextureFormat* p_textureFormat)
+{
+	LegoChar buffer[c_errorBufferSize];
+
+	if (m_palette) {
+		m_palette->Release();
+		m_palette = NULL;
+		m_firstEntry = 0;
+		m_entryCount = 0;
+	}
+
+	LPDIRECTDRAW4 ddraw = p_renderer->GetDirectDraw4();
+	LegoU32 entryCount;
+	DWORD paletteFlags;
+
+	switch (p_textureFormat->m_bitsPerPixel) {
+	case 1:
+		paletteFlags = DDPCAPS_2BIT;
+		entryCount = c_paletteEntries2Bit / c_systemPaletteEntries;
+		break;
+	case 2:
+		paletteFlags = DDPCAPS_4BIT;
+		entryCount = c_paletteEntries4Bit / c_paletteEntries2Bit;
+		break;
+	case 4:
+		paletteFlags = DDPCAPS_4BIT;
+		entryCount = c_paletteEntries4Bit;
+		break;
+	case 8:
+		paletteFlags = DDPCAPS_8BIT;
+		entryCount = c_paletteEntries8Bit;
+		break;
+	default:
+		paletteFlags = 0;
+		entryCount = 0;
+		break;
+	}
+
+	m_firstEntry = 0;
+	m_entryCount = (LegoU16) entryCount;
+
+	if (p_renderer->m_unk0xc8700 == 0) {
+		for (LegoU32 systemEntry = 0; systemEntry < c_systemPaletteReservedEntries; systemEntry++) {
+			g_paletteEntries[systemEntry].peRed = (BYTE) systemEntry;
+			g_paletteEntries[systemEntry].peGreen = 0;
+			g_paletteEntries[systemEntry].peBlue = 0;
+			g_paletteEntries[systemEntry].peFlags = PC_EXPLICIT;
+
+			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peRed =
+				(BYTE) (systemEntry + c_systemPaletteUpperFirst);
+			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peGreen = 0;
+			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peBlue = 0;
+			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peFlags = PC_EXPLICIT;
+		}
+
+		for (LegoU32 paletteEntry = c_systemPaletteReservedEntries; paletteEntry < c_systemPaletteUpperFirst;
+			 paletteEntry++) {
+			g_paletteEntries[paletteEntry].peRed = c_colorChannelMax;
+			g_paletteEntries[paletteEntry].peGreen = 0;
+			g_paletteEntries[paletteEntry].peBlue = 0;
+			g_paletteEntries[paletteEntry].peFlags = PC_NOCOLLAPSE;
+		}
+	}
+	else {
+		LegoU32 lastEntry = entryCount - 1;
+		for (LegoU32 paletteEntry = 0; paletteEntry < lastEntry; paletteEntry++) {
+			g_paletteEntries[paletteEntry].peRed = 0;
+			g_paletteEntries[paletteEntry].peGreen = 0;
+			g_paletteEntries[paletteEntry].peBlue = 0;
+			g_paletteEntries[paletteEntry].peFlags = PC_NOCOLLAPSE;
+		}
+
+		g_paletteEntries[lastEntry].peRed = c_colorChannelMax;
+		g_paletteEntries[lastEntry].peGreen = c_colorChannelMax;
+		g_paletteEntries[lastEntry].peBlue = c_colorChannelMax;
+		g_paletteEntries[lastEntry].peFlags = PC_NOCOLLAPSE;
+		paletteFlags |= DDPCAPS_ALLOW256;
+	}
+
+	HRESULT result = ddraw->CreatePalette(paletteFlags, g_paletteEntries, &m_palette, NULL);
+	if (result) {
+		paletteFlags &= ~DDPCAPS_ALLOW256;
+		result = ddraw->CreatePalette(paletteFlags, g_paletteEntries, &m_palette, NULL);
+		if (result) {
+			::sprintf(buffer, "Unable to create palette\nerror number = %x", result);
+			GOL_FATALERROR_MESSAGE(buffer);
+		}
+	}
+
+	if (entryCount == c_paletteEntries8Bit) {
+		result = m_palette->GetCaps(&paletteFlags);
+		if (!result && !(paletteFlags & DDPCAPS_ALLOW256)) {
+			m_firstEntry = 1;
+			m_entryCount = c_paletteEntries8BitUsable;
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x100073f0

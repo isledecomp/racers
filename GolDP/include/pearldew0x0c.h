@@ -21,6 +21,8 @@ public:
 		c_paletteEntries4Bit = 0x10,
 		c_paletteEntries8Bit = 0x100,
 		c_paletteEntries8BitUsable = c_paletteEntries8Bit - c_systemPaletteEntries,
+		c_systemPaletteReservedEntries = 10,
+		c_systemPaletteUpperFirst = c_paletteEntries8Bit - c_systemPaletteReservedEntries,
 		c_332RedLevels = 8,
 		c_332GreenLevels = 8,
 		c_332BlueLevels = 4,
@@ -31,6 +33,7 @@ public:
 	PearlDew0x0c();
 	~PearlDew0x0c();
 
+	void CreateDirectDrawPalette(class BronzeFalcon0xc8770* p_renderer, class FalconTextureFormat* p_textureFormat);
 	void Release();
 	void Set332PaletteEntries();
 

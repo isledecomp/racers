@@ -100,6 +100,9 @@ public:
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
+	friend class PearlDew0x0c;
+	friend class SlatePeak0x58;
+
 private:
 	struct TextureFormat : public FalconTextureFormat {
 		TextureFormat();

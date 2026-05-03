@@ -527,12 +527,11 @@ void MenuManager::FUN_0042d730()
 	STUB(0x42d730);
 }
 
-// STUB: LEGORACERS 0x0042e1f0
+// FUNCTION: LEGORACERS 0x0042e1f0
 void MenuManager::FUN_0042e1f0()
 {
 	LegoU32 driverIndex = 0;
 	LegoFloat musicVolume;
-	const LegoChar* driverName;
 	PeridotTraceState0x438& state = m_unk0x04.m_unk0x258.GetUnk0x18c4();
 
 	m_unk0x04.m_context->m_unk0x100 = state.GetUnk0x0c();
@@ -559,6 +558,10 @@ void MenuManager::FUN_0042e1f0()
 	GolDrawState* drawState = m_unk0x04.m_context->m_golApp->GetDrawState();
 	DisplayDriverGuid savedDisplayDriverGuid;
 	DisplayDriverGuid currentDisplayDriverGuid;
+	DisplayDriverGuid driverGuid;
+	const LegoChar* driverName = NULL;
+	LegoU32 deviceIndex = 0;
+	LegoU32 selectedDrawFlags = 0;
 	state.FUN_0042f060(savedDisplayDriverGuid);
 
 	const GUID* currentGuid = drawState->VTable0x38();
@@ -569,35 +572,23 @@ void MenuManager::FUN_0042e1f0()
 		currentDisplayDriverGuid.m_guid = *currentGuid;
 	}
 
-	LegoU32 selectedDrawFlags = 0;
 	if (::memcmp(&savedDisplayDriverGuid, &currentDisplayDriverGuid, sizeof(GUID)) != 0) {
-		driverName = NULL;
-
-		while (driverName == NULL) {
-			DisplayDriverGuid driverGuid;
+		do {
 			drawState->VTable0x30(driverIndex, &driverGuid.m_guid);
 
-			if (::memcmp(&savedDisplayDriverGuid, &driverGuid, sizeof(GUID)) == 0) {
+			if (::memcmp(&driverGuid, &savedDisplayDriverGuid, sizeof(GUID)) == 0) {
 				driverName = drawState->VTable0x14(driverIndex);
 			}
 
 			driverIndex++;
-			if (driverName != NULL || driverIndex >= drawState->VTable0x10()) {
-				break;
-			}
-		}
+		} while (driverName == NULL && driverIndex < drawState->VTable0x10());
 
 		if (driverName != NULL) {
 			driverIndex--;
 
-			LegoU32 deviceIndex = 0;
-			if (drawState->VTable0x1c(driverIndex) > 0) {
-				while (!drawState->VTable0x28(driverIndex, deviceIndex)) {
-					deviceIndex++;
-					if (deviceIndex >= drawState->VTable0x1c(driverIndex)) {
-						break;
-					}
-				}
+			while (deviceIndex < drawState->VTable0x1c(driverIndex) &&
+				   !drawState->VTable0x28(driverIndex, deviceIndex)) {
+				deviceIndex++;
 			}
 
 			if (deviceIndex < drawState->VTable0x1c(driverIndex)) {

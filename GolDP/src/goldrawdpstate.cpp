@@ -362,34 +362,38 @@ LegoBool32 GolDrawDPState::VTable0xa8() const
 	return m_ddrawCaps.dwCaps2 & DDCAPS2_CANRENDERWINDOWED;
 }
 
-// STUB: GOLDP 0x10001750
+// FUNCTION: GOLDP 0x10001750
 undefined4 GolDrawDPState::VTable0x58()
 {
 	HRESULT hResult;
-	char buffer[100];
+	LegoChar buffer[100];
+
 	if (!(m_flags & c_flagBit16)) {
 		hResult = m_ddraw->QueryInterface(IID_IDirect3D3, reinterpret_cast<LPVOID*>(&m_d3d3));
 		if (hResult != DD_OK) {
-			sprintf(buffer, "DirectDraw QueryInterface(IID_IDirect3D3) error\nerror code = 0x%x", hResult);
+			::sprintf(buffer, "DirectDraw QueryInterface(IID_IDirect3D3) error\nerror code = 0x%x", hResult);
 			VTable0x48();
 			GOL_FATALERROR_MESSAGE(buffer);
 		}
-		if ((m_bpp == 4 && !(m_deviceDesc.dwDeviceRenderBitDepth & DDBD_4)) ||
-			(m_bpp == 8 && !(m_deviceDesc.dwDeviceRenderBitDepth & DDBD_8)) ||
-			(m_bpp == 16 && !(m_deviceDesc.dwDeviceRenderBitDepth & DDBD_16)) ||
-			(m_bpp == 24 && !(m_deviceDesc.dwDeviceRenderBitDepth & DDBD_24)) ||
-			(m_bpp == 32 && !(m_deviceDesc.dwDeviceRenderBitDepth & DDBD_32))) {
+
+		LegoU32 renderBitDepth = m_deviceDesc.dwDeviceRenderBitDepth;
+		if ((m_bpp == 4 && !(renderBitDepth & DDBD_4)) || (m_bpp == 8 && !(renderBitDepth & DDBD_8)) ||
+			(m_bpp == 16 && !(renderBitDepth & DDBD_16)) || (m_bpp == 24 && !(renderBitDepth & DDBD_24)) ||
+			(m_bpp == 32 && !(renderBitDepth & DDBD_32))) {
 			VTable0x48();
 			GOL_FATALERROR_MESSAGE("Direct3D error\ncurrent bit depth not supported for 3D rendering");
 		}
+
 		if ((m_flags & c_flagBit3) &&
 			!(m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_ANTIALIASSORTINDEPENDENT)) {
 			m_flags &= ~c_flagBit3;
 		}
+
 		if (!(m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_ZBUFFERLESSHSR)) {
 			::memset(&m_depthBufferPixelformat, 0, sizeof(m_depthBufferPixelformat));
 			m_depthBufferPixelformat.dwZBufferBitDepth = 16;
 			hResult = m_d3d3->EnumZBufferFormats(m_deviceGuid, FindmatchingDepthPixelformat, &m_depthBufferPixelformat);
+
 			if (m_depthBufferPixelformat.dwSize == 0) {
 				m_depthBufferPixelformat.dwZBufferBitDepth = 24;
 				hResult =
@@ -403,13 +407,23 @@ undefined4 GolDrawDPState::VTable0x58()
 					);
 				}
 			}
+
 			if ((m_flags & c_flagBit12) && (hResult != DD_OK || m_depthBufferPixelformat.dwSize == 0)) {
 				GOL_FATALERROR_MESSAGE("Unable to find z-buffer format");
 			}
 		}
 	}
-	// TODO
-	STUB(0x10001750);
+
+	if (!(m_unk0x354.GetUnk0x04() & BronzeFalcon0xc8770::c_flagBit0)) {
+		undefined4 result = m_unk0x354.FUN_10007d90(this, &m_unk0x2fc, m_flags);
+		if (result != 0) {
+			return result;
+		}
+	}
+	else {
+		m_unk0x354.FUN_10007e20(m_flags);
+	}
+
 	return 0;
 }
 

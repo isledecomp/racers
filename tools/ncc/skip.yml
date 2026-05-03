@@ -11,3 +11,5 @@ c_332BlueLevels: 'Allow constant'
 c_332GreenStride: 'Allow constant'
 c_332RedStride: 'Allow constant'
 STDMETHODCALLTYPE: 'Allow macro'
+m_guid: "Can't currently detect member in union"
+m_words: "Can't currently detect member in union"

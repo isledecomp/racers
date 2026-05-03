@@ -42,7 +42,7 @@ public:
 	virtual IPalette0x4* GetPalette();                                                         // vtable+0x1c
 	virtual void Fill(LegoU32 p_color);                                                        // vtable+0x20
 	virtual void Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Rect* p_sourceRect); // vtable+0x24
-	virtual void VTable0x28(undefined4, undefined4, undefined4*);                              // vtable+0x28
+	virtual void VTable0x28(Rect* p_destRect, SilverDune0x30* p_source, Rect* p_sourceRect);   // vtable+0x28
 	virtual void VTable0x2c();                                                                 // vtable+0x2c
 
 	// SYNTHETIC: GOLDP 0x1001cf40

@@ -43,7 +43,7 @@ GolDrawDPState::~GolDrawDPState()
 	ReleaseDDraw();
 }
 
-// STUB: GOLDP 0x100011e0
+// FUNCTION: GOLDP 0x100011e0
 void GolDrawDPState::VTable0x08(HWND p_hWnd)
 {
 	m_hWnd = p_hWnd;

@@ -105,7 +105,11 @@ LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
 		BuildPathname(NULL, p_fileName);
 
 		LegoU32 i = 0;
-		while (i < g_fileSourceCount && result == e_ioFileNotFound) {
+		while (result == e_ioFileNotFound) {
+			if (i >= g_fileSourceCount) {
+				break;
+			}
+
 			result = g_fileSources[i].Find(g_pathBuffer);
 			i++;
 		}
@@ -120,18 +124,14 @@ LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
 		result = e_ioFileNotFound;
 		LegoU32 i = 0;
 
-		while (TRUE) {
+		while (result == e_ioFileNotFound) {
 			if (i >= g_searchPathCount) {
 				break;
 			}
 
 			BuildPathname(g_searchPaths[i], p_fileName);
 			result = GolFile::Exists(g_pathBuffer);
-			i++;
-
-			if (result != e_ioFileNotFound) {
-				break;
-			}
+			++i;
 		}
 	}
 	else {

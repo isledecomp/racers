@@ -63,7 +63,7 @@ void ImaginaryWrench0x23bc::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x0047b470
-void ImaginaryWrench0x23bc::VTable0x8c(undefined4, undefined4)
+void ImaginaryWrench0x23bc::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	// TODO
 	STUB(0x47b470);

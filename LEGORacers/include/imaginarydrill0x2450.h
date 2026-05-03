@@ -20,7 +20,7 @@ public:
 	void VTable0x74() override;                                                     // vtable+0x74
 	LegoBool32 VTable0x78(undefined4) override;                                     // vtable+0x78
 	void VTable0x84() override;                                                     // vtable+0x84
-	void VTable0x8c(undefined4, undefined4) override;                               // vtable+0x84
+	void VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override;    // vtable+0x84
 
 	// SYNTHETIC: LEGORACERS 0x00480cb0
 	//  ImaginaryDrill0x2450::`scalar deleting destructor'

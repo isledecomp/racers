@@ -21,6 +21,8 @@
 #include "legopiecelibrary.h"
 #include "legoracers.h"
 #include "menuanimationlist.h"
+#include "menutoolcontext0x4bc8.h"
+#include "menutoolcreateparams0x30.h"
 #include "onyxbreeze0x248.h"
 #include "porcelainveil0x50.h"
 #include "racedefinitionlist.h"
@@ -67,7 +69,7 @@ public:
 	void LoadMenuData();
 	void UnloadMenuData();
 	LegoBool32 LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload);
-	void FUN_0042d3e0(LegoU16 p_unk0x04);
+	void FUN_0042d3e0(LegoU16 p_menuId);
 	void Run();
 	void FUN_0042e1f0();
 	LegoBool32 FUN_0042e450();
@@ -80,34 +82,12 @@ private:
 		c_menuTextRendererObjectName = 0x36,
 	};
 
-	// SIZE 0x4bc8
-	class VioletCurrent0x4bc8 {
-	public:
-		LegoRacers::Context* m_context;               // 0x00
-		StackOfLegoU16 m_unk0x04;                     // 0x04
-		OnyxBreeze0x248 m_inputBindings;              // 0x10
-		CitrineGrove0x1f4c m_unk0x258;                // 0x258
-		TopazBurst0x14 m_unk0x21a4;                   // 0x21a4
-		LegoPieceLibrary m_pieceLibrary;              // 0x21b8
-		SapphireReef0x2030 m_unk0x21f4;               // 0x21f4
-		VerdantTide0x38 m_unk0x4224;                  // 0x4224
-		TurquoiseGlow0x80 m_unk0x425c;                // 0x425c
-		AquamarineSpirit0x3c m_unk0x42dc;             // 0x42dc
-		ChampionDefinitionList m_championDefinitions; // 0x4318
-		RaceDefinitionList m_raceList;                // 0x434c
-		RaceNameList m_raceNames;                     // 0x4360
-		MenuAnimationList m_menuAnimations;           // 0x4374
-		LavenderVault0x764 m_unk0x437c;               // 0x437c
-		GarnetFlare0x60 m_unk0x4ae0;                  // 0x4ae0
-		TanzaniteWisp0x88 m_unk0x4b40;                // 0x4b40
-	};
-
 	void ShutdownInputBindings();
 	void ShutdownAudio();
 	void FUN_0042d080();
 	void FUN_0042d730();
 
-	VioletCurrent0x4bc8 m_unk0x04;          // 0x04
+	MenuToolContext0x4bc8 m_unk0x04;        // 0x04
 	ChromeSpike0x4 m_unk0x4bcc;             // 0x4bcc
 	CrimsonSun0xa4 m_unk0x4bd0;             // 0x4bd0
 	CopperCrest0x40 m_unk0x4c74;            // 0x4c74
@@ -116,7 +96,9 @@ private:
 	undefined4 m_unk0x4cbc;                 // 0x4cbc
 	undefined4 m_unk0x4cc0;                 // 0x4cc0
 	LegoU8 m_unk0x4cc4;                     // 0x4cc4
-	undefined m_unk0x4cc5[0x4cd4 - 0x4cc5]; // 0x4cc5
+	undefined m_unk0x4cc5[0x4cc8 - 0x4cc5]; // 0x4cc5
+	ImaginaryTool0x368* m_unk0x4cc8;        // 0x4cc8
+	undefined m_unk0x4ccc[0x4cd4 - 0x4ccc]; // 0x4ccc
 	GolExport* m_unk0x4cd4;                 // 0x4cd4
 	BronzeFalcon0xc8770* m_unk0x4cd8;       // 0x4cd8
 	AwakeKite0x20* m_imageTable;            // 0x4cdc
@@ -129,7 +111,7 @@ private:
 	GolString m_unk0x4d30;                  // 0x4d30
 	SoundGroupBinding m_soundGroupBinding;  // 0x4d3c
 	PorcelainVeil0x50 m_menuStyles;         // 0x4d48
-	undefined4 m_unk0x4d98[0x30 / 4];       // 0x4d98
+	MenuToolCreateParams0x30 m_unk0x4d98;   // 0x4d98
 	ImaginaryTool0x368* m_unk0x4dc8;        // 0x4dc8
 	undefined4 m_unk0x4dcc;                 // 0x4dcc
 	LegoBool32 m_unk0x4dd0;                 // 0x4dd0

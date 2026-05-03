@@ -38,9 +38,12 @@ public:
 
 	LegoS32 FUN_00469040(InitStruct* p_initStruct);
 	void FUN_00469550();
+	undefined4* GetUnk0x10() { return &m_unk0x10; }
 
 private:
-	undefined m_unk0x04[0x40 - 0x04]; // 0x04
+	undefined m_unk0x04[0x10 - 0x04]; // 0x04
+	undefined4 m_unk0x10;             // 0x10
+	undefined m_unk0x14[0x40 - 0x14]; // 0x14
 };
 
 #endif // COPPERCREST0X40_H

@@ -33,7 +33,7 @@ void ImaginaryAxe0x36c4::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x0047c210
-void ImaginaryAxe0x36c4::VTable0x8c(undefined4, undefined4)
+void ImaginaryAxe0x36c4::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x0047c210);
 }

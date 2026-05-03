@@ -16,6 +16,8 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
+DECOMP_SIZE_ASSERT(MenuToolContext0x4bc8, 0x4bc8)
+DECOMP_SIZE_ASSERT(MenuToolCreateParams0x30, 0x30)
 DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 
 // GLOBAL: LEGORACERS 0x004c4918
@@ -115,7 +117,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	LegoU16 top = m_unk0x04.m_unk0x04.Peek();
 	FUN_0042d3e0(top);
 
-	m_unk0x4bd0.FUN_00468af0(m_unk0x4d98, 2, &m_unk0x4c74);
+	m_unk0x4bd0.FUN_00468af0(&m_unk0x4d98, 2, &m_unk0x4c74);
 	return 1;
 }
 
@@ -365,11 +367,7 @@ void MenuManager::UnloadMenuData()
 // FUNCTION: LEGORACERS 0x0042d300
 LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload)
 {
-	do {
-		if (p_languageIndex == m_unk0x04.m_context->m_languageIndex && !p_forceReload) {
-			break;
-		}
-
+	if (p_languageIndex != m_unk0x04.m_context->m_languageIndex || p_forceReload) {
 		m_unk0x04.m_unk0x258.GetUnk0x18c4().SetLanguageResourcePath();
 		m_unk0x04.m_context->m_languageIndex = p_languageIndex;
 
@@ -393,16 +391,44 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 		params.m_fileName = "gstyles";
 		params.m_binary = m_unk0x04.m_context->m_unk0x18;
 		p_forceReload = m_menuStyles.Load(&params);
-	} while (FALSE);
+	}
 
 	return p_forceReload;
 }
 
-// STUB: LEGORACERS 0x0042d3e0
-void MenuManager::FUN_0042d3e0(LegoU16)
+// FUNCTION: LEGORACERS 0x0042d3e0
+void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 {
-	// TODO
-	STUB(0x42d3e0);
+	LoadLocalizedMenuResources(m_unk0x04.m_unk0x258.GetLanguageIndex(), FALSE);
+
+	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d30, p_menuId);
+
+	m_unk0x4d98.m_golExport = m_unk0x4cd4;
+	m_unk0x4d98.m_renderer = m_unk0x4cd8;
+	m_unk0x4d98.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
+	m_unk0x4d98.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
+	m_unk0x4d98.m_soundGroupBinding = &m_soundGroupBinding;
+	m_unk0x4d98.m_menuStyles = &m_menuStyles;
+	m_unk0x4d98.m_menuId = p_menuId;
+	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_unk0x18;
+	m_unk0x4d98.m_unk0x20 = &m_unk0x4bd0;
+	m_unk0x4d98.m_unk0x24 = m_unk0x4c74.GetUnk0x10();
+	m_unk0x4d98.m_menuNameStrings = &m_menuNameStrings;
+	m_unk0x4d98.m_menuTextStrings = &m_menuTextStrings;
+
+	if (m_unk0x4dc8) {
+		m_unk0x4cd8->VTable0xf4();
+		m_unk0x4dc8->VTable0x74();
+
+		if (m_unk0x4dc8) {
+			delete m_unk0x4dc8;
+		}
+	}
+
+	ImaginaryTool0x368*& currentTool = m_unk0x4dc8;
+	currentTool = m_unk0x4bcc.FUN_0047f4e0(p_menuId);
+	m_unk0x4cc8 = currentTool;
+	currentTool->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
 }
 
 // FUNCTION: LEGORACERS 0x0042d510

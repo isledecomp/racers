@@ -20,7 +20,7 @@ public:
 	void VTable0x80() override;                                                     // vtable+0x80
 	void VTable0x84() override;                                                     // vtable+0x84
 	void VTable0x88() override;                                                     // vtable+0x88
-	void VTable0x8c(undefined4, undefined4) override;                               // vtable+0x8c
+	void VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override;    // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x004816f0
 	// ImaginarySpool0x2cc4::`scalar deleting destructor'

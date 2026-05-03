@@ -15,7 +15,7 @@ ImaginaryLever0x1d7c::~ImaginaryLever0x1d7c()
 }
 
 // STUB: LEGORACERS 0x00486dd0
-void ImaginaryLever0x1d7c::VTable0x8c(undefined4, undefined4)
+void ImaginaryLever0x1d7c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00486dd0);
 }

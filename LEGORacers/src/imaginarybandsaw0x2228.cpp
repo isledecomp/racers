@@ -27,7 +27,7 @@ void ImaginaryBandsaw0x2228::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x0047a040
-void ImaginaryBandsaw0x2228::VTable0x8c(undefined4, undefined4)
+void ImaginaryBandsaw0x2228::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x0047a040);
 }

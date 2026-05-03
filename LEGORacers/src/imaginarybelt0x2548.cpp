@@ -21,7 +21,7 @@ void ImaginaryBelt0x2548::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00484980
-void ImaginaryBelt0x2548::VTable0x8c(undefined4, undefined4)
+void ImaginaryBelt0x2548::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00484980);
 }

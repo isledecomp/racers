@@ -547,10 +547,53 @@ void SlatePeak0x58::Fill(LegoU32 p_color)
 	}
 }
 
-// STUB: GOLDP 0x10003d80
-void SlatePeak0x58::VTable0x28(undefined4, undefined4, undefined4*)
+// FUNCTION: GOLDP 0x10003d80
+void SlatePeak0x58::VTable0x28(Rect* p_destRect, SilverDune0x30* p_source, Rect* p_sourceRect)
 {
-	STUB(0x10003d80);
+	RECT destRect;
+	RECT sourceRect;
+	DDBLTFX bltFx;
+	LegoChar errorMessage[100];
+
+	destRect.left = p_destRect->m_left;
+	destRect.right = p_destRect->m_right;
+	destRect.top = p_destRect->m_top;
+	destRect.bottom = p_destRect->m_bottom;
+
+	sourceRect.left = p_sourceRect->m_left;
+	sourceRect.right = p_sourceRect->m_right;
+	sourceRect.top = p_sourceRect->m_top;
+	sourceRect.bottom = p_sourceRect->m_bottom;
+
+	::memset(&bltFx, 0, sizeof(bltFx));
+	bltFx.dwSize = sizeof(bltFx);
+
+	if (m_pixelFlags & c_lockFlagUnknown0x04) {
+		VTable0x18();
+	}
+
+	SlatePeak0x58* source = static_cast<SlatePeak0x58*>(p_source);
+	if (source->m_pixelFlags & c_lockFlagUnknown0x04) {
+		source->VTable0x18();
+	}
+
+	for (;;) {
+		LPDIRECTDRAWSURFACE4 sourceSurface = source->m_renderSurface;
+		LPDIRECTDRAWSURFACE4 renderSurface = m_renderSurface;
+		HRESULT result;
+
+		while ((result = renderSurface->Blt(&destRect, sourceSurface, &sourceRect, 0, &bltFx)) == DDERR_SURFACEBUSY ||
+			   result == DDERR_WASSTILLDRAWING) {
+			::Sleep(1);
+		}
+
+		if (result == DD_OK || result == DDERR_SURFACELOST) {
+			return;
+		}
+
+		::sprintf(errorMessage, "Error in blit of display surface\nError code = %x", result);
+		GOL_FATALERROR_MESSAGE(errorMessage);
+	}
 }
 
 // STUB: GOLDP 0x10003e90

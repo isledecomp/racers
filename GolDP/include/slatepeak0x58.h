@@ -22,8 +22,9 @@ public:
 	void VTable0x18() override;                                                        // vtable+0x18
 	IPalette0x4* GetPalette() override;                                                // vtable+0x1c
 	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
-	void VTable0x28(undefined4, undefined4, undefined4*) override;                     // vtable+0x28
-	void VTable0x2c() override;                                                        // vtable+0x2c
+	void VTable0x28(Rect* p_destRect, SilverDune0x30* p_source,
+					Rect* p_sourceRect) override; // vtable+0x28
+	void VTable0x2c() override;                   // vtable+0x2c
 	void VTable0x30(
 		GolDrawState* p_drawState,
 		undefined4 p_width,

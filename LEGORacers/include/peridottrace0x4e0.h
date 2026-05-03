@@ -2,9 +2,8 @@
 #define PERIDOTTRACE0X4E0_H
 
 #include "decomp.h"
+#include "displaydriverguid.h"
 #include "types.h"
-
-#include <windows.h>
 
 class GolFile;
 class InputManager;
@@ -107,7 +106,8 @@ public:
 	void FUN_0042eb60(PeridotTrace0x4a8*, undefined4);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
 	void SetLanguageResourcePath();
-	void FUN_0042f020(const GUID* p_guid);
+	void FUN_0042f020(const DisplayDriverGuid& p_guid);
+	void FUN_0042f060(DisplayDriverGuid& p_guid);
 	void FUN_0042f200(LegoU8 p_unk0x04);
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;
@@ -115,20 +115,54 @@ public:
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	undefined4 GetUnk0x04() const { return m_unk0x04; }
+	LegoU8 GetUnk0x0c() const { return m_unk0x0c; }
+	LegoU8 GetUnk0x1f() const { return m_unk0x1f; }
+	LegoU8 GetUnk0x20() const { return m_unk0x20; }
+	LegoU8 GetUnk0x21() const { return m_unk0x21; }
 	LegoU8 GetLanguageIndex() const { return m_languageIndex; }
 	LegoU8 GetUnk0x22() const { return GetLanguageIndex(); }
+	LegoU8 GetUnk0x23() const { return m_unk0x23; }
 
 private:
-	undefined4 m_unk0x00;              // 0x00
-	undefined4 m_unk0x04;              // 0x04
-	InputManager* m_inputManager;      // 0x08
-	undefined m_unk0x0c[0x22 - 0x0c];  // 0x0c
-	LegoU8 m_languageIndex;            // 0x22
-	undefined m_unk0x23;               // 0x23
-	LegoU8 m_unk0x24;                  // 0x24
-	LegoU8 m_unk0x25;                  // 0x25
-	LegoU16 m_unk0x26;                 // 0x26
-	undefined m_unk0x28[0x438 - 0x28]; // 0x28
+	// SIZE 0x04
+	struct SerializedGuidWord {
+		void Set(const LegoU32& p_word)
+		{
+			m_byte0 = static_cast<LegoU8>(p_word);
+			m_byte1 = static_cast<LegoU8>(p_word >> 8);
+			m_byte2 = static_cast<LegoU8>(p_word >> 16);
+			m_byte3 = static_cast<LegoU8>(p_word >> 24);
+		}
+
+		LegoU32 Get() const { return (m_byte3 << 24) + (m_byte2 << 16) + (m_byte1 << 8) + m_byte0; }
+
+		LegoU8 m_byte0; // 0x00
+		LegoU8 m_byte1; // 0x01
+		LegoU8 m_byte2; // 0x02
+		LegoU8 m_byte3; // 0x03
+	};
+
+	// SIZE 0x10
+	struct SerializedGuid {
+		SerializedGuidWord m_words[sizeof(GUID) / sizeof(LegoU32)]; // 0x00
+	};
+
+	undefined4 m_unk0x00;               // 0x00
+	undefined4 m_unk0x04;               // 0x04
+	InputManager* m_inputManager;       // 0x08
+	LegoU8 m_unk0x0c;                   // 0x0c
+	SerializedGuid m_displayDriverGuid; // 0x0d
+	undefined m_unk0x1d;                // 0x1d
+	undefined m_unk0x1e;                // 0x1e
+	LegoU8 m_unk0x1f;                   // 0x1f
+	LegoU8 m_unk0x20;                   // 0x20
+	LegoU8 m_unk0x21;                   // 0x21
+	LegoU8 m_languageIndex;             // 0x22
+	undefined m_unk0x23;                // 0x23
+	LegoU8 m_unk0x24;                   // 0x24
+	LegoU8 m_unk0x25;                   // 0x25
+	LegoU16 m_unk0x26;                  // 0x26
+	undefined m_unk0x28[0x438 - 0x28];  // 0x28
 };
 
 // SIZE 0x250

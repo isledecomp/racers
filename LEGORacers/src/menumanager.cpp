@@ -20,14 +20,17 @@ DECOMP_SIZE_ASSERT(MenuToolContext0x4bc8, 0x4bc8)
 DECOMP_SIZE_ASSERT(MenuToolCreateParams0x30, 0x30)
 DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 
+// GLOBAL: LEGORACERS 0x004b05d8
+LegoFloat g_unk0x4b05d8 = 1.0f / 255.0f;
+
+// GLOBAL: LEGORACERS 0x004beb78
+LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
+
 // GLOBAL: LEGORACERS 0x004c4918
 MenuManager* g_menuManager = NULL;
 
 // GLOBAL: LEGORACERS 0x004c4928
-GUID g_displayDriverGuid = {0};
-
-// GLOBAL: LEGORACERS 0x004beb78
-LegoFloat g_unk0x4beb78[7] = {0.04f, 0.04f, 0.04f, 0.04f, 0.39f, 0.4f, 0.04f};
+DisplayDriverGuid g_displayDriverGuid = {0};
 
 // FUNCTION: LEGORACERS 0x0042b1e0
 void MenuManager::Run(LegoRacers::Context* p_context)
@@ -309,7 +312,7 @@ void MenuManager::FUN_0042d0e0()
 	else {
 		currentDisplayDriverGuid = *displayDriverGuid;
 	}
-	g_displayDriverGuid = currentDisplayDriverGuid;
+	g_displayDriverGuid.m_guid = currentDisplayDriverGuid;
 
 	m_unk0x04.m_unk0x258.FUN_004432e0(m_unk0x04.m_context->m_golApp->GetInputManager(), FALSE);
 
@@ -527,8 +530,112 @@ void MenuManager::FUN_0042d730()
 // STUB: LEGORACERS 0x0042e1f0
 void MenuManager::FUN_0042e1f0()
 {
-	// TODO
-	STUB(0x42e1f0);
+	LegoU32 driverIndex = 0;
+	LegoFloat musicVolume;
+	const LegoChar* driverName;
+	PeridotTraceState0x438& state = m_unk0x04.m_unk0x258.GetUnk0x18c4();
+
+	m_unk0x04.m_context->m_unk0x100 = state.GetUnk0x0c();
+	m_unk0x04.m_context->m_unk0x2c = state.GetUnk0x23();
+
+	if (m_unk0x04.m_context->GetSoundManager() != NULL) {
+		musicVolume = state.GetUnk0x1f() * g_unk0x4b05d8;
+		m_unk0x04.m_context->GetSoundManager()->SetMusicVolumeScale(1.0f);
+
+		if (m_unk0x04.m_unk0x4b40.m_musicInstance) {
+			m_unk0x04.m_unk0x4b40.m_musicInstance->SetVolume(musicVolume);
+		}
+		m_unk0x04.m_context->GetSoundManager()->SetMusicVolumeScale(musicVolume);
+		m_unk0x04.m_context->GetSoundManager()->SetVolumeScale(state.GetUnk0x20() * g_unk0x4b05d8);
+
+		if (state.GetUnk0x21()) {
+			m_unk0x04.m_context->GetSoundManager()->ClearUnk0x04Flag0x04();
+		}
+		else {
+			m_unk0x04.m_context->GetSoundManager()->SetUnk0x04Flag0x04();
+		}
+	}
+
+	GolDrawState* drawState = m_unk0x04.m_context->m_golApp->GetDrawState();
+	DisplayDriverGuid savedDisplayDriverGuid;
+	DisplayDriverGuid currentDisplayDriverGuid;
+	state.FUN_0042f060(savedDisplayDriverGuid);
+
+	const GUID* currentGuid = drawState->VTable0x38();
+	if (!currentGuid) {
+		drawState->VTable0x30(driverIndex, &currentDisplayDriverGuid.m_guid);
+	}
+	else {
+		currentDisplayDriverGuid.m_guid = *currentGuid;
+	}
+
+	LegoU32 selectedDrawFlags = 0;
+	if (::memcmp(&savedDisplayDriverGuid, &currentDisplayDriverGuid, sizeof(GUID)) != 0) {
+		driverName = NULL;
+
+		while (driverName == NULL) {
+			DisplayDriverGuid driverGuid;
+			drawState->VTable0x30(driverIndex, &driverGuid.m_guid);
+
+			if (::memcmp(&savedDisplayDriverGuid, &driverGuid, sizeof(GUID)) == 0) {
+				driverName = drawState->VTable0x14(driverIndex);
+			}
+
+			driverIndex++;
+			if (driverName != NULL || driverIndex >= drawState->VTable0x10()) {
+				break;
+			}
+		}
+
+		if (driverName != NULL) {
+			driverIndex--;
+
+			LegoU32 deviceIndex = 0;
+			if (drawState->VTable0x1c(driverIndex) > 0) {
+				while (!drawState->VTable0x28(driverIndex, deviceIndex)) {
+					deviceIndex++;
+					if (deviceIndex >= drawState->VTable0x1c(driverIndex)) {
+						break;
+					}
+				}
+			}
+
+			if (deviceIndex < drawState->VTable0x1c(driverIndex)) {
+				const LegoChar* deviceName = drawState->VTable0x20(driverIndex, deviceIndex);
+				drawState->VTable0x0c(driverName, deviceName);
+				selectedDrawFlags = GolDrawState::c_flagBit14;
+			}
+		}
+	}
+
+	LegoS32 width = drawState->m_width;
+	LegoS32 height = drawState->m_height;
+
+	if (::memcmp(&savedDisplayDriverGuid, &currentDisplayDriverGuid, sizeof(GUID)) != 0) {
+		LegoU32 appFlags = m_unk0x04.m_context->m_golApp->GetFlags();
+
+		if (!(appFlags & (GolApp::c_flagPrimaryDriver | GolApp::c_flagSelect3DDevice))) {
+			LegoU32 displayFlags = 0;
+			if (appFlags & GolApp::c_flagFullscreen) {
+				displayFlags = GolApp::c_flagFullscreen;
+			}
+			if (appFlags & GolApp::c_flagBit4) {
+				displayFlags |= GolApp::c_flagBit4;
+			}
+			if (appFlags & GolApp::c_flagBit8) {
+				displayFlags |= GolApp::c_flagBit8;
+			}
+
+			drawState->VTable0x50();
+			undefined4 bpp = drawState->m_bpp;
+			drawState->VTable0x54(
+				width,
+				height,
+				bpp,
+				m_unk0x04.m_context->m_golApp->BuildDrawStateFlags(displayFlags) | selectedDrawFlags
+			);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042e450

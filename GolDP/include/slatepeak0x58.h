@@ -6,6 +6,8 @@
 #include "depthbuffer0x38.h"
 #include "pearldew0x0c.h"
 
+class BronzeFalcon0xc8770;
+
 // VTABLE: GOLDP 0x1005627c
 // SIZE 0x58
 class SlatePeak0x58 : public AzureRidge0x38 {
@@ -39,6 +41,7 @@ protected:
 
 	LegoS32 AttachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
 	void DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
+	void SetDisplayPalette(BronzeFalcon0xc8770* p_renderer);
 
 	PearlDew0x0c m_palette;                // 0x38
 	GolDrawState* m_drawState;             // 0x44

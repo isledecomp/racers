@@ -15,7 +15,7 @@ ImaginaryPlate0x770::~ImaginaryPlate0x770()
 }
 
 // STUB: LEGORACERS 0x00482120
-void ImaginaryPlate0x770::VTable0x8c(undefined4, undefined4)
+void ImaginaryPlate0x770::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00482120);
 }

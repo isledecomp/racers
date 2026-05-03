@@ -15,7 +15,7 @@ ImaginarySpring0x658::~ImaginarySpring0x658()
 }
 
 // STUB: LEGORACERS 0x00479b10
-void ImaginarySpring0x658::VTable0x8c(undefined4, undefined4)
+void ImaginarySpring0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00479b10);
 }

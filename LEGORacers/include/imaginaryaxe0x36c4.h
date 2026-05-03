@@ -11,15 +11,15 @@ class ImaginaryAxe0x36c4 : public ImaginaryTool0x368 {
 public:
 	ImaginaryAxe0x36c4();
 
-	void VTable0x38(undefined4) override;             // vtable+0x38
-	void VTable0x44(undefined4) override;             // vtable+0x44
-	void VTable0x4c(undefined4) override;             // vtable+0x4c
-	void VTable0x54() override;                       // vtable+0x54
-	~ImaginaryAxe0x36c4() override;                   // vtable+0x68
-	void VTable0x74() override;                       // vtable+0x74
-	void VTable0x80() override;                       // vtable+0x80
-	void VTable0x84() override;                       // vtable+0x84
-	void VTable0x8c(undefined4, undefined4) override; // vtable+0x8c
+	void VTable0x38(undefined4) override;                                        // vtable+0x38
+	void VTable0x44(undefined4) override;                                        // vtable+0x44
+	void VTable0x4c(undefined4) override;                                        // vtable+0x4c
+	void VTable0x54() override;                                                  // vtable+0x54
+	~ImaginaryAxe0x36c4() override;                                              // vtable+0x68
+	void VTable0x74() override;                                                  // vtable+0x74
+	void VTable0x80() override;                                                  // vtable+0x80
+	void VTable0x84() override;                                                  // vtable+0x84
+	void VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x0047bde0
 	// ImaginaryAxe0x36c4::`scalar deleting destructor'

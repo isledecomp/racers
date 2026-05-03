@@ -27,7 +27,7 @@ void ImaginaryRuler0x2e60::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00487ca0
-void ImaginaryRuler0x2e60::VTable0x8c(undefined4, undefined4)
+void ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00487ca0);
 }

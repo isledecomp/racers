@@ -5,6 +5,9 @@
 #include "decomp.h"
 #include "imaginarynotion0x290.h"
 
+class MenuToolContext0x4bc8;
+class MenuToolCreateParams0x30;
+
 // VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368
 class ImaginaryTool0x368 : public ImaginaryNotion0x290 {
@@ -32,7 +35,7 @@ public:
 	virtual void VTable0x80();                                                      // vtable+0x80
 	virtual void VTable0x84() = 0;                                                  // vtable+0x84
 	virtual void VTable0x88();                                                      // vtable+0x88
-	virtual void VTable0x8c(undefined4, undefined4);                                // vtable+0x8c
+	virtual void VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*);     // vtable+0x8c
 	virtual void VTable0x90(undefined4);                                            // vtable+0x90
 	virtual void VTable0x94(undefined4);                                            // vtable+0x94
 

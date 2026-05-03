@@ -15,7 +15,7 @@ ImaginaryHammer0x658::~ImaginaryHammer0x658()
 }
 
 // STUB: LEGORACERS 0x00488410
-void ImaginaryHammer0x658::VTable0x8c(undefined4, undefined4)
+void ImaginaryHammer0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00488410);
 }

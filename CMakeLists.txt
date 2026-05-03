@@ -108,6 +108,8 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/bronzefalconsurface0x5c.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/depthbuffer0x38.cpp
+  GolDP/src/golfont0xa0.cpp
+  GolDP/src/bronzedune0x4c.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -137,9 +139,9 @@ add_library(goldp SHARED
   GolDP/src/goldrawdpstate.cpp
   GolDP/src/goldpexport.cpp
   GolDP/src/fluffygloomkins0x118.cpp
+  GolDP/src/pearldew0x0c.cpp
   GolDP/src/goldevicelist.cpp
   GolDP/src/main.cpp
-  GolDP/src/pearldew0x0c.cpp
   GolDP/src/zoweeblubberworth0xf0.cpp
   GolDP/src/silverdune0x30.cpp
   GolDP/src/floatyboat0x28.cpp

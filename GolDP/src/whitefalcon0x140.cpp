@@ -146,13 +146,13 @@ DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 // FUNCTION: GOLDP 0x10028840
 WhiteFalcon0x140::WhiteFalcon0x140()
 {
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
+	m_textureFormatIndex = 0;
+	m_requestedRedBitCount = 0;
+	m_requestedGrnBitCount = 0;
+	m_requestedBluBitCount = 0;
+	m_requestedAlpBitCount = 0;
+	m_requestedUnk0x10BitCount = 0;
+	m_requestedPaletteBitCount = 0;
 	m_countTextureFormats = 0;
 	m_textureFormats = NULL;
 	m_textureLists = NULL;
@@ -186,13 +186,13 @@ void WhiteFalcon0x140::Destroy()
 
 	AmberHaze0x1c* amberHaze = m_materialLists;
 	m_countTextureFormats = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
+	m_textureFormatIndex = 0;
+	m_requestedRedBitCount = 0;
+	m_requestedGrnBitCount = 0;
+	m_requestedBluBitCount = 0;
+	m_requestedAlpBitCount = 0;
+	m_requestedUnk0x10BitCount = 0;
+	m_requestedPaletteBitCount = 0;
 
 	while (amberHaze != NULL) {
 		AmberHaze0x1c* next = amberHaze->GetNext();
@@ -255,13 +255,13 @@ void WhiteFalcon0x140::ReleaseResources()
 		fontList = fontList->GetNext();
 	}
 
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
+	m_textureFormatIndex = 0;
+	m_requestedRedBitCount = 0;
+	m_requestedGrnBitCount = 0;
+	m_requestedBluBitCount = 0;
+	m_requestedAlpBitCount = 0;
+	m_requestedUnk0x10BitCount = 0;
+	m_requestedPaletteBitCount = 0;
 }
 
 // FUNCTION: GOLDP 0x10028a10
@@ -468,10 +468,280 @@ undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 	return NULL;
 }
 
-// STUB: GOLDP 0x10028c50
-void WhiteFalcon0x140::VTable0x0c(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10028c50
+void WhiteFalcon0x140::SelectTextureFormat(
+	const FalconTextureFormat& p_requestedTextureFormat,
+	FalconTextureFormat* p_actualTextureFormat,
+	LegoBool32
+)
 {
-	STUB(0x10028c50);
+	LegoU32 i;
+	LegoU32 alpBitCount;
+	LegoU32 redBitCount;
+	LegoU32 grnBitCount;
+	LegoU32 bluBitCount;
+
+	redBitCount = p_requestedTextureFormat.GetRedBitCount();
+	grnBitCount = p_requestedTextureFormat.GetGreenBitCount();
+	bluBitCount = p_requestedTextureFormat.GetBlueBitCount();
+	alpBitCount = p_requestedTextureFormat.GetAlphaBitCount();
+	LegoU32 textureFormatField0x10BitCount = p_requestedTextureFormat.FUN_1001cc10();
+	LegoU32 paletteBitCount = p_requestedTextureFormat.GetPaletteBitCount();
+	LegoU32 bpp = p_requestedTextureFormat.m_bitsPerPixel;
+
+	if (m_requestedRedBitCount == redBitCount && m_requestedGrnBitCount == grnBitCount &&
+		m_requestedBluBitCount == bluBitCount && m_requestedAlpBitCount == alpBitCount &&
+		m_requestedUnk0x10BitCount == textureFormatField0x10BitCount && m_requestedPaletteBitCount == paletteBitCount) {
+		*p_actualTextureFormat = m_textureFormats[m_textureFormatIndex];
+		return;
+	}
+
+	m_requestedRedBitCount = redBitCount;
+	m_requestedGrnBitCount = grnBitCount;
+	m_requestedBluBitCount = bluBitCount;
+	m_requestedAlpBitCount = alpBitCount;
+	m_requestedUnk0x10BitCount = textureFormatField0x10BitCount;
+	m_requestedPaletteBitCount = paletteBitCount;
+
+	if (alpBitCount != 0) {
+		if (paletteBitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
+					m_textureFormats[i].GetPaletteBitCount() == paletteBitCount &&
+					m_textureFormats[i].GetAlphaBitCount() == alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else if (textureFormatField0x10BitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
+					m_textureFormats[i].FUN_1001cc10() == textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetAlphaBitCount() == alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp && m_textureFormats[i].GetRedBitCount() == redBitCount &&
+					m_textureFormats[i].GetGreenBitCount() == grnBitCount &&
+					m_textureFormats[i].GetBlueBitCount() == bluBitCount &&
+					m_textureFormats[i].GetAlphaBitCount() == alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+
+		if (paletteBitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
+					m_textureFormats[i].GetPaletteBitCount() >= paletteBitCount &&
+					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel >= 16 && m_textureFormats[i].GetRedBitCount() >= 5 &&
+					m_textureFormats[i].GetGreenBitCount() >= 5 && m_textureFormats[i].GetBlueBitCount() >= 5 &&
+					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else if (textureFormatField0x10BitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
+					m_textureFormats[i].FUN_1001cc10() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
+					m_textureFormats[i].GetRedBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp && m_textureFormats[i].GetRedBitCount() >= redBitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= grnBitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= bluBitCount &&
+					m_textureFormats[i].GetAlphaBitCount() >= alpBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+
+		if (alpBitCount >= 4) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].GetAlphaBitCount() >= 4) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+
+		for (i = 0; i < m_countTextureFormats; i++) {
+			if (m_textureFormats[i].GetAlphaBitCount() != 0) {
+				*p_actualTextureFormat = m_textureFormats[i];
+				m_textureFormatIndex = i;
+				return;
+			}
+		}
+	}
+	else {
+		if (paletteBitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
+					m_textureFormats[i].GetPaletteBitCount() == paletteBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			if (paletteBitCount < 8) {
+				for (i = 0; i < m_countTextureFormats; i++) {
+					if (m_textureFormats[i].m_bitsPerPixel < 16 &&
+						m_textureFormats[i].GetPaletteBitCount() >= paletteBitCount) {
+						*p_actualTextureFormat = m_textureFormats[i];
+						m_textureFormatIndex = i;
+						return;
+					}
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == 16 && m_textureFormats[i].GetRedBitCount() >= 5 &&
+					m_textureFormats[i].GetGreenBitCount() >= 5 && m_textureFormats[i].GetBlueBitCount() >= 5) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else if (textureFormatField0x10BitCount != 0) {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
+					m_textureFormats[i].FUN_1001cc10() == textureFormatField0x10BitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
+					m_textureFormats[i].FUN_1001cc10() >= textureFormatField0x10BitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp &&
+					m_textureFormats[i].GetRedBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= textureFormatField0x10BitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= textureFormatField0x10BitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+		else {
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp &&
+					m_textureFormats[i].m_redBitMask == p_requestedTextureFormat.m_redBitMask &&
+					m_textureFormats[i].m_grnBitMask == p_requestedTextureFormat.m_grnBitMask &&
+					m_textureFormats[i].m_bluBitMask == p_requestedTextureFormat.m_bluBitMask) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel == bpp && m_textureFormats[i].GetRedBitCount() == redBitCount &&
+					m_textureFormats[i].GetGreenBitCount() == grnBitCount &&
+					m_textureFormats[i].GetBlueBitCount() == bluBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+
+			for (i = 0; i < m_countTextureFormats; i++) {
+				if (m_textureFormats[i].m_bitsPerPixel > bpp && m_textureFormats[i].GetRedBitCount() >= redBitCount &&
+					m_textureFormats[i].GetGreenBitCount() >= grnBitCount &&
+					m_textureFormats[i].GetBlueBitCount() >= bluBitCount) {
+					*p_actualTextureFormat = m_textureFormats[i];
+					m_textureFormatIndex = i;
+					return;
+				}
+			}
+		}
+
+		for (i = 0; i < m_countTextureFormats; i++) {
+			if (m_textureFormats[i].m_bitsPerPixel >= 15 && m_textureFormats[i].GetRedBitCount() >= 5 &&
+				m_textureFormats[i].GetGreenBitCount() >= 5 && m_textureFormats[i].GetBlueBitCount() >= 5) {
+				*p_actualTextureFormat = m_textureFormats[i];
+				m_textureFormatIndex = i;
+				return;
+			}
+		}
+	}
+
+	for (i = 0; i < m_countTextureFormats; i++) {
+		if (m_textureFormats[i].m_bitsPerPixel == bpp) {
+			*p_actualTextureFormat = m_textureFormats[i];
+			m_textureFormatIndex = i;
+			return;
+		}
+	}
+
+	for (i = 0; i < m_countTextureFormats; i++) {
+		if (m_textureFormats[i].m_bitsPerPixel > bpp) {
+			*p_actualTextureFormat = m_textureFormats[i];
+			m_textureFormatIndex = i;
+			return;
+		}
+	}
+
+	*p_actualTextureFormat = m_textureFormats[0];
+	m_textureFormatIndex = 0;
+	m_requestedRedBitCount = 0;
+	m_requestedGrnBitCount = 0;
+	m_requestedBluBitCount = 0;
+	m_requestedAlpBitCount = 0;
+	m_requestedUnk0x10BitCount = 0;
+	m_requestedPaletteBitCount = 0;
 }
 
 // STUB: GOLDP 0x10029500

@@ -13,8 +13,13 @@ public:
 	~BronzeDune0x4c() override;                         // vtable+0x00
 	IPalette0x4* GetPalette() override;                 // vtable+0x1c
 	void VTable0x30(undefined4*, undefined4*) override; // vtable+0x30
-	void VTable0x34() override;                         // vtable+0x34
-	void VTable0x38() override;                         // vtable+0x38
+	void VTable0x34(
+		undefined4,
+		const FalconTextureFormat& p_textureFormat,
+		LegoU32 p_width,
+		LegoU32 p_height
+	) override;                 // vtable+0x34
+	void VTable0x38() override; // vtable+0x38
 
 	// SYNTHETIC: GOLDP 0x10004450
 	// BronzeDune0x4c::`scalar deleting destructor'

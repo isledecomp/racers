@@ -331,7 +331,7 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void SilverDune0x30::VTable0x28(undefined4, undefined4, undefined4*)
+void SilverDune0x30::VTable0x28(Rect*, SilverDune0x30*, Rect*)
 {
 	// empty
 }

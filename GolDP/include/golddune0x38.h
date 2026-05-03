@@ -10,8 +10,13 @@ public:
 	GoldDune0x38();
 
 	virtual void VTable0x30(undefined4*, undefined4*); // vtable+0x30
-	virtual void VTable0x34() = 0;                     // vtable+0x34
-	virtual void VTable0x38() = 0;                     // vtable+0x38
+	virtual void VTable0x34(
+		undefined4,
+		const FalconTextureFormat& p_textureFormat,
+		LegoU32 p_width,
+		LegoU32 p_height
+	) = 0;                         // vtable+0x34
+	virtual void VTable0x38() = 0; // vtable+0x38
 
 	// SYNTHETIC: GOLDP 0x10004470 FOLDED
 	// GoldDune0x38::~GoldDune0x38

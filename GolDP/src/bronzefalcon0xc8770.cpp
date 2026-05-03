@@ -386,13 +386,13 @@ void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 		}
 	}
 	else {
-		float c = static_cast<float>(p_color.m_red) / 255.0;
+		float c = static_cast<float>(static_cast<double>(p_color.m_red) / 255.0);
 		m_materialParams.ambient.r = c;
 		m_materialParams.diffuse.r = c;
-		c = static_cast<float>(p_color.m_grn) / 255.0;
+		c = static_cast<float>(static_cast<double>(p_color.m_grn) / 255.0);
 		m_materialParams.ambient.g = c;
 		m_materialParams.diffuse.g = c;
-		c = static_cast<float>(p_color.m_blu) / 255.0;
+		c = static_cast<float>(static_cast<double>(p_color.m_blu) / 255.0);
 		m_materialParams.ambient.b = c;
 		m_materialParams.diffuse.b = c;
 		m_backgroundMaterial->SetMaterial(&m_materialParams);
@@ -565,10 +565,27 @@ void BronzeFalcon0xc8770::DrawTriangle(
 	STUB(0x10009ce0);
 }
 
-// STUB: GOLDP 0x1000a110
-void BronzeFalcon0xc8770::VTable0x0c(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000a110
+void BronzeFalcon0xc8770::SelectTextureFormat(
+	const FalconTextureFormat& p_requestedTextureFormat,
+	FalconTextureFormat* p_actualTextureFormat,
+	LegoBool32 p_arg3
+)
 {
-	STUB(0x1000a110);
+	FalconTextureFormat reqTextureFormat;
+	if (p_arg3 && (m_unk0x04 & (c_flagBit7 | c_flagBit8)) && p_requestedTextureFormat.GetAlphaBitCount() == 0) {
+		reqTextureFormat.m_redBitMask = 0xf800;
+		reqTextureFormat.m_grnBitMask = 0x07c0;
+		reqTextureFormat.m_bluBitMask = 0x003e;
+		reqTextureFormat.m_alpBitMask = 0x0001;
+		reqTextureFormat.m_unk0x10 = 0;
+		reqTextureFormat.m_paletteMask = 0;
+		reqTextureFormat.m_bitsPerPixel = 16;
+		WhiteFalcon0x140::SelectTextureFormat(reqTextureFormat, p_actualTextureFormat, TRUE);
+	}
+	else {
+		WhiteFalcon0x140::SelectTextureFormat(p_requestedTextureFormat, p_actualTextureFormat, FALSE);
+	}
 }
 
 // STUB: GOLDP 0x1000a1c0

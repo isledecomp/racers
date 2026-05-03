@@ -10,6 +10,11 @@ class GolDrawState;
 // SIZE 0x38
 class AzureRidge0x38 : public SilverDune0x30 {
 public:
+	enum {
+		c_surfaceFlagWindowed = 0x01,
+		c_surfaceFlagFlip = 0x02
+	};
+
 	AzureRidge0x38();
 	~AzureRidge0x38() override; // vtable+0x00
 
@@ -25,8 +30,8 @@ public:
 	// AzureRidge0x38::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x30; // 0x30
-	undefined4 m_unk0x34; // 0x34
+	GolDrawState* m_unk0x30; // 0x30
+	undefined4 m_unk0x34;    // 0x34
 };
 
 #endif // GOLDP_AZURERIDGE0X38_H

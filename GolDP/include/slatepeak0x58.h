@@ -6,6 +6,8 @@
 #include "depthbuffer0x38.h"
 #include "pearldew0x0c.h"
 
+class BronzeFalcon0xc8770;
+
 // VTABLE: GOLDP 0x1005627c
 // SIZE 0x58
 class SlatePeak0x58 : public AzureRidge0x38 {
@@ -20,8 +22,9 @@ public:
 	void VTable0x18() override;                                                        // vtable+0x18
 	IPalette0x4* GetPalette() override;                                                // vtable+0x1c
 	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
-	void VTable0x28(undefined4, undefined4, undefined4*) override;                     // vtable+0x28
-	void VTable0x2c() override;                                                        // vtable+0x2c
+	void VTable0x28(Rect* p_destRect, SilverDune0x30* p_source,
+					Rect* p_sourceRect) override; // vtable+0x28
+	void VTable0x2c() override;                   // vtable+0x2c
 	void VTable0x30(
 		GolDrawState* p_drawState,
 		undefined4 p_width,
@@ -39,6 +42,7 @@ protected:
 
 	LegoS32 AttachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
 	void DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
+	void SetDisplayPalette(BronzeFalcon0xc8770* p_renderer);
 
 	PearlDew0x0c m_palette;                // 0x38
 	GolDrawState* m_drawState;             // 0x44

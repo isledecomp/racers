@@ -18,7 +18,7 @@ DECOMP_SIZE_ASSERT(PeridotTraceBuffer0x250, 0x250)
 const LegoChar* g_menuLanguageDirectories[9] =
 	{"english", "spanish", "french", "german", "italian", "danish", "swedish", "norwegi", "dutch"};
 
-extern GUID g_displayDriverGuid;
+extern DisplayDriverGuid g_displayDriverGuid;
 
 // STUB: LEGORACERS 0x0042b290
 PeridotTraceBuffer0x250::PeridotTraceBuffer0x250()
@@ -89,7 +89,7 @@ void PeridotTraceState0x438::FUN_0042e920(InputManager* p_inputManager)
 	FUN_0042e950();
 	m_inputManager = p_inputManager;
 	FUN_0042e960(p_inputManager);
-	FUN_0042f020(&g_displayDriverGuid);
+	FUN_0042f020(g_displayDriverGuid);
 	m_unk0x00 = 0;
 }
 
@@ -134,11 +134,27 @@ void PeridotTraceState0x438::SetLanguageResourcePath()
 	}
 }
 
-// STUB: LEGORACERS 0x0042f020
-void PeridotTraceState0x438::FUN_0042f020(const GUID*)
+// FUNCTION: LEGORACERS 0x0042f020
+void PeridotTraceState0x438::FUN_0042f020(const DisplayDriverGuid& p_guid)
 {
-	// TODO
-	STUB(0x0042f020);
+	const LegoU32* source = p_guid.GetWords();
+
+	m_unk0x00 = 1;
+
+	SerializedGuidWord* dest = m_displayDriverGuid.m_words;
+	for (LegoU32 i = 0; i < sizeOfArray(m_displayDriverGuid.m_words); i++, source++, dest++) {
+		dest->Set(*source);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042f060
+void PeridotTraceState0x438::FUN_0042f060(DisplayDriverGuid& p_guid)
+{
+	const SerializedGuidWord* source = m_displayDriverGuid.m_words;
+	LegoU32* dest = p_guid.GetWords();
+	for (LegoU32 i = 0; i < sizeOfArray(m_displayDriverGuid.m_words); i++, source++, dest++) {
+		*dest = source->Get();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042f200

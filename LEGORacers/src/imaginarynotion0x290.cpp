@@ -1,5 +1,7 @@
 #include "imaginarynotion0x290.h"
 
+#include "obscurevantage0x58.h"
+
 DECOMP_SIZE_ASSERT(ImaginaryNotion0x290, 0x290)
 
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
@@ -16,7 +18,7 @@ void ImaginaryNotion0x290::VTable0x00(undefined4)
 }
 
 // STUB: LEGORACERS 0x0044f590 FOLDED
-void ImaginaryNotion0x290::VTable0x04(undefined4)
+void ImaginaryNotion0x290::VTable0x04(ObscureVantage0x58*)
 {
 	// TODO
 	STUB(0x0044f590);

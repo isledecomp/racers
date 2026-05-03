@@ -3,10 +3,13 @@
 
 #include "decomp.h"
 
+class ObscureVantage0x58;
+
 // VTABLE: LEGORACERS 0x004b2388
 class ImaginaryInterface {
+public:
 	virtual void VTable0x00(undefined4) = 0;                                           // vtable+0x00
-	virtual void VTable0x04(undefined4) = 0;                                           // vtable+0x04
+	virtual void VTable0x04(ObscureVantage0x58*) = 0;                                  // vtable+0x04
 	virtual void VTable0x08(undefined4) = 0;                                           // vtable+0x08
 	virtual void VTable0x0c(undefined4) = 0;                                           // vtable+0x0c
 	virtual void VTable0x10(undefined4) = 0;                                           // vtable+0x10

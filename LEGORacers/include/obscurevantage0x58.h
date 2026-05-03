@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "imaginaryinterface.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004b29b4
@@ -34,16 +35,6 @@ public:
 	// ObscureVantage0x58::`scalar deleting destructor'
 
 protected:
-	class Struct0x28 {
-	public:
-		virtual void VTable0x00() { STUB(0xdeadbeef); } // vtable+0x00
-		virtual void VTable0x04(ObscureVantage0x58*)
-		{
-			STUB(0xdeadbeef);
-		} // vtable+0x04
-		  // more ?
-	};
-
 	// SIZE 0x10
 	class Struct0x34 {
 	public:
@@ -62,7 +53,7 @@ protected:
 	undefined m_unk0x1c;           // 0x1c
 	undefined4 m_unk0x20;          // 0x20
 	undefined4 m_unk0x24;          // 0x24
-	Struct0x28* m_unk0x28;         // 0x28
+	ImaginaryInterface* m_unk0x28; // 0x28
 	undefined4 m_unk0x2c;          // 0x2c
 	undefined2 m_unk0x30;          // 0x30
 	Struct0x34 m_unk0x34;          // 0x34

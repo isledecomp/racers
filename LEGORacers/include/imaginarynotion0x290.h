@@ -9,6 +9,8 @@
 #include "obscureicon0x1a8.h"
 #include "types.h"
 
+class ObscureVantage0x58;
+
 // VTABLE: LEGORACERS 0x004b2308
 // SIZE 0x290
 class ImaginaryNotion0x290 : public ImaginaryInterface {
@@ -16,7 +18,7 @@ public:
 	ImaginaryNotion0x290();
 
 	void VTable0x00(undefined4) override;                                           // vtable+0x00
-	void VTable0x04(undefined4) override;                                           // vtable+0x04
+	void VTable0x04(ObscureVantage0x58*) override;                                  // vtable+0x04
 	void VTable0x08(undefined4) override;                                           // vtable+0x08
 	void VTable0x0c(undefined4) override;                                           // vtable+0x0c
 	void VTable0x10(undefined4) override;                                           // vtable+0x10

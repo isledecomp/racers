@@ -49,11 +49,11 @@ void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, Falc
 
 	switch (p_textureFormat->m_bitsPerPixel) {
 	case 1:
-		paletteFlags = DDPCAPS_2BIT;
+		paletteFlags = DDPCAPS_1BIT;
 		entryCount = c_paletteEntries2Bit / c_systemPaletteEntries;
 		break;
 	case 2:
-		paletteFlags = DDPCAPS_4BIT;
+		paletteFlags = DDPCAPS_2BIT;
 		entryCount = c_paletteEntries4Bit / c_paletteEntries2Bit;
 		break;
 	case 4:
@@ -65,7 +65,6 @@ void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, Falc
 		entryCount = c_paletteEntries8Bit;
 		break;
 	default:
-		paletteFlags = 0;
 		entryCount = 0;
 		break;
 	}
@@ -76,14 +75,13 @@ void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, Falc
 	if (p_renderer->m_unk0xc8700 == 0) {
 		for (LegoU32 systemEntry = 0; systemEntry < c_systemPaletteReservedEntries; systemEntry++) {
 			g_paletteEntries[systemEntry].peRed = (BYTE) systemEntry;
-			g_paletteEntries[systemEntry].peGreen = 0;
-			g_paletteEntries[systemEntry].peBlue = 0;
-			g_paletteEntries[systemEntry].peFlags = PC_EXPLICIT;
-
 			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peRed =
 				(BYTE) (systemEntry + c_systemPaletteUpperFirst);
+			g_paletteEntries[systemEntry].peGreen = 0;
 			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peGreen = 0;
+			g_paletteEntries[systemEntry].peBlue = 0;
 			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peBlue = 0;
+			g_paletteEntries[systemEntry].peFlags = PC_EXPLICIT;
 			g_paletteEntries[systemEntry + c_systemPaletteUpperFirst].peFlags = PC_EXPLICIT;
 		}
 
@@ -96,12 +94,16 @@ void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, Falc
 		}
 	}
 	else {
-		LegoU32 lastEntry = entryCount - 1;
-		for (LegoU32 paletteEntry = 0; paletteEntry < lastEntry; paletteEntry++) {
-			g_paletteEntries[paletteEntry].peRed = 0;
-			g_paletteEntries[paletteEntry].peGreen = 0;
-			g_paletteEntries[paletteEntry].peBlue = 0;
-			g_paletteEntries[paletteEntry].peFlags = PC_NOCOLLAPSE;
+		LegoU32 paletteEntryCount = entryCount - 1;
+		LegoU32 lastEntry = 0;
+		if (paletteEntryCount > 0) {
+			lastEntry = paletteEntryCount;
+			for (LegoU32 paletteEntry = 0; paletteEntry < paletteEntryCount; paletteEntry++) {
+				g_paletteEntries[paletteEntry].peRed = 0;
+				g_paletteEntries[paletteEntry].peGreen = 0;
+				g_paletteEntries[paletteEntry].peBlue = 0;
+				g_paletteEntries[paletteEntry].peFlags = PC_NOCOLLAPSE;
+			}
 		}
 
 		g_paletteEntries[lastEntry].peRed = c_colorChannelMax;

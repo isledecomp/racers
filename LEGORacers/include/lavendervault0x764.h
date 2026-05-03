@@ -18,7 +18,7 @@ public:
 	~LavenderVault0x764();
 
 	void Reset();
-	void Destroy();
+	LegoBool32 Destroy();
 
 	LegoBool32 FUN_00498740(const LegoChar* p_arg1, LegoBool32 p_binary);
 

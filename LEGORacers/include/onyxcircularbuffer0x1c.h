@@ -9,6 +9,7 @@
 // VTABLE: LEGORACERS 0x004b0e84
 class OnyxCircularBuffer0x1c : public InputDevice::Callback {
 public:
+	// SIZE 0x10
 	struct Item {
 		InputDevice* m_device;           // 0x00
 		undefined4 m_keyCode;            // 0x04
@@ -31,6 +32,7 @@ public:
 	Item* FUN_0044b7f0();
 	Item* FUN_0044b820(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
 	void FUN_0044b8e0();
+	LegoS32 GetSize() const { return m_size; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b710
 	// OnyxCircularBuffer0x1c::`scalar deleting destructor'

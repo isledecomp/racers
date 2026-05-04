@@ -1,6 +1,10 @@
 #include "obscurevantage0x58.h"
 
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
+DECOMP_SIZE_ASSERT(ObscureVantage0x58::Struct0x34, 0x10)
+
+// GLOBAL: LEGORACERS 0x004c7650
+SilverDune0x30::Rect g_unk0x4c7650;
 
 // FUNCTION: LEGORACERS 0x004729b0
 ObscureVantage0x58::ObscureVantage0x58()
@@ -124,6 +128,56 @@ void ObscureVantage0x58::FUN_00472b50()
 	m_unk0x1c &= 0xfb;
 }
 
+// FUNCTION: LEGORACERS 0x00472e40
+ObscureVantage0x58* ObscureVantage0x58::FUN_00472e40()
+{
+	ObscureVantage0x58* result = this;
+
+	while (result->m_unk0x04) {
+		result = result->m_unk0x04;
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00472e60
+ObscureVantage0x58* ObscureVantage0x58::FUN_00472e60()
+{
+	ObscureVantage0x58* result = FUN_00472e40();
+	ObscureVantage0x58* child = result->m_unk0x18;
+
+	if (!child) {
+		return (result->m_unk0x1c & 0x08) ? result : NULL;
+	}
+
+	do {
+		result = child;
+		child = result->m_unk0x18;
+	} while (child);
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00472e90
+SilverDune0x30::Rect* ObscureVantage0x58::FUN_00472e90()
+{
+	ObscureVantage0x58* node = this;
+
+	g_unk0x4c7650.m_top = 0;
+	g_unk0x4c7650.m_left = 0;
+
+	while (node) {
+		g_unk0x4c7650.m_left += node->m_unk0x34.m_unk0x00;
+		g_unk0x4c7650.m_top += node->m_unk0x34.m_unk0x04;
+		node = node->m_unk0x04;
+	}
+
+	g_unk0x4c7650.m_right = (m_unk0x34.m_unk0x08 - m_unk0x34.m_unk0x00) + g_unk0x4c7650.m_left;
+	g_unk0x4c7650.m_bottom = (m_unk0x34.m_unk0x0c - m_unk0x34.m_unk0x04) + g_unk0x4c7650.m_top;
+
+	return &g_unk0x4c7650;
+}
+
 // STUB: LEGORACERS 0x00472f40
 void ObscureVantage0x58::VTable0x10(undefined4)
 {
@@ -153,7 +207,7 @@ void ObscureVantage0x58::VTable0x18(undefined4)
 }
 
 // STUB: LEGORACERS 0x00473210
-undefined4 ObscureVantage0x58::VTable0x1c(undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x1c(SilverDune0x30::Rect*, SilverDune0x30::Rect*)
 {
 	// TODO
 	STUB(0x00473210);
@@ -161,7 +215,7 @@ undefined4 ObscureVantage0x58::VTable0x1c(undefined4, undefined4)
 }
 
 // STUB: LEGORACERS 0x004732d0
-undefined4 ObscureVantage0x58::VTable0x20(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x20(void*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x004732d0);
@@ -169,7 +223,7 @@ undefined4 ObscureVantage0x58::VTable0x20(undefined4, undefined4, undefined4)
 }
 
 // STUB: LEGORACERS 0x00473370
-undefined4 ObscureVantage0x58::VTable0x24(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x00473370);
@@ -177,7 +231,7 @@ undefined4 ObscureVantage0x58::VTable0x24(undefined4, undefined4, undefined4)
 }
 
 // STUB: LEGORACERS 0x00473400
-undefined4 ObscureVantage0x58::VTable0x28(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x00473400);
@@ -185,19 +239,19 @@ undefined4 ObscureVantage0x58::VTable0x28(undefined4, undefined4, undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x2c(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x2c(void*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x30(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x34(undefined4, undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }

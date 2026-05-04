@@ -1,6 +1,7 @@
 #include "imaginarytool0x368.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368, 0x368)
+DECOMP_SIZE_ASSERT(ImaginaryTool0x368::HelperAt0x354, 0x24)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void ImaginaryTool0x368::VTable0x80()
@@ -8,7 +9,7 @@ void ImaginaryTool0x368::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x18(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryTool0x368::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x4804f0);
@@ -16,7 +17,7 @@ undefined4 ImaginaryTool0x368::VTable0x18(undefined4, undefined4, undefined4, un
 }
 
 // STUB: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x1c(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryTool0x368::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x4804f0);

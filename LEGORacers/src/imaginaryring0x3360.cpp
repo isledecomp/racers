@@ -57,14 +57,14 @@ void ImaginaryRing0x3360::VTable0x38(undefined4)
 }
 
 // STUB: LEGORACERS 0x0047ac90
-undefined4 ImaginaryRing0x3360::VTable0x18(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryRing0x3360::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x0047ac90);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x0047ad90
-undefined4 ImaginaryRing0x3360::VTable0x1c(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryRing0x3360::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x0047ad90);
 	return 0;

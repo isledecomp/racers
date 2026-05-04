@@ -25,7 +25,7 @@ public:
 	PorcelainVeil0x50* m_menuStyles;                 // 0x18
 	SoundGroupBinding* m_soundGroupBinding;          // 0x1c
 	CrimsonSun0xa4* m_unk0x20;                       // 0x20
-	undefined4* m_unk0x24;                           // 0x24
+	void* m_unk0x24;                                 // 0x24
 	LegoU16 m_menuId;                                // 0x28
 	undefined2 m_unk0x2a;                            // 0x2a
 	undefined4 m_unk0x2c;                            // 0x2c

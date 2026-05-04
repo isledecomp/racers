@@ -9,6 +9,8 @@
 #include <stdio.h>
 
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::TextureFormat, 0x18)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::Field0xc83b4, 0x10)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
 
 // GLOBAL: GOLDP 0x10056560
@@ -500,9 +502,16 @@ const SlatePeak0x58* BronzeFalcon0xc8770::GetRenderTargetInfo()
 }
 
 // STUB: GOLDP 0x10009960
-void BronzeFalcon0xc8770::VTable0x7c()
+undefined4 BronzeFalcon0xc8770::VTable0x7c(
+	UtopianPan0xa4*,
+	undefined4,
+	SilverDune0x30::Rect*,
+	SilverDune0x30::Rect*,
+	undefined4
+)
 {
 	STUB(0x10009960);
+	return 0;
 }
 
 // STUB: GOLDP 0x10009990

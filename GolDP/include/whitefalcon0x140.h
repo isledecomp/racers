@@ -4,6 +4,7 @@
 #include "color.h"
 #include "decomp.h"
 #include "falcontextureformat.h"
+#include "silverdune0x30.h"
 #include "types.h"
 
 class AmberHaze0x1c;
@@ -91,8 +92,14 @@ public:
 	virtual void VTable0x70() = 0;                                          // vtable+0x70
 	virtual void VTable0x74() = 0;                                          // vtable+0x74
 	virtual void VTable0x78() = 0;                                          // vtable+0x78
-	virtual void VTable0x7c() = 0;                                          // vtable+0x7c
-	virtual void VTable0x80() = 0;                                          // vtable+0x80
+	virtual undefined4 VTable0x7c(
+		UtopianPan0xa4* p_image,
+		undefined4 p_unk0x08,
+		SilverDune0x30::Rect* p_destRect,
+		SilverDune0x30::Rect* p_sourceRect,
+		undefined4 p_unk0x14
+	) = 0;                         // vtable+0x7c
+	virtual void VTable0x80() = 0; // vtable+0x80
 	virtual void DrawTriangle(
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,

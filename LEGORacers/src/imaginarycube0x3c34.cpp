@@ -33,14 +33,14 @@ void ImaginaryCube0x3c34::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParam
 }
 
 // STUB: LEGORACERS 0x004744c0
-undefined4 ImaginaryCube0x3c34::VTable0x18(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryCube0x3c34::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x004744c0);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00474550
-undefined4 ImaginaryCube0x3c34::VTable0x1c(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryCube0x3c34::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00474550);
 	return 0;
@@ -59,7 +59,7 @@ void ImaginaryCube0x3c34::VTable0x24(undefined4)
 }
 
 // STUB: LEGORACERS 0x004746c0
-undefined4 ImaginaryCube0x3c34::VTable0x28(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryCube0x3c34::VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4)
 {
 	STUB(0x004746c0);
 	return 0;
@@ -91,14 +91,14 @@ LegoBool32 ImaginaryCube0x3c34::VTable0x78(undefined4)
 }
 
 // STUB: LEGORACERS 0x00474c70
-undefined4 ImaginaryCube0x3c34::VTable0x14(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryCube0x3c34::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)
 {
 	STUB(0x00474c70);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00475010
-LegoBool32 ImaginaryCube0x3c34::VTable0x7c(undefined4 p_arg1, undefined4 p_arg2)
+LegoBool32 ImaginaryCube0x3c34::VTable0x7c(SilverDune0x30::Rect*, SilverDune0x30::Rect*)
 {
 	STUB(0x00475010);
 	return FALSE;

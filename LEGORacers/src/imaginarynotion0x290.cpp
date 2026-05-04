@@ -357,7 +357,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x78(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0046c7e0 FOLDED
-LegoBool32 ImaginaryNotion0x290::VTable0x7c(undefined4 p_arg1, undefined4 p_arg2)
+LegoBool32 ImaginaryNotion0x290::VTable0x7c(SilverDune0x30::Rect* p_arg1, SilverDune0x30::Rect* p_arg2)
 {
 	m_unk0xd8.VTable0x1c(p_arg1, p_arg2);
 	return TRUE;
@@ -392,25 +392,25 @@ void ImaginaryNotion0x290::VTable0x6c()
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x14(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x18(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x1c(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x28(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4)
 {
 	return 0;
 }

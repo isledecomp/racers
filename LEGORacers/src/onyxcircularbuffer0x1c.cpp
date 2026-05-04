@@ -5,6 +5,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(OnyxCircularBuffer0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(OnyxCircularBuffer0x1c::Item, 0x10)
 
 // FUNCTION: LEGORACERS 0x0044b6f0
 OnyxCircularBuffer0x1c::OnyxCircularBuffer0x1c()

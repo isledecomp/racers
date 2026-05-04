@@ -19,6 +19,19 @@ class GolDrawDPState;
 // SIZE 0xc8770
 class BronzeFalcon0xc8770 : public WhiteFalcon0x140 {
 public:
+	// SIZE 0x18
+	struct TextureFormat : public FalconTextureFormat {
+		TextureFormat();
+	};
+
+	// SIZE 0x10
+	struct Field0xc83b4 {
+		undefined4 m_unk0x00; // 0x00
+		undefined4 m_unk0x04; // 0x04
+		undefined4 m_unk0x08; // 0x08
+		undefined4 m_unk0x0c; // 0x0c
+	};
+
 	BronzeFalcon0xc8770();
 
 	void ReleaseResources() override; // vtable+0x04
@@ -52,8 +65,14 @@ public:
 	void VTable0x70() override;                                              // vtable+0x70
 	void VTable0x74() override;                                              // vtable+0x74
 	void VTable0x78() override;                                              // vtable+0x78
-	void VTable0x7c() override;                                              // vtable+0x7c
-	void VTable0x80() override;                                              // vtable+0x80
+	undefined4 VTable0x7c(
+		UtopianPan0xa4* p_image,
+		undefined4 p_unk0x08,
+		SilverDune0x30::Rect* p_destRect,
+		SilverDune0x30::Rect* p_sourceRect,
+		undefined4 p_unk0x14
+	) override;                 // vtable+0x7c
+	void VTable0x80() override; // vtable+0x80
 	void DrawTriangle(
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,
@@ -108,10 +127,6 @@ public:
 	friend class SlatePeak0x58;
 
 private:
-	struct TextureFormat : public FalconTextureFormat {
-		TextureFormat();
-	};
-
 	void FUN_100082e0();
 	void FUN_1000a2c0(undefined*);
 	void FUN_1000a950(undefined*);
@@ -119,13 +134,6 @@ private:
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
-
-	struct Field0xc83b4 {
-		undefined4 m_unk0x00;
-		undefined4 m_unk0x04;
-		undefined4 m_unk0x08;
-		undefined4 m_unk0x0c;
-	};
 
 	GolDrawDPState* m_drawState;                           // 0x140
 	LPDIRECT3DDEVICE3 m_d3dDevice;                         // 0x144

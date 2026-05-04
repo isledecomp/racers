@@ -428,10 +428,9 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 		}
 	}
 
-	ImaginaryTool0x368*& currentTool = m_unk0x4dc8;
-	currentTool = m_unk0x4bcc.FUN_0047f4e0(p_menuId);
-	m_unk0x4cc8 = currentTool;
-	currentTool->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
+	m_unk0x4dc8 = m_unk0x4bcc.FUN_0047f4e0(p_menuId);
+	m_unk0x4c74.SetUnk0x54(m_unk0x4dc8);
+	m_unk0x4dc8->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
 }
 
 // FUNCTION: LEGORACERS 0x0042d510
@@ -705,18 +704,17 @@ void MenuManager::VTable0x1c(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0042e830
 void MenuManager::VTable0x28()
 {
-	m_unk0x4cc4 = 1;
+	m_unk0x4c74.SetCursorInside(1);
 }
 
 // FUNCTION: LEGORACERS 0x0042e840
 void MenuManager::VTable0x2c()
 {
-	m_unk0x4cc4 = 0;
+	m_unk0x4c74.SetCursorInside(0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e850
 void MenuManager::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
 {
-	m_unk0x4cb4 = p_arg1 - m_unk0x4cbc;
-	m_unk0x4cb8 = p_arg2 - m_unk0x4cc0;
+	m_unk0x4c74.SetCursorPosition(p_arg1, p_arg2);
 }

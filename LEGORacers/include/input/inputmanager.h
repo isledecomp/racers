@@ -27,6 +27,7 @@ public:
 
 	MouseInputDevice* GetMouse() { return m_mouse; }
 	KeyboardInputDevice* GetKeyboard() { return m_keyboard; }
+	LegoBool32 IsMouseAvailable() const { return m_mouseAvailable; }
 	LegoS32 GetJoystickCount() const { return m_joystickCount; }
 	JoystickInputDevice* GetJoystick(LegoS32 p_index) const { return m_joysticks[p_index]; }
 

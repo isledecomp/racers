@@ -51,14 +51,14 @@ void ImaginaryDrill0x2450::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004812f0
-undefined4 ImaginaryDrill0x2450::VTable0x18(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryDrill0x2450::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x004812f0);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00481310
-undefined4 ImaginaryDrill0x2450::VTable0x1c(undefined4, undefined4, undefined4, undefined4)
+undefined4 ImaginaryDrill0x2450::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00481310);
 	return 0;

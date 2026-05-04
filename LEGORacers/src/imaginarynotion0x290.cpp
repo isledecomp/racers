@@ -1,5 +1,7 @@
 #include "imaginarynotion0x290.h"
 
+#include "input/inputmanager.h"
+#include "menutoolcreateparams0x30.h"
 #include "obscurevantage0x58.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryNotion0x290, 0x290)
@@ -148,11 +150,30 @@ void ImaginaryNotion0x290::VTable0x54()
 	m_unk0x04 = 0;
 }
 
-// STUB: LEGORACERS 0x0046b500
-void ImaginaryNotion0x290::VTable0x70(undefined4*)
+// FUNCTION: LEGORACERS 0x0046b500
+LegoBool32 ImaginaryNotion0x290::VTable0x70(MenuToolCreateParams0x30* p_createParams)
 {
-	// TODO
-	STUB(0x0046b500);
+	m_unk0xb4 = p_createParams->m_golExport;
+	m_unk0xb8 = p_createParams->m_renderer;
+	m_unk0x280 = p_createParams->m_soundGroupBinding;
+	m_unk0xcc = p_createParams->m_inputManager;
+	m_unk0x288 = p_createParams->m_unk0x2c;
+	m_unk0x284 = p_createParams->m_unk0x20;
+	m_unk0xc4 = (FieldAt0xc4*) p_createParams->m_unk0x24;
+	m_unk0x28c = p_createParams->m_menuId;
+	m_unk0x54 = p_createParams->m_menuStyles;
+	m_unk0xc8 = p_createParams->m_inputBindingContainer;
+	m_unk0xd4 = p_createParams->m_menuTextStrings;
+	m_unk0xd0 = p_createParams->m_menuNameStrings;
+
+	if (FUN_0046b630() && FUN_0046b6e0(p_createParams) && VTable0x58(p_createParams)) {
+		VTable0x4c();
+		m_unk0xcc->PollDevices(0);
+		m_unk0xc8->FUN_0044b8e0();
+		m_unk0x04 = TRUE;
+	}
+
+	return m_unk0x04;
 }
 
 // STUB: LEGORACERS 0x0046b5d0
@@ -163,25 +184,27 @@ void ImaginaryNotion0x290::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x0046b630
-undefined4 ImaginaryNotion0x290::FUN_0046b630()
+LegoBool32 ImaginaryNotion0x290::FUN_0046b630()
 {
 	// TODO
 	STUB(0x0046b630);
-	return 0;
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x0046b6e0
-void ImaginaryNotion0x290::FUN_0046b6e0()
+LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30*)
 {
 	// TODO
 	STUB(0x0046b6e0);
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x0046b890 FOLDED
-void ImaginaryNotion0x290::VTable0x58(undefined4*)
+LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30*)
 {
 	// TODO
 	STUB(0x0046b890);
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x0046ba60

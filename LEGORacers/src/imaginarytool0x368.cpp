@@ -1,5 +1,7 @@
 #include "imaginarytool0x368.h"
 
+#include "golstring.h"
+
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368, 0x368)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
@@ -66,12 +68,16 @@ void ImaginaryTool0x368::VTable0x54()
 	ImaginaryNotion0x290::VTable0x54();
 }
 
-// STUB: LEGORACERS 0x0047fc20
-LegoBool32 ImaginaryTool0x368::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0047fc20
+LegoBool32 ImaginaryTool0x368::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	// TODO
-	STUB(0x0047fc20);
-	return TRUE;
+	GolString string;
+
+	m_unk0x354 = p_context;
+	LegoBool32 result = ImaginaryNotion0x290::VTable0x70(p_createParams);
+	VTable0x80();
+
+	return result;
 }
 
 // STUB: LEGORACERS 0x0047fca0
@@ -114,11 +120,13 @@ void ImaginaryTool0x368::VTable0x3c(undefined4 p_unk0x04)
 	m_unk0x358 = p_unk0x04;
 }
 
-// STUB: LEGORACERS 0x00480520
+// FUNCTION: LEGORACERS 0x00480520
 LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 {
-	// TODO
-	STUB(0x00480520);
+	if (m_unk0x364 && VTable0x88()) {
+		VTable0x84();
+	}
+
 	return FALSE;
 }
 

@@ -19,10 +19,12 @@ PurpleDune0x7c::~PurpleDune0x7c()
 {
 	FUN_10016380();
 	m_unk0x50.FUN_1002a1b0();
+
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
 		m_pixels = NULL;
 	}
+
 	m_pixelFlags = 0;
 }
 
@@ -44,18 +46,21 @@ void PurpleDune0x7c::VTable0x34(
 	if (m_pixelFlags & c_lockRequestRead) {
 		VTable0x38();
 	}
+
 	m_pixelFlags |= c_lockRequestRead;
 	m_width = p_width;
 	m_height = p_height;
 	m_textureFormat = p_textureFormat;
-	m_pitch = (p_width * m_textureFormat.m_bitsPerPixel + 7) / 8;
+	m_pitch = ((LegoU32) (LegoU16) p_width * m_textureFormat.m_bitsPerPixel + 7) / 8;
 	m_pixels = new LegoU8[m_pitch * p_height];
+
 	if (m_pixels == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	if (p_textureFormat.m_paletteMask != 0) {
 		m_unk0x50.FUN_1002a120(p_textureFormat);
 	}
+
 	FUN_10016460(static_cast<BronzeFalcon0xc8770&>(p_renderer));
 }
 
@@ -64,23 +69,25 @@ void PurpleDune0x7c::VTable0x38()
 {
 	FUN_10016380();
 	m_unk0x50.FUN_1002a1b0();
+
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
 		m_pixels = NULL;
 	}
+
 	m_pixelFlags = 0;
 }
 
 // FUNCTION: GOLDP 0x10015e30
 void PurpleDune0x7c::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
-	DDSURFACEDESC2 surfaceDesc; // = { 0};
 	if (p_flags & c_lockRequestRead) {
 		m_pixelFlags |= c_lockFlagRead;
 	}
 	if (p_flags & c_lockRequestWrite) {
 		m_pixelFlags |= c_lockFlagWrite;
 	}
+
 	m_pixelFlags |= c_lockFlagLocked;
 	if (m_pixels == NULL) {
 		if (m_unk0x44 != NULL) {
@@ -99,8 +106,11 @@ void PurpleDune0x7c::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_f
 					lockFlags = DDLOCK_WRITEONLY;
 				}
 			}
+
+			DDSURFACEDESC2 surfaceDesc;
 			::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 			surfaceDesc.dwSize = sizeof(surfaceDesc);
+
 			for (;;) {
 				HRESULT hresult = LockDirectDrawSurface(m_surface, NULL, &surfaceDesc, lockFlags, NULL);
 				switch (hresult) {
@@ -151,34 +161,40 @@ void PurpleDune0x7c::FUN_10015fb0()
 {
 	DDCOLORKEY colorkey;
 	ColorRGBA rgba;
+
 	if (m_unk0x44 == NULL && (m_unk0x36 & c_unk0x36Bit5) && !(m_unk0x36 & c_unk0x36Bit10) &&
 		(m_unk0x36 & c_unk0x36Bit11)) {
 		if (m_textureFormat2.m_paletteMask == 0) {
+			LegoU32 color;
+
 			if (m_unk0x36 & c_unk0x36Bit7) {
-				::memset(&colorkey, 0, sizeof(colorkey));
+				color = 0;
 			}
 			else {
 				LegoU32 redRightShift = 8 - m_textureFormat2.GetRedBitCount();
 				LegoU32 grnRightShift = 8 - m_textureFormat2.GetGreenBitCount();
 				LegoU32 bluRightShift = 8 - m_textureFormat2.GetBlueBitCount();
-				colorkey.dwColorSpaceHighValue =
-					((m_unk0x30.m_blu >> bluRightShift) << m_textureFormat2.GetBlueBitShift()) |
-					((m_unk0x30.m_grn >> grnRightShift) << m_textureFormat2.GetGreenBitShift()) |
-					((m_unk0x30.m_red >> redRightShift) << m_textureFormat2.GetRedBitShift());
-				colorkey.dwColorSpaceLowValue = colorkey.dwColorSpaceHighValue;
+				LegoU32 red = (m_unk0x30.m_red >> redRightShift) << m_textureFormat2.GetRedBitShift();
+				LegoU32 grn = (m_unk0x30.m_grn >> grnRightShift) << m_textureFormat2.GetGreenBitShift();
+				LegoU32 blu = (m_unk0x30.m_blu >> bluRightShift) << m_textureFormat2.GetBlueBitShift();
+				color = blu | grn | red;
 			}
+			colorkey.dwColorSpaceHighValue = color;
+			colorkey.dwColorSpaceLowValue = color;
 		}
 		else {
+			LegoS32 color;
+
 			if (m_unk0x36 & c_unk0x36Bit7) {
 				rgba.m_red = 0;
 				rgba.m_grn = 0;
 				rgba.m_blu = 0;
 				rgba.m_alp = 0;
+				color = m_unk0x40->FindEntry(rgba);
 			}
 			else {
-				rgba = m_unk0x30;
+				color = m_unk0x40->FindEntry(m_unk0x30);
 			}
-			LegoS32 color = m_unk0x40->FindEntry(rgba);
 			colorkey.dwColorSpaceHighValue = color;
 			colorkey.dwColorSpaceLowValue = colorkey.dwColorSpaceHighValue;
 
@@ -202,9 +218,11 @@ IPalette0x4* PurpleDune0x7c::GetPalette()
 			return m_unk0x40;
 		}
 	}
+
 	if (m_unk0x50.HasEntries()) {
 		return &m_unk0x50;
 	}
+
 	return NULL;
 }
 
@@ -219,6 +237,7 @@ void PurpleDune0x7c::FUN_10016100()
 void PurpleDune0x7c::FUN_10016380()
 {
 	LegoU32 i;
+
 	if (m_unk0x44 != NULL) {
 		if (m_unk0x40 != NULL) {
 			FalconDuneBag0x10* palette = static_cast<FalconDuneBag0x10*>(m_unk0x40);
@@ -226,6 +245,7 @@ void PurpleDune0x7c::FUN_10016380()
 			if (palette != NULL) {
 				delete palette;
 			}
+
 			m_unk0x40 = NULL;
 		}
 		for (i = 0; i < m_unk0x34; i++) {
@@ -234,6 +254,7 @@ void PurpleDune0x7c::FUN_10016380()
 				m_unk0x44[i].m_pixels = NULL;
 			}
 		}
+
 		delete[] m_unk0x44;
 		m_unk0x44 = NULL;
 	}
@@ -241,6 +262,7 @@ void PurpleDune0x7c::FUN_10016380()
 		if (m_unk0x40 != NULL) {
 			PearlDew0x0c* palette = static_cast<PearlDew0x0c*>(m_unk0x40);
 			palette->Release();
+
 			if (m_unk0x40 != NULL) {
 				delete palette;
 				m_unk0x40 = NULL;
@@ -251,6 +273,7 @@ void PurpleDune0x7c::FUN_10016380()
 			m_unk0x4c = NULL;
 		}
 	}
+
 	if (m_surface != NULL) {
 		m_surface->Release();
 		m_surface = NULL;

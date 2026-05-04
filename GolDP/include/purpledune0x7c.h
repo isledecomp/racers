@@ -43,7 +43,7 @@ private:
 		// Unsure about size, might be a union
 		LegoU8* m_pixels;                 // 0x00
 		LegoU32 m_pitch;                  // 0x04
-		undefined m_unk0x08[0x18 - 0x00]; // 0x08
+		undefined m_unk0x08[0x18 - 0x08]; // 0x08
 	};
 
 	undefined4 m_unk0x38;                 // 0x38

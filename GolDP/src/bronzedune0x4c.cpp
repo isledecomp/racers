@@ -8,9 +8,9 @@ DECOMP_SIZE_ASSERT(BronzeDune0x4c, 0x4c)
 BronzeDune0x4c g_bronzeDune0x4c;
 
 // STUB: GOLDP 0x10004f80
-void BronzeDune0x4c::VTable0x30(undefined4* p_arg1, undefined4* p_arg2)
+void BronzeDune0x4c::VTable0x30(WhiteFalcon0x140& p_renderer, undefined4* p_arg2)
 {
-	GoldDune0x38::VTable0x30(p_arg1, p_arg2);
+	GoldDune0x38::VTable0x30(p_renderer, p_arg2);
 }
 
 // FUNCTION: GOLDP 0x1001de50
@@ -26,7 +26,7 @@ BronzeDune0x4c::~BronzeDune0x4c()
 
 // FUNCTION: GOLDP 0x1002a3e0
 void BronzeDune0x4c::VTable0x34(
-	undefined4,
+	WhiteFalcon0x140& p_renderer,
 	const FalconTextureFormat& p_textureFormat,
 	LegoU32 p_width,
 	LegoU32 p_height

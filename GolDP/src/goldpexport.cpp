@@ -8,6 +8,7 @@
 #include "golerror.h"
 #include "golfont0xa0.h"
 #include "golfonttable.h"
+#include "purpleribbon0x24.h"
 #include "types.h"
 
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
@@ -43,12 +44,14 @@ ZoweeBlubberworth0xf0* GolDPExport::VTable0x08()
 	return obj;
 }
 
-// STUB: GOLDP 0x10015110
-undefined4* GolDPExport::VTable0x0c()
+// FUNCTION: GOLDP 0x10015110
+MagentaRibbon0x20* GolDPExport::VTable0x0c()
 {
-	// TODO
-	STUB(0x10015110);
-	return NULL;
+	MagentaRibbon0x20* obj = new PurpleRibbon0x24;
+	if (obj == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return obj;
 }
 
 // STUB: GOLDP 0x10015180

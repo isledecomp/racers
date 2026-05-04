@@ -230,15 +230,25 @@ void GolDPExport::VTable0x58(undefined4*)
 // STUB: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x68(AwakeKite0x20* p_obj)
 {
+	// FIXME: other folding functions need implementation
+#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
+#else
+	STUB(0x10015600);
+#endif
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x6c(GolNameTable* p_fontTable)
 {
+	// FIXME: other folding functions need implementation
+#if 0
 	if (p_fontTable != NULL) {
 		delete p_fontTable;
 	}
+#else
+	STUB(0x10015600);
+#endif
 }

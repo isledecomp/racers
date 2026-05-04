@@ -12,12 +12,14 @@
 class BronzeFalcon0xc8770;
 class CrimsonSun0xa4;
 class GolExport;
+class GolFontTable;
 class GolStringTable;
 class InputManager;
 class MenuToolCreateParams0x30;
 class ObscureVantage0x58;
 class PorcelainVeil0x50;
 class SoundGroupBinding;
+class AwakeKite0x20;
 
 // VTABLE: LEGORACERS 0x004b2308
 // SIZE 0x290
@@ -115,8 +117,8 @@ protected:
 	undefined4 m_unk0xb0;              // 0x0b0
 	GolExport* m_unk0xb4;              // 0x0b4
 	BronzeFalcon0xc8770* m_unk0xb8;    // 0x0b8
-	undefined4* m_unk0xbc;             // 0x0bc
-	undefined4 m_unk0xc0;              // 0x0c0
+	AwakeKite0x20* m_unk0xbc;          // 0x0bc
+	GolFontTable* m_unk0xc0;           // 0x0c0
 	FieldAt0xc4* m_unk0xc4;            // 0x0c4
 	OnyxCircularBuffer0x1c* m_unk0xc8; // 0x0c8
 	InputManager* m_unk0xcc;           // 0x0cc

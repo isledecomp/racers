@@ -6,10 +6,35 @@
 #include "obscurevantage0x58.h"
 #include "types.h"
 
+class BronzeFalcon0xc8770;
+class GolExport;
+class SoundGroupBinding;
+
 // VTABLE: LEGORACERS 0x004b2944
 // SIZE 0x1a8
 class ObscureIcon0x1a8 : public ObscureVantage0x58 {
 public:
+	// SIZE 0x84
+	class CreateParams0x84 {
+	public:
+		GolExport* m_golExport;                 // 0x00
+		BronzeFalcon0xc8770* m_renderer;        // 0x04
+		SoundGroupBinding* m_soundGroupBinding; // 0x08
+		ImaginaryInterface* m_eventHandler;     // 0x0c
+		undefined m_unk0x10[0x18 - 0x10];       // 0x10
+		LegoS32 m_width;                        // 0x18
+		LegoS32 m_height;                       // 0x1c
+		undefined m_unk0x20[0x38 - 0x20];       // 0x20
+		LegoBool m_unk0x38;                     // 0x38
+		undefined m_unk0x39[0x84 - 0x39];       // 0x39
+	};
+
+	// SIZE 0x90
+	class CreateState0x90 {
+	public:
+		undefined4 m_unk0x00[0x90 / sizeof(undefined4)]; // 0x00
+	};
+
 	ObscureIcon0x1a8();
 	void VTable0x00() override;                                                            // vtable+0x00
 	~ObscureIcon0x1a8() override;                                                          // vtable+0x04
@@ -32,6 +57,8 @@ public:
 	virtual ObscureIcon0x1a8* VTable0x64();
 	virtual ObscureIcon0x1a8* VTable0x68();
 	virtual ObscureIcon0x1a8* VTable0x6c();
+
+	LegoBool32 FUN_00471e30(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// ObscureIcon0x1a8::`scalar deleting destructor'

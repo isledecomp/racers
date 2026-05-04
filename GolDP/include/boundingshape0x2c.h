@@ -6,22 +6,23 @@
 #include "types.h"
 
 // VTABLE: GOLDP 0x10056b74
-// SIZE: 0x1fc
+// SIZE 0x1fc
 class BdbTxtParser : public GolTxtParser {};
 
 // VTABLE: GOLDP 0x10056b68
 // SIZE 0x2c
 class BoundingShape0x2c {
 public:
-	// SIZE: 0x20
+	// SIZE 0x20
 	struct StructField0x08 {
 		enum {
+			c_invalidIndex = 0xffff,
 			e_type0 = 0,
 			e_type1 = 1,
 		};
 
 		LegoU16 m_type;
-		LegoS16 m_unk0x02;
+		LegoU16 m_unk0x02;
 		union {
 			struct {
 				LegoFloat m_unk0x00;
@@ -30,8 +31,8 @@ public:
 				LegoFloat m_unk0x0c;
 				undefined4 m_unk0x10;
 				undefined4 m_unk0x14;
-				LegoS16 m_unk0x18;
-				LegoS16 m_unk0x1a;
+				LegoU16 m_unk0x18;
+				LegoU16 m_unk0x1a;
 			} t0;
 			struct {
 				undefined4 m_unk0x00;
@@ -46,7 +47,7 @@ public:
 			} t1;
 		} m_unk0x04;
 	};
-	// SIZE: 0x18
+	// SIZE 0x18
 	struct StructField0x18 {
 		LegoFloat m_unk0x00;
 		LegoFloat m_unk0x04;

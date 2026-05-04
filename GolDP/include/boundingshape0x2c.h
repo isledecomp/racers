@@ -15,7 +15,12 @@ class BoundingShape0x2c {
 public:
 	// SIZE: 0x20
 	struct StructField0x08 {
-		undefined2 m_type;
+		enum {
+			e_type0 = 0,
+			e_type1 = 1,
+		};
+
+		LegoU16 m_type;
 		LegoS16 m_unk0x02;
 		union {
 			struct {

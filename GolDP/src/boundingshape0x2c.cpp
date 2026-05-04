@@ -96,7 +96,7 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 		GolFileParser::ParserTokenType type = p_parser.GetNextToken();
 		StructField0x08* obj = &m_unk0x08[i];
 		if (type == GolFileParser::e_unknown0x28) {
-			obj->m_type = 0;
+			obj->m_type = StructField0x08::e_type0;
 			obj->m_unk0x04.t0.m_unk0x10 = 0;
 			obj->m_unk0x04.t0.m_unk0x14 = 0;
 			if (p_parser.ReadInteger() < 0) {
@@ -127,7 +127,7 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 			obj->m_unk0x04.t0.m_unk0x0c = p_parser.ReadFloat();
 		}
 		else if (type == GolFileParser::e_unknown0x29) {
-			obj->m_type = 1;
+			obj->m_type = StructField0x08::e_type1;
 			if (p_parser.ReadInteger() < 0) {
 				obj->m_unk0x02 = -1;
 				m_unk0x0c = obj;

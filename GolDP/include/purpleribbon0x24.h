@@ -11,13 +11,11 @@ class PurpleDune0x7c;
 class PurpleRibbon0x24 : public MagentaRibbon0x20 {
 public:
 	PurpleRibbon0x24();
-	~PurpleRibbon0x24();
-
-	void Clear() override; // vtable+0x08
-
-	void VTable0x0c() override; // vtable+0x0c
-	void VTable0x10() override; // vtable+0x10
-	void VTable0x14() override; // vtable+0x14
+	~PurpleRibbon0x24() override; // vtable+0x00
+	void Clear() override;        // vtable+0x08
+	void VTable0x0c() override;   // vtable+0x0c
+	void VTable0x10() override;   // vtable+0x10
+	void VTable0x14() override;   // vtable+0x14
 	void VTable0x18(
 		LegoU32 p_index,
 		const FalconTextureFormat& p_textureFormat,

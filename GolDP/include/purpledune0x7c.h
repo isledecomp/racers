@@ -14,7 +14,7 @@ class IPalette0x4;
 class PurpleDune0x7c : public GoldDune0x38 {
 public:
 	PurpleDune0x7c();
-	~PurpleDune0x7c(); // vtable+0x00
+	~PurpleDune0x7c() override; // vtable+0x00
 
 	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x04
 	void UnlockPixels() override;                                                   // vtable+0x08

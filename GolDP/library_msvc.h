@@ -85,7 +85,7 @@
 // IID_IDirectDraw4
 
 // GLOBAL: GOLDP 0x100580a8 SYMBOL
-// _IID_IDirectDrawSurface
+// IID_IDirectDrawSurface
 
 // GLOBAL: GOLDP 0x100583b8
 // IID_IDirect3D3

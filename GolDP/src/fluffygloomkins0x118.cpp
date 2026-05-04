@@ -1,6 +1,8 @@
 #include "fluffygloomkins0x118.h"
 
 #include "amberlens0x344.h"
+#include "boundingshape0x2c.h"
+#include "golerror.h"
 
 DECOMP_SIZE_ASSERT(FluffyGloomkins0x118, 0x118)
 
@@ -108,10 +110,23 @@ undefined4* FluffyGloomkins0x118::VTable0x50(undefined4)
 // STUB: GOLDP 0x10017390
 undefined4* FluffyGloomkins0x118::VTable0x08()
 {
-	// TODO
+	// ...
+	if (GetUnk0x3c() != 0) {
+		m_unk0x110 = new BoundingShape0x2c[GetUnk0x3c()];
+		if (m_unk0x110 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	// ...
+
 	if (GetUnk0x7c()) {
 		m_unk0x114 = new AmberLens0x344[GetUnk0x7c()];
+		if (m_unk0x114 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
 	}
+	// TODO
 	STUB(0x10017390);
 	return NULL;
 }

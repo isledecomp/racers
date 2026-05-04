@@ -6,6 +6,7 @@
 #include "zoweeblubberworth0xf0.h"
 
 class AmberLensBase0x120;
+class BoundingShape0x2c;
 
 // SIZE 0x118
 // VTABLE: GOLDP 0x1005690c
@@ -45,7 +46,7 @@ private:
 	undefined4* m_unk0x104;         // 0x104
 	undefined4* m_unk0x108;         // 0x108
 	undefined4* m_unk0x10c;         // 0x10c
-	undefined4* m_unk0x110;         // 0x110
+	BoundingShape0x2c* m_unk0x110;  // 0x110
 	AmberLensBase0x120* m_unk0x114; // 0x114
 };
 

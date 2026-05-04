@@ -36,6 +36,9 @@ public:
 	// SYNTHETIC: GOLDP 0x10003170
 	// SlatePeak0x58::`scalar deleting destructor'
 
+	LPDIRECTDRAWSURFACE4 GetDisplaySurface() const { return m_displaySurface; }
+	LPDIRECTDRAWSURFACE4 GetRenderSurface() const { return m_renderSurface; }
+
 protected:
 	friend class DepthBuffer0x38;
 	friend class BronzeFalcon0xc8770;

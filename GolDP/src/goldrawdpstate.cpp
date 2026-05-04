@@ -621,20 +621,42 @@ void GolDrawDPState::VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32
 	*p_deviceIndex = m_deviceList.m_deviceIndex;
 }
 
-// STUB: GOLDP 0x10001d80
-undefined4 GolDrawDPState::VTable0xb0()
+// FUNCTION: GOLDP 0x10001d80
+LPDIRECTDRAWSURFACE GolDrawDPState::GetDisplaySurface()
 {
-	// TODO
-	STUB(0x10001d80);
-	return 0;
+	LPDIRECTDRAWSURFACE surface;
+	LegoChar message[100];
+	HRESULT hresult =
+		m_unk0x2fc.GetDisplaySurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
+	if (hresult != DD_OK) {
+		::sprintf(
+			message,
+			"DirectDrawSurface QueryInterface(IID_IDirectDrawSurface) error\nerror code = 0x%x",
+			hresult
+		);
+		VTable0x48();
+		GOL_FATALERROR_MESSAGE(message);
+	}
+	return surface;
 }
 
-// STUB: GOLDP 0x10001de0
-undefined4 GolDrawDPState::VTable0xb4()
+// FUNCTION: GOLDP 0x10001de0
+LPDIRECTDRAWSURFACE GolDrawDPState::GetRenderSurface()
 {
-	// TODO
-	STUB(0x10001de0);
-	return 0;
+	LPDIRECTDRAWSURFACE surface;
+	LegoChar message[100];
+	HRESULT hresult =
+		m_unk0x2fc.GetRenderSurface()->QueryInterface(IID_IDirectDrawSurface, reinterpret_cast<void**>(&surface));
+	if (hresult != DD_OK) {
+		::sprintf(
+			message,
+			"DirectDrawSurface QueryInterface(IID_IDirectDrawSurface) error\nerror code = 0x%x",
+			hresult
+		);
+		VTable0x48();
+		GOL_FATALERROR_MESSAGE(message);
+	}
+	return surface;
 }
 
 // FUNCTION: GOLDP 0x10001e40
@@ -657,7 +679,7 @@ HRESULT GolDrawDPState::FindmatchingDepthPixelformat(LPDDPIXELFORMAT p_pixelform
 }
 
 // FUNCTION: GOLDP 0x10001e90
-void* GolDrawDPState::VTable0xac()
+LPDIRECTDRAW GolDrawDPState::GetDirectDraw()
 {
 	return m_ddraw;
 }

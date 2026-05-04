@@ -148,7 +148,7 @@ void GolFileParser::SetSuffix(const LegoChar* p_suffix)
 
 // FUNCTION: GOLDP 0x100326a0
 // FUNCTION: LEGORACERS 0x0044e800
-undefined4 GolFileParser::ReadInteger()
+LegoS32 GolFileParser::ReadInteger()
 {
 	if (GetNextToken() != e_int) {
 		HandleUnexpectedToken(e_int);

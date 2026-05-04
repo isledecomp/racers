@@ -221,19 +221,19 @@ LegoBool32 GolCommonDrawState::VTable0xa8() const
 }
 
 // FUNCTION: GOLDP 0x10018630 FOLDED
-void* GolCommonDrawState::VTable0xac()
+LPDIRECTDRAW GolCommonDrawState::GetDirectDraw()
 {
 	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10018630 FOLDED
-undefined4 GolCommonDrawState::VTable0xb0()
+LPDIRECTDRAWSURFACE GolCommonDrawState::GetDisplaySurface()
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: GOLDP 0x10018630 FOLDED
-undefined4 GolCommonDrawState::VTable0xb4()
+LPDIRECTDRAWSURFACE GolCommonDrawState::GetRenderSurface()
 {
-	return 0;
+	return NULL;
 }

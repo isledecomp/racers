@@ -66,7 +66,7 @@ public:
 
 	void FUN_10032580(LegoS32 p_code);
 	void SetSuffix(const LegoChar* p_suffix);
-	undefined4 ReadInteger();
+	LegoS32 ReadInteger();
 	LegoFloat ReadFloat();
 	LegoChar* ReadString();
 	LegoChar* ReadStringWithMaxLength(size_t p_len);
@@ -79,6 +79,8 @@ public:
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
+	LegoS32 GetUnk0x38() const { return m_unk0x38; }
+
 	// SYNTHETIC: GOLDP 0x10032480
 	// SYNTHETIC: LEGORACERS 0x0044e5c0
 	// GolFileParser::`scalar deleting destructor'
@@ -86,7 +88,7 @@ public:
 protected:
 	undefined4 m_unk0x30;               // 0x30
 	ParserTokenType m_unk0x34;          // 0x34
-	undefined4 m_unk0x38;               // 0x38
+	LegoS32 m_unk0x38;                  // 0x38
 	undefined m_unk0x3c[0x40 - 0x3c];   // 0x3c
 	LegoFloat m_unk0x40;                // 0x40
 	LegoChar m_unk0x44[0x84 - 0x44];    // 0x44

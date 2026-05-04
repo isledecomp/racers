@@ -14,6 +14,8 @@
 typedef void FatalErrorMessageCBFN(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line);
 typedef void GolExitCBFN();
 
+class BoundingShape0x2c;
+class GolFontBase0x40;
 class GolHashTable;
 class GolFileSource;
 class AmberLens0x344;
@@ -47,11 +49,11 @@ public:
 	virtual undefined4* VTable0x10() = 0;            // vtable+0x10
 	virtual undefined4* VTable0x14() = 0;            // vtable+0x14
 	virtual undefined4* VTable0x18() = 0;            // vtable+0x18
-	virtual undefined4* VTable0x1c() = 0;            // vtable+0x1c
+	virtual BoundingShape0x2c* VTable0x1c() = 0;     // vtable+0x1c
 	virtual AmberLens0x344* VTable0x20() = 0;        // vtable+0x20
 	virtual undefined4 VTable0x24() = 0;             // vtable+0x24
 	virtual WhiteBaffoon0x50* VTable0x28() = 0;      // vtable+0x28
-	virtual undefined4* VTable0x2c() = 0;            // vtable+0x2c
+	virtual GolFontBase0x40* VTable0x2c() = 0;       // vtable+0x2c
 	virtual FloatyBoat0x28* VTable0x30() = 0;        // vtable+0x30
 	virtual AwakeKite0x20* VTable0x34() = 0;         // vtable+0x34
 	virtual GolFontTable* VTable0x38() = 0;          // vtable+0x38

@@ -98,6 +98,7 @@ set(COMMON_SOURCES
 # narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
+  GolDP/src/boundingshape0x2c.cpp
   GolDP/src/golfontbase0x40.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp
@@ -176,6 +177,7 @@ add_library(goldp SHARED
   GolDP/src/depthbuffer0x38.cpp
   GolDP/src/softwarerenderer0x58.cpp
   GolDP/src/falcondunebag0x10.cpp
+  GolDP/src/boundingshape0x2c.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

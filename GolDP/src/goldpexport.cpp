@@ -2,9 +2,11 @@
 
 #include "amberlens0x344.h"
 #include "awakekite0x20.h"
+#include "boundingshape0x2c.h"
 #include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
 #include "golerror.h"
+#include "golfont0xa0.h"
 #include "golfonttable.h"
 #include "types.h"
 
@@ -73,12 +75,14 @@ undefined4* GolDPExport::VTable0x18()
 	return NULL;
 }
 
-// STUB: GOLDP 0x100152d0
-undefined4* GolDPExport::VTable0x1c()
+// FUNCTION: GOLDP 0x100152d0
+BoundingShape0x2c* GolDPExport::VTable0x1c()
 {
-	// TODO
-	STUB(0x100152d0);
-	return NULL;
+	BoundingShape0x2c* bdb = new BoundingShape0x2c;
+	if (bdb == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return bdb;
 }
 
 // FUNCTION: GOLDP 0x10015340
@@ -103,12 +107,14 @@ WhiteBaffoon0x50* GolDPExport::VTable0x28()
 	return result;
 }
 
-// STUB: GOLDP 0x10015420
-undefined4* GolDPExport::VTable0x2c()
+// FUNCTION: GOLDP 0x10015420
+GolFontBase0x40* GolDPExport::VTable0x2c()
 {
-	// TODO
-	STUB(0x10015420);
-	return NULL;
+	GolFont0xa0* font = new GolFont0xa0;
+	if (font == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return font;
 }
 
 // FUNCTION: GOLDP 0x10015490
@@ -186,11 +192,12 @@ void GolDPExport::VTable0x50(undefined4*)
 	STUB(0x10015600);
 }
 
-// STUB: GOLDP 0x10015640
-void GolDPExport::VTable0x54(AmberLens0x344*)
+// FUNCTION: GOLDP 0x10015640
+void GolDPExport::VTable0x54(AmberLens0x344* p_obj)
 {
-	// TODO
-	STUB(0x10015640);
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
 }
 
 // STUB: GOLDP 0x10015660
@@ -221,15 +228,17 @@ void GolDPExport::VTable0x58(undefined4*)
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x68(AwakeKite0x20*)
+void GolDPExport::VTable0x68(AwakeKite0x20* p_obj)
 {
-	// TODO
-	STUB(0x10015600);
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x6c(GolNameTable*)
+void GolDPExport::VTable0x6c(GolNameTable* p_fontTable)
 {
-	// TODO
-	STUB(0x10015600);
+	if (p_fontTable != NULL) {
+		delete p_fontTable;
+	}
 }

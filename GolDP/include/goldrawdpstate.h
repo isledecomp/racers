@@ -29,32 +29,32 @@ public:
 	void VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid) override;      // vtable+0x34
 	GUID* VTable0x38() const override;                                                         // vtable+0x38
 
-	void VTable0x48() override;             // vtable+0x48
-	void VTable0x50() override;             // vtable+0x50
-	undefined4 VTable0x58() override;       // vtable+0x58
-	undefined4 VTable0x5c() const override; // vtable+0x5c
-	undefined4 VTable0x60() override;       // vtable+0x60
-	LegoBool32 VTable0x64() const override; // vtable+0x64
-	LegoBool32 VTable0x68() const override; // vtable+0x68
-	LegoBool32 VTable0x6c() const override; // vtable+0x6c
-	LegoBool32 VTable0x70() const override; // vtable+0x70
-	LegoBool32 VTable0x74() const override; // vtable+0x74
-	LegoBool32 VTable0x78() const override; // vtable+0x78
-	LegoBool32 VTable0x7c() const override; // vtable+0x7c
-	LegoBool32 VTable0x80() const override; // vtable+0x80
-	LegoBool32 VTable0x84() const override; // vtable+0x84
-	LegoBool32 VTable0x88() const override; // vtable+0x88
-	LegoBool32 VTable0x8c() const override; // vtable+0x8c
-	LegoBool32 VTable0x90() const override; // vtable+0x90
-	undefined4 VTable0x94() override;       // vtable+0x94
-	LegoBool32 VTable0x98() const override; // vtable+0x98
-	LegoBool32 VTable0x9c() const override; // vtable+0x9c
-	LegoBool32 VTable0xa0() const override; // vtable+0xa0
-	LegoBool32 VTable0xa4() const override; // vtable+0xa4
-	LegoBool32 VTable0xa8() const override; // vtable+0xa8
-	void* VTable0xac() override;            // vtable+0xac
-	undefined4 VTable0xb0() override;       // vtable+0xb0
-	undefined4 VTable0xb4() override;       // vtable+0xb4
+	void VTable0x48() override;                       // vtable+0x48
+	void VTable0x50() override;                       // vtable+0x50
+	undefined4 VTable0x58() override;                 // vtable+0x58
+	undefined4 VTable0x5c() const override;           // vtable+0x5c
+	undefined4 VTable0x60() override;                 // vtable+0x60
+	LegoBool32 VTable0x64() const override;           // vtable+0x64
+	LegoBool32 VTable0x68() const override;           // vtable+0x68
+	LegoBool32 VTable0x6c() const override;           // vtable+0x6c
+	LegoBool32 VTable0x70() const override;           // vtable+0x70
+	LegoBool32 VTable0x74() const override;           // vtable+0x74
+	LegoBool32 VTable0x78() const override;           // vtable+0x78
+	LegoBool32 VTable0x7c() const override;           // vtable+0x7c
+	LegoBool32 VTable0x80() const override;           // vtable+0x80
+	LegoBool32 VTable0x84() const override;           // vtable+0x84
+	LegoBool32 VTable0x88() const override;           // vtable+0x88
+	LegoBool32 VTable0x8c() const override;           // vtable+0x8c
+	LegoBool32 VTable0x90() const override;           // vtable+0x90
+	undefined4 VTable0x94() override;                 // vtable+0x94
+	LegoBool32 VTable0x98() const override;           // vtable+0x98
+	LegoBool32 VTable0x9c() const override;           // vtable+0x9c
+	LegoBool32 VTable0xa0() const override;           // vtable+0xa0
+	LegoBool32 VTable0xa4() const override;           // vtable+0xa4
+	LegoBool32 VTable0xa8() const override;           // vtable+0xa8
+	LPDIRECTDRAW GetDirectDraw() override;            // vtable+0xac
+	LPDIRECTDRAWSURFACE GetDisplaySurface() override; // vtable+0xb0
+	LPDIRECTDRAWSURFACE GetRenderSurface() override;  // vtable+0xb4
 
 	// SYNTHETIC: GOLDP 0x100010e0
 	// GolDrawDPState::`scalar deleting destructor'

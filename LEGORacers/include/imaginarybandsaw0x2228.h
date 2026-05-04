@@ -3,11 +3,11 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "imaginarytool0x368.h"
+#include "imaginarygizmo0x1908.h"
 
 // VTABLE: LEGORACERS 0x004b30c8
 // SIZE 0x2228
-class ImaginaryBandsaw0x2228 : public ImaginaryTool0x368 {
+class ImaginaryBandsaw0x2228 : public ImaginaryGizmo0x1908 {
 public:
 	ImaginaryBandsaw0x2228();
 
@@ -16,7 +16,6 @@ public:
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	void VTable0x54() override;                                                        // vtable+0x54
 	~ImaginaryBandsaw0x2228() override;                                                // vtable+0x68
-	void VTable0x74() override;                                                        // vtable+0x74
 	LegoBool32 VTable0x78(undefined4) override;                                        // vtable+0x78
 	void VTable0x84() override;                                                        // vtable+0x84
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override; // vtable+0x8c
@@ -25,7 +24,7 @@ public:
 	//  ImaginaryBandsaw0x2228::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x2228 - 0x368]; // 0x368
+	undefined m_unk0x1908[0x2228 - 0x1908]; // 0x1908
 };
 
 #endif // IMAGINARYBANDSAW0X2228

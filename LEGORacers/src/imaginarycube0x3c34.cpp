@@ -90,35 +90,3 @@ LegoBool32 ImaginaryCube0x3c34::VTable0x78(undefined4)
 	STUB(0x00474b10);
 	return FALSE;
 }
-
-// STUB: LEGORACERS 0x00474c70
-undefined4 ImaginaryCube0x3c34::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)
-{
-	STUB(0x00474c70);
-	return 0;
-}
-
-// STUB: LEGORACERS 0x00475010
-LegoBool32 ImaginaryCube0x3c34::VTable0x7c(SilverDune0x30::Rect*, SilverDune0x30::Rect*)
-{
-	STUB(0x00475010);
-	return FALSE;
-}
-
-// STUB: LEGORACERS 0x00477210
-void ImaginaryCube0x3c34::VTable0x80()
-{
-	STUB(0x00477210);
-}
-
-// STUB: LEGORACERS 0x00477380
-void ImaginaryCube0x3c34::VTable0x84()
-{
-	STUB(0x00477380);
-}
-
-// STUB: LEGORACERS 0x00477700
-void ImaginaryCube0x3c34::VTable0x10(undefined4)
-{
-	STUB(0x00477700);
-}

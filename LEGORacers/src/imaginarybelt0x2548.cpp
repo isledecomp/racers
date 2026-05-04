@@ -15,15 +15,16 @@ ImaginaryBelt0x2548::~ImaginaryBelt0x2548()
 }
 
 // STUB: LEGORACERS 0x00484960
-void ImaginaryBelt0x2548::VTable0x4c(undefined4)
+void ImaginaryBelt0x2548::VTable0x4c()
 {
 	STUB(0x00484960);
 }
 
 // STUB: LEGORACERS 0x00484980
-void ImaginaryBelt0x2548::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryBelt0x2548::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00484980);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x004849c0 FOLDED

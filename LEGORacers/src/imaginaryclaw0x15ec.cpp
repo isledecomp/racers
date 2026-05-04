@@ -15,15 +15,16 @@ ImaginaryClaw0x15ec::~ImaginaryClaw0x15ec()
 }
 
 // STUB: LEGORACERS 0x00484510
-void ImaginaryClaw0x15ec::VTable0x4c(undefined4)
+void ImaginaryClaw0x15ec::VTable0x4c()
 {
 	STUB(0x00484510);
 }
 
 // STUB: LEGORACERS 0x004845c0
-void ImaginaryClaw0x15ec::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryClaw0x15ec::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x004845c0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00484620

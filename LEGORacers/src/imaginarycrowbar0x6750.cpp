@@ -21,9 +21,10 @@ void ImaginaryCrowbar0x6750::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x00475970
-void ImaginaryCrowbar0x6750::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryCrowbar0x6750::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00475970);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00475990
@@ -33,7 +34,7 @@ void ImaginaryCrowbar0x6750::VTable0x38(undefined4)
 }
 
 // STUB: LEGORACERS 0x004831a0
-void ImaginaryCrowbar0x6750::VTable0x4c(undefined4)
+void ImaginaryCrowbar0x6750::VTable0x4c()
 {
 	STUB(0x004831a0);
 }

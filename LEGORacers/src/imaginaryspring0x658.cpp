@@ -11,13 +11,14 @@ ImaginarySpring0x658::ImaginarySpring0x658()
 // STUB: LEGORACERS 0x00479ac0
 ImaginarySpring0x658::~ImaginarySpring0x658()
 {
-	STUB(0x00479aa0);
+	STUB(0x00479ac0);
 }
 
 // STUB: LEGORACERS 0x00479b10
-void ImaginarySpring0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginarySpring0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00479b10);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00479bd0
@@ -27,7 +28,7 @@ void ImaginarySpring0x658::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x00479c40
-void ImaginarySpring0x658::VTable0x4c(undefined4)
+void ImaginarySpring0x658::VTable0x4c()
 {
 	STUB(0x00479c40);
 }

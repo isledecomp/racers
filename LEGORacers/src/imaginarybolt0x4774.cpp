@@ -21,15 +21,16 @@ void ImaginaryBolt0x4774::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x0047d2f0
-void ImaginaryBolt0x4774::VTable0x4c(undefined4)
+void ImaginaryBolt0x4774::VTable0x4c()
 {
 	STUB(0x0047d2f0);
 }
 
 // STUB: LEGORACERS 0x0047d460
-void ImaginaryBolt0x4774::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryBolt0x4774::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x0047d460);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047d520
@@ -39,9 +40,10 @@ void ImaginaryBolt0x4774::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x0047d9a0
-void ImaginaryBolt0x4774::VTable0x88()
+LegoBool32 ImaginaryBolt0x4774::VTable0x88()
 {
 	STUB(0x0047d9a0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047d9d0

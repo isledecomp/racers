@@ -21,7 +21,7 @@ void ImaginaryAxe0x36c4::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x0047c0e0
-void ImaginaryAxe0x36c4::VTable0x4c(undefined4)
+void ImaginaryAxe0x36c4::VTable0x4c()
 {
 	STUB(0x0047c0e0);
 }
@@ -33,9 +33,10 @@ void ImaginaryAxe0x36c4::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x0047c210
-void ImaginaryAxe0x36c4::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryAxe0x36c4::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x0047c210);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047c2c0

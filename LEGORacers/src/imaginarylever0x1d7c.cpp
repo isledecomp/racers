@@ -15,9 +15,10 @@ ImaginaryLever0x1d7c::~ImaginaryLever0x1d7c()
 }
 
 // STUB: LEGORACERS 0x00486dd0
-void ImaginaryLever0x1d7c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryLever0x1d7c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00486dd0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00486ff0
@@ -34,7 +35,7 @@ LegoBool32 ImaginaryLever0x1d7c::VTable0x78(undefined4)
 }
 
 // STUB: LEGORACERS 0x00487060
-void ImaginaryLever0x1d7c::VTable0x4c(undefined4)
+void ImaginaryLever0x1d7c::VTable0x4c()
 {
 	STUB(0x00487060);
 }

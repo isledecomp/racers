@@ -54,7 +54,7 @@ public:
 		LegoU16 m_unk0x1c;                      // 0x1c
 		LegoU8 m_unk0x1e;                       // 0x1e
 		undefined m_unk0x1f;                    // 0x1f
-		undefined m_unk0x20[0x24 - 0x20];       // 0x20
+		LegoU32 m_unk0x20;                      // 0x20
 		undefined4 m_unk0x24;                   // 0x24
 		LegoU32 m_languageIndex;                // 0x28
 		undefined m_unk0x2c;                    // 0x2c

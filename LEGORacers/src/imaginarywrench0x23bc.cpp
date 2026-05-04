@@ -1,5 +1,7 @@
 #include "imaginarywrench0x23bc.h"
 
+#include "menutoolcontext0x4bc8.h"
+
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryWrench0x23bc, 0x23bc)
@@ -56,52 +58,53 @@ void ImaginaryWrench0x23bc::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x0047b300
-void ImaginaryWrench0x23bc::VTable0x4c(undefined4)
+void ImaginaryWrench0x23bc::VTable0x4c()
 {
 	// TODO
-	STUB(0x47b300);
+	STUB(0x0047b300);
 }
 
 // STUB: LEGORACERS 0x0047b470
-void ImaginaryWrench0x23bc::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryWrench0x23bc::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	// TODO
-	STUB(0x47b470);
+	STUB(0x0047b470);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047b550
 void ImaginaryWrench0x23bc::VTable0x74()
 {
 	// TODO
-	STUB(0x47b550);
+	STUB(0x0047b550);
 }
 
 // STUB: LEGORACERS 0x0047b7f0
 void ImaginaryWrench0x23bc::VTable0x84()
 {
 	// TODO
-	STUB(0x47b7f0);
+	STUB(0x0047b7f0);
 }
 
 // STUB: LEGORACERS 0x0047b850
 void ImaginaryWrench0x23bc::VTable0x38(undefined4)
 {
 	// TODO
-	STUB(0x47b850);
+	STUB(0x0047b850);
 }
 
 // STUB: LEGORACERS 0x0047b9c0
 void ImaginaryWrench0x23bc::VTable0x40(undefined4)
 {
 	// TODO
-	STUB(0x47b9c0);
+	STUB(0x0047b9c0);
 }
 
 // STUB: LEGORACERS 0x0047b9e0
 void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
 {
 	// TODO
-	STUB(0x47b9e0);
+	STUB(0x0047b9e0);
 }
 
 // FUNCTION: LEGORACERS 0x0047ba00
@@ -115,48 +118,48 @@ void ImaginaryWrench0x23bc::ApplyCheatCode()
 		if (strcmp(g_cheatNames[i], buf) == 0) {
 			if (i < sizeOfArray(g_cheatNames) - 1) {
 				LegoU32 flag = 1 << i;
-				LegoU32 current = (*m_unk0x354)->m_unk0x20;
+				LegoU32 current = m_unk0x354->m_context->m_unk0x20;
 
 				if (current & flag) {
-					(*m_unk0x354)->m_unk0x20 = current & ~flag;
+					m_unk0x354->m_context->m_unk0x20 = current & ~flag;
 				}
 				else {
-					(*m_unk0x354)->m_unk0x20 = current | flag;
+					m_unk0x354->m_context->m_unk0x20 = current | flag;
 
 					switch (flag) {
 					case c_pgllrd:
-						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllyll | c_pgllgrn | c_rpcrnly);
+						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllyll | c_pgllgrn | c_rpcrnly);
 						break;
 					case c_pgllyll:
-						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllgrn | c_rpcrnly);
+						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllgrn | c_rpcrnly);
 						break;
 					case c_pgllgrn:
-						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_rpcrnly);
+						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_rpcrnly);
 						break;
 					case c_rpcrnly:
-						(*m_unk0x354)->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_pgllgrn | c_mxpmx);
+						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_pgllgrn | c_mxpmx);
 						break;
 					case c_mxpmx:
-						(*m_unk0x354)->m_unk0x20 &= ~c_rpcrnly;
+						m_unk0x354->m_context->m_unk0x20 &= ~c_rpcrnly;
 						break;
 					case c_nwhls: {
-						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
 						if ((v & c_nchsss) && (v & c_ndrvr)) {
-							(*m_unk0x354)->m_unk0x20 = v & ~c_ndrvr;
+							m_unk0x354->m_context->m_unk0x20 = v & ~c_ndrvr;
 						}
 						break;
 					}
 					case c_nchsss: {
-						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
 						if ((v & c_nwhls) && (v & c_ndrvr)) {
-							(*m_unk0x354)->m_unk0x20 = v & ~c_nwhls;
+							m_unk0x354->m_context->m_unk0x20 = v & ~c_nwhls;
 						}
 						break;
 					}
 					case c_ndrvr: {
-						LegoU32 v = (*m_unk0x354)->m_unk0x20;
+						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
 						if ((v & c_nchsss) && (v & c_nwhls)) {
-							(*m_unk0x354)->m_unk0x20 = v & ~c_nchsss;
+							m_unk0x354->m_context->m_unk0x20 = v & ~c_nchsss;
 						}
 						break;
 					}
@@ -164,7 +167,7 @@ void ImaginaryWrench0x23bc::ApplyCheatCode()
 				}
 			}
 			else if (i == sizeOfArray(g_cheatNames) - 1) {
-				(*m_unk0x354)->m_unk0x20 = 0;
+				m_unk0x354->m_context->m_unk0x20 = 0;
 			}
 		}
 	}
@@ -174,5 +177,5 @@ void ImaginaryWrench0x23bc::ApplyCheatCode()
 void ImaginaryWrench0x23bc::VTable0x90(undefined4)
 {
 	// TODO
-	STUB(0x47bbf0);
+	STUB(0x0047bbf0);
 }

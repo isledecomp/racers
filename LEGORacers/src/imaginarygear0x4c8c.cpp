@@ -21,15 +21,16 @@ void ImaginaryGear0x4c8c::VTable0x10(undefined4)
 }
 
 // STUB: LEGORACERS 0x00484d90
-void ImaginaryGear0x4c8c::VTable0x4c(undefined4)
+void ImaginaryGear0x4c8c::VTable0x4c()
 {
 	STUB(0x00484d90);
 }
 
 // STUB: LEGORACERS 0x00484e40
-void ImaginaryGear0x4c8c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryGear0x4c8c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00484e40);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00484f40
@@ -76,7 +77,8 @@ void ImaginaryGear0x4c8c::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x004869b0 FOLDED
-void ImaginaryGear0x4c8c::VTable0x88()
+LegoBool32 ImaginaryGear0x4c8c::VTable0x88()
 {
 	STUB(0x004869b0);
+	return FALSE;
 }

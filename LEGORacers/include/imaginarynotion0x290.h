@@ -15,6 +15,16 @@ class ObscureVantage0x58;
 // SIZE 0x290
 class ImaginaryNotion0x290 : public ImaginaryInterface {
 public:
+	// SIZE unknown
+	class FieldAt0xc4 {
+	public:
+		void SetUnk0x41(undefined p_unk0x41) { m_unk0x41 = p_unk0x41; }
+
+	private:
+		undefined m_unk0x00[0x41 - 0x00]; // 0x00
+		undefined m_unk0x41;              // 0x41
+	};
+
 	ImaginaryNotion0x290();
 
 	void VTable0x00(undefined4) override;                                             // vtable+0x00
@@ -46,7 +56,7 @@ public:
 	void VTable0x40(undefined4) override;                                                      // vtable+0x40
 	void VTable0x44(undefined4) override;                                                      // vtable+0x44
 	void VTable0x48(undefined4) override;                                                      // vtable+0x48
-	virtual void VTable0x4c(undefined4) = 0;                                                   // vtable+0x4c
+	virtual void VTable0x4c() = 0;                                                             // vtable+0x4c
 	virtual undefined4 VTable0x50();                                                           // vtable+0x50
 	virtual void VTable0x54();                                                                 // vtable+0x54
 	virtual void VTable0x58(undefined4*);                                                      // vtable+0x58
@@ -79,7 +89,7 @@ public:
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
 	void FUN_0046c480(undefined4*, undefined4, undefined2);
 	void FUN_0046c510(undefined4*, undefined4, undefined2);
-	void FUN_0046c5b0(undefined4*, undefined4, undefined2);
+	void FUN_0046c5b0(ObscureVantage0x58*, undefined2);
 	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
 	undefined4 FUN_0046c6f0(undefined4, undefined4, undefined2);
 	undefined4 FUN_0046c730(undefined4, undefined2);
@@ -99,7 +109,7 @@ protected:
 	undefined4 m_unk0xb8;          // 0x0b8
 	undefined4* m_unk0xbc;         // 0x0bc
 	undefined4 m_unk0xc0;          // 0x0c0
-	undefined4 m_unk0xc4;          // 0x0c4
+	FieldAt0xc4* m_unk0xc4;        // 0x0c4
 	undefined4 m_unk0xc8;          // 0x0c8
 	undefined4* m_unk0xcc;         // 0x0cc
 	undefined4* m_unk0xd0;         // 0x0d0

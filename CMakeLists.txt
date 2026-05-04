@@ -264,6 +264,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarybelt0x2548.cpp
   LEGORacers/src/imaginarybolt0x4774.cpp
   LEGORacers/src/imaginarybrush0x6410.cpp
+  LEGORacers/src/imaginarychisel0x658.cpp
   LEGORacers/src/imaginaryclaw0x15ec.cpp
   LEGORacers/src/imaginarycrowbar0x6750.cpp
   LEGORacers/src/imaginarycube0x3c34.cpp

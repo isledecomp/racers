@@ -139,7 +139,7 @@ void ImaginaryNotion0x290::VTable0x54()
 	m_unk0x280 = 0;
 	m_unk0xcc = NULL;
 	m_unk0x284 = 0;
-	m_unk0xc4 = 0;
+	m_unk0xc4 = NULL;
 	m_unk0x54 = 0;
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
@@ -311,7 +311,7 @@ void ImaginaryNotion0x290::FUN_0046c510(undefined4*, undefined4, undefined2)
 }
 
 // STUB: LEGORACERS 0x0046c5b0
-void ImaginaryNotion0x290::FUN_0046c5b0(undefined4*, undefined4, undefined2)
+void ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58*, undefined2)
 {
 	// TODO
 	STUB(0x0046c5b0);

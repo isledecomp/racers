@@ -21,15 +21,16 @@ void ImaginaryRuler0x2e60::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x00487b50
-void ImaginaryRuler0x2e60::VTable0x4c(undefined4)
+void ImaginaryRuler0x2e60::VTable0x4c()
 {
 	STUB(0x00487b50);
 }
 
 // STUB: LEGORACERS 0x00487ca0
-void ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00487ca0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00487d10

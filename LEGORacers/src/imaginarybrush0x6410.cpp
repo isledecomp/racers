@@ -21,15 +21,16 @@ void ImaginaryBrush0x6410::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x0047e650
-void ImaginaryBrush0x6410::VTable0x4c(undefined4)
+void ImaginaryBrush0x6410::VTable0x4c()
 {
 	STUB(0x0047e650);
 }
 
 // STUB: LEGORACERS 0x0047e680
-void ImaginaryBrush0x6410::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryBrush0x6410::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x0047e680);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047ec00
@@ -64,9 +65,10 @@ void ImaginaryBrush0x6410::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x004869b0 FOLDED
-void ImaginaryBrush0x6410::VTable0x88()
+LegoBool32 ImaginaryBrush0x6410::VTable0x88()
 {
 	STUB(0x004869b0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00489130

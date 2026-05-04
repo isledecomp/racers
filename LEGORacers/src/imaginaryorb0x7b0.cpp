@@ -15,9 +15,10 @@ ImaginaryOrb0x7b0::~ImaginaryOrb0x7b0()
 }
 
 // STUB: LEGORACERS 0x00475d30
-void ImaginaryOrb0x7b0::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryOrb0x7b0::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00475d30);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00475e50
@@ -27,7 +28,7 @@ void ImaginaryOrb0x7b0::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x00475f40
-void ImaginaryOrb0x7b0::VTable0x4c(undefined4)
+void ImaginaryOrb0x7b0::VTable0x4c()
 {
 	STUB(0x00475f40);
 }

@@ -21,15 +21,16 @@ void ImaginarySpool0x2cc4::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x00481830
-void ImaginarySpool0x2cc4::VTable0x4c(undefined4)
+void ImaginarySpool0x2cc4::VTable0x4c()
 {
 	STUB(0x00481830);
 }
 
 // STUB: LEGORACERS 0x00481a30
-void ImaginarySpool0x2cc4::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginarySpool0x2cc4::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
 {
 	STUB(0x00481a30);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00481c80
@@ -65,7 +66,8 @@ void ImaginarySpool0x2cc4::VTable0x74()
 }
 
 // STUB: LEGORACERS 0x004869b0 FOLDED
-void ImaginarySpool0x2cc4::VTable0x88()
+LegoBool32 ImaginarySpool0x2cc4::VTable0x88()
 {
 	STUB(0x004869b0);
+	return FALSE;
 }

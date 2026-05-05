@@ -28,7 +28,7 @@ public:
 	virtual void VTable0x0c(ObscureVantage0x58*);                                         // vtable+0x0c
 	virtual void VTable0x10(undefined4);                                                  // vtable+0x10
 	virtual void VTable0x14(undefined4);                                                  // vtable+0x14
-	virtual void VTable0x18(undefined4);                                                  // vtable+0x18
+	virtual undefined4 VTable0x18(undefined4);                                            // vtable+0x18
 	virtual undefined4 VTable0x1c(SilverDune0x30::Rect*, SilverDune0x30::Rect*);          // vtable+0x1c
 	virtual undefined4 VTable0x20(void*, undefined4, undefined4);                         // vtable+0x20
 	virtual undefined4 VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x24

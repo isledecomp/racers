@@ -199,11 +199,23 @@ void ObscureVantage0x58::FUN_004731b0(undefined4& p_param1, undefined4& p_param2
 	p_param2 -= m_unk0x34.m_unk0x04;
 }
 
-// STUB: LEGORACERS 0x004731d0
-void ObscureVantage0x58::VTable0x18(undefined4)
+// FUNCTION: LEGORACERS 0x004731d0
+undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 {
-	// TODO
-	STUB(0x004731d0);
+	ObscureVantage0x58* child = m_unk0x08;
+	if (VTable0x3c(p_unk0x04)) {
+		return TRUE;
+	}
+
+	while (child) {
+		if (child->VTable0x18(p_unk0x04)) {
+			return TRUE;
+		}
+
+		child = child->m_unk0x14;
+	}
+
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00473210

@@ -52,7 +52,7 @@ public:
 		void Activate(
 			LegoU32 p_durationMs,
 			LegoBool32 p_fadeOut,
-			undefined4 p_material,
+			DuskwindBananaRelic0x24* p_material,
 			const ScreenRectSource* p_rectSource
 		);
 		void Reset();
@@ -64,7 +64,7 @@ public:
 	private:
 		void Clear();
 
-		undefined4 m_material;                // 0x00
+		DuskwindBananaRelic0x24* m_material;  // 0x00
 		const ScreenRectSource* m_rectSource; // 0x04
 		LegoU8 m_red;                         // 0x08
 		LegoU8 m_green;                       // 0x09

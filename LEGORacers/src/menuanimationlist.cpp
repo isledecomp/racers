@@ -38,7 +38,7 @@ void MenuAnimationList::Entry::Reset()
 // FUNCTION: LEGORACERS 0x00490530
 void MenuAnimationList::Entry::Clear()
 {
-	m_material = 0;
+	m_material = NULL;
 	m_rectSource = NULL;
 	m_remainingMs = 0;
 	m_durationMs = 0;
@@ -53,7 +53,7 @@ void MenuAnimationList::Entry::Clear()
 void MenuAnimationList::Entry::Activate(
 	LegoU32 p_durationMs,
 	LegoBool32 p_fadeOut,
-	undefined4 p_material,
+	DuskwindBananaRelic0x24* p_material,
 	const ScreenRectSource* p_rectSource
 )
 {
@@ -136,40 +136,40 @@ void MenuAnimationList::Entry::Draw(BronzeFalcon0xc8770* p_renderer)
 	scratch.m_topLeft.m_z = 0.0f;
 	scratch.m_topLeft.m_u = 0.0f;
 	scratch.m_topLeft.m_v = 0.0f;
-	scratch.m_topLeft.m_red = m_red;
-	scratch.m_topLeft.m_green = m_green;
-	scratch.m_topLeft.m_blue = m_blue;
-	scratch.m_topLeft.m_alpha = scratch.m_alpha;
+	scratch.m_topLeft.m_color.m_red = m_red;
+	scratch.m_topLeft.m_color.m_grn = m_green;
+	scratch.m_topLeft.m_color.m_blu = m_blue;
+	scratch.m_topLeft.m_color.m_alp = scratch.m_alpha;
 
 	scratch.m_bottomLeft.m_x = scratch.m_topLeft.m_x;
 	scratch.m_bottomLeft.m_y = (LegoFloat) scratch.m_rect.m_bottom;
 	scratch.m_bottomLeft.m_z = 0.0f;
 	scratch.m_bottomLeft.m_u = 0.0f;
 	scratch.m_bottomLeft.m_v = 1.0f;
-	scratch.m_bottomLeft.m_red = m_red;
-	scratch.m_bottomLeft.m_green = m_green;
-	scratch.m_bottomLeft.m_blue = m_blue;
-	scratch.m_bottomLeft.m_alpha = scratch.m_alpha;
+	scratch.m_bottomLeft.m_color.m_red = m_red;
+	scratch.m_bottomLeft.m_color.m_grn = m_green;
+	scratch.m_bottomLeft.m_color.m_blu = m_blue;
+	scratch.m_bottomLeft.m_color.m_alp = scratch.m_alpha;
 
 	scratch.m_topRight.m_x = (LegoFloat) scratch.m_rect.m_right;
 	scratch.m_topRight.m_y = scratch.m_topAsFloat;
 	scratch.m_topRight.m_z = 0.0f;
 	scratch.m_topRight.m_u = 1.0f;
 	scratch.m_topRight.m_v = 0.0f;
-	scratch.m_topRight.m_red = m_red;
-	scratch.m_topRight.m_green = m_green;
-	scratch.m_topRight.m_blue = m_blue;
-	scratch.m_topRight.m_alpha = scratch.m_alpha;
+	scratch.m_topRight.m_color.m_red = m_red;
+	scratch.m_topRight.m_color.m_grn = m_green;
+	scratch.m_topRight.m_color.m_blu = m_blue;
+	scratch.m_topRight.m_color.m_alp = scratch.m_alpha;
 
 	scratch.m_bottomRight.m_x = scratch.m_topRight.m_x;
 	scratch.m_bottomRight.m_y = scratch.m_bottomLeft.m_y;
 	scratch.m_bottomRight.m_z = 0.0f;
 	scratch.m_bottomRight.m_u = 1.0f;
 	scratch.m_bottomRight.m_v = 1.0f;
-	scratch.m_bottomRight.m_red = m_red;
-	scratch.m_bottomRight.m_green = m_green;
-	scratch.m_bottomRight.m_blue = m_blue;
-	scratch.m_bottomRight.m_alpha = scratch.m_alpha;
+	scratch.m_bottomRight.m_color.m_red = m_red;
+	scratch.m_bottomRight.m_color.m_grn = m_green;
+	scratch.m_bottomRight.m_color.m_blu = m_blue;
+	scratch.m_bottomRight.m_color.m_alp = scratch.m_alpha;
 
 	p_renderer->SetAlphaOverride(scratch.m_alpha, TRUE);
 	p_renderer->DrawTriangle(&scratch.m_bottomLeft, &scratch.m_topLeft, &scratch.m_bottomRight, m_material, 0);

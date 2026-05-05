@@ -71,13 +71,21 @@ public:
 		SilverDune0x30::Rect* p_destRect,
 		SilverDune0x30::Rect* p_sourceRect,
 		undefined4 p_unk0x14
-	) override;                 // vtable+0x7c
-	void VTable0x80() override; // vtable+0x80
+	) override; // vtable+0x7c
+	void DrawRectangle(
+		const IntRectangle0x10& p_rect,
+		LegoFloat p_z,
+		const ColorRGBA& p_color1,
+		const ColorRGBA& p_color2,
+		const ColorRGBA& p_color3,
+		const ColorRGBA& p_color4,
+		undefined4 p_arg7
+	) override; // vtable+0x80
 	void DrawTriangle(
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,
 		const TexturedVertex* p_vertex2,
-		undefined4 p_material,
+		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
 	) override;                                                             // vtable+0x84
 	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
@@ -106,12 +114,12 @@ public:
 	void VTable0xec(undefined4) override;                                   // vtable+0xec
 	void VTable0xf0() override;                                             // vtable+0xf0
 	void VTable0xf4() override;                                             // vtable+0xf4
-	void VTable0xf8() override;                                             // vtable+0xf8
-	void VTable0xfc() override;                                             // vtable+0xfc
-	void VTable0x100() override;                                            // vtable+0x100
-	void VTable0x104() override;                                            // vtable+0x104
-	void VTable0x108() override;                                            // vtable+0x108
-	void VTable0x10c() override;                                            // vtable+0x10c
+	LegoU32 GetMinimumTextureWidth(undefined4) const override;              // vtable+0xf8
+	LegoU32 GetMaximumTextureWidth(undefined4) const override;              // vtable+0xfc
+	LegoU32 GetMinimumTextureHeight(undefined4) const override;             // vtable+0x100
+	LegoU32 GetMaximumTextureHeight(undefined4) const override;             // vtable+0x104
+	LegoBool32 TexturesMustBeSquare() const override;                       // vtable+0x108
+	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
 	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
 	undefined4 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
@@ -128,43 +136,47 @@ public:
 
 private:
 	void FUN_100082e0();
-	void FUN_1000a2c0(undefined*);
-	void FUN_1000a950(undefined*);
+	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
+	void FUN_1000a950(DuskwindBananaRelic0x24*);
+	void FUN_1000ac00(undefined4*);
 	void FUN_1000b4a0();
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 
-	GolDrawDPState* m_drawState;                           // 0x140
-	LPDIRECT3DDEVICE3 m_d3dDevice;                         // 0x144
-	D3DDEVICEDESC m_d3dDeviceDesc;                         // 0x148
-	LPDIRECT3DVIEWPORT3 m_d3dViewport;                     // 0x244
-	D3DVIEWPORT2 m_viewportParams;                         // 0x248
-	D3DMATERIAL m_materialParams;                          // 0x274
-	LPDIRECT3DMATERIAL3 m_backgroundMaterial;              // 0x2c4
-	D3DMATERIALHANDLE m_backgroundMaterialHandle;          // 0x2c8
-	ColorRGBA m_unk0x2cc;                                  // 0x2cc
-	LegoU32 m_unk0x2d0;                                    // 0x2d0
-	DuskwindBananaRelic0x30 m_unk0x2d4;                    // 0x2d4
-	SlatePeak0x58* m_unk0x304;                             // 0x304
-	SlatePeak0x58* m_renderTargetInfo;                     // 0x308
-	BronzeFalconSurface0x5c* m_unk0x30c;                   // 0x30c
-	DepthBuffer0x38 m_depthBuffer;                         // 0x310
-	undefined m_unk0x348[0xc384c - 0x348];                 // 0x348
-	undefined4 m_unk0xc384c;                               // 0xc384c
-	undefined m_unk0xc3850[0xc83b4 - 0xc3850];             // 0xc3850
-	Field0xc83b4 m_unk0xc83b4;                             // 0xc83b4
-	undefined4 m_unk0xc83c4;                               // 0xc83c4
-	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];             // 0xc83c8
-	SoftwareRenderer0x58 m_softwareRenderer;               // 0xc8698
-	undefined m_unk0xc86f0[0xc86fc - 0xc86f0];             // 0xc86f0
-	float m_unk0xc86fc;                                    // 0xc86fc
-	undefined4 m_unk0xc8700;                               // 0xc8700
-	undefined m_unk0xc8704[0xc8708 - 0xc8704];             // 0xc8704
-	undefined4 m_unk0xc8708[11];                           // 0xc8708
-	undefined4 m_unk0xc8734[11];                           // 0xc8734
-	undefined m_unk0xc8760[0xc876c - 0xc8760];             // 0xc8760
-	void (BronzeFalcon0xc8770::*m_unk0xc876c)(undefined*); // 0xc876c
+	GolDrawDPState* m_drawState;                                         // 0x140
+	LPDIRECT3DDEVICE3 m_d3dDevice;                                       // 0x144
+	D3DDEVICEDESC m_d3dDeviceDesc;                                       // 0x148
+	LPDIRECT3DVIEWPORT3 m_d3dViewport;                                   // 0x244
+	D3DVIEWPORT2 m_viewportParams;                                       // 0x248
+	D3DMATERIAL m_materialParams;                                        // 0x274
+	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                            // 0x2c4
+	D3DMATERIALHANDLE m_backgroundMaterialHandle;                        // 0x2c8
+	ColorRGBA m_unk0x2cc;                                                // 0x2cc
+	LegoU32 m_unk0x2d0;                                                  // 0x2d0
+	DuskwindBananaRelic0x30 m_unk0x2d4;                                  // 0x2d4
+	SlatePeak0x58* m_unk0x304;                                           // 0x304
+	SlatePeak0x58* m_renderTargetInfo;                                   // 0x308
+	BronzeFalconSurface0x5c* m_unk0x30c;                                 // 0x30c
+	DepthBuffer0x38 m_depthBuffer;                                       // 0x310
+	D3DTLVERTEX m_unk0x348[25000];                                       // 0x348
+	undefined4 m_unk0xc3848;                                             // 0xc3848
+	undefined4 m_unk0xc384c;                                             // 0xc384c
+	undefined m_unk0xc3850[0xc83b4 - 0xc3850];                           // 0xc3850
+	Field0xc83b4 m_unk0xc83b4;                                           // 0xc83b4
+	undefined4 m_unk0xc83c4;                                             // 0xc83c4
+	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];                           // 0xc83c8
+	SoftwareRenderer0x58 m_softwareRenderer;                             // 0xc8698
+	SoftwareRendererCommand0x14* m_unk0xc86f0;                           // 0xc86f0
+	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
+	LegoS32 m_unk0xc86f8;                                                // 0xc86f8
+	float m_unk0xc86fc;                                                  // 0xc86fc
+	undefined4 m_unk0xc8700;                                             // 0xc8700
+	undefined m_unk0xc8704[0xc8708 - 0xc8704];                           // 0xc8704
+	undefined4 m_unk0xc8708[11];                                         // 0xc8708
+	undefined4 m_unk0xc8734[11];                                         // 0xc8734
+	undefined m_unk0xc8760[0xc876c - 0xc8760];                           // 0xc8760
+	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*); // 0xc876c
 };
 
 #endif // BRONZEFALCON0XC8770_H

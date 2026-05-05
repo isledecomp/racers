@@ -5,6 +5,7 @@
 #include "falcontextureformat.h"
 #include "goldrawdpstate.h"
 #include "golerror.h"
+#include "rectangle.h"
 
 #include <stdio.h>
 
@@ -12,6 +13,7 @@ DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::TextureFormat, 0x18)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::Field0xc83b4, 0x10)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
+DECOMP_SIZE_ASSERT(IntRectangle0x10, 0x10)
 
 // GLOBAL: GOLDP 0x10056560
 LegoU32 g_blendCapsMasks[11] = {
@@ -266,7 +268,7 @@ rendererCreated:
 		VTable0x20(m_unk0x0c);
 	}
 
-	m_unk0x2d4.FUN_10006320(this);
+	m_unk0x2d4.FUN_10006320(*this);
 	for (BronzeFalconSurface0x5c* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
 		surface->FUN_100136a0(this);
 	}
@@ -556,22 +558,154 @@ void BronzeFalcon0xc8770::VTable0x6c()
 	STUB(0x10009ba0);
 }
 
-// STUB: GOLDP 0x10009bd0
-void BronzeFalcon0xc8770::VTable0x80()
+// FUNCTION: GOLDP 0x10009bd0
+void BronzeFalcon0xc8770::DrawRectangle(
+	const IntRectangle0x10& p_rect,
+	LegoFloat p_z,
+	const ColorRGBA& p_color1,
+	const ColorRGBA& p_color2,
+	const ColorRGBA& p_color3,
+	const ColorRGBA& p_color4,
+	undefined4 p_arg7
+)
 {
-	STUB(0x10009bd0);
+	TexturedVertex v1;
+	TexturedVertex v2;
+	TexturedVertex v3;
+	TexturedVertex v4;
+
+	v2.m_x = v1.m_x = static_cast<LegoFloat>(p_rect.m_left);
+	v1.m_z = p_z;
+	v1.m_color = p_color1;
+	v3.m_y = v1.m_y = static_cast<LegoFloat>(p_rect.m_top);
+
+	v2.m_z = p_z;
+	v2.m_color = p_color2;
+
+	v2.m_y = v4.m_y = static_cast<LegoFloat>(p_rect.m_bottom);
+	v3.m_x = v4.m_x = static_cast<LegoFloat>(p_rect.m_right);
+
+	v3.m_z = p_z;
+	v3.m_color = p_color3;
+
+	v4.m_color = p_color4;
+	v4.m_z = p_z;
+
+	v1.m_u = 0.0f;
+	v1.m_v = 0.0f;
+	v2.m_u = 0.0f;
+	v2.m_v = 0.0f;
+	v3.m_u = 0.0f;
+	v3.m_v = 0.0f;
+	v4.m_u = 0.0f;
+	v4.m_v = 0.0f;
+	DrawTriangle(&v2, &v1, &v4, NULL, p_arg7);
+	DrawTriangle(&v4, &v1, &v3, NULL, p_arg7);
 }
 
-// STUB: GOLDP 0x10009ce0
+// FUNCTION: GOLDP 0x10009ce0
 void BronzeFalcon0xc8770::DrawTriangle(
-	const TexturedVertex*,
-	const TexturedVertex*,
-	const TexturedVertex*,
-	undefined4,
+	const TexturedVertex* p_v1,
+	const TexturedVertex* p_v2,
+	const TexturedVertex* p_v3,
+	DuskwindBananaRelic0x24* p_material,
 	undefined4
 )
 {
-	STUB(0x10009ce0);
+	if (p_material == NULL) {
+		p_material = &m_unk0x2d4;
+	}
+	(this->*BronzeFalcon0xc8770::m_unk0xc876c)(p_material);
+	FUN_1000ac00(p_material->GetUnk0x04());
+	if (p_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit14) {
+		const TexturedVertex* tmp = p_v3;
+		p_v3 = p_v1;
+		p_v1 = p_v2;
+		p_v2 = tmp;
+	}
+	D3DTLVERTEX* vertices = &m_unk0x348[(0x40 & ~m_unk0xc384c) + (m_unk0xc3848 & m_unk0xc384c)];
+
+	vertices[0].sx = p_v1->m_x;
+	vertices[0].sy = p_v1->m_y;
+	vertices[0].sz = p_v1->m_z;
+	if (vertices[0].sz > 0.0f) {
+		vertices[0].rhw = 1.0f / p_v1->m_z;
+	}
+	else {
+		vertices[0].rhw = 1.0f;
+	}
+	vertices[0].tu = p_v1->m_u;
+	vertices[0].tv = p_v1->m_v;
+	vertices[0].specular = 0;
+
+	vertices[1].sx = p_v2->m_x;
+	vertices[1].sy = p_v2->m_y;
+	vertices[1].sz = p_v2->m_z;
+	if (vertices[1].sz > 0.0f) {
+		vertices[1].rhw = 1.0f / p_v2->m_z;
+	}
+	else {
+		vertices[1].rhw = 1.0f;
+	}
+	vertices[1].tu = p_v2->m_u;
+	vertices[1].tv = p_v2->m_v;
+	vertices[1].specular = 0;
+
+	vertices[2].sx = p_v3->m_x;
+	vertices[2].sy = p_v3->m_y;
+	vertices[2].sz = p_v3->m_z;
+	if (vertices[2].sz > 0.0f) {
+		vertices[2].rhw = 1.0f / p_v3->m_z;
+	}
+	else {
+		vertices[2].rhw = 1.0f;
+	}
+	vertices[2].tu = p_v3->m_u;
+	vertices[2].tv = p_v3->m_v;
+	vertices[2].specular = 0;
+	switch (m_unk0xc8700) {
+	case 1:
+		vertices[0].color =
+			((p_v1->m_color.m_blu >> 3) | ((p_v1->m_color.m_grn & 0xe0)) >> 3) | (p_v1->m_color.m_red & 0xe0);
+		vertices[1].color =
+			((p_v2->m_color.m_blu >> 3) | ((p_v2->m_color.m_grn & 0xe0)) >> 3) | (p_v2->m_color.m_red & 0xe0);
+		vertices[2].color =
+			((p_v3->m_color.m_blu >> 3) | ((p_v3->m_color.m_grn & 0xe0)) >> 3) | (p_v3->m_color.m_red & 0xe0);
+		break;
+	case 2:
+		vertices[0].color = (p_v1->m_color.m_alp << 24) | (p_v1->m_color.m_red << 16) | (p_v1->m_color.m_grn << 8) |
+							(p_v1->m_color.m_blu << 0);
+		vertices[1].color = (p_v2->m_color.m_alp << 24) | (p_v2->m_color.m_red << 16) | (p_v2->m_color.m_grn << 8) |
+							(p_v2->m_color.m_blu << 0);
+		vertices[2].color = (p_v3->m_color.m_alp << 24) | (p_v3->m_color.m_red << 16) | (p_v3->m_color.m_grn << 8) |
+							(p_v3->m_color.m_blu << 0);
+		break;
+	}
+
+	if (m_unk0xc83c4) {
+		if (m_unk0xc86f4 + 1 < m_unk0xc86f8) {
+			SoftwareRendererCommand0x14* cmd = &m_unk0xc86f0[m_unk0xc86f4++];
+			cmd->m_unk0x08 = m_unk0xc3848++;
+			cmd->m_unk0x0a = m_unk0xc3848++;
+			cmd->m_unk0x0c = m_unk0xc3848++;
+			cmd->m_unk0x10 = m_unk0xc83b4.m_unk0x00;
+			if (m_unk0x04 & c_flagBit5) {
+				m_softwareRenderer.FUN_100417c0(cmd, 1);
+			}
+			else {
+				m_softwareRenderer.FUN_100417a0(cmd, 1, m_unk0xc86fc);
+			}
+		}
+	}
+	else {
+		m_d3dDevice->DrawPrimitive(
+			D3DPT_TRIANGLELIST,
+			D3DFVF_TLVERTEX,
+			vertices,
+			3,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
+	}
 }
 
 // FUNCTION: GOLDP 0x1000a110
@@ -597,54 +731,95 @@ void BronzeFalcon0xc8770::SelectTextureFormat(
 	}
 }
 
-// STUB: GOLDP 0x1000a1c0
-void BronzeFalcon0xc8770::VTable0xf8()
+// FUNCTION: GOLDP 0x1000a1c0
+LegoU32 BronzeFalcon0xc8770::GetMinimumTextureWidth(undefined4) const
 {
-	STUB(0x1000a1c0);
+	if (m_unk0xc83c4) {
+		return 8;
+	}
+	if (m_d3dDeviceDesc.dwMinTextureWidth != 0) {
+		return m_d3dDeviceDesc.dwMinTextureWidth;
+	}
+	return 32;
 }
 
-// STUB: GOLDP 0x1000a1f0
-void BronzeFalcon0xc8770::VTable0xfc()
+// FUNCTION: GOLDP 0x1000a1f0
+LegoU32 BronzeFalcon0xc8770::GetMaximumTextureWidth(undefined4) const
 {
-	STUB(0x1000a1f0);
+	if (m_unk0xc83c4) {
+		return 256;
+	}
+	if (m_d3dDeviceDesc.dwMaxTextureWidth != 0) {
+		return m_d3dDeviceDesc.dwMaxTextureWidth;
+	}
+	return 256;
 }
 
-// STUB: GOLDP 0x1000a210
-void BronzeFalcon0xc8770::VTable0x100()
+// FUNCTION: GOLDP 0x1000a210
+LegoU32 BronzeFalcon0xc8770::GetMinimumTextureHeight(undefined4) const
 {
-	STUB(0x1000a210);
+	if (m_unk0xc83c4) {
+		return 8;
+	}
+	if (m_d3dDeviceDesc.dwMinTextureHeight != 0) {
+		return m_d3dDeviceDesc.dwMinTextureHeight;
+	}
+	return 32;
 }
 
-// STUB: GOLDP 0x1000a240
-void BronzeFalcon0xc8770::VTable0x104()
+// FUNCTION: GOLDP 0x1000a240
+LegoU32 BronzeFalcon0xc8770::GetMaximumTextureHeight(undefined4) const
 {
-	STUB(0x1000a240);
+	if (m_unk0xc83c4) {
+		return 256;
+	}
+	if (m_d3dDeviceDesc.dwMaxTextureHeight != 0) {
+		return m_d3dDeviceDesc.dwMaxTextureHeight;
+	}
+	return 256;
 }
 
-// STUB: GOLDP 0x1000a260
-void BronzeFalcon0xc8770::VTable0x108()
+// FUNCTION: GOLDP 0x1000a260
+LegoBool32 BronzeFalcon0xc8770::TexturesMustBeSquare() const
 {
-	STUB(0x1000a260);
+	if (m_unk0xc83c4) {
+		return FALSE;
+	}
+	else {
+		return !(m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_SQUAREONLY);
+	}
 }
 
-// STUB: GOLDP 0x1000a290
-void BronzeFalcon0xc8770::VTable0x10c()
+// FUNCTION: GOLDP 0x1000a290
+LegoBool32 BronzeFalcon0xc8770::TextureSizesMustBePowersOfTwo() const
 {
-	STUB(0x1000a290);
+	if (m_unk0xc83c4) {
+		return TRUE;
+	}
+	else {
+		return !!(m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_POW2);
+	}
 }
 
 // STUB: GOLDP 0x1000a2c0
-void BronzeFalcon0xc8770::FUN_1000a2c0(undefined*)
+void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24*)
 {
 	// TODO
 	STUB(0x1000a2c0);
 }
 
 // STUB: GOLDP 0x1000a950
-void BronzeFalcon0xc8770::FUN_1000a950(undefined*)
+void BronzeFalcon0xc8770::FUN_1000a950(DuskwindBananaRelic0x24*)
 {
 	// TODO
 	STUB(0x1000a950);
+}
+
+// STUB: GOLDP 0x1000ac00
+void BronzeFalcon0xc8770::FUN_1000ac00(undefined4*)
+{
+	// FIXME
+	STUB(0x1000ac00);
 }
 
 // STUB: GOLDP 0x1000aeb0

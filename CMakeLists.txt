@@ -99,6 +99,7 @@ set(COMMON_SOURCES
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/boundingshape0x2c.cpp
+  GolDP/src/duskwindbananarelic0x30.cpp
   GolDP/src/golfontbase0x40.cpp
   GolDP/src/goldrawstate.cpp
   GolDP/src/silverdune0x30.cpp

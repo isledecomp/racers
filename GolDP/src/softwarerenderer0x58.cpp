@@ -81,3 +81,20 @@ SoftwareRenderer0x58::~SoftwareRenderer0x58()
 		m_nodes = NULL;
 	}
 }
+
+// FUNCTION: GOLDP 0x100417a0
+void SoftwareRenderer0x58::FUN_100417a0(SoftwareRendererCommand0x14* p_cmds, LegoU32 p_count, LegoFloat p_arg3)
+{
+	while (p_count) {
+		p_cmds->m_unk0x04 = p_arg3;
+		p_cmds++;
+		p_count--;
+	}
+}
+
+// STUB: GOLDP 0x100417c0
+void SoftwareRenderer0x58::FUN_100417c0(SoftwareRendererCommand0x14* p_cmds, LegoU32 p_count)
+{
+	// TODO
+	STUB(0x100417c0);
+}

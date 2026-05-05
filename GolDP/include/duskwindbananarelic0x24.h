@@ -23,18 +23,22 @@ struct DuskwindBananaRelicColor {
 // SIZE 0x24
 class DuskwindBananaRelic0x24 {
 public:
+	enum {
+		c_flagBit0 = 1 << 0,
+		c_flagBit14 = 1 << 14,
+	};
+
 	DuskwindBananaRelic0x24();
 	virtual ~DuskwindBananaRelic0x24(); // vtable+0x00
+
+	undefined4* GetUnk0x04() const { return m_unk0x04; }
+	LegoU32 GetUnk0x08() const { return m_unk0x08; }
 
 	// SYNTHETIC: GOLDP 0x100257b0
 	// DuskwindBananaRelic0x24::`scalar deleting destructor'
 
 protected:
-	enum {
-		c_flagBit0 = 1 << 0,
-	};
-
-	undefined4 m_unk0x04;
+	undefined4* m_unk0x04;
 	LegoU32 m_unk0x08;
 	DuskwindBananaRelicColor m_unk0x0c;
 	DuskwindBananaRelicColor m_unk0x10;

@@ -11,11 +11,13 @@ class AmberHaze0x1c;
 class AmberLens0x344;
 class BronzeFalcon0xc8770;
 class CinderBasin0x28;
+class DuskwindBananaRelic0x24;
 class FalconTextureFormat;
 class GolFont0xa0;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
+struct IntRectangle0x10;
 class MagentaRibbon0x20;
 class SlatePeak0x58;
 class UtopianPan0xa4;
@@ -26,15 +28,12 @@ class WhiteFalcon0x140 {
 public:
 	// SIZE 0x18
 	struct TexturedVertex {
-		LegoFloat m_x;  // 0x00
-		LegoFloat m_y;  // 0x04
-		LegoFloat m_z;  // 0x08
-		LegoFloat m_u;  // 0x0c
-		LegoFloat m_v;  // 0x10
-		LegoU8 m_red;   // 0x14
-		LegoU8 m_green; // 0x15
-		LegoU8 m_blue;  // 0x16
-		LegoU8 m_alpha; // 0x17
+		LegoFloat m_x;     // 0x00
+		LegoFloat m_y;     // 0x04
+		LegoFloat m_z;     // 0x08
+		LegoFloat m_u;     // 0x0c
+		LegoFloat m_v;     // 0x10
+		ColorRGBA m_color; // 0x14
 	};
 
 	enum Flags {
@@ -98,13 +97,21 @@ public:
 		SilverDune0x30::Rect* p_destRect,
 		SilverDune0x30::Rect* p_sourceRect,
 		undefined4 p_unk0x14
-	) = 0;                         // vtable+0x7c
-	virtual void VTable0x80() = 0; // vtable+0x80
+	) = 0; // vtable+0x7c
+	virtual void DrawRectangle(
+		const IntRectangle0x10& p_rect,
+		LegoFloat p_z,
+		const ColorRGBA& p_color1,
+		const ColorRGBA& p_color2,
+		const ColorRGBA& p_color3,
+		const ColorRGBA& p_color4,
+		undefined4 p_arg7
+	) = 0; // vtable+0x80
 	virtual void DrawTriangle(
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,
 		const TexturedVertex* p_vertex2,
-		undefined4 p_material,
+		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
 	) = 0;                                                                                  // vtable+0x84
 	virtual void VTable0x88(undefined4, undefined4, undefined4);                            // vtable+0x88
@@ -135,12 +142,12 @@ public:
 	virtual void VTable0xec(undefined4);                                                    // vtable+0xec
 	virtual void VTable0xf0() = 0;                                                          // vtable+0xf0
 	virtual void VTable0xf4();                                                              // vtable+0xf4
-	virtual void VTable0xf8() = 0;                                                          // vtable+0xf8
-	virtual void VTable0xfc() = 0;                                                          // vtable+0xfc
-	virtual void VTable0x100() = 0;                                                         // vtable+0x100
-	virtual void VTable0x104() = 0;                                                         // vtable+0x104
-	virtual void VTable0x108() = 0;                                                         // vtable+0x108
-	virtual void VTable0x10c() = 0;                                                         // vtable+0x10c
+	virtual LegoU32 GetMinimumTextureWidth(undefined4) const = 0;                           // vtable+0xf8
+	virtual LegoU32 GetMaximumTextureWidth(undefined4) const = 0;                           // vtable+0xfc
+	virtual LegoU32 GetMinimumTextureHeight(undefined4) const = 0;                          // vtable+0x100
+	virtual LegoU32 GetMaximumTextureHeight(undefined4) const = 0;                          // vtable+0x104
+	virtual LegoBool32 TexturesMustBeSquare() const = 0;                                    // vtable+0x108
+	virtual LegoBool32 TextureSizesMustBePowersOfTwo() const = 0;                           // vtable+0x10c
 	virtual LegoBool32 VTable0x110() const;
 
 	void Destroy();

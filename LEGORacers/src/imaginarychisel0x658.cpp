@@ -14,7 +14,7 @@
 DECOMP_SIZE_ASSERT(ImaginaryChisel0x658, 0x658)
 DECOMP_SIZE_ASSERT(ImaginaryChisel0x658::HelperAt0x368, 0x2d0)
 
-// STUB: LEGORACERS 0x00466090
+// STUB: LEGORACERS 0x00466090 FOLDED
 undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x2c(void*, undefined4, undefined4)
 {
 	STUB(0x00466090);

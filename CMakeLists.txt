@@ -261,8 +261,14 @@ add_executable(legoracers WIN32
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
   LEGORacers/src/ceruleanemperor0x4c.cpp
-  LEGORacers/src/obscurevantage0x58.cpp
+  LEGORacers/src/obscureanchor0x5c.cpp
+  LEGORacers/src/obscureanthem0x58.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
+  LEGORacers/src/obscurerune0x4d8.cpp
+  LEGORacers/src/obscuresigil0xdc.cpp
+  LEGORacers/src/obscuretome0x3dc.cpp
+  LEGORacers/src/obscurevantage0x58.cpp
+  LEGORacers/src/obscurezebra0xa4.cpp
   LEGORacers/src/imaginaryaxe0x36c4.cpp
   LEGORacers/src/imaginarybandsaw0x2228.cpp
   LEGORacers/src/imaginarybelt0x2548.cpp
@@ -275,6 +281,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarydrill0x2450.cpp
   LEGORacers/src/imaginaryfeather0x658.cpp
   LEGORacers/src/imaginarygear0x4c8c.cpp
+  LEGORacers/src/imaginarygizmo0x1908.cpp
   LEGORacers/src/imaginaryhammer0x658.cpp
   LEGORacers/src/imaginarylever0x1d7c.cpp
   LEGORacers/src/imaginarynotion0x290.cpp
@@ -282,6 +289,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryplate0x770.cpp
   LEGORacers/src/imaginaryring0x3360.cpp
   LEGORacers/src/imaginaryruler0x2e60.cpp
+  LEGORacers/src/imaginaryshape0x2b20.cpp
   LEGORacers/src/imaginaryspool0x2cc4.cpp
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp

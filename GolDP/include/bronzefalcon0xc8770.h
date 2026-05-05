@@ -167,7 +167,7 @@ private:
 	undefined4 m_unk0xc83c4;                                             // 0xc83c4
 	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];                           // 0xc83c8
 	SoftwareRenderer0x58 m_softwareRenderer;                             // 0xc8698
-	SoftwareRendererCommand0x14* m_unk0xc86f0;                           // 0xc86f0
+	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                     // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                // 0xc86f8
 	float m_unk0xc86fc;                                                  // 0xc86fc

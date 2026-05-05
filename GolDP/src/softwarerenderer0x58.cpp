@@ -5,6 +5,7 @@
 #include <stdlib.h>
 
 DECOMP_SIZE_ASSERT(SoftwareRenderer0x58, 0x58)
+DECOMP_SIZE_ASSERT(SoftwareRenderer0x58::Command0x14, 0x14)
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void NoopSpanRasterizer()
@@ -83,7 +84,7 @@ SoftwareRenderer0x58::~SoftwareRenderer0x58()
 }
 
 // FUNCTION: GOLDP 0x100417a0
-void SoftwareRenderer0x58::FUN_100417a0(SoftwareRendererCommand0x14* p_cmds, LegoU32 p_count, LegoFloat p_arg3)
+void SoftwareRenderer0x58::FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, LegoFloat p_arg3)
 {
 	while (p_count) {
 		p_cmds->m_unk0x04 = p_arg3;
@@ -93,7 +94,7 @@ void SoftwareRenderer0x58::FUN_100417a0(SoftwareRendererCommand0x14* p_cmds, Leg
 }
 
 // STUB: GOLDP 0x100417c0
-void SoftwareRenderer0x58::FUN_100417c0(SoftwareRendererCommand0x14* p_cmds, LegoU32 p_count)
+void SoftwareRenderer0x58::FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count)
 {
 	// TODO
 	STUB(0x100417c0);

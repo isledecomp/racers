@@ -20,6 +20,7 @@ class GolHashTable;
 class GolFileSource;
 class AmberLens0x344;
 class GolFontTable;
+class MagentaRibbon0x20;
 class WhiteBaffoon0x50;
 
 struct GolImport {
@@ -45,7 +46,7 @@ protected:
 public:
 	virtual GolDrawState* VTable0x04() = 0;          // vtable+0x04
 	virtual ZoweeBlubberworth0xf0* VTable0x08() = 0; // vtable+0x08
-	virtual undefined4* VTable0x0c() = 0;            // vtable+0x0c
+	virtual MagentaRibbon0x20* VTable0x0c() = 0;     // vtable+0x0c
 	virtual undefined4* VTable0x10() = 0;            // vtable+0x10
 	virtual undefined4* VTable0x14() = 0;            // vtable+0x14
 	virtual undefined4* VTable0x18() = 0;            // vtable+0x18

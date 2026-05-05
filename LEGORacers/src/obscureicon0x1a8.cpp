@@ -1,6 +1,8 @@
 #include "obscureicon0x1a8.h"
 
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8, 0x1a8)
+DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateParams0x84, 0x84)
+DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateState0x90, 0x90)
 
 // STUB: LEGORACERS 0x004664f0
 LegoBool32 ObscureIcon0x1a8::VTable0x5c()
@@ -33,6 +35,13 @@ ObscureIcon0x1a8::~ObscureIcon0x1a8()
 void ObscureIcon0x1a8::VTable0x00()
 {
 	STUB(0x00471cf0);
+}
+
+// STUB: LEGORACERS 0x00471e30
+LegoBool32 ObscureIcon0x1a8::FUN_00471e30(CreateParams0x84*, const CreateState0x90*)
+{
+	STUB(0x00471e30);
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x00471ea0

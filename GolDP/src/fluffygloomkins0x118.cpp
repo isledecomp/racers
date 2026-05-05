@@ -3,6 +3,7 @@
 #include "amberlens0x344.h"
 #include "boundingshape0x2c.h"
 #include "golerror.h"
+#include "purpleribbon0x24.h"
 
 DECOMP_SIZE_ASSERT(FluffyGloomkins0x118, 0x118)
 
@@ -111,6 +112,16 @@ undefined4* FluffyGloomkins0x118::VTable0x50(undefined4)
 undefined4* FluffyGloomkins0x118::VTable0x08()
 {
 	// ...
+
+	if (GetUnk0x0c() != 0) {
+		m_unk0xf0 = new PurpleRibbon0x24[GetUnk0x0c()];
+		if (m_unk0xf0 != NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	// ...
+
 	if (GetUnk0x3c() != 0) {
 		m_unk0x110 = new BoundingShape0x2c[GetUnk0x3c()];
 		if (m_unk0x110 == NULL) {

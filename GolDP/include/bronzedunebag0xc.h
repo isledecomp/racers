@@ -22,6 +22,8 @@ public:
 	void FUN_1002a120(const FalconTextureFormat& p_textureFormat);
 	void FUN_1002a1b0();
 
+	bool HasEntries() const { return m_entries != NULL; }
+
 	// SYNTHETIC: GOLDP 0x1002a0b0
 	// BronzeDuneBag0xc::`scalar deleting destructor'
 

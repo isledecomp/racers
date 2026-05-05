@@ -2,6 +2,7 @@
 #define IMAGINARYCHISEL0X658_H
 
 #include "compat.h"
+#include "crimsonpebble0x228.h"
 #include "decomp.h"
 #include "golstringtable.h"
 #include "imaginarytool0x368.h"
@@ -34,9 +35,11 @@ public:
 		// SYNTHETIC: LEGORACERS 0x00466a80
 		// ImaginaryChisel0x658::HelperAt0x368::`scalar deleting destructor'
 
-		undefined m_unk0x58[0x2c8 - 0x58]; // 0x058
-		undefined4 m_unk0x2c8;             // 0x2c8
-		undefined4 m_unk0x2cc;             // 0x2cc
+		undefined m_unk0x58[0x84 - 0x58];    // 0x058
+		CrimsonPebble0x228 m_unk0x84;        // 0x084
+		undefined m_unk0x2ac[0x2c8 - 0x2ac]; // 0x2ac
+		undefined4 m_unk0x2c8;               // 0x2c8
+		undefined4 m_unk0x2cc;               // 0x2cc
 	};
 
 	ImaginaryChisel0x658();

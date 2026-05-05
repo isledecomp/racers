@@ -82,7 +82,7 @@ void CrimsonPebble0x228::Reset()
 	m_unk0x200 = NULL;
 	m_unk0x210 = 0;
 	m_unk0x214 = NULL;
-	m_unk0x224 = 0;
+	m_stringTable = NULL;
 }
 
 // STUB: LEGORACERS 0x004a0bf0
@@ -132,6 +132,12 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_unk0x04)
 	}
 
 	p_unk0x04->ReadRightCurly();
+}
+
+// STUB: LEGORACERS 0x004a24e0
+void CrimsonPebble0x228::FUN_004a24e0()
+{
+	STUB(0x004a24e0);
 }
 
 // STUB: LEGORACERS 0x004a2ac0

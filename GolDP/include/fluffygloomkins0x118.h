@@ -7,6 +7,7 @@
 
 class AmberLensBase0x120;
 class BoundingShape0x2c;
+class PurpleRibbon0x24;
 
 // SIZE 0x118
 // VTABLE: GOLDP 0x1005690c
@@ -38,7 +39,7 @@ public:
 private:
 	void FUN_10017390();
 
-	undefined4* m_unk0xf0;          // 0xf0
+	PurpleRibbon0x24* m_unk0xf0;    // 0xf0
 	undefined4* m_unk0xf4;          // 0xf4
 	undefined4* m_unk0xf8;          // 0xf8
 	undefined4* m_unk0xfc;          // 0xfc

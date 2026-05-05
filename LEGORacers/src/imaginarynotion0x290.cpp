@@ -1,10 +1,27 @@
 #include "imaginarynotion0x290.h"
 
+#include "awakekite0x20.h"
+#include "bronzefalcon0xc8770.h"
+#include "gol.h"
+#include "golcommondrawstate.h"
+#include "goldrawstate.h"
+#include "golfonttable.h"
+#include "golstream.h"
+#include "golstring.h"
+#include "golstringtable.h"
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
 #include "obscurevantage0x58.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(ImaginaryNotion0x290, 0x290)
+
+// GLOBAL: LEGORACERS 0x004b2240
+const undefined4 g_unk0x4b2240[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+
+// GLOBAL: LEGORACERS 0x004b2278
+const ObscureIcon0x1a8::CreateState0x90 g_unk0x4b2278 = {{0}};
 
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
 undefined4 ImaginaryNotion0x290::VTable0x50()
@@ -183,19 +200,70 @@ void ImaginaryNotion0x290::VTable0x74()
 	STUB(0x0046b5d0);
 }
 
-// STUB: LEGORACERS 0x0046b630
+// FUNCTION: LEGORACERS 0x0046b630
 LegoBool32 ImaginaryNotion0x290::FUN_0046b630()
 {
-	// TODO
-	STUB(0x0046b630);
-	return TRUE;
+	GolCommonDrawState* drawState = m_unk0xb8->GetDrawState();
+	ObscureIcon0x1a8::CreateParams0x84 createParams;
+
+	memset(&createParams, 0, sizeof(createParams));
+	BronzeFalcon0xc8770* renderer = m_unk0xb8;
+	memcpy(&createParams, g_unk0x4b2240, sizeof(g_unk0x4b2240));
+
+	createParams.m_golExport = m_unk0xb4;
+	createParams.m_renderer = renderer;
+	createParams.m_unk0x38 = TRUE;
+	createParams.m_soundGroupBinding = m_unk0x280;
+	createParams.m_width = drawState->m_width;
+	createParams.m_height = drawState->m_height;
+	createParams.m_eventHandler = this;
+
+	if (m_unk0xd8.FUN_00471e30(&createParams, &g_unk0x4b2278)) {
+		m_unk0xd8.VTable0x4c(0);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0046b6e0
-LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0046b6e0
+LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_createParams)
 {
-	// TODO
-	STUB(0x0046b6e0);
+	GolString string;
+
+	if (!VTable0x50()) {
+		return TRUE;
+	}
+
+	m_unk0xd0->CopyStringByIndex(&string, m_unk0x28c);
+
+	LegoChar fileName[16];
+	string.CopyToString(fileName);
+
+	const LegoChar* idSuffix = ".idb";
+	if (!p_createParams->m_unk0x2c) {
+		idSuffix = ".idf";
+	}
+	strcat(fileName, idSuffix);
+
+	if (!GolStream::FindFile(fileName)) {
+		m_unk0xbc = m_unk0xb4->VTable0x34();
+		m_unk0xbc->LoadImageDefinitions(m_unk0xb8, fileName, p_createParams->m_unk0x2c);
+	}
+
+	string.CopyToString(fileName);
+
+	const LegoChar* fontSuffix = ".fdb";
+	if (!p_createParams->m_unk0x2c) {
+		fontSuffix = ".fdf";
+	}
+	strcat(fileName, fontSuffix);
+
+	if (!GolStream::FindFile(fileName)) {
+		m_unk0xc0 = m_unk0xb4->VTable0x38();
+		m_unk0xc0->VTable0x20(m_unk0xb8, fileName, p_createParams->m_unk0x2c);
+	}
+
 	return TRUE;
 }
 

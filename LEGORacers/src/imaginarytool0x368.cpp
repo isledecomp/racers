@@ -31,17 +31,16 @@ void ImaginaryTool0x368::VTable0x94(undefined4)
 {
 }
 
-// STUB: LEGORACERS 0x00474bf0 FOLDED
-void ImaginaryTool0x368::VTable0x5c()
+// FUNCTION: LEGORACERS 0x00474bf0 FOLDED
+CeruleanEmperor0x4c* ImaginaryTool0x368::VTable0x5c()
 {
-	STUB(0x00474bf0);
+	return &m_unk0x290;
 }
 
-// STUB: LEGORACERS 0x00474c00
-void ImaginaryTool0x368::VTable0x64()
+// FUNCTION: LEGORACERS 0x00474c00
+CeruleanQueen0x58* ImaginaryTool0x368::VTable0x64()
 {
-	// TODO
-	STUB(0x00474c00);
+	return &m_unk0x2e0;
 }
 
 // STUB: LEGORACERS 0x0047fae0
@@ -94,11 +93,13 @@ void ImaginaryTool0x368::VTable0x6c()
 	STUB(0x004803c0);
 }
 
-// STUB: LEGORACERS 0x00480420 FOLDED
+// FUNCTION: LEGORACERS 0x00480420 FOLDED
 LegoBool32 ImaginaryTool0x368::VTable0x88()
 {
-	// TODO
-	STUB(0x00480420);
+	if (m_unk0x35c) {
+		return !(m_unk0x35c->GetUnk0x54() & TRUE);
+	}
+
 	return TRUE;
 }
 

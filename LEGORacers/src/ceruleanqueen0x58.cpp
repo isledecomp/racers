@@ -1,6 +1,12 @@
 #include "ceruleanqueen0x58.h"
 
-DECOMP_SIZE_ASSERT(CeruleanQueen0x58, 0x58)
+#include "golbinparser.h"
+#include "golerror.h"
+
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58, 0x5c)
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58::MidTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58::ResourceLoadParams, 0x0c)
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58::Struct0x74, 0x74)
 
 // FUNCTION: LEGORACERS 0x004695b0
 CeruleanQueen0x58::CeruleanQueen0x58()
@@ -34,18 +40,102 @@ void CeruleanQueen0x58::VTable0x0c()
 	CeruleanKnight0x20::VTable0x0c();
 }
 
-// STUB: LEGORACERS 0x004696f0
-void CeruleanQueen0x58::Clear()
+// FUNCTION: LEGORACERS 0x004696b0
+LegoBool32 CeruleanQueen0x58::Load(ResourceLoadParams* p_params)
 {
-	// TODO
-	STUB(0x004696f0);
+	Clear();
+	m_unk0x14 = p_params->m_renderer;
+
+	if (FUN_0046b100()) {
+		FUN_00469900(p_params);
+	}
+
+	return m_nameEntries != NULL;
 }
 
-// STUB: LEGORACERS 0x00469810
-void CeruleanQueen0x58::VTable0x10(undefined4)
+// FUNCTION: LEGORACERS 0x004696f0
+void CeruleanQueen0x58::Clear()
 {
-	// TODO
-	STUB(0x00469810);
+	if (m_nameEntries == NULL) {
+		return;
+	}
+
+	if (m_unk0x20) {
+		delete[] m_unk0x20;
+	}
+	if (m_unk0x24) {
+		delete[] m_unk0x24;
+	}
+	if (m_unk0x28) {
+		delete[] m_unk0x28;
+	}
+	if (m_unk0x2c) {
+		delete[] m_unk0x2c;
+	}
+	if (m_unk0x30) {
+		delete[] m_unk0x30;
+	}
+	if (m_unk0x34) {
+		delete[] m_unk0x34;
+	}
+	if (m_unk0x38) {
+		delete[] m_unk0x38;
+	}
+	if (m_unk0x3c) {
+		delete[] m_unk0x3c;
+	}
+	if (m_unk0x40) {
+		for (LegoS32 i = 0; i < m_unk0x58; i++) {
+			delete[] m_unk0x40[i].m_unk0x3c;
+		}
+
+		delete[] m_unk0x40;
+	}
+	if (m_unk0x44) {
+		delete[] m_unk0x44;
+	}
+	if (m_unk0x48) {
+		delete[] m_unk0x48;
+	}
+	if (m_unk0x4c) {
+		delete[] m_unk0x4c;
+	}
+	if (m_unk0x50) {
+		delete[] m_unk0x50;
+	}
+
+	CeruleanKnight0x20::Clear();
+}
+
+// FUNCTION: LEGORACERS 0x00469810
+void CeruleanQueen0x58::VTable0x10(undefined4 p_param)
+{
+	if (p_param) {
+		m_unk0x10 = new GolBinParser();
+		if (m_unk0x10 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_unk0x10->SetSuffix(".mib");
+		return;
+	}
+
+	m_unk0x10 = new MidTxtParser();
+	if (m_unk0x10 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00469900
+void CeruleanQueen0x58::FUN_00469900(ResourceLoadParams* p_params)
+{
+	VTable0x10(p_params->m_binary);
+	m_unk0x10->OpenFileForRead(p_params->m_fileName);
+	FUN_0046b130();
+	FUN_0046b250();
+	m_unk0x10->Dispose();
+
+	delete m_unk0x10;
 }
 
 // FUNCTION: LEGORACERS 0x00469950

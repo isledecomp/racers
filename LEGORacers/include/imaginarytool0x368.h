@@ -31,8 +31,8 @@ public:
 	void VTable0x3c(undefined4) override;       // vtable+0x3c
 	void VTable0x40(undefined4) override;       // vtable+0x40
 	void VTable0x54() override;                 // vtable+0x54
-	void VTable0x5c() override;                 // vtable+0x5c
-	void VTable0x64() override;                 // vtable+0x64
+	CeruleanEmperor0x4c* VTable0x5c() override; // vtable+0x5c
+	CeruleanQueen0x58* VTable0x64() override;   // vtable+0x64
 	~ImaginaryTool0x368() override;             // vtable+0x68
 	void VTable0x6c() override;                 // vtable+0x6c
 	void VTable0x74() override;                 // vtable+0x74
@@ -51,7 +51,10 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x290[0x354 - 0x290]; // 0x290
+	CeruleanEmperor0x4c m_unk0x290;      // 0x290
+	undefined4 m_unk0x2dc;               // 0x2dc
+	CeruleanQueen0x58 m_unk0x2e0;        // 0x2e0
+	undefined m_unk0x33c[0x354 - 0x33c]; // 0x33c
 	MenuToolContext0x4bc8* m_unk0x354;   // 0x354
 	undefined4 m_unk0x358;               // 0x358
 	ObscureVantage0x58* m_unk0x35c;      // 0x35c

@@ -70,9 +70,9 @@ public:
 	virtual undefined4 VTable0x50();                                                           // vtable+0x50
 	virtual void VTable0x54();                                                                 // vtable+0x54
 	virtual LegoBool32 VTable0x58(MenuToolCreateParams0x30*);                                  // vtable+0x58
-	virtual void VTable0x5c();                                                                 // vtable+0x5c
+	virtual CeruleanEmperor0x4c* VTable0x5c();                                                 // vtable+0x5c
 	virtual void VTable0x60();                                                                 // vtable+0x60
-	virtual void VTable0x64();                                                                 // vtable+0x64
+	virtual CeruleanQueen0x58* VTable0x64();                                                   // vtable+0x64
 	virtual ~ImaginaryNotion0x290();                                                           // vtable+0x68
 	virtual void VTable0x6c();                                                                 // vtable+0x6c
 	virtual LegoBool32 VTable0x70(MenuToolCreateParams0x30*);                                  // vtable+0x70
@@ -114,7 +114,6 @@ protected:
 	CeruleanEmperor0x4c m_unk0x08;     // 0x008
 	PorcelainVeil0x50* m_unk0x54;      // 0x054
 	CeruleanQueen0x58 m_unk0x58;       // 0x058
-	undefined4 m_unk0xb0;              // 0x0b0
 	GolExport* m_unk0xb4;              // 0x0b4
 	BronzeFalcon0xc8770* m_unk0xb8;    // 0x0b8
 	AwakeKite0x20* m_unk0xbc;          // 0x0bc

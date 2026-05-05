@@ -44,6 +44,7 @@ public:
 	ObscureVantage0x58* FUN_00472e60();
 	SilverDune0x30::Rect* FUN_00472e90();
 	void FUN_004731b0(undefined4&, undefined4&);
+	LegoBool GetUnk0x54() const { return m_unk0x54; }
 
 	// SYNTHETIC: LEGORACERS 0x004729d0
 	// ObscureVantage0x58::`scalar deleting destructor'

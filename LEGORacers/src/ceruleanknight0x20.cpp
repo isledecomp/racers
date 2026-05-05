@@ -24,6 +24,13 @@ void CeruleanKnight0x20::VTable0x0c()
 	m_unk0x0c = 0;
 }
 
+// FUNCTION: LEGORACERS 0x0046b100
+LegoBool32 CeruleanKnight0x20::FUN_0046b100()
+{
+	m_unk0x0c = TRUE;
+	return TRUE;
+}
+
 // FUNCTION: LEGORACERS 0x0046b110
 void CeruleanKnight0x20::Clear()
 {

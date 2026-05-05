@@ -37,12 +37,18 @@ void CeruleanEmperor0x4c::VTable0x0c()
 	CeruleanKnight0x20::VTable0x0c();
 }
 
-// STUB: LEGORACERS 0x0046fb40
-LegoBool32 CeruleanEmperor0x4c::Load(ResourceLoadParams*)
+// FUNCTION: LEGORACERS 0x0046fb40
+LegoBool32 CeruleanEmperor0x4c::Load(ResourceLoadParams* p_params)
 {
-	// TODO
-	STUB(0x0046fb40);
-	return FALSE;
+	Clear();
+	m_unk0x14 = p_params->m_renderer;
+	m_unk0x20 = p_params->m_unk0x04;
+
+	if (FUN_0046b100()) {
+		FUN_0046fd30(p_params);
+	}
+
+	return m_nameEntries != NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0046fb80
@@ -104,6 +110,18 @@ void CeruleanEmperor0x4c::VTable0x10(undefined4 p_param)
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+}
+
+// FUNCTION: LEGORACERS 0x0046fd30
+void CeruleanEmperor0x4c::FUN_0046fd30(ResourceLoadParams* p_params)
+{
+	VTable0x10(p_params->m_binary);
+	m_unk0x10->OpenFileForRead(p_params->m_fileName);
+	FUN_0046b130();
+	FUN_0046b250();
+	m_unk0x10->Dispose();
+
+	delete m_unk0x10;
 }
 
 // FUNCTION: LEGORACERS 0x0046fd80

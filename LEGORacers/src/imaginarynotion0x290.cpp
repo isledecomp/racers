@@ -267,11 +267,57 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_create
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0046b890 FOLDED
-LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0046b890
+LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createParams)
 {
-	// TODO
-	STUB(0x0046b890);
+	GolString string;
+
+	if (!VTable0x50()) {
+		return TRUE;
+	}
+
+	m_unk0xd0->CopyStringByIndex(&string, m_unk0x28c);
+
+	LegoChar fileName[16];
+	string.CopyToString(fileName);
+
+	const LegoChar* styleSuffix = ".msb";
+	if (!p_createParams->m_unk0x2c) {
+		styleSuffix = ".msd";
+	}
+	strcat(fileName, styleSuffix);
+
+	if (!GolStream::FindFile(fileName)) {
+		CeruleanEmperor0x4c::ResourceLoadParams params;
+		params.m_renderer = m_unk0xb8;
+		params.m_unk0x04 = p_createParams->m_menuStyles;
+		params.m_fileName = fileName;
+		params.m_binary = p_createParams->m_unk0x2c;
+
+		if (!VTable0x5c()->Load(&params)) {
+			return FALSE;
+		}
+	}
+
+	string.CopyToString(fileName);
+
+	const LegoChar* inputSuffix = ".mib";
+	if (!p_createParams->m_unk0x2c) {
+		inputSuffix = ".mid";
+	}
+	strcat(fileName, inputSuffix);
+
+	if (!GolStream::FindFile(fileName)) {
+		CeruleanQueen0x58::ResourceLoadParams params;
+		params.m_renderer = m_unk0xb8;
+		params.m_fileName = fileName;
+		params.m_binary = p_createParams->m_unk0x2c;
+
+		if (!VTable0x64()->Load(&params)) {
+			return FALSE;
+		}
+	}
+
 	return TRUE;
 }
 
@@ -454,11 +500,10 @@ LegoBool32 ImaginaryNotion0x290::VTable0x7c(SilverDune0x30::Rect* p_arg1, Silver
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0046c810
-void ImaginaryNotion0x290::VTable0x5c()
+// FUNCTION: LEGORACERS 0x0046c810
+CeruleanEmperor0x4c* ImaginaryNotion0x290::VTable0x5c()
 {
-	// TODO
-	STUB(0x0046c810);
+	return &m_unk0x08;
 }
 
 // STUB: LEGORACERS 0x0046c820 FOLDED
@@ -468,11 +513,10 @@ void ImaginaryNotion0x290::VTable0x60()
 	STUB(0x0046c820);
 }
 
-// STUB: LEGORACERS 0x0046c840
-void ImaginaryNotion0x290::VTable0x64()
+// FUNCTION: LEGORACERS 0x0046c840
+CeruleanQueen0x58* ImaginaryNotion0x290::VTable0x64()
 {
-	// TODO
-	STUB(0x0046c840);
+	return &m_unk0x58;
 }
 
 // STUB: LEGORACERS 0x0046c850

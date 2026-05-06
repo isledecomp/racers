@@ -44,14 +44,14 @@ void ImaginaryNotion0x290::VTable0x04(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x0044f590 FOLDED
-void ImaginaryNotion0x290::VTable0x08(undefined4)
+void ImaginaryNotion0x290::VTable0x08(ObscureVantage0x58*)
 {
 	// TODO
 	STUB(0x0044f590);
 }
 
 // STUB: LEGORACERS 0x0044f590 FOLDED
-void ImaginaryNotion0x290::VTable0x0c(undefined4)
+void ImaginaryNotion0x290::VTable0x0c(ObscureVantage0x58*)
 {
 	// TODO
 	STUB(0x0044f590);

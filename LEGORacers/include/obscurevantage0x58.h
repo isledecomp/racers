@@ -2,9 +2,11 @@
 #define OBSCUREVANTAGE0X58_H
 
 #include "compat.h"
+#include "coppercrest0x40.h"
 #include "decomp.h"
 #include "imaginaryinterface.h"
 #include "onyxcircularbuffer0x1c.h"
+#include "rectangle.h"
 #include "silverdune0x30.h"
 #include "types.h"
 
@@ -12,25 +14,16 @@
 // SIZE 0x58
 class ObscureVantage0x58 {
 public:
-	// SIZE 0x10
-	class Struct0x34 {
-	public:
-		undefined4 m_unk0x00; // 0x00
-		undefined4 m_unk0x04; // 0x04
-		undefined4 m_unk0x08; // 0x08
-		undefined4 m_unk0x0c; // 0x0c
-	};
-
 	ObscureVantage0x58();
 	virtual void VTable0x00();                                                            // vtable+0x00
 	virtual ~ObscureVantage0x58();                                                        // vtable+0x04
 	virtual undefined4 VTable0x08();                                                      // vtable+0x08
 	virtual void VTable0x0c(ObscureVantage0x58*);                                         // vtable+0x0c
-	virtual void VTable0x10(undefined4);                                                  // vtable+0x10
-	virtual void VTable0x14(undefined4);                                                  // vtable+0x14
+	virtual void VTable0x10(IntRectangle0x10*);                                           // vtable+0x10
+	virtual void VTable0x14(undefined4*);                                                 // vtable+0x14
 	virtual undefined4 VTable0x18(undefined4);                                            // vtable+0x18
 	virtual undefined4 VTable0x1c(SilverDune0x30::Rect*, SilverDune0x30::Rect*);          // vtable+0x1c
-	virtual undefined4 VTable0x20(void*, undefined4, undefined4);                         // vtable+0x20
+	virtual undefined4 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);  // vtable+0x20
 	virtual undefined4 VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x24
 	virtual undefined4 VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x28
 	virtual undefined4 VTable0x2c(void*, undefined4, undefined4);                         // vtable+0x2c
@@ -40,6 +33,7 @@ public:
 	virtual undefined4 VTable0x3c(undefined4);                                            // vtable+0x3c
 
 	void FUN_00472b50();
+	undefined4 FUN_00472c40(LegoS32, LegoS32);
 	ObscureVantage0x58* FUN_00472e40();
 	ObscureVantage0x58* FUN_00472e60();
 	SilverDune0x30::Rect* FUN_00472e90();
@@ -62,7 +56,7 @@ protected:
 	ImaginaryInterface* m_unk0x28; // 0x28
 	undefined4 m_unk0x2c;          // 0x2c
 	undefined2 m_unk0x30;          // 0x30
-	Struct0x34 m_unk0x34;          // 0x34
+	IntRectangle0x10 m_unk0x34;    // 0x34
 	LegoFloat m_unk0x44;           // 0x44
 	LegoFloat m_unk0x48;           // 0x48
 	undefined4 m_unk0x4c;          // 0x4c

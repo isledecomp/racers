@@ -148,7 +148,7 @@ undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined
 }
 
 // STUB: LEGORACERS 0x00472950
-void ObscureIcon0x1a8::VTable0x10(undefined4)
+void ObscureIcon0x1a8::VTable0x10(IntRectangle0x10*)
 {
 	STUB(0x00472950);
 }

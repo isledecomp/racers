@@ -39,8 +39,8 @@ public:
 
 	void VTable0x00(undefined4) override;                                             // vtable+0x00
 	void VTable0x04(ObscureVantage0x58*) override;                                    // vtable+0x04
-	void VTable0x08(undefined4) override;                                             // vtable+0x08
-	void VTable0x0c(undefined4) override;                                             // vtable+0x0c
+	void VTable0x08(ObscureVantage0x58*) override;                                    // vtable+0x08
+	void VTable0x0c(ObscureVantage0x58*) override;                                    // vtable+0x0c
 	void VTable0x10(undefined4) override;                                             // vtable+0x10
 	undefined4 VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4) override; // vtable+0x14
 	undefined4 VTable0x18(

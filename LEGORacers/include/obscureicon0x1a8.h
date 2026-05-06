@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "obscurevantage0x58.h"
+#include "rectangle.h"
 #include "types.h"
 
 class BronzeFalcon0xc8770;
@@ -39,7 +40,7 @@ public:
 	void VTable0x00() override;                                                            // vtable+0x00
 	~ObscureIcon0x1a8() override;                                                          // vtable+0x04
 	undefined4 VTable0x08() override;                                                      // vtable+0x08
-	void VTable0x10(undefined4) override;                                                  // vtable+0x10
+	void VTable0x10(IntRectangle0x10*) override;                                           // vtable+0x10
 	undefined4 VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c
 	undefined4 VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x30
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34

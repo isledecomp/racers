@@ -22,7 +22,7 @@ void ObscureAnchor0x5c::VTable0x00()
 }
 
 // STUB: LEGORACERS 0x0046f1a0
-undefined4 ObscureAnchor0x5c::VTable0x38(undefined4, undefined4)
+undefined4 ObscureAnchor0x5c::VTable0x38(Rect*, Rect*)
 {
 	STUB(0x0046f1a0);
 	return 0;

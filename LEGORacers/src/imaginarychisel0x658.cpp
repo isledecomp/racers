@@ -48,7 +48,7 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x3c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00466e40
-undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x38(undefined4, undefined4)
+undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x38(Rect*, Rect*)
 {
 	STUB(0x00466e40);
 	return 0;

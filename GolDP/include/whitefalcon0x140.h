@@ -17,7 +17,7 @@ class GolFont0xa0;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
-struct IntRectangle0x10;
+struct Rect;
 class MagentaRibbon0x20;
 class SlatePeak0x58;
 class UtopianPan0xa4;
@@ -94,12 +94,12 @@ public:
 	virtual undefined4 VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
-		SilverDune0x30::Rect* p_destRect,
-		SilverDune0x30::Rect* p_sourceRect,
+		Rect* p_destRect,
+		Rect* p_sourceRect,
 		undefined4 p_unk0x14
 	) = 0; // vtable+0x7c
 	virtual void DrawRectangle(
-		const IntRectangle0x10& p_rect,
+		const Rect& p_rect,
 		LegoFloat p_z,
 		const ColorRGBA& p_color1,
 		const ColorRGBA& p_color2,

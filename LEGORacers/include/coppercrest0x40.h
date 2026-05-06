@@ -53,7 +53,7 @@ public:
 			GolExport* m_golExport;           // 0x04
 			BronzeFalcon0xc8770* m_renderer;  // 0x08
 			UtopianPan0xa4* m_rendererObject; // 0x0c
-			SilverDune0x30::Rect* m_bounds;   // 0x10
+			Rect* m_bounds;                   // 0x10
 			undefined4 m_unk0x14;             // 0x14
 			undefined4 m_unk0x18;             // 0x18
 			undefined4 m_unk0x1c;             // 0x1c
@@ -69,19 +69,19 @@ public:
 		LegoS32 FUN_00467d80(undefined4 p_elapsedMs);
 		LegoS32 FUN_00467e00();
 
-		InputManager* m_inputManager;      // 0x00
-		GolExport* m_golExport;            // 0x04
-		BronzeFalcon0xc8770* m_renderer;   // 0x08
-		UtopianPan0xa4* m_rendererObject;  // 0x0c
-		SilverDune0x30::Rect m_bounds;     // 0x10
-		SilverDune0x30::Rect m_sourceRect; // 0x20
-		LegoS32 m_unk0x30;                 // 0x30
-		LegoS32 m_unk0x34;                 // 0x34
-		LegoS32 m_unk0x38;                 // 0x38
-		LegoS32 m_unk0x3c;                 // 0x3c
-		LegoU8 m_unk0x40;                  // 0x40
-		LegoU8 m_unk0x41;                  // 0x41
-		undefined m_unk0x42[0x44 - 0x42];  // 0x42
+		InputManager* m_inputManager;     // 0x00
+		GolExport* m_golExport;           // 0x04
+		BronzeFalcon0xc8770* m_renderer;  // 0x08
+		UtopianPan0xa4* m_rendererObject; // 0x0c
+		Rect m_bounds;                    // 0x10
+		Rect m_sourceRect;                // 0x20
+		LegoS32 m_unk0x30;                // 0x30
+		LegoS32 m_unk0x34;                // 0x34
+		LegoS32 m_unk0x38;                // 0x38
+		LegoS32 m_unk0x3c;                // 0x3c
+		LegoU8 m_unk0x40;                 // 0x40
+		LegoU8 m_unk0x41;                 // 0x41
+		undefined m_unk0x42[0x44 - 0x42]; // 0x42
 	};
 
 	CopperCrest0x40();

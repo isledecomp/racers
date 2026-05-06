@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::TextureFormat, 0x18)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::Field0xc83b4, 0x10)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
-DECOMP_SIZE_ASSERT(IntRectangle0x10, 0x10)
+DECOMP_SIZE_ASSERT(Rect, 0x10)
 
 // GLOBAL: GOLDP 0x10056560
 LegoU32 g_blendCapsMasks[11] = {
@@ -504,13 +504,7 @@ const SlatePeak0x58* BronzeFalcon0xc8770::GetRenderTargetInfo()
 }
 
 // STUB: GOLDP 0x10009960
-undefined4 BronzeFalcon0xc8770::VTable0x7c(
-	UtopianPan0xa4*,
-	undefined4,
-	SilverDune0x30::Rect*,
-	SilverDune0x30::Rect*,
-	undefined4
-)
+undefined4 BronzeFalcon0xc8770::VTable0x7c(UtopianPan0xa4*, undefined4, Rect*, Rect*, undefined4)
 {
 	STUB(0x10009960);
 	return 0;
@@ -560,7 +554,7 @@ void BronzeFalcon0xc8770::VTable0x6c()
 
 // FUNCTION: GOLDP 0x10009bd0
 void BronzeFalcon0xc8770::DrawRectangle(
-	const IntRectangle0x10& p_rect,
+	const Rect& p_rect,
 	LegoFloat p_z,
 	const ColorRGBA& p_color1,
 	const ColorRGBA& p_color2,

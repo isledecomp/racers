@@ -128,7 +128,7 @@ public:
 	virtual void VTable0xb4() = 0;                                                          // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags);                  // vtable+0xb8
 	virtual void ClearAlphaOverride();                                                      // vtable+0xbc
-	virtual void VTable0xc0(undefined4* p_param);                                           // vtable+0xc0
+	virtual void VTable0xc0(const ColorRGBA& p_param);                                      // vtable+0xc0
 	virtual void VTable0xc4();                                                              // vtable+0xc4
 	virtual void VTable0xc8();                                                              // vtable+0xc8
 	virtual void VTable0xcc();                                                              // vtable+0xcc
@@ -196,7 +196,7 @@ protected:
 	CinderBasin0x28* m_fontLists;                 // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
 	undefined m_unk0x4c[0x118 - 0x4c];            // 0x4c
-	undefined4 m_unk0x118;                        // 0x118
+	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
 	undefined4 m_unk0x120;                        // 0x120
 	undefined4 m_unk0x124[7];                     // 0x124

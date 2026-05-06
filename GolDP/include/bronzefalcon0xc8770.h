@@ -100,7 +100,7 @@ public:
 	void VTable0xb4() override;                                             // vtable+0xb4
 	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
 	void ClearAlphaOverride() override;                                     // vtable+0xbc
-	void VTable0xc0(undefined4*) override;                                  // vtable+0xc0
+	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
 	void VTable0xc4() override;                                             // vtable+0xc4
 	void VTable0xc8() override;                                             // vtable+0xc8
 	void VTable0xcc() override;                                             // vtable+0xcc
@@ -140,6 +140,7 @@ private:
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(undefined4*);
 	void FUN_1000b4a0();
+	void FUN_10012f50();
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
@@ -165,7 +166,32 @@ private:
 	undefined m_unk0xc3850[0xc83b4 - 0xc3850];                           // 0xc3850
 	Field0xc83b4 m_unk0xc83b4;                                           // 0xc83b4
 	undefined4 m_unk0xc83c4;                                             // 0xc83c4
-	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];                           // 0xc83c8
+	undefined4 m_unk0xc83c8;                                             // 0xc83c8
+	undefined m_unk0xc83cc[0xc83d0 - 0xc83cc];                           // 0xc83cc
+	undefined4 m_unk0xc83d0;                                             // 0xc83d0
+	undefined4 m_unk0xc83d4;                                             // 0xc83d4
+	undefined4 m_unk0xc83d8;                                             // 0xc83d8
+	undefined4 m_unk0xc83dc;                                             // 0xc83dc
+	undefined4 m_unk0xc83e0;                                             // 0xc83e0
+	undefined m_unk0xc83e4[0xc83e8 - 0xc83e4];                           // 0xc83e4
+	LegoBool32 m_unk0xc83e8;                                             // 0xc83e8
+	undefined4 m_unk0xc83ec;                                             // 0xc83ec
+	undefined m_unk0xc83f0[0xc83f8 - 0xc83f0];                           // 0xc83f0
+	LegoBool32 m_unk0xc83f8;                                             // 0xc83f8
+	LegoU32 m_unk0xc83fc;                                                // 0xc83fc
+	undefined m_unk0xc8400[0xc8538 - 0xc8400];                           // 0xc8400
+	DuskwindBananaRelic0x24* m_unk0xc8538;                               // 0xc8538
+	undefined m_unk0xc853c[0xc8568 - 0xc853c];                           // 0xc853c
+	undefined4 m_unk0xc8568;                                             // 0xc8568
+	ColorRGBA m_unk0xc856c;                                              // 0xc856c
+	undefined4 m_unk0xc8570;                                             // 0xc8570
+	undefined4 m_unk0xc8574;                                             // 0xc8574
+	undefined4 m_unk0xc8578;                                             // 0xc8578
+	undefined4 m_unk0xc857c;                                             // 0xc857c
+	ColorRGBA m_unk0xc8580[2]; /* Unknown size */                        // 0xc8580
+	undefined m_unk0xc8588[0xc859c - 0xc8588];                           // 0xc8588
+	FColorRGB m_unk0xc859c[2]; /* Unknown size */                        // 0xc859c
+	undefined m_unk0xc85b4[0xc8698 - 0xc85b4];                           // 0xc85b4
 	SoftwareRenderer0x58 m_softwareRenderer;                             // 0xc8698
 	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                     // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
@@ -173,8 +199,8 @@ private:
 	float m_unk0xc86fc;                                                  // 0xc86fc
 	undefined4 m_unk0xc8700;                                             // 0xc8700
 	undefined m_unk0xc8704[0xc8708 - 0xc8704];                           // 0xc8704
-	undefined4 m_unk0xc8708[11];                                         // 0xc8708
-	undefined4 m_unk0xc8734[11];                                         // 0xc8734
+	D3DBLEND m_unk0xc8708[11];                                           // 0xc8708
+	D3DBLEND m_unk0xc8734[11];                                           // 0xc8734
 	undefined m_unk0xc8760[0xc876c - 0xc8760];                           // 0xc8760
 	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*); // 0xc876c
 };

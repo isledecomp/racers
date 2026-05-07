@@ -38,10 +38,10 @@ public:
 	undefined4 m_unk0x2c;              // 0x2c
 	LegoU32 m_flags;                   // 0x30
 	undefined m_unk0x34[0x110 - 0x34]; // 0x34
-	undefined4 m_unk0x110;             // 0x110
-	undefined4 m_unk0x114;             // 0x114
-	undefined4 m_unk0x118;             // 0x118
-	undefined4 m_unk0x11c;             // 0x11c
+	LegoS32 m_unk0x110;                // 0x110
+	LegoS32 m_unk0x114;                // 0x114
+	LegoS32 m_unk0x118;                // 0x118
+	LegoS32 m_unk0x11c;                // 0x11c
 };
 
 #endif // AMBERLENSBASE0X120_H

@@ -35,6 +35,7 @@ public:
 	// ZoweeBlubberworth0xf0::`scalar deleting destructor'
 
 	undefined4 GetUnk0x0c() const { return m_unk0x0c; }
+	undefined4 GetUnk0x14() const { return m_unk0x14; }
 	undefined4 GetUnk0x3c() const { return m_unk0x3c; }
 	undefined4 GetUnk0x7c() const { return m_unk0x7c; }
 

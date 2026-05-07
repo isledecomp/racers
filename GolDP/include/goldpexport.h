@@ -18,7 +18,7 @@ public:
 	GolDrawState* VTable0x04() override;                 // vtable+0x04
 	ZoweeBlubberworth0xf0* VTable0x08() override;        // vtable+0x08
 	MagentaRibbon0x20* VTable0x0c() override;            // vtable+0x0c
-	undefined4* VTable0x10() override;                   // vtable+0x10
+	AmberHaze0x1c* VTable0x10() override;                // vtable+0x10
 	undefined4* VTable0x14() override;                   // vtable+0x14
 	undefined4* VTable0x18() override;                   // vtable+0x18
 	BoundingShape0x2c* VTable0x1c() override;            // vtable+0x1c

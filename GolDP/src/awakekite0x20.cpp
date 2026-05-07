@@ -51,8 +51,9 @@ UtopianPan0xa4* AwakeKite0x20::GetItem(undefined4 p_index)
 // FUNCTION: GOLDP 0x10005f10
 void AwakeKite0x20::VTable0x10()
 {
+	LegoU32 i;
 	if (m_numItems > 0) {
-		for (LegoS32 i = 0; i < m_numItems; i++) {
+		for (i = 0; i < m_numItems; i++) {
 			if (m_items[i].m_unk0x3c & 1) {
 				m_items[i].FUN_100051c0();
 			}
@@ -63,8 +64,9 @@ void AwakeKite0x20::VTable0x10()
 // FUNCTION: GOLDP 0x10005f50
 void AwakeKite0x20::VTable0x14()
 {
+	LegoU32 i;
 	if (m_numItems > 0) {
-		for (LegoS32 i = 0; i < m_numItems; i++) {
+		for (i = 0; i < m_numItems; i++) {
 			if (m_items[i].m_unk0x3c & 1) {
 				m_items[i].FUN_10005210();
 			}

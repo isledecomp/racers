@@ -1,5 +1,6 @@
 #include "goldpexport.h"
 
+#include "amberhaze0x20.h"
 #include "amberlens0x344.h"
 #include "awakekite0x20.h"
 #include "boundingshape0x2c.h"
@@ -54,12 +55,14 @@ MagentaRibbon0x20* GolDPExport::VTable0x0c()
 	return obj;
 }
 
-// STUB: GOLDP 0x10015180
-undefined4* GolDPExport::VTable0x10()
+// FUNCTION: GOLDP 0x10015180
+AmberHaze0x1c* GolDPExport::VTable0x10()
 {
-	// TODO
-	STUB(0x10015180);
-	return NULL;
+	AmberHaze0x20* result = new AmberHaze0x20;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	return result;
 }
 
 // STUB: GOLDP 0x100151f0
@@ -154,45 +157,81 @@ GolFontTable* GolDPExport::VTable0x38()
 }
 
 // STUB: GOLDP 0x100155e0
-void GolDPExport::VTable0x3c(undefined4*)
+void GolDPExport::VTable0x3c(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x100155e0);
+#endif
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x40(undefined4*)
+void GolDPExport::VTable0x40(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015600);
+#endif
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x44(undefined4*)
+void GolDPExport::VTable0x44(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015600);
+#endif
 }
 
 // STUB: GOLDP 0x10015620
-void GolDPExport::VTable0x48(undefined4*)
+void GolDPExport::VTable0x48(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015620);
+#endif
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x4c(undefined4*)
+void GolDPExport::VTable0x4c(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015600);
+#endif
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x50(undefined4*)
+void GolDPExport::VTable0x50(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015600);
+#endif
 }
 
 // FUNCTION: GOLDP 0x10015640
@@ -204,24 +243,42 @@ void GolDPExport::VTable0x54(AmberLens0x344* p_obj)
 }
 
 // STUB: GOLDP 0x10015660
-void GolDPExport::VTable0x5c(undefined4*)
+void GolDPExport::VTable0x5c(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015660);
+#endif
 }
 
 // STUB: GOLDP 0x10015680
-void GolDPExport::VTable0x60(undefined4*)
+void GolDPExport::VTable0x60(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj;
+	}
+#else
 	// TODO
 	STUB(0x10015680);
+#endif
 }
 
 // STUB: GOLDP 0x100156a0
-void GolDPExport::VTable0x64(undefined4*)
+void GolDPExport::VTable0x64(undefined4* p_obj)
 {
+#if 0
+	if (p_obj != NULL) {
+		delete p_obj; // or delete[] p_obj
+	}
+#else
 	// TODO
 	STUB(0x100156a0);
+#endif
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

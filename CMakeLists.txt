@@ -113,6 +113,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/golfont0xa0.cpp
   GolDP/src/bronzedune0x4c.cpp
   GolDP/src/purpleribbon0x24.cpp
+    GolDP/src/amberhaze0x20.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -159,6 +160,7 @@ add_library(goldp SHARED
   GolDP/src/ddrawutil.cpp
   GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/amberhaze0x1c.cpp
+  GolDP/src/amberhaze0x20.cpp
   GolDP/src/cinderbasin0x28.cpp
   GolDP/src/golfontbase0x40.cpp
   GolDP/src/magentaribbon0x20.cpp

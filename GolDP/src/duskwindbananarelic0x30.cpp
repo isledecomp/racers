@@ -1,7 +1,7 @@
 #include "duskwindbananarelic0x30.h"
 
-#include "bronzefalcon0xc8770.h"
 #include "golcommondrawstate.h"
+#include "whitefalcon0x140.h"
 
 DECOMP_SIZE_ASSERT(DuskwindBananaRelic0x30, 0x30)
 
@@ -20,7 +20,7 @@ DuskwindBananaRelic0x30::~DuskwindBananaRelic0x30()
 }
 
 // STUB: GOLDP 0x10006320
-void DuskwindBananaRelic0x30::FUN_10006320(BronzeFalcon0xc8770& p_renderer)
+void DuskwindBananaRelic0x30::FUN_10006320(WhiteFalcon0x140& p_renderer)
 {
 	// TODO
 	STUB(0x10006320);

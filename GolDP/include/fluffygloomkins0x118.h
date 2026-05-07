@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "zoweeblubberworth0xf0.h"
 
+class AmberHaze0x20;
 class AmberLensBase0x120;
 class BoundingShape0x2c;
 class PurpleRibbon0x24;
@@ -40,7 +41,7 @@ private:
 	void FUN_10017390();
 
 	PurpleRibbon0x24* m_unk0xf0;    // 0xf0
-	undefined4* m_unk0xf4;          // 0xf4
+	AmberHaze0x20* m_unk0xf4;       // 0xf4
 	undefined4* m_unk0xf8;          // 0xf8
 	undefined4* m_unk0xfc;          // 0xfc
 	undefined4* m_unk0x100;         // 0x100

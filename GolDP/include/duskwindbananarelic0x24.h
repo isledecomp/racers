@@ -6,7 +6,7 @@
 
 class WhiteFalcon0x140;
 
-// SIZE 0x08
+// SIZE 0x04
 struct DuskwindBananaRelicColor {
 	DuskwindBananaRelicColor() {}
 	DuskwindBananaRelicColor(undefined4 p_arg0, undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
@@ -22,6 +22,7 @@ struct DuskwindBananaRelicColor {
 	undefined m_unk0x3; // 0x3
 };
 
+// SIZE 0x14
 struct DuskWindBananaRelicParams {
 	LegoU32 m_unk0x00;
 	undefined4* m_unk0x04;

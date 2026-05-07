@@ -3,7 +3,9 @@
 #include "golddune0x38.h"
 #include "whitefalcon0x140.h"
 
+DECOMP_SIZE_ASSERT(DuskWindName0x8, 0x8)
 DECOMP_SIZE_ASSERT(DuskwindBananaRelic0x24, 0x24)
+DECOMP_SIZE_ASSERT(DuskWindBananaRelicParams, 0x14)
 
 // FUNCTION: GOLDP 0x10025770
 DuskwindBananaRelic0x24::DuskwindBananaRelic0x24()

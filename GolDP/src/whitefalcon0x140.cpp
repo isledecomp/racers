@@ -777,9 +777,9 @@ void WhiteFalcon0x140::ClearAlphaOverride()
 }
 
 // FUNCTION: GOLDP 0x10029880
-void WhiteFalcon0x140::VTable0xc0(undefined4* p_param)
+void WhiteFalcon0x140::VTable0xc0(const ColorRGBA& p_param)
 {
-	m_unk0x118 = *p_param;
+	m_unk0x118 = p_param;
 	m_unk0x04 |= c_flagBit19;
 }
 

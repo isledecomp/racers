@@ -864,24 +864,25 @@ LegoBool32 BronzeFalcon0xc8770::TextureSizesMustBePowersOfTwo() const
 void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 {
 	LegoU32 newFlags = p_material->GetUnk0x08();
-	LegoU32 i;
+
 	m_unk0xc8538 = p_material;
 	if (m_unk0xc8568 != 0) {
 		DuskwindBananaRelicColor c = p_material->GetColor0x10();
-		m_unk0xc8570 = (m_unk0xc856c.m_red * c.m_unk0x0) >> 8;
-		m_unk0xc8574 = (m_unk0xc856c.m_grn * c.m_unk0x1) >> 8;
-		m_unk0xc8578 = (m_unk0xc856c.m_blu * c.m_unk0x2) >> 8;
-		m_unk0xc857c = (c.m_unk0x3) & 0xff;
+		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_unk0x0) >> 8;
+		m_unk0xc8574 = static_cast<LegoU32>(m_unk0xc856c.m_grn * c.m_unk0x1) >> 8;
+		m_unk0xc8578 = static_cast<LegoU32>(m_unk0xc856c.m_blu * c.m_unk0x2) >> 8;
+		m_unk0xc857c = c.m_unk0x3 & 0xff;
 		c = p_material->GetColor0x0c();
-		LegoFloat r = static_cast<LegoFloat>(c.m_unk0x0 & 0xff);
-		LegoFloat g = static_cast<LegoFloat>(c.m_unk0x1 & 0xff);
-		LegoFloat b = static_cast<LegoFloat>(c.m_unk0x2 & 0xff);
-		for (i = 0; i < m_unk0x11c; i++) {
-			m_unk0xc859c[i].m_red = static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * r / 256.0f;
-			m_unk0xc859c[i].m_grn = static_cast<LegoFloat>(m_unk0xc8580[i].m_grn) * g / 256.0f;
-			m_unk0xc859c[i].m_blu = static_cast<LegoFloat>(m_unk0xc8580[i].m_blu) * b / 256.0f;
+		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+			m_unk0xc859c[i].m_red =
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_red) * static_cast<LegoFloat>(c.m_unk0x0 & 0xff) / 256.0f;
+			m_unk0xc859c[i].m_grn =
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_grn) * static_cast<LegoFloat>(c.m_unk0x1 & 0xff) / 256.0f;
+			m_unk0xc859c[i].m_blu =
+				static_cast<LegoFloat>(m_unk0xc8580[i].m_blu) * static_cast<LegoFloat>(c.m_unk0x2 & 0xff) / 256.0f;
 		}
 	}
+
 	if (m_unk0x04 & c_flagBit14) {
 		newFlags &= ~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
 		newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
@@ -890,40 +891,47 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 		if (newFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit6 | DuskwindBananaRelic0x24::c_flag0x08Bit8 |
 						DuskwindBananaRelic0x24::c_flag0x08Bit12)) {
 			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit6) {
-				if (m_unk0xc83d0 != p_material->GetAlphaFunc()) {
-					m_unk0xc83d0 = p_material->GetAlphaFunc();
-					m_d3dDevice->SetRenderState(
-						D3DRENDERSTATE_ALPHAFUNC,
-						g_d3dCmpFuncLookup[p_material->GetAlphaFunc()]
-					);
+				LegoU32 alphaFunc = p_material->GetAlphaFunc();
+				if (m_unk0xc83d0 != alphaFunc) {
+					m_unk0xc83d0 = alphaFunc;
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAFUNC, g_d3dCmpFuncLookup[alphaFunc]);
 				}
-				if (m_unk0xc83d4 != p_material->GetAlphaRef()) {
-					m_unk0xc83d4 = p_material->GetAlphaRef();
-					// BUG? documentatino specifies range from 0x00000000 to 0x000000FF
-					m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAREF, p_material->GetAlphaRef() << 16);
+
+				LegoU32 alphaRef = p_material->GetAlphaRef();
+				if (m_unk0xc83d4 != alphaRef) {
+					m_unk0xc83d4 = alphaRef;
+					// BUG? documentation specifies range from 0x00000000 to 0x000000FF.
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAREF, alphaRef << 16);
 				}
 			}
+
 			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
-				m_unk0xc83e0 = p_material->GetDestBlend();
+				LegoU32 destBlend = p_material->GetDestBlend();
+				m_unk0xc83e0 = destBlend;
 				newFlags &= ~DuskwindBananaRelic0x24::c_flag0x08Bit4;
 				newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit5;
-				m_unk0xc83fc = (p_material->GetDestBlend() << 24) | (m_unk0xc83fc & 0x00ffffff);
+				m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
 			}
 			else if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
-				if (m_unk0xc83d8 != p_material->GetSrcBlend()) {
-					m_unk0xc83d8 = p_material->GetSrcBlend();
-					m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_unk0xc8708[p_material->GetSrcBlend()]);
+				LegoU32 srcBlend = p_material->GetSrcBlend();
+				if (m_unk0xc83d8 != srcBlend) {
+					m_unk0xc83d8 = srcBlend;
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_unk0xc8708[srcBlend]);
 				}
-				if (m_unk0xc83dc != p_material->GetDestBlend()) {
-					m_unk0xc83dc = p_material->GetDestBlend();
-					m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_unk0xc8734[p_material->GetDestBlend()]);
+
+				LegoU32 destBlend = p_material->GetDestBlend();
+				if (m_unk0xc83dc != destBlend) {
+					m_unk0xc83dc = destBlend;
+					m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_unk0xc8734[destBlend]);
 				}
 			}
 		}
 	}
+
 	if (newFlags == m_unk0xc83c8) {
 		return;
 	}
+
 	if ((newFlags ^ m_unk0xc83c8) &
 		(DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit11)) {
 		if (!(newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit11) && m_drawState->VTable0x60()) {
@@ -935,6 +943,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_POINT);
 		}
 	}
+
 	if ((newFlags ^ m_unk0xc83c8) &
 		(DuskwindBananaRelic0x24::c_flag0x08Bit15 | DuskwindBananaRelic0x24::c_flag0x08Bit16)) {
 		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit16) {
@@ -944,6 +953,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_WRAP);
 		}
 	}
+
 	if ((newFlags ^ m_unk0xc83c8) &
 		(DuskwindBananaRelic0x24::c_flag0x08Bit1 | DuskwindBananaRelic0x24::c_flag0x08Bit2)) {
 		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit2) {
@@ -953,6 +963,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_SHADEMODE, D3DSHADE_FLAT);
 		}
 	}
+
 	if ((newFlags ^ m_unk0xc83c8) & (DuskwindBananaRelic0x24::c_flag0x08Bit3 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
 									 DuskwindBananaRelic0x24::c_flag0x08Bit5)) {
 		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
@@ -992,6 +1003,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 		}
 		FUN_10012f50();
 	}
+
 	if ((newFlags ^ m_unk0xc83c8) &
 		(DuskwindBananaRelic0x24::c_flag0x08Bit6 | DuskwindBananaRelic0x24::c_flag0x08Bit7)) {
 		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit6) {
@@ -1045,7 +1057,6 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			FUN_10012f50();
 		}
 		else {
-
 			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
 				if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
 					if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {

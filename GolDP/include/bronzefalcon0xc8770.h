@@ -135,11 +135,15 @@ public:
 	friend class SlatePeak0x58;
 
 private:
+	typedef void (BronzeFalcon0xc8770::*SoftwareCommandHandler)(undefined4, undefined4, undefined4);
+
 	void FUN_100082e0();
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(undefined4*);
 	void FUN_1000b4a0();
+	void FUN_1000c630(undefined4, undefined4, undefined4);
+	void FUN_1000edf0(undefined4, undefined4, undefined4);
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
@@ -162,20 +166,62 @@ private:
 	D3DTLVERTEX m_unk0x348[25000];                                       // 0x348
 	undefined4 m_unk0xc3848;                                             // 0xc3848
 	undefined4 m_unk0xc384c;                                             // 0xc384c
-	undefined m_unk0xc3850[0xc83b4 - 0xc3850];                           // 0xc3850
+	undefined m_unk0xc3850[0xc38ec - 0xc3850];                           // 0xc3850
+	undefined4 m_unk0xc38ec[(0xc426c - 0xc38ec) / sizeof(undefined4)];   // 0xc38ec
+	undefined m_unk0xc426c[0xc428c - 0xc426c];                           // 0xc426c
+	undefined4 m_unk0xc428c[(0xc4c0c - 0xc428c) / sizeof(undefined4)];   // 0xc428c
+	undefined4 m_unk0xc4c0c;                                             // 0xc4c0c
+	undefined4 m_unk0xc4c10;                                             // 0xc4c10
+	undefined4 m_unk0xc4c14;                                             // 0xc4c14
+	undefined4 m_unk0xc4c18;                                             // 0xc4c18
+	undefined m_unk0xc4c1c[0xc53a0 - 0xc4c1c];                           // 0xc4c1c
+	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)]; // 0xc53a0
+	undefined4 m_unk0xc83a0;                                             // 0xc83a0
+	undefined4 m_unk0xc83a4;                                             // 0xc83a4
+	undefined4 m_unk0xc83a8;                                             // 0xc83a8
+	undefined4 m_unk0xc83ac;                                             // 0xc83ac
+	undefined4 m_unk0xc83b0;                                             // 0xc83b0
 	Field0xc83b4 m_unk0xc83b4;                                           // 0xc83b4
 	undefined4 m_unk0xc83c4;                                             // 0xc83c4
-	undefined m_unk0xc83c8[0xc8698 - 0xc83c8];                           // 0xc83c8
+	undefined4 m_unk0xc83c8;                                             // 0xc83c8
+	undefined4 m_unk0xc83cc;                                             // 0xc83cc
+	undefined m_unk0xc83d0[0xc83e0 - 0xc83d0];                           // 0xc83d0
+	undefined4 m_unk0xc83e0;                                             // 0xc83e0
+	undefined4 m_unk0xc83e4;                                             // 0xc83e4
+	undefined4 m_unk0xc83e8;                                             // 0xc83e8
+	undefined4 m_unk0xc83ec;                                             // 0xc83ec
+	undefined4 m_unk0xc83f0;                                             // 0xc83f0
+	undefined4 m_unk0xc83f4;                                             // 0xc83f4
+	undefined4 m_unk0xc83f8;                                             // 0xc83f8
+	undefined4 m_unk0xc83fc;                                             // 0xc83fc
+	undefined4 m_unk0xc8400[4];                                          // 0xc8400
+	D3DMATRIX m_unk0xc8410;                                              // 0xc8410
+	D3DMATRIX m_unk0xc8450;                                              // 0xc8450
+	undefined4 m_unk0xc8490;                                             // 0xc8490
+	undefined4 m_unk0xc8494;                                             // 0xc8494
+	undefined m_unk0xc8498[0xc8518 - 0xc8498];                           // 0xc8498
+	undefined4 m_unk0xc8518;                                             // 0xc8518
+	undefined4 m_unk0xc851c;                                             // 0xc851c
+	undefined4 m_unk0xc8520;                                             // 0xc8520
+	undefined4 m_unk0xc8524;                                             // 0xc8524
+	undefined4 m_unk0xc8528;                                             // 0xc8528
+	LegoFloat m_unk0xc852c;                                              // 0xc852c
+	void* m_unk0xc8530[(0xc854c - 0xc8530) / sizeof(void*)];             // 0xc8530
+	void* m_unk0xc854c[(0xc8568 - 0xc854c) / sizeof(void*)];             // 0xc854c
+	undefined4 m_unk0xc8568;                                             // 0xc8568
+	undefined m_unk0xc856c[0xc8698 - 0xc856c];                           // 0xc856c
 	SoftwareRenderer0x58 m_softwareRenderer;                             // 0xc8698
 	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                     // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                // 0xc86f8
 	float m_unk0xc86fc;                                                  // 0xc86fc
 	undefined4 m_unk0xc8700;                                             // 0xc8700
-	undefined m_unk0xc8704[0xc8708 - 0xc8704];                           // 0xc8704
-	undefined4 m_unk0xc8708[11];                                         // 0xc8708
-	undefined4 m_unk0xc8734[11];                                         // 0xc8734
-	undefined m_unk0xc8760[0xc876c - 0xc8760];                           // 0xc8760
+	undefined4 m_unk0xc8704;                                             // 0xc8704
+	undefined4 m_unk0xc8708[(0xc8734 - 0xc8708) / sizeof(undefined4)];   // 0xc8708
+	undefined4 m_unk0xc8734[(0xc8760 - 0xc8734) / sizeof(undefined4)];   // 0xc8734
+	undefined m_unk0xc8760[0xc8764 - 0xc8760];                           // 0xc8760
+	SoftwareCommandHandler m_unk0xc8764;                                 // 0xc8764
+	SoftwareCommandHandler m_unk0xc8768;                                 // 0xc8768
 	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*); // 0xc876c
 };
 

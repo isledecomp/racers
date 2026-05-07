@@ -68,12 +68,12 @@ public:
 	undefined4 VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
-		SilverDune0x30::Rect* p_destRect,
-		SilverDune0x30::Rect* p_sourceRect,
+		Rect* p_destRect,
+		Rect* p_sourceRect,
 		undefined4 p_unk0x14
 	) override; // vtable+0x7c
 	void DrawRectangle(
-		const IntRectangle0x10& p_rect,
+		const Rect& p_rect,
 		LegoFloat p_z,
 		const ColorRGBA& p_color1,
 		const ColorRGBA& p_color2,

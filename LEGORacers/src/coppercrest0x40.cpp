@@ -117,7 +117,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
 {
 	if (m_golExport && m_unk0x40 && m_unk0x41) {
-		SilverDune0x30::Rect destRect;
+		Rect destRect;
 
 		destRect.m_left = m_unk0x30;
 		destRect.m_right = m_unk0x30 + m_sourceRect.m_right;
@@ -165,7 +165,7 @@ LegoS32 CopperCrest0x40::FUN_00468fa0(InitStruct* p_initStruct)
 		return TRUE;
 	}
 
-	SilverDune0x30::Rect bounds;
+	Rect bounds;
 	Helper0x44::InitStruct helperInit;
 
 	bounds.m_left = 0;
@@ -247,7 +247,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 			return TRUE;
 		}
 		if (active) {
-			SilverDune0x30::Rect* rect = active->FUN_00472e90();
+			Rect* rect = active->FUN_00472e90();
 
 			if (active->VTable0x30(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;
@@ -259,7 +259,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 			return TRUE;
 		}
 		if (active) {
-			SilverDune0x30::Rect* rect = active->FUN_00472e90();
+			Rect* rect = active->FUN_00472e90();
 
 			if (active->VTable0x34(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;
@@ -278,7 +278,7 @@ void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 	UtopianPan0xa4* rendererObject = m_unk0x10.m_rendererObject;
 	LegoS32 right = m_unk0x58 - (rendererObject->m_unk0x34 >> 2);
 	LegoS32 bottom = m_unk0x5c - (rendererObject->m_unk0x38 >> 2);
-	SilverDune0x30::Rect* bounds = &m_unk0x10.m_bounds;
+	Rect* bounds = &m_unk0x10.m_bounds;
 
 	bounds->m_left = 0;
 	Helper0x44* helper = &m_unk0x10;
@@ -392,8 +392,8 @@ LegoS32 CopperCrest0x40::VTable0x10(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00469550
 void CopperCrest0x40::FUN_00469550()
 {
-	SilverDune0x30::Rect rect1;
-	SilverDune0x30::Rect rect2;
+	Rect rect1;
+	Rect rect2;
 
 	rect2.m_left = 0;
 	rect2.m_top = 0;

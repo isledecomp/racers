@@ -54,31 +54,31 @@ public:
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4
-	) override;                                                                                // vtable+0x1c
-	void VTable0x20(undefined4) override;                                                      // vtable+0x20
-	void VTable0x24(undefined4) override;                                                      // vtable+0x24
-	undefined4 VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4) override;          // vtable+0x28
-	void VTable0x2c(undefined4) override;                                                      // vtable+0x2c
-	void VTable0x30(undefined4) override;                                                      // vtable+0x30
-	void VTable0x34(undefined4) override;                                                      // vtable+0x34
-	void VTable0x38(undefined4) override;                                                      // vtable+0x38
-	void VTable0x3c(undefined4) override;                                                      // vtable+0x3c
-	void VTable0x40(undefined4) override;                                                      // vtable+0x40
-	void VTable0x44(undefined4) override;                                                      // vtable+0x44
-	void VTable0x48(undefined4) override;                                                      // vtable+0x48
-	virtual void VTable0x4c() = 0;                                                             // vtable+0x4c
-	virtual undefined4 VTable0x50();                                                           // vtable+0x50
-	virtual void VTable0x54();                                                                 // vtable+0x54
-	virtual LegoBool32 VTable0x58(MenuToolCreateParams0x30*);                                  // vtable+0x58
-	virtual CeruleanEmperor0x4c* VTable0x5c();                                                 // vtable+0x5c
-	virtual void VTable0x60();                                                                 // vtable+0x60
-	virtual CeruleanQueen0x58* VTable0x64();                                                   // vtable+0x64
-	virtual ~ImaginaryNotion0x290();                                                           // vtable+0x68
-	virtual void VTable0x6c();                                                                 // vtable+0x6c
-	virtual LegoBool32 VTable0x70(MenuToolCreateParams0x30*);                                  // vtable+0x70
-	virtual void VTable0x74();                                                                 // vtable+0x74
-	virtual LegoBool32 VTable0x78(undefined4);                                                 // vtable+0x78
-	virtual LegoBool32 VTable0x7c(SilverDune0x30::Rect* p_arg1, SilverDune0x30::Rect* p_arg2); // vtable+0x7c
+	) override;                                                                       // vtable+0x1c
+	void VTable0x20(undefined4) override;                                             // vtable+0x20
+	void VTable0x24(undefined4) override;                                             // vtable+0x24
+	undefined4 VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4) override; // vtable+0x28
+	void VTable0x2c(undefined4) override;                                             // vtable+0x2c
+	void VTable0x30(undefined4) override;                                             // vtable+0x30
+	void VTable0x34(undefined4) override;                                             // vtable+0x34
+	void VTable0x38(undefined4) override;                                             // vtable+0x38
+	void VTable0x3c(undefined4) override;                                             // vtable+0x3c
+	void VTable0x40(undefined4) override;                                             // vtable+0x40
+	void VTable0x44(undefined4) override;                                             // vtable+0x44
+	void VTable0x48(undefined4) override;                                             // vtable+0x48
+	virtual void VTable0x4c() = 0;                                                    // vtable+0x4c
+	virtual undefined4 VTable0x50();                                                  // vtable+0x50
+	virtual void VTable0x54();                                                        // vtable+0x54
+	virtual LegoBool32 VTable0x58(MenuToolCreateParams0x30*);                         // vtable+0x58
+	virtual CeruleanEmperor0x4c* VTable0x5c();                                        // vtable+0x5c
+	virtual void VTable0x60();                                                        // vtable+0x60
+	virtual CeruleanQueen0x58* VTable0x64();                                          // vtable+0x64
+	virtual ~ImaginaryNotion0x290();                                                  // vtable+0x68
+	virtual void VTable0x6c();                                                        // vtable+0x6c
+	virtual LegoBool32 VTable0x70(MenuToolCreateParams0x30*);                         // vtable+0x70
+	virtual void VTable0x74();                                                        // vtable+0x74
+	virtual LegoBool32 VTable0x78(undefined4);                                        // vtable+0x78
+	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                        // vtable+0x7c
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);

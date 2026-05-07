@@ -13,8 +13,8 @@
 class ObscureTome0x3dc : public ObscureAnthem0x58 {
 public:
 	ObscureTome0x3dc();
-	~ObscureTome0x3dc() override;                // vtable+0x04
-	void VTable0x10(IntRectangle0x10*) override; // vtable+0x10
+	~ObscureTome0x3dc() override;    // vtable+0x04
+	void VTable0x10(Rect*) override; // vtable+0x10
 
 	// SYNTHETIC: LEGORACERS 0x0046ec30
 	// ObscureTome0x3dc::`scalar deleting destructor'

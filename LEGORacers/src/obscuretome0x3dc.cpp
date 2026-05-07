@@ -15,7 +15,7 @@ ObscureTome0x3dc::~ObscureTome0x3dc()
 }
 
 // STUB: LEGORACERS 0x0046ee40
-void ObscureTome0x3dc::VTable0x10(IntRectangle0x10*)
+void ObscureTome0x3dc::VTable0x10(Rect*)
 {
 	STUB(0x0046ee40);
 }

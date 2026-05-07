@@ -24,7 +24,7 @@ undefined4 ImaginaryShape0x2b20::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffe
 }
 
 // STUB: LEGORACERS 0x00475010
-LegoBool32 ImaginaryShape0x2b20::VTable0x7c(SilverDune0x30::Rect*, SilverDune0x30::Rect*)
+LegoBool32 ImaginaryShape0x2b20::VTable0x7c(Rect*, Rect*)
 {
 	STUB(0x00475010);
 	return FALSE;

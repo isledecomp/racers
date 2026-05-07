@@ -494,7 +494,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x78(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0046c7e0 FOLDED
-LegoBool32 ImaginaryNotion0x290::VTable0x7c(SilverDune0x30::Rect* p_arg1, SilverDune0x30::Rect* p_arg2)
+LegoBool32 ImaginaryNotion0x290::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
 {
 	m_unk0xd8.VTable0x1c(p_arg1, p_arg2);
 	return TRUE;

@@ -3,6 +3,7 @@
 
 #include "decomp.h"
 #include "falcontextureformat.h"
+#include "rectangle.h"
 #include "types.h"
 
 class PearlDew0x0c;
@@ -13,13 +14,6 @@ class BronzeFalcon0xc8770;
 // SIZE 0x30
 class SilverDune0x30 {
 public:
-	struct Rect {
-		LegoS32 m_left;   // 0x00
-		LegoS32 m_top;    // 0x04
-		LegoS32 m_right;  // 0x08
-		LegoS32 m_bottom; // 0x0c
-	};
-
 	enum {
 		c_lockRequestRead = 0x01,
 		c_lockRequestWrite = 0x02,

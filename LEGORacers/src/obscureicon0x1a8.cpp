@@ -12,7 +12,7 @@ LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 }
 
 // STUB: LEGORACERS 0x004676c0
-undefined4 ObscureIcon0x1a8::VTable0x38(undefined4, undefined4)
+undefined4 ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
 {
 	// TODO
 	STUB(0x004676c0);
@@ -148,7 +148,7 @@ undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined
 }
 
 // STUB: LEGORACERS 0x00472950
-void ObscureIcon0x1a8::VTable0x10(IntRectangle0x10*)
+void ObscureIcon0x1a8::VTable0x10(Rect*)
 {
 	STUB(0x00472950);
 }

@@ -19,24 +19,26 @@ public:
 	virtual ~ObscureVantage0x58();                                                        // vtable+0x04
 	virtual undefined4 VTable0x08();                                                      // vtable+0x08
 	virtual void VTable0x0c(ObscureVantage0x58*);                                         // vtable+0x0c
-	virtual void VTable0x10(IntRectangle0x10*);                                           // vtable+0x10
-	virtual void VTable0x14(undefined4*);                                                 // vtable+0x14
+	virtual void VTable0x10(Rect*);                                                       // vtable+0x10
+	virtual void VTable0x14(Rect*);                                                       // vtable+0x14
 	virtual undefined4 VTable0x18(undefined4);                                            // vtable+0x18
-	virtual undefined4 VTable0x1c(SilverDune0x30::Rect*, SilverDune0x30::Rect*);          // vtable+0x1c
+	virtual undefined4 VTable0x1c(Rect*, Rect*);                                          // vtable+0x1c
 	virtual undefined4 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);  // vtable+0x20
 	virtual undefined4 VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x24
 	virtual undefined4 VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x28
 	virtual undefined4 VTable0x2c(void*, undefined4, undefined4);                         // vtable+0x2c
 	virtual undefined4 VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x30
 	virtual undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x34
-	virtual undefined4 VTable0x38(undefined4, undefined4);                                // vtable+0x38
+	virtual undefined4 VTable0x38(Rect*, Rect*);                                          // vtable+0x38
 	virtual undefined4 VTable0x3c(undefined4);                                            // vtable+0x3c
 
 	void FUN_00472b50();
 	undefined4 FUN_00472c40(LegoS32, LegoS32);
 	ObscureVantage0x58* FUN_00472e40();
 	ObscureVantage0x58* FUN_00472e60();
-	SilverDune0x30::Rect* FUN_00472e90();
+	Rect* FUN_00472e90();
+	LegoBool32 FUN_004730a0(Rect*, Rect*);
+	Rect* FUN_00473160(Rect*);
 	void FUN_004731b0(undefined4&, undefined4&);
 	LegoBool GetUnk0x54() const { return m_unk0x54; }
 
@@ -56,11 +58,11 @@ protected:
 	ImaginaryInterface* m_unk0x28; // 0x28
 	undefined4 m_unk0x2c;          // 0x2c
 	undefined2 m_unk0x30;          // 0x30
-	IntRectangle0x10 m_unk0x34;    // 0x34
+	Rect m_unk0x34;                // 0x34
 	LegoFloat m_unk0x44;           // 0x44
 	LegoFloat m_unk0x48;           // 0x48
-	undefined4 m_unk0x4c;          // 0x4c
-	undefined4 m_unk0x50;          // 0x50
+	LegoS32 m_unk0x4c;             // 0x4c
+	LegoS32 m_unk0x50;             // 0x50
 	undefined m_unk0x54;           // 0x54
 };
 

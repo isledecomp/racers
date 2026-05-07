@@ -49,7 +49,7 @@ undefined4 ObscureSigil0xdc::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x00465f20
-undefined4 ObscureSigil0xdc::VTable0x38(undefined4, undefined4)
+undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 {
 	STUB(0x00465f20);
 	return 0;

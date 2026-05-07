@@ -3,7 +3,7 @@
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
 
 // GLOBAL: LEGORACERS 0x004c7650
-SilverDune0x30::Rect g_unk0x4c7650;
+Rect g_unk0x4c7650;
 
 // FUNCTION: LEGORACERS 0x004729b0
 ObscureVantage0x58::ObscureVantage0x58()
@@ -64,7 +64,7 @@ undefined4 ObscureVantage0x58::VTable0x3c(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0044e7f0 FOLDED
-undefined4 ObscureVantage0x58::VTable0x38(undefined4, undefined4)
+undefined4 ObscureVantage0x58::VTable0x38(Rect*, Rect*)
 {
 	return 0;
 }
@@ -165,7 +165,7 @@ ObscureVantage0x58* ObscureVantage0x58::FUN_00472e60()
 }
 
 // FUNCTION: LEGORACERS 0x00472e90
-SilverDune0x30::Rect* ObscureVantage0x58::FUN_00472e90()
+Rect* ObscureVantage0x58::FUN_00472e90()
 {
 	ObscureVantage0x58* node = this;
 
@@ -185,7 +185,7 @@ SilverDune0x30::Rect* ObscureVantage0x58::FUN_00472e90()
 }
 
 // FUNCTION: LEGORACERS 0x00472f40
-void ObscureVantage0x58::VTable0x10(IntRectangle0x10* p_rect)
+void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 {
 	if (m_unk0x28) {
 		if ((((m_unk0x34.m_right - p_rect->m_right) - m_unk0x34.m_left) + p_rect->m_left != 0) ||
@@ -203,9 +203,70 @@ void ObscureVantage0x58::VTable0x10(IntRectangle0x10* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x00472fc0
-void ObscureVantage0x58::VTable0x14(undefined4* p_param)
+void ObscureVantage0x58::VTable0x14(Rect* p_param)
 {
-	m_unk0x2c = *p_param;
+	m_unk0x2c = p_param->m_left;
+}
+
+// FUNCTION: LEGORACERS 0x004730a0
+LegoBool32 ObscureVantage0x58::FUN_004730a0(Rect* p_rect, Rect* p_arg)
+{
+	if (p_rect->m_left >= m_unk0x34.m_right) {
+		return FALSE;
+	}
+
+	if (p_rect->m_right <= m_unk0x34.m_left) {
+		return FALSE;
+	}
+
+	if (p_rect->m_top >= m_unk0x34.m_bottom) {
+		return FALSE;
+	}
+
+	if (p_rect->m_bottom <= m_unk0x34.m_top) {
+		return FALSE;
+	}
+
+	if (p_rect->m_left < m_unk0x34.m_left) {
+		p_arg->m_left += m_unk0x34.m_left - p_rect->m_left;
+		p_rect->m_left = m_unk0x34.m_left;
+	}
+
+	if (p_rect->m_top < m_unk0x34.m_top) {
+		p_arg->m_top += m_unk0x34.m_top - p_rect->m_top;
+		p_rect->m_top = m_unk0x34.m_top;
+	}
+
+	if (p_rect->m_right > m_unk0x34.m_right) {
+		p_arg->m_right += m_unk0x34.m_right - p_rect->m_right;
+		p_rect->m_right = m_unk0x34.m_right;
+	}
+
+	if (p_rect->m_bottom > m_unk0x34.m_bottom) {
+		p_arg->m_bottom += m_unk0x34.m_bottom - p_rect->m_bottom;
+		p_rect->m_bottom = m_unk0x34.m_bottom;
+	}
+
+	return TRUE;
+}
+
+// STUB: LEGORACERS 0x00473160
+Rect* ObscureVantage0x58::FUN_00473160(Rect* p_rect)
+{
+	Rect* result = p_rect;
+	LegoS32 oldTop = p_rect->m_top;
+	LegoS32 oldLeft = p_rect->m_left;
+	LegoS32 translatedLeft = oldLeft + m_unk0x4c - m_unk0x34.m_left;
+	LegoS32 translatedTop = oldTop + m_unk0x50 - m_unk0x34.m_top;
+	LegoS32 height = p_rect->m_bottom - oldTop;
+	LegoS32 translatedRight = translatedLeft + p_rect->m_right - oldLeft;
+
+	p_rect->m_left = translatedLeft;
+	p_rect->m_top = translatedTop;
+	p_rect->m_right = translatedRight;
+	p_rect->m_bottom = translatedTop + height;
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x004731b0
@@ -234,11 +295,26 @@ undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00473210
-undefined4 ObscureVantage0x58::VTable0x1c(SilverDune0x30::Rect*, SilverDune0x30::Rect*)
+// FUNCTION: LEGORACERS 0x00473210
+undefined4 ObscureVantage0x58::VTable0x1c(Rect* p_rect, Rect* p_arg)
 {
-	// TODO
-	STUB(0x00473210);
+	Rect rect = *p_rect;
+	ObscureVantage0x58* child = m_unk0x08;
+	Rect arg = *p_arg;
+
+	if (FUN_004730a0(&rect, &arg)) {
+		FUN_00473160(&rect);
+
+		undefined flags = m_unk0x1c;
+		if ((flags & 2) && (!(flags & 0x10) || !VTable0x38(&rect, &arg))) {
+			for (; child; child = child->m_unk0x14) {
+				if (child->VTable0x1c(&rect, &arg)) {
+					break;
+				}
+			}
+		}
+	}
+
 	return 0;
 }
 

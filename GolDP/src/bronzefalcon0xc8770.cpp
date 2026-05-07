@@ -1,5 +1,6 @@
 #include "bronzefalcon0xc8770.h"
 
+#include "amberlens0x344.h"
 #include "bronzefalconsurface0x5c.h"
 #include "falcondunebag0x10.h"
 #include "falcontextureformat.h"
@@ -290,16 +291,42 @@ void BronzeFalcon0xc8770::ReleaseResources()
 	STUB(0x10008680);
 }
 
-// STUB: GOLDP 0x10008740
+// FUNCTION: GOLDP 0x10008740
 void BronzeFalcon0xc8770::VTable0x18()
 {
-	STUB(0x10008740);
+	if (m_unk0x0c != NULL) {
+		m_unk0x0c->FUN_10001f60(NULL);
+		m_unk0x0c = NULL;
+	}
+
+	WhiteFalcon0x140::Destroy();
+	ReleaseResources();
+
+	BronzeFalconSurface0x5c* surface = m_unk0x30c;
+	while (surface != NULL) {
+		BronzeFalconSurface0x5c* next = surface->m_next;
+		surface->VTable0x34();
+		delete surface;
+		surface = next;
+	}
+
+	if (m_drawState != NULL) {
+		m_drawState->RemoveRenderer(this);
+	}
+
+	Reset();
+	m_unk0x04 = 0;
 }
 
-// STUB: GOLDP 0x100087b0
-void BronzeFalcon0xc8770::VTable0x20(AmberLens0x344*)
+// FUNCTION: GOLDP 0x100087b0
+void BronzeFalcon0xc8770::VTable0x20(AmberLens0x344* p_lens)
 {
-	STUB(0x100087b0);
+	if (m_unk0x0c != NULL) {
+		m_unk0x0c->FUN_10001f60(NULL);
+	}
+
+	m_unk0x0c = p_lens;
+	p_lens->FUN_10001f60(this);
 }
 
 // STUB: GOLDP 0x100087e0

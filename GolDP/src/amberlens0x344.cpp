@@ -1,6 +1,7 @@
 #include "amberlens0x344.h"
 
 #include "bronzefalcon0xc8770.h"
+#include "slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 
@@ -19,11 +20,31 @@ AmberLens0x344::~AmberLens0x344()
 	}
 }
 
-// STUB: GOLDP 0x10001f60
-void AmberLens0x344::FUN_10001f60(undefined*)
+// FUNCTION: GOLDP 0x10001f60
+void AmberLens0x344::FUN_10001f60(BronzeFalcon0xc8770* p_renderer)
 {
-	// TODO
-	STUB(0x10001f60);
+	m_unk0x340 = p_renderer;
+	if (p_renderer != NULL) {
+		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
+		if (m_unk0x11c == 0 || m_unk0x118 == 0) {
+			m_unk0x110 = 0;
+			m_unk0x114 = 0;
+			m_unk0x118 = renderTargetInfo->GetWidth();
+			m_unk0x11c = renderTargetInfo->GetHeight();
+		}
+
+		if (!(m_flags & c_flagBit3)) {
+			LegoFloat width = static_cast<LegoFloat>(m_unk0x118 - m_unk0x110);
+			LegoFloat height = static_cast<LegoFloat>(m_unk0x11c - m_unk0x114);
+			m_unk0x0c = width / height;
+		}
+
+		m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_unk0x118 - m_unk0x110);
+		m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_unk0x11c - m_unk0x114);
+		m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_unk0x110);
+		m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_unk0x114);
+		m_flags |= c_flagBit0 | c_flagBit1;
+	}
 }
 
 // STUB: GOLDP 0x10002060

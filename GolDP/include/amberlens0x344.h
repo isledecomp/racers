@@ -17,6 +17,7 @@ public:
 	enum {
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,
+		c_flagBit3 = 1 << 3,
 	};
 
 	AmberLens0x344();
@@ -38,7 +39,9 @@ public:
 	JadeOrbit0x220* GetUnk0x04() { return (JadeOrbit0x220*) m_unk0x04; }
 
 protected:
-	void FUN_10001f60(undefined*);
+	friend class BronzeFalcon0xc8770;
+
+	void FUN_10001f60(BronzeFalcon0xc8770*);
 
 	JadeOrbit0x220 m_unk0x120;       // 0x120
 	BronzeFalcon0xc8770* m_unk0x340; // 0x340

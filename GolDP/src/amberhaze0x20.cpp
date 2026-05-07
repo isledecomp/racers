@@ -15,7 +15,7 @@ AmberHaze0x20::~AmberHaze0x20()
 	Clear();
 }
 
-// FUNCTION	: GOLDP 0x10006710
+// FUNCTION: GOLDP 0x10006710
 void AmberHaze0x20::VTable0x14()
 {
 	m_unk0x1c = new DuskwindBananaRelic0x30[m_numItems];

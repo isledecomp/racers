@@ -112,6 +112,7 @@ public:
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
+	ParserTokenType GetCurrentToken() const { return m_unk0x34; }
 	LegoS32 GetUnk0x38() const { return m_unk0x38; }
 
 	// SYNTHETIC: GOLDP 0x10032480

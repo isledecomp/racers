@@ -59,9 +59,10 @@ void ImaginaryBrush0x6410::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED
-void ImaginaryBrush0x6410::VTable0x74()
+LegoBool32 ImaginaryBrush0x6410::VTable0x74()
 {
 	STUB(0x004860f0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x004869b0 FOLDED

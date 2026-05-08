@@ -121,29 +121,29 @@ void AquaCoral0x37b8::ReleaseContextAssets()
 		ScarletNova0x5c& slot = m_context->m_unk0x108[i];
 
 		if (slot.m_flag) {
-			if (slot.m_unk0x20[0]) {
-				golExport->VTable0x48(slot.m_unk0x20[0]);
-				slot.m_unk0x20[0] = NULL;
+			if (slot.m_unk0x20) {
+				golExport->VTable0x48(slot.m_unk0x20);
+				slot.m_unk0x20 = NULL;
 			}
-			if (slot.m_unk0x20[1]) {
-				golExport->VTable0x44(slot.m_unk0x20[1]);
-				slot.m_unk0x20[1] = NULL;
+			if (slot.m_unk0x24) {
+				golExport->VTable0x44(slot.m_unk0x24);
+				slot.m_unk0x24 = NULL;
 			}
-			if (slot.m_unk0x20[2]) {
-				golExport->VTable0x40(slot.m_unk0x20[2]);
-				slot.m_unk0x20[2] = NULL;
+			if (slot.m_unk0x28) {
+				golExport->VTable0x40(slot.m_unk0x28);
+				slot.m_unk0x28 = NULL;
 			}
-			if (slot.m_unk0x20[9]) {
-				golExport->VTable0x48(slot.m_unk0x20[9]);
-				slot.m_unk0x20[9] = NULL;
+			if (slot.m_unk0x44) {
+				golExport->VTable0x48(slot.m_unk0x44);
+				slot.m_unk0x44 = NULL;
 			}
-			if (slot.m_unk0x20[10]) {
-				golExport->VTable0x44(slot.m_unk0x20[10]);
-				slot.m_unk0x20[10] = NULL;
+			if (slot.m_unk0x48) {
+				golExport->VTable0x44(slot.m_unk0x48);
+				slot.m_unk0x48 = NULL;
 			}
-			if (slot.m_unk0x20[11]) {
-				golExport->VTable0x40(slot.m_unk0x20[11]);
-				slot.m_unk0x20[11] = NULL;
+			if (slot.m_unk0x4c) {
+				golExport->VTable0x40(slot.m_unk0x4c);
+				slot.m_unk0x4c = NULL;
 			}
 		}
 	}

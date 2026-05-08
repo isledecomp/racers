@@ -73,10 +73,11 @@ LegoBool32 ImaginaryWrench0x23bc::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCre
 }
 
 // STUB: LEGORACERS 0x0047b550
-void ImaginaryWrench0x23bc::VTable0x74()
+LegoBool32 ImaginaryWrench0x23bc::VTable0x74()
 {
 	// TODO
 	STUB(0x0047b550);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047b7f0

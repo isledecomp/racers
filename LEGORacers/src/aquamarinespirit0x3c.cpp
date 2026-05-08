@@ -246,12 +246,12 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x1c = new undefined4*[2 * m_unk0x30];
+		m_unk0x1c = new MagentaRibbon0x20*[2 * m_unk0x30];
 		// BUG: should check m_unk0x1c
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x20 = new undefined4*[2 * m_unk0x30];
+		m_unk0x20 = new AmberHaze0x1c*[2 * m_unk0x30];
 		// BUG: should check m_unk0x20
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);

@@ -43,9 +43,8 @@ public:
 	};
 
 	ImaginaryChisel0x658();
-
 	~ImaginaryChisel0x658() override;           // vtable+0x68
-	void VTable0x74() override;                 // vtable+0x74
+	LegoBool32 VTable0x74() override;           // vtable+0x74
 	LegoBool32 VTable0x78(undefined4) override; // vtable+0x78
 	void VTable0x84() override;                 // vtable+0x84
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*,

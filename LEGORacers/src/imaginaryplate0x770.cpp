@@ -40,7 +40,8 @@ void ImaginaryPlate0x770::VTable0x38(undefined4)
 }
 
 // STUB: LEGORACERS 0x004849c0 FOLDED
-void ImaginaryPlate0x770::VTable0x74()
+LegoBool32 ImaginaryPlate0x770::VTable0x74()
 {
 	STUB(0x004849c0);
+	return FALSE;
 }

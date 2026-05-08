@@ -170,7 +170,7 @@ void GolDPExport::VTable0x3c(undefined4* p_obj)
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x40(undefined4* p_obj)
+void GolDPExport::VTable0x40(MagentaRibbon0x20* p_obj)
 {
 #if 0
 	if (p_obj != NULL) {
@@ -183,7 +183,7 @@ void GolDPExport::VTable0x40(undefined4* p_obj)
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x44(undefined4* p_obj)
+void GolDPExport::VTable0x44(AmberHaze0x1c* p_obj)
 {
 #if 0
 	if (p_obj != NULL) {

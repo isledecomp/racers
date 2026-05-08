@@ -34,9 +34,10 @@ LegoBool32 ImaginaryBolt0x4774::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreat
 }
 
 // STUB: LEGORACERS 0x0047d520
-void ImaginaryBolt0x4774::VTable0x74()
+LegoBool32 ImaginaryBolt0x4774::VTable0x74()
 {
 	STUB(0x0047d520);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047d9a0

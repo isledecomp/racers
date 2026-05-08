@@ -60,7 +60,7 @@ LegoBool32 ImaginaryHammer0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 }
 
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED
-void ImaginaryHammer0x658::VTable0x74()
+LegoBool32 ImaginaryHammer0x658::VTable0x74()
 {
 	if (m_unk0x354) {
 		if (m_unk0x354->m_unk0x4b40.GetMusicGroup()) {
@@ -74,7 +74,7 @@ void ImaginaryHammer0x658::VTable0x74()
 		}
 	}
 
-	ImaginaryChisel0x658::VTable0x74();
+	return ImaginaryChisel0x658::VTable0x74();
 }
 
 // FUNCTION: LEGORACERS 0x00488550

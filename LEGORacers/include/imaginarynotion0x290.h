@@ -74,9 +74,9 @@ public:
 	virtual void VTable0x60();                                                        // vtable+0x60
 	virtual CeruleanQueen0x58* VTable0x64();                                          // vtable+0x64
 	virtual ~ImaginaryNotion0x290();                                                  // vtable+0x68
-	virtual void VTable0x6c();                                                        // vtable+0x6c
+	virtual LegoFloat VTable0x6c();                                                   // vtable+0x6c
 	virtual LegoBool32 VTable0x70(MenuToolCreateParams0x30*);                         // vtable+0x70
-	virtual void VTable0x74();                                                        // vtable+0x74
+	virtual LegoBool32 VTable0x74();                                                  // vtable+0x74
 	virtual LegoBool32 VTable0x78(undefined4);                                        // vtable+0x78
 	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                        // vtable+0x7c
 

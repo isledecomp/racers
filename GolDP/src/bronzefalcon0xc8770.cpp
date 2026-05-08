@@ -62,6 +62,30 @@ D3DBLEND g_d3dBlendOps[11] = {
 	D3DBLEND_SRCALPHASAT,
 };
 
+// GLOBAL: GOLDP 0x1005c8a8
+BronzeFalconDrawFunction BronzeFalcon0xc8770::g_unk0x1005c8a8[8] = {
+	&BronzeFalcon0xc8770::FUN_10011e60,
+	&BronzeFalcon0xc8770::FUN_10011ed0,
+	&BronzeFalcon0xc8770::FUN_10012030,
+	&BronzeFalcon0xc8770::FUN_100121e0,
+	&BronzeFalcon0xc8770::FUN_100123e0,
+	&BronzeFalcon0xc8770::FUN_10012640,
+	&BronzeFalcon0xc8770::FUN_100128f0,
+	&BronzeFalcon0xc8770::FUN_10012bf0,
+};
+
+// GLOBAL: GOLDP 0x1005c8c8
+BronzeFalconDrawFunction BronzeFalcon0xc8770::g_unk0x1005c8c8[8] = {
+	&BronzeFalcon0xc8770::FUN_1000c160,
+	&BronzeFalcon0xc8770::FUN_1000c2d0,
+	&BronzeFalcon0xc8770::FUN_1000bfb0,
+	&BronzeFalcon0xc8770::FUN_1000c470,
+	&BronzeFalcon0xc8770::FUN_1000be20,
+	&BronzeFalcon0xc8770::FUN_1000c2d0,
+	&BronzeFalcon0xc8770::FUN_1000bfb0,
+	&BronzeFalcon0xc8770::FUN_1000c470,
+};
+
 // FUNCTION: GOLDP 0x100078e0
 BronzeFalcon0xc8770::BronzeFalcon0xc8770()
 {
@@ -1822,10 +1846,88 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	return TRUE;
 }
 
+// STUB: GOLDP 0x1000be20
+void BronzeFalcon0xc8770::FUN_1000be20(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000be20);
+}
+
+// STUB: GOLDP 0x1000bfb0
+void BronzeFalcon0xc8770::FUN_1000bfb0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000bfb0);
+}
+
+// STUB: GOLDP 0x1000c160
+void BronzeFalcon0xc8770::FUN_1000c160(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000c160);
+}
+
+// STUB: GOLDP 0x1000c2d0
+void BronzeFalcon0xc8770::FUN_1000c2d0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000c2d0);
+}
+
+// STUB: GOLDP 0x1000c470
+void BronzeFalcon0xc8770::FUN_1000c470(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000c470);
+}
+
 // STUB: GOLDP 0x1000c630
 void BronzeFalcon0xc8770::FUN_1000c630(undefined4, undefined4, undefined4)
 {
 	STUB(0x1000c630);
+}
+
+// STUB: GOLDP 0x1000d210
+void BronzeFalcon0xc8770::FUN_1000d210(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000d210);
+}
+
+// STUB: GOLDP 0x1000d440
+void BronzeFalcon0xc8770::FUN_1000d440(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000d440);
+}
+
+// STUB: GOLDP 0x1000d5d0
+void BronzeFalcon0xc8770::FUN_1000d5d0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000d5d0);
+}
+
+// STUB: GOLDP 0x1000d760
+void BronzeFalcon0xc8770::FUN_1000d760(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000d760);
+}
+
+// STUB: GOLDP 0x1000dbb0
+void BronzeFalcon0xc8770::FUN_1000dbb0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000dbb0);
+}
+
+// STUB: GOLDP 0x1000eb90
+void BronzeFalcon0xc8770::FUN_1000eb90(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000eb90);
+}
+
+// STUB: GOLDP 0x1000ebd0
+void BronzeFalcon0xc8770::FUN_1000ebd0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000ebd0);
+}
+
+// STUB: GOLDP 0x1000ece0
+void BronzeFalcon0xc8770::FUN_1000ece0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000ece0);
 }
 
 // STUB: GOLDP 0x1000edf0
@@ -1834,11 +1936,171 @@ void BronzeFalcon0xc8770::FUN_1000edf0(undefined4, undefined4, undefined4)
 	STUB(0x1000edf0);
 }
 
-// STUB: GOLDP 0x10012f50 FOLDED
+// STUB: GOLDP 0x10010330
+void BronzeFalcon0xc8770::FUN_10010330(undefined4, undefined4, undefined4)
+{
+	STUB(0x10010330);
+}
+
+// STUB: GOLDP 0x10010500
+void BronzeFalcon0xc8770::FUN_10010500(undefined4, undefined4, undefined4)
+{
+	STUB(0x10010500);
+}
+
+// STUB: GOLDP 0x100106d0
+void BronzeFalcon0xc8770::FUN_100106d0(undefined4, undefined4, undefined4)
+{
+	STUB(0x100106d0);
+}
+
+// STUB: GOLDP 0x10011e60
+void BronzeFalcon0xc8770::FUN_10011e60(undefined4, undefined4, undefined4)
+{
+	STUB(0x10011e60);
+}
+
+// STUB: GOLDP 0x10011ed0
+void BronzeFalcon0xc8770::FUN_10011ed0(undefined4, undefined4, undefined4)
+{
+	STUB(0x10011ed0);
+}
+
+// STUB: GOLDP 0x10012030
+void BronzeFalcon0xc8770::FUN_10012030(undefined4, undefined4, undefined4)
+{
+	STUB(0x10012030);
+}
+
+// STUB: GOLDP 0x100121e0
+void BronzeFalcon0xc8770::FUN_100121e0(undefined4, undefined4, undefined4)
+{
+	STUB(0x100121e0);
+}
+
+// STUB: GOLDP 0x100123e0
+void BronzeFalcon0xc8770::FUN_100123e0(undefined4, undefined4, undefined4)
+{
+	STUB(0x100123e0);
+}
+
+// STUB: GOLDP 0x10012640
+void BronzeFalcon0xc8770::FUN_10012640(undefined4, undefined4, undefined4)
+{
+	STUB(0x10012640);
+}
+
+// STUB: GOLDP 0x100128f0
+void BronzeFalcon0xc8770::FUN_100128f0(undefined4, undefined4, undefined4)
+{
+	STUB(0x100128f0);
+}
+
+// STUB: GOLDP 0x10012bf0
+void BronzeFalcon0xc8770::FUN_10012bf0(undefined4, undefined4, undefined4)
+{
+	STUB(0x10012bf0);
+}
+
+// FUNCTION: GOLDP 0x10012f50
 void BronzeFalcon0xc8770::FUN_10012f50()
 {
-	// TODO
-	STUB(0x10012f50);
+	if (m_unk0xc8524) {
+		if (m_unk0xc8528) {
+			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000eb90;
+			if (m_unk0xc8568) {
+				m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d210;
+				return;
+			}
+			if (m_unk0xc83ec) {
+				m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d5d0;
+				return;
+			}
+
+			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d440;
+			return;
+		}
+
+		if (m_unk0xc83c4) {
+			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_100106d0;
+		}
+		else {
+			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+		}
+
+		if (m_unk0xc83ec) {
+			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000dbb0;
+		}
+		else {
+			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d760;
+		}
+	}
+	else {
+		LegoU32 index = m_unk0xc83f8;
+		index <<= 3;
+		index |= m_unk0xc83e8;
+		index <<= 1;
+		index |= m_unk0xc83f4;
+		index <<= 1;
+		index |= (m_unk0x04 >> 9) & 0x10;
+		index |= m_unk0xc83ec;
+
+		if (m_unk0xc83e4) {
+			if (m_unk0xc83c4) {
+				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_100106d0;
+				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
+					m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_100132f0;
+					return;
+				}
+			}
+			else {
+				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+			}
+
+			index |= 8;
+		}
+		else {
+			LegoU32 flags = m_unk0xc83c8 | m_unk0xc83cc;
+			if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit14) {
+				if (m_unk0xc83c4) {
+					m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_10010500;
+				}
+				else {
+					m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000ece0;
+				}
+			}
+			else if (m_unk0xc83c4) {
+				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_10010330;
+				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
+					m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_10013110;
+					return;
+				}
+			}
+			else {
+				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000ebd0;
+			}
+		}
+
+		if (m_unk0xc8568) {
+			m_unk0xc8764 = g_unk0x1005c8a8[m_unk0x11c];
+			m_unk0xc8760 = g_unk0x1005c8c8[index];
+		}
+		else {
+			m_unk0xc8764 = g_unk0x1005c8c8[index];
+		}
+	}
+}
+
+// STUB: GOLDP 0x10013110
+void BronzeFalcon0xc8770::FUN_10013110(undefined4, undefined4, undefined4)
+{
+	STUB(0x10013110);
+}
+
+// STUB: GOLDP 0x100132f0
+void BronzeFalcon0xc8770::FUN_100132f0(undefined4, undefined4, undefined4)
+{
+	STUB(0x100132f0);
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

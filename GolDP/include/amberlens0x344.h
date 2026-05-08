@@ -24,7 +24,7 @@ public:
 	void VTable0x00() override;                                           // vtable+0x00
 	void VTable0x04() override;                                           // vtable+0x04
 	~AmberLens0x344() override;                                           // vtable+0x08
-	void VTable0x0c() override;                                           // vtable+0x0c
+	void VTable0x0c(Rect* p_rect) override;                               // vtable+0x0c
 	void VTable0x10() override;                                           // vtable+0x10
 	void VTable0x14() override;                                           // vtable+0x14
 	void VTable0x18() override;                                           // vtable+0x18

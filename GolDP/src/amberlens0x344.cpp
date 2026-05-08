@@ -90,7 +90,7 @@ void AmberLens0x344::VTable0x10()
 }
 
 // STUB: GOLDP 0x10002660
-void AmberLens0x344::VTable0x0c()
+void AmberLens0x344::VTable0x0c(Rect*)
 {
 	STUB(0x10002660);
 }

@@ -63,7 +63,7 @@ LegoBool SoftwareRenderer0x58::Initialize(PixelFormat p_pixelFormat, LegoS32 p_n
 		p_nodeCapacity = 0xffff;
 	}
 
-	m_nodes = new RenderNode[p_nodeCapacity];
+	m_nodes = new Command0x14[p_nodeCapacity];
 	if (m_nodes == NULL) {
 		m_unk0x54 = NULL;
 		return FALSE;
@@ -98,4 +98,16 @@ void SoftwareRenderer0x58::FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count)
 {
 	// TODO
 	STUB(0x100417c0);
+}
+
+// STUB: GOLDP 0x10041830
+void SoftwareRenderer0x58::FUN_10041830(LegoS32, LegoBool32)
+{
+	STUB(0x10041830);
+}
+
+// STUB: GOLDP 0x10041a20
+void SoftwareRenderer0x58::FUN_10041a20(LegoBool32)
+{
+	STUB(0x10041a20);
 }

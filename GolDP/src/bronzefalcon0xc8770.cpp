@@ -530,16 +530,94 @@ void BronzeFalcon0xc8770::VTable0x90()
 	STUB(0x100092a0);
 }
 
-// STUB: GOLDP 0x10009420
-void BronzeFalcon0xc8770::VTable0x54(undefined4)
+// FUNCTION: GOLDP 0x10009420
+void BronzeFalcon0xc8770::VTable0x54(undefined4 p_flags)
 {
-	STUB(0x10009420);
+	VTable0x5c();
+	VTable0x60();
+
+	m_unk0xc3848 = 0;
+
+	if (m_renderTargetInfo->m_pixelFlags & SilverDune0x30::c_lockFlagUnknown0x04) {
+		m_renderTargetInfo->VTable0x18();
+	}
+
+	if (p_flags & 0x05) {
+		if (m_unk0xc83c4 == 0) {
+			D3DRECT rect;
+			rect.x1 = 0;
+			rect.y1 = 0;
+
+			rect.x2 = m_renderTargetInfo->m_width;
+			rect.y2 = m_renderTargetInfo->m_height;
+
+			LegoU32 clearFlags = ((~p_flags & 0xff) >> 2) & 1;
+			if (m_unk0x04 & c_flagBit1) {
+				clearFlags |= 2;
+			}
+
+			m_d3dViewport->Clear(1, &rect, clearFlags);
+		}
+		else if (p_flags & 0x01) {
+			m_renderTargetInfo->Fill(m_unk0x2d0);
+		}
+	}
+
+	if (m_unk0xc83c4 == 0) {
+		HRESULT result = m_d3dDevice->BeginScene();
+		if (result) {
+			GOL_FATALERROR_MESSAGE("Unable to begin scene");
+		}
+	}
+	else {
+		m_unk0xc86f4 = 0;
+		m_softwareRenderer.SetDimensions(m_renderTargetInfo->m_width, m_renderTargetInfo->m_height);
+		m_unk0xc86f0 = m_softwareRenderer.GetCommands();
+		m_unk0xc86f8 = m_softwareRenderer.GetNodeCapacity();
+	}
 }
 
-// STUB: GOLDP 0x10009540
+// FUNCTION: GOLDP 0x10009540
 void BronzeFalcon0xc8770::VTable0xf0()
 {
-	STUB(0x10009540);
+	if (m_unk0xc83c4 == 0) {
+		HRESULT result = m_d3dDevice->EndScene();
+		if (result && result != DDERR_SURFACELOST) {
+			GOL_FATALERROR_MESSAGE("Unable to end scene");
+		}
+	}
+	else {
+		m_softwareRenderer.FUN_10041830(m_unk0xc86f4, TRUE);
+		if (m_unk0xc86f4 != 0) {
+			m_softwareRenderer.SetUnk0x50(m_unk0xc3848);
+
+			LegoU8* pixels;
+			LegoU32 pitch;
+			m_renderTargetInfo
+				->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
+			if (pixels != NULL) {
+				m_softwareRenderer.SetRenderTarget(pixels, pitch);
+				m_softwareRenderer.FUN_10041a20(FALSE);
+				m_renderTargetInfo->UnlockPixels();
+			}
+		}
+	}
+
+	if (m_renderTargetInfo != m_unk0x304) {
+		SlatePeak0x58* renderTargetInfo = m_unk0x304;
+		m_renderTargetInfo = renderTargetInfo;
+
+		Rect rect;
+		rect.m_left = 0;
+		rect.m_top = 0;
+		rect.m_right = renderTargetInfo->m_width;
+		rect.m_bottom = renderTargetInfo->m_height;
+
+		VTable0x20(m_unk0x0c);
+		m_unk0x0c->VTable0x0c(&rect);
+	}
+
+	m_unk0xc8538 = NULL;
 }
 
 // FUNCTION: GOLDP 0x10009640

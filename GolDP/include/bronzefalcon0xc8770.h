@@ -140,69 +140,105 @@ private:
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(undefined4*);
 	void FUN_1000b4a0();
+	void FUN_1000c630(undefined4, undefined4, undefined4);
+	void FUN_1000edf0(undefined4, undefined4, undefined4);
 	void FUN_10012f50();
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 
-	GolDrawDPState* m_drawState;                                         // 0x140
-	LPDIRECT3DDEVICE3 m_d3dDevice;                                       // 0x144
-	D3DDEVICEDESC m_d3dDeviceDesc;                                       // 0x148
-	LPDIRECT3DVIEWPORT3 m_d3dViewport;                                   // 0x244
-	D3DVIEWPORT2 m_viewportParams;                                       // 0x248
-	D3DMATERIAL m_materialParams;                                        // 0x274
-	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                            // 0x2c4
-	D3DMATERIALHANDLE m_backgroundMaterialHandle;                        // 0x2c8
-	ColorRGBA m_unk0x2cc;                                                // 0x2cc
-	LegoU32 m_unk0x2d0;                                                  // 0x2d0
-	DuskwindBananaRelic0x30 m_unk0x2d4;                                  // 0x2d4
-	SlatePeak0x58* m_unk0x304;                                           // 0x304
-	SlatePeak0x58* m_renderTargetInfo;                                   // 0x308
-	BronzeFalconSurface0x5c* m_unk0x30c;                                 // 0x30c
-	DepthBuffer0x38 m_depthBuffer;                                       // 0x310
-	D3DTLVERTEX m_unk0x348[25000];                                       // 0x348
-	undefined4 m_unk0xc3848;                                             // 0xc3848
-	undefined4 m_unk0xc384c;                                             // 0xc384c
-	undefined m_unk0xc3850[0xc83b4 - 0xc3850];                           // 0xc3850
-	Field0xc83b4 m_unk0xc83b4;                                           // 0xc83b4
-	undefined4 m_unk0xc83c4;                                             // 0xc83c4
-	undefined4 m_unk0xc83c8;                                             // 0xc83c8
-	undefined m_unk0xc83cc[0xc83d0 - 0xc83cc];                           // 0xc83cc
-	undefined4 m_unk0xc83d0;                                             // 0xc83d0
-	undefined4 m_unk0xc83d4;                                             // 0xc83d4
-	undefined4 m_unk0xc83d8;                                             // 0xc83d8
-	undefined4 m_unk0xc83dc;                                             // 0xc83dc
-	undefined4 m_unk0xc83e0;                                             // 0xc83e0
-	undefined m_unk0xc83e4[0xc83e8 - 0xc83e4];                           // 0xc83e4
-	LegoBool32 m_unk0xc83e8;                                             // 0xc83e8
-	undefined4 m_unk0xc83ec;                                             // 0xc83ec
-	undefined m_unk0xc83f0[0xc83f8 - 0xc83f0];                           // 0xc83f0
-	LegoBool32 m_unk0xc83f8;                                             // 0xc83f8
-	LegoU32 m_unk0xc83fc;                                                // 0xc83fc
-	undefined m_unk0xc8400[0xc8538 - 0xc8400];                           // 0xc8400
-	DuskwindBananaRelic0x24* m_unk0xc8538;                               // 0xc8538
-	undefined m_unk0xc853c[0xc8568 - 0xc853c];                           // 0xc853c
-	undefined4 m_unk0xc8568;                                             // 0xc8568
-	ColorRGBA m_unk0xc856c;                                              // 0xc856c
-	undefined4 m_unk0xc8570;                                             // 0xc8570
-	undefined4 m_unk0xc8574;                                             // 0xc8574
-	undefined4 m_unk0xc8578;                                             // 0xc8578
-	undefined4 m_unk0xc857c;                                             // 0xc857c
-	ColorRGBA m_unk0xc8580[2]; /* Unknown size */                        // 0xc8580
-	undefined m_unk0xc8588[0xc859c - 0xc8588];                           // 0xc8588
-	FColorRGB m_unk0xc859c[2]; /* Unknown size */                        // 0xc859c
-	undefined m_unk0xc85b4[0xc8698 - 0xc85b4];                           // 0xc85b4
-	SoftwareRenderer0x58 m_softwareRenderer;                             // 0xc8698
-	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                     // 0xc86f0
-	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
-	LegoS32 m_unk0xc86f8;                                                // 0xc86f8
-	float m_unk0xc86fc;                                                  // 0xc86fc
-	undefined4 m_unk0xc8700;                                             // 0xc8700
-	undefined m_unk0xc8704[0xc8708 - 0xc8704];                           // 0xc8704
-	D3DBLEND m_unk0xc8708[11];                                           // 0xc8708
-	D3DBLEND m_unk0xc8734[11];                                           // 0xc8734
-	undefined m_unk0xc8760[0xc876c - 0xc8760];                           // 0xc8760
-	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*); // 0xc876c
+	GolDrawDPState* m_drawState;                                                   // 0x140
+	LPDIRECT3DDEVICE3 m_d3dDevice;                                                 // 0x144
+	D3DDEVICEDESC m_d3dDeviceDesc;                                                 // 0x148
+	LPDIRECT3DVIEWPORT3 m_d3dViewport;                                             // 0x244
+	D3DVIEWPORT2 m_viewportParams;                                                 // 0x248
+	D3DMATERIAL m_materialParams;                                                  // 0x274
+	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                                      // 0x2c4
+	D3DMATERIALHANDLE m_backgroundMaterialHandle;                                  // 0x2c8
+	ColorRGBA m_unk0x2cc;                                                          // 0x2cc
+	LegoU32 m_unk0x2d0;                                                            // 0x2d0
+	DuskwindBananaRelic0x30 m_unk0x2d4;                                            // 0x2d4
+	SlatePeak0x58* m_unk0x304;                                                     // 0x304
+	SlatePeak0x58* m_renderTargetInfo;                                             // 0x308
+	BronzeFalconSurface0x5c* m_unk0x30c;                                           // 0x30c
+	DepthBuffer0x38 m_depthBuffer;                                                 // 0x310
+	D3DTLVERTEX m_unk0x348[25000];                                                 // 0x348
+	undefined4 m_unk0xc3848;                                                       // 0xc3848
+	undefined4 m_unk0xc384c;                                                       // 0xc384c
+	undefined m_unk0xc3850[0xc38ec - 0xc3850];                                     // 0xc3850
+	undefined4 m_unk0xc38ec[(0xc426c - 0xc38ec) / sizeof(undefined4)];             // 0xc38ec
+	undefined m_unk0xc426c[0xc428c - 0xc426c];                                     // 0xc426c
+	undefined4 m_unk0xc428c[(0xc4c0c - 0xc428c) / sizeof(undefined4)];             // 0xc428c
+	undefined4 m_unk0xc4c0c;                                                       // 0xc4c0c
+	undefined4 m_unk0xc4c10;                                                       // 0xc4c10
+	undefined4 m_unk0xc4c14;                                                       // 0xc4c14
+	undefined4 m_unk0xc4c18;                                                       // 0xc4c18
+	undefined m_unk0xc4c1c[0xc53a0 - 0xc4c1c];                                     // 0xc4c1c
+	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
+	undefined4 m_unk0xc83a0;                                                       // 0xc83a0
+	undefined4 m_unk0xc83a4;                                                       // 0xc83a4
+	undefined4 m_unk0xc83a8;                                                       // 0xc83a8
+	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
+	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
+	Field0xc83b4 m_unk0xc83b4;                                                     // 0xc83b4
+	undefined4 m_unk0xc83c4;                                                       // 0xc83c4
+	undefined4 m_unk0xc83c8;                                                       // 0xc83c8
+	undefined4 m_unk0xc83cc;                                                       // 0xc83cc
+	undefined4 m_unk0xc83d0;                                                       // 0xc83d0
+	undefined4 m_unk0xc83d4;                                                       // 0xc83d4
+	undefined4 m_unk0xc83d8;                                                       // 0xc83d8
+	undefined4 m_unk0xc83dc;                                                       // 0xc83dc
+	undefined4 m_unk0xc83e0;                                                       // 0xc83e0
+	undefined4 m_unk0xc83e4;                                                       // 0xc83e4
+	LegoBool32 m_unk0xc83e8;                                                       // 0xc83e8
+	undefined4 m_unk0xc83ec;                                                       // 0xc83ec
+	undefined4 m_unk0xc83f0;                                                       // 0xc83f0
+	undefined4 m_unk0xc83f4;                                                       // 0xc83f4
+	LegoBool32 m_unk0xc83f8;                                                       // 0xc83f8
+	LegoU32 m_unk0xc83fc;                                                          // 0xc83fc
+	undefined4 m_unk0xc8400[4];                                                    // 0xc8400
+	D3DMATRIX m_unk0xc8410;                                                        // 0xc8410
+	D3DMATRIX m_unk0xc8450;                                                        // 0xc8450
+	undefined4 m_unk0xc8490;                                                       // 0xc8490
+	undefined4 m_unk0xc8494;                                                       // 0xc8494
+	undefined m_unk0xc8498[0xc8518 - 0xc8498];                                     // 0xc8498
+	undefined4 m_unk0xc8518;                                                       // 0xc8518
+	undefined4 m_unk0xc851c;                                                       // 0xc851c
+	undefined4 m_unk0xc8520;                                                       // 0xc8520
+	undefined4 m_unk0xc8524;                                                       // 0xc8524
+	undefined4 m_unk0xc8528;                                                       // 0xc8528
+	LegoFloat m_unk0xc852c;                                                        // 0xc852c
+	void* m_unk0xc8530;                                                            // 0xc8530
+	void* m_unk0xc8534;                                                            // 0xc8534
+	DuskwindBananaRelic0x24* m_unk0xc8538;                                         // 0xc8538
+	void* m_unk0xc853c;                                                            // 0xc853c
+	void* m_unk0xc8540;                                                            // 0xc8540
+	void* m_unk0xc8544;                                                            // 0xc8544
+	void* m_unk0xc8548;                                                            // 0xc8548
+	void* m_unk0xc854c[(0xc8568 - 0xc854c) / sizeof(void*)];                       // 0xc854c
+	undefined4 m_unk0xc8568;                                                       // 0xc8568
+	ColorRGBA m_unk0xc856c;                                                        // 0xc856c
+	undefined4 m_unk0xc8570;                                                       // 0xc8570
+	undefined4 m_unk0xc8574;                                                       // 0xc8574
+	undefined4 m_unk0xc8578;                                                       // 0xc8578
+	undefined4 m_unk0xc857c;                                                       // 0xc857c
+	ColorRGBA m_unk0xc8580[2]; /* Unknown size */                                  // 0xc8580
+	undefined m_unk0xc8588[0xc859c - 0xc8588];                                     // 0xc8588
+	FColorRGB m_unk0xc859c[2]; /* Unknown size */                                  // 0xc859c
+	undefined m_unk0xc85b4[0xc8698 - 0xc85b4];                                     // 0xc85b4
+	SoftwareRenderer0x58 m_softwareRenderer;                                       // 0xc8698
+	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                               // 0xc86f0
+	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4
+	LegoS32 m_unk0xc86f8;                                                          // 0xc86f8
+	float m_unk0xc86fc;                                                            // 0xc86fc
+	undefined4 m_unk0xc8700;                                                       // 0xc8700
+	undefined4 m_unk0xc8704;                                                       // 0xc8704
+	D3DBLEND m_unk0xc8708[11];                                                     // 0xc8708
+	D3DBLEND m_unk0xc8734[11];                                                     // 0xc8734
+	undefined m_unk0xc8760[0xc8764 - 0xc8760];                                     // 0xc8760
+	void (BronzeFalcon0xc8770::*m_unk0xc8764)(undefined4, undefined4, undefined4); // 0xc8764
+	void (BronzeFalcon0xc8770::*m_unk0xc8768)(undefined4, undefined4, undefined4); // 0xc8768
+	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*);           // 0xc876c
 };
 
 #endif // BRONZEFALCON0XC8770_H

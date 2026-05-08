@@ -426,10 +426,43 @@ void BronzeFalcon0xc8770::FUN_100082e0()
 	STUB(0x100082e0);
 }
 
-// STUB: GOLDP 0x10008680
+// FUNCTION: GOLDP 0x10008680
 void BronzeFalcon0xc8770::ReleaseResources()
 {
-	STUB(0x10008680);
+	WhiteFalcon0x140::ReleaseResources();
+
+	for (BronzeFalconSurface0x5c* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
+		surface->FUN_100137d0();
+	}
+
+	m_unk0x2d4.Destroy();
+
+	if (m_unk0x04 & c_flagBit16) {
+		m_softwareRenderer.~SoftwareRenderer0x58();
+	}
+
+	if (m_depthBuffer.GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
+		m_depthBuffer.Release();
+	}
+
+	if (m_d3dViewport != NULL) {
+		m_d3dViewport->Release();
+		m_d3dViewport = NULL;
+	}
+
+	if (m_d3dDevice != NULL) {
+		if (m_backgroundMaterial != NULL) {
+			m_backgroundMaterial->Release();
+			m_backgroundMaterial = NULL;
+			m_backgroundMaterialHandle = 0;
+		}
+
+		m_d3dDevice->Release();
+		m_d3dDevice = NULL;
+	}
+
+	::memset(&m_d3dDeviceDesc, 0, sizeof(m_d3dDeviceDesc));
+	m_d3dDeviceDesc.dwSize = sizeof(m_d3dDeviceDesc);
 }
 
 // FUNCTION: GOLDP 0x10008740

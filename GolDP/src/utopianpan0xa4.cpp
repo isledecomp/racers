@@ -86,6 +86,14 @@ void UtopianPan0xa4::FUN_10005440(undefined4*, undefined4*, undefined4*)
 	STUB(0x10005440);
 }
 
+// STUB: GOLDP 0x10005510
+undefined4 UtopianPan0xa4::FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*, Rect*, undefined4)
+{
+	// TODO
+	STUB(0x10005510);
+	return 0;
+}
+
 // STUB: GOLDP 0x10005ae0
 undefined4 UtopianPan0xa4::VTable0x1c(undefined4, undefined4)
 {

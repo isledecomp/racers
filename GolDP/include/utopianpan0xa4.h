@@ -6,7 +6,9 @@
 #include "types.h"
 #include "whitebaffoon0x50.h"
 
+class BronzeFalcon0xc8770;
 class DuskwindBananaRelic0x30;
+struct Rect;
 
 // SIZE 0xa4
 // VTABLE: GOLDP 0x10056340
@@ -26,6 +28,7 @@ public:
 	void FUN_100051c0();
 	void FUN_10005210();
 	void FUN_10005440(undefined4*, undefined4*, undefined4*);
+	undefined4 FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*, Rect*, undefined4);
 
 	// SYNTHETIC: GOLDP 0x10005e60
 	// UtopianPan0xa4::`vector deleting destructor'

@@ -782,11 +782,16 @@ const SlatePeak0x58* BronzeFalcon0xc8770::GetRenderTargetInfo()
 	return m_renderTargetInfo;
 }
 
-// STUB: GOLDP 0x10009960
-undefined4 BronzeFalcon0xc8770::VTable0x7c(UtopianPan0xa4*, undefined4, Rect*, Rect*, undefined4)
+// FUNCTION: GOLDP 0x10009960
+undefined4 BronzeFalcon0xc8770::VTable0x7c(
+	UtopianPan0xa4* p_image,
+	undefined4 p_unk0x08,
+	Rect* p_destRect,
+	Rect* p_sourceRect,
+	undefined4 p_unk0x14
+)
 {
-	STUB(0x10009960);
-	return 0;
+	return p_image->FUN_10005510(this, p_unk0x08, p_destRect, p_sourceRect, p_unk0x14);
 }
 
 // STUB: GOLDP 0x10009990
@@ -1370,10 +1375,12 @@ void BronzeFalcon0xc8770::FUN_1000ac00(undefined4*)
 	STUB(0x1000ac00);
 }
 
-// STUB: GOLDP 0x1000aeb0
-void BronzeFalcon0xc8770::SetAlphaOverride(undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000aeb0
+void BronzeFalcon0xc8770::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 {
-	STUB(0x1000aeb0);
+	WhiteFalcon0x140::SetAlphaOverride(p_alpha, p_flags);
+	m_unk0xc83e0 = p_alpha;
+	m_unk0xc83fc = (m_unk0xc83fc & 0x00ffffff) | (p_alpha << 24);
 }
 
 // FUNCTION: GOLDP 0x1000aef0

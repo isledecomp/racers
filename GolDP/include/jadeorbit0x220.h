@@ -10,23 +10,24 @@
 class JadeOrbit0x220 : public JadeOrbitBase0x10 {
 public:
 	JadeOrbit0x220();
-	void VTable0x00() override;                                                 // vtable+0x00
-	void VTable0x04() override;                                                 // vtable+0x04
-	void VTable0x08(undefined4, undefined4) override;                           // vtable+0x08
-	void VTable0x0c() override;                                                 // vtable+0x0c
-	void VTable0x10() override;                                                 // vtable+0x10
-	void VTable0x14() override;                                                 // vtable+0x14
-	void VTable0x18() override;                                                 // vtable+0x18
-	void VTable0x1c() override;                                                 // vtable+0x1c
-	void VTable0x20() override;                                                 // vtable+0x20
+	void VTable0x00() override;                       // vtable+0x00
+	void VTable0x04() override;                       // vtable+0x04
+	void VTable0x08(undefined4, undefined4) override; // vtable+0x08
+	void VTable0x0c() override;                       // vtable+0x0c
+	void VTable0x10() override;                       // vtable+0x10
+	void VTable0x14() override;                       // vtable+0x14
+	void VTable0x18(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08,
+					FloatyVec0xc* p_unk0x0c) override;                          // vtable+0x18
+	void VTable0x1c(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x1c
+	void VTable0x20(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x20
 	void VTable0x24(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x24
 	void VTable0x28() override;                                                 // vtable+0x28
 	void VTable0x2c() override;                                                 // vtable+0x2c
-	void VTable0x30() override;                                                 // vtable+0x30
-	void VTable0x34() override;                                                 // vtable+0x34
-	void VTable0x38() override;                                                 // vtable+0x38
+	void VTable0x30(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x30
+	void VTable0x34(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x34
+	void VTable0x38(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x38
 	void VTable0x3c() override;                                                 // vtable+0x3c
-	void VTable0x40() override;                                                 // vtable+0x40
+	void VTable0x40(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x40
 	void VTable0x44(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x44
 	void VTable0x48() override;                                                 // vtable+0x48
 

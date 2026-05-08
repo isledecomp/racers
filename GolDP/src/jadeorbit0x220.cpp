@@ -55,22 +55,40 @@ JadeOrbit0x220::JadeOrbit0x220()
 	m_unk0x4c = 1.0f;
 }
 
-// STUB: GOLDP 0x10002980
-void JadeOrbit0x220::VTable0x18()
+// FUNCTION: GOLDP 0x10002980
+void JadeOrbit0x220::VTable0x18(FloatyVec0xc* p_right, FloatyVec0xc* p_forward, FloatyVec0xc* p_up)
 {
-	STUB(0x10002980);
+	p_up->m_x = m_unk0x10;
+	p_up->m_y = m_unk0x14;
+	p_up->m_z = m_unk0x18;
+	p_forward->m_x = m_unk0x20;
+	p_forward->m_y = m_unk0x24;
+	p_forward->m_z = m_unk0x28;
+	p_right->m_x = m_unk0x30;
+	p_right->m_y = m_unk0x34;
+	p_right->m_z = m_unk0x38;
 }
 
-// STUB: GOLDP 0x100029d0
-void JadeOrbit0x220::VTable0x1c()
+// FUNCTION: GOLDP 0x100029d0
+void JadeOrbit0x220::VTable0x1c(FloatyVec0xc* p_right, FloatyVec0xc* p_forward)
 {
-	STUB(0x100029d0);
+	p_forward->m_x = m_unk0x20;
+	p_forward->m_y = m_unk0x24;
+	p_forward->m_z = m_unk0x28;
+	p_right->m_x = m_unk0x30;
+	p_right->m_y = m_unk0x34;
+	p_right->m_z = m_unk0x38;
 }
 
-// STUB: GOLDP 0x10002a00
-void JadeOrbit0x220::VTable0x20()
+// FUNCTION: GOLDP 0x10002a00
+void JadeOrbit0x220::VTable0x20(FloatyVec0xc* p_up, FloatyVec0xc* p_right)
 {
-	STUB(0x10002a00);
+	p_up->m_x = m_unk0x10;
+	p_up->m_y = m_unk0x14;
+	p_up->m_z = m_unk0x18;
+	p_right->m_x = m_unk0x30;
+	p_right->m_y = m_unk0x34;
+	p_right->m_z = m_unk0x38;
 }
 
 // STUB: GOLDP 0x10002a30
@@ -115,22 +133,28 @@ void JadeOrbit0x220::VTable0x2c()
 	STUB(0x10002e30);
 }
 
-// STUB: GOLDP 0x10002f50
-void JadeOrbit0x220::VTable0x30()
+// FUNCTION: GOLDP 0x10002f50
+void JadeOrbit0x220::VTable0x30(FloatyVec0xc* p_up)
 {
-	STUB(0x10002f50);
+	p_up->m_x = m_unk0x10;
+	p_up->m_y = m_unk0x14;
+	p_up->m_z = m_unk0x18;
 }
 
-// STUB: GOLDP 0x10002f70
-void JadeOrbit0x220::VTable0x34()
+// FUNCTION: GOLDP 0x10002f70
+void JadeOrbit0x220::VTable0x34(FloatyVec0xc* p_forward)
 {
-	STUB(0x10002f70);
+	p_forward->m_x = m_unk0x20;
+	p_forward->m_y = m_unk0x24;
+	p_forward->m_z = m_unk0x28;
 }
 
-// STUB: GOLDP 0x10002f90
-void JadeOrbit0x220::VTable0x38()
+// FUNCTION: GOLDP 0x10002f90
+void JadeOrbit0x220::VTable0x38(FloatyVec0xc* p_right)
 {
-	STUB(0x10002f90);
+	p_right->m_x = m_unk0x30;
+	p_right->m_y = m_unk0x34;
+	p_right->m_z = m_unk0x38;
 }
 
 // STUB: GOLDP 0x10002fb0
@@ -139,16 +163,20 @@ void JadeOrbit0x220::VTable0x3c()
 	STUB(0x10002fb0);
 }
 
-// STUB: GOLDP 0x10002fe0
-void JadeOrbit0x220::VTable0x40()
+// FUNCTION: GOLDP 0x10002fe0
+void JadeOrbit0x220::VTable0x40(FloatyVec0xc* p_position)
 {
-	STUB(0x10002fe0);
+	p_position->m_x = m_unk0x40;
+	p_position->m_y = m_unk0x44;
+	p_position->m_z = m_unk0x48;
 }
 
-// STUB: GOLDP 0x10003000
-void JadeOrbit0x220::VTable0x44(FloatyVec0xc*)
+// FUNCTION: GOLDP 0x10003000
+void JadeOrbit0x220::VTable0x44(FloatyVec0xc* p_position)
 {
-	STUB(0x10003000);
+	m_unk0x40 = p_position->m_x;
+	m_unk0x44 = p_position->m_y;
+	m_unk0x48 = p_position->m_z;
 }
 
 // STUB: GOLDP 0x10003020

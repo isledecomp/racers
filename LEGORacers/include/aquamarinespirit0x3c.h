@@ -15,6 +15,7 @@ class GolExport;
 class AmberHaze0x1c;
 class MagentaRibbon0x20;
 class OpalHaven0xf4;
+class WhiteFalconNode0x18;
 
 // VTABLE: LEGORACERS 0x004afe70
 // SIZE 0x3c
@@ -61,18 +62,18 @@ private:
 	void FUN_0041d980();
 	void FUN_0041dae0();
 
-	GolExport* m_unk0x0c;          // 0x0c
-	undefined4 m_unk0x10;          // 0x10
-	Item0x104* m_unk0x14;          // 0x14
-	undefined4** m_unk0x18;        // 0x18
-	MagentaRibbon0x20** m_unk0x1c; // 0x1c
-	AmberHaze0x1c** m_unk0x20;     // 0x20
-	undefined4** m_unk0x24;        // 0x24
-	CmbModelPart0x34* m_unk0x28;   // 0x28
-	OpalHaven0xf4* m_unk0x2c;      // 0x2c
-	undefined4 m_unk0x30;          // 0x30
-	LegoU32 m_unk0x34;             // 0x34
-	undefined4 m_unk0x38;          // 0x38
+	GolExport* m_unk0x0c;            // 0x0c
+	undefined4 m_unk0x10;            // 0x10
+	Item0x104* m_unk0x14;            // 0x14
+	undefined4** m_unk0x18;          // 0x18
+	MagentaRibbon0x20** m_unk0x1c;   // 0x1c
+	AmberHaze0x1c** m_unk0x20;       // 0x20
+	WhiteFalconNode0x18** m_unk0x24; // 0x24
+	CmbModelPart0x34* m_unk0x28;     // 0x28
+	OpalHaven0xf4* m_unk0x2c;        // 0x2c
+	undefined4 m_unk0x30;            // 0x30
+	LegoU32 m_unk0x34;               // 0x34
+	undefined4 m_unk0x38;            // 0x38
 };
 
 #endif // AQUAMARINESPIRIT0X3C_H

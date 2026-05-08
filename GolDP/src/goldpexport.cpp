@@ -8,9 +8,12 @@
 #include "fluffygloomkins0x118.h"
 #include "golerror.h"
 #include "golfont0xa0.h"
+#include "golfontbase0x40.h"
 #include "golfonttable.h"
 #include "purpleribbon0x24.h"
 #include "types.h"
+#include "whitebaffoon0x50.h"
+#include "whitefalconnode0x18.h"
 
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
 DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
@@ -156,43 +159,28 @@ GolFontTable* GolDPExport::VTable0x38()
 	return result;
 }
 
-// STUB: GOLDP 0x100155e0
-void GolDPExport::VTable0x3c(undefined4* p_obj)
+// FUNCTION: GOLDP 0x100155e0
+void GolDPExport::VTable0x3c(ZoweeBlubberworth0xf0* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x100155e0);
-#endif
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
+// FUNCTION: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x40(MagentaRibbon0x20* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015600);
-#endif
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
+// FUNCTION: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x44(AmberHaze0x1c* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015600);
-#endif
 }
 
 // STUB: GOLDP 0x10015620
@@ -208,30 +196,20 @@ void GolDPExport::VTable0x48(undefined4* p_obj)
 #endif
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x4c(undefined4* p_obj)
+// FUNCTION: GOLDP 0x10015600 FOLDED
+void GolDPExport::VTable0x4c(WhiteFalconNode0x18* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015600);
-#endif
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x50(undefined4* p_obj)
+// FUNCTION: GOLDP 0x10015600 FOLDED
+void GolDPExport::VTable0x50(BoundingShape0x2c* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015600);
-#endif
 }
 
 // FUNCTION: GOLDP 0x10015640
@@ -242,43 +220,28 @@ void GolDPExport::VTable0x54(AmberLens0x344* p_obj)
 	}
 }
 
-// STUB: GOLDP 0x10015660
-void GolDPExport::VTable0x5c(undefined4* p_obj)
+// FUNCTION: GOLDP 0x10015660
+void GolDPExport::VTable0x5c(WhiteBaffoon0x50* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015660);
-#endif
 }
 
-// STUB: GOLDP 0x10015680
-void GolDPExport::VTable0x60(undefined4* p_obj)
+// FUNCTION: GOLDP 0x10015680
+void GolDPExport::VTable0x60(GolFontBase0x40* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015680);
-#endif
 }
 
-// STUB: GOLDP 0x100156a0
+// FUNCTION: GOLDP 0x100156a0
 void GolDPExport::VTable0x64(undefined4* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
-		delete p_obj; // or delete[] p_obj
+		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x100156a0);
-#endif
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
@@ -287,28 +250,18 @@ void GolDPExport::VTable0x58(undefined4*)
 	// empty
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
+// FUNCTION: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x68(AwakeKite0x20* p_obj)
 {
-	// FIXME: other folding functions need implementation
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	STUB(0x10015600);
-#endif
 }
 
-// STUB: GOLDP 0x10015600 FOLDED
+// FUNCTION: GOLDP 0x10015600 FOLDED
 void GolDPExport::VTable0x6c(GolNameTable* p_fontTable)
 {
-	// FIXME: other folding functions need implementation
-#if 0
 	if (p_fontTable != NULL) {
 		delete p_fontTable;
 	}
-#else
-	STUB(0x10015600);
-#endif
 }

@@ -29,16 +29,16 @@ public:
 	FloatyBoat0x28* VTable0x30() override;               // vtable+0x30
 	AwakeKite0x20* VTable0x34() override;                // vtable+0x34
 	GolFontTable* VTable0x38() override;                 // vtable+0x38
-	void VTable0x3c(undefined4*) override;               // vtable+0x3c
+	void VTable0x3c(ZoweeBlubberworth0xf0*) override;    // vtable+0x3c
 	void VTable0x40(MagentaRibbon0x20*) override;        // vtable+0x40
 	void VTable0x44(AmberHaze0x1c*) override;            // vtable+0x44
 	void VTable0x48(undefined4*) override;               // vtable+0x48
-	void VTable0x4c(undefined4*) override;               // vtable+0x4c
-	void VTable0x50(undefined4*) override;               // vtable+0x50
+	void VTable0x4c(WhiteFalconNode0x18*) override;      // vtable+0x4c
+	void VTable0x50(BoundingShape0x2c*) override;        // vtable+0x50
 	void VTable0x54(AmberLens0x344*) override;           // vtable+0x54
 	void VTable0x58(undefined4*) override;               // vtable+0x58
-	void VTable0x5c(undefined4*) override;               // vtable+0x5c
-	void VTable0x60(undefined4*) override;               // vtable+0x60
+	void VTable0x5c(WhiteBaffoon0x50*) override;         // vtable+0x5c
+	void VTable0x60(GolFontBase0x40*) override;          // vtable+0x60
 	void VTable0x64(undefined4*) override;               // vtable+0x64
 	void VTable0x68(AwakeKite0x20*) override;            // vtable+0x68
 	void VTable0x6c(GolNameTable* p_fontTable) override; // vtable+0x6c

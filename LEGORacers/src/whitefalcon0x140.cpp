@@ -46,13 +46,13 @@ UtopianPan0xa4* WhiteFalcon0x140::FindImageByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x004131d0
-undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
+GoldDune0x38* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 {
 	MagentaRibbon0x20* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
+			GoldDune0x38* value = static_cast<GoldDune0x38*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

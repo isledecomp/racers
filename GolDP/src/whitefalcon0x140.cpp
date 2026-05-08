@@ -398,13 +398,13 @@ void WhiteFalcon0x140::RemoveTextureList(MagentaRibbon0x20* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028b90
-undefined4* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
+GoldDune0x38* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 {
 	MagentaRibbon0x20* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
+			GoldDune0x38* value = static_cast<GoldDune0x38*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}
@@ -829,7 +829,7 @@ void WhiteFalcon0x140::VTable0x48()
 }
 
 // FUNCTION: GOLDP 0x10029960
-void WhiteFalcon0x140::VTable0x58(undefined4 p_param1, undefined4 p_param2)
+void WhiteFalcon0x140::VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2)
 {
 	VTable0x54(p_param2);
 }
@@ -859,7 +859,7 @@ SlatePeak0x58* WhiteFalcon0x140::VTable0x4c(undefined2, undefined2)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void WhiteFalcon0x140::VTable0x50(undefined4)
+void WhiteFalcon0x140::VTable0x50(SlatePeak0x58*)
 {
 	// empty
 }
@@ -913,7 +913,7 @@ void WhiteFalcon0x140::VTable0xb0(undefined4, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void WhiteFalcon0x140::VTable0x3c(undefined4)
+void WhiteFalcon0x140::VTable0x3c(LegoU32)
 {
 	// empty
 }

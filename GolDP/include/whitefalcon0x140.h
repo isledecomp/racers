@@ -21,6 +21,7 @@ struct Rect;
 class MagentaRibbon0x20;
 class SlatePeak0x58;
 class UtopianPan0xa4;
+class GoldDune0x38;
 
 // VTABLE: GOLDP 0x10057338
 // SIZE 0x140
@@ -54,6 +55,7 @@ public:
 		c_flagBit14 = 1 << 14,
 		c_flagBit15 = 1 << 15,
 		c_flagBit16 = 1 << 16,
+		c_flagBit17 = 1 << 17,
 		c_flagBit18 = 1 << 18,
 		c_flagBit19 = 1 << 19,
 		c_flagBit20 = 1 << 20,
@@ -81,14 +83,14 @@ public:
 	virtual void VTable0x30(const Field0x124* p_param);                     // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
 	virtual void VTable0x38();                                              // vtable+0x38
-	virtual void VTable0x3c(undefined4);                                    // vtable+0x3c
+	virtual void VTable0x3c(LegoU32);                                       // vtable+0x3c
 	virtual void VTable0x40();                                              // vtable+0x40
 	virtual void VTable0x44();                                              // vtable+0x44
 	virtual void VTable0x48();                                              // vtable+0x48
 	virtual SlatePeak0x58* VTable0x4c(undefined2, undefined2);              // vtable+0x4c
-	virtual void VTable0x50(undefined4);                                    // vtable+0x50
+	virtual void VTable0x50(SlatePeak0x58*);                                // vtable+0x50
 	virtual void VTable0x54(undefined4) = 0;                                // vtable+0x54
-	virtual void VTable0x58(undefined4 p_param1, undefined4 p_param2);      // vtable+0x58
+	virtual void VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2);  // vtable+0x58
 	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
 	virtual void VTable0x64() = 0;                                          // vtable+0x64
@@ -163,7 +165,7 @@ public:
 	void RemoveImageList(HypnoticNoise0x1c* p_param);
 	void AddTextureList(MagentaRibbon0x20* p_param);
 	void RemoveTextureList(MagentaRibbon0x20* p_param);
-	undefined4* FindTextureByName(const LegoChar* p_name);
+	GoldDune0x38* FindTextureByName(const LegoChar* p_name);
 	void AddMaterialList(AmberHaze0x1c* p_param);
 	void RemoveMaterialList(AmberHaze0x1c* p_param);
 	undefined4* FindMaterialByName(const LegoChar* p_name);

@@ -13,6 +13,7 @@
 
 class BronzeFalconSurface0x5c;
 class AmberLens0x344;
+class GoldDune0x38;
 class GolDrawDPState;
 
 // VTABLE: GOLDP 0x100565b8
@@ -51,12 +52,12 @@ public:
 	void VTable0x30(const Field0x124*) override;                             // vtable+0x30
 	void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
 	void VTable0x38() override;                                              // vtable+0x38
-	void VTable0x3c(undefined4) override;                                    // vtable+0x3c
+	void VTable0x3c(LegoU32) override;                                       // vtable+0x3c
 	void VTable0x40() override;                                              // vtable+0x40
 	SlatePeak0x58* VTable0x4c(undefined2, undefined2) override;              // vtable+0x4c
-	void VTable0x50(undefined4) override;                                    // vtable+0x50
+	void VTable0x50(SlatePeak0x58*) override;                                // vtable+0x50
 	void VTable0x54(undefined4) override;                                    // vtable+0x54
-	void VTable0x58(undefined4, undefined4) override;                        // vtable+0x58
+	void VTable0x58(SlatePeak0x58*, undefined4) override;                    // vtable+0x58
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
 	void VTable0x64() override;                                              // vtable+0x64
@@ -143,7 +144,7 @@ private:
 	void FUN_100082e0();
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
-	void FUN_1000ac00(undefined4*);
+	void FUN_1000ac00(GoldDune0x38*);
 	void FUN_1000b0f0(LegoU32 p_index, const Field0x124* p_param);
 	void FUN_1000b4a0();
 	void FUN_1000c630(undefined4, undefined4, undefined4);
@@ -183,7 +184,7 @@ private:
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)];           // 0xc53a0
 	undefined4 m_unk0xc83a0;                                                       // 0xc83a0
 	undefined4 m_unk0xc83a4;                                                       // 0xc83a4
-	undefined4 m_unk0xc83a8;                                                       // 0xc83a8
+	GoldDune0x38* m_unk0xc83a8;                                                    // 0xc83a8
 	undefined4 m_unk0xc83ac;                                                       // 0xc83ac
 	undefined4 m_unk0xc83b0;                                                       // 0xc83b0
 	Field0xc83b4 m_unk0xc83b4;                                                     // 0xc83b4

@@ -5,6 +5,7 @@
 #include "falcontextureformat.h"
 #include "golddune0x38.h"
 
+#include <d3d.h>
 #include <ddraw.h>
 
 class IPalette0x4;
@@ -33,6 +34,8 @@ public:
 	void FUN_10016380();
 	void FUN_10016440(BronzeFalcon0xc8770& p_renderer);
 	void FUN_10016460(BronzeFalcon0xc8770& p_renderer);
+
+	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return reinterpret_cast<LPDIRECT3DTEXTURE2>(m_unk0x4c); }
 
 	// SYNTHETIC: GOLDP 0x10004aa0
 	// PurpleDune0x7c::`vector deleting destructor'

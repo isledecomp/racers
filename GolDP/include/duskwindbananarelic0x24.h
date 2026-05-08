@@ -5,6 +5,7 @@
 #include "types.h"
 
 class WhiteFalcon0x140;
+class GoldDune0x38;
 
 // SIZE 0x04
 struct DuskwindBananaRelicColor {
@@ -28,7 +29,7 @@ struct DuskWindBananaRelicParams {
 	DuskWindBananaRelicParams(LegoU8 p_fullIntensity);
 
 	LegoU32 m_unk0x00;
-	undefined4* m_unk0x04;
+	GoldDune0x38* m_unk0x04;
 	DuskwindBananaRelicColor m_unk0x08;
 	DuskwindBananaRelicColor m_unk0x0c;
 	undefined m_unk0x10;
@@ -83,7 +84,7 @@ public:
 	DuskwindBananaRelic0x24();
 	virtual ~DuskwindBananaRelic0x24(); // vtable+0x00
 
-	undefined4* GetUnk0x04() const { return m_unk0x04; }
+	GoldDune0x38* GetUnk0x04() const { return m_unk0x04; }
 	LegoU32 GetUnk0x08() const { return m_unk0x08; }
 	const DuskwindBananaRelicColor& GetColor0x0c() const { return m_unk0x0c; }
 	const DuskwindBananaRelicColor& GetColor0x10() const { return m_unk0x10; }
@@ -99,7 +100,7 @@ public:
 	friend class AmberHaze0x1c;
 
 protected:
-	undefined4* m_unk0x04;
+	GoldDune0x38* m_unk0x04;
 	LegoU32 m_unk0x08;
 	DuskwindBananaRelicColor m_unk0x0c;
 	DuskwindBananaRelicColor m_unk0x10;

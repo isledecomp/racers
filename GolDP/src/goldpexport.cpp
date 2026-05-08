@@ -30,7 +30,7 @@ GolDPExport::~GolDPExport()
 // FUNCTION: GOLDP 0x10015090
 GolDrawState* GolDPExport::VTable0x04()
 {
-	return &this->m_state;
+	return &m_state;
 }
 
 // FUNCTION: GOLDP 0x100150a0

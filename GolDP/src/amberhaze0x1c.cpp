@@ -37,10 +37,12 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 	if (m_renderer != NULL) {
 		Clear();
 	}
+
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
 	m_unk0x14 = NULL;
 	GolFileParser* parser;
+
 	if (p_binary) {
 		parser = new GolBinParser;
 		if (parser == NULL) {
@@ -54,17 +56,22 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	m_numItems = parser->FUN_100327e0();
+
 	if (m_numItems == 0) {
 		parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
+
 	GolNameTable::Allocate(m_numItems);
 	VTable0x14();
 	LegoU32 i;
 	LegoU32 j;
 	LegoChar textureName[8];
+	LegoU8 fullIntensity = 0xff;
+
 	for (i = 0; i < m_numItems; i++) {
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 		DuskWindName0x8 name;
@@ -76,28 +83,10 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 		DuskwindBananaRelic0x24* material = VTable0x28(i);
 		AddName(name.m_unk0x0, material);
 		parser->ReadLeftCurly();
-		DuskWindBananaRelicParams params;
-		params.m_unk0x0c.m_unk0x0 = 0xff;
-		params.m_unk0x0c.m_unk0x1 = 0xff;
-		params.m_unk0x0c.m_unk0x2 = 0xff;
-		params.m_unk0x0c.m_unk0x3 = 0xff;
-		params.m_unk0x08.m_unk0x0 = 0xff;
-		params.m_unk0x08.m_unk0x1 = 0xff;
-		params.m_unk0x08.m_unk0x2 = 0xff;
-		params.m_unk0x08.m_unk0x3 = 0xff;
-		params.m_unk0x00 = DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
-						   DuskwindBananaRelic0x24::c_flag0x08Bit7 | DuskwindBananaRelic0x24::c_flag0x08Bit9 |
-						   DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit13 |
-						   DuskwindBananaRelic0x24::c_flag0x08Bit15 | DuskwindBananaRelic0x24::c_flag0x08Bit20 |
-						   DuskwindBananaRelic0x24::c_flag0x08Bit22;
-		params.m_unk0x04 = NULL;
-		params.m_unk0x10 = 2;
-		params.m_unk0x11 = 0;
-		params.m_unk0x12 = 1;
-		params.m_unk0x13 = 0;
+		DuskWindBananaRelicParams params(fullIntensity);
 
-		GolFileParser::ParserTokenType token;
-		while ((token = parser->GetNextToken()) != GolFileParser::e_rightCurly) {
+		GolFileParser::ParserTokenType token = parser->GetNextToken();
+		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
 				params.m_unk0x08.m_unk0x0 = parser->ReadInteger();
@@ -121,7 +110,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 				break;
 			case GolFileParser::e_unknown0x2c:
 				::strncpy(textureName, parser->ReadStringWithMaxLength(8), 8);
-				params.m_unk0x04 = m_renderer->FindTextureByName(textureName);
+				params.m_unk0x04 = p_renderer->FindTextureByName(textureName);
 				if (params.m_unk0x04 == NULL) {
 					char message[128];
 					::strcpy(message, "Mat def file references unknown texture: ");
@@ -234,13 +223,6 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit10;
 				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit11;
 				break;
-			case GolFileParser::e_unknown0x46:
-			case GolFileParser::e_unknown0x4e:
-				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 &=
-					~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
-				break;
 			case GolFileParser::e_unknown0x47:
 				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit14;
 				break;
@@ -263,14 +245,21 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit22;
 				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit21;
 				break;
-			case GolFileParser::e_unknown0x4d:
-			case GolFileParser::e_unknown0x50:
+			case GolFileParser::e_unknown0x46:
+			case GolFileParser::e_unknown0x4e:
 				params.m_unk0x13 = parser->ReadInteger();
 				params.m_unk0x00 &=
 					~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
 				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
 				break;
 			case GolFileParser::e_unknown0x4f:
+				params.m_unk0x13 = parser->ReadInteger();
+				params.m_unk0x00 = (params.m_unk0x00 & ~(DuskwindBananaRelic0x24::c_flag0x08Bit8 |
+														 DuskwindBananaRelic0x24::c_flag0x08Bit13)) |
+								   (DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12);
+				break;
+			case GolFileParser::e_unknown0x4d:
+			case GolFileParser::e_unknown0x50:
 				params.m_unk0x13 = parser->ReadInteger();
 				params.m_unk0x00 &=
 					~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
@@ -280,10 +269,12 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 				break;
 			}
+			token = parser->GetNextToken();
 		}
 		material->m_unk0x18 = name;
 		material->FUN_100257e0(m_renderer, params);
 	}
+
 	parser->ReadRightCurly();
 	parser->Dispose();
 	FUN_10026970();
@@ -325,6 +316,7 @@ void AmberHaze0x1c::VTable0x20(WhiteFalcon0x140* p_renderer, undefined4* p_arg2,
 	if (m_renderer != NULL) {
 		Clear();
 	}
+
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
 	m_unk0x14 = p_arg2;
@@ -355,6 +347,7 @@ void AmberHaze0x1c::VTable0x1c(WhiteFalcon0x140* p_renderer, LegoU32 p_capacity)
 	if (m_renderer != NULL) {
 		Clear();
 	}
+
 	m_renderer = p_renderer;
 	p_renderer->AddMaterialList(this);
 	m_numItems = p_capacity;

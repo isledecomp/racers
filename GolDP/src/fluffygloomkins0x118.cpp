@@ -116,14 +116,14 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 
 	if (GetUnk0x0c() != 0) {
 		m_unk0xf0 = new PurpleRibbon0x24[GetUnk0x0c()];
-		if (m_unk0xf0 != NULL) {
+		if (m_unk0xf0 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (GetUnk0x14() != 0) {
 		m_unk0xf4 = new AmberHaze0x20[GetUnk0x14()];
-		if (m_unk0xf4 != NULL) {
+		if (m_unk0xf4 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}

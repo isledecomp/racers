@@ -24,6 +24,9 @@ struct DuskwindBananaRelicColor {
 
 // SIZE 0x14
 struct DuskWindBananaRelicParams {
+	DuskWindBananaRelicParams() {}
+	DuskWindBananaRelicParams(LegoU8 p_fullIntensity);
+
 	LegoU32 m_unk0x00;
 	undefined4* m_unk0x04;
 	DuskwindBananaRelicColor m_unk0x08;
@@ -107,5 +110,27 @@ protected:
 	undefined m_unk0x22;
 	undefined m_unk0x23;
 };
+
+inline DuskWindBananaRelicParams::DuskWindBananaRelicParams(LegoU8 p_fullIntensity)
+{
+	m_unk0x0c.m_unk0x0 = p_fullIntensity;
+	m_unk0x0c.m_unk0x1 = p_fullIntensity;
+	m_unk0x0c.m_unk0x2 = p_fullIntensity;
+	m_unk0x0c.m_unk0x3 = p_fullIntensity;
+	m_unk0x08.m_unk0x0 = p_fullIntensity;
+	m_unk0x08.m_unk0x1 = p_fullIntensity;
+	m_unk0x08.m_unk0x2 = p_fullIntensity;
+	m_unk0x08.m_unk0x3 = p_fullIntensity;
+	m_unk0x00 = DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
+				DuskwindBananaRelic0x24::c_flag0x08Bit7 | DuskwindBananaRelic0x24::c_flag0x08Bit9 |
+				DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit13 |
+				DuskwindBananaRelic0x24::c_flag0x08Bit15 | DuskwindBananaRelic0x24::c_flag0x08Bit20 |
+				DuskwindBananaRelic0x24::c_flag0x08Bit22;
+	m_unk0x04 = NULL;
+	m_unk0x10 = 2;
+	m_unk0x11 = 0;
+	m_unk0x12 = 1;
+	m_unk0x13 = 0;
+}
 
 #endif // DUSKWINDBANANARELIC0x24_H

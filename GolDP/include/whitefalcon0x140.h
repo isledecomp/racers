@@ -52,6 +52,7 @@ public:
 		c_flagBit9 = 1 << 9,
 		c_flagBit11 = 1 << 11,
 		c_flagBit12 = 1 << 12,
+		c_flagBit13 = 1 << 13,
 		c_flagBit14 = 1 << 14,
 		c_flagBit15 = 1 << 15,
 		c_flagBit16 = 1 << 16,

@@ -421,11 +421,102 @@ rendererCreated:
 	return 0;
 }
 
-// STUB: GOLDP 0x100082e0
+// FUNCTION: GOLDP 0x100082e0
 void BronzeFalcon0xc8770::FUN_100082e0()
 {
-	// TODO
-	STUB(0x100082e0);
+	m_unk0xc83f0 = FALSE;
+	m_unk0xc83ec = 0;
+	m_unk0xc83e8 = FALSE;
+	if (m_unk0x04 & c_flagBit19) {
+		m_unk0xc83fc = ARGBU32(m_unk0xc83e0, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+	}
+	else {
+		m_unk0xc83f8 = FALSE;
+	}
+
+	m_unk0xc83d0 = 0;
+	m_unk0xc83d4 = 0;
+	m_unk0xc83d8 = 6;
+	m_unk0xc83dc = 8;
+	m_unk0xc83c8 = DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
+				   DuskwindBananaRelic0x24::c_flag0x08Bit7 | DuskwindBananaRelic0x24::c_flag0x08Bit9 |
+				   DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit13 |
+				   DuskwindBananaRelic0x24::c_flag0x08Bit15 | DuskwindBananaRelic0x24::c_flag0x08Bit20 |
+				   DuskwindBananaRelic0x24::c_flag0x08Bit22;
+	FUN_10012f50();
+
+	if (m_unk0x04 & c_flagBit16) {
+		return;
+	}
+
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_CULLMODE, D3DCULL_NONE);
+	m_d3dDevice->SetRenderState(
+		D3DRENDERSTATE_TEXTUREPERSPECTIVE,
+		m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_PERSPECTIVE
+	);
+
+	m_d3dDevice->SetRenderState(
+		D3DRENDERSTATE_SUBPIXEL,
+		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_SUBPIXEL) && m_drawState->VTable0x60()
+	);
+
+	m_d3dDevice->SetRenderState(
+		D3DRENDERSTATE_DITHERENABLE,
+		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->VTable0x60()
+	);
+
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_WRAP);
+	if ((m_drawState->m_flags & GolDrawState::c_flagBit3) && m_drawState->VTable0x60()) {
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ANTIALIAS, D3DANTIALIAS_SORTINDEPENDENT);
+	}
+	else {
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ANTIALIAS, D3DANTIALIAS_NONE);
+	}
+
+	if ((m_d3dDeviceDesc.dpcTriCaps.dwTextureFilterCaps & D3DPTFILTERCAPS_LINEAR) && m_drawState->VTable0x60()) {
+		m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTFG_LINEAR);
+		m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_LINEAR);
+	}
+	else {
+		m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTFG_POINT);
+		m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_POINT);
+	}
+
+	if (m_unk0x04 & c_flagBit1) {
+		if (m_drawState->VTable0x94()) {
+			m_unk0x04 |= c_flagBit13;
+			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_USEW);
+		}
+		else {
+			m_unk0x04 &= ~c_flagBit13;
+			m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_TRUE);
+		}
+
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, TRUE);
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZFUNC, D3DCMP_LESSEQUAL);
+		m_unk0x04 |= c_flagBit5;
+	}
+	else {
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZENABLE, D3DZB_FALSE);
+		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ZWRITEENABLE, FALSE);
+	}
+
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_SHADEMODE, D3DSHADE_GOURAUD);
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHATESTENABLE, FALSE);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_STIPPLEDALPHA, FALSE);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHABLENDENABLE, FALSE);
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG1, D3DTA_TEXTURE);
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_COLORARG2, D3DTA_DIFFUSE);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_SPECULARENABLE, FALSE);
+	m_d3dDevice->SetTextureStageState(1, D3DTSS_COLOROP, D3DTOP_DISABLE);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAFUNC, g_d3dCmpFuncLookup[0]);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_ALPHAREF, 0);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_SRCBLEND, m_unk0xc8708[m_unk0xc83d8]);
+	m_d3dDevice->SetRenderState(D3DRENDERSTATE_DESTBLEND, m_unk0xc8734[m_unk0xc83dc]);
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
+	m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_DIFFUSE);
 }
 
 // FUNCTION: GOLDP 0x10008680

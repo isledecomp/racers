@@ -9,11 +9,13 @@
 #include "rectangle.h"
 
 #include <stdio.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::TextureFormat, 0x18)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::Field0xc83b4, 0x10)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
+DECOMP_SIZE_ASSERT(D3DTLVERTEX, 0x20)
 DECOMP_SIZE_ASSERT(Rect, 0x10)
 
 // GLOBAL: GOLDP 0x10056540
@@ -70,11 +72,138 @@ BronzeFalcon0xc8770::~BronzeFalcon0xc8770()
 	VTable0x18();
 }
 
-// STUB: GOLDP 0x10007a00
+// FUNCTION: GOLDP 0x10007a00
 void BronzeFalcon0xc8770::Reset()
 {
-	// TODO
-	STUB(0x10007a00);
+	LegoU32 i;
+
+	m_drawState = NULL;
+	m_d3dDevice = NULL;
+	::memset(&m_d3dDeviceDesc, 0, sizeof(m_d3dDeviceDesc));
+	m_d3dDeviceDesc.dwSize = sizeof(m_d3dDeviceDesc);
+	m_d3dViewport = NULL;
+
+	::memset(&m_viewportParams, 0, sizeof(m_viewportParams));
+	m_viewportParams.dwSize = sizeof(m_viewportParams);
+	m_viewportParams.dwX = 0;
+	m_viewportParams.dwY = 0;
+	m_viewportParams.dwWidth = 640;
+	m_viewportParams.dwHeight = 480;
+	m_viewportParams.dvClipX = -1.0f;
+	m_viewportParams.dvClipY = -0.75f;
+	m_viewportParams.dvClipWidth = 2.0f;
+	m_viewportParams.dvClipHeight = 1.5f;
+	m_viewportParams.dvMinZ = 0.0f;
+	m_viewportParams.dvMaxZ = 1.0f;
+
+	::memset(&m_materialParams, 0, sizeof(m_materialParams));
+	m_materialParams.dwSize = sizeof(m_materialParams);
+	m_materialParams.dwRampSize = 1;
+	m_backgroundMaterial = NULL;
+	m_backgroundMaterialHandle = 0;
+	m_unk0x2cc.m_alp = 0;
+	m_unk0x2cc.m_red = 0;
+	m_unk0x2cc.m_grn = 0;
+	m_unk0x2cc.m_blu = 0;
+	m_unk0x2d0 = 0;
+	m_unk0x304 = NULL;
+	m_renderTargetInfo = NULL;
+	m_unk0x30c = NULL;
+
+	::memset(m_unk0x348, 0, 0xcc8 - 0x348);
+	::memset(m_unk0xc38ec, 0, sizeof(m_unk0xc38ec));
+	::memset(m_unk0xc428c, 0, sizeof(m_unk0xc428c));
+	m_unk0xc86f0 = NULL;
+	m_unk0xc86f4 = 0;
+	m_unk0xc86f8 = 0;
+	m_unk0xc83ac = 0;
+	m_unk0xc83b0 = 0;
+	m_unk0xc852c = 1.0f;
+	::memset(&m_unk0xc83b4, 0, sizeof(m_unk0xc83b4));
+	m_unk0xc83c4 = 0;
+	m_unk0xc86fc = 0.0f;
+	m_unk0xc3848 = 0;
+	m_unk0xc384c = 0;
+	m_unk0xc4c0c = 0;
+	m_unk0xc4c10 = 0;
+	m_unk0xc4c14 = 0;
+	m_unk0xc4c18 = 0;
+	m_unk0xc83e4 = 0;
+	m_unk0xc83e8 = 0;
+	m_unk0xc83f0 = 0;
+	m_unk0xc83ec = 0;
+	m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a2c0;
+	m_unk0xc83f4 = 0;
+	m_unk0xc83a0 = 0;
+	m_unk0xc83a4 = 0;
+	m_unk0xc83a8 = 0;
+	m_unk0xc83c8 = 0;
+	m_unk0xc83cc = 0;
+	m_unk0xc83e0 = 255;
+	m_unk0xc8568 = 0;
+	m_unk0xc83f8 = 0;
+	m_unk0xc83fc = -1;
+	::memset(m_unk0xc8400, 0, sizeof(m_unk0xc8400));
+	m_unk0xc8490 = 0;
+	m_unk0xc8494 = 0;
+	m_unk0xc8518 = 0;
+	m_unk0xc851c = 0;
+	m_unk0xc8520 = 0;
+	m_unk0xc8524 = 0;
+	m_unk0xc8528 = 0;
+	::memset(&m_unk0xc8530, 0, 0xc854c - 0xc8530);
+	::memset(m_unk0xc854c, 0, sizeof(m_unk0xc854c));
+	m_unk0xc8530 = this;
+	m_unk0xc853c = m_unk0xc428c;
+	m_unk0xc8538 = NULL;
+	m_unk0xc854c[0] = this;
+	m_unk0xc854c[3] = m_unk0xc428c;
+	m_unk0xc8410._11 = 1.0f;
+	m_unk0xc8450._11 = 1.0f;
+	m_unk0xc8410._12 = 0.0f;
+	m_unk0xc8450._12 = 0.0f;
+	m_unk0xc8410._13 = 0.0f;
+	m_unk0xc8450._13 = 0.0f;
+	m_unk0xc8410._14 = 0.0f;
+	m_unk0xc8450._14 = 0.0f;
+	m_unk0xc8410._21 = 0.0f;
+	m_unk0xc8450._21 = 0.0f;
+	m_unk0xc8410._22 = 1.0f;
+	m_unk0xc8450._22 = 1.0f;
+	m_unk0xc8410._23 = 0.0f;
+	m_unk0xc8450._23 = 0.0f;
+	m_unk0xc8410._24 = 0.0f;
+	m_unk0xc8450._24 = 0.0f;
+	m_unk0xc8410._31 = 0.0f;
+	m_unk0xc8450._31 = 0.0f;
+	m_unk0xc8410._32 = 0.0f;
+	m_unk0xc8450._32 = 0.0f;
+	m_unk0xc8410._33 = 1.0f;
+	m_unk0xc8450._33 = 1.0f;
+	m_unk0xc8410._34 = 0.0f;
+	m_unk0xc8450._34 = 0.0f;
+	m_unk0xc8410._41 = 0.0f;
+	m_unk0xc8450._41 = 0.0f;
+	m_unk0xc8410._42 = 0.0f;
+	m_unk0xc8450._42 = 0.0f;
+	m_unk0xc8410._43 = 0.0f;
+	m_unk0xc8450._43 = 0.0f;
+	m_unk0xc8410._44 = 1.0f;
+	m_unk0xc8450._44 = 1.0f;
+	m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000c630;
+	m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+
+	for (i = 0; i < (0xcc8 - 0x348) / sizeof(*m_unk0x348); i++) {
+		m_unk0x348[i].color = 0xffffffff;
+		m_unk0x348[i].specular = 0xffffffff;
+	}
+
+	for (i = 0; i < sizeOfArray(m_unk0xc53a0); i++) {
+		m_unk0xc53a0[i].color = 0xffffffff;
+		m_unk0xc53a0[i].specular = 0xffffffff;
+	}
+
+	m_unk0xc8704 = 0;
 }
 
 // FUNCTION: GOLDP 0x10007d80
@@ -1404,6 +1533,18 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	}
 
 	return TRUE;
+}
+
+// STUB: GOLDP 0x1000c630
+void BronzeFalcon0xc8770::FUN_1000c630(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000c630);
+}
+
+// STUB: GOLDP 0x1000edf0
+void BronzeFalcon0xc8770::FUN_1000edf0(undefined4, undefined4, undefined4)
+{
+	STUB(0x1000edf0);
 }
 
 // STUB: GOLDP 0x10012f50 FOLDED

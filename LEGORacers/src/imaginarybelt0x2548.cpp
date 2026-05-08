@@ -28,9 +28,10 @@ LegoBool32 ImaginaryBelt0x2548::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreat
 }
 
 // STUB: LEGORACERS 0x004849c0 FOLDED
-void ImaginaryBelt0x2548::VTable0x74()
+LegoBool32 ImaginaryBelt0x2548::VTable0x74()
 {
 	STUB(0x004849c0);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x004849e0

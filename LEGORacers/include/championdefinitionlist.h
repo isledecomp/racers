@@ -7,6 +7,8 @@
 #include "types.h"
 
 class GolExport;
+class AmberHaze0x1c;
+class MagentaRibbon0x20;
 
 // VTABLE: LEGORACERS 0x004afde8
 // SIZE 0x34
@@ -44,8 +46,8 @@ private:
 	undefined4 m_unk0x10;              // 0x10
 	ChampionDefinition* m_definitions; // 0x14
 	undefined4** m_unk0x18;            // 0x18
-	undefined4** m_unk0x1c;            // 0x1c
-	undefined4** m_unk0x20;            // 0x20
+	MagentaRibbon0x20** m_unk0x1c;     // 0x1c
+	AmberHaze0x1c** m_unk0x20;         // 0x20
 	undefined* m_unk0x24;              // 0x24
 	undefined4 m_unk0x28;              // 0x28
 	LegoU32 m_entryCount;              // 0x2c

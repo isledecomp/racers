@@ -30,8 +30,8 @@ public:
 	AwakeKite0x20* VTable0x34() override;                // vtable+0x34
 	GolFontTable* VTable0x38() override;                 // vtable+0x38
 	void VTable0x3c(undefined4*) override;               // vtable+0x3c
-	void VTable0x40(undefined4*) override;               // vtable+0x40
-	void VTable0x44(undefined4*) override;               // vtable+0x44
+	void VTable0x40(MagentaRibbon0x20*) override;        // vtable+0x40
+	void VTable0x44(AmberHaze0x1c*) override;            // vtable+0x44
 	void VTable0x48(undefined4*) override;               // vtable+0x48
 	void VTable0x4c(undefined4*) override;               // vtable+0x4c
 	void VTable0x50(undefined4*) override;               // vtable+0x50

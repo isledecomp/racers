@@ -22,6 +22,7 @@ class AmberLens0x344;
 class GolFontTable;
 class MagentaRibbon0x20;
 class WhiteBaffoon0x50;
+class AmberHaze0x1c;
 
 struct GolImport {
 	GolFileSource* m_fileSources;               // 0x00
@@ -59,8 +60,8 @@ public:
 	virtual AwakeKite0x20* VTable0x34() = 0;         // vtable+0x34
 	virtual GolFontTable* VTable0x38() = 0;          // vtable+0x38
 	virtual void VTable0x3c(undefined4*) = 0;        // vtable+0x3c
-	virtual void VTable0x40(undefined4*) = 0;        // vtable+0x40
-	virtual void VTable0x44(undefined4*) = 0;        // vtable+0x44
+	virtual void VTable0x40(MagentaRibbon0x20*) = 0; // vtable+0x40
+	virtual void VTable0x44(AmberHaze0x1c*) = 0;     // vtable+0x44
 	virtual void VTable0x48(undefined4*) = 0;        // vtable+0x48
 	virtual void VTable0x4c(undefined4*) = 0;        // vtable+0x4c
 	virtual void VTable0x50(undefined4*) = 0;        // vtable+0x50

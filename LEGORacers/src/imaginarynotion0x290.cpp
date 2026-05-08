@@ -193,11 +193,24 @@ LegoBool32 ImaginaryNotion0x290::VTable0x70(MenuToolCreateParams0x30* p_createPa
 	return m_unk0x04;
 }
 
-// STUB: LEGORACERS 0x0046b5d0
-void ImaginaryNotion0x290::VTable0x74()
+// FUNCTION: LEGORACERS 0x0046b5d0
+LegoBool32 ImaginaryNotion0x290::VTable0x74()
 {
-	// TODO
-	STUB(0x0046b5d0);
+	if (m_unk0x04) {
+		if (m_unk0xbc) {
+			m_unk0xbc->Clear();
+			m_unk0xb4->VTable0x68(m_unk0xbc);
+		}
+
+		if (m_unk0xc0) {
+			m_unk0xc0->Clear();
+			m_unk0xb4->VTable0x6c(m_unk0xc0);
+		}
+
+		VTable0x54();
+	}
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046b630
@@ -519,12 +532,16 @@ CeruleanQueen0x58* ImaginaryNotion0x290::VTable0x64()
 	return &m_unk0x58;
 }
 
-// STUB: LEGORACERS 0x0046c850
-void ImaginaryNotion0x290::VTable0x6c()
+// TODO: Temporary workaround until we figure out how the original code was written.
+// The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
+
+// FUNCTION: LEGORACERS 0x0046c850
+#pragma code_seg(".text$imaginarynotion_vt6c")
+LegoFloat ImaginaryNotion0x290::VTable0x6c()
 {
-	// TODO
-	STUB(0x0046c850);
+	return 1.0f;
 }
+#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
 undefined4 ImaginaryNotion0x290::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)

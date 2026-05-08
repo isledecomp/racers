@@ -1,6 +1,9 @@
 #include "tanzanitewisp0x88.h"
 
+#include "amberhaze0x1c.h"
+#include "bronzefalcon0xc8770.h"
 #include "gol.h"
+#include "magentaribbon0x20.h"
 
 #include <stdlib.h>
 
@@ -24,7 +27,7 @@ void TanzaniteWisp0x88::ResetMenuState()
 	m_unk0x10 = 1;
 	m_menuId = 0;
 	m_golExport = NULL;
-	m_unk0x18 = 0;
+	m_renderer = NULL;
 	m_menuResource0 = NULL;
 	m_menuResource1 = NULL;
 	m_unk0x04 = 0;
@@ -50,4 +53,15 @@ LegoBool32 TanzaniteWisp0x88::ReleaseMenuResources()
 
 	ResetMenuState();
 	return m_menuId == 0;
+}
+
+// FUNCTION: LEGORACERS 0x0049d260
+void TanzaniteWisp0x88::RefreshMenuResources()
+{
+	m_unk0x04 = 0;
+	m_unk0x08 = 0;
+	m_menuResource0->Clear();
+	m_menuResource1->Clear();
+	m_menuResource0->VTable0x1c(m_renderer, m_menuId);
+	m_menuResource1->VTable0x1c(m_renderer, m_menuId);
 }

@@ -41,6 +41,15 @@ public:
 		e_unknown0x2d = 0x2d,
 		e_unknown0x2e = 0x2e,
 		e_unknown0x2f = 0x2f,
+		e_unknown0x30 = 0x30,
+		e_unknown0x31 = 0x31,
+		e_unknown0x32 = 0x32,
+		e_unknown0x33 = 0x33,
+		e_unknown0x39 = 0x39,
+		e_unknown0x3a = 0x3a,
+		e_unknown0x3b = 0x3b,
+		e_unknown0x3c = 0x3c,
+		e_unknown0x46 = 0x46,
 	};
 
 	GolFileParser();
@@ -79,6 +88,7 @@ public:
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
+	ParserTokenType GetCurrentToken() const { return m_unk0x34; }
 	LegoS32 GetUnk0x38() const { return m_unk0x38; }
 
 	// SYNTHETIC: GOLDP 0x10032480

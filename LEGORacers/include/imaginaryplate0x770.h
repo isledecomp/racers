@@ -14,7 +14,7 @@ public:
 	void VTable0x38(undefined4) override;                                              // vtable+0x38
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	~ImaginaryPlate0x770() override;                                                   // vtable+0x68
-	void VTable0x74() override;                                                        // vtable+0x74
+	LegoBool32 VTable0x74() override;                                                  // vtable+0x74
 	void VTable0x84() override;                                                        // vtable+0x84
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override; // vtable+0x8c
 

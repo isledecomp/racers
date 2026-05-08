@@ -161,14 +161,14 @@ void GolDPExport::VTable0x3c(undefined4*)
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x40(undefined4*)
+void GolDPExport::VTable0x40(MagentaRibbon0x20* p_obj)
 {
 	// TODO
 	STUB(0x10015600);
 }
 
 // STUB: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x44(undefined4*)
+void GolDPExport::VTable0x44(AmberHaze0x1c* p_obj)
 {
 	// TODO
 	STUB(0x10015600);

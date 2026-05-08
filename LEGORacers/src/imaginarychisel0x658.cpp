@@ -158,7 +158,7 @@ LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 }
 
 // FUNCTION: LEGORACERS 0x004799b0
-void ImaginaryChisel0x658::VTable0x74()
+LegoBool32 ImaginaryChisel0x658::VTable0x74()
 {
 	m_unk0x638.ReleaseOwnedBuffers();
 	m_unk0x368.VTable0x08();
@@ -169,7 +169,7 @@ void ImaginaryChisel0x658::VTable0x74()
 
 	m_unk0x64c = NULL;
 	m_unk0x650 = NULL;
-	ImaginaryTool0x368::VTable0x74();
+	return ImaginaryTool0x368::VTable0x74();
 }
 
 // FUNCTION: LEGORACERS 0x00479a10

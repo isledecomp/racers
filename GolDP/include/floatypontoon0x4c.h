@@ -11,10 +11,10 @@ public:
 	FloatyPontoon0x4c();
 
 	// FUNCTION: GOLDP 0x100156c0
-	void VTable0x08(const FloatyVec0xc& p_v) override { FloatyBoat0x28::VTable0x08(p_v); } // vtable+0x08
-	void VTable0x14(FloatyVec0xc* p_arg1, undefined4*) override;                           // vtable+0x14
-	void VTable0x1c(undefined4*) override;                                                 // vtable+0x1c
-	undefined4 VTable0x20() override;                                                      // vtable+0x20
+	void VTable0x08(const GolVec3& p_v) override { FloatyBoat0x28::VTable0x08(p_v); } // vtable+0x08
+	void VTable0x14(GolVec3* p_arg1, undefined4*) override;                           // vtable+0x14
+	void VTable0x1c(undefined4*) override;                                            // vtable+0x1c
+	undefined4 VTable0x20() override;                                                 // vtable+0x20
 	virtual undefined4 VTable0x4c(
 		LegoFloat p_arg1,
 		LegoFloat p_arg2,

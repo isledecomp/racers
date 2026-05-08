@@ -16,20 +16,20 @@ public:
 	void VTable0x0c() override;                       // vtable+0x0c
 	void VTable0x10() override;                       // vtable+0x10
 	void VTable0x14() override;                       // vtable+0x14
-	void VTable0x18(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08,
-					FloatyVec0xc* p_unk0x0c) override;                          // vtable+0x18
-	void VTable0x1c(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x1c
-	void VTable0x20(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x20
-	void VTable0x24(FloatyVec0xc* p_unk0x04, FloatyVec0xc* p_unk0x08) override; // vtable+0x24
-	void VTable0x28() override;                                                 // vtable+0x28
-	void VTable0x2c() override;                                                 // vtable+0x2c
-	void VTable0x30(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x30
-	void VTable0x34(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x34
-	void VTable0x38(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x38
-	void VTable0x3c() override;                                                 // vtable+0x3c
-	void VTable0x40(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x40
-	void VTable0x44(FloatyVec0xc* p_unk0x04) override;                          // vtable+0x44
-	void VTable0x48() override;                                                 // vtable+0x48
+	void VTable0x18(GolVec3* p_unk0x04, GolVec3* p_unk0x08,
+					GolVec3* p_unk0x0c) override;                     // vtable+0x18
+	void VTable0x1c(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x1c
+	void VTable0x20(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x20
+	void VTable0x24(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x24
+	void VTable0x28() override;                                       // vtable+0x28
+	void VTable0x2c() override;                                       // vtable+0x2c
+	void VTable0x30(GolVec3* p_unk0x04) override;                     // vtable+0x30
+	void VTable0x34(GolVec3* p_unk0x04) override;                     // vtable+0x34
+	void VTable0x38(GolVec3* p_unk0x04) override;                     // vtable+0x38
+	void VTable0x3c() override;                                       // vtable+0x3c
+	void VTable0x40(GolVec3* p_unk0x04) override;                     // vtable+0x40
+	void VTable0x44(GolVec3* p_unk0x04) override;                     // vtable+0x44
+	void VTable0x48() override;                                       // vtable+0x48
 
 	LegoFloat m_unk0x10;               // 0x10
 	LegoFloat m_unk0x14;               // 0x14

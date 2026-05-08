@@ -27,7 +27,7 @@ FloatyBoat0x28::FloatyBoat0x28()
 // FUNCTION: GOLDP 0x100284f0
 void FloatyBoat0x28::VTable0x10(LegoS32 p_arg)
 {
-	// FloatyVec0xc t;
+	// GolVec3 t;
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
@@ -41,7 +41,7 @@ void FloatyBoat0x28::VTable0x10(LegoS32 p_arg)
 // FUNCTION: GOLDP 0x10028560
 void FloatyBoat0x28::VTable0x0c(LegoFloat p_v)
 {
-	// FloatyVec0xc t;
+	// GolVec3 t;
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
@@ -53,7 +53,7 @@ void FloatyBoat0x28::VTable0x0c(LegoFloat p_v)
 }
 
 // STUB: GOLDP 0x100285d0
-void FloatyBoat0x28::VTable0x14(FloatyVec0xc* p_arg1, undefined4*)
+void FloatyBoat0x28::VTable0x14(GolVec3* p_arg1, undefined4*)
 {
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
@@ -74,7 +74,7 @@ LegoS32 FloatyBoat0x28::VTable0x18()
 }
 
 // FUNCTION: GOLDP 0x100286b0
-void FloatyBoat0x28::VTable0x04(FloatyVec0xc* p_v) const
+void FloatyBoat0x28::VTable0x04(GolVec3* p_v) const
 {
 	p_v->m_x = m_v0.m_x;
 	p_v->m_y = m_v0.m_y;
@@ -82,7 +82,7 @@ void FloatyBoat0x28::VTable0x04(FloatyVec0xc* p_v) const
 }
 
 // FUNCTION: GOLDP 0x100286d0
-void FloatyBoat0x28::FUN_100286d0(FloatyVec0xc* p_v)
+void FloatyBoat0x28::FUN_100286d0(GolVec3* p_v)
 {
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
@@ -114,7 +114,7 @@ LegoFloat FloatyBoat0x28::FUN_10028710()
 }
 
 // FUNCTION: GOLDP 0x10028730
-void FloatyBoat0x28::VTable0x08(const FloatyVec0xc& p_v)
+void FloatyBoat0x28::VTable0x08(const GolVec3& p_v)
 {
 	m_v0.m_x = p_v.m_x;
 	m_v0.m_y = p_v.m_y;
@@ -124,7 +124,7 @@ void FloatyBoat0x28::VTable0x08(const FloatyVec0xc& p_v)
 }
 
 // FUNCTION: GOLDP 0x10028760
-void FloatyBoat0x28::VTable0x2c(const FloatyVec0xc& p_add, FloatyVec0xc* p_dest) const
+void FloatyBoat0x28::VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const
 {
 	p_dest->m_x = m_v0.m_x + p_add.m_x;
 	p_dest->m_y = m_v0.m_y + p_add.m_y;
@@ -132,7 +132,7 @@ void FloatyBoat0x28::VTable0x2c(const FloatyVec0xc& p_add, FloatyVec0xc* p_dest)
 }
 
 // FUNCTION: GOLDP 0x10028790
-void FloatyBoat0x28::VTable0x30(const FloatyVec0xc& p_add, FloatyVec0xc* p_dest) const
+void FloatyBoat0x28::VTable0x30(const GolVec3& p_add, GolVec3* p_dest) const
 {
 	p_dest->m_x = p_add.m_x - m_v0.m_x;
 	p_dest->m_y = p_add.m_y - m_v0.m_y;
@@ -140,19 +140,19 @@ void FloatyBoat0x28::VTable0x30(const FloatyVec0xc& p_add, FloatyVec0xc* p_dest)
 }
 
 // FUNCTION: GOLDP 0x100287c0 FOLDED
-void FloatyBoat0x28::VTable0x34(const FloatyVec0xc& p_src, FloatyVec0xc* p_dest)
+void FloatyBoat0x28::VTable0x34(const GolVec3& p_src, GolVec3* p_dest)
 {
 	*p_dest = p_src;
 }
 
 // FUNCTION: GOLDP 0x100287c0 FOLDED
-void FloatyBoat0x28::VTable0x38(const FloatyVec0xc& p_src, FloatyVec0xc* p_dest) const
+void FloatyBoat0x28::VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const
 {
 	*p_dest = p_src;
 }
 
 // FUNCTION: GOLDP 0x100287e0
-void FloatyBoat0x28::VTable0x48(FloatyVec0xc* p_v1, FloatyVec0xc* p_v2) const
+void FloatyBoat0x28::VTable0x48(GolVec3* p_v1, GolVec3* p_v2) const
 {
 	p_v1->m_x = 1.0f;
 	p_v1->m_y = 0.0f;

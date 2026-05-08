@@ -7,9 +7,11 @@
 // SIZE 0x1fc
 // VTABLE: GOLDP 0x10057160
 class MdbTxtParser : public GolTxtParser {
-
 	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// MdbTxtParser::`scalar deleting destructor'
+
+	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+	// MdbTxtParser::~MdbTxtParser
 };
 
 class WhiteFalcon0x140;

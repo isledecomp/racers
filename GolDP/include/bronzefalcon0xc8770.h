@@ -47,8 +47,8 @@ public:
 	void VTable0x1c(const ColorRGBA&) override;                              // vtable+0x1c
 	void VTable0x20(AmberLens0x344*) override;                               // vtable+0x20
 	void VTable0x28() override;                                              // vtable+0x28
-	void VTable0x2c(undefined4) override;                                    // vtable+0x2c
-	void VTable0x30(undefined4) override;                                    // vtable+0x30
+	void VTable0x2c(const Field0x124*) override;                             // vtable+0x2c
+	void VTable0x30(const Field0x124*) override;                             // vtable+0x30
 	void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08) override; // vtable+0x34
 	void VTable0x38() override;                                              // vtable+0x38
 	void VTable0x3c(undefined4) override;                                    // vtable+0x3c
@@ -135,10 +135,16 @@ public:
 	friend class SlatePeak0x58;
 
 private:
+	static LegoFloat ScaleColorChannel(double p_color, double p_materialColor)
+	{
+		return static_cast<LegoFloat>(p_color * p_materialColor) * 0.00390625f;
+	}
+
 	void FUN_100082e0();
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(undefined4*);
+	void FUN_1000b0f0(LegoU32 p_index, const Field0x124* p_param);
 	void FUN_1000b4a0();
 	void FUN_1000c630(undefined4, undefined4, undefined4);
 	void FUN_1000edf0(undefined4, undefined4, undefined4);
@@ -222,10 +228,10 @@ private:
 	undefined4 m_unk0xc8574;                                                       // 0xc8574
 	undefined4 m_unk0xc8578;                                                       // 0xc8578
 	undefined4 m_unk0xc857c;                                                       // 0xc857c
-	ColorRGBA m_unk0xc8580[2]; /* Unknown size */                                  // 0xc8580
-	undefined m_unk0xc8588[0xc859c - 0xc8588];                                     // 0xc8588
-	FColorRGB m_unk0xc859c[2]; /* Unknown size */                                  // 0xc859c
-	undefined m_unk0xc85b4[0xc8698 - 0xc85b4];                                     // 0xc85b4
+	ColorRGBA m_unk0xc8580[7];                                                     // 0xc8580
+	FColorRGB m_unk0xc859c[7];                                                     // 0xc859c
+	FColorRGB m_unk0xc85f0[7];                                                     // 0xc85f0
+	undefined m_unk0xc8644[0xc8698 - 0xc8644];                                     // 0xc8644
 	SoftwareRenderer0x58 m_softwareRenderer;                                       // 0xc8698
 	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                               // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                          // 0xc86f4

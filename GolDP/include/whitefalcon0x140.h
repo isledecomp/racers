@@ -36,6 +36,12 @@ public:
 		ColorRGBA m_color; // 0x14
 	};
 
+	// SIZE 0x10
+	struct Field0x124 {
+		ColorRGBA m_unk0x00; // 0x00
+		FColorRGB m_unk0x04; // 0x04
+	};
+
 	enum Flags {
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,
@@ -71,8 +77,8 @@ public:
 	virtual void VTable0x20(AmberLens0x344*) = 0;                           // vtable+0x20
 	virtual void VTable0x24();                                              // vtable+0x24
 	virtual void VTable0x28();                                              // vtable+0x28
-	virtual void VTable0x2c(undefined4 p_param);                            // vtable+0x2c
-	virtual void VTable0x30(undefined4 p_param);                            // vtable+0x30
+	virtual void VTable0x2c(const Field0x124* p_param);                     // vtable+0x2c
+	virtual void VTable0x30(const Field0x124* p_param);                     // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
 	virtual void VTable0x38();                                              // vtable+0x38
 	virtual void VTable0x3c(undefined4);                                    // vtable+0x3c
@@ -198,8 +204,8 @@ protected:
 	undefined m_unk0x4c[0x118 - 0x4c];            // 0x4c
 	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
-	undefined4 m_unk0x120;                        // 0x120
-	undefined4 m_unk0x124[7];                     // 0x124
+	const Field0x124* m_unk0x120;                 // 0x120
+	const Field0x124* m_unk0x124[7];              // 0x124
 };
 
 #endif // WHITEFALCON0x140_H

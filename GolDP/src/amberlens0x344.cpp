@@ -100,3 +100,13 @@ void AmberLens0x344::VTable0x20(undefined4, undefined4)
 {
 	STUB(0x10002770);
 }
+
+// FUNCTION: GOLDP 0x10002860
+void AmberLens0x344::FUN_10002860(D3DVIEWPORT2* p_viewport)
+{
+	const SlatePeak0x58* renderTargetInfo = m_unk0x340->GetRenderTargetInfo();
+	p_viewport->dwX = 0;
+	p_viewport->dwY = 0;
+	p_viewport->dwWidth = renderTargetInfo->GetWidth();
+	p_viewport->dwHeight = renderTargetInfo->GetHeight();
+}

@@ -7,6 +7,8 @@
 #include "jadeorbit0x220.h"
 #include "types.h"
 
+#include <d3d.h>
+
 class AmberLens0x344;
 class BronzeFalcon0xc8770;
 
@@ -42,6 +44,7 @@ protected:
 	friend class BronzeFalcon0xc8770;
 
 	void FUN_10001f60(BronzeFalcon0xc8770*);
+	void FUN_10002860(D3DVIEWPORT2* p_viewport);
 
 	JadeOrbit0x220 m_unk0x120;       // 0x120
 	BronzeFalcon0xc8770* m_unk0x340; // 0x340

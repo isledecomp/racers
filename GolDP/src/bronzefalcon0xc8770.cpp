@@ -503,10 +503,21 @@ void BronzeFalcon0xc8770::VTable0x20(AmberLens0x344* p_lens)
 	p_lens->FUN_10001f60(this);
 }
 
-// STUB: GOLDP 0x100087e0
+// FUNCTION: GOLDP 0x100087e0
 void BronzeFalcon0xc8770::VTable0x5c()
 {
-	STUB(0x100087e0);
+	AmberLens0x344* lens = m_unk0x0c;
+	lens->VTable0x28();
+	lens->FUN_10002860(&m_viewportParams);
+
+	if (!(m_unk0x04 & c_flagBit16) && m_d3dViewport->SetViewport2(&m_viewportParams) != D3D_OK) {
+		GOL_FATALERROR_MESSAGE("Unable to set viewport");
+	}
+
+	m_unk0xc8490 = lens->m_unk0x120.m_unk0x190;
+	m_unk0xc8494 = lens->m_unk0x120.m_unk0x1d0;
+	::memcpy(m_unk0x4c, lens->m_unk0x34, sizeof(m_unk0x4c));
+	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
 }
 
 // STUB: GOLDP 0x10008910

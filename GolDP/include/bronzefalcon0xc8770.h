@@ -205,8 +205,8 @@ private:
 	undefined4 m_unk0xc8400[4];                                                    // 0xc8400
 	D3DMATRIX m_unk0xc8410;                                                        // 0xc8410
 	D3DMATRIX m_unk0xc8450;                                                        // 0xc8450
-	undefined4 m_unk0xc8490;                                                       // 0xc8490
-	undefined4 m_unk0xc8494;                                                       // 0xc8494
+	undefined4* m_unk0xc8490;                                                      // 0xc8490
+	undefined4* m_unk0xc8494;                                                      // 0xc8494
 	undefined m_unk0xc8498[0xc8518 - 0xc8498];                                     // 0xc8498
 	undefined4 m_unk0xc8518;                                                       // 0xc8518
 	undefined4 m_unk0xc851c;                                                       // 0xc851c

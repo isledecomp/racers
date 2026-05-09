@@ -30,11 +30,25 @@ void GolMath::FUN_00449190(const LegoFloat*, const LegoFloat*, LegoFloat*)
 	STUB(0x00449190);
 }
 
-// STUB: GOLDP 0x1002f4e0
-// STUB: LEGORACERS 0x00449280
-void __fastcall GolMath::FUN_1002f4e0(const GolVec2*, GolVec2*)
+// FUNCTION: GOLDP 0x1002f4e0
+// FUNCTION: LEGORACERS 0x00449280
+void __fastcall GolMath::NormalizeVector2(const GolVec2& p_src, GolVec2& p_dest)
 {
-	STUB(0x1002f4e0);
+	LegoFloat x = p_src.m_x;
+	LegoFloat y = p_src.m_y;
+	LegoFloat lengthSquared = x * x;
+	lengthSquared += y * y;
+	LegoFloat length = (LegoFloat) sqrt(lengthSquared);
+
+	if (length == 0.0) {
+		p_dest.m_x = 0.0f;
+		p_dest.m_y = 0.0f;
+	}
+	else {
+		LegoFloat scale = 1.0f / length;
+		p_dest.m_x = x * scale;
+		p_dest.m_y = y * scale;
+	}
 }
 
 // FUNCTION: GOLDP 0x1002f530

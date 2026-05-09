@@ -85,7 +85,7 @@ public:
 	static void FUN_1002f450(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 	static void FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
 	static void FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
-	static void __fastcall FUN_1002f4e0(const GolVec2* p_src, GolVec2* p_dest);
+	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2& p_dest);
 	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3& p_dest);
 	static void FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest);
 	static void FUN_1002f5a0(const LegoFloat* p_matrix, GolQuat* p_dest);

@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(GolVec3, 0xc)
 DECOMP_SIZE_ASSERT(GolQuat, 0x10)
 
 // STUB: GOLDP 0x1002f3a0
-void GolMath::FUN_1002f3a0(const LegoFloat*, const LegoFloat*, LegoFloat*)
+void GolMath::FUN_1002f3a0(const D3DMATRIX*, const LegoFloat*, LegoFloat*)
 {
 	STUB(0x1002f3a0);
 }

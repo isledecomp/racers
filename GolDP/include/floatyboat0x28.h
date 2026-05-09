@@ -4,6 +4,8 @@
 #include "decomp.h"
 #include "golmath.h"
 
+class WhiteFalcon0x140;
+
 // VTABLE: GOLDP 0x100572e4
 // SIZE 0x28
 class FloatyBoat0x28 {
@@ -17,7 +19,7 @@ public:
 	virtual void VTable0x10(LegoS32);                                     // vtable+0x10
 	virtual void VTable0x14(GolVec3* p_arg1, undefined4*);                // vtable+0x14
 	virtual LegoS32 VTable0x18();                                         // vtable+0x18
-	virtual void VTable0x1c(undefined4*);                                 // vtable+0x1c
+	virtual void VTable0x1c(WhiteFalcon0x140*);                           // vtable+0x1c
 	virtual undefined4 VTable0x20();                                      // vtable+0x20
 	virtual void VTable0x24(undefined4*);                                 // vtable+0x24
 	virtual void VTable0x28();                                            // vtable+0x28

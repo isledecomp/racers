@@ -4,6 +4,8 @@
 #include "decomp.h"
 #include "types.h"
 
+#include <d3d.h>
+
 // SIZE 0x8
 struct GolVec2 {
 	LegoFloat m_x;
@@ -79,7 +81,7 @@ struct GolQuat {
 
 class GolMath {
 public:
-	static void FUN_1002f3a0(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
+	static void FUN_1002f3a0(const D3DMATRIX* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 	static void FUN_1002f450(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 	static void FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
 	static void FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);

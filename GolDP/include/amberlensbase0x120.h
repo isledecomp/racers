@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "types.h"
 
+class JadeOrbit0x220;
 struct Rect;
 
 // VTABLE: GOLDP 0x10056cc0
@@ -27,7 +28,7 @@ public:
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// AmberLensBase0x120::`scalar deleting destructor'
 
-	void* m_unk0x04;                   // 0x04
+	JadeOrbit0x220* m_unk0x04;         // 0x04
 	LegoFloat m_unk0x08;               // 0x08
 	LegoFloat m_unk0x0c;               // 0x0c
 	LegoFloat m_unk0x10;               // 0x10

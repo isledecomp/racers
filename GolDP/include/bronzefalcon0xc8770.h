@@ -137,7 +137,7 @@ public:
 	void VTable0xa8(undefined4, undefined4, undefined4) override;           // vtable+0xa8
 	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
 	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
-	void VTable0xb4() override;                                             // vtable+0xb4
+	void VTable0xb4(FloatyPontoon0x4c&) override;                           // vtable+0xb4
 	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
 	void ClearAlphaOverride() override;                                     // vtable+0xbc
 	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
@@ -275,10 +275,10 @@ private:
 	undefined4 m_unk0xc8400[4];                                          // 0xc8400
 	D3DMATRIX m_unk0xc8410;                                              // 0xc8410
 	D3DMATRIX m_unk0xc8450;                                              // 0xc8450
-	undefined4* m_unk0xc8490;                                            // 0xc8490
-	undefined4* m_unk0xc8494;                                            // 0xc8494
-	undefined m_unk0xc8498[0xc8518 - 0xc8498];                           // 0xc8498
-	undefined4 m_unk0xc8518;                                             // 0xc8518
+	LegoFloat* m_unk0xc8490;                                             // 0xc8490
+	LegoFloat* m_unk0xc8494;                                             // 0xc8494
+	LegoFloat m_unk0xc8498[(0xc8518 - 0xc8498) / sizeof(LegoFloat)];     // 0xc8498
+	LegoFloat* m_unk0xc8518;                                             // 0xc8518
 	undefined4 m_unk0xc851c;                                             // 0xc851c
 	undefined4 m_unk0xc8520;                                             // 0xc8520
 	undefined4 m_unk0xc8524;                                             // 0xc8524

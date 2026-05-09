@@ -38,7 +38,7 @@ public:
 	// SYNTHETIC: GOLDP 0x10017a60
 	// AmberLens0x344::`vector deleting destructor'
 
-	JadeOrbit0x220* GetUnk0x04() { return (JadeOrbit0x220*) m_unk0x04; }
+	JadeOrbit0x220* GetUnk0x04() { return m_unk0x04; }
 
 protected:
 	friend class BronzeFalcon0xc8770;

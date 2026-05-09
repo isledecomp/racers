@@ -182,7 +182,7 @@ void FloatyBoat0x28::VTable0x40(undefined4, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x1c(undefined4*)
+void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140*)
 {
 	// empty
 }

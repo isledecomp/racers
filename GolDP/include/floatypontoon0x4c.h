@@ -4,6 +4,10 @@
 #include "compat.h"
 #include "floatyboat0x28.h"
 
+#include <d3d.h>
+
+class BronzeFalcon0xc8770;
+
 // VTABLE: GOLDP 0x10057500
 // SIZE 0x4c
 class FloatyPontoon0x4c : public FloatyBoat0x28 {
@@ -13,7 +17,7 @@ public:
 	// FUNCTION: GOLDP 0x100156c0
 	void VTable0x08(const GolVec3& p_v) override { FloatyBoat0x28::VTable0x08(p_v); } // vtable+0x08
 	void VTable0x14(GolVec3* p_arg1, undefined4*) override;                           // vtable+0x14
-	void VTable0x1c(undefined4*) override;                                            // vtable+0x1c
+	void VTable0x1c(WhiteFalcon0x140*) override;                                      // vtable+0x1c
 	undefined4 VTable0x20() override;                                                 // vtable+0x20
 	virtual undefined4 VTable0x4c(
 		LegoFloat p_arg1,
@@ -23,8 +27,11 @@ public:
 	);                         // vtable+0x4c
 	virtual void VTable0x50(); // vtable+0x50
 
+	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, D3DMATRIX* p_matrix);
+	void FUN_10014ff0(BronzeFalcon0xc8770* p_renderer);
 	undefined4 FUN_10026fa0(LegoFloat p_arg1);
 	void FUN_10029e90(undefined4* p_arg1, LegoS32 p_arg2, undefined4 p_arg3, undefined4 p_arg4, undefined4 p_arg5);
+	void FUN_10029fa0(const GolVec3& p_arg1, undefined4* p_arg2);
 	undefined4 FUN_1002a020();
 
 private:

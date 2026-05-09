@@ -4,6 +4,7 @@
 #include "color.h"
 #include "decomp.h"
 #include "falcontextureformat.h"
+#include "golmath.h"
 #include "silverdune0x30.h"
 #include "types.h"
 
@@ -18,6 +19,7 @@ class GolFontBase0x40;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
+class FloatyPontoon0x4c;
 struct Rect;
 class MagentaRibbon0x20;
 class SlatePeak0x58;
@@ -42,6 +44,12 @@ public:
 	struct Field0x124 {
 		ColorRGBA m_unk0x00; // 0x00
 		FColorRGB m_unk0x04; // 0x04
+	};
+
+	// SIZE 0xcc
+	struct Field0x4c {
+		GolVec3 m_position;               // 0x00
+		undefined m_unk0x0c[0xcc - 0x0c]; // 0x0c
 	};
 
 	enum Flags {
@@ -174,7 +182,7 @@ public:
 	virtual void VTable0xa8(undefined4 p_param1, undefined4 p_param2, undefined4 p_param3); // vtable+0xa8
 	virtual void VTable0xac(undefined4, undefined4);                                        // vtable+0xac
 	virtual void VTable0xb0(undefined4, undefined4);                                        // vtable+0xb0
-	virtual void VTable0xb4() = 0;                                                          // vtable+0xb4
+	virtual void VTable0xb4(FloatyPontoon0x4c&) = 0;                                        // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags);                  // vtable+0xb8
 	virtual void ClearAlphaOverride();                                                      // vtable+0xbc
 	virtual void VTable0xc0(const ColorRGBA& p_param);                                      // vtable+0xc0
@@ -244,7 +252,7 @@ protected:
 	HypnoticNoise0x1c* m_imageLists;              // 0x40
 	CinderBasin0x28* m_fontLists;                 // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
-	undefined m_unk0x4c[0x118 - 0x4c];            // 0x4c
+	Field0x4c m_unk0x4c;                          // 0x4c
 	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
 	const Field0x124* m_unk0x120;                 // 0x120

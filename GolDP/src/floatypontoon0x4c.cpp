@@ -1,5 +1,7 @@
 #include "floatypontoon0x4c.h"
 
+#include "whitefalcon0x140.h"
+
 #include <float.h>
 #include <math.h>
 
@@ -75,6 +77,12 @@ undefined4 FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_arg1)
 	return 0;
 }
 
+// STUB: GOLDP 0x10029fa0
+void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3&, undefined4*)
+{
+	STUB(0x10029fa0);
+}
+
 // STUB: GOLDP 0x1002a020
 undefined4 FloatyPontoon0x4c::FUN_1002a020()
 {
@@ -83,11 +91,10 @@ undefined4 FloatyPontoon0x4c::FUN_1002a020()
 	return 0;
 }
 
-// STUB: GOLDP 0x1002a040
-void FloatyPontoon0x4c::VTable0x1c(undefined4* p_arg1)
+// FUNCTION: GOLDP 0x1002a040
+void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140* p_renderer)
 {
-	// TODO
-	STUB(0x1002a040);
+	p_renderer->VTable0xb4(*this);
 }
 
 // STUB: GOLDP 0x1002a060

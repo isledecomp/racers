@@ -4,10 +4,12 @@
 #include "bronzefalconsurface0x5c.h"
 #include "falcondunebag0x10.h"
 #include "falcontextureformat.h"
+#include "floatypontoon0x4c.h"
 #include "golddune0x38.h"
 #include "goldrawdpstate.h"
 #include "golerror.h"
 #include "golfontbase0x40.h"
+#include "golmath.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 
@@ -634,7 +636,7 @@ void BronzeFalcon0xc8770::VTable0x5c()
 
 	m_unk0xc8490 = lens->m_unk0x120.m_unk0x190;
 	m_unk0xc8494 = lens->m_unk0x120.m_unk0x1d0;
-	::memcpy(m_unk0x4c, lens->m_unk0x34, sizeof(m_unk0x4c));
+	::memcpy(&m_unk0x4c, lens->m_unk0x34, sizeof(m_unk0x4c));
 	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
 }
 
@@ -674,16 +676,18 @@ void BronzeFalcon0xc8770::VTable0x88(undefined4, undefined4, undefined4)
 	STUB(0x100090b0);
 }
 
-// STUB: GOLDP 0x10009240
-void BronzeFalcon0xc8770::VTable0x9c(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10009240
+void BronzeFalcon0xc8770::VTable0x9c(undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
 {
-	STUB(0x10009240);
+	m_unk0xc8528 = TRUE;
+	VTable0x8c(p_arg1, p_arg2, p_arg3);
 }
 
-// STUB: GOLDP 0x10009270
-void BronzeFalcon0xc8770::VTable0x98(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10009270
+void BronzeFalcon0xc8770::VTable0x98(undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
 {
-	STUB(0x10009270);
+	m_unk0xc8528 = TRUE;
+	VTable0x88(p_arg1, p_arg2, p_arg3);
 }
 
 // STUB: GOLDP 0x100092a0
@@ -983,9 +987,31 @@ void BronzeFalcon0xc8770::VTable0x70(
 }
 
 // STUB: GOLDP 0x10009a70
-void BronzeFalcon0xc8770::VTable0xb4()
+void BronzeFalcon0xc8770::VTable0xb4(FloatyPontoon0x4c& p_param)
 {
-	STUB(0x10009a70);
+	undefined4 visibility[2];
+	p_param.FUN_10029fa0(m_unk0x4c.m_position, visibility);
+	if (visibility[0]) {
+		GolVec3 forward;
+		GolVec3 right;
+		JadeOrbitBase0x10* orbit = m_unk0x0c->m_unk0x04;
+		orbit->VTable0x1c(&right, &forward);
+
+		forward.m_x = -forward.m_x;
+		forward.m_y = -forward.m_y;
+		forward.m_z = -forward.m_z;
+
+		D3DMATRIX* matrix = &m_unk0xc8410;
+		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, matrix);
+		if (builtMatrix) {
+			GolMath::FUN_1002f3a0(matrix, m_unk0xc8490, m_unk0xc8498);
+			m_unk0xc8568 = 0;
+			m_unk0xc83e4 = 1;
+			m_unk0xc8518 = m_unk0xc8498;
+			FUN_10012f50();
+			p_param.FUN_10014ff0(this);
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x10009b40

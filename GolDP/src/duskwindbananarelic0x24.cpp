@@ -25,7 +25,7 @@ DuskwindBananaRelic0x24::~DuskwindBananaRelic0x24()
 {
 }
 
-// STUB: GOLDP 0x100257e0
+// FUNCTION: GOLDP 0x100257e0
 void DuskwindBananaRelic0x24::FUN_100257e0(WhiteFalcon0x140* p_renderer, const DuskWindBananaRelicParams& p_params)
 {
 	m_unk0x10 = p_params.m_unk0x08;
@@ -39,14 +39,7 @@ void DuskwindBananaRelic0x24::FUN_100257e0(WhiteFalcon0x140* p_renderer, const D
 	m_unk0x23 = p_params.m_unk0x13;
 	if (m_unk0x08 & c_flag0x08Bit3) {
 		m_unk0x04 = p_params.m_unk0x04;
-#if 0
-		// p_params.m_unk0x04 is probably GoldDune0x30. But this is a pure guess.
-		if (reinterpret_cast<GoldDune0x38*>(p_params.m_unk0x04)->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
-#else
-		// TODO
-		STUB(0x100257e0);
-		if (1) {
-#endif
+		if (m_unk0x04->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
 			if (p_renderer->GetUnk0x04() & (WhiteFalcon0x140::c_flagBit7 | WhiteFalcon0x140::c_flagBit8)) {
 				if ((p_renderer->GetUnk0x04() & WhiteFalcon0x140::c_flagBit7) && !(m_unk0x08 & c_flag0x08Bit12)) {
 					m_unk0x22 = 6;

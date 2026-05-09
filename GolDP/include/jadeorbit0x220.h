@@ -31,21 +31,13 @@ public:
 	void VTable0x44(GolVec3* p_unk0x04) override;                     // vtable+0x44
 	void VTable0x48() override;                                       // vtable+0x48
 
-	LegoFloat m_unk0x10;               // 0x10
-	LegoFloat m_unk0x14;               // 0x14
-	LegoFloat m_unk0x18;               // 0x18
+	GolVec3 m_up;                      // 0x10
 	LegoFloat m_unk0x1c;               // 0x1c
-	LegoFloat m_unk0x20;               // 0x20
-	LegoFloat m_unk0x24;               // 0x24
-	LegoFloat m_unk0x28;               // 0x28
+	GolVec3 m_forward;                 // 0x20
 	LegoFloat m_unk0x2c;               // 0x2c
-	LegoFloat m_unk0x30;               // 0x30
-	LegoFloat m_unk0x34;               // 0x34
-	LegoFloat m_unk0x38;               // 0x38
+	GolVec3 m_right;                   // 0x30
 	LegoFloat m_unk0x3c;               // 0x3c
-	LegoFloat m_unk0x40;               // 0x40
-	LegoFloat m_unk0x44;               // 0x44
-	LegoFloat m_unk0x48;               // 0x48
+	GolVec3 m_position;                // 0x40
 	LegoFloat m_unk0x4c;               // 0x4c
 	LegoFloat m_unk0x50;               // 0x50
 	LegoFloat m_unk0x54;               // 0x54

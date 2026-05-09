@@ -6,8 +6,6 @@ DECOMP_SIZE_ASSERT(GolVec2, 0x8)
 DECOMP_SIZE_ASSERT(GolVec3, 0xc)
 DECOMP_SIZE_ASSERT(GolQuat, 0x10)
 
-#ifdef BUILDING_GOL
-
 // STUB: GOLDP 0x1002f3a0
 void GolMath::FUN_1002f3a0(const LegoFloat*, const LegoFloat*, LegoFloat*)
 {
@@ -20,10 +18,6 @@ void GolMath::FUN_1002f450(const LegoFloat*, const LegoFloat*, LegoFloat*)
 	STUB(0x1002f450);
 }
 
-#endif
-
-#ifdef BUILDING_LEGORACERS
-
 // STUB: LEGORACERS 0x00449170
 void GolMath::FUN_00449170(LegoFloat, LegoFloat*, LegoFloat*)
 {
@@ -35,8 +29,6 @@ void GolMath::FUN_00449190(const LegoFloat*, const LegoFloat*, LegoFloat*)
 {
 	STUB(0x00449190);
 }
-
-#endif
 
 // STUB: GOLDP 0x1002f4e0
 // STUB: LEGORACERS 0x00449280
@@ -71,15 +63,11 @@ void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3& p_dest)
 	}
 }
 
-#ifdef BUILDING_LEGORACERS
-
 // STUB: LEGORACERS 0x00449340
 void GolMath::FUN_00449340(const GolQuat*, LegoFloat*)
 {
 	STUB(0x00449340);
 }
-
-#endif
 
 // STUB: GOLDP 0x1002f5a0
 // STUB: LEGORACERS 0x00449460
@@ -88,15 +76,11 @@ void GolMath::FUN_1002f5a0(const LegoFloat*, GolQuat*)
 	STUB(0x1002f5a0);
 }
 
-#ifdef BUILDING_GOL
-
 // STUB: GOLDP 0x1002f720
 void GolMath::FUN_1002f720(const LegoFloat*, GolQuat*)
 {
 	STUB(0x1002f720);
 }
-
-#endif
 
 // STUB: GOLDP 0x1002f890
 // STUB: LEGORACERS 0x004495e0
@@ -104,8 +88,6 @@ void GolMath::FUN_1002f890(const GolQuat*, const GolQuat*, LegoFloat, GolQuat*)
 {
 	STUB(0x1002f890);
 }
-
-#ifdef BUILDING_LEGORACERS
 
 // STUB: LEGORACERS 0x004496a0
 void GolMath::FUN_004496a0(const GolVec3*, GolVec3*, const GolVec3*, LegoFloat)
@@ -138,5 +120,3 @@ void GolMath::FUN_00449bf0(const LegoFloat*, const LegoFloat*, LegoFloat*)
 {
 	STUB(0x00449bf0);
 }
-
-#endif

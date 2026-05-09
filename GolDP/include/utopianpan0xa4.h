@@ -28,6 +28,7 @@ public:
 	void FUN_100051c0();
 	void FUN_10005210();
 	void FUN_10005440(undefined4*, undefined4*, undefined4*);
+	void FUN_100054d0(BronzeFalcon0xc8770*, undefined4, Rect*, undefined4);
 	undefined4 FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*, Rect*, undefined4);
 
 	// SYNTHETIC: GOLDP 0x10005e60

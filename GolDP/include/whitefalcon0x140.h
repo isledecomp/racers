@@ -97,9 +97,21 @@ public:
 	virtual void VTable0x64() = 0;                                          // vtable+0x64
 	virtual void VTable0x68() = 0;                                          // vtable+0x68
 	virtual void VTable0x6c() = 0;                                          // vtable+0x6c
-	virtual void VTable0x70() = 0;                                          // vtable+0x70
-	virtual void VTable0x74() = 0;                                          // vtable+0x74
-	virtual void VTable0x78() = 0;                                          // vtable+0x78
+	virtual void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,
+							LegoS32) = 0; // vtable+0x70
+	virtual void VTable0x74(
+		UtopianPan0xa4*,
+		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32
+	) = 0;                                                                       // vtable+0x74
+	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) = 0; // vtable+0x78
 	virtual undefined4 VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,

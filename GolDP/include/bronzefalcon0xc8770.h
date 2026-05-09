@@ -66,9 +66,21 @@ public:
 	void VTable0x64() override;                                              // vtable+0x64
 	void VTable0x68() override;                                              // vtable+0x68
 	void VTable0x6c() override;                                              // vtable+0x6c
-	void VTable0x70() override;                                              // vtable+0x70
-	void VTable0x74() override;                                              // vtable+0x74
-	void VTable0x78() override;                                              // vtable+0x78
+	void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,
+					LegoS32) override; // vtable+0x70
+	void VTable0x74(
+		UtopianPan0xa4*,
+		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32,
+		LegoS32
+	) override;                                                               // vtable+0x74
+	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) override; // vtable+0x78
 	undefined4 VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,

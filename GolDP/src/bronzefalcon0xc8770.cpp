@@ -922,22 +922,63 @@ undefined4 BronzeFalcon0xc8770::VTable0x7c(
 	return p_image->FUN_10005510(this, p_unk0x08, p_destRect, p_sourceRect, p_unk0x14);
 }
 
-// STUB: GOLDP 0x10009990
-void BronzeFalcon0xc8770::VTable0x78()
+// FUNCTION: GOLDP 0x10009990
+void BronzeFalcon0xc8770::VTable0x78(
+	UtopianPan0xa4* p_image,
+	undefined4 p_unk0x08,
+	Rect* p_destRect,
+	undefined4 p_unk0x14
+)
 {
-	STUB(0x10009990);
+	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_unk0x14);
 }
 
-// STUB: GOLDP 0x100099b0
-void BronzeFalcon0xc8770::VTable0x74()
+// FUNCTION: GOLDP 0x100099b0
+void BronzeFalcon0xc8770::VTable0x74(
+	UtopianPan0xa4* p_image,
+	undefined4 p_unk0x08,
+	LegoS32 p_destLeft,
+	LegoS32 p_destTop,
+	LegoS32 p_destWidth,
+	LegoS32 p_destHeight,
+	LegoS32 p_sourceLeft,
+	LegoS32 p_sourceTop,
+	LegoS32 p_sourceWidth,
+	LegoS32 p_sourceHeight
+)
 {
-	STUB(0x100099b0);
+	Rect destRect;
+	destRect.m_left = p_destLeft;
+	destRect.m_top = p_destTop;
+	destRect.m_right = p_destLeft + p_destWidth;
+	destRect.m_bottom = p_destTop + p_destHeight;
+
+	Rect sourceRect;
+	sourceRect.m_left = p_sourceLeft;
+	sourceRect.m_top = p_sourceTop;
+	sourceRect.m_right = p_sourceLeft + p_sourceWidth;
+	sourceRect.m_bottom = p_sourceTop + p_sourceHeight;
+
+	p_image->FUN_10005510(this, p_unk0x08, &destRect, &sourceRect, 0);
 }
 
-// STUB: GOLDP 0x10009a20
-void BronzeFalcon0xc8770::VTable0x70()
+// FUNCTION: GOLDP 0x10009a20
+void BronzeFalcon0xc8770::VTable0x70(
+	UtopianPan0xa4* p_image,
+	undefined4 p_unk0x08,
+	LegoS32 p_destLeft,
+	LegoS32 p_destTop,
+	LegoS32 p_destWidth,
+	LegoS32 p_destHeight
+)
 {
-	STUB(0x10009a20);
+	Rect destRect;
+	destRect.m_left = p_destLeft;
+	destRect.m_top = p_destTop;
+	destRect.m_right = p_destLeft + p_destWidth;
+	destRect.m_bottom = p_destTop + p_destHeight;
+
+	p_image->FUN_100054d0(this, p_unk0x08, &destRect, 0);
 }
 
 // STUB: GOLDP 0x10009a70

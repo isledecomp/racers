@@ -1,6 +1,7 @@
 #include "utopianpan0xa4.h"
 
 #include "duskwindbananarelic0x30.h"
+#include "rectangle.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
 
@@ -84,6 +85,23 @@ void UtopianPan0xa4::FUN_10005440(undefined4*, undefined4*, undefined4*)
 {
 	// TODO
 	STUB(0x10005440);
+}
+
+// FUNCTION: GOLDP 0x100054d0
+void UtopianPan0xa4::FUN_100054d0(
+	BronzeFalcon0xc8770* p_renderer,
+	undefined4 p_unk0x08,
+	Rect* p_destRect,
+	undefined4 p_unk0x14
+)
+{
+	Rect sourceRect;
+	sourceRect.m_left = 0;
+	sourceRect.m_top = 0;
+	sourceRect.m_right = m_unk0x34;
+	sourceRect.m_bottom = m_unk0x38;
+
+	FUN_10005510(p_renderer, p_unk0x08, p_destRect, &sourceRect, p_unk0x14);
 }
 
 // STUB: GOLDP 0x10005510

@@ -77,10 +77,15 @@ option(RACERS_DECOMP_ASSERT "Assert struct size" ${MSVC_FOR_DECOMP})
 add_cxx_warning(parentheses)
 
 set(COMMON_SOURCES
+  common/src/golsurfaceformat.cpp
   common/src/golnametable.cpp
   common/src/golerror.cpp
   common/src/golfile.cpp
   common/src/golfsutil.cpp
+  common/src/golimgfile.cpp
+  common/src/golbmpfile.cpp
+  common/src/goltgafile.cpp
+  common/src/goldecompress.cpp
   common/src/golcpu.cpp
   common/src/golhashtable.cpp
   common/src/golstream.cpp
@@ -107,7 +112,6 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/whitebaffoon0x50.cpp
   GolDP/src/whitefalcon0x140.cpp
   GolDP/src/duskwindbananarelic0x24.cpp
-  GolDP/src/falcontextureformat.cpp
   GolDP/src/bronzefalconsurface0x5c.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/depthbuffer0x38.cpp
@@ -156,7 +160,6 @@ add_library(goldp SHARED
   GolDP/src/azureridge0x38.cpp
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/amberlens0x344.cpp
-  GolDP/src/falcontextureformat.cpp
   GolDP/src/jadeorbit0x220.cpp
   GolDP/src/ddrawutil.cpp
   GolDP/src/jadeorbitbase0x10.cpp
@@ -186,7 +189,6 @@ add_library(goldp SHARED
   GolDP/src/softwarerenderer0x58.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/boundingshape0x2c.cpp
-  GolDP/src/moonlitcanvas0x5b0.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

@@ -1,14 +1,14 @@
-#ifndef FALCONTEXTUREFORMAT_H
-#define FALCONTEXTUREFORMAT_H
+#ifndef GOLSURFACEFORMAT_H
+#define GOLSURFACEFORMAT_H
 
 #include "color.h"
 #include "decomp.h"
 #include "types.h"
 
 // SIZE 0x18
-class FalconTextureFormat {
+class GolSurfaceFormat {
 public:
-	FalconTextureFormat()
+	GolSurfaceFormat()
 	{
 		m_redBitMask = 0;
 		m_grnBitMask = 0;
@@ -19,6 +19,7 @@ public:
 		m_bitsPerPixel = 0;
 	}
 
+#ifdef BUILDING_GOL
 	LegoU32 GetRedBitCount() const;
 	LegoU32 GetBlueBitCount() const;
 	LegoU32 GetGreenBitCount() const;
@@ -30,6 +31,7 @@ public:
 	LegoU32 GetGreenBitShift() const;
 	LegoU32 GetAlphaBitShift() const;
 	LegoU32 MapRGBA(const ColorRGBA& p_rgba) const;
+#endif
 
 	LegoU32 m_redBitMask;   // 0x00
 	LegoU32 m_grnBitMask;   // 0x04
@@ -40,4 +42,4 @@ public:
 	LegoU16 m_bitsPerPixel; // 0x16
 };
 
-#endif // FALCONTEXTUREFORMAT_H
+#endif // GOLSURFACEFORMAT

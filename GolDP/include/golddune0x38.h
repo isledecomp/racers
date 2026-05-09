@@ -4,7 +4,7 @@
 #include "silverdune0x30.h"
 
 class WhiteFalcon0x140;
-class MoonlitCanvas0x5b0;
+class GolImgFile;
 
 // VTABLE: GOLDP 0x1005766c
 // SIZE 0x38
@@ -20,10 +20,10 @@ public:
 	};
 	GoldDune0x38();
 
-	virtual void VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0* p_source); // vtable+0x30
+	virtual void VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_source); // vtable+0x30
 	virtual void VTable0x34(
 		WhiteFalcon0x140& p_renderer,
-		const FalconTextureFormat& p_textureFormat,
+		const GolSurfaceFormat& p_textureFormat,
 		LegoU32 p_width,
 		LegoU32 p_height
 	) = 0;                         // vtable+0x34

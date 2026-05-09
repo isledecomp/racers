@@ -98,6 +98,8 @@ public:
 	LegoU32 GetFlags() const { return m_flags; }
 	LegoS32 GetSize() { return m_size; }
 
+	LegoBool IsOpen() const { return m_flags & c_flagOpen; }
+
 protected:
 	LegoU32 m_mode;           // 0x04
 	LegoU32 m_flags;          // 0x08

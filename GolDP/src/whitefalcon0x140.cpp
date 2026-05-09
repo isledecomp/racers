@@ -2,7 +2,7 @@
 
 #include "amberhaze0x1c.h"
 #include "cinderbasin0x28.h"
-#include "falcontextureformat.h"
+#include "golsurfaceformat.h"
 #include "hypnoticnoise0x1c.h"
 #include "magentaribbon0x20.h"
 
@@ -472,8 +472,8 @@ undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 
 // FUNCTION: GOLDP 0x10028c50
 void WhiteFalcon0x140::SelectTextureFormat(
-	const FalconTextureFormat& p_requestedTextureFormat,
-	FalconTextureFormat* p_actualTextureFormat,
+	const GolSurfaceFormat& p_requestedTextureFormat,
+	GolSurfaceFormat* p_actualTextureFormat,
 	LegoBool32
 )
 {

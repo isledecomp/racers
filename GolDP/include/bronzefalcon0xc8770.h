@@ -24,7 +24,7 @@ typedef void (BronzeFalcon0xc8770::*BronzeFalconDrawFunction)(undefined4, undefi
 class BronzeFalcon0xc8770 : public WhiteFalcon0x140 {
 public:
 	// SIZE 0x18
-	struct TextureFormat : public FalconTextureFormat {
+	struct TextureFormat : public GolSurfaceFormat {
 		TextureFormat();
 	};
 
@@ -38,8 +38,8 @@ public:
 	void ReleaseResources() override; // vtable+0x04
 	~BronzeFalcon0xc8770() override;  // vtable+0x08
 	void SelectTextureFormat(
-		const FalconTextureFormat& p_requestedTextureFormat,
-		FalconTextureFormat* p_actualTextureFormat,
+		const GolSurfaceFormat& p_requestedTextureFormat,
+		GolSurfaceFormat* p_actualTextureFormat,
 		LegoBool32
 	) override;                                                              // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10

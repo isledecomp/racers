@@ -4,7 +4,7 @@
 #include "golnametable.h"
 
 class BronzeFalcon0xc8770;
-class FalconTextureFormat;
+class GolSurfaceFormat;
 class GoldDune0x38;
 
 // VTABLE: GOLDP 0x100575ac
@@ -20,7 +20,7 @@ public:
 	virtual void VTable0x14() = 0; // vtable+0x14
 	virtual void VTable0x18(
 		LegoU32 p_index,
-		const FalconTextureFormat& p_textureFormat,
+		const GolSurfaceFormat& p_textureFormat,
 		LegoU32 p_width,
 		LegoU32 p_height
 	) = 0;                                                                                              // vtable+0x18

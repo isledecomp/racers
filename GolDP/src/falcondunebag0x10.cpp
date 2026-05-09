@@ -1,7 +1,7 @@
 #include "falcondunebag0x10.h"
 
 // GLOBAL: GOLDP 0x10063558
-FalconTextureFormat FalconDuneBag0x10::g_textureFormat;
+GolSurfaceFormat FalconDuneBag0x10::g_textureFormat;
 
 // FUNCTION: GOLDP 0x100146c0
 FalconDuneBag0x10::FalconDuneBag0x10()
@@ -58,7 +58,7 @@ void FalconDuneBag0x10::CopyEntriesFrom(IPalette0x4* p_source)
 }
 
 // FUNCTION: GOLDP 0x100148c0
-void FalconDuneBag0x10::SetTextureFormat(const FalconTextureFormat& p_format)
+void FalconDuneBag0x10::SetTextureFormat(const GolSurfaceFormat& p_format)
 {
 	g_textureFormat = p_format;
 }

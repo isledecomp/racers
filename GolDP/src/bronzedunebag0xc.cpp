@@ -21,7 +21,7 @@ BronzeDuneBag0xc::~BronzeDuneBag0xc()
 }
 
 // FUNCTION: GOLDP 0x1002a120
-void BronzeDuneBag0xc::FUN_1002a120(const FalconTextureFormat& p_textureFormat)
+void BronzeDuneBag0xc::FUN_1002a120(const GolSurfaceFormat& p_textureFormat)
 {
 	LegoU32 i;
 	if (m_entries != NULL) {

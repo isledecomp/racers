@@ -33,7 +33,7 @@ public:
 	PearlDew0x0c();
 	~PearlDew0x0c();
 
-	void CreateDirectDrawPalette(class BronzeFalcon0xc8770* p_renderer, class FalconTextureFormat* p_textureFormat);
+	void CreateDirectDrawPalette(class BronzeFalcon0xc8770* p_renderer, class GolSurfaceFormat* p_textureFormat);
 	void Release();
 	void Set332PaletteEntries();
 

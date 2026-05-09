@@ -1,7 +1,8 @@
-#include "falcontextureformat.h"
+#include "golsurfaceformat.h"
 
+#ifdef BUILDING_GOL
 // FUNCTION: GOLDP 0x1001cb50
-LegoU32 FalconTextureFormat::GetRedBitCount() const
+LegoU32 GolSurfaceFormat::GetRedBitCount() const
 {
 	LegoU32 mask = m_redBitMask;
 	if (mask == 0) {
@@ -20,7 +21,7 @@ LegoU32 FalconTextureFormat::GetRedBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cb80
-LegoU32 FalconTextureFormat::GetGreenBitCount() const
+LegoU32 GolSurfaceFormat::GetGreenBitCount() const
 {
 	LegoU32 mask = m_grnBitMask;
 	if (mask == 0) {
@@ -39,7 +40,7 @@ LegoU32 FalconTextureFormat::GetGreenBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cbb0
-LegoU32 FalconTextureFormat::GetBlueBitCount() const
+LegoU32 GolSurfaceFormat::GetBlueBitCount() const
 {
 	LegoU32 mask = m_bluBitMask;
 	if (mask == 0) {
@@ -58,7 +59,7 @@ LegoU32 FalconTextureFormat::GetBlueBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cbe0
-LegoU32 FalconTextureFormat::GetAlphaBitCount() const
+LegoU32 GolSurfaceFormat::GetAlphaBitCount() const
 {
 	LegoU32 mask = m_alpBitMask;
 	if (mask == 0) {
@@ -77,7 +78,7 @@ LegoU32 FalconTextureFormat::GetAlphaBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cc10
-LegoU32 FalconTextureFormat::FUN_1001cc10() const
+LegoU32 GolSurfaceFormat::FUN_1001cc10() const
 {
 	LegoU32 mask = m_unk0x10;
 	if (mask == 0) {
@@ -96,7 +97,7 @@ LegoU32 FalconTextureFormat::FUN_1001cc10() const
 }
 
 // FUNCTION: GOLDP 0x1001cc40
-LegoU32 FalconTextureFormat::GetPaletteBitCount() const
+LegoU32 GolSurfaceFormat::GetPaletteBitCount() const
 {
 	LegoU16 mask = m_paletteMask;
 	if (mask == 0) {
@@ -116,7 +117,7 @@ LegoU32 FalconTextureFormat::GetPaletteBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cc70
-LegoU32 FalconTextureFormat::GetRedBitShift() const
+LegoU32 GolSurfaceFormat::GetRedBitShift() const
 {
 	LegoU32 mask = m_redBitMask;
 	if (mask == 0) {
@@ -132,7 +133,7 @@ LegoU32 FalconTextureFormat::GetRedBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001cc90
-LegoU32 FalconTextureFormat::GetGreenBitShift() const
+LegoU32 GolSurfaceFormat::GetGreenBitShift() const
 {
 	LegoU32 mask = m_grnBitMask;
 	if (mask == 0) {
@@ -148,7 +149,7 @@ LegoU32 FalconTextureFormat::GetGreenBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccb0
-LegoU32 FalconTextureFormat::GetBlueBitShift() const
+LegoU32 GolSurfaceFormat::GetBlueBitShift() const
 {
 	LegoU32 mask = m_bluBitMask;
 	if (mask == 0) {
@@ -164,7 +165,7 @@ LegoU32 FalconTextureFormat::GetBlueBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccd0
-LegoU32 FalconTextureFormat::GetAlphaBitShift() const
+LegoU32 GolSurfaceFormat::GetAlphaBitShift() const
 {
 	LegoU32 mask = m_alpBitMask;
 	if (mask == 0) {
@@ -180,7 +181,7 @@ LegoU32 FalconTextureFormat::GetAlphaBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccf0
-LegoU32 FalconTextureFormat::MapRGBA(const ColorRGBA& p_rgba) const
+LegoU32 GolSurfaceFormat::MapRGBA(const ColorRGBA& p_rgba) const
 {
 	LegoU32 redMask = m_redBitMask;
 	LegoU32 mask = redMask;
@@ -327,3 +328,4 @@ LegoU32 FalconTextureFormat::MapRGBA(const ColorRGBA& p_rgba) const
 
 	return red | alp;
 }
+#endif

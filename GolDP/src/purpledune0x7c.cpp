@@ -5,7 +5,7 @@
 #include "falcondunebag0x10.h"
 #include "golcommondrawstate.h"
 #include "golerror.h"
-#include "moonlitcanvas0x5b0.h"
+#include "golimgfile.h"
 #include "pearldew0x0c.h"
 
 #include <string.h>
@@ -33,9 +33,9 @@ PurpleDune0x7c::~PurpleDune0x7c()
 }
 
 // FUNCTION: GOLDP 0x10015c80
-void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0* p_source)
+void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_source)
 {
-	FalconTextureFormat textureFormat = p_source->GetTextureFormat();
+	GolSurfaceFormat textureFormat = p_source->GetTextureFormat();
 
 	if (p_renderer.GetUnk0x04() & WhiteFalcon0x140::c_flagBit17) {
 		m_unk0x34 = static_cast<LegoU16>(static_cast<BronzeFalcon0xc8770&>(p_renderer).GetUnk0xc8704());
@@ -51,7 +51,7 @@ void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0
 // FUNCTION: GOLDP 0x10015d60
 void PurpleDune0x7c::VTable0x34(
 	WhiteFalcon0x140& p_renderer,
-	const FalconTextureFormat& p_textureFormat,
+	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
 	LegoU32 p_height
 )
@@ -305,7 +305,7 @@ void PurpleDune0x7c::FUN_10016440(BronzeFalcon0xc8770& p_renderer)
 // FUNCTION: GOLDP 0x10016460
 undefined4 PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
 {
-	FalconTextureFormat textureFormat;
+	GolSurfaceFormat textureFormat;
 
 	GolCommonDrawState* drawState = p_renderer.GetDrawState();
 	if (m_unk0x34 > 1) {

@@ -18,7 +18,7 @@ public:
 	void VTable0x14() override;   // vtable+0x14
 	void VTable0x18(
 		LegoU32 p_index,
-		const FalconTextureFormat& p_textureFormat,
+		const GolSurfaceFormat& p_textureFormat,
 		LegoU32 p_width,
 		LegoU32 p_height
 	) override;

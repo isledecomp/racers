@@ -3,7 +3,7 @@
 
 #include "bronzedunebag0xc.h"
 #include "decomp.h"
-#include "falcontextureformat.h"
+#include "golsurfaceformat.h"
 
 #include <windows.h>
 
@@ -20,14 +20,14 @@ public:
 	void FUN_10014770(undefined4*);
 	void Destroy();
 
-	static void SetTextureFormat(const FalconTextureFormat& p_format);
+	static void SetTextureFormat(const GolSurfaceFormat& p_format);
 	// SYNTHETIC: GOLDP 0x100146e0
 	// FalconDuneBag0x10::`scalar deleting destructor'
 
 private:
 	LegoU16* m_unk0x0c; // 0x0c
 
-	static FalconTextureFormat g_textureFormat;
+	static GolSurfaceFormat g_textureFormat;
 };
 
 #endif // FALCONDUNEBAG0X10_H

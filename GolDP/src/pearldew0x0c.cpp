@@ -1,8 +1,8 @@
 #include "pearldew0x0c.h"
 
 #include "bronzefalcon0xc8770.h"
-#include "falcontextureformat.h"
 #include "golerror.h"
+#include "golsurfaceformat.h"
 
 #include <stdio.h>
 
@@ -32,7 +32,7 @@ PearlDew0x0c::~PearlDew0x0c()
 }
 
 // FUNCTION: GOLDP 0x100071e0
-void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, FalconTextureFormat* p_textureFormat)
+void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
 	LegoChar buffer[c_errorBufferSize];
 

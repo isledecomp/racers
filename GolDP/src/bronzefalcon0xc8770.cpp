@@ -3,13 +3,13 @@
 #include "amberlens0x344.h"
 #include "bronzefalconsurface0x5c.h"
 #include "falcondunebag0x10.h"
-#include "falcontextureformat.h"
 #include "floatypontoon0x4c.h"
 #include "golddune0x38.h"
 #include "goldrawdpstate.h"
 #include "golerror.h"
 #include "golfontbase0x40.h"
 #include "golmath.h"
+#include "golsurfaceformat.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 
@@ -271,7 +271,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlateP
 // FUNCTION: GOLDP 0x10007e20
 undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 {
-	FalconTextureFormat swTextureFormat;
+	GolSurfaceFormat swTextureFormat;
 	LegoU32 forceSoftware;
 	LegoChar errorMessage[64];
 	D3DDEVICEDESC helCaps;
@@ -385,7 +385,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 				GOL_FATALERROR_MESSAGE("Unable to create background material");
 			}
 
-			m_textureFormats = new FalconTextureFormat[m_countTextureFormats];
+			m_textureFormats = new GolSurfaceFormat[m_countTextureFormats];
 			if (m_textureFormats == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
@@ -789,7 +789,7 @@ void BronzeFalcon0xc8770::VTable0xf0()
 // FUNCTION: GOLDP 0x10009640
 void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 {
-	FalconTextureFormat textureFormat;
+	GolSurfaceFormat textureFormat;
 
 	m_unk0x2cc = p_color;
 	if (m_unk0x04 & c_flagBit16) {
@@ -1253,12 +1253,12 @@ void BronzeFalcon0xc8770::DrawTriangle(
 
 // FUNCTION: GOLDP 0x1000a110
 void BronzeFalcon0xc8770::SelectTextureFormat(
-	const FalconTextureFormat& p_requestedTextureFormat,
-	FalconTextureFormat* p_actualTextureFormat,
+	const GolSurfaceFormat& p_requestedTextureFormat,
+	GolSurfaceFormat* p_actualTextureFormat,
 	LegoBool32 p_arg3
 )
 {
-	FalconTextureFormat reqTextureFormat;
+	GolSurfaceFormat reqTextureFormat;
 	if (p_arg3 && (m_unk0x04 & (c_flagBit7 | c_flagBit8)) && p_requestedTextureFormat.GetAlphaBitCount() == 0) {
 		reqTextureFormat.m_redBitMask = 0xf800;
 		reqTextureFormat.m_grnBitMask = 0x07c0;
@@ -2015,7 +2015,7 @@ void BronzeFalcon0xc8770::FUN_1000b4a0()
 		m_textureFormats[1].m_unk0x10 = 0;
 		m_textureFormats[1].m_bitsPerPixel = 8;
 
-		FalconTextureFormat& textureFormat = m_renderTargetInfo->GetTextureFormat();
+		GolSurfaceFormat& textureFormat = m_renderTargetInfo->GetTextureFormat();
 		if (textureFormat.GetGreenBitCount() == 6) {
 			m_textureFormats[0].m_redBitMask = 0xf800;
 			m_textureFormats[0].m_grnBitMask = 0x07e0;
@@ -2070,7 +2070,7 @@ HRESULT BronzeFalcon0xc8770::CountTextureFormatsCallback(DDPIXELFORMAT* p_format
 HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context)
 {
 	BronzeFalcon0xc8770* self = static_cast<BronzeFalcon0xc8770*>(p_context);
-	FalconTextureFormat* format = &self->m_textureFormats[self->m_unk0x2c];
+	GolSurfaceFormat* format = &self->m_textureFormats[self->m_unk0x2c];
 	self->m_unk0x2c += 1;
 
 	if (p_format->dwFlags & DDPF_PALETTEINDEXED8) {

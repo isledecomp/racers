@@ -2,7 +2,7 @@
 #define GOLDP_SILVERDUNE0X30_H
 
 #include "decomp.h"
-#include "falcontextureformat.h"
+#include "golsurfaceformat.h"
 #include "rectangle.h"
 #include "types.h"
 
@@ -45,19 +45,19 @@ public:
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
 	LegoU16 GetWidth() const { return m_width; }
 	LegoU16 GetHeight() const { return m_height; }
-	FalconTextureFormat& GetTextureFormat() { return m_textureFormat; }
+	GolSurfaceFormat& GetTextureFormat() { return m_textureFormat; }
 
 protected:
 	friend class BronzeFalcon0xc8770;
 
-	FalconTextureFormat m_textureFormat; // 0x04
-	LegoU8* m_pixels;                    // 0x1c
-	LegoU8* m_auxPixels;                 // 0x20
-	LegoU16 m_pitch;                     // 0x24
-	LegoU16 m_pixelFlags;                // 0x26
-	LegoU16 m_auxFlags;                  // 0x28
-	LegoU16 m_width;                     // 0x2a
-	LegoU16 m_height;                    // 0x2c
+	GolSurfaceFormat m_textureFormat; // 0x04
+	LegoU8* m_pixels;                 // 0x1c
+	LegoU8* m_auxPixels;              // 0x20
+	LegoU16 m_pitch;                  // 0x24
+	LegoU16 m_pixelFlags;             // 0x26
+	LegoU16 m_auxFlags;               // 0x28
+	LegoU16 m_width;                  // 0x2a
+	LegoU16 m_height;                 // 0x2c
 };
 
 #endif // GOLDP_SILVERDUNE0X30_H

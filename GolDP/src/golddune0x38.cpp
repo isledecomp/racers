@@ -10,7 +10,7 @@ GoldDune0x38::GoldDune0x38()
 }
 
 // STUB: GOLDP 0x1002bb20
-void GoldDune0x38::VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0*)
+void GoldDune0x38::VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile*)
 {
 	// TODO
 	STUB(0x1002bb20);

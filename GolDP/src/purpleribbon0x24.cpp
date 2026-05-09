@@ -74,7 +74,7 @@ GoldDune0x38* PurpleRibbon0x24::VTable0x28(LegoU32 p_index)
 // FUNCTION: GOLDP 0x10015b10
 void PurpleRibbon0x24::VTable0x18(
 	LegoU32 p_index,
-	const FalconTextureFormat& p_textureFormat,
+	const GolSurfaceFormat& p_textureFormat,
 	LegoU32 p_width,
 	LegoU32 p_height
 )

@@ -186,6 +186,7 @@ add_library(goldp SHARED
   GolDP/src/softwarerenderer0x58.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/boundingshape0x2c.cpp
+  GolDP/src/moonlitcanvas0x5b0.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

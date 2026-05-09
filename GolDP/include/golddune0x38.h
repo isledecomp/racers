@@ -4,20 +4,23 @@
 #include "silverdune0x30.h"
 
 class WhiteFalcon0x140;
+class MoonlitCanvas0x5b0;
 
 // VTABLE: GOLDP 0x1005766c
 // SIZE 0x38
 class GoldDune0x38 : public SilverDune0x30 {
 public:
 	enum {
+		c_unk0x36Bit2 = 0x04,
 		c_unk0x36Bit5 = 0x20,
+		c_unk0x36Bit6 = 0x40,
 		c_unk0x36Bit7 = 0x80,
 		c_unk0x36Bit10 = 0x400,
 		c_unk0x36Bit11 = 0x800,
 	};
 	GoldDune0x38();
 
-	virtual void VTable0x30(WhiteFalcon0x140& p_renderer, undefined4*); // vtable+0x30
+	virtual void VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0* p_source); // vtable+0x30
 	virtual void VTable0x34(
 		WhiteFalcon0x140& p_renderer,
 		const FalconTextureFormat& p_textureFormat,

@@ -3,8 +3,12 @@
 #include "bronzefalcon0xc8770.h"
 #include "ddrawutil.h"
 #include "falcondunebag0x10.h"
+#include "golcommondrawstate.h"
 #include "golerror.h"
+#include "moonlitcanvas0x5b0.h"
 #include "pearldew0x0c.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(PurpleDune0x7c, 0x7c)
 
@@ -28,11 +32,20 @@ PurpleDune0x7c::~PurpleDune0x7c()
 	m_pixelFlags = 0;
 }
 
-// STUB: GOLDP 0x10015c80
-void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, undefined4*)
+// FUNCTION: GOLDP 0x10015c80
+void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0* p_source)
 {
-	// TODO
-	STUB(0x10015c80);
+	FalconTextureFormat textureFormat = p_source->GetTextureFormat();
+
+	if (p_renderer.GetUnk0x04() & WhiteFalcon0x140::c_flagBit17) {
+		m_unk0x34 = static_cast<LegoU16>(static_cast<BronzeFalcon0xc8770&>(p_renderer).GetUnk0xc8704());
+	}
+
+	VTable0x34(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
+	p_source->SetUnk0x5a8(TRUE);
+	p_source->SetUnk0x5ac(0);
+	p_source->VTable0x20(this, m_unk0x36 & c_unk0x36Bit2, 0);
+	p_source->SetUnk0x5a8(0);
 }
 
 // FUNCTION: GOLDP 0x10015d60
@@ -289,11 +302,77 @@ void PurpleDune0x7c::FUN_10016440(BronzeFalcon0xc8770& p_renderer)
 	}
 }
 
-// STUB: GOLDP 0x10016460
-void PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
+// FUNCTION: GOLDP 0x10016460
+undefined4 PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
 {
-	p_renderer.GetDrawState();
+	FalconTextureFormat textureFormat;
 
-	// TODO
-	STUB(0x10016460);
+	GolCommonDrawState* drawState = p_renderer.GetDrawState();
+	if (m_unk0x34 > 1) {
+		textureFormat.m_redBitMask = 0xf800;
+		textureFormat.m_grnBitMask = 0x07e0;
+		textureFormat.m_bluBitMask = 0x001f;
+		textureFormat.m_alpBitMask = 0;
+		textureFormat.m_paletteMask = 0;
+		textureFormat.m_unk0x10 = 0;
+		textureFormat.m_bitsPerPixel = 16;
+	}
+	else {
+		textureFormat = m_textureFormat;
+	}
+
+	p_renderer.SelectTextureFormat(textureFormat, &m_textureFormat2, static_cast<LegoU8>(m_unk0x36) & c_unk0x36Bit5);
+	m_unk0x74 = m_width;
+	m_unk0x78 = m_height;
+
+	if (!p_renderer.TexturesMustBeSquare()) {
+		if (m_width > m_height) {
+			m_unk0x78 = m_width;
+		}
+		else {
+			m_unk0x74 = m_height;
+		}
+	}
+
+	if ((m_unk0x36 & c_unk0x36Bit5) && (p_renderer.GetUnk0x04() & WhiteFalcon0x140::c_flagBit9)) {
+		m_unk0x36 |= c_unk0x36Bit7;
+	}
+	else {
+		m_unk0x36 &= ~c_unk0x36Bit7;
+	}
+
+	if (p_renderer.VTable0x110()) {
+		m_unk0x36 |= c_unk0x36Bit6;
+	}
+	else {
+		m_unk0x36 &= ~c_unk0x36Bit6;
+	}
+
+	if (p_renderer.GetUnk0x04() & (WhiteFalcon0x140::c_flagBit7 | WhiteFalcon0x140::c_flagBit8)) {
+		m_unk0x36 |= c_unk0x36Bit10;
+	}
+	else {
+		m_unk0x36 &= ~c_unk0x36Bit10;
+	}
+
+	m_unk0x36 |= c_unk0x36Bit11;
+	if (p_renderer.GetUnk0x04() & WhiteFalcon0x140::c_flagBit16) {
+		return FUN_100168c0(p_renderer);
+	}
+
+	return FUN_100165c0(drawState, p_renderer);
+}
+
+// STUB: GOLDP 0x100165c0
+undefined4 PurpleDune0x7c::FUN_100165c0(GolCommonDrawState*, BronzeFalcon0xc8770&)
+{
+	STUB(0x100165c0);
+	return 0;
+}
+
+// STUB: GOLDP 0x100168c0
+undefined4 PurpleDune0x7c::FUN_100168c0(BronzeFalcon0xc8770&)
+{
+	STUB(0x100168c0);
+	return 0;
 }

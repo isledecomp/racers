@@ -9,6 +9,7 @@
 #include <ddraw.h>
 
 class IPalette0x4;
+class GolCommonDrawState;
 
 // VTABLE: GOLDP 0x1005681c
 // SIZE 0x7c
@@ -17,10 +18,10 @@ public:
 	PurpleDune0x7c();
 	~PurpleDune0x7c() override; // vtable+0x00
 
-	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x04
-	void UnlockPixels() override;                                                   // vtable+0x08
-	IPalette0x4* GetPalette() override;                                             // vtable+0x1c
-	void VTable0x30(WhiteFalcon0x140& p_renderer, undefined4*) override;            // vtable+0x30
+	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;       // vtable+0x04
+	void UnlockPixels() override;                                                         // vtable+0x08
+	IPalette0x4* GetPalette() override;                                                   // vtable+0x1c
+	void VTable0x30(WhiteFalcon0x140& p_renderer, MoonlitCanvas0x5b0* p_source) override; // vtable+0x30
 	void VTable0x34(
 		WhiteFalcon0x140& p_renderer,
 		const FalconTextureFormat& p_textureFormat,
@@ -33,7 +34,9 @@ public:
 	void FUN_10016100();
 	void FUN_10016380();
 	void FUN_10016440(BronzeFalcon0xc8770& p_renderer);
-	void FUN_10016460(BronzeFalcon0xc8770& p_renderer);
+	undefined4 FUN_10016460(BronzeFalcon0xc8770& p_renderer);
+	undefined4 FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer);
+	undefined4 FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return reinterpret_cast<LPDIRECT3DTEXTURE2>(m_unk0x4c); }
 

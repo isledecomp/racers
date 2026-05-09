@@ -95,6 +95,7 @@ public:
 	static void TransformToUpper(LegoChar* p_str);
 	static LegoS32 IsAbsolutePath(const LegoChar* p_path);
 	static void BuildPathname(const LegoChar* p_prefix, const LegoChar* p_path);
+	LegoU32 GetFlags() const { return m_flags; }
 	LegoS32 GetSize() { return m_size; }
 
 protected:

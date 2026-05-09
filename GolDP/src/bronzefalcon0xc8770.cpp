@@ -989,7 +989,7 @@ void BronzeFalcon0xc8770::VTable0x70(
 // STUB: GOLDP 0x10009a70
 void BronzeFalcon0xc8770::VTable0xb4(FloatyPontoon0x4c& p_param)
 {
-	undefined4 visibility[2];
+	LegoBool32 visibility[2];
 	p_param.FUN_10029fa0(m_unk0x4c.m_position, visibility);
 	if (visibility[0]) {
 		GolVec3 forward;

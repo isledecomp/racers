@@ -77,10 +77,25 @@ undefined4 FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_arg1)
 	return 0;
 }
 
-// STUB: GOLDP 0x10029fa0
-void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3&, undefined4*)
+// FUNCTION: GOLDP 0x10029fa0
+void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
 {
-	STUB(0x10029fa0);
+	GolVec3 position;
+
+	p_result[1] = FALSE;
+	FUN_100286d0(&position);
+
+	LegoFloat x = p_arg1.m_x - position.m_x;
+	LegoFloat y = p_arg1.m_y - position.m_y;
+	LegoFloat z = p_arg1.m_z - position.m_z;
+	LegoFloat distanceSquared = x * x + y * y + z * z;
+
+	if (distanceSquared != 0.0f && distanceSquared <= m_unk0x44) {
+		p_result[0] = TRUE;
+	}
+	else {
+		p_result[0] = FALSE;
+	}
 }
 
 // STUB: GOLDP 0x1002a020

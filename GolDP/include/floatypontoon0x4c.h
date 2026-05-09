@@ -31,7 +31,7 @@ public:
 	void FUN_10014ff0(BronzeFalcon0xc8770* p_renderer);
 	undefined4 FUN_10026fa0(LegoFloat p_arg1);
 	void FUN_10029e90(undefined4* p_arg1, LegoS32 p_arg2, undefined4 p_arg3, undefined4 p_arg4, undefined4 p_arg5);
-	void FUN_10029fa0(const GolVec3& p_arg1, undefined4* p_arg2);
+	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
 	undefined4 FUN_1002a020();
 
 private:

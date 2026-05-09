@@ -61,7 +61,7 @@ void FloatyPontoon0x4c::VTable0x50()
 }
 
 // STUB: GOLDP 0x10029ee0
-void FloatyPontoon0x4c::VTable0x14(FloatyVec0xc* p_arg1, undefined4* p_arg2)
+void FloatyPontoon0x4c::VTable0x14(GolVec3* p_arg1, undefined4* p_arg2)
 {
 	// TODO
 	STUB(0x10029ee0);

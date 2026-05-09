@@ -175,9 +175,9 @@ void MenuManager::FUN_0042cd60()
 // FUNCTION: LEGORACERS 0x0042cde0
 void MenuManager::FUN_0042cde0()
 {
-	FloatyVec0xc position;
-	FloatyVec0xc forward;
-	FloatyVec0xc right;
+	GolVec3 position;
+	GolVec3 forward;
+	GolVec3 right;
 	AmberLens0x344* lens = m_unk0x4cd4->VTable0x20();
 
 	lens->m_unk0x08 = m_unk0x04.m_context->GetUnk0x0c();

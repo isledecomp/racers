@@ -89,6 +89,7 @@ set(COMMON_SOURCES
   common/src/goltxtparser.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp
+  common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
 )

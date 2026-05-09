@@ -52,3 +52,54 @@ void GolFontBase0x40::VTable0x00(undefined4, undefined4)
 	// TODO
 	STUB(0x1001e070);
 }
+
+// STUB: GOLDP 0x1001eaa0
+undefined4 GolFontBase0x40::FUN_1001eaa0(
+	undefined4,
+	WhiteFalcon0x140*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	// TODO
+	STUB(0x1001eaa0);
+	return 0;
+}
+
+// STUB: GOLDP 0x1001eb70
+undefined4 GolFontBase0x40::FUN_1001eb70(
+	undefined4,
+	WhiteFalcon0x140*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	// TODO
+	STUB(0x1001eb70);
+	return 0;
+}
+
+// STUB: GOLDP 0x1001eca0
+undefined4 GolFontBase0x40::FUN_1001eca0(
+	undefined4,
+	WhiteFalcon0x140*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	// TODO
+	STUB(0x1001eca0);
+	return 0;
+}

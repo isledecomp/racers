@@ -7,6 +7,7 @@
 #include "golddune0x38.h"
 #include "goldrawdpstate.h"
 #include "golerror.h"
+#include "golfontbase0x40.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 
@@ -987,22 +988,49 @@ void BronzeFalcon0xc8770::VTable0xb4()
 	STUB(0x10009a70);
 }
 
-// STUB: GOLDP 0x10009b40
-void BronzeFalcon0xc8770::VTable0x68()
+// FUNCTION: GOLDP 0x10009b40
+undefined4 BronzeFalcon0xc8770::VTable0x68(
+	undefined4 p_unk0x04,
+	GolFontBase0x40* p_font,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10,
+	undefined4 p_unk0x14,
+	undefined4 p_unk0x18,
+	undefined4 p_unk0x1c,
+	undefined4 p_unk0x20
+)
 {
-	STUB(0x10009b40);
+	return p_font->FUN_1001eaa0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
-// STUB: GOLDP 0x10009b70
-void BronzeFalcon0xc8770::VTable0x64()
+// FUNCTION: GOLDP 0x10009b70
+undefined4 BronzeFalcon0xc8770::VTable0x64(
+	undefined4 p_unk0x04,
+	GolFontBase0x40* p_font,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10,
+	undefined4 p_unk0x14,
+	undefined4 p_unk0x18,
+	undefined4 p_unk0x1c,
+	undefined4 p_unk0x20
+)
 {
-	STUB(0x10009b70);
+	return p_font->FUN_1001eb70(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
-// STUB: GOLDP 0x10009ba0
-void BronzeFalcon0xc8770::VTable0x6c()
+// FUNCTION: GOLDP 0x10009ba0
+undefined4 BronzeFalcon0xc8770::VTable0x6c(
+	undefined4 p_unk0x04,
+	GolFontBase0x40* p_font,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10,
+	undefined4 p_unk0x14,
+	undefined4 p_unk0x18,
+	undefined4 p_unk0x1c,
+	undefined4 p_unk0x20
+)
 {
-	STUB(0x10009ba0);
+	return p_font->FUN_1001eca0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009bd0

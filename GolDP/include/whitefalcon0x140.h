@@ -14,6 +14,7 @@ class CinderBasin0x28;
 class DuskwindBananaRelic0x24;
 class FalconTextureFormat;
 class GolFont0xa0;
+class GolFontBase0x40;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
@@ -94,9 +95,36 @@ public:
 	virtual void VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2);  // vtable+0x58
 	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
-	virtual void VTable0x64() = 0;                                          // vtable+0x64
-	virtual void VTable0x68() = 0;                                          // vtable+0x68
-	virtual void VTable0x6c() = 0;                                          // vtable+0x6c
+	virtual undefined4 VTable0x64(
+		undefined4,
+		GolFontBase0x40*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	) = 0; // vtable+0x64
+	virtual undefined4 VTable0x68(
+		undefined4,
+		GolFontBase0x40*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	) = 0; // vtable+0x68
+	virtual undefined4 VTable0x6c(
+		undefined4,
+		GolFontBase0x40*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	) = 0; // vtable+0x6c
 	virtual void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,
 							LegoS32) = 0; // vtable+0x70
 	virtual void VTable0x74(

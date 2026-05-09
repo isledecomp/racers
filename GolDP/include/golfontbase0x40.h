@@ -27,6 +27,37 @@ public:
 	// SYNTHETIC: GOLDP 0x1001dee0
 	// GolFontBase0x40::`scalar deleting destructor'
 
+	undefined4 FUN_1001eaa0(
+		undefined4,
+		WhiteFalcon0x140*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	);
+	undefined4 FUN_1001eb70(
+		undefined4,
+		WhiteFalcon0x140*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	);
+	undefined4 FUN_1001eca0(
+		undefined4,
+		WhiteFalcon0x140*,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	);
+
 	LegoBool32 HasLoadedData() const { return m_unk0x28 != NULL; }
 	void SetColor(LegoU8 p_red, LegoU8 p_green, LegoU8 p_blue, LegoU8 p_alpha)
 	{

@@ -140,6 +140,8 @@ public:
 
 	LPDIRECT3D3 GetDirect3D3() const;
 	LPDIRECTDRAW4 GetDirectDraw4() const;
+	LPDIRECT3DDEVICE3 GetDirect3DDevice() const { return m_d3dDevice; }
+	SoftwareRenderer0x58& GetSoftwareRenderer() { return m_softwareRenderer; }
 
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'

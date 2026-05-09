@@ -6,6 +6,8 @@
 
 #include <d3dtypes.h>
 
+class DuskwindBananaRelic0x24;
+
 // SIZE 0x58
 class SoftwareRenderer0x58 {
 public:
@@ -47,6 +49,7 @@ public:
 	Command0x14* GetCommands() { return m_nodes; }
 	LegoS32 GetNodeCapacity() const { return m_nodeCapacity; }
 
+	void FUN_100411b0(LegoU8* p_buffer, DuskwindBananaRelic0x24* p_material, LegoU32 p_index);
 	void FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, LegoFloat);
 	void FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count);
 	void FUN_10041830(LegoS32 p_count, LegoBool32 p_sort);

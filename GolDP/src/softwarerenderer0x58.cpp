@@ -19,6 +19,13 @@ static void NoopTriangleRasterizer()
 	// empty
 }
 
+// STUB: GOLDP 0x100411b0
+void SoftwareRenderer0x58::FUN_100411b0(LegoU8* p_buffer, DuskwindBananaRelic0x24* p_material, LegoU32 p_index)
+{
+	// TODO
+	STUB(0x100411b0);
+}
+
 // FUNCTION: GOLDP 0x100416a0
 SoftwareRenderer0x58::SoftwareRenderer0x58()
 {

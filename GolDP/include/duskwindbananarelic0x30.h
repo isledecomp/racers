@@ -7,6 +7,7 @@
 #include <d3d.h>
 
 class WhiteFalcon0x140;
+class BronzeFalcon0xc8770;
 
 // VTABLE: GOLDP 0x100563c4
 // SIZE 0x30
@@ -24,8 +25,10 @@ public:
 	void Destroy();
 
 private:
+	void FUN_100064d0(BronzeFalcon0xc8770* p_renderer);
+
 	LPDIRECT3DMATERIAL3 m_unk0x24; // 0x24
-	undefined4 m_unk0x28;          // 0x28
+	D3DMATERIALHANDLE m_unk0x28;   // 0x28
 	LegoU8* m_unk0x2c;             // 0x2c
 };
 

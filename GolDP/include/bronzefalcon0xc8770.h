@@ -30,10 +30,7 @@ public:
 
 	// SIZE 0x10
 	struct Field0xc83b4 {
-		undefined4 m_unk0x00; // 0x00
-		undefined4 m_unk0x04; // 0x04
-		undefined4 m_unk0x08; // 0x08
-		undefined4 m_unk0x0c; // 0x0c
+		LegoU8* m_unk0x00[4]; // 0x00
 	};
 
 	BronzeFalcon0xc8770();

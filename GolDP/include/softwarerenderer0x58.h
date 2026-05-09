@@ -16,7 +16,7 @@ public:
 		undefined2 m_unk0x08; // 0x08
 		undefined2 m_unk0x0a; // 0x0a
 		undefined2 m_unk0x0c; // 0x0c
-		undefined4 m_unk0x10; // 0x10
+		LegoU8* m_unk0x10;    // 0x10
 	};
 
 	enum PixelFormat {

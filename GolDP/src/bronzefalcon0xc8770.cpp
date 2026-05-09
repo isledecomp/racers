@@ -1177,7 +1177,7 @@ void BronzeFalcon0xc8770::DrawTriangle(
 			cmd->m_unk0x08 = m_unk0xc3848++;
 			cmd->m_unk0x0a = m_unk0xc3848++;
 			cmd->m_unk0x0c = m_unk0xc3848++;
-			cmd->m_unk0x10 = m_unk0xc83b4.m_unk0x00;
+			cmd->m_unk0x10 = m_unk0xc83b4.m_unk0x00[0];
 			if (m_unk0x04 & c_flagBit5) {
 				m_softwareRenderer.FUN_100417c0(cmd, 1);
 			}
@@ -1529,12 +1529,104 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 	}
 }
 
-// STUB: GOLDP 0x1000a950
+// FUNCTION: GOLDP 0x1000a950
 void BronzeFalcon0xc8770::FUN_1000a950(DuskwindBananaRelic0x24* p_material)
 {
+	LegoU32 newFlags = p_material->GetUnk0x08();
 	m_unk0xc8538 = p_material;
-	// TODO
-	STUB(0x1000a950);
+
+	LegoU32 textureCount;
+	if (p_material->GetUnk0x04() == NULL) {
+		textureCount = 1;
+	}
+	else {
+		textureCount = p_material->GetUnk0x04()->GetUnk0x34();
+	}
+	m_unk0xc83ac = textureCount - 1;
+
+	if (textureCount > 0) {
+		for (LegoU32 i = 0; i < textureCount; i++) {
+			m_unk0xc83b4.m_unk0x00[i] = static_cast<DuskwindBananaRelic0x30*>(p_material)->GetUnk0x2c() + i * 16;
+		}
+	}
+
+	if (m_unk0xc8568 != 0) {
+		DuskwindBananaRelicColor color = p_material->GetColor0x10();
+		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_unk0x0 & 0xff)) >> 8;
+		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_unk0x1 & 0xff)) >> 8;
+		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_unk0x2 & 0xff)) >> 8;
+		m_unk0xc857c = color.m_unk0x3 & 0xff;
+
+		color = p_material->GetColor0x0c();
+		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+			m_unk0xc859c[i].m_red = ScaleColorChannel(m_unk0xc8580[i].m_red, color.m_unk0x0 & 0xff);
+			m_unk0xc859c[i].m_grn = ScaleColorChannel(m_unk0xc8580[i].m_grn, color.m_unk0x1 & 0xff);
+			m_unk0xc859c[i].m_blu = ScaleColorChannel(m_unk0xc8580[i].m_blu, color.m_unk0x2 & 0xff);
+		}
+	}
+
+	if (m_unk0x04 & c_flagBit14) {
+		newFlags &= ~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
+		newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
+	}
+	else if (
+		newFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit6 | DuskwindBananaRelic0x24::c_flag0x08Bit8 |
+					DuskwindBananaRelic0x24::c_flag0x08Bit12)
+	) {
+		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit6) {
+			m_unk0xc83d0 = p_material->GetAlphaFunc();
+			m_unk0xc83d4 = p_material->GetAlphaRef();
+		}
+
+		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+			LegoU32 destBlend = p_material->GetDestBlend();
+			m_unk0xc83e0 = destBlend;
+			newFlags &= ~DuskwindBananaRelic0x24::c_flag0x08Bit4;
+			newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit5;
+			m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
+		}
+		else if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
+			m_unk0xc83d8 = p_material->GetSrcBlend();
+			m_unk0xc83dc = p_material->GetDestBlend();
+		}
+	}
+
+	if (newFlags == m_unk0xc83c8) {
+		return;
+	}
+
+	LegoU32 changedFlags = newFlags ^ m_unk0xc83c8;
+	if (changedFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit3 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
+						DuskwindBananaRelic0x24::c_flag0x08Bit5)) {
+		m_unk0xc83e8 = (newFlags >> 3) & 1;
+		FUN_10012f50();
+	}
+
+	changedFlags = newFlags ^ m_unk0xc83c8;
+	if (changedFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit9 |
+						DuskwindBananaRelic0x24::c_flag0x08Bit12 | DuskwindBananaRelic0x24::c_flag0x08Bit13)) {
+		m_unk0xc83ec = 0;
+		if (newFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit12)) {
+			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+				m_unk0xc83d8 = 6;
+				m_unk0xc83dc = 8;
+				m_unk0xc83ec = 1;
+				m_unk0xc83c8 = newFlags;
+				FUN_10012f50();
+				return;
+			}
+			m_unk0xc83e0 = 0xff;
+		}
+
+		m_unk0xc83c8 = newFlags;
+		FUN_10012f50();
+	}
+	else {
+		m_unk0xc83c8 = newFlags;
+		if (changedFlags & DuskwindBananaRelic0x24::c_flag0x08Bit14) {
+			FUN_10012f50();
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x1000ac00

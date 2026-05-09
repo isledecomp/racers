@@ -16,6 +16,7 @@ public:
 	~DuskwindBananaRelic0x30() override; // vtable+0x00
 
 	void FUN_10006320(WhiteFalcon0x140& p_renderer);
+	LegoU8* GetUnk0x2c() const { return m_unk0x2c; }
 
 	// SYNTHETIC: GOLDP 0x10004b00
 	// DuskwindBananaRelic0x30::`vector deleting destructor'
@@ -25,7 +26,7 @@ public:
 private:
 	LPDIRECT3DMATERIAL3 m_unk0x24; // 0x24
 	undefined4 m_unk0x28;          // 0x28
-	undefined4* m_unk0x2c;         // 0x2c
+	LegoU8* m_unk0x2c;             // 0x2c
 };
 
 #endif // DUSKWINDBANANARELIC0x30_H

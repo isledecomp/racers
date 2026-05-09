@@ -26,6 +26,7 @@ public:
 	) = 0;                         // vtable+0x34
 	virtual void VTable0x38() = 0; // vtable+0x38
 
+	LegoU16 GetUnk0x34() const { return m_unk0x34; }
 	LegoU16 GetUnk0x36() const { return m_unk0x36; }
 
 	// SYNTHETIC: GOLDP 0x10004470 FOLDED

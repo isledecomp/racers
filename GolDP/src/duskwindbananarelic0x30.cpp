@@ -33,7 +33,7 @@ void DuskwindBananaRelic0x30::FUN_10006320(WhiteFalcon0x140& p_renderer)
 	m_unk0x08 |= c_flagBit0;
 	BronzeFalcon0xc8770* renderer = static_cast<BronzeFalcon0xc8770*>(p_renderer.GetDrawState()->m_currentRenderer);
 
-	if (renderer->GetUnk0x04() & WhiteFalcon0x140::c_flagBit16) {
+	if (renderer->GetFlags() & WhiteFalcon0x140::c_flagBit16) {
 		LegoU32 textureCount;
 		if (m_unk0x04 != NULL) {
 			textureCount = m_unk0x04->GetUnk0x34();

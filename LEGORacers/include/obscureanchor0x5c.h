@@ -11,7 +11,7 @@ class ObscureAnchor0x5c : public ObscureAnthem0x58 {
 public:
 	ObscureAnchor0x5c();
 
-	void VTable0x00() override;                   // vtable+0x00
+	void Reset() override;                        // vtable+0x00
 	~ObscureAnchor0x5c() override;                // vtable+0x04
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
 

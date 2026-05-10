@@ -232,8 +232,8 @@ private:
 	D3DMATERIAL m_materialParams;                                        // 0x274
 	LPDIRECT3DMATERIAL3 m_backgroundMaterial;                            // 0x2c4
 	D3DMATERIALHANDLE m_backgroundMaterialHandle;                        // 0x2c8
-	ColorRGBA m_unk0x2cc;                                                // 0x2cc
-	LegoU32 m_unk0x2d0;                                                  // 0x2d0
+	ColorRGBA m_clearColor;                                              // 0x2cc
+	LegoU32 m_clearPixelValue;                                           // 0x2d0
 	DuskwindBananaRelic0x30 m_unk0x2d4;                                  // 0x2d4
 	SlatePeak0x58* m_unk0x304;                                           // 0x304
 	SlatePeak0x58* m_renderTargetInfo;                                   // 0x308
@@ -254,7 +254,7 @@ private:
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)]; // 0xc53a0
 	undefined4 m_unk0xc83a0;                                             // 0xc83a0
 	undefined4 m_unk0xc83a4;                                             // 0xc83a4
-	GoldDune0x38* m_unk0xc83a8;                                          // 0xc83a8
+	GoldDune0x38* m_currentTexture;                                      // 0xc83a8
 	undefined4 m_unk0xc83ac;                                             // 0xc83ac
 	undefined4 m_unk0xc83b0;                                             // 0xc83b0
 	Field0xc83b4 m_unk0xc83b4;                                           // 0xc83b4

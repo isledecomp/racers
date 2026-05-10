@@ -247,7 +247,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 			return TRUE;
 		}
 		if (active) {
-			Rect* rect = active->FUN_00472e90();
+			Rect* rect = active->GetGlobalRect();
 
 			if (active->VTable0x30(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;
@@ -259,7 +259,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 			return TRUE;
 		}
 		if (active) {
-			Rect* rect = active->FUN_00472e90();
+			Rect* rect = active->GetGlobalRect();
 
 			if (active->VTable0x34(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;

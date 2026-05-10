@@ -92,8 +92,8 @@ private:
 	ChromeSpike0x4 m_unk0x4bcc;            // 0x4bcc
 	CrimsonSun0xa4 m_unk0x4bd0;            // 0x4bd0
 	CopperCrest0x40 m_unk0x4c74;           // 0x4c74
-	GolExport* m_unk0x4cd4;                // 0x4cd4
-	BronzeFalcon0xc8770* m_unk0x4cd8;      // 0x4cd8
+	GolExport* m_golExport;                // 0x4cd4
+	BronzeFalcon0xc8770* m_renderer;       // 0x4cd8
 	AwakeKite0x20* m_imageTable;           // 0x4cdc
 	GolFontTable* m_fontTable;             // 0x4ce0
 	GolStringTable m_menuNameStrings;      // 0x4ce4

@@ -12,7 +12,7 @@ class ObscureSigil0xdc : public ObscureVantage0x58 {
 public:
 	ObscureSigil0xdc();
 
-	void VTable0x00() override;                                                            // vtable+0x00
+	void Reset() override;                                                                 // vtable+0x00
 	~ObscureSigil0xdc() override;                                                          // vtable+0x04
 	undefined4 VTable0x08() override;                                                      // vtable+0x08
 	undefined4 VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c

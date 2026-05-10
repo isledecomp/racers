@@ -40,7 +40,7 @@ public:
 	undefined4 FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer);
 	undefined4 FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
-	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return reinterpret_cast<LPDIRECT3DTEXTURE2>(m_unk0x4c); }
+	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return reinterpret_cast<LPDIRECT3DTEXTURE2>(m_d3dTexture); }
 
 	// SYNTHETIC: GOLDP 0x10004aa0
 	// PurpleDune0x7c::`vector deleting destructor'
@@ -56,10 +56,10 @@ private:
 
 	undefined4 m_unk0x38;              // 0x38
 	undefined4 m_unk0x3c;              // 0x3c
-	IPalette0x4* m_unk0x40;            // 0x40
+	IPalette0x4* m_palette;            // 0x40
 	MipmapLevel* m_mipmaps;            // 0x44
 	LPDIRECTDRAWSURFACE4 m_surface;    // 0x48
-	undefined4* m_unk0x4c;             // 0x4c
+	undefined4* m_d3dTexture;          // 0x4c
 	BronzeDuneBag0xc m_unk0x50;        // 0x50
 	GolSurfaceFormat m_textureFormat2; // 0x5c
 	undefined4 m_unk0x74;              // 0x74

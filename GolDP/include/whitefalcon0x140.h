@@ -227,13 +227,13 @@ public:
 	// SYNTHETIC: GOLDP 0x100288b0
 	// WhiteFalcon0x140::`scalar deleting destructor'
 
-	undefined4 GetUnk0x04() { return m_unk0x04; }
+	undefined4 GetFlags() { return m_flags; }
 	AmberLens0x344* GetUnk0x0c() { return m_unk0x0c; }
 
 protected:
 	friend class GolCommonDrawState;
 
-	undefined4 m_unk0x04;                         // 0x04
+	undefined4 m_flags;                           // 0x04
 	undefined2 m_unk0x08;                         // 0x08
 	undefined2 m_unk0x0a;                         // 0x0a
 	AmberLens0x344* m_unk0x0c;                    // 0x0c

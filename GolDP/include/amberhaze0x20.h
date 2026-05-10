@@ -23,7 +23,7 @@ public:
 	// AmberHaze0x20::`vector deleting destructor'
 
 private:
-	DuskwindBananaRelic0x30* m_unk0x1c; // 0x1c
+	DuskwindBananaRelic0x30* m_items; // 0x1c
 };
 
 #endif // AMBERHAZE0X20_H

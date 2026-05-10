@@ -40,14 +40,14 @@ void DuskwindBananaRelic0x24::FUN_100257e0(WhiteFalcon0x140* p_renderer, const D
 	if (m_unk0x08 & c_flag0x08Bit3) {
 		m_unk0x04 = p_params.m_unk0x04;
 		if (m_unk0x04->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
-			if (p_renderer->GetUnk0x04() & (WhiteFalcon0x140::c_flagBit7 | WhiteFalcon0x140::c_flagBit8)) {
-				if ((p_renderer->GetUnk0x04() & WhiteFalcon0x140::c_flagBit7) && !(m_unk0x08 & c_flag0x08Bit12)) {
+			if (p_renderer->GetFlags() & (WhiteFalcon0x140::c_flagBit7 | WhiteFalcon0x140::c_flagBit8)) {
+				if ((p_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit7) && !(m_unk0x08 & c_flag0x08Bit12)) {
 					m_unk0x22 = 6;
 					m_unk0x23 = 8;
 					m_unk0x08 &= ~(c_flag0x08Bit9 | c_flag0x08Bit5 | c_flag0x08Bit2);
 					m_unk0x08 |= c_flag0x08Bit8 | c_flag0x08Bit4 | c_flag0x08Bit1;
 				}
-				if (p_renderer->GetUnk0x04() & WhiteFalcon0x140::c_flagBit8) {
+				if (p_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit8) {
 					m_unk0x20 = 2;
 					m_unk0x21 = 0;
 					m_unk0x08 &= ~c_flag0x08Bit7;

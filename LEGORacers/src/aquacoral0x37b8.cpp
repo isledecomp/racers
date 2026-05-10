@@ -24,7 +24,7 @@ void AquaCoral0x37b8::FUN_0042b130(LegoRacers::Context* p_context)
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	g_unk0x4c4914->FUN_0042c280(p_context);
+	g_unk0x4c4914->Initialize(p_context);
 	g_unk0x4c4914->Run();
 	g_unk0x4c4914->Shutdown();
 
@@ -46,7 +46,7 @@ AquaCoral0x37b8::~AquaCoral0x37b8()
 }
 
 // FUNCTION: LEGORACERS 0x0042c280
-LegoS32 AquaCoral0x37b8::FUN_0042c280(LegoRacers::Context* p_context)
+LegoS32 AquaCoral0x37b8::Initialize(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
 	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit3;

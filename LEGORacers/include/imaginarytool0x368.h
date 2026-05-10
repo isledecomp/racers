@@ -125,16 +125,16 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
-	PorcelainVeil0x50 m_unk0x290;      // 0x290
-	FieldAt0x2e0 m_unk0x2e0;           // 0x2e0
-	FieldAt0x340 m_unk0x340;           // 0x340
-	FieldAt0x350 m_unk0x350;           // 0x350
-	MenuToolContext0x4bc8* m_unk0x354; // 0x354
-	undefined4 m_unk0x358;             // 0x358
-	ObscureVantage0x58* m_unk0x35c;    // 0x35c
-	LegoU16 m_unk0x360;                // 0x360
-	LegoU16 m_menuId;                  // 0x362
-	LegoBool32 m_unk0x364;             // 0x364
+	PorcelainVeil0x50 m_unk0x290;     // 0x290
+	FieldAt0x2e0 m_unk0x2e0;          // 0x2e0
+	FieldAt0x340 m_unk0x340;          // 0x340
+	FieldAt0x350 m_unk0x350;          // 0x350
+	MenuToolContext0x4bc8* m_context; // 0x354
+	undefined4 m_unk0x358;            // 0x358
+	ObscureVantage0x58* m_unk0x35c;   // 0x35c
+	LegoU16 m_unk0x360;               // 0x360
+	LegoU16 m_menuId;                 // 0x362
+	LegoBool32 m_unk0x364;            // 0x364
 };
 
 #endif // IMAGINARYTOOL0X368_H

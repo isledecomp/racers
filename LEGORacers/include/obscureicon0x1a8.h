@@ -37,7 +37,7 @@ public:
 	};
 
 	ObscureIcon0x1a8();
-	void VTable0x00() override;                                                            // vtable+0x00
+	void Reset() override;                                                                 // vtable+0x00
 	~ObscureIcon0x1a8() override;                                                          // vtable+0x04
 	undefined4 VTable0x08() override;                                                      // vtable+0x08
 	void VTable0x10(Rect*) override;                                                       // vtable+0x10

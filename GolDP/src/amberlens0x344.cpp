@@ -9,21 +9,21 @@ DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 AmberLens0x344::AmberLens0x344()
 {
 	m_unk0x04 = &m_unk0x120;
-	m_unk0x340 = NULL;
+	m_renderer = NULL;
 }
 
 // FUNCTION: GOLDP 0x10001f00
 AmberLens0x344::~AmberLens0x344()
 {
-	if (m_unk0x340) {
-		m_unk0x340->VTable0x24();
+	if (m_renderer) {
+		m_renderer->VTable0x24();
 	}
 }
 
 // FUNCTION: GOLDP 0x10001f60
 void AmberLens0x344::FUN_10001f60(BronzeFalcon0xc8770* p_renderer)
 {
-	m_unk0x340 = p_renderer;
+	m_renderer = p_renderer;
 	if (p_renderer != NULL) {
 		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
 		if (m_unk0x11c == 0 || m_unk0x118 == 0) {
@@ -128,7 +128,7 @@ void AmberLens0x344::VTable0x20(undefined4, undefined4)
 // FUNCTION: GOLDP 0x10002860
 void AmberLens0x344::FUN_10002860(D3DVIEWPORT2* p_viewport)
 {
-	const SlatePeak0x58* renderTargetInfo = m_unk0x340->GetRenderTargetInfo();
+	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
 	p_viewport->dwX = 0;
 	p_viewport->dwY = 0;
 	p_viewport->dwWidth = renderTargetInfo->GetWidth();

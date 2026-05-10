@@ -27,7 +27,7 @@ public:
 	);                         // vtable+0x4c
 	virtual void VTable0x50(); // vtable+0x50
 
-	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, D3DMATRIX* p_matrix);
+	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix);
 	void FUN_10014ff0(BronzeFalcon0xc8770* p_renderer);
 	undefined4 FUN_10026fa0(LegoFloat p_arg1);
 	void FUN_10029e90(undefined4* p_arg1, LegoS32 p_arg2, undefined4 p_arg3, undefined4 p_arg4, undefined4 p_arg5);

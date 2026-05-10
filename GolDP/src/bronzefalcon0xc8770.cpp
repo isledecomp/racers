@@ -187,38 +187,38 @@ void BronzeFalcon0xc8770::Reset()
 	m_unk0xc8538 = NULL;
 	m_unk0xc854c[0] = this;
 	m_unk0xc854c[3] = m_unk0xc428c;
-	m_unk0xc8410._11 = 1.0f;
-	m_unk0xc8450._11 = 1.0f;
-	m_unk0xc8410._12 = 0.0f;
-	m_unk0xc8450._12 = 0.0f;
-	m_unk0xc8410._13 = 0.0f;
-	m_unk0xc8450._13 = 0.0f;
-	m_unk0xc8410._14 = 0.0f;
-	m_unk0xc8450._14 = 0.0f;
-	m_unk0xc8410._21 = 0.0f;
-	m_unk0xc8450._21 = 0.0f;
-	m_unk0xc8410._22 = 1.0f;
-	m_unk0xc8450._22 = 1.0f;
-	m_unk0xc8410._23 = 0.0f;
-	m_unk0xc8450._23 = 0.0f;
-	m_unk0xc8410._24 = 0.0f;
-	m_unk0xc8450._24 = 0.0f;
-	m_unk0xc8410._31 = 0.0f;
-	m_unk0xc8450._31 = 0.0f;
-	m_unk0xc8410._32 = 0.0f;
-	m_unk0xc8450._32 = 0.0f;
-	m_unk0xc8410._33 = 1.0f;
-	m_unk0xc8450._33 = 1.0f;
-	m_unk0xc8410._34 = 0.0f;
-	m_unk0xc8450._34 = 0.0f;
-	m_unk0xc8410._41 = 0.0f;
-	m_unk0xc8450._41 = 0.0f;
-	m_unk0xc8410._42 = 0.0f;
-	m_unk0xc8450._42 = 0.0f;
-	m_unk0xc8410._43 = 0.0f;
-	m_unk0xc8450._43 = 0.0f;
-	m_unk0xc8410._44 = 1.0f;
-	m_unk0xc8450._44 = 1.0f;
+	m_unk0xc8410.m_m[0][0] = 1.0f;
+	m_unk0xc8450.m_m[0][0] = 1.0f;
+	m_unk0xc8410.m_m[0][1] = 0.0f;
+	m_unk0xc8450.m_m[0][1] = 0.0f;
+	m_unk0xc8410.m_m[0][2] = 0.0f;
+	m_unk0xc8450.m_m[0][2] = 0.0f;
+	m_unk0xc8410.m_m[0][3] = 0.0f;
+	m_unk0xc8450.m_m[0][3] = 0.0f;
+	m_unk0xc8410.m_m[1][0] = 0.0f;
+	m_unk0xc8450.m_m[1][0] = 0.0f;
+	m_unk0xc8410.m_m[1][1] = 1.0f;
+	m_unk0xc8450.m_m[1][1] = 1.0f;
+	m_unk0xc8410.m_m[1][2] = 0.0f;
+	m_unk0xc8450.m_m[1][2] = 0.0f;
+	m_unk0xc8410.m_m[1][3] = 0.0f;
+	m_unk0xc8450.m_m[1][3] = 0.0f;
+	m_unk0xc8410.m_m[2][0] = 0.0f;
+	m_unk0xc8450.m_m[2][0] = 0.0f;
+	m_unk0xc8410.m_m[2][1] = 0.0f;
+	m_unk0xc8450.m_m[2][1] = 0.0f;
+	m_unk0xc8410.m_m[2][2] = 1.0f;
+	m_unk0xc8450.m_m[2][2] = 1.0f;
+	m_unk0xc8410.m_m[2][3] = 0.0f;
+	m_unk0xc8450.m_m[2][3] = 0.0f;
+	m_unk0xc8410.m_m[3][0] = 0.0f;
+	m_unk0xc8450.m_m[3][0] = 0.0f;
+	m_unk0xc8410.m_m[3][1] = 0.0f;
+	m_unk0xc8450.m_m[3][1] = 0.0f;
+	m_unk0xc8410.m_m[3][2] = 0.0f;
+	m_unk0xc8450.m_m[3][2] = 0.0f;
+	m_unk0xc8410.m_m[3][3] = 1.0f;
+	m_unk0xc8450.m_m[3][3] = 1.0f;
 	m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000c630;
 	m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
 
@@ -634,8 +634,8 @@ void BronzeFalcon0xc8770::VTable0x5c()
 		GOL_FATALERROR_MESSAGE("Unable to set viewport");
 	}
 
-	m_unk0xc8490 = lens->m_unk0x120.m_unk0x190;
-	m_unk0xc8494 = lens->m_unk0x120.m_unk0x1d0;
+	m_unk0xc8490 = &lens->m_unk0x120.m_unk0x190;
+	m_unk0xc8494 = &lens->m_unk0x120.m_unk0x1d0;
 	::memcpy(&m_unk0x4c, lens->m_unk0x34, sizeof(m_unk0x4c));
 	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
 }
@@ -1001,10 +1001,9 @@ void BronzeFalcon0xc8770::VTable0xb4(FloatyPontoon0x4c& p_param)
 		forward.m_y = -forward.m_y;
 		forward.m_z = -forward.m_z;
 
-		D3DMATRIX* matrix = &m_unk0xc8410;
-		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, matrix);
+		LegoBool32 builtMatrix = p_param.FUN_10014e50(&right, &forward, &m_unk0xc8410);
 		if (builtMatrix) {
-			GolMath::FUN_1002f3a0(matrix, m_unk0xc8490, m_unk0xc8498);
+			GolMath::FUN_1002f3a0(m_unk0xc8410, *m_unk0xc8490, m_unk0xc8498);
 			m_unk0xc8568 = 0;
 			m_unk0xc83e4 = 1;
 			m_unk0xc8518 = m_unk0xc8498;

@@ -274,12 +274,13 @@ private:
 	LegoBool32 m_unk0xc83f8;                                             // 0xc83f8
 	LegoU32 m_unk0xc83fc;                                                // 0xc83fc
 	undefined4 m_unk0xc8400[4];                                          // 0xc8400
-	D3DMATRIX m_unk0xc8410;                                              // 0xc8410
-	D3DMATRIX m_unk0xc8450;                                              // 0xc8450
-	LegoFloat* m_unk0xc8490;                                             // 0xc8490
-	LegoFloat* m_unk0xc8494;                                             // 0xc8494
-	LegoFloat m_unk0xc8498[(0xc8518 - 0xc8498) / sizeof(LegoFloat)];     // 0xc8498
-	LegoFloat* m_unk0xc8518;                                             // 0xc8518
+	GolMatrix4 m_unk0xc8410;                                             // 0xc8410
+	GolMatrix4 m_unk0xc8450;                                             // 0xc8450
+	GolMatrix4* m_unk0xc8490;                                            // 0xc8490
+	GolMatrix4* m_unk0xc8494;                                            // 0xc8494
+	GolMatrix4 m_unk0xc8498[1];                                          // 0xc8498
+	LegoFloat m_unk0xc84d8[(0xc8518 - 0xc84d8) / sizeof(LegoFloat)];     // 0xc84d8
+	GolMatrix4* m_unk0xc8518;                                            // 0xc8518
 	undefined4 m_unk0xc851c;                                             // 0xc851c
 	undefined4 m_unk0xc8520;                                             // 0xc8520
 	undefined4 m_unk0xc8524;                                             // 0xc8524

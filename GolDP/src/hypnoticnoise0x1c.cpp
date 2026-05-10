@@ -67,7 +67,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-	m_numItems = parser->FUN_100327e0();
+	m_numItems = parser->ReadBracketedCountAndLeftCurly();
 
 	if (!m_numItems) {
 		parser->Dispose();
@@ -167,7 +167,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 
 	for (LegoU32 j = 0; j < m_numItems; j++) {
 		UtopianPan0xa4* entry = GetItem(j);
-		if ((entry->m_unk0x3c & UtopianPan0xa4::c_stateFlagBit0) == 0) {
+		if (!(entry->m_unk0x3c & UtopianPan0xa4::c_stateFlagBit0)) {
 			entry->VTable0x10();
 		}
 	}

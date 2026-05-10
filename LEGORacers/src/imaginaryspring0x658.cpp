@@ -22,7 +22,7 @@ LegoBool32 ImaginarySpring0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCrea
 }
 
 // STUB: LEGORACERS 0x00479bd0
-LegoBool32 ImaginarySpring0x658::VTable0x74()
+LegoBool32 ImaginarySpring0x658::Destroy()
 {
 	STUB(0x00479bd0);
 	return FALSE;

@@ -143,7 +143,7 @@ LegoS32 GolDrawDPState::VTable0x00()
 	HRESULT hResult = m_ddraw->QueryInterface(IID_IDirectDraw4, (LPVOID*) &m_ddraw4);
 	if (hResult != DD_OK) {
 		::sprintf(buffer, "DirectDraw QueryInterface() error\nerror code = 0x%x", hResult);
-		this->VTable0x48();
+		VTable0x48();
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
 

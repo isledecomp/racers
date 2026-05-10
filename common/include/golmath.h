@@ -21,18 +21,18 @@ struct GolVec3 {
 	GolVec3 operator+(const GolVec3& p_rhs) const
 	{
 		GolVec3 result;
-		result.m_x = this->m_x + p_rhs.m_x;
-		result.m_y = this->m_y + p_rhs.m_y;
-		result.m_z = this->m_z + p_rhs.m_z;
+		result.m_x = m_x + p_rhs.m_x;
+		result.m_y = m_y + p_rhs.m_y;
+		result.m_z = m_z + p_rhs.m_z;
 		return result;
 	}
 
 	GolVec3 operator-(const GolVec3& p_rhs) const
 	{
 		GolVec3 result;
-		result.m_x = this->m_x - p_rhs.m_x;
-		result.m_y = this->m_y - p_rhs.m_y;
-		result.m_z = this->m_z - p_rhs.m_z;
+		result.m_x = m_x - p_rhs.m_x;
+		result.m_y = m_y - p_rhs.m_y;
+		result.m_z = m_z - p_rhs.m_z;
 		return result;
 	}
 

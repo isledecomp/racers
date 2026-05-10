@@ -59,7 +59,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-	m_numItems = parser->FUN_100327e0();
+	m_numItems = parser->ReadBracketedCountAndLeftCurly();
 
 	if (m_numItems == 0) {
 		parser->HandleUnexpectedToken(GolFileParser::e_int);

@@ -59,7 +59,7 @@ LegoBool32 ImaginaryGear0x4c8c::VTable0x78(undefined4)
 }
 
 // STUB: LEGORACERS 0x00488eb0
-void ImaginaryGear0x4c8c::VTable0x54()
+void ImaginaryGear0x4c8c::Reset()
 {
 	STUB(0x00488eb0);
 }
@@ -71,7 +71,7 @@ void ImaginaryGear0x4c8c::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED
-LegoBool32 ImaginaryGear0x4c8c::VTable0x74()
+LegoBool32 ImaginaryGear0x4c8c::Destroy()
 {
 	STUB(0x004860f0);
 	return FALSE;

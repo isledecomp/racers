@@ -15,7 +15,7 @@ ImaginaryCube0x3c34::~ImaginaryCube0x3c34()
 }
 
 // STUB: LEGORACERS 0x004738a0
-void ImaginaryCube0x3c34::VTable0x54()
+void ImaginaryCube0x3c34::Reset()
 {
 	STUB(0x004738a0);
 }

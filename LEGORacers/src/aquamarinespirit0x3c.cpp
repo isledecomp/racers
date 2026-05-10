@@ -132,7 +132,7 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 	}
 	parser->VTable0x38(p_params->m_filename);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-	LegoU32 count = parser->FUN_100327e0();
+	LegoU32 count = parser->ReadBracketedCountAndLeftCurly();
 	if (count != 0) {
 		m_unk0x14 = new Item0x104[count];
 		if (m_unk0x14 == NULL) {

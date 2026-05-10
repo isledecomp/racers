@@ -65,7 +65,7 @@ void BoundingShape0x2c::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 			FUN_1001b1a0(*parser);
 			break;
 		case GolFileParser::e_unknown0x2b:
-			m_unk0x1c = parser->FUN_100327e0();
+			m_unk0x1c = parser->ReadBracketedCountAndLeftCurly();
 			if (m_unk0x1c == 0) {
 				parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 			}
@@ -96,7 +96,7 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 {
 	LegoU32 i;
 
-	m_unk0x04 = p_parser.FUN_100327e0();
+	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x04 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 	}
@@ -175,7 +175,7 @@ void BoundingShape0x2c::FUN_1001b1a0(GolFileParser& p_parser)
 {
 	LegoS32 i;
 
-	m_unk0x14 = p_parser.FUN_100327e0();
+	m_unk0x14 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x14 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 	}

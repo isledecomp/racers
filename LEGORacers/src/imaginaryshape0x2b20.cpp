@@ -43,7 +43,7 @@ ImaginaryShape0x2b20::~ImaginaryShape0x2b20()
 }
 
 // STUB: LEGORACERS 0x00476ff0
-void ImaginaryShape0x2b20::VTable0x54()
+void ImaginaryShape0x2b20::Reset()
 {
 	STUB(0x00476ff0);
 }

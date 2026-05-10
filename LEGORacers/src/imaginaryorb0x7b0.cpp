@@ -22,7 +22,7 @@ LegoBool32 ImaginaryOrb0x7b0::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateP
 }
 
 // STUB: LEGORACERS 0x00475e50
-LegoBool32 ImaginaryOrb0x7b0::VTable0x74()
+LegoBool32 ImaginaryOrb0x7b0::Destroy()
 {
 	STUB(0x00475e50);
 	return FALSE;

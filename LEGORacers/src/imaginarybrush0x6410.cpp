@@ -15,7 +15,7 @@ ImaginaryBrush0x6410::~ImaginaryBrush0x6410()
 }
 
 // STUB: LEGORACERS 0x0047e530
-void ImaginaryBrush0x6410::VTable0x54()
+void ImaginaryBrush0x6410::Reset()
 {
 	STUB(0x0047e530);
 }
@@ -59,7 +59,7 @@ void ImaginaryBrush0x6410::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED
-LegoBool32 ImaginaryBrush0x6410::VTable0x74()
+LegoBool32 ImaginaryBrush0x6410::Destroy()
 {
 	STUB(0x004860f0);
 	return FALSE;

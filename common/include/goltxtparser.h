@@ -23,10 +23,10 @@ public:
 	void VTable0x5c(LegoFloat) override;                    // vtable+0x5c
 	void WriteInt4(undefined4) override;                    // vtable+0x60
 	void WriteString(LegoChar*) override;                   // vtable+0x64
-	void VTable0x68() override;                             // vtable+0x68
-	void VTable0x6c() override;                             // vtable+0x6c
-	void VTable0x70() override;                             // vtable+0x70
-	void VTable0x74(undefined4) override;                   // vtable+0x74
+	void FlushLine() override;                              // vtable+0x68
+	void WriteSpace() override;                             // vtable+0x6c
+	void WriteTab() override;                               // vtable+0x70
+	void WriteTabs(undefined4) override;                    // vtable+0x74
 
 	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED

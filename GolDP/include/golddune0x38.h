@@ -39,7 +39,7 @@ public:
 	// GoldDune0x38::`scalar deleting destructor'
 
 protected:
-	ColorRGBA m_unk0x30;  // 0x30
+	ColorRGBA m_colorKey; // 0x30
 	undefined2 m_unk0x34; // 0x34
 	LegoU16 m_unk0x36;    // 0x36
 };

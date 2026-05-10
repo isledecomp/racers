@@ -15,7 +15,7 @@ public:
 	void VTable0x3c(undefined4) override;                                              // vtable+0x3c
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
-	void VTable0x54() override;                                                        // vtable+0x54
+	void Reset() override;                                                             // vtable+0x54
 	~ImaginaryRuler0x2e60() override;                                                  // vtable+0x68
 	LegoBool32 VTable0x78(undefined4) override;                                        // vtable+0x78
 	void VTable0x84() override;                                                        // vtable+0x84

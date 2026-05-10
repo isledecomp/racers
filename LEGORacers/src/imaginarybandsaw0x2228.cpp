@@ -15,7 +15,7 @@ ImaginaryBandsaw0x2228::~ImaginaryBandsaw0x2228()
 }
 
 // STUB: LEGORACERS 0x00479f50
-void ImaginaryBandsaw0x2228::VTable0x54()
+void ImaginaryBandsaw0x2228::Reset()
 {
 	STUB(0x00479f50);
 }

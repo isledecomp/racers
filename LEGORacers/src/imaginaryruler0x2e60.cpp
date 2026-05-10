@@ -15,7 +15,7 @@ ImaginaryRuler0x2e60::~ImaginaryRuler0x2e60()
 }
 
 // STUB: LEGORACERS 0x00487ae0
-void ImaginaryRuler0x2e60::VTable0x54()
+void ImaginaryRuler0x2e60::Reset()
 {
 	STUB(0x00487ae0);
 }

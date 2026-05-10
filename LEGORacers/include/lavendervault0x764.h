@@ -20,29 +20,29 @@ public:
 	void Reset();
 	LegoBool32 Destroy();
 
-	LegoBool32 FUN_00498740(const LegoChar* p_arg1, LegoBool32 p_binary);
+	LegoBool32 Load(const LegoChar* p_path, LegoBool32 p_binary);
 
 private:
-	LegoS32 FUN_00498870(GolFileParser& p_parser) const;
+	LegoS32 ReadBracketedCount(GolFileParser& p_parser) const;
 	void FUN_004988a0(GolFileParser& p_parser);
 	void FUN_00498930(GolFileParser& p_parser);
-	void FUN_00498990(GolFileParser& p_parser);
-	void FUN_00498a10(GolFileParser& p_parser);
-	void FUN_00498bc0(GolFileParser& p_parser);
-	void FUN_00498c90(GolFileParser& p_parser);
-	void FUN_00498d70(GolFileParser& p_parser);
+	void ReadHats(GolFileParser& p_parser);
+	void ReadFaces(GolFileParser& p_parser);
+	void ReadTorsos(GolFileParser& p_parser);
+	void ReadLegs(GolFileParser& p_parser);
+	void ReadHeadHats(GolFileParser& p_parser);
 	void FUN_00498de0(GolFileParser& p_parser);
 	void FUN_00498e40(GolFileParser& p_parser);
-	void FUN_00498e90(GolFileParser& p_parser);
+	void ReadFile(GolFileParser& p_parser);
 
 public:
-	void FUN_00498f50(LegoS32 p_index, LegoChar* p_buffer) const;
+	void CopyHatName(LegoS32 p_index, LegoChar* p_buffer) const;
 	void FUN_00498f70(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
 	void FUN_00498fd0(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
 	void FUN_00499020(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const;
 	void FUN_00499070(LegoS32 p_index, LegoChar* p_buffer) const;
-	void FUN_00499090(LegoS32 p_index, LegoChar* p_buffer) const;
-	void FUN_004990b0(int p_index1, int p_index2, LegoChar* p_buffer) const;
+	void CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const;
+	void BuildFaceExpressionName(LegoS32 p_faceIndex, LegoS32 p_expressionIndex, LegoChar* p_buffer) const;
 
 private:
 	LegoBool32 m_loaded;                 // 0x000
@@ -51,23 +51,23 @@ private:
 	LegoS32 m_countTorsos;               // 0x00c
 	LegoS32 m_countLegs;                 // 0x010
 	LegoS32 m_unk0x014;                  // 0x014
-	LegoChar m_unk0x018[40][8];          // 0x018
+	LegoChar m_hatNames[40][8];          // 0x018
 	undefined m_unk0x158[40];            // 0x158
 	LegoChar m_unk0x180[0x188 - 0x180];  // 0x180
-	LegoChar m_unk0x188[30][4];          // 0x180
-	LegoChar m_unk0x200[6][6];           // 0x200
+	LegoChar m_faceNames[30][4];         // 0x188
+	LegoChar m_faceExpressions[6][6];    // 0x200
 	undefined m_unk0x224[30];            // 0x224
 	LegoChar m_unk0x242[2][8];           // 0x242
-	LegoChar m_unk0x252[30][8];          // 0x252
+	LegoChar m_torsoNames[30][8];        // 0x252
 	undefined m_unk0x342[0x344 - 0x342]; // 0x342
 	undefined4 m_unk0x344[30];           // 0x344
 	undefined m_unk0x3bc[30];            // 0x3bc
 	LegoChar m_unk0x3da[2][8];           // 0x3da
-	LegoChar m_unk0x3ea[30][8];          // 0x3ea
+	LegoChar m_legNames[30][8];          // 0x3ea
 	undefined m_unk0x4da[0x4dc - 0x4da]; // 0x4da
 	undefined4 m_unk0x4dc[30];           // 0x4dc
 	undefined m_unk0x554[30];            // 0x554
-	LegoChar m_unk0x572[40][8];          // 0x572
+	LegoChar m_headHatNames[40][8];      // 0x572
 	LegoChar m_unk0x6b2[2][8];           // 0x6b2
 	undefined m_unk0x6c2[0x6da - 0x6c2]; // 0x6c2
 	LegoChar m_unk0x6da[13];             // 0x6da

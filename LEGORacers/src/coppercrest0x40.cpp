@@ -242,7 +242,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 	undefined4 x = m_unk0x10.m_unk0x38 + m_unk0x10.m_unk0x30;
 	undefined4 y = m_unk0x10.m_unk0x3c + m_unk0x10.m_unk0x34;
 
-	if (p_item->m_unk0x0c) {
+	if (p_item->m_isPressed) {
 		if (m_unk0x54->VTable0x18(icon, p_item, x, y)) {
 			return TRUE;
 		}
@@ -308,19 +308,19 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 	OnyxCircularBuffer0x1c::Item* item;
 
 	while (m_inputBindingContainer->GetSize()) {
-		item = m_inputBindingContainer->FUN_0044b7f0();
+		item = m_inputBindingContainer->Dequeue();
 		if (!FUN_004690f0(item)) {
 			switch (item->m_keyCode) {
 			case c_keyboardLeftShift:
 			case c_keyboardRightShift:
-				g_unk0x4c7648 = item->m_unk0x0c != FALSE;
+				g_unk0x4c7648 = item->m_isPressed != FALSE;
 				break;
 			case c_keyboardLeftControl:
 			case c_keyboardRightControl:
-				g_unk0x4c764c = item->m_unk0x0c != FALSE;
+				g_unk0x4c764c = item->m_isPressed != FALSE;
 				break;
 			case c_keyboardTab:
-				if (item->m_unk0x0c) {
+				if (item->m_isPressed) {
 					if (g_unk0x4c7648) {
 						VTable0x18();
 					}
@@ -332,14 +332,14 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 			case c_keyboardDown:
 			case c_joystick1Button8:
 			case c_joystick2Button2:
-				if (item->m_unk0x0c) {
+				if (item->m_isPressed) {
 					VTable0x14();
 				}
 				break;
 			case c_keyboardUp:
 			case c_joystick1Button6:
 			case c_joystick2Button3:
-				if (item->m_unk0x0c) {
+				if (item->m_isPressed) {
 					VTable0x18();
 				}
 				break;
@@ -348,7 +348,7 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 			default:
 				ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
 
-				if (item->m_unk0x0c) {
+				if (item->m_isPressed) {
 					icon->VTable0x24(item, x, y);
 				}
 				else {

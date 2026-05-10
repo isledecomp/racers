@@ -113,7 +113,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 
 	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeRead, 0x1000);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset = 0;
@@ -247,7 +247,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 					}
 				}
 				else {
-					FUN_10032580(code);
+					HandleIoError(code);
 				}
 			}
 
@@ -433,7 +433,7 @@ undefined4 GolBinParser::ReadBytes(LegoS32 p_size)
 			}
 		}
 		else {
-			FUN_10032580(code);
+			HandleIoError(code);
 		}
 	}
 
@@ -566,7 +566,7 @@ void GolBinParser::OpenFileForWrite(LegoChar* p_fileName)
 
 	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeWrite | c_modeCreate, 0x1000);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset = 0;
@@ -586,7 +586,7 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 
 		LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 3);
 		if (code != e_ioSuccess) {
-			FUN_10032580(code);
+			HandleIoError(code);
 		}
 
 		m_fileOffset += 3;
@@ -595,7 +595,7 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 		m_unk0xa4[0] = (LegoU8) p_token;
 		LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 		if (code != e_ioSuccess) {
-			FUN_10032580(code);
+			HandleIoError(code);
 		}
 
 		m_fileOffset++;
@@ -609,7 +609,7 @@ void GolBinParser::VTable0x54(undefined4 p_param)
 	*m_unk0xa4 = p_param;
 	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset++;
@@ -622,7 +622,7 @@ void GolBinParser::WriteFloat(LegoFloat p_param)
 	*m_unk0xa4 = 3;
 	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset++;
@@ -636,7 +636,7 @@ void GolBinParser::WriteFloat(LegoFloat p_param)
 
 	code = BufferedWrite(m_fileOffset, m_unk0xa4, sizeof(p_param));
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset += 4;
@@ -656,7 +656,7 @@ void GolBinParser::WriteInt4(undefined4 p_param)
 	*m_unk0xa4 = 4;
 	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset++;
@@ -668,7 +668,7 @@ void GolBinParser::WriteInt4(undefined4 p_param)
 
 	code = BufferedWrite(m_fileOffset, m_unk0xa4, sizeof(p_param));
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset += 4;
@@ -681,7 +681,7 @@ void GolBinParser::WriteString(LegoChar* p_str)
 	*m_unk0xa4 = 2;
 	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset++;
@@ -695,7 +695,7 @@ void GolBinParser::WriteString(LegoChar* p_str)
 
 	code = BufferedWrite(m_fileOffset, m_unk0xa4, len);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset += len;
@@ -703,7 +703,7 @@ void GolBinParser::WriteString(LegoChar* p_str)
 	*m_unk0xa4 = 2;
 	code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_fileOffset++;
@@ -711,28 +711,28 @@ void GolBinParser::WriteString(LegoChar* p_str)
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolBinParser::VTable0x68()
+void GolBinParser::FlushLine()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolBinParser::VTable0x6c()
+void GolBinParser::WriteSpace()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolBinParser::VTable0x70()
+void GolBinParser::WriteTab()
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolBinParser::VTable0x74(undefined4)
+void GolBinParser::WriteTabs(undefined4)
 {
 	// empty
 }

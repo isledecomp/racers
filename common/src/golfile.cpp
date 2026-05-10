@@ -50,7 +50,7 @@ LegoS32 GolFile::Open(LegoChar* p_fileName)
 	if (mode & c_modeTextAppend) {
 		openFlags |= _O_TEXT | _O_APPEND;
 
-		if ((mode & (c_modeRead | c_modeWrite)) == 0) {
+		if (!(mode & (c_modeRead | c_modeWrite))) {
 			result = e_ioBadParameter;
 		}
 	}

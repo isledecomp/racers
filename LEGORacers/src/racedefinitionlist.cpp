@@ -128,9 +128,8 @@ void RaceDefinitionList::Load(GolStringTable* p_stringTable, const LegoChar* p_f
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_tokenRaceDefinition));
 
-	LegoU32 entryCount = parser->ReadBracketedCountAndLeftCurly();
-	m_entryCount = entryCount;
-	m_entries = new RaceDefinition[entryCount];
+	m_entryCount = parser->ReadBracketedCountAndLeftCurly();
+	m_entries = new RaceDefinition[m_entryCount];
 
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

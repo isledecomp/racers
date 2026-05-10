@@ -5,11 +5,11 @@ DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0)
 // FUNCTION: GOLDP 0x1002c030
 ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()
 {
-	FUN_1002c0e0();
+	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002c0e0
-void ZoweeBlubberworth0xf0::FUN_1002c0e0()
+void ZoweeBlubberworth0xf0::Reset()
 {
 	m_unk0x94 = 1.0;
 	m_unk0x04 = 0;

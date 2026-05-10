@@ -42,13 +42,12 @@ void DuskwindBananaRelic0x30::FUN_10006320(WhiteFalcon0x140& p_renderer)
 			textureCount = 1;
 		}
 
-		LegoU32 bufferSize = textureCount * 16;
-		m_unk0x2c = new LegoU8[bufferSize];
+		m_unk0x2c = new LegoU8[textureCount * 16];
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		::memset(m_unk0x2c, 0, bufferSize);
+		::memset(m_unk0x2c, 0, textureCount * 16);
 		if (m_unk0x04 == NULL) {
 			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c, this, 0);
 			FUN_100064d0(renderer);

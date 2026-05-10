@@ -133,7 +133,7 @@ protected:
 	undefined4 m_unk0x358;             // 0x358
 	ObscureVantage0x58* m_unk0x35c;    // 0x35c
 	LegoU16 m_unk0x360;                // 0x360
-	LegoU16 m_unk0x362;                // 0x362
+	LegoU16 m_menuId;                  // 0x362
 	LegoBool32 m_unk0x364;             // 0x364
 };
 

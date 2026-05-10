@@ -85,14 +85,10 @@ void DirectMusicGroup::Unload()
 		m_musicNames = NULL;
 	}
 
-	while (TRUE) {
-		GolListLink* link = m_musicInstances.LastLink();
-
-		if (!m_musicInstances.IsValidLastLink(link)) {
-			break;
-		}
-
+	GolListLink* link = m_musicInstances.LastLink();
+	while (m_musicInstances.IsValidLastLink(link)) {
 		DestroyMusicInstance(&m_musicInstances.GetItem(*link));
+		link = m_musicInstances.LastLink();
 	}
 
 	m_musicCount = 0;

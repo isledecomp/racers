@@ -40,7 +40,7 @@ public:
 	undefined4 GetUnk0x7c() const { return m_unk0x7c; }
 
 private:
-	void FUN_1002c0e0();
+	void Reset();
 	void FUN_1002c7b0(undefined4*);
 	void FUN_1002c840(undefined4*);
 	void FUN_1002c8d0(undefined4*);

@@ -25,7 +25,7 @@ LegoBool32 ImaginaryHammer0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 {
 	Destroy();
 
-	m_unk0x362 = p_createParams->m_menuId;
+	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 1;
 
 	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
@@ -35,7 +35,7 @@ LegoBool32 ImaginaryHammer0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 	undefined4 nextMenu = 0;
 	undefined4 pushExtra = FALSE;
 
-	switch (m_unk0x362) {
+	switch (m_menuId) {
 	case 43:
 		nextMenu = 0x15;
 		break;
@@ -80,7 +80,7 @@ LegoBool32 ImaginaryHammer0x658::Destroy()
 // FUNCTION: LEGORACERS 0x00488550
 void ImaginaryHammer0x658::VTable0x4c()
 {
-	switch (m_unk0x362) {
+	switch (m_menuId) {
 	case 43:
 		if (g_hashTable) {
 			g_hashTable->SetCurrentEntryFromString("MENUDATA\\N64INTR");
@@ -108,7 +108,7 @@ void ImaginaryHammer0x658::VTable0x4c()
 		break;
 	}
 
-	FUN_0046c5b0(&m_unk0x368, m_unk0x362);
+	FUN_0046c5b0(&m_unk0x368, m_menuId);
 }
 
 // FUNCTION: LEGORACERS 0x00488630
@@ -117,7 +117,7 @@ void ImaginaryHammer0x658::VTable0x84()
 	m_unk0x354->m_unk0x04.Pop();
 	m_unk0xc4->SetUnk0x41(TRUE);
 
-	switch (m_unk0x362) {
+	switch (m_menuId) {
 	case 43:
 		m_unk0x354->m_unk0x04.Push(0x29);
 		return;
@@ -142,7 +142,7 @@ void ImaginaryHammer0x658::VTable0x84()
 // FUNCTION: LEGORACERS 0x00488720
 LegoBool32 ImaginaryHammer0x658::VTable0x78(undefined4 p_unk0x04)
 {
-	if (m_unk0x362 != 0x29) {
+	if (m_menuId != 0x29) {
 		m_unk0x368.m_unk0x2cc = 1;
 	}
 

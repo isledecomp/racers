@@ -238,7 +238,7 @@ ImaginaryTool0x368::~ImaginaryTool0x368()
 void ImaginaryTool0x368::Reset()
 {
 	m_unk0x360 = 0xffff;
-	m_unk0x362 = 0;
+	m_menuId = 0;
 	m_unk0x354 = NULL;
 	m_unk0x35c = NULL;
 	m_unk0x358 = 0;

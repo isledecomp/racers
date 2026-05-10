@@ -143,9 +143,8 @@ void RaceNameList::Load(
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_tokenRaceName));
 
-	LegoU32 entryCount = parser->ReadBracketedCountAndLeftCurly();
-	m_entryCount = entryCount;
-	m_entries = new RaceNameEntry[entryCount];
+	m_entryCount = parser->ReadBracketedCountAndLeftCurly();
+	m_entries = new RaceNameEntry[m_entryCount];
 
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

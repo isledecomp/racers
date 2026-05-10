@@ -24,7 +24,7 @@ public:
 
 private:
 	void FUN_100136a0(BronzeFalcon0xc8770*);
-	void FUN_100137d0();
+	void ReleaseResources();
 
 	BronzeFalconSurface0x5c* m_next; // 0x58
 };

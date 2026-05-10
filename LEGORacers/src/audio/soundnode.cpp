@@ -25,8 +25,6 @@ SoundNode::SoundNode()
 	m_orientation.m_y = 1.0f;
 	m_orientation.m_z = 0.0f;
 	m_soundSpeed = g_unk0x4afa38;
-
-	LegoFloat scaledDistance = g_unk0x4afa38;
-	m_maxVelocity = scaledDistance * 0.5f;
+	m_maxVelocity = g_unk0x4afa38 * 0.5f;
 	m_unk0x44 = 1;
 }

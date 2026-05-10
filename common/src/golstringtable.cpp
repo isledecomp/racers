@@ -103,13 +103,10 @@ LegoS32 GolStringTable::Load(const LegoChar* p_fileName)
 	LegoU32 stringDataOffset = bytesRead + 2 * sizeof(undefined2);
 	LegoU8* bytes = (LegoU8*) m_stringOffsets;
 
-	i = 0;
-	if (i < m_stringCount) {
-		do {
-			undefined2 word = bytes[0] + (bytes[1] << 8);
-			bytes += sizeof(undefined2);
-			m_stringOffsets[i++] = word;
-		} while (i < m_stringCount);
+	for (i = 0; i < m_stringCount; i++) {
+		undefined2 word = bytes[0] + (bytes[1] << 8);
+		bytes += sizeof(undefined2);
+		m_stringOffsets[i] = word;
 	}
 
 	if (file.BufferedRead(stringDataOffset, m_stringData, sizeof(undefined2) * stringDataLength, &bytesRead)) {
@@ -119,13 +116,10 @@ LegoS32 GolStringTable::Load(const LegoChar* p_fileName)
 	file.Dispose();
 	bytes = (LegoU8*) m_stringData;
 
-	i = 0;
-	if (i < stringDataLength) {
-		do {
-			undefined2 word = bytes[0] + (bytes[1] << 8);
-			bytes += sizeof(undefined2);
-			m_stringData[i++] = word;
-		} while (i < stringDataLength);
+	for (i = 0; i < stringDataLength; i++) {
+		undefined2 word = bytes[0] + (bytes[1] << 8);
+		bytes += sizeof(undefined2);
+		m_stringData[i] = word;
 	}
 
 	return TRUE;

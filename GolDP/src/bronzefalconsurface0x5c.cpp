@@ -29,7 +29,7 @@ void BronzeFalconSurface0x5c::VTable0x14(undefined4*)
 // FUNCTION: GOLDP 0x10013660
 void BronzeFalconSurface0x5c::VTable0x34()
 {
-	FUN_100137d0();
+	ReleaseResources();
 	m_next = NULL;
 	m_drawState = NULL;
 }
@@ -42,7 +42,7 @@ void BronzeFalconSurface0x5c::FUN_100136a0(BronzeFalcon0xc8770*)
 }
 
 // FUNCTION: GOLDP 0x100137d0
-void BronzeFalconSurface0x5c::FUN_100137d0()
+void BronzeFalconSurface0x5c::ReleaseResources()
 {
 	m_palette.Release();
 	if (m_depthBuffer != NULL) {

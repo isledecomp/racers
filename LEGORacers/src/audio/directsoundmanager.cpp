@@ -267,9 +267,7 @@ void DirectSoundManager::Pause()
 					sound.StopOrRelease();
 				}
 				else {
-					LegoS32 availableSoundCount = manager->m_availableSoundCount;
-					availableSoundCount++;
-					manager->m_availableSoundCount = availableSoundCount;
+					manager->m_availableSoundCount++;
 					sound.StopDirectSoundBuffer();
 
 					sound.GetLink().Remove();

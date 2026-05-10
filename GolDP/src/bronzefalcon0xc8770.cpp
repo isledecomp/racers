@@ -552,7 +552,7 @@ void BronzeFalcon0xc8770::ReleaseResources()
 	WhiteFalcon0x140::ReleaseResources();
 
 	for (BronzeFalconSurface0x5c* surface = m_unk0x30c; surface != NULL; surface = surface->m_next) {
-		surface->FUN_100137d0();
+		surface->ReleaseResources();
 	}
 
 	m_unk0x2d4.Destroy();

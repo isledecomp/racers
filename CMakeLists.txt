@@ -83,8 +83,8 @@ set(COMMON_SOURCES
   common/src/golfile.cpp
   common/src/golfsutil.cpp
   common/src/golimgfile.cpp
-  common/src/golbmpfile.cpp
   common/src/goltgafile.cpp
+  common/src/golbmpfile.cpp
   common/src/goldecompress.cpp
   common/src/golcpu.cpp
   common/src/golhashtable.cpp

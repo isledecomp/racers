@@ -147,7 +147,7 @@ void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 	LegoU8* endDst = p_dst + m_width;
 	if (m_unk0x098) {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -158,17 +158,22 @@ void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 			LegoU32 r = (m_format.m_redBitMask & u32) >> m_unk0x078;
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_unk0x07c;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_unk0x080;
+			LegoU8 pixel;
 			if (r == m_unk0x09c && g == m_unk0x09d && b == m_unk0x09e) {
-				*p_dst = static_cast<LegoU8>(m_unk0x0a4);
+				pixel = static_cast<LegoU8>(m_unk0x0a4);
 			}
 			else {
-				*p_dst = (r << m_unk0x088) | (g << m_unk0x08c) | (b << m_unk0x090) | m_unk0x074;
+				pixel = r << m_unk0x088;
+				pixel |= g << m_unk0x08c;
+				pixel |= b << m_unk0x090;
+				pixel |= m_unk0x074;
 			}
+			*p_dst = pixel;
 		}
 	}
 	else {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -176,10 +181,11 @@ void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 			p_src += (m_unk0x070 >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_unk0x070 >> 3) & 0x1;
-			*p_dst = (((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088) |
-					 (((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c) |
-					 (((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090) |
-					 (((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094);
+			LegoU32 alp = ((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094;
+			LegoU32 blu = ((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090;
+			LegoU32 grn = ((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c;
+			LegoU32 red = ((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088;
+			*p_dst = alp | blu | grn | red;
 		}
 	}
 }
@@ -190,7 +196,7 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 	LegoU16* endDst = p_dst + m_width;
 	if (m_unk0x098) {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -202,16 +208,20 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_unk0x07c;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_unk0x080;
 			if (r == m_unk0x09c && g == m_unk0x09d && b == m_unk0x09e) {
-				*p_dst = static_cast<LegoU16>(m_unk0x0a4);
+				*p_dst = m_unk0x0a4;
 			}
 			else {
-				*p_dst = (r << m_unk0x088) | (g << m_unk0x08c) | (b << m_unk0x090) | m_unk0x074;
+				LegoU32 pixel = r << m_unk0x088;
+				pixel |= g << m_unk0x08c;
+				pixel |= b << m_unk0x090;
+				pixel |= m_unk0x074;
+				*p_dst = pixel;
 			}
 		}
 	}
 	else {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -219,10 +229,11 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 			p_src += (m_unk0x070 >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_unk0x070 >> 3) & 0x1;
-			*p_dst = (((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088) |
-					 (((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c) |
-					 (((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090) |
-					 (((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094);
+			LegoU32 blu = ((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090;
+			LegoU32 grn = ((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c;
+			LegoU32 red = ((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088;
+			LegoU32 alp = ((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094;
+			*p_dst = blu | grn | red | alp;
 		}
 	}
 }
@@ -233,7 +244,7 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 	LegoU32 i;
 	if (m_unk0x098) {
 		for (i = 0; i < m_width; i++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -245,22 +256,21 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 			LegoU32 g = (m_format.m_grnBitMask & u32) >> m_unk0x07c;
 			LegoU32 b = (m_format.m_bluBitMask & u32) >> m_unk0x080;
 			if (r == m_unk0x09c && g == m_unk0x09d && b == m_unk0x09e) {
-				p_dst[0] = static_cast<LegoU8>(m_unk0x0a4 >> 0);
-				p_dst[1] = static_cast<LegoU8>(m_unk0x0a4 >> 8);
-				p_dst[2] = static_cast<LegoU8>(m_unk0x0a4 >> 16);
+				*p_dst++ = m_unk0x0a4;
+				*p_dst++ = m_unk0x0a4 >> 8;
+				*p_dst++ = m_unk0x0a4 >> 16;
 			}
 			else {
 				LegoU32 rgb = (r << m_unk0x088) | (g << m_unk0x08c) | (b << m_unk0x090) | m_unk0x074;
-				p_dst[0] = static_cast<LegoU8>(rgb >> 0);
-				p_dst[1] = static_cast<LegoU8>(rgb >> 8);
-				p_dst[2] = static_cast<LegoU8>(rgb >> 16);
+				*p_dst++ = rgb;
+				*p_dst++ = rgb >> 8;
+				*p_dst++ = rgb >> 16;
 			}
-			p_dst += 3;
 		}
 	}
 	else {
 		for (i = 0; i < m_width; i++) {
-			LegoU32 u32 = *p_src << 0;
+			LegoU32 u32 = *p_src;
 			p_src += (m_unk0x070 >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_unk0x070 >> 1) & 0x1;
@@ -268,14 +278,14 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 			p_src += (m_unk0x070 >> 2) & 0x1;
 			u32 |= *p_src << 24;
 			p_src += (m_unk0x070 >> 3) & 0x1;
-			LegoU32 rgb = (((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088) |
-						  (((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c) |
-						  (((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090) |
-						  (((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094);
-			p_dst[0] = static_cast<LegoU8>(rgb >> 0);
-			p_dst[1] = static_cast<LegoU8>(rgb >> 8);
-			p_dst[2] = static_cast<LegoU8>(rgb >> 16);
-			p_dst += 3;
+			LegoU32 blu = ((m_format.m_bluBitMask & u32) >> m_unk0x080) << m_unk0x090;
+			LegoU32 grn = ((m_format.m_grnBitMask & u32) >> m_unk0x07c) << m_unk0x08c;
+			LegoU32 alp = ((m_format.m_alpBitMask & u32) >> m_unk0x084) << m_unk0x094;
+			LegoU32 red = ((m_format.m_redBitMask & u32) >> m_unk0x078) << m_unk0x088;
+			LegoU32 rgb = blu | grn | alp | red;
+			*p_dst++ = rgb;
+			*p_dst++ = rgb >> 8;
+			*p_dst++ = rgb >> 16;
 		}
 	}
 }

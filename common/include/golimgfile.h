@@ -6,9 +6,9 @@
 #include "golfile.h"
 #include "golsurfaceformat.h"
 
-#define BUF_U16LE(BUF, POS) ((LegoU16) (((BUF)[0 + (POS)] << 0) | ((BUF)[1 + (POS)] << 8)))
+#define BUF_U16LE(BUF, POS) ((BUF)[0 + (POS)] + ((BUF)[1 + (POS)] << 8))
 #define BUF_U32LE(BUF, POS)                                                                                            \
-	(((BUF)[0 + (POS)] << 0) | ((BUF)[1 + (POS)] << 8) | ((BUF)[2 + (POS)] << 16) | ((BUF)[3 + (POS)] << 24))
+	((BUF)[0 + (POS)] + (((BUF)[1 + (POS)] + (((BUF)[2 + (POS)] + ((BUF)[3 + (POS)] << 8)) << 8)) << 8))
 
 class IPalette0x4;
 class SilverDune0x30;

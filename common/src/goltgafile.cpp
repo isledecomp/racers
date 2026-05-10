@@ -68,7 +68,7 @@ void GolTgaFile::VTable0x00()
 	m_width = BUF_U16LE(header, 0xc);
 	m_height = BUF_U16LE(header, 0xe);
 	LegoU32 bpp = header[0x10];
-	m_rowByteStride = (m_width * bpp + 31) >> 3;
+	m_rowByteStride = ((m_width * bpp + 31) >> 3) & 0x1ffffffc;
 	m_colorMapType = header[1]; // 1: data type 1, 2: data type 2, 9: date type 9, 10: data type 10
 	m_colorMapEntrySize = header[7];
 	m_imageDescriptorByte = header[0x11];
@@ -93,8 +93,9 @@ void GolTgaFile::VTable0x00()
 		switch (m_colorMapEntrySize) {
 		case 0xf:
 			// xrgb1555
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++, bufPtr += 2) {
-				LegoU16 col16 = BUF_U16LE(bufPtr, 0);
+			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+				LegoU16 col16 = *bufPtr++;
+				col16 |= *bufPtr++ << 8;
 				m_palette[i].m_blu = static_cast<LegoU8>(col16 << 3);
 				m_palette[i].m_grn = static_cast<LegoU8>(col16 >> 2) & 0xf8;
 				m_palette[i].m_red = static_cast<LegoU8>(col16 >> 7) & 0xf8;
@@ -103,8 +104,9 @@ void GolTgaFile::VTable0x00()
 			break;
 		case 0x10:
 			// argb1555
-			for (i = 0, bufPtr = buf; i < m_paletteSize; i++, bufPtr += 2) {
-				LegoU16 col16 = BUF_U16LE(bufPtr, 0);
+			for (i = 0, bufPtr = buf; i < m_paletteSize; i++) {
+				LegoU16 col16 = *bufPtr++;
+				col16 |= *bufPtr++ << 8;
 				m_palette[i].m_blu = static_cast<LegoU8>(col16 << 3);
 				m_palette[i].m_grn = static_cast<LegoU8>(col16 >> 2) & 0xf8;
 				m_palette[i].m_red = static_cast<LegoU8>(col16 >> 7) & 0xf8;

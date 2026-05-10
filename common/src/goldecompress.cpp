@@ -3,41 +3,41 @@
 // FUNCTION: GOLDP 0x10032840
 LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 {
-	LegoU8* writePtr = p_dst;
+	LegoU8* src = p_src;
+	LegoU8* dst = p_dst;
 
-	*writePtr++ = *p_src++;
+	*dst++ = *src++;
 	for (;;) {
-		LegoU32 ctrl = ((*p_src++) << 24) + 1;
+		LegoS32 ctrl = ((*src++) << 24) + 1;
 		for (;;) {
-			if (static_cast<LegoS32>(ctrl) >= 0) {
-				*writePtr++ = *p_src++;
+			if (ctrl >= 0) {
 				ctrl *= 2;
+				*dst++ = *src++;
 				if (!(ctrl & 0xff)) {
 					break;
 				}
 			}
 			else {
-				LegoU8 cntOff = *p_src++;
-				LegoU32 rawCnt = cntOff & 0xf;
-				LegoU8 rawBack;
-				LegoU32 cnt;
-				if (rawCnt == 0) {
-					rawBack = *p_src++;
-					cnt = -*p_src++ - 18;
+				LegoU8 token = *src++;
+				LegoS32 count = token & 0xf;
+				LegoS32 back = ((token & 0xf0) << 4) | *src;
+
+				if (count == 0) {
+					count = -*++src - 18;
 				}
 				else {
-					rawBack = *p_src++;
-					cnt = rawCnt - 18;
+					count -= 18;
 				}
-				LegoS32 back = -(((cntOff >> 4) << 8) | rawBack);
+				src++;
+				back = -back;
 				if (back == 0) {
-					return writePtr - p_dst;
+					return dst - p_dst;
 				}
 				do {
-					cnt++;
-					*writePtr = writePtr[back];
-					writePtr++;
-				} while (cnt != 0);
+					count++;
+					*dst = dst[back];
+					dst++;
+				} while (count != 0);
 				ctrl *= 2;
 				if (!(ctrl & 0xff)) {
 					break;

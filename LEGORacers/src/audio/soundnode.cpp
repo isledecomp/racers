@@ -3,9 +3,6 @@
 DECOMP_SIZE_ASSERT(SoundVector, 0x0c)
 DECOMP_SIZE_ASSERT(SoundNode, 0x50)
 
-// GLOBAL: LEGORACERS 0x004af58c
-LegoFloat g_unk0x4af58c = 0.5f;
-
 // GLOBAL: LEGORACERS 0x004afa38
 LegoFloat g_unk0x4afa38 = 343.0f;
 
@@ -30,6 +27,6 @@ SoundNode::SoundNode()
 	m_soundSpeed = g_unk0x4afa38;
 
 	LegoFloat scaledDistance = g_unk0x4afa38;
-	m_maxVelocity = scaledDistance * g_unk0x4af58c;
+	m_maxVelocity = scaledDistance * 0.5f;
 	m_unk0x44 = 1;
 }

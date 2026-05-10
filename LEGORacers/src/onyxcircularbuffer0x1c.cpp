@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(OnyxCircularBuffer0x1c::Item, 0x10)
 // FUNCTION: LEGORACERS 0x0044b6f0
 OnyxCircularBuffer0x1c::OnyxCircularBuffer0x1c()
 {
-	FUN_0044b740();
+	Init();
 }
 
 // FUNCTION: LEGORACERS 0x0044b730
@@ -20,9 +20,9 @@ OnyxCircularBuffer0x1c::~OnyxCircularBuffer0x1c()
 }
 
 // FUNCTION: LEGORACERS 0x0044b740
-void OnyxCircularBuffer0x1c::FUN_0044b740()
+void OnyxCircularBuffer0x1c::Init()
 {
-	FUN_0044b8e0();
+	ClearQueue();
 	m_allocated = FALSE;
 	m_items = NULL;
 	m_capacity = 0;
@@ -52,14 +52,14 @@ LegoBool32 OnyxCircularBuffer0x1c::Reset()
 			delete[] m_items;
 		}
 
-		FUN_0044b740();
+		Init();
 	}
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0044b7f0
-OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::FUN_0044b7f0()
+OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Dequeue()
 {
 	Item* item = &m_items[m_readPos];
 	if (m_size == 0) {
@@ -73,7 +73,7 @@ OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::FUN_0044b7f0()
 }
 
 // FUNCTION: LEGORACERS 0x0044b820
-OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::FUN_0044b820(
+OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Enqueue(
 	InputDevice* p_device,
 	undefined4 p_keyCode,
 	undefined4 p_arg3
@@ -87,42 +87,41 @@ OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::FUN_0044b820(
 	item->m_device = p_device;
 	item->m_keyCode = p_keyCode;
 	item->m_unk0x08 = p_arg3;
-	item->m_unk0x0d = 0;
-	item->m_unk0x0c = FALSE;
+	item->m_isRepeat = 0;
+	item->m_isPressed = FALSE;
 	m_writePos += 1;
 	m_writePos %= m_capacity;
 	m_size += 1;
-	// m_writePos = (m_writePos + 1) % m_capacity;
 	return item;
 }
 
 // FUNCTION: LEGORACERS 0x0044b870
 void OnyxCircularBuffer0x1c::OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
-	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
+	Item* item = Enqueue(p_device, p_keyCode, p_arg3);
 	if (item != NULL) {
-		item->m_unk0x0c = TRUE;
+		item->m_isPressed = TRUE;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0044b890
 void OnyxCircularBuffer0x1c::OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
-	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
+	Item* item = Enqueue(p_device, p_keyCode, p_arg3);
 }
 
 // FUNCTION: LEGORACERS 0x0044b8b0
 void OnyxCircularBuffer0x1c::OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
 {
-	Item* item = FUN_0044b820(p_device, p_keyCode, p_arg3);
+	Item* item = Enqueue(p_device, p_keyCode, p_arg3);
 	if (item != NULL) {
-		item->m_unk0x0c = TRUE;
-		item->m_unk0x0d = TRUE;
+		item->m_isPressed = TRUE;
+		item->m_isRepeat = TRUE;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0044b8e0
-void OnyxCircularBuffer0x1c::FUN_0044b8e0()
+void OnyxCircularBuffer0x1c::ClearQueue()
 {
 	m_writePos = 0;
 	m_readPos = 0;

@@ -47,7 +47,7 @@ public:
 
 private:
 	// SIZE 0x18
-	struct UnkField0x44 {
+	struct MipmapLevel {
 		// Unsure about size, might be a union
 		LegoU8* m_pixels;                 // 0x00
 		LegoU32 m_pitch;                  // 0x04
@@ -57,7 +57,7 @@ private:
 	undefined4 m_unk0x38;              // 0x38
 	undefined4 m_unk0x3c;              // 0x3c
 	IPalette0x4* m_unk0x40;            // 0x40
-	UnkField0x44* m_unk0x44;           // 0x44
+	MipmapLevel* m_mipmaps;            // 0x44
 	LPDIRECTDRAWSURFACE4 m_surface;    // 0x48
 	undefined4* m_unk0x4c;             // 0x4c
 	BronzeDuneBag0xc m_unk0x50;        // 0x50

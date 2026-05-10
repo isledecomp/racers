@@ -56,7 +56,7 @@ JadeOrbit0x220::JadeOrbit0x220()
 }
 
 // FUNCTION: GOLDP 0x10002980
-void JadeOrbit0x220::VTable0x18(GolVec3* p_right, GolVec3* p_forward, GolVec3* p_up)
+void JadeOrbit0x220::GetBasis(GolVec3* p_right, GolVec3* p_forward, GolVec3* p_up)
 {
 	p_up->m_x = m_up.m_x;
 	p_up->m_y = m_up.m_y;
@@ -170,7 +170,7 @@ void JadeOrbit0x220::VTable0x2c()
 }
 
 // FUNCTION: GOLDP 0x10002f50
-void JadeOrbit0x220::VTable0x30(GolVec3* p_up)
+void JadeOrbit0x220::GetUp(GolVec3* p_up)
 {
 	p_up->m_x = m_up.m_x;
 	p_up->m_y = m_up.m_y;
@@ -178,7 +178,7 @@ void JadeOrbit0x220::VTable0x30(GolVec3* p_up)
 }
 
 // FUNCTION: GOLDP 0x10002f70
-void JadeOrbit0x220::VTable0x34(GolVec3* p_forward)
+void JadeOrbit0x220::GetForward(GolVec3* p_forward)
 {
 	p_forward->m_x = m_forward.m_x;
 	p_forward->m_y = m_forward.m_y;
@@ -186,7 +186,7 @@ void JadeOrbit0x220::VTable0x34(GolVec3* p_forward)
 }
 
 // FUNCTION: GOLDP 0x10002f90
-void JadeOrbit0x220::VTable0x38(GolVec3* p_right)
+void JadeOrbit0x220::GetRight(GolVec3* p_right)
 {
 	p_right->m_x = m_right.m_x;
 	p_right->m_y = m_right.m_y;
@@ -200,7 +200,7 @@ void JadeOrbit0x220::VTable0x3c()
 }
 
 // FUNCTION: GOLDP 0x10002fe0
-void JadeOrbit0x220::VTable0x40(GolVec3* p_position)
+void JadeOrbit0x220::GetPosition(GolVec3* p_position)
 {
 	p_position->m_x = m_position.m_x;
 	p_position->m_y = m_position.m_y;
@@ -208,7 +208,7 @@ void JadeOrbit0x220::VTable0x40(GolVec3* p_position)
 }
 
 // FUNCTION: GOLDP 0x10003000
-void JadeOrbit0x220::VTable0x44(GolVec3* p_position)
+void JadeOrbit0x220::SetPosition(GolVec3* p_position)
 {
 	m_position.m_x = p_position->m_x;
 	m_position.m_y = p_position->m_y;

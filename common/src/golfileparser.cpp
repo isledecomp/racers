@@ -83,7 +83,7 @@ const LegoChar* GolFileParser::ParserErrorCodeToString(LegoS32 p_code)
 
 // FUNCTION: GOLDP 0x10032580
 // FUNCTION: LEGORACERS 0x0044e6c0
-void GolFileParser::FUN_10032580(LegoS32 p_code)
+void GolFileParser::HandleIoError(LegoS32 p_code)
 {
 	if (m_filePath == NULL) {
 		GOL_FATALERROR_MESSAGE(ErrorCodeToString(p_code));
@@ -241,7 +241,7 @@ void GolFileParser::ReadRightCurly()
 
 // FUNCTION: GOLDP 0x100327e0
 // FUNCTION: LEGORACERS 0x0044e940
-undefined4 GolFileParser::FUN_100327e0()
+undefined4 GolFileParser::ReadBracketedCountAndLeftCurly()
 {
 	if (GetNextToken() != e_leftBracket) {
 		HandleUnexpectedToken(e_leftBracket);

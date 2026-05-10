@@ -92,12 +92,12 @@ public:
 	virtual void VTable0x5c(LegoFloat) = 0;                  // vtable+0x5c
 	virtual void WriteInt4(undefined4) = 0;                  // vtable+0x60
 	virtual void WriteString(LegoChar*) = 0;                 // vtable+0x64
-	virtual void VTable0x68() = 0;                           // vtable+0x68
-	virtual void VTable0x6c() = 0;                           // vtable+0x6c
-	virtual void VTable0x70() = 0;                           // vtable+0x70
-	virtual void VTable0x74(undefined4) = 0;                 // vtable+0x74
+	virtual void FlushLine() = 0;                            // vtable+0x68
+	virtual void WriteSpace() = 0;                           // vtable+0x6c
+	virtual void WriteTab() = 0;                             // vtable+0x70
+	virtual void WriteTabs(undefined4) = 0;                  // vtable+0x74
 
-	void FUN_10032580(LegoS32 p_code);
+	void HandleIoError(LegoS32 p_code);
 	void SetSuffix(const LegoChar* p_suffix);
 	LegoS32 ReadInteger();
 	LegoFloat ReadFloat();
@@ -108,7 +108,7 @@ public:
 	void ReadRightBracket();
 	void ReadLeftCurly();
 	void ReadRightCurly();
-	undefined4 FUN_100327e0();
+	undefined4 ReadBracketedCountAndLeftCurly();
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 

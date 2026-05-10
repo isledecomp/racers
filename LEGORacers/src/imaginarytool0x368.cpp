@@ -81,13 +81,13 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_00469b50(Entry0xe0*)
 }
 
 // FUNCTION: LEGORACERS 0x00474bf0 FOLDED
-CeruleanEmperor0x4c* ImaginaryTool0x368::VTable0x5c()
+CeruleanEmperor0x4c* ImaginaryTool0x368::GetMenuStyles()
 {
 	return &m_unk0x290;
 }
 
 // FUNCTION: LEGORACERS 0x00474c00
-CeruleanQueen0x58* ImaginaryTool0x368::VTable0x64()
+CeruleanQueen0x58* ImaginaryTool0x368::GetMenuInputBindings()
 {
 	return &m_unk0x2e0;
 }
@@ -210,38 +210,32 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f410()
 	m_unk0x5c = new Entry0xe0[entryCount];
 	::memset(m_unk0x5c, 0, sizeof(Entry0xe0) * entryCount);
 
-	if (entryCount > 0) {
-		LegoS32 entryOffset = 0;
-
-		for (; entryCount; entryCount--) {
-			if (m_unk0x10->GetNextToken() != GolFileParser::e_unknown0x46) {
-				m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
-			}
-
-			LegoChar name[8];
-			::strncpy(name, m_unk0x10->ReadString(), sizeof(name));
-			AddName(name, (Entry0xe0*) ((LegoS32) m_unk0x5c + entryOffset));
-			FUN_0047f2b0((Entry0xe0*) ((LegoS32) m_unk0x5c + entryOffset));
-
-			entryOffset += sizeof(Entry0xe0);
+	for (LegoS32 i = 0; i < entryCount; i++) {
+		if (m_unk0x10->GetNextToken() != GolFileParser::e_unknown0x46) {
+			m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
+
+		LegoChar name[8];
+		::strncpy(name, m_unk0x10->ReadString(), sizeof(name));
+		AddName(name, &m_unk0x5c[i]);
+		FUN_0047f2b0(&m_unk0x5c[i]);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047fae0
 ImaginaryTool0x368::ImaginaryTool0x368()
 {
-	VTable0x54();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047fb80
 ImaginaryTool0x368::~ImaginaryTool0x368()
 {
-	VTable0x74();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047fbf0
-void ImaginaryTool0x368::VTable0x54()
+void ImaginaryTool0x368::Reset()
 {
 	m_unk0x360 = 0xffff;
 	m_unk0x362 = 0;
@@ -249,7 +243,7 @@ void ImaginaryTool0x368::VTable0x54()
 	m_unk0x35c = NULL;
 	m_unk0x358 = 0;
 	m_unk0x364 = FALSE;
-	ImaginaryNotion0x290::VTable0x54();
+	ImaginaryNotion0x290::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047fc20
@@ -265,7 +259,7 @@ LegoBool32 ImaginaryTool0x368::VTable0x8c(MenuToolContext0x4bc8* p_context, Menu
 }
 
 // FUNCTION: LEGORACERS 0x0047fca0
-LegoBool32 ImaginaryTool0x368::VTable0x74()
+LegoBool32 ImaginaryTool0x368::Destroy()
 {
 	if (!m_unk0x04) {
 		return TRUE;
@@ -277,7 +271,7 @@ LegoBool32 ImaginaryTool0x368::VTable0x74()
 
 	m_unk0xb8->VTable0x28();
 	m_unk0xb8->VTable0x60();
-	return ImaginaryNotion0x290::VTable0x74();
+	return ImaginaryNotion0x290::Destroy();
 }
 
 // TODO: Temporary workaround until we figure out how the original code was written.

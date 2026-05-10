@@ -15,7 +15,7 @@ ImaginarySpool0x2cc4::~ImaginarySpool0x2cc4()
 }
 
 // STUB: LEGORACERS 0x00481800
-void ImaginarySpool0x2cc4::VTable0x54()
+void ImaginarySpool0x2cc4::Reset()
 {
 	STUB(0x00481800);
 }
@@ -60,7 +60,7 @@ void ImaginarySpool0x2cc4::VTable0x80()
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED
-LegoBool32 ImaginarySpool0x2cc4::VTable0x74()
+LegoBool32 ImaginarySpool0x2cc4::Destroy()
 {
 	STUB(0x004860f0);
 	return FALSE;

@@ -137,17 +137,17 @@ void ImaginaryNotion0x290::VTable0x48(undefined4)
 // FUNCTION: LEGORACERS 0x0046b380
 ImaginaryNotion0x290::ImaginaryNotion0x290()
 {
-	VTable0x54();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046b410
 ImaginaryNotion0x290::~ImaginaryNotion0x290()
 {
-	VTable0x74();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046b480
-void ImaginaryNotion0x290::VTable0x54()
+void ImaginaryNotion0x290::Reset()
 {
 	m_unk0xd4 = 0;
 	m_unk0xd0 = NULL;
@@ -186,7 +186,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x70(MenuToolCreateParams0x30* p_createPa
 	if (FUN_0046b630() && FUN_0046b6e0(p_createParams) && VTable0x58(p_createParams)) {
 		VTable0x4c();
 		m_unk0xcc->PollDevices(0);
-		m_unk0xc8->FUN_0044b8e0();
+		m_unk0xc8->ClearQueue();
 		m_unk0x04 = TRUE;
 	}
 
@@ -194,7 +194,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x70(MenuToolCreateParams0x30* p_createPa
 }
 
 // FUNCTION: LEGORACERS 0x0046b5d0
-LegoBool32 ImaginaryNotion0x290::VTable0x74()
+LegoBool32 ImaginaryNotion0x290::Destroy()
 {
 	if (m_unk0x04) {
 		if (m_unk0xbc) {
@@ -207,7 +207,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x74()
 			m_unk0xb4->VTable0x6c(m_unk0xc0);
 		}
 
-		VTable0x54();
+		Reset();
 	}
 
 	return TRUE;
@@ -220,11 +220,10 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b630()
 	ObscureIcon0x1a8::CreateParams0x84 createParams;
 
 	memset(&createParams, 0, sizeof(createParams));
-	BronzeFalcon0xc8770* renderer = m_unk0xb8;
 	memcpy(&createParams, g_unk0x4b2240, sizeof(g_unk0x4b2240));
 
 	createParams.m_golExport = m_unk0xb4;
-	createParams.m_renderer = renderer;
+	createParams.m_renderer = m_unk0xb8;
 	createParams.m_unk0x38 = TRUE;
 	createParams.m_soundGroupBinding = m_unk0x280;
 	createParams.m_width = drawState->m_width;
@@ -307,7 +306,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 		params.m_fileName = fileName;
 		params.m_binary = p_createParams->m_unk0x2c;
 
-		if (!VTable0x5c()->Load(&params)) {
+		if (!GetMenuStyles()->Load(&params)) {
 			return FALSE;
 		}
 	}
@@ -326,7 +325,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 		params.m_fileName = fileName;
 		params.m_binary = p_createParams->m_unk0x2c;
 
-		if (!VTable0x64()->Load(&params)) {
+		if (!GetMenuInputBindings()->Load(&params)) {
 			return FALSE;
 		}
 	}
@@ -514,7 +513,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
 }
 
 // FUNCTION: LEGORACERS 0x0046c810
-CeruleanEmperor0x4c* ImaginaryNotion0x290::VTable0x5c()
+CeruleanEmperor0x4c* ImaginaryNotion0x290::GetMenuStyles()
 {
 	return &m_unk0x08;
 }
@@ -527,7 +526,7 @@ void ImaginaryNotion0x290::VTable0x60()
 }
 
 // FUNCTION: LEGORACERS 0x0046c840
-CeruleanQueen0x58* ImaginaryNotion0x290::VTable0x64()
+CeruleanQueen0x58* ImaginaryNotion0x290::GetMenuInputBindings()
 {
 	return &m_unk0x58;
 }

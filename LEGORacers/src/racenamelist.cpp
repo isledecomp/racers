@@ -143,7 +143,7 @@ void RaceNameList::Load(
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_tokenRaceName));
 
-	LegoU32 entryCount = parser->FUN_100327e0();
+	LegoU32 entryCount = parser->ReadBracketedCountAndLeftCurly();
 	m_entryCount = entryCount;
 	m_entries = new RaceNameEntry[entryCount];
 

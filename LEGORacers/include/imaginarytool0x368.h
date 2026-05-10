@@ -100,20 +100,20 @@ public:
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4
-	) override;                                 // vtable+0x1c
-	void VTable0x34(undefined4) override;       // vtable+0x34
-	void VTable0x3c(undefined4) override;       // vtable+0x3c
-	void VTable0x40(undefined4) override;       // vtable+0x40
-	void VTable0x54() override;                 // vtable+0x54
-	CeruleanEmperor0x4c* VTable0x5c() override; // vtable+0x5c
-	CeruleanQueen0x58* VTable0x64() override;   // vtable+0x64
-	~ImaginaryTool0x368() override;             // vtable+0x68
-	LegoFloat VTable0x6c() override;            // vtable+0x6c
-	LegoBool32 VTable0x74() override;           // vtable+0x74
-	LegoBool32 VTable0x78(undefined4) override; // vtable+0x78
-	virtual void VTable0x80();                  // vtable+0x80
-	virtual void VTable0x84() = 0;              // vtable+0x84
-	virtual LegoBool32 VTable0x88();            // vtable+0x88
+	) override;                                         // vtable+0x1c
+	void VTable0x34(undefined4) override;               // vtable+0x34
+	void VTable0x3c(undefined4) override;               // vtable+0x3c
+	void VTable0x40(undefined4) override;               // vtable+0x40
+	void Reset() override;                              // vtable+0x54
+	CeruleanEmperor0x4c* GetMenuStyles() override;      // vtable+0x5c
+	CeruleanQueen0x58* GetMenuInputBindings() override; // vtable+0x64
+	~ImaginaryTool0x368() override;                     // vtable+0x68
+	LegoFloat VTable0x6c() override;                    // vtable+0x6c
+	LegoBool32 Destroy() override;                      // vtable+0x74
+	LegoBool32 VTable0x78(undefined4) override;         // vtable+0x78
+	virtual void VTable0x80();                          // vtable+0x80
+	virtual void VTable0x84() = 0;                      // vtable+0x84
+	virtual LegoBool32 VTable0x88();                    // vtable+0x88
 	virtual LegoBool32 VTable0x8c(MenuToolContext0x4bc8*,
 								  MenuToolCreateParams0x30*); // vtable+0x8c
 	virtual void VTable0x90(undefined4);                      // vtable+0x90

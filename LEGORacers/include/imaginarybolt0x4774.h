@@ -20,9 +20,9 @@ public:
 	void VTable0x38(undefined4) override;                                              // vtable+0x38
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
-	void VTable0x54() override;                                                        // vtable+0x54
+	void Reset() override;                                                             // vtable+0x54
 	~ImaginaryBolt0x4774() override;                                                   // vtable+0x68
-	LegoBool32 VTable0x74() override;                                                  // vtable+0x74
+	LegoBool32 Destroy() override;                                                     // vtable+0x74
 	LegoBool32 VTable0x78(undefined4) override;                                        // vtable+0x78
 	void VTable0x84() override;                                                        // vtable+0x84
 	LegoBool32 VTable0x88() override;                                                  // vtable+0x88

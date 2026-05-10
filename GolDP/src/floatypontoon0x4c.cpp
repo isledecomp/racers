@@ -27,11 +27,11 @@ FloatyPontoon0x4c::FloatyPontoon0x4c()
 
 // FUNCTION: GOLDP 0x10029e30
 undefined4 FloatyPontoon0x4c::VTable0x4c(LegoFloat p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4)
-
 {
 #define SQR(V) ((V) * (V))
 	LegoFloat len = sqrtf(SQR(p_arg2 / 2.0f) + SQR(p_arg3 / 2.0f));
 #undef SQR
+
 	m_unk0x28 = p_arg1;
 	m_unk0x3c = p_arg2;
 	m_unk0x40 = p_arg3;

@@ -15,7 +15,7 @@ ImaginaryDrill0x2450::~ImaginaryDrill0x2450()
 }
 
 // STUB: LEGORACERS 0x00480e10
-void ImaginaryDrill0x2450::VTable0x54()
+void ImaginaryDrill0x2450::Reset()
 {
 	STUB(0x00480e10);
 }
@@ -34,7 +34,7 @@ LegoBool32 ImaginaryDrill0x2450::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCrea
 }
 
 // STUB: LEGORACERS 0x00481120
-LegoBool32 ImaginaryDrill0x2450::VTable0x74()
+LegoBool32 ImaginaryDrill0x2450::Destroy()
 {
 	STUB(0x00481120);
 	return FALSE;

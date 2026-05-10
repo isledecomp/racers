@@ -15,7 +15,7 @@ ImaginaryCrowbar0x6750::~ImaginaryCrowbar0x6750()
 }
 
 // STUB: LEGORACERS 0x00475700
-void ImaginaryCrowbar0x6750::VTable0x54()
+void ImaginaryCrowbar0x6750::Reset()
 {
 	STUB(0x00475700);
 }

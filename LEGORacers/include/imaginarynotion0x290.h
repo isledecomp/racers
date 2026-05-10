@@ -68,15 +68,15 @@ public:
 	void VTable0x48(undefined4) override;                                             // vtable+0x48
 	virtual void VTable0x4c() = 0;                                                    // vtable+0x4c
 	virtual undefined4 VTable0x50();                                                  // vtable+0x50
-	virtual void VTable0x54();                                                        // vtable+0x54
+	virtual void Reset();                                                             // vtable+0x54
 	virtual LegoBool32 VTable0x58(MenuToolCreateParams0x30*);                         // vtable+0x58
-	virtual CeruleanEmperor0x4c* VTable0x5c();                                        // vtable+0x5c
+	virtual CeruleanEmperor0x4c* GetMenuStyles();                                     // vtable+0x5c
 	virtual void VTable0x60();                                                        // vtable+0x60
-	virtual CeruleanQueen0x58* VTable0x64();                                          // vtable+0x64
+	virtual CeruleanQueen0x58* GetMenuInputBindings();                                // vtable+0x64
 	virtual ~ImaginaryNotion0x290();                                                  // vtable+0x68
 	virtual LegoFloat VTable0x6c();                                                   // vtable+0x6c
 	virtual LegoBool32 VTable0x70(MenuToolCreateParams0x30*);                         // vtable+0x70
-	virtual LegoBool32 VTable0x74();                                                  // vtable+0x74
+	virtual LegoBool32 Destroy();                                                     // vtable+0x74
 	virtual LegoBool32 VTable0x78(undefined4);                                        // vtable+0x78
 	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                        // vtable+0x7c
 

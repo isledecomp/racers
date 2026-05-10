@@ -14,8 +14,8 @@ public:
 		InputDevice* m_device;           // 0x00
 		undefined4 m_keyCode;            // 0x04
 		undefined4 m_unk0x08;            // 0x08
-		LegoBool m_unk0x0c;              // 0x0c
-		LegoBool m_unk0x0d;              // 0x0d
+		LegoBool m_isPressed;            // 0x0c
+		LegoBool m_isRepeat;             // 0x0d
 		undefined m_unk0x0e[0x10 - 0xe]; // 0x0e
 	};
 
@@ -28,10 +28,10 @@ public:
 	virtual LegoBool32 Allocate(LegoS32 p_capacity);                                           // vtable+0x10
 	virtual LegoBool32 Reset();                                                                // vtable+0x14
 
-	void FUN_0044b740();
-	Item* FUN_0044b7f0();
-	Item* FUN_0044b820(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
-	void FUN_0044b8e0();
+	void Init();
+	Item* Dequeue();
+	Item* Enqueue(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
+	void ClearQueue();
 	LegoS32 GetSize() const { return m_size; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b710

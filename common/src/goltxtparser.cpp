@@ -51,7 +51,7 @@ void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 
 	LegoS32 code = GolStream::BufferedOpen(m_filePath, c_modeTextAppend | c_modeWrite | c_modeCreate, 0x1000);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_unk0x1f0 = 0;
@@ -64,7 +64,7 @@ void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 void GolTxtParser::WriteToken(ParserTokenType p_token)
 {
 	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	switch (p_token) {
@@ -106,7 +106,7 @@ void GolTxtParser::VTable0x54(undefined4 p_param)
 void GolTxtParser::WriteFloat(LegoFloat p_param)
 {
 	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	sprintf(m_unk0x84, "%f", p_param);
@@ -120,7 +120,7 @@ void GolTxtParser::WriteFloat(LegoFloat p_param)
 void GolTxtParser::WriteInt4(undefined4 p_param)
 {
 	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	sprintf(m_unk0x84, "%d", p_param);
@@ -135,7 +135,7 @@ void GolTxtParser::WriteString(LegoChar* p_str)
 {
 	LegoS32 len = strlen(p_str);
 	if (len + 4 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	m_unk0xa4[m_unk0x1f4++] = '"';
@@ -146,11 +146,11 @@ void GolTxtParser::WriteString(LegoChar* p_str)
 
 // FUNCTION: GOLDP 0x1002fe60
 // FUNCTION: LEGORACERS 0x0044a600
-void GolTxtParser::VTable0x68()
+void GolTxtParser::FlushLine()
 {
 	LegoS32 code = WriteLine(m_unk0xa4, m_unk0x1f4);
 	if (code != e_ioSuccess) {
-		FUN_10032580(code);
+		HandleIoError(code);
 	}
 
 	m_unk0x1f0++;
@@ -159,10 +159,10 @@ void GolTxtParser::VTable0x68()
 
 // FUNCTION: GOLDP 0x1002fea0
 // FUNCTION: LEGORACERS 0x0044a640
-void GolTxtParser::VTable0x6c()
+void GolTxtParser::WriteSpace()
 {
 	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	m_unk0xa4[m_unk0x1f4] = ' ';
@@ -171,10 +171,10 @@ void GolTxtParser::VTable0x6c()
 
 // FUNCTION: GOLDP 0x1002fee0
 // FUNCTION: LEGORACERS 0x0044a680
-void GolTxtParser::VTable0x70()
+void GolTxtParser::WriteTab()
 {
 	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	m_unk0xa4[m_unk0x1f4] = '\t';
@@ -183,10 +183,10 @@ void GolTxtParser::VTable0x70()
 
 // FUNCTION: GOLDP 0x1002ff20
 // FUNCTION: LEGORACERS 0x0044a6c0
-void GolTxtParser::VTable0x74(undefined4 p_param)
+void GolTxtParser::WriteTabs(undefined4 p_param)
 {
 	if (p_param + m_unk0x1f4 + 1 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
-		VTable0x68();
+		FlushLine();
 	}
 
 	while (p_param > 0) {

@@ -133,7 +133,7 @@ LegoS32 MenuManager::Shutdown()
 
 	if (m_unk0x04.m_context) {
 		if (m_unk0x4dc8) {
-			m_unk0x4dc8->VTable0x74();
+			m_unk0x4dc8->Destroy();
 
 			if (m_unk0x4dc8) {
 				delete m_unk0x4dc8;
@@ -197,7 +197,7 @@ void MenuManager::FUN_0042cde0()
 	right.m_y = 0.0f;
 	right.m_z = 0.0f;
 
-	lens->GetUnk0x04()->VTable0x44(&position);
+	lens->GetUnk0x04()->SetPosition(&position);
 	lens->m_flags |= AmberLens0x344::c_flagBit0;
 	lens->GetUnk0x04()->VTable0x24(&right, &forward);
 	lens->m_flags |= AmberLens0x344::c_flagBit0;
@@ -421,7 +421,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 
 	if (m_unk0x4dc8) {
 		m_unk0x4cd8->VTable0xf4();
-		m_unk0x4dc8->VTable0x74();
+		m_unk0x4dc8->Destroy();
 
 		if (m_unk0x4dc8) {
 			delete m_unk0x4dc8;
@@ -509,7 +509,7 @@ void MenuManager::Run()
 
 	m_unk0x4cd8->VTable0xf4();
 	if (m_unk0x4dc8) {
-		m_unk0x4dc8->VTable0x74();
+		m_unk0x4dc8->Destroy();
 		delete m_unk0x4dc8;
 		m_unk0x4dc8 = NULL;
 	}

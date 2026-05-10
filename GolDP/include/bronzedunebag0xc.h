@@ -22,6 +22,7 @@ public:
 	void FUN_1002a120(const GolSurfaceFormat& p_textureFormat);
 	void FUN_1002a1b0();
 
+	ColorRGBA* GetEntries() const { return m_entries; }
 	bool HasEntries() const { return m_entries != NULL; }
 
 	// SYNTHETIC: GOLDP 0x1002a0b0

@@ -22,10 +22,10 @@ GolImgFile::GolImgFile()
 	m_unk0x09f = 0;
 	m_unk0x074 = 0;
 	m_unk0x068 = 0;
-	m_unk0x0a0 = 0;
-	m_unk0x0a1 = 0;
-	m_unk0x0a2 = 0;
-	m_unk0x0a3 = 0;
+	m_unk0x0a0.m_red = 0;
+	m_unk0x0a0.m_grn = 0;
+	m_unk0x0a0.m_blu = 0;
+	m_unk0x0a0.m_alp = 0;
 	m_unk0x0a4 = 0;
 	m_unk0x5a8 = 0;
 	m_unk0x5ac = 0;
@@ -483,15 +483,15 @@ void GolImgFile::FUN_100226c0(
 
 // STUB: GOLDP 0x10022730
 void GolImgFile::FUN_10022730(
+	LegoU8*,
+	LegoU8*,
+	LegoU32,
+	LegoU32,
+	LegoU32,
+	const GolSurfaceFormat&,
+	IPalette0x4*,
 	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4
+	ColorRGBA*
 )
 {
 	// TODO
@@ -512,6 +512,22 @@ void GolImgFile::FUN_10022800(
 {
 	// TODO
 	STUB(0x10022800);
+}
+
+// STUB: GOLDP 0x10022880
+void GolImgFile::FUN_10022880(
+	LegoU8*,
+	LegoU8*,
+	LegoU32,
+	LegoU32,
+	LegoU32,
+	const GolSurfaceFormat&,
+	undefined4,
+	ColorRGBA*
+)
+{
+	// TODO
+	STUB(0x10022880);
 }
 
 // STUB: GOLDP 0x100229b0

@@ -39,6 +39,7 @@ public:
 	LegoU32 GetHeight() const { return m_height; }
 	void SetUnk0x5a8(undefined4 p_unk0x5a8) { m_unk0x5a8 = p_unk0x5a8; }
 	void SetUnk0x5ac(undefined4 p_unk0x5ac) { m_unk0x5ac = p_unk0x5ac; }
+	void SetUnk0x0a0(const ColorRGBA& p_unk0x0a0) { m_unk0x0a0 = p_unk0x0a0; }
 
 	void FUN_100200f0(IPalette0x4*, undefined4*);
 	LegoU32 FUN_10020370(const ColorRGBA&);
@@ -65,17 +66,27 @@ public:
 		LegoU32 p_paletteSize
 	);
 	void FUN_10022730(
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4
+		LegoU8* p_src,
+		LegoU8* p_dst,
+		LegoU32 p_pitch,
+		LegoU32 p_width,
+		LegoU32 p_height,
+		const GolSurfaceFormat& p_format,
+		IPalette0x4* p_palette,
+		undefined4 p_unk0x20,
+		ColorRGBA* p_colorKey
 	);
 	void FUN_10022800(undefined4, undefined4, undefined4, undefined4, undefined4, undefined4, undefined4, undefined4);
+	void FUN_10022880(
+		LegoU8* p_src,
+		LegoU8* p_dst,
+		LegoU32 p_width,
+		LegoU32 p_height,
+		LegoU32 p_pitch,
+		const GolSurfaceFormat& p_format,
+		undefined4 p_unk0x1c,
+		ColorRGBA* p_colorKey
+	);
 	void FUN_100229b0(undefined4, undefined4, undefined4, undefined4);
 	void FUN_10022b80(undefined4, undefined4, undefined4);
 
@@ -106,10 +117,7 @@ protected:
 	undefined m_unk0x09d;                // 0x09d
 	undefined m_unk0x09e;                // 0x09e
 	undefined m_unk0x09f;                // 0x09f
-	undefined m_unk0x0a0;                // 0x0a0
-	undefined m_unk0x0a1;                // 0x0a1
-	undefined m_unk0x0a2;                // 0x0a2
-	undefined m_unk0x0a3;                // 0x0a3
+	ColorRGBA m_unk0x0a0;                // 0x0a0
 	undefined4 m_unk0x0a4;               // 0x0a4
 	ColorRGBA m_palette[256];            // 0x0a8
 	undefined m_unk0x4a8[0x5a4 - 0x4a8]; // 0x4a8

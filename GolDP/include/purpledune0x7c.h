@@ -33,6 +33,7 @@ public:
 
 	void FUN_10015fb0();
 	void FUN_10016100();
+	void FUN_10016260();
 	void FUN_10016380();
 	void FUN_10016440(BronzeFalcon0xc8770& p_renderer);
 	undefined4 FUN_10016460(BronzeFalcon0xc8770& p_renderer);

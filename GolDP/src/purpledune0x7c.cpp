@@ -12,6 +12,12 @@
 
 DECOMP_SIZE_ASSERT(PurpleDune0x7c, 0x7c)
 
+// GLOBAL: GOLDP 0x10057668
+static const ColorRGBA g_unk0x10057668 = {0, 0, 0, 0};
+
+// GLOBAL: GOLDP 0x100635c0
+static GolImgFile g_unk0x100635c0;
+
 // FUNCTION: GOLDP 0x10015b70
 PurpleDune0x7c::PurpleDune0x7c()
 	: m_unk0x40(NULL), m_unk0x44(NULL), m_surface(NULL), m_unk0x4c(NULL), m_unk0x74(0), m_unk0x78(0)
@@ -239,11 +245,132 @@ IPalette0x4* PurpleDune0x7c::GetPalette()
 	return NULL;
 }
 
-// STUB: GOLDP 0x10016100
+// FUNCTION: GOLDP 0x10016100
 void PurpleDune0x7c::FUN_10016100()
 {
-	// TODO
-	STUB(0x10016100);
+	ColorRGBA* colorKey;
+	LegoU8* dstPixels;
+	LegoU32 dstPitch;
+	LegoU32 paletteSize;
+	ColorRGBA* paletteEntries;
+
+	if (m_textureFormat.m_paletteMask != 0) {
+		paletteEntries = m_unk0x50.GetEntries();
+		paletteSize = m_unk0x50.GetPaletteSize();
+	}
+	else {
+		paletteEntries = NULL;
+		paletteSize = 0;
+	}
+
+	g_unk0x100635c0.FUN_100226c0(m_textureFormat, m_width, m_height, m_pitch, paletteEntries, paletteSize);
+
+	if (m_unk0x36 & c_unk0x36Bit5) {
+		if (m_unk0x36 & c_unk0x36Bit7) {
+			g_unk0x100635c0.SetUnk0x0a0(g_unk0x10057668);
+		}
+		else {
+			g_unk0x100635c0.SetUnk0x0a0(m_unk0x30);
+		}
+
+		colorKey = &m_unk0x30;
+	}
+	else {
+		colorKey = NULL;
+	}
+
+	if (m_unk0x44 != NULL) {
+		g_unk0x100635c0.SetUnk0x5ac(1);
+		dstPixels = m_unk0x44->m_pixels;
+		dstPitch = m_unk0x44->m_pitch;
+	}
+	else {
+		DDSURFACEDESC2 surfaceDesc;
+		::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
+		surfaceDesc.dwSize = sizeof(surfaceDesc);
+
+		HRESULT hresult;
+		do {
+			hresult = LockDirectDrawSurface(m_surface, NULL, &surfaceDesc, DDLOCK_WRITEONLY, NULL);
+			if (hresult == DD_OK) {
+				dstPixels = static_cast<LegoU8*>(surfaceDesc.lpSurface);
+				dstPitch = surfaceDesc.lPitch;
+			}
+			else {
+				if (hresult == DDERR_SURFACELOST) {
+					if (m_surface->Restore() != DD_OK) {
+						GOL_FATALERROR_MESSAGE("Unable to restore lost surface");
+					}
+				}
+				else {
+					GOL_FATALERROR_MESSAGE("Unable to lock surface");
+				}
+			}
+		} while (hresult != DD_OK);
+	}
+
+	g_unk0x100635c0
+		.FUN_10022730(m_pixels, dstPixels, m_unk0x74, m_unk0x78, dstPitch, m_textureFormat2, m_unk0x40, 0, colorKey);
+	g_unk0x100635c0.Destroy();
+
+	if (m_unk0x44 == NULL) {
+		m_surface->Unlock(NULL);
+		FUN_10015fb0();
+	}
+	else {
+		FUN_10016260();
+	}
+}
+
+// FUNCTION: GOLDP 0x10016260
+void PurpleDune0x7c::FUN_10016260()
+{
+	if (m_unk0x44 != NULL) {
+		if (m_unk0x34 > 1) {
+			if (m_width == m_height) {
+				ColorRGBA* colorKey;
+				if (m_unk0x36 & c_unk0x36Bit5) {
+					if (m_unk0x36 & c_unk0x36Bit7) {
+						g_unk0x100635c0.SetUnk0x0a0(g_unk0x10057668);
+					}
+					else {
+						g_unk0x100635c0.SetUnk0x0a0(m_unk0x30);
+					}
+
+					colorKey = &m_unk0x30;
+				}
+				else {
+					colorKey = NULL;
+				}
+
+				LegoU8* srcPixels = m_unk0x44[0].m_pixels;
+				LegoU32 srcPitch = m_unk0x44[0].m_pitch;
+				LegoU32 width = m_unk0x74;
+				LegoU32 height = m_unk0x78;
+
+				for (LegoU32 i = 1; i < m_unk0x34; i++) {
+					g_unk0x100635c0.FUN_100226c0(m_textureFormat2, width, height, srcPitch, NULL, 0);
+
+					width >>= 1;
+					height >>= 1;
+					srcPitch = m_unk0x44[i].m_pitch;
+					g_unk0x100635c0.FUN_10022880(
+						srcPixels,
+						m_unk0x44[i].m_pixels,
+						width,
+						height,
+						srcPitch,
+						m_textureFormat2,
+						0,
+						colorKey
+					);
+
+					srcPixels = m_unk0x44[i].m_pixels;
+					g_unk0x100635c0.Destroy();
+				}
+			}
+		}
+	}
 }
 
 // STUB: GOLDP 0x10016380

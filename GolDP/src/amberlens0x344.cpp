@@ -53,20 +53,25 @@ void AmberLens0x344::VTable0x28()
 	if (m_flags & (c_flagBit0 | c_flagBit1)) {
 		if (m_flags & c_flagBit1) {
 			if (!(m_flags & c_flagBit3)) {
-				m_unk0x0c =
-					static_cast<LegoFloat>(m_unk0x118 - m_unk0x110) / static_cast<LegoFloat>(m_unk0x11c - m_unk0x114);
+				LegoFloat width = static_cast<LegoFloat>(m_unk0x118 - m_unk0x110);
+				LegoFloat height = static_cast<LegoFloat>(m_unk0x11c - m_unk0x114);
+				m_unk0x0c = width / height;
 			}
+
 			m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_unk0x118 - m_unk0x110);
 			m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_unk0x11c - m_unk0x114);
 			m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_unk0x110);
 			m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_unk0x114);
 		}
+
 		if (m_flags & c_flagBit0) {
 			VTable0x00();
 		}
+
 		if (m_flags & c_flagBit1) {
 			VTable0x04();
 		}
+
 		GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x110, &m_unk0x120.m_unk0x190);
 		GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x150, &m_unk0x120.m_unk0x1d0);
 	}

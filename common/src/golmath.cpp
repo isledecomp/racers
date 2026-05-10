@@ -131,7 +131,7 @@ void GolMath::FUN_1002f5a0(const GolMatrix4& p_matrix, GolQuat* p_dest)
 		p_dest->m_z = (p_matrix.m_m[0][3] - p_matrix.m_m[0][1]) * v;
 		return;
 	}
-	int major = 0;
+	LegoS32 major = 0;
 	if (p_matrix.m_m[1][0] > p_matrix.m_m[0][0]) {
 		major = 1;
 	}

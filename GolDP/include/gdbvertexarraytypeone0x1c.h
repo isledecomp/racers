@@ -20,7 +20,7 @@ public:
 	void VTable0x28(LegoU32 p_index, const GolVec2& p_arg2) override; // vtable+0x28
 	void VTable0x30(LegoU32 p_index, const ColorRGBA&) override;      // vtable+0x30
 
-	// SYNTHETIC: GOLDP 0x10005fb0
+	// SYNTHETIC: GOLDP 0x10005fb0 FOLDED
 	// GdbVertexArrayTypeOne0x1c::~GdbVertexArrayTypeOne0x1c
 
 	// SYNTHETIC: GOLDP 0x10016af0 FOLDED

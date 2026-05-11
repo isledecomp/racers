@@ -16,6 +16,9 @@ public:
 	void VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) override; // vtable+0x20
 	void VTable0x28(LegoU32 p_index, const GolVec2&) override;    // vtable+0x28
 
+	// SYNTHETIC: GOLDP 0x10005fb0 FOLDED
+	// GdbVertexArrayMistery0x1c::~GdbVertexArrayMistery0x1c
+
 	// SYNTHETIC: GOLDP 0x10016af0 FOLDED
 	// GdbVertexArrayMistery0x1c::`scalar deleting destructor'
 };

@@ -14,6 +14,9 @@ public:
 	void VTable0x08(GolFileParser& p_parser) override; // vtable+0x08
 	void VTable0x10() override;                        // vtable+0x10
 
+	// SYNTHETIC: GOLDP 0x10005fb0 FOLDED
+	// GdbVertexArrayTypeThree0x20::~GdbVertexArrayTypeThree0x20
+
 	// SYNTHETIC: GOLDP 0x10016af0 FOLDED
 	// GdbVertexArrayTypeThree0x20::`scalar deleting destructor'
 };

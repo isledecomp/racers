@@ -11,7 +11,7 @@ class ImaginaryRuler0x2e60 : public ImaginaryGizmo0x1908 {
 public:
 	ImaginaryRuler0x2e60();
 
-	void VTable0x38(undefined4) override;                                              // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x3c(undefined4) override;                                              // vtable+0x3c
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c

@@ -125,6 +125,17 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
+	undefined4 FUN_0047fcf0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
+	undefined4 FUN_0047fdc0(
+		ObscureVantage0x58* p_unk0x04,
+		undefined2 p_unk0x08,
+		undefined2 p_unk0x0c,
+		undefined2 p_unk0x10
+	);
+	void FUN_0047fec0(FieldAt0x350* p_unk0x04, FieldAt0x340* p_unk0x08);
+	LegoBool32 FUN_00480440(MenuToolContext0x4bc8* p_context);
+	void FUN_004804c0(MenuToolContext0x4bc8* p_context);
+
 	PorcelainVeil0x50 m_unk0x290;     // 0x290
 	FieldAt0x2e0 m_unk0x2e0;          // 0x2e0
 	FieldAt0x340 m_unk0x340;          // 0x340

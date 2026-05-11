@@ -109,6 +109,7 @@ address,type,size
 0x4b2efc,float,4
 0x4b3510,float,4
 0x4b3514,float,4
+0x4b3770,float,4
 0x4b39c8,float,4
 0x4b39cc,float,4
 0x4b4700,float,4

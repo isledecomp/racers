@@ -272,6 +272,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/obscureanchor0x5c.cpp
   LEGORacers/src/obscureanthem0x58.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
+  LEGORacers/src/obscurelink0x1c.cpp
   LEGORacers/src/obscurerune0x4d8.cpp
   LEGORacers/src/obscuresigil0xdc.cpp
   LEGORacers/src/obscuretome0x3dc.cpp
@@ -287,6 +288,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarycrowbar0x6750.cpp
   LEGORacers/src/imaginarycube0x3c34.cpp
   LEGORacers/src/imaginarydrill0x2450.cpp
+  LEGORacers/src/imaginarydrillfieldat0x22dc.cpp
+  LEGORacers/src/imaginarydrillfieldat0x420.cpp
+  LEGORacers/src/imaginarydrillfieldat0x498.cpp
   LEGORacers/src/imaginaryfeather0x658.cpp
   LEGORacers/src/imaginarygear0x4c8c.cpp
   LEGORacers/src/imaginarygizmo0x1908.cpp

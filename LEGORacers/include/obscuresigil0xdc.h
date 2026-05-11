@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "obscurelink0x1c.h"
 #include "obscurevantage0x58.h"
 #include "types.h"
 
@@ -20,12 +21,13 @@ public:
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
 	undefined4 VTable0x3c(undefined4) override;                                            // vtable+0x3c
+	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);
 
 	// SYNTHETIC: LEGORACERS 0x00465730
 	// ObscureSigil0xdc::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x58;             // 0x58
+	ObscureLink0x1c* m_unk0x58;       // 0x58
 	undefined4 m_unk0x5c;             // 0x5c
 	undefined4 m_unk0x60;             // 0x60
 	undefined4 m_unk0x64;             // 0x64

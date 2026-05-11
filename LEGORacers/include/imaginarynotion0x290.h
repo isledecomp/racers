@@ -29,10 +29,13 @@ public:
 	class FieldAt0xc4 {
 	public:
 		void SetUnk0x41(undefined p_unk0x41) { m_unk0x41 = p_unk0x41; }
+		undefined4 GetUnk0x98() const { return m_unk0x98; }
 
 	private:
 		undefined m_unk0x00[0x41 - 0x00]; // 0x00
 		undefined m_unk0x41;              // 0x41
+		undefined m_unk0x42[0x98 - 0x42]; // 0x42
+		undefined4 m_unk0x98;             // 0x98
 	};
 
 	ImaginaryNotion0x290();
@@ -61,7 +64,7 @@ public:
 	void VTable0x2c(undefined4) override;                                             // vtable+0x2c
 	void VTable0x30(undefined4) override;                                             // vtable+0x30
 	void VTable0x34(undefined4) override;                                             // vtable+0x34
-	void VTable0x38(undefined4) override;                                             // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                    // vtable+0x38
 	void VTable0x3c(undefined4) override;                                             // vtable+0x3c
 	void VTable0x40(undefined4) override;                                             // vtable+0x40
 	void VTable0x44(undefined4) override;                                             // vtable+0x44
@@ -89,20 +92,20 @@ public:
 	void FUN_0046bd80(undefined4*, undefined4);
 	void FUN_0046be10(undefined4*, undefined2);
 	void FUN_0046bea0(undefined4*, undefined2);
-	undefined4 FUN_0046bef0(undefined4*, undefined2, undefined2);
-	undefined4 FUN_0046bf80(undefined4*, undefined2, undefined2, undefined2);
+	undefined4 FUN_0046bef0(ObscureVantage0x58*, undefined2, undefined2);
+	undefined4 FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2);
 	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c240(undefined4*, undefined2, undefined2);
 	void FUN_0046c2b0(undefined4*, undefined4, undefined2, undefined2);
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
-	void FUN_0046c480(undefined4*, undefined4, undefined2);
+	void FUN_0046c480(ObscureVantage0x58*, undefined4, undefined2);
 	void FUN_0046c510(undefined4*, undefined4, undefined2);
 	void FUN_0046c5b0(ObscureVantage0x58*, undefined2);
 	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
-	undefined4 FUN_0046c6f0(undefined4, undefined4, undefined2);
-	undefined4 FUN_0046c730(undefined4, undefined2);
+	undefined4 FUN_0046c6f0(ObscureVantage0x58*, ObscureVantage0x58*, undefined2);
+	undefined4 FUN_0046c730(ObscureVantage0x58*, undefined2);
 	void FUN_0046c760();
 	ObscureIcon0x1a8* GetUnk0xd8() { return &m_unk0xd8; }
 

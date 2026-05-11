@@ -40,7 +40,7 @@ void ImaginaryRuler0x2e60::VTable0x3c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00487d40
-void ImaginaryRuler0x2e60::VTable0x38(undefined4)
+void ImaginaryRuler0x2e60::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x00487d40);
 }

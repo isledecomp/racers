@@ -27,22 +27,22 @@ public:
 	~DirectSoundGroup();
 	void Load(const LegoChar* p_name) override; // vtable+0x00
 	void Unload() override;                     // vtable+0x04
-	virtual LegoBool32 IsLoaded();              // vtable+0x08
-	virtual LegoU32 GetSoundCount();            // vtable+0x0c
-	virtual void PlaySpatialSound(
+	LegoBool32 IsLoaded() override;             // vtable+0x08
+	LegoU32 GetSoundCount() override;           // vtable+0x0c
+	void PlaySpatialSound(
 		LegoU32 p_index,
 		SoundNode* p_node,
 		LegoFloat p_minDistance,
 		LegoFloat p_maxDistance,
 		LegoFloat p_volume,
 		LegoFloat p_frequencyScale
-	);                                                                             // vtable+0x10
-	virtual void PlaySoundByIndex(LegoU32 p_index);                                // vtable+0x14
-	virtual SoundInstance* CreateSoundInstance(LegoU32 p_index);                   // vtable+0x18
-	virtual void DestroySoundInstance(SoundInstance* p_sound);                     // vtable+0x1c
-	virtual StreamingSoundInstance* CreateStreamingSoundInstance(LegoU32 p_index); // vtable+0x20
-	virtual void DestroyStreamingSoundInstance(StreamingSoundInstance* p_sound);   // vtable+0x24
-	virtual SoundManager* GetSoundManager();                                       // vtable+0x28
+	) override;                                                                     // vtable+0x10
+	void PlaySoundByIndex(LegoU32 p_index) override;                                // vtable+0x14
+	SoundInstance* CreateSoundInstance(LegoU32 p_index) override;                   // vtable+0x18
+	void DestroySoundInstance(SoundInstance* p_sound) override;                     // vtable+0x1c
+	StreamingSoundInstance* CreateStreamingSoundInstance(LegoU32 p_index) override; // vtable+0x20
+	void DestroyStreamingSoundInstance(StreamingSoundInstance* p_sound) override;   // vtable+0x24
+	SoundManager* GetSoundManager() override;                                       // vtable+0x28
 
 private:
 	undefined4 m_unk0x10;                                      // 0x10

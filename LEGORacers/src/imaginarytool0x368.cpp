@@ -18,8 +18,6 @@ DECOMP_SIZE_ASSERT(ImaginaryTool0x368::FieldAt0x340, 0x10)
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368::FieldAt0x350, 0x4)
 
 void __stdcall FUN_00469b20(ImaginaryTool0x368::FieldAt0x2e0::Entry0xe0* p_entry);
-LegoBool32 __stdcall FUN_00480440(MenuToolContext0x4bc8* p_context);
-void __stdcall FUN_004804c0(MenuToolContext0x4bc8* p_context);
 
 // FUNCTION: LEGORACERS 0x00408460
 ImaginaryTool0x368::FieldAt0x340::FieldAt0x340()
@@ -41,18 +39,6 @@ ImaginaryTool0x368::FieldAt0x350::FieldAt0x350()
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void ImaginaryTool0x368::VTable0x80()
 {
-}
-
-// FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
-{
-	return m_unk0x364;
-}
-
-// FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
-{
-	return m_unk0x364;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
@@ -274,6 +260,26 @@ LegoBool32 ImaginaryTool0x368::Destroy()
 	return ImaginaryNotion0x290::Destroy();
 }
 
+// STUB: LEGORACERS 0x0047fcf0
+undefined4 ImaginaryTool0x368::FUN_0047fcf0(ObscureVantage0x58*, undefined2, undefined2)
+{
+	STUB(0x0047fcf0);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x0047fdc0
+undefined4 ImaginaryTool0x368::FUN_0047fdc0(ObscureVantage0x58*, undefined2, undefined2, undefined2)
+{
+	STUB(0x0047fdc0);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x0047fec0
+void ImaginaryTool0x368::FUN_0047fec0(FieldAt0x350*, FieldAt0x340*)
+{
+	STUB(0x0047fec0);
+}
+
 // TODO: Temporary workaround until we figure out how the original code was written.
 // The pragma code_seg prevents this trivial body from folding with identical functions elsewhere.
 
@@ -295,8 +301,20 @@ LegoBool32 ImaginaryTool0x368::VTable0x88()
 	return TRUE;
 }
 
+// FUNCTION: LEGORACERS 0x004804f0 FOLDED
+undefined4 ImaginaryTool0x368::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+{
+	return m_unk0x364;
+}
+
+// FUNCTION: LEGORACERS 0x004804f0 FOLDED
+undefined4 ImaginaryTool0x368::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+{
+	return m_unk0x364;
+}
+
 // FUNCTION: LEGORACERS 0x00480440
-LegoBool32 __stdcall FUN_00480440(MenuToolContext0x4bc8* p_context)
+LegoBool32 ImaginaryTool0x368::FUN_00480440(MenuToolContext0x4bc8* p_context)
 {
 	MusicInstance* musicInstance = p_context->m_unk0x4b40.GetMusicInstance();
 	return musicInstance && musicInstance->IsPlaying();
@@ -318,7 +336,7 @@ void ImaginaryTool0x368::FUN_00480470(MenuToolContext0x4bc8* p_context, undefine
 }
 
 // FUNCTION: LEGORACERS 0x004804c0
-void __stdcall FUN_004804c0(MenuToolContext0x4bc8* p_context)
+void ImaginaryTool0x368::FUN_004804c0(MenuToolContext0x4bc8* p_context)
 {
 	if (FUN_00480440(p_context)) {
 		p_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(p_context->m_unk0x4b40.GetMusicInstance());

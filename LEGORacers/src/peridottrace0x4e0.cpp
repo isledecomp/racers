@@ -157,6 +157,12 @@ void PeridotTraceState0x438::FUN_0042f060(DisplayDriverGuid& p_guid)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0042f1f0
+LegoU8 PeridotTraceState0x438::FUN_0042f1f0() const
+{
+	return m_unk0x25 | 1;
+}
+
 // FUNCTION: LEGORACERS 0x0042f200
 void PeridotTraceState0x438::FUN_0042f200(LegoU8 p_unk0x04)
 {

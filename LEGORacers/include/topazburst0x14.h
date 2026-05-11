@@ -27,6 +27,8 @@ public:
 	TopazBurst0x14();
 	~TopazBurst0x14();
 
+	void SetUnk0x00(undefined4 p_unk0x00) { m_unk0x00 = p_unk0x00; }
+
 private:
 	void FUN_0049ce40();
 

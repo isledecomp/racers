@@ -36,7 +36,7 @@ public:
 	virtual void VTable0x2c(undefined4) = 0;                                             // vtable+0x2c
 	virtual void VTable0x30(undefined4) = 0;                                             // vtable+0x30
 	virtual void VTable0x34(undefined4) = 0;                                             // vtable+0x34
-	virtual void VTable0x38(undefined4) = 0;                                             // vtable+0x38
+	virtual void VTable0x38(ObscureVantage0x58*) = 0;                                    // vtable+0x38
 	virtual void VTable0x3c(undefined4) = 0;                                             // vtable+0x3c
 	virtual void VTable0x40(undefined4) = 0;                                             // vtable+0x40
 	virtual void VTable0x44(undefined4) = 0;                                             // vtable+0x44

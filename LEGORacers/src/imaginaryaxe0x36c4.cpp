@@ -47,7 +47,7 @@ LegoBool32 ImaginaryAxe0x36c4::Destroy()
 }
 
 // STUB: LEGORACERS 0x0047c980
-void ImaginaryAxe0x36c4::VTable0x38(undefined4)
+void ImaginaryAxe0x36c4::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x0047c980);
 }

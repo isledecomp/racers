@@ -17,6 +17,7 @@ public:
 	LegoU16 Pop();
 	LegoU16 Peek();
 	LegoS32 GetSize() { return m_size; }
+	void ResetSize() { m_size = 0; }
 
 private:
 	LegoU16* m_buffer;  // 0x00

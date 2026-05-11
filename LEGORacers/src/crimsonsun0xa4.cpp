@@ -40,6 +40,12 @@ LegoBool CrimsonSun0xa4::FUN_00468af0(void*, LegoS32, void*)
 	return FALSE;
 }
 
+// STUB: LEGORACERS 0x00468cf0
+void CrimsonSun0xa4::FUN_00468cf0()
+{
+	STUB(0x468cf0);
+}
+
 // STUB: LEGORACERS 0x00468da0
 void CrimsonSun0xa4::FUN_00468da0(LegoU32)
 {

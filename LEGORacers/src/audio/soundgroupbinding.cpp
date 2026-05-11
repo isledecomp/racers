@@ -47,3 +47,11 @@ LegoBool32 SoundGroupBinding::ResetSoundGroup()
 
 	return m_soundGroup == NULL;
 }
+
+// FUNCTION: LEGORACERS 0x0046e970
+void SoundGroupBinding::FUN_0046e970(LegoU32 p_index)
+{
+	if (m_soundGroup && p_index) {
+		m_soundGroup->PlaySoundByIndex(m_unk0x08 + p_index - 1);
+	}
+}

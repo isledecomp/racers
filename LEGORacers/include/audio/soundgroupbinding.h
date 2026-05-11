@@ -15,6 +15,7 @@ public:
 
 	LegoBool32 SetSoundGroup(SoundManager* p_soundManager, SoundGroup* p_soundGroup, undefined4 p_unk0x0c);
 	LegoBool32 ResetSoundGroup();
+	void FUN_0046e970(LegoU32 p_index);
 
 private:
 	void Reset();

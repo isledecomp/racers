@@ -156,6 +156,24 @@ void CitrineGrove0x1f4c::FUN_004436e0()
 	STUB(0x4436e0);
 }
 
+// FUNCTION: LEGORACERS 0x00443760
+LegoU32 CitrineGrove0x1f4c::FUN_00443760()
+{
+	LegoU8 flags = m_unk0x18c4.FUN_0042f1f0();
+
+	LegoU32 mask = 2;
+	for (LegoU32 index = 1; index < 7;) {
+		if (!(flags & mask)) {
+			return index - 1;
+		}
+
+		index++;
+		mask <<= 1;
+	}
+
+	return 6;
+}
+
 // STUB: LEGORACERS 0x00450fc0
 void CitrineGrove0x1f4c::FUN_00450fc0(const LegoChar* p_path)
 {

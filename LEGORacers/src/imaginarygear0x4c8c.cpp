@@ -34,7 +34,7 @@ LegoBool32 ImaginaryGear0x4c8c::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreat
 }
 
 // STUB: LEGORACERS 0x00484f40
-void ImaginaryGear0x4c8c::VTable0x38(undefined4)
+void ImaginaryGear0x4c8c::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x00484f40);
 }

@@ -11,13 +11,29 @@ class OpalHaven0xf4 : public SilverHollow0xb8 {
 public:
 	OpalHaven0xf4();
 
+	void VTable0x40(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08);
+	void FUN_0040dad0(undefined2 p_unk0x04);
+	void FUN_0040db80(
+		undefined4 p_unk0x04,
+		undefined4 p_unk0x08,
+		LegoFloat p_unk0x0c,
+		undefined4 p_unk0x10,
+		undefined4 p_unk0x14,
+		undefined4 p_unk0x18
+	);
+	LegoBool32 FUN_0040e360();
+	LegoU32 GetUnk0x5c() const { return m_unk0x5c; }
+	void SetUnk0x5c(LegoU32 p_unk0x5c) { m_unk0x5c = p_unk0x5c; }
+	LegoU16 GetActiveState() const { return (m_unk0x5c & 0x20000) ? m_unk0xd8 : m_unk0xbc; }
+	LegoFloat GetActiveValue() const { return (m_unk0x5c & 0x20000) ? m_unk0xd0 : m_unk0xb4; }
+
 private:
 	void Reset();
 
 	undefined4 m_unk0xb8;             // 0xb8
 	undefined2 m_unk0xbc;             // 0xbc
 	undefined m_unk0xbe[0xd0 - 0xbe]; // 0xbe
-	undefined4 m_unk0xd0;             // 0xd0
+	LegoFloat m_unk0xd0;              // 0xd0
 	undefined4 m_unk0xd4;             // 0xd4
 	undefined2 m_unk0xd8;             // 0xd8
 	undefined m_unk0xda[0xec - 0xda]; // 0xda

@@ -198,8 +198,8 @@ add_library(goldp SHARED
   GolDP/src/igdbmodel0x40.cpp
   GolDP/src/gdbvertexarray0xc.cpp
   GolDP/src/gdbcommonvertexarray0x1c.cpp
-  GolDP/src/gdbvertexarraytypeone0x1c.cpp
   GolDP/src/gdbvertexarraytypetwo0x20.cpp
+  GolDP/src/gdbvertexarraytypeone0x1c.cpp
   GolDP/src/gdbvertexarraytypethree0x20.cpp
   GolDP/src/gdbvertexarraymistery0x1c.cpp
   GolDP/src/gdbmodel0x48.cpp

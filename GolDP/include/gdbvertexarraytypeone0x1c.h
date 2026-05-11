@@ -8,7 +8,7 @@ struct GolVec2;
 struct ColorRGBA;
 
 // VTABLE: GOLDP 0x10056388
-// SIZE: 0x1c
+// SIZE 0x1c
 class GdbVertexArrayTypeOne0x1c : public GdbCommonVertexArray0x1c {
 public:
 	GdbVertexArrayTypeOne0x1c();

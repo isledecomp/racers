@@ -5,7 +5,7 @@
 #include "gdbcommonvertexarray0x1c.h"
 
 // VTABLE: GOLDP 0x10056894
-// SIZE: 0x20
+// SIZE 0x20
 class GdbVertexArrayTypeTwo0x20 : public GdbCommonVertexArray0x1c {
 public:
 	GdbVertexArrayTypeTwo0x20();

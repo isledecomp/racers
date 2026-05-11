@@ -21,8 +21,8 @@ public:
 	virtual void VTable0x04(undefined4*);                                                                // vtable+0x04
 	virtual void VTable0x08(undefined4*);                                                                // vtable+0x08
 	virtual void VTable0x0c(GolFileParser& p_parser) = 0;                                                // vtable+0x0c
-	virtual void VTable0x10(undefined4*) = 0;                                                            // vtable+0x10
-	virtual void VTable0x14(undefined4*);                                                                // vtable+0x14
+	virtual void VTable0x10(GolFileParser& p_parser) = 0;                                                            // vtable+0x10
+	virtual void VTable0x14(GolFileParser& p_parser);                                                                // vtable+0x14
 	virtual void VTable0x18(undefined4, undefined2, undefined4, undefined4, undefined4, undefined4) = 0; // vtable+0x18
 	virtual void VTable0x1c(undefined4 p_arg1, const LegoChar* p_name, LegoBool32 p_binary);             // vtable+0x1c
 	virtual ~IGdbModel0x40();                                                                            // vtable+0x20

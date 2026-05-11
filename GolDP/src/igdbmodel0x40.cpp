@@ -96,7 +96,7 @@ void IGdbModel0x40::VTable0x08(undefined4*)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void IGdbModel0x40::VTable0x14(undefined4*)
+void IGdbModel0x40::VTable0x14(GolFileParser& p_parser)
 {
 	// empty
 }

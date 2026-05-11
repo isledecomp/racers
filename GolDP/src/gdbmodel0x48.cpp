@@ -98,16 +98,30 @@ void GdbModel0x48::VTable0x0c(GolFileParser& p_parser)
 	m_unk0x40->VTable0x08(p_parser);
 }
 
-// STUB: GOLDP 0x10006b30
-void GdbModel0x48::VTable0x10(undefined4*)
+// FUNCTION: GOLDP 0x10006b30
+void GdbModel0x48::VTable0x10(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x10006b30);
+	if (m_unk0x40 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x40 = new GdbVertexArrayTypeOne0x1c;
+	m_unk0x10 = m_unk0x40;
+	if (m_unk0x10 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	m_unk0x40->VTable0x08(p_parser);
 }
 
-// STUB: GOLDP 0x10006bc0
-void GdbModel0x48::VTable0x14(undefined4*)
+// FUNCTION: GOLDP 0x10006bc0
+void GdbModel0x48::VTable0x14(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x10006bc0);
+	if (m_unk0x40 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x40 = new GdbVertexArrayTypeTwo0x20;
+	m_unk0x10 = m_unk0x40;
+	if (m_unk0x10 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	m_unk0x40->VTable0x08(p_parser);
 }

@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import logging
 from pathlib import PurePath, Path
 from typing import Iterable, Iterator, NamedTuple

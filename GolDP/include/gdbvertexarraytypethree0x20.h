@@ -9,7 +9,6 @@
 class GdbVertexArrayTypeThree0x20 : public GdbVertexArrayTypeTwo0x20 {
 public:
 	GdbVertexArrayTypeThree0x20();
-	~GdbVertexArrayTypeThree0x20() override; // vtable+0x00
 
 	void VTable0x04(LegoU16 p_count) override;         // vtable+0x04
 	void VTable0x08(GolFileParser& p_parser) override; // vtable+0x08

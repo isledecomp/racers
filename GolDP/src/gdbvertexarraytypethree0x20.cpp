@@ -6,13 +6,6 @@ GdbVertexArrayTypeThree0x20::GdbVertexArrayTypeThree0x20()
 	m_unk0x06 = 1;
 }
 
-// STUB: GOLDP 0x10016f60 FOLDED
-GdbVertexArrayTypeThree0x20::~GdbVertexArrayTypeThree0x20()
-{
-	// TODO
-	STUB(0x10016f60);
-}
-
 // STUB: GOLDP 0x10016b10
 void GdbVertexArrayTypeThree0x20::VTable0x08(GolFileParser& p_parser)
 {

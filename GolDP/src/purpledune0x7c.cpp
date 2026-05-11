@@ -8,6 +8,7 @@
 #include "golimgfile.h"
 #include "pearldew0x0c.h"
 
+#include <stdio.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(PurpleDune0x7c, 0x7c)
@@ -495,11 +496,114 @@ void PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
 	}
 }
 
-// STUB: GOLDP 0x100165c0
-undefined4 PurpleDune0x7c::FUN_100165c0(GolCommonDrawState*, BronzeFalcon0xc8770&)
+// FUNCTION: GOLDP 0x100165c0
+void PurpleDune0x7c::FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer)
 {
-	STUB(0x100165c0);
-	return 0;
+	LPDIRECTDRAW4 ddraw = p_renderer.GetDirectDraw4();
+
+	DDSURFACEDESC2 surfaceDesc;
+	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
+	surfaceDesc.dwSize = sizeof(surfaceDesc);
+	surfaceDesc.dwFlags = DDSD_CAPS | DDSD_HEIGHT | DDSD_WIDTH | DDSD_PIXELFORMAT;
+	surfaceDesc.dwHeight = m_unk0x78;
+	surfaceDesc.dwWidth = m_unk0x74;
+	surfaceDesc.ddsCaps.dwCaps = DDSCAPS_TEXTURE;
+	surfaceDesc.ddpfPixelFormat.dwSize = sizeof(DDPIXELFORMAT);
+	surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB;
+
+	if (m_textureFormat2.m_paletteMask != 0) {
+		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_textureFormat2.m_bitsPerPixel;
+		switch (surfaceDesc.ddpfPixelFormat.dwRGBBitCount) {
+		case 1:
+			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_PALETTEINDEXED1;
+			break;
+		case 2:
+			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_PALETTEINDEXED2;
+			break;
+		case 4:
+			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_PALETTEINDEXED4;
+			break;
+		case 8:
+			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_PALETTEINDEXED8;
+			break;
+		}
+
+		if ((m_palette = new PearlDew0x0c) == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		static_cast<PearlDew0x0c*>(m_palette)->CreateDirectDrawPalette(&p_renderer, &m_textureFormat2);
+	}
+	else {
+		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_textureFormat2.m_bitsPerPixel;
+		surfaceDesc.ddpfPixelFormat.dwRBitMask = m_textureFormat2.m_redBitMask;
+		surfaceDesc.ddpfPixelFormat.dwGBitMask = m_textureFormat2.m_grnBitMask;
+		surfaceDesc.ddpfPixelFormat.dwBBitMask = m_textureFormat2.m_bluBitMask;
+		if (m_textureFormat2.m_alpBitMask != 0) {
+			surfaceDesc.ddpfPixelFormat.dwFlags = DDPF_RGB | DDPF_ALPHAPIXELS;
+			surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask = m_textureFormat2.m_alpBitMask;
+		}
+	}
+
+	if (m_unk0x36 & c_unk0x36Bit1) {
+		surfaceDesc.ddsCaps.dwCaps |= DDSCAPS_3DDEVICE;
+	}
+	if (m_unk0x36 & c_unk0x36Bit0) {
+		if (p_drawState->IsHwAccelerated() && p_drawState->SupportsMipmap()) {
+			DWORD flags = surfaceDesc.dwFlags;
+			DWORD caps = surfaceDesc.ddsCaps.dwCaps;
+			flags |= DDSD_MIPMAPCOUNT;
+			caps |= DDSCAPS_COMPLEX | DDSCAPS_MIPMAP;
+			surfaceDesc.dwFlags = flags;
+			surfaceDesc.ddsCaps.dwCaps = caps;
+			surfaceDesc.dwMipMapCount = m_unk0x34;
+		}
+		else {
+			m_unk0x36 &= ~c_unk0x36Bit0;
+		}
+	}
+
+	surfaceDesc.ddsCaps.dwCaps2 |= DDSCAPS2_TEXTUREMANAGE;
+	HRESULT result = ddraw->CreateSurface(&surfaceDesc, &m_surface, NULL);
+	if (result) {
+		if (result == DDERR_OUTOFVIDEOMEMORY) {
+			GOL_FATALERROR_MESSAGE("Cannot create texture surface\nOut of video memory");
+		}
+		else {
+			LegoChar errorMessage[64];
+			::sprintf(errorMessage, "Error creating texture surface\nerror code = 0x%x", result);
+			GOL_FATALERROR_MESSAGE(errorMessage);
+		}
+	}
+
+	result = m_surface->QueryInterface(IID_IDirect3DTexture2, (LPVOID*) &m_d3dTexture);
+	if (result) {
+		LegoChar errorMessage[64];
+		::sprintf(errorMessage, "Unable to query surface texture interface\nerror %x", result);
+		GOL_FATALERROR_MESSAGE(errorMessage);
+	}
+
+	if (m_textureFormat2.m_paletteMask == 0) {
+		result = m_surface->GetSurfaceDesc(&surfaceDesc);
+		if (!result) {
+			LegoU32 redBitMask = surfaceDesc.ddpfPixelFormat.dwRBitMask;
+			LegoU32 grnBitMask = surfaceDesc.ddpfPixelFormat.dwGBitMask;
+			LegoU32 bluBitMask = surfaceDesc.ddpfPixelFormat.dwBBitMask;
+			LegoU32 alpBitMask = surfaceDesc.ddpfPixelFormat.dwRGBAlphaBitMask;
+			m_textureFormat2.m_redBitMask = redBitMask;
+			m_textureFormat2.m_grnBitMask = grnBitMask;
+			m_textureFormat2.m_bluBitMask = bluBitMask;
+			m_textureFormat2.m_alpBitMask = alpBitMask;
+		}
+	}
+	else {
+		result = m_surface->SetPalette(static_cast<PearlDew0x0c*>(m_palette)->GetPalette());
+		if (result) {
+			LegoChar errorMessage[64];
+			::sprintf(errorMessage, "Unable to set texture palette\nerror %x", result);
+			GOL_FATALERROR_MESSAGE(errorMessage);
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x100168c0

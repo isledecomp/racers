@@ -90,6 +90,9 @@
 // GLOBAL: GOLDP 0x100583b8
 // IID_IDirect3D3
 
+// GLOBAL: GOLDP 0x10058468
+// IID_IDirect3DTexture2
+
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain
 #endif

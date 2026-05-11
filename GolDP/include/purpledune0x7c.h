@@ -37,7 +37,7 @@ public:
 	void FUN_10016380();
 	void FUN_10016440(BronzeFalcon0xc8770& p_renderer);
 	void FUN_10016460(BronzeFalcon0xc8770& p_renderer);
-	undefined4 FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer);
+	void FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer);
 	void FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }

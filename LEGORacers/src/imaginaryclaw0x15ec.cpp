@@ -34,7 +34,7 @@ void ImaginaryClaw0x15ec::VTable0x44(undefined4)
 }
 
 // STUB: LEGORACERS 0x00484650
-void ImaginaryClaw0x15ec::VTable0x38(undefined4)
+void ImaginaryClaw0x15ec::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x00484650);
 }

@@ -16,6 +16,12 @@ SapphireReef0x2030::~SapphireReef0x2030()
 	STUB(0x499e20);
 }
 
+// FUNCTION: LEGORACERS 0x0049a0e0
+LegoBool32 SapphireReef0x2030::FUN_0049a0e0()
+{
+	return m_unk0x00 != 0;
+}
+
 // STUB: LEGORACERS 0x0049a0f0
 void SapphireReef0x2030::Destroy()
 {

@@ -28,7 +28,7 @@ LegoBool32 ImaginaryCrowbar0x6750::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCr
 }
 
 // STUB: LEGORACERS 0x00475990
-void ImaginaryCrowbar0x6750::VTable0x38(undefined4)
+void ImaginaryCrowbar0x6750::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x00475990);
 }

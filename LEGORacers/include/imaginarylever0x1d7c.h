@@ -11,7 +11,7 @@ class ImaginaryLever0x1d7c : public ImaginaryTool0x368 {
 public:
 	ImaginaryLever0x1d7c();
 
-	void VTable0x38(undefined4) override;                                              // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	~ImaginaryLever0x1d7c() override;                                                  // vtable+0x68
 	LegoBool32 Destroy() override;                                                     // vtable+0x74

@@ -33,6 +33,8 @@ public:
 	MusicInstance* GetMusicInstance() { return m_musicInstance; }
 	void SetMusicInstance(MusicInstance* p_musicInstance) { m_musicInstance = p_musicInstance; }
 	LegoBool32 HasMenuResources() const { return m_menuId != 0; }
+	undefined4 GetUnk0x78() const { return m_unk0x78; }
+	void SetUnk0x78(undefined4 p_unk0x78) { m_unk0x78 = p_unk0x78; }
 
 private:
 	friend class MenuManager;

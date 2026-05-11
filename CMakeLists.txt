@@ -231,6 +231,7 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
   LEGORacers/src/main.cpp
+  LEGORacers/src/gamemain.cpp
   LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/legoracers.cpp
   LEGORacers/src/win32golapp.cpp
@@ -283,6 +284,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/obscureanchor0x5c.cpp
   LEGORacers/src/obscureanthem0x58.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
+  LEGORacers/src/obscurelink0x1c.cpp
   LEGORacers/src/obscurerune0x4d8.cpp
   LEGORacers/src/obscuresigil0xdc.cpp
   LEGORacers/src/obscuretome0x3dc.cpp
@@ -294,10 +296,14 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarybolt0x4774.cpp
   LEGORacers/src/imaginarybrush0x6410.cpp
   LEGORacers/src/imaginarychisel0x658.cpp
+  LEGORacers/src/imaginarychisel0x658helperat0x368.cpp
   LEGORacers/src/imaginaryclaw0x15ec.cpp
   LEGORacers/src/imaginarycrowbar0x6750.cpp
   LEGORacers/src/imaginarycube0x3c34.cpp
   LEGORacers/src/imaginarydrill0x2450.cpp
+  LEGORacers/src/imaginarydrillfieldat0x22dc.cpp
+  LEGORacers/src/imaginarydrillfieldat0x420.cpp
+  LEGORacers/src/imaginarydrillfieldat0x498.cpp
   LEGORacers/src/imaginaryfeather0x658.cpp
   LEGORacers/src/imaginarygear0x4c8c.cpp
   LEGORacers/src/imaginarygizmo0x1908.cpp
@@ -312,11 +318,17 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryspool0x2cc4.cpp
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp
+  LEGORacers/src/imaginarytool0x368fieldat0x2e0.cpp
+  LEGORacers/src/imaginarytool0x368fieldat0x340.cpp
+  LEGORacers/src/imaginarytool0x368fieldat0x350.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
   LEGORacers/src/onyxcircularbuffer0x1c.cpp
   LEGORacers/src/peridottraceroot0x108.cpp
   LEGORacers/src/peridottrace0x4e0.cpp
+  LEGORacers/src/peridottrace0x4a8.cpp
+  LEGORacers/src/peridottraceactionbase0x34.cpp
+  LEGORacers/src/peridottracestate0x438.cpp
   LEGORacers/src/citrinegrove0x1f4c.cpp
   LEGORacers/src/topazburst0x14.cpp
   LEGORacers/src/legopiecelibrary.cpp

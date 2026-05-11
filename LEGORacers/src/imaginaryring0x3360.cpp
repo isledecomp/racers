@@ -52,7 +52,7 @@ void ImaginaryRing0x3360::VTable0x34(undefined4)
 }
 
 // STUB: LEGORACERS 0x0047ac60
-void ImaginaryRing0x3360::VTable0x38(undefined4)
+void ImaginaryRing0x3360::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x0047ac60);
 }

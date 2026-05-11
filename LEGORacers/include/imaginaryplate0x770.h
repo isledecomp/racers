@@ -11,7 +11,7 @@ class ImaginaryPlate0x770 : public ImaginaryTool0x368 {
 public:
 	ImaginaryPlate0x770();
 
-	void VTable0x38(undefined4) override;                                              // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	~ImaginaryPlate0x770() override;                                                   // vtable+0x68
 	LegoBool32 Destroy() override;                                                     // vtable+0x74

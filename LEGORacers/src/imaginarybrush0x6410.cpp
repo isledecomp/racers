@@ -40,7 +40,7 @@ void ImaginaryBrush0x6410::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047ee50
-void ImaginaryBrush0x6410::VTable0x38(undefined4)
+void ImaginaryBrush0x6410::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x0047ee50);
 }

@@ -11,7 +11,7 @@ class ImaginaryClaw0x15ec : public ImaginaryTool0x368 {
 public:
 	ImaginaryClaw0x15ec();
 
-	void VTable0x38(undefined4) override;                                              // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	~ImaginaryClaw0x15ec() override;                                                   // vtable+0x68

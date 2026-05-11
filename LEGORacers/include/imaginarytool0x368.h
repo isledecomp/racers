@@ -28,16 +28,8 @@ public:
 		void VTable0x14(undefined4) override; // vtable+0x14
 
 		// SIZE 0xe0
-		class Entry0xe0 {
+		class Entry0xe0 : public CeruleanQueen0x58::Entry0x84 {
 		public:
-			undefined m_unk0x00[0x38 - 0x00]; // 0x00
-			LegoU8 m_unk0x38;                 // 0x38
-			undefined m_unk0x39[0x52 - 0x39]; // 0x39
-			LegoS8 m_unk0x52[6][4];           // 0x52
-			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
-			undefined4 m_unk0x74;             // 0x74
-			undefined4 m_unk0x78;             // 0x78
-			undefined m_unk0x7c[0x84 - 0x7c]; // 0x7c
 			GolFont0xa0* m_unk0x84[6];        // 0x84
 			UtopianPan0xa4* m_unk0x9c[6];     // 0x9c
 			LegoS8 m_unk0xb4[6][4];           // 0xb4
@@ -56,7 +48,6 @@ public:
 		class MidTxtParser : public GolTxtParser {};
 
 	private:
-		void FUN_00469b50(Entry0xe0* p_entry);
 		void FUN_0047f2b0(Entry0xe0* p_entry);
 		void FUN_0047f410();
 
@@ -125,6 +116,17 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
+	undefined4 FUN_0047fcf0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
+	undefined4 FUN_0047fdc0(
+		ObscureVantage0x58* p_unk0x04,
+		undefined2 p_unk0x08,
+		undefined2 p_unk0x0c,
+		undefined2 p_unk0x10
+	);
+	void FUN_0047fec0(FieldAt0x350* p_unk0x04, FieldAt0x340* p_unk0x08);
+	LegoBool32 FUN_00480440(MenuToolContext0x4bc8* p_context);
+	void FUN_004804c0(MenuToolContext0x4bc8* p_context);
+
 	PorcelainVeil0x50 m_unk0x290;     // 0x290
 	FieldAt0x2e0 m_unk0x2e0;          // 0x2e0
 	FieldAt0x340 m_unk0x340;          // 0x340

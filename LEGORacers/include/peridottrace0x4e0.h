@@ -122,6 +122,7 @@ public:
 	LegoU8 GetLanguageIndex() const { return m_languageIndex; }
 	LegoU8 GetUnk0x22() const { return GetLanguageIndex(); }
 	LegoU8 GetUnk0x23() const { return m_unk0x23; }
+	LegoU8 FUN_0042f1f0() const;
 
 private:
 	// SIZE 0x04

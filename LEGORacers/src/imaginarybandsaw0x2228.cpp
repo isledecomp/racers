@@ -34,7 +34,7 @@ LegoBool32 ImaginaryBandsaw0x2228::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCr
 }
 
 // STUB: LEGORACERS 0x0047a090
-void ImaginaryBandsaw0x2228::VTable0x38(undefined4)
+void ImaginaryBandsaw0x2228::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x0047a090);
 }

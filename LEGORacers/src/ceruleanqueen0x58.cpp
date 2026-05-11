@@ -3,7 +3,10 @@
 #include "golbinparser.h"
 #include "golerror.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58, 0x5c)
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58::Entry0x84, 0x84)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::MidTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::ResourceLoadParams, 0x0c)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::Struct0x74, 0x74)
@@ -187,6 +190,28 @@ void CeruleanQueen0x58::VTable0x14(undefined4 p_arg1)
 		FUN_0046aea0();
 		break;
 	}
+}
+
+// STUB: LEGORACERS 0x00469a20
+void CeruleanQueen0x58::FUN_00469a20(Entry0x84*)
+{
+	// TODO
+	STUB(0x00469a20);
+}
+
+// FUNCTION: LEGORACERS 0x00469b20
+void __stdcall CeruleanQueen0x58::FUN_00469b20(Entry0x84* p_entry)
+{
+	p_entry->m_unk0x38 = TRUE;
+	p_entry->m_unk0x74 = TRUE;
+	::memset(p_entry->m_unk0x52, 0xff, sizeof(p_entry->m_unk0x52));
+}
+
+// STUB: LEGORACERS 0x00469b50
+void CeruleanQueen0x58::FUN_00469b50(Entry0x84*)
+{
+	// TODO
+	STUB(0x00469b50);
 }
 
 // STUB: LEGORACERS 0x0046a750

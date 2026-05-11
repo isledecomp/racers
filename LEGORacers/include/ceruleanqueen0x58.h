@@ -31,6 +31,19 @@ public:
 		undefined m_unk0x40[0x74 - 0x40]; // 0x40
 	};
 
+	// SIZE 0x84
+	class Entry0x84 {
+	public:
+		undefined m_unk0x00[0x38 - 0x00]; // 0x00
+		LegoU8 m_unk0x38;                 // 0x38
+		undefined m_unk0x39[0x52 - 0x39]; // 0x39
+		LegoS8 m_unk0x52[6][4];           // 0x52
+		undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
+		undefined4 m_unk0x74;             // 0x74
+		undefined4 m_unk0x78;             // 0x78
+		undefined m_unk0x7c[0x84 - 0x7c]; // 0x7c
+	};
+
 	// SIZE 0x0c
 	struct ResourceLoadParams {
 		BronzeFalcon0xc8770* m_renderer; // 0x00
@@ -51,6 +64,7 @@ public:
 
 private:
 	void FUN_00469900(ResourceLoadParams* p_params);
+	void FUN_00469a20(Entry0x84* p_entry);
 	void FUN_0046a750();
 	void FUN_0046a800();
 	void FUN_0046a8a0();
@@ -66,6 +80,9 @@ private:
 	void FUN_0046aea0();
 
 protected:
+	static void __stdcall FUN_00469b20(Entry0x84* p_entry);
+	void FUN_00469b50(Entry0x84* p_entry);
+
 	undefined* m_unk0x20;   // 0x20
 	undefined* m_unk0x24;   // 0x24
 	undefined* m_unk0x28;   // 0x28

@@ -35,7 +35,7 @@ LegoBool32 ImaginaryBelt0x2548::Destroy()
 }
 
 // STUB: LEGORACERS 0x004849e0
-void ImaginaryBelt0x2548::VTable0x38(undefined4)
+void ImaginaryBelt0x2548::VTable0x38(ObscureVantage0x58*)
 {
 	STUB(0x004849e0);
 }

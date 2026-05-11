@@ -12,7 +12,7 @@ public:
 	ImaginaryBrush0x6410();
 
 	void VTable0x10(undefined4) override;                                              // vtable+0x10
-	void VTable0x38(undefined4) override;                                              // vtable+0x38
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	void Reset() override;                                                             // vtable+0x54

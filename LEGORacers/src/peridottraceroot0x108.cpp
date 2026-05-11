@@ -30,6 +30,13 @@ PeridotTraceRoot0x108::~PeridotTraceRoot0x108()
 	Clear();
 }
 
+// STUB: LEGORACERS 0x00450fc0
+void PeridotTraceRoot0x108::FUN_00450fc0(const LegoChar*)
+{
+	// TODO
+	STUB(0x00450fc0);
+}
+
 // FUNCTION: LEGORACERS 0x00451040
 void PeridotTraceRoot0x108::Clear()
 {

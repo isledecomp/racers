@@ -22,7 +22,7 @@ void ObscureSigil0xdc::Reset()
 	m_unk0x64 = 0;
 	m_unk0x60 = 0;
 	m_unk0x68 = 0;
-	m_unk0x58 = 0;
+	m_unk0x58 = NULL;
 	m_unk0x6c = 0;
 	m_unk0xb4 = 0;
 	m_unk0xb8 = 0;
@@ -46,6 +46,17 @@ undefined4 ObscureSigil0xdc::VTable0x08()
 {
 	STUB(0x00465890);
 	return 0;
+}
+
+// FUNCTION: LEGORACERS 0x00465b40
+ObscureLink0x1c* ObscureSigil0xdc::FUN_00465b40(ObscureLink0x1c* p_unk0x04)
+{
+	if (!m_unk0x58) {
+		m_unk0x58 = p_unk0x04;
+		return p_unk0x04;
+	}
+
+	return p_unk0x04->FUN_0046b350(m_unk0x58);
 }
 
 // STUB: LEGORACERS 0x00465f20

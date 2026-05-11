@@ -12,6 +12,7 @@ public:
 
 	LegoS32 Reset();
 	LegoS32 FUN_00468ab0();
+	void FUN_00468cf0();
 	void FUN_00468da0(LegoU32 p_unk0x04);
 	void FUN_00468e20();
 	LegoBool FUN_00468af0(void* p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c);

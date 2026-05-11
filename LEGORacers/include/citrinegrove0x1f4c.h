@@ -30,7 +30,7 @@ public:
 	void FUN_004435c0();
 	void FUN_00443620(const LegoChar*, PeridotTrace0x4a8*);
 	void FUN_004436e0();
-	void FUN_00450fc0(const LegoChar* p_path);
+	LegoU32 FUN_00443760();
 
 private:
 	MarigoldTrail0x108 m_unk0x00;        // 0x00

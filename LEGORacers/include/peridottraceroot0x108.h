@@ -42,6 +42,7 @@ public:
 	LegoU32 GetEntryCount() override;                      // vtable+0x04
 	PeridotTraceRootEntry0x10* GetEntry(LegoU32) override; // vtable+0x08
 	virtual ~PeridotTraceRoot0x108();                      // vtable+0x0c
+	void FUN_00450fc0(const LegoChar* p_path);
 
 	// SYNTHETIC: LEGORACERS 0x00450ef0
 	// PeridotTraceRoot0x108::`scalar deleting destructor'

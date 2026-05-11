@@ -52,7 +52,7 @@ void CitrineGrove0x1f4c::FUN_004432e0(InputManager* p_inputManager, LegoBool32 p
 	}
 
 	::strcat(path, "Save\\");
-	FUN_00450fc0(path);
+	m_unk0x00.FUN_00450fc0(path);
 	m_unk0x108.FUN_004426d0(5, 1, 0);
 	m_unk0x18c4.FUN_0042ef80(&m_unk0x108);
 	FUN_00443520(p_arg2);
@@ -172,11 +172,4 @@ LegoU32 CitrineGrove0x1f4c::FUN_00443760()
 	}
 
 	return 6;
-}
-
-// STUB: LEGORACERS 0x00450fc0
-void CitrineGrove0x1f4c::FUN_00450fc0(const LegoChar* p_path)
-{
-	// TODO
-	STUB(0x00450fc0);
 }

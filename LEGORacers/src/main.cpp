@@ -31,18 +31,6 @@ LegoChar g_commandLine[256];
 // GLOBAL: LEGORACERS 0x004c6fe8
 CommandLineArgs g_commandLineArgs;
 
-// FUNCTION: LEGORACERS 0x0042f870
-LegoS32 GameMain(LegoS32 p_argc, LegoChar** p_argv)
-{
-	if (!g_racers.Initialize(p_argc, p_argv)) {
-		return 1;
-	}
-
-	g_racers.Run();
-	g_racers.Destroy();
-	return 0;
-}
-
 // FUNCTION: LEGORACERS 0x00449ce0
 void SplitCommand()
 {

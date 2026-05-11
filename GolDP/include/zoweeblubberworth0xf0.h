@@ -3,6 +3,11 @@
 
 #include "golnametable.h"
 
+class CmbModelPart0x34;
+class AmberHaze0x1c;
+class BoundingShape0x2c;
+class MagentaRibbon0x20;
+
 // VTABLE: GOLDP 0x100576ec
 // SIZE 0xf0
 class ZoweeBlubberworth0xf0 {
@@ -19,16 +24,16 @@ public:
 	virtual void VTable0x20(undefined4) = 0;                            // vtable+0x20
 	virtual void VTable0x24(undefined4) = 0;                            // vtable+0x24
 	virtual void VTable0x28(undefined4*) = 0;                           // vtable+0x28
-	virtual undefined4* VTable0x2c(undefined4) = 0;                     // vtable+0x2c
-	virtual undefined4* VTable0x30(undefined4) = 0;                     // vtable+0x30
-	virtual undefined4* VTable0x34(undefined4) = 0;                     // vtable+0x34
-	virtual undefined4* VTable0x38(undefined4) = 0;                     // vtable+0x38
-	virtual undefined4* VTable0x3c(undefined4) = 0;                     // vtable+0x3c
-	virtual undefined4* VTable0x40(undefined4) = 0;                     // vtable+0x40
-	virtual undefined4* VTable0x44(undefined4) = 0;                     // vtable+0x44
-	virtual undefined4* VTable0x48(undefined4) = 0;                     // vtable+0x48
-	virtual undefined4* VTable0x4c(undefined4) = 0;                     // vtable+0x4c
-	virtual undefined4* VTable0x50(undefined4) = 0;                     // vtable+0x50
+	virtual MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) = 0;         // vtable+0x2c
+	virtual AmberHaze0x1c* VTable0x30(LegoU32 p_index) = 0;             // vtable+0x30
+	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) = 0;          // vtable+0x34
+	virtual undefined4* VTable0x38(LegoU32 p_index) = 0;                // vtable+0x38
+	virtual undefined4* VTable0x3c(LegoU32 p_index) = 0;                // vtable+0x3c
+	virtual undefined4* VTable0x40(LegoU32 p_index) = 0;                // vtable+0x40
+	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) = 0;         // vtable+0x44
+	virtual undefined4* VTable0x48(LegoU32 p_index) = 0;                // vtable+0x48
+	virtual undefined4* VTable0x4c(LegoU32 p_index) = 0;                // vtable+0x4c
+	virtual undefined4* VTable0x50(LegoU32 p_index) = 0;                // vtable+0x50
 	virtual void VTable0x54(void);                                      // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
@@ -36,6 +41,7 @@ public:
 
 	undefined4 GetUnk0x0c() const { return m_unk0x0c; }
 	undefined4 GetUnk0x14() const { return m_unk0x14; }
+	undefined4 GetUnk0x1c() const { return m_unk0x1c; }
 	undefined4 GetUnk0x3c() const { return m_unk0x3c; }
 	undefined4 GetUnk0x7c() const { return m_unk0x7c; }
 

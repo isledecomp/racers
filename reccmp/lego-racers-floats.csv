@@ -1,4 +1,5 @@
 address,type,size
+0x4af220,float,4
 0x4af300,float,4
 0x4af338,float,4
 0x4af354,float,4

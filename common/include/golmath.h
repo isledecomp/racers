@@ -62,6 +62,14 @@ struct GolVec3 {
 	}
 };
 
+// SIZE 0x10
+struct GolVec4 {
+	LegoFloat m_x;
+	LegoFloat m_y;
+	LegoFloat m_z;
+	LegoFloat m_u;
+};
+
 inline GolVec3 operator*(LegoFloat p_f, const GolVec3& p_rhs)
 {
 	GolVec3 result;

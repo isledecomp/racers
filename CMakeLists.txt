@@ -97,6 +97,9 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
+  common/src/cmbmodelpart0x34.cpp
+  common/src/cmbmodelpartdata0x18.cpp
+  common/src/cmbmodelpartdata0x28.cpp
 )
 
 # These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
@@ -216,7 +219,6 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
 # --- LEGORacers.exe target ---
 add_executable(legoracers WIN32
-  LEGORacers/src/cmbmodelpart0x34.cpp
   LEGORacers/src/main.cpp
   LEGORacers/src/cactusinterface0x4.cpp
   LEGORacers/src/legoracers.cpp
@@ -261,7 +263,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/glassstream0x94.cpp
   LEGORacers/src/celestialforge0x48.cpp
   LEGORacers/src/opalhaven0xf4.cpp
-  LEGORacers/src/cmbmodelpartdata0x18.cpp
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
   LEGORacers/src/whitefalcon0x140.cpp

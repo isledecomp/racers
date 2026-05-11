@@ -65,7 +65,9 @@ public:
 	// ObscureIcon0x1a8::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x58[0x1a8 - 0x58]; // 0x58
+	undefined m_unk0x58[0x12c - 0x58];   // 0x58
+	LegoU8 m_unk0x12c;                   // 0x12c
+	undefined m_unk0x12d[0x1a8 - 0x12d]; // 0x12d
 };
 
 #endif // OBSCUREICON0X1A8_H

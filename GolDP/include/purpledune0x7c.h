@@ -36,11 +36,11 @@ public:
 	void FUN_10016260();
 	void FUN_10016380();
 	void FUN_10016440(BronzeFalcon0xc8770& p_renderer);
-	undefined4 FUN_10016460(BronzeFalcon0xc8770& p_renderer);
+	void FUN_10016460(BronzeFalcon0xc8770& p_renderer);
 	undefined4 FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0xc8770& p_renderer);
-	undefined4 FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
+	void FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
-	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return reinterpret_cast<LPDIRECT3DTEXTURE2>(m_d3dTexture); }
+	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
 
 	// SYNTHETIC: GOLDP 0x10004aa0
 	// PurpleDune0x7c::`vector deleting destructor'
@@ -48,10 +48,15 @@ public:
 private:
 	// SIZE 0x18
 	struct MipmapLevel {
-		// Unsure about size, might be a union
-		LegoU8* m_pixels;                 // 0x00
-		LegoU32 m_pitch;                  // 0x04
-		undefined m_unk0x08[0x18 - 0x08]; // 0x08
+		LegoU8* m_pixels;       // 0x00
+		LegoU32 m_pitch;        // 0x04
+		LegoU32 m_width;        // 0x08
+		LegoU32 m_height;       // 0x0c
+		LegoU8 m_bitsPerPixel;  // 0x10
+		LegoU8 m_unk0x11;       // 0x11
+		LegoU8 m_bytesPerPixel; // 0x12
+		LegoU8 m_unk0x13;       // 0x13
+		LegoU16* m_paletteData; // 0x14
 	};
 
 	undefined4 m_unk0x38;              // 0x38
@@ -59,7 +64,7 @@ private:
 	IPalette0x4* m_palette;            // 0x40
 	MipmapLevel* m_mipmaps;            // 0x44
 	LPDIRECTDRAWSURFACE4 m_surface;    // 0x48
-	undefined4* m_d3dTexture;          // 0x4c
+	LPDIRECT3DTEXTURE2 m_d3dTexture;   // 0x4c
 	BronzeDuneBag0xc m_unk0x50;        // 0x50
 	GolSurfaceFormat m_textureFormat2; // 0x5c
 	undefined4 m_unk0x74;              // 0x74

@@ -17,6 +17,7 @@ CmbModelPartData0x18::CmbModelPartData0x18()
 	m_keys = NULL;
 }
 
+// FUNCTION: GOLDP 0x10024710 FOLDED
 // FUNCTION: LEGORACERS 0x0040e4b0
 CmbModelPartData0x18::~CmbModelPartData0x18()
 {
@@ -89,7 +90,7 @@ void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
 	}
 }
 
-// FUNCTION: GOLDP 0x10024710
+// FUNCTION: GOLDP 0x10024710 FOLDED
 // FUNCTION: LEGORACERS 0x0040e9d0
 void CmbModelPartData0x18::Clear()
 {

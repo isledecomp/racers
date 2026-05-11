@@ -4,10 +4,16 @@ DECOMP_SIZE_ASSERT(ObscureIcon0x1a8, 0x1a8)
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateParams0x84, 0x84)
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateState0x90, 0x90)
 
-// STUB: LEGORACERS 0x004664f0
+// FUNCTION: LEGORACERS 0x004664f0
 LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 {
-	STUB(0x004664f0);
+	if (m_flags & 2) {
+		LegoBool32 result = TRUE;
+		if (result & m_unk0x12c) {
+			return result;
+		}
+	}
+
 	return FALSE;
 }
 

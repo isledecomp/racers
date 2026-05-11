@@ -1,5 +1,9 @@
 #include "falcondunebag0x10.h"
 
+#include "golerror.h"
+
+#include <string.h>
+
 // GLOBAL: GOLDP 0x10063558
 GolSurfaceFormat FalconDuneBag0x10::g_textureFormat;
 
@@ -15,11 +19,26 @@ FalconDuneBag0x10::~FalconDuneBag0x10()
 	Destroy();
 }
 
-// STUB: GOLDP 0x10014770
-void FalconDuneBag0x10::FUN_10014770(undefined4*)
+// FUNCTION: GOLDP 0x10014770
+void FalconDuneBag0x10::FUN_10014770(const GolSurfaceFormat& p_textureFormat)
 {
-	// TODO
-	STUB(0x10014770);
+	if (m_entries != NULL) {
+		if (m_unk0x0c != NULL) {
+			delete m_unk0x0c;
+			m_unk0x0c = NULL;
+		}
+
+		Shutdown();
+	}
+
+	Initialize(p_textureFormat);
+
+	m_unk0x0c = new LegoU16[m_size];
+	if (m_unk0x0c == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	memset(m_unk0x0c, 0, m_size * sizeof(*m_unk0x0c));
 }
 
 // FUNCTION: GOLDP 0x100147f0

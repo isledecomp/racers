@@ -373,17 +373,20 @@ void PurpleDune0x7c::FUN_10016260()
 	}
 }
 
-// STUB: GOLDP 0x10016380
+// FUNCTION: GOLDP 0x10016380
 void PurpleDune0x7c::FUN_10016380()
 {
 	LegoU32 i;
+	MipmapLevel* mipmaps = m_mipmaps;
+	IPalette0x4* palette = m_palette;
 
-	if (m_mipmaps != NULL) {
-		if (m_palette != NULL) {
-			FalconDuneBag0x10* palette = static_cast<FalconDuneBag0x10*>(m_palette);
-			palette->Destroy();
+	if (mipmaps != NULL) {
+		if (palette != NULL) {
+			static_cast<FalconDuneBag0x10*>(palette)->Destroy();
+
+			palette = m_palette;
 			if (palette != NULL) {
-				delete palette;
+				delete static_cast<FalconDuneBag0x10*>(palette);
 			}
 
 			m_palette = NULL;
@@ -399,17 +402,18 @@ void PurpleDune0x7c::FUN_10016380()
 		m_mipmaps = NULL;
 	}
 	else {
-		if (m_palette != NULL) {
-			PearlDew0x0c* palette = static_cast<PearlDew0x0c*>(m_palette);
-			palette->Release();
+		if (palette != NULL) {
+			static_cast<PearlDew0x0c*>(palette)->Release();
 
-			if (m_palette != NULL) {
-				delete palette;
-				m_palette = NULL;
+			palette = m_palette;
+			if (palette != NULL) {
+				delete static_cast<PearlDew0x0c*>(palette);
 			}
+
+			m_palette = NULL;
 		}
 		if (m_d3dTexture != NULL) {
-			delete m_d3dTexture;
+			m_d3dTexture->Release();
 			m_d3dTexture = NULL;
 		}
 	}
@@ -430,7 +434,7 @@ void PurpleDune0x7c::FUN_10016440(BronzeFalcon0xc8770& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x10016460
-undefined4 PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
+void PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
 {
 	GolSurfaceFormat textureFormat;
 
@@ -484,10 +488,11 @@ undefined4 PurpleDune0x7c::FUN_10016460(BronzeFalcon0xc8770& p_renderer)
 
 	m_unk0x36 |= c_unk0x36Bit11;
 	if (p_renderer.GetFlags() & WhiteFalcon0x140::c_flagBit16) {
-		return FUN_100168c0(p_renderer);
+		FUN_100168c0(p_renderer);
 	}
-
-	return FUN_100165c0(drawState, p_renderer);
+	else {
+		FUN_100165c0(drawState, p_renderer);
+	}
 }
 
 // STUB: GOLDP 0x100165c0
@@ -497,9 +502,73 @@ undefined4 PurpleDune0x7c::FUN_100165c0(GolCommonDrawState*, BronzeFalcon0xc8770
 	return 0;
 }
 
-// STUB: GOLDP 0x100168c0
-undefined4 PurpleDune0x7c::FUN_100168c0(BronzeFalcon0xc8770&)
+// FUNCTION: GOLDP 0x100168c0
+void PurpleDune0x7c::FUN_100168c0(BronzeFalcon0xc8770& p_renderer)
 {
-	STUB(0x100168c0);
-	return 0;
+	LegoU32 width;
+	LegoU32 height;
+	LegoU32 minWidth;
+	LegoU32 minHeight;
+	LegoU32 i;
+
+	if (m_unk0x34 < 1 || p_renderer.GetUnk0xc8700() == 1) {
+		m_unk0x34 = 1;
+	}
+
+	if (m_textureFormat2.m_bitsPerPixel != 8 && m_textureFormat2.m_bitsPerPixel != 16) {
+		m_unk0x34 = 1;
+	}
+
+	if (m_unk0x34 > 4) {
+		m_unk0x34 = 4;
+	}
+
+	height = m_unk0x78;
+	width = m_unk0x74;
+	minWidth = p_renderer.GetMinimumTextureWidth(m_textureFormat2.m_bitsPerPixel);
+	minHeight = p_renderer.GetMinimumTextureHeight(m_textureFormat2.m_bitsPerPixel);
+
+	m_mipmaps = new MipmapLevel[m_unk0x34];
+	if (m_mipmaps == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (i = 0; i < m_unk0x34; i++) {
+		if (width < minWidth || height < minHeight) {
+			break;
+		}
+
+		MipmapLevel* mipmap = &m_mipmaps[i];
+
+		mipmap->m_width = width;
+		mipmap->m_height = height;
+		mipmap->m_pitch = (m_textureFormat2.m_bitsPerPixel * width + 7) >> 3;
+		mipmap->m_bitsPerPixel = static_cast<LegoU8>(m_textureFormat2.m_bitsPerPixel);
+		mipmap->m_unk0x11 = 0xff;
+		mipmap->m_bytesPerPixel = static_cast<LegoU8>((static_cast<LegoU32>(m_textureFormat2.m_bitsPerPixel) + 7) >> 3);
+		mipmap->m_unk0x13 = 0xff;
+		mipmap->m_pixels = NULL;
+
+		if (m_textureFormat2.m_paletteMask != 0 && p_renderer.GetUnk0xc8700() != 0) {
+			if ((m_palette = new FalconDuneBag0x10) == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
+
+			static_cast<FalconDuneBag0x10*>(m_palette)->FUN_10014770(m_textureFormat2);
+			mipmap->m_paletteData = static_cast<FalconDuneBag0x10*>(m_palette)->m_unk0x0c;
+		}
+		else {
+			mipmap->m_paletteData = NULL;
+		}
+
+		mipmap->m_pixels = new LegoU8[mipmap->m_pitch * mipmap->m_height];
+		if (mipmap->m_pixels == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		width >>= 1;
+		height >>= 1;
+	}
+
+	m_unk0x34 = static_cast<LegoU16>(i);
 }

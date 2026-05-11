@@ -1,7 +1,7 @@
 #ifndef AQUAMARINESPIRIT0X3C_H
 #define AQUAMARINESPIRIT0X3C_H
 
-#include "../../common/include/cmbmodelpart0x34.h"
+#include "cmbmodelpart0x34.h"
 #include "decomp.h"
 #include "golnametable.h"
 #include "goltxtparser.h"

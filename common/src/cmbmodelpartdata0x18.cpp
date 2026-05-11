@@ -1,7 +1,7 @@
-#include "../include/cmbmodelpartdata0x18.h"
+#include "cmbmodelpartdata0x18.h"
 
-#include "../include/golerror.h"
-#include "../include/golfileparser.h"
+#include "golerror.h"
+#include "golfileparser.h"
 
 DECOMP_SIZE_ASSERT(CmbModelPartData0x18, 0x18)
 

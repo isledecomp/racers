@@ -1,8 +1,8 @@
-#include "../include/cmbmodelpart0x34.h"
+#include "cmbmodelpart0x34.h"
 
-#include "../include/cmbmodelpartdata0x28.h"
-#include "../include/golbinparser.h"
-#include "../include/golerror.h"
+#include "cmbmodelpartdata0x28.h"
+#include "golbinparser.h"
+#include "golerror.h"
 
 DECOMP_SIZE_ASSERT(CmbModelPart0x34, 0x34)
 
@@ -97,7 +97,7 @@ void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
 	if (m_unk0x28 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x24 = new CmbModelPartData0x14[m_unk0x28];
+	m_unk0x24 = new Data0x14[m_unk0x28];
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}

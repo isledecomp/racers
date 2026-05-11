@@ -145,7 +145,7 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 
 	if (GetUnk0x1c() != 0) {
 		m_unk0x10c = new CmbModelPart0x34[GetUnk0x1c()];
-		if (m_unk0xf4 == NULL) {
+		if (m_unk0x10c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}

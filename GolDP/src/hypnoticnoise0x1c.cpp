@@ -77,7 +77,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 
 	GolNameTable::Allocate(m_numItems);
 	m_currentHashEntry = g_hashTable ? g_hashTable->GetCurrentEntry() : NULL;
-	VTable0x0c();
+	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
 		FourBytes local30;
@@ -184,7 +184,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 	m_renderer->AddImageList(this);
 	m_numItems = p_numItems;
 
-	VTable0x0c();
+	AllocateItems();
 
 	for (LegoU32 i = 0; i < p_numItems; i++) {
 		GetItem(i)->m_renderer = p_renderer;

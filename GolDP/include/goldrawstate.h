@@ -33,23 +33,23 @@ public:
 		c_flagBit21 = 1 << 21,
 	};
 
-	virtual LegoS32 VTable0x00() = 0;                                                         // vtable+0x00
-	virtual ~GolDrawState();                                                                  // vtable+04
-	virtual void VTable0x08(HWND p_hWnd) = 0;                                                 // vtable+08
-	virtual void VTable0x0c(const char* p_driverName, const char* p_deviceName);              // vtable+0c
-	virtual LegoU32 VTable0x10();                                                             // vtable+10
-	virtual const LegoChar* VTable0x14(LegoU32 p_index);                                      // vtable+14
-	virtual const LegoChar* VTable0x18(LegoU32 p_index);                                      // vtable+18
-	virtual LegoU32 VTable0x1c(LegoU32 p_index);                                              // vtable+1c
-	virtual const LegoChar* VTable0x20(LegoU32 p_driverIndex, LegoU32 p_deviceIndex);         // vtable+20
-	virtual const LegoChar* VTable0x24(LegoU32 p_driverIndex, LegoU32 p_deviceIndex);         // vtable+24
-	virtual undefined4 VTable0x28(undefined4, undefined4);                                    // vtable+28
-	virtual void VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex); // vtable+2c
-	virtual void VTable0x30(LegoU32 p_driverIndex, GUID* p_guid);                             // vtable+30
-	virtual void VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid);      // vtable+34
-	virtual GUID* VTable0x38() const;                                                         // vtable+38
-	virtual void VTable0x3c();                                                                // vtable+3c
-	virtual void VTable0x40();                                                                // vtable+40
+	virtual LegoS32 VTable0x00() = 0;                                                           // vtable+0x00
+	virtual ~GolDrawState();                                                                    // vtable+04
+	virtual void SetWindowHandle(HWND p_hWnd) = 0;                                              // vtable+08
+	virtual void VTable0x0c(const char* p_driverName, const char* p_deviceName);                // vtable+0c
+	virtual LegoU32 GetDriverCount();                                                           // vtable+10
+	virtual const LegoChar* GetDriverDescription(LegoU32 p_index);                              // vtable+14
+	virtual const LegoChar* GetDriverName(LegoU32 p_index);                                     // vtable+18
+	virtual LegoU32 GetDeviceCount(LegoU32 p_driverIndex);                                      // vtable+1c
+	virtual const LegoChar* GetDeviceName(LegoU32 p_driverIndex, LegoU32 p_deviceIndex);        // vtable+20
+	virtual const LegoChar* GetDeviceDescription(LegoU32 p_driverIndex, LegoU32 p_deviceIndex); // vtable+24
+	virtual LegoBool32 IsDeviceHwAccelerated(LegoU32 p_driverIndex, LegoU32 p_deviceIndex);     // vtable+28
+	virtual void VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32* p_deviceIndex);   // vtable+2c
+	virtual void GetDriverGuid(LegoU32 p_driverIndex, GUID* p_guid);                            // vtable+30
+	virtual void GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid);     // vtable+34
+	virtual GUID* GetCurrentDriverGuid() const;                                                 // vtable+38
+	virtual void VTable0x3c();                                                                  // vtable+3c
+	virtual void VTable0x40();                                                                  // vtable+40
 	virtual LegoS32 VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
 							   LegoU32 p_flags); // vtable+44
 	virtual void VTable0x48();                   // vtable+48

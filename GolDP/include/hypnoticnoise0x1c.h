@@ -19,9 +19,9 @@ public:
 	// SYNTHETIC: GOLDP 0x10022fc0
 	// HypnoticNoise0x1c::`scalar deleting destructor'
 
-	virtual void VTable0x0c() = 0; // vtable+0x0c
-	virtual void VTable0x10();     // vtable+0x10
-	virtual void VTable0x14();     // vtable+0x14
+	virtual void AllocateItems() = 0; // vtable+0x0c
+	virtual void VTable0x10();        // vtable+0x10
+	virtual void VTable0x14();        // vtable+0x14
 	virtual void LoadImageDefinitions(
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,

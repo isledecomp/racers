@@ -29,7 +29,7 @@ void FalconDuneBag0x10::Destroy()
 		delete m_unk0x0c;
 		m_unk0x0c = NULL;
 	}
-	FUN_1002a1b0();
+	Shutdown();
 }
 
 // FUNCTION: GOLDP 0x10014820

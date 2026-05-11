@@ -28,7 +28,7 @@ PurpleDune0x7c::PurpleDune0x7c()
 PurpleDune0x7c::~PurpleDune0x7c()
 {
 	FUN_10016380();
-	m_unk0x50.FUN_1002a1b0();
+	m_unk0x50.Shutdown();
 
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
@@ -77,7 +77,7 @@ void PurpleDune0x7c::VTable0x34(
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	if (p_textureFormat.m_paletteMask != 0) {
-		m_unk0x50.FUN_1002a120(p_textureFormat);
+		m_unk0x50.Initialize(p_textureFormat);
 	}
 
 	FUN_10016460(static_cast<BronzeFalcon0xc8770&>(p_renderer));
@@ -87,7 +87,7 @@ void PurpleDune0x7c::VTable0x34(
 void PurpleDune0x7c::VTable0x38()
 {
 	FUN_10016380();
-	m_unk0x50.FUN_1002a1b0();
+	m_unk0x50.Shutdown();
 
 	if (m_pixels != NULL) {
 		delete[] m_pixels;

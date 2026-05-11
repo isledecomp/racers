@@ -293,15 +293,15 @@ A member name is proven when a `// FUNCTION:` match forces a specific semantic i
 
 Rename from `VTable0xNN` / `FUN_XXXXXXXX` to a semantic name when evidence is strong:
 
-- **Clear pair with a named counterpart.** `VTable0x20` calls `m_input.Shutdown()`; adjacent `VTable0x1c` calls the input-init helper with hInstance/hWnd → `VTable0x1c` is `InitInput`.
-- **Symmetric with a named method.** `VTable0x10` undoes every action `Init()` took and is also `~Class()` body → `Destroy`.
+- **Clear pair with a named counterpart.** `VTable0x20` calls `m_input.Shutdown()`; adjacent `VTable0x1c` calls the input-init helper with hInstance/hWnd → `VTable0x1c` is `InitializeInput`.
+- **Symmetric with a named method.** `VTable0x10` undoes every action `Initialize()` took and is also `~Class()` body → `Destroy`.
 - **Body leaves no interpretation.** A one-line tail call to `InitInput`, or a loop opening every line of a newline list and publishing them as globals.
 
 Do not rename on weak evidence. If multiple plausible names exist (`OpenFileSources` vs. `LoadFileSources` vs. `RegisterFileSources`), keep `FUN_XXXXXXXX`. A misleading name is worse than a neutral placeholder. Renaming a virtual does not affect codegen — the vtable is slot-indexed — so it's safe if all call sites and overrides are updated together.
 
 **Lifecycle vocabulary.** Match existing class method names so the whole codebase shares one vocabulary:
 
-- `Init()` — explicit init separate from the ctor (ctor zeroes fields, `Init` allocates/loads/registers).
+- `Initialize()` — explicit init separate from the ctor (ctor zeroes fields, `Initialize` allocates/loads/registers).
 - `Run()` — the main loop / per-instance driver (top-level app/game class).
 - `Shutdown()` — release live resources but leave the object reusable (`SoundManager`, `CobaltMist0x30`, `OpalVault0xf0`, `IndigoStar0x18`, `GolHashTable`).
 - `Destroy()` — full teardown: invokes `Shutdown` plus everything else, leaving the object in its post-construction state.

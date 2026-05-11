@@ -41,7 +41,7 @@ Win32GolApp::~Win32GolApp()
 }
 
 // FUNCTION: LEGORACERS 0x004165e0
-void Win32GolApp::Init(const LegoChar* p_windowName, const LegoChar* p_fileName)
+void Win32GolApp::Initialize(const LegoChar* p_windowName, const LegoChar* p_fileName)
 {
 	LegoChar buffer[64];
 
@@ -104,8 +104,8 @@ void Win32GolApp::Init(const LegoChar* p_windowName, const LegoChar* p_fileName)
 	}
 
 	LoadGolLibrary();
-	InitInput();
-	m_golDrawState->VTable0x08(m_hWnd);
+	InitializeInput();
+	m_golDrawState->SetWindowHandle(m_hWnd);
 	SetWindowLong(m_hWnd, 0, (LONG) this);
 	ShowWindow(m_hWnd, SW_SHOW);
 	m_lastFrameTimeMs = timeGetTime();
@@ -223,7 +223,7 @@ void Win32GolApp::LoadGolLibrary()
 	CreateGolImport(&golImport);
 	golImport.m_fatalErrorMessage = GolFatalErrorMessage;
 	m_golExport = golEntry(&golImport);
-	m_golDrawState = m_golExport->VTable0x04();
+	m_golDrawState = m_golExport->GetDrawState();
 }
 
 // FUNCTION: LEGORACERS 0x00416a30
@@ -245,7 +245,7 @@ void Win32GolApp::UnloadGolLibrary()
 }
 
 // FUNCTION: LEGORACERS 0x00416a90
-void Win32GolApp::InitInput()
+void Win32GolApp::InitializeInput()
 {
 	m_inputManager.Initialize(g_hInstance, m_hWnd);
 }

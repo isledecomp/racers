@@ -14,7 +14,7 @@ public:
 	~CinderBasin0x28() override; // vtable+0x00
 	void Clear() override;       // vtable+0x08
 
-	virtual void VTable0x0c() = 0;                   // vtable+0x0c
+	virtual void AllocateItems() = 0;                // vtable+0x0c
 	virtual void VTable0x10(undefined4 p_index) = 0; // vtable+0x10
 	virtual void ReleaseDefinitionBuffers() = 0;     // vtable+0x14
 	virtual void ReleaseFontSurfaces();              // vtable+0x18
@@ -23,8 +23,8 @@ public:
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                             // vtable+0x20
-	virtual void* VTable0x24(LegoU32 p_index) = 0; // vtable+0x24
+	);                                          // vtable+0x20
+	virtual void* GetItem(LegoU32 p_index) = 0; // vtable+0x24
 
 	// SYNTHETIC: GOLDP 0x1001d850
 	// CinderBasin0x28::`scalar deleting destructor'

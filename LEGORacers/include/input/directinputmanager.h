@@ -14,7 +14,7 @@ public:
 	LegoS32 Reset() override;                                                   // vtable+0x00
 	~DirectInputManager() override;                                             // vtable+0x04
 	LegoS32 Shutdown() override;                                                // vtable+0x08
-	LegoS32 Init() override;                                                    // vtable+0x0c
+	LegoS32 Initialize() override;                                              // vtable+0x0c
 	LegoS32 PollDevices(LegoS32 p_elapsedMs) override;                          // vtable+0x10
 	LegoS32 DetectNewJoysticks() override;                                      // vtable+0x14
 	virtual LegoBool32 DetectKeyboard();                                        // vtable+0x18

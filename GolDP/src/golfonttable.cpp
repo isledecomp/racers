@@ -29,7 +29,7 @@ GolFontTable::~GolFontTable()
 }
 
 // FUNCTION: GOLDP 0x10004060
-void GolFontTable::VTable0x0c()
+void GolFontTable::AllocateItems()
 {
 	m_fonts = new GolFont0xa0[m_numItems];
 	if (m_fonts == NULL) {
@@ -98,7 +98,7 @@ void GolFontTable::ReleaseDefinitionBuffers()
 }
 
 // FUNCTION: GOLDP 0x10004300
-void* GolFontTable::VTable0x24(LegoU32 p_index)
+void* GolFontTable::GetItem(LegoU32 p_index)
 {
 	return &m_fonts[p_index];
 }

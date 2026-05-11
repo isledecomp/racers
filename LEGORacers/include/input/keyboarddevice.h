@@ -11,7 +11,7 @@ class KeyboardInputDevice : public DirectInputDevice {
 public:
 	KeyboardInputDevice();
 
-	void Init() override;                                                                  // vtable+0x00
+	void Initialize() override;                                                            // vtable+0x00
 	void SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify) override; // vtable+0x04
 	void SetAxisValue(undefined4, LegoFloat) override;                                     // vtable+0x08
 	~KeyboardInputDevice() override;                                                       // vtable+0x0c

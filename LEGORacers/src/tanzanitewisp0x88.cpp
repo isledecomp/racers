@@ -44,11 +44,11 @@ LegoBool32 TanzaniteWisp0x88::ReleaseMenuResources()
 	}
 
 	if (m_menuResource0) {
-		m_golExport->VTable0x40(m_menuResource0);
+		m_golExport->DestroyTextureList(m_menuResource0);
 	}
 
 	if (m_menuResource1) {
-		m_golExport->VTable0x44(m_menuResource1);
+		m_golExport->DestroyMaterialList(m_menuResource1);
 	}
 
 	ResetMenuState();

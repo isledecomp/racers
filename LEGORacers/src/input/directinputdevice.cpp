@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(DirectInputDevice, 0xcc)
 // FUNCTION: LEGORACERS 0x0044f990
 DirectInputDevice::DirectInputDevice()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044fa00
@@ -17,7 +17,7 @@ DirectInputDevice::~DirectInputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044fa50
-void DirectInputDevice::Init()
+void DirectInputDevice::Initialize()
 {
 	m_unk0x9c = 0;
 	m_device = NULL;
@@ -28,7 +28,7 @@ void DirectInputDevice::Init()
 	m_axisNameIndices = NULL;
 	m_cooperativeLevel = DISCL_BACKGROUND | DISCL_NONEXCLUSIVE;
 	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
-	InputDevice::Init();
+	InputDevice::Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044faa0

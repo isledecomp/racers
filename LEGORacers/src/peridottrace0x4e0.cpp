@@ -44,11 +44,11 @@ void PeridotTraceBuffer0x250::FUN_0042b2f0(undefined4, undefined4, undefined4, u
 // FUNCTION: LEGORACERS 0x0042b6e0
 PeridotTraceBase0x24::PeridotTraceBase0x24()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0042b700
-void PeridotTraceBase0x24::Init()
+void PeridotTraceBase0x24::Initialize()
 {
 	m_unk0x20 = 0;
 	m_unk0x00 = 0;

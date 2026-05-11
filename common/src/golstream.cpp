@@ -63,7 +63,7 @@ static const LegoChar* const g_errorCodeStrings[] = {
 // FUNCTION: LEGORACERS 0x0044c920
 GolStream::GolStream()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: GOLDP 0x10031530
@@ -75,11 +75,11 @@ GolStream::~GolStream()
 		m_buffer = NULL;
 	}
 
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044c990
-void GolStream::Init()
+void GolStream::Initialize()
 {
 	m_handle = -1;
 	m_mode = 0;

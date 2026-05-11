@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(OnyxCircularBuffer0x1c::Item, 0x10)
 // FUNCTION: LEGORACERS 0x0044b6f0
 OnyxCircularBuffer0x1c::OnyxCircularBuffer0x1c()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044b730
@@ -20,7 +20,7 @@ OnyxCircularBuffer0x1c::~OnyxCircularBuffer0x1c()
 }
 
 // FUNCTION: LEGORACERS 0x0044b740
-void OnyxCircularBuffer0x1c::Init()
+void OnyxCircularBuffer0x1c::Initialize()
 {
 	ClearQueue();
 	m_allocated = FALSE;
@@ -52,7 +52,7 @@ LegoBool32 OnyxCircularBuffer0x1c::Reset()
 			delete[] m_items;
 		}
 
-		Init();
+		Initialize();
 	}
 
 	return TRUE;

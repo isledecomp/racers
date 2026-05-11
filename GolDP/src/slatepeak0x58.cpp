@@ -49,7 +49,7 @@ void SlatePeak0x58::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, un
 		m_unk0x34 |= c_surfaceFlagWindowed;
 
 		DWORD memoryCaps;
-		if (static_cast<GolDrawDPState*>(p_drawState)->VTable0x60()) {
+		if (static_cast<GolDrawDPState*>(p_drawState)->IsHwAccelerated()) {
 			m_unk0x34 |= c_surfaceFlagFlip;
 			memoryCaps = DDSCAPS_VIDEOMEMORY;
 		}

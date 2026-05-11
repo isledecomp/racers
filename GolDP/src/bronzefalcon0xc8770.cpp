@@ -290,7 +290,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 		m_unk0xc83c4 = 0;
 		m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a2c0;
 
-		if (m_flags & c_flagBit1 && !m_drawState->VTable0x98()) {
+		if (m_flags & c_flagBit1 && !m_drawState->SupportsZBufferlessHsr()) {
 			undefined4 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
 			if (r != 0) {
 				return r;
@@ -484,23 +484,23 @@ void BronzeFalcon0xc8770::FUN_100082e0()
 
 	m_d3dDevice->SetRenderState(
 		D3DRENDERSTATE_SUBPIXEL,
-		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_SUBPIXEL) && m_drawState->VTable0x60()
+		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_SUBPIXEL) && m_drawState->IsHwAccelerated()
 	);
 
 	m_d3dDevice->SetRenderState(
 		D3DRENDERSTATE_DITHERENABLE,
-		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->VTable0x60()
+		(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->IsHwAccelerated()
 	);
 
 	m_d3dDevice->SetTextureStageState(0, D3DTSS_ADDRESS, D3DTADDRESS_WRAP);
-	if ((m_drawState->m_flags & GolDrawState::c_flagBit3) && m_drawState->VTable0x60()) {
+	if ((m_drawState->m_flags & GolDrawState::c_flagBit3) && m_drawState->IsHwAccelerated()) {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ANTIALIAS, D3DANTIALIAS_SORTINDEPENDENT);
 	}
 	else {
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_ANTIALIAS, D3DANTIALIAS_NONE);
 	}
 
-	if ((m_d3dDeviceDesc.dpcTriCaps.dwTextureFilterCaps & D3DPTFILTERCAPS_LINEAR) && m_drawState->VTable0x60()) {
+	if ((m_d3dDeviceDesc.dpcTriCaps.dwTextureFilterCaps & D3DPTFILTERCAPS_LINEAR) && m_drawState->IsHwAccelerated()) {
 		m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTFG_LINEAR);
 		m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_LINEAR);
 	}
@@ -821,7 +821,7 @@ void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 void BronzeFalcon0xc8770::VTable0xd8()
 {
 	if (!m_unk0xc83c4) {
-		if (!m_drawState->VTable0x60()) {
+		if (!m_drawState->IsHwAccelerated()) {
 			m_d3dDevice->SetRenderState(
 				D3DRENDERSTATE_TEXTUREPERSPECTIVE,
 				(m_d3dDeviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_PERSPECTIVE) ? TRUE : FALSE
@@ -834,7 +834,7 @@ void BronzeFalcon0xc8770::VTable0xd8()
 void BronzeFalcon0xc8770::VTable0xd4()
 {
 	if (!m_unk0xc83c4) {
-		if (!m_drawState->VTable0x60()) {
+		if (!m_drawState->IsHwAccelerated()) {
 			m_d3dDevice->SetRenderState(D3DRENDERSTATE_TEXTUREPERSPECTIVE, FALSE);
 		}
 	}
@@ -846,8 +846,8 @@ void BronzeFalcon0xc8770::VTable0xdc()
 	if (!m_unk0xc83c4) {
 		m_d3dDevice->SetRenderState(
 			D3DRENDERSTATE_DITHERENABLE,
-			(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->VTable0x60() ? TRUE
-																										   : FALSE
+			(m_d3dDeviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER) && m_drawState->IsHwAccelerated() ? TRUE
+																												: FALSE
 		);
 	}
 }
@@ -1422,7 +1422,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 
 	if ((newFlags ^ m_unk0xc83c8) &
 		(DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit11)) {
-		if (!(newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit11) && m_drawState->VTable0x60()) {
+		if (!(newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit11) && m_drawState->IsHwAccelerated()) {
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MAGFILTER, D3DTSS_COLORARG1);
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_MINFILTER, D3DTFN_LINEAR);
 		}

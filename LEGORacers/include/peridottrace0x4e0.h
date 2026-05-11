@@ -25,7 +25,7 @@ public:
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
 
 private:
-	void Init();
+	void Initialize();
 
 	undefined4 m_unk0x00;
 	undefined4 m_unk0x04;

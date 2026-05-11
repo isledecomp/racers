@@ -47,33 +47,33 @@ protected:
 	virtual ~GolExport() {} // vtable+0x00
 
 public:
-	virtual GolDrawState* VTable0x04() = 0;              // vtable+0x04
-	virtual ZoweeBlubberworth0xf0* VTable0x08() = 0;     // vtable+0x08
-	virtual MagentaRibbon0x20* VTable0x0c() = 0;         // vtable+0x0c
-	virtual AmberHaze0x1c* VTable0x10() = 0;             // vtable+0x10
-	virtual undefined4* VTable0x14() = 0;                // vtable+0x14
-	virtual undefined4* VTable0x18() = 0;                // vtable+0x18
-	virtual BoundingShape0x2c* VTable0x1c() = 0;         // vtable+0x1c
-	virtual AmberLens0x344* VTable0x20() = 0;            // vtable+0x20
-	virtual undefined4 VTable0x24() = 0;                 // vtable+0x24
-	virtual WhiteBaffoon0x50* VTable0x28() = 0;          // vtable+0x28
-	virtual GolFontBase0x40* VTable0x2c() = 0;           // vtable+0x2c
-	virtual FloatyBoat0x28* VTable0x30() = 0;            // vtable+0x30
-	virtual AwakeKite0x20* VTable0x34() = 0;             // vtable+0x34
-	virtual GolFontTable* VTable0x38() = 0;              // vtable+0x38
-	virtual void VTable0x3c(ZoweeBlubberworth0xf0*) = 0; // vtable+0x3c
-	virtual void VTable0x40(MagentaRibbon0x20*) = 0;     // vtable+0x40
-	virtual void VTable0x44(AmberHaze0x1c*) = 0;         // vtable+0x44
-	virtual void VTable0x48(undefined4*) = 0;            // vtable+0x48
-	virtual void VTable0x4c(WhiteFalconNode0x18*) = 0;   // vtable+0x4c
-	virtual void VTable0x50(BoundingShape0x2c*) = 0;     // vtable+0x50
-	virtual void VTable0x54(AmberLens0x344*) = 0;        // vtable+0x54
-	virtual void VTable0x58(undefined4*) = 0;            // vtable+0x58
-	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;      // vtable+0x5c
-	virtual void VTable0x60(GolFontBase0x40*) = 0;       // vtable+0x60
-	virtual void VTable0x64(undefined4*) = 0;            // vtable+0x64
-	virtual void VTable0x68(AwakeKite0x20*) = 0;         // vtable+0x68
-	virtual void VTable0x6c(GolNameTable*) = 0;          // vtable+0x6c
+	virtual GolDrawState* GetDrawState() = 0;                  // vtable+0x04
+	virtual ZoweeBlubberworth0xf0* VTable0x08() = 0;           // vtable+0x08
+	virtual MagentaRibbon0x20* CreateTextureList() = 0;        // vtable+0x0c
+	virtual AmberHaze0x1c* CreateMaterialList() = 0;           // vtable+0x10
+	virtual undefined4* VTable0x14() = 0;                      // vtable+0x14
+	virtual undefined4* VTable0x18() = 0;                      // vtable+0x18
+	virtual BoundingShape0x2c* CreateBoundingShape() = 0;      // vtable+0x1c
+	virtual AmberLens0x344* VTable0x20() = 0;                  // vtable+0x20
+	virtual undefined4 VTable0x24() = 0;                       // vtable+0x24
+	virtual WhiteBaffoon0x50* VTable0x28() = 0;                // vtable+0x28
+	virtual GolFontBase0x40* CreateFont() = 0;                 // vtable+0x2c
+	virtual FloatyBoat0x28* VTable0x30() = 0;                  // vtable+0x30
+	virtual AwakeKite0x20* VTable0x34() = 0;                   // vtable+0x34
+	virtual GolFontTable* CreateFontTable() = 0;               // vtable+0x38
+	virtual void VTable0x3c(ZoweeBlubberworth0xf0*) = 0;       // vtable+0x3c
+	virtual void DestroyTextureList(MagentaRibbon0x20*) = 0;   // vtable+0x40
+	virtual void DestroyMaterialList(AmberHaze0x1c*) = 0;      // vtable+0x44
+	virtual void VTable0x48(undefined4*) = 0;                  // vtable+0x48
+	virtual void VTable0x4c(WhiteFalconNode0x18*) = 0;         // vtable+0x4c
+	virtual void DestroyBoundingShape(BoundingShape0x2c*) = 0; // vtable+0x50
+	virtual void VTable0x54(AmberLens0x344*) = 0;              // vtable+0x54
+	virtual void VTable0x58(undefined4*) = 0;                  // vtable+0x58
+	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;            // vtable+0x5c
+	virtual void DestroyFont(GolFontBase0x40*) = 0;            // vtable+0x60
+	virtual void VTable0x64(undefined4*) = 0;                  // vtable+0x64
+	virtual void VTable0x68(AwakeKite0x20*) = 0;               // vtable+0x68
+	virtual void DestroyFontTable(GolNameTable*) = 0;          // vtable+0x6c
 };
 
 typedef GolExport* GolEntryCBFN(GolImport*);

@@ -21,7 +21,7 @@ InputDevice::InputDevice()
 		*writePtr = i;
 	}
 
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044b940
@@ -31,7 +31,7 @@ InputDevice::~InputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044b950
-void InputDevice::Init()
+void InputDevice::Initialize()
 {
 	m_forceFeedbackAvailable = 0;
 	m_axisButtonEventsEnabled = 0;
@@ -65,7 +65,7 @@ LegoBool32 InputDevice::Destroy()
 		return true;
 	}
 
-	Init();
+	Initialize();
 	return !m_created;
 }
 

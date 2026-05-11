@@ -32,7 +32,7 @@ public:
 
 	DirectInputDevice();
 
-	void Init() override;                               // vtable+0x00
+	void Initialize() override;                         // vtable+0x00
 	~DirectInputDevice() override;                      // vtable+0x0c
 	LegoBool32 Destroy() override;                      // vtable+0x10
 	undefined4 Poll(LegoS32 p_elapsedMs) override;      // vtable+0x14

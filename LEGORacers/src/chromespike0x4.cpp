@@ -37,7 +37,7 @@ LegoBool32 ChromeSpike0x4::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x0047f4d0
-LegoBool32 ChromeSpike0x4::Init()
+LegoBool32 ChromeSpike0x4::Initialize()
 {
 	Shutdown();
 	return TRUE;

@@ -97,7 +97,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0042bb20
 	// LegoRacers::`scalar deleting destructor'
 
-	LegoS32 Init(LegoS32 p_argc, LegoChar** p_argv);
+	LegoS32 Initialize(LegoS32 p_argc, LegoChar** p_argv);
 	void Destroy();
 	void Run();
 	void FUN_0042bd00();

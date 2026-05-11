@@ -18,10 +18,10 @@ public:
 	GolHashTable();
 	~GolHashTable();
 
-	virtual void ClearEntries();                                      // vtable+0x00
-	virtual Entry* AddEntry(Entry**, const LegoChar*);                // vtable+0x04
-	virtual LegoS32 Init(LegoS32 p_numBuckets, LegoU32 p_bufferSize); // vtable+0x08
-	virtual LegoS32 Shutdown();                                       // vtable+0x0c
+	virtual void ClearEntries();                                            // vtable+0x00
+	virtual Entry* AddEntry(Entry**, const LegoChar*);                      // vtable+0x04
+	virtual LegoS32 Initialize(LegoS32 p_numBuckets, LegoU32 p_bufferSize); // vtable+0x08
+	virtual LegoS32 Shutdown();                                             // vtable+0x0c
 
 	void Reset();
 	LegoU32 HashString(const LegoChar* p_string);

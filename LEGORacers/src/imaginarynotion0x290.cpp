@@ -204,7 +204,7 @@ LegoBool32 ImaginaryNotion0x290::Destroy()
 
 		if (m_fontTable) {
 			m_fontTable->Clear();
-			m_golExport->VTable0x6c(m_fontTable);
+			m_golExport->DestroyFontTable(m_fontTable);
 		}
 
 		Reset();
@@ -272,7 +272,7 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_create
 	strcat(fileName, fontSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
-		m_fontTable = m_golExport->VTable0x38();
+		m_fontTable = m_golExport->CreateFontTable();
 		m_fontTable->VTable0x20(m_renderer, fileName, p_createParams->m_unk0x2c);
 	}
 

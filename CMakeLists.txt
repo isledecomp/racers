@@ -122,6 +122,8 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/bronzedune0x4c.cpp
   GolDP/src/purpleribbon0x24.cpp
   GolDP/src/amberhaze0x20.cpp
+  GolDP/src/gdbvertexarray0xc.cpp
+  GolDP/src/gdbcommonvertexarray0x1c.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -192,6 +194,15 @@ add_library(goldp SHARED
   GolDP/src/softwarerenderer0x58.cpp
   GolDP/src/falcondunebag0x10.cpp
   GolDP/src/boundingshape0x2c.cpp
+  GolDP/src/shadowwolf0xc.cpp
+  GolDP/src/igdbmodel0x40.cpp
+  GolDP/src/gdbvertexarray0xc.cpp
+  GolDP/src/gdbcommonvertexarray0x1c.cpp
+  GolDP/src/gdbvertexarraytypeone0x1c.cpp
+  GolDP/src/gdbvertexarraytypetwo0x20.cpp
+  GolDP/src/gdbvertexarraytypethree0x20.cpp
+  GolDP/src/gdbvertexarraymistery0x1c.cpp
+  GolDP/src/gdbmodel0x48.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

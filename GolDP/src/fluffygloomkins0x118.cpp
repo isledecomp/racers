@@ -4,8 +4,10 @@
 #include "amberlens0x344.h"
 #include "boundingshape0x2c.h"
 #include "cmbmodelpart0x34.h"
+#include "gdbmodel0x48.h"
 #include "golerror.h"
 #include "purpleribbon0x24.h"
+#include "shadowwolf0xc.h"
 
 DECOMP_SIZE_ASSERT(FluffyGloomkins0x118, 0x118)
 
@@ -49,27 +51,15 @@ CmbModelPart0x34* FluffyGloomkins0x118::VTable0x34(LegoU32 p_index)
 }
 
 // STUB: GOLDP 0x100172b0
-undefined4* FluffyGloomkins0x118::VTable0x38(LegoU32 p_index)
+IGdbModel0x40* FluffyGloomkins0x118::VTable0x38(LegoU32 p_index)
 {
-#if 0
 	return &m_unk0xf8[p_index];
-#else
-	// TODO
-	STUB(0x100172b0);
-	return NULL;
-#endif
 }
 
 // STUB: GOLDP 0x100172d0
-undefined4* FluffyGloomkins0x118::VTable0x3c(LegoU32 p_index)
+ShadowWolf0xc* FluffyGloomkins0x118::VTable0x3c(LegoU32 p_index)
 {
-#if 0
 	return &m_unk0x104[p_index];
-#else
-	// TODO
-	STUB(0x100172d0);
-	return NULL;
-#endif
 }
 
 // STUB: GOLDP 0x100172f0
@@ -146,6 +136,22 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 	if (GetUnk0x1c() != 0) {
 		m_unk0x10c = new CmbModelPart0x34[GetUnk0x1c()];
 		if (m_unk0x10c == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	if (GetUnk0x24() != 0) {
+		m_unk0xf8 = new GdbModel0x48[GetUnk0x24()];
+		if (m_unk0xf8 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	// ...
+
+	if (GetUnk0x2c() != 0) {
+		m_unk0x104 = new ShadowWolf0xc[GetUnk0x2c()];
+		if (m_unk0x104 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}

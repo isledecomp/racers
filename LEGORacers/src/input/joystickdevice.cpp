@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(JoystickInputDevice, 0x23c)
 // FUNCTION: LEGORACERS 0x0044ea20
 JoystickInputDevice::JoystickInputDevice()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044ea90
@@ -15,12 +15,12 @@ JoystickInputDevice::~JoystickInputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044eae0
-void JoystickInputDevice::Init()
+void JoystickInputDevice::Initialize()
 {
 	::memset(&m_joyState, 0, sizeof(m_joyState));
 	::memset(&m_axisButtonStates, 0, sizeof(m_axisButtonStates));
 	::memset(&m_axisValues, 0, sizeof(m_axisValues));
-	DirectInputDevice::Init();
+	DirectInputDevice::Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044eb20

@@ -16,7 +16,7 @@ AmberHaze0x20::~AmberHaze0x20()
 }
 
 // FUNCTION: GOLDP 0x10006710
-void AmberHaze0x20::VTable0x14()
+void AmberHaze0x20::AllocateItems()
 {
 	m_items = new DuskwindBananaRelic0x30[m_numItems];
 	if (m_items == NULL) {
@@ -51,7 +51,7 @@ void AmberHaze0x20::Clear()
 }
 
 // FUNCTION: GOLDP 0x10006800
-DuskwindBananaRelic0x24* AmberHaze0x20::VTable0x28(LegoU32 p_index) const
+DuskwindBananaRelic0x24* AmberHaze0x20::GetItem(LegoU32 p_index) const
 {
 	return &m_items[p_index];
 }

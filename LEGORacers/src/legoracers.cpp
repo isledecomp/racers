@@ -71,7 +71,7 @@ LegoRacers::~LegoRacers()
 }
 
 // FUNCTION: LEGORACERS 0x0042bbb0
-LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
+LegoS32 LegoRacers::Initialize(LegoS32 p_argc, LegoChar** p_argv)
 {
 	if (m_golApp.GetFlags() & GolApp::c_flagInitialized) {
 		Destroy();
@@ -82,9 +82,9 @@ LegoS32 LegoRacers::Init(LegoS32 p_argc, LegoChar** p_argv)
 		return result;
 	}
 
-	m_golApp.GetHashTable().Init(100, 4096);
+	m_golApp.GetHashTable().Initialize(100, 4096);
 	m_golApp.SetGolBackendType(m_golBackendType);
-	m_golApp.Init("LEGO Racers", g_jamFile);
+	m_golApp.Initialize("LEGO Racers", g_jamFile);
 	return 1;
 }
 
@@ -142,11 +142,11 @@ void LegoRacers::FUN_0042bd00()
 				slot.m_unk0x20 = NULL;
 			}
 			if (slot.m_unk0x24) {
-				golExport->VTable0x44(slot.m_unk0x24);
+				golExport->DestroyMaterialList(slot.m_unk0x24);
 				slot.m_unk0x24 = NULL;
 			}
 			if (slot.m_unk0x28) {
-				golExport->VTable0x40(slot.m_unk0x28);
+				golExport->DestroyTextureList(slot.m_unk0x28);
 				slot.m_unk0x28 = NULL;
 			}
 			if (slot.m_unk0x44) {
@@ -154,11 +154,11 @@ void LegoRacers::FUN_0042bd00()
 				slot.m_unk0x44 = NULL;
 			}
 			if (slot.m_unk0x48) {
-				golExport->VTable0x44(slot.m_unk0x48);
+				golExport->DestroyMaterialList(slot.m_unk0x48);
 				slot.m_unk0x48 = NULL;
 			}
 			if (slot.m_unk0x4c) {
-				golExport->VTable0x40(slot.m_unk0x4c);
+				golExport->DestroyTextureList(slot.m_unk0x4c);
 				slot.m_unk0x4c = NULL;
 			}
 		}

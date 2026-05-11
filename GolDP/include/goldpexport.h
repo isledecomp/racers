@@ -15,33 +15,33 @@ public:
 	// SYNTHETIC: GOLDP 0x10007040
 	// GolDPExport::`scalar deleting destructor'
 
-	GolDrawState* VTable0x04() override;                 // vtable+0x04
-	ZoweeBlubberworth0xf0* VTable0x08() override;        // vtable+0x08
-	MagentaRibbon0x20* VTable0x0c() override;            // vtable+0x0c
-	AmberHaze0x1c* VTable0x10() override;                // vtable+0x10
-	undefined4* VTable0x14() override;                   // vtable+0x14
-	undefined4* VTable0x18() override;                   // vtable+0x18
-	BoundingShape0x2c* VTable0x1c() override;            // vtable+0x1c
-	AmberLens0x344* VTable0x20() override;               // vtable+0x20
-	undefined4 VTable0x24() override;                    // vtable+0x24
-	WhiteBaffoon0x50* VTable0x28() override;             // vtable+0x28
-	GolFontBase0x40* VTable0x2c() override;              // vtable+0x2c
-	FloatyBoat0x28* VTable0x30() override;               // vtable+0x30
-	AwakeKite0x20* VTable0x34() override;                // vtable+0x34
-	GolFontTable* VTable0x38() override;                 // vtable+0x38
-	void VTable0x3c(ZoweeBlubberworth0xf0*) override;    // vtable+0x3c
-	void VTable0x40(MagentaRibbon0x20*) override;        // vtable+0x40
-	void VTable0x44(AmberHaze0x1c*) override;            // vtable+0x44
-	void VTable0x48(undefined4*) override;               // vtable+0x48
-	void VTable0x4c(WhiteFalconNode0x18*) override;      // vtable+0x4c
-	void VTable0x50(BoundingShape0x2c*) override;        // vtable+0x50
-	void VTable0x54(AmberLens0x344*) override;           // vtable+0x54
-	void VTable0x58(undefined4*) override;               // vtable+0x58
-	void VTable0x5c(WhiteBaffoon0x50*) override;         // vtable+0x5c
-	void VTable0x60(GolFontBase0x40*) override;          // vtable+0x60
-	void VTable0x64(undefined4*) override;               // vtable+0x64
-	void VTable0x68(AwakeKite0x20*) override;            // vtable+0x68
-	void VTable0x6c(GolNameTable* p_fontTable) override; // vtable+0x6c
+	GolDrawState* GetDrawState() override;                     // vtable+0x04
+	ZoweeBlubberworth0xf0* VTable0x08() override;              // vtable+0x08
+	MagentaRibbon0x20* CreateTextureList() override;           // vtable+0x0c
+	AmberHaze0x1c* CreateMaterialList() override;              // vtable+0x10
+	undefined4* VTable0x14() override;                         // vtable+0x14
+	undefined4* VTable0x18() override;                         // vtable+0x18
+	BoundingShape0x2c* CreateBoundingShape() override;         // vtable+0x1c
+	AmberLens0x344* VTable0x20() override;                     // vtable+0x20
+	undefined4 VTable0x24() override;                          // vtable+0x24
+	WhiteBaffoon0x50* VTable0x28() override;                   // vtable+0x28
+	GolFontBase0x40* CreateFont() override;                    // vtable+0x2c
+	FloatyBoat0x28* VTable0x30() override;                     // vtable+0x30
+	AwakeKite0x20* VTable0x34() override;                      // vtable+0x34
+	GolFontTable* CreateFontTable() override;                  // vtable+0x38
+	void VTable0x3c(ZoweeBlubberworth0xf0*) override;          // vtable+0x3c
+	void DestroyTextureList(MagentaRibbon0x20*) override;      // vtable+0x40
+	void DestroyMaterialList(AmberHaze0x1c*) override;         // vtable+0x44
+	void VTable0x48(undefined4*) override;                     // vtable+0x48
+	void VTable0x4c(WhiteFalconNode0x18*) override;            // vtable+0x4c
+	void DestroyBoundingShape(BoundingShape0x2c*) override;    // vtable+0x50
+	void VTable0x54(AmberLens0x344*) override;                 // vtable+0x54
+	void VTable0x58(undefined4*) override;                     // vtable+0x58
+	void VTable0x5c(WhiteBaffoon0x50*) override;               // vtable+0x5c
+	void DestroyFont(GolFontBase0x40*) override;               // vtable+0x60
+	void VTable0x64(undefined4*) override;                     // vtable+0x64
+	void VTable0x68(AwakeKite0x20*) override;                  // vtable+0x68
+	void DestroyFontTable(GolNameTable* p_fontTable) override; // vtable+0x6c
 
 private:
 	GolDrawDPState m_state; // 0x04

@@ -66,7 +66,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 	}
 
 	GolNameTable::Allocate(m_numItems);
-	VTable0x14();
+	AllocateItems();
 	LegoU32 i;
 	LegoU32 j;
 	LegoChar textureName[8];
@@ -80,7 +80,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 			parser->ReadStringWithMaxLength(sizeOfArray(name.m_unk0x0)),
 			sizeOfArray(name.m_unk0x0)
 		);
-		DuskwindBananaRelic0x24* material = VTable0x28(i);
+		DuskwindBananaRelic0x24* material = GetItem(i);
 		AddName(name.m_unk0x0, material);
 		parser->ReadLeftCurly();
 		DuskWindBananaRelicParams params(fullIntensity);
@@ -287,7 +287,7 @@ void AmberHaze0x1c::FUN_10026970()
 	LegoU32 i;
 	if (m_unk0x14 != NULL) {
 		for (i = 0; i < m_numItems; i++) {
-			DuskwindBananaRelic0x24* item = VTable0x28(i);
+			DuskwindBananaRelic0x24* item = GetItem(i);
 			if (!(item->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit0)) {
 #if 0
 				m_unk0x14->VTable0x00(i, buffer);
@@ -302,7 +302,7 @@ void AmberHaze0x1c::FUN_10026970()
 	}
 	else {
 		for (i = 0; i < m_numItems; i++) {
-			DuskwindBananaRelic0x24* item = VTable0x28(i);
+			DuskwindBananaRelic0x24* item = GetItem(i);
 			if (!(item->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit0)) {
 				VTable0x18(i);
 			}
@@ -322,7 +322,7 @@ void AmberHaze0x1c::VTable0x20(WhiteFalcon0x140* p_renderer, undefined4* p_arg2,
 	m_unk0x14 = p_arg2;
 	m_numItems = p_capacity;
 	GolNameTable::Allocate(p_capacity);
-	VTable0x14();
+	AllocateItems();
 	FUN_10026970();
 }
 
@@ -352,7 +352,7 @@ void AmberHaze0x1c::VTable0x1c(WhiteFalcon0x140* p_renderer, LegoU32 p_capacity)
 	p_renderer->AddMaterialList(this);
 	m_numItems = p_capacity;
 	GolNameTable::Allocate(p_capacity);
-	VTable0x14();
+	AllocateItems();
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

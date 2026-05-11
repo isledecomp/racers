@@ -69,7 +69,7 @@ LegoS32 DirectInputManager::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00450490
-LegoS32 DirectInputManager::Init()
+LegoS32 DirectInputManager::Initialize()
 {
 	DestroyDevices();
 

@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(MouseInputDevice, 0xe8)
 // FUNCTION: LEGORACERS 0x0044f520
 MouseInputDevice::MouseInputDevice()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f570
@@ -33,9 +33,9 @@ MouseInputDevice::~MouseInputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044f610
-void MouseInputDevice::Init()
+void MouseInputDevice::Initialize()
 {
-	DirectInputDevice::Init();
+	DirectInputDevice::Initialize();
 	// These arrays are contiguous; zero both in a single call so MSVC fuses the stores.
 	::memset(m_rawAxisValues, 0, sizeof(m_rawAxisValues) + sizeof(m_buttonStates));
 	::memset(m_axisValues, 0, sizeof(m_axisValues));

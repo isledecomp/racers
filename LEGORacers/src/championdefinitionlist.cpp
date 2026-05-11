@@ -40,7 +40,7 @@ void ChampionDefinitionList::Clear()
 
 	if (m_unk0x20 != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->VTable0x44(m_unk0x20[i]);
+			m_golExport->DestroyMaterialList(m_unk0x20[i]);
 			m_unk0x20[i] = NULL;
 		}
 
@@ -50,7 +50,7 @@ void ChampionDefinitionList::Clear()
 
 	if (m_unk0x1c != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->VTable0x40(m_unk0x1c[i]);
+			m_golExport->DestroyTextureList(m_unk0x1c[i]);
 			m_unk0x1c[i] = NULL;
 		}
 

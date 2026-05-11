@@ -33,7 +33,7 @@ void GolHashTable::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0044c5c0
-LegoS32 GolHashTable::Init(LegoS32 p_numBuckets, LegoU32 p_bufferSize)
+LegoS32 GolHashTable::Initialize(LegoS32 p_numBuckets, LegoU32 p_bufferSize)
 {
 	if (m_initialized) {
 		Shutdown();

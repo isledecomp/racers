@@ -21,7 +21,7 @@ BronzeDuneBag0xc::~BronzeDuneBag0xc()
 }
 
 // FUNCTION: GOLDP 0x1002a120
-void BronzeDuneBag0xc::FUN_1002a120(const GolSurfaceFormat& p_textureFormat)
+void BronzeDuneBag0xc::Initialize(const GolSurfaceFormat& p_textureFormat)
 {
 	LegoU32 i;
 	if (m_entries != NULL) {
@@ -43,7 +43,7 @@ void BronzeDuneBag0xc::FUN_1002a120(const GolSurfaceFormat& p_textureFormat)
 }
 
 // FUNCTION: GOLDP 0x1002a1b0
-void BronzeDuneBag0xc::FUN_1002a1b0()
+void BronzeDuneBag0xc::Shutdown()
 {
 	m_size = 0;
 	if (m_entries != NULL) {

@@ -19,14 +19,14 @@ class CactusInterface0x4;
 class Win32GolApp : public GolApp {
 public:
 	Win32GolApp();
-	LegoU32 BuildDrawStateFlags(LegoU32 p_flags) override; // vtable+0x00
-	~Win32GolApp() override;                               // vtable+0x04
-	void Init(const LegoChar*, const LegoChar*) override;  // vtable+0x0c
-	void Destroy() override;                               // vtable+0x10
-	void LoadGolLibrary() override;                        // vtable+0x14
-	void UnloadGolLibrary() override;                      // vtable+0x18
-	void InitInput() override;                             // vtable+0x1c
-	void ShutdownInput() override;                         // vtable+0x20
+	LegoU32 BuildDrawStateFlags(LegoU32 p_flags) override;      // vtable+0x00
+	~Win32GolApp() override;                                    // vtable+0x04
+	void Initialize(const LegoChar*, const LegoChar*) override; // vtable+0x0c
+	void Destroy() override;                                    // vtable+0x10
+	void LoadGolLibrary() override;                             // vtable+0x14
+	void UnloadGolLibrary() override;                           // vtable+0x18
+	void InitializeInput() override;                            // vtable+0x1c
+	void ShutdownInput() override;                              // vtable+0x20
 	LegoS32 InitializeDisplay(
 		LegoU32 p_width,
 		LegoU32 p_height,

@@ -18,7 +18,7 @@ public:
 	virtual LegoS32 Reset();                              // vtable+0x00
 	virtual ~InputManager();                              // vtable+0x04
 	virtual LegoS32 Shutdown() = 0;                       // vtable+0x08
-	virtual LegoS32 Init() = 0;                           // vtable+0x0c
+	virtual LegoS32 Initialize() = 0;                     // vtable+0x0c
 	virtual LegoS32 PollDevices(LegoS32 p_elapsedMs) = 0; // vtable+0x10
 	virtual LegoS32 DetectNewJoysticks() = 0;             // vtable+0x14
 

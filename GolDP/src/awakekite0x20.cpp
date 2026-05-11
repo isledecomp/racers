@@ -23,7 +23,7 @@ AwakeKite0x20::~AwakeKite0x20()
 }
 
 // FUNCTION: GOLDP 0x10005dc0
-void AwakeKite0x20::VTable0x0c()
+void AwakeKite0x20::AllocateItems()
 {
 	m_items = new UtopianPan0xa4[m_numItems];
 	if (m_items == NULL) {

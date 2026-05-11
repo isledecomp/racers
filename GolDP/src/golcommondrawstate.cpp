@@ -98,85 +98,85 @@ BronzeFalcon0xc8770* GolCommonDrawState::RemoveRenderer(BronzeFalcon0xc8770* p_r
 }
 
 // FUNCTION: GOLDP 0x10018620
-LegoU32 GolCommonDrawState::VTable0x5c() const
+LegoU32 GolCommonDrawState::GetZBufferBitDepth() const
 {
 	return 16;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-undefined4 GolCommonDrawState::VTable0x60()
-{
-	return 1;
-}
-
-// FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x64() const
+LegoBool32 GolCommonDrawState::IsHwAccelerated()
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x68() const
+LegoBool32 GolCommonDrawState::SupportsCulling() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x6c() const
+LegoBool32 GolCommonDrawState::SupportsPerspectiveCorrection() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x70() const
+LegoBool32 GolCommonDrawState::SupportsTextureWrap() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x74() const
+LegoBool32 GolCommonDrawState::SupportsCullCW() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x78() const
+LegoBool32 GolCommonDrawState::SupportsCullCCW() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x7c() const
+LegoBool32 GolCommonDrawState::SupportsDither() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x80() const
+LegoBool32 GolCommonDrawState::SupportsSubpixel() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x84() const
+LegoBool32 GolCommonDrawState::SupportsLinearFilter() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x88() const
+LegoBool32 GolCommonDrawState::SupportsMipmap() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x8c() const
+LegoBool32 GolCommonDrawState::SupportsFogTable() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x90() const
+LegoBool32 GolCommonDrawState::SupportsTextureAlpha() const
+{
+	return TRUE;
+}
+
+// FUNCTION: GOLDP 0x1002fa30 FOLDED
+LegoBool32 GolCommonDrawState::SupportsAdditiveBlend() const
 {
 	return TRUE;
 }
@@ -189,32 +189,32 @@ undefined4 GolCommonDrawState::VTable0x94()
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x98() const
+LegoBool32 GolCommonDrawState::SupportsZBufferlessHsr() const
 {
 	MATCHING(0x100016f0);
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0x9c() const
+LegoBool32 GolCommonDrawState::SupportsPaletteAlpha() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0xa0() const
+LegoBool32 GolCommonDrawState::SupportsTextureSystemMemory() const
 {
 	return TRUE;
 }
 
 // FUNCTION: GOLDP 0x1002fa30 FOLDED
-LegoBool32 GolCommonDrawState::VTable0xa4() const
+LegoBool32 GolCommonDrawState::SupportsTextureVideoMemory() const
 {
 	return TRUE;
 }
 
 // STUB: GOLDP 0x100016f0 FOLDED
-LegoBool32 GolCommonDrawState::VTable0xa8() const
+LegoBool32 GolCommonDrawState::SupportsRenderingInWindow() const
 {
 	MATCHING(0x100016f0);
 	return FALSE;

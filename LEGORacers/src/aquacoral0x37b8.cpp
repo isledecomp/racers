@@ -126,11 +126,11 @@ void AquaCoral0x37b8::ReleaseContextAssets()
 				slot.m_unk0x20 = NULL;
 			}
 			if (slot.m_unk0x24) {
-				golExport->VTable0x44(slot.m_unk0x24);
+				golExport->DestroyMaterialList(slot.m_unk0x24);
 				slot.m_unk0x24 = NULL;
 			}
 			if (slot.m_unk0x28) {
-				golExport->VTable0x40(slot.m_unk0x28);
+				golExport->DestroyTextureList(slot.m_unk0x28);
 				slot.m_unk0x28 = NULL;
 			}
 			if (slot.m_unk0x44) {
@@ -138,11 +138,11 @@ void AquaCoral0x37b8::ReleaseContextAssets()
 				slot.m_unk0x44 = NULL;
 			}
 			if (slot.m_unk0x48) {
-				golExport->VTable0x44(slot.m_unk0x48);
+				golExport->DestroyMaterialList(slot.m_unk0x48);
 				slot.m_unk0x48 = NULL;
 			}
 			if (slot.m_unk0x4c) {
-				golExport->VTable0x40(slot.m_unk0x4c);
+				golExport->DestroyTextureList(slot.m_unk0x4c);
 				slot.m_unk0x4c = NULL;
 			}
 		}

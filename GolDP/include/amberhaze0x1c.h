@@ -27,7 +27,7 @@ public:
 
 	virtual void VTable0x0c();                                                                     // vtable+0x0c
 	virtual void VTable0x10();                                                                     // vtable+0x10
-	virtual void VTable0x14() = 0;                                                                 // vtable+0x14
+	virtual void AllocateItems() = 0;                                                              // vtable+0x14
 	virtual void VTable0x18(LegoU32 p_index) = 0;                                                  // vtable+0x18
 	virtual void VTable0x1c(WhiteFalcon0x140* p_renderer, LegoU32 p_capacity);                     // vtable+0x1c
 	virtual void VTable0x20(WhiteFalcon0x140* p_renderer, undefined4* p_arg2, LegoU32 p_capacity); // vtable+0x20
@@ -35,8 +35,8 @@ public:
 		WhiteFalcon0x140* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                                                      // vtable+0x24
-	virtual DuskwindBananaRelic0x24* VTable0x28(LegoU32 p_index) const = 0; // vtable+0x28
+	);                                                                   // vtable+0x24
+	virtual DuskwindBananaRelic0x24* GetItem(LegoU32 p_index) const = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100261d0
 	// AmberHaze0x1c::`scalar deleting destructor'

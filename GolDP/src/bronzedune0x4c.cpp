@@ -40,7 +40,7 @@ void BronzeDune0x4c::VTable0x34(
 	m_height = static_cast<LegoU16>(p_height);
 	m_textureFormat = p_textureFormat;
 	if (p_textureFormat.m_paletteMask) {
-		m_unk0x40.FUN_1002a120(p_textureFormat);
+		m_unk0x40.Initialize(p_textureFormat);
 	}
 	LegoU16 pitch = (p_textureFormat.m_bitsPerPixel * p_width + 8 - 1) / 8U;
 	m_pitch = static_cast<LegoU16>(pitch);
@@ -53,7 +53,7 @@ void BronzeDune0x4c::VTable0x34(
 // FUNCTION: GOLDP 0x1002a470
 void BronzeDune0x4c::VTable0x38()
 {
-	m_unk0x40.FUN_1002a1b0();
+	m_unk0x40.Shutdown();
 	if (m_pixels != NULL) {
 		delete[] m_pixels;
 		m_pixels = NULL;

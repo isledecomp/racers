@@ -28,7 +28,7 @@ public:
 	virtual LegoBool32 Allocate(LegoS32 p_capacity);                                           // vtable+0x10
 	virtual LegoBool32 Reset();                                                                // vtable+0x14
 
-	void Init();
+	void Initialize();
 	Item* Dequeue();
 	Item* Enqueue(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
 	void ClearQueue();

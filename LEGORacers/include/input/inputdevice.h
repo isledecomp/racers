@@ -79,7 +79,7 @@ public:
 	};
 
 	InputDevice();
-	virtual void Init();                                                                  // vtable+0x00
+	virtual void Initialize();                                                            // vtable+0x00
 	virtual void SetButtonState(undefined4 p_event, LegoU8 p_state, LegoBool32 p_notify); // vtable+0x04
 	virtual void SetAxisValue(undefined4, LegoFloat) = 0;                                 // vtable+0x08
 	virtual ~InputDevice();                                                               // vtable+0x0c

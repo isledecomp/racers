@@ -31,7 +31,7 @@ GolDPExport::~GolDPExport()
 }
 
 // FUNCTION: GOLDP 0x10015090
-GolDrawState* GolDPExport::VTable0x04()
+GolDrawState* GolDPExport::GetDrawState()
 {
 	return &m_state;
 }
@@ -49,7 +49,7 @@ ZoweeBlubberworth0xf0* GolDPExport::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x10015110
-MagentaRibbon0x20* GolDPExport::VTable0x0c()
+MagentaRibbon0x20* GolDPExport::CreateTextureList()
 {
 	MagentaRibbon0x20* obj = new PurpleRibbon0x24;
 	if (obj == NULL) {
@@ -59,7 +59,7 @@ MagentaRibbon0x20* GolDPExport::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x10015180
-AmberHaze0x1c* GolDPExport::VTable0x10()
+AmberHaze0x1c* GolDPExport::CreateMaterialList()
 {
 	AmberHaze0x20* result = new AmberHaze0x20;
 	if (result == NULL) {
@@ -85,7 +85,7 @@ undefined4* GolDPExport::VTable0x18()
 }
 
 // FUNCTION: GOLDP 0x100152d0
-BoundingShape0x2c* GolDPExport::VTable0x1c()
+BoundingShape0x2c* GolDPExport::CreateBoundingShape()
 {
 	BoundingShape0x2c* bdb = new BoundingShape0x2c;
 	if (bdb == NULL) {
@@ -117,7 +117,7 @@ WhiteBaffoon0x50* GolDPExport::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x10015420
-GolFontBase0x40* GolDPExport::VTable0x2c()
+GolFontBase0x40* GolDPExport::CreateFont()
 {
 	GolFont0xa0* font = new GolFont0xa0;
 	if (font == NULL) {
@@ -149,7 +149,7 @@ AwakeKite0x20* GolDPExport::VTable0x34()
 }
 
 // FUNCTION: GOLDP 0x10015570
-GolFontTable* GolDPExport::VTable0x38()
+GolFontTable* GolDPExport::CreateFontTable()
 {
 	GolFontTable* result = new GolFontTable;
 	if (result == NULL) {
@@ -168,7 +168,7 @@ void GolDPExport::VTable0x3c(ZoweeBlubberworth0xf0* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x40(MagentaRibbon0x20* p_obj)
+void GolDPExport::DestroyTextureList(MagentaRibbon0x20* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -176,7 +176,7 @@ void GolDPExport::VTable0x40(MagentaRibbon0x20* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x44(AmberHaze0x1c* p_obj)
+void GolDPExport::DestroyMaterialList(AmberHaze0x1c* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -205,7 +205,7 @@ void GolDPExport::VTable0x4c(WhiteFalconNode0x18* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x50(BoundingShape0x2c* p_obj)
+void GolDPExport::DestroyBoundingShape(BoundingShape0x2c* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -229,7 +229,7 @@ void GolDPExport::VTable0x5c(WhiteBaffoon0x50* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015680
-void GolDPExport::VTable0x60(GolFontBase0x40* p_obj)
+void GolDPExport::DestroyFont(GolFontBase0x40* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -259,7 +259,7 @@ void GolDPExport::VTable0x68(AwakeKite0x20* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::VTable0x6c(GolNameTable* p_fontTable)
+void GolDPExport::DestroyFontTable(GolNameTable* p_fontTable)
 {
 	if (p_fontTable != NULL) {
 		delete p_fontTable;

@@ -15,9 +15,9 @@ public:
 	~MagentaRibbon0x20() override; // vtable+0x00
 	void Clear() override;         // vtable+0x08
 
-	virtual void VTable0x0c();     // vtable+0x0c
-	virtual void VTable0x10();     // vtable+0x10
-	virtual void VTable0x14() = 0; // vtable+0x14
+	virtual void VTable0x0c();        // vtable+0x0c
+	virtual void VTable0x10();        // vtable+0x10
+	virtual void AllocateItems() = 0; // vtable+0x14
 	virtual void VTable0x18(
 		LegoU32 p_index,
 		const GolSurfaceFormat& p_textureFormat,
@@ -30,8 +30,8 @@ public:
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                                     // vtable+0x24
-	virtual GoldDune0x38* VTable0x28(LegoU32 p_index) = 0; // vtable+0x28
+	);                                                  // vtable+0x24
+	virtual GoldDune0x38* GetItem(LegoU32 p_index) = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x1002b500
 	// MagentaRibbon0x20::`scalar deleting destructor'

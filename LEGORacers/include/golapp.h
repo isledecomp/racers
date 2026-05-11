@@ -36,15 +36,15 @@ public:
 	};
 
 	GolApp();
-	virtual LegoU32 BuildDrawStateFlags(LegoU32) = 0;        // vtable+0x00
-	virtual ~GolApp();                                       // vtable+0x04
-	virtual void PresentFrame();                             // vtable+0x08
-	virtual void Init(const LegoChar*, const LegoChar*) = 0; // vtable+0x0c
-	virtual void Destroy() = 0;                              // vtable+0x10
-	virtual void LoadGolLibrary() = 0;                       // vtable+0x14
-	virtual void UnloadGolLibrary() = 0;                     // vtable+0x18
-	virtual void InitInput() = 0;                            // vtable+0x1c
-	virtual void ShutdownInput() = 0;                        // vtable+0x20
+	virtual LegoU32 BuildDrawStateFlags(LegoU32) = 0;              // vtable+0x00
+	virtual ~GolApp();                                             // vtable+0x04
+	virtual void PresentFrame();                                   // vtable+0x08
+	virtual void Initialize(const LegoChar*, const LegoChar*) = 0; // vtable+0x0c
+	virtual void Destroy() = 0;                                    // vtable+0x10
+	virtual void LoadGolLibrary() = 0;                             // vtable+0x14
+	virtual void UnloadGolLibrary() = 0;                           // vtable+0x18
+	virtual void InitializeInput() = 0;                            // vtable+0x1c
+	virtual void ShutdownInput() = 0;                              // vtable+0x20
 	virtual LegoS32 InitializeDisplay(
 		LegoU32 p_width,
 		LegoU32 p_height,

@@ -58,7 +58,7 @@ void AquamarineSpirit0x3c::Clear()
 
 	if (m_unk0x20 != NULL) {
 		for (LegoU32 i = 0; i < m_unk0x34; i++) {
-			m_unk0x0c->VTable0x44(m_unk0x20[i]);
+			m_unk0x0c->DestroyMaterialList(m_unk0x20[i]);
 			m_unk0x20[i] = NULL;
 		}
 		delete[] m_unk0x20;
@@ -67,7 +67,7 @@ void AquamarineSpirit0x3c::Clear()
 
 	if (m_unk0x1c != NULL) {
 		for (LegoU32 i = 0; i < m_unk0x34; i++) {
-			m_unk0x0c->VTable0x40(m_unk0x1c[i]);
+			m_unk0x0c->DestroyTextureList(m_unk0x1c[i]);
 			m_unk0x1c[i] = NULL;
 		}
 		delete[] m_unk0x1c;

@@ -21,7 +21,7 @@ GolDrawDPState::GolDrawDPState()
 	::memset(&m_deviceDesc, 0, sizeof(m_deviceDesc));
 	m_device = NULL;
 	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
-	m_unk0x2c0 = 0;
+	m_hwAccelerated = FALSE;
 	m_currentRenderer = &m_unk0x354;
 	m_unk0x14 = &m_unk0x2fc;
 }
@@ -44,7 +44,7 @@ GolDrawDPState::~GolDrawDPState()
 }
 
 // FUNCTION: GOLDP 0x100011e0
-void GolDrawDPState::VTable0x08(HWND p_hWnd)
+void GolDrawDPState::SetWindowHandle(HWND p_hWnd)
 {
 	m_hWnd = p_hWnd;
 }
@@ -82,7 +82,7 @@ void GolDrawDPState::ReleaseDDraw()
 	m_ddrawCaps.dwSize = sizeof(m_ddrawCaps);
 	::memset(&m_deviceDesc, 0, sizeof(m_deviceDesc));
 	::memset(&m_deviceGuid, 0, sizeof(m_deviceGuid));
-	m_unk0x2c0 = 0;
+	m_hwAccelerated = FALSE;
 }
 
 // FUNCTION: GOLDP 0x100012b0
@@ -167,10 +167,10 @@ LegoS32 GolDrawDPState::VTable0x00()
 	if (!(m_flags & (c_flagBit11 | c_flagBit16 | c_flagBit17)) && (m_ddrawCaps.dwCaps & DDCAPS_3D) &&
 		device->m_hwAccelerated) {
 		m_flags &= ~c_flagBit11;
-		m_unk0x2c0 = TRUE;
+		m_hwAccelerated = TRUE;
 	}
 	else {
-		m_unk0x2c0 = FALSE;
+		m_hwAccelerated = FALSE;
 		m_flags |= c_flagBit11;
 		if (!(m_flags & c_flagBit17)) {
 			m_flags |= c_flagBit16;
@@ -207,13 +207,13 @@ LegoS32 GolDrawDPState::VTable0x00()
 }
 
 // FUNCTION: GOLDP 0x100015d0
-undefined4 GolDrawDPState::VTable0x60()
+LegoBool32 GolDrawDPState::IsHwAccelerated()
 {
-	return m_unk0x2c0;
+	return m_hwAccelerated;
 }
 
 // FUNCTION: GOLDP 0x100015e0
-LegoU32 GolDrawDPState::VTable0x5c() const
+LegoU32 GolDrawDPState::GetZBufferBitDepth() const
 {
 	if (m_deviceDesc.dwDeviceZBufferBitDepth & DDBD_16) {
 		return 16;
@@ -232,60 +232,60 @@ LegoU32 GolDrawDPState::VTable0x5c() const
 }
 
 // FUNCTION: GOLDP 0x10001610
-LegoBool32 GolDrawDPState::VTable0x68() const
+LegoBool32 GolDrawDPState::SupportsPerspectiveCorrection() const
 {
 	return !!(m_deviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_PERSPECTIVE);
 }
 
 // FUNCTION: GOLDP 0x10001620
-LegoBool32 GolDrawDPState::VTable0x6c() const
+LegoBool32 GolDrawDPState::SupportsTextureWrap() const
 {
 	return !!(m_deviceDesc.dpcTriCaps.dwTextureAddressCaps & D3DPTADDRESSCAPS_WRAP);
 }
 
 // FUNCTION: GOLDP 0x10001630
-LegoBool32 GolDrawDPState::VTable0x64() const
+LegoBool32 GolDrawDPState::SupportsCulling() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwMiscCaps & (D3DPMISCCAPS_CULLCW | D3DPMISCCAPS_CULLCCW);
 }
 
 // FUNCTION: GOLDP 0x10001640
-LegoBool32 GolDrawDPState::VTable0x70() const
+LegoBool32 GolDrawDPState::SupportsCullCW() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwMiscCaps & D3DPMISCCAPS_CULLCW;
 }
 
 // FUNCTION: GOLDP 0x10001650
-LegoBool32 GolDrawDPState::VTable0x74() const
+LegoBool32 GolDrawDPState::SupportsCullCCW() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwMiscCaps & D3DPMISCCAPS_CULLCCW;
 }
 
 // FUNCTION: GOLDP 0x10001660
-LegoBool32 GolDrawDPState::VTable0x78() const
+LegoBool32 GolDrawDPState::SupportsDither() const
 {
 	return !!(m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_DITHER);
 }
 
 // FUNCTION: GOLDP 0x10001670
-LegoBool32 GolDrawDPState::VTable0x7c() const
+LegoBool32 GolDrawDPState::SupportsSubpixel() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_SUBPIXEL;
 }
 
 // FUNCTION: GOLDP 0x10001680
-LegoBool32 GolDrawDPState::VTable0x80() const
+LegoBool32 GolDrawDPState::SupportsLinearFilter() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwTextureFilterCaps & D3DPTFILTERCAPS_LINEAR;
 }
 
 // FUNCTION: GOLDP 0x10001690
-LegoBool32 GolDrawDPState::VTable0x84() const
+LegoBool32 GolDrawDPState::SupportsMipmap() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwTextureFilterCaps &
@@ -294,21 +294,21 @@ LegoBool32 GolDrawDPState::VTable0x84() const
 }
 
 // FUNCTION: GOLDP 0x100016a0
-LegoBool32 GolDrawDPState::VTable0x88() const
+LegoBool32 GolDrawDPState::SupportsFogTable() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_FOGTABLE;
 }
 
 // FUNCTION: GOLDP 0x100016b0
-LegoBool32 GolDrawDPState::VTable0x8c() const
+LegoBool32 GolDrawDPState::SupportsTextureAlpha() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_ALPHA;
 }
 
 // FUNCTION: GOLDP 0x100016c0
-LegoBool32 GolDrawDPState::VTable0x90() const
+LegoBool32 GolDrawDPState::SupportsAdditiveBlend() const
 {
 	if ((m_deviceDesc.dpcTriCaps.dwTextureCaps & D3DPTEXTURECAPS_ALPHA) &&
 		(m_deviceDesc.dpcTriCaps.dwSrcBlendCaps & D3DPBLENDCAPS_ONE) &&
@@ -328,35 +328,35 @@ undefined4 GolDrawDPState::VTable0x94()
 }
 
 // FUNCTION: GOLDP 0x10001700
-LegoBool32 GolDrawDPState::VTable0x9c() const
+LegoBool32 GolDrawDPState::SupportsPaletteAlpha() const
 {
 	// BUG: Not a bool
 	return m_ddrawCaps.dwPalCaps & DDPCAPS_ALPHA;
 }
 
 // FUNCTION: GOLDP 0x10001710
-LegoBool32 GolDrawDPState::VTable0xa0() const
+LegoBool32 GolDrawDPState::SupportsTextureSystemMemory() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dwDevCaps & D3DDEVCAPS_TEXTURESYSTEMMEMORY;
 }
 
 // FUNCTION: GOLDP 0x10001720
-LegoBool32 GolDrawDPState::VTable0xa4() const
+LegoBool32 GolDrawDPState::SupportsTextureVideoMemory() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dwDevCaps & D3DDEVCAPS_TEXTUREVIDEOMEMORY;
 }
 
 // FUNCTION: GOLDP 0x10001730
-LegoBool32 GolDrawDPState::VTable0x98() const
+LegoBool32 GolDrawDPState::SupportsZBufferlessHsr() const
 {
 	// BUG: Not a bool
 	return m_deviceDesc.dpcTriCaps.dwRasterCaps & D3DPRASTERCAPS_ZBUFFERLESSHSR;
 }
 
 // FUNCTION: GOLDP 0x10001740
-LegoBool32 GolDrawDPState::VTable0xa8() const
+LegoBool32 GolDrawDPState::SupportsRenderingInWindow() const
 {
 	// BUG: Not a bool
 	return m_ddrawCaps.dwCaps2 & DDCAPS2_CANRENDERWINDOWED;
@@ -461,7 +461,7 @@ void GolDrawDPState::VTable0x0c(const char* p_driverName, const char* p_deviceNa
 }
 
 // FUNCTION: GOLDP 0x10001a00
-LegoU32 GolDrawDPState::VTable0x10()
+LegoU32 GolDrawDPState::GetDriverCount()
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -471,7 +471,7 @@ LegoU32 GolDrawDPState::VTable0x10()
 }
 
 // FUNCTION: GOLDP 0x10001a20
-const LegoChar* GolDrawDPState::VTable0x14(LegoU32 p_index)
+const LegoChar* GolDrawDPState::GetDriverDescription(LegoU32 p_index)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -485,7 +485,7 @@ const LegoChar* GolDrawDPState::VTable0x14(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10001a70
-const LegoChar* GolDrawDPState::VTable0x18(LegoU32 p_index)
+const LegoChar* GolDrawDPState::GetDriverName(LegoU32 p_index)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -499,7 +499,7 @@ const LegoChar* GolDrawDPState::VTable0x18(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10001ac0
-LegoU32 GolDrawDPState::VTable0x1c(LegoU32 p_index)
+LegoU32 GolDrawDPState::GetDeviceCount(LegoU32 p_index)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -513,7 +513,7 @@ LegoU32 GolDrawDPState::VTable0x1c(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10001b10
-const LegoChar* GolDrawDPState::VTable0x20(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
+const LegoChar* GolDrawDPState::GetDeviceName(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -532,7 +532,7 @@ const LegoChar* GolDrawDPState::VTable0x20(LegoU32 p_driverIndex, LegoU32 p_devi
 }
 
 // FUNCTION: GOLDP 0x10001b70
-const LegoChar* GolDrawDPState::VTable0x24(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
+const LegoChar* GolDrawDPState::GetDeviceDescription(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -551,7 +551,7 @@ const LegoChar* GolDrawDPState::VTable0x24(LegoU32 p_driverIndex, LegoU32 p_devi
 }
 
 // FUNCTION: GOLDP 0x10001bd0
-GUID* GolDrawDPState::VTable0x38() const
+GUID* GolDrawDPState::GetCurrentDriverGuid() const
 {
 	if (m_device != NULL) {
 		GolDeviceList::GolD3DDriverInfo* driver = m_device->m_driver;
@@ -564,7 +564,7 @@ GUID* GolDrawDPState::VTable0x38() const
 }
 
 // FUNCTION: GOLDP 0x10001bf0
-void GolDrawDPState::VTable0x30(LegoU32 p_driverIndex, GUID* p_guid)
+void GolDrawDPState::GetDriverGuid(LegoU32 p_driverIndex, GUID* p_guid)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -576,7 +576,7 @@ void GolDrawDPState::VTable0x30(LegoU32 p_driverIndex, GUID* p_guid)
 }
 
 // FUNCTION: GOLDP 0x10001c50
-void GolDrawDPState::VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid)
+void GolDrawDPState::GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GUID* p_guid)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
@@ -592,7 +592,7 @@ void GolDrawDPState::VTable0x34(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, GU
 }
 
 // FUNCTION: GOLDP 0x10001cc0
-LegoBool32 GolDrawDPState::VTable0x28(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
+LegoBool32 GolDrawDPState::IsDeviceHwAccelerated(LegoU32 p_driverIndex, LegoU32 p_deviceIndex)
 {
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();

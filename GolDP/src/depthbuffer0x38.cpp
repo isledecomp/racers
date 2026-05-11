@@ -31,7 +31,7 @@ LegoS32 DepthBuffer0x38::Create(GolDrawDPState* p_arg1, SlatePeak0x58* p_surface
 	ddSurfaceDesc.dwFlags = DDSD_WIDTH | DDSD_HEIGHT | DDSD_CAPS | DDSD_PIXELFORMAT;
 	ddSurfaceDesc.dwWidth = p_surface->m_width;
 	ddSurfaceDesc.ddsCaps.dwCaps = DDSCAPS_ZBUFFER;
-	if (p_arg1->VTable0x60()) {
+	if (p_arg1->IsHwAccelerated()) {
 		ddSurfaceDesc.ddsCaps.dwCaps |= DDSCAPS_VIDEOMEMORY;
 	}
 	else {

@@ -278,7 +278,7 @@ void MenuManager::LoadMenuImages()
 	}
 
 	if (!m_fontTable) {
-		m_fontTable = m_golExport->VTable0x38();
+		m_fontTable = m_golExport->CreateFontTable();
 	}
 
 	m_imageTable->LoadImageDefinitions(m_renderer, "GImages", m_unk0x04.m_context->m_unk0x18);
@@ -295,7 +295,7 @@ void MenuManager::FUN_0042d080()
 
 	if (m_fontTable) {
 		m_fontTable->Clear();
-		m_golExport->VTable0x6c(m_fontTable);
+		m_golExport->DestroyFontTable(m_fontTable);
 		m_fontTable = NULL;
 	}
 }
@@ -303,7 +303,7 @@ void MenuManager::FUN_0042d080()
 // FUNCTION: LEGORACERS 0x0042d0e0
 void MenuManager::FUN_0042d0e0()
 {
-	const GUID* displayDriverGuid = m_unk0x04.m_context->m_golApp->GetDrawState()->VTable0x38();
+	const GUID* displayDriverGuid = m_unk0x04.m_context->m_golApp->GetDrawState()->GetCurrentDriverGuid();
 	GUID currentDisplayDriverGuid;
 
 	if (!displayDriverGuid) {
@@ -342,7 +342,7 @@ void MenuManager::LoadMenuData()
 
 	raceList->Load(raceStrings, "LEGORace", m_unk0x04.m_context->m_unk0x18);
 	m_unk0x04.m_raceNames.Load(raceStrings, raceList, "LEGORace", m_unk0x04.m_context->m_unk0x18);
-	m_unk0x4bcc.Init();
+	m_unk0x4bcc.Initialize();
 	m_unk0x04.m_menuAnimations.Allocate(2);
 
 	GolStringTable* menuNameStrings = &m_menuNameStrings;
@@ -563,9 +563,9 @@ void MenuManager::FUN_0042e1f0()
 	LegoU32 selectedDrawFlags = 0;
 	state.FUN_0042f060(savedDisplayDriverGuid);
 
-	const GUID* currentGuid = drawState->VTable0x38();
+	const GUID* currentGuid = drawState->GetCurrentDriverGuid();
 	if (!currentGuid) {
-		drawState->VTable0x30(driverIndex, &currentDisplayDriverGuid.m_guid);
+		drawState->GetDriverGuid(driverIndex, &currentDisplayDriverGuid.m_guid);
 	}
 	else {
 		currentDisplayDriverGuid.m_guid = *currentGuid;
@@ -573,25 +573,25 @@ void MenuManager::FUN_0042e1f0()
 
 	if (::memcmp(&savedDisplayDriverGuid, &currentDisplayDriverGuid, sizeof(GUID)) != 0) {
 		do {
-			drawState->VTable0x30(driverIndex, &driverGuid.m_guid);
+			drawState->GetDriverGuid(driverIndex, &driverGuid.m_guid);
 
 			if (::memcmp(&driverGuid, &savedDisplayDriverGuid, sizeof(GUID)) == 0) {
-				driverName = drawState->VTable0x14(driverIndex);
+				driverName = drawState->GetDriverDescription(driverIndex);
 			}
 
 			driverIndex++;
-		} while (driverName == NULL && driverIndex < drawState->VTable0x10());
+		} while (driverName == NULL && driverIndex < drawState->GetDriverCount());
 
 		if (driverName != NULL) {
 			driverIndex--;
 
-			while (deviceIndex < drawState->VTable0x1c(driverIndex) &&
-				   !drawState->VTable0x28(driverIndex, deviceIndex)) {
+			while (deviceIndex < drawState->GetDeviceCount(driverIndex) &&
+				   !drawState->IsDeviceHwAccelerated(driverIndex, deviceIndex)) {
 				deviceIndex++;
 			}
 
-			if (deviceIndex < drawState->VTable0x1c(driverIndex)) {
-				const LegoChar* deviceName = drawState->VTable0x20(driverIndex, deviceIndex);
+			if (deviceIndex < drawState->GetDeviceCount(driverIndex)) {
+				const LegoChar* deviceName = drawState->GetDeviceName(driverIndex, deviceIndex);
 				drawState->VTable0x0c(driverName, deviceName);
 				selectedDrawFlags = GolDrawState::c_flagBit14;
 			}

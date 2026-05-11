@@ -19,8 +19,8 @@ public:
 	LegoU32 GetPaletteSize() override;                                                // vtable+0x
 	virtual ~BronzeDuneBag0xc();                                                      // vtable+0x00
 
-	void FUN_1002a120(const GolSurfaceFormat& p_textureFormat);
-	void FUN_1002a1b0();
+	void Initialize(const GolSurfaceFormat& p_textureFormat);
+	void Shutdown();
 
 	ColorRGBA* GetEntries() const { return m_entries; }
 	bool HasEntries() const { return m_entries != NULL; }

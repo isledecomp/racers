@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(KeyboardInputDevice, 0x2cc)
 // FUNCTION: LEGORACERS 0x0044f270
 KeyboardInputDevice::KeyboardInputDevice()
 {
-	Init();
+	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f2c0 FOLDED
@@ -48,10 +48,10 @@ KeyboardInputDevice::~KeyboardInputDevice()
 }
 
 // FUNCTION: LEGORACERS 0x0044f370
-void KeyboardInputDevice::Init()
+void KeyboardInputDevice::Initialize()
 {
 	::memset(m_keyStates, 0, sizeof(m_keyStates));
-	DirectInputDevice::Init();
+	DirectInputDevice::Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0044f390

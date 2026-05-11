@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(ObscureAnthem0x58, 0x58)
 // FUNCTION: LEGORACERS 0x0046e9e0
 ObscureAnthem0x58::ObscureAnthem0x58()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046ea50

@@ -62,14 +62,12 @@ LegoBool32 ImaginaryHammer0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED
 LegoBool32 ImaginaryHammer0x658::Destroy()
 {
-	if (m_unk0x354) {
-		if (m_unk0x354->m_unk0x4b40.GetMusicGroup()) {
-			if (m_unk0x354->m_unk0x4b40.GetMusicInstance()) {
-				m_unk0x354->m_unk0x4b40.GetMusicInstance()->Stop();
-				m_unk0x354->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(
-					m_unk0x354->m_unk0x4b40.GetMusicInstance()
-				);
-				m_unk0x354->m_unk0x4b40.SetMusicInstance(NULL);
+	if (m_context) {
+		if (m_context->m_unk0x4b40.GetMusicGroup()) {
+			if (m_context->m_unk0x4b40.GetMusicInstance()) {
+				m_context->m_unk0x4b40.GetMusicInstance()->Stop();
+				m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
+				m_context->m_unk0x4b40.SetMusicInstance(NULL);
 			}
 		}
 	}
@@ -114,26 +112,26 @@ void ImaginaryHammer0x658::VTable0x4c()
 // FUNCTION: LEGORACERS 0x00488630
 void ImaginaryHammer0x658::VTable0x84()
 {
-	m_unk0x354->m_unk0x04.Pop();
+	m_context->m_unk0x04.Pop();
 	m_unk0xc4->SetUnk0x41(TRUE);
 
 	switch (m_menuId) {
 	case 43:
-		m_unk0x354->m_unk0x04.Push(0x29);
+		m_context->m_unk0x04.Push(0x29);
 		return;
 	case 41:
-		m_unk0x354->m_unk0x04.Push(1);
+		m_context->m_unk0x04.Push(1);
 		return;
 	case 1:
-		m_unk0x354->m_unk0x04.Push(0x26);
+		m_context->m_unk0x04.Push(0x26);
 		return;
 	case 40:
-		m_unk0x354->m_unk0x04.Push(2);
-		m_unk0x354->m_unk0x04.Push(0x2d);
+		m_context->m_unk0x04.Push(2);
+		m_context->m_unk0x04.Push(0x2d);
 		return;
 	case 39:
-		if (!m_unk0x354->m_unk0x04.GetSize()) {
-			m_unk0x354->m_unk0x04.Push(2);
+		if (!m_context->m_unk0x04.GetSize()) {
+			m_context->m_unk0x04.Push(2);
 		}
 		return;
 	}

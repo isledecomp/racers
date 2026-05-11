@@ -47,7 +47,7 @@ protected:
 	void FUN_10002860(D3DVIEWPORT2* p_viewport);
 
 	JadeOrbit0x220 m_unk0x120;       // 0x120
-	BronzeFalcon0xc8770* m_unk0x340; // 0x340
+	BronzeFalcon0xc8770* m_renderer; // 0x340
 };
 
 #endif // AMBERLENS0X344_H

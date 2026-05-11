@@ -56,7 +56,7 @@ public:
 protected:
 	HelperAt0x368 m_unk0x368;        // 0x368
 	GolStringTable m_unk0x638;       // 0x638
-	BronzeFalcon0xc8770* m_unk0x64c; // 0x64c
+	BronzeFalcon0xc8770* m_renderer; // 0x64c
 	AmberLens0x344* m_unk0x650;      // 0x650
 	undefined4 m_unk0x654;           // 0x654
 };

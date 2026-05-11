@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(ObscureAnchor0x5c, 0x5c)
 // FUNCTION: LEGORACERS 0x0046f080
 ObscureAnchor0x5c::ObscureAnchor0x5c()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046f0f0
@@ -15,10 +15,10 @@ ObscureAnchor0x5c::~ObscureAnchor0x5c()
 }
 
 // FUNCTION: LEGORACERS 0x0046f140
-void ObscureAnchor0x5c::VTable0x00()
+void ObscureAnchor0x5c::Reset()
 {
 	m_unk0x58 = 0;
-	ObscureVantage0x58::VTable0x00();
+	ObscureVantage0x58::Reset();
 }
 
 // STUB: LEGORACERS 0x0046f1a0

@@ -10,7 +10,7 @@
 class ObscureZebra0xa4 : public ObscureVantage0x58 {
 public:
 	ObscureZebra0xa4();
-	void VTable0x00() override;                   // vtable+0x00
+	void Reset() override;                        // vtable+0x00
 	~ObscureZebra0xa4() override;                 // vtable+0x04
 	void VTable0x14(Rect*) override;              // vtable+0x14
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38

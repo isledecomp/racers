@@ -67,8 +67,8 @@ void MenuManager::Reset()
 	m_unk0x04.m_context = NULL;
 	m_unk0x04.m_unk0x258.GetUnk0x1cfc().Reset();
 	m_unk0x04.m_unk0x4b40.Reset();
-	m_unk0x4cd4 = NULL;
-	m_unk0x4cd8 = NULL;
+	m_golExport = NULL;
+	m_renderer = NULL;
 	m_soundGroup = NULL;
 	m_unk0x4dc8 = NULL;
 	m_imageTable = NULL;
@@ -84,8 +84,8 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 {
 	LegoBool32 flag = FALSE;
 	m_unk0x04.m_context = p_context;
-	m_unk0x4cd4 = p_context->m_golApp->GetGolExport();
-	m_unk0x4cd8 = p_context->m_golApp->GetRenderer();
+	m_golExport = p_context->m_golApp->GetGolExport();
+	m_renderer = p_context->m_golApp->GetRenderer();
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -108,7 +108,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 		flag = TRUE;
 	}
 
-	m_unk0x4cd8->VTable0x34(7, g_unk0x4beb78);
+	m_renderer->VTable0x34(7, g_unk0x4beb78);
 
 	m_unk0x04.m_unk0x04.Allocate(10);
 	m_unk0x04.m_unk0x04.Push(m_unk0x04.m_context->m_unk0x1c);
@@ -147,7 +147,7 @@ LegoS32 MenuManager::Shutdown()
 		ShutdownInputBindings();
 		ShutdownAudio();
 		FUN_0042d080();
-		m_unk0x4cd8->VTable0x38();
+		m_renderer->VTable0x38();
 		Reset();
 	}
 
@@ -163,9 +163,9 @@ void MenuManager::FUN_0042cd60()
 	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);
 	m_unk0x4d24.CopyToBuf8(name);
 
-	initStruct.m_golExport = m_unk0x4cd4;
-	initStruct.m_renderer = m_unk0x4cd8;
-	initStruct.m_rendererObject = m_unk0x4cd8->FindImageByName(name);
+	initStruct.m_golExport = m_golExport;
+	initStruct.m_renderer = m_renderer;
+	initStruct.m_rendererObject = m_renderer->FindImageByName(name);
 	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
 	initStruct.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
 
@@ -178,7 +178,7 @@ void MenuManager::FUN_0042cde0()
 	GolVec3 position;
 	GolVec3 forward;
 	GolVec3 right;
-	AmberLens0x344* lens = m_unk0x4cd4->VTable0x20();
+	AmberLens0x344* lens = m_golExport->VTable0x20();
 
 	lens->m_unk0x08 = m_unk0x04.m_context->GetUnk0x0c();
 	lens->m_flags |= AmberLens0x344::c_flagBit1;
@@ -201,15 +201,15 @@ void MenuManager::FUN_0042cde0()
 	lens->m_flags |= AmberLens0x344::c_flagBit0;
 	lens->GetUnk0x04()->VTable0x24(&right, &forward);
 	lens->m_flags |= AmberLens0x344::c_flagBit0;
-	m_unk0x4cd8->VTable0x20(lens);
+	m_renderer->VTable0x20(lens);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0
 void MenuManager::ReleaseRendererObject()
 {
-	AmberLens0x344* object = m_unk0x4cd8->GetUnk0x0c();
+	AmberLens0x344* object = m_renderer->GetUnk0x0c();
 	if (object) {
-		m_unk0x4cd4->VTable0x54(object);
+		m_golExport->VTable0x54(object);
 	}
 }
 
@@ -274,14 +274,14 @@ void MenuManager::ShutdownAudio()
 void MenuManager::LoadMenuImages()
 {
 	if (!m_imageTable) {
-		m_imageTable = m_unk0x4cd4->VTable0x34();
+		m_imageTable = m_golExport->VTable0x34();
 	}
 
 	if (!m_fontTable) {
-		m_fontTable = m_unk0x4cd4->VTable0x38();
+		m_fontTable = m_golExport->VTable0x38();
 	}
 
-	m_imageTable->LoadImageDefinitions(m_unk0x4cd8, "GImages", m_unk0x04.m_context->m_unk0x18);
+	m_imageTable->LoadImageDefinitions(m_renderer, "GImages", m_unk0x04.m_context->m_unk0x18);
 }
 
 // FUNCTION: LEGORACERS 0x0042d080
@@ -289,13 +289,13 @@ void MenuManager::FUN_0042d080()
 {
 	if (m_imageTable) {
 		m_imageTable->Clear();
-		m_unk0x4cd4->VTable0x68(m_imageTable);
+		m_golExport->VTable0x68(m_imageTable);
 		m_imageTable = NULL;
 	}
 
 	if (m_fontTable) {
 		m_fontTable->Clear();
-		m_unk0x4cd4->VTable0x6c(m_fontTable);
+		m_golExport->VTable0x6c(m_fontTable);
 		m_fontTable = NULL;
 	}
 }
@@ -382,14 +382,14 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 
 		menuTextStrings->Load("menutext.srf");
 		raceStrings->Load("circuit.srf");
-		m_fontTable->LoadFontDefinitions(m_unk0x4cd8, "GFonts", m_unk0x04.m_context->m_unk0x18);
+		m_fontTable->LoadFontDefinitions(m_renderer, "GFonts", m_unk0x04.m_context->m_unk0x18);
 
 		if (g_hashTable) {
 			g_hashTable->SetCurrentEntryFromString("MENUDATA");
 		}
 
 		CeruleanEmperor0x4c::ResourceLoadParams params;
-		params.m_renderer = m_unk0x4cd8;
+		params.m_renderer = m_renderer;
 		params.m_unk0x04 = 0;
 		params.m_fileName = "gstyles";
 		params.m_binary = m_unk0x04.m_context->m_unk0x18;
@@ -406,8 +406,8 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 
 	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d30, p_menuId);
 
-	m_unk0x4d98.m_golExport = m_unk0x4cd4;
-	m_unk0x4d98.m_renderer = m_unk0x4cd8;
+	m_unk0x4d98.m_golExport = m_golExport;
+	m_unk0x4d98.m_renderer = m_renderer;
 	m_unk0x4d98.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
 	m_unk0x4d98.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
 	m_unk0x4d98.m_soundGroupBinding = &m_soundGroupBinding;
@@ -420,7 +420,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_menuTextStrings = &m_menuTextStrings;
 
 	if (m_unk0x4dc8) {
-		m_unk0x4cd8->VTable0xf4();
+		m_renderer->VTable0xf4();
 		m_unk0x4dc8->Destroy();
 
 		if (m_unk0x4dc8) {
@@ -447,7 +447,7 @@ void MenuManager::Run()
 	rendererState.m_grn = 0;
 	rendererState.m_blu = 0;
 	rendererState.m_alp = 0;
-	m_unk0x4cd8->VTable0x1c(rendererState);
+	m_renderer->VTable0x1c(rendererState);
 	m_unk0x4dd0 = TRUE;
 
 	while (m_unk0x4dd0) {
@@ -482,9 +482,9 @@ void MenuManager::Run()
 
 			menuAnimations = &m_unk0x04.m_menuAnimations;
 			menuAnimations->Update(frameDeltaMs);
-			m_unk0x4cd8->VTable0x54(TRUE);
-			m_unk0x4cd8->VTable0xec(6);
-			m_unk0x4cd8->VTable0xe8(TRUE);
+			m_renderer->VTable0x54(TRUE);
+			m_renderer->VTable0xec(6);
+			m_renderer->VTable0xe8(TRUE);
 
 			if (m_unk0x4bd0.GetUnk0x9c() > 0) {
 				m_unk0x4bd0.FUN_00468e20();
@@ -493,9 +493,9 @@ void MenuManager::Run()
 				m_unk0x4c74.FUN_00469550();
 			}
 
-			menuAnimations->Draw(m_unk0x4cd8);
-			m_unk0x4cd8->VTable0xe4();
-			m_unk0x4cd8->VTable0xf0();
+			menuAnimations->Draw(m_renderer);
+			m_renderer->VTable0xe4();
+			m_renderer->VTable0xf0();
 
 			if (golApp->GetInputManager()->GetKeyboard()->GetButtonState(
 					InputDevice::MakeEvent(InputDevice::c_sourceKeyboard, 0xb7)
@@ -507,7 +507,7 @@ void MenuManager::Run()
 		}
 	}
 
-	m_unk0x4cd8->VTable0xf4();
+	m_renderer->VTable0xf4();
 	if (m_unk0x4dc8) {
 		m_unk0x4dc8->Destroy();
 		delete m_unk0x4dc8;

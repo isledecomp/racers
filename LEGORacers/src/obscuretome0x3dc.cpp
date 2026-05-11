@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(ObscureTome0x3dc, 0x3dc)
 // FUNCTION: LEGORACERS 0x0046ebb0
 ObscureTome0x3dc::ObscureTome0x3dc()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046ec50

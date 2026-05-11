@@ -8,7 +8,7 @@ Rect g_unk0x4c7650;
 // FUNCTION: LEGORACERS 0x004729b0
 ObscureVantage0x58::ObscureVantage0x58()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004729f0
@@ -18,18 +18,18 @@ ObscureVantage0x58::~ObscureVantage0x58()
 }
 
 // FUNCTION: LEGORACERS 0x00472a00
-void ObscureVantage0x58::VTable0x00()
+void ObscureVantage0x58::Reset()
 {
 	m_unk0x54 &= 0xfe;
-	m_unk0x1c = (m_unk0x1c & 0xf2) | 2;
+	m_flags = (m_flags & 0xf2) | 2;
 	m_unk0x20 = 0;
 	m_unk0x24 = 0;
 	m_unk0x18 = 0;
-	m_unk0x14 = 0;
-	m_unk0x10 = 0;
-	m_unk0x0c = 0;
-	m_unk0x08 = 0;
-	m_unk0x04 = 0;
+	m_nextSibling = 0;
+	m_prevSibling = 0;
+	m_lastChild = 0;
+	m_firstChild = 0;
+	m_parent = 0;
 	m_unk0x30 = 0;
 	m_unk0x28 = 0;
 	m_unk0x48 = 1.0;
@@ -45,13 +45,13 @@ void ObscureVantage0x58::VTable0x00()
 // FUNCTION: LEGORACERS 0x00472ad0
 undefined4 ObscureVantage0x58::VTable0x08()
 {
-	if (m_unk0x1c & 1) {
-		FUN_00472b50();
+	if (m_flags & 1) {
+		RemoveFromParent();
 		if (m_unk0x28) {
 			m_unk0x28->VTable0x04(this);
 		}
 
-		VTable0x00();
+		Reset();
 	}
 
 	return 1;
@@ -70,61 +70,61 @@ undefined4 ObscureVantage0x58::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00472b00
-void ObscureVantage0x58::VTable0x0c(ObscureVantage0x58* p_param)
+void ObscureVantage0x58::SetParent(ObscureVantage0x58* p_param)
 {
-	if (m_unk0x1c & 4) {
-		FUN_00472b50();
+	if (m_flags & 4) {
+		RemoveFromParent();
 	}
 
-	m_unk0x1c |= 4;
-	m_unk0x04 = p_param;
+	m_flags |= 4;
+	m_parent = p_param;
 
-	if (m_unk0x04 == NULL) {
+	if (m_parent == NULL) {
 		return;
 	}
 
-	if (m_unk0x04->m_unk0x0c == NULL) {
-		m_unk0x04->m_unk0x08 = this;
-		m_unk0x04->m_unk0x0c = this;
+	if (m_parent->m_lastChild == NULL) {
+		m_parent->m_firstChild = this;
+		m_parent->m_lastChild = this;
 		return;
 	}
 
-	m_unk0x10 = m_unk0x04->m_unk0x0c;
-	m_unk0x10->m_unk0x14 = this;
-	m_unk0x04->m_unk0x0c = this;
+	m_prevSibling = m_parent->m_lastChild;
+	m_prevSibling->m_nextSibling = this;
+	m_parent->m_lastChild = this;
 }
 
 // FUNCTION: LEGORACERS 0x00472b50
-void ObscureVantage0x58::FUN_00472b50()
+void ObscureVantage0x58::RemoveFromParent()
 {
-	if (!(m_unk0x1c & 4)) {
+	if (!(m_flags & 4)) {
 		return;
 	}
 
-	if (m_unk0x10) {
-		m_unk0x10->m_unk0x14 = m_unk0x14;
+	if (m_prevSibling) {
+		m_prevSibling->m_nextSibling = m_nextSibling;
 	}
-	else if (m_unk0x04) {
-		m_unk0x04->m_unk0x08 = m_unk0x14;
+	else if (m_parent) {
+		m_parent->m_firstChild = m_nextSibling;
 	}
 
-	if (m_unk0x14) {
-		m_unk0x14->m_unk0x10 = m_unk0x10;
-		m_unk0x14 = 0;
-		m_unk0x10 = 0;
-		m_unk0x04 = 0;
-		m_unk0x1c &= 0xfb;
+	if (m_nextSibling) {
+		m_nextSibling->m_prevSibling = m_prevSibling;
+		m_nextSibling = 0;
+		m_prevSibling = 0;
+		m_parent = 0;
+		m_flags &= 0xfb;
 		return;
 	}
 
-	if (m_unk0x04) {
-		m_unk0x04->m_unk0x0c = m_unk0x10;
+	if (m_parent) {
+		m_parent->m_lastChild = m_prevSibling;
 	}
 
-	m_unk0x14 = 0;
-	m_unk0x10 = 0;
-	m_unk0x04 = 0;
-	m_unk0x1c &= 0xfb;
+	m_nextSibling = 0;
+	m_prevSibling = 0;
+	m_parent = 0;
+	m_flags &= 0xfb;
 }
 
 // FUNCTION: LEGORACERS 0x00472c40
@@ -135,12 +135,12 @@ undefined4 ObscureVantage0x58::FUN_00472c40(LegoS32 p_x, LegoS32 p_y)
 }
 
 // FUNCTION: LEGORACERS 0x00472e40
-ObscureVantage0x58* ObscureVantage0x58::FUN_00472e40()
+ObscureVantage0x58* ObscureVantage0x58::FindRoot()
 {
 	ObscureVantage0x58* result = this;
 
-	while (result->m_unk0x04) {
-		result = result->m_unk0x04;
+	while (result->m_parent) {
+		result = result->m_parent;
 	}
 
 	return result;
@@ -149,11 +149,11 @@ ObscureVantage0x58* ObscureVantage0x58::FUN_00472e40()
 // FUNCTION: LEGORACERS 0x00472e60
 ObscureVantage0x58* ObscureVantage0x58::FUN_00472e60()
 {
-	ObscureVantage0x58* result = FUN_00472e40();
+	ObscureVantage0x58* result = FindRoot();
 	ObscureVantage0x58* child = result->m_unk0x18;
 
 	if (!child) {
-		return (result->m_unk0x1c & 0x08) ? result : NULL;
+		return (result->m_flags & 0x08) ? result : NULL;
 	}
 
 	do {
@@ -165,7 +165,7 @@ ObscureVantage0x58* ObscureVantage0x58::FUN_00472e60()
 }
 
 // FUNCTION: LEGORACERS 0x00472e90
-Rect* ObscureVantage0x58::FUN_00472e90()
+Rect* ObscureVantage0x58::GetGlobalRect()
 {
 	ObscureVantage0x58* node = this;
 
@@ -175,7 +175,7 @@ Rect* ObscureVantage0x58::FUN_00472e90()
 	while (node) {
 		g_unk0x4c7650.m_left += node->m_unk0x34.m_left;
 		g_unk0x4c7650.m_top += node->m_unk0x34.m_top;
-		node = node->m_unk0x04;
+		node = node->m_parent;
 	}
 
 	g_unk0x4c7650.m_right = (m_unk0x34.m_right - m_unk0x34.m_left) + g_unk0x4c7650.m_left;
@@ -209,7 +209,7 @@ void ObscureVantage0x58::VTable0x14(Rect* p_param)
 }
 
 // FUNCTION: LEGORACERS 0x004730a0
-LegoBool32 ObscureVantage0x58::FUN_004730a0(Rect* p_rect, Rect* p_arg)
+LegoBool32 ObscureVantage0x58::ClipRect(Rect* p_rect, Rect* p_arg)
 {
 	if (p_rect->m_left >= m_unk0x34.m_right) {
 		return FALSE;
@@ -279,7 +279,7 @@ void ObscureVantage0x58::FUN_004731b0(undefined4& p_x, undefined4& p_y)
 // FUNCTION: LEGORACERS 0x004731d0
 undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 {
-	ObscureVantage0x58* child = m_unk0x08;
+	ObscureVantage0x58* child = m_firstChild;
 	if (VTable0x3c(p_unk0x04)) {
 		return TRUE;
 	}
@@ -289,7 +289,7 @@ undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 			return TRUE;
 		}
 
-		child = child->m_unk0x14;
+		child = child->m_nextSibling;
 	}
 
 	return FALSE;
@@ -299,15 +299,15 @@ undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 undefined4 ObscureVantage0x58::VTable0x1c(Rect* p_rect, Rect* p_arg)
 {
 	Rect rect = *p_rect;
-	ObscureVantage0x58* child = m_unk0x08;
+	ObscureVantage0x58* child = m_firstChild;
 	Rect arg = *p_arg;
 
-	if (FUN_004730a0(&rect, &arg)) {
+	if (ClipRect(&rect, &arg)) {
 		FUN_00473160(&rect);
 
-		undefined flags = m_unk0x1c;
+		undefined flags = m_flags;
 		if ((flags & 2) && (!(flags & 0x10) || !VTable0x38(&rect, &arg))) {
-			for (; child; child = child->m_unk0x14) {
+			for (; child; child = child->m_nextSibling) {
 				if (child->VTable0x1c(&rect, &arg)) {
 					break;
 				}
@@ -321,19 +321,19 @@ undefined4 ObscureVantage0x58::VTable0x1c(Rect* p_rect, Rect* p_arg)
 // FUNCTION: LEGORACERS 0x004732d0
 undefined4 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	ObscureVantage0x58* child = m_unk0x08;
+	ObscureVantage0x58* child = m_firstChild;
 	undefined4 x = p_x;
 	undefined4 y = p_y;
 
 	FUN_004731b0(x, y);
 
-	if ((m_unk0x1c & 2) && FUN_00472c40(x, y)) {
+	if ((m_flags & 2) && FUN_00472c40(x, y)) {
 		while (child) {
 			if (child->VTable0x20(p_param1, x, y)) {
 				return TRUE;
 			}
 
-			child = child->m_unk0x14;
+			child = child->m_nextSibling;
 		}
 
 		if (VTable0x2c(p_param1, x, y)) {
@@ -347,11 +347,11 @@ undefined4 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1,
 // FUNCTION: LEGORACERS 0x00473370
 undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	ObscureVantage0x58* child = m_unk0x08;
+	ObscureVantage0x58* child = m_firstChild;
 	undefined4 x = p_x;
 	undefined4 y = p_y;
 
-	if (!(m_unk0x1c & 2)) {
+	if (!(m_flags & 2)) {
 		return FALSE;
 	}
 
@@ -362,7 +362,7 @@ undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item* p_param1
 			return TRUE;
 		}
 
-		child = child->m_unk0x14;
+		child = child->m_nextSibling;
 	}
 
 	return VTable0x30(p_param1, x, y);

@@ -414,7 +414,7 @@ undefined4 GolDrawDPState::VTable0x58()
 		}
 	}
 
-	if (!(m_unk0x354.GetUnk0x04() & BronzeFalcon0xc8770::c_flagBit0)) {
+	if (!(m_unk0x354.GetFlags() & BronzeFalcon0xc8770::c_flagBit0)) {
 		undefined4 result = m_unk0x354.FUN_10007d90(this, &m_unk0x2fc, m_flags);
 		if (result != 0) {
 			return result;

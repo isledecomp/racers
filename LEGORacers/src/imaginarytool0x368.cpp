@@ -239,7 +239,7 @@ void ImaginaryTool0x368::Reset()
 {
 	m_unk0x360 = 0xffff;
 	m_menuId = 0;
-	m_unk0x354 = NULL;
+	m_context = NULL;
 	m_unk0x35c = NULL;
 	m_unk0x358 = 0;
 	m_unk0x364 = FALSE;
@@ -251,8 +251,8 @@ LegoBool32 ImaginaryTool0x368::VTable0x8c(MenuToolContext0x4bc8* p_context, Menu
 {
 	GolString string;
 
-	m_unk0x354 = p_context;
-	LegoBool32 result = ImaginaryNotion0x290::VTable0x70(p_createParams);
+	m_context = p_context;
+	LegoBool32 result = ImaginaryNotion0x290::Initialize(p_createParams);
 	VTable0x80();
 
 	return result;
@@ -265,12 +265,12 @@ LegoBool32 ImaginaryTool0x368::Destroy()
 		return TRUE;
 	}
 
-	if (m_unk0x354->m_unk0x4b40.HasMenuResources()) {
-		m_unk0x354->m_unk0x4b40.RefreshMenuResources();
+	if (m_context->m_unk0x4b40.HasMenuResources()) {
+		m_context->m_unk0x4b40.RefreshMenuResources();
 	}
 
-	m_unk0xb8->VTable0x28();
-	m_unk0xb8->VTable0x60();
+	m_renderer->VTable0x28();
+	m_renderer->VTable0x60();
 	return ImaginaryNotion0x290::Destroy();
 }
 

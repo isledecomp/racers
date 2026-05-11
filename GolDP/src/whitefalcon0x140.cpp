@@ -163,7 +163,7 @@ WhiteFalcon0x140::WhiteFalcon0x140()
 	m_fontLists = NULL;
 	m_nextDrawStateRenderer = NULL;
 	m_unk0x0c = NULL;
-	m_unk0x04 = 0;
+	m_flags = 0;
 	m_unk0x0a = 0;
 	::memset(&m_unk0x4c, 0, sizeof(m_unk0x4c));
 	m_unk0x11c = 0;
@@ -767,7 +767,7 @@ void WhiteFalcon0x140::VTable0xa8(undefined4 p_param1, undefined4 p_param2, unde
 // FUNCTION: GOLDP 0x10029850
 void WhiteFalcon0x140::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 {
-	m_unk0x04 |= c_flagBit14;
+	m_flags |= c_flagBit14;
 	m_unk0x0a = p_alpha;
 	m_unk0x08 = p_flags;
 }
@@ -775,26 +775,26 @@ void WhiteFalcon0x140::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 // FUNCTION: GOLDP 0x10029870
 void WhiteFalcon0x140::ClearAlphaOverride()
 {
-	m_unk0x04 &= ~c_flagBit14;
+	m_flags &= ~c_flagBit14;
 }
 
 // FUNCTION: GOLDP 0x10029880
 void WhiteFalcon0x140::VTable0xc0(const ColorRGBA& p_param)
 {
 	m_unk0x118 = p_param;
-	m_unk0x04 |= c_flagBit19;
+	m_flags |= c_flagBit19;
 }
 
 // FUNCTION: GOLDP 0x100298a0
 void WhiteFalcon0x140::VTable0xc4()
 {
-	m_unk0x04 &= ~c_flagBit19;
+	m_flags &= ~c_flagBit19;
 }
 
 // FUNCTION: GOLDP 0x100298b0
 void WhiteFalcon0x140::VTable0x28()
 {
-	m_unk0x04 &= ~c_flagBit15;
+	m_flags &= ~c_flagBit15;
 	m_unk0x11c = 0;
 	m_unk0x120 = 0;
 	m_unk0x124[0] = 0;
@@ -803,7 +803,7 @@ void WhiteFalcon0x140::VTable0x28()
 // FUNCTION: GOLDP 0x100298d0
 void WhiteFalcon0x140::VTable0x2c(const Field0x124* p_param)
 {
-	m_unk0x04 |= c_flagBit15;
+	m_flags |= c_flagBit15;
 	m_unk0x120 = p_param;
 }
 
@@ -811,7 +811,7 @@ void WhiteFalcon0x140::VTable0x2c(const Field0x124* p_param)
 void WhiteFalcon0x140::VTable0x30(const Field0x124* p_param)
 {
 	if (m_unk0x11c < 7) {
-		m_unk0x04 |= c_flagBit15;
+		m_flags |= c_flagBit15;
 		m_unk0x124[m_unk0x11c] = p_param;
 		m_unk0x11c++;
 	}
@@ -820,13 +820,13 @@ void WhiteFalcon0x140::VTable0x30(const Field0x124* p_param)
 // FUNCTION: GOLDP 0x10029930
 void WhiteFalcon0x140::VTable0x44()
 {
-	m_unk0x04 |= c_flagBit18;
+	m_flags |= c_flagBit18;
 }
 
 // FUNCTION: GOLDP 0x10029940
 void WhiteFalcon0x140::VTable0x48()
 {
-	m_unk0x04 &= ~c_flagBit18;
+	m_flags &= ~c_flagBit18;
 }
 
 // FUNCTION: GOLDP 0x10029960

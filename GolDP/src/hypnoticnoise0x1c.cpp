@@ -142,7 +142,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 			flags = flags | UtopianPan0xa4::c_flagBit6;
 		}
 
-		if ((flags & UtopianPan0xa4::c_flagBit5) && (p_renderer->GetUnk0x04() & BronzeFalcon0xc8770::c_flagBit9)) {
+		if ((flags & UtopianPan0xa4::c_flagBit5) && (p_renderer->GetFlags() & BronzeFalcon0xc8770::c_flagBit9)) {
 			flags = flags | UtopianPan0xa4::c_flagBit7;
 		}
 

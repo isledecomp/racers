@@ -22,7 +22,7 @@ undefined4 ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
 // FUNCTION: LEGORACERS 0x00471c30
 ObscureIcon0x1a8::ObscureIcon0x1a8()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00471ca0
@@ -32,7 +32,7 @@ ObscureIcon0x1a8::~ObscureIcon0x1a8()
 }
 
 // STUB: LEGORACERS 0x00471cf0
-void ObscureIcon0x1a8::VTable0x00()
+void ObscureIcon0x1a8::Reset()
 {
 	STUB(0x00471cf0);
 }

@@ -69,7 +69,7 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x34(OnyxCircularBuffer0x1
 }
 
 // FUNCTION: LEGORACERS 0x004796a0
-ImaginaryChisel0x658::ImaginaryChisel0x658() : m_unk0x64c(NULL), m_unk0x650(NULL), m_unk0x654(0)
+ImaginaryChisel0x658::ImaginaryChisel0x658() : m_renderer(NULL), m_unk0x650(NULL), m_unk0x654(0)
 {
 }
 
@@ -86,9 +86,9 @@ LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 		Destroy();
 	}
 
-	m_unk0x64c = p_createParams->m_renderer;
+	m_renderer = p_createParams->m_renderer;
 	p_context->m_context->m_golApp->ClearFileSourceDirectoryCaches();
-	m_unk0x650 = m_unk0x64c->GetUnk0x0c();
+	m_unk0x650 = m_renderer->GetUnk0x0c();
 
 	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
@@ -97,7 +97,7 @@ LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 	LegoChar fontName[8];
 	::strncpy(fontName, "font_ths", sizeof(fontName));
 
-	GolFont0xa0* font = m_unk0x64c->FindFontByName(fontName);
+	GolFont0xa0* font = m_renderer->FindFontByName(fontName);
 	if (font) {
 		font->SetColor(0xff, 0xff, 0xff, 0xff);
 	}
@@ -163,11 +163,11 @@ LegoBool32 ImaginaryChisel0x658::Destroy()
 	m_unk0x638.ReleaseOwnedBuffers();
 	m_unk0x368.VTable0x08();
 
-	if (m_unk0x64c && m_unk0x650) {
-		m_unk0x64c->VTable0x20(m_unk0x650);
+	if (m_renderer && m_unk0x650) {
+		m_renderer->VTable0x20(m_unk0x650);
 	}
 
-	m_unk0x64c = NULL;
+	m_renderer = NULL;
 	m_unk0x650 = NULL;
 	return ImaginaryTool0x368::Destroy();
 }
@@ -191,6 +191,6 @@ LegoBool32 ImaginaryChisel0x658::VTable0x78(undefined4 p_unk0x04)
 void ImaginaryChisel0x658::VTable0x84()
 {
 	m_unk0xc4->SetUnk0x41(TRUE);
-	m_unk0x354->m_unk0x04.Pop();
-	m_unk0x354->m_unk0x04.Push(2);
+	m_context->m_unk0x04.Pop();
+	m_context->m_unk0x04.Push(2);
 }

@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
 // FUNCTION: LEGORACERS 0x004656e0
 ObscureSigil0xdc::ObscureSigil0xdc()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00465750
@@ -15,7 +15,7 @@ ObscureSigil0xdc::~ObscureSigil0xdc()
 }
 
 // FUNCTION: LEGORACERS 0x004657a0
-void ObscureSigil0xdc::VTable0x00()
+void ObscureSigil0xdc::Reset()
 {
 	m_unk0x88 = 5;
 	m_unk0x5c = 0;
@@ -38,7 +38,7 @@ void ObscureSigil0xdc::VTable0x00()
 	m_unk0x90 = 0;
 	m_unk0x98 = -1;
 
-	ObscureVantage0x58::VTable0x00();
+	ObscureVantage0x58::Reset();
 }
 
 // STUB: LEGORACERS 0x00465890

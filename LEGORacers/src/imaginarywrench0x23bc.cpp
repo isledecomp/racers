@@ -119,48 +119,48 @@ void ImaginaryWrench0x23bc::ApplyCheatCode()
 		if (strcmp(g_cheatNames[i], buf) == 0) {
 			if (i < sizeOfArray(g_cheatNames) - 1) {
 				LegoU32 flag = 1 << i;
-				LegoU32 current = m_unk0x354->m_context->m_unk0x20;
+				LegoU32 current = m_context->m_context->m_unk0x20;
 
 				if (current & flag) {
-					m_unk0x354->m_context->m_unk0x20 = current & ~flag;
+					m_context->m_context->m_unk0x20 = current & ~flag;
 				}
 				else {
-					m_unk0x354->m_context->m_unk0x20 = current | flag;
+					m_context->m_context->m_unk0x20 = current | flag;
 
 					switch (flag) {
 					case c_pgllrd:
-						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllyll | c_pgllgrn | c_rpcrnly);
+						m_context->m_context->m_unk0x20 &= ~(c_pgllyll | c_pgllgrn | c_rpcrnly);
 						break;
 					case c_pgllyll:
-						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllgrn | c_rpcrnly);
+						m_context->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllgrn | c_rpcrnly);
 						break;
 					case c_pgllgrn:
-						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_rpcrnly);
+						m_context->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_rpcrnly);
 						break;
 					case c_rpcrnly:
-						m_unk0x354->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_pgllgrn | c_mxpmx);
+						m_context->m_context->m_unk0x20 &= ~(c_pgllrd | c_pgllyll | c_pgllgrn | c_mxpmx);
 						break;
 					case c_mxpmx:
-						m_unk0x354->m_context->m_unk0x20 &= ~c_rpcrnly;
+						m_context->m_context->m_unk0x20 &= ~c_rpcrnly;
 						break;
 					case c_nwhls: {
-						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
+						LegoU32 v = m_context->m_context->m_unk0x20;
 						if ((v & c_nchsss) && (v & c_ndrvr)) {
-							m_unk0x354->m_context->m_unk0x20 = v & ~c_ndrvr;
+							m_context->m_context->m_unk0x20 = v & ~c_ndrvr;
 						}
 						break;
 					}
 					case c_nchsss: {
-						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
+						LegoU32 v = m_context->m_context->m_unk0x20;
 						if ((v & c_nwhls) && (v & c_ndrvr)) {
-							m_unk0x354->m_context->m_unk0x20 = v & ~c_nwhls;
+							m_context->m_context->m_unk0x20 = v & ~c_nwhls;
 						}
 						break;
 					}
 					case c_ndrvr: {
-						LegoU32 v = m_unk0x354->m_context->m_unk0x20;
+						LegoU32 v = m_context->m_context->m_unk0x20;
 						if ((v & c_nchsss) && (v & c_nwhls)) {
-							m_unk0x354->m_context->m_unk0x20 = v & ~c_nchsss;
+							m_context->m_context->m_unk0x20 = v & ~c_nchsss;
 						}
 						break;
 					}
@@ -168,7 +168,7 @@ void ImaginaryWrench0x23bc::ApplyCheatCode()
 				}
 			}
 			else if (i == sizeOfArray(g_cheatNames) - 1) {
-				m_unk0x354->m_context->m_unk0x20 = 0;
+				m_context->m_context->m_unk0x20 = 0;
 			}
 		}
 	}

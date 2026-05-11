@@ -47,14 +47,12 @@ LegoBool32 ImaginaryFeather0x658::VTable0x78(undefined4)
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED
 LegoBool32 ImaginaryFeather0x658::Destroy()
 {
-	if (m_unk0x354) {
-		if (m_unk0x354->m_unk0x4b40.GetMusicGroup()) {
-			if (m_unk0x354->m_unk0x4b40.GetMusicInstance()) {
-				m_unk0x354->m_unk0x4b40.GetMusicInstance()->Stop();
-				m_unk0x354->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(
-					m_unk0x354->m_unk0x4b40.GetMusicInstance()
-				);
-				m_unk0x354->m_unk0x4b40.SetMusicInstance(NULL);
+	if (m_context) {
+		if (m_context->m_unk0x4b40.GetMusicGroup()) {
+			if (m_context->m_unk0x4b40.GetMusicInstance()) {
+				m_context->m_unk0x4b40.GetMusicInstance()->Stop();
+				m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
+				m_context->m_unk0x4b40.SetMusicInstance(NULL);
 			}
 		}
 	}

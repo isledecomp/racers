@@ -149,17 +149,17 @@ ImaginaryNotion0x290::~ImaginaryNotion0x290()
 // FUNCTION: LEGORACERS 0x0046b480
 void ImaginaryNotion0x290::Reset()
 {
-	m_unk0xd4 = 0;
-	m_unk0xd0 = NULL;
-	m_unk0xb4 = 0;
-	m_unk0xb8 = 0;
+	m_menuTextStrings = 0;
+	m_menuNameStrings = NULL;
+	m_golExport = 0;
+	m_renderer = 0;
 	m_unk0xbc = NULL;
-	m_unk0xc0 = 0;
-	m_unk0x280 = 0;
-	m_unk0xcc = NULL;
+	m_fontTable = 0;
+	m_soundGroupBinding = 0;
+	m_inputManager = NULL;
 	m_unk0x284 = 0;
 	m_unk0xc4 = NULL;
-	m_unk0x54 = 0;
+	m_menuStyles = 0;
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
 	m_unk0x58.Clear();
@@ -168,25 +168,25 @@ void ImaginaryNotion0x290::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046b500
-LegoBool32 ImaginaryNotion0x290::VTable0x70(MenuToolCreateParams0x30* p_createParams)
+LegoBool32 ImaginaryNotion0x290::Initialize(MenuToolCreateParams0x30* p_createParams)
 {
-	m_unk0xb4 = p_createParams->m_golExport;
-	m_unk0xb8 = p_createParams->m_renderer;
-	m_unk0x280 = p_createParams->m_soundGroupBinding;
-	m_unk0xcc = p_createParams->m_inputManager;
+	m_golExport = p_createParams->m_golExport;
+	m_renderer = p_createParams->m_renderer;
+	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
+	m_inputManager = p_createParams->m_inputManager;
 	m_unk0x288 = p_createParams->m_unk0x2c;
 	m_unk0x284 = p_createParams->m_unk0x20;
 	m_unk0xc4 = (FieldAt0xc4*) p_createParams->m_unk0x24;
 	m_unk0x28c = p_createParams->m_menuId;
-	m_unk0x54 = p_createParams->m_menuStyles;
-	m_unk0xc8 = p_createParams->m_inputBindingContainer;
-	m_unk0xd4 = p_createParams->m_menuTextStrings;
-	m_unk0xd0 = p_createParams->m_menuNameStrings;
+	m_menuStyles = p_createParams->m_menuStyles;
+	m_inputBindingContainer = p_createParams->m_inputBindingContainer;
+	m_menuTextStrings = p_createParams->m_menuTextStrings;
+	m_menuNameStrings = p_createParams->m_menuNameStrings;
 
 	if (FUN_0046b630() && FUN_0046b6e0(p_createParams) && VTable0x58(p_createParams)) {
 		VTable0x4c();
-		m_unk0xcc->PollDevices(0);
-		m_unk0xc8->ClearQueue();
+		m_inputManager->PollDevices(0);
+		m_inputBindingContainer->ClearQueue();
 		m_unk0x04 = TRUE;
 	}
 
@@ -199,12 +199,12 @@ LegoBool32 ImaginaryNotion0x290::Destroy()
 	if (m_unk0x04) {
 		if (m_unk0xbc) {
 			m_unk0xbc->Clear();
-			m_unk0xb4->VTable0x68(m_unk0xbc);
+			m_golExport->VTable0x68(m_unk0xbc);
 		}
 
-		if (m_unk0xc0) {
-			m_unk0xc0->Clear();
-			m_unk0xb4->VTable0x6c(m_unk0xc0);
+		if (m_fontTable) {
+			m_fontTable->Clear();
+			m_golExport->VTable0x6c(m_fontTable);
 		}
 
 		Reset();
@@ -216,16 +216,16 @@ LegoBool32 ImaginaryNotion0x290::Destroy()
 // FUNCTION: LEGORACERS 0x0046b630
 LegoBool32 ImaginaryNotion0x290::FUN_0046b630()
 {
-	GolCommonDrawState* drawState = m_unk0xb8->GetDrawState();
+	GolCommonDrawState* drawState = m_renderer->GetDrawState();
 	ObscureIcon0x1a8::CreateParams0x84 createParams;
 
 	memset(&createParams, 0, sizeof(createParams));
 	memcpy(&createParams, g_unk0x4b2240, sizeof(g_unk0x4b2240));
 
-	createParams.m_golExport = m_unk0xb4;
-	createParams.m_renderer = m_unk0xb8;
+	createParams.m_golExport = m_golExport;
+	createParams.m_renderer = m_renderer;
 	createParams.m_unk0x38 = TRUE;
-	createParams.m_soundGroupBinding = m_unk0x280;
+	createParams.m_soundGroupBinding = m_soundGroupBinding;
 	createParams.m_width = drawState->m_width;
 	createParams.m_height = drawState->m_height;
 	createParams.m_eventHandler = this;
@@ -247,7 +247,7 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_create
 		return TRUE;
 	}
 
-	m_unk0xd0->CopyStringByIndex(&string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&string, m_unk0x28c);
 
 	LegoChar fileName[16];
 	string.CopyToString(fileName);
@@ -259,8 +259,8 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_create
 	strcat(fileName, idSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
-		m_unk0xbc = m_unk0xb4->VTable0x34();
-		m_unk0xbc->LoadImageDefinitions(m_unk0xb8, fileName, p_createParams->m_unk0x2c);
+		m_unk0xbc = m_golExport->VTable0x34();
+		m_unk0xbc->LoadImageDefinitions(m_renderer, fileName, p_createParams->m_unk0x2c);
 	}
 
 	string.CopyToString(fileName);
@@ -272,8 +272,8 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b6e0(MenuToolCreateParams0x30* p_create
 	strcat(fileName, fontSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
-		m_unk0xc0 = m_unk0xb4->VTable0x38();
-		m_unk0xc0->VTable0x20(m_unk0xb8, fileName, p_createParams->m_unk0x2c);
+		m_fontTable = m_golExport->VTable0x38();
+		m_fontTable->VTable0x20(m_renderer, fileName, p_createParams->m_unk0x2c);
 	}
 
 	return TRUE;
@@ -288,7 +288,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 		return TRUE;
 	}
 
-	m_unk0xd0->CopyStringByIndex(&string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&string, m_unk0x28c);
 
 	LegoChar fileName[16];
 	string.CopyToString(fileName);
@@ -301,7 +301,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 
 	if (!GolStream::FindFile(fileName)) {
 		CeruleanEmperor0x4c::ResourceLoadParams params;
-		params.m_renderer = m_unk0xb8;
+		params.m_renderer = m_renderer;
 		params.m_unk0x04 = p_createParams->m_menuStyles;
 		params.m_fileName = fileName;
 		params.m_binary = p_createParams->m_unk0x2c;
@@ -321,7 +321,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 
 	if (!GolStream::FindFile(fileName)) {
 		CeruleanQueen0x58::ResourceLoadParams params;
-		params.m_renderer = m_unk0xb8;
+		params.m_renderer = m_renderer;
 		params.m_fileName = fileName;
 		params.m_binary = p_createParams->m_unk0x2c;
 

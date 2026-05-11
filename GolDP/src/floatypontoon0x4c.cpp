@@ -6,6 +6,7 @@
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(FloatyPontoon0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(FloatyPontoon0x4c::Field0x2c, 0x0c)
 
 // GLOBAL: GOLDP 0x100574fc
 float g_pontoonMaxFloat = FLT_MAX;
@@ -13,11 +14,11 @@ float g_pontoonMaxFloat = FLT_MAX;
 // FUNCTION: GOLDP 0x10029df0
 FloatyPontoon0x4c::FloatyPontoon0x4c()
 {
-	m_unk0x28 = 0.0f;
-	m_unk0x2c = 0.0f;
-	m_unk0x30 = 0.0f;
-	m_unk0x34 = 0.0f;
-	m_unk0x38 = 1.0f;
+	m_unk0x28 = NULL;
+	m_unk0x2c = NULL;
+	m_unk0x30.m_x = 0.0f;
+	m_unk0x30.m_y = 0.0f;
+	m_unk0x30.m_z = 1.0f;
 	m_unk0x48 = 0;
 	m_unk0x4a = 0;
 	m_unk0x3c = 0.0f;
@@ -26,7 +27,7 @@ FloatyPontoon0x4c::FloatyPontoon0x4c()
 }
 
 // FUNCTION: GOLDP 0x10029e30
-undefined4 FloatyPontoon0x4c::VTable0x4c(LegoFloat p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4)
+undefined4 FloatyPontoon0x4c::VTable0x4c(undefined4* p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4)
 {
 #define SQR(V) ((V) * (V))
 	LegoFloat len = sqrtf(SQR(p_arg2 / 2.0f) + SQR(p_arg3 / 2.0f));
@@ -40,23 +41,25 @@ undefined4 FloatyPontoon0x4c::VTable0x4c(LegoFloat p_arg1, LegoFloat p_arg2, Leg
 	return FUN_10026fa0(len);
 }
 
-// STUB: GOLDP 0x10029e90
+// FUNCTION: GOLDP 0x10029e90
 void FloatyPontoon0x4c::FUN_10029e90(
-	undefined4* p_arg1,
+	Field0x2c* p_arg1,
 	LegoS32 p_arg2,
-	undefined4 p_arg3,
-	undefined4 p_arg4,
-	undefined4 p_arg5
+	LegoFloat p_arg3,
+	LegoFloat p_arg4,
+	LegoFloat p_arg5
 )
 {
-	// TODO
-	STUB(0x10029e90);
+	m_unk0x2c = p_arg1;
+	m_unk0x4a = static_cast<undefined2>(p_arg2);
+	VTable0x4c(p_arg1->m_unk0x08[p_arg2], p_arg3, p_arg4, p_arg5);
+	m_unk0x48 |= c_flag0x48Bit2;
 }
 
 // FUNCTION: GOLDP 0x10029ed0
 void FloatyPontoon0x4c::VTable0x50()
 {
-	m_unk0x28 = 0.0f;
+	m_unk0x28 = NULL;
 	m_unk0x48 = 0;
 	m_unk0x3c = 0;
 	m_unk0x40 = 0;
@@ -98,12 +101,14 @@ void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result
 	}
 }
 
-// STUB: GOLDP 0x1002a020
-undefined4 FloatyPontoon0x4c::FUN_1002a020()
+// FUNCTION: GOLDP 0x1002a020
+undefined4* FloatyPontoon0x4c::FUN_1002a020()
 {
-	// TODO
-	STUB(0x1002a020);
-	return 0;
+	if (m_unk0x48 & c_flag0x48Bit2) {
+		m_unk0x28 = m_unk0x2c->m_unk0x08[m_unk0x4a];
+	}
+
+	return m_unk0x28;
 }
 
 // FUNCTION: GOLDP 0x1002a040
@@ -112,10 +117,12 @@ void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140* p_renderer)
 	p_renderer->VTable0xb4(*this);
 }
 
-// STUB: GOLDP 0x1002a060
+// FUNCTION: GOLDP 0x1002a060
 undefined4 FloatyPontoon0x4c::VTable0x20()
 {
-	// TODO
-	STUB(0x1002a060);
-	return 0;
+	if (m_unk0x48 & c_flag0x48Bit2) {
+		m_unk0x28 = m_unk0x2c->m_unk0x08[m_unk0x4a];
+	}
+
+	return m_unk0x28[2] & 0x1100;
 }

@@ -177,6 +177,7 @@ public:
 
 	friend class PearlDew0x0c;
 	friend class SlatePeak0x58;
+	friend class BronzeFalconSurface0x5c;
 
 private:
 	static LegoFloat ScaleColorChannel(double p_color, double p_materialColor)

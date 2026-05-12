@@ -62,6 +62,7 @@ public:
 	friend class DepthBuffer0x38;
 	friend class SlatePeak0x58;
 	friend class BronzeFalcon0xc8770;
+	friend class BronzeFalconSurface0x5c;
 
 private:
 	void ReleaseDDraw();

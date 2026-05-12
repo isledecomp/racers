@@ -46,6 +46,7 @@ public:
 	LegoU16 GetWidth() const { return m_width; }
 	LegoU16 GetHeight() const { return m_height; }
 	GolSurfaceFormat& GetTextureFormat() { return m_textureFormat; }
+	const GolSurfaceFormat& GetTextureFormat() const { return m_textureFormat; }
 
 protected:
 	friend class BronzeFalcon0xc8770;

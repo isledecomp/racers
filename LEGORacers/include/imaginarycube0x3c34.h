@@ -23,10 +23,10 @@ public:
 		undefined4,
 		undefined4
 	) override;                                                                        // vtable+0x1c
-	void VTable0x20(undefined4) override;                                              // vtable+0x20
-	void VTable0x24(undefined4) override;                                              // vtable+0x24
+	void VTable0x20(ObscureVantage0x58*) override;                                     // vtable+0x20
+	void VTable0x24(ObscureVantage0x58*) override;                                     // vtable+0x24
 	undefined4 VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4) override;  // vtable+0x28
-	void VTable0x34(undefined4) override;                                              // vtable+0x34
+	void VTable0x34(ObscureIcon0x1a8*) override;                                       // vtable+0x34
 	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x44(undefined4) override;                                              // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c

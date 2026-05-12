@@ -18,7 +18,7 @@ public:
 	void VTable0x10(Rect*) override;                                                       // vtable+0x10
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
-	void VTable0x40(undefined4) override;                                                  // vtable+0x40
+	void VTable0x40(ImaginaryInterface*) override;                                         // vtable+0x40
 
 	// SYNTHETIC: LEGORACERS 0x00482400
 	// ImaginaryDrillFieldAt0x498::`scalar deleting destructor'

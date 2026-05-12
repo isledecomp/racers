@@ -45,7 +45,7 @@ void ImaginaryDrillFieldAt0x498::VTable0x10(Rect*)
 }
 
 // STUB: LEGORACERS 0x004828f0
-void ImaginaryDrillFieldAt0x498::VTable0x40(undefined4)
+void ImaginaryDrillFieldAt0x498::VTable0x40(ImaginaryInterface*)
 {
 	STUB(0x004828f0);
 }

@@ -90,7 +90,7 @@ void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const Crea
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_unk0x168 = p_createParams->m_unk0x40;
 	m_unk0x130 = p_createState->m_unk0x84;
-	VTable0x40((undefined4) p_createParams->m_unk0x80);
+	VTable0x40(p_createParams->m_unk0x80);
 }
 
 // FUNCTION: LEGORACERS 0x00471e30
@@ -115,14 +115,14 @@ LegoBool32 ObscureIcon0x1a8::FUN_00471e30(CreateParams0x84* p_createParams, cons
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00471ea0
+// FUNCTION: LEGORACERS 0x00471ea0
 undefined4 ObscureIcon0x1a8::VTable0x08()
 {
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
 		FUN_00471f00();
-		ObscureVantage0x58::VTable0x08();
+		result = ObscureVantage0x58::VTable0x08();
 	}
 
 	return result;
@@ -226,7 +226,7 @@ void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 			ImaginaryInterface* eventHandler = icon->m_unk0x170;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
-					eventHandler->VTable0x3c((undefined4) this);
+					eventHandler->VTable0x3c(this);
 				}
 			}
 
@@ -253,7 +253,7 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 			ImaginaryInterface* eventHandler = icon->m_unk0x170;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
-					eventHandler->VTable0x40((undefined4) this);
+					eventHandler->VTable0x40(this);
 				}
 			}
 
@@ -306,7 +306,7 @@ void ObscureIcon0x1a8::VTable0x44(undefined4 p_flags)
 		FUN_00472080();
 
 		if (m_unk0x170 && !(p_flags & 1)) {
-			m_unk0x170->VTable0x2c((undefined4) this);
+			m_unk0x170->VTable0x2c(this);
 		}
 	}
 }
@@ -328,7 +328,7 @@ void ObscureIcon0x1a8::VTable0x48(undefined4 p_flags)
 		FUN_00472080();
 
 		if (m_unk0x170 && !flags) {
-			m_unk0x170->VTable0x30((undefined4) this);
+			m_unk0x170->VTable0x30(this);
 		}
 	}
 }
@@ -387,16 +387,60 @@ void ObscureIcon0x1a8::VTable0x50(undefined4 p_flags)
 	}
 }
 
-// STUB: LEGORACERS 0x00472290
-void ObscureIcon0x1a8::VTable0x54(undefined4)
+// FUNCTION: LEGORACERS 0x00472290
+void ObscureIcon0x1a8::VTable0x54(undefined4 p_flags)
 {
-	STUB(0x00472290);
+	if (m_unk0x12c & 4) {
+		return;
+	}
+
+	LegoU8 flags = (LegoU8) p_flags;
+
+	if (m_parentIcon && !(flags & 2)) {
+		m_parentIcon->VTable0x54(0);
+	}
+
+	FUN_00472bc0();
+	m_unk0x12c |= 4;
+	FUN_00472080();
+
+	if (m_unk0x170 && !flags) {
+		m_unk0x170->VTable0x34(this);
+	}
+
+	if (!(flags & 4)) {
+		m_soundGroupBinding->FUN_0046e970(m_soundIds[2]);
+	}
 }
 
-// STUB: LEGORACERS 0x00472310
-void ObscureIcon0x1a8::VTable0x58(undefined4)
+// FUNCTION: LEGORACERS 0x00472310
+void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 {
-	STUB(0x00472310);
+	LegoU8 stateFlags = m_unk0x12c;
+	m_unk0x1a0 = 0;
+
+	if (stateFlags & 4) {
+		if (m_flags & 8) {
+			FUN_00472c10();
+		}
+
+		LegoU8 flags = (LegoU8) p_flags;
+
+		if (m_parentIcon && !(flags & 2)) {
+			m_parentIcon->VTable0x58(0);
+		}
+
+		m_unk0x12c &= 0xfb;
+		FUN_00472080();
+
+		if (m_unk0x170 && !flags) {
+			m_unk0x170->VTable0x38(this);
+		}
+
+		if (!(flags & 4)) {
+			m_soundGroupBinding->FUN_0046e970(m_soundIds[3]);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004723a0
@@ -570,7 +614,7 @@ void ObscureIcon0x1a8::VTable0x10(Rect*)
 }
 
 // STUB: LEGORACERS 0x004729a0
-void ObscureIcon0x1a8::VTable0x40(undefined4)
+void ObscureIcon0x1a8::VTable0x40(ImaginaryInterface*)
 {
 	STUB(0x004729a0);
 }

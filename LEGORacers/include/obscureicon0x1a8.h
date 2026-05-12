@@ -53,7 +53,7 @@ public:
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
 	undefined4 VTable0x3c(undefined4) override;                                            // vtable+0x3c
-	virtual void VTable0x40(undefined4);
+	virtual void VTable0x40(ImaginaryInterface*);
 	virtual void VTable0x44(undefined4);
 	virtual void VTable0x48(undefined4);
 	virtual void VTable0x4c(undefined4);

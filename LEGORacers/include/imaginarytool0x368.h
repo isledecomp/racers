@@ -92,9 +92,9 @@ public:
 		undefined4,
 		undefined4
 	) override;                                         // vtable+0x1c
-	void VTable0x34(undefined4) override;               // vtable+0x34
-	void VTable0x3c(undefined4) override;               // vtable+0x3c
-	void VTable0x40(undefined4) override;               // vtable+0x40
+	void VTable0x34(ObscureIcon0x1a8*) override;        // vtable+0x34
+	void VTable0x3c(ObscureIcon0x1a8*) override;        // vtable+0x3c
+	void VTable0x40(ObscureIcon0x1a8*) override;        // vtable+0x40
 	void Reset() override;                              // vtable+0x54
 	CeruleanEmperor0x4c* GetMenuStyles() override;      // vtable+0x5c
 	CeruleanQueen0x58* GetMenuInputBindings() override; // vtable+0x64
@@ -132,7 +132,7 @@ protected:
 	FieldAt0x340 m_unk0x340;          // 0x340
 	FieldAt0x350 m_unk0x350;          // 0x350
 	MenuToolContext0x4bc8* m_context; // 0x354
-	undefined4 m_unk0x358;            // 0x358
+	ObscureIcon0x1a8* m_unk0x358;     // 0x358
 	ObscureVantage0x58* m_unk0x35c;   // 0x35c
 	LegoU16 m_unk0x360;               // 0x360
 	LegoU16 m_menuId;                 // 0x362

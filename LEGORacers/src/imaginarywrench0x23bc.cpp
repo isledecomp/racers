@@ -95,14 +95,14 @@ void ImaginaryWrench0x23bc::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x0047b9c0
-void ImaginaryWrench0x23bc::VTable0x40(undefined4)
+void ImaginaryWrench0x23bc::VTable0x40(ObscureIcon0x1a8*)
 {
 	// TODO
 	STUB(0x0047b9c0);
 }
 
 // STUB: LEGORACERS 0x0047b9e0
-void ImaginaryWrench0x23bc::VTable0x3c(undefined4)
+void ImaginaryWrench0x23bc::VTable0x3c(ObscureIcon0x1a8*)
 {
 	// TODO
 	STUB(0x0047b9e0);

@@ -40,7 +40,7 @@ public:
 
 	ImaginaryNotion0x290();
 
-	void VTable0x00(undefined4) override;                                             // vtable+0x00
+	void VTable0x00(ObscureVantage0x58*) override;                                    // vtable+0x00
 	void VTable0x04(ObscureVantage0x58*) override;                                    // vtable+0x04
 	void VTable0x08(ObscureVantage0x58*) override;                                    // vtable+0x08
 	void VTable0x0c(ObscureVantage0x58*) override;                                    // vtable+0x0c
@@ -58,15 +58,15 @@ public:
 		undefined4,
 		undefined4
 	) override;                                                                       // vtable+0x1c
-	void VTable0x20(undefined4) override;                                             // vtable+0x20
-	void VTable0x24(undefined4) override;                                             // vtable+0x24
+	void VTable0x20(ObscureVantage0x58*) override;                                    // vtable+0x20
+	void VTable0x24(ObscureVantage0x58*) override;                                    // vtable+0x24
 	undefined4 VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4) override; // vtable+0x28
-	void VTable0x2c(undefined4) override;                                             // vtable+0x2c
-	void VTable0x30(undefined4) override;                                             // vtable+0x30
-	void VTable0x34(undefined4) override;                                             // vtable+0x34
+	void VTable0x2c(ObscureIcon0x1a8*) override;                                      // vtable+0x2c
+	void VTable0x30(ObscureIcon0x1a8*) override;                                      // vtable+0x30
+	void VTable0x34(ObscureIcon0x1a8*) override;                                      // vtable+0x34
 	void VTable0x38(ObscureVantage0x58*) override;                                    // vtable+0x38
-	void VTable0x3c(undefined4) override;                                             // vtable+0x3c
-	void VTable0x40(undefined4) override;                                             // vtable+0x40
+	void VTable0x3c(ObscureIcon0x1a8*) override;                                      // vtable+0x3c
+	void VTable0x40(ObscureIcon0x1a8*) override;                                      // vtable+0x40
 	void VTable0x44(undefined4) override;                                             // vtable+0x44
 	void VTable0x48(undefined4) override;                                             // vtable+0x48
 	virtual void VTable0x4c() = 0;                                                    // vtable+0x4c

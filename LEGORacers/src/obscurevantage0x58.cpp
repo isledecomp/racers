@@ -62,7 +62,7 @@ LegoBool32 ObscureVantage0x58::FUN_00472a60(CreateParams0x30* p_createParams)
 	m_flags |= 0x11;
 
 	if (m_unk0x28) {
-		m_unk0x28->VTable0x00((undefined4) this);
+		m_unk0x28->VTable0x00(this);
 	}
 
 	return TRUE;
@@ -151,6 +151,50 @@ void ObscureVantage0x58::RemoveFromParent()
 	m_prevSibling = 0;
 	m_parent = 0;
 	m_flags &= 0xfb;
+}
+
+// FUNCTION: LEGORACERS 0x00472bc0
+void ObscureVantage0x58::FUN_00472bc0()
+{
+	ObscureVantage0x58* node = this;
+
+	if (node->FindRoot()->m_unk0x18) {
+		node->FUN_00472e60()->FUN_00472c10();
+	}
+
+	node->m_flags |= 8;
+
+	if (node->m_unk0x28) {
+		node->m_unk0x28->VTable0x20(node);
+	}
+
+	while (node) {
+		if (node->m_parent) {
+			node->m_parent->m_unk0x18 = node;
+		}
+
+		node = node->m_parent;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00472c10
+void ObscureVantage0x58::FUN_00472c10()
+{
+	ObscureVantage0x58* node = this;
+	LegoU8 flags = node->m_flags;
+
+	if (flags & 8) {
+		node->m_flags = flags & 0xf7;
+
+		if (node->m_unk0x28) {
+			node->m_unk0x28->VTable0x24(node);
+		}
+
+		while (node) {
+			node->m_unk0x18 = NULL;
+			node = node->m_parent;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00472c40

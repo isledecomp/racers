@@ -34,7 +34,7 @@ LegoBool32 ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCrea
 }
 
 // STUB: LEGORACERS 0x00487d10
-void ImaginaryRuler0x2e60::VTable0x3c(undefined4)
+void ImaginaryRuler0x2e60::VTable0x3c(ObscureIcon0x1a8*)
 {
 	STUB(0x00487d10);
 }

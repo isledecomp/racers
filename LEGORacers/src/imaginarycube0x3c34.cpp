@@ -48,13 +48,13 @@ undefined4 ImaginaryCube0x3c34::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer
 }
 
 // STUB: LEGORACERS 0x004745e0
-void ImaginaryCube0x3c34::VTable0x20(undefined4)
+void ImaginaryCube0x3c34::VTable0x20(ObscureVantage0x58*)
 {
 	STUB(0x004745e0);
 }
 
 // STUB: LEGORACERS 0x00474640
-void ImaginaryCube0x3c34::VTable0x24(undefined4)
+void ImaginaryCube0x3c34::VTable0x24(ObscureVantage0x58*)
 {
 	STUB(0x00474640);
 }
@@ -67,7 +67,7 @@ undefined4 ImaginaryCube0x3c34::VTable0x28(ObscureIcon0x1a8*, void*, undefined4,
 }
 
 // STUB: LEGORACERS 0x00474710
-void ImaginaryCube0x3c34::VTable0x34(undefined4)
+void ImaginaryCube0x3c34::VTable0x34(ObscureIcon0x1a8*)
 {
 	STUB(0x00474710);
 }

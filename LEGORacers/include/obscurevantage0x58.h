@@ -85,6 +85,8 @@ protected:
 
 protected:
 	LegoBool32 FUN_00472a60(CreateParams0x30* p_createParams);
+	void FUN_00472bc0();
+	void FUN_00472c10();
 };
 
 #endif // OBSCUREVANTAGE0X58_H

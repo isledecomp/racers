@@ -54,7 +54,7 @@ void ImaginaryTool0x368::Reset()
 	m_menuId = 0;
 	m_context = NULL;
 	m_unk0x35c = NULL;
-	m_unk0x358 = 0;
+	m_unk0x358 = NULL;
 	m_unk0x364 = FALSE;
 	ImaginaryNotion0x290::Reset();
 }
@@ -172,13 +172,13 @@ void ImaginaryTool0x368::FUN_004804c0(MenuToolContext0x4bc8* p_context)
 }
 
 // FUNCTION: LEGORACERS 0x00480500 FOLDED
-void ImaginaryTool0x368::VTable0x34(undefined4)
+void ImaginaryTool0x368::VTable0x34(ObscureIcon0x1a8*)
 {
 	m_unk0x364 = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00480510 FOLDED
-void ImaginaryTool0x368::VTable0x3c(undefined4 p_unk0x04)
+void ImaginaryTool0x368::VTable0x3c(ObscureIcon0x1a8* p_unk0x04)
 {
 	m_unk0x358 = p_unk0x04;
 }
@@ -194,7 +194,7 @@ LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 }
 
 // STUB: LEGORACERS 0x00487d30 FOLDED
-void ImaginaryTool0x368::VTable0x40(undefined4)
+void ImaginaryTool0x368::VTable0x40(ObscureIcon0x1a8*)
 {
 	// TODO
 	STUB(0x00487d30);

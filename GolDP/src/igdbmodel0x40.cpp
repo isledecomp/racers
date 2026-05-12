@@ -120,6 +120,7 @@ void IGdbModel0x40::VTable0x24()
 void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 {
 	m_unk0x20 = p_parser.ReadBracketedCountAndLeftCurly();
+	LegoU32 count = 0;
 	if (m_unk0x20 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
@@ -127,97 +128,101 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	LegoS32 count = 0;
-	LegoU32 stackSize = 0;
-	LegoBool32 seen = FALSE;
 	LegoU32 field0;
 	LegoU32 field1;
 	LegoU32 field2;
 	LegoU32 colorStack[10];
-	LegoU32* colorStackPointer = colorStack;
 	LegoU32 i;
-	for (i = 0; i < m_unk0x20; i++) {
-		switch (p_parser.GetNextToken()) {
-		case GolFileParser::e_unknown0x31:
-			if (seen) {
-				count += 1;
-				seen = FALSE;
-			}
-			field1 = p_parser.ReadInteger();
-			if (field1 >= 0x40) {
-				p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
-			}
-			field0 = p_parser.ReadInteger();
-			field2 = p_parser.ReadInteger();
-			if (field2 + field1 > 0x40) {
-				p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
-			}
-			m_unk0x24[count] = 0x0 << 28;
-			m_unk0x24[count] |= (field1 & 0x3f) << 22;
-			m_unk0x24[count] |= ((field2 + 0xffff) & 0x3f) << 16;
-			m_unk0x24[count++] |= (field0 & 0xffff);
-			break;
+	LegoU32 stackSize;
+	LegoBool32 seen;
+	LegoU32* colorStackPointer;
 
-		case GolFileParser::e_unknown0x2d:
-			if (seen) {
-				count += 1;
-				seen = FALSE;
-			}
-			field0 = p_parser.ReadInteger();
-			field1 = p_parser.ReadInteger();
-			if (field1 > 0xff) {
-				p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
-			}
-			m_unk0x24[count] = 0x2 << 28;
-			m_unk0x24[count] |= ((field1 & 0x7f) << 16);
-			m_unk0x24[count++] |= (field0 & 0xffff);
-			break;
+	if ((stackSize = 0, i = count, seen = FALSE, i < m_unk0x20)) {
+		colorStackPointer = colorStack;
+		for (; i < m_unk0x20; i++) {
+			switch (p_parser.GetNextToken()) {
+			case GolFileParser::e_unknown0x31:
+				if (seen) {
+					count += 1;
+					seen = FALSE;
+				}
+				field1 = p_parser.ReadInteger();
+				if (field1 >= 0x40) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
+				}
+				field0 = p_parser.ReadInteger();
+				field2 = p_parser.ReadInteger();
+				if (field2 + field1 > 0x40) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
+				}
+				m_unk0x24[count] = 0x0 << 28;
+				m_unk0x24[count] |= (field1 & 0x3f) << 22;
+				m_unk0x24[count] |= ((field2 + 0xffff) & 0x3f) << 16;
+				m_unk0x24[count++] |= (field0 & 0xffff);
+				break;
 
-		case GolFileParser::e_unknown0x2f:
-			field1 = p_parser.ReadInteger();
-			if (stackSize >= sizeOfArray(colorStack)) {
-				p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+			case GolFileParser::e_unknown0x2d:
+				if (seen) {
+					count += 1;
+					seen = FALSE;
+				}
+				field0 = p_parser.ReadInteger();
+				field1 = p_parser.ReadInteger();
+				if (field1 > 0xff) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
+				}
+				m_unk0x24[count] = 0x2 << 28;
+				m_unk0x24[count] |= ((field1 & 0x7f) << 16);
+				m_unk0x24[count++] |= (field0 & 0xffff);
+				break;
+
+			case GolFileParser::e_unknown0x2f:
+				field1 = p_parser.ReadInteger();
+				if (stackSize >= sizeOfArray(colorStack)) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+				}
+				seen = TRUE;
+				stackSize += 1;
+				*colorStackPointer++ = field1;
+				m_unk0x24[count] = 0xa << 28;
+				m_unk0x24[count] |= field1 & 0xffffff;
+				break;
+
+			case GolFileParser::e_unknown0x30:
+				if (stackSize < 1) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+				}
+				stackSize -= 1;
+				seen = TRUE;
+				m_unk0x24[count] = 0xa << 28;
+				colorStackPointer--;
+				m_unk0x24[count] |= colorStackPointer[-1] & 0xffffff;
+				break;
+
+			case GolFileParser::e_unknown0x32:
+				field1 = p_parser.ReadInteger();
+				seen = TRUE;
+				m_unk0x24[count] = 0xa << 28;
+				m_unk0x24[count] |= field1 & 0xffffff;
+				break;
+
+			case GolFileParser::e_unknown0x27:
+				if (seen) {
+					count += 1;
+					seen = FALSE;
+				}
+				field0 = p_parser.ReadInteger();
+				m_unk0x24[count] = 0x8 << 28;
+				m_unk0x24[count++] |= (field0 & 0x00ffffff);
+				break;
+
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
 			}
-			seen = TRUE;
-			stackSize += 1;
-			*colorStackPointer++ = field1;
-			m_unk0x24[count] = 0xa << 28;
-			m_unk0x24[count] |= field1 & 0xffffff;
-			break;
-
-		case GolFileParser::e_unknown0x30:
-			if (stackSize == 0) {
-				p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
-			}
-			stackSize -= 1;
-			seen = TRUE;
-			m_unk0x24[count] = 0xa << 28;
-			m_unk0x24[count] |= colorStackPointer[-2] & 0xffffff;
-			colorStackPointer--;
-			break;
-
-		case GolFileParser::e_unknown0x32:
-			field1 = p_parser.ReadInteger();
-			seen = TRUE;
-			m_unk0x24[count] = 0xa << 28;
-			m_unk0x24[count] |= field1 & 0xffffff;
-			break;
-
-		case GolFileParser::e_unknown0x27:
-			if (seen) {
-				count += 1;
-				seen = FALSE;
-			}
-			field0 = p_parser.ReadInteger();
-			m_unk0x24[count] = 0x8 << 28;
-			m_unk0x24[count++] |= (field0 & 0x00ffffff);
-			break;
-
-		default:
-			p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-			break;
 		}
 	}
+
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
@@ -287,7 +292,6 @@ void IGdbModel0x40::VTable0x14(GolFileParser& p_parser)
 // FUNCTION: GOLDP 0x100278c0
 void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat p_scale) const
 {
-	LegoFloat radiusSquared;
 	LegoU32 countGroups;
 	GolVec3 vertex;
 	GolVec3 max;
@@ -337,10 +341,11 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 		}
 	}
 	if (countGroups != 0) {
-		radiusSquared = -FLT_MAX;
-		p_center->m_x = (max.m_x + min.m_x) / 2.0f;
-		p_center->m_y = (max.m_y + min.m_y) / 2.0f;
-		p_center->m_z = (max.m_z + min.m_z) / 2.0f;
+		GolVec3* center = p_center;
+		center->m_x = (max.m_x + min.m_x) / 2.0f;
+		center->m_y = (max.m_y + min.m_y) / 2.0f;
+		center->m_z = (max.m_z + min.m_z) / 2.0f;
+		LegoFloat radiusSquared = -FLT_MAX;
 		maskPtr = m_unk0x24;
 		endMaskPtr = m_unk0x24 + m_unk0x20;
 		for (; maskPtr < endMaskPtr; maskPtr++) {
@@ -350,7 +355,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 				LegoU32 endVertexIndex = vertexIndex + 1 + ((mask >> 16) & 0x3f);
 				for (; vertexIndex < endVertexIndex; vertexIndex++) {
 					m_unk0x10->VTable0x14(vertexIndex, &vertex);
-					LegoFloat distSquared = p_center->DistanceSquaredTo(vertex);
+					LegoFloat distSquared = center->DistanceSquaredTo(vertex);
 					if (distSquared > radiusSquared) {
 						radiusSquared = distSquared;
 					}
@@ -360,7 +365,11 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 				break;
 			}
 		}
-		*p_center *= p_scale;
+		center->m_x = p_scale * center->m_x;
+		LegoFloat y = center->m_y;
+		center->m_y = y * p_scale;
+		LegoFloat z = center->m_z;
+		center->m_z = z * p_scale;
 		*p_radius = static_cast<LegoFloat>(sqrt(radiusSquared)) * p_scale;
 	}
 }

@@ -17,7 +17,7 @@ IGdbModel0x40::IGdbModel0x40()
 	m_unk0x10 = NULL;
 	m_unk0x14 = NULL;
 	m_unk0x18 = NULL;
-	m_unk0x1c = 0;
+	m_unk0x1c = NULL;
 	m_unk0x20 = 0;
 	m_unk0x24 = NULL;
 	m_unk0x28.m_x = 0.0f;
@@ -35,7 +35,7 @@ IGdbModel0x40::~IGdbModel0x40()
 }
 
 // FUNCTION: GOLDP 0x100270e0
-void IGdbModel0x40::VTable0x1c(undefined4 p_arg1, const LegoChar* p_name, LegoBool32 p_binary)
+void IGdbModel0x40::VTable0x1c(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_unk0x24 != NULL) {
 		VTable0x24();
@@ -62,7 +62,7 @@ void IGdbModel0x40::VTable0x1c(undefined4 p_arg1, const LegoChar* p_name, LegoBo
 			if (m_unk0x04.GetUnk0x00() != 0) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x04.FUN_10025f90(p_arg1, *parser);
+			m_unk0x04.FUN_10025f90(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x28:
 			VTable0x0c(*parser);
@@ -102,18 +102,46 @@ void IGdbModel0x40::VTable0x1c(undefined4 p_arg1, const LegoChar* p_name, LegoBo
 	}
 }
 
-// STUB: GOLDP 0x100272e0
-void IGdbModel0x40::FUN_100272e0(undefined4, undefined4)
+// FUNCTION: GOLDP 0x100272e0
+void IGdbModel0x40::FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups)
 {
-	// TODO
-	STUB(0x100272e0);
+	m_unk0x20 = p_countGroups;
+	m_unk0x18 = new GdbModelIndexArray0xc;
+	m_unk0x24 = new LegoU32[m_unk0x20];
+	if (m_unk0x18 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	static_cast<GdbModelIndexArray0xc*>(m_unk0x18)->VTable0x0c(p_countVertices);
+	if (m_unk0x24 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	m_unk0x24[0] = 0x6 << 29;
 }
 
-// STUB: GOLDP 0x100273b0
+// FUNCTION: GOLDP 0x100273b0
 void IGdbModel0x40::VTable0x24()
 {
-	// TODO
-	STUB(0x100273b0);
+	if (m_unk0x14 != NULL) {
+		m_unk0x14->VTable0x0c();
+		delete m_unk0x14;
+		m_unk0x14 = NULL;
+		m_unk0x10 = NULL;
+	}
+	if (m_unk0x1c != NULL) {
+		delete m_unk0x1c;
+		m_unk0x1c = NULL;
+	}
+	if (m_unk0x18 != NULL) {
+		m_unk0x18->VTable0x08();
+		delete m_unk0x18;
+		m_unk0x18 = NULL;
+	}
+	if (m_unk0x24 != NULL) {
+		delete[] m_unk0x24;
+		m_unk0x24 = NULL;
+	}
+	m_unk0x04.Destroy();
+	m_unk0x20 = 0;
 }
 
 // FUNCTION: GOLDP 0x10027430
@@ -137,7 +165,10 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 	LegoBool32 seen;
 	LegoU32* colorStackPointer;
 
-	if ((stackSize = 0, i = count, seen = FALSE, i < m_unk0x20)) {
+	stackSize = 0;
+	i = 0;
+	seen = FALSE;
+	if (i < m_unk0x20) {
 		colorStackPointer = colorStack;
 		for (; i < m_unk0x20; i++) {
 			switch (p_parser.GetNextToken()) {
@@ -155,7 +186,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 				if (field2 + field1 > 0x40) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
 				}
-				m_unk0x24[count] = 0x0 << 28;
+				m_unk0x24[count] = 0x0 << 29;
 				m_unk0x24[count] |= (field1 & 0x3f) << 22;
 				m_unk0x24[count] |= ((field2 + 0xffff) & 0x3f) << 16;
 				m_unk0x24[count++] |= (field0 & 0xffff);
@@ -171,7 +202,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 				if (field1 > 0xff) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
 				}
-				m_unk0x24[count] = 0x2 << 28;
+				m_unk0x24[count] = 0x1 << 29;
 				m_unk0x24[count] |= ((field1 & 0x7f) << 16);
 				m_unk0x24[count++] |= (field0 & 0xffff);
 				break;
@@ -184,7 +215,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 				seen = TRUE;
 				stackSize += 1;
 				*colorStackPointer++ = field1;
-				m_unk0x24[count] = 0xa << 28;
+				m_unk0x24[count] = 0x5 << 29;
 				m_unk0x24[count] |= field1 & 0xffffff;
 				break;
 
@@ -194,7 +225,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 				}
 				stackSize -= 1;
 				seen = TRUE;
-				m_unk0x24[count] = 0xa << 28;
+				m_unk0x24[count] = 0x5 << 29;
 				colorStackPointer--;
 				m_unk0x24[count] |= colorStackPointer[-1] & 0xffffff;
 				break;
@@ -202,7 +233,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 			case GolFileParser::e_unknown0x32:
 				field1 = p_parser.ReadInteger();
 				seen = TRUE;
-				m_unk0x24[count] = 0xa << 28;
+				m_unk0x24[count] = 0x5 << 29;
 				m_unk0x24[count] |= field1 & 0xffffff;
 				break;
 
@@ -212,7 +243,7 @@ void IGdbModel0x40::VTable0x00(GolFileParser& p_parser)
 					seen = FALSE;
 				}
 				field0 = p_parser.ReadInteger();
-				m_unk0x24[count] = 0x8 << 28;
+				m_unk0x24[count] = 0x4 << 29;
 				m_unk0x24[count++] |= (field0 & 0x00ffffff);
 				break;
 
@@ -310,7 +341,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 	endMaskPtr = m_unk0x24 + m_unk0x20;
 	for (; maskPtr < endMaskPtr; maskPtr++) {
 		LegoU32 mask = *maskPtr;
-		if ((mask & 0xe0000000) == 0) {
+		if ((mask & (0x7 << 29)) == 0) {
 			LegoU32 vertexIndex = mask & 0xffff;
 			LegoU32 endVertexIndex = vertexIndex + 1 + ((mask >> 16) & 0x3f);
 			for (; vertexIndex < endVertexIndex; vertexIndex++) {
@@ -336,7 +367,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 			}
 			countGroups += 1;
 		}
-		else if ((mask & 0xe0000000) == 0xc0000000) {
+		else if ((mask & (0x7 << 29)) == (0x6 << 29)) {
 			break;
 		}
 	}
@@ -350,7 +381,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 		endMaskPtr = m_unk0x24 + m_unk0x20;
 		for (; maskPtr < endMaskPtr; maskPtr++) {
 			LegoU32 mask = *maskPtr;
-			if ((mask & 0xe0000000) == 0) {
+			if ((mask & (0x7 << 29)) == 0) {
 				LegoU32 vertexIndex = mask & 0xffff;
 				LegoU32 endVertexIndex = vertexIndex + 1 + ((mask >> 16) & 0x3f);
 				for (; vertexIndex < endVertexIndex; vertexIndex++) {
@@ -361,7 +392,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 					}
 				}
 			}
-			else if ((mask & 0xe0000000) == 0xc0000000) {
+			else if ((mask & (0x7 << 29)) == (0x6 << 29)) {
 				break;
 			}
 		}
@@ -374,16 +405,14 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 	}
 }
 
-// STUB: GOLDP 0x10027b30
-void IGdbModel0x40::VTable0x3c(undefined4)
+// FUNCTION: GOLDP 0x10027b30
+void IGdbModel0x40::VTable0x3c(const PixelFormatMod& p_details)
 {
-	// TODO
-	STUB(0x10027b30);
+	m_unk0x10->VTable0x34(p_details);
 }
 
-// STUB: GOLDP 0x10027b40
-void IGdbModel0x40::VTable0x40(undefined4)
+// FUNCTION: GOLDP 0x10027b40
+void IGdbModel0x40::VTable0x40()
 {
-	// TODO
-	STUB(0x10027b40);
+	m_unk0x10->VTable0x38();
 }

@@ -126,6 +126,8 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/gdbcommonvertexarray0x1c.cpp
   GolDP/src/igdbmodelindexarray0x8.cpp
   GolDP/src/gdbmodelindexarray0xc.cpp
+  GolDP/src/shadowwolf0xc.cpp
+  GolDP/src/gdbmodel0x48.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})

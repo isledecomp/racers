@@ -20,12 +20,19 @@ public:
 	GdbModel0x48();
 	~GdbModel0x48() override; // vtable+0x20
 
-	void VTable0x0c(GolFileParser& p_parser) override;                                                // vtable+0x0c
-	void VTable0x10(GolFileParser& p_parser) override;                                                // vtable+0x10
-	void VTable0x14(GolFileParser& p_parser) override;                                                // vtable+0x14
-	void VTable0x18(undefined4, undefined2, undefined4, undefined4, undefined4, undefined4) override; // vtable+0x18
-	void VTable0x1c(undefined4 p_arg1, const LegoChar* p_name, LegoBool32 p_binary) override;         // vtable+0x1c
-	void VTable0x24() override;                                                                       // vtable+0x24
+	void VTable0x0c(GolFileParser& p_parser) override; // vtable+0x0c
+	void VTable0x10(GolFileParser& p_parser) override; // vtable+0x10
+	void VTable0x14(GolFileParser& p_parser) override; // vtable+0x14
+	void VTable0x18(
+		WhiteFalcon0x140* p_renderer,
+		undefined2,
+		undefined4,
+		undefined4,
+		undefined4,
+		undefined4
+	) override;                                                                                          // vtable+0x18
+	void VTable0x1c(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
+	void VTable0x24() override;                                                                          // vtable+0x24
 
 	// SYNTHETIC: GOLDP 0x100178e0
 	// GdbModel0x48::`vector deleting destructor'

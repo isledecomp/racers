@@ -9,6 +9,17 @@ struct GolVec2;
 struct GolVec3;
 struct ColorRGBA;
 
+struct PixelFormatMod {
+	LegoU32 m_redShift;  // 0x00
+	LegoU32 m_grnShift;  // 0x04
+	LegoU32 m_bluShift;  // 0x08
+	LegoU32 m_alpShift;  // 0x0c
+	LegoU32 m_redOffset; // 0x10
+	LegoU32 m_grnOffset; // 0x14
+	LegoU32 m_bluOffset; // 0x18
+	LegoU32 m_alpOffset; // 0x1c
+};
+
 // VTABLE: GOLDP 0x100576a8
 // SIZE 0xc
 class GdbVertexArray0xc {
@@ -27,7 +38,7 @@ public:
 	virtual void VTable0x28(LegoU32 p_index, const GolVec2&);          // vtable+0x28
 	virtual void VTable0x2c(LegoU32 p_index, const GolVec3&);          // vtable+0x2c
 	virtual void VTable0x30(LegoU32 p_index, const ColorRGBA&);        // vtable+0x30
-	virtual void VTable0x34(undefined4);                               // vtable+0x34
+	virtual void VTable0x34(const PixelFormatMod& p_details);          // vtable+0x34
 	virtual void VTable0x38();                                         // vtable+0x38
 
 	// SYNTHETIC: GOLDP 0x1002be20

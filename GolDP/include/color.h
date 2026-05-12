@@ -26,4 +26,5 @@ struct FColorRGB {
 	LegoFloat m_grn; // 0x04
 	LegoFloat m_blu; // 0x08
 };
+
 #endif // COLOR_H

@@ -137,7 +137,7 @@ void GdbVertexArray0xc::VTable0x30(LegoU32 p_index, const ColorRGBA&)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GdbVertexArray0xc::VTable0x34(undefined4)
+void GdbVertexArray0xc::VTable0x34(const PixelFormatMod& p_details)
 {
 	// empty
 }

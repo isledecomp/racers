@@ -654,7 +654,8 @@ void PurpleDune0x7c::FUN_100168c0(BronzeFalcon0xc8770& p_renderer)
 		mipmap->m_pixels = NULL;
 
 		if (m_textureFormat2.m_paletteMask != 0 && p_renderer.GetUnk0xc8700() != 0) {
-			if ((m_palette = new FalconDuneBag0x10) == NULL) {
+			m_palette = new FalconDuneBag0x10;
+			if (m_palette == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 

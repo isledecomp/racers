@@ -128,6 +128,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/gdbmodelindexarray0xc.cpp
   GolDP/src/shadowwolf0xc.cpp
   GolDP/src/gdbmodel0x48.cpp
+  GolDP/src/greyfalconnode0x1c.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -169,7 +170,7 @@ add_library(goldp SHARED
   GolDP/src/azureridge0x38.cpp
   GolDP/src/amberlensbase0x120.cpp
   GolDP/src/amberlens0x344.cpp
-  GolDP/src/jadeorbit0x220.cpp
+  GolDP/src/jadeorbit0xd0.cpp
   GolDP/src/ddrawutil.cpp
   GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/amberhaze0x1c.cpp
@@ -209,6 +210,7 @@ add_library(goldp SHARED
   GolDP/src/gdbmodel0x48.cpp
   GolDP/src/igdbmodelindexarray0x8.cpp
   GolDP/src/gdbmodelindexarray0xc.cpp
+  GolDP/src/greyfalconnode0x1c.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

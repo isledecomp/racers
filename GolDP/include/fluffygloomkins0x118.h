@@ -5,11 +5,12 @@
 #include "decomp.h"
 #include "zoweeblubberworth0xf0.h"
 
-class CmbModelPart0x34;
 class AmberHaze0x20;
 class AmberLensBase0x120;
 class BoundingShape0x2c;
+class CmbModelPart0x34;
 class GdbModel0x48;
+class GreyFalconNode0x1c;
 class PurpleRibbon0x24;
 class ShadowWolf0xc;
 
@@ -46,7 +47,7 @@ private:
 	PurpleRibbon0x24* m_unk0xf0;    // 0xf0
 	AmberHaze0x20* m_unk0xf4;       // 0xf4
 	GdbModel0x48* m_unk0xf8;        // 0xf8
-	undefined4* m_unk0xfc;          // 0xfc
+	GreyFalconNode0x1c* m_unk0xfc;  // 0xfc
 	undefined4* m_unk0x100;         // 0x100
 	ShadowWolf0xc* m_unk0x104;      // 0x104
 	undefined4* m_unk0x108;         // 0x108

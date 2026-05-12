@@ -46,6 +46,7 @@ public:
 	undefined4 GetUnk0x1c() const { return m_unk0x1c; }
 	undefined4 GetUnk0x24() const { return m_unk0x24; }
 	undefined4 GetUnk0x2c() const { return m_unk0x2c; }
+	undefined4 GetUnk0x34() const { return m_unk0x34; }
 	undefined4 GetUnk0x3c() const { return m_unk0x3c; }
 	undefined4 GetUnk0x7c() const { return m_unk0x7c; }
 

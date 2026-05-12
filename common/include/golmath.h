@@ -91,6 +91,11 @@ struct GolQuat {
 	LegoFloat m_w;
 };
 
+// SIZE 0x30
+struct GolMatrix34 {
+	LegoFloat m_m[4][3];
+};
+
 // SIZE 0x40
 struct GolMatrix4 {
 	LegoFloat m_m[4][4];

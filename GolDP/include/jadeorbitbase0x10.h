@@ -31,9 +31,9 @@ public:
 	virtual void SetPosition(GolVec3* p_position) = 0;                   // vtable+0x44
 	virtual void VTable0x48() = 0;                                       // vtable+0x48
 
-	undefined4 m_unk0x04; // 0x04
-	undefined4 m_unk0x08; // 0x08
-	undefined4 m_unk0x0c; // 0x0c
+	JadeOrbitBase0x10* m_unk0x04; // 0x04
+	undefined4 m_unk0x08;         // 0x08
+	undefined4 m_unk0x0c;         // 0x0c
 };
 
 #endif // JADEORBITBASE0X10_H

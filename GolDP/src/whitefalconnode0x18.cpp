@@ -1,5 +1,7 @@
 #include "whitefalconnode0x18.h"
 
+#include "jadeorbitbase0x10.h"
+
 DECOMP_SIZE_ASSERT(WhiteFalconNode0x18, 0x18)
 
 // FUNCTION: GOLDP 0x10029980
@@ -51,19 +53,19 @@ void WhiteFalconNode0x18::Clear()
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
-undefined4 WhiteFalconNode0x18::VTable0x1c(undefined4)
+LegoU32 WhiteFalconNode0x18::VTable0x1c(const JadeOrbitBase0x10&) const
 {
 	return 0;
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void WhiteFalconNode0x18::VTable0x20(undefined4)
+void WhiteFalconNode0x18::VTable0x20(const GolMatrix4&)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void WhiteFalconNode0x18::VTable0x24(undefined4)
+void WhiteFalconNode0x18::VTable0x24(const GolMatrix34* p_m)
 {
 	// empty
 }
@@ -75,7 +77,7 @@ void WhiteFalconNode0x18::VTable0x28(undefined4, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void WhiteFalconNode0x18::VTable0x2c(undefined4, undefined4)
+void WhiteFalconNode0x18::VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const
 {
 	// empty
 }

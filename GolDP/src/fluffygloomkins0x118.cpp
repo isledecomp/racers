@@ -6,6 +6,7 @@
 #include "cmbmodelpart0x34.h"
 #include "gdbmodel0x48.h"
 #include "golerror.h"
+#include "greyfalconnode0x1c.h"
 #include "purpleribbon0x24.h"
 #include "shadowwolf0xc.h"
 
@@ -147,8 +148,6 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 		}
 	}
 
-	// ...
-
 	if (GetUnk0x2c() != 0) {
 		m_unk0x104 = new ShadowWolf0xc[GetUnk0x2c()];
 		if (m_unk0x104 == NULL) {
@@ -156,7 +155,12 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 		}
 	}
 
-	// ...
+	if (GetUnk0x34() != 0) {
+		m_unk0xfc = new GreyFalconNode0x1c[GetUnk0x34()];
+		if (m_unk0xfc == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
 
 	if (GetUnk0x3c() != 0) {
 		m_unk0x110 = new BoundingShape0x2c[GetUnk0x3c()];

@@ -16,24 +16,31 @@ class SoundGroupBinding;
 class ObscureIcon0x1a8 : public ObscureVantage0x58 {
 public:
 	// SIZE 0x84
-	class CreateParams0x84 {
+	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x30 {
 	public:
-		GolExport* m_golExport;                 // 0x00
-		BronzeFalcon0xc8770* m_renderer;        // 0x04
-		SoundGroupBinding* m_soundGroupBinding; // 0x08
-		ImaginaryInterface* m_eventHandler;     // 0x0c
-		undefined m_unk0x10[0x18 - 0x10];       // 0x10
-		LegoS32 m_width;                        // 0x18
-		LegoS32 m_height;                       // 0x1c
-		undefined m_unk0x20[0x38 - 0x20];       // 0x20
-		LegoBool m_unk0x38;                     // 0x38
-		undefined m_unk0x39[0x84 - 0x39];       // 0x39
+		undefined m_unk0x30[0x38 - 0x30]; // 0x30
+		LegoBool m_unk0x38;               // 0x38
+		undefined m_unk0x39[0x40 - 0x39]; // 0x39
+		undefined2 m_unk0x40;             // 0x40
+		undefined m_unk0x42[0x44 - 0x42]; // 0x42
+		ObscureIcon0x1a8* m_parentIcon;   // 0x44
+		undefined m_unk0x48[0x52 - 0x48]; // 0x48
+		undefined m_unk0x52[0x6a - 0x52]; // 0x52
+		undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
+		undefined4 m_unk0x74;             // 0x74
+		undefined4 m_unk0x78;             // 0x78
+		undefined4 m_unk0x7c;             // 0x7c
+		ImaginaryInterface* m_unk0x80;    // 0x80
 	};
 
 	// SIZE 0x90
 	class CreateState0x90 {
 	public:
-		undefined4 m_unk0x00[0x90 / sizeof(undefined4)]; // 0x00
+		undefined m_unk0x00[0x18 - 0x00]; // 0x00
+		undefined m_unk0x18[0x24 - 0x18]; // 0x18
+		Rect m_unk0x24[6];                // 0x24
+		undefined4 m_unk0x84;             // 0x84
+		undefined m_unk0x88[0x90 - 0x88]; // 0x88
 	};
 
 	ObscureIcon0x1a8();
@@ -65,9 +72,41 @@ public:
 	// ObscureIcon0x1a8::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x58[0x12c - 0x58];   // 0x58
-	LegoU8 m_unk0x12c;                   // 0x12c
-	undefined m_unk0x12d[0x1a8 - 0x12d]; // 0x12d
+	void FUN_00471d90(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
+	void FUN_00471ec0(ObscureIcon0x1a8* p_parentIcon);
+	void FUN_00471f00();
+	ObscureIcon0x1a8* FUN_00471f70();
+	ObscureIcon0x1a8* FUN_00471f90();
+	void FUN_00471fb0(undefined4 p_flags);
+	void FUN_00472010(undefined4 p_flags);
+	void FUN_00472080();
+	void FUN_00472540();
+
+	ObscureIcon0x1a8* m_parentIcon;         // 0x058
+	ObscureIcon0x1a8* m_prevIcon;           // 0x05c
+	ObscureIcon0x1a8* m_nextIcon;           // 0x060
+	ObscureIcon0x1a8* m_firstIcon;          // 0x064
+	ObscureIcon0x1a8* m_lastIcon;           // 0x068
+	Rect m_unk0x6c[6];                      // 0x06c
+	Rect m_unk0xcc[6];                      // 0x0cc
+	LegoU8 m_unk0x12c;                      // 0x12c
+	LegoBool m_unk0x12d;                    // 0x12d
+	undefined m_unk0x12e[0x130 - 0x12e];    // 0x12e
+	undefined4 m_unk0x130;                  // 0x130
+	undefined4 m_unk0x134;                  // 0x134
+	undefined m_unk0x138[0x158 - 0x138];    // 0x138
+	undefined4 m_unk0x158[4];               // 0x158
+	undefined2 m_unk0x168;                  // 0x168
+	SoundGroupBinding* m_soundGroupBinding; // 0x16c
+	ImaginaryInterface* m_unk0x170;         // 0x170
+	undefined4 m_unk0x174[6];               // 0x174
+	LegoU16 m_soundIds[5];                  // 0x18c
+	undefined m_unk0x196[0x198 - 0x196];    // 0x196
+	ObscureIcon0x1a8* m_unk0x198;           // 0x198
+	LegoU8 m_unk0x19c;                      // 0x19c
+	undefined m_unk0x19d[0x1a0 - 0x19d];    // 0x19d
+	undefined4 m_unk0x1a0;                  // 0x1a0
+	undefined4 m_unk0x1a4;                  // 0x1a4
 };
 
 #endif // OBSCUREICON0X1A8_H

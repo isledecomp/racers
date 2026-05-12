@@ -226,8 +226,8 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046b630()
 	createParams.m_renderer = m_renderer;
 	createParams.m_unk0x38 = TRUE;
 	createParams.m_soundGroupBinding = m_soundGroupBinding;
-	createParams.m_width = drawState->m_width;
-	createParams.m_height = drawState->m_height;
+	createParams.m_rect.m_right = drawState->m_width;
+	createParams.m_rect.m_bottom = drawState->m_height;
 	createParams.m_eventHandler = this;
 
 	if (m_unk0xd8.FUN_00471e30(&createParams, &g_unk0x4b2278)) {

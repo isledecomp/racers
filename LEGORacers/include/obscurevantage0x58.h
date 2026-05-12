@@ -10,10 +10,28 @@
 #include "silverdune0x30.h"
 #include "types.h"
 
+class BronzeFalcon0xc8770;
+class GolExport;
+class SoundGroupBinding;
+
 // VTABLE: LEGORACERS 0x004b29b4
 // SIZE 0x58
 class ObscureVantage0x58 {
 public:
+	// SIZE 0x30
+	class CreateParams0x30 {
+	public:
+		GolExport* m_golExport;                 // 0x00
+		BronzeFalcon0xc8770* m_renderer;        // 0x04
+		SoundGroupBinding* m_soundGroupBinding; // 0x08
+		ImaginaryInterface* m_eventHandler;     // 0x0c
+		Rect m_rect;                            // 0x10
+		undefined2 m_unk0x20;                   // 0x20
+		undefined m_unk0x22[0x28 - 0x22];       // 0x22
+		ObscureVantage0x58* m_parent;           // 0x28
+		undefined4 m_flags;                     // 0x2c
+	};
+
 	ObscureVantage0x58();
 	virtual void Reset();                                                                 // vtable+0x00
 	virtual ~ObscureVantage0x58();                                                        // vtable+0x04
@@ -64,6 +82,9 @@ protected:
 	LegoS32 m_unk0x4c;                 // 0x4c
 	LegoS32 m_unk0x50;                 // 0x50
 	undefined m_unk0x54;               // 0x54
+
+protected:
+	LegoBool32 FUN_00472a60(CreateParams0x30* p_createParams);
 };
 
 #endif // OBSCUREVANTAGE0X58_H

@@ -4,8 +4,6 @@
 #include "decomp.h"
 #include "types.h"
 
-#include <d3d.h>
-
 // SIZE 0x8
 struct GolVec2 {
 	LegoFloat m_x;
@@ -59,6 +57,12 @@ struct GolVec3 {
 		m_y *= p_f;
 		m_z *= p_f;
 		return *this;
+	}
+
+	LegoFloat DistanceSquaredTo(const GolVec3& p_other) const
+	{
+		GolVec3 d = p_other - *this;
+		return d.m_x * d.m_x + d.m_y * d.m_y + d.m_z * d.m_z;
 	}
 };
 

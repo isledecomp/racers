@@ -8,6 +8,8 @@
 #include "golerror.h"
 #include "golfileparser.h"
 
+DECOMP_SIZE_ASSERT(GdbModel0x48, 0x48)
+
 // FUNCTION: GOLDP 0x10006840
 GdbModel0x48::GdbModel0x48()
 {

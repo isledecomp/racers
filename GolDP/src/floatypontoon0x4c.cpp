@@ -88,10 +88,7 @@ void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result
 	p_result[1] = FALSE;
 	FUN_100286d0(&position);
 
-	LegoFloat x = p_arg1.m_x - position.m_x;
-	LegoFloat y = p_arg1.m_y - position.m_y;
-	LegoFloat z = p_arg1.m_z - position.m_z;
-	LegoFloat distanceSquared = x * x + y * y + z * z;
+	LegoFloat distanceSquared = position.DistanceSquaredTo(p_arg1);
 
 	if (distanceSquared != 0.0f && distanceSquared <= m_unk0x44) {
 		p_result[0] = TRUE;

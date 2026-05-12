@@ -25,7 +25,7 @@ void ShadowWolf0xc::FUN_10025e60(undefined4, undefined4, undefined4)
 }
 
 // STUB: GOLDP 0x10025f90
-void ShadowWolf0xc::FUN_10025f90(undefined4, undefined4)
+void ShadowWolf0xc::FUN_10025f90(undefined4, GolFileParser& p_parser)
 {
 	// TODO
 	STUB(0x10025f90);

@@ -5,6 +5,8 @@
 #include "golfileparser.h"
 #include "golmath.h"
 
+DECOMP_SIZE_ASSERT(GdbVertexArrayTypeTwo0x20, 0x20)
+
 // FUNCTION: GOLDP 0x10016b80
 GdbVertexArrayTypeTwo0x20::GdbVertexArrayTypeTwo0x20()
 {
@@ -101,14 +103,14 @@ void GdbVertexArrayTypeTwo0x20::VTable0x0c()
 }
 
 // FUNCTION: GOLDP 0x10006210 FOLDED
-void GdbVertexArrayTypeTwo0x20::VTable0x18(LegoU32 p_index, GolVec2* p_dest)
+void GdbVertexArrayTypeTwo0x20::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
 {
 	p_dest->m_x = m_unk0x0c[p_index].m_x;
 	p_dest->m_y = m_unk0x0c[p_index].m_y;
 }
 
 // FUNCTION: GOLDP 0x10016e70 FOLDED
-void GdbVertexArrayTypeTwo0x20::VTable0x1c(LegoU32 p_index, GolVec3* p_dest)
+void GdbVertexArrayTypeTwo0x20::VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const
 {
 	p_dest->m_x = m_unk0x1c[p_index].m_x;
 	p_dest->m_y = m_unk0x1c[p_index].m_y;
@@ -116,7 +118,7 @@ void GdbVertexArrayTypeTwo0x20::VTable0x1c(LegoU32 p_index, GolVec3* p_dest)
 }
 
 // FUNCTION: GOLDP 0x10016ea0 FOLDED
-void GdbVertexArrayTypeTwo0x20::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest)
+void GdbVertexArrayTypeTwo0x20::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = m_unk0x10[p_index] >> 16;
 	p_dest->m_grn = m_unk0x10[p_index] >> 8;

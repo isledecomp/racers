@@ -5,6 +5,8 @@
 #include "golfileparser.h"
 #include "golmath.h"
 
+DECOMP_SIZE_ASSERT(GdbVertexArrayMistery0x1c, 0x1c)
+
 // FUNCTION: GOLDP 0x100156d0
 GdbVertexArrayMistery0x1c::GdbVertexArrayMistery0x1c()
 {
@@ -78,14 +80,14 @@ void GdbVertexArrayMistery0x1c::VTable0x08(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x10006210 FOLDED
-void GdbVertexArrayMistery0x1c::VTable0x18(LegoU32 p_index, GolVec2* p_dest)
+void GdbVertexArrayMistery0x1c::VTable0x18(LegoU32 p_index, GolVec2* p_dest) const
 {
 	p_dest->m_x = m_unk0x0c[p_index].m_x;
 	p_dest->m_y = m_unk0x0c[p_index].m_y;
 }
 
 // FUNCTION: GOLDP 0x10015890
-void GdbVertexArrayMistery0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest)
+void GdbVertexArrayMistery0x1c::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0xff;
 	p_dest->m_grn = 0xff;

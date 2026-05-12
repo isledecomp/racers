@@ -124,6 +124,8 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/amberhaze0x20.cpp
   GolDP/src/gdbvertexarray0xc.cpp
   GolDP/src/gdbcommonvertexarray0x1c.cpp
+  GolDP/src/igdbmodelindexarray0x8.cpp
+  GolDP/src/gdbmodelindexarray0xc.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -203,6 +205,8 @@ add_library(goldp SHARED
   GolDP/src/gdbvertexarraytypethree0x20.cpp
   GolDP/src/gdbvertexarraymistery0x1c.cpp
   GolDP/src/gdbmodel0x48.cpp
+  GolDP/src/igdbmodelindexarray0x8.cpp
+  GolDP/src/gdbmodelindexarray0xc.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

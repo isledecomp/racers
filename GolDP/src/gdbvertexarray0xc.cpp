@@ -4,8 +4,10 @@
 #include "golfileparser.h"
 #include "golmath.h"
 
+DECOMP_SIZE_ASSERT(GdbVertexArray0xc, 0xc)
+
 // FUNCTION: GOLDP 0x10006230
-void GdbVertexArray0xc::VTable0x1c(LegoU32 p_index, GolVec3* p_arg2)
+void GdbVertexArray0xc::VTable0x1c(LegoU32 p_index, GolVec3* p_arg2) const
 {
 	p_arg2->m_x = 0.0f;
 	p_arg2->m_y = 0.0f;
@@ -13,7 +15,7 @@ void GdbVertexArray0xc::VTable0x1c(LegoU32 p_index, GolVec3* p_arg2)
 }
 
 // FUNCTION: GOLDP 0x10015860
-void GdbVertexArray0xc::VTable0x14(LegoU32 p_index, GolVec3* p_arg2)
+void GdbVertexArray0xc::VTable0x14(LegoU32 p_index, GolVec3* p_arg2) const
 {
 	p_arg2->m_x = m_unk0x08[p_index].m_x;
 	p_arg2->m_y = m_unk0x08[p_index].m_y;
@@ -85,7 +87,7 @@ void GdbVertexArray0xc::VTable0x04(LegoU16 p_count)
 	}
 }
 
-// FUNCTION: GOLDP 0x1002bfb0
+// FUNCTION: GOLDP 0x1002bfb0 FOLDED
 void GdbVertexArray0xc::VTable0x0c()
 {
 	if (m_unk0x08 != NULL) {
@@ -101,14 +103,14 @@ void GdbVertexArray0xc::VTable0x10()
 }
 
 // FUNCTION: GOLDP 0x1002bfd0
-void GdbVertexArray0xc::VTable0x18(undefined4, GolVec2* p_dest)
+void GdbVertexArray0xc::VTable0x18(undefined4, GolVec2* p_dest) const
 {
 	p_dest->m_x = 0.0f;
 	p_dest->m_y = 0.0f;
 }
 
 // FUNCTION: GOLDP 0x1002bff0
-void GdbVertexArray0xc::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest)
+void GdbVertexArray0xc::VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0;
 	p_dest->m_grn = 0;

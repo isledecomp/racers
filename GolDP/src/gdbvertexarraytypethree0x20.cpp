@@ -2,6 +2,8 @@
 
 #include "golmath.h"
 
+DECOMP_SIZE_ASSERT(GdbVertexArrayTypeThree0x20, 0x20)
+
 // FUNCTION: GOLDP 0x10016ad0
 GdbVertexArrayTypeThree0x20::GdbVertexArrayTypeThree0x20()
 {

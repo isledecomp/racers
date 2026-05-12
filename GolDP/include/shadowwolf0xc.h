@@ -2,6 +2,9 @@
 #define SHADOWWOLF0xC_H
 
 #include "decomp.h"
+#include "types.h"
+
+class GolFileParser;
 
 class ShadowWolf0xc {
 public:
@@ -10,7 +13,9 @@ public:
 
 	void FUN_10025df0(undefined4, undefined4);
 	void FUN_10025e60(undefined4, undefined4, undefined4);
-	void FUN_10025f90(undefined4, undefined4);
+	void FUN_10025f90(undefined4, GolFileParser& p_parser);
+
+	undefined4 GetUnk0x00() const { return m_unk0x00; }
 
 protected:
 	undefined4 m_unk0x00;  // 0x00

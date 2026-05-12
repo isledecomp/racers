@@ -56,15 +56,12 @@ void GreyFalconNode0x1c::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix4& 
 		obj = m_unk0x18;
 		end = &m_unk0x18[m_unk0x10];
 		for (; obj < end; obj++) {
-			if (obj->m_unk0x04 != NULL) {
-				GolMath::FUN_1002f3a0(
-					obj->m_unk0x10,
-					static_cast<JadeOrbit0xd0*>(obj->m_unk0x04)->m_unk0x50,
-					&obj->m_unk0x50
-				);
+			JadeOrbit0xd0* parent = static_cast<JadeOrbit0xd0*>(obj->m_unk0x04);
+			if (parent == NULL) {
+				GolMath::FUN_1002f3a0(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
 			}
 			else {
-				GolMath::FUN_1002f3a0(obj->m_unk0x10, p_m1, &obj->m_unk0x50);
+				GolMath::FUN_1002f3a0(obj->m_unk0x10, parent->m_unk0x50, &obj->m_unk0x50);
 			}
 		}
 	}

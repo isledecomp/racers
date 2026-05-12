@@ -8,7 +8,7 @@ DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
 // FUNCTION: GOLDP 0x10001ea0
 AmberLens0x344::AmberLens0x344()
 {
-	m_unk0x04 = &m_unk0x120;
+	m_unk0x04 = &m_unk0x120.m_unk0x00;
 	m_renderer = NULL;
 }
 

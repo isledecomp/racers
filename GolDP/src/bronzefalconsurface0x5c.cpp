@@ -60,8 +60,8 @@ void BronzeFalconSurface0x5c::FUN_100136a0(BronzeFalcon0xc8770* p_renderer)
 
 	DDSURFACEDESC2 surfaceDesc;
 	LegoChar errorMessage[100];
-	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	m_renderSurface = NULL;
+	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
 
 	HRESULT result = p_renderer->m_renderTargetInfo->GetRenderSurface()->GetSurfaceDesc(&surfaceDesc);

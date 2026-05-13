@@ -30,6 +30,7 @@ public:
 	LegoBool32 IsMouseAvailable() const { return m_mouseAvailable; }
 	LegoS32 GetJoystickCount() const { return m_joystickCount; }
 	JoystickInputDevice* GetJoystick(LegoS32 p_index) const { return m_joysticks[p_index]; }
+	JoystickInputDevice* FindJoystickByDeviceId(LegoS32 p_deviceId) const;
 
 	void RestoreSuspendedDevices();
 	void SuspendActiveDevices();

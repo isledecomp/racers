@@ -1,10 +1,51 @@
 #include "golhashtable.h"
 #include "golstream.h"
+#include "input/inputdevice.h"
+#include "input/inputmanager.h"
+#include "input/joystickdevice.h"
+#include "input/keyboarddevice.h"
 #include "peridottrace0x4e0.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceState0x438, 0x438)
+
+// GLOBAL: LEGORACERS 0x004b0624
+const LegoU32 g_keyboardInputBindingEvents[3][9] = {
+	{
+		InputDevice::c_sourceKeyboard | 0xcb,
+		InputDevice::c_sourceKeyboard | 0xcd,
+		InputDevice::c_sourceKeyboard | 0xc8,
+		InputDevice::c_sourceKeyboard | 0xd0,
+		InputDevice::c_sourceKeyboard | 0x1c,
+		InputDevice::c_sourceKeyboard | 0x9d,
+		InputDevice::c_sourceKeyboard | 0x32,
+		InputDevice::c_sourceKeyboard | 0x39,
+		InputDevice::c_sourceKeyboard | 0xb8,
+	},
+	{
+		InputDevice::c_sourceKeyboard | 0x1e,
+		InputDevice::c_sourceKeyboard | 0x20,
+		InputDevice::c_sourceKeyboard | 0x11,
+		InputDevice::c_sourceKeyboard | 0x2d,
+		InputDevice::c_sourceKeyboard | 0x38,
+		InputDevice::c_sourceKeyboard | 0x10,
+		InputDevice::c_sourceKeyboard | 0x12,
+		InputDevice::c_sourceKeyboard | 0x2a,
+		InputDevice::c_sourceKeyboard | 0x2c,
+	},
+	{
+		InputDevice::c_sourceKeyboard | 0x4b,
+		InputDevice::c_sourceKeyboard | 0x4d,
+		InputDevice::c_sourceKeyboard | 0x48,
+		InputDevice::c_sourceKeyboard | 0x50,
+		InputDevice::c_sourceKeyboard | 0x36,
+		InputDevice::c_sourceKeyboard | 0x51,
+		InputDevice::c_sourceKeyboard | 0x47,
+		InputDevice::c_sourceKeyboard | 0x9c,
+		InputDevice::c_sourceKeyboard | 0x49,
+	},
+};
 
 // GLOBAL: LEGORACERS 0x004becd8
 const LegoChar* g_menuLanguageDirectories[9] =
@@ -12,42 +53,111 @@ const LegoChar* g_menuLanguageDirectories[9] =
 
 extern DisplayDriverGuid g_displayDriverGuid;
 
-// STUB: LEGORACERS 0x0042e880
+// FUNCTION: LEGORACERS 0x0042e880
 PeridotTraceState0x438::PeridotTraceState0x438()
 {
-	// TODO
-	STUB(0x42e880);
+	Initialize();
 }
 
-// STUB: LEGORACERS 0x0042e890
+// FUNCTION: LEGORACERS 0x0042e890
 PeridotTraceState0x438::~PeridotTraceState0x438()
 {
-	// TODO
-	STUB(0x42e890);
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0042e8a0
+void PeridotTraceState0x438::Initialize()
+{
+	m_unk0x00 = 0;
+	m_unk0x04 = 0xffffffff;
+
+	m_state.Clear();
+	m_state.m_unk0x0c = 5;
+	m_state.m_unk0x1e = 0x80;
+	m_state.m_unk0x1f = 0xff;
+	m_state.m_unk0x20 = 0xff;
+	m_state.m_unk0x21 = 1;
+	m_state.m_languageIndex = GetRegistryLanguageIndex();
+	m_state.m_unk0x23 = 3;
+	m_state.m_inputBindings.m_unk0x00 = 0;
+	m_state.m_inputBindings.m_unk0x01 = 2;
+	m_state.m_inputBindings.m_unk0x02 = 0;
+	m_state.m_inputBindings.m_unk0x03 = 0;
+	m_state.m_inputBindings.m_unk0x04 = 0;
+	m_state.m_inputBindings.m_unk0x05 = 2;
+	m_state.m_inputBindings.m_unk0x06 = 0;
+	m_state.m_inputBindings.m_unk0x07 = 1;
+	m_inputManager = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0042e920
-void PeridotTraceState0x438::FUN_0042e920(InputManager* p_inputManager)
+void PeridotTraceState0x438::Initialize(InputManager* p_inputManager)
 {
-	FUN_0042e950();
+	Reset();
 	m_inputManager = p_inputManager;
-	FUN_0042e960(p_inputManager);
+	InitializeInputBindings(p_inputManager);
 	FUN_0042f020(g_displayDriverGuid);
 	m_unk0x00 = 0;
 }
 
-// STUB: LEGORACERS 0x0042e950
-void PeridotTraceState0x438::FUN_0042e950()
+// FUNCTION: LEGORACERS 0x0042e950
+void PeridotTraceState0x438::Reset()
 {
-	// TODO
-	STUB(0x0042e950);
+	Initialize();
 }
 
-// STUB: LEGORACERS 0x0042e960
-void PeridotTraceState0x438::FUN_0042e960(InputManager*)
+// FUNCTION: LEGORACERS 0x0042e960
+void PeridotTraceState0x438::InitializeInputBindings(InputManager* p_inputManager)
 {
-	// TODO
-	STUB(0x0042e960);
+	LegoS32 i;
+	LegoS32 j;
+
+	for (i = 0; i < 2; i++) {
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+		JoystickInputDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
+
+		if (joystick == NULL) {
+			entry->m_deviceType = 4;
+			entry->m_deviceSubType = 2;
+		}
+		else {
+			entry->m_deviceType = joystick->GetDeviceType();
+			entry->m_deviceSubType = joystick->GetDeviceSubType();
+		}
+
+		entry->m_unk0x02 = i;
+		::memset(entry->m_events, 0, sizeof(entry->m_events));
+
+		if (joystick != NULL) {
+			if (joystick->GetDeviceSubType() == 4) {
+				entry->m_events[0] = InputDevice::c_sourceJoystick2 | 1;
+				entry->m_events[1] = InputDevice::c_sourceJoystick2;
+			}
+
+			for (LegoS32 button = 2; button < joystick->GetButtonCountFast(); button++) {
+				entry->m_events[button] = InputDevice::c_sourceJoystick1 | (button - 2);
+			}
+		}
+	}
+
+	KeyboardInputDevice* keyboard = p_inputManager->GetKeyboard();
+
+	for (i = 0; i < sizeOfArray(g_keyboardInputBindingEvents); i++) {
+		if (keyboard == NULL) {
+			m_state.m_inputBindings.m_entries[4].m_deviceSubType = 4;
+		}
+		else {
+			m_state.m_inputBindings.m_entries[4].m_deviceSubType = keyboard->GetDeviceSubType();
+		}
+
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
+		entry->m_deviceType = 3;
+		entry->m_unk0x02 = 0;
+
+		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
+			entry->m_events[j] = g_keyboardInputBindingEvents[i][j];
+		}
+	}
 }
 
 // STUB: LEGORACERS 0x0042eb60
@@ -57,11 +167,10 @@ void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4a8*, undefined4)
 	STUB(0x0042eb60);
 }
 
-// STUB: LEGORACERS 0x0042ef80
-void PeridotTraceState0x438::FUN_0042ef80(PeridotTrace0x4a8*)
+// FUNCTION: LEGORACERS 0x0042ef80
+void PeridotTraceState0x438::FUN_0042ef80(PeridotTrace0x4a8* p_trace)
 {
-	// TODO
-	STUB(0x0042ef80);
+	p_trace->FUN_00442c20(&m_state);
 }
 
 // FUNCTION: LEGORACERS 0x0042ef90
@@ -70,7 +179,7 @@ void PeridotTraceState0x438::SetLanguageResourcePath()
 	LegoChar path[24];
 
 	::strcpy(path, "MENUDATA\\");
-	::strcat(path, g_menuLanguageDirectories[m_languageIndex]);
+	::strcat(path, g_menuLanguageDirectories[m_state.m_languageIndex]);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString(path);
@@ -84,8 +193,8 @@ void PeridotTraceState0x438::FUN_0042f020(const DisplayDriverGuid& p_guid)
 
 	m_unk0x00 = 1;
 
-	SerializedGuidWord* dest = m_displayDriverGuid.m_words;
-	for (LegoU32 i = 0; i < sizeOfArray(m_displayDriverGuid.m_words); i++, source++, dest++) {
+	SerializedGuidWord* dest = m_state.m_displayDriverGuid.m_words;
+	for (LegoU32 i = 0; i < sizeOfArray(m_state.m_displayDriverGuid.m_words); i++, source++, dest++) {
 		dest->Set(*source);
 	}
 }
@@ -93,24 +202,32 @@ void PeridotTraceState0x438::FUN_0042f020(const DisplayDriverGuid& p_guid)
 // FUNCTION: LEGORACERS 0x0042f060
 void PeridotTraceState0x438::FUN_0042f060(DisplayDriverGuid& p_guid)
 {
-	const SerializedGuidWord* source = m_displayDriverGuid.m_words;
+	const SerializedGuidWord* source = m_state.m_displayDriverGuid.m_words;
 	LegoU32* dest = p_guid.GetWords();
-	for (LegoU32 i = 0; i < sizeOfArray(m_displayDriverGuid.m_words); i++, source++, dest++) {
+	for (LegoU32 i = 0; i < sizeOfArray(m_state.m_displayDriverGuid.m_words); i++, source++, dest++) {
 		*dest = source->Get();
 	}
+}
+
+// STUB: LEGORACERS 0x0042f0b0
+LegoU8 PeridotTraceState0x438::GetRegistryLanguageIndex()
+{
+	// TODO
+	STUB(0x0042f0b0);
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042f1f0
 LegoU8 PeridotTraceState0x438::FUN_0042f1f0() const
 {
-	return m_unk0x25 | 1;
+	return m_state.m_unk0x25 | 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042f200
 void PeridotTraceState0x438::FUN_0042f200(LegoU8 p_unk0x04)
 {
 	m_unk0x00 = 1;
-	m_unk0x24 |= p_unk0x04;
+	m_state.m_unk0x24 |= p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x0042f250
@@ -118,9 +235,9 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f250(LegoU32 p_unk0x04)
 {
 	LegoBool32 result = FALSE;
 
-	if (!static_cast<LegoU16>(m_unk0x26 & p_unk0x04)) {
+	if (!static_cast<LegoU16>(m_state.m_unk0x26 & p_unk0x04)) {
 		result = TRUE;
-		m_unk0x26 |= p_unk0x04;
+		m_state.m_unk0x26 |= p_unk0x04;
 		m_unk0x00 = result;
 	}
 
@@ -130,7 +247,7 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f250(LegoU32 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0042f280
 LegoBool32 PeridotTraceState0x438::FUN_0042f280() const
 {
-	return m_unk0x26 == 0x0fff;
+	return m_state.m_unk0x26 == 0x0fff;
 }
 
 // FUNCTION: LEGORACERS 0x0042f310
@@ -150,10 +267,10 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f310(
 
 	LegoU32 current;
 	if (!p_unk0x08) {
-		current = m_unk0x28[p_unk0x04];
+		current = m_state.m_unk0x28[p_unk0x04];
 	}
 	else {
-		current = m_unk0x5c[p_unk0x04];
+		current = m_state.m_unk0x5c[p_unk0x04];
 	}
 
 	if (current && p_unk0x0c >= current) {
@@ -161,12 +278,12 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f310(
 	}
 
 	if (!p_unk0x08) {
-		m_unk0x28[p_unk0x04] = p_unk0x0c;
-		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_unk0x90[p_unk0x04], 14);
+		m_state.m_unk0x28[p_unk0x04] = p_unk0x0c;
+		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_state.m_unk0x90[p_unk0x04], 14);
 	}
 	else {
-		m_unk0x5c[p_unk0x04] = p_unk0x0c;
-		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_unk0x1fc[p_unk0x04], 14);
+		m_state.m_unk0x5c[p_unk0x04] = p_unk0x0c;
+		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_state.m_unk0x1fc[p_unk0x04], 14);
 	}
 
 	m_unk0x00 = 1;

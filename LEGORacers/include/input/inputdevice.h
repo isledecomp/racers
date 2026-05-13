@@ -123,6 +123,10 @@ public:
 	static LegoU32 MakeEvent(LegoU32 p_source, LegoU32 p_value) { return p_source | p_value; }
 
 	LegoBool32 IsCreated() const { return m_created; }
+	LegoS32 GetButtonCountFast() const { return m_buttonCount; }
+	undefined4 GetDeviceSubType() const { return m_deviceSubType; }
+	undefined4 GetDeviceType() const { return m_deviceType; }
+	undefined4 GetDeviceId() const { return m_deviceId; }
 	void SetForceFeedbackAvailable(undefined4 p_forceFeedbackAvailable)
 	{
 		m_forceFeedbackAvailable = p_forceFeedbackAvailable;

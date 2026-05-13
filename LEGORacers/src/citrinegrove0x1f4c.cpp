@@ -38,7 +38,7 @@ void CitrineGrove0x1f4c::FUN_004432e0(InputManager* p_inputManager, LegoBool32 p
 {
 	char path[128];
 
-	m_unk0x18c4.FUN_0042e920(p_inputManager);
+	m_unk0x18c4.Initialize(p_inputManager);
 	if (g_searchPaths[0] != NULL) {
 		::strcpy(path, g_searchPaths[0]);
 		size_t len = strlen(path);

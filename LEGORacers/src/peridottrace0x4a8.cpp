@@ -34,6 +34,13 @@ undefined4 PeridotTrace0x4a8::FUN_00442770(GolFile& p_file)
 	return 0;
 }
 
+// STUB: LEGORACERS 0x00442c20
+void PeridotTrace0x4a8::FUN_00442c20(void*)
+{
+	// TODO
+	STUB(0x00442c20);
+}
+
 // STUB: LEGORACERS 0x004437e0
 PeridotTrace0x4e0::PeridotTrace0x4e0()
 {

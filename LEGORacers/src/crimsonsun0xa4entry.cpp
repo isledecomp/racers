@@ -256,27 +256,24 @@ undefined4 CrimsonSun0xa4::Entry0x74c::GetUnk0x2c0() const
 	return m_unk0x2c0;
 }
 
-// STUB: LEGORACERS 0x004687a0
+// FUNCTION: LEGORACERS 0x004687a0
 void CrimsonSun0xa4::Entry0x74c::FUN_004687a0()
 {
 	FUN_00468740();
 
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x78();
-	if (icon && (icon->GetFlags() & 1)) {
-		icon->FUN_00471f00();
-		icon->RemoveFromParent();
+	if (m_unk0x6c8.GetUnk0x78() && (m_unk0x6c8.GetUnk0x78()->GetFlags() & 1)) {
+		m_unk0x6c8.GetUnk0x78()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x78()->RemoveFromParent();
 	}
 
-	icon = m_unk0x6c8.GetUnk0x7c();
-	if (icon && (icon->GetFlags() & 1)) {
-		icon->FUN_00471f00();
-		icon->RemoveFromParent();
+	if (m_unk0x6c8.GetUnk0x7c() && (m_unk0x6c8.GetUnk0x7c()->GetFlags() & 1)) {
+		m_unk0x6c8.GetUnk0x7c()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x7c()->RemoveFromParent();
 	}
 
-	icon = m_unk0x6c8.GetUnk0x80();
-	if (icon && (icon->GetFlags() & 1)) {
-		icon->FUN_00471f00();
-		icon->RemoveFromParent();
+	if (m_unk0x6c8.GetUnk0x80() && (m_unk0x6c8.GetUnk0x80()->GetFlags() & 1)) {
+		m_unk0x6c8.GetUnk0x80()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x80()->RemoveFromParent();
 	}
 
 	m_unk0x2bc = 3;

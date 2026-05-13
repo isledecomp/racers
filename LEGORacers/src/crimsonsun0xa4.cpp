@@ -149,13 +149,13 @@ void CrimsonSun0xa4::FUN_00468e20()
 	}
 }
 
-// STUB: LEGORACERS 0x0046f810
+// FUNCTION: LEGORACERS 0x0046f810
 CrimsonSun0xa4::FieldAt0x6c8::FieldAt0x6c8()
 {
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0046f880
+// FUNCTION: LEGORACERS 0x0046f880
 CrimsonSun0xa4::FieldAt0x6c8::~FieldAt0x6c8()
 {
 	VTable0x08();

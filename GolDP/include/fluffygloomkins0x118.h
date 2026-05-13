@@ -25,23 +25,23 @@ class FluffyGloomkins0x118 : public ZoweeBlubberworth0xf0 {
 public:
 	FluffyGloomkins0x118();
 	~FluffyGloomkins0x118() override;
-	void VTable0x08() override;                                      // vtable+0x08
-	undefined4* VTable0x0c() override;                               // vtable+0x0c
-	void VTable0x18() override;                                      // vtable+0x18
-	void VTable0x1c(undefined4*) override;                           // vtable+0x1c
-	void VTable0x20(undefined4) override;                            // vtable+0x20
-	void VTable0x24(undefined4) override;                            // vtable+0x24
-	void VTable0x28(undefined4*) override;                           // vtable+0x28
-	MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const override;   // vtable+0x2c
-	AmberHaze0x1c* VTable0x30(LegoU32 p_index) const override;       // vtable+0x30
-	CmbModelPart0x34* VTable0x34(LegoU32 p_index) const override;    // vtable+0x34
-	IGdbModel0x40* VTable0x38(LegoU32 p_index) const override;       // vtable+0x38
-	ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const override;       // vtable+0x3c
-	WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const override; // vtable+0x40
-	BoundingShape0x2c* VTable0x44(LegoU32 p_index) const override;   // vtable+0x44
-	FloatyBoat0x28* VTable0x48(LegoU32 p_index) const override;      // vtable+0x48
-	MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const override;          // vtable+0x4c
-	AmberLensBase0x120* VTable0x50(LegoU32 p_index) const override;          // vtable+0x50
+	void VTable0x08() override;                                           // vtable+0x08
+	undefined4* VTable0x0c() override;                                    // vtable+0x0c
+	void VTable0x18() override;                                           // vtable+0x18
+	void VTable0x1c(undefined4*) override;                                // vtable+0x1c
+	void VTable0x20(undefined4) override;                                 // vtable+0x20
+	void VTable0x24(undefined4) override;                                 // vtable+0x24
+	void VTable0x28(undefined4*) override;                                // vtable+0x28
+	MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const override;        // vtable+0x2c
+	AmberHaze0x1c* VTable0x30(LegoU32 p_index) const override;            // vtable+0x30
+	CmbModelPart0x34* VTable0x34(LegoU32 p_index) const override;         // vtable+0x34
+	IGdbModel0x40* VTable0x38(LegoU32 p_index) const override;            // vtable+0x38
+	ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const override;            // vtable+0x3c
+	WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const override;      // vtable+0x40
+	BoundingShape0x2c* VTable0x44(LegoU32 p_index) const override;        // vtable+0x44
+	FloatyBoat0x28* VTable0x48(LegoU32 p_index) const override;           // vtable+0x48
+	MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const override; // vtable+0x4c
+	AmberLensBase0x120* VTable0x50(LegoU32 p_index) const override;       // vtable+0x50
 
 	// SYNTHETIC: GOLDP 0x100171e0
 	// FluffyGloomkins0x118::`scalar deleting destructor'
@@ -58,7 +58,7 @@ private:
 	MabMaterialAnimation0x14* m_unk0x108; // 0x108
 	CmbModelPart0x34* m_unk0x10c;         // 0x10c
 	BoundingShape0x2c* m_unk0x110;        // 0x110
-	AmberLens0x344* m_unk0x114;       // 0x114
+	AmberLens0x344* m_unk0x114;           // 0x114
 };
 
 #endif // FLUFFYGLOOMKINS0X118_H

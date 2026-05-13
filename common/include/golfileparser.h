@@ -108,12 +108,15 @@ public:
 	void ReadRightBracket();
 	void ReadLeftCurly();
 	void ReadRightCurly();
-	undefined4 ReadBracketedCountAndLeftCurly();
+	LegoU32 ReadBracketedCountAndLeftCurly();
 
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
+	void SetUnk0x30(undefined4 p_arg) { m_unk0x30 = p_arg; }
 	ParserTokenType GetCurrentToken() const { return m_unk0x34; }
 	LegoS32 GetUnk0x38() const { return m_unk0x38; }
+	LegoFloat GetUnk0x40() const { return m_unk0x40; }
+	const LegoChar* GetUnk0x44() const { return m_unk0x44; }
 
 	// SYNTHETIC: GOLDP 0x10032480
 	// SYNTHETIC: LEGORACERS 0x0044e5c0

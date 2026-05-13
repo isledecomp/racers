@@ -1,5 +1,6 @@
 #include "gdbvertexarray0xc.h"
 
+#include "color.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golmath.h"

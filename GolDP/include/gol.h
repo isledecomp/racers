@@ -1,13 +1,8 @@
 #ifndef GOLDP_GOL_H
 #define GOLDP_GOL_H
 
-#include "awakekite0x20.h"
 #include "decomp.h"
-#include "floatyboat0x28.h"
-#include "goldrawstate.h"
-#include "golnametable.h"
 #include "types.h"
-#include "zoweeblubberworth0xf0.h"
 
 #include <windows.h>
 
@@ -15,16 +10,20 @@ typedef void FatalErrorMessageCBFN(const LegoChar* p_message, const LegoChar* p_
 typedef void GolExitCBFN();
 
 class AmberHaze0x1c;
+class AmberLens0x344;
+class AwakeKite0x20;
 class BoundingShape0x2c;
+class FloatyBoat0x28;
+class GolDrawState;
 class GolFontBase0x40;
 class GolHashTable;
 class GolFileSource;
-class AmberLens0x344;
 class GolFontTable;
+class GolNameTable;
 class MagentaRibbon0x20;
 class WhiteBaffoon0x50;
-class AmberHaze0x1c;
 class WhiteFalconNode0x18;
+class ZoweeBlubberworth0xf0;
 
 struct GolImport {
 	GolFileSource* m_fileSources;               // 0x00

@@ -241,7 +241,7 @@ void GolFileParser::ReadRightCurly()
 
 // FUNCTION: GOLDP 0x100327e0
 // FUNCTION: LEGORACERS 0x0044e940
-undefined4 GolFileParser::ReadBracketedCountAndLeftCurly()
+LegoU32 GolFileParser::ReadBracketedCountAndLeftCurly()
 {
 	if (GetNextToken() != e_leftBracket) {
 		HandleUnexpectedToken(e_leftBracket);

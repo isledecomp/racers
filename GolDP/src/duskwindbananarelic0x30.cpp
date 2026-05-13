@@ -2,6 +2,7 @@
 
 #include "bronzefalcon0xc8770.h"
 #include "golcommondrawstate.h"
+#include "golddune0x38.h"
 #include "golerror.h"
 
 #include <stdio.h>

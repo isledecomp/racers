@@ -12,6 +12,7 @@
 #include "golsurfaceformat.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
+#include "utopianpan0xa4.h"
 
 #include <stdio.h>
 #include <string.h>

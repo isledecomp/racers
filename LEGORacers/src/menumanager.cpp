@@ -2,8 +2,7 @@
 
 #include "amberlens0x344.h"
 #include "audio/musicinstance.h"
-#include "audio/nullmusicgroup.h"
-#include "audio/nullsoundgroup.h"
+#include "awakekite0x20.h"
 #include "goldrawstate.h"
 #include "golhashtable.h"
 #include "golstream.h"

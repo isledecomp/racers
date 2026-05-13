@@ -15,7 +15,7 @@ public:
 
 	MabMaterialAnimationItem0x18();
 
-	void FUN_10025d40(undefined2, undefined2, undefined2, undefined4);
+	void FUN_10025d40(undefined2, undefined2, undefined2, LegoS32);
 	void FUN_10025da0(undefined4 p_arg1, undefined2 p_arg2, undefined4 p_arg3);
 	void FUN_004103c0(const MabMaterialAnimationItem0x18& p_other);
 	void Reset();

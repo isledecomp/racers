@@ -18,23 +18,18 @@ MabMaterialAnimationItem0x18::MabMaterialAnimationItem0x18()
 
 // FUNCTION: GOLDP 0x10025d40
 // FUNCTION: LEGORACERS 0x00410370
-void MabMaterialAnimationItem0x18::FUN_10025d40(
-	undefined2 p_arg1,
-	undefined2 p_arg2,
-	undefined2 p_arg3,
-	undefined4 p_arg4
-)
+void MabMaterialAnimationItem0x18::FUN_10025d40(undefined2 p_arg1, undefined2 p_arg2, undefined2 p_arg3, LegoS32 p_arg4)
 {
 	if (m_flags & c_flagBit0) {
 		Reset();
 	}
 	LegoFloat f = static_cast<LegoFloat>(p_arg4);
 	m_unk0x06 = p_arg1;
-	m_unk0x0c = f / 1000.0f;
 	m_unk0x08 = p_arg2;
 	m_unk0x0a = p_arg3;
-	m_flags = c_flagBit0;
 	m_unk0x10 = 0.0f;
+	m_unk0x0c = f / 1000.0f;
+	m_flags = c_flagBit0;
 }
 
 // FUNCTION: LEGORACERS 0x004103c0
@@ -88,7 +83,7 @@ void MabMaterialAnimationItem0x18::FUN_00410470()
 // FUNCTION: LEGORACERS 0x00410480
 void MabMaterialAnimationItem0x18::FUN_00410480()
 {
-	m_unk0x10 = 0;
+	m_unk0x10 = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00410490

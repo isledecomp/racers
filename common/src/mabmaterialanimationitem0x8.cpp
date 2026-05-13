@@ -22,7 +22,7 @@ void MabMaterialAnimationItem0x8::FUN_10026110(WhiteFalcon0x140* p_renderer, con
 {
 	m_unk0x00 = p_renderer->FindMaterialByName(p_name);
 	if (m_unk0x00 == NULL) {
-		char message[40];
+		LegoChar message[40];
 		::strcpy(message, "Unable to find named material: ");
 		size_t lenPrefix = strlen(message);
 		::strncpy(message + lenPrefix, p_name, 8);

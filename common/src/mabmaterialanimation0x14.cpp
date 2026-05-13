@@ -103,7 +103,6 @@ void MabMaterialAnimation0x14::FUN_10025a40(WhiteFalcon0x140* p_renderer, GolFil
 // FUNCTION: LEGORACERS 0x00410140
 void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 {
-
 	LegoU32 i;
 
 	if (p_parser.GetNextToken() != GolFileParser::e_unknown0x28) {

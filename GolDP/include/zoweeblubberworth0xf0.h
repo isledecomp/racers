@@ -3,11 +3,13 @@
 
 #include "golnametable.h"
 
+class AmberLensBase0x120;
 class AmberHaze0x1c;
 class BoundingShape0x2c;
 class CmbModelPart0x34;
 class FloatyBoat0x28;
 class IGdbModel0x40;
+class MabMaterialAnimation0x14;
 class MagentaRibbon0x20;
 class ShadowWolf0xc;
 class WhiteFalconNode0x18;
@@ -36,8 +38,8 @@ public:
 	virtual WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const = 0; // vtable+0x40
 	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) const = 0;   // vtable+0x44
 	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;      // vtable+0x48
-	virtual undefined4* VTable0x4c(LegoU32 p_index) const = 0;          // vtable+0x4c
-	virtual undefined4* VTable0x50(LegoU32 p_index) const = 0;          // vtable+0x50
+	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;          // vtable+0x4c
+	virtual AmberLensBase0x120* VTable0x50(LegoU32 p_index) const = 0;          // vtable+0x50
 	virtual void VTable0x54(void);                                      // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0

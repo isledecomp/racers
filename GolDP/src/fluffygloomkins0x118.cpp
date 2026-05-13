@@ -65,7 +65,7 @@ ShadowWolf0xc* FluffyGloomkins0x118::VTable0x3c(LegoU32 p_index) const
 	return &m_unk0x104[p_index];
 }
 
-// STUB: GOLDP 0x100172f0
+// FUNCTION: GOLDP 0x100172f0
 WhiteFalconNode0x18* FluffyGloomkins0x118::VTable0x40(LegoU32 p_index) const
 {
 	return &m_unk0xfc[p_index];
@@ -83,28 +83,16 @@ FloatyBoat0x28* FluffyGloomkins0x118::VTable0x48(LegoU32 p_index) const
 	return &m_unk0x100[p_index];
 }
 
-// STUB: GOLDP 0x10017350
-undefined4* FluffyGloomkins0x118::VTable0x4c(LegoU32 p_index) const
+// FUNCTION: GOLDP 0x10017350
+MabMaterialAnimation0x14* FluffyGloomkins0x118::VTable0x4c(LegoU32 p_index) const
 {
-#if 0
 	return &m_unk0x108[p_index];
-#else
-	// TODO
-	STUB(0x10017350);
-	return NULL;
-#endif
 }
 
-// STUB: GOLDP 0x10017370
-undefined4* FluffyGloomkins0x118::VTable0x50(LegoU32 p_index) const
+// FUNCTION: GOLDP 0x10017370
+AmberLensBase0x120* FluffyGloomkins0x118::VTable0x50(LegoU32 p_index) const
 {
-#if 0
 	return &m_unk0x114[p_index];
-#else
-	// TODO
-	STUB(0x10017370);
-	return NULL;
-#endif
 }
 
 // FUNCTION: GOLDP 0x10017390

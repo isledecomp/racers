@@ -6,6 +6,7 @@
 #include "zoweeblubberworth0xf0.h"
 
 class AmberHaze0x20;
+class AmberLens0x344;
 class AmberLensBase0x120;
 class BoundingShape0x2c;
 class CmbModelPart0x34;
@@ -39,8 +40,8 @@ public:
 	WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const override; // vtable+0x40
 	BoundingShape0x2c* VTable0x44(LegoU32 p_index) const override;   // vtable+0x44
 	FloatyBoat0x28* VTable0x48(LegoU32 p_index) const override;      // vtable+0x48
-	undefined4* VTable0x4c(LegoU32 p_index) const override;          // vtable+0x4c
-	undefined4* VTable0x50(LegoU32 p_index) const override;          // vtable+0x50
+	MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const override;          // vtable+0x4c
+	AmberLensBase0x120* VTable0x50(LegoU32 p_index) const override;          // vtable+0x50
 
 	// SYNTHETIC: GOLDP 0x100171e0
 	// FluffyGloomkins0x118::`scalar deleting destructor'
@@ -57,7 +58,7 @@ private:
 	MabMaterialAnimation0x14* m_unk0x108; // 0x108
 	CmbModelPart0x34* m_unk0x10c;         // 0x10c
 	BoundingShape0x2c* m_unk0x110;        // 0x110
-	AmberLensBase0x120* m_unk0x114;       // 0x114
+	AmberLens0x344* m_unk0x114;       // 0x114
 };
 
 #endif // FLUFFYGLOOMKINS0X118_H

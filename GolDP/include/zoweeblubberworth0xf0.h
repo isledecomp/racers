@@ -48,7 +48,7 @@ class WdbTxtParser : public GolTxtParser {
 	// SYNTHETIC: GOLDP 0x10030050 FOLDED
 	// WdbTxtParser::`scalar deleting destructor'
 
-	// SYNTHETIC: GOLDP 0xx1001b000 FOLDED
+	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
 	// WdbTxtParser::~WdbTxtParser
 };
 

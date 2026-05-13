@@ -7,6 +7,7 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0)
+DECOMP_SIZE_ASSERT(WdbStaticModel0x8c, 0x8c)
 DECOMP_SIZE_ASSERT(WdbTxtParser, 0x1fc)
 
 // GLOBAL: GOLDP 0x100576e4
@@ -371,8 +372,8 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x50, 0, sizeof(*m_unk0x50) * m_unk0x4c);
-	for (i = 0; i < m_unk0x4c; i++) {
-		WdbStaticModel0x8c* item = &m_unk0x50[i];
+	WdbStaticModel0x8c* item = m_unk0x50;
+	for (i = 0; i < m_unk0x4c; item++, i++) {
 		LegoU32 cnt = 0;
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2e);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -398,7 +399,7 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 				}
-				if (p_parser.GetUnk0x38() >= m_unk0x24 && m_unk0x24 != 0) {
+				if (static_cast<LegoU32>(p_parser.GetUnk0x38()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
 				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
@@ -430,7 +431,7 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 				}
-				if (p_parser.GetUnk0x38() >= m_unk0x2c && m_unk0x2c != 0) {
+				if (static_cast<LegoU32>(p_parser.GetUnk0x38()) >= m_unk0x2c && m_unk0x2c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
 				v = p_parser.GetUnk0x38();

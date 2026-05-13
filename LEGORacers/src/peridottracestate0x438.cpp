@@ -132,3 +132,43 @@ LegoBool32 PeridotTraceState0x438::FUN_0042f280() const
 {
 	return m_unk0x26 == 0x0fff;
 }
+
+// FUNCTION: LEGORACERS 0x0042f310
+LegoBool32 PeridotTraceState0x438::FUN_0042f310(
+	LegoU32 p_unk0x04,
+	LegoBool32 p_unk0x08,
+	LegoU32 p_unk0x0c,
+	GolString* p_string
+)
+{
+	if (p_unk0x04 >= 13) {
+		p_unk0x04 -= 13;
+		if (p_unk0x04 >= 13) {
+			return FALSE;
+		}
+	}
+
+	LegoU32 current;
+	if (!p_unk0x08) {
+		current = m_unk0x28[p_unk0x04];
+	}
+	else {
+		current = m_unk0x5c[p_unk0x04];
+	}
+
+	if (current && p_unk0x0c >= current) {
+		return FALSE;
+	}
+
+	if (!p_unk0x08) {
+		m_unk0x28[p_unk0x04] = p_unk0x0c;
+		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_unk0x90[p_unk0x04], 14);
+	}
+	else {
+		m_unk0x5c[p_unk0x04] = p_unk0x0c;
+		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_unk0x1fc[p_unk0x04], 14);
+	}
+
+	m_unk0x00 = 1;
+	return TRUE;
+}

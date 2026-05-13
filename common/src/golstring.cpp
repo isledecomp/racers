@@ -17,6 +17,16 @@ LegoS32 GolString::GolStrlen(undefined2* p_string)
 	return len;
 }
 
+// FUNCTION: LEGORACERS 0x00449de0
+void GolString::CopyStringToBuf16(const LegoChar* p_src, undefined2* p_dst)
+{
+	while (*p_src) {
+		*p_dst++ = static_cast<LegoU8>(*p_src++);
+	}
+
+	*p_dst = 0;
+}
+
 // FUNCTION: GOLDP 0x1002f950
 // FUNCTION: LEGORACERS 0x00449e10
 GolString::GolString()

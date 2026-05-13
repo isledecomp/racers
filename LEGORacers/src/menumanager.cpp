@@ -645,9 +645,57 @@ LegoBool32 MenuManager::FUN_0042e450()
 // STUB: LEGORACERS 0x0042e490
 LegoS32 MenuManager::FUN_0042e490()
 {
-	// TODO
-	STUB(0x42e490);
-	return FALSE;
+	LegoU8 flags = m_unk0x04.m_context->m_unk0x1e;
+
+	if (!(flags & LegoRacers::Context::c_flagBit4)) {
+		return FALSE;
+	}
+
+	m_unk0x04.m_context->m_unk0x1e = flags & ~LegoRacers::Context::c_flagBit4;
+	LegoRacers::Context* context = m_unk0x04.m_context;
+
+	GolString string;
+	LegoChar name[15];
+	undefined2 wideName[15];
+	LegoS32 result = FALSE;
+	LegoU32 raceIndex = 0;
+
+	for (LegoS32 i = 0; i < 4; i++) {
+		LegoBool32 hasRaceIndex = FALSE;
+
+		if (context->m_unk0x98[i]) {
+			raceIndex = m_unk0x04.m_raceNames.GetEntryIndexByName(context->m_raceSlots[i].m_unk0x08);
+			hasRaceIndex = TRUE;
+
+			const LegoChar* sourceName = context->m_unk0x108[context->m_unk0xa8[i]].m_unk0x2c;
+			::strncpy(name, sourceName, sizeof(name) - 1);
+			name[sizeof(name) - 1] = '\0';
+			GolString::CopyStringToBuf16(sourceName, wideName);
+			string.CopyFromBufSelection(wideName, sizeof(name) - 1);
+
+			if (m_unk0x04.m_unk0x258.GetUnk0x18c4().FUN_0042f310(raceIndex, 0, context->m_unk0x98[i], &string)) {
+				result = TRUE;
+			}
+		}
+
+		if (context->m_unk0xb8[i]) {
+			if (!hasRaceIndex) {
+				raceIndex = m_unk0x04.m_raceNames.GetEntryIndexByName(context->m_raceSlots[i].m_unk0x08);
+			}
+
+			const LegoChar* sourceName = context->m_unk0x108[context->m_unk0xc8[i]].m_unk0x2c;
+			::strncpy(name, sourceName, sizeof(name) - 1);
+			name[sizeof(name) - 1] = '\0';
+			GolString::CopyStringToBuf16(sourceName, wideName);
+			string.CopyFromBufSelection(wideName, sizeof(name) - 1);
+
+			if (m_unk0x04.m_unk0x258.GetUnk0x18c4().FUN_0042f310(raceIndex, 1, context->m_unk0xb8[i], &string)) {
+				result = TRUE;
+			}
+		}
+	}
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0042e680

@@ -11,6 +11,7 @@ public:
 	~GolString();
 
 	static LegoS32 GolStrlen(undefined2* p_string);
+	static void CopyStringToBuf16(const LegoChar* p_src, undefined2* p_dst);
 	undefined2* FromCursor(undefined4 p_param);
 	undefined4 CopyFromBufSelection(undefined2* p_buf, undefined2 p_count);
 	undefined4 CopyFromGolString(GolString* p_string);

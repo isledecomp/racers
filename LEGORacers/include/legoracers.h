@@ -39,6 +39,7 @@ public:
 			c_flagBit1 = 1 << 1,
 			c_flagBit2 = 1 << 2,
 			c_flagBit3 = 1 << 3,
+			c_flagBit4 = 1 << 4,
 			c_flagBit5 = 1 << 5,
 			c_flagBit6 = 1 << 6,
 			c_flagBit7 = 1 << 7,
@@ -61,7 +62,10 @@ public:
 		LegoChar m_unk0x2d[8];                  // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];       // 0x35
 		RaceSlot m_raceSlots[4];                // 0x38
-		undefined m_unk0x98[0xd8 - 0x98];       // 0x98
+		undefined4 m_unk0x98[4];                // 0x98
+		LegoU32 m_unk0xa8[4];                   // 0xa8
+		undefined4 m_unk0xb8[4];                // 0xb8
+		LegoU32 m_unk0xc8[4];                   // 0xc8
 		undefined4 m_unk0xd8;                   // 0xd8
 		LegoChar m_gameDataDirectory[18];       // 0xdc
 		LegoChar m_commonDataDirectory[18];     // 0xee

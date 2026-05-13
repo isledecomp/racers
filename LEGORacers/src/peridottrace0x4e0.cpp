@@ -1,5 +1,7 @@
 #include "peridottrace0x4e0.h"
 
+#include "golstring.h"
+
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::Record, 0x241)
 DECOMP_SIZE_ASSERT(PeridotTraceBuffer0x250, 0x250)
@@ -23,6 +25,30 @@ void PeridotTraceBuffer0x250::FUN_0042b2f0(undefined4, undefined4, undefined4, u
 {
 	// TODO
 	STUB(0x0042b2f0);
+}
+
+// FUNCTION: LEGORACERS 0x0042b560
+void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, undefined2* p_dest, LegoU32 p_count)
+{
+	LegoU32 length = p_string->SelectionLength();
+	if (length > p_count) {
+		length = p_count;
+	}
+
+	LegoU8* dest = reinterpret_cast<LegoU8*>(p_dest);
+	LegoU32 i = 0;
+	for (; i < length; i++) {
+		undefined2 c = *p_string->FromCursor(i);
+
+		dest[0] = static_cast<LegoU8>(c);
+		dest[1] = static_cast<LegoU8>(c >> 8);
+		dest += 2;
+	}
+
+	for (; i < p_count; i++) {
+		*dest++ = 0;
+		*dest++ = 0;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042b6e0

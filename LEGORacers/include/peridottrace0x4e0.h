@@ -6,6 +6,7 @@
 #include "types.h"
 
 class GolFile;
+class GolString;
 class InputManager;
 class PeridotTrace0x4e0;
 
@@ -111,6 +112,7 @@ public:
 	void FUN_0042f200(LegoU8 p_unk0x04);
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;
+	LegoBool32 FUN_0042f310(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, LegoU32 p_unk0x0c, GolString* p_string);
 
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
@@ -148,22 +150,26 @@ private:
 		SerializedGuidWord m_words[sizeof(GUID) / sizeof(LegoU32)]; // 0x00
 	};
 
-	undefined4 m_unk0x00;               // 0x00
-	undefined4 m_unk0x04;               // 0x04
-	InputManager* m_inputManager;       // 0x08
-	LegoU8 m_unk0x0c;                   // 0x0c
-	SerializedGuid m_displayDriverGuid; // 0x0d
-	undefined m_unk0x1d;                // 0x1d
-	undefined m_unk0x1e;                // 0x1e
-	LegoU8 m_unk0x1f;                   // 0x1f
-	LegoU8 m_unk0x20;                   // 0x20
-	LegoU8 m_unk0x21;                   // 0x21
-	LegoU8 m_languageIndex;             // 0x22
-	undefined m_unk0x23;                // 0x23
-	LegoU8 m_unk0x24;                   // 0x24
-	LegoU8 m_unk0x25;                   // 0x25
-	LegoU16 m_unk0x26;                  // 0x26
-	undefined m_unk0x28[0x438 - 0x28];  // 0x28
+	undefined4 m_unk0x00;                // 0x00
+	undefined4 m_unk0x04;                // 0x04
+	InputManager* m_inputManager;        // 0x08
+	LegoU8 m_unk0x0c;                    // 0x0c
+	SerializedGuid m_displayDriverGuid;  // 0x0d
+	undefined m_unk0x1d;                 // 0x1d
+	undefined m_unk0x1e;                 // 0x1e
+	LegoU8 m_unk0x1f;                    // 0x1f
+	LegoU8 m_unk0x20;                    // 0x20
+	LegoU8 m_unk0x21;                    // 0x21
+	LegoU8 m_languageIndex;              // 0x22
+	undefined m_unk0x23;                 // 0x23
+	LegoU8 m_unk0x24;                    // 0x24
+	LegoU8 m_unk0x25;                    // 0x25
+	LegoU16 m_unk0x26;                   // 0x26
+	LegoU32 m_unk0x28[13];               // 0x28
+	LegoU32 m_unk0x5c[13];               // 0x5c
+	undefined2 m_unk0x90[13][14];        // 0x90
+	undefined2 m_unk0x1fc[13][14];       // 0x1fc
+	undefined m_unk0x368[0x438 - 0x368]; // 0x368
 };
 
 // SIZE 0x250
@@ -171,6 +177,8 @@ class PeridotTraceBuffer0x250 {
 public:
 	PeridotTraceBuffer0x250();
 	~PeridotTraceBuffer0x250();
+
+	static void CopyStringToBuffer(GolString* p_string, undefined2* p_dest, LegoU32 p_count);
 
 	void Reset() { m_unk0x244 = 0; }
 

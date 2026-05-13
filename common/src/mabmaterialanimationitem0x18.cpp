@@ -94,7 +94,7 @@ void MabMaterialAnimationItem0x18::FUN_00410480()
 // FUNCTION: LEGORACERS 0x00410490
 void MabMaterialAnimationItem0x18::FUN_00410490()
 {
-	if (m_unk0x0a != 0) {
+	if (m_unk0x0a > 0) {
 		m_unk0x10 = static_cast<LegoFloat>(m_unk0x0a - 1);
 	}
 	else {

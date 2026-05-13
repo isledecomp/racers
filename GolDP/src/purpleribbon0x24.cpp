@@ -6,7 +6,7 @@
 
 DECOMP_SIZE_ASSERT(PurpleRibbon0x24, 0x24)
 
-// FUNCTION: GOLDP 10015920
+// FUNCTION: GOLDP 0x10015920
 PurpleRibbon0x24::PurpleRibbon0x24()
 {
 	m_items = NULL;

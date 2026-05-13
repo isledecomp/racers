@@ -189,14 +189,50 @@ undefined4* FluffyGloomkins0x118::VTable0x0c()
 	return NULL;
 }
 
-// STUB: GOLDP 0x100180a0
+// FUNCTION: GOLDP 0x100180a0
 void FluffyGloomkins0x118::VTable0x18()
 {
 	if (m_unk0x114) {
 		delete[] m_unk0x114;
 		m_unk0x114 = NULL;
 	}
-	STUB(0x100180a0);
+	if (m_unk0x100) {
+		delete[] m_unk0x100;
+		m_unk0x100 = NULL;
+	}
+	if (m_unk0x110) {
+		delete[] m_unk0x110;
+		m_unk0x110 = NULL;
+	}
+	if (m_unk0xfc) {
+		delete[] m_unk0xfc;
+		m_unk0xfc = NULL;
+	}
+	if (m_unk0x104) {
+		delete[] m_unk0x104;
+		m_unk0x104 = NULL;
+	}
+	if (m_unk0xf8) {
+		delete[] m_unk0xf8;
+		m_unk0xf8 = NULL;
+	}
+	if (m_unk0x10c) {
+		delete[] m_unk0x10c;
+		m_unk0x10c = NULL;
+	}
+	if (m_unk0xf4) {
+		delete[] m_unk0xf4;
+		m_unk0xf4 = NULL;
+	}
+	if (m_unk0xf0) {
+		delete[] m_unk0xf0;
+		m_unk0xf0 = NULL;
+	}
+	if (m_unk0x108) {
+		delete[] m_unk0x108;
+		m_unk0x108 = NULL;
+	}
+	ZoweeBlubberworth0xf0::VTable0x18();
 }
 
 // STUB: GOLDP 0x100181b0

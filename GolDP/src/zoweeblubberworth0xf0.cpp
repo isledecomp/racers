@@ -3,15 +3,21 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
+#include "rectangle.h"
 
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0)
-DECOMP_SIZE_ASSERT(WdbStaticModel0x8c, 0x8c)
 DECOMP_SIZE_ASSERT(WdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(WdbModel0x8c, 0x8c)
+DECOMP_SIZE_ASSERT(WdbCamera0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(WdbLight0x10, 0x10)
 
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;
+
+// GLOBAL: GOLDP 0x100576e8
+LegoFloat g_fltMax0x100576e8 = FLT_MAX;
 
 // FUNCTION: GOLDP 0x1002c030
 ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()
@@ -22,7 +28,7 @@ ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()
 // FUNCTION: GOLDP 0x1002c0e0
 void ZoweeBlubberworth0xf0::Reset()
 {
-	m_unk0x94 = 1.0;
+	m_unk0x94 = 1.0f;
 	m_unk0x04 = 0;
 	m_unk0x0c = 0;
 	m_unk0x10 = NULL;
@@ -41,28 +47,28 @@ void ZoweeBlubberworth0xf0::Reset()
 	m_unk0x44 = 0;
 	m_unk0x48 = NULL;
 	m_unk0x4c = 0;
-	m_unk0x50 = 0;
+	m_unk0x50 = NULL;
 	m_unk0x54 = 0;
-	m_unk0x58 = 0;
+	m_unk0x58 = NULL;
 	m_unk0x5c = 0;
-	m_unk0x60 = 0;
+	m_unk0x60 = NULL;
 	m_unk0x64 = 0;
-	m_unk0x68 = 0;
+	m_unk0x68 = NULL;
 	m_unk0x6c = 0;
-	m_unk0x70 = 0;
+	m_unk0x70 = NULL;
 	m_unk0x74 = 0;
-	m_unk0x78 = 0;
+	m_unk0x78 = NULL;
 	m_unk0x7c = 0;
-	m_unk0x80 = 0;
+	m_unk0x80 = NULL;
 	m_unk0x84 = 0;
-	m_unk0x88 = 0;
+	m_unk0x88 = NULL;
 	m_unk0x8c = 0;
-	m_unk0x90 = 0;
+	m_unk0x90 = NULL;
 	m_unk0x08 = FALSE;
 	m_unk0x98 = 0;
 	m_unk0x9c = 0;
 	m_unk0xa0 = 0;
-	m_unk0xa4 = 0;
+	m_unk0xa4 = NULL;
 	m_unk0xa8 = 0;
 	m_unk0xac = 0;
 	m_unk0xb0 = 0;
@@ -367,12 +373,12 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 	if (m_unk0x4c == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x50 = new WdbStaticModel0x8c[m_unk0x4c];
+	m_unk0x50 = new WdbModel0x8c[m_unk0x4c];
 	if (m_unk0x50 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	::memset(m_unk0x50, 0, sizeof(*m_unk0x50) * m_unk0x4c);
-	WdbStaticModel0x8c* item = m_unk0x50;
+	WdbModel0x8c* item = m_unk0x50;
 	for (i = 0; i < m_unk0x4c; item++, i++) {
 		LegoU32 cnt = 0;
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2e);
@@ -450,15 +456,15 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
 				break;
 			case GolFileParser::e_unknown0x3f:
-				item->m_flags |= WdbStaticModel0x8c::e_flagBit3;
+				item->m_flags |= WdbModel0x8c::e_flagBit3;
 				item->m_unk0x80 = p_parser.ReadFloat();
 				item->m_unk0x84 = p_parser.ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x42:
-				item->m_flags |= WdbStaticModel0x8c::e_flagBit1;
+				item->m_flags |= WdbModel0x8c::e_flagBit1;
 				break;
 			case GolFileParser::e_unknown0x4c:
-				item->m_flags |= WdbStaticModel0x8c::e_flagBit2;
+				item->m_flags |= WdbModel0x8c::e_flagBit2;
 				break;
 			default:
 				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -469,67 +475,628 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002cfa0
+// FUNCTION: GOLDP 0x1002cfa0
 void ZoweeBlubberworth0xf0::FUN_1002cfa0(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002cfa0);
+	LegoU32 i;
+	LegoS32 v;
+
+	if (m_unk0x58 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x54 = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x54 == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x58 = new WdbModel0x8c[m_unk0x54];
+	if (m_unk0x58 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x58, 0, sizeof(*m_unk0x58) * m_unk0x54);
+	WdbModel0x8c* item = m_unk0x58;
+	for (i = 0; i < m_unk0x54; item++, i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2f);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+			item->m_unk0x00[0] = '\0';
+		}
+		else {
+			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+		}
+		p_parser.ReadLeftCurly();
+		LegoU32 cnt = 0;
+		for (cnt = 0; cnt < 3; cnt++) {
+			item->m_unk0x08[cnt] = -1;
+			item->m_unk0x14[cnt] = -1;
+			item->m_unk0x2c[cnt] = -1;
+		}
+		cnt = 0;
+		item->m_unk0x44 = -1;
+		item->m_unk0x5c.m_x = 1.0f;
+		item->m_unk0x68.m_z = 1.0f;
+		item->m_unk0x74 = 1.0f;
+		item->m_unk0x48[0] = '\0';
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x33:
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x34 && m_unk0x34 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x1c && m_unk0x1c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x20[cnt] = p_parser.GetUnk0x38();
+				if (p_parser.ReadFloat() < 0.0f) {
+					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+				}
+				else {
+					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+				}
+				cnt += 1;
+				break;
+			case GolFileParser::e_unknown0x2c:
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x34 && m_unk0x34 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x1c && m_unk0x1c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x20[cnt] = p_parser.GetUnk0x38();
+				if (p_parser.ReadFloat() < 0.0f) {
+					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+				}
+				else {
+					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+				}
+				cnt += 1;
+				break;
+			case GolFileParser::e_unknown0x31:
+				item->m_unk0x50.m_x = p_parser.ReadFloat();
+				item->m_unk0x50.m_y = p_parser.ReadFloat();
+				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x32:
+				item->m_unk0x5c.m_x = p_parser.ReadFloat();
+				item->m_unk0x5c.m_y = p_parser.ReadFloat();
+				item->m_unk0x5c.m_z = p_parser.ReadFloat();
+				item->m_unk0x68.m_x = p_parser.ReadFloat();
+				item->m_unk0x68.m_y = p_parser.ReadFloat();
+				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x2b:
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				v = p_parser.GetUnk0x38();
+				if (p_parser.ReadInteger() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x2c[p_parser.GetUnk0x38()] = v;
+				break;
+			case GolFileParser::e_unknown0x35:
+				token = p_parser.GetNextToken();
+				if (token == GolFileParser::e_string) {
+					item->m_unk0x44 = -1;
+					::strncpy(item->m_unk0x48, p_parser.GetUnk0x44(), sizeof(item->m_unk0x48));
+				}
+				else {
+					if (token != GolFileParser::e_int) {
+						p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+					}
+					item->m_unk0x44 = p_parser.GetUnk0x38();
+					item->m_unk0x48[0] = '\0';
+				}
+				break;
+			case GolFileParser::e_unknown0x36:
+				item->m_unk0x74 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x3e:
+				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
+				break;
+			case GolFileParser::e_unknown0x3f:
+				item->m_flags |= WdbModel0x8c::e_flagBit3;
+				item->m_unk0x80 = p_parser.ReadFloat();
+				item->m_unk0x84 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x42:
+				item->m_flags |= WdbModel0x8c::e_flagBit1;
+				break;
+			case GolFileParser::e_unknown0x4c:
+				item->m_flags |= WdbModel0x8c::e_flagBit2;
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002d400
+// FUNCTION: GOLDP 0x1002d400
 void ZoweeBlubberworth0xf0::FUN_1002d400(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002d400);
+	LegoU32 i;
+	LegoS32 v;
+
+	if (m_unk0x60 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x5c = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x5c == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x60 = new WdbModel0x8c[m_unk0x5c];
+	if (m_unk0x60 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x60, 0, sizeof(*m_unk0x60) * m_unk0x5c);
+	WdbModel0x8c* item = m_unk0x60;
+	for (i = 0; i < m_unk0x5c; item++, i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x30);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+			item->m_unk0x00[0] = '\0';
+		}
+		else {
+			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+		}
+		p_parser.ReadLeftCurly();
+		LegoU32 cnt = 0;
+		for (cnt = 0; cnt < 3; cnt++) {
+			item->m_unk0x08[cnt] = -1;
+			item->m_unk0x2c[cnt] = -1;
+		}
+		cnt = 0;
+		item->m_unk0x5c.m_x = 1.0f;
+		item->m_unk0x68.m_z = 1.0f;
+		item->m_unk0x74 = 1.0f;
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x34:
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x3c && m_unk0x3c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				if (p_parser.ReadFloat() < 0.0f) {
+					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
+				}
+				else {
+					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+				}
+				cnt += 1;
+				break;
+			case GolFileParser::e_unknown0x31:
+				item->m_unk0x50.m_x = p_parser.ReadFloat();
+				item->m_unk0x50.m_y = p_parser.ReadFloat();
+				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x32:
+				item->m_unk0x5c.m_x = p_parser.ReadFloat();
+				item->m_unk0x5c.m_y = p_parser.ReadFloat();
+				item->m_unk0x5c.m_z = p_parser.ReadFloat();
+				item->m_unk0x68.m_x = p_parser.ReadFloat();
+				item->m_unk0x68.m_y = p_parser.ReadFloat();
+				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x2b:
+				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				v = p_parser.GetUnk0x38();
+				if (p_parser.ReadInteger() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x2c[p_parser.GetUnk0x38()] = v;
+				break;
+			case GolFileParser::e_unknown0x3e:
+				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
+				break;
+			case GolFileParser::e_unknown0x3f:
+				item->m_flags |= WdbModel0x8c::e_flagBit3;
+				item->m_unk0x80 = p_parser.ReadFloat();
+				item->m_unk0x84 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x42:
+				item->m_flags |= WdbModel0x8c::e_flagBit1;
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002d720
+// FUNCTION: GOLDP 0x1002d720
 void ZoweeBlubberworth0xf0::FUN_1002d720(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002d720);
+	LegoU32 i;
+	LegoS32 v;
+
+	if (m_unk0x68 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x64 = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x64 == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x68 = new WdbModel0x8c[m_unk0x64];
+	if (m_unk0x68 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x68, 0, sizeof(*m_unk0x68) * m_unk0x64);
+	WdbModel0x8c* item = m_unk0x68;
+	for (i = 0; i < m_unk0x64; item++, i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x41);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+			item->m_unk0x00[0] = '\0';
+		}
+		else {
+			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+		}
+		p_parser.ReadLeftCurly();
+		item->m_unk0x2c[0] = -1;
+		item->m_unk0x5c.m_x = 1.0f;
+		item->m_unk0x68.m_z = 1.0f;
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x40:
+				item->m_unk0x14[0] = v = p_parser.ReadInteger();
+				if (static_cast<LegoU32>(v) >= m_unk0x44 && m_unk0x44 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				break;
+			case GolFileParser::e_unknown0x31:
+				item->m_unk0x50.m_x = p_parser.ReadFloat();
+				item->m_unk0x50.m_y = p_parser.ReadFloat();
+				item->m_unk0x50.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x32:
+				item->m_unk0x5c.m_x = p_parser.ReadFloat();
+				item->m_unk0x5c.m_y = p_parser.ReadFloat();
+				item->m_unk0x5c.m_z = p_parser.ReadFloat();
+				item->m_unk0x68.m_x = p_parser.ReadFloat();
+				item->m_unk0x68.m_y = p_parser.ReadFloat();
+				item->m_unk0x68.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x2b:
+				v = p_parser.ReadInteger();
+				if (static_cast<LegoU32>(v) >= m_unk0x2c && m_unk0x2c != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x2c[0] = v;
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002d950
+// FUNCTION: GOLDP 0x1002d950
 void ZoweeBlubberworth0xf0::FUN_1002d950(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002d950);
+	LegoU32 i;
+
+	if (m_unk0x70 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x6c = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x6c == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x70 = new WdbBillboardSprite0x38[m_unk0x6c];
+	if (m_unk0x70 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x70, 0, sizeof(*m_unk0x70) * m_unk0x6c);
+	WdbBillboardSprite0x38* item = m_unk0x70;
+	for (i = 0; i < m_unk0x6c; item++, i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x37);
+		p_parser.ReadLeftCurly();
+		item->m_unk0x28 = g_fltMax0x100576e8;
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x2b:
+				item->m_flags |= WdbBillboardSprite0x38::c_flagBit2;
+				item->m_unk0x34 = p_parser.ReadInteger();
+				item->m_unk0x36 = p_parser.ReadInteger();
+				break;
+			case GolFileParser::e_unknown0x31:
+				item->m_unk0x08.m_x = p_parser.ReadFloat();
+				item->m_unk0x08.m_y = p_parser.ReadFloat();
+				item->m_unk0x08.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x38:
+				item->m_flags |= WdbBillboardSprite0x38::c_flagBit1;
+				item->m_unk0x14.m_x = p_parser.ReadFloat();
+				item->m_unk0x14.m_y = p_parser.ReadFloat();
+				item->m_unk0x14.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x39:
+				::strncpy(item->m_unk0x00, p_parser.ReadString(), sizeof(item->m_unk0x00));
+				break;
+			case GolFileParser::e_unknown0x3a:
+				item->m_unk0x20 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x3b:
+				item->m_unk0x24 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x3c:
+				item->m_unk0x28 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x3e:
+				item->m_unk0x32 = 1;
+				item->m_unk0x2e = p_parser.ReadInteger();
+				item->m_unk0x30 = p_parser.ReadInteger();
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002db50
+// FUNCTION: GOLDP 0x1002db50
 void ZoweeBlubberworth0xf0::FUN_1002db50(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002db50);
+	LegoU32 i;
+
+	if (m_unk0x78 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x74 = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x74 == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x78 = new GolName[m_unk0x74];
+	if (m_unk0x78 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	for (i = 0; i < m_unk0x74; i++) {
+		::strncpy(m_unk0x78[i], p_parser.ReadString(), sizeOfArray(m_unk0x78[i]));
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002dbe0
-void ZoweeBlubberworth0xf0::FUN_1002dbe0(GolFileParser& p_parser, LegoU32* p_count, undefined4**)
+// FUNCTION: GOLDP 0x1002dbe0
+void ZoweeBlubberworth0xf0::FUN_1002dbe0(GolFileParser& p_parser, Rect** p_rects, LegoU32* p_count)
 {
-	// TODO
-	STUB(0x1002dbe0);
+	LegoU32 i;
+	LegoU32 count;
+	Rect* rects;
+
+	if (*p_rects != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	*p_count = count = p_parser.ReadBracketedCountAndLeftCurly();
+	if (count == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	*p_rects = rects = new Rect[count];
+	if (rects == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	Rect* item = rects;
+	for (i = 0; i < count; item++, i++) {
+		item->m_left = p_parser.ReadInteger();
+		item->m_top = p_parser.ReadInteger();
+		item->m_right = p_parser.ReadInteger();
+		item->m_bottom = p_parser.ReadInteger();
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002dc80
+// FUNCTION: GOLDP 0x1002dc80
 void ZoweeBlubberworth0xf0::FUN_1002dc80(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002dc80);
+	LegoU32 i;
+
+	if (m_unk0x80 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x7c = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x7c == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x80 = new WdbCamera0x4c[m_unk0x7c];
+	if (m_unk0x80 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	GolVec3 pos;
+	pos.m_x = 0.0f;
+	pos.m_y = 0.0f;
+	pos.m_z = 0.0f;
+	::memset(m_unk0x80, 0, sizeof(*m_unk0x80) * m_unk0x7c);
+	WdbCamera0x4c* item = m_unk0x80;
+	for (i = 0; i < m_unk0x7c; item++, i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x43);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+			item->m_unk0x00[0] = '\0';
+		}
+		else {
+			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+		}
+		p_parser.ReadLeftCurly();
+		item->m_unk0x08 = -1;
+		item->m_unk0x28.m_x = 1.0f;
+		item->m_unk0x34.m_z = -1.0f;
+		item->m_unk0x40 = 1.0f;
+		item->m_unk0x44 = 100.0f;
+		item->m_unk0x48 = 65.0f;
+		LegoBool32 seen = FALSE;
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x2f:
+				item->m_unk0x08 = p_parser.ReadInteger();
+				if (static_cast<LegoU32>(item->m_unk0x08) >= m_unk0x54 && m_unk0x54 != 0) {
+					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
+				}
+				item->m_unk0x0c = p_parser.ReadInteger();
+				break;
+			case GolFileParser::e_unknown0x35:
+				token = p_parser.GetNextToken();
+				if (token == GolFileParser::e_string) {
+					item->m_unk0x10 = -1;
+					::strncpy(item->m_unk0x14, p_parser.GetUnk0x44(), sizeof(item->m_unk0x14));
+				}
+				else {
+					if (token != GolFileParser::e_int) {
+						p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+					}
+					item->m_unk0x10 = p_parser.GetUnk0x38();
+					item->m_unk0x14[0] = '\0';
+				}
+				break;
+			case GolFileParser::e_unknown0x31:
+				item->m_unk0x1c.m_x = p_parser.ReadFloat();
+				item->m_unk0x1c.m_y = p_parser.ReadFloat();
+				item->m_unk0x1c.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x44:
+				seen = TRUE;
+				pos.m_x = p_parser.ReadFloat();
+				pos.m_y = p_parser.ReadFloat();
+				pos.m_z = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x32:
+				item->m_unk0x28.m_x = p_parser.ReadFloat();
+				item->m_unk0x28.m_y = p_parser.ReadFloat();
+				item->m_unk0x28.m_z = p_parser.ReadFloat();
+				item->m_unk0x34.m_x = -p_parser.ReadFloat();
+				item->m_unk0x34.m_y = -p_parser.ReadFloat();
+				item->m_unk0x34.m_z = -p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x45:
+				item->m_unk0x40 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x46:
+				item->m_unk0x44 = p_parser.ReadFloat();
+				break;
+			case GolFileParser::e_unknown0x47:
+				item->m_unk0x48 = p_parser.ReadFloat();
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+		if (seen) {
+			item->m_unk0x28.m_x = pos.m_x - item->m_unk0x1c.m_x;
+			item->m_unk0x28.m_y = pos.m_y - item->m_unk0x1c.m_y;
+			item->m_unk0x28.m_z = pos.m_z - item->m_unk0x1c.m_z;
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002df90
+// FUNCTION: GOLDP 0x1002df90
 void ZoweeBlubberworth0xf0::FUN_1002df90(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002df90);
+	LegoU32 i;
+
+	if (m_unk0x88 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x84 = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x84 == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x88 = new WdbLight0x10[m_unk0x84];
+	if (m_unk0x88 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x88, 0, sizeof(*m_unk0x88) * m_unk0x84);
+	for (i = 0; i < m_unk0x84; i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x48);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+		}
+		p_parser.ReadLeftCurly();
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x4a:
+				m_unk0x88[i].m_color.m_red = p_parser.ReadInteger();
+				m_unk0x88[i].m_color.m_grn = p_parser.ReadInteger();
+				m_unk0x88[i].m_color.m_blu = p_parser.ReadInteger();
+				m_unk0x88[i].m_color.m_alp = 0xff;
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002e0d0
+// FUNCTION: GOLDP 0x1002e0d0
 void ZoweeBlubberworth0xf0::FUN_1002e0d0(GolFileParser& p_parser)
 {
-	// TODO
-	STUB(0x1002e0d0);
+	LegoU32 i;
+	if (m_unk0x90 != NULL) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+	m_unk0x8c = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_unk0x8c == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+	m_unk0x90 = new WdbLight0x10[m_unk0x8c];
+	if (m_unk0x90 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_unk0x90, 0, sizeof(*m_unk0x90) * m_unk0x8c);
+	for (i = 0; i < m_unk0x8c; i++) {
+		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x49);
+		if (p_parser.GetNextToken() != GolFileParser::e_string) {
+			p_parser.SetUnk0x30(1);
+		}
+		p_parser.ReadLeftCurly();
+		GolFileParser::ParserTokenType token;
+		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
+			switch (token) {
+			case GolFileParser::e_unknown0x4a:
+				m_unk0x90[i].m_color.m_red = p_parser.ReadInteger();
+				m_unk0x90[i].m_color.m_grn = p_parser.ReadInteger();
+				m_unk0x90[i].m_color.m_blu = p_parser.ReadInteger();
+				m_unk0x90[i].m_color.m_alp = 0xff;
+				break;
+			case GolFileParser::e_unknown0x4b:
+				m_unk0x90[i].m_unk0x04.m_x = p_parser.ReadFloat();
+				m_unk0x90[i].m_unk0x04.m_y = p_parser.ReadFloat();
+				m_unk0x90[i].m_unk0x04.m_z = p_parser.ReadFloat();
+				break;
+			default:
+				p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		}
+	}
+	p_parser.ReadRightCurly();
 }
 
 // STUB: GOLDP 0x1002e250

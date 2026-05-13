@@ -1,6 +1,7 @@
 #ifndef ZOWEEBLUBBERWORTH0xF0_H
 #define ZOWEEBLUBBERWORTH0xF0_H
 
+#include "color.h"
 #include "golmath.h"
 #include "golname.h"
 #include "golnametable.h"
@@ -17,29 +18,76 @@ class MabMaterialAnimation0x14;
 class MagentaRibbon0x20;
 class ShadowWolf0xc;
 class WhiteFalconNode0x18;
+struct Rect;
 
 // SIZE 0x8c
-struct WdbStaticModel0x8c {
+struct WdbModel0x8c {
 	enum {
 		e_flagBit1 = 0x1 << 1,
 		e_flagBit2 = 0x1 << 2,
 		e_flagBit3 = 0x1 << 3,
 	};
 
+	GolName m_unk0x00;      // 0x00
+	LegoS32 m_unk0x08[3];   // 0x08
+	LegoS32 m_unk0x14[3];   // 0x14
+	LegoS32 m_unk0x20[3];   // 0x14
+	LegoS32 m_unk0x2c[3];   // 0x2c
+	LegoFloat m_unk0x38[3]; // 0x38
+	LegoS32 m_unk0x44;      // 0x44
+	GolName m_unk0x48;      // 0x48
+	GolVec3 m_unk0x50;      // 0x50
+	GolVec3 m_unk0x5c;      // 0x5c
+	GolVec3 m_unk0x68;      // 0x68
+	LegoFloat m_unk0x74;    // 0x74
+	Rect* m_unk0x78;        // 0x78
+	LegoU32 m_unk0x7c;      // 0x7c
+	LegoFloat m_unk0x80;    // 0x80
+	LegoFloat m_unk0x84;    // 0x84
+	LegoU32 m_flags;        // 0x88
+};
+
+// SIZE 0x38
+struct WdbBillboardSprite0x38 {
+	enum {
+		c_flagBit1 = 0x1 << 1,
+		c_flagBit2 = 0x1 << 2,
+	};
+
 	GolName m_unk0x00;                // 0x00
-	LegoS32 m_unk0x08[3];             // 0x08
-	undefined m_unk0x14[0x2c - 0x14]; // 0x14
-	LegoS32 m_unk0x2c[3];             // 0x2c
-	LegoFloat m_unk0x38[6];           // 0x38
-	GolVec3 m_unk0x50;                // 0x50
-	GolVec3 m_unk0x5c;                // 0x5c
-	GolVec3 m_unk0x68;                // 0x68
-	LegoFloat m_unk0x74;              // 0x74
-	LegoU32 m_unk0x78;                // 0x78
-	undefined4* m_unk0x7c;            // 0x7c
-	LegoFloat m_unk0x80;              // 0x80
-	LegoFloat m_unk0x84;              // 0x84
-	LegoU32 m_flags;                  // 0x88
+	GolVec3 m_unk0x08;                // 0x08
+	GolVec3 m_unk0x14;                // 0x14
+	LegoFloat m_unk0x20;              // 0x20
+	LegoFloat m_unk0x24;              // 0x24
+	LegoFloat m_unk0x28;              // 0x28
+	LegoU8 m_flags;                   // 0x2c
+	undefined m_unk0x2d[0x2e - 0x2d]; // 0x2d
+	undefined2 m_unk0x2e;             // 0x2e
+	undefined2 m_unk0x30;             // 0x30
+	undefined2 m_unk0x32;             // 0x32
+	undefined2 m_unk0x34;             // 0x34
+	undefined2 m_unk0x36;             // 0x36
+};
+
+// SIZE 0x4c
+struct WdbCamera0x4c {
+	GolName m_unk0x00;    // 0x00
+	LegoS32 m_unk0x08;    // 0x08
+	undefined4 m_unk0x0c; // 0x0c
+	LegoS32 m_unk0x10;    // 0x10
+	GolName m_unk0x14;    // 0x14
+	GolVec3 m_unk0x1c;    // 0x1c
+	GolVec3 m_unk0x28;    // 0x28
+	GolVec3 m_unk0x34;    // 0x34
+	LegoFloat m_unk0x40;  // 0x40
+	LegoFloat m_unk0x44;  // 0x44
+	LegoFloat m_unk0x48;  // 0x48
+};
+
+// SIZE 0x10
+struct WdbLight0x10 {
+	ColorRGBA m_color; // 0x00
+	GolVec3 m_unk0x04; // 0x04
 };
 
 // VTABLE: GOLDP 0x10057744
@@ -110,7 +158,7 @@ private:
 	void FUN_1002d720(GolFileParser&);
 	void FUN_1002d950(GolFileParser&);
 	void FUN_1002db50(GolFileParser&);
-	void FUN_1002dbe0(GolFileParser&, LegoU32* p_count, undefined4**);
+	void FUN_1002dbe0(GolFileParser&, Rect**, LegoU32* p_count);
 	void FUN_1002dc80(GolFileParser&);
 	void FUN_1002df90(GolFileParser&);
 	void FUN_1002e0d0(GolFileParser&);
@@ -118,55 +166,55 @@ private:
 	void FUN_1002e640();
 	void FUN_1002f210(undefined4, undefined4*);
 
-	undefined4 m_unk0x04;          // 0x04
-	LegoBool32 m_unk0x08;          // 0x08
-	LegoU32 m_unk0x0c;             // 0x0c
-	GolName* m_unk0x10;            // 0x10
-	LegoU32 m_unk0x14;             // 0x14
-	GolName* m_unk0x18;            // 0x18
-	LegoU32 m_unk0x1c;             // 0x1c
-	GolName* m_unk0x20;            // 0x20
-	LegoU32 m_unk0x24;             // 0x24
-	GolName* m_unk0x28;            // 0x28
-	LegoU32 m_unk0x2c;             // 0x2c
-	GolName* m_unk0x30;            // 0x30
-	LegoU32 m_unk0x34;             // 0x34
-	GolName* m_unk0x38;            // 0x38
-	LegoU32 m_unk0x3c;             // 0x3c
-	GolName* m_unk0x40;            // 0x40
-	LegoU32 m_unk0x44;             // 0x44
-	GolName* m_unk0x48;            // 0x48
-	LegoU32 m_unk0x4c;             // 0x4c
-	WdbStaticModel0x8c* m_unk0x50; // 0x50
-	undefined4 m_unk0x54;          // 0x54
-	undefined4 m_unk0x58;          // 0x58
-	undefined4 m_unk0x5c;          // 0x5c
-	undefined4 m_unk0x60;          // 0x60
-	undefined4 m_unk0x64;          // 0x64
-	undefined4 m_unk0x68;          // 0x68
-	undefined4 m_unk0x6c;          // 0x6c
-	undefined4 m_unk0x70;          // 0x70
-	undefined4 m_unk0x74;          // 0x74
-	undefined4 m_unk0x78;          // 0x78
-	undefined4 m_unk0x7c;          // 0x7c
-	undefined4 m_unk0x80;          // 0x80
-	undefined4 m_unk0x84;          // 0x84
-	undefined4 m_unk0x88;          // 0x88
-	undefined4 m_unk0x8c;          // 0x8c
-	undefined4 m_unk0x90;          // 0x90
-	float m_unk0x94;               // 0x94
-	undefined4 m_unk0x98;          // 0x98
-	undefined4 m_unk0x9c;          // 0x9c
-	undefined4 m_unk0xa0;          // 0xa0
-	LegoChar* m_unk0xa4;           // 0xa4
-	undefined4 m_unk0xa8;          // 0xa8
-	undefined4 m_unk0xac;          // 0xac
-	undefined4 m_unk0xb0;          // 0xb0
-	GolNameTable m_unk0xb4;        // 0xb4
-	GolNameTable m_unk0xc0;        // 0xc0
-	GolNameTable m_unk0xcc;        // 0xcc
-	GolNameTable m_unk0xd8;        // 0xd8
-	GolNameTable m_unk0xe4;        // 0xe4
+	undefined4 m_unk0x04;              // 0x04
+	LegoBool32 m_unk0x08;              // 0x08
+	LegoU32 m_unk0x0c;                 // 0x0c
+	GolName* m_unk0x10;                // 0x10
+	LegoU32 m_unk0x14;                 // 0x14
+	GolName* m_unk0x18;                // 0x18
+	LegoU32 m_unk0x1c;                 // 0x1c
+	GolName* m_unk0x20;                // 0x20
+	LegoU32 m_unk0x24;                 // 0x24
+	GolName* m_unk0x28;                // 0x28
+	LegoU32 m_unk0x2c;                 // 0x2c
+	GolName* m_unk0x30;                // 0x30
+	LegoU32 m_unk0x34;                 // 0x34
+	GolName* m_unk0x38;                // 0x38
+	LegoU32 m_unk0x3c;                 // 0x3c
+	GolName* m_unk0x40;                // 0x40
+	LegoU32 m_unk0x44;                 // 0x44
+	GolName* m_unk0x48;                // 0x48
+	LegoU32 m_unk0x4c;                 // 0x4c
+	WdbModel0x8c* m_unk0x50;           // 0x50
+	LegoU32 m_unk0x54;                 // 0x54
+	WdbModel0x8c* m_unk0x58;           // 0x58
+	LegoU32 m_unk0x5c;                 // 0x5c
+	WdbModel0x8c* m_unk0x60;           // 0x60
+	LegoU32 m_unk0x64;                 // 0x64
+	WdbModel0x8c* m_unk0x68;           // 0x68
+	LegoU32 m_unk0x6c;                 // 0x6c
+	WdbBillboardSprite0x38* m_unk0x70; // 0x70
+	LegoU32 m_unk0x74;                 // 0x74
+	GolName* m_unk0x78;                // 0x78
+	LegoU32 m_unk0x7c;                 // 0x7c
+	WdbCamera0x4c* m_unk0x80;          // 0x80
+	LegoU32 m_unk0x84;                 // 0x84
+	WdbLight0x10* m_unk0x88;           // 0x88
+	LegoU32 m_unk0x8c;                 // 0x8c
+	WdbLight0x10* m_unk0x90;           // 0x90
+	float m_unk0x94;                   // 0x94
+	undefined4 m_unk0x98;              // 0x98
+	undefined4 m_unk0x9c;              // 0x9c
+	undefined4 m_unk0xa0;              // 0xa0
+	LegoChar* m_unk0xa4;               // 0xa4
+	undefined4 m_unk0xa8;              // 0xa8
+	undefined4 m_unk0xac;              // 0xac
+	undefined4 m_unk0xb0;              // 0xb0
+	GolNameTable m_unk0xb4;            // 0xb4
+	GolNameTable m_unk0xc0;            // 0xc0
+	GolNameTable m_unk0xcc;            // 0xcc
+	GolNameTable m_unk0xd8;            // 0xd8
+	GolNameTable m_unk0xe4;            // 0xe4
 };
 
 #endif // ZOWEEBLUBBERWORTH0xF0_H

@@ -616,7 +616,7 @@ INT_PTR_COMPAT GolDeviceList::SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPAR
 	return 0;
 }
 
-// FUNCTION: GOLDP 0x10026100
+// FUNCTION: GOLDP 0x10026100 FOLDED
 GolDeviceList::GolDeviceList()
 {
 	m_countDrivers = 0;

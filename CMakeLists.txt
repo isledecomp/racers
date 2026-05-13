@@ -100,6 +100,9 @@ set(COMMON_SOURCES
   common/src/cmbmodelpart0x34.cpp
   common/src/cmbmodelpartdata0x18.cpp
   common/src/cmbmodelpartdata0x28.cpp
+  common/src/mabmaterialanimation0x14.cpp
+  common/src/mabmaterialanimationitem0x8.cpp
+  common/src/mabmaterialanimationitem0x18.cpp
 )
 
 # These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
@@ -278,6 +281,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/aquacoral0x37b8.cpp
   LEGORacers/src/stackoflegou16.cpp
   LEGORacers/src/crimsonsun0xa4.cpp
+  LEGORacers/src/cutscenevent0xe4.cpp
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp
   LEGORacers/src/glassstream0x94.cpp

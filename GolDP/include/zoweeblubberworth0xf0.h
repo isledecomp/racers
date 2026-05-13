@@ -6,9 +6,11 @@
 class AmberHaze0x1c;
 class BoundingShape0x2c;
 class CmbModelPart0x34;
+class FloatyBoat0x28;
 class IGdbModel0x40;
 class MagentaRibbon0x20;
 class ShadowWolf0xc;
+class WhiteFalconNode0x18;
 
 // VTABLE: GOLDP 0x100576ec
 // SIZE 0xf0
@@ -17,7 +19,7 @@ public:
 	ZoweeBlubberworth0xf0();
 	virtual void VTable0x00(void);                                      // vtable+0x00
 	virtual void VTable0x04(void);                                      // vtable+0x04
-	virtual undefined4* VTable0x08(void) = 0;                           // vtable+0x08
+	virtual void VTable0x08(void) = 0;                                  // vtable+0x08
 	virtual undefined4* VTable0x0c(void) = 0;                           // vtable+0x0c
 	virtual ~ZoweeBlubberworth0xf0(void);                               // vtable+0x10
 	virtual void VTable0x14(undefined4, undefined4, undefined4, float); // vtable+0x14
@@ -26,16 +28,16 @@ public:
 	virtual void VTable0x20(undefined4) = 0;                            // vtable+0x20
 	virtual void VTable0x24(undefined4) = 0;                            // vtable+0x24
 	virtual void VTable0x28(undefined4*) = 0;                           // vtable+0x28
-	virtual MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) = 0;         // vtable+0x2c
-	virtual AmberHaze0x1c* VTable0x30(LegoU32 p_index) = 0;             // vtable+0x30
-	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) = 0;          // vtable+0x34
-	virtual IGdbModel0x40* VTable0x38(LegoU32 p_index) = 0;             // vtable+0x38
-	virtual ShadowWolf0xc* VTable0x3c(LegoU32 p_index) = 0;             // vtable+0x3c
-	virtual undefined4* VTable0x40(LegoU32 p_index) = 0;                // vtable+0x40
-	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) = 0;         // vtable+0x44
-	virtual undefined4* VTable0x48(LegoU32 p_index) = 0;                // vtable+0x48
-	virtual undefined4* VTable0x4c(LegoU32 p_index) = 0;                // vtable+0x4c
-	virtual undefined4* VTable0x50(LegoU32 p_index) = 0;                // vtable+0x50
+	virtual MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const = 0;   // vtable+0x2c
+	virtual AmberHaze0x1c* VTable0x30(LegoU32 p_index) const = 0;       // vtable+0x30
+	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) const = 0;    // vtable+0x34
+	virtual IGdbModel0x40* VTable0x38(LegoU32 p_index) const = 0;       // vtable+0x38
+	virtual ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const = 0;       // vtable+0x3c
+	virtual WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const = 0; // vtable+0x40
+	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) const = 0;   // vtable+0x44
+	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;      // vtable+0x48
+	virtual undefined4* VTable0x4c(LegoU32 p_index) const = 0;          // vtable+0x4c
+	virtual undefined4* VTable0x50(LegoU32 p_index) const = 0;          // vtable+0x50
 	virtual void VTable0x54(void);                                      // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
@@ -48,6 +50,8 @@ public:
 	undefined4 GetUnk0x2c() const { return m_unk0x2c; }
 	undefined4 GetUnk0x34() const { return m_unk0x34; }
 	undefined4 GetUnk0x3c() const { return m_unk0x3c; }
+	undefined4 GetUnk0x6c() const { return m_unk0x6c; }
+	undefined4 GetUnk0x74() const { return m_unk0x74; }
 	undefined4 GetUnk0x7c() const { return m_unk0x7c; }
 
 private:

@@ -4,9 +4,11 @@
 #include "amberlens0x344.h"
 #include "boundingshape0x2c.h"
 #include "cmbmodelpart0x34.h"
+#include "floatybarge0x4c.h"
 #include "gdbmodel0x48.h"
 #include "golerror.h"
 #include "greyfalconnode0x1c.h"
+#include "mabmaterialanimation0x14.h"
 #include "purpleribbon0x24.h"
 #include "shadowwolf0xc.h"
 
@@ -34,67 +36,55 @@ FluffyGloomkins0x118::~FluffyGloomkins0x118()
 }
 
 // FUNCTION: GOLDP 0x10017250
-MagentaRibbon0x20* FluffyGloomkins0x118::VTable0x2c(LegoU32 p_index)
+MagentaRibbon0x20* FluffyGloomkins0x118::VTable0x2c(LegoU32 p_index) const
 {
 	return &m_unk0xf0[p_index];
 }
 
 // FUNCTION: GOLDP 0x10017270
-AmberHaze0x1c* FluffyGloomkins0x118::VTable0x30(LegoU32 p_index)
+AmberHaze0x1c* FluffyGloomkins0x118::VTable0x30(LegoU32 p_index) const
 {
 	return &m_unk0xf4[p_index];
 }
 
-// STUB: GOLDP 0x10017290
-CmbModelPart0x34* FluffyGloomkins0x118::VTable0x34(LegoU32 p_index)
+// FUNCTION: GOLDP 0x10017290
+CmbModelPart0x34* FluffyGloomkins0x118::VTable0x34(LegoU32 p_index) const
 {
 	return &m_unk0x10c[p_index];
 }
 
-// STUB: GOLDP 0x100172b0
-IGdbModel0x40* FluffyGloomkins0x118::VTable0x38(LegoU32 p_index)
+// FUNCTION: GOLDP 0x100172b0
+IGdbModel0x40* FluffyGloomkins0x118::VTable0x38(LegoU32 p_index) const
 {
 	return &m_unk0xf8[p_index];
 }
 
-// STUB: GOLDP 0x100172d0
-ShadowWolf0xc* FluffyGloomkins0x118::VTable0x3c(LegoU32 p_index)
+// FUNCTION: GOLDP 0x100172d0
+ShadowWolf0xc* FluffyGloomkins0x118::VTable0x3c(LegoU32 p_index) const
 {
 	return &m_unk0x104[p_index];
 }
 
 // STUB: GOLDP 0x100172f0
-undefined4* FluffyGloomkins0x118::VTable0x40(LegoU32 p_index)
+WhiteFalconNode0x18* FluffyGloomkins0x118::VTable0x40(LegoU32 p_index) const
 {
-#if 0
 	return &m_unk0xfc[p_index];
-#else
-	// TODO
-	STUB(0x100172f0);
-	return NULL;
-#endif
 }
 
 // FUNCTION: GOLDP 0x10017310
-BoundingShape0x2c* FluffyGloomkins0x118::VTable0x44(LegoU32 p_index)
+BoundingShape0x2c* FluffyGloomkins0x118::VTable0x44(LegoU32 p_index) const
 {
 	return &m_unk0x110[p_index];
 }
 
-// STUB: GOLDP 0x10017330
-undefined4* FluffyGloomkins0x118::VTable0x48(LegoU32 p_index)
+// FUNCTION: GOLDP 0x10017330
+FloatyBoat0x28* FluffyGloomkins0x118::VTable0x48(LegoU32 p_index) const
 {
-#if 0
 	return &m_unk0x100[p_index];
-#else
-	// TODO
-	STUB(0x10017330);
-	return NULL;
-#endif
 }
 
 // STUB: GOLDP 0x10017350
-undefined4* FluffyGloomkins0x118::VTable0x4c(LegoU32 p_index)
+undefined4* FluffyGloomkins0x118::VTable0x4c(LegoU32 p_index) const
 {
 #if 0
 	return &m_unk0x108[p_index];
@@ -106,7 +96,7 @@ undefined4* FluffyGloomkins0x118::VTable0x4c(LegoU32 p_index)
 }
 
 // STUB: GOLDP 0x10017370
-undefined4* FluffyGloomkins0x118::VTable0x50(LegoU32 p_index)
+undefined4* FluffyGloomkins0x118::VTable0x50(LegoU32 p_index) const
 {
 #if 0
 	return &m_unk0x114[p_index];
@@ -117,8 +107,8 @@ undefined4* FluffyGloomkins0x118::VTable0x50(LegoU32 p_index)
 #endif
 }
 
-// STUB: GOLDP 0x10017390
-undefined4* FluffyGloomkins0x118::VTable0x08()
+// FUNCTION: GOLDP 0x10017390
+void FluffyGloomkins0x118::VTable0x08()
 {
 	if (GetUnk0x0c() != 0) {
 		m_unk0xf0 = new PurpleRibbon0x24[GetUnk0x0c()];
@@ -169,7 +159,19 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 		}
 	}
 
-	// ...
+	if (GetUnk0x6c() != 0) {
+		m_unk0x100 = new FloatyBarge0x4c[GetUnk0x6c()];
+		if (m_unk0x100 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	if (GetUnk0x74() != 0) {
+		m_unk0x108 = new MabMaterialAnimation0x14[GetUnk0x74()];
+		if (m_unk0x108 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
 
 	if (GetUnk0x7c()) {
 		m_unk0x114 = new AmberLens0x344[GetUnk0x7c()];
@@ -177,9 +179,6 @@ undefined4* FluffyGloomkins0x118::VTable0x08()
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
-	// TODO
-	STUB(0x10017390);
-	return NULL;
 }
 
 // STUB: GOLDP 0x10017ac0

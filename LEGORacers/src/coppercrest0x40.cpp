@@ -3,6 +3,7 @@
 #include "bronzefalcon0xc8770.h"
 #include "golcommondrawstate.h"
 #include "goldrawstate.h"
+#include "imaginarynotion0x290.h"
 #include "imaginarytool0x368.h"
 #include "input/inputmanager.h"
 #include "input/mousedevice.h"

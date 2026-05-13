@@ -67,14 +67,14 @@ public:
 	virtual ObscureIcon0x1a8* VTable0x6c();
 
 	LegoBool32 FUN_00471e30(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
+	void FUN_00471ec0(ObscureIcon0x1a8* p_parentIcon);
+	void FUN_00471f00();
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// ObscureIcon0x1a8::`scalar deleting destructor'
 
 protected:
 	void FUN_00471d90(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
-	void FUN_00471ec0(ObscureIcon0x1a8* p_parentIcon);
-	void FUN_00471f00();
 	ObscureIcon0x1a8* FUN_00471f70();
 	ObscureIcon0x1a8* FUN_00471f90();
 	void FUN_00471fb0(undefined4 p_flags);

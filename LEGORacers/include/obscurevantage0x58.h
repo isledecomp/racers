@@ -55,10 +55,14 @@ public:
 	ObscureVantage0x58* FindRoot();
 	ObscureVantage0x58* FUN_00472e60();
 	Rect* GetGlobalRect();
+	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
 	Rect* FUN_00473160(Rect*);
 	void FUN_004731b0(undefined4&, undefined4&);
+	LegoU8 GetFlags() const { return m_flags; }
 	LegoBool GetUnk0x54() const { return m_unk0x54; }
+	void ClearFlags(LegoU8 p_flags) { m_flags &= ~p_flags; }
+	void SetFlags(LegoU8 p_flags) { m_flags |= p_flags; }
 
 	// SYNTHETIC: LEGORACERS 0x004729d0
 	// ObscureVantage0x58::`scalar deleting destructor'

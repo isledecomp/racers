@@ -2,6 +2,7 @@
 
 #include "awakekite0x20.h"
 #include "bronzefalcon0xc8770.h"
+#include "crimsonsun0xa4.h"
 #include "gol.h"
 #include "golcommondrawstate.h"
 #include "goldrawstate.h"
@@ -474,20 +475,29 @@ undefined4 ImaginaryNotion0x290::FUN_0046c610(undefined4*, undefined2, undefined
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0046c6f0
-undefined4 ImaginaryNotion0x290::FUN_0046c6f0(ObscureVantage0x58*, ObscureVantage0x58*, undefined2)
+// FUNCTION: LEGORACERS 0x0046c6f0
+undefined4 ImaginaryNotion0x290::FUN_0046c6f0(
+	ObscureIcon0x1a8* p_unk0x04,
+	ObscureIcon0x1a8* p_unk0x08,
+	undefined2 p_unk0x0c
+)
 {
-	// TODO
-	STUB(0x0046c6f0);
-	return 1;
+	CrimsonSun0xa4::Entry0x74c* entry = m_unk0x284->FUN_00468c50(2, p_unk0x0c, this, 0);
+	entry->SetUnk0x744(p_unk0x04);
+	entry->SetUnk0x748(p_unk0x08);
+	entry->FUN_00468590();
+
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0046c730
-undefined4 ImaginaryNotion0x290::FUN_0046c730(ObscureVantage0x58*, undefined2)
+// FUNCTION: LEGORACERS 0x0046c730
+undefined4 ImaginaryNotion0x290::FUN_0046c730(ObscureIcon0x1a8* p_unk0x04, undefined2 p_unk0x08)
 {
-	// TODO
-	STUB(0x0046c730);
-	return 1;
+	CrimsonSun0xa4::Entry0x74c* entry = m_unk0x284->FUN_00468c50(1, p_unk0x08, this, 0);
+	entry->SetUnk0x740(p_unk0x04);
+	entry->FUN_00468590();
+
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x0046c760

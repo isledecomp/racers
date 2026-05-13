@@ -104,8 +104,8 @@ public:
 	void FUN_0046c510(undefined4*, undefined4, undefined2);
 	void FUN_0046c5b0(ObscureVantage0x58*, undefined2);
 	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
-	undefined4 FUN_0046c6f0(ObscureVantage0x58*, ObscureVantage0x58*, undefined2);
-	undefined4 FUN_0046c730(ObscureVantage0x58*, undefined2);
+	undefined4 FUN_0046c6f0(ObscureIcon0x1a8*, ObscureIcon0x1a8*, undefined2);
+	undefined4 FUN_0046c730(ObscureIcon0x1a8*, undefined2);
 	void FUN_0046c760();
 	ObscureIcon0x1a8* GetUnk0xd8() { return &m_unk0xd8; }
 

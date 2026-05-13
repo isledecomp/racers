@@ -26,6 +26,18 @@ void ImaginaryDrillFieldAt0x420::Reset()
 	ObscureVantage0x58::Reset();
 }
 
+// STUB: LEGORACERS 0x0046f580
+void ImaginaryDrillFieldAt0x420::VTable0x44(undefined4, undefined4)
+{
+	STUB(0x0046f580);
+}
+
+// STUB: LEGORACERS 0x0046f600
+void ImaginaryDrillFieldAt0x420::VTable0x40(undefined4, undefined4)
+{
+	STUB(0x0046f600);
+}
+
 // STUB: LEGORACERS 0x0046f6f0
 undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect*, Rect*)
 {

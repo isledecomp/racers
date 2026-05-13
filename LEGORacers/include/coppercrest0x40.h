@@ -9,6 +9,7 @@
 class BronzeFalcon0xc8770;
 class GolExport;
 class GolCommonDrawState;
+class ImaginaryNotion0x290;
 class ImaginaryTool0x368;
 class InputManager;
 class MouseInputDevice;
@@ -99,7 +100,8 @@ public:
 	LegoS32 FUN_00469040(InitStruct* p_initStruct);
 	void FUN_00469550();
 	void* GetUnk0x10() { return &m_unk0x10; }
-	void SetUnk0x54(ImaginaryTool0x368* p_unk0x54) { m_unk0x54 = p_unk0x54; }
+	ImaginaryNotion0x290* GetUnk0x54() { return m_unk0x54; }
+	void SetUnk0x54(ImaginaryNotion0x290* p_unk0x54) { m_unk0x54 = p_unk0x54; }
 	void SetCursorInside(LegoU8 p_cursorInside) { m_unk0x10.m_unk0x40 = p_cursorInside; }
 	void SetCursorPosition(undefined4 p_x, undefined4 p_y)
 	{
@@ -116,7 +118,7 @@ private:
 	InputManager* m_inputManager;                    // 0x08
 	OnyxCircularBuffer0x1c* m_inputBindingContainer; // 0x0c
 	Helper0x44 m_unk0x10;                            // 0x10
-	ImaginaryTool0x368* m_unk0x54;                   // 0x54
+	ImaginaryNotion0x290* m_unk0x54;                 // 0x54
 	LegoS32 m_unk0x58;                               // 0x58
 	LegoS32 m_unk0x5c;                               // 0x5c
 };

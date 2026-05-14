@@ -501,7 +501,7 @@ void ZoweeBlubberworth0xf0::FUN_1002cfa0(GolFileParser& p_parser)
 			item->m_unk0x00[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 cnt = 0;
@@ -523,20 +523,20 @@ void ZoweeBlubberworth0xf0::FUN_1002cfa0(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x08[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x34 && m_unk0x34 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x14[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x1c && m_unk0x1c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x20[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x20[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
 					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
@@ -544,16 +544,16 @@ void ZoweeBlubberworth0xf0::FUN_1002cfa0(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x34 && m_unk0x34 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x14[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x1c && m_unk0x1c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x20[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x20[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
 					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
@@ -574,23 +574,23 @@ void ZoweeBlubberworth0xf0::FUN_1002cfa0(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				v = p_parser.GetUnk0x38();
+				v = p_parser.GetLastInt();
 				if (p_parser.ReadInteger() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x2c[p_parser.GetUnk0x38()] = v;
+				item->m_unk0x2c[p_parser.GetLastInt()] = v;
 				break;
 			case GolFileParser::e_unknown0x35:
 				token = p_parser.GetNextToken();
 				if (token == GolFileParser::e_string) {
 					item->m_unk0x44 = -1;
-					::strncpy(item->m_unk0x48, p_parser.GetUnk0x44(), sizeof(item->m_unk0x48));
+					::strncpy(item->m_unk0x48, p_parser.GetLastString(), sizeof(item->m_unk0x48));
 				}
 				else {
 					if (token != GolFileParser::e_int) {
 						p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 					}
-					item->m_unk0x44 = p_parser.GetUnk0x38();
+					item->m_unk0x44 = p_parser.GetLastInt();
 					item->m_unk0x48[0] = '\0';
 				}
 				break;
@@ -646,7 +646,7 @@ void ZoweeBlubberworth0xf0::FUN_1002d400(GolFileParser& p_parser)
 			item->m_unk0x00[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 cnt = 0;
@@ -665,16 +665,16 @@ void ZoweeBlubberworth0xf0::FUN_1002d400(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x08[cnt] = p_parser.GetLastInt();
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x3c && m_unk0x3c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x14[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x14[cnt] = p_parser.GetLastInt();
 				if (p_parser.ReadFloat() < 0.0f) {
 					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
 				}
 				cnt += 1;
 				break;
@@ -695,11 +695,11 @@ void ZoweeBlubberworth0xf0::FUN_1002d400(GolFileParser& p_parser)
 				if (static_cast<LegoU32>(p_parser.ReadInteger()) >= m_unk0x2c && m_unk0x2c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				v = p_parser.GetUnk0x38();
+				v = p_parser.GetLastInt();
 				if (p_parser.ReadInteger() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x2c[p_parser.GetUnk0x38()] = v;
+				item->m_unk0x2c[p_parser.GetLastInt()] = v;
 				break;
 			case GolFileParser::e_unknown0x3e:
 				FUN_1002dbe0(p_parser, &item->m_unk0x78, &item->m_unk0x7c);
@@ -747,7 +747,7 @@ void ZoweeBlubberworth0xf0::FUN_1002d720(GolFileParser& p_parser)
 			item->m_unk0x00[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
 		}
 		p_parser.ReadLeftCurly();
 		item->m_unk0x2c[0] = -1;
@@ -937,7 +937,7 @@ void ZoweeBlubberworth0xf0::FUN_1002dc80(GolFileParser& p_parser)
 			item->m_unk0x00[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
 		}
 		p_parser.ReadLeftCurly();
 		item->m_unk0x08 = -1;
@@ -961,13 +961,13 @@ void ZoweeBlubberworth0xf0::FUN_1002dc80(GolFileParser& p_parser)
 				token = p_parser.GetNextToken();
 				if (token == GolFileParser::e_string) {
 					item->m_unk0x10 = -1;
-					::strncpy(item->m_unk0x14, p_parser.GetUnk0x44(), sizeof(item->m_unk0x14));
+					::strncpy(item->m_unk0x14, p_parser.GetLastString(), sizeof(item->m_unk0x14));
 				}
 				else {
 					if (token != GolFileParser::e_int) {
 						p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 					}
-					item->m_unk0x10 = p_parser.GetUnk0x38();
+					item->m_unk0x10 = p_parser.GetLastInt();
 					item->m_unk0x14[0] = '\0';
 				}
 				break;

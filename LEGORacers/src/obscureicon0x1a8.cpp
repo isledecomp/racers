@@ -68,7 +68,7 @@ void ObscureIcon0x1a8::Reset()
 	ObscureVantage0x58::Reset();
 }
 
-// STUB: LEGORACERS 0x00471d90
+// FUNCTION: LEGORACERS 0x00471d90
 void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const CreateState0x90* p_createState)
 {
 	const undefined* defaultRects = p_createParams->m_unk0x52;
@@ -78,12 +78,11 @@ void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const Crea
 
 	::memcpy(m_unk0x174, defaultRects, sizeof(m_unk0x174));
 
-	const undefined* soundIds = p_createParams->m_unk0x6a;
-	if (!p_createParams->m_unk0x7c) {
-		soundIds = p_createState->m_unk0x18;
-	}
-
-	::memcpy(m_soundIds, soundIds, sizeof(m_soundIds));
+	::memcpy(
+		m_soundIds,
+		p_createParams->m_unk0x7c ? p_createParams->m_unk0x6a : p_createState->m_unk0x18,
+		sizeof(m_soundIds)
+	);
 	::memcpy(m_unk0x6c, p_createState->m_unk0x24, sizeof(m_unk0x6c));
 
 	m_unk0x170 = p_createParams->m_unk0x80;
@@ -266,7 +265,7 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 	}
 }
 
-// STUB: LEGORACERS 0x00472080
+// FUNCTION: LEGORACERS 0x00472080
 void ObscureIcon0x1a8::FUN_00472080()
 {
 	LegoU8 flags = m_unk0x12c;
@@ -289,13 +288,11 @@ void ObscureIcon0x1a8::FUN_00472080()
 		m_unk0x19c++;
 	}
 
-	LegoU32 state = 0;
-	state = m_unk0x19c;
-	if (oldState != state) {
+	if (oldState != m_unk0x19c) {
 		FUN_00472540();
 	}
 
-	VTable0x14((Rect*) &m_unk0x174[state]);
+	VTable0x14((Rect*) &m_unk0x174[m_unk0x19c]);
 }
 
 // FUNCTION: LEGORACERS 0x004720f0
@@ -624,14 +621,21 @@ undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00472950
-void ObscureIcon0x1a8::VTable0x10(Rect*)
+// FUNCTION: LEGORACERS 0x00472950
+void ObscureIcon0x1a8::VTable0x10(Rect* p_rect)
 {
-	STUB(0x00472950);
+	ObscureVantage0x58::VTable0x10(p_rect);
+
+	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x6c); i++) {
+		m_unk0xcc[i].m_top = m_unk0x6c[i].m_top + p_rect->m_top;
+		m_unk0xcc[i].m_bottom = m_unk0x6c[i].m_bottom + p_rect->m_bottom;
+		m_unk0xcc[i].m_left = m_unk0x6c[i].m_left + p_rect->m_left;
+		m_unk0xcc[i].m_right = m_unk0x6c[i].m_right + p_rect->m_right;
+	}
 }
 
-// STUB: LEGORACERS 0x004729a0
-void ObscureIcon0x1a8::VTable0x40(ImaginaryInterface*)
+// FUNCTION: LEGORACERS 0x004729a0
+void ObscureIcon0x1a8::VTable0x40(ImaginaryInterface* p_eventHandler)
 {
-	STUB(0x004729a0);
+	m_unk0x170 = p_eventHandler;
 }

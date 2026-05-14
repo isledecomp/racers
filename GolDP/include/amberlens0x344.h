@@ -19,6 +19,7 @@ public:
 	enum {
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,
+		c_flagBit2 = 1 << 2,
 		c_flagBit3 = 1 << 3,
 	};
 
@@ -44,6 +45,13 @@ protected:
 	friend class BronzeFalcon0xc8770;
 
 	void FUN_10001f60(BronzeFalcon0xc8770*);
+	void FUN_100022b0(
+		GolMatrix4* p_matrix,
+		LegoFloat p_unk0x08,
+		LegoFloat p_unk0x0c,
+		LegoFloat p_unk0x10,
+		LegoFloat p_unk0x14
+	);
 	void FUN_10002860(D3DVIEWPORT2* p_viewport);
 
 	JadeOrbit0x220 m_unk0x120;       // 0x120

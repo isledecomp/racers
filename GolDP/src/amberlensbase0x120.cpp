@@ -10,8 +10,8 @@ AmberLensBase0x120::AmberLensBase0x120()
 	m_unk0x0c = 1.3333334f;
 	m_unk0x10 = 2.0f;
 	m_unk0x14 = 200.0f;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
+	m_unk0x18 = 0.0f;
+	m_unk0x1c = 0.0f;
 	m_unk0x24 = 0.0f;
 	m_unk0x20 = 0.0f;
 	m_flags = 3;
@@ -26,6 +26,18 @@ AmberLensBase0x120::AmberLensBase0x120()
 // FUNCTION: GOLDP 0x1001bfb0
 AmberLensBase0x120::~AmberLensBase0x120()
 {
+}
+
+// STUB: GOLDP 0x1001bfc0
+void AmberLensBase0x120::FUN_1001bfc0(undefined*)
+{
+	STUB(0x1001bfc0);
+}
+
+// STUB: GOLDP 0x1001c450
+void AmberLensBase0x120::FUN_1001c450(undefined*)
+{
+	STUB(0x1001c450);
 }
 
 // STUB: GOLDP 0x1001c900

@@ -28,19 +28,26 @@ public:
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// AmberLensBase0x120::`scalar deleting destructor'
 
+	void FUN_1001bfc0(undefined* p_unk0x04);
+	void FUN_1001c450(undefined* p_unk0x04);
+
 	JadeOrbit0xd0* m_unk0x04;          // 0x04
 	LegoFloat m_unk0x08;               // 0x08
 	LegoFloat m_unk0x0c;               // 0x0c
 	LegoFloat m_unk0x10;               // 0x10
 	LegoFloat m_unk0x14;               // 0x14
-	undefined4 m_unk0x18;              // 0x18
-	undefined4 m_unk0x1c;              // 0x1c
+	LegoFloat m_unk0x18;               // 0x18
+	LegoFloat m_unk0x1c;               // 0x1c
 	LegoFloat m_unk0x20;               // 0x20
 	LegoFloat m_unk0x24;               // 0x24
 	undefined4 m_unk0x28;              // 0x28
 	undefined4 m_unk0x2c;              // 0x2c
 	LegoU32 m_flags;                   // 0x30
-	undefined m_unk0x34[0x110 - 0x34]; // 0x34
+	undefined m_unk0x34[0x100 - 0x34]; // 0x34
+	LegoFloat m_unk0x100;              // 0x100
+	LegoFloat m_unk0x104;              // 0x104
+	LegoFloat m_unk0x108;              // 0x108
+	LegoFloat m_unk0x10c;              // 0x10c
 	LegoS32 m_viewportMinX;            // 0x110
 	LegoS32 m_viewportMinY;            // 0x114
 	LegoS32 m_viewportMaxX;            // 0x118

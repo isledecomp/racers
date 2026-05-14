@@ -110,6 +110,7 @@ void GolTxtParser::WriteFloat(LegoFloat p_param)
 	}
 
 	sprintf(m_formatBuffer, "%f", p_param);
+
 	LegoS32 len = strlen(m_formatBuffer);
 	memcpy(&m_readBuffer[m_bufferLength], m_formatBuffer, len);
 	m_bufferLength += len;
@@ -124,6 +125,7 @@ void GolTxtParser::WriteInt4(undefined4 p_param)
 	}
 
 	sprintf(m_formatBuffer, "%d", p_param);
+
 	LegoS32 len = strlen(m_formatBuffer);
 	memcpy(&m_readBuffer[m_bufferLength], m_formatBuffer, len);
 	m_bufferLength += len;
@@ -134,6 +136,7 @@ void GolTxtParser::WriteInt4(undefined4 p_param)
 void GolTxtParser::WriteString(LegoChar* p_str)
 {
 	LegoS32 len = strlen(p_str);
+
 	if (len + 4 >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}

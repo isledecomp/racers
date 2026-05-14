@@ -40,7 +40,7 @@ void GdbVertexArray0xc::VTable0x38()
 // FUNCTION: GOLDP 0x1002be00
 GdbVertexArray0xc::GdbVertexArray0xc()
 {
-	m_unk0x04 = 0;
+	m_count = 0;
 	m_unk0x06 = 5;
 	m_unk0x08 = NULL;
 }
@@ -54,34 +54,40 @@ GdbVertexArray0xc::~GdbVertexArray0xc()
 // FUNCTION: GOLDP 0x1002be90
 void GdbVertexArray0xc::VTable0x08(GolFileParser& p_parser)
 {
-	if (m_unk0x04 != 0) {
+	if (m_count != 0) {
 		VTable0x0c();
 	}
-	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x04 == 0) {
+
+	m_count = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_count == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x08 = new GolVec3[m_unk0x04];
+
+	m_unk0x08 = new GolVec3[m_count];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_unk0x08, 0, m_unk0x04 * sizeof(GolVec3));
+
+	::memset(m_unk0x08, 0, m_count * sizeof(GolVec3));
+
 	LegoU32 i;
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_count; i++) {
 		m_unk0x08[i].m_x = p_parser.ReadFloat();
 		m_unk0x08[i].m_y = p_parser.ReadFloat();
 		m_unk0x08[i].m_z = p_parser.ReadFloat();
 	}
+
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: GOLDP 0x1002bf60
 void GdbVertexArray0xc::VTable0x04(LegoU16 p_count)
 {
-	if (m_unk0x04 != 0) {
+	if (m_count != 0) {
 		VTable0x0c();
 	}
-	m_unk0x04 = p_count;
+
+	m_count = p_count;
 	m_unk0x08 = new GolVec3[p_count];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);

@@ -35,13 +35,16 @@ void BronzeDune0x4c::VTable0x34(
 	if (m_pixelFlags & c_lockRequestRead) {
 		VTable0x38();
 	}
+
 	m_pixelFlags |= c_lockRequestRead;
 	m_width = static_cast<LegoU16>(p_width);
 	m_height = static_cast<LegoU16>(p_height);
 	m_textureFormat = p_textureFormat;
+
 	if (p_textureFormat.m_paletteMask) {
 		m_unk0x40.Initialize(p_textureFormat);
 	}
+
 	LegoU16 pitch = (p_textureFormat.m_bitsPerPixel * p_width + 8 - 1) / 8U;
 	m_pitch = static_cast<LegoU16>(pitch);
 	m_pixels = new LegoU8[pitch * p_height];
@@ -58,6 +61,7 @@ void BronzeDune0x4c::VTable0x38()
 		delete[] m_pixels;
 		m_pixels = NULL;
 	}
+
 	m_pixelFlags = 0;
 }
 

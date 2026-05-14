@@ -31,5 +31,6 @@ void GdbVertexArrayTypeThree0x20::VTable0x10()
 		delete[] m_unk0x1c;
 		m_unk0x1c = NULL;
 	}
+
 	m_unk0x06 = 1;
 }

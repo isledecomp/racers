@@ -32,7 +32,7 @@ protected:
 	void FUN_0046b250();
 
 	LegoBool m_unk0x0c;             // 0x0c
-	GolFileParser* m_unk0x10;       // 0x10
+	GolFileParser* m_parser;        // 0x10
 	BronzeFalcon0xc8770* m_unk0x14; // 0x14
 	undefined4 m_unk0x18;           // 0x18
 	undefined4 m_unk0x1c;           // 0x1c

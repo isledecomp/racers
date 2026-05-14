@@ -31,7 +31,7 @@ public:
 
 protected:
 	undefined4 m_unk0x0c; // 0x0c
-	undefined4 m_unk0x10; // 0x10
+	LegoU32 m_capacity;   // 0x10
 	undefined4 m_unk0x14; // 0x14
 };
 

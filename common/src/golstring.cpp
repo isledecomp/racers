@@ -212,6 +212,7 @@ LegoS32 GolString::CountLines()
 {
 	LegoS32 i = GolStrlen(m_chars);
 	LegoS32 count = 1;
+
 	while (--i >= 0) {
 		if (m_chars[i] == '\n') {
 			count++;

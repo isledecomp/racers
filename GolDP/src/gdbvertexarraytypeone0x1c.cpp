@@ -17,29 +17,33 @@ GdbVertexArrayTypeOne0x1c::GdbVertexArrayTypeOne0x1c()
 void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 {
 	LegoU32 i;
-	if (m_unk0x04 != 0) {
+
+	if (m_count != 0) {
 		VTable0x0c();
 	}
+
 	p_parser.ReadLeftBracket();
-	m_unk0x04 = p_parser.ReadInteger();
-	if (m_unk0x04 == 0) {
+	m_count = p_parser.ReadInteger();
+	if (m_count == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 	p_parser.ReadRightBracket();
 	p_parser.ReadLeftCurly();
-	m_unk0x08 = new GolVec3[m_unk0x04];
+
+	m_unk0x08 = new GolVec3[m_count];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x0c = new GolVec2[m_unk0x04];
+	m_unk0x0c = new GolVec2[m_count];
 	if (m_unk0x0c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x10 = new LegoU32[m_unk0x04];
+	m_unk0x10 = new LegoU32[m_count];
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	for (i = 0; i < m_unk0x04; i++) {
+
+	for (i = 0; i < m_count; i++) {
 		m_unk0x08[i].m_x = p_parser.ReadFloat();
 		m_unk0x08[i].m_y = p_parser.ReadFloat();
 		m_unk0x08[i].m_z = p_parser.ReadFloat();
@@ -51,6 +55,7 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 		LegoU32 alp = p_parser.ReadInteger() & 0xff;
 		m_unk0x10[i] = (alp << 24) | (red << 16) | (grn << 8) | (blu << 0);
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -58,23 +63,27 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 void GdbVertexArrayTypeOne0x1c::VTable0x04(LegoU16 p_count)
 {
 	LegoU32 i;
-	if (m_unk0x04 != 0) {
+
+	if (m_count != 0) {
 		VTable0x0c();
 	}
-	m_unk0x04 = p_count;
-	m_unk0x08 = new GolVec3[m_unk0x04];
+
+	m_count = p_count;
+
+	m_unk0x08 = new GolVec3[m_count];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x0c = new GolVec2[m_unk0x04];
+	m_unk0x0c = new GolVec2[m_count];
 	if (m_unk0x0c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	m_unk0x10 = new LegoU32[m_unk0x04];
+	m_unk0x10 = new LegoU32[m_count];
 	if (m_unk0x10 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	for (i = 0; i < m_unk0x04; i++) {
+
+	for (i = 0; i < m_count; i++) {
 		m_unk0x0c[i].m_x = 0.0f;
 		m_unk0x0c[i].m_y = 0.0f;
 		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);

@@ -47,6 +47,7 @@ void AmberHaze0x20::Clear()
 		delete[] m_items;
 		m_items = NULL;
 	}
+
 	AmberHaze0x1c::Clear();
 }
 

@@ -52,6 +52,7 @@ void BoundingShape0x2c::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_path);
 
 	GolFileParser::ParserTokenType token;

@@ -56,6 +56,7 @@ void GolImgFile::VTable0x08(const LegoChar* p_fileName)
 		::strcat(buffer, p_fileName);
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
+
 	m_format.m_redBitMask = 0;
 	m_format.m_grnBitMask = 0;
 	m_format.m_bluBitMask = 0;
@@ -64,6 +65,7 @@ void GolImgFile::VTable0x08(const LegoChar* p_fileName)
 	m_format.m_paletteMask = 0;
 	m_unk0x5a8 = 0;
 	m_unk0x5ac = 0;
+
 	VTable0x00();
 }
 
@@ -89,18 +91,21 @@ void GolImgFile::FUN_100200f0(IPalette0x4*, undefined4*)
 LegoU32 GolImgFile::FUN_10020370(const ColorRGBA& p_rgba)
 {
 	LegoU32 i;
+
 	for (i = 0; i < m_paletteCount; i++) {
 		if (p_rgba.m_red == m_paletteEntries[i].m_red && p_rgba.m_grn == m_paletteEntries[i].m_grn &&
 			p_rgba.m_blu == m_paletteEntries[i].m_blu) {
 			return i;
 		}
 	}
+
 	for (i = m_paletteCapacity - m_paletteReservedEnd; i < m_paletteCapacity; i++) {
 		if (p_rgba.m_red == m_paletteEntries[i].m_red && p_rgba.m_grn == m_paletteEntries[i].m_grn &&
 			p_rgba.m_blu == m_paletteEntries[i].m_blu) {
 			return i;
 		}
 	}
+
 	if (m_paletteReservedEnd + m_paletteCount >= m_paletteCapacity) {
 		LegoU32 bestMatch = 0;
 		LegoS32 bestMatchDiff = INT_MAX;
@@ -469,6 +474,7 @@ void GolImgFile::FUN_100226c0(
 	if (m_file.IsOpen()) {
 		Destroy();
 	}
+
 	m_format = p_format;
 	m_width = p_width;
 	m_height = p_height;
@@ -476,6 +482,7 @@ void GolImgFile::FUN_100226c0(
 	m_paletteSize = 1 << m_format.m_bitsPerPixel;
 	m_unk0x5a8 = 0;
 	m_unk0x5ac = 0;
+
 	if (p_paletteColors != NULL && p_paletteSize != 0) {
 		::memcpy(m_palette, p_paletteColors, p_paletteSize * sizeof(*p_paletteColors));
 	}

@@ -30,6 +30,7 @@ void CmbModelPart0x34::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 	if (m_unk0x2c) {
 		Clear();
 	}
+
 	GolFileParser* parser;
 	if (p_binary) {
 		parser = new GolBinParser;
@@ -44,7 +45,9 @@ void CmbModelPart0x34::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_name);
+
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
@@ -62,6 +65,7 @@ void CmbModelPart0x34::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary)
 			break;
 		}
 	}
+
 	parser->Dispose();
 	if (parser != NULL) {
 		delete parser;
@@ -97,10 +101,12 @@ void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
 	if (m_unk0x28 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
+
 	m_unk0x24 = new Data0x14[m_unk0x28];
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	LegoU32 i;
 	for (i = 0; i < m_unk0x28; i++) {
 		m_unk0x24[i].m_unk0x00 = p_parser.ReadInteger();
@@ -110,6 +116,7 @@ void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
 		m_unk0x24[i].m_unk0x0c = p_parser.ReadInteger();
 		m_unk0x24[i].m_unk0x12 = p_parser.ReadInteger();
 	}
+
 	p_parser.ReadRightCurly();
 }
 
@@ -121,20 +128,25 @@ void CmbModelPart0x34::VTable0x10(GolFileParser& p_parser)
 	if (m_unk0x30 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
+
 	m_unk0x2c = new CmbModelPartData0x28[m_unk0x30];
 	if (m_unk0x2c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	GolNameTable::Allocate(m_unk0x30);
+
 	LegoU32 i;
 	for (i = 0; i < m_unk0x30; i++) {
 		if (p_parser.GetNextToken() != GolFileParser::e_unknown0x2c) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
+
 		LegoChar name[8];
 		::strncpy(name, p_parser.ReadString(), sizeOfArray(name));
 		AddName(name, &m_unk0x2c[i]);
 		m_unk0x2c[i].FUN_10018670(p_parser);
 	}
+
 	p_parser.ReadRightCurly();
 }

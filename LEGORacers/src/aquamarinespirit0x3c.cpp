@@ -95,6 +95,7 @@ void AquamarineSpirit0x3c::Clear()
 void AquamarineSpirit0x3c::FUN_0041dae0()
 {
 	GolNameTable::Clear();
+
 	if (m_unk0x14 != NULL) {
 		delete[] m_unk0x14;
 		m_unk0x14 = NULL;

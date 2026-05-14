@@ -36,9 +36,11 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 	if (!width) {
 		width = 640;
 	}
+
 	if (!height) {
 		height = 480;
 	}
+
 	if (!bpp) {
 		bpp = 16;
 	}
@@ -57,6 +59,7 @@ LegoS32 GolDrawState::VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bp
 
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;
+
 	return 0;
 }
 
@@ -88,12 +91,15 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 	if (p_width == 0) {
 		p_width = 640;
 	}
+
 	if (p_height == 0) {
 		p_height = 480;
 	}
+
 	if (p_bpp == 0) {
 		p_bpp = 16;
 	}
+
 	m_width = p_width;
 	m_bpp = p_bpp;
 	m_height = p_height;
@@ -107,6 +113,7 @@ LegoS32 GolDrawState::VTable0x54(LegoS32 p_width, LegoS32 p_height, undefined4 p
 	m_unk0x14->VTable0x30(this, m_width, m_height, m_bpp);
 	m_flags &= ~c_flagBit1;
 	m_flags |= c_flagBit0;
+
 	return 0;
 }
 

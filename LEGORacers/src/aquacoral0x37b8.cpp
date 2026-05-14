@@ -17,7 +17,7 @@ AquaCoral0x37b8* g_unk0x4c4914 = NULL;
 LegoChar g_raceNameBuffer[9];
 
 // FUNCTION: LEGORACERS 0x0042b130
-void AquaCoral0x37b8::FUN_0042b130(LegoRacers::Context* p_context)
+void AquaCoral0x37b8::Run(LegoRacers::Context* p_context)
 {
 	g_unk0x4c4914 = new AquaCoral0x37b8();
 	if (!g_unk0x4c4914) {

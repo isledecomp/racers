@@ -66,7 +66,9 @@ void FalconDuneBag0x10::CopyEntriesFrom(IPalette0x4* p_source)
 {
 	LegoU32 i;
 	ColorRGBA entry;
+
 	BronzeDuneBag0xc::CopyEntriesFrom(p_source);
+
 	for (i = 0; i < m_size; i++) {
 		p_source->GetEntry(&entry, i);
 		m_unk0x0c[i] = g_textureFormat.MapRGBA(entry);

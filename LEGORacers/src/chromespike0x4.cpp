@@ -44,10 +44,10 @@ LegoBool32 ChromeSpike0x4::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0047f4e0
-ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(undefined2 p_unk0x04)
+ImaginaryTool0x368* ChromeSpike0x4::FUN_0047f4e0(LegoU16 p_menuId)
 {
 	ImaginaryTool0x368* tool;
-	switch (p_unk0x04) {
+	switch (p_menuId) {
 	case 0x01:
 	case 0x27:
 	case 0x28:

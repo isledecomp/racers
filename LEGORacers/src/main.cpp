@@ -66,13 +66,16 @@ int WINAPI WinMain(HINSTANCE p_hInstance, HINSTANCE p_hPrevInstance, LPSTR p_lpC
 	int result;
 
 	CoInitialize(0);
+
 	g_hInstance = p_hInstance;
 	g_hPrevInstance = p_hPrevInstance;
 	srand((unsigned int) timeGetTime);
 	strncpy(g_commandLine, p_lpCmdLine, sizeof(g_commandLine));
 	g_commandLine[sizeof(g_commandLine) - 1] = '\0';
 	SplitCommand();
+
 	result = GameMain(g_commandLineArgs.m_argc, g_commandLineArgs.m_argv);
+
 	CoUninitialize();
 	return result;
 }

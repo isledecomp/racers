@@ -350,6 +350,7 @@ void ObscureVantage0x58::FUN_004731b0(undefined4& p_x, undefined4& p_y)
 undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 {
 	ObscureVantage0x58* child = m_firstChild;
+
 	if (VTable0x3c(p_unk0x04)) {
 		return TRUE;
 	}

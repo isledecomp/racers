@@ -10,6 +10,7 @@ HRESULT LockDirectDrawSurface(
 )
 {
 	HRESULT hresult;
+
 	for (;;) {
 		hresult = p_surface->Lock(p_rect, p_desc, p_flags, p_event);
 		if (hresult != DDERR_SURFACEBUSY && hresult != DDERR_WASSTILLDRAWING) {
@@ -17,5 +18,6 @@ HRESULT LockDirectDrawSurface(
 		}
 		Sleep(1);
 	}
+
 	return hresult;
 }

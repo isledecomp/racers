@@ -67,6 +67,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+
 	m_numItems = parser->ReadBracketedCountAndLeftCurly();
 
 	if (!m_numItems) {
@@ -86,6 +87,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 		local34.m_bytes[3] = -1;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+
 		UtopianPan0xa4* item = GetItem(i);
 
 		FourBytes name[2];
@@ -195,6 +197,7 @@ void HypnoticNoise0x1c::VTable0x1c(BronzeFalcon0xc8770* p_renderer, LegoU32 p_nu
 void HypnoticNoise0x1c::Clear()
 {
 	m_numItems = 0;
+
 	if (m_renderer) {
 		m_renderer->RemoveImageList(this);
 		m_renderer = NULL;

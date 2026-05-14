@@ -18,6 +18,7 @@ LegoPieceLibrary::LegoPieceLibrary()
 {
 	m_next = g_pieceLibraryList;
 	g_pieceLibraryList = this;
+
 	Reset();
 }
 

@@ -114,17 +114,17 @@ void CeruleanQueen0x58::Clear()
 void CeruleanQueen0x58::VTable0x10(undefined4 p_param)
 {
 	if (p_param) {
-		m_unk0x10 = new GolBinParser();
-		if (m_unk0x10 == NULL) {
+		m_parser = new GolBinParser();
+		if (m_parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_unk0x10->SetSuffix(".mib");
+		m_parser->SetSuffix(".mib");
 		return;
 	}
 
-	m_unk0x10 = new MidTxtParser();
-	if (m_unk0x10 == NULL) {
+	m_parser = new MidTxtParser();
+	if (m_parser == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -133,12 +133,12 @@ void CeruleanQueen0x58::VTable0x10(undefined4 p_param)
 void CeruleanQueen0x58::FUN_00469900(ResourceLoadParams* p_params)
 {
 	VTable0x10(p_params->m_binary);
-	m_unk0x10->OpenFileForRead(p_params->m_fileName);
+	m_parser->OpenFileForRead(p_params->m_fileName);
 	FUN_0046b130();
 	FUN_0046b250();
-	m_unk0x10->Dispose();
+	m_parser->Dispose();
 
-	delete m_unk0x10;
+	delete m_parser;
 }
 
 // FUNCTION: LEGORACERS 0x00469950
@@ -178,7 +178,7 @@ void CeruleanQueen0x58::VTable0x14(undefined4 p_arg1)
 	case 0x41:
 	case 0x44:
 	default:
-		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		break;
 	case 0x42:
 		FUN_0046adf0();

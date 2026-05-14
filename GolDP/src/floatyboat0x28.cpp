@@ -58,6 +58,7 @@ void FloatyBoat0x28::VTable0x14(GolVec3* p_arg1, undefined4*)
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
+
 	// TODO
 	STUB(0x100285d0);
 }
@@ -68,6 +69,7 @@ LegoS32 FloatyBoat0x28::VTable0x18()
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
+
 	// TODO
 	STUB(0x10028610);
 	return 0;
@@ -87,6 +89,7 @@ void FloatyBoat0x28::FUN_100286d0(GolVec3* p_v)
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
+
 	p_v->m_x = m_v0.m_x;
 	p_v->m_y = m_v0.m_y;
 	p_v->m_z = m_v0.m_z;

@@ -54,6 +54,7 @@ void OnyxBreeze0x248::Initialize(InputManager* p_inputManager)
 			joystick->Acquire();
 			joystick->SetRepeatDelays(250, 500);
 			joystick->SetDeadZonePercent(60);
+
 			LegoS32 sourceId = joystick->AddDirectionalTrigger(&m_unk0x224);
 			m_unk0x224.Configure(
 				sourceId,

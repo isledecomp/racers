@@ -32,14 +32,17 @@ void GolTgaFile::VTable0x08(const LegoChar* p_fileName)
 {
 	size_t lenFileName = strlen(p_fileName);
 	size_t lenSuffix = strlen(g_tgaSuffix);
+
 	if (lenFileName > lenSuffix && ::memcmp(p_fileName + lenFileName - lenSuffix, g_tgaSuffix, lenSuffix) == 0) {
 		GolImgFile::VTable0x08(p_fileName);
 		return;
 	}
+
 	LegoChar* pathBuffer = new LegoChar[lenFileName + lenSuffix + 1];
 	if (pathBuffer == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::strcpy(pathBuffer, p_fileName);
 	::strcat(pathBuffer, g_tgaSuffix);
 	GolImgFile::VTable0x08(pathBuffer);
@@ -58,6 +61,7 @@ void GolTgaFile::VTable0x00()
 	if (result != GolStream::e_ioSuccess) {
 		GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 	}
+
 	m_imageType = header[0x2]; // 1: type1 color-mapped image, 2: unmapped rgb, 9: RLE color-mapped, 10: RLE rgb
 	m_colorMapFirstEntry = BUF_U16LE(header, 0x3);
 	m_colorMapLength = BUF_U16LE(header, 0x5);
@@ -67,6 +71,7 @@ void GolTgaFile::VTable0x00()
 	m_posImageData = m_identificationFieldSize + 0x12;
 	m_width = BUF_U16LE(header, 0xc);
 	m_height = BUF_U16LE(header, 0xe);
+
 	LegoU32 bpp = header[0x10];
 	m_rowByteStride = ((m_width * bpp + 31) >> 3) & 0x1ffffffc;
 	m_colorMapType = header[1]; // 1: data type 1, 2: data type 2, 9: date type 9, 10: data type 10
@@ -74,20 +79,24 @@ void GolTgaFile::VTable0x00()
 	m_imageDescriptorByte = header[0x11];
 	m_paletteSize = 0;
 	m_imageByteSize = m_rowByteStride * m_height;
+
 	if (m_colorMapType != 0 && bpp <= 8) {
 		LegoU32 rawPaletteByteSize = ((m_colorMapEntrySize + 7) >> 3) * m_colorMapLength;
 		LegoU8* buf = new LegoU8[rawPaletteByteSize];
 		if (buf == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
+
 		result = m_file.BufferedRead(m_posImageData, buf, rawPaletteByteSize, &amount);
 		if (result != GolStream::e_ioSuccess) {
 			GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 		}
+
 		m_paletteSize = m_colorMapLength;
 		if (m_paletteSize > 256) {
 			m_paletteSize = 256;
 		}
+
 		LegoU32 i;
 		LegoU8* bufPtr;
 		switch (m_colorMapEntrySize) {
@@ -132,9 +141,11 @@ void GolTgaFile::VTable0x00()
 			}
 			break;
 		}
+
 		delete[] buf;
 		m_posImageData += rawPaletteByteSize;
 	}
+
 	switch (bpp) {
 	case 4:
 		m_format.m_paletteMask = 0xf;

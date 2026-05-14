@@ -167,7 +167,7 @@ private:
 	void FUN_1002f210(undefined4, undefined4*);
 
 	undefined4 m_unk0x04;              // 0x04
-	LegoBool32 m_unk0x08;              // 0x08
+	LegoBool32 m_binary;               // 0x08
 	LegoU32 m_unk0x0c;                 // 0x0c
 	GolName* m_unk0x10;                // 0x10
 	LegoU32 m_unk0x14;                 // 0x14

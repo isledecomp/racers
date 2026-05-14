@@ -45,7 +45,7 @@ ObscureIcon0x1a8::~ObscureIcon0x1a8()
 void ObscureIcon0x1a8::Reset()
 {
 	m_soundGroupBinding = NULL;
-	m_unk0x170 = NULL;
+	m_eventHandler = NULL;
 	m_unk0x198 = NULL;
 	m_unk0x12c = 0;
 	m_unk0x19c = 0;
@@ -85,7 +85,7 @@ void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const Crea
 	);
 	::memcpy(m_unk0x6c, p_createState->m_unk0x24, sizeof(m_unk0x6c));
 
-	m_unk0x170 = p_createParams->m_unk0x80;
+	m_eventHandler = p_createParams->m_unk0x80;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_unk0x168 = p_createParams->m_unk0x40;
 	m_unk0x130 = p_createState->m_unk0x84;
@@ -219,10 +219,10 @@ void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 
 	if (icon) {
 		do {
-			icon->m_unk0x12c |= 2;
+			icon->m_unk0x12c |= c_flagBit1;
 			FUN_00472080();
 
-			ImaginaryInterface* eventHandler = icon->m_unk0x170;
+			ImaginaryInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
 					eventHandler->VTable0x3c(this);
@@ -246,10 +246,10 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 
 	if (icon) {
 		do {
-			icon->m_unk0x12c &= 0xfd;
+			icon->m_unk0x12c &= ~c_flagBit1;
 			FUN_00472080();
 
-			ImaginaryInterface* eventHandler = icon->m_unk0x170;
+			ImaginaryInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
 				if (!(p_flags & 1)) {
 					eventHandler->VTable0x40(this);
@@ -272,8 +272,8 @@ void ObscureIcon0x1a8::FUN_00472080()
 	LegoU32 oldState = 0;
 	oldState = m_unk0x19c;
 
-	if (flags & 1) {
-		if (flags & 2) {
+	if (flags & c_flagBit0) {
+		if (flags & c_flagBit1) {
 			m_unk0x19c = 4;
 		}
 		else {
@@ -284,7 +284,7 @@ void ObscureIcon0x1a8::FUN_00472080()
 		m_unk0x19c = 0;
 	}
 
-	if (flags & 4) {
+	if (flags & c_flagBit2) {
 		m_unk0x19c++;
 	}
 
@@ -298,12 +298,12 @@ void ObscureIcon0x1a8::FUN_00472080()
 // FUNCTION: LEGORACERS 0x004720f0
 void ObscureIcon0x1a8::VTable0x44(undefined4 p_flags)
 {
-	if (!(m_unk0x12c & 1)) {
-		m_unk0x12c |= 1;
+	if (!(m_unk0x12c & c_flagBit0)) {
+		m_unk0x12c |= c_flagBit0;
 		FUN_00472080();
 
-		if (m_unk0x170 && !(p_flags & 1)) {
-			m_unk0x170->VTable0x2c(this);
+		if (m_eventHandler && !(p_flags & 1)) {
+			m_eventHandler->VTable0x2c(this);
 		}
 	}
 }
@@ -311,21 +311,21 @@ void ObscureIcon0x1a8::VTable0x44(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472130
 void ObscureIcon0x1a8::VTable0x48(undefined4 p_flags)
 {
-	if (m_unk0x12c & 1) {
+	if (m_unk0x12c & c_flagBit0) {
 		LegoU8 flags = (LegoU8) p_flags;
 
-		if (m_unk0x12c & 2) {
+		if (m_unk0x12c & c_flagBit1) {
 			ObscureIcon0x1a8* root = FUN_00471f70();
 			if (!root->VTable0x60() && !root->VTable0x68()) {
 				VTable0x50(0);
 			}
 		}
 
-		m_unk0x12c &= 0xfe;
+		m_unk0x12c &= ~c_flagBit0;
 		FUN_00472080();
 
-		if (m_unk0x170 && !flags) {
-			m_unk0x170->VTable0x30(this);
+		if (m_eventHandler && !flags) {
+			m_eventHandler->VTable0x30(this);
 		}
 	}
 }
@@ -333,8 +333,8 @@ void ObscureIcon0x1a8::VTable0x48(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x004721a0
 void ObscureIcon0x1a8::VTable0x4c(undefined4 p_flags)
 {
-	if (m_unk0x12c & 1) {
-		if ((m_unk0x12c & 2) && !m_unk0x198) {
+	if (m_unk0x12c & c_flagBit0) {
+		if ((m_unk0x12c & c_flagBit1) && !m_unk0x198) {
 			return;
 		}
 
@@ -356,8 +356,8 @@ void ObscureIcon0x1a8::VTable0x4c(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472200
 void ObscureIcon0x1a8::VTable0x50(undefined4 p_flags)
 {
-	if ((m_unk0x12c & 1) && (m_unk0x12c & 2)) {
-		if (m_unk0x12c & 4) {
+	if ((m_unk0x12c & c_flagBit0) && (m_unk0x12c & c_flagBit1)) {
+		if (m_unk0x12c & c_flagBit2) {
 			VTable0x58(1);
 		}
 
@@ -387,7 +387,7 @@ void ObscureIcon0x1a8::VTable0x50(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472290
 void ObscureIcon0x1a8::VTable0x54(undefined4 p_flags)
 {
-	if (m_unk0x12c & 4) {
+	if (m_unk0x12c & c_flagBit2) {
 		return;
 	}
 
@@ -398,11 +398,11 @@ void ObscureIcon0x1a8::VTable0x54(undefined4 p_flags)
 	}
 
 	FUN_00472bc0();
-	m_unk0x12c |= 4;
+	m_unk0x12c |= c_flagBit2;
 	FUN_00472080();
 
-	if (m_unk0x170 && !flags) {
-		m_unk0x170->VTable0x34(this);
+	if (m_eventHandler && !flags) {
+		m_eventHandler->VTable0x34(this);
 	}
 
 	if (!(flags & 4)) {
@@ -416,7 +416,7 @@ void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 	LegoU8 stateFlags = m_unk0x12c;
 	m_unk0x1a0 = 0;
 
-	if (stateFlags & 4) {
+	if (stateFlags & c_flagBit2) {
 		if (m_flags & 8) {
 			FUN_00472c10();
 		}
@@ -427,11 +427,11 @@ void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 			m_parentIcon->VTable0x58(0);
 		}
 
-		m_unk0x12c &= 0xfb;
+		m_unk0x12c &= ~c_flagBit2;
 		FUN_00472080();
 
-		if (m_unk0x170 && !flags) {
-			m_unk0x170->VTable0x38(this);
+		if (m_eventHandler && !flags) {
+			m_eventHandler->VTable0x38(this);
 		}
 
 		if (!(flags & 4)) {
@@ -489,7 +489,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x6c()
 // FUNCTION: LEGORACERS 0x00472440
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 {
-	if (m_unk0x12c & 2) {
+	if (m_unk0x12c & c_flagBit1) {
 		ObscureIcon0x1a8* child = m_unk0x198;
 
 		while (child) {
@@ -529,7 +529,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 // FUNCTION: LEGORACERS 0x004724c0
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 {
-	if (m_unk0x12c & 2) {
+	if (m_unk0x12c & c_flagBit1) {
 		ObscureIcon0x1a8* child = m_unk0x198;
 
 		while (child) {
@@ -637,5 +637,5 @@ void ObscureIcon0x1a8::VTable0x10(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x004729a0
 void ObscureIcon0x1a8::VTable0x40(ImaginaryInterface* p_eventHandler)
 {
-	m_unk0x170 = p_eventHandler;
+	m_eventHandler = p_eventHandler;
 }

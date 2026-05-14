@@ -60,7 +60,7 @@ protected:
 	GdbVertexArray0xc* m_unk0x14;
 	IGdbModelIndexArray0x8* m_unk0x18;
 	undefined4* m_unk0x1c;
-	undefined4 m_unk0x20;
+	LegoU32 m_countGroups;
 	LegoU32* m_unk0x24;
 	GolVec3 m_unk0x28;
 	LegoFloat m_unk0x34;

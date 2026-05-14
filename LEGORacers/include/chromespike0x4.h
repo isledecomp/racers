@@ -12,7 +12,7 @@ public:
 	~ChromeSpike0x4();
 	LegoBool32 Shutdown();
 	LegoBool32 Initialize();
-	ImaginaryTool0x368* FUN_0047f4e0(undefined2 p_unk0x04);
+	ImaginaryTool0x368* FUN_0047f4e0(LegoU16 p_menuId);
 
 private:
 	undefined m_unk0x00[0x4 - 0x00]; // 0x00

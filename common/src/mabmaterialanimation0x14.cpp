@@ -47,6 +47,7 @@ void MabMaterialAnimation0x14::VTable0x04(WhiteFalcon0x140* p_renderer, const Le
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_fileName);
 	FUN_10025a40(p_renderer, *parser);
 	FUN_10025b60(*parser);
@@ -81,19 +82,23 @@ void MabMaterialAnimation0x14::FUN_10025a40(WhiteFalcon0x140* p_renderer, GolFil
 	if (p_parser.GetNextToken() != GolFileParser::e_unknown0x27) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
+
 	m_unk0x08 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x08 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
+
 	m_unk0x04 = new MabMaterialAnimationItem0x8[m_unk0x08];
 	if (m_unk0x04 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	for (i = 0; i < m_unk0x08; i++) {
 		LegoChar name[8];
 		::strncpy(name, p_parser.ReadStringWithMaxLength(sizeOfArray(name)), sizeof(name));
 		m_unk0x04[i].FUN_10026110(p_renderer, name, p_parser.ReadInteger());
 	}
+
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
@@ -108,6 +113,7 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 	if (p_parser.GetNextToken() != GolFileParser::e_unknown0x28) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
+
 	m_unk0x10 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x10 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
@@ -117,6 +123,7 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 	if (m_unk0x0c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	for (i = 0; i < m_unk0x10; i++) {
 		undefined4 param2 = 1;
 		undefined4 param1 = 0;
@@ -126,9 +133,11 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 		if (p_parser.GetNextToken() != GolFileParser::e_unknown0x28) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
+
 		if (p_parser.GetNextToken() != GolFileParser::e_leftCurly) {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
+
 		GolFileParser::ParserTokenType token;
 		while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 			switch (token) {
@@ -147,8 +156,10 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 				break;
 			}
 		}
+
 		m_unk0x0c[i].FUN_10025d40(param1, param2, param3, param4);
 	}
+
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}

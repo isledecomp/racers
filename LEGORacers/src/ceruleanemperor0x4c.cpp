@@ -97,17 +97,17 @@ void CeruleanEmperor0x4c::VTable0x10(undefined4 p_param)
 {
 	if (p_param) {
 		// TODO: Subclass of GolFileParser. GolFormatParser?
-		m_unk0x10 = new GolBinParser();
-		if (m_unk0x10 == NULL) {
+		m_parser = new GolBinParser();
+		if (m_parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_unk0x10->SetSuffix(".msb");
+		m_parser->SetSuffix(".msb");
 		return;
 	}
 
-	m_unk0x10 = new GolTxtParser();
-	if (m_unk0x10 == NULL) {
+	m_parser = new GolTxtParser();
+	if (m_parser == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -116,12 +116,12 @@ void CeruleanEmperor0x4c::VTable0x10(undefined4 p_param)
 void CeruleanEmperor0x4c::FUN_0046fd30(ResourceLoadParams* p_params)
 {
 	VTable0x10(p_params->m_binary);
-	m_unk0x10->OpenFileForRead(p_params->m_fileName);
+	m_parser->OpenFileForRead(p_params->m_fileName);
 	FUN_0046b130();
 	FUN_0046b250();
-	m_unk0x10->Dispose();
+	m_parser->Dispose();
 
-	delete m_unk0x10;
+	delete m_parser;
 }
 
 // FUNCTION: LEGORACERS 0x0046fd80
@@ -154,7 +154,7 @@ void CeruleanEmperor0x4c::VTable0x14(undefined4 p_arg1)
 		break;
 	case 0x3a:
 	default:
-		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		break;
 	case 0x3b:
 		FUN_00470d10();

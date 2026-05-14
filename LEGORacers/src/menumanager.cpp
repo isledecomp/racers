@@ -560,6 +560,7 @@ void MenuManager::FUN_0042e1f0()
 	const LegoChar* driverName = NULL;
 	LegoU32 deviceIndex = 0;
 	LegoU32 selectedDrawFlags = 0;
+
 	state.FUN_0042f060(savedDisplayDriverGuid);
 
 	const GUID* currentGuid = drawState->GetCurrentDriverGuid();

@@ -321,6 +321,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 	}
 
 	LegoS32 flags = m_flags;
+
 	if (flags & c_flagMapped) {
 		if (offset >= (LegoU32) m_size) {
 			return e_ioEndOfFile;

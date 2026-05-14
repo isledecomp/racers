@@ -91,7 +91,7 @@ LegoS32 LegoRacers::Initialize(LegoS32 p_argc, LegoChar** p_argv)
 // FUNCTION: LEGORACERS 0x0042bc20
 void LegoRacers::Destroy()
 {
-	FUN_0042bd00();
+	ReleaseContextAssets();
 	Shutdown();
 	m_golApp.Destroy();
 }
@@ -123,13 +123,13 @@ void LegoRacers::Run()
 		FUN_0042bde0();
 	}
 
-	FUN_0042bd00();
+	ReleaseContextAssets();
 	Shutdown();
 	ResetDisplay();
 }
 
 // FUNCTION: LEGORACERS 0x0042bd00
-void LegoRacers::FUN_0042bd00()
+void LegoRacers::ReleaseContextAssets()
 {
 	GolExport* golExport = m_context.m_golApp->GetGolExport();
 
@@ -175,7 +175,7 @@ void LegoRacers::FUN_0042bdc0()
 // FUNCTION: LEGORACERS 0x0042bde0
 void LegoRacers::FUN_0042bde0()
 {
-	AquaCoral0x37b8::FUN_0042b130(&m_context);
+	AquaCoral0x37b8::Run(&m_context);
 	m_golApp.ClearFileSourceDirectoryCaches();
 }
 

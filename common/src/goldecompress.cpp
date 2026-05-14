@@ -7,6 +7,7 @@ LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 	LegoU8* dst = p_dst;
 
 	*dst++ = *src++;
+
 	for (;;) {
 		LegoS32 ctrl = ((*src++) << 24) + 1;
 		for (;;) {
@@ -33,11 +34,13 @@ LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 				if (back == 0) {
 					return dst - p_dst;
 				}
+
 				do {
 					count++;
 					*dst = dst[back];
 					dst++;
 				} while (count != 0);
+
 				ctrl *= 2;
 				if (!(ctrl & 0xff)) {
 					break;

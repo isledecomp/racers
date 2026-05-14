@@ -24,16 +24,19 @@ BronzeDuneBag0xc::~BronzeDuneBag0xc()
 void BronzeDuneBag0xc::Initialize(const GolSurfaceFormat& p_textureFormat)
 {
 	LegoU32 i;
+
 	if (m_entries != NULL) {
 		m_size = 0;
 		delete[] m_entries;
 		m_entries = 0;
 	}
+
 	m_size = 1 << p_textureFormat.m_bitsPerPixel;
 	m_entries = new ColorRGBA[m_size];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	for (i = 0; i < m_size; i++) {
 		m_entries[i].m_red = 0;
 		m_entries[i].m_grn = 0;

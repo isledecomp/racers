@@ -21,13 +21,14 @@ void GreyFalconNode0x1c::Clear()
 		delete[] m_unk0x18;
 		m_unk0x18 = NULL;
 	}
+
 	WhiteFalconNode0x18::Clear();
 }
 
 // FUNCTION: GOLDP 0x100149a0
 void GreyFalconNode0x1c::VTable0x0c()
 {
-	m_unk0x18 = new JadeOrbit0xd0[m_unk0x10];
+	m_unk0x18 = new JadeOrbit0xd0[m_capacity];
 	if (m_unk0x18 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -44,17 +45,18 @@ void GreyFalconNode0x1c::FUN_10014a60(const GolMatrix4& p_m1, const GolMatrix4& 
 {
 	JadeOrbit0xd0* obj;
 	JadeOrbit0xd0* end;
+
 	if (m_unk0x14 != NULL) {
 		VTable0x20(p_m2);
 		obj = m_unk0x18;
-		end = &m_unk0x18[m_unk0x10];
+		end = &m_unk0x18[m_capacity];
 		for (; obj < end; obj++) {
 			GolMath::FUN_1002f3a0(obj->m_unk0x90, p_m3, &obj->m_unk0x50);
 		}
 	}
 	else {
 		obj = m_unk0x18;
-		end = &m_unk0x18[m_unk0x10];
+		end = &m_unk0x18[m_capacity];
 		for (; obj < end; obj++) {
 			JadeOrbit0xd0* parent = static_cast<JadeOrbit0xd0*>(obj->m_unk0x04);
 			if (parent == NULL) {
@@ -99,10 +101,12 @@ void GreyFalconNode0x1c::VTable0x24(const GolMatrix34* p_m)
 		m.m_m[3][1] = 0.0f;
 		m.m_m[3][2] = 0.0f;
 	}
+
 	m.m_m[0][3] = 0.0f;
 	m.m_m[1][3] = 0.0f;
 	m.m_m[2][3] = 0.0f;
 	m.m_m[3][3] = 1.0f;
+
 	VTable0x20(m);
 }
 
@@ -112,8 +116,10 @@ void GreyFalconNode0x1c::VTable0x20(const GolMatrix4& p_m)
 	if (m_unk0x14 == NULL) {
 		JadeOrbit0xd0* obj;
 		JadeOrbit0xd0* end;
+
 		obj = m_unk0x18;
-		end = m_unk0x18 + m_unk0x10;
+		end = m_unk0x18 + m_capacity;
+
 		for (; obj < end; obj++) {
 			if (obj->m_unk0x04 != NULL) {
 				GolMath::FUN_1002f450(

@@ -67,6 +67,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 
 	GolNameTable::Allocate(m_numItems);
 	AllocateItems();
+
 	LegoU32 i;
 	LegoU32 j;
 	LegoChar textureName[8];
@@ -285,6 +286,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 void AmberHaze0x1c::FUN_10026970()
 {
 	LegoU32 i;
+
 	if (m_unk0x14 != NULL) {
 		for (i = 0; i < m_numItems; i++) {
 			DuskwindBananaRelic0x24* item = GetItem(i);

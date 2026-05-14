@@ -12,8 +12,8 @@ public:
 	// SIZE 0x10
 	struct Item {
 		InputDevice* m_device;           // 0x00
-		undefined4 m_keyCode;            // 0x04
-		undefined4 m_unk0x08;            // 0x08
+		LegoU32 m_keyCode;               // 0x04
+		LegoU32 m_unk0x08;               // 0x08
 		LegoBool m_isPressed;            // 0x0c
 		LegoBool m_isRepeat;             // 0x0d
 		undefined m_unk0x0e[0x10 - 0xe]; // 0x0e
@@ -30,7 +30,7 @@ public:
 
 	void Initialize();
 	Item* Dequeue();
-	Item* Enqueue(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3);
+	Item* Enqueue(InputDevice* p_device, LegoU32 p_keyCode, LegoU32 p_arg3);
 	void ClearQueue();
 	LegoS32 GetSize() const { return m_size; }
 

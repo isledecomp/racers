@@ -44,14 +44,16 @@ void GdbCommonVertexArray0x1c::VTable0x34(const PixelFormatMod& p_details)
 	LegoU32* ptrInEnd;
 
 	if (m_unk0x18 == NULL) {
-		m_unk0x18 = new LegoU32[m_unk0x04];
+		m_unk0x18 = new LegoU32[m_count];
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	ptrOut = m_unk0x18;
 	ptrIn = m_unk0x10;
-	ptrInEnd = ptrIn + m_unk0x04;
+	ptrInEnd = ptrIn + m_count;
+
 	for (; ptrIn < ptrInEnd; ptrIn++, ptrOut++) {
 		LegoU32 original = *ptrIn;
 		LegoS32 r = (original >> 16) & 0xff;
@@ -76,6 +78,7 @@ void GdbCommonVertexArray0x1c::VTable0x34(const PixelFormatMod& p_details)
 		}
 		*ptrOut = (a << 24) | (r << 16) | (g << 8) | (b << 0);
 	}
+
 	m_unk0x14 = TRUE;
 }
 

@@ -194,6 +194,7 @@ GolDeviceList::GolD3DDeviceInfo* GolDeviceList::SelectDevice(
 
 			StoreDialogItem(&writePtr, SS_LEFT, 5, 5, 22, 13, -1, "STATIC", "Driver:");
 			StoreDialogItem(&writePtr, SS_LEFT, 5, 24, 25, 13, -1, "STATIC", "Device:");
+
 			int result = DialogBoxIndirectParam(
 				hInstance,
 				dialogTemplate,
@@ -400,6 +401,7 @@ BOOL GolDeviceList::EnumerateDirectDrawDriversCallback(
 	}
 
 	::strcpy(driver->m_description, p_description);
+
 	driver->m_name = new LegoChar[strlen(p_name) + 1];
 
 	if (driver->m_name == NULL) {
@@ -480,6 +482,7 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 {
 	GolD3DDriverInfo* const driver = static_cast<GolD3DDriverInfo*>(p_context);
 	GolD3DDeviceInfo* const device = &driver->m_devices[driver->m_countDevices++];
+
 	device->m_driver = driver;
 	device->m_name = new LegoChar[strlen(p_name) + 1];
 
@@ -488,6 +491,7 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 	}
 
 	::strcpy(device->m_name, p_name);
+
 	device->m_description = new LegoChar[strlen(p_description) + 1];
 
 	if (device->m_description == NULL) {
@@ -495,6 +499,7 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 	}
 
 	::strcpy(device->m_description, p_description);
+
 	if (p_guid != NULL) {
 		device->m_validGuid = TRUE;
 		device->m_guid = *p_guid;
@@ -502,6 +507,7 @@ HRESULT GolDeviceList::EnumerateDirect3DDevicesCallback(
 	else {
 		device->m_validGuid = FALSE;
 	}
+
 	if (p_halDesc->dwFlags != 0) {
 		device->m_deviceDesc = *p_halDesc;
 		device->m_hwAccelerated = TRUE;
@@ -553,6 +559,7 @@ void GolDeviceList::StoreDialogItem(
 	itemTemplate->cx = p_cx;
 	itemTemplate->cy = p_cy;
 	itemTemplate->id = p_id;
+
 	*p_ptrStorage = reinterpret_cast<LegoU8*>(itemTemplate + 1);
 
 	int lenText = lstrlen(p_type);
@@ -591,6 +598,7 @@ INT_PTR_COMPAT GolDeviceList::SelectDeviceDlgProc(HWND p_hWnd, UINT p_uMsg, WPAR
 			}
 
 			LegoS16 notificationCode = HIWORD(p_wParam);
+
 			if (notificationCode == CBN_SELENDOK) {
 				int index = SendMessage(reinterpret_cast<HWND>(p_lParam), CB_GETCURSEL, 0, 0);
 

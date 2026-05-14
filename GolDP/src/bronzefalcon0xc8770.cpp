@@ -169,7 +169,7 @@ void BronzeFalcon0xc8770::Reset()
 	m_currentTexture = 0;
 	m_unk0xc83c8 = 0;
 	m_unk0xc83cc = 0;
-	m_unk0xc83e0 = 255;
+	m_alpha = 255;
 	m_unk0xc8568 = 0;
 	m_unk0xc83f8 = 0;
 	m_unk0xc83fc = -1;
@@ -243,7 +243,7 @@ GolCommonDrawState* BronzeFalcon0xc8770::GetDrawState()
 }
 
 // FUNCTION: GOLDP 0x10007d90
-undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlatePeak0x58* p_parg2, LegoU32 p_flags)
+LegoS32 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlatePeak0x58* p_parg2, LegoU32 p_flags)
 {
 	if (m_flags & c_flagBit0) {
 		VTable0x18();
@@ -260,7 +260,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlateP
 	m_viewportParams.dwWidth = m_renderTargetInfo->m_width;
 	m_viewportParams.dwHeight = m_renderTargetInfo->m_height;
 
-	undefined4 result = FUN_10007e20(p_flags);
+	LegoS32 result = FUN_10007e20(p_flags);
 	if (result != 0) {
 		return result;
 	}
@@ -270,7 +270,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007d90(GolDrawDPState* p_drawState, SlateP
 }
 
 // FUNCTION: GOLDP 0x10007e20
-undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
+LegoS32 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 {
 	GolSurfaceFormat swTextureFormat;
 	LegoU32 forceSoftware;
@@ -292,7 +292,7 @@ undefined4 BronzeFalcon0xc8770::FUN_10007e20(LegoU32 p_flags)
 		m_unk0xc876c = &BronzeFalcon0xc8770::FUN_1000a2c0;
 
 		if (m_flags & c_flagBit1 && !m_drawState->SupportsZBufferlessHsr()) {
-			undefined4 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
+			LegoS32 r = m_depthBuffer.Create(m_drawState, m_unk0x304);
 			if (r != 0) {
 				return r;
 			}
@@ -456,7 +456,7 @@ void BronzeFalcon0xc8770::FUN_100082e0()
 	m_unk0xc83ec = 0;
 	m_unk0xc83e8 = FALSE;
 	if (m_flags & c_flagBit19) {
-		m_unk0xc83fc = ARGBU32(m_unk0xc83e0, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+		m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
 	}
 	else {
 		m_unk0xc83f8 = FALSE;
@@ -1108,6 +1108,7 @@ void BronzeFalcon0xc8770::DrawRectangle(
 	topRight.m_v = 0.0f;
 	bottomRight.m_u = 0.0f;
 	bottomRight.m_v = 0.0f;
+
 	DrawTriangle(&bottomLeft, &topLeft, &bottomRight, NULL, p_arg7);
 	DrawTriangle(&bottomRight, &topLeft, &topRight, NULL, p_arg7);
 }
@@ -1124,6 +1125,7 @@ void BronzeFalcon0xc8770::DrawTriangle(
 	if (p_material == NULL) {
 		p_material = &m_unk0x2d4;
 	}
+
 	(this->*m_unk0xc876c)(p_material);
 	FUN_1000ac00(p_material->GetUnk0x04());
 
@@ -1188,6 +1190,7 @@ void BronzeFalcon0xc8770::DrawTriangle(
 	vertices[2].tu = v2->m_u;
 	vertices[2].tv = v2->m_v;
 	vertices[2].specular = 0;
+
 	switch (m_unk0xc8700) {
 	case 1: {
 		LegoU32 color = v0->m_color.m_grn;
@@ -1396,7 +1399,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 
 			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
 				LegoU32 destBlend = p_material->GetDestBlend();
-				m_unk0xc83e0 = destBlend;
+				m_alpha = destBlend;
 				newFlags &= ~DuskwindBananaRelic0x24::c_flag0x08Bit4;
 				newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit5;
 				m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
@@ -1459,7 +1462,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_MODULATE);
 				if (m_flags & c_flagBit19) {
-					m_unk0xc83fc = ARGBU32(m_unk0xc83e0, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+					m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
 				}
 				else {
 					m_unk0xc83f8 = FALSE;
@@ -1468,7 +1471,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			else {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_COLOROP, D3DTOP_SELECTARG1);
 				m_unk0xc83f8 = TRUE;
-				m_unk0xc83fc = ARGBU32(m_unk0xc83e0, 0xff, 0xff, 0xff);
+				m_unk0xc83fc = ARGBU32(m_alpha, 0xff, 0xff, 0xff);
 			}
 			if (newFlags & (DuskwindBananaRelic0x24::c_flag0x08Bit12 | DuskwindBananaRelic0x24::c_flag0x08Bit5)) {
 				m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);
@@ -1484,7 +1487,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
 			m_unk0xc83e8 = FALSE;
 			if (m_flags & c_flagBit19) {
-				m_unk0xc83fc = ARGBU32(m_unk0xc83e0, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
+				m_unk0xc83fc = ARGBU32(m_alpha, m_unk0x118.m_red, m_unk0x118.m_grn, m_unk0x118.m_blu);
 			}
 			else {
 				m_unk0xc83f8 = FALSE;
@@ -1534,7 +1537,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 				else {
 					m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
 				}
-				m_unk0xc83e0 = 0xff;
+				m_alpha = 0xff;
 			}
 			if (m_flags & c_flagBit12) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_STIPPLEDALPHA, TRUE);
@@ -1559,7 +1562,7 @@ void BronzeFalcon0xc8770::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 				else {
 					m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_SELECTARG2);
 				}
-				m_unk0xc83e0 = 0xff;
+				m_alpha = 0xff;
 			}
 			if (m_flags & c_flagBit12) {
 				m_d3dDevice->SetRenderState(D3DRENDERSTATE_STIPPLEDALPHA, FALSE);
@@ -1634,7 +1637,7 @@ void BronzeFalcon0xc8770::FUN_1000a950(DuskwindBananaRelic0x24* p_material)
 
 		if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
 			LegoU32 destBlend = p_material->GetDestBlend();
-			m_unk0xc83e0 = destBlend;
+			m_alpha = destBlend;
 			newFlags &= ~DuskwindBananaRelic0x24::c_flag0x08Bit4;
 			newFlags |= DuskwindBananaRelic0x24::c_flag0x08Bit5;
 			m_unk0xc83fc = (destBlend << 24) | (m_unk0xc83fc & 0x00ffffff);
@@ -1669,7 +1672,7 @@ void BronzeFalcon0xc8770::FUN_1000a950(DuskwindBananaRelic0x24* p_material)
 				FUN_10012f50();
 				return;
 			}
-			m_unk0xc83e0 = 0xff;
+			m_alpha = 0xff;
 		}
 
 		m_unk0xc83c8 = newFlags;
@@ -1722,7 +1725,7 @@ void BronzeFalcon0xc8770::FUN_1000ac00(GoldDune0x38* p_texture)
 void BronzeFalcon0xc8770::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags)
 {
 	WhiteFalcon0x140::SetAlphaOverride(p_alpha, p_flags);
-	m_unk0xc83e0 = p_alpha;
+	m_alpha = p_alpha;
 	m_unk0xc83fc = (m_unk0xc83fc & 0x00ffffff) | (p_alpha << 24);
 }
 
@@ -1730,7 +1733,7 @@ void BronzeFalcon0xc8770::SetAlphaOverride(undefined4 p_alpha, undefined4 p_flag
 void BronzeFalcon0xc8770::ClearAlphaOverride()
 {
 	WhiteFalcon0x140::ClearAlphaOverride();
-	m_unk0xc83e0 = 0xff;
+	m_alpha = 0xff;
 	m_unk0xc83fc |= 0xff000000;
 }
 
@@ -1739,7 +1742,7 @@ void BronzeFalcon0xc8770::VTable0xc0(const ColorRGBA& p_color)
 {
 	WhiteFalcon0x140::VTable0xc0(p_color);
 	m_unk0xc83f8 = TRUE;
-	m_unk0xc83fc = ARGBU32(m_unk0xc83e0, p_color.m_red, p_color.m_grn, p_color.m_blu);
+	m_unk0xc83fc = ARGBU32(m_alpha, p_color.m_red, p_color.m_grn, p_color.m_blu);
 }
 
 // FUNCTION: GOLDP 0x1000af70

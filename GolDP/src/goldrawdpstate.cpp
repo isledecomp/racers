@@ -100,15 +100,18 @@ LegoS32 GolDrawDPState::VTable0x00()
 	char buffer[100];
 	DDSURFACEDESC displayMode;
 	m_ddraw = NULL;
+
 	if (m_flags & (c_flagBit16 | c_flagBit17)) {
 		m_flags |= c_flagBit11 | c_flagBit13;
 	}
 	else {
 		m_flags &= ~c_flagBit19;
 	}
+
 	if ((m_flags & c_flagBit16) && (m_flags & c_flagBit18)) {
 		m_bpp = 8;
 	}
+
 	if (!(m_flags & c_flagBit9)) {
 		if (DirectDrawCreate(NULL, &m_ddraw, NULL) != DD_OK) {
 			GOL_FATALERROR_MESSAGE("Unable to create DirectDraw object");
@@ -434,14 +437,17 @@ void GolDrawDPState::VTable0x0c(const char* p_driverName, const char* p_deviceNa
 		delete[] m_driverName;
 		m_driverName = NULL;
 	}
+
 	if (m_deviceName != NULL) {
 		delete[] m_deviceName;
 		m_deviceName = NULL;
 	}
+
 	if (p_driverName == NULL || p_deviceName == NULL) {
 		m_flags &= ~c_flagBit14;
 		return;
 	}
+
 	size_t len;
 
 	len = ::strlen(p_driverName) + 1;
@@ -476,6 +482,7 @@ const LegoChar* GolDrawDPState::GetDriverDescription(LegoU32 p_index)
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
@@ -490,6 +497,7 @@ const LegoChar* GolDrawDPState::GetDriverName(LegoU32 p_index)
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
@@ -504,6 +512,7 @@ LegoU32 GolDrawDPState::GetDeviceCount(LegoU32 p_index)
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_index > m_deviceList.m_countDrivers) {
 		return NULL;
@@ -518,11 +527,14 @@ const LegoChar* GolDrawDPState::GetDeviceName(LegoU32 p_driverIndex, LegoU32 p_d
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_driverIndex > m_deviceList.m_countDrivers) {
 		return NULL;
 	}
+
 	const GolDeviceList::GolD3DDriverInfo* driver = &m_deviceList.m_drivers[p_driverIndex];
+
 	// BUG: should be >=
 	if (p_deviceIndex > driver->m_countDevices) {
 		return NULL;
@@ -537,11 +549,14 @@ const LegoChar* GolDrawDPState::GetDeviceDescription(LegoU32 p_driverIndex, Lego
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_driverIndex > m_deviceList.m_countDrivers) {
 		return NULL;
 	}
+
 	const GolDeviceList::GolD3DDriverInfo* driver = &m_deviceList.m_drivers[p_driverIndex];
+
 	// BUG: should be >=
 	if (p_deviceIndex > driver->m_countDevices) {
 		return NULL;
@@ -569,6 +584,7 @@ void GolDrawDPState::GetDriverGuid(LegoU32 p_driverIndex, GUID* p_guid)
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be <
 	if (p_driverIndex <= m_deviceList.m_countDrivers) {
 		*p_guid = m_deviceList.m_drivers[p_driverIndex].m_guid;
@@ -581,6 +597,7 @@ void GolDrawDPState::GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex,
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be <
 	if (p_driverIndex <= m_deviceList.m_countDrivers) {
 		const GolDeviceList::GolD3DDriverInfo* driver = &m_deviceList.m_drivers[p_driverIndex];
@@ -597,11 +614,14 @@ LegoBool32 GolDrawDPState::IsDeviceHwAccelerated(LegoU32 p_driverIndex, LegoU32 
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	// BUG: should be >=
 	if (p_driverIndex > m_deviceList.m_countDrivers) {
 		return FALSE;
 	}
+
 	const GolDeviceList::GolD3DDriverInfo* driver = &m_deviceList.m_drivers[p_driverIndex];
+
 	// BUG: should be >=
 	if (p_deviceIndex > driver->m_countDevices) {
 		return FALSE;
@@ -616,6 +636,7 @@ void GolDrawDPState::VTable0x2c(LegoU32 p_flags, LegoU32* p_driverIndex, LegoU32
 	if (m_deviceList.m_countDrivers <= 0) {
 		m_deviceList.DetectDevices();
 	}
+
 	m_deviceList.SelectDevice(m_hWnd, p_flags, m_driverName, m_deviceName);
 	*p_driverIndex = m_deviceList.m_driverIndex;
 	*p_deviceIndex = m_deviceList.m_deviceIndex;
@@ -637,6 +658,7 @@ LPDIRECTDRAWSURFACE GolDrawDPState::GetDisplaySurface()
 		VTable0x48();
 		GOL_FATALERROR_MESSAGE(message);
 	}
+
 	return surface;
 }
 
@@ -656,6 +678,7 @@ LPDIRECTDRAWSURFACE GolDrawDPState::GetRenderSurface()
 		VTable0x48();
 		GOL_FATALERROR_MESSAGE(message);
 	}
+
 	return surface;
 }
 
@@ -665,6 +688,7 @@ HRESULT GolDrawDPState::FindmatchingDepthPixelformat(LPDDPIXELFORMAT p_pixelform
 	if (p_pixelformat == NULL) {
 		return FALSE;
 	}
+
 	LPDDPIXELFORMAT destPixelformat = static_cast<LPDDPIXELFORMAT>(p_context);
 	if (p_pixelformat->dwFlags == DDPF_ZBUFFER) {
 		if (destPixelformat->dwZBufferBitDepth == 0 ||

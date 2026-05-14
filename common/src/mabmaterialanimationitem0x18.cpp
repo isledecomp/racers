@@ -23,6 +23,7 @@ void MabMaterialAnimationItem0x18::FUN_10025d40(undefined2 p_arg1, undefined2 p_
 	if (m_flags & c_flagBit0) {
 		Reset();
 	}
+
 	LegoFloat f = static_cast<LegoFloat>(p_arg4);
 	m_unk0x06 = p_arg1;
 	m_unk0x08 = p_arg2;
@@ -38,6 +39,7 @@ void MabMaterialAnimationItem0x18::FUN_004103c0(const MabMaterialAnimationItem0x
 	if (m_flags & c_flagBit0) {
 		Reset();
 	}
+
 	m_unk0x06 = p_other.m_unk0x06;
 	m_unk0x08 = p_other.m_unk0x08;
 	m_unk0x0a = p_other.m_unk0x0a;

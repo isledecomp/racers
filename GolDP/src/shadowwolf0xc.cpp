@@ -11,7 +11,7 @@
 // FUNCTION: GOLDP 0x10025de0
 ShadowWolf0xc::ShadowWolf0xc()
 {
-	m_unk0x00 = NULL;
+	m_renderer = NULL;
 	m_unk0x04 = 0;
 	m_unk0x08 = NULL;
 }
@@ -19,24 +19,28 @@ ShadowWolf0xc::ShadowWolf0xc()
 // FUNCTION: GOLDP 0x10025df0
 void ShadowWolf0xc::FUN_10025df0(WhiteFalcon0x140* p_renderer, undefined4 p_arg2)
 {
-	if (m_unk0x00 != NULL) {
+	if (m_renderer != NULL) {
 		Destroy();
 	}
-	m_unk0x00 = p_renderer;
+
+	m_renderer = p_renderer;
 	m_unk0x04 = p_arg2;
+
 	m_unk0x08 = new undefined4*[p_arg2];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	::memset(m_unk0x08, 0, sizeof(*m_unk0x08) * m_unk0x04);
 }
 
 // FUNCTION: GOLDP 0x10025e60
 void ShadowWolf0xc::FUN_10025e60(WhiteFalcon0x140* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
-	if (m_unk0x00 != NULL) {
+	if (m_renderer != NULL) {
 		Destroy();
 	}
+
 	GolFileParser* parser;
 	if (p_binary) {
 		parser = new GolBinParser;
@@ -51,9 +55,11 @@ void ShadowWolf0xc::FUN_10025e60(WhiteFalcon0x140* p_renderer, const LegoChar* p
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_fileName);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	FUN_10025f90(p_renderer, *parser);
+
 	parser->Dispose();
 	delete parser;
 }
@@ -62,22 +68,26 @@ void ShadowWolf0xc::FUN_10025e60(WhiteFalcon0x140* p_renderer, const LegoChar* p
 void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_parser)
 {
 	LegoU32 i;
-	if (m_unk0x00 != NULL) {
+
+	if (m_renderer != NULL) {
 		Destroy();
 	}
-	m_unk0x00 = p_renderer;
+
+	m_renderer = p_renderer;
 	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
 	if (m_unk0x04 == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
+
 	m_unk0x08 = new undefined4*[m_unk0x04];
 	if (m_unk0x08 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
+
 	for (i = 0; i < m_unk0x04; i++) {
 		char materialName[8];
 		::strncpy(materialName, p_parser.ReadString(), sizeof(materialName));
-		m_unk0x08[i] = m_unk0x00->FindMaterialByName(materialName);
+		m_unk0x08[i] = m_renderer->FindMaterialByName(materialName);
 		if (m_unk0x08[i] == NULL) {
 			char message[64];
 			::memset(message, 0, sizeof(materialName) + 1);
@@ -86,6 +96,7 @@ void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_
 			GOL_FATALERROR_MESSAGE(message);
 		}
 	}
+
 	if (p_parser.GetNextToken() != GolFileParser::e_rightCurly) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
@@ -104,6 +115,6 @@ void ShadowWolf0xc::Destroy()
 		delete[] m_unk0x08;
 		m_unk0x08 = NULL;
 	}
-	m_unk0x00 = 0;
+	m_renderer = NULL;
 	m_unk0x04 = 0;
 }

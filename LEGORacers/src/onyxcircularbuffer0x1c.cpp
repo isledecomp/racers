@@ -73,11 +73,7 @@ OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Dequeue()
 }
 
 // FUNCTION: LEGORACERS 0x0044b820
-OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Enqueue(
-	InputDevice* p_device,
-	undefined4 p_keyCode,
-	undefined4 p_arg3
-)
+OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Enqueue(InputDevice* p_device, LegoU32 p_keyCode, LegoU32 p_arg3)
 {
 	Item* item = &m_items[m_writePos];
 	if (m_size == m_capacity) {
@@ -87,7 +83,7 @@ OnyxCircularBuffer0x1c::Item* OnyxCircularBuffer0x1c::Enqueue(
 	item->m_device = p_device;
 	item->m_keyCode = p_keyCode;
 	item->m_unk0x08 = p_arg3;
-	item->m_isRepeat = 0;
+	item->m_isRepeat = FALSE;
 	item->m_isPressed = FALSE;
 	m_writePos += 1;
 	m_writePos %= m_capacity;

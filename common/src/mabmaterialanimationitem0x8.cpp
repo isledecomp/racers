@@ -29,5 +29,6 @@ void MabMaterialAnimationItem0x8::FUN_10026110(WhiteFalcon0x140* p_renderer, con
 		message[lenPrefix + 8] = '\0';
 		GOL_FATALERROR_MESSAGE(message);
 	}
+
 	m_unk0x04 = p_id;
 }

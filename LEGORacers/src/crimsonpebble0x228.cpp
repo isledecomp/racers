@@ -115,6 +115,7 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_unk0x04)
 
 	LegoU32 i = 0;
 	LegoU32 offset = 0;
+
 	if (i < m_unk0x78) {
 		LegoU32 tableOffset = offset;
 

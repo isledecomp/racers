@@ -152,17 +152,17 @@ ImaginaryNotion0x290::~ImaginaryNotion0x290()
 // FUNCTION: LEGORACERS 0x0046b480
 void ImaginaryNotion0x290::Reset()
 {
-	m_menuTextStrings = 0;
+	m_menuTextStrings = NULL;
 	m_menuNameStrings = NULL;
-	m_golExport = 0;
-	m_renderer = 0;
+	m_golExport = NULL;
+	m_renderer = NULL;
 	m_unk0xbc = NULL;
-	m_fontTable = 0;
-	m_soundGroupBinding = 0;
+	m_fontTable = NULL;
+	m_soundGroupBinding = NULL;
 	m_inputManager = NULL;
-	m_unk0x284 = 0;
+	m_unk0x284 = NULL;
 	m_unk0xc4 = NULL;
-	m_menuStyles = 0;
+	m_menuStyles = NULL;
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
 	m_unk0x58.Clear();

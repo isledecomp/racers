@@ -220,6 +220,7 @@ void FluffyGloomkins0x118::VTable0x18()
 		delete[] m_unk0x108;
 		m_unk0x108 = NULL;
 	}
+
 	ZoweeBlubberworth0xf0::VTable0x18();
 }
 

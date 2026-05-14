@@ -162,8 +162,8 @@ public:
 	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
 	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
-	undefined4 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
-	undefined4 FUN_10007e20(LegoU32 p_flags);
+	LegoS32 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
+	LegoS32 FUN_10007e20(LegoU32 p_flags);
 
 	LPDIRECT3D3 GetDirect3D3() const;
 	LPDIRECTDRAW4 GetDirectDraw4() const;
@@ -267,7 +267,7 @@ private:
 	undefined4 m_unk0xc83d4;                                             // 0xc83d4
 	undefined4 m_unk0xc83d8;                                             // 0xc83d8
 	undefined4 m_unk0xc83dc;                                             // 0xc83dc
-	undefined4 m_unk0xc83e0;                                             // 0xc83e0
+	LegoU32 m_alpha;                                                     // 0xc83e0
 	undefined4 m_unk0xc83e4;                                             // 0xc83e4
 	LegoBool32 m_unk0xc83e8;                                             // 0xc83e8
 	undefined4 m_unk0xc83ec;                                             // 0xc83ec

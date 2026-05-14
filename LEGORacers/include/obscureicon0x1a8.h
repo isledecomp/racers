@@ -43,6 +43,12 @@ public:
 		undefined m_unk0x88[0x90 - 0x88]; // 0x88
 	};
 
+	enum {
+		c_flagBit0 = 1 << 0, // VTable0x44 sets / VTable0x48 clears
+		c_flagBit1 = 1 << 1, // FUN_00471fb0 sets / FUN_00472010 clears
+		c_flagBit2 = 1 << 2, // VTable0x54 sets / VTable0x58 clears
+	};
+
 	ObscureIcon0x1a8();
 	void Reset() override;                                                                 // vtable+0x00
 	~ObscureIcon0x1a8() override;                                                          // vtable+0x04
@@ -105,7 +111,7 @@ protected:
 	undefined4 m_unk0x158[4];               // 0x158
 	undefined2 m_unk0x168;                  // 0x168
 	SoundGroupBinding* m_soundGroupBinding; // 0x16c
-	ImaginaryInterface* m_unk0x170;         // 0x170
+	ImaginaryInterface* m_eventHandler;     // 0x170
 	undefined4 m_unk0x174[6];               // 0x174
 	LegoU16 m_soundIds[5];                  // 0x18c
 	undefined m_unk0x196[0x198 - 0x196];    // 0x196

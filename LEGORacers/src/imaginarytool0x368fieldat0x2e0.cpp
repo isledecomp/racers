@@ -44,17 +44,17 @@ void ImaginaryTool0x368::FieldAt0x2e0::Clear()
 void ImaginaryTool0x368::FieldAt0x2e0::VTable0x10(undefined4 p_param)
 {
 	if (p_param) {
-		m_unk0x10 = new GolBinParser();
-		if (m_unk0x10 == NULL) {
+		m_parser = new GolBinParser();
+		if (m_parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_unk0x10->SetSuffix(".mib");
+		m_parser->SetSuffix(".mib");
 		return;
 	}
 
-	m_unk0x10 = new MidTxtParser();
-	if (m_unk0x10 == NULL) {
+	m_parser = new MidTxtParser();
+	if (m_parser == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -76,21 +76,21 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f2b0(Entry0xe0* p_entry)
 	CeruleanQueen0x58::FUN_00469b20(p_entry);
 	::memset(p_entry->m_unk0xb4, 0xff, sizeof(p_entry->m_unk0xb4));
 
-	if (m_unk0x10->GetNextToken() != GolFileParser::e_leftCurly) {
-		m_unk0x10->HandleUnexpectedToken(GolFileParser::e_leftCurly);
+	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
+		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	while (m_unk0x10->GetNextToken() != GolFileParser::e_rightCurly) {
-		switch (m_unk0x10->GetCurrentToken()) {
+	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
+		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x29: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x84[i] = m_unk0x14->FindFontByName(m_unk0x10->ReadString());
+				p_entry->m_unk0x84[i] = m_unk0x14->FindFontByName(m_parser->ReadString());
 			}
 			break;
 		}
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x9c[i] = m_unk0x14->FindImageByName(m_unk0x10->ReadString());
+				p_entry->m_unk0x9c[i] = m_unk0x14->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		}
@@ -110,7 +110,7 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f2b0(Entry0xe0* p_entry)
 			break;
 		}
 		case GolFileParser::e_unknown0x33:
-			p_entry->m_unk0xd8 = m_unk0x10->ReadInteger();
+			p_entry->m_unk0xd8 = m_parser->ReadInteger();
 			p_entry->m_unk0xdc = TRUE;
 			break;
 		default:
@@ -128,12 +128,12 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f410()
 	::memset(m_unk0x5c, 0, sizeof(Entry0xe0) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
-		if (m_unk0x10->GetNextToken() != GolFileParser::e_unknown0x46) {
-			m_unk0x10->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x46) {
+			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
 		LegoChar name[8];
-		::strncpy(name, m_unk0x10->ReadString(), sizeof(name));
+		::strncpy(name, m_parser->ReadString(), sizeof(name));
 		AddName(name, &m_unk0x5c[i]);
 		FUN_0047f2b0(&m_unk0x5c[i]);
 	}

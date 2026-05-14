@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(WhiteFalconNode0x18, 0x18)
 // FUNCTION: GOLDP 0x10029980
 WhiteFalconNode0x18::WhiteFalconNode0x18()
 {
-	m_unk0x10 = 0;
+	m_capacity = 0;
 	m_unk0x14 = 0;
 	m_unk0x0c = 0;
 }
@@ -16,7 +16,7 @@ WhiteFalconNode0x18::WhiteFalconNode0x18()
 WhiteFalconNode0x18::~WhiteFalconNode0x18()
 {
 	GolNameTable::Clear();
-	m_unk0x10 = 0;
+	m_capacity = 0;
 	m_unk0x0c = 0;
 }
 
@@ -35,12 +35,12 @@ void WhiteFalconNode0x18::VTable0x10(undefined4)
 // FUNCTION: GOLDP 0x10029c10
 void WhiteFalconNode0x18::Allocate(LegoU32 p_capacity)
 {
-	if (m_unk0x10 != 0) {
+	if (m_capacity != 0) {
 		Clear();
 	}
 
-	m_unk0x10 = p_capacity;
-	GolNameTable::Allocate(m_unk0x10);
+	m_capacity = p_capacity;
+	GolNameTable::Allocate(m_capacity);
 	VTable0x0c();
 }
 
@@ -48,7 +48,7 @@ void WhiteFalconNode0x18::Allocate(LegoU32 p_capacity)
 void WhiteFalconNode0x18::Clear()
 {
 	GolNameTable::Clear();
-	m_unk0x10 = 0;
+	m_capacity = 0;
 	m_unk0x0c = 0;
 }
 

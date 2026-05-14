@@ -52,6 +52,7 @@ UtopianPan0xa4* AwakeKite0x20::GetItem(undefined4 p_index)
 void AwakeKite0x20::VTable0x10()
 {
 	LegoU32 i;
+
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
 			if (m_items[i].m_unk0x3c & 1) {
@@ -65,6 +66,7 @@ void AwakeKite0x20::VTable0x10()
 void AwakeKite0x20::VTable0x14()
 {
 	LegoU32 i;
+
 	if (m_numItems > 0) {
 		for (i = 0; i < m_numItems; i++) {
 			if (m_items[i].m_unk0x3c & 1) {

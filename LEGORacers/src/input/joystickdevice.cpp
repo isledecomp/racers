@@ -32,10 +32,12 @@ LegoBool32 JoystickInputDevice::CreateDevice(CreateDirectInputDeviceParams* p_pa
 	if (DirectInputDevice::CreateDevice(p_params)) {
 		HRESULT result1 = m_device->EnumObjects(StoreButtonNameCallback, this, DIDFT_PSHBUTTON | DIDFT_TGLBUTTON);
 		HRESULT result2 = m_device->EnumObjects(StoreAxisNameCallback, this, DIDFT_RELAXIS | DIDFT_ABSAXIS);
+
 		if (!TranslateDirectInputResult(result1) && !TranslateDirectInputResult(result2)) {
 			SetDeadZonePercent(c_defaultDeadZonePercent);
 			return m_created;
 		}
+
 		Destroy();
 	}
 
@@ -73,6 +75,7 @@ BOOL JoystickInputDevice::StoreAxisNameCallback(LPCDIDEVICEOBJECTINSTANCE p_obje
 void JoystickInputDevice::SetAxisRangeAndDeadZone(DWORD p_object, DWORD p_deadZone)
 {
 	undefined4 result = IsAcquired();
+
 	if (result) {
 		Unacquire();
 	}
@@ -104,6 +107,7 @@ void JoystickInputDevice::SetDeadZonePercent(LegoU32 p_deadZonePercent)
 {
 	undefined4 result = IsAcquired();
 	DWORD deadZone = p_deadZonePercent * c_directInputDeadZoneScale;
+
 	if (result) {
 		Unacquire();
 	}

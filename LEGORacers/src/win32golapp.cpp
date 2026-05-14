@@ -212,14 +212,17 @@ void Win32GolApp::LoadGolLibrary()
 	else {
 		m_golLibrary = LoadLibrary("GolDP.DLL");
 	}
+
 	if (m_golLibrary == NULL) {
 		::sprintf(buffer, "Unable to find a valid Gol DLL\nError Code = %d", GetLastError());
 		GOL_FATALERROR_MESSAGE(buffer);
 	}
+
 	GolEntryCBFN* golEntry = (GolEntryCBFN*) GetProcAddress(m_golLibrary, "GolEntry");
 	if (golEntry == NULL) {
 		GOL_FATALERROR_MESSAGE("Invalid Gol DLL - cannot call entry procedure");
 	}
+
 	CreateGolImport(&golImport);
 	golImport.m_fatalErrorMessage = GolFatalErrorMessage;
 	m_golExport = golEntry(&golImport);
@@ -453,6 +456,7 @@ LegoS32 Win32GolApp::Tick(CactusInterface0x4* p_eventHandler)
 	if (m_pollInput) {
 		m_inputManager.PollDevices(m_frameDeltaMs);
 	}
+
 	m_eventHandler = 0;
 	return 1;
 }
@@ -570,6 +574,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 				SWP_SHOWWINDOW
 			);
 		}
+
 		m_golDrawState->VTable0x54(m_width, m_height, m_bpp, fullscreenFlags);
 
 		if (m_eventHandler) {

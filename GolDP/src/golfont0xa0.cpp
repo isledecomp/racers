@@ -12,7 +12,7 @@ GolFont0xa0::GolFont0xa0()
 	STUB(0x100043d0);
 	m_unk0x90 = NULL;
 	m_unk0x9c = NULL;
-	m_unk0x8c = NULL;
+	m_renderer = NULL;
 }
 
 // STUB: GOLDP 0x10004480
@@ -68,7 +68,7 @@ undefined4* GolFont0xa0::VTable0x08(LegoU32)
 // FUNCTION: GOLDP 0x10004b80
 void GolFont0xa0::VTable0x0c(WhiteFalcon0x140* p_renderer, undefined4)
 {
-	m_unk0x8c = static_cast<BronzeFalcon0xc8770*>(p_renderer);
+	m_renderer = static_cast<BronzeFalcon0xc8770*>(p_renderer);
 }
 
 // STUB: GOLDP 0x10004b90

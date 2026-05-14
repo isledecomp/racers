@@ -84,6 +84,7 @@ void ImaginaryDrill0x2450::FUN_00480e40()
 	vector0[0] = 0.0f;
 	vector0[1] = 0.0f;
 	vector0[2] = 1.0f;
+
 	m_unk0x2438 = m_unk0x22dc.GetUnk0x1c();
 	m_unk0x2438->VTable0x40(vector1, vector0);
 }

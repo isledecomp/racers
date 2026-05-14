@@ -90,6 +90,7 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 
 				index = 0;
 				currentPath = soundPaths;
+
 				while (index < (LegoS32) m_soundCount) {
 					m_soundData[index].Load(currentPath);
 					index++;

@@ -592,6 +592,7 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 	}
 	else {
 		m_readBuffer[0] = (LegoU8) p_token;
+
 		LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 		if (code != e_ioSuccess) {
 			HandleIoError(code);
@@ -606,6 +607,7 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 void GolBinParser::VTable0x54(undefined4 p_param)
 {
 	*m_readBuffer = p_param;
+
 	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
@@ -619,6 +621,7 @@ void GolBinParser::VTable0x54(undefined4 p_param)
 void GolBinParser::WriteFloat(LegoFloat p_param)
 {
 	*m_readBuffer = 3;
+
 	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
@@ -653,6 +656,7 @@ void GolBinParser::VTable0x5c(LegoFloat p_param)
 void GolBinParser::WriteInt4(undefined4 p_param)
 {
 	*m_readBuffer = 4;
+
 	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
@@ -678,6 +682,7 @@ void GolBinParser::WriteInt4(undefined4 p_param)
 void GolBinParser::WriteString(LegoChar* p_str)
 {
 	*m_readBuffer = 2;
+
 	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);

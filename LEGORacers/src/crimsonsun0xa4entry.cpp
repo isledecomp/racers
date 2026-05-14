@@ -72,6 +72,7 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::FUN_00468300(CreateParams0x18* p_createPa
 
 	m_unk0x2c0 = 0;
 	m_unk0x2bc = 1;
+
 	return TRUE;
 }
 
@@ -311,6 +312,7 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
 LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x78(undefined4 p_elapsedMs)
 {
 	LegoFloat scale = 1.0f;
+
 	m_unk0x2b0 += p_elapsedMs;
 
 	if (!m_unk0x2b8 && m_unk0x2b0 > 5000) {
@@ -371,6 +373,7 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x78(undefined4 p_elapsedMs)
 	rect.m_bottom = bottom;
 	top -= y;
 	rect.m_top = top;
+
 	m_unk0x2cc.VTable0x10(&rect);
 
 	return m_unk0x2c4 == 0;

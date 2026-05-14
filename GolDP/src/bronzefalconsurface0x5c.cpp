@@ -36,6 +36,7 @@ void BronzeFalconSurface0x5c::FUN_10013600(BronzeFalcon0xc8770* p_renderer, unde
 	m_width = p_width;
 	m_height = p_height;
 	m_textureFormat = p_renderer->GetRenderTargetInfo()->GetTextureFormat();
+
 	FUN_100136a0(p_renderer);
 }
 
@@ -60,6 +61,7 @@ void BronzeFalconSurface0x5c::FUN_100136a0(BronzeFalcon0xc8770* p_renderer)
 
 	DDSURFACEDESC2 surfaceDesc;
 	LegoChar errorMessage[100];
+
 	m_renderSurface = NULL;
 	::memset(&surfaceDesc, 0, sizeof(surfaceDesc));
 	surfaceDesc.dwSize = sizeof(surfaceDesc);
@@ -99,13 +101,16 @@ void BronzeFalconSurface0x5c::FUN_100136a0(BronzeFalcon0xc8770* p_renderer)
 void BronzeFalconSurface0x5c::ReleaseResources()
 {
 	m_palette.Release();
+
 	if (m_depthBuffer != NULL) {
 		m_depthBuffer->Release();
 	}
+
 	if (m_displaySurface != NULL) {
 		m_displaySurface->Release();
 		m_displaySurface = NULL;
 	}
+
 	m_renderSurface = NULL;
 	AzureRidge0x38::VTable0x34();
 }

@@ -104,7 +104,7 @@ public:
 	LegoS32 Initialize(LegoS32 p_argc, LegoChar** p_argv);
 	void Destroy();
 	void Run();
-	void FUN_0042bd00();
+	void ReleaseContextAssets();
 	void FUN_0042bdc0();
 	void FUN_0042bde0();
 	void FUN_0042be00();

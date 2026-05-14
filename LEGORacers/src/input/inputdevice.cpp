@@ -215,6 +215,7 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 	LegoU32 source = 0;
 
 	m_repeatTimerMs -= p_elapsedMs;
+
 	if (!m_repeatEnabled || m_repeatTimerMs > 0 || !m_callback) {
 		return;
 	}

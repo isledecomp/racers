@@ -14,7 +14,7 @@ public:
 	AquaCoral0x37b8();
 	~AquaCoral0x37b8();
 
-	static void FUN_0042b130(LegoRacers::Context* p_context);
+	static void Run(LegoRacers::Context* p_context);
 
 	LegoS32 Initialize(LegoRacers::Context* p_context);
 	void Run();

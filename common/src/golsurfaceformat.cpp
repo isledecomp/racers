@@ -8,9 +8,11 @@ LegoU32 GolSurfaceFormat::GetRedBitCount() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	while (!(mask & 0x1)) {
 		mask >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (mask & 0x1) {
 		mask >>= 1;
@@ -27,9 +29,11 @@ LegoU32 GolSurfaceFormat::GetGreenBitCount() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	while (!(mask & 0x1)) {
 		mask >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (mask & 0x1) {
 		mask >>= 1;
@@ -46,9 +50,11 @@ LegoU32 GolSurfaceFormat::GetBlueBitCount() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	while (!(mask & 0x1)) {
 		mask >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (mask & 0x1) {
 		mask >>= 1;
@@ -65,9 +71,11 @@ LegoU32 GolSurfaceFormat::GetAlphaBitCount() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	while (!(mask & 0x1)) {
 		mask >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (mask & 0x1) {
 		mask >>= 1;
@@ -84,9 +92,11 @@ LegoU32 GolSurfaceFormat::FUN_1001cc10() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	while (!(mask & 0x1)) {
 		mask >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (mask & 0x1) {
 		mask >>= 1;
@@ -103,10 +113,12 @@ LegoU32 GolSurfaceFormat::GetPaletteBitCount() const
 	if (mask == 0) {
 		return 0;
 	}
+
 	LegoU32 work = mask;
 	while (!(work & 0x1)) {
 		work >>= 1;
 	}
+
 	LegoU32 count = 0;
 	while (work & 0x1) {
 		work >>= 1;
@@ -123,6 +135,7 @@ LegoU32 GolSurfaceFormat::GetRedBitShift() const
 	if (mask == 0) {
 		return 32;
 	}
+
 	LegoU32 count = 0;
 	while (!(mask & 0x1)) {
 		mask >>= 1;
@@ -139,6 +152,7 @@ LegoU32 GolSurfaceFormat::GetGreenBitShift() const
 	if (mask == 0) {
 		return 32;
 	}
+
 	LegoU32 count = 0;
 	while (!(mask & 0x1)) {
 		mask >>= 1;
@@ -155,6 +169,7 @@ LegoU32 GolSurfaceFormat::GetBlueBitShift() const
 	if (mask == 0) {
 		return 32;
 	}
+
 	LegoU32 count = 0;
 	while (!(mask & 0x1)) {
 		mask >>= 1;
@@ -171,6 +186,7 @@ LegoU32 GolSurfaceFormat::GetAlphaBitShift() const
 	if (mask == 0) {
 		return 32;
 	}
+
 	LegoU32 count = 0;
 	while (!(mask & 0x1)) {
 		mask >>= 1;

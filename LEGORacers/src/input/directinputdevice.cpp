@@ -214,6 +214,7 @@ undefined4 DirectInputDevice::Unacquire()
 LegoBool32 DirectInputDevice::ApplyCooperativeLevel()
 {
 	undefined4 result = IsAcquired();
+
 	if (!m_created) {
 		return FALSE;
 	}
@@ -235,6 +236,7 @@ LegoBool32 DirectInputDevice::ApplyCooperativeLevel()
 void DirectInputDevice::SetBufferSize(undefined4 p_bufferSize)
 {
 	undefined4 wasAcquired = IsAcquired();
+
 	if (wasAcquired) {
 		Unacquire();
 	}
@@ -415,6 +417,7 @@ LegoBool32 DirectInputDevice::CreateForceFeedbackEffect()
 	effectParams.lpvTypeSpecificParams = &periodicParams;
 
 	HRESULT hr = m_device->CreateEffect(GUID_Sine, &effectParams, &m_effect, NULL);
+
 	if (FAILED(hr)) {
 		m_effect = NULL;
 	}

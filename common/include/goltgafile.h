@@ -24,17 +24,17 @@ public:
 	void FUN_1002ad40(undefined4, undefined4);
 
 private:
-	undefined4 m_identificationFieldSize; // 0x5b0
-	undefined4 m_colorMapType;            // 0x5b4
-	undefined4 m_imageType;               // 0x5b8
-	undefined4 m_colorMapFirstEntry;      // 0x5bc
-	undefined4 m_colorMapLength;          // 0x5c0
-	undefined4 m_colorMapEntrySize;       // 0x5c4
-	undefined4 m_xOrigin;                 // 0x5c8
-	undefined4 m_yOrigin;                 // 0x5cc
-	undefined4 m_imageDescriptorByte;     // 0x5d0
-	undefined4 m_posImageData;            // 0x5d4
-	undefined4 m_imageByteSize;           // 0x5d8
+	LegoU32 m_identificationFieldSize; // 0x5b0
+	LegoU32 m_colorMapType;            // 0x5b4
+	LegoU32 m_imageType;               // 0x5b8
+	LegoU32 m_colorMapFirstEntry;      // 0x5bc
+	LegoU32 m_colorMapLength;          // 0x5c0
+	LegoU32 m_colorMapEntrySize;       // 0x5c4
+	LegoU32 m_xOrigin;                 // 0x5c8
+	LegoU32 m_yOrigin;                 // 0x5cc
+	LegoU32 m_imageDescriptorByte;     // 0x5d0
+	LegoU32 m_posImageData;            // 0x5d4
+	LegoU32 m_imageByteSize;           // 0x5d8
 };
 
 #endif // GOLTGAFILE_H

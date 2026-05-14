@@ -45,7 +45,7 @@ public:
 	// GdbVertexArray0xc::`scalar deleting destructor'
 
 protected:
-	LegoU16 m_unk0x04;    // 0x04
+	LegoU16 m_count;      // 0x04
 	undefined2 m_unk0x06; // 0x06
 	GolVec3* m_unk0x08;   // 0x08
 };

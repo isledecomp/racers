@@ -13,6 +13,7 @@ void GolMath::FUN_1002f3a0(const GolMatrix4& p_left, const GolMatrix4& p_right, 
 	LegoU32 i;
 	const LegoFloat(*leftRow)[4] = &p_left.m_m[0];
 	LegoFloat(*destRow)[4] = &p_dest->m_m[0];
+
 	for (i = 0; i < 4; i++, leftRow += 1, destRow += 1) {
 		(*destRow)[0] = (*leftRow)[0] * p_right.m_m[0][0];
 		(*destRow)[1] = (*leftRow)[0] * p_right.m_m[0][1];
@@ -131,6 +132,7 @@ void GolMath::FUN_1002f5a0(const GolMatrix4& p_matrix, GolQuat* p_dest)
 		p_dest->m_z = (p_matrix.m_m[0][3] - p_matrix.m_m[0][1]) * v;
 		return;
 	}
+
 	LegoS32 major = 0;
 	if (p_matrix.m_m[1][0] > p_matrix.m_m[0][0]) {
 		major = 1;
@@ -138,6 +140,7 @@ void GolMath::FUN_1002f5a0(const GolMatrix4& p_matrix, GolQuat* p_dest)
 	if (p_matrix.m_m[2][0] > p_matrix.m_m[major][0]) {
 		major = 2;
 	}
+
 	switch (major) {
 	case 0:
 		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[0][0] - (p_matrix.m_m[1][0] + p_matrix.m_m[2][0]) + 1.0f));
@@ -180,6 +183,7 @@ void GolMath::FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest)
 		p_dest->m_z = (p_matrix.m_m[1][0] - p_matrix.m_m[0][1]) * inv;
 		return;
 	}
+
 	LegoU32 major = 0;
 	if (p_matrix.m_m[1][1] > p_matrix.m_m[0][0]) {
 		major = 1;
@@ -187,6 +191,7 @@ void GolMath::FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest)
 	if (p_matrix.m_m[2][2] > p_matrix.m_m[major][major]) {
 		major = 2;
 	}
+
 	switch (major) {
 	case 0:
 		v = static_cast<LegoFloat>(sqrt(p_matrix.m_m[0][0] - (p_matrix.m_m[1][1] + p_matrix.m_m[2][2]) + 1.0f));

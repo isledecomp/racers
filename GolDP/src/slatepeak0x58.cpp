@@ -38,6 +38,7 @@ void SlatePeak0x58::VTable0x30(GolDrawState* p_drawState, undefined4 p_width, un
 
 	m_unk0x30 = p_drawState;
 	m_drawState = p_drawState;
+
 	LPDIRECTDRAW4 ddraw = static_cast<GolDrawDPState*>(p_drawState)->m_ddraw4;
 	LPDIRECTDRAWSURFACE4* renderSurface = &m_renderSurface;
 	*renderSurface = NULL;
@@ -200,6 +201,7 @@ void SlatePeak0x58::VTable0x34()
 	if (m_renderSurface) {
 		m_renderSurface->Release();
 	}
+
 	m_renderSurface = NULL;
 
 	if (m_displaySurface) {

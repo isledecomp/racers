@@ -131,20 +131,20 @@ public:
 	void FUN_00468cf0();
 	void FUN_00468da0(LegoU32 p_unk0x04);
 	void FUN_00468e20();
-	LegoBool32 FUN_00468af0(MenuToolCreateParams0x30* p_unk0x04, LegoS32 p_unk0x08, CopperCrest0x40* p_unk0x0c);
+	LegoBool32 FUN_00468af0(MenuToolCreateParams0x30* p_createParams, LegoS32 p_count, CopperCrest0x40* p_copperCrest);
 	LegoU32 GetUnk0x9c() const { return m_unk0x9c; }
 
 private:
 	void FUN_00468d20();
 
-	CeruleanQueen0x58 m_unk0x00;        // 0x00
-	MenuToolCreateParams0x30 m_unk0x5c; // 0x5c
-	Entry0x74c* m_unk0x8c;              // 0x8c
-	CopperCrest0x40* m_unk0x90;         // 0x90
-	ImaginaryNotion0x290* m_unk0x94;    // 0x94
-	LegoS32 m_unk0x98;                  // 0x98
-	LegoU32 m_unk0x9c;                  // 0x9c
-	undefined4 m_unk0xa0;               // 0xa0
+	CeruleanQueen0x58 m_unk0x00;             // 0x00
+	MenuToolCreateParams0x30 m_createParams; // 0x5c
+	Entry0x74c* m_entries;                   // 0x8c
+	CopperCrest0x40* m_unk0x90;              // 0x90
+	ImaginaryNotion0x290* m_unk0x94;         // 0x94
+	LegoS32 m_count;                         // 0x98
+	LegoU32 m_unk0x9c;                       // 0x9c
+	undefined4 m_unk0xa0;                    // 0xa0
 };
 
 #endif // CRIMSONSUN0XA4_H

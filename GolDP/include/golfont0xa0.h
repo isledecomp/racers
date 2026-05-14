@@ -29,12 +29,12 @@ public:
 	void RefreshSurfaces(BronzeFalcon0xc8770* p_renderer);
 
 private:
-	BronzeDune0x4c m_unk0x40;       // 0x40
-	BronzeFalcon0xc8770* m_unk0x8c; // 0x8c
-	undefined4* m_unk0x90;          // 0x90
-	LegoFloat m_unk0x94;            // 0x94
-	LegoFloat m_unk0x98;            // 0x98
-	undefined4* m_unk0x9c;          // 0x9c
+	BronzeDune0x4c m_unk0x40;        // 0x40
+	BronzeFalcon0xc8770* m_renderer; // 0x8c
+	undefined4* m_unk0x90;           // 0x90
+	LegoFloat m_unk0x94;             // 0x94
+	LegoFloat m_unk0x98;             // 0x98
+	undefined4* m_unk0x9c;           // 0x9c
 };
 
 #endif // GOLFONT0XA0_H

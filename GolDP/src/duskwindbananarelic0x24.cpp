@@ -37,6 +37,7 @@ void DuskwindBananaRelic0x24::FUN_100257e0(WhiteFalcon0x140* p_renderer, const D
 	m_unk0x22 = p_params.m_unk0x12;
 	m_unk0x23 = p_params.m_unk0x13;
 	m_unk0x23 = p_params.m_unk0x13;
+
 	if (m_unk0x08 & c_flag0x08Bit3) {
 		m_unk0x04 = p_params.m_unk0x04;
 		if (m_unk0x04->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {

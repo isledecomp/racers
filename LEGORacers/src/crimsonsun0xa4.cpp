@@ -24,10 +24,10 @@ CrimsonSun0xa4::~CrimsonSun0xa4()
 // FUNCTION: LEGORACERS 0x00468a80
 LegoS32 CrimsonSun0xa4::Reset()
 {
-	m_unk0x8c = NULL;
+	m_entries = NULL;
 	m_unk0x90 = NULL;
 	m_unk0x94 = NULL;
-	m_unk0x98 = 0;
+	m_count = 0;
 	m_unk0x9c = 0;
 	m_unk0xa0 = 0;
 	return 0;
@@ -39,9 +39,9 @@ LegoS32 CrimsonSun0xa4::FUN_00468ab0()
 	CeruleanQueen0x58* inputBindings = &m_unk0x00;
 	inputBindings->Clear();
 
-	if (m_unk0x8c) {
-		delete[] m_unk0x8c;
-		m_unk0x8c = NULL;
+	if (m_entries) {
+		delete[] m_entries;
+		m_entries = NULL;
 	}
 
 	Reset();
@@ -57,12 +57,12 @@ LegoBool32 CrimsonSun0xa4::FUN_00468af0(
 {
 	FUN_00468ab0();
 
-	m_unk0x5c = *p_createParams;
+	m_createParams = *p_createParams;
 	m_unk0x90 = p_copperCrest;
-	m_unk0x98 = p_count;
-	m_unk0x8c = new Entry0x74c[p_count];
+	m_count = p_count;
+	m_entries = new Entry0x74c[p_count];
 
-	if (!m_unk0x8c) {
+	if (!m_entries) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
@@ -87,14 +87,14 @@ CrimsonSun0xa4::Entry0x74c* CrimsonSun0xa4::FUN_00468c50(
 	}
 
 	Entry0x74c::CreateParams0x18 createParams;
-	createParams.m_createParams = &m_unk0x5c;
+	createParams.m_createParams = &m_createParams;
 	createParams.m_owner = this;
 	createParams.m_eventHandler = p_unk0x0c;
 	createParams.m_unk0x0c = p_unk0x04;
 	createParams.m_unk0x10 = p_unk0x08;
 	createParams.m_unk0x14 = p_unk0x10;
 
-	Entry0x74c* entry = &m_unk0x8c[m_unk0x9c];
+	Entry0x74c* entry = &m_entries[m_unk0x9c];
 	entry->FUN_00468300(&createParams);
 	m_unk0x90->SetUnk0x54(entry);
 	m_unk0x9c++;
@@ -105,17 +105,17 @@ CrimsonSun0xa4::Entry0x74c* CrimsonSun0xa4::FUN_00468c50(
 // FUNCTION: LEGORACERS 0x00468cf0
 void CrimsonSun0xa4::FUN_00468cf0()
 {
-	m_unk0x8c[m_unk0x9c - 1].FUN_004687a0();
+	m_entries[m_unk0x9c - 1].FUN_004687a0();
 }
 
 // FUNCTION: LEGORACERS 0x00468d20
 void CrimsonSun0xa4::FUN_00468d20()
 {
 	m_unk0x9c--;
-	m_unk0x8c[m_unk0x9c].Destroy();
+	m_entries[m_unk0x9c].Destroy();
 
 	if (m_unk0x9c > 0) {
-		m_unk0x90->SetUnk0x54(&m_unk0x8c[m_unk0x9c]);
+		m_unk0x90->SetUnk0x54(&m_entries[m_unk0x9c]);
 	}
 	else {
 		m_unk0x90->SetUnk0x54(m_unk0x94);
@@ -126,8 +126,8 @@ void CrimsonSun0xa4::FUN_00468d20()
 void CrimsonSun0xa4::FUN_00468da0(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x9c) {
-		if (!m_unk0x8c[m_unk0x9c - 1].VTable0x78(p_elapsedMs)) {
-			m_unk0xa0 = m_unk0x8c[m_unk0x9c - 1].GetUnk0x2c0();
+		if (!m_entries[m_unk0x9c - 1].VTable0x78(p_elapsedMs)) {
+			m_unk0xa0 = m_entries[m_unk0x9c - 1].GetUnk0x2c0();
 			FUN_00468d20();
 		}
 	}
@@ -141,11 +141,11 @@ void CrimsonSun0xa4::FUN_00468e20()
 		m_unk0x90->FUN_00469550();
 
 		for (LegoU32 i = 0; i < m_unk0x9c; i++) {
-			m_unk0x90->SetUnk0x54(&m_unk0x8c[i]);
+			m_unk0x90->SetUnk0x54(&m_entries[i]);
 			m_unk0x90->FUN_00469550();
 		}
 
-		m_unk0x90->SetUnk0x54(&m_unk0x8c[m_unk0x9c - 1]);
+		m_unk0x90->SetUnk0x54(&m_entries[m_unk0x9c - 1]);
 	}
 }
 

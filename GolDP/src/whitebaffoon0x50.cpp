@@ -17,7 +17,6 @@ WhiteBaffoon0x50::~WhiteBaffoon0x50()
 // FUNCTION: GOLDP 0x1001f2f0
 void WhiteBaffoon0x50::Reset()
 {
-
 	m_renderer = NULL;
 	m_unk0x2c = 0;
 	m_unk0x30 = 0;

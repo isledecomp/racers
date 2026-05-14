@@ -67,6 +67,7 @@ void GolNameTable::AddName(const LegoChar* p_name, void* p_value)
 	}
 
 	startIndex %= m_capacity;
+
 	for (i = startIndex; m_nameEntries[i].m_value != NULL;) {
 		if (::strncmp(m_nameEntries[i].m_name, p_name, sizeOfArray(m_nameEntries[i].m_name)) == 0) {
 			char buffer[40];

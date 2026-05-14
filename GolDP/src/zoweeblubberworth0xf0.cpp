@@ -64,7 +64,7 @@ void ZoweeBlubberworth0xf0::Reset()
 	m_unk0x88 = NULL;
 	m_unk0x8c = 0;
 	m_unk0x90 = NULL;
-	m_unk0x08 = FALSE;
+	m_binary = FALSE;
 	m_unk0x98 = 0;
 	m_unk0x9c = 0;
 	m_unk0xa0 = 0;
@@ -86,8 +86,10 @@ void ZoweeBlubberworth0xf0::VTable0x14(undefined4 p_arg1, const LegoChar* p_name
 	if (m_unk0x04) {
 		VTable0x18();
 	}
+
 	m_unk0x04 = p_arg1;
 	m_unk0x94 = p_arg4;
+
 	GolFileParser* parser;
 	if (p_binary) {
 		parser = new GolBinParser;
@@ -102,8 +104,10 @@ void ZoweeBlubberworth0xf0::VTable0x14(undefined4 p_arg1, const LegoChar* p_name
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	parser->OpenFileForRead(p_name);
-	m_unk0x08 = p_binary;
+	m_binary = p_binary;
+
 	GolFileParser::ParserTokenType token;
 	while ((token = parser->GetNextToken()) != GolFileParser::e_syntaxerror) {
 		switch (token) {
@@ -160,11 +164,13 @@ void ZoweeBlubberworth0xf0::VTable0x14(undefined4 p_arg1, const LegoChar* p_name
 			break;
 		}
 	}
+
 	parser->Dispose();
 	VTable0x08();
 	VTable0x04();
 	VTable0x0c();
 	FUN_1002e640();
+
 	if (parser != NULL) {
 		delete parser;
 	}

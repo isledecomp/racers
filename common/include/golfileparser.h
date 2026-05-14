@@ -113,27 +113,27 @@ public:
 	const LegoChar* ParserErrorCodeToString(LegoS32 p_code);
 
 	void SetUnk0x30(undefined4 p_arg) { m_unk0x30 = p_arg; }
-	ParserTokenType GetCurrentToken() const { return m_unk0x34; }
-	LegoS32 GetUnk0x38() const { return m_unk0x38; }
-	LegoFloat GetUnk0x40() const { return m_unk0x40; }
-	const LegoChar* GetUnk0x44() const { return m_unk0x44; }
+	ParserTokenType GetCurrentToken() const { return m_currentToken; }
+	LegoS32 GetLastInt() const { return m_lastInt; }
+	LegoFloat GetLastFloat() const { return m_lastFloat; }
+	const LegoChar* GetLastString() const { return m_lastString; }
 
 	// SYNTHETIC: GOLDP 0x10032480
 	// SYNTHETIC: LEGORACERS 0x0044e5c0
 	// GolFileParser::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x30;               // 0x30
-	ParserTokenType m_unk0x34;          // 0x34
-	LegoS32 m_unk0x38;                  // 0x38
-	undefined m_unk0x3c[0x40 - 0x3c];   // 0x3c
-	LegoFloat m_unk0x40;                // 0x40
-	LegoChar m_unk0x44[0x84 - 0x44];    // 0x44
-	LegoChar m_unk0x84[0xa4 - 0x84];    // 0x84
-	LegoU8 m_unk0xa4[256];              // 0xa4
-	LegoChar* m_filePath;               // 0x1a4
-	LegoChar m_unk0x1a8[0x1e8 - 0x1a8]; // 0x1a8
-	LegoChar m_suffix[5];               // 0x1a8
+	undefined4 m_unk0x30;                       // 0x30
+	ParserTokenType m_currentToken;             // 0x34
+	LegoS32 m_lastInt;                          // 0x38
+	undefined m_unk0x3c[0x40 - 0x3c];           // 0x3c
+	LegoFloat m_lastFloat;                      // 0x40
+	LegoChar m_lastString[0x84 - 0x44];         // 0x44
+	LegoChar m_formatBuffer[0xa4 - 0x84];       // 0x84
+	LegoU8 m_readBuffer[256];                   // 0xa4
+	LegoChar* m_filePath;                       // 0x1a4
+	LegoChar m_inlinePathBuffer[0x1e8 - 0x1a8]; // 0x1a8
+	LegoChar m_suffix[5];                       // 0x1e8
 };
 
 #endif // GOLFILEPARSER_H

@@ -15,10 +15,10 @@ AmberLensBase0x120::AmberLensBase0x120()
 	m_unk0x24 = 0.0f;
 	m_unk0x20 = 0.0f;
 	m_flags = 3;
-	m_unk0x110 = 0;
-	m_unk0x118 = 0;
-	m_unk0x114 = 0;
-	m_unk0x11c = 0;
+	m_viewportMinX = 0;
+	m_viewportMaxX = 0;
+	m_viewportMinY = 0;
+	m_viewportMaxY = 0;
 	m_unk0x28 = 0;
 	m_unk0x2c = 0;
 }

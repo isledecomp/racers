@@ -120,14 +120,14 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 				m_unk0x0c = obj;
 			}
 			else {
-				obj->m_unk0x02 = p_parser.GetUnk0x38();
+				obj->m_unk0x02 = p_parser.GetLastInt();
 			}
 
 			if (p_parser.ReadInteger() < 0) {
 				obj->m_unk0x04.t0.m_unk0x18 = StructField0x08::c_invalidIndex;
 			}
 			else {
-				obj->m_unk0x04.t0.m_unk0x18 = p_parser.GetUnk0x38();
+				obj->m_unk0x04.t0.m_unk0x18 = p_parser.GetLastInt();
 			}
 
 			if (p_parser.ReadInteger() < 0) {
@@ -137,7 +137,7 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 				}
 			}
 			else {
-				obj->m_unk0x04.t0.m_unk0x1a = p_parser.GetUnk0x38();
+				obj->m_unk0x04.t0.m_unk0x1a = p_parser.GetLastInt();
 			}
 
 			obj->m_unk0x04.t0.m_unk0x00 = p_parser.ReadFloat();
@@ -153,7 +153,7 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 				m_unk0x0c = obj;
 			}
 			else {
-				obj->m_unk0x02 = p_parser.GetUnk0x38();
+				obj->m_unk0x02 = p_parser.GetLastInt();
 			}
 
 			obj->m_unk0x04.t1.m_unk0x00 = p_parser.ReadInteger();

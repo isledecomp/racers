@@ -44,12 +44,12 @@ void CopperCrest0x40::Helper0x44::FUN_00467c80()
 	m_renderer = NULL;
 	m_inputManager = NULL;
 	m_rendererObject = NULL;
-	m_unk0x3c = 0;
-	m_unk0x38 = 0;
-	m_unk0x34 = 0;
-	m_unk0x30 = 0;
-	m_unk0x40 = TRUE;
-	m_unk0x41 = TRUE;
+	m_originY = 0;
+	m_originX = 0;
+	m_cursorY = 0;
+	m_cursorX = 0;
+	m_isCursorVisible = TRUE;
+	m_isCursorEnabled = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467cc0
@@ -68,10 +68,10 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467cc0(InitStruct* p_initStruct)
 	m_golExport = p_initStruct->m_golExport;
 	m_renderer = p_initStruct->m_renderer;
 	m_inputManager = p_initStruct->m_inputManager;
-	m_unk0x30 = p_initStruct->m_unk0x14;
-	m_unk0x34 = p_initStruct->m_unk0x18;
-	m_unk0x38 = p_initStruct->m_unk0x1c;
-	m_unk0x3c = p_initStruct->m_unk0x20;
+	m_cursorX = p_initStruct->m_initialCursorX;
+	m_cursorY = p_initStruct->m_initialCursorY;
+	m_originX = p_initStruct->m_initialOriginX;
+	m_originY = p_initStruct->m_initialOriginY;
 	m_sourceRect.m_top = 0;
 	m_sourceRect.m_left = 0;
 	m_sourceRect.m_right = m_rendererObject->m_unk0x34;
@@ -90,24 +90,24 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d70()
 // FUNCTION: LEGORACERS 0x00467d80
 LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 {
-	if (m_golExport && m_unk0x40 && m_unk0x41) {
+	if (m_golExport && m_isCursorVisible && m_isCursorEnabled) {
 		MouseInputDevice* mouse = m_inputManager->GetMouse();
 
-		m_unk0x30 += (LegoS32) mouse->GetAxisValue(1);
-		m_unk0x34 += (LegoS32) mouse->GetAxisValue(2);
+		m_cursorX += (LegoS32) mouse->GetAxisValue(1);
+		m_cursorY += (LegoS32) mouse->GetAxisValue(2);
 
-		if (m_unk0x30 < m_bounds.m_left) {
-			m_unk0x30 = m_bounds.m_left;
+		if (m_cursorX < m_bounds.m_left) {
+			m_cursorX = m_bounds.m_left;
 		}
-		else if (m_unk0x30 > m_bounds.m_right) {
-			m_unk0x30 = m_bounds.m_right;
+		else if (m_cursorX > m_bounds.m_right) {
+			m_cursorX = m_bounds.m_right;
 		}
 
-		if (m_unk0x34 < m_bounds.m_top) {
-			m_unk0x34 = m_bounds.m_top;
+		if (m_cursorY < m_bounds.m_top) {
+			m_cursorY = m_bounds.m_top;
 		}
-		else if (m_unk0x34 > m_bounds.m_bottom) {
-			m_unk0x34 = m_bounds.m_bottom;
+		else if (m_cursorY > m_bounds.m_bottom) {
+			m_cursorY = m_bounds.m_bottom;
 		}
 	}
 
@@ -117,13 +117,13 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 // FUNCTION: LEGORACERS 0x00467e00
 LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
 {
-	if (m_golExport && m_unk0x40 && m_unk0x41) {
+	if (m_golExport && m_isCursorVisible && m_isCursorEnabled) {
 		Rect destRect;
 
-		destRect.m_left = m_unk0x30;
-		destRect.m_right = m_unk0x30 + m_sourceRect.m_right;
-		destRect.m_top = m_unk0x34;
-		destRect.m_bottom = m_unk0x34 + m_sourceRect.m_right;
+		destRect.m_left = m_cursorX;
+		destRect.m_right = m_cursorX + m_sourceRect.m_right;
+		destRect.m_top = m_cursorY;
+		destRect.m_bottom = m_cursorY + m_sourceRect.m_right;
 
 		m_renderer->VTable0x7c(m_rendererObject, 0, &destRect, &m_sourceRect, 0);
 		return TRUE;
@@ -181,10 +181,10 @@ LegoS32 CopperCrest0x40::FUN_00468fa0(InitStruct* p_initStruct)
 	helperInit.m_renderer = p_initStruct->m_renderer;
 	helperInit.m_inputManager = p_initStruct->m_inputManager;
 	helperInit.m_bounds = &bounds;
-	helperInit.m_unk0x14 = 0;
-	helperInit.m_unk0x18 = 0;
-	helperInit.m_unk0x1c = 0;
-	helperInit.m_unk0x20 = 0;
+	helperInit.m_initialCursorX = 0;
+	helperInit.m_initialCursorY = 0;
+	helperInit.m_initialOriginX = 0;
+	helperInit.m_initialOriginY = 0;
 
 	return m_unk0x10.FUN_00467cc0(&helperInit);
 }
@@ -240,8 +240,8 @@ LegoS32 CopperCrest0x40::FUN_004690f0(OnyxCircularBuffer0x1c::Item* p_item)
 {
 	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
 	ObscureVantage0x58* active = icon->FUN_00472e60();
-	undefined4 x = m_unk0x10.m_unk0x38 + m_unk0x10.m_unk0x30;
-	undefined4 y = m_unk0x10.m_unk0x3c + m_unk0x10.m_unk0x34;
+	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
+	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
 
 	if (p_item->m_isPressed) {
 		if (m_unk0x54->VTable0x18(icon, p_item, x, y)) {
@@ -287,8 +287,8 @@ void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 	bounds->m_right = right;
 	bounds->m_bottom = bottom;
 
-	undefined4 x = helper->m_unk0x38 + helper->m_unk0x30;
-	undefined4 y = helper->m_unk0x3c + helper->m_unk0x34;
+	undefined4 x = helper->m_originX + helper->m_cursorX;
+	undefined4 y = helper->m_originY + helper->m_cursorY;
 
 	if (!m_unk0x54->VTable0x14(icon, helper, x, y)) {
 		if (active) {
@@ -304,8 +304,8 @@ void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 // FUNCTION: LEGORACERS 0x004692b0
 LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 {
-	undefined4 x = m_unk0x10.m_unk0x38 + m_unk0x10.m_unk0x30;
-	undefined4 y = m_unk0x10.m_unk0x3c + m_unk0x10.m_unk0x34;
+	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
+	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
 	OnyxCircularBuffer0x1c::Item* item;
 
 	while (m_inputBindingContainer->GetSize()) {

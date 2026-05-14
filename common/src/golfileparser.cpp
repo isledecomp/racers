@@ -40,9 +40,9 @@ const LegoChar* const g_parserErrorStrings[] = {
 GolFileParser::GolFileParser()
 {
 	m_unk0x30 = 0;
-	m_unk0x34 = e_syntaxerror;
-	m_unk0x44[0] = '\0';
-	m_unk0x84[0] = '\0';
+	m_currentToken = e_syntaxerror;
+	m_lastString[0] = '\0';
+	m_formatBuffer[0] = '\0';
 	m_filePath = NULL;
 	::memset(m_suffix, 0, sizeOfArray(m_suffix));
 }
@@ -51,7 +51,7 @@ GolFileParser::GolFileParser()
 // FUNCTION: LEGORACERS 0x0044e5e0
 GolFileParser::~GolFileParser()
 {
-	if (m_filePath != NULL && m_filePath != m_unk0x1a8) {
+	if (m_filePath != NULL && m_filePath != m_inlinePathBuffer) {
 		delete[] m_filePath;
 	}
 }
@@ -62,7 +62,7 @@ LegoS32 GolFileParser::Dispose()
 {
 	LegoS32 result = GolStream::Dispose();
 
-	if (m_filePath != NULL && m_filePath != m_unk0x1a8) {
+	if (m_filePath != NULL && m_filePath != m_inlinePathBuffer) {
 		delete[] m_filePath;
 		m_filePath = NULL;
 	}
@@ -92,14 +92,14 @@ void GolFileParser::HandleIoError(LegoS32 p_code)
 
 	LegoS32 totalLen =
 		::strlen(ErrorCodeToString(p_code)) + ::strlen(m_filePath) + ::strlen(g_ioErrorOccurredFormatStr);
-	m_unk0xa4[0] = '\0';
+	m_readBuffer[0] = '\0';
 
-	if (totalLen < (LegoS32) sizeOfArray(m_unk0xa4) - 1) {
-		::sprintf((LegoChar*) m_unk0xa4, g_ioErrorOccurredFormatStr, m_filePath);
+	if (totalLen < (LegoS32) sizeOfArray(m_readBuffer) - 1) {
+		::sprintf((LegoChar*) m_readBuffer, g_ioErrorOccurredFormatStr, m_filePath);
 	}
 
-	::strcat((LegoChar*) m_unk0xa4, ErrorCodeToString(p_code));
-	GOL_FATALERROR_MESSAGE((LegoChar*) m_unk0xa4);
+	::strcat((LegoChar*) m_readBuffer, ErrorCodeToString(p_code));
+	GOL_FATALERROR_MESSAGE((LegoChar*) m_readBuffer);
 }
 
 // FUNCTION: GOLDP 0x10032650
@@ -154,7 +154,7 @@ LegoS32 GolFileParser::ReadInteger()
 		HandleUnexpectedToken(e_int);
 	}
 
-	return m_unk0x38;
+	return m_lastInt;
 }
 
 // FUNCTION: GOLDP 0x100326c0
@@ -165,7 +165,7 @@ LegoFloat GolFileParser::ReadFloat()
 		HandleUnexpectedToken(e_float);
 	}
 
-	return m_unk0x40;
+	return m_lastFloat;
 }
 
 // FUNCTION: GOLDP 0x100326e0
@@ -176,7 +176,7 @@ LegoChar* GolFileParser::ReadString()
 		HandleUnexpectedToken(e_string);
 	}
 
-	return m_unk0x44;
+	return m_lastString;
 }
 
 // FUNCTION: GOLDP 0x10032700
@@ -187,11 +187,11 @@ LegoChar* GolFileParser::ReadStringWithMaxLength(size_t p_len)
 		HandleUnexpectedToken(e_string);
 	}
 
-	if (::strlen(m_unk0x44) > p_len) {
+	if (::strlen(m_lastString) > p_len) {
 		HandleUnexpectedToken(e_invalidString);
 	}
 
-	return m_unk0x44;
+	return m_lastString;
 }
 
 // FUNCTION: GOLDP 0x10032740
@@ -259,5 +259,5 @@ LegoU32 GolFileParser::ReadBracketedCountAndLeftCurly()
 		HandleUnexpectedToken(e_leftCurly);
 	}
 
-	return m_unk0x38;
+	return m_lastInt;
 }

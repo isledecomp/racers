@@ -14,7 +14,7 @@ LegoBool32 FloatyPontoon0x4c::FUN_10014e50(const GolVec3* p_arg1, const GolVec3*
 	row0.m_y = -p_arg1->m_y;
 	row0.m_z = -p_arg1->m_z;
 
-	if (m_unk0x48 & c_flag0x48Bit1) {
+	if (m_flags & c_flagBit1) {
 		row2 = &m_unk0x30;
 		LegoFloat dot = row2->m_z * row0.m_z + row0.m_y * row2->m_y + row0.m_x * row2->m_x;
 		row0.m_x -= dot * row2->m_x;
@@ -46,8 +46,8 @@ LegoBool32 FloatyPontoon0x4c::FUN_10014e50(const GolVec3* p_arg1, const GolVec3*
 	p_matrix->m_m[2][2] = row2->m_z;
 	p_matrix->m_m[2][3] = 0.0f;
 
-	LegoFloat halfWidth = m_unk0x3c * 0.5f;
-	LegoFloat halfHeight = m_unk0x40 * 0.5f;
+	LegoFloat halfWidth = m_width * 0.5f;
+	LegoFloat halfHeight = m_height * 0.5f;
 	p_matrix->m_m[3][0] = position.m_x - halfWidth * row1.m_x - halfHeight * row2->m_x;
 	p_matrix->m_m[3][1] = position.m_y - halfWidth * row1.m_y - halfHeight * row2->m_y;
 	p_matrix->m_m[3][2] = position.m_z - halfWidth * row1.m_z - halfHeight * row2->m_z;
@@ -57,9 +57,14 @@ LegoBool32 FloatyPontoon0x4c::FUN_10014e50(const GolVec3* p_arg1, const GolVec3*
 }
 
 // FUNCTION: GOLDP 0x10014fd0
-undefined4 FloatyBarge0x4c::VTable0x4c(undefined4* p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4)
+undefined4 FloatyBarge0x4c::VTable0x4c(
+	undefined4* p_position,
+	LegoFloat p_width,
+	LegoFloat p_height,
+	LegoFloat p_maxDistanceSquared
+)
 {
-	return FloatyPontoon0x4c::VTable0x4c(p_arg1, p_arg2, p_arg3, p_arg4);
+	return FloatyPontoon0x4c::VTable0x4c(p_position, p_width, p_height, p_maxDistanceSquared);
 }
 
 // STUB: GOLDP 0x10014ff0

@@ -363,8 +363,6 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 		if (result) {
 			return result;
 		}
-
-		p_size = p_size;
 	}
 
 	LegoS32 result;

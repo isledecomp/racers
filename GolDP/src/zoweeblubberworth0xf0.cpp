@@ -381,7 +381,7 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 			item->m_unk0x00[0] = '\0';
 		}
 		else {
-			::strncpy(item->m_unk0x00, p_parser.GetUnk0x44(), sizeof(item->m_unk0x00));
+			::strncpy(item->m_unk0x00, p_parser.GetLastString(), sizeof(item->m_unk0x00));
 		}
 		p_parser.ReadLeftCurly();
 		LegoU32 j;
@@ -399,18 +399,18 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 				}
-				if (static_cast<LegoU32>(p_parser.GetUnk0x38()) >= m_unk0x24 && m_unk0x24 != 0) {
+				if (static_cast<LegoU32>(p_parser.GetLastInt()) >= m_unk0x24 && m_unk0x24 != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x08[cnt] = p_parser.GetUnk0x38();
+				item->m_unk0x08[cnt] = p_parser.GetLastInt();
 				if (p_parser.GetNextToken() != GolFileParser::e_float) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_float);
 				}
-				if (p_parser.GetUnk0x40() < 0.0f) {
+				if (p_parser.GetLastFloat() < 0.0f) {
 					item->m_unk0x38[cnt] = g_fltMax0x100576e4;
 				}
 				else {
-					item->m_unk0x38[cnt] = p_parser.GetUnk0x40();
+					item->m_unk0x38[cnt] = p_parser.GetLastFloat();
 				}
 				cnt++;
 				break;
@@ -431,17 +431,17 @@ void ZoweeBlubberworth0xf0::FUN_1002cc30(GolFileParser& p_parser)
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 				}
-				if (static_cast<LegoU32>(p_parser.GetUnk0x38()) >= m_unk0x2c && m_unk0x2c != 0) {
+				if (static_cast<LegoU32>(p_parser.GetLastInt()) >= m_unk0x2c && m_unk0x2c != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				v = p_parser.GetUnk0x38();
+				v = p_parser.GetLastInt();
 				if (p_parser.GetNextToken() != GolFileParser::e_int) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 				}
-				if (p_parser.GetUnk0x38() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
+				if (p_parser.GetLastInt() >= static_cast<LegoS32>(sizeOfArray(item->m_unk0x2c))) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
-				item->m_unk0x2c[p_parser.GetUnk0x38()] = v;
+				item->m_unk0x2c[p_parser.GetLastInt()] = v;
 				break;
 			case GolFileParser::e_unknown0x36:
 				item->m_unk0x74 = p_parser.ReadFloat();

@@ -91,10 +91,10 @@ public:
 	void FUN_10022b80(undefined4, undefined4, undefined4);
 
 protected:
-	undefined4 m_unk0x004;               // 0x004
-	undefined4 m_unk0x008;               // 0x008
-	undefined4 m_unk0x00c;               // 0x00c
-	ColorRGBA* m_unk0x010;               // 0x010
+	LegoU32 m_paletteCount;              // 0x004
+	LegoU32 m_paletteReservedEnd;        // 0x008
+	LegoU32 m_paletteCapacity;           // 0x00c
+	ColorRGBA* m_paletteEntries;         // 0x010
 	GolFile m_file;                      // 0x014
 	LegoU32 m_width;                     // 0x044
 	LegoU32 m_height;                    // 0x048
@@ -102,23 +102,23 @@ protected:
 	GolSurfaceFormat m_format;           // 0x050
 	undefined4 m_unk0x068;               // 0x068
 	undefined4 m_paletteSize;            // 0x06c
-	undefined4 m_unk0x070;               // 0x070
-	undefined4 m_unk0x074;               // 0x074
-	undefined4 m_unk0x078;               // 0x078
-	undefined4 m_unk0x07c;               // 0x07c
-	undefined4 m_unk0x080;               // 0x080
-	undefined4 m_unk0x084;               // 0x084
-	undefined4 m_unk0x088;               // 0x088
-	undefined4 m_unk0x08c;               // 0x08c
-	undefined4 m_unk0x090;               // 0x090
-	undefined4 m_unk0x094;               // 0x094
-	undefined4 m_unk0x098;               // 0x098
+	LegoU32 m_srcStrideMask;             // 0x070
+	LegoU32 m_constPixelBits;            // 0x074
+	LegoU32 m_redSrcShift;               // 0x078
+	LegoU32 m_grnSrcShift;               // 0x07c
+	LegoU32 m_bluSrcShift;               // 0x080
+	LegoU32 m_alpSrcShift;               // 0x084
+	LegoU32 m_redDstShift;               // 0x088
+	LegoU32 m_grnDstShift;               // 0x08c
+	LegoU32 m_bluDstShift;               // 0x090
+	LegoU32 m_alpDstShift;               // 0x094
+	LegoBool32 m_hasColorKey;            // 0x098
 	undefined m_unk0x09c;                // 0x09c
 	undefined m_unk0x09d;                // 0x09d
 	undefined m_unk0x09e;                // 0x09e
 	undefined m_unk0x09f;                // 0x09f
 	ColorRGBA m_unk0x0a0;                // 0x0a0
-	undefined4 m_unk0x0a4;               // 0x0a4
+	LegoU32 m_colorKeyPixel;             // 0x0a4
 	ColorRGBA m_palette[256];            // 0x0a8
 	undefined m_unk0x4a8[0x5a4 - 0x4a8]; // 0x4a8
 	undefined4 m_unk0x5a4;               // 0x5a4

@@ -69,7 +69,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 		const LegoChar* suffix = GetSuffix();
 		len += strlen(suffix);
 		if (len < 64) {
-			m_filePath = m_unk0x1a8;
+			m_filePath = m_inlinePathBuffer;
 		}
 		else {
 			m_filePath = new LegoChar[len + 1];
@@ -85,7 +85,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 		const LegoChar* suffix = GetSuffix();
 		len += strlen(suffix);
 		if (len < 64) {
-			m_filePath = m_unk0x1a8;
+			m_filePath = m_inlinePathBuffer;
 		}
 		else {
 			m_filePath = new LegoChar[len + 1];
@@ -99,7 +99,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 	}
 	else {
 		if (len < 64) {
-			m_filePath = m_unk0x1a8;
+			m_filePath = m_inlinePathBuffer;
 		}
 		else {
 			m_filePath = new LegoChar[len + 1];
@@ -118,7 +118,7 @@ void GolBinParser::OpenFileForRead(const LegoChar* p_fileName)
 
 	m_fileOffset = 0;
 	m_unk0x1f4 = 0;
-	m_unk0x34 = e_syntaxerror;
+	m_currentToken = e_syntaxerror;
 	m_unk0x30 = 0;
 }
 
@@ -149,7 +149,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 	if (m_unk0x30) {
 		m_unk0x30 = 0;
-		return (GolFileParser::ParserTokenType) m_unk0x34;
+		return (GolFileParser::ParserTokenType) m_currentToken;
 	}
 
 	while (1) {
@@ -161,7 +161,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
-			t = ((LegoU8) m_unk0xa4[0]);
+			t = ((LegoU8) m_readBuffer[0]);
 		}
 
 		switch (t) {
@@ -170,19 +170,19 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			m_expansionRepeatCount = ((LegoU8) m_unk0xa4[0]) + ((LegoU8) m_unk0xa4[1] << 8);
+			m_expansionRepeatCount = ((LegoU8) m_readBuffer[0]) + ((LegoU8) m_readBuffer[1] << 8);
 
 			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
-			m_expansionToken = (LegoU8) m_unk0xa4[0];
+			m_expansionToken = (LegoU8) m_readBuffer[0];
 			if (m_expansionToken == 0x13) {
 				if (!ReadBytes(2)) {
 					return e_syntaxerror;
 				}
 
-				m_expansionToken = ((LegoU8) m_unk0xa4[0]) + ((LegoU8) m_unk0xa4[1] << 8);
+				m_expansionToken = ((LegoU8) m_readBuffer[0]) + ((LegoU8) m_readBuffer[1] << 8);
 			}
 
 			m_expandingTokenSequence = FALSE;
@@ -213,7 +213,7 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 
 		case 0x16:
 			ReadTokenSequenceDefinition();
-			if (m_unk0x34 == e_syntaxerror) {
+			if (m_currentToken == e_syntaxerror) {
 				return e_syntaxerror;
 			}
 
@@ -233,16 +233,15 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				break;
 			}
 
-			m_unk0x34 = (GolFileParser::ParserTokenType) t;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_currentToken = (GolFileParser::ParserTokenType) t;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 2:
-			lenRead;
-			code = BufferedRead(m_fileOffset, m_unk0xa4, 63, &lenRead);
+			code = BufferedRead(m_fileOffset, m_readBuffer, 63, &lenRead);
 			if (code != e_ioSuccess) {
 				if (code == e_ioEndOfFile) {
 					if (lenRead == 0) {
-						m_unk0x34 = e_syntaxerror;
+						m_currentToken = e_syntaxerror;
 						return e_syntaxerror;
 					}
 				}
@@ -252,31 +251,31 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			}
 
 			for (i = 0; i < lenRead; i++) {
-				if (m_unk0xa4[i] == '\0') {
+				if (m_readBuffer[i] == '\0') {
 					break;
 				}
 
-				m_unk0x44[i] = m_unk0xa4[i];
+				m_lastString[i] = m_readBuffer[i];
 			}
 
-			m_unk0x44[i++] = '\0';
+			m_lastString[i++] = '\0';
 			m_fileOffset += i;
 
-			m_unk0x34 = (GolFileParser::ParserTokenType) t;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_currentToken = (GolFileParser::ParserTokenType) t;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 3: {
 			if (!ReadBytes(4)) {
 				return e_syntaxerror;
 			}
 
-			LegoU32 floatBits = (((LegoU32) m_unk0xa4[3] << 8) + (LegoU32) m_unk0xa4[2]);
-			floatBits = (floatBits << 8) + (LegoU32) m_unk0xa4[1];
-			floatBits = (floatBits << 8) + (LegoU32) m_unk0xa4[0];
-			m_unk0x40 = *(LegoFloat*) &floatBits;
+			LegoU32 floatBits = (((LegoU32) m_readBuffer[3] << 8) + (LegoU32) m_readBuffer[2]);
+			floatBits = (floatBits << 8) + (LegoU32) m_readBuffer[1];
+			floatBits = (floatBits << 8) + (LegoU32) m_readBuffer[0];
+			m_lastFloat = *(LegoFloat*) &floatBits;
 
-			m_unk0x34 = (GolFileParser::ParserTokenType) t;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_currentToken = (GolFileParser::ParserTokenType) t;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 		}
 
 		case 4: {
@@ -284,13 +283,13 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 				return e_syntaxerror;
 			}
 
-			LegoU32 intBits = (((LegoU32) m_unk0xa4[3] << 8) + (LegoU32) m_unk0xa4[2]);
-			intBits = (intBits << 8) + (LegoU32) m_unk0xa4[1];
-			intBits = (intBits << 8) + (LegoU32) m_unk0xa4[0];
-			m_unk0x38 = intBits;
+			LegoU32 intBits = (((LegoU32) m_readBuffer[3] << 8) + (LegoU32) m_readBuffer[2]);
+			intBits = (intBits << 8) + (LegoU32) m_readBuffer[1];
+			intBits = (intBits << 8) + (LegoU32) m_readBuffer[0];
+			m_lastInt = intBits;
 
-			m_unk0x34 = (GolFileParser::ParserTokenType) t;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_currentToken = (GolFileParser::ParserTokenType) t;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 		}
 
 		case 0xb:
@@ -299,31 +298,31 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			}
 
 #ifdef BUILDING_GOL
-			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
-			m_unk0x34 = e_int;
+			m_lastInt = (LegoU8) (m_readBuffer[0]);
+			m_currentToken = e_int;
 #else
-			m_unk0x34 = e_int;
-			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
+			m_currentToken = e_int;
+			m_lastInt = (LegoU8) (m_readBuffer[0]);
 #endif
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0xc:
 			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x38 = (LegoU8) (m_unk0xa4[0]);
-			m_unk0x34 = e_int;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastInt = (LegoU8) (m_readBuffer[0]);
+			m_currentToken = e_int;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0xd:
 			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x38 = (LegoS16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
-			m_unk0x34 = e_int;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastInt = (LegoS16) (m_readBuffer[0] + (m_readBuffer[1] << 8));
+			m_currentToken = e_int;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0xe:
 			if (!ReadBytes(2)) {
@@ -331,59 +330,59 @@ GolFileParser::ParserTokenType GolBinParser::GetNextToken()
 			}
 
 #ifdef BUILDING_GOL
-			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
-			m_unk0x34 = e_int;
+			m_lastInt = (LegoU16) (m_readBuffer[0] + (m_readBuffer[1] << 8));
+			m_currentToken = e_int;
 #else
-			m_unk0x34 = e_int;
-			m_unk0x38 = (LegoU16) (m_unk0xa4[0] + (m_unk0xa4[1] << 8));
+			m_currentToken = e_int;
+			m_lastInt = (LegoU16) (m_readBuffer[0] + (m_readBuffer[1] << 8));
 #endif
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0xf:
 			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = g_token0x0fconstant * (LegoS16) (m_unk0xa4[0] + ((m_unk0xa4[1] << 8)));
-			m_unk0x34 = e_float;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastFloat = g_token0x0fconstant * (LegoS16) (m_readBuffer[0] + ((m_readBuffer[1] << 8)));
+			m_currentToken = e_float;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0x10:
 			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = g_token0x10constant * (LegoS16) (m_unk0xa4[0] + ((m_unk0xa4[1] << 8)));
-			m_unk0x34 = e_float;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastFloat = g_token0x10constant * (LegoS16) (m_readBuffer[0] + ((m_readBuffer[1] << 8)));
+			m_currentToken = e_float;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0x11:
 			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = (LegoS16) (m_unk0xa4[0] + ((m_unk0xa4[1] << 8)));
-			m_unk0x34 = e_float;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastFloat = (LegoS16) (m_readBuffer[0] + ((m_readBuffer[1] << 8)));
+			m_currentToken = e_float;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0x12:
 			if (!ReadBytes(1)) {
 				return e_syntaxerror;
 			}
 
-			m_unk0x40 = g_token0x12constant * (LegoU8) (m_unk0xa4[0]);
-			m_unk0x34 = e_float;
-			return (GolFileParser::ParserTokenType) m_unk0x34;
+			m_lastFloat = g_token0x12constant * (LegoU8) (m_readBuffer[0]);
+			m_currentToken = e_float;
+			return (GolFileParser::ParserTokenType) m_currentToken;
 
 		case 0x13: {
 			if (!ReadBytes(2)) {
 				return e_syntaxerror;
 			}
 
-			token = (ParserTokenType) ((LegoU8) m_unk0xa4[1]);
+			token = (ParserTokenType) ((LegoU8) m_readBuffer[1]);
 			token = (ParserTokenType) ((LegoU32) token << 8);
-			token = (ParserTokenType) (token + (LegoU8) m_unk0xa4[0]);
-			m_unk0x34 = token;
+			token = (ParserTokenType) (token + (LegoU8) m_readBuffer[0]);
+			m_currentToken = token;
 			return token;
 		}
 		}
@@ -398,8 +397,8 @@ void GolBinParser::ReadTokenSequenceDefinition()
 		return;
 	}
 
-	LegoU32 sequenceIndex = (LegoU8) m_unk0xa4[0] - 0x17;
-	LegoU32 count = (LegoU8) m_unk0xa4[1];
+	LegoU32 sequenceIndex = (LegoU8) m_readBuffer[0] - 0x17;
+	LegoU32 count = (LegoU8) m_readBuffer[1];
 	m_tokenSequenceLengths[sequenceIndex] = count;
 
 	for (LegoU32 i = 0; i < count; i++) {
@@ -407,13 +406,13 @@ void GolBinParser::ReadTokenSequenceDefinition()
 			return;
 		}
 
-		LegoU32 token = (LegoU8) m_unk0xa4[0];
+		LegoU32 token = (LegoU8) m_readBuffer[0];
 		if (token == 0x13) {
 			if (!ReadBytes(2)) {
 				return;
 			}
 
-			token = ((LegoU8) m_unk0xa4[1] << 8) + (LegoU8) m_unk0xa4[0];
+			token = ((LegoU8) m_readBuffer[1] << 8) + (LegoU8) m_readBuffer[0];
 		}
 
 		m_tokenSequences[sequenceIndex][i] = token;
@@ -424,11 +423,11 @@ void GolBinParser::ReadTokenSequenceDefinition()
 undefined4 GolBinParser::ReadBytes(LegoS32 p_size)
 {
 	LegoS32 lenRead;
-	LegoS32 code = BufferedRead(m_fileOffset, m_unk0xa4, p_size, &lenRead);
+	LegoS32 code = BufferedRead(m_fileOffset, m_readBuffer, p_size, &lenRead);
 	if (code != e_ioSuccess) {
 		if (code == e_ioEndOfFile) {
 			if (lenRead == 0) {
-				m_unk0x34 = e_syntaxerror;
+				m_currentToken = e_syntaxerror;
 				return 0;
 			}
 		}
@@ -506,14 +505,14 @@ void GolBinParser::HandleUnexpectedToken(ParserTokenType p_code)
 	}
 
 	LegoS32 totalLen = strlen(ParserErrorCodeToString(p_code)) + strlen(m_filePath) + strlen(g_fileFormatStr);
-	m_unk0xa4[0] = '\0';
+	m_readBuffer[0] = '\0';
 
-	if (totalLen < (LegoS32) sizeOfArray(m_unk0xa4) - 1) {
-		sprintf((LegoChar*) m_unk0xa4, g_fileFormatStr, m_filePath);
+	if (totalLen < (LegoS32) sizeOfArray(m_readBuffer) - 1) {
+		sprintf((LegoChar*) m_readBuffer, g_fileFormatStr, m_filePath);
 	}
 
-	strcat((LegoChar*) m_unk0xa4, ParserErrorCodeToString(p_code));
-	GOL_FATALERROR_MESSAGE((LegoChar*) m_unk0xa4);
+	strcat((LegoChar*) m_readBuffer, ParserErrorCodeToString(p_code));
+	GOL_FATALERROR_MESSAGE((LegoChar*) m_readBuffer);
 }
 
 // FUNCTION: GOLDP 0x10030f10
@@ -538,7 +537,7 @@ void GolBinParser::OpenFileForWrite(LegoChar* p_fileName)
 		const LegoChar* suffix = GetSuffix();
 		len += strlen(suffix);
 		if (len < 64) {
-			m_filePath = m_unk0x1a8;
+			m_filePath = m_inlinePathBuffer;
 		}
 		else {
 			m_filePath = new LegoChar[len + 1];
@@ -552,7 +551,7 @@ void GolBinParser::OpenFileForWrite(LegoChar* p_fileName)
 	}
 	else {
 		if (len < 64) {
-			m_filePath = m_unk0x1a8;
+			m_filePath = m_inlinePathBuffer;
 		}
 		else {
 			m_filePath = new LegoChar[len + 1];
@@ -580,11 +579,11 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 	if ((LegoU32) p_token > 0xff) {
 		LegoU8 tokenHigh = (LegoU16) p_token >> 8;
 
-		m_unk0xa4[0] = 0x13;
-		m_unk0xa4[1] = (LegoU8) p_token;
-		m_unk0xa4[2] = tokenHigh;
+		m_readBuffer[0] = 0x13;
+		m_readBuffer[1] = (LegoU8) p_token;
+		m_readBuffer[2] = tokenHigh;
 
-		LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 3);
+		LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 3);
 		if (code != e_ioSuccess) {
 			HandleIoError(code);
 		}
@@ -592,8 +591,8 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 		m_fileOffset += 3;
 	}
 	else {
-		m_unk0xa4[0] = (LegoU8) p_token;
-		LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+		m_readBuffer[0] = (LegoU8) p_token;
+		LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 		if (code != e_ioSuccess) {
 			HandleIoError(code);
 		}
@@ -606,8 +605,8 @@ void GolBinParser::WriteToken(ParserTokenType p_token)
 // FUNCTION: LEGORACERS 0x0044b4a0
 void GolBinParser::VTable0x54(undefined4 p_param)
 {
-	*m_unk0xa4 = p_param;
-	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+	*m_readBuffer = p_param;
+	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
@@ -619,8 +618,8 @@ void GolBinParser::VTable0x54(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x0044b4e0
 void GolBinParser::WriteFloat(LegoFloat p_param)
 {
-	*m_unk0xa4 = 3;
-	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+	*m_readBuffer = 3;
+	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
@@ -629,12 +628,12 @@ void GolBinParser::WriteFloat(LegoFloat p_param)
 
 	LegoU32 buf;
 	memcpy(&buf, &p_param, sizeof(buf));
-	m_unk0xa4[0] = (LegoU8) buf;
-	m_unk0xa4[1] = (LegoU8) (buf >> 8);
-	m_unk0xa4[2] = (LegoU8) (buf >> 16);
-	m_unk0xa4[3] = (LegoU8) (buf >> 24);
+	m_readBuffer[0] = (LegoU8) buf;
+	m_readBuffer[1] = (LegoU8) (buf >> 8);
+	m_readBuffer[2] = (LegoU8) (buf >> 16);
+	m_readBuffer[3] = (LegoU8) (buf >> 24);
 
-	code = BufferedWrite(m_fileOffset, m_unk0xa4, sizeof(p_param));
+	code = BufferedWrite(m_fileOffset, m_readBuffer, sizeof(p_param));
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
@@ -653,20 +652,20 @@ void GolBinParser::VTable0x5c(LegoFloat p_param)
 // FUNCTION: LEGORACERS 0x0044b580
 void GolBinParser::WriteInt4(undefined4 p_param)
 {
-	*m_unk0xa4 = 4;
-	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+	*m_readBuffer = 4;
+	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
 
 	m_fileOffset++;
 
-	m_unk0xa4[0] = (LegoU8) p_param;
-	m_unk0xa4[1] = (LegoU8) (p_param >> 8);
-	m_unk0xa4[2] = (LegoU8) (p_param >> 16);
-	m_unk0xa4[3] = (LegoU8) (p_param >> 24);
+	m_readBuffer[0] = (LegoU8) p_param;
+	m_readBuffer[1] = (LegoU8) (p_param >> 8);
+	m_readBuffer[2] = (LegoU8) (p_param >> 16);
+	m_readBuffer[3] = (LegoU8) (p_param >> 24);
 
-	code = BufferedWrite(m_fileOffset, m_unk0xa4, sizeof(p_param));
+	code = BufferedWrite(m_fileOffset, m_readBuffer, sizeof(p_param));
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
@@ -678,8 +677,8 @@ void GolBinParser::WriteInt4(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x0044b610
 void GolBinParser::WriteString(LegoChar* p_str)
 {
-	*m_unk0xa4 = 2;
-	LegoS32 code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+	*m_readBuffer = 2;
+	LegoS32 code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
@@ -691,17 +690,17 @@ void GolBinParser::WriteString(LegoChar* p_str)
 		len = 63;
 	}
 
-	memcpy(m_unk0xa4, p_str, len);
+	memcpy(m_readBuffer, p_str, len);
 
-	code = BufferedWrite(m_fileOffset, m_unk0xa4, len);
+	code = BufferedWrite(m_fileOffset, m_readBuffer, len);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
 
 	m_fileOffset += len;
 
-	*m_unk0xa4 = 2;
-	code = BufferedWrite(m_fileOffset, m_unk0xa4, 1);
+	*m_readBuffer = 2;
+	code = BufferedWrite(m_fileOffset, m_readBuffer, 1);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}

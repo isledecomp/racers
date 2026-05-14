@@ -54,8 +54,8 @@ void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 		HandleIoError(code);
 	}
 
-	m_unk0x1f0 = 0;
-	m_unk0x1f4 = 0;
+	m_lineCount = 0;
+	m_bufferLength = 0;
 	m_unk0x1f8 = 0;
 }
 
@@ -63,28 +63,28 @@ void GolTxtParser::OpenFileForWrite(LegoChar* p_fileName)
 // FUNCTION: LEGORACERS 0x0044a340
 void GolTxtParser::WriteToken(ParserTokenType p_token)
 {
-	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (m_bufferLength + (LegoS32) sizeof(m_formatBuffer) >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
 	switch (p_token) {
 	case 5:
-		m_unk0xa4[m_unk0x1f4++] = '{';
+		m_readBuffer[m_bufferLength++] = '{';
 		break;
 	case 6:
-		m_unk0xa4[m_unk0x1f4++] = '}';
+		m_readBuffer[m_bufferLength++] = '}';
 		break;
 	case 7:
-		m_unk0xa4[m_unk0x1f4++] = '[';
+		m_readBuffer[m_bufferLength++] = '[';
 		break;
 	case 8:
-		m_unk0xa4[m_unk0x1f4++] = ']';
+		m_readBuffer[m_bufferLength++] = ']';
 		break;
 	case 9:
-		m_unk0xa4[m_unk0x1f4++] = ',';
+		m_readBuffer[m_bufferLength++] = ',';
 		break;
 	case 10:
-		m_unk0xa4[m_unk0x1f4++] = ';';
+		m_readBuffer[m_bufferLength++] = ';';
 		break;
 	default:
 		VTable0x54(p_token);
@@ -105,28 +105,28 @@ void GolTxtParser::VTable0x54(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x0044a470
 void GolTxtParser::WriteFloat(LegoFloat p_param)
 {
-	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (m_bufferLength + (LegoS32) sizeof(m_formatBuffer) >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
-	sprintf(m_unk0x84, "%f", p_param);
-	LegoS32 len = strlen(m_unk0x84);
-	memcpy(&m_unk0xa4[m_unk0x1f4], m_unk0x84, len);
-	m_unk0x1f4 += len;
+	sprintf(m_formatBuffer, "%f", p_param);
+	LegoS32 len = strlen(m_formatBuffer);
+	memcpy(&m_readBuffer[m_bufferLength], m_formatBuffer, len);
+	m_bufferLength += len;
 }
 
 // FUNCTION: GOLDP 0x1002fd60
 // FUNCTION: LEGORACERS 0x0044a4f0
 void GolTxtParser::WriteInt4(undefined4 p_param)
 {
-	if (m_unk0x1f4 + (LegoS32) sizeof(m_unk0x84) >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (m_bufferLength + (LegoS32) sizeof(m_formatBuffer) >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
-	sprintf(m_unk0x84, "%d", p_param);
-	LegoS32 len = strlen(m_unk0x84);
-	memcpy(&m_unk0xa4[m_unk0x1f4], m_unk0x84, len);
-	m_unk0x1f4 += len;
+	sprintf(m_formatBuffer, "%d", p_param);
+	LegoS32 len = strlen(m_formatBuffer);
+	memcpy(&m_readBuffer[m_bufferLength], m_formatBuffer, len);
+	m_bufferLength += len;
 }
 
 // FUNCTION: GOLDP 0x1002fdd0
@@ -134,64 +134,64 @@ void GolTxtParser::WriteInt4(undefined4 p_param)
 void GolTxtParser::WriteString(LegoChar* p_str)
 {
 	LegoS32 len = strlen(p_str);
-	if (len + 4 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (len + 4 >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
-	m_unk0xa4[m_unk0x1f4++] = '"';
-	memcpy(&m_unk0xa4[m_unk0x1f4], p_str, len);
-	m_unk0x1f4 += len;
-	m_unk0xa4[m_unk0x1f4++] = '"';
+	m_readBuffer[m_bufferLength++] = '"';
+	memcpy(&m_readBuffer[m_bufferLength], p_str, len);
+	m_bufferLength += len;
+	m_readBuffer[m_bufferLength++] = '"';
 }
 
 // FUNCTION: GOLDP 0x1002fe60
 // FUNCTION: LEGORACERS 0x0044a600
 void GolTxtParser::FlushLine()
 {
-	LegoS32 code = WriteLine(m_unk0xa4, m_unk0x1f4);
+	LegoS32 code = WriteLine(m_readBuffer, m_bufferLength);
 	if (code != e_ioSuccess) {
 		HandleIoError(code);
 	}
 
-	m_unk0x1f0++;
-	m_unk0x1f4 = 0;
+	m_lineCount++;
+	m_bufferLength = 0;
 }
 
 // FUNCTION: GOLDP 0x1002fea0
 // FUNCTION: LEGORACERS 0x0044a640
 void GolTxtParser::WriteSpace()
 {
-	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (m_bufferLength + 2 >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
-	m_unk0xa4[m_unk0x1f4] = ' ';
-	m_unk0x1f4++;
+	m_readBuffer[m_bufferLength] = ' ';
+	m_bufferLength++;
 }
 
 // FUNCTION: GOLDP 0x1002fee0
 // FUNCTION: LEGORACERS 0x0044a680
 void GolTxtParser::WriteTab()
 {
-	if (m_unk0x1f4 + 2 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (m_bufferLength + 2 >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
-	m_unk0xa4[m_unk0x1f4] = '\t';
-	m_unk0x1f4++;
+	m_readBuffer[m_bufferLength] = '\t';
+	m_bufferLength++;
 }
 
 // FUNCTION: GOLDP 0x1002ff20
 // FUNCTION: LEGORACERS 0x0044a6c0
 void GolTxtParser::WriteTabs(undefined4 p_param)
 {
-	if (p_param + m_unk0x1f4 + 1 >= (LegoS32) sizeof(m_unk0xa4) - 1) {
+	if (p_param + m_bufferLength + 1 >= (LegoS32) sizeof(m_readBuffer) - 1) {
 		FlushLine();
 	}
 
 	while (p_param > 0) {
-		m_unk0xa4[m_unk0x1f4] = '\t';
-		m_unk0x1f4++;
+		m_readBuffer[m_bufferLength] = '\t';
+		m_bufferLength++;
 		p_param--;
 	}
 }

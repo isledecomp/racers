@@ -106,7 +106,7 @@ public:
 		undefined2 m_unk0x2ac;               // 0x2ac
 		undefined m_unk0x2ae[0x2b0 - 0x2ae]; // 0x2ae
 		LegoU32 m_unk0x2b0;                  // 0x2b0
-		LegoU32 m_unk0x2b4;                  // 0x2b4
+		LegoS32 m_unk0x2b4;                  // 0x2b4
 		undefined4 m_unk0x2b8;               // 0x2b8
 		undefined4 m_unk0x2bc;               // 0x2bc
 		undefined4 m_unk0x2c0;               // 0x2c0

@@ -149,7 +149,7 @@ void ObscureIcon0x1a8::FUN_00471ec0(ObscureIcon0x1a8* p_parentIcon)
 	m_unk0x12d = TRUE;
 }
 
-// STUB: LEGORACERS 0x00471f00
+// FUNCTION: LEGORACERS 0x00471f00
 void ObscureIcon0x1a8::FUN_00471f00()
 {
 	if (!(m_flags & 4)) {

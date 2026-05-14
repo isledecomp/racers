@@ -307,7 +307,7 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
 	return ImaginaryNotion0x290::VTable0x7c(p_arg1, p_arg2);
 }
 
-// STUB: LEGORACERS 0x00468860
+// FUNCTION: LEGORACERS 0x00468860
 LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x78(undefined4 p_elapsedMs)
 {
 	LegoFloat scale = 1.0f;
@@ -320,9 +320,11 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x78(undefined4 p_elapsedMs)
 
 	if (m_unk0x2bc == 1 || m_unk0x2bc == 3) {
 		m_unk0x2b4 += p_elapsedMs;
-		scale = m_unk0x2b4 * g_unk0x4b2160;
+		LegoS32 elapsedMs = m_unk0x2b4;
+		LegoFloat elapsedScale = (LegoFloat) elapsedMs;
+		scale = elapsedScale * g_unk0x4b2160;
 
-		if (m_unk0x2b4 > 300) {
+		if ((LegoU32) elapsedMs > 300) {
 			if (m_unk0x2bc == 1) {
 				FUN_004686f0();
 				m_unk0x2b4 = 0;
@@ -347,14 +349,28 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x78(undefined4 p_elapsedMs)
 		}
 	}
 
-	LegoS32 x = (LegoS32) (m_unk0x2a4 * scale);
-	LegoS32 y = (LegoS32) (m_unk0x2a8 * scale);
+	LegoFloat scaledX = m_unk0x2a4;
+	scaledX *= scale;
+	LegoS32 x = (LegoS32) scaledX;
+
+	LegoFloat scaledY = m_unk0x2a8;
+	scaledY *= scale;
+	LegoS32 y = (LegoS32) scaledY;
 
 	Rect rect;
-	rect.m_right = m_unk0x29c + x;
-	rect.m_left = m_unk0x29c - x;
-	rect.m_bottom = m_unk0x2a0 + y;
-	rect.m_top = m_unk0x2a0 - y;
+	LegoS32 right = m_unk0x29c;
+	LegoS32 left = right;
+	right += x;
+	rect.m_right = right;
+	left -= x;
+	rect.m_left = left;
+
+	LegoS32 bottom = m_unk0x2a0;
+	LegoS32 top = bottom;
+	bottom += y;
+	rect.m_bottom = bottom;
+	top -= y;
+	rect.m_top = top;
 	m_unk0x2cc.VTable0x10(&rect);
 
 	return m_unk0x2c4 == 0;

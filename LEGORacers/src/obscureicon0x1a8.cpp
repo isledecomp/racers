@@ -569,10 +569,27 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00472540
+// FUNCTION: LEGORACERS 0x00472540
 void ObscureIcon0x1a8::FUN_00472540()
 {
-	STUB(0x00472540);
+	LegoS32 count = m_unk0x130;
+	m_unk0x134 = count;
+	LegoFloat countFloat = (LegoFloat) count;
+
+	if (count) {
+		m_unk0x138 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_top - m_unk0x34.m_top) / countFloat;
+		m_unk0x148 = (LegoFloat) m_unk0x34.m_top;
+		m_unk0x13c = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_bottom - m_unk0x34.m_bottom) / countFloat;
+		m_unk0x14c = (LegoFloat) m_unk0x34.m_bottom;
+		m_unk0x140 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_left - m_unk0x34.m_left) / countFloat;
+		m_unk0x150 = (LegoFloat) m_unk0x34.m_left;
+		m_unk0x144 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_right - m_unk0x34.m_right) / countFloat;
+		m_unk0x154 = (LegoFloat) m_unk0x34.m_right;
+
+		if (m_unk0x138 != 0.0f || m_unk0x13c != 0.0f || m_unk0x140 != 0.0f || m_unk0x144 != 0.0f) {
+			m_unk0x54 |= 1;
+		}
+	}
 }
 
 // STUB: LEGORACERS 0x00472680

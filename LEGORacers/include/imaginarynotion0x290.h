@@ -25,6 +25,13 @@ class AwakeKite0x20;
 // SIZE 0x290
 class ImaginaryNotion0x290 : public ImaginaryInterface {
 public:
+	// SIZE 0x54
+	class FieldAt0x54 : public ObscureVantage0x58::CreateParams0x30 {
+	public:
+		undefined m_unk0x30[0x50 - 0x30]; // 0x30
+		LegoFloat m_unk0x50;              // 0x50
+	};
+
 	// SIZE unknown
 	class FieldAt0xc4 {
 	public:
@@ -85,12 +92,12 @@ public:
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);
-	void FUN_0046ba60(undefined4*);
+	void FUN_0046ba60(FieldAt0x54*);
 	void FUN_0046bb10(undefined4*);
 	void FUN_0046bb90(undefined4*, undefined4);
 	void FUN_0046bc90(undefined4*, undefined4);
 	void FUN_0046bd80(undefined4*, undefined4);
-	void FUN_0046be10(undefined4*, undefined2);
+	FieldAt0x54* FUN_0046be10(undefined2);
 	void FUN_0046bea0(undefined4*, undefined2);
 	undefined4 FUN_0046bef0(ObscureVantage0x58*, undefined2, undefined2);
 	undefined4 FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2);
@@ -102,7 +109,7 @@ public:
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
 	void FUN_0046c480(ObscureVantage0x58*, undefined4, undefined2);
 	void FUN_0046c510(undefined4*, undefined4, undefined2);
-	void FUN_0046c5b0(ObscureVantage0x58*, undefined2);
+	undefined4 FUN_0046c5b0(ObscureVantage0x58*, undefined2);
 	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
 	undefined4 FUN_0046c6f0(ObscureIcon0x1a8*, ObscureIcon0x1a8*, undefined2);
 	undefined4 FUN_0046c730(ObscureIcon0x1a8*, undefined2);

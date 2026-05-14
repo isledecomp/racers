@@ -21,6 +21,13 @@ ImaginaryChisel0x658::HelperAt0x368::~HelperAt0x368()
 	STUB(0x00466aa0);
 }
 
+// STUB: LEGORACERS 0x00466b50
+undefined4 ImaginaryChisel0x658::HelperAt0x368::FUN_00466b50(ImaginaryNotion0x290::FieldAt0x54*, undefined4)
+{
+	STUB(0x00466b50);
+	return 0;
+}
+
 // STUB: LEGORACERS 0x00466d60
 undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x08()
 {

@@ -10,6 +10,7 @@
 #include "golstream.h"
 #include "golstring.h"
 #include "golstringtable.h"
+#include "imaginarychisel0x658.h"
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
 #include "obscurevantage0x58.h"
@@ -17,6 +18,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryNotion0x290, 0x290)
+DECOMP_SIZE_ASSERT(ImaginaryNotion0x290::FieldAt0x54, 0x54)
 
 // GLOBAL: LEGORACERS 0x004b2240
 const undefined4 g_unk0x4b2240[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
@@ -335,7 +337,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 }
 
 // STUB: LEGORACERS 0x0046ba60
-void ImaginaryNotion0x290::FUN_0046ba60(undefined4*)
+void ImaginaryNotion0x290::FUN_0046ba60(FieldAt0x54*)
 {
 	// TODO
 	STUB(0x0046ba60);
@@ -370,10 +372,11 @@ void ImaginaryNotion0x290::FUN_0046bd80(undefined4*, undefined4)
 }
 
 // STUB: LEGORACERS 0x0046be10
-void ImaginaryNotion0x290::FUN_0046be10(undefined4*, undefined2)
+ImaginaryNotion0x290::FieldAt0x54* ImaginaryNotion0x290::FUN_0046be10(undefined2)
 {
 	// TODO
 	STUB(0x0046be10);
+	return NULL;
 }
 
 // STUB: LEGORACERS 0x0046bea0
@@ -460,11 +463,19 @@ void ImaginaryNotion0x290::FUN_0046c510(undefined4*, undefined4, undefined2)
 	STUB(0x0046c510);
 }
 
-// STUB: LEGORACERS 0x0046c5b0
-void ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58*, undefined2)
+// FUNCTION: LEGORACERS 0x0046c5b0
+undefined4 ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08)
 {
-	// TODO
-	STUB(0x0046c5b0);
+	FieldAt0x54* params = FUN_0046be10(p_unk0x08);
+	if (!params) {
+		return 0;
+	}
+
+	FieldAt0x54 createParams = *params;
+	FUN_0046ba60(&createParams);
+	createParams.m_unk0x50 = VTable0x6c();
+
+	return static_cast<ImaginaryChisel0x658::HelperAt0x368*>(p_unk0x04)->FUN_00466b50(&createParams, m_unk0x288);
 }
 
 // STUB: LEGORACERS 0x0046c610

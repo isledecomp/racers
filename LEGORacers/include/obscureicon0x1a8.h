@@ -92,9 +92,16 @@ protected:
 	LegoU8 m_unk0x12c;                      // 0x12c
 	LegoBool m_unk0x12d;                    // 0x12d
 	undefined m_unk0x12e[0x130 - 0x12e];    // 0x12e
-	undefined4 m_unk0x130;                  // 0x130
-	undefined4 m_unk0x134;                  // 0x134
-	undefined m_unk0x138[0x158 - 0x138];    // 0x138
+	LegoS32 m_unk0x130;                     // 0x130
+	LegoS32 m_unk0x134;                     // 0x134
+	LegoFloat m_unk0x138;                   // 0x138
+	LegoFloat m_unk0x13c;                   // 0x13c
+	LegoFloat m_unk0x140;                   // 0x140
+	LegoFloat m_unk0x144;                   // 0x144
+	LegoFloat m_unk0x148;                   // 0x148
+	LegoFloat m_unk0x14c;                   // 0x14c
+	LegoFloat m_unk0x150;                   // 0x150
+	LegoFloat m_unk0x154;                   // 0x154
 	undefined4 m_unk0x158[4];               // 0x158
 	undefined2 m_unk0x168;                  // 0x168
 	SoundGroupBinding* m_soundGroupBinding; // 0x16c

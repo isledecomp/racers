@@ -35,6 +35,8 @@ public:
 		// SYNTHETIC: LEGORACERS 0x00466a80
 		// ImaginaryChisel0x658::HelperAt0x368::`scalar deleting destructor'
 
+		undefined4 FUN_00466b50(ImaginaryNotion0x290::FieldAt0x54* p_createParams, undefined4 p_unk0x08);
+
 		undefined m_unk0x58[0x84 - 0x58];    // 0x058
 		CrimsonPebble0x228 m_unk0x84;        // 0x084
 		undefined m_unk0x2ac[0x2c8 - 0x2ac]; // 0x2ac

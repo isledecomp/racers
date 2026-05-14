@@ -7,6 +7,7 @@
 #include "peridottrace0x4e0.h"
 
 #include <string.h>
+#include <windows.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceState0x438, 0x438)
 
@@ -209,12 +210,63 @@ void PeridotTraceState0x438::FUN_0042f060(DisplayDriverGuid& p_guid)
 	}
 }
 
-// STUB: LEGORACERS 0x0042f0b0
-LegoU8 PeridotTraceState0x438::GetRegistryLanguageIndex()
+// FUNCTION: LEGORACERS 0x0042f0b0
+LegoU32 PeridotTraceState0x438::GetRegistryLanguageIndex()
 {
-	// TODO
-	STUB(0x0042f0b0);
-	return 0;
+	struct RegistryLanguageQuery {
+		LegoU32 m_languageId;
+		DWORD m_dataType;
+		HKEY m_key;
+		DWORD m_dataSize;
+	};
+
+	RegistryLanguageQuery query;
+	query.m_languageId = 0;
+
+	if (RegOpenKey(HKEY_LOCAL_MACHINE, "Software\\LEGO Media\\Games\\LEGO Racers\\0.90.000", &query.m_key) ==
+		ERROR_SUCCESS) {
+		query.m_dataType = REG_DWORD;
+		query.m_dataSize = sizeof(query.m_languageId);
+
+		if (RegQueryValueEx(
+				query.m_key,
+				"LangID",
+				NULL,
+				&query.m_dataType,
+				(LPBYTE) &query.m_languageId,
+				&query.m_dataSize
+			) != ERROR_SUCCESS ||
+			query.m_dataType != REG_DWORD) {
+			query.m_languageId = 0;
+		}
+
+		RegCloseKey(query.m_key);
+	}
+
+	switch (query.m_languageId) {
+	case 0x0006:
+		return 5;
+	case 0x0007:
+		return 3;
+	case 0x0009:
+		return 0;
+	case 0x000a:
+		return 1;
+	case 0x000b:
+		return 10;
+	case 0x0010:
+		return 4;
+	case 0x0013:
+		return 8;
+	case 0x0014:
+		return 7;
+	case 0x001d:
+		return 6;
+	case 0x040c:
+		return 2;
+	default:
+		return 0;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042f1f0

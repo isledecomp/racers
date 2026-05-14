@@ -55,10 +55,10 @@ public:
 			BronzeFalcon0xc8770* m_renderer;  // 0x08
 			UtopianPan0xa4* m_rendererObject; // 0x0c
 			Rect* m_bounds;                   // 0x10
-			undefined4 m_unk0x14;             // 0x14
-			undefined4 m_unk0x18;             // 0x18
-			undefined4 m_unk0x1c;             // 0x1c
-			undefined4 m_unk0x20;             // 0x20
+			LegoS32 m_initialCursorX;         // 0x14
+			LegoS32 m_initialCursorY;         // 0x18
+			LegoS32 m_initialOriginX;         // 0x1c
+			LegoS32 m_initialOriginY;         // 0x20
 		};
 
 		Helper0x44();
@@ -76,12 +76,12 @@ public:
 		UtopianPan0xa4* m_rendererObject; // 0x0c
 		Rect m_bounds;                    // 0x10
 		Rect m_sourceRect;                // 0x20
-		LegoS32 m_unk0x30;                // 0x30
-		LegoS32 m_unk0x34;                // 0x34
-		LegoS32 m_unk0x38;                // 0x38
-		LegoS32 m_unk0x3c;                // 0x3c
-		LegoU8 m_unk0x40;                 // 0x40
-		LegoU8 m_unk0x41;                 // 0x41
+		LegoS32 m_cursorX;                // 0x30
+		LegoS32 m_cursorY;                // 0x34
+		LegoS32 m_originX;                // 0x38
+		LegoS32 m_originY;                // 0x3c
+		LegoU8 m_isCursorVisible;         // 0x40
+		LegoU8 m_isCursorEnabled;         // 0x41
 		undefined m_unk0x42[0x44 - 0x42]; // 0x42
 	};
 
@@ -102,11 +102,11 @@ public:
 	void* GetUnk0x10() { return &m_unk0x10; }
 	ImaginaryNotion0x290* GetUnk0x54() { return m_unk0x54; }
 	void SetUnk0x54(ImaginaryNotion0x290* p_unk0x54) { m_unk0x54 = p_unk0x54; }
-	void SetCursorInside(LegoU8 p_cursorInside) { m_unk0x10.m_unk0x40 = p_cursorInside; }
+	void SetCursorInside(LegoU8 p_cursorInside) { m_unk0x10.m_isCursorVisible = p_cursorInside; }
 	void SetCursorPosition(undefined4 p_x, undefined4 p_y)
 	{
-		m_unk0x10.m_unk0x30 = p_x - m_unk0x10.m_unk0x38;
-		m_unk0x10.m_unk0x34 = p_y - m_unk0x10.m_unk0x3c;
+		m_unk0x10.m_cursorX = p_x - m_unk0x10.m_originX;
+		m_unk0x10.m_cursorY = p_y - m_unk0x10.m_originY;
 	}
 
 private:

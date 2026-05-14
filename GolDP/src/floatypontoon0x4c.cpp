@@ -14,55 +14,60 @@ float g_pontoonMaxFloat = FLT_MAX;
 // FUNCTION: GOLDP 0x10029df0
 FloatyPontoon0x4c::FloatyPontoon0x4c()
 {
-	m_unk0x28 = NULL;
-	m_unk0x2c = NULL;
+	m_position = NULL;
+	m_positionContainer = NULL;
 	m_unk0x30.m_x = 0.0f;
 	m_unk0x30.m_y = 0.0f;
 	m_unk0x30.m_z = 1.0f;
-	m_unk0x48 = 0;
-	m_unk0x4a = 0;
-	m_unk0x3c = 0.0f;
-	m_unk0x40 = 0.0f;
-	m_unk0x44 = g_pontoonMaxFloat; // std::numeric_limits<float>::max();
+	m_flags = 0;
+	m_positionIndex = 0;
+	m_width = 0.0f;
+	m_height = 0.0f;
+	m_maxDistanceSquared = g_pontoonMaxFloat; // std::numeric_limits<float>::max();
 }
 
 // FUNCTION: GOLDP 0x10029e30
-undefined4 FloatyPontoon0x4c::VTable0x4c(undefined4* p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4)
+undefined4 FloatyPontoon0x4c::VTable0x4c(
+	undefined4* p_position,
+	LegoFloat p_width,
+	LegoFloat p_height,
+	LegoFloat p_maxDistanceSquared
+)
 {
 #define SQR(V) ((V) * (V))
-	LegoFloat len = sqrtf(SQR(p_arg2 / 2.0f) + SQR(p_arg3 / 2.0f));
+	LegoFloat len = sqrtf(SQR(p_width / 2.0f) + SQR(p_height / 2.0f));
 #undef SQR
 
-	m_unk0x28 = p_arg1;
-	m_unk0x3c = p_arg2;
-	m_unk0x40 = p_arg3;
-	m_unk0x48 = 1;
-	m_unk0x44 = p_arg4;
+	m_position = p_position;
+	m_width = p_width;
+	m_height = p_height;
+	m_flags = 1;
+	m_maxDistanceSquared = p_maxDistanceSquared;
 	return FUN_10026fa0(len);
 }
 
 // FUNCTION: GOLDP 0x10029e90
 void FloatyPontoon0x4c::FUN_10029e90(
-	Field0x2c* p_arg1,
-	LegoS32 p_arg2,
-	LegoFloat p_arg3,
-	LegoFloat p_arg4,
-	LegoFloat p_arg5
+	Field0x2c* p_container,
+	LegoS32 p_index,
+	LegoFloat p_width,
+	LegoFloat p_height,
+	LegoFloat p_maxDistanceSquared
 )
 {
-	m_unk0x2c = p_arg1;
-	m_unk0x4a = static_cast<undefined2>(p_arg2);
-	VTable0x4c(p_arg1->m_unk0x08[p_arg2], p_arg3, p_arg4, p_arg5);
-	m_unk0x48 |= c_flag0x48Bit2;
+	m_positionContainer = p_container;
+	m_positionIndex = static_cast<LegoU16>(p_index);
+	VTable0x4c(p_container->m_unk0x08[p_index], p_width, p_height, p_maxDistanceSquared);
+	m_flags |= c_flagBit2;
 }
 
 // FUNCTION: GOLDP 0x10029ed0
 void FloatyPontoon0x4c::VTable0x50()
 {
-	m_unk0x28 = NULL;
-	m_unk0x48 = 0;
-	m_unk0x3c = 0;
-	m_unk0x40 = 0;
+	m_position = NULL;
+	m_flags = 0;
+	m_width = 0;
+	m_height = 0;
 }
 
 // STUB: GOLDP 0x10029ee0
@@ -90,7 +95,7 @@ void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result
 
 	LegoFloat distanceSquared = position.DistanceSquaredTo(p_arg1);
 
-	if (distanceSquared != 0.0f && distanceSquared <= m_unk0x44) {
+	if (distanceSquared != 0.0f && distanceSquared <= m_maxDistanceSquared) {
 		p_result[0] = TRUE;
 	}
 	else {
@@ -101,11 +106,11 @@ void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result
 // FUNCTION: GOLDP 0x1002a020
 undefined4* FloatyPontoon0x4c::FUN_1002a020()
 {
-	if (m_unk0x48 & c_flag0x48Bit2) {
-		m_unk0x28 = m_unk0x2c->m_unk0x08[m_unk0x4a];
+	if (m_flags & c_flagBit2) {
+		m_position = m_positionContainer->m_unk0x08[m_positionIndex];
 	}
 
-	return m_unk0x28;
+	return m_position;
 }
 
 // FUNCTION: GOLDP 0x1002a040
@@ -117,9 +122,9 @@ void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140* p_renderer)
 // FUNCTION: GOLDP 0x1002a060
 undefined4 FloatyPontoon0x4c::VTable0x20()
 {
-	if (m_unk0x48 & c_flag0x48Bit2) {
-		m_unk0x28 = m_unk0x2c->m_unk0x08[m_unk0x4a];
+	if (m_flags & c_flagBit2) {
+		m_position = m_positionContainer->m_unk0x08[m_positionIndex];
 	}
 
-	return m_unk0x28[2] & 0x1100;
+	return m_position[2] & 0x1100;
 }

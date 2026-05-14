@@ -39,13 +39,13 @@ void CmbModelPartData0x28::FUN_10018670(GolFileParser& p_parser)
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
-			m_unk0x24 = p_parser.GetUnk0x38();
+			m_unk0x24 = p_parser.GetLastInt();
 			break;
 		case GolFileParser::e_unknown0x2e:
 			if (p_parser.GetNextToken() != GolFileParser::e_int) {
 				p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 			}
-			m_unk0x26 = p_parser.GetUnk0x38();
+			m_unk0x26 = p_parser.GetLastInt();
 			break;
 		case GolFileParser::e_unknown0x2f:
 			m_unk0x00 = static_cast<LegoFloat>(p_parser.ReadInteger()) / 1000.0f;

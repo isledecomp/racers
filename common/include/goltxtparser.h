@@ -37,9 +37,9 @@ public:
 	// GolTxtParser::~GolTxtParser
 
 protected:
-	undefined4 m_unk0x1f0; // 0x1f0
-	LegoS32 m_unk0x1f4;    // 0x1f4
-	undefined4 m_unk0x1f8; // 0x1f8
+	LegoS32 m_lineCount;    // 0x1f0
+	LegoS32 m_bufferLength; // 0x1f4
+	undefined4 m_unk0x1f8;  // 0x1f8
 };
 
 #endif // GOLTXTPARSER_H

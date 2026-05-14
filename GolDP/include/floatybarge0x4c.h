@@ -4,5 +4,10 @@
 // SIZE 0x4c
 class FloatyBarge0x4c : public FloatyPontoon0x4c {
 public:
-	undefined4 VTable0x4c(undefined4* p_arg1, LegoFloat p_arg2, LegoFloat p_arg3, LegoFloat p_arg4) override;
+	undefined4 VTable0x4c(
+		undefined4* p_position,
+		LegoFloat p_width,
+		LegoFloat p_height,
+		LegoFloat p_maxDistanceSquared
+	) override;
 };

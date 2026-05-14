@@ -220,8 +220,8 @@ void BronzeFalcon0xc8770::Reset()
 	m_unk0xc8450.m_m[3][2] = 0.0f;
 	m_unk0xc8410.m_m[3][3] = 1.0f;
 	m_unk0xc8450.m_m[3][3] = 1.0f;
-	m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000c630;
-	m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+	m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000c630;
+	m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000edf0;
 
 	for (i = 0; i < (0xcc8 - 0x348) / sizeof(*m_unk0x348); i++) {
 		m_unk0x348[i].color = 0xffffffff;
@@ -2285,32 +2285,32 @@ void BronzeFalcon0xc8770::FUN_10012f50()
 {
 	if (m_unk0xc8524) {
 		if (m_unk0xc8528) {
-			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000eb90;
+			m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000eb90;
 			if (m_unk0xc8568) {
-				m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d210;
+				m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000d210;
 				return;
 			}
 			if (m_unk0xc83ec) {
-				m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d5d0;
+				m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000d5d0;
 				return;
 			}
 
-			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d440;
+			m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000d440;
 			return;
 		}
 
 		if (m_unk0xc83c4) {
-			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_100106d0;
+			m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_100106d0;
 		}
 		else {
-			m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+			m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000edf0;
 		}
 
 		if (m_unk0xc83ec) {
-			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000dbb0;
+			m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000dbb0;
 		}
 		else {
-			m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_1000d760;
+			m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_1000d760;
 		}
 	}
 	else {
@@ -2325,14 +2325,14 @@ void BronzeFalcon0xc8770::FUN_10012f50()
 
 		if (m_unk0xc83e4) {
 			if (m_unk0xc83c4) {
-				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_100106d0;
+				m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_100106d0;
 				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
-					m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_100132f0;
+					m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_100132f0;
 					return;
 				}
 			}
 			else {
-				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000edf0;
+				m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000edf0;
 			}
 
 			index |= 8;
@@ -2341,30 +2341,30 @@ void BronzeFalcon0xc8770::FUN_10012f50()
 			LegoU32 flags = m_unk0xc83c8 | m_unk0xc83cc;
 			if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit14) {
 				if (m_unk0xc83c4) {
-					m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_10010500;
+					m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_10010500;
 				}
 				else {
-					m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000ece0;
+					m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000ece0;
 				}
 			}
 			else if (m_unk0xc83c4) {
-				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_10010330;
+				m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_10010330;
 				if (!m_unk0xc83e8 && m_unk0xc8700 == 0) {
-					m_unk0xc8764 = &BronzeFalcon0xc8770::FUN_10013110;
+					m_drawTriangleFn1 = &BronzeFalcon0xc8770::FUN_10013110;
 					return;
 				}
 			}
 			else {
-				m_unk0xc8768 = &BronzeFalcon0xc8770::FUN_1000ebd0;
+				m_drawTriangleFn2 = &BronzeFalcon0xc8770::FUN_1000ebd0;
 			}
 		}
 
 		if (m_unk0xc8568) {
-			m_unk0xc8764 = g_unk0x1005c8a8[m_unk0x11c];
-			m_unk0xc8760 = g_unk0x1005c8c8[index];
+			m_drawTriangleFn1 = g_unk0x1005c8a8[m_unk0x11c];
+			m_drawTriangleFn0 = g_unk0x1005c8c8[index];
 		}
 		else {
-			m_unk0xc8764 = g_unk0x1005c8c8[index];
+			m_drawTriangleFn1 = g_unk0x1005c8c8[index];
 		}
 	}
 }

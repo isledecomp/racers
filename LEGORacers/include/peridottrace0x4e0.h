@@ -199,7 +199,7 @@ private:
 	};
 
 	void Initialize();
-	LegoU8 GetRegistryLanguageIndex();
+	LegoU32 GetRegistryLanguageIndex();
 
 	undefined4 m_unk0x00;         // 0x00
 	undefined4 m_unk0x04;         // 0x04

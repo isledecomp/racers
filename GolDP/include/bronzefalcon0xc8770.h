@@ -315,9 +315,9 @@ private:
 	undefined4 m_unk0xc8704;                                             // 0xc8704
 	D3DBLEND m_unk0xc8708[11];                                           // 0xc8708
 	D3DBLEND m_unk0xc8734[11];                                           // 0xc8734
-	BronzeFalconDrawFunction m_unk0xc8760;                               // 0xc8760
-	BronzeFalconDrawFunction m_unk0xc8764;                               // 0xc8764
-	BronzeFalconDrawFunction m_unk0xc8768;                               // 0xc8768
+	BronzeFalconDrawFunction m_drawTriangleFn0;                          // 0xc8760
+	BronzeFalconDrawFunction m_drawTriangleFn1;                          // 0xc8764
+	BronzeFalconDrawFunction m_drawTriangleFn2;                          // 0xc8768
 	void (BronzeFalcon0xc8770::*m_unk0xc876c)(DuskwindBananaRelic0x24*); // 0xc876c
 };
 

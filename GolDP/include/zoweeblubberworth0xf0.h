@@ -202,7 +202,7 @@ private:
 	WdbLight0x10* m_unk0x88;           // 0x88
 	LegoU32 m_unk0x8c;                 // 0x8c
 	WdbLight0x10* m_unk0x90;           // 0x90
-	float m_unk0x94;                   // 0x94
+	LegoFloat m_unk0x94;               // 0x94
 	undefined4 m_unk0x98;              // 0x98
 	undefined4 m_unk0x9c;              // 0x9c
 	undefined4 m_unk0xa0;              // 0xa0

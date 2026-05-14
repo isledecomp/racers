@@ -214,6 +214,7 @@ add_library(goldp SHARED
   GolDP/src/igdbmodelindexarray0x8.cpp
   GolDP/src/gdbmodelindexarray0xc.cpp
   GolDP/src/greyfalconnode0x1c.cpp
+  GolDP/src/boundingvolume0x64.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

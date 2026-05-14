@@ -1,5 +1,6 @@
 #include "zoweeblubberworth0xf0.h"
 
+#include "boundingvolume0x64.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
@@ -1115,6 +1116,12 @@ void ZoweeBlubberworth0xf0::FUN_1002e250(undefined4*, undefined4*)
 // STUB: GOLDP 0x1002e2c0
 void ZoweeBlubberworth0xf0::VTable0x04()
 {
+	if (m_unk0x44 != 0) {
+		m_unk0x98 = new BoundingVolume0x64[m_unk0x44];
+		if (m_unk0x98 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
 	// TODO
 	STUB(0x1002e2c0);
 }

@@ -10,6 +10,7 @@
 class AmberLensBase0x120;
 class AmberHaze0x1c;
 class BoundingShape0x2c;
+class BoundingVolume0x64;
 class CmbModelPart0x34;
 class GolFileParser;
 class FloatyBoat0x28;
@@ -203,7 +204,7 @@ private:
 	LegoU32 m_unk0x8c;                 // 0x8c
 	WdbLight0x10* m_unk0x90;           // 0x90
 	LegoFloat m_unk0x94;               // 0x94
-	undefined4 m_unk0x98;              // 0x98
+	BoundingVolume0x64* m_unk0x98;     // 0x98
 	undefined4 m_unk0x9c;              // 0x9c
 	undefined4 m_unk0xa0;              // 0xa0
 	LegoChar* m_unk0xa4;               // 0xa4

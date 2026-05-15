@@ -46,7 +46,7 @@ void ImaginaryLever0x1d7c::FUN_00486e40(CitrineGrove0x1f4c* p_unk0x04)
 	LegoS32 statusEightCount;
 
 	switch (m_unk0x36c) {
-	case 0x2d:
+	case 0x2d: {
 		emptyCount = 0;
 		statusEightCount = 0;
 		m_unk0x370 = p_unk0x04->GetUnk0x18c0() - 1;
@@ -63,11 +63,16 @@ void ImaginaryLever0x1d7c::FUN_00486e40(CitrineGrove0x1f4c* p_unk0x04)
 			m_unk0x370--;
 		}
 
-		m_unk0x370 = 0;
-		if (!emptyCount && statusEightCount > 0) {
+		LegoS32 status = 0;
+		m_unk0x370 = status;
+		if (emptyCount != status) {
+			m_unk0x368 = status;
+		}
+		else if (statusEightCount > status) {
 			m_unk0x368 = 8;
 		}
 		break;
+	}
 	case 0x2e:
 		m_unk0x368 = p_unk0x04->FUN_00443420(m_unk0x370, FALSE);
 		break;
@@ -83,8 +88,8 @@ void ImaginaryLever0x1d7c::FUN_00486e40(CitrineGrove0x1f4c* p_unk0x04)
 		break;
 	}
 	case 0x30: {
-		m_unk0x368 = 0;
 		m_unk0x370 = p_unk0x04->GetUnk0x18c0() - 1;
+		m_unk0x368 = 0;
 		while (m_unk0x370 >= 0) {
 			LegoS32 status = p_unk0x04->FUN_004434a0(m_unk0x370);
 			if (status && status != 0x12 && status != 8) {
@@ -197,15 +202,15 @@ void ImaginaryLever0x1d7c::VTable0x38(ObscureVantage0x58* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x1a88) {
 		switch (m_unk0x368) {
+		case 0x16:
+		case 0x17:
+			m_unk0x368 = 8;
+			break;
 		case 1:
 		case 0x13:
 		case 0x14:
 		case 0x18:
 			FUN_00486e40(&m_context->m_unk0x258);
-			break;
-		case 0x16:
-		case 0x17:
-			m_unk0x368 = 8;
 			break;
 		}
 

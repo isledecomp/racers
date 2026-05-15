@@ -1,6 +1,19 @@
 #include "ceruleanknight0x20.h"
 
+#include "golname.h"
+
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(CeruleanKnight0x20, 0x20)
+
+// FUNCTION: LEGORACERS 0x0046aff0
+void* CeruleanKnight0x20::FUN_0046aff0(const LegoChar* p_name)
+{
+	GolName name;
+
+	::strncpy(name, p_name, sizeof(name));
+	return GetName(name);
+}
 
 // FUNCTION: LEGORACERS 0x0046b020
 CeruleanKnight0x20::CeruleanKnight0x20()

@@ -5,6 +5,7 @@
 #include "audio/nullsoundmanager.h"
 #include "cactusinterface0x4.h"
 #include "decomp.h"
+#include "golname.h"
 #include "scarletnova0x5c.h"
 #include "types.h"
 #include "win32golapp.h"
@@ -15,10 +16,10 @@ class LegoRacers : public CactusInterface0x4 {
 public:
 	// SIZE 0x18
 	struct RaceSlot {
-		undefined4 m_unk0x00;   // 0x00
-		undefined4 m_unk0x04;   // 0x04
-		LegoChar m_unk0x08[8];  // 0x08
-		LegoChar m_raceName[8]; // 0x10
+		undefined4 m_unk0x00; // 0x00
+		undefined4 m_unk0x04; // 0x04
+		GolName m_unk0x08;    // 0x08
+		GolName m_raceName;   // 0x10
 	};
 
 	// SIZE 0x12b0
@@ -59,7 +60,7 @@ public:
 		undefined4 m_unk0x24;                   // 0x24
 		LegoU32 m_languageIndex;                // 0x28
 		undefined m_unk0x2c;                    // 0x2c
-		LegoChar m_unk0x2d[8];                  // 0x2d
+		GolName m_unk0x2d;                      // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];       // 0x35
 		RaceSlot m_raceSlots[4];                // 0x38
 		undefined4 m_unk0x98[4];                // 0x98

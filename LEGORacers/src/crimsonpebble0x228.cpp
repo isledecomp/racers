@@ -2,6 +2,7 @@
 
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golname.h"
 
 #include <string.h>
 
@@ -120,8 +121,8 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_unk0x04)
 		LegoU32 tableOffset = offset;
 
 		do {
-			::strncpy(&m_unk0x80[offset], p_unk0x04->ReadStringWithMaxLength(8), 8);
-			m_unk0x80[offset + 8] = '\0';
+			::strncpy(&m_unk0x80[offset], p_unk0x04->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+			m_unk0x80[offset + sizeof(GolName)] = '\0';
 			::strcat(&m_unk0x80[offset], ".srf");
 
 			((GolStringTable*) ((LegoU8*) m_unk0x7c + tableOffset))->UseOwnedBuffers();

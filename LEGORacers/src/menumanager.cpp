@@ -5,6 +5,7 @@
 #include "awakekite0x20.h"
 #include "goldrawstate.h"
 #include "golhashtable.h"
+#include "golname.h"
 #include "golstream.h"
 #include "imaginarytool0x368.h"
 #include "input/inputmanager.h"
@@ -156,7 +157,7 @@ LegoS32 MenuManager::Shutdown()
 // FUNCTION: LEGORACERS 0x0042cd60
 void MenuManager::FUN_0042cd60()
 {
-	LegoChar name[8];
+	GolName name;
 	CopperCrest0x40::InitStruct initStruct;
 
 	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);

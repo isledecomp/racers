@@ -2,6 +2,7 @@
 #define CHAMPIONDEFINITIONLIST_H
 
 #include "decomp.h"
+#include "golname.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 #include "types.h"
@@ -20,14 +21,14 @@ public:
 
 	// SIZE 0x30
 	struct ChampionDefinition {
-		LegoChar m_unk0x00[8]; // 0x00
-		LegoChar m_unk0x08[8]; // 0x08
-		LegoChar m_unk0x10[8]; // 0x10
-		LegoChar m_unk0x18[8]; // 0x18
-		LegoFloat m_unk0x20;   // 0x20
-		LegoFloat m_unk0x24;   // 0x24
-		LegoFloat m_unk0x28;   // 0x28
-		LegoFloat m_unk0x2c;   // 0x2c
+		GolName m_unk0x00;   // 0x00
+		GolName m_unk0x08;   // 0x08
+		GolName m_unk0x10;   // 0x10
+		GolName m_unk0x18;   // 0x18
+		LegoFloat m_unk0x20; // 0x20
+		LegoFloat m_unk0x24; // 0x24
+		LegoFloat m_unk0x28; // 0x28
+		LegoFloat m_unk0x2c; // 0x2c
 	};
 
 	ChampionDefinitionList();

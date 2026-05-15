@@ -4,7 +4,10 @@
 #include "audio/musicinstance.h"
 #include "golerror.h"
 #include "golstring.h"
+#include "imaginarydrillfieldat0x498.h"
 #include "menutoolcontext0x4bc8.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368, 0x368)
 
@@ -94,11 +97,42 @@ undefined4 ImaginaryTool0x368::FUN_0047fcf0(ObscureVantage0x58*, undefined2, und
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0047fdc0
-undefined4 ImaginaryTool0x368::FUN_0047fdc0(ObscureVantage0x58*, undefined2, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0047fdc0
+undefined4 ImaginaryTool0x368::FUN_0047fdc0(
+	ImaginaryDrillFieldAt0x498* p_unk0x04,
+	undefined2 p_unk0x08,
+	undefined2 p_unk0x0c,
+	undefined2 p_unk0x10
+)
 {
-	STUB(0x0047fdc0);
-	return 0;
+	ImaginaryDrillFieldAt0x498::CreateParams0xe0* sourceParams =
+		(ImaginaryDrillFieldAt0x498::CreateParams0xe0*) FUN_0046be10(p_unk0x08);
+	CeruleanEmperor0x4c::Entry0x104* styleEntry = (CeruleanEmperor0x4c::Entry0x104*) FUN_0046bd80(p_unk0x0c);
+	if (!sourceParams || !styleEntry) {
+		return 0;
+	}
+
+	ImaginaryDrillFieldAt0x498::CreateParams0xe0 createParams;
+	::memcpy(&createParams, sourceParams, sizeof(createParams));
+	FUN_0046bb10(&createParams);
+
+	for (LegoS32 i = 0; i < 6; i++) {
+		if (!createParams.m_unk0x9c[i]) {
+			createParams.m_unk0x9c[i] = styleEntry->m_unk0xa8[i];
+		}
+
+		if (!createParams.m_unk0x84[i]) {
+			createParams.m_unk0x84[i] = styleEntry->m_unk0x90[i];
+		}
+	}
+
+	if (!createParams.m_unk0x78 && styleEntry->m_unk0x88) {
+		::memcpy(createParams.m_unk0xb4, styleEntry->m_unk0xc0, sizeof(createParams.m_unk0xb4));
+	}
+
+	createParams.m_unk0xcc = m_menuTextStrings;
+	createParams.m_unk0xd4 = p_unk0x10;
+	return p_unk0x04->FUN_004826c0(&createParams, (undefined4*) styleEntry);
 }
 
 // STUB: LEGORACERS 0x0047fec0

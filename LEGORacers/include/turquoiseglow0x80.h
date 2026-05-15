@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golname.h"
 #include "golnametable.h"
 #include "turquoiseglowcolor.h"
 #include "types.h"
@@ -14,10 +15,10 @@ public:
 	// SIZE 0x30
 	struct Entry0x30 {
 		LegoU16 m_unk0x00;          // 0x00
-		LegoChar m_unk0x02[8];      // 0x02
-		LegoChar m_unk0x0a[8];      // 0x0a
-		LegoChar m_unk0x12[8];      // 0x12
-		LegoChar m_unk0x1a[8];      // 0x1a
+		GolName m_unk0x02;          // 0x02
+		GolName m_unk0x0a;          // 0x0a
+		GolName m_unk0x12;          // 0x12
+		GolName m_unk0x1a;          // 0x1a
 		LegoU8 m_unk0x22;           // 0x22
 		LegoU8 m_unk0x23;           // 0x23
 		LegoU8 m_unk0x24;           // 0x24

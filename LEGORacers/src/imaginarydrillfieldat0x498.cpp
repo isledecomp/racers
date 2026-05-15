@@ -5,6 +5,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x498, 0x2f0)
+DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x498::CreateParams0xe0, 0xe0)
 
 // FUNCTION: LEGORACERS 0x00482390
 ImaginaryDrillFieldAt0x498::ImaginaryDrillFieldAt0x498()
@@ -26,6 +27,13 @@ void ImaginaryDrillFieldAt0x498::Reset()
 	::memset(m_unk0x1c0, 0, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
 	::memset(m_unk0x2e0, 0, sizeof(m_unk0x2e0));
 	ObscureIcon0x1a8::Reset();
+}
+
+// STUB: LEGORACERS 0x004826c0
+undefined4 ImaginaryDrillFieldAt0x498::FUN_004826c0(CreateParams0xe0*, undefined4*)
+{
+	STUB(0x004826c0);
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00482760

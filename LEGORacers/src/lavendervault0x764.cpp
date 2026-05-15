@@ -122,7 +122,7 @@ void LavenderVault0x764::ReadHats(GolFileParser& p_parser)
 	p_parser.ReadLeftCurly();
 
 	for (LegoS32 i = 0; i < m_countHats; i++) {
-		str = p_parser.ReadStringWithMaxLength(8);
+		str = p_parser.ReadStringWithMaxLength(sizeof(m_hatNames[i]));
 		::memcpy(m_hatNames[i], str, sizeof(m_hatNames[i]));
 		m_unk0x158[i] = p_parser.ReadInteger();
 	}

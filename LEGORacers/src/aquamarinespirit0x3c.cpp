@@ -3,6 +3,7 @@
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 #include "opalhaven0xf4.h"
 
 DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c, 0x3c)
@@ -149,7 +150,7 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 	::memset(m_unk0x14, 0, count * sizeof(Item0x104));
 	for (LegoU32 i = 0; i < count; i++) {
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		parser->ReadLeftCurly();
 		m_unk0x14->m_unk0x100[0] = '2';

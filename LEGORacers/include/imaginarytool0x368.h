@@ -8,6 +8,7 @@
 
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
+class ImaginaryDrillFieldAt0x498;
 class ObscureVantage0x58;
 class GolFont0xa0;
 class UtopianPan0xa4;
@@ -45,7 +46,9 @@ public:
 
 		// VTABLE: LEGORACERS 0x004b3498
 		// SIZE 0x1fc
-		class MidTxtParser : public GolTxtParser {};
+		class MidTxtParser : public GolTxtParser {
+			// Constructor is inlined; destructor thunks fold through the shared parser implementation.
+		};
 
 	private:
 		void FUN_0047f2b0(Entry0xe0* p_entry);
@@ -118,7 +121,7 @@ public:
 protected:
 	undefined4 FUN_0047fcf0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0047fdc0(
-		ObscureVantage0x58* p_unk0x04,
+		ImaginaryDrillFieldAt0x498* p_unk0x04,
 		undefined2 p_unk0x08,
 		undefined2 p_unk0x0c,
 		undefined2 p_unk0x10

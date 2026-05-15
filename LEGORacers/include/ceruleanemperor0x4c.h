@@ -4,15 +4,45 @@
 #include "ceruleanknight0x20.h"
 #include "compat.h"
 #include "decomp.h"
+#include "goltxtparser.h"
+#include "rectangle.h"
 #include "types.h"
+#include "visualstate0x4.h"
 
 class BronzeFalcon0xc8770;
+class GolFont0xa0;
 class PorcelainVeil0x50;
+class UtopianPan0xa4;
 
 // VTABLE: LEGORACERS 0x004b27cc
 // SIZE 0x50
 class CeruleanEmperor0x4c : public CeruleanKnight0x20 {
 public:
+	// SIZE 0x90
+	class Entry0x90 {
+	public:
+		VisualState0x4 m_unk0x00[6]; // 0x00
+		undefined2 m_unk0x18[5];     // 0x18
+		undefined2 m_unk0x22;        // 0x22
+		Rect m_unk0x24[6];           // 0x24
+		undefined4 m_unk0x84;        // 0x84
+		undefined4 m_unk0x88;        // 0x88
+		undefined4 m_unk0x8c;        // 0x8c
+	};
+
+	// SIZE 0x104
+	class Entry0x104 : public Entry0x90 {
+	public:
+		GolFont0xa0* m_unk0x90[6];    // 0x90
+		UtopianPan0xa4* m_unk0xa8[6]; // 0xa8
+		VisualState0x4 m_unk0xc0[6];  // 0xc0
+		VisualState0x4 m_unk0xd8;     // 0xd8
+		Rect m_unk0xdc;               // 0xdc
+		Rect m_unk0xec;               // 0xec
+		undefined4 m_unk0xfc;         // 0xfc
+		undefined4 m_unk0x100;        // 0x100
+	};
+
 	// SIZE 0x10
 	struct ResourceLoadParams {
 		BronzeFalcon0xc8770* m_renderer; // 0x00
@@ -28,12 +58,16 @@ public:
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14
 	LegoBool32 Load(ResourceLoadParams* p_params);
+	Entry0x90* FUN_00470e60(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x0046faa0
 	// CeruleanEmperor0x4c::`scalar deleting destructor'
 
-private:
+protected:
 	void FUN_0046fd30(ResourceLoadParams* p_params);
+	void FUN_00470020(Entry0x90* p_entry);
+
+private:
 	void FUN_004707e0();
 	void FUN_00470880();
 	void FUN_00470920();
@@ -46,17 +80,17 @@ private:
 	void FUN_00470dc0();
 
 protected:
-	PorcelainVeil0x50* m_unk0x20; // 0x20
-	undefined* m_unk0x24;         // 0x24
-	undefined* m_unk0x28;         // 0x28
-	undefined* m_unk0x2c;         // 0x2c
-	undefined* m_unk0x30;         // 0x30
-	undefined* m_unk0x34;         // 0x34
-	undefined* m_unk0x38;         // 0x38
-	undefined* m_unk0x3c;         // 0x3c
-	undefined* m_unk0x40;         // 0x40
-	undefined* m_unk0x44;         // 0x44
-	undefined* m_unk0x48;         // 0x48
+	CeruleanEmperor0x4c* m_unk0x20; // 0x20
+	undefined* m_unk0x24;           // 0x24
+	undefined* m_unk0x28;           // 0x28
+	undefined* m_unk0x2c;           // 0x2c
+	undefined* m_unk0x30;           // 0x30
+	undefined* m_unk0x34;           // 0x34
+	undefined* m_unk0x38;           // 0x38
+	undefined* m_unk0x3c;           // 0x3c
+	undefined* m_unk0x40;           // 0x40
+	undefined* m_unk0x44;           // 0x44
+	undefined* m_unk0x48;           // 0x48
 };
 
 #endif // CERULEANEMPEROR0X4C_H

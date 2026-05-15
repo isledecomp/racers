@@ -3,6 +3,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golname.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "mabmaterialanimationitem0x8.h"
 
@@ -94,7 +95,7 @@ void MabMaterialAnimation0x14::FUN_10025a40(WhiteFalcon0x140* p_renderer, GolFil
 	}
 
 	for (i = 0; i < m_unk0x08; i++) {
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, p_parser.ReadStringWithMaxLength(sizeOfArray(name)), sizeof(name));
 		m_unk0x04[i].FUN_10026110(p_renderer, name, p_parser.ReadInteger());
 	}

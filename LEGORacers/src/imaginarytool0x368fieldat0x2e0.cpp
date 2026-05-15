@@ -1,6 +1,7 @@
 #include "bronzefalcon0xc8770.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 #include "imaginarytool0x368.h"
 
 #include <string.h>
@@ -50,12 +51,12 @@ void ImaginaryTool0x368::FieldAt0x2e0::VTable0x10(undefined4 p_param)
 		}
 
 		m_parser->SetSuffix(".mib");
-		return;
 	}
-
-	m_parser = new MidTxtParser();
-	if (m_parser == NULL) {
-		GOL_FATALERROR(c_golErrorOutOfMemory);
+	else {
+		m_parser = new MidTxtParser();
+		if (m_parser == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
 	}
 }
 
@@ -132,7 +133,7 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f410()
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, m_parser->ReadString(), sizeof(name));
 		AddName(name, &m_unk0x5c[i]);
 		FUN_0047f2b0(&m_unk0x5c[i]);

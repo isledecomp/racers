@@ -2,6 +2,7 @@
 #define DUSKWINDBANANARELIC0x24_H
 
 #include "decomp.h"
+#include "golname.h"
 #include "types.h"
 
 class WhiteFalcon0x140;
@@ -40,7 +41,7 @@ struct DuskWindBananaRelicParams {
 
 // SIZE 0x8
 struct DuskWindName0x8 {
-	LegoChar m_unk0x0[8];
+	GolName m_unk0x0;
 };
 
 // VTABLE: GOLDP 0x10057030

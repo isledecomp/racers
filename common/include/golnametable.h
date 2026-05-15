@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golname.h"
 #include "types.h"
 
 // SIZE 0x0c
@@ -12,8 +13,8 @@ class GolNameTable {
 public:
 	// SIZE 0x0c
 	struct Entry {
-		LegoChar m_name[8]; // 0x00
-		void* m_value;      // 0x08
+		GolName m_name; // 0x00
+		void* m_value;  // 0x08
 	};
 
 	GolNameTable();

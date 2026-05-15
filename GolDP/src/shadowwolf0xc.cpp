@@ -3,6 +3,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golname.h"
 #include "igdbmodel0x40.h"
 #include "whitefalcon0x140.h"
 
@@ -85,7 +86,7 @@ void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_
 	}
 
 	for (i = 0; i < m_unk0x04; i++) {
-		char materialName[8];
+		GolName materialName;
 		::strncpy(materialName, p_parser.ReadString(), sizeof(materialName));
 		m_unk0x08[i] = m_renderer->FindMaterialByName(materialName);
 		if (m_unk0x08[i] == NULL) {

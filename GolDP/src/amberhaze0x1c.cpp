@@ -3,6 +3,7 @@
 #include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 #include "whitefalcon0x140.h"
 
 DECOMP_SIZE_ASSERT(AmberHaze0x1c, 0x1c)
@@ -70,7 +71,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 
 	LegoU32 i;
 	LegoU32 j;
-	LegoChar textureName[8];
+	GolName textureName;
 	LegoU8 fullIntensity = 0xff;
 
 	for (i = 0; i < m_numItems; i++) {
@@ -110,7 +111,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit2;
 				break;
 			case GolFileParser::e_unknown0x2c:
-				::strncpy(textureName, parser->ReadStringWithMaxLength(8), 8);
+				::strncpy(textureName, parser->ReadStringWithMaxLength(sizeOfArray(textureName)), sizeof(textureName));
 				params.m_unk0x04 = p_renderer->FindTextureByName(textureName);
 				if (params.m_unk0x04 == NULL) {
 					char message[128];

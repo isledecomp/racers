@@ -2,6 +2,7 @@
 #define RACEDEFINITIONLIST_H
 
 #include "decomp.h"
+#include "golname.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 #include "types.h"
@@ -40,10 +41,10 @@ public:
 		};
 
 		LegoBool32 m_loaded;                 // 0x00
-		LegoChar m_name[8];                  // 0x04
-		LegoChar m_menuName[8];              // 0x0c
+		GolName m_name;                      // 0x04
+		GolName m_menuName;                  // 0x0c
 		LegoU32 m_courseCount;               // 0x14
-		LegoChar m_courseNames[6][8];        // 0x18
+		GolName m_courseNames[6];            // 0x18
 		RaceNameEntry* m_raceNameEntries[4]; // 0x48
 		LegoS32 m_stringIndex;               // 0x58
 		GolStringTable* m_stringTable;       // 0x5c

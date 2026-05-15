@@ -4,6 +4,7 @@
 #include "golapp.h"
 #include "golfont0xa0.h"
 #include "golhashtable.h"
+#include "golname.h"
 #include "golstream.h"
 #include "legoracers.h"
 #include "menutoolcontext0x4bc8.h"
@@ -39,7 +40,7 @@ LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 		return FALSE;
 	}
 
-	LegoChar fontName[8];
+	GolName fontName;
 	::strncpy(fontName, "font_ths", sizeof(fontName));
 
 	GolFont0xa0* font = m_renderer->FindFontByName(fontName);

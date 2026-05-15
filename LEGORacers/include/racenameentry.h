@@ -1,6 +1,7 @@
 #ifndef RACENAMEENTRY_H
 #define RACENAMEENTRY_H
 
+#include "golname.h"
 #include "racedefinitionlist.h"
 #include "types.h"
 
@@ -34,10 +35,10 @@ private:
 	};
 
 	LegoBool32 m_loaded;                           // 0x00
-	LegoChar m_name[8];                            // 0x04
-	LegoChar m_unk0x0c[8];                         // 0x0c
-	LegoChar m_unk0x14[8];                         // 0x14
-	LegoChar m_unk0x1c[8];                         // 0x1c
+	GolName m_name;                                // 0x04
+	GolName m_unk0x0c;                             // 0x0c
+	GolName m_unk0x14;                             // 0x14
+	GolName m_unk0x1c;                             // 0x1c
 	RaceDefinitionList::RaceDefinition* m_circuit; // 0x24
 	LegoU32 m_raceDefinitionIndex;                 // 0x28
 	LegoBool32 m_unk0x2c;                          // 0x2c

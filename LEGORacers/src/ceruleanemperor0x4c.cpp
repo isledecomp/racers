@@ -2,9 +2,13 @@
 
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 #include "goltxtparser.h"
+#include "porcelainveil0x50.h"
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x90, 0x90)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x104, 0x104)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::ResourceLoadParams, 0x10)
 
 // FUNCTION: LEGORACERS 0x0046fa50
@@ -165,6 +169,46 @@ void CeruleanEmperor0x4c::VTable0x14(undefined4 p_arg1)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00470020
+void CeruleanEmperor0x4c::FUN_00470020(Entry0x90* p_entry)
+{
+	::memset(p_entry->m_unk0x00, 0xff, sizeof(p_entry->m_unk0x00));
+
+	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
+		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
+	}
+
+	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
+		LegoS32 i;
+
+		switch (m_parser->GetCurrentToken()) {
+		case GolFileParser::e_unknown0x2d:
+			p_entry->m_unk0x84 = m_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x2b:
+			for (i = 0; i < 5; i++) {
+				p_entry->m_unk0x18[i] = m_parser->ReadInteger();
+			}
+			p_entry->m_unk0x8c = TRUE;
+			break;
+		case GolFileParser::e_unknown0x2c:
+			for (i = 0; i < 6; i++) {
+				FUN_0046b1d0(&p_entry->m_unk0x24[i].m_left);
+			}
+			break;
+		case GolFileParser::e_unknown0x2a:
+			for (i = 0; i < 6; i++) {
+				FUN_0046b210(p_entry->m_unk0x00[i].m_bytes);
+			}
+			p_entry->m_unk0x88 = TRUE;
+			break;
+		default:
+			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+			break;
+		}
+	}
+}
+
 // STUB: LEGORACERS 0x004707e0
 void CeruleanEmperor0x4c::FUN_004707e0()
 {
@@ -233,4 +277,19 @@ void CeruleanEmperor0x4c::FUN_00470dc0()
 {
 	// TODO00470dc0();
 	STUB(0x00470dc0);
+}
+
+// FUNCTION: LEGORACERS 0x00470e60
+CeruleanEmperor0x4c::Entry0x90* CeruleanEmperor0x4c::FUN_00470e60(const LegoChar* p_name)
+{
+	GolName name;
+
+	::strncpy(name, p_name, sizeof(name));
+
+	Entry0x90* result = (Entry0x90*) GetName(name);
+	if (!result && m_unk0x20) {
+		return m_unk0x20->FUN_00470e60(p_name);
+	}
+
+	return result;
 }

@@ -81,7 +81,7 @@ public:
 	virtual void Reset();                                                             // vtable+0x54
 	virtual LegoBool32 VTable0x58(MenuToolCreateParams0x30*);                         // vtable+0x58
 	virtual CeruleanEmperor0x4c* GetMenuStyles();                                     // vtable+0x5c
-	virtual void VTable0x60();                                                        // vtable+0x60
+	virtual CeruleanEmperor0x4c* VTable0x60();                                        // vtable+0x60
 	virtual CeruleanQueen0x58* GetMenuInputBindings();                                // vtable+0x64
 	virtual ~ImaginaryNotion0x290();                                                  // vtable+0x68
 	virtual LegoFloat VTable0x6c();                                                   // vtable+0x6c
@@ -93,11 +93,11 @@ public:
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);
 	void FUN_0046ba60(FieldAt0x54*);
-	void FUN_0046bb10(undefined4*);
+	void FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*);
 	void FUN_0046bb90(undefined4*, undefined4);
 	void FUN_0046bc90(undefined4*, undefined4);
-	void FUN_0046bd80(undefined4*, undefined4);
-	FieldAt0x54* FUN_0046be10(undefined2);
+	CeruleanEmperor0x4c::Entry0x90* FUN_0046bd80(undefined2);
+	ObscureVantage0x58::CreateParams0x30* FUN_0046be10(undefined2);
 	void FUN_0046bea0(undefined4*, undefined2);
 	undefined4 FUN_0046bef0(ObscureVantage0x58*, undefined2, undefined2);
 	undefined4 FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2);

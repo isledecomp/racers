@@ -19,6 +19,7 @@ public:
 	virtual void VTable0x0c();               // vtable+0x0c
 	virtual void VTable0x10(undefined4) = 0; // vtable+0x10
 	virtual void VTable0x14(undefined4) = 0; // vtable+0x14
+	void* FUN_0046aff0(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x0046b070
 	// CeruleanKnight0x20::`scalar deleting destructor'

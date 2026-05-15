@@ -9,6 +9,12 @@
 // SIZE 0x50
 class PorcelainVeil0x50 : public CeruleanEmperor0x4c {
 public:
+	// VTABLE: LEGORACERS 0x004b35c8
+	// SIZE 0x1fc
+	class MidTxtParser : public GolTxtParser {
+		// Constructor is inlined; destructor thunks fold through the shared parser implementation.
+	};
+
 	PorcelainVeil0x50();
 	~PorcelainVeil0x50() override;        // vtable+0x00
 	void Clear() override;                // vtable+0x08
@@ -20,7 +26,10 @@ public:
 	// PorcelainVeil0x50::`scalar deleting destructor'
 
 private:
-	undefined* m_unk0x4c; // 0x4c
+	void FUN_00480760(Entry0x104* p_entry);
+	void FUN_004808f0();
+
+	Entry0x104* m_unk0x4c; // 0x4c
 };
 
 #endif // PORCELAINVEIL0X50_H

@@ -7,6 +7,7 @@
 #include "golcommondrawstate.h"
 #include "goldrawstate.h"
 #include "golfonttable.h"
+#include "golname.h"
 #include "golstream.h"
 #include "golstring.h"
 #include "golstringtable.h"
@@ -344,7 +345,7 @@ void ImaginaryNotion0x290::FUN_0046ba60(FieldAt0x54*)
 }
 
 // STUB: LEGORACERS 0x0046bb10
-void ImaginaryNotion0x290::FUN_0046bb10(undefined4*)
+void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*)
 {
 	// TODO
 	STUB(0x0046bb10);
@@ -364,19 +365,26 @@ void ImaginaryNotion0x290::FUN_0046bc90(undefined4*, undefined4)
 	STUB(0x0046bc90);
 }
 
-// STUB: LEGORACERS 0x0046bd80
-void ImaginaryNotion0x290::FUN_0046bd80(undefined4*, undefined4)
+// FUNCTION: LEGORACERS 0x0046bd80
+CeruleanEmperor0x4c::Entry0x90* ImaginaryNotion0x290::FUN_0046bd80(undefined2 p_unk0x04)
 {
-	// TODO
-	STUB(0x0046bd80);
+	GolString string;
+	GolName name;
+
+	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
+	string.CopyToBuf8(name);
+	return VTable0x60()->FUN_00470e60(name);
 }
 
-// STUB: LEGORACERS 0x0046be10
-ImaginaryNotion0x290::FieldAt0x54* ImaginaryNotion0x290::FUN_0046be10(undefined2)
+// FUNCTION: LEGORACERS 0x0046be10
+ObscureVantage0x58::CreateParams0x30* ImaginaryNotion0x290::FUN_0046be10(undefined2 p_unk0x04)
 {
-	// TODO
-	STUB(0x0046be10);
-	return NULL;
+	GolString string;
+	GolName name;
+
+	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
+	string.CopyToBuf8(name);
+	return (ObscureVantage0x58::CreateParams0x30*) GetMenuInputBindings()->FUN_0046aff0(name);
 }
 
 // STUB: LEGORACERS 0x0046bea0
@@ -466,7 +474,7 @@ void ImaginaryNotion0x290::FUN_0046c510(undefined4*, undefined4, undefined2)
 // FUNCTION: LEGORACERS 0x0046c5b0
 undefined4 ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08)
 {
-	FieldAt0x54* params = FUN_0046be10(p_unk0x08);
+	FieldAt0x54* params = (FieldAt0x54*) FUN_0046be10(p_unk0x08);
 	if (!params) {
 		return 0;
 	}
@@ -539,11 +547,15 @@ CeruleanEmperor0x4c* ImaginaryNotion0x290::GetMenuStyles()
 	return &m_unk0x08;
 }
 
-// STUB: LEGORACERS 0x0046c820 FOLDED
-void ImaginaryNotion0x290::VTable0x60()
+// FUNCTION: LEGORACERS 0x0046c820 FOLDED
+CeruleanEmperor0x4c* ImaginaryNotion0x290::VTable0x60()
 {
-	// TODO
-	STUB(0x0046c820);
+	CeruleanEmperor0x4c* styles = GetMenuStyles();
+	if (!styles->GetNameEntries()) {
+		return m_menuStyles;
+	}
+
+	return styles;
 }
 
 // FUNCTION: LEGORACERS 0x0046c840

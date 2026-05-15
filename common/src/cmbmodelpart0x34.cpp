@@ -3,6 +3,7 @@
 #include "cmbmodelpartdata0x28.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 
 DECOMP_SIZE_ASSERT(CmbModelPart0x34, 0x34)
 
@@ -142,7 +143,7 @@ void CmbModelPart0x34::VTable0x10(GolFileParser& p_parser)
 			p_parser.HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		}
 
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, p_parser.ReadString(), sizeOfArray(name));
 		AddName(name, &m_unk0x2c[i]);
 		m_unk0x2c[i].FUN_10018670(p_parser);

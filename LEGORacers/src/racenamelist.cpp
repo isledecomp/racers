@@ -2,6 +2,7 @@
 
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 
 #include <memory.h>
 #include <string.h>
@@ -54,7 +55,7 @@ void RaceNameEntry::Load(
 	m_loaded = TRUE;
 
 	GolFileParser::ParserTokenType token;
-	LegoChar circuitName[8];
+	GolName circuitName;
 	while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case c_tokenRaceDefinitionIndex:
@@ -155,7 +156,7 @@ void RaceNameList::Load(
 	for (LegoU32 i = 0; i < m_entryCount; i++) {
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_tokenRaceName));
 
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		parser->ReadLeftCurly();
 		AddName(name, &m_entries[i]);

@@ -2,6 +2,7 @@
 
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golname.h"
 
 #include <string.h>
 
@@ -140,7 +141,7 @@ void RaceDefinitionList::Load(GolStringTable* p_stringTable, const LegoChar* p_f
 	for (LegoU32 i = 0; i < m_entryCount; i++) {
 		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_tokenRaceDefinition));
 
-		LegoChar name[8];
+		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 		parser->ReadLeftCurly();
 		AddName(name, &m_entries[i]);

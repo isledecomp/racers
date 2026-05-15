@@ -2,6 +2,7 @@
 #define LAVENDERVAULT0X764_H
 
 #include "decomp.h"
+#include "golname.h"
 #include "goltxtparser.h"
 #include "types.h"
 
@@ -51,31 +52,31 @@ private:
 	LegoS32 m_countTorsos;               // 0x00c
 	LegoS32 m_countLegs;                 // 0x010
 	LegoS32 m_unk0x014;                  // 0x014
-	LegoChar m_hatNames[40][8];          // 0x018
+	GolName m_hatNames[40];              // 0x018
 	undefined m_unk0x158[40];            // 0x158
 	LegoChar m_unk0x180[0x188 - 0x180];  // 0x180
 	LegoChar m_faceNames[30][4];         // 0x188
 	LegoChar m_faceExpressions[6][6];    // 0x200
 	undefined m_unk0x224[30];            // 0x224
-	LegoChar m_unk0x242[2][8];           // 0x242
-	LegoChar m_torsoNames[30][8];        // 0x252
+	GolName m_unk0x242[2];               // 0x242
+	GolName m_torsoNames[30];            // 0x252
 	undefined m_unk0x342[0x344 - 0x342]; // 0x342
 	undefined4 m_unk0x344[30];           // 0x344
 	undefined m_unk0x3bc[30];            // 0x3bc
-	LegoChar m_unk0x3da[2][8];           // 0x3da
-	LegoChar m_legNames[30][8];          // 0x3ea
+	GolName m_unk0x3da[2];               // 0x3da
+	GolName m_legNames[30];              // 0x3ea
 	undefined m_unk0x4da[0x4dc - 0x4da]; // 0x4da
 	undefined4 m_unk0x4dc[30];           // 0x4dc
 	undefined m_unk0x554[30];            // 0x554
-	LegoChar m_headHatNames[40][8];      // 0x572
-	LegoChar m_unk0x6b2[2][8];           // 0x6b2
+	GolName m_headHatNames[40];          // 0x572
+	GolName m_unk0x6b2[2];               // 0x6b2
 	undefined m_unk0x6c2[0x6da - 0x6c2]; // 0x6c2
 	LegoChar m_unk0x6da[13];             // 0x6da
 	LegoChar m_unk0x6e7[13];             // 0x6e7
 	LegoChar m_unk0x6f4[13];             // 0x6f4
 	LegoChar m_unk0x701[32];             // 0x701
 	LegoChar m_unk0x721[32];             // 0x721
-	LegoChar m_unk0x741[4][8];           // 0x741
+	GolName m_unk0x741[4];               // 0x741
 	undefined m_unk0x761[0x763 - 0x761]; // 0x761
 };
 

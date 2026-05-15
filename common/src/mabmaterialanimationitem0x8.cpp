@@ -2,6 +2,7 @@
 
 #include "decomp.h"
 #include "golerror.h"
+#include "golname.h"
 #include "whitefalcon0x140.h"
 
 #include <string.h>
@@ -25,8 +26,8 @@ void MabMaterialAnimationItem0x8::FUN_10026110(WhiteFalcon0x140* p_renderer, con
 		LegoChar message[40];
 		::strcpy(message, "Unable to find named material: ");
 		size_t lenPrefix = strlen(message);
-		::strncpy(message + lenPrefix, p_name, 8);
-		message[lenPrefix + 8] = '\0';
+		::strncpy(message + lenPrefix, p_name, sizeof(GolName));
+		message[lenPrefix + sizeof(GolName)] = '\0';
 		GOL_FATALERROR_MESSAGE(message);
 	}
 

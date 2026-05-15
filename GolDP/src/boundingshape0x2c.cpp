@@ -113,8 +113,8 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 
 		if (type == GolFileParser::e_unknown0x28) {
 			obj->m_type = StructField0x08::e_type0;
-			obj->m_unk0x04.t0.m_unk0x10 = 0;
-			obj->m_unk0x04.t0.m_unk0x14 = 0;
+			obj->m_unk0x04.m_t0.m_unk0x10 = 0;
+			obj->m_unk0x04.m_t0.m_unk0x14 = 0;
 
 			if (p_parser.ReadInteger() < 0) {
 				obj->m_unk0x02 = StructField0x08::c_invalidIndex;
@@ -125,26 +125,26 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 			}
 
 			if (p_parser.ReadInteger() < 0) {
-				obj->m_unk0x04.t0.m_unk0x18 = StructField0x08::c_invalidIndex;
+				obj->m_unk0x04.m_t0.m_unk0x18 = StructField0x08::c_invalidIndex;
 			}
 			else {
-				obj->m_unk0x04.t0.m_unk0x18 = p_parser.GetLastInt();
+				obj->m_unk0x04.m_t0.m_unk0x18 = p_parser.GetLastInt();
 			}
 
 			if (p_parser.ReadInteger() < 0) {
-				obj->m_unk0x04.t0.m_unk0x1a = StructField0x08::c_invalidIndex;
-				if (obj->m_unk0x04.t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+				obj->m_unk0x04.m_t0.m_unk0x1a = StructField0x08::c_invalidIndex;
+				if (obj->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_unsuported);
 				}
 			}
 			else {
-				obj->m_unk0x04.t0.m_unk0x1a = p_parser.GetLastInt();
+				obj->m_unk0x04.m_t0.m_unk0x1a = p_parser.GetLastInt();
 			}
 
-			obj->m_unk0x04.t0.m_unk0x00 = p_parser.ReadFloat();
-			obj->m_unk0x04.t0.m_unk0x04 = p_parser.ReadFloat();
-			obj->m_unk0x04.t0.m_unk0x08 = p_parser.ReadFloat();
-			obj->m_unk0x04.t0.m_unk0x0c = p_parser.ReadFloat();
+			obj->m_unk0x04.m_t0.m_unk0x00 = p_parser.ReadFloat();
+			obj->m_unk0x04.m_t0.m_unk0x04 = p_parser.ReadFloat();
+			obj->m_unk0x04.m_t0.m_unk0x08 = p_parser.ReadFloat();
+			obj->m_unk0x04.m_t0.m_unk0x0c = p_parser.ReadFloat();
 		}
 		else if (type == GolFileParser::e_unknown0x29) {
 			obj->m_type = StructField0x08::e_type1;
@@ -157,11 +157,11 @@ void BoundingShape0x2c::FUN_1001b010(GolFileParser& p_parser)
 				obj->m_unk0x02 = p_parser.GetLastInt();
 			}
 
-			obj->m_unk0x04.t1.m_unk0x00 = p_parser.ReadInteger();
-			obj->m_unk0x04.t1.m_unk0x04 = p_parser.ReadInteger();
-			obj->m_unk0x04.t1.m_unk0x18 = p_parser.ReadInteger();
-			obj->m_unk0x04.t1.m_unk0x14 = p_parser.ReadInteger();
-			obj->m_unk0x04.t1.m_unk0x16 = p_parser.ReadInteger();
+			obj->m_unk0x04.m_t1.m_unk0x00 = p_parser.ReadInteger();
+			obj->m_unk0x04.m_t1.m_unk0x04 = p_parser.ReadInteger();
+			obj->m_unk0x04.m_t1.m_unk0x18 = p_parser.ReadInteger();
+			obj->m_unk0x04.m_t1.m_unk0x14 = p_parser.ReadInteger();
+			obj->m_unk0x04.m_t1.m_unk0x16 = p_parser.ReadInteger();
 		}
 		else {
 			p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);

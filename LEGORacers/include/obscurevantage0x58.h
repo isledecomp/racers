@@ -62,6 +62,7 @@ public:
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
+	Rect* FUN_00472c80(Rect*, Rect*);
 	Rect* FUN_00472d00(GolFontBase0x40*, GolString*, Rect*, Rect*, LegoS32);
 	undefined2 FUN_00472da0(Rect*, Rect*, GolFontBase0x40*, GolString*, LegoS32, LegoS32);
 	Rect* FUN_00473160(Rect*);
@@ -86,14 +87,17 @@ protected:
 	GolExport* m_golExport;            // 0x20
 	BronzeFalcon0xc8770* m_renderer;   // 0x24
 	ImaginaryInterface* m_unk0x28;     // 0x28
-	ColorRGBA m_unk0x2c;               // 0x2c
-	undefined2 m_unk0x30;              // 0x30
-	Rect m_unk0x34;                    // 0x34
-	LegoFloat m_unk0x44;               // 0x44
-	LegoFloat m_unk0x48;               // 0x48
-	LegoS32 m_unk0x4c;                 // 0x4c
-	LegoS32 m_unk0x50;                 // 0x50
-	undefined m_unk0x54;               // 0x54
+	union {
+		ColorRGBA m_color;     // 0x2c
+		LegoU32 m_colorPacked; // 0x2c
+	};
+	undefined2 m_unk0x30; // 0x30
+	Rect m_unk0x34;       // 0x34
+	LegoFloat m_unk0x44;  // 0x44
+	LegoFloat m_unk0x48;  // 0x48
+	LegoS32 m_unk0x4c;    // 0x4c
+	LegoS32 m_unk0x50;    // 0x50
+	undefined m_unk0x54;  // 0x54
 
 protected:
 	LegoBool32 FUN_00472a60(CreateParams0x30* p_createParams);

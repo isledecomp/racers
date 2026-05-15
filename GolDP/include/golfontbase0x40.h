@@ -69,6 +69,8 @@ public:
 		m_color = color;
 	}
 
+	void SetColor(LegoU32 p_color) { m_colorPacked = p_color; }
+
 protected:
 	// SIZE 0x0c
 	struct Glyph0x0c {
@@ -95,7 +97,10 @@ protected:
 	undefined m_unk0x31[0x34 - 0x31]; // 0x31
 	undefined4 m_unk0x34;             // 0x34
 	undefined4 m_unk0x38;             // 0x38
-	ColorRGBA m_color;                // 0x3c
+	union {
+		ColorRGBA m_color;     // 0x3c
+		LegoU32 m_colorPacked; // 0x3c
+	};
 };
 
 #endif // GOLFONTBASE0X40_H

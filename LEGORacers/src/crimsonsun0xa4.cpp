@@ -165,28 +165,30 @@ CrimsonSun0xa4::FieldAt0x6c8::~FieldAt0x6c8()
 // FUNCTION: LEGORACERS 0x0046f8d0
 void CrimsonSun0xa4::FieldAt0x6c8::VTable0x40(GolString* p_string, undefined4 p_unk0x08)
 {
-	m_unk0x64.CopyFromGolString(p_string);
+	GolString* originalString = p_string;
+	LegoS32 width;
+	LegoS32 height;
+	LegoFloat heightFloat;
+
+	m_unk0x64.CopyFromGolString(originalString);
 	if (m_unk0x34.m_right) {
-		LegoS32 width;
-		LegoS32 height;
 		m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
 
 		if (width < m_unk0x34.m_right - m_unk0x34.m_left) {
 			m_unk0x74 = FALSE;
-			ImaginaryDrillFieldAt0x420::VTable0x40(p_string, p_unk0x08);
+			ImaginaryDrillFieldAt0x420::VTable0x40(originalString, p_unk0x08);
 			return;
 		}
 	}
 
-	LegoS32 width;
-	LegoS32 height;
 	m_unk0x74 = TRUE;
 	m_unk0x60->FUN_00408d50(&m_unk0x64, m_unk0x70, 0, m_unk0x44, m_unk0x48, &width, &height);
 
 	if (m_unk0x34.m_right && m_unk0x34.m_bottom && !p_unk0x08) {
 		LegoS32 bottom = m_unk0x34.m_bottom - m_unk0x34.m_top;
 		if (static_cast<LegoU32>(height) > static_cast<LegoU32>(bottom)) {
-			m_unk0x48 = (LegoFloat) bottom / (LegoFloat) height;
+			heightFloat = static_cast<LegoFloat>(height);
+			m_unk0x48 = static_cast<LegoFloat>(bottom) / heightFloat;
 		}
 	}
 	else {

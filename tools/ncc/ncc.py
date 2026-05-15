@@ -155,7 +155,7 @@ class VariableNameRule(object):
             return self.scope_prefix_rule.global_prefix
         elif (scope is CursorKind.CLASS_DECL) or (scope is CursorKind.CLASS_TEMPLATE):
             return self.scope_prefix_rule.class_member_prefix
-        elif (scope is CursorKind.STRUCT_DECL):
+        elif (scope is CursorKind.STRUCT_DECL) or (scope is CursorKind.UNION_DECL):
             return self.scope_prefix_rule.struct_member_prefix
         return ""
 

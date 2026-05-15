@@ -33,7 +33,7 @@ public:
 				undefined4 m_unk0x14;
 				LegoU16 m_unk0x18;
 				LegoU16 m_unk0x1a;
-			} t0;
+			} m_t0;
 			struct {
 				undefined4 m_unk0x00;
 				undefined4 m_unk0x04;
@@ -44,7 +44,7 @@ public:
 				undefined2 m_unk0x16;
 				undefined2 m_unk0x18;
 				undefined m_unk0x1a[0x1c - 0x1a];
-			} t1;
+			} m_t1;
 		} m_unk0x04;
 	};
 	// SIZE 0x18

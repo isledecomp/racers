@@ -1,18 +1,7 @@
 LONG_PTR: 'Win32 SDK typedef shim for MSVC 6.0'
-m_sound: "Can't currently detect member in union"
-m_streamingSound: "Can't currently detect member in union"
-m_soundInstance: "Can't currently detect member in union"
-m_streamingSoundInstance: "Can't currently detect member in union"
-m_adpcmHeader: "Can't currently detect member in union"
-m_streamBuffer: "Can't currently detect member in union"
 c_332RedLevels: 'Allow constant'
 c_332GreenLevels: 'Allow constant'
 c_332BlueLevels: 'Allow constant'
 c_332GreenStride: 'Allow constant'
 c_332RedStride: 'Allow constant'
 STDMETHODCALLTYPE: 'Allow macro'
-m_guid: "Can't currently detect member in union"
-m_words: "Can't currently detect member in union"
-m_unk0x00: "Can't currently detect member in union"
-m_bytes: "Can't currently detect member in union"
-m_color: "Can't currently detect member in union"

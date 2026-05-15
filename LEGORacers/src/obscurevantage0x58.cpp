@@ -210,7 +210,7 @@ undefined4 ObscureVantage0x58::FUN_00472c40(LegoS32 p_x, LegoS32 p_y)
 }
 
 // FUNCTION: LEGORACERS 0x00472c80
-static Rect* __stdcall FUN_00472c80(Rect* p_source, Rect* p_dest)
+Rect* ObscureVantage0x58::FUN_00472c80(Rect* p_source, Rect* p_dest)
 {
 	LegoS32 sourceLeft = p_source->m_left;
 	LegoU32 sourceHeight = p_source->m_bottom - p_source->m_top;
@@ -277,7 +277,8 @@ undefined2 ObscureVantage0x58::FUN_00472da0(
 	LegoS32 p_unk0x18
 )
 {
-	p_font->SetColor(m_unk0x2c.m_red, m_unk0x2c.m_grn, m_unk0x2c.m_blu, m_unk0x2c.m_alp);
+	LegoU32 color = m_colorPacked;
+	p_font->SetColor(color);
 
 	if (p_wrapWidth) {
 		return p_font->FUN_00408fe0(
@@ -290,16 +291,23 @@ undefined2 ObscureVantage0x58::FUN_00472da0(
 			m_unk0x44,
 			m_unk0x48,
 			p_dest,
-			&m_unk0x2c,
+			&m_color,
 			p_unk0x18
 		);
 	}
 
-	LegoS32 x = p_source->m_left;
 	LegoS32 y = p_source->m_top;
-	LegoFloat width = static_cast<LegoFloat>(p_source->m_right - x);
-	LegoFloat height = static_cast<LegoFloat>(p_source->m_bottom - y);
-	return m_renderer->VTable0x6c(p_string, p_font, x, y, width, height, p_dest, 0);
+	LegoS32 x = p_source->m_left;
+	return m_renderer->VTable0x6c(
+		p_string,
+		p_font,
+		x,
+		y,
+		static_cast<LegoFloat>(p_source->m_right - x),
+		static_cast<LegoFloat>(p_source->m_bottom - y),
+		p_dest,
+		0
+	);
 }
 
 // FUNCTION: LEGORACERS 0x00472e40
@@ -373,7 +381,7 @@ void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x00472fc0
 void ObscureVantage0x58::VTable0x14(VisualState0x4* p_param)
 {
-	m_unk0x2c = p_param->m_color;
+	m_color = p_param->m_color;
 }
 
 // FUNCTION: LEGORACERS 0x004730a0

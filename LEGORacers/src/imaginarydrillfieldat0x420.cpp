@@ -49,8 +49,8 @@ void ImaginaryDrillFieldAt0x420::VTable0x40(GolString* p_string, undefined4 p_un
 		m_unk0x34.m_bottom = m_unk0x34.m_top;
 		m_unk0x34.m_right = m_unk0x34.m_left;
 
-		LegoS32 width;
 		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
+			LegoS32 width;
 			LegoS32 height;
 			m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
 
@@ -72,7 +72,8 @@ void ImaginaryDrillFieldAt0x420::VTable0x40(GolString* p_string, undefined4 p_un
 undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 lineCount = m_unk0x64.CountLines();
-	LegoFloat lineHeight = (LegoFloat) (m_unk0x34.m_bottom - m_unk0x34.m_top) / (LegoFloat) lineCount;
+	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
+	LegoFloat lineHeight = static_cast<LegoFloat>(m_unk0x34.m_bottom - m_unk0x34.m_top) / lineCountFloat;
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 	LegoFloat lineBottom = 0.0f;
@@ -80,7 +81,7 @@ undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 	m_unk0x64.FirstLine();
 	if (lineCount > 0) {
 		LegoS32 lineTop = 0;
-		while (lineCount) {
+		for (; lineCount > 0; lineCount--) {
 			Rect source;
 			source.m_left = 0;
 			source.m_top = lineTop;
@@ -98,7 +99,6 @@ undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 			dest.m_bottom += yOffset;
 			FUN_00472da0(&dest, p_arg, m_unk0x60, &m_unk0x64, 0, 0);
 			m_unk0x64.NextLine();
-			lineCount--;
 		}
 	}
 

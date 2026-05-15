@@ -631,37 +631,37 @@ undefined4 ObscureIcon0x1a8::VTable0x3c(undefined4 p_elapsedMs)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00472790
+// FUNCTION: LEGORACERS 0x00472790
 undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 {
-	LegoU8 flags = m_flags;
 	LegoU8 flag = 8;
 
 	if (!m_parentIcon) {
-		if (!(flag & flags)) {
+		if (!(flag & m_flags)) {
 			return 0;
 		}
 	}
-	else if (!(flag & flags)) {
-		if (!VTable0x5c()) {
-			return 0;
-		}
 
-		VTable0x4c(0);
-
-		if (m_unk0x198 || m_firstIcon) {
-			return 0;
-		}
-
+	if (flag & m_flags) {
 		if (m_unk0x28) {
-			m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
+			m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
 		}
 
 		return (undefined4) this;
 	}
 
+	if (!VTable0x5c()) {
+		return 0;
+	}
+
+	VTable0x4c(0);
+
+	if (m_unk0x198 || m_firstIcon) {
+		return 0;
+	}
+
 	if (m_unk0x28) {
-		m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
+		m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
 	}
 
 	return (undefined4) this;
@@ -717,17 +717,17 @@ undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, un
 // STUB: LEGORACERS 0x004728e0
 undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
-	undefined4 activeKey = m_unk0x1a0;
-	undefined4 keyCode = p_item->m_keyCode;
-	undefined4 eventType = keyCode & InputDevice::c_sourceMask;
+	LegoU32 keyCode = p_item->m_keyCode;
+	LegoU32 eventType = InputDevice::GetKeySource(keyCode);
+	LegoU32 activeKey = m_unk0x1a0;
 
 	if (keyCode != activeKey) {
 		return 0;
 	}
 
+	LegoBool32 isMouse = eventType == InputDevice::c_sourceMouse;
 	m_unk0x1a0 = 0;
-
-	if (eventType == InputDevice::c_sourceMouse) {
+	if (isMouse) {
 		if (!FUN_00472c40(p_x, p_y) && (m_unk0x12c & c_flagBit2)) {
 			VTable0x58(1);
 			return (undefined4) this;

@@ -118,7 +118,7 @@ protected:
 	ObscureIcon0x1a8* m_unk0x198;           // 0x198
 	LegoU8 m_unk0x19c;                      // 0x19c
 	undefined m_unk0x19d[0x1a0 - 0x19d];    // 0x19d
-	undefined4 m_unk0x1a0;                  // 0x1a0
+	LegoU32 m_unk0x1a0;                     // 0x1a0
 	undefined4 m_unk0x1a4;                  // 0x1a4
 };
 

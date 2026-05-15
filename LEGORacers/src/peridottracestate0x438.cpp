@@ -131,12 +131,12 @@ void PeridotTraceState0x438::InitializeInputBindings(InputManager* p_inputManage
 
 		if (joystick != NULL) {
 			if (joystick->GetDeviceSubType() == 4) {
-				entry->m_events[0] = InputDevice::c_sourceJoystick2 | 1;
-				entry->m_events[1] = InputDevice::c_sourceJoystick2;
+				entry->m_events[0] = InputDevice::c_sourceJoystickAxisButton | 1;
+				entry->m_events[1] = InputDevice::c_sourceJoystickAxisButton;
 			}
 
 			for (LegoS32 button = 2; button < joystick->GetButtonCountFast(); button++) {
-				entry->m_events[button] = InputDevice::c_sourceJoystick1 | (button - 2);
+				entry->m_events[button] = InputDevice::c_sourceJoystickButton | (button - 2);
 			}
 		}
 	}

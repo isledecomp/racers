@@ -71,8 +71,8 @@ public:
 	enum {
 		c_sourceKeyboard = 0x10000000,
 		c_sourceMouse = 0x20000000,
-		c_sourceJoystick1 = 0x30000000,
-		c_sourceJoystick2 = 0x40000000,
+		c_sourceJoystickButton = 0x30000000,
+		c_sourceJoystickAxisButton = 0x40000000,
 		c_sourceMask = 0xf0000000,
 		c_keyCodeMask = 0x0000ffff,
 		c_pressed = 0x80,

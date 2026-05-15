@@ -82,7 +82,7 @@ void InputDevice::ReleasePressedButtons()
 		flag = c_sourceKeyboard;
 		break;
 	case DIDEVTYPE_JOYSTICK:
-		flag = c_sourceJoystick1;
+		flag = c_sourceJoystickButton;
 		break;
 	}
 
@@ -201,11 +201,11 @@ void InputDevice::DispatchAxisButtonStateChanges(LegoFloat p_newValue, LegoFloat
 	}
 
 	if (pressedEvent >= 0) {
-		SetButtonState(pressedEvent | c_sourceJoystick2, TRUE, TRUE);
+		SetButtonState(pressedEvent | c_sourceJoystickAxisButton, TRUE, TRUE);
 	}
 
 	if (releasedEvent >= 0) {
-		SetButtonState(releasedEvent | c_sourceJoystick2, FALSE, TRUE);
+		SetButtonState(releasedEvent | c_sourceJoystickAxisButton, FALSE, TRUE);
 	}
 }
 
@@ -228,7 +228,7 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 		source = c_sourceKeyboard;
 		break;
 	case DIDEVTYPE_JOYSTICK:
-		source = c_sourceJoystick1;
+		source = c_sourceJoystickButton;
 		break;
 	}
 
@@ -244,8 +244,8 @@ void InputDevice::DispatchRepeatEvents(LegoS32 p_elapsedMs)
 
 	if (m_axisButtonEventsEnabled) {
 		for (i = 0; i < (LegoS32) (GetAxisCount() << 1); i++) {
-			if (GetButtonState(i | c_sourceJoystick2)) {
-				undefined4 keyCode = c_sourceJoystick2 | m_axisMapping[i];
+			if (GetButtonState(i | c_sourceJoystickAxisButton)) {
+				undefined4 keyCode = c_sourceJoystickAxisButton | m_axisMapping[i];
 				m_callback->OnKeyRepeat(this, keyCode, m_currentTimeMs);
 				repeatCount++;
 			}

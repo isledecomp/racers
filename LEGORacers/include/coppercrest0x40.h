@@ -2,6 +2,7 @@
 #define COPPERCREST0X40_H
 
 #include "decomp.h"
+#include "input/inputdevice.h"
 #include "onyxcircularbuffer0x1c.h"
 #include "silverdune0x30.h"
 #include "types.h"
@@ -28,11 +29,11 @@ public:
 		c_keyboardRightControl = 0x1000009d,
 		c_keyboardUp = 0x100000c8,
 		c_keyboardDown = 0x100000d0,
-		c_joystick1Button1 = 0x30000001,
-		c_joystick1Button6 = 0x30000006,
-		c_joystick1Button8 = 0x30000008,
-		c_joystick2Button2 = 0x40000002,
-		c_joystick2Button3 = 0x40000003
+		c_joystickButton1 = InputDevice::c_sourceJoystickButton | 0x1,
+		c_joystickButton6 = InputDevice::c_sourceJoystickButton | 0x6,
+		c_joystickButton8 = InputDevice::c_sourceJoystickButton | 0x8,
+		c_joystickAxisButton2 = InputDevice::c_sourceJoystickAxisButton | 0x2,
+		c_joystickAxisButton3 = InputDevice::c_sourceJoystickAxisButton | 0x3
 	};
 
 	// SIZE 0x18

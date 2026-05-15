@@ -331,20 +331,20 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 				}
 				break;
 			case c_keyboardDown:
-			case c_joystick1Button8:
-			case c_joystick2Button2:
+			case c_joystickButton8:
+			case c_joystickAxisButton2:
 				if (item->m_isPressed) {
 					VTable0x14();
 				}
 				break;
 			case c_keyboardUp:
-			case c_joystick1Button6:
-			case c_joystick2Button3:
+			case c_joystickButton6:
+			case c_joystickAxisButton3:
 				if (item->m_isPressed) {
 					VTable0x18();
 				}
 				break;
-			case c_joystick1Button1:
+			case c_joystickButton1:
 				break;
 			default:
 				ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();

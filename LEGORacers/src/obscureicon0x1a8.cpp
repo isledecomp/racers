@@ -1,6 +1,7 @@
 #include "obscureicon0x1a8.h"
 
 #include "audio/soundgroupbinding.h"
+#include "input/inputdevice.h"
 
 #include <string.h>
 
@@ -22,11 +23,9 @@ LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 }
 
 // STUB: LEGORACERS 0x004676c0
-undefined4 ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
+undefined4 ObscureIcon0x1a8::VTable0x38(Rect* p_rect1, Rect* p_rect2)
 {
-	// TODO
-	STUB(0x004676c0);
-	return 0;
+	return ObscureVantage0x58::VTable0x38(p_rect1, p_rect2);
 }
 
 // FUNCTION: LEGORACERS 0x00471c30
@@ -193,7 +192,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f70()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00471f90
+// FUNCTION: LEGORACERS 0x00471f90
 ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f90()
 {
 	ObscureIcon0x1a8* result = FUN_00471f70();
@@ -205,20 +204,21 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f90()
 
 	do {
 		result = child;
-		child = result->m_unk0x198;
-	} while (child);
+	} while ((child = result->m_unk0x198));
 
 	return result;
 }
 
-// STUB: LEGORACERS 0x00471fb0
+// FUNCTION: LEGORACERS 0x00471fb0
 void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 {
-	LegoU8 skipParentLink = (LegoU8) p_flags & 2;
 	ObscureIcon0x1a8* icon = this;
+	LegoU8 skipParentLink;
 
 	if (icon) {
-		do {
+		skipParentLink = (LegoU8) p_flags & 2;
+
+		for (; icon; icon = icon->m_parentIcon) {
 			icon->m_unk0x12c |= c_flagBit1;
 			FUN_00472080();
 
@@ -229,23 +229,26 @@ void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 				}
 			}
 
-			if (!skipParentLink && icon->m_parentIcon) {
-				icon->m_parentIcon->m_unk0x198 = icon;
+			if (skipParentLink) {
+				break;
 			}
 
-			icon = icon->m_parentIcon;
-		} while (icon);
+			if (icon->m_parentIcon) {
+				icon->m_parentIcon->m_unk0x198 = icon;
+			}
+		}
 	}
 }
 
-// STUB: LEGORACERS 0x00472010
+// FUNCTION: LEGORACERS 0x00472010
 void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 {
-	LegoU8 skipParentLink = (LegoU8) p_flags & 2;
 	ObscureIcon0x1a8* icon = this;
 
 	if (icon) {
-		do {
+		LegoU8 skipParentLink = (LegoU8) p_flags & 2;
+
+		for (; icon; icon = icon->m_parentIcon) {
 			icon->m_unk0x12c &= ~c_flagBit1;
 			FUN_00472080();
 
@@ -256,12 +259,14 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 				}
 			}
 
-			if (!skipParentLink && icon->m_parentIcon) {
-				icon->m_parentIcon->m_unk0x198 = NULL;
+			if (skipParentLink) {
+				break;
 			}
 
-			icon = icon->m_parentIcon;
-		} while (icon);
+			if (icon->m_parentIcon) {
+				icon->m_parentIcon->m_unk0x198 = NULL;
+			}
+		}
 	}
 }
 
@@ -589,36 +594,148 @@ void ObscureIcon0x1a8::FUN_00472540()
 	}
 }
 
-// STUB: LEGORACERS 0x00472680
-undefined4 ObscureIcon0x1a8::VTable0x3c(undefined4)
+// FUNCTION: LEGORACERS 0x00472680
+undefined4 ObscureIcon0x1a8::VTable0x3c(undefined4 p_elapsedMs)
 {
-	// TODO
-	STUB(0x00472680);
+	if (!(m_unk0x54 & 1)) {
+		return 0;
+	}
+
+	if (!m_unk0x134) {
+		m_unk0x54 &= ~1;
+
+		m_unk0x34 = m_unk0xcc[m_unk0x19c];
+		m_unk0x138 = 0.0f;
+		return 0;
+	}
+
+	if ((undefined4) m_unk0x134 < p_elapsedMs) {
+		p_elapsedMs = m_unk0x134;
+	}
+
+	LegoFloat elapsedFloat = (LegoFloat) (LegoS32) p_elapsedMs;
+	m_unk0x134 -= p_elapsedMs;
+	LegoFloat delta = m_unk0x138;
+	m_unk0x148 += delta * elapsedFloat;
+	delta = m_unk0x13c;
+	m_unk0x14c += delta * elapsedFloat;
+	delta = m_unk0x140;
+	m_unk0x150 += delta * elapsedFloat;
+	delta = m_unk0x144;
+	m_unk0x154 += delta * elapsedFloat;
+	m_unk0x34.m_top = (LegoS32) m_unk0x148;
+	m_unk0x34.m_bottom = (LegoS32) m_unk0x14c;
+	m_unk0x34.m_left = (LegoS32) m_unk0x150;
+	m_unk0x34.m_right = (LegoS32) m_unk0x154;
+
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00472790
-undefined4 ObscureIcon0x1a8::VTable0x2c(void*, undefined4, undefined4)
+undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 {
-	// TODO
-	STUB(0x00472790);
-	return 0;
+	LegoU8 flags = m_flags;
+	LegoU8 flag = 8;
+
+	if (!m_parentIcon) {
+		if (!(flag & flags)) {
+			return 0;
+		}
+	}
+	else if (!(flag & flags)) {
+		if (!VTable0x5c()) {
+			return 0;
+		}
+
+		VTable0x4c(0);
+
+		if (m_unk0x198 || m_firstIcon) {
+			return 0;
+		}
+
+		if (m_unk0x28) {
+			m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
+		}
+
+		return (undefined4) this;
+	}
+
+	if (m_unk0x28) {
+		m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
+	}
+
+	return (undefined4) this;
 }
 
-// STUB: LEGORACERS 0x00472820
-undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00472820
+undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
-	// TODO
-	STUB(0x00472820);
+	LegoU32 keyCode = p_item->m_keyCode;
+	LegoU32 eventType = keyCode & InputDevice::c_sourceMask;
+	LegoU8 stateFlags = m_unk0x12c;
+	LegoBool32 activate = FALSE;
+
+	if (stateFlags & c_flagBit0) {
+		if (!m_unk0x1a0 || m_unk0x1a0 == keyCode) {
+			if ((stateFlags & c_flagBit2) || !p_item->m_isRepeat) {
+				if (keyCode == m_unk0x1a4) {
+					activate = TRUE;
+				}
+				else if (stateFlags & c_flagBit1) {
+					switch (eventType) {
+					case InputDevice::c_sourceKeyboard:
+						if (keyCode == (InputDevice::c_sourceKeyboard | 0x1c) ||
+							keyCode == (InputDevice::c_sourceKeyboard | 0x39)) {
+							activate = TRUE;
+						}
+						break;
+					case InputDevice::c_sourceMouse:
+						if (FUN_00472c40(p_x, p_y)) {
+							activate = TRUE;
+						}
+						break;
+					case InputDevice::c_sourceJoystickButton:
+						if (keyCode == (InputDevice::c_sourceJoystickButton | 0x4)) {
+							activate = TRUE;
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
+	if (activate && !(m_unk0x12c & c_flagBit2)) {
+		VTable0x54(0);
+		m_unk0x1a0 = keyCode;
+		return (undefined4) this;
+	}
+
 	return 0;
 }
 
 // STUB: LEGORACERS 0x004728e0
-undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
-	// TODO
-	STUB(0x004728e0);
-	return 0;
+	undefined4 activeKey = m_unk0x1a0;
+	undefined4 keyCode = p_item->m_keyCode;
+	undefined4 eventType = keyCode & InputDevice::c_sourceMask;
+
+	if (keyCode != activeKey) {
+		return 0;
+	}
+
+	m_unk0x1a0 = 0;
+
+	if (eventType == InputDevice::c_sourceMouse) {
+		if (!FUN_00472c40(p_x, p_y) && (m_unk0x12c & c_flagBit2)) {
+			VTable0x58(1);
+			return (undefined4) this;
+		}
+	}
+
+	VTable0x58(0);
+	return (undefined4) this;
 }
 
 // FUNCTION: LEGORACERS 0x00472950

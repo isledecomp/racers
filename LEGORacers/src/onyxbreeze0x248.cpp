@@ -58,10 +58,10 @@ void OnyxBreeze0x248::Initialize(InputManager* p_inputManager)
 			LegoS32 sourceId = joystick->AddDirectionalTrigger(&m_unk0x224);
 			m_unk0x224.Configure(
 				sourceId,
-				InputDevice::c_sourceJoystick2 | 0x3,
-				InputDevice::c_sourceJoystick2 | 0x0,
-				InputDevice::c_sourceJoystick2 | 0x2,
-				InputDevice::c_sourceJoystick2 | 0x1
+				InputDevice::c_sourceJoystickAxisButton | 0x3,
+				InputDevice::c_sourceJoystickAxisButton | 0x0,
+				InputDevice::c_sourceJoystickAxisButton | 0x2,
+				InputDevice::c_sourceJoystickAxisButton | 0x1
 			);
 		}
 	}

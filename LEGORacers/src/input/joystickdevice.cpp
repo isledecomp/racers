@@ -184,7 +184,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lX) / 1000.0f,
 			m_axisValues[0],
-			c_sourceJoystick2 | 0x0
+			c_sourceJoystickAxisButton | 0x0
 		);
 	}
 
@@ -192,7 +192,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lY) / 1000.0f,
 			m_axisValues[1],
-			c_sourceJoystick2 | 0x2
+			c_sourceJoystickAxisButton | 0x2
 		);
 	}
 
@@ -200,7 +200,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lZ) / 1000.0f,
 			m_axisValues[2],
-			c_sourceJoystick2 | 0x4
+			c_sourceJoystickAxisButton | 0x4
 		);
 	}
 
@@ -208,7 +208,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lRx) / 1000.0f,
 			m_axisValues[3],
-			c_sourceJoystick2 | 0x6
+			c_sourceJoystickAxisButton | 0x6
 		);
 	}
 
@@ -216,7 +216,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lRy) / 1000.0f,
 			m_axisValues[4],
-			c_sourceJoystick2 | 0x8
+			c_sourceJoystickAxisButton | 0x8
 		);
 	}
 
@@ -224,7 +224,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.lRz) / 1000.0f,
 			m_axisValues[5],
-			c_sourceJoystick2 | 0xa
+			c_sourceJoystickAxisButton | 0xa
 		);
 	}
 
@@ -232,7 +232,7 @@ void JoystickInputDevice::DispatchPolledAxisChanges(const DIJOYSTATE2& p_state)
 		DispatchAxisButtonStateChanges(
 			static_cast<LegoFloat>(p_state.rglSlider[0]) / 1000.0f,
 			m_axisValues[6],
-			c_sourceJoystick2 | 0xc
+			c_sourceJoystickAxisButton | 0xc
 		);
 	}
 }
@@ -243,7 +243,7 @@ void JoystickInputDevice::DispatchPolledStateChanges(const DIJOYSTATE2& p_state)
 	if (m_callback != NULL) {
 		for (LegoS32 i = 0; i < m_buttonCount; i++) {
 			if (p_state.rgbButtons[i] != m_joyState.rgbButtons[i]) {
-				SetButtonState(i | c_sourceJoystick1, p_state.rgbButtons[i], TRUE);
+				SetButtonState(i | c_sourceJoystickButton, p_state.rgbButtons[i], TRUE);
 			}
 		}
 
@@ -284,13 +284,13 @@ undefined4 JoystickInputDevice::GetButtonState(undefined4 p_key)
 	}
 
 	switch (GetKeySource(p_key)) {
-	case c_sourceJoystick1:
+	case c_sourceJoystickButton:
 		// BUG: should be "< sizeOfArray(m_joyState.rgbButtons))"
 		if ((p_key & 0xffff) < 256) {
 			return m_joyState.rgbButtons[p_key & 0xffff];
 		}
 		break;
-	case c_sourceJoystick2:
+	case c_sourceJoystickAxisButton:
 		if ((p_key & 0xffff) < sizeOfArray(m_axisButtonStates)) {
 			return m_axisButtonStates[p_key & 0xffff];
 		}
@@ -333,9 +333,9 @@ void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 
 	p_event &= c_keyCodeMask;
 
-	if (keyCode != c_sourceJoystick1) {
-		if (keyCode == c_sourceJoystick2 && p_event < sizeOfArray(m_axisButtonStates)) {
-			keyCode = m_axisMapping[p_event] | c_sourceJoystick2;
+	if (keyCode != c_sourceJoystickButton) {
+		if (keyCode == c_sourceJoystickAxisButton && p_event < sizeOfArray(m_axisButtonStates)) {
+			keyCode = m_axisMapping[p_event] | c_sourceJoystickAxisButton;
 			m_axisButtonStates[p_event] = p_state;
 		}
 	}
@@ -343,7 +343,7 @@ void JoystickInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 		// BUG: should be "< sizeOfArray(m_joyState.rgbButtons))"
 		if (p_event < 256) {
 			m_joyState.rgbButtons[p_event] = p_state;
-			keyCode = m_buttonMapping[p_event] | c_sourceJoystick1;
+			keyCode = m_buttonMapping[p_event] | c_sourceJoystickButton;
 		}
 	}
 

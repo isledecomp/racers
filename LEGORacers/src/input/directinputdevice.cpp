@@ -260,9 +260,9 @@ const wchar_t* DirectInputDevice::GetControlName(undefined4 p_arg)
 	switch (GetKeySource(p_arg)) {
 	case c_sourceKeyboard:
 	case c_sourceMouse:
-	case c_sourceJoystick1:
+	case c_sourceJoystickButton:
 		return &m_stringBuffer[m_buttonNameIndices[LOWORD(p_arg)]];
-	case c_sourceJoystick2:
+	case c_sourceJoystickAxisButton:
 		return &m_stringBuffer[m_axisNameIndices[p_arg & 0xfffe]];
 	default:
 		return NULL;

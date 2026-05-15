@@ -15,6 +15,7 @@ public:
 	~CitrineGrove0x1f4c();
 
 	PeridotTrace0x4a8& GetUnk0x108() { return m_unk0x108; }
+	MarigoldTrail0x108& GetUnk0x00() { return m_unk0x00; }
 	PeridotTrace0x4e0* GetUnk0xa58() { return m_unk0xa58; }
 	LegoU32 GetUnk0x18c0() const { return m_unk0x18c0; }
 	PeridotTraceState0x438& GetUnk0x18c4() { return m_unk0x18c4; }

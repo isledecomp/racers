@@ -35,6 +35,7 @@ public:
 	LegoBool32 HasMenuResources() const { return m_menuId != 0; }
 	undefined4 GetUnk0x78() const { return m_unk0x78; }
 	void SetUnk0x78(undefined4 p_unk0x78) { m_unk0x78 = p_unk0x78; }
+	LegoS32 GetUnk0x84() const { return m_unk0x84; }
 
 private:
 	friend class MenuManager;
@@ -54,7 +55,7 @@ private:
 	undefined4 m_unk0x78;               // 0x78
 	MusicGroup* m_musicGroup;           // 0x7c
 	MusicInstance* m_musicInstance;     // 0x80
-	undefined m_unk0x84[0x88 - 0x84];   // 0x84
+	LegoS32 m_unk0x84;                  // 0x84
 };
 
 #endif // TANZANITEWISP0X88_H

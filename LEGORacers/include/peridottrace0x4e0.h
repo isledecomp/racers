@@ -24,6 +24,7 @@ public:
 	PeridotTraceBase0x24();
 
 	Record* FUN_0042b880();
+	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
 

@@ -19,7 +19,7 @@ void ImaginaryDrillFieldAt0x420::Reset()
 {
 	m_unk0x64.Reset();
 	m_unk0x5c = 0;
-	m_unk0x60 = 0;
+	m_unk0x60 = NULL;
 	m_unk0x58 = 0;
 	m_unk0x70 = 0;
 	m_unk0x74 = 0;

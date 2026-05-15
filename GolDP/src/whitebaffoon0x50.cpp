@@ -20,8 +20,8 @@ void WhiteBaffoon0x50::Reset()
 	m_renderer = NULL;
 	m_unk0x2c = 0;
 	m_unk0x30 = 0;
-	m_unk0x34 = 0;
-	m_unk0x38 = 0;
+	m_width = 0;
+	m_height = 0;
 	m_unk0x3c = c_flagBit5 | c_flagBit1;
 	m_flags = 0;
 	m_unk0x28.m_bytes[0] = 0;

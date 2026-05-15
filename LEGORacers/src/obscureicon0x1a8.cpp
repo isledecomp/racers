@@ -71,7 +71,7 @@ void ObscureIcon0x1a8::Reset()
 // FUNCTION: LEGORACERS 0x00471d90
 void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const CreateState0x90* p_createState)
 {
-	const undefined* defaultRects = p_createParams->m_unk0x52;
+	const VisualState0x4* defaultRects = p_createParams->m_unk0x52;
 	if (!p_createParams->m_unk0x78) {
 		defaultRects = p_createState->m_unk0x00;
 	}
@@ -292,7 +292,7 @@ void ObscureIcon0x1a8::FUN_00472080()
 		FUN_00472540();
 	}
 
-	VTable0x14((Rect*) &m_unk0x174[m_unk0x19c]);
+	VTable0x14(&m_unk0x174[m_unk0x19c]);
 }
 
 // FUNCTION: LEGORACERS 0x004720f0

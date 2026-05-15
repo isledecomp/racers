@@ -1,5 +1,7 @@
 #include "imaginarydrillfieldat0x498.h"
 
+#include "utopianpan0xa4.h"
+
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x498, 0x2f0)
@@ -21,7 +23,7 @@ void ImaginaryDrillFieldAt0x498::Reset()
 {
 	m_unk0x1a8 = 0;
 	m_unk0x2dc = 0;
-	::memset(m_unk0x1c0, 0, sizeof(m_unk0x1c0));
+	::memset(m_unk0x1c0, 0, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
 	::memset(m_unk0x2e0, 0, sizeof(m_unk0x2e0));
 	ObscureIcon0x1a8::Reset();
 }
@@ -39,21 +41,33 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x00482890
-void ImaginaryDrillFieldAt0x498::VTable0x10(Rect*)
+void ImaginaryDrillFieldAt0x498::VTable0x10(Rect* p_rect)
 {
-	STUB(0x00482890);
+	Rect rect = *p_rect;
+
+	if (m_flags & 1) {
+		rect.m_right = m_unk0x264.GetRect()->m_right + p_rect->m_left;
+		rect.m_bottom = m_unk0x1d8[0]->GetHeight() + p_rect->m_top;
+		ObscureIcon0x1a8::VTable0x10(&rect);
+	}
 }
 
-// STUB: LEGORACERS 0x004828f0
-void ImaginaryDrillFieldAt0x498::VTable0x40(ImaginaryInterface*)
+// FUNCTION: LEGORACERS 0x004828f0
+void ImaginaryDrillFieldAt0x498::VTable0x40(ImaginaryInterface* p_eventHandler)
 {
-	STUB(0x004828f0);
+	ObscureIcon0x1a8::VTable0x40(p_eventHandler);
+	m_unk0x208.SetEventHandler(p_eventHandler);
+	m_unk0x264.SetEventHandler(p_eventHandler);
 }
 
-// STUB: LEGORACERS 0x00482910
+// FUNCTION: LEGORACERS 0x00482910
 undefined4 ImaginaryDrillFieldAt0x498::VTable0x38(Rect*, Rect*)
 {
-	STUB(0x00482910);
+	m_unk0x208.SetUnk0x58(m_unk0x1d8[m_unk0x19c]);
+	m_unk0x208.VTable0x14(&m_unk0x1f0[m_unk0x19c]);
+	m_unk0x264.SetUnk0x60(m_unk0x1c0[m_unk0x19c]);
+	m_unk0x264.VTable0x14(&m_unk0x174[m_unk0x19c]);
+
 	return 0;
 }
 

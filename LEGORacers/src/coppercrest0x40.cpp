@@ -74,8 +74,8 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467cc0(InitStruct* p_initStruct)
 	m_originY = p_initStruct->m_initialOriginY;
 	m_sourceRect.m_top = 0;
 	m_sourceRect.m_left = 0;
-	m_sourceRect.m_right = m_rendererObject->m_unk0x34;
-	m_sourceRect.m_bottom = m_rendererObject->m_unk0x38;
+	m_sourceRect.m_right = m_rendererObject->m_width;
+	m_sourceRect.m_bottom = m_rendererObject->m_height;
 
 	return TRUE;
 }
@@ -171,9 +171,9 @@ LegoS32 CopperCrest0x40::FUN_00468fa0(InitStruct* p_initStruct)
 
 	bounds.m_left = 0;
 	bounds.m_top = 0;
-	bounds.m_right = m_unk0x58 - p_initStruct->m_rendererObject->m_unk0x34;
+	bounds.m_right = m_unk0x58 - p_initStruct->m_rendererObject->m_width;
 	LegoS32 bottom = m_unk0x5c;
-	bottom -= p_initStruct->m_rendererObject->m_unk0x38;
+	bottom -= p_initStruct->m_rendererObject->m_height;
 	bounds.m_bottom = bottom;
 
 	helperInit.m_rendererObject = p_initStruct->m_rendererObject;
@@ -277,8 +277,8 @@ void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
 	ObscureVantage0x58* active = icon->FUN_00472e60();
 	UtopianPan0xa4* rendererObject = m_unk0x10.m_rendererObject;
-	LegoS32 right = m_unk0x58 - (rendererObject->m_unk0x34 >> 2);
-	LegoS32 bottom = m_unk0x5c - (rendererObject->m_unk0x38 >> 2);
+	LegoS32 right = m_unk0x58 - (rendererObject->m_width >> 2);
+	LegoS32 bottom = m_unk0x5c - (rendererObject->m_height >> 2);
 	Rect* bounds = &m_unk0x10.m_bounds;
 
 	bounds->m_left = 0;

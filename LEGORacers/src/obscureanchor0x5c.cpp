@@ -17,7 +17,7 @@ ObscureAnchor0x5c::~ObscureAnchor0x5c()
 // FUNCTION: LEGORACERS 0x0046f140
 void ObscureAnchor0x5c::Reset()
 {
-	m_unk0x58 = 0;
+	m_unk0x58 = NULL;
 	ObscureVantage0x58::Reset();
 }
 

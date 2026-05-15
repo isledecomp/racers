@@ -6,6 +6,7 @@
 #include "decomp.h"
 #include "goltxtparser.h"
 #include "types.h"
+#include "visualstate0x4.h"
 
 class BronzeFalcon0xc8770;
 
@@ -37,7 +38,7 @@ public:
 		undefined m_unk0x00[0x38 - 0x00]; // 0x00
 		LegoU8 m_unk0x38;                 // 0x38
 		undefined m_unk0x39[0x52 - 0x39]; // 0x39
-		LegoS8 m_unk0x52[6][4];           // 0x52
+		VisualState0x4 m_unk0x52[6];      // 0x52
 		undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
 		undefined4 m_unk0x74;             // 0x74
 		undefined4 m_unk0x78;             // 0x78

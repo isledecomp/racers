@@ -32,11 +32,11 @@ void ObscureZebra0xa4::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004735c0
-void ObscureZebra0xa4::VTable0x14(Rect* p_param)
+void ObscureZebra0xa4::VTable0x14(VisualState0x4* p_param)
 {
-	m_unk0x6c = p_param->m_left;
-	m_unk0x84 = p_param->m_left;
-	m_unk0x9c = p_param->m_left;
+	m_unk0x6c = p_param->m_unk0x00;
+	m_unk0x84 = p_param->m_unk0x00;
+	m_unk0x9c = p_param->m_unk0x00;
 
 	ObscureVantage0x58::VTable0x14(p_param);
 }

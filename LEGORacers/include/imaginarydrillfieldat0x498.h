@@ -7,6 +7,9 @@
 #include "obscureanchor0x5c.h"
 #include "obscureicon0x1a8.h"
 
+class GolFont0xa0;
+class UtopianPan0xa4;
+
 // VTABLE: LEGORACERS 0x004b38b0
 // SIZE 0x2f0
 class ImaginaryDrillFieldAt0x498 : public ObscureIcon0x1a8 {
@@ -26,7 +29,9 @@ public:
 private:
 	undefined4 m_unk0x1a8;                 // 0x1a8
 	undefined m_unk0x1ac[0x1c0 - 0x1ac];   // 0x1ac
-	undefined4 m_unk0x1c0[0x12];           // 0x1c0
+	GolFont0xa0* m_unk0x1c0[6];            // 0x1c0
+	UtopianPan0xa4* m_unk0x1d8[6];         // 0x1d8
+	VisualState0x4 m_unk0x1f0[6];          // 0x1f0
 	ObscureAnchor0x5c m_unk0x208;          // 0x208
 	ImaginaryDrillFieldAt0x420 m_unk0x264; // 0x264
 	undefined4 m_unk0x2dc;                 // 0x2dc

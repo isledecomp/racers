@@ -5,6 +5,8 @@
 #include "decomp.h"
 #include "obscureanthem0x58.h"
 
+class UtopianPan0xa4;
+
 // VTABLE: LEGORACERS 0x004b26bc
 // SIZE 0x5c
 class ObscureAnchor0x5c : public ObscureAnthem0x58 {
@@ -14,12 +16,13 @@ public:
 	void Reset() override;                        // vtable+0x00
 	~ObscureAnchor0x5c() override;                // vtable+0x04
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	void SetUnk0x58(UtopianPan0xa4* p_unk0x58) { m_unk0x58 = p_unk0x58; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f0d0
 	// ObscureAnchor0x5c::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x58; // 0x58
+	UtopianPan0xa4* m_unk0x58; // 0x58
 };
 
 #endif // OBSCUREANCHOR0X5C

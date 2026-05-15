@@ -1,6 +1,7 @@
 #include "obscurevantage0x58.h"
 
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
+DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)
 DECOMP_SIZE_ASSERT(ObscureVantage0x58::CreateParams0x30, 0x30)
 
 // GLOBAL: LEGORACERS 0x004c7650
@@ -23,8 +24,8 @@ void ObscureVantage0x58::Reset()
 {
 	m_unk0x54 &= 0xfe;
 	m_flags = (m_flags & 0xf2) | 2;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
+	m_golExport = NULL;
+	m_renderer = NULL;
 	m_unk0x18 = 0;
 	m_nextSibling = 0;
 	m_prevSibling = 0;
@@ -48,12 +49,12 @@ LegoBool32 ObscureVantage0x58::FUN_00472a60(CreateParams0x30* p_createParams)
 {
 	VTable0x08();
 
-	m_unk0x20 = (undefined4) p_createParams->m_golExport;
-	m_unk0x24 = (undefined4) p_createParams->m_renderer;
+	m_golExport = p_createParams->m_golExport;
+	m_renderer = p_createParams->m_renderer;
 	m_unk0x30 = p_createParams->m_unk0x20;
 	m_unk0x28 = p_createParams->m_eventHandler;
 	VTable0x10(&p_createParams->m_rect);
-	VTable0x14((Rect*) p_createParams->m_unk0x22);
+	VTable0x14(&p_createParams->m_unk0x22);
 
 	if (p_createParams->m_parent && (p_createParams->m_flags & 1)) {
 		SetParent(p_createParams->m_parent);
@@ -273,9 +274,9 @@ void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x00472fc0
-void ObscureVantage0x58::VTable0x14(Rect* p_param)
+void ObscureVantage0x58::VTable0x14(VisualState0x4* p_param)
 {
-	m_unk0x2c = p_param->m_left;
+	m_unk0x2c = p_param->m_unk0x00;
 }
 
 // FUNCTION: LEGORACERS 0x004730a0

@@ -13,3 +13,5 @@ c_332RedStride: 'Allow constant'
 STDMETHODCALLTYPE: 'Allow macro'
 m_guid: "Can't currently detect member in union"
 m_words: "Can't currently detect member in union"
+m_unk0x00: "Can't currently detect member in union"
+m_bytes: "Can't currently detect member in union"

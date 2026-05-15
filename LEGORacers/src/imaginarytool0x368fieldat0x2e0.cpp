@@ -95,15 +95,15 @@ void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f2b0(Entry0xe0* p_entry)
 			break;
 		}
 		case GolFileParser::e_unknown0x2a: {
-			FUN_0046b210(p_entry->m_unk0xd0);
+			FUN_0046b210(p_entry->m_unk0xd0.m_bytes);
 
 			LegoS32 i;
 			for (i = 0; i < 6; i++) {
-				FUN_0046b210(p_entry->m_unk0xb4[i]);
+				FUN_0046b210(p_entry->m_unk0xb4[i].m_bytes);
 			}
 
 			for (i = 0; i < 6; i++) {
-				FUN_0046b210(p_entry->m_unk0x52[i]);
+				FUN_0046b210(p_entry->m_unk0x52[i].m_bytes);
 			}
 
 			p_entry->m_unk0x78 = TRUE;

@@ -50,6 +50,8 @@ public:
 	void FUN_1001f790();
 	void FUN_1001fde0();
 
+	LegoU32 GetWidth() const { return m_width; }
+	LegoU32 GetHeight() const { return m_height; }
 	LegoU32 GetUnk0x3c() const { return m_unk0x3c; }
 
 	// SYNTHETIC: GOLDP 0x1001f240
@@ -83,8 +85,8 @@ public:
 	FourBytes m_unk0x28;              // 0x28
 	LegoU32 m_unk0x2c;                // 0x2c
 	undefined4 m_unk0x30;             // 0x30
-	undefined4 m_unk0x34;             // 0x34
-	undefined4 m_unk0x38;             // 0x38
+	LegoU32 m_width;                  // 0x34
+	LegoU32 m_height;                 // 0x38
 	LegoU32 m_unk0x3c;                // 0x3c
 	LegoU16 m_flags;                  // 0x40
 	FourBytes m_name[2];              // 0x42

@@ -12,7 +12,7 @@ public:
 	ObscureZebra0xa4();
 	void Reset() override;                        // vtable+0x00
 	~ObscureZebra0xa4() override;                 // vtable+0x04
-	void VTable0x14(Rect*) override;              // vtable+0x14
+	void VTable0x14(VisualState0x4*) override;    // vtable+0x14
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x004734f0

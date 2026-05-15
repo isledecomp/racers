@@ -98,8 +98,8 @@ void UtopianPan0xa4::FUN_100054d0(
 	Rect sourceRect;
 	sourceRect.m_left = 0;
 	sourceRect.m_top = 0;
-	sourceRect.m_right = m_unk0x34;
-	sourceRect.m_bottom = m_unk0x38;
+	sourceRect.m_right = m_width;
+	sourceRect.m_bottom = m_height;
 
 	FUN_10005510(p_renderer, p_unk0x08, p_destRect, &sourceRect, p_unk0x14);
 }

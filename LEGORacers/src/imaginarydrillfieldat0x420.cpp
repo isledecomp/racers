@@ -1,5 +1,8 @@
 #include "imaginarydrillfieldat0x420.h"
 
+#include "golfont0xa0.h"
+#include "golstringtable.h"
+
 DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x420, 0x78)
 
 // FUNCTION: LEGORACERS 0x0046f410
@@ -26,21 +29,78 @@ void ImaginaryDrillFieldAt0x420::Reset()
 	ObscureVantage0x58::Reset();
 }
 
-// STUB: LEGORACERS 0x0046f580
+// FUNCTION: LEGORACERS 0x0046f580
 void ImaginaryDrillFieldAt0x420::VTable0x44(undefined4, undefined4)
 {
-	STUB(0x0046f580);
+	GolString string;
+
+	m_unk0x5c->CopyStringByIndex(&string, 0);
+	VTable0x40(&string, 0);
 }
 
-// STUB: LEGORACERS 0x0046f600
-void ImaginaryDrillFieldAt0x420::VTable0x40(undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x0046f600
+void ImaginaryDrillFieldAt0x420::VTable0x40(GolString* p_string, undefined4 p_unk0x08)
 {
-	STUB(0x0046f600);
+	m_unk0x64.CopyFromGolString(p_string);
+	m_unk0x64.ToUpperCase();
+
+	if (!m_unk0x34.m_right || !m_unk0x34.m_bottom || p_unk0x08) {
+		m_unk0x64.FirstLine();
+		m_unk0x34.m_bottom = m_unk0x34.m_top;
+		m_unk0x34.m_right = m_unk0x34.m_left;
+
+		LegoS32 width;
+		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
+			LegoS32 height;
+			m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
+
+			LegoU32 right = m_unk0x34.m_left + width;
+			LegoU32 currentRight = m_unk0x34.m_right;
+			if (right > currentRight) {
+				m_unk0x34.m_right = right;
+			}
+
+			m_unk0x34.m_bottom += height;
+			m_unk0x64.NextLine();
+		}
+
+		m_unk0x64.FirstLine();
+	}
 }
 
-// STUB: LEGORACERS 0x0046f6f0
-undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect*, Rect*)
+// FUNCTION: LEGORACERS 0x0046f6f0
+undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
-	STUB(0x0046f6f0);
+	LegoS32 lineCount = m_unk0x64.CountLines();
+	LegoFloat lineHeight = (LegoFloat) (m_unk0x34.m_bottom - m_unk0x34.m_top) / (LegoFloat) lineCount;
+	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
+	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
+	LegoFloat lineBottom = 0.0f;
+
+	m_unk0x64.FirstLine();
+	if (lineCount > 0) {
+		LegoS32 lineTop = 0;
+		while (lineCount) {
+			Rect source;
+			source.m_left = 0;
+			source.m_top = lineTop;
+
+			lineBottom += lineHeight;
+			lineTop = (LegoS32) lineBottom;
+			source.m_bottom = lineTop;
+			source.m_right = m_unk0x34.m_right - m_unk0x34.m_left;
+
+			Rect dest;
+			FUN_00472d00(m_unk0x60, &m_unk0x64, &source, &dest, 0);
+			dest.m_left += xOffset;
+			dest.m_top += yOffset;
+			dest.m_right += xOffset;
+			dest.m_bottom += yOffset;
+			FUN_00472da0(&dest, p_arg, m_unk0x60, &m_unk0x64, 0, 0);
+			m_unk0x64.NextLine();
+			lineCount--;
+		}
+	}
+
 	return 0;
 }

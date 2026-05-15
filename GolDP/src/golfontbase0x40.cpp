@@ -55,13 +55,13 @@ void GolFontBase0x40::VTable0x00(undefined4, undefined4)
 
 // STUB: GOLDP 0x1001eaa0
 undefined4 GolFontBase0x40::FUN_1001eaa0(
-	undefined4,
+	GolString*,
 	WhiteFalcon0x140*,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
+	LegoS32,
+	LegoS32,
+	LegoFloat,
+	LegoFloat,
+	Rect*,
 	undefined4
 )
 {
@@ -72,13 +72,13 @@ undefined4 GolFontBase0x40::FUN_1001eaa0(
 
 // STUB: GOLDP 0x1001eb70
 undefined4 GolFontBase0x40::FUN_1001eb70(
-	undefined4,
+	GolString*,
 	WhiteFalcon0x140*,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
+	LegoS32,
+	LegoS32,
+	LegoFloat,
+	LegoFloat,
+	Rect*,
 	undefined4
 )
 {
@@ -89,13 +89,13 @@ undefined4 GolFontBase0x40::FUN_1001eb70(
 
 // STUB: GOLDP 0x1001eca0
 undefined4 GolFontBase0x40::FUN_1001eca0(
-	undefined4,
+	GolString*,
 	WhiteFalcon0x140*,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
+	LegoS32,
+	LegoS32,
+	LegoFloat,
+	LegoFloat,
+	Rect*,
 	undefined4
 )
 {

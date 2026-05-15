@@ -61,33 +61,33 @@ public:
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
 	undefined4 VTable0x64(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) override; // vtable+0x64
 	undefined4 VTable0x68(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) override; // vtable+0x68
 	undefined4 VTable0x6c(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) override; // vtable+0x6c
 	void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,

@@ -1,6 +1,7 @@
 #ifndef OBSCUREVANTAGE0X58_H
 #define OBSCUREVANTAGE0X58_H
 
+#include "color.h"
 #include "compat.h"
 #include "coppercrest0x40.h"
 #include "decomp.h"
@@ -12,7 +13,9 @@
 #include "visualstate0x4.h"
 
 class BronzeFalcon0xc8770;
+class GolFontBase0x40;
 class GolExport;
+class GolString;
 class SoundGroupBinding;
 
 // VTABLE: LEGORACERS 0x004b29b4
@@ -59,6 +62,8 @@ public:
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
+	Rect* FUN_00472d00(GolFontBase0x40*, GolString*, Rect*, Rect*, LegoS32);
+	undefined2 FUN_00472da0(Rect*, Rect*, GolFontBase0x40*, GolString*, LegoS32, LegoS32);
 	Rect* FUN_00473160(Rect*);
 	void FUN_004731b0(undefined4&, undefined4&);
 	void SetEventHandler(ImaginaryInterface* p_eventHandler) { m_unk0x28 = p_eventHandler; }
@@ -81,7 +86,7 @@ protected:
 	GolExport* m_golExport;            // 0x20
 	BronzeFalcon0xc8770* m_renderer;   // 0x24
 	ImaginaryInterface* m_unk0x28;     // 0x28
-	undefined4 m_unk0x2c;              // 0x2c
+	ColorRGBA m_unk0x2c;               // 0x2c
 	undefined2 m_unk0x30;              // 0x30
 	Rect m_unk0x34;                    // 0x34
 	LegoFloat m_unk0x44;               // 0x44

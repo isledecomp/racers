@@ -22,7 +22,7 @@ public:
 		FieldAt0x6c8();
 		~FieldAt0x6c8() override;                         // vtable+0x04
 		undefined4 VTable0x38(Rect*, Rect*) override;     // vtable+0x38
-		void VTable0x40(undefined4, undefined4) override; // vtable+0x40
+		void VTable0x40(GolString*, undefined4) override; // vtable+0x40
 
 		// SYNTHETIC: LEGORACERS 0x0046f860
 		// CrimsonSun0xa4::FieldAt0x6c8::`scalar deleting destructor'

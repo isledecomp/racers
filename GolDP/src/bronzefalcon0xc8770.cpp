@@ -1016,13 +1016,13 @@ void BronzeFalcon0xc8770::VTable0xb4(FloatyPontoon0x4c& p_param)
 
 // FUNCTION: GOLDP 0x10009b40
 undefined4 BronzeFalcon0xc8770::VTable0x68(
-	undefined4 p_unk0x04,
+	GolString* p_unk0x04,
 	GolFontBase0x40* p_font,
-	undefined4 p_unk0x0c,
-	undefined4 p_unk0x10,
-	undefined4 p_unk0x14,
-	undefined4 p_unk0x18,
-	undefined4 p_unk0x1c,
+	LegoS32 p_unk0x0c,
+	LegoS32 p_unk0x10,
+	LegoFloat p_unk0x14,
+	LegoFloat p_unk0x18,
+	Rect* p_unk0x1c,
 	undefined4 p_unk0x20
 )
 {
@@ -1031,13 +1031,13 @@ undefined4 BronzeFalcon0xc8770::VTable0x68(
 
 // FUNCTION: GOLDP 0x10009b70
 undefined4 BronzeFalcon0xc8770::VTable0x64(
-	undefined4 p_unk0x04,
+	GolString* p_unk0x04,
 	GolFontBase0x40* p_font,
-	undefined4 p_unk0x0c,
-	undefined4 p_unk0x10,
-	undefined4 p_unk0x14,
-	undefined4 p_unk0x18,
-	undefined4 p_unk0x1c,
+	LegoS32 p_unk0x0c,
+	LegoS32 p_unk0x10,
+	LegoFloat p_unk0x14,
+	LegoFloat p_unk0x18,
+	Rect* p_unk0x1c,
 	undefined4 p_unk0x20
 )
 {
@@ -1046,13 +1046,13 @@ undefined4 BronzeFalcon0xc8770::VTable0x64(
 
 // FUNCTION: GOLDP 0x10009ba0
 undefined4 BronzeFalcon0xc8770::VTable0x6c(
-	undefined4 p_unk0x04,
+	GolString* p_unk0x04,
 	GolFontBase0x40* p_font,
-	undefined4 p_unk0x0c,
-	undefined4 p_unk0x10,
-	undefined4 p_unk0x14,
-	undefined4 p_unk0x18,
-	undefined4 p_unk0x1c,
+	LegoS32 p_unk0x0c,
+	LegoS32 p_unk0x10,
+	LegoFloat p_unk0x14,
+	LegoFloat p_unk0x18,
+	Rect* p_unk0x1c,
 	undefined4 p_unk0x20
 )
 {

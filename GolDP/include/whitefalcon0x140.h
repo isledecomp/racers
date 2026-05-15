@@ -16,6 +16,7 @@ class DuskwindBananaRelic0x24;
 class GolSurfaceFormat;
 class GolFont0xa0;
 class GolFontBase0x40;
+class GolString;
 class GolCommonDrawState;
 class GolNameTable;
 class HypnoticNoise0x1c;
@@ -104,33 +105,33 @@ public:
 	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
 	virtual undefined4 VTable0x64(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) = 0; // vtable+0x64
 	virtual undefined4 VTable0x68(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) = 0; // vtable+0x68
 	virtual undefined4 VTable0x6c(
-		undefined4,
+		GolString*,
 		GolFontBase0x40*,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
-		undefined4,
+		LegoS32,
+		LegoS32,
+		LegoFloat,
+		LegoFloat,
+		Rect*,
 		undefined4
 	) = 0; // vtable+0x6c
 	virtual void VTable0x70(UtopianPan0xa4*, undefined4, LegoS32, LegoS32, LegoS32,

@@ -244,6 +244,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/main.cpp
   LEGORacers/src/gamemain.cpp
   LEGORacers/src/cactusinterface0x4.cpp
+  LEGORacers/src/golfontbase0x40.cpp
   LEGORacers/src/legoracers.cpp
   LEGORacers/src/win32golapp.cpp
   LEGORacers/src/audio/musicinstance.cpp

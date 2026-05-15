@@ -2,6 +2,7 @@
 
 #include "coppercrest0x40.h"
 #include "golerror.h"
+#include "golfont0xa0.h"
 
 DECOMP_SIZE_ASSERT(CrimsonSun0xa4, 0xa4)
 DECOMP_SIZE_ASSERT(CrimsonSun0xa4::FieldAt0x6c8, 0x84)
@@ -161,15 +162,57 @@ CrimsonSun0xa4::FieldAt0x6c8::~FieldAt0x6c8()
 	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x0046f8d0
-void CrimsonSun0xa4::FieldAt0x6c8::VTable0x40(undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x0046f8d0
+void CrimsonSun0xa4::FieldAt0x6c8::VTable0x40(GolString* p_string, undefined4 p_unk0x08)
 {
-	STUB(0x0046f8d0);
+	m_unk0x64.CopyFromGolString(p_string);
+	if (m_unk0x34.m_right) {
+		LegoS32 width;
+		LegoS32 height;
+		m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
+
+		if (width < m_unk0x34.m_right - m_unk0x34.m_left) {
+			m_unk0x74 = FALSE;
+			ImaginaryDrillFieldAt0x420::VTable0x40(p_string, p_unk0x08);
+			return;
+		}
+	}
+
+	LegoS32 width;
+	LegoS32 height;
+	m_unk0x74 = TRUE;
+	m_unk0x60->FUN_00408d50(&m_unk0x64, m_unk0x70, 0, m_unk0x44, m_unk0x48, &width, &height);
+
+	if (m_unk0x34.m_right && m_unk0x34.m_bottom && !p_unk0x08) {
+		LegoS32 bottom = m_unk0x34.m_bottom - m_unk0x34.m_top;
+		if (static_cast<LegoU32>(height) > static_cast<LegoU32>(bottom)) {
+			m_unk0x48 = (LegoFloat) bottom / (LegoFloat) height;
+		}
+	}
+	else {
+		m_unk0x34.m_right = width + m_unk0x34.m_left;
+		m_unk0x34.m_bottom = height + m_unk0x34.m_top;
+	}
 }
 
-// STUB: LEGORACERS 0x0046f9b0
-undefined4 CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect*, Rect*)
+// FUNCTION: LEGORACERS 0x0046f9b0
+undefined4 CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
-	STUB(0x0046f9b0);
+	if (!m_unk0x74) {
+		return ImaginaryDrillFieldAt0x420::VTable0x38(p_rect, p_arg);
+	}
+
+	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
+	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
+
+	m_unk0x64.FirstLine();
+
+	Rect source;
+	source.m_left = xOffset;
+	source.m_top = yOffset;
+	source.m_bottom = yOffset + m_unk0x34.m_bottom - m_unk0x34.m_top;
+	source.m_right = xOffset + m_unk0x34.m_right - m_unk0x34.m_left;
+
+	FUN_00472da0(&source, p_arg, m_unk0x60, &m_unk0x64, m_unk0x70, m_unk0x58->m_unk0x00[4].m_unk0x00);
 	return 0;
 }

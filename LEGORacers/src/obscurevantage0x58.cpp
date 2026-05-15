@@ -1,5 +1,9 @@
 #include "obscurevantage0x58.h"
 
+#include "bronzefalcon0xc8770.h"
+#include "golfontbase0x40.h"
+#include "golstring.h"
+
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
 DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)
 DECOMP_SIZE_ASSERT(ObscureVantage0x58::CreateParams0x30, 0x30)
@@ -205,6 +209,99 @@ undefined4 ObscureVantage0x58::FUN_00472c40(LegoS32 p_x, LegoS32 p_y)
 		   p_y <= (m_unk0x34.m_bottom - m_unk0x34.m_top);
 }
 
+// FUNCTION: LEGORACERS 0x00472c80
+static Rect* __stdcall FUN_00472c80(Rect* p_source, Rect* p_dest)
+{
+	LegoS32 sourceLeft = p_source->m_left;
+	LegoU32 sourceHeight = p_source->m_bottom - p_source->m_top;
+	LegoU32 sourceWidth = p_source->m_right - p_source->m_left;
+	LegoU32 destWidth = p_dest->m_right - p_dest->m_left;
+	LegoU32 destHeight = p_dest->m_bottom - p_dest->m_top;
+
+	if (sourceWidth <= destWidth) {
+		p_dest->m_left = sourceLeft;
+		p_dest->m_right = p_source->m_right;
+	}
+	else {
+		LegoU32 inset = (sourceWidth - destWidth) >> 1;
+		p_dest->m_left = sourceLeft + inset;
+		p_dest->m_right = p_source->m_right - inset;
+	}
+
+	if (sourceHeight <= destHeight) {
+		p_dest->m_top = p_source->m_top;
+		p_dest->m_bottom = p_source->m_bottom;
+	}
+	else {
+		LegoU32 inset = (sourceHeight - destHeight) >> 1;
+		p_dest->m_top = p_source->m_top + inset;
+		p_dest->m_bottom = p_source->m_bottom - inset;
+	}
+
+	return p_dest;
+}
+
+// FUNCTION: LEGORACERS 0x00472d00
+Rect* ObscureVantage0x58::FUN_00472d00(
+	GolFontBase0x40* p_font,
+	GolString* p_string,
+	Rect* p_source,
+	Rect* p_dest,
+	LegoS32 p_wrapWidth
+)
+{
+	LegoS32 width;
+	LegoS32 height;
+
+	if (p_wrapWidth) {
+		p_font->FUN_00408d50(p_string, p_wrapWidth, 0, m_unk0x44, m_unk0x48, &width, &height);
+	}
+	else {
+		p_font->FUN_00408be0(p_string, &width, &height);
+	}
+
+	p_dest->m_left = 0;
+	p_dest->m_top = 0;
+	p_dest->m_right = width;
+	p_dest->m_bottom = height;
+	return FUN_00472c80(p_source, p_dest);
+}
+
+// FUNCTION: LEGORACERS 0x00472da0
+undefined2 ObscureVantage0x58::FUN_00472da0(
+	Rect* p_source,
+	Rect* p_dest,
+	GolFontBase0x40* p_font,
+	GolString* p_string,
+	LegoS32 p_wrapWidth,
+	LegoS32 p_unk0x18
+)
+{
+	p_font->SetColor(m_unk0x2c.m_red, m_unk0x2c.m_grn, m_unk0x2c.m_blu, m_unk0x2c.m_alp);
+
+	if (p_wrapWidth) {
+		return p_font->FUN_00408fe0(
+			p_string,
+			m_renderer,
+			p_source->m_left,
+			p_source->m_top,
+			p_wrapWidth,
+			0,
+			m_unk0x44,
+			m_unk0x48,
+			p_dest,
+			&m_unk0x2c,
+			p_unk0x18
+		);
+	}
+
+	LegoS32 x = p_source->m_left;
+	LegoS32 y = p_source->m_top;
+	LegoFloat width = static_cast<LegoFloat>(p_source->m_right - x);
+	LegoFloat height = static_cast<LegoFloat>(p_source->m_bottom - y);
+	return m_renderer->VTable0x6c(p_string, p_font, x, y, width, height, p_dest, 0);
+}
+
 // FUNCTION: LEGORACERS 0x00472e40
 ObscureVantage0x58* ObscureVantage0x58::FindRoot()
 {
@@ -276,7 +373,7 @@ void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 // FUNCTION: LEGORACERS 0x00472fc0
 void ObscureVantage0x58::VTable0x14(VisualState0x4* p_param)
 {
-	m_unk0x2c = p_param->m_unk0x00;
+	m_unk0x2c = p_param->m_color;
 }
 
 // FUNCTION: LEGORACERS 0x004730a0

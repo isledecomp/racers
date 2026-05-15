@@ -1,6 +1,7 @@
 #ifndef VISUALSTATE0X4_H
 #define VISUALSTATE0X4_H
 
+#include "color.h"
 #include "decomp.h"
 #include "types.h"
 
@@ -12,6 +13,7 @@ public:
 	union {
 		undefined4 m_unk0x00; // 0x00
 		LegoS8 m_bytes[4];    // 0x00
+		ColorRGBA m_color;    // 0x00
 	};
 };
 

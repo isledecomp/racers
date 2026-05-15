@@ -19,11 +19,14 @@ PeridotTrace0x4a8::~PeridotTrace0x4a8()
 	STUB(0x442680);
 }
 
-// STUB: LEGORACERS 0x004426d0
-void PeridotTrace0x4a8::FUN_004426d0(undefined4, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x004426d0
+void PeridotTrace0x4a8::FUN_004426d0(undefined4 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c)
 {
-	// TODO
-	STUB(0x004426d0);
+	if (m_unk0x04) {
+		Destroy();
+	}
+
+	FUN_0042b720(p_count, p_unk0x08, p_unk0x0c);
 }
 
 // STUB: LEGORACERS 0x00442770

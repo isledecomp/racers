@@ -10,18 +10,45 @@
 class GolFile;
 class GolString;
 class InputManager;
+class PeridotTraceBuffer0x250;
 class PeridotTrace0x4e0;
 
 // SIZE 0x24
 class PeridotTraceBase0x24 {
 public:
-	// SIZE 0x241
+	// SIZE 0x244
 	struct Record {
+		Record();
+		~Record();
+
+		void FUN_0042b2f0(
+			undefined4 p_unk0x08,
+			undefined4 p_unk0x0c,
+			undefined4 p_unk0x10,
+			PeridotTraceBase0x24* p_owner
+		);
+
+		PeridotTraceBase0x24* m_owner; // 0x00
+		Record* m_next;                // 0x04
+		undefined4 m_unk0x08;          // 0x08
+		undefined4 m_unk0x0c;          // 0x0c
+		undefined4 m_unk0x10;          // 0x10
+		undefined m_data[0x22d];       // 0x14
+		undefined m_unk0x241[0x244 - 0x241];
+
+	private:
+		void Initialize();
+		void Destroy();
+	};
+
+	// SIZE 0x241
+	struct SerializedRecord {
 		undefined m_unk0x00[0x14]; // 0x00
 		undefined m_data[0x22d];   // 0x14
 	};
 
 	PeridotTraceBase0x24();
+	~PeridotTraceBase0x24();
 
 	Record* FUN_0042b880();
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
@@ -30,16 +57,22 @@ public:
 
 private:
 	void Initialize();
+	void Destroy();
+	void FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	void FUN_0042b7f0();
+	void FUN_0042b830();
 
-	undefined4 m_unk0x00;
-	undefined4 m_unk0x04;
-	undefined4 m_unk0x08;
-	undefined4 m_unk0x0c;
-	undefined4 m_unk0x10;
-	undefined4 m_unk0x14;
-	undefined4 m_unk0x18;
-	undefined4 m_unk0x1c;
-	undefined4 m_unk0x20;
+	friend class PeridotTrace0x4a8;
+
+	LegoU32 m_unk0x00;    // 0x00
+	Record* m_unk0x04;    // 0x04
+	undefined4 m_unk0x08; // 0x08
+	undefined4 m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10; // 0x10
+	Record* m_unk0x14;    // 0x14
+	Record* m_unk0x18;    // 0x18
+	LegoU32 m_unk0x1c;    // 0x1c
+	undefined4 m_unk0x20; // 0x20
 };
 
 // SIZE 0x4a8
@@ -209,19 +242,13 @@ private:
 };
 
 // SIZE 0x250
-class PeridotTraceBuffer0x250 {
+class PeridotTraceBuffer0x250 : public PeridotTraceBase0x24::Record {
 public:
-	PeridotTraceBuffer0x250();
-	~PeridotTraceBuffer0x250();
-
 	static void CopyStringToBuffer(GolString* p_string, undefined2* p_dest, LegoU32 p_count);
 
 	void Reset() { m_unk0x244 = 0; }
 
-	void FUN_0042b2f0(undefined4, undefined4, undefined4, undefined4);
-
 private:
-	undefined m_unk0x00[0x244 - 0x00];   // 0x00
 	undefined4 m_unk0x244;               // 0x244
 	undefined m_unk0x248[0x250 - 0x248]; // 0x248
 };

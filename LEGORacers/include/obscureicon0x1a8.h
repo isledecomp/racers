@@ -77,6 +77,7 @@ public:
 	LegoBool32 FUN_00471e30(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
 	void AttachToParent(ObscureIcon0x1a8* p_parent);
 	void DetachFromParent();
+	ObscureIcon0x1a8* GetFirstChild() { return m_firstChild; }
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// ObscureIcon0x1a8::`scalar deleting destructor'

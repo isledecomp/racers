@@ -619,18 +619,36 @@ undefined4 ImaginaryNotion0x290::FUN_0046c730(ObscureIcon0x1a8* p_unk0x04, undef
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0046c760
+// FUNCTION: LEGORACERS 0x0046c760
 void ImaginaryNotion0x290::FUN_0046c760()
 {
-	// TODO
-	STUB(0x0046c760);
+	ObscureIcon0x1a8* icon;
+	ObscureVantage0x58* node;
+
+	while (m_unk0xd8.GetFirstChild()) {
+		icon = &m_unk0xd8;
+
+		while (icon->GetFirstChild()) {
+			icon = icon->GetFirstChild();
+		}
+
+		icon->DetachFromParent();
+	}
+
+	while (static_cast<ObscureVantage0x58*>(&m_unk0xd8)->GetFirstChild()) {
+		node = &m_unk0xd8;
+
+		while (node->GetFirstChild()) {
+			node = node->GetFirstChild();
+		}
+
+		node->RemoveFromParent();
+	}
 }
 
-// STUB: LEGORACERS 0x0046c7d0
+// FUNCTION: LEGORACERS 0x0046c7d0
 LegoBool32 ImaginaryNotion0x290::VTable0x78(undefined4)
 {
-	// TODO
-	STUB(0x0046c7d0);
 	return TRUE;
 }
 

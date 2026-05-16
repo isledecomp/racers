@@ -28,7 +28,7 @@ ImaginaryChisel0x658::~ImaginaryChisel0x658()
 // FUNCTION: LEGORACERS 0x004797a0
 LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	if (m_unk0x04) {
+	if (m_initialized) {
 		Destroy();
 	}
 
@@ -137,6 +137,6 @@ LegoBool32 ImaginaryChisel0x658::VTable0x78(undefined4 p_unk0x04)
 void ImaginaryChisel0x658::VTable0x84()
 {
 	m_unk0xc4->SetUnk0x41(TRUE);
-	m_context->m_unk0x04.Pop();
-	m_context->m_unk0x04.Push(2);
+	m_context->m_menuStack.Pop();
+	m_context->m_menuStack.Push(2);
 }

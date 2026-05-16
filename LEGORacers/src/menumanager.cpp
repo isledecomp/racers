@@ -73,7 +73,7 @@ void MenuManager::Reset()
 	m_unk0x4dc8 = NULL;
 	m_imageTable = NULL;
 	m_fontTable = NULL;
-	m_unk0x4dd0 = FALSE;
+	m_running = FALSE;
 	m_unk0x4d24.Reset();
 	m_unk0x4d30.Reset();
 	m_menuStyles.Clear();
@@ -99,7 +99,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	FUN_0042cde0();
 	InitializeInputBindings();
 	InitializeAudio();
-	FUN_0042cd60();
+	InitializeTextRenderer();
 
 	if (FUN_0042e490()) {
 		flag = TRUE;
@@ -110,17 +110,17 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 
 	m_renderer->VTable0x34(7, g_unk0x4beb78);
 
-	m_unk0x04.m_unk0x04.Allocate(10);
-	m_unk0x04.m_unk0x04.Push(m_unk0x04.m_context->m_unk0x1c);
+	m_unk0x04.m_menuStack.Allocate(10);
+	m_unk0x04.m_menuStack.Push(m_unk0x04.m_context->m_unk0x1c);
 
 	if (flag && FUN_0042e450()) {
-		m_unk0x04.m_unk0x04.Push(48);
+		m_unk0x04.m_menuStack.Push(48);
 	}
 
-	LegoU16 top = m_unk0x04.m_unk0x04.Peek();
+	LegoU16 top = m_unk0x04.m_menuStack.Peek();
 	FUN_0042d3e0(top);
 
-	m_unk0x4bd0.FUN_00468af0(&m_unk0x4d98, 2, &m_unk0x4c74);
+	m_unk0x4bd0.FUN_00468af0(&m_unk0x4d98, 2, &m_textRenderer);
 	return 1;
 }
 
@@ -140,13 +140,13 @@ LegoS32 MenuManager::Shutdown()
 			}
 		}
 
-		m_unk0x4c74.VTable0x0c();
+		m_textRenderer.VTable0x0c();
 		m_unk0x4bd0.FUN_00468ab0();
 		UnloadMenuData();
 		ReleaseRendererObject();
 		ShutdownInputBindings();
 		ShutdownAudio();
-		FUN_0042d080();
+		UnloadMenuImages();
 		m_renderer->VTable0x38();
 		Reset();
 	}
@@ -155,7 +155,7 @@ LegoS32 MenuManager::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x0042cd60
-void MenuManager::FUN_0042cd60()
+void MenuManager::InitializeTextRenderer()
 {
 	GolName name;
 	CopperCrest0x40::InitStruct initStruct;
@@ -169,7 +169,7 @@ void MenuManager::FUN_0042cd60()
 	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
 	initStruct.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
 
-	m_unk0x4c74.FUN_00469040(&initStruct);
+	m_textRenderer.FUN_00469040(&initStruct);
 }
 
 // FUNCTION: LEGORACERS 0x0042cde0
@@ -285,7 +285,7 @@ void MenuManager::LoadMenuImages()
 }
 
 // FUNCTION: LEGORACERS 0x0042d080
-void MenuManager::FUN_0042d080()
+void MenuManager::UnloadMenuImages()
 {
 	if (m_imageTable) {
 		m_imageTable->Clear();
@@ -415,7 +415,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_menuId = p_menuId;
 	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_unk0x18;
 	m_unk0x4d98.m_unk0x20 = &m_unk0x4bd0;
-	m_unk0x4d98.m_unk0x24 = m_unk0x4c74.GetUnk0x10();
+	m_unk0x4d98.m_unk0x24 = m_textRenderer.GetUnk0x10();
 	m_unk0x4d98.m_menuNameStrings = &m_menuNameStrings;
 	m_unk0x4d98.m_menuTextStrings = &m_menuTextStrings;
 
@@ -429,7 +429,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	}
 
 	m_unk0x4dc8 = m_unk0x4bcc.FUN_0047f4e0(p_menuId);
-	m_unk0x4c74.SetUnk0x54(m_unk0x4dc8);
+	m_textRenderer.SetUnk0x54(m_unk0x4dc8);
 	m_unk0x4dc8->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
 }
 
@@ -448,10 +448,10 @@ void MenuManager::Run()
 	rendererState.m_blu = 0;
 	rendererState.m_alp = 0;
 	m_renderer->VTable0x1c(rendererState);
-	m_unk0x4dd0 = TRUE;
+	m_running = TRUE;
 
-	while (m_unk0x4dd0) {
-		if (!golApp->Tick(this) || !m_unk0x4dd0) {
+	while (m_running) {
+		if (!golApp->Tick(this) || !m_running) {
 			m_unk0x04.m_context->m_unk0x00 = FALSE;
 			break;
 		}
@@ -460,9 +460,9 @@ void MenuManager::Run()
 		m_unk0x04.m_context->GetSoundManager()->Update(frameDeltaMs);
 
 		if (!golApp->IsDisabled()) {
-			stack = &m_unk0x04.m_unk0x04;
+			stack = &m_unk0x04.m_menuStack;
 			previousMenu = stack->Peek();
-			m_unk0x04.m_context->m_unk0x00 = m_unk0x4c74.VTable0x10(frameDeltaMs);
+			m_unk0x04.m_context->m_unk0x00 = m_textRenderer.VTable0x10(frameDeltaMs);
 
 			if (m_unk0x4bd0.GetUnk0x9c() > 0) {
 				m_unk0x4bd0.FUN_00468da0(frameDeltaMs);
@@ -471,7 +471,7 @@ void MenuManager::Run()
 				if (m_unk0x4dc8->VTable0x78(frameDeltaMs)) {
 					m_unk0x04.m_context->m_unk0x00 = FALSE;
 				}
-				if (!m_unk0x04.m_context->m_unk0x00 || !m_unk0x04.m_unk0x04.GetSize()) {
+				if (!m_unk0x04.m_context->m_unk0x00 || !m_unk0x04.m_menuStack.GetSize()) {
 					break;
 				}
 
@@ -490,7 +490,7 @@ void MenuManager::Run()
 				m_unk0x4bd0.FUN_00468e20();
 			}
 			else {
-				m_unk0x4c74.FUN_00469550();
+				m_textRenderer.FUN_00469550();
 			}
 
 			menuAnimations->Draw(m_renderer);
@@ -731,7 +731,7 @@ LegoBool32 MenuManager::FUN_0042e680()
 // FUNCTION: LEGORACERS 0x0042e700
 void MenuManager::VTable0x00()
 {
-	m_unk0x4dd0 = FALSE;
+	m_running = FALSE;
 	m_unk0x04.m_context->m_unk0x00 = FALSE;
 }
 
@@ -753,17 +753,17 @@ void MenuManager::VTable0x1c(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0042e830
 void MenuManager::VTable0x28()
 {
-	m_unk0x4c74.SetCursorInside(1);
+	m_textRenderer.SetCursorInside(1);
 }
 
 // FUNCTION: LEGORACERS 0x0042e840
 void MenuManager::VTable0x2c()
 {
-	m_unk0x4c74.SetCursorInside(0);
+	m_textRenderer.SetCursorInside(0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e850
 void MenuManager::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
 {
-	m_unk0x4c74.SetCursorPosition(p_arg1, p_arg2);
+	m_textRenderer.SetCursorPosition(p_arg1, p_arg2);
 }

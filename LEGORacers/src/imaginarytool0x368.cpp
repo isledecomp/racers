@@ -78,7 +78,7 @@ LegoBool32 ImaginaryTool0x368::VTable0x8c(MenuToolContext0x4bc8* p_context, Menu
 // FUNCTION: LEGORACERS 0x0047fca0
 LegoBool32 ImaginaryTool0x368::Destroy()
 {
-	if (!m_unk0x04) {
+	if (!m_initialized) {
 		return TRUE;
 	}
 

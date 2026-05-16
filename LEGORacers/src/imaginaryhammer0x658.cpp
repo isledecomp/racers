@@ -112,26 +112,26 @@ void ImaginaryHammer0x658::VTable0x4c()
 // FUNCTION: LEGORACERS 0x00488630
 void ImaginaryHammer0x658::VTable0x84()
 {
-	m_context->m_unk0x04.Pop();
+	m_context->m_menuStack.Pop();
 	m_unk0xc4->SetUnk0x41(TRUE);
 
 	switch (m_menuId) {
 	case 43:
-		m_context->m_unk0x04.Push(0x29);
+		m_context->m_menuStack.Push(0x29);
 		return;
 	case 41:
-		m_context->m_unk0x04.Push(1);
+		m_context->m_menuStack.Push(1);
 		return;
 	case 1:
-		m_context->m_unk0x04.Push(0x26);
+		m_context->m_menuStack.Push(0x26);
 		return;
 	case 40:
-		m_context->m_unk0x04.Push(2);
-		m_context->m_unk0x04.Push(0x2d);
+		m_context->m_menuStack.Push(2);
+		m_context->m_menuStack.Push(0x2d);
 		return;
 	case 39:
-		if (!m_context->m_unk0x04.GetSize()) {
-			m_context->m_unk0x04.Push(2);
+		if (!m_context->m_menuStack.GetSize()) {
+			m_context->m_menuStack.Push(2);
 		}
 		return;
 	}

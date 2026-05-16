@@ -6,7 +6,7 @@
 #include "rectangle.h"
 #include "types.h"
 
-class PearlDew0x0c;
+class DirectDrawPalette;
 class IPalette0x4;
 class BronzeFalcon0xc8770;
 

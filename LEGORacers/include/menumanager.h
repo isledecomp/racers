@@ -64,7 +64,7 @@ public:
 	void Reset();
 	LegoS32 Initialize(LegoRacers::Context* p_context);
 	LegoS32 Shutdown();
-	void FUN_0042cd60();
+	void InitializeTextRenderer();
 	void FUN_0042cde0();
 	void ReleaseRendererObject();
 	void InitializeInputBindings();
@@ -85,13 +85,13 @@ public:
 private:
 	void ShutdownInputBindings();
 	void ShutdownAudio();
-	void FUN_0042d080();
+	void UnloadMenuImages();
 	void FUN_0042d730();
 
 	MenuToolContext0x4bc8 m_unk0x04;       // 0x04
 	ChromeSpike0x4 m_unk0x4bcc;            // 0x4bcc
 	CrimsonSun0xa4 m_unk0x4bd0;            // 0x4bd0
-	CopperCrest0x40 m_unk0x4c74;           // 0x4c74
+	CopperCrest0x40 m_textRenderer;        // 0x4c74
 	GolExport* m_golExport;                // 0x4cd4
 	BronzeFalcon0xc8770* m_renderer;       // 0x4cd8
 	AwakeKite0x20* m_imageTable;           // 0x4cdc
@@ -107,7 +107,7 @@ private:
 	MenuToolCreateParams0x30 m_unk0x4d98;  // 0x4d98
 	ImaginaryTool0x368* m_unk0x4dc8;       // 0x4dc8
 	undefined4 m_unk0x4dcc;                // 0x4dcc
-	LegoBool32 m_unk0x4dd0;                // 0x4dd0
+	LegoBool32 m_running;                  // 0x4dd0
 };
 
 #endif // MENUMANAGER_H

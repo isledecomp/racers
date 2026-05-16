@@ -4,7 +4,7 @@
 #include "azureridge0x38.h"
 #include "compat.h"
 #include "depthbuffer0x38.h"
-#include "pearldew0x0c.h"
+#include "directdrawpalette.h"
 
 class BronzeFalcon0xc8770;
 
@@ -47,7 +47,7 @@ protected:
 	void DetachDepthBuffer(DepthBuffer0x38* p_depthBuffer);
 	void SetDisplayPalette(BronzeFalcon0xc8770* p_renderer);
 
-	PearlDew0x0c m_palette;                // 0x38
+	DirectDrawPalette m_palette;           // 0x38
 	GolDrawState* m_drawState;             // 0x44
 	LPDIRECTDRAWSURFACE4 m_displaySurface; // 0x48
 	LPDIRECTDRAWSURFACE4 m_renderSurface;  // 0x4c

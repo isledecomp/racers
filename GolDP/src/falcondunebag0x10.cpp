@@ -20,7 +20,7 @@ FalconDuneBag0x10::~FalconDuneBag0x10()
 }
 
 // FUNCTION: GOLDP 0x10014770
-void FalconDuneBag0x10::FUN_10014770(const GolSurfaceFormat& p_textureFormat)
+void FalconDuneBag0x10::Initialize(const GolSurfaceFormat& p_textureFormat)
 {
 	if (m_entries != NULL) {
 		if (m_unk0x0c != NULL) {
@@ -31,7 +31,7 @@ void FalconDuneBag0x10::FUN_10014770(const GolSurfaceFormat& p_textureFormat)
 		Shutdown();
 	}
 
-	Initialize(p_textureFormat);
+	BronzeDuneBag0xc::Initialize(p_textureFormat);
 
 	m_unk0x0c = new LegoU16[m_size];
 	if (m_unk0x0c == NULL) {

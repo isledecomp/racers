@@ -145,7 +145,7 @@ LegoBool32 ImaginaryDrill0x2450::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 // FUNCTION: LEGORACERS 0x00481120
 LegoBool32 ImaginaryDrill0x2450::Destroy()
 {
-	if (!m_unk0x04) {
+	if (!m_initialized) {
 		return TRUE;
 	}
 
@@ -201,11 +201,11 @@ void ImaginaryDrill0x2450::VTable0x38(ObscureVantage0x58* p_unk0x04)
 void ImaginaryDrill0x2450::VTable0x84()
 {
 	if (m_unk0x360 && m_unk0x360 != 0xffff) {
-		m_context->m_unk0x04.Push(m_unk0x360);
+		m_context->m_menuStack.Push(m_unk0x360);
 		return;
 	}
 
-	m_context->m_unk0x04.ResetSize();
+	m_context->m_menuStack.ResetSize();
 }
 
 // STUB: LEGORACERS 0x004812f0

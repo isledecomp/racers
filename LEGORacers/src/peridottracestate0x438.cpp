@@ -340,19 +340,18 @@ LegoU32 PeridotTraceState0x438::FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_en
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0042ee10
+// FUNCTION: LEGORACERS 0x0042ee10
 void PeridotTraceState0x438::FUN_0042ee10(
 	LegoU32 p_playerIndex,
 	LegoU32 p_entryIndex,
 	PeridotTraceInputBindingEntry* p_entry
 )
 {
-	PeridotTraceInputBindingEntry* source = &m_state.m_inputBindings.m_entries[p_entryIndex];
-	LegoU32 i;
+	LegoS32 i;
 
-	p_entry->m_deviceType = source->m_deviceType;
-	p_entry->m_deviceSubType = source->m_deviceSubType;
-	p_entry->m_unk0x02 = source->m_unk0x02;
+	p_entry->m_deviceType = m_state.m_inputBindings.m_entries[p_entryIndex].m_deviceType;
+	p_entry->m_unk0x02 = m_state.m_inputBindings.m_entries[p_entryIndex].m_unk0x02;
+	p_entry->m_deviceSubType = m_state.m_inputBindings.m_entries[p_entryIndex].m_deviceSubType;
 
 	for (i = 0; i < c_inputBindingEventCount; i++) {
 		p_entry->m_events[i] = FUN_0042ed80(p_playerIndex, p_entryIndex, i);

@@ -69,6 +69,12 @@
 // LIBRARY: GOLDP 0x1004c73d
 // __amsg_exit
 
+// LIBRARY: GOLDP 0x1004d061
+// __getptd
+
+// LIBRARY: GOLDP 0x1004d04e
+// __initptd
+
 // LIBRARY: GOLDP 0x1004d21f
 // _free
 
@@ -78,11 +84,20 @@
 // LIBRARY: GOLDP 0x1004d420
 // __output
 
+// LIBRARY: GOLDP 0x1004dc2a
+// _malloc
+
 // LIBRARY: GOLDP 0x1004dc3c
 // __nh_malloc
 
 // LIBRARY: GOLDP 0x1004e311
 // __exit
+
+// LIBRARY: GOLDP 0x1004f356
+// __lock
+
+// LIBRARY: GOLDP 0x1004f3b7
+// __unlock
 
 // LIBRARY: GOLDP 0x100502e9
 // __FF_MSGBANNER
@@ -93,11 +108,26 @@
 // LIBRARY: GOLDP 0x10051e30
 // _strlen
 
+// LIBRARY: GOLDP 0x10051eab
+// _wctomb
+
+// LIBRARY: GOLDP 0x10051f04
+// __wctomb_lk
+
+// LIBRARY: GOLDP 0x10051f70
+// __aulldiv
+
+// LIBRARY: GOLDP 0x10051fe0
+// __aullrem
+
 // LIBRARY: GOLDP 0x10052890
 // _strcpy
 
 // LIBRARY: GOLDP 0x100528a0
 // _strcat
+
+// LIBRARY: GOLDP 0x100529d8
+// __fptrap
 
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
@@ -115,17 +145,50 @@
 // GLOBAL: GOLDP 0x10058468
 // IID_IDirect3DTexture2
 
+// GLOBAL: GOLDP 0x10059990
+// ___lookuptable
+
+// GLOBAL: GOLDP 0x1005f600
+// ___tlsindex
+
+// GLOBAL: GOLDP 0x1005f97c
+// ___mb_cur_max
+
+// GLOBAL: GOLDP 0x1005f988
+// __locktable
+
 // GLOBAL: GOLDP 0x1005fc10
 // ___sbh_threshold
 
 // GLOBAL: GOLDP 0x10065f08
 // ___error_mode
 
+// GLOBAL: GOLDP 0x1005f608
+// ___nullstring
+
+// GLOBAL: GOLDP 0x1005f60c
+// ___wnullstring
+
+// GLOBAL: GOLDP 0x1005f770
+// __pctype
+
 // GLOBAL: GOLDP 0x10065f0c
 // ___app_type
 
+// GLOBAL: GOLDP 0x10065fdc
+// ___lc_codepage
+
 // GLOBAL: GOLDP 0x100660f4
 // __adbgmsg
+
+// GLOBAL: GOLDP 0x10066104
+// __newmode
+
+// GLOBAL: GOLDP 0x10067604
+// ___setlc_active
+
+// GLOBAL: GOLDP 0x10067608
+// ___unguarded_readlc_active
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain

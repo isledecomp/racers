@@ -1,4 +1,4 @@
-#include "pearldew0x0c.h"
+#include "directdrawpalette.h"
 
 #include "bronzefalcon0xc8770.h"
 #include "golerror.h"
@@ -6,13 +6,13 @@
 
 #include <stdio.h>
 
-DECOMP_SIZE_ASSERT(PearlDew0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(DirectDrawPalette, 0x0c)
 
 // GLOBAL: GOLDP 0x10063150
-PALETTEENTRY g_paletteEntries[PearlDew0x0c::c_paletteEntries8Bit];
+PALETTEENTRY g_paletteEntries[DirectDrawPalette::c_paletteEntries8Bit];
 
 // FUNCTION: GOLDP 0x10007190
-PearlDew0x0c::PearlDew0x0c()
+DirectDrawPalette::DirectDrawPalette()
 {
 	m_palette = NULL;
 	m_firstEntry = 0;
@@ -20,7 +20,7 @@ PearlDew0x0c::PearlDew0x0c()
 }
 
 // FUNCTION: GOLDP 0x100071b0
-PearlDew0x0c::~PearlDew0x0c()
+DirectDrawPalette::~DirectDrawPalette()
 {
 	if (m_palette) {
 		m_palette->Release();
@@ -32,7 +32,7 @@ PearlDew0x0c::~PearlDew0x0c()
 }
 
 // FUNCTION: GOLDP 0x100071e0
-void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
+void DirectDrawPalette::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
 	LegoChar buffer[c_errorBufferSize];
 
@@ -133,7 +133,7 @@ void PearlDew0x0c::CreateDirectDrawPalette(BronzeFalcon0xc8770* p_renderer, GolS
 }
 
 // FUNCTION: GOLDP 0x100073f0
-void PearlDew0x0c::Release()
+void DirectDrawPalette::Release()
 {
 	if (m_palette) {
 		m_palette->Release();
@@ -145,7 +145,7 @@ void PearlDew0x0c::Release()
 }
 
 // FUNCTION: GOLDP 0x10007420
-void PearlDew0x0c::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
+void DirectDrawPalette::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	LegoChar buffer[c_errorBufferSize];
 
@@ -182,7 +182,7 @@ void PearlDew0x0c::GetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_c
 }
 
 // FUNCTION: GOLDP 0x10007500
-void PearlDew0x0c::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
+void DirectDrawPalette::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count)
 {
 	LegoChar buffer[c_errorBufferSize];
 
@@ -201,7 +201,7 @@ void PearlDew0x0c::SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_c
 }
 
 // FUNCTION: GOLDP 0x100075b0
-void PearlDew0x0c::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
+void DirectDrawPalette::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 {
 	PALETTEENTRY entry;
 	LegoChar buffer[c_errorBufferSize];
@@ -219,7 +219,7 @@ void PearlDew0x0c::GetEntry(ColorRGBA* p_entry, LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10007620
-void PearlDew0x0c::CopyEntriesFrom(IPalette0x4* p_source)
+void DirectDrawPalette::CopyEntriesFrom(IPalette0x4* p_source)
 {
 	ColorRGBA entry;
 	LegoChar buffer[c_errorBufferSize];
@@ -241,7 +241,7 @@ void PearlDew0x0c::CopyEntriesFrom(IPalette0x4* p_source)
 }
 
 // FUNCTION: GOLDP 0x100076d0
-LegoS32 PearlDew0x0c::FindEntry(const ColorRGBA& p_entry)
+LegoS32 DirectDrawPalette::FindEntry(const ColorRGBA& p_entry)
 {
 	DWORD caps;
 	LegoChar buffer[c_errorBufferSize];
@@ -280,19 +280,19 @@ LegoS32 PearlDew0x0c::FindEntry(const ColorRGBA& p_entry)
 }
 
 // FUNCTION: GOLDP 0x100077b0
-LegoU32 PearlDew0x0c::GetFirstEntry()
+LegoU32 DirectDrawPalette::GetFirstEntry()
 {
 	return m_firstEntry;
 }
 
 // FUNCTION: GOLDP 0x100077c0
-LegoU32 PearlDew0x0c::GetEntryCount()
+LegoU32 DirectDrawPalette::GetEntryCount()
 {
 	return m_entryCount;
 }
 
 // FUNCTION: GOLDP 0x100077d0
-LegoU32 PearlDew0x0c::GetPaletteSize()
+LegoU32 DirectDrawPalette::GetPaletteSize()
 {
 	if (m_entryCount == c_paletteEntries8BitUsable) {
 		return c_paletteEntries8Bit;
@@ -302,7 +302,7 @@ LegoU32 PearlDew0x0c::GetPaletteSize()
 }
 
 // STUB: GOLDP 0x100077f0
-void PearlDew0x0c::Set332PaletteEntries()
+void DirectDrawPalette::Set332PaletteEntries()
 {
 	LegoChar buffer[c_errorBufferSize];
 

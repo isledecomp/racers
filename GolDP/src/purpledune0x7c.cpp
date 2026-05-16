@@ -2,11 +2,11 @@
 
 #include "bronzefalcon0xc8770.h"
 #include "ddrawutil.h"
+#include "directdrawpalette.h"
 #include "falcondunebag0x10.h"
 #include "golcommondrawstate.h"
 #include "golerror.h"
 #include "golimgfile.h"
-#include "pearldew0x0c.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -404,11 +404,11 @@ void PurpleDune0x7c::FUN_10016380()
 	}
 	else {
 		if (palette != NULL) {
-			static_cast<PearlDew0x0c*>(palette)->Release();
+			static_cast<DirectDrawPalette*>(palette)->Release();
 
 			palette = m_palette;
 			if (palette != NULL) {
-				delete static_cast<PearlDew0x0c*>(palette);
+				delete static_cast<DirectDrawPalette*>(palette);
 			}
 
 			m_palette = NULL;
@@ -528,11 +528,11 @@ void PurpleDune0x7c::FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0
 			break;
 		}
 
-		if ((m_palette = new PearlDew0x0c) == NULL) {
+		if ((m_palette = new DirectDrawPalette) == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		static_cast<PearlDew0x0c*>(m_palette)->CreateDirectDrawPalette(&p_renderer, &m_textureFormat2);
+		static_cast<DirectDrawPalette*>(m_palette)->CreateDirectDrawPalette(&p_renderer, &m_textureFormat2);
 	}
 	else {
 		surfaceDesc.ddpfPixelFormat.dwRGBBitCount = m_textureFormat2.m_bitsPerPixel;
@@ -597,7 +597,7 @@ void PurpleDune0x7c::FUN_100165c0(GolCommonDrawState* p_drawState, BronzeFalcon0
 		}
 	}
 	else {
-		result = m_surface->SetPalette(static_cast<PearlDew0x0c*>(m_palette)->GetPalette());
+		result = m_surface->SetPalette(static_cast<DirectDrawPalette*>(m_palette)->GetPalette());
 		if (result) {
 			LegoChar errorMessage[64];
 			::sprintf(errorMessage, "Unable to set texture palette\nerror %x", result);
@@ -659,7 +659,7 @@ void PurpleDune0x7c::FUN_100168c0(BronzeFalcon0xc8770& p_renderer)
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			static_cast<FalconDuneBag0x10*>(m_palette)->FUN_10014770(m_textureFormat2);
+			static_cast<FalconDuneBag0x10*>(m_palette)->Initialize(m_textureFormat2);
 			mipmap->m_paletteData = static_cast<FalconDuneBag0x10*>(m_palette)->m_unk0x0c;
 		}
 		else {

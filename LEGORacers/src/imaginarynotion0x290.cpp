@@ -169,7 +169,7 @@ void ImaginaryNotion0x290::Reset()
 	m_unk0x08.Clear();
 	m_unk0x58.Clear();
 	m_unk0xd8.VTable0x08();
-	m_unk0x04 = 0;
+	m_initialized = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046b500
@@ -192,16 +192,16 @@ LegoBool32 ImaginaryNotion0x290::Initialize(MenuToolCreateParams0x30* p_createPa
 		VTable0x4c();
 		m_inputManager->PollDevices(0);
 		m_inputBindingContainer->ClearQueue();
-		m_unk0x04 = TRUE;
+		m_initialized = TRUE;
 	}
 
-	return m_unk0x04;
+	return m_initialized;
 }
 
 // FUNCTION: LEGORACERS 0x0046b5d0
 LegoBool32 ImaginaryNotion0x290::Destroy()
 {
-	if (m_unk0x04) {
+	if (m_initialized) {
 		if (m_unk0xbc) {
 			m_unk0xbc->Clear();
 			m_golExport->VTable0x68(m_unk0xbc);

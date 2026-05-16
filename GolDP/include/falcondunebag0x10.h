@@ -17,7 +17,7 @@ public:
 	void CopyEntriesFrom(IPalette0x4* p_source) override;                             // vtable+0x04
 	void SetEntries(ColorRGBA* p_entries, LegoU32 p_start, LegoU32 p_count) override; // vtable+0x08
 
-	void FUN_10014770(const GolSurfaceFormat& p_textureFormat);
+	void Initialize(const GolSurfaceFormat& p_textureFormat);
 	void Destroy();
 
 	LegoU16* GetMappedEntries() const { return m_unk0x0c; }

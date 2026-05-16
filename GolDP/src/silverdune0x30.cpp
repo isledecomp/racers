@@ -1,6 +1,6 @@
 #include "silverdune0x30.h"
 
-#include "pearldew0x0c.h"
+#include "directdrawpalette.h"
 
 DECOMP_SIZE_ASSERT(SilverDune0x30, 0x30)
 

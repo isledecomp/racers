@@ -143,7 +143,7 @@ public:
 	// ImaginaryNotion0x290::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x04;                            // 0x004
+	LegoBool32 m_initialized;                        // 0x004
 	CeruleanEmperor0x4c m_unk0x08;                   // 0x008
 	PorcelainVeil0x50* m_menuStyles;                 // 0x054
 	CeruleanQueen0x58 m_unk0x58;                     // 0x058

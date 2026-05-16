@@ -28,7 +28,7 @@ void BronzeDuneBag0xc::Initialize(const GolSurfaceFormat& p_textureFormat)
 	if (m_entries != NULL) {
 		m_size = 0;
 		delete[] m_entries;
-		m_entries = 0;
+		m_entries = NULL;
 	}
 
 	m_size = 1 << p_textureFormat.m_bitsPerPixel;

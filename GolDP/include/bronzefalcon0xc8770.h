@@ -175,7 +175,7 @@ public:
 	// SYNTHETIC: GOLDP 0x10007960
 	// BronzeFalcon0xc8770::`scalar deleting destructor'
 
-	friend class PearlDew0x0c;
+	friend class DirectDrawPalette;
 	friend class SlatePeak0x58;
 	friend class BronzeFalconSurface0x5c;
 

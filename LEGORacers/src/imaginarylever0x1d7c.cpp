@@ -22,7 +22,7 @@ ImaginaryLever0x1d7c::~ImaginaryLever0x1d7c()
 // FUNCTION: LEGORACERS 0x00486dd0
 LegoBool32 ImaginaryLever0x1d7c::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	if (m_unk0x04) {
+	if (m_initialized) {
 		Destroy();
 	}
 
@@ -113,7 +113,7 @@ void ImaginaryLever0x1d7c::FUN_00486e40(CitrineGrove0x1f4c* p_unk0x04)
 // FUNCTION: LEGORACERS 0x00486ff0
 LegoBool32 ImaginaryLever0x1d7c::Destroy()
 {
-	if (!m_unk0x04) {
+	if (!m_initialized) {
 		return TRUE;
 	}
 
@@ -194,7 +194,7 @@ void ImaginaryLever0x1d7c::VTable0x4c()
 // FUNCTION: LEGORACERS 0x00487210
 void ImaginaryLever0x1d7c::VTable0x84()
 {
-	m_context->m_unk0x04.Pop();
+	m_context->m_menuStack.Pop();
 }
 
 // FUNCTION: LEGORACERS 0x00487220

@@ -24,7 +24,7 @@
 class MenuToolContext0x4bc8 {
 public:
 	LegoRacers::Context* m_context;               // 0x00
-	StackOfLegoU16 m_unk0x04;                     // 0x04
+	StackOfLegoU16 m_menuStack;                   // 0x04
 	OnyxBreeze0x248 m_inputBindings;              // 0x10
 	CitrineGrove0x1f4c m_unk0x258;                // 0x258
 	TopazBurst0x14 m_unk0x21a4;                   // 0x21a4

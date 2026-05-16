@@ -1,5 +1,5 @@
-#ifndef GOLDP_PEARLDEW0X0C_H
-#define GOLDP_PEARLDEW0X0C_H
+#ifndef GOLDP_DIRECTDRAWPALETTE_H
+#define GOLDP_DIRECTDRAWPALETTE_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -10,7 +10,7 @@
 
 // VTABLE: GOLDP 0x10056520
 // SIZE 0x0c
-class PearlDew0x0c : public IPalette0x4 {
+class DirectDrawPalette : public IPalette0x4 {
 public:
 	enum {
 		c_errorBufferSize = 128,
@@ -30,8 +30,8 @@ public:
 		c_332RedStride = c_332GreenLevels * c_332GreenStride
 	};
 
-	PearlDew0x0c();
-	~PearlDew0x0c();
+	DirectDrawPalette();
+	~DirectDrawPalette();
 
 	void CreateDirectDrawPalette(class BronzeFalcon0xc8770* p_renderer, class GolSurfaceFormat* p_textureFormat);
 	void Release();
@@ -54,4 +54,4 @@ private:
 	LegoU16 m_entryCount;          // 0x0a
 };
 
-#endif // GOLDP_PEARLDEW0X0C_H
+#endif // GOLDP_DIRECTDRAWPALETTE_H

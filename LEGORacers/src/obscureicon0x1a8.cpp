@@ -14,7 +14,7 @@ LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 {
 	if (m_flags & 2) {
 		LegoBool32 result = TRUE;
-		if (result & m_unk0x12c) {
+		if (result & m_stateFlags) {
 			return result;
 		}
 	}
@@ -45,18 +45,18 @@ void ObscureIcon0x1a8::Reset()
 {
 	m_soundGroupBinding = NULL;
 	m_eventHandler = NULL;
-	m_unk0x198 = NULL;
-	m_unk0x12c = 0;
-	m_unk0x19c = 0;
+	m_activeChild = NULL;
+	m_stateFlags = 0;
+	m_visualStateIndex = 0;
 	m_unk0x12d = FALSE;
-	m_lastIcon = NULL;
-	m_firstIcon = NULL;
-	m_nextIcon = NULL;
-	m_prevIcon = NULL;
-	m_parentIcon = NULL;
-	m_unk0x134 = 0;
+	m_lastChild = NULL;
+	m_firstChild = NULL;
+	m_nextSibling = NULL;
+	m_prevSibling = NULL;
+	m_parent = NULL;
+	m_transitionRemainingMs = 0;
 	m_unk0x1a4 = 0;
-	m_unk0x1a0 = 0;
+	m_activeKeyCode = 0;
 	m_unk0x168 = 0;
 
 	::memset(m_unk0x158, 0, sizeof(m_unk0x158));
@@ -87,7 +87,7 @@ void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const Crea
 	m_eventHandler = p_createParams->m_unk0x80;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_unk0x168 = p_createParams->m_unk0x40;
-	m_unk0x130 = p_createState->m_unk0x84;
+	m_transitionDurationMs = p_createState->m_unk0x84;
 	VTable0x40(p_createParams->m_unk0x80);
 }
 
@@ -98,15 +98,15 @@ LegoBool32 ObscureIcon0x1a8::FUN_00471e30(CreateParams0x84* p_createParams, cons
 	FUN_00471d90(p_createParams, p_createState);
 
 	if (FUN_00472a60(p_createParams)) {
-		if (p_createParams->m_unk0x74 && p_createParams->m_parentIcon && (m_flags & 4)) {
-			FUN_00471ec0(p_createParams->m_parentIcon);
+		if (p_createParams->m_unk0x74 && p_createParams->m_parent && (m_flags & 4)) {
+			AttachToParent(p_createParams->m_parent);
 		}
 
 		if (p_createParams->m_unk0x38) {
 			VTable0x44(0);
 		}
 
-		FUN_00472080();
+		RefreshVisualState();
 		return TRUE;
 	}
 
@@ -119,7 +119,7 @@ undefined4 ObscureIcon0x1a8::VTable0x08()
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
-		FUN_00471f00();
+		DetachFromParent();
 		result = ObscureVantage0x58::VTable0x08();
 	}
 
@@ -127,66 +127,66 @@ undefined4 ObscureIcon0x1a8::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x00471ec0
-void ObscureIcon0x1a8::FUN_00471ec0(ObscureIcon0x1a8* p_parentIcon)
+void ObscureIcon0x1a8::AttachToParent(ObscureIcon0x1a8* p_parent)
 {
-	FUN_00471f00();
-	m_parentIcon = p_parentIcon;
+	DetachFromParent();
+	m_parent = p_parent;
 
-	if (m_parentIcon) {
-		if (!m_parentIcon->m_lastIcon) {
-			m_parentIcon->m_firstIcon = this;
-			m_parentIcon->m_lastIcon = this;
+	if (m_parent) {
+		if (!m_parent->m_lastChild) {
+			m_parent->m_firstChild = this;
+			m_parent->m_lastChild = this;
 			return;
 		}
 
-		m_prevIcon = m_parentIcon->m_lastIcon;
-		m_prevIcon->m_nextIcon = this;
-		m_parentIcon->m_lastIcon = this;
+		m_prevSibling = m_parent->m_lastChild;
+		m_prevSibling->m_nextSibling = this;
+		m_parent->m_lastChild = this;
 	}
 
 	m_unk0x12d = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00471f00
-void ObscureIcon0x1a8::FUN_00471f00()
+void ObscureIcon0x1a8::DetachFromParent()
 {
 	if (!(m_flags & 4)) {
 		return;
 	}
 
-	if (m_prevIcon) {
-		m_prevIcon->m_nextIcon = m_nextIcon;
+	if (m_prevSibling) {
+		m_prevSibling->m_nextSibling = m_nextSibling;
 	}
-	else if (m_parentIcon) {
-		m_parentIcon->m_firstIcon = m_nextIcon;
+	else if (m_parent) {
+		m_parent->m_firstChild = m_nextSibling;
 	}
 
-	if (m_nextIcon) {
-		m_nextIcon->m_prevIcon = m_prevIcon;
-		m_nextIcon = NULL;
-		m_prevIcon = NULL;
-		m_parentIcon = NULL;
+	if (m_nextSibling) {
+		m_nextSibling->m_prevSibling = m_prevSibling;
+		m_nextSibling = NULL;
+		m_prevSibling = NULL;
+		m_parent = NULL;
 		m_unk0x12d = FALSE;
 		return;
 	}
 
-	if (m_parentIcon) {
-		m_parentIcon->m_lastIcon = m_prevIcon;
+	if (m_parent) {
+		m_parent->m_lastChild = m_prevSibling;
 	}
 
-	m_nextIcon = NULL;
-	m_prevIcon = NULL;
-	m_parentIcon = NULL;
+	m_nextSibling = NULL;
+	m_prevSibling = NULL;
+	m_parent = NULL;
 	m_unk0x12d = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00471f70
-ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f70()
+ObscureIcon0x1a8* ObscureIcon0x1a8::FindRoot()
 {
 	ObscureIcon0x1a8* result = this;
 
-	while (result->m_parentIcon) {
-		result = result->m_parentIcon;
+	while (result->m_parent) {
+		result = result->m_parent;
 	}
 
 	return result;
@@ -195,8 +195,8 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f70()
 // FUNCTION: LEGORACERS 0x00471f90
 ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f90()
 {
-	ObscureIcon0x1a8* result = FUN_00471f70();
-	ObscureIcon0x1a8* child = result->m_unk0x198;
+	ObscureIcon0x1a8* result = FindRoot();
+	ObscureIcon0x1a8* child = result->m_activeChild;
 
 	if (!child) {
 		return NULL;
@@ -204,7 +204,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::FUN_00471f90()
 
 	do {
 		result = child;
-	} while ((child = result->m_unk0x198));
+	} while ((child = result->m_activeChild));
 
 	return result;
 }
@@ -218,9 +218,9 @@ void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 	if (icon) {
 		skipParentLink = (LegoU8) p_flags & 2;
 
-		for (; icon; icon = icon->m_parentIcon) {
-			icon->m_unk0x12c |= c_flagBit1;
-			FUN_00472080();
+		for (; icon; icon = icon->m_parent) {
+			icon->m_stateFlags |= c_flagBit1;
+			RefreshVisualState();
 
 			ImaginaryInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
@@ -233,8 +233,8 @@ void ObscureIcon0x1a8::FUN_00471fb0(undefined4 p_flags)
 				break;
 			}
 
-			if (icon->m_parentIcon) {
-				icon->m_parentIcon->m_unk0x198 = icon;
+			if (icon->m_parent) {
+				icon->m_parent->m_activeChild = icon;
 			}
 		}
 	}
@@ -248,9 +248,9 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 	if (icon) {
 		LegoU8 skipParentLink = (LegoU8) p_flags & 2;
 
-		for (; icon; icon = icon->m_parentIcon) {
-			icon->m_unk0x12c &= ~c_flagBit1;
-			FUN_00472080();
+		for (; icon; icon = icon->m_parent) {
+			icon->m_stateFlags &= ~c_flagBit1;
+			RefreshVisualState();
 
 			ImaginaryInterface* eventHandler = icon->m_eventHandler;
 			if (eventHandler) {
@@ -263,49 +263,48 @@ void ObscureIcon0x1a8::FUN_00472010(undefined4 p_flags)
 				break;
 			}
 
-			if (icon->m_parentIcon) {
-				icon->m_parentIcon->m_unk0x198 = NULL;
+			if (icon->m_parent) {
+				icon->m_parent->m_activeChild = NULL;
 			}
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00472080
-void ObscureIcon0x1a8::FUN_00472080()
+void ObscureIcon0x1a8::RefreshVisualState()
 {
-	LegoU8 flags = m_unk0x12c;
-	LegoU32 oldState = 0;
-	oldState = m_unk0x19c;
+	LegoU8 flags = m_stateFlags;
+	LegoU32 oldState = m_visualStateIndex;
 
 	if (flags & c_flagBit0) {
 		if (flags & c_flagBit1) {
-			m_unk0x19c = 4;
+			m_visualStateIndex = 4;
 		}
 		else {
-			m_unk0x19c = 2;
+			m_visualStateIndex = 2;
 		}
 	}
 	else {
-		m_unk0x19c = 0;
+		m_visualStateIndex = 0;
 	}
 
 	if (flags & c_flagBit2) {
-		m_unk0x19c++;
+		m_visualStateIndex++;
 	}
 
-	if (oldState != m_unk0x19c) {
-		FUN_00472540();
+	if (oldState != m_visualStateIndex) {
+		BeginRectTransition();
 	}
 
-	VTable0x14(&m_unk0x174[m_unk0x19c]);
+	VTable0x14(&m_unk0x174[m_visualStateIndex]);
 }
 
 // FUNCTION: LEGORACERS 0x004720f0
 void ObscureIcon0x1a8::VTable0x44(undefined4 p_flags)
 {
-	if (!(m_unk0x12c & c_flagBit0)) {
-		m_unk0x12c |= c_flagBit0;
-		FUN_00472080();
+	if (!(m_stateFlags & c_flagBit0)) {
+		m_stateFlags |= c_flagBit0;
+		RefreshVisualState();
 
 		if (m_eventHandler && !(p_flags & 1)) {
 			m_eventHandler->VTable0x2c(this);
@@ -316,18 +315,18 @@ void ObscureIcon0x1a8::VTable0x44(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472130
 void ObscureIcon0x1a8::VTable0x48(undefined4 p_flags)
 {
-	if (m_unk0x12c & c_flagBit0) {
+	if (m_stateFlags & c_flagBit0) {
 		LegoU8 flags = (LegoU8) p_flags;
 
-		if (m_unk0x12c & c_flagBit1) {
-			ObscureIcon0x1a8* root = FUN_00471f70();
+		if (m_stateFlags & c_flagBit1) {
+			ObscureIcon0x1a8* root = FindRoot();
 			if (!root->VTable0x60() && !root->VTable0x68()) {
 				VTable0x50(0);
 			}
 		}
 
-		m_unk0x12c &= ~c_flagBit0;
-		FUN_00472080();
+		m_stateFlags &= ~c_flagBit0;
+		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
 			m_eventHandler->VTable0x30(this);
@@ -338,8 +337,8 @@ void ObscureIcon0x1a8::VTable0x48(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x004721a0
 void ObscureIcon0x1a8::VTable0x4c(undefined4 p_flags)
 {
-	if (m_unk0x12c & c_flagBit0) {
-		if ((m_unk0x12c & c_flagBit1) && !m_unk0x198) {
+	if (m_stateFlags & c_flagBit0) {
+		if ((m_stateFlags & c_flagBit1) && !m_activeChild) {
 			return;
 		}
 
@@ -361,12 +360,12 @@ void ObscureIcon0x1a8::VTable0x4c(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472200
 void ObscureIcon0x1a8::VTable0x50(undefined4 p_flags)
 {
-	if ((m_unk0x12c & c_flagBit0) && (m_unk0x12c & c_flagBit1)) {
-		if (m_unk0x12c & c_flagBit2) {
+	if ((m_stateFlags & c_flagBit0) && (m_stateFlags & c_flagBit1)) {
+		if (m_stateFlags & c_flagBit2) {
 			VTable0x58(1);
 		}
 
-		if (m_parentIcon && !(p_flags & 2)) {
+		if (m_parent && !(p_flags & 2)) {
 			ObscureIcon0x1a8* icon = FUN_00471f90();
 			if (!icon) {
 				return;
@@ -392,19 +391,19 @@ void ObscureIcon0x1a8::VTable0x50(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472290
 void ObscureIcon0x1a8::VTable0x54(undefined4 p_flags)
 {
-	if (m_unk0x12c & c_flagBit2) {
+	if (m_stateFlags & c_flagBit2) {
 		return;
 	}
 
 	LegoU8 flags = (LegoU8) p_flags;
 
-	if (m_parentIcon && !(flags & 2)) {
-		m_parentIcon->VTable0x54(0);
+	if (m_parent && !(flags & 2)) {
+		m_parent->VTable0x54(0);
 	}
 
 	FUN_00472bc0();
-	m_unk0x12c |= c_flagBit2;
-	FUN_00472080();
+	m_stateFlags |= c_flagBit2;
+	RefreshVisualState();
 
 	if (m_eventHandler && !flags) {
 		m_eventHandler->VTable0x34(this);
@@ -418,8 +417,8 @@ void ObscureIcon0x1a8::VTable0x54(undefined4 p_flags)
 // FUNCTION: LEGORACERS 0x00472310
 void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 {
-	LegoU8 stateFlags = m_unk0x12c;
-	m_unk0x1a0 = 0;
+	LegoU8 stateFlags = m_stateFlags;
+	m_activeKeyCode = 0;
 
 	if (stateFlags & c_flagBit2) {
 		if (m_flags & 8) {
@@ -428,12 +427,12 @@ void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 
 		LegoU8 flags = (LegoU8) p_flags;
 
-		if (m_parentIcon && !(flags & 2)) {
-			m_parentIcon->VTable0x58(0);
+		if (m_parent && !(flags & 2)) {
+			m_parent->VTable0x58(0);
 		}
 
-		m_unk0x12c &= ~c_flagBit2;
-		FUN_00472080();
+		m_stateFlags &= ~c_flagBit2;
+		RefreshVisualState();
 
 		if (m_eventHandler && !flags) {
 			m_eventHandler->VTable0x38(this);
@@ -449,7 +448,7 @@ void ObscureIcon0x1a8::VTable0x58(undefined4 p_flags)
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x68()
 {
 	if (VTable0x5c()) {
-		ObscureIcon0x1a8* child = m_firstIcon;
+		ObscureIcon0x1a8* child = m_firstChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x68();
@@ -458,7 +457,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x68()
 				return result;
 			}
 
-			child = child->m_nextIcon;
+			child = child->m_nextSibling;
 		}
 
 		VTable0x4c(0);
@@ -472,7 +471,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x68()
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x6c()
 {
 	if (VTable0x5c()) {
-		ObscureIcon0x1a8* child = m_lastIcon;
+		ObscureIcon0x1a8* child = m_lastChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x68();
@@ -481,7 +480,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x6c()
 				return result;
 			}
 
-			child = child->m_prevIcon;
+			child = child->m_prevSibling;
 		}
 
 		VTable0x4c(0);
@@ -494,8 +493,8 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x6c()
 // FUNCTION: LEGORACERS 0x00472440
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 {
-	if (m_unk0x12c & c_flagBit1) {
-		ObscureIcon0x1a8* child = m_unk0x198;
+	if (m_stateFlags & c_flagBit1) {
+		ObscureIcon0x1a8* child = m_activeChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x60();
@@ -504,7 +503,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 				return result;
 			}
 
-			child = child->m_nextIcon;
+			child = child->m_nextSibling;
 		}
 
 		VTable0x50(0);
@@ -512,7 +511,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 	}
 
 	if (VTable0x5c()) {
-		ObscureIcon0x1a8* child = m_firstIcon;
+		ObscureIcon0x1a8* child = m_firstChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x60();
@@ -521,7 +520,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 				return result;
 			}
 
-			child = child->m_nextIcon;
+			child = child->m_nextSibling;
 		}
 
 		VTable0x4c(0);
@@ -534,8 +533,8 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x60()
 // FUNCTION: LEGORACERS 0x004724c0
 ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 {
-	if (m_unk0x12c & c_flagBit1) {
-		ObscureIcon0x1a8* child = m_unk0x198;
+	if (m_stateFlags & c_flagBit1) {
+		ObscureIcon0x1a8* child = m_activeChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x64();
@@ -544,7 +543,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 				return result;
 			}
 
-			child = child->m_prevIcon;
+			child = child->m_prevSibling;
 		}
 
 		VTable0x50(0);
@@ -552,7 +551,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 	}
 
 	if (VTable0x5c()) {
-		ObscureIcon0x1a8* child = m_lastIcon;
+		ObscureIcon0x1a8* child = m_lastChild;
 
 		while (child) {
 			ObscureIcon0x1a8* result = child->VTable0x64();
@@ -561,7 +560,7 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 				return result;
 			}
 
-			child = child->m_prevIcon;
+			child = child->m_prevSibling;
 		}
 
 		VTable0x4c(0);
@@ -572,23 +571,24 @@ ObscureIcon0x1a8* ObscureIcon0x1a8::VTable0x64()
 }
 
 // FUNCTION: LEGORACERS 0x00472540
-void ObscureIcon0x1a8::FUN_00472540()
+void ObscureIcon0x1a8::BeginRectTransition()
 {
-	LegoS32 count = m_unk0x130;
-	m_unk0x134 = count;
+	LegoS32 count = m_transitionDurationMs;
+	m_transitionRemainingMs = count;
 	LegoFloat countFloat = (LegoFloat) count;
 
 	if (count) {
-		m_unk0x138 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_top - m_unk0x34.m_top) / countFloat;
-		m_unk0x148 = (LegoFloat) m_unk0x34.m_top;
-		m_unk0x13c = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_bottom - m_unk0x34.m_bottom) / countFloat;
-		m_unk0x14c = (LegoFloat) m_unk0x34.m_bottom;
-		m_unk0x140 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_left - m_unk0x34.m_left) / countFloat;
-		m_unk0x150 = (LegoFloat) m_unk0x34.m_left;
-		m_unk0x144 = (LegoFloat) (m_unk0xcc[m_unk0x19c].m_right - m_unk0x34.m_right) / countFloat;
-		m_unk0x154 = (LegoFloat) m_unk0x34.m_right;
+		m_rectDeltaTop = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_top - m_unk0x34.m_top) / countFloat;
+		m_rectTopF = (LegoFloat) m_unk0x34.m_top;
+		m_rectDeltaBottom = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_bottom - m_unk0x34.m_bottom) / countFloat;
+		m_rectBottomF = (LegoFloat) m_unk0x34.m_bottom;
+		m_rectDeltaLeft = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_left - m_unk0x34.m_left) / countFloat;
+		m_rectLeftF = (LegoFloat) m_unk0x34.m_left;
+		m_rectDeltaRight = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_right - m_unk0x34.m_right) / countFloat;
+		m_rectRightF = (LegoFloat) m_unk0x34.m_right;
 
-		if (m_unk0x138 != 0.0f || m_unk0x13c != 0.0f || m_unk0x140 != 0.0f || m_unk0x144 != 0.0f) {
+		if (m_rectDeltaTop != 0.0f || m_rectDeltaBottom != 0.0f || m_rectDeltaLeft != 0.0f ||
+			m_rectDeltaRight != 0.0f) {
 			m_unk0x54 |= 1;
 		}
 	}
@@ -601,32 +601,32 @@ undefined4 ObscureIcon0x1a8::VTable0x3c(undefined4 p_elapsedMs)
 		return 0;
 	}
 
-	if (!m_unk0x134) {
+	if (!m_transitionRemainingMs) {
 		m_unk0x54 &= ~1;
 
-		m_unk0x34 = m_unk0xcc[m_unk0x19c];
-		m_unk0x138 = 0.0f;
+		m_unk0x34 = m_unk0xcc[m_visualStateIndex];
+		m_rectDeltaTop = 0.0f;
 		return 0;
 	}
 
-	if ((undefined4) m_unk0x134 < p_elapsedMs) {
-		p_elapsedMs = m_unk0x134;
+	if ((undefined4) m_transitionRemainingMs < p_elapsedMs) {
+		p_elapsedMs = m_transitionRemainingMs;
 	}
 
 	LegoFloat elapsedFloat = (LegoFloat) (LegoS32) p_elapsedMs;
-	m_unk0x134 -= p_elapsedMs;
-	LegoFloat delta = m_unk0x138;
-	m_unk0x148 += delta * elapsedFloat;
-	delta = m_unk0x13c;
-	m_unk0x14c += delta * elapsedFloat;
-	delta = m_unk0x140;
-	m_unk0x150 += delta * elapsedFloat;
-	delta = m_unk0x144;
-	m_unk0x154 += delta * elapsedFloat;
-	m_unk0x34.m_top = (LegoS32) m_unk0x148;
-	m_unk0x34.m_bottom = (LegoS32) m_unk0x14c;
-	m_unk0x34.m_left = (LegoS32) m_unk0x150;
-	m_unk0x34.m_right = (LegoS32) m_unk0x154;
+	m_transitionRemainingMs -= p_elapsedMs;
+	LegoFloat delta = m_rectDeltaTop;
+	m_rectTopF += delta * elapsedFloat;
+	delta = m_rectDeltaBottom;
+	m_rectBottomF += delta * elapsedFloat;
+	delta = m_rectDeltaLeft;
+	m_rectLeftF += delta * elapsedFloat;
+	delta = m_rectDeltaRight;
+	m_rectRightF += delta * elapsedFloat;
+	m_unk0x34.m_top = (LegoS32) m_rectTopF;
+	m_unk0x34.m_bottom = (LegoS32) m_rectBottomF;
+	m_unk0x34.m_left = (LegoS32) m_rectLeftF;
+	m_unk0x34.m_right = (LegoS32) m_rectRightF;
 
 	return 0;
 }
@@ -636,7 +636,7 @@ undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4
 {
 	LegoU8 flag = 8;
 
-	if (!m_parentIcon) {
+	if (!m_parent) {
 		if (!(flag & m_flags)) {
 			return 0;
 		}
@@ -656,7 +656,7 @@ undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4
 
 	VTable0x4c(0);
 
-	if (m_unk0x198 || m_firstIcon) {
+	if (m_activeChild || m_firstChild) {
 		return 0;
 	}
 
@@ -672,11 +672,11 @@ undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, un
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode & InputDevice::c_sourceMask;
-	LegoU8 stateFlags = m_unk0x12c;
+	LegoU8 stateFlags = m_stateFlags;
 	LegoBool32 activate = FALSE;
 
 	if (stateFlags & c_flagBit0) {
-		if (!m_unk0x1a0 || m_unk0x1a0 == keyCode) {
+		if (!m_activeKeyCode || m_activeKeyCode == keyCode) {
 			if ((stateFlags & c_flagBit2) || !p_item->m_isRepeat) {
 				if (keyCode == m_unk0x1a4) {
 					activate = TRUE;
@@ -705,9 +705,9 @@ undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, un
 		}
 	}
 
-	if (activate && !(m_unk0x12c & c_flagBit2)) {
+	if (activate && !(m_stateFlags & c_flagBit2)) {
 		VTable0x54(0);
-		m_unk0x1a0 = keyCode;
+		m_activeKeyCode = keyCode;
 		return (undefined4) this;
 	}
 
@@ -719,16 +719,16 @@ undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, un
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = InputDevice::GetKeySource(keyCode);
-	LegoU32 activeKey = m_unk0x1a0;
+	LegoU32 activeKey = m_activeKeyCode;
 
 	if (keyCode != activeKey) {
 		return 0;
 	}
 
 	LegoBool32 isMouse = eventType == InputDevice::c_sourceMouse;
-	m_unk0x1a0 = 0;
+	m_activeKeyCode = 0;
 	if (isMouse) {
-		if (!FUN_00472c40(p_x, p_y) && (m_unk0x12c & c_flagBit2)) {
+		if (!FUN_00472c40(p_x, p_y) && (m_stateFlags & c_flagBit2)) {
 			VTable0x58(1);
 			return (undefined4) this;
 		}

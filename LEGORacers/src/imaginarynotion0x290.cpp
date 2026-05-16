@@ -383,7 +383,7 @@ void ImaginaryNotion0x290::FUN_0046ba60(ObscureVantage0x58::CreateParams0x30* p_
 // FUNCTION: LEGORACERS 0x0046bb10
 void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84* p_createParams)
 {
-	if (!p_createParams->m_parentIcon && p_createParams->m_unk0x74) {
+	if (!p_createParams->m_parent && p_createParams->m_unk0x74) {
 		if (p_createParams->m_unk0x4a) {
 			CeruleanQueen0x58::Entry0x84* entry = (CeruleanQueen0x58::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(
 				p_createParams->m_flagsAndName.m_unk0x2d
@@ -395,8 +395,7 @@ void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84* p_cr
 			p_createParams->m_unk0x48 = 1;
 		}
 
-		p_createParams->m_parentIcon =
-			static_cast<ObscureIcon0x1a8*>(m_unk0xd8.FUN_00472f10(p_createParams->m_unk0x48));
+		p_createParams->m_parent = static_cast<ObscureIcon0x1a8*>(m_unk0xd8.FUN_00472f10(p_createParams->m_unk0x48));
 	}
 
 	if (!p_createParams->m_unk0x80) {

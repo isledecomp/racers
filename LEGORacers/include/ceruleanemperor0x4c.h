@@ -26,6 +26,16 @@ public:
 		undefined4 m_unk0x08;      // 0x08
 	};
 
+	// SIZE 0x14
+	class Entry0x14 {
+	public:
+		GolFont0xa0* m_unk0x00;   // 0x00
+		VisualState0x4 m_unk0x04; // 0x04
+		undefined4 m_unk0x08;     // 0x08
+		undefined4 m_unk0x0c;     // 0x0c
+		undefined4 m_unk0x10;     // 0x10
+	};
+
 	// SIZE 0x90
 	class Entry0x90 {
 	public:
@@ -68,6 +78,7 @@ public:
 	LegoBool32 Load(ResourceLoadParams* p_params);
 	void* FUN_00470e60(const LegoChar* p_name);
 	Entry0x0c* GetEntry0x0c(const LegoChar* p_name) { return static_cast<Entry0x0c*>(FUN_00470e60(p_name)); }
+	Entry0x14* GetEntry0x14(const LegoChar* p_name) { return static_cast<Entry0x14*>(FUN_00470e60(p_name)); }
 	Entry0x90* GetEntry0x90(const LegoChar* p_name) { return static_cast<Entry0x90*>(FUN_00470e60(p_name)); }
 	Entry0x104* GetEntry0x104(const LegoChar* p_name) { return static_cast<Entry0x104*>(FUN_00470e60(p_name)); }
 
@@ -93,7 +104,7 @@ private:
 protected:
 	CeruleanEmperor0x4c* m_unk0x20; // 0x20
 	undefined* m_unk0x24;           // 0x24
-	undefined* m_unk0x28;           // 0x28
+	Entry0x14* m_unk0x28;           // 0x28
 	undefined* m_unk0x2c;           // 0x2c
 	undefined* m_unk0x30;           // 0x30
 	undefined* m_unk0x34;           // 0x34

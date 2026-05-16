@@ -8,6 +8,7 @@
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x14, 0x14)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x90, 0x90)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x104, 0x104)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::ResourceLoadParams, 0x10)

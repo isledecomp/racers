@@ -47,7 +47,7 @@ private:
 	LegoBool32 FUN_00482540(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
 
 	CeruleanEmperor0x4c::Entry0x104* m_unk0x1a8; // 0x1a8
-	undefined4 m_unk0x1ac[5];                    // 0x1ac
+	CeruleanEmperor0x4c::Entry0x14 m_unk0x1ac;   // 0x1ac
 	GolFont0xa0* m_unk0x1c0[6];                  // 0x1c0
 	UtopianPan0xa4* m_unk0x1d8[6];               // 0x1d8
 	VisualState0x4 m_unk0x1f0[6];                // 0x1f0

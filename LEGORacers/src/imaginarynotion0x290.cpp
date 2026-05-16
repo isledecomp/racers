@@ -12,6 +12,7 @@
 #include "golstring.h"
 #include "golstringtable.h"
 #include "imaginarychisel0x658.h"
+#include "imaginarydrillfieldat0x420.h"
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
 #include "obscureanchor0x5c.h"
@@ -471,12 +472,42 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046bef0(ObscureAnchor0x5c* p_unk0x04, unde
 	return p_unk0x04->FUN_0046f150(&createParams);
 }
 
-// STUB: LEGORACERS 0x0046bf80
-undefined4 ImaginaryNotion0x290::FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046bf80
+LegoBool32 ImaginaryNotion0x290::FUN_0046bf80(
+	ImaginaryDrillFieldAt0x420* p_unk0x04,
+	undefined2 p_unk0x08,
+	undefined2 p_unk0x0c,
+	undefined2 p_unk0x10
+)
 {
-	// TODO
-	STUB(0x0046bf80);
-	return 0;
+	ImaginaryDrillFieldAt0x420::CreateParams0x48* sourceParams =
+		static_cast<ImaginaryDrillFieldAt0x420::CreateParams0x48*>(FUN_0046be10(p_unk0x08));
+	CeruleanEmperor0x4c::Entry0x14* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0x14*>(FUN_0046bd80(p_unk0x0c));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ImaginaryDrillFieldAt0x420::CreateParams0x48 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+	createParams.m_unk0x40 = p_unk0x10;
+
+	if (!createParams.m_unk0x38) {
+		createParams.m_unk0x38 = m_menuTextStrings;
+	}
+
+	if (!createParams.m_unk0x44 && styleEntry->m_unk0x08) {
+		createParams.m_unk0x44 = styleEntry->m_unk0x08;
+	}
+
+	if (!createParams.m_unk0x3c) {
+		createParams.m_unk0x3c = styleEntry->m_unk0x00;
+	}
+
+	if (styleEntry->m_unk0x0c && !(createParams.m_flags & 2)) {
+		createParams.m_unk0x22 = styleEntry->m_unk0x04;
+	}
+
+	return p_unk0x04->FUN_0046f520(&createParams, styleEntry);
 }
 
 // STUB: LEGORACERS 0x0046c050

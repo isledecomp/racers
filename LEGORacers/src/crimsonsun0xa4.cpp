@@ -210,11 +210,11 @@ undefined4 CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect* p_rect, Rect* p_arg)
 	m_unk0x64.FirstLine();
 
 	Rect source;
-	source.m_left = xOffset;
-	source.m_top = yOffset;
 	source.m_bottom = yOffset + m_unk0x34.m_bottom - m_unk0x34.m_top;
+	source.m_top = yOffset;
 	source.m_right = xOffset + m_unk0x34.m_right - m_unk0x34.m_left;
+	source.m_left = xOffset;
 
-	FUN_00472da0(&source, p_arg, m_unk0x60, &m_unk0x64, m_unk0x70, m_unk0x58->m_unk0x00[4].m_unk0x00);
+	FUN_00472da0(&source, p_arg, m_unk0x60, &m_unk0x64, m_unk0x70, m_unk0x58->m_unk0x10);
 	return 0;
 }

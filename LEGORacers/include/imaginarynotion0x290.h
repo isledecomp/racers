@@ -16,6 +16,7 @@ class GolExport;
 class GolFontTable;
 class GolStringTable;
 class InputManager;
+class ImaginaryDrillFieldAt0x420;
 class MenuToolCreateParams0x30;
 class ObscureVantage0x58;
 class PorcelainVeil0x50;
@@ -101,7 +102,7 @@ public:
 	void* FUN_0046be10(undefined2);
 	void FUN_0046bea0(undefined4*, undefined2);
 	LegoBool32 FUN_0046bef0(ObscureAnchor0x5c*, undefined2, undefined2);
-	undefined4 FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2);
+	LegoBool32 FUN_0046bf80(ImaginaryDrillFieldAt0x420*, undefined2, undefined2, undefined2);
 	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);

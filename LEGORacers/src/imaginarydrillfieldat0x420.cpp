@@ -33,7 +33,7 @@ void ImaginaryDrillFieldAt0x420::Reset()
 // FUNCTION: LEGORACERS 0x0046f520
 LegoBool32 ImaginaryDrillFieldAt0x420::FUN_0046f520(
 	CreateParams0x48* p_createParams,
-	CeruleanEmperor0x4c::Entry0x90* p_unk0x08
+	CeruleanEmperor0x4c::Entry0x14* p_unk0x08
 )
 {
 	VTable0x08();

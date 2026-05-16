@@ -87,9 +87,9 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createPa
 	createParams.m_unk0x40 = p_createParams->m_unk0xd4;
 	createParams.m_unk0x22 = m_unk0x174[0];
 	createParams.m_unk0x30 = (undefined4) this;
-	m_unk0x1ac[4] = 0;
+	m_unk0x1ac.m_unk0x10 = 0;
 
-	return m_unk0x264.FUN_0046f520(&createParams, (CeruleanEmperor0x4c::Entry0x90*) m_unk0x1ac);
+	return m_unk0x264.FUN_0046f520(&createParams, &m_unk0x1ac);
 }
 
 // FUNCTION: LEGORACERS 0x004826c0

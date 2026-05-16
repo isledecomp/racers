@@ -32,14 +32,14 @@ public:
 	undefined4 VTable0x38(Rect*, Rect*) override;    // vtable+0x38
 	virtual void VTable0x40(GolString*, undefined4); // vtable+0x40
 	virtual void VTable0x44(undefined2, undefined4); // vtable+0x44
-	LegoBool32 FUN_0046f520(CreateParams0x48* p_createParams, CeruleanEmperor0x4c::Entry0x90* p_unk0x08);
+	LegoBool32 FUN_0046f520(CreateParams0x48* p_createParams, CeruleanEmperor0x4c::Entry0x14* p_unk0x08);
 	void SetUnk0x60(GolFont0xa0* p_unk0x60) { m_unk0x60 = p_unk0x60; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f470
 	// ImaginaryDrillFieldAt0x420::`scalar deleting destructor'
 
 protected:
-	CeruleanEmperor0x4c::Entry0x90* m_unk0x58; // 0x58
+	CeruleanEmperor0x4c::Entry0x14* m_unk0x58; // 0x58
 	GolStringTable* m_unk0x5c;                 // 0x5c
 	GolFont0xa0* m_unk0x60;                    // 0x60
 	GolString m_unk0x64;                       // 0x64

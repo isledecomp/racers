@@ -50,22 +50,22 @@ void BoundingVolume0x64::VTable0x04(undefined4* p_arg1, const LegoChar* p_name, 
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
 			if (m_unk0x18.GetRenderer() != NULL) {
-				parser->HandleIoError(GolFileParser::e_unsuportedKeyword);
+				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
 			m_unk0x18.FUN_10025f90(reinterpret_cast<WhiteFalcon0x140*>(p_arg1), *parser);
 			break;
-		case GolFileParser::e_unknown0x2d:
-			FUN_1001bb10(*parser);
-			break;
 		case GolFileParser::e_unknown0x34:
 			if (m_unk0x0c != 0) {
-				parser->HandleIoError(GolFileParser::e_unsuportedKeyword);
+				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
 			m_unk0x0c = new GdbVertexArray0xc;
 			if (m_unk0x0c == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			m_unk0x0c->VTable0x08(*parser);
+			break;
+		case GolFileParser::e_unknown0x2d:
+			FUN_1001bb10(*parser);
 			break;
 		case GolFileParser::e_unknown0x8b:
 			FUN_1001bbb0(*parser);
@@ -80,13 +80,13 @@ void BoundingVolume0x64::VTable0x04(undefined4* p_arg1, const LegoChar* p_name, 
 	if (m_unk0x04 != 0) {
 		m_unk0x28 = FUN_1001be50();
 		m_unk0x2c = new GolVec3[m_unk0x28];
-		if (m_unk0x28 == NULL) {
+		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		parser->Dispose();
-		if (parser != NULL) {
-			delete parser;
-		}
+	}
+	parser->Dispose();
+	if (parser != NULL) {
+		delete parser;
 	}
 }
 
@@ -241,43 +241,42 @@ undefined4 BoundingVolume0x64::FUN_1001be50()
 	if (stack == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	LegoU16* stackHead = stack;
+
 	LegoU32 index = 0;
 	LegoU32 maxStackSize = 0;
 	LegoU32 stackSize = 0;
 	LegoU32 prevIndex = 0;
-	*stackHead = 0;
+	*stack = 0;
+	LegoU16* stackHead = stack;
 
 	for (;;) {
-		for (;;) {
-			PolygonRange0x14* obj = &m_unk0x08[index];
-			if (stackSize > maxStackSize) {
-				maxStackSize = stackSize;
-			}
-			LegoU32 v1 = obj->m_unk0x10[1];
-			if (prevIndex == v1) {
-				break;
-			}
-			LegoU32 v0 = obj->m_unk0x10[0];
-			if (prevIndex != v0 && v0 != 0xffff && v0 != 0xfffe) {
-				prevIndex = index;
-				index = obj->m_unk0x10[0];
+		PolygonRange0x14* obj = &m_unk0x08[index];
+		if (stackSize > maxStackSize) {
+			maxStackSize = stackSize;
+		}
+
+		LegoU32 rightIndex = obj->m_unk0x10[1];
+		if (prevIndex != rightIndex) {
+			LegoU32 leftIndex = obj->m_unk0x10[0];
+			if (prevIndex != leftIndex && leftIndex != 0xffff && leftIndex != 0xfffe) {
 				stackSize++;
 				stackHead++;
-				*stackHead = v0;
-			}
-			else if (v1 != 0xffff && v1 != 0xfffe) {
 				prevIndex = index;
-				index = obj->m_unk0x10[1];
+				index = leftIndex;
+				*stackHead = leftIndex;
+				continue;
+			}
+			if (rightIndex != 0xffff && rightIndex != 0xfffe) {
 				stackSize++;
 				stackHead++;
-				*stackHead = v1;
-			}
-			else {
-				break;
+				prevIndex = index;
+				index = rightIndex;
+				*stackHead = rightIndex;
+				continue;
 			}
 		}
-		if (stackSize == 0) {
+
+		if (stackSize < 1) {
 			break;
 		}
 		prevIndex = index;

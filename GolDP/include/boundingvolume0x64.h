@@ -1,5 +1,5 @@
-#ifndef BOUDNINGVOLUME0X64_H
-#define BOUDNINGVOLUME0X64_H
+#ifndef BOUNDINGVOLUME0X64_H
+#define BOUNDINGVOLUME0X64_H
 
 #include "decomp.h"
 #include "golmath.h"
@@ -26,8 +26,8 @@ public:
 	BoundingVolume0x64();
 
 	virtual ~BoundingVolume0x64();                                                    // vtable+0x00
-	void VTable0x04(undefined4* p_arg1, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x04
-	void VTable0x08();                                                                // vtable+0x08
+	virtual void VTable0x04(undefined4* p_arg1, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x04
+	virtual void VTable0x08();                                                                // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x1002e5e0
 	// BoundingVolume0x64::`vector deleting destructor'
@@ -62,4 +62,4 @@ private:
 	GolVec3* m_unk0x2c;               // 0x2c
 	undefined m_unk0x30[0x64 - 0x30]; // 0x30
 };
-#endif // BOUDNINGVOLUME0X64_H
+#endif // BOUNDINGVOLUME0X64_H

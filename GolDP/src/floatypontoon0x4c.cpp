@@ -27,7 +27,7 @@ FloatyPontoon0x4c::FloatyPontoon0x4c()
 }
 
 // FUNCTION: GOLDP 0x10029e30
-undefined4 FloatyPontoon0x4c::VTable0x4c(
+void FloatyPontoon0x4c::VTable0x4c(
 	undefined4* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
@@ -43,7 +43,7 @@ undefined4 FloatyPontoon0x4c::VTable0x4c(
 	m_height = p_height;
 	m_flags = 1;
 	m_maxDistanceSquared = p_maxDistanceSquared;
-	return FUN_10026fa0(len);
+	FUN_10026fa0(len);
 }
 
 // FUNCTION: GOLDP 0x10029e90
@@ -77,12 +77,12 @@ void FloatyPontoon0x4c::VTable0x14(GolVec3* p_arg1, undefined4* p_arg2)
 	STUB(0x10029ee0);
 }
 
-// STUB: GOLDP 0x10026fa0 FOLDED
-undefined4 FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_arg1)
+// FUNCTION: GOLDP 0x10026fa0 FOLDED
+void FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_scalar)
 {
-	// TODO
-	STUB(0x10026fa0);
-	return 0;
+	m_v1.m_x = p_scalar;
+	m_v1.m_y = m_v0.m_x - p_scalar;
+	m_v1.m_z = p_scalar + m_v0.m_x;
 }
 
 // FUNCTION: GOLDP 0x10029fa0

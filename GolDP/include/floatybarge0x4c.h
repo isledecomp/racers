@@ -4,7 +4,7 @@
 // SIZE 0x4c
 class FloatyBarge0x4c : public FloatyPontoon0x4c {
 public:
-	undefined4 VTable0x4c(
+	void VTable0x4c(
 		undefined4* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,

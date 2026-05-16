@@ -165,11 +165,18 @@ void FloatyBoat0x28::VTable0x48(GolVec3* p_v1, GolVec3* p_v2) const
 	p_v2->m_z = 1.0f;
 }
 
-// STUB: GOLDP 0x10028810
-void FloatyBoat0x28::VTable0x44(undefined4*) const
+// FUNCTION: GOLDP 0x10028810
+void FloatyBoat0x28::VTable0x44(GolMatrix3* p_dest) const
 {
-	// TODO
-	STUB(0x10028810);
+	p_dest->m_m[0][0] = 1.0f;
+	p_dest->m_m[0][1] = 0.0f;
+	p_dest->m_m[0][2] = 0.0f;
+	p_dest->m_m[1][0] = 0.0f;
+	p_dest->m_m[1][1] = 1.0f;
+	p_dest->m_m[1][2] = 0.0f;
+	p_dest->m_m[2][0] = 0.0f;
+	p_dest->m_m[2][1] = 0.0f;
+	p_dest->m_m[2][2] = 1.0f;
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
@@ -179,7 +186,7 @@ void FloatyBoat0x28::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void FloatyBoat0x28::VTable0x40(undefined4, undefined4)
+void FloatyBoat0x28::VTable0x40(const GolVec3& p_v1, const GolVec3& p_v2)
 {
 	// empty
 }
@@ -197,7 +204,7 @@ void FloatyBoat0x28::VTable0x24(undefined4*)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x3c(undefined4*)
+void FloatyBoat0x28::VTable0x3c(const GolMatrix34&)
 {
 	// empty
 }

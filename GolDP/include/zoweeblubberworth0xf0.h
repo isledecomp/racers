@@ -14,6 +14,7 @@ class BoundingVolume0x64;
 class CmbModelPart0x34;
 class GolFileParser;
 class FloatyBoat0x28;
+class FloatyKajak0x64;
 class IGdbModel0x40;
 class MabMaterialAnimation0x14;
 class MagentaRibbon0x20;
@@ -208,7 +209,7 @@ private:
 	undefined4 m_unk0x9c;              // 0x9c
 	undefined4 m_unk0xa0;              // 0xa0
 	LegoChar* m_unk0xa4;               // 0xa4
-	undefined4 m_unk0xa8;              // 0xa8
+	FloatyKajak0x64* m_unk0xa8;        // 0xa8
 	undefined4 m_unk0xac;              // 0xac
 	undefined4 m_unk0xb0;              // 0xb0
 	GolNameTable m_unk0xb4;            // 0xb4

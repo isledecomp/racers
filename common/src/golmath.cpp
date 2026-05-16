@@ -67,7 +67,7 @@ void GolMath::FUN_00449190(const LegoFloat*, const LegoFloat*, LegoFloat*)
 
 // FUNCTION: GOLDP 0x1002f4e0
 // FUNCTION: LEGORACERS 0x00449280
-void __fastcall GolMath::NormalizeVector2(const GolVec2& p_src, GolVec2& p_dest)
+void __fastcall GolMath::NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest)
 {
 	LegoFloat x = p_src.m_x;
 	LegoFloat y = p_src.m_y;
@@ -76,19 +76,19 @@ void __fastcall GolMath::NormalizeVector2(const GolVec2& p_src, GolVec2& p_dest)
 	LegoFloat length = (LegoFloat) sqrt(lengthSquared);
 
 	if (length == 0.0) {
-		p_dest.m_x = 0.0f;
-		p_dest.m_y = 0.0f;
+		p_dest->m_x = 0.0f;
+		p_dest->m_y = 0.0f;
 	}
 	else {
 		LegoFloat scale = 1.0f / length;
-		p_dest.m_x = x * scale;
-		p_dest.m_y = y * scale;
+		p_dest->m_x = x * scale;
+		p_dest->m_y = y * scale;
 	}
 }
 
 // FUNCTION: GOLDP 0x1002f530
 // FUNCTION: LEGORACERS 0x004492d0
-void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3& p_dest)
+void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest)
 {
 	LegoFloat x = p_src.m_x;
 	// TODO: Find the original clean source form. The double cast is only here
@@ -100,15 +100,15 @@ void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3& p_dest)
 	LegoFloat length = (LegoFloat) sqrt(lengthSquared + (z * z));
 
 	if (length == 0.0) {
-		p_dest.m_x = 0.0f;
-		p_dest.m_y = 0.0f;
-		p_dest.m_z = 0.0f;
+		p_dest->m_x = 0.0f;
+		p_dest->m_y = 0.0f;
+		p_dest->m_z = 0.0f;
 	}
 	else {
 		LegoFloat scale = 1.0f / length;
-		p_dest.m_x = x * scale;
-		p_dest.m_y = y * scale;
-		p_dest.m_z = z * scale;
+		p_dest->m_x = x * scale;
+		p_dest->m_y = y * scale;
+		p_dest->m_z = z * scale;
 	}
 }
 

@@ -4,6 +4,8 @@
 #include "decomp.h"
 #include "types.h"
 
+#define GOLVECTOR3_DOT(V1, V2) ((V1).m_x * (V2).m_x + (V1).m_y * (V2).m_y + (V1).m_z * (V2).m_z)
+
 // SIZE 0x8
 struct GolVec2 {
 	LegoFloat m_x;
@@ -51,6 +53,14 @@ struct GolVec3 {
 		return *this;
 	}
 
+	GolVec3& operator-=(const GolVec3& p_rhs)
+	{
+		m_x -= p_rhs.m_x;
+		m_y -= p_rhs.m_y;
+		m_z -= p_rhs.m_z;
+		return *this;
+	}
+
 	GolVec3& operator*=(LegoFloat p_f)
 	{
 		m_x *= p_f;
@@ -91,6 +101,11 @@ struct GolQuat {
 	LegoFloat m_w;
 };
 
+// SIZE 0x24
+struct GolMatrix3 {
+	LegoFloat m_m[3][3];
+};
+
 // SIZE 0x30
 struct GolMatrix34 {
 	LegoFloat m_m[4][3];
@@ -113,8 +128,8 @@ public:
 	static void FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
 	static void FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
 	static void FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
-	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2& p_dest);
-	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3& p_dest);
+	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest);
+	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest);
 	static void FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest);
 	static void FUN_1002f5a0(const GolMatrix4& p_matrix, GolQuat* p_dest);
 	static void FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest);

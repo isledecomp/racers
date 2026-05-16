@@ -1,6 +1,7 @@
 #include "zoweeblubberworth0xf0.h"
 
 #include "boundingvolume0x64.h"
+#include "floatykajak0x64.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
@@ -1122,6 +1123,16 @@ void ZoweeBlubberworth0xf0::VTable0x04()
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
+	// ...
+
+	if (m_unk0x64 != 0) {
+		m_unk0xa8 = new FloatyKajak0x64[m_unk0x64];
+		if (m_unk0xa8 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
 	// TODO
 	STUB(0x1002e2c0);
 }

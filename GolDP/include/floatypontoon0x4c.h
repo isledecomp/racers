@@ -30,7 +30,7 @@ public:
 	void VTable0x14(GolVec3* p_arg1, undefined4*) override;                           // vtable+0x14
 	void VTable0x1c(WhiteFalcon0x140*) override;                                      // vtable+0x1c
 	undefined4 VTable0x20() override;                                                 // vtable+0x20
-	virtual undefined4 VTable0x4c(
+	virtual void VTable0x4c(
 		undefined4* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,
@@ -40,7 +40,7 @@ public:
 
 	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix);
 	void FUN_10014ff0(BronzeFalcon0xc8770* p_renderer);
-	undefined4 FUN_10026fa0(LegoFloat p_arg1);
+	void FUN_10026fa0(LegoFloat p_arg1);
 	void FUN_10029e90(
 		Field0x2c* p_container,
 		LegoS32 p_index,

@@ -215,6 +215,8 @@ add_library(goldp SHARED
   GolDP/src/gdbmodelindexarray0xc.cpp
   GolDP/src/greyfalconnode0x1c.cpp
   GolDP/src/boundingvolume0x64.cpp
+  GolDP/src/floatybuoy0x58.cpp
+  GolDP/src/floatykajak0x64.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

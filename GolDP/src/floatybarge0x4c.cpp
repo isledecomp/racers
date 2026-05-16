@@ -25,7 +25,7 @@ LegoBool32 FloatyPontoon0x4c::FUN_10014e50(const GolVec3* p_arg1, const GolVec3*
 		row2 = p_arg2;
 	}
 
-	GolMath::NormalizeVector3(row0, row0);
+	GolMath::NormalizeVector3(row0, &row0);
 
 	row1.m_x = row0.m_z * row2->m_y - row2->m_z * row0.m_y;
 	row1.m_y = row2->m_z * row0.m_x - row0.m_z * row2->m_x;
@@ -57,14 +57,14 @@ LegoBool32 FloatyPontoon0x4c::FUN_10014e50(const GolVec3* p_arg1, const GolVec3*
 }
 
 // FUNCTION: GOLDP 0x10014fd0
-undefined4 FloatyBarge0x4c::VTable0x4c(
+void FloatyBarge0x4c::VTable0x4c(
 	undefined4* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
 	LegoFloat p_maxDistanceSquared
 )
 {
-	return FloatyPontoon0x4c::VTable0x4c(p_position, p_width, p_height, p_maxDistanceSquared);
+	FloatyPontoon0x4c::VTable0x4c(p_position, p_width, p_height, p_maxDistanceSquared);
 }
 
 // STUB: GOLDP 0x10014ff0

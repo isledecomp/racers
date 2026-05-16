@@ -98,7 +98,7 @@ void JadeOrbit0xd0::VTable0x20(GolVec3* p_up, GolVec3* p_right)
 void JadeOrbit0xd0::VTable0x24(GolVec3* p_right, GolVec3* p_forward)
 {
 	GolVec3 right;
-	GolMath::NormalizeVector3(*p_right, right);
+	GolMath::NormalizeVector3(*p_right, &right);
 
 	LegoFloat dot = p_forward->m_y;
 	dot *= right.m_y;
@@ -109,7 +109,7 @@ void JadeOrbit0xd0::VTable0x24(GolVec3* p_right, GolVec3* p_forward)
 	forward.m_x = p_forward->m_x - (right.m_x * dot);
 	forward.m_y = p_forward->m_y - (right.m_y * dot);
 	forward.m_z = p_forward->m_z - (right.m_z * dot);
-	GolMath::NormalizeVector3(forward, forward);
+	GolMath::NormalizeVector3(forward, &forward);
 
 	GolVec3 up;
 	up.m_x = right.m_z;

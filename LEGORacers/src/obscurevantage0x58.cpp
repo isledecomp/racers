@@ -566,12 +566,28 @@ undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item* p_param1
 	return VTable0x30(p_param1, x, y);
 }
 
-// STUB: LEGORACERS 0x00473400
-undefined4 ObscureVantage0x58::VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00473400
+undefined4 ObscureVantage0x58::VTable0x28(OnyxCircularBuffer0x1c::Item* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	// TODO
-	STUB(0x00473400);
-	return 0;
+	ObscureVantage0x58* child = m_firstChild;
+	undefined4 x = p_x;
+	undefined4 y = p_y;
+
+	if (!(m_flags & 2)) {
+		return FALSE;
+	}
+
+	FUN_004731b0(x, y);
+
+	while (child) {
+		if (child->VTable0x28(p_param1, x, y)) {
+			return TRUE;
+		}
+
+		child = child->m_nextSibling;
+	}
+
+	return VTable0x34(p_param1, x, y);
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED

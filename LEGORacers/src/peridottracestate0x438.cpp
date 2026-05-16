@@ -393,27 +393,26 @@ void PeridotTraceState0x438::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventI
 	m_unk0x00 = 1;
 }
 
-// STUB: LEGORACERS 0x0042ef00
+// FUNCTION: LEGORACERS 0x0042ef00
 LegoU32 PeridotTraceState0x438::FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 {
 	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
-	LegoU32 eventIndex = p_eventIndex;
 	LegoU32 result = 0;
 
 	if (entry->m_deviceType == c_joystickDeviceType) {
-		if (eventIndex < 2 && entry->m_deviceSubType != c_axisJoystickDeviceSubType) {
+		if (p_eventIndex < 2 && entry->m_deviceSubType != c_axisJoystickDeviceSubType) {
 			return result;
 		}
 
 		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02);
-		LegoU32 buttonIndex = eventIndex - 2;
+		p_eventIndex -= 2;
 
-		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) > buttonIndex) {
-			result = InputDevice::c_sourceJoystickButton | buttonIndex;
+		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) > p_eventIndex) {
+			result = InputDevice::c_sourceJoystickButton | p_eventIndex;
 		}
 	}
 	else if (p_entryIndex >= c_keyboardBindingStart) {
-		result = g_keyboardInputBindingEvents[p_entryIndex - c_keyboardBindingStart][eventIndex];
+		result = g_keyboardInputBindingEvents[p_entryIndex - c_keyboardBindingStart][p_eventIndex];
 	}
 
 	return result;

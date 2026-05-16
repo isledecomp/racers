@@ -19,15 +19,15 @@ CrimsonSun0xa4::Entry0x74c::~Entry0x74c()
 	Destroy();
 }
 
-// STUB: LEGORACERS 0x00468220
+// FUNCTION: LEGORACERS 0x00468220
 void CrimsonSun0xa4::Entry0x74c::Reset()
 {
 	m_unk0x290 = NULL;
 	m_unk0x294 = NULL;
 	m_unk0x298 = NULL;
-	m_unk0x6c8.SetUnk0x7c(NULL);
-	m_unk0x6c8.SetUnk0x80(NULL);
-	m_unk0x6c8.SetUnk0x78(NULL);
+	m_unk0x744 = NULL;
+	m_unk0x748 = NULL;
+	m_unk0x740 = NULL;
 	m_unk0x2bc = 0;
 	m_unk0x2c0 = 0;
 	m_unk0x29c = 0;
@@ -80,7 +80,7 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::FUN_00468300(CreateParams0x18* p_createPa
 void CrimsonSun0xa4::Entry0x74c::FUN_00468390()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x78();
+	ObscureIcon0x1a8* icon = m_unk0x740;
 
 	icon->VTable0x40(this);
 
@@ -102,7 +102,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468390()
 void CrimsonSun0xa4::Entry0x74c::FUN_00468430()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x7c();
+	ObscureIcon0x1a8* icon = m_unk0x744;
 
 	icon->VTable0x40(this);
 
@@ -127,7 +127,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468430()
 void CrimsonSun0xa4::Entry0x74c::FUN_004684e0()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x80();
+	ObscureIcon0x1a8* icon = m_unk0x748;
 
 	icon->VTable0x40(this);
 
@@ -135,7 +135,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004684e0()
 	m_unk0x2a8 += bottom * 0.5f;
 
 	rect.m_left = 0x19;
-	rect.m_top = m_unk0x6c8.GetUnk0x7c()->GetRect()->m_bottom + 0x14;
+	rect.m_top = m_unk0x744->GetRect()->m_bottom + 0x14;
 	rect.m_right = bottom + rect.m_top;
 	rect.m_bottom = icon->GetRect()->m_right + 0x19;
 
@@ -179,13 +179,13 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468590()
 // FUNCTION: LEGORACERS 0x00468670
 void CrimsonSun0xa4::Entry0x74c::VTable0x38(ObscureVantage0x58* p_unk0x04)
 {
-	if (p_unk0x04 == m_unk0x6c8.GetUnk0x78()) {
+	if (p_unk0x04 == m_unk0x740) {
 		m_unk0x2c0 = 2;
 	}
-	else if (p_unk0x04 == m_unk0x6c8.GetUnk0x7c()) {
+	else if (p_unk0x04 == m_unk0x744) {
 		m_unk0x2c0 = 3;
 	}
-	else if (p_unk0x04 == m_unk0x6c8.GetUnk0x80()) {
+	else if (p_unk0x04 == m_unk0x748) {
 		m_unk0x2c0 = 4;
 	}
 
@@ -214,17 +214,17 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004686f0()
 {
 	m_unk0x6c8.SetFlags(2);
 
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x78();
+	ObscureIcon0x1a8* icon = m_unk0x740;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
 
-	icon = m_unk0x6c8.GetUnk0x7c();
+	icon = m_unk0x744;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
 
-	icon = m_unk0x6c8.GetUnk0x80();
+	icon = m_unk0x748;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
@@ -235,17 +235,17 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468740()
 {
 	m_unk0x6c8.ClearFlags(2);
 
-	ObscureIcon0x1a8* icon = m_unk0x6c8.GetUnk0x78();
+	ObscureIcon0x1a8* icon = m_unk0x740;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
 
-	icon = m_unk0x6c8.GetUnk0x7c();
+	icon = m_unk0x744;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
 
-	icon = m_unk0x6c8.GetUnk0x80();
+	icon = m_unk0x748;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
@@ -262,19 +262,19 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004687a0()
 {
 	FUN_00468740();
 
-	if (m_unk0x6c8.GetUnk0x78() && (m_unk0x6c8.GetUnk0x78()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x78()->DetachFromParent();
-		m_unk0x6c8.GetUnk0x78()->RemoveFromParent();
+	if (m_unk0x740 && (m_unk0x740->GetFlags() & 1)) {
+		m_unk0x740->DetachFromParent();
+		m_unk0x740->RemoveFromParent();
 	}
 
-	if (m_unk0x6c8.GetUnk0x7c() && (m_unk0x6c8.GetUnk0x7c()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x7c()->DetachFromParent();
-		m_unk0x6c8.GetUnk0x7c()->RemoveFromParent();
+	if (m_unk0x744 && (m_unk0x744->GetFlags() & 1)) {
+		m_unk0x744->DetachFromParent();
+		m_unk0x744->RemoveFromParent();
 	}
 
-	if (m_unk0x6c8.GetUnk0x80() && (m_unk0x6c8.GetUnk0x80()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x80()->DetachFromParent();
-		m_unk0x6c8.GetUnk0x80()->RemoveFromParent();
+	if (m_unk0x748 && (m_unk0x748->GetFlags() & 1)) {
+		m_unk0x748->DetachFromParent();
+		m_unk0x748->RemoveFromParent();
 	}
 
 	m_unk0x2bc = 3;

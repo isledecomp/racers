@@ -5,7 +5,7 @@
 #include "golfont0xa0.h"
 
 DECOMP_SIZE_ASSERT(CrimsonSun0xa4, 0xa4)
-DECOMP_SIZE_ASSERT(CrimsonSun0xa4::FieldAt0x6c8, 0x84)
+DECOMP_SIZE_ASSERT(CrimsonSun0xa4::FieldAt0x6c8, 0x78)
 
 // GLOBAL: LEGORACERS 0x004c1ccc
 const LegoChar* g_dialogMidFileName = "Dialog.mid";

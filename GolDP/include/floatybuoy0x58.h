@@ -22,14 +22,33 @@ public:
 	void VTable0x44(GolMatrix3*) const override;                           // vtable+0x44
 	void VTable0x48(GolVec3* p_dest1, GolVec3* p_dest2) const override;    // vtable+0x48
 
-	void FUN_10026b10();
+	void Reset();
 	void FUN_10026c50(GolMatrix4* p_dest);
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fa0(LegoFloat p_scalar);
 	void FUN_10026fc0(GolMatrix4* p_dest, float p_scale) const;
 
 protected:
-	GolMatrix34 m_unk0x28;
+	void Initialize()
+	{
+		m_v2.m_x = 0.0f;
+		m_v2.m_y = 0.0f;
+		m_v2.m_z = 0.0f;
+		m_unk0x28.m_m[0][0] = 1.0f;
+		m_unk0x28.m_m[0][1] = 0.0f;
+		m_unk0x28.m_m[0][2] = 0.0f;
+		m_unk0x28.m_m[1][0] = 0.0f;
+		m_unk0x28.m_m[1][1] = 1.0f;
+		m_unk0x28.m_m[1][2] = 0.0f;
+		m_unk0x28.m_m[2][0] = 0.0f;
+		m_unk0x28.m_m[2][1] = 0.0f;
+		m_unk0x28.m_m[2][2] = 1.0f;
+		m_unk0x28.m_m[3][0] = 0.0f;
+		m_unk0x28.m_m[3][1] = 0.0f;
+		m_unk0x28.m_m[3][2] = 0.0f;
+	}
+
+	GolMatrix34 m_unk0x28; // 0x28
 };
 
 #endif // FLOATYBUOY0X58_H

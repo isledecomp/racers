@@ -12,11 +12,10 @@ PeridotTrace0x4a8::PeridotTrace0x4a8()
 	m_unk0x4a4 = 0;
 }
 
-// STUB: LEGORACERS 0x00442680
+// FUNCTION: LEGORACERS 0x00442680
 PeridotTrace0x4a8::~PeridotTrace0x4a8()
 {
-	// TODO
-	STUB(0x442680);
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004426d0

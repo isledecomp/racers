@@ -25,7 +25,7 @@ class BoundingVolume0x64 {
 public:
 	BoundingVolume0x64();
 
-	virtual ~BoundingVolume0x64();                                                    // vtable+0x00
+	virtual ~BoundingVolume0x64();                                                            // vtable+0x00
 	virtual void VTable0x04(undefined4* p_arg1, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x04
 	virtual void VTable0x08();                                                                // vtable+0x08
 

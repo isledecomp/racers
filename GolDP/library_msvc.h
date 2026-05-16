@@ -1,6 +1,15 @@
 #ifdef 0
 // For GOLDP symbols only
 
+// LIBRARY: GOLDP 0x1004b268
+// __global_unwind2
+
+// LIBRARY: GOLDP 0x1004b2aa
+// __local_unwind2
+
+// LIBRARY: GOLDP 0x1004b33e
+// __NLG_Notify
+
 // aka `operator delete`
 // LIBRARY: GOLDP 0x1004b356
 // ??3@YAXPAX@Z
@@ -17,6 +26,9 @@
 
 // LIBRARY: GOLDP 0x1004b493
 // ??_M@YGXPAXIHP6EX0@Z@Z
+
+// LIBRARY: GOLDP 0x1004b513
+// ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
 // LIBRARY: GOLDP 0x1004ba3b
 // _isalpha
@@ -41,6 +53,9 @@
 
 // LIBRARY: GOLDP 0x1004b930
 // _strncmp
+
+// LIBRARY: GOLDP 0x1004bb06
+// __toupper_lk
 
 // LIBRARY: GOLDP 0x1004bd2e
 // __errno
@@ -90,8 +105,14 @@
 // LIBRARY: GOLDP 0x1004dc3c
 // __nh_malloc
 
+// LIBRARY: GOLDP 0x1004e20c
+// __except_handler3
+
 // LIBRARY: GOLDP 0x1004e311
 // __exit
+
+// LIBRARY: GOLDP 0x1004f24c
+// __isctype
 
 // LIBRARY: GOLDP 0x1004f356
 // __lock
@@ -99,11 +120,17 @@
 // LIBRARY: GOLDP 0x1004f3b7
 // __unlock
 
+// LIBRARY: GOLDP 0x1004f3cc
+// ___crtLCMapStringA
+
 // LIBRARY: GOLDP 0x100502e9
 // __FF_MSGBANNER
 
 // LIBRARY: GOLDP 0x10050322
 // __NMSG_WRITE
+
+// LIBRARY: GOLDP 0x100508f5
+// _calloc
 
 // LIBRARY: GOLDP 0x10051e30
 // _strlen
@@ -126,8 +153,17 @@
 // LIBRARY: GOLDP 0x100528a0
 // _strcat
 
+// LIBRARY: GOLDP 0x10052980
+// _memset
+
 // LIBRARY: GOLDP 0x100529d8
 // __fptrap
+
+// LIBRARY: GOLDP 0x10052df8
+// ___crtGetStringTypeA
+
+// LIBRARY: GOLDP 0x10052fd0
+// __chkstk
 
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
@@ -147,6 +183,9 @@
 
 // GLOBAL: GOLDP 0x10059990
 // ___lookuptable
+
+// GLOBAL: GOLDP 0x1005f440
+// __NLG_Destination
 
 // GLOBAL: GOLDP 0x1005f600
 // ___tlsindex
@@ -192,4 +231,13 @@
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain
+
+/// Globals from libraries without symbols
+
+// STRING: GOLDP 0x10059b94
+static const char* ___crtLCMapStringA_str = "\0";
+
+// STRING: GOLDP 0x10059b98
+static const wchar_t *___crtLCMapStringA_wstr = L"\0";
+
 #endif

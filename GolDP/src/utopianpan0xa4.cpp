@@ -2,12 +2,21 @@
 
 #include "bronzefalcon0xc8770.h"
 #include "duskwindbananarelic0x30.h"
+#include "golbmpfile.h"
 #include "golerror.h"
+#include "golimgfile.h"
 #include "golsurfaceformat.h"
+#include "goltgafile.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
+
+// GLOBAL: GOLDP 0x10063ca0
+static GolTgaFile g_unk0x10063ca0;
+
+// GLOBAL: GOLDP 0x10064280
+static GolBmpFile g_unk0x10064280;
 
 // FUNCTION: GOLDP 0x10004fd0
 UtopianPan0xa4::UtopianPan0xa4()
@@ -25,11 +34,41 @@ UtopianPan0xa4::~UtopianPan0xa4()
 	WhiteBaffoon0x50::Reset();
 }
 
-// STUB: GOLDP 0x100050b0
+// FUNCTION: GOLDP 0x100050b0
 void UtopianPan0xa4::VTable0x10()
 {
-	// TODO
-	STUB(0x100050b0);
+	GolSurfaceFormat imageFormat;
+	UtopianPanImageName imageName;
+	imageName.m_name[0] = m_name[0];
+	imageName.m_name[1] = m_name[1];
+	imageName.m_chars[8] = 0;
+
+	GolImgFile* imageFile = &g_unk0x10063ca0;
+	if (!(m_flags & c_flagBit4)) {
+		imageFile = &g_unk0x10064280;
+	}
+
+	m_unk0x3c = (m_unk0x3c & ~(c_flagBit1 | c_flagBit2)) | c_flagBit3;
+	if (!(m_unk0x3c & (c_flagBit4 | c_flagBit5))) {
+		m_unk0x3c |= c_flagBit4;
+	}
+
+	imageFile->VTable0x08(imageName.m_chars);
+	imageFormat = imageFile->GetTextureFormat();
+	m_width = imageFile->GetWidth();
+	m_height = imageFile->GetHeight();
+
+	m_unk0x58.VTable0x34(*m_renderer, imageFormat, m_width, m_height);
+	imageFile->SetUnk0x5a8(TRUE);
+	imageFile->SetUnk0x5ac(FALSE);
+	imageFile->VTable0x20(&m_unk0x58, m_flags & c_flagBit2, NULL);
+	imageFile->SetUnk0x5a8(FALSE);
+	imageFile->Destroy();
+
+	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
+	m_renderer->SelectTextureFormat(textureFormat, &m_unk0x0c, m_flags & c_flagBit5);
+	FUN_1001f430();
+	FUN_10005b00();
 }
 
 // FUNCTION: GOLDP 0x100051c0
@@ -53,11 +92,14 @@ void UtopianPan0xa4::FUN_100051c0()
 	}
 }
 
-// STUB: GOLDP 0x10005210
+// FUNCTION: GOLDP 0x10005210
 void UtopianPan0xa4::FUN_10005210()
 {
-	// TODO
-	STUB(0x10005210);
+	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
+
+	m_renderer->SelectTextureFormat(textureFormat, &m_unk0x0c, m_flags & c_flagBit5);
+	FUN_1001f430();
+	FUN_10005b00();
 }
 
 // FUNCTION: GOLDP 0x10005260
@@ -180,4 +222,11 @@ undefined4 UtopianPan0xa4::FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*,
 PurpleDune0x7c* UtopianPan0xa4::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 {
 	return &m_unk0x50[p_row * m_unk0x30 + p_column];
+}
+
+// STUB: GOLDP 0x10005b00
+void UtopianPan0xa4::FUN_10005b00()
+{
+	// TODO
+	STUB(0x10005b00);
 }

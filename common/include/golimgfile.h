@@ -20,15 +20,15 @@ class GolImgFile {
 public:
 	GolImgFile();
 
-	virtual void VTable0x00();                                                        // vtable+0x00
-	virtual ~GolImgFile();                                                            // vtable+0x04
-	virtual void VTable0x08(const LegoChar* p_fileName);                              // vtable+0x08
-	virtual void Destroy();                                                           // vtable+0x0c
-	virtual const LegoChar* GetSuffix();                                              // vtable+0x10
-	virtual void VTable0x14(undefined4, undefined4, undefined4, undefined4);          // vtable+0x14
-	virtual void VTable0x18(LegoU8* p_buffer);                                        // vtable+0x18
-	virtual void VTable0x1c(undefined4, undefined4, undefined4);                      // vtable+0x1c
-	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, undefined4*); // vtable+0x20
+	virtual void VTable0x00();                                                                  // vtable+0x00
+	virtual ~GolImgFile();                                                                      // vtable+0x04
+	virtual void VTable0x08(const LegoChar* p_fileName);                                        // vtable+0x08
+	virtual void Destroy();                                                                     // vtable+0x0c
+	virtual const LegoChar* GetSuffix();                                                        // vtable+0x10
+	virtual void VTable0x14(undefined4, undefined4, undefined4, undefined4);                    // vtable+0x14
+	virtual void VTable0x18(LegoU8* p_buffer);                                                  // vtable+0x18
+	virtual void VTable0x1c(undefined4, undefined4, undefined4);                                // vtable+0x1c
+	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001ff30
 	// SYNTHETIC: LEGORACERS 0x0040a950
@@ -37,13 +37,13 @@ public:
 	const GolSurfaceFormat& GetTextureFormat() const { return m_format; }
 	LegoU32 GetWidth() const { return m_width; }
 	LegoU32 GetHeight() const { return m_height; }
-	void SetUnk0x5a8(undefined4 p_unk0x5a8) { m_unk0x5a8 = p_unk0x5a8; }
-	void SetUnk0x5ac(undefined4 p_unk0x5ac) { m_unk0x5ac = p_unk0x5ac; }
+	void SetUnk0x5a8(LegoBool32 p_unk0x5a8) { m_unk0x5a8 = p_unk0x5a8; }
+	void SetUnk0x5ac(LegoBool32 p_unk0x5ac) { m_unk0x5ac = p_unk0x5ac; }
 	void SetUnk0x0a0(const ColorRGBA& p_unk0x0a0) { m_unk0x0a0 = p_unk0x0a0; }
 
-	void FUN_100200f0(IPalette0x4*, undefined4*);
+	void FUN_100200f0(IPalette0x4*, ColorRGBA* p_colorKey);
 	LegoU32 FUN_10020370(const ColorRGBA&);
-	void FUN_100204d0(const GolSurfaceFormat&, undefined4*);
+	void FUN_100204d0(const GolSurfaceFormat&, ColorRGBA* p_colorKey);
 	void FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFormat& p_format);
 	void FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst);
 	void FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst);
@@ -122,8 +122,8 @@ protected:
 	ColorRGBA m_palette[256];            // 0x0a8
 	undefined m_unk0x4a8[0x5a4 - 0x4a8]; // 0x4a8
 	undefined4 m_unk0x5a4;               // 0x5a4
-	undefined4 m_unk0x5a8;               // 0x5a8
-	undefined4 m_unk0x5ac;               // 0x5ac
+	LegoBool32 m_unk0x5a8;               // 0x5a8
+	LegoBool32 m_unk0x5ac;               // 0x5ac
 };
 
 #endif // GOLIMGFILE_H

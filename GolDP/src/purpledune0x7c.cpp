@@ -50,9 +50,9 @@ void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_sour
 
 	VTable0x34(p_renderer, textureFormat, p_source->GetWidth(), p_source->GetHeight());
 	p_source->SetUnk0x5a8(TRUE);
-	p_source->SetUnk0x5ac(0);
-	p_source->VTable0x20(this, m_unk0x36 & c_unk0x36Bit2, 0);
-	p_source->SetUnk0x5a8(0);
+	p_source->SetUnk0x5ac(FALSE);
+	p_source->VTable0x20(this, m_unk0x36 & c_unk0x36Bit2, NULL);
+	p_source->SetUnk0x5a8(FALSE);
 }
 
 // FUNCTION: GOLDP 0x10015d00
@@ -301,7 +301,7 @@ void PurpleDune0x7c::FUN_10016100()
 	}
 
 	if (m_mipmaps != NULL) {
-		g_unk0x100635c0.SetUnk0x5ac(1);
+		g_unk0x100635c0.SetUnk0x5ac(TRUE);
 		dstPixels = m_mipmaps->m_pixels;
 		dstPitch = m_mipmaps->m_pitch;
 	}

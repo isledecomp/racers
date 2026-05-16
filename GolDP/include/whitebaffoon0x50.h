@@ -2,17 +2,20 @@
 #define WHITEBAFFOON0X58_H
 
 #include "decomp.h"
+#include "golsurfaceformat.h"
 #include "types.h"
 
 class BronzeFalcon0xc8770;
-class GolSurfaceFormat;
 class PurpleDune0x7c;
 
 // This type is needed because
 // - instances of this type have component access like `char[4]`, but copy like an `int`,
 // - instances of this type are not aligned to 4 bytes.
 struct FourBytes {
-	LegoChar m_bytes[4];
+	union {
+		LegoChar m_bytes[4];
+		LegoU8 m_uBytes[4];
+	};
 };
 
 // VTABLE: GOLDP 0x10056ee4
@@ -59,30 +62,10 @@ public:
 	// SYNTHETIC: GOLDP 0x1001f240
 	// WhiteBaffoon0x50::`scalar deleting destructor'
 
-	struct InnerWhiteBaffon0x24 {
-		InnerWhiteBaffon0x24()
-		{
-			m_unk0x0c = 0;
-			m_unk0x10 = 0;
-			m_unk0x14 = 0;
-			m_unk0x18 = 0;
-			m_unk0x1c = 0;
-			m_unk0x20 = 0;
-			m_unk0x22 = 0;
-		}
-		undefined4 m_unk0x0c; // 0x0c
-		undefined4 m_unk0x10; // 0x10
-		undefined4 m_unk0x14; // 0x14
-		undefined4 m_unk0x18; // 0x18
-		undefined4 m_unk0x1c; // 0x1c
-		undefined2 m_unk0x20; // 0x20
-		undefined2 m_unk0x22; // 0x22
-	};
-
 public:
 	LegoS32* m_unk0x04;               // 0x04
 	LegoS32* m_unk0x08;               // 0x08
-	InnerWhiteBaffon0x24 m_unk0x0c;   // 0x0c
+	GolSurfaceFormat m_unk0x0c;       // 0x0c
 	BronzeFalcon0xc8770* m_renderer;  // 0x24
 	FourBytes m_unk0x28;              // 0x28
 	LegoU32 m_unk0x2c;                // 0x2c

@@ -182,7 +182,7 @@ void GolTgaFile::VTable0x00()
 
 // STUB: GOLDP 0x1002aa80
 // STUB: LEGORACERS 0x00413d50
-void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, undefined4*)
+void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	// TODO
 	STUB(0x1002aa80);

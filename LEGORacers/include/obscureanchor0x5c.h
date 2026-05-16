@@ -11,11 +11,19 @@ class UtopianPan0xa4;
 // SIZE 0x5c
 class ObscureAnchor0x5c : public ObscureAnthem0x58 {
 public:
+	// SIZE 0x3c
+	class CreateParams0x3c : public ObscureVantage0x58::CreateParams0x30 {
+	public:
+		undefined m_unk0x30[0x38 - 0x30]; // 0x30
+		UtopianPan0xa4* m_unk0x38;        // 0x38
+	};
+
 	ObscureAnchor0x5c();
 
 	void Reset() override;                        // vtable+0x00
 	~ObscureAnchor0x5c() override;                // vtable+0x04
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	LegoBool32 FUN_0046f150(CreateParams0x3c* p_createParams);
 	void SetUnk0x58(UtopianPan0xa4* p_unk0x58) { m_unk0x58 = p_unk0x58; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f0d0

@@ -6,6 +6,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58, 0x5c)
+DECOMP_SIZE_ASSERT(CeruleanQueen0x58::Entry0x3c, 0x3c)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::Entry0x84, 0x84)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::MidTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CeruleanQueen0x58::ResourceLoadParams, 0x0c)

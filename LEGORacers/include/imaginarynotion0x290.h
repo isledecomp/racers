@@ -6,6 +6,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "imaginaryinterface.h"
+#include "obscureanchor0x5c.h"
 #include "obscureicon0x1a8.h"
 #include "types.h"
 
@@ -92,14 +93,14 @@ public:
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);
-	void FUN_0046ba60(FieldAt0x54*);
+	void FUN_0046ba60(ObscureVantage0x58::CreateParams0x30*);
 	void FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*);
 	void FUN_0046bb90(undefined4*, undefined4);
 	void FUN_0046bc90(undefined4*, undefined4);
-	CeruleanEmperor0x4c::Entry0x90* FUN_0046bd80(undefined2);
-	ObscureVantage0x58::CreateParams0x30* FUN_0046be10(undefined2);
+	void* FUN_0046bd80(undefined2);
+	void* FUN_0046be10(undefined2);
 	void FUN_0046bea0(undefined4*, undefined2);
-	undefined4 FUN_0046bef0(ObscureVantage0x58*, undefined2, undefined2);
+	LegoBool32 FUN_0046bef0(ObscureAnchor0x5c*, undefined2, undefined2);
 	undefined4 FUN_0046bf80(ObscureVantage0x58*, undefined2, undefined2, undefined2);
 	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
@@ -115,6 +116,28 @@ public:
 	undefined4 FUN_0046c730(ObscureIcon0x1a8*, undefined2);
 	void FUN_0046c760();
 	ObscureIcon0x1a8* GetUnk0xd8() { return &m_unk0xd8; }
+
+	CeruleanEmperor0x4c::Entry0x0c* GetStyleEntry0x0c(undefined2 p_id)
+	{
+		return static_cast<CeruleanEmperor0x4c::Entry0x0c*>(FUN_0046bd80(p_id));
+	}
+
+	CeruleanEmperor0x4c::Entry0x104* GetStyleEntry0x104(undefined2 p_id)
+	{
+		return static_cast<CeruleanEmperor0x4c::Entry0x104*>(FUN_0046bd80(p_id));
+	}
+
+	CeruleanQueen0x58::Entry0x3c* GetInputBindingEntry0x3c(undefined2 p_id)
+	{
+		return static_cast<CeruleanQueen0x58::Entry0x3c*>(FUN_0046be10(p_id));
+	}
+
+	CeruleanQueen0x58::Entry0x84* GetInputBindingEntry0x84(undefined2 p_id)
+	{
+		return static_cast<CeruleanQueen0x58::Entry0x84*>(FUN_0046be10(p_id));
+	}
+
+	FieldAt0x54* GetInputBindingEntry0x54(undefined2 p_id) { return static_cast<FieldAt0x54*>(FUN_0046be10(p_id)); }
 
 	// SYNTHETIC: LEGORACERS 0x0046b3f0
 	// ImaginaryNotion0x290::`scalar deleting destructor'

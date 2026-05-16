@@ -37,7 +37,7 @@ public:
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
 	void VTable0x40(ImaginaryInterface*) override;                                         // vtable+0x40
-	undefined4 FUN_004826c0(CreateParams0xe0* p_createParams, undefined4* p_unk0x08);
+	undefined4 FUN_004826c0(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
 
 	// SYNTHETIC: LEGORACERS 0x00482400
 	// ImaginaryDrillFieldAt0x498::`scalar deleting destructor'

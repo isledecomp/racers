@@ -360,6 +360,27 @@ Rect* ObscureVantage0x58::GetGlobalRect()
 	return &g_unk0x4c7650;
 }
 
+// FUNCTION: LEGORACERS 0x00472f10
+ObscureVantage0x58* ObscureVantage0x58::FUN_00472f10(undefined2 p_unk0x04)
+{
+	ObscureVantage0x58* child = m_firstChild;
+
+	if (m_unk0x30 == p_unk0x04) {
+		return this;
+	}
+
+	while (child) {
+		ObscureVantage0x58* result = child->FUN_00472f10(p_unk0x04);
+		if (result) {
+			return result;
+		}
+
+		child = child->m_nextSibling;
+	}
+
+	return NULL;
+}
+
 // FUNCTION: LEGORACERS 0x00472f40
 void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 {

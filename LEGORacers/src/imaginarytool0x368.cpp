@@ -10,6 +10,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368, 0x368)
+DECOMP_SIZE_ASSERT(ImaginaryTool0x368::FieldAt0x2e0::Entry0xe0, 0xe0)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void ImaginaryTool0x368::VTable0x80()
@@ -105,9 +106,8 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 	undefined2 p_unk0x10
 )
 {
-	ImaginaryDrillFieldAt0x498::CreateParams0xe0* sourceParams =
-		(ImaginaryDrillFieldAt0x498::CreateParams0xe0*) FUN_0046be10(p_unk0x08);
-	CeruleanEmperor0x4c::Entry0x104* styleEntry = (CeruleanEmperor0x4c::Entry0x104*) FUN_0046bd80(p_unk0x0c);
+	FieldAt0x2e0::Entry0xe0* sourceParams = GetToolInputBindingEntry0xe0(p_unk0x08);
+	CeruleanEmperor0x4c::Entry0x104* styleEntry = GetStyleEntry0x104(p_unk0x0c);
 	if (!sourceParams || !styleEntry) {
 		return 0;
 	}
@@ -132,7 +132,7 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 
 	createParams.m_unk0xcc = m_menuTextStrings;
 	createParams.m_unk0xd4 = p_unk0x10;
-	return p_unk0x04->FUN_004826c0(&createParams, (undefined4*) styleEntry);
+	return p_unk0x04->FUN_004826c0(&createParams, styleEntry);
 }
 
 // STUB: LEGORACERS 0x0047fec0

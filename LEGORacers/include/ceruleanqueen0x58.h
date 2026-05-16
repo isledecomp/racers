@@ -5,6 +5,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
+#include "obscureanchor0x5c.h"
+#include "obscureicon0x1a8.h"
 #include "types.h"
 #include "visualstate0x4.h"
 
@@ -32,18 +34,11 @@ public:
 		undefined m_unk0x40[0x74 - 0x40]; // 0x40
 	};
 
+	// SIZE 0x3c
+	class Entry0x3c : public ObscureAnchor0x5c::CreateParams0x3c {};
+
 	// SIZE 0x84
-	class Entry0x84 {
-	public:
-		undefined m_unk0x00[0x38 - 0x00]; // 0x00
-		LegoU8 m_unk0x38;                 // 0x38
-		undefined m_unk0x39[0x52 - 0x39]; // 0x39
-		VisualState0x4 m_unk0x52[6];      // 0x52
-		undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
-		undefined4 m_unk0x74;             // 0x74
-		undefined4 m_unk0x78;             // 0x78
-		undefined m_unk0x7c[0x84 - 0x7c]; // 0x7c
-	};
+	class Entry0x84 : public ObscureIcon0x1a8::CreateParams0x84 {};
 
 	// SIZE 0x0c
 	struct ResourceLoadParams {
@@ -59,6 +54,8 @@ public:
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14
 	LegoBool32 Load(ResourceLoadParams* p_params);
+	Entry0x3c* GetEntry0x3c(const LegoChar* p_name) { return static_cast<Entry0x3c*>(FUN_0046aff0(p_name)); }
+	Entry0x84* GetEntry0x84(const LegoChar* p_name) { return static_cast<Entry0x84*>(FUN_0046aff0(p_name)); }
 
 	// SYNTHETIC: LEGORACERS 0x00469600
 	// CeruleanQueen0x58::`scalar deleting destructor'

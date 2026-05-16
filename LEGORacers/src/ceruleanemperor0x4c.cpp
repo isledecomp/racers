@@ -7,6 +7,7 @@
 #include "porcelainveil0x50.h"
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x90, 0x90)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x104, 0x104)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::ResourceLoadParams, 0x10)
@@ -280,13 +281,13 @@ void CeruleanEmperor0x4c::FUN_00470dc0()
 }
 
 // FUNCTION: LEGORACERS 0x00470e60
-CeruleanEmperor0x4c::Entry0x90* CeruleanEmperor0x4c::FUN_00470e60(const LegoChar* p_name)
+void* CeruleanEmperor0x4c::FUN_00470e60(const LegoChar* p_name)
 {
 	GolName name;
 
 	::strncpy(name, p_name, sizeof(name));
 
-	Entry0x90* result = (Entry0x90*) GetName(name);
+	void* result = GetName(name);
 	if (!result && m_unk0x20) {
 		return m_unk0x20->FUN_00470e60(p_name);
 	}

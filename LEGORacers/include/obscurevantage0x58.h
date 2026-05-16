@@ -34,7 +34,13 @@ public:
 		VisualState0x4 m_unk0x22;               // 0x22
 		undefined2 m_unk0x26;                   // 0x26
 		ObscureVantage0x58* m_parent;           // 0x28
-		undefined4 m_flags;                     // 0x2c
+		union {
+			undefined4 m_flags; // 0x2c
+			struct {
+				LegoU8 m_flagsByte;              // 0x2c
+				LegoChar m_unk0x2d[0x30 - 0x2d]; // 0x2d
+			} m_flagsAndName;
+		};
 	};
 
 	ObscureVantage0x58();
@@ -59,6 +65,7 @@ public:
 	undefined4 FUN_00472c40(LegoS32, LegoS32);
 	ObscureVantage0x58* FindRoot();
 	ObscureVantage0x58* FUN_00472e60();
+	ObscureVantage0x58* FUN_00472f10(undefined2);
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);

@@ -18,6 +18,14 @@ class UtopianPan0xa4;
 // SIZE 0x50
 class CeruleanEmperor0x4c : public CeruleanKnight0x20 {
 public:
+	// SIZE 0x0c
+	class Entry0x0c {
+	public:
+		UtopianPan0xa4* m_unk0x00; // 0x00
+		undefined4 m_unk0x04;      // 0x04
+		undefined4 m_unk0x08;      // 0x08
+	};
+
 	// SIZE 0x90
 	class Entry0x90 {
 	public:
@@ -58,7 +66,10 @@ public:
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14
 	LegoBool32 Load(ResourceLoadParams* p_params);
-	Entry0x90* FUN_00470e60(const LegoChar* p_name);
+	void* FUN_00470e60(const LegoChar* p_name);
+	Entry0x0c* GetEntry0x0c(const LegoChar* p_name) { return static_cast<Entry0x0c*>(FUN_00470e60(p_name)); }
+	Entry0x90* GetEntry0x90(const LegoChar* p_name) { return static_cast<Entry0x90*>(FUN_00470e60(p_name)); }
+	Entry0x104* GetEntry0x104(const LegoChar* p_name) { return static_cast<Entry0x104*>(FUN_00470e60(p_name)); }
 
 	// SYNTHETIC: LEGORACERS 0x0046faa0
 	// CeruleanEmperor0x4c::`scalar deleting destructor'

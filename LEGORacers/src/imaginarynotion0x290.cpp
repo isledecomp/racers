@@ -14,6 +14,7 @@
 #include "imaginarychisel0x658.h"
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
+#include "obscureanchor0x5c.h"
 #include "obscurevantage0x58.h"
 
 #include <string.h>
@@ -337,18 +338,72 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0046ba60
-void ImaginaryNotion0x290::FUN_0046ba60(FieldAt0x54*)
+// FUNCTION: LEGORACERS 0x0046ba60
+void ImaginaryNotion0x290::FUN_0046ba60(ObscureVantage0x58::CreateParams0x30* p_createParams)
 {
-	// TODO
-	STUB(0x0046ba60);
+	if (!p_createParams->m_golExport) {
+		p_createParams->m_golExport = m_golExport;
+	}
+
+	if (!p_createParams->m_renderer) {
+		p_createParams->m_renderer = m_renderer;
+	}
+
+	if (!p_createParams->m_soundGroupBinding) {
+		p_createParams->m_soundGroupBinding = m_soundGroupBinding;
+	}
+
+	if (!p_createParams->m_eventHandler) {
+		p_createParams->m_eventHandler = this;
+	}
+
+	if (!(p_createParams->m_flags & 2)) {
+		::memset(&p_createParams->m_unk0x22, 0xff, sizeof(p_createParams->m_unk0x22));
+	}
+
+	if (!p_createParams->m_parent && (p_createParams->m_flags & 1)) {
+		if (p_createParams->m_flagsAndName.m_unk0x2d[0]) {
+			CeruleanQueen0x58::Entry0x84* entry = (CeruleanQueen0x58::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(
+				p_createParams->m_flagsAndName.m_unk0x2d
+			);
+
+			if (entry) {
+				p_createParams->m_unk0x26 = entry->m_unk0x20;
+			}
+		}
+
+		if (!p_createParams->m_unk0x26) {
+			p_createParams->m_unk0x26 = 1;
+		}
+
+		p_createParams->m_parent = m_unk0xd8.FUN_00472f10(p_createParams->m_unk0x26);
+	}
 }
 
-// STUB: LEGORACERS 0x0046bb10
-void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*)
+// FUNCTION: LEGORACERS 0x0046bb10
+void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84* p_createParams)
 {
-	// TODO
-	STUB(0x0046bb10);
+	if (!p_createParams->m_parentIcon && p_createParams->m_unk0x74) {
+		if (p_createParams->m_unk0x4a) {
+			CeruleanQueen0x58::Entry0x84* entry = (CeruleanQueen0x58::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(
+				p_createParams->m_flagsAndName.m_unk0x2d
+			);
+			p_createParams->m_unk0x48 = entry->m_unk0x20;
+		}
+
+		if (!p_createParams->m_unk0x48) {
+			p_createParams->m_unk0x48 = 1;
+		}
+
+		p_createParams->m_parentIcon =
+			static_cast<ObscureIcon0x1a8*>(m_unk0xd8.FUN_00472f10(p_createParams->m_unk0x48));
+	}
+
+	if (!p_createParams->m_unk0x80) {
+		p_createParams->m_unk0x80 = this;
+	}
+
+	FUN_0046ba60(p_createParams);
 }
 
 // STUB: LEGORACERS 0x0046bb90
@@ -366,7 +421,7 @@ void ImaginaryNotion0x290::FUN_0046bc90(undefined4*, undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0046bd80
-CeruleanEmperor0x4c::Entry0x90* ImaginaryNotion0x290::FUN_0046bd80(undefined2 p_unk0x04)
+void* ImaginaryNotion0x290::FUN_0046bd80(undefined2 p_unk0x04)
 {
 	GolString string;
 	GolName name;
@@ -377,14 +432,14 @@ CeruleanEmperor0x4c::Entry0x90* ImaginaryNotion0x290::FUN_0046bd80(undefined2 p_
 }
 
 // FUNCTION: LEGORACERS 0x0046be10
-ObscureVantage0x58::CreateParams0x30* ImaginaryNotion0x290::FUN_0046be10(undefined2 p_unk0x04)
+void* ImaginaryNotion0x290::FUN_0046be10(undefined2 p_unk0x04)
 {
 	GolString string;
 	GolName name;
 
 	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
 	string.CopyToBuf8(name);
-	return (ObscureVantage0x58::CreateParams0x30*) GetMenuInputBindings()->FUN_0046aff0(name);
+	return GetMenuInputBindings()->FUN_0046aff0(name);
 }
 
 // STUB: LEGORACERS 0x0046bea0
@@ -394,12 +449,27 @@ void ImaginaryNotion0x290::FUN_0046bea0(undefined4*, undefined2)
 	STUB(0x0046bea0);
 }
 
-// STUB: LEGORACERS 0x0046bef0
-undefined4 ImaginaryNotion0x290::FUN_0046bef0(ObscureVantage0x58*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046bef0
+LegoBool32 ImaginaryNotion0x290::FUN_0046bef0(ObscureAnchor0x5c* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
-	// TODO
-	STUB(0x0046bef0);
-	return 0;
+	CeruleanQueen0x58::Entry0x3c* sourceParams = GetInputBindingEntry0x3c(p_unk0x08);
+	CeruleanEmperor0x4c::Entry0x0c* styleEntry = GetStyleEntry0x0c(p_unk0x0c);
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureAnchor0x5c::CreateParams0x3c createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+
+	if (!createParams.m_unk0x38) {
+		createParams.m_unk0x38 = styleEntry->m_unk0x00;
+	}
+
+	if (!(createParams.m_flags & 2) && styleEntry->m_unk0x08) {
+		createParams.m_unk0x38 = styleEntry->m_unk0x00;
+	}
+
+	return p_unk0x04->FUN_0046f150(&createParams);
 }
 
 // STUB: LEGORACERS 0x0046bf80
@@ -474,7 +544,7 @@ void ImaginaryNotion0x290::FUN_0046c510(undefined4*, undefined4, undefined2)
 // FUNCTION: LEGORACERS 0x0046c5b0
 undefined4 ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08)
 {
-	FieldAt0x54* params = (FieldAt0x54*) FUN_0046be10(p_unk0x08);
+	FieldAt0x54* params = GetInputBindingEntry0x54(p_unk0x08);
 	if (!params) {
 		return 0;
 	}

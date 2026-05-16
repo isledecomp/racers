@@ -119,6 +119,11 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
+	FieldAt0x2e0::Entry0xe0* GetToolInputBindingEntry0xe0(undefined2 p_id)
+	{
+		return static_cast<FieldAt0x2e0::Entry0xe0*>(FUN_0046be10(p_id));
+	}
+
 	undefined4 FUN_0047fcf0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0047fdc0(
 		ImaginaryDrillFieldAt0x498* p_unk0x04,

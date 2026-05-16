@@ -30,7 +30,7 @@ void ImaginaryDrillFieldAt0x498::Reset()
 }
 
 // STUB: LEGORACERS 0x004826c0
-undefined4 ImaginaryDrillFieldAt0x498::FUN_004826c0(CreateParams0xe0*, undefined4*)
+undefined4 ImaginaryDrillFieldAt0x498::FUN_004826c0(CreateParams0xe0*, CeruleanEmperor0x4c::Entry0x104*)
 {
 	STUB(0x004826c0);
 	return 0;

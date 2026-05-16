@@ -69,7 +69,7 @@ public:
 	BronzeFalcon0xc8770* m_renderer;  // 0x24
 	FourBytes m_unk0x28;              // 0x28
 	LegoU32 m_unk0x2c;                // 0x2c
-	undefined4 m_unk0x30;             // 0x30
+	LegoU32 m_unk0x30;                // 0x30
 	LegoU32 m_width;                  // 0x34
 	LegoU32 m_height;                 // 0x38
 	LegoU32 m_unk0x3c;                // 0x3c

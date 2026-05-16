@@ -7,10 +7,16 @@
 #include "golimgfile.h"
 #include "golsurfaceformat.h"
 #include "goltgafile.h"
+#include "ipalette0x4.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
+
+extern const ColorRGBA g_unk0x10057668;
+
+// GLOBAL: GOLDP 0x10062b18
+static GolImgFile g_unk0x10062b18;
 
 // GLOBAL: GOLDP 0x10063ca0
 static GolTgaFile g_unk0x10063ca0;
@@ -227,6 +233,98 @@ PurpleDune0x7c* UtopianPan0xa4::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 // STUB: GOLDP 0x10005b00
 void UtopianPan0xa4::FUN_10005b00()
 {
-	// TODO
-	STUB(0x10005b00);
+	GolSurfaceFormat textureFormat = m_unk0x58.GetTextureFormat();
+
+	LegoU8* sourcePixels;
+	LegoU32 sourcePitch;
+	m_unk0x58.LockPixels(
+		&sourcePixels,
+		&sourcePitch,
+		SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite
+	);
+
+	ColorRGBA* paletteEntries;
+	LegoU32 paletteSize;
+	if (textureFormat.m_paletteMask != 0) {
+		paletteEntries = m_unk0x58.GetPaletteEntries();
+		paletteSize = m_unk0x58.GetPaletteSize();
+	}
+	else {
+		paletteEntries = NULL;
+		paletteSize = 0;
+	}
+
+	ColorRGBA* colorKey;
+	if (m_flags & c_flagBit5) {
+		ColorRGBA* sourceColorKey = reinterpret_cast<ColorRGBA*>(&m_unk0x28);
+		if (m_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit9) {
+			g_unk0x10062b18.SetUnk0x0a0(g_unk0x10057668);
+		}
+		else {
+			g_unk0x10062b18.SetUnk0x0a0(*sourceColorKey);
+		}
+
+		colorKey = sourceColorKey;
+	}
+	else {
+		colorKey = NULL;
+	}
+
+	LegoU32 sourceX = 0;
+	LegoU32 copyWidth = 0;
+	LegoU32 copyHeight = 0;
+	LegoU32 row;
+	LegoU32 column;
+	for (row = 0; row < m_unk0x2c; row++) {
+		LegoU32 sourceY = 0;
+		for (column = 0; column < m_unk0x30; column++) {
+			PurpleDune0x7c* texture = VTable0x1c(row, column);
+			copyWidth = texture->GetWidth();
+
+			LegoU32 remainingWidth = m_unk0x58.GetWidth() - sourceX;
+			if (copyWidth > remainingWidth) {
+				copyWidth = remainingWidth;
+			}
+
+			copyHeight = texture->GetHeight();
+			LegoU32 remainingHeight = m_unk0x58.GetHeight() - sourceY;
+			if (copyHeight > remainingHeight) {
+				copyHeight = remainingHeight;
+			}
+
+			LegoU8* source = sourcePixels + sourceY * sourcePitch + ((textureFormat.m_bitsPerPixel * sourceX + 7) >> 3);
+
+			g_unk0x10062b18
+				.FUN_100226c0(textureFormat, copyWidth, copyHeight, sourcePitch, paletteEntries, paletteSize);
+			g_unk0x10062b18.SetUnk0x5ac(TRUE);
+
+			LegoU8* destPixels;
+			LegoU32 destPitch;
+			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+
+			IPalette0x4* destPalette = NULL;
+			if (m_unk0x0c.m_paletteMask != 0) {
+				destPalette = texture->GetPalette();
+			}
+
+			g_unk0x10062b18.FUN_10022730(
+				source,
+				destPixels,
+				destPitch,
+				copyWidth,
+				copyHeight,
+				m_unk0x0c,
+				destPalette,
+				0,
+				colorKey
+			);
+			texture->UnlockPixels();
+
+			sourceY += copyHeight;
+		}
+
+		sourceX += copyWidth;
+	}
+
+	m_unk0x58.UnlockPixels();
 }

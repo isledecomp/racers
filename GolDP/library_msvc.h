@@ -81,6 +81,28 @@
 // LIBRARY: GOLDP 0x1004dc3c
 // __nh_malloc
 
+// LIBRARY: GOLDP 0x1004e311
+// __exit
+
+// LIBRARY: GOLDP 0x100502e9
+// __FF_MSGBANNER
+
+// LIBRARY: GOLDP 0x10050322
+// __NMSG_WRITE
+
+// LIBRARY: GOLDP 0x10051e30
+// _strlen
+
+// LIBRARY: GOLDP 0x10052890
+// _strcpy
+
+// LIBRARY: GOLDP 0x100528a0
+// _strcat
+
+// LIBRARY: GOLDP 0x100537c0
+// ___crtMessageBoxA
+
+
 // GLOBAL: GOLDP 0x10058098
 // IID_IDirectDraw4
 
@@ -92,6 +114,18 @@
 
 // GLOBAL: GOLDP 0x10058468
 // IID_IDirect3DTexture2
+
+// GLOBAL: GOLDP 0x1005fc10
+// ___sbh_threshold
+
+// GLOBAL: GOLDP 0x10065f08
+// ___error_mode
+
+// GLOBAL: GOLDP 0x10065f0c
+// ___app_type
+
+// GLOBAL: GOLDP 0x100660f4
+// __adbgmsg
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain

@@ -10,6 +10,12 @@
 #include <windows.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceState0x438, 0x438)
+DECOMP_SIZE_ASSERT(DisplayDriverGuid::SerializedWord, 0x04)
+DECOMP_SIZE_ASSERT(DisplayDriverGuid::Serialized, 0x10)
+DECOMP_SIZE_ASSERT(PeridotTraceInputBindingEntry, 0x28)
+DECOMP_SIZE_ASSERT(PeridotTraceInputBindingPlayerState, 0x04)
+DECOMP_SIZE_ASSERT(PeridotTraceInputBindingState, 0xd0)
+DECOMP_SIZE_ASSERT(PeridotTracePersistentState, 0x42c)
 
 // GLOBAL: LEGORACERS 0x004b0624
 const LegoU32 g_keyboardInputBindingEvents[3][9] = {
@@ -80,14 +86,14 @@ void PeridotTraceState0x438::Initialize()
 	m_state.m_unk0x21 = 1;
 	m_state.m_languageIndex = GetRegistryLanguageIndex();
 	m_state.m_unk0x23 = 3;
-	m_state.m_inputBindings.m_unk0x00 = 0;
-	m_state.m_inputBindings.m_unk0x01 = 2;
-	m_state.m_inputBindings.m_unk0x02 = 0;
-	m_state.m_inputBindings.m_unk0x03 = 0;
-	m_state.m_inputBindings.m_unk0x04 = 0;
-	m_state.m_inputBindings.m_unk0x05 = 2;
-	m_state.m_inputBindings.m_unk0x06 = 0;
-	m_state.m_inputBindings.m_unk0x07 = 1;
+	m_state.m_inputBindings.m_players[0].m_unk0x00 = 0;
+	m_state.m_inputBindings.m_players[0].m_unk0x01 = 2;
+	m_state.m_inputBindings.m_players[0].m_unk0x02 = 0;
+	m_state.m_inputBindings.m_players[0].m_selectedEntryIndex = 0;
+	m_state.m_inputBindings.m_players[1].m_unk0x00 = 0;
+	m_state.m_inputBindings.m_players[1].m_unk0x01 = 2;
+	m_state.m_inputBindings.m_players[1].m_unk0x02 = 0;
+	m_state.m_inputBindings.m_players[1].m_selectedEntryIndex = 1;
 	m_inputManager = NULL;
 }
 
@@ -114,7 +120,7 @@ void PeridotTraceState0x438::InitializeInputBindings(InputManager* p_inputManage
 	LegoS32 j;
 
 	for (i = 0; i < 2; i++) {
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
 		JoystickInputDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
 
 		if (joystick == NULL) {
@@ -151,7 +157,7 @@ void PeridotTraceState0x438::InitializeInputBindings(InputManager* p_inputManage
 			m_state.m_inputBindings.m_entries[4].m_deviceSubType = keyboard->GetDeviceSubType();
 		}
 
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
+		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
 		entry->m_deviceType = 3;
 		entry->m_unk0x02 = 0;
 
@@ -161,11 +167,256 @@ void PeridotTraceState0x438::InitializeInputBindings(InputManager* p_inputManage
 	}
 }
 
-// STUB: LEGORACERS 0x0042eb60
-void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4a8*, undefined4)
+// STUB: LEGORACERS 0x0042ea50
+void PeridotTraceState0x438::FUN_0042ea50(LegoU32 p_playerIndex)
 {
-	// TODO
-	STUB(0x0042eb60);
+	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
+	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
+
+	for (LegoU32 i = 0; i < c_joystickBindingCount; i++) {
+		if (otherEntryIndex != i) {
+			PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+			if (m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02) != NULL) {
+				FUN_0042eb20(p_playerIndex, i);
+				return;
+			}
+		}
+	}
+
+	FUN_0042eb20(p_playerIndex, FUN_0042eac0(p_playerIndex));
+}
+
+// FUNCTION: LEGORACERS 0x0042eac0
+LegoU32 PeridotTraceState0x438::FUN_0042eac0(LegoU32 p_playerIndex)
+{
+	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
+	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
+
+	if (p_playerIndex && otherEntryIndex < c_joystickBindingCount) {
+		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
+		LegoU32 deviceId = entry->m_unk0x02;
+		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(deviceId);
+
+		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) >= c_inputBindingEventCount) {
+			return c_keyboardBindingStart;
+		}
+	}
+
+	LegoU32 result = otherEntryIndex == c_keyboardBindingStart;
+	return c_keyboardBindingStart + result;
+}
+
+// FUNCTION: LEGORACERS 0x0042eb20
+void PeridotTraceState0x438::FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
+{
+	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
+
+	m_unk0x00 = 1;
+	m_state.m_inputBindings.SetSelectedEntryIndex(p_playerIndex, static_cast<LegoU8>(p_entryIndex));
+
+	if (p_entryIndex == m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex)) {
+		FUN_0042ea50(otherPlayerIndex);
+	}
+}
+
+// STUB: LEGORACERS 0x0042eb60
+void PeridotTraceState0x438::FUN_0042eb60(PeridotTrace0x4a8* p_trace, undefined4 p_index)
+{
+	PeridotTracePersistentState state;
+	LegoU32 i;
+
+	m_unk0x04 = p_index;
+	m_unk0x00 = 0;
+	p_trace->FUN_00442a00(&state);
+
+	m_state.m_unk0x0c = state.m_unk0x0c;
+	m_state.m_displayDriverGuid = state.m_displayDriverGuid;
+	m_state.m_unk0x1d = state.m_unk0x1d;
+	m_state.m_unk0x1e = state.m_unk0x1e;
+	m_state.m_unk0x1f = state.m_unk0x1f;
+	m_state.m_unk0x20 = state.m_unk0x20;
+	m_state.m_unk0x21 = state.m_unk0x21;
+	m_state.m_languageIndex = state.m_languageIndex;
+	m_state.m_unk0x23 = state.m_unk0x23;
+
+	LegoU8* destBindingEntry = &m_state.m_inputBindings.m_entries[0].m_deviceSubType;
+	LegoU8* sourceBindingEntry = &state.m_inputBindings.m_entries[0].m_deviceSubType;
+	for (i = 0; i < c_inputBindingEntryCount; i++) {
+		if (destBindingEntry[-1] == sourceBindingEntry[-1] && destBindingEntry[0] == sourceBindingEntry[0] &&
+			destBindingEntry[1] == sourceBindingEntry[1]) {
+			::memcpy(
+				destBindingEntry + 3,
+				sourceBindingEntry + 3,
+				sizeof(m_state.m_inputBindings.m_entries[0].m_events)
+			);
+		}
+
+		sourceBindingEntry += sizeof(PeridotTraceInputBindingEntry);
+		destBindingEntry += sizeof(PeridotTraceInputBindingEntry);
+	}
+
+	PeridotTraceInputBindingPlayerState* sourcePlayer = state.m_inputBindings.m_players;
+	PeridotTraceInputBindingPlayerState* destPlayer = m_state.m_inputBindings.m_players;
+	LegoU8* selectedEntryIndex = &destPlayer->m_selectedEntryIndex;
+	for (i = 0; i < c_joystickBindingCount; i++) {
+		*destPlayer = *sourcePlayer;
+
+		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[*selectedEntryIndex];
+
+		if (entry->m_deviceType == c_joystickDeviceType &&
+			m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02) == NULL) {
+			FUN_0042ea50(i);
+		}
+
+		sourcePlayer++;
+		destPlayer++;
+		selectedEntryIndex += sizeof(PeridotTraceInputBindingPlayerState);
+	}
+
+	m_state.m_unk0x24 = state.m_unk0x24;
+	m_state.m_unk0x25 = state.m_unk0x25;
+	m_state.m_unk0x26 = state.m_unk0x26;
+
+	for (i = 0; i < sizeOfArray(m_state.m_unk0x28); i++) {
+		m_state.m_unk0x28[i] = state.m_unk0x28[i];
+		m_state.m_unk0x5c[i] = state.m_unk0x5c[i];
+		::memcpy(m_state.m_unk0x90[i], state.m_unk0x90[i], sizeof(m_state.m_unk0x90[i]));
+		::memcpy(m_state.m_unk0x1fc[i], state.m_unk0x1fc[i], sizeof(m_state.m_unk0x1fc[i]));
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042ed10
+LegoBool32 PeridotTraceState0x438::FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event)
+{
+	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	LegoS32 i;
+	LegoS32 j;
+
+	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceJoystickButton) {
+		for (i = 0; i < c_inputBindingEventCount; i++) {
+			if (entry->m_events[i] == p_event) {
+				return TRUE;
+			}
+		}
+
+		return FALSE;
+	}
+
+	for (i = 0; i < c_inputBindingEntryCount; i++) {
+		entry = &m_state.m_inputBindings.m_entries[i];
+
+		for (j = 0; j < c_inputBindingEventCount; j++) {
+			if (entry->m_events[j] == p_event) {
+				return TRUE;
+			}
+		}
+	}
+
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x0042ed80
+LegoU32 PeridotTraceState0x438::FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex)
+{
+	LegoU32 event = m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex];
+
+	if (event) {
+		return event;
+	}
+
+	event = FUN_0042ef00(p_entryIndex, p_eventIndex);
+	if (event) {
+		if (!FUN_0042ed10(p_entryIndex, event)) {
+			FUN_0042ee70(p_entryIndex, p_eventIndex, event);
+			return event;
+		}
+	}
+
+	if (p_entryIndex < 1 && p_eventIndex > 1) {
+		LegoU32 fallbackEntryIndex = FUN_0042eac0(p_playerIndex);
+		return m_state.m_inputBindings.m_entries[fallbackEntryIndex].m_events[p_eventIndex];
+	}
+
+	return 0;
+}
+
+// STUB: LEGORACERS 0x0042ee10
+void PeridotTraceState0x438::FUN_0042ee10(
+	LegoU32 p_playerIndex,
+	LegoU32 p_entryIndex,
+	PeridotTraceInputBindingEntry* p_entry
+)
+{
+	PeridotTraceInputBindingEntry* source = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	LegoU32 i;
+
+	p_entry->m_deviceType = source->m_deviceType;
+	p_entry->m_deviceSubType = source->m_deviceSubType;
+	p_entry->m_unk0x02 = source->m_unk0x02;
+
+	for (i = 0; i < c_inputBindingEventCount; i++) {
+		p_entry->m_events[i] = FUN_0042ed80(p_playerIndex, p_entryIndex, i);
+	}
+}
+
+// STUB: LEGORACERS 0x0042ee70
+void PeridotTraceState0x438::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
+{
+	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	LegoU32 i;
+	LegoU32 j;
+
+	if (entry->m_events[p_eventIndex] == p_event) {
+		return;
+	}
+
+	if ((p_event & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
+		for (i = 0; i < c_inputBindingEventCount; i++) {
+			if (entry->m_events[i] == p_event) {
+				entry->m_events[i] = 0;
+			}
+		}
+	}
+	else {
+		for (i = 0; i < c_inputBindingEntryCount; i++) {
+			PeridotTraceInputBindingEntry* otherEntry = &m_state.m_inputBindings.m_entries[i];
+
+			for (j = 0; j < c_inputBindingEventCount; j++) {
+				if (otherEntry->m_events[j] == p_event) {
+					otherEntry->m_events[j] = 0;
+				}
+			}
+		}
+	}
+
+	entry->m_events[p_eventIndex] = p_event;
+	m_unk0x00 = 1;
+}
+
+// STUB: LEGORACERS 0x0042ef00
+LegoU32 PeridotTraceState0x438::FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
+{
+	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	LegoU32 eventIndex = p_eventIndex;
+	LegoU32 result = 0;
+
+	if (entry->m_deviceType == c_joystickDeviceType) {
+		if (eventIndex < 2 && entry->m_deviceSubType != c_axisJoystickDeviceSubType) {
+			return result;
+		}
+
+		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02);
+		LegoU32 buttonIndex = eventIndex - 2;
+
+		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) > buttonIndex) {
+			result = InputDevice::c_sourceJoystickButton | buttonIndex;
+		}
+	}
+	else if (p_entryIndex >= c_keyboardBindingStart) {
+		result = g_keyboardInputBindingEvents[p_entryIndex - c_keyboardBindingStart][eventIndex];
+	}
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0042ef80
@@ -194,7 +445,7 @@ void PeridotTraceState0x438::FUN_0042f020(const DisplayDriverGuid& p_guid)
 
 	m_unk0x00 = 1;
 
-	SerializedGuidWord* dest = m_state.m_displayDriverGuid.m_words;
+	DisplayDriverGuid::SerializedWord* dest = m_state.m_displayDriverGuid.m_words;
 	for (LegoU32 i = 0; i < sizeOfArray(m_state.m_displayDriverGuid.m_words); i++, source++, dest++) {
 		dest->Set(*source);
 	}
@@ -203,7 +454,7 @@ void PeridotTraceState0x438::FUN_0042f020(const DisplayDriverGuid& p_guid)
 // FUNCTION: LEGORACERS 0x0042f060
 void PeridotTraceState0x438::FUN_0042f060(DisplayDriverGuid& p_guid)
 {
-	const SerializedGuidWord* source = m_state.m_displayDriverGuid.m_words;
+	const DisplayDriverGuid::SerializedWord* source = m_state.m_displayDriverGuid.m_words;
 	LegoU32* dest = p_guid.GetWords();
 	for (LegoU32 i = 0; i < sizeOfArray(m_state.m_displayDriverGuid.m_words); i++, source++, dest++) {
 		*dest = source->Get();

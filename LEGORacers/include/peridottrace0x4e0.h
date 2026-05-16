@@ -13,6 +13,59 @@ class InputManager;
 class PeridotTraceBuffer0x250;
 class PeridotTrace0x4e0;
 
+// SIZE 0x28
+struct PeridotTraceInputBindingEntry {
+	LegoU8 m_deviceType;    // 0x00
+	LegoU8 m_deviceSubType; // 0x01
+	LegoU8 m_unk0x02;       // 0x02
+	LegoU8 m_unk0x03;       // 0x03
+	LegoU32 m_events[9];    // 0x04
+};
+
+// SIZE 0x04
+struct PeridotTraceInputBindingPlayerState {
+	LegoU8 m_unk0x00;            // 0x00
+	LegoU8 m_unk0x01;            // 0x01
+	LegoU8 m_unk0x02;            // 0x02
+	LegoU8 m_selectedEntryIndex; // 0x03
+};
+
+// SIZE 0xd0
+struct PeridotTraceInputBindingState {
+	PeridotTraceInputBindingPlayerState m_players[2]; // 0x00
+	PeridotTraceInputBindingEntry m_entries[5];       // 0x08
+
+	LegoU8 GetSelectedEntryIndex(LegoU32 p_playerIndex) const { return m_players[p_playerIndex].m_selectedEntryIndex; }
+
+	void SetSelectedEntryIndex(LegoU32 p_playerIndex, LegoU8 p_entryIndex)
+	{
+		m_players[p_playerIndex].m_selectedEntryIndex = p_entryIndex;
+	}
+};
+
+// SIZE 0x42c
+struct PeridotTracePersistentState {
+	void Clear() { ::memset(this, 0, sizeof(*this)); }
+
+	LegoU8 m_unk0x0c;                                  // 0x000
+	DisplayDriverGuid::Serialized m_displayDriverGuid; // 0x001
+	LegoU8 m_unk0x1d;                                  // 0x011
+	LegoU8 m_unk0x1e;                                  // 0x012
+	LegoU8 m_unk0x1f;                                  // 0x013
+	LegoU8 m_unk0x20;                                  // 0x014
+	LegoU8 m_unk0x21;                                  // 0x015
+	LegoU8 m_languageIndex;                            // 0x016
+	LegoU8 m_unk0x23;                                  // 0x017
+	LegoU8 m_unk0x24;                                  // 0x018
+	LegoU8 m_unk0x25;                                  // 0x019
+	LegoU16 m_unk0x26;                                 // 0x01a
+	LegoU32 m_unk0x28[13];                             // 0x01c
+	LegoU32 m_unk0x5c[13];                             // 0x050
+	undefined2 m_unk0x90[13][14];                      // 0x084
+	undefined2 m_unk0x1fc[13][14];                     // 0x1f0
+	PeridotTraceInputBindingState m_inputBindings;     // 0x35c
+};
+
 // SIZE 0x24
 class PeridotTraceBase0x24 {
 public:
@@ -81,14 +134,25 @@ public:
 	PeridotTrace0x4a8();
 	~PeridotTrace0x4a8();
 
-	undefined* GetUnk0x24() { return m_unk0x24; }
+	LegoU8* GetUnk0x24() { return m_unk0x24; }
 	void FUN_004426d0(undefined4, undefined4, undefined4);
 	undefined4 FUN_00442770(GolFile& p_file);
-	void FUN_00442c20(void* p_unk0x04);
+	void FUN_00442a00(PeridotTracePersistentState* p_state);
+	void FUN_00442c20(PeridotTracePersistentState* p_state);
 	undefined4 FUN_004439b0();
 
 private:
-	undefined m_unk0x24[0x4a4 - 0x24]; // 0x24
+	enum {
+		c_traceScoreRecordsOffset = 0x09,
+		c_traceScoreRecordSize = 0x40,
+		c_tracePersistentHeaderOffset = 0x349,
+		c_traceInputBindingHeaderOffset = 0x361,
+		c_traceInputBindingEntryOffset = 0x369,
+		c_traceInputBindingEntrySize = 0x27,
+		c_inputBindingHeaderSize = 8,
+	};
+
+	LegoU8 m_unk0x24[0x4a4 - 0x24]; // 0x24
 	undefined4 m_unk0x4a4;
 };
 
@@ -164,81 +228,30 @@ public:
 	LegoU8 FUN_0042f1f0() const;
 
 private:
-	// SIZE 0x04
-	struct SerializedGuidWord {
-		void Set(const LegoU32& p_word)
-		{
-			m_byte0 = static_cast<LegoU8>(p_word);
-			m_byte1 = static_cast<LegoU8>(p_word >> 8);
-			m_byte2 = static_cast<LegoU8>(p_word >> 16);
-			m_byte3 = static_cast<LegoU8>(p_word >> 24);
-		}
-
-		LegoU32 Get() const { return (m_byte3 << 24) + (m_byte2 << 16) + (m_byte1 << 8) + m_byte0; }
-
-		LegoU8 m_byte0; // 0x00
-		LegoU8 m_byte1; // 0x01
-		LegoU8 m_byte2; // 0x02
-		LegoU8 m_byte3; // 0x03
-	};
-
-	// SIZE 0x10
-	struct SerializedGuid {
-		SerializedGuidWord m_words[sizeof(GUID) / sizeof(LegoU32)]; // 0x00
-	};
-
-	// SIZE 0x28
-	struct InputBindingEntry {
-		LegoU8 m_deviceType;    // 0x00
-		LegoU8 m_deviceSubType; // 0x01
-		LegoU8 m_unk0x02;       // 0x02
-		undefined m_unk0x03;    // 0x03
-		LegoU32 m_events[9];    // 0x04
-	};
-
-	// SIZE 0xd0
-	struct InputBindingState {
-		LegoU8 m_unk0x00;               // 0x00
-		LegoU8 m_unk0x01;               // 0x01
-		LegoU8 m_unk0x02;               // 0x02
-		LegoU8 m_unk0x03;               // 0x03
-		LegoU8 m_unk0x04;               // 0x04
-		LegoU8 m_unk0x05;               // 0x05
-		LegoU8 m_unk0x06;               // 0x06
-		LegoU8 m_unk0x07;               // 0x07
-		InputBindingEntry m_entries[5]; // 0x08
-	};
-
-	// SIZE 0x42c
-	struct PersistentState {
-		void Clear() { ::memset(this, 0, sizeof(*this)); }
-
-		LegoU8 m_unk0x0c;                   // 0x000
-		SerializedGuid m_displayDriverGuid; // 0x001
-		undefined m_unk0x1d;                // 0x011
-		undefined m_unk0x1e;                // 0x012
-		LegoU8 m_unk0x1f;                   // 0x013
-		LegoU8 m_unk0x20;                   // 0x014
-		LegoU8 m_unk0x21;                   // 0x015
-		LegoU8 m_languageIndex;             // 0x016
-		undefined m_unk0x23;                // 0x017
-		LegoU8 m_unk0x24;                   // 0x018
-		LegoU8 m_unk0x25;                   // 0x019
-		LegoU16 m_unk0x26;                  // 0x01a
-		LegoU32 m_unk0x28[13];              // 0x01c
-		LegoU32 m_unk0x5c[13];              // 0x050
-		undefined2 m_unk0x90[13][14];       // 0x084
-		undefined2 m_unk0x1fc[13][14];      // 0x1f0
-		InputBindingState m_inputBindings;  // 0x35c
+	enum {
+		c_joystickBindingCount = 2,
+		c_keyboardBindingStart = 2,
+		c_inputBindingEntryCount = 5,
+		c_inputBindingEventCount = 9,
+		c_joystickDeviceType = 4,
+		c_axisJoystickDeviceSubType = 4,
 	};
 
 	void Initialize();
+	void FUN_0042ea50(LegoU32 p_playerIndex);
+	LegoU32 FUN_0042eac0(LegoU32 p_playerIndex);
+	void FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
+	LegoBool32 FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event);
+	LegoU32 FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
+	void FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry);
+	void FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
+	LegoU32 FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	LegoU32 GetRegistryLanguageIndex();
 
-	undefined4 m_unk0x00;         // 0x00
-	undefined4 m_unk0x04;         // 0x04
-	InputManager* m_inputManager; // 0x08
-	PersistentState m_state;      // 0x0c
+	undefined4 m_unk0x00;                // 0x00
+	undefined4 m_unk0x04;                // 0x04
+	InputManager* m_inputManager;        // 0x08
+	PeridotTracePersistentState m_state; // 0x0c
 };
 
 // SIZE 0x250

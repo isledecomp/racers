@@ -1,15 +1,11 @@
 #include "golstringtable.h"
 
+#include "golbyteorder.h"
 #include "golerror.h"
 #include "golfile.h"
 #include "golstring.h"
 
 DECOMP_SIZE_ASSERT(GolStringTable, 0x14)
-
-inline static undefined2 ReadLittleEndianWord(const LegoU8* p_bytes)
-{
-	return p_bytes[0] + (p_bytes[1] << 8);
-}
 
 // FUNCTION: LEGORACERS 0x0044e220
 GolStringTable::GolStringTable()
@@ -81,14 +77,14 @@ LegoS32 GolStringTable::Load(const LegoChar* p_fileName)
 		return FALSE;
 	}
 
-	m_stringCount = ReadLittleEndianWord((LegoU8*) wordBuffer);
+	m_stringCount = ReadLittleEndianU16((LegoU8*) wordBuffer);
 
 	if (file.BufferedRead(sizeof(undefined2), wordBuffer, sizeof(undefined2), &bytesRead) ||
 		bytesRead != sizeof(undefined2)) {
 		return FALSE;
 	}
 
-	undefined2 stringDataLength = ReadLittleEndianWord((LegoU8*) wordBuffer);
+	undefined2 stringDataLength = ReadLittleEndianU16((LegoU8*) wordBuffer);
 	m_stringOffsets = new undefined2[m_stringCount];
 	m_stringData = new undefined2[stringDataLength];
 
@@ -104,7 +100,7 @@ LegoS32 GolStringTable::Load(const LegoChar* p_fileName)
 	LegoU8* bytes = (LegoU8*) m_stringOffsets;
 
 	for (i = 0; i < m_stringCount; i++) {
-		undefined2 word = bytes[0] + (bytes[1] << 8);
+		undefined2 word = ReadLittleEndianU16(bytes);
 		bytes += sizeof(undefined2);
 		m_stringOffsets[i] = word;
 	}
@@ -117,7 +113,7 @@ LegoS32 GolStringTable::Load(const LegoChar* p_fileName)
 	bytes = (LegoU8*) m_stringData;
 
 	for (i = 0; i < stringDataLength; i++) {
-		undefined2 word = bytes[0] + (bytes[1] << 8);
+		undefined2 word = ReadLittleEndianU16(bytes);
 		bytes += sizeof(undefined2);
 		m_stringData[i] = word;
 	}

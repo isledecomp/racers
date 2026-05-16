@@ -94,7 +94,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468390()
 
 	icon->VTable0x10(&rect);
 	icon->SetParent(&m_unk0x2cc);
-	icon->FUN_00471ec0(GetUnk0xd8());
+	icon->AttachToParent(GetUnk0xd8());
 	icon->VTable0x4c(5);
 }
 
@@ -116,7 +116,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468430()
 
 	icon->VTable0x10(&rect);
 	icon->SetParent(&m_unk0x2cc);
-	icon->FUN_00471ec0(GetUnk0xd8());
+	icon->AttachToParent(GetUnk0xd8());
 
 	if (m_unk0x2c8) {
 		icon->VTable0x4c(5);
@@ -141,7 +141,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004684e0()
 
 	icon->VTable0x10(&rect);
 	icon->SetParent(&m_unk0x2cc);
-	icon->FUN_00471ec0(GetUnk0xd8());
+	icon->AttachToParent(GetUnk0xd8());
 
 	if (!m_unk0x2c8) {
 		icon->VTable0x4c(5);
@@ -263,17 +263,17 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004687a0()
 	FUN_00468740();
 
 	if (m_unk0x6c8.GetUnk0x78() && (m_unk0x6c8.GetUnk0x78()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x78()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x78()->DetachFromParent();
 		m_unk0x6c8.GetUnk0x78()->RemoveFromParent();
 	}
 
 	if (m_unk0x6c8.GetUnk0x7c() && (m_unk0x6c8.GetUnk0x7c()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x7c()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x7c()->DetachFromParent();
 		m_unk0x6c8.GetUnk0x7c()->RemoveFromParent();
 	}
 
 	if (m_unk0x6c8.GetUnk0x80() && (m_unk0x6c8.GetUnk0x80()->GetFlags() & 1)) {
-		m_unk0x6c8.GetUnk0x80()->FUN_00471f00();
+		m_unk0x6c8.GetUnk0x80()->DetachFromParent();
 		m_unk0x6c8.GetUnk0x80()->RemoveFromParent();
 	}
 

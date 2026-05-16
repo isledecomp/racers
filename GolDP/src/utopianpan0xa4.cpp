@@ -1,6 +1,10 @@
 #include "utopianpan0xa4.h"
 
+#include "bronzefalcon0xc8770.h"
 #include "duskwindbananarelic0x30.h"
+#include "golerror.h"
+#include "golsurfaceformat.h"
+#include "purpledune0x7c.h"
 #include "rectangle.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
@@ -28,11 +32,25 @@ void UtopianPan0xa4::VTable0x10()
 	STUB(0x100050b0);
 }
 
-// STUB: GOLDP 0x100051c0
+// FUNCTION: GOLDP 0x100051c0
 void UtopianPan0xa4::FUN_100051c0()
 {
-	// TODO
-	STUB(0x100051c0);
+	if (m_unk0x54 != NULL) {
+		delete[] m_unk0x54;
+		m_unk0x54 = NULL;
+	}
+	if (m_unk0x50 != NULL) {
+		delete[] m_unk0x50;
+		m_unk0x50 = NULL;
+	}
+	if (m_unk0x08 != NULL) {
+		delete[] m_unk0x08;
+		m_unk0x08 = NULL;
+	}
+	if (m_unk0x04 != NULL) {
+		delete[] m_unk0x04;
+		m_unk0x04 = NULL;
+	}
 }
 
 // STUB: GOLDP 0x10005210
@@ -42,49 +60,95 @@ void UtopianPan0xa4::FUN_10005210()
 	STUB(0x10005210);
 }
 
-// STUB: GOLDP 0x10005260
+// FUNCTION: GOLDP 0x10005260
 void UtopianPan0xa4::Reset()
 {
-	// TODO
-	STUB(0x10005260);
+	FUN_100051c0();
+	m_unk0x58.VTable0x38();
+	WhiteBaffoon0x50::Reset();
 }
 
-// STUB: GOLDP 0x10005280
+// FUNCTION: GOLDP 0x10005280
 void UtopianPan0xa4::VTable0x00()
 {
-	// TODO
-	STUB(0x10005280);
+	m_unk0x04 = new LegoS32[m_unk0x2c];
+	if (m_unk0x04 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 }
 
-// STUB: GOLDP 0x100052b0
+// FUNCTION: GOLDP 0x100052b0
 void UtopianPan0xa4::VTable0x04()
 {
-	// TODO
-	STUB(0x100052b0);
+	m_unk0x08 = new LegoS32[m_unk0x30];
+	if (m_unk0x08 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 }
 
-// STUB: GOLDP 0x100052e0
+// FUNCTION: GOLDP 0x100052e0
 void UtopianPan0xa4::VTable0x08()
 {
-	undefined4 count = m_unk0x30 * m_unk0x2c;
-	// ...
+	LegoU32 count = m_unk0x30 * m_unk0x2c;
+
+	m_unk0x50 = new PurpleDune0x7c[count];
+	if (m_unk0x50 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
 	m_unk0x54 = new DuskwindBananaRelic0x30[count];
-	// TODO
-	STUB(0x100052e0);
+	if (m_unk0x54 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
 }
 
-// STUB: GOLDP 0x100053d0
-void UtopianPan0xa4::VTable0x0c(undefined4, undefined4, undefined4*)
+// FUNCTION: GOLDP 0x100053d0
+void UtopianPan0xa4::VTable0x0c(LegoU32 p_row, LegoU32 p_column, GolSurfaceFormat* p_textureFormat)
 {
-	// TODO
-	STUB(0x100053d0);
+	LegoU32 index = p_row * m_unk0x30 + p_column;
+
+	m_unk0x50[index].FUN_10015d00(
+		static_cast<BronzeFalcon0xc8770&>(*m_renderer),
+		*p_textureFormat,
+		m_unk0x04[p_row],
+		m_unk0x08[p_column]
+	);
+	FUN_10005440(m_renderer, &m_unk0x54[index], &m_unk0x50[index]);
 }
 
-// STUB: GOLDP 0x10005440
-void UtopianPan0xa4::FUN_10005440(undefined4*, undefined4*, undefined4*)
+// FUNCTION: GOLDP 0x10005440
+void UtopianPan0xa4::FUN_10005440(
+	WhiteFalcon0x140* p_renderer,
+	DuskwindBananaRelic0x30* p_material,
+	GoldDune0x38* p_texture
+)
 {
-	// TODO
-	STUB(0x10005440);
+	LegoU32 flags = (m_unk0x3c & c_flagBit1) ? 0x92a8a : 0x92a8c;
+	if (m_unk0x3c & c_flagBit4) {
+		flags |= c_flagBit4;
+	}
+	else {
+		flags |= c_flagBit5;
+	}
+
+	DuskWindBananaRelicParams params;
+	params.m_unk0x04 = p_texture;
+	params.m_unk0x08.m_unk0x0 = 0xff;
+	params.m_unk0x08.m_unk0x1 = 0xff;
+	params.m_unk0x08.m_unk0x2 = 0xff;
+	params.m_unk0x08.m_unk0x3 = 0xff;
+	params.m_unk0x0c.m_unk0x0 = 0xff;
+	params.m_unk0x0c.m_unk0x1 = 0xff;
+	params.m_unk0x0c.m_unk0x2 = 0xff;
+	params.m_unk0x0c.m_unk0x3 = 0xff;
+	params.m_unk0x11 = 0;
+	params.m_unk0x13 = 0;
+	params.m_unk0x00 = flags;
+	params.m_unk0x10 = 2;
+	params.m_unk0x12 = 1;
+
+	p_material->FUN_100257e0(p_renderer, params);
+	p_material->FUN_10006320(*p_renderer);
 }
 
 // FUNCTION: GOLDP 0x100054d0
@@ -112,10 +176,8 @@ undefined4 UtopianPan0xa4::FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*,
 	return 0;
 }
 
-// STUB: GOLDP 0x10005ae0
-undefined4 UtopianPan0xa4::VTable0x1c(undefined4, undefined4)
+// FUNCTION: GOLDP 0x10005ae0
+PurpleDune0x7c* UtopianPan0xa4::VTable0x1c(LegoU32 p_row, LegoU32 p_column)
 {
-	// TODO
-	STUB(0x10005ae0);
-	return 0;
+	return &m_unk0x50[p_row * m_unk0x30 + p_column];
 }

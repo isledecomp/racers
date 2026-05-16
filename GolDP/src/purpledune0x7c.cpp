@@ -55,6 +55,26 @@ void PurpleDune0x7c::VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_sour
 	p_source->SetUnk0x5a8(0);
 }
 
+// FUNCTION: GOLDP 0x10015d00
+void PurpleDune0x7c::FUN_10015d00(
+	BronzeFalcon0xc8770& p_renderer,
+	const GolSurfaceFormat& p_textureFormat,
+	LegoU32 p_width,
+	LegoU32 p_height
+)
+{
+	if (m_pixelFlags & c_lockRequestRead) {
+		VTable0x38();
+	}
+
+	m_pixelFlags |= c_lockRequestRead;
+	m_height = static_cast<LegoU16>(p_height);
+	m_width = static_cast<LegoU16>(p_width);
+	m_textureFormat = p_textureFormat;
+	m_pitch = (static_cast<LegoU32>(m_textureFormat.m_bitsPerPixel) * static_cast<LegoU16>(p_width) + 7) / 8;
+	FUN_10016460(p_renderer);
+}
+
 // FUNCTION: GOLDP 0x10015d60
 void PurpleDune0x7c::VTable0x34(
 	WhiteFalcon0x140& p_renderer,

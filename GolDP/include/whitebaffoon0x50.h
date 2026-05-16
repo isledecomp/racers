@@ -5,6 +5,8 @@
 #include "types.h"
 
 class BronzeFalcon0xc8770;
+class GolSurfaceFormat;
+class PurpleDune0x7c;
 
 // This type is needed because
 // - instances of this type have component access like `char[4]`, but copy like an `int`,
@@ -40,11 +42,11 @@ public:
 	virtual void VTable0x00() = 0;                                    // vtable+0x00
 	virtual void VTable0x04() = 0;                                    // vtable+0x04
 	virtual void VTable0x08() = 0;                                    // vtable+0x08
-	virtual void VTable0x0c(undefined4, undefined4, undefined4*) = 0; // vtable+0x0c
+	virtual void VTable0x0c(LegoU32, LegoU32, GolSurfaceFormat*) = 0; // vtable+0x0c
 	virtual void VTable0x10();                                        // vtable+0x10
 	virtual ~WhiteBaffoon0x50();                                      // vtable+0x14
 	virtual void Reset();                                             // vtable+0x18
-	virtual undefined4 VTable0x1c(undefined4, undefined4) = 0;        // vtable+0x1c
+	virtual PurpleDune0x7c* VTable0x1c(LegoU32, LegoU32) = 0;         // vtable+0x1c
 
 	void FUN_1001f430();
 	void FUN_1001f790();
@@ -78,8 +80,8 @@ public:
 	};
 
 public:
-	undefined4 m_unk0x04;             // 0x04
-	undefined4 m_unk0x08;             // 0x08
+	LegoS32* m_unk0x04;               // 0x04
+	LegoS32* m_unk0x08;               // 0x08
 	InnerWhiteBaffon0x24 m_unk0x0c;   // 0x0c
 	BronzeFalcon0xc8770* m_renderer;  // 0x24
 	FourBytes m_unk0x28;              // 0x28

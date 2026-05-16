@@ -34,7 +34,7 @@ void AmberHaze0x20::VTable0x0c()
 	}
 }
 
-// STUB: GOLDP 0x100067d0
+// FUNCTION: GOLDP 0x100067d0
 void AmberHaze0x20::VTable0x10()
 {
 	FUN_10026970();

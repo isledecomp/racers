@@ -32,6 +32,12 @@ public:
 	void VTable0x38() override; // vtable+0x38
 
 	void FUN_10015fb0();
+	void FUN_10015d00(
+		BronzeFalcon0xc8770& p_renderer,
+		const GolSurfaceFormat& p_textureFormat,
+		LegoU32 p_width,
+		LegoU32 p_height
+	);
 	void FUN_10016100();
 	void FUN_10016260();
 	void FUN_10016380();

@@ -9,7 +9,9 @@
 // VTABLE: GOLDP 0x10056300
 class BronzeDune0x4c : public GoldDune0x38 {
 public:
-	BronzeDune0x4c();
+	// FUNCTION: GOLDP 0x1001de50
+	BronzeDune0x4c() {}
+
 	~BronzeDune0x4c() override;                                                   // vtable+0x00
 	IPalette0x4* GetPalette() override;                                           // vtable+0x1c
 	void VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_source) override; // vtable+0x30

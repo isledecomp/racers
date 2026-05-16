@@ -7,15 +7,10 @@ DECOMP_SIZE_ASSERT(BronzeDune0x4c, 0x4c)
 // GLOBAL: GOLDP 0x10063c50
 BronzeDune0x4c g_bronzeDune0x4c;
 
-// STUB: GOLDP 0x10004f80
+// FUNCTION: GOLDP 0x10004f80
 void BronzeDune0x4c::VTable0x30(WhiteFalcon0x140& p_renderer, GolImgFile* p_source)
 {
 	GoldDune0x38::VTable0x30(p_renderer, p_source);
-}
-
-// FUNCTION: GOLDP 0x1001de50
-BronzeDune0x4c::BronzeDune0x4c()
-{
 }
 
 // FUNCTION: GOLDP 0x1002a360

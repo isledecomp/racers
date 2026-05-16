@@ -642,7 +642,7 @@ void BronzeFalcon0xc8770::VTable0x5c()
 }
 
 // STUB: GOLDP 0x10008910
-void BronzeFalcon0xc8770::VTable0x94(undefined4)
+void BronzeFalcon0xc8770::VTable0x94(FloatyBoat0x28*)
 {
 	STUB(0x10008910);
 }
@@ -666,7 +666,7 @@ void BronzeFalcon0xc8770::VTable0x8c(undefined4, undefined4, undefined4)
 }
 
 // STUB: GOLDP 0x10008f70
-void BronzeFalcon0xc8770::VTable0xa8(undefined4, undefined4, undefined4)
+void BronzeFalcon0xc8770::VTable0xa8(FloatyBoat0x28*, LegoFloat, LegoFloat)
 {
 	STUB(0x10008f70);
 }

@@ -53,7 +53,7 @@ void FloatyBoat0x28::VTable0x0c(LegoFloat p_v)
 }
 
 // STUB: GOLDP 0x100285d0
-void FloatyBoat0x28::VTable0x14(GolVec3* p_arg1, undefined4*)
+void FloatyBoat0x28::VTable0x14(const GolVec3& p_arg1, ResultStruct*)
 {
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
@@ -192,7 +192,7 @@ void FloatyBoat0x28::VTable0x40(const GolVec3& p_v1, const GolVec3& p_v2)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140*)
+void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140&)
 {
 	// empty
 }

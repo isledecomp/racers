@@ -27,8 +27,8 @@ public:
 
 	// FUNCTION: GOLDP 0x100156c0
 	void VTable0x08(const GolVec3& p_v) override { FloatyBoat0x28::VTable0x08(p_v); } // vtable+0x08
-	void VTable0x14(GolVec3* p_arg1, undefined4*) override;                           // vtable+0x14
-	void VTable0x1c(WhiteFalcon0x140*) override;                                      // vtable+0x1c
+	void VTable0x14(const GolVec3& p_arg1, ResultStruct*) override;                   // vtable+0x14
+	void VTable0x1c(WhiteFalcon0x140&) override;                                      // vtable+0x1c
 	undefined4 VTable0x20() override;                                                 // vtable+0x20
 	virtual void VTable0x4c(
 		undefined4* p_position,

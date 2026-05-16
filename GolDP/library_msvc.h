@@ -36,6 +36,9 @@
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
 
+// LIBRARY: GOLDP 0x1004b808
+// __ftol
+
 // LIBRARY: GOLDP 0x1004b830
 // _strncpy
 

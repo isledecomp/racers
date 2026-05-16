@@ -131,10 +131,10 @@ public:
 	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
 	void VTable0x8c(undefined4, undefined4, undefined4) override;           // vtable+0x8c
 	void VTable0x90() override;                                             // vtable+0x90
-	void VTable0x94(undefined4) override;                                   // vtable+0x94
+	void VTable0x94(FloatyBoat0x28*) override;                              // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4) override;           // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4) override;           // vtable+0x9c
-	void VTable0xa8(undefined4, undefined4, undefined4) override;           // vtable+0xa8
+	void VTable0xa8(FloatyBoat0x28*, LegoFloat, LegoFloat) override;        // vtable+0xa8
 	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
 	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
 	void VTable0xb4(FloatyPontoon0x4c&) override;                           // vtable+0xb4

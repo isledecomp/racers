@@ -13,6 +13,7 @@ class AmberLens0x344;
 class BronzeFalcon0xc8770;
 class CinderBasin0x28;
 class DuskwindBananaRelic0x24;
+class FloatyBoat0x28;
 class GolSurfaceFormat;
 class GolFont0xa0;
 class GolFontBase0x40;
@@ -171,41 +172,41 @@ public:
 		const TexturedVertex* p_vertex2,
 		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
-	) = 0;                                                                                  // vtable+0x84
-	virtual void VTable0x88(undefined4, undefined4, undefined4);                            // vtable+0x88
-	virtual void VTable0x8c(undefined4, undefined4, undefined4);                            // vtable+0x8c
-	virtual void VTable0x90() = 0;                                                          // vtable+0x90
-	virtual void VTable0x94(undefined4) = 0;                                                // vtable+0x94
-	virtual void VTable0x98(undefined4, undefined4, undefined4);                            // vtable+0x98
-	virtual void VTable0x9c(undefined4, undefined4, undefined4);                            // vtable+0x9c
-	virtual void VTable0xa0();                                                              // vtable+0xa0
-	virtual void VTable0xa4();                                                              // vtable+0xa4
-	virtual void VTable0xa8(undefined4 p_param1, undefined4 p_param2, undefined4 p_param3); // vtable+0xa8
-	virtual void VTable0xac(undefined4, undefined4);                                        // vtable+0xac
-	virtual void VTable0xb0(undefined4, undefined4);                                        // vtable+0xb0
-	virtual void VTable0xb4(FloatyPontoon0x4c&) = 0;                                        // vtable+0xb4
-	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags);                  // vtable+0xb8
-	virtual void ClearAlphaOverride();                                                      // vtable+0xbc
-	virtual void VTable0xc0(const ColorRGBA& p_param);                                      // vtable+0xc0
-	virtual void VTable0xc4();                                                              // vtable+0xc4
-	virtual void VTable0xc8();                                                              // vtable+0xc8
-	virtual void VTable0xcc();                                                              // vtable+0xcc
-	virtual void VTable0xd0() = 0;                                                          // vtable+0xd0
-	virtual void VTable0xd4() = 0;                                                          // vtable+0xd4
-	virtual void VTable0xd8() = 0;                                                          // vtable+0xd8
-	virtual void VTable0xdc() = 0;                                                          // vtable+0xdc
-	virtual void VTable0xe0() = 0;                                                          // vtable+0xe0
-	virtual void VTable0xe4() = 0;                                                          // vtable+0xe4
-	virtual void VTable0xe8(LegoBool32 p_arg) = 0;                                          // vtable+0xe8
-	virtual void VTable0xec(undefined4);                                                    // vtable+0xec
-	virtual void VTable0xf0() = 0;                                                          // vtable+0xf0
-	virtual void VTable0xf4();                                                              // vtable+0xf4
-	virtual LegoU32 GetMinimumTextureWidth(undefined4) const = 0;                           // vtable+0xf8
-	virtual LegoU32 GetMaximumTextureWidth(undefined4) const = 0;                           // vtable+0xfc
-	virtual LegoU32 GetMinimumTextureHeight(undefined4) const = 0;                          // vtable+0x100
-	virtual LegoU32 GetMaximumTextureHeight(undefined4) const = 0;                          // vtable+0x104
-	virtual LegoBool32 TexturesMustBeSquare() const = 0;                                    // vtable+0x108
-	virtual LegoBool32 TextureSizesMustBePowersOfTwo() const = 0;                           // vtable+0x10c
+	) = 0;                                                                                     // vtable+0x84
+	virtual void VTable0x88(undefined4, undefined4, undefined4);                               // vtable+0x88
+	virtual void VTable0x8c(undefined4, undefined4, undefined4);                               // vtable+0x8c
+	virtual void VTable0x90() = 0;                                                             // vtable+0x90
+	virtual void VTable0x94(FloatyBoat0x28*) = 0;                                              // vtable+0x94
+	virtual void VTable0x98(undefined4, undefined4, undefined4);                               // vtable+0x98
+	virtual void VTable0x9c(undefined4, undefined4, undefined4);                               // vtable+0x9c
+	virtual void VTable0xa0();                                                                 // vtable+0xa0
+	virtual void VTable0xa4(FloatyBoat0x28*);                                                  // vtable+0xa4
+	virtual void VTable0xa8(FloatyBoat0x28* p_param1, LegoFloat p_param2, LegoFloat p_param3); // vtable+0xa8
+	virtual void VTable0xac(undefined4, undefined4);                                           // vtable+0xac
+	virtual void VTable0xb0(undefined4, undefined4);                                           // vtable+0xb0
+	virtual void VTable0xb4(FloatyPontoon0x4c&) = 0;                                           // vtable+0xb4
+	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags);                     // vtable+0xb8
+	virtual void ClearAlphaOverride();                                                         // vtable+0xbc
+	virtual void VTable0xc0(const ColorRGBA& p_param);                                         // vtable+0xc0
+	virtual void VTable0xc4();                                                                 // vtable+0xc4
+	virtual void VTable0xc8();                                                                 // vtable+0xc8
+	virtual void VTable0xcc();                                                                 // vtable+0xcc
+	virtual void VTable0xd0() = 0;                                                             // vtable+0xd0
+	virtual void VTable0xd4() = 0;                                                             // vtable+0xd4
+	virtual void VTable0xd8() = 0;                                                             // vtable+0xd8
+	virtual void VTable0xdc() = 0;                                                             // vtable+0xdc
+	virtual void VTable0xe0() = 0;                                                             // vtable+0xe0
+	virtual void VTable0xe4() = 0;                                                             // vtable+0xe4
+	virtual void VTable0xe8(LegoBool32 p_arg) = 0;                                             // vtable+0xe8
+	virtual void VTable0xec(undefined4);                                                       // vtable+0xec
+	virtual void VTable0xf0() = 0;                                                             // vtable+0xf0
+	virtual void VTable0xf4();                                                                 // vtable+0xf4
+	virtual LegoU32 GetMinimumTextureWidth(undefined4) const = 0;                              // vtable+0xf8
+	virtual LegoU32 GetMaximumTextureWidth(undefined4) const = 0;                              // vtable+0xfc
+	virtual LegoU32 GetMinimumTextureHeight(undefined4) const = 0;                             // vtable+0x100
+	virtual LegoU32 GetMaximumTextureHeight(undefined4) const = 0;                             // vtable+0x104
+	virtual LegoBool32 TexturesMustBeSquare() const = 0;                                       // vtable+0x108
+	virtual LegoBool32 TextureSizesMustBePowersOfTwo() const = 0;                              // vtable+0x10c
 	virtual LegoBool32 VTable0x110() const;
 
 	void Destroy();

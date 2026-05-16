@@ -1,5 +1,7 @@
 #include "imaginarydrillfieldat0x498.h"
 
+#include "golfont0xa0.h"
+#include "golstringtable.h"
 #include "utopianpan0xa4.h"
 
 #include <string.h>
@@ -22,18 +24,101 @@ ImaginaryDrillFieldAt0x498::~ImaginaryDrillFieldAt0x498()
 // FUNCTION: LEGORACERS 0x00482490
 void ImaginaryDrillFieldAt0x498::Reset()
 {
-	m_unk0x1a8 = 0;
+	m_unk0x1a8 = NULL;
 	m_unk0x2dc = 0;
 	::memset(m_unk0x1c0, 0, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
 	::memset(m_unk0x2e0, 0, sizeof(m_unk0x2e0));
 	ObscureIcon0x1a8::Reset();
 }
 
-// STUB: LEGORACERS 0x004826c0
-undefined4 ImaginaryDrillFieldAt0x498::FUN_004826c0(CreateParams0xe0*, CeruleanEmperor0x4c::Entry0x104*)
+// STUB: LEGORACERS 0x004824d0
+LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createParams)
 {
-	STUB(0x004826c0);
-	return 0;
+	ObscureAnchor0x5c::CreateParams0x3c createParams;
+	::memset(&createParams, 0, sizeof(createParams));
+	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x30) + 8);
+
+	LegoU8 flags = createParams.m_flagsAndName.m_flagsByte;
+	createParams.m_rect.m_left = 0;
+	flags |= 1;
+	createParams.m_rect.m_top = 0;
+	createParams.m_flagsAndName.m_flagsByte = flags;
+	UtopianPan0xa4* image = m_unk0x1d8[0];
+	createParams.m_rect.m_right = 0;
+	createParams.m_unk0x38 = image;
+	createParams.m_rect.m_bottom = 0;
+	VisualState0x4 visualState = m_unk0x1f0[0];
+	createParams.m_unk0x22 = visualState;
+	createParams.m_parent = this;
+
+	return m_unk0x208.FUN_0046f150(&createParams);
+}
+
+// STUB: LEGORACERS 0x00482540
+LegoBool32 ImaginaryDrillFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104*)
+{
+	GolString string;
+	ImaginaryDrillFieldAt0x420::CreateParams0x48 createParams;
+	::memset(&createParams, 0, sizeof(createParams));
+	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x30) + 8);
+
+	p_createParams->m_unk0xcc->CopyStringByIndex(&string, p_createParams->m_unk0xd4);
+
+	Rect source;
+	p_createParams->m_unk0x84[0]->FUN_00408be0(&string, &source.m_right, &source.m_bottom);
+
+	if (m_unk0x2dc && source.m_right > m_unk0x2dc) {
+		source.m_right = m_unk0x2dc;
+	}
+
+	source.m_left = 0;
+	source.m_top = 0;
+	source.m_bottom = m_unk0x208.GetRect()->m_bottom - m_unk0x208.GetRect()->m_top;
+
+	FUN_00472d00(m_unk0x1c0[m_visualStateIndex], &string, &source, &createParams.m_rect, 0);
+
+	LegoS32 right = m_unk0x208.GetRect()->m_right;
+	createParams.m_rect.m_left += right;
+	createParams.m_rect.m_right += right;
+
+	createParams.m_flags |= 3;
+	createParams.m_unk0x38 = p_createParams->m_unk0xcc;
+	createParams.m_unk0x3c = m_unk0x1c0[0];
+	createParams.m_unk0x40 = p_createParams->m_unk0xd4;
+	createParams.m_unk0x22 = m_unk0x174[0];
+	createParams.m_unk0x30 = (undefined4) this;
+	m_unk0x1ac[4] = 0;
+
+	return m_unk0x264.FUN_0046f520(&createParams, (CeruleanEmperor0x4c::Entry0x90*) m_unk0x1ac);
+}
+
+// FUNCTION: LEGORACERS 0x004826c0
+LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004826c0(
+	CreateParams0xe0* p_createParams,
+	CeruleanEmperor0x4c::Entry0x104* p_styleEntry
+)
+{
+	VTable0x08();
+
+	m_unk0x1a8 = p_styleEntry;
+	LegoS32 maxWidth;
+	if (p_createParams->m_unk0xdc) {
+		maxWidth = p_createParams->m_unk0xd8;
+	}
+	else {
+		maxWidth = p_styleEntry->m_unk0xfc;
+	}
+
+	m_unk0x2dc = maxWidth;
+	::memcpy(m_unk0x1c0, p_createParams->m_unk0x84, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
+
+	if (FUN_00471e30(p_createParams, (ObscureIcon0x1a8::CreateState0x90*) p_styleEntry) &&
+		FUN_004824d0(p_createParams) && FUN_00482540(p_createParams, p_styleEntry)) {
+		VTable0x10(&p_createParams->m_rect);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00482760
@@ -51,11 +136,16 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x08()
 // STUB: LEGORACERS 0x00482890
 void ImaginaryDrillFieldAt0x498::VTable0x10(Rect* p_rect)
 {
-	Rect rect = *p_rect;
+	LegoU8 flags = m_flags;
+	Rect rect;
+	rect.m_left = p_rect->m_left;
+	rect.m_top = p_rect->m_top;
+	rect.m_right = p_rect->m_right;
+	rect.m_bottom = p_rect->m_bottom;
 
-	if (m_flags & 1) {
-		rect.m_right = m_unk0x264.GetRect()->m_right + p_rect->m_left;
-		rect.m_bottom = m_unk0x1d8[0]->GetHeight() + p_rect->m_top;
+	if (flags & 1) {
+		rect.m_right = m_unk0x264.GetRect()->m_right + rect.m_left;
+		rect.m_bottom = m_unk0x1d8[0]->GetHeight() + rect.m_top;
 		ObscureIcon0x1a8::VTable0x10(&rect);
 	}
 }

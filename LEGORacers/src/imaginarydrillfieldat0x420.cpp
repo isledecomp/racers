@@ -4,6 +4,7 @@
 #include "golstringtable.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x420, 0x78)
+DECOMP_SIZE_ASSERT(ImaginaryDrillFieldAt0x420::CreateParams0x48, 0x48)
 
 // FUNCTION: LEGORACERS 0x0046f410
 ImaginaryDrillFieldAt0x420::ImaginaryDrillFieldAt0x420()
@@ -29,8 +30,33 @@ void ImaginaryDrillFieldAt0x420::Reset()
 	ObscureVantage0x58::Reset();
 }
 
+// FUNCTION: LEGORACERS 0x0046f520
+LegoBool32 ImaginaryDrillFieldAt0x420::FUN_0046f520(
+	CreateParams0x48* p_createParams,
+	CeruleanEmperor0x4c::Entry0x90* p_unk0x08
+)
+{
+	VTable0x08();
+
+	m_unk0x60 = p_createParams->m_unk0x3c;
+	m_unk0x5c = p_createParams->m_unk0x38;
+	m_unk0x58 = p_unk0x08;
+	LegoS32 unk0x44 = p_createParams->m_unk0x44;
+	m_unk0x70 = unk0x44;
+	if (unk0x44) {
+		m_unk0x74 = TRUE;
+	}
+
+	if (FUN_00472a60(p_createParams)) {
+		VTable0x44(p_createParams->m_unk0x40, 0);
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
 // FUNCTION: LEGORACERS 0x0046f580
-void ImaginaryDrillFieldAt0x420::VTable0x44(undefined4, undefined4)
+void ImaginaryDrillFieldAt0x420::VTable0x44(undefined2, undefined4)
 {
 	GolString string;
 

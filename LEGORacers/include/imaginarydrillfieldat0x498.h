@@ -37,21 +37,24 @@ public:
 	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
 	void VTable0x40(ImaginaryInterface*) override;                                         // vtable+0x40
-	undefined4 FUN_004826c0(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
+	LegoBool32 FUN_004826c0(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
 
 	// SYNTHETIC: LEGORACERS 0x00482400
 	// ImaginaryDrillFieldAt0x498::`scalar deleting destructor'
 
 private:
-	undefined4 m_unk0x1a8;                 // 0x1a8
-	undefined m_unk0x1ac[0x1c0 - 0x1ac];   // 0x1ac
-	GolFont0xa0* m_unk0x1c0[6];            // 0x1c0
-	UtopianPan0xa4* m_unk0x1d8[6];         // 0x1d8
-	VisualState0x4 m_unk0x1f0[6];          // 0x1f0
-	ObscureAnchor0x5c m_unk0x208;          // 0x208
-	ImaginaryDrillFieldAt0x420 m_unk0x264; // 0x264
-	undefined4 m_unk0x2dc;                 // 0x2dc
-	undefined4 m_unk0x2e0[4];              // 0x2e0
+	LegoBool32 FUN_004824d0(CreateParams0xe0* p_createParams);
+	LegoBool32 FUN_00482540(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
+
+	CeruleanEmperor0x4c::Entry0x104* m_unk0x1a8; // 0x1a8
+	undefined4 m_unk0x1ac[5];                    // 0x1ac
+	GolFont0xa0* m_unk0x1c0[6];                  // 0x1c0
+	UtopianPan0xa4* m_unk0x1d8[6];               // 0x1d8
+	VisualState0x4 m_unk0x1f0[6];                // 0x1f0
+	ObscureAnchor0x5c m_unk0x208;                // 0x208
+	ImaginaryDrillFieldAt0x420 m_unk0x264;       // 0x264
+	LegoS32 m_unk0x2dc;                          // 0x2dc
+	undefined4 m_unk0x2e0[4];                    // 0x2e0
 };
 
 #endif // IMAGINARYDRILLFIELDAT0X498_H

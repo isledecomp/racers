@@ -14,12 +14,25 @@ class GolStringTable;
 // SIZE 0x78
 class ImaginaryDrillFieldAt0x420 : public ObscureAnthem0x58 {
 public:
+	// SIZE 0x48
+	class CreateParams0x48 : public ObscureVantage0x58::CreateParams0x30 {
+	public:
+		undefined4 m_unk0x30;      // 0x30
+		undefined4 m_unk0x34;      // 0x34
+		GolStringTable* m_unk0x38; // 0x38
+		GolFont0xa0* m_unk0x3c;    // 0x3c
+		undefined2 m_unk0x40;      // 0x40
+		undefined m_unk0x42[2];    // 0x42
+		undefined4 m_unk0x44;      // 0x44
+	};
+
 	ImaginaryDrillFieldAt0x420();
 	void Reset() override;                           // vtable+0x00
 	~ImaginaryDrillFieldAt0x420() override;          // vtable+0x04
 	undefined4 VTable0x38(Rect*, Rect*) override;    // vtable+0x38
 	virtual void VTable0x40(GolString*, undefined4); // vtable+0x40
-	virtual void VTable0x44(undefined4, undefined4); // vtable+0x44
+	virtual void VTable0x44(undefined2, undefined4); // vtable+0x44
+	LegoBool32 FUN_0046f520(CreateParams0x48* p_createParams, CeruleanEmperor0x4c::Entry0x90* p_unk0x08);
 	void SetUnk0x60(GolFont0xa0* p_unk0x60) { m_unk0x60 = p_unk0x60; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f470

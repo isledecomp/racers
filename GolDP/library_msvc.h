@@ -228,6 +228,9 @@
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
 
+// GLOBAL: GOLDP 0x1004bcbb
+// __dosmaperr
+
 // GLOBAL: GOLDP 0x10058098
 // IID_IDirectDraw4
 

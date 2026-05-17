@@ -22,7 +22,7 @@ public:
 	virtual PurpleDune0x7c* VTable0x08(LegoU32 p_index) = 0;                        // vtable+0x08
 	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, undefined4 p_unk0x08) = 0; // vtable+0x0c
 	virtual void VTable0x10(LegoU32 p_index) = 0;                                   // vtable+0x10
-	virtual void VTable0x14(undefined4 p_unk0x04, undefined4 p_unk0x08) = 0;        // vtable+0x14
+	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;              // vtable+0x14
 	virtual void VTable0x18() = 0;                                                  // vtable+0x18
 	virtual ~GolFontBase0x40();                                                     // vtable+0x1c
 	virtual void Clear();                                                           // vtable+0x20

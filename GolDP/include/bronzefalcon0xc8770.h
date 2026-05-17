@@ -178,6 +178,7 @@ public:
 	friend class DirectDrawPalette;
 	friend class SlatePeak0x58;
 	friend class BronzeFalconSurface0x5c;
+	friend class GolFont0xa0;
 	friend class UtopianPan0xa4;
 
 private:

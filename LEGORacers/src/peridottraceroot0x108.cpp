@@ -1,13 +1,25 @@
 #include "peridottraceroot0x108.h"
 
 #include "golerror.h"
+#include "golstream.h"
 
+#include <direct.h>
+#include <errno.h>
+#include <io.h>
+#include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(PeridotTraceRootEntry0x10, 0x10)
 DECOMP_SIZE_ASSERT(PeridotTraceRootEntryDerived0x10, 0x10)
 DECOMP_SIZE_ASSERT(PeridotTraceRootBase0x08, 0x08)
 DECOMP_SIZE_ASSERT(PeridotTraceRoot0x108, 0x108)
+
+// GLOBAL: LEGORACERS 0x004c73f4
+LegoChar g_saveCurrentDirectory[256];
+
+// GLOBAL: LEGORACERS 0x004c74f4
+LegoChar g_saveFileName[256];
 
 // FUNCTION: LEGORACERS 0x00450eb0
 PeridotTraceRoot0x108::PeridotTraceRoot0x108()
@@ -100,30 +112,82 @@ void PeridotTraceRootEntry0x10::Reset()
 	m_index = 0;
 }
 
-// STUB: LEGORACERS 0x00451160
-undefined4 PeridotTraceRootEntry0x10::VTable0x04()
+// FUNCTION: LEGORACERS 0x00451160
+LegoS32 PeridotTraceRootEntry0x10::VTable0x04()
 {
-	STUB(0x00451160);
+	_getcwd(g_saveCurrentDirectory, sizeof(g_saveCurrentDirectory));
+	BuildDirectoryPath(g_saveFileName);
+
+	if (_chdir(g_saveFileName)) {
+		VTable0x08();
+	}
+	else {
+		_chdir(g_saveCurrentDirectory);
+	}
+
 	return 0;
 }
 
-// STUB: LEGORACERS 0x004511c0
-undefined4 PeridotTraceRootEntry0x10::VTable0x08()
+// FUNCTION: LEGORACERS 0x004511c0
+LegoS32 PeridotTraceRootEntry0x10::VTable0x08()
 {
-	STUB(0x004511c0);
+	_mkdir(m_root->GetDirectoryPath());
+	BuildDirectoryPath(g_saveFileName);
+	_mkdir(g_saveFileName);
+
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00451200
-undefined4 PeridotTraceRootEntry0x10::VTable0x0c(undefined4)
+// FUNCTION: LEGORACERS 0x00451200
+LegoS32 PeridotTraceRootEntry0x10::VTable0x0c(const LegoChar* p_fileName)
 {
-	STUB(0x00451200);
+	BuildFilePath(p_fileName, g_saveFileName);
+	if (_access(g_saveFileName, 0) < 0 && errno == ENOENT) {
+		return GolStream::e_ioFileNotFound;
+	}
+
+	return GolStream::e_ioSuccess;
+}
+
+// FUNCTION: LEGORACERS 0x00451240
+LegoS32 PeridotTraceRootEntry0x10::VTable0x14(const LegoChar* p_fileName)
+{
+	BuildFilePath(p_fileName, g_saveFileName);
+	if (::remove(g_saveFileName) < 0) {
+		if (errno == ENOENT) {
+			return GolStream::e_ioFileNotFound;
+		}
+
+		return errno != EACCES ? GolStream::e_ioGenericError : GolStream::e_ioAccessDenied;
+	}
+
+	return GolStream::e_ioSuccess;
+}
+
+// FUNCTION: LEGORACERS 0x004512a0
+LegoS32 PeridotTraceRootEntry0x10::BuildFilePath(const LegoChar* p_fileName, LegoChar* p_buffer)
+{
+	BuildDirectoryPath(p_buffer);
+	::strcat(p_buffer, p_fileName);
+
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00451240
-undefined4 PeridotTraceRootEntry0x10::VTable0x14(undefined4)
+// FUNCTION: LEGORACERS 0x004512e0
+LegoS32 PeridotTraceRootEntry0x10::BuildDirectoryPath(LegoChar* p_buffer)
 {
-	STUB(0x00451240);
+	::strcpy(p_buffer, m_root->GetDirectoryPath());
+
+	LegoU32 offset = ::strlen(p_buffer);
+	if (p_buffer[offset - 1] != '\\') {
+		p_buffer[offset] = '\\';
+		offset++;
+	}
+
+	::itoa(m_index, &p_buffer[offset], 10);
+	LegoU32 pathLength = ::strlen(p_buffer);
+	p_buffer[pathLength] = '\\';
+	p_buffer[pathLength + 1] = 0;
+
 	return 0;
 }

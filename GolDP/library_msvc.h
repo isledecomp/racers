@@ -105,11 +105,20 @@
 // LIBRARY: GOLDP 0x1004c73d
 // __amsg_exit
 
+// LIBRARY: GOLDP 0x1004cfdc
+// __mtinit
+
+// LIBRARY: GOLDP 0x1004d030
+// __mtterm
+
 // LIBRARY: GOLDP 0x1004d061
 // __getptd
 
 // LIBRARY: GOLDP 0x1004d04e
 // __initptd
+
+// LIBRARY: GOLDP 0x1004d0c8
+// __freeptd
 
 // TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x1004d21f
@@ -134,8 +143,17 @@
 // LIBRARY: GOLDP 0x1004e20c
 // __except_handler3
 
+// LIBRARY: GOLDP 0x1004e2e4
+// __cinit
+
 // LIBRARY: GOLDP 0x1004e311
 // __exit
+
+// LIBRARY: GOLDP 0x1004e322
+// __cexit
+
+// LIBRARY: GOLDP 0x1004f8fc
+// __ioinit
 
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
@@ -167,8 +185,26 @@
 // LIBRARY: GOLDP 0x1004f8da
 // __unlock_fhandle
 
+// LIBRARY: GOLDP 0x1004fab8
+// __ioterm
+
 // LIBRARY: GOLDP 0x1004fb0c
 // __chsize_lk
+
+// LIBRARY: GOLDP 0x1004fc31
+// __setenvp
+
+// LIBRARY: GOLDP 0x1004fcea
+// __setargv
+
+// LIBRARY: GOLDP 0x1004ff37
+// ___crtGetEnvironmentStringsA
+
+// LIBRARY: GOLDP 0x100501de
+// __heap_init
+
+// LIBRARY: GOLDP 0x1005023b
+// __heap_term
 
 // LIBRARY: GOLDP 0x100502e9
 // __FF_MSGBANNER
@@ -276,11 +312,29 @@
 // GLOBAL: GOLDP 0x1005fb58
 // ___badioinfo
 
+// GLOBAL: GOLDP 0x10065f00
+// __aenvptr
+
 // GLOBAL: GOLDP 0x10065f0c
 // ___app_type
 
 // GLOBAL: GOLDP 0x10065f10
 // __umaskval
+
+// GLOBAL: GOLDP 0x10065f14
+// __osver
+
+// GLOBAL: GOLDP 0x10065f18
+// __winver
+
+// GLOBAL: GOLDP 0x10065f1c
+// __winmajor
+
+// GLOBAL: GOLDP 0x10065f20
+// __winminor
+
+// GLOBAL: GOLDP 0x10065f4c
+// __C_Termination_Done
 
 // GLOBAL: GOLDP 0x10065fdc
 // ___lc_codepage
@@ -311,6 +365,9 @@
 
 // GLOBAL: GOLDP 0x10067600
 // __nhandle
+
+// GLOBAL: GOLDP 0x1006761c
+// __acmdln
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain

@@ -4,6 +4,8 @@
 
 #include <float.h>
 
+DECOMP_SIZE_ASSERT(FloatyCanoe0x90, 0x90)
+
 // GLOBAL: GOLDP 0x1005726c
 static LegoFloat g_negativeOneFloat = -1.0f;
 
@@ -58,7 +60,7 @@ void FloatyCanoe0x90::VTable0x54()
 	m_unk0x64 = 0;
 	m_unk0x68 = 0;
 	for (i = 0; i < 3; i++) {
-		m_unk0x78[i] = 0;
+		m_unk0x78[i] = NULL;
 		m_unk0x84[i] = g_negativeOneFloat;
 		m_unk0x6c[i] = 0.0f;
 	}
@@ -93,27 +95,33 @@ void FloatyCanoe0x90::FUN_10027c50(undefined4* p_value, LegoFloat p_scalar)
 void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::ResultStruct* p_result)
 {
 	LegoU32 i;
+	LegoFloat* threshold;
 
 	i = 0;
+	threshold = m_unk0x84;
 	p_result->m_unk0x04 = 0;
-	if (m_unk0x84[0] != g_maxFloat) {
+
+	if (*threshold != g_maxFloat) {
 		GolVec3 v3;
 		VTable0x04(&v3);
-		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(v3, p_vector);
-		for (; i < 3; i++) {
-			if (m_unk0x84[i] >= distanceSquared) {
+		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_vector, v3);
+
+		for (;;) {
+			if (distanceSquared <= *threshold) {
 				break;
+			}
+			i++;
+			threshold++;
+			if (i >= 3) {
+				p_result->m_unk0x04 = 3;
+				p_result->m_unk0x00 = 0;
+				return;
 			}
 		}
 	}
-	if (i < 3) {
-		p_result->m_unk0x04 = i;
-		if (!m_unk0x78[i]) {
-			p_result->m_unk0x00 = 0;
-		}
-	}
-	else {
-		p_result->m_unk0x04 = 3;
+
+	p_result->m_unk0x04 = i;
+	if (!m_unk0x78[i]) {
 		p_result->m_unk0x00 = 0;
 	}
 }

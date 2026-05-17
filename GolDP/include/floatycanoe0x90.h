@@ -1,5 +1,5 @@
-#ifndef FLOATYCANOE0x90
-#define FLOATYCANOE0x90
+#ifndef FLOATYCANOE0X90_H
+#define FLOATYCANOE0X90_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -11,7 +11,7 @@ class FloatyCanoe0x90 : public FloatyBuoy0x58 {
 public:
 	FloatyCanoe0x90();
 
-	void VTable0x00() override;                                                // vtable0x00
+	void VTable0x00() override;                                                // vtable+0x00
 	void VTable0x10(LegoS32 p_v) override;                                     // vtable+0x10
 	void VTable0x14(const GolVec3& p_vector, ResultStruct* p_result) override; // vtable+0x14
 	void VTable0x1c(WhiteFalcon0x140&) override;                               // vtable+0x1c
@@ -19,10 +19,10 @@ public:
 	void VTable0x24(undefined4*) override;                                     // vtable+0x24
 	void VTable0x28() override;                                                // vtable+0x28
 	virtual void VTable0x4c(LegoU32 p_index);                                  // vtable+0x4c
-	virtual void VTable0x50(undefined4* p_value, LegoFloat p_scalar);          // vtable+0x4c
-	virtual void VTable0x54();                                                 // vtable+0x4c
-	virtual undefined4 VTable0x58(undefined4);                                 // vtable+0x4c
-	virtual void VTable0x5c(undefined4);                                       // vtable+0x4c
+	virtual void VTable0x50(undefined4* p_value, LegoFloat p_scalar);          // vtable+0x50
+	virtual void VTable0x54();                                                 // vtable+0x54
+	virtual undefined4 VTable0x58(undefined4);                                 // vtable+0x58
+	virtual void VTable0x5c(undefined4);                                       // vtable+0x5c
 
 	void FUN_10027c50(undefined4* p_value, LegoFloat p_scalar);
 	void FUN_10027cc0(const GolVec3& p_vector, ResultStruct* p_result);
@@ -48,4 +48,4 @@ protected:
 	undefined4* m_unk0x78[3]; // 0x78
 	LegoFloat m_unk0x84[3];   // 0x84
 };
-#endif // FLOATYCANOE0x90
+#endif // FLOATYCANOE0X90_H

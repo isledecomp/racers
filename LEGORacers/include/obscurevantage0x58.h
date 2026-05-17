@@ -16,7 +16,15 @@ class BronzeFalcon0xc8770;
 class GolFontBase0x40;
 class GolExport;
 class GolString;
+class ObscureVantage0x58;
 class SoundGroupBinding;
+
+typedef LegoBool32 ObscureVantageEventResult;
+
+union ObscureVantageEventResultValue {
+	ObscureVantage0x58* m_widget;
+	ObscureVantageEventResult m_result;
+};
 
 // VTABLE: LEGORACERS 0x004b29b4
 // SIZE 0x58
@@ -44,22 +52,22 @@ public:
 	};
 
 	ObscureVantage0x58();
-	virtual void Reset();                                                                 // vtable+0x00
-	virtual ~ObscureVantage0x58();                                                        // vtable+0x04
-	virtual undefined4 VTable0x08();                                                      // vtable+0x08
-	virtual void SetParent(ObscureVantage0x58*);                                          // vtable+0x0c
-	virtual void VTable0x10(Rect*);                                                       // vtable+0x10
-	virtual void VTable0x14(VisualState0x4*);                                             // vtable+0x14
-	virtual undefined4 VTable0x18(undefined4);                                            // vtable+0x18
-	virtual undefined4 VTable0x1c(Rect*, Rect*);                                          // vtable+0x1c
-	virtual undefined4 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);  // vtable+0x20
-	virtual undefined4 VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x24
-	virtual undefined4 VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x28
-	virtual undefined4 VTable0x2c(void*, undefined4, undefined4);                         // vtable+0x2c
-	virtual undefined4 VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x30
-	virtual undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x34
-	virtual undefined4 VTable0x38(Rect*, Rect*);                                          // vtable+0x38
-	virtual undefined4 VTable0x3c(undefined4);                                            // vtable+0x3c
+	virtual void Reset();                                                                                // vtable+0x00
+	virtual ~ObscureVantage0x58();                                                                       // vtable+0x04
+	virtual undefined4 VTable0x08();                                                                     // vtable+0x08
+	virtual void SetParent(ObscureVantage0x58*);                                                         // vtable+0x0c
+	virtual void VTable0x10(Rect*);                                                                      // vtable+0x10
+	virtual void VTable0x14(VisualState0x4*);                                                            // vtable+0x14
+	virtual LegoBool32 VTable0x18(undefined4);                                                           // vtable+0x18
+	virtual undefined4 VTable0x1c(Rect*, Rect*);                                                         // vtable+0x1c
+	virtual LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);                 // vtable+0x20
+	virtual ObscureVantageEventResult VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x24
+	virtual ObscureVantageEventResult VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4); // vtable+0x28
+	virtual ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4);                               // vtable+0x2c
+	virtual ObscureVantage0x58* VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4);       // vtable+0x30
+	virtual ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4);       // vtable+0x34
+	virtual undefined4 VTable0x38(Rect*, Rect*);                                                         // vtable+0x38
+	virtual undefined4 VTable0x3c(undefined4);                                                           // vtable+0x3c
 
 	void RemoveFromParent();
 	undefined4 FUN_00472c40(LegoS32, LegoS32);

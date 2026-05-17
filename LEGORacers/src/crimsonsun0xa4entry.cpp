@@ -282,7 +282,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004687a0()
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
 undefined4 CrimsonSun0xa4::Entry0x74c::VTable0x18(
-	ObscureIcon0x1a8*,
+	ObscureVantage0x58*,
 	OnyxCircularBuffer0x1c::Item*,
 	undefined4,
 	undefined4
@@ -293,7 +293,7 @@ undefined4 CrimsonSun0xa4::Entry0x74c::VTable0x18(
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
 undefined4 CrimsonSun0xa4::Entry0x74c::VTable0x1c(
-	ObscureIcon0x1a8*,
+	ObscureVantage0x58*,
 	OnyxCircularBuffer0x1c::Item*,
 	undefined4,
 	undefined4

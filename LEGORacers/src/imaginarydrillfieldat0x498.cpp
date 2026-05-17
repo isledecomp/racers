@@ -170,7 +170,7 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00482980
-undefined4 ImaginaryDrillFieldAt0x498::VTable0x34(
+ObscureVantage0x58* ImaginaryDrillFieldAt0x498::VTable0x34(
 	OnyxCircularBuffer0x1c::Item* p_item,
 	undefined4 p_unk0x08,
 	undefined4 p_unk0x0c

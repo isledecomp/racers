@@ -22,11 +22,13 @@ LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x004676c0
-undefined4 ObscureIcon0x1a8::VTable0x38(Rect* p_rect1, Rect* p_rect2)
+// FUNCTION: LEGORACERS 0x004676c0
+#pragma code_seg(".text$obscureicon_vt38")
+undefined4 ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
 {
-	return ObscureVantage0x58::VTable0x38(p_rect1, p_rect2);
+	return 0;
 }
+#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x00471c30
 ObscureIcon0x1a8::ObscureIcon0x1a8()
@@ -632,13 +634,13 @@ undefined4 ObscureIcon0x1a8::VTable0x3c(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00472790
-undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU8 flag = 8;
 
 	if (!m_parent) {
 		if (!(flag & m_flags)) {
-			return 0;
+			return NULL;
 		}
 	}
 
@@ -647,28 +649,28 @@ undefined4 ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, undefined4
 			m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
 		}
 
-		return (undefined4) this;
+		return this;
 	}
 
 	if (!VTable0x5c()) {
-		return 0;
+		return NULL;
 	}
 
 	VTable0x4c(0);
 
 	if (m_activeChild || m_firstChild) {
-		return 0;
+		return NULL;
 	}
 
 	if (m_unk0x28) {
 		m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
 	}
 
-	return (undefined4) this;
+	return this;
 }
 
 // FUNCTION: LEGORACERS 0x00472820
-undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode & InputDevice::c_sourceMask;
@@ -708,21 +710,21 @@ undefined4 ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, un
 	if (activate && !(m_stateFlags & c_flagBit2)) {
 		VTable0x54(0);
 		m_activeKeyCode = keyCode;
-		return (undefined4) this;
+		return this;
 	}
 
-	return 0;
+	return NULL;
 }
 
 // STUB: LEGORACERS 0x004728e0
-undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = InputDevice::GetKeySource(keyCode);
 	LegoU32 activeKey = m_activeKeyCode;
 
 	if (keyCode != activeKey) {
-		return 0;
+		return NULL;
 	}
 
 	LegoBool32 isMouse = eventType == InputDevice::c_sourceMouse;
@@ -730,12 +732,12 @@ undefined4 ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, un
 	if (isMouse) {
 		if (!FUN_00472c40(p_x, p_y) && (m_stateFlags & c_flagBit2)) {
 			VTable0x58(1);
-			return (undefined4) this;
+			return this;
 		}
 	}
 
 	VTable0x58(0);
-	return (undefined4) this;
+	return this;
 }
 
 // FUNCTION: LEGORACERS 0x00472950

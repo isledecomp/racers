@@ -91,13 +91,13 @@ undefined4 ObscureVantage0x58::VTable0x08()
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
 undefined4 ObscureVantage0x58::VTable0x3c(undefined4)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0044e7f0 FOLDED
 undefined4 ObscureVantage0x58::VTable0x38(Rect*, Rect*)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00472b00
@@ -474,7 +474,7 @@ void ObscureVantage0x58::FUN_004731b0(undefined4& p_x, undefined4& p_y)
 }
 
 // FUNCTION: LEGORACERS 0x004731d0
-undefined4 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
+LegoBool32 ObscureVantage0x58::VTable0x18(undefined4 p_unk0x04)
 {
 	ObscureVantage0x58* child = m_firstChild;
 
@@ -517,7 +517,7 @@ undefined4 ObscureVantage0x58::VTable0x1c(Rect* p_rect, Rect* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004732d0
-undefined4 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	ObscureVantage0x58* child = m_firstChild;
 	undefined4 x = p_x;
@@ -543,7 +543,11 @@ undefined4 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1,
 }
 
 // FUNCTION: LEGORACERS 0x00473370
-undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item* p_param1, undefined4 p_x, undefined4 p_y)
+ObscureVantageEventResult ObscureVantage0x58::VTable0x24(
+	OnyxCircularBuffer0x1c::Item* p_param1,
+	undefined4 p_x,
+	undefined4 p_y
+)
 {
 	ObscureVantage0x58* child = m_firstChild;
 	undefined4 x = p_x;
@@ -563,11 +567,18 @@ undefined4 ObscureVantage0x58::VTable0x24(OnyxCircularBuffer0x1c::Item* p_param1
 		child = child->m_nextSibling;
 	}
 
-	return VTable0x30(p_param1, x, y);
+	ObscureVantageEventResultValue leafResult;
+
+	leafResult.m_widget = VTable0x30(p_param1, x, y);
+	return leafResult.m_result;
 }
 
 // FUNCTION: LEGORACERS 0x00473400
-undefined4 ObscureVantage0x58::VTable0x28(OnyxCircularBuffer0x1c::Item* p_param1, undefined4 p_x, undefined4 p_y)
+ObscureVantageEventResult ObscureVantage0x58::VTable0x28(
+	OnyxCircularBuffer0x1c::Item* p_param1,
+	undefined4 p_x,
+	undefined4 p_y
+)
 {
 	ObscureVantage0x58* child = m_firstChild;
 	undefined4 x = p_x;
@@ -587,23 +598,26 @@ undefined4 ObscureVantage0x58::VTable0x28(OnyxCircularBuffer0x1c::Item* p_param1
 		child = child->m_nextSibling;
 	}
 
-	return VTable0x34(p_param1, x, y);
+	ObscureVantageEventResultValue leafResult;
+
+	leafResult.m_widget = VTable0x34(p_param1, x, y);
+	return leafResult.m_result;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x2c(void*, undefined4, undefined4)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x2c(void*, undefined4, undefined4)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-undefined4 ObscureVantage0x58::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
-	return 0;
+	return NULL;
 }

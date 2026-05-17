@@ -705,25 +705,25 @@ LegoFloat ImaginaryNotion0x290::VTable0x6c()
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x18(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x28(ObscureIcon0x1a8*, void*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x28(ObscureVantage0x58*, void*, undefined4, undefined4)
 {
 	return 0;
 }

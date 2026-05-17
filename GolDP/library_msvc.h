@@ -99,7 +99,7 @@
 // LIBRARY: GOLDP 0x1004d04e
 // __initptd
 
-// TODO: Seems to mismatch, maybe a custom allocator is used?
+// TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x1004d21f
 // _free
 
@@ -115,7 +115,7 @@
 // LIBRARY: GOLDP 0x1004dc3c
 // __nh_malloc
 
-// TODO: Seems to mismatch, maybe a custom allocator is used?
+// TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x1004dc68
 // __heap_alloc
 
@@ -149,7 +149,7 @@
 // LIBRARY: GOLDP 0x10050322
 // __NMSG_WRITE
 
-// TODO: Seems to mismatch, maybe a custom allocator is used?
+// TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x100508f5
 // _calloc
 

@@ -15,11 +15,10 @@ PeridotTraceActionFile0x30::~PeridotTraceActionFile0x30()
 	Dispose();
 }
 
-// STUB: LEGORACERS 0x0044e130
-LegoS32 PeridotTraceActionFile0x30::BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize)
+// FUNCTION: LEGORACERS 0x0044e130
+LegoS32 PeridotTraceActionFile0x30::BufferedOpen(const LegoChar*, LegoS32, LegoU32)
 {
-	STUB(0x0044e130);
-	return GolStream::BufferedOpen(p_fileName, p_mode, p_bufferSize);
+	return e_ioFileNotFound;
 }
 
 // FUNCTION: LEGORACERS 0x0044e1e0

@@ -238,6 +238,6 @@
 static const char* ___crtLCMapStringA_str = "\0";
 
 // STRING: GOLDP 0x10059b98
-static const wchar_t *___crtLCMapStringA_wstr = L"\0";
+static const wchar_t* ___crtLCMapStringA_wstr = L"\0";
 
 #endif

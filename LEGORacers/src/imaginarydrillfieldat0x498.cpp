@@ -133,15 +133,11 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x08()
 	return ObscureIcon0x1a8::VTable0x08();
 }
 
-// STUB: LEGORACERS 0x00482890
+// FUNCTION: LEGORACERS 0x00482890
 void ImaginaryDrillFieldAt0x498::VTable0x10(Rect* p_rect)
 {
 	LegoU8 flags = m_flags;
-	Rect rect;
-	rect.m_left = p_rect->m_left;
-	rect.m_top = p_rect->m_top;
-	rect.m_right = p_rect->m_right;
-	rect.m_bottom = p_rect->m_bottom;
+	Rect rect = *p_rect;
 
 	if (flags & 1) {
 		rect.m_right = m_unk0x264.GetRect()->m_right + rect.m_left;

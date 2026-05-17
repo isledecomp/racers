@@ -1219,7 +1219,6 @@ address,type,size
 1004b178,function,117
 1004b1ed,function,123
 1004b268,function,66
-1004b288,function,34
 1004b312,function,35
 1004b335,function,9
 1004b356,function,11
@@ -1229,9 +1228,7 @@ address,type,size
 1004b3d8,function,1
 1004b3d9,function,56
 1004b411,function,130
-1004b47b,function,24
 1004b493,function,128
-1004b4fb,function,24
 1004b513,function,94
 1004b571,function,126
 1004b5ef,function,18
@@ -1497,7 +1494,6 @@ address,type,size
 10052773,function,92
 100527cf,function,182
 10052890,function,16
-10052897,function,9
 100528a0,function,224
 10052980,function,88
 100529d8,function,9

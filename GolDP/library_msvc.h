@@ -168,7 +168,6 @@
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
 
-
 // GLOBAL: GOLDP 0x10058098
 // IID_IDirectDraw4
 
@@ -197,7 +196,7 @@
 // __locktable
 
 // GLOBAL: GOLDP 0x1005fc10
-// ___sbh_threshold
+// __XcptActTab
 
 // GLOBAL: GOLDP 0x10065f08
 // ___error_mode

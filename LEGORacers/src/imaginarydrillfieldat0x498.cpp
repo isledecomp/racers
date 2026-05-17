@@ -31,7 +31,7 @@ void ImaginaryDrillFieldAt0x498::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
-// STUB: LEGORACERS 0x004824d0
+// FUNCTION: LEGORACERS 0x004824d0
 LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createParams)
 {
 	ObscureAnchor0x5c::CreateParams0x3c createParams;
@@ -43,13 +43,11 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createPa
 	flags |= 1;
 	createParams.m_rect.m_top = 0;
 	createParams.m_flagsAndName.m_flagsByte = flags;
-	UtopianPan0xa4* image = m_unk0x1d8[0];
 	createParams.m_rect.m_right = 0;
-	createParams.m_unk0x38 = image;
+	createParams.m_unk0x38 = m_unk0x1d8[0];
 	createParams.m_rect.m_bottom = 0;
-	VisualState0x4 visualState = m_unk0x1f0[0];
-	createParams.m_unk0x22 = visualState;
 	createParams.m_parent = this;
+	createParams.m_unk0x22 = m_unk0x1f0[0];
 
 	return m_unk0x208.FUN_0046f150(&createParams);
 }

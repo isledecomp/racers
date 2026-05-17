@@ -138,25 +138,27 @@ void PeridotTrace0x4a8::FUN_00442c20(PeridotTracePersistentState* p_state)
 	}
 }
 
-// STUB: LEGORACERS 0x004437e0
+// FUNCTION: LEGORACERS 0x004437e0
 PeridotTrace0x4e0::PeridotTrace0x4e0()
 {
-	// TODO
-	STUB(0x4437e0);
+	m_unk0x4a8 = NULL;
 }
 
-// STUB: LEGORACERS 0x00443840
+// FUNCTION: LEGORACERS 0x00443840
 PeridotTrace0x4e0::~PeridotTrace0x4e0()
 {
-	// TODO
-	STUB(0x443840);
+	FUN_004438e0();
 }
 
-// STUB: LEGORACERS 0x004438e0
+// FUNCTION: LEGORACERS 0x004438e0
 void PeridotTrace0x4e0::FUN_004438e0()
 {
-	// TODO
-	STUB(0x4438e0);
+	if (m_unk0x4ac.GetFlags() & GolStream::c_flagOpen) {
+		PeridotTraceActionBase0x34* action = &m_unk0x4ac;
+		action->Dispose();
+	}
+
+	PeridotTraceBase0x24::Destroy();
 }
 
 // STUB: LEGORACERS 0x00443910

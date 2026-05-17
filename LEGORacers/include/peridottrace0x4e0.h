@@ -3,6 +3,7 @@
 
 #include "decomp.h"
 #include "displaydriverguid.h"
+#include "golfile.h"
 #include "types.h"
 
 #include <string.h>
@@ -116,6 +117,7 @@ private:
 	void FUN_0042b830();
 
 	friend class PeridotTrace0x4a8;
+	friend class PeridotTrace0x4e0;
 
 	LegoU32 m_unk0x00;    // 0x00
 	Record* m_unk0x04;    // 0x04
@@ -156,27 +158,51 @@ private:
 	undefined4 m_unk0x4a4;
 };
 
-// SIZE 0x34
-class PeridotTraceActionBase0x34 {
+// VTABLE: LEGORACERS 0x004b0fac
+// SIZE 0x30
+class PeridotTraceActionFile0x30 : public GolFile {
 public:
-	PeridotTraceActionBase0x34();
-	~PeridotTraceActionBase0x34();
+	~PeridotTraceActionFile0x30() override; // vtable+0x18
 
 	enum {
 		c_unk0x08Flag0x01 = 1 << 0,
 	};
 
-	LegoBool32 HasUnk0x08Flag0x01() const { return m_unk0x08 & c_unk0x08Flag0x01; }
+	LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize) override; // vtable+0x1c
+	LegoS32 Dispose() override;                                                                      // vtable+0x20
 
-private:
-	undefined4 m_unk0x00;             // 0x00
-	undefined4 m_unk0x04;             // 0x04
-	LegoU32 m_unk0x08;                // 0x08
-	undefined m_unk0x0c[0x34 - 0x0c]; // 0x0c
+	LegoBool32 HasUnk0x08Flag0x01() const { return m_flags & c_unk0x08Flag0x01; }
+
+	// SYNTHETIC: LEGORACERS 0x0044e110
+	// PeridotTraceActionFile0x30::`scalar deleting destructor'
 };
 
+// VTABLE: LEGORACERS 0x004b1288
 // SIZE 0x34
-class PeridotTraceAction0x34 : public PeridotTraceActionBase0x34 {};
+class PeridotTraceActionBase0x34 : public PeridotTraceActionFile0x30 {
+public:
+	PeridotTraceActionBase0x34();
+
+	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
+	// PeridotTraceActionBase0x34::~PeridotTraceActionBase0x34
+
+	// SYNTHETIC: LEGORACERS 0x00450e50 FOLDED
+	// PeridotTraceActionBase0x34::`scalar deleting destructor'
+
+private:
+	undefined4 m_unk0x30; // 0x30
+};
+
+// VTABLE: LEGORACERS 0x004b0ba4
+// SIZE 0x34
+class PeridotTraceAction0x34 : public PeridotTraceActionBase0x34 {
+public:
+	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
+	// PeridotTraceAction0x34::~PeridotTraceAction0x34
+
+	// SYNTHETIC: LEGORACERS 0x00450e50 FOLDED
+	// PeridotTraceAction0x34::`scalar deleting destructor'
+};
 
 // SIZE 0x4e0
 class PeridotTrace0x4e0 : public PeridotTrace0x4a8 {

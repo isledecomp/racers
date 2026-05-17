@@ -1,6 +1,7 @@
 #include "obscuresigil0xdc.h"
 
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
+DECOMP_SIZE_ASSERT(ObscureSigil0xdc::CreateParams0x84, 0x84)
 
 // FUNCTION: LEGORACERS 0x004656e0
 ObscureSigil0xdc::ObscureSigil0xdc()
@@ -41,11 +42,49 @@ void ObscureSigil0xdc::Reset()
 	ObscureVantage0x58::Reset();
 }
 
+// FUNCTION: LEGORACERS 0x00465820
+LegoBool32 ObscureSigil0xdc::FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08)
+{
+	VTable0x08();
+	m_unk0x88 = p_createParams->m_unk0x78;
+
+	if (p_createParams->m_parent) {
+		if (!p_createParams->m_rect.m_right) {
+			p_createParams->m_rect.m_right =
+				p_createParams->m_parent->GetRect()->m_right - p_createParams->m_parent->GetRect()->m_left;
+		}
+
+		if (!p_createParams->m_rect.m_bottom) {
+			p_createParams->m_rect.m_bottom =
+				p_createParams->m_parent->GetRect()->m_bottom - p_createParams->m_parent->GetRect()->m_top;
+		}
+	}
+
+	if (FUN_00472a60(p_createParams)) {
+		FUN_00465900(p_createParams, p_unk0x08);
+		FUN_004659b0(p_createParams);
+	}
+
+	return m_flags & 1;
+}
+
 // STUB: LEGORACERS 0x00465890
 undefined4 ObscureSigil0xdc::VTable0x08()
 {
 	STUB(0x00465890);
 	return 0;
+}
+
+// STUB: LEGORACERS 0x00465900
+void ObscureSigil0xdc::FUN_00465900(CreateParams0x84*, undefined4)
+{
+	STUB(0x00465900);
+}
+
+// STUB: LEGORACERS 0x004659b0
+void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84*)
+{
+	STUB(0x004659b0);
 }
 
 // FUNCTION: LEGORACERS 0x00465b40

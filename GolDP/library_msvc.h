@@ -60,11 +60,17 @@
 // LIBRARY: GOLDP 0x1004bd2e
 // __errno
 
+// LIBRARY: GOLDP 0x1004bd57
+// __sopen
+
 // LIBRARY: GOLDP 0x1004bd40
 // __open
 
 // LIBRARY: GOLDP 0x1004c026
 // __close
+
+// LIBRARY: GOLDP 0x1004c083
+// __close_lk
 
 // LIBRARY: GOLDP 0x1004c106
 // __read
@@ -90,6 +96,7 @@
 // LIBRARY: GOLDP 0x1004d04e
 // __initptd
 
+// TODO: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x1004d21f
 // _free
 
@@ -104,6 +111,10 @@
 
 // LIBRARY: GOLDP 0x1004dc3c
 // __nh_malloc
+
+// TODO: Seems to mismatch, maybe a custom allocator is used?
+// LIBRARY: GOLDP 0x1004dc68
+// __heap_alloc
 
 // LIBRARY: GOLDP 0x1004e20c
 // __except_handler3
@@ -123,12 +134,19 @@
 // LIBRARY: GOLDP 0x1004f3cc
 // ___crtLCMapStringA
 
+// LIBRARY: GOLDP 0x1004f87b
+// __lock_fhandle
+
+// LIBRARY: GOLDP 0x1004f8da
+// __unlock_fhandle
+
 // LIBRARY: GOLDP 0x100502e9
 // __FF_MSGBANNER
 
 // LIBRARY: GOLDP 0x10050322
 // __NMSG_WRITE
 
+// TODO: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x100508f5
 // _calloc
 
@@ -146,6 +164,9 @@
 
 // LIBRARY: GOLDP 0x10051fe0
 // __aullrem
+
+// LIBRARY: GOLDP 0x10052055
+// __callnewh
 
 // LIBRARY: GOLDP 0x10052890
 // _strcpy
@@ -221,6 +242,9 @@
 
 // GLOBAL: GOLDP 0x10066104
 // __newmode
+
+// GLOBAL: GOLDP 0x10066108
+// ?_pnhHeap@@3P6AHI@ZA
 
 // GLOBAL: GOLDP 0x10067604
 // ___setlc_active

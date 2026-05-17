@@ -22,7 +22,7 @@ public:
 	virtual void VTable0x50(undefined4* p_value, LegoFloat p_scalar);          // vtable+0x4c
 	virtual void VTable0x54();                                                 // vtable+0x4c
 	virtual undefined4 VTable0x58(undefined4);                                 // vtable+0x4c
-	virtual void VTable0x5c(undefined4);                                                 // vtable+0x4c
+	virtual void VTable0x5c(undefined4);                                       // vtable+0x4c
 
 	void FUN_10027c50(undefined4* p_value, LegoFloat p_scalar);
 	void FUN_10027cc0(const GolVec3& p_vector, ResultStruct* p_result);

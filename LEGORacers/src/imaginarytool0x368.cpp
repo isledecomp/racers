@@ -163,13 +163,13 @@ LegoBool32 ImaginaryTool0x368::VTable0x88()
 }
 
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryTool0x368::VTable0x18(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return m_unk0x364;
 }
 
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryTool0x368::VTable0x1c(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	return m_unk0x364;
 }
@@ -227,9 +227,8 @@ LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00487d30 FOLDED
+// FUNCTION: LEGORACERS 0x00487d30
 void ImaginaryTool0x368::VTable0x40(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x00487d30);
+	m_unk0x358 = NULL;
 }

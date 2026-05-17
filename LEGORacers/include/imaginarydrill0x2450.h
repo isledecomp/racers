@@ -17,13 +17,13 @@ public:
 	ImaginaryDrill0x2450();
 
 	undefined4 VTable0x18(
-		ObscureIcon0x1a8*,
+		ObscureVantage0x58*,
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4
 	) override; // vtable+0x18
 	undefined4 VTable0x1c(
-		ObscureIcon0x1a8*,
+		ObscureVantage0x58*,
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4

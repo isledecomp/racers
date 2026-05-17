@@ -11,16 +11,16 @@ class ImaginaryShape0x2b20 : public ImaginaryTool0x368 {
 public:
 	ImaginaryShape0x2b20();
 
-	void VTable0x10(undefined4) override;                                             // vtable+0x10
-	undefined4 VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4) override; // vtable+0x14
+	void VTable0x10(undefined4) override;                                               // vtable+0x10
+	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x14
 	undefined4 VTable0x18(
-		ObscureIcon0x1a8*,
+		ObscureVantage0x58*,
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4
 	) override; // vtable+0x18
 	undefined4 VTable0x1c(
-		ObscureIcon0x1a8*,
+		ObscureVantage0x58*,
 		OnyxCircularBuffer0x1c::Item*,
 		undefined4,
 		undefined4

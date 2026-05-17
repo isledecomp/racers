@@ -3,21 +3,21 @@
 DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20, 0x2b20)
 
 // STUB: LEGORACERS 0x00474c70
-undefined4 ImaginaryShape0x2b20::VTable0x14(ObscureIcon0x1a8*, void*, undefined4, undefined4)
+undefined4 ImaginaryShape0x2b20::VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4)
 {
 	STUB(0x00474c70);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00474e00 FOLDED
-undefined4 ImaginaryShape0x2b20::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryShape0x2b20::VTable0x18(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00474e00);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00474e00 FOLDED
-undefined4 ImaginaryShape0x2b20::VTable0x1c(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryShape0x2b20::VTable0x1c(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00474e00);
 	return 0;

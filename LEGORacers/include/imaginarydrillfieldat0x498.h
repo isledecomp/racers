@@ -30,13 +30,13 @@ public:
 	};
 
 	ImaginaryDrillFieldAt0x498();
-	void Reset() override;                                                                 // vtable+0x00
-	~ImaginaryDrillFieldAt0x498() override;                                                // vtable+0x04
-	undefined4 VTable0x08() override;                                                      // vtable+0x08
-	void VTable0x10(Rect*) override;                                                       // vtable+0x10
-	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
-	void VTable0x40(ImaginaryInterface*) override;                                         // vtable+0x40
+	void Reset() override;                                                                          // vtable+0x00
+	~ImaginaryDrillFieldAt0x498() override;                                                         // vtable+0x04
+	undefined4 VTable0x08() override;                                                               // vtable+0x08
+	void VTable0x10(Rect*) override;                                                                // vtable+0x10
+	ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
+	undefined4 VTable0x38(Rect*, Rect*) override;                                                   // vtable+0x38
+	void VTable0x40(ImaginaryInterface*) override;                                                  // vtable+0x40
 	LegoBool32 FUN_004826c0(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
 
 	// SYNTHETIC: LEGORACERS 0x00482400

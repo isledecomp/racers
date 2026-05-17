@@ -16,6 +16,8 @@ class GolFileParser;
 class FloatyBoat0x28;
 class FloatyCanoe0x90;
 class FloatyKajak0x64;
+class FloatyFerry0xf4;
+class FloatyFrigate0x9c;
 class IGdbModel0x40;
 class MabMaterialAnimation0x14;
 class MagentaRibbon0x20;
@@ -208,8 +210,8 @@ private:
 	LegoFloat m_unk0x94;               // 0x94
 	BoundingVolume0x64* m_unk0x98;     // 0x98
 	FloatyCanoe0x90* m_unk0x9c;        // 0x9c
-	undefined4 m_unk0xa0;              // 0xa0
-	LegoChar* m_unk0xa4;               // 0xa4
+	FloatyFerry0xf4* m_unk0xa0;        // 0xa0
+	FloatyFrigate0x9c* m_unk0xa4;      // 0xa4
 	FloatyKajak0x64* m_unk0xa8;        // 0xa8
 	undefined4 m_unk0xac;              // 0xac
 	undefined4 m_unk0xb0;              // 0xb0

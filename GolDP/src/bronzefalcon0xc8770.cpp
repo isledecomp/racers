@@ -692,7 +692,7 @@ void BronzeFalcon0xc8770::VTable0x98(undefined4 p_arg1, undefined4 p_arg2, undef
 }
 
 // STUB: GOLDP 0x100092a0
-void BronzeFalcon0xc8770::VTable0x90()
+void BronzeFalcon0xc8770::VTable0x90(FloatyBoat0x28*)
 {
 	STUB(0x100092a0);
 }

@@ -2,6 +2,8 @@
 
 #include "boundingvolume0x64.h"
 #include "floatycanoe0x90.h"
+#include "floatyferry0xf4.h"
+#include "floatyfrigate0x9c.h"
 #include "floatykajak0x64.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -1124,6 +1126,7 @@ void ZoweeBlubberworth0xf0::VTable0x04()
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+
 	if (m_unk0x4c != 0) {
 		m_unk0x9c = new FloatyCanoe0x90[m_unk0x4c];
 		if (m_unk0x9c == NULL) {
@@ -1131,7 +1134,19 @@ void ZoweeBlubberworth0xf0::VTable0x04()
 		}
 	}
 
-	// ...
+	if (m_unk0x54 != 0) {
+		m_unk0xa0 = new FloatyFerry0xf4[m_unk0x54];
+		if (m_unk0x9c == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	if (m_unk0x5c != 0) {
+		m_unk0xa4 = new FloatyFrigate0x9c[m_unk0x5c];
+		if (m_unk0xa4 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
 
 	if (m_unk0x64 != 0) {
 		m_unk0xa8 = new FloatyKajak0x64[m_unk0x64];

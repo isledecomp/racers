@@ -60,8 +60,14 @@
 // LIBRARY: GOLDP 0x1004bb06
 // __toupper_lk
 
+// LIBRARY: GOLDP 0x1004bc48
+// __lseek_lk
+
 // LIBRARY: GOLDP 0x1004bd2e
 // __errno
+
+// LIBRARY: GOLDP 0x1004bd37
+// ___doserrno
 
 // LIBRARY: GOLDP 0x1004bd57
 // __sopen
@@ -78,8 +84,14 @@
 // LIBRARY: GOLDP 0x1004c106
 // __read
 
+// LIBRARY: GOLDP 0x1004c16b
+// __read_lk
+
 // LIBRARY: GOLDP 0x1004c344
 // __write
+
+// LIBRARY: GOLDP 0x1004c3a9
+// __write_lk
 
 // LIBRARY: GOLDP 0x1004c534
 // __commit
@@ -137,11 +149,26 @@
 // LIBRARY: GOLDP 0x1004f3cc
 // ___crtLCMapStringA
 
+// LIBRARY: GOLDP 0x1004f61b
+// __alloc_osfhnd
+
+// LIBRARY: GOLDP 0x1004f73e
+// __set_osfhnd
+
+// LIBRARY: GOLDP 0x1004f7ba
+// __free_osfhnd
+
+// LIBRARY: GOLDP 0x1004f839
+// __get_osfhandle
+
 // LIBRARY: GOLDP 0x1004f87b
 // __lock_fhandle
 
 // LIBRARY: GOLDP 0x1004f8da
 // __unlock_fhandle
+
+// LIBRARY: GOLDP 0x1004fb0c
+// __chsize_lk
 
 // LIBRARY: GOLDP 0x100502e9
 // __FF_MSGBANNER
@@ -152,6 +179,12 @@
 // TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x100508f5
 // _calloc
+
+// LIBRARY: GOLDP 0x10051c5d
+// __getbuf
+
+// LIBRARY: GOLDP 0x10051ca1
+// __isatty
 
 // LIBRARY: GOLDP 0x10051e30
 // _strlen
@@ -188,6 +221,9 @@
 
 // LIBRARY: GOLDP 0x10052fd0
 // __chkstk
+
+// LIBRARY: GOLDP 0x10052fff
+// __setmode_lk
 
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
@@ -234,14 +270,26 @@
 // GLOBAL: GOLDP 0x1005f770
 // __pctype
 
+// GLOBAL: GOLDP 0x1005fb58
+// ___badioinfo
+
 // GLOBAL: GOLDP 0x10065f0c
 // ___app_type
+
+// GLOBAL: GOLDP 0x10065f10
+// __umaskval
 
 // GLOBAL: GOLDP 0x10065fdc
 // ___lc_codepage
 
+// GLOBAL: GOLDP 0x10065fe8
+// __fmode
+
 // GLOBAL: GOLDP 0x100660f4
 // __adbgmsg
+
+// GLOBAL: GOLDP 0x10066100
+// __cflush
 
 // GLOBAL: GOLDP 0x10066104
 // __newmode
@@ -249,11 +297,17 @@
 // GLOBAL: GOLDP 0x10066108
 // ?_pnhHeap@@3P6AHI@ZA
 
+// GLOBAL: GOLDP 0x10067500
+// ___pioinfo
+
 // GLOBAL: GOLDP 0x10067604
 // ___setlc_active
 
 // GLOBAL: GOLDP 0x10067608
 // ___unguarded_readlc_active
+
+// GLOBAL: GOLDP 0x10067600
+// __nhandle
 
 // GLOBAL: GOLDP 0x10067620
 // __pRawDllMain

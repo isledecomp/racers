@@ -25,7 +25,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0044e050
 	// PeridotTraceRootEntryBase0x8::`scalar deleting destructor'
 
-private:
+	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
+
+protected:
 	undefined4 m_unk0x04; // 0x04
 };
 

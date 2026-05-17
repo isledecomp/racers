@@ -4,6 +4,7 @@
 #include "decomp.h"
 #include "displaydriverguid.h"
 #include "golfile.h"
+#include "peridottraceroot0x108.h"
 #include "types.h"
 
 #include <string.h>
@@ -81,6 +82,7 @@ public:
 			undefined4 p_unk0x10,
 			PeridotTraceBase0x24* p_owner
 		);
+		void Destroy();
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -92,7 +94,6 @@ public:
 
 	private:
 		void Initialize();
-		void Destroy();
 	};
 
 	// SIZE 0x241
@@ -108,10 +109,10 @@ public:
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
+	void Destroy();
 
 private:
 	void Initialize();
-	void Destroy();
 	void FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_0042b7f0();
 	void FUN_0042b830();
@@ -212,14 +213,20 @@ public:
 
 	LegoBool32 HasUnk0x4b4Flag0x01() const { return !m_unk0x4a8->HasUnk0x04() && m_unk0x4ac.HasUnk0x08Flag0x01(); }
 
+	void FUN_004438a0(
+		PeridotTraceRootEntry0x10* p_entry,
+		undefined4 p_count,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
 	void FUN_004438e0();
 	undefined4 FUN_00443910();
 	undefined4 FUN_00443940();
 	undefined4 FUN_00443980();
 
 private:
-	PeridotTrace0x4a8* m_unk0x4a8;     // 0x4a8
-	PeridotTraceAction0x34 m_unk0x4ac; // 0x4ac
+	PeridotTraceRootEntry0x10* m_unk0x4a8; // 0x4a8
+	PeridotTraceAction0x34 m_unk0x4ac;     // 0x4ac
 };
 
 // SIZE 0x438

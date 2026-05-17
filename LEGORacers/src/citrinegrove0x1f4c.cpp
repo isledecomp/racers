@@ -109,18 +109,41 @@ undefined4 CitrineGrove0x1f4c::FUN_004434a0(undefined4 p_index)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00443520
-void CitrineGrove0x1f4c::FUN_00443520(undefined4)
+// FUNCTION: LEGORACERS 0x00443520
+void CitrineGrove0x1f4c::FUN_00443520(undefined4 p_unk0x04)
 {
-	// TODO
-	STUB(0x00443520);
+	PeridotTraceRootBase0x08& root = m_unk0x00;
+	m_unk0x18c0 = root.GetEntryCount();
+	if (m_unk0x18c0 > 2) {
+		m_unk0x18c0 = 2;
+	}
+
+	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
+		PeridotTrace0x4e0* trace = &m_unk0xa58[i];
+		trace->FUN_004438a0(root.GetEntry(i), 100, 2, i);
+		m_unk0x18c4.FUN_0042ef80(trace);
+
+		undefined4 status = trace->FUN_00443910();
+		if (status == 0) {
+			trace->FUN_00443980();
+		}
+		else if (status == 8 && p_unk0x04) {
+			trace->FUN_00443940();
+		}
+	}
+
+	FUN_004435c0();
 }
 
-// STUB: LEGORACERS 0x004435c0
+// FUNCTION: LEGORACERS 0x004435c0
 void CitrineGrove0x1f4c::FUN_004435c0()
 {
-	// TODO
-	STUB(0x004435c0);
+	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
+		if (m_unk0xa58[i].HasUnk0x4b4Flag0x01() && m_unk0x18c4.GetUnk0x04() == 0xffffffff) {
+			m_unk0x18c4.FUN_0042eb60(&m_unk0xa58[i], i);
+			return;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00443620
@@ -149,11 +172,22 @@ void CitrineGrove0x1f4c::FUN_00443620(const LegoChar* p_fileName, PeridotTrace0x
 	}
 }
 
-// STUB: LEGORACERS 0x004436e0
+// FUNCTION: LEGORACERS 0x004436e0
 void CitrineGrove0x1f4c::FUN_004436e0()
 {
-	// TODO
-	STUB(0x4436e0);
+	m_unk0x1cfc.Destroy();
+	m_unk0x108.Destroy();
+	m_unk0x5b0.Destroy();
+	m_unk0x1418.Destroy();
+
+	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
+		m_unk0xa58[i].FUN_004438e0();
+	}
+
+	PeridotTraceRootBase0x08& root = m_unk0x00;
+	root.Clear();
+	m_unk0x18c4.Reset();
+	FUN_004432d0();
 }
 
 // FUNCTION: LEGORACERS 0x00443760

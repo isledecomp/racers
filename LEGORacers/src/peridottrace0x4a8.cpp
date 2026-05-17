@@ -150,6 +150,22 @@ PeridotTrace0x4e0::~PeridotTrace0x4e0()
 	FUN_004438e0();
 }
 
+// FUNCTION: LEGORACERS 0x004438a0
+void PeridotTrace0x4e0::FUN_004438a0(
+	PeridotTraceRootEntry0x10* p_entry,
+	undefined4 p_count,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10
+)
+{
+	if (m_unk0x04) {
+		FUN_004438e0();
+	}
+
+	FUN_004426d0(p_count, p_unk0x0c, p_unk0x10);
+	m_unk0x4a8 = p_entry;
+}
+
 // FUNCTION: LEGORACERS 0x004438e0
 void PeridotTrace0x4e0::FUN_004438e0()
 {

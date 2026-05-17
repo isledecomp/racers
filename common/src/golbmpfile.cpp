@@ -333,7 +333,7 @@ void GolBmpFile::VTable0x00()
 
 // STUB: GOLDP 0x100197a0
 // STUB: LEGORACERS 0x004021d0
-void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, undefined4* p_arg3)
+void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	LegoU32 widthScale = 1;
 	LegoU32 heightScale = 1;
@@ -347,9 +347,9 @@ void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, undefine
 	}
 
 	GolSurfaceFormat format = p_texture->GetTextureFormat();
-	FUN_100204d0(format, p_arg3);
+	FUN_100204d0(format, p_colorKey);
 	if (format.m_paletteMask != 0 && m_paletteSize != 0) {
-		FUN_100200f0(p_texture->GetPalette(), p_arg3);
+		FUN_100200f0(p_texture->GetPalette(), p_colorKey);
 	}
 
 	LegoU8* pixels;

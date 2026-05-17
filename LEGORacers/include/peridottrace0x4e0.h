@@ -3,6 +3,8 @@
 
 #include "decomp.h"
 #include "displaydriverguid.h"
+#include "golfile.h"
+#include "peridottraceroot0x108.h"
 #include "types.h"
 
 #include <string.h>
@@ -80,6 +82,7 @@ public:
 			undefined4 p_unk0x10,
 			PeridotTraceBase0x24* p_owner
 		);
+		void Destroy();
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -91,7 +94,6 @@ public:
 
 	private:
 		void Initialize();
-		void Destroy();
 	};
 
 	// SIZE 0x241
@@ -107,15 +109,16 @@ public:
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
+	void Destroy();
 
 private:
 	void Initialize();
-	void Destroy();
 	void FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_0042b7f0();
 	void FUN_0042b830();
 
 	friend class PeridotTrace0x4a8;
+	friend class PeridotTrace0x4e0;
 
 	LegoU32 m_unk0x00;    // 0x00
 	Record* m_unk0x04;    // 0x04
@@ -156,27 +159,51 @@ private:
 	undefined4 m_unk0x4a4;
 };
 
-// SIZE 0x34
-class PeridotTraceActionBase0x34 {
+// VTABLE: LEGORACERS 0x004b0fac
+// SIZE 0x30
+class PeridotTraceActionFile0x30 : public GolFile {
 public:
-	PeridotTraceActionBase0x34();
-	~PeridotTraceActionBase0x34();
+	~PeridotTraceActionFile0x30() override; // vtable+0x18
 
 	enum {
 		c_unk0x08Flag0x01 = 1 << 0,
 	};
 
-	LegoBool32 HasUnk0x08Flag0x01() const { return m_unk0x08 & c_unk0x08Flag0x01; }
+	LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize) override; // vtable+0x1c
+	LegoS32 Dispose() override;                                                                      // vtable+0x20
 
-private:
-	undefined4 m_unk0x00;             // 0x00
-	undefined4 m_unk0x04;             // 0x04
-	LegoU32 m_unk0x08;                // 0x08
-	undefined m_unk0x0c[0x34 - 0x0c]; // 0x0c
+	LegoBool32 HasUnk0x08Flag0x01() const { return m_flags & c_unk0x08Flag0x01; }
+
+	// SYNTHETIC: LEGORACERS 0x0044e110
+	// PeridotTraceActionFile0x30::`scalar deleting destructor'
 };
 
+// VTABLE: LEGORACERS 0x004b1288
 // SIZE 0x34
-class PeridotTraceAction0x34 : public PeridotTraceActionBase0x34 {};
+class PeridotTraceActionBase0x34 : public PeridotTraceActionFile0x30 {
+public:
+	PeridotTraceActionBase0x34();
+
+	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
+	// PeridotTraceActionBase0x34::~PeridotTraceActionBase0x34
+
+	// SYNTHETIC: LEGORACERS 0x00450e50 FOLDED
+	// PeridotTraceActionBase0x34::`scalar deleting destructor'
+
+private:
+	undefined4 m_unk0x30; // 0x30
+};
+
+// VTABLE: LEGORACERS 0x004b0ba4
+// SIZE 0x34
+class PeridotTraceAction0x34 : public PeridotTraceActionBase0x34 {
+public:
+	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
+	// PeridotTraceAction0x34::~PeridotTraceAction0x34
+
+	// SYNTHETIC: LEGORACERS 0x00450e50 FOLDED
+	// PeridotTraceAction0x34::`scalar deleting destructor'
+};
 
 // SIZE 0x4e0
 class PeridotTrace0x4e0 : public PeridotTrace0x4a8 {
@@ -186,14 +213,20 @@ public:
 
 	LegoBool32 HasUnk0x4b4Flag0x01() const { return !m_unk0x4a8->HasUnk0x04() && m_unk0x4ac.HasUnk0x08Flag0x01(); }
 
+	void FUN_004438a0(
+		PeridotTraceRootEntry0x10* p_entry,
+		undefined4 p_count,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
 	void FUN_004438e0();
 	undefined4 FUN_00443910();
 	undefined4 FUN_00443940();
 	undefined4 FUN_00443980();
 
 private:
-	PeridotTrace0x4a8* m_unk0x4a8;     // 0x4a8
-	PeridotTraceAction0x34 m_unk0x4ac; // 0x4ac
+	PeridotTraceRootEntry0x10* m_unk0x4a8; // 0x4a8
+	PeridotTraceAction0x34 m_unk0x4ac;     // 0x4ac
 };
 
 // SIZE 0x438

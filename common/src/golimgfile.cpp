@@ -81,7 +81,7 @@ void GolImgFile::Destroy()
 }
 
 // STUB: GOLDP 0x100200f0
-void GolImgFile::FUN_100200f0(IPalette0x4*, undefined4*)
+void GolImgFile::FUN_100200f0(IPalette0x4*, ColorRGBA* p_colorKey)
 {
 	// TODO
 	STUB(0x100200f0);
@@ -133,7 +133,7 @@ LegoU32 GolImgFile::FUN_10020370(const ColorRGBA& p_rgba)
 }
 
 // STUB: GOLDP 0x100204d0
-void GolImgFile::FUN_100204d0(const GolSurfaceFormat&, undefined4*)
+void GolImgFile::FUN_100204d0(const GolSurfaceFormat&, ColorRGBA* p_colorKey)
 {
 	// TODO
 	STUB(0x100204d0);
@@ -560,7 +560,7 @@ void GolImgFile::VTable0x1c(undefined4, undefined4, undefined4)
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void GolImgFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, undefined4*)
+void GolImgFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	// empty
 }

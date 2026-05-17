@@ -16,6 +16,7 @@
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
 #include "obscureanchor0x5c.h"
+#include "obscuresigil0xdc.h"
 #include "obscurevantage0x58.h"
 
 #include <string.h>
@@ -557,11 +558,21 @@ undefined4 ImaginaryNotion0x290::FUN_0046c400(undefined4*, undefined2, undefined
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0046c480
-void ImaginaryNotion0x290::FUN_0046c480(ObscureVantage0x58*, undefined4, undefined2)
+// FUNCTION: LEGORACERS 0x0046c480
+LegoBool32 ImaginaryNotion0x290::FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c)
 {
-	// TODO
-	STUB(0x0046c480);
+	ObscureSigil0xdc::CreateParams0x84* sourceParams =
+		static_cast<ObscureSigil0xdc::CreateParams0x84*>(FUN_0046be10(p_unk0x0c));
+	if (!sourceParams) {
+		return FALSE;
+	}
+
+	ObscureSigil0xdc::CreateParams0x84 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+	createParams.m_unk0x7c = p_unk0x08;
+	createParams.m_unk0x5c = 1.0f;
+	createParams.m_unk0x80 = VTable0x6c();
+	return p_unk0x04->FUN_00465820(&createParams, m_unk0x288);
 }
 
 // STUB: LEGORACERS 0x0046c510

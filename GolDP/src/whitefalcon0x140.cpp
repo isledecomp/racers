@@ -747,7 +747,7 @@ void WhiteFalcon0x140::SelectTextureFormat(
 }
 
 // STUB: GOLDP 0x10029500
-void WhiteFalcon0x140::VTable0xa4()
+void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28*)
 {
 	STUB(0x10029500);
 }
@@ -759,7 +759,7 @@ void WhiteFalcon0x140::VTable0xa0()
 }
 
 // FUNCTION: GOLDP 0x10029840
-void WhiteFalcon0x140::VTable0xa8(undefined4 p_param1, undefined4 p_param2, undefined4 p_param3)
+void WhiteFalcon0x140::VTable0xa8(FloatyBoat0x28* p_param1, LegoFloat p_param2, LegoFloat p_param3)
 {
 	VTable0x94(p_param1);
 }

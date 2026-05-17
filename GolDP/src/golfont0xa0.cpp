@@ -2,31 +2,31 @@
 
 #include "bronzefalcon0xc8770.h"
 #include "decomp.h"
+#include "duskwindbananarelic0x30.h"
+#include "purpledune0x7c.h"
 
 DECOMP_SIZE_ASSERT(GolFont0xa0, 0xa0)
 
-// STUB: GOLDP 0x100043d0
+// FUNCTION: GOLDP 0x100043d0
 GolFont0xa0::GolFont0xa0()
 {
-	// TODO
-	STUB(0x100043d0);
 	m_unk0x90 = NULL;
 	m_unk0x9c = NULL;
 	m_renderer = NULL;
 }
 
-// STUB: GOLDP 0x10004480
+// FUNCTION: GOLDP 0x10004480
 GolFont0xa0::~GolFont0xa0()
 {
-	// TODO
-	STUB(0x10004480);
+	Clear();
 }
 
-// STUB: GOLDP 0x10004520
+// FUNCTION: GOLDP 0x10004520
 void GolFont0xa0::Clear()
 {
-	// TODO
-	STUB(0x10004520);
+	m_unk0x40.VTable0x38();
+	ReleaseSurfaces();
+	GolFontBase0x40::Clear();
 }
 
 // STUB: GOLDP 0x10004570
@@ -36,11 +36,18 @@ void GolFont0xa0::VTable0x00(undefined4, undefined4)
 	STUB(0x10004570);
 }
 
-// STUB: GOLDP 0x100046e0
+// FUNCTION: GOLDP 0x100046e0
 void GolFont0xa0::ReleaseSurfaces()
 {
-	// TODO
-	STUB(0x100046e0);
+	if (m_unk0x9c != NULL) {
+		delete[] m_unk0x9c;
+		m_unk0x9c = NULL;
+	}
+
+	if (m_unk0x90 != NULL) {
+		delete[] m_unk0x90;
+		m_unk0x90 = NULL;
+	}
 }
 
 // STUB: GOLDP 0x10004720
@@ -57,12 +64,10 @@ void GolFont0xa0::VTable0x04(undefined4)
 	STUB(0x100047b0);
 }
 
-// STUB: GOLDP 0x10004b60
-undefined4* GolFont0xa0::VTable0x08(LegoU32)
+// FUNCTION: GOLDP 0x10004b60
+PurpleDune0x7c* GolFont0xa0::VTable0x08(LegoU32 p_index)
 {
-	// TODO
-	STUB(0x10004b60);
-	return NULL;
+	return &m_unk0x90[p_index];
 }
 
 // FUNCTION: GOLDP 0x10004b80

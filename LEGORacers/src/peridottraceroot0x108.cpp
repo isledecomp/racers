@@ -79,7 +79,7 @@ PeridotTraceRootEntry0x10::PeridotTraceRootEntry0x10()
 	m_index = 0;
 }
 
-// STUB: LEGORACERS 0x004510e0
+// FUNCTION: LEGORACERS 0x004510e0
 PeridotTraceRootEntry0x10::~PeridotTraceRootEntry0x10()
 {
 	Reset();

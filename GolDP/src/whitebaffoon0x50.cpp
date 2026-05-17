@@ -27,11 +27,11 @@ void WhiteBaffoon0x50::Reset()
 	m_unk0x28.m_bytes[0] = 0;
 	m_unk0x28.m_bytes[1] = 0;
 	m_unk0x28.m_bytes[2] = 0;
-	m_unk0x28.m_bytes[3] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[0] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[1] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[2] = (LegoChar) 0xff;
-	m_unk0x4a.m_bytes[3] = (LegoChar) 0xff;
+	m_unk0x28.m_uBytes[3] = 0xff;
+	m_unk0x4a.m_uBytes[0] = 0xff;
+	m_unk0x4a.m_uBytes[1] = 0xff;
+	m_unk0x4a.m_uBytes[2] = 0xff;
+	m_unk0x4a.m_uBytes[3] = 0xff;
 	m_unk0x04 = 0;
 	m_unk0x08 = 0;
 }

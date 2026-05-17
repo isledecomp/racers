@@ -26,6 +26,9 @@ public:
 	// SYNTHETIC: GOLDP 0x10004450
 	// BronzeDune0x4c::`scalar deleting destructor'
 
+	ColorRGBA* GetPaletteEntries() { return m_unk0x40.GetEntries(); }
+	LegoU32 GetPaletteSize() { return m_unk0x40.GetPaletteSize(); }
+
 protected:
 	undefined m_unk0x38[0x40 - 0x38];
 	BronzeDuneBag0xc m_unk0x40;

@@ -217,6 +217,7 @@ add_library(goldp SHARED
   GolDP/src/boundingvolume0x64.cpp
   GolDP/src/floatybuoy0x58.cpp
   GolDP/src/floatykajak0x64.cpp
+  GolDP/src/floatycanoe0x90.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )

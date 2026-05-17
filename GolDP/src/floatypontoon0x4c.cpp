@@ -71,7 +71,7 @@ void FloatyPontoon0x4c::VTable0x50()
 }
 
 // STUB: GOLDP 0x10029ee0
-void FloatyPontoon0x4c::VTable0x14(GolVec3* p_arg1, undefined4* p_arg2)
+void FloatyPontoon0x4c::VTable0x14(const GolVec3& p_arg1, ResultStruct* p_arg2)
 {
 	// TODO
 	STUB(0x10029ee0);
@@ -114,9 +114,9 @@ undefined4* FloatyPontoon0x4c::FUN_1002a020()
 }
 
 // FUNCTION: GOLDP 0x1002a040
-void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140* p_renderer)
+void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140& p_renderer)
 {
-	p_renderer->VTable0xb4(*this);
+	p_renderer.VTable0xb4(*this);
 }
 
 // FUNCTION: GOLDP 0x1002a060

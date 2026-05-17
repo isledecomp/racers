@@ -361,18 +361,17 @@ void PeridotTraceState0x438::FUN_0042ee10(
 // STUB: LEGORACERS 0x0042ee70
 void PeridotTraceState0x438::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
 {
-	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 	LegoU32 i;
 	LegoU32 j;
 
-	if (entry->m_events[p_eventIndex] == p_event) {
+	if (m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex] == p_event) {
 		return;
 	}
 
 	if ((p_event & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
 		for (i = 0; i < c_inputBindingEventCount; i++) {
-			if (entry->m_events[i] == p_event) {
-				entry->m_events[i] = 0;
+			if (m_state.m_inputBindings.m_entries[p_entryIndex].m_events[i] == p_event) {
+				m_state.m_inputBindings.m_entries[p_entryIndex].m_events[i] = 0;
 			}
 		}
 	}
@@ -388,7 +387,7 @@ void PeridotTraceState0x438::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventI
 		}
 	}
 
-	entry->m_events[p_eventIndex] = p_event;
+	m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex] = p_event;
 	m_unk0x00 = 1;
 }
 

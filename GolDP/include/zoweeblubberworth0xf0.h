@@ -14,6 +14,7 @@ class BoundingVolume0x64;
 class CmbModelPart0x34;
 class GolFileParser;
 class FloatyBoat0x28;
+class FloatyCanoe0x90;
 class FloatyKajak0x64;
 class IGdbModel0x40;
 class MabMaterialAnimation0x14;
@@ -206,7 +207,7 @@ private:
 	WdbLight0x10* m_unk0x90;           // 0x90
 	LegoFloat m_unk0x94;               // 0x94
 	BoundingVolume0x64* m_unk0x98;     // 0x98
-	undefined4 m_unk0x9c;              // 0x9c
+	FloatyCanoe0x90* m_unk0x9c;        // 0x9c
 	undefined4 m_unk0xa0;              // 0xa0
 	LegoChar* m_unk0xa4;               // 0xa4
 	FloatyKajak0x64* m_unk0xa8;        // 0xa8

@@ -4,7 +4,10 @@
 #include "decomp.h"
 #include "types.h"
 
+#define GOL_SQUARED(V) ((V) * (V))
 #define GOLVECTOR3_DOT(V1, V2) ((V1).m_x * (V2).m_x + (V1).m_y * (V2).m_y + (V1).m_z * (V2).m_z)
+#define GOLVECTOR3_DISTANCE_SQUARED(V1, V2)                                                                            \
+	(GOL_SQUARED((V1).m_x - (V2).m_x) + GOL_SQUARED((V1).m_y - (V2).m_y) + GOL_SQUARED((V1).m_z - (V2).m_z))
 
 // SIZE 0x8
 struct GolVec2 {

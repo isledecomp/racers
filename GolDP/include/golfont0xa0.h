@@ -5,6 +5,8 @@
 #include "golfontbase0x40.h"
 
 class BronzeFalcon0xc8770;
+class DuskwindBananaRelic0x30;
+class PurpleDune0x7c;
 
 // VTABLE: GOLDP 0x100562dc
 // SIZE 0xa0
@@ -14,7 +16,7 @@ public:
 
 	void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08) override;        // vtable+0x00
 	void VTable0x04(undefined4 p_unk0x04) override;                              // vtable+0x04
-	undefined4* VTable0x08(LegoU32 p_index) override;                            // vtable+0x08
+	PurpleDune0x7c* VTable0x08(LegoU32 p_index) override;                        // vtable+0x08
 	void VTable0x0c(WhiteFalcon0x140* p_unk0x04, undefined4 p_unk0x08) override; // vtable+0x0c
 	void VTable0x10(LegoU32 p_index) override;                                   // vtable+0x10
 	void VTable0x14(undefined4 p_unk0x04, undefined4 p_unk0x08) override;        // vtable+0x14
@@ -29,12 +31,12 @@ public:
 	void RefreshSurfaces(BronzeFalcon0xc8770* p_renderer);
 
 private:
-	BronzeDune0x4c m_unk0x40;        // 0x40
-	BronzeFalcon0xc8770* m_renderer; // 0x8c
-	undefined4* m_unk0x90;           // 0x90
-	LegoFloat m_unk0x94;             // 0x94
-	LegoFloat m_unk0x98;             // 0x98
-	undefined4* m_unk0x9c;           // 0x9c
+	BronzeDune0x4c m_unk0x40;           // 0x40
+	BronzeFalcon0xc8770* m_renderer;    // 0x8c
+	PurpleDune0x7c* m_unk0x90;          // 0x90
+	LegoFloat m_unk0x94;                // 0x94
+	LegoFloat m_unk0x98;                // 0x98
+	DuskwindBananaRelic0x30* m_unk0x9c; // 0x9c
 };
 
 #endif // GOLFONT0XA0_H

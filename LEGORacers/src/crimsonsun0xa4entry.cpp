@@ -76,50 +76,52 @@ LegoBool32 CrimsonSun0xa4::Entry0x74c::FUN_00468300(CreateParams0x18* p_createPa
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00468390
+// FUNCTION: LEGORACERS 0x00468390
 void CrimsonSun0xa4::Entry0x74c::FUN_00468390()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x740;
 
-	icon->VTable0x40(this);
+	m_unk0x740->VTable0x40(this);
 
-	LegoS32 bottom = icon->GetRect()->m_bottom + 0x14;
+	LegoS32 bottom = m_unk0x740->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
 
-	rect.m_left = 0x19;
 	rect.m_top = m_unk0x6c8.GetRect()->m_bottom + 0x14;
-	rect.m_right = bottom + rect.m_top;
-	rect.m_bottom = icon->GetRect()->m_right + 0x19;
+	LegoS32 rectBottom = m_unk0x740->GetRect()->m_bottom;
+	rectBottom += rect.m_top;
+	rect.m_left = 0x19;
+	rect.m_bottom = rectBottom;
+	rect.m_right = m_unk0x740->GetRect()->m_right + 0x19;
 
-	icon->VTable0x10(&rect);
-	icon->SetParent(&m_unk0x2cc);
-	icon->AttachToParent(GetUnk0xd8());
-	icon->VTable0x4c(5);
+	m_unk0x740->VTable0x10(&rect);
+	m_unk0x740->SetParent(&m_unk0x2cc);
+	m_unk0x740->AttachToParent(GetUnk0xd8());
+	m_unk0x740->VTable0x4c(5);
 }
 
-// STUB: LEGORACERS 0x00468430
+// FUNCTION: LEGORACERS 0x00468430
 void CrimsonSun0xa4::Entry0x74c::FUN_00468430()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x744;
 
-	icon->VTable0x40(this);
+	m_unk0x744->VTable0x40(this);
 
-	LegoS32 bottom = icon->GetRect()->m_bottom + 0x14;
+	LegoS32 bottom = m_unk0x744->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
 
-	rect.m_left = 0x19;
 	rect.m_top = m_unk0x6c8.GetRect()->m_bottom + 0x14;
-	rect.m_right = bottom + rect.m_top;
-	rect.m_bottom = icon->GetRect()->m_right + 0x19;
+	LegoS32 rectBottom = m_unk0x744->GetRect()->m_bottom;
+	rectBottom += rect.m_top;
+	rect.m_left = 0x19;
+	rect.m_bottom = rectBottom;
+	rect.m_right = m_unk0x744->GetRect()->m_right + 0x19;
 
-	icon->VTable0x10(&rect);
-	icon->SetParent(&m_unk0x2cc);
-	icon->AttachToParent(GetUnk0xd8());
+	m_unk0x744->VTable0x10(&rect);
+	m_unk0x744->SetParent(&m_unk0x2cc);
+	m_unk0x744->AttachToParent(GetUnk0xd8());
 
 	if (m_unk0x2c8) {
-		icon->VTable0x4c(5);
+		m_unk0x744->VTable0x4c(5);
 	}
 }
 
@@ -127,24 +129,25 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468430()
 void CrimsonSun0xa4::Entry0x74c::FUN_004684e0()
 {
 	Rect rect;
-	ObscureIcon0x1a8* icon = m_unk0x748;
 
-	icon->VTable0x40(this);
+	m_unk0x748->VTable0x40(this);
 
-	LegoS32 bottom = icon->GetRect()->m_bottom + 0x14;
+	LegoS32 bottom = m_unk0x748->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
 
-	rect.m_left = 0x19;
 	rect.m_top = m_unk0x744->GetRect()->m_bottom + 0x14;
-	rect.m_right = bottom + rect.m_top;
-	rect.m_bottom = icon->GetRect()->m_right + 0x19;
+	LegoS32 rectBottom = m_unk0x748->GetRect()->m_bottom;
+	rectBottom += rect.m_top;
+	rect.m_left = 0x19;
+	rect.m_bottom = rectBottom;
+	rect.m_right = m_unk0x748->GetRect()->m_right + 0x19;
 
-	icon->VTable0x10(&rect);
-	icon->SetParent(&m_unk0x2cc);
-	icon->AttachToParent(GetUnk0xd8());
+	m_unk0x748->VTable0x10(&rect);
+	m_unk0x748->SetParent(&m_unk0x2cc);
+	m_unk0x748->AttachToParent(GetUnk0xd8());
 
 	if (!m_unk0x2c8) {
-		icon->VTable0x4c(5);
+		m_unk0x748->VTable0x4c(5);
 	}
 }
 

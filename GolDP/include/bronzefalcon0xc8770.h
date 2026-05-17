@@ -130,7 +130,7 @@ public:
 	) override;                                                             // vtable+0x84
 	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
 	void VTable0x8c(undefined4, undefined4, undefined4) override;           // vtable+0x8c
-	void VTable0x90() override;                                             // vtable+0x90
+	void VTable0x90(FloatyBoat0x28*) override;                              // vtable+0x90
 	void VTable0x94(FloatyBoat0x28*) override;                              // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4) override;           // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4) override;           // vtable+0x9c

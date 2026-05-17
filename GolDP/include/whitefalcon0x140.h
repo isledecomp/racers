@@ -175,7 +175,7 @@ public:
 	) = 0;                                                                                     // vtable+0x84
 	virtual void VTable0x88(undefined4, undefined4, undefined4);                               // vtable+0x88
 	virtual void VTable0x8c(undefined4, undefined4, undefined4);                               // vtable+0x8c
-	virtual void VTable0x90() = 0;                                                             // vtable+0x90
+	virtual void VTable0x90(FloatyBoat0x28*) = 0;                                              // vtable+0x90
 	virtual void VTable0x94(FloatyBoat0x28*) = 0;                                              // vtable+0x94
 	virtual void VTable0x98(undefined4, undefined4, undefined4);                               // vtable+0x98
 	virtual void VTable0x9c(undefined4, undefined4, undefined4);                               // vtable+0x9c

@@ -148,14 +148,14 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) = 0;                                                                       // vtable+0x74
-	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) = 0; // vtable+0x78
-	virtual undefined4 VTable0x7c(
+	) = 0;                                                                  // vtable+0x74
+	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
+	virtual void VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
-		undefined4 p_unk0x14
+		Rect* p_clipRect
 	) = 0; // vtable+0x7c
 	virtual void DrawRectangle(
 		const Rect& p_rect,

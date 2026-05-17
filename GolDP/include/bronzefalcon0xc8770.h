@@ -103,14 +103,14 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) override;                                                               // vtable+0x74
-	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) override; // vtable+0x78
-	undefined4 VTable0x7c(
+	) override;                                                          // vtable+0x74
+	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) override; // vtable+0x78
+	void VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
-		undefined4 p_unk0x14
+		Rect* p_clipRect
 	) override; // vtable+0x7c
 	void DrawRectangle(
 		const Rect& p_rect,
@@ -178,6 +178,7 @@ public:
 	friend class DirectDrawPalette;
 	friend class SlatePeak0x58;
 	friend class BronzeFalconSurface0x5c;
+	friend class UtopianPan0xa4;
 
 private:
 	static LegoFloat ScaleColorChannel(double p_color, double p_materialColor)
@@ -186,6 +187,7 @@ private:
 	}
 
 	void FUN_100082e0();
+	void FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count);
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(GoldDune0x38*);

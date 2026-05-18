@@ -91,3 +91,9 @@ void LegoPieceLibrary::Reset()
 	m_unk0x34 = 0;
 	m_unk0x38 = 0;
 }
+
+// STUB: LEGORACERS 0x0049ee30
+void LegoPieceLibrary::FUN_0049ee30(const LegoChar*, undefined4)
+{
+	STUB(0x0049ee30);
+}

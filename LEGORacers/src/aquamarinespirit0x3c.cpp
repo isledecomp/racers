@@ -275,3 +275,9 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 	}
 #endif
 }
+
+// STUB: LEGORACERS 0x0041e570
+void AquamarineSpirit0x3c::FUN_0041e570()
+{
+	STUB(0x0041e570);
+}

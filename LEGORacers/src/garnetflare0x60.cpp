@@ -16,6 +16,13 @@ GarnetFlare0x60::~GarnetFlare0x60()
 	STUB(0x497e90);
 }
 
+// STUB: LEGORACERS 0x00497f10
+LegoBool32 GarnetFlare0x60::FUN_00497f10(const LoadParams*, undefined4)
+{
+	STUB(0x00497f10);
+	return TRUE;
+}
+
 // STUB: LEGORACERS 0x00497fb0
 LegoBool32 GarnetFlare0x60::ReleaseResources()
 {

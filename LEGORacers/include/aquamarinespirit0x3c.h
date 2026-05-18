@@ -13,6 +13,7 @@ class CmbTxtParser : public GolTxtParser {};
 
 class GolExport;
 class AmberHaze0x1c;
+class BronzeFalcon0xc8770;
 class MagentaRibbon0x20;
 class OpalHaven0xf4;
 class WhiteFalconNode0x18;
@@ -30,13 +31,14 @@ public:
 
 	struct Params {
 		GolExport* m_unk0x00;
-		undefined4 m_unk0x04;
+		BronzeFalcon0xc8770* m_unk0x04;
 		LegoS32 m_unk0x08;
 		const LegoChar* m_filename;
 		undefined4 m_unk0x10;
 	};
 
 	void FUN_0041db10(const Params* p_params);
+	void FUN_0041e570();
 
 	// SIZE 0x104
 	struct Item0x104 {

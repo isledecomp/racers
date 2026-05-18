@@ -59,3 +59,9 @@ void TopazBurst0x14::FUN_0049ce40()
 	m_unk0x00 = 0;
 	m_unk0x10 = 0;
 }
+
+// STUB: LEGORACERS 0x0049ce80
+void TopazBurst0x14::FUN_0049ce80(const LegoChar*, LegoPieceLibrary*, VerdantTide0x38*, undefined4)
+{
+	STUB(0x0049ce80);
+}

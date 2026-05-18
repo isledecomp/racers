@@ -4,6 +4,9 @@
 #include "decomp.h"
 #include "types.h"
 
+class LegoPieceLibrary;
+class VerdantTide0x38;
+
 // SIZE 0x14
 class TopazBurst0x14 {
 public:
@@ -28,6 +31,12 @@ public:
 	~TopazBurst0x14();
 
 	void SetUnk0x00(undefined4 p_unk0x00) { m_unk0x00 = p_unk0x00; }
+	void FUN_0049ce80(
+		const LegoChar* p_filename,
+		LegoPieceLibrary* p_pieceLibrary,
+		VerdantTide0x38* p_unk0x0c,
+		undefined4 p_binary
+	);
 
 private:
 	void FUN_0049ce40();

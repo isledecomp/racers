@@ -36,6 +36,13 @@ void TanzaniteWisp0x88::ResetMenuState()
 	m_unk0x0c = 0;
 }
 
+// STUB: LEGORACERS 0x0049d1d0
+undefined4 TanzaniteWisp0x88::FUN_0049d1d0(const LoadParams*)
+{
+	STUB(0x0049d1d0);
+	return 0;
+}
+
 // FUNCTION: LEGORACERS 0x0049d210
 LegoBool32 TanzaniteWisp0x88::ReleaseMenuResources()
 {

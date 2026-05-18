@@ -11,14 +11,24 @@ class MagentaRibbon0x20;
 class MusicInstance;
 class MenuManager;
 class MusicGroup;
+class GarnetFlare0x60;
 
 // SIZE 0x88
 class TanzaniteWisp0x88 {
 public:
+	// SIZE 0x10
+	struct LoadParams {
+		GolExport* m_golExport;          // 0x00
+		BronzeFalcon0xc8770* m_renderer; // 0x04
+		undefined4 m_menuId;             // 0x08
+		GarnetFlare0x60* m_unk0x0c;      // 0x0c
+	};
+
 	TanzaniteWisp0x88();
 	~TanzaniteWisp0x88();
 
 	void ResetMenuState();
+	undefined4 FUN_0049d1d0(const LoadParams* p_params);
 	LegoBool32 ReleaseMenuResources();
 	void RefreshMenuResources();
 

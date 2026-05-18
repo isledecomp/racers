@@ -31,6 +31,7 @@ public:
 	~LegoPieceLibrary();
 
 	void Destroy();
+	void FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
 
 private:
 	void DestroyData();

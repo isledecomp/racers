@@ -76,7 +76,6 @@ public:
 		undefined4 p_unk0x20,
 		ColorRGBA* p_colorKey
 	);
-	void FUN_10022800(undefined4, undefined4, undefined4, undefined4, undefined4, undefined4, undefined4, undefined4);
 	void FUN_10022880(
 		LegoU8* p_src,
 		LegoU8* p_dst,

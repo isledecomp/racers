@@ -2,6 +2,7 @@
 
 DECOMP_SIZE_ASSERT(TurquoiseGlow0x80, 0x80)
 DECOMP_SIZE_ASSERT(TurquoiseGlowColor, 0x05)
+DECOMP_SIZE_ASSERT(TurquoiseGlow0x80::LoadParams, 0x14)
 DECOMP_SIZE_ASSERT(TurquoiseGlow0x80::Entry0x30, 0x30)
 
 // STUB: LEGORACERS 0x00420680
@@ -23,6 +24,12 @@ void TurquoiseGlow0x80::Clear()
 {
 	// TODO
 	STUB(0x004207b0);
+}
+
+// STUB: LEGORACERS 0x004208f0
+void TurquoiseGlow0x80::Load(LoadParams*)
+{
+	STUB(0x004208f0);
 }
 
 // FUNCTION: LEGORACERS 0x00421050

@@ -2,6 +2,8 @@
 
 #include "audio/soundgroupbinding.h"
 #include "crimsonsun0xa4.h"
+#include "golhashtable.h"
+#include "golstream.h"
 #include "input/inputmanager.h"
 #include "menutoolcontext0x4bc8.h"
 #include "menutoolcreateparams0x30.h"
@@ -25,16 +27,31 @@ void ImaginaryDrill0x2450::FUN_00480210(MenuToolContext0x4bc8*, undefined4)
 	STUB(0x00480210);
 }
 
-// STUB: LEGORACERS 0x00480310
+// FUNCTION: LEGORACERS 0x00480310
 void ImaginaryDrill0x2450::FUN_00480310()
 {
-	STUB(0x00480310);
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
+	}
+
+	TurquoiseGlow0x80::LoadParams params;
+	params.m_golExport = m_context->m_context->m_golApp->GetGolExport();
+	params.m_renderer = m_context->m_context->m_golApp->GetRenderer();
+	params.m_unk0x08 = 0;
+	params.m_filename = "drivers.ddf";
+	params.m_unk0x10 = m_context->m_context->m_unk0x18;
+	m_context->m_unk0x425c.Load(&params);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
 }
 
-// STUB: LEGORACERS 0x004803a0
+// FUNCTION: LEGORACERS 0x004803a0
 void ImaginaryDrill0x2450::FUN_004803a0()
 {
-	STUB(0x004803a0);
+	TurquoiseGlow0x80* drivers = &m_context->m_unk0x425c;
+	drivers->Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00480b70

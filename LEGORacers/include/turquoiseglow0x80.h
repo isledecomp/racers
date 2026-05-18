@@ -8,10 +8,22 @@
 #include "turquoiseglowcolor.h"
 #include "types.h"
 
+class BronzeFalcon0xc8770;
+class GolExport;
+
 // VTABLE: LEGORACERS 0x004b00a4
 // SIZE 0x80
 class TurquoiseGlow0x80 : public GolNameTable {
 public:
+	// SIZE 0x14
+	struct LoadParams {
+		GolExport* m_golExport;          // 0x00
+		BronzeFalcon0xc8770* m_renderer; // 0x04
+		undefined4 m_unk0x08;            // 0x08
+		LegoChar* m_filename;            // 0x0c
+		undefined4 m_unk0x10;            // 0x10
+	};
+
 	// SIZE 0x30
 	struct Entry0x30 {
 		LegoU16 m_unk0x00;          // 0x00
@@ -35,6 +47,7 @@ public:
 	~TurquoiseGlow0x80() override; // vtable+0x00
 
 	void Clear() override; // vtable+0x08
+	void Load(LoadParams* p_params);
 	void FUN_00421050(LegoU32 p_index, TurquoiseGlowColor* p_color);
 
 	// SYNTHETIC: LEGORACERS 0x004206f0

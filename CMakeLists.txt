@@ -132,6 +132,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/shadowwolf0xc.cpp
   GolDP/src/gdbmodel0x48.cpp
   GolDP/src/greyfalconnode0x1c.cpp
+  GolDP/src/bronzedunebag0xc.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})

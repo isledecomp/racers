@@ -56,12 +56,12 @@ LegoBool32 ImaginaryDrillFieldAt0x420::FUN_0046f520(
 }
 
 // FUNCTION: LEGORACERS 0x0046f580
-void ImaginaryDrillFieldAt0x420::VTable0x44(undefined2, undefined4)
+void ImaginaryDrillFieldAt0x420::VTable0x44(undefined2 p_unk0x04, undefined4 p_unk0x08)
 {
 	GolString string;
 
-	m_unk0x5c->CopyStringByIndex(&string, 0);
-	VTable0x40(&string, 0);
+	m_unk0x5c->CopyStringByIndex(&string, p_unk0x04);
+	VTable0x40(&string, p_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x0046f600

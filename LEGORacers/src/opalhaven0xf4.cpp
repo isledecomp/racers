@@ -28,10 +28,6 @@ void OpalHaven0xf4::Reset()
 	m_unk0xf0 = 0;
 }
 
-void OpalHaven0xf4::VTable0x40(LegoFloat*, LegoFloat*)
-{
-}
-
 // STUB: LEGORACERS 0x0040dad0
 void OpalHaven0xf4::FUN_0040dad0(undefined2)
 {
@@ -42,6 +38,24 @@ void OpalHaven0xf4::FUN_0040dad0(undefined2)
 void OpalHaven0xf4::FUN_0040db80(undefined4, undefined4, LegoFloat, undefined4, undefined4, undefined4)
 {
 	STUB(0x0040db80);
+}
+
+// STUB: LEGORACERS 0x0040dd60
+void OpalHaven0xf4::VTable0x10(undefined4)
+{
+	STUB(0x0040dd60);
+}
+
+// STUB: LEGORACERS 0x0040e0b0
+void OpalHaven0xf4::VTable0x4c(undefined4)
+{
+	STUB(0x0040e0b0);
+}
+
+// STUB: LEGORACERS 0x0040e270
+void OpalHaven0xf4::VTable0x14(undefined4, undefined4)
+{
+	STUB(0x0040e270);
 }
 
 // STUB: LEGORACERS 0x0040e360

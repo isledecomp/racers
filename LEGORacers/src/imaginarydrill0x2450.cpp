@@ -10,6 +10,8 @@
 #include "sapphirereef0x2030.h"
 #include "turquoiseglow0x80.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(ImaginaryDrill0x2450, 0x2450)
 
 // GLOBAL: LEGORACERS 0x004c214c
@@ -76,19 +78,22 @@ void ImaginaryDrill0x2450::Reset()
 	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x00480e40
+// FUNCTION: LEGORACERS 0x00480e40
 void ImaginaryDrill0x2450::FUN_00480e40()
 {
 	ImaginaryDrillFieldAt0x22dc::CreateParams params;
 	LegoFloat vector0[3];
 	LegoFloat vector1[3];
+	BronzeFalcon0xc8770* renderer;
 
 	FUN_0046c480(&m_unk0x21f8, 0, 0xd0);
 
-	params.m_renderer = m_renderer;
+	renderer = m_renderer;
+	::memset(&params, 0, sizeof(params));
 	params.m_golExport = m_golExport;
-	params.m_unk0x08 = &m_unk0x21f8;
 	params.m_unk0x0c = &m_context->m_unk0x4b40;
+	params.m_unk0x08 = &m_unk0x21f8;
+	params.m_renderer = renderer;
 	params.m_unk0x10 = 18.18122864f;
 	params.m_unk0x14 = -10.62275887f;
 	params.m_unk0x18 = 0.025708f;
@@ -228,7 +233,11 @@ void ImaginaryDrill0x2450::VTable0x84()
 // STUB: LEGORACERS 0x004812f0
 undefined4 ImaginaryDrill0x2450::VTable0x18(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
-	return m_unk0x364 ? TRUE : FALSE;
+	if (m_unk0x364) {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00481310

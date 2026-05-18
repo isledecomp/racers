@@ -18,8 +18,8 @@ class ImaginaryDrillFieldAt0x22dc : public ObscureLink0x1c {
 public:
 	// SIZE 0x1c
 	struct CreateParams {
-		BronzeFalcon0xc8770* m_renderer; // 0x00
-		GolExport* m_golExport;          // 0x04
+		GolExport* m_golExport;          // 0x00
+		BronzeFalcon0xc8770* m_renderer; // 0x04
 		ObscureSigil0xdc* m_unk0x08;     // 0x08
 		TanzaniteWisp0x88* m_unk0x0c;    // 0x0c
 		LegoFloat m_unk0x10;             // 0x10

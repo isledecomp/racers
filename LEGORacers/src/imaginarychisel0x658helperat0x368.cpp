@@ -59,43 +59,29 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::FUN_00466b50(
 	return m_flags & 1;
 }
 
-// STUB: LEGORACERS 0x00466b90
-LegoS32 ImaginaryChisel0x658::HelperAt0x368::FUN_00466b90()
+// FUNCTION: LEGORACERS 0x00466b90
+void ImaginaryChisel0x658::HelperAt0x368::FUN_00466b90()
 {
 	const SlatePeak0x58* renderTarget = m_renderer->GetRenderTargetInfo();
-	LegoS32 result;
-	LegoS32 top;
-	LegoS32 right;
-	LegoS32 bottom;
+	Rect rect = *GetGlobalRect();
 
-	Rect* globalRect = GetGlobalRect();
-	result = globalRect->m_left;
-	top = globalRect->m_top;
-	right = globalRect->m_right;
-	bottom = globalRect->m_bottom;
-
-	if (result < 0) {
-		result = 0;
+	if (rect.m_left < 0) {
+		rect.m_left = 0;
 	}
 
-	if (right > renderTarget->GetWidth()) {
-		right = renderTarget->GetWidth();
+	if (rect.m_right > renderTarget->GetWidth()) {
+		rect.m_right = renderTarget->GetWidth();
 	}
 
-	if (top < 0) {
-		top = 0;
+	if (rect.m_top < 0) {
+		rect.m_top = 0;
 	}
 
-	if (bottom > renderTarget->GetHeight()) {
-		bottom = renderTarget->GetHeight();
+	if (rect.m_bottom > renderTarget->GetHeight()) {
+		rect.m_bottom = renderTarget->GetHeight();
 	}
 
-	m_unk0x2b4.m_left = result;
-	m_unk0x2b4.m_top = top;
-	m_unk0x2b4.m_right = right;
-	m_unk0x2b4.m_bottom = bottom;
-
-	return result;
+	m_unk0x2b4 = rect;
 }
 
 // FUNCTION: LEGORACERS 0x00466bf0

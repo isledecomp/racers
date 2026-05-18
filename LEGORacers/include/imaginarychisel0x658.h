@@ -38,7 +38,7 @@ public:
 
 		undefined4 FUN_00466b50(ImaginaryNotion0x290::FieldAt0x54* p_createParams, undefined4 p_unk0x08);
 		void FUN_00466b10();
-		LegoS32 FUN_00466b90();
+		void FUN_00466b90();
 		void FUN_00466bf0(ImaginaryNotion0x290::FieldAt0x54* p_createParams, undefined4 p_unk0x08);
 		void FUN_00466d00(SaffronQuartz0x2c::Frame0xb8* p_frame);
 

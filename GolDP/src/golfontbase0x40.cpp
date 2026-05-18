@@ -199,9 +199,8 @@ LegoS32 GolFontBase0x40::FUN_1001eb70(
 {
 	GolFontBase0x40* font = this;
 	GolString* string = p_string;
-	LegoU16 selectionLength = string->SelectionLength();
-	if (selectionLength) {
-		LegoU32 length = selectionLength;
+	if (string->SelectionLength()) {
+		LegoU32 length = string->SelectionLength();
 		LegoU32 offset = 0;
 
 		while (length > 0) {

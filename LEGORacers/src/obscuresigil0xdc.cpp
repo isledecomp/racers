@@ -106,17 +106,17 @@ undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 }
 
 // STUB: LEGORACERS 0x00465fe0
-undefined4 ObscureSigil0xdc::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00465fe0);
-	return 0;
+	return NULL;
 }
 
 // STUB: LEGORACERS 0x00466010
-undefined4 ObscureSigil0xdc::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x00466010);
-	return 0;
+	return NULL;
 }
 
 // STUB: LEGORACERS 0x00466040
@@ -127,8 +127,8 @@ undefined4 ObscureSigil0xdc::VTable0x3c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00466090 FOLDED
-undefined4 ObscureSigil0xdc::VTable0x2c(void*, undefined4, undefined4)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x2c(void*, undefined4, undefined4)
 {
 	STUB(0x00466090);
-	return 0;
+	return NULL;
 }

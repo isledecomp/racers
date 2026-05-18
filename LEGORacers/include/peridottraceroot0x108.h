@@ -12,15 +12,15 @@ class PeridotTraceRoot0x108;
 class PeridotTraceRootEntryBase0x8 {
 public:
 	PeridotTraceRootEntryBase0x8();
-	virtual ~PeridotTraceRootEntryBase0x8();               // vtable+0x00
-	virtual undefined4 VTable0x04() = 0;                   // vtable+0x04
-	virtual undefined4 VTable0x08() = 0;                   // vtable+0x08
-	virtual undefined4 VTable0x0c(undefined4) = 0;         // vtable+0x0c
-	virtual undefined4 VTable0x10(undefined4);             // vtable+0x10
-	virtual undefined4 VTable0x14(undefined4) = 0;         // vtable+0x14
-	virtual undefined4 VTable0x18(undefined4, undefined4); // vtable+0x18
-	virtual undefined4 VTable0x1c(undefined4);             // vtable+0x1c
-	virtual undefined4 VTable0x20(undefined4, undefined4); // vtable+0x20
+	virtual ~PeridotTraceRootEntryBase0x8();            // vtable+0x00
+	virtual LegoS32 VTable0x04() = 0;                   // vtable+0x04
+	virtual LegoS32 VTable0x08() = 0;                   // vtable+0x08
+	virtual LegoS32 VTable0x0c(const LegoChar*) = 0;    // vtable+0x0c
+	virtual LegoS32 VTable0x10(undefined4);             // vtable+0x10
+	virtual LegoS32 VTable0x14(const LegoChar*) = 0;    // vtable+0x14
+	virtual LegoS32 VTable0x18(undefined4, undefined4); // vtable+0x18
+	virtual LegoS32 VTable0x1c(undefined4);             // vtable+0x1c
+	virtual LegoS32 VTable0x20(undefined4, undefined4); // vtable+0x20
 
 	// SYNTHETIC: LEGORACERS 0x0044e050
 	// PeridotTraceRootEntryBase0x8::`scalar deleting destructor'
@@ -36,11 +36,11 @@ protected:
 class PeridotTraceRootEntry0x10 : public PeridotTraceRootEntryBase0x8 {
 public:
 	PeridotTraceRootEntry0x10();
-	~PeridotTraceRootEntry0x10() override;      // vtable+0x00
-	undefined4 VTable0x04() override;           // vtable+0x04
-	undefined4 VTable0x08() override;           // vtable+0x08
-	undefined4 VTable0x0c(undefined4) override; // vtable+0x0c
-	undefined4 VTable0x14(undefined4) override; // vtable+0x14
+	~PeridotTraceRootEntry0x10() override;        // vtable+0x00
+	LegoS32 VTable0x04() override;                // vtable+0x04
+	LegoS32 VTable0x08() override;                // vtable+0x08
+	LegoS32 VTable0x0c(const LegoChar*) override; // vtable+0x0c
+	LegoS32 VTable0x14(const LegoChar*) override; // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x004510c0
 	// PeridotTraceRootEntry0x10::`scalar deleting destructor'
@@ -49,6 +49,9 @@ public:
 	void Reset();
 
 private:
+	LegoS32 BuildFilePath(const LegoChar* p_fileName, LegoChar* p_buffer);
+	LegoS32 BuildDirectoryPath(LegoChar* p_buffer);
+
 	PeridotTraceRoot0x108* m_root; // 0x08
 	LegoU32 m_index;               // 0x0c
 };
@@ -73,6 +76,8 @@ public:
 	virtual void Clear() = 0;                                 // vtable+0x00
 	virtual LegoU32 GetEntryCount() = 0;                      // vtable+0x04
 	virtual PeridotTraceRootEntry0x10* GetEntry(LegoU32) = 0; // vtable+0x08
+
+	const LegoChar* GetDirectoryPath() const { return m_directoryPath; }
 
 protected:
 	LegoChar* m_directoryPath; // 0x04

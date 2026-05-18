@@ -10,6 +10,7 @@
 #include "ipalette0x4.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
+#include "slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
 
@@ -17,6 +18,9 @@ extern const ColorRGBA g_unk0x10057668;
 
 // GLOBAL: GOLDP 0x10062b18
 static GolImgFile g_unk0x10062b18;
+
+// GLOBAL: GOLDP 0x100630c8
+static D3DTLVERTEX g_unk0x100630c8[4];
 
 // GLOBAL: GOLDP 0x10063ca0
 static GolTgaFile g_unk0x10063ca0;
@@ -204,7 +208,7 @@ void UtopianPan0xa4::FUN_100054d0(
 	BronzeFalcon0xc8770* p_renderer,
 	undefined4 p_unk0x08,
 	Rect* p_destRect,
-	undefined4 p_unk0x14
+	Rect* p_clipRect
 )
 {
 	Rect sourceRect;
@@ -213,15 +217,193 @@ void UtopianPan0xa4::FUN_100054d0(
 	sourceRect.m_right = m_width;
 	sourceRect.m_bottom = m_height;
 
-	FUN_10005510(p_renderer, p_unk0x08, p_destRect, &sourceRect, p_unk0x14);
+	FUN_10005510(p_renderer, p_unk0x08, p_destRect, &sourceRect, p_clipRect);
 }
 
 // STUB: GOLDP 0x10005510
-undefined4 UtopianPan0xa4::FUN_10005510(BronzeFalcon0xc8770*, undefined4, Rect*, Rect*, undefined4)
+void UtopianPan0xa4::FUN_10005510(
+	BronzeFalcon0xc8770* p_renderer,
+	undefined4,
+	Rect* p_destRect,
+	Rect* p_sourceRect,
+	Rect* p_clipRect
+)
 {
-	// TODO
-	STUB(0x10005510);
-	return 0;
+	if (!(m_unk0x3c & c_flagBit3)) {
+		return;
+	}
+
+	LegoS32 renderTargetWidth = p_renderer->GetRenderTargetInfo()->GetWidth();
+	LegoS32 renderTargetHeight = p_renderer->GetRenderTargetInfo()->GetHeight();
+	LegoFloat clipLeft = 0.0f;
+	LegoFloat clipTop = 0.0f;
+	LegoFloat clipRight = static_cast<LegoFloat>(renderTargetWidth);
+	LegoFloat clipBottom = static_cast<LegoFloat>(renderTargetHeight);
+
+	if (p_clipRect != NULL) {
+		if (p_clipRect->m_left > 0) {
+			clipLeft = static_cast<LegoFloat>(p_clipRect->m_left);
+		}
+		if (p_clipRect->m_top > 0) {
+			clipTop = static_cast<LegoFloat>(p_clipRect->m_top);
+		}
+		if (p_clipRect->m_right < renderTargetWidth) {
+			clipRight = static_cast<LegoFloat>(p_clipRect->m_right);
+		}
+		if (p_clipRect->m_bottom < renderTargetHeight) {
+			clipBottom = static_cast<LegoFloat>(p_clipRect->m_bottom);
+		}
+
+		if (clipRight <= clipLeft || clipBottom <= clipTop) {
+			return;
+		}
+	}
+
+	LegoS32 destRightInt = p_destRect->m_right;
+	LegoS32 destLeftInt = p_destRect->m_left;
+	if (destRightInt <= destLeftInt) {
+		return;
+	}
+
+	LegoS32 destBottomInt = p_destRect->m_bottom;
+	LegoS32 destTopInt = p_destRect->m_top;
+	if (destBottomInt <= destTopInt) {
+		return;
+	}
+
+	LegoFloat destLeft = static_cast<LegoFloat>(destLeftInt);
+	LegoFloat destTop = static_cast<LegoFloat>(destTopInt);
+	LegoFloat destRight = static_cast<LegoFloat>(destRightInt);
+	LegoFloat destBottom = static_cast<LegoFloat>(destBottomInt);
+
+	if (destLeft > clipRight || destTop > clipBottom || destRight <= clipLeft || destBottom <= clipTop) {
+		return;
+	}
+
+	LegoS32 sourceRightInt = p_sourceRect->m_right;
+	LegoS32 sourceLeftInt = p_sourceRect->m_left;
+	if (sourceRightInt <= sourceLeftInt) {
+		return;
+	}
+
+	LegoS32 sourceBottomInt = p_sourceRect->m_bottom;
+	LegoS32 sourceTopInt = p_sourceRect->m_top;
+	if (sourceBottomInt <= sourceTopInt) {
+		return;
+	}
+
+	LegoFloat sourceLeft = static_cast<LegoFloat>(sourceLeftInt);
+	LegoFloat sourceTop = static_cast<LegoFloat>(sourceTopInt);
+	LegoFloat sourceRight = static_cast<LegoFloat>(sourceRightInt);
+	LegoFloat sourceBottom = static_cast<LegoFloat>(sourceBottomInt);
+	LegoFloat scaleX = (destRight - destLeft) / (sourceRight - sourceLeft);
+	LegoFloat scaleY = (destBottom - destTop) / (sourceBottom - sourceTop);
+	LegoFloat sourcePerDestX = 1.0f / scaleX;
+	LegoFloat sourcePerDestY = 1.0f / scaleY;
+
+	if (clipLeft - destLeft > 0.0f) {
+		sourceLeft += (clipLeft - destLeft) * sourcePerDestX;
+		destLeft = clipLeft;
+	}
+	if (clipTop - destTop > 0.0f) {
+		sourceTop += (clipTop - destTop) * sourcePerDestY;
+		destTop = clipTop;
+	}
+	if (clipRight - destRight < 0.0f) {
+		sourceRight += (clipRight - destRight) * sourcePerDestX;
+	}
+	if (clipBottom - destBottom < 0.0f) {
+		sourceBottom += (clipBottom - destBottom) * sourcePerDestY;
+	}
+
+	g_unk0x100630c8[0].sz = 0.0f;
+	g_unk0x100630c8[1].sz = 0.0f;
+	g_unk0x100630c8[2].sz = 0.0f;
+	g_unk0x100630c8[3].sz = 0.0f;
+
+	g_unk0x100630c8[0].rhw = 1.0f;
+	g_unk0x100630c8[1].rhw = 1.0f;
+	g_unk0x100630c8[2].rhw = 1.0f;
+	g_unk0x100630c8[3].rhw = 1.0f;
+
+	LegoU32 color = (m_unk0x4a.m_uBytes[3] << 24) | (m_unk0x4a.m_uBytes[0] << 16) | (m_unk0x4a.m_uBytes[1] << 8) |
+					m_unk0x4a.m_uBytes[2];
+	g_unk0x100630c8[0].color = color;
+	g_unk0x100630c8[1].color = color;
+	g_unk0x100630c8[2].color = color;
+	g_unk0x100630c8[3].color = color;
+
+	g_unk0x100630c8[0].specular = 0xffffffff;
+	g_unk0x100630c8[1].specular = 0xffffffff;
+	g_unk0x100630c8[2].specular = 0xffffffff;
+	g_unk0x100630c8[3].specular = 0xffffffff;
+
+	LegoFloat tileLeft = 0.0f;
+	for (LegoU32 row = 0; row < m_unk0x2c; row++) {
+		LegoFloat tileTop = 0.0f;
+		LegoFloat tileRight;
+
+		for (LegoU32 column = 0; column < m_unk0x30; column++) {
+			LegoFloat tileBottom;
+			LegoFloat tileWidth = static_cast<LegoFloat>(m_unk0x04[row]);
+			LegoFloat tileHeight = static_cast<LegoFloat>(m_unk0x08[column]);
+			tileRight = tileLeft + tileWidth;
+			tileBottom = tileTop + tileHeight;
+
+			if (tileLeft < sourceRight && tileRight > sourceLeft && tileTop < sourceBottom && tileBottom > sourceTop) {
+				LegoFloat clippedLeft = tileLeft;
+				LegoFloat clippedTop = tileTop;
+				LegoFloat clippedRight = tileRight;
+				LegoFloat clippedBottom = tileBottom;
+
+				if (clippedLeft < sourceLeft) {
+					clippedLeft = sourceLeft;
+				}
+				if (clippedRight > sourceRight) {
+					clippedRight = sourceRight;
+				}
+				if (clippedTop < sourceTop) {
+					clippedTop = sourceTop;
+				}
+				if (clippedBottom > sourceBottom) {
+					clippedBottom = sourceBottom;
+				}
+
+				LegoU32 index = row * m_unk0x30 + column;
+				(p_renderer->*p_renderer->m_unk0xc876c)(&m_unk0x54[index]);
+				p_renderer->FUN_1000ac00(&m_unk0x50[index]);
+
+				LegoFloat invTileWidth = 1.0f / tileWidth;
+				LegoFloat invTileHeight = 1.0f / tileHeight;
+
+				g_unk0x100630c8[0].sx = (clippedLeft - sourceLeft) * scaleX + destLeft;
+				g_unk0x100630c8[0].sy = (clippedTop - sourceTop) * scaleY + destTop;
+				g_unk0x100630c8[0].tu = (clippedLeft - tileLeft) * invTileWidth;
+				g_unk0x100630c8[0].tv = (clippedTop - tileTop) * invTileHeight;
+
+				g_unk0x100630c8[1].sx = (clippedLeft - sourceLeft) * scaleX + destLeft;
+				g_unk0x100630c8[1].sy = (clippedBottom - sourceTop) * scaleY + destTop;
+				g_unk0x100630c8[1].tu = (clippedLeft - tileLeft) * invTileWidth;
+				g_unk0x100630c8[1].tv = (clippedBottom - tileTop) * invTileHeight;
+
+				g_unk0x100630c8[2].sx = (clippedRight - sourceLeft) * scaleX + destLeft;
+				g_unk0x100630c8[2].sy = (clippedTop - sourceTop) * scaleY + destTop;
+				g_unk0x100630c8[2].tu = (clippedRight - tileLeft) * invTileWidth;
+				g_unk0x100630c8[2].tv = (clippedTop - tileTop) * invTileHeight;
+
+				g_unk0x100630c8[3].sx = (clippedRight - sourceLeft) * scaleX + destLeft;
+				g_unk0x100630c8[3].sy = (clippedBottom - sourceTop) * scaleY + destTop;
+				g_unk0x100630c8[3].tu = (clippedRight - tileLeft) * invTileWidth;
+				g_unk0x100630c8[3].tv = (clippedBottom - tileTop) * invTileHeight;
+
+				p_renderer->FUN_10009fd0(g_unk0x100630c8, sizeOfArray(g_unk0x100630c8));
+			}
+
+			tileTop = tileBottom;
+		}
+
+		tileLeft = tileRight;
+	}
 }
 
 // FUNCTION: GOLDP 0x10005ae0

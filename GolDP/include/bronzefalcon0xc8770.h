@@ -60,7 +60,7 @@ public:
 	void VTable0x58(SlatePeak0x58*, undefined4) override;                    // vtable+0x58
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
-	undefined4 VTable0x64(
+	LegoS32 VTable0x64(
 		GolString*,
 		GolFontBase0x40*,
 		LegoS32,
@@ -70,8 +70,8 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x64
-	undefined4 VTable0x68(
-		GolString*,
+	void VTable0x68(
+		const LegoChar*,
 		GolFontBase0x40*,
 		LegoS32,
 		LegoS32,
@@ -80,7 +80,7 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x68
-	undefined4 VTable0x6c(
+	LegoS32 VTable0x6c(
 		GolString*,
 		GolFontBase0x40*,
 		LegoS32,
@@ -103,14 +103,14 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) override;                                                               // vtable+0x74
-	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) override; // vtable+0x78
-	undefined4 VTable0x7c(
+	) override;                                                          // vtable+0x74
+	void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) override; // vtable+0x78
+	void VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
-		undefined4 p_unk0x14
+		Rect* p_clipRect
 	) override; // vtable+0x7c
 	void DrawRectangle(
 		const Rect& p_rect,
@@ -130,7 +130,7 @@ public:
 	) override;                                                             // vtable+0x84
 	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
 	void VTable0x8c(undefined4, undefined4, undefined4) override;           // vtable+0x8c
-	void VTable0x90() override;                                             // vtable+0x90
+	void VTable0x90(FloatyBoat0x28*) override;                              // vtable+0x90
 	void VTable0x94(FloatyBoat0x28*) override;                              // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4) override;           // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4) override;           // vtable+0x9c
@@ -178,6 +178,8 @@ public:
 	friend class DirectDrawPalette;
 	friend class SlatePeak0x58;
 	friend class BronzeFalconSurface0x5c;
+	friend class GolFont0xa0;
+	friend class UtopianPan0xa4;
 
 private:
 	static LegoFloat ScaleColorChannel(double p_color, double p_materialColor)
@@ -186,6 +188,7 @@ private:
 	}
 
 	void FUN_100082e0();
+	void FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count);
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(GoldDune0x38*);

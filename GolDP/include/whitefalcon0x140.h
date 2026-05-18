@@ -105,7 +105,7 @@ public:
 	virtual void VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2);  // vtable+0x58
 	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
-	virtual undefined4 VTable0x64(
+	virtual LegoS32 VTable0x64(
 		GolString*,
 		GolFontBase0x40*,
 		LegoS32,
@@ -115,8 +115,8 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x64
-	virtual undefined4 VTable0x68(
-		GolString*,
+	virtual void VTable0x68(
+		const LegoChar*,
 		GolFontBase0x40*,
 		LegoS32,
 		LegoS32,
@@ -125,7 +125,7 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x68
-	virtual undefined4 VTable0x6c(
+	virtual LegoS32 VTable0x6c(
 		GolString*,
 		GolFontBase0x40*,
 		LegoS32,
@@ -148,14 +148,14 @@ public:
 		LegoS32,
 		LegoS32,
 		LegoS32
-	) = 0;                                                                       // vtable+0x74
-	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, undefined4) = 0; // vtable+0x78
-	virtual undefined4 VTable0x7c(
+	) = 0;                                                                  // vtable+0x74
+	virtual void VTable0x78(UtopianPan0xa4*, undefined4, Rect*, Rect*) = 0; // vtable+0x78
+	virtual void VTable0x7c(
 		UtopianPan0xa4* p_image,
 		undefined4 p_unk0x08,
 		Rect* p_destRect,
 		Rect* p_sourceRect,
-		undefined4 p_unk0x14
+		Rect* p_clipRect
 	) = 0; // vtable+0x7c
 	virtual void DrawRectangle(
 		const Rect& p_rect,
@@ -175,7 +175,7 @@ public:
 	) = 0;                                                                                     // vtable+0x84
 	virtual void VTable0x88(undefined4, undefined4, undefined4);                               // vtable+0x88
 	virtual void VTable0x8c(undefined4, undefined4, undefined4);                               // vtable+0x8c
-	virtual void VTable0x90() = 0;                                                             // vtable+0x90
+	virtual void VTable0x90(FloatyBoat0x28*) = 0;                                              // vtable+0x90
 	virtual void VTable0x94(FloatyBoat0x28*) = 0;                                              // vtable+0x94
 	virtual void VTable0x98(undefined4, undefined4, undefined4);                               // vtable+0x98
 	virtual void VTable0x9c(undefined4, undefined4, undefined4);                               // vtable+0x9c

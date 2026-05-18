@@ -49,6 +49,7 @@ public:
 		e_ioGenericError = 1,
 		e_ioBadParameter = 3,
 		e_ioOutOfMemory = 4,
+		e_ioOperationNotSupported = 6,
 		e_ioNameTooLong = 6,
 		e_ioNotOpen = 7,
 		e_ioFileNotFound = 8,

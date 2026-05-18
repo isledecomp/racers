@@ -54,7 +54,7 @@ void ImaginaryBolt0x4774::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047da50
-undefined4 ImaginaryBolt0x4774::VTable0x18(ObscureIcon0x1a8*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+undefined4 ImaginaryBolt0x4774::VTable0x18(ObscureVantage0x58*, OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
 {
 	STUB(0x0047da50);
 	return 0;

@@ -31,7 +31,7 @@ void ImaginaryDrillFieldAt0x498::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
-// STUB: LEGORACERS 0x004824d0
+// FUNCTION: LEGORACERS 0x004824d0
 LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createParams)
 {
 	ObscureAnchor0x5c::CreateParams0x3c createParams;
@@ -43,13 +43,11 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createPa
 	flags |= 1;
 	createParams.m_rect.m_top = 0;
 	createParams.m_flagsAndName.m_flagsByte = flags;
-	UtopianPan0xa4* image = m_unk0x1d8[0];
 	createParams.m_rect.m_right = 0;
-	createParams.m_unk0x38 = image;
+	createParams.m_unk0x38 = m_unk0x1d8[0];
 	createParams.m_rect.m_bottom = 0;
-	VisualState0x4 visualState = m_unk0x1f0[0];
-	createParams.m_unk0x22 = visualState;
 	createParams.m_parent = this;
+	createParams.m_unk0x22 = m_unk0x1f0[0];
 
 	return m_unk0x208.FUN_0046f150(&createParams);
 }
@@ -133,15 +131,11 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x08()
 	return ObscureIcon0x1a8::VTable0x08();
 }
 
-// STUB: LEGORACERS 0x00482890
+// FUNCTION: LEGORACERS 0x00482890
 void ImaginaryDrillFieldAt0x498::VTable0x10(Rect* p_rect)
 {
 	LegoU8 flags = m_flags;
-	Rect rect;
-	rect.m_left = p_rect->m_left;
-	rect.m_top = p_rect->m_top;
-	rect.m_right = p_rect->m_right;
-	rect.m_bottom = p_rect->m_bottom;
+	Rect rect = *p_rect;
 
 	if (flags & 1) {
 		rect.m_right = m_unk0x264.GetRect()->m_right + rect.m_left;
@@ -170,7 +164,7 @@ undefined4 ImaginaryDrillFieldAt0x498::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00482980
-undefined4 ImaginaryDrillFieldAt0x498::VTable0x34(
+ObscureVantage0x58* ImaginaryDrillFieldAt0x498::VTable0x34(
 	OnyxCircularBuffer0x1c::Item* p_item,
 	undefined4 p_unk0x08,
 	undefined4 p_unk0x0c

@@ -26,14 +26,14 @@ public:
 
 	ObscureSigil0xdc();
 
-	void Reset() override;                                                                 // vtable+0x00
-	~ObscureSigil0xdc() override;                                                          // vtable+0x04
-	undefined4 VTable0x08() override;                                                      // vtable+0x08
-	undefined4 VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c
-	undefined4 VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x30
-	undefined4 VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x38(Rect*, Rect*) override;                                          // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;                                            // vtable+0x3c
+	void Reset() override;                                                                          // vtable+0x00
+	~ObscureSigil0xdc() override;                                                                   // vtable+0x04
+	undefined4 VTable0x08() override;                                                               // vtable+0x08
+	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c
+	ObscureVantage0x58* VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x30
+	ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
+	undefined4 VTable0x38(Rect*, Rect*) override;                                                   // vtable+0x38
+	undefined4 VTable0x3c(undefined4) override;                                                     // vtable+0x3c
 	LegoBool32 FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);
 

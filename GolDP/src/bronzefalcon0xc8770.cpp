@@ -692,7 +692,7 @@ void BronzeFalcon0xc8770::VTable0x98(undefined4 p_arg1, undefined4 p_arg2, undef
 }
 
 // STUB: GOLDP 0x100092a0
-void BronzeFalcon0xc8770::VTable0x90()
+void BronzeFalcon0xc8770::VTable0x90(FloatyBoat0x28*)
 {
 	STUB(0x100092a0);
 }
@@ -917,26 +917,21 @@ const SlatePeak0x58* BronzeFalcon0xc8770::GetRenderTargetInfo()
 }
 
 // FUNCTION: GOLDP 0x10009960
-undefined4 BronzeFalcon0xc8770::VTable0x7c(
+void BronzeFalcon0xc8770::VTable0x7c(
 	UtopianPan0xa4* p_image,
 	undefined4 p_unk0x08,
 	Rect* p_destRect,
 	Rect* p_sourceRect,
-	undefined4 p_unk0x14
+	Rect* p_clipRect
 )
 {
-	return p_image->FUN_10005510(this, p_unk0x08, p_destRect, p_sourceRect, p_unk0x14);
+	p_image->FUN_10005510(this, p_unk0x08, p_destRect, p_sourceRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x10009990
-void BronzeFalcon0xc8770::VTable0x78(
-	UtopianPan0xa4* p_image,
-	undefined4 p_unk0x08,
-	Rect* p_destRect,
-	undefined4 p_unk0x14
-)
+void BronzeFalcon0xc8770::VTable0x78(UtopianPan0xa4* p_image, undefined4 p_unk0x08, Rect* p_destRect, Rect* p_clipRect)
 {
-	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_unk0x14);
+	p_image->FUN_100054d0(this, p_unk0x08, p_destRect, p_clipRect);
 }
 
 // FUNCTION: GOLDP 0x100099b0
@@ -1015,8 +1010,8 @@ void BronzeFalcon0xc8770::VTable0xb4(FloatyPontoon0x4c& p_param)
 }
 
 // FUNCTION: GOLDP 0x10009b40
-undefined4 BronzeFalcon0xc8770::VTable0x68(
-	GolString* p_unk0x04,
+void BronzeFalcon0xc8770::VTable0x68(
+	const LegoChar* p_unk0x04,
 	GolFontBase0x40* p_font,
 	LegoS32 p_unk0x0c,
 	LegoS32 p_unk0x10,
@@ -1026,11 +1021,11 @@ undefined4 BronzeFalcon0xc8770::VTable0x68(
 	undefined4 p_unk0x20
 )
 {
-	return p_font->FUN_1001eaa0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	p_font->FUN_1001eaa0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009b70
-undefined4 BronzeFalcon0xc8770::VTable0x64(
+LegoS32 BronzeFalcon0xc8770::VTable0x64(
 	GolString* p_unk0x04,
 	GolFontBase0x40* p_font,
 	LegoS32 p_unk0x0c,
@@ -1045,7 +1040,7 @@ undefined4 BronzeFalcon0xc8770::VTable0x64(
 }
 
 // FUNCTION: GOLDP 0x10009ba0
-undefined4 BronzeFalcon0xc8770::VTable0x6c(
+LegoS32 BronzeFalcon0xc8770::VTable0x6c(
 	GolString* p_unk0x04,
 	GolFontBase0x40* p_font,
 	LegoS32 p_unk0x0c,
@@ -1249,6 +1244,61 @@ void BronzeFalcon0xc8770::DrawTriangle(
 			D3DFVF_TLVERTEX,
 			vertices,
 			3,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
+	}
+}
+
+// FUNCTION: GOLDP 0x10009fd0
+void BronzeFalcon0xc8770::FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count)
+{
+	if (m_unk0xc83c4) {
+		D3DTLVERTEX* vertices = &m_unk0x348[m_unk0xc3848];
+
+		LegoU32 copyCount = p_count;
+		D3DTLVERTEX* dest = vertices;
+		for (; copyCount > 0; copyCount--) {
+			*dest = *p_vertices;
+			dest++;
+			p_vertices++;
+		}
+
+		LegoS32 triangleCount = p_count - 2;
+		if (triangleCount >= 0) {
+			LegoS32 commandIndex = m_unk0xc86f4;
+			LegoS32 nextCommandIndex = commandIndex + triangleCount;
+			if (nextCommandIndex < m_unk0xc86f8) {
+				SoftwareRenderer0x58::Command0x14* cmd = m_unk0xc86f0 + commandIndex;
+				m_unk0xc86f4 = nextCommandIndex;
+
+				LegoS32 winding = 1;
+				SoftwareRenderer0x58::Command0x14* command = cmd;
+				for (LegoS32 i = 0; i < triangleCount;) {
+					i++;
+					command->m_unk0x08 = static_cast<undefined2>(m_unk0xc3848 + i + winding);
+					command->m_unk0x0a = static_cast<undefined2>(m_unk0xc3848 + i);
+					command->m_unk0x0c = static_cast<undefined2>(m_unk0xc3848 + i - winding);
+					command->m_unk0x10 = m_unk0xc83b4.m_unk0x00[0];
+					winding = -winding;
+					command++;
+				}
+
+				m_unk0xc3848 += p_count;
+				if (m_flags & c_flagBit5) {
+					m_softwareRenderer.FUN_100417c0(cmd, triangleCount);
+				}
+				else {
+					m_softwareRenderer.FUN_100417a0(cmd, triangleCount, m_unk0xc86fc);
+				}
+			}
+		}
+	}
+	else {
+		m_d3dDevice->DrawPrimitive(
+			D3DPT_TRIANGLESTRIP,
+			D3DFVF_TLVERTEX,
+			p_vertices,
+			p_count,
 			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
 		);
 	}

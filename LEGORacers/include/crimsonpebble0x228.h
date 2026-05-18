@@ -9,6 +9,10 @@
 #include "types.h"
 
 class GolFileParser;
+class BronzeFalcon0xc8770;
+class GolExport;
+class SaffronQuartz0x2c;
+class SoundManager;
 
 // VTABLE: LEGORACERS 0x004b4970
 // SIZE 0x228
@@ -31,8 +35,21 @@ public:
 	virtual ~CrimsonPebble0x228();                                // vtable+0x30
 
 	void Reset();
+	void FUN_004a0730(
+		GolExport* p_golExport,
+		BronzeFalcon0xc8770* p_renderer,
+		SoundManager* p_soundManager,
+		SaffronQuartz0x2c* p_unk0x10,
+		const LegoChar* p_fileName,
+		undefined4 p_binary
+	);
 	void FUN_004a12e0(GolFileParser* p_unk0x04);
 	void FUN_004a24e0();
+	void FUN_004a2dc0(undefined4 p_elapsedMs);
+	void FUN_004a2f30(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004a3070(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004a30b0(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004a3150();
 
 	undefined4 GetUnk0x118() const { return m_unk0x118; }
 	void SetStringTable(GolStringTable* p_stringTable) { m_stringTable = p_stringTable; }
@@ -40,9 +57,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004a0390
 	// CrimsonPebble0x228::`scalar deleting destructor'
 
-private:
 	void FUN_004a0bf0();
 
+private:
 	undefined4* m_unk0x04;         // 0x004
 	undefined4 m_unk0x08;          // 0x008
 	undefined4* m_unk0x0c;         // 0x00c

@@ -7,6 +7,7 @@
 #include "golstringtable.h"
 #include "imaginarytool0x368.h"
 #include "obscurevantage0x58.h"
+#include "saffronquartz0x2c.h"
 #include "types.h"
 
 class AmberLens0x344;
@@ -36,12 +37,19 @@ public:
 		// ImaginaryChisel0x658::HelperAt0x368::`scalar deleting destructor'
 
 		undefined4 FUN_00466b50(ImaginaryNotion0x290::FieldAt0x54* p_createParams, undefined4 p_unk0x08);
+		void FUN_00466b10();
+		LegoS32 FUN_00466b90();
+		void FUN_00466bf0(ImaginaryNotion0x290::FieldAt0x54* p_createParams, undefined4 p_unk0x08);
+		void FUN_00466d00(SaffronQuartz0x2c::Frame0xb8* p_frame);
 
-		undefined m_unk0x58[0x84 - 0x58];    // 0x058
-		CrimsonPebble0x228 m_unk0x84;        // 0x084
-		undefined m_unk0x2ac[0x2c8 - 0x2ac]; // 0x2ac
-		undefined4 m_unk0x2c8;               // 0x2c8
-		undefined4 m_unk0x2cc;               // 0x2cc
+		SaffronQuartz0x2c m_unk0x58;              // 0x058
+		CrimsonPebble0x228 m_unk0x84;             // 0x084
+		LegoU32 m_unk0x2ac;                       // 0x2ac
+		SaffronQuartz0x2c::Frame0xb8* m_unk0x2b0; // 0x2b0
+		Rect m_unk0x2b4;                          // 0x2b4
+		undefined4 m_unk0x2c4;                    // 0x2c4
+		LegoBool32 m_unk0x2c8;                    // 0x2c8
+		LegoBool32 m_unk0x2cc;                    // 0x2cc
 	};
 
 	ImaginaryChisel0x658();

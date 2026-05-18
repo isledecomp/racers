@@ -126,9 +126,11 @@ undefined4 ObscureSigil0xdc::VTable0x3c(undefined4)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00466090 FOLDED
+// Keep this fold pair out of the unrelated ObscureVantage0x58 null-return fold group.
+#pragma code_seg(".text$legoracers_00466090")
+// FUNCTION: LEGORACERS 0x00466090 FOLDED
 ObscureVantage0x58* ObscureSigil0xdc::VTable0x2c(void*, undefined4, undefined4)
 {
-	STUB(0x00466090);
 	return NULL;
 }
+#pragma code_seg()

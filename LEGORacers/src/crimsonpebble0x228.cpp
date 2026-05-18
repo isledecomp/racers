@@ -86,6 +86,19 @@ void CrimsonPebble0x228::Reset()
 	m_stringTable = NULL;
 }
 
+// STUB: LEGORACERS 0x004a0730
+void CrimsonPebble0x228::FUN_004a0730(
+	GolExport*,
+	BronzeFalcon0xc8770*,
+	SoundManager*,
+	SaffronQuartz0x2c*,
+	const LegoChar*,
+	undefined4
+)
+{
+	STUB(0x004a0730);
+}
+
 // STUB: LEGORACERS 0x004a0bf0
 void CrimsonPebble0x228::FUN_004a0bf0()
 {
@@ -212,4 +225,34 @@ void CrimsonPebble0x228::VTable0x28(undefined4, undefined4, undefined4)
 void CrimsonPebble0x228::VTable0x2c(undefined4, undefined4, undefined4)
 {
 	STUB(0x4a2d80);
+}
+
+// STUB: LEGORACERS 0x004a2dc0
+void CrimsonPebble0x228::FUN_004a2dc0(undefined4)
+{
+	STUB(0x004a2dc0);
+}
+
+// STUB: LEGORACERS 0x004a2f30
+void CrimsonPebble0x228::FUN_004a2f30(BronzeFalcon0xc8770*)
+{
+	STUB(0x004a2f30);
+}
+
+// STUB: LEGORACERS 0x004a3070
+void CrimsonPebble0x228::FUN_004a3070(BronzeFalcon0xc8770*)
+{
+	STUB(0x004a3070);
+}
+
+// STUB: LEGORACERS 0x004a30b0
+void CrimsonPebble0x228::FUN_004a30b0(BronzeFalcon0xc8770*)
+{
+	STUB(0x004a30b0);
+}
+
+// STUB: LEGORACERS 0x004a3150
+void CrimsonPebble0x228::FUN_004a3150()
+{
+	STUB(0x004a3150);
 }

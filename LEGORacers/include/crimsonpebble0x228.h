@@ -20,19 +20,19 @@ class CrimsonPebble0x228 : public BluebellFog0x4 {
 public:
 	CrimsonPebble0x228();
 
-	void VTable0x00(undefined4, undefined4, undefined4) override; // vtable+0x00
-	void VTable0x04(undefined4, undefined4, undefined4) override; // vtable+0x04
-	void VTable0x08(undefined4, undefined4, undefined4) override; // vtable+0x08
-	void VTable0x0c(undefined4, undefined4, undefined4) override; // vtable+0x0c
-	void VTable0x10(undefined4, undefined4, undefined4) override; // vtable+0x10
-	void VTable0x14(undefined4, undefined4, undefined4) override; // vtable+0x14
-	void VTable0x18(undefined4, undefined4, undefined4) override; // vtable+0x18
-	void VTable0x1c(undefined4, undefined4, undefined4) override; // vtable+0x1c
-	void VTable0x20(undefined4, undefined4, undefined4) override; // vtable+0x20
-	void VTable0x24(undefined4, undefined4, undefined4) override; // vtable+0x24
-	void VTable0x28(undefined4, undefined4, undefined4) override; // vtable+0x28
-	void VTable0x2c(undefined4, undefined4, undefined4) override; // vtable+0x2c
-	virtual ~CrimsonPebble0x228();                                // vtable+0x30
+	void VTable0x00(void*, void*, void*) override; // vtable+0x00
+	void VTable0x04(void*, void*, void*) override; // vtable+0x04
+	void VTable0x08(void*, void*, void*) override; // vtable+0x08
+	void VTable0x0c(void*, void*, void*) override; // vtable+0x0c
+	void VTable0x10(void*, void*, void*) override; // vtable+0x10
+	void VTable0x14(void*, void*, void*) override; // vtable+0x14
+	void VTable0x18(void*, void*, void*) override; // vtable+0x18
+	void VTable0x1c(void*, void*, void*) override; // vtable+0x1c
+	void VTable0x20(void*, void*, void*) override; // vtable+0x20
+	void VTable0x24(void*, void*, void*) override; // vtable+0x24
+	void VTable0x28(void*, void*, void*) override; // vtable+0x28
+	void VTable0x2c(void*, void*, void*) override; // vtable+0x2c
+	virtual ~CrimsonPebble0x228();                 // vtable+0x30
 
 	void Reset();
 	void FUN_004a0730(
@@ -52,6 +52,7 @@ public:
 	void FUN_004a3150();
 
 	undefined4 GetUnk0x118() const { return m_unk0x118; }
+	SoundManager* GetSoundManager() const { return m_unk0x0c; }
 	void SetStringTable(GolStringTable* p_stringTable) { m_stringTable = p_stringTable; }
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
@@ -62,7 +63,7 @@ public:
 private:
 	undefined4* m_unk0x04;         // 0x004
 	undefined4 m_unk0x08;          // 0x008
-	undefined4* m_unk0x0c;         // 0x00c
+	SoundManager* m_unk0x0c;       // 0x00c
 	undefined4 m_unk0x10;          // 0x010
 	SoundNode m_unk0x14;           // 0x014
 	undefined4* m_unk0x64;         // 0x064

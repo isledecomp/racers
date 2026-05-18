@@ -156,73 +156,73 @@ void CrimsonPebble0x228::FUN_004a24e0()
 }
 
 // STUB: LEGORACERS 0x004a2ac0
-void CrimsonPebble0x228::VTable0x00(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x00(void*, void*, void*)
 {
 	STUB(0x4a2ac0);
 }
 
 // STUB: LEGORACERS 0x004a2b00
-void CrimsonPebble0x228::VTable0x04(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x04(void*, void*, void*)
 {
 	STUB(0x4a2b00);
 }
 
 // STUB: LEGORACERS 0x004a2b40
-void CrimsonPebble0x228::VTable0x08(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x08(void*, void*, void*)
 {
 	STUB(0x4a2b40);
 }
 
 // STUB: LEGORACERS 0x004a2b80
-void CrimsonPebble0x228::VTable0x0c(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x0c(void*, void*, void*)
 {
 	STUB(0x4a2b80);
 }
 
 // STUB: LEGORACERS 0x004a2bc0
-void CrimsonPebble0x228::VTable0x10(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x10(void*, void*, void*)
 {
 	STUB(0x4a2bc0);
 }
 
 // STUB: LEGORACERS 0x004a2c00
-void CrimsonPebble0x228::VTable0x14(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x14(void*, void*, void*)
 {
 	STUB(0x4a2c00);
 }
 
 // STUB: LEGORACERS 0x004a2c40
-void CrimsonPebble0x228::VTable0x18(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x18(void*, void*, void*)
 {
 	STUB(0x4a2c40);
 }
 
 // STUB: LEGORACERS 0x004a2c80
-void CrimsonPebble0x228::VTable0x1c(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x1c(void*, void*, void*)
 {
 	STUB(0x4a2c80);
 }
 
 // STUB: LEGORACERS 0x004a2cc0
-void CrimsonPebble0x228::VTable0x20(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x20(void*, void*, void*)
 {
 	STUB(0x4a2cc0);
 }
 
 // STUB: LEGORACERS 0x004a2d00
-void CrimsonPebble0x228::VTable0x24(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x24(void*, void*, void*)
 {
 	STUB(0x4a2d00);
 }
 
 // STUB: LEGORACERS 0x004a2d40
-void CrimsonPebble0x228::VTable0x28(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x28(void*, void*, void*)
 {
 	STUB(0x4a2d40);
 }
 
 // STUB: LEGORACERS 0x004a2d80
-void CrimsonPebble0x228::VTable0x2c(undefined4, undefined4, undefined4)
+void CrimsonPebble0x228::VTable0x2c(void*, void*, void*)
 {
 	STUB(0x4a2d80);
 }

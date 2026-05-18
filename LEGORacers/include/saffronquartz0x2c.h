@@ -8,6 +8,7 @@
 
 class BronzeFalcon0xc8770;
 class GolExport;
+class ZoweeBlubberworth0xf0;
 
 // VTABLE: LEGORACERS 0x004af38c
 // SIZE 0x2c
@@ -16,6 +17,16 @@ public:
 	// SIZE 0xb8
 	class Frame0xb8 {
 	public:
+		class Resource {
+		public:
+			virtual void VTable0x00(undefined4) = 0; // vtable+0x00
+		};
+
+		Frame0xb8();
+		~Frame0xb8();
+
+		void Reset();
+		void Destroy();
 		void FUN_00406310();
 		void FUN_00406330();
 		void FUN_00406380();
@@ -40,12 +51,36 @@ public:
 		LegoU32 GetUnk0x58() const { return m_unk0x58; }
 
 	private:
-		undefined m_unk0x00[0x44 - 0x00]; // 0x00
-		LegoU32 m_unk0x44;                // 0x44
-		LegoU32 m_unk0x48;                // 0x48
-		undefined m_unk0x4c[0x58 - 0x4c]; // 0x4c
-		LegoU32 m_unk0x58;                // 0x58
-		undefined m_unk0x5c[0xb8 - 0x5c]; // 0x5c
+		undefined4 m_unk0x00;     // 0x00
+		LegoU32 m_unk0x04;        // 0x04
+		Resource* m_unk0x08;      // 0x08
+		LegoU32 m_unk0x0c;        // 0x0c
+		Resource* m_unk0x10;      // 0x10
+		LegoU32 m_unk0x14;        // 0x14
+		Resource* m_unk0x18;      // 0x18
+		LegoU32 m_unk0x1c;        // 0x1c
+		Resource* m_unk0x20;      // 0x20
+		LegoU32 m_unk0x24;        // 0x24
+		Resource* m_unk0x28;      // 0x28
+		LegoU32 m_unk0x2c;        // 0x2c
+		undefined4** m_unk0x30;   // 0x30
+		LegoU32 m_unk0x34;        // 0x34
+		undefined4** m_unk0x38;   // 0x38
+		LegoU32 m_unk0x3c;        // 0x3c
+		undefined4* m_unk0x40;    // 0x40
+		LegoU32 m_unk0x44;        // 0x44
+		LegoU32 m_unk0x48;        // 0x48
+		LegoU32 m_unk0x4c;        // 0x4c
+		LegoU32 m_unk0x50;        // 0x50
+		LegoU32 m_unk0x54;        // 0x54
+		LegoU32 m_unk0x58;        // 0x58
+		LegoU32 m_unk0x5c;        // 0x5c
+		undefined4* m_unk0x60[8]; // 0x60
+		undefined4 m_unk0x80;     // 0x80
+		LegoU32 m_unk0x84;        // 0x84
+		undefined4* m_unk0x88[7]; // 0x88
+		LegoFloat m_unk0xa4;      // 0xa4
+		Rect m_unk0xa8;           // 0xa8
 	};
 
 	SaffronQuartz0x2c();
@@ -79,14 +114,14 @@ public:
 	// SaffronQuartz0x2c::`scalar deleting destructor'
 
 private:
-	void* m_unk0x0c;                 // 0x0c
-	GolExport* m_golExport;          // 0x10
-	BronzeFalcon0xc8770* m_renderer; // 0x14
-	LegoU32 m_unk0x18;               // 0x18
-	undefined4* m_unk0x1c;           // 0x1c
-	LegoChar* m_unk0x20;             // 0x20
-	LegoU32 m_frameCount;            // 0x24
-	Frame0xb8* m_frames;             // 0x28
+	void* m_unk0x0c;                   // 0x0c
+	GolExport* m_golExport;            // 0x10
+	BronzeFalcon0xc8770* m_renderer;   // 0x14
+	LegoU32 m_unk0x18;                 // 0x18
+	ZoweeBlubberworth0xf0** m_unk0x1c; // 0x1c
+	LegoChar* m_unk0x20;               // 0x20
+	LegoU32 m_frameCount;              // 0x24
+	Frame0xb8* m_frames;               // 0x28
 };
 
 #endif // SAFFRONQUARTZ0X2C_H

@@ -1,7 +1,96 @@
 #include "saffronquartz0x2c.h"
 
+#include "gol.h"
+#include "zoweeblubberworth0xf0.h"
+
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c, 0x2c)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8, 0xb8)
+
+// FUNCTION: LEGORACERS 0x00405890
+SaffronQuartz0x2c::Frame0xb8::Frame0xb8()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004058a0
+SaffronQuartz0x2c::Frame0xb8::~Frame0xb8()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004058b0
+void SaffronQuartz0x2c::Frame0xb8::Reset()
+{
+	m_unk0x00 = 0;
+	m_unk0x54 = 30;
+	m_unk0x58 = 30;
+	m_unk0x04 = 0;
+	m_unk0x08 = NULL;
+	m_unk0x0c = 0;
+	m_unk0x10 = NULL;
+	m_unk0x14 = 0;
+	m_unk0x18 = NULL;
+	m_unk0x1c = 0;
+	m_unk0x20 = NULL;
+	m_unk0x24 = 0;
+	m_unk0x28 = NULL;
+	m_unk0x2c = 0;
+	m_unk0x30 = NULL;
+	m_unk0x34 = 0;
+	m_unk0x38 = NULL;
+	m_unk0x3c = 0;
+	m_unk0x40 = NULL;
+	m_unk0x44 = 0;
+	m_unk0x4c = 0;
+	m_unk0x48 = 0;
+	m_unk0x50 = 0;
+	m_unk0xa4 = 0.0f;
+	m_unk0x5c = 0;
+	::memset(m_unk0x60, 0, sizeof(m_unk0x60));
+	m_unk0x80 = 0;
+	m_unk0x84 = 0;
+	::memset(m_unk0x88, 0, sizeof(m_unk0x88));
+	m_unk0xa8.m_bottom = 0;
+	m_unk0xa8.m_top = 0;
+	m_unk0xa8.m_left = 0;
+	m_unk0xa8.m_right = 0;
+}
+
+// FUNCTION: LEGORACERS 0x004062a0
+void SaffronQuartz0x2c::Frame0xb8::Destroy()
+{
+	if (m_unk0x30) {
+		delete[] m_unk0x30;
+	}
+
+	if (m_unk0x38) {
+		delete[] m_unk0x38;
+	}
+
+	if (m_unk0x08) {
+		m_unk0x08->VTable0x00(3);
+	}
+
+	if (m_unk0x10) {
+		m_unk0x10->VTable0x00(3);
+	}
+
+	if (m_unk0x18) {
+		m_unk0x18->VTable0x00(3);
+	}
+
+	if (m_unk0x20) {
+		m_unk0x20->VTable0x00(3);
+	}
+
+	if (m_unk0x28) {
+		m_unk0x28->VTable0x00(3);
+	}
+
+	Reset();
+}
 
 // STUB: LEGORACERS 0x00406310
 void SaffronQuartz0x2c::Frame0xb8::FUN_00406310()
@@ -114,13 +203,13 @@ undefined4 SaffronQuartz0x2c::Frame0xb8::FUN_00406890()
 	return 0;
 }
 
-// STUB: LEGORACERS 0x004068a0
+// FUNCTION: LEGORACERS 0x004068a0
 SaffronQuartz0x2c::SaffronQuartz0x2c()
 {
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00406910
+// FUNCTION: LEGORACERS 0x00406910
 SaffronQuartz0x2c::~SaffronQuartz0x2c()
 {
 	Clear();
@@ -145,10 +234,33 @@ void SaffronQuartz0x2c::FUN_00406980(GolExport*, BronzeFalcon0xc8770*, const Leg
 	STUB(0x00406980);
 }
 
-// STUB: LEGORACERS 0x00406af0
+// FUNCTION: LEGORACERS 0x00406af0
 void SaffronQuartz0x2c::Clear()
 {
-	STUB(0x00406af0);
+	if (m_unk0x1c) {
+		if (m_golExport) {
+			LegoU32 i;
+			for (i = 0; i < m_unk0x18; i++) {
+				if (m_unk0x1c[i]) {
+					m_unk0x1c[i]->VTable0x18();
+					m_golExport->VTable0x3c(m_unk0x1c[i]);
+				}
+			}
+		}
+
+		delete[] m_unk0x1c;
+	}
+
+	if (m_unk0x20) {
+		delete[] m_unk0x20;
+	}
+
+	if (m_frames) {
+		delete[] m_frames;
+	}
+
+	GolNameTable::Clear();
+	Reset();
 }
 
 // STUB: LEGORACERS 0x00406b90

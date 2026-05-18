@@ -158,6 +158,12 @@
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
 
+// LIBRARY: GOLDP 0x1004f2c1
+// __mtinitlocks
+
+// LIBRARY: GOLDP 0x1004f2ea
+// __mtdeletelocks
+
 // LIBRARY: GOLDP 0x1004f356
 // __lock
 
@@ -261,6 +267,9 @@
 // LIBRARY: GOLDP 0x10052fff
 // __setmode_lk
 
+// LIBRARY: GOLDP 0x10053438
+// ___initmbctable
+
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
 
@@ -333,6 +342,9 @@
 // GLOBAL: GOLDP 0x10065f20
 // __winminor
 
+// GLOBAL: GOLDP 0x10065f30
+// __environ
+
 // GLOBAL: GOLDP 0x10065f4c
 // __C_Termination_Done
 
@@ -365,6 +377,12 @@
 
 // GLOBAL: GOLDP 0x10067600
 // __nhandle
+
+// GLOBAL: GOLDP 0x1006760c
+// ___env_initialized
+
+// GLOBAL: GOLDP 0x10067610
+// ___mbctype_initialized
 
 // GLOBAL: GOLDP 0x1006761c
 // __acmdln

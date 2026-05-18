@@ -505,22 +505,6 @@ void GolImgFile::FUN_10022730(
 	STUB(0x10022730);
 }
 
-// STUB: GOLDP 0x10022800
-void GolImgFile::FUN_10022800(
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4
-)
-{
-	// TODO
-	STUB(0x10022800);
-}
-
 // STUB: GOLDP 0x10022880
 void GolImgFile::FUN_10022880(
 	LegoU8*,

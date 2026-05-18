@@ -14,15 +14,15 @@ class GolFont0xa0 : public GolFontBase0x40 {
 public:
 	GolFont0xa0();
 
-	void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08) override;        // vtable+0x00
-	void VTable0x04(undefined4 p_unk0x04) override;                              // vtable+0x04
-	PurpleDune0x7c* VTable0x08(LegoU32 p_index) override;                        // vtable+0x08
-	void VTable0x0c(WhiteFalcon0x140* p_unk0x04, undefined4 p_unk0x08) override; // vtable+0x0c
-	void VTable0x10(LegoU32 p_index) override;                                   // vtable+0x10
-	void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) override;              // vtable+0x14
-	void VTable0x18() override;                                                  // vtable+0x18
-	~GolFont0xa0() override;                                                     // vtable+0x1c
-	void Clear() override;                                                       // vtable+0x20
+	void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08) override;   // vtable+0x00
+	void VTable0x04(undefined4 p_unk0x04) override;                         // vtable+0x04
+	PurpleDune0x7c* VTable0x08(LegoU32 p_index) override;                   // vtable+0x08
+	void VTable0x0c(WhiteFalcon0x140* p_unk0x04, LegoU32 p_count) override; // vtable+0x0c
+	void VTable0x10(LegoU32 p_index) override;                              // vtable+0x10
+	void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) override;         // vtable+0x14
+	void VTable0x18() override;                                             // vtable+0x18
+	~GolFont0xa0() override;                                                // vtable+0x1c
+	void Clear() override;                                                  // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x10004190
 	// GolFont0xa0::`vector deleting destructor'

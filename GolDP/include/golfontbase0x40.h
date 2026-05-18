@@ -17,22 +17,26 @@ class GolFontBase0x40 {
 public:
 	GolFontBase0x40();
 
-	virtual void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08);            // vtable+0x00
-	virtual void VTable0x04(undefined4 p_unk0x04) = 0;                              // vtable+0x04
-	virtual PurpleDune0x7c* VTable0x08(LegoU32 p_index) = 0;                        // vtable+0x08
-	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, undefined4 p_unk0x08) = 0; // vtable+0x0c
-	virtual void VTable0x10(LegoU32 p_index) = 0;                                   // vtable+0x10
-	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;              // vtable+0x14
-	virtual void VTable0x18() = 0;                                                  // vtable+0x18
-	virtual ~GolFontBase0x40();                                                     // vtable+0x1c
-	virtual void Clear();                                                           // vtable+0x20
+	virtual void VTable0x00(undefined4 p_unk0x04, undefined4 p_unk0x08);       // vtable+0x00
+	virtual void VTable0x04(undefined4 p_unk0x04) = 0;                         // vtable+0x04
+	virtual PurpleDune0x7c* VTable0x08(LegoU32 p_index) = 0;                   // vtable+0x08
+	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, LegoU32 p_count) = 0; // vtable+0x0c
+	virtual void VTable0x10(LegoU32 p_index) = 0;                              // vtable+0x10
+	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;         // vtable+0x14
+	virtual void VTable0x18() = 0;                                             // vtable+0x18
+	virtual ~GolFontBase0x40();                                                // vtable+0x1c
+	virtual void Clear();                                                      // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001dee0
 	// GolFontBase0x40::`scalar deleting destructor'
 
-	undefined4 FUN_1001eaa0(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
-	undefined4 FUN_1001eb70(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
-	undefined4 FUN_1001eca0(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	void FUN_1001eaa0(const LegoChar*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	LegoS32 FUN_1001eb70(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	LegoS32 FUN_1001eca0(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	void FUN_1001e970(GolString*, LegoS32*, LegoS32*);
+	LegoS32 FUN_1001ed00(LegoU32, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	LegoBool32 FUN_1001ef60(WhiteFalcon0x140*, Rect*, Rect*);
+	void FUN_1001f090(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
 	undefined4 FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
 	undefined4 FUN_00408d50(
 		GolString* p_string,

@@ -72,7 +72,7 @@ PurpleDune0x7c* GolFont0xa0::VTable0x08(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10004b80
-void GolFont0xa0::VTable0x0c(WhiteFalcon0x140* p_renderer, undefined4)
+void GolFont0xa0::VTable0x0c(WhiteFalcon0x140* p_renderer, LegoU32)
 {
 	m_renderer = static_cast<BronzeFalcon0xc8770*>(p_renderer);
 }

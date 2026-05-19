@@ -900,7 +900,7 @@ void GolImgFile::FUN_10021e10(const LegoU8* p_src, LegoU32* p_dst)
 	}
 }
 
-// STUB: GOLDP 0x10022180
+// FUNCTION: GOLDP 0x10022180
 void GolImgFile::FUN_10022180(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* endDst = p_dst + m_width;
@@ -934,7 +934,7 @@ void GolImgFile::FUN_10022180(const LegoU8* p_src, LegoU8* p_dst)
 	}
 }
 
-// STUB: GOLDP 0x100222c0
+// FUNCTION: GOLDP 0x100222c0
 void GolImgFile::FUN_100222c0(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;

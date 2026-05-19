@@ -1,6 +1,5 @@
 #include "golsurfaceformat.h"
 
-#ifdef BUILDING_GOL
 // FUNCTION: GOLDP 0x1001cb50
 LegoU32 GolSurfaceFormat::GetRedBitCount() const
 {
@@ -344,4 +343,3 @@ LegoU32 GolSurfaceFormat::MapRGBA(const ColorRGBA& p_rgba) const
 
 	return red | alp;
 }
-#endif

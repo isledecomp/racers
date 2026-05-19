@@ -19,7 +19,6 @@ public:
 		m_bitsPerPixel = 0;
 	}
 
-#ifdef BUILDING_GOL
 	LegoU32 GetRedBitCount() const;
 	LegoU32 GetBlueBitCount() const;
 	LegoU32 GetGreenBitCount() const;
@@ -31,7 +30,6 @@ public:
 	LegoU32 GetGreenBitShift() const;
 	LegoU32 GetAlphaBitShift() const;
 	LegoU32 MapRGBA(const ColorRGBA& p_rgba) const;
-#endif
 
 	LegoU32 m_redBitMask;   // 0x00
 	LegoU32 m_grnBitMask;   // 0x04

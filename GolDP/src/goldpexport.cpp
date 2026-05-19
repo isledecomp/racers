@@ -6,10 +6,12 @@
 #include "boundingshape0x2c.h"
 #include "floatybarge0x4c.h"
 #include "fluffygloomkins0x118.h"
+#include "gdbmodel0x48.h"
 #include "golerror.h"
 #include "golfont0xa0.h"
 #include "golfontbase0x40.h"
 #include "golfonttable.h"
+#include "greyfalconnode0x1c.h"
 #include "purpleribbon0x24.h"
 #include "types.h"
 #include "whitebaffoon0x50.h"
@@ -68,20 +70,26 @@ AmberHaze0x1c* GolDPExport::CreateMaterialList()
 	return result;
 }
 
-// STUB: GOLDP 0x100151f0
-undefined4* GolDPExport::VTable0x14()
+// FUNCTION: GOLDP 0x100151f0
+IGdbModel0x40* GolDPExport::VTable0x14()
 {
-	// TODO
-	STUB(0x100151f0);
-	return NULL;
+	GdbModel0x48* result = new GdbModel0x48;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	return result;
 }
 
-// STUB: GOLDP 0x10015260
-undefined4* GolDPExport::VTable0x18()
+// FUNCTION: GOLDP 0x10015260
+WhiteFalconNode0x18* GolDPExport::VTable0x18()
 {
-	// TODO
-	STUB(0x10015260);
-	return NULL;
+	GreyFalconNode0x1c* result = new GreyFalconNode0x1c;
+	if (result == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	return result;
 }
 
 // FUNCTION: GOLDP 0x100152d0
@@ -183,17 +191,12 @@ void GolDPExport::DestroyMaterialList(AmberHaze0x1c* p_obj)
 	}
 }
 
-// STUB: GOLDP 0x10015620
-void GolDPExport::VTable0x48(undefined4* p_obj)
+// FUNCTION: GOLDP 0x10015620
+void GolDPExport::VTable0x48(IGdbModel0x40* p_obj)
 {
-#if 0
 	if (p_obj != NULL) {
 		delete p_obj;
 	}
-#else
-	// TODO
-	STUB(0x10015620);
-#endif
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED

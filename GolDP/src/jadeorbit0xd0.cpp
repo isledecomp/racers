@@ -166,10 +166,39 @@ void JadeOrbit0xd0::VTable0x10()
 	STUB(0x10002dc0);
 }
 
-// STUB: GOLDP 0x10002e30
-void JadeOrbit0xd0::VTable0x2c()
+// FUNCTION: GOLDP 0x10002e30
+void JadeOrbit0xd0::VTable0x2c(LegoFloat* p_unk0x04)
 {
-	STUB(0x10002e30);
+	LegoFloat scale = 2.0f / ((p_unk0x04[0] * p_unk0x04[0]) + (p_unk0x04[1] * p_unk0x04[1]) +
+							  (p_unk0x04[2] * p_unk0x04[2]) + (p_unk0x04[3] * p_unk0x04[3]));
+	LegoFloat v0 = scale * p_unk0x04[0];
+	LegoFloat v1 = p_unk0x04[1];
+	v1 *= scale;
+	LegoFloat v2 = scale * p_unk0x04[2];
+	LegoFloat v3 = p_unk0x04[3];
+	v3 *= v0;
+	LegoFloat v4 = p_unk0x04[3];
+	v4 *= v1;
+	LegoFloat v5 = p_unk0x04[3];
+	v5 *= v2;
+	LegoFloat v6 = v0 * p_unk0x04[0];
+	LegoFloat v7 = v1 * p_unk0x04[0];
+	LegoFloat v8 = v2 * p_unk0x04[0];
+	LegoFloat v9 = p_unk0x04[1];
+	v9 *= v1;
+	LegoFloat v10 = p_unk0x04[1];
+	v10 *= v2;
+	LegoFloat v11 = v2 * p_unk0x04[2];
+
+	m_unk0x10.m_m[0][0] = 1.0f - (v11 + v9);
+	m_unk0x10.m_m[0][1] = v7 - v5;
+	m_unk0x10.m_m[0][2] = v8 + v4;
+	m_unk0x10.m_m[1][0] = v7 + v5;
+	m_unk0x10.m_m[1][1] = 1.0f - (v11 + v6);
+	m_unk0x10.m_m[1][2] = v10 - v3;
+	m_unk0x10.m_m[2][0] = v8 - v4;
+	m_unk0x10.m_m[2][1] = v10 + v3;
+	m_unk0x10.m_m[2][2] = 1.0f - (v9 + v6);
 }
 
 // FUNCTION: GOLDP 0x10002f50

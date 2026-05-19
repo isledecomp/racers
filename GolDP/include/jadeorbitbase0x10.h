@@ -22,7 +22,7 @@ public:
 	virtual void VTable0x20(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x20
 	virtual void VTable0x24(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x24
 	virtual void VTable0x28() = 0;                                       // vtable+0x28
-	virtual void VTable0x2c() = 0;                                       // vtable+0x2c
+	virtual void VTable0x2c(LegoFloat* p_unk0x04) = 0;                   // vtable+0x2c
 	virtual void GetUp(GolVec3* p_up) = 0;                               // vtable+0x30
 	virtual void GetForward(GolVec3* p_forward) = 0;                     // vtable+0x34
 	virtual void GetRight(GolVec3* p_right) = 0;                         // vtable+0x38
@@ -31,9 +31,11 @@ public:
 	virtual void SetPosition(GolVec3* p_position) = 0;                   // vtable+0x44
 	virtual void VTable0x48() = 0;                                       // vtable+0x48
 
+	void FUN_1001ceb0(JadeOrbitBase0x10* p_unk0x04);
+
 	JadeOrbitBase0x10* m_unk0x04; // 0x04
-	undefined4 m_unk0x08;         // 0x08
-	undefined4 m_unk0x0c;         // 0x0c
+	JadeOrbitBase0x10* m_unk0x08; // 0x08
+	JadeOrbitBase0x10* m_unk0x0c; // 0x0c
 };
 
 #endif // JADEORBITBASE0X10_H

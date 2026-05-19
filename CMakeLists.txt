@@ -372,6 +372,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/guids.cpp
+  LEGORacers/src/lilacorbit0x28.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
   $<TARGET_OBJECTS:common_legoracers>

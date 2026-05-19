@@ -6,6 +6,10 @@
 #include "silverhollow0xb8.h"
 #include "types.h"
 
+class CmbModelPart0x34;
+class IGdbModel0x40;
+class WhiteFalconNode0x18;
+
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
 class OpalHaven0xf4 : public SilverHollow0xb8 {
@@ -15,6 +19,13 @@ public:
 	void VTable0x10(undefined4 p_unk0x04) override;   // vtable+0x10
 	void VTable0x14(undefined4, undefined4) override; // vtable+0x14
 	void VTable0x4c(undefined4 p_unk0x04) override;   // vtable+0x4c
+	void VTable0x54() override;                       // vtable+0x54
+	void FUN_0040d550(
+		IGdbModel0x40* p_model,
+		WhiteFalconNode0x18* p_node,
+		CmbModelPart0x34* p_modelParts,
+		LegoFloat p_unk0x10
+	);
 	void FUN_0040dad0(undefined2 p_unk0x04);
 	void FUN_0040db80(
 		undefined4 p_unk0x04,

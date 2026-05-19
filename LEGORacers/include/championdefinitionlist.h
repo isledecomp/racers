@@ -9,6 +9,7 @@
 
 class GolExport;
 class AmberHaze0x1c;
+class IGdbModel0x40;
 class MagentaRibbon0x20;
 
 // VTABLE: LEGORACERS 0x004afde8
@@ -46,7 +47,7 @@ private:
 	GolExport* m_golExport;            // 0x0c
 	undefined4 m_unk0x10;              // 0x10
 	ChampionDefinition* m_definitions; // 0x14
-	undefined4** m_unk0x18;            // 0x18
+	IGdbModel0x40** m_unk0x18;         // 0x18
 	MagentaRibbon0x20** m_unk0x1c;     // 0x1c
 	AmberHaze0x1c** m_unk0x20;         // 0x20
 	undefined* m_unk0x24;              // 0x24

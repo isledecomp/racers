@@ -19,8 +19,8 @@ public:
 	ZoweeBlubberworth0xf0* VTable0x08() override;              // vtable+0x08
 	MagentaRibbon0x20* CreateTextureList() override;           // vtable+0x0c
 	AmberHaze0x1c* CreateMaterialList() override;              // vtable+0x10
-	undefined4* VTable0x14() override;                         // vtable+0x14
-	undefined4* VTable0x18() override;                         // vtable+0x18
+	IGdbModel0x40* VTable0x14() override;                      // vtable+0x14
+	WhiteFalconNode0x18* VTable0x18() override;                // vtable+0x18
 	BoundingShape0x2c* CreateBoundingShape() override;         // vtable+0x1c
 	AmberLens0x344* VTable0x20() override;                     // vtable+0x20
 	undefined4 VTable0x24() override;                          // vtable+0x24
@@ -32,7 +32,7 @@ public:
 	void VTable0x3c(ZoweeBlubberworth0xf0*) override;          // vtable+0x3c
 	void DestroyTextureList(MagentaRibbon0x20*) override;      // vtable+0x40
 	void DestroyMaterialList(AmberHaze0x1c*) override;         // vtable+0x44
-	void VTable0x48(undefined4*) override;                     // vtable+0x48
+	void VTable0x48(IGdbModel0x40*) override;                  // vtable+0x48
 	void VTable0x4c(WhiteFalconNode0x18*) override;            // vtable+0x4c
 	void DestroyBoundingShape(BoundingShape0x2c*) override;    // vtable+0x50
 	void VTable0x54(AmberLens0x344*) override;                 // vtable+0x54

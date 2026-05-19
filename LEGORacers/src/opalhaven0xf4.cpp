@@ -8,12 +8,32 @@ OpalHaven0xf4::OpalHaven0xf4()
 	Reset();
 }
 
+// FUNCTION: LEGORACERS 0x0040d550
+void OpalHaven0xf4::FUN_0040d550(
+	IGdbModel0x40* p_model,
+	WhiteFalconNode0x18* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_unk0x10
+)
+{
+	SilverHollow0xb8::VTable0x50(p_model, p_unk0x10);
+	m_nodes[0] = p_node;
+	m_modelParts[0] = p_modelParts;
+}
+
+// FUNCTION: LEGORACERS 0x0040d5d0
+void OpalHaven0xf4::VTable0x54()
+{
+	SilverHollow0xb8::VTable0x54();
+	Reset();
+}
+
 // FUNCTION: LEGORACERS 0x0040d5f0
 void OpalHaven0xf4::Reset()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x90); i++) {
-		m_unk0x90[i] = 0;
-		m_unk0xa8[i] = 0;
+	for (LegoS32 i = 0; i < sizeOfArray(m_nodes); i++) {
+		m_nodes[i] = NULL;
+		m_modelParts[i] = NULL;
 		m_unk0x9c[i] = 0xffffffff;
 	}
 

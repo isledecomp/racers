@@ -22,7 +22,7 @@ public:
 	void VTable0x20(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x20
 	void VTable0x24(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x24
 	void VTable0x28() override;                                       // vtable+0x28
-	void VTable0x2c() override;                                       // vtable+0x2c
+	void VTable0x2c(LegoFloat* p_unk0x04) override;                   // vtable+0x2c
 	void GetUp(GolVec3* p_up) override;                               // vtable+0x30
 	void GetForward(GolVec3* p_forward) override;                     // vtable+0x34
 	void GetRight(GolVec3* p_right) override;                         // vtable+0x38

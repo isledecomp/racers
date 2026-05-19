@@ -14,6 +14,7 @@ class CmbTxtParser : public GolTxtParser {};
 class GolExport;
 class AmberHaze0x1c;
 class BronzeFalcon0xc8770;
+class IGdbModel0x40;
 class MagentaRibbon0x20;
 class OpalHaven0xf4;
 class WhiteFalconNode0x18;
@@ -67,7 +68,7 @@ private:
 	GolExport* m_unk0x0c;            // 0x0c
 	undefined4 m_unk0x10;            // 0x10
 	Item0x104* m_unk0x14;            // 0x14
-	undefined4** m_unk0x18;          // 0x18
+	IGdbModel0x40** m_unk0x18;       // 0x18
 	MagentaRibbon0x20** m_unk0x1c;   // 0x1c
 	AmberHaze0x1c** m_unk0x20;       // 0x20
 	WhiteFalconNode0x18** m_unk0x24; // 0x24

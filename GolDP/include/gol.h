@@ -20,6 +20,7 @@ class GolHashTable;
 class GolFileSource;
 class GolFontTable;
 class GolNameTable;
+class IGdbModel0x40;
 class MagentaRibbon0x20;
 class WhiteBaffoon0x50;
 class WhiteFalconNode0x18;
@@ -50,8 +51,8 @@ public:
 	virtual ZoweeBlubberworth0xf0* VTable0x08() = 0;           // vtable+0x08
 	virtual MagentaRibbon0x20* CreateTextureList() = 0;        // vtable+0x0c
 	virtual AmberHaze0x1c* CreateMaterialList() = 0;           // vtable+0x10
-	virtual undefined4* VTable0x14() = 0;                      // vtable+0x14
-	virtual undefined4* VTable0x18() = 0;                      // vtable+0x18
+	virtual IGdbModel0x40* VTable0x14() = 0;                   // vtable+0x14
+	virtual WhiteFalconNode0x18* VTable0x18() = 0;             // vtable+0x18
 	virtual BoundingShape0x2c* CreateBoundingShape() = 0;      // vtable+0x1c
 	virtual AmberLens0x344* VTable0x20() = 0;                  // vtable+0x20
 	virtual undefined4 VTable0x24() = 0;                       // vtable+0x24
@@ -63,7 +64,7 @@ public:
 	virtual void VTable0x3c(ZoweeBlubberworth0xf0*) = 0;       // vtable+0x3c
 	virtual void DestroyTextureList(MagentaRibbon0x20*) = 0;   // vtable+0x40
 	virtual void DestroyMaterialList(AmberHaze0x1c*) = 0;      // vtable+0x44
-	virtual void VTable0x48(undefined4*) = 0;                  // vtable+0x48
+	virtual void VTable0x48(IGdbModel0x40*) = 0;               // vtable+0x48
 	virtual void VTable0x4c(WhiteFalconNode0x18*) = 0;         // vtable+0x4c
 	virtual void DestroyBoundingShape(BoundingShape0x2c*) = 0; // vtable+0x50
 	virtual void VTable0x54(AmberLens0x344*) = 0;              // vtable+0x54

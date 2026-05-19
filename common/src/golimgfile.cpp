@@ -1,11 +1,16 @@
 #include "golimgfile.h"
 
 #include "golerror.h"
+#include "ipalette0x4.h"
 
 #include <limits.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolImgFile, 0x5b0)
+
+// GLOBAL: GOLDP 0x1005cd90
+// GLOBAL: LEGORACERS 0x004be258
+ColorRGBA g_unk0x1005cd90 = {0x08, 0x08, 0x08, 0xff};
 
 // FUNCTION: GOLDP 0x1001fe90
 // FUNCTION: LEGORACERS 0x0040a8b0
@@ -80,11 +85,92 @@ void GolImgFile::Destroy()
 	}
 }
 
-// STUB: GOLDP 0x100200f0
-void GolImgFile::FUN_100200f0(IPalette0x4*, ColorRGBA* p_colorKey)
+// FUNCTION: GOLDP 0x100200f0
+void GolImgFile::FUN_100200f0(IPalette0x4* p_palette, ColorRGBA* p_colorKey)
 {
-	// TODO
-	STUB(0x100200f0);
+	LegoS32 colorKeyIndex = -1;
+	LegoU32 sourcePaletteSize = 1 << m_format.m_bitsPerPixel;
+
+	if (p_colorKey != NULL) {
+		for (LegoU32 i = 0; i < sourcePaletteSize; i++) {
+			if (p_colorKey->m_red == m_palette[i].m_red && p_colorKey->m_grn == m_palette[i].m_grn &&
+				p_colorKey->m_blu == m_palette[i].m_blu) {
+				colorKeyIndex = i;
+
+				if (m_hasColorKey) {
+					m_palette[i].m_red = m_unk0x0a0.m_red;
+					m_palette[i].m_grn = m_unk0x0a0.m_grn;
+					m_palette[i].m_blu = m_unk0x0a0.m_blu;
+					m_palette[i].m_alp = 0;
+				}
+				break;
+			}
+		}
+	}
+
+	LegoU32 entryCount = p_palette->GetEntryCount();
+	m_paletteCapacity = p_palette->GetPaletteSize();
+	if (sourcePaletteSize > m_paletteCapacity) {
+		sourcePaletteSize = m_paletteCapacity;
+	}
+
+	if (m_paletteCapacity == entryCount && p_colorKey == NULL) {
+		for (LegoU32 i = 0; i < sourcePaletteSize; i++) {
+			m_unk0x4a8[i] = static_cast<LegoU8>(i);
+		}
+
+		p_palette->SetEntries(m_palette, 0, sourcePaletteSize);
+		return;
+	}
+
+	if (m_paletteEntries == NULL) {
+		m_paletteEntries = new ColorRGBA[m_paletteCapacity];
+		if (m_paletteEntries == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	LegoU32 firstEntry = p_palette->GetFirstEntry();
+	m_paletteCount = firstEntry;
+	if (firstEntry != 0) {
+		p_palette->GetEntries(m_paletteEntries, 0, firstEntry);
+	}
+
+	m_paletteReservedEnd = m_paletteCapacity - firstEntry - entryCount;
+	if (m_paletteReservedEnd != 0 && m_paletteCapacity > entryCount) {
+		LegoU32 reservedStart = firstEntry + entryCount;
+		p_palette->GetEntries(m_paletteEntries + reservedStart, reservedStart, m_paletteReservedEnd);
+	}
+
+	if (colorKeyIndex >= 0) {
+		m_unk0x4a8[colorKeyIndex] = FUN_10020370(m_palette[colorKeyIndex]);
+		for (LegoU32 i = 0; i < sourcePaletteSize; i++) {
+			if (i != static_cast<LegoU32>(colorKeyIndex)) {
+				m_unk0x4a8[i] = FUN_10020370(m_palette[i]);
+			}
+		}
+	}
+	else if (m_unk0x5ac) {
+		for (LegoU32 i = 0; i < sourcePaletteSize; i++) {
+			ColorRGBA* color = &m_palette[i];
+			if (color->m_red == 0 && color->m_grn == 0 && color->m_blu == 0) {
+				g_unk0x1005cd90.m_alp = color->m_alp;
+				m_unk0x4a8[i] = FUN_10020370(g_unk0x1005cd90);
+			}
+			else {
+				m_unk0x4a8[i] = FUN_10020370(*color);
+			}
+		}
+	}
+	else {
+		for (LegoU32 i = 0; i < sourcePaletteSize; i++) {
+			m_unk0x4a8[i] = FUN_10020370(m_palette[i]);
+		}
+	}
+
+	p_palette->SetEntries(m_paletteEntries + firstEntry, firstEntry, m_paletteCount - firstEntry);
+	delete[] m_paletteEntries;
+	m_paletteEntries = NULL;
 }
 
 // FUNCTION: GOLDP 0x10020370

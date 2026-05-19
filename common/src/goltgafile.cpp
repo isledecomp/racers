@@ -189,10 +189,52 @@ void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 }
 
 // STUB: GOLDP 0x1002ad40
-void GolTgaFile::FUN_1002ad40(undefined4, undefined4)
+void GolTgaFile::FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst)
 {
-	// TODO
-	STUB(0x1002ad40);
+	LegoU32 bytesPerPixel = m_format.m_bitsPerPixel;
+	LegoU32 pixelCount = 0;
+	LegoU32 dstByteCount = 0;
+	LegoU32 dstOffset = 0;
+
+	bytesPerPixel += 7;
+	bytesPerPixel >>= 3;
+	LegoU8* dst = p_dst;
+	LegoU8* src = p_src;
+
+	while (pixelCount < m_width) {
+		LegoU32 packet = *src++;
+		LegoU32 newPixelCount = pixelCount + (packet & 0x7f) + 1;
+		if (newPixelCount > m_width) {
+			return;
+		}
+
+		if (packet & 0x80) {
+			packet &= 0x7f;
+			LegoU32 startOffset = dstOffset;
+			pixelCount += packet + 1;
+			dstByteCount += (packet + 1) * bytesPerPixel;
+
+			for (LegoU32 i = bytesPerPixel; i > 0; i--) {
+				dst[dstOffset++] = *src++;
+			}
+
+			for (; packet > 0; packet--) {
+				for (LegoU32 i = 0; i < bytesPerPixel; i++) {
+					dst[dstOffset++] = dst[startOffset + i];
+				}
+			}
+		}
+		else {
+			pixelCount += packet + 1;
+			dstByteCount += (packet + 1) * bytesPerPixel;
+
+			do {
+				for (LegoU32 i = bytesPerPixel; i > 0; i--) {
+					dst[dstOffset++] = *src++;
+				}
+			} while (packet-- != 0);
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED

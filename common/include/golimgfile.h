@@ -86,7 +86,7 @@ public:
 		undefined4 p_unk0x1c,
 		ColorRGBA* p_colorKey
 	);
-	void FUN_100229b0(undefined4, undefined4, undefined4, undefined4);
+	void FUN_100229b0(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWidth, LegoU32 p_bitsPerPixel);
 	void FUN_10022b80(undefined4, undefined4, undefined4);
 
 protected:

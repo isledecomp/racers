@@ -21,7 +21,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004016a0 FOLDED
 	// GolTgaFile::`scalar deleting destructor'
 
-	void FUN_1002ad40(undefined4, undefined4);
+	void FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst);
 
 private:
 	LegoU32 m_identificationFieldSize; // 0x5b0

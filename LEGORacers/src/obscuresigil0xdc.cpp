@@ -1,5 +1,11 @@
 #include "obscuresigil0xdc.h"
 
+#include "amberlens0x344.h"
+#include "bronzefalcon0xc8770.h"
+#include "gol.h"
+#include "golerror.h"
+#include "zoweeblubberworth0xf0.h"
+
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc::CreateParams0x84, 0x84)
 
@@ -68,17 +74,56 @@ LegoBool32 ObscureSigil0xdc::FUN_00465820(CreateParams0x84* p_createParams, unde
 	return m_flags & 1;
 }
 
-// STUB: LEGORACERS 0x00465890
-undefined4 ObscureSigil0xdc::VTable0x08()
+// FUNCTION: LEGORACERS 0x00465890
+LegoBool32 ObscureSigil0xdc::VTable0x08()
 {
-	STUB(0x00465890);
-	return 0;
+	LegoBool32 result = TRUE;
+
+	if (result & m_flags) {
+		if (m_unk0x64 && m_unk0x5c && !m_unk0x5c->GetUnk0x7c()) {
+			m_golExport->VTable0x54(m_unk0x64);
+		}
+
+		if (m_unk0x5c) {
+			m_unk0x5c->VTable0x18();
+			m_golExport->VTable0x3c(m_unk0x5c);
+		}
+
+		if (m_unk0x60) {
+			m_unk0x60->VTable0x18();
+			m_golExport->VTable0x3c(m_unk0x60);
+		}
+
+		result = ObscureVantage0x58::VTable0x08();
+	}
+
+	return result;
 }
 
-// STUB: LEGORACERS 0x00465900
-void ObscureSigil0xdc::FUN_00465900(CreateParams0x84*, undefined4)
+// FUNCTION: LEGORACERS 0x00465900
+void ObscureSigil0xdc::FUN_00465900(CreateParams0x84* p_createParams, undefined4 p_binary)
 {
-	STUB(0x00465900);
+	m_unk0x6c = p_createParams->m_unk0x70;
+	m_unk0x8c = p_createParams->m_unk0x5c;
+
+	m_unk0x5c = m_golExport->VTable0x08();
+	if (!m_unk0x5c) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x5c->VTable0x14(m_renderer, p_createParams->m_unk0x60, p_binary, m_unk0x8c);
+
+	if (p_createParams->m_unk0x74) {
+		m_unk0x60 = m_golExport->VTable0x08();
+		if (!m_unk0x60) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_unk0x60->VTable0x14(m_renderer, "blended", p_binary, m_unk0x8c);
+	}
+
+	ColorRGBA color = {0, 0, 0, 0};
+	m_renderer->VTable0x1c(color);
 }
 
 // STUB: LEGORACERS 0x004659b0
@@ -105,17 +150,23 @@ undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00465fe0
-ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00465fe0
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x00465fe0);
+	if (m_unk0x28 && m_unk0x28->VTable0x18(this, p_item, p_x, p_y)) {
+		return this;
+	}
+
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00466010
-ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00466010
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x00466010);
+	if (m_unk0x28 && m_unk0x28->VTable0x1c(this, p_item, p_x, p_y)) {
+		return this;
+	}
+
 	return NULL;
 }
 

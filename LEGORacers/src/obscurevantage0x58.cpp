@@ -74,7 +74,7 @@ LegoBool32 ObscureVantage0x58::FUN_00472a60(CreateParams0x30* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x00472ad0
-undefined4 ObscureVantage0x58::VTable0x08()
+LegoBool32 ObscureVantage0x58::VTable0x08()
 {
 	if (m_flags & 1) {
 		RemoveFromParent();
@@ -85,7 +85,7 @@ undefined4 ObscureVantage0x58::VTable0x08()
 		Reset();
 	}
 
-	return 1;
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED

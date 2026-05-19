@@ -54,7 +54,7 @@ public:
 	ObscureVantage0x58();
 	virtual void Reset();                                                                                // vtable+0x00
 	virtual ~ObscureVantage0x58();                                                                       // vtable+0x04
-	virtual undefined4 VTable0x08();                                                                     // vtable+0x08
+	virtual LegoBool32 VTable0x08();                                                                     // vtable+0x08
 	virtual void SetParent(ObscureVantage0x58*);                                                         // vtable+0x0c
 	virtual void VTable0x10(Rect*);                                                                      // vtable+0x10
 	virtual void VTable0x14(VisualState0x4*);                                                            // vtable+0x14

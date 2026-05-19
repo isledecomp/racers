@@ -136,7 +136,7 @@ void ImaginaryChisel0x658::HelperAt0x368::FUN_00466d00(SaffronQuartz0x2c::Frame0
 }
 
 // FUNCTION: LEGORACERS 0x00466d60
-undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x08()
+LegoBool32 ImaginaryChisel0x658::HelperAt0x368::VTable0x08()
 {
 	m_unk0x58.Clear();
 	m_unk0x84.FUN_004a0bf0();

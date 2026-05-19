@@ -120,7 +120,7 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004826c0(
 }
 
 // FUNCTION: LEGORACERS 0x00482760
-undefined4 ImaginaryDrillFieldAt0x498::VTable0x08()
+LegoBool32 ImaginaryDrillFieldAt0x498::VTable0x08()
 {
 	ObscureVantage0x58* fieldAt0x264 = &m_unk0x264;
 	fieldAt0x264->VTable0x08();

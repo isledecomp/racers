@@ -116,7 +116,7 @@ LegoBool32 ObscureIcon0x1a8::FUN_00471e30(CreateParams0x84* p_createParams, cons
 }
 
 // FUNCTION: LEGORACERS 0x00471ea0
-undefined4 ObscureIcon0x1a8::VTable0x08()
+LegoBool32 ObscureIcon0x1a8::VTable0x08()
 {
 	LegoBool32 result = TRUE;
 

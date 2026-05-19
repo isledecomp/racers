@@ -32,7 +32,7 @@ public:
 	ImaginaryDrillFieldAt0x498();
 	void Reset() override;                                                                          // vtable+0x00
 	~ImaginaryDrillFieldAt0x498() override;                                                         // vtable+0x04
-	undefined4 VTable0x08() override;                                                               // vtable+0x08
+	LegoBool32 VTable0x08() override;                                                               // vtable+0x08
 	void VTable0x10(Rect*) override;                                                                // vtable+0x10
 	ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x38(Rect*, Rect*) override;                                                   // vtable+0x38

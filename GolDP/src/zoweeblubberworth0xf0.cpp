@@ -86,7 +86,12 @@ ZoweeBlubberworth0xf0::~ZoweeBlubberworth0xf0()
 }
 
 // FUNCTION: GOLDP 0x1002c240
-void ZoweeBlubberworth0xf0::VTable0x14(undefined4 p_arg1, const LegoChar* p_name, LegoBool32 p_binary, float p_arg4)
+void ZoweeBlubberworth0xf0::VTable0x14(
+	WhiteFalcon0x140* p_arg1,
+	const LegoChar* p_name,
+	LegoBool32 p_binary,
+	float p_arg4
+)
 {
 	if (m_unk0x04) {
 		VTable0x18();

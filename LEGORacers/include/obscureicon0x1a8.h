@@ -54,7 +54,7 @@ public:
 	ObscureIcon0x1a8();
 	void Reset() override;                                                                          // vtable+0x00
 	~ObscureIcon0x1a8() override;                                                                   // vtable+0x04
-	undefined4 VTable0x08() override;                                                               // vtable+0x08
+	LegoBool32 VTable0x08() override;                                                               // vtable+0x08
 	void VTable0x10(Rect*) override;                                                                // vtable+0x10
 	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c
 	ObscureVantage0x58* VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x30

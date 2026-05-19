@@ -7,6 +7,9 @@
 #include "obscurevantage0x58.h"
 #include "types.h"
 
+class AmberLens0x344;
+class ZoweeBlubberworth0xf0;
+
 // VTABLE: LEGORACERS 0x004b1dfc
 // SIZE: 0xdc
 class ObscureSigil0xdc : public ObscureVantage0x58 {
@@ -16,9 +19,9 @@ public:
 	public:
 		undefined m_unk0x30[0x5c - 0x30]; // 0x30
 		LegoFloat m_unk0x5c;              // 0x5c
-		undefined m_unk0x60[0x70 - 0x60]; // 0x60
+		LegoChar m_unk0x60[0x70 - 0x60];  // 0x60
 		undefined4 m_unk0x70;             // 0x70
-		undefined4 m_unk0x74;             // 0x74
+		LegoBool32 m_unk0x74;             // 0x74
 		undefined4 m_unk0x78;             // 0x78
 		undefined4 m_unk0x7c;             // 0x7c
 		LegoFloat m_unk0x80;              // 0x80
@@ -28,7 +31,7 @@ public:
 
 	void Reset() override;                                                                          // vtable+0x00
 	~ObscureSigil0xdc() override;                                                                   // vtable+0x04
-	undefined4 VTable0x08() override;                                                               // vtable+0x08
+	LegoBool32 VTable0x08() override;                                                               // vtable+0x08
 	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                         // vtable+0x2c
 	ObscureVantage0x58* VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x30
 	ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x34
@@ -45,14 +48,14 @@ protected:
 	void FUN_004659b0(CreateParams0x84* p_createParams);
 
 	ObscureLink0x1c* m_unk0x58;       // 0x58
-	undefined4 m_unk0x5c;             // 0x5c
-	undefined4 m_unk0x60;             // 0x60
-	undefined4 m_unk0x64;             // 0x64
+	ZoweeBlubberworth0xf0* m_unk0x5c; // 0x5c
+	ZoweeBlubberworth0xf0* m_unk0x60; // 0x60
+	AmberLens0x344* m_unk0x64;        // 0x64
 	undefined4 m_unk0x68;             // 0x68
 	undefined4 m_unk0x6c;             // 0x6c
 	undefined m_unk0x70[0x88 - 0x70]; // 0x70
 	undefined4 m_unk0x88;             // 0x88
-	undefined4 m_unk0x8c;             // 0x8c
+	LegoFloat m_unk0x8c;              // 0x8c
 	undefined4 m_unk0x90;             // 0x90
 	undefined4 m_unk0x94;             // 0x94
 	LegoFloat m_unk0x98;              // 0x98

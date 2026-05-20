@@ -1084,37 +1084,128 @@ void GolImgFile::FUN_100226c0(
 	}
 }
 
-// STUB: GOLDP 0x10022730
+// FUNCTION: GOLDP 0x10022730
 void GolImgFile::FUN_10022730(
-	LegoU8*,
-	LegoU8*,
-	LegoU32,
-	LegoU32,
-	LegoU32,
-	const GolSurfaceFormat&,
-	IPalette0x4*,
-	undefined4,
-	ColorRGBA*
+	LegoU8* p_src,
+	LegoU8* p_dst,
+	LegoU32 p_width,
+	LegoU32 p_height,
+	LegoU32 p_pitch,
+	const GolSurfaceFormat& p_format,
+	IPalette0x4* p_palette,
+	undefined4 p_unk0x20,
+	ColorRGBA* p_colorKey
 )
 {
-	// TODO
-	STUB(0x10022730);
+	LegoU32 xScale = 1;
+	LegoU32 yScale = 1;
+	LegoU32 height = p_height;
+	LegoU32 width = p_width;
+
+	if (m_height != height || m_width != width) {
+		xScale = width / m_width;
+		yScale = height / m_height;
+	}
+
+	if (m_height > height || m_width > width) {
+		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
+	}
+
+	FUN_100204d0(p_format, p_colorKey);
+	if (p_format.m_paletteMask != 0 && p_palette != NULL) {
+		FUN_100200f0(p_palette, p_colorKey);
+	}
+
+	LegoS32 pitch;
+	if (p_unk0x20 != 0) {
+		pitch = p_pitch;
+		p_dst += (height - 1) * pitch;
+		pitch = -pitch;
+	}
+	else {
+		pitch = p_pitch;
+	}
+
+	LegoU8* src = p_src;
+	for (LegoU32 y = 0; y < m_height; y++) {
+		FUN_100207e0(src, p_dst, p_format);
+
+		if (xScale > 1) {
+			FUN_100229b0(p_dst, xScale, width, p_format.m_bitsPerPixel);
+		}
+
+		for (LegoU32 repeat = 1; repeat < yScale; repeat++) {
+			::memcpy(p_dst + pitch, p_dst, pitch);
+			p_dst += pitch;
+		}
+
+		src += m_rowByteStride;
+		p_dst += pitch;
+	}
 }
 
 // STUB: GOLDP 0x10022880
 void GolImgFile::FUN_10022880(
-	LegoU8*,
-	LegoU8*,
-	LegoU32,
-	LegoU32,
-	LegoU32,
-	const GolSurfaceFormat&,
+	LegoU8* p_src,
+	LegoU8* p_dst,
+	LegoU32 p_width,
+	LegoU32 p_height,
+	LegoU32 p_pitch,
+	const GolSurfaceFormat& p_format,
 	undefined4,
-	ColorRGBA*
+	ColorRGBA* p_colorKey
 )
 {
-	// TODO
-	STUB(0x10022880);
+	if ((m_height >> 1) != p_height || (m_width >> 1) != p_width) {
+		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
+	}
+
+	FUN_100204d0(p_format, p_colorKey);
+
+	LegoU32 rows = m_height >> 1;
+	LegoU32 srcPitch = m_rowByteStride << 1;
+
+	if (p_format.m_paletteMask != 0) {
+		for (; rows != 0; rows--) {
+			LegoU8* end = p_dst + (m_width >> 1);
+			if (p_dst < end) {
+				LegoU8* dst = p_dst - 1;
+				LegoU8* bottom = p_src + m_rowByteStride - 1;
+				LegoU8* top = p_src - 1;
+
+				for (; dst + 1 < end;) {
+					top += 2;
+					LegoU8 topLeft = top[-1];
+					LegoU8 topRight = top[0];
+					bottom += 2;
+					dst++;
+
+					if (topLeft == topRight) {
+						*dst = topRight;
+					}
+					else {
+						LegoU8 bottomLeft = bottom[-1];
+						if (bottomLeft != topLeft && bottomLeft != topRight) {
+							*dst = bottom[0];
+						}
+						else {
+							*dst = bottomLeft;
+						}
+					}
+				}
+			}
+
+			p_src += srcPitch;
+			p_dst += p_pitch;
+		}
+	}
+	else {
+		for (; rows != 0; rows--) {
+			FUN_10022b80(p_src, p_src + m_rowByteStride, p_dst);
+			p_src += srcPitch;
+			p_dst += p_pitch;
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x100229b0
@@ -1204,10 +1295,96 @@ void GolImgFile::FUN_100229b0(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledW
 }
 
 // STUB: GOLDP 0x10022b80
-void GolImgFile::FUN_10022b80(undefined4, undefined4, undefined4)
+void GolImgFile::FUN_10022b80(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 {
-	// TODO
-	STUB(0x10022b80);
+	LegoU8* end = p_dst + (m_width >> 1) * sizeof(LegoU16);
+	for (; p_dst < end; p_dst += sizeof(LegoU16)) {
+		LegoU32 samples[4];
+		LegoU8* src = p_top;
+
+		samples[0] = *src;
+		src += (m_srcStrideMask >> 0) & 1;
+		samples[0] |= *src << 8;
+		src += (m_srcStrideMask >> 1) & 1;
+		samples[0] |= *src << 16;
+		src += (m_srcStrideMask >> 2) & 1;
+		samples[0] |= *src << 24;
+		src += (m_srcStrideMask >> 3) & 1;
+
+		samples[1] = *src;
+		src += (m_srcStrideMask >> 0) & 1;
+		samples[1] |= *src << 8;
+		src += (m_srcStrideMask >> 1) & 1;
+		samples[1] |= *src << 16;
+		src += (m_srcStrideMask >> 2) & 1;
+		samples[1] |= *src << 24;
+		src += (m_srcStrideMask >> 3) & 1;
+
+		p_top = src;
+		src = p_bottom;
+
+		samples[2] = *src;
+		src += (m_srcStrideMask >> 0) & 1;
+		samples[2] |= *src << 8;
+		src += (m_srcStrideMask >> 1) & 1;
+		samples[2] |= *src << 16;
+		src += (m_srcStrideMask >> 2) & 1;
+		samples[2] |= *src << 24;
+		src += (m_srcStrideMask >> 3) & 1;
+
+		samples[3] = *src;
+		src += (m_srcStrideMask >> 0) & 1;
+		samples[3] |= *src << 8;
+		src += (m_srcStrideMask >> 1) & 1;
+		samples[3] |= *src << 16;
+		src += (m_srcStrideMask >> 2) & 1;
+		samples[3] |= *src << 24;
+		src += (m_srcStrideMask >> 3) & 1;
+
+		p_bottom = src;
+
+		LegoU32 red = 0;
+		LegoU32 grn = 0;
+		LegoU32 blu = 0;
+
+		if (m_hasColorKey) {
+			LegoBool32 foundColorKey = FALSE;
+			for (LegoU32 i = 0; i < 4; i++) {
+				LegoU32 sampleRed = (samples[i] & m_format.m_redBitMask) >> m_redSrcShift;
+				LegoU32 sampleGrn = (samples[i] & m_format.m_grnBitMask) >> m_grnSrcShift;
+				LegoU32 sampleBlu = (samples[i] & m_format.m_bluBitMask) >> m_bluSrcShift;
+
+				if (sampleRed == m_unk0x09c && sampleGrn == m_unk0x09d && sampleBlu == m_unk0x09e) {
+					*reinterpret_cast<LegoU16*>(p_dst) = static_cast<LegoU16>(m_colorKeyPixel);
+					foundColorKey = TRUE;
+					break;
+				}
+
+				red += sampleRed;
+				grn += sampleGrn;
+				blu += sampleBlu;
+			}
+
+			if (!foundColorKey) {
+				LegoU32 pixel = ((red >> 2) << m_redDstShift) | ((grn >> 2) << m_grnDstShift) |
+								((blu >> 2) << m_bluDstShift) | m_constPixelBits;
+				*reinterpret_cast<LegoU16*>(p_dst) = static_cast<LegoU16>(pixel);
+			}
+		}
+		else {
+			LegoU32 alp = 0;
+			for (LegoU32 i = 0; i < 4; i++) {
+				red += (samples[i] & m_format.m_redBitMask) >> m_redSrcShift;
+				grn += (samples[i] & m_format.m_grnBitMask) >> m_grnSrcShift;
+				blu += (samples[i] & m_format.m_bluBitMask) >> m_bluSrcShift;
+				alp += (samples[i] & m_format.m_alpBitMask) >> m_alpSrcShift;
+			}
+
+			LegoU32 pixel = ((red >> 2) << m_redDstShift) | ((grn >> 2) << m_grnDstShift) |
+							((blu >> 2) << m_bluDstShift) | ((alp >> 2) << m_alpDstShift);
+			*reinterpret_cast<LegoU16*>(p_dst) = static_cast<LegoU16>(pixel);
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED

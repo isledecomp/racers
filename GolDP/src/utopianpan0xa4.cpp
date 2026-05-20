@@ -492,9 +492,9 @@ void UtopianPan0xa4::FUN_10005b00()
 			g_unk0x10062b18.FUN_10022730(
 				source,
 				destPixels,
-				destPitch,
 				copyWidth,
 				copyHeight,
+				destPitch,
 				m_unk0x0c,
 				destPalette,
 				0,

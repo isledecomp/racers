@@ -2,6 +2,7 @@
 
 #include "audio/musicgroup.h"
 #include "audio/musicinstance.h"
+#include "bronzefalcon0xc8770.h"
 #include "golerror.h"
 #include "golstring.h"
 #include "imaginarydrillfieldat0x498.h"
@@ -135,10 +136,22 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 	return p_unk0x04->FUN_004826c0(&createParams, styleEntry);
 }
 
-// STUB: LEGORACERS 0x0047fec0
-void ImaginaryTool0x368::FUN_0047fec0(FieldAt0x350*, FieldAt0x340*)
+// FUNCTION: LEGORACERS 0x0047fec0
+void ImaginaryTool0x368::FUN_0047fec0(FieldAt0x350* p_materialColor, FieldAt0x340* p_lightColor)
 {
-	STUB(0x0047fec0);
+	GolVec3 lightDirection;
+	lightDirection.m_x = -1.0f;
+	lightDirection.m_y = -1.0f;
+	lightDirection.m_z = -1.0f;
+
+	m_unk0x350.SetColor(p_materialColor->GetColor());
+	m_unk0x340.SetColor(p_lightColor->GetColor());
+	m_unk0x340.SetDirection(lightDirection);
+
+	m_renderer->VTable0x28();
+	m_renderer->VTable0x2c(reinterpret_cast<const WhiteFalcon0x140::Field0x124*>(&m_unk0x350));
+	m_renderer->VTable0x30(reinterpret_cast<const WhiteFalcon0x140::Field0x124*>(&m_unk0x340));
+	m_renderer->VTable0x60();
 }
 
 // TODO: Temporary workaround until we figure out how the original code was written.

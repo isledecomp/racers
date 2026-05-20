@@ -1,8 +1,10 @@
 #ifndef IMAGINARYTOOL0X368_H
 #define IMAGINARYTOOL0X368_H
 
+#include "color.h"
 #include "compat.h"
 #include "decomp.h"
+#include "golmath.h"
 #include "imaginarynotion0x290.h"
 #include "porcelainveil0x50.h"
 
@@ -61,24 +63,21 @@ public:
 	class FieldAt0x350 {
 	public:
 		FieldAt0x350();
+		void SetColor(ColorRGBA p_color);
+		const ColorRGBA& GetColor() const { return m_color; }
 
 	private:
-		LegoU8 m_unk0x00; // 0x00
-		LegoU8 m_unk0x01; // 0x01
-		LegoU8 m_unk0x02; // 0x02
-		LegoU8 m_unk0x03; // 0x03
+		ColorRGBA m_color; // 0x00
 	};
 
 	// SIZE 0x10
-	class FieldAt0x340 {
+	class FieldAt0x340 : public FieldAt0x350 {
 	public:
 		FieldAt0x340();
+		void SetDirection(const GolVec3& p_direction);
 
 	private:
-		FieldAt0x350 m_unk0x00; // 0x00
-		LegoFloat m_unk0x04;    // 0x04
-		LegoFloat m_unk0x08;    // 0x08
-		LegoFloat m_unk0x0c;    // 0x0c
+		GolVec3 m_direction; // 0x04
 	};
 
 	ImaginaryTool0x368();

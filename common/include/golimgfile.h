@@ -68,9 +68,9 @@ public:
 	void FUN_10022730(
 		LegoU8* p_src,
 		LegoU8* p_dst,
-		LegoU32 p_pitch,
 		LegoU32 p_width,
 		LegoU32 p_height,
+		LegoU32 p_pitch,
 		const GolSurfaceFormat& p_format,
 		IPalette0x4* p_palette,
 		undefined4 p_unk0x20,
@@ -87,7 +87,7 @@ public:
 		ColorRGBA* p_colorKey
 	);
 	void FUN_100229b0(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWidth, LegoU32 p_bitsPerPixel);
-	void FUN_10022b80(undefined4, undefined4, undefined4);
+	void FUN_10022b80(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst);
 
 protected:
 	LegoU32 m_paletteCount;              // 0x004

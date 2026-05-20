@@ -24,10 +24,10 @@ void WhiteBaffoon0x50::Reset()
 	m_height = 0;
 	m_unk0x3c = c_flagBit5 | c_flagBit1;
 	m_flags = 0;
-	m_unk0x28.m_bytes[0] = 0;
-	m_unk0x28.m_bytes[1] = 0;
-	m_unk0x28.m_bytes[2] = 0;
-	m_unk0x28.m_uBytes[3] = 0xff;
+	m_colorKey.m_red = 0;
+	m_colorKey.m_grn = 0;
+	m_colorKey.m_blu = 0;
+	m_colorKey.m_alp = 0xff;
 	m_unk0x4a.m_uBytes[0] = 0xff;
 	m_unk0x4a.m_uBytes[1] = 0xff;
 	m_unk0x4a.m_uBytes[2] = 0xff;

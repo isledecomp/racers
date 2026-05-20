@@ -19,6 +19,7 @@ struct Rect;
 class GolFontBase0x40 {
 public:
 	enum Flags {
+		c_flagBit2 = 0x0004,
 		c_flagBit3 = 0x0008,
 		c_flagBit4 = 0x0010,
 		c_flagBit5 = 0x0020,
@@ -30,27 +31,32 @@ public:
 
 	GolFontBase0x40();
 
-	virtual void VTable0x00(const LegoChar* p_name, BronzeFalcon0xc8770* p_renderer); // vtable+0x00
-	virtual void VTable0x04(undefined4 p_unk0x04) = 0;                                // vtable+0x04
-	virtual PurpleDune0x7c* VTable0x08(LegoU32 p_index) = 0;                          // vtable+0x08
-	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, LegoU32 p_count) = 0;        // vtable+0x0c
-	virtual void VTable0x10(LegoU32 p_index) = 0;                                     // vtable+0x10
-	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;                // vtable+0x14
-	virtual void VTable0x18() = 0;                                                    // vtable+0x18
-	virtual ~GolFontBase0x40();                                                       // vtable+0x1c
-	virtual void Clear();                                                             // vtable+0x20
+	virtual void VTable0x00(const LegoChar* p_name, BronzeFalcon0xc8770* p_renderer);                // vtable+0x00
+	virtual void VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat) = 0; // vtable+0x04
+	virtual PurpleDune0x7c* VTable0x08(LegoU32 p_index) = 0;                                         // vtable+0x08
+	virtual void VTable0x0c(WhiteFalcon0x140* p_unk0x04, LegoU32 p_count) = 0;                       // vtable+0x0c
+	virtual void VTable0x10(LegoU32 p_index) = 0;                                                    // vtable+0x10
+	virtual void VTable0x14(Rect* p_sourceRect, Rect* p_destRect) = 0;                               // vtable+0x14
+	virtual void VTable0x18() = 0;                                                                   // vtable+0x18
+	virtual ~GolFontBase0x40();                                                                      // vtable+0x1c
+	virtual void Clear();                                                                            // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001dee0
 	// GolFontBase0x40::`scalar deleting destructor'
 
 	void FUN_1001eaa0(const LegoChar*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	void FUN_1001df80(BronzeFalcon0xc8770* p_renderer, GolString* p_string, LegoU32 p_count);
+	void FUN_1001e190(const LegoChar* p_name);
+	void FUN_1001e420(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch);
+	LegoBool32 FUN_1001e4c0(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch, LegoBool32 p_highNibble);
+	LegoU32 FUN_1001e5e0(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat);
 	LegoS32 FUN_1001eb70(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoS32 FUN_1001eca0(GolString*, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	void FUN_1001e970(GolString*, LegoS32*, LegoS32*);
 	LegoS32 FUN_1001ed00(LegoU32, WhiteFalcon0x140*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoBool32 FUN_1001ef60(WhiteFalcon0x140*, Rect*, Rect*);
 	void FUN_1001f090(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
+	static LegoS32 __cdecl CompareGlyphChars(const void* p_left, const void* p_right);
 	undefined4 FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
 	undefined4 FUN_00408d50(
 		GolString* p_string,
@@ -103,22 +109,25 @@ protected:
 		LegoU16 m_width;      // 0x0a
 	};
 
-	undefined4 m_unk0x04; // 0x04
-	undefined4 m_unk0x08; // 0x08
-	undefined4 m_unk0x0c; // 0x0c
-	undefined4 m_unk0x10; // 0x10
-	undefined4 m_unk0x14; // 0x14
+	LegoU32 m_unk0x04;    // 0x04
+	LegoU32 m_unk0x08;    // 0x08
+	LegoU32 m_unk0x0c;    // 0x0c
+	LegoU32 m_unk0x10;    // 0x10
+	LegoU32 m_unk0x14;    // 0x14
 	LegoS32 m_unk0x18;    // 0x18
 	LegoS32 m_unk0x1c;    // 0x1c
 	LegoS32 m_unk0x20;    // 0x20
 	LegoS32 m_unk0x24;    // 0x24
 	Glyph0x0c* m_unk0x28; // 0x28
-	undefined4 m_unk0x2c; // 0x2c
+	LegoU32 m_unk0x2c;    // 0x2c
 	union {
 		GolName m_name;           // 0x30
 		FourBytes m_nameParts[2]; // 0x30
 	};
-	undefined4 m_unk0x38; // 0x38
+	union {
+		ColorRGBA m_colorKey;     // 0x38
+		LegoU32 m_colorKeyPacked; // 0x38
+	};
 	union {
 		ColorRGBA m_color;     // 0x3c
 		LegoU32 m_colorPacked; // 0x3c

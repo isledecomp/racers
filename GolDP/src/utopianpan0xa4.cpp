@@ -23,10 +23,10 @@ static GolImgFile g_unk0x10062b18;
 static D3DTLVERTEX g_unk0x100630c8[4];
 
 // GLOBAL: GOLDP 0x10063ca0
-static GolTgaFile g_unk0x10063ca0;
+GolTgaFile g_unk0x10063ca0;
 
 // GLOBAL: GOLDP 0x10064280
-static GolBmpFile g_unk0x10064280;
+GolBmpFile g_unk0x10064280;
 
 // FUNCTION: GOLDP 0x10004fd0
 UtopianPan0xa4::UtopianPan0xa4()
@@ -438,15 +438,13 @@ void UtopianPan0xa4::FUN_10005b00()
 
 	ColorRGBA* colorKey;
 	if (m_flags & c_flagBit5) {
-		ColorRGBA* sourceColorKey = reinterpret_cast<ColorRGBA*>(&m_unk0x28);
+		colorKey = &m_colorKey;
 		if (m_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit9) {
 			g_unk0x10062b18.SetUnk0x0a0(g_unk0x10057668);
 		}
 		else {
-			g_unk0x10062b18.SetUnk0x0a0(*sourceColorKey);
+			g_unk0x10062b18.SetUnk0x0a0(*colorKey);
 		}
-
-		colorKey = sourceColorKey;
 	}
 	else {
 		colorKey = NULL;

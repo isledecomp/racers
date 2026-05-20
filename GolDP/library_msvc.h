@@ -30,6 +30,9 @@
 // LIBRARY: GOLDP 0x1004b513
 // ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
+// LIBRARY: GOLDP 0x1004b630
+// _qsort
+
 // LIBRARY: GOLDP 0x1004ba3b
 // _isalpha
 

@@ -3,10 +3,30 @@
 #include "bronzefalcon0xc8770.h"
 #include "decomp.h"
 #include "duskwindbananarelic0x30.h"
+#include "golbmpfile.h"
+#include "golerror.h"
+#include "golimgfile.h"
+#include "goltgafile.h"
+#include "ipalette0x4.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
+#include "silverdune0x30.h"
+
+#include <stdlib.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFont0xa0, 0xa0)
+
+// GLOBAL: GOLDP 0x10062568
+static GolImgFile g_unk0x10062568;
+
+extern SilverDune0x30* g_unk0x10063c9c;
+
+extern GolTgaFile g_unk0x10063ca0;
+
+extern GolBmpFile g_unk0x10064280;
+
+extern const ColorRGBA g_unk0x10057668;
 
 // FUNCTION: GOLDP 0x100043d0
 GolFont0xa0::GolFont0xa0()
@@ -30,11 +50,45 @@ void GolFont0xa0::Clear()
 	GolFontBase0x40::Clear();
 }
 
-// STUB: GOLDP 0x10004570
-void GolFont0xa0::VTable0x00(const LegoChar*, BronzeFalcon0xc8770*)
+// FUNCTION: GOLDP 0x10004570
+void GolFont0xa0::VTable0x00(const LegoChar* p_name, BronzeFalcon0xc8770* p_renderer)
 {
-	// TODO
-	STUB(0x10004570);
+	GolSurfaceFormat sourceFormat;
+
+	GolImgFile* imageFile = &g_unk0x10063ca0;
+	if (!(m_unk0x2c & c_flagBit4)) {
+		imageFile = &g_unk0x10064280;
+	}
+
+	imageFile->VTable0x08(p_name);
+	LegoU32 sourceHeight = imageFile->GetHeight();
+	sourceFormat = imageFile->GetTextureFormat();
+	m_unk0x1c = sourceHeight;
+
+	if (sourceFormat.m_paletteMask && sourceFormat.m_bitsPerPixel == 4) {
+		::memset(&sourceFormat, 0, sizeof(sourceFormat));
+		sourceFormat.m_bitsPerPixel = 8;
+		sourceFormat.m_paletteMask = 0x00ff;
+	}
+
+	LegoU32 sourceWidth = imageFile->GetWidth();
+	g_unk0x10063c9c = &m_unk0x40;
+	m_unk0x40.VTable0x34(*p_renderer, sourceFormat, sourceWidth, m_unk0x1c);
+	imageFile->VTable0x20(&m_unk0x40, m_unk0x2c & c_flagBit2, NULL);
+	imageFile->Destroy();
+
+	FUN_1001e190(p_name);
+
+	GolSurfaceFormat textureFormat;
+	g_unk0x10063c9c = &m_unk0x40;
+	GolSurfaceFormat surfaceFormat = m_unk0x40.GetTextureFormat();
+	LegoU32 selectFlags = m_unk0x2c & c_flagBit5;
+	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, selectFlags);
+	FUN_1001e5e0(p_renderer, &textureFormat);
+	VTable0x04(p_renderer, &textureFormat);
+	FUN_10004d70(p_renderer, &surfaceFormat, &textureFormat);
+
+	::qsort(m_unk0x28, m_unk0x24, sizeof(Glyph0x0c), GolFontBase0x40::CompareGlyphChars);
 }
 
 // FUNCTION: GOLDP 0x100046e0
@@ -51,18 +105,90 @@ void GolFont0xa0::ReleaseSurfaces()
 	}
 }
 
-// STUB: GOLDP 0x10004720
-void GolFont0xa0::RefreshSurfaces(BronzeFalcon0xc8770*)
+// FUNCTION: GOLDP 0x10004720
+void GolFont0xa0::RefreshSurfaces(BronzeFalcon0xc8770* p_renderer)
 {
-	// TODO
-	STUB(0x10004720);
+	GolSurfaceFormat textureFormat;
+
+	g_unk0x10063c9c = &m_unk0x40;
+	GolSurfaceFormat sourceFormat = m_unk0x40.GetTextureFormat();
+	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_unk0x2c & c_flagBit5);
+	FUN_1001e5e0(p_renderer, &textureFormat);
+	VTable0x04(p_renderer, &textureFormat);
+	FUN_10004d70(p_renderer, &sourceFormat, &textureFormat);
 }
 
-// STUB: GOLDP 0x100047b0
-void GolFont0xa0::VTable0x04(undefined4)
+// FUNCTION: GOLDP 0x100047b0
+void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
-	// TODO
-	STUB(0x100047b0);
+	m_unk0x90 = new PurpleDune0x7c[m_unk0x04];
+	if (m_unk0x90 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x9c = new DuskwindBananaRelic0x30[m_unk0x04];
+	if (m_unk0x9c == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoU32 i;
+	for (i = 0; i < m_unk0x04 - 1; i++) {
+		PurpleDune0x7c* texture = &m_unk0x90[i];
+
+		if (m_unk0x2c & c_flagBit5) {
+			texture->SetColorKey(m_colorKey);
+		}
+
+		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_unk0x08, m_unk0x0c);
+
+		DuskWindBananaRelicParams params;
+		params.m_unk0x00 = c_fontMaterialFlags;
+		params.m_unk0x04 = texture;
+		params.m_unk0x08.m_unk0x0 = 0xff;
+		params.m_unk0x08.m_unk0x1 = 0xff;
+		params.m_unk0x08.m_unk0x2 = 0xff;
+		params.m_unk0x08.m_unk0x3 = 0xff;
+		params.m_unk0x0c.m_unk0x0 = 0xff;
+		params.m_unk0x0c.m_unk0x1 = 0xff;
+		params.m_unk0x0c.m_unk0x2 = 0xff;
+		params.m_unk0x0c.m_unk0x3 = 0xff;
+		params.m_unk0x10 = 2;
+		params.m_unk0x11 = 0;
+		params.m_unk0x12 = 1;
+		params.m_unk0x13 = 0;
+
+		m_unk0x9c[i].FUN_100257e0(p_renderer, params);
+		m_unk0x9c[i].FUN_10006320(*p_renderer);
+	}
+
+	i = m_unk0x04 - 1;
+	PurpleDune0x7c* texture = &m_unk0x90[i];
+
+	if (m_unk0x2c & c_flagBit5) {
+		texture->SetColorKey(m_colorKey);
+	}
+
+	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_unk0x10, m_unk0x14);
+	texture->SetUnk0x38(*((undefined4*) &m_nameParts[0]), *((undefined4*) &m_nameParts[1]));
+
+	DuskWindBananaRelicParams params;
+	params.m_unk0x00 = c_fontMaterialFlags;
+	params.m_unk0x04 = texture;
+	params.m_unk0x08.m_unk0x0 = 0xff;
+	params.m_unk0x08.m_unk0x1 = 0xff;
+	params.m_unk0x08.m_unk0x2 = 0xff;
+	params.m_unk0x08.m_unk0x3 = 0xff;
+	params.m_unk0x0c.m_unk0x0 = 0xff;
+	params.m_unk0x0c.m_unk0x1 = 0xff;
+	params.m_unk0x0c.m_unk0x2 = 0xff;
+	params.m_unk0x0c.m_unk0x3 = 0xff;
+	params.m_unk0x10 = 2;
+	params.m_unk0x11 = 0;
+	params.m_unk0x12 = 1;
+	params.m_unk0x13 = 0;
+
+	m_unk0x9c[i].FUN_100257e0(p_renderer, params);
+	m_unk0x9c[i].FUN_10006320(*p_renderer);
 }
 
 // FUNCTION: GOLDP 0x10004b60
@@ -90,7 +216,7 @@ void GolFont0xa0::VTable0x10(LegoU32 p_index)
 	m_unk0x98 = 1.0f / static_cast<LegoFloat>(m_unk0x90[index].GetHeight());
 }
 
-// STUB: GOLDP 0x10004c20
+// FUNCTION: GOLDP 0x10004c20
 void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 {
 	D3DTLVERTEX vertices[4];
@@ -138,6 +264,85 @@ void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 
 	LegoU32 vertexCount = sizeOfArray(vertices);
 	m_renderer->FUN_10009fd0(vertices, vertexCount);
+}
+
+// FUNCTION: GOLDP 0x10004d70
+void GolFont0xa0::FUN_10004d70(
+	BronzeFalcon0xc8770* p_renderer,
+	const GolSurfaceFormat* p_sourceFormat,
+	GolSurfaceFormat* p_textureFormat
+)
+{
+	GolFont0xa0* font = this;
+	LegoU32 currentSurface = 0;
+	PurpleDune0x7c* texture = font->VTable0x08(currentSurface);
+
+	ColorRGBA* paletteEntries;
+	LegoU32 paletteSize;
+	if (p_sourceFormat->m_paletteMask) {
+		paletteEntries = font->m_unk0x40.GetPaletteEntries();
+		paletteSize = font->m_unk0x40.GetPaletteSize();
+	}
+	else {
+		paletteEntries = NULL;
+		paletteSize = 0;
+	}
+
+	ColorRGBA* colorKey;
+	if (font->m_unk0x2c & c_flagBit5) {
+		colorKey = &font->m_colorKey;
+		if (p_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit9) {
+			g_unk0x10062568.SetUnk0x0a0(g_unk0x10057668);
+		}
+		else {
+			g_unk0x10062568.SetUnk0x0a0(*colorKey);
+		}
+	}
+	else {
+		colorKey = NULL;
+	}
+
+	LegoU8* sourcePixels;
+	LegoU32 sourcePitch;
+	font->m_unk0x40.LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
+
+	LegoU8* destPixels;
+	LegoU32 destPitch;
+	texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+
+	for (LegoU32 i = 0; i < font->m_unk0x24; i++) {
+		Glyph0x0c* glyph = &font->m_unk0x28[i];
+
+		if (glyph->m_unk0x04 != currentSurface) {
+			texture->UnlockPixels();
+			currentSurface = glyph->m_unk0x04;
+			texture = font->VTable0x08(currentSurface);
+			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
+		}
+
+		g_unk0x10062568
+			.FUN_100226c0(*p_sourceFormat, glyph->m_width, font->m_unk0x1c, sourcePitch, paletteEntries, paletteSize);
+
+		LegoU8* source = sourcePixels + ((p_sourceFormat->m_bitsPerPixel * glyph->m_unk0x02 + 7) >> 3);
+		LegoU8* dest =
+			destPixels + destPitch * glyph->m_unk0x08 + ((p_textureFormat->m_bitsPerPixel * glyph->m_unk0x06 + 7) >> 3);
+
+		IPalette0x4* palette = p_textureFormat->m_paletteMask ? texture->GetPalette() : NULL;
+		g_unk0x10062568.FUN_10022730(
+			source,
+			dest,
+			glyph->m_width,
+			font->m_unk0x1c,
+			destPitch,
+			*p_textureFormat,
+			palette,
+			0,
+			colorKey
+		);
+	}
+
+	texture->UnlockPixels();
+	font->m_unk0x40.UnlockPixels();
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED

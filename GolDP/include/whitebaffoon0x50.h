@@ -1,6 +1,7 @@
 #ifndef WHITEBAFFOON0X58_H
 #define WHITEBAFFOON0X58_H
 
+#include "color.h"
 #include "decomp.h"
 #include "golsurfaceformat.h"
 #include "types.h"
@@ -63,11 +64,14 @@ public:
 	// WhiteBaffoon0x50::`scalar deleting destructor'
 
 public:
-	LegoS32* m_unk0x04;               // 0x04
-	LegoS32* m_unk0x08;               // 0x08
-	GolSurfaceFormat m_unk0x0c;       // 0x0c
-	BronzeFalcon0xc8770* m_renderer;  // 0x24
-	FourBytes m_unk0x28;              // 0x28
+	LegoS32* m_unk0x04;              // 0x04
+	LegoS32* m_unk0x08;              // 0x08
+	GolSurfaceFormat m_unk0x0c;      // 0x0c
+	BronzeFalcon0xc8770* m_renderer; // 0x24
+	union {
+		ColorRGBA m_colorKey;     // 0x28
+		LegoU32 m_colorKeyPacked; // 0x28
+	};
 	LegoU32 m_unk0x2c;                // 0x2c
 	LegoU32 m_unk0x30;                // 0x30
 	LegoU32 m_width;                  // 0x34

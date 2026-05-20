@@ -5,15 +5,19 @@
 #include "golerror.h"
 #include "golstring.h"
 #include "rectangle.h"
+#include "silverdune0x30.h"
 #include "slatepeak0x58.h"
 #include "whitefalcon0x140.h"
 
+#include <stdio.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFontBase0x40, 0x40)
 
 // GLOBAL: GOLDP 0x10063bd0
 static LegoU8 g_unk0x10063bd0[0x80];
+
+extern SilverDune0x30* g_unk0x10063c9c;
 
 // FUNCTION: GOLDP 0x1001dea0
 GolFontBase0x40::GolFontBase0x40()
@@ -88,6 +92,281 @@ void GolFontBase0x40::VTable0x00(const LegoChar*, BronzeFalcon0xc8770*)
 {
 	// TODO
 	STUB(0x1001e070);
+}
+
+// FUNCTION: GOLDP 0x1001e190
+void GolFontBase0x40::FUN_1001e190(const LegoChar* p_name)
+{
+	LegoU32* rowSignature = new LegoU32[m_unk0x1c];
+	if (rowSignature == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoU8* pixels;
+	LegoU32 pitch;
+	g_unk0x10063c9c->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead);
+	FUN_1001e420(rowSignature, pixels, pitch);
+
+	const LegoU32 step = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel >> 2;
+	const LegoU32 width = g_unk0x10063c9c->GetWidth();
+	LegoU32 x = 0;
+	LegoU32 pixelOffset = 0;
+	LegoU8* column = pixels;
+
+	while (x < width) {
+		if (!FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
+			break;
+		}
+
+		pixelOffset += step;
+		column = pixels + (pixelOffset >> 1);
+		x++;
+	}
+
+	m_unk0x18 = x;
+	m_unk0x28[0].m_unk0x02 = 0;
+	m_unk0x28[0].m_width = static_cast<LegoU16>(m_unk0x18);
+
+	for (LegoU32 i = 1; i < m_unk0x24; i++) {
+		if (i != 1) {
+			pixelOffset = x * step;
+			column = pixels + (pixelOffset >> 1);
+			while (x < width) {
+				if (!FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
+					break;
+				}
+
+				pixelOffset += step;
+				column = pixels + (pixelOffset >> 1);
+				x++;
+			}
+		}
+
+		LegoU32 start = x;
+		m_unk0x28[i].m_unk0x02 = static_cast<undefined2>(start);
+
+		pixelOffset = x * step;
+		column = pixels + (pixelOffset >> 1);
+		while (x < width) {
+			if (FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
+				break;
+			}
+
+			pixelOffset += step;
+			column = pixels + (pixelOffset >> 1);
+			x++;
+		}
+
+		LegoU32 glyphWidth = x - start;
+		m_unk0x28[i].m_width = static_cast<LegoU16>(glyphWidth);
+		if (!m_unk0x28[i].m_width) {
+			LegoChar message[256];
+			::sprintf(message, "Incomplete font image: %s\nmissing character %x\n", p_name, m_unk0x28[i].m_char);
+			GOL_FATALERROR_MESSAGE(message);
+		}
+	}
+
+	g_unk0x10063c9c->UnlockPixels();
+	delete[] rowSignature;
+}
+
+// FUNCTION: GOLDP 0x1001e420
+void GolFontBase0x40::FUN_1001e420(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch)
+{
+	GolFontBase0x40* font = this;
+	LegoU16 bitsPerPixel = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel;
+
+	if (bitsPerPixel == 4) {
+		for (LegoU32 i = 0; i < font->m_unk0x1c; i++) {
+			p_rowSignature[i] = *p_pixels & 0x0f;
+			p_pixels += p_pitch;
+		}
+	}
+	else {
+		LegoU32 mask = (1 << bitsPerPixel) - 1;
+		for (LegoU32 i = 0; i < font->m_unk0x1c; i++) {
+			LegoU32 pixel = p_pixels[0] | (p_pixels[1] << 8) | (p_pixels[2] << 16) | (p_pixels[3] << 24);
+			p_rowSignature[i] = mask & pixel;
+			p_pixels += p_pitch;
+		}
+	}
+}
+
+// FUNCTION: GOLDP 0x1001e4c0
+LegoBool32 GolFontBase0x40::FUN_1001e4c0(
+	LegoU32* p_rowSignature,
+	LegoU8* p_pixels,
+	LegoU32 p_pitch,
+	LegoBool32 p_highNibble
+)
+{
+	GolFontBase0x40* font = this;
+	LegoU16 bitsPerPixel = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel;
+
+	if (bitsPerPixel == 4) {
+		if (!p_highNibble) {
+			LegoU32 i = 0;
+			while (i < font->m_unk0x1c) {
+				LegoU32 pixel = *p_pixels & 0x0f;
+				if (pixel != *p_rowSignature) {
+					return FALSE;
+				}
+
+				p_pixels += p_pitch;
+				i++;
+				p_rowSignature++;
+			}
+
+			return TRUE;
+		}
+
+		LegoU32 i = 0;
+		while (i < font->m_unk0x1c) {
+			LegoU32 pixel = *p_pixels >> 4;
+			if (pixel != *p_rowSignature) {
+				return FALSE;
+			}
+
+			p_pixels += p_pitch;
+			i++;
+			p_rowSignature++;
+		}
+
+		return TRUE;
+	}
+
+	LegoU32 bytesPerPixel = bitsPerPixel >> 3;
+	for (LegoU32 i = 0; i < font->m_unk0x1c; i++) {
+		LegoU32 shift = 0;
+		LegoU32 j = 0;
+		while (j < bytesPerPixel) {
+			if (p_pixels[j] != static_cast<LegoU8>(*p_rowSignature >> shift)) {
+				return FALSE;
+			}
+
+			shift += 8;
+			j++;
+		}
+
+		p_pixels += p_pitch;
+		p_rowSignature++;
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: GOLDP 0x1001e5e0
+LegoU32 GolFontBase0x40::FUN_1001e5e0(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
+{
+	LegoU32 bitsPerPixel = p_textureFormat->m_bitsPerPixel;
+
+	m_unk0x0c = p_renderer->GetMaximumTextureHeight(bitsPerPixel);
+	if (m_unk0x0c > 0x100) {
+		m_unk0x0c = 0x100;
+	}
+
+	if (p_renderer->TexturesMustBeSquare()) {
+		m_unk0x08 = p_renderer->GetMaximumTextureWidth(bitsPerPixel);
+		if (m_unk0x08 > 0x100) {
+			m_unk0x08 = 0x100;
+		}
+	}
+	else {
+		m_unk0x08 = m_unk0x0c;
+	}
+
+	if (m_unk0x1c > m_unk0x0c) {
+		GOL_FATALERROR_MESSAGE("Font too tall for tallest texture height");
+	}
+
+	LegoU32 texture = 0;
+	LegoU32 x = 0;
+	LegoU32 y = 0;
+	LegoU32 lastTextureCount = 0;
+	m_unk0x04 = 0;
+
+	for (LegoU32 i = 0; i < m_unk0x24; i++) {
+		if (m_unk0x28[i].m_width > m_unk0x08) {
+			GOL_FATALERROR_MESSAGE("Font char too wide for widest texture width");
+		}
+
+		if (x + m_unk0x28[i].m_width > m_unk0x08) {
+			y += m_unk0x1c;
+			x = 0;
+
+			if (y + m_unk0x1c > m_unk0x0c) {
+				lastTextureCount = 0;
+				y = 0;
+				m_unk0x04++;
+			}
+		}
+
+		m_unk0x28[i].m_unk0x06 = static_cast<undefined2>(x);
+		m_unk0x28[i].m_unk0x08 = static_cast<undefined2>(y);
+		x += m_unk0x28[i].m_width;
+		m_unk0x28[i].m_unk0x04 = static_cast<undefined2>(m_unk0x04);
+		lastTextureCount++;
+	}
+
+	m_unk0x04++;
+
+	LegoU32 power = 0;
+	LegoU32 hasRemainder = 0;
+	m_unk0x14 = m_unk0x1c;
+	while (m_unk0x14 > 1) {
+		power++;
+		hasRemainder |= m_unk0x14 & 1;
+		m_unk0x14 >>= 1;
+	}
+
+	m_unk0x14 = 1 << (power + hasRemainder);
+
+	if (m_unk0x14 < p_renderer->GetMinimumTextureHeight(bitsPerPixel)) {
+		m_unk0x14 = p_renderer->GetMinimumTextureHeight(bitsPerPixel);
+	}
+
+	m_unk0x10 = m_unk0x14;
+	LegoU32 packedCount = 0;
+	for (;;) {
+		x = 0;
+		y = 0;
+		packedCount = 0;
+
+		LegoU32 startIndex = m_unk0x24 - lastTextureCount;
+		for (LegoU32 i = startIndex; i < m_unk0x24; i++) {
+			if (m_unk0x28[i].m_width > m_unk0x10) {
+				break;
+			}
+
+			if (x + m_unk0x28[i].m_width > m_unk0x10) {
+				x = 0;
+				y += m_unk0x1c;
+
+				if (y + m_unk0x1c > m_unk0x14) {
+					break;
+				}
+			}
+
+			m_unk0x28[i].m_unk0x06 = static_cast<undefined2>(x);
+			m_unk0x28[i].m_unk0x08 = static_cast<undefined2>(y);
+			x += m_unk0x28[i].m_width;
+			packedCount++;
+		}
+
+		if (packedCount >= lastTextureCount) {
+			return lastTextureCount;
+		}
+
+		m_unk0x14 *= 2;
+		if (m_unk0x14 > p_renderer->GetMaximumTextureHeight(bitsPerPixel)) {
+			m_unk0x14 = p_renderer->GetMaximumTextureHeight(bitsPerPixel);
+		}
+
+		m_unk0x10 *= 2;
+		if (m_unk0x10 > p_renderer->GetMaximumTextureWidth(bitsPerPixel)) {
+			m_unk0x10 = p_renderer->GetMaximumTextureWidth(bitsPerPixel);
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x1001e970
@@ -501,4 +780,19 @@ void GolFontBase0x40::FUN_1001f090(
 		p_destRect->m_left += delta;
 		p_sourceRect->m_left += static_cast<LegoS32>(static_cast<LegoFloat>(delta) * p_inverseScaleX);
 	}
+}
+
+// FUNCTION: GOLDP 0x1001f140
+LegoS32 __cdecl GolFontBase0x40::CompareGlyphChars(const void* p_left, const void* p_right)
+{
+	LegoU16 left = *static_cast<const LegoU16*>(p_left);
+	LegoU16 right = *static_cast<const LegoU16*>(p_right);
+
+	if (left > right) {
+		return 1;
+	}
+
+	LegoS16 difference = left;
+	difference -= right;
+	return difference ? -1 : 0;
 }

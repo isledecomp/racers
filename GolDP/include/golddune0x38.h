@@ -33,6 +33,13 @@ public:
 
 	LegoU16 GetUnk0x34() const { return m_unk0x34; }
 	LegoU16 GetUnk0x36() const { return m_unk0x36; }
+	void SetColorKey(const ColorRGBA& p_colorKey)
+	{
+		m_colorKey = p_colorKey;
+		m_colorKey.m_alp = 0;
+		m_unk0x36 = c_unk0x36Bit5;
+		m_unk0x36 |= c_unk0x36Bit11;
+	}
 
 	// SYNTHETIC: GOLDP 0x10004470 FOLDED
 	// GoldDune0x38::~GoldDune0x38

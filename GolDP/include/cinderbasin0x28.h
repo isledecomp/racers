@@ -1,6 +1,7 @@
 #ifndef CINDERBASIN0X28_H
 #define CINDERBASIN0X28_H
 
+#include "color.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 #include "whitebaffoon0x50.h"
@@ -20,9 +21,15 @@ class CinderBasin0x28 : public GolNameTable {
 public:
 	// SIZE 0x0c
 	struct FontParseStyle {
-		FourBytes m_foregroundColor; // 0x00
-		LegoU32 m_flags;             // 0x04
-		FourBytes m_textColor;       // 0x08
+		union {
+			ColorRGBA m_foregroundColor;     // 0x00
+			LegoU32 m_foregroundColorPacked; // 0x00
+		};
+		LegoU32 m_flags; // 0x04
+		union {
+			ColorRGBA m_textColor;     // 0x08
+			LegoU32 m_textColorPacked; // 0x08
+		};
 	};
 
 	CinderBasin0x28();

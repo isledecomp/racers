@@ -94,16 +94,16 @@ void CinderBasin0x28::VTable0x20(BronzeFalcon0xc8770* p_renderer, const LegoChar
 		parser->ReadLeftCurly();
 
 		FontParseStyle style;
-		style.m_foregroundColor.m_bytes[3] = -1;
-		style.m_textColor.m_bytes[3] = -1;
+		style.m_foregroundColor.m_alp = 0xff;
+		style.m_textColor.m_alp = 0xff;
 
 		style.m_flags = 0;
-		style.m_foregroundColor.m_bytes[0] = 0;
-		style.m_foregroundColor.m_bytes[1] = 0;
-		style.m_foregroundColor.m_bytes[2] = 0;
-		style.m_textColor.m_bytes[0] = -1;
-		style.m_textColor.m_bytes[1] = -1;
-		style.m_textColor.m_bytes[2] = -1;
+		style.m_foregroundColor.m_red = 0;
+		style.m_foregroundColor.m_grn = 0;
+		style.m_foregroundColor.m_blu = 0;
+		style.m_textColor.m_red = 0xff;
+		style.m_textColor.m_grn = 0xff;
+		style.m_textColor.m_blu = 0xff;
 
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {
@@ -118,9 +118,9 @@ void CinderBasin0x28::VTable0x20(BronzeFalcon0xc8770* p_renderer, const LegoChar
 				break;
 			case GolFileParser::e_unknown0x2a:
 				style.m_flags |= GolFontBase0x40::c_flagBit5;
-				style.m_foregroundColor.m_bytes[0] = parser->ReadInteger();
-				style.m_foregroundColor.m_bytes[1] = parser->ReadInteger();
-				style.m_foregroundColor.m_bytes[2] = parser->ReadInteger();
+				style.m_foregroundColor.m_red = parser->ReadInteger();
+				style.m_foregroundColor.m_grn = parser->ReadInteger();
+				style.m_foregroundColor.m_blu = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2c:
 				font->m_unk0x20 = parser->ReadInteger();
@@ -140,9 +140,9 @@ void CinderBasin0x28::VTable0x20(BronzeFalcon0xc8770* p_renderer, const LegoChar
 				break;
 			}
 			case GolFileParser::e_unknown0x2d:
-				style.m_textColor.m_bytes[0] = parser->ReadInteger();
-				style.m_textColor.m_bytes[1] = parser->ReadInteger();
-				style.m_textColor.m_bytes[2] = parser->ReadInteger();
+				style.m_textColor.m_red = parser->ReadInteger();
+				style.m_textColor.m_grn = parser->ReadInteger();
+				style.m_textColor.m_blu = parser->ReadInteger();
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -155,11 +155,11 @@ void CinderBasin0x28::VTable0x20(BronzeFalcon0xc8770* p_renderer, const LegoChar
 		font->m_nameParts[0] = name[0];
 		LegoU32 flags = style.m_flags;
 		font->m_nameParts[1] = name[1];
-		font->m_colorPacked = *(LegoU32*) &style.m_textColor;
+		font->m_colorPacked = style.m_textColorPacked;
 		font->m_unk0x2c = flags;
 
 		if (flags & GolFontBase0x40::c_flagBit5) {
-			font->m_unk0x38 = *(LegoU32*) &style.m_foregroundColor;
+			font->m_colorKeyPacked = style.m_foregroundColorPacked;
 			font->m_unk0x2c = flags | GolFontBase0x40::c_flagBit11;
 		}
 	}

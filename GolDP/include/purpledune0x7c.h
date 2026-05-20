@@ -47,6 +47,11 @@ public:
 	void FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
+	void SetUnk0x38(undefined4 p_unk0x38, undefined4 p_unk0x3c)
+	{
+		m_unk0x38 = p_unk0x38;
+		m_unk0x3c = p_unk0x3c;
+	}
 
 	// SYNTHETIC: GOLDP 0x10004aa0
 	// PurpleDune0x7c::`vector deleting destructor'

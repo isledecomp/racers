@@ -81,9 +81,9 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		FourBytes local30;
+		ColorRGBA colorKey;
 		FourBytes local34;
-		local30.m_bytes[3] = -1;
+		colorKey.m_alp = 0xff;
 		local34.m_bytes[3] = -1;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
@@ -98,9 +98,9 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 
 		LegoU16 flags = 0;
 
-		local30.m_bytes[0] = 0;
-		local30.m_bytes[1] = 0;
-		local30.m_bytes[2] = 0;
+		colorKey.m_red = 0;
+		colorKey.m_grn = 0;
+		colorKey.m_blu = 0;
 
 		local34.m_bytes[0] = -1;
 		local34.m_bytes[1] = -1;
@@ -121,9 +121,9 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 				break;
 			case GolFileParser::e_unknown0x2b:
 				flags |= UtopianPan0xa4::c_flagBit5;
-				local30.m_bytes[0] = parser->ReadInteger();
-				local30.m_bytes[1] = parser->ReadInteger();
-				local30.m_bytes[2] = parser->ReadInteger();
+				colorKey.m_red = parser->ReadInteger();
+				colorKey.m_grn = parser->ReadInteger();
+				colorKey.m_blu = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2c:
 				local34.m_bytes[0] = parser->ReadInteger();
@@ -152,7 +152,7 @@ void HypnoticNoise0x1c::LoadImageDefinitions(
 		item->m_unk0x4a = local34;
 
 		if (flags & UtopianPan0xa4::c_flagBit5) {
-			item->m_unk0x28 = local30;
+			item->m_colorKey = colorKey;
 			item->m_flags = flags | UtopianPan0xa4::c_flagBit11;
 		}
 

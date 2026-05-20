@@ -68,9 +68,9 @@ public:
 	void FUN_10022730(
 		LegoU8* p_src,
 		LegoU8* p_dst,
-		LegoU32 p_pitch,
 		LegoU32 p_width,
 		LegoU32 p_height,
+		LegoU32 p_pitch,
 		const GolSurfaceFormat& p_format,
 		IPalette0x4* p_palette,
 		undefined4 p_unk0x20,

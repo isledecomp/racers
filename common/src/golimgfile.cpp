@@ -1084,21 +1084,64 @@ void GolImgFile::FUN_100226c0(
 	}
 }
 
-// STUB: GOLDP 0x10022730
+// FUNCTION: GOLDP 0x10022730
 void GolImgFile::FUN_10022730(
-	LegoU8*,
-	LegoU8*,
-	LegoU32,
-	LegoU32,
-	LegoU32,
-	const GolSurfaceFormat&,
-	IPalette0x4*,
-	undefined4,
-	ColorRGBA*
+	LegoU8* p_src,
+	LegoU8* p_dst,
+	LegoU32 p_width,
+	LegoU32 p_height,
+	LegoU32 p_pitch,
+	const GolSurfaceFormat& p_format,
+	IPalette0x4* p_palette,
+	undefined4 p_unk0x20,
+	ColorRGBA* p_colorKey
 )
 {
-	// TODO
-	STUB(0x10022730);
+	LegoU32 xScale = 1;
+	LegoU32 yScale = 1;
+
+	if (m_height != p_height || m_width != p_width) {
+		xScale = p_width / m_width;
+		yScale = p_height / m_height;
+	}
+
+	if (m_height > p_height || m_width > p_width) {
+		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
+	}
+
+	FUN_100204d0(p_format, p_colorKey);
+	if (p_format.m_paletteMask != 0 && p_palette != NULL) {
+		FUN_100200f0(p_palette, p_colorKey);
+	}
+
+	LegoS32 pitch;
+	LegoU8* dst;
+	if (p_unk0x20 != 0) {
+		pitch = -static_cast<LegoS32>(p_pitch);
+		dst = p_dst + (p_height - 1) * p_pitch;
+	}
+	else {
+		pitch = p_pitch;
+		dst = p_dst;
+	}
+
+	for (LegoU32 y = 0; y < m_height; y++) {
+		FUN_100207e0(p_src, dst, p_format);
+
+		if (xScale > 1) {
+			FUN_100229b0(dst, xScale, p_width, p_format.m_bitsPerPixel);
+		}
+
+		if (yScale > 1) {
+			for (LegoU32 i = yScale - 1; i != 0; i--) {
+				::memcpy(dst + pitch, dst, pitch);
+				dst += pitch;
+			}
+		}
+
+		p_src += m_rowByteStride;
+		dst += pitch;
+	}
 }
 
 // STUB: GOLDP 0x10022880

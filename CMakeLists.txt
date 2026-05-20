@@ -91,6 +91,7 @@ set(COMMON_SOURCES
   common/src/golstream.cpp
   common/src/golfileparser.cpp
   common/src/golbinparser.cpp
+  common/src/golconstants.cpp
   common/src/goltxtparser.cpp
   common/src/golfilesource.cpp
   common/src/goldirentry.cpp

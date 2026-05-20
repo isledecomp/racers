@@ -1,10 +1,14 @@
 #include "golfontbase0x40.h"
 
+#include "bronzefalcon0xc8770.h"
 #include "decomp.h"
+#include "golerror.h"
 #include "golstring.h"
 #include "rectangle.h"
 #include "slatepeak0x58.h"
 #include "whitefalcon0x140.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFontBase0x40, 0x40)
 
@@ -23,7 +27,7 @@ GolFontBase0x40::GolFontBase0x40()
 	m_color.m_grn = 0xff;
 	m_color.m_blu = 0xff;
 	m_color.m_alp = 0xff;
-	m_unk0x30 = 0;
+	m_name[0] = '\0';
 	m_unk0x2c = 0;
 	m_unk0x20 = 0;
 }
@@ -32,6 +36,32 @@ GolFontBase0x40::GolFontBase0x40()
 GolFontBase0x40::~GolFontBase0x40()
 {
 	Clear();
+}
+
+// FUNCTION: GOLDP 0x1001df80
+void GolFontBase0x40::FUN_1001df80(BronzeFalcon0xc8770* p_renderer, GolString* p_string, LegoU32 p_count)
+{
+	if (m_unk0x28) {
+		Clear();
+	}
+
+	m_unk0x24 = p_count + 1;
+	m_unk0x28 = new Glyph0x0c[m_unk0x24];
+
+	if (!m_unk0x28) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x28[0].m_char = ' ';
+	for (LegoU32 i = 1; i < m_unk0x24; i++) {
+		m_unk0x28[i].m_char = *p_string->FromCursor(i - 1);
+	}
+
+	LegoChar name[sizeof(m_name) + 1];
+	::memcpy(name, m_name, sizeof(m_name));
+	name[sizeof(m_name)] = '\0';
+
+	VTable0x00(name, p_renderer);
 }
 
 // FUNCTION: GOLDP 0x1001e030
@@ -54,7 +84,7 @@ void GolFontBase0x40::Clear()
 }
 
 // STUB: GOLDP 0x1001e070
-void GolFontBase0x40::VTable0x00(undefined4, undefined4)
+void GolFontBase0x40::VTable0x00(const LegoChar*, BronzeFalcon0xc8770*)
 {
 	// TODO
 	STUB(0x1001e070);

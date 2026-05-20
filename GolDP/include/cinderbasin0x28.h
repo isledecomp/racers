@@ -2,14 +2,29 @@
 #define CINDERBASIN0X28_H
 
 #include "golnametable.h"
+#include "goltxtparser.h"
+#include "whitebaffoon0x50.h"
 
 class BronzeFalcon0xc8770;
+class GolFileParser;
+class GolFontBase0x40;
 class GolString;
+
+// VTABLE: GOLDP 0x10056e30
+// SIZE 0x1fc
+class FdbTxtParser : public GolTxtParser {};
 
 // VTABLE: GOLDP 0x10056e08
 // SIZE 0x28
 class CinderBasin0x28 : public GolNameTable {
 public:
+	// SIZE 0x0c
+	struct FontParseStyle {
+		FourBytes m_foregroundColor; // 0x00
+		LegoU32 m_flags;             // 0x04
+		FourBytes m_textColor;       // 0x08
+	};
+
 	CinderBasin0x28();
 	~CinderBasin0x28() override; // vtable+0x00
 	void Clear() override;       // vtable+0x08
@@ -23,8 +38,8 @@ public:
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                          // vtable+0x20
-	virtual void* GetItem(LegoU32 p_index) = 0; // vtable+0x24
+	);                                                     // vtable+0x20
+	virtual GolFontBase0x40* GetItem(LegoU32 p_index) = 0; // vtable+0x24
 
 	// SYNTHETIC: GOLDP 0x1001d850
 	// CinderBasin0x28::`scalar deleting destructor'
@@ -33,6 +48,8 @@ public:
 	void SetNext(CinderBasin0x28* p_next) { m_next = p_next; }
 
 protected:
+	static void __stdcall ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count);
+
 	BronzeFalcon0xc8770* m_renderer; // 0x0c
 	CinderBasin0x28* m_next;         // 0x10
 	LegoU32 m_numItems;              // 0x14

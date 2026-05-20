@@ -98,7 +98,7 @@ void GolFontTable::ReleaseDefinitionBuffers()
 }
 
 // FUNCTION: GOLDP 0x10004300
-void* GolFontTable::GetItem(LegoU32 p_index)
+GolFontBase0x40* GolFontTable::GetItem(LegoU32 p_index)
 {
 	return &m_fonts[p_index];
 }

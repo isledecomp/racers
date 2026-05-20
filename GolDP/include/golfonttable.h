@@ -19,12 +19,12 @@ public:
 	// SYNTHETIC: GOLDP 0x10003fd0
 	// GolFontTable::`scalar deleting destructor'
 
-	void AllocateItems() override;                // vtable+0x0c
-	void VTable0x10(undefined4 p_index) override; // vtable+0x10
-	void ReleaseDefinitionBuffers() override;     // vtable+0x14
-	void ReleaseFontSurfaces() override;          // vtable+0x18
-	void RefreshFontSurfaces() override;          // vtable+0x1c
-	void* GetItem(LegoU32 p_index) override;      // vtable+0x24
+	void AllocateItems() override;                      // vtable+0x0c
+	void VTable0x10(undefined4 p_index) override;       // vtable+0x10
+	void ReleaseDefinitionBuffers() override;           // vtable+0x14
+	void ReleaseFontSurfaces() override;                // vtable+0x18
+	void RefreshFontSurfaces() override;                // vtable+0x1c
+	GolFontBase0x40* GetItem(LegoU32 p_index) override; // vtable+0x24
 
 	void LoadFontDefinitions(BronzeFalcon0xc8770* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 	{

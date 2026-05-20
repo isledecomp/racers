@@ -31,7 +31,7 @@ void GolFont0xa0::Clear()
 }
 
 // STUB: GOLDP 0x10004570
-void GolFont0xa0::VTable0x00(undefined4, undefined4)
+void GolFont0xa0::VTable0x00(const LegoChar*, BronzeFalcon0xc8770*)
 {
 	// TODO
 	STUB(0x10004570);

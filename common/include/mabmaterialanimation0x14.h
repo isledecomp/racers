@@ -32,6 +32,8 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004a11e0
 	// MabMaterialAnimation0x14::`vector deleting destructor'
 
+	MabMaterialAnimationItem0x18* GetUnk0x0c() const { return m_unk0x0c; }
+
 private:
 	void FUN_10025a40(WhiteFalcon0x140* p_renderer, GolFileParser& p_parser);
 	void FUN_10025b60(GolFileParser& p_parser);

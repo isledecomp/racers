@@ -8,6 +8,7 @@
 #include "goltxtparser.h"
 
 class AmberLensBase0x120;
+class AmberLens0x344;
 class AmberHaze0x1c;
 class BoundingShape0x2c;
 class BoundingVolume0x64;
@@ -147,6 +148,22 @@ public:
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 	LegoU32 GetUnk0x74() const { return m_unk0x74; }
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
+	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
+	{
+		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xb4.GetName(p_name)) : NULL;
+	}
+	FloatyBoat0x28* FindUnk0xc0(const LegoChar* p_name) const
+	{
+		return m_unk0xc0.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xc0.GetName(p_name)) : NULL;
+	}
+	FloatyBoat0x28* FindUnk0xcc(const LegoChar* p_name) const
+	{
+		return m_unk0xcc.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xcc.GetName(p_name)) : NULL;
+	}
+	AmberLens0x344* FindUnk0xe4(const LegoChar* p_name) const
+	{
+		return m_unk0xe4.GetNameEntries() ? static_cast<AmberLens0x344*>(m_unk0xe4.GetName(p_name)) : NULL;
+	}
 
 private:
 	void Reset();

@@ -29,9 +29,9 @@ public:
 	~AmberLens0x344() override;                                      // vtable+0x08
 	void VTable0x0c(Rect* p_rect) override;                          // vtable+0x0c
 	void VTable0x10(const GolVec4* p_bounds) override;               // vtable+0x10
-	void VTable0x14() override;                                      // vtable+0x14
-	void VTable0x18() override;                                      // vtable+0x18
-	void VTable0x1c() override;                                      // vtable+0x1c
+	void VTable0x14(GolMatrix4* p_dest) override;                    // vtable+0x14
+	void VTable0x18(GolMatrix4* p_dest) override;                    // vtable+0x18
+	void VTable0x1c(const GolVec3* p_src, GolVec3* p_dest) override; // vtable+0x1c
 	void VTable0x20(const GolVec3* p_src, GolVec3* p_dest) override; // vtable+0x20
 	using AmberLensBase0x120::VTable0x24;                            // vtable+0x24
 	void VTable0x28() override;                                      // vtable+0x28

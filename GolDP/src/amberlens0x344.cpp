@@ -176,22 +176,71 @@ void AmberLens0x344::VTable0x04()
 	m_flags &= ~c_flagBit1;
 }
 
-// STUB: GOLDP 0x10002430
-void AmberLens0x344::VTable0x14()
+// FUNCTION: GOLDP 0x10002430
+void AmberLens0x344::VTable0x14(GolMatrix4* p_dest)
 {
-	STUB(0x10002430);
+	p_dest->m_m[0][0] = m_unk0x120.m_unk0xd0.m_m[0][0];
+	p_dest->m_m[0][1] = m_unk0x120.m_unk0xd0.m_m[0][1];
+	p_dest->m_m[0][2] = m_unk0x120.m_unk0xd0.m_m[0][2];
+	p_dest->m_m[0][3] = m_unk0x120.m_unk0xd0.m_m[0][3];
+	p_dest->m_m[1][0] = m_unk0x120.m_unk0xd0.m_m[1][0];
+	p_dest->m_m[1][1] = m_unk0x120.m_unk0xd0.m_m[1][1];
+	p_dest->m_m[1][2] = m_unk0x120.m_unk0xd0.m_m[1][2];
+	p_dest->m_m[1][3] = m_unk0x120.m_unk0xd0.m_m[1][3];
+	p_dest->m_m[2][0] = m_unk0x120.m_unk0xd0.m_m[2][0];
+	p_dest->m_m[2][1] = m_unk0x120.m_unk0xd0.m_m[2][1];
+	p_dest->m_m[2][2] = m_unk0x120.m_unk0xd0.m_m[2][2];
+	p_dest->m_m[2][3] = m_unk0x120.m_unk0xd0.m_m[2][3];
+	p_dest->m_m[3][0] = m_unk0x120.m_unk0xd0.m_m[3][0];
+	p_dest->m_m[3][1] = m_unk0x120.m_unk0xd0.m_m[3][1];
+	p_dest->m_m[3][2] = m_unk0x120.m_unk0xd0.m_m[3][2];
+	p_dest->m_m[3][3] = m_unk0x120.m_unk0xd0.m_m[3][3];
 }
 
-// STUB: GOLDP 0x100024d0
-void AmberLens0x344::VTable0x18()
+// FUNCTION: GOLDP 0x100024d0
+void AmberLens0x344::VTable0x18(GolMatrix4* p_dest)
 {
-	STUB(0x100024d0);
+	p_dest->m_m[0][0] = m_unk0x120.m_unk0x1d0.m_m[0][0];
+	p_dest->m_m[0][1] = m_unk0x120.m_unk0x1d0.m_m[0][1];
+	p_dest->m_m[0][2] = m_unk0x120.m_unk0x1d0.m_m[0][2];
+	p_dest->m_m[0][3] = m_unk0x120.m_unk0x1d0.m_m[0][3];
+	p_dest->m_m[1][0] = m_unk0x120.m_unk0x1d0.m_m[1][0];
+	p_dest->m_m[1][1] = m_unk0x120.m_unk0x1d0.m_m[1][1];
+	p_dest->m_m[1][2] = m_unk0x120.m_unk0x1d0.m_m[1][2];
+	p_dest->m_m[1][3] = m_unk0x120.m_unk0x1d0.m_m[1][3];
+	p_dest->m_m[2][0] = m_unk0x120.m_unk0x1d0.m_m[2][0];
+	p_dest->m_m[2][1] = m_unk0x120.m_unk0x1d0.m_m[2][1];
+	p_dest->m_m[2][2] = m_unk0x120.m_unk0x1d0.m_m[2][2];
+	p_dest->m_m[2][3] = m_unk0x120.m_unk0x1d0.m_m[2][3];
+	p_dest->m_m[3][0] = m_unk0x120.m_unk0x1d0.m_m[3][0];
+	p_dest->m_m[3][1] = m_unk0x120.m_unk0x1d0.m_m[3][1];
+	p_dest->m_m[3][2] = m_unk0x120.m_unk0x1d0.m_m[3][2];
+	p_dest->m_m[3][3] = m_unk0x120.m_unk0x1d0.m_m[3][3];
 }
 
-// STUB: GOLDP 0x10002570
-void AmberLens0x344::VTable0x1c()
+// FUNCTION: GOLDP 0x10002570
+void AmberLens0x344::VTable0x1c(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002570);
+	if (m_flags & c_flagBit0) {
+		VTable0x00();
+	}
+
+	LegoFloat x = m_unk0x120.m_unk0xd0.m_m[0][0];
+	p_dest->m_x = x * p_src->m_x;
+	p_dest->m_y = m_unk0x120.m_unk0xd0.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_unk0x120.m_unk0xd0.m_m[0][2] * p_src->m_x;
+
+	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[1][2] * p_src->m_y;
+
+	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[2][2] * p_src->m_z;
+
+	p_dest->m_x += m_unk0x120.m_unk0xd0.m_m[3][0];
+	p_dest->m_y += m_unk0x120.m_unk0xd0.m_m[3][1];
+	p_dest->m_z += m_unk0x120.m_unk0xd0.m_m[3][2];
 }
 
 // FUNCTION: GOLDP 0x10002630

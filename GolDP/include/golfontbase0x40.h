@@ -57,8 +57,8 @@ public:
 	LegoBool32 FUN_1001ef60(WhiteFalcon0x140*, Rect*, Rect*);
 	void FUN_1001f090(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
 	static LegoS32 __cdecl CompareGlyphChars(const void* p_left, const void* p_right);
-	undefined4 FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
-	undefined4 FUN_00408d50(
+	void FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
+	void FUN_00408d50(
 		GolString* p_string,
 		LegoS32 p_wrapWidth,
 		LegoS32 p_unk0x10,

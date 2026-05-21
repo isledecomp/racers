@@ -3,7 +3,12 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "imaginarydrillfieldat0x420.h"
+#include "imaginarydrillfieldat0x498.h"
 #include "imaginarytool0x368.h"
+#include "obscureanchor0x5c.h"
+#include "obscurebanner0x5ec.h"
+#include "obscurecarousel0x78.h"
 
 // VTABLE: LEGORACERS 0x004b3a38
 // SIZE 0x15ec
@@ -22,7 +27,12 @@ public:
 	// ImaginaryClaw0x15ec::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x15ec - 0x368]; // 0x0368
+	ObscureAnchor0x5c m_unk0x368;             // 0x0368
+	ImaginaryDrillFieldAt0x420 m_unk0x3c4;    // 0x03c4
+	ObscureBanner0x9f4 m_unk0x43c;            // 0x043c
+	ObscureCarouselNavigator0x94 m_unk0xe30;  // 0x0e30
+	ImaginaryDrillFieldAt0x420 m_unk0xec4[9]; // 0x0ec4
+	ImaginaryDrillFieldAt0x498 m_unk0x12fc;   // 0x12fc
 };
 
 #endif // IMAGINARYCLAW0X15EC

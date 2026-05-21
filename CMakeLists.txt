@@ -304,6 +304,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/ceruleanemperor0x4c.cpp
   LEGORacers/src/obscureanchor0x5c.cpp
   LEGORacers/src/obscureanthem0x58.cpp
+  LEGORacers/src/obscurebanner0x5ec.cpp
+  LEGORacers/src/obscurecarousel0x78.cpp
+  LEGORacers/src/obscureglyph0x21c.cpp
   LEGORacers/src/obscureicon0x1a8.cpp
   LEGORacers/src/obscurelink0x1c.cpp
   LEGORacers/src/obscurerune0x4d8.cpp

@@ -1,0 +1,40 @@
+#include "obscureglyph0x21c.h"
+
+DECOMP_SIZE_ASSERT(ObscureGlyph0x21c, 0x21c)
+
+// FUNCTION: LEGORACERS 0x00466260
+ObscureGlyph0x21c::ObscureGlyph0x21c()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004662e0
+ObscureGlyph0x21c::~ObscureGlyph0x21c()
+{
+	VTable0x08();
+}
+
+// FUNCTION: LEGORACERS 0x00466340
+void ObscureGlyph0x21c::Reset()
+{
+	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x1a8); i++) {
+		m_unk0x1a8[i] = 0;
+	}
+
+	m_unk0x1c0.VTable0x08();
+	ObscureIcon0x1a8::Reset();
+}
+
+// STUB: LEGORACERS 0x00466450
+LegoBool32 ObscureGlyph0x21c::VTable0x08()
+{
+	STUB(0x00466450);
+	return ObscureIcon0x1a8::VTable0x08();
+}
+
+// STUB: LEGORACERS 0x00466470
+undefined4 ObscureGlyph0x21c::VTable0x38(Rect*, Rect*)
+{
+	STUB(0x00466470);
+	return 0;
+}

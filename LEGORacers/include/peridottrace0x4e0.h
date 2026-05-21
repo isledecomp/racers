@@ -249,13 +249,14 @@ public:
 	LegoBool32 FUN_0042f310(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, LegoU32 p_unk0x0c, GolString* p_string);
 
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
+	void SetLanguageIndex(LegoU8 p_languageIndex) { m_state.m_languageIndex = p_languageIndex; }
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	undefined4 GetUnk0x04() const { return m_unk0x04; }
 	LegoU8 GetUnk0x0c() const { return m_state.m_unk0x0c; }
 	LegoU8 GetUnk0x1f() const { return m_state.m_unk0x1f; }
 	LegoU8 GetUnk0x20() const { return m_state.m_unk0x20; }
 	LegoU8 GetUnk0x21() const { return m_state.m_unk0x21; }
-	LegoU8 GetLanguageIndex() const { return m_state.m_languageIndex; }
+	LegoU32 GetLanguageIndex() const { return m_state.m_languageIndex; }
 	LegoU8 GetUnk0x22() const { return GetLanguageIndex(); }
 	LegoU8 GetUnk0x23() const { return m_state.m_unk0x23; }
 	LegoU8 FUN_0042f1f0() const;

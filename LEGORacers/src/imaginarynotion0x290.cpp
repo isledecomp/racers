@@ -536,7 +536,7 @@ undefined4 ImaginaryNotion0x290::FUN_0046c1b0(undefined4*, undefined2, undefined
 }
 
 // STUB: LEGORACERS 0x0046c240
-undefined4 ImaginaryNotion0x290::FUN_0046c240(undefined4*, undefined2, undefined2)
+undefined4 ImaginaryNotion0x290::FUN_0046c240(ObscureVantage0x58*, undefined2, undefined2)
 {
 	// TODO
 	STUB(0x0046c240);
@@ -544,7 +544,7 @@ undefined4 ImaginaryNotion0x290::FUN_0046c240(undefined4*, undefined2, undefined
 }
 
 // STUB: LEGORACERS 0x0046c2b0
-void ImaginaryNotion0x290::FUN_0046c2b0(undefined4*, undefined4, undefined2, undefined2)
+void ImaginaryNotion0x290::FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2)
 {
 	// TODO
 	STUB(0x0046c2b0);

@@ -94,6 +94,26 @@ void ImaginaryDrillFieldAt0x420::VTable0x40(GolString* p_string, undefined4 p_un
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0046f6b0
+void ImaginaryDrillFieldAt0x420::FUN_0046f6b0(LegoS32 p_rightMargin)
+{
+	LegoS32 right;
+	LegoS32 left;
+
+	if (m_parent) {
+		right = m_parent->GetRect()->m_right - m_parent->GetRect()->m_left - p_rightMargin;
+		left = m_unk0x34.m_left;
+	}
+	else {
+		right = m_unk0x34.m_right;
+		left = m_unk0x34.m_left;
+	}
+
+	LegoS32 width = m_unk0x34.m_right - left;
+	m_unk0x34.m_right = right;
+	m_unk0x34.m_left = right - width;
+}
+
 // FUNCTION: LEGORACERS 0x0046f6f0
 undefined4 ImaginaryDrillFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 {

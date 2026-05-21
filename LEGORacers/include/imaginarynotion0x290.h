@@ -110,8 +110,8 @@ public:
 	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
-	undefined4 FUN_0046c240(undefined4*, undefined2, undefined2);
-	void FUN_0046c2b0(undefined4*, undefined4, undefined2, undefined2);
+	undefined4 FUN_0046c240(ObscureVantage0x58*, undefined2, undefined2);
+	void FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2);
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
 	LegoBool32 FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	void FUN_0046c510(undefined4*, undefined4, undefined2);

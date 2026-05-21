@@ -1,0 +1,68 @@
+#ifndef OBSCUREBANNER0X5EC_H
+#define OBSCUREBANNER0X5EC_H
+
+#include "compat.h"
+#include "decomp.h"
+#include "obscureglyph0x21c.h"
+#include "obscuretome0x3dc.h"
+
+// VTABLE: LEGORACERS 0x004b1fa0
+// SIZE 0x5ec
+class ObscureBanner0x5ec : public ObscureIcon0x1a8 {
+public:
+	ObscureBanner0x5ec();
+	void Reset() override;                                                                                // vtable+0x00
+	~ObscureBanner0x5ec() override;                                                                       // vtable+0x04
+	LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4) override;                 // vtable+0x20
+	ObscureVantageEventResult VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x24
+	ObscureVantageEventResult VTable0x28(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x28
+	void VTable0x44(undefined4) override;                                                                 // vtable+0x44
+	void VTable0x48(undefined4) override;                                                                 // vtable+0x48
+	void VTable0x4c(undefined4) override;                                                                 // vtable+0x4c
+	void VTable0x50(undefined4) override;                                                                 // vtable+0x50
+	void VTable0x58(undefined4) override;                                                                 // vtable+0x58
+	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                                    // vtable+0x70
+	virtual undefined4 VTable0x74(undefined4) = 0;                                                        // vtable+0x74
+	virtual void VTable0x78() = 0;                                                                        // vtable+0x78
+	virtual void VTable0x7c() = 0;                                                                        // vtable+0x7c
+
+	// SYNTHETIC: LEGORACERS 0x00466fd0
+	// ObscureBanner0x5ec::`scalar deleting destructor'
+
+protected:
+	undefined4 m_unk0x1a8;        // 0x1a8
+	ObscureGlyph0x21c m_unk0x1ac; // 0x1ac
+	ObscureGlyph0x21c m_unk0x3c8; // 0x3c8
+	undefined4 m_unk0x5e4;        // 0x5e4
+	undefined4 m_unk0x5e8;        // 0x5e8
+};
+
+// VTABLE: LEGORACERS 0x004b2020
+// SIZE 0x9f4
+class ObscureBanner0x9f4 : public ObscureBanner0x5ec {
+public:
+	ObscureBanner0x9f4();
+	void Reset() override;                                                                                // vtable+0x00
+	~ObscureBanner0x9f4() override;                                                                       // vtable+0x04
+	LegoBool32 VTable0x08() override;                                                                     // vtable+0x08
+	void VTable0x14(VisualState0x4*) override;                                                            // vtable+0x14
+	ObscureVantageEventResult VTable0x24(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override; // vtable+0x24
+	ObscureVantage0x58* VTable0x30(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override;       // vtable+0x30
+	ObscureVantage0x58* VTable0x34(OnyxCircularBuffer0x1c::Item*, undefined4, undefined4) override;       // vtable+0x34
+	undefined4 VTable0x3c(undefined4) override;                                                           // vtable+0x3c
+	undefined4 VTable0x74(undefined4) override;                                                           // vtable+0x74
+	void VTable0x78() override;                                                                           // vtable+0x78
+	void VTable0x7c() override;                                                                           // vtable+0x7c
+
+	// SYNTHETIC: LEGORACERS 0x00467730
+	// ObscureBanner0x9f4::`scalar deleting destructor'
+
+protected:
+	ObscureTome0x3dc m_unk0x5ec;         // 0x5ec
+	undefined m_unk0x9c8[0x9e8 - 0x9c8]; // 0x9c8
+	undefined4 m_unk0x9e8;               // 0x9e8
+	undefined4 m_unk0x9ec;               // 0x9ec
+	undefined4 m_unk0x9f0;               // 0x9f0
+};
+
+#endif // OBSCUREBANNER0X5EC_H

@@ -1,6 +1,7 @@
 #include "amberlens0x344.h"
 
 #include "bronzefalcon0xc8770.h"
+#include "rectangle.h"
 #include "slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
@@ -123,9 +124,9 @@ void AmberLens0x344::FUN_100022b0(
 	LegoFloat p_unk0x14
 )
 {
-	LegoFloat xScale = 1.0f / (m_unk0x108 - m_unk0x100);
+	LegoFloat xScale = 1.0f / (m_unk0x100.m_z - m_unk0x100.m_x);
 	xScale *= p_unk0x08;
-	LegoFloat yScale = 1.0f / (m_unk0x10c - m_unk0x104);
+	LegoFloat yScale = 1.0f / (m_unk0x100.m_u - m_unk0x100.m_y);
 	yScale *= p_unk0x0c;
 	LegoFloat zScale = m_unk0x14;
 	LegoFloat zDenominator = m_unk0x14 - m_unk0x10;
@@ -140,8 +141,8 @@ void AmberLens0x344::FUN_100022b0(
 	p_matrix->m_m[1][1] = nearTwice * yScale;
 	p_matrix->m_m[1][2] = 0.0f;
 	p_matrix->m_m[1][3] = 0.0f;
-	p_matrix->m_m[2][0] = p_unk0x10 - ((m_unk0x100 + m_unk0x108) * xScale);
-	p_matrix->m_m[2][1] = p_unk0x14 - ((m_unk0x104 + m_unk0x10c) * yScale);
+	p_matrix->m_m[2][0] = p_unk0x10 - ((m_unk0x100.m_x + m_unk0x100.m_z) * xScale);
+	p_matrix->m_m[2][1] = p_unk0x14 - ((m_unk0x100.m_y + m_unk0x100.m_u) * yScale);
 	p_matrix->m_m[2][2] = zScale;
 	p_matrix->m_m[2][3] = 1.0f;
 	p_matrix->m_m[3][0] = 0.0f;
@@ -154,10 +155,10 @@ void AmberLens0x344::FUN_100022b0(
 void AmberLens0x344::VTable0x04()
 {
 	if (!(m_flags & c_flagBit2)) {
-		m_unk0x100 = -m_unk0x18;
-		m_unk0x104 = -m_unk0x1c;
-		m_unk0x108 = m_unk0x18;
-		m_unk0x10c = m_unk0x1c;
+		m_unk0x100.m_x = -m_unk0x18;
+		m_unk0x100.m_y = -m_unk0x1c;
+		m_unk0x100.m_z = m_unk0x18;
+		m_unk0x100.m_u = m_unk0x1c;
 	}
 
 	FUN_100022b0(&m_unk0x120.m_unk0x110, 0.5f, 0.5f, 0.5f, 0.5f);
@@ -193,22 +194,76 @@ void AmberLens0x344::VTable0x1c()
 	STUB(0x10002570);
 }
 
-// STUB: GOLDP 0x10002630
-void AmberLens0x344::VTable0x10()
+// FUNCTION: GOLDP 0x10002630
+void AmberLens0x344::VTable0x10(const GolVec4* p_bounds)
 {
-	STUB(0x10002630);
+	m_flags |= c_flagBit0 | c_flagBit1 | c_flagBit2;
+	m_unk0x100 = *p_bounds;
 }
 
-// STUB: GOLDP 0x10002660
-void AmberLens0x344::VTable0x0c(Rect*)
+// FUNCTION: GOLDP 0x10002660
+void AmberLens0x344::VTable0x0c(Rect* p_rect)
 {
-	STUB(0x10002660);
+	m_viewportMinX = p_rect->m_left;
+	m_viewportMaxX = p_rect->m_right;
+	m_viewportMinY = p_rect->m_top;
+	m_viewportMaxY = p_rect->m_bottom;
+
+	if (!(m_flags & c_flagBit3)) {
+		LegoFloat width = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
+		LegoFloat height = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
+		m_unk0x0c = width / height;
+	}
+
+	m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
+	m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
+	m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewportMinX);
+	m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewportMinY);
+
+	if (m_flags & c_flagBit2) {
+		FUN_1001c450(m_unk0x34);
+	}
+	else {
+		FUN_1001bfc0(m_unk0x34);
+	}
+
+	VTable0x04();
+	GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x110, &m_unk0x120.m_unk0x190);
+	GolMath::FUN_1002f3a0(m_unk0x120.m_unk0xd0, m_unk0x120.m_unk0x150, &m_unk0x120.m_unk0x1d0);
 }
 
-// STUB: GOLDP 0x10002770
-void AmberLens0x344::VTable0x20(undefined4, undefined4)
+// FUNCTION: GOLDP 0x10002770
+void AmberLens0x344::VTable0x20(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002770);
+	VTable0x28();
+
+	LegoFloat x = m_unk0x120.m_unk0x1d0.m_m[0][0];
+	p_dest->m_x = x * p_src->m_x;
+	p_dest->m_y = m_unk0x120.m_unk0x1d0.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_unk0x120.m_unk0x1d0.m_m[0][2] * p_src->m_x;
+	LegoFloat w = m_unk0x120.m_unk0x1d0.m_m[0][3] * p_src->m_x;
+
+	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[1][2] * p_src->m_y;
+	w += m_unk0x120.m_unk0x1d0.m_m[1][3] * p_src->m_y;
+
+	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[2][2] * p_src->m_z;
+	w += m_unk0x120.m_unk0x1d0.m_m[2][3] * p_src->m_z;
+
+	p_dest->m_x += m_unk0x120.m_unk0x1d0.m_m[3][0];
+	p_dest->m_y += m_unk0x120.m_unk0x1d0.m_m[3][1];
+	p_dest->m_z += m_unk0x120.m_unk0x1d0.m_m[3][2];
+	w += m_unk0x120.m_unk0x1d0.m_m[3][3];
+
+	LegoFloat inverseW = 1.0f / w;
+	p_dest->m_x *= inverseW;
+	LegoFloat y = p_dest->m_y;
+	p_dest->m_y = y * inverseW;
+	LegoFloat z = p_dest->m_z;
+	p_dest->m_z = z * inverseW;
 }
 
 // FUNCTION: GOLDP 0x10002860

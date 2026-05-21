@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golmath.h"
 #include "types.h"
 
 class JadeOrbit0xd0;
@@ -17,11 +18,11 @@ public:
 	virtual void VTable0x04() = 0;                                                             // vtable+0x04
 	virtual ~AmberLensBase0x120();                                                             // vtable+0x08
 	virtual void VTable0x0c(Rect* p_rect) = 0;                                                 // vtable+0x0c
-	virtual void VTable0x10() = 0;                                                             // vtable+0x10
+	virtual void VTable0x10(const GolVec4* p_bounds) = 0;                                      // vtable+0x10
 	virtual void VTable0x14() = 0;                                                             // vtable+0x14
 	virtual void VTable0x18() = 0;                                                             // vtable+0x18
 	virtual void VTable0x1c() = 0;                                                             // vtable+0x1c
-	virtual void VTable0x20(undefined4 p_unk0x04, undefined4 p_unk0x08);                       // vtable+0x20
+	virtual void VTable0x20(const GolVec3* p_src, GolVec3* p_dest);                            // vtable+0x20
 	virtual void VTable0x24(undefined4 p_unk0x04, undefined4 p_unk0x08, undefined4 p_unk0x0c); // vtable+0x24
 	virtual void VTable0x28() = 0;                                                             // vtable+0x28
 
@@ -44,10 +45,7 @@ public:
 	undefined4 m_unk0x2c;              // 0x2c
 	LegoU32 m_flags;                   // 0x30
 	undefined m_unk0x34[0x100 - 0x34]; // 0x34
-	LegoFloat m_unk0x100;              // 0x100
-	LegoFloat m_unk0x104;              // 0x104
-	LegoFloat m_unk0x108;              // 0x108
-	LegoFloat m_unk0x10c;              // 0x10c
+	GolVec4 m_unk0x100;                // 0x100
 	LegoS32 m_viewportMinX;            // 0x110
 	LegoS32 m_viewportMinY;            // 0x114
 	LegoS32 m_viewportMaxX;            // 0x118

@@ -2,6 +2,7 @@
 
 #include "goldecompress.h"
 #include "golerror.h"
+#include "silverdune0x30.h"
 
 #include <string.h>
 
@@ -184,8 +185,83 @@ void GolTgaFile::VTable0x00()
 // STUB: LEGORACERS 0x00413d50
 void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
-	// TODO
-	STUB(0x1002aa80);
+	LegoU8* rowBuffer2;
+	LegoU8* rowBuffer1;
+	LegoS32 widthScale = 1;
+	LegoS32 heightScale = 1;
+	LegoU32 pitch;
+	LegoU32 fileOffset;
+	LegoS32 amount;
+	GolSurfaceFormat format;
+
+	if (m_height > p_texture->GetHeight() || m_width > p_texture->GetWidth()) {
+		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
+	}
+	if (m_height != p_texture->GetHeight() || m_width != p_texture->GetWidth()) {
+		widthScale = p_texture->GetWidth() / m_width;
+		heightScale = p_texture->GetHeight() / m_height;
+	}
+
+	format = p_texture->GetTextureFormat();
+	FUN_100204d0(format, p_colorKey);
+	if (format.m_paletteMask != 0) {
+		FUN_100200f0(p_texture->GetPalette(), p_colorKey);
+	}
+
+	LegoU8* pixels;
+	p_texture->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
+
+	LegoS32 rowPitch = pitch;
+	fileOffset = m_posImageData;
+	rowBuffer1 = new LegoU8[m_rowByteStride + 2];
+	if (rowBuffer1 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	rowBuffer2 = rowBuffer1;
+	if (m_imageType >= 9) {
+		rowBuffer2 = new LegoU8[m_rowByteStride + 2];
+		if (rowBuffer2 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	if (p_flags == 0) {
+		pixels += (p_texture->GetHeight() - 1) * pitch;
+		rowPitch = -rowPitch;
+	}
+
+	for (LegoU32 y = 0; y < m_height; y++) {
+		LegoS32 result = m_file.BufferedRead(fileOffset, rowBuffer1, m_rowByteStride, &amount);
+		if (result != GolStream::e_ioSuccess) {
+			p_texture->UnlockPixels();
+			GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+		}
+
+		if (m_imageType >= 9) {
+			FUN_1002ad40(rowBuffer1, rowBuffer2);
+		}
+
+		FUN_100207e0(rowBuffer2, pixels, format);
+		if (widthScale > 1) {
+			FUN_100229b0(pixels, widthScale, p_texture->GetWidth(), format.m_bitsPerPixel);
+		}
+
+		for (LegoS32 repeat = 1; repeat < heightScale; repeat++) {
+			::memcpy(pixels + rowPitch, pixels, pitch);
+			pixels += rowPitch;
+		}
+
+		fileOffset += amount;
+		pixels += rowPitch;
+	}
+
+	delete[] rowBuffer1;
+	if (m_imageType >= 9) {
+		delete[] rowBuffer2;
+	}
+
+	p_texture->UnlockPixels();
 }
 
 // STUB: GOLDP 0x1002ad40

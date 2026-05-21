@@ -47,7 +47,7 @@ void AmberLensBase0x120::VTable0x24(undefined4, undefined4, undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void AmberLensBase0x120::VTable0x20(undefined4, undefined4)
+void AmberLensBase0x120::VTable0x20(const GolVec3*, GolVec3*)
 {
 	// empty
 }

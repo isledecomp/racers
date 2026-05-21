@@ -26,7 +26,7 @@ public:
 private:
 	LegoU32 m_identificationFieldSize; // 0x5b0
 	LegoU32 m_colorMapType;            // 0x5b4
-	LegoU32 m_imageType;               // 0x5b8
+	LegoS32 m_imageType;               // 0x5b8
 	LegoU32 m_colorMapFirstEntry;      // 0x5bc
 	LegoU32 m_colorMapLength;          // 0x5c0
 	LegoU32 m_colorMapEntrySize;       // 0x5c4

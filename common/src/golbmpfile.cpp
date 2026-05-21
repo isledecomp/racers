@@ -337,16 +337,19 @@ void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 {
 	LegoU32 widthScale = 1;
 	LegoU32 heightScale = 1;
+	LegoU32 scaledHeight = 1;
+	GolSurfaceFormat format;
 
-	if (p_texture->GetWidth() < m_height || p_texture->GetHeight() < m_width) {
+	if (m_height > p_texture->GetHeight() || m_width > p_texture->GetWidth()) {
 		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
 	}
-	if (p_texture->GetWidth() != m_height || p_texture->GetHeight() != m_width) {
+	if (m_height != p_texture->GetHeight() || m_width != p_texture->GetWidth()) {
 		widthScale = p_texture->GetWidth() / m_width;
 		heightScale = p_texture->GetHeight() / m_height;
 	}
+	scaledHeight = m_height * heightScale;
 
-	GolSurfaceFormat format = p_texture->GetTextureFormat();
+	format = p_texture->GetTextureFormat();
 	FUN_100204d0(format, p_colorKey);
 	if (format.m_paletteMask != 0 && m_paletteSize != 0) {
 		FUN_100200f0(p_texture->GetPalette(), p_colorKey);
@@ -356,27 +359,159 @@ void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 	LegoU32 pitch;
 	p_texture->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite);
 
-	if (m_unk0xed4 != 0x80) {
-		LegoU8* buf1 = new LegoU8[m_rowByteStride + 2];
-		if (buf1 == NULL) {
+	LegoS32 rowPitch = pitch;
+	LegoU32 fileOffset = m_bitmapOffset;
+	if (m_unk0xed4 == 0x80) {
+		if (p_flags != 0) {
+			pixels += (scaledHeight - 1) * pitch;
+			rowPitch = -rowPitch;
+		}
+
+		LegoU8* decompBuffer = reinterpret_cast<LegoU8*>(m_unk0x8f0);
+		if (decompBuffer == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		LegoU8* buf2 = buf1;
+		LegoU8* rowBuffer;
+		if (m_rowByteStride + 2 <= sizeof(m_unk0x5f0)) {
+			rowBuffer = m_unk0x5f0;
+		}
+		else {
+			rowBuffer = new LegoU8[m_rowByteStride + 2];
+		}
+		if (rowBuffer == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		LegoS32 rowByteCount;
+		if (m_format.m_bitsPerPixel == 4) {
+			rowByteCount = (m_width * 4 + 4) >> 3;
+		}
+		else {
+			rowByteCount = (m_format.m_bitsPerPixel * m_width) >> 3;
+		}
+
+		LegoU8* availableDecompressedPtr = NULL;
+		LegoS32 availableDecompressedSize = 0;
+
+		for (LegoU32 y = 0; y < m_height; y++) {
+			if (availableDecompressedSize < rowByteCount) {
+				LegoS32 rowAmount = availableDecompressedSize;
+				if (rowAmount != 0) {
+					::memcpy(rowBuffer, availableDecompressedPtr, rowAmount);
+				}
+
+				while (rowAmount < rowByteCount) {
+					LegoS32 amount;
+					LegoS32 result = m_file.BufferedRead(fileOffset, decompBuffer, 4, &amount);
+					if (result != GolStream::e_ioSuccess) {
+						p_texture->UnlockPixels();
+						GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+					}
+
+					fileOffset += 4;
+					LegoS32 decompressedSize = BUF_U16LE(decompBuffer, 0);
+					LegoS32 compressedSize = BUF_U16LE(decompBuffer, 2);
+					if (compressedSize < decompressedSize) {
+						LegoU8* compressedBuffer = decompBuffer + sizeof(m_unk0x8f0) - compressedSize;
+						result = m_file.BufferedRead(fileOffset, compressedBuffer, compressedSize, &amount);
+						if (result != GolStream::e_ioSuccess) {
+							p_texture->UnlockPixels();
+							GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+						}
+						GolDecompress(compressedBuffer, decompBuffer);
+					}
+					else {
+						result = m_file.BufferedRead(fileOffset, decompBuffer, decompressedSize, &amount);
+						if (result != GolStream::e_ioSuccess) {
+							p_texture->UnlockPixels();
+							GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+						}
+					}
+
+					fileOffset += compressedSize;
+					LegoS32 copySize = rowByteCount - rowAmount;
+					if (decompressedSize < copySize) {
+						copySize = decompressedSize;
+					}
+
+					::memcpy(rowBuffer + rowAmount, decompBuffer, copySize);
+					availableDecompressedSize = decompressedSize - copySize;
+					availableDecompressedPtr = decompBuffer + copySize;
+					rowAmount += copySize;
+				}
+			}
+			else {
+				::memcpy(rowBuffer, availableDecompressedPtr, rowByteCount);
+				availableDecompressedPtr += rowByteCount;
+				availableDecompressedSize -= rowByteCount;
+			}
+
+			FUN_100207e0(rowBuffer, pixels, format);
+			if (widthScale > 1) {
+				FUN_100229b0(pixels, widthScale, p_texture->GetWidth(), format.m_bitsPerPixel);
+			}
+
+			for (LegoU32 repeat = 1; repeat < heightScale; repeat++) {
+				::memcpy(pixels + rowPitch, pixels, pitch);
+				pixels += rowPitch;
+			}
+
+			pixels += rowPitch;
+		}
+
+		if (rowBuffer != m_unk0x5f0) {
+			delete[] rowBuffer;
+		}
+	}
+	else {
+		LegoU8* rowBuffer1 = new LegoU8[m_rowByteStride + 2];
+		if (rowBuffer1 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		LegoU8* rowBuffer2 = rowBuffer1;
 		if (m_unk0xed4 != 0) {
-			buf2 = new LegoU8[m_rowByteStride + 2];
-			if (buf2 == NULL) {
+			rowBuffer2 = new LegoU8[m_rowByteStride + 2];
+			if (rowBuffer2 == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 		}
 
-		(void) widthScale;
-		(void) heightScale;
-		// ...
+		if (p_flags == 0) {
+			pixels += (scaledHeight - 1) * pitch;
+			rowPitch = -rowPitch;
+		}
+
+		for (LegoU32 y = 0; y < m_height; y++) {
+			LegoS32 amount;
+			LegoS32 result = m_file.BufferedRead(fileOffset, rowBuffer1, m_rowByteStride, &amount);
+			if (result != GolStream::e_ioSuccess) {
+				p_texture->UnlockPixels();
+				GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+			}
+
+			FUN_100207e0(rowBuffer2, pixels, format);
+			if (widthScale > 1) {
+				FUN_100229b0(pixels, widthScale, p_texture->GetWidth(), format.m_bitsPerPixel);
+			}
+
+			for (LegoU32 repeat = 1; repeat < heightScale; repeat++) {
+				::memcpy(pixels + rowPitch, pixels, pitch);
+				pixels += rowPitch;
+			}
+
+			fileOffset += amount;
+			pixels += rowPitch;
+		}
+
+		if (m_unk0xed4 != 0) {
+			delete[] rowBuffer2;
+		}
+		delete[] rowBuffer1;
 	}
-	// ...
-	// TODO
-	STUB(0x100197a0);
+
+	p_texture->UnlockPixels();
 }
 
 // STUB: GOLDP 0x10019da0

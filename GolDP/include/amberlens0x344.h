@@ -24,17 +24,17 @@ public:
 	};
 
 	AmberLens0x344();
-	void VTable0x00() override;                                           // vtable+0x00
-	void VTable0x04() override;                                           // vtable+0x04
-	~AmberLens0x344() override;                                           // vtable+0x08
-	void VTable0x0c(Rect* p_rect) override;                               // vtable+0x0c
-	void VTable0x10() override;                                           // vtable+0x10
-	void VTable0x14() override;                                           // vtable+0x14
-	void VTable0x18() override;                                           // vtable+0x18
-	void VTable0x1c() override;                                           // vtable+0x1c
-	void VTable0x20(undefined4 p_unk0x04, undefined4 p_unk0x08) override; // vtable+0x20
-	using AmberLensBase0x120::VTable0x24;                                 // vtable+0x24
-	void VTable0x28() override;                                           // vtable+0x28
+	void VTable0x00() override;                                      // vtable+0x00
+	void VTable0x04() override;                                      // vtable+0x04
+	~AmberLens0x344() override;                                      // vtable+0x08
+	void VTable0x0c(Rect* p_rect) override;                          // vtable+0x0c
+	void VTable0x10(const GolVec4* p_bounds) override;               // vtable+0x10
+	void VTable0x14() override;                                      // vtable+0x14
+	void VTable0x18() override;                                      // vtable+0x18
+	void VTable0x1c() override;                                      // vtable+0x1c
+	void VTable0x20(const GolVec3* p_src, GolVec3* p_dest) override; // vtable+0x20
+	using AmberLensBase0x120::VTable0x24;                            // vtable+0x24
+	void VTable0x28() override;                                      // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x10017a60
 	// AmberLens0x344::`vector deleting destructor'

@@ -107,19 +107,19 @@ void GolFontBase0x40::FUN_1001e190(const LegoChar* p_name)
 	g_unk0x10063c9c->LockPixels(&pixels, &pitch, SilverDune0x30::c_lockRequestRead);
 	FUN_1001e420(rowSignature, pixels, pitch);
 
-	const LegoU32 step = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel >> 2;
-	const LegoU32 width = g_unk0x10063c9c->GetWidth();
+	LegoU32 step = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel >> 2;
+	LegoU32 sourcePitch = pitch;
+	LegoU8* sourcePixels = pixels;
 	LegoU32 x = 0;
 	LegoU32 pixelOffset = 0;
-	LegoU8* column = pixels;
-
-	while (x < width) {
-		if (!FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
+	LegoU8* column = sourcePixels;
+	while (x < g_unk0x10063c9c->GetWidth()) {
+		if (!FUN_1001e4c0(rowSignature, column, sourcePitch, pixelOffset & 1)) {
 			break;
 		}
 
 		pixelOffset += step;
-		column = pixels + (pixelOffset >> 1);
+		column = sourcePixels + (pixelOffset >> 1);
 		x++;
 	}
 
@@ -127,17 +127,21 @@ void GolFontBase0x40::FUN_1001e190(const LegoChar* p_name)
 	m_unk0x28[0].m_unk0x02 = 0;
 	m_unk0x28[0].m_width = static_cast<LegoU16>(m_unk0x18);
 
+	x++;
 	for (LegoU32 i = 1; i < m_unk0x24; i++) {
 		if (i != 1) {
-			pixelOffset = x * step;
-			column = pixels + (pixelOffset >> 1);
-			while (x < width) {
-				if (!FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
+			LegoU32 sourcePitch = pitch;
+			LegoU8* sourcePixels = pixels;
+			LegoU32 step = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel >> 2;
+			LegoU32 pixelOffset = x * step;
+			LegoU8* column = sourcePixels + (pixelOffset >> 1);
+			while (x < g_unk0x10063c9c->GetWidth()) {
+				if (!FUN_1001e4c0(rowSignature, column, sourcePitch, pixelOffset & 1)) {
 					break;
 				}
 
 				pixelOffset += step;
-				column = pixels + (pixelOffset >> 1);
+				column = sourcePixels + (pixelOffset >> 1);
 				x++;
 			}
 		}
@@ -145,25 +149,33 @@ void GolFontBase0x40::FUN_1001e190(const LegoChar* p_name)
 		LegoU32 start = x;
 		m_unk0x28[i].m_unk0x02 = static_cast<undefined2>(start);
 
-		pixelOffset = x * step;
-		column = pixels + (pixelOffset >> 1);
-		while (x < width) {
-			if (FUN_1001e4c0(rowSignature, column, pitch, pixelOffset & 1)) {
-				break;
-			}
+		LegoU32 end = start;
+		{
+			LegoU32 sourcePitch = pitch;
+			LegoU8* sourcePixels = pixels;
+			LegoU32 step = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel >> 2;
+			LegoU32 pixelOffset = end * step;
+			LegoU8* column = sourcePixels + (pixelOffset >> 1);
+			while (end < g_unk0x10063c9c->GetWidth()) {
+				if (FUN_1001e4c0(rowSignature, column, sourcePitch, pixelOffset & 1)) {
+					break;
+				}
 
-			pixelOffset += step;
-			column = pixels + (pixelOffset >> 1);
-			x++;
+				pixelOffset += step;
+				column = sourcePixels + (pixelOffset >> 1);
+				end++;
+			}
 		}
 
-		LegoU32 glyphWidth = x - start;
+		LegoU32 glyphWidth = end - start;
 		m_unk0x28[i].m_width = static_cast<LegoU16>(glyphWidth);
 		if (!m_unk0x28[i].m_width) {
 			LegoChar message[256];
 			::sprintf(message, "Incomplete font image: %s\nmissing character %x\n", p_name, m_unk0x28[i].m_char);
 			GOL_FATALERROR_MESSAGE(message);
 		}
+
+		x += m_unk0x28[i].m_width;
 	}
 
 	g_unk0x10063c9c->UnlockPixels();

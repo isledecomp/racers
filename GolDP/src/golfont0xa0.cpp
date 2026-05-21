@@ -131,10 +131,11 @@ void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* 
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	LegoU32 i;
-	for (i = 0; i < m_unk0x04 - 1; i++) {
-		PurpleDune0x7c* texture = &m_unk0x90[i];
+	LegoU32 i = 0;
+	PurpleDune0x7c* texture = m_unk0x90;
+	DuskwindBananaRelic0x30* material = m_unk0x9c;
 
+	for (; i < m_unk0x04 - 1; i++) {
 		if (m_unk0x2c & c_flagBit5) {
 			texture->SetColorKey(m_colorKey);
 		}
@@ -157,12 +158,16 @@ void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* 
 		params.m_unk0x12 = 1;
 		params.m_unk0x13 = 0;
 
-		m_unk0x9c[i].FUN_100257e0(p_renderer, params);
-		m_unk0x9c[i].FUN_10006320(*p_renderer);
+		material->FUN_100257e0(p_renderer, params);
+		material->FUN_10006320(*p_renderer);
+
+		texture++;
+		material++;
 	}
 
 	i = m_unk0x04 - 1;
-	PurpleDune0x7c* texture = &m_unk0x90[i];
+	texture = &m_unk0x90[i];
+	material = &m_unk0x9c[i];
 
 	if (m_unk0x2c & c_flagBit5) {
 		texture->SetColorKey(m_colorKey);
@@ -187,8 +192,8 @@ void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* 
 	params.m_unk0x12 = 1;
 	params.m_unk0x13 = 0;
 
-	m_unk0x9c[i].FUN_100257e0(p_renderer, params);
-	m_unk0x9c[i].FUN_10006320(*p_renderer);
+	material->FUN_100257e0(p_renderer, params);
+	material->FUN_10006320(*p_renderer);
 }
 
 // FUNCTION: GOLDP 0x10004b60
@@ -219,32 +224,31 @@ void GolFont0xa0::VTable0x10(LegoU32 p_index)
 // FUNCTION: GOLDP 0x10004c20
 void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 {
+	LegoS32 sourceBottom = p_sourceRect->m_bottom - 1;
 	D3DTLVERTEX vertices[4];
 
-	vertices[0].sx = static_cast<LegoFloat>(p_destRect->m_left);
-	vertices[0].sy = static_cast<LegoFloat>(p_destRect->m_top);
 	vertices[0].sz = 0.0f;
-	vertices[0].rhw = 1.0f;
-
-	vertices[1].sx = static_cast<LegoFloat>(p_destRect->m_left);
-	vertices[1].sy = static_cast<LegoFloat>(p_destRect->m_bottom);
 	vertices[1].sz = 0.0f;
-	vertices[1].rhw = 1.0f;
-
-	vertices[2].sx = static_cast<LegoFloat>(p_destRect->m_right);
-	vertices[2].sy = static_cast<LegoFloat>(p_destRect->m_top);
 	vertices[2].sz = 0.0f;
-	vertices[2].rhw = 1.0f;
 
-	vertices[3].sx = static_cast<LegoFloat>(p_destRect->m_right);
-	vertices[3].sy = static_cast<LegoFloat>(p_destRect->m_bottom);
+	vertices[0].sx = static_cast<LegoFloat>(p_destRect->m_left);
 	vertices[3].sz = 0.0f;
+	vertices[0].rhw = 1.0f;
+	vertices[0].sy = static_cast<LegoFloat>(p_destRect->m_top);
+	vertices[1].rhw = 1.0f;
+	vertices[2].rhw = 1.0f;
+	vertices[1].sx = vertices[0].sx;
+	vertices[1].sy = static_cast<LegoFloat>(p_destRect->m_bottom);
+	vertices[2].sx = static_cast<LegoFloat>(p_destRect->m_right);
+	vertices[3].sx = vertices[2].sx;
+	vertices[2].sy = vertices[0].sy;
 	vertices[3].rhw = 1.0f;
+	vertices[3].sy = vertices[1].sy;
 
 	vertices[0].tu = static_cast<LegoFloat>(p_sourceRect->m_left) * m_unk0x94 + (m_unk0x94 * 0.25f);
 	vertices[0].tv = static_cast<LegoFloat>(p_sourceRect->m_top) * m_unk0x98;
 	vertices[1].tu = vertices[0].tu;
-	vertices[1].tv = static_cast<LegoFloat>(p_sourceRect->m_bottom - 1) * m_unk0x98;
+	vertices[1].tv = static_cast<LegoFloat>(sourceBottom) * m_unk0x98;
 	vertices[2].tu = static_cast<LegoFloat>(p_sourceRect->m_right) * m_unk0x94 + (m_unk0x94 * 0.25f);
 	vertices[2].tv = vertices[0].tv;
 	vertices[3].tu = vertices[2].tu;
@@ -262,8 +266,7 @@ void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 	vertices[2].specular = 0xffffffff;
 	vertices[3].specular = 0xffffffff;
 
-	LegoU32 vertexCount = sizeOfArray(vertices);
-	m_renderer->FUN_10009fd0(vertices, vertexCount);
+	m_renderer->FUN_10009fd0(vertices, sizeOfArray(vertices));
 }
 
 // FUNCTION: GOLDP 0x10004d70
@@ -290,13 +293,13 @@ void GolFont0xa0::FUN_10004d70(
 
 	ColorRGBA* colorKey;
 	if (font->m_unk0x2c & c_flagBit5) {
-		colorKey = &font->m_colorKey;
 		if (p_renderer->GetFlags() & WhiteFalcon0x140::c_flagBit9) {
 			g_unk0x10062568.SetUnk0x0a0(g_unk0x10057668);
 		}
 		else {
-			g_unk0x10062568.SetUnk0x0a0(*colorKey);
+			g_unk0x10062568.SetUnk0x0a0(font->m_colorKey);
 		}
+		colorKey = &font->m_colorKey;
 	}
 	else {
 		colorKey = NULL;
@@ -311,27 +314,34 @@ void GolFont0xa0::FUN_10004d70(
 	texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
 
 	for (LegoU32 i = 0; i < font->m_unk0x24; i++) {
-		Glyph0x0c* glyph = &font->m_unk0x28[i];
-
-		if (glyph->m_unk0x04 != currentSurface) {
+		if (font->m_unk0x28[i].m_unk0x04 != currentSurface) {
 			texture->UnlockPixels();
-			currentSurface = glyph->m_unk0x04;
+			currentSurface = font->m_unk0x28[i].m_unk0x04;
 			texture = font->VTable0x08(currentSurface);
 			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
 		}
 
-		g_unk0x10062568
-			.FUN_100226c0(*p_sourceFormat, glyph->m_width, font->m_unk0x1c, sourcePitch, paletteEntries, paletteSize);
+		g_unk0x10062568.FUN_100226c0(
+			*p_sourceFormat,
+			font->m_unk0x28[i].m_width,
+			font->m_unk0x1c,
+			sourcePitch,
+			paletteEntries,
+			paletteSize
+		);
 
-		LegoU8* source = sourcePixels + ((p_sourceFormat->m_bitsPerPixel * glyph->m_unk0x02 + 7) >> 3);
+		LegoU8* source =
+			sourcePixels +
+			((static_cast<LegoU32>(p_sourceFormat->m_bitsPerPixel) * font->m_unk0x28[i].m_unk0x02 + 7) >> 3);
 		LegoU8* dest =
-			destPixels + destPitch * glyph->m_unk0x08 + ((p_textureFormat->m_bitsPerPixel * glyph->m_unk0x06 + 7) >> 3);
+			destPixels + destPitch * font->m_unk0x28[i].m_unk0x08 +
+			((static_cast<LegoU32>(p_textureFormat->m_bitsPerPixel) * font->m_unk0x28[i].m_unk0x06 + 7) >> 3);
 
 		IPalette0x4* palette = p_textureFormat->m_paletteMask ? texture->GetPalette() : NULL;
 		g_unk0x10062568.FUN_10022730(
 			source,
 			dest,
-			glyph->m_width,
+			font->m_unk0x28[i].m_width,
 			font->m_unk0x1c,
 			destPitch,
 			*p_textureFormat,

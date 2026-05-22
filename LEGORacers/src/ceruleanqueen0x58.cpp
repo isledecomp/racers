@@ -193,11 +193,54 @@ void CeruleanQueen0x58::VTable0x14(undefined4 p_arg1)
 	}
 }
 
-// STUB: LEGORACERS 0x00469a20
-void CeruleanQueen0x58::FUN_00469a20(Entry0x84*)
+// FUNCTION: LEGORACERS 0x00469a20
+void CeruleanQueen0x58::FUN_00469a20(Entry0x84* p_entry)
 {
-	// TODO
-	STUB(0x00469a20);
+	VisualState0x4* visualState = &p_entry->m_unk0x22;
+	visualState->m_unk0x00 = -1;
+
+	LegoU8 flags = p_entry->m_flagsAndName.m_flagsByte;
+	flags |= 1;
+	p_entry->m_flagsAndName.m_flagsByte = flags;
+	p_entry->m_unk0x20 = m_unk0x54++;
+
+	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
+		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
+	}
+
+	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
+		switch (m_parser->GetCurrentToken()) {
+		case GolFileParser::e_unknown0x2f:
+			FUN_0046b1d0(&p_entry->m_rect.m_left);
+			break;
+		case GolFileParser::e_unknown0x30: {
+			LegoS32 value = m_parser->ReadInteger();
+			p_entry->m_unk0x20 = value;
+			m_unk0x54 = value + 1;
+			break;
+		}
+		case GolFileParser::e_unknown0x32: {
+			LegoU8 value = m_parser->ReadInteger();
+			LegoU8 flags = p_entry->m_flagsAndName.m_flagsByte;
+			LegoU8 newFlags = flags;
+			newFlags ^= value;
+			newFlags &= 1;
+			newFlags ^= flags;
+			p_entry->m_flagsAndName.m_flagsByte = newFlags;
+			break;
+		}
+		case GolFileParser::e_unknown0x31:
+			::strncpy(p_entry->m_flagsAndName.m_unk0x2d, m_parser->ReadString(), 8);
+			break;
+		case GolFileParser::e_unknown0x2a:
+			FUN_0046b210(visualState->m_bytes);
+			p_entry->m_flagsAndName.m_flagsByte |= 2;
+			break;
+		default:
+			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);
+			break;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00469b20

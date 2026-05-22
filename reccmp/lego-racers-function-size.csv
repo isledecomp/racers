@@ -4289,9 +4289,6 @@ address,type,size
 004a67f0,function,196
 004a68c0,function,187
 004a6980,function,6
-004a6990,function,2648
-004a73f0,function,4120
-004a8410,function,136
 004a8498,function,6
 004a849e,function,6
 004a84a4,function,6
@@ -4307,8 +4304,6 @@ address,type,size
 004a8638,function,44
 004a8664,function,18
 004a8676,function,6
-004a867c,function,338
-004a87ce,function,12
 004a87da,function,6
 004a87e0,function,6
 004a87e6,function,6

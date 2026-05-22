@@ -74,7 +74,7 @@ void ImaginaryTool0x368::FieldAt0x2e0::VTable0x14(undefined4 p_arg1)
 // FUNCTION: LEGORACERS 0x0047f2b0
 void ImaginaryTool0x368::FieldAt0x2e0::FUN_0047f2b0(Entry0xe0* p_entry)
 {
-	CeruleanQueen0x58::FUN_00469b20(p_entry);
+	FUN_00469b20(p_entry);
 	::memset(p_entry->m_unk0xb4, 0xff, sizeof(p_entry->m_unk0xb4));
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {

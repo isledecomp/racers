@@ -22,8 +22,8 @@ public:
 	class Entry0x0c {
 	public:
 		UtopianPan0xa4* m_unk0x00; // 0x00
-		undefined4 m_unk0x04;      // 0x04
-		undefined4 m_unk0x08;      // 0x08
+		VisualState0x4 m_unk0x04;  // 0x04
+		LegoBool32 m_unk0x08;      // 0x08
 	};
 
 	// SIZE 0x14
@@ -31,9 +31,27 @@ public:
 	public:
 		GolFont0xa0* m_unk0x00;   // 0x00
 		VisualState0x4 m_unk0x04; // 0x04
-		undefined4 m_unk0x08;     // 0x08
-		undefined4 m_unk0x0c;     // 0x0c
-		undefined4 m_unk0x10;     // 0x10
+		LegoS32 m_unk0x08;        // 0x08
+		LegoBool32 m_unk0x0c;     // 0x0c
+		LegoS32 m_unk0x10;        // 0x10
+	};
+
+	// SIZE 0x18
+	class Entry0x18 {
+	public:
+		undefined4 m_unk0x00[3]; // 0x00
+		LegoS32 m_unk0x0c;       // 0x0c
+		LegoS32 m_unk0x10;       // 0x10
+		LegoS32 m_unk0x14;       // 0x14
+	};
+
+	// SIZE 0x2c
+	class Entry0x2c {
+	public:
+		UtopianPan0xa4* m_unk0x00[8]; // 0x00
+		VisualState0x4 m_unk0x20;     // 0x20
+		VisualState0x4 m_unk0x24;     // 0x24
+		LegoBool32 m_unk0x28;         // 0x28
 	};
 
 	// SIZE 0x90
@@ -48,6 +66,12 @@ public:
 		undefined4 m_unk0x8c;        // 0x8c
 	};
 
+	// SIZE 0xa8
+	class Entry0xa8 : public Entry0x90 {
+	public:
+		UtopianPan0xa4* m_unk0x90[6]; // 0x90
+	};
+
 	// SIZE 0x104
 	class Entry0x104 : public Entry0x90 {
 	public:
@@ -59,6 +83,57 @@ public:
 		Rect m_unk0xec;               // 0xec
 		undefined4 m_unk0xfc;         // 0xfc
 		undefined4 m_unk0x100;        // 0x100
+	};
+
+	// SIZE 0x100
+	class Entry0x100 : public Entry0x90 {
+	public:
+		// SIZE 0x0c
+		class ImageTriplet {
+		public:
+			UtopianPan0xa4* m_unk0x00; // 0x00
+			UtopianPan0xa4* m_unk0x04; // 0x04
+			UtopianPan0xa4* m_unk0x08; // 0x08
+		};
+
+		GolFont0xa0* m_unk0x90[6]; // 0x90
+		union {
+			ImageTriplet m_unk0xa8[6];            // 0xa8
+			UtopianPan0xa4* m_utopianunk0xa8[18]; // 0xa8
+		};
+		Rect m_unk0xf0; // 0xf0
+	};
+
+	// SIZE 0x150
+	class Entry0x150 : public Entry0x90 {
+	public:
+		undefined m_unk0x90[0xa8 - 0x90]; // 0x90
+		UtopianPan0xa4* m_unk0xa8;        // 0xa8
+		LegoS32 m_unk0xac;                // 0xac
+		undefined4 m_unk0xb0[8];          // 0xb0
+		Rect m_unk0xd0[8];                // 0xd0
+	};
+
+	// SIZE 0xbc
+	class Entry0xbc : public Entry0x90 {
+	public:
+		Entry0x90* m_unk0x90;        // 0x90
+		Entry0x90* m_unk0x94;        // 0x94
+		Entry0x90* m_unk0x98;        // 0x98
+		VisualState0x4 m_unk0x9c[4]; // 0x9c
+		VisualState0x4 m_unk0xac[4]; // 0xac
+	};
+
+	// SIZE 0xbc
+	class Entry0xbcWithImages : public Entry0x90 {
+	public:
+		Entry0x90* m_unk0x90;         // 0x90
+		Entry0x90* m_unk0x94;         // 0x94
+		Entry0x90* m_unk0x98;         // 0x98
+		Entry0x90* m_unk0x9c;         // 0x9c
+		UtopianPan0xa4* m_unk0xa0[6]; // 0xa0
+		undefined2 m_unk0xb8;         // 0xb8
+		undefined2 m_unk0xba;         // 0xba
 	};
 
 	// SIZE 0x10
@@ -87,7 +162,16 @@ public:
 
 protected:
 	void FUN_0046fd30(ResourceLoadParams* p_params);
+	void FUN_0046fe20(Entry0x0c* p_entry);
+	void FUN_0046feb0(Entry0x14* p_entry);
+	void FUN_0046ff70(Entry0x2c* p_entry);
 	void FUN_00470020(Entry0x90* p_entry);
+	void FUN_00470110(Entry0xa8* p_entry);
+	void FUN_004701a0(Entry0x100* p_entry);
+	void FUN_004702e0(Entry0x150* p_entry);
+	void FUN_00470410(Entry0x18* p_entry);
+	void FUN_004704b0(Entry0xbc* p_entry);
+	void FUN_00470650(Entry0xbcWithImages* p_entry);
 
 private:
 	void FUN_004707e0();
@@ -103,16 +187,16 @@ private:
 
 protected:
 	CeruleanEmperor0x4c* m_unk0x20; // 0x20
-	undefined* m_unk0x24;           // 0x24
+	Entry0x0c* m_unk0x24;           // 0x24
 	Entry0x14* m_unk0x28;           // 0x28
-	undefined* m_unk0x2c;           // 0x2c
-	undefined* m_unk0x30;           // 0x30
-	undefined* m_unk0x34;           // 0x34
-	undefined* m_unk0x38;           // 0x38
-	undefined* m_unk0x3c;           // 0x3c
-	undefined* m_unk0x40;           // 0x40
-	undefined* m_unk0x44;           // 0x44
-	undefined* m_unk0x48;           // 0x48
+	Entry0x2c* m_unk0x2c;           // 0x2c
+	Entry0xa8* m_unk0x30;           // 0x30
+	Entry0x100* m_unk0x34;          // 0x34
+	Entry0x150* m_unk0x38;          // 0x38
+	Entry0x18* m_unk0x3c;           // 0x3c
+	Entry0xbc* m_unk0x40;           // 0x40
+	Entry0xbcWithImages* m_unk0x44; // 0x44
+	Entry0x90* m_unk0x48;           // 0x48
 };
 
 #endif // CERULEANEMPEROR0X4C_H

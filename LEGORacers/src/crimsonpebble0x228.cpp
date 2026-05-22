@@ -149,10 +149,12 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_unk0x04)
 	p_unk0x04->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004a24e0
+// FUNCTION: LEGORACERS 0x004a24e0
 void CrimsonPebble0x228::FUN_004a24e0()
 {
-	STUB(0x004a24e0);
+	for (LegoS32 i = 0; i < this->m_unk0x118; i++) {
+		m_unk0x11c[i].FUN_004a4790(this, m_unk0x08);
+	}
 }
 
 // STUB: LEGORACERS 0x004a2ac0

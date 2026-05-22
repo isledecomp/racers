@@ -4,6 +4,7 @@
 #include "audio/soundnode.h"
 #include "bluebellfog0x4.h"
 #include "decomp.h"
+#include "defiantoven0x70.h"
 #include "golnametable.h"
 #include "golstringtable.h"
 #include "types.h"
@@ -100,7 +101,7 @@ private:
 	undefined4* m_unk0x108;        // 0x108
 	GolNameTable m_unk0x10c;       // 0x10c
 	undefined4 m_unk0x118;         // 0x118
-	undefined4* m_unk0x11c;        // 0x11c
+	DefiantOven0x70* m_unk0x11c;   // 0x11c
 	GolNameTable m_unk0x120;       // 0x120
 	undefined4 m_unk0x12c;         // 0x12c
 	undefined4* m_unk0x130;        // 0x130

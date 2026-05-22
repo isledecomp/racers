@@ -376,6 +376,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/guids.cpp
   LEGORacers/src/lilacorbit0x28.cpp
+  LEGORacers/src/defiantoven0x70.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
   $<TARGET_OBJECTS:common_legoracers>

@@ -133,11 +133,18 @@ jobs:
 
     - name: Check Variables
       if: ${{ steps.detection.conclusion == 'success' && always() }}
+      shell: bash
+      run: |
+        # reccmp-datacmp --target LEGORACERS
+        reccmp-datacmp --target GOLDP
+
+    - name: Check Variables (temporarily ignore failures)
+      if: ${{ steps.detection.conclusion == 'success' && always() }}
       continue-on-error: true
       shell: bash
       run: |
         reccmp-datacmp --target LEGORACERS
-        reccmp-datacmp --target GOLDP
+
 
     - name: Check Folding
       if: ${{ steps.detection.conclusion == 'success' && always() }}

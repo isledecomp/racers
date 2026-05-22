@@ -5,10 +5,29 @@
 #include "decomp.h"
 #include "obscureanthem0x58.h"
 
+class SoundGroupBinding;
+
 // VTABLE: LEGORACERS 0x004b23f0
 // SIZE 0x78
 class ObscureCarousel0x78 : public ObscureAnthem0x58 {
 public:
+	// SIZE 0x38
+	class CreateParams0x38 : public ObscureVantage0x58::CreateParams0x30 {
+	public:
+		undefined m_unk0x30[0x38 - 0x30]; // 0x30
+	};
+
+	// SIZE 0x18
+	class StyleEntry0x18 {
+	public:
+		undefined4 m_unk0x00; // 0x00
+		undefined4 m_unk0x04; // 0x04
+		undefined4 m_unk0x08; // 0x08
+		LegoS32 m_unk0x0c;    // 0x0c
+		LegoBool32 m_unk0x10; // 0x10
+		undefined4 m_unk0x14; // 0x14
+	};
+
 	ObscureCarousel0x78();
 	void Reset() override;                                                                          // vtable+0x00
 	~ObscureCarousel0x78() override;                                                                // vtable+0x04
@@ -22,18 +41,20 @@ public:
 	virtual LegoS32 VTable0x54() = 0;                                                               // vtable+0x54
 	virtual LegoS32 VTable0x58() = 0;                                                               // vtable+0x58
 
+	LegoBool32 FUN_0046c970(CreateParams0x38* p_createParams, StyleEntry0x18* p_styleEntry);
+
 	// SYNTHETIC: LEGORACERS 0x0046c8d0
 	// ObscureCarousel0x78::`scalar deleting destructor'
 
 protected:
-	ObscureVantage0x58* m_unk0x58; // 0x58
-	ObscureVantage0x58* m_unk0x5c; // 0x5c
-	LegoS32 m_unk0x60;             // 0x60
-	undefined4 m_unk0x64;          // 0x64
-	LegoS32 m_unk0x68;             // 0x68
-	LegoS32 m_unk0x6c;             // 0x6c
-	LegoS32 m_unk0x70;             // 0x70
-	LegoS32 m_unk0x74;             // 0x74
+	StyleEntry0x18* m_unk0x58;    // 0x58
+	SoundGroupBinding* m_unk0x5c; // 0x5c
+	LegoS32 m_unk0x60;            // 0x60
+	undefined4 m_unk0x64;         // 0x64
+	LegoS32 m_unk0x68;            // 0x68
+	LegoS32 m_unk0x6c;            // 0x6c
+	LegoS32 m_unk0x70;            // 0x70
+	LegoS32 m_unk0x74;            // 0x74
 };
 
 // VTABLE: LEGORACERS 0x004b24b4

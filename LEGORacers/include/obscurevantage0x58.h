@@ -73,6 +73,7 @@ public:
 	undefined4 FUN_00472c40(LegoS32, LegoS32);
 	ObscureVantage0x58* FindRoot();
 	ObscureVantage0x58* FUN_00472e60();
+	ObscureVantage0x58* FUN_00472ef0(LegoS32 p_unk0x04);
 	ObscureVantage0x58* FUN_00472f10(undefined2);
 	ObscureVantage0x58* GetFirstChild() { return m_firstChild; }
 	Rect* GetGlobalRect();
@@ -104,8 +105,9 @@ protected:
 	BronzeFalcon0xc8770* m_renderer;   // 0x24
 	ImaginaryInterface* m_unk0x28;     // 0x28
 	union {
-		ColorRGBA m_color;     // 0x2c
-		LegoU32 m_colorPacked; // 0x2c
+		ColorRGBA m_color;            // 0x2c
+		LegoU32 m_colorPacked;        // 0x2c
+		VisualState0x4 m_visualState; // 0x2c
 	};
 	undefined2 m_unk0x30; // 0x30
 	Rect m_unk0x34;       // 0x34

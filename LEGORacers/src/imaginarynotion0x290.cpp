@@ -16,6 +16,7 @@
 #include "input/inputmanager.h"
 #include "menutoolcreateparams0x30.h"
 #include "obscureanchor0x5c.h"
+#include "obscurecarousel0x78.h"
 #include "obscuresigil0xdc.h"
 #include "obscurevantage0x58.h"
 
@@ -535,12 +536,25 @@ undefined4 ImaginaryNotion0x290::FUN_0046c1b0(undefined4*, undefined2, undefined
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0046c240
-undefined4 ImaginaryNotion0x290::FUN_0046c240(ObscureVantage0x58*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c240
+LegoBool32 ImaginaryNotion0x290::FUN_0046c240(
+	ObscureCarousel0x78* p_unk0x04,
+	undefined2 p_unk0x08,
+	undefined2 p_unk0x0c
+)
 {
-	// TODO
-	STUB(0x0046c240);
-	return 0;
+	ObscureCarousel0x78::CreateParams0x38* sourceParams =
+		static_cast<ObscureCarousel0x78::CreateParams0x38*>(FUN_0046be10(p_unk0x08));
+	ObscureCarousel0x78::StyleEntry0x18* styleEntry =
+		static_cast<ObscureCarousel0x78::StyleEntry0x18*>(FUN_0046bd80(p_unk0x0c));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureCarousel0x78::CreateParams0x38 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+
+	return p_unk0x04->FUN_0046c970(&createParams, styleEntry);
 }
 
 // STUB: LEGORACERS 0x0046c2b0

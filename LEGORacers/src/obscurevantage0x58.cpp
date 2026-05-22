@@ -360,6 +360,18 @@ Rect* ObscureVantage0x58::GetGlobalRect()
 	return &g_unk0x4c7650;
 }
 
+// FUNCTION: LEGORACERS 0x00472ef0
+ObscureVantage0x58* ObscureVantage0x58::FUN_00472ef0(LegoS32 p_unk0x04)
+{
+	ObscureVantage0x58* child = m_firstChild;
+
+	while (p_unk0x04-- && child) {
+		child = child->m_nextSibling;
+	}
+
+	return child;
+}
+
 // FUNCTION: LEGORACERS 0x00472f10
 ObscureVantage0x58* ObscureVantage0x58::FUN_00472f10(undefined2 p_unk0x04)
 {

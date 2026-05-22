@@ -1,6 +1,8 @@
 #include "obscurecarousel0x78.h"
 
 DECOMP_SIZE_ASSERT(ObscureCarousel0x78, 0x78)
+DECOMP_SIZE_ASSERT(ObscureCarousel0x78::CreateParams0x38, 0x38)
+DECOMP_SIZE_ASSERT(ObscureCarousel0x78::StyleEntry0x18, 0x18)
 DECOMP_SIZE_ASSERT(ObscureCarousel0x94, 0x94)
 DECOMP_SIZE_ASSERT(ObscureCarouselNavigator0x94, 0x94)
 
@@ -27,6 +29,16 @@ void ObscureCarousel0x78::Reset()
 	m_unk0x70 = 0;
 	m_unk0x74 = 0;
 	ObscureVantage0x58::Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0046c970
+LegoBool32 ObscureCarousel0x78::FUN_0046c970(CreateParams0x38* p_createParams, StyleEntry0x18* p_styleEntry)
+{
+	VTable0x08();
+	m_unk0x58 = p_styleEntry;
+	m_unk0x5c = p_createParams->m_soundGroupBinding;
+
+	return FUN_00472a60(p_createParams);
 }
 
 // STUB: LEGORACERS 0x0046c9c0
@@ -76,23 +88,38 @@ void ObscureCarousel0x94::Reset()
 	m_unk0x8c = 0.0f;
 }
 
-// STUB: LEGORACERS 0x0046d960
+// FUNCTION: LEGORACERS 0x0046d960
 void ObscureCarousel0x94::VTable0x50(undefined4 p_unk0x04)
 {
+	m_unk0x78 = FUN_00472ef0(p_unk0x04);
 	m_unk0x6c = p_unk0x04;
-	STUB(0x0046d960);
+	if (!m_unk0x70) {
+		VTable0x40();
+	}
 }
 
-// STUB: LEGORACERS 0x0046d990
+// FUNCTION: LEGORACERS 0x0046d990
 void ObscureCarousel0x94::VTable0x40()
 {
-	STUB(0x0046d990);
+	m_unk0x4c = m_unk0x78->GetRect()->m_left;
+
+	if (m_unk0x58->m_unk0x10) {
+		LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
+		m_unk0x4c = (m_unk0x4c / width) * width;
+	}
 }
 
-// STUB: LEGORACERS 0x0046d9c0
-void ObscureCarousel0x94::FUN_0046d9c0(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x0046d9c0
+void ObscureCarousel0x94::FUN_0046d9c0(ObscureVantage0x58* p_unk0x04)
 {
-	STUB(0x0046d9c0);
+	p_unk0x04->SetParent(this);
+	p_unk0x04->VTable0x14(&m_visualState);
+	m_unk0x68++;
+	VTable0x5c(p_unk0x04);
+
+	if (m_unk0x68 == 1) {
+		VTable0x50(m_unk0x6c);
+	}
 }
 
 // STUB: LEGORACERS 0x0046da80

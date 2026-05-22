@@ -16,6 +16,8 @@ public:
 	void VTable0x14(VisualState0x4*) override;    // vtable+0x14
 	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
 
+	LegoBool32 FUN_004735a0(CreateParams0x30* p_createParams);
+
 	// SYNTHETIC: LEGORACERS 0x004734f0
 	// ObscureZebra0xa4::`scalar deleting destructor'
 

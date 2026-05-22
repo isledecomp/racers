@@ -19,6 +19,7 @@
 #include "obscurecarousel0x78.h"
 #include "obscuresigil0xdc.h"
 #include "obscurevantage0x58.h"
+#include "obscurezebra0xa4.h"
 
 #include <string.h>
 
@@ -444,11 +445,18 @@ void* ImaginaryNotion0x290::FUN_0046be10(undefined2 p_unk0x04)
 	return GetMenuInputBindings()->FUN_0046aff0(name);
 }
 
-// STUB: LEGORACERS 0x0046bea0
-void ImaginaryNotion0x290::FUN_0046bea0(undefined4*, undefined2)
+// FUNCTION: LEGORACERS 0x0046bea0
+void ImaginaryNotion0x290::FUN_0046bea0(ObscureZebra0xa4* p_unk0x04, undefined2 p_unk0x08)
 {
-	// TODO
-	STUB(0x0046bea0);
+	CeruleanQueen0x58::Entry0x38* sourceParams = static_cast<CeruleanQueen0x58::Entry0x38*>(FUN_0046be10(p_unk0x08));
+	if (sourceParams == NULL) {
+		return;
+	}
+
+	CeruleanQueen0x58::Entry0x38 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+
+	p_unk0x04->FUN_004735a0(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bef0

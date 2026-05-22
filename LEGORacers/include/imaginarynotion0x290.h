@@ -21,6 +21,7 @@ class MenuToolCreateParams0x30;
 class ObscureCarousel0x78;
 class ObscureVantage0x58;
 class ObscureSigil0xdc;
+class ObscureZebra0xa4;
 class PorcelainVeil0x50;
 class SoundGroupBinding;
 class AwakeKite0x20;
@@ -105,7 +106,7 @@ public:
 	void FUN_0046bc90(undefined4*, undefined4);
 	void* FUN_0046bd80(undefined2);
 	void* FUN_0046be10(undefined2);
-	void FUN_0046bea0(undefined4*, undefined2);
+	void FUN_0046bea0(ObscureZebra0xa4*, undefined2);
 	LegoBool32 FUN_0046bef0(ObscureAnchor0x5c*, undefined2, undefined2);
 	LegoBool32 FUN_0046bf80(ImaginaryDrillFieldAt0x420*, undefined2, undefined2, undefined2);
 	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);

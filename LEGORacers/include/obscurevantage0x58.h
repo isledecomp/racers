@@ -76,6 +76,7 @@ public:
 	ObscureVantage0x58* FUN_00472ef0(LegoS32 p_unk0x04);
 	ObscureVantage0x58* FUN_00472f10(undefined2);
 	ObscureVantage0x58* GetFirstChild() { return m_firstChild; }
+	ObscureVantage0x58* GetNextSibling() { return m_nextSibling; }
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);

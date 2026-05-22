@@ -41,10 +41,14 @@ LegoBool32 ObscureCarousel0x78::FUN_0046c970(CreateParams0x38* p_createParams, S
 	return FUN_00472a60(p_createParams);
 }
 
-// STUB: LEGORACERS 0x0046c9c0
-void ObscureCarousel0x78::VTable0x14(VisualState0x4*)
+// FUNCTION: LEGORACERS 0x0046c9c0
+void ObscureCarousel0x78::VTable0x14(VisualState0x4* p_visualState)
 {
-	STUB(0x0046c9c0);
+	for (ObscureVantage0x58* child = m_firstChild; child; child = child->GetNextSibling()) {
+		child->VTable0x14(p_visualState);
+	}
+
+	ObscureVantage0x58::VTable0x14(p_visualState);
 }
 
 #pragma code_seg(".text$legoracers_00466090")

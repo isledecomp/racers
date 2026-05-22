@@ -1,6 +1,6 @@
 #include "golbinparser.h"
-#include "golconstants.h"
 
+#include "golconstants.h"
 #include "golerror.h"
 
 #include <stdio.h>

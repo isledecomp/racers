@@ -6,10 +6,10 @@
 DECOMP_SIZE_ASSERT(MusicInstanceState, 0x18)
 
 // GLOBAL: LEGORACERS 0x004afb9c
-LegoFloat g_minMusicVolume = 0.0f;
+const LegoFloat g_minMusicVolume = 0.0f;
 
 // GLOBAL: LEGORACERS 0x004afba0
-LegoFloat g_defaultMusicVolume = 1.0f;
+const LegoFloat g_defaultMusicVolume = 1.0f;
 
 // FUNCTION: LEGORACERS 0x0041a570
 MusicInstanceState::MusicInstanceState()

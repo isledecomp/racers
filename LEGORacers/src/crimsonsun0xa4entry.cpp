@@ -151,7 +151,7 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004684e0()
 	}
 }
 
-// STUB: LEGORACERS 0x00468590
+// FUNCTION: LEGORACERS 0x00468590
 void CrimsonSun0xa4::Entry0x74c::FUN_00468590()
 {
 	Rect rect;
@@ -159,21 +159,23 @@ void CrimsonSun0xa4::Entry0x74c::FUN_00468590()
 	m_unk0x2a4 = (m_unk0x6c8.GetRect()->m_right + 0x28) * 0.5f;
 	m_unk0x2a8 = (m_unk0x6c8.GetRect()->m_bottom + 0x28) * 0.5f;
 
-	rect.m_left = m_unk0x6c8.GetRect()->m_left + 0x14;
 	rect.m_top = m_unk0x6c8.GetRect()->m_top + 0x14;
-	rect.m_right = m_unk0x6c8.GetRect()->m_right + 0x14;
 	rect.m_bottom = m_unk0x6c8.GetRect()->m_bottom + 0x14;
+	rect.m_left = m_unk0x6c8.GetRect()->m_left + 0x14;
+	rect.m_right = m_unk0x6c8.GetRect()->m_right + 0x14;
 	m_unk0x6c8.VTable0x10(&rect);
 
-	m_unk0x29c = m_unk0xd8.GetRect()->m_right / 2;
-	m_unk0x2a0 = m_unk0xd8.GetRect()->m_bottom / 2;
+	m_unk0x29c = m_unk0xd8.GetRect()->m_right >> 1;
+	m_unk0x2a0 = m_unk0xd8.GetRect()->m_bottom >> 1;
 
-	if (m_unk0x2b8 == 1) {
-		FUN_00468390();
-	}
-	else if (m_unk0x2b8 == 2) {
+	switch (m_unk0x2b8) {
+	case 2:
 		FUN_00468430();
 		FUN_004684e0();
+		break;
+	case 1:
+		FUN_00468390();
+		break;
 	}
 
 	FUN_00468740();

@@ -10,8 +10,8 @@ public:
 	LegoFloat m_value;
 };
 
-extern const FloatConstant g_4096f;
-extern const FloatConstant g_32f;
-extern const LegoFloat g_127f;
+extern const FloatConstant g_floatConst4096;
+extern const FloatConstant g_floatConst32;
+extern const LegoFloat g_floatConst127;
 
 #endif // GOLCONSTANTS_H

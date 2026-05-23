@@ -91,7 +91,7 @@ void CrimsonPebble0x228::Reset()
 }
 
 // STUB: LEGORACERS 0x004a0680
-LegoBool CrimsonPebble0x228::FUN_004a0680(const LegoChar* p_fileName, const LegoChar* p_suffix)
+LegoBool32 CrimsonPebble0x228::FUN_004a0680(const LegoChar* p_fileName, const LegoChar* p_suffix)
 {
 	STUB(0x004a0680);
 	return FALSE;
@@ -124,19 +124,19 @@ void CrimsonPebble0x228::FUN_004a0730(
 		parser->SetSuffix(".ceb");
 	}
 	else {
-		parser = new GolTxtParser();
+		parser = new GolTxtParser2();
 		if (!parser) {
 			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 		}
 		if (!FUN_004a0680(p_fileName, parser->GetSuffix())) {
-			parser->Dispose();
+			delete parser;
 			return;
 		}
 	}
 
+	m_unk0x04 = p_golExport;
 	m_unk0x08 = p_renderer;
 	m_unk0x10 = p_unk0x10;
-	m_unk0x04 = p_golExport;
 	m_soundManager = p_soundManager;
 
 	p_soundManager->AddActiveSoundNode(&m_unk0x14);
@@ -151,6 +151,9 @@ void CrimsonPebble0x228::FUN_004a0730(
 			break;
 		case GolFileParser::e_unknown0x28:
 			FUN_004a12e0(parser);
+			break;
+		case GolFileParser::e_unknown0x5c:
+			FUN_004a15e0(parser);
 			break;
 		case GolFileParser::e_unknown0x29:
 			FUN_004a1760(parser);
@@ -169,6 +172,9 @@ void CrimsonPebble0x228::FUN_004a0730(
 			break;
 		case GolFileParser::e_unknown0x3c:
 			FUN_004a1f80(parser);
+			break;
+		case GolFileParser::e_unknown0x60:
+			FUN_004a20f0(parser);
 			break;
 		case GolFileParser::e_unknown0x3f:
 			FUN_004a2310(parser);
@@ -212,12 +218,6 @@ void CrimsonPebble0x228::FUN_004a0730(
 		case GolFileParser::e_unknown0x5b:
 			FUN_004a2730(parser, 0x5b, m_unk0x210, m_unk0x214, m_unk0x218);
 			break;
-		case GolFileParser::e_unknown0x5c:
-			FUN_004a15e0(parser);
-			break;
-		case GolFileParser::e_unknown0x60:
-			FUN_004a20f0(parser);
-			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
 			break;
@@ -225,9 +225,8 @@ void CrimsonPebble0x228::FUN_004a0730(
 		token = parser->GetNextToken();
 	}
 
-	if (parser->Dispose()) {
-		delete parser;
-	}
+	parser->Dispose();
+	delete parser;
 
 	FUN_004a1240(p_binary);
 	FUN_004a14e0();

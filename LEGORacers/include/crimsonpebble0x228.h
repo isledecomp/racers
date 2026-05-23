@@ -36,7 +36,7 @@ public:
 	virtual ~CrimsonPebble0x228();                 // vtable+0x30
 
 	void Reset();
-	LegoBool FUN_004a0680(const LegoChar* p_fileName, const LegoChar* p_suffix);
+	LegoBool32 FUN_004a0680(const LegoChar* p_fileName, const LegoChar* p_suffix);
 	void FUN_004a0730(
 		GolExport* p_golExport,
 		BronzeFalcon0xc8770* p_renderer,

@@ -10,9 +10,10 @@ class MabMaterialAnimation0x14;
 class CutSceneEvent0xe4 {
 	// FIXME: size is unknown
 
-private:
+public:
 	void FUN_004a0ff0(GolFileParser& p_parser);
 
+private:
 	void* m_vftable;                  // 0x00
 	undefined m_unk0x04[0x68 - 0x04]; // 0x04
 	LegoU32 m_unk0x68;                // 0x68

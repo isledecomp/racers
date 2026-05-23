@@ -4,6 +4,7 @@
 #include "decomp.h"
 #include "types.h"
 
+class BronzeFalcon0xc8770;
 class CrimsonPebble0x228;
 
 // SIZE 0x70
@@ -15,7 +16,7 @@ public:
 	};
 
 	void FUN_004a3550(LegoFloat p_param1);
-	void FUN_004a4790(CrimsonPebble0x228*, undefined4);
+	void FUN_004a4790(CrimsonPebble0x228*, BronzeFalcon0xc8770*);
 
 private:
 	undefined m_unk0x00[0x1c - 0x00];

@@ -45,8 +45,32 @@ public:
 		const LegoChar* p_fileName,
 		undefined4 p_binary
 	);
-	void FUN_004a12e0(GolFileParser* p_unk0x04);
+
+	void FUN_004a1240(undefined4);
+	void FUN_004a12e0(GolFileParser* p_parser);
+	void FUN_004a14e0();
+	void FUN_004a15e0(GolFileParser* p_parser);
+	void FUN_004a16f0();
+	void FUN_004a1760(GolFileParser* p_parser);
+	void FUN_004a1850(undefined4);
+	void FUN_004a18d0(GolFileParser* p_parser);
+	void FUN_004a19c0(undefined4);
+	void FUN_004a1a40(GolFileParser* p_parser);
+	void FUN_004a1c00(GolFileParser* p_parser);
+	void FUN_004a1dc0(GolFileParser* p_parser);
+	void FUN_004a1f80(GolFileParser* p_parser);
+	void FUN_004a20f0(GolFileParser* p_parser);
+	void FUN_004a2310(GolFileParser* p_parser);
 	void FUN_004a24e0();
+	void FUN_004a2520(GolFileParser* p_parser);
+	void FUN_004a26f0();
+	void FUN_004a2730(
+		GolFileParser* p_parser,
+		undefined4 p_unk0x04,
+		undefined4& p_unk0x08,
+		undefined4*& p_unk0x0c,
+		GolNameTable& p_unk0x10
+	);
 	void FUN_004a2dc0(undefined4 p_elapsedMs);
 	void FUN_004a2f30(BronzeFalcon0xc8770* p_renderer);
 	void FUN_004a3070(BronzeFalcon0xc8770* p_renderer);
@@ -54,7 +78,7 @@ public:
 	void FUN_004a3150();
 
 	undefined4 GetUnk0x118() const { return m_unk0x118; }
-	SoundManager* GetSoundManager() const { return m_unk0x0c; }
+	SoundManager* GetSoundManager() const { return m_soundManager; }
 	void SetStringTable(GolStringTable* p_stringTable) { m_stringTable = p_stringTable; }
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
@@ -63,86 +87,86 @@ public:
 	void FUN_004a0bf0();
 
 private:
-	undefined4* m_unk0x04;         // 0x004
-	undefined4 m_unk0x08;          // 0x008
-	SoundManager* m_unk0x0c;       // 0x00c
-	undefined4 m_unk0x10;          // 0x010
-	SoundNode m_unk0x14;           // 0x014
-	undefined4* m_unk0x64;         // 0x064
-	undefined4 m_unk0x68;          // 0x068
-	undefined4* m_unk0x6c;         // 0x06c
-	undefined4* m_unk0x70;         // 0x070
-	undefined4* m_unk0x74;         // 0x074
-	LegoU32 m_unk0x78;             // 0x078
-	GolStringTable* m_unk0x7c;     // 0x07c
-	LegoChar* m_unk0x80;           // 0x080
-	undefined4 m_unk0x84;          // 0x084
-	undefined4* m_unk0x88;         // 0x088
-	undefined4* m_unk0x8c;         // 0x08c
-	undefined4 m_unk0x90;          // 0x090
-	undefined4* m_unk0x94;         // 0x094
-	undefined4* m_unk0x98;         // 0x098
-	undefined4 m_unk0x9c;          // 0x09c
-	undefined4* m_unk0xa0;         // 0x0a0
-	undefined4* m_unk0xa4;         // 0x0a4
-	GolNameTable m_unk0xa8;        // 0x0a8
-	undefined4 m_unk0xb4;          // 0x0b4
-	undefined4* m_unk0xb8;         // 0x0b8
-	GolNameTable m_unk0xbc;        // 0x0bc
-	undefined4 m_unk0xc8;          // 0x0c8
-	undefined4* m_unk0xcc;         // 0x0cc
-	GolNameTable m_unk0xd0;        // 0x0d0
-	undefined4 m_unk0xdc;          // 0x0dc
-	undefined4* m_unk0xe0;         // 0x0e0
-	GolNameTable m_unk0xe4;        // 0x0e4
-	undefined4 m_unk0xf0;          // 0x0f0
-	undefined4* m_unk0xf4;         // 0x0f4
-	GolNameTable m_unk0xf8;        // 0x0f8
-	undefined4 m_unk0x104;         // 0x104
-	undefined4* m_unk0x108;        // 0x108
-	GolNameTable m_unk0x10c;       // 0x10c
-	undefined4 m_unk0x118;         // 0x118
-	DefiantOven0x70* m_unk0x11c;   // 0x11c
-	GolNameTable m_unk0x120;       // 0x120
-	undefined4 m_unk0x12c;         // 0x12c
-	undefined4* m_unk0x130;        // 0x130
-	undefined4 m_unk0x134;         // 0x134
-	undefined4* m_unk0x138;        // 0x138
-	GolNameTable m_unk0x13c;       // 0x13c
-	undefined4 m_unk0x148;         // 0x148
-	undefined4* m_unk0x14c;        // 0x14c
-	GolNameTable m_unk0x150;       // 0x150
-	undefined4 m_unk0x15c;         // 0x15c
-	undefined4* m_unk0x160;        // 0x160
-	GolNameTable m_unk0x164;       // 0x164
-	undefined4 m_unk0x170;         // 0x170
-	undefined4* m_unk0x174;        // 0x174
-	GolNameTable m_unk0x178;       // 0x178
-	undefined4 m_unk0x184;         // 0x184
-	undefined4* m_unk0x188;        // 0x188
-	GolNameTable m_unk0x18c;       // 0x18c
-	undefined4 m_unk0x198;         // 0x198
-	undefined4* m_unk0x19c;        // 0x19c
-	GolNameTable m_unk0x1a0;       // 0x1a0
-	undefined4 m_unk0x1ac;         // 0x1ac
-	undefined4* m_unk0x1b0;        // 0x1b0
-	GolNameTable m_unk0x1b4;       // 0x1b4
-	undefined4 m_unk0x1c0;         // 0x1c0
-	undefined4* m_unk0x1c4;        // 0x1c4
-	GolNameTable m_unk0x1c8;       // 0x1c8
-	undefined4 m_unk0x1d4;         // 0x1d4
-	undefined4* m_unk0x1d8;        // 0x1d8
-	GolNameTable m_unk0x1dc;       // 0x1dc
-	undefined4 m_unk0x1e8;         // 0x1e8
-	undefined4* m_unk0x1ec;        // 0x1ec
-	GolNameTable m_unk0x1f0;       // 0x1f0
-	undefined4 m_unk0x1fc;         // 0x1fc
-	undefined4* m_unk0x200;        // 0x200
-	GolNameTable m_unk0x204;       // 0x204
-	undefined4 m_unk0x210;         // 0x210
-	undefined4* m_unk0x214;        // 0x214
-	GolNameTable m_unk0x218;       // 0x218
-	GolStringTable* m_stringTable; // 0x224
+	GolExport* m_unk0x04;           // 0x004
+	BronzeFalcon0xc8770* m_unk0x08; // 0x008
+	SoundManager* m_soundManager;   // 0x00c
+	SaffronQuartz0x2c* m_unk0x10;   // 0x010
+	SoundNode m_unk0x14;            // 0x014
+	undefined4* m_unk0x64;          // 0x064
+	undefined4 m_unk0x68;           // 0x068
+	undefined4* m_unk0x6c;          // 0x06c
+	undefined4* m_unk0x70;          // 0x070
+	undefined4* m_unk0x74;          // 0x074
+	LegoU32 m_unk0x78;              // 0x078
+	GolStringTable* m_unk0x7c;      // 0x07c
+	LegoChar* m_unk0x80;            // 0x080
+	undefined4 m_unk0x84;           // 0x084
+	undefined4* m_unk0x88;          // 0x088
+	undefined4* m_unk0x8c;          // 0x08c
+	undefined4 m_unk0x90;           // 0x090
+	undefined4* m_unk0x94;          // 0x094
+	undefined4* m_unk0x98;          // 0x098
+	undefined4 m_unk0x9c;           // 0x09c
+	undefined4* m_unk0xa0;          // 0x0a0
+	undefined4* m_unk0xa4;          // 0x0a4
+	GolNameTable m_unk0xa8;         // 0x0a8
+	undefined4 m_unk0xb4;           // 0x0b4
+	undefined4* m_unk0xb8;          // 0x0b8
+	GolNameTable m_unk0xbc;         // 0x0bc
+	undefined4 m_unk0xc8;           // 0x0c8
+	undefined4* m_unk0xcc;          // 0x0cc
+	GolNameTable m_unk0xd0;         // 0x0d0
+	undefined4 m_unk0xdc;           // 0x0dc
+	undefined4* m_unk0xe0;          // 0x0e0
+	GolNameTable m_unk0xe4;         // 0x0e4
+	undefined4 m_unk0xf0;           // 0x0f0
+	undefined4* m_unk0xf4;          // 0x0f4
+	GolNameTable m_unk0xf8;         // 0x0f8
+	undefined4 m_unk0x104;          // 0x104
+	undefined4* m_unk0x108;         // 0x108
+	GolNameTable m_unk0x10c;        // 0x10c
+	undefined4 m_unk0x118;          // 0x118
+	DefiantOven0x70* m_unk0x11c;    // 0x11c
+	GolNameTable m_unk0x120;        // 0x120
+	undefined4 m_unk0x12c;          // 0x12c
+	undefined4* m_unk0x130;         // 0x130
+	undefined4 m_unk0x134;          // 0x134
+	undefined4* m_unk0x138;         // 0x138
+	GolNameTable m_unk0x13c;        // 0x13c
+	undefined4 m_unk0x148;          // 0x148
+	undefined4* m_unk0x14c;         // 0x14c
+	GolNameTable m_unk0x150;        // 0x150
+	undefined4 m_unk0x15c;          // 0x15c
+	undefined4* m_unk0x160;         // 0x160
+	GolNameTable m_unk0x164;        // 0x164
+	undefined4 m_unk0x170;          // 0x170
+	undefined4* m_unk0x174;         // 0x174
+	GolNameTable m_unk0x178;        // 0x178
+	undefined4 m_unk0x184;          // 0x184
+	undefined4* m_unk0x188;         // 0x188
+	GolNameTable m_unk0x18c;        // 0x18c
+	undefined4 m_unk0x198;          // 0x198
+	undefined4* m_unk0x19c;         // 0x19c
+	GolNameTable m_unk0x1a0;        // 0x1a0
+	undefined4 m_unk0x1ac;          // 0x1ac
+	undefined4* m_unk0x1b0;         // 0x1b0
+	GolNameTable m_unk0x1b4;        // 0x1b4
+	undefined4 m_unk0x1c0;          // 0x1c0
+	undefined4* m_unk0x1c4;         // 0x1c4
+	GolNameTable m_unk0x1c8;        // 0x1c8
+	undefined4 m_unk0x1d4;          // 0x1d4
+	undefined4* m_unk0x1d8;         // 0x1d8
+	GolNameTable m_unk0x1dc;        // 0x1dc
+	undefined4 m_unk0x1e8;          // 0x1e8
+	undefined4* m_unk0x1ec;         // 0x1ec
+	GolNameTable m_unk0x1f0;        // 0x1f0
+	undefined4 m_unk0x1fc;          // 0x1fc
+	undefined4* m_unk0x200;         // 0x200
+	GolNameTable m_unk0x204;        // 0x204
+	undefined4 m_unk0x210;          // 0x210
+	undefined4* m_unk0x214;         // 0x214
+	GolNameTable m_unk0x218;        // 0x218
+	GolStringTable* m_stringTable;  // 0x224
 };
 
 #endif // CRIMSONPEBBLE0X228_H

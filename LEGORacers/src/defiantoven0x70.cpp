@@ -14,7 +14,7 @@ void DefiantOven0x70::FUN_004a3550(LegoFloat p_param1)
 }
 
 // STUB: LEGORACERS 0x004a4790
-void DefiantOven0x70::FUN_004a4790(CrimsonPebble0x228*, undefined4)
+void DefiantOven0x70::FUN_004a4790(CrimsonPebble0x228*, BronzeFalcon0xc8770*)
 {
 	STUB(0x004a4790);
 }

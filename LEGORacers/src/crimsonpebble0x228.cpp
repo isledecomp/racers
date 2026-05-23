@@ -1,12 +1,12 @@
 #include "crimsonpebble0x228.h"
 
 #include "audio/soundmanager.h"
-#include "cutscenevent0xe4.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golname.h"
 #include "goltxtparser.h"
+#include "mabmaterialanimation0x14.h"
 
 #include <string.h>
 
@@ -145,9 +145,7 @@ void CrimsonPebble0x228::FUN_004a0730(
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			// FIXME: possible inheritance
-
-			((CutSceneEvent0xe4*) this)->FUN_004a0ff0(*parser);
+			FUN_004a0ff0(parser);
 			break;
 		case GolFileParser::e_unknown0x28:
 			FUN_004a12e0(parser);
@@ -241,6 +239,16 @@ void CrimsonPebble0x228::FUN_004a0730(
 void CrimsonPebble0x228::FUN_004a0bf0()
 {
 	STUB(0x4a0bf0);
+}
+
+// STUB: LEGORACERS 0x004a0ff0
+void CrimsonPebble0x228::FUN_004a0ff0(GolFileParser* p_parser)
+{
+	// ...
+	m_unk0x70 = new MabMaterialAnimation0x14[m_unk0x68];
+
+	// TODO
+	STUB(0x004a0ff0);
 }
 
 // STUB: LEGORACERS 0x004a1240

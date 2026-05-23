@@ -290,7 +290,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/stackoflegou16.cpp
   LEGORacers/src/crimsonsun0xa4entry.cpp
   LEGORacers/src/crimsonsun0xa4.cpp
-  LEGORacers/src/cutscenevent0xe4.cpp
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp
   LEGORacers/src/glassstream0x94.cpp

@@ -540,7 +540,7 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004a0390
 	// CrimsonPebble0x228::`scalar deleting destructor'
 
-	void FUN_004a0bf0();
+	void Clear();
 
 private:
 	GolExport* m_unk0x04;                            // 0x004

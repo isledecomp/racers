@@ -20,8 +20,8 @@ public:
 	// ObscureGlyph0x21c::`scalar deleting destructor'
 
 protected:
-	undefined4 m_unk0x1a8[6];     // 0x1a8
-	ObscureAnchor0x5c m_unk0x1c0; // 0x1c0
+	UtopianPan0xa4* m_unk0x1a8[6]; // 0x1a8
+	ObscureAnchor0x5c m_unk0x1c0;  // 0x1c0
 };
 
 #endif // OBSCUREGLYPH0X21C_H

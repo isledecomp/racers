@@ -1,5 +1,7 @@
 #include "obscureglyph0x21c.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(ObscureGlyph0x21c, 0x21c)
 
 // FUNCTION: LEGORACERS 0x00466260
@@ -17,9 +19,7 @@ ObscureGlyph0x21c::~ObscureGlyph0x21c()
 // FUNCTION: LEGORACERS 0x00466340
 void ObscureGlyph0x21c::Reset()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x1a8); i++) {
-		m_unk0x1a8[i] = 0;
-	}
+	::memset(m_unk0x1a8, 0, sizeof(m_unk0x1a8));
 
 	m_unk0x1c0.VTable0x08();
 	ObscureIcon0x1a8::Reset();
@@ -37,9 +37,18 @@ LegoBool32 ObscureGlyph0x21c::VTable0x08()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00466470
+// FUNCTION: LEGORACERS 0x00466470
 undefined4 ObscureGlyph0x21c::VTable0x38(Rect*, Rect*)
 {
-	STUB(0x00466470);
+	Rect rect;
+	rect.m_top = 0;
+	rect.m_left = 0;
+	rect.m_right = m_unk0x34.m_right - m_unk0x34.m_left;
+	rect.m_bottom = m_unk0x34.m_bottom - m_unk0x34.m_top;
+
+	m_unk0x1c0.VTable0x10(&rect);
+	m_unk0x1c0.SetUnk0x58(m_unk0x1a8[m_visualStateIndex]);
+	m_unk0x1c0.VTable0x14(&m_unk0x174[m_visualStateIndex]);
+
 	return 0;
 }

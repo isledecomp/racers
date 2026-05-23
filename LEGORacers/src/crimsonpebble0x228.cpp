@@ -405,7 +405,7 @@ CrimsonPebble0x228::CrimsonPebble0x228()
 // FUNCTION: LEGORACERS 0x004a03b0
 CrimsonPebble0x228::~CrimsonPebble0x228()
 {
-	FUN_004a0bf0();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x004a0530
@@ -504,7 +504,7 @@ void CrimsonPebble0x228::FUN_004a0730(
 	GolFileParser* parser;
 
 	if (m_unk0x04) {
-		FUN_004a0bf0();
+		Clear();
 	}
 
 	if (p_binary) {
@@ -629,10 +629,148 @@ void CrimsonPebble0x228::FUN_004a0730(
 	FUN_004a26f0();
 }
 
-// STUB: LEGORACERS 0x004a0bf0
-void CrimsonPebble0x228::FUN_004a0bf0()
+// FUNCTION: LEGORACERS 0x004a0bf0
+void CrimsonPebble0x228::Clear()
 {
-	STUB(0x4a0bf0);
+	LegoS32 i;
+
+	if (m_soundManager) {
+		m_soundManager->RemoveActiveSoundNode(&m_unk0x14);
+	}
+
+	if (m_unk0x88) {
+		for (i = 0; i < m_unk0x84; i++) {
+			if (m_unk0x88[i]) {
+				m_soundManager->DestroySoundGroup(m_unk0x88[i]);
+			}
+		}
+		delete[] m_unk0x88;
+	}
+
+	if (m_unk0x8c) {
+		delete m_unk0x8c;
+	}
+
+	if (m_unk0x94) {
+		for (i = 0; i < m_unk0x90; i++) {
+			if (m_unk0x94[i]) {
+				m_unk0x04->DestroyFontTable(m_unk0x94[i]);
+			}
+		}
+		delete[] m_unk0x94;
+	}
+
+	if (m_unk0x98) {
+		delete m_unk0x98;
+	}
+
+	if (m_unk0xa0) {
+		for (i = 0; i < m_unk0x9c; i++) {
+			if (m_unk0xa0[i]) {
+				m_unk0x04->VTable0x68(m_unk0xa0[i]);
+			}
+		}
+		delete m_unk0xa0;
+	}
+	if (m_unk0xa4) {
+		delete m_unk0xa4;
+	}
+	if (m_unk0x6c) {
+		delete[] m_unk0x6c;
+	}
+	if (m_unk0x74) {
+		delete m_unk0x74;
+	}
+	if (m_unk0x70) {
+		delete[] m_unk0x70;
+	}
+	if (m_unk0x7c) {
+		delete[] m_unk0x7c;
+	}
+	if (m_unk0x80) {
+		delete m_unk0x80;
+	}
+	if (m_unk0xb8) {
+		delete[] m_unk0xb8;
+	}
+	if (m_unk0xcc) {
+		delete[] m_unk0xcc;
+	}
+	if (m_unk0xe0) {
+		delete[] m_unk0xe0;
+	}
+	if (m_unk0xf4) {
+		delete[] m_unk0xf4;
+	}
+	if (m_unk0x64) {
+		delete m_unk0x64;
+	}
+	if (m_unk0x108) {
+		delete[] m_unk0x108;
+	}
+	if (m_unk0x11c) {
+		delete[] m_unk0x11c;
+	}
+	if (m_unk0x130) {
+		delete[] m_unk0x130;
+	}
+	if (m_unk0x138) {
+		delete m_unk0x138;
+	}
+	if (m_unk0x14c) {
+		delete m_unk0x14c;
+	}
+	if (m_unk0x160) {
+		delete m_unk0x160;
+	}
+	if (m_unk0x174) {
+		delete m_unk0x174;
+	}
+	if (m_unk0x188) {
+		delete m_unk0x188;
+	}
+	if (m_unk0x19c) {
+		delete m_unk0x19c;
+	}
+	if (m_unk0x1b0) {
+		delete m_unk0x1b0;
+	}
+	if (m_unk0x1c4) {
+		delete m_unk0x1c4;
+	}
+	if (m_unk0x1d8) {
+		delete m_unk0x1d8;
+	}
+	if (m_unk0x1ec) {
+		delete m_unk0x1ec;
+	}
+	if (m_unk0x200) {
+		delete m_unk0x200;
+	}
+	if (m_unk0x214) {
+		delete m_unk0x214;
+	}
+	m_unk0xa8.Clear();
+	m_unk0xbc.Clear();
+	m_unk0xd0.Clear();
+	m_unk0xe4.Clear();
+	m_unk0xf8.Clear();
+	m_unk0x10c.Clear();
+	m_unk0x120.Clear();
+	m_unk0x13c.Clear();
+	m_unk0x150.Clear();
+	m_unk0x164.Clear();
+	m_unk0x178.Clear();
+	m_unk0x18c.Clear();
+	m_unk0x1a0.Clear();
+	m_unk0x1b4.Clear();
+	m_unk0x1c8.Clear();
+	m_unk0x1dc.Clear();
+	m_unk0x1f0.Clear();
+	m_unk0x204.Clear();
+	m_unk0x218.Clear();
+
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a0ff0

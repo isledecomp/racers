@@ -139,7 +139,7 @@ void ImaginaryChisel0x658::HelperAt0x368::FUN_00466d00(SaffronQuartz0x2c::Frame0
 LegoBool32 ImaginaryChisel0x658::HelperAt0x368::VTable0x08()
 {
 	m_unk0x58.Clear();
-	m_unk0x84.FUN_004a0bf0();
+	m_unk0x84.Clear();
 	FUN_00466b10();
 
 	return TRUE;

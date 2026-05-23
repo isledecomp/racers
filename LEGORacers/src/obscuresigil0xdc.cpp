@@ -128,31 +128,32 @@ void ObscureSigil0xdc::FUN_00465900(CreateParams0x84* p_createParams, undefined4
 	m_renderer->VTable0x1c(color);
 }
 
-// STUB: LEGORACERS 0x004659b0
+// FUNCTION: LEGORACERS 0x004659b0
 void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84* p_createParams)
 {
-	STUB(0x004659b0);
-
 	if (m_unk0x5c->GetUnk0x7c()) {
 		m_unk0x64 = static_cast<AmberLens0x344*>(m_unk0x5c->VTable0x50(0));
 	}
 	else {
+		GolVec3* cameraVectors = &p_createParams->m_unk0x38;
 		m_unk0x64 = m_golExport->VTable0x20();
 		if (!m_unk0x64) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		GolVec3* cameraVectors = &p_createParams->m_unk0x38;
 		LegoU32 dirtyFlag = AmberLens0x344::c_flagBit1;
+		AmberLens0x344* lens = m_unk0x64;
 		LegoFloat value = cameraVectors[2].m_x;
-		m_unk0x64->m_unk0x08 = value;
-		m_unk0x64->m_flags |= dirtyFlag;
+		lens->m_unk0x08 = value;
+		lens->m_flags |= dirtyFlag;
+		lens = m_unk0x64;
 		value = cameraVectors[2].m_y;
-		m_unk0x64->m_unk0x10 = value;
-		m_unk0x64->m_flags |= dirtyFlag;
+		lens->m_unk0x10 = value;
+		lens->m_flags |= dirtyFlag;
+		lens = m_unk0x64;
 		value = cameraVectors[2].m_z;
-		m_unk0x64->m_unk0x14 = value;
-		m_unk0x64->m_flags |= dirtyFlag;
+		lens->m_unk0x14 = value;
+		lens->m_flags |= dirtyFlag;
 
 		FUN_00465ab0(cameraVectors, cameraVectors + 1);
 	}
@@ -160,10 +161,14 @@ void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84* p_createParams)
 	Rect rect = *GetGlobalRect();
 	FUN_00465e40(&rect);
 
-	LegoS32 width = rect.m_right - rect.m_left;
-	LegoS32 height = rect.m_bottom - rect.m_top;
+	LegoS32 width = rect.m_right;
+	width -= rect.m_left;
+	LegoS32 height = rect.m_bottom;
+	height -= rect.m_top;
+
 	LegoFloat aspect = static_cast<LegoFloat>(width);
-	aspect /= static_cast<LegoFloat>(height);
+	LegoFloat divisor = static_cast<LegoFloat>(height);
+	aspect /= divisor;
 	aspect *= p_createParams->m_unk0x80;
 	m_unk0x64->FUN_00404740(aspect);
 }

@@ -186,12 +186,12 @@ void CrimsonPebbleEventLink0x0c::FUN_004a0120(CrimsonPebbleEventSelectorPayload0
 // FUNCTION: LEGORACERS 0x004a0180
 void CrimsonPebbleEventLink0x0c::FUN_004a0180(CrimsonPebbleEventVectorPayload0x44* p_payload)
 {
-	GolVec3 p_unk0x04 = p_payload->m_unk0x20;
-	GolVec3 p_unk0x08 = p_payload->m_unk0x2c;
-	GolVec3 p_unk0x0c = p_payload->m_unk0x38;
+	GolVec3 vector0 = p_payload->m_unk0x20;
+	GolVec3 vector1 = p_payload->m_unk0x2c;
+	GolVec3 vector2 = p_payload->m_unk0x38;
 
 	if (m_unk0x00) {
-		m_event->VTable0x10(&p_unk0x04, &p_unk0x08, &p_unk0x0c);
+		m_event->VTable0x10(&vector0, &vector1, &vector2);
 	}
 	else {
 		m_event->VTable0x18();

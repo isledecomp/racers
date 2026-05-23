@@ -1,8 +1,10 @@
 #include "crimsonpebble0x228.h"
 
+#include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golname.h"
+#include "goltxtparser.h"
 
 #include <string.h>
 
@@ -86,16 +88,51 @@ void CrimsonPebble0x228::Reset()
 	m_stringTable = NULL;
 }
 
-// STUB: LEGORACERS 0x004a0730
+// STUB: LEGORACERS 0x004a0680
+LegoBool CrimsonPebble0x228::FUN_004a0680(const LegoChar* p_fileName, const LegoChar* p_suffix)
+{
+	STUB(0x004a0680);
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x004a0730
 void CrimsonPebble0x228::FUN_004a0730(
-	GolExport*,
-	BronzeFalcon0xc8770*,
-	SoundManager*,
-	SaffronQuartz0x2c*,
-	const LegoChar*,
-	undefined4
+	GolExport* p_golExport,
+	BronzeFalcon0xc8770* p_renderer,
+	SoundManager* p_soundManager,
+	SaffronQuartz0x2c* p_unk0x10,
+	const LegoChar* p_fileName,
+	undefined4 p_binary
 )
 {
+	GolFileParser* parser;
+
+	if (m_unk0x04) {
+		FUN_004a0bf0();
+	}
+
+	if (p_binary) {
+		if (!FUN_004a0680(p_fileName, ".ceb")) {
+			return;
+		}
+		parser = new GolBinParser();
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+		parser->SetSuffix(".ceb");
+	}
+	else {
+		parser = new GolTxtParser();
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+		if (!FUN_004a0680(p_fileName, parser->GetSuffix())) {
+			return;
+		}
+	}
+
+	// WIP: Proceed here
+
 	STUB(0x004a0730);
 }
 

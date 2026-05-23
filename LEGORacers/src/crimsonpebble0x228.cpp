@@ -140,7 +140,7 @@ void CrimsonPebble0x228::FUN_004a0730(
 	m_soundManager = p_soundManager;
 
 	p_soundManager->AddActiveSoundNode(&m_unk0x14);
-
+	parser->OpenFileForRead(p_fileName);
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {

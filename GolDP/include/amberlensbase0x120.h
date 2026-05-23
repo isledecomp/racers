@@ -31,6 +31,8 @@ public:
 
 	void FUN_1001bfc0(undefined* p_unk0x04);
 	void FUN_1001c450(undefined* p_unk0x04);
+	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
+	void FUN_00404740(LegoFloat p_aspect);
 
 	JadeOrbit0xd0* m_unk0x04;          // 0x04
 	LegoFloat m_unk0x08;               // 0x08

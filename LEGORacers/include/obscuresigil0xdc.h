@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golmath.h"
 #include "obscurelink0x1c.h"
 #include "obscurevantage0x58.h"
 #include "types.h"
@@ -17,7 +18,10 @@ public:
 	// SIZE 0x84
 	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x30 {
 	public:
-		undefined m_unk0x30[0x5c - 0x30]; // 0x30
+		undefined m_unk0x30[0x38 - 0x30]; // 0x30
+		GolVec3 m_unk0x38;                // 0x38
+		GolVec3 m_unk0x44;                // 0x44
+		GolVec3 m_unk0x50;                // 0x50
 		LegoFloat m_unk0x5c;              // 0x5c
 		LegoChar m_unk0x60[0x70 - 0x60];  // 0x60
 		undefined4 m_unk0x70;             // 0x70
@@ -46,6 +50,8 @@ public:
 protected:
 	void FUN_00465900(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	void FUN_004659b0(CreateParams0x84* p_createParams);
+	void FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
+	void FUN_00465e40(Rect* p_rect);
 
 	ObscureLink0x1c* m_unk0x58;       // 0x58
 	ZoweeBlubberworth0xf0* m_unk0x5c; // 0x5c
@@ -53,7 +59,8 @@ protected:
 	AmberLens0x344* m_unk0x64;        // 0x64
 	undefined4 m_unk0x68;             // 0x68
 	undefined4 m_unk0x6c;             // 0x6c
-	undefined m_unk0x70[0x88 - 0x70]; // 0x70
+	GolVec3 m_unk0x70;                // 0x70
+	GolVec3 m_unk0x7c;                // 0x7c
 	undefined4 m_unk0x88;             // 0x88
 	LegoFloat m_unk0x8c;              // 0x8c
 	undefined4 m_unk0x90;             // 0x90

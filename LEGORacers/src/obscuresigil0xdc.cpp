@@ -1,9 +1,11 @@
 #include "obscuresigil0xdc.h"
 
 #include "amberlens0x344.h"
+#include "amberlensbase0x120.h"
 #include "bronzefalcon0xc8770.h"
 #include "gol.h"
 #include "golerror.h"
+#include "slatepeak0x58.h"
 #include "zoweeblubberworth0xf0.h"
 
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
@@ -127,9 +129,72 @@ void ObscureSigil0xdc::FUN_00465900(CreateParams0x84* p_createParams, undefined4
 }
 
 // STUB: LEGORACERS 0x004659b0
-void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84*)
+void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84* p_createParams)
 {
 	STUB(0x004659b0);
+
+	if (m_unk0x5c->GetUnk0x7c()) {
+		m_unk0x64 = static_cast<AmberLens0x344*>(m_unk0x5c->VTable0x50(0));
+	}
+	else {
+		m_unk0x64 = m_golExport->VTable0x20();
+		if (!m_unk0x64) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		GolVec3* cameraVectors = &p_createParams->m_unk0x38;
+		LegoU32 dirtyFlag = AmberLens0x344::c_flagBit1;
+		LegoFloat value = cameraVectors[2].m_x;
+		m_unk0x64->m_unk0x08 = value;
+		m_unk0x64->m_flags |= dirtyFlag;
+		value = cameraVectors[2].m_y;
+		m_unk0x64->m_unk0x10 = value;
+		m_unk0x64->m_flags |= dirtyFlag;
+		value = cameraVectors[2].m_z;
+		m_unk0x64->m_unk0x14 = value;
+		m_unk0x64->m_flags |= dirtyFlag;
+
+		FUN_00465ab0(cameraVectors, cameraVectors + 1);
+	}
+
+	Rect rect = *GetGlobalRect();
+	FUN_00465e40(&rect);
+
+	LegoS32 width = rect.m_right - rect.m_left;
+	LegoS32 height = rect.m_bottom - rect.m_top;
+	LegoFloat aspect = static_cast<LegoFloat>(width);
+	aspect /= static_cast<LegoFloat>(height);
+	aspect *= p_createParams->m_unk0x80;
+	m_unk0x64->FUN_00404740(aspect);
+}
+
+// FUNCTION: LEGORACERS 0x00465ab0
+void ObscureSigil0xdc::FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+{
+	GolVec3 up;
+	up.m_y = 0.0f;
+	up.m_x = 0.0f;
+	up.m_z = 1.0f;
+
+	if (p_unk0x04) {
+		LegoFloat scale = m_unk0x8c;
+		m_unk0x70.m_x = scale * p_unk0x04->m_x;
+		LegoFloat y = p_unk0x04->m_y;
+		m_unk0x70.m_y = y * scale;
+		LegoFloat z = p_unk0x04->m_z;
+		m_unk0x70.m_z = z * scale;
+	}
+
+	if (p_unk0x08) {
+		LegoFloat scale = m_unk0x8c;
+		m_unk0x7c.m_x = scale * p_unk0x08->m_x;
+		LegoFloat y = p_unk0x08->m_y;
+		m_unk0x7c.m_y = y * scale;
+		LegoFloat z = p_unk0x08->m_z;
+		m_unk0x7c.m_z = z * scale;
+	}
+
+	m_unk0x64->FUN_004046a0(&m_unk0x70, &m_unk0x7c, &up);
 }
 
 // FUNCTION: LEGORACERS 0x00465b40
@@ -141,6 +206,32 @@ ObscureLink0x1c* ObscureSigil0xdc::FUN_00465b40(ObscureLink0x1c* p_unk0x04)
 	}
 
 	return p_unk0x04->FUN_0046b350(m_unk0x58);
+}
+
+// FUNCTION: LEGORACERS 0x00465e40
+void ObscureSigil0xdc::FUN_00465e40(Rect* p_rect)
+{
+	const SlatePeak0x58* renderTarget = m_renderer->GetRenderTargetInfo();
+
+	if (p_rect->m_left < 0) {
+		p_rect->m_left = 0;
+	}
+
+	LegoS32 width = renderTarget->GetWidth();
+	if (p_rect->m_right > width) {
+		p_rect->m_right = width;
+	}
+
+	if (p_rect->m_top < 0) {
+		p_rect->m_top = 0;
+	}
+
+	LegoS32 height = renderTarget->GetHeight();
+	if (p_rect->m_bottom > height) {
+		p_rect->m_bottom = height;
+	}
+
+	m_unk0x64->VTable0x0c(p_rect);
 }
 
 // STUB: LEGORACERS 0x00465f20

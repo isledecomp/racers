@@ -25,11 +25,16 @@ void ObscureGlyph0x21c::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
-// STUB: LEGORACERS 0x00466450
+// FUNCTION: LEGORACERS 0x00466450
 LegoBool32 ObscureGlyph0x21c::VTable0x08()
 {
-	STUB(0x00466450);
-	return ObscureIcon0x1a8::VTable0x08();
+	LegoBool32 result = TRUE;
+
+	if (m_flags & 1) {
+		return ObscureIcon0x1a8::VTable0x08();
+	}
+
+	return result;
 }
 
 // STUB: LEGORACERS 0x00466470

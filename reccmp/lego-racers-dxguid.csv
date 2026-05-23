@@ -11,8 +11,8 @@ address,type,size,name,comment
 0x004b5a40,global,16,GUID_SysKeyboard,
 0x004b5a90,global,16,GUID_Sine,
 0x004a6990,global,2624,c_rgodfDIJoystick2,DIOBJECTDATAFORMAT[164]
-# 0x004a73d0,global,24,c_dfDIJoystick2,DIDATAFORMAT # Cannot be handled right now due to anonymous pointer in struct.
+0x004a73d0,global,24,c_dfDIJoystick2,DIDATAFORMAT
 0x004a73f0,global,4096,c_rgodfDIKeyboard,DIOBJECTDATAFORMAT[256]
-# 0x004a83f0,global,24,c_dfDIKeyboard,DIDATAFORMAT # Cannot be handled right now due to anonymous pointer in struct.
+0x004a83f0,global,24,c_dfDIKeyboard,DIDATAFORMAT
 0x004a8410,global,112,c_rgodfDIMouse,DIOBJECTDATAFORMAT[7]
-# 0x004a8480,global,24,c_dfDIMouse,DIDATAFORMAT # Cannot be handled right now due to anonymous pointer in struct.
+0x004a8480,global,24,c_dfDIMouse,DIDATAFORMAT

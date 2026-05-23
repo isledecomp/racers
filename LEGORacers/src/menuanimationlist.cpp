@@ -215,6 +215,47 @@ void MenuAnimationList::Allocate(LegoU32 p_count)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00494eb0
+MenuAnimationList::Entry* MenuAnimationList::Activate(
+	LegoU32 p_durationMs,
+	LegoBool32 p_fadeOut,
+	DuskwindBananaRelic0x24* p_material,
+	const Entry::ScreenRectSource* p_rectSource
+)
+{
+	LegoU32 i = 0;
+	while (i < m_count && m_entries[i].IsActive()) {
+		i++;
+	}
+
+	if (i == m_count) {
+		return NULL;
+	}
+
+	m_entries[i].Activate(p_durationMs, p_fadeOut, p_material, p_rectSource);
+	return &m_entries[i];
+}
+
+// FUNCTION: LEGORACERS 0x00494f10
+void MenuAnimationList::Deactivate(Entry* p_entry)
+{
+	if (p_entry->IsActive()) {
+		p_entry->Deactivate();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00494f30
+LegoBool32 MenuAnimationList::HasActive() const
+{
+	for (LegoU32 i = 0; i < m_count; i++) {
+		if (m_entries[i].IsActive()) {
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 // FUNCTION: LEGORACERS 0x00494f60
 void MenuAnimationList::Update(LegoU32 p_elapsedMs)
 {

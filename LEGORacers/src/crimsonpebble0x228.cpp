@@ -2,9 +2,12 @@
 
 #include "amberlens0x344.h"
 #include "audio/soundgroup.h"
+#include "audio/soundinstance.h"
 #include "audio/soundmanager.h"
+#include "audio/spatialsoundinstance.h"
 #include "awakekite0x20.h"
 #include "bronzefalcon0xc8770.h"
+#include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -16,6 +19,9 @@
 #include "goltxtparser.h"
 #include "mabmaterialanimation0x14.h"
 #include "menuanimationlist.h"
+#include "rectangle.h"
+#include "saffronquartz0x2c.h"
+#include "utopianpan0xa4.h"
 #include "whitefalcon0x140.h"
 
 #include <string.h>
@@ -31,6 +37,8 @@ DECOMP_SIZE_ASSERT(CrimsonPebbleEventLink0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(CrimsonPebbleEvent0x30, 0x30)
 DECOMP_SIZE_ASSERT(CrimsonPebbleEvent0x48, 0x48)
 DECOMP_SIZE_ASSERT(CrimsonPebbleEvent0x50, 0x50)
+DECOMP_SIZE_ASSERT(CrimsonPebbleEvent0x50Derived, 0x50)
+DECOMP_SIZE_ASSERT(CrimsonPebbleMenuAnimationEvent0x2c, 0x2c)
 DECOMP_SIZE_ASSERT(CrimsonPebbleVisual0x58, 0x58)
 DECOMP_SIZE_ASSERT(CrimsonPebbleVisual0x64, 0x64)
 DECOMP_SIZE_ASSERT(CrimsonPebbleText0x70, 0x70)
@@ -38,6 +46,15 @@ DECOMP_SIZE_ASSERT(CrimsonPebbleAnimation0x33c::Entry0x8, 0x08)
 DECOMP_SIZE_ASSERT(CrimsonPebbleAnimation0x33c::Runtime0x44, 0x44)
 DECOMP_SIZE_ASSERT(CrimsonPebbleAnimation0x33c::Particle0x18c, 0x18c)
 DECOMP_SIZE_ASSERT(CrimsonPebbleAnimation0x33c, 0x33c)
+
+// GLOBAL: LEGORACERS 0x004b4ab0
+const LegoFloat g_crimsonPebbleEvent0x30DefaultVolume = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b4ab4
+const LegoFloat g_crimsonPebbleEvent0x30DefaultPan = 0.0f;
+
+// GLOBAL: LEGORACERS 0x004b4ab8
+const LegoFloat g_crimsonPebbleEvent0x30DefaultFrequencyScale = 1.0f;
 
 // STUB: LEGORACERS 0x004893f0
 CrimsonPebbleAnimation0x33c::Particle0x18c::Particle0x18c()
@@ -222,6 +239,57 @@ void CrimsonPebbleEvent0x14::VTable0x04(undefined4 p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
+	}
+}
+
+// STUB: LEGORACERS 0x0049ff70
+void CrimsonPebbleEvent0x14::ParseCommonToken(
+	GolFileParser* p_parser,
+	GolFileParser::ParserTokenType p_token,
+	CrimsonPebble0x228* p_owner
+)
+{
+	GolName name;
+	::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+
+	switch (p_token) {
+	case GolFileParser::e_unknown0x5d:
+		m_unk0x04 = p_owner->FUN_004a3240(name);
+		m_unk0x08 = m_unk0x04;
+		m_unk0x0c = m_unk0x04;
+		if (m_unk0x04 == NULL) {
+			LegoChar text[64];
+			::strncpy(text, name, sizeof(GolName));
+			text[sizeof(GolName)] = '\0';
+			::strcat(text, ": unable to find jointed model");
+			GOL_FATALERROR_MESSAGE(text);
+		}
+		break;
+	case GolFileParser::e_unknown0x5e:
+		m_unk0x04 = p_owner->FUN_004a3230(name);
+		m_unk0x08 = m_unk0x04;
+		if (m_unk0x04 == NULL) {
+			LegoChar text[64];
+			::strncpy(text, name, sizeof(GolName));
+			text[sizeof(GolName)] = '\0';
+			::strcat(text, ": unable to find model");
+			GOL_FATALERROR_MESSAGE(text);
+		}
+		break;
+	case GolFileParser::e_unknown0x5f:
+		m_unk0x04 = p_owner->FUN_004a3250(name);
+		m_unk0x08 = m_unk0x04;
+		if (m_unk0x04 == NULL) {
+			LegoChar text[64];
+			::strncpy(text, name, sizeof(GolName));
+			text[sizeof(GolName)] = '\0';
+			::strcat(text, ": unable to find bsp model");
+			GOL_FATALERROR_MESSAGE(text);
+		}
+		break;
+	default:
+		p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+		break;
 	}
 }
 
@@ -857,34 +925,180 @@ void CrimsonPebble0x228::FUN_004a19c0(undefined4 p_binary)
 	}
 }
 
-// STUB: LEGORACERS 0x004a1a40
+// FUNCTION: LEGORACERS 0x004a1a40
 void CrimsonPebble0x228::FUN_004a1a40(GolFileParser* p_parser)
 {
-	STUB(0x004a1a40);
+	if (m_unk0xb8 != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0xb4 = p_parser->ReadInteger();
+	if (m_unk0xb4 == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0xa8.Allocate(m_unk0xb4);
+	m_unk0xb8 = new CrimsonPebbleEvent0x48[m_unk0xb4];
+	if (m_unk0xb8 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_unk0xb4; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2b);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0xa8.AddName(name, &m_unk0xb8[i]);
+		m_unk0xb8[i].Parse(p_parser, this);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004a1c00
+// FUNCTION: LEGORACERS 0x004a1c00
 void CrimsonPebble0x228::FUN_004a1c00(GolFileParser* p_parser)
 {
-	STUB(0x004a1c00);
+	if (m_unk0xcc != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0xc8 = p_parser->ReadInteger();
+	if (m_unk0xc8 == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0xbc.Allocate(m_unk0xc8);
+	m_unk0xcc = new CrimsonPebbleEvent0x30[m_unk0xc8];
+	if (m_unk0xcc == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_unk0xc8; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2f);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0xbc.AddName(name, &m_unk0xcc[i]);
+		m_unk0xcc[i].Parse(p_parser, this);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004a1dc0
+// FUNCTION: LEGORACERS 0x004a1dc0
 void CrimsonPebble0x228::FUN_004a1dc0(GolFileParser* p_parser)
 {
-	STUB(0x004a1dc0);
+	if (m_unk0xe0 != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0xdc = p_parser->ReadInteger();
+	if (m_unk0xdc == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0xd0.Allocate(m_unk0xdc);
+	m_unk0xe0 = new CrimsonPebbleEvent0x50Derived[m_unk0xdc];
+	if (m_unk0xe0 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_unk0xdc; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x36);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0xd0.AddName(name, &m_unk0xe0[i]);
+		m_unk0xe0[i].Parse(p_parser, this);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004a1f80
+// FUNCTION: LEGORACERS 0x004a1f80
 void CrimsonPebble0x228::FUN_004a1f80(GolFileParser* p_parser)
 {
-	STUB(0x004a1f80);
+	if (m_unk0xf4 != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0xf0 = p_parser->ReadInteger();
+	if (m_unk0xf0 == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0xe4.Allocate(m_unk0xf0);
+	m_unk0xf4 = new CrimsonPebbleEvent0x50[m_unk0xf0];
+	if (m_unk0xf4 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_unk0xf0; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x3c);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0xe4.AddName(name, &m_unk0xf4[i]);
+		m_unk0xf4[i].Parse(p_parser, this);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
-// STUB: LEGORACERS 0x004a20f0
+// FUNCTION: LEGORACERS 0x004a20f0
 void CrimsonPebble0x228::FUN_004a20f0(GolFileParser* p_parser)
 {
-	STUB(0x004a20f0);
+	if (m_unk0x108 != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0x104 = p_parser->ReadInteger();
+	if (m_unk0x104 == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0xf8.Allocate(m_unk0x104);
+	m_unk0x108 = new CrimsonPebbleMenuAnimationEvent0x2c[m_unk0x104];
+	m_unk0x64 = new MenuAnimationList();
+	if (m_unk0x108 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	if (m_unk0x64 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x64->Allocate(2);
+
+	for (LegoU32 i = 0; i < m_unk0x104; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x60);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0xf8.AddName(name, &m_unk0x108[i]);
+		m_unk0x108[i].Parse(p_parser, this, m_unk0x64, m_unk0x08);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x004a2310
@@ -929,10 +1143,38 @@ void CrimsonPebble0x228::FUN_004a24e0()
 	}
 }
 
-// STUB: LEGORACERS 0x004a2520
+// FUNCTION: LEGORACERS 0x004a2520
 void CrimsonPebble0x228::FUN_004a2520(GolFileParser* p_parser)
 {
-	STUB(0x004a2520);
+	if (m_unk0x130 != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	m_unk0x12c = p_parser->ReadInteger();
+	if (m_unk0x12c == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	m_unk0x120.Allocate(m_unk0x12c);
+	m_unk0x130 = new CrimsonPebbleVisual0x64[m_unk0x12c];
+	if (m_unk0x130 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (LegoU32 i = 0; i < m_unk0x12c; i++) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x4d);
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0x120.AddName(name, &m_unk0x130[i]);
+		m_unk0x130[i].Parse(p_parser, this, m_unk0x08);
+	}
+
+	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x004a26f0
@@ -946,13 +1188,112 @@ void CrimsonPebble0x228::FUN_004a26f0()
 // STUB: LEGORACERS 0x004a2730
 void CrimsonPebble0x228::FUN_004a2730(
 	GolFileParser* p_parser,
-	undefined4 p_unk0x04,
+	LegoU32 p_token,
 	undefined4& p_unk0x08,
 	CrimsonPebbleEventLink0x0c*& p_unk0x0c,
 	GolNameTable& p_unk0x10
 )
 {
-	STUB(0x004a2730);
+	if (p_unk0x0c != NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
+	}
+
+	p_parser->ReadLeftBracket();
+	LegoU32 count = p_parser->ReadInteger();
+	if (count == 0) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	p_parser->ReadRightBracket();
+	p_parser->ReadLeftCurly();
+
+	p_unk0x08 = count;
+	p_unk0x10.Allocate(count);
+
+	CrimsonPebbleEventLink0x0c* links = new CrimsonPebbleEventLink0x0c[count];
+	if (links == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	p_unk0x0c = links;
+
+	CrimsonPebbleEventLink0x0c* link = links;
+	CrimsonPebbleEventLink0x0c* end = links + count;
+	while (link < end) {
+		GolName name;
+
+		p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(p_token));
+		::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+
+		CrimsonPebbleEventLink0x0c* existing = static_cast<CrimsonPebbleEventLink0x0c*>(p_unk0x10.GetName(name));
+		if (existing != NULL) {
+			link->SetNext(existing->GetNext());
+			existing->SetNext(link);
+		}
+		else {
+			p_unk0x10.AddName(name, link);
+		}
+
+		p_parser->ReadLeftCurly();
+
+		GolFileParser::ParserTokenType targetToken = p_parser->GetNextToken();
+		GolFileParser::ParserTokenType modeToken = p_parser->GetNextToken();
+		undefined4 mode;
+		if (modeToken == GolFileParser::e_unknown0x4e) {
+			mode = 1;
+		}
+		else if (modeToken == GolFileParser::e_unknown0x4f) {
+			mode = 0;
+		}
+		else {
+			p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+			mode = 0;
+		}
+
+		GolName targetName;
+		::strncpy(targetName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+
+		CrimsonPebbleEvent0x14* event = NULL;
+		switch (targetToken) {
+		case GolFileParser::e_unknown0x2b:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0xa8.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x2f:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0xbc.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x36:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0xd0.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x3c:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0xe4.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x60:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0xf8.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x3f:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0x10c.GetName(targetName));
+			break;
+		case GolFileParser::e_unknown0x4d:
+			event = static_cast<CrimsonPebbleEvent0x14*>(m_unk0x120.GetName(targetName));
+			break;
+		default:
+			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+			break;
+		}
+
+		if (event == NULL) {
+			LegoChar text[64];
+			::strncpy(text, targetName, sizeof(GolName));
+			text[sizeof(GolName)] = '\0';
+			::strcat(text, ": Unable to find effect");
+			GOL_FATALERROR_MESSAGE(text);
+		}
+
+		link->FUN_004a00c0(mode, event);
+		p_parser->ReadRightCurly();
+		link++;
+	}
+
+	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x004a2ac0
@@ -1299,6 +1640,24 @@ void CrimsonPebble0x228::FUN_004a3150()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004a3230
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
+{
+	return m_unk0x10->FUN_00406e30(p_name);
+}
+
+// FUNCTION: LEGORACERS 0x004a3240
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
+{
+	return m_unk0x10->FUN_00406e80(p_name);
+}
+
+// FUNCTION: LEGORACERS 0x004a3250
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
+{
+	return m_unk0x10->FUN_00406ed0(p_name);
+}
+
 // FUNCTION: LEGORACERS 0x004a3260
 GolStringTable* CrimsonPebble0x228::GetStringTableByIndex(LegoU32 p_index)
 {
@@ -1307,6 +1666,51 @@ GolStringTable* CrimsonPebble0x228::GetStringTableByIndex(LegoU32 p_index)
 	}
 
 	return &m_unk0x7c[p_index];
+}
+
+// FUNCTION: LEGORACERS 0x004a37e0
+CrimsonPebbleVisual0x64::CrimsonPebbleVisual0x64()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a3830
+CrimsonPebbleVisual0x64::~CrimsonPebbleVisual0x64()
+{
+	Clear();
+}
+
+// FUNCTION: LEGORACERS 0x004a3880
+void CrimsonPebbleVisual0x64::Reset()
+{
+	m_unk0x58 = NULL;
+	m_unk0x5c[0] = '\0';
+	CrimsonPebbleVisual0x58::Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a3890
+void CrimsonPebbleVisual0x64::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer)
+{
+	p_parser->ReadLeftCurly();
+	m_flags = 3;
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	if (token != GolFileParser::e_rightCurly) {
+		do {
+			if (token != GolFileParser::e_unknown0x4d) {
+				ParseVisualToken(p_parser, token, p_owner, p_renderer);
+			}
+			else {
+				::strncpy(m_unk0x5c, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+			}
+
+			token = p_parser->GetNextToken();
+		} while (token != GolFileParser::e_rightCurly);
+	}
+
+	if (m_unk0x5c[0] == '\0') {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004a3910
@@ -1322,26 +1726,621 @@ void CrimsonPebbleVisual0x64::FUN_004a3910(BronzeFalcon0xc8770* p_renderer)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004a3990
+void CrimsonPebbleVisual0x64::Clear()
+{
+	Reset();
+	CrimsonPebbleEvent0x14::Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a39b0
+void CrimsonPebbleVisual0x64::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
+{
+	*p_width = m_unk0x58->GetWidth();
+	*p_height = m_unk0x58->GetHeight();
+}
+
+// FUNCTION: LEGORACERS 0x004a39d0
+void CrimsonPebbleVisual0x64::VTable0x20(
+	WhiteFalcon0x140* p_renderer,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	undefined4 p_width,
+	undefined4 p_height,
+	LegoFloat,
+	LegoFloat
+)
+{
+	Rect destRect;
+	destRect.m_left = p_x;
+	destRect.m_right = p_x + p_width;
+	destRect.m_top = p_y;
+	destRect.m_bottom = p_y + p_height;
+
+	if (m_flags & 0x100) {
+		m_unk0x58->m_unk0x4a.m_u32 = m_colorPacked;
+	}
+
+	p_renderer->VTable0x78(m_unk0x58, 0, &destRect, NULL);
+
+	if (m_flags & 0x100) {
+		union {
+			ColorRGBA m_color;
+			LegoU32 m_colorPacked;
+		} color;
+
+		color.m_color.m_red = 0xff;
+		color.m_color.m_grn = 0xff;
+		color.m_color.m_blu = 0xff;
+		color.m_color.m_alp = 0xff;
+		m_unk0x58->m_unk0x4a.m_u32 = color.m_colorPacked;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a3a50
+CrimsonPebbleEvent0x50::CrimsonPebbleEvent0x50()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a3aa0
+void CrimsonPebbleEvent0x50::Reset()
+{
+	m_unk0x14 = NULL;
+	m_unk0x18 = NULL;
+	m_unk0x1c[0] = '\0';
+	m_unk0x24.m_x = 0.0f;
+	m_unk0x24.m_y = 0.0f;
+	m_unk0x24.m_z = 0.0f;
+	m_unk0x30.m_x = 0.0f;
+	m_unk0x30.m_y = 0.0f;
+	m_unk0x30.m_z = 0.0f;
+	m_unk0x3c.m_x = 0.0f;
+	m_unk0x3c.m_y = 0.0f;
+	m_unk0x3c.m_z = 0.0f;
+	m_unk0x48 = 0;
+	m_unk0x4c = 0;
+}
+
+// FUNCTION: LEGORACERS 0x004a3ad0
+void CrimsonPebbleEvent0x50::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
+{
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x3d: {
+			LegoU32 index = p_parser->ReadInteger();
+			if (index >= p_owner->GetAnimationCount()) {
+				p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
+			}
+
+			m_unk0x14 = p_owner->GetAnimationByIndex(index);
+			::strncpy(m_unk0x1c, p_parser->ReadString(), sizeof(GolName));
+			break;
+		}
+		case GolFileParser::e_unknown0x39:
+			m_unk0x24.m_x = p_parser->ReadFloat();
+			m_unk0x24.m_y = p_parser->ReadFloat();
+			m_unk0x24.m_z = p_parser->ReadFloat();
+			m_unk0x48 |= 1;
+			break;
+		case GolFileParser::e_unknown0x3e:
+			m_unk0x30.m_x = p_parser->ReadFloat();
+			m_unk0x30.m_y = p_parser->ReadFloat();
+			m_unk0x30.m_z = p_parser->ReadFloat();
+			m_unk0x3c.m_x = p_parser->ReadFloat();
+			m_unk0x3c.m_y = p_parser->ReadFloat();
+			m_unk0x3c.m_z = p_parser->ReadFloat();
+			m_unk0x48 |= 2;
+			break;
+		case GolFileParser::e_unknown0x3a:
+			m_unk0x48 |= 4;
+			break;
+		case GolFileParser::e_unknown0x3b:
+			m_unk0x4c = p_parser->ReadInteger();
+			m_unk0x48 |= 8;
+			break;
+		default:
+			ParseCommonToken(p_parser, token, p_owner);
+			break;
+		}
+
+		token = p_parser->GetNextToken();
+	}
+}
+
+// STUB: LEGORACERS 0x004a3c20
+void CrimsonPebbleEvent0x50::VTable0x14()
+{
+	if (m_unk0x18 == NULL) {
+		FUN_004a3db0();
+	}
+}
+
+// STUB: LEGORACERS 0x004a3c90
+void CrimsonPebbleEvent0x50::VTable0x10(const GolVec3*, const GolVec3*, const GolVec3*)
+{
+	if (m_unk0x18 == NULL) {
+		VTable0x14();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a3d70
+void CrimsonPebbleEvent0x50::VTable0x0c(undefined4 p_arg)
+{
+	if (m_unk0x18 == NULL) {
+		if (m_unk0x04 == NULL) {
+			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+		}
+
+		VTable0x14();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a3d90
+void CrimsonPebbleEvent0x50::VTable0x04(undefined4 p_arg)
+{
+	if (m_unk0x18 == NULL) {
+		if (m_unk0x0c == NULL) {
+			m_unk0x0c = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+		}
+
+		VTable0x14();
+	}
+}
+
+// STUB: LEGORACERS 0x004a3db0
+void CrimsonPebbleEvent0x50::FUN_004a3db0()
+{
+	STUB(0x004a3db0);
+}
+
+// STUB: LEGORACERS 0x004a3dd0
+void CrimsonPebbleEvent0x50::VTable0x18()
+{
+	STUB(0x004a3dd0);
+	m_unk0x18 = NULL;
+}
+
 // STUB: LEGORACERS 0x004a3df0
 void CrimsonPebbleEvent0x50::FUN_004a3df0(LegoU32)
 {
 	STUB(0x004a3df0);
 }
 
+// FUNCTION: LEGORACERS 0x004a3e70
+CrimsonPebbleEvent0x30::CrimsonPebbleEvent0x30()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a3ec0
+void CrimsonPebbleEvent0x30::Reset()
+{
+	m_unk0x14 = NULL;
+	m_unk0x18 = NULL;
+	m_unk0x1c = g_crimsonPebbleEvent0x30DefaultVolume;
+	m_unk0x20 = 0;
+	m_unk0x24 = g_crimsonPebbleEvent0x30DefaultFrequencyScale;
+	m_unk0x28 = g_crimsonPebbleEvent0x30DefaultPan;
+	m_unk0x2c = 0;
+	m_unk0x2e = 0;
+}
+
+// FUNCTION: LEGORACERS 0x004a3ef0
+void CrimsonPebbleEvent0x30::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
+{
+	if (m_unk0x14 != NULL) {
+		Reset();
+	}
+
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		if (!ParseToken(p_parser, p_owner, token)) {
+			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+		}
+
+		token = p_parser->GetNextToken();
+	}
+
+	if (m_unk0x14 == NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a3f60
+LegoBool32 CrimsonPebbleEvent0x30::ParseToken(
+	GolFileParser* p_parser,
+	CrimsonPebble0x228* p_owner,
+	GolFileParser::ParserTokenType p_token
+)
+{
+	switch (p_token) {
+	case GolFileParser::e_unknown0x30: {
+		LegoU32 index = p_parser->ReadInteger();
+		if (index >= p_owner->GetSoundGroupCount()) {
+			p_parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
+		}
+
+		m_unk0x14 = p_owner->GetSoundGroupByIndex(index);
+		m_unk0x2e = static_cast<LegoU16>(p_parser->ReadInteger());
+		return TRUE;
+	}
+	case GolFileParser::e_unknown0x31:
+		m_unk0x20 = p_parser->ReadInteger();
+		return TRUE;
+	case GolFileParser::e_unknown0x32:
+		m_unk0x1c = p_parser->ReadFloat();
+		return TRUE;
+	case GolFileParser::e_unknown0x33:
+		m_unk0x24 = p_parser->ReadFloat();
+		return TRUE;
+	case GolFileParser::e_unknown0x34:
+		m_unk0x28 = p_parser->ReadFloat();
+		return TRUE;
+	case GolFileParser::e_unknown0x35:
+		m_unk0x2c = 1;
+		return TRUE;
+	default:
+		return FALSE;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4070
+void CrimsonPebbleEvent0x30::VTable0x14()
+{
+	if (m_unk0x18 == NULL) {
+		m_unk0x18 = m_unk0x14->CreateSoundInstance(m_unk0x2e);
+		m_unk0x18->Play(m_unk0x2c);
+		m_unk0x18->SetVolume(m_unk0x1c);
+		m_unk0x18->SetPan(m_unk0x28);
+		m_unk0x18->SetFrequencyScale(m_unk0x24);
+		m_unk0x18->SetPriority(m_unk0x20);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a40d0
+void CrimsonPebbleEvent0x30::VTable0x18()
+{
+	if (m_unk0x18 != NULL) {
+		m_unk0x14->DestroySoundInstance(m_unk0x18);
+		m_unk0x18 = NULL;
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004a40f0
 void CrimsonPebbleEvent0x30::FUN_004a40f0()
 {
 	if (m_unk0x18 != NULL) {
-		if (!m_unk0x18->VTable0x08()) {
+		if (!m_unk0x18->IsPlaying()) {
 			VTable0x18();
 		}
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004a4110
+CrimsonPebbleEvent0x50Derived::CrimsonPebbleEvent0x50Derived()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a4160
+void CrimsonPebbleEvent0x50Derived::Reset()
+{
+	m_unk0x30 = NULL;
+	m_unk0x34 = 100.0f;
+	m_unk0x38 = 500.0f;
+	m_unk0x3c.m_x = 0.0f;
+	m_unk0x3c.m_y = 0.0f;
+	m_unk0x3c.m_z = 0.0f;
+	m_unk0x48 = 0;
+	m_unk0x4c = 0;
+	CrimsonPebbleEvent0x30::Reset();
+	CrimsonPebbleEvent0x14::Reset();
+}
+
+// STUB: LEGORACERS 0x004a41a0
+void CrimsonPebbleEvent0x50Derived::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
+{
+	if (m_unk0x14 != NULL) {
+		VTable0x14();
+	}
+
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x37:
+			m_unk0x34 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x38:
+			m_unk0x38 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x39:
+			m_unk0x3c.m_x = p_parser->ReadFloat();
+			m_unk0x3c.m_y = p_parser->ReadFloat();
+			m_unk0x3c.m_z = p_parser->ReadFloat();
+			m_unk0x48 |= 1;
+			break;
+		case GolFileParser::e_unknown0x3a:
+			m_unk0x48 = (m_unk0x48 & ~4) | 2;
+			break;
+		case GolFileParser::e_unknown0x3b:
+			m_unk0x4c = p_parser->ReadInteger();
+			m_unk0x48 = (m_unk0x48 & ~2) | 4;
+			break;
+		default:
+			if (!ParseToken(p_parser, p_owner, token)) {
+				ParseCommonToken(p_parser, token, p_owner);
+			}
+			break;
+		}
+
+		token = p_parser->GetNextToken();
+	}
+
+	if (m_unk0x14 == NULL) {
+		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
+	}
+}
+
+// STUB: LEGORACERS 0x004a42b0
+void CrimsonPebbleEvent0x50Derived::VTable0x14()
+{
+	STUB(0x004a42b0);
+}
+
+// STUB: LEGORACERS 0x004a43a0
+void CrimsonPebbleEvent0x50Derived::FUN_004a43a0(const GolVec3*)
+{
+	STUB(0x004a43a0);
+}
+
+// FUNCTION: LEGORACERS 0x004a4450
+void CrimsonPebbleEvent0x50Derived::VTable0x10(const GolVec3* p_a, const GolVec3*, const GolVec3*)
+{
+	if (m_unk0x30 == NULL) {
+		if (m_unk0x04 == NULL && !(m_unk0x48 & 1)) {
+			FUN_004a43a0(p_a);
+		}
+		else {
+			VTable0x14();
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4480
+void CrimsonPebbleEvent0x50Derived::VTable0x0c(undefined4 p_arg)
+{
+	if (m_unk0x30 == NULL) {
+		if (m_unk0x04 == NULL) {
+			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+		}
+
+		VTable0x14();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a44a0
+void CrimsonPebbleEvent0x50Derived::VTable0x04(undefined4 p_arg)
+{
+	if (m_unk0x30 == NULL) {
+		if (m_unk0x0c == NULL) {
+			m_unk0x0c = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+		}
+
+		VTable0x14();
+	}
+}
+
+// STUB: LEGORACERS 0x004a44c0
+void CrimsonPebbleEvent0x50Derived::VTable0x18()
+{
+	STUB(0x004a44c0);
+	m_unk0x30 = NULL;
+}
+
 // STUB: LEGORACERS 0x004a44f0
-void CrimsonPebbleEvent0x50::FUN_004a44f0()
+void CrimsonPebbleEvent0x50Derived::FUN_004a44f0()
 {
 	STUB(0x004a44f0);
+}
+
+// FUNCTION: LEGORACERS 0x004a4970
+CrimsonPebbleMenuAnimationEvent0x2c::CrimsonPebbleMenuAnimationEvent0x2c()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a49c0
+void CrimsonPebbleMenuAnimationEvent0x2c::Reset()
+{
+	m_unk0x14 = NULL;
+	m_unk0x18 = NULL;
+	m_unk0x1c = NULL;
+	m_unk0x24 = 0;
+	m_unk0x28 = 0;
+	m_unk0x20 = 0;
+	m_unk0x21 = 0;
+	m_unk0x22 = 0;
+	m_unk0x23 = 0;
+}
+
+// STUB: LEGORACERS 0x004a49e0
+void CrimsonPebbleMenuAnimationEvent0x2c::Parse(
+	GolFileParser* p_parser,
+	CrimsonPebble0x228* p_owner,
+	MenuAnimationList* p_animationList,
+	BronzeFalcon0xc8770* p_renderer
+)
+{
+	GolName materialName;
+	LegoBool hasMaterialName = FALSE;
+
+	m_unk0x14 = p_animationList;
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x61:
+			m_unk0x24 = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x62: {
+			GolFileParser::ParserTokenType mode = p_parser->GetNextToken();
+			if (mode == GolFileParser::e_unknown0x63) {
+				m_unk0x28 |= 1;
+			}
+			else if (mode == GolFileParser::e_unknown0x64) {
+				m_unk0x28 |= 2;
+			}
+			else {
+				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+			}
+			break;
+		}
+		case GolFileParser::e_unknown0x65:
+			::strncpy(materialName, p_parser->ReadString(), sizeof(GolName));
+			hasMaterialName = TRUE;
+			break;
+		case GolFileParser::e_unknown0x66:
+			m_unk0x20 = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_unk0x21 = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_unk0x22 = static_cast<LegoU8>(p_parser->ReadInteger());
+			break;
+		default:
+			ParseCommonToken(p_parser, token, p_owner);
+			break;
+		}
+
+		token = p_parser->GetNextToken();
+	}
+
+	if (hasMaterialName) {
+		m_unk0x18 = reinterpret_cast<DuskwindBananaRelic0x24*>(p_renderer->FindMaterialByName(materialName));
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4af0
+void CrimsonPebbleMenuAnimationEvent0x2c::VTable0x14()
+{
+	if (m_unk0x28 & 1) {
+		m_unk0x1c = m_unk0x14->Activate(m_unk0x24, TRUE, m_unk0x18, NULL);
+	}
+	else if (m_unk0x28 & 2) {
+		m_unk0x1c = m_unk0x14->Activate(m_unk0x24, FALSE, m_unk0x18, NULL);
+	}
+
+	if (m_unk0x1c != NULL) {
+		m_unk0x1c->SetColor(m_colorPacked);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4b40
+void CrimsonPebbleMenuAnimationEvent0x2c::VTable0x18()
+{
+	if (m_unk0x1c != NULL) {
+		m_unk0x14->Deactivate(m_unk0x1c);
+		m_unk0x1c = NULL;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4b60
+CrimsonPebbleEvent0x48::CrimsonPebbleEvent0x48()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a4bb0
+void CrimsonPebbleEvent0x48::Reset()
+{
+	m_unk0x08 = NULL;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+	m_unk0x24 = 0;
+	m_unk0x28 = 0;
+	m_unk0x2c = 0;
+	m_unk0x30 = 0.0f;
+	m_unk0x34 = 0.0f;
+	m_unk0x38 = 0.0f;
+	m_unk0x3c = 0.0f;
+	m_unk0x40 = 0.0f;
+	m_unk0x44 = 0.0f;
+}
+
+// FUNCTION: LEGORACERS 0x004a4be0
+void CrimsonPebbleEvent0x48::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
+{
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x2c:
+			m_unk0x18 = p_parser->ReadInteger();
+			m_unk0x1c = p_parser->ReadInteger();
+			m_unk0x20 = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x2d:
+			m_unk0x24 = p_parser->ReadInteger();
+			m_unk0x28 = p_parser->ReadInteger();
+			m_unk0x2c = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x2e:
+			m_unk0x3c = p_parser->ReadFloat();
+			m_unk0x40 = p_parser->ReadFloat();
+			m_unk0x44 = p_parser->ReadFloat();
+			break;
+		default:
+			ParseCommonToken(p_parser, token, p_owner);
+			break;
+		}
+
+		token = p_parser->GetNextToken();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4ca0
+void CrimsonPebbleEvent0x48::VTable0x14()
+{
+	if (m_unk0x14 == 0 && m_unk0x08 != NULL) {
+		m_unk0x14 = 1;
+		m_unk0x30 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x24));
+		m_unk0x34 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x28));
+		m_unk0x38 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x2c));
+		FUN_004a4da0();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4cd0
+void CrimsonPebbleEvent0x48::VTable0x08(undefined4 p_arg)
+{
+	if (m_unk0x14 == 0) {
+		if (m_unk0x08 == NULL) {
+			m_unk0x08 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+		}
+
+		VTable0x14();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4cf0
+void CrimsonPebbleEvent0x48::VTable0x18()
+{
+	if (m_unk0x14 != 0) {
+		m_unk0x14 = 0;
+		if (m_unk0x08 != NULL) {
+			m_unk0x08->VTable0x28();
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4d10

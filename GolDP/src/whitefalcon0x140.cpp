@@ -141,7 +141,8 @@ LegoFloat g_arccosTable[1024] = {
 };
 
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::TexturedVertex, 0x18)
-DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Field0x124, 0x10)
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::MaterialColor, 0x04)
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Light, 0x10)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Field0x4c, 0xcc)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
@@ -801,14 +802,14 @@ void WhiteFalcon0x140::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x100298d0
-void WhiteFalcon0x140::VTable0x2c(const Field0x124* p_param)
+void WhiteFalcon0x140::VTable0x2c(const MaterialColor* p_param)
 {
 	m_flags |= c_flagBit15;
 	m_unk0x120 = p_param;
 }
 
 // FUNCTION: GOLDP 0x100298f0
-void WhiteFalcon0x140::VTable0x30(const Field0x124* p_param)
+void WhiteFalcon0x140::VTable0x30(const Light* p_param)
 {
 	if (m_unk0x11c < 7) {
 		m_flags |= c_flagBit15;

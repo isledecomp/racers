@@ -28,10 +28,10 @@ public:
 	void VTable0x08() override;                                           // vtable+0x08
 	undefined4* VTable0x0c() override;                                    // vtable+0x0c
 	void VTable0x18() override;                                           // vtable+0x18
-	void VTable0x1c(undefined4*) override;                                // vtable+0x1c
-	void VTable0x20(undefined4) override;                                 // vtable+0x20
-	void VTable0x24(undefined4) override;                                 // vtable+0x24
-	void VTable0x28(undefined4*) override;                                // vtable+0x28
+	void VTable0x1c(WhiteFalcon0x140*) override;                          // vtable+0x1c
+	void VTable0x20(WhiteFalcon0x140*) override;                          // vtable+0x20
+	void VTable0x24(WhiteFalcon0x140*) override;                          // vtable+0x24
+	void VTable0x28(WhiteFalcon0x140*) override;                          // vtable+0x28
 	MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const override;        // vtable+0x2c
 	AmberHaze0x1c* VTable0x30(LegoU32 p_index) const override;            // vtable+0x30
 	CmbModelPart0x34* VTable0x34(LegoU32 p_index) const override;         // vtable+0x34

@@ -150,13 +150,13 @@ public:
 			// SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::`vector deleting destructor'
 
 		private:
-			ImaginaryTool0x368::FieldAt0x350 m_unk0x20; // 0x20
-			LegoU32 m_unk0x24;                          // 0x24
-			LegoU32 m_unk0x28;                          // 0x28
-			LegoU32 m_unk0x2c;                          // 0x2c
-			LegoU8 m_unk0x30;                           // 0x30
-			undefined m_unk0x31[0x34 - 0x31];           // 0x31
-			Frame0xb8* m_unk0x34;                       // 0x34
+			WhiteFalcon0x140::MaterialColor m_unk0x20; // 0x20
+			LegoU32 m_unk0x24;                         // 0x24
+			LegoU32 m_unk0x28;                         // 0x28
+			LegoU32 m_unk0x2c;                         // 0x2c
+			LegoU8 m_unk0x30;                          // 0x30
+			undefined m_unk0x31[0x34 - 0x31];          // 0x31
+			Frame0xb8* m_unk0x34;                      // 0x34
 		};
 
 		// VTABLE: LEGORACERS 0x004af370
@@ -177,13 +177,13 @@ public:
 			// SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::`vector deleting destructor'
 
 		private:
-			ImaginaryTool0x368::FieldAt0x340 m_unk0x20; // 0x20
-			LegoU32 m_unk0x30;                          // 0x30
-			LegoU32 m_unk0x34;                          // 0x34
-			LegoU32 m_unk0x38;                          // 0x38
-			LegoU8 m_unk0x3c;                           // 0x3c
-			undefined m_unk0x3d[0x40 - 0x3d];           // 0x3d
-			Frame0xb8* m_unk0x40;                       // 0x40
+			WhiteFalcon0x140::Light m_unk0x20; // 0x20
+			LegoU32 m_unk0x30;                 // 0x30
+			LegoU32 m_unk0x34;                 // 0x34
+			LegoU32 m_unk0x38;                 // 0x38
+			LegoU8 m_unk0x3c;                  // 0x3c
+			undefined m_unk0x3d[0x40 - 0x3d];  // 0x3d
+			Frame0xb8* m_unk0x40;              // 0x40
 		};
 
 		// VTABLE: LEGORACERS 0x004af410
@@ -231,10 +231,10 @@ public:
 		void FUN_004066b0(Event0x20* p_event);
 		LegoU32 FUN_004066d0(AmberLens0x344* p_lens);
 		void FUN_00406710(AmberLens0x344* p_lens);
-		void FUN_00406760(const WhiteFalcon0x140::Field0x124* p_material);
-		void FUN_00406770(const WhiteFalcon0x140::Field0x124* p_material);
-		LegoU32 FUN_00406790(const WhiteFalcon0x140::Field0x124* p_light);
-		void FUN_004067f0(const WhiteFalcon0x140::Field0x124* p_light);
+		void FUN_00406760(const WhiteFalcon0x140::MaterialColor* p_material);
+		void FUN_00406770(const WhiteFalcon0x140::MaterialColor* p_material);
+		LegoU32 FUN_00406790(const WhiteFalcon0x140::Light* p_light);
+		void FUN_004067f0(const WhiteFalcon0x140::Light* p_light);
 		void FUN_00406860();
 		AmberLens0x344* FUN_00406890();
 
@@ -268,9 +268,9 @@ public:
 		LegoU32 m_unk0x58;                                // 0x58
 		LegoU32 m_unk0x5c;                                // 0x5c
 		AmberLens0x344* m_unk0x60[8];                     // 0x60
-		const WhiteFalcon0x140::Field0x124* m_unk0x80;    // 0x80
+		const WhiteFalcon0x140::MaterialColor* m_unk0x80; // 0x80
 		LegoU32 m_unk0x84;                                // 0x84
-		const WhiteFalcon0x140::Field0x124* m_unk0x88[7]; // 0x88
+		const WhiteFalcon0x140::Light* m_unk0x88[7];      // 0x88
 		LegoFloat m_unk0xa4;                              // 0xa4
 		Rect m_unk0xa8;                                   // 0xa8
 	};

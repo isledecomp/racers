@@ -1,12 +1,11 @@
 #ifndef IMAGINARYTOOL0X368_H
 #define IMAGINARYTOOL0X368_H
 
-#include "color.h"
 #include "compat.h"
 #include "decomp.h"
-#include "golmath.h"
 #include "imaginarynotion0x290.h"
 #include "porcelainveil0x50.h"
+#include "whitefalcon0x140.h"
 
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
@@ -59,27 +58,6 @@ public:
 		Entry0xe0* m_unk0x5c; // 0x5c
 	};
 
-	// SIZE 0x4
-	class FieldAt0x350 {
-	public:
-		FieldAt0x350();
-		void SetColor(ColorRGBA p_color);
-		const ColorRGBA& GetColor() const { return m_color; }
-
-	private:
-		ColorRGBA m_color; // 0x00
-	};
-
-	// SIZE 0x10
-	class FieldAt0x340 : public FieldAt0x350 {
-	public:
-		FieldAt0x340();
-		void SetDirection(const GolVec3& p_direction);
-
-	private:
-		GolVec3 m_direction; // 0x04
-	};
-
 	ImaginaryTool0x368();
 
 	undefined4 VTable0x18(
@@ -130,20 +108,20 @@ protected:
 		undefined2 p_unk0x0c,
 		undefined2 p_unk0x10
 	);
-	void FUN_0047fec0(FieldAt0x350* p_unk0x04, FieldAt0x340* p_unk0x08);
+	void FUN_0047fec0(WhiteFalcon0x140::MaterialColor* p_unk0x04, WhiteFalcon0x140::Light* p_unk0x08);
 	LegoBool32 FUN_00480440(MenuToolContext0x4bc8* p_context);
 	void FUN_004804c0(MenuToolContext0x4bc8* p_context);
 
-	PorcelainVeil0x50 m_unk0x290;     // 0x290
-	FieldAt0x2e0 m_unk0x2e0;          // 0x2e0
-	FieldAt0x340 m_unk0x340;          // 0x340
-	FieldAt0x350 m_unk0x350;          // 0x350
-	MenuToolContext0x4bc8* m_context; // 0x354
-	ObscureIcon0x1a8* m_unk0x358;     // 0x358
-	ObscureVantage0x58* m_unk0x35c;   // 0x35c
-	LegoU16 m_unk0x360;               // 0x360
-	LegoU16 m_menuId;                 // 0x362
-	LegoBool32 m_unk0x364;            // 0x364
+	PorcelainVeil0x50 m_unk0x290;               // 0x290
+	FieldAt0x2e0 m_unk0x2e0;                    // 0x2e0
+	WhiteFalcon0x140::Light m_unk0x340;         // 0x340
+	WhiteFalcon0x140::MaterialColor m_unk0x350; // 0x350
+	MenuToolContext0x4bc8* m_context;           // 0x354
+	ObscureIcon0x1a8* m_unk0x358;               // 0x358
+	ObscureVantage0x58* m_unk0x35c;             // 0x35c
+	LegoU16 m_unk0x360;                         // 0x360
+	LegoU16 m_menuId;                           // 0x362
+	LegoBool32 m_unk0x364;                      // 0x364
 };
 
 #endif // IMAGINARYTOOL0X368_H

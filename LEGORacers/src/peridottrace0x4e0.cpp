@@ -56,15 +56,15 @@ void PeridotTraceBase0x24::Record::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0042b560
-void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, undefined2* p_dest, LegoU32 p_count)
+void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count)
 {
 	LegoU32 length = p_string->SelectionLength();
 	if (length > p_count) {
 		length = p_count;
 	}
 
-	LegoU8* dest = reinterpret_cast<LegoU8*>(p_dest);
 	LegoU32 i = 0;
+	LegoU8* dest = p_dest;
 	for (; i < length; i++) {
 		undefined2 c = *p_string->FromCursor(i);
 

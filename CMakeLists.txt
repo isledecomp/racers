@@ -299,6 +299,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
   LEGORacers/src/whitefalcon0x140.cpp
+  LEGORacers/src/zoweeblubberworth0xf0.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
   LEGORacers/src/ceruleanemperor0x4c.cpp
@@ -321,6 +322,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarybrush0x6410.cpp
   LEGORacers/src/imaginarychisel0x658.cpp
   LEGORacers/src/imaginarychisel0x658helperat0x368.cpp
+  LEGORacers/src/amberlensbase0x120.cpp
   LEGORacers/src/saffronquartz0x2c.cpp
   LEGORacers/src/imaginaryclaw0x15ec.cpp
   LEGORacers/src/imaginarycrowbar0x6750.cpp
@@ -344,8 +346,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarytool0x368fieldat0x2e0.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x340.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x350.cpp
+  LEGORacers/src/whitefalcon0x140light.cpp
+  LEGORacers/src/whitefalcon0x140materialcolor.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
   LEGORacers/src/onyxcircularbuffer0x1c.cpp

@@ -367,7 +367,7 @@ void GolBmpFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 			rowPitch = -rowPitch;
 		}
 
-		LegoU8* decompBuffer = reinterpret_cast<LegoU8*>(m_unk0x8f0);
+		LegoU8* decompBuffer = m_unk0x8f0;
 		if (decompBuffer == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

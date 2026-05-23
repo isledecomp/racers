@@ -28,8 +28,11 @@ public:
 	};
 
 	ImaginaryDrillFieldAt0x22dc();
-	void Reset() override;                   // vtable+0x00
-	~ImaginaryDrillFieldAt0x22dc() override; // vtable+0x04
+	void Reset() override;                      // vtable+0x00
+	~ImaginaryDrillFieldAt0x22dc() override;    // vtable+0x04
+	LegoBool32 VTable0x08() override;           // vtable+0x08
+	LegoBool32 VTable0x0c() override;           // vtable+0x0c
+	LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
 
 	OpalHaven0xf4* GetUnk0x1c() { return &m_unk0x1c; }
 	CmbModelPart0x34* GetUnk0x118() { return &m_unk0x118; }

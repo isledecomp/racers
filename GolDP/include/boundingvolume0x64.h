@@ -8,6 +8,7 @@
 #include "types.h"
 
 class GdbVertexArray0xc;
+class WhiteFalcon0x140;
 
 // VTABLE: GOLDP 0x10056c48
 // SIZE 0xf1c
@@ -25,9 +26,10 @@ class BoundingVolume0x64 {
 public:
 	BoundingVolume0x64();
 
-	virtual ~BoundingVolume0x64();                                                            // vtable+0x00
-	virtual void VTable0x04(undefined4* p_arg1, const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x04
-	virtual void VTable0x08();                                                                // vtable+0x08
+	virtual ~BoundingVolume0x64(); // vtable+0x00
+	virtual void VTable0x04(WhiteFalcon0x140* p_renderer, const LegoChar* p_name,
+							LegoBool32 p_binary); // vtable+0x04
+	virtual void VTable0x08();                    // vtable+0x08
 
 	// SYNTHETIC: GOLDP 0x1002e5e0
 	// BoundingVolume0x64::`vector deleting destructor'

@@ -1821,10 +1821,10 @@ void BronzeFalcon0xc8770::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x1000b000
-void BronzeFalcon0xc8770::VTable0x2c(const Field0x124* p_param)
+void BronzeFalcon0xc8770::VTable0x2c(const MaterialColor* p_param)
 {
 	WhiteFalcon0x140::VTable0x2c(p_param);
-	m_unk0xc856c = p_param->m_unk0x00;
+	m_unk0xc856c = p_param->m_color;
 
 	if (m_unk0xc8538 != NULL) {
 		DuskwindBananaRelicColor color = m_unk0xc8538->GetColor0x10();
@@ -1842,7 +1842,7 @@ void BronzeFalcon0xc8770::VTable0x2c(const Field0x124* p_param)
 }
 
 // FUNCTION: GOLDP 0x1000b0c0
-void BronzeFalcon0xc8770::VTable0x30(const Field0x124* p_param)
+void BronzeFalcon0xc8770::VTable0x30(const Light* p_param)
 {
 	LegoU32 index = m_unk0x11c;
 	if (index < 7) {
@@ -1852,10 +1852,10 @@ void BronzeFalcon0xc8770::VTable0x30(const Field0x124* p_param)
 }
 
 // FUNCTION: GOLDP 0x1000b0f0
-void BronzeFalcon0xc8770::FUN_1000b0f0(LegoU32 p_index, const Field0x124* p_param)
+void BronzeFalcon0xc8770::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
 {
-	m_unk0xc8580[p_index] = p_param->m_unk0x00;
-	m_unk0xc85f0[p_index] = p_param->m_unk0x04;
+	m_unk0xc8580[p_index] = p_param->m_color;
+	m_unk0xc85f0[p_index] = p_param->m_direction;
 
 	DuskwindBananaRelicColor color;
 	if (m_unk0xc8538 != NULL) {

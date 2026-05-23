@@ -26,6 +26,7 @@ class MenuAnimationList;
 class AmberLens0x344;
 struct Rect;
 
+// VTABLE: LEGORACERS 0x004b4954
 // SIZE 0x14
 class CrimsonPebbleEvent0x14 {
 public:
@@ -39,6 +40,9 @@ public:
 	virtual void VTable0x18();                                               // vtable+0x18
 
 	void Reset();
+
+	// SYNTHETIC: LEGORACERS 0x0049fd90
+	// CrimsonPebbleEvent0x14::`scalar deleting destructor'
 
 protected:
 	undefined4 m_unk0x04; // 0x04
@@ -122,6 +126,7 @@ private:
 	undefined m_unk0x14[0x50 - 0x14]; // 0x14
 };
 
+// VTABLE: LEGORACERS 0x004b4a4c
 // SIZE 0x58
 class CrimsonPebbleVisual0x58 : public CrimsonPebbleEvent0x14 {
 public:
@@ -151,6 +156,9 @@ public:
 		CrimsonPebble0x228* p_owner,
 		WhiteFalcon0x140* p_renderer
 	);
+
+	// SYNTHETIC: LEGORACERS 0x004a32d0
+	// CrimsonPebbleVisual0x58::`scalar deleting destructor'
 
 protected:
 	LegoFloat m_unk0x14;        // 0x14

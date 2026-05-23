@@ -113,7 +113,8 @@ void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterial
 	LegoS32 lastFrame = firstFrame + frameCount - 1;
 
 	LegoFloat secondsPerFrame = m_unk0x0c;
-	m_unk0x10 += secondsPerFrame * static_cast<LegoFloat>(p_elapsedMs);
+	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+	m_unk0x10 += secondsPerFrame * elapsed;
 
 	LegoU32 frame = static_cast<LegoU32>(m_unk0x10);
 	if (!(m_flags & c_flagBit2) && frame >= m_unk0x0a) {
@@ -126,9 +127,9 @@ void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterial
 
 	LegoS32 selectedFrame = lastFrame;
 	if (lastFrame >= static_cast<LegoS32>(firstFrame)) {
-		while (frame < p_items[selectedFrame].GetFrame()) {
-			selectedFrame--;
-			if (selectedFrame < static_cast<LegoS32>(firstFrame)) {
+		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
+		for (; selectedFrame >= static_cast<LegoS32>(firstFrame); selectedFrame--, item--) {
+			if (frame >= item->GetFrame()) {
 				break;
 			}
 		}
@@ -148,7 +149,9 @@ undefined4* MabMaterialAnimationItem0x18::FUN_00410560(
 	LegoU32
 )
 {
-	LegoS32 frame = static_cast<LegoS32>(m_unk0x0c * static_cast<LegoFloat>(p_elapsedMs));
+	LegoFloat secondsPerFrame = m_unk0x0c;
+	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+	LegoS32 frame = static_cast<LegoS32>(secondsPerFrame * elapsed);
 	frame %= m_unk0x0a;
 
 	LegoS32 firstFrame = m_unk0x06;
@@ -156,10 +159,8 @@ undefined4* MabMaterialAnimationItem0x18::FUN_00410560(
 	LegoS32 selectedFrame = lastFrame;
 	if (selectedFrame >= firstFrame) {
 		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
-		while (frame < static_cast<LegoS32>(item->GetFrame())) {
-			selectedFrame--;
-			item--;
-			if (selectedFrame < firstFrame) {
+		for (; selectedFrame >= firstFrame; selectedFrame--, item--) {
+			if (static_cast<LegoU32>(frame) >= item->GetFrame()) {
 				break;
 			}
 		}

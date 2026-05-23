@@ -50,14 +50,13 @@ void AmberLensBase0x120::FUN_004047b0()
 	GolVec3 position;
 	GolVec3 right;
 	GolVec3 forward;
+	GolVec3 transformedPosition;
+	GolVec3 transformedRight;
+	GolVec3 transformedForward;
 	orbit->GetPosition(&position);
 	orbit->VTable0x20(&right, &forward);
 
 	for (JadeOrbitBase0x10* parent = orbit->m_unk0x04; parent != NULL; parent = parent->m_unk0x04) {
-		GolVec3 transformedPosition;
-		GolVec3 transformedRight;
-		GolVec3 transformedForward;
-
 		parent->VTable0x04(&position, &transformedPosition);
 		parent->VTable0x0c(&right, &transformedRight);
 		parent->VTable0x0c(&forward, &transformedForward);
@@ -67,19 +66,15 @@ void AmberLensBase0x120::FUN_004047b0()
 		forward = transformedForward;
 	}
 
-	GolVec3 worldPosition;
-	GolVec3 worldRight;
-	GolVec3 worldForward;
-	m_unk0x28->VTable0x2c(position, &worldPosition);
-	m_unk0x28->VTable0x34(right, &worldRight);
-	m_unk0x28->VTable0x34(forward, &worldForward);
+	m_unk0x28->VTable0x2c(position, &transformedPosition);
+	m_unk0x28->VTable0x34(right, &transformedRight);
+	m_unk0x28->VTable0x34(forward, &transformedForward);
 
-	m_unk0x04->SetPosition(&worldPosition);
-	worldForward.m_x = -worldForward.m_x;
-	worldForward.m_y = -worldForward.m_y;
-	worldForward.m_z = -worldForward.m_z;
-
+	m_unk0x04->SetPosition(&transformedPosition);
+	transformedForward.m_x = -transformedForward.m_x;
 	m_flags |= 1;
-	m_unk0x04->VTable0x24(&worldRight, &worldForward);
+	transformedForward.m_y = -transformedForward.m_y;
+	transformedForward.m_z = -transformedForward.m_z;
+	m_unk0x04->VTable0x24(&transformedRight, &transformedForward);
 	m_flags |= 1;
 }

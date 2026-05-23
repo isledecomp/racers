@@ -2249,16 +2249,78 @@ void BronzeFalcon0xc8770::FUN_1000eb90(undefined4, undefined4, undefined4)
 	STUB(0x1000eb90);
 }
 
-// STUB: GOLDP 0x1000ebd0
-void BronzeFalcon0xc8770::FUN_1000ebd0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000ebd0
+void BronzeFalcon0xc8770::FUN_1000ebd0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex)
 {
-	STUB(0x1000ebd0);
+	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
+	LegoU8* end = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
+	LegoU16* indices = m_unk0xc4c20;
+
+	for (; triangle < end; triangle += 4) {
+		LegoU32 index2 = triangle[2];
+		LegoU32 index0 = triangle[0];
+		LegoU32 index1 = triangle[1];
+		D3DTLVERTEX* vertex2 = &m_unk0x348[index2];
+		D3DTLVERTEX* vertex1 = &m_unk0x348[index1];
+		D3DTLVERTEX* vertex0 = &m_unk0x348[index0];
+
+		if (((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx)) -
+				((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) <
+			0.0f) {
+			*indices++ = index2;
+			*indices++ = index1;
+			*indices++ = index0;
+		}
+	}
+
+	if (indices != m_unk0xc4c20) {
+		m_d3dDevice->DrawIndexedPrimitive(
+			D3DPT_TRIANGLELIST,
+			D3DFVF_TLVERTEX,
+			m_unk0x348,
+			p_lastVertex + 1,
+			m_unk0xc4c20,
+			indices - m_unk0xc4c20,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
+	}
 }
 
-// STUB: GOLDP 0x1000ece0
-void BronzeFalcon0xc8770::FUN_1000ece0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000ece0
+void BronzeFalcon0xc8770::FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex)
 {
-	STUB(0x1000ece0);
+	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
+	LegoU8* end = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
+	LegoU16* indices = m_unk0xc4c20;
+
+	for (; triangle < end; triangle += 4) {
+		LegoU32 index2 = triangle[2];
+		LegoU32 index0 = triangle[0];
+		LegoU32 index1 = triangle[1];
+		D3DTLVERTEX* vertex2 = &m_unk0x348[index2];
+		D3DTLVERTEX* vertex1 = &m_unk0x348[index1];
+		D3DTLVERTEX* vertex0 = &m_unk0x348[index0];
+
+		if (((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx)) -
+				((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) >
+			0.0f) {
+			*indices++ = index2;
+			*indices++ = index1;
+			*indices++ = index0;
+		}
+	}
+
+	if (indices != m_unk0xc4c20) {
+		m_d3dDevice->DrawIndexedPrimitive(
+			D3DPT_TRIANGLELIST,
+			D3DFVF_TLVERTEX,
+			m_unk0x348,
+			p_lastVertex + 1,
+			m_unk0xc4c20,
+			indices - m_unk0xc4c20,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
+	}
 }
 
 // STUB: GOLDP 0x1000edf0

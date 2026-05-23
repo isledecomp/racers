@@ -1,4 +1,6 @@
+#include "bronzefalcon0xc8770.h"
 #include "crimsonpebble0x228.h"
+#include "slatepeak0x58.h"
 
 // FUNCTION: LEGORACERS 0x004a3280
 CrimsonPebbleVisual0x58::CrimsonPebbleVisual0x58()
@@ -126,7 +128,42 @@ void CrimsonPebbleVisual0x58::FUN_004a3550(LegoFloat p_elapsedSeconds)
 }
 
 // STUB: LEGORACERS 0x004a35a0
-void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770*)
+void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770* p_renderer)
 {
-	STUB(0x004a35a0);
+	if (m_flags & 0x40) {
+		LegoS32 renderTargetWidth = p_renderer->GetRenderTargetInfo()->GetWidth();
+		LegoFloat width = static_cast<LegoFloat>(renderTargetWidth);
+		LegoS32 renderTargetHeight = p_renderer->GetRenderTargetInfo()->GetHeight();
+		LegoFloat height = static_cast<LegoFloat>(renderTargetHeight);
+
+		if (static_cast<LegoS32>(m_flags) < 0) {
+			FUN_004a36e0(p_renderer, width, height);
+		}
+
+		if (m_unk0x1c >= 0.0f && m_unk0x20 >= 0.0f) {
+			LegoS32 x = static_cast<LegoS32>(m_unk0x1c * width);
+			LegoS32 y = static_cast<LegoS32>(m_unk0x20 * height);
+			LegoS32 drawWidth = static_cast<LegoS32>(m_unk0x2c * width);
+			LegoS32 drawHeight = static_cast<LegoS32>(m_unk0x30 * height);
+
+			if (drawWidth) {
+				if (drawHeight && drawWidth + x <= static_cast<LegoU32>(renderTargetWidth) &&
+					y + drawHeight <= static_cast<LegoU32>(renderTargetHeight)) {
+					LegoS32 sourceWidth;
+					LegoS32 sourceHeight;
+					VTable0x1c(&sourceWidth, &sourceHeight);
+
+					LegoFloat scaleY = static_cast<LegoFloat>(drawHeight) / static_cast<LegoFloat>(sourceHeight);
+					LegoFloat scaleX = static_cast<LegoFloat>(drawWidth) / static_cast<LegoFloat>(sourceWidth);
+					VTable0x20(p_renderer, x, y, drawWidth, drawHeight, scaleX, scaleY);
+				}
+			}
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x004a36e0
+void CrimsonPebbleVisual0x58::FUN_004a36e0(BronzeFalcon0xc8770*, LegoFloat, LegoFloat)
+{
+	STUB(0x004a36e0);
 }

@@ -206,8 +206,8 @@ private:
 	void FUN_1000d760(undefined4, undefined4, undefined4);
 	void FUN_1000dbb0(undefined4, undefined4, undefined4);
 	void FUN_1000eb90(undefined4, undefined4, undefined4);
-	void FUN_1000ebd0(undefined4, undefined4, undefined4);
-	void FUN_1000ece0(undefined4, undefined4, undefined4);
+	void FUN_1000ebd0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex);
+	void FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex);
 	void FUN_1000edf0(undefined4, undefined4, undefined4);
 	void FUN_10010330(undefined4, undefined4, undefined4);
 	void FUN_10010500(undefined4, undefined4, undefined4);
@@ -254,8 +254,9 @@ private:
 	undefined4 m_unk0xc4c0c;                                             // 0xc4c0c
 	undefined4 m_unk0xc4c10;                                             // 0xc4c10
 	undefined4 m_unk0xc4c14;                                             // 0xc4c14
-	undefined4 m_unk0xc4c18;                                             // 0xc4c18
-	undefined m_unk0xc4c1c[0xc53a0 - 0xc4c1c];                           // 0xc4c1c
+	LegoU8* m_unk0xc4c18;                                                // 0xc4c18
+	undefined4 m_unk0xc4c1c;                                             // 0xc4c1c
+	LegoU16 m_unk0xc4c20[(0xc53a0 - 0xc4c20) / sizeof(LegoU16)];         // 0xc4c20
 	D3DTLVERTEX m_unk0xc53a0[(0xc83a0 - 0xc53a0) / sizeof(D3DTLVERTEX)]; // 0xc53a0
 	undefined4 m_unk0xc83a0;                                             // 0xc83a0
 	undefined4 m_unk0xc83a4;                                             // 0xc83a4

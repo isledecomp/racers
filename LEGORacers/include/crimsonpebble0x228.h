@@ -17,13 +17,17 @@ class BronzeFalcon0xc8770;
 class CrimsonPebble0x228;
 class GolExport;
 class GolFont0xa0;
+class GolFontTable;
 class GolFileParser;
 class MabMaterialAnimation0x14;
 class WhiteFalcon0x140;
+class UtopianPan0xa4;
 class SaffronQuartz0x2c;
 class SoundManager;
+class SoundGroup;
 class MenuAnimationList;
 class AmberLens0x344;
+class AwakeKite0x20;
 struct Rect;
 
 // VTABLE: LEGORACERS 0x004b4954
@@ -104,16 +108,38 @@ public:
 	void FUN_004a40f0();
 
 private:
-	undefined m_unk0x14[0x30 - 0x14]; // 0x14
+	class Runtime0x4 {
+	public:
+		virtual void VTable0x00() = 0;       // vtable+0x00
+		virtual void VTable0x04() = 0;       // vtable+0x04
+		virtual LegoBool32 VTable0x08() = 0; // vtable+0x08
+	};
+
+	undefined4 m_unk0x14;             // 0x14
+	Runtime0x4* m_unk0x18;            // 0x18
+	undefined m_unk0x1c[0x30 - 0x1c]; // 0x1c
 };
 
 // SIZE 0x48
 class CrimsonPebbleEvent0x48 : public CrimsonPebbleEvent0x14 {
 public:
 	void FUN_004a4d10(LegoFloat p_elapsedSeconds);
+	void FUN_004a4da0();
 
 private:
-	undefined m_unk0x14[0x48 - 0x14]; // 0x14
+	undefined4 m_unk0x14; // 0x14
+	undefined4 m_unk0x18; // 0x18
+	undefined4 m_unk0x1c; // 0x1c
+	undefined4 m_unk0x20; // 0x20
+	undefined4 m_unk0x24; // 0x24
+	undefined4 m_unk0x28; // 0x28
+	undefined4 m_unk0x2c; // 0x2c
+	LegoFloat m_unk0x30;  // 0x30
+	LegoFloat m_unk0x34;  // 0x34
+	LegoFloat m_unk0x38;  // 0x38
+	LegoFloat m_unk0x3c;  // 0x3c
+	LegoFloat m_unk0x40;  // 0x40
+	LegoFloat m_unk0x44;  // 0x44
 };
 
 // SIZE 0x50
@@ -150,6 +176,7 @@ public:
 	void Clear();
 	void FUN_004a3550(LegoFloat p_elapsedSeconds);
 	void FUN_004a35a0(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004a36e0(BronzeFalcon0xc8770* p_renderer, LegoFloat p_width, LegoFloat p_height);
 	void ParseVisualToken(
 		GolFileParser* p_parser,
 		GolFileParser::ParserTokenType p_token,
@@ -184,8 +211,12 @@ protected:
 
 // SIZE 0x64
 class CrimsonPebbleVisual0x64 : public CrimsonPebbleVisual0x58 {
+public:
+	void FUN_004a3910(BronzeFalcon0xc8770* p_renderer);
+
 private:
-	undefined m_unk0x58[0x64 - 0x58]; // 0x58
+	UtopianPan0xa4* m_unk0x58; // 0x58
+	GolName m_unk0x5c;         // 0x5c
 };
 
 // VTABLE: LEGORACERS 0x004b4af4
@@ -221,15 +252,74 @@ private:
 	LegoU32 m_stringIndex; // 0x6c
 };
 
+// VTABLE: LEGORACERS 0x004b403c
 // SIZE 0x33c
-class CrimsonPebbleAnimation0x33c {
+class CrimsonPebbleAnimation0x33c : public GolNameTable {
 public:
+	// SIZE 0x08
+	class Entry0x8 {
+	public:
+		Entry0x8();
+		~Entry0x8();
+
+	private:
+		undefined4 m_unk0x00;     // 0x00
+		LegoU8 m_unk0x04;         // 0x04
+		undefined m_unk0x05[0x3]; // 0x05
+	};
+
+	// SIZE 0x44
+	class Runtime0x44 {
+	public:
+		Runtime0x44();
+		~Runtime0x44();
+
+	private:
+		undefined m_unk0x00[0x44]; // 0x00
+	};
+
+	// SIZE 0x18c
+	class Particle0x18c {
+	public:
+		Particle0x18c();
+		~Particle0x18c();
+
+		LegoU8 GetFlags() const { return m_flags; }
+		void FUN_004897e0(LegoU32 p_elapsedMs);
+		void FUN_00489960(BronzeFalcon0xc8770* p_renderer);
+		void FUN_004513d0(BronzeFalcon0xc8770* p_renderer);
+
+	private:
+		undefined m_unk0x000[0xc0]; // 0x000
+		LegoU8 m_flags;             // 0x0c0
+		undefined m_unk0x0c1[0x18c - 0x0c1];
+	};
+
+	CrimsonPebbleAnimation0x33c();
+	~CrimsonPebbleAnimation0x33c() override; // vtable+0x00
+
+	void Clear() override; // vtable+0x08
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
 	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);
+	void FUN_00489af0(
+		LegoU32 p_unk0x04,
+		GolExport* p_golExport,
+		BronzeFalcon0xc8770* p_renderer,
+		MabMaterialAnimation0x14* p_materialAnimation,
+		const LegoChar* p_fileName,
+		undefined4 p_binary
+	);
+
+	// SYNTHETIC: LEGORACERS 0x004a1180
+	// CrimsonPebbleAnimation0x33c::`vector deleting destructor'
 
 private:
-	undefined m_unk0x000[0x33c]; // 0x000
+	Particle0x18c* m_unk0x00c; // 0x00c
+	Runtime0x44* m_unk0x010;   // 0x010
+	Entry0x8 m_unk0x014[100];  // 0x014
+	LegoU32 m_unk0x334;        // 0x334
+	LegoU32 m_unk0x338;        // 0x338
 };
 
 // VTABLE: LEGORACERS 0x004b4970
@@ -316,19 +406,19 @@ private:
 	LegoU32 m_unk0x68;                      // 0x068
 	CrimsonPebbleAnimation0x33c* m_unk0x6c; // 0x06c
 	MabMaterialAnimation0x14* m_unk0x70;    // 0x070
-	undefined4* m_unk0x74;                  // 0x074
+	LegoChar* m_unk0x74;                    // 0x074
 	LegoU32 m_unk0x78;                      // 0x078
 	GolStringTable* m_unk0x7c;              // 0x07c
 	LegoChar* m_unk0x80;                    // 0x080
-	undefined4 m_unk0x84;                   // 0x084
-	undefined4* m_unk0x88;                  // 0x088
-	undefined4* m_unk0x8c;                  // 0x08c
-	undefined4 m_unk0x90;                   // 0x090
-	undefined4* m_unk0x94;                  // 0x094
-	undefined4* m_unk0x98;                  // 0x098
-	undefined4 m_unk0x9c;                   // 0x09c
-	undefined4* m_unk0xa0;                  // 0x0a0
-	undefined4* m_unk0xa4;                  // 0x0a4
+	LegoU32 m_unk0x84;                      // 0x084
+	SoundGroup** m_unk0x88;                 // 0x088
+	LegoChar* m_unk0x8c;                    // 0x08c
+	LegoU32 m_unk0x90;                      // 0x090
+	GolFontTable** m_unk0x94;               // 0x094
+	LegoChar* m_unk0x98;                    // 0x098
+	LegoU32 m_unk0x9c;                      // 0x09c
+	AwakeKite0x20** m_unk0xa0;              // 0x0a0
+	LegoChar* m_unk0xa4;                    // 0x0a4
 	GolNameTable m_unk0xa8;                 // 0x0a8
 	LegoU32 m_unk0xb4;                      // 0x0b4
 	CrimsonPebbleEvent0x48* m_unk0xb8;      // 0x0b8

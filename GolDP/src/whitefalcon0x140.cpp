@@ -2,9 +2,13 @@
 
 #include "amberhaze0x1c.h"
 #include "cinderbasin0x28.h"
+#include "floatycanoe0x90.h"
+#include "golmath.h"
 #include "golsurfaceformat.h"
 #include "hypnoticnoise0x1c.h"
+#include "jadeorbitbase0x10.h"
 #include "magentaribbon0x20.h"
+#include "whitefalconnode0x18.h"
 
 #include <string.h>
 
@@ -748,9 +752,46 @@ void WhiteFalcon0x140::SelectTextureFormat(
 }
 
 // STUB: GOLDP 0x10029500
-void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28*)
+void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28* p_model)
 {
-	STUB(0x10029500);
+	FloatyBoat0x28::ResultStruct result;
+	p_model->VTable0x14(m_unk0x4c.m_position, &result);
+	if (!result.m_unk0x00) {
+		return;
+	}
+
+	GolVec3 localRight;
+	GolVec3 localForward;
+	WhiteFalconNode0x18* node = static_cast<FloatyCanoe0x90*>(p_model)->VTable0x58(result.m_unk0x04);
+	if (node != NULL) {
+		GolVec3 worldRight;
+		GolVec3 worldForward;
+		static_cast<FloatyCanoe0x90*>(p_model)->VTable0x5c(result.m_unk0x04);
+		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
+		p_model->VTable0x34(worldRight, &localRight);
+		p_model->VTable0x34(worldForward, &localForward);
+	}
+	else {
+		p_model->VTable0x48(&localRight, &localForward);
+	}
+
+	if (localRight.m_x == 0.0f && localRight.m_y == 0.0f) {
+		VTable0xa8(p_model, 0.0f, 0.5f);
+	}
+	else {
+		GolVec2 uv;
+		uv.m_x = localRight.m_x;
+		uv.m_y = localRight.m_y;
+		GolMath::NormalizeVector2(uv, &uv);
+
+		LegoFloat u = g_arccosTable[static_cast<LegoS32>((uv.m_x + 1.0f) * 511.5f)] * 0.31830987f * 0.5f;
+		if (uv.m_y < 0.0f) {
+			u = 1.0f - u;
+		}
+
+		LegoFloat v = g_arccosTable[static_cast<LegoS32>((localForward.m_z + 1.0f) * 511.5f)] * 0.31830987f;
+		VTable0xa8(p_model, u, v);
+	}
 }
 
 // STUB: GOLDP 0x10029680

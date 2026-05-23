@@ -152,7 +152,7 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_unk0x04)
 // FUNCTION: LEGORACERS 0x004a24e0
 void CrimsonPebble0x228::FUN_004a24e0()
 {
-	for (LegoS32 i = 0; i < this->m_unk0x118; i++) {
+	for (LegoU32 i = 0; i < this->m_unk0x118; i++) {
 		m_unk0x11c[i].FUN_004a4790(this, m_unk0x08);
 	}
 }

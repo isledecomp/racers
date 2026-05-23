@@ -151,8 +151,8 @@ public:
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
-	const WhiteFalcon0x140::Field0x124* GetUnk0xac() const { return m_unk0xac; }
-	const WhiteFalcon0x140::Field0x124* GetUnk0xb0() const { return m_unk0xb0; }
+	const WhiteFalcon0x140::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
+	const WhiteFalcon0x140::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
 	void FUN_00416090(undefined4 p_elapsedMs);
 	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
@@ -196,55 +196,55 @@ private:
 	void FUN_1002e640();
 	void FUN_1002f210(undefined4, undefined4*);
 
-	WhiteFalcon0x140* m_unk0x04;             // 0x04
-	LegoBool32 m_binary;                     // 0x08
-	LegoU32 m_unk0x0c;                       // 0x0c
-	GolName* m_unk0x10;                      // 0x10
-	LegoU32 m_unk0x14;                       // 0x14
-	GolName* m_unk0x18;                      // 0x18
-	LegoU32 m_unk0x1c;                       // 0x1c
-	GolName* m_unk0x20;                      // 0x20
-	LegoU32 m_unk0x24;                       // 0x24
-	GolName* m_unk0x28;                      // 0x28
-	LegoU32 m_unk0x2c;                       // 0x2c
-	GolName* m_unk0x30;                      // 0x30
-	LegoU32 m_unk0x34;                       // 0x34
-	GolName* m_unk0x38;                      // 0x38
-	LegoU32 m_unk0x3c;                       // 0x3c
-	GolName* m_unk0x40;                      // 0x40
-	LegoU32 m_unk0x44;                       // 0x44
-	GolName* m_unk0x48;                      // 0x48
-	LegoU32 m_unk0x4c;                       // 0x4c
-	WdbModel0x8c* m_unk0x50;                 // 0x50
-	LegoU32 m_unk0x54;                       // 0x54
-	WdbModel0x8c* m_unk0x58;                 // 0x58
-	LegoU32 m_unk0x5c;                       // 0x5c
-	WdbModel0x8c* m_unk0x60;                 // 0x60
-	LegoU32 m_unk0x64;                       // 0x64
-	WdbModel0x8c* m_unk0x68;                 // 0x68
-	LegoU32 m_unk0x6c;                       // 0x6c
-	WdbBillboardSprite0x38* m_unk0x70;       // 0x70
-	LegoU32 m_unk0x74;                       // 0x74
-	GolName* m_unk0x78;                      // 0x78
-	LegoU32 m_unk0x7c;                       // 0x7c
-	WdbCamera0x4c* m_unk0x80;                // 0x80
-	LegoU32 m_unk0x84;                       // 0x84
-	WdbLight0x10* m_unk0x88;                 // 0x88
-	LegoU32 m_unk0x8c;                       // 0x8c
-	WdbLight0x10* m_unk0x90;                 // 0x90
-	LegoFloat m_unk0x94;                     // 0x94
-	BoundingVolume0x64* m_unk0x98;           // 0x98
-	FloatyCanoe0x90* m_unk0x9c;              // 0x9c
-	FloatyFerry0xf4* m_unk0xa0;              // 0xa0
-	FloatyFrigate0x9c* m_unk0xa4;            // 0xa4
-	FloatyKajak0x64* m_unk0xa8;              // 0xa8
-	WhiteFalcon0x140::Field0x124* m_unk0xac; // 0xac
-	WhiteFalcon0x140::Field0x124* m_unk0xb0; // 0xb0
-	GolNameTable m_unk0xb4;                  // 0xb4
-	GolNameTable m_unk0xc0;                  // 0xc0
-	GolNameTable m_unk0xcc;                  // 0xcc
-	GolNameTable m_unk0xd8;                  // 0xd8
-	GolNameTable m_unk0xe4;                  // 0xe4
+	WhiteFalcon0x140* m_unk0x04;                // 0x04
+	LegoBool32 m_binary;                        // 0x08
+	LegoU32 m_unk0x0c;                          // 0x0c
+	GolName* m_unk0x10;                         // 0x10
+	LegoU32 m_unk0x14;                          // 0x14
+	GolName* m_unk0x18;                         // 0x18
+	LegoU32 m_unk0x1c;                          // 0x1c
+	GolName* m_unk0x20;                         // 0x20
+	LegoU32 m_unk0x24;                          // 0x24
+	GolName* m_unk0x28;                         // 0x28
+	LegoU32 m_unk0x2c;                          // 0x2c
+	GolName* m_unk0x30;                         // 0x30
+	LegoU32 m_unk0x34;                          // 0x34
+	GolName* m_unk0x38;                         // 0x38
+	LegoU32 m_unk0x3c;                          // 0x3c
+	GolName* m_unk0x40;                         // 0x40
+	LegoU32 m_unk0x44;                          // 0x44
+	GolName* m_unk0x48;                         // 0x48
+	LegoU32 m_unk0x4c;                          // 0x4c
+	WdbModel0x8c* m_unk0x50;                    // 0x50
+	LegoU32 m_unk0x54;                          // 0x54
+	WdbModel0x8c* m_unk0x58;                    // 0x58
+	LegoU32 m_unk0x5c;                          // 0x5c
+	WdbModel0x8c* m_unk0x60;                    // 0x60
+	LegoU32 m_unk0x64;                          // 0x64
+	WdbModel0x8c* m_unk0x68;                    // 0x68
+	LegoU32 m_unk0x6c;                          // 0x6c
+	WdbBillboardSprite0x38* m_unk0x70;          // 0x70
+	LegoU32 m_unk0x74;                          // 0x74
+	GolName* m_unk0x78;                         // 0x78
+	LegoU32 m_unk0x7c;                          // 0x7c
+	WdbCamera0x4c* m_unk0x80;                   // 0x80
+	LegoU32 m_unk0x84;                          // 0x84
+	WdbLight0x10* m_unk0x88;                    // 0x88
+	LegoU32 m_unk0x8c;                          // 0x8c
+	WdbLight0x10* m_unk0x90;                    // 0x90
+	LegoFloat m_unk0x94;                        // 0x94
+	BoundingVolume0x64* m_unk0x98;              // 0x98
+	FloatyCanoe0x90* m_unk0x9c;                 // 0x9c
+	FloatyFerry0xf4* m_unk0xa0;                 // 0xa0
+	FloatyFrigate0x9c* m_unk0xa4;               // 0xa4
+	FloatyKajak0x64* m_unk0xa8;                 // 0xa8
+	WhiteFalcon0x140::MaterialColor* m_unk0xac; // 0xac
+	WhiteFalcon0x140::Light* m_unk0xb0;         // 0xb0
+	GolNameTable m_unk0xb4;                     // 0xb4
+	GolNameTable m_unk0xc0;                     // 0xc0
+	GolNameTable m_unk0xcc;                     // 0xcc
+	GolNameTable m_unk0xd8;                     // 0xd8
+	GolNameTable m_unk0xe4;                     // 0xe4
 };
 
 #endif // ZOWEEBLUBBERWORTH0xF0_H

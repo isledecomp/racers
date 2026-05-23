@@ -137,7 +137,10 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 }
 
 // FUNCTION: LEGORACERS 0x0047fec0
-void ImaginaryTool0x368::FUN_0047fec0(FieldAt0x350* p_materialColor, FieldAt0x340* p_lightColor)
+void ImaginaryTool0x368::FUN_0047fec0(
+	WhiteFalcon0x140::MaterialColor* p_materialColor,
+	WhiteFalcon0x140::Light* p_lightColor
+)
 {
 	GolVec3 lightDirection;
 	lightDirection.m_x = -1.0f;
@@ -149,8 +152,8 @@ void ImaginaryTool0x368::FUN_0047fec0(FieldAt0x350* p_materialColor, FieldAt0x34
 	m_unk0x340.SetDirection(lightDirection);
 
 	m_renderer->VTable0x28();
-	m_renderer->VTable0x2c(reinterpret_cast<const WhiteFalcon0x140::Field0x124*>(&m_unk0x350));
-	m_renderer->VTable0x30(reinterpret_cast<const WhiteFalcon0x140::Field0x124*>(&m_unk0x340));
+	m_renderer->VTable0x2c(&m_unk0x350);
+	m_renderer->VTable0x30(&m_unk0x340);
 	m_renderer->VTable0x60();
 }
 

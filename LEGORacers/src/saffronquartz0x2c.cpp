@@ -434,7 +434,7 @@ void SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::VTable0x10(Frame0xb8* p
 {
 	m_unk0x3c |= 2;
 	m_unk0x38 = m_unk0x30;
-	p_frame->FUN_00406790((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+	p_frame->FUN_00406790(&m_unk0x20);
 
 	Event0x20::VTable0x10(p_frame, p_event);
 	if (p_event) {
@@ -447,7 +447,7 @@ void SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::VTable0x10(Frame0xb8* p
 // FUNCTION: LEGORACERS 0x00405460
 void SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::VTable0x14(Frame0xb8* p_frame, BluebellFog0x4* p_event)
 {
-	p_frame->FUN_004067f0((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+	p_frame->FUN_004067f0(&m_unk0x20);
 	Event0x20::VTable0x14(p_frame, p_event);
 	if (p_event) {
 		p_event->VTable0x2c(p_frame, m_name, this);
@@ -468,12 +468,12 @@ void SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::VTable0x04(undefined4 p
 		else if (m_unk0x3c & 2) {
 			m_unk0x3c &= ~2;
 			m_unk0x38 = m_unk0x34;
-			m_unk0x40->FUN_004067f0((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+			m_unk0x40->FUN_004067f0(&m_unk0x20);
 		}
 		else {
 			m_unk0x38 = m_unk0x30;
 			m_unk0x3c |= 2;
-			m_unk0x40->FUN_00406790((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+			m_unk0x40->FUN_00406790(&m_unk0x20);
 		}
 	}
 }
@@ -624,7 +624,7 @@ void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::VTable0x10(Frame0xb8* p_fra
 {
 	m_unk0x30 |= 2;
 	m_unk0x2c = m_unk0x24;
-	p_frame->FUN_00406760((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+	p_frame->FUN_00406760(&m_unk0x20);
 
 	Event0x20::VTable0x10(p_frame, p_event);
 	if (p_event) {
@@ -637,7 +637,7 @@ void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::VTable0x10(Frame0xb8* p_fra
 // FUNCTION: LEGORACERS 0x004057d0
 void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::VTable0x14(Frame0xb8* p_frame, BluebellFog0x4* p_event)
 {
-	p_frame->FUN_00406770((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+	p_frame->FUN_00406770(&m_unk0x20);
 	Event0x20::VTable0x14(p_frame, p_event);
 	if (p_event) {
 		p_event->VTable0x24(p_frame, m_name, this);
@@ -658,12 +658,12 @@ void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::VTable0x04(undefined4 p_ela
 		else if (m_unk0x30 & 2) {
 			m_unk0x30 &= ~2;
 			m_unk0x2c = m_unk0x28;
-			m_unk0x34->FUN_00406770((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+			m_unk0x34->FUN_00406770(&m_unk0x20);
 		}
 		else {
 			m_unk0x2c = m_unk0x24;
 			m_unk0x30 |= 2;
-			m_unk0x34->FUN_00406760((WhiteFalcon0x140::Field0x124*) &m_unk0x20);
+			m_unk0x34->FUN_00406760(&m_unk0x20);
 		}
 	}
 }
@@ -1235,13 +1235,13 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406710(AmberLens0x344* p_lens)
 }
 
 // FUNCTION: LEGORACERS 0x00406760
-void SaffronQuartz0x2c::Frame0xb8::FUN_00406760(const WhiteFalcon0x140::Field0x124* p_material)
+void SaffronQuartz0x2c::Frame0xb8::FUN_00406760(const WhiteFalcon0x140::MaterialColor* p_material)
 {
 	m_unk0x80 = p_material;
 }
 
 // FUNCTION: LEGORACERS 0x00406770
-void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const WhiteFalcon0x140::Field0x124* p_material)
+void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const WhiteFalcon0x140::MaterialColor* p_material)
 {
 	if (m_unk0x80 == p_material) {
 		m_unk0x80 = NULL;
@@ -1249,7 +1249,7 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const WhiteFalcon0x140::Field0x1
 }
 
 // FUNCTION: LEGORACERS 0x00406790
-LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const WhiteFalcon0x140::Field0x124* p_light)
+LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const WhiteFalcon0x140::Light* p_light)
 {
 	LegoU32 count = m_unk0x84;
 	for (LegoU32 i = 0; i < count; i++) {
@@ -1269,7 +1269,7 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const WhiteFalcon0x140::Field
 }
 
 // FUNCTION: LEGORACERS 0x004067f0
-void SaffronQuartz0x2c::Frame0xb8::FUN_004067f0(const WhiteFalcon0x140::Field0x124* p_light)
+void SaffronQuartz0x2c::Frame0xb8::FUN_004067f0(const WhiteFalcon0x140::Light* p_light)
 {
 	if (m_unk0x84) {
 		LegoU32 i = 0;

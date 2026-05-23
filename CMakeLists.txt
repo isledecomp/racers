@@ -346,8 +346,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarytool0x368fieldat0x2e0.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x340.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x350.cpp
+  LEGORacers/src/whitefalcon0x140light.cpp
+  LEGORacers/src/whitefalcon0x140materialcolor.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
   LEGORacers/src/onyxcircularbuffer0x1c.cpp

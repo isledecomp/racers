@@ -42,10 +42,23 @@ public:
 		ColorRGBA m_color; // 0x14
 	};
 
+	// SIZE 0x04
+	class MaterialColor {
+	public:
+		MaterialColor();
+		void SetColor(ColorRGBA p_color);
+		const ColorRGBA& GetColor() const { return m_color; }
+
+		ColorRGBA m_color; // 0x00
+	};
+
 	// SIZE 0x10
-	struct Field0x124 {
-		ColorRGBA m_unk0x00; // 0x00
-		FColorRGB m_unk0x04; // 0x04
+	class Light : public MaterialColor {
+	public:
+		Light();
+		void SetDirection(const GolVec3& p_direction);
+
+		GolVec3 m_direction; // 0x04
 	};
 
 	// SIZE 0xcc
@@ -91,8 +104,8 @@ public:
 	virtual void VTable0x20(AmberLens0x344*) = 0;                           // vtable+0x20
 	virtual void VTable0x24();                                              // vtable+0x24
 	virtual void VTable0x28();                                              // vtable+0x28
-	virtual void VTable0x2c(const Field0x124* p_param);                     // vtable+0x2c
-	virtual void VTable0x30(const Field0x124* p_param);                     // vtable+0x30
+	virtual void VTable0x2c(const MaterialColor* p_param);                  // vtable+0x2c
+	virtual void VTable0x30(const Light* p_param);                          // vtable+0x30
 	virtual void VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08); // vtable+0x34
 	virtual void VTable0x38();                                              // vtable+0x38
 	virtual void VTable0x3c(LegoU32);                                       // vtable+0x3c
@@ -257,8 +270,8 @@ protected:
 	Field0x4c m_unk0x4c;                          // 0x4c
 	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
-	const Field0x124* m_unk0x120;                 // 0x120
-	const Field0x124* m_unk0x124[7];              // 0x124
+	const MaterialColor* m_unk0x120;              // 0x120
+	const Light* m_unk0x124[7];                   // 0x124
 };
 
 #endif // WHITEFALCON0x140_H

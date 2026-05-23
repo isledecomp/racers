@@ -1,5 +1,10 @@
 #include "zoweeblubberworth0xf0.h"
 
+#include "amberlensbase0x120.h"
+#include "floatycanoe0x90.h"
+#include "floatyferry0xf4.h"
+#include "mabmaterialanimation0x14.h"
+
 // FUNCTION: LEGORACERS 0x00416040
 void ZoweeBlubberworth0xf0::FUN_00416040()
 {
@@ -20,8 +25,24 @@ void ZoweeBlubberworth0xf0::FUN_00416040()
 	}
 }
 
-// STUB: LEGORACERS 0x00416090
-void ZoweeBlubberworth0xf0::FUN_00416090(undefined4)
+// FUNCTION: LEGORACERS 0x00416090
+void ZoweeBlubberworth0xf0::FUN_00416090(LegoS32 p_elapsedMs)
 {
-	STUB(0x00416090);
+	LegoU32 i;
+
+	for (i = 0; i < m_unk0x74; i++) {
+		VTable0x4c(i)->FUN_00410300(p_elapsedMs);
+	}
+
+	for (i = 0; i < m_unk0x4c; i++) {
+		m_unk0x9c[i].VTable0x10(p_elapsedMs);
+	}
+
+	for (i = 0; i < m_unk0x54; i++) {
+		m_unk0xa0[i].VTable0x10(p_elapsedMs);
+	}
+
+	for (i = 0; i < m_unk0x7c; i++) {
+		VTable0x50(i)->FUN_004047b0();
+	}
 }

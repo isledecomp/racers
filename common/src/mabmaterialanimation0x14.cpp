@@ -165,3 +165,13 @@ void MabMaterialAnimation0x14::FUN_10025b60(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
 }
+
+// FUNCTION: LEGORACERS 0x00410300
+void MabMaterialAnimation0x14::FUN_00410300(LegoS32 p_elapsedMs)
+{
+	for (LegoU32 i = 0; i < m_unk0x10; i++) {
+		if (m_unk0x0c[i].IsAssigned()) {
+			m_unk0x0c[i].FUN_004104c0(p_elapsedMs, m_unk0x04, m_unk0x08);
+		}
+	}
+}

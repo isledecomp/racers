@@ -5,6 +5,7 @@
 #include "golmath.h"
 
 class WhiteFalcon0x140;
+class ZoweeBlubberworth0xf0;
 
 // VTABLE: GOLDP 0x100572e4
 // SIZE 0x28
@@ -41,6 +42,8 @@ public:
 	LegoFloat FUN_10028710();
 
 protected:
+	friend class ZoweeBlubberworth0xf0;
+
 	GolVec3 m_v0; // 0x04
 	GolVec3 m_v1; // 0x10
 	GolVec3 m_v2; // 0x1c

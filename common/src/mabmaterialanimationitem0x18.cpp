@@ -1,12 +1,14 @@
 #include "mabmaterialanimationitem0x18.h"
 
+#include "mabmaterialanimationitem0x8.h"
+
 DECOMP_SIZE_ASSERT(MabMaterialAnimationItem0x18, 0x18)
 
 // FUNCTION: GOLDP 0x10025d20
 // FUNCTION: LEGORACERS 0x00410350
 MabMaterialAnimationItem0x18::MabMaterialAnimationItem0x18()
 {
-	m_unk0x00 = 0;
+	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
 	m_unk0x06 = 0;
 	m_unk0x08 = 0;
@@ -51,7 +53,7 @@ void MabMaterialAnimationItem0x18::FUN_004103c0(const MabMaterialAnimationItem0x
 // FUNCTION: LEGORACERS 0x00410410
 void MabMaterialAnimationItem0x18::Reset()
 {
-	m_unk0x00 = 0;
+	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
 	m_unk0x06 = 0;
 	m_unk0x08 = 0;
@@ -63,7 +65,7 @@ void MabMaterialAnimationItem0x18::Reset()
 
 // FUNCTION: GOLDP 0x10025da0
 // FUNCTION: LEGORACERS 0x00410430
-void MabMaterialAnimationItem0x18::FUN_10025da0(undefined4 p_arg1, undefined2 p_arg2, undefined4 p_arg3)
+void MabMaterialAnimationItem0x18::FUN_10025da0(FloatyPontoon0x4c::Field0x2c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3)
 {
 	m_unk0x00 = p_arg1;
 	m_unk0x04 = p_arg2;
@@ -99,16 +101,73 @@ void MabMaterialAnimationItem0x18::FUN_00410490()
 	}
 }
 
-// STUB: LEGORACERS 0x004104c0
-void MabMaterialAnimationItem0x18::FUN_004104c0(undefined4, undefined4*)
+// FUNCTION: LEGORACERS 0x004104c0
+void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32)
 {
-	// TODO
-	STUB(0x004104c0);
+	if (!(m_flags & c_flagBit1)) {
+		return;
+	}
+
+	LegoU32 firstFrame = m_unk0x06;
+	LegoU32 frameCount = m_unk0x08;
+	LegoS32 lastFrame = firstFrame + frameCount - 1;
+
+	LegoFloat secondsPerFrame = m_unk0x0c;
+	m_unk0x10 += secondsPerFrame * static_cast<LegoFloat>(p_elapsedMs);
+
+	LegoU32 frame = static_cast<LegoU32>(m_unk0x10);
+	if (!(m_flags & c_flagBit2) && frame >= m_unk0x0a) {
+		FUN_00410470();
+		FUN_00410480();
+		return;
+	}
+
+	frame %= m_unk0x0a;
+
+	LegoS32 selectedFrame = lastFrame;
+	if (lastFrame >= static_cast<LegoS32>(firstFrame)) {
+		while (frame < p_items[selectedFrame].GetFrame()) {
+			selectedFrame--;
+			if (selectedFrame < static_cast<LegoS32>(firstFrame)) {
+				break;
+			}
+		}
+	}
+
+	if (selectedFrame < static_cast<LegoS32>(firstFrame)) {
+		selectedFrame = lastFrame;
+	}
+
+	m_unk0x00->SetPosition(m_unk0x04, p_items[selectedFrame].GetMaterial());
 }
 
-// STUB: LEGORACERS 0x00410560
-void MabMaterialAnimationItem0x18::FUN_00410560(undefined4, undefined4*)
+// FUNCTION: LEGORACERS 0x00410560
+undefined4* MabMaterialAnimationItem0x18::FUN_00410560(
+	LegoS32 p_elapsedMs,
+	MabMaterialAnimationItem0x8* p_items,
+	LegoU32
+)
 {
-	// TODO
-	STUB(0x00410560);
+	LegoS32 frame = static_cast<LegoS32>(m_unk0x0c * static_cast<LegoFloat>(p_elapsedMs));
+	frame %= m_unk0x0a;
+
+	LegoS32 firstFrame = m_unk0x06;
+	LegoS32 lastFrame = firstFrame + m_unk0x08 - 1;
+	LegoS32 selectedFrame = lastFrame;
+	if (selectedFrame >= firstFrame) {
+		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
+		while (frame < static_cast<LegoS32>(item->GetFrame())) {
+			selectedFrame--;
+			item--;
+			if (selectedFrame < firstFrame) {
+				break;
+			}
+		}
+	}
+
+	if (selectedFrame < firstFrame) {
+		return p_items[lastFrame].GetMaterial();
+	}
+
+	return p_items[selectedFrame].GetMaterial();
 }

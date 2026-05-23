@@ -13,6 +13,7 @@ class ImaginaryDrillFieldAt0x498;
 class ObscureVantage0x58;
 class GolFont0xa0;
 class UtopianPan0xa4;
+class SiennaCircuit0x154;
 
 // VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368
@@ -101,7 +102,7 @@ protected:
 		return static_cast<FieldAt0x2e0::Entry0xe0*>(FUN_0046be10(p_id));
 	}
 
-	undefined4 FUN_0047fcf0(ObscureVantage0x58* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
+	undefined4 FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0047fdc0(
 		ImaginaryDrillFieldAt0x498* p_unk0x04,
 		undefined2 p_unk0x08,

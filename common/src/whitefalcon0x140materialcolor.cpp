@@ -2,6 +2,7 @@
 
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::MaterialColor, 0x4)
 
+// FUNCTION: GOLDP 0x10024760
 // FUNCTION: LEGORACERS 0x0040eac0
 WhiteFalcon0x140::MaterialColor::MaterialColor()
 {
@@ -11,6 +12,7 @@ WhiteFalcon0x140::MaterialColor::MaterialColor()
 	m_color.m_alp = 0xff;
 }
 
+// FUNCTION: GOLDP 0x10024770
 // FUNCTION: LEGORACERS 0x00442e60
 void WhiteFalcon0x140::MaterialColor::SetColor(ColorRGBA p_color)
 {

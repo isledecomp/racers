@@ -27,12 +27,12 @@ FloatyCanoe0x90::FloatyCanoe0x90()
 	for (i = 0; i < 3; i++) {
 		m_unk0x78[i] = NULL;
 		m_unk0x84[i] = g_negativeOneFloat;
-		m_unk0x6c[i] = 0.0f;
+		m_unk0x6c[i] = NULL;
 	}
 }
 
 // FUNCTION: GOLDP 0x10027bb0
-void FloatyCanoe0x90::VTable0x50(undefined4* p_value, LegoFloat p_scalar)
+void FloatyCanoe0x90::VTable0x50(IGdbModel0x40* p_value, LegoFloat p_scalar)
 {
 	if (m_flags & c_flagBit0) {
 		VTable0x54();
@@ -62,13 +62,13 @@ void FloatyCanoe0x90::VTable0x54()
 	for (i = 0; i < 3; i++) {
 		m_unk0x78[i] = NULL;
 		m_unk0x84[i] = g_negativeOneFloat;
-		m_unk0x6c[i] = 0.0f;
+		m_unk0x6c[i] = NULL;
 	}
 	FloatyBuoy0x58::Reset();
 }
 
 // FUNCTION: GOLDP 0x10027c50
-void FloatyCanoe0x90::FUN_10027c50(undefined4* p_value, LegoFloat p_scalar)
+void FloatyCanoe0x90::FUN_10027c50(IGdbModel0x40* p_value, LegoFloat p_scalar)
 {
 	LegoU32 i;
 	LegoU32 j;
@@ -243,7 +243,7 @@ undefined4 FloatyCanoe0x90::VTable0x20()
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
-undefined4 FloatyCanoe0x90::VTable0x58(undefined4)
+WhiteFalconNode0x18* FloatyCanoe0x90::VTable0x58(undefined4)
 {
 	return 0;
 }

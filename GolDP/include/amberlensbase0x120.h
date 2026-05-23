@@ -7,6 +7,7 @@
 #include "types.h"
 
 class JadeOrbit0xd0;
+class FloatyFerry0xf4;
 struct Rect;
 
 // VTABLE: GOLDP 0x10056cc0
@@ -31,8 +32,10 @@ public:
 
 	void FUN_1001bfc0(undefined* p_unk0x04);
 	void FUN_1001c450(undefined* p_unk0x04);
+	void FUN_1001cb30(FloatyFerry0xf4* p_arg1, LegoU32 p_arg2);
 	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
 	void FUN_00404740(LegoFloat p_aspect);
+	void FUN_004047b0();
 
 	JadeOrbit0xd0* m_unk0x04;          // 0x04
 	LegoFloat m_unk0x08;               // 0x08
@@ -43,8 +46,8 @@ public:
 	LegoFloat m_unk0x1c;               // 0x1c
 	LegoFloat m_unk0x20;               // 0x20
 	LegoFloat m_unk0x24;               // 0x24
-	undefined4 m_unk0x28;              // 0x28
-	undefined4 m_unk0x2c;              // 0x2c
+	FloatyFerry0xf4* m_unk0x28;        // 0x28
+	LegoU32 m_unk0x2c;                 // 0x2c
 	LegoU32 m_flags;                   // 0x30
 	undefined m_unk0x34[0x100 - 0x34]; // 0x34
 	GolVec4 m_unk0x100;                // 0x100

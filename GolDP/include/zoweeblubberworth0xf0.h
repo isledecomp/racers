@@ -20,6 +20,7 @@ class FloatyCanoe0x90;
 class FloatyKajak0x64;
 class FloatyFerry0xf4;
 class FloatyFrigate0x9c;
+class FloatyPontoon0x4c;
 class IGdbModel0x40;
 class MabMaterialAnimation0x14;
 class MagentaRibbon0x20;
@@ -79,6 +80,10 @@ struct WdbBillboardSprite0x38 {
 
 // SIZE 0x4c
 struct WdbCamera0x4c {
+	LegoFloat GetUnk0x40() const { return m_unk0x40; }
+	LegoFloat GetUnk0x44() const { return m_unk0x44; }
+	LegoFloat GetUnk0x48() const { return m_unk0x48; }
+
 	GolName m_unk0x00;    // 0x00
 	LegoS32 m_unk0x08;    // 0x08
 	undefined4 m_unk0x0c; // 0x0c
@@ -134,7 +139,7 @@ public:
 	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;                                  // vtable+0x48
 	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;                        // vtable+0x4c
 	virtual AmberLensBase0x120* VTable0x50(LegoU32 p_index) const = 0;                              // vtable+0x50
-	virtual void VTable0x54();                                                                      // vtable+0x54
+	virtual void VTable0x54(undefined4);                                                            // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
 	// ZoweeBlubberworth0xf0::`scalar deleting destructor'
@@ -154,7 +159,7 @@ public:
 	const WhiteFalcon0x140::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
 	const WhiteFalcon0x140::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
-	void FUN_00416090(undefined4 p_elapsedMs);
+	void FUN_00416090(LegoS32 p_elapsedMs);
 	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
 	{
 		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xb4.GetName(p_name)) : NULL;
@@ -192,9 +197,9 @@ private:
 	void FUN_1002dc80(GolFileParser&);
 	void FUN_1002df90(GolFileParser&);
 	void FUN_1002e0d0(GolFileParser&);
-	void FUN_1002e250(undefined4*, undefined4*);
+	void FUN_1002e250(FloatyPontoon0x4c* p_billboard, WdbBillboardSprite0x38* p_sprite);
 	void FUN_1002e640();
-	void FUN_1002f210(undefined4, undefined4*);
+	void FUN_1002f210(LegoU32 p_cameraIndex, AmberLensBase0x120* p_lens);
 
 	WhiteFalcon0x140* m_unk0x04;                // 0x04
 	LegoBool32 m_binary;                        // 0x08

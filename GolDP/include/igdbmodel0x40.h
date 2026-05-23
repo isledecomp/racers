@@ -50,6 +50,7 @@ public:
 	virtual void VTable0x40();                                                                          // vtable+0x40
 
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
+	ShadowWolf0xc* GetMaterialTable() { return &m_unk0x04; }
 
 	// SYNTHETIC: GOLDP 0x10027070
 	// IGdbModel0x40::`scalar deleting destructor'

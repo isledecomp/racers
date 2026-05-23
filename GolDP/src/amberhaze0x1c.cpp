@@ -283,7 +283,7 @@ void AmberHaze0x1c::VTable0x24(WhiteFalcon0x140* p_renderer, const LegoChar* p_f
 	delete parser;
 }
 
-// STUB: GOLDP 0x10026970
+// FUNCTION: GOLDP 0x10026970
 void AmberHaze0x1c::FUN_10026970()
 {
 	LegoU32 i;
@@ -292,13 +292,9 @@ void AmberHaze0x1c::FUN_10026970()
 		for (i = 0; i < m_numItems; i++) {
 			DuskwindBananaRelic0x24* item = GetItem(i);
 			if (!(item->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit0)) {
-#if 0
-				m_unk0x14->VTable0x00(i, buffer);
-				item->FUN_100257e0(m_renderer, buffer);
-#else
-				// TODO
-				STUB(0x10026970);
-#endif
+				DuskWindBananaRelicParams params;
+				m_unk0x14->VTable0x00(i, &params);
+				item->FUN_100257e0(m_renderer, params);
 				VTable0x18(i);
 			}
 		}
@@ -314,7 +310,7 @@ void AmberHaze0x1c::FUN_10026970()
 }
 
 // FUNCTION: GOLDP 0x10026a00
-void AmberHaze0x1c::VTable0x20(WhiteFalcon0x140* p_renderer, undefined4* p_arg2, LegoU32 p_capacity)
+void AmberHaze0x1c::VTable0x20(WhiteFalcon0x140* p_renderer, DuskwindBananaRelicProvider0x4* p_arg2, LegoU32 p_capacity)
 {
 	if (m_renderer != NULL) {
 		Clear();

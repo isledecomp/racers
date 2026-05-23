@@ -4,6 +4,7 @@
 #include "golstring.h"
 
 #include <math.h>
+#include <string.h>
 
 // FUNCTION: LEGORACERS 0x00408be0
 void GolFontBase0x40::FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height)
@@ -36,6 +37,48 @@ void GolFontBase0x40::FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS3
 			}
 			else {
 				LegoU16 textChar = *p_string->FromCursor(i);
+				LegoU32 glyphIndex = FUN_004092b0(textChar);
+				width += font->m_unk0x28[glyphIndex].m_width + font->m_unk0x20;
+			}
+		}
+
+		width -= font->m_unk0x20;
+
+		*p_width = width < 0 ? 0 : width;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00408ca0
+void GolFontBase0x40::FUN_00408ca0(const LegoChar* p_string, LegoS32* p_width, LegoS32* p_height)
+{
+	GolFontBase0x40* font = this;
+
+	if (p_string == NULL) {
+		if (p_width != NULL) {
+			*p_width = 0;
+		}
+
+		if (p_height != NULL) {
+			*p_height = 0;
+		}
+
+		return;
+	}
+
+	if (p_height != NULL) {
+		*p_height = font->m_unk0x1c;
+	}
+
+	if (p_width != NULL) {
+		LegoS32 width = 0;
+		LegoU32 length = ::strlen(p_string);
+
+		for (LegoU32 i = 0; i < length; i++) {
+			if (p_string[i] == ' ') {
+				width += font->m_unk0x20 + font->m_unk0x18;
+			}
+			else {
+				LegoS16 textChar = p_string[i];
 				LegoU32 glyphIndex = FUN_004092b0(textChar);
 				width += font->m_unk0x28[glyphIndex].m_width + font->m_unk0x20;
 			}

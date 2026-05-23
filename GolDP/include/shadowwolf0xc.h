@@ -2,12 +2,13 @@
 #define SHADOWWOLF0xC_H
 
 #include "decomp.h"
+#include "floatypontoon0x4c.h"
 #include "types.h"
 
 class GolFileParser;
 class WhiteFalcon0x140;
 
-class ShadowWolf0xc {
+class ShadowWolf0xc : public FloatyPontoon0x4c::Field0x2c {
 public:
 	ShadowWolf0xc();
 	~ShadowWolf0xc();
@@ -19,11 +20,6 @@ public:
 	void FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_parser);
 
 	WhiteFalcon0x140* GetRenderer() const { return m_renderer; }
-
-protected:
-	WhiteFalcon0x140* m_renderer; // 0x00
-	LegoU32 m_unk0x04;            // 0x04
-	undefined4** m_unk0x08;       // 0x08
 };
 
 #endif // SHADOWWOLF0xC_H

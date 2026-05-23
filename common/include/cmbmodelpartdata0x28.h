@@ -13,6 +13,9 @@ public:
 	CmbModelPartData0x28();
 	void FUN_10018670(GolFileParser& p_parser);
 
+	LegoFloat GetUnk0x00() const { return m_unk0x00; }
+	const GolVec3& GetUnk0x04() const { return m_unk0x04; }
+
 private:
 	LegoFloat m_unk0x00; // 0x00
 	GolVec3 m_unk0x04;   // 0x04

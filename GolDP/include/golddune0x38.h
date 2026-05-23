@@ -14,9 +14,13 @@ public:
 		c_unk0x36Bit0 = 0x01,
 		c_unk0x36Bit1 = 0x02,
 		c_unk0x36Bit2 = 0x04,
+		c_unk0x36Bit3 = 0x08,
+		c_unk0x36Bit4 = 0x10,
 		c_unk0x36Bit5 = 0x20,
 		c_unk0x36Bit6 = 0x40,
 		c_unk0x36Bit7 = 0x80,
+		c_unk0x36Bit8 = 0x100,
+		c_unk0x36Bit9 = 0x200,
 		c_unk0x36Bit10 = 0x400,
 		c_unk0x36Bit11 = 0x800,
 	};
@@ -33,6 +37,22 @@ public:
 
 	LegoU16 GetUnk0x34() const { return m_unk0x34; }
 	LegoU16 GetUnk0x36() const { return m_unk0x36; }
+	void SetTextureDefinition(LegoU16 p_unk0x34, LegoU16 p_unk0x36, const ColorRGBA& p_colorKey)
+	{
+		m_unk0x34 = p_unk0x34;
+		m_unk0x36 = p_unk0x36;
+		m_colorKey = p_colorKey;
+		m_colorKey.m_alp = 0;
+	}
+	void SetSourceTextureDefinition(LegoU16 p_unk0x34, LegoU16 p_unk0x36, const ColorRGBA& p_colorKey)
+	{
+		m_unk0x36 = p_unk0x36;
+		m_unk0x34 = p_unk0x34;
+		p_unk0x36 |= c_unk0x36Bit11;
+		m_unk0x36 = p_unk0x36;
+		m_colorKey = p_colorKey;
+		m_colorKey.m_alp = 0;
+	}
 	void SetColorKey(const ColorRGBA& p_colorKey)
 	{
 		m_colorKey = p_colorKey;

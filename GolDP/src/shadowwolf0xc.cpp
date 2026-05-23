@@ -13,8 +13,8 @@
 ShadowWolf0xc::ShadowWolf0xc()
 {
 	m_renderer = NULL;
-	m_unk0x04 = 0;
-	m_unk0x08 = NULL;
+	m_count = 0;
+	m_entries = NULL;
 }
 
 // FUNCTION: GOLDP 0x10025df0
@@ -25,14 +25,14 @@ void ShadowWolf0xc::FUN_10025df0(WhiteFalcon0x140* p_renderer, undefined4 p_arg2
 	}
 
 	m_renderer = p_renderer;
-	m_unk0x04 = p_arg2;
+	m_count = p_arg2;
 
-	m_unk0x08 = new undefined4*[p_arg2];
-	if (m_unk0x08 == NULL) {
+	m_entries = new undefined4*[p_arg2];
+	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(m_unk0x08, 0, sizeof(*m_unk0x08) * m_unk0x04);
+	::memset(m_entries, 0, sizeof(*m_entries) * m_count);
 }
 
 // FUNCTION: GOLDP 0x10025e60
@@ -75,21 +75,21 @@ void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_
 	}
 
 	m_renderer = p_renderer;
-	m_unk0x04 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x04 == 0) {
+	m_count = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_count == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x08 = new undefined4*[m_unk0x04];
-	if (m_unk0x08 == NULL) {
+	m_entries = new undefined4*[m_count];
+	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (i = 0; i < m_unk0x04; i++) {
+	for (i = 0; i < m_count; i++) {
 		GolName materialName;
 		::strncpy(materialName, p_parser.ReadString(), sizeof(materialName));
-		m_unk0x08[i] = m_renderer->FindMaterialByName(materialName);
-		if (m_unk0x08[i] == NULL) {
+		m_entries[i] = m_renderer->FindMaterialByName(materialName);
+		if (m_entries[i] == NULL) {
 			char message[64];
 			::memset(message, 0, sizeof(materialName) + 1);
 			::strncpy(message, materialName, sizeof(materialName));
@@ -112,10 +112,10 @@ ShadowWolf0xc::~ShadowWolf0xc()
 // FUNCTION: GOLDP 0x100260d0 FOLDED
 void ShadowWolf0xc::Destroy()
 {
-	if (m_unk0x08 != NULL) {
-		delete[] m_unk0x08;
-		m_unk0x08 = NULL;
+	if (m_entries != NULL) {
+		delete[] m_entries;
+		m_entries = NULL;
 	}
 	m_renderer = NULL;
-	m_unk0x04 = 0;
+	m_count = 0;
 }

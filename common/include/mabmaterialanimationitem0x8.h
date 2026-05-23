@@ -12,6 +12,8 @@ public:
 	MabMaterialAnimationItem0x8();
 
 	void FUN_10026110(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoU32 p_id);
+	undefined4* GetMaterial() const { return m_unk0x00; }
+	LegoU32 GetFrame() const { return m_unk0x04; }
 
 private:
 	undefined4* m_unk0x00; // 0x00

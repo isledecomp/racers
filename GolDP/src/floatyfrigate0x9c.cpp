@@ -13,7 +13,7 @@ FloatyFrigate0x9c::FloatyFrigate0x9c()
 }
 
 // FUNCTION: GOLDP 0x1001aca0
-void FloatyFrigate0x9c::VTable0x60(undefined4* p_arg1, undefined4 p_arg2, LegoFloat p_arg3)
+void FloatyFrigate0x9c::VTable0x60(IGdbModel0x40* p_arg1, BoundingShape0x2c* p_arg2, LegoFloat p_arg3)
 {
 	FloatyCanoe0x90::VTable0x50(p_arg1, p_arg3);
 	m_unk0x90[0] = p_arg2;
@@ -29,7 +29,7 @@ void FloatyFrigate0x9c::VTable0x54()
 }
 
 // FUNCTION: GOLDP 0x1001acf0
-void FloatyFrigate0x9c::FUN_1001acf0(undefined4* p_arg1, undefined4 p_arg2, LegoFloat p_arg3)
+void FloatyFrigate0x9c::FUN_1001acf0(IGdbModel0x40* p_arg1, BoundingShape0x2c* p_arg2, LegoFloat p_arg3)
 {
 	LegoU32 i;
 

@@ -7,11 +7,14 @@
 #include "golstring.h"
 #include "imaginarydrillfieldat0x498.h"
 #include "menutoolcontext0x4bc8.h"
+#include "siennacircuit0x154.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368, 0x368)
 DECOMP_SIZE_ASSERT(ImaginaryTool0x368::FieldAt0x2e0::Entry0xe0, 0xe0)
+DECOMP_SIZE_ASSERT(SiennaCircuit0x154, 0x154)
+DECOMP_SIZE_ASSERT(SiennaCircuit0x154::CreateParams0x84, 0x84)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void ImaginaryTool0x368::VTable0x80()
@@ -92,11 +95,28 @@ LegoBool32 ImaginaryTool0x368::Destroy()
 	return ImaginaryNotion0x290::Destroy();
 }
 
-// STUB: LEGORACERS 0x0047fcf0
-undefined4 ImaginaryTool0x368::FUN_0047fcf0(ObscureVantage0x58*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0047fcf0
+undefined4 ImaginaryTool0x368::FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
-	STUB(0x0047fcf0);
-	return 0;
+	CeruleanQueen0x58::Entry0x84* inputBindingEntry = GetInputBindingEntry0x84(p_unk0x08);
+	CeruleanEmperor0x4c::Entry0x150* styleEntry = GetStyleEntry0x150(p_unk0x0c);
+	if (!inputBindingEntry || !styleEntry) {
+		return 0;
+	}
+
+	SiennaCircuit0x154::CreateParams0x84 createParams;
+	::memcpy(&createParams, inputBindingEntry, sizeof(createParams));
+	FUN_0046ba60(&createParams);
+
+	MenuToolContext0x4bc8* context = m_context;
+	createParams.m_unk0x74 = &context->m_unk0x21a4;
+	createParams.m_pieceLibrary = &context->m_pieceLibrary;
+	createParams.m_unk0x7c = &context->m_unk0x21f4;
+	createParams.m_unk0x80 = &context->m_unk0x4224;
+	createParams.m_unk0x70 = VTable0x6c();
+	createParams.m_unk0x6c = 5;
+
+	return p_unk0x04->FUN_00485300(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0047fdc0
@@ -240,6 +260,13 @@ LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 		VTable0x84();
 	}
 
+	return FALSE;
+}
+
+// STUB: LEGORACERS 0x00485300
+LegoBool32 SiennaCircuit0x154::FUN_00485300(CreateParams0x84*, CeruleanEmperor0x4c::Entry0x150*)
+{
+	STUB(0x00485300);
 	return FALSE;
 }
 

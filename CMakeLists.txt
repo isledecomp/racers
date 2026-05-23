@@ -97,10 +97,13 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
+  common/src/whitefalcon0x140light.cpp
+  common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart0x34.cpp
   common/src/cmbmodelpartdata0x18.cpp
   common/src/cmbmodelpartdata0x28.cpp
   common/src/mabmaterialanimation0x14.cpp
+  common/src/floatypontoon0x4cfield0x2c.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -346,8 +349,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarytool0x368fieldat0x2e0.cpp
-  LEGORacers/src/whitefalcon0x140light.cpp
-  LEGORacers/src/whitefalcon0x140materialcolor.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
   LEGORacers/src/onyxcircularbuffer0x1c.cpp

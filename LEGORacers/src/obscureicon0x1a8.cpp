@@ -716,24 +716,28 @@ ObscureVantage0x58* ObscureIcon0x1a8::VTable0x30(OnyxCircularBuffer0x1c::Item* p
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x004728e0
+// FUNCTION: LEGORACERS 0x004728e0
 ObscureVantage0x58* ObscureIcon0x1a8::VTable0x34(OnyxCircularBuffer0x1c::Item* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
-	LegoU32 eventType = InputDevice::GetKeySource(keyCode);
+	LegoU32 eventType = keyCode;
+	eventType &= InputDevice::c_sourceMask;
 	LegoU32 activeKey = m_activeKeyCode;
 
 	if (keyCode != activeKey) {
 		return NULL;
 	}
 
-	LegoBool32 isMouse = eventType == InputDevice::c_sourceMouse;
-	m_activeKeyCode = 0;
-	if (isMouse) {
+	if (eventType == InputDevice::c_sourceMouse) {
+		m_activeKeyCode = 0;
+
 		if (!FUN_00472c40(p_x, p_y) && (m_stateFlags & c_flagBit2)) {
 			VTable0x58(1);
 			return this;
 		}
+	}
+	else {
+		m_activeKeyCode = 0;
 	}
 
 	VTable0x58(0);

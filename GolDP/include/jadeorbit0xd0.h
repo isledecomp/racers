@@ -10,12 +10,12 @@
 class JadeOrbit0xd0 : public JadeOrbitBase0x10 {
 public:
 	JadeOrbit0xd0();
-	void VTable0x00() override;                       // vtable+0x00
-	void VTable0x04() override;                       // vtable+0x04
-	void VTable0x08(undefined4, undefined4) override; // vtable+0x08
-	void VTable0x0c() override;                       // vtable+0x0c
-	void VTable0x10() override;                       // vtable+0x10
-	void VTable0x14() override;                       // vtable+0x14
+	void VTable0x00() override;                                      // vtable+0x00
+	void VTable0x04(const GolVec3* p_src, GolVec3* p_dest) override; // vtable+0x04
+	void VTable0x08(undefined4, undefined4) override;                // vtable+0x08
+	void VTable0x0c(const GolVec3* p_src, GolVec3* p_dest) override; // vtable+0x0c
+	void VTable0x10() override;                                      // vtable+0x10
+	void VTable0x14() override;                                      // vtable+0x14
 	void GetBasis(GolVec3* p_right, GolVec3* p_forward,
 				  GolVec3* p_up) override;                            // vtable+0x18
 	void VTable0x1c(GolVec3* p_unk0x04, GolVec3* p_unk0x08) override; // vtable+0x1c

@@ -13,11 +13,12 @@
 #include "golstringtable.h"
 #include "types.h"
 
-class GolFileParser;
 class BronzeFalcon0xc8770;
 class CrimsonPebble0x228;
 class GolExport;
 class GolFont0xa0;
+class GolFileParser;
+class MabMaterialAnimation0x14;
 class WhiteFalcon0x140;
 class SaffronQuartz0x2c;
 class SoundManager;
@@ -253,9 +254,32 @@ public:
 		const LegoChar* p_fileName,
 		undefined4 p_binary
 	);
+	void FUN_004a0ff0(GolFileParser* p_parser);
+	void FUN_004a1240(undefined4 p_binary);
 	void FUN_004a12e0(GolFileParser* p_unk0x04);
+	void FUN_004a14e0();
+	void FUN_004a15e0(GolFileParser* p_parser);
+	void FUN_004a16f0();
+	void FUN_004a1760(GolFileParser* p_parser);
+	void FUN_004a1850(undefined4 p_binary);
+	void FUN_004a18d0(GolFileParser* p_parser);
+	void FUN_004a19c0(undefined4 p_binary);
+	void FUN_004a1a40(GolFileParser* p_parser);
+	void FUN_004a1c00(GolFileParser* p_parser);
+	void FUN_004a1dc0(GolFileParser* p_parser);
+	void FUN_004a1f80(GolFileParser* p_parser);
+	void FUN_004a20f0(GolFileParser* p_parser);
 	void LoadTextEntries(GolFileParser* p_parser);
 	void FUN_004a24e0();
+	void FUN_004a2520(GolFileParser* p_parser);
+	void FUN_004a26f0();
+	void FUN_004a2730(
+		GolFileParser* p_parser,
+		undefined4 p_unk0x04,
+		undefined4& p_unk0x08,
+		CrimsonPebbleEventLink0x0c*& p_unk0x0c,
+		GolNameTable& p_unk0x10
+	);
 	void FUN_004a2dc0(LegoU32 p_elapsedMs);
 	void FUN_004a2f30(BronzeFalcon0xc8770* p_renderer);
 	void FUN_004a2f80(AmberLens0x344* p_lens);
@@ -266,7 +290,7 @@ public:
 
 	LegoU32 GetUnk0x118() const { return m_unk0x118; }
 	LegoU32 GetStringTableCount() const { return m_unk0x78; }
-	SoundManager* GetSoundManager() const { return m_unk0x0c; }
+	SoundManager* GetSoundManager() const { return m_soundManager; }
 	void SetStringTable(GolStringTable* p_stringTable) { m_stringTable = p_stringTable; }
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
@@ -277,13 +301,13 @@ public:
 private:
 	GolExport* m_unk0x04;                   // 0x004
 	BronzeFalcon0xc8770* m_unk0x08;         // 0x008
-	SoundManager* m_unk0x0c;                // 0x00c
+	SoundManager* m_soundManager;           // 0x00c
 	SaffronQuartz0x2c* m_unk0x10;           // 0x010
 	SoundNode m_unk0x14;                    // 0x014
 	MenuAnimationList* m_unk0x64;           // 0x064
 	LegoU32 m_unk0x68;                      // 0x068
 	CrimsonPebbleAnimation0x33c* m_unk0x6c; // 0x06c
-	undefined4* m_unk0x70;                  // 0x070
+	MabMaterialAnimation0x14* m_unk0x70;    // 0x070
 	undefined4* m_unk0x74;                  // 0x074
 	LegoU32 m_unk0x78;                      // 0x078
 	GolStringTable* m_unk0x7c;              // 0x07c

@@ -26,8 +26,29 @@ void ImaginaryDrillFieldAt0x22dc::FUN_0047e0a0(CreateParams*)
 	STUB(0x0047e0a0);
 }
 
+// STUB: LEGORACERS 0x0047e0e0
+LegoBool32 ImaginaryDrillFieldAt0x22dc::VTable0x08()
+{
+	STUB(0x0047e0e0);
+	return TRUE;
+}
+
 // STUB: LEGORACERS 0x0047e210
 void ImaginaryDrillFieldAt0x22dc::FUN_0047e210(TurquoiseGlowColor*)
 {
 	STUB(0x0047e210);
+}
+
+// STUB: LEGORACERS 0x0047e250
+LegoBool32 ImaginaryDrillFieldAt0x22dc::VTable0x0c()
+{
+	STUB(0x0047e250);
+	return TRUE;
+}
+
+// STUB: LEGORACERS 0x0047e290
+LegoBool32 ImaginaryDrillFieldAt0x22dc::VTable0x10(undefined4)
+{
+	STUB(0x0047e290);
+	return TRUE;
 }

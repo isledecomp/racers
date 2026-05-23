@@ -3,6 +3,7 @@
 #include "bronzefalcon0xc8770.h"
 #include "golfontbase0x40.h"
 #include "golstring.h"
+#include "utopianpan0xa4.h"
 
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
 DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)
@@ -267,6 +268,13 @@ Rect* ObscureVantage0x58::FUN_00472d00(
 	return FUN_00472c80(p_source, p_dest);
 }
 
+// FUNCTION: LEGORACERS 0x00472d70
+void ObscureVantage0x58::FUN_00472d70(Rect* p_destRect, Rect* p_sourceRect, UtopianPan0xa4* p_image)
+{
+	p_image->m_unk0x4a.m_u32 = m_colorPacked;
+	m_renderer->VTable0x7c(p_image, 0, p_destRect, p_sourceRect, NULL);
+}
+
 // FUNCTION: LEGORACERS 0x00472da0
 undefined2 ObscureVantage0x58::FUN_00472da0(
 	Rect* p_source,
@@ -415,6 +423,37 @@ void ObscureVantage0x58::VTable0x10(Rect* p_rect)
 void ObscureVantage0x58::VTable0x14(VisualState0x4* p_param)
 {
 	m_color = p_param->m_color;
+}
+
+// FUNCTION: LEGORACERS 0x00472fd0
+void ObscureVantage0x58::FUN_00472fd0(Rect* p_sourceRect, Rect* p_destRect)
+{
+	if (p_destRect->m_left >= p_destRect->m_right) {
+		m_unk0x44 = 0.0f;
+	}
+	else {
+		LegoFloat sourceWidth = static_cast<LegoFloat>(p_sourceRect->m_right - p_sourceRect->m_left);
+		LegoFloat destWidth = static_cast<LegoFloat>(p_destRect->m_right - p_destRect->m_left);
+		m_unk0x44 = sourceWidth / destWidth;
+	}
+
+	if (p_destRect->m_top >= p_destRect->m_bottom) {
+		m_unk0x48 = 0.0f;
+	}
+	else {
+		LegoFloat sourceHeight = static_cast<LegoFloat>(p_sourceRect->m_bottom - p_sourceRect->m_top);
+		LegoFloat destHeight = static_cast<LegoFloat>(p_destRect->m_bottom - p_destRect->m_top);
+		m_unk0x48 = sourceHeight / destHeight;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00473050
+void ObscureVantage0x58::FUN_00473050(Rect* p_sourceRect, Rect* p_destRect)
+{
+	p_destRect->m_top = static_cast<LegoS32>(p_sourceRect->m_top * m_unk0x48);
+	p_destRect->m_left = static_cast<LegoS32>(p_sourceRect->m_left * m_unk0x44);
+	p_destRect->m_right = static_cast<LegoS32>(p_sourceRect->m_right * m_unk0x44);
+	p_destRect->m_bottom = static_cast<LegoS32>(p_sourceRect->m_bottom * m_unk0x48);
 }
 
 // FUNCTION: LEGORACERS 0x004730a0

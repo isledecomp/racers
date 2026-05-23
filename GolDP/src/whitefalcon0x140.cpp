@@ -2,9 +2,13 @@
 
 #include "amberhaze0x1c.h"
 #include "cinderbasin0x28.h"
+#include "floatycanoe0x90.h"
+#include "golmath.h"
 #include "golsurfaceformat.h"
 #include "hypnoticnoise0x1c.h"
+#include "jadeorbitbase0x10.h"
 #include "magentaribbon0x20.h"
+#include "whitefalconnode0x18.h"
 
 #include <string.h>
 
@@ -141,7 +145,8 @@ LegoFloat g_arccosTable[1024] = {
 };
 
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::TexturedVertex, 0x18)
-DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Field0x124, 0x10)
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::MaterialColor, 0x04)
+DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Light, 0x10)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Field0x4c, 0xcc)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
@@ -747,9 +752,46 @@ void WhiteFalcon0x140::SelectTextureFormat(
 }
 
 // STUB: GOLDP 0x10029500
-void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28*)
+void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28* p_model)
 {
-	STUB(0x10029500);
+	FloatyBoat0x28::ResultStruct result;
+	p_model->VTable0x14(m_unk0x4c.m_position, &result);
+	if (!result.m_unk0x00) {
+		return;
+	}
+
+	GolVec3 localRight;
+	GolVec3 localForward;
+	WhiteFalconNode0x18* node = static_cast<FloatyCanoe0x90*>(p_model)->VTable0x58(result.m_unk0x04);
+	if (node != NULL) {
+		GolVec3 worldRight;
+		GolVec3 worldForward;
+		static_cast<FloatyCanoe0x90*>(p_model)->VTable0x5c(result.m_unk0x04);
+		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
+		p_model->VTable0x34(worldRight, &localRight);
+		p_model->VTable0x34(worldForward, &localForward);
+	}
+	else {
+		p_model->VTable0x48(&localRight, &localForward);
+	}
+
+	if (localRight.m_x == 0.0f && localRight.m_y == 0.0f) {
+		VTable0xa8(p_model, 0.0f, 0.5f);
+	}
+	else {
+		GolVec2 uv;
+		uv.m_x = localRight.m_x;
+		uv.m_y = localRight.m_y;
+		GolMath::NormalizeVector2(uv, &uv);
+
+		LegoFloat u = g_arccosTable[static_cast<LegoS32>((uv.m_x + 1.0f) * 511.5f)] * 0.31830987f * 0.5f;
+		if (uv.m_y < 0.0f) {
+			u = 1.0f - u;
+		}
+
+		LegoFloat v = g_arccosTable[static_cast<LegoS32>((localForward.m_z + 1.0f) * 511.5f)] * 0.31830987f;
+		VTable0xa8(p_model, u, v);
+	}
 }
 
 // STUB: GOLDP 0x10029680
@@ -801,14 +843,14 @@ void WhiteFalcon0x140::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x100298d0
-void WhiteFalcon0x140::VTable0x2c(const Field0x124* p_param)
+void WhiteFalcon0x140::VTable0x2c(const MaterialColor* p_param)
 {
 	m_flags |= c_flagBit15;
 	m_unk0x120 = p_param;
 }
 
 // FUNCTION: GOLDP 0x100298f0
-void WhiteFalcon0x140::VTable0x30(const Field0x124* p_param)
+void WhiteFalcon0x140::VTable0x30(const Light* p_param)
 {
 	if (m_unk0x11c < 7) {
 		m_flags |= c_flagBit15;

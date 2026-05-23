@@ -63,8 +63,8 @@ struct PeridotTracePersistentState {
 	LegoU16 m_unk0x26;                                 // 0x01a
 	LegoU32 m_unk0x28[13];                             // 0x01c
 	LegoU32 m_unk0x5c[13];                             // 0x050
-	undefined2 m_unk0x90[13][14];                      // 0x084
-	undefined2 m_unk0x1fc[13][14];                     // 0x1f0
+	LegoU8 m_unk0x90[13][28];                          // 0x084
+	LegoU8 m_unk0x1fc[13][28];                         // 0x1f0
 	PeridotTraceInputBindingState m_inputBindings;     // 0x35c
 };
 
@@ -291,7 +291,7 @@ private:
 // SIZE 0x250
 class PeridotTraceBuffer0x250 : public PeridotTraceBase0x24::Record {
 public:
-	static void CopyStringToBuffer(GolString* p_string, undefined2* p_dest, LegoU32 p_count);
+	static void CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count);
 
 	void Reset() { m_unk0x244 = 0; }
 

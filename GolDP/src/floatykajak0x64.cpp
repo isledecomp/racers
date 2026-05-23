@@ -8,7 +8,7 @@ FloatyKajak0x64::FloatyKajak0x64()
 }
 
 // FUNCTION: GOLDP 0x1001b760
-void FloatyKajak0x64::FUN_1001b760(undefined4 p_arg)
+void FloatyKajak0x64::FUN_1001b760(BoundingVolume0x64* p_arg)
 {
 	m_unk0x58 = p_arg;
 }

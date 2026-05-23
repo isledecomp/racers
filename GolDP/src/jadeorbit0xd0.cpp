@@ -143,13 +143,13 @@ void JadeOrbit0xd0::VTable0x28()
 }
 
 // STUB: GOLDP 0x10002c10
-void JadeOrbit0xd0::VTable0x04()
+void JadeOrbit0xd0::VTable0x04(const GolVec3*, GolVec3*)
 {
 	STUB(0x10002c10);
 }
 
 // STUB: GOLDP 0x10002c90
-void JadeOrbit0xd0::VTable0x0c()
+void JadeOrbit0xd0::VTable0x0c(const GolVec3*, GolVec3*)
 {
 	STUB(0x10002c90);
 }

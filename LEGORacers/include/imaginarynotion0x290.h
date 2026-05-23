@@ -134,6 +134,11 @@ public:
 		return static_cast<CeruleanEmperor0x4c::Entry0x104*>(FUN_0046bd80(p_id));
 	}
 
+	CeruleanEmperor0x4c::Entry0x150* GetStyleEntry0x150(undefined2 p_id)
+	{
+		return static_cast<CeruleanEmperor0x4c::Entry0x150*>(FUN_0046bd80(p_id));
+	}
+
 	CeruleanQueen0x58::Entry0x3c* GetInputBindingEntry0x3c(undefined2 p_id)
 	{
 		return static_cast<CeruleanQueen0x58::Entry0x3c*>(FUN_0046be10(p_id));

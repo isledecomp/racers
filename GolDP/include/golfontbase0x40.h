@@ -58,6 +58,7 @@ public:
 	void FUN_1001f090(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
 	static LegoS32 __cdecl CompareGlyphChars(const void* p_left, const void* p_right);
 	void FUN_00408be0(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
+	void FUN_00408ca0(const LegoChar* p_string, LegoS32* p_width, LegoS32* p_height);
 	void FUN_00408d50(
 		GolString* p_string,
 		LegoS32 p_wrapWidth,
@@ -95,6 +96,7 @@ public:
 	}
 
 	void SetColor(LegoU32 p_color) { m_colorPacked = p_color; }
+	void SetColor(const ColorRGBA& p_color) { m_color = p_color; }
 
 protected:
 	friend class CinderBasin0x28;

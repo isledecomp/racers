@@ -98,10 +98,13 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
+  common/src/whitefalcon0x140light.cpp
+  common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart0x34.cpp
   common/src/cmbmodelpartdata0x18.cpp
   common/src/cmbmodelpartdata0x28.cpp
   common/src/mabmaterialanimation0x14.cpp
+  common/src/floatypontoon0x4cfield0x2c.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -291,7 +294,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/stackoflegou16.cpp
   LEGORacers/src/crimsonsun0xa4entry.cpp
   LEGORacers/src/crimsonsun0xa4.cpp
-  LEGORacers/src/cutscenevent0xe4.cpp
   LEGORacers/src/glassblock0x3368.cpp
   LEGORacers/src/glassshard0x3b8.cpp
   LEGORacers/src/glassstream0x94.cpp
@@ -300,6 +302,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
   LEGORacers/src/whitefalcon0x140.cpp
+  LEGORacers/src/zoweeblubberworth0xf0.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
   LEGORacers/src/ceruleanemperor0x4c.cpp
@@ -322,6 +325,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginarybrush0x6410.cpp
   LEGORacers/src/imaginarychisel0x658.cpp
   LEGORacers/src/imaginarychisel0x658helperat0x368.cpp
+  LEGORacers/src/amberlensbase0x120.cpp
   LEGORacers/src/saffronquartz0x2c.cpp
   LEGORacers/src/imaginaryclaw0x15ec.cpp
   LEGORacers/src/imaginarycrowbar0x6750.cpp
@@ -345,8 +349,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/imaginaryspring0x658.cpp
   LEGORacers/src/imaginarytool0x368.cpp
   LEGORacers/src/imaginarytool0x368fieldat0x2e0.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x340.cpp
-  LEGORacers/src/imaginarytool0x368fieldat0x350.cpp
   LEGORacers/src/imaginarywrench0x23bc.cpp
   LEGORacers/src/onyxbreeze0x248.cpp
   LEGORacers/src/onyxcircularbuffer0x1c.cpp
@@ -360,6 +362,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/topazburst0x14.cpp
   LEGORacers/src/legopiecelibrary.cpp
   LEGORacers/src/crimsonpebble0x228.cpp
+  LEGORacers/src/crimsonpebbletext0x70.cpp
+  LEGORacers/src/crimsonpebblevisual0x58.cpp
   LEGORacers/src/sapphirereef0x2030.cpp
   LEGORacers/src/verdanttide0x38.cpp
   LEGORacers/src/turquoiseglow0x80.cpp

@@ -46,6 +46,13 @@ void AmberLensBase0x120::VTable0x24(undefined4, undefined4, undefined4)
 	STUB(0x1001c900);
 }
 
+// FUNCTION: GOLDP 0x1001cb30
+void AmberLensBase0x120::FUN_1001cb30(FloatyFerry0xf4* p_arg1, LegoU32 p_arg2)
+{
+	m_unk0x28 = p_arg1;
+	m_unk0x2c = p_arg2;
+}
+
 // FUNCTION: GOLDP 0x1002c010 FOLDED
 void AmberLensBase0x120::VTable0x20(const GolVec3*, GolVec3*)
 {

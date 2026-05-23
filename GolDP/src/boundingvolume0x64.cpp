@@ -25,7 +25,7 @@ BoundingVolume0x64::~BoundingVolume0x64()
 }
 
 // FUNCTION: GOLDP 0x1001b800
-void BoundingVolume0x64::VTable0x04(undefined4* p_arg1, const LegoChar* p_name, LegoBool32 p_binary)
+void BoundingVolume0x64::VTable0x04(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoBool32 p_binary)
 {
 	if (m_unk0x08 != NULL) {
 		VTable0x08();
@@ -52,7 +52,7 @@ void BoundingVolume0x64::VTable0x04(undefined4* p_arg1, const LegoChar* p_name, 
 			if (m_unk0x18.GetRenderer() != NULL) {
 				parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 			}
-			m_unk0x18.FUN_10025f90(reinterpret_cast<WhiteFalcon0x140*>(p_arg1), *parser);
+			m_unk0x18.FUN_10025f90(p_renderer, *parser);
 			break;
 		case GolFileParser::e_unknown0x34:
 			if (m_unk0x0c != 0) {

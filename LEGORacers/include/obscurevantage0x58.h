@@ -18,6 +18,7 @@ class GolExport;
 class GolString;
 class ObscureVantage0x58;
 class SoundGroupBinding;
+class UtopianPan0xa4;
 
 typedef LegoBool32 ObscureVantageEventResult;
 
@@ -82,9 +83,12 @@ public:
 	LegoBool32 ClipRect(Rect*, Rect*);
 	Rect* FUN_00472c80(Rect*, Rect*);
 	Rect* FUN_00472d00(GolFontBase0x40*, GolString*, Rect*, Rect*, LegoS32);
+	void FUN_00472d70(Rect*, Rect*, UtopianPan0xa4*);
 	undefined2 FUN_00472da0(Rect*, Rect*, GolFontBase0x40*, GolString*, LegoS32, LegoS32);
 	Rect* FUN_00473160(Rect*);
 	void FUN_004731b0(undefined4&, undefined4&);
+	void FUN_00472fd0(Rect*, Rect*);
+	void FUN_00473050(Rect*, Rect*);
 	void SetEventHandler(ImaginaryInterface* p_eventHandler) { m_unk0x28 = p_eventHandler; }
 	LegoU8 GetFlags() const { return m_flags; }
 	LegoBool GetUnk0x54() const { return m_unk0x54; }

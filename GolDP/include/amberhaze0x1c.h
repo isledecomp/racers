@@ -1,6 +1,7 @@
 #ifndef AMBERHAZE0X1C_H
 #define AMBERHAZE0X1C_H
 
+#include "duskwindbananarelic0x24.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 
@@ -15,7 +16,11 @@ class MdbTxtParser : public GolTxtParser {
 };
 
 class WhiteFalcon0x140;
-class DuskwindBananaRelic0x24;
+
+class DuskwindBananaRelicProvider0x4 {
+public:
+	virtual void VTable0x00(LegoU32 p_index, DuskWindBananaRelicParams* p_params) = 0;
+};
 
 // VTABLE: GOLDP 0x10057134
 // SIZE 0x1c
@@ -25,12 +30,16 @@ public:
 	~AmberHaze0x1c() override; // vtable+0x00
 	void Clear() override;     // vtable+0x08
 
-	virtual void VTable0x0c();                                                                     // vtable+0x0c
-	virtual void VTable0x10();                                                                     // vtable+0x10
-	virtual void AllocateItems() = 0;                                                              // vtable+0x14
-	virtual void VTable0x18(LegoU32 p_index) = 0;                                                  // vtable+0x18
-	virtual void VTable0x1c(WhiteFalcon0x140* p_renderer, LegoU32 p_capacity);                     // vtable+0x1c
-	virtual void VTable0x20(WhiteFalcon0x140* p_renderer, undefined4* p_arg2, LegoU32 p_capacity); // vtable+0x20
+	virtual void VTable0x0c();                                                 // vtable+0x0c
+	virtual void VTable0x10();                                                 // vtable+0x10
+	virtual void AllocateItems() = 0;                                          // vtable+0x14
+	virtual void VTable0x18(LegoU32 p_index) = 0;                              // vtable+0x18
+	virtual void VTable0x1c(WhiteFalcon0x140* p_renderer, LegoU32 p_capacity); // vtable+0x1c
+	virtual void VTable0x20(
+		WhiteFalcon0x140* p_renderer,
+		DuskwindBananaRelicProvider0x4* p_source,
+		LegoU32 p_capacity
+	); // vtable+0x20
 	virtual void VTable0x24(
 		WhiteFalcon0x140* p_renderer,
 		const LegoChar* p_fileName,
@@ -49,10 +58,10 @@ public:
 protected:
 	void FUN_10026970();
 
-	WhiteFalcon0x140* m_renderer; // 0x0c
-	AmberHaze0x1c* m_next;        // 0x10
-	undefined4* m_unk0x14;        // 0x14
-	LegoU32 m_numItems;           // 0x18
+	WhiteFalcon0x140* m_renderer;              // 0x0c
+	AmberHaze0x1c* m_next;                     // 0x10
+	DuskwindBananaRelicProvider0x4* m_unk0x14; // 0x14
+	LegoU32 m_numItems;                        // 0x18
 };
 
 #endif // AMBERHAZE0X1C_H

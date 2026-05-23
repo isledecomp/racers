@@ -1,14 +1,24 @@
 #include "zoweeblubberworth0xf0.h"
 
+#include "amberlensbase0x120.h"
+#include "boundingshape0x2c.h"
 #include "boundingvolume0x64.h"
+#include "cmbmodelpart0x34.h"
 #include "floatycanoe0x90.h"
 #include "floatyferry0xf4.h"
 #include "floatyfrigate0x9c.h"
 #include "floatykajak0x64.h"
+#include "floatypontoon0x4c.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
+#include "igdbmodel0x40.h"
+#include "jadeorbit0xd0.h"
+#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimationitem0x18.h"
 #include "rectangle.h"
+#include "shadowwolf0xc.h"
+#include "whitefalconnode0x18.h"
 
 #include <float.h>
 
@@ -21,8 +31,20 @@ DECOMP_SIZE_ASSERT(WdbLight0x10, 0x10)
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;
 
+// GLOBAL: GOLDP 0x10057330
+static const LegoFloat g_fltMax0x10057330 = FLT_MAX;
+
 // GLOBAL: GOLDP 0x100576e8
 LegoFloat g_fltMax0x100576e8 = FLT_MAX;
+
+// GLOBAL: GOLDP 0x1005cf0c
+undefined4 g_unk0x1005cf0c;
+
+// FUNCTION: GOLDP 0x1002baf0
+void FUN_1002baf0(undefined4 p_arg)
+{
+	g_unk0x1005cf0c = p_arg;
+}
 
 // FUNCTION: GOLDP 0x1002c030
 ZoweeBlubberworth0xf0::ZoweeBlubberworth0xf0()
@@ -186,18 +208,153 @@ void ZoweeBlubberworth0xf0::VTable0x14(
 	}
 }
 
-// STUB: GOLDP 0x1002c4d0
+// FUNCTION: GOLDP 0x1002c4d0
 void ZoweeBlubberworth0xf0::VTable0x00()
 {
-	// TODO
-	STUB(0x1002c240);
+	if (m_unk0x90 != NULL) {
+		delete[] m_unk0x90;
+		m_unk0x90 = NULL;
+	}
+
+	if (m_unk0x88 != NULL) {
+		delete[] m_unk0x88;
+		m_unk0x88 = NULL;
+	}
+
+	if (m_unk0x80 != NULL) {
+		delete[] m_unk0x80;
+		m_unk0x80 = NULL;
+	}
+
+	if (m_unk0x70 != NULL) {
+		delete[] m_unk0x70;
+		m_unk0x70 = NULL;
+	}
+
+	if (m_unk0x68 != NULL) {
+		delete[] m_unk0x68;
+		m_unk0x68 = NULL;
+	}
+
+	if (m_unk0x60 != NULL) {
+		for (LegoU32 i = 0; i < m_unk0x5c; i++) {
+			if (m_unk0x60[i].m_unk0x78 != NULL) {
+				delete[] m_unk0x60[i].m_unk0x78;
+			}
+		}
+
+		delete[] m_unk0x60;
+		m_unk0x60 = NULL;
+	}
+
+	if (m_unk0x58 != NULL) {
+		for (LegoU32 i = 0; i < m_unk0x54; i++) {
+			if (m_unk0x58[i].m_unk0x78 != NULL) {
+				delete[] m_unk0x58[i].m_unk0x78;
+			}
+		}
+
+		delete[] m_unk0x58;
+		m_unk0x58 = NULL;
+	}
+
+	if (m_unk0x50 != NULL) {
+		for (LegoU32 i = 0; i < m_unk0x4c; i++) {
+			if (m_unk0x50[i].m_unk0x78 != NULL) {
+				delete[] m_unk0x50[i].m_unk0x78;
+			}
+		}
+
+		delete[] m_unk0x50;
+		m_unk0x50 = NULL;
+	}
+
+	if (m_unk0x40 != NULL) {
+		delete[] m_unk0x40;
+		m_unk0x40 = NULL;
+	}
+
+	if (m_unk0x48 != NULL) {
+		delete[] m_unk0x48;
+		m_unk0x48 = NULL;
+	}
+
+	if (m_unk0x38 != NULL) {
+		delete[] m_unk0x38;
+		m_unk0x38 = NULL;
+	}
+
+	if (m_unk0x30 != NULL) {
+		delete[] m_unk0x30;
+		m_unk0x30 = NULL;
+	}
+
+	if (m_unk0x28 != NULL) {
+		delete[] m_unk0x28;
+		m_unk0x28 = NULL;
+	}
+
+	if (m_unk0x20 != NULL) {
+		delete[] m_unk0x20;
+		m_unk0x20 = NULL;
+	}
+
+	if (m_unk0x18 != NULL) {
+		delete[] m_unk0x18;
+		m_unk0x18 = NULL;
+	}
+
+	if (m_unk0x10 != NULL) {
+		delete[] m_unk0x10;
+		m_unk0x10 = NULL;
+	}
 }
 
-// STUB: GOLDP 0x1002c6b0
+// FUNCTION: GOLDP 0x1002c6b0
 void ZoweeBlubberworth0xf0::VTable0x18()
 {
-	// TODO
-	STUB(0x1002c6b0);
+	VTable0x00();
+
+	if (m_unk0x78 != NULL) {
+		delete[] m_unk0x78;
+		m_unk0x78 = NULL;
+	}
+
+	m_unk0xe4.Clear();
+	m_unk0xb4.Clear();
+	m_unk0xc0.Clear();
+	m_unk0xcc.Clear();
+	m_unk0xd8.Clear();
+
+	if (m_unk0xa8 != NULL) {
+		delete[] m_unk0xa8;
+	}
+
+	if (m_unk0xa4 != NULL) {
+		delete[] m_unk0xa4;
+	}
+
+	if (m_unk0xa0 != NULL) {
+		delete[] m_unk0xa0;
+	}
+
+	if (m_unk0x9c != NULL) {
+		delete[] m_unk0x9c;
+	}
+
+	if (m_unk0x98 != NULL) {
+		delete[] m_unk0x98;
+	}
+
+	if (m_unk0xac != NULL) {
+		delete[] m_unk0xac;
+	}
+
+	if (m_unk0xb0 != NULL) {
+		delete[] m_unk0xb0;
+	}
+
+	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002c7b0
@@ -1115,14 +1272,28 @@ void ZoweeBlubberworth0xf0::FUN_1002e0d0(GolFileParser& p_parser)
 	p_parser.ReadRightCurly();
 }
 
-// STUB: GOLDP 0x1002e250
-void ZoweeBlubberworth0xf0::FUN_1002e250(undefined4*, undefined4*)
+// FUNCTION: GOLDP 0x1002e250
+void ZoweeBlubberworth0xf0::FUN_1002e250(FloatyPontoon0x4c* p_billboard, WdbBillboardSprite0x38* p_sprite)
 {
-	// TODO
-	STUB(0x1002e250);
+	if (p_sprite->m_unk0x32 == 0) {
+		return;
+	}
+
+	if (!(p_billboard->GetFlags() & FloatyPontoon0x4c::c_flagBit2)) {
+		GOL_FATALERROR_MESSAGE("Mat animation invalid for sprites without mat assignment");
+	}
+
+	LegoU32 animationIndex = p_sprite->m_unk0x2e;
+	if (animationIndex >= m_unk0x74) {
+		return;
+	}
+
+	LegoU32 materialIndex = p_sprite->m_unk0x30;
+	MabMaterialAnimationItem0x18* item = VTable0x4c(animationIndex)->GetUnk0x0c();
+	item[materialIndex].FUN_10025da0(p_billboard->GetPositionContainer(), p_sprite->m_unk0x36, TRUE);
 }
 
-// STUB: GOLDP 0x1002e2c0
+// FUNCTION: GOLDP 0x1002e2c0
 void ZoweeBlubberworth0xf0::VTable0x04()
 {
 	if (m_unk0x44 != 0) {
@@ -1141,7 +1312,7 @@ void ZoweeBlubberworth0xf0::VTable0x04()
 
 	if (m_unk0x54 != 0) {
 		m_unk0xa0 = new FloatyFerry0xf4[m_unk0x54];
-		if (m_unk0x9c == NULL) {
+		if (m_unk0xa0 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
@@ -1160,27 +1331,397 @@ void ZoweeBlubberworth0xf0::VTable0x04()
 		}
 	}
 
-	// TODO
-	STUB(0x1002e2c0);
+	if (m_unk0x84 != 0) {
+		m_unk0xac = new WhiteFalcon0x140::MaterialColor[m_unk0x84];
+		if (m_unk0xac == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	if (m_unk0x8c != 0) {
+		m_unk0xb0 = new WhiteFalcon0x140::Light[m_unk0x8c];
+		if (m_unk0xb0 == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
 }
 
 // STUB: GOLDP 0x1002e640
 void ZoweeBlubberworth0xf0::FUN_1002e640()
 {
-	// TODO
-	STUB(0x1002e640);
+	LegoU32 i;
+	LegoU32 j;
+	LegoU32 lod;
+	LegoFloat maxDistances[3];
+
+	for (i = 0; i < m_unk0x4c; i++) {
+		WdbModel0x8c* model = &m_unk0x50[i];
+		FloatyCanoe0x90* runtime = &m_unk0x9c[i];
+
+		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
+		}
+
+		for (lod = 0; lod < 3; lod++) {
+			if (model->m_unk0x08[lod] < 0) {
+				break;
+			}
+
+			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+				maxDistances[lod] = g_fltMax0x100576e4;
+			}
+			else {
+				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+			}
+
+			if (model->m_unk0x2c[lod] >= 0) {
+				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
+					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+				}
+				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+			}
+			else {
+				runtime->m_unk0x6c[lod] = NULL;
+			}
+		}
+
+		runtime->VTable0x50(VTable0x38(model->m_unk0x08[0]), maxDistances[0]);
+		for (lod = 1; lod < 3; lod++) {
+			if (model->m_unk0x08[lod] < 0) {
+				break;
+			}
+			runtime->FUN_10027c50(VTable0x38(model->m_unk0x08[lod]), maxDistances[lod]);
+		}
+
+		runtime->VTable0x08(model->m_unk0x50);
+		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->m_v1.m_x = -1.0f;
+		runtime->m_unk0x58 = model->m_unk0x74;
+
+		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+			runtime->FUN_10028110(model->m_unk0x80);
+			runtime->FUN_10028140(model->m_unk0x84);
+		}
+		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+			runtime->m_flags |= FloatyCanoe0x90::c_flagBit1;
+		}
+		if (model->m_flags & WdbModel0x8c::e_flagBit2) {
+			runtime->m_flags |= FloatyCanoe0x90::c_flagBit2;
+		}
+
+		for (j = 0; j < model->m_unk0x7c; j++) {
+			Rect* assignment = &model->m_unk0x78[j];
+			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
+				continue;
+			}
+
+			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			LegoU32 targetIndex = assignment->m_bottom;
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			if (target == NULL) {
+				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+			}
+			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+		}
+
+		if (model->m_unk0x00[0] != '\0') {
+			if (m_unk0xb4.GetNameEntries() == NULL) {
+				m_unk0xb4.Allocate(m_unk0x4c);
+			}
+			m_unk0xb4.AddName(model->m_unk0x00, runtime);
+		}
+	}
+
+	for (i = 0; i < m_unk0x54; i++) {
+		WdbModel0x8c* model = &m_unk0x58[i];
+		FloatyFerry0xf4* runtime = &m_unk0xa0[i];
+
+		if (model->m_unk0x08[0] >= 0 && static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
+		}
+		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x34) {
+			GOL_FATALERROR_MESSAGE("Illegal skeleton reference");
+		}
+
+		for (lod = 0; lod < 3; lod++) {
+			if (model->m_unk0x14[lod] < 0) {
+				break;
+			}
+
+			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+				maxDistances[lod] = g_fltMax0x100576e4;
+			}
+			else {
+				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+			}
+
+			if (model->m_unk0x2c[lod] >= 0) {
+				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
+					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+				}
+				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+			}
+			else {
+				runtime->m_unk0x6c[lod] = NULL;
+			}
+		}
+
+		WhiteFalconNode0x18* node = VTable0x40(model->m_unk0x14[0]);
+		CmbModelPart0x34* part = VTable0x34(model->m_unk0x20[0]);
+		CmbModelPart0x34* partForPartName = part;
+
+		if (model->m_unk0x08[0] < 0) {
+			runtime->FUN_100234c0(node, part, maxDistances[0]);
+			for (lod = 1; lod < 3; lod++) {
+				if (model->m_unk0x14[lod] < 0) {
+					break;
+				}
+
+				node = VTable0x40(model->m_unk0x14[lod]);
+				part = VTable0x34(model->m_unk0x20[lod]);
+				partForPartName = part;
+				runtime->FUN_100239e0(node, part, maxDistances[lod]);
+			}
+		}
+		else {
+			runtime->FUN_10023490(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
+			for (lod = 1; lod < 3; lod++) {
+				if (model->m_unk0x08[lod] < 0) {
+					break;
+				}
+
+				node = VTable0x40(model->m_unk0x14[lod]);
+				part = VTable0x34(model->m_unk0x20[lod]);
+				partForPartName = part;
+				runtime->FUN_10023940(VTable0x38(model->m_unk0x08[lod]), node, part, maxDistances[lod]);
+			}
+		}
+
+		runtime->VTable0x08(model->m_unk0x50);
+		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+		runtime->m_v1.m_x = -1.0f;
+		runtime->m_unk0x58 = model->m_unk0x74;
+
+		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+			runtime->FUN_10028110(model->m_unk0x80);
+			runtime->FUN_10028140(model->m_unk0x84);
+		}
+
+		if (model->m_unk0x48[0] != '\0') {
+			model->m_unk0x44 = partForPartName->GetPartIndex(model->m_unk0x48);
+		}
+
+		if (model->m_unk0x44 >= 0) {
+			runtime->FUN_10023a70(model->m_unk0x44);
+			runtime->SetPartAnimationEnabled(TRUE);
+		}
+		else {
+			runtime->SetPartAnimationEnabled(FALSE);
+		}
+
+		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+			runtime->m_flags |= FloatyCanoe0x90::c_flagBit1;
+		}
+		if (model->m_flags & WdbModel0x8c::e_flagBit2) {
+			runtime->m_flags |= FloatyCanoe0x90::c_flagBit2;
+		}
+
+		for (j = 0; j < model->m_unk0x7c; j++) {
+			Rect* assignment = &model->m_unk0x78[j];
+			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
+				continue;
+			}
+
+			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			LegoU32 targetIndex = assignment->m_bottom;
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			if (target == NULL) {
+				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+			}
+			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+		}
+
+		if (model->m_unk0x00[0] != '\0') {
+			if (m_unk0xc0.GetNameEntries() == NULL) {
+				m_unk0xc0.Allocate(m_unk0x54);
+			}
+			m_unk0xc0.AddName(model->m_unk0x00, runtime);
+		}
+	}
+
+	for (i = 0; i < m_unk0x5c; i++) {
+		WdbModel0x8c* model = &m_unk0x60[i];
+		FloatyFrigate0x9c* runtime = &m_unk0xa4[i];
+
+		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
+			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
+		}
+		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x3c) {
+			GOL_FATALERROR_MESSAGE("Illegal bsp tree reference");
+		}
+
+		for (lod = 0; lod < 3; lod++) {
+			if (model->m_unk0x08[lod] < 0) {
+				break;
+			}
+
+			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+				maxDistances[lod] = g_fltMax0x100576e4;
+			}
+			else {
+				maxDistances[lod] = model->m_unk0x38[lod] * model->m_unk0x38[lod];
+			}
+
+			if (model->m_unk0x2c[lod] >= 0) {
+				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
+					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+				}
+				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+			}
+			else {
+				runtime->m_unk0x6c[lod] = NULL;
+			}
+		}
+
+		runtime->VTable0x60(VTable0x38(model->m_unk0x08[0]), VTable0x44(model->m_unk0x14[0]), maxDistances[0]);
+		for (lod = 1; lod < 3; lod++) {
+			if (model->m_unk0x08[lod] < 0) {
+				break;
+			}
+			runtime
+				->FUN_1001acf0(VTable0x38(model->m_unk0x08[lod]), VTable0x44(model->m_unk0x14[lod]), maxDistances[lod]);
+		}
+
+		runtime->VTable0x08(model->m_unk0x50);
+		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+
+		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
+			runtime->FUN_10028110(model->m_unk0x80);
+			runtime->FUN_10028140(model->m_unk0x84);
+		}
+		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
+			runtime->m_flags |= FloatyCanoe0x90::c_flagBit1;
+		}
+
+		for (j = 0; j < model->m_unk0x7c; j++) {
+			Rect* assignment = &model->m_unk0x78[j];
+			if (static_cast<LegoU32>(assignment->m_left) >= m_unk0x74) {
+				continue;
+			}
+
+			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
+			LegoU32 targetIndex = assignment->m_bottom;
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			if (target == NULL) {
+				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+			}
+			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
+		}
+
+		if (model->m_unk0x00[0] != '\0') {
+			if (m_unk0xcc.GetNameEntries() == NULL) {
+				m_unk0xcc.Allocate(m_unk0x5c);
+			}
+			m_unk0xcc.AddName(model->m_unk0x00, runtime);
+		}
+	}
+
+	for (i = 0; i < m_unk0x44; i++) {
+		LegoChar name[sizeof(GolName) + 1];
+		::memcpy(name, m_unk0x48[i], sizeof(GolName));
+		name[sizeof(GolName)] = '\0';
+		m_unk0x98[i].VTable0x04(m_unk0x04, name, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x64; i++) {
+		WdbModel0x8c* model = &m_unk0x68[i];
+		FloatyKajak0x64* runtime = &m_unk0xa8[i];
+
+		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x44) {
+			GOL_FATALERROR_MESSAGE("Illegal bsp volume reference");
+		}
+
+		if (model->m_unk0x2c[0] >= 0) {
+			if (model->m_unk0x2c[0] >= static_cast<LegoS32>(m_unk0x2c)) {
+				GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
+			}
+			runtime->m_unk0x5c = VTable0x3c(model->m_unk0x2c[0]);
+		}
+		else {
+			runtime->m_unk0x5c = NULL;
+		}
+
+		runtime->FUN_1001b760(&m_unk0x98[model->m_unk0x14[0]]);
+		runtime->VTable0x08(model->m_unk0x50);
+		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
+
+		if (model->m_unk0x00[0] != '\0') {
+			if (m_unk0xd8.GetNameEntries() == NULL) {
+				m_unk0xd8.Allocate(m_unk0x64);
+			}
+			m_unk0xd8.AddName(model->m_unk0x00, runtime);
+		}
+	}
+
+	for (i = 0; i < m_unk0x7c; i++) {
+		FUN_1002f210(i, VTable0x50(i));
+	}
+
+	for (i = 0; i < m_unk0x84; i++) {
+		m_unk0xac[i].SetColor(m_unk0x88[i].m_color);
+	}
+
+	for (i = 0; i < m_unk0x8c; i++) {
+		m_unk0xb0[i].SetColor(m_unk0x90[i].m_color);
+		m_unk0xb0[i].SetDirection(m_unk0x90[i].m_unk0x04);
+	}
 }
 
-// STUB: GOLDP 0x1002f210
-void ZoweeBlubberworth0xf0::FUN_1002f210(undefined4, undefined4*)
+// FUNCTION: GOLDP 0x1002f210
+void ZoweeBlubberworth0xf0::FUN_1002f210(LegoU32 p_cameraIndex, AmberLensBase0x120* p_lens)
 {
-	// TODO
-	STUB(0x1002f210);
+	WdbCamera0x4c* camera = &m_unk0x80[p_cameraIndex];
+
+	p_lens->m_unk0x10 = camera->GetUnk0x40();
+	p_lens->m_flags |= 2;
+	p_lens->m_unk0x14 = camera->GetUnk0x44();
+	p_lens->m_flags |= 2;
+	p_lens->m_unk0x08 = camera->GetUnk0x48();
+	p_lens->m_flags |= 2;
+
+	p_lens->m_unk0x04->SetPosition(&camera->m_unk0x1c);
+	p_lens->m_flags |= 1;
+	p_lens->m_unk0x04->VTable0x24(&camera->m_unk0x28, &camera->m_unk0x34);
+	p_lens->m_flags |= 1;
+
+	if (camera->m_unk0x08 >= 0) {
+		FloatyFerry0xf4* model = &m_unk0xa0[camera->m_unk0x08];
+		p_lens->FUN_1001cb30(model, camera->m_unk0x0c);
+
+		if (camera->m_unk0x14[0] != '\0') {
+			camera->m_unk0x10 = model->GetModelPart()->GetPartIndex(camera->m_unk0x14);
+		}
+
+		if (camera->m_unk0x10 >= 0) {
+			model->FUN_10023a70(camera->m_unk0x10);
+			model->SetPartAnimationEnabled(TRUE);
+		}
+		else {
+			model->SetPartAnimationEnabled(FALSE);
+		}
+	}
+
+	if (camera->m_unk0x00[0] != '\0') {
+		if (m_unk0xe4.GetNameEntries() == NULL) {
+			GolNameTable* nameTable = &m_unk0xe4;
+			nameTable->Allocate(m_unk0x7c);
+		}
+		m_unk0xe4.AddName(camera->m_unk0x00, p_lens);
+	}
 }
 
-// STUB: GOLDP 0x1002f350
-void ZoweeBlubberworth0xf0::VTable0x54()
+// FUNCTION: GOLDP 0x1002f350
+void ZoweeBlubberworth0xf0::VTable0x54(undefined4 p_arg)
 {
-	// TODO
-	STUB(0x1002f350);
+	FUN_1002baf0(p_arg);
 }

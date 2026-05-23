@@ -7,6 +7,7 @@
 #include <d3d.h>
 
 class BronzeFalcon0xc8770;
+class WhiteFalcon0x140;
 
 // VTABLE: GOLDP 0x10057500
 // SIZE 0x4c
@@ -19,8 +20,11 @@ public:
 
 	// SIZE 0x0c
 	struct Field0x2c {
-		undefined m_unk0x00[0x08]; // 0x00
-		undefined4** m_unk0x08;    // 0x08
+		void SetPosition(LegoU32 p_index, undefined4* p_position);
+
+		WhiteFalcon0x140* m_renderer; // 0x00
+		LegoU32 m_count;              // 0x04
+		undefined4** m_entries;       // 0x08
 	};
 
 	FloatyPontoon0x4c();
@@ -50,6 +54,8 @@ public:
 	);
 	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
 	undefined4* FUN_1002a020();
+	Field0x2c* GetPositionContainer() const { return m_positionContainer; }
+	LegoU16 GetFlags() const { return m_flags; }
 
 private:
 	undefined4* m_position;         // 0x28

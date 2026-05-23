@@ -10,12 +10,12 @@
 class JadeOrbitBase0x10 {
 public:
 	JadeOrbitBase0x10();
-	virtual void VTable0x00() = 0;                       // vtable+0x00
-	virtual void VTable0x04() = 0;                       // vtable+0x04
-	virtual void VTable0x08(undefined4, undefined4) = 0; // vtable+0x08
-	virtual void VTable0x0c() = 0;                       // vtable+0x0c
-	virtual void VTable0x10() = 0;                       // vtable+0x10
-	virtual void VTable0x14() = 0;                       // vtable+0x14
+	virtual void VTable0x00() = 0;                                      // vtable+0x00
+	virtual void VTable0x04(const GolVec3* p_src, GolVec3* p_dest) = 0; // vtable+0x04
+	virtual void VTable0x08(undefined4, undefined4) = 0;                // vtable+0x08
+	virtual void VTable0x0c(const GolVec3* p_src, GolVec3* p_dest) = 0; // vtable+0x0c
+	virtual void VTable0x10() = 0;                                      // vtable+0x10
+	virtual void VTable0x14() = 0;                                      // vtable+0x14
 	virtual void GetBasis(GolVec3* p_right, GolVec3* p_forward,
 						  GolVec3* p_up) = 0;                            // vtable+0x18
 	virtual void VTable0x1c(GolVec3* p_unk0x04, GolVec3* p_unk0x08) = 0; // vtable+0x1c

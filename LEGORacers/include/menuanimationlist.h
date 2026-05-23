@@ -6,6 +6,7 @@
 #include "whitefalcon0x140.h"
 
 class BronzeFalcon0xc8770;
+class DuskwindBananaRelic0x24;
 
 // SIZE 0x8
 class MenuAnimationList {
@@ -60,26 +61,40 @@ public:
 		void Update(LegoU32 p_elapsedMs);
 		void Draw(BronzeFalcon0xc8770* p_renderer);
 		LegoBool IsActive() { return m_flags & c_flagActive; }
+		void SetColor(LegoU32 p_colorPacked) { m_colorPacked = p_colorPacked; }
 
 	private:
 		void Clear();
 
 		DuskwindBananaRelic0x24* m_material;  // 0x00
 		const ScreenRectSource* m_rectSource; // 0x04
-		LegoU8 m_red;                         // 0x08
-		LegoU8 m_green;                       // 0x09
-		LegoU8 m_blue;                        // 0x0a
-		undefined m_unk0x0b;                  // 0x0b
-		LegoU32 m_remainingMs;                // 0x0c
-		LegoU32 m_durationMs;                 // 0x10
-		LegoU8 m_flags;                       // 0x14
-		undefined m_unk0x15[3];               // 0x15
+		union {
+			struct {
+				LegoU8 m_red;        // 0x08
+				LegoU8 m_green;      // 0x09
+				LegoU8 m_blue;       // 0x0a
+				undefined m_unk0x0b; // 0x0b
+			};
+			LegoU32 m_colorPacked; // 0x08
+		};
+		LegoU32 m_remainingMs;  // 0x0c
+		LegoU32 m_durationMs;   // 0x10
+		LegoU8 m_flags;         // 0x14
+		undefined m_unk0x15[3]; // 0x15
 	};
 
 	MenuAnimationList();
 	~MenuAnimationList();
 	void Reset();
 	void Allocate(LegoU32 p_count);
+	Entry* Activate(
+		LegoU32 p_durationMs,
+		LegoBool32 p_fadeOut,
+		DuskwindBananaRelic0x24* p_material,
+		const Entry::ScreenRectSource* p_rectSource
+	);
+	void Deactivate(Entry* p_entry);
+	LegoBool32 HasActive() const;
 	void Update(LegoU32 p_elapsedMs);
 	void Draw(BronzeFalcon0xc8770* p_renderer);
 

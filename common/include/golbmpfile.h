@@ -25,7 +25,7 @@ public:
 private:
 	LegoChar m_unk0x5b0[0x40];  // 0x5b0
 	LegoU8 m_unk0x5f0[3 * 256]; // 0x5f0
-	undefined m_unk0x8f0[1500]; // 0x8f0
+	LegoU8 m_unk0x8f0[1500];    // 0x8f0
 	LegoU32 m_bitmapOffset;     // 0xecc
 	undefined4 m_imageByteSize; // 0xed0
 	undefined4 m_unk0xed4;      // 0xed4

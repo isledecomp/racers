@@ -11,7 +11,7 @@ ObscureLink0x1c::ObscureLink0x1c()
 // FUNCTION: LEGORACERS 0x0046b2d0
 ObscureLink0x1c::~ObscureLink0x1c()
 {
-	FUN_0046b330();
+	VTable0x08();
 }
 
 // FUNCTION: LEGORACERS 0x0046b2e0
@@ -26,7 +26,7 @@ void ObscureLink0x1c::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046b330
-LegoBool32 ObscureLink0x1c::FUN_0046b330()
+LegoBool32 ObscureLink0x1c::VTable0x08()
 {
 	if (m_unk0x18) {
 		Reset();

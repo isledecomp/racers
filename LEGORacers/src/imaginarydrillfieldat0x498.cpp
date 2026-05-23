@@ -52,7 +52,7 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createPa
 	return m_unk0x208.FUN_0046f150(&createParams);
 }
 
-// STUB: LEGORACERS 0x00482540
+// FUNCTION: LEGORACERS 0x00482540
 LegoBool32 ImaginaryDrillFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104*)
 {
 	GolString string;
@@ -69,22 +69,21 @@ LegoBool32 ImaginaryDrillFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createPa
 		source.m_right = m_unk0x2dc;
 	}
 
-	source.m_left = 0;
 	source.m_top = 0;
+	source.m_left = 0;
 	source.m_bottom = m_unk0x208.GetRect()->m_bottom - m_unk0x208.GetRect()->m_top;
 
 	FUN_00472d00(m_unk0x1c0[m_visualStateIndex], &string, &source, &createParams.m_rect, 0);
 
 	LegoS32 right = m_unk0x208.GetRect()->m_right;
-	createParams.m_rect.m_left += right;
 	createParams.m_rect.m_right += right;
-
-	createParams.m_flags |= 3;
+	createParams.m_flagsAndName.m_flagsByte |= 3;
 	createParams.m_unk0x38 = p_createParams->m_unk0xcc;
 	createParams.m_unk0x3c = m_unk0x1c0[0];
 	createParams.m_unk0x40 = p_createParams->m_unk0xd4;
 	createParams.m_unk0x22 = m_unk0x174[0];
-	createParams.m_unk0x30 = (undefined4) this;
+	createParams.m_rect.m_left += right;
+	createParams.m_parent = this;
 	m_unk0x1ac.m_unk0x10 = 0;
 
 	return m_unk0x264.FUN_0046f520(&createParams, &m_unk0x1ac);

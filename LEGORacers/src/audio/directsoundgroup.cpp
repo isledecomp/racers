@@ -16,6 +16,7 @@
 DECOMP_SIZE_ASSERT(DirectSoundGroup, 0x34)
 
 // GLOBAL: LEGORACERS 0x004be7f4
+// STRING: LEGORACERS 0x004be7f8
 const LegoChar* g_soundBankExtension = ".SBK";
 
 // GLOBAL: LEGORACERS 0x004afc04

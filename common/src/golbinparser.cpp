@@ -1,20 +1,21 @@
 #include "golbinparser.h"
 
+#include "golconstants.h"
 #include "golerror.h"
 
 #include <stdio.h>
 
 // GLOBAL: GOLDP 0x10065b58
 // GLOBAL: LEGORACERS 0x004c7070
-const LegoFloat g_token0x0fconstant = 1.0f / 4096.0f;
+const LegoFloat g_token0x0fconstant = 1.0f / g_floatConst4096.m_value;
 
 // GLOBAL: GOLDP 0x10065b60
 // GLOBAL: LEGORACERS 0x004c7078
-const LegoFloat g_token0x10constant = 1.0f / 32.0f;
+const LegoFloat g_token0x10constant = 1.0f / g_floatConst32.m_value;
 
 // GLOBAL: GOLDP 0x10065b64
 // GLOBAL: LEGORACERS 0x004c707c
-const LegoFloat g_token0x12constant = 1.0f / 127.0f;
+const LegoFloat g_token0x12constant = 1.0f / g_floatConst127;
 
 // GLOBAL: GOLDP 0x1005f030
 // GLOBAL: LEGORACERS 0x004c182c

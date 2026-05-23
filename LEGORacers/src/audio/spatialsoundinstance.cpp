@@ -9,22 +9,22 @@
 DECOMP_SIZE_ASSERT(SpatialSoundInstance, 0x38)
 
 // GLOBAL: LEGORACERS 0x004afab8
-LegoFloat g_defaultSpatialVolume = 1.0f;
+const LegoFloat g_defaultSpatialVolume = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004afabc
-LegoFloat g_defaultSpatialPan = 0.0f;
+const LegoFloat g_defaultSpatialPan = 0.0f;
 
 // GLOBAL: LEGORACERS 0x004afac0
-LegoFloat g_defaultSpatialFrequencyScale = 1.0f;
+const LegoFloat g_defaultSpatialFrequencyScale = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004afac4
-LegoFloat g_defaultSoundSpeed = 343.0f;
+const LegoFloat g_defaultSoundSpeed = 343.0f;
 
 // GLOBAL: LEGORACERS 0x004afac8
-LegoFloat g_negativePanScale = -0.7f;
+const LegoFloat g_negativePanScale = -0.7f;
 
 // GLOBAL: LEGORACERS 0x004afacc
-LegoFloat g_positivePanScale = 0.7f;
+const LegoFloat g_positivePanScale = 0.7f;
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void SpatialSoundInstance::Stop()

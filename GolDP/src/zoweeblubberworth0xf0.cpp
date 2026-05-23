@@ -38,7 +38,7 @@ static const LegoFloat g_fltMax0x10057330 = FLT_MAX;
 LegoFloat g_fltMax0x100576e8 = FLT_MAX;
 
 // GLOBAL: GOLDP 0x1005cf0c
-undefined4 g_unk0x1005cf0c;
+undefined4 g_unk0x1005cf0c = 1;
 
 // FUNCTION: GOLDP 0x1002baf0
 void FUN_1002baf0(undefined4 p_arg)

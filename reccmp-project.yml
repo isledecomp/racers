@@ -12,6 +12,13 @@ targets:
       - reccmp/lego-racers-directshow.csv
       - reccmp/lego-racers-dxguid.csv
       - reccmp/lego-racers-function-size.csv
+    report:
+      ignore-variables:
+        # Cannot be handled right now due to anonymous pointer in struct.
+        - c_dfDIJoystick2
+        - c_dfDIKeyboard
+        - c_dfDIMouse
+        # Others
   GOLDP:
     filename: GolDP.dll
     source-root:

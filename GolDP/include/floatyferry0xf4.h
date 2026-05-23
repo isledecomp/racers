@@ -16,7 +16,7 @@ public:
 	FloatyFerry0xf4();
 
 	void VTable0x10(LegoS32 p_v) override;
-	void VTable0x14(const GolVec3& p_vector, ResultStruct* p_result) override;
+	void VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result) override;
 	void VTable0x4c(LegoU32 p_index) override;
 	void VTable0x54() override;
 	WhiteFalconNode0x18* VTable0x58(LegoU32 p_arg1) override;

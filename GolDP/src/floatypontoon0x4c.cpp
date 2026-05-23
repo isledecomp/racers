@@ -70,11 +70,22 @@ void FloatyPontoon0x4c::VTable0x50()
 	m_height = 0;
 }
 
-// STUB: GOLDP 0x10029ee0
-void FloatyPontoon0x4c::VTable0x14(const GolVec3& p_arg1, ResultStruct* p_arg2)
+// FUNCTION: GOLDP 0x10029ee0
+void FloatyPontoon0x4c::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
-	// TODO
-	STUB(0x10029ee0);
+	GolVec3 position;
+	FUN_100286d0(&position);
+	p_result->m_unk0x04 = 0;
+
+	if (m_maxDistanceSquared != g_pontoonMaxFloat) {
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
+		if (distanceSquared == 0.0f || distanceSquared > m_maxDistanceSquared) {
+			p_result->m_unk0x00 = 0;
+			return;
+		}
+	}
+
+	p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED

@@ -1,5 +1,6 @@
 #include "floatycanoe0x90.h"
 
+#include "igdbmodel0x40.h"
 #include "whitefalcon0x140.h"
 
 #include <float.h>
@@ -106,10 +107,7 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 		VTable0x04(&v3);
 		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_vector, v3);
 
-		for (;;) {
-			if (distanceSquared <= *threshold) {
-				break;
-			}
+		for (; distanceSquared > *threshold;) {
 			i++;
 			threshold++;
 			if (i >= 3) {
@@ -126,18 +124,44 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 	}
 }
 
-// STUB: GOLDP 0x10027d80
-void FloatyCanoe0x90::VTable0x14(const GolVec3& p_vector, ResultStruct* p_result)
+// FUNCTION: GOLDP 0x10027d80
+void FloatyCanoe0x90::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
-	// TODO
-	STUB(0x10027d80);
+	LegoU32 i;
+	LegoFloat* threshold;
+	GolVec3 position;
+
+	i = 0;
+	threshold = m_unk0x84;
+	if (*threshold != g_maxFloat) {
+		VTable0x04(&position);
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
+
+		for (; distanceSquared > *threshold;) {
+			i++;
+			threshold++;
+			if (i >= 3) {
+				p_result->m_unk0x00 = 0;
+				return;
+			}
+		}
+	}
+
+	p_result->m_unk0x04 = i;
+	if (m_unk0x78[i] == NULL) {
+		p_result->m_unk0x00 = 0;
+		return;
+	}
+
+	FUN_100286d0(&position);
+	p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
-// STUB: GOLDP 0x10027e70
+// FUNCTION: GOLDP 0x10027e70
 void FloatyCanoe0x90::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
 {
-	// TODO
-	STUB(0x10027e70);
+	IGdbModel0x40* model = m_unk0x78[p_index];
+	FUN_10026fc0(p_dest, model->GetScale() * m_unk0x58);
 }
 
 // FUNCTION: GOLDP 0x10027e90
@@ -146,11 +170,25 @@ void FloatyCanoe0x90::VTable0x00()
 	VTable0x4c(0);
 }
 
-// STUB: GOLDP 0x10027ea0
+// FUNCTION: GOLDP 0x10027ea0
 void FloatyCanoe0x90::VTable0x4c(LegoU32 p_index)
 {
-	// TODO
-	STUB(0x10027ea0);
+	IGdbModel0x40* model = m_unk0x78[p_index];
+	if (model == NULL) {
+		FUN_10026fa0(0.0f);
+		return;
+	}
+
+	LegoFloat scale = m_unk0x58;
+	GolVec3 center = model->GetCenter();
+	LegoFloat radius = model->GetRadius();
+	center.m_x *= scale;
+	center.m_y *= scale;
+	center.m_z *= scale;
+	GolVec3 position;
+	VTable0x2c(center, &position);
+	FUN_10026f70(position);
+	FUN_10026fa0(m_unk0x58 * radius);
 }
 
 // FUNCTION: GOLDP 0x10027f40

@@ -6,7 +6,7 @@
 
 DECOMP_SIZE_ASSERT(FloatyFerry0xf4, 0xf4)
 
-// GLOBAL: 0x10056fc4
+// GLOBAL: GOLDP 0x10056fc4
 static const LegoFloat g_fltMax0x10056fc4 = FLT_MAX;
 
 // FUNCTION: GOLDP 0x10023420
@@ -158,19 +158,22 @@ void FloatyFerry0xf4::VTable0x4c(LegoU32 p_index)
 	STUB(0x10023ef0);
 }
 
-// STUB: GOLDP 0x100240b0
-void FloatyFerry0xf4::VTable0x14(const GolVec3& p_vector, ResultStruct* p_result)
+// FUNCTION: GOLDP 0x100240b0
+void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
-#if 0
 	LegoU32 i;
+	LegoFloat* threshold;
+	GolVec3 position;
 
-	GolVec3 vec3;
-	FUN_100286d0(&vec3);
-	if (m_unk0x84[0] != g_fltMax0x10056fc4) {
-		LegoFloat d = GOLVECTOR3_DISTANCE_SQUARED(p_vector, vec3);
-		while (m_unk0x84[i] < d) {
+	FUN_100286d0(&position);
+	i = 0;
+	threshold = m_unk0x84;
+	if (*threshold != g_fltMax0x10056fc4) {
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
+		for (; distanceSquared > *threshold;) {
 			i++;
-			if (i > 2) {
+			threshold++;
+			if (i >= 3) {
 				p_result->m_unk0x00 = 0;
 				return;
 			}
@@ -179,17 +182,14 @@ void FloatyFerry0xf4::VTable0x14(const GolVec3& p_vector, ResultStruct* p_result
 	p_result->m_unk0x04 = i;
 	if (m_unk0x78[i] == NULL) {
 		p_result->m_unk0x00 = 0;
-	} else {
+	}
+	else {
 		if (i != 0) {
 			VTable0x4c(i);
-			FUN_100286d0(&vec3);
+			FUN_100286d0(&position);
 		}
-		p_result->m_unk0x00 = p_vector.FUN_1002bc20(vec3, FUN_10028710());
+		p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
 	}
-#else
-	// TODO
-	STUB(0x100240b0);
-#endif
 }
 
 // FUNCTION: GOLDP 0x100241a0

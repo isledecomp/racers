@@ -7,6 +7,7 @@
 #include "golsurfaceformat.h"
 #include "silverdune0x30.h"
 #include "types.h"
+#include "whitefalconview0xcc.h"
 
 class AmberHaze0x1c;
 class AmberLens0x344;
@@ -59,12 +60,6 @@ public:
 		void SetDirection(const GolVec3& p_direction);
 
 		GolVec3 m_direction; // 0x04
-	};
-
-	// SIZE 0xcc
-	struct Field0x4c {
-		GolVec3 m_position;               // 0x00
-		undefined m_unk0x0c[0xcc - 0x0c]; // 0x0c
 	};
 
 	enum Flags {
@@ -267,7 +262,7 @@ protected:
 	HypnoticNoise0x1c* m_imageLists;              // 0x40
 	CinderBasin0x28* m_fontLists;                 // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
-	Field0x4c m_unk0x4c;                          // 0x4c
+	WhiteFalconView0xcc m_unk0x4c;                // 0x4c
 	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
 	const MaterialColor* m_unk0x120;              // 0x120

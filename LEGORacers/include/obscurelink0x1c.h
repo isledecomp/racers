@@ -10,11 +10,14 @@
 class ObscureLink0x1c {
 public:
 	ObscureLink0x1c();
-	virtual void Reset();       // vtable+0x00
-	virtual ~ObscureLink0x1c(); // vtable+0x04
+	virtual void Reset();                          // vtable+0x00
+	virtual ~ObscureLink0x1c();                    // vtable+0x04
+	virtual LegoBool32 VTable0x08();               // vtable+0x08
+	virtual LegoBool32 VTable0x0c() = 0;           // vtable+0x0c
+	virtual LegoBool32 VTable0x10(undefined4) = 0; // vtable+0x10
 
-	LegoBool32 FUN_0046b330();
 	ObscureLink0x1c* FUN_0046b350(ObscureLink0x1c* p_parent);
+	ObscureLink0x1c* GetNext() const { return m_unk0x08; }
 
 	// SYNTHETIC: LEGORACERS 0x0046b2b0
 	// ObscureLink0x1c::`scalar deleting destructor'

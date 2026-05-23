@@ -239,10 +239,51 @@ void ObscureSigil0xdc::FUN_00465e40(Rect* p_rect)
 	m_unk0x64->VTable0x0c(p_rect);
 }
 
-// STUB: LEGORACERS 0x00465f20
+// FUNCTION: LEGORACERS 0x00465ea0
+void ObscureSigil0xdc::FUN_00465ea0()
+{
+	if (m_unk0x5c->GetUnk0x84() || m_unk0x5c->GetUnk0x8c()) {
+		m_renderer->VTable0x28();
+
+		if (m_unk0x5c->GetUnk0x84()) {
+			m_renderer->VTable0x2c(m_unk0x5c->GetUnk0xac());
+		}
+
+		for (LegoU32 i = 0; i < m_unk0x5c->GetUnk0x8c(); i++) {
+			m_renderer->VTable0x30(&m_unk0x5c->GetUnk0xb0()[i]);
+		}
+
+		m_renderer->VTable0x60();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00465f20
 undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 {
-	STUB(0x00465f20);
+	m_renderer->VTable0xe4();
+	m_unk0x68 = m_renderer->GetUnk0x0c();
+	m_renderer->VTable0x20(m_unk0x64);
+	m_renderer->VTable0x5c();
+	m_renderer->VTable0xec(m_unk0x88);
+	FUN_00465ea0();
+
+	if (m_unk0x6c || !m_unk0x58) {
+		m_unk0x5c->FUN_00416040();
+	}
+
+	for (ObscureLink0x1c* link = m_unk0x58; link; link = link->GetNext()) {
+		link->VTable0x0c();
+	}
+
+	if (m_unk0x6c && m_unk0x60) {
+		m_unk0x60->FUN_00416040();
+	}
+
+	m_renderer->VTable0x20(m_unk0x68);
+	m_renderer->VTable0x5c();
+	m_renderer->VTable0xec(6);
+	m_renderer->VTable0xe8(FALSE);
+
 	return 0;
 }
 

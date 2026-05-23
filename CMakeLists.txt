@@ -299,6 +299,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/silverhollow0xb8.cpp
   LEGORacers/src/golapp.cpp
   LEGORacers/src/whitefalcon0x140.cpp
+  LEGORacers/src/zoweeblubberworth0xf0.cpp
   LEGORacers/src/ceruleanknight0x20.cpp
   LEGORacers/src/ceruleanqueen0x58.cpp
   LEGORacers/src/ceruleanemperor0x4c.cpp

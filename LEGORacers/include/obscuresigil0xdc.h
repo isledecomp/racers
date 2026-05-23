@@ -52,12 +52,13 @@ protected:
 	void FUN_004659b0(CreateParams0x84* p_createParams);
 	void FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
 	void FUN_00465e40(Rect* p_rect);
+	void FUN_00465ea0();
 
 	ObscureLink0x1c* m_unk0x58;       // 0x58
 	ZoweeBlubberworth0xf0* m_unk0x5c; // 0x5c
 	ZoweeBlubberworth0xf0* m_unk0x60; // 0x60
 	AmberLens0x344* m_unk0x64;        // 0x64
-	undefined4 m_unk0x68;             // 0x68
+	AmberLens0x344* m_unk0x68;        // 0x68
 	undefined4 m_unk0x6c;             // 0x6c
 	GolVec3 m_unk0x70;                // 0x70
 	GolVec3 m_unk0x7c;                // 0x7c

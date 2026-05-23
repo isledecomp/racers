@@ -225,28 +225,28 @@ void FluffyGloomkins0x118::VTable0x18()
 }
 
 // STUB: GOLDP 0x100181b0
-void FluffyGloomkins0x118::VTable0x1c(undefined4*)
+void FluffyGloomkins0x118::VTable0x1c(WhiteFalcon0x140*)
 {
 	// TODO
 	STUB(0x100181b0);
 }
 
 // STUB: GOLDP 0x100181f0
-void FluffyGloomkins0x118::VTable0x20(undefined4)
+void FluffyGloomkins0x118::VTable0x20(WhiteFalcon0x140*)
 {
 	// TODO
 	STUB(0x100181f0);
 }
 
 // STUB: GOLDP 0x10018230
-void FluffyGloomkins0x118::VTable0x24(undefined4)
+void FluffyGloomkins0x118::VTable0x24(WhiteFalcon0x140*)
 {
 	// TODO
 	STUB(0x10018230);
 }
 
 // STUB: GOLDP 0x10018270
-void FluffyGloomkins0x118::VTable0x28(undefined4*)
+void FluffyGloomkins0x118::VTable0x28(WhiteFalcon0x140*)
 {
 	// TODO
 	STUB(0x10018270);

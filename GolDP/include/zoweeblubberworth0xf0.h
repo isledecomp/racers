@@ -154,6 +154,7 @@ public:
 	const WhiteFalcon0x140::Field0x124* GetUnk0xac() const { return m_unk0xac; }
 	const WhiteFalcon0x140::Field0x124* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
+	void FUN_00416090(undefined4 p_elapsedMs);
 	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
 	{
 		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xb4.GetName(p_name)) : NULL;

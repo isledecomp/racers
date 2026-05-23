@@ -43,9 +43,9 @@ void ObscureSigil0xdc::Reset()
 	m_unk0xd0 = 0;
 	m_unk0xd4 = 0;
 	m_unk0xd8 = 0;
-	m_unk0x94 = 0;
-	m_unk0x90 = 0;
-	m_unk0x98 = -1;
+	m_unk0x90.m_y = 0.0f;
+	m_unk0x90.m_x = 0.0f;
+	m_unk0x90.m_z = -1.0f;
 
 	ObscureVantage0x58::Reset();
 }
@@ -213,6 +213,90 @@ ObscureLink0x1c* ObscureSigil0xdc::FUN_00465b40(ObscureLink0x1c* p_unk0x04)
 	return p_unk0x04->FUN_0046b350(m_unk0x58);
 }
 
+// FUNCTION: LEGORACERS 0x00465c00
+void ObscureSigil0xdc::FUN_00465c00(undefined4 p_elapsedMs)
+{
+	if (m_unk0x64->m_unk0x28) {
+		return;
+	}
+
+	m_unk0xc0 = (m_unk0xbc - m_unk0xc0) * 0.03f + m_unk0xc0;
+	m_unk0xb8 = (m_unk0xb4 - m_unk0xb8) * 0.02f + m_unk0xb8;
+	m_unk0xc4 = m_unk0xc8 * 0.1f + m_unk0xc4 * 0.9f;
+	m_unk0xcc = m_unk0xd0 * 0.1f + m_unk0xcc * 0.9f;
+	LegoFloat turn = m_unk0xd8 * 0.3f + m_unk0xd4 * 0.7f;
+	m_unk0xd4 = turn;
+
+	if (turn != 0.0f) {
+		AmberLens0x344* lens = m_unk0x64;
+		LegoFloat value = lens->m_unk0x08;
+		LegoU32 flags = lens->m_flags;
+		value += turn;
+		lens->m_flags = flags | AmberLens0x344::c_flagBit1;
+		lens->m_unk0x08 = value;
+	}
+
+	GolVec3* forward = &m_unk0x90;
+	GolVec3* right = &m_unk0x9c;
+	m_unk0x64->GetUnk0x04()->VTable0x1c(right, forward);
+
+	GolVec3* axis = &m_unk0xa8;
+	LegoFloat axisX = right->m_y;
+	axisX *= forward->m_z;
+	axisX -= forward->m_y * right->m_z;
+	axis->m_x = axisX;
+
+	LegoFloat axisY = right->m_z;
+	axisY *= forward->m_x;
+	axisY -= right->m_x * forward->m_z;
+	axis->m_y = axisY;
+
+	LegoFloat axisZ = forward->m_y * right->m_x;
+	LegoFloat side = right->m_y;
+	side *= forward->m_x;
+	axisZ -= side;
+	axis->m_z = axisZ;
+	m_unk0x90.m_x = 0.0f;
+	m_unk0x90.m_y = 0.0f;
+	m_unk0x90.m_z = -1.0f;
+
+	LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+	GolVec3 rotatedRight;
+	LegoFloat angle = m_unk0xc4;
+	angle *= elapsed;
+	GolMath::FUN_004496a0(right, &rotatedRight, axis, angle);
+	angle = m_unk0xcc;
+	angle *= elapsed;
+	GolMath::FUN_004496a0(&rotatedRight, right, forward, angle);
+
+	GolVec3 position;
+	m_unk0x64->GetUnk0x04()->GetPosition(&position);
+	LegoFloat forwardDelta = -forward->m_x;
+	forwardDelta *= m_unk0xb8;
+	LegoFloat rightDelta = -right->m_x;
+	rightDelta *= m_unk0xc0;
+	position.m_x += (forwardDelta + rightDelta) * elapsed;
+	AmberLens0x344* lens = m_unk0x64;
+
+	rightDelta = -m_unk0x9c.m_y;
+	rightDelta *= m_unk0xc0;
+	forwardDelta = -m_unk0x90.m_y;
+	forwardDelta *= m_unk0xb8;
+	position.m_y += (rightDelta + forwardDelta) * elapsed;
+
+	rightDelta = -m_unk0x9c.m_z;
+	rightDelta *= m_unk0xc0;
+	forwardDelta = -m_unk0x90.m_z;
+	forwardDelta *= m_unk0xb8;
+	position.m_z += (rightDelta + forwardDelta) * elapsed;
+	lens->GetUnk0x04()->SetPosition(&position);
+
+	lens->m_flags |= AmberLens0x344::c_flagBit0;
+	AmberLens0x344* currentLens = m_unk0x64;
+	currentLens->GetUnk0x04()->VTable0x24(right, forward);
+	currentLens->m_flags |= AmberLens0x344::c_flagBit0;
+}
+
 // FUNCTION: LEGORACERS 0x00465e40
 void ObscureSigil0xdc::FUN_00465e40(Rect* p_rect)
 {
@@ -307,10 +391,22 @@ ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(OnyxCircularBuffer0x1c::Item* p
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00466040
-undefined4 ObscureSigil0xdc::VTable0x3c(undefined4)
+// FUNCTION: LEGORACERS 0x00466040
+undefined4 ObscureSigil0xdc::VTable0x3c(undefined4 p_elapsedMs)
 {
-	STUB(0x00466040);
+	for (ObscureLink0x1c* link = m_unk0x58; link; link = link->GetNext()) {
+		link->VTable0x10(p_elapsedMs);
+	}
+
+	if (m_unk0x6c) {
+		m_unk0x5c->FUN_00416090(p_elapsedMs);
+
+		if (m_unk0x60) {
+			m_unk0x60->FUN_00416090(p_elapsedMs);
+		}
+	}
+
+	FUN_00465c00(p_elapsedMs);
 	return 0;
 }
 

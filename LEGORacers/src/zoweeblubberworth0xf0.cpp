@@ -19,3 +19,9 @@ void ZoweeBlubberworth0xf0::FUN_00416040()
 		VTable0x28(m_unk0x04);
 	}
 }
+
+// STUB: LEGORACERS 0x00416090
+void ZoweeBlubberworth0xf0::FUN_00416090(undefined4)
+{
+	STUB(0x00416090);
+}

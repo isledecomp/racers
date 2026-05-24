@@ -848,20 +848,12 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	LegoU32 i = 0;
-	LegoU32 offset = 0;
+	for (LegoU32 i = 0; i < m_unk0x78; i++) {
+		::strncpy(&m_unk0x80[i * 13], p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+		m_unk0x80[i * 13 + sizeof(GolName)] = '\0';
+		::strcat(&m_unk0x80[i * 13], ".srf");
 
-	if (i < m_unk0x78) {
-		do {
-			::strncpy(&m_unk0x80[offset], p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
-			m_unk0x80[offset + sizeof(GolName)] = '\0';
-			::strcat(&m_unk0x80[offset], ".srf");
-
-			m_unk0x7c[i].UseOwnedBuffers();
-
-			i++;
-			offset += 13;
-		} while (i < m_unk0x78);
+		m_unk0x7c[i].UseOwnedBuffers();
 	}
 
 	p_parser->ReadRightCurly();

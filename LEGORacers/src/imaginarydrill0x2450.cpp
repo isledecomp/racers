@@ -228,8 +228,8 @@ LegoBool32 ImaginaryDrill0x2450::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 	m_unk0x22dc.FUN_0047e210(&color);
 	m_unk0x22dc.GetUnk0x118()->VTable0x14("legoman", p_context->m_context->m_unk0x18);
 	m_unk0x2438->FUN_0040dad0(0);
-	m_unk0x2438->SetUnk0x5c(m_unk0x2438->GetUnk0x5c() | 0x10000);
-	m_unk0x2438->SetUnk0x5c(m_unk0x2438->GetUnk0x5c() & ~0x40000);
+	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
+	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() & ~0x40000);
 	p_context->m_unk0x258.GetUnk0x1cfc().Reset();
 	m_unk0x1058.VTable0x4c(5);
 	m_unk0xc4->SetUnk0x41(TRUE);
@@ -389,12 +389,12 @@ LegoBool32 ImaginaryDrill0x2450::VTable0x78(undefined4 p_elapsed)
 
 	if (!m_unk0x2448) {
 		m_unk0x2438->FUN_0040db80(2, 200, 0.0f, 0, 0, 0);
-		m_unk0x2438->SetUnk0x5c(m_unk0x2438->GetUnk0x5c() | 0x10000);
+		m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
 		m_unk0x2448 = 30000;
 	}
 	else if (m_unk0x2438->FUN_0040e360()) {
 		m_unk0x2438->FUN_0040db80(1, 200, 0.0f, 0, 0, 1);
-		m_unk0x2438->SetUnk0x5c(m_unk0x2438->GetUnk0x5c() | 0x10000);
+		m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
 	}
 
 	if (!m_unk0x2444) {

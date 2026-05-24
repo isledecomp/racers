@@ -284,8 +284,8 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 
 		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
 			static_cast<OpalHaven0xf4*>(m_unk0x24)->FUN_0040dad0(static_cast<undefined2>(m_unk0x58));
-			static_cast<OpalHaven0xf4*>(m_unk0x24)->SetUnk0x5c(
-				static_cast<OpalHaven0xf4*>(m_unk0x24)->GetUnk0x5c() | 0x10000
+			static_cast<OpalHaven0xf4*>(m_unk0x24)->SetFlags(
+				static_cast<OpalHaven0xf4*>(m_unk0x24)->GetFlags() | 0x10000
 			);
 		}
 

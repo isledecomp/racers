@@ -17,10 +17,10 @@ FloatyFerry0xf4::FloatyFerry0xf4()
 {
 	LegoU32 i;
 
-	for (i = 0; i < 3; i++) {
-		m_unk0x90[i] = 0;
-		m_unk0xa8[i] = NULL;
-		m_unk0x9c[i] = -1;
+	for (i = 0; i < sizeOfArray(m_nodes); i++) {
+		m_nodes[i] = NULL;
+		m_modelParts[i] = NULL;
+		m_partIndices[i] = -1;
 	}
 	m_unk0xbc = 0;
 	m_radius = -1.0f;
@@ -35,29 +35,33 @@ FloatyFerry0xf4::FloatyFerry0xf4()
 
 // FUNCTION: GOLDP 0x10023490
 void FloatyFerry0xf4::FUN_10023490(
-	IGdbModel0x40* p_arg1,
-	WhiteFalconNode0x18* p_arg2,
-	CmbModelPart0x34* p_arg3,
-	LegoFloat p_arg4
+	IGdbModel0x40* p_model,
+	WhiteFalconNode0x18* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_modelDistance
 )
 {
-	FloatyCanoe0x90::VTable0x50(p_arg1, p_arg4);
-	m_unk0x90[0] = p_arg2;
-	m_unk0xa8[0] = p_arg3;
+	FloatyCanoe0x90::VTable0x50(p_model, p_modelDistance);
+	m_nodes[0] = p_node;
+	m_modelParts[0] = p_modelParts;
 }
 
 // FUNCTION: GOLDP 0x100234c0
-void FloatyFerry0xf4::FUN_100234c0(WhiteFalconNode0x18* p_arg1, CmbModelPart0x34* p_arg2, LegoFloat p_arg3)
+void FloatyFerry0xf4::FUN_100234c0(
+	WhiteFalconNode0x18* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_modelDistance
+)
 {
-	m_unk0x84[0] = p_arg3;
+	m_modelDistances[0] = p_modelDistance;
 	m_radius = 0.0f;
 	m_unk0x60 = 0;
 	m_unk0x62 = 0;
 	m_unk0x64 = 0;
 	m_unk0x68 = 0;
 	m_unk0x58 = 1.0f;
-	m_unk0x90[0] = p_arg1;
-	m_unk0xa8[0] = p_arg2;
+	m_nodes[0] = p_node;
+	m_modelParts[0] = p_modelParts;
 	m_flags |= c_flagBit0;
 }
 
@@ -68,10 +72,10 @@ void FloatyFerry0xf4::VTable0x54()
 
 	FloatyCanoe0x90::VTable0x54();
 
-	for (i = 0; i < 3; i++) {
-		m_unk0x90[i] = 0;
-		m_unk0xa8[i] = NULL;
-		m_unk0x9c[i] = -1;
+	for (i = 0; i < sizeOfArray(m_nodes); i++) {
+		m_nodes[i] = NULL;
+		m_modelParts[i] = NULL;
+		m_partIndices[i] = -1;
 	}
 	m_unk0xbc = 0;
 	m_radius = -1.0f;
@@ -85,7 +89,7 @@ void FloatyFerry0xf4::VTable0x54()
 }
 
 // STUB: GOLDP 0x10023580
-void FloatyFerry0xf4::VTable0x5c(undefined4)
+void FloatyFerry0xf4::VTable0x5c(LegoU32)
 {
 	// TODO
 	STUB(0x10023580);
@@ -99,28 +103,32 @@ void FloatyFerry0xf4::FUN_10023940(IGdbModel0x40*, WhiteFalconNode0x18*, CmbMode
 }
 
 // FUNCTION: GOLDP 0x100239e0
-void FloatyFerry0xf4::FUN_100239e0(WhiteFalconNode0x18* p_arg1, CmbModelPart0x34* p_arg2, LegoFloat p_arg3)
+void FloatyFerry0xf4::FUN_100239e0(
+	WhiteFalconNode0x18* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_modelDistance
+)
 {
 	LegoU32 i;
 
 	for (i = 0; i < 2; i++) {
-		if (m_unk0x90[i] == 0) {
+		if (m_nodes[i] == NULL) {
 			break;
 		}
-		if (p_arg3 < m_unk0x84[i]) {
+		if (p_modelDistance < m_modelDistances[i]) {
 			LegoU32 j;
 			for (j = 2; j > i; j--) {
-				m_unk0x90[j] = m_unk0x90[j - 1];
-				m_unk0xa8[j] = m_unk0xa8[j - 1];
-				m_unk0x84[j] = m_unk0x84[j - 1];
+				m_nodes[j] = m_nodes[j - 1];
+				m_modelParts[j] = m_modelParts[j - 1];
+				m_modelDistances[j] = m_modelDistances[j - 1];
 			}
 			break;
 		}
 	}
-	m_unk0x90[i] = p_arg1;
-	m_unk0x9c[i] = -1;
-	m_unk0xa8[i] = p_arg2;
-	m_unk0x84[i] = p_arg3;
+	m_nodes[i] = p_node;
+	m_partIndices[i] = -1;
+	m_modelParts[i] = p_modelParts;
+	m_modelDistances[i] = p_modelDistance;
 }
 
 // FUNCTION: GOLDP 0x10023a70
@@ -128,9 +136,9 @@ void FloatyFerry0xf4::FUN_10023a70(LegoU32 p_partIndex)
 {
 	LegoS32 noPart = -1;
 
-	m_unk0x9c[0] = noPart;
-	m_unk0x9c[1] = noPart;
-	m_unk0x9c[2] = noPart;
+	m_partIndices[0] = noPart;
+	m_partIndices[1] = noPart;
+	m_partIndices[2] = noPart;
 	LegoU32 flags = m_flags;
 	m_unk0xbc = p_partIndex;
 	flags &= ~c_flagsPartAnimationMask;
@@ -138,7 +146,7 @@ void FloatyFerry0xf4::FUN_10023a70(LegoU32 p_partIndex)
 	p_partIndex &= 0xffff;
 	m_flags = flags;
 
-	CmbModelPart0x34* modelPart = m_unk0xa8[0];
+	CmbModelPart0x34* modelPart = m_modelParts[0];
 	m_radius = -1.0f;
 	m_unk0xb8 = modelPart->GetPartData()[p_partIndex].GetUnk0x00();
 	m_unk0xb4 = 0;
@@ -148,7 +156,7 @@ void FloatyFerry0xf4::FUN_10023a70(LegoU32 p_partIndex)
 }
 
 // STUB: GOLDP 0x10023b10
-void FloatyFerry0xf4::VTable0x10(LegoS32 p_v)
+void FloatyFerry0xf4::VTable0x10(LegoS32)
 {
 	// TODO
 	STUB(0x10023b10);
@@ -159,7 +167,7 @@ void FloatyFerry0xf4::VTable0x4c(LegoU32 p_index)
 {
 	STUB(0x10023ef0);
 
-	IGdbModel0x40* model = m_unk0x78[p_index];
+	IGdbModel0x40* model = m_models[p_index];
 	if (model == NULL) {
 		FUN_10026fa0(0.0f);
 		return;
@@ -169,7 +177,7 @@ void FloatyFerry0xf4::VTable0x4c(LegoU32 p_index)
 	LegoFloat radius;
 	LegoFloat scale;
 	if (m_flags & c_flagBit16) {
-		CmbModelPartData0x28* partData = m_unk0xa8[p_index]->GetPartData();
+		CmbModelPartData0x28* partData = m_modelParts[p_index]->GetPartData();
 		const GolVec4& bounds = partData[m_unk0xbc].GetBounds();
 		center.m_x = bounds.m_x;
 		center.m_y = bounds.m_y;
@@ -219,7 +227,7 @@ void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct
 
 	FUN_100286d0(&position);
 	i = 0;
-	threshold = m_unk0x84;
+	threshold = m_modelDistances;
 	if (*threshold != g_fltMax0x10056fc4) {
 		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
 		for (; distanceSquared > *threshold;) {
@@ -232,7 +240,7 @@ void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct
 		}
 	}
 	p_result->m_lodIndex = i;
-	if (m_unk0x78[i] == NULL) {
+	if (m_models[i] == NULL) {
 		p_result->m_visibility = 0;
 	}
 	else {
@@ -247,5 +255,5 @@ void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct
 // FUNCTION: GOLDP 0x100241a0
 WhiteFalconNode0x18* FloatyFerry0xf4::VTable0x58(LegoU32 p_arg1)
 {
-	return m_unk0x90[p_arg1];
+	return m_nodes[p_arg1];
 }

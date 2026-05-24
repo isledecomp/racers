@@ -13,10 +13,10 @@ void OpalHaven0xf4::FUN_0040d550(
 	IGdbModel0x40* p_model,
 	WhiteFalconNode0x18* p_node,
 	CmbModelPart0x34* p_modelParts,
-	LegoFloat p_unk0x10
+	LegoFloat p_modelDistance
 )
 {
-	SilverHollow0xb8::VTable0x50(p_model, p_unk0x10);
+	SilverHollow0xb8::VTable0x50(p_model, p_modelDistance);
 	m_nodes[0] = p_node;
 	m_modelParts[0] = p_modelParts;
 }
@@ -31,10 +31,12 @@ void OpalHaven0xf4::VTable0x54()
 // FUNCTION: LEGORACERS 0x0040d5f0
 void OpalHaven0xf4::Reset()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_nodes); i++) {
+	LegoU32 i;
+
+	for (i = 0; i < sizeOfArray(m_nodes); i++) {
 		m_nodes[i] = NULL;
 		m_modelParts[i] = NULL;
-		m_unk0x9c[i] = 0xffffffff;
+		m_partIndices[i] = -1;
 	}
 
 	m_unk0xbc = 0;
@@ -51,8 +53,10 @@ void OpalHaven0xf4::Reset()
 // FUNCTION: LEGORACERS 0x0040d650
 void OpalHaven0xf4::FUN_0040d650()
 {
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x9c); i++) {
-		m_unk0x9c[i] = -1;
+	LegoU32 i;
+
+	for (i = 0; i < sizeOfArray(m_partIndices); i++) {
+		m_partIndices[i] = -1;
 	}
 }
 
@@ -81,7 +85,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32)
 }
 
 // STUB: LEGORACERS 0x0040e0b0
-void OpalHaven0xf4::VTable0x4c(undefined4)
+void OpalHaven0xf4::VTable0x4c(LegoU32)
 {
 	STUB(0x0040e0b0);
 }

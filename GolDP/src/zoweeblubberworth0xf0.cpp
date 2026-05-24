@@ -1377,10 +1377,10 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
 					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 				}
-				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+				runtime->m_materialTables[lod] = VTable0x3c(model->m_unk0x2c[lod]);
 			}
 			else {
-				runtime->m_unk0x6c[lod] = NULL;
+				runtime->m_materialTables[lod] = NULL;
 			}
 		}
 
@@ -1398,8 +1398,8 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_10028110(model->m_unk0x80);
-			runtime->FUN_10028140(model->m_unk0x84);
+			runtime->FUN_00411700(model->m_unk0x80);
+			runtime->FUN_00411730(model->m_unk0x84);
 		}
 		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
 			runtime->m_flags |= FloatyCanoe0x90::c_flagBit1;
@@ -1416,9 +1416,9 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
-				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}
@@ -1458,10 +1458,10 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
 					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 				}
-				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+				runtime->m_materialTables[lod] = VTable0x3c(model->m_unk0x2c[lod]);
 			}
 			else {
-				runtime->m_unk0x6c[lod] = NULL;
+				runtime->m_materialTables[lod] = NULL;
 			}
 		}
 
@@ -1502,8 +1502,8 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_10028110(model->m_unk0x80);
-			runtime->FUN_10028140(model->m_unk0x84);
+			runtime->FUN_00411700(model->m_unk0x80);
+			runtime->FUN_00411730(model->m_unk0x84);
 		}
 
 		if (model->m_unk0x48[0] != '\0') {
@@ -1533,9 +1533,9 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
-				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}
@@ -1575,10 +1575,10 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				if (model->m_unk0x2c[lod] >= static_cast<LegoS32>(m_unk0x2c)) {
 					GOL_FATALERROR_MESSAGE("Illegal alt mat assign ref val");
 				}
-				runtime->m_unk0x6c[lod] = VTable0x3c(model->m_unk0x2c[lod]);
+				runtime->m_materialTables[lod] = VTable0x3c(model->m_unk0x2c[lod]);
 			}
 			else {
-				runtime->m_unk0x6c[lod] = NULL;
+				runtime->m_materialTables[lod] = NULL;
 			}
 		}
 
@@ -1595,8 +1595,8 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
-			runtime->FUN_10028110(model->m_unk0x80);
-			runtime->FUN_10028140(model->m_unk0x84);
+			runtime->FUN_00411700(model->m_unk0x80);
+			runtime->FUN_00411730(model->m_unk0x84);
 		}
 		if (model->m_flags & WdbModel0x8c::e_flagBit1) {
 			runtime->m_flags |= FloatyCanoe0x90::c_flagBit1;
@@ -1610,9 +1610,9 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_unk0x6c[targetIndex];
+			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
-				target = runtime->m_unk0x78[targetIndex]->GetMaterialTable();
+				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
 			item[assignment->m_top].FUN_10025da0(target, assignment->m_right, TRUE);
 		}

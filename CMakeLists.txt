@@ -108,6 +108,7 @@ set(COMMON_SOURCES
   common/src/mabmaterialanimation0x14.cpp
   common/src/floatypontoon0x4cfield0x2c.cpp
   common/src/floatyboat0x28.cpp
+  common/src/floatybuoy0x58.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -220,7 +221,6 @@ add_library(goldp SHARED
   GolDP/src/gdbmodelindexarray0xc.cpp
   GolDP/src/greyfalconnode0x1c.cpp
   GolDP/src/boundingvolume0x64.cpp
-  GolDP/src/floatybuoy0x58.cpp
   GolDP/src/floatykajak0x64.cpp
   GolDP/src/floatycanoe0x90.cpp
   GolDP/src/floatyfrigate0x9c.cpp

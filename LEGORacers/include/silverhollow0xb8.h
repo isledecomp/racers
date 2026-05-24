@@ -1,8 +1,8 @@
 #ifndef SILVERHOLLOW0XB8_H
 #define SILVERHOLLOW0XB8_H
 
-#include "ambermeadow0x58.h"
 #include "decomp.h"
+#include "floatybuoy0x58.h"
 #include "types.h"
 
 class IGdbModel0x40;
@@ -13,7 +13,7 @@ class WhiteFalconNode0x18;
 
 // VTABLE: LEGORACERS 0x004af754
 // SIZE 0xb8
-class SilverHollow0xb8 : public AmberMeadow0x58 {
+class SilverHollow0xb8 : public FloatyBuoy0x58 {
 public:
 	SilverHollow0xb8();
 

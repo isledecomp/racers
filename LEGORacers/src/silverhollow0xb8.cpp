@@ -1,96 +1,10 @@
 #include "silverhollow0xb8.h"
 
-DECOMP_SIZE_ASSERT(AmberMeadow0x58, 0x58)
+DECOMP_SIZE_ASSERT(FloatyBuoy0x58, 0x58)
 DECOMP_SIZE_ASSERT(SilverHollow0xb8, 0xb8)
 
 // GLOBAL: LEGORACERS 0x004af750
 LegoFloat g_unk0x004af750 = -1.0f;
-
-// STUB: LEGORACERS 0x00403c90
-void AmberMeadow0x58::VTable0x48(GolVec3*, GolVec3*) const
-{
-	STUB(0x00403c90);
-}
-
-// FUNCTION: LEGORACERS 0x004108a0
-AmberMeadow0x58::AmberMeadow0x58()
-{
-	FUN_004108c0();
-}
-
-// FUNCTION: LEGORACERS 0x004108c0
-void AmberMeadow0x58::FUN_004108c0()
-{
-	m_velocity.m_x = 0;
-	m_velocity.m_y = 0;
-	m_velocity.m_z = 0;
-	m_unk0x28 = 1.0f;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0;
-	m_unk0x38 = 1.0f;
-	m_unk0x3c = 0;
-	m_unk0x40 = 0;
-	m_unk0x44 = 0;
-	m_unk0x48 = 1.0f;
-	m_unk0x4c = 0;
-	m_unk0x50 = 0;
-	m_unk0x54 = 0;
-}
-
-// STUB: LEGORACERS 0x00410900
-void AmberMeadow0x58::VTable0x40(const GolVec3&, const GolVec3&)
-{
-	STUB(0x00410900);
-}
-
-// STUB: LEGORACERS 0x00410c00
-void AmberMeadow0x58::VTable0x44(GolMatrix3*) const
-{
-	STUB(0x00410c00);
-}
-
-// STUB: LEGORACERS 0x00410c40
-void AmberMeadow0x58::VTable0x3c(const GolMatrix34&)
-{
-	STUB(0x00410c40);
-}
-
-// STUB: LEGORACERS 0x00410c80
-void AmberMeadow0x58::VTable0x34(const GolVec3&, GolVec3*)
-{
-	STUB(0x00410c80);
-}
-
-// STUB: LEGORACERS 0x00410cf0
-void AmberMeadow0x58::VTable0x38(const GolVec3&, GolVec3*) const
-{
-	STUB(0x00410cf0);
-}
-
-// STUB: LEGORACERS 0x00410d60
-void AmberMeadow0x58::VTable0x2c(const GolVec3&, GolVec3*) const
-{
-	STUB(0x00410d60);
-}
-
-// STUB: LEGORACERS 0x00410de0
-void AmberMeadow0x58::VTable0x30(const GolVec3&, GolVec3*) const
-{
-	STUB(0x00410de0);
-}
-
-// STUB: LEGORACERS 0x00410ea0
-void AmberMeadow0x58::VTable0x04(GolVec3*) const
-{
-	STUB(0x00410ea0);
-}
-
-// STUB: LEGORACERS 0x00410ec0
-void AmberMeadow0x58::VTable0x08(const GolVec3&)
-{
-	STUB(0x00410ec0);
-}
 
 // FUNCTION: LEGORACERS 0x00411150
 SilverHollow0xb8::SilverHollow0xb8()
@@ -144,7 +58,7 @@ void SilverHollow0xb8::VTable0x54()
 		m_unk0x6c[i] = 0;
 	}
 
-	FUN_004108c0();
+	Reset();
 }
 
 // STUB: LEGORACERS 0x004112c0

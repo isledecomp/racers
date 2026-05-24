@@ -6,6 +6,7 @@
 #include "golmath.h"
 
 // VTABLE: GOLDP 0x100571d8
+// VTABLE: LEGORACERS 0x004af700
 // SIZE 0x58
 class FloatyBuoy0x58 : public FloatyBoat0x28 {
 public:
@@ -27,29 +28,10 @@ public:
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fa0(LegoFloat p_scalar);
 	void FUN_10026fc0(GolMatrix4* p_dest, float p_scale) const;
-	const GolMatrix34& GetTransform() const { return m_unk0x28; }
 
 protected:
-	void Initialize()
-	{
-		m_velocity.m_x = 0.0f;
-		m_velocity.m_y = 0.0f;
-		m_velocity.m_z = 0.0f;
-		m_unk0x28.m_m[0][0] = 1.0f;
-		m_unk0x28.m_m[0][1] = 0.0f;
-		m_unk0x28.m_m[0][2] = 0.0f;
-		m_unk0x28.m_m[1][0] = 0.0f;
-		m_unk0x28.m_m[1][1] = 1.0f;
-		m_unk0x28.m_m[1][2] = 0.0f;
-		m_unk0x28.m_m[2][0] = 0.0f;
-		m_unk0x28.m_m[2][1] = 0.0f;
-		m_unk0x28.m_m[2][2] = 1.0f;
-		m_unk0x28.m_m[3][0] = 0.0f;
-		m_unk0x28.m_m[3][1] = 0.0f;
-		m_unk0x28.m_m[3][2] = 0.0f;
-	}
-
-	GolMatrix34 m_unk0x28; // 0x28
+	GolMatrix3 m_orientation; // 0x28
+	GolVec3 m_position;       // 0x4c
 };
 
 #endif // FLOATYBUOY0X58_H

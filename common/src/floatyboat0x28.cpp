@@ -112,6 +112,7 @@ void FloatyBoat0x28::VTable0x04(GolVec3* p_center) const
 	p_center->m_z = m_center.m_z;
 }
 
+// FUNCTION: GOLDP 0x10028730 FOLDED
 // FUNCTION: LEGORACERS 0x00411c50
 void FloatyBoat0x28::VTable0x08(const GolVec3& p_center)
 {
@@ -152,7 +153,7 @@ LegoFloat FloatyBoat0x28::FUN_10028710()
 	return m_radius;
 }
 
-// FUNCTION: GOLDP 0x10028730
+// FUNCTION: GOLDP 0x10028730 FOLDED
 // FUNCTION: LEGORACERS 0x00411cc0
 void FloatyBoat0x28::SetCenter(const GolVec3& p_center)
 {

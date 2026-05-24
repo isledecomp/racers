@@ -7,6 +7,7 @@
 class GolFileParser;
 struct GolMatrix34;
 struct GolMatrix4;
+struct GolVec3;
 class JadeOrbitBase0x10;
 
 // VTABLE: GOLDP 0x10057454
@@ -29,6 +30,8 @@ public:
 
 	// SYNTHETIC: GOLDP 0x100299a0
 	// WhiteFalconNode0x18::`scalar deleting destructor'
+
+	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* param_3);
 
 protected:
 	// VTABLE: GOLDP 0x10057484

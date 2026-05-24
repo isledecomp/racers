@@ -18,6 +18,7 @@ class BronzeFalcon0xc8770;
 class CrimsonPebble0x228;
 class CrimsonPebbleAnimation0x33c;
 class FloatyBoat0x28;
+class FloatyCanoe0x90;
 class GolExport;
 class GolFont0xa0;
 class GolFontTable;
@@ -51,17 +52,17 @@ public:
 
 	void Reset();
 	void FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2);
-	void FUN_0049fec0();
+	void FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	void ParseCommonToken(GolFileParser* p_parser, GolFileParser::ParserTokenType p_token, CrimsonPebble0x228* p_owner);
 
 	// SYNTHETIC: LEGORACERS 0x0049fd90
 	// CrimsonPebbleEvent0x14::`scalar deleting destructor'
 
 protected:
-	FloatyBoat0x28* m_unk0x04; // 0x04
-	FloatyBoat0x28* m_unk0x08; // 0x08
-	FloatyBoat0x28* m_unk0x0c; // 0x0c
-	undefined4 m_unk0x10;      // 0x10
+	FloatyBoat0x28* m_unk0x04;  // 0x04
+	FloatyBoat0x28* m_unk0x08;  // 0x08
+	FloatyCanoe0x90* m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10;       // 0x10
 };
 
 // SIZE 0x2c
@@ -174,6 +175,28 @@ private:
 	LegoFloat m_unk0x44;  // 0x44
 };
 
+// SIZE 0x18c
+class Particle0x18c {
+public:
+	Particle0x18c();
+	~Particle0x18c();
+
+	LegoU8 GetFlags() const { return m_flags; }
+	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
+	void FUN_00489660(GolVec3* p_vec);
+	void FUN_004897e0(LegoU32 p_elapsedMs);
+	void FUN_00489960(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004513d0(BronzeFalcon0xc8770* p_renderer);
+
+private:
+	undefined m_unk0x000[0xc0]; // 0x000
+	LegoU8 m_flags;             // 0x0c0
+	undefined m_unk0x0c1[0x154 - 0x0c1];
+	GolVec3 m_unk0x154;
+	GolMatrix3 m_unk0x160;
+	undefined m_unk184[0x18c - 0x184];
+};
+
 // VTABLE: LEGORACERS 0x004b4a94
 // SIZE 0x50
 class CrimsonPebbleEvent0x50 : public CrimsonPebbleEvent0x14 {
@@ -196,7 +219,7 @@ public:
 
 private:
 	CrimsonPebbleAnimation0x33c* m_unk0x14; // 0x14
-	undefined4* m_unk0x18;                  // 0x18
+	Particle0x18c** m_unk0x18;              // 0x18
 	GolName m_unk0x1c;                      // 0x1c
 	GolVec3 m_unk0x24;                      // 0x24
 	GolVec3 m_unk0x30;                      // 0x30
@@ -423,29 +446,12 @@ public:
 		undefined m_unk0x00[0x44]; // 0x00
 	};
 
-	// SIZE 0x18c
-	class Particle0x18c {
-	public:
-		Particle0x18c();
-		~Particle0x18c();
-
-		LegoU8 GetFlags() const { return m_flags; }
-		void FUN_004897e0(LegoU32 p_elapsedMs);
-		void FUN_00489960(BronzeFalcon0xc8770* p_renderer);
-		void FUN_004513d0(BronzeFalcon0xc8770* p_renderer);
-
-	private:
-		undefined m_unk0x000[0xc0]; // 0x000
-		LegoU8 m_flags;             // 0x0c0
-		undefined m_unk0x0c1[0x18c - 0x0c1];
-	};
-
 	CrimsonPebbleAnimation0x33c();
 	~CrimsonPebbleAnimation0x33c() override; // vtable+0x00
 
 	void Clear() override; // vtable+0x08
 
-	undefined4* FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
+	Particle0x18c** FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
 	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);

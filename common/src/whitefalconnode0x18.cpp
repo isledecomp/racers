@@ -177,3 +177,15 @@ void WhiteFalconNode0x18::VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const
 {
 	// empty
 }
+
+// FUNCTION: LEGORACERS 0x004132a0
+void WhiteFalconNode0x18::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
+{
+	*p_param3 = *p_param2;
+
+	GolVec3 vec;
+	for (JadeOrbitBase0x10* current = VTable0x18(p_param1); current != NULL; current = current->m_unk0x04) {
+		vec = *p_param3;
+		current->VTable0x0c(&vec, p_param3);
+	}
+}

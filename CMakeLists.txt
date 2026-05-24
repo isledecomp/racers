@@ -98,6 +98,8 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
+  common/src/jadeorbitbase0x10.cpp
+  common/src/whitefalconnode0x18.cpp
   common/src/whitefalcon0x140light.cpp
   common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart0x34.cpp
@@ -180,7 +182,6 @@ add_library(goldp SHARED
   GolDP/src/amberlens0x344.cpp
   GolDP/src/jadeorbit0xd0.cpp
   GolDP/src/ddrawutil.cpp
-  GolDP/src/jadeorbitbase0x10.cpp
   GolDP/src/amberhaze0x1c.cpp
   GolDP/src/amberhaze0x20.cpp
   GolDP/src/cinderbasin0x28.cpp
@@ -189,7 +190,6 @@ add_library(goldp SHARED
   GolDP/src/purpleribbon0x24.cpp
   GolDP/src/purpledune0x7c.cpp
   GolDP/src/whitefalcon0x140.cpp
-  GolDP/src/whitefalconnode0x18.cpp
   GolDP/src/bronzefalcon0xc8770.cpp
   GolDP/src/bronzefalconsurface0x5c.cpp
   GolDP/src/awakekite0x20.cpp

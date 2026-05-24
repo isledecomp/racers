@@ -189,12 +189,12 @@ public:
 	void FUN_004513d0(BronzeFalcon0xc8770* p_renderer);
 
 private:
-	undefined m_unk0x000[0xc0]; // 0x000
-	LegoU8 m_flags;             // 0x0c0
-	undefined m_unk0x0c1[0x154 - 0x0c1];
-	GolVec3 m_unk0x154;
-	GolMatrix3 m_unk0x160;
-	undefined m_unk184[0x18c - 0x184];
+	undefined m_unk0x000[0xc0];          // 0x000
+	LegoU8 m_flags;                      // 0x0c0
+	undefined m_unk0x0c1[0x154 - 0x0c1]; // 0x0c1
+	GolVec3 m_unk0x154;                  // 0x154
+	GolMatrix3 m_unk0x160;               // 0x160
+	undefined m_unk0x184[0x18c - 0x184]; // 0x184
 };
 
 // VTABLE: LEGORACERS 0x004b4a94

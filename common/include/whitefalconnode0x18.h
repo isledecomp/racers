@@ -31,7 +31,7 @@ public:
 	// SYNTHETIC: GOLDP 0x100299a0
 	// WhiteFalconNode0x18::`scalar deleting destructor'
 
-	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* param_3);
+	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 
 protected:
 	// VTABLE: GOLDP 0x10057484

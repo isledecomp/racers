@@ -76,22 +76,19 @@ void Particle0x18c::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 	// should be semantically correct, but does not match yet
 
 	float fVar1;
-	GolVec3 v2;
-	GolVec3 v0;
-	GolVec3 v1;
-	GolVec3 local_c;
+	GolVec3 v0, v1, v2, v3;
 
 	GolMath::NormalizeVector3(*p_param1, &v0);
 	GolMath::NormalizeVector3(*p_param1, &v1);
 	fVar1 = v1.m_x * p_param2->m_x + p_param2->m_y * v1.m_y + v1.m_z * p_param2->m_z;
 
-	local_c.m_x = v1.m_x * fVar1;
-	local_c.m_y = v1.m_y * fVar1;
-	local_c.m_z = v1.m_z * fVar1;
+	v3.m_x = v1.m_x * fVar1;
+	v3.m_y = v1.m_y * fVar1;
+	v3.m_z = v1.m_z * fVar1;
 
-	v2.m_x = p_param2->m_x - local_c.m_x;
-	v2.m_y = p_param2->m_y - local_c.m_y;
-	v2.m_z = p_param2->m_z - local_c.m_z;
+	v2.m_x = p_param2->m_x - v3.m_x;
+	v2.m_y = p_param2->m_y - v3.m_y;
+	v2.m_z = p_param2->m_z - v3.m_z;
 
 	GolMath::NormalizeVector3(v2, &v2);
 
@@ -2120,7 +2117,6 @@ void CrimsonPebbleEvent0x50::VTable0x04(undefined4 p_arg)
 // FUNCTION: LEGORACERS 0x004a3db0
 void CrimsonPebbleEvent0x50::FUN_004a3db0()
 {
-	// FIXME
 	m_unk0x18 = m_unk0x14->FUN_00489d70(m_unk0x1c, &m_unk0x24, &m_unk0x30, &m_unk0x3c);
 }
 
@@ -2134,18 +2130,16 @@ void CrimsonPebbleEvent0x50::VTable0x18()
 // FUNCTION: LEGORACERS 0x004a3df0
 void CrimsonPebbleEvent0x50::FUN_004a3df0(LegoU32)
 {
-	GolVec3 local_24;
-	GolVec3 local_c;
-	GolVec3 local_18;
+	GolVec3 v0, v1, v2;
 
 	if (m_unk0x18 && (m_unk0x48 & 8) && m_unk0x0c) {
-		CrimsonPebbleEvent0x14::FUN_0049fe30(m_unk0x4c, &local_24);
-		FUN_0049fec0(m_unk0x4c, &local_c, &local_18);
+		CrimsonPebbleEvent0x14::FUN_0049fe30(m_unk0x4c, &v0);
+		FUN_0049fec0(m_unk0x4c, &v1, &v2);
 		if (m_unk0x18[0]) {
-			m_unk0x18[0]->FUN_00489660(&local_24);
+			m_unk0x18[0]->FUN_00489660(&v0);
 		}
 		if (m_unk0x18[0]) {
-			m_unk0x18[0]->FUN_00489540(&local_c, &local_18);
+			m_unk0x18[0]->FUN_00489540(&v1, &v2);
 		}
 	}
 }

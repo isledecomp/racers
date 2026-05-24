@@ -545,7 +545,7 @@ foreach(target ${RECCMP_TARGETS})
   add_custom_command(OUTPUT "${progress_local}" COMMAND ${download_command})
   add_custom_target(show-progress-${reccmp_id}
     COMMENT "Compare progress of ${reccmp_id} with current git master"
-    COMMAND reccmp-reccmp --target ${reccmp_id} --nolib --diff "${progress_local}"
+    COMMAND reccmp-reccmp --target ${reccmp_id} --diff "${progress_local}"
     DEPENDS "${progress_local}"
   )
   add_dependencies(show-progress show-progress-${reccmp_id})

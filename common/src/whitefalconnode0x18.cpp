@@ -149,6 +149,7 @@ void WhiteFalconNode0x18::FUN_10029c60(GolFileParser* p_parser)
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
+// FUNCTION: LEGORACERS 0x004113b0 FOLDED
 LegoU32 WhiteFalconNode0x18::VTable0x1c(const JadeOrbitBase0x10&) const
 {
 	return 0;

@@ -361,6 +361,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/citrinegrove0x1f4c.cpp
   LEGORacers/src/topazburst0x14.cpp
   LEGORacers/src/legopiecelibrary.cpp
+  LEGORacers/src/particle0x18c.cpp
   LEGORacers/src/crimsonpebble0x228.cpp
   LEGORacers/src/crimsonpebbletext0x70.cpp
   LEGORacers/src/crimsonpebblevisual0x58.cpp

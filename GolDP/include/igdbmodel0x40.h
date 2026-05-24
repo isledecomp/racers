@@ -52,8 +52,12 @@ public:
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	ShadowWolf0xc* GetMaterialTable() { return &m_unk0x04; }
 	const GolVec3& GetCenter() const { return m_unk0x28; }
+	const GolVec3& GetBoundingCenter() const { return m_unk0x28; }
 	LegoFloat GetRadius() const { return m_unk0x34; }
+	LegoFloat GetBoundingRadius() const { return m_unk0x34; }
 	LegoFloat GetScale() const { return m_unk0x38; }
+	LegoU32 GetGroupCount() const { return m_countGroups; }
+	const LegoU32* GetGroups() const { return m_unk0x24; }
 
 	// SYNTHETIC: GOLDP 0x10027070
 	// IGdbModel0x40::`scalar deleting destructor'

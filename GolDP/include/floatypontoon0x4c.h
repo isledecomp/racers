@@ -20,11 +20,12 @@ public:
 
 	// SIZE 0x0c
 	struct Field0x2c {
-		void SetPosition(LegoU32 p_index, undefined4* p_position);
+		void SetPosition(LegoU32 p_index, void* p_position);
+		undefined4* GetPosition(LegoU32 p_index) const { return static_cast<undefined4*>(m_entries[p_index]); }
 
 		WhiteFalcon0x140* m_renderer; // 0x00
 		LegoU32 m_count;              // 0x04
-		undefined4** m_entries;       // 0x08
+		void** m_entries;             // 0x08
 	};
 
 	FloatyPontoon0x4c();

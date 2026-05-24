@@ -29,6 +29,13 @@ class WhiteFalcon0x140;
 class WhiteFalconNode0x18;
 struct Rect;
 
+#ifdef BUILDING_LEGORACERS
+class LilacOrbit0x28;
+typedef LilacOrbit0x28 ZoweeModel0x28;
+#else
+typedef FloatyBoat0x28 ZoweeModel0x28;
+#endif
+
 // SIZE 0x8c
 struct WdbModel0x8c {
 	enum {
@@ -136,7 +143,7 @@ public:
 	virtual ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const = 0;                                   // vtable+0x3c
 	virtual WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const = 0;                             // vtable+0x40
 	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) const = 0;                               // vtable+0x44
-	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;                                  // vtable+0x48
+	virtual ZoweeModel0x28* VTable0x48(LegoU32 p_index) const = 0;                                  // vtable+0x48
 	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;                        // vtable+0x4c
 	virtual AmberLensBase0x120* VTable0x50(LegoU32 p_index) const = 0;                              // vtable+0x50
 	virtual void VTable0x54(undefined4);                                                            // vtable+0x54
@@ -160,17 +167,17 @@ public:
 	const WhiteFalcon0x140::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);
-	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
+	ZoweeModel0x28* FindUnk0xb4(const LegoChar* p_name) const
 	{
-		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xb4.GetName(p_name)) : NULL;
+		return m_unk0xb4.GetNameEntries() ? static_cast<ZoweeModel0x28*>(m_unk0xb4.GetName(p_name)) : NULL;
 	}
-	FloatyBoat0x28* FindUnk0xc0(const LegoChar* p_name) const
+	ZoweeModel0x28* FindUnk0xc0(const LegoChar* p_name) const
 	{
-		return m_unk0xc0.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xc0.GetName(p_name)) : NULL;
+		return m_unk0xc0.GetNameEntries() ? static_cast<ZoweeModel0x28*>(m_unk0xc0.GetName(p_name)) : NULL;
 	}
-	FloatyBoat0x28* FindUnk0xcc(const LegoChar* p_name) const
+	ZoweeModel0x28* FindUnk0xcc(const LegoChar* p_name) const
 	{
-		return m_unk0xcc.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xcc.GetName(p_name)) : NULL;
+		return m_unk0xcc.GetNameEntries() ? static_cast<ZoweeModel0x28*>(m_unk0xcc.GetName(p_name)) : NULL;
 	}
 	AmberLens0x344* FindUnk0xe4(const LegoChar* p_name) const
 	{

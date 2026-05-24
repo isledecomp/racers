@@ -57,7 +57,7 @@ void FloatyPontoon0x4c::FUN_10029e90(
 {
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
-	VTable0x4c(p_container->m_entries[p_index], p_width, p_height, p_maxDistanceSquared);
+	VTable0x4c(p_container->GetPosition(p_index), p_width, p_height, p_maxDistanceSquared);
 	m_flags |= c_flagBit2;
 }
 
@@ -75,17 +75,17 @@ void FloatyPontoon0x4c::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStru
 {
 	GolVec3 position;
 	FUN_100286d0(&position);
-	p_result->m_unk0x04 = 0;
+	p_result->m_lodIndex = 0;
 
 	if (m_maxDistanceSquared != g_pontoonMaxFloat) {
 		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
 		if (distanceSquared == 0.0f || distanceSquared > m_maxDistanceSquared) {
-			p_result->m_unk0x00 = 0;
+			p_result->m_visibility = 0;
 			return;
 		}
 	}
 
-	p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
+	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
@@ -118,7 +118,7 @@ void FloatyPontoon0x4c::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result
 undefined4* FloatyPontoon0x4c::FUN_1002a020()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = m_positionContainer->m_entries[m_positionIndex];
+		m_position = m_positionContainer->GetPosition(m_positionIndex);
 	}
 
 	return m_position;
@@ -134,7 +134,7 @@ void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140& p_renderer)
 undefined4 FloatyPontoon0x4c::VTable0x20()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = m_positionContainer->m_entries[m_positionIndex];
+		m_position = m_positionContainer->GetPosition(m_positionIndex);
 	}
 
 	return m_position[2] & 0x1100;

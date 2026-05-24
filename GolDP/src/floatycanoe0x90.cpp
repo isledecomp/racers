@@ -100,7 +100,7 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 
 	i = 0;
 	threshold = m_unk0x84;
-	p_result->m_unk0x04 = 0;
+	p_result->m_lodIndex = 0;
 
 	if (*threshold != g_maxFloat) {
 		GolVec3 v3;
@@ -111,16 +111,16 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 			i++;
 			threshold++;
 			if (i >= 3) {
-				p_result->m_unk0x04 = 3;
-				p_result->m_unk0x00 = 0;
+				p_result->m_lodIndex = 3;
+				p_result->m_visibility = 0;
 				return;
 			}
 		}
 	}
 
-	p_result->m_unk0x04 = i;
+	p_result->m_lodIndex = i;
 	if (!m_unk0x78[i]) {
-		p_result->m_unk0x00 = 0;
+		p_result->m_visibility = 0;
 	}
 }
 
@@ -141,20 +141,20 @@ void FloatyCanoe0x90::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct
 			i++;
 			threshold++;
 			if (i >= 3) {
-				p_result->m_unk0x00 = 0;
+				p_result->m_visibility = 0;
 				return;
 			}
 		}
 	}
 
-	p_result->m_unk0x04 = i;
+	p_result->m_lodIndex = i;
 	if (m_unk0x78[i] == NULL) {
-		p_result->m_unk0x00 = 0;
+		p_result->m_visibility = 0;
 		return;
 	}
 
 	FUN_100286d0(&position);
-	p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
+	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10027e70
@@ -245,7 +245,7 @@ void FloatyCanoe0x90::VTable0x1c(WhiteFalcon0x140& p_renderer)
 }
 
 // STUB: GOLDP 0x100280c0
-void FloatyCanoe0x90::VTable0x24(VTable24Argument*)
+void FloatyCanoe0x90::VTable0x24(TransformPayload0x20*)
 {
 	// TODO
 	STUB(0x100280c0);
@@ -254,8 +254,19 @@ void FloatyCanoe0x90::VTable0x24(VTable24Argument*)
 // STUB: GOLDP 0x100280f0
 void FloatyCanoe0x90::VTable0x28()
 {
-	// TODO
 	STUB(0x100280f0);
+
+	LegoU32 i = 0;
+	IGdbModel0x40** model = m_unk0x78;
+
+	do {
+		if (*model == NULL) {
+			break;
+		}
+		(*model)->VTable0x40();
+		i++;
+		model++;
+	} while (i < 3);
 }
 
 // FUNCTION: GOLDP 0x10028110

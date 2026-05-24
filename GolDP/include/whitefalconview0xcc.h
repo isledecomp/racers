@@ -16,9 +16,9 @@ public:
 
 	LegoS32 FUN_1002bc20(const GolVec3& p_center, LegoFloat p_radius) const;
 
-	GolVec3 m_position;               // 0x00
-	undefined m_unk0x0c[0x6c - 0x0c]; // 0x0c
-	Plane0x10 m_planes[6];            // 0x6c
+	GolVec3 m_position;    // 0x00
+	GolVec3 m_corners[8];  // 0x0c
+	Plane0x10 m_planes[6]; // 0x6c
 };
 
 #endif // WHITEFALCONVIEW0XCC_H

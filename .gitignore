@@ -15,8 +15,7 @@ ENV/
 VENV/
 env.bak/
 venv.bak/
-/build/
-/build_debug/
+/build*
 *.swp
 LEGORACERSPROGRESS.*
 GOLDPPROGRESS.*

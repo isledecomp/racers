@@ -27,7 +27,7 @@ public:
 	virtual const LegoChar* GetSuffix();                                                        // vtable+0x10
 	virtual void VTable0x14(undefined4, undefined4, undefined4, undefined4);                    // vtable+0x14
 	virtual void VTable0x18(LegoU8* p_buffer);                                                  // vtable+0x18
-	virtual void VTable0x1c(undefined4, undefined4, undefined4);                                // vtable+0x1c
+	virtual void VTable0x1c(void*, undefined4, ColorRGBA*);                                     // vtable+0x1c
 	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001ff30

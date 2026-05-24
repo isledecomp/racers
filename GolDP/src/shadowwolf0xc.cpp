@@ -27,7 +27,7 @@ void ShadowWolf0xc::FUN_10025df0(WhiteFalcon0x140* p_renderer, undefined4 p_arg2
 	m_renderer = p_renderer;
 	m_count = p_arg2;
 
-	m_entries = new undefined4*[p_arg2];
+	m_entries = new void*[p_arg2];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -80,7 +80,7 @@ void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_entries = new undefined4*[m_count];
+	m_entries = new void*[m_count];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -88,7 +88,8 @@ void ShadowWolf0xc::FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_
 	for (i = 0; i < m_count; i++) {
 		GolName materialName;
 		::strncpy(materialName, p_parser.ReadString(), sizeof(materialName));
-		m_entries[i] = m_renderer->FindMaterialByName(materialName);
+		DuskwindBananaRelic0x24* material = m_renderer->FindMaterialByName(materialName);
+		m_entries[i] = material;
 		if (m_entries[i] == NULL) {
 			char message[64];
 			::memset(message, 0, sizeof(materialName) + 1);

@@ -414,7 +414,7 @@ void CeruleanQueen0x58::FUN_00469ee0(Entry0x60* p_entry)
 			break;
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 8; i++) {
-				p_entry->m_unk0x38[i] = m_unk0x14->FindImageByName(m_parser->ReadString());
+				p_entry->m_images[i] = m_unk0x14->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		}

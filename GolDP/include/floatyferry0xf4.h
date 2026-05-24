@@ -42,6 +42,7 @@ public:
 protected:
 	enum {
 		c_flagBit16 = 0x1 << 16,
+		c_flagBit17 = 0x1 << 17,
 		c_flagBit18 = 0x1 << 18,
 		c_flagsPartAnimationMask = 0x005a0000,
 	};

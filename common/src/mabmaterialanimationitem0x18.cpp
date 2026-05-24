@@ -143,7 +143,7 @@ void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterial
 }
 
 // FUNCTION: LEGORACERS 0x00410560
-undefined4* MabMaterialAnimationItem0x18::FUN_00410560(
+DuskwindBananaRelic0x24* MabMaterialAnimationItem0x18::FUN_00410560(
 	LegoS32 p_elapsedMs,
 	MabMaterialAnimationItem0x8* p_items,
 	LegoU32

@@ -1,6 +1,7 @@
 #include "lilacorbit0x28.h"
 
 DECOMP_SIZE_ASSERT(LilacOrbit0x28, 0x28)
+DECOMP_SIZE_ASSERT(LilacOrbit0x28::TransformPayload0x20, 0x20)
 
 // FUNCTION: LEGORACERS 0x00411a40
 LilacOrbit0x28::LilacOrbit0x28()
@@ -132,12 +133,12 @@ LegoBool32 LilacOrbit0x28::VTable0x20()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void LilacOrbit0x28::VTable0x1c(undefined4)
+void LilacOrbit0x28::VTable0x1c(WhiteFalcon0x140*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void LilacOrbit0x28::VTable0x24(undefined4)
+void LilacOrbit0x28::VTable0x24(TransformPayload0x20*)
 {
 }
 

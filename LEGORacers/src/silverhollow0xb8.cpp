@@ -172,13 +172,13 @@ void SilverHollow0xb8::VTable0x10(undefined4)
 }
 
 // STUB: LEGORACERS 0x00411560
-void SilverHollow0xb8::VTable0x1c(undefined4)
+void SilverHollow0xb8::VTable0x1c(WhiteFalcon0x140*)
 {
 	STUB(0x00411560);
 }
 
 // STUB: LEGORACERS 0x004115f0
-void SilverHollow0xb8::VTable0x24(undefined4)
+void SilverHollow0xb8::VTable0x24(TransformPayload0x20*)
 {
 	STUB(0x004115f0);
 }

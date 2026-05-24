@@ -48,6 +48,20 @@ void OpalHaven0xf4::Reset()
 	m_unk0xf0 = 0;
 }
 
+// FUNCTION: LEGORACERS 0x0040d650
+void OpalHaven0xf4::FUN_0040d650()
+{
+	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x9c); i++) {
+		m_unk0x9c[i] = -1;
+	}
+}
+
+// STUB: LEGORACERS 0x0040d670
+void OpalHaven0xf4::VTable0x5c(LegoU32)
+{
+	STUB(0x0040d670);
+}
+
 // STUB: LEGORACERS 0x0040dad0
 void OpalHaven0xf4::FUN_0040dad0(undefined2)
 {
@@ -83,4 +97,10 @@ LegoBool32 OpalHaven0xf4::FUN_0040e360()
 {
 	STUB(0x0040e360);
 	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x0040e480
+WhiteFalconNode0x18* OpalHaven0xf4::VTable0x58(LegoU32 p_arg1)
+{
+	return m_nodes[p_arg1];
 }

@@ -65,13 +65,13 @@ GoldDune0x38* WhiteFalcon0x140::FindTextureByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00413200
-undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
+DuskwindBananaRelic0x24* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 {
 	AmberHaze0x1c* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
+			DuskwindBananaRelic0x24* value = static_cast<DuskwindBananaRelic0x24*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

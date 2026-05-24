@@ -3,6 +3,9 @@
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
 #include "float.h"
+#include "igdbmodel0x40.h"
+
+#include <math.h>
 
 DECOMP_SIZE_ASSERT(FloatyFerry0xf4, 0xf4)
 
@@ -154,8 +157,57 @@ void FloatyFerry0xf4::VTable0x10(LegoS32 p_v)
 // STUB: GOLDP 0x10023ef0
 void FloatyFerry0xf4::VTable0x4c(LegoU32 p_index)
 {
-	// TODO
 	STUB(0x10023ef0);
+
+	IGdbModel0x40* model = m_unk0x78[p_index];
+	if (model == NULL) {
+		FUN_10026fa0(0.0f);
+		return;
+	}
+
+	GolVec3 center;
+	LegoFloat radius;
+	LegoFloat scale;
+	if (m_flags & c_flagBit16) {
+		CmbModelPartData0x28* partData = m_unk0xa8[p_index]->GetPartData();
+		const GolVec4& bounds = partData[m_unk0xbc].GetBounds();
+		center.m_x = bounds.m_x;
+		center.m_y = bounds.m_y;
+		center.m_z = bounds.m_z;
+		radius = bounds.m_u;
+
+		if (m_flags & c_flagBit17) {
+			const GolVec4& bounds2 = partData[m_unk0xd8].GetBounds();
+			GolVec3 center2;
+			center2.m_x = bounds2.m_x;
+			center2.m_y = bounds2.m_y;
+			center2.m_z = bounds2.m_z;
+
+			center = (center + center2) * 0.5f;
+			if (radius < bounds2.m_u) {
+				radius = bounds2.m_u;
+			}
+
+			LegoFloat deltaX = center.m_x - center2.m_x;
+			LegoFloat deltaY = center.m_y - center2.m_y;
+			LegoFloat deltaZ = center.m_z - center2.m_z;
+			radius += static_cast<LegoFloat>(sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
+		}
+
+		scale = model->GetScale() * m_unk0x58;
+	}
+	else {
+		center = model->GetBoundingCenter();
+		radius = model->GetBoundingRadius();
+		scale = m_unk0x58;
+	}
+
+	center *= scale;
+
+	GolVec3 position;
+	VTable0x2c(center, &position);
+	FUN_10026f70(position);
+	FUN_10026fa0(radius * scale);
 }
 
 // FUNCTION: GOLDP 0x100240b0
@@ -174,21 +226,21 @@ void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct
 			i++;
 			threshold++;
 			if (i >= 3) {
-				p_result->m_unk0x00 = 0;
+				p_result->m_visibility = 0;
 				return;
 			}
 		}
 	}
-	p_result->m_unk0x04 = i;
+	p_result->m_lodIndex = i;
 	if (m_unk0x78[i] == NULL) {
-		p_result->m_unk0x00 = 0;
+		p_result->m_visibility = 0;
 	}
 	else {
 		if (i != 0) {
 			VTable0x4c(i);
 			FUN_100286d0(&position);
 		}
-		p_result->m_unk0x00 = p_view.FUN_1002bc20(position, FUN_10028710());
+		p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 	}
 }
 

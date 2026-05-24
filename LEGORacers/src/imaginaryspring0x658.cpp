@@ -40,9 +40,9 @@ void ImaginarySpring0x658::VTable0x84()
 	STUB(0x00479d10);
 }
 
-// STUB: LEGORACERS 0x00480b50 FOLDED
-LegoBool32 ImaginarySpring0x658::VTable0x78(undefined4)
+// FUNCTION: LEGORACERS 0x00480b50 FOLDED
+LegoBool32 ImaginarySpring0x658::VTable0x78(undefined4 p_unk0x04)
 {
-	STUB(0x00480b50);
-	return FALSE;
+	m_unk0x368.m_unk0x2cc = TRUE;
+	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
 }

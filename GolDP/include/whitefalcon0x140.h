@@ -227,7 +227,7 @@ public:
 	GoldDune0x38* FindTextureByName(const LegoChar* p_name);
 	void AddMaterialList(AmberHaze0x1c* p_param);
 	void RemoveMaterialList(AmberHaze0x1c* p_param);
-	undefined4* FindMaterialByName(const LegoChar* p_name);
+	DuskwindBananaRelic0x24* FindMaterialByName(const LegoChar* p_name);
 
 #ifdef BUILDING_LEGORACERS
 	GolFont0xa0* FindFontByName(const LegoChar* p_name);

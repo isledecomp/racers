@@ -1,8 +1,8 @@
 #include "floatyboat0x28.h"
 
 DECOMP_SIZE_ASSERT(FloatyBoat0x28, 0x28)
-DECOMP_SIZE_ASSERT(FloatyBoat0x28::ResultStruct, 0x8)
-DECOMP_SIZE_ASSERT(FloatyBoat0x28::VTable24Argument, 0x20)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::ResultStruct, 0x08)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::TransformPayload0x20, 0x20)
 
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 FloatyBoat0x28::VTable0x20()
@@ -61,8 +61,8 @@ void FloatyBoat0x28::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct*
 		VTable0x00();
 	}
 
-	p_result->m_unk0x04 = 0;
-	p_result->m_unk0x00 = p_view.FUN_1002bc20(m_v0, m_v1.m_x);
+	p_result->m_lodIndex = 0;
+	p_result->m_visibility = p_view.FUN_1002bc20(m_v0, m_v1.m_x);
 }
 
 // STUB: GOLDP 0x10028610
@@ -200,7 +200,7 @@ void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140&)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x24(VTable24Argument*)
+void FloatyBoat0x28::VTable0x24(TransformPayload0x20*)
 {
 	// empty
 }

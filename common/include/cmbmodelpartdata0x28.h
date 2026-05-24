@@ -15,6 +15,7 @@ public:
 
 	LegoFloat GetUnk0x00() const { return m_unk0x00; }
 	const GolVec3& GetUnk0x04() const { return m_unk0x04; }
+	const GolVec4& GetBounds() const { return m_unk0x10; }
 
 private:
 	LegoFloat m_unk0x00; // 0x00

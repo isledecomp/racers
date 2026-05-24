@@ -634,7 +634,7 @@ void GolBmpFile::VTable0x18(LegoU8* p_buffer)
 
 // STUB: GOLDP 0x1001a340
 // STUB: LEGORACERS 0x00402d70
-void GolBmpFile::VTable0x1c(undefined4, undefined4, undefined4)
+void GolBmpFile::VTable0x1c(void*, undefined4, ColorRGBA*)
 {
 	// TODO
 	STUB(0x1001a340);

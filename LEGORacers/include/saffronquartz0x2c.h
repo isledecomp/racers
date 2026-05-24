@@ -12,9 +12,9 @@
 class AmberLens0x344;
 class BluebellFog0x4;
 class BronzeFalcon0xc8770;
-class FloatyBoat0x28;
 class GolExport;
 class GolFileParser;
+class LilacOrbit0x28;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
 class ZoweeBlubberworth0xf0;
@@ -67,6 +67,19 @@ public:
 		// SIZE 0x68
 		class Model0x68 : public Event0x20 {
 		public:
+			// SIZE 0x08
+			struct ModelIndexRef0x08 {
+				LegoU32 m_resourceIndex; // 0x00
+				LegoU32 m_modelIndex;    // 0x04
+			};
+
+			// Tagged by m_unk0x20: cases 1-3 use m_name, case 4 uses m_indexedRef.
+			// SIZE 0x08
+			union ModelRef0x08 {
+				GolName m_name;                 // 0x00
+				ModelIndexRef0x08 m_indexedRef; // 0x00
+			};
+
 			// SIZE 0x1c
 			struct Animation0x1c {
 				MabMaterialAnimation0x14* m_unk0x00;     // 0x00
@@ -96,9 +109,9 @@ public:
 
 		private:
 			LegoU32 m_unk0x20;            // 0x20
-			FloatyBoat0x28* m_unk0x24;    // 0x24
+			LilacOrbit0x28* m_unk0x24;    // 0x24
 			SaffronQuartz0x2c* m_unk0x28; // 0x28
-			GolName m_unk0x2c;            // 0x2c
+			ModelRef0x08 m_unk0x2c;       // 0x2c
 			GolVec3 m_unk0x34;            // 0x34
 			GolVec3 m_unk0x40;            // 0x40
 			GolVec3 m_unk0x4c;            // 0x4c
@@ -241,6 +254,7 @@ public:
 		LegoU32 GetUnk0x44() const { return m_unk0x44; }
 		LegoU32 GetUnk0x48() const { return m_unk0x48; }
 		LegoU32 GetUnk0x58() const { return m_unk0x58; }
+		void SetFlags(LegoU32 p_flags) { m_unk0x44 |= p_flags; }
 
 	private:
 		SaffronQuartz0x2c* m_unk0x00;                     // 0x00
@@ -290,10 +304,10 @@ public:
 	void FUN_00406c50(LegoBool32 p_binary);
 	void FUN_00406cb0(GolFileParser* p_parser);
 	AmberLens0x344* FUN_00406de0(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406e30(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406e80(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406ed0(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
+	LilacOrbit0x28* FUN_00406e30(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_00406e80(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_00406ed0(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
 	MabMaterialAnimation0x14* FUN_00406f40(LegoU32 p_index, LegoU32 p_animationIndex);
 	MabMaterialAnimationItem0x18* FUN_00406f60(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 FUN_00406f90(LegoFloat p_scale);

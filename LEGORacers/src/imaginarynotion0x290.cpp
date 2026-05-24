@@ -18,6 +18,7 @@
 #include "obscureanchor0x5c.h"
 #include "obscurecarousel0x78.h"
 #include "obscuresigil0xdc.h"
+#include "obscuretome0x3dc.h"
 #include "obscurevantage0x58.h"
 #include "obscurezebra0xa4.h"
 
@@ -520,12 +521,30 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046bf80(
 	return p_unk0x04->FUN_0046f520(&createParams, styleEntry);
 }
 
-// STUB: LEGORACERS 0x0046c050
-undefined4 ImaginaryNotion0x290::FUN_0046c050(undefined4*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c050
+LegoBool32 ImaginaryNotion0x290::FUN_0046c050(ObscureTome0x3fc* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
-	// TODO
-	STUB(0x0046c050);
-	return 0;
+	CeruleanQueen0x58::Entry0x60* sourceParams = static_cast<CeruleanQueen0x58::Entry0x60*>(FUN_0046be10(p_unk0x08));
+	CeruleanEmperor0x4c::Entry0x2c* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0x2c*>(FUN_0046bd80(p_unk0x0c));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureTome0x3fc::CreateParams0x60 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+
+	for (LegoS32 i = 0; i < 8; i++) {
+		if (!createParams.m_images[i]) {
+			createParams.m_images[i] = styleEntry->m_unk0x00[i];
+		}
+	}
+
+	if (!(sourceParams->m_flags & 2) && styleEntry->m_unk0x28) {
+		createParams.m_unk0x22 = styleEntry->m_unk0x20;
+		createParams.m_unk0x58 = styleEntry->m_unk0x24;
+	}
+
+	return p_unk0x04->FUN_0046ecd0(&createParams);
 }
 
 // STUB: LEGORACERS 0x0046c110

@@ -458,13 +458,13 @@ void WhiteFalcon0x140::RemoveMaterialList(AmberHaze0x1c* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028c20
-undefined4* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
+DuskwindBananaRelic0x24* WhiteFalcon0x140::FindMaterialByName(const LegoChar* p_name)
 {
 	AmberHaze0x1c* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			undefined4* value = static_cast<undefined4*>(node->GetName(p_name));
+			DuskwindBananaRelic0x24* value = static_cast<DuskwindBananaRelic0x24*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}
@@ -757,17 +757,17 @@ void WhiteFalcon0x140::VTable0xa4(FloatyBoat0x28* p_model)
 {
 	FloatyBoat0x28::ResultStruct result;
 	p_model->VTable0x14(m_unk0x4c, &result);
-	if (!result.m_unk0x00) {
+	if (!result.m_visibility) {
 		return;
 	}
 
 	GolVec3 localRight;
 	GolVec3 localForward;
-	WhiteFalconNode0x18* node = static_cast<FloatyCanoe0x90*>(p_model)->VTable0x58(result.m_unk0x04);
+	WhiteFalconNode0x18* node = static_cast<FloatyCanoe0x90*>(p_model)->VTable0x58(result.m_lodIndex);
 	if (node != NULL) {
 		GolVec3 worldRight;
 		GolVec3 worldForward;
-		static_cast<FloatyCanoe0x90*>(p_model)->VTable0x5c(result.m_unk0x04);
+		static_cast<FloatyCanoe0x90*>(p_model)->VTable0x5c(result.m_lodIndex);
 		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
 		p_model->VTable0x34(worldRight, &localRight);
 		p_model->VTable0x34(worldForward, &localForward);

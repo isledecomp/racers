@@ -4,11 +4,19 @@
 #include "compat.h"
 #include "decomp.h"
 #include "golmath.h"
+#include "rectangle.h"
 #include "types.h"
+#include "whitefalconview0xcc.h"
 
 class JadeOrbit0xd0;
+
+#ifdef BUILDING_LEGORACERS
+class OpalHaven0xf4;
+typedef OpalHaven0xf4 AmberLensTrackedObject0xf4;
+#else
 class FloatyFerry0xf4;
-struct Rect;
+typedef FloatyFerry0xf4 AmberLensTrackedObject0xf4;
+#endif
 
 // VTABLE: GOLDP 0x10056cc0
 // SIZE 0x120
@@ -30,31 +38,28 @@ public:
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// AmberLensBase0x120::`scalar deleting destructor'
 
-	void FUN_1001bfc0(undefined* p_unk0x04);
-	void FUN_1001c450(undefined* p_unk0x04);
-	void FUN_1001cb30(FloatyFerry0xf4* p_arg1, LegoU32 p_arg2);
+	void FUN_1001bfc0(WhiteFalconView0xcc* p_view);
+	void FUN_1001c450(WhiteFalconView0xcc* p_view);
+	void FUN_1001cb30(AmberLensTrackedObject0xf4* p_arg1, LegoU32 p_arg2);
 	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
 	void FUN_00404740(LegoFloat p_aspect);
 	void FUN_004047b0();
 
-	JadeOrbit0xd0* m_unk0x04;          // 0x04
-	LegoFloat m_unk0x08;               // 0x08
-	LegoFloat m_unk0x0c;               // 0x0c
-	LegoFloat m_unk0x10;               // 0x10
-	LegoFloat m_unk0x14;               // 0x14
-	LegoFloat m_unk0x18;               // 0x18
-	LegoFloat m_unk0x1c;               // 0x1c
-	LegoFloat m_unk0x20;               // 0x20
-	LegoFloat m_unk0x24;               // 0x24
-	FloatyFerry0xf4* m_unk0x28;        // 0x28
-	LegoU32 m_unk0x2c;                 // 0x2c
-	LegoU32 m_flags;                   // 0x30
-	undefined m_unk0x34[0x100 - 0x34]; // 0x34
-	GolVec4 m_unk0x100;                // 0x100
-	LegoS32 m_viewportMinX;            // 0x110
-	LegoS32 m_viewportMinY;            // 0x114
-	LegoS32 m_viewportMaxX;            // 0x118
-	LegoS32 m_viewportMaxY;            // 0x11c
+	JadeOrbit0xd0* m_unk0x04;              // 0x04
+	LegoFloat m_unk0x08;                   // 0x08
+	LegoFloat m_unk0x0c;                   // 0x0c
+	LegoFloat m_unk0x10;                   // 0x10
+	LegoFloat m_unk0x14;                   // 0x14
+	LegoFloat m_unk0x18;                   // 0x18
+	LegoFloat m_unk0x1c;                   // 0x1c
+	LegoFloat m_unk0x20;                   // 0x20
+	LegoFloat m_unk0x24;                   // 0x24
+	AmberLensTrackedObject0xf4* m_unk0x28; // 0x28
+	LegoU32 m_unk0x2c;                     // 0x2c
+	LegoU32 m_flags;                       // 0x30
+	WhiteFalconView0xcc m_unk0x34;         // 0x34
+	GolVec4 m_unk0x100;                    // 0x100
+	Rect m_viewport;                       // 0x110
 };
 
 #endif // AMBERLENSBASE0X120_H

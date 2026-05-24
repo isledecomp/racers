@@ -54,15 +54,15 @@ void FloatyBoat0x28::VTable0x0c(LegoFloat p_v)
 	m_v1.m_z = m_v0.m_x + m_v1.m_x;
 }
 
-// STUB: GOLDP 0x100285d0
-void FloatyBoat0x28::VTable0x14(const WhiteFalconViewState0xcc&, ResultStruct*)
+// FUNCTION: GOLDP 0x100285d0
+void FloatyBoat0x28::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
 	}
 
-	// TODO
-	STUB(0x100285d0);
+	p_result->m_lodIndex = 0;
+	p_result->m_visibility = p_view.FUN_1002bc20(m_v0, m_v1.m_x);
 }
 
 // STUB: GOLDP 0x10028610

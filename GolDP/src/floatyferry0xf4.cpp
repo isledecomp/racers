@@ -9,7 +9,7 @@
 
 DECOMP_SIZE_ASSERT(FloatyFerry0xf4, 0xf4)
 
-// GLOBAL: 0x10056fc4
+// GLOBAL: GOLDP 0x10056fc4
 static const LegoFloat g_fltMax0x10056fc4 = FLT_MAX;
 
 // FUNCTION: GOLDP 0x10023420
@@ -210,26 +210,27 @@ void FloatyFerry0xf4::VTable0x4c(LegoU32 p_index)
 	FUN_10026fa0(radius * scale);
 }
 
-// STUB: GOLDP 0x100240b0
-void FloatyFerry0xf4::VTable0x14(const WhiteFalconViewState0xcc& p_viewState, ResultStruct* p_result)
+// FUNCTION: GOLDP 0x100240b0
+void FloatyFerry0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
-	STUB(0x100240b0);
-
-	LegoU32 i = 0;
+	LegoU32 i;
+	LegoFloat* threshold;
 	GolVec3 position;
-	FUN_100286d0(&position);
 
-	if (m_unk0x84[0] != g_fltMax0x10056fc4) {
-		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_viewState.m_position, position);
-		while (m_unk0x84[i] < distanceSquared) {
+	FUN_100286d0(&position);
+	i = 0;
+	threshold = m_unk0x84;
+	if (*threshold != g_fltMax0x10056fc4) {
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
+		for (; distanceSquared > *threshold;) {
 			i++;
+			threshold++;
 			if (i >= 3) {
 				p_result->m_visibility = 0;
 				return;
 			}
 		}
 	}
-
 	p_result->m_lodIndex = i;
 	if (m_unk0x78[i] == NULL) {
 		p_result->m_visibility = 0;
@@ -239,7 +240,7 @@ void FloatyFerry0xf4::VTable0x14(const WhiteFalconViewState0xcc& p_viewState, Re
 			VTable0x4c(i);
 			FUN_100286d0(&position);
 		}
-		p_result->m_visibility = p_viewState.FUN_1002bc20(position, FUN_10028710());
+		p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 	}
 }
 

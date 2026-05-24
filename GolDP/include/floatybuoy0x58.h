@@ -27,6 +27,7 @@ public:
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fa0(LegoFloat p_scalar);
 	void FUN_10026fc0(GolMatrix4* p_dest, float p_scale) const;
+	const GolMatrix34& GetTransform() const { return m_unk0x28; }
 
 protected:
 	void Initialize()

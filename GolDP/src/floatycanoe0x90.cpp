@@ -107,10 +107,7 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 		VTable0x04(&v3);
 		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_vector, v3);
 
-		for (;;) {
-			if (distanceSquared <= *threshold) {
-				break;
-			}
+		for (; distanceSquared > *threshold;) {
 			i++;
 			threshold++;
 			if (i >= 3) {
@@ -127,23 +124,20 @@ void FloatyCanoe0x90::FUN_10027cc0(const GolVec3& p_vector, FloatyCanoe0x90::Res
 	}
 }
 
-// STUB: GOLDP 0x10027d80
-void FloatyCanoe0x90::VTable0x14(const WhiteFalconViewState0xcc& p_viewState, ResultStruct* p_result)
+// FUNCTION: GOLDP 0x10027d80
+void FloatyCanoe0x90::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result)
 {
-	STUB(0x10027d80);
+	LegoU32 i;
+	LegoFloat* threshold;
+	GolVec3 position;
 
-	LegoU32 i = 0;
-	LegoFloat* threshold = m_unk0x84;
-
+	i = 0;
+	threshold = m_unk0x84;
 	if (*threshold != g_maxFloat) {
-		GolVec3 position;
 		VTable0x04(&position);
-		LegoFloat distanceSquared = GOLVECTOR3_DISTANCE_SQUARED(p_viewState.m_position, position);
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
 
-		for (;;) {
-			if (distanceSquared <= *threshold) {
-				break;
-			}
+		for (; distanceSquared > *threshold;) {
 			i++;
 			threshold++;
 			if (i >= 3) {
@@ -154,22 +148,20 @@ void FloatyCanoe0x90::VTable0x14(const WhiteFalconViewState0xcc& p_viewState, Re
 	}
 
 	p_result->m_lodIndex = i;
-	if (m_unk0x78[i] != NULL) {
-		GolVec3 position;
-		FUN_100286d0(&position);
-		LegoFloat radius = FUN_10028710();
-		p_result->m_visibility = p_viewState.FUN_1002bc20(position, radius);
-	}
-	else {
+	if (m_unk0x78[i] == NULL) {
 		p_result->m_visibility = 0;
+		return;
 	}
+
+	FUN_100286d0(&position);
+	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10027e70
 void FloatyCanoe0x90::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
 {
-	LegoFloat scale = m_unk0x78[p_index]->GetScale() * m_unk0x58;
-	FUN_10026fc0(p_dest, scale);
+	IGdbModel0x40* model = m_unk0x78[p_index];
+	FUN_10026fc0(p_dest, model->GetScale() * m_unk0x58);
 }
 
 // FUNCTION: GOLDP 0x10027e90
@@ -178,25 +170,25 @@ void FloatyCanoe0x90::VTable0x00()
 	VTable0x4c(0);
 }
 
-// STUB: GOLDP 0x10027ea0
+// FUNCTION: GOLDP 0x10027ea0
 void FloatyCanoe0x90::VTable0x4c(LegoU32 p_index)
 {
-	STUB(0x10027ea0);
-
-	if (m_unk0x78[p_index] == NULL) {
+	IGdbModel0x40* model = m_unk0x78[p_index];
+	if (model == NULL) {
 		FUN_10026fa0(0.0f);
 		return;
 	}
 
-	GolVec3 center = m_unk0x78[p_index]->GetBoundingCenter();
-	center *= m_unk0x58;
-
+	LegoFloat scale = m_unk0x58;
+	GolVec3 center = model->GetCenter();
+	LegoFloat radius = model->GetRadius();
+	center.m_x *= scale;
+	center.m_y *= scale;
+	center.m_z *= scale;
 	GolVec3 position;
 	VTable0x2c(center, &position);
 	FUN_10026f70(position);
-
-	LegoFloat radius = m_unk0x58 * m_unk0x78[p_index]->GetBoundingRadius();
-	FUN_10026fa0(radius);
+	FUN_10026fa0(m_unk0x58 * radius);
 }
 
 // FUNCTION: GOLDP 0x10027f40

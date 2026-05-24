@@ -147,7 +147,8 @@ LegoFloat g_arccosTable[1024] = {
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::TexturedVertex, 0x18)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::MaterialColor, 0x04)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140::Light, 0x10)
-DECOMP_SIZE_ASSERT(WhiteFalconViewState0xcc, 0xcc)
+DECOMP_SIZE_ASSERT(WhiteFalconView0xcc::Plane0x10, 0x10)
+DECOMP_SIZE_ASSERT(WhiteFalconView0xcc, 0xcc)
 DECOMP_SIZE_ASSERT(WhiteFalcon0x140, 0x140)
 
 // FUNCTION: GOLDP 0x10028840
@@ -937,31 +938,29 @@ void WhiteFalcon0x140::VTable0x9c(undefined4, undefined4, undefined4)
 	// empty
 }
 
-// STUB: GOLDP 0x1002bc20
-LegoS32 WhiteFalconViewState0xcc::FUN_1002bc20(const GolVec3& p_center, LegoFloat p_radius) const
+// FUNCTION: GOLDP 0x1002bc20
+LegoS32 WhiteFalconView0xcc::FUN_1002bc20(const GolVec3& p_center, LegoFloat p_radius) const
 {
-	STUB(0x1002bc20);
-
-	LegoS32 outsideCount = 0;
-	const GolVec4* plane = m_planes;
-	const GolVec4* end = m_planes + sizeOfArray(m_planes);
+	LegoS32 insideCount = 0;
+	const Plane0x10* plane = m_planes;
+	const Plane0x10* end = m_planes + sizeOfArray(m_planes);
 
 	for (; plane < end; plane++) {
-		LegoFloat distance =
-			plane->m_z * p_center.m_z + plane->m_y * p_center.m_y + plane->m_x * p_center.m_x + plane->m_u;
-
+		LegoFloat distance = plane->m_normal.m_z * p_center.m_z;
+		distance += plane->m_normal.m_y * p_center.m_y;
+		distance += plane->m_normal.m_x * p_center.m_x;
+		distance += plane->m_distance;
 		if (distance > p_radius) {
-			outsideCount++;
+			insideCount++;
 		}
 		else if (distance < -p_radius) {
 			return 0;
 		}
 	}
 
-	if (outsideCount == sizeOfArray(m_planes)) {
+	if (insideCount == 6) {
 		return 2;
 	}
-
 	return 1;
 }
 

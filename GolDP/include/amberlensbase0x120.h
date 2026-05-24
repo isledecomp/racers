@@ -6,7 +6,7 @@
 #include "golmath.h"
 #include "rectangle.h"
 #include "types.h"
-#include "whitefalconviewstate0xcc.h"
+#include "whitefalconview0xcc.h"
 
 class JadeOrbit0xd0;
 
@@ -38,8 +38,8 @@ public:
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// AmberLensBase0x120::`scalar deleting destructor'
 
-	void FUN_1001bfc0(WhiteFalconViewState0xcc* p_viewState);
-	void FUN_1001c450(WhiteFalconViewState0xcc* p_viewState);
+	void FUN_1001bfc0(WhiteFalconView0xcc* p_view);
+	void FUN_1001c450(WhiteFalconView0xcc* p_view);
 	void FUN_1001cb30(AmberLensTrackedObject0xf4* p_arg1, LegoU32 p_arg2);
 	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
 	void FUN_00404740(LegoFloat p_aspect);
@@ -57,7 +57,7 @@ public:
 	AmberLensTrackedObject0xf4* m_unk0x28; // 0x28
 	LegoU32 m_unk0x2c;                     // 0x2c
 	LegoU32 m_flags;                       // 0x30
-	WhiteFalconViewState0xcc m_unk0x34;    // 0x34
+	WhiteFalconView0xcc m_unk0x34;         // 0x34
 	GolVec4 m_unk0x100;                    // 0x100
 	Rect m_viewport;                       // 0x110
 };

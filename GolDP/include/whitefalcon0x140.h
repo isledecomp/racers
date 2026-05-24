@@ -7,7 +7,7 @@
 #include "golsurfaceformat.h"
 #include "silverdune0x30.h"
 #include "types.h"
-#include "whitefalconviewstate0xcc.h"
+#include "whitefalconview0xcc.h"
 
 class AmberHaze0x1c;
 class AmberLens0x344;
@@ -262,7 +262,7 @@ protected:
 	HypnoticNoise0x1c* m_imageLists;              // 0x40
 	CinderBasin0x28* m_fontLists;                 // 0x44
 	BronzeFalcon0xc8770* m_nextDrawStateRenderer; // 0x48
-	WhiteFalconViewState0xcc m_unk0x4c;           // 0x4c
+	WhiteFalconView0xcc m_unk0x4c;                // 0x4c
 	ColorRGBA m_unk0x118;                         // 0x118
 	undefined4 m_unk0x11c;                        // 0x11c
 	const MaterialColor* m_unk0x120;              // 0x120

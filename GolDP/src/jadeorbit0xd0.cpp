@@ -142,28 +142,87 @@ void JadeOrbit0xd0::VTable0x28()
 	STUB(0x10002b20);
 }
 
-// STUB: GOLDP 0x10002c10
-void JadeOrbit0xd0::VTable0x04(const GolVec3*, GolVec3*)
+// FUNCTION: GOLDP 0x10002c10
+void JadeOrbit0xd0::VTable0x04(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002c10);
+	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	p_dest->m_y = m_unk0x10.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_unk0x10.m_m[0][2] * p_src->m_x;
+
+	p_dest->m_x += m_unk0x10.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_unk0x10.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_unk0x10.m_m[1][2] * p_src->m_y;
+
+	p_dest->m_x += m_unk0x10.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_unk0x10.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_unk0x10.m_m[2][2] * p_src->m_z;
+
+	p_dest->m_x += m_unk0x10.m_m[3][0];
+	p_dest->m_y += m_unk0x10.m_m[3][1];
+	p_dest->m_z += m_unk0x10.m_m[3][2];
 }
 
-// STUB: GOLDP 0x10002c90
-void JadeOrbit0xd0::VTable0x0c(const GolVec3*, GolVec3*)
+// FUNCTION: GOLDP 0x10002c90
+void JadeOrbit0xd0::VTable0x0c(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002c90);
+	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	p_dest->m_y = m_unk0x10.m_m[0][1] * p_src->m_x;
+	p_dest->m_z = m_unk0x10.m_m[0][2] * p_src->m_x;
+
+	p_dest->m_x += m_unk0x10.m_m[1][0] * p_src->m_y;
+	p_dest->m_y += m_unk0x10.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_unk0x10.m_m[1][2] * p_src->m_y;
+
+	p_dest->m_x += m_unk0x10.m_m[2][0] * p_src->m_z;
+	p_dest->m_y += m_unk0x10.m_m[2][1] * p_src->m_z;
+	p_dest->m_z += m_unk0x10.m_m[2][2] * p_src->m_z;
 }
 
 // STUB: GOLDP 0x10002d00
-void JadeOrbit0xd0::VTable0x08(undefined4, undefined4)
+void JadeOrbit0xd0::VTable0x08(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002d00);
+	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	p_dest->m_y = m_unk0x10.m_m[1][0] * p_src->m_x;
+	p_dest->m_z = m_unk0x10.m_m[2][0] * p_src->m_x;
+
+	p_dest->m_x = (p_src->m_y * m_unk0x10.m_m[0][1]) + p_dest->m_x;
+	p_dest->m_y = (p_src->m_y * m_unk0x10.m_m[1][1]) + p_dest->m_y;
+	p_dest->m_z = (m_unk0x10.m_m[2][1] * p_src->m_y) + p_dest->m_z;
+
+	p_dest->m_x = (p_src->m_z * m_unk0x10.m_m[0][2]) + p_dest->m_x;
+	p_dest->m_y = (p_src->m_z * m_unk0x10.m_m[1][2]) + p_dest->m_y;
+	p_dest->m_z = (m_unk0x10.m_m[2][2] * p_src->m_z) + p_dest->m_z;
+
+	LegoFloat offset = m_unk0x10.m_m[3][0] * m_unk0x10.m_m[0][0];
+	offset += m_unk0x10.m_m[0][1] * m_unk0x10.m_m[3][1];
+	offset += m_unk0x10.m_m[3][2] * m_unk0x10.m_m[0][2];
+	p_dest->m_x -= offset;
+
+	offset = m_unk0x10.m_m[3][2] * m_unk0x10.m_m[1][2];
+	offset += m_unk0x10.m_m[1][1] * m_unk0x10.m_m[3][1];
+	offset += m_unk0x10.m_m[3][0] * m_unk0x10.m_m[1][0];
+	p_dest->m_y -= offset;
+
+	offset = m_unk0x10.m_m[2][2] * m_unk0x10.m_m[3][2];
+	offset += m_unk0x10.m_m[2][1] * m_unk0x10.m_m[3][1];
+	offset += m_unk0x10.m_m[3][0] * m_unk0x10.m_m[2][0];
+	p_dest->m_z -= offset;
 }
 
-// STUB: GOLDP 0x10002dc0
-void JadeOrbit0xd0::VTable0x10()
+// FUNCTION: GOLDP 0x10002dc0
+void JadeOrbit0xd0::VTable0x10(const GolVec3* p_src, GolVec3* p_dest)
 {
-	STUB(0x10002dc0);
+	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	p_dest->m_y = m_unk0x10.m_m[1][0] * p_src->m_x;
+	p_dest->m_z = m_unk0x10.m_m[2][0] * p_src->m_x;
+
+	p_dest->m_x += m_unk0x10.m_m[0][1] * p_src->m_y;
+	p_dest->m_y += m_unk0x10.m_m[1][1] * p_src->m_y;
+	p_dest->m_z += m_unk0x10.m_m[2][1] * p_src->m_y;
+
+	p_dest->m_x += m_unk0x10.m_m[0][2] * p_src->m_z;
+	p_dest->m_y += m_unk0x10.m_m[1][2] * p_src->m_z;
+	p_dest->m_z += m_unk0x10.m_m[2][2] * p_src->m_z;
 }
 
 // FUNCTION: GOLDP 0x10002e30

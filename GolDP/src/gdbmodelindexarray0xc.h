@@ -26,6 +26,8 @@ public:
 		LegoU8 m_x; // 0x3
 	};
 
+	const Indices* GetIndices() const { return m_unk0x08; }
+
 protected:
 	Indices* m_unk0x08;
 };

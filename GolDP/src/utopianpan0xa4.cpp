@@ -13,6 +13,7 @@
 #include "slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(UtopianPan0xa4, 0xa4)
+DECOMP_SIZE_ASSERT(UtopianPan0xa4::UtopianPanImageName, 0x09)
 
 extern const ColorRGBA g_unk0x10057668;
 

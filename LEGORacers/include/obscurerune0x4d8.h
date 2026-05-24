@@ -17,8 +17,7 @@ public:
 	// ObscureRune0x4d8::`scalar deleting destructor'
 
 protected:
-	ObscureTome0x3dc m_unk0xdc;          // 0x0dc
-	undefined m_unk0x4b8[0x4d8 - 0x4b8]; // 0x4b8
+	ObscureTome0x3fc m_unk0xdc; // 0x0dc
 };
 
 #endif // OBSCURERUNE0X4D8

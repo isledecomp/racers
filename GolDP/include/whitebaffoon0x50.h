@@ -9,6 +9,7 @@
 class BronzeFalcon0xc8770;
 class PurpleDune0x7c;
 
+// SIZE 0x04
 // This type is needed because
 // - instances of this type have component access like `char[4]`, but copy like an `int`,
 // - instances of this type are not aligned to 4 bytes.
@@ -42,6 +43,14 @@ public:
 
 	enum StateFlags {
 		c_stateFlagBit0 = 0x01
+	};
+
+	// SIZE 0x09
+	struct WhiteBaffoonImageName {
+		union {
+			FourBytes m_name[2]; // 0x00
+			LegoChar m_chars[9]; // 0x00
+		};
 	};
 
 	WhiteBaffoon0x50();

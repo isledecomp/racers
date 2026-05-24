@@ -27,23 +27,23 @@ void AmberLens0x344::FUN_10001f60(BronzeFalcon0xc8770* p_renderer)
 	m_renderer = p_renderer;
 	if (p_renderer != NULL) {
 		const SlatePeak0x58* renderTargetInfo = p_renderer->GetRenderTargetInfo();
-		if (m_viewportMaxY == 0 || m_viewportMaxX == 0) {
-			m_viewportMinX = 0;
-			m_viewportMinY = 0;
-			m_viewportMaxX = renderTargetInfo->GetWidth();
-			m_viewportMaxY = renderTargetInfo->GetHeight();
+		if (m_viewport.m_bottom == 0 || m_viewport.m_right == 0) {
+			m_viewport.m_left = 0;
+			m_viewport.m_top = 0;
+			m_viewport.m_right = renderTargetInfo->GetWidth();
+			m_viewport.m_bottom = renderTargetInfo->GetHeight();
 		}
 
 		if (!(m_flags & c_flagBit3)) {
-			LegoFloat width = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-			LegoFloat height = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
+			LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+			LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 			m_unk0x0c = width / height;
 		}
 
-		m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-		m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
-		m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewportMinX);
-		m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewportMinY);
+		m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+		m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+		m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
+		m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
 		m_flags |= c_flagBit0 | c_flagBit1;
 	}
 }
@@ -54,15 +54,15 @@ void AmberLens0x344::VTable0x28()
 	if (m_flags & (c_flagBit0 | c_flagBit1)) {
 		if (m_flags & c_flagBit1) {
 			if (!(m_flags & c_flagBit3)) {
-				LegoFloat width = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-				LegoFloat height = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
+				LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+				LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 				m_unk0x0c = width / height;
 			}
 
-			m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-			m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
-			m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewportMinX);
-			m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewportMinY);
+			m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+			m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+			m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
+			m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
 		}
 
 		if (m_flags & c_flagBit0) {
@@ -108,10 +108,10 @@ void AmberLens0x344::VTable0x00()
 	m_flags &= ~c_flagBit0;
 	viewMatrix.m_m[3][2] = -(position.m_x * right.m_x + position.m_y * right.m_y + position.m_z * right.m_z);
 	if (m_flags & c_flagBit2) {
-		FUN_1001c450(m_unk0x34);
+		FUN_1001c450(&m_unk0x34);
 	}
 	else {
-		FUN_1001bfc0(m_unk0x34);
+		FUN_1001bfc0(&m_unk0x34);
 	}
 }
 
@@ -253,27 +253,27 @@ void AmberLens0x344::VTable0x10(const GolVec4* p_bounds)
 // FUNCTION: GOLDP 0x10002660
 void AmberLens0x344::VTable0x0c(Rect* p_rect)
 {
-	m_viewportMinX = p_rect->m_left;
-	m_viewportMaxX = p_rect->m_right;
-	m_viewportMinY = p_rect->m_top;
-	m_viewportMaxY = p_rect->m_bottom;
+	m_viewport.m_left = p_rect->m_left;
+	m_viewport.m_right = p_rect->m_right;
+	m_viewport.m_top = p_rect->m_top;
+	m_viewport.m_bottom = p_rect->m_bottom;
 
 	if (!(m_flags & c_flagBit3)) {
-		LegoFloat width = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-		LegoFloat height = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
+		LegoFloat width = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+		LegoFloat height = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
 		m_unk0x0c = width / height;
 	}
 
-	m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewportMaxX - m_viewportMinX);
-	m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewportMaxY - m_viewportMinY);
-	m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewportMinX);
-	m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewportMinY);
+	m_unk0x120.m_unk0x210 = static_cast<LegoFloat>(m_viewport.m_right - m_viewport.m_left);
+	m_unk0x120.m_unk0x214 = static_cast<LegoFloat>(m_viewport.m_bottom - m_viewport.m_top);
+	m_unk0x120.m_unk0x218 = static_cast<LegoFloat>(m_viewport.m_left);
+	m_unk0x120.m_unk0x21c = static_cast<LegoFloat>(m_viewport.m_top);
 
 	if (m_flags & c_flagBit2) {
-		FUN_1001c450(m_unk0x34);
+		FUN_1001c450(&m_unk0x34);
 	}
 	else {
-		FUN_1001bfc0(m_unk0x34);
+		FUN_1001bfc0(&m_unk0x34);
 	}
 
 	VTable0x04();

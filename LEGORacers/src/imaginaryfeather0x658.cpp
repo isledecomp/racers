@@ -2,46 +2,76 @@
 
 #include "audio/musicgroup.h"
 #include "audio/musicinstance.h"
+#include "golerror.h"
+#include "golhashtable.h"
 #include "menutoolcontext0x4bc8.h"
+#include "menutoolcreateparams0x30.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryFeather0x658, 0x658)
 
-// STUB: LEGORACERS 0x004809b0
+// FUNCTION: LEGORACERS 0x004809b0
 ImaginaryFeather0x658::ImaginaryFeather0x658()
 {
-	STUB(0x004809b0);
 }
 
-// STUB: LEGORACERS 0x004809f0
+// FUNCTION: LEGORACERS 0x004809f0
 ImaginaryFeather0x658::~ImaginaryFeather0x658()
 {
-	STUB(0x004809f0);
+	Destroy();
 }
 
-// STUB: LEGORACERS 0x00480a40
-LegoBool32 ImaginaryFeather0x658::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x00480a40
+LegoBool32 ImaginaryFeather0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x00480a40);
-	return FALSE;
+	if (m_initialized) {
+		Destroy();
+	}
+
+	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
+		return FALSE;
+	}
+
+	if (p_context->m_unk0x4b40.GetMusicInstance()) {
+		p_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(p_context->m_unk0x4b40.GetMusicInstance());
+		p_context->m_unk0x4b40.SetMusicInstance(NULL);
+	}
+
+	p_context->m_unk0x4b40.SetMusicInstance(p_context->m_unk0x4b40.GetMusicGroup()->CreateMusicInstance(19));
+	if (!p_context->m_unk0x4b40.GetMusicInstance()) {
+		GOL_FATALERROR(c_golErrorGeneral);
+	}
+
+	p_context->m_unk0x4b40.GetMusicInstance()->Play(TRUE);
+	m_unk0x368.m_unk0x2cc = FALSE;
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00480ad0
+// FUNCTION: LEGORACERS 0x00480ad0
 void ImaginaryFeather0x658::VTable0x4c()
 {
-	STUB(0x00480ad0);
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\MAININTR");
+	}
+
+	FUN_0046c5b0(&m_unk0x368, m_unk0x28c);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
 }
 
-// STUB: LEGORACERS 0x00480b20
+// FUNCTION: LEGORACERS 0x00480b20
 void ImaginaryFeather0x658::VTable0x84()
 {
-	STUB(0x00480b20);
+	m_context->m_menuStack.Pop();
+	m_context->m_menuStack.Push(40);
 }
 
-// STUB: LEGORACERS 0x00480b50 FOLDED
-LegoBool32 ImaginaryFeather0x658::VTable0x78(undefined4)
+// FUNCTION: LEGORACERS 0x00480b50 FOLDED
+LegoBool32 ImaginaryFeather0x658::VTable0x78(undefined4 p_unk0x04)
 {
-	STUB(0x00480b50);
-	return FALSE;
+	m_unk0x368.m_unk0x2cc = TRUE;
+	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED

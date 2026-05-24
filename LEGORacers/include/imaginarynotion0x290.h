@@ -19,6 +19,7 @@ class InputManager;
 class ImaginaryDrillFieldAt0x420;
 class MenuToolCreateParams0x30;
 class ObscureCarousel0x78;
+class ObscureTome0x3fc;
 class ObscureVantage0x58;
 class ObscureSigil0xdc;
 class ObscureZebra0xa4;
@@ -109,7 +110,7 @@ public:
 	void FUN_0046bea0(ObscureZebra0xa4*, undefined2);
 	LegoBool32 FUN_0046bef0(ObscureAnchor0x5c*, undefined2, undefined2);
 	LegoBool32 FUN_0046bf80(ImaginaryDrillFieldAt0x420*, undefined2, undefined2, undefined2);
-	undefined4 FUN_0046c050(undefined4*, undefined2, undefined2);
+	LegoBool32 FUN_0046c050(ObscureTome0x3fc*, undefined2, undefined2);
 	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
 	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
 	LegoBool32 FUN_0046c240(ObscureCarousel0x78*, undefined2, undefined2);

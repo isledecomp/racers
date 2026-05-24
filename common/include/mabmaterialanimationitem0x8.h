@@ -5,6 +5,7 @@
 #include "types.h"
 
 class WhiteFalcon0x140;
+class DuskwindBananaRelic0x24;
 
 // SIZE 0x8
 class MabMaterialAnimationItem0x8 {
@@ -12,12 +13,12 @@ public:
 	MabMaterialAnimationItem0x8();
 
 	void FUN_10026110(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoU32 p_id);
-	undefined4* GetMaterial() const { return m_unk0x00; }
+	DuskwindBananaRelic0x24* GetMaterial() const { return m_unk0x00; }
 	LegoU32 GetFrame() const { return m_unk0x04; }
 
 private:
-	undefined4* m_unk0x00; // 0x00
-	LegoU32 m_unk0x04;     // 0x04
+	DuskwindBananaRelic0x24* m_unk0x00; // 0x00
+	LegoU32 m_unk0x04;                  // 0x04
 };
 
 #endif // MABMATERIALANIMATIONITEM0X8_H

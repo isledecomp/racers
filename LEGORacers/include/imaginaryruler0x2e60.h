@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "imaginarygizmo0x1908.h"
+#include "obscureanchor0x5c.h"
 
 // VTABLE: LEGORACERS 0x004b3dc8
 // SIZE 0x2e60
@@ -25,7 +26,8 @@ public:
 	// ImaginaryRuler0x2e60::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x1908[0x2e60 - 0x1908]; // 0x1908
+	ObscureAnchor0x5c m_unk0x1908;          // 0x1908
+	undefined m_unk0x1964[0x2e60 - 0x1964]; // 0x1964
 };
 
 #endif // IMAGINARYRULER0X2E60

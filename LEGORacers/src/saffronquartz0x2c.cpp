@@ -4,14 +4,16 @@
 #include "amberlensbase0x120.h"
 #include "bluebellfog0x4.h"
 #include "bronzefalcon0xc8770.h"
-#include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "igdbmodel0x40.h"
+#include "lilacorbit0x28.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "opalhaven0xf4.h"
+#include "silverhollow0xb8.h"
 #include "zoweeblubberworth0xf0.h"
 
 #include <stdlib.h>
@@ -22,6 +24,8 @@ DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::CdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8, 0xb8)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Event0x20, 0x20)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Model0x68, 0x68)
+DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Model0x68::ModelIndexRef0x08, 0x08)
+DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Model0x68::ModelRef0x08, 0x08)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Model0x68::Animation0x1c, 0x1c)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::Camera0x34, 0x34)
 DECOMP_SIZE_ASSERT(SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38, 0x38)
@@ -45,10 +49,10 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::Reset()
 {
 	LegoU32 result = 0;
 
-	m_unk0x2c[0] = '\0';
+	m_unk0x2c.m_name[0] = '\0';
 	m_unk0x20 = 0;
-	((LegoU32*) m_unk0x2c)[0] = 0;
-	((LegoU32*) m_unk0x2c)[1] = 0;
+	m_unk0x2c.m_indexedRef.m_resourceIndex = 0;
+	m_unk0x2c.m_indexedRef.m_modelIndex = 0;
 	m_unk0x28 = NULL;
 	m_unk0x24 = NULL;
 	m_unk0x34.m_x = 0.0f;
@@ -93,20 +97,20 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::FUN_00404a10(SaffronQuartz0x2c*
 			m_unk0x58 = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2f:
-			::strncpy(m_unk0x2c, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c));
+			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
 			m_unk0x20 = 1;
 			break;
 		case GolFileParser::e_unknown0x30:
-			::strncpy(m_unk0x2c, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c));
+			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
 			m_unk0x20 = 2;
 			break;
 		case GolFileParser::e_unknown0x31:
-			::strncpy(m_unk0x2c, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c));
+			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
 			m_unk0x20 = 3;
 			break;
 		case GolFileParser::e_unknown0x32:
-			((LegoU32*) m_unk0x2c)[0] = p_parser->ReadInteger();
-			((LegoU32*) m_unk0x2c)[1] = p_parser->ReadInteger();
+			m_unk0x2c.m_indexedRef.m_resourceIndex = p_parser->ReadInteger();
+			m_unk0x2c.m_indexedRef.m_modelIndex = p_parser->ReadInteger();
 			m_unk0x20 = 4;
 			break;
 		case GolFileParser::e_unknown0x33:
@@ -166,34 +170,35 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::FUN_00404c90()
 
 		switch (m_unk0x20) {
 		case 1:
-			m_unk0x24 = m_unk0x28->FUN_00406e30(m_unk0x2c);
+			m_unk0x24 = m_unk0x28->FUN_00406e30(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c, sizeof(m_unk0x2c));
+				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case 2:
-			m_unk0x24 = m_unk0x28->FUN_00406e80(m_unk0x2c);
+			m_unk0x24 = m_unk0x28->FUN_00406e80(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c, sizeof(m_unk0x2c));
+				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find jointed model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case 3:
-			m_unk0x24 = m_unk0x28->FUN_00406ed0(m_unk0x2c);
+			m_unk0x24 = m_unk0x28->FUN_00406ed0(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c, sizeof(m_unk0x2c));
+				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find bsp model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case 4:
-			m_unk0x24 = m_unk0x28->FUN_00406f20(((LegoU32*) m_unk0x2c)[0], ((LegoU32*) m_unk0x2c)[1]);
+			m_unk0x24 =
+				m_unk0x28->FUN_00406f20(m_unk0x2c.m_indexedRef.m_resourceIndex, m_unk0x2c.m_indexedRef.m_modelIndex);
 			break;
 		default:
 			return m_unk0x20 - 1;
@@ -221,13 +226,19 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::FUN_00404e80()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00404ea0
+// FUNCTION: LEGORACERS 0x00404ea0
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x04(undefined4 p_elapsedMs)
 {
-	STUB(0x00404ea0);
-
-	if (m_unk0x14 && m_unk0x24) {
+	if (m_unk0x14) {
 		m_unk0x24->VTable0x10(p_elapsedMs);
+
+		for (LegoU32 i = 0; i < m_unk0x5c; i++) {
+			m_unk0x60[i].m_unk0x04->FUN_004104c0(
+				p_elapsedMs,
+				m_unk0x60[i].m_unk0x00->GetUnk0x04(),
+				m_unk0x60[i].m_unk0x00->GetUnk0x08()
+			);
+		}
 	}
 }
 
@@ -235,7 +246,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x04(undefined4 p_elapsedMs)
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_renderer)
 {
 	if (m_unk0x14 && !m_unk0x64) {
-		m_unk0x24->VTable0x1c(*p_renderer);
+		m_unk0x24->VTable0x1c(p_renderer);
 	}
 }
 
@@ -243,22 +254,39 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x0c(BronzeFalcon0xc8770* p_renderer)
 {
 	if (m_unk0x14 && m_unk0x64) {
-		m_unk0x24->VTable0x1c(*p_renderer);
+		m_unk0x24->VTable0x1c(p_renderer);
 	}
 }
 
-// STUB: LEGORACERS 0x00404f40
+// FUNCTION: LEGORACERS 0x00404f40
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, BluebellFog0x4* p_event)
 {
-	STUB(0x00404f40);
-
 	if (m_unk0x24) {
 		m_unk0x64 = m_unk0x24->VTable0x20();
-		m_unk0x24->VTable0x08(m_unk0x34);
-		m_unk0x24->VTable0x40(m_unk0x40, m_unk0x4c);
+		m_unk0x24->VTable0x08(&m_unk0x34.m_x);
+		m_unk0x24->VTable0x40(&m_unk0x40.m_x, &m_unk0x4c.m_x);
+
+		if (m_unk0x5c && (m_unk0x20 == 2 || m_unk0x20 == 1 || m_unk0x20 == 3)) {
+			Animation0x1c* animation = m_unk0x60;
+			Animation0x1c* end = animation + m_unk0x5c;
+
+			for (; animation < end; animation++) {
+				ShadowWolf0xc* materialTarget =
+					static_cast<SilverHollow0xb8*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
+				if (materialTarget == NULL) {
+					materialTarget =
+						static_cast<SilverHollow0xb8*>(m_unk0x24)->GetModel(animation->m_unk0x18)->GetMaterialTable();
+				}
+
+				animation->m_unk0x04->FUN_10025da0(materialTarget, animation->m_unk0x14, TRUE);
+			}
+		}
 
 		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
-			::srand(m_unk0x58);
+			static_cast<OpalHaven0xf4*>(m_unk0x24)->FUN_0040dad0(static_cast<undefined2>(m_unk0x58));
+			static_cast<OpalHaven0xf4*>(m_unk0x24)->SetUnk0x5c(
+				static_cast<OpalHaven0xf4*>(m_unk0x24)->GetUnk0x5c() | 0x10000
+			);
 		}
 
 		Event0x20::VTable0x10(p_frame, p_event);
@@ -343,7 +371,7 @@ void SaffronQuartz0x2c::Frame0xb8::Camera0x34::VTable0x10(Frame0xb8* p_frame, Bl
 
 		p_frame->FUN_004066d0(m_unk0x20);
 		if (m_unk0x30 >= 0 && m_unk0x20->m_unk0x28) {
-			((OpalHaven0xf4*) m_unk0x20->m_unk0x28)->FUN_0040dad0((undefined2) m_unk0x30);
+			m_unk0x20->m_unk0x28->FUN_0040dad0((undefined2) m_unk0x30);
 		}
 
 		Event0x20::VTable0x10(p_frame, p_event);
@@ -365,10 +393,10 @@ void SaffronQuartz0x2c::Frame0xb8::Camera0x34::VTable0x14(Frame0xb8* p_frame, Bl
 	}
 }
 
-// STUB: LEGORACERS 0x00405270
+// FUNCTION: LEGORACERS 0x00405270
 void SaffronQuartz0x2c::Frame0xb8::Camera0x34::VTable0x04(undefined4)
 {
-	STUB(0x00405270);
+	m_unk0x20->FUN_004047b0();
 }
 
 // FUNCTION: LEGORACERS 0x00405280
@@ -534,19 +562,19 @@ void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x14(Frame0xb8* p_frame, Blu
 	}
 }
 
-typedef LegoS32(__cdecl* QSortComparator)(const void*, const void*);
-
 // FUNCTION: LEGORACERS 0x004055f0
-static LegoS32 __cdecl CompareEventStart(
-	SaffronQuartz0x2c::Frame0xb8::Event0x20** p_left,
-	SaffronQuartz0x2c::Frame0xb8::Event0x20** p_right
-)
+static LegoS32 __cdecl CompareEventStart(const void* p_left, const void* p_right)
 {
-	if ((*p_left)->m_unk0x0c > (*p_right)->m_unk0x0c) {
+	SaffronQuartz0x2c::Frame0xb8::Event0x20* left =
+		*static_cast<SaffronQuartz0x2c::Frame0xb8::Event0x20* const*>(p_left);
+	SaffronQuartz0x2c::Frame0xb8::Event0x20* right =
+		*static_cast<SaffronQuartz0x2c::Frame0xb8::Event0x20* const*>(p_right);
+
+	if (left->m_unk0x0c > right->m_unk0x0c) {
 		return 1;
 	}
 
-	if ((*p_left)->m_unk0x0c < (*p_right)->m_unk0x0c) {
+	if (left->m_unk0x0c < right->m_unk0x0c) {
 		return -1;
 	}
 
@@ -554,16 +582,18 @@ static LegoS32 __cdecl CompareEventStart(
 }
 
 // FUNCTION: LEGORACERS 0x00405610
-static LegoS32 __cdecl CompareEventEnd(
-	SaffronQuartz0x2c::Frame0xb8::Event0x20** p_left,
-	SaffronQuartz0x2c::Frame0xb8::Event0x20** p_right
-)
+static LegoS32 __cdecl CompareEventEnd(const void* p_left, const void* p_right)
 {
-	if ((*p_left)->m_unk0x10 > (*p_right)->m_unk0x10) {
+	SaffronQuartz0x2c::Frame0xb8::Event0x20* left =
+		*static_cast<SaffronQuartz0x2c::Frame0xb8::Event0x20* const*>(p_left);
+	SaffronQuartz0x2c::Frame0xb8::Event0x20* right =
+		*static_cast<SaffronQuartz0x2c::Frame0xb8::Event0x20* const*>(p_right);
+
+	if (left->m_unk0x10 > right->m_unk0x10) {
 		return 1;
 	}
 
-	if ((*p_left)->m_unk0x10 < (*p_right)->m_unk0x10) {
+	if (left->m_unk0x10 < right->m_unk0x10) {
 		return -1;
 	}
 
@@ -820,8 +850,8 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00405950(SaffronQuartz0x2c* p_parent, Gol
 		eventIndex++;
 	}
 
-	::qsort(m_unk0x30, m_unk0x2c, sizeof(Event0x20*), (QSortComparator) CompareEventStart);
-	::qsort(m_unk0x38, m_unk0x2c, sizeof(Event0x20*), (QSortComparator) CompareEventEnd);
+	::qsort(m_unk0x30, m_unk0x2c, sizeof(Event0x20*), CompareEventStart);
+	::qsort(m_unk0x38, m_unk0x2c, sizeof(Event0x20*), CompareEventEnd);
 }
 
 // FUNCTION: LEGORACERS 0x00405bd0
@@ -1504,10 +1534,10 @@ AmberLens0x344* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e30
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
+LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
+		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1517,10 +1547,10 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e80
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
+LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
+		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
 		if (result) {
 			return result;
 		}
@@ -1530,10 +1560,10 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406ed0
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
+LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
+		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
 		if (result) {
 			return result;
 		}
@@ -1543,7 +1573,7 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406f20
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
+LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
 {
 	return m_unk0x1c[p_index]->VTable0x48(p_modelIndex);
 }

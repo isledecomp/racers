@@ -16,18 +16,18 @@ class FloatyCanoe0x90 : public FloatyBuoy0x58 {
 public:
 	FloatyCanoe0x90();
 
-	void VTable0x00() override;                                                // vtable+0x00
-	void VTable0x10(LegoS32 p_v) override;                                     // vtable+0x10
-	void VTable0x14(const GolVec3& p_vector, ResultStruct* p_result) override; // vtable+0x14
-	void VTable0x1c(WhiteFalcon0x140&) override;                               // vtable+0x1c
-	undefined4 VTable0x20() override;                                          // vtable+0x20
-	void VTable0x24(undefined4*) override;                                     // vtable+0x24
-	void VTable0x28() override;                                                // vtable+0x28
-	virtual void VTable0x4c(LegoU32 p_index);                                  // vtable+0x4c
-	virtual void VTable0x50(IGdbModel0x40* p_value, LegoFloat p_scalar);       // vtable+0x50
-	virtual void VTable0x54();                                                 // vtable+0x54
-	virtual WhiteFalconNode0x18* VTable0x58(undefined4);                       // vtable+0x58
-	virtual void VTable0x5c(undefined4);                                       // vtable+0x5c
+	void VTable0x00() override;                                                                    // vtable+0x00
+	void VTable0x10(LegoS32 p_v) override;                                                         // vtable+0x10
+	void VTable0x14(const WhiteFalconViewState0xcc& p_viewState, ResultStruct* p_result) override; // vtable+0x14
+	void VTable0x1c(WhiteFalcon0x140&) override;                                                   // vtable+0x1c
+	undefined4 VTable0x20() override;                                                              // vtable+0x20
+	void VTable0x24(TransformPayload0x20* p_transform) override;                                   // vtable+0x24
+	void VTable0x28() override;                                                                    // vtable+0x28
+	virtual void VTable0x4c(LegoU32 p_index);                                                      // vtable+0x4c
+	virtual void VTable0x50(IGdbModel0x40* p_value, LegoFloat p_scalar);                           // vtable+0x50
+	virtual void VTable0x54();                                                                     // vtable+0x54
+	virtual WhiteFalconNode0x18* VTable0x58(undefined4);                                           // vtable+0x58
+	virtual void VTable0x5c(undefined4);                                                           // vtable+0x5c
 
 	void FUN_10027c50(IGdbModel0x40* p_value, LegoFloat p_scalar);
 	void FUN_10027cc0(const GolVec3& p_vector, ResultStruct* p_result);
@@ -35,6 +35,8 @@ public:
 	void FUN_10027fe0(undefined4 p_arg1, GolVec3* p_destVec, LegoFloat* p_destScalar);
 	void FUN_10028110(LegoFloat p_arg);
 	void FUN_10028140(LegoFloat p_arg);
+	IGdbModel0x40* GetModel(LegoU32 p_index) const { return m_unk0x78[p_index]; }
+	ShadowWolf0xc* GetMaterialTable(LegoU32 p_index) const { return m_unk0x6c[p_index]; }
 
 protected:
 	friend class ZoweeBlubberworth0xf0;

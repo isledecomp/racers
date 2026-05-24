@@ -1,6 +1,8 @@
 #include "floatyboat0x28.h"
 
 DECOMP_SIZE_ASSERT(FloatyBoat0x28, 0x28)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::ResultStruct, 0x08)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::TransformPayload0x20, 0x20)
 
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 FloatyBoat0x28::VTable0x20()
@@ -53,7 +55,7 @@ void FloatyBoat0x28::VTable0x0c(LegoFloat p_v)
 }
 
 // STUB: GOLDP 0x100285d0
-void FloatyBoat0x28::VTable0x14(const GolVec3& p_arg1, ResultStruct*)
+void FloatyBoat0x28::VTable0x14(const WhiteFalconViewState0xcc&, ResultStruct*)
 {
 	if (m_v1.m_x < 0.0f) {
 		VTable0x00();
@@ -198,7 +200,7 @@ void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140&)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x24(undefined4*)
+void FloatyBoat0x28::VTable0x24(TransformPayload0x20*)
 {
 	// empty
 }

@@ -6,6 +6,7 @@
 #include "types.h"
 
 class MabMaterialAnimationItem0x8;
+class DuskwindBananaRelic0x24;
 
 // SIZE 0x18
 class MabMaterialAnimationItem0x18 {
@@ -26,7 +27,11 @@ public:
 	void FUN_00410480();
 	void FUN_00410490();
 	void FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32 p_itemCount);
-	undefined4* FUN_00410560(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32 p_itemCount);
+	DuskwindBananaRelic0x24* FUN_00410560(
+		LegoS32 p_elapsedMs,
+		MabMaterialAnimationItem0x8* p_items,
+		LegoU32 p_itemCount
+	);
 	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
 
 private:

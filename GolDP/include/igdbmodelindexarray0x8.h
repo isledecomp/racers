@@ -2,6 +2,7 @@
 #define IGDBMODELINDEXARRAY0X8_H
 
 #include "decomp.h"
+#include "types.h"
 
 class GolFileParser;
 
@@ -17,6 +18,8 @@ public:
 
 	// SYNTHETIC: GOLDP 0x1001d7e0
 	// IGdbModelIndexArray0x8::`scalar deleting destructor'
+
+	LegoU32 GetCount() const { return m_unk0x04; }
 
 protected:
 	undefined4 m_unk0x04; // 0x04

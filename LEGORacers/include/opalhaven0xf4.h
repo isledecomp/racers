@@ -16,10 +16,13 @@ class OpalHaven0xf4 : public SilverHollow0xb8 {
 public:
 	OpalHaven0xf4();
 
-	void VTable0x10(undefined4 p_unk0x04) override;   // vtable+0x10
-	void VTable0x14(undefined4, undefined4) override; // vtable+0x14
-	void VTable0x4c(undefined4 p_unk0x04) override;   // vtable+0x4c
-	void VTable0x54() override;                       // vtable+0x54
+	void VTable0x10(undefined4 p_unk0x04) override;          // vtable+0x10
+	void VTable0x14(undefined4, undefined4) override;        // vtable+0x14
+	void VTable0x4c(undefined4 p_unk0x04) override;          // vtable+0x4c
+	void VTable0x54() override;                              // vtable+0x54
+	virtual WhiteFalconNode0x18* VTable0x58(LegoU32 p_arg1); // vtable+0x58
+	virtual void VTable0x5c(LegoU32 p_arg1);                 // vtable+0x5c
+
 	void FUN_0040d550(
 		IGdbModel0x40* p_model,
 		WhiteFalconNode0x18* p_node,
@@ -43,6 +46,7 @@ public:
 
 private:
 	void Reset();
+	void FUN_0040d650();
 
 	undefined4 m_unk0xb8;             // 0xb8
 	undefined2 m_unk0xbc;             // 0xbc

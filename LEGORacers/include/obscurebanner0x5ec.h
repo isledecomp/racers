@@ -58,11 +58,10 @@ public:
 	// ObscureBanner0x9f4::`scalar deleting destructor'
 
 protected:
-	ObscureTome0x3dc m_unk0x5ec;         // 0x5ec
-	undefined m_unk0x9c8[0x9e8 - 0x9c8]; // 0x9c8
-	undefined4 m_unk0x9e8;               // 0x9e8
-	undefined4 m_unk0x9ec;               // 0x9ec
-	undefined4 m_unk0x9f0;               // 0x9f0
+	ObscureTome0x3fc m_unk0x5ec; // 0x5ec
+	undefined4 m_unk0x9e8;       // 0x9e8
+	undefined4 m_unk0x9ec;       // 0x9ec
+	undefined4 m_unk0x9f0;       // 0x9f0
 };
 
 #endif // OBSCUREBANNER0X5EC_H

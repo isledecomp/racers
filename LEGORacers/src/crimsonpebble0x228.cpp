@@ -7,7 +7,6 @@
 #include "audio/spatialsoundinstance.h"
 #include "awakekite0x20.h"
 #include "bronzefalcon0xc8770.h"
-#include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -17,6 +16,7 @@
 #include "golname.h"
 #include "golstream.h"
 #include "goltxtparser.h"
+#include "lilacorbit0x28.h"
 #include "mabmaterialanimation0x14.h"
 #include "menuanimationlist.h"
 #include "rectangle.h"
@@ -219,7 +219,7 @@ void CrimsonPebbleEvent0x14::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x0049fde0
-void CrimsonPebbleEvent0x14::VTable0x0c(undefined4)
+void CrimsonPebbleEvent0x14::VTable0x0c(LilacOrbit0x28*)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x14();
@@ -227,7 +227,7 @@ void CrimsonPebbleEvent0x14::VTable0x0c(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0049fdf0
-void CrimsonPebbleEvent0x14::VTable0x08(undefined4 p_arg)
+void CrimsonPebbleEvent0x14::VTable0x08(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x0c(p_arg);
@@ -235,7 +235,7 @@ void CrimsonPebbleEvent0x14::VTable0x08(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0049fe10
-void CrimsonPebbleEvent0x14::VTable0x04(undefined4 p_arg)
+void CrimsonPebbleEvent0x14::VTable0x04(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
@@ -332,7 +332,7 @@ void CrimsonPebbleEventLink0x0c::FUN_004a00d0()
 // FUNCTION: LEGORACERS 0x004a00f0
 void CrimsonPebbleEventLink0x0c::FUN_004a00f0(CrimsonPebbleEventValuePayload0x24* p_payload)
 {
-	undefined4 value = p_payload->m_unk0x20->m_unk0x28;
+	LilacOrbit0x28* value = p_payload->m_unk0x20->m_unk0x28;
 	if (value) {
 		if (m_unk0x00) {
 			m_event->VTable0x04(value);
@@ -852,18 +852,15 @@ void CrimsonPebble0x228::FUN_004a12e0(GolFileParser* p_parser)
 	LegoU32 offset = 0;
 
 	if (i < m_unk0x78) {
-		LegoU32 tableOffset = offset;
-
 		do {
 			::strncpy(&m_unk0x80[offset], p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 			m_unk0x80[offset + sizeof(GolName)] = '\0';
 			::strcat(&m_unk0x80[offset], ".srf");
 
-			((GolStringTable*) ((LegoU8*) m_unk0x7c + tableOffset))->UseOwnedBuffers();
+			m_unk0x7c[i].UseOwnedBuffers();
 
 			i++;
 			offset += 13;
-			tableOffset += sizeof(GolStringTable);
 		} while (i < m_unk0x78);
 	}
 
@@ -877,13 +874,12 @@ void CrimsonPebble0x228::FUN_004a14e0()
 		LegoU32 i = 0;
 
 		if (i < m_unk0x78) {
-			LegoU32 tableOffset = 0;
 			LegoU32 fileNameOffset = 0;
 
 			do {
-				((GolStringTable*) ((LegoU8*) m_unk0x7c + tableOffset))->UseOwnedBuffers();
+				m_unk0x7c[i].UseOwnedBuffers();
 
-				if (!((GolStringTable*) ((LegoU8*) m_unk0x7c + tableOffset))->Load(&m_unk0x80[fileNameOffset])) {
+				if (!m_unk0x7c[i].Load(&m_unk0x80[fileNameOffset])) {
 					LegoChar text[48];
 					::strcpy(text, "Unable to open: ");
 					::strcat(text, &m_unk0x80[fileNameOffset]);
@@ -891,7 +887,6 @@ void CrimsonPebble0x228::FUN_004a14e0()
 				}
 
 				i++;
-				tableOffset += sizeof(GolStringTable);
 				fileNameOffset += 13;
 			} while (i < m_unk0x78);
 		}
@@ -1711,10 +1706,15 @@ void CrimsonPebble0x228::FUN_004a2f80(AmberLens0x344* p_lens)
 	node->m_orientation.m_x = (node->m_unk0x28 * node->m_unk0x20) - (node->m_frequencyScale * node->m_unk0x1c);
 	node->m_orientation.m_y = (node->m_frequencyScale * node->m_volume) - (node->m_unk0x20 * node->m_unk0x24);
 	node->m_orientation.m_z = (node->m_unk0x1c * node->m_unk0x24) - (node->m_unk0x28 * node->m_volume);
-	GolMath::NormalizeVector3(
-		reinterpret_cast<GolVec3&>(node->m_orientation),
-		reinterpret_cast<GolVec3*>(&node->m_orientation)
-	);
+
+	GolVec3 orientation;
+	orientation.m_x = node->m_orientation.m_x;
+	orientation.m_y = node->m_orientation.m_y;
+	orientation.m_z = node->m_orientation.m_z;
+	GolMath::NormalizeVector3(orientation, &orientation);
+	node->m_orientation.m_x = orientation.m_x;
+	node->m_orientation.m_y = orientation.m_y;
+	node->m_orientation.m_z = orientation.m_z;
 
 	node->m_unk0x44 = 1;
 }
@@ -1779,19 +1779,19 @@ void CrimsonPebble0x228::FUN_004a3150()
 }
 
 // FUNCTION: LEGORACERS 0x004a3230
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
+LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e30(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3240
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
+LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e80(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3250
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
+LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406ed0(p_name);
 }
@@ -2006,11 +2006,11 @@ void CrimsonPebbleEvent0x50::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x004a3d70
-void CrimsonPebbleEvent0x50::VTable0x0c(undefined4 p_arg)
+void CrimsonPebbleEvent0x50::VTable0x0c(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x04 == NULL) {
-			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x04 = p_arg;
 		}
 
 		VTable0x14();
@@ -2018,11 +2018,11 @@ void CrimsonPebbleEvent0x50::VTable0x0c(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a3d90
-void CrimsonPebbleEvent0x50::VTable0x04(undefined4 p_arg)
+void CrimsonPebbleEvent0x50::VTable0x04(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x0c == NULL) {
-			m_unk0x0c = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x0c = p_arg;
 		}
 
 		VTable0x14();
@@ -2253,11 +2253,11 @@ void CrimsonPebbleEvent0x50Derived::VTable0x10(const GolVec3* p_a, const GolVec3
 }
 
 // FUNCTION: LEGORACERS 0x004a4480
-void CrimsonPebbleEvent0x50Derived::VTable0x0c(undefined4 p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x0c(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x04 == NULL) {
-			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x04 = p_arg;
 		}
 
 		VTable0x14();
@@ -2265,12 +2265,12 @@ void CrimsonPebbleEvent0x50Derived::VTable0x0c(undefined4 p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a44a0
-void CrimsonPebbleEvent0x50Derived::VTable0x04(undefined4 p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x04(LilacOrbit0x28* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x0c == NULL) {
-			m_unk0x0c = reinterpret_cast<FloatyBoat0x28*>(p_arg);
-			m_unk0x04 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x0c = p_arg;
+			m_unk0x04 = p_arg;
 		}
 
 		VTable0x14();
@@ -2361,7 +2361,7 @@ void CrimsonPebbleMenuAnimationEvent0x2c::Parse(
 	}
 
 	if (hasMaterialName) {
-		m_unk0x18 = reinterpret_cast<DuskwindBananaRelic0x24*>(p_renderer->FindMaterialByName(materialName));
+		m_unk0x18 = p_renderer->FindMaterialByName(materialName);
 	}
 }
 
@@ -2399,19 +2399,19 @@ CrimsonPebbleEvent0x48::CrimsonPebbleEvent0x48()
 void CrimsonPebbleEvent0x48::Reset()
 {
 	m_unk0x08 = NULL;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0.0f;
-	m_unk0x34 = 0.0f;
-	m_unk0x38 = 0.0f;
-	m_unk0x3c = 0.0f;
-	m_unk0x40 = 0.0f;
-	m_unk0x44 = 0.0f;
+	m_active = FALSE;
+	m_baseX = 0;
+	m_baseY = 0;
+	m_baseZ = 0;
+	m_offsetStartX = 0;
+	m_offsetStartY = 0;
+	m_offsetStartZ = 0;
+	m_offsetX = 0.0f;
+	m_offsetY = 0.0f;
+	m_offsetZ = 0.0f;
+	m_offsetDeltaX = 0.0f;
+	m_offsetDeltaY = 0.0f;
+	m_offsetDeltaZ = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x004a4be0
@@ -2423,19 +2423,19 @@ void CrimsonPebbleEvent0x48::Parse(GolFileParser* p_parser, CrimsonPebble0x228* 
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x2c:
-			m_unk0x18 = p_parser->ReadInteger();
-			m_unk0x1c = p_parser->ReadInteger();
-			m_unk0x20 = p_parser->ReadInteger();
+			m_baseX = p_parser->ReadInteger();
+			m_baseY = p_parser->ReadInteger();
+			m_baseZ = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2d:
-			m_unk0x24 = p_parser->ReadInteger();
-			m_unk0x28 = p_parser->ReadInteger();
-			m_unk0x2c = p_parser->ReadInteger();
+			m_offsetStartX = p_parser->ReadInteger();
+			m_offsetStartY = p_parser->ReadInteger();
+			m_offsetStartZ = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2e:
-			m_unk0x3c = p_parser->ReadFloat();
-			m_unk0x40 = p_parser->ReadFloat();
-			m_unk0x44 = p_parser->ReadFloat();
+			m_offsetDeltaX = p_parser->ReadFloat();
+			m_offsetDeltaY = p_parser->ReadFloat();
+			m_offsetDeltaZ = p_parser->ReadFloat();
 			break;
 		default:
 			ParseCommonToken(p_parser, token, p_owner);
@@ -2449,21 +2449,21 @@ void CrimsonPebbleEvent0x48::Parse(GolFileParser* p_parser, CrimsonPebble0x228* 
 // FUNCTION: LEGORACERS 0x004a4ca0
 void CrimsonPebbleEvent0x48::VTable0x14()
 {
-	if (m_unk0x14 == 0 && m_unk0x08 != NULL) {
-		m_unk0x14 = 1;
-		m_unk0x30 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x24));
-		m_unk0x34 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x28));
-		m_unk0x38 = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x2c));
+	if (!m_active && m_unk0x08 != NULL) {
+		m_active = TRUE;
+		m_offsetX = static_cast<LegoFloat>(m_offsetStartX);
+		m_offsetY = static_cast<LegoFloat>(m_offsetStartY);
+		m_offsetZ = static_cast<LegoFloat>(m_offsetStartZ);
 		FUN_004a4da0();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4cd0
-void CrimsonPebbleEvent0x48::VTable0x08(undefined4 p_arg)
+void CrimsonPebbleEvent0x48::VTable0x08(LilacOrbit0x28* p_arg)
 {
-	if (m_unk0x14 == 0) {
+	if (!m_active) {
 		if (m_unk0x08 == NULL) {
-			m_unk0x08 = reinterpret_cast<FloatyBoat0x28*>(p_arg);
+			m_unk0x08 = p_arg;
 		}
 
 		VTable0x14();
@@ -2473,8 +2473,8 @@ void CrimsonPebbleEvent0x48::VTable0x08(undefined4 p_arg)
 // FUNCTION: LEGORACERS 0x004a4cf0
 void CrimsonPebbleEvent0x48::VTable0x18()
 {
-	if (m_unk0x14 != 0) {
-		m_unk0x14 = 0;
+	if (m_active) {
+		m_active = FALSE;
 		if (m_unk0x08 != NULL) {
 			m_unk0x08->VTable0x28();
 		}
@@ -2484,24 +2484,34 @@ void CrimsonPebbleEvent0x48::VTable0x18()
 // FUNCTION: LEGORACERS 0x004a4d10
 void CrimsonPebbleEvent0x48::FUN_004a4d10(LegoFloat p_elapsedSeconds)
 {
-	if (m_unk0x14 != 0) {
+	if (m_active) {
 		if (m_unk0x08 != 0) {
-			LegoFloat deltaX = m_unk0x3c * p_elapsedSeconds;
-			LegoFloat deltaY = m_unk0x40 * p_elapsedSeconds;
-			LegoFloat deltaZ = m_unk0x44 * p_elapsedSeconds;
+			LegoFloat deltaX = m_offsetDeltaX * p_elapsedSeconds;
+			LegoFloat deltaY = m_offsetDeltaY * p_elapsedSeconds;
+			LegoFloat deltaZ = m_offsetDeltaZ * p_elapsedSeconds;
 
 			if (static_cast<LegoS32>(deltaX) || static_cast<LegoS32>(deltaY) || static_cast<LegoS32>(deltaZ)) {
-				m_unk0x30 += deltaX;
-				m_unk0x34 += deltaY;
-				m_unk0x38 += deltaZ;
+				m_offsetX += deltaX;
+				m_offsetY += deltaY;
+				m_offsetZ += deltaZ;
 				FUN_004a4da0();
 			}
 		}
 	}
 }
 
-// STUB: LEGORACERS 0x004a4da0
+// FUNCTION: LEGORACERS 0x004a4da0
 void CrimsonPebbleEvent0x48::FUN_004a4da0()
 {
-	STUB(0x004a4da0);
+	LilacOrbit0x28::TransformPayload0x20 transform;
+	transform.m_baseX = m_baseX;
+	transform.m_baseY = m_baseY;
+	transform.m_baseZ = m_baseZ;
+	transform.m_baseW = 0;
+	transform.m_offsetX = static_cast<LegoS32>(m_offsetX);
+	transform.m_offsetY = static_cast<LegoS32>(m_offsetY);
+	transform.m_offsetZ = static_cast<LegoS32>(m_offsetZ);
+	transform.m_offsetW = 0;
+
+	m_unk0x08->VTable0x24(&transform);
 }

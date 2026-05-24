@@ -1,5 +1,7 @@
 #include "imaginaryruler0x2e60.h"
 
+#include "menutoolcreateparams0x30.h"
+
 DECOMP_SIZE_ASSERT(ImaginaryRuler0x2e60, 0x2e60)
 
 // STUB: LEGORACERS 0x00487850
@@ -23,14 +25,22 @@ void ImaginaryRuler0x2e60::Reset()
 // STUB: LEGORACERS 0x00487b50
 void ImaginaryRuler0x2e60::VTable0x4c()
 {
+	FUN_0046bef0(&m_unk0x1908, 0x49, 0x49);
+	ImaginaryGizmo0x1908::VTable0x4c();
+
 	STUB(0x00487b50);
 }
 
 // STUB: LEGORACERS 0x00487ca0
-LegoBool32 ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+LegoBool32 ImaginaryRuler0x2e60::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
+	m_menuId = p_createParams->m_menuId;
+	p_createParams->m_menuId = 6;
+
+	LegoBool32 result = ImaginaryGizmo0x1908::VTable0x8c(p_context, p_createParams);
+
 	STUB(0x00487ca0);
-	return FALSE;
+	return result;
 }
 
 // STUB: LEGORACERS 0x00487d10

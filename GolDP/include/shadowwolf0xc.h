@@ -7,6 +7,7 @@
 
 class GolFileParser;
 class WhiteFalcon0x140;
+class DuskwindBananaRelic0x24;
 
 class ShadowWolf0xc : public FloatyPontoon0x4c::Field0x2c {
 public:
@@ -20,6 +21,11 @@ public:
 	void FUN_10025f90(WhiteFalcon0x140* p_renderer, GolFileParser& p_parser);
 
 	WhiteFalcon0x140* GetRenderer() const { return m_renderer; }
+	LegoU32 GetCount() const { return m_count; }
+	DuskwindBananaRelic0x24* GetMaterial(LegoU32 p_index) const
+	{
+		return static_cast<DuskwindBananaRelic0x24*>(m_entries[p_index]);
+	}
 };
 
 #endif // SHADOWWOLF0xC_H

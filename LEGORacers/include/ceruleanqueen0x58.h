@@ -7,6 +7,7 @@
 #include "goltxtparser.h"
 #include "obscureanchor0x5c.h"
 #include "obscureicon0x1a8.h"
+#include "obscuretome0x3dc.h"
 #include "types.h"
 #include "visualstate0x4.h"
 
@@ -51,13 +52,7 @@ public:
 	};
 
 	// SIZE 0x60
-	class Entry0x60 : public ObscureVantage0x58::CreateParams0x30 {
-	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		UtopianPan0xa4* m_unk0x38[8];     // 0x38
-		VisualState0x4 m_unk0x58;         // 0x58
-		undefined4 m_unk0x5c;             // 0x5c
-	};
+	class Entry0x60 : public ObscureTome0x3fc::CreateParams0x60 {};
 
 	// SIZE 0x84
 	class Entry0x84 : public ObscureIcon0x1a8::CreateParams0x84 {};

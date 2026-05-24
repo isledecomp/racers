@@ -1,5 +1,7 @@
+#include "amberlens0x344.h"
 #include "bronzefalcon0xc8770.h"
 #include "crimsonpebble0x228.h"
+#include "rectangle.h"
 #include "slatepeak0x58.h"
 
 // FUNCTION: LEGORACERS 0x004a3280
@@ -136,7 +138,7 @@ void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770* p_renderer)
 		LegoS32 renderTargetHeight = p_renderer->GetRenderTargetInfo()->GetHeight();
 		LegoFloat height = static_cast<LegoFloat>(renderTargetHeight);
 
-		if (static_cast<LegoS32>(m_flags) < 0) {
+		if (m_flags & c_flagLayoutPending) {
 			FUN_004a36e0(p_renderer, width, height);
 		}
 
@@ -163,7 +165,47 @@ void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770* p_renderer)
 }
 
 // STUB: LEGORACERS 0x004a36e0
-void CrimsonPebbleVisual0x58::FUN_004a36e0(BronzeFalcon0xc8770*, LegoFloat, LegoFloat)
+void CrimsonPebbleVisual0x58::FUN_004a36e0(BronzeFalcon0xc8770* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
-	STUB(0x004a36e0);
+	const Rect* viewport = &p_renderer->GetUnk0x0c()->m_viewport;
+	LegoS32 viewportX = viewport->m_left;
+	LegoS32 viewportY = viewport->m_top;
+	LegoS32 viewportWidth = viewport->m_right - viewportX;
+	LegoS32 viewportHeight = viewport->m_bottom - viewportY;
+
+	LegoS32 imageWidth;
+	LegoS32 imageHeight;
+	VTable0x1c(&imageWidth, &imageHeight);
+
+	LegoU32 flags = m_flags;
+	LegoBool32 hasHeight;
+	LegoBool32 hasWidth = flags & c_flagWidth;
+	if (hasWidth) {
+		imageWidth = static_cast<LegoS32>(m_unk0x2c * p_width);
+	}
+
+	hasHeight = flags & c_flagHeight;
+	if (hasHeight) {
+		imageHeight = static_cast<LegoS32>(m_unk0x30 * p_height);
+	}
+
+	LegoS32 y = viewportY + ((viewportHeight - imageHeight) / 2);
+	if (!(flags & c_flagPositionX)) {
+		LegoS32 x = viewportX + ((viewportWidth - imageWidth) / 2);
+		m_unk0x1c = static_cast<LegoFloat>(x) / p_width;
+	}
+
+	if (!(flags & c_flagPositionY)) {
+		m_unk0x20 = static_cast<LegoFloat>(y) / p_height;
+	}
+
+	if (!hasWidth) {
+		m_unk0x2c = static_cast<LegoFloat>(imageWidth) / p_width;
+	}
+
+	if (!hasHeight) {
+		m_unk0x30 = static_cast<LegoFloat>(imageHeight) / p_height;
+	}
+
+	m_flags = flags & ~c_flagLayoutPending;
 }

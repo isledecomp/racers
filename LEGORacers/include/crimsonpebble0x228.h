@@ -17,11 +17,11 @@
 class BronzeFalcon0xc8770;
 class CrimsonPebble0x228;
 class CrimsonPebbleAnimation0x33c;
-class FloatyBoat0x28;
 class GolExport;
 class GolFont0xa0;
 class GolFontTable;
 class GolFileParser;
+class LilacOrbit0x28;
 class MabMaterialAnimation0x14;
 class WhiteFalcon0x140;
 class UtopianPan0xa4;
@@ -42,9 +42,9 @@ class CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x14();
 	virtual ~CrimsonPebbleEvent0x14();                                       // vtable+0x00
-	virtual void VTable0x04(undefined4 p_arg);                               // vtable+0x04
-	virtual void VTable0x08(undefined4 p_arg);                               // vtable+0x08
-	virtual void VTable0x0c(undefined4 p_arg);                               // vtable+0x0c
+	virtual void VTable0x04(LilacOrbit0x28* p_arg);                          // vtable+0x04
+	virtual void VTable0x08(LilacOrbit0x28* p_arg);                          // vtable+0x08
+	virtual void VTable0x0c(LilacOrbit0x28* p_arg);                          // vtable+0x0c
 	virtual void VTable0x10(const GolVec3*, const GolVec3*, const GolVec3*); // vtable+0x10
 	virtual void VTable0x14();                                               // vtable+0x14
 	virtual void VTable0x18();                                               // vtable+0x18
@@ -56,16 +56,16 @@ public:
 	// CrimsonPebbleEvent0x14::`scalar deleting destructor'
 
 protected:
-	FloatyBoat0x28* m_unk0x04; // 0x04
-	FloatyBoat0x28* m_unk0x08; // 0x08
-	FloatyBoat0x28* m_unk0x0c; // 0x0c
+	LilacOrbit0x28* m_unk0x04; // 0x04
+	LilacOrbit0x28* m_unk0x08; // 0x08
+	LilacOrbit0x28* m_unk0x0c; // 0x0c
 	undefined4 m_unk0x10;      // 0x10
 };
 
 // SIZE 0x2c
 struct CrimsonPebbleEventValueSource0x2c {
 	undefined m_unk0x00[0x28]; // 0x00
-	undefined4 m_unk0x28;      // 0x28
+	LilacOrbit0x28* m_unk0x28; // 0x28
 };
 
 // SIZE 0x24
@@ -78,7 +78,7 @@ struct CrimsonPebbleEventValuePayload0x24 {
 struct CrimsonPebbleEventSelectorPayload0x28 {
 	undefined m_unk0x00[0x20]; // 0x00
 	undefined4 m_unk0x20;      // 0x20
-	undefined4 m_unk0x24;      // 0x24
+	LilacOrbit0x28* m_unk0x24; // 0x24
 };
 
 // SIZE 0x44
@@ -144,9 +144,9 @@ class CrimsonPebbleEvent0x48 : public CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x48();
 
-	void VTable0x14() override;                 // vtable+0x14
-	void VTable0x18() override;                 // vtable+0x18
-	void VTable0x08(undefined4 p_arg) override; // vtable+0x08
+	void VTable0x14() override;                      // vtable+0x14
+	void VTable0x18() override;                      // vtable+0x18
+	void VTable0x08(LilacOrbit0x28* p_arg) override; // vtable+0x08
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner);
@@ -157,19 +157,19 @@ public:
 	// CrimsonPebbleEvent0x48::`vector deleting destructor'
 
 private:
-	undefined4 m_unk0x14; // 0x14
-	undefined4 m_unk0x18; // 0x18
-	undefined4 m_unk0x1c; // 0x1c
-	undefined4 m_unk0x20; // 0x20
-	undefined4 m_unk0x24; // 0x24
-	undefined4 m_unk0x28; // 0x28
-	undefined4 m_unk0x2c; // 0x2c
-	LegoFloat m_unk0x30;  // 0x30
-	LegoFloat m_unk0x34;  // 0x34
-	LegoFloat m_unk0x38;  // 0x38
-	LegoFloat m_unk0x3c;  // 0x3c
-	LegoFloat m_unk0x40;  // 0x40
-	LegoFloat m_unk0x44;  // 0x44
+	LegoBool32 m_active;      // 0x14
+	LegoS32 m_baseX;          // 0x18
+	LegoS32 m_baseY;          // 0x1c
+	LegoS32 m_baseZ;          // 0x20
+	LegoS32 m_offsetStartX;   // 0x24
+	LegoS32 m_offsetStartY;   // 0x28
+	LegoS32 m_offsetStartZ;   // 0x2c
+	LegoFloat m_offsetX;      // 0x30
+	LegoFloat m_offsetY;      // 0x34
+	LegoFloat m_offsetZ;      // 0x38
+	LegoFloat m_offsetDeltaX; // 0x3c
+	LegoFloat m_offsetDeltaY; // 0x40
+	LegoFloat m_offsetDeltaZ; // 0x44
 };
 
 // VTABLE: LEGORACERS 0x004b4a94
@@ -178,8 +178,8 @@ class CrimsonPebbleEvent0x50 : public CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x50();
 
-	void VTable0x04(undefined4 p_arg) override;                                           // vtable+0x04
-	void VTable0x0c(undefined4 p_arg) override;                                           // vtable+0x0c
+	void VTable0x04(LilacOrbit0x28* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(LilacOrbit0x28* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -209,8 +209,8 @@ class CrimsonPebbleEvent0x50Derived : public CrimsonPebbleEvent0x30 {
 public:
 	CrimsonPebbleEvent0x50Derived();
 
-	void VTable0x04(undefined4 p_arg) override;                                           // vtable+0x04
-	void VTable0x0c(undefined4 p_arg) override;                                           // vtable+0x0c
+	void VTable0x04(LilacOrbit0x28* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(LilacOrbit0x28* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -306,6 +306,15 @@ public:
 	// CrimsonPebbleVisual0x58::`scalar deleting destructor'
 
 protected:
+	enum Flags {
+		c_flagPositionX = 1 << 2,
+		c_flagPositionY = 1 << 3,
+		c_flagWidth = 1 << 4,
+		c_flagHeight = 1 << 5,
+		c_flagActive = 1 << 6,
+		c_flagLayoutPending = 1 << 7
+	};
+
 	LegoFloat m_unk0x14;        // 0x14
 	LegoFloat m_unk0x18;        // 0x18
 	LegoFloat m_unk0x1c;        // 0x1c
@@ -533,9 +542,9 @@ public:
 	CrimsonPebbleAnimation0x33c* GetAnimationByIndex(LegoU32 p_index) const { return &m_unk0x6c[p_index]; }
 	LegoU32 GetSoundGroupCount() const { return m_unk0x84; }
 	SoundGroup* GetSoundGroupByIndex(LegoU32 p_index) const { return m_unk0x88[p_index]; }
-	FloatyBoat0x28* FUN_004a3230(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_004a3240(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_004a3250(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_004a3230(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_004a3240(const LegoChar* p_name);
+	LilacOrbit0x28* FUN_004a3250(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
 	// CrimsonPebble0x228::`scalar deleting destructor'

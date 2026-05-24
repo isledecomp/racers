@@ -33,6 +33,8 @@ public:
 	// MabMaterialAnimation0x14::`vector deleting destructor'
 
 	MabMaterialAnimationItem0x18* GetUnk0x0c() const { return m_unk0x0c; }
+	MabMaterialAnimationItem0x8* GetUnk0x04() const { return m_unk0x04; }
+	LegoU32 GetUnk0x08() const { return m_unk0x08; }
 	void FUN_00410300(LegoS32 p_elapsedMs);
 
 private:

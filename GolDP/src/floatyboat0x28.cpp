@@ -1,6 +1,8 @@
 #include "floatyboat0x28.h"
 
 DECOMP_SIZE_ASSERT(FloatyBoat0x28, 0x28)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::ResultStruct, 0x8)
+DECOMP_SIZE_ASSERT(FloatyBoat0x28::VTable24Argument, 0x20)
 
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 FloatyBoat0x28::VTable0x20()
@@ -198,7 +200,7 @@ void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140&)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void FloatyBoat0x28::VTable0x24(undefined4*)
+void FloatyBoat0x28::VTable0x24(VTable24Argument*)
 {
 	// empty
 }

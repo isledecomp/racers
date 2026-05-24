@@ -29,7 +29,7 @@ class SaffronQuartz0x2c;
 class SoundManager;
 class SoundGroup;
 class SoundInstance;
-class SpatialSoundInstance;
+class StreamingSoundInstance;
 class MenuAnimationList;
 class AmberLens0x344;
 class AwakeKite0x20;
@@ -50,6 +50,8 @@ public:
 	virtual void VTable0x18();                                               // vtable+0x18
 
 	void Reset();
+	void FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2);
+	void FUN_0049fec0();
 	void ParseCommonToken(GolFileParser* p_parser, GolFileParser::ParserTokenType p_token, CrimsonPebble0x228* p_owner);
 
 	// SYNTHETIC: LEGORACERS 0x0049fd90
@@ -207,6 +209,10 @@ private:
 // SIZE 0x50
 class CrimsonPebbleEvent0x50Derived : public CrimsonPebbleEvent0x30 {
 public:
+	enum Flags {
+		c_flagBit3 = 1 << 3,
+	};
+
 	CrimsonPebbleEvent0x50Derived();
 
 	void VTable0x04(undefined4 p_arg) override;                                           // vtable+0x04
@@ -221,12 +227,12 @@ public:
 	void FUN_004a44f0();
 
 private:
-	SpatialSoundInstance* m_unk0x30; // 0x30
-	LegoFloat m_unk0x34;             // 0x34
-	LegoFloat m_unk0x38;             // 0x38
-	GolVec3 m_unk0x3c;               // 0x3c
-	LegoU32 m_unk0x48;               // 0x48
-	LegoU32 m_unk0x4c;               // 0x4c
+	StreamingSoundInstance* m_unk0x30; // 0x30
+	LegoFloat m_unk0x34;               // 0x34
+	LegoFloat m_unk0x38;               // 0x38
+	GolVec3 m_unk0x3c;                 // 0x3c
+	LegoU32 m_unk0x48;                 // 0x48
+	LegoU32 m_unk0x4c;                 // 0x4c
 };
 
 // VTABLE: LEGORACERS 0x004b4b18
@@ -438,6 +444,8 @@ public:
 	~CrimsonPebbleAnimation0x33c() override; // vtable+0x00
 
 	void Clear() override; // vtable+0x08
+
+	undefined4* FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
 	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);

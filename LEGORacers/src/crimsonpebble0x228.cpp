@@ -148,6 +148,20 @@ void CrimsonPebbleAnimation0x33c::FUN_00489af0(
 	STUB(0x00489af0);
 }
 
+// STUB: LEGORACERS 0x00489d70
+undefined4* CrimsonPebbleAnimation0x33c::FUN_00489d70(
+	const LegoChar* p_param1,
+	GolVec3* p_param2,
+	GolVec3* p_param3,
+	GolVec3* p_param4
+)
+{
+	GetName(p_param1);
+
+	STUB(0x00489d70);
+	return 0;
+}
+
 // FUNCTION: LEGORACERS 0x00489fa0
 void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 {
@@ -240,6 +254,18 @@ void CrimsonPebbleEvent0x14::VTable0x04(undefined4 p_arg)
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
 	}
+}
+
+// STUB: LEGORACERS 0x0049fe30
+void CrimsonPebbleEvent0x14::FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2)
+{
+	STUB(0x0049fe30);
+}
+
+// STUB: LEGORACERS 0x0049fec0
+void CrimsonPebbleEvent0x14::FUN_0049fec0()
+{
+	STUB(0x0049fec0);
 }
 
 // STUB: LEGORACERS 0x0049ff70
@@ -632,7 +658,7 @@ void CrimsonPebble0x228::FUN_004a0730(
 // FUNCTION: LEGORACERS 0x004a0bf0
 void CrimsonPebble0x228::Clear()
 {
-	LegoS32 i;
+	LegoU32 i;
 
 	if (m_soundManager) {
 		m_soundManager->RemoveActiveSoundNode(&m_unk0x14);
@@ -2029,10 +2055,10 @@ void CrimsonPebbleEvent0x50::VTable0x04(undefined4 p_arg)
 	}
 }
 
-// STUB: LEGORACERS 0x004a3db0
+// FUNCTION: LEGORACERS 0x004a3db0
 void CrimsonPebbleEvent0x50::FUN_004a3db0()
 {
-	STUB(0x004a3db0);
+	m_unk0x18 = m_unk0x14->FUN_00489d70(m_unk0x1c, &m_unk0x24, &m_unk0x30, &m_unk0x3c);
 }
 
 // STUB: LEGORACERS 0x004a3dd0
@@ -2277,11 +2303,14 @@ void CrimsonPebbleEvent0x50Derived::VTable0x04(undefined4 p_arg)
 	}
 }
 
-// STUB: LEGORACERS 0x004a44c0
+// FUNCTION: LEGORACERS 0x004a44c0
 void CrimsonPebbleEvent0x50Derived::VTable0x18()
 {
-	STUB(0x004a44c0);
-	m_unk0x30 = NULL;
+	if (m_unk0x30) {
+		m_unk0x48 &= ~c_flagBit3;
+		m_unk0x14->DestroyStreamingSoundInstance(m_unk0x30);
+		m_unk0x30 = NULL;
+	}
 }
 
 // STUB: LEGORACERS 0x004a44f0
@@ -2500,8 +2529,19 @@ void CrimsonPebbleEvent0x48::FUN_004a4d10(LegoFloat p_elapsedSeconds)
 	}
 }
 
-// STUB: LEGORACERS 0x004a4da0
+// FUNCTION: LEGORACERS 0x004a4da0
 void CrimsonPebbleEvent0x48::FUN_004a4da0()
 {
-	STUB(0x004a4da0);
+	FloatyBoat0x28::VTable24Argument arg;
+
+	arg.m_unk0x0c = 0;
+	arg.m_unk0x00 = m_unk0x18;
+	arg.m_unk0x04 = m_unk0x1c;
+	arg.m_unk0x08 = m_unk0x20;
+	arg.m_unk0x10 = (LegoS32) m_unk0x30;
+	arg.m_unk0x14 = (LegoS32) m_unk0x34;
+	arg.m_unk0x18 = (LegoS32) m_unk0x38;
+	arg.m_unk0x1c = 0;
+
+	m_unk0x08->VTable0x24(&arg);
 }

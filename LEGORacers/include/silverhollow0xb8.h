@@ -18,7 +18,7 @@ public:
 	SilverHollow0xb8();
 
 	void VTable0x00() override;                                           // vtable+0x00
-	void VTable0x10(undefined4 p_unk0x04) override;                       // vtable+0x10
+	void VTable0x10(LegoS32 p_unk0x04) override;                          // vtable+0x10
 	void VTable0x14(undefined4, undefined4) override;                     // vtable+0x14
 	void VTable0x1c(WhiteFalcon0x140* p_renderer) override;               // vtable+0x1c
 	LegoBool32 VTable0x20() override;                                     // vtable+0x20

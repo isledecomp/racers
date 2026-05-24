@@ -38,7 +38,7 @@ void OpalHaven0xf4::Reset()
 	}
 
 	m_unk0xbc = 0;
-	m_unk0x10 = -1.0f;
+	m_radius = -1.0f;
 	m_unk0xb4 = 0;
 	m_unk0xb8 = 0;
 	m_unk0xd8 = 0;
@@ -75,7 +75,7 @@ void OpalHaven0xf4::FUN_0040db80(undefined4, undefined4, LegoFloat, undefined4, 
 }
 
 // STUB: LEGORACERS 0x0040dd60
-void OpalHaven0xf4::VTable0x10(undefined4)
+void OpalHaven0xf4::VTable0x10(LegoS32)
 {
 	STUB(0x0040dd60);
 }

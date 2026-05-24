@@ -21,9 +21,9 @@ AmberMeadow0x58::AmberMeadow0x58()
 // FUNCTION: LEGORACERS 0x004108c0
 void AmberMeadow0x58::FUN_004108c0()
 {
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
+	m_velocity.m_x = 0;
+	m_velocity.m_y = 0;
+	m_velocity.m_z = 0;
 	m_unk0x28 = 1.0f;
 	m_unk0x2c = 0;
 	m_unk0x30 = 0;
@@ -96,7 +96,7 @@ void AmberMeadow0x58::VTable0x08(LegoFloat*)
 SilverHollow0xb8::SilverHollow0xb8()
 {
 	m_unk0x58 = 1.0f;
-	m_unk0x10 = -1.0f;
+	m_radius = -1.0f;
 	m_unk0x5c = 0;
 	m_unk0x60 = 0;
 	m_unk0x62 = 0;
@@ -124,7 +124,7 @@ void SilverHollow0xb8::VTable0x50(IGdbModel0x40* p_model, LegoFloat p_unk0x08)
 	m_unk0x68 = 0;
 	m_unk0x84[0] = p_unk0x08;
 	m_unk0x58 = 1.0f;
-	m_unk0x10 = -1.0f;
+	m_radius = -1.0f;
 	m_unk0x5c |= 1;
 }
 
@@ -166,7 +166,7 @@ void SilverHollow0xb8::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x00411470
-void SilverHollow0xb8::VTable0x10(undefined4)
+void SilverHollow0xb8::VTable0x10(LegoS32)
 {
 	STUB(0x00411470);
 }

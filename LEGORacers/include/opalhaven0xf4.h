@@ -16,7 +16,7 @@ class OpalHaven0xf4 : public SilverHollow0xb8 {
 public:
 	OpalHaven0xf4();
 
-	void VTable0x10(undefined4 p_unk0x04) override;          // vtable+0x10
+	void VTable0x10(LegoS32 p_unk0x04) override;             // vtable+0x10
 	void VTable0x14(undefined4, undefined4) override;        // vtable+0x14
 	void VTable0x4c(undefined4 p_unk0x04) override;          // vtable+0x4c
 	void VTable0x54() override;                              // vtable+0x54

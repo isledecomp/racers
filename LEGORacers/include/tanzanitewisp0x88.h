@@ -12,6 +12,8 @@ class MusicInstance;
 class MenuManager;
 class MusicGroup;
 class GarnetFlare0x60;
+class IGdbModel0x40;
+struct TurquoiseGlowColor;
 
 // SIZE 0x88
 class TanzaniteWisp0x88 {
@@ -31,6 +33,10 @@ public:
 	undefined4 FUN_0049d1d0(const LoadParams* p_params);
 	LegoBool32 ReleaseMenuResources();
 	void RefreshMenuResources();
+	IGdbModel0x40* FUN_0049db90(TurquoiseGlowColor* p_color, IGdbModel0x40* p_model, undefined4 p_unk0x0c);
+	undefined4 FUN_0049dc10(TurquoiseGlowColor* p_color);
+	void FUN_0049dc90(undefined4* p_dest);
+	void FUN_0049dce0(IGdbModel0x40* p_model, TurquoiseGlowColor* p_color);
 
 	void Reset()
 	{
@@ -43,6 +49,7 @@ public:
 	MusicInstance* GetMusicInstance() { return m_musicInstance; }
 	void SetMusicInstance(MusicInstance* p_musicInstance) { m_musicInstance = p_musicInstance; }
 	LegoBool32 HasMenuResources() const { return m_menuId != 0; }
+	void SetUnk0x10(undefined4 p_unk0x10) { m_unk0x10 = p_unk0x10; }
 	undefined4 GetUnk0x78() const { return m_unk0x78; }
 	void SetUnk0x78(undefined4 p_unk0x78) { m_unk0x78 = p_unk0x78; }
 	LegoS32 GetUnk0x84() const { return m_unk0x84; }

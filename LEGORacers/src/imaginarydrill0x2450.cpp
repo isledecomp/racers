@@ -154,8 +154,8 @@ void ImaginaryDrill0x2450::Reset()
 void ImaginaryDrill0x2450::FUN_00480e40()
 {
 	ImaginaryDrillFieldAt0x22dc::CreateParams params;
-	LegoFloat vector0[3];
-	LegoFloat vector1[3];
+	GolVec3 vector0;
+	GolVec3 vector1;
 	BronzeFalcon0xc8770* renderer;
 
 	FUN_0046c480(&m_unk0x21f8, 0, 0xd0);
@@ -166,18 +166,18 @@ void ImaginaryDrill0x2450::FUN_00480e40()
 	params.m_unk0x0c = &m_context->m_unk0x4b40;
 	params.m_unk0x08 = &m_unk0x21f8;
 	params.m_renderer = renderer;
-	params.m_unk0x10 = 18.18122864f;
-	params.m_unk0x14 = -10.62275887f;
-	params.m_unk0x18 = 0.025708f;
+	params.m_position.m_x = 18.18122864f;
+	params.m_position.m_y = -10.62275887f;
+	params.m_position.m_z = 0.025708f;
 	m_unk0x22dc.FUN_0047e0a0(&params);
 	m_unk0x21f8.FUN_00465b40(&m_unk0x22dc);
 
-	vector1[0] = 0.97237003f;
-	vector1[1] = -0.233445f;
-	vector1[2] = 0.0f;
-	vector0[0] = 0.0f;
-	vector0[1] = 0.0f;
-	vector0[2] = 1.0f;
+	vector1.m_x = 0.97237003f;
+	vector1.m_y = -0.233445f;
+	vector1.m_z = 0.0f;
+	vector0.m_x = 0.0f;
+	vector0.m_y = 0.0f;
+	vector0.m_z = 1.0f;
 
 	m_unk0x2438 = m_unk0x22dc.GetUnk0x1c();
 	m_unk0x2438->VTable0x40(vector1, vector0);

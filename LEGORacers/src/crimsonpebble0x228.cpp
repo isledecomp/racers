@@ -7,6 +7,7 @@
 #include "audio/spatialsoundinstance.h"
 #include "awakekite0x20.h"
 #include "bronzefalcon0xc8770.h"
+#include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -16,7 +17,6 @@
 #include "golname.h"
 #include "golstream.h"
 #include "goltxtparser.h"
-#include "lilacorbit0x28.h"
 #include "mabmaterialanimation0x14.h"
 #include "menuanimationlist.h"
 #include "opalhaven0xf4.h"
@@ -206,7 +206,7 @@ void CrimsonPebbleEvent0x14::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x0049fde0
-void CrimsonPebbleEvent0x14::VTable0x0c(LilacOrbit0x28*)
+void CrimsonPebbleEvent0x14::VTable0x0c(FloatyBoat0x28*)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x14();
@@ -214,7 +214,7 @@ void CrimsonPebbleEvent0x14::VTable0x0c(LilacOrbit0x28*)
 }
 
 // FUNCTION: LEGORACERS 0x0049fdf0
-void CrimsonPebbleEvent0x14::VTable0x08(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x08(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x0c(p_arg);
@@ -222,7 +222,7 @@ void CrimsonPebbleEvent0x14::VTable0x08(LilacOrbit0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0049fe10
-void CrimsonPebbleEvent0x14::VTable0x04(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x04(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
@@ -248,13 +248,13 @@ void CrimsonPebbleEvent0x14::FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2
 	vec1.m_z = 0.0f;
 
 	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
-	m_unk0x0c->VTable0x34(&vec2.m_x, &p_param2->m_x);
+	m_unk0x0c->VTable0x34(vec2, p_param2);
 
 	vec1.m_x = 0.0f;
 	vec1.m_y = 0.0f;
 	vec1.m_z = 1.0f;
 	falconNode->FUN_004132a0(p_param1, &vec1, &vec2);
-	m_unk0x0c->VTable0x34(&vec2.m_x, &p_param3->m_x);
+	m_unk0x0c->VTable0x34(vec2, p_param3);
 }
 
 // STUB: LEGORACERS 0x0049ff70
@@ -347,7 +347,7 @@ void CrimsonPebbleEventLink0x0c::FUN_004a00d0()
 // FUNCTION: LEGORACERS 0x004a00f0
 void CrimsonPebbleEventLink0x0c::FUN_004a00f0(CrimsonPebbleEventValuePayload0x24* p_payload)
 {
-	LilacOrbit0x28* value = p_payload->m_unk0x20->m_unk0x28;
+	FloatyBoat0x28* value = p_payload->m_unk0x20->m_unk0x28;
 	if (value) {
 		if (m_unk0x00) {
 			m_event->VTable0x04(value);
@@ -1786,19 +1786,19 @@ void CrimsonPebble0x228::FUN_004a3150()
 }
 
 // FUNCTION: LEGORACERS 0x004a3230
-LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e30(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3240
-LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e80(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3250
-LilacOrbit0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
+FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406ed0(p_name);
 }
@@ -2013,7 +2013,7 @@ void CrimsonPebbleEvent0x50::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x004a3d70
-void CrimsonPebbleEvent0x50::VTable0x0c(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x0c(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2025,7 +2025,7 @@ void CrimsonPebbleEvent0x50::VTable0x0c(LilacOrbit0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a3d90
-void CrimsonPebbleEvent0x50::VTable0x04(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x04(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2271,7 +2271,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x10(const GolVec3* p_a, const GolVec3
 }
 
 // FUNCTION: LEGORACERS 0x004a4480
-void CrimsonPebbleEvent0x50Derived::VTable0x0c(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x0c(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2283,7 +2283,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x0c(LilacOrbit0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a44a0
-void CrimsonPebbleEvent0x50Derived::VTable0x04(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x04(FloatyBoat0x28* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2480,7 +2480,7 @@ void CrimsonPebbleEvent0x48::VTable0x14()
 }
 
 // FUNCTION: LEGORACERS 0x004a4cd0
-void CrimsonPebbleEvent0x48::VTable0x08(LilacOrbit0x28* p_arg)
+void CrimsonPebbleEvent0x48::VTable0x08(FloatyBoat0x28* p_arg)
 {
 	if (!m_active) {
 		if (m_unk0x08 == NULL) {
@@ -2524,7 +2524,7 @@ void CrimsonPebbleEvent0x48::FUN_004a4d10(LegoFloat p_elapsedSeconds)
 // FUNCTION: LEGORACERS 0x004a4da0
 void CrimsonPebbleEvent0x48::FUN_004a4da0()
 {
-	LilacOrbit0x28::TransformPayload0x20 transform;
+	FloatyBoat0x28::TransformPayload0x20 transform;
 	transform.m_baseX = m_baseX;
 	transform.m_baseY = m_baseY;
 	transform.m_baseZ = m_baseZ;

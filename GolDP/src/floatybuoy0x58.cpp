@@ -195,25 +195,25 @@ void FloatyBuoy0x58::VTable0x08(const GolVec3& p_pos)
 	m_unk0x28.m_m[3][0] = p_pos.m_x;
 	m_unk0x28.m_m[3][1] = p_pos.m_y;
 	m_unk0x28.m_m[3][2] = p_pos.m_z;
-	m_v1.m_x = -1.0;
+	m_radius = -1.0;
 }
 
 // FUNCTION: GOLDP 0x10026f70
 void FloatyBuoy0x58::FUN_10026f70(const GolVec3& p_v)
 {
-	m_v0 = p_v;
-	m_v1.m_y = m_v0.m_x - m_v1.m_x;
-	m_v1.m_z = m_v0.m_x + m_v1.m_x;
-	m_v1.m_y = m_v0.m_x - m_v1.m_x;
-	m_v1.m_z = m_v0.m_x + m_v1.m_x;
+	m_center = p_v;
+	m_minX = m_center.m_x - m_radius;
+	m_maxX = m_center.m_x + m_radius;
+	m_minX = m_center.m_x - m_radius;
+	m_maxX = m_center.m_x + m_radius;
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
 void FloatyBuoy0x58::FUN_10026fa0(float p_scalar)
 {
-	m_v1.m_x = p_scalar;
-	m_v1.m_y = m_v0.m_x - p_scalar;
-	m_v1.m_z = p_scalar + m_v0.m_x;
+	m_radius = p_scalar;
+	m_minX = m_center.m_x - p_scalar;
+	m_maxX = p_scalar + m_center.m_x;
 }
 
 // FUNCTION: GOLDP 0x10026fc0

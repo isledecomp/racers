@@ -31,8 +31,7 @@ DECOMP_SIZE_ASSERT(WdbLight0x10, 0x10)
 // GLOBAL: GOLDP 0x100576e4
 LegoFloat g_fltMax0x100576e4 = FLT_MAX;
 
-// GLOBAL: GOLDP 0x10057330
-static const LegoFloat g_fltMax0x10057330 = FLT_MAX;
+static const LegoFloat g_floatyBoatMaxFloat = FLT_MAX;
 
 // GLOBAL: GOLDP 0x100576e8
 LegoFloat g_fltMax0x100576e8 = FLT_MAX;
@@ -1367,7 +1366,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
@@ -1395,7 +1394,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 		runtime->VTable0x08(model->m_unk0x50);
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
-		runtime->m_v1.m_x = -1.0f;
+		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
@@ -1448,7 +1447,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {
@@ -1499,7 +1498,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 		runtime->VTable0x08(model->m_unk0x50);
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
-		runtime->m_v1.m_x = -1.0f;
+		runtime->m_radius = -1.0f;
 		runtime->m_unk0x58 = model->m_unk0x74;
 
 		if (model->m_flags & WdbModel0x8c::e_flagBit3) {
@@ -1565,7 +1564,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 				break;
 			}
 
-			if (!(model->m_unk0x38[lod] < g_fltMax0x10057330)) {
+			if (!(model->m_unk0x38[lod] < g_floatyBoatMaxFloat)) {
 				maxDistances[lod] = g_fltMax0x100576e4;
 			}
 			else {

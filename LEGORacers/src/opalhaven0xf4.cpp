@@ -87,7 +87,7 @@ void OpalHaven0xf4::VTable0x4c(undefined4)
 }
 
 // STUB: LEGORACERS 0x0040e270
-void OpalHaven0xf4::VTable0x14(undefined4, undefined4)
+void OpalHaven0xf4::VTable0x14(const WhiteFalconView0xcc&, ViewResult*)
 {
 	STUB(0x0040e270);
 }

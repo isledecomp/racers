@@ -32,9 +32,9 @@ public:
 protected:
 	void Initialize()
 	{
-		m_v2.m_x = 0.0f;
-		m_v2.m_y = 0.0f;
-		m_v2.m_z = 0.0f;
+		m_velocity.m_x = 0.0f;
+		m_velocity.m_y = 0.0f;
+		m_velocity.m_z = 0.0f;
 		m_unk0x28.m_m[0][0] = 1.0f;
 		m_unk0x28.m_m[0][1] = 0.0f;
 		m_unk0x28.m_m[0][2] = 0.0f;

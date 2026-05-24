@@ -35,7 +35,7 @@ public:
 
 	void VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result) override; // vtable+0x14
 	void VTable0x1c(WhiteFalcon0x140&) override;                                         // vtable+0x1c
-	undefined4 VTable0x20() override;                                                    // vtable+0x20
+	LegoBool32 VTable0x20() override;                                                    // vtable+0x20
 	virtual void VTable0x4c(
 		undefined4* p_position,
 		LegoFloat p_width,

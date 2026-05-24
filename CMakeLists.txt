@@ -107,6 +107,7 @@ set(COMMON_SOURCES
   common/src/cmbmodelpartdata0x28.cpp
   common/src/mabmaterialanimation0x14.cpp
   common/src/floatypontoon0x4cfield0x2c.cpp
+  common/src/floatyboat0x28.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -173,7 +174,6 @@ add_library(goldp SHARED
   GolDP/src/main.cpp
   GolDP/src/zoweeblubberworth0xf0.cpp
   GolDP/src/silverdune0x30.cpp
-  GolDP/src/floatyboat0x28.cpp
   GolDP/src/floatypontoon0x4c.cpp
   GolDP/src/floatybarge0x4c.cpp
   GolDP/src/slatepeak0x58.cpp
@@ -381,7 +381,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/porcelainveil0x50.cpp
   LEGORacers/src/videoplayer.cpp
   LEGORacers/src/guids.cpp
-  LEGORacers/src/lilacorbit0x28.cpp
   LEGORacers/racers.rc
   util/decomp.cpp
   $<TARGET_OBJECTS:common_legoracers>

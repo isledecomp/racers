@@ -3,7 +3,9 @@
 #include "amberhaze0x1c.h"
 #include "bronzefalcon0xc8770.h"
 #include "gol.h"
+#include "igdbmodel0x40.h"
 #include "magentaribbon0x20.h"
+#include "turquoiseglowcolor.h"
 
 #include <stdlib.h>
 
@@ -71,4 +73,30 @@ void TanzaniteWisp0x88::RefreshMenuResources()
 	m_menuResource1->Clear();
 	m_menuResource0->VTable0x1c(m_renderer, m_menuId);
 	m_menuResource1->VTable0x1c(m_renderer, m_menuId);
+}
+
+// STUB: LEGORACERS 0x0049db90
+IGdbModel0x40* TanzaniteWisp0x88::FUN_0049db90(TurquoiseGlowColor*, IGdbModel0x40* p_model, undefined4)
+{
+	STUB(0x0049db90);
+	return p_model;
+}
+
+// STUB: LEGORACERS 0x0049dc10
+undefined4 TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor*)
+{
+	STUB(0x0049dc10);
+	return 0;
+}
+
+// STUB: LEGORACERS 0x0049dc90
+void TanzaniteWisp0x88::FUN_0049dc90(undefined4*)
+{
+	STUB(0x0049dc90);
+}
+
+// STUB: LEGORACERS 0x0049dce0
+void TanzaniteWisp0x88::FUN_0049dce0(IGdbModel0x40*, TurquoiseGlowColor*)
+{
+	STUB(0x0049dce0);
 }

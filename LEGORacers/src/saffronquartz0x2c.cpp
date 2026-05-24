@@ -4,12 +4,12 @@
 #include "amberlensbase0x120.h"
 #include "bluebellfog0x4.h"
 #include "bronzefalcon0xc8770.h"
+#include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "igdbmodel0x40.h"
-#include "lilacorbit0x28.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "opalhaven0xf4.h"
@@ -246,7 +246,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x04(undefined4 p_elapsedMs)
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_renderer)
 {
 	if (m_unk0x14 && !m_unk0x64) {
-		m_unk0x24->VTable0x1c(p_renderer);
+		m_unk0x24->VTable0x1c(*p_renderer);
 	}
 }
 
@@ -254,7 +254,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_
 void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x0c(BronzeFalcon0xc8770* p_renderer)
 {
 	if (m_unk0x14 && m_unk0x64) {
-		m_unk0x24->VTable0x1c(p_renderer);
+		m_unk0x24->VTable0x1c(*p_renderer);
 	}
 }
 
@@ -263,8 +263,8 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 {
 	if (m_unk0x24) {
 		m_unk0x64 = m_unk0x24->VTable0x20();
-		m_unk0x24->VTable0x08(&m_unk0x34.m_x);
-		m_unk0x24->VTable0x40(&m_unk0x40.m_x, &m_unk0x4c.m_x);
+		m_unk0x24->VTable0x08(m_unk0x34);
+		m_unk0x24->VTable0x40(m_unk0x40, m_unk0x4c);
 
 		if (m_unk0x5c && (m_unk0x20 == 2 || m_unk0x20 == 1 || m_unk0x20 == 3)) {
 			Animation0x1c* animation = m_unk0x60;
@@ -1534,10 +1534,10 @@ AmberLens0x344* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e30
-LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
+FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
+		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1547,10 +1547,10 @@ LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e80
-LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
+FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
+		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
 		if (result) {
 			return result;
 		}
@@ -1560,10 +1560,10 @@ LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406ed0
-LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
+FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		LilacOrbit0x28* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
+		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
 		if (result) {
 			return result;
 		}
@@ -1573,7 +1573,7 @@ LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406f20
-LilacOrbit0x28* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
+FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
 {
 	return m_unk0x1c[p_index]->VTable0x48(p_modelIndex);
 }

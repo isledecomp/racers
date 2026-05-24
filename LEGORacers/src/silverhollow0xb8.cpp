@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(SilverHollow0xb8, 0xb8)
 LegoFloat g_unk0x004af750 = -1.0f;
 
 // STUB: LEGORACERS 0x00403c90
-void AmberMeadow0x58::VTable0x48(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x48(GolVec3*, GolVec3*) const
 {
 	STUB(0x00403c90);
 }
@@ -39,55 +39,55 @@ void AmberMeadow0x58::FUN_004108c0()
 }
 
 // STUB: LEGORACERS 0x00410900
-void AmberMeadow0x58::VTable0x40(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x40(const GolVec3&, const GolVec3&)
 {
 	STUB(0x00410900);
 }
 
 // STUB: LEGORACERS 0x00410c00
-void AmberMeadow0x58::VTable0x44(LegoFloat*)
+void AmberMeadow0x58::VTable0x44(GolMatrix3*) const
 {
 	STUB(0x00410c00);
 }
 
 // STUB: LEGORACERS 0x00410c40
-void AmberMeadow0x58::VTable0x3c(LegoFloat*)
+void AmberMeadow0x58::VTable0x3c(const GolMatrix34&)
 {
 	STUB(0x00410c40);
 }
 
 // STUB: LEGORACERS 0x00410c80
-void AmberMeadow0x58::VTable0x34(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x34(const GolVec3&, GolVec3*)
 {
 	STUB(0x00410c80);
 }
 
 // STUB: LEGORACERS 0x00410cf0
-void AmberMeadow0x58::VTable0x38(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x38(const GolVec3&, GolVec3*) const
 {
 	STUB(0x00410cf0);
 }
 
 // STUB: LEGORACERS 0x00410d60
-void AmberMeadow0x58::VTable0x2c(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x2c(const GolVec3&, GolVec3*) const
 {
 	STUB(0x00410d60);
 }
 
 // STUB: LEGORACERS 0x00410de0
-void AmberMeadow0x58::VTable0x30(LegoFloat*, LegoFloat*)
+void AmberMeadow0x58::VTable0x30(const GolVec3&, GolVec3*) const
 {
 	STUB(0x00410de0);
 }
 
 // STUB: LEGORACERS 0x00410ea0
-void AmberMeadow0x58::VTable0x04(LegoFloat*)
+void AmberMeadow0x58::VTable0x04(GolVec3*) const
 {
 	STUB(0x00410ea0);
 }
 
 // STUB: LEGORACERS 0x00410ec0
-void AmberMeadow0x58::VTable0x08(LegoFloat*)
+void AmberMeadow0x58::VTable0x08(const GolVec3&)
 {
 	STUB(0x00410ec0);
 }
@@ -148,7 +148,7 @@ void SilverHollow0xb8::VTable0x54()
 }
 
 // STUB: LEGORACERS 0x004112c0
-void SilverHollow0xb8::VTable0x14(undefined4, undefined4)
+void SilverHollow0xb8::VTable0x14(const WhiteFalconView0xcc&, ViewResult*)
 {
 	STUB(0x004112c0);
 }
@@ -172,7 +172,7 @@ void SilverHollow0xb8::VTable0x10(LegoS32)
 }
 
 // STUB: LEGORACERS 0x00411560
-void SilverHollow0xb8::VTable0x1c(WhiteFalcon0x140*)
+void SilverHollow0xb8::VTable0x1c(WhiteFalcon0x140&)
 {
 	STUB(0x00411560);
 }

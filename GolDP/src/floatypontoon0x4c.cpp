@@ -91,9 +91,9 @@ void FloatyPontoon0x4c::VTable0x14(const WhiteFalconView0xcc& p_view, ResultStru
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
 void FloatyPontoon0x4c::FUN_10026fa0(LegoFloat p_scalar)
 {
-	m_v1.m_x = p_scalar;
-	m_v1.m_y = m_v0.m_x - p_scalar;
-	m_v1.m_z = p_scalar + m_v0.m_x;
+	m_radius = p_scalar;
+	m_minX = m_center.m_x - p_scalar;
+	m_maxX = p_scalar + m_center.m_x;
 }
 
 // FUNCTION: GOLDP 0x10029fa0
@@ -131,7 +131,7 @@ void FloatyPontoon0x4c::VTable0x1c(WhiteFalcon0x140& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x1002a060
-undefined4 FloatyPontoon0x4c::VTable0x20()
+LegoBool32 FloatyPontoon0x4c::VTable0x20()
 {
 	if (m_flags & c_flagBit2) {
 		m_position = m_positionContainer->GetPosition(m_positionIndex);

@@ -19,7 +19,7 @@ FloatyCanoe0x90::FloatyCanoe0x90()
 	LegoU32 i;
 
 	m_unk0x58 = 1.0f;
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	m_flags = 0;
 	m_unk0x60 = 0;
 	m_unk0x62 = 0;
@@ -45,7 +45,7 @@ void FloatyCanoe0x90::VTable0x50(IGdbModel0x40* p_value, LegoFloat p_scalar)
 	m_unk0x68 = 0;
 	m_unk0x84[0] = p_scalar;
 	m_unk0x58 = 1.0f;
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	m_flags |= c_flagBit0;
 }
 
@@ -197,9 +197,9 @@ void FloatyCanoe0x90::VTable0x10(LegoS32 p_scalar)
 	GolVec3 v;
 	VTable0x04(&v);
 	LegoFloat f = static_cast<LegoFloat>(p_scalar);
-	v += m_v2 * f;
+	v += m_velocity * f;
 	VTable0x08(v);
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	if (m_unk0x64 != 0 || m_unk0x68 != 0) {
 		m_unk0x60 += m_unk0x64 * p_scalar;
 		m_unk0x62 += m_unk0x68 * p_scalar;
@@ -215,10 +215,10 @@ void FloatyCanoe0x90::FUN_10027fe0(undefined4 p_arg1, GolVec3* p_destVec, LegoFl
 	}
 	else {
 		VTable0x4c(p_arg1);
-		p_destVec->m_x = m_v0.m_x;
-		p_destVec->m_y = m_v0.m_y;
-		p_destVec->m_z = m_v0.m_z;
-		*p_destScalar = m_v1.m_x;
+		p_destVec->m_x = m_center.m_x;
+		p_destVec->m_y = m_center.m_y;
+		p_destVec->m_z = m_center.m_z;
+		*p_destScalar = m_radius;
 	}
 }
 
@@ -284,7 +284,7 @@ void FloatyCanoe0x90::FUN_10028140(LegoFloat p_arg)
 }
 
 // STUB: GOLDP 0x10028170
-undefined4 FloatyCanoe0x90::VTable0x20()
+LegoBool32 FloatyCanoe0x90::VTable0x20()
 {
 	// TODO
 	STUB(0x10028170);

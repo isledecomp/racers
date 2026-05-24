@@ -66,9 +66,9 @@ void AmberLensBase0x120::FUN_004047b0()
 		forward = transformedForward;
 	}
 
-	m_unk0x28->VTable0x2c(&position.m_x, &transformedPosition.m_x);
-	m_unk0x28->VTable0x34(&right.m_x, &transformedRight.m_x);
-	m_unk0x28->VTable0x34(&forward.m_x, &transformedForward.m_x);
+	m_unk0x28->VTable0x2c(position, &transformedPosition);
+	m_unk0x28->VTable0x34(right, &transformedRight);
+	m_unk0x28->VTable0x34(forward, &transformedForward);
 
 	m_unk0x04->SetPosition(&transformedPosition);
 	transformedForward.m_x = -transformedForward.m_x;

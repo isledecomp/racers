@@ -23,7 +23,7 @@ FloatyFerry0xf4::FloatyFerry0xf4()
 		m_unk0x9c[i] = -1;
 	}
 	m_unk0xbc = 0;
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	m_unk0xb4 = 0;
 	m_unk0xb8 = 0;
 	m_unk0xd8 = 0;
@@ -50,7 +50,7 @@ void FloatyFerry0xf4::FUN_10023490(
 void FloatyFerry0xf4::FUN_100234c0(WhiteFalconNode0x18* p_arg1, CmbModelPart0x34* p_arg2, LegoFloat p_arg3)
 {
 	m_unk0x84[0] = p_arg3;
-	m_v1.m_x = 0.0f;
+	m_radius = 0.0f;
 	m_unk0x60 = 0;
 	m_unk0x62 = 0;
 	m_unk0x64 = 0;
@@ -74,7 +74,7 @@ void FloatyFerry0xf4::VTable0x54()
 		m_unk0x9c[i] = -1;
 	}
 	m_unk0xbc = 0;
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	m_unk0xb4 = 0;
 	m_unk0xb8 = 0;
 	m_unk0xd8 = 0;
@@ -139,12 +139,12 @@ void FloatyFerry0xf4::FUN_10023a70(LegoU32 p_partIndex)
 	m_flags = flags;
 
 	CmbModelPart0x34* modelPart = m_unk0xa8[0];
-	m_v1.m_x = -1.0f;
+	m_radius = -1.0f;
 	m_unk0xb8 = modelPart->GetPartData()[p_partIndex].GetUnk0x00();
 	m_unk0xb4 = 0;
 	const GolVec3& position = modelPart->GetPartData()[p_partIndex].GetUnk0x04();
 	m_unk0xc0 = position;
-	m_v2 = position;
+	m_velocity = position;
 }
 
 // STUB: GOLDP 0x10023b10

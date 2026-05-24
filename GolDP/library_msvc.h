@@ -33,21 +33,6 @@
 // LIBRARY: GOLDP 0x1004b630
 // _qsort
 
-// LIBRARY: GOLDP 0x1004ba3b
-// _isalpha
-
-// LIBRARY: GOLDP 0x1004ba70
-// _strrchr
-
-// LIBRARY: GOLDP 0x1004ba97
-// _toupper
-
-// LIBRARY: GOLDP 0x1004bbd2
-// __tell
-
-// LIBRARY: GOLDP 0x1004bbe3
-// __lseek
-
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
 
@@ -60,8 +45,23 @@
 // LIBRARY: GOLDP 0x1004b930
 // _strncmp
 
+// LIBRARY: GOLDP 0x1004ba3b
+// _isalpha
+
+// LIBRARY: GOLDP 0x1004ba70
+// _strrchr
+
+// LIBRARY: GOLDP 0x1004ba97
+// _toupper
+
 // LIBRARY: GOLDP 0x1004bb06
 // __toupper_lk
+
+// LIBRARY: GOLDP 0x1004bbd2
+// __tell
+
+// LIBRARY: GOLDP 0x1004bbe3
+// __lseek
 
 // LIBRARY: GOLDP 0x1004bc48
 // __lseek_lk
@@ -72,11 +72,11 @@
 // LIBRARY: GOLDP 0x1004bd37
 // ___doserrno
 
-// LIBRARY: GOLDP 0x1004bd57
-// __sopen
-
 // LIBRARY: GOLDP 0x1004bd40
 // __open
+
+// LIBRARY: GOLDP 0x1004bd57
+// __sopen
 
 // LIBRARY: GOLDP 0x1004c026
 // __close
@@ -114,11 +114,11 @@
 // LIBRARY: GOLDP 0x1004d030
 // __mtterm
 
-// LIBRARY: GOLDP 0x1004d061
-// __getptd
-
 // LIBRARY: GOLDP 0x1004d04e
 // __initptd
+
+// LIBRARY: GOLDP 0x1004d061
+// __getptd
 
 // LIBRARY: GOLDP 0x1004d0c8
 // __freeptd
@@ -154,9 +154,6 @@
 
 // LIBRARY: GOLDP 0x1004e322
 // __cexit
-
-// LIBRARY: GOLDP 0x1004f8fc
-// __ioinit
 
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
@@ -194,6 +191,9 @@
 // LIBRARY: GOLDP 0x1004f8da
 // __unlock_fhandle
 
+// LIBRARY: GOLDP 0x1004f8fc
+// __ioinit
+
 // LIBRARY: GOLDP 0x1004fab8
 // __ioterm
 
@@ -209,6 +209,12 @@
 // LIBRARY: GOLDP 0x1004ff37
 // ___crtGetEnvironmentStringsA
 
+// LIBRARY: GOLDP 0x10050069
+// __GetLinkerVersion
+
+// LIBRARY: GOLDP 0x10050096
+// ___heap_select
+
 // LIBRARY: GOLDP 0x100501de
 // __heap_init
 
@@ -221,9 +227,51 @@
 // LIBRARY: GOLDP 0x10050322
 // __NMSG_WRITE
 
+// LIBRARY: GOLDP 0x100505c0
+// _memmove
+
 // TODO #297: Seems to mismatch, maybe a custom allocator is used?
 // LIBRARY: GOLDP 0x100508f5
 // _calloc
+
+// LIBRARY: GOLDP 0x10050a49
+// ___sbh_heap_init
+
+// LIBRARY: GOLDP 0x10050a91
+// ___sbh_find_block
+
+// LIBRARY: GOLDP 0x10050abc
+// ___sbh_free_block
+
+// LIBRARY: GOLDP 0x10050de5
+// ___sbh_alloc_block
+
+// LIBRARY: GOLDP 0x100510ee
+// ___sbh_alloc_new_region
+
+// LIBRARY: GOLDP 0x1005119f
+// ___sbh_alloc_new_group
+
+// LIBRARY: GOLDP 0x10051590
+// ___old_sbh_new_region
+
+// LIBRARY: GOLDP 0x100516d4
+// ___old_sbh_release_region
+
+// LIBRARY: GOLDP 0x1005172a
+// ___old_sbh_decommit_pages
+
+// LIBRARY: GOLDP 0x100517ec
+// ___old_sbh_find_block
+
+// LIBRARY: GOLDP 0x10051843
+// ___old_sbh_free_block
+
+// LIBRARY: GOLDP 0x10051888
+// ___old_sbh_alloc_block
+
+// LIBRARY: GOLDP 0x10051a90
+// ___old_sbh_alloc_block_from_page
 
 // LIBRARY: GOLDP 0x10051c5d
 // __getbuf
@@ -261,6 +309,9 @@
 // LIBRARY: GOLDP 0x100529d8
 // __fptrap
 
+// LIBRARY: GOLDP 0x100529f0
+// _memcpy
+
 // LIBRARY: GOLDP 0x10052df8
 // ___crtGetStringTypeA
 
@@ -270,8 +321,23 @@
 // LIBRARY: GOLDP 0x10052fff
 // __setmode_lk
 
+// LIBRARY: GOLDP 0x10053060
+// __setmbcp
+
 // LIBRARY: GOLDP 0x10053438
 // ___initmbctable
+
+// LIBRARY: GOLDP 0x10053454
+// _strtol
+
+// LIBRARY: GOLDP 0x10053680
+// _strchr
+
+// LIBRARY: GOLDP 0x10053686
+// ___from_strstr_to_strchr
+
+// LIBRARY: GOLDP 0x10053740
+// _strstr
 
 // LIBRARY: GOLDP 0x100537c0
 // ___crtMessageBoxA
@@ -297,20 +363,26 @@
 // GLOBAL: GOLDP 0x1005f440
 // __NLG_Destination
 
+// GLOBAL: GOLDP 0x1005c000
+// ___xc_a
+
+// GLOBAL: GOLDP 0x1005c038
+// ___xc_z
+
+// GLOBAL: GOLDP 0x1005c03c
+// ___xi_a
+
+// GLOBAL: GOLDP 0x1005c050
+// ___xi_z
+
+// GLOBAL: GOLDP 0x1005f458
+// __FPinit
+
+// GLOBAL: GOLDP 0x1005f5f8
+// __aexit_rtn
+
 // GLOBAL: GOLDP 0x1005f600
 // ___tlsindex
-
-// GLOBAL: GOLDP 0x1005f97c
-// ___mb_cur_max
-
-// GLOBAL: GOLDP 0x1005f988
-// __locktable
-
-// GLOBAL: GOLDP 0x1005fc10
-// __XcptActTab
-
-// GLOBAL: GOLDP 0x10065f08
-// ___error_mode
 
 // GLOBAL: GOLDP 0x1005f608
 // ___nullstring
@@ -318,14 +390,35 @@
 // GLOBAL: GOLDP 0x1005f60c
 // ___wnullstring
 
+// GLOBAL: GOLDP 0x1005f610
+// __cfltcvt_tab
+
 // GLOBAL: GOLDP 0x1005f770
 // __pctype
+
+// GLOBAL: GOLDP 0x1005f97c
+// ___mb_cur_max
+
+// GLOBAL: GOLDP 0x1005f988
+// __locktable
 
 // GLOBAL: GOLDP 0x1005fb58
 // ___badioinfo
 
+// GLOBAL: GOLDP 0x1005fc10
+// __XcptActTab
+
+// GLOBAL: GOLDP 0x1005fc98
+// ___old_small_block_heap
+
+// GLOBAL: GOLDP 0x10061cbc
+// ___old_sbh_threshold
+
 // GLOBAL: GOLDP 0x10065f00
 // __aenvptr
+
+// GLOBAL: GOLDP 0x10065f08
+// ___error_mode
 
 // GLOBAL: GOLDP 0x10065f0c
 // ___app_type
@@ -345,8 +438,17 @@
 // GLOBAL: GOLDP 0x10065f20
 // __winminor
 
+// GLOBAL: GOLDP 0x10065f24
+// ___argc
+
+// GLOBAL: GOLDP 0x10065f28
+// ___argv
+
 // GLOBAL: GOLDP 0x10065f30
 // __environ
+
+// GLOBAL: GOLDP 0x10065f40
+// __pgmptr
 
 // GLOBAL: GOLDP 0x10065f4c
 // __C_Termination_Done
@@ -369,17 +471,62 @@
 // GLOBAL: GOLDP 0x10066108
 // ?_pnhHeap@@3P6AHI@ZA
 
+// GLOBAL: GOLDP 0x10066270
+// ___mbcodepage
+
+// GLOBAL: GOLDP 0x100663a0
+// __mbctype
+
+// GLOBAL: GOLDP 0x10061f88
+// ___lc_time_curr
+
+// GLOBAL: GOLDP 0x10066280
+// ___mbulinfo
+
+// GLOBAL: GOLDP 0x1006628c
+// ___ismbcodepage
+
+// GLOBAL: GOLDP 0x100664a4
+// ___mblcid
+
+// GLOBAL: GOLDP 0x100674c4
+// ___sbh_sizeHeaderList
+
+// GLOBAL: GOLDP 0x100674c8
+// ___sbh_indGroupDefer
+
+// GLOBAL: GOLDP 0x100674cc
+// ___sbh_pHeaderScan
+
+// GLOBAL: GOLDP 0x100674d0
+// ___sbh_pHeaderDefer
+
+// GLOBAL: GOLDP 0x100674d4
+// ___sbh_cntHeaderList
+
+// GLOBAL: GOLDP 0x100674d8
+// ___sbh_pHeaderList
+
+// GLOBAL: GOLDP 0x100674dc
+// ___sbh_threshold
+
+// GLOBAL: GOLDP 0x100674e0
+// __crtheap
+
+// GLOBAL: GOLDP 0x100674e4
+// ___active_heap
+
 // GLOBAL: GOLDP 0x10067500
 // ___pioinfo
+
+// GLOBAL: GOLDP 0x10067600
+// __nhandle
 
 // GLOBAL: GOLDP 0x10067604
 // ___setlc_active
 
 // GLOBAL: GOLDP 0x10067608
 // ___unguarded_readlc_active
-
-// GLOBAL: GOLDP 0x10067600
-// __nhandle
 
 // GLOBAL: GOLDP 0x1006760c
 // ___env_initialized

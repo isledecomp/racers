@@ -245,7 +245,7 @@ void FloatyCanoe0x90::VTable0x1c(WhiteFalcon0x140& p_renderer)
 }
 
 // STUB: GOLDP 0x100280c0
-void FloatyCanoe0x90::VTable0x24(undefined4*)
+void FloatyCanoe0x90::VTable0x24(VTable24Argument*)
 {
 	// TODO
 	STUB(0x100280c0);

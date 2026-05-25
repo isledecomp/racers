@@ -10,6 +10,7 @@
 #include "floatyboat0x28.h"
 #include "gol.h"
 #include "golbinparser.h"
+#include "golconstants.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golfont0xa0.h"
@@ -18,6 +19,7 @@
 #include "golstream.h"
 #include "goltxtparser.h"
 #include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimationitem0x18.h"
 #include "menuanimationlist.h"
 #include "opalhaven0xf4.h"
 #include "particle0x18c.h"
@@ -160,7 +162,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489af0(
 		GolNameTable::Allocate(m_unk0x334);
 
 		for (i = 0; i < m_unk0x334; i++) {
-			m_unk0x010[i].Parse(p_renderer, p_golExport, parser, this);
+			m_unk0x010[i].Parse(p_materialAnimation, p_renderer, parser, this);
 		}
 	}
 
@@ -230,15 +232,140 @@ CrimsonPebbleAnimation0x33c::Runtime0x44::~Runtime0x44()
 	STUB(0x0048a0a0);
 }
 
-// STUB: LEGORACERS 0x0048a130
+// FUNCTION: LEGORACERS 0x0048a0b0
+void CrimsonPebbleAnimation0x33c::Runtime0x44::Clear()
+{
+	if (m_unk0x00) {
+		delete[] m_unk0x00;
+		m_unk0x00 = NULL;
+	}
+
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0048a0e0
+void CrimsonPebbleAnimation0x33c::Runtime0x44::Reset()
+{
+	m_unk0x00 = NULL;
+	m_unk0x04 = 0;
+	m_unk0x38 = 0;
+	m_materialAnimation = NULL;
+	m_unk0x40 = NULL;
+	m_unk0x14 = 0;
+	m_unk0x18 = 0;
+	m_unk0x1c = 1.0f;
+	m_unk0x20 = 1.0f;
+	m_unk0x24 = 0.0f;
+	m_unk0x28 = 0.0f;
+	m_unk0x08 = 0.0f;
+	m_unk0x0c = 0.0f;
+	m_unk0x10 = 0.0f;
+	m_unk0x2c = 0.0f;
+	m_unk0x30 = 0;
+	m_unk0x19 = 0;
+	m_unk0x34 = -1;
+}
+
+// FUNCTION: LEGORACERS 0x0048a130
 void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
-	BronzeFalcon0xc8770* p_param1,
-	GolExport* p_param2,
-	GolFileParser* p_param3,
+	MabMaterialAnimation0x14* p_materialAnimation,
+	BronzeFalcon0xc8770* p_renderer,
+	GolFileParser* p_parser,
 	CrimsonPebbleAnimation0x33c* p_param4
 )
 {
-	STUB(0x0048a130);
+	if (m_unk0x00) {
+		Clear();
+	}
+
+	LegoU32 i;
+
+	m_unk0x38 = 0;
+	m_unk0x40 = 0;
+	m_materialAnimation = p_materialAnimation;
+
+	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+
+	LegoChar name[8];
+	strncpy(name, p_parser->ReadStringWithMaxLength(8), 8);
+
+	p_param4->AddName(name, this);
+	p_parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case GolFileParser::e_unknown0x28:
+			m_unk0x14 = (LegoS32) (g_floatConst1000 / p_parser->ReadFloat());
+			break;
+		case GolFileParser::e_unknown0x29:
+			m_unk0x18 = (LegoS32) (p_parser->ReadFloat() * g_floatConst256);
+			break;
+		case GolFileParser::e_unknown0x35:
+			m_unk0x19 = (LegoS8) p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x2c:
+			m_unk0x1c = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x2d:
+			m_unk0x20 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x31:
+			m_unk0x24 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x32:
+			m_unk0x28 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x33:
+			m_unk0x2c = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x2f:
+			m_unk0x30 = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x30:
+			m_unk0x34 = p_parser->ReadInteger();
+			break;
+		case GolFileParser::e_unknown0x2a:
+			m_unk0x08 = p_parser->ReadFloat();
+			m_unk0x0c = p_parser->ReadFloat();
+			m_unk0x10 = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x2e:
+			i = p_parser->ReadInteger();
+			m_unk0x38 = &p_materialAnimation->GetUnk0x0c()[i];
+			break;
+		case GolFileParser::e_unknown0x34: {
+			LegoChar materialName[8];
+			strncpy(materialName, p_parser->ReadStringWithMaxLength(8), 8);
+			m_unk0x40 = p_renderer->FindMaterialByName(materialName);
+			break;
+		}
+		case GolFileParser::e_unknown0x2b:
+			p_parser->ReadLeftBracket();
+			m_unk0x04 = p_parser->ReadInteger();
+			p_parser->ReadRightBracket();
+
+			m_unk0x00 = new ListTypeAt0x00[m_unk0x04];
+
+			if (!m_unk0x00) {
+				GolFatalError(c_golErrorOutOfMemory, (char*) 0x0, 0);
+			}
+			p_parser->ReadLeftCurly();
+
+			for (i = 0; i < m_unk0x04; i++) {
+				m_unk0x00[i].m_unk0x00 = p_parser->ReadFloat();
+				m_unk0x00[i].m_unk0x04 = p_parser->ReadFloat();
+				m_unk0x00[i].m_unk0x08 = p_parser->ReadFloat();
+			}
+
+			p_parser->ReadRightCurly();
+			break;
+		default:
+			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+		}
+		token = p_parser->GetNextToken();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0049fd70

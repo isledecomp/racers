@@ -1,5 +1,7 @@
 #include "particle0x18c.h"
 
+#include "gol.h"
+
 DECOMP_SIZE_ASSERT(Particle0x18c, 0x18c)
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
@@ -17,6 +19,12 @@ Particle0x18c::Particle0x18c()
 Particle0x18c::~Particle0x18c()
 {
 	STUB(0x00489440);
+}
+
+// STUB: LEGORACERS 0x00489520
+void Particle0x18c::FUN_00489520(LegoU32 p_param1, GolExport* p_param2)
+{
+	STUB(0x00489540);
 }
 
 // STUB: LEGORACERS 0x00489540

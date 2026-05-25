@@ -430,6 +430,13 @@ public:
 		Runtime0x44();
 		~Runtime0x44();
 
+		void Parse(
+			BronzeFalcon0xc8770* p_param1,
+			GolExport* p_param2,
+			GolFileParser* p_param3,
+			CrimsonPebbleAnimation0x33c* p_param4
+		);
+
 	private:
 		undefined m_unk0x00[0x44]; // 0x00
 	};
@@ -449,18 +456,18 @@ public:
 		BronzeFalcon0xc8770* p_renderer,
 		MabMaterialAnimation0x14* p_materialAnimation,
 		const LegoChar* p_fileName,
-		undefined4 p_binary
+		LegoBool32 p_binary
 	);
 
 	// SYNTHETIC: LEGORACERS 0x004a1180
 	// CrimsonPebbleAnimation0x33c::`vector deleting destructor'
 
 private:
-	Particle0x18c* m_unk0x00c; // 0x00c
-	Runtime0x44* m_unk0x010;   // 0x010
-	Entry0x8 m_unk0x014[100];  // 0x014
-	LegoU32 m_unk0x334;        // 0x334
-	LegoU32 m_unk0x338;        // 0x338
+	Particle0x18c* m_particles; // 0x00c
+	Runtime0x44* m_unk0x010;    // 0x010
+	Entry0x8 m_unk0x014[100];   // 0x014
+	LegoU32 m_unk0x334;         // 0x334
+	LegoU32 m_numParticles;     // 0x338
 };
 
 // VTABLE: LEGORACERS 0x004b4970

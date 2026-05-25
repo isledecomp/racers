@@ -75,10 +75,10 @@ CrimsonPebbleAnimation0x33c::Entry0x8::~Entry0x8()
 // FUNCTION: LEGORACERS 0x00489990
 CrimsonPebbleAnimation0x33c::CrimsonPebbleAnimation0x33c()
 {
-	m_unk0x00c = NULL;
+	m_particles = NULL;
 	m_unk0x010 = NULL;
 	m_unk0x334 = 0;
-	m_unk0x338 = 0;
+	m_numParticles = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00489a00
@@ -99,26 +99,79 @@ void CrimsonPebbleAnimation0x33c::Clear()
 		m_unk0x010 = NULL;
 	}
 
-	if (m_unk0x00c != NULL) {
-		delete[] m_unk0x00c;
-		m_unk0x00c = NULL;
+	if (m_particles != NULL) {
+		delete[] m_particles;
+		m_particles = NULL;
 	}
 
 	m_unk0x334 = 0;
-	m_unk0x338 = 0;
+	m_numParticles = 0;
 }
 
-// STUB: LEGORACERS 0x00489af0
+// FUNCTION: LEGORACERS 0x00489af0
 void CrimsonPebbleAnimation0x33c::FUN_00489af0(
-	LegoU32,
-	GolExport*,
-	BronzeFalcon0xc8770*,
-	MabMaterialAnimation0x14*,
-	const LegoChar*,
-	undefined4
+	LegoU32 p_numParticles,
+	GolExport* p_golExport,
+	BronzeFalcon0xc8770* p_renderer,
+	MabMaterialAnimation0x14* p_materialAnimation,
+	const LegoChar* p_fileName,
+	LegoBool32 p_binary
 )
 {
-	STUB(0x00489af0);
+	LegoU32 i;
+	GolFileParser* parser;
+
+	if (m_unk0x010) {
+		Clear();
+	}
+
+	m_numParticles = p_numParticles;
+	m_particles = new Particle0x18c[p_numParticles];
+	if (!m_particles) {
+		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+	}
+
+	if (p_binary) {
+		parser = new GolBinParser();
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+		parser->SetSuffix(".emb");
+	}
+	else {
+		parser = new GolTxtParser3();
+		if (!parser) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+	}
+
+	parser->OpenFileForRead(p_fileName);
+	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+
+	m_unk0x334 = parser->ReadBracketedCountAndLeftCurly();
+
+	if (m_unk0x334) {
+		m_unk0x010 = new Runtime0x44[m_unk0x334];
+
+		if (!m_unk0x010) {
+			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+		}
+
+		GolNameTable::Allocate(m_unk0x334);
+
+		for (i = 0; i < m_unk0x334; i++) {
+			m_unk0x010[i].Parse(p_renderer, p_golExport, parser, this);
+		}
+	}
+
+	parser->ReadRightCurly();
+
+	parser->Dispose();
+	delete parser;
+
+	for (i = 0; i < m_numParticles; i++) {
+		m_particles[i].FUN_00489520(p_numParticles, p_golExport);
+	}
 }
 
 // STUB: LEGORACERS 0x00489d70
@@ -138,9 +191,9 @@ Particle0x18c** CrimsonPebbleAnimation0x33c::FUN_00489d70(
 // FUNCTION: LEGORACERS 0x00489fa0
 void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 {
-	for (LegoU32 i = 0; i < m_unk0x338; i++) {
-		if (m_unk0x00c[i].GetFlags() & 0x02) {
-			m_unk0x00c[i].FUN_004897e0(p_elapsedMs);
+	for (LegoU32 i = 0; i < m_numParticles; i++) {
+		if (m_particles[i].GetFlags() & 0x02) {
+			m_particles[i].FUN_004897e0(p_elapsedMs);
 		}
 	}
 }
@@ -148,9 +201,9 @@ void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00489ff0
 void CrimsonPebbleAnimation0x33c::FUN_00489ff0(BronzeFalcon0xc8770* p_renderer)
 {
-	for (LegoU32 i = 0; i < m_unk0x338; i++) {
-		if (m_unk0x00c[i].GetFlags() & 0x02) {
-			m_unk0x00c[i].FUN_004513d0(p_renderer);
+	for (LegoU32 i = 0; i < m_numParticles; i++) {
+		if (m_particles[i].GetFlags() & 0x02) {
+			m_particles[i].FUN_004513d0(p_renderer);
 		}
 	}
 }
@@ -158,9 +211,9 @@ void CrimsonPebbleAnimation0x33c::FUN_00489ff0(BronzeFalcon0xc8770* p_renderer)
 // FUNCTION: LEGORACERS 0x0048a040
 void CrimsonPebbleAnimation0x33c::FUN_0048a040(BronzeFalcon0xc8770* p_renderer)
 {
-	for (LegoU32 i = 0; i < m_unk0x338; i++) {
-		if (m_unk0x00c[i].GetFlags() & 0x02) {
-			m_unk0x00c[i].FUN_00489960(p_renderer);
+	for (LegoU32 i = 0; i < m_numParticles; i++) {
+		if (m_particles[i].GetFlags() & 0x02) {
+			m_particles[i].FUN_00489960(p_renderer);
 		}
 	}
 }
@@ -175,6 +228,17 @@ CrimsonPebbleAnimation0x33c::Runtime0x44::Runtime0x44()
 CrimsonPebbleAnimation0x33c::Runtime0x44::~Runtime0x44()
 {
 	STUB(0x0048a0a0);
+}
+
+// STUB: LEGORACERS 0x0048a130
+void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
+	BronzeFalcon0xc8770* p_param1,
+	GolExport* p_param2,
+	GolFileParser* p_param3,
+	CrimsonPebbleAnimation0x33c* p_param4
+)
+{
+	STUB(0x0048a130);
 }
 
 // FUNCTION: LEGORACERS 0x0049fd70

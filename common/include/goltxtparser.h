@@ -45,7 +45,13 @@ protected:
 // VTABLE: LEGORACERS 0x004b49d4
 // SIZE 0x1fc
 class GolTxtParser2 : public GolTxtParser {
-	// It is not clear at this point why this class exists twice. The VTable is identical.
+	// It is not clear at this point why this class exists multiple times. The VTable is identical.
+};
+
+// VTABLE: LEGORACERS 0x004b4048
+// SIZE 0x1fc
+class GolTxtParser3 : public GolTxtParser {
+	// It is not clear at this point why this class exists multiple times. The VTable is identical.
 };
 
 #endif // GOLTXTPARSER_H

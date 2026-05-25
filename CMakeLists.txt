@@ -106,6 +106,7 @@ set(COMMON_SOURCES
   common/src/cmbmodelpartdata0x18.cpp
   common/src/cmbmodelpartdata0x28.cpp
   common/src/mabmaterialanimation0x14.cpp
+  common/src/materialtable0x0c.cpp
   common/src/floatypontoon0x4cfield0x2c.cpp
   common/src/floatyboat0x28.cpp
   common/src/floatybuoy0x58.cpp

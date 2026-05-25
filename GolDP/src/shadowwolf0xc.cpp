@@ -3,6 +3,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golname.h"
 #include "igdbmodel0x40.h"
 #include "whitefalcon0x140.h"
 

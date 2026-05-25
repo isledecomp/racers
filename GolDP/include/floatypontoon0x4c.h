@@ -26,9 +26,6 @@ public:
 
 		void Initialize(WhiteFalcon0x140* p_renderer, LegoU32 p_count);
 		void Clear();
-		LegoS32 FindEntryIndexByName(const LegoChar* p_name) const;
-		void* AssignEntryByName(LegoS32 p_index, const LegoChar* p_name);
-		void SetPosition(LegoU32 p_index, void* p_position);
 	};
 
 	FloatyPontoon0x4c();

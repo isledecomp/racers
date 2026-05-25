@@ -3,6 +3,7 @@
 #include "amberhaze0x20.h"
 #include "amberlens0x344.h"
 #include "boundingshape0x2c.h"
+#include "bronzefalcon0xc8770.h"
 #include "cmbmodelpart0x34.h"
 #include "floatybarge0x4c.h"
 #include "gdbmodel0x48.h"
@@ -12,7 +13,16 @@
 #include "purpleribbon0x24.h"
 #include "shadowwolf0xc.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(FluffyGloomkins0x118, 0x118)
+
+inline static void BuildResourceFileName(LegoChar* p_dest, const LegoChar* p_name, const LegoChar* p_suffix)
+{
+	::memcpy(p_dest, p_name, sizeof(GolName));
+	p_dest[sizeof(GolName)] = '\0';
+	::strcat(p_dest, p_suffix);
+}
 
 // FUNCTION: GOLDP 0x10017190
 FluffyGloomkins0x118::FluffyGloomkins0x118()
@@ -172,8 +182,59 @@ void FluffyGloomkins0x118::VTable0x08()
 // STUB: GOLDP 0x10017ac0
 undefined4* FluffyGloomkins0x118::VTable0x0c()
 {
-	// TODO
 	STUB(0x10017ac0);
+
+	LegoU32 i;
+	BronzeFalcon0xc8770* textureRenderer = static_cast<BronzeFalcon0xc8770*>(m_unk0x04);
+
+	for (i = 0; i < m_unk0x0c; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x10[i], ".tdf");
+		VTable0x2c(i)->VTable0x24(textureRenderer, fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x14; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x18[i], ".mdf");
+		VTable0x30(i)->VTable0x24(m_unk0x04, fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x1c; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x20[i], ".adf");
+		VTable0x34(i)->VTable0x14(fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x24; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x28[i], ".gdf");
+		VTable0x38(i)->VTable0x1c(m_unk0x04, fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x2c; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x30[i], ".gdf");
+		VTable0x3c(i)->FUN_10025e60(m_unk0x04, fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x34; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x38[i], ".sdf");
+		VTable0x40(i)->VTable0x14(fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x3c; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x40[i], ".bdf");
+		VTable0x44(i)->Deserialize(fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x74; i++) {
+		LegoChar fileName[sizeof(GolName) + 5];
+		BuildResourceFileName(fileName, m_unk0x78[i], ".maf");
+		VTable0x4c(i)->VTable0x04(m_unk0x04, fileName, m_binary);
+	}
+
 	return NULL;
 }
 
@@ -227,27 +288,23 @@ void FluffyGloomkins0x118::VTable0x18()
 // STUB: GOLDP 0x100181b0
 void FluffyGloomkins0x118::VTable0x1c(WhiteFalcon0x140*)
 {
-	// TODO
 	STUB(0x100181b0);
 }
 
 // STUB: GOLDP 0x100181f0
 void FluffyGloomkins0x118::VTable0x20(WhiteFalcon0x140*)
 {
-	// TODO
 	STUB(0x100181f0);
 }
 
 // STUB: GOLDP 0x10018230
 void FluffyGloomkins0x118::VTable0x24(WhiteFalcon0x140*)
 {
-	// TODO
 	STUB(0x10018230);
 }
 
 // STUB: GOLDP 0x10018270
 void FluffyGloomkins0x118::VTable0x28(WhiteFalcon0x140*)
 {
-	// TODO
 	STUB(0x10018270);
 }

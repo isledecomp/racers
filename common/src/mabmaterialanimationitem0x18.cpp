@@ -65,7 +65,7 @@ void MabMaterialAnimationItem0x18::Reset()
 
 // FUNCTION: GOLDP 0x10025da0
 // FUNCTION: LEGORACERS 0x00410430
-void MabMaterialAnimationItem0x18::FUN_10025da0(FloatyPontoon0x4c::Field0x2c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3)
+void MabMaterialAnimationItem0x18::FUN_10025da0(MaterialTable0x0c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3)
 {
 	m_unk0x00 = p_arg1;
 	m_unk0x04 = p_arg2;

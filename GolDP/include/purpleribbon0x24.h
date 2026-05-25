@@ -22,7 +22,7 @@ public:
 		LegoU32 p_width,
 		LegoU32 p_height
 	) override;
-	GoldDune0x38* GetItem(LegoU32 p_index) override; // vtable+0x28
+	PurpleDune0x7c* GetItem(LegoU32 p_index) override; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100177c0
 	// PurpleRibbon0x24::`vector deleting destructor'

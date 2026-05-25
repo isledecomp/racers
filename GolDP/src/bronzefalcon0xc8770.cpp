@@ -5,6 +5,7 @@
 #include "falcondunebag0x10.h"
 #include "floatycanoe0x90.h"
 #include "floatypontoon0x4c.h"
+#include "gdbmodel0x48.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golddune0x38.h"
@@ -13,6 +14,7 @@
 #include "golfontbase0x40.h"
 #include "golmath.h"
 #include "golsurfaceformat.h"
+#include "greyfalconnode0x1c.h"
 #include "igdbmodel0x40.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
@@ -645,154 +647,72 @@ void BronzeFalcon0xc8770::VTable0x5c()
 	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
 }
 
-// STUB: GOLDP 0x10008910
+// FUNCTION: GOLDP 0x10008880
+void BronzeFalcon0xc8770::FUN_10008880(FloatyBoat0x28* p_model, LegoU32 p_lodIndex)
+{
+	FloatyCanoe0x90* canoe = static_cast<FloatyCanoe0x90*>(p_model);
+	m_unk0xc8520 = canoe->VTable0x58(p_lodIndex);
+	if (m_unk0xc8520 != NULL) {
+		canoe->VTable0x5c(p_lodIndex);
+		if (m_unk0xc83e4) {
+			static_cast<GreyFalconNode0x1c*>(m_unk0xc8520)->FUN_10014a60(m_unk0xc8498[0], m_unk0xc8410, *m_unk0xc8490);
+		}
+		else {
+			static_cast<GreyFalconNode0x1c*>(m_unk0xc8520)->FUN_10014a60(m_unk0xc84d8, m_unk0xc8410, *m_unk0xc8494);
+		}
+
+		if (m_unk0xc8568) {
+			m_unk0xc8520->VTable0x20(m_unk0xc8450);
+		}
+	}
+}
+
+// FUNCTION: GOLDP 0x10008910
 void BronzeFalcon0xc8770::VTable0x94(FloatyBoat0x28* p_model)
 {
-	STUB(0x10008910);
-
 	FloatyBoat0x28::ResultStruct result;
 	p_model->VTable0x14(m_unk0x4c, &result);
-	if (!result.m_visibility || m_unk0xc8494 == NULL) {
+	if (!result.m_visibility) {
 		return;
 	}
 
+	GolMatrix4* modelMatrix = &m_unk0xc8410;
 	FloatyCanoe0x90* canoe = static_cast<FloatyCanoe0x90*>(p_model);
-	LegoU32 lodIndex = result.m_lodIndex;
-	IGdbModel0x40* model = canoe->GetModel(lodIndex);
-	if (model == NULL) {
-		return;
+	canoe->FUN_10027e70(modelMatrix, result.m_lodIndex);
+
+	const GolVec3& position = canoe->GetPosition();
+	modelMatrix->m_m[3][0] = position.m_x;
+	modelMatrix->m_m[3][1] = position.m_y;
+	modelMatrix->m_m[3][2] = position.m_z;
+
+	if (result.m_visibility == 1) {
+		m_unk0xc83e4 = TRUE;
+		m_unk0xc8518 = m_unk0xc8498;
+		FUN_10012f50();
+		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+	}
+	else {
+		m_unk0xc83e4 = FALSE;
+		m_unk0xc8518 = &m_unk0xc84d8;
+		FUN_10012f50();
+		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
-	GdbVertexArray0xc* vertexArray;
-	model->VTable0x28(&vertexArray);
-	if (vertexArray == NULL) {
-		return;
+	GdbModel0x48* model = static_cast<GdbModel0x48*>(canoe->GetModel(result.m_lodIndex));
+	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	LegoU16 vertexType = vertexArray->GetVertexType();
+	if (m_unk0xc8568 != (vertexType == 2 || vertexType == 3)) {
+		m_unk0xc8568 = (vertexType == 2 || vertexType == 3);
+		FUN_10012f50();
 	}
 
-	IGdbModelIndexArray0x8* indexArrayBase;
-	model->VTable0x30(&indexArrayBase);
-	if (indexArrayBase == NULL) {
-		return;
+	if (m_unk0xc8568) {
+		FUN_1000add0(p_model, model);
 	}
 
-	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
-	const GdbModelIndexArray0xc::Indices* triangles = indexArray->GetIndices();
-	if (triangles == NULL) {
-		return;
-	}
-
-	GolMatrix4 modelMatrix;
-	canoe->FUN_10027e70(&modelMatrix, lodIndex);
-	GolVec3 position;
-	p_model->VTable0x04(&position);
-	modelMatrix.m_m[3][0] = position.m_x;
-	modelMatrix.m_m[3][1] = position.m_y;
-	modelMatrix.m_m[3][2] = position.m_z;
-	modelMatrix.m_m[3][3] = 1.0f;
-
-	GolMatrix4 screenMatrix;
-	GolMath::FUN_1002f3a0(modelMatrix, *m_unk0xc8494, &screenMatrix);
-
-	ShadowWolf0xc* materialTable = canoe->GetMaterialTable(lodIndex);
-	if (materialTable == NULL) {
-		materialTable = model->GetMaterialTable();
-	}
-
-	DuskwindBananaRelic0x24* material = NULL;
-	const LegoU32* groups = model->GetGroups();
-	const LegoU32 groupCount = model->GetGroupCount();
-	const LegoU32 triangleTotal = indexArray->GetCount();
-
-	for (LegoU32 groupIndex = 0; groupIndex < groupCount; groupIndex++) {
-		LegoU32 command = groups[groupIndex];
-		LegoU32 commandType = command & 0xe0000000;
-
-		if (commandType == 0xc0000000) {
-			return;
-		}
-
-		if (commandType == 0x80000000) {
-			LegoU32 materialIndex = command & 0xffff;
-			if (materialTable != NULL && materialIndex < materialTable->GetCount()) {
-				material = materialTable->GetMaterial(materialIndex);
-			}
-			else {
-				material = NULL;
-			}
-			continue;
-		}
-
-		if (commandType != 0x20000000) {
-			continue;
-		}
-
-		LegoU32 firstTriangle = command & 0xffff;
-		LegoU32 triangleCount = (command >> 16) & 0x7f;
-		if (firstTriangle >= triangleTotal) {
-			continue;
-		}
-		if (firstTriangle + triangleCount > triangleTotal) {
-			triangleCount = triangleTotal - firstTriangle;
-		}
-
-		for (LegoU32 triangleIndex = 0; triangleIndex < triangleCount; triangleIndex++) {
-			const GdbModelIndexArray0xc::Indices& indices = triangles[firstTriangle + triangleIndex];
-			LegoU8 vertexIndices[3];
-			vertexIndices[0] = indices.m_a;
-			vertexIndices[1] = indices.m_b;
-			vertexIndices[2] = indices.m_c;
-
-			TexturedVertex vertices[3];
-			for (LegoU32 vertex = 0; vertex < sizeOfArray(vertices); vertex++) {
-				GolVec3 source;
-				vertexArray->VTable0x14(vertexIndices[vertex], &source);
-
-				LegoFloat x = screenMatrix.m_m[0][0] * source.m_x;
-				LegoFloat y = screenMatrix.m_m[0][1] * source.m_x;
-				LegoFloat z = screenMatrix.m_m[0][2] * source.m_x;
-				LegoFloat w = screenMatrix.m_m[0][3] * source.m_x;
-
-				x += screenMatrix.m_m[1][0] * source.m_y;
-				y += screenMatrix.m_m[1][1] * source.m_y;
-				z += screenMatrix.m_m[1][2] * source.m_y;
-				w += screenMatrix.m_m[1][3] * source.m_y;
-
-				x += screenMatrix.m_m[2][0] * source.m_z;
-				y += screenMatrix.m_m[2][1] * source.m_z;
-				z += screenMatrix.m_m[2][2] * source.m_z;
-				w += screenMatrix.m_m[2][3] * source.m_z;
-
-				x += screenMatrix.m_m[3][0];
-				y += screenMatrix.m_m[3][1];
-				z += screenMatrix.m_m[3][2];
-				w += screenMatrix.m_m[3][3];
-
-				if (w != 0.0f) {
-					LegoFloat inverseW = 1.0f / w;
-					x *= inverseW;
-					y *= inverseW;
-					z *= inverseW;
-				}
-
-				vertices[vertex].m_x = x;
-				vertices[vertex].m_y = y;
-				vertices[vertex].m_z = z;
-
-				GolVec2 uv;
-				vertexArray->VTable0x18(vertexIndices[vertex], &uv);
-				vertices[vertex].m_u = uv.m_x;
-				vertices[vertex].m_v = uv.m_y;
-
-				vertices[vertex].m_color.m_red = 0xff;
-				vertices[vertex].m_color.m_grn = 0xff;
-				vertices[vertex].m_color.m_blu = 0xff;
-				vertices[vertex].m_color.m_alp = 0xff;
-				vertexArray->VTable0x20(vertexIndices[vertex], &vertices[vertex].m_color);
-			}
-
-			DrawTriangle(&vertices[0], &vertices[1], &vertices[2], material, 0);
-		}
-	}
+	ShadowWolf0xc* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
+	FUN_10008880(p_model, result.m_lodIndex);
+	model->FUN_10006c50(this, materialTable);
 }
 
 // STUB: GOLDP 0x10008a50
@@ -952,13 +872,13 @@ void BronzeFalcon0xc8770::VTable0x1c(const ColorRGBA& p_color)
 		}
 	}
 	else {
-		float c = static_cast<float>(static_cast<double>(p_color.m_red) / 255.0);
+		LegoFloat c = static_cast<LegoFloat>(static_cast<double>(p_color.m_red) / 255.0);
 		m_materialParams.ambient.r = c;
 		m_materialParams.diffuse.r = c;
-		c = static_cast<float>(static_cast<double>(p_color.m_grn) / 255.0);
+		c = static_cast<LegoFloat>(static_cast<double>(p_color.m_grn) / 255.0);
 		m_materialParams.ambient.g = c;
 		m_materialParams.diffuse.g = c;
-		c = static_cast<float>(static_cast<double>(p_color.m_blu) / 255.0);
+		c = static_cast<LegoFloat>(static_cast<double>(p_color.m_blu) / 255.0);
 		m_materialParams.ambient.b = c;
 		m_materialParams.diffuse.b = c;
 		m_backgroundMaterial->SetMaterial(&m_materialParams);
@@ -1918,6 +1838,12 @@ void BronzeFalcon0xc8770::FUN_1000ac00(GoldDune0x38* p_texture)
 		m_d3dDevice->SetRenderState(D3DRENDERSTATE_COLORKEYENABLE, FALSE);
 		m_unk0xc83f0 = FALSE;
 	}
+}
+
+// STUB: GOLDP 0x1000add0
+void BronzeFalcon0xc8770::FUN_1000add0(FloatyBoat0x28*, GdbModel0x48*)
+{
+	STUB(0x1000add0);
 }
 
 // FUNCTION: GOLDP 0x1000aeb0

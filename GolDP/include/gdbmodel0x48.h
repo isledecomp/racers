@@ -6,6 +6,7 @@
 #include "igdbmodel0x40.h"
 
 class GdbVertexArray0xc;
+class BronzeFalcon0xc8770;
 
 // VTABLE: GOLDP 0x100563fc
 // SIZE 0x48
@@ -33,6 +34,7 @@ public:
 	) override;                                                                                          // vtable+0x18
 	void VTable0x1c(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
 	void VTable0x24() override;                                                                          // vtable+0x24
+	void FUN_10006c50(BronzeFalcon0xc8770* p_renderer, ShadowWolf0xc* p_materialTable);
 
 	// SYNTHETIC: GOLDP 0x100178e0
 	// GdbModel0x48::`vector deleting destructor'

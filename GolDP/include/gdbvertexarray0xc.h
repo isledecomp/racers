@@ -9,7 +9,8 @@ struct GolVec2;
 struct GolVec3;
 struct ColorRGBA;
 
-struct PixelFormatMod {
+// SIZE 0x20
+struct ColorTransform0x20 {
 	LegoU32 m_redShift;  // 0x00
 	LegoU32 m_grnShift;  // 0x04
 	LegoU32 m_bluShift;  // 0x08
@@ -38,11 +39,14 @@ public:
 	virtual void VTable0x28(LegoU32 p_index, const GolVec2&);          // vtable+0x28
 	virtual void VTable0x2c(LegoU32 p_index, const GolVec3&);          // vtable+0x2c
 	virtual void VTable0x30(LegoU32 p_index, const ColorRGBA&);        // vtable+0x30
-	virtual void VTable0x34(const PixelFormatMod& p_details);          // vtable+0x34
+	virtual void VTable0x34(const ColorTransform0x20& p_details);      // vtable+0x34
 	virtual void VTable0x38();                                         // vtable+0x38
 
 	// SYNTHETIC: GOLDP 0x1002be20
 	// GdbVertexArray0xc::`scalar deleting destructor'
+
+	LegoU16 GetVertexType() const { return m_unk0x06; }
+	LegoU16 GetCount() const { return m_count; }
 
 protected:
 	LegoU16 m_count;      // 0x04

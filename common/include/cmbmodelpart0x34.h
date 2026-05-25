@@ -27,16 +27,6 @@ class CmbModelPart0x34 : public GolNameTable {
 		// CmbModelPart0x34::AdbTxtParser::~AdbTxtParser
 	};
 
-	// SIZE 0x14
-	struct Data0x14 {
-		LegoU32 m_unk0x00; // 0x00
-		LegoU32 m_unk0x04; // 0x04
-		LegoU32 m_unk0x08; // 0x08
-		LegoU32 m_unk0x0c; // 0x0c
-		LegoU16 m_unk0x10; // 0x10
-		LegoU16 m_unk0x12; // 0x12
-	};
-
 public:
 	CmbModelPart0x34();
 	~CmbModelPart0x34() override;                                         // vtable+0x00
@@ -46,6 +36,9 @@ public:
 	virtual void VTable0x14(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
 
 	CmbModelPartData0x28* GetPartData() const { return m_unk0x2c; }
+	LegoU32 GetPartCount() const { return m_unk0x30; }
+	CmbModelPartData0x18& GetAnimationData() { return m_data; }
+	const CmbModelPartTrack0x14& GetTrack(LegoU32 p_index) const { return m_unk0x24[p_index]; }
 	CmbModelPartData0x28* FindPart(const LegoChar* p_name) const
 	{
 		return static_cast<CmbModelPartData0x28*>(GetName(p_name));
@@ -61,11 +54,11 @@ public:
 	// CmbModelPart0x34::`vector deleting destructor'
 
 private:
-	CmbModelPartData0x18 m_data;     // 0x0c
-	Data0x14* m_unk0x24;             // 0x24
-	LegoU32 m_unk0x28;               // 0x28
-	CmbModelPartData0x28* m_unk0x2c; // 0x2c
-	LegoU32 m_unk0x30;               // 0x30
+	CmbModelPartData0x18 m_data;      // 0x0c
+	CmbModelPartTrack0x14* m_unk0x24; // 0x24
+	LegoU32 m_unk0x28;                // 0x28
+	CmbModelPartData0x28* m_unk0x2c;  // 0x2c
+	LegoU32 m_unk0x30;                // 0x30
 };
 
 #endif // CMBMODELPART0X34_H

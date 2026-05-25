@@ -6,6 +6,7 @@
 #include "golname.h"
 
 DECOMP_SIZE_ASSERT(CmbModelPart0x34, 0x34)
+DECOMP_SIZE_ASSERT(CmbModelPartTrack0x14, 0x14)
 
 // FUNCTION: GOLDP 0x100187e0
 // FUNCTION: LEGORACERS 0x004011a0
@@ -103,19 +104,19 @@ void CmbModelPart0x34::VTable0x0c(GolFileParser& p_parser)
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x24 = new Data0x14[m_unk0x28];
+	m_unk0x24 = new CmbModelPartTrack0x14[m_unk0x28];
 	if (m_unk0x24 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 i;
 	for (i = 0; i < m_unk0x28; i++) {
-		m_unk0x24[i].m_unk0x00 = p_parser.ReadInteger();
-		m_unk0x24[i].m_unk0x04 = p_parser.ReadInteger();
-		m_unk0x24[i].m_unk0x10 = p_parser.ReadInteger();
-		m_unk0x24[i].m_unk0x08 = p_parser.ReadInteger();
-		m_unk0x24[i].m_unk0x0c = p_parser.ReadInteger();
-		m_unk0x24[i].m_unk0x12 = p_parser.ReadInteger();
+		m_unk0x24[i].m_rotationFrameIndex = p_parser.ReadInteger();
+		m_unk0x24[i].m_rotationKeyIndex = p_parser.ReadInteger();
+		m_unk0x24[i].m_rotationKeyCount = p_parser.ReadInteger();
+		m_unk0x24[i].m_positionFrameIndex = p_parser.ReadInteger();
+		m_unk0x24[i].m_positionKeyIndex = p_parser.ReadInteger();
+		m_unk0x24[i].m_positionKeyCount = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();

@@ -67,3 +67,17 @@ void CmbModelPartData0x28::FUN_10018670(GolFileParser& p_parser)
 		}
 	}
 }
+
+// FUNCTION: GOLDP 0x10018790
+// FUNCTION: LEGORACERS 0x00401150
+LegoFloat CmbModelPartData0x28::WrapTime(LegoFloat p_time) const
+{
+	LegoFloat frameCount = static_cast<LegoFloat>(m_unk0x26);
+	if (p_time >= frameCount) {
+		LegoFloat wrapCount = static_cast<LegoFloat>(static_cast<LegoS32>(p_time / frameCount));
+
+		return p_time - frameCount * wrapCount;
+	}
+
+	return p_time;
+}

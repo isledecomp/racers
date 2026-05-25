@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "floatyboat0x28.h"
+#include "materialtable0x0c.h"
 
 #include <d3d.h>
 
@@ -19,13 +20,15 @@ public:
 	};
 
 	// SIZE 0x0c
-	struct Field0x2c {
-		void SetPosition(LegoU32 p_index, void* p_position);
-		undefined4* GetPosition(LegoU32 p_index) const { return static_cast<undefined4*>(m_entries[p_index]); }
+	struct Field0x2c : public MaterialTable0x0c {
+		Field0x2c();
+		~Field0x2c();
 
-		WhiteFalcon0x140* m_renderer; // 0x00
-		LegoU32 m_count;              // 0x04
-		void** m_entries;             // 0x08
+		void Initialize(WhiteFalcon0x140* p_renderer, LegoU32 p_count);
+		void Clear();
+		LegoS32 FindEntryIndexByName(const LegoChar* p_name) const;
+		void* AssignEntryByName(LegoS32 p_index, const LegoChar* p_name);
+		void SetPosition(LegoU32 p_index, void* p_position);
 	};
 
 	FloatyPontoon0x4c();

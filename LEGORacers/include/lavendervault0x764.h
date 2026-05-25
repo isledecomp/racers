@@ -44,6 +44,16 @@ public:
 	void FUN_00499070(LegoS32 p_index, LegoChar* p_buffer) const;
 	void CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const;
 	void BuildFaceExpressionName(LegoS32 p_faceIndex, LegoS32 p_expressionIndex, LegoChar* p_buffer) const;
+	LegoS32 GetFaceCount() const { return m_countFaces; }
+	LegoS32 GetTorsoVariant(LegoS32 p_index) const { return m_unk0x344[p_index]; }
+	LegoS32 GetLegVariant(LegoS32 p_index) const { return m_unk0x4dc[p_index]; }
+	LegoS32 GetTorsoLegIndex(LegoS32 p_torsoIndex, LegoS32 p_legIndex) const
+	{
+		return GetTorsoVariant(p_torsoIndex) + 2 * GetLegVariant(p_legIndex);
+	}
+	LegoS32 GetHatCount() const { return m_countHats; }
+	const LegoChar* GetBodyModelFileName(LegoS32 p_index) const { return &m_unk0x6e7[p_index * 13]; }
+	const LegoChar* GetBodyModelDirectory(LegoS32 p_index) const { return &m_unk0x701[p_index * 32]; }
 
 private:
 	LegoBool32 m_loaded;                 // 0x000

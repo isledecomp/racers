@@ -24,7 +24,7 @@ public:
 	void VTable0x14(const WhiteFalconView0xcc& p_view, ResultStruct* p_result) override; // vtable+0x14
 	void VTable0x1c(WhiteFalcon0x140& p_renderer) override;                              // vtable+0x1c
 	LegoBool32 VTable0x20() override;                                                    // vtable+0x20
-	void VTable0x24(TransformPayload0x20* p_transform) override;                         // vtable+0x24
+	void VTable0x24(ColorTransform0x20* p_transform) override;                           // vtable+0x24
 	void VTable0x28() override;                                                          // vtable+0x28
 	virtual void VTable0x4c(LegoU32 p_index);                                            // vtable+0x4c
 	virtual void VTable0x50(IGdbModel0x40* p_model, LegoFloat p_modelDistance);          // vtable+0x50

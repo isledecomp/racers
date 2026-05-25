@@ -429,7 +429,7 @@ void IGdbModel0x40::VTable0x38(GolVec3* p_center, LegoFloat* p_radius, LegoFloat
 }
 
 // FUNCTION: GOLDP 0x10027b30
-void IGdbModel0x40::VTable0x3c(const PixelFormatMod& p_details)
+void IGdbModel0x40::VTable0x3c(const ColorTransform0x20& p_details)
 {
 	m_unk0x10->VTable0x34(p_details);
 }

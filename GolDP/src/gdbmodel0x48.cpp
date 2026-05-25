@@ -141,3 +141,9 @@ void GdbModel0x48::VTable0x14(GolFileParser& p_parser)
 
 	m_unk0x40->VTable0x08(p_parser);
 }
+
+// STUB: GOLDP 0x10006c50
+void GdbModel0x48::FUN_10006c50(BronzeFalcon0xc8770*, ShadowWolf0xc*)
+{
+	STUB(0x10006c50);
+}

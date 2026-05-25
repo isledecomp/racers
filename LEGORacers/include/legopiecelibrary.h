@@ -4,14 +4,43 @@
 #include "decomp.h"
 #include "types.h"
 
+class GolFileParser;
+
 // SIZE 0x3c
 class LegoPieceLibrary {
 public:
+	// SIZE 0x02
+	struct ShapeCell {
+		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);
+
+		LegoU8 m_first;  // 0x00
+		LegoU8 m_second; // 0x01
+	};
+
 	// SIZE 0x1c
 	struct PieceRecord {
 		~PieceRecord();
 
-		undefined m_unk0x00[0x1c - 0x00]; // 0x00
+		LegoS32 SetName(const LegoChar* p_name);
+		LegoS32 GetWidth() const;
+		LegoS32 GetHeight() const;
+		LegoS32 GetMaxCellValue() const;
+		LegoS32 CompareName(const LegoChar* p_name) const;
+		PieceRecord* GetVariant(LegoS32 p_variant);
+		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation) const
+		{
+			return m_shapeData->GetCell(p_x, p_y, p_orientation);
+		}
+
+		LegoPieceLibrary* m_library; // 0x00
+		LegoChar m_name[9];          // 0x04
+		LegoU8 m_variantIndex;       // 0x0d
+		LegoU8 m_variantCount;       // 0x0e
+		undefined m_padding0x0f;     // 0x0f
+		ShapeCell* m_shapeData;      // 0x10
+		LegoU16 m_pieceType;         // 0x14
+		LegoU16 m_baseOffset;        // 0x16
+		LegoU32 m_unk0x18;           // 0x18
 	};
 
 	// SIZE 0x06
@@ -30,8 +59,12 @@ public:
 	LegoPieceLibrary();
 	~LegoPieceLibrary();
 
+	static LegoS32 ReadBracketedCountAndLeftCurly(GolFileParser* p_parser);
+
 	void Destroy();
 	void FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
+	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant) const;
+	PieceRecord* FindPieceRecordByName(const LegoChar* p_name) const;
 
 private:
 	void DestroyData();
@@ -40,18 +73,18 @@ private:
 	LegoPieceLibrary* m_next;                // 0x00
 	LegoS32 m_pieceCount;                    // 0x04
 	PieceRecord* m_pieces;                   // 0x08
-	LegoS32 m_unk0x0c;                       // 0x0c
-	LegoU8* m_unk0x10;                       // 0x10
-	LegoS32 m_unk0x14;                       // 0x14
-	LegoU16* m_unk0x18;                      // 0x18
+	LegoS32 m_shapeDataPairCount;            // 0x0c
+	ShapeCell* m_shapeData;                  // 0x10
+	LegoS32 m_indexCount;                    // 0x14
+	LegoU16* m_indices;                      // 0x18
 	LegoS32 m_colorCount;                    // 0x1c
 	Color* m_colors;                         // 0x20
-	LegoS32 m_unk0x24;                       // 0x24
-	LegoU8* m_unk0x28;                       // 0x28
+	LegoS32 m_colorTripleCount;              // 0x24
+	LegoU8* m_colorTriples;                  // 0x28
 	LegoS32 m_textureCoordinateCount;        // 0x2c
 	TextureCoordinate* m_textureCoordinates; // 0x30
-	LegoS32 m_unk0x34;                       // 0x34
-	LegoS32 m_unk0x38;                       // 0x38
+	LegoS32 m_maxHighPieceOffset;            // 0x34
+	LegoS32 m_maxLowPieceOffset;             // 0x38
 };
 
 #endif // LEGOPIECELIBRARY_H

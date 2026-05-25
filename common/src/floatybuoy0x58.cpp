@@ -248,7 +248,7 @@ void FloatyBuoy0x58::FUN_10026f70(const GolVec3& p_v)
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED
 // FUNCTION: LEGORACERS 0x00410f10
-void FloatyBuoy0x58::FUN_10026fa0(float p_scalar)
+void FloatyBuoy0x58::FUN_10026fa0(LegoFloat p_scalar)
 {
 	m_radius = p_scalar;
 	m_minX = m_center.m_x - p_scalar;
@@ -256,7 +256,7 @@ void FloatyBuoy0x58::FUN_10026fa0(float p_scalar)
 }
 
 // FUNCTION: GOLDP 0x10026fc0
-void FloatyBuoy0x58::FUN_10026fc0(GolMatrix4* p_dest, float p_scale) const
+void FloatyBuoy0x58::FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const
 {
 	LegoFloat value = m_orientation.m_m[0][0];
 	p_dest->m_m[0][0] = value * p_scale;

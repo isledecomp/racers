@@ -278,11 +278,16 @@ void FloatyCanoe0x90::VTable0x1c(WhiteFalcon0x140& p_renderer)
 	p_renderer.VTable0x94(this);
 }
 
-// STUB: GOLDP 0x100280c0
-void FloatyCanoe0x90::VTable0x24(TransformPayload0x20*)
+// FUNCTION: GOLDP 0x100280c0
+void FloatyCanoe0x90::VTable0x24(ColorTransform0x20* p_transform)
 {
-	// TODO
-	STUB(0x100280c0);
+	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
+		IGdbModel0x40* model = m_models[i];
+		if (model == NULL) {
+			break;
+		}
+		model->VTable0x3c(*p_transform);
+	}
 }
 
 // FUNCTION: GOLDP 0x100280f0

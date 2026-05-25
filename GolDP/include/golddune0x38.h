@@ -37,6 +37,7 @@ public:
 
 	LegoU16 GetUnk0x34() const { return m_unk0x34; }
 	LegoU16 GetUnk0x36() const { return m_unk0x36; }
+	void SetTextureFlags(LegoU16 p_flags) { m_unk0x36 = p_flags; }
 	void SetTextureDefinition(LegoU16 p_unk0x34, LegoU16 p_unk0x36, const ColorRGBA& p_colorKey)
 	{
 		m_unk0x34 = p_unk0x34;

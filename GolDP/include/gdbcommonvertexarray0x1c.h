@@ -11,7 +11,7 @@ public:
 	GdbCommonVertexArray0x1c();
 	~GdbCommonVertexArray0x1c() override; // vtable+0x00
 	void VTable0x0c() override;
-	void VTable0x34(const PixelFormatMod& p_details) override;
+	void VTable0x34(const ColorTransform0x20& p_details) override;
 	void VTable0x38() override;
 
 	// SYNTHETIC: GOLDP 0x10016f40

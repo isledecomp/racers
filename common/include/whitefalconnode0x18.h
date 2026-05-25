@@ -19,7 +19,7 @@ public:
 	void Allocate(LegoU32 p_capacity) override;                           // vtable+0x04
 	void Clear() override;                                                // vtable+0x08
 	virtual void VTable0x0c() = 0;                                        // vtable+0x0c
-	virtual void VTable0x10(undefined4 p_param);                          // vtable+0x10
+	virtual void VTable0x10(WhiteFalconNode0x18* p_node);                 // vtable+0x10
 	virtual void VTable0x14(const LegoChar* p_name, LegoBool32 p_binary); // vtable+0x14
 	virtual JadeOrbitBase0x10* VTable0x18(LegoU32 p_index) const = 0;     // vtable+0x18
 	virtual LegoU32 VTable0x1c(const JadeOrbitBase0x10&) const;           // vtable+0x1c
@@ -32,6 +32,16 @@ public:
 	// WhiteFalconNode0x18::`scalar deleting destructor'
 
 	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
+	LegoU32 GetUpdateSerial() const { return m_unk0x0c; }
+	LegoU32 GetCapacity() const { return m_capacity; }
+	LegoU32 AdvanceUpdateSerial()
+	{
+		m_unk0x0c++;
+		if (m_unk0x0c == static_cast<LegoU32>(-1)) {
+			m_unk0x0c = 0;
+		}
+		return m_unk0x0c;
+	}
 
 protected:
 	// VTABLE: GOLDP 0x10057484

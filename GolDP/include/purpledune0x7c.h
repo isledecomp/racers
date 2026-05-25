@@ -3,10 +3,12 @@
 
 #include "bronzedunebag0xc.h"
 #include "golddune0x38.h"
+#include "golname.h"
 #include "golsurfaceformat.h"
 
 #include <d3d.h>
 #include <ddraw.h>
+#include <string.h>
 
 class IPalette0x4;
 class GolCommonDrawState;
@@ -47,10 +49,12 @@ public:
 	void FUN_100168c0(BronzeFalcon0xc8770& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
-	void SetUnk0x38(undefined4 p_unk0x38, undefined4 p_unk0x3c)
+	void SetName(const GolName& p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
+	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
+	void CopyNameToBuffer(LegoChar* p_buffer) const
 	{
-		m_unk0x38 = p_unk0x38;
-		m_unk0x3c = p_unk0x3c;
+		::memcpy(p_buffer, m_name, sizeof(m_name));
+		p_buffer[sizeof(m_name)] = '\0';
 	}
 
 	// SYNTHETIC: GOLDP 0x10004aa0
@@ -70,8 +74,7 @@ private:
 		LegoU16* m_paletteData; // 0x14
 	};
 
-	undefined4 m_unk0x38;              // 0x38
-	undefined4 m_unk0x3c;              // 0x3c
+	GolName m_name;                    // 0x38
 	IPalette0x4* m_palette;            // 0x40
 	MipmapLevel* m_mipmaps;            // 0x44
 	LPDIRECTDRAWSURFACE4 m_surface;    // 0x48

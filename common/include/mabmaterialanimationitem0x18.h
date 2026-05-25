@@ -2,7 +2,7 @@
 #define MABMATERIALANIMATIONITEM0X18_H
 
 #include "decomp.h"
-#include "floatypontoon0x4c.h"
+#include "materialtable0x0c.h"
 #include "types.h"
 
 class MabMaterialAnimationItem0x8;
@@ -20,7 +20,7 @@ public:
 	MabMaterialAnimationItem0x18();
 
 	void FUN_10025d40(undefined2, undefined2, undefined2, LegoS32);
-	void FUN_10025da0(FloatyPontoon0x4c::Field0x2c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3);
+	void FUN_10025da0(MaterialTable0x0c* p_arg1, LegoU32 p_arg2, LegoBool32 p_arg3);
 	void FUN_004103c0(const MabMaterialAnimationItem0x18& p_other);
 	void Reset();
 	void FUN_00410470();
@@ -35,14 +35,14 @@ public:
 	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
 
 private:
-	FloatyPontoon0x4c::Field0x2c* m_unk0x00; // 0x00
-	LegoU16 m_unk0x04;                       // 0x04
-	LegoU16 m_unk0x06;                       // 0x06
-	LegoU16 m_unk0x08;                       // 0x08
-	LegoU16 m_unk0x0a;                       // 0x0a
-	LegoFloat m_unk0x0c;                     // 0x0c
-	LegoFloat m_unk0x10;                     // 0x10
-	LegoU32 m_flags;                         // 0x14
+	MaterialTable0x0c* m_unk0x00; // 0x00
+	LegoU16 m_unk0x04;            // 0x04
+	LegoU16 m_unk0x06;            // 0x06
+	LegoU16 m_unk0x08;            // 0x08
+	LegoU16 m_unk0x0a;            // 0x0a
+	LegoFloat m_unk0x0c;          // 0x0c
+	LegoFloat m_unk0x10;          // 0x10
+	LegoU32 m_flags;              // 0x14
 };
 
 #endif // MABMATERIALANIMATIONITEM0X18_H

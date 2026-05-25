@@ -33,12 +33,12 @@ public:
 	);
 	void FUN_0040dad0(undefined2 p_unk0x04);
 	void FUN_0040db80(
-		undefined4 p_unk0x04,
-		undefined4 p_unk0x08,
+		LegoU32 p_partIndex,
+		LegoS32 p_transitionTime,
 		LegoFloat p_unk0x0c,
-		undefined4 p_unk0x10,
-		undefined4 p_unk0x14,
-		undefined4 p_unk0x18
+		LegoBool32 p_unk0x10,
+		LegoBool32 p_unk0x14,
+		LegoBool32 p_loop
 	);
 	LegoBool32 FUN_0040e360();
 	LegoU32 GetFlags() const { return m_flags; }
@@ -49,16 +49,32 @@ public:
 private:
 	void Reset();
 	void FUN_0040d650();
+	void FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale);
+
+	enum {
+		c_flagPartAnimation = 1 << 16,
+		c_flagPartTransition = 1 << 17,
+		c_flagLoopCurrentPart = 1 << 18,
+		c_flagPartAnimationDone = 1 << 19,
+		c_flagRestartQueuedPart = 1 << 20,
+		c_flagLoopQueuedPart = 1 << 22,
+		c_flagLoopWrapped = 1 << 25,
+		c_flagsPartAnimationMask = 0x005a0000,
+	};
 
 	LegoFloat m_unk0xb8;              // 0xb8
 	LegoU16 m_unk0xbc;                // 0xbc
-	undefined m_unk0xbe[0xd0 - 0xbe]; // 0xbe
+	undefined m_unk0xbe[0xc0 - 0xbe]; // 0xbe
+	GolVec3 m_unk0xc0;                // 0xc0
+	LegoBool32 m_unk0xcc;             // 0xcc
 	LegoFloat m_unk0xd0;              // 0xd0
-	undefined4 m_unk0xd4;             // 0xd4
+	LegoFloat m_unk0xd4;              // 0xd4
 	LegoU16 m_unk0xd8;                // 0xd8
-	undefined m_unk0xda[0xec - 0xda]; // 0xda
-	undefined4 m_unk0xec;             // 0xec
-	undefined4 m_unk0xf0;             // 0xf0
+	undefined m_unk0xda[0xdc - 0xda]; // 0xda
+	GolVec3 m_unk0xdc;                // 0xdc
+	LegoBool32 m_unk0xe8;             // 0xe8
+	LegoFloat m_unk0xec;              // 0xec
+	LegoFloat m_unk0xf0;              // 0xf0
 };
 
 #endif // OPALHAVEN0XF4_H

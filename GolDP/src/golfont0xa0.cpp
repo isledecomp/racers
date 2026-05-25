@@ -118,9 +118,11 @@ void GolFont0xa0::RefreshSurfaces(BronzeFalcon0xc8770* p_renderer)
 	FUN_10004d70(p_renderer, &sourceFormat, &textureFormat);
 }
 
-// FUNCTION: GOLDP 0x100047b0
+// STUB: GOLDP 0x100047b0
 void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
+	STUB(0x100047b0);
+
 	m_unk0x90 = new PurpleDune0x7c[m_unk0x04];
 	if (m_unk0x90 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -174,7 +176,7 @@ void GolFont0xa0::VTable0x04(BronzeFalcon0xc8770* p_renderer, GolSurfaceFormat* 
 	}
 
 	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_unk0x10, m_unk0x14);
-	texture->SetUnk0x38(*((undefined4*) &m_nameParts[0]), *((undefined4*) &m_nameParts[1]));
+	texture->SetName(m_name);
 
 	DuskWindBananaRelicParams params;
 	params.m_unk0x00 = c_fontMaterialFlags;
@@ -221,9 +223,11 @@ void GolFont0xa0::VTable0x10(LegoU32 p_index)
 	m_unk0x98 = 1.0f / static_cast<LegoFloat>(m_unk0x90[index].GetHeight());
 }
 
-// FUNCTION: GOLDP 0x10004c20
+// STUB: GOLDP 0x10004c20
 void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 {
+	STUB(0x10004c20);
+
 	LegoS32 sourceBottom = p_sourceRect->m_bottom - 1;
 	D3DTLVERTEX vertices[4];
 

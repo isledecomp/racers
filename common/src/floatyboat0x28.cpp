@@ -4,7 +4,6 @@
 
 DECOMP_SIZE_ASSERT(FloatyBoat0x28, 0x28)
 DECOMP_SIZE_ASSERT(FloatyBoat0x28::ViewResult, 0x08)
-DECOMP_SIZE_ASSERT(FloatyBoat0x28::TransformPayload0x20, 0x20)
 
 // FUNCTION: GOLDP 0x100284c0
 // FUNCTION: LEGORACERS 0x00411a40
@@ -230,7 +229,7 @@ void FloatyBoat0x28::VTable0x28()
 	// empty
 }
 
-// FUNCTION: GOLDP 0x100016f0 FOLDED
+// STUB: GOLDP 0x100016f0 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
 undefined4 FloatyBoat0x28::VTable0x20()
 {
@@ -256,7 +255,7 @@ void FloatyBoat0x28::VTable0x1c(WhiteFalcon0x140&)
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void FloatyBoat0x28::VTable0x24(TransformPayload0x20*)
+void FloatyBoat0x28::VTable0x24(ColorTransform0x20*)
 {
 	// empty
 }

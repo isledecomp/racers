@@ -1,6 +1,18 @@
 #include "opalhaven0xf4.h"
 
+#include "cmbmodelpart0x34.h"
+#include "cmbmodelpartdata0x28.h"
+#include "igdbmodel0x40.h"
+#include "jadeorbitbase0x10.h"
+#include "whitefalconnode0x18.h"
+
+#include <float.h>
+#include <math.h>
+
 DECOMP_SIZE_ASSERT(OpalHaven0xf4, 0xf4)
+
+// GLOBAL: LEGORACERS 0x004af86c
+static const LegoFloat g_maxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x0040d530
 OpalHaven0xf4::OpalHaven0xf4()
@@ -61,46 +73,439 @@ void OpalHaven0xf4::FUN_0040d650()
 }
 
 // STUB: LEGORACERS 0x0040d670
-void OpalHaven0xf4::VTable0x5c(LegoU32)
+void OpalHaven0xf4::VTable0x5c(LegoU32 p_index)
 {
 	STUB(0x0040d670);
+
+	if (!(m_flags & c_flagPartAnimation)) {
+		return;
+	}
+
+	CmbModelPart0x34* modelPart = m_modelParts[p_index];
+	if (m_unk0xbc >= modelPart->GetPartCount()) {
+		return;
+	}
+
+	WhiteFalconNode0x18* node = m_nodes[p_index];
+	if (node->GetUpdateSerial() == static_cast<LegoU32>(m_partIndices[p_index])) {
+		return;
+	}
+
+	m_partIndices[p_index] = node->AdvanceUpdateSerial();
+
+	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
+	const CmbModelPartData0x28& activePart = modelPart->GetPartData()[m_unk0xbc];
+	LegoU32 activeTrackIndex = activePart.GetTrackIndex();
+	LegoU16 activeFrameCount;
+	LegoFloat activeTime;
+	if (m_flags & c_flagLoopCurrentPart) {
+		activeFrameCount = activePart.GetLoopFrameCount();
+		activeTime = activePart.WrapTime(m_unk0xb4);
+	}
+	else {
+		activeFrameCount = activePart.GetFrameCount();
+		activeTime = m_unk0xb4;
+	}
+
+	LegoBool32 hasQueuedPart = FALSE;
+	LegoU32 queuedTrackIndex = 0;
+	LegoU16 queuedFrameCount = 0;
+	LegoFloat queuedTime = 0.0f;
+	if (m_flags & c_flagPartTransition) {
+		if (m_unk0xd8 < modelPart->GetPartCount()) {
+			const CmbModelPartData0x28& queuedPart = modelPart->GetPartData()[m_unk0xd8];
+			queuedTrackIndex = queuedPart.GetTrackIndex();
+			if (m_flags & c_flagLoopQueuedPart) {
+				queuedFrameCount = queuedPart.GetLoopFrameCount();
+				queuedTime = queuedPart.WrapTime(m_unk0xd0);
+			}
+			else {
+				queuedFrameCount = queuedPart.GetFrameCount();
+				queuedTime = m_unk0xd0;
+			}
+			hasQueuedPart = TRUE;
+		}
+	}
+
+	for (LegoU32 i = 0; i < node->GetCapacity(); i++) {
+		JadeOrbitBase0x10* orbit = node->VTable0x18(i);
+
+		GolVec3 activePosition;
+		GolQuat activeRotation;
+		GolVec3 queuedPosition;
+		GolQuat queuedRotation;
+		LegoBool32 hasActivePosition = animationData.InterpolatePosition(
+			&activePosition,
+			modelPart->GetTrack(activeTrackIndex + i),
+			activeTime,
+			activeFrameCount
+		);
+		LegoBool32 hasActiveRotation = animationData.InterpolateRotation(
+			&activeRotation,
+			modelPart->GetTrack(activeTrackIndex + i),
+			activeTime,
+			activeFrameCount
+		);
+
+		LegoBool32 hasQueuedPosition = FALSE;
+		LegoBool32 hasQueuedRotation = FALSE;
+		if (hasQueuedPart) {
+			hasQueuedPosition = animationData.InterpolatePosition(
+				&queuedPosition,
+				modelPart->GetTrack(queuedTrackIndex + i),
+				queuedTime,
+				queuedFrameCount
+			);
+			hasQueuedRotation = animationData.InterpolateRotation(
+				&queuedRotation,
+				modelPart->GetTrack(queuedTrackIndex + i),
+				queuedTime,
+				queuedFrameCount
+			);
+		}
+
+		if (hasActivePosition) {
+			if (hasQueuedPosition) {
+				GolVec3 blendedPosition;
+				blendedPosition.m_x = activePosition.m_x + (queuedPosition.m_x - activePosition.m_x) * m_unk0xec;
+				blendedPosition.m_y = activePosition.m_y + (queuedPosition.m_y - activePosition.m_y) * m_unk0xec;
+				blendedPosition.m_z = activePosition.m_z + (queuedPosition.m_z - activePosition.m_z) * m_unk0xec;
+				orbit->SetPosition(&blendedPosition);
+			}
+			else {
+				orbit->SetPosition(&activePosition);
+			}
+		}
+		else if (hasQueuedPosition) {
+			orbit->SetPosition(&queuedPosition);
+		}
+
+		if (hasActiveRotation) {
+			if (hasQueuedRotation) {
+				GolQuat blendedRotation;
+				GolMath::FUN_1002f890(activeRotation, queuedRotation, m_unk0xec, &blendedRotation);
+				orbit->VTable0x2c(&blendedRotation.m_x);
+			}
+			else {
+				orbit->VTable0x2c(&activeRotation.m_x);
+			}
+		}
+		else if (hasQueuedRotation) {
+			orbit->VTable0x2c(&queuedRotation.m_x);
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x0040dad0
-void OpalHaven0xf4::FUN_0040dad0(undefined2)
+// FUNCTION: LEGORACERS 0x0040dad0
+void OpalHaven0xf4::FUN_0040dad0(undefined2 p_partIndex)
 {
-	STUB(0x0040dad0);
+	FUN_0040dae0(p_partIndex, 0);
 }
 
-// STUB: LEGORACERS 0x0040db80
-void OpalHaven0xf4::FUN_0040db80(undefined4, undefined4, LegoFloat, undefined4, undefined4, undefined4)
+// STUB: LEGORACERS 0x0040dae0
+void OpalHaven0xf4::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 {
-	STUB(0x0040db80);
+	STUB(0x0040dae0);
+
+	FUN_0040d650();
+
+	LegoU32 flags = m_flags;
+	flags &= ~c_flagsPartAnimationMask;
+	flags |= c_flagLoopCurrentPart;
+	m_unk0xbc = p_partIndex;
+	m_flags = flags;
+	m_radius = -1.0f;
+
+	CmbModelPartData0x28* partData = m_modelParts[0]->GetPartData();
+	LegoU32 partIndex = p_partIndex;
+	LegoFloat rate = partData[partIndex].GetUnk0x00();
+	m_unk0xb8 = rate;
+	if (p_timeScale != 0) {
+		LegoFloat timeScale = static_cast<LegoFloat>(p_timeScale);
+		rate *= timeScale;
+	}
+	else {
+		rate = 0.0f;
+	}
+	m_unk0xb4 = rate;
+
+	const GolVec3& offset = partData[partIndex].GetUnk0x04();
+	m_unk0xc0 = offset;
+	m_velocity = offset;
+}
+
+// FUNCTION: LEGORACERS 0x0040db80
+void OpalHaven0xf4::FUN_0040db80(
+	LegoU32 p_partIndex,
+	LegoS32 p_transitionTime,
+	LegoFloat p_time,
+	LegoBool32 p_updateCurrent,
+	LegoBool32 p_updateQueued,
+	LegoBool32 p_loop
+)
+{
+	FUN_0040d650();
+	if (p_transitionTime == 0) {
+		LegoS32 timeScale;
+		if (p_time != 0.0f) {
+			const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+			timeScale = static_cast<LegoS32>(p_time / activePart.GetUnk0x00());
+		}
+		else {
+			timeScale = 0;
+		}
+
+		FUN_0040dae0(static_cast<LegoU16>(p_partIndex), timeScale);
+		if (!p_loop) {
+			m_flags &= ~c_flagLoopCurrentPart;
+		}
+		return;
+	}
+
+	LegoU32 flags = m_flags;
+	LegoU32 currentPartIndex = (flags & c_flagPartTransition) ? m_unk0xd8 : m_unk0xbc;
+	if (p_partIndex == currentPartIndex) {
+		return;
+	}
+
+	if (flags & c_flagPartTransition) {
+		m_unk0xb8 = m_unk0xd4;
+		m_unk0xb4 = m_unk0xd0;
+		m_unk0xbc = m_unk0xd8;
+		m_radius = -1.0f;
+		m_unk0xc0 = m_unk0xdc;
+		m_velocity = m_unk0xdc;
+		if (flags & c_flagLoopQueuedPart) {
+			flags |= c_flagLoopCurrentPart;
+		}
+		else {
+			flags &= ~c_flagLoopCurrentPart;
+		}
+		m_flags = flags;
+	}
+
+	flags = m_flags;
+	flags &= ~0x00580000;
+	flags |= c_flagPartTransition;
+	m_unk0xd8 = static_cast<LegoU16>(p_partIndex);
+	m_flags = flags;
+	if (p_loop) {
+		flags |= c_flagLoopQueuedPart;
+		m_flags = flags;
+	}
+
+	LegoU32 queuedPartIndex = static_cast<LegoU16>(p_partIndex);
+	LegoBool32 updateQueued = p_updateQueued;
+	CmbModelPartData0x28* partData = m_modelParts[0]->GetPartData();
+	m_unk0xd4 = partData[queuedPartIndex].GetUnk0x00();
+	m_unk0xec = 0.0f;
+	m_unk0xd0 = p_time;
+	LegoBool32 updateCurrent = p_updateCurrent;
+	m_unk0xcc = updateCurrent;
+	m_unk0xe8 = updateQueued;
+	m_unk0xf0 = 1.0f / static_cast<LegoFloat>(p_transitionTime);
+	if (!updateCurrent) {
+		m_unk0xc0.m_x = 0.0f;
+		m_unk0xc0.m_y = 0.0f;
+		m_unk0xc0.m_z = 0.0f;
+	}
+
+	m_unk0xdc = partData[queuedPartIndex].GetUnk0x04();
 }
 
 // STUB: LEGORACERS 0x0040dd60
-void OpalHaven0xf4::VTable0x10(LegoS32)
+void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 {
 	STUB(0x0040dd60);
+
+	m_flags &= ~c_flagLoopWrapped;
+	if (!(m_flags & c_flagPartAnimation)) {
+		SilverHollow0xb8::VTable0x10(p_elapsed);
+		return;
+	}
+
+	FUN_0040d650();
+	LegoU32 flags = m_flags;
+	if (flags & c_flagPartTransition) {
+		m_radius = -1.0f;
+		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
+		m_unk0xec += m_unk0xf0 * elapsed;
+		if (m_unk0xec >= 1.0f) {
+			LegoS32 consumed = static_cast<LegoS32>((m_unk0xec - 1.0f) / m_unk0xf0);
+			p_elapsed -= consumed;
+
+			m_unk0xb8 = m_unk0xd4;
+			m_unk0xb4 = m_unk0xd0;
+			m_unk0xbc = m_unk0xd8;
+			m_unk0xc0 = m_unk0xdc;
+			m_velocity = m_unk0xdc;
+
+			flags &= ~(c_flagPartTransition | c_flagLoopCurrentPart | c_flagRestartQueuedPart);
+			if (flags & c_flagLoopQueuedPart) {
+				flags |= c_flagLoopCurrentPart;
+			}
+			m_flags = flags;
+		}
+		else {
+			if (m_unk0xcc) {
+				const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+				m_unk0xb4 += m_unk0xb8 * elapsed;
+				LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+				if (m_unk0xb4 > endFrame) {
+					if (flags & c_flagLoopCurrentPart) {
+						m_unk0xb4 = activePart.WrapTime(m_unk0xb4);
+					}
+					else {
+						m_unk0xb4 = endFrame;
+					}
+				}
+			}
+
+			if (m_unk0xe8) {
+				const CmbModelPartData0x28& queuedPart = m_modelParts[0]->GetPartData()[m_unk0xd8];
+				m_unk0xd0 += m_unk0xd4 * elapsed;
+				LegoFloat endFrame = static_cast<LegoFloat>(queuedPart.GetFrameCount() - 1);
+				if (m_unk0xd0 > endFrame) {
+					if (m_flags & c_flagLoopQueuedPart) {
+						m_unk0xd0 = queuedPart.WrapTime(m_unk0xd0);
+					}
+					else {
+						m_unk0xd0 = endFrame;
+					}
+				}
+			}
+
+			m_velocity = m_unk0xdc - m_unk0xc0;
+			m_velocity = m_unk0xc0 + (m_velocity * m_unk0xec);
+		}
+	}
+
+	if (m_flags & c_flagPartTransition) {
+		SilverHollow0xb8::VTable0x10(p_elapsed);
+		return;
+	}
+
+	const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+	m_unk0xb4 += m_unk0xb8 * static_cast<LegoFloat>(p_elapsed);
+	LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+	if (m_unk0xb4 >= endFrame) {
+		if (m_flags & c_flagLoopCurrentPart) {
+			LegoFloat oldTime = m_unk0xb4;
+			m_unk0xb4 = activePart.WrapTime(m_unk0xb4);
+			if (m_unk0xb4 < oldTime) {
+				m_flags |= c_flagLoopWrapped;
+			}
+		}
+		else {
+			if (m_flags & c_flagRestartQueuedPart) {
+				FUN_0040dad0(m_unk0xd8);
+			}
+			else {
+				m_unk0xb4 = endFrame;
+			}
+			m_flags |= c_flagPartAnimationDone;
+		}
+	}
+
+	SilverHollow0xb8::VTable0x10(p_elapsed);
 }
 
 // STUB: LEGORACERS 0x0040e0b0
-void OpalHaven0xf4::VTable0x4c(LegoU32)
+void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
 {
 	STUB(0x0040e0b0);
+
+	IGdbModel0x40* model = m_models[p_index];
+	if (model == NULL) {
+		FUN_10026fa0(0.0f);
+		return;
+	}
+
+	GolVec3 center;
+	LegoFloat radius;
+	LegoFloat scale;
+	if (m_flags & c_flagPartAnimation) {
+		CmbModelPartData0x28* partData = m_modelParts[p_index]->GetPartData();
+		const GolVec4& bounds = partData[m_unk0xbc].GetBounds();
+		center.m_x = bounds.m_x;
+		center.m_y = bounds.m_y;
+		center.m_z = bounds.m_z;
+		radius = bounds.m_u;
+
+		if (m_flags & c_flagPartTransition) {
+			const GolVec4& bounds2 = partData[m_unk0xd8].GetBounds();
+			GolVec3 center2;
+			center2.m_x = bounds2.m_x;
+			center2.m_y = bounds2.m_y;
+			center2.m_z = bounds2.m_z;
+
+			center = (center + center2) * 0.5f;
+			if (radius < bounds2.m_u) {
+				radius = bounds2.m_u;
+			}
+
+			GolVec3 delta = center - center2;
+			radius +=
+				static_cast<LegoFloat>(sqrt(delta.m_x * delta.m_x + delta.m_y * delta.m_y + delta.m_z * delta.m_z));
+		}
+
+		scale = model->GetScale() * m_unk0x58;
+	}
+	else {
+		center = model->GetBoundingCenter();
+		radius = model->GetBoundingRadius();
+		scale = m_unk0x58;
+	}
+
+	center *= scale;
+
+	GolVec3 position;
+	VTable0x2c(center, &position);
+	FUN_10026f70(position);
+	FUN_10026fa0(radius * scale);
 }
 
-// STUB: LEGORACERS 0x0040e270
-void OpalHaven0xf4::VTable0x14(const WhiteFalconView0xcc&, ViewResult*)
+// FUNCTION: LEGORACERS 0x0040e270
+void OpalHaven0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ViewResult* p_result)
 {
-	STUB(0x0040e270);
+	GolVec3 position;
+	FUN_100286d0(&position);
+
+	LegoU32 i = 0;
+	LegoFloat* threshold = m_modelDistances;
+	if (*threshold != g_maxFloat) {
+		LegoFloat distanceSquared = position.DistanceSquaredTo(p_view.m_position);
+		for (; distanceSquared > *threshold;) {
+			i++;
+			threshold++;
+			if (i >= sizeOfArray(m_models)) {
+				p_result->m_visibility = 0;
+				return;
+			}
+		}
+	}
+
+	p_result->m_lodIndex = i;
+	if (m_models[i] == NULL) {
+		p_result->m_visibility = 0;
+		return;
+	}
+
+	if (i != 0) {
+		VTable0x4c(i);
+		FUN_100286d0(&position);
+	}
+	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
 }
 
-// STUB: LEGORACERS 0x0040e360
+// FUNCTION: LEGORACERS 0x0040e360
 LegoBool32 OpalHaven0xf4::FUN_0040e360()
 {
-	STUB(0x0040e360);
-	return FALSE;
+	LegoU32 flags = m_flags;
+	const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+
+	return (flags & c_flagPartAnimationDone) ||
+		   (!(flags & c_flagLoopCurrentPart) && static_cast<LegoFloat>(activePart.GetFrameCount() - 1) <= m_unk0xb4);
 }
 
 // FUNCTION: LEGORACERS 0x0040e480

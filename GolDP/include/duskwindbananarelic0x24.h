@@ -5,6 +5,8 @@
 #include "golname.h"
 #include "types.h"
 
+#include <string.h>
+
 class WhiteFalcon0x140;
 class GoldDune0x38;
 
@@ -93,9 +95,13 @@ public:
 	undefined GetAlphaRef() const { return m_unk0x21; }
 	undefined GetSrcBlend() const { return m_unk0x22; }
 	undefined GetDestBlend() const { return m_unk0x23; }
+	const LegoChar* GetName() const { return m_unk0x18.m_unk0x0; }
+	const DuskWindName0x8& GetNameRecord() const { return m_unk0x18; }
+	void SetName(const LegoChar* p_name) { ::memcpy(m_unk0x18.m_unk0x0, p_name, sizeof(GolName)); }
 	// SYNTHETIC: GOLDP 0x100257b0
 	// DuskwindBananaRelic0x24::`scalar deleting destructor'
 
+	void CopyParamsTo(DuskWindBananaRelicParams* p_params) const;
 	void FUN_100257e0(WhiteFalcon0x140*, const DuskWindBananaRelicParams&);
 
 	friend class AmberHaze0x1c;

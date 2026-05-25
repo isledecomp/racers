@@ -220,16 +220,16 @@ void CrimsonPebbleAnimation0x33c::FUN_0048a040(BronzeFalcon0xc8770* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x0048a090
+// FUNCTION: LEGORACERS 0x0048a090
 CrimsonPebbleAnimation0x33c::Runtime0x44::Runtime0x44()
 {
-	STUB(0x0048a090);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x0048a0a0
+// FUNCTION: LEGORACERS 0x0048a0a0
 CrimsonPebbleAnimation0x33c::Runtime0x44::~Runtime0x44()
 {
-	STUB(0x0048a0a0);
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0048a0b0
@@ -297,13 +297,13 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x28:
-			m_unk0x14 = (LegoS32) (g_floatConst1000 / p_parser->ReadFloat());
+			m_unk0x14 = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
 			break;
 		case GolFileParser::e_unknown0x29:
-			m_unk0x18 = (LegoS32) (p_parser->ReadFloat() * g_floatConst256);
+			m_unk0x18 = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);
 			break;
 		case GolFileParser::e_unknown0x35:
-			m_unk0x19 = (LegoS8) p_parser->ReadInteger();
+			m_unk0x19 = static_cast<LegoS8>(p_parser->ReadInteger());
 			break;
 		case GolFileParser::e_unknown0x2c:
 			m_unk0x1c = p_parser->ReadFloat();
@@ -349,7 +349,7 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 			m_unk0x00 = new ListTypeAt0x00[m_unk0x04];
 
 			if (!m_unk0x00) {
-				GolFatalError(c_golErrorOutOfMemory, (char*) 0x0, 0);
+				GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 			}
 			p_parser->ReadLeftCurly();
 
@@ -510,7 +510,7 @@ void CrimsonPebbleEvent0x14::VTable0x18()
 {
 }
 
-// FUNCTION: LEGORACERS 0x004a00b0
+// FUNCTION: LEGORACERS 0x004a00b0 FOLDED
 CrimsonPebbleEventLink0x0c::CrimsonPebbleEventLink0x0c()
 {
 	m_unk0x00 = 0;
@@ -1822,7 +1822,7 @@ void CrimsonPebble0x228::VTable0x2c(void*, void* p_name, void* p_payload)
 void CrimsonPebble0x228::FUN_004a2dc0(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x04 != NULL) {
-		LegoFloat elapsedSeconds = (LegoS32) p_elapsedMs * 0.001f;
+		LegoFloat elapsedSeconds = static_cast<LegoS32>(p_elapsedMs) * 0.001f;
 		LegoU32 i;
 
 		for (i = 0; i < m_unk0xb4; i++) {
@@ -2716,15 +2716,15 @@ void CrimsonPebbleEvent0x48::FUN_004a4d10(LegoFloat p_elapsedSeconds)
 // FUNCTION: LEGORACERS 0x004a4da0
 void CrimsonPebbleEvent0x48::FUN_004a4da0()
 {
-	FloatyBoat0x28::TransformPayload0x20 transform;
-	transform.m_baseX = m_baseX;
-	transform.m_baseY = m_baseY;
-	transform.m_baseZ = m_baseZ;
-	transform.m_baseW = 0;
-	transform.m_offsetX = static_cast<LegoS32>(m_offsetX);
-	transform.m_offsetY = static_cast<LegoS32>(m_offsetY);
-	transform.m_offsetZ = static_cast<LegoS32>(m_offsetZ);
-	transform.m_offsetW = 0;
+	ColorTransform0x20 transform;
+	transform.m_redShift = m_baseX;
+	transform.m_grnShift = m_baseY;
+	transform.m_bluShift = m_baseZ;
+	transform.m_alpShift = 0;
+	transform.m_redOffset = static_cast<LegoS32>(m_offsetX);
+	transform.m_grnOffset = static_cast<LegoS32>(m_offsetY);
+	transform.m_bluOffset = static_cast<LegoS32>(m_offsetZ);
+	transform.m_alpOffset = 0;
 
 	m_unk0x08->VTable0x24(&transform);
 }

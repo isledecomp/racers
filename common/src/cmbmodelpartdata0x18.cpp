@@ -90,6 +90,148 @@ void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
 	}
 }
 
+// STUB: GOLDP 0x10024380
+// STUB: LEGORACERS 0x0040e670
+LegoBool32 CmbModelPartData0x18::InterpolatePosition(
+	GolVec3* p_dest,
+	const CmbModelPartTrack0x14& p_track,
+	LegoFloat p_time,
+	LegoU16 p_frameCount
+) const
+{
+	STUB(0x0040e670);
+
+	LegoU16 keyCount = p_track.m_positionKeyCount;
+	if (keyCount == 0) {
+		return FALSE;
+	}
+
+	if (keyCount == 1) {
+		*p_dest = m_vertices[p_track.m_positionFrameIndex];
+		return TRUE;
+	}
+
+	const LegoU16* keys = &m_keys[p_track.m_positionKeyIndex];
+	LegoU32 keyIndex = 0;
+	for (; keyIndex < keyCount; keyIndex++) {
+		if (keys[keyIndex] > p_time) {
+			break;
+		}
+	}
+
+	const GolVec3* from;
+	const GolVec3* to;
+	LegoS32 duration;
+	LegoFloat elapsed;
+	if (keyIndex == 0) {
+		LegoU16 firstKey = keys[0];
+		LegoU16 lastKey = keys[keyCount - 1];
+		duration = p_frameCount + firstKey - lastKey;
+		elapsed = static_cast<LegoFloat>(duration - firstKey) + p_time;
+		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
+		to = &m_vertices[p_track.m_positionFrameIndex];
+	}
+	else if (keyIndex == keyCount) {
+		LegoU16 firstKey = keys[0];
+		LegoU16 lastKey = keys[keyCount - 1];
+		duration = p_frameCount + firstKey - lastKey;
+		elapsed = p_time - static_cast<LegoFloat>(lastKey);
+		from = &m_vertices[p_track.m_positionFrameIndex + keyCount - 1];
+		to = &m_vertices[p_track.m_positionFrameIndex];
+	}
+	else {
+		LegoU16 previousKey = keys[keyIndex - 1];
+		duration = keys[keyIndex] - previousKey;
+		elapsed = p_time - static_cast<LegoFloat>(previousKey);
+		from = &m_vertices[p_track.m_positionFrameIndex + keyIndex - 1];
+		to = &m_vertices[p_track.m_positionFrameIndex + keyIndex];
+	}
+
+	LegoFloat amount = duration == 0 ? 0.0f : elapsed / static_cast<LegoFloat>(duration);
+	p_dest->m_x = from->m_x + (to->m_x - from->m_x) * amount;
+	p_dest->m_y = from->m_y + (to->m_y - from->m_y) * amount;
+	p_dest->m_z = from->m_z + (to->m_z - from->m_z) * amount;
+	return TRUE;
+}
+
+// STUB: GOLDP 0x10024540
+// STUB: LEGORACERS 0x0040e830
+LegoBool32 CmbModelPartData0x18::InterpolateRotation(
+	GolQuat* p_dest,
+	const CmbModelPartTrack0x14& p_track,
+	LegoFloat p_time,
+	LegoU16 p_frameCount
+) const
+{
+	STUB(0x0040e830);
+
+	LegoU16 keyCount = p_track.m_rotationKeyCount;
+	if (keyCount == 0) {
+		return FALSE;
+	}
+
+	if (keyCount == 1) {
+		const GolVec4& frame = m_frames[p_track.m_rotationFrameIndex];
+		p_dest->m_x = frame.m_x;
+		p_dest->m_y = frame.m_y;
+		p_dest->m_z = frame.m_z;
+		p_dest->m_w = frame.m_u;
+		return TRUE;
+	}
+
+	const LegoU16* keys = &m_keys[p_track.m_rotationKeyIndex];
+	LegoU32 keyIndex = 0;
+	for (; keyIndex < keyCount; keyIndex++) {
+		if (keys[keyIndex] > p_time) {
+			break;
+		}
+	}
+
+	LegoU32 fromIndex;
+	LegoU32 toIndex;
+	LegoS32 duration;
+	LegoFloat elapsed;
+	if (keyIndex == 0) {
+		LegoU16 firstKey = keys[0];
+		LegoU16 lastKey = keys[keyCount - 1];
+		duration = p_frameCount + firstKey - lastKey;
+		elapsed = static_cast<LegoFloat>(duration - firstKey) + p_time;
+		fromIndex = p_track.m_rotationFrameIndex + keyCount - 1;
+		toIndex = p_track.m_rotationFrameIndex;
+	}
+	else if (keyIndex == keyCount) {
+		LegoU16 firstKey = keys[0];
+		LegoU16 lastKey = keys[keyCount - 1];
+		duration = p_frameCount + firstKey - lastKey;
+		elapsed = p_time - static_cast<LegoFloat>(lastKey);
+		fromIndex = p_track.m_rotationFrameIndex + keyCount - 1;
+		toIndex = p_track.m_rotationFrameIndex;
+	}
+	else {
+		LegoU16 previousKey = keys[keyIndex - 1];
+		duration = keys[keyIndex] - previousKey;
+		elapsed = p_time - static_cast<LegoFloat>(previousKey);
+		fromIndex = p_track.m_rotationFrameIndex + keyIndex - 1;
+		toIndex = p_track.m_rotationFrameIndex + keyIndex;
+	}
+
+	GolQuat from;
+	from.m_x = m_frames[fromIndex].m_x;
+	from.m_y = m_frames[fromIndex].m_y;
+	from.m_z = m_frames[fromIndex].m_z;
+	from.m_w = m_frames[fromIndex].m_u;
+
+	GolQuat to;
+	to.m_x = m_frames[toIndex].m_x;
+	to.m_y = m_frames[toIndex].m_y;
+	to.m_z = m_frames[toIndex].m_z;
+	to.m_w = m_frames[toIndex].m_u;
+
+	LegoFloat amount = duration == 0 ? 0.0f : elapsed / static_cast<LegoFloat>(duration);
+	GolMath::FUN_1002f890(from, to, amount, p_dest);
+	return TRUE;
+}
+
 // FUNCTION: GOLDP 0x10024710 FOLDED
 // FUNCTION: LEGORACERS 0x0040e9d0
 void CmbModelPartData0x18::Clear()

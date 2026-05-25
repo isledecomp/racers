@@ -5,6 +5,7 @@
 #include "golfileparser.h"
 #include "golmath.h"
 
+DECOMP_SIZE_ASSERT(ColorTransform0x20, 0x20)
 DECOMP_SIZE_ASSERT(GdbVertexArray0xc, 0xc)
 
 // FUNCTION: GOLDP 0x10006230
@@ -144,7 +145,7 @@ void GdbVertexArray0xc::VTable0x30(LegoU32 p_index, const ColorRGBA&)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GdbVertexArray0xc::VTable0x34(const PixelFormatMod& p_details)
+void GdbVertexArray0xc::VTable0x34(const ColorTransform0x20& p_details)
 {
 	// empty
 }

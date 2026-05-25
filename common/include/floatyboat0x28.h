@@ -2,6 +2,7 @@
 #define FLOATYBOAT0X28_H
 
 #include "decomp.h"
+#include "gdbvertexarray0xc.h"
 #include "golmath.h"
 #include "whitefalconview0xcc.h"
 
@@ -23,18 +24,6 @@ public:
 
 	typedef ViewResult ResultStruct;
 
-	// SIZE 0x20
-	struct TransformPayload0x20 {
-		LegoS32 m_baseX;   // 0x00
-		LegoS32 m_baseY;   // 0x04
-		LegoS32 m_baseZ;   // 0x08
-		LegoS32 m_baseW;   // 0x0c
-		LegoS32 m_offsetX; // 0x10
-		LegoS32 m_offsetY; // 0x14
-		LegoS32 m_offsetZ; // 0x18
-		LegoS32 m_offsetW; // 0x1c
-	};
-
 	virtual void VTable0x00();                                                        // vtable+0x00
 	virtual void VTable0x04(GolVec3* p_center) const;                                 // vtable+0x04
 	virtual void VTable0x08(const GolVec3& p_center);                                 // vtable+0x08
@@ -44,7 +33,7 @@ public:
 	virtual LegoBool32 VTable0x18(FloatyBoat0x28* p_model);                           // vtable+0x18
 	virtual void VTable0x1c(WhiteFalcon0x140& p_renderer);                            // vtable+0x1c
 	virtual undefined4 VTable0x20();                                                  // vtable+0x20
-	virtual void VTable0x24(TransformPayload0x20* p_transform);                       // vtable+0x24
+	virtual void VTable0x24(ColorTransform0x20* p_transform);                         // vtable+0x24
 	virtual void VTable0x28();                                                        // vtable+0x28
 	virtual void VTable0x2c(const GolVec3& p_add, GolVec3* p_dest) const;             // vtable+0x2c
 	virtual void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const;             // vtable+0x30

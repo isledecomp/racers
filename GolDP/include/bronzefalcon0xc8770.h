@@ -13,9 +13,11 @@
 
 class BronzeFalconSurface0x5c;
 class AmberLens0x344;
+class GdbModel0x48;
 class GoldDune0x38;
 class GolDrawDPState;
 class BronzeFalcon0xc8770;
+class WhiteFalconNode0x18;
 
 typedef void (BronzeFalcon0xc8770::*BronzeFalconDrawFunction)(undefined4, undefined4, undefined4);
 
@@ -192,6 +194,7 @@ private:
 	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(GoldDune0x38*);
+	void FUN_1000add0(FloatyBoat0x28* p_model, GdbModel0x48* p_modelData);
 	void FUN_1000b0f0(LegoU32 p_index, const Light* p_param);
 	void FUN_1000b4a0();
 	void FUN_1000be20(undefined4, undefined4, undefined4);
@@ -221,6 +224,7 @@ private:
 	void FUN_100128f0(undefined4, undefined4, undefined4);
 	void FUN_10012bf0(undefined4, undefined4, undefined4);
 	void FUN_10012f50();
+	void FUN_10008880(FloatyBoat0x28* p_model, LegoU32 p_lodIndex);
 	void FUN_10013110(undefined4, undefined4, undefined4);
 	void FUN_100132f0(undefined4, undefined4, undefined4);
 	void Reset();
@@ -272,7 +276,7 @@ private:
 	undefined4 m_unk0xc83d8;                                             // 0xc83d8
 	undefined4 m_unk0xc83dc;                                             // 0xc83dc
 	LegoU32 m_alpha;                                                     // 0xc83e0
-	undefined4 m_unk0xc83e4;                                             // 0xc83e4
+	LegoBool32 m_unk0xc83e4;                                             // 0xc83e4
 	LegoBool32 m_unk0xc83e8;                                             // 0xc83e8
 	undefined4 m_unk0xc83ec;                                             // 0xc83ec
 	undefined4 m_unk0xc83f0;                                             // 0xc83f0
@@ -285,10 +289,10 @@ private:
 	GolMatrix4* m_unk0xc8490;                                            // 0xc8490
 	GolMatrix4* m_unk0xc8494;                                            // 0xc8494
 	GolMatrix4 m_unk0xc8498[1];                                          // 0xc8498
-	LegoFloat m_unk0xc84d8[(0xc8518 - 0xc84d8) / sizeof(LegoFloat)];     // 0xc84d8
+	GolMatrix4 m_unk0xc84d8;                                             // 0xc84d8
 	GolMatrix4* m_unk0xc8518;                                            // 0xc8518
 	undefined4 m_unk0xc851c;                                             // 0xc851c
-	undefined4 m_unk0xc8520;                                             // 0xc8520
+	WhiteFalconNode0x18* m_unk0xc8520;                                   // 0xc8520
 	undefined4 m_unk0xc8524;                                             // 0xc8524
 	undefined4 m_unk0xc8528;                                             // 0xc8528
 	LegoFloat m_unk0xc852c;                                              // 0xc852c
@@ -300,7 +304,7 @@ private:
 	void* m_unk0xc8544;                                                  // 0xc8544
 	void* m_unk0xc8548;                                                  // 0xc8548
 	void* m_unk0xc854c[(0xc8568 - 0xc854c) / sizeof(void*)];             // 0xc854c
-	undefined4 m_unk0xc8568;                                             // 0xc8568
+	LegoBool32 m_unk0xc8568;                                             // 0xc8568
 	ColorRGBA m_unk0xc856c;                                              // 0xc856c
 	undefined4 m_unk0xc8570;                                             // 0xc8570
 	undefined4 m_unk0xc8574;                                             // 0xc8574
@@ -314,7 +318,7 @@ private:
 	SoftwareRenderer0x58::Command0x14* m_unk0xc86f0;                     // 0xc86f0
 	LegoS32 m_unk0xc86f4;                                                // 0xc86f4
 	LegoS32 m_unk0xc86f8;                                                // 0xc86f8
-	float m_unk0xc86fc;                                                  // 0xc86fc
+	LegoFloat m_unk0xc86fc;                                              // 0xc86fc
 	undefined4 m_unk0xc8700;                                             // 0xc8700
 	undefined4 m_unk0xc8704;                                             // 0xc8704
 	D3DBLEND m_unk0xc8708[11];                                           // 0xc8708

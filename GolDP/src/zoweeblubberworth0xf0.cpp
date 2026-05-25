@@ -111,7 +111,7 @@ void ZoweeBlubberworth0xf0::VTable0x14(
 	WhiteFalcon0x140* p_arg1,
 	const LegoChar* p_name,
 	LegoBool32 p_binary,
-	float p_arg4
+	LegoFloat p_arg4
 )
 {
 	if (m_unk0x04) {
@@ -1416,7 +1416,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
@@ -1533,7 +1533,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}
@@ -1610,7 +1610,7 @@ void ZoweeBlubberworth0xf0::FUN_1002e640()
 
 			MabMaterialAnimationItem0x18* item = VTable0x4c(assignment->m_left)->GetUnk0x0c();
 			LegoU32 targetIndex = assignment->m_bottom;
-			FloatyPontoon0x4c::Field0x2c* target = runtime->m_materialTables[targetIndex];
+			MaterialTable0x0c* target = runtime->m_materialTables[targetIndex];
 			if (target == NULL) {
 				target = runtime->m_models[targetIndex]->GetMaterialTable();
 			}

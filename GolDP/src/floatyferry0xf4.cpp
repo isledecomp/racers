@@ -91,15 +91,40 @@ void FloatyFerry0xf4::VTable0x54()
 // STUB: GOLDP 0x10023580
 void FloatyFerry0xf4::VTable0x5c(LegoU32)
 {
-	// TODO
 	STUB(0x10023580);
 }
 
-// STUB: GOLDP 0x10023940
-void FloatyFerry0xf4::FUN_10023940(IGdbModel0x40*, WhiteFalconNode0x18*, CmbModelPart0x34*, LegoFloat)
+// FUNCTION: GOLDP 0x10023940
+void FloatyFerry0xf4::FUN_10023940(
+	IGdbModel0x40* p_model,
+	WhiteFalconNode0x18* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_modelDistance
+)
 {
-	// TODO
-	STUB(0x10023940);
+	LegoU32 i;
+
+	for (i = 0; i < 2; i++) {
+		if (m_models[i] == NULL) {
+			break;
+		}
+		if (p_modelDistance < m_modelDistances[i]) {
+			LegoU32 j;
+			for (j = 2; j > i; j--) {
+				m_models[j] = m_models[j - 1];
+				m_nodes[j] = m_nodes[j - 1];
+				m_modelParts[j] = m_modelParts[j - 1];
+				m_modelDistances[j] = m_modelDistances[j - 1];
+			}
+			break;
+		}
+	}
+
+	m_models[i] = p_model;
+	m_nodes[i] = p_node;
+	m_partIndices[i] = -1;
+	m_modelParts[i] = p_modelParts;
+	m_modelDistances[i] = p_modelDistance;
 }
 
 // FUNCTION: GOLDP 0x100239e0
@@ -158,7 +183,6 @@ void FloatyFerry0xf4::FUN_10023a70(LegoU32 p_partIndex)
 // STUB: GOLDP 0x10023b10
 void FloatyFerry0xf4::VTable0x10(LegoS32)
 {
-	// TODO
 	STUB(0x10023b10);
 }
 

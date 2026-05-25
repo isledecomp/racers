@@ -66,7 +66,7 @@ void PurpleRibbon0x24::Clear()
 }
 
 // FUNCTION: GOLDP 0x10015af0
-GoldDune0x38* PurpleRibbon0x24::GetItem(LegoU32 p_index)
+PurpleDune0x7c* PurpleRibbon0x24::GetItem(LegoU32 p_index)
 {
 	return &m_items[p_index];
 }

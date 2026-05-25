@@ -87,7 +87,7 @@ void MagentaRibbon0x20::VTable0x24(BronzeFalcon0xc8770* p_renderer, const LegoCh
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		GolName textureName;
+		GolName textureName = {0};
 		ColorRGBA colorKey;
 		LegoU16 mipmapCount = 0;
 		LegoU16 flags = 0;
@@ -98,7 +98,7 @@ void MagentaRibbon0x20::VTable0x24(BronzeFalcon0xc8770* p_renderer, const LegoCh
 		colorKey.m_alp = 0;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
-		GoldDune0x38* texture = GetItem(i);
+		PurpleDune0x7c* texture = GetItem(i);
 		::strncpy(textureName, parser->ReadStringWithMaxLength(sizeof(textureName)), sizeof(textureName));
 
 		if (m_renderer->FindTextureByName(textureName) != NULL) {
@@ -146,6 +146,7 @@ void MagentaRibbon0x20::VTable0x24(BronzeFalcon0xc8770* p_renderer, const LegoCh
 		}
 
 		flags |= GoldDune0x38::c_unk0x36Bit11;
+		texture->SetName(textureName);
 		texture->SetTextureDefinition(mipmapCount, flags, colorKey);
 	}
 
@@ -196,13 +197,13 @@ void MagentaRibbon0x20::LoadTextures()
 	}
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		GoldDune0x38* texture = GetItem(i);
+		PurpleDune0x7c* texture = GetItem(i);
 		if (texture->GetPixelFlags() & SilverDune0x30::c_lockRequestRead) {
 			continue;
 		}
 
-		GolName textureName;
-		GetNameByValue(texture, textureName);
+		LegoChar textureName[sizeof(GolName) + 1];
+		texture->CopyNameToBuffer(textureName);
 		if (textureName[0] == '\0') {
 			continue;
 		}

@@ -5,6 +5,9 @@
 #include "bluebellfog0x4.h"
 #include "bronzefalcon0xc8770.h"
 #include "floatyboat0x28.h"
+#include "floatycanoe0x90.h"
+#include "floatyferry0xf4.h"
+#include "floatyfrigate0x9c.h"
 #include "gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
@@ -166,7 +169,7 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::FUN_00404c90()
 	STUB(0x00404c90);
 
 	if (!m_unk0x24) {
-		char message[64];
+		LegoChar message[64];
 
 		switch (m_unk0x20) {
 		case 1:
@@ -361,7 +364,7 @@ void SaffronQuartz0x2c::Frame0xb8::Camera0x34::VTable0x10(Frame0xb8* p_frame, Bl
 		if (!m_unk0x20) {
 			m_unk0x20 = m_unk0x2c->FUN_00406de0(m_unk0x24);
 			if (!m_unk0x20) {
-				char message[64];
+				LegoChar message[64];
 				::strncpy(message, m_unk0x24, sizeof(m_unk0x24));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find named camera");
@@ -371,7 +374,7 @@ void SaffronQuartz0x2c::Frame0xb8::Camera0x34::VTable0x10(Frame0xb8* p_frame, Bl
 
 		p_frame->FUN_004066d0(m_unk0x20);
 		if (m_unk0x30 >= 0 && m_unk0x20->m_unk0x28) {
-			m_unk0x20->m_unk0x28->FUN_0040dad0((undefined2) m_unk0x30);
+			m_unk0x20->m_unk0x28->FUN_0040dad0(static_cast<undefined2>(m_unk0x30));
 		}
 
 		Event0x20::VTable0x10(p_frame, p_event);
@@ -424,9 +427,9 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::FUN_00405280(GolFile
 			break;
 		case GolFileParser::e_unknown0x38: {
 			ColorRGBA color;
-			color.m_red = (LegoU8) p_parser->ReadInteger();
-			color.m_grn = (LegoU8) p_parser->ReadInteger();
-			color.m_blu = (LegoU8) p_parser->ReadInteger();
+			color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
+			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
+			color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_alp = 0xff;
 			m_unk0x20.SetColor(color);
 			break;
@@ -440,8 +443,8 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::FUN_00405280(GolFile
 			break;
 		}
 		case GolFileParser::e_unknown0x3c:
-			m_unk0x30 = (LegoU32) ((LegoFloat) p_parser->ReadInteger() * 33.333328f);
-			m_unk0x34 = (LegoU32) ((LegoFloat) p_parser->ReadInteger() * 33.333328f);
+			m_unk0x30 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_unk0x34 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x3c |= 1;
 			break;
 		default:
@@ -490,8 +493,8 @@ void SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::VTable0x04(undefined4 p
 	STUB(0x004054a0);
 
 	if (m_unk0x3c & 1) {
-		if ((LegoU32) p_elapsedMs <= m_unk0x38) {
-			m_unk0x38 -= (LegoU32) p_elapsedMs;
+		if (static_cast<LegoU32>(p_elapsedMs) <= m_unk0x38) {
+			m_unk0x38 -= static_cast<LegoU32>(p_elapsedMs);
 		}
 		else if (m_unk0x3c & 2) {
 			m_unk0x3c &= ~2;
@@ -625,16 +628,16 @@ void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::FUN_00405630(GolFileParser*
 			break;
 		case GolFileParser::e_unknown0x38: {
 			ColorRGBA color;
-			color.m_red = (LegoU8) p_parser->ReadInteger();
-			color.m_grn = (LegoU8) p_parser->ReadInteger();
-			color.m_blu = (LegoU8) p_parser->ReadInteger();
+			color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
+			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
+			color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_alp = 0xff;
 			m_unk0x20.SetColor(color);
 			break;
 		}
 		case GolFileParser::e_unknown0x3c:
-			m_unk0x24 = (LegoU32) ((LegoFloat) p_parser->ReadInteger() * 33.333328f);
-			m_unk0x28 = (LegoU32) ((LegoFloat) p_parser->ReadInteger() * 33.333328f);
+			m_unk0x24 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_unk0x28 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x30 |= 1;
 			break;
 		default:
@@ -682,8 +685,8 @@ void SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::VTable0x04(undefined4 p_ela
 	STUB(0x00405810);
 
 	if (m_unk0x30 & 1) {
-		if ((LegoU32) p_elapsedMs <= m_unk0x2c) {
-			m_unk0x2c -= (LegoU32) p_elapsedMs;
+		if (static_cast<LegoU32>(p_elapsedMs) <= m_unk0x2c) {
+			m_unk0x2c -= static_cast<LegoU32>(p_elapsedMs);
 		}
 		else if (m_unk0x30 & 2) {
 			m_unk0x30 &= ~2;
@@ -1066,18 +1069,18 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406390(LegoS32 p_elapsedMs)
 		FUN_004065d0(m_unk0x48, frame);
 
 		if (m_unk0x58 == m_unk0x54) {
-			m_unk0xa4 = (LegoFloat) ((double) p_elapsedMs + m_unk0xa4);
+			m_unk0xa4 = static_cast<LegoFloat>(static_cast<double>(p_elapsedMs) + m_unk0xa4);
 		}
 		else {
-			double frameElapsed = (double) (LegoS32) (elapsed - m_unk0x50);
-			frameElapsed = frameElapsed / (double) (LegoS32) m_unk0x54;
-			m_unk0xa4 = (LegoFloat) (frameElapsed + m_unk0xa4);
+			double frameElapsed = static_cast<double>(static_cast<LegoS32>(elapsed - m_unk0x50));
+			frameElapsed = frameElapsed / static_cast<double>(static_cast<LegoS32>(m_unk0x54));
+			m_unk0xa4 = static_cast<LegoFloat>(frameElapsed + m_unk0xa4);
 		}
 
 		if (m_unk0xa4 >= 1.0f) {
-			LegoS32 ticks = (LegoS32) m_unk0xa4;
+			LegoS32 ticks = static_cast<LegoS32>(m_unk0xa4);
 			FUN_004065a0(ticks);
-			m_unk0xa4 = m_unk0xa4 - (LegoFloat) ticks;
+			m_unk0xa4 = m_unk0xa4 - static_cast<LegoFloat>(ticks);
 		}
 
 		m_unk0x50 = elapsed;

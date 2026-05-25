@@ -1,0 +1,161 @@
+#include "gdbpartvertexpool0x14.h"
+
+#include "golerror.h"
+#include "golfileparser.h"
+
+#include <string.h>
+
+DECOMP_SIZE_ASSERT(GdbPartVertexPool0x14, 0x14)
+DECOMP_SIZE_ASSERT(GdbPartVertexPool0x14::Vertex0x0e, 0x0e)
+DECOMP_SIZE_ASSERT(GdbPartVertexPool0x14::Vertex0x0e::Tail0x04, 0x04)
+DECOMP_SIZE_ASSERT(GdbPartVertexPool0x14::Vertex0x0e::Tail0x04::Normal0x04, 0x04)
+
+static const LegoFloat g_gdbPartScaleNumerator = 1.0f;
+static const LegoFloat g_gdbPartTexCoordDivisor = 4096.0f;
+static const LegoFloat g_gdbPartNormalDivisor = 127.0f;
+
+// GLOBAL: LEGORACERS 0x004c2854
+static LegoFloat g_gdbPartNormalScale = g_gdbPartScaleNumerator / g_gdbPartNormalDivisor;
+
+// GLOBAL: LEGORACERS 0x004c2858
+static LegoFloat g_gdbPartTexCoordScale = g_gdbPartScaleNumerator / g_gdbPartTexCoordDivisor;
+
+// FUNCTION: LEGORACERS 0x00407fe0
+GdbPartVertexPool0x14::GdbPartVertexPool0x14()
+{
+	m_vertices = NULL;
+	m_unk0x10 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00408020
+GdbPartVertexPool0x14::~GdbPartVertexPool0x14()
+{
+	Clear();
+}
+
+// FUNCTION: LEGORACERS 0x00408070
+void GdbPartVertexPool0x14::Read(GolFileParser& p_parser, LegoU16 p_vertexType)
+{
+	if (m_count != 0) {
+		Clear();
+	}
+
+	m_vertexType = p_vertexType;
+	m_count = static_cast<LegoU16>(p_parser.ReadBracketedCountAndLeftCurly());
+	if (m_count == 0) {
+		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
+	}
+
+	m_vertices = new Vertex0x0e[m_count];
+	if (m_vertices == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+	::memset(m_vertices, 0, sizeof(*m_vertices) * m_count);
+
+	Vertex0x0e* vertex = m_vertices;
+	Vertex0x0e* end = m_vertices + m_count;
+	if (m_vertexType == 1) {
+		while (vertex < end) {
+			vertex->m_x = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_y = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_z = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_u = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_v = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_argb = static_cast<LegoU8>(p_parser.ReadInteger());
+			vertex++;
+		}
+	}
+	else {
+		while (vertex < end) {
+			vertex->m_x = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_y = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_z = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_u = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_v = static_cast<LegoS16>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_parser.ReadInteger());
+			vertex++;
+		}
+	}
+
+	p_parser.ReadRightCurly();
+}
+
+// FUNCTION: LEGORACERS 0x00408200
+void GdbPartVertexPool0x14::Clear()
+{
+	if (m_vertices != NULL) {
+		delete[] m_vertices;
+		m_vertices = NULL;
+	}
+	m_unk0x10 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00408230
+void GdbPartVertexPool0x14::GetPosition(LegoU32 p_index, GolVec3* p_dest) const
+{
+	const Vertex0x0e& vertex = m_vertices[p_index];
+	p_dest->m_x = static_cast<LegoFloat>(vertex.m_x);
+	p_dest->m_y = static_cast<LegoFloat>(vertex.m_y);
+	p_dest->m_z = static_cast<LegoFloat>(vertex.m_z);
+}
+
+// FUNCTION: LEGORACERS 0x00408280
+void GdbPartVertexPool0x14::GetTexCoord(LegoU32 p_index, GolVec2* p_dest) const
+{
+	const Vertex0x0e& vertex = m_vertices[p_index];
+	p_dest->m_x = static_cast<LegoFloat>(vertex.m_u) * g_gdbPartTexCoordScale;
+	p_dest->m_y = static_cast<LegoFloat>(vertex.m_v) * g_gdbPartTexCoordScale;
+}
+
+// FUNCTION: LEGORACERS 0x004082d0
+void GdbPartVertexPool0x14::GetNormal(LegoU32 p_index, GolVec3* p_dest) const
+{
+	const Vertex0x0e& vertex = m_vertices[p_index];
+	p_dest->m_x = static_cast<LegoFloat>(vertex.m_tail.m_normal.m_nx) * g_gdbPartNormalScale;
+	p_dest->m_y = static_cast<LegoFloat>(vertex.m_tail.m_normal.m_ny) * g_gdbPartNormalScale;
+	p_dest->m_z = static_cast<LegoFloat>(vertex.m_tail.m_normal.m_nz) * g_gdbPartNormalScale;
+}
+
+// FUNCTION: LEGORACERS 0x00408330
+void GdbPartVertexPool0x14::GetColor(LegoU32 p_index, ColorRGBA* p_dest) const
+{
+	*p_dest = m_vertices[p_index].m_tail.m_color;
+}
+
+// FUNCTION: LEGORACERS 0x00408350
+void GdbPartVertexPool0x14::SetPosition(LegoU32 p_index, const GolVec3* p_src)
+{
+	Vertex0x0e* vertex = &m_vertices[p_index];
+	vertex->m_x = static_cast<LegoS16>(p_src->m_x);
+	vertex->m_y = static_cast<LegoS16>(p_src->m_y);
+	vertex->m_z = static_cast<LegoS16>(p_src->m_z);
+}
+
+// FUNCTION: LEGORACERS 0x00408390
+void GdbPartVertexPool0x14::SetTexCoord(LegoU32 p_index, const GolVec2* p_src)
+{
+	Vertex0x0e* vertex = &m_vertices[p_index];
+	vertex->m_u = static_cast<LegoS16>(g_gdbPartTexCoordDivisor * p_src->m_x);
+	vertex->m_v = static_cast<LegoS16>(p_src->m_y * 4096.0f);
+}
+
+// FUNCTION: LEGORACERS 0x004083e0
+void GdbPartVertexPool0x14::SetNormal(LegoU32 p_index, const GolVec3* p_src)
+{
+	Vertex0x0e* vertex = &m_vertices[p_index];
+	vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(g_gdbPartNormalDivisor * p_src->m_x);
+	vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_src->m_y * 127.0f);
+	vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_src->m_z * 127.0f);
+	vertex->m_tail.m_normal.m_argb = 0xff;
+}
+
+// FUNCTION: LEGORACERS 0x00408440
+void GdbPartVertexPool0x14::SetColor(LegoU32 p_index, const ColorRGBA* p_src)
+{
+	m_vertices[p_index].m_tail.m_color = *p_src;
+}

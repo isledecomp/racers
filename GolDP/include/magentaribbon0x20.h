@@ -8,6 +8,7 @@
 
 class BronzeFalcon0xc8770;
 class GoldDune0x38;
+class PurpleDune0x7c;
 
 // SIZE 0x1fc
 // VTABLE: GOLDP 0x100575d8
@@ -66,8 +67,8 @@ public:
 		BronzeFalcon0xc8770* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                                  // vtable+0x24
-	virtual GoldDune0x38* GetItem(LegoU32 p_index) = 0; // vtable+0x28
+	);                                                    // vtable+0x24
+	virtual PurpleDune0x7c* GetItem(LegoU32 p_index) = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x1002b500
 	// MagentaRibbon0x20::`scalar deleting destructor'

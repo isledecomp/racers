@@ -202,9 +202,11 @@ void SilverHollow0xb8::FUN_00411510(LegoU32 p_index, GolVec3* p_destVec, LegoFlo
 	}
 }
 
-// FUNCTION: LEGORACERS 0x00411560
+// STUB: LEGORACERS 0x00411560
 void SilverHollow0xb8::VTable0x1c(WhiteFalcon0x140& p_renderer)
 {
+	STUB(0x00411560);
+
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
 		if (m_unk0x60 == 0 && m_unk0x62 == 0) {
 			if (m_flags & c_flagBit2) {
@@ -223,10 +225,16 @@ void SilverHollow0xb8::VTable0x1c(WhiteFalcon0x140& p_renderer)
 	p_renderer.VTable0x94(this);
 }
 
-// STUB: LEGORACERS 0x004115f0
-void SilverHollow0xb8::VTable0x24(TransformPayload0x20*)
+// FUNCTION: LEGORACERS 0x004115f0
+void SilverHollow0xb8::VTable0x24(ColorTransform0x20* p_transform)
 {
-	STUB(0x004115f0);
+	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
+		IGdbModel0x40* model = m_models[i];
+		if (model == NULL) {
+			break;
+		}
+		model->VTable0x3c(*p_transform);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00411620

@@ -11,7 +11,7 @@ class GdbVertexArray0xc;
 class GolFileParser;
 struct GolVec3;
 class IGdbModelIndexArray0x8;
-struct PixelFormatMod;
+struct ColorTransform0x20;
 class WhiteFalcon0x140;
 
 // VTABLE: GOLDP 0x100570bc
@@ -46,18 +46,23 @@ public:
 	virtual void VTable0x30(IGdbModelIndexArray0x8**) const;                                            // vtable+0x30
 	virtual void VTable0x34(LegoU32);                                                                   // vtable+0x34
 	virtual void VTable0x38(GolVec3*, LegoFloat*, LegoFloat) const;                                     // vtable+0x38
-	virtual void VTable0x3c(const PixelFormatMod&);                                                     // vtable+0x3c
+	virtual void VTable0x3c(const ColorTransform0x20&);                                                 // vtable+0x3c
 	virtual void VTable0x40();                                                                          // vtable+0x40
 
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
 	ShadowWolf0xc* GetMaterialTable() { return &m_unk0x04; }
+	GdbVertexArray0xc* GetVertexArray() const { return m_unk0x10; }
+	IGdbModelIndexArray0x8* GetIndexArray() const { return m_unk0x18; }
 	const GolVec3& GetCenter() const { return m_unk0x28; }
 	const GolVec3& GetBoundingCenter() const { return m_unk0x28; }
 	LegoFloat GetRadius() const { return m_unk0x34; }
 	LegoFloat GetBoundingRadius() const { return m_unk0x34; }
 	LegoFloat GetScale() const { return m_unk0x38; }
+	void SetScale(LegoFloat p_scale) { m_unk0x38 = p_scale; }
+	void SetDirty(LegoBool32 p_dirty) { m_unk0x3c = p_dirty; }
 	LegoU32 GetGroupCount() const { return m_countGroups; }
 	const LegoU32* GetGroups() const { return m_unk0x24; }
+	LegoU32* GetMutableGroups() { return m_unk0x24; }
 
 	// SYNTHETIC: GOLDP 0x10027070
 	// IGdbModel0x40::`scalar deleting destructor'

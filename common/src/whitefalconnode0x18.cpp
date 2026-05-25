@@ -65,7 +65,7 @@ void WhiteFalconNode0x18::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary
 }
 
 // STUB: GOLDP 0x10029b50
-void WhiteFalconNode0x18::VTable0x10(undefined4)
+void WhiteFalconNode0x18::VTable0x10(WhiteFalconNode0x18*)
 {
 	STUB(0x10029b50);
 }

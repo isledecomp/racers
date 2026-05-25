@@ -118,28 +118,28 @@ class WdbTxtParser : public GolTxtParser {
 class ZoweeBlubberworth0xf0 {
 public:
 	ZoweeBlubberworth0xf0();
-	virtual void VTable0x00();                                                                      // vtable+0x00
-	virtual void VTable0x04();                                                                      // vtable+0x04
-	virtual void VTable0x08() = 0;                                                                  // vtable+0x08
-	virtual undefined4* VTable0x0c() = 0;                                                           // vtable+0x0c
-	virtual ~ZoweeBlubberworth0xf0();                                                               // vtable+0x10
-	virtual void VTable0x14(WhiteFalcon0x140*, const LegoChar* p_name, LegoBool32 p_binary, float); // vtable+0x14
-	virtual void VTable0x18();                                                                      // vtable+0x18
-	virtual void VTable0x1c(WhiteFalcon0x140*) = 0;                                                 // vtable+0x1c
-	virtual void VTable0x20(WhiteFalcon0x140*) = 0;                                                 // vtable+0x20
-	virtual void VTable0x24(WhiteFalcon0x140*) = 0;                                                 // vtable+0x24
-	virtual void VTable0x28(WhiteFalcon0x140*) = 0;                                                 // vtable+0x28
-	virtual MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const = 0;                               // vtable+0x2c
-	virtual AmberHaze0x1c* VTable0x30(LegoU32 p_index) const = 0;                                   // vtable+0x30
-	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) const = 0;                                // vtable+0x34
-	virtual IGdbModel0x40* VTable0x38(LegoU32 p_index) const = 0;                                   // vtable+0x38
-	virtual ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const = 0;                                   // vtable+0x3c
-	virtual WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const = 0;                             // vtable+0x40
-	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) const = 0;                               // vtable+0x44
-	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;                                  // vtable+0x48
-	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;                        // vtable+0x4c
-	virtual AmberLensBase0x120* VTable0x50(LegoU32 p_index) const = 0;                              // vtable+0x50
-	virtual void VTable0x54(undefined4);                                                            // vtable+0x54
+	virtual void VTable0x00();                                                                          // vtable+0x00
+	virtual void VTable0x04();                                                                          // vtable+0x04
+	virtual void VTable0x08() = 0;                                                                      // vtable+0x08
+	virtual undefined4* VTable0x0c() = 0;                                                               // vtable+0x0c
+	virtual ~ZoweeBlubberworth0xf0();                                                                   // vtable+0x10
+	virtual void VTable0x14(WhiteFalcon0x140*, const LegoChar* p_name, LegoBool32 p_binary, LegoFloat); // vtable+0x14
+	virtual void VTable0x18();                                                                          // vtable+0x18
+	virtual void VTable0x1c(WhiteFalcon0x140*) = 0;                                                     // vtable+0x1c
+	virtual void VTable0x20(WhiteFalcon0x140*) = 0;                                                     // vtable+0x20
+	virtual void VTable0x24(WhiteFalcon0x140*) = 0;                                                     // vtable+0x24
+	virtual void VTable0x28(WhiteFalcon0x140*) = 0;                                                     // vtable+0x28
+	virtual MagentaRibbon0x20* VTable0x2c(LegoU32 p_index) const = 0;                                   // vtable+0x2c
+	virtual AmberHaze0x1c* VTable0x30(LegoU32 p_index) const = 0;                                       // vtable+0x30
+	virtual CmbModelPart0x34* VTable0x34(LegoU32 p_index) const = 0;                                    // vtable+0x34
+	virtual IGdbModel0x40* VTable0x38(LegoU32 p_index) const = 0;                                       // vtable+0x38
+	virtual ShadowWolf0xc* VTable0x3c(LegoU32 p_index) const = 0;                                       // vtable+0x3c
+	virtual WhiteFalconNode0x18* VTable0x40(LegoU32 p_index) const = 0;                                 // vtable+0x40
+	virtual BoundingShape0x2c* VTable0x44(LegoU32 p_index) const = 0;                                   // vtable+0x44
+	virtual FloatyBoat0x28* VTable0x48(LegoU32 p_index) const = 0;                                      // vtable+0x48
+	virtual MabMaterialAnimation0x14* VTable0x4c(LegoU32 p_index) const = 0;                            // vtable+0x4c
+	virtual AmberLensBase0x120* VTable0x50(LegoU32 p_index) const = 0;                                  // vtable+0x50
+	virtual void VTable0x54(undefined4);                                                                // vtable+0x54
 
 	// SYNTHETIC: GOLDP 0x1002c0c0
 	// ZoweeBlubberworth0xf0::`scalar deleting destructor'
@@ -151,33 +151,44 @@ public:
 	LegoU32 GetUnk0x2c() const { return m_unk0x2c; }
 	LegoU32 GetUnk0x34() const { return m_unk0x34; }
 	LegoU32 GetUnk0x3c() const { return m_unk0x3c; }
+	LegoU32 GetUnk0x54() const { return m_unk0x54; }
+	LegoU32 GetUnk0x5c() const { return m_unk0x5c; }
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 	LegoU32 GetUnk0x74() const { return m_unk0x74; }
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
+	FloatyFerry0xf4* GetUnk0xa0() const { return m_unk0xa0; }
 	const WhiteFalcon0x140::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
 	const WhiteFalcon0x140::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);
-	FloatyBoat0x28* FindUnk0xb4(const LegoChar* p_name) const
+	GolNameTable::Entry* GetUnk0xc0NameEntries() const { return m_unk0xc0.GetNameEntries(); }
+	FloatyFerry0xf4* GetUnk0xc0Name(const LegoChar* p_name) const
 	{
-		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xb4.GetName(p_name)) : NULL;
+		return static_cast<FloatyFerry0xf4*>(m_unk0xc0.GetName(p_name));
 	}
-	FloatyBoat0x28* FindUnk0xc0(const LegoChar* p_name) const
+	FloatyCanoe0x90* FindUnk0xb4(const LegoChar* p_name) const
 	{
-		return m_unk0xc0.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xc0.GetName(p_name)) : NULL;
+		return m_unk0xb4.GetNameEntries() ? static_cast<FloatyCanoe0x90*>(m_unk0xb4.GetName(p_name)) : NULL;
 	}
-	FloatyBoat0x28* FindUnk0xcc(const LegoChar* p_name) const
+	FloatyFerry0xf4* FindUnk0xc0(const LegoChar* p_name) const
 	{
-		return m_unk0xcc.GetNameEntries() ? static_cast<FloatyBoat0x28*>(m_unk0xcc.GetName(p_name)) : NULL;
+		if (m_unk0xc0.GetNameEntries() == NULL) {
+			return NULL;
+		}
+		return static_cast<FloatyFerry0xf4*>(m_unk0xc0.GetName(p_name));
+	}
+	FloatyFrigate0x9c* FindUnk0xcc(const LegoChar* p_name) const
+	{
+		return m_unk0xcc.GetNameEntries() ? static_cast<FloatyFrigate0x9c*>(m_unk0xcc.GetName(p_name)) : NULL;
 	}
 	AmberLens0x344* FindUnk0xe4(const LegoChar* p_name) const
 	{
 		return m_unk0xe4.GetNameEntries() ? static_cast<AmberLens0x344*>(m_unk0xe4.GetName(p_name)) : NULL;
 	}
 
-private:
+protected:
 	void Reset();
 	void FUN_1002c7b0(GolFileParser&);
 	void FUN_1002c840(GolFileParser&);

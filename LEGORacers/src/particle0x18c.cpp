@@ -22,7 +22,7 @@ Particle0x18c::~Particle0x18c()
 }
 
 // STUB: LEGORACERS 0x00489520
-void Particle0x18c::FUN_00489520(LegoU32 p_param1, GolExport* p_param2)
+void Particle0x18c::FUN_00489520(GolExport* p_golExport, BronzeFalcon0xc8770* p_renderer)
 {
 	STUB(0x00489540);
 }

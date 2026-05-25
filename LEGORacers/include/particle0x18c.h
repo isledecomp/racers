@@ -15,7 +15,7 @@ public:
 	~Particle0x18c();
 
 	LegoU8 GetFlags() const { return m_flags; }
-	void FUN_00489520(LegoU32 p_param1, GolExport* p_param2);
+	void FUN_00489520(GolExport* p_golExport, BronzeFalcon0xc8770* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);
 	void FUN_004897e0(LegoU32 p_elapsedMs);

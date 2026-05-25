@@ -164,15 +164,15 @@ void CrimsonPebbleAnimation0x33c::FUN_00489af0(
 		for (i = 0; i < m_unk0x334; i++) {
 			m_unk0x010[i].Parse(p_materialAnimation, p_renderer, parser, this);
 		}
-	}
 
-	parser->ReadRightCurly();
+		parser->ReadRightCurly();
+	}
 
 	parser->Dispose();
 	delete parser;
 
 	for (i = 0; i < m_numParticles; i++) {
-		m_particles[i].FUN_00489520(p_numParticles, p_golExport);
+		m_particles[i].FUN_00489520(p_golExport, p_renderer);
 	}
 }
 
@@ -377,6 +377,7 @@ CrimsonPebbleEvent0x14::CrimsonPebbleEvent0x14()
 // FUNCTION: LEGORACERS 0x0049fdb0
 CrimsonPebbleEvent0x14::~CrimsonPebbleEvent0x14()
 {
+	// empty
 }
 
 // FUNCTION: LEGORACERS 0x0049fdc0

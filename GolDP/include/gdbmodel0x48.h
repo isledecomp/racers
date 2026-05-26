@@ -18,6 +18,15 @@ public:
 		e_vertexType3 = 3,
 	};
 
+	enum GdbModelGroupType {
+		c_groupTypeMask = 0xe0000000,
+		c_groupTypeTriangles = 0x00000000,
+		c_groupTypeTriangleBatch = 0x20000000,
+		c_groupTypeMaterial = 0x80000000,
+		c_groupTypeMatrix = 0xa0000000,
+		c_groupTypeEnd = 0xc0000000,
+	};
+
 	GdbModel0x48();
 	~GdbModel0x48() override; // vtable+0x20
 
@@ -35,12 +44,14 @@ public:
 	void VTable0x1c(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
 	void VTable0x24() override;                                                                          // vtable+0x24
 	void FUN_10006c50(BronzeFalcon0xc8770* p_renderer, ShadowWolf0xc* p_materialTable);
+	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
+	GdbVertexArray0xc* GetModelVertexArray() const { return m_unk0x40; }
 
 	// SYNTHETIC: GOLDP 0x100178e0
 	// GdbModel0x48::`vector deleting destructor'
 
 private:
-	GdbVertexArray0xc* m_unk0x40;     // 0x44
+	GdbVertexArray0xc* m_unk0x40;     // 0x40
 	undefined m_unk0x44[0x48 - 0x44]; // 0x44
 };
 

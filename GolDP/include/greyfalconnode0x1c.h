@@ -7,6 +7,7 @@
 
 class JadeOrbitBase0x10;
 class JadeOrbit0xd0;
+class BronzeFalcon0xc8770;
 struct GolMatrix4;
 
 // VTABLE: GOLDP 0x1005672c
@@ -30,6 +31,8 @@ public:
 	// GreyFalconNode0x1c::`vector deleting destructor'
 
 private:
+	friend class BronzeFalcon0xc8770;
+
 	JadeOrbit0xd0* m_unk0x18; // 0x18
 };
 

@@ -8,6 +8,7 @@
 #include "gdbmodel0x48.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
+#include "gdbvertexarraytypetwo0x20.h"
 #include "golddune0x38.h"
 #include "goldrawdpstate.h"
 #include "golerror.h"
@@ -16,6 +17,7 @@
 #include "golsurfaceformat.h"
 #include "greyfalconnode0x1c.h"
 #include "igdbmodel0x40.h"
+#include "jadeorbit0xd0.h"
 #include "purpledune0x7c.h"
 #include "rectangle.h"
 #include "utopianpan0xa4.h"
@@ -26,9 +28,36 @@
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770, 0xc8770)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::TextureFormat, 0x18)
 DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::Field0xc83b4, 0x10)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::VertexCacheEntry, 0x20)
+DECOMP_SIZE_ASSERT(BronzeFalcon0xc8770::CommandVertex, 0x20)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
 DECOMP_SIZE_ASSERT(D3DTLVERTEX, 0x20)
 DECOMP_SIZE_ASSERT(Rect, 0x10)
+
+inline static LegoS32 ClampModelColorChannel(LegoS32 p_value, LegoS32 p_minimum)
+{
+	if (p_value < p_minimum) {
+		p_value = p_minimum;
+	}
+	if (p_value > 0xff) {
+		p_value = 0xff;
+	}
+
+	return p_value;
+}
+
+inline static LegoU32 BuildModelClipFlags(const BronzeFalcon0xc8770::VertexCacheEntry& p_vertex)
+{
+	const LegoU32 x = *reinterpret_cast<const LegoU32*>(&p_vertex.m_x);
+	const LegoU32 y = *reinterpret_cast<const LegoU32*>(&p_vertex.m_y);
+	const LegoU32 z = *reinterpret_cast<const LegoU32*>(&p_vertex.m_z);
+	const LegoU32 w = *reinterpret_cast<const LegoU32*>(&p_vertex.m_w);
+
+	LegoU32 lowFlags = (x >> 31) | ((y & 0x80000000) >> 29) | ((z & 0x80000000) >> 27);
+	LegoU32 highFlags =
+		(((w - x) & 0x80000000) >> 30) | (((w - y) & 0x80000000) >> 28) | (((w - z) & 0x80000000) >> 26);
+	return lowFlags | (highFlags & ~(lowFlags << 1));
+}
 
 // GLOBAL: GOLDP 0x10056540
 const D3DCMPFUNC g_d3dCmpFuncLookup[] = {
@@ -85,15 +114,29 @@ BronzeFalconDrawFunction BronzeFalcon0xc8770::g_unk0x1005c8a8[8] = {
 };
 
 // GLOBAL: GOLDP 0x1005c8c8
-BronzeFalconDrawFunction BronzeFalcon0xc8770::g_unk0x1005c8c8[8] = {
-	&BronzeFalcon0xc8770::FUN_1000c160,
-	&BronzeFalcon0xc8770::FUN_1000c2d0,
-	&BronzeFalcon0xc8770::FUN_1000bfb0,
-	&BronzeFalcon0xc8770::FUN_1000c470,
-	&BronzeFalcon0xc8770::FUN_1000be20,
-	&BronzeFalcon0xc8770::FUN_1000c2d0,
-	&BronzeFalcon0xc8770::FUN_1000bfb0,
-	&BronzeFalcon0xc8770::FUN_1000c470,
+BronzeFalconDrawFunction BronzeFalcon0xc8770::g_unk0x1005c8c8[64] = {
+	&BronzeFalcon0xc8770::FUN_1000c160, &BronzeFalcon0xc8770::FUN_1000c2d0, &BronzeFalcon0xc8770::FUN_1000bfb0,
+	&BronzeFalcon0xc8770::FUN_1000c470, &BronzeFalcon0xc8770::FUN_1000be20, &BronzeFalcon0xc8770::FUN_1000c2d0,
+	&BronzeFalcon0xc8770::FUN_1000bfb0, &BronzeFalcon0xc8770::FUN_1000c470, &BronzeFalcon0xc8770::FUN_1000caf0,
+	&BronzeFalcon0xc8770::FUN_1000cd20, &BronzeFalcon0xc8770::FUN_1000c880, &BronzeFalcon0xc8770::FUN_1000cf90,
+	&BronzeFalcon0xc8770::FUN_1000c630, &BronzeFalcon0xc8770::FUN_1000cd20, &BronzeFalcon0xc8770::FUN_1000c880,
+	&BronzeFalcon0xc8770::FUN_1000cf90, &BronzeFalcon0xc8770::FUN_1000baa0, &BronzeFalcon0xc8770::FUN_1000bc40,
+	&BronzeFalcon0xc8770::FUN_1000bfb0, &BronzeFalcon0xc8770::FUN_1000c470, &BronzeFalcon0xc8770::FUN_1000b8e0,
+	&BronzeFalcon0xc8770::FUN_1000c2d0, &BronzeFalcon0xc8770::FUN_1000bfb0, &BronzeFalcon0xc8770::FUN_1000c470,
+	&BronzeFalcon0xc8770::FUN_1000caf0, &BronzeFalcon0xc8770::FUN_1000cd20, &BronzeFalcon0xc8770::FUN_1000c880,
+	&BronzeFalcon0xc8770::FUN_1000cf90, &BronzeFalcon0xc8770::FUN_1000c630, &BronzeFalcon0xc8770::FUN_1000cd20,
+	&BronzeFalcon0xc8770::FUN_1000c880, &BronzeFalcon0xc8770::FUN_1000cf90, &BronzeFalcon0xc8770::FUN_1000e010,
+	&BronzeFalcon0xc8770::FUN_1000e010, &BronzeFalcon0xc8770::FUN_1000e010, &BronzeFalcon0xc8770::FUN_1000e010,
+	&BronzeFalcon0xc8770::FUN_1000e180, &BronzeFalcon0xc8770::FUN_1000e180, &BronzeFalcon0xc8770::FUN_1000e790,
+	&BronzeFalcon0xc8770::FUN_1000e790, &BronzeFalcon0xc8770::FUN_1000e310, &BronzeFalcon0xc8770::FUN_1000e310,
+	&BronzeFalcon0xc8770::FUN_1000e930, &BronzeFalcon0xc8770::FUN_1000e930, &BronzeFalcon0xc8770::FUN_1000e540,
+	&BronzeFalcon0xc8770::FUN_1000e540, &BronzeFalcon0xc8770::FUN_1000e930, &BronzeFalcon0xc8770::FUN_1000e930,
+	&BronzeFalcon0xc8770::FUN_1000e010, &BronzeFalcon0xc8770::FUN_1000e010, &BronzeFalcon0xc8770::FUN_1000e790,
+	&BronzeFalcon0xc8770::FUN_1000e790, &BronzeFalcon0xc8770::FUN_1000e180, &BronzeFalcon0xc8770::FUN_1000e180,
+	&BronzeFalcon0xc8770::FUN_1000e790, &BronzeFalcon0xc8770::FUN_1000e790, &BronzeFalcon0xc8770::FUN_1000e310,
+	&BronzeFalcon0xc8770::FUN_1000e310, &BronzeFalcon0xc8770::FUN_1000e930, &BronzeFalcon0xc8770::FUN_1000e930,
+	&BronzeFalcon0xc8770::FUN_1000e540, &BronzeFalcon0xc8770::FUN_1000e540, &BronzeFalcon0xc8770::FUN_1000e930,
+	&BronzeFalcon0xc8770::FUN_1000e930,
 };
 
 // FUNCTION: GOLDP 0x100078e0
@@ -188,12 +231,12 @@ void BronzeFalcon0xc8770::Reset()
 	m_unk0xc8524 = 0;
 	m_unk0xc8528 = 0;
 	::memset(&m_unk0xc8530, 0, 0xc854c - 0xc8530);
-	::memset(m_unk0xc854c, 0, sizeof(m_unk0xc854c));
+	::memset(&m_unk0xc854c, 0, sizeof(m_unk0xc854c));
 	m_unk0xc8530 = this;
 	m_unk0xc853c = m_unk0xc428c;
 	m_unk0xc8538 = NULL;
-	m_unk0xc854c[0] = this;
-	m_unk0xc854c[3] = m_unk0xc428c;
+	m_unk0xc854c.m_unk0x00 = this;
+	m_unk0xc854c.m_unk0x0c = m_unk0xc428c;
 	m_unk0xc8410.m_m[0][0] = 1.0f;
 	m_unk0xc8450.m_m[0][0] = 1.0f;
 	m_unk0xc8410.m_m[0][1] = 0.0f;
@@ -1840,10 +1883,66 @@ void BronzeFalcon0xc8770::FUN_1000ac00(GoldDune0x38* p_texture)
 	}
 }
 
-// STUB: GOLDP 0x1000add0
-void BronzeFalcon0xc8770::FUN_1000add0(FloatyBoat0x28*, GdbModel0x48*)
+// FUNCTION: GOLDP 0x1000acf0
+void BronzeFalcon0xc8770::FUN_1000acf0(LegoU32 p_index)
 {
-	STUB(0x1000add0);
+	Field0xc8524* useMatrix = m_unk0xc8524;
+	JadeOrbit0xd0** orbits = &static_cast<GreyFalconNode0x1c*>(m_unk0xc8520)->m_unk0x18;
+	GolMatrix4* matrix;
+	if (useMatrix != NULL) {
+		matrix = &(*orbits)[p_index].m_unk0x90;
+	}
+	else {
+		matrix = &(*orbits)[p_index].m_unk0x50;
+	}
+	m_unk0xc8518 = matrix;
+
+	if (m_unk0xc8568 != 0) {
+		GolMatrix4* lightMatrix = &(*orbits)[p_index].m_unk0x90;
+		for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+			m_unk0xc8644[i].m_x = m_unk0xc85f0[i].m_x * lightMatrix->m_m[0][0];
+			m_unk0xc8644[i].m_y = m_unk0xc85f0[i].m_x * lightMatrix->m_m[1][0];
+			m_unk0xc8644[i].m_z = m_unk0xc85f0[i].m_x * lightMatrix->m_m[2][0];
+
+			m_unk0xc8644[i].m_x += lightMatrix->m_m[0][1] * m_unk0xc85f0[i].m_y;
+			m_unk0xc8644[i].m_y += lightMatrix->m_m[1][1] * m_unk0xc85f0[i].m_y;
+			m_unk0xc8644[i].m_z += lightMatrix->m_m[2][1] * m_unk0xc85f0[i].m_y;
+
+			m_unk0xc8644[i].m_x += m_unk0xc85f0[i].m_z * lightMatrix->m_m[0][2];
+			m_unk0xc8644[i].m_y += m_unk0xc85f0[i].m_z * lightMatrix->m_m[1][2];
+			m_unk0xc8644[i].m_z += m_unk0xc85f0[i].m_z * lightMatrix->m_m[2][2];
+		}
+	}
+}
+
+// FUNCTION: GOLDP 0x1000add0
+void BronzeFalcon0xc8770::FUN_1000add0(FloatyBoat0x28* p_model, GdbModel0x48* p_modelData)
+{
+	FloatyBuoy0x58* model = static_cast<FloatyBuoy0x58*>(p_model);
+	model->FUN_10026c50(&m_unk0xc8450);
+
+	const GolVec3& position = model->GetPosition();
+	m_unk0xc8450.m_m[3][0] = position.m_x;
+	m_unk0xc8450.m_m[3][1] = position.m_y;
+	m_unk0xc8450.m_m[3][2] = position.m_z;
+
+	GdbVertexArrayTypeTwo0x20* vertexArray =
+		static_cast<GdbVertexArrayTypeTwo0x20*>(p_modelData->GetModelVertexArray());
+	m_unk0xc4c1c = vertexArray->GetNormals();
+
+	for (LegoU32 i = 0; i < m_unk0x11c; i++) {
+		m_unk0xc8644[i].m_x = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[0][0];
+		m_unk0xc8644[i].m_y = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[1][0];
+		m_unk0xc8644[i].m_z = m_unk0xc85f0[i].m_x * m_unk0xc8450.m_m[2][0];
+
+		m_unk0xc8644[i].m_x += m_unk0xc8450.m_m[0][1] * m_unk0xc85f0[i].m_y;
+		m_unk0xc8644[i].m_y += m_unk0xc8450.m_m[1][1] * m_unk0xc85f0[i].m_y;
+		m_unk0xc8644[i].m_z += m_unk0xc8450.m_m[2][1] * m_unk0xc85f0[i].m_y;
+
+		m_unk0xc8644[i].m_x += m_unk0xc85f0[i].m_z * m_unk0xc8450.m_m[0][2];
+		m_unk0xc8644[i].m_y += m_unk0xc85f0[i].m_z * m_unk0xc8450.m_m[1][2];
+		m_unk0xc8644[i].m_z += m_unk0xc8450.m_m[2][2] * m_unk0xc85f0[i].m_z;
+	}
 }
 
 // FUNCTION: GOLDP 0x1000aeb0
@@ -2252,76 +2351,1088 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	return TRUE;
 }
 
-// STUB: GOLDP 0x1000be20
-void BronzeFalcon0xc8770::FUN_1000be20(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000b8e0
+void BronzeFalcon0xc8770::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000be20);
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	D3DTLVERTEX* vertex = vertices;
+	for (; position < positionEnd; position++) {
+		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
+		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
+		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+
+		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
+		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
+		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+
+		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
+		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
+		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+
+		vertex->sx += m_unk0xc8518->m_m[3][0];
+		vertex->sy += m_unk0xc8518->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+
+		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
+		vertexMap++;
+		vertex->color = *color;
+		color++;
+		vertex->tu = uv->m_x;
+		vertex->tv = uv->m_y;
+		uv++;
+		vertex->sx *= vertex->rhw;
+		vertex->sy *= vertex->rhw;
+		vertex++;
+	}
+
+	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000bfb0
-void BronzeFalcon0xc8770::FUN_1000bfb0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000baa0
+void BronzeFalcon0xc8770::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000bfb0);
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	D3DTLVERTEX* vertex = vertices;
+	for (; position < positionEnd; position++) {
+		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
+		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
+		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+
+		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
+		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
+		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+
+		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
+		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
+		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+
+		vertex->sx += m_unk0xc8518->m_m[3][0];
+		vertex->sy += m_unk0xc8518->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+
+		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
+		vertexMap++;
+		vertex->color = *color;
+		color++;
+		vertex->sx *= vertex->rhw;
+		vertex->sy *= vertex->rhw;
+		vertex++;
+	}
+
+	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c160
-void BronzeFalcon0xc8770::FUN_1000c160(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000bc40
+void BronzeFalcon0xc8770::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000c160);
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	D3DTLVERTEX* vertex = vertices;
+	for (; position < positionEnd; position++) {
+		vertex->sx = m_unk0xc8518->m_m[0][0] * position->m_x;
+		vertex->sy = m_unk0xc8518->m_m[0][1] * position->m_x;
+		vertex->rhw = m_unk0xc8518->m_m[0][3] * position->m_x;
+
+		vertex->sx += m_unk0xc8518->m_m[1][0] * position->m_y;
+		vertex->sy += m_unk0xc8518->m_m[1][1] * position->m_y;
+		vertex->rhw += m_unk0xc8518->m_m[1][3] * position->m_y;
+
+		vertex->sx += m_unk0xc8518->m_m[2][0] * position->m_z;
+		vertex->sy += m_unk0xc8518->m_m[2][1] * position->m_z;
+		vertex->rhw += m_unk0xc8518->m_m[2][3] * position->m_z;
+
+		vertex->sx += m_unk0xc8518->m_m[3][0];
+		vertex->sy += m_unk0xc8518->m_m[3][1];
+		vertex->rhw = 1.0f / (vertex->rhw + m_unk0xc8518->m_m[3][3]);
+
+		vertexMap[1] = static_cast<LegoU16>(vertexMap[0] + 1);
+		vertexMap++;
+		vertex->color = (*color & 0x00ffffff) | alpha;
+		color++;
+		vertex->tu = uv->m_x;
+		vertex->tv = uv->m_y;
+		uv++;
+		vertex->sx *= vertex->rhw;
+		vertex->sy *= vertex->rhw;
+		vertex++;
+	}
+
+	*vertexMap = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c2d0
-void BronzeFalcon0xc8770::FUN_1000c2d0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000be20
+void BronzeFalcon0xc8770::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000c2d0);
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c470
-void BronzeFalcon0xc8770::FUN_1000c470(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000bfb0
+void BronzeFalcon0xc8770::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000c470);
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000c630
-void BronzeFalcon0xc8770::FUN_1000c630(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000c160
+void BronzeFalcon0xc8770::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000c630);
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000d210
-void BronzeFalcon0xc8770::FUN_1000d210(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000c2d0
+void BronzeFalcon0xc8770::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000d210);
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = (m_unk0xc4c14[sourceIndex] & 0x00ffffff) | alpha;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000d440
-void BronzeFalcon0xc8770::FUN_1000d440(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000c470
+void BronzeFalcon0xc8770::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000d440);
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = (m_unk0xc4c14[sourceIndex] & 0x00ffffff) | alpha;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// STUB: GOLDP 0x1000d5d0
-void BronzeFalcon0xc8770::FUN_1000d5d0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000c630
+void BronzeFalcon0xc8770::FUN_1000c630(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000d5d0);
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+		vertex.tu = uv[i].m_x;
+		vertex.tv = uv[i].m_y;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000d760
-void BronzeFalcon0xc8770::FUN_1000d760(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000c880
+void BronzeFalcon0xc8770::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000d760);
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000dbb0
-void BronzeFalcon0xc8770::FUN_1000dbb0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000caf0
+void BronzeFalcon0xc8770::FUN_1000caf0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000dbb0);
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc4c14[sourceIndex];
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000eb90
-void BronzeFalcon0xc8770::FUN_1000eb90(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x1000cd20
+void BronzeFalcon0xc8770::FUN_1000cd20(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x1000eb90);
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = (m_unk0xc4c14[sourceIndex] & 0x00ffffff) | alpha;
+		vertex.tu = uv[i].m_x;
+		vertex.tv = uv[i].m_y;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+}
+
+// FUNCTION: GOLDP 0x1000cf90
+void BronzeFalcon0xc8770::FUN_1000cf90(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = (m_unk0xc4c14[sourceIndex] & 0x00ffffff) | alpha;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+}
+
+// FUNCTION: GOLDP 0x1000d210
+void BronzeFalcon0xc8770::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	const GolVec3* normal = m_unk0xc4c1c + p_firstVertex;
+	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+
+	for (; position < positionEnd; position++, normal++, uv++, vertex++) {
+		vertex->m_x = (m_unk0xc8518->m_m[0][0] * position->m_x) * m_unk0xc852c;
+		vertex->m_y = (m_unk0xc8518->m_m[0][1] * position->m_x) * m_unk0xc852c;
+		vertex->m_z = (m_unk0xc8518->m_m[0][2] * position->m_x) * m_unk0xc852c;
+
+		vertex->m_x += (m_unk0xc8518->m_m[1][0] * position->m_y) * m_unk0xc852c;
+		vertex->m_y += (m_unk0xc8518->m_m[1][1] * position->m_y) * m_unk0xc852c;
+		vertex->m_z += (m_unk0xc8518->m_m[1][2] * position->m_y) * m_unk0xc852c;
+
+		vertex->m_x += (m_unk0xc8518->m_m[2][0] * position->m_z) * m_unk0xc852c;
+		vertex->m_y += (m_unk0xc8518->m_m[2][1] * position->m_z) * m_unk0xc852c;
+		vertex->m_z += (m_unk0xc8518->m_m[2][2] * position->m_z) * m_unk0xc852c;
+
+		vertex->m_x += m_unk0xc8518->m_m[3][0];
+		vertex->m_y += m_unk0xc8518->m_m[3][1];
+		vertex->m_z += m_unk0xc8518->m_m[3][2];
+
+		vertex->m_nx = m_unk0xc8518->m_m[0][0] * normal->m_x;
+		vertex->m_ny = m_unk0xc8518->m_m[0][1] * normal->m_y;
+		vertex->m_nz = m_unk0xc8518->m_m[0][2] * normal->m_z;
+
+		vertex->m_nx += m_unk0xc8518->m_m[1][0] * normal->m_x;
+		vertex->m_ny += m_unk0xc8518->m_m[1][1] * normal->m_y;
+		vertex->m_nz += m_unk0xc8518->m_m[1][2] * normal->m_z;
+
+		vertex->m_nx += m_unk0xc8518->m_m[2][0] * normal->m_x;
+		vertex->m_ny += m_unk0xc8518->m_m[2][1] * normal->m_y;
+		vertex->m_nz += m_unk0xc8518->m_m[2][2] * normal->m_z;
+
+		vertex->m_u = uv->m_x;
+		vertex->m_v = uv->m_y;
+	}
+
+	m_unk0xc8540 = p_outputFirst;
+	m_unk0xc8544 = p_firstVertex;
+	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+}
+
+// FUNCTION: GOLDP 0x1000d440
+void BronzeFalcon0xc8770::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+
+	while (position < positionEnd) {
+		vertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
+		vertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
+		vertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+
+		vertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
+		vertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
+		vertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+
+		vertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
+		vertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
+		vertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+
+		vertex->m_x += m_unk0xc8518->m_m[3][0];
+		vertex->m_y += m_unk0xc8518->m_m[3][1];
+		vertex->m_z += m_unk0xc8518->m_m[3][2];
+
+		LegoU32 sourceColor = *color;
+		LegoU8* destColor = reinterpret_cast<LegoU8*>(&vertex->m_color);
+		destColor[0] = static_cast<LegoU8>(sourceColor >> 16);
+		destColor[1] = static_cast<LegoU8>(sourceColor >> 8);
+		destColor[2] = static_cast<LegoU8>(sourceColor);
+		destColor[3] = static_cast<LegoU8>(sourceColor >> 24);
+		vertex->m_u = uv->m_x;
+		vertex->m_v = uv->m_y;
+
+		position++;
+		uv++;
+		color++;
+		vertex++;
+	}
+
+	m_unk0xc8540 = p_outputFirst;
+	m_unk0xc8544 = p_firstVertex;
+	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+}
+
+// FUNCTION: GOLDP 0x1000d5d0
+void BronzeFalcon0xc8770::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* positionEnd = position + p_vertexCount;
+	LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+	const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+	CommandVertex* vertex = m_unk0xc428c + p_outputFirst;
+
+	while (position < positionEnd) {
+		vertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
+		vertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
+		vertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+
+		vertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
+		vertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
+		vertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+
+		vertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
+		vertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
+		vertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+
+		vertex->m_x += m_unk0xc8518->m_m[3][0];
+		vertex->m_y += m_unk0xc8518->m_m[3][1];
+		vertex->m_z += m_unk0xc8518->m_m[3][2];
+
+		LegoU32 sourceColor = *color;
+		LegoU8* destColor = reinterpret_cast<LegoU8*>(&vertex->m_color);
+		destColor[0] = static_cast<LegoU8>(sourceColor >> 16);
+		destColor[1] = static_cast<LegoU8>(sourceColor >> 8);
+		destColor[2] = static_cast<LegoU8>(sourceColor);
+		destColor[3] = static_cast<LegoU8>(m_alpha);
+		vertex->m_u = uv->m_x;
+		vertex->m_v = uv->m_y;
+
+		position++;
+		uv++;
+		color++;
+		vertex++;
+	}
+
+	m_unk0xc8540 = p_outputFirst;
+	m_unk0xc8544 = p_firstVertex;
+	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
+}
+
+// FUNCTION: GOLDP 0x1000d760
+void BronzeFalcon0xc8770::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	{
+		const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+		const GolVec3* positionEnd = position + p_vertexCount;
+		LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+		const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
+
+		while (position < positionEnd) {
+			commandVertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
+			commandVertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
+			commandVertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
+			commandVertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
+			commandVertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
+			commandVertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
+			commandVertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[3][0];
+			commandVertex->m_y += m_unk0xc8518->m_m[3][1];
+			commandVertex->m_z += m_unk0xc8518->m_m[3][2];
+
+			LegoU32 sourceColor = *color;
+			LegoU8* destColor = reinterpret_cast<LegoU8*>(&commandVertex->m_color);
+			destColor[0] = static_cast<LegoU8>(sourceColor >> 16);
+			destColor[1] = static_cast<LegoU8>(sourceColor >> 8);
+			destColor[2] = static_cast<LegoU8>(sourceColor);
+			destColor[3] = static_cast<LegoU8>(sourceColor >> 24);
+			commandVertex->m_u = uv->m_x;
+			commandVertex->m_v = uv->m_y;
+
+			position++;
+			uv++;
+			color++;
+			commandVertex++;
+		}
+	}
+
+	m_unk0xc8540 = p_outputFirst;
+	m_unk0xc8544 = p_firstVertex;
+	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
+
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	m_unk0xc3848 = cacheIndex + p_vertexCount;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	CommandVertex* source = m_unk0xc428c + p_outputFirst;
+	CommandVertex* sourceEnd = source + p_vertexCount;
+
+	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
+		const GolMatrix4& matrix = *m_unk0xc8490;
+		cache->m_x = source->m_x * matrix.m_m[0][0] + source->m_y * matrix.m_m[1][0] + source->m_z * matrix.m_m[2][0] +
+					 matrix.m_m[3][0];
+		cache->m_y = source->m_x * matrix.m_m[0][1] + source->m_y * matrix.m_m[1][1] + source->m_z * matrix.m_m[2][1] +
+					 matrix.m_m[3][1];
+		cache->m_z = source->m_x * matrix.m_m[0][2] + source->m_y * matrix.m_m[1][2] + source->m_z * matrix.m_m[2][2] +
+					 matrix.m_m[3][2];
+		cache->m_w = source->m_x * matrix.m_m[0][3] + source->m_y * matrix.m_m[1][3] + source->m_z * matrix.m_m[2][3] +
+					 matrix.m_m[3][3];
+		cache->m_unk0x10 = cacheIndex;
+		cache->m_clipFlags = BuildModelClipFlags(*cache);
+
+		vertex->rhw = 1.0f / cache->m_w;
+		vertex->sx = cache->m_x * vertex->rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex->sy = cache->m_y * vertex->rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex->sz = cache->m_z * vertex->rhw;
+		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
+		vertex->color = (sourceColor[3] << 24) | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
+		vertex->specular = m_unk0xc83fc;
+		vertex->tu = source->m_u + m_unk0xc83a0;
+		vertex->tv = source->m_v + m_unk0xc83a4;
+	}
+}
+
+// FUNCTION: GOLDP 0x1000dbb0
+void BronzeFalcon0xc8770::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	{
+		const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
+		const GolVec3* positionEnd = position + p_vertexCount;
+		LegoU32* color = m_unk0xc4c14 + p_firstVertex;
+		const GolVec2* uv = m_unk0xc4c10 + p_firstVertex;
+		CommandVertex* commandVertex = m_unk0xc428c + p_outputFirst;
+
+		while (position < positionEnd) {
+			commandVertex->m_x = m_unk0xc8518->m_m[0][0] * position->m_x;
+			commandVertex->m_y = m_unk0xc8518->m_m[0][1] * position->m_x;
+			commandVertex->m_z = m_unk0xc8518->m_m[0][2] * position->m_x;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[1][0] * position->m_y;
+			commandVertex->m_y += m_unk0xc8518->m_m[1][1] * position->m_y;
+			commandVertex->m_z += m_unk0xc8518->m_m[1][2] * position->m_y;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[2][0] * position->m_z;
+			commandVertex->m_y += m_unk0xc8518->m_m[2][1] * position->m_z;
+			commandVertex->m_z += m_unk0xc8518->m_m[2][2] * position->m_z;
+
+			commandVertex->m_x += m_unk0xc8518->m_m[3][0];
+			commandVertex->m_y += m_unk0xc8518->m_m[3][1];
+			commandVertex->m_z += m_unk0xc8518->m_m[3][2];
+
+			LegoU32 sourceColor = *color;
+			LegoU8* destColor = reinterpret_cast<LegoU8*>(&commandVertex->m_color);
+			destColor[0] = static_cast<LegoU8>(sourceColor >> 16);
+			destColor[1] = static_cast<LegoU8>(sourceColor >> 8);
+			destColor[2] = static_cast<LegoU8>(sourceColor);
+			destColor[3] = static_cast<LegoU8>(m_alpha);
+			commandVertex->m_u = uv->m_x;
+			commandVertex->m_v = uv->m_y;
+
+			position++;
+			uv++;
+			color++;
+			commandVertex++;
+		}
+	}
+
+	m_unk0xc8540 = p_outputFirst;
+	m_unk0xc8544 = p_firstVertex;
+	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
+
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	m_unk0xc3848 = cacheIndex + p_vertexCount;
+	D3DTLVERTEX* vertex = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	CommandVertex* source = m_unk0xc428c + p_outputFirst;
+	CommandVertex* sourceEnd = source + p_vertexCount;
+	LegoU32 alpha = (m_alpha & 0xff) << 24;
+
+	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
+		const GolMatrix4& matrix = *m_unk0xc8490;
+		cache->m_x = source->m_x * matrix.m_m[0][0] + source->m_y * matrix.m_m[1][0] + source->m_z * matrix.m_m[2][0] +
+					 matrix.m_m[3][0];
+		cache->m_y = source->m_x * matrix.m_m[0][1] + source->m_y * matrix.m_m[1][1] + source->m_z * matrix.m_m[2][1] +
+					 matrix.m_m[3][1];
+		cache->m_z = source->m_x * matrix.m_m[0][2] + source->m_y * matrix.m_m[1][2] + source->m_z * matrix.m_m[2][2] +
+					 matrix.m_m[3][2];
+		cache->m_w = source->m_x * matrix.m_m[0][3] + source->m_y * matrix.m_m[1][3] + source->m_z * matrix.m_m[2][3] +
+					 matrix.m_m[3][3];
+		cache->m_unk0x10 = cacheIndex;
+		cache->m_clipFlags = BuildModelClipFlags(*cache);
+
+		vertex->rhw = 1.0f / cache->m_w;
+		vertex->sx = cache->m_x * vertex->rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex->sy = cache->m_y * vertex->rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex->sz = cache->m_z * vertex->rhw;
+		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
+		vertex->color = alpha | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
+		vertex->specular = m_unk0xc83fc;
+		vertex->tu = source->m_u + m_unk0xc83a0;
+		vertex->tv = source->m_v + m_unk0xc83a4;
+	}
+}
+
+// FUNCTION: GOLDP 0x1000e010
+void BronzeFalcon0xc8770::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc83fc;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
+}
+
+// FUNCTION: GOLDP 0x1000e180
+void BronzeFalcon0xc8770::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc83fc;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
+}
+
+// FUNCTION: GOLDP 0x1000e310
+void BronzeFalcon0xc8770::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc83fc;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+}
+
+// FUNCTION: GOLDP 0x1000e540
+void BronzeFalcon0xc8770::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc83fc;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+}
+
+// FUNCTION: GOLDP 0x1000e790
+void BronzeFalcon0xc8770::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		LegoFloat x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+					  matrix.m_m[3][0];
+		LegoFloat y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+					  matrix.m_m[3][1];
+		LegoFloat z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+					  matrix.m_m[3][2];
+		LegoFloat w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+					  matrix.m_m[3][3];
+		LegoFloat rhw = 1.0f / w;
+		D3DTLVERTEX& vertex = vertices[i];
+
+		vertex.sx = x * rhw;
+		vertex.sy = y * rhw;
+		vertex.sz = z * rhw;
+		vertex.rhw = rhw;
+		vertex.color = m_unk0xc83fc;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+		vertexMap[i + 1] = static_cast<LegoU16>(vertexMap[i] + 1);
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
+}
+
+// FUNCTION: GOLDP 0x1000e930
+void BronzeFalcon0xc8770::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
+{
+	LegoU32 cacheIndex = m_unk0xc3848;
+	LegoU32 outputIndex = (cacheIndex & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
+	D3DTLVERTEX* vertices = m_unk0x348 + outputIndex;
+	VertexCacheEntry* cache = m_unk0xc38ec + p_outputFirst;
+	LegoU32 savedCacheIndex = cache[p_vertexCount].m_unk0x10;
+	cache[0].m_unk0x10 = cacheIndex;
+	m_unk0xc3848 += p_vertexCount;
+
+	const GolMatrix4& matrix = *m_unk0xc8518;
+	for (LegoU32 i = 0; i < p_vertexCount; i++, cacheIndex++) {
+		LegoU32 sourceIndex = p_firstVertex + i;
+		const GolVec3& source = m_unk0xc4c0c[sourceIndex];
+		VertexCacheEntry& cacheEntry = cache[i];
+		D3DTLVERTEX& vertex = vertices[i];
+
+		cacheEntry.m_x = source.m_x * matrix.m_m[0][0] + source.m_y * matrix.m_m[1][0] + source.m_z * matrix.m_m[2][0] +
+						 matrix.m_m[3][0];
+		cacheEntry.m_y = source.m_x * matrix.m_m[0][1] + source.m_y * matrix.m_m[1][1] + source.m_z * matrix.m_m[2][1] +
+						 matrix.m_m[3][1];
+		cacheEntry.m_z = source.m_x * matrix.m_m[0][2] + source.m_y * matrix.m_m[1][2] + source.m_z * matrix.m_m[2][2] +
+						 matrix.m_m[3][2];
+		cacheEntry.m_w = source.m_x * matrix.m_m[0][3] + source.m_y * matrix.m_m[1][3] + source.m_z * matrix.m_m[2][3] +
+						 matrix.m_m[3][3];
+		cacheEntry.m_unk0x10 = cacheIndex;
+		cacheEntry.m_clipFlags = BuildModelClipFlags(cacheEntry);
+
+		vertex.rhw = 1.0f / cacheEntry.m_w;
+		vertex.sx = cacheEntry.m_x * vertex.rhw * m_unk0xc8400[0] + m_unk0xc8400[2];
+		vertex.sy = cacheEntry.m_y * vertex.rhw * m_unk0xc8400[1] + m_unk0xc8400[3];
+		vertex.sz = cacheEntry.m_z * vertex.rhw;
+		vertex.color = m_unk0xc83fc;
+		vertex.tu = m_unk0xc4c10[sourceIndex].m_x + m_unk0xc83a0;
+		vertex.tv = m_unk0xc4c10[sourceIndex].m_y + m_unk0xc83a4;
+	}
+
+	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
+}
+
+// FUNCTION: GOLDP 0x1000eb90
+void BronzeFalcon0xc8770::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
+{
+	DuskwindBananaRelic0x24* material = m_unk0xc8538;
+	undefined4 firstTriangle = p_firstTriangle;
+	m_unk0xc8560 = firstTriangle;
+	m_unk0xc854c.m_material = material;
+	m_unk0xc8564 = p_triangleCount;
+	m_unk0xc8524->VTable0x0c(&m_unk0xc854c);
 }
 
 // FUNCTION: GOLDP 0x1000ebd0
@@ -2399,9 +3510,15 @@ void BronzeFalcon0xc8770::FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triang
 }
 
 // STUB: GOLDP 0x1000edf0
-void BronzeFalcon0xc8770::FUN_1000edf0(undefined4, undefined4, undefined4)
+void BronzeFalcon0xc8770::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4 p_lastVertex)
 {
 	STUB(0x1000edf0);
+	if ((m_unk0xc83c8 | m_unk0xc83cc) & DuskwindBananaRelic0x24::c_flag0x08Bit14) {
+		FUN_1000ece0(p_firstTriangle, p_triangleCount, p_lastVertex);
+	}
+	else {
+		FUN_1000ebd0(p_firstTriangle, p_triangleCount, p_lastVertex);
+	}
 }
 
 // STUB: GOLDP 0x10010330
@@ -2422,52 +3539,244 @@ void BronzeFalcon0xc8770::FUN_100106d0(undefined4, undefined4, undefined4)
 	STUB(0x100106d0);
 }
 
-// STUB: GOLDP 0x10011e60
-void BronzeFalcon0xc8770::FUN_10011e60(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10011e60
+void BronzeFalcon0xc8770::FUN_10011e60(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x10011e60);
+	LegoU32 vertexCount = p_vertexCount;
+	LegoU32 color = m_unk0xc857c;
+	LegoU32 red = m_unk0xc8570;
+	color <<= 8;
+	LegoU32 blue = m_unk0xc8578;
+	LegoU32 firstVertex = p_firstVertex;
+	color |= red;
+	LegoU32 green = m_unk0xc8574;
+	color <<= 8;
+	color |= green;
+	LegoU32 endIndex = firstVertex + vertexCount;
+	color <<= 8;
+	color |= blue;
+
+	LegoU32* first = m_unk0xc4c14 + firstVertex;
+	LegoU32* end = m_unk0xc4c14 + endIndex;
+	for (; first < end; first++) {
+		*first = color;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x10011ed0
-void BronzeFalcon0xc8770::FUN_10011ed0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10011ed0
+void BronzeFalcon0xc8770::FUN_10011ed0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x10011ed0);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+	LegoU32* color = m_unk0xc4c14 + firstVertex;
+	LegoU32* colorEnd = color + vertexCount;
+	const GolVec3* normal = m_unk0xc4c1c + firstVertex;
+	LegoS32 baseRed = static_cast<LegoS32>(m_unk0xc8570);
+	LegoS32 baseGreen = static_cast<LegoS32>(m_unk0xc8574);
+	LegoS32 baseBlue = static_cast<LegoS32>(m_unk0xc8578);
+	LegoU32 alpha = m_unk0xc857c << 8;
+
+	for (; color < colorEnd; color++, normal++) {
+		LegoFloat intensity =
+			normal->m_z * m_unk0xc8644[0].m_z + normal->m_y * m_unk0xc8644[0].m_y + normal->m_x * m_unk0xc8644[0].m_x;
+		LegoS32 red = baseRed - static_cast<LegoS32>(m_unk0xc859c[0].m_red * intensity);
+		LegoS32 green = baseGreen - static_cast<LegoS32>(m_unk0xc859c[0].m_grn * intensity);
+		LegoS32 blue = baseBlue - static_cast<LegoS32>(m_unk0xc859c[0].m_blu * intensity);
+
+		red = ClampModelColorChannel(red, baseRed);
+		green = ClampModelColorChannel(green, baseGreen);
+		blue = ClampModelColorChannel(blue, baseBlue);
+		LegoU32 finalColor = alpha | red;
+		finalColor <<= 8;
+		finalColor |= green;
+		finalColor <<= 8;
+		finalColor |= blue;
+		*color = finalColor;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x10012030
-void BronzeFalcon0xc8770::FUN_10012030(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10012030
+void BronzeFalcon0xc8770::FUN_10012030(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x10012030);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 2; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x100121e0
-void BronzeFalcon0xc8770::FUN_100121e0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x100121e0
+void BronzeFalcon0xc8770::FUN_100121e0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x100121e0);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 3; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x100123e0
-void BronzeFalcon0xc8770::FUN_100123e0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x100123e0
+void BronzeFalcon0xc8770::FUN_100123e0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x100123e0);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 4; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x10012640
-void BronzeFalcon0xc8770::FUN_10012640(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10012640
+void BronzeFalcon0xc8770::FUN_10012640(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x10012640);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 5; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x100128f0
-void BronzeFalcon0xc8770::FUN_100128f0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x100128f0
+void BronzeFalcon0xc8770::FUN_100128f0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x100128f0);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 6; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// STUB: GOLDP 0x10012bf0
-void BronzeFalcon0xc8770::FUN_10012bf0(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10012bf0
+void BronzeFalcon0xc8770::FUN_10012bf0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
-	STUB(0x10012bf0);
+	LegoU32 firstVertex = p_firstVertex;
+	LegoU32 vertexCount = p_vertexCount;
+
+	for (LegoU32 i = 0; i < vertexCount; i++) {
+		LegoU32 sourceIndex = firstVertex + i;
+		const GolVec3& normal = m_unk0xc4c1c[sourceIndex];
+		LegoS32 red = static_cast<LegoS32>(m_unk0xc8570);
+		LegoS32 green = static_cast<LegoS32>(m_unk0xc8574);
+		LegoS32 blue = static_cast<LegoS32>(m_unk0xc8578);
+
+		for (LegoU32 lightIndex = 0; lightIndex < 7; lightIndex++) {
+			LegoFloat intensity = normal.m_x * m_unk0xc8644[lightIndex].m_x +
+								  normal.m_y * m_unk0xc8644[lightIndex].m_y + normal.m_z * m_unk0xc8644[lightIndex].m_z;
+			red -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_red * intensity);
+			green -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_grn * intensity);
+			blue -= static_cast<LegoS32>(m_unk0xc859c[lightIndex].m_blu * intensity);
+		}
+
+		red = ClampModelColorChannel(red, static_cast<LegoS32>(m_unk0xc8570));
+		green = ClampModelColorChannel(green, static_cast<LegoS32>(m_unk0xc8574));
+		blue = ClampModelColorChannel(blue, static_cast<LegoS32>(m_unk0xc8578));
+		m_unk0xc4c14[sourceIndex] = ((m_unk0xc857c & 0xff) << 24) | (red << 16) | (green << 8) | blue;
+	}
+
+	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
 // FUNCTION: GOLDP 0x10012f50

@@ -17,6 +17,11 @@ public:
 	// SYNTHETIC: GOLDP 0x10016f40
 	// GdbCommonVertexArray0x1c::`scalar deleting destructor'
 
+	GolVec2* GetTextureCoordinates() const { return m_unk0x0c; }
+	LegoU32* GetColors() const { return m_unk0x10; }
+	LegoBool32 HasTransformedColors() const { return m_unk0x14; }
+	LegoU32* GetTransformedColors() const { return m_unk0x18; }
+
 protected:
 	GolVec2* m_unk0x0c;   // 0x0c
 	LegoU32* m_unk0x10;   // 0x10

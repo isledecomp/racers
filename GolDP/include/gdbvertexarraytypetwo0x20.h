@@ -26,6 +26,8 @@ public:
 	// SYNTHETIC: GOLDP 0x10016af0 FOLDED
 	// GdbVertexArrayTypeTwo0x20::`scalar deleting destructor'
 
+	GolVec3* GetNormals() const { return m_unk0x1c; }
+
 protected:
 	GolVec3* m_unk0x1c; // 0x1c
 };

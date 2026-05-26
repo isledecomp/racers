@@ -90,8 +90,8 @@ void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
 	}
 }
 
-// STUB: GOLDP 0x10024380
-// STUB: LEGORACERS 0x0040e670
+// FUNCTION: GOLDP 0x10024380
+// FUNCTION: LEGORACERS 0x0040e670
 LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 	GolVec3* p_dest,
 	const CmbModelPartTrack0x14& p_track,
@@ -99,8 +99,6 @@ LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 	LegoU16 p_frameCount
 ) const
 {
-	STUB(0x0040e670);
-
 	LegoU16 keyCount = p_track.m_positionKeyCount;
 	if (keyCount == 0) {
 		return FALSE;
@@ -154,8 +152,8 @@ LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 	return TRUE;
 }
 
-// STUB: GOLDP 0x10024540
-// STUB: LEGORACERS 0x0040e830
+// FUNCTION: GOLDP 0x10024540
+// FUNCTION: LEGORACERS 0x0040e830
 LegoBool32 CmbModelPartData0x18::InterpolateRotation(
 	GolQuat* p_dest,
 	const CmbModelPartTrack0x14& p_track,
@@ -163,8 +161,6 @@ LegoBool32 CmbModelPartData0x18::InterpolateRotation(
 	LegoU16 p_frameCount
 ) const
 {
-	STUB(0x0040e830);
-
 	LegoU16 keyCount = p_track.m_rotationKeyCount;
 	if (keyCount == 0) {
 		return FALSE;

@@ -110,56 +110,41 @@ void GreyFalconNode0x1c::VTable0x24(const GolMatrix34* p_m)
 	VTable0x20(m);
 }
 
-// STUB: GOLDP 0x10014c20
+// FUNCTION: GOLDP 0x10014c20
 void GreyFalconNode0x1c::VTable0x20(const GolMatrix4& p_m)
 {
 	if (m_unk0x14 == NULL) {
-		JadeOrbit0xd0* obj;
-		JadeOrbit0xd0* end;
-
-		obj = m_unk0x18;
-		end = m_unk0x18 + m_capacity;
-
-		for (; obj < end; obj++) {
-			if (obj->m_unk0x04 != NULL) {
-				GolMath::FUN_1002f450(
-					obj->m_unk0x10,
-					static_cast<JadeOrbit0xd0*>(obj->m_unk0x04)->m_unk0x90,
-					&obj->m_unk0x90
-				);
+		for (LegoU32 i = 0; i < m_capacity; i++) {
+			JadeOrbit0xd0* obj = &m_unk0x18[i];
+			JadeOrbit0xd0* parent = static_cast<JadeOrbit0xd0*>(obj->m_unk0x04);
+			if (parent != NULL) {
+				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 			else {
 				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
 			}
 		}
+		return;
 	}
-	else {
-		LegoU32 i;
-		for (i = 0; i < m_unk0x14; i++) {
-			// TODO
-			STUB(0x10014c20);
-#if 0
+
+	for (LegoU32 i = 0; i < m_capacity; i++) {
 		JadeOrbit0xd0* obj = &m_unk0x18[i];
-		GolQuat quat;
+		JadeOrbit0xd0* parent = static_cast<JadeOrbit0xd0*>(obj->m_unk0x04);
+		const GolMatrix4& parentMatrix = parent != NULL ? parent->m_unk0x90 : p_m;
+
 		if (m_unk0x14->VTable0x00(i)) {
-				GolMath::FUN_1002f720(obj->m_unk0x10, &quat);
-				GolVec3 v3;
-				v3.m_x = obj->m_unk0x10.m_m[3][0];
-				v3.m_y = obj->m_unk0x10.m_m[3][1];
-				v3.m_z = obj->m_unk0x10.m_m[3][2];
-				if (obj->m_unk0x04 != NULL) {
-					m_unk0x14->VTable0x04(i, quat, v3, static_cast<JadeOrbit0xd0*>(obj->m_unk0x04)->m_unk0x90, &obj->m_unk0x90);
-				} else {
-					m_unk0x14->VTable0x04(i, quat, v3, p_m, &obj->m_unk0x90);
-				}
-			} else {
-				if (obj->m_unk0x04 != NULL) {
-					GolMath::FUN_1002f450(obj->m_unk0x10, static_cast<JadeOrbit0xd0*>(obj->m_unk0x04)->m_unk0x90, &obj->m_unk0x90);
-				} else {
-					GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
-				}
-			}
-#endif
+			GolQuat rotation;
+			GolMath::FUN_1002f720(obj->m_unk0x10, &rotation);
+
+			GolVec3 position;
+			position.m_x = obj->m_unk0x10.m_m[3][0];
+			position.m_y = obj->m_unk0x10.m_m[3][1];
+			position.m_z = obj->m_unk0x10.m_m[3][2];
+
+			m_unk0x14->VTable0x04(i, rotation, position, parentMatrix, &obj->m_unk0x90);
+		}
+		else {
+			GolMath::FUN_1002f450(obj->m_unk0x10, parentMatrix, &obj->m_unk0x90);
 		}
 	}
 }

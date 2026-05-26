@@ -155,15 +155,13 @@ void GdbPartLibrary0x1c::Clear()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00407950
+// FUNCTION: LEGORACERS 0x00407950
 void GdbPartLibrary0x1c::CopyPartToModel(
 	BronzeFalcon0xc8770* p_renderer,
 	IGdbModel0x40* p_model,
 	const LegoChar* p_name
 )
 {
-	STUB(0x00407950);
-
 	GdbPartDefinition0x0c* part = static_cast<GdbPartDefinition0x0c*>(GetName(p_name));
 	if (part == NULL) {
 		LegoChar message[64];
@@ -228,15 +226,13 @@ void GdbPartLibrary0x1c::CopyPartToModel(
 	p_model->VTable0x2c(g_gdbPartModelDirty, TRUE);
 }
 
-// STUB: LEGORACERS 0x00407b40
+// FUNCTION: LEGORACERS 0x00407b40
 void GdbPartLibrary0x1c::CopyPartGroupStart(
 	BronzeFalcon0xc8770* p_renderer,
 	LegoU32 p_groupIndex,
 	const LegoChar* p_materialName
 )
 {
-	STUB(0x00407b40);
-
 	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(p_materialName);
 	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
 
@@ -246,11 +242,9 @@ void GdbPartLibrary0x1c::CopyPartGroupStart(
 	g_copyModel->SetDirty(TRUE);
 }
 
-// STUB: LEGORACERS 0x00407ba0
+// FUNCTION: LEGORACERS 0x00407ba0
 void GdbPartLibrary0x1c::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
 {
-	STUB(0x00407ba0);
-
 	LegoS32 addedCount = 0;
 	LegoS32 batchIndex0 = FindCopyBatchVertex(p_index0);
 	if (batchIndex0 < 0) {
@@ -339,11 +333,9 @@ LegoS32 GdbPartLibrary0x1c::CopyBatchVertex(LegoU32 p_sourceVertex)
 	return g_copyBatchVertexCount++;
 }
 
-// STUB: LEGORACERS 0x00407d60
+// FUNCTION: LEGORACERS 0x00407d60
 void GdbPartLibrary0x1c::FlushCopyBatch()
 {
-	STUB(0x00407d60);
-
 	if (g_copyBatchIndexCount == 0) {
 		return;
 	}

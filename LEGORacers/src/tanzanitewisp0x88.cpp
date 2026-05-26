@@ -5,6 +5,7 @@
 #include "bronzefalcon0xc8770.h"
 #include "color.h"
 #include "garnetflare0x60.h"
+#include "gdbmodel0x48.h"
 #include "gdbvertexarray0xc.h"
 #include "gol.h"
 #include "golbmpfile.h"
@@ -225,11 +226,9 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d5c0() const
 	return m_unk0x50.m_unk0x0c + m_unk0x3c.m_unk0x0c <= m_unk0x64.m_unk0x0c;
 }
 
-// STUB: LEGORACERS 0x0049d600
+// FUNCTION: LEGORACERS 0x0049d600
 void TanzaniteWisp0x88::FUN_0049d600()
 {
-	STUB(0x0049d600);
-
 	ShadowWolf0xc* outputMaterials = m_unk0x64.m_model->GetMaterialTable();
 	ShadowWolf0xc* headMaterials = m_unk0x50.m_model->GetMaterialTable();
 	LegoU32 outputIndex = static_cast<LegoU32>(m_unk0x3c.m_unk0x0c);
@@ -248,11 +247,9 @@ void TanzaniteWisp0x88::FUN_0049d600()
 	}
 }
 
-// STUB: LEGORACERS 0x0049d670
+// FUNCTION: LEGORACERS 0x0049d670
 LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
 {
-	STUB(0x0049d670);
-
 	if (p_model == NULL || p_model->GetGroups() == NULL) {
 		return TRUE;
 	}
@@ -268,11 +265,9 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
 	return needsNewModel;
 }
 
-// STUB: LEGORACERS 0x0049d6e0
+// FUNCTION: LEGORACERS 0x0049d6e0
 IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 {
-	STUB(0x0049d6e0);
-
 	IGdbModel0x40* model = m_golExport->VTable0x14();
 	if (model == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -298,15 +293,13 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 	return model;
 }
 
-// STUB: LEGORACERS 0x0049d790
+// FUNCTION: LEGORACERS 0x0049d790
 void TanzaniteWisp0x88::CopyModelVertices(
 	IGdbModel0x40* p_sourceModel,
 	IGdbModel0x40* p_destModel,
 	LegoU32 p_vertexOffset
 )
 {
-	STUB(0x0049d790);
-
 	GdbVertexArray0xc* sourceVertices;
 	GdbVertexArray0xc* destVertices;
 	p_sourceModel->VTable0x28(&sourceVertices);
@@ -336,11 +329,9 @@ void TanzaniteWisp0x88::CopyModelVertices(
 	p_destModel->VTable0x2c(0, FALSE);
 }
 
-// STUB: LEGORACERS 0x0049d880
+// FUNCTION: LEGORACERS 0x0049d880
 void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_indexOffset)
 {
-	STUB(0x0049d880);
-
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
 	IGdbModelIndexArray0x8* destIndexArrayBase;
 	p_sourceModel->VTable0x30(&sourceIndexArrayBase);
@@ -362,11 +353,9 @@ void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40
 	p_destModel->VTable0x34(0);
 }
 
-// STUB: LEGORACERS 0x0049d920
+// FUNCTION: LEGORACERS 0x0049d920
 void TanzaniteWisp0x88::FUN_0049d920()
 {
-	STUB(0x0049d920);
-
 	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;
 	IGdbModel0x40* outputModel = m_unk0x64.m_model;
 	CopyModelVertices(bodyModel, outputModel, 0);
@@ -387,27 +376,42 @@ void TanzaniteWisp0x88::FUN_0049d970()
 	FUN_0049d600();
 }
 
-// STUB: LEGORACERS 0x0049d9b0
+// FUNCTION: LEGORACERS 0x0049d9b0
 void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
-	STUB(0x0049d9b0);
-
-	if (p_material == NULL) {
-		return;
-	}
-
 	ShadowWolf0xc* materialTable = m_unk0x64.m_model->GetMaterialTable();
-	LegoS32 materialIndex = materialTable->FindEntryIndexByName(p_name);
-	if (materialIndex < 0) {
-		return;
+	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
+	if (params == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	DuskWindBananaRelicParams params;
-	p_material->CopyParamsTo(&params);
-	params.m_unk0x08 = m_unk0x24.m_unk0x08;
-	params.m_unk0x0c = m_unk0x24.m_unk0x0c;
-	p_material->FUN_100257e0(m_renderer, params);
-	materialTable->SetPosition(materialIndex, p_material);
+	LegoS32 materialCount = materialTable->GetCount();
+	for (LegoS32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
+		DuskwindBananaRelic0x24* material = materialTable->GetMaterial(materialIndex);
+		if (material != NULL) {
+			GolName materialName;
+			::memcpy(materialName, material->GetName(), sizeof(GolName));
+
+			if (::strncmp(materialName, p_name, sizeof(GolName)) == 0) {
+				p_material->CopyParamsTo(params);
+				params->m_unk0x08.m_unk0x3 = m_unk0x24.m_unk0x08.m_unk0x3;
+				params->m_unk0x08.m_unk0x0 = m_unk0x24.m_unk0x08.m_unk0x0;
+				params->m_unk0x08.m_unk0x1 = m_unk0x24.m_unk0x08.m_unk0x1;
+				params->m_unk0x08.m_unk0x2 = m_unk0x24.m_unk0x08.m_unk0x2;
+				params->m_unk0x0c.m_unk0x3 = m_unk0x24.m_unk0x0c.m_unk0x3;
+				params->m_unk0x0c.m_unk0x0 = m_unk0x24.m_unk0x0c.m_unk0x0;
+				params->m_unk0x0c.m_unk0x1 = m_unk0x24.m_unk0x0c.m_unk0x1;
+				params->m_unk0x0c.m_unk0x2 = m_unk0x24.m_unk0x0c.m_unk0x2;
+
+				p_material->FUN_100257e0(m_renderer, *params);
+				materialTable->SetPosition(materialIndex, p_material);
+				delete params;
+				return;
+			}
+		}
+	}
+
+	delete params;
 }
 
 // FUNCTION: LEGORACERS 0x0049dab0
@@ -490,53 +494,73 @@ void TanzaniteWisp0x88::FUN_0049dce0(IGdbModel0x40* p_model, TurquoiseGlowColor*
 	p_model->GetMaterialTable()->AssignEntryByName(materialIndex, materialName);
 }
 
-// STUB: LEGORACERS 0x0049dd50
+// FUNCTION: LEGORACERS 0x0049dd50
 void TanzaniteWisp0x88::FUN_0049dd50()
 {
-	STUB(0x0049dd50);
-
 	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;
 	IGdbModel0x40* headModel = m_unk0x50.m_model;
 	IGdbModel0x40* outputModel = m_unk0x64.m_model;
-	LegoU32* outputGroups = outputModel->GetMutableGroups();
-	ShadowWolf0xc* outputMaterials = outputModel->GetMaterialTable();
-	LegoU32 outputIndex = 0;
-	LegoU32 vertexOffset = static_cast<LegoU32>(m_unk0x3c.m_unk0x00);
-	LegoU32 indexOffset = static_cast<LegoU32>(m_unk0x3c.m_unk0x04);
-	LegoS32 i;
-
 	const LegoU32* bodyGroups = bodyModel->GetGroups();
-	for (i = 0; i < m_unk0x3c.m_unk0x08 && bodyGroups[i] != 0xc0000000; i++) {
-		outputGroups[outputIndex++] = bodyGroups[i];
+	const LegoU32* headGroups = headModel->GetGroups();
+	LegoU32* outputGroups = outputModel->GetMutableGroups();
+
+	GolName faceName;
+	::strncpy(faceName, g_faceMaterialName, sizeof(GolName));
+	LegoU32 faceGroup = GdbModel0x48::c_groupTypeMaterial |
+						(bodyModel->GetMaterialTable()->FindEntryIndexByName(faceName) & 0x00ffffff);
+
+	LegoS32 bodyIndex = 0;
+	while (TRUE) {
+		LegoU32 group = bodyGroups[bodyIndex];
+		outputGroups[bodyIndex] = group;
+		bodyIndex++;
+		if (group == faceGroup) {
+			break;
+		}
 	}
 
-	const LegoU32* headGroups = headModel->GetGroups();
-	for (i = 0; i < m_unk0x50.m_unk0x08 && headGroups[i] != 0xc0000000; i++) {
-		LegoU32 command = headGroups[i];
-		LegoU32 tag = command & 0xe0000000;
-		if (tag == 0x00000000) {
-			LegoU32 vertexCount = command & 0x003f0000;
-			LegoU32 sourceVertex = (command + vertexOffset) & 0xffff;
-			LegoU32 flags = command & 0x0fc00000;
-			command = flags | vertexCount | sourceVertex;
-		}
-		else if (tag == 0x20000000) {
-			LegoU32 indexCount = command & 0x007f0000;
-			LegoU32 sourceIndex = (command + indexOffset) & 0xffff;
-			command = 0x20000000 | indexCount | sourceIndex;
-		}
-		else if (tag == 0x80000000) {
-			LegoU32 materialIndex = command & 0x00ffffff;
-			DuskwindBananaRelic0x24* material = headModel->GetMaterialTable()->GetMaterial(materialIndex);
-			if (material != NULL) {
-				LegoS32 destIndex = outputMaterials->FindEntryIndexByName(material->GetName());
-				if (destIndex >= 0) {
-					command = 0x80000000 | (static_cast<LegoU32>(destIndex) & 0x00ffffff);
-				}
-			}
+	LegoS32 outputIndex = bodyIndex - 1;
+	while (bodyIndex < m_unk0x3c.m_unk0x08) {
+		LegoU32 group = bodyGroups[bodyIndex];
+		LegoU32 groupType = group & GdbModel0x48::c_groupTypeMask;
+		if (groupType == GdbModel0x48::c_groupTypeMatrix) {
+			outputGroups[outputIndex++] = group;
 		}
 
-		outputGroups[outputIndex++] = command;
+		if (groupType == GdbModel0x48::c_groupTypeMaterial || groupType == GdbModel0x48::c_groupTypeEnd) {
+			break;
+		}
+
+		bodyIndex++;
+	}
+
+	for (LegoS32 headIndex = 0; headIndex < m_unk0x50.m_unk0x08; headIndex++) {
+		LegoU32 group = headGroups[headIndex];
+		LegoU32 groupType = group & GdbModel0x48::c_groupTypeMask;
+
+		if (groupType == GdbModel0x48::c_groupTypeTriangles) {
+			group = (group & 0x0fc00000) | (group & 0x003f0000) | ((group + m_unk0x3c.m_unk0x00) & 0x0000ffff);
+		}
+		else if (groupType == GdbModel0x48::c_groupTypeTriangleBatch) {
+			group = GdbModel0x48::c_groupTypeTriangleBatch | (group & 0x007f0000) |
+					((group + m_unk0x3c.m_unk0x04) & 0x0000ffff);
+		}
+		else if (groupType == GdbModel0x48::c_groupTypeMaterial) {
+			DuskwindBananaRelic0x24* material = headModel->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
+			GolName materialName;
+			::memcpy(materialName, material->GetName(), sizeof(GolName));
+			group = GdbModel0x48::c_groupTypeMaterial |
+					(outputModel->GetMaterialTable()->FindEntryIndexByName(materialName) & 0x00ffffff);
+		}
+		else if (groupType == GdbModel0x48::c_groupTypeEnd) {
+			break;
+		}
+
+		outputGroups[outputIndex++] = group;
+	}
+
+	while (bodyIndex < m_unk0x3c.m_unk0x08) {
+		outputGroups[outputIndex++] = bodyGroups[bodyIndex++];
 	}
 
 	outputGroups[outputIndex] = 0xc0000000;

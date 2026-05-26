@@ -7,6 +7,7 @@
 class GolFileParser;
 struct GolMatrix34;
 struct GolMatrix4;
+struct GolQuat;
 struct GolVec3;
 class JadeOrbitBase0x10;
 
@@ -14,6 +15,18 @@ class JadeOrbitBase0x10;
 // SIZE 0x18
 class WhiteFalconNode0x18 : public GolNameTable {
 public:
+	class Field0x14 {
+	public:
+		virtual LegoBool32 VTable0x00(LegoU32 p_index) = 0; // vtable+0x00
+		virtual void VTable0x04(
+			LegoU32 p_index,
+			const GolQuat& p_rotation,
+			const GolVec3& p_position,
+			const GolMatrix4& p_parentMatrix,
+			GolMatrix4* p_dest
+		) = 0; // vtable+0x04
+	};
+
 	WhiteFalconNode0x18();
 	~WhiteFalconNode0x18() override;                                      // vtable+0x00
 	void Allocate(LegoU32 p_capacity) override;                           // vtable+0x04
@@ -58,7 +71,7 @@ protected:
 
 	undefined4 m_unk0x0c; // 0x0c
 	LegoU32 m_capacity;   // 0x10
-	undefined4 m_unk0x14; // 0x14
+	Field0x14* m_unk0x14; // 0x14
 };
 
 #endif // WHITEFALCONNODE0X18_H

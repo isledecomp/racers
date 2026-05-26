@@ -120,51 +120,51 @@ void GolMath::FUN_00449340(const GolQuat*, LegoFloat*)
 
 // FUNCTION: GOLDP 0x1002f5a0
 // FUNCTION: LEGORACERS 0x00449460
-void GolMath::FUN_1002f5a0(const GolMatrix4& p_matrix, GolQuat* p_dest)
+void GolMath::FUN_1002f5a0(const GolMatrix34& p_matrix, GolQuat* p_dest)
 {
-	LegoFloat v = p_matrix.m_m[0][0] + p_matrix.m_m[1][0] + p_matrix.m_m[2][0];
+	LegoFloat v = p_matrix.m_m[0][0] + p_matrix.m_m[1][1] + p_matrix.m_m[2][2];
 	if (v > 0.0f) {
 		v = static_cast<LegoFloat>(sqrt(v + 1.0f));
 		p_dest->m_w = v / 2.0f;
 		v = 0.5f / v;
-		p_dest->m_x = (p_matrix.m_m[1][3] - p_matrix.m_m[1][1]) * v;
-		p_dest->m_y = (p_matrix.m_m[0][2] - p_matrix.m_m[1][2]) * v;
-		p_dest->m_z = (p_matrix.m_m[0][3] - p_matrix.m_m[0][1]) * v;
+		p_dest->m_x = (p_matrix.m_m[2][1] - p_matrix.m_m[1][2]) * v;
+		p_dest->m_y = (p_matrix.m_m[0][2] - p_matrix.m_m[2][0]) * v;
+		p_dest->m_z = (p_matrix.m_m[1][0] - p_matrix.m_m[0][1]) * v;
 		return;
 	}
 
 	LegoS32 major = 0;
-	if (p_matrix.m_m[1][0] > p_matrix.m_m[0][0]) {
+	if (p_matrix.m_m[1][1] > p_matrix.m_m[0][0]) {
 		major = 1;
 	}
-	if (p_matrix.m_m[2][0] > p_matrix.m_m[major][0]) {
+	if (p_matrix.m_m[2][2] > p_matrix.m_m[major][major]) {
 		major = 2;
 	}
 
 	switch (major) {
 	case 0:
-		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[0][0] - (p_matrix.m_m[1][0] + p_matrix.m_m[2][0]) + 1.0f));
+		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[0][0] - (p_matrix.m_m[1][1] + p_matrix.m_m[2][2]) + 1.0f));
 		p_dest->m_x = v / 2.0f;
 		v = 0.5f / v;
-		p_dest->m_w = (p_matrix.m_m[1][3] - p_matrix.m_m[1][1]) * v;
-		p_dest->m_y = (p_matrix.m_m[0][3] + p_matrix.m_m[0][1]) * v;
-		p_dest->m_z = (p_matrix.m_m[1][2] + p_matrix.m_m[0][2]) * v;
+		p_dest->m_w = (p_matrix.m_m[2][1] - p_matrix.m_m[1][2]) * v;
+		p_dest->m_y = (p_matrix.m_m[1][0] + p_matrix.m_m[0][1]) * v;
+		p_dest->m_z = (p_matrix.m_m[2][0] + p_matrix.m_m[0][2]) * v;
 		break;
 	case 1:
-		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[1][0] - (p_matrix.m_m[0][0] + p_matrix.m_m[2][0]) + 1.0f));
+		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[1][1] - (p_matrix.m_m[0][0] + p_matrix.m_m[2][2]) + 1.0f));
 		p_dest->m_y = v / 2.0f;
 		v = 0.5f / v;
-		p_dest->m_w = (p_matrix.m_m[0][2] - p_matrix.m_m[1][2]) * v;
-		p_dest->m_z = (p_matrix.m_m[1][3] + p_matrix.m_m[1][1]) * v;
-		p_dest->m_x = (p_matrix.m_m[0][3] + p_matrix.m_m[0][1]) * v;
+		p_dest->m_w = (p_matrix.m_m[0][2] - p_matrix.m_m[2][0]) * v;
+		p_dest->m_z = (p_matrix.m_m[2][1] + p_matrix.m_m[1][2]) * v;
+		p_dest->m_x = (p_matrix.m_m[1][0] + p_matrix.m_m[0][1]) * v;
 		break;
 	case 2:
-		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[2][0] - (p_matrix.m_m[1][0] + p_matrix.m_m[0][0]) + 1.0f));
+		v = static_cast<LegoFloat>(sqrtf(p_matrix.m_m[2][2] - (p_matrix.m_m[1][1] + p_matrix.m_m[0][0]) + 1.0f));
 		p_dest->m_z = v / 2.0f;
 		v = 0.5f / v;
-		p_dest->m_w = (p_matrix.m_m[0][3] - p_matrix.m_m[0][1]) * v;
-		p_dest->m_x = (p_matrix.m_m[1][2] + p_matrix.m_m[0][2]) * v;
-		p_dest->m_y = (p_matrix.m_m[1][3] + p_matrix.m_m[1][1]) * v;
+		p_dest->m_w = (p_matrix.m_m[1][0] - p_matrix.m_m[0][1]) * v;
+		p_dest->m_x = (p_matrix.m_m[2][0] + p_matrix.m_m[0][2]) * v;
+		p_dest->m_y = (p_matrix.m_m[2][1] + p_matrix.m_m[1][2]) * v;
 		break;
 	}
 }
@@ -238,10 +238,44 @@ void GolMath::FUN_1002f890(const GolQuat& p_from, const GolQuat& p_to, LegoFloat
 	}
 }
 
-// STUB: LEGORACERS 0x004496a0
-void GolMath::FUN_004496a0(const GolVec3*, GolVec3*, const GolVec3*, LegoFloat)
+// FUNCTION: LEGORACERS 0x004496a0
+void GolMath::FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle)
 {
-	STUB(0x004496a0);
+	LegoFloat s = (LegoFloat) sin(p_angle);
+
+	GolVec3 src = *p_src;
+
+	LegoFloat c = (LegoFloat) cos(p_angle);
+	LegoFloat oneMinusC = 1.0f - c;
+	LegoFloat matrix[3][3];
+
+	LegoFloat xy = p_axis->m_y;
+	xy *= p_axis->m_x;
+	xy *= oneMinusC;
+	LegoFloat xz = p_axis->m_z;
+	xz *= p_axis->m_x;
+	xz *= oneMinusC;
+	LegoFloat yz = p_axis->m_z * p_axis->m_y;
+	yz *= oneMinusC;
+	LegoFloat xs = s * p_axis->m_x;
+	LegoFloat ys = p_axis->m_y;
+	ys *= s;
+	LegoFloat zs = s * p_axis->m_z;
+
+	matrix[0][0] = p_axis->m_x * p_axis->m_x * oneMinusC + c;
+	matrix[0][1] = xy + zs;
+	matrix[0][2] = xz - ys;
+	matrix[1][0] = xy - zs;
+	matrix[1][1] = p_axis->m_y * p_axis->m_y * oneMinusC + c;
+	matrix[1][2] = yz + xs;
+	matrix[2][0] = xz + ys;
+	matrix[2][1] = yz - xs;
+	GolVec3* dest = p_dest;
+	matrix[2][2] = p_axis->m_z * p_axis->m_z * oneMinusC + c;
+
+	dest->m_x = src.m_z * matrix[0][2] + src.m_y * matrix[0][1] + src.m_x * matrix[0][0];
+	dest->m_y = src.m_z * matrix[1][2] + src.m_y * matrix[1][1] + src.m_x * matrix[1][0];
+	dest->m_z = src.m_z * matrix[2][2] + src.m_y * matrix[2][1] + src.m_x * matrix[2][0];
 }
 
 // STUB: LEGORACERS 0x004497f0

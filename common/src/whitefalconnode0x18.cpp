@@ -64,10 +64,34 @@ void WhiteFalconNode0x18::VTable0x14(const LegoChar* p_name, LegoBool32 p_binary
 	}
 }
 
-// STUB: GOLDP 0x10029b50
-void WhiteFalconNode0x18::VTable0x10(WhiteFalconNode0x18*)
+// FUNCTION: GOLDP 0x10029b50
+void WhiteFalconNode0x18::VTable0x10(WhiteFalconNode0x18* p_node)
 {
-	STUB(0x10029b50);
+	if (m_capacity != 0) {
+		Clear();
+	}
+
+	m_capacity = p_node->m_capacity;
+	GolNameTable::Allocate(m_capacity);
+	VTable0x0c();
+
+	for (LegoU32 i = 0; i < m_capacity; i++) {
+		JadeOrbitBase0x10* sourceOrbit = p_node->VTable0x18(i);
+
+		GolName name;
+		p_node->GetNameByValue(sourceOrbit, name);
+
+		JadeOrbitBase0x10* destOrbit = VTable0x18(i);
+		AddName(name, destOrbit);
+
+		if (sourceOrbit->m_unk0x04 != NULL) {
+			GolName parentName;
+			p_node->GetNameByValue(sourceOrbit->m_unk0x04, parentName);
+			static_cast<JadeOrbitBase0x10*>(GetName(parentName))->FUN_1001ceb0(destOrbit);
+		}
+
+		destOrbit->VTable0x48(sourceOrbit);
+	}
 }
 
 // FUNCTION: GOLDP 0x10029c10

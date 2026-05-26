@@ -79,7 +79,7 @@ private:
 	void FUN_0049d600();
 	LegoBool32 FUN_0049d670(IGdbModel0x40* p_model) const;
 	IGdbModel0x40* FUN_0049d6e0(undefined2 p_vertexType);
-	static void CopyModelVertices(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_vertexOffset);
+	void CopyModelVertices(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_vertexOffset);
 	void FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_indexOffset);
 	void FUN_0049d920();
 	void FUN_0049d970();

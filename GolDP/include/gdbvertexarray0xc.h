@@ -47,6 +47,7 @@ public:
 
 	LegoU16 GetVertexType() const { return m_unk0x06; }
 	LegoU16 GetCount() const { return m_count; }
+	GolVec3* GetPositions() const { return m_unk0x08; }
 
 protected:
 	LegoU16 m_count;      // 0x04

@@ -1,0 +1,63 @@
+#ifndef DRIVERLICENSESCREEN_H
+#define DRIVERLICENSESCREEN_H
+
+#include "compat.h"
+#include "decomp.h"
+#include "golstring.h"
+#include "menu/screens/imaginarytool0x368.h"
+
+// VTABLE: LEGORACERS 0x004b31f8
+// SIZE 0x23bc
+class DriverLicenseScreen : public ImaginaryTool0x368 {
+public:
+	DriverLicenseScreen();
+
+	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
+	void VTable0x3c(ObscureIcon0x1a8*) override;                                       // vtable+0x3c
+	void VTable0x40(ObscureIcon0x1a8*) override;                                       // vtable+0x40
+	void VTable0x44(undefined4) override;                                              // vtable+0x44
+	void VTable0x4c() override;                                                        // vtable+0x4c
+	void Reset() override;                                                             // vtable+0x54
+	~DriverLicenseScreen() override;                                                   // vtable+0x68
+	LegoBool32 Destroy() override;                                                     // vtable+0x74
+	void VTable0x84() override;                                                        // vtable+0x84
+	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override; // vtable+0x8c
+	void VTable0x90(undefined4) override;                                              // vtable+0x90
+	void VTable0x94(undefined4) override;                                              // vtable+0x94
+
+	void ApplyCheatCode();
+
+	// SYNTHETIC: LEGORACERS 0x0047b070
+	// DriverLicenseScreen::`scalar deleting destructor'
+
+protected:
+	enum {
+		c_nslwj = 1 << 0,
+		c_flyskyhgh = 1 << 1,
+		c_pgllrd = 1 << 2,
+		c_pgllyll = 1 << 3,
+		c_pgllgrn = 1 << 4,
+		c_lnfrrrm = 1 << 5,
+		c_rpcrnly = 1 << 6,
+		c_mxpmx = 1 << 7,
+		c_fstfrwrd = 1 << 8,
+		c_nwhls = 1 << 9,
+		c_nchsss = 1 << 10,
+		c_ndrvr = 1 << 11,
+		c_nmrchts = 1 << 12
+	};
+
+	enum {
+		c_cheatBufferLength = 14,
+		c_cheatBufferStorageLength = c_cheatBufferLength + 1
+	};
+
+	undefined m_unk0x368[0x221c - 0x368];                 // 0x0368
+	undefined2 m_cheatBuffer[c_cheatBufferStorageLength]; // 0x221c
+	undefined m_unk0x223a[0x23a8 - 0x223a];               // 0x223a
+	GolString m_cheatString;                              // 0x23a8
+	LegoBool32 m_unk0x23b4;                               // 0x23b4
+	LegoBool32 m_unk0x23b8;                               // 0x23b8
+};
+
+#endif // DRIVERLICENSESCREEN_H

@@ -3,7 +3,7 @@
 #include "decomp.h"
 
 #ifdef BUILDING_LEGORACERS
-#include "main.h"
+#include "app/main.h"
 #endif
 
 #if defined(BUILDING_GOL)

@@ -53,22 +53,22 @@ public:
 	};
 
 	ObscureVantage0x58();
-	virtual void Reset();                                                                         // vtable+0x00
-	virtual ~ObscureVantage0x58();                                                                // vtable+0x04
-	virtual LegoBool32 VTable0x08();                                                              // vtable+0x08
-	virtual void SetParent(ObscureVantage0x58*);                                                  // vtable+0x0c
-	virtual void VTable0x10(Rect*);                                                               // vtable+0x10
-	virtual void VTable0x14(VisualState0x4*);                                                     // vtable+0x14
-	virtual LegoBool32 VTable0x18(undefined4);                                                    // vtable+0x18
-	virtual undefined4 VTable0x1c(Rect*, Rect*);                                                  // vtable+0x1c
-	virtual LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);          // vtable+0x20
-	virtual ObscureVantageEventResult VTable0x24(InputEventQueue::Item*, undefined4, undefined4); // vtable+0x24
-	virtual ObscureVantageEventResult VTable0x28(InputEventQueue::Item*, undefined4, undefined4); // vtable+0x28
-	virtual ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4);                        // vtable+0x2c
-	virtual ObscureVantage0x58* VTable0x30(InputEventQueue::Item*, undefined4, undefined4);       // vtable+0x30
-	virtual ObscureVantage0x58* VTable0x34(InputEventQueue::Item*, undefined4, undefined4);       // vtable+0x34
-	virtual undefined4 VTable0x38(Rect*, Rect*);                                                  // vtable+0x38
-	virtual undefined4 VTable0x3c(undefined4);                                                    // vtable+0x3c
+	virtual void Reset();                                                                          // vtable+0x00
+	virtual ~ObscureVantage0x58();                                                                 // vtable+0x04
+	virtual LegoBool32 VTable0x08();                                                               // vtable+0x08
+	virtual void SetParent(ObscureVantage0x58*);                                                   // vtable+0x0c
+	virtual void VTable0x10(Rect*);                                                                // vtable+0x10
+	virtual void VTable0x14(VisualState0x4*);                                                      // vtable+0x14
+	virtual LegoBool32 VTable0x18(undefined4);                                                     // vtable+0x18
+	virtual undefined4 VTable0x1c(Rect*, Rect*);                                                   // vtable+0x1c
+	virtual LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4);           // vtable+0x20
+	virtual ObscureVantageEventResult VTable0x24(InputEventQueue::Event*, undefined4, undefined4); // vtable+0x24
+	virtual ObscureVantageEventResult VTable0x28(InputEventQueue::Event*, undefined4, undefined4); // vtable+0x28
+	virtual ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4);                         // vtable+0x2c
+	virtual ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4);       // vtable+0x30
+	virtual ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4);       // vtable+0x34
+	virtual undefined4 VTable0x38(Rect*, Rect*);                                                   // vtable+0x38
+	virtual undefined4 VTable0x3c(undefined4);                                                     // vtable+0x3c
 
 	void RemoveFromParent();
 	undefined4 FUN_00472c40(LegoS32, LegoS32);

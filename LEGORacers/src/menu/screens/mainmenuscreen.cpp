@@ -303,7 +303,7 @@ void MainMenuScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004812f0
-undefined4 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	undefined4 result = TRUE;
 
@@ -315,7 +315,12 @@ undefined4 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item
 }
 
 // FUNCTION: LEGORACERS 0x00481310
-undefined4 MainMenuScreen::VTable0x1c(ObscureVantage0x58* p_icon, InputEventQueue::Item* p_item, undefined4, undefined4)
+undefined4 MainMenuScreen::VTable0x1c(
+	ObscureVantage0x58* p_icon,
+	InputEventQueue::Event* p_item,
+	undefined4,
+	undefined4
+)
 {
 	if (m_unk0x364) {
 		return TRUE;

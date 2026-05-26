@@ -11,7 +11,7 @@ class EditDriverScreen : public ImaginaryTool0x368 {
 public:
 	EditDriverScreen();
 
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                        // vtable+0x18
 	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x44(undefined4) override;                                              // vtable+0x44

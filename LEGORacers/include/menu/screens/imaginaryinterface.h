@@ -20,13 +20,13 @@ public:
 	virtual undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) = 0; // vtable+0x14
 	virtual undefined4 VTable0x18(
 		ObscureVantage0x58*,
-		InputEventQueue::Item*,
+		InputEventQueue::Event*,
 		undefined4,
 		undefined4
 	) = 0; // vtable+0x18
 	virtual undefined4 VTable0x1c(
 		ObscureVantage0x58*,
-		InputEventQueue::Item*,
+		InputEventQueue::Event*,
 		undefined4,
 		undefined4
 	) = 0;                                                                                 // vtable+0x1c

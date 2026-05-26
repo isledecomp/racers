@@ -69,14 +69,14 @@ LegoBool32 ObscureBanner0x5ec::VTable0x20(CopperCrest0x40::Helper0x44*, undefine
 }
 
 // STUB: LEGORACERS 0x004674c0
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x004674c0);
 	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00467510
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00467510);
 	return FALSE;
@@ -118,7 +118,7 @@ void ObscureBanner0x9f4::VTable0x14(VisualState0x4*)
 }
 
 // STUB: LEGORACERS 0x004678e0
-ObscureVantageEventResult ObscureBanner0x9f4::VTable0x24(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantageEventResult ObscureBanner0x9f4::VTable0x24(InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x004678e0);
 	return FALSE;
@@ -151,14 +151,14 @@ undefined4 ObscureBanner0x9f4::VTable0x74(undefined4)
 }
 
 // STUB: LEGORACERS 0x00467b50
-ObscureVantage0x58* ObscureBanner0x9f4::VTable0x30(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureBanner0x9f4::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00467b50);
 	return NULL;
 }
 
 // STUB: LEGORACERS 0x00467be0
-ObscureVantage0x58* ObscureBanner0x9f4::VTable0x34(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureBanner0x9f4::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00467be0);
 	return NULL;

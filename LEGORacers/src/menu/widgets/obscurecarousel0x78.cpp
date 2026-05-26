@@ -53,7 +53,7 @@ void ObscureCarousel0x78::VTable0x14(VisualState0x4* p_visualState)
 
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
-ObscureVantage0x58* ObscureCarousel0x78::VTable0x30(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureCarousel0x78::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
 }

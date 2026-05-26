@@ -190,7 +190,7 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x38(Rect*, Rect*)
 
 // FUNCTION: LEGORACERS 0x00466ec0
 ObscureVantage0x58* ImaginaryChisel0x658::HelperAt0x368::VTable0x30(
-	InputEventQueue::Item* p_item,
+	InputEventQueue::Event* p_item,
 	undefined4,
 	undefined4
 )
@@ -214,7 +214,7 @@ ObscureVantage0x58* ImaginaryChisel0x658::HelperAt0x368::VTable0x30(
 }
 
 // FUNCTION: LEGORACERS 0x00466f20
-ObscureVantage0x58* ImaginaryChisel0x658::HelperAt0x368::VTable0x34(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ImaginaryChisel0x658::HelperAt0x368::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
 {
 	ObscureVantage0x58* result = this;
 

@@ -10,14 +10,14 @@ undefined4 ImaginaryShape0x2b20::VTable0x14(ObscureVantage0x58*, void*, undefine
 }
 
 // STUB: LEGORACERS 0x00474e00 FOLDED
-undefined4 ImaginaryShape0x2b20::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ImaginaryShape0x2b20::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00474e00);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x00474e00 FOLDED
-undefined4 ImaginaryShape0x2b20::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ImaginaryShape0x2b20::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00474e00);
 	return 0;

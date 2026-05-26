@@ -35,7 +35,7 @@ ObscureVantage0x58* ObscureAnthem0x58::VTable0x2c(void* p_item, undefined4 p_x, 
 }
 
 // FUNCTION: LEGORACERS 0x0046eaf0
-ObscureVantage0x58* ObscureAnthem0x58::VTable0x30(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureAnthem0x58::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	if ((p_item->m_keyCode & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse && !FUN_00472c40(p_x, p_y)) {
 		return NULL;
@@ -49,7 +49,7 @@ ObscureVantage0x58* ObscureAnthem0x58::VTable0x30(InputEventQueue::Item* p_item,
 }
 
 // FUNCTION: LEGORACERS 0x0046eb50
-ObscureVantage0x58* ObscureAnthem0x58::VTable0x34(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureAnthem0x58::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	if ((p_item->m_keyCode & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse && !FUN_00472c40(p_x, p_y)) {
 		return NULL;

@@ -38,12 +38,12 @@ public:
 
 	// SIZE 0x18
 	struct InitStruct {
-		GolExport* m_golExport;                   // 0x00
-		BronzeFalcon0xc8770* m_renderer;          // 0x04
-		UtopianPan0xa4* m_rendererObject;         // 0x08
-		InputManager* m_inputManager;             // 0x0c
-		InputEventQueue* m_inputBindingContainer; // 0x10
-		undefined4 m_unk0x14;                     // 0x14
+		GolExport* m_golExport;           // 0x00
+		BronzeFalcon0xc8770* m_renderer;  // 0x04
+		UtopianPan0xa4* m_rendererObject; // 0x08
+		InputManager* m_inputManager;     // 0x0c
+		InputEventQueue* m_inputEvents;   // 0x10
+		undefined4 m_unk0x14;             // 0x14
 	};
 
 	// SIZE 0x44
@@ -112,16 +112,16 @@ public:
 
 private:
 	LegoS32 FUN_00468fa0(InitStruct* p_initStruct);
-	LegoS32 FUN_004690f0(InputEventQueue::Item* p_item);
+	LegoS32 FUN_004690f0(InputEventQueue::Event* p_item);
 	void FUN_004691e0(MouseInputDevice* p_mouse);
 
-	GolCommonDrawState* m_drawState;          // 0x04
-	InputManager* m_inputManager;             // 0x08
-	InputEventQueue* m_inputBindingContainer; // 0x0c
-	Helper0x44 m_unk0x10;                     // 0x10
-	ImaginaryNotion0x290* m_unk0x54;          // 0x54
-	LegoS32 m_unk0x58;                        // 0x58
-	LegoS32 m_unk0x5c;                        // 0x5c
+	GolCommonDrawState* m_drawState; // 0x04
+	InputManager* m_inputManager;    // 0x08
+	InputEventQueue* m_inputEvents;  // 0x0c
+	Helper0x44 m_unk0x10;            // 0x10
+	ImaginaryNotion0x290* m_unk0x54; // 0x54
+	LegoS32 m_unk0x58;               // 0x58
+	LegoS32 m_unk0x5c;               // 0x5c
 };
 
 #endif // COPPERCREST0X40_H

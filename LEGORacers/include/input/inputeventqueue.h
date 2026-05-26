@@ -10,7 +10,7 @@
 class InputEventQueue : public InputDevice::Callback {
 public:
 	// SIZE 0x10
-	struct Item {
+	struct Event {
 		InputDevice* m_device;           // 0x00
 		LegoU32 m_keyCode;               // 0x04
 		LegoU32 m_unk0x08;               // 0x08
@@ -29,8 +29,8 @@ public:
 	virtual LegoBool32 Reset();                                                                // vtable+0x14
 
 	void Initialize();
-	Item* Dequeue();
-	Item* Enqueue(InputDevice* p_device, LegoU32 p_keyCode, LegoU32 p_arg3);
+	Event* Dequeue();
+	Event* Enqueue(InputDevice* p_device, LegoU32 p_keyCode, LegoU32 p_arg3);
 	void ClearQueue();
 	LegoS32 GetSize() const { return m_size; }
 
@@ -40,7 +40,7 @@ public:
 private:
 	LegoBool m_allocated;             // 0x04
 	undefined m_unk0x05[0x08 - 0x05]; // 0x05
-	Item* m_items;                    // 0x08
+	Event* m_events;                  // 0x08
 	LegoS32 m_readPos;                // 0x0c
 	LegoS32 m_writePos;               // 0x10
 	LegoS32 m_capacity;               // 0x14

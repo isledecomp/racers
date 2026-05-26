@@ -47,13 +47,13 @@ public:
 		~Entry0x74c() override; // vtable+0x68
 		undefined4 VTable0x18(
 			ObscureVantage0x58*,
-			InputEventQueue::Item*,
+			InputEventQueue::Event*,
 			undefined4,
 			undefined4
 		) override; // vtable+0x18
 		undefined4 VTable0x1c(
 			ObscureVantage0x58*,
-			InputEventQueue::Item*,
+			InputEventQueue::Event*,
 			undefined4,
 			undefined4
 		) override;                                                 // vtable+0x1c

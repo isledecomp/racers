@@ -372,7 +372,7 @@ undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00465fe0
-ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	if (m_unk0x28 && m_unk0x28->VTable0x18(this, p_item, p_x, p_y)) {
 		return this;
@@ -382,7 +382,7 @@ ObscureVantage0x58* ObscureSigil0xdc::VTable0x30(InputEventQueue::Item* p_item, 
 }
 
 // FUNCTION: LEGORACERS 0x00466010
-ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	if (m_unk0x28 && m_unk0x28->VTable0x1c(this, p_item, p_x, p_y)) {
 		return this;

@@ -168,7 +168,7 @@ void MenuManager::InitializeTextRenderer()
 	initStruct.m_renderer = m_renderer;
 	initStruct.m_rendererObject = m_renderer->FindImageByName(name);
 	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
-	initStruct.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
+	initStruct.m_inputEvents = m_unk0x04.m_inputBindings.GetUnk0x208();
 
 	m_textRenderer.FUN_00469040(&initStruct);
 }
@@ -410,7 +410,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_golExport = m_golExport;
 	m_unk0x4d98.m_renderer = m_renderer;
 	m_unk0x4d98.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
-	m_unk0x4d98.m_inputBindingContainer = m_unk0x04.m_inputBindings.GetUnk0x208();
+	m_unk0x4d98.m_inputEvents = m_unk0x04.m_inputBindings.GetUnk0x208();
 	m_unk0x4d98.m_soundGroupBinding = &m_soundGroupBinding;
 	m_unk0x4d98.m_menuStyles = &m_menuStyles;
 	m_unk0x4d98.m_menuId = p_menuId;

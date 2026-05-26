@@ -62,9 +62,9 @@ public:
 	void VTable0x0c(ObscureVantage0x58*) override;                                      // vtable+0x0c
 	void VTable0x10(undefined4) override;                                               // vtable+0x10
 	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x14
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override; // vtable+0x18
-	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                         // vtable+0x1c
 	void VTable0x20(ObscureVantage0x58*) override;                                      // vtable+0x20
 	void VTable0x24(ObscureVantage0x58*) override;                                      // vtable+0x24
@@ -148,24 +148,24 @@ public:
 	// ImaginaryNotion0x290::`scalar deleting destructor'
 
 protected:
-	LegoBool32 m_initialized;                 // 0x004
-	CeruleanEmperor0x4c m_unk0x08;            // 0x008
-	PorcelainVeil0x50* m_menuStyles;          // 0x054
-	MenuInputBindingTable m_unk0x58;          // 0x058
-	GolExport* m_golExport;                   // 0x0b4
-	BronzeFalcon0xc8770* m_renderer;          // 0x0b8
-	AwakeKite0x20* m_unk0xbc;                 // 0x0bc
-	GolFontTable* m_fontTable;                // 0x0c0
-	FieldAt0xc4* m_unk0xc4;                   // 0x0c4
-	InputEventQueue* m_inputBindingContainer; // 0x0c8
-	InputManager* m_inputManager;             // 0x0cc
-	GolStringTable* m_menuNameStrings;        // 0x0d0
-	GolStringTable* m_menuTextStrings;        // 0x0d4
-	ObscureIcon0x1a8 m_unk0xd8;               // 0x0d8
-	SoundGroupBinding* m_soundGroupBinding;   // 0x280
-	CrimsonSun0xa4* m_unk0x284;               // 0x284
-	undefined4 m_unk0x288;                    // 0x288
-	undefined2 m_unk0x28c;                    // 0x28c
+	LegoBool32 m_initialized;               // 0x004
+	CeruleanEmperor0x4c m_unk0x08;          // 0x008
+	PorcelainVeil0x50* m_menuStyles;        // 0x054
+	MenuInputBindingTable m_unk0x58;        // 0x058
+	GolExport* m_golExport;                 // 0x0b4
+	BronzeFalcon0xc8770* m_renderer;        // 0x0b8
+	AwakeKite0x20* m_unk0xbc;               // 0x0bc
+	GolFontTable* m_fontTable;              // 0x0c0
+	FieldAt0xc4* m_unk0xc4;                 // 0x0c4
+	InputEventQueue* m_inputEvents;         // 0x0c8
+	InputManager* m_inputManager;           // 0x0cc
+	GolStringTable* m_menuNameStrings;      // 0x0d0
+	GolStringTable* m_menuTextStrings;      // 0x0d4
+	ObscureIcon0x1a8 m_unk0xd8;             // 0x0d8
+	SoundGroupBinding* m_soundGroupBinding; // 0x280
+	CrimsonSun0xa4* m_unk0x284;             // 0x284
+	undefined4 m_unk0x288;                  // 0x288
+	undefined2 m_unk0x28c;                  // 0x28c
 };
 
 #endif // IMAGINARYNOTION0X290_H

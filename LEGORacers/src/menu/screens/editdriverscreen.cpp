@@ -54,7 +54,7 @@ void EditDriverScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047da50
-undefined4 EditDriverScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 EditDriverScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x0047da50);
 	return 0;

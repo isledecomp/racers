@@ -10,10 +10,10 @@
 class ObscureAnthem0x58 : public ObscureVantage0x58 {
 public:
 	ObscureAnthem0x58();
-	~ObscureAnthem0x58() override;                                                           // vtable+0x04
-	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                  // vtable+0x2c
-	ObscureVantage0x58* VTable0x30(InputEventQueue::Item*, undefined4, undefined4) override; // vtable+0x30
-	ObscureVantage0x58* VTable0x34(InputEventQueue::Item*, undefined4, undefined4) override; // vtable+0x34
+	~ObscureAnthem0x58() override;                                                            // vtable+0x04
+	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
+	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
 
 	// SYNTHETIC: LEGORACERS 0x0046ea30
 	// ObscureAnthem0x58::`scalar deleting destructor'

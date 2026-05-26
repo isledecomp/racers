@@ -148,7 +148,7 @@ CopperCrest0x40::~CopperCrest0x40()
 LegoS32 CopperCrest0x40::VTable0x00()
 {
 	m_inputManager = NULL;
-	m_inputBindingContainer = NULL;
+	m_inputEvents = NULL;
 	m_unk0x54 = NULL;
 	m_unk0x58 = 0;
 	m_unk0x5c = 0;
@@ -193,7 +193,7 @@ LegoS32 CopperCrest0x40::FUN_00468fa0(InitStruct* p_initStruct)
 LegoS32 CopperCrest0x40::FUN_00469040(InitStruct* p_initStruct)
 {
 	m_inputManager = p_initStruct->m_inputManager;
-	m_inputBindingContainer = p_initStruct->m_inputBindingContainer;
+	m_inputEvents = p_initStruct->m_inputEvents;
 	m_drawState = p_initStruct->m_renderer->GetDrawState();
 
 	return FUN_00468fa0(p_initStruct);
@@ -236,7 +236,7 @@ void CopperCrest0x40::VTable0x18()
 }
 
 // FUNCTION: LEGORACERS 0x004690f0
-LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Item* p_item)
+LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
 {
 	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
 	ObscureVantage0x58* active = icon->FUN_00472e60();
@@ -306,10 +306,10 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 {
 	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
 	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
-	InputEventQueue::Item* item;
+	InputEventQueue::Event* item;
 
-	while (m_inputBindingContainer->GetSize()) {
-		item = m_inputBindingContainer->Dequeue();
+	while (m_inputEvents->GetSize()) {
+		item = m_inputEvents->Dequeue();
 		if (!FUN_004690f0(item)) {
 			switch (item->m_keyCode) {
 			case c_keyboardLeftShift:

@@ -164,7 +164,7 @@ undefined4 MainMenuScreenFieldAt0x498::VTable0x38(Rect*, Rect*)
 
 // FUNCTION: LEGORACERS 0x00482980
 ObscureVantage0x58* MainMenuScreenFieldAt0x498::VTable0x34(
-	InputEventQueue::Item* p_item,
+	InputEventQueue::Event* p_item,
 	undefined4 p_unk0x08,
 	undefined4 p_unk0x0c
 )

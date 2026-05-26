@@ -58,14 +58,14 @@ void ControlConfigScreen::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x0047ac90
-undefined4 ControlConfigScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ControlConfigScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x0047ac90);
 	return 0;
 }
 
 // STUB: LEGORACERS 0x0047ad90
-undefined4 ControlConfigScreen::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ControlConfigScreen::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x0047ad90);
 	return 0;

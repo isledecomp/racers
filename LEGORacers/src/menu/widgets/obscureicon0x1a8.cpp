@@ -670,7 +670,7 @@ ObscureVantage0x58* ObscureIcon0x1a8::VTable0x2c(void* p_item, undefined4 p_x, u
 }
 
 // FUNCTION: LEGORACERS 0x00472820
-ObscureVantage0x58* ObscureIcon0x1a8::VTable0x30(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode & InputDevice::c_sourceMask;
@@ -717,7 +717,7 @@ ObscureVantage0x58* ObscureIcon0x1a8::VTable0x30(InputEventQueue::Item* p_item, 
 }
 
 // FUNCTION: LEGORACERS 0x004728e0
-ObscureVantage0x58* ObscureIcon0x1a8::VTable0x34(InputEventQueue::Item* p_item, undefined4 p_x, undefined4 p_y)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode;

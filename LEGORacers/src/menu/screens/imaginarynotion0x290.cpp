@@ -189,14 +189,14 @@ LegoBool32 ImaginaryNotion0x290::Initialize(MenuToolCreateParams0x30* p_createPa
 	m_unk0xc4 = (FieldAt0xc4*) p_createParams->m_unk0x24;
 	m_unk0x28c = p_createParams->m_menuId;
 	m_menuStyles = p_createParams->m_menuStyles;
-	m_inputBindingContainer = p_createParams->m_inputBindingContainer;
+	m_inputEvents = p_createParams->m_inputEvents;
 	m_menuTextStrings = p_createParams->m_menuTextStrings;
 	m_menuNameStrings = p_createParams->m_menuNameStrings;
 
 	if (FUN_0046b630() && FUN_0046b6e0(p_createParams) && VTable0x58(p_createParams)) {
 		VTable0x4c();
 		m_inputManager->PollDevices(0);
-		m_inputBindingContainer->ClearQueue();
+		m_inputEvents->ClearQueue();
 		m_initialized = TRUE;
 	}
 
@@ -756,13 +756,13 @@ undefined4 ImaginaryNotion0x290::VTable0x14(ObscureVantage0x58*, void*, undefine
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4, undefined4)
+undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return 0;
 }

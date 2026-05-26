@@ -16,9 +16,9 @@ class MainMenuScreen : public ImaginaryTool0x368 {
 public:
 	MainMenuScreen();
 
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override; // vtable+0x18
-	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                        // vtable+0x1c
 	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
 	void VTable0x4c() override;                                                        // vtable+0x4c

@@ -11,9 +11,9 @@ class CarBuildScreen : public ImaginaryShape0x2b20 {
 public:
 	CarBuildScreen();
 
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override; // vtable+0x18
-	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                         // vtable+0x1c
 	void VTable0x20(ObscureVantage0x58*) override;                                      // vtable+0x20
 	void VTable0x24(ObscureVantage0x58*) override;                                      // vtable+0x24

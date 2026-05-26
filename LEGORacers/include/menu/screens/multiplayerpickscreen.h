@@ -11,7 +11,7 @@ class MultiplayerPickScreen : public ImaginaryTool0x368 {
 public:
 	MultiplayerPickScreen();
 
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Item*, undefined4,
+	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                        // vtable+0x18
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	void Reset() override;                                                             // vtable+0x54

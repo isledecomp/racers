@@ -29,17 +29,17 @@ public:
 	};
 
 	ObscureCarousel0x78();
-	void Reset() override;                                                                   // vtable+0x00
-	~ObscureCarousel0x78() override;                                                         // vtable+0x04
-	void VTable0x14(VisualState0x4*) override;                                               // vtable+0x14
-	ObscureVantage0x58* VTable0x30(InputEventQueue::Item*, undefined4, undefined4) override; // vtable+0x30
-	virtual void VTable0x40() = 0;                                                           // vtable+0x40
-	virtual void VTable0x44(undefined4) = 0;                                                 // vtable+0x44
-	virtual void VTable0x48(undefined4, undefined4);                                         // vtable+0x48
-	virtual void VTable0x4c(undefined4, undefined4);                                         // vtable+0x4c
-	virtual void VTable0x50(undefined4) = 0;                                                 // vtable+0x50
-	virtual LegoS32 VTable0x54() = 0;                                                        // vtable+0x54
-	virtual LegoS32 VTable0x58() = 0;                                                        // vtable+0x58
+	void Reset() override;                                                                    // vtable+0x00
+	~ObscureCarousel0x78() override;                                                          // vtable+0x04
+	void VTable0x14(VisualState0x4*) override;                                                // vtable+0x14
+	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	virtual void VTable0x40() = 0;                                                            // vtable+0x40
+	virtual void VTable0x44(undefined4) = 0;                                                  // vtable+0x44
+	virtual void VTable0x48(undefined4, undefined4);                                          // vtable+0x48
+	virtual void VTable0x4c(undefined4, undefined4);                                          // vtable+0x4c
+	virtual void VTable0x50(undefined4) = 0;                                                  // vtable+0x50
+	virtual LegoS32 VTable0x54() = 0;                                                         // vtable+0x54
+	virtual LegoS32 VTable0x58() = 0;                                                         // vtable+0x58
 
 	LegoBool32 FUN_0046c970(CreateParams0x38* p_createParams, StyleEntry0x18* p_styleEntry);
 

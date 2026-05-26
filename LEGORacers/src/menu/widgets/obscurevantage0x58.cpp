@@ -595,7 +595,7 @@ LegoBool32 ObscureVantage0x58::VTable0x20(CopperCrest0x40::Helper0x44* p_param1,
 
 // FUNCTION: LEGORACERS 0x00473370
 ObscureVantageEventResult ObscureVantage0x58::VTable0x24(
-	InputEventQueue::Item* p_param1,
+	InputEventQueue::Event* p_param1,
 	undefined4 p_x,
 	undefined4 p_y
 )
@@ -626,7 +626,7 @@ ObscureVantageEventResult ObscureVantage0x58::VTable0x24(
 
 // FUNCTION: LEGORACERS 0x00473400
 ObscureVantageEventResult ObscureVantage0x58::VTable0x28(
-	InputEventQueue::Item* p_param1,
+	InputEventQueue::Event* p_param1,
 	undefined4 p_x,
 	undefined4 p_y
 )
@@ -662,13 +662,13 @@ ObscureVantage0x58* ObscureVantage0x58::VTable0x2c(void*, undefined4, undefined4
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-ObscureVantage0x58* ObscureVantage0x58::VTable0x30(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00473490 FOLDED
-ObscureVantage0x58* ObscureVantage0x58::VTable0x34(InputEventQueue::Item*, undefined4, undefined4)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
 }

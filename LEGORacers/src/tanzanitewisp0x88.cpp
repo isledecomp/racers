@@ -226,7 +226,7 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d5c0() const
 	return m_unk0x50.m_unk0x0c + m_unk0x3c.m_unk0x0c <= m_unk0x64.m_unk0x0c;
 }
 
-// FUNCTION: LEGORACERS 0x0049d600
+// STUB: LEGORACERS 0x0049d600
 void TanzaniteWisp0x88::FUN_0049d600()
 {
 	ShadowWolf0xc* outputMaterials = m_unk0x64.m_model->GetMaterialTable();
@@ -247,7 +247,7 @@ void TanzaniteWisp0x88::FUN_0049d600()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x0049d670
+// STUB: LEGORACERS 0x0049d670
 LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
 {
 	if (p_model == NULL || p_model->GetGroups() == NULL) {
@@ -265,7 +265,7 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
 	return needsNewModel;
 }
 
-// FUNCTION: LEGORACERS 0x0049d6e0
+// STUB: LEGORACERS 0x0049d6e0
 IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 {
 	IGdbModel0x40* model = m_golExport->VTable0x14();
@@ -293,7 +293,7 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 	return model;
 }
 
-// FUNCTION: LEGORACERS 0x0049d790
+// STUB: LEGORACERS 0x0049d790
 void TanzaniteWisp0x88::CopyModelVertices(
 	IGdbModel0x40* p_sourceModel,
 	IGdbModel0x40* p_destModel,
@@ -329,7 +329,7 @@ void TanzaniteWisp0x88::CopyModelVertices(
 	p_destModel->VTable0x2c(0, FALSE);
 }
 
-// FUNCTION: LEGORACERS 0x0049d880
+// STUB: LEGORACERS 0x0049d880
 void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_indexOffset)
 {
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
@@ -353,7 +353,7 @@ void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40
 	p_destModel->VTable0x34(0);
 }
 
-// FUNCTION: LEGORACERS 0x0049d920
+// STUB: LEGORACERS 0x0049d920
 void TanzaniteWisp0x88::FUN_0049d920()
 {
 	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;
@@ -376,7 +376,7 @@ void TanzaniteWisp0x88::FUN_0049d970()
 	FUN_0049d600();
 }
 
-// FUNCTION: LEGORACERS 0x0049d9b0
+// STUB: LEGORACERS 0x0049d9b0
 void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
 	ShadowWolf0xc* materialTable = m_unk0x64.m_model->GetMaterialTable();
@@ -494,7 +494,7 @@ void TanzaniteWisp0x88::FUN_0049dce0(IGdbModel0x40* p_model, TurquoiseGlowColor*
 	p_model->GetMaterialTable()->AssignEntryByName(materialIndex, materialName);
 }
 
-// FUNCTION: LEGORACERS 0x0049dd50
+// STUB: LEGORACERS 0x0049dd50
 void TanzaniteWisp0x88::FUN_0049dd50()
 {
 	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;

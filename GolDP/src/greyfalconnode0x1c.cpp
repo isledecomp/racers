@@ -110,7 +110,7 @@ void GreyFalconNode0x1c::VTable0x24(const GolMatrix34* p_m)
 	VTable0x20(m);
 }
 
-// FUNCTION: GOLDP 0x10014c20
+// STUB: GOLDP 0x10014c20
 void GreyFalconNode0x1c::VTable0x20(const GolMatrix4& p_m)
 {
 	if (m_unk0x14 == NULL) {

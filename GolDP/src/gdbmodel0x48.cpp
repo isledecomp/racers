@@ -146,7 +146,7 @@ void GdbModel0x48::VTable0x14(GolFileParser& p_parser)
 	m_unk0x40->VTable0x08(p_parser);
 }
 
-// FUNCTION: GOLDP 0x10006c50
+// STUB: GOLDP 0x10006c50
 void GdbModel0x48::FUN_10006c50(BronzeFalcon0xc8770* p_renderer, ShadowWolf0xc* p_materialTable)
 {
 	if (p_materialTable == NULL) {

@@ -231,7 +231,7 @@ void BronzeFalcon0xc8770::Reset()
 	m_unk0xc8524 = 0;
 	m_unk0xc8528 = 0;
 	::memset(&m_unk0xc8530, 0, 0xc854c - 0xc8530);
-	::memset(&m_unk0xc854c, 0, sizeof(m_unk0xc854c));
+	::memset(&m_unk0xc854c, 0, 0xc8568 - 0xc854c);
 	m_unk0xc8530 = this;
 	m_unk0xc853c = m_unk0xc428c;
 	m_unk0xc8538 = NULL;
@@ -1915,7 +1915,7 @@ void BronzeFalcon0xc8770::FUN_1000acf0(LegoU32 p_index)
 	}
 }
 
-// FUNCTION: GOLDP 0x1000add0
+// STUB: GOLDP 0x1000add0
 void BronzeFalcon0xc8770::FUN_1000add0(FloatyBoat0x28* p_model, GdbModel0x48* p_modelData)
 {
 	FloatyBuoy0x58* model = static_cast<FloatyBuoy0x58*>(p_model);
@@ -2351,7 +2351,7 @@ HRESULT BronzeFalcon0xc8770::EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_fo
 	return TRUE;
 }
 
-// FUNCTION: GOLDP 0x1000b8e0
+// STUB: GOLDP 0x1000b8e0
 void BronzeFalcon0xc8770::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
@@ -2398,7 +2398,7 @@ void BronzeFalcon0xc8770::FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	*vertexMap = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000baa0
+// STUB: GOLDP 0x1000baa0
 void BronzeFalcon0xc8770::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
@@ -2441,7 +2441,7 @@ void BronzeFalcon0xc8770::FUN_1000baa0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	*vertexMap = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000bc40
+// STUB: GOLDP 0x1000bc40
 void BronzeFalcon0xc8770::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
@@ -2489,7 +2489,7 @@ void BronzeFalcon0xc8770::FUN_1000bc40(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	*vertexMap = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000be20
+// STUB: GOLDP 0x1000be20
 void BronzeFalcon0xc8770::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -2527,7 +2527,7 @@ void BronzeFalcon0xc8770::FUN_1000be20(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000bfb0
+// STUB: GOLDP 0x1000bfb0
 void BronzeFalcon0xc8770::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -2565,7 +2565,7 @@ void BronzeFalcon0xc8770::FUN_1000bfb0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000c160
+// STUB: GOLDP 0x1000c160
 void BronzeFalcon0xc8770::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -2601,7 +2601,7 @@ void BronzeFalcon0xc8770::FUN_1000c160(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000c2d0
+// STUB: GOLDP 0x1000c2d0
 void BronzeFalcon0xc8770::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -2640,7 +2640,7 @@ void BronzeFalcon0xc8770::FUN_1000c2d0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000c470
+// STUB: GOLDP 0x1000c470
 void BronzeFalcon0xc8770::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -2679,7 +2679,7 @@ void BronzeFalcon0xc8770::FUN_1000c470(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000c630
+// STUB: GOLDP 0x1000c630
 void BronzeFalcon0xc8770::FUN_1000c630(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -2721,7 +2721,7 @@ void BronzeFalcon0xc8770::FUN_1000c630(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000c880
+// STUB: GOLDP 0x1000c880
 void BronzeFalcon0xc8770::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -2762,7 +2762,7 @@ void BronzeFalcon0xc8770::FUN_1000c880(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000caf0
+// STUB: GOLDP 0x1000caf0
 void BronzeFalcon0xc8770::FUN_1000caf0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -2801,7 +2801,7 @@ void BronzeFalcon0xc8770::FUN_1000caf0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000cd20
+// STUB: GOLDP 0x1000cd20
 void BronzeFalcon0xc8770::FUN_1000cd20(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -2844,7 +2844,7 @@ void BronzeFalcon0xc8770::FUN_1000cd20(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000cf90
+// STUB: GOLDP 0x1000cf90
 void BronzeFalcon0xc8770::FUN_1000cf90(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -2934,7 +2934,7 @@ void BronzeFalcon0xc8770::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
-// FUNCTION: GOLDP 0x1000d440
+// STUB: GOLDP 0x1000d440
 void BronzeFalcon0xc8770::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
@@ -2981,7 +2981,7 @@ void BronzeFalcon0xc8770::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
-// FUNCTION: GOLDP 0x1000d5d0
+// STUB: GOLDP 0x1000d5d0
 void BronzeFalcon0xc8770::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	const GolVec3* position = m_unk0xc4c0c + p_firstVertex;
@@ -3028,7 +3028,7 @@ void BronzeFalcon0xc8770::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
-// FUNCTION: GOLDP 0x1000d760
+// STUB: GOLDP 0x1000d760
 void BronzeFalcon0xc8770::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	{
@@ -3109,7 +3109,7 @@ void BronzeFalcon0xc8770::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	}
 }
 
-// FUNCTION: GOLDP 0x1000dbb0
+// STUB: GOLDP 0x1000dbb0
 void BronzeFalcon0xc8770::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	{
@@ -3191,7 +3191,7 @@ void BronzeFalcon0xc8770::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	}
 }
 
-// FUNCTION: GOLDP 0x1000e010
+// STUB: GOLDP 0x1000e010
 void BronzeFalcon0xc8770::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3227,7 +3227,7 @@ void BronzeFalcon0xc8770::FUN_1000e010(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000e180
+// STUB: GOLDP 0x1000e180
 void BronzeFalcon0xc8770::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3265,7 +3265,7 @@ void BronzeFalcon0xc8770::FUN_1000e180(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000e310
+// STUB: GOLDP 0x1000e310
 void BronzeFalcon0xc8770::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -3304,7 +3304,7 @@ void BronzeFalcon0xc8770::FUN_1000e310(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000e540
+// STUB: GOLDP 0x1000e540
 void BronzeFalcon0xc8770::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -3345,7 +3345,7 @@ void BronzeFalcon0xc8770::FUN_1000e540(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000e790
+// STUB: GOLDP 0x1000e790
 void BronzeFalcon0xc8770::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 outputIndex = (m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c);
@@ -3383,7 +3383,7 @@ void BronzeFalcon0xc8770::FUN_1000e790(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
-// FUNCTION: GOLDP 0x1000e930
+// STUB: GOLDP 0x1000e930
 void BronzeFalcon0xc8770::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -3424,7 +3424,7 @@ void BronzeFalcon0xc8770::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVer
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// FUNCTION: GOLDP 0x1000eb90
+// STUB: GOLDP 0x1000eb90
 void BronzeFalcon0xc8770::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
 	DuskwindBananaRelic0x24* material = m_unk0xc8538;
@@ -3565,7 +3565,7 @@ void BronzeFalcon0xc8770::FUN_10011e60(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x10011ed0
+// STUB: GOLDP 0x10011ed0
 void BronzeFalcon0xc8770::FUN_10011ed0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3599,7 +3599,7 @@ void BronzeFalcon0xc8770::FUN_10011ed0(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x10012030
+// STUB: GOLDP 0x10012030
 void BronzeFalcon0xc8770::FUN_10012030(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3629,7 +3629,7 @@ void BronzeFalcon0xc8770::FUN_10012030(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x100121e0
+// STUB: GOLDP 0x100121e0
 void BronzeFalcon0xc8770::FUN_100121e0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3659,7 +3659,7 @@ void BronzeFalcon0xc8770::FUN_100121e0(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x100123e0
+// STUB: GOLDP 0x100123e0
 void BronzeFalcon0xc8770::FUN_100123e0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3689,7 +3689,7 @@ void BronzeFalcon0xc8770::FUN_100123e0(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x10012640
+// STUB: GOLDP 0x10012640
 void BronzeFalcon0xc8770::FUN_10012640(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3719,7 +3719,7 @@ void BronzeFalcon0xc8770::FUN_10012640(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x100128f0
+// STUB: GOLDP 0x100128f0
 void BronzeFalcon0xc8770::FUN_100128f0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;
@@ -3749,7 +3749,7 @@ void BronzeFalcon0xc8770::FUN_100128f0(undefined4 p_outputFirst, undefined4 p_fi
 	(this->*m_drawTriangleFn0)(p_outputFirst, firstVertex, vertexCount);
 }
 
-// FUNCTION: GOLDP 0x10012bf0
+// STUB: GOLDP 0x10012bf0
 void BronzeFalcon0xc8770::FUN_10012bf0(undefined4 p_outputFirst, undefined4 p_firstVertex, undefined4 p_vertexCount)
 {
 	LegoU32 firstVertex = p_firstVertex;

@@ -90,8 +90,8 @@ void CmbModelPartData0x18::FUN_100241d0(GolFileParser& p_parser)
 	}
 }
 
-// FUNCTION: GOLDP 0x10024380
-// FUNCTION: LEGORACERS 0x0040e670
+// STUB: GOLDP 0x10024380
+// STUB: LEGORACERS 0x0040e670
 LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 	GolVec3* p_dest,
 	const CmbModelPartTrack0x14& p_track,
@@ -152,8 +152,8 @@ LegoBool32 CmbModelPartData0x18::InterpolatePosition(
 	return TRUE;
 }
 
-// FUNCTION: GOLDP 0x10024540
-// FUNCTION: LEGORACERS 0x0040e830
+// STUB: GOLDP 0x10024540
+// STUB: LEGORACERS 0x0040e830
 LegoBool32 CmbModelPartData0x18::InterpolateRotation(
 	GolQuat* p_dest,
 	const CmbModelPartTrack0x14& p_track,

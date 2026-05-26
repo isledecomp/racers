@@ -155,7 +155,7 @@ void GdbPartLibrary0x1c::Clear()
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x00407950
+// STUB: LEGORACERS 0x00407950
 void GdbPartLibrary0x1c::CopyPartToModel(
 	BronzeFalcon0xc8770* p_renderer,
 	IGdbModel0x40* p_model,
@@ -226,7 +226,7 @@ void GdbPartLibrary0x1c::CopyPartToModel(
 	p_model->VTable0x2c(g_gdbPartModelDirty, TRUE);
 }
 
-// FUNCTION: LEGORACERS 0x00407b40
+// STUB: LEGORACERS 0x00407b40
 void GdbPartLibrary0x1c::CopyPartGroupStart(
 	BronzeFalcon0xc8770* p_renderer,
 	LegoU32 p_groupIndex,
@@ -242,7 +242,7 @@ void GdbPartLibrary0x1c::CopyPartGroupStart(
 	g_copyModel->SetDirty(TRUE);
 }
 
-// FUNCTION: LEGORACERS 0x00407ba0
+// STUB: LEGORACERS 0x00407ba0
 void GdbPartLibrary0x1c::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
 {
 	LegoS32 addedCount = 0;
@@ -333,7 +333,7 @@ LegoS32 GdbPartLibrary0x1c::CopyBatchVertex(LegoU32 p_sourceVertex)
 	return g_copyBatchVertexCount++;
 }
 
-// FUNCTION: LEGORACERS 0x00407d60
+// STUB: LEGORACERS 0x00407d60
 void GdbPartLibrary0x1c::FlushCopyBatch()
 {
 	if (g_copyBatchIndexCount == 0) {

@@ -384,6 +384,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/gdbpositionvertexpool0x0c.cpp
   LEGORacers/src/util/garnetflare0x60.cpp
   LEGORacers/src/util/tanzanitewisp0x88.cpp
+  LEGORacers/src/util/sordidwatch0xe8.cpp
   LEGORacers/src/menu/chromespike0x4.cpp
   LEGORacers/src/text/coppercrest0x40.cpp
   LEGORacers/src/menu/style/porcelainveil0x50.cpp

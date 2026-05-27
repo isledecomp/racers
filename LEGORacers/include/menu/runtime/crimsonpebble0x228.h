@@ -179,6 +179,18 @@ private:
 	LegoFloat m_offsetDeltaZ; // 0x44
 };
 
+struct WoozyTrade {
+public:
+	enum {
+		c_flagBit0 = 1 << 0
+	};
+
+	// size unknown, confirmed to be at least 5
+
+	Particle0x18c* m_unk0x00;
+	LegoU8 m_unk0x04;
+};
+
 // VTABLE: LEGORACERS 0x004b4a94
 // SIZE 0x50
 class CrimsonPebbleEvent0x50 : public CrimsonPebbleEvent0x14 {
@@ -201,7 +213,7 @@ public:
 
 private:
 	CrimsonPebbleAnimation0x33c* m_unk0x14; // 0x14
-	Particle0x18c** m_unk0x18;              // 0x18
+	WoozyTrade* m_unk0x18;                  // 0x18
 	GolName m_unk0x1c;                      // 0x1c
 	GolVec3 m_unk0x24;                      // 0x24
 	GolVec3 m_unk0x30;                      // 0x30
@@ -479,8 +491,8 @@ public:
 
 	void Clear() override; // vtable+0x08
 
-	Particle0x18c** FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
-	void FUN_00489f00(Particle0x18c**);
+	WoozyTrade* FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
+	void FUN_00489f00(WoozyTrade* p_param);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
 	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);

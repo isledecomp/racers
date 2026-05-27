@@ -15,6 +15,8 @@ void DuskwindBananaRelic0x24::FUN_100257e0(WhiteFalcon0x140* p_renderer, const D
 	m_unk0x20 = p_params.m_unk0x10;
 	m_unk0x21 = p_params.m_unk0x11;
 	m_unk0x22 = p_params.m_unk0x12;
+	m_unk0x22 = p_params.m_unk0x12;
+	m_unk0x23 = p_params.m_unk0x13;
 	m_unk0x23 = p_params.m_unk0x13;
 
 	if (m_unk0x08 & c_flag0x08Bit3) {
@@ -51,5 +53,7 @@ void DuskwindBananaRelic0x24::CopyParamsTo(DuskWindBananaRelicParams* p_params) 
 	p_params->m_unk0x10 = m_unk0x20;
 	p_params->m_unk0x11 = m_unk0x21;
 	p_params->m_unk0x12 = m_unk0x22;
+	p_params->m_unk0x12 = m_unk0x22;
+	p_params->m_unk0x13 = m_unk0x23;
 	p_params->m_unk0x13 = m_unk0x23;
 }

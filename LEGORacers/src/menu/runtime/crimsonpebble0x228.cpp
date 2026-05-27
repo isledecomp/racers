@@ -32,6 +32,8 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(CrimsonPebble0x228, 0x228)
+DECOMP_SIZE_ASSERT(CrimsonPebble0x228::CebTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(CrimsonPebbleAnimation0x33c::EmbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(BluebellFog0x4, 0x04)
 DECOMP_SIZE_ASSERT(CrimsonPebbleEvent0x14, 0x14)
 DECOMP_SIZE_ASSERT(CrimsonPebbleEventValueSource0x2c, 0x2c)
@@ -141,7 +143,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489af0(
 		parser->SetSuffix(".emb");
 	}
 	else {
-		parser = new GolTxtParser3();
+		parser = new EmbTxtParser();
 		if (!parser) {
 			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 		}
@@ -725,7 +727,7 @@ void CrimsonPebble0x228::FUN_004a0730(
 		parser->SetSuffix(".ceb");
 	}
 	else {
-		parser = new GolTxtParser2();
+		parser = new CebTxtParser();
 		if (!parser) {
 			GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 		}
@@ -2136,7 +2138,6 @@ void CrimsonPebbleEvent0x50::Reset()
 	m_unk0x3c.m_y = 0.0f;
 	m_unk0x3c.m_z = 0.0f;
 	m_unk0x48 = 0;
-	m_unk0x4c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a3ad0
@@ -2281,7 +2282,7 @@ void CrimsonPebbleEvent0x30::Reset()
 void CrimsonPebbleEvent0x30::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
 {
 	if (m_unk0x14 != NULL) {
-		Reset();
+		FUN_004a4050();
 	}
 
 	p_parser->ReadLeftCurly();
@@ -2336,6 +2337,13 @@ LegoBool32 CrimsonPebbleEvent0x30::ParseToken(
 	default:
 		return FALSE;
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004a4050
+void CrimsonPebbleEvent0x30::FUN_004a4050()
+{
+	Reset();
+	CrimsonPebbleEvent0x14::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a4070

@@ -10,16 +10,6 @@ class BronzeFalcon0xc8770;
 class GoldDune0x38;
 class PurpleDune0x7c;
 
-// SIZE 0x1fc
-// VTABLE: GOLDP 0x100575d8
-class TdbTxtParser : public GolTxtParser {
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// TdbTxtParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// TdbTxtParser::~TdbTxtParser
-};
-
 // SIZE 0x2c
 struct MagentaRibbonSourceItem0x2c {
 	LegoU32 m_width;                  // 0x00
@@ -44,6 +34,16 @@ public:
 // SIZE 0x20
 class MagentaRibbon0x20 : public GolNameTable {
 public:
+	// VTABLE: GOLDP 0x100575d8
+	// SIZE 0x1fc
+	class TdbTxtParser : public GolTxtParser {
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// MagentaRibbon0x20::TdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// MagentaRibbon0x20::TdbTxtParser::~TdbTxtParser
+	};
+
 	MagentaRibbon0x20();
 	~MagentaRibbon0x20() override; // vtable+0x00
 	void Clear() override;         // vtable+0x08

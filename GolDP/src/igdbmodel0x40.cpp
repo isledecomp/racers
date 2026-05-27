@@ -5,11 +5,13 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "goltxtparser.h"
 
 #include <float.h>
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(IGdbModel0x40, 0x40)
+DECOMP_SIZE_ASSERT(IGdbModel0x40::GdbTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x10027020
 IGdbModel0x40::IGdbModel0x40()

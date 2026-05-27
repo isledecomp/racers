@@ -129,7 +129,7 @@ void VerdantTide0x38::FUN_00497a10(const LegoChar* p_filename, undefined4 p_bina
 		parser->SetSuffix(".leb");
 	}
 	else {
-		parser = new GolTxtParser2;
+		parser = new LegoPieceLibrary::LebTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

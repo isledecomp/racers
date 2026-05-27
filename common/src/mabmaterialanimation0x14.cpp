@@ -8,6 +8,7 @@
 #include "mabmaterialanimationitem0x8.h"
 
 DECOMP_SIZE_ASSERT(MabMaterialAnimation0x14, 0x14)
+DECOMP_SIZE_ASSERT(MabMaterialAnimation0x14::MabTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x10025890
 // FUNCTION: LEGORACERS 0x0040fea0

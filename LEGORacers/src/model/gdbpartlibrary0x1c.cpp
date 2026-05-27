@@ -89,7 +89,7 @@ void GdbPartLibrary0x1c::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 		parser->SetSuffix(".gcb");
 	}
 	else {
-		parser = new GolTxtParser2;
+		parser = new IGdbModel0x40::GdbTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

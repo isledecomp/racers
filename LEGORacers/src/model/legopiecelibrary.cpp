@@ -9,6 +9,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(LegoPieceLibrary, 0x3c)
+DECOMP_SIZE_ASSERT(LegoPieceLibrary::LebTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::ShapeCell, 0x02)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::PieceRecord, 0x1c)
 DECOMP_SIZE_ASSERT(LegoPieceLibrary::Color, 0x06)
@@ -80,9 +81,7 @@ LegoS32 LegoPieceLibrary::PieceRecord::GetHeight() const
 // FUNCTION: LEGORACERS 0x0049eb40
 LegoS32 LegoPieceLibrary::PieceRecord::GetMaxCellValue() const
 {
-	LegoS32 cellCount = GetHeight();
-	LegoS32 width = GetWidth();
-	cellCount *= width;
+	LegoS32 cellCount = GetHeight() * GetWidth();
 
 	if (cellCount != 0) {
 		ShapeCell* cell = GetCell(0, 0, 0);
@@ -256,7 +255,7 @@ void LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_bin
 		parser->SetSuffix(".leb");
 	}
 	else {
-		parser = new GolTxtParser2;
+		parser = new LebTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

@@ -161,14 +161,10 @@ DuskwindBananaRelic0x24* MabMaterialAnimationItem0x18::FUN_00410560(
 		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
 		for (; selectedFrame >= firstFrame; selectedFrame--, item--) {
 			if (static_cast<LegoU32>(frame) >= item->GetFrame()) {
-				break;
+				return p_items[selectedFrame].GetMaterial();
 			}
 		}
 	}
 
-	if (selectedFrame < firstFrame) {
-		return p_items[lastFrame].GetMaterial();
-	}
-
-	return p_items[selectedFrame].GetMaterial();
+	return p_items[lastFrame].GetMaterial();
 }

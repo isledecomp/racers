@@ -14,14 +14,15 @@ class IGdbModelIndexArray0x8;
 struct ColorTransform0x20;
 class WhiteFalcon0x140;
 
-// VTABLE: GOLDP 0x100570bc
-// SIZE 0x1fc
-class GdbTxtParser : public GolTxtParser {};
-
 // VTABLE: GOLDP 0x10057224
 // SIZE 0x40
 class IGdbModel0x40 {
 public:
+	// VTABLE: GOLDP 0x100570bc
+	// VTABLE: LEGORACERS 0x004af434
+	// SIZE 0x1fc
+	class GdbTxtParser : public GolTxtParser {};
+
 	IGdbModel0x40();
 
 	virtual void VTable0x00(GolFileParser& p_parser);     // vtable+0x00

@@ -5,6 +5,7 @@
 #include "golerror.h"
 
 DECOMP_SIZE_ASSERT(BoundingVolume0x64, 0x64)
+DECOMP_SIZE_ASSERT(BoundingVolume0x64::BvbTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x1001b770
 BoundingVolume0x64::BoundingVolume0x64() : m_unk0x24(&m_unk0x18)

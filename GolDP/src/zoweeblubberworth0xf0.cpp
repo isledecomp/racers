@@ -23,7 +23,7 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0, 0xf0)
-DECOMP_SIZE_ASSERT(WdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(ZoweeBlubberworth0xf0::WdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(WdbModel0x8c, 0x8c)
 DECOMP_SIZE_ASSERT(WdbCamera0x4c, 0x4c)
 DECOMP_SIZE_ASSERT(WdbLight0x10, 0x10)

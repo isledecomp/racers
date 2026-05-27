@@ -10,20 +10,20 @@
 class GdbVertexArray0xc;
 class WhiteFalcon0x140;
 
-// VTABLE: GOLDP 0x10056c48
-// SIZE 0xf1c
-class BvbTxtParser : public GolTxtParser {
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// BvbTxtParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// BvbTxtParser::~MdbTxtParser
-};
-
 // VTABLE: GOLDP 0x10056c3c
 // SIZE 0x64
 class BoundingVolume0x64 {
 public:
+	// VTABLE: GOLDP 0x10056c48
+	// SIZE 0x1fc
+	class BvbTxtParser : public GolTxtParser {
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// BoundingVolume0x64::BvbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// BoundingVolume0x64::BvbTxtParser::~BvbTxtParser
+	};
+
 	BoundingVolume0x64();
 
 	virtual ~BoundingVolume0x64(); // vtable+0x00

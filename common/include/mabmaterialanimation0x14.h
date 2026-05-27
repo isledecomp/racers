@@ -5,11 +5,6 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-// VTABLE: GOLDP 0x10057040
-// VTABLE: LEGORACERS 0x004af684
-// SIZE 0x1fc
-class MabTxtParser : public GolTxtParser {};
-
 class MabMaterialAnimationItem0x8;
 class MabMaterialAnimationItem0x18;
 class WhiteFalcon0x140;
@@ -19,6 +14,11 @@ class WhiteFalcon0x140;
 // SIZE 0x14
 class MabMaterialAnimation0x14 {
 public:
+	// VTABLE: GOLDP 0x10057040
+	// VTABLE: LEGORACERS 0x004af684
+	// SIZE 0x1fc
+	class MabTxtParser : public GolTxtParser {};
+
 	MabMaterialAnimation0x14();
 	virtual ~MabMaterialAnimation0x14(); // vtable+0x00
 	virtual void VTable0x04(

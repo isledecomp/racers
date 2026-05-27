@@ -15,6 +15,16 @@ class JadeOrbitBase0x10;
 // SIZE 0x18
 class WhiteFalconNode0x18 : public GolNameTable {
 public:
+	// VTABLE: GOLDP 0x10057484
+	// SIZE 0x1fc
+	class DdfTxtParser : public GolTxtParser {
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// WhiteFalconNode0x18::DdfTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// WhiteFalconNode0x18::DdfTxtParser::~DdfTxtParser
+	};
+
 	class Field0x14 {
 	public:
 		virtual LegoBool32 VTable0x00(LegoU32 p_index) = 0; // vtable+0x00
@@ -57,16 +67,6 @@ public:
 	}
 
 protected:
-	// VTABLE: GOLDP 0x10057484
-	// SIZE 0x1fc
-	class DdfTxtParser : public GolTxtParser {
-		// SYNTHETIC: GOLDP 0x10030050 FOLDED
-		// WhiteFalconNode0x18::DdfTxtParser::`scalar deleting destructor'
-
-		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-		// WhiteFalconNode0x18::DdfTxtParser::~DdfTxtParser
-	};
-
 	void FUN_10029c60(GolFileParser* p_parser);
 
 	undefined4 m_unk0x0c; // 0x0c

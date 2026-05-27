@@ -11,9 +11,7 @@ class PorcelainVeil0x50 : public CeruleanEmperor0x4c {
 public:
 	// VTABLE: LEGORACERS 0x004b35c8
 	// SIZE 0x1fc
-	class MidTxtParser : public GolTxtParser {
-		// Constructor is inlined; destructor thunks fold through the shared parser implementation.
-	};
+	class MidTxtParser : public GolTxtParser {};
 
 	PorcelainVeil0x50();
 	~PorcelainVeil0x50() override;        // vtable+0x00

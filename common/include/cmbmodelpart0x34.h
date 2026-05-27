@@ -14,6 +14,7 @@ class GolFileParser;
 // VTABLE: LEGORACERS 0x004af224
 // SIZE 0x34
 class CmbModelPart0x34 : public GolNameTable {
+public:
 	// VTABLE: GOLDP 0x10056a68
 	// VTABLE: LEGORACERS 0x004af23c
 	// SIZE 0x1fc
@@ -27,7 +28,6 @@ class CmbModelPart0x34 : public GolNameTable {
 		// CmbModelPart0x34::AdbTxtParser::~AdbTxtParser
 	};
 
-public:
 	CmbModelPart0x34();
 	~CmbModelPart0x34() override;                                         // vtable+0x00
 	void Clear() override;                                                // vtable+0x08

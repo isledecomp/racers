@@ -4,6 +4,7 @@
 #include "golerror.h"
 #include "golfileparser.h"
 #include "golname.h"
+#include "goltxtparser.h"
 #include "igdbmodel0x40.h"
 #include "whitefalcon0x140.h"
 
@@ -53,7 +54,7 @@ void ShadowWolf0xc::FUN_10025e60(WhiteFalcon0x140* p_renderer, const LegoChar* p
 		parser->SetSuffix(".gdb");
 	}
 	else {
-		parser = new GdbTxtParser;
+		parser = new IGdbModel0x40::GdbTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

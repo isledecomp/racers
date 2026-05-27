@@ -14,6 +14,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c, 0x3c)
+DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c::CmbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(AquamarineSpirit0x3c::Item0x104, 0x104)
 
 // GLOBAL: LEGORACERS 0x004afe6c

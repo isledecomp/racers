@@ -13,6 +13,7 @@
 DECOMP_SIZE_ASSERT(MagentaRibbonSourceItem0x2c, 0x2c)
 DECOMP_SIZE_ASSERT(MagentaRibbonSource0x4, 0x04)
 DECOMP_SIZE_ASSERT(MagentaRibbon0x20, 0x20)
+DECOMP_SIZE_ASSERT(MagentaRibbon0x20::TdbTxtParser, 0x1fc)
 
 extern GolTgaFile g_unk0x10063ca0;
 

@@ -5,14 +5,14 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-// VTABLE: GOLDP 0x10056b74
-// SIZE 0x1fc
-class BdbTxtParser : public GolTxtParser {};
-
 // VTABLE: GOLDP 0x10056b68
 // SIZE 0x2c
 class BoundingShape0x2c {
 public:
+	// VTABLE: GOLDP 0x10056b74
+	// SIZE 0x1fc
+	class BdbTxtParser : public GolTxtParser {};
+
 	// SIZE 0x20
 	struct StructField0x08 {
 		enum {

@@ -7,6 +7,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(WhiteFalconNode0x18, 0x18)
+DECOMP_SIZE_ASSERT(WhiteFalconNode0x18::DdfTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x10029980
 WhiteFalconNode0x18::WhiteFalconNode0x18()

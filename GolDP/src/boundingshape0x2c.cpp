@@ -3,7 +3,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 
-DECOMP_SIZE_ASSERT(BdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(BoundingShape0x2c::BdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(BoundingShape0x2c::StructField0x08, 0x20)
 DECOMP_SIZE_ASSERT(BoundingShape0x2c::StructField0x18, 0x18)
 DECOMP_SIZE_ASSERT(BoundingShape0x2c, 0x2c)

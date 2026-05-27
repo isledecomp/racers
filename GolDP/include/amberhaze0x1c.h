@@ -5,16 +5,6 @@
 #include "golnametable.h"
 #include "goltxtparser.h"
 
-// SIZE 0x1fc
-// VTABLE: GOLDP 0x10057160
-class MdbTxtParser : public GolTxtParser {
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// MdbTxtParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// MdbTxtParser::~MdbTxtParser
-};
-
 class WhiteFalcon0x140;
 
 class DuskwindBananaRelicProvider0x4 {
@@ -26,6 +16,16 @@ public:
 // SIZE 0x1c
 class AmberHaze0x1c : public GolNameTable {
 public:
+	// VTABLE: GOLDP 0x10057160
+	// SIZE 0x1fc
+	class MdbTxtParser : public GolTxtParser {
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// AmberHaze0x1c::MdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// AmberHaze0x1c::MdbTxtParser::~MdbTxtParser
+	};
+
 	AmberHaze0x1c();
 	~AmberHaze0x1c() override; // vtable+0x00
 	void Clear() override;     // vtable+0x08

@@ -7,6 +7,7 @@
 #include "whitefalcon0x140.h"
 
 DECOMP_SIZE_ASSERT(AmberHaze0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(AmberHaze0x1c::MdbTxtParser, 0x1fc)
 
 // FUNCTION: GOLDP 0x100261b0
 AmberHaze0x1c::AmberHaze0x1c()

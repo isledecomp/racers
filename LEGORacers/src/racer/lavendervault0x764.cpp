@@ -6,7 +6,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(LavenderVault0x764, 0x764)
-DECOMP_SIZE_ASSERT(PcbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(LavenderVault0x764::PcbTxtParser, 0x1fc)
 
 // FUNCTION: LEGORACERS 0x00498700
 LavenderVault0x764::LavenderVault0x764()

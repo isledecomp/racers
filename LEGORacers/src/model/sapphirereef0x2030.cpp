@@ -239,12 +239,11 @@ LegoBool32 SapphireReef0x2030::Field0xbc::Initialize(LegoS32 p_width, LegoS32 p_
 	m_width = p_width;
 	m_height = p_height;
 	m_entries = new Entry0x0c[p_width * p_height];
-	if (m_entries == NULL) {
-		return FALSE;
+	if (m_entries) {
+		ResetEntries();
+		return TRUE;
 	}
-
-	ResetEntries();
-	return TRUE;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0049e280

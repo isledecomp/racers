@@ -13,6 +13,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(DriverCosmeticTable, 0x80)
+DECOMP_SIZE_ASSERT(DriverCosmeticTable::DdfTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(TurquoiseGlowColor, 0x05)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::LoadParams, 0x14)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::Entry0x30, 0x30)

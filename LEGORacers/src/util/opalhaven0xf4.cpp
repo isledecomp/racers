@@ -11,7 +11,7 @@
 
 DECOMP_SIZE_ASSERT(OpalHaven0xf4, 0xf4)
 
-// GLOBAL: LEGORACERS 0x004af86c
+// GLOBAL: LEGORACERS 0x004af5e8
 static const LegoFloat g_maxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x0040d530

@@ -23,6 +23,10 @@ class WhiteFalconNode0x18;
 // SIZE 0x80
 class DriverCosmeticTable : public GolNameTable {
 public:
+	// VTABLE: LEGORACERS 0x004b00b0
+	// SIZE 0x1fc
+	class DdfTxtParser : public GolTxtParser {};
+
 	// SIZE 0x14
 	struct LoadParams {
 		GolExport* m_golExport;          // 0x00
@@ -65,12 +69,6 @@ public:
 	// DriverCosmeticTable::`scalar deleting destructor'
 
 private:
-	// VTABLE: LEGORACERS 0x004b00b0
-	// SIZE 0x1fc
-	class DdfTxtParser : public GolTxtParser {
-		// Constructor is inlined; destructor thunks fold through the shared parser implementation.
-	};
-
 	void Reset();
 	void ClearEntries();
 	OpalHaven0xf4* LoadEntry(Entry0x30* p_entry);

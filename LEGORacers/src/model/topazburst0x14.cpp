@@ -58,7 +58,7 @@ void TopazBurst0x14::Entry::Load(
 		parser->SetSuffix(".leb");
 	}
 	else {
-		parser = new GolTxtParser2;
+		parser = new LegoPieceLibrary::LebTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -159,7 +159,7 @@ void TopazBurst0x14::FUN_0049ce80(
 		parser->SetSuffix(".leb");
 	}
 	else {
-		parser = new GolTxtParser2;
+		parser = new LegoPieceLibrary::LebTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

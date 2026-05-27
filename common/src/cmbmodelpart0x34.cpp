@@ -6,6 +6,7 @@
 #include "golname.h"
 
 DECOMP_SIZE_ASSERT(CmbModelPart0x34, 0x34)
+DECOMP_SIZE_ASSERT(CmbModelPart0x34::AdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CmbModelPartTrack0x14, 0x14)
 
 // FUNCTION: GOLDP 0x100187e0

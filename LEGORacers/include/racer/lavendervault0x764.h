@@ -8,13 +8,13 @@
 
 class GolFileParser;
 
-// SIZE 0x1fc
-// VTABLE: LEGORACERS 0x004b48b8
-class PcbTxtParser : public GolTxtParser {};
-
 // SIZE 0x764
 class LavenderVault0x764 {
 public:
+	// VTABLE: LEGORACERS 0x004b48b8
+	// SIZE 0x1fc
+	class PcbTxtParser : public GolTxtParser {};
+
 	LavenderVault0x764();
 	~LavenderVault0x764();
 

@@ -2,6 +2,7 @@
 #define LEGOPIECELIBRARY_H
 
 #include "decomp.h"
+#include "goltxtparser.h"
 #include "types.h"
 
 class GolFileParser;
@@ -9,6 +10,10 @@ class GolFileParser;
 // SIZE 0x3c
 class LegoPieceLibrary {
 public:
+	// VTABLE: LEGORACERS 0x004b4810
+	// SIZE 0x1fc
+	class LebTxtParser : public GolTxtParser {};
+
 	// SIZE 0x02
 	struct ShapeCell {
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);

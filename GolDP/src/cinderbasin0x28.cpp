@@ -12,7 +12,7 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(FdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(CinderBasin0x28::FdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(CinderBasin0x28::FontParseStyle, 0x0c)
 DECOMP_SIZE_ASSERT(CinderBasin0x28, 0x28)
 

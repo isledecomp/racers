@@ -23,6 +23,10 @@ public:
 	// SIZE 0x60
 	class FieldAt0x2e0 : public MenuInputBindingTable {
 	public:
+		// VTABLE: LEGORACERS 0x004b3498
+		// SIZE 0x1fc
+		class MidTxtParser : public GolTxtParser {};
+
 		FieldAt0x2e0();
 		~FieldAt0x2e0() override;             // vtable+0x00
 		void Clear() override;                // vtable+0x08
@@ -45,12 +49,6 @@ public:
 
 		// SYNTHETIC: LEGORACERS 0x0047f0f0
 		// ImaginaryTool0x368::FieldAt0x2e0::`scalar deleting destructor'
-
-		// VTABLE: LEGORACERS 0x004b3498
-		// SIZE 0x1fc
-		class MidTxtParser : public GolTxtParser {
-			// Constructor is inlined; destructor thunks fold through the shared parser implementation.
-		};
 
 	private:
 		void FUN_0047f2b0(Entry0xe0* p_entry);

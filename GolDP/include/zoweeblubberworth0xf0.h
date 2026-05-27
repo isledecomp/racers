@@ -103,20 +103,20 @@ struct WdbLight0x10 {
 	GolVec3 m_unk0x04; // 0x04
 };
 
-// VTABLE: GOLDP 0x10057744
-// SIZE 0x1fc
-class WdbTxtParser : public GolTxtParser {
-	// SYNTHETIC: GOLDP 0x10030050 FOLDED
-	// WdbTxtParser::`scalar deleting destructor'
-
-	// SYNTHETIC: GOLDP 0x1001b000 FOLDED
-	// WdbTxtParser::~WdbTxtParser
-};
-
 // VTABLE: GOLDP 0x100576ec
 // SIZE 0xf0
 class ZoweeBlubberworth0xf0 {
 public:
+	// VTABLE: GOLDP 0x10057744
+	// SIZE 0x1fc
+	class WdbTxtParser : public GolTxtParser {
+		// SYNTHETIC: GOLDP 0x10030050 FOLDED
+		// ZoweeBlubberworth0xf0::WdbTxtParser::`scalar deleting destructor'
+
+		// SYNTHETIC: GOLDP 0x1001b000 FOLDED
+		// ZoweeBlubberworth0xf0::WdbTxtParser::~WdbTxtParser
+	};
+
 	ZoweeBlubberworth0xf0();
 	virtual void VTable0x00();                                                                          // vtable+0x00
 	virtual void VTable0x04();                                                                          // vtable+0x04

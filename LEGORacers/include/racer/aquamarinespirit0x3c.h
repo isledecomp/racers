@@ -9,10 +9,6 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-// VTABLE: LEGORACERS 0x004afe7c
-// SIZE 0x1fc
-class CmbTxtParser : public GolTxtParser {};
-
 class GolExport;
 class AmberHaze0x1c;
 class BronzeFalcon0xc8770;
@@ -26,6 +22,10 @@ class GolFileParser;
 // SIZE 0x3c
 class AquamarineSpirit0x3c : public GolNameTable {
 public:
+	// VTABLE: LEGORACERS 0x004afe7c
+	// SIZE 0x1fc
+	class CmbTxtParser : public GolTxtParser {};
+
 	AquamarineSpirit0x3c();
 	~AquamarineSpirit0x3c() override; // vtable+0x00
 	void Clear() override;

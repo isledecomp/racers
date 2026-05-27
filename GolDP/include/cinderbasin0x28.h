@@ -11,14 +11,14 @@ class GolFileParser;
 class GolFontBase0x40;
 class GolString;
 
-// VTABLE: GOLDP 0x10056e30
-// SIZE 0x1fc
-class FdbTxtParser : public GolTxtParser {};
-
 // VTABLE: GOLDP 0x10056e08
 // SIZE 0x28
 class CinderBasin0x28 : public GolNameTable {
 public:
+	// VTABLE: GOLDP 0x10056e30
+	// SIZE 0x1fc
+	class FdbTxtParser : public GolTxtParser {};
+
 	// SIZE 0x0c
 	struct FontParseStyle {
 		union {

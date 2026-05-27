@@ -10,6 +10,7 @@
 #include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
+#include "goltxtparser.h"
 #include "menu/menuanimationlist.h"
 #include "types.h"
 #include "util/bluebellfog0x4.h"
@@ -127,6 +128,7 @@ public:
 	void Reset();
 	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner);
 	LegoBool32 ParseToken(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolFileParser::ParserTokenType p_token);
+	void FUN_004a4050();
 	void FUN_004a40f0();
 
 	// SYNTHETIC: LEGORACERS 0x004a1d60
@@ -413,6 +415,10 @@ private:
 // SIZE 0x33c
 class CrimsonPebbleAnimation0x33c : public GolNameTable {
 public:
+	// VTABLE: LEGORACERS 0x004b4048
+	// SIZE 0x1fc
+	class EmbTxtParser : public GolTxtParser {};
+
 	// SIZE 0x08
 	class Entry0x8 {
 	public:
@@ -501,6 +507,10 @@ private:
 // SIZE 0x228
 class CrimsonPebble0x228 : public BluebellFog0x4 {
 public:
+	// VTABLE: LEGORACERS 0x004b49d4
+	// SIZE 0x1fc
+	class CebTxtParser : public GolTxtParser {};
+
 	CrimsonPebble0x228();
 
 	void VTable0x00(void*, void*, void*) override; // vtable+0x00

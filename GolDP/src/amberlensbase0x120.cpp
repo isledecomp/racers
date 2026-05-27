@@ -102,9 +102,9 @@ void AmberLensBase0x120::FUN_1001bfc0(WhiteFalconView0xcc* p_view)
 
 	edge0 = p_view->m_corners[1] - p_view->m_corners[5];
 	edge1 = p_view->m_corners[7] - p_view->m_corners[5];
-	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
-	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
-	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
+	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
+	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
+	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
 	p_view->m_planes[1].m_normal = normal;
 	p_view->m_planes[1].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[5]);
@@ -120,9 +120,9 @@ void AmberLensBase0x120::FUN_1001bfc0(WhiteFalconView0xcc* p_view)
 
 	edge0 = p_view->m_corners[0] - p_view->m_corners[4];
 	edge1 = p_view->m_corners[5] - p_view->m_corners[4];
-	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
-	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
-	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
+	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
+	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
+	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
 	p_view->m_planes[3].m_normal = normal;
 	p_view->m_planes[3].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[4]);
@@ -210,9 +210,9 @@ void AmberLensBase0x120::FUN_1001c450(WhiteFalconView0xcc* p_view)
 
 	edge0 = p_view->m_corners[1] - p_view->m_corners[5];
 	edge1 = p_view->m_corners[7] - p_view->m_corners[5];
-	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
-	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
-	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
+	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
+	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
+	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
 	p_view->m_planes[1].m_normal = normal;
 	p_view->m_planes[1].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[5]);
@@ -228,9 +228,9 @@ void AmberLensBase0x120::FUN_1001c450(WhiteFalconView0xcc* p_view)
 
 	edge0 = p_view->m_corners[0] - p_view->m_corners[4];
 	edge1 = p_view->m_corners[5] - p_view->m_corners[4];
-	normal.m_x = edge1.m_y * edge0.m_z - edge1.m_z * edge0.m_y;
-	normal.m_y = edge1.m_z * edge0.m_x - edge1.m_x * edge0.m_z;
-	normal.m_z = edge1.m_x * edge0.m_y - edge1.m_y * edge0.m_x;
+	normal.m_x = edge0.m_y * edge1.m_z - edge0.m_z * edge1.m_y;
+	normal.m_y = edge0.m_z * edge1.m_x - edge0.m_x * edge1.m_z;
+	normal.m_z = edge0.m_x * edge1.m_y - edge0.m_y * edge1.m_x;
 	GolMath::NormalizeVector3(normal, &normal);
 	p_view->m_planes[3].m_normal = normal;
 	p_view->m_planes[3].m_distance = -GOLVECTOR3_DOT(normal, p_view->m_corners[4]);

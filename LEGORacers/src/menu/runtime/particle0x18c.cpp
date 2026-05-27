@@ -68,6 +68,14 @@ void Particle0x18c::FUN_00489660(GolVec3* p_vec)
 	m_unk0x154.m_z = p_vec->m_z;
 }
 
+// FUNCTION: LEGORACERS 0x004897a0
+void Particle0x18c::FUN_004897a0()
+{
+	m_unk0x000 = 0;
+	m_unk0x008.FUN_00412840();
+	m_unk0x004 = 0;
+}
+
 // STUB: LEGORACERS 0x004897e0
 void Particle0x18c::FUN_004897e0(LegoU32)
 {

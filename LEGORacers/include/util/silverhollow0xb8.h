@@ -45,6 +45,8 @@ public:
 	void FUN_00411730(LegoFloat p_arg);
 	IGdbModel0x40* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	ShadowWolf0xc* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
+	LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
+	void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
 
 protected:
 	enum {
@@ -66,7 +68,10 @@ protected:
 	WhiteFalconNode0x18* m_nodes[3];    // 0x90
 	LegoS32 m_partIndices[3];           // 0x9c
 	CmbModelPart0x34* m_modelParts[3];  // 0xa8
-	LegoFloat m_unk0xb4;                // 0xb4
+	union {
+		LegoFloat m_unk0xb4; // 0xb4
+		LegoU8 m_flags0xb4;  // 0xb4
+	};
 };
 
 #endif // SILVERHOLLOW0XB8_H

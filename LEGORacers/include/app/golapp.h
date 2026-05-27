@@ -31,6 +31,7 @@ public:
 		c_flagBit10 = 1 << 10,
 		c_flagBit12 = 1 << 12,
 		c_flagBit13 = 1 << 13,
+		c_flagBit14 = 1 << 14,
 		c_flagAlphaTransparency = 1 << 15,
 		c_flagBit17 = 1 << 17,
 	};
@@ -71,6 +72,7 @@ public:
 	LegoU32 GetFrameDeltaMs() { return m_frameDeltaMs; }
 	GolHashTable& GetHashTable() { return m_hashTable; }
 	GolDrawState* GetDrawState() { return m_golDrawState; }
+	void ClearFlags(LegoU32 p_flags) { m_flags &= ~p_flags; }
 
 	void ResetRuntimeState();
 	void NotifyCloseRequested();

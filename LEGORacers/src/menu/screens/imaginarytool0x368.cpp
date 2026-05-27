@@ -2,12 +2,12 @@
 
 #include "audio/musicgroup.h"
 #include "audio/musicinstance.h"
-#include "bronzefalcon0xc8770.h"
 #include "golerror.h"
 #include "golstring.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/screens/mainmenuscreenfieldat0x498.h"
 #include "racer/siennacircuit0x154.h"
+#include "render/gold3drenderdevice.h"
 
 #include <string.h>
 
@@ -158,8 +158,8 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 
 // FUNCTION: LEGORACERS 0x0047fec0
 void ImaginaryTool0x368::FUN_0047fec0(
-	WhiteFalcon0x140::MaterialColor* p_materialColor,
-	WhiteFalcon0x140::Light* p_lightColor
+	GolRenderDevice::MaterialColor* p_materialColor,
+	GolRenderDevice::Light* p_lightColor
 )
 {
 	GolVec3 lightDirection;

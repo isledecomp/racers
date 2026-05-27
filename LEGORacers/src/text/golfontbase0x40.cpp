@@ -1,4 +1,4 @@
-#include "golfontbase0x40.h"
+#include "font/golfontbase0x40.h"
 
 #include "decomp.h"
 #include "golstring.h"
@@ -225,7 +225,7 @@ void GolFontBase0x40::FUN_00408d50(
 // STUB: LEGORACERS 0x00408fe0
 undefined2 GolFontBase0x40::FUN_00408fe0(
 	GolString*,
-	WhiteFalcon0x140*,
+	GolRenderDevice*,
 	LegoS32,
 	LegoS32,
 	LegoS32,

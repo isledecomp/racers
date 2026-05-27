@@ -2,7 +2,7 @@
 
 #include "goldecompress.h"
 #include "golerror.h"
-#include "silverdune0x30.h"
+#include "surface/silverdune0x30.h"
 
 #include <string.h>
 

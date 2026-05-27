@@ -1,18 +1,18 @@
 #ifndef OBSCUREVANTAGE0X58_H
 #define OBSCUREVANTAGE0X58_H
 
-#include "color.h"
 #include "compat.h"
 #include "decomp.h"
 #include "input/inputeventqueue.h"
 #include "menu/screens/imaginaryinterface.h"
-#include "rectangle.h"
-#include "silverdune0x30.h"
+#include "render/rectangle.h"
+#include "surface/color.h"
+#include "surface/silverdune0x30.h"
 #include "text/coppercrest0x40.h"
 #include "types.h"
 #include "util/visualstate0x4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolFontBase0x40;
 class GolExport;
 class GolString;
@@ -35,7 +35,7 @@ public:
 	class CreateParams0x30 {
 	public:
 		GolExport* m_golExport;                 // 0x00
-		BronzeFalcon0xc8770* m_renderer;        // 0x04
+		GolD3DRenderDevice* m_renderer;         // 0x04
 		SoundGroupBinding* m_soundGroupBinding; // 0x08
 		ImaginaryInterface* m_eventHandler;     // 0x0c
 		Rect m_rect;                            // 0x10
@@ -107,7 +107,7 @@ protected:
 	ObscureVantage0x58* m_unk0x18;     // 0x18
 	undefined m_flags;                 // 0x1c
 	GolExport* m_golExport;            // 0x20
-	BronzeFalcon0xc8770* m_renderer;   // 0x24
+	GolD3DRenderDevice* m_renderer;    // 0x24
 	ImaginaryInterface* m_unk0x28;     // 0x28
 	union {
 		ColorRGBA m_color;            // 0x2c

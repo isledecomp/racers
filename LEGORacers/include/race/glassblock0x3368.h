@@ -5,10 +5,11 @@
 #include "compat.h"
 #include "decomp.h"
 #include "input/inputeventqueue.h"
+#include "race/azurecircuit0x320.h"
 #include "types.h"
 #include "util/cactusinterface0x4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class CelestialForge0x48;
 class GlassShard0x3b8;
 class GolExport;
@@ -43,21 +44,6 @@ public:
 	// GlassBlock0x3368::`scalar deleting destructor'
 
 private:
-	class Field0x3bc {
-	public:
-		class Field0x318 {
-		public:
-			undefined m_unk0x000[0xdb8 - 0x000]; // 0x000
-			undefined4 m_unk0xdb8;               // 0xdb8
-		};
-
-		void FUN_0043beb0(LegoRacers::Context* p_context);
-
-		undefined m_unk0x000[0x318 - 0x000]; // 0x000
-		Field0x318* m_unk0x318;              // 0x318
-		undefined m_unk0x31c[0x320 - 0x31c]; // 0x31c
-	};
-
 	void FUN_004349a0();
 	void FUN_00434b00();
 	void FUN_00434c80();
@@ -70,12 +56,12 @@ private:
 	Win32GolApp* m_golApp;                  // 0x08
 	SoundManager* m_soundManager;           // 0x0c
 	GolExport* m_golExport;                 // 0x10
-	BronzeFalcon0xc8770* m_renderer;        // 0x14
+	GolD3DRenderDevice* m_renderer;         // 0x14
 	CelestialForge0x48* m_unk0x18;          // 0x18
 	undefined m_unk0x1c[0x220 - 0x1c];      // 0x1c
 	InputEventQueue m_inputEvents;          // 0x220
 	undefined m_unk0x23c[0x3bc - 0x23c];    // 0x23c
-	Field0x3bc m_unk0x3bc;                  // 0x3bc
+	AzureCircuit0x320 m_unk0x3bc;           // 0x3bc
 	undefined m_unk0x6dc[0x30c0 - 0x6dc];   // 0x6dc
 	undefined4 m_unk0x30c0;                 // 0x30c0
 	undefined m_unk0x30c4[0x3328 - 0x30c4]; // 0x30c4

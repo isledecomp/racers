@@ -3,7 +3,7 @@
 #include "decomp.h"
 #include "golerror.h"
 #include "golname.h"
-#include "whitefalcon0x140.h"
+#include "render/golrenderdevice.h"
 
 #include <string.h>
 
@@ -19,7 +19,7 @@ MabMaterialAnimationItem0x8::MabMaterialAnimationItem0x8()
 
 // FUNCTION: GOLDP 0x10026110
 // FUNCTION: LEGORACERS 0x00410770
-void MabMaterialAnimationItem0x8::FUN_10026110(WhiteFalcon0x140* p_renderer, const LegoChar* p_name, LegoU32 p_id)
+void MabMaterialAnimationItem0x8::FUN_10026110(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoU32 p_id)
 {
 	m_unk0x00 = p_renderer->FindMaterialByName(p_name);
 	if (m_unk0x00 == NULL) {

@@ -11,7 +11,7 @@
 #include "types.h"
 #include "util/visualstate0x4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolFont0xa0;
 class GolStringTable;
 class UtopianPan0xa4;
@@ -163,9 +163,9 @@ public:
 
 	// SIZE 0x0c
 	struct ResourceLoadParams {
-		BronzeFalcon0xc8770* m_renderer; // 0x00
-		const LegoChar* m_fileName;      // 0x04
-		undefined4 m_binary;             // 0x08
+		GolD3DRenderDevice* m_renderer; // 0x00
+		const LegoChar* m_fileName;     // 0x04
+		undefined4 m_binary;            // 0x08
 	};
 
 	MenuInputBindingTable();

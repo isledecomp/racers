@@ -1,10 +1,10 @@
-#include "whitefalcon0x140.h"
+#include "render/golrenderdevice.h"
 
-DECOMP_SIZE_ASSERT(WhiteFalcon0x140::MaterialColor, 0x4)
+DECOMP_SIZE_ASSERT(GolRenderDevice::MaterialColor, 0x4)
 
 // FUNCTION: GOLDP 0x10024760
 // FUNCTION: LEGORACERS 0x0040eac0
-WhiteFalcon0x140::MaterialColor::MaterialColor()
+GolRenderDevice::MaterialColor::MaterialColor()
 {
 	m_color.m_red = 0xff;
 	m_color.m_grn = 0xff;
@@ -14,7 +14,7 @@ WhiteFalcon0x140::MaterialColor::MaterialColor()
 
 // FUNCTION: GOLDP 0x10024770
 // FUNCTION: LEGORACERS 0x00442e60
-void WhiteFalcon0x140::MaterialColor::SetColor(ColorRGBA p_color)
+void GolRenderDevice::MaterialColor::SetColor(ColorRGBA p_color)
 {
 	m_color = p_color;
 }

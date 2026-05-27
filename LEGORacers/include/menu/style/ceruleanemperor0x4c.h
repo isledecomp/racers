@@ -5,11 +5,11 @@
 #include "decomp.h"
 #include "goltxtparser.h"
 #include "menu/style/ceruleanknight0x20.h"
-#include "rectangle.h"
+#include "render/rectangle.h"
 #include "types.h"
 #include "util/visualstate0x4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolFont0xa0;
 class PorcelainVeil0x50;
 class UtopianPan0xa4;
@@ -138,10 +138,10 @@ public:
 
 	// SIZE 0x10
 	struct ResourceLoadParams {
-		BronzeFalcon0xc8770* m_renderer; // 0x00
-		PorcelainVeil0x50* m_unk0x04;    // 0x04
-		const LegoChar* m_fileName;      // 0x08
-		undefined4 m_binary;             // 0x0c
+		GolD3DRenderDevice* m_renderer; // 0x00
+		PorcelainVeil0x50* m_unk0x04;   // 0x04
+		const LegoChar* m_fileName;     // 0x08
+		undefined4 m_binary;            // 0x0c
 	};
 
 	CeruleanEmperor0x4c();

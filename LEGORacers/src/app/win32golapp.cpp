@@ -1,13 +1,12 @@
 #include "app/win32golapp.h"
 
-#include "../../GolDP/include/gol.h"
-#include "../../GolDP/include/golcommondrawstate.h"
-#include "gol.h"
+#include "core/gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
 #include "golstream.h"
 #include "input/directinputmanager.h"
 #include "input/mousedevice.h"
+#include "render/golcommondrawstate.h"
 #include "util/cactusinterface0x4.h"
 
 #include <mmsystem.h>

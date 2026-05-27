@@ -4,10 +4,10 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/obscurevantage0x58.h"
-#include "rectangle.h"
+#include "render/rectangle.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
 class SoundGroupBinding;
 

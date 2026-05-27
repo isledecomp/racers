@@ -7,7 +7,7 @@
 #endif
 
 #if defined(BUILDING_GOL)
-#include "gol.h"
+#include "core/gol.h"
 
 // GLOBAL: GOLDP 0x1006314c
 FatalErrorMessageCBFN* g_fatalErrorMessage;

@@ -1,16 +1,16 @@
 #include "menu/menumanager.h"
 
-#include "amberlens0x344.h"
 #include "audio/musicinstance.h"
-#include "awakekite0x20.h"
-#include "goldrawstate.h"
+#include "camera/golcamera.h"
 #include "golhashtable.h"
 #include "golname.h"
 #include "golstream.h"
 #include "input/inputmanager.h"
 #include "input/keyboarddevice.h"
+#include "material/awakekite0x20.h"
 #include "menu/menuscreenid.h"
 #include "menu/screens/imaginarytool0x368.h"
+#include "render/goldrawstate.h"
 
 #include <golerror.h>
 #include <stddef.h>
@@ -19,7 +19,7 @@
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
 DECOMP_SIZE_ASSERT(MenuToolContext0x4bc8, 0x4bc8)
 DECOMP_SIZE_ASSERT(MenuToolCreateParams0x30, 0x30)
-DECOMP_SIZE_ASSERT(AmberLens0x344, 0x344)
+DECOMP_SIZE_ASSERT(GolCamera, 0x344)
 
 // GLOBAL: LEGORACERS 0x004b05d8
 LegoFloat g_unk0x4b05d8 = 1.0f / 255.0f;
@@ -179,14 +179,14 @@ void MenuManager::FUN_0042cde0()
 	GolVec3 position;
 	GolVec3 forward;
 	GolVec3 right;
-	AmberLens0x344* lens = m_golExport->VTable0x20();
+	GolCamera* lens = m_golExport->VTable0x20();
 
 	lens->m_unk0x08 = m_unk0x04.m_context->GetUnk0x0c();
-	lens->m_flags |= AmberLens0x344::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagBit1;
 	lens->m_unk0x10 = m_unk0x04.m_context->GetUnk0x10();
-	lens->m_flags |= AmberLens0x344::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagBit1;
 	lens->m_unk0x14 = m_unk0x04.m_context->GetUnk0x14();
-	lens->m_flags |= AmberLens0x344::c_flagBit1;
+	lens->m_flags |= GolCamera::c_flagBit1;
 
 	position.m_x = 0.0f;
 	position.m_y = 0.0f;
@@ -199,16 +199,16 @@ void MenuManager::FUN_0042cde0()
 	right.m_z = 0.0f;
 
 	lens->GetUnk0x04()->SetPosition(&position);
-	lens->m_flags |= AmberLens0x344::c_flagBit0;
+	lens->m_flags |= GolCamera::c_flagBit0;
 	lens->GetUnk0x04()->VTable0x24(&right, &forward);
-	lens->m_flags |= AmberLens0x344::c_flagBit0;
+	lens->m_flags |= GolCamera::c_flagBit0;
 	m_renderer->VTable0x20(lens);
 }
 
 // FUNCTION: LEGORACERS 0x0042ceb0
 void MenuManager::ReleaseRendererObject()
 {
-	AmberLens0x344* object = m_renderer->GetUnk0x0c();
+	GolCamera* object = m_renderer->GetUnk0x0c();
 	if (object) {
 		m_golExport->VTable0x54(object);
 	}

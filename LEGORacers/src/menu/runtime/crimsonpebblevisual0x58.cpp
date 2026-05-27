@@ -1,8 +1,8 @@
-#include "amberlens0x344.h"
-#include "bronzefalcon0xc8770.h"
+#include "camera/golcamera.h"
 #include "menu/runtime/crimsonpebble0x228.h"
-#include "rectangle.h"
-#include "slatepeak0x58.h"
+#include "render/gold3drenderdevice.h"
+#include "render/rectangle.h"
+#include "surface/slatepeak0x58.h"
 
 // FUNCTION: LEGORACERS 0x004a3280
 CrimsonPebbleVisual0x58::CrimsonPebbleVisual0x58()
@@ -43,7 +43,7 @@ void CrimsonPebbleVisual0x58::ParseVisualToken(
 	GolFileParser* p_parser,
 	GolFileParser::ParserTokenType p_token,
 	CrimsonPebble0x228*,
-	WhiteFalcon0x140*
+	GolRenderDevice*
 )
 {
 	switch (p_token) {
@@ -130,7 +130,7 @@ void CrimsonPebbleVisual0x58::FUN_004a3550(LegoFloat p_elapsedSeconds)
 }
 
 // STUB: LEGORACERS 0x004a35a0
-void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebbleVisual0x58::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & 0x40) {
 		LegoS32 renderTargetWidth = p_renderer->GetRenderTargetInfo()->GetWidth();
@@ -165,7 +165,7 @@ void CrimsonPebbleVisual0x58::FUN_004a35a0(BronzeFalcon0xc8770* p_renderer)
 }
 
 // STUB: LEGORACERS 0x004a36e0
-void CrimsonPebbleVisual0x58::FUN_004a36e0(BronzeFalcon0xc8770* p_renderer, LegoFloat p_width, LegoFloat p_height)
+void CrimsonPebbleVisual0x58::FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
 	const Rect* viewport = &p_renderer->GetUnk0x0c()->m_viewport;
 	LegoS32 viewportX = viewport->m_left;

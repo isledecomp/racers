@@ -29,7 +29,7 @@ MabMaterialAnimation0x14::~MabMaterialAnimation0x14()
 
 // FUNCTION: GOLDP 0x100258f0
 // FUNCTION: LEGORACERS 0x0040fed0
-void MabMaterialAnimation0x14::VTable0x04(WhiteFalcon0x140* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void MabMaterialAnimation0x14::VTable0x04(GolRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
 	if (m_unk0x0c != NULL) {
 		VTable0x08();
@@ -77,7 +77,7 @@ void MabMaterialAnimation0x14::VTable0x08()
 
 // FUNCTION: GOLDP 0x10025a40
 // FUNCTION: LEGORACERS 0x00410020
-void MabMaterialAnimation0x14::FUN_10025a40(WhiteFalcon0x140* p_renderer, GolFileParser& p_parser)
+void MabMaterialAnimation0x14::FUN_10025a40(GolRenderDevice* p_renderer, GolFileParser& p_parser)
 {
 	LegoU32 i;
 

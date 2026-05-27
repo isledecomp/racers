@@ -1,8 +1,8 @@
-#include "bronzefalcon0xc8770.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
 #include "menu/screens/imaginarytool0x368.h"
+#include "render/gold3drenderdevice.h"
 
 #include <string.h>
 

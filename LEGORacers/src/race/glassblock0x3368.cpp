@@ -142,7 +142,7 @@ void GlassBlock0x3368::Run()
 	m_renderer->VTable0x48();
 	m_unk0x3bc.FUN_0043beb0(m_context);
 
-	Field0x3bc::Field0x318* field = m_unk0x3bc.m_unk0x318;
+	AzureCircuit0x320::Field0x318* field = m_unk0x3bc.GetUnk0x318();
 	if (field) {
 		m_context->m_unk0x398 = field->m_unk0xdb8;
 	}
@@ -259,11 +259,4 @@ void GlassBlock0x3368::FUN_00436010()
 {
 	// TODO
 	STUB(0x00436010);
-}
-
-// STUB: LEGORACERS 0x0043beb0
-void GlassBlock0x3368::Field0x3bc::FUN_0043beb0(LegoRacers::Context*)
-{
-	// TODO
-	STUB(0x0043beb0);
 }

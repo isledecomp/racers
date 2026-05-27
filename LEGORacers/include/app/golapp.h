@@ -8,7 +8,7 @@
 #include "types.h"
 
 class CactusInterface0x4;
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolDrawState;
 class GolExport;
 class InputManager;
@@ -87,7 +87,7 @@ protected:
 	GolExport* m_golExport;             // 0x800
 	GolDrawState* m_golDrawState;       // 0x804
 	undefined4 m_unk0x808;              // 0x808
-	BronzeFalcon0xc8770* m_renderer;    // 0x80c
+	GolD3DRenderDevice* m_renderer;     // 0x80c
 	LegoU32 m_width;                    // 0x810
 	LegoU32 m_height;                   // 0x814
 	LegoU32 m_bpp;                      // 0x818

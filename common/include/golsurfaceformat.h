@@ -1,8 +1,8 @@
 #ifndef GOLSURFACEFORMAT_H
 #define GOLSURFACEFORMAT_H
 
-#include "color.h"
 #include "decomp.h"
+#include "surface/color.h"
 #include "types.h"
 
 // SIZE 0x18

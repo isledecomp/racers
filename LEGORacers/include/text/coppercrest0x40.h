@@ -4,10 +4,10 @@
 #include "decomp.h"
 #include "input/inputdevice.h"
 #include "input/inputeventqueue.h"
-#include "silverdune0x30.h"
+#include "surface/silverdune0x30.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
 class GolCommonDrawState;
 class ImaginaryNotion0x290;
@@ -39,7 +39,7 @@ public:
 	// SIZE 0x18
 	struct InitStruct {
 		GolExport* m_golExport;           // 0x00
-		BronzeFalcon0xc8770* m_renderer;  // 0x04
+		GolD3DRenderDevice* m_renderer;   // 0x04
 		UtopianPan0xa4* m_rendererObject; // 0x08
 		InputManager* m_inputManager;     // 0x0c
 		InputEventQueue* m_inputEvents;   // 0x10
@@ -53,7 +53,7 @@ public:
 		struct InitStruct {
 			InputManager* m_inputManager;     // 0x00
 			GolExport* m_golExport;           // 0x04
-			BronzeFalcon0xc8770* m_renderer;  // 0x08
+			GolD3DRenderDevice* m_renderer;   // 0x08
 			UtopianPan0xa4* m_rendererObject; // 0x0c
 			Rect* m_bounds;                   // 0x10
 			LegoS32 m_initialCursorX;         // 0x14
@@ -73,7 +73,7 @@ public:
 
 		InputManager* m_inputManager;     // 0x00
 		GolExport* m_golExport;           // 0x04
-		BronzeFalcon0xc8770* m_renderer;  // 0x08
+		GolD3DRenderDevice* m_renderer;   // 0x08
 		UtopianPan0xa4* m_rendererObject; // 0x0c
 		Rect m_bounds;                    // 0x10
 		Rect m_sourceRect;                // 0x20

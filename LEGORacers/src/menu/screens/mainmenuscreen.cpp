@@ -30,7 +30,7 @@ void MainMenuScreen::FUN_0047ff50(MenuToolContext0x4bc8* p_context, undefined4 p
 
 	LegoPieceLibrary* pieceLibrary = &p_context->m_pieceLibrary;
 	GolExport* golExport = p_context->m_context->m_golApp->GetGolExport();
-	BronzeFalcon0xc8770* renderer = p_context->m_context->m_golApp->GetRenderer();
+	GolD3DRenderDevice* renderer = p_context->m_context->m_golApp->GetRenderer();
 	VerdantTide0x38* pieceResource;
 
 	if (p_binary) {
@@ -156,7 +156,7 @@ void MainMenuScreen::FUN_00480e40()
 	MainMenuScreenFieldAt0x22dc::CreateParams params;
 	GolVec3 vector0;
 	GolVec3 vector1;
-	BronzeFalcon0xc8770* renderer;
+	GolD3DRenderDevice* renderer;
 
 	FUN_0046c480(&m_unk0x21f8, 0, 0xd0);
 

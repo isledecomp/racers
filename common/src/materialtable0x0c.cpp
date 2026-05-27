@@ -1,10 +1,10 @@
-#include "materialtable0x0c.h"
+#include "material/materialtable0x0c.h"
 
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
 #include "golerror.h"
 #include "golname.h"
-#include "whitefalcon0x140.h"
+#include "material/duskwindbananarelic0x24.h"
+#include "render/golrenderdevice.h"
 
 #include <string.h>
 

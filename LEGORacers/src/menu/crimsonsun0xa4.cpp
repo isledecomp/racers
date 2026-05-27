@@ -1,7 +1,7 @@
 #include "menu/crimsonsun0xa4.h"
 
+#include "font/golfont0xa0.h"
 #include "golerror.h"
-#include "golfont0xa0.h"
 #include "text/coppercrest0x40.h"
 
 DECOMP_SIZE_ASSERT(CrimsonSun0xa4, 0xa4)

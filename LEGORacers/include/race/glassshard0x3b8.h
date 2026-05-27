@@ -1,9 +1,9 @@
 #ifndef GLASSSHARD0X3B8_H
 #define GLASSSHARD0X3B8_H
 
-#include "bronzefalcon0xc8770.h"
 #include "compat.h"
 #include "decomp.h"
+#include "render/gold3drenderdevice.h"
 #include "types.h"
 #include "util/opalhaven0xf4.h"
 #include "util/silverhollow0xb8.h"
@@ -21,7 +21,7 @@ public:
 	// GlassShard0x3b8::`scalar deleting destructor'
 
 	void FUN_004223c0();
-	void FUN_00422420(BronzeFalcon0xc8770* p_unk0x04, GolExport* p_unk0x08, undefined4 p_unk0x0c, undefined4 p_unk0x10);
+	void FUN_00422420(GolD3DRenderDevice* p_unk0x04, GolExport* p_unk0x08, undefined4 p_unk0x0c, undefined4 p_unk0x10);
 	void FUN_00422670();
 	void FUN_004230e0();
 	LegoBool32 FUN_004234b0();

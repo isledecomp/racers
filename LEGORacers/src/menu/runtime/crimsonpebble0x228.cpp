@@ -1,33 +1,33 @@
 #include "menu/runtime/crimsonpebble0x228.h"
 
-#include "amberlens0x344.h"
 #include "audio/soundgroup.h"
 #include "audio/soundinstance.h"
 #include "audio/soundmanager.h"
 #include "audio/spatialsoundinstance.h"
-#include "awakekite0x20.h"
-#include "bronzefalcon0xc8770.h"
-#include "floatyboat0x28.h"
-#include "gol.h"
+#include "camera/golcamera.h"
+#include "core/gol.h"
+#include "font/golfont0xa0.h"
+#include "font/golfonttable.h"
 #include "golbinparser.h"
 #include "golconstants.h"
 #include "golerror.h"
 #include "golfileparser.h"
-#include "golfont0xa0.h"
-#include "golfonttable.h"
 #include "golname.h"
+#include "golscenenode.h"
 #include "golstream.h"
 #include "goltxtparser.h"
+#include "golwdbentity.h"
+#include "image/utopianpan0xa4.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
+#include "material/awakekite0x20.h"
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/particle0x18c.h"
 #include "menu/runtime/saffronquartz0x2c.h"
-#include "rectangle.h"
+#include "render/gold3drenderdevice.h"
+#include "render/golrenderdevice.h"
+#include "render/rectangle.h"
 #include "util/opalhaven0xf4.h"
-#include "utopianpan0xa4.h"
-#include "whitefalcon0x140.h"
-#include "whitefalconnode0x18.h"
 
 #include <string.h>
 
@@ -116,7 +116,7 @@ void CrimsonPebbleAnimation0x33c::Clear()
 void CrimsonPebbleAnimation0x33c::FUN_00489af0(
 	LegoU32 p_numParticles,
 	GolExport* p_golExport,
-	BronzeFalcon0xc8770* p_renderer,
+	GolD3DRenderDevice* p_renderer,
 	MabMaterialAnimation0x14* p_materialAnimation,
 	const LegoChar* p_fileName,
 	LegoBool32 p_binary
@@ -203,7 +203,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00489ff0
-void CrimsonPebbleAnimation0x33c::FUN_00489ff0(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebbleAnimation0x33c::FUN_00489ff0(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
 		if (m_particles[i].GetFlags() & 0x02) {
@@ -213,7 +213,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489ff0(BronzeFalcon0xc8770* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0048a040
-void CrimsonPebbleAnimation0x33c::FUN_0048a040(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebbleAnimation0x33c::FUN_0048a040(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
 		if (m_particles[i].GetFlags() & 0x02) {
@@ -271,7 +271,7 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Reset()
 // FUNCTION: LEGORACERS 0x0048a130
 void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 	MabMaterialAnimation0x14* p_materialAnimation,
-	BronzeFalcon0xc8770* p_renderer,
+	GolD3DRenderDevice* p_renderer,
 	GolFileParser* p_parser,
 	CrimsonPebbleAnimation0x33c* p_param4
 )
@@ -400,7 +400,7 @@ void CrimsonPebbleEvent0x14::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x0049fde0
-void CrimsonPebbleEvent0x14::VTable0x0c(FloatyBoat0x28*)
+void CrimsonPebbleEvent0x14::VTable0x0c(GolWdbEntity*)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x14();
@@ -408,7 +408,7 @@ void CrimsonPebbleEvent0x14::VTable0x0c(FloatyBoat0x28*)
 }
 
 // FUNCTION: LEGORACERS 0x0049fdf0
-void CrimsonPebbleEvent0x14::VTable0x08(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x08(GolWdbEntity* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x0c(p_arg);
@@ -416,7 +416,7 @@ void CrimsonPebbleEvent0x14::VTable0x08(FloatyBoat0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0049fe10
-void CrimsonPebbleEvent0x14::VTable0x04(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x04(GolWdbEntity* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
@@ -433,7 +433,7 @@ void CrimsonPebbleEvent0x14::FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2
 void CrimsonPebbleEvent0x14::FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
 {
 	m_unk0x0c->VTable0x5c(0);
-	WhiteFalconNode0x18* falconNode = m_unk0x0c->VTable0x58(0);
+	GolSceneNode* falconNode = m_unk0x0c->VTable0x58(0);
 
 	GolVec3 vec1;
 	GolVec3 vec2;
@@ -541,7 +541,7 @@ void CrimsonPebbleEventLink0x0c::FUN_004a00d0()
 // FUNCTION: LEGORACERS 0x004a00f0
 void CrimsonPebbleEventLink0x0c::FUN_004a00f0(CrimsonPebbleEventValuePayload0x24* p_payload)
 {
-	FloatyBoat0x28* value = p_payload->m_unk0x20->m_unk0x28;
+	GolWdbEntity* value = p_payload->m_unk0x20->m_unk0x28;
 	if (value) {
 		if (m_unk0x00) {
 			m_event->VTable0x04(value);
@@ -703,7 +703,7 @@ LegoBool32 CrimsonPebble0x228::HasFileWithSuffix(const LegoChar* p_fileName, con
 // FUNCTION: LEGORACERS 0x004a0730
 void CrimsonPebble0x228::FUN_004a0730(
 	GolExport* p_golExport,
-	BronzeFalcon0xc8770* p_renderer,
+	GolD3DRenderDevice* p_renderer,
 	SoundManager* p_soundManager,
 	SaffronQuartz0x2c* p_unk0x10,
 	const LegoChar* p_fileName,
@@ -1864,7 +1864,7 @@ void CrimsonPebble0x228::FUN_004a2dc0(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004a2f30
-void CrimsonPebble0x228::FUN_004a2f30(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebble0x228::FUN_004a2f30(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x04 != NULL) {
 		FUN_004a2f80(p_renderer->GetUnk0x0c());
@@ -1876,7 +1876,7 @@ void CrimsonPebble0x228::FUN_004a2f30(BronzeFalcon0xc8770* p_renderer)
 }
 
 // STUB: LEGORACERS 0x004a2f80
-void CrimsonPebble0x228::FUN_004a2f80(AmberLens0x344* p_lens)
+void CrimsonPebble0x228::FUN_004a2f80(GolCamera* p_lens)
 {
 	GolVec3 position;
 	GolVec3 right;
@@ -1921,7 +1921,7 @@ void CrimsonPebble0x228::FUN_004a2f80(AmberLens0x344* p_lens)
 }
 
 // FUNCTION: LEGORACERS 0x004a3070
-void CrimsonPebble0x228::FUN_004a3070(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebble0x228::FUN_004a3070(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x04 != NULL) {
 		for (LegoU32 i = 0; i < m_unk0x68; i++) {
@@ -1931,7 +1931,7 @@ void CrimsonPebble0x228::FUN_004a3070(BronzeFalcon0xc8770* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x004a30b0
-void CrimsonPebble0x228::FUN_004a30b0(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebble0x228::FUN_004a30b0(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x04 != NULL) {
 		p_renderer->VTable0xe8(FALSE);
@@ -1980,19 +1980,19 @@ void CrimsonPebble0x228::FUN_004a3150()
 }
 
 // FUNCTION: LEGORACERS 0x004a3230
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
+GolWdbEntity* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e30(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3240
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
+GolWdbEntity* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e80(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3250
-FloatyBoat0x28* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
+GolWdbEntity* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406ed0(p_name);
 }
@@ -2028,7 +2028,7 @@ void CrimsonPebbleVisual0x64::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004a3890
-void CrimsonPebbleVisual0x64::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer)
+void CrimsonPebbleVisual0x64::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer)
 {
 	p_parser->ReadLeftCurly();
 	m_flags = 3;
@@ -2053,7 +2053,7 @@ void CrimsonPebbleVisual0x64::Parse(GolFileParser* p_parser, CrimsonPebble0x228*
 }
 
 // FUNCTION: LEGORACERS 0x004a3910
-void CrimsonPebbleVisual0x64::FUN_004a3910(BronzeFalcon0xc8770* p_renderer)
+void CrimsonPebbleVisual0x64::FUN_004a3910(GolD3DRenderDevice* p_renderer)
 {
 	m_unk0x58 = p_renderer->FindImageByName(m_unk0x5c);
 	if (m_unk0x58 == NULL) {
@@ -2081,7 +2081,7 @@ void CrimsonPebbleVisual0x64::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
 
 // FUNCTION: LEGORACERS 0x004a39d0
 void CrimsonPebbleVisual0x64::VTable0x20(
-	WhiteFalcon0x140* p_renderer,
+	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
 	LegoS32 p_y,
 	undefined4 p_width,
@@ -2206,7 +2206,7 @@ void CrimsonPebbleEvent0x50::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x004a3d70
-void CrimsonPebbleEvent0x50::VTable0x0c(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x0c(GolWdbEntity* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2218,7 +2218,7 @@ void CrimsonPebbleEvent0x50::VTable0x0c(FloatyBoat0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a3d90
-void CrimsonPebbleEvent0x50::VTable0x04(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x04(GolWdbEntity* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2471,7 +2471,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x10(const GolVec3* p_a, const GolVec3
 }
 
 // FUNCTION: LEGORACERS 0x004a4480
-void CrimsonPebbleEvent0x50Derived::VTable0x0c(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x0c(GolWdbEntity* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2483,7 +2483,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x0c(FloatyBoat0x28* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a44a0
-void CrimsonPebbleEvent0x50Derived::VTable0x04(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x04(GolWdbEntity* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2536,7 +2536,7 @@ void CrimsonPebbleMenuAnimationEvent0x2c::Parse(
 	GolFileParser* p_parser,
 	CrimsonPebble0x228* p_owner,
 	MenuAnimationList* p_animationList,
-	BronzeFalcon0xc8770* p_renderer
+	GolD3DRenderDevice* p_renderer
 )
 {
 	GolName materialName;
@@ -2680,7 +2680,7 @@ void CrimsonPebbleEvent0x48::VTable0x14()
 }
 
 // FUNCTION: LEGORACERS 0x004a4cd0
-void CrimsonPebbleEvent0x48::VTable0x08(FloatyBoat0x28* p_arg)
+void CrimsonPebbleEvent0x48::VTable0x08(GolWdbEntity* p_arg)
 {
 	if (!m_active) {
 		if (m_unk0x08 == NULL) {

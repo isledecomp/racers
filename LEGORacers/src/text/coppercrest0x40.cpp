@@ -1,14 +1,14 @@
 #include "text/coppercrest0x40.h"
 
-#include "bronzefalcon0xc8770.h"
-#include "golcommondrawstate.h"
-#include "goldrawstate.h"
+#include "image/utopianpan0xa4.h"
 #include "input/inputmanager.h"
 #include "input/mousedevice.h"
 #include "menu/screens/imaginarynotion0x290.h"
 #include "menu/screens/imaginarytool0x368.h"
 #include "menu/widgets/obscureicon0x1a8.h"
-#include "utopianpan0xa4.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "render/goldrawstate.h"
 
 #include <memory.h>
 

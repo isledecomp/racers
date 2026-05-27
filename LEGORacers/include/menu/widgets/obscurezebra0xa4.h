@@ -4,7 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/obscurevantage0x58.h"
-#include "whitefalcon0x140.h"
+#include "render/golrenderdevice.h"
 
 // VTABLE: LEGORACERS 0x004b29f4
 // SIZE 0xa4
@@ -23,8 +23,8 @@ public:
 	// ObscureZebra0xa4::`scalar deleting destructor'
 
 protected:
-	WhiteFalcon0x140::TexturedVertex m_vertices[3]; // 0x58
-	LegoU32 m_alphaOverride;                        // 0xa0
+	GolRenderDevice::TexturedVertex m_vertices[3]; // 0x58
+	LegoU32 m_alphaOverride;                       // 0xa0
 };
 
 #endif // OBSCUREZEBRA0XA4

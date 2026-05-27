@@ -1,11 +1,11 @@
 #include "menu/runtime/particle0x18c.h"
 
-#include "gol.h"
+#include "core/gol.h"
 
 DECOMP_SIZE_ASSERT(Particle0x18c, 0x18c)
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void Particle0x18c::FUN_004513d0(BronzeFalcon0xc8770*)
+void Particle0x18c::FUN_004513d0(GolD3DRenderDevice*)
 {
 }
 
@@ -22,7 +22,7 @@ Particle0x18c::~Particle0x18c()
 }
 
 // STUB: LEGORACERS 0x00489520
-void Particle0x18c::FUN_00489520(GolExport* p_golExport, BronzeFalcon0xc8770* p_renderer)
+void Particle0x18c::FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
 	STUB(0x00489540);
 }
@@ -75,7 +75,7 @@ void Particle0x18c::FUN_004897e0(LegoU32)
 }
 
 // STUB: LEGORACERS 0x00489960
-void Particle0x18c::FUN_00489960(BronzeFalcon0xc8770*)
+void Particle0x18c::FUN_00489960(GolD3DRenderDevice*)
 {
 	STUB(0x00489960);
 }

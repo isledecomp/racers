@@ -1,8 +1,8 @@
 #include "menu/menuanimationlist.h"
 
-#include "bronzefalcon0xc8770.h"
 #include "golerror.h"
-#include "slatepeak0x58.h"
+#include "render/gold3drenderdevice.h"
+#include "surface/slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(MenuAnimationList, 0x8)
 DECOMP_SIZE_ASSERT(MenuAnimationList::Entry, 0x18)
@@ -98,7 +98,7 @@ void MenuAnimationList::Entry::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004905e0
-void MenuAnimationList::Entry::Draw(BronzeFalcon0xc8770* p_renderer)
+void MenuAnimationList::Entry::Draw(GolD3DRenderDevice* p_renderer)
 {
 	DrawScratch scratch;
 
@@ -267,7 +267,7 @@ void MenuAnimationList::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00494fa0
-void MenuAnimationList::Draw(BronzeFalcon0xc8770* p_renderer)
+void MenuAnimationList::Draw(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_count; i++) {
 		if (m_entries[i].IsActive()) {

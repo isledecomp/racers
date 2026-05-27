@@ -2,7 +2,7 @@
 #define MABMATERIALANIMATIONITEM0X18_H
 
 #include "decomp.h"
-#include "materialtable0x0c.h"
+#include "material/materialtable0x0c.h"
 #include "types.h"
 
 class MabMaterialAnimationItem0x8;

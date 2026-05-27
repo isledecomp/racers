@@ -1,6 +1,6 @@
 #include "menu/widgets/obscuretome0x3fc.h"
 
-#include "utopianpan0xa4.h"
+#include "image/utopianpan0xa4.h"
 
 #include <string.h>
 

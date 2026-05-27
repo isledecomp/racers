@@ -2,12 +2,12 @@
 #define WIN32GOLAPP_H
 
 #include "app/golapp.h"
-#include "bronzefalcon0xc8770.h"
 #include "compat.h"
+#include "core/gol.h"
 #include "decomp.h"
-#include "gol.h"
 #include "input/directinputmanager.h"
 #include "racers_resource.h"
+#include "render/gold3drenderdevice.h"
 #include "types.h"
 
 #include <windows.h>
@@ -72,7 +72,7 @@ public:
 	LegoU32 GetGolBackendType() { return m_golBackendType; }
 	void SetGolBackendType(LegoU32 p_golBackendType) { m_golBackendType = p_golBackendType; }
 	GolExport* GetGolExport() { return m_golExport; }
-	BronzeFalcon0xc8770* GetRenderer() { return m_renderer; }
+	GolD3DRenderDevice* GetRenderer() { return m_renderer; }
 	HWND GetHwnd() { return m_hWnd; }
 	LegoU32 GetWindowMode() { return m_windowMode; }
 	LegoBool32 IsDisabled() { return m_disabled; }

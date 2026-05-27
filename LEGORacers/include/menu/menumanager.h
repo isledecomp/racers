@@ -3,10 +3,9 @@
 
 #include "app/legoracers.h"
 #include "audio/soundgroupbinding.h"
-#include "bronzefalcon0xc8770.h"
 #include "compat.h"
 #include "decomp.h"
-#include "golfonttable.h"
+#include "font/golfonttable.h"
 #include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
@@ -26,6 +25,7 @@
 #include "racer/aquamarinespirit0x3c.h"
 #include "racer/drivercosmetictable.h"
 #include "racer/lavendervault0x764.h"
+#include "render/gold3drenderdevice.h"
 #include "save/savesystem.h"
 #include "text/coppercrest0x40.h"
 #include "types.h"
@@ -93,7 +93,7 @@ private:
 	CrimsonSun0xa4 m_unk0x4bd0;            // 0x4bd0
 	CopperCrest0x40 m_textRenderer;        // 0x4c74
 	GolExport* m_golExport;                // 0x4cd4
-	BronzeFalcon0xc8770* m_renderer;       // 0x4cd8
+	GolD3DRenderDevice* m_renderer;        // 0x4cd8
 	AwakeKite0x20* m_imageTable;           // 0x4cdc
 	GolFontTable* m_fontTable;             // 0x4ce0
 	GolStringTable m_menuNameStrings;      // 0x4ce4

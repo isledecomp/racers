@@ -10,7 +10,7 @@
 #include "menu/widgets/obscureicon0x1a8.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class CrimsonSun0xa4;
 class GolExport;
 class GolFontTable;
@@ -153,7 +153,7 @@ protected:
 	PorcelainVeil0x50* m_menuStyles;        // 0x054
 	MenuInputBindingTable m_unk0x58;        // 0x058
 	GolExport* m_golExport;                 // 0x0b4
-	BronzeFalcon0xc8770* m_renderer;        // 0x0b8
+	GolD3DRenderDevice* m_renderer;         // 0x0b8
 	AwakeKite0x20* m_unk0xbc;               // 0x0bc
 	GolFontTable* m_fontTable;              // 0x0c0
 	FieldAt0xc4* m_unk0xc4;                 // 0x0c4

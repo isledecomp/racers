@@ -5,7 +5,7 @@
 #include "golmath.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
 
 // SIZE 0x18c
@@ -15,12 +15,12 @@ public:
 	~Particle0x18c();
 
 	LegoU8 GetFlags() const { return m_flags; }
-	void FUN_00489520(GolExport* p_golExport, BronzeFalcon0xc8770* p_renderer);
+	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);
 	void FUN_004897e0(LegoU32 p_elapsedMs);
-	void FUN_00489960(BronzeFalcon0xc8770* p_renderer);
-	void FUN_004513d0(BronzeFalcon0xc8770* p_renderer);
+	void FUN_00489960(GolD3DRenderDevice* p_renderer);
+	void FUN_004513d0(GolD3DRenderDevice* p_renderer);
 
 private:
 	undefined m_unk0x000[0xc0];          // 0x000

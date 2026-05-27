@@ -480,6 +480,7 @@ public:
 	void Clear() override; // vtable+0x08
 
 	Particle0x18c** FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
+	void FUN_00489f00(Particle0x18c**);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
 	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);

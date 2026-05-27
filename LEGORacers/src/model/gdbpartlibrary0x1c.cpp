@@ -19,6 +19,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GdbPartLibrary0x1c, 0x1c)
+DECOMP_SIZE_ASSERT(GdbPartLibrary0x1c::GdbTxtParser, 0x1fc)
 
 static const LegoU32 g_gdbPartBatchVertexCapacity = 0x40;
 static const LegoU32 g_gdbPartModelDirty = 1;
@@ -89,7 +90,7 @@ void GdbPartLibrary0x1c::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 		parser->SetSuffix(".gcb");
 	}
 	else {
-		parser = new IGdbModel0x40::GdbTxtParser;
+		parser = new GdbTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

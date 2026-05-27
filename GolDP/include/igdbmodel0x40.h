@@ -19,7 +19,6 @@ class WhiteFalcon0x140;
 class IGdbModel0x40 {
 public:
 	// VTABLE: GOLDP 0x100570bc
-	// VTABLE: LEGORACERS 0x004af434
 	// SIZE 0x1fc
 	class GdbTxtParser : public GolTxtParser {};
 

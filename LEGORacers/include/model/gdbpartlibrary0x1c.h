@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "golnametable.h"
+#include "goltxtparser.h"
 #include "types.h"
 
 class BronzeFalcon0xc8770;
@@ -16,6 +17,10 @@ class IGdbModel0x40;
 // SIZE 0x1c
 class GdbPartLibrary0x1c : public GolNameTable {
 public:
+	// VTABLE: LEGORACERS 0x004af434
+	// SIZE 0x1fc
+	class GdbTxtParser : public GolTxtParser {};
+
 	GdbPartLibrary0x1c();
 	~GdbPartLibrary0x1c() override; // vtable+0x00
 

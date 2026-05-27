@@ -28,15 +28,6 @@
 DECOMP_SIZE_ASSERT(TanzaniteWisp0x88, 0x88)
 DECOMP_SIZE_ASSERT(TanzaniteWisp0x88::ModelSummary0x14, 0x14)
 
-// GLOBAL: LEGORACERS 0x004c217c
-static const LegoChar g_legsMaterialName[] = "legs";
-
-// GLOBAL: LEGORACERS 0x004c2184
-static const LegoChar g_torsoMaterialName[] = "torso";
-
-// GLOBAL: LEGORACERS 0x004c218c
-static const LegoChar g_faceMaterialName[] = "face";
-
 // FUNCTION: LEGORACERS 0x0049d120
 TanzaniteWisp0x88::TanzaniteWisp0x88()
 {
@@ -440,9 +431,9 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049dab0(
 	FUN_0049d420(p_color->m_unk0x01);
 
 	p_model->SetScale(m_unk0x3c.m_model->GetScale());
-	FUN_0049d9b0(m_unk0x38->FUN_00498640(p_color->m_unk0x01), g_faceMaterialName);
-	FUN_0049d9b0(m_unk0x38->FUN_00498680(p_color->m_unk0x02), g_torsoMaterialName);
-	FUN_0049d9b0(m_unk0x38->FUN_004986c0(p_color->m_unk0x03), g_legsMaterialName);
+	FUN_0049d9b0(m_unk0x38->FUN_00498640(p_color->m_unk0x01), "face");
+	FUN_0049d9b0(m_unk0x38->FUN_00498680(p_color->m_unk0x02), "torso");
+	FUN_0049d9b0(m_unk0x38->FUN_004986c0(p_color->m_unk0x03), "legs");
 
 	return p_model;
 }
@@ -505,7 +496,7 @@ void TanzaniteWisp0x88::FUN_0049dd50()
 	LegoU32* outputGroups = outputModel->GetMutableGroups();
 
 	GolName faceName;
-	::strncpy(faceName, g_faceMaterialName, sizeof(GolName));
+	::strncpy(faceName, "face", sizeof(GolName));
 	LegoU32 faceGroup = GdbModel0x48::c_groupTypeMaterial |
 						(bodyModel->GetMaterialTable()->FindEntryIndexByName(faceName) & 0x00ffffff);
 

@@ -1,14 +1,14 @@
 #include "model/verdanttide0x38.h"
 
-#include "amberhaze0x1c.h"
-#include "bronzefalcon0xc8770.h"
-#include "duskwindbananarelic0x24.h"
-#include "gol.h"
+#include "core/gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "goltxtparser.h"
+#include "material/duskwindbananarelic0x24.h"
+#include "material/golmateriallibrary.h"
 #include "model/legopiecelibrary.h"
-#include "zoweeblubberworth0xf0.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -54,7 +54,7 @@ VerdantTide0x38::~VerdantTide0x38()
 }
 
 // FUNCTION: LEGORACERS 0x004978f0
-void VerdantTide0x38::FUN_004978f0(GolExport* p_golExport, BronzeFalcon0xc8770* p_renderer)
+void VerdantTide0x38::FUN_004978f0(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
 	Destroy();
 	m_golExport = p_golExport;
@@ -212,7 +212,7 @@ void VerdantTide0x38::FUN_00497c30(const LegoChar* p_filename, undefined4 p_bina
 }
 
 // FUNCTION: LEGORACERS 0x00497cf0
-FloatyPontoon0x4c::Field0x2c* VerdantTide0x38::GetMaterialTable()
+GolBillboard::Field0x2c* VerdantTide0x38::GetMaterialTable()
 {
 	return m_materialTable.m_renderer != NULL ? &m_materialTable : NULL;
 }

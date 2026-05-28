@@ -1,16 +1,13 @@
 #include "menu/screens/imaginarynotion0x290.h"
 
-#include "awakekite0x20.h"
-#include "bronzefalcon0xc8770.h"
-#include "gol.h"
-#include "golcommondrawstate.h"
-#include "goldrawstate.h"
-#include "golfonttable.h"
+#include "core/gol.h"
+#include "font/golfonttable.h"
 #include "golname.h"
 #include "golstream.h"
 #include "golstring.h"
 #include "golstringtable.h"
 #include "input/inputmanager.h"
+#include "material/awakekite0x20.h"
 #include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcreateparams0x30.h"
 #include "menu/screens/imaginarychisel0x658.h"
@@ -21,6 +18,9 @@
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "menu/widgets/obscurevantage0x58.h"
 #include "menu/widgets/obscurezebra0xa4.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "render/goldrawstate.h"
 
 #include <string.h>
 

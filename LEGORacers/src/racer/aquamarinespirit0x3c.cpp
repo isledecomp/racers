@@ -1,15 +1,15 @@
 #include "racer/aquamarinespirit0x3c.h"
 
-#include "amberhaze0x1c.h"
-#include "bronzefalcon0xc8770.h"
-#include "gol.h"
+#include "core/gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
-#include "igdbmodel0x40.h"
-#include "magentaribbon0x20.h"
+#include "golscenenode.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "mesh/golmodelbase.h"
+#include "render/gold3drenderdevice.h"
 #include "util/opalhaven0xf4.h"
-#include "whitefalconnode0x18.h"
 
 #include <string.h>
 
@@ -263,19 +263,19 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x18 = new IGdbModel0x40*[modelCount];
+		m_unk0x18 = new GolModelBase*[modelCount];
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x1c = new MagentaRibbon0x20*[modelCount];
+		m_unk0x1c = new GolTextureList*[modelCount];
 		if (m_unk0x1c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x20 = new AmberHaze0x1c*[modelCount];
+		m_unk0x20 = new GolMaterialLibrary*[modelCount];
 		if (m_unk0x20 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x24 = new WhiteFalconNode0x18*[modelCount];
+		m_unk0x24 = new GolSceneNode*[modelCount];
 		if (m_unk0x24 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

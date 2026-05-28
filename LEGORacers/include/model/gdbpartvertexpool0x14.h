@@ -1,10 +1,10 @@
 #ifndef GDBPARTVERTEXPOOL0X14_H
 #define GDBPARTVERTEXPOOL0X14_H
 
-#include "color.h"
 #include "compat.h"
 #include "decomp.h"
 #include "model/gdbpositionvertexpool0x0c.h"
+#include "surface/color.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004af4b4

@@ -10,12 +10,12 @@
 #include "types.h"
 
 class GolExport;
-class AmberHaze0x1c;
-class BronzeFalcon0xc8770;
-class IGdbModel0x40;
-class MagentaRibbon0x20;
+class GolMaterialLibrary;
+class GolD3DRenderDevice;
+class GolModelBase;
+class GolTextureList;
 class OpalHaven0xf4;
-class WhiteFalconNode0x18;
+class GolSceneNode;
 class GolFileParser;
 
 // VTABLE: LEGORACERS 0x004afe70
@@ -34,11 +34,11 @@ public:
 	// AquamarineSpirit0x3c::`scalar deleting destructor'
 
 	struct Params {
-		GolExport* m_unk0x00;           // 0x00
-		BronzeFalcon0xc8770* m_unk0x04; // 0x04
-		LegoS32 m_unk0x08;              // 0x08
-		const LegoChar* m_filename;     // 0x0c
-		LegoBool32 m_unk0x10;           // 0x10
+		GolExport* m_unk0x00;          // 0x00
+		GolD3DRenderDevice* m_unk0x04; // 0x04
+		LegoS32 m_unk0x08;             // 0x08
+		const LegoChar* m_filename;    // 0x0c
+		LegoBool32 m_unk0x10;          // 0x10
 	};
 
 	void FUN_0041db10(const Params* p_params);
@@ -79,18 +79,18 @@ private:
 	void FUN_0041e210(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant);
 	LegoU32 FUN_0041e360(Item0x104* p_item, OpalHaven0xf4** p_primary, OpalHaven0xf4** p_secondary);
 
-	GolExport* m_unk0x0c;            // 0x0c
-	BronzeFalcon0xc8770* m_unk0x10;  // 0x10
-	Item0x104* m_unk0x14;            // 0x14
-	IGdbModel0x40** m_unk0x18;       // 0x18
-	MagentaRibbon0x20** m_unk0x1c;   // 0x1c
-	AmberHaze0x1c** m_unk0x20;       // 0x20
-	WhiteFalconNode0x18** m_unk0x24; // 0x24
-	CmbModelPart0x34* m_unk0x28;     // 0x28
-	OpalHaven0xf4* m_unk0x2c;        // 0x2c
-	LegoU32 m_unk0x30;               // 0x30
-	LegoU32 m_unk0x34;               // 0x34
-	LegoBool32 m_unk0x38;            // 0x38
+	GolExport* m_unk0x0c;           // 0x0c
+	GolD3DRenderDevice* m_unk0x10;  // 0x10
+	Item0x104* m_unk0x14;           // 0x14
+	GolModelBase** m_unk0x18;       // 0x18
+	GolTextureList** m_unk0x1c;     // 0x1c
+	GolMaterialLibrary** m_unk0x20; // 0x20
+	GolSceneNode** m_unk0x24;       // 0x24
+	CmbModelPart0x34* m_unk0x28;    // 0x28
+	OpalHaven0xf4* m_unk0x2c;       // 0x2c
+	LegoU32 m_unk0x30;              // 0x30
+	LegoU32 m_unk0x34;              // 0x34
+	LegoBool32 m_unk0x38;           // 0x38
 };
 
 #endif // AQUAMARINESPIRIT0X3C_H

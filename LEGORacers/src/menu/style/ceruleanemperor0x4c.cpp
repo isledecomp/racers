@@ -1,11 +1,11 @@
 #include "menu/style/ceruleanemperor0x4c.h"
 
-#include "bronzefalcon0xc8770.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
 #include "goltxtparser.h"
 #include "menu/style/porcelainveil0x50.h"
+#include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c, 0x4c)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x0c, 0x0c)

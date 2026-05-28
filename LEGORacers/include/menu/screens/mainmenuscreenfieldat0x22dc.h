@@ -8,12 +8,12 @@
 #include "racer/turquoiseglowcolor.h"
 #include "util/opalhaven0xf4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
-class IGdbModel0x40;
+class GolModelBase;
 class ObscureSigil0xdc;
 class TanzaniteWisp0x88;
-class WhiteFalconNode0x18;
+class GolSceneNode;
 
 // VTABLE: LEGORACERS 0x004b33c8
 // SIZE 0x15c
@@ -48,8 +48,8 @@ private:
 	void FUN_0047df90();
 
 	OpalHaven0xf4 m_unk0x1c;             // 0x01c
-	IGdbModel0x40* m_unk0x110;           // 0x110
-	WhiteFalconNode0x18* m_unk0x114;     // 0x114
+	GolModelBase* m_unk0x110;            // 0x110
+	GolSceneNode* m_unk0x114;            // 0x114
 	CmbModelPart0x34 m_unk0x118;         // 0x118
 	undefined4 m_unk0x14c;               // 0x14c
 	TanzaniteWisp0x88* m_unk0x150;       // 0x150

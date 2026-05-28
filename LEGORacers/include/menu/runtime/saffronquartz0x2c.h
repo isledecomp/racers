@@ -5,19 +5,19 @@
 #include "golnametable.h"
 #include "goltxtparser.h"
 #include "menu/screens/imaginarytool0x368.h"
-#include "rectangle.h"
+#include "render/golrenderdevice.h"
+#include "render/rectangle.h"
 #include "types.h"
-#include "whitefalcon0x140.h"
 
-class AmberLens0x344;
+class GolCamera;
 class BluebellFog0x4;
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
 class GolFileParser;
-class FloatyBoat0x28;
+class GolWorldEntity;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
-class ZoweeBlubberworth0xf0;
+class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004af38c
 // SIZE 0x2c
@@ -45,8 +45,8 @@ public:
 			Event0x20();
 			virtual ~Event0x20();                                                 // vtable+0x00
 			virtual void VTable0x04(undefined4 p_elapsedMs);                      // vtable+0x04
-			virtual void VTable0x08(BronzeFalcon0xc8770* p_renderer);             // vtable+0x08
-			virtual void VTable0x0c(BronzeFalcon0xc8770* p_renderer);             // vtable+0x0c
+			virtual void VTable0x08(GolD3DRenderDevice* p_renderer);              // vtable+0x08
+			virtual void VTable0x0c(GolD3DRenderDevice* p_renderer);              // vtable+0x0c
 			virtual void VTable0x10(Frame0xb8* p_frame, BluebellFog0x4* p_event); // vtable+0x10
 			virtual void VTable0x14(Frame0xb8* p_frame, BluebellFog0x4* p_event); // vtable+0x14
 
@@ -94,8 +94,8 @@ public:
 			Model0x68();
 			~Model0x68() override;                                                 // vtable+0x00
 			void VTable0x04(undefined4 p_elapsedMs) override;                      // vtable+0x04
-			void VTable0x08(BronzeFalcon0xc8770* p_renderer) override;             // vtable+0x08
-			void VTable0x0c(BronzeFalcon0xc8770* p_renderer) override;             // vtable+0x0c
+			void VTable0x08(GolD3DRenderDevice* p_renderer) override;              // vtable+0x08
+			void VTable0x0c(GolD3DRenderDevice* p_renderer) override;              // vtable+0x0c
 			void VTable0x10(Frame0xb8* p_frame, BluebellFog0x4* p_event) override; // vtable+0x10
 			void VTable0x14(Frame0xb8* p_frame, BluebellFog0x4* p_event) override; // vtable+0x14
 
@@ -109,7 +109,7 @@ public:
 
 		private:
 			LegoU32 m_unk0x20;            // 0x20
-			FloatyBoat0x28* m_unk0x24;    // 0x24
+			GolWorldEntity* m_unk0x24;    // 0x24
 			SaffronQuartz0x2c* m_unk0x28; // 0x28
 			ModelRef0x08 m_unk0x2c;       // 0x2c
 			GolVec3 m_unk0x34;            // 0x34
@@ -139,7 +139,7 @@ public:
 			// SaffronQuartz0x2c::Frame0xb8::Camera0x34::`vector deleting destructor'
 
 		private:
-			AmberLens0x344* m_unk0x20;    // 0x20
+			GolCamera* m_unk0x20;         // 0x20
 			GolName m_unk0x24;            // 0x24
 			SaffronQuartz0x2c* m_unk0x2c; // 0x2c
 			LegoS32 m_unk0x30;            // 0x30
@@ -163,13 +163,13 @@ public:
 			// SaffronQuartz0x2c::Frame0xb8::AmbientLight0x38::`vector deleting destructor'
 
 		private:
-			WhiteFalcon0x140::MaterialColor m_unk0x20; // 0x20
-			LegoU32 m_unk0x24;                         // 0x24
-			LegoU32 m_unk0x28;                         // 0x28
-			LegoU32 m_unk0x2c;                         // 0x2c
-			LegoU8 m_unk0x30;                          // 0x30
-			undefined m_unk0x31[0x34 - 0x31];          // 0x31
-			Frame0xb8* m_unk0x34;                      // 0x34
+			GolRenderDevice::MaterialColor m_unk0x20; // 0x20
+			LegoU32 m_unk0x24;                        // 0x24
+			LegoU32 m_unk0x28;                        // 0x28
+			LegoU32 m_unk0x2c;                        // 0x2c
+			LegoU8 m_unk0x30;                         // 0x30
+			undefined m_unk0x31[0x34 - 0x31];         // 0x31
+			Frame0xb8* m_unk0x34;                     // 0x34
 		};
 
 		// VTABLE: LEGORACERS 0x004af370
@@ -190,13 +190,13 @@ public:
 			// SaffronQuartz0x2c::Frame0xb8::DirectionalLight0x44::`vector deleting destructor'
 
 		private:
-			WhiteFalcon0x140::Light m_unk0x20; // 0x20
-			LegoU32 m_unk0x30;                 // 0x30
-			LegoU32 m_unk0x34;                 // 0x34
-			LegoU32 m_unk0x38;                 // 0x38
-			LegoU8 m_unk0x3c;                  // 0x3c
-			undefined m_unk0x3d[0x40 - 0x3d];  // 0x3d
-			Frame0xb8* m_unk0x40;              // 0x40
+			GolRenderDevice::Light m_unk0x20; // 0x20
+			LegoU32 m_unk0x30;                // 0x30
+			LegoU32 m_unk0x34;                // 0x34
+			LegoU32 m_unk0x38;                // 0x38
+			LegoU8 m_unk0x3c;                 // 0x3c
+			undefined m_unk0x3d[0x40 - 0x3d]; // 0x3d
+			Frame0xb8* m_unk0x40;             // 0x40
 		};
 
 		// VTABLE: LEGORACERS 0x004af410
@@ -237,19 +237,19 @@ public:
 		void FUN_00406380();
 		void FUN_00406390(LegoS32 p_elapsedMs);
 		void FUN_00406490(Rect* p_rect);
-		void FUN_004064c0(BronzeFalcon0xc8770* p_renderer, LegoU32 p_lensIndex);
+		void FUN_004064c0(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex);
 		void FUN_004065a0(undefined4 p_unk0x04);
 		LegoU32 FUN_004065d0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 		void FUN_00406680(Event0x20* p_event);
 		void FUN_004066b0(Event0x20* p_event);
-		LegoU32 FUN_004066d0(AmberLens0x344* p_lens);
-		void FUN_00406710(AmberLens0x344* p_lens);
-		void FUN_00406760(const WhiteFalcon0x140::MaterialColor* p_material);
-		void FUN_00406770(const WhiteFalcon0x140::MaterialColor* p_material);
-		LegoU32 FUN_00406790(const WhiteFalcon0x140::Light* p_light);
-		void FUN_004067f0(const WhiteFalcon0x140::Light* p_light);
+		LegoU32 FUN_004066d0(GolCamera* p_lens);
+		void FUN_00406710(GolCamera* p_lens);
+		void FUN_00406760(const GolRenderDevice::MaterialColor* p_material);
+		void FUN_00406770(const GolRenderDevice::MaterialColor* p_material);
+		LegoU32 FUN_00406790(const GolRenderDevice::Light* p_light);
+		void FUN_004067f0(const GolRenderDevice::Light* p_light);
 		void FUN_00406860();
-		AmberLens0x344* FUN_00406890();
+		GolCamera* FUN_00406890();
 
 		LegoU32 GetUnk0x44() const { return m_unk0x44; }
 		LegoU32 GetUnk0x48() const { return m_unk0x48; }
@@ -257,36 +257,36 @@ public:
 		void SetFlags(LegoU32 p_flags) { m_unk0x44 |= p_flags; }
 
 	private:
-		SaffronQuartz0x2c* m_unk0x00;                     // 0x00
-		LegoU32 m_unk0x04;                                // 0x04
-		Camera0x34* m_unk0x08;                            // 0x08
-		LegoU32 m_unk0x0c;                                // 0x0c
-		Model0x68* m_unk0x10;                             // 0x10
-		LegoU32 m_unk0x14;                                // 0x14
-		Event0x44* m_unk0x18;                             // 0x18
-		LegoU32 m_unk0x1c;                                // 0x1c
-		AmbientLight0x38* m_unk0x20;                      // 0x20
-		LegoU32 m_unk0x24;                                // 0x24
-		DirectionalLight0x44* m_unk0x28;                  // 0x28
-		LegoU32 m_unk0x2c;                                // 0x2c
-		Event0x20** m_unk0x30;                            // 0x30
-		LegoU32 m_unk0x34;                                // 0x34
-		Event0x20** m_unk0x38;                            // 0x38
-		LegoU32 m_unk0x3c;                                // 0x3c
-		Event0x20* m_unk0x40;                             // 0x40
-		LegoU32 m_unk0x44;                                // 0x44
-		LegoU32 m_unk0x48;                                // 0x48
-		LegoU32 m_unk0x4c;                                // 0x4c
-		LegoU32 m_unk0x50;                                // 0x50
-		LegoU32 m_unk0x54;                                // 0x54
-		LegoU32 m_unk0x58;                                // 0x58
-		LegoU32 m_unk0x5c;                                // 0x5c
-		AmberLens0x344* m_unk0x60[8];                     // 0x60
-		const WhiteFalcon0x140::MaterialColor* m_unk0x80; // 0x80
-		LegoU32 m_unk0x84;                                // 0x84
-		const WhiteFalcon0x140::Light* m_unk0x88[7];      // 0x88
-		LegoFloat m_unk0xa4;                              // 0xa4
-		Rect m_unk0xa8;                                   // 0xa8
+		SaffronQuartz0x2c* m_unk0x00;                    // 0x00
+		LegoU32 m_unk0x04;                               // 0x04
+		Camera0x34* m_unk0x08;                           // 0x08
+		LegoU32 m_unk0x0c;                               // 0x0c
+		Model0x68* m_unk0x10;                            // 0x10
+		LegoU32 m_unk0x14;                               // 0x14
+		Event0x44* m_unk0x18;                            // 0x18
+		LegoU32 m_unk0x1c;                               // 0x1c
+		AmbientLight0x38* m_unk0x20;                     // 0x20
+		LegoU32 m_unk0x24;                               // 0x24
+		DirectionalLight0x44* m_unk0x28;                 // 0x28
+		LegoU32 m_unk0x2c;                               // 0x2c
+		Event0x20** m_unk0x30;                           // 0x30
+		LegoU32 m_unk0x34;                               // 0x34
+		Event0x20** m_unk0x38;                           // 0x38
+		LegoU32 m_unk0x3c;                               // 0x3c
+		Event0x20* m_unk0x40;                            // 0x40
+		LegoU32 m_unk0x44;                               // 0x44
+		LegoU32 m_unk0x48;                               // 0x48
+		LegoU32 m_unk0x4c;                               // 0x4c
+		LegoU32 m_unk0x50;                               // 0x50
+		LegoU32 m_unk0x54;                               // 0x54
+		LegoU32 m_unk0x58;                               // 0x58
+		LegoU32 m_unk0x5c;                               // 0x5c
+		GolCamera* m_unk0x60[8];                         // 0x60
+		const GolRenderDevice::MaterialColor* m_unk0x80; // 0x80
+		LegoU32 m_unk0x84;                               // 0x84
+		const GolRenderDevice::Light* m_unk0x88[7];      // 0x88
+		LegoFloat m_unk0xa4;                             // 0xa4
+		Rect m_unk0xa8;                                  // 0xa8
 	};
 
 	SaffronQuartz0x2c();
@@ -296,18 +296,18 @@ public:
 	void Reset();
 	void FUN_00406980(
 		GolExport* p_golExport,
-		BronzeFalcon0xc8770* p_renderer,
+		GolD3DRenderDevice* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
 	);
 	void FUN_00406b90(GolFileParser* p_parser);
 	void FUN_00406c50(LegoBool32 p_binary);
 	void FUN_00406cb0(GolFileParser* p_parser);
-	AmberLens0x344* FUN_00406de0(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406e30(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406e80(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406ed0(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
+	GolCamera* FUN_00406de0(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406e30(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406e80(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406ed0(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
 	MabMaterialAnimation0x14* FUN_00406f40(LegoU32 p_index, LegoU32 p_animationIndex);
 	MabMaterialAnimationItem0x18* FUN_00406f60(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 FUN_00406f90(LegoFloat p_scale);
@@ -321,14 +321,14 @@ public:
 	// SaffronQuartz0x2c::`scalar deleting destructor'
 
 private:
-	BluebellFog0x4* m_unk0x0c;         // 0x0c
-	GolExport* m_golExport;            // 0x10
-	BronzeFalcon0xc8770* m_renderer;   // 0x14
-	LegoU32 m_unk0x18;                 // 0x18
-	ZoweeBlubberworth0xf0** m_unk0x1c; // 0x1c
-	LegoChar* m_unk0x20;               // 0x20
-	LegoU32 m_frameCount;              // 0x24
-	Frame0xb8* m_frames;               // 0x28
+	BluebellFog0x4* m_unk0x0c;      // 0x0c
+	GolExport* m_golExport;         // 0x10
+	GolD3DRenderDevice* m_renderer; // 0x14
+	LegoU32 m_unk0x18;              // 0x18
+	GolWorldDatabase** m_unk0x1c;   // 0x1c
+	LegoChar* m_unk0x20;            // 0x20
+	LegoU32 m_frameCount;           // 0x24
+	Frame0xb8* m_frames;            // 0x28
 };
 
 #endif // SAFFRONQUARTZ0X2C_H

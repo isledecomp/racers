@@ -1,9 +1,9 @@
 #include "audio/soundgroupbinding.h"
-#include "bronzefalcon0xc8770.h"
 #include "golerror.h"
 #include "input/inputdevice.h"
 #include "menu/screens/imaginarychisel0x658.h"
-#include "slatepeak0x58.h"
+#include "render/gold3drenderdevice.h"
+#include "surface/slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryChisel0x658::HelperAt0x368, 0x2d0)
 

@@ -1,7 +1,7 @@
 #include "golfsutil.h"
 
+#include "core/gol.h"
 #include "decomp.h"
-#include "gol.h"
 #include "golstream.h"
 #include "types.h"
 

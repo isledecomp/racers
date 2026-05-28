@@ -1,6 +1,6 @@
 #include "menu/widgets/obscurezebra0xa4.h"
 
-#include "bronzefalcon0xc8770.h"
+#include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(ObscureZebra0xa4, 0xa4)
 

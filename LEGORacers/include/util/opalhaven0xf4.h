@@ -7,27 +7,27 @@
 #include "util/silverhollow0xb8.h"
 
 class CmbModelPart0x34;
-class IGdbModel0x40;
-class WhiteFalconNode0x18;
+class GolModelBase;
+class GolSceneNode;
 
 // Completes the same 0x90..0xf4 tail that GOLDP keeps entirely in
-// FloatyFerry0xf4; the base SilverHollow0xb8 owns 0x90..0xb8 here.
+// GolSkinnedEntity; the base SilverHollow0xb8 owns 0x90..0xb8 here.
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
 class OpalHaven0xf4 : public SilverHollow0xb8 {
 public:
 	OpalHaven0xf4();
 
-	void VTable0x10(LegoS32 p_elapsed) override;                                       // vtable+0x10
-	void VTable0x14(const WhiteFalconView0xcc& p_view, ViewResult* p_result) override; // vtable+0x14
-	void VTable0x4c(LegoU32 p_index) override;                                         // vtable+0x4c
-	void VTable0x54() override;                                                        // vtable+0x54
-	WhiteFalconNode0x18* VTable0x58(LegoU32 p_arg1) override;                          // vtable+0x58
-	void VTable0x5c(LegoU32 p_arg1) override;                                          // vtable+0x5c
+	void VTable0x10(LegoS32 p_elapsed) override;                                  // vtable+0x10
+	void VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result) override; // vtable+0x14
+	void VTable0x4c(LegoU32 p_index) override;                                    // vtable+0x4c
+	void VTable0x54() override;                                                   // vtable+0x54
+	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                            // vtable+0x58
+	void VTable0x5c(LegoU32 p_arg1) override;                                     // vtable+0x5c
 
 	void FUN_0040d550(
-		IGdbModel0x40* p_model,
-		WhiteFalconNode0x18* p_node,
+		GolModelBase* p_model,
+		GolSceneNode* p_node,
 		CmbModelPart0x34* p_modelParts,
 		LegoFloat p_modelDistance
 	);

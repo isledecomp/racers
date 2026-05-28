@@ -1,7 +1,7 @@
+#include "font/golfont0xa0.h"
 #include "golerror.h"
-#include "golfont0xa0.h"
 #include "menu/runtime/crimsonpebble0x228.h"
-#include "whitefalcon0x140.h"
+#include "render/golrenderdevice.h"
 
 #include <string.h>
 
@@ -29,7 +29,7 @@ void CrimsonPebbleText0x70::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004a4690
-void CrimsonPebbleText0x70::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer)
+void CrimsonPebbleText0x70::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer)
 {
 	p_parser->ReadLeftCurly();
 	m_flags = 3;
@@ -66,7 +66,7 @@ void CrimsonPebbleText0x70::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p
 }
 
 // FUNCTION: LEGORACERS 0x004a4790
-void CrimsonPebbleText0x70::RefreshString(CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer)
+void CrimsonPebbleText0x70::RefreshString(CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer)
 {
 	if (m_rawString == NULL) {
 		if (m_stringTableIndex >= p_owner->GetStringTableCount()) {
@@ -114,7 +114,7 @@ void CrimsonPebbleText0x70::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
 
 // FUNCTION: LEGORACERS 0x004a48d0
 void CrimsonPebbleText0x70::VTable0x20(
-	WhiteFalcon0x140* p_renderer,
+	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
 	LegoS32 p_y,
 	undefined4,

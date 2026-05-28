@@ -1,6 +1,6 @@
 #include "menu/widgets/obscureanchor0x5c.h"
 
-#include "utopianpan0xa4.h"
+#include "image/utopianpan0xa4.h"
 
 DECOMP_SIZE_ASSERT(ObscureAnchor0x5c, 0x5c)
 DECOMP_SIZE_ASSERT(ObscureAnchor0x5c::CreateParams0x3c, 0x3c)

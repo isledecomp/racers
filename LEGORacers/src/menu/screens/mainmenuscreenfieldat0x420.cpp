@@ -1,6 +1,6 @@
 #include "menu/screens/mainmenuscreenfieldat0x420.h"
 
-#include "golfont0xa0.h"
+#include "font/golfont0xa0.h"
 #include "golstringtable.h"
 
 DECOMP_SIZE_ASSERT(MainMenuScreenFieldAt0x420, 0x78)

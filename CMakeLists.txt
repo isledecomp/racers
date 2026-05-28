@@ -98,8 +98,8 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
-  common/src/jadeorbitbase0x10.cpp
-  common/src/whitefalconnode0x18.cpp
+  common/src/goltransformbase.cpp
+  common/src/golscenenode.cpp
   common/src/whitefalcon0x140light.cpp
   common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart0x34.cpp
@@ -107,9 +107,9 @@ set(COMMON_SOURCES
   common/src/cmbmodelpartdata0x28.cpp
   common/src/mabmaterialanimation0x14.cpp
   common/src/materialtable0x0c.cpp
-  common/src/floatypontoon0x4cfield0x2c.cpp
-  common/src/floatyboat0x28.cpp
-  common/src/floatybuoy0x58.cpp
+  common/src/golbillboardfield0x2c.cpp
+  common/src/golworldentity.cpp
+  common/src/golorientedentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -118,31 +118,31 @@ set(COMMON_SOURCES
 # This might represent another original static library or project grouping; keep the list
 # narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
-  GolDP/src/amberlensbase0x120.cpp
-  GolDP/src/boundingshape0x2c.cpp
-  GolDP/src/floatycanoe0x90.cpp
-  GolDP/src/duskwindbananarelic0x30.cpp
-  GolDP/src/golfontbase0x40.cpp
-  GolDP/src/goldrawstate.cpp
-  GolDP/src/silverdune0x30.cpp
-  GolDP/src/whitebaffoon0x50.cpp
-  GolDP/src/whitefalcon0x140.cpp
-  GolDP/src/duskwindbananarelic0x24.cpp
-  GolDP/src/bronzefalconsurface0x5c.cpp
-  GolDP/src/falcondunebag0x10.cpp
-  GolDP/src/depthbuffer0x38.cpp
-  GolDP/src/golfont0xa0.cpp
-  GolDP/src/bronzedune0x4c.cpp
-  GolDP/src/purpleribbon0x24.cpp
-  GolDP/src/amberhaze0x20.cpp
-  GolDP/src/gdbvertexarray0xc.cpp
-  GolDP/src/gdbcommonvertexarray0x1c.cpp
-  GolDP/src/igdbmodelindexarray0x8.cpp
-  GolDP/src/gdbmodelindexarray0xc.cpp
-  GolDP/src/shadowwolf0xc.cpp
-  GolDP/src/gdbmodel0x48.cpp
-  GolDP/src/greyfalconnode0x1c.cpp
-  GolDP/src/bronzedunebag0xc.cpp
+  GolDP/src/camera/golcamerabase.cpp
+  GolDP/src/bounds/golboundingshape.cpp
+  GolDP/src/scene/golmodelentity.cpp
+  GolDP/src/material/duskwindbananarelic0x30.cpp
+  GolDP/src/font/golfontbase0x40.cpp
+  GolDP/src/render/goldrawstate.cpp
+  GolDP/src/surface/silverdune0x30.cpp
+  GolDP/src/image/whitebaffoon0x50.cpp
+  GolDP/src/render/golrenderdevice.cpp
+  GolDP/src/material/duskwindbananarelic0x24.cpp
+  GolDP/src/render/gold3drendersurface.cpp
+  GolDP/src/surface/falcondunebag0x10.cpp
+  GolDP/src/surface/goldepthbuffer.cpp
+  GolDP/src/font/golfont0xa0.cpp
+  GolDP/src/surface/bronzedune0x4c.cpp
+  GolDP/src/material/purpleribbon0x24.cpp
+  GolDP/src/material/amberhaze0x20.cpp
+  GolDP/src/mesh/gdbvertexarray0xc.cpp
+  GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
+  GolDP/src/mesh/igdbmodelindexarray0x8.cpp
+  GolDP/src/mesh/gdbmodelindexarray0xc.cpp
+  GolDP/src/mesh/golmodelmaterialtable.cpp
+  GolDP/src/mesh/golmodel.cpp
+  GolDP/src/camera/golscenetransformnode.cpp
+  GolDP/src/surface/bronzedunebag0xc.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -166,67 +166,67 @@ target_include_directories(common_legoracers PRIVATE
 
 # --- GolDP.dll target ---
 add_library(goldp SHARED
-  GolDP/src/bronzedunebag0xc.cpp
-  GolDP/src/golcommondrawstate.cpp
-  GolDP/src/goldrawstate.cpp
-  GolDP/src/goldrawdpstate.cpp
-  GolDP/src/goldpexport.cpp
-  GolDP/src/fluffygloomkins0x118.cpp
-  GolDP/src/directdrawpalette.cpp
-  GolDP/src/goldevicelist.cpp
-  GolDP/src/main.cpp
-  GolDP/src/zoweeblubberworth0xf0.cpp
-  GolDP/src/silverdune0x30.cpp
-  GolDP/src/floatypontoon0x4c.cpp
-  GolDP/src/floatybarge0x4c.cpp
-  GolDP/src/slatepeak0x58.cpp
-  GolDP/src/azureridge0x38.cpp
-  GolDP/src/amberlensbase0x120.cpp
-  GolDP/src/amberlens0x344.cpp
-  GolDP/src/jadeorbit0xd0.cpp
-  GolDP/src/ddrawutil.cpp
-  GolDP/src/amberhaze0x1c.cpp
-  GolDP/src/amberhaze0x20.cpp
-  GolDP/src/cinderbasin0x28.cpp
-  GolDP/src/golfontbase0x40.cpp
-  GolDP/src/magentaribbon0x20.cpp
-  GolDP/src/purpleribbon0x24.cpp
-  GolDP/src/purpledune0x7c.cpp
-  GolDP/src/whitefalcon0x140.cpp
-  GolDP/src/bronzefalcon0xc8770.cpp
-  GolDP/src/bronzefalconsurface0x5c.cpp
-  GolDP/src/awakekite0x20.cpp
-  GolDP/src/hypnoticnoise0x1c.cpp
-  GolDP/src/golfonttable.cpp
-  GolDP/src/golfont0xa0.cpp
-  GolDP/src/moltenquillphantom0x34.cpp
-  GolDP/src/golddune0x38.cpp
-  GolDP/src/bronzedune0x4c.cpp
-  GolDP/src/whitebaffoon0x50.cpp
-  GolDP/src/utopianpan0xa4.cpp
-  GolDP/src/duskwindbananarelic0x24.cpp
-  GolDP/src/duskwindbananarelic0x30.cpp
-  GolDP/src/depthbuffer0x38.cpp
-  GolDP/src/softwarerenderer0x58.cpp
-  GolDP/src/falcondunebag0x10.cpp
-  GolDP/src/boundingshape0x2c.cpp
-  GolDP/src/shadowwolf0xc.cpp
-  GolDP/src/igdbmodel0x40.cpp
-  GolDP/src/gdbvertexarray0xc.cpp
-  GolDP/src/gdbcommonvertexarray0x1c.cpp
-  GolDP/src/gdbvertexarraytypetwo0x20.cpp
-  GolDP/src/gdbvertexarraytypeone0x1c.cpp
-  GolDP/src/gdbvertexarraytypethree0x20.cpp
-  GolDP/src/gdbvertexarraymistery0x1c.cpp
-  GolDP/src/gdbmodel0x48.cpp
-  GolDP/src/igdbmodelindexarray0x8.cpp
-  GolDP/src/gdbmodelindexarray0xc.cpp
-  GolDP/src/greyfalconnode0x1c.cpp
-  GolDP/src/boundingvolume0x64.cpp
-  GolDP/src/floatykajak0x64.cpp
-  GolDP/src/floatycanoe0x90.cpp
-  GolDP/src/floatyfrigate0x9c.cpp
-  GolDP/src/floatyferry0xf4.cpp
+  GolDP/src/surface/bronzedunebag0xc.cpp
+  GolDP/src/render/golcommondrawstate.cpp
+  GolDP/src/render/goldrawstate.cpp
+  GolDP/src/render/goldrawdpstate.cpp
+  GolDP/src/core/goldpexport.cpp
+  GolDP/src/world/golworlddatabaseex.cpp
+  GolDP/src/device/goldirectdrawpalette.cpp
+  GolDP/src/device/goldevicelist.cpp
+  GolDP/src/core/main.cpp
+  GolDP/src/world/golworlddatabase.cpp
+  GolDP/src/surface/silverdune0x30.cpp
+  GolDP/src/scene/golbillboard.cpp
+  GolDP/src/scene/golbillboardex.cpp
+  GolDP/src/surface/slatepeak0x58.cpp
+  GolDP/src/surface/azureridge0x38.cpp
+  GolDP/src/camera/golcamerabase.cpp
+  GolDP/src/camera/golcamera.cpp
+  GolDP/src/camera/goltransform.cpp
+  GolDP/src/device/ddrawutil.cpp
+  GolDP/src/material/golmateriallibrary.cpp
+  GolDP/src/material/amberhaze0x20.cpp
+  GolDP/src/font/golfontlibrary.cpp
+  GolDP/src/font/golfontbase0x40.cpp
+  GolDP/src/material/goltexturelist.cpp
+  GolDP/src/material/purpleribbon0x24.cpp
+  GolDP/src/surface/purpledune0x7c.cpp
+  GolDP/src/render/golrenderdevice.cpp
+  GolDP/src/render/gold3drenderdevice.cpp
+  GolDP/src/render/gold3drendersurface.cpp
+  GolDP/src/material/awakekite0x20.cpp
+  GolDP/src/material/golimagelist.cpp
+  GolDP/src/font/golfonttable.cpp
+  GolDP/src/font/golfont0xa0.cpp
+  GolDP/src/surface/moltenquillphantom0x34.cpp
+  GolDP/src/surface/golddune0x38.cpp
+  GolDP/src/surface/bronzedune0x4c.cpp
+  GolDP/src/image/whitebaffoon0x50.cpp
+  GolDP/src/image/utopianpan0xa4.cpp
+  GolDP/src/material/duskwindbananarelic0x24.cpp
+  GolDP/src/material/duskwindbananarelic0x30.cpp
+  GolDP/src/surface/goldepthbuffer.cpp
+  GolDP/src/render/golsoftwarerenderer.cpp
+  GolDP/src/surface/falcondunebag0x10.cpp
+  GolDP/src/bounds/golboundingshape.cpp
+  GolDP/src/mesh/golmodelmaterialtable.cpp
+  GolDP/src/mesh/golmodelbase.cpp
+  GolDP/src/mesh/gdbvertexarray0xc.cpp
+  GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
+  GolDP/src/mesh/gdbvertexarraytypetwo0x20.cpp
+  GolDP/src/mesh/gdbvertexarraytypeone0x1c.cpp
+  GolDP/src/mesh/gdbvertexarraytypethree0x20.cpp
+  GolDP/src/mesh/gdbvertexarraymistery0x1c.cpp
+  GolDP/src/mesh/golmodel.cpp
+  GolDP/src/mesh/igdbmodelindexarray0x8.cpp
+  GolDP/src/mesh/gdbmodelindexarray0xc.cpp
+  GolDP/src/camera/golscenetransformnode.cpp
+  GolDP/src/bounds/golboundingvolume.cpp
+  GolDP/src/scene/golboundedentity.cpp
+  GolDP/src/scene/golmodelentity.cpp
+  GolDP/src/scene/golcollidableentity.cpp
+  GolDP/src/scene/golskinnedentity.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )
@@ -298,14 +298,15 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/crimsonsun0xa4entry.cpp
   LEGORacers/src/menu/crimsonsun0xa4.cpp
   LEGORacers/src/race/glassblock0x3368.cpp
+  LEGORacers/src/race/azurecircuit0x320.cpp
   LEGORacers/src/race/glassshard0x3b8.cpp
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
   LEGORacers/src/util/opalhaven0xf4.cpp
   LEGORacers/src/util/silverhollow0xb8.cpp
   LEGORacers/src/app/golapp.cpp
-  LEGORacers/src/text/whitefalcon0x140.cpp
-  LEGORacers/src/model/zoweeblubberworth0xf0.cpp
+  LEGORacers/src/text/golrenderdevice.cpp
+  LEGORacers/src/model/golworlddatabase.cpp
   LEGORacers/src/menu/style/ceruleanknight0x20.cpp
   LEGORacers/src/menu/style/menuinputbindingtable.cpp
   LEGORacers/src/menu/style/ceruleanemperor0x4c.cpp
@@ -328,7 +329,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/garagescreen.cpp
   LEGORacers/src/menu/screens/imaginarychisel0x658.cpp
   LEGORacers/src/menu/screens/imaginarychisel0x658helperat0x368.cpp
-  LEGORacers/src/util/amberlensbase0x120.cpp
+  LEGORacers/src/util/golcamerabase.cpp
   LEGORacers/src/menu/runtime/saffronquartz0x2c.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp
   LEGORacers/src/menu/screens/optionsscreen.cpp

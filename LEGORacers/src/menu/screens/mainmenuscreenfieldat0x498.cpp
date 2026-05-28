@@ -1,8 +1,8 @@
 #include "menu/screens/mainmenuscreenfieldat0x498.h"
 
-#include "golfont0xa0.h"
+#include "font/golfont0xa0.h"
 #include "golstringtable.h"
-#include "utopianpan0xa4.h"
+#include "image/utopianpan0xa4.h"
 
 #include <string.h>
 

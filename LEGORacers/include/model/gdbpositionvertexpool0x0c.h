@@ -1,9 +1,9 @@
 #ifndef GDBPOSITIONVERTEXPOOL0X0C_H
 #define GDBPOSITIONVERTEXPOOL0X0C_H
 
-#include "color.h"
 #include "decomp.h"
 #include "golmath.h"
+#include "surface/color.h"
 #include "types.h"
 
 class GolFileParser;

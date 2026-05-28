@@ -1,9 +1,9 @@
 #include "menu/style/porcelainveil0x50.h"
 
-#include "bronzefalcon0xc8770.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
+#include "render/gold3drenderdevice.h"
 
 #include <string.h>
 

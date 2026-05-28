@@ -7,7 +7,7 @@
 #include "golnametable.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 
 // VTABLE: LEGORACERS 0x004b2210
 // SIZE 0x20
@@ -32,11 +32,11 @@ protected:
 	void FUN_0046b210(LegoS8* p_ints);
 	void FUN_0046b250();
 
-	LegoBool m_unk0x0c;             // 0x0c
-	GolFileParser* m_parser;        // 0x10
-	BronzeFalcon0xc8770* m_unk0x14; // 0x14
-	undefined4 m_unk0x18;           // 0x18
-	undefined4 m_unk0x1c;           // 0x1c
+	LegoBool m_unk0x0c;            // 0x0c
+	GolFileParser* m_parser;       // 0x10
+	GolD3DRenderDevice* m_unk0x14; // 0x14
+	undefined4 m_unk0x18;          // 0x18
+	undefined4 m_unk0x1c;          // 0x1c
 };
 
 #endif // CERULEANKNIGHT0X20_H

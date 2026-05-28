@@ -1,9 +1,9 @@
 #include "menu/widgets/obscurevantage0x58.h"
 
-#include "bronzefalcon0xc8770.h"
-#include "golfontbase0x40.h"
+#include "font/golfontbase0x40.h"
 #include "golstring.h"
-#include "utopianpan0xa4.h"
+#include "image/utopianpan0xa4.h"
+#include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
 DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)

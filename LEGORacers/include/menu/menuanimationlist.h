@@ -2,10 +2,10 @@
 #define MENUANIMATIONLIST_H
 
 #include "decomp.h"
+#include "render/golrenderdevice.h"
 #include "types.h"
-#include "whitefalcon0x140.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class DuskwindBananaRelic0x24;
 
 // SIZE 0x8
@@ -37,14 +37,14 @@ public:
 
 		// SIZE 0x78
 		struct DrawScratch {
-			LegoFloat m_topAsFloat;                         // 0x00
-			LegoU8 m_alpha;                                 // 0x04
-			undefined m_unk0x05[0x08 - 0x05];               // 0x05
-			ScreenRect m_rect;                              // 0x08
-			WhiteFalcon0x140::TexturedVertex m_topLeft;     // 0x18
-			WhiteFalcon0x140::TexturedVertex m_bottomRight; // 0x30
-			WhiteFalcon0x140::TexturedVertex m_bottomLeft;  // 0x48
-			WhiteFalcon0x140::TexturedVertex m_topRight;    // 0x60
+			LegoFloat m_topAsFloat;                        // 0x00
+			LegoU8 m_alpha;                                // 0x04
+			undefined m_unk0x05[0x08 - 0x05];              // 0x05
+			ScreenRect m_rect;                             // 0x08
+			GolRenderDevice::TexturedVertex m_topLeft;     // 0x18
+			GolRenderDevice::TexturedVertex m_bottomRight; // 0x30
+			GolRenderDevice::TexturedVertex m_bottomLeft;  // 0x48
+			GolRenderDevice::TexturedVertex m_topRight;    // 0x60
 		};
 
 		Entry();
@@ -59,7 +59,7 @@ public:
 		void Reset();
 		void Deactivate();
 		void Update(LegoU32 p_elapsedMs);
-		void Draw(BronzeFalcon0xc8770* p_renderer);
+		void Draw(GolD3DRenderDevice* p_renderer);
 		LegoBool IsActive() { return m_flags & c_flagActive; }
 		void SetColor(LegoU32 p_colorPacked) { m_colorPacked = p_colorPacked; }
 
@@ -96,7 +96,7 @@ public:
 	void Deactivate(Entry* p_entry);
 	LegoBool32 HasActive() const;
 	void Update(LegoU32 p_elapsedMs);
-	void Draw(BronzeFalcon0xc8770* p_renderer);
+	void Draw(GolD3DRenderDevice* p_renderer);
 
 private:
 	Entry* m_entries; // 0x00

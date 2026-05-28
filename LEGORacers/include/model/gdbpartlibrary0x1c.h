@@ -7,11 +7,11 @@
 #include "goltxtparser.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GdbPartDefinition0x0c;
 class GdbPartVertexPool0x14;
 class GolFileParser;
-class IGdbModel0x40;
+class GolModelBase;
 
 // VTABLE: LEGORACERS 0x004af428
 // SIZE 0x1c
@@ -31,11 +31,11 @@ public:
 
 	void Reset();
 	void Load(const LegoChar* p_filename, LegoBool32 p_binary);
-	void CopyPartToModel(BronzeFalcon0xc8770* p_renderer, IGdbModel0x40* p_model, const LegoChar* p_name);
+	void CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name);
 
 private:
 	void ReadParts(GolFileParser& p_parser);
-	void CopyPartGroupStart(BronzeFalcon0xc8770* p_renderer, LegoU32 p_groupIndex, const LegoChar* p_materialName);
+	void CopyPartGroupStart(GolD3DRenderDevice* p_renderer, LegoU32 p_groupIndex, const LegoChar* p_materialName);
 	void EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2);
 	LegoS32 CopyBatchVertex(LegoU32 p_sourceVertex);
 	void FlushCopyBatch();

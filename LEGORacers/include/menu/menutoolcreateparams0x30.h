@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class CrimsonSun0xa4;
 class GolExport;
 class GolStringTable;
@@ -17,7 +17,7 @@ class SoundGroupBinding;
 class MenuToolCreateParams0x30 {
 public:
 	GolExport* m_golExport;                 // 0x00
-	BronzeFalcon0xc8770* m_renderer;        // 0x04
+	GolD3DRenderDevice* m_renderer;         // 0x04
 	GolStringTable* m_menuNameStrings;      // 0x08
 	GolStringTable* m_menuTextStrings;      // 0x0c
 	InputManager* m_inputManager;           // 0x10

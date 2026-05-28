@@ -1,23 +1,23 @@
 #include "menu/runtime/saffronquartz0x2c.h"
 
-#include "amberlens0x344.h"
-#include "amberlensbase0x120.h"
-#include "bronzefalcon0xc8770.h"
-#include "floatyboat0x28.h"
-#include "floatycanoe0x90.h"
-#include "floatyferry0xf4.h"
-#include "floatyfrigate0x9c.h"
-#include "gol.h"
+#include "camera/golcamera.h"
+#include "camera/golcamerabase.h"
+#include "core/gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
-#include "igdbmodel0x40.h"
+#include "golworldentity.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
+#include "mesh/golmodelbase.h"
+#include "render/gold3drenderdevice.h"
+#include "scene/golcollidableentity.h"
+#include "scene/golmodelentity.h"
+#include "scene/golskinnedentity.h"
 #include "util/bluebellfog0x4.h"
 #include "util/opalhaven0xf4.h"
 #include "util/silverhollow0xb8.h"
-#include "zoweeblubberworth0xf0.h"
+#include "world/golworlddatabase.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -246,7 +246,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x04(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00404f00
-void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_renderer)
+void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x14 && !m_unk0x64) {
 		m_unk0x24->VTable0x1c(*p_renderer);
@@ -254,7 +254,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x08(BronzeFalcon0xc8770* p_
 }
 
 // FUNCTION: LEGORACERS 0x00404f20
-void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x0c(BronzeFalcon0xc8770* p_renderer)
+void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x0c(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x14 && m_unk0x64) {
 		m_unk0x24->VTable0x1c(*p_renderer);
@@ -274,7 +274,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 			Animation0x1c* end = animation + m_unk0x5c;
 
 			for (; animation < end; animation++) {
-				ShadowWolf0xc* materialTarget =
+				GolModelMaterialTable* materialTarget =
 					static_cast<SilverHollow0xb8*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
 				if (materialTarget == NULL) {
 					materialTarget =
@@ -538,12 +538,12 @@ void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x04(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x08(BronzeFalcon0xc8770*)
+void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x08(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x0c(BronzeFalcon0xc8770*)
+void SaffronQuartz0x2c::Frame0xb8::Event0x20::VTable0x0c(GolD3DRenderDevice*)
 {
 }
 
@@ -1096,7 +1096,7 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406490(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x004064c0
-void SaffronQuartz0x2c::Frame0xb8::FUN_004064c0(BronzeFalcon0xc8770* p_renderer, LegoU32 p_lensIndex)
+void SaffronQuartz0x2c::Frame0xb8::FUN_004064c0(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex)
 {
 	if (m_unk0x5c) {
 		LegoU32 lensIndex = p_lensIndex;
@@ -1233,7 +1233,7 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_004066b0(Event0x20* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x004066d0
-LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_004066d0(AmberLens0x344* p_lens)
+LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_004066d0(GolCamera* p_lens)
 {
 	LegoU32 count = m_unk0x5c;
 	for (LegoU32 i = 0; i < count; i++) {
@@ -1249,7 +1249,7 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_004066d0(AmberLens0x344* p_lens)
 }
 
 // FUNCTION: LEGORACERS 0x00406710
-void SaffronQuartz0x2c::Frame0xb8::FUN_00406710(AmberLens0x344* p_lens)
+void SaffronQuartz0x2c::Frame0xb8::FUN_00406710(GolCamera* p_lens)
 {
 	if (m_unk0x5c) {
 		LegoU32 i = 0;
@@ -1268,13 +1268,13 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406710(AmberLens0x344* p_lens)
 }
 
 // FUNCTION: LEGORACERS 0x00406760
-void SaffronQuartz0x2c::Frame0xb8::FUN_00406760(const WhiteFalcon0x140::MaterialColor* p_material)
+void SaffronQuartz0x2c::Frame0xb8::FUN_00406760(const GolRenderDevice::MaterialColor* p_material)
 {
 	m_unk0x80 = p_material;
 }
 
 // FUNCTION: LEGORACERS 0x00406770
-void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const WhiteFalcon0x140::MaterialColor* p_material)
+void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const GolRenderDevice::MaterialColor* p_material)
 {
 	if (m_unk0x80 == p_material) {
 		m_unk0x80 = NULL;
@@ -1282,7 +1282,7 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406770(const WhiteFalcon0x140::Material
 }
 
 // FUNCTION: LEGORACERS 0x00406790
-LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const WhiteFalcon0x140::Light* p_light)
+LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const GolRenderDevice::Light* p_light)
 {
 	LegoU32 count = m_unk0x84;
 	for (LegoU32 i = 0; i < count; i++) {
@@ -1302,7 +1302,7 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::FUN_00406790(const WhiteFalcon0x140::Light
 }
 
 // FUNCTION: LEGORACERS 0x004067f0
-void SaffronQuartz0x2c::Frame0xb8::FUN_004067f0(const WhiteFalcon0x140::Light* p_light)
+void SaffronQuartz0x2c::Frame0xb8::FUN_004067f0(const GolRenderDevice::Light* p_light)
 {
 	if (m_unk0x84) {
 		LegoU32 i = 0;
@@ -1329,7 +1329,7 @@ void SaffronQuartz0x2c::Frame0xb8::FUN_00406860()
 }
 
 // FUNCTION: LEGORACERS 0x00406890
-AmberLens0x344* SaffronQuartz0x2c::Frame0xb8::FUN_00406890()
+GolCamera* SaffronQuartz0x2c::Frame0xb8::FUN_00406890()
 {
 	if (m_unk0x5c) {
 		return m_unk0x60[m_unk0x5c - 1];
@@ -1366,7 +1366,7 @@ void SaffronQuartz0x2c::Reset()
 // FUNCTION: LEGORACERS 0x00406980
 void SaffronQuartz0x2c::FUN_00406980(
 	GolExport* p_golExport,
-	BronzeFalcon0xc8770* p_renderer,
+	GolD3DRenderDevice* p_renderer,
 	const LegoChar* p_fileName,
 	LegoBool32 p_binary
 )
@@ -1466,7 +1466,7 @@ void SaffronQuartz0x2c::FUN_00406b90(GolFileParser* p_parser)
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x1c = new ZoweeBlubberworth0xf0*[m_unk0x18];
+	m_unk0x1c = new GolWorldDatabase*[m_unk0x18];
 	m_unk0x20 = new LegoChar[m_unk0x18 * 9];
 
 	if (!m_unk0x1c || !m_unk0x20) {
@@ -1524,10 +1524,10 @@ void SaffronQuartz0x2c::FUN_00406cb0(GolFileParser* p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00406de0
-AmberLens0x344* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
+GolCamera* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		AmberLens0x344* result = m_unk0x1c[i]->FindUnk0xe4(p_name);
+		GolCamera* result = m_unk0x1c[i]->FindUnk0xe4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1537,10 +1537,10 @@ AmberLens0x344* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e30
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1550,10 +1550,10 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e80
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
 		if (result) {
 			return result;
 		}
@@ -1563,10 +1563,10 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406ed0
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		FloatyBoat0x28* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
 		if (result) {
 			return result;
 		}
@@ -1576,7 +1576,7 @@ FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406f20
-FloatyBoat0x28* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
 {
 	return m_unk0x1c[p_index]->VTable0x48(p_modelIndex);
 }
@@ -1602,10 +1602,10 @@ MabMaterialAnimationItem0x18* SaffronQuartz0x2c::FUN_00406f60(
 LegoU32 SaffronQuartz0x2c::FUN_00406f90(LegoFloat p_scale)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		ZoweeBlubberworth0xf0* resource = m_unk0x1c[i];
+		GolWorldDatabase* resource = m_unk0x1c[i];
 
 		for (LegoU32 j = 0; j < resource->GetUnk0x7c(); j++) {
-			AmberLensBase0x120* lens = resource->VTable0x50(j);
+			GolCameraBase* lens = resource->VTable0x50(j);
 
 			if (p_scale > 0.0f) {
 				lens->m_unk0x0c = p_scale;

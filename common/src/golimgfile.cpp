@@ -1,7 +1,7 @@
 #include "golimgfile.h"
 
+#include "device/golpalettebase.h"
 #include "golerror.h"
-#include "ipalette0x4.h"
 
 #include <limits.h>
 #include <string.h>
@@ -86,7 +86,7 @@ void GolImgFile::Destroy()
 }
 
 // FUNCTION: GOLDP 0x100200f0
-void GolImgFile::FUN_100200f0(IPalette0x4* p_palette, ColorRGBA* p_colorKey)
+void GolImgFile::FUN_100200f0(GolPaletteBase* p_palette, ColorRGBA* p_colorKey)
 {
 	LegoS32 colorKeyIndex = -1;
 	LegoU32 sourcePaletteSize = 1 << m_format.m_bitsPerPixel;
@@ -1092,7 +1092,7 @@ void GolImgFile::FUN_10022730(
 	LegoU32 p_height,
 	LegoU32 p_pitch,
 	const GolSurfaceFormat& p_format,
-	IPalette0x4* p_palette,
+	GolPaletteBase* p_palette,
 	undefined4 p_unk0x20,
 	ColorRGBA* p_colorKey
 )

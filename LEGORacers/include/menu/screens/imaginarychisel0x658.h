@@ -10,8 +10,8 @@
 #include "menu/widgets/obscurevantage0x58.h"
 #include "types.h"
 
-class AmberLens0x344;
-class BronzeFalcon0xc8770;
+class GolCamera;
+class GolD3DRenderDevice;
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
 
@@ -64,11 +64,11 @@ public:
 	// ImaginaryChisel0x658::`scalar deleting destructor'
 
 protected:
-	HelperAt0x368 m_unk0x368;        // 0x368
-	GolStringTable m_unk0x638;       // 0x638
-	BronzeFalcon0xc8770* m_renderer; // 0x64c
-	AmberLens0x344* m_unk0x650;      // 0x650
-	undefined4 m_unk0x654;           // 0x654
+	HelperAt0x368 m_unk0x368;       // 0x368
+	GolStringTable m_unk0x638;      // 0x638
+	GolD3DRenderDevice* m_renderer; // 0x64c
+	GolCamera* m_unk0x650;          // 0x650
+	undefined4 m_unk0x654;          // 0x654
 };
 
 #endif // IMAGINARYCHISEL0X658_H

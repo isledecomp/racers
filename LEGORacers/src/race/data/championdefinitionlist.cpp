@@ -1,6 +1,6 @@
 #include "race/data/championdefinitionlist.h"
 
-#include "gol.h"
+#include "core/gol.h"
 
 DECOMP_SIZE_ASSERT(ChampionDefinitionList, 0x34)
 DECOMP_SIZE_ASSERT(ChampionDefinitionList::CcbTxtParser, 0x1fc)

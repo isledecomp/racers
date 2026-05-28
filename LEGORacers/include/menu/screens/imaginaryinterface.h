@@ -3,7 +3,7 @@
 
 #include "decomp.h"
 #include "input/inputeventqueue.h"
-#include "silverdune0x30.h"
+#include "surface/silverdune0x30.h"
 
 class ObscureIcon0x1a8;
 

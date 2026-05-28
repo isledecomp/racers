@@ -1,16 +1,16 @@
 #ifndef GOLIMGFILE_H
 #define GOLIMGFILE_H
 
-#include "color.h"
 #include "decomp.h"
 #include "golfile.h"
 #include "golsurfaceformat.h"
+#include "surface/color.h"
 
 #define BUF_U16LE(BUF, POS) ((BUF)[0 + (POS)] + ((BUF)[1 + (POS)] << 8))
 #define BUF_U32LE(BUF, POS)                                                                                            \
 	((BUF)[0 + (POS)] + (((BUF)[1 + (POS)] + (((BUF)[2 + (POS)] + ((BUF)[3 + (POS)] << 8)) << 8)) << 8))
 
-class IPalette0x4;
+class GolPaletteBase;
 class SilverDune0x30;
 
 // SIZE 0x5b0
@@ -41,7 +41,7 @@ public:
 	void SetUnk0x5ac(LegoBool32 p_unk0x5ac) { m_unk0x5ac = p_unk0x5ac; }
 	void SetUnk0x0a0(const ColorRGBA& p_unk0x0a0) { m_unk0x0a0 = p_unk0x0a0; }
 
-	void FUN_100200f0(IPalette0x4*, ColorRGBA* p_colorKey);
+	void FUN_100200f0(GolPaletteBase*, ColorRGBA* p_colorKey);
 	LegoU32 FUN_10020370(const ColorRGBA&);
 	void FUN_100204d0(const GolSurfaceFormat&, ColorRGBA* p_colorKey);
 	void FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFormat& p_format);
@@ -72,7 +72,7 @@ public:
 		LegoU32 p_height,
 		LegoU32 p_pitch,
 		const GolSurfaceFormat& p_format,
-		IPalette0x4* p_palette,
+		GolPaletteBase* p_palette,
 		undefined4 p_unk0x20,
 		ColorRGBA* p_colorKey
 	);

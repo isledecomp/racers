@@ -6,7 +6,7 @@
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscureanthem0x58.h"
 #include "menu/widgets/obscurezebra0xa4.h"
-#include "rectangle.h"
+#include "render/rectangle.h"
 
 class UtopianPan0xa4;
 

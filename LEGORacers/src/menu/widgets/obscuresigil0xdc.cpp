@@ -1,12 +1,12 @@
 #include "menu/widgets/obscuresigil0xdc.h"
 
-#include "amberlens0x344.h"
-#include "amberlensbase0x120.h"
-#include "bronzefalcon0xc8770.h"
-#include "gol.h"
+#include "camera/golcamera.h"
+#include "camera/golcamerabase.h"
+#include "core/gol.h"
 #include "golerror.h"
-#include "slatepeak0x58.h"
-#include "zoweeblubberworth0xf0.h"
+#include "render/gold3drenderdevice.h"
+#include "surface/slatepeak0x58.h"
+#include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc::CreateParams0x84, 0x84)
@@ -132,7 +132,7 @@ void ObscureSigil0xdc::FUN_00465900(CreateParams0x84* p_createParams, undefined4
 void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84* p_createParams)
 {
 	if (m_unk0x5c->GetUnk0x7c()) {
-		m_unk0x64 = static_cast<AmberLens0x344*>(m_unk0x5c->VTable0x50(0));
+		m_unk0x64 = static_cast<GolCamera*>(m_unk0x5c->VTable0x50(0));
 	}
 	else {
 		GolVec3* cameraVectors = &p_createParams->m_unk0x38;
@@ -141,8 +141,8 @@ void ObscureSigil0xdc::FUN_004659b0(CreateParams0x84* p_createParams)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		LegoU32 dirtyFlag = AmberLens0x344::c_flagBit1;
-		AmberLens0x344* lens = m_unk0x64;
+		LegoU32 dirtyFlag = GolCamera::c_flagBit1;
+		GolCamera* lens = m_unk0x64;
 		LegoFloat value = cameraVectors[2].m_x;
 		lens->m_unk0x08 = value;
 		lens->m_flags |= dirtyFlag;
@@ -228,11 +228,11 @@ void ObscureSigil0xdc::FUN_00465c00(undefined4 p_elapsedMs)
 	m_unk0xd4 = turn;
 
 	if (turn != 0.0f) {
-		AmberLens0x344* lens = m_unk0x64;
+		GolCamera* lens = m_unk0x64;
 		LegoFloat value = lens->m_unk0x08;
 		LegoU32 flags = lens->m_flags;
 		value += turn;
-		lens->m_flags = flags | AmberLens0x344::c_flagBit1;
+		lens->m_flags = flags | GolCamera::c_flagBit1;
 		lens->m_unk0x08 = value;
 	}
 
@@ -276,7 +276,7 @@ void ObscureSigil0xdc::FUN_00465c00(undefined4 p_elapsedMs)
 	LegoFloat rightDelta = -right->m_x;
 	rightDelta *= m_unk0xc0;
 	position.m_x += (forwardDelta + rightDelta) * elapsed;
-	AmberLens0x344* lens = m_unk0x64;
+	GolCamera* lens = m_unk0x64;
 
 	rightDelta = -m_unk0x9c.m_y;
 	rightDelta *= m_unk0xc0;
@@ -291,10 +291,10 @@ void ObscureSigil0xdc::FUN_00465c00(undefined4 p_elapsedMs)
 	position.m_z += (rightDelta + forwardDelta) * elapsed;
 	lens->GetUnk0x04()->SetPosition(&position);
 
-	lens->m_flags |= AmberLens0x344::c_flagBit0;
-	AmberLens0x344* currentLens = m_unk0x64;
+	lens->m_flags |= GolCamera::c_flagBit0;
+	GolCamera* currentLens = m_unk0x64;
 	currentLens->GetUnk0x04()->VTable0x24(right, forward);
-	currentLens->m_flags |= AmberLens0x344::c_flagBit0;
+	currentLens->m_flags |= GolCamera::c_flagBit0;
 }
 
 // FUNCTION: LEGORACERS 0x00465e40

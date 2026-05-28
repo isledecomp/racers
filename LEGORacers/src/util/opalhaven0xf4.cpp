@@ -2,9 +2,9 @@
 
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
-#include "igdbmodel0x40.h"
-#include "jadeorbitbase0x10.h"
-#include "whitefalconnode0x18.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "mesh/golmodelbase.h"
 
 #include <float.h>
 #include <math.h>
@@ -22,8 +22,8 @@ OpalHaven0xf4::OpalHaven0xf4()
 
 // FUNCTION: LEGORACERS 0x0040d550
 void OpalHaven0xf4::FUN_0040d550(
-	IGdbModel0x40* p_model,
-	WhiteFalconNode0x18* p_node,
+	GolModelBase* p_model,
+	GolSceneNode* p_node,
 	CmbModelPart0x34* p_modelParts,
 	LegoFloat p_modelDistance
 )
@@ -84,7 +84,7 @@ void OpalHaven0xf4::VTable0x5c(LegoU32 p_index)
 		return;
 	}
 
-	WhiteFalconNode0x18* node = m_nodes[p_index];
+	GolSceneNode* node = m_nodes[p_index];
 	if (node->GetUpdateSerial() == static_cast<LegoU32>(m_partIndices[p_index])) {
 		return;
 	}
@@ -126,7 +126,7 @@ void OpalHaven0xf4::VTable0x5c(LegoU32 p_index)
 	}
 
 	for (LegoU32 i = 0; i < node->GetCapacity(); i++) {
-		JadeOrbitBase0x10* orbit = node->VTable0x18(i);
+		GolTransformBase* orbit = node->VTable0x18(i);
 
 		GolVec3 activePosition;
 		GolQuat activeRotation;
@@ -407,7 +407,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 // STUB: LEGORACERS 0x0040e0b0
 void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
 {
-	IGdbModel0x40* model = m_models[p_index];
+	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
 		FUN_10026fa0(0.0f);
 		return;
@@ -458,7 +458,7 @@ void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0040e270
-void OpalHaven0xf4::VTable0x14(const WhiteFalconView0xcc& p_view, ViewResult* p_result)
+void OpalHaven0xf4::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result)
 {
 	GolVec3 position;
 	FUN_100286d0(&position);
@@ -501,7 +501,7 @@ LegoBool32 OpalHaven0xf4::FUN_0040e360()
 }
 
 // FUNCTION: LEGORACERS 0x0040e480
-WhiteFalconNode0x18* OpalHaven0xf4::VTable0x58(LegoU32 p_arg1)
+GolSceneNode* OpalHaven0xf4::VTable0x58(LegoU32 p_arg1)
 {
 	return m_nodes[p_arg1];
 }

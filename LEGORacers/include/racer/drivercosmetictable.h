@@ -11,13 +11,13 @@
 #include "racer/turquoiseglowcolor.h"
 #include "types.h"
 
-class AmberHaze0x1c;
-class BronzeFalcon0xc8770;
+class GolMaterialLibrary;
+class GolD3DRenderDevice;
 class GolExport;
-class IGdbModel0x40;
-class MagentaRibbon0x20;
+class GolModelBase;
+class GolTextureList;
 class OpalHaven0xf4;
-class WhiteFalconNode0x18;
+class GolSceneNode;
 
 // VTABLE: LEGORACERS 0x004b00a4
 // SIZE 0x80
@@ -29,11 +29,11 @@ public:
 
 	// SIZE 0x14
 	struct LoadParams {
-		GolExport* m_golExport;          // 0x00
-		BronzeFalcon0xc8770* m_renderer; // 0x04
-		undefined4 m_unk0x08;            // 0x08
-		LegoChar* m_filename;            // 0x0c
-		undefined4 m_unk0x10;            // 0x10
+		GolExport* m_golExport;         // 0x00
+		GolD3DRenderDevice* m_renderer; // 0x04
+		undefined4 m_unk0x08;           // 0x08
+		LegoChar* m_filename;           // 0x0c
+		undefined4 m_unk0x10;           // 0x10
 	};
 
 	// SIZE 0x30
@@ -73,19 +73,19 @@ private:
 	void ClearEntries();
 	OpalHaven0xf4* LoadEntry(Entry0x30* p_entry);
 
-	GolStringTable m_strings;        // 0x0c
-	GolExport* m_golExport;          // 0x20
-	BronzeFalcon0xc8770* m_renderer; // 0x24
-	Entry0x30* m_entries;            // 0x28
-	IGdbModel0x40** m_models;        // 0x2c
-	MagentaRibbon0x20** m_textures;  // 0x30
-	AmberHaze0x1c** m_materials;     // 0x34
-	OpalHaven0xf4* m_loadedEntries;  // 0x38
-	WhiteFalconNode0x18* m_rootNode; // 0x3c
-	CmbModelPart0x34 m_modelParts;   // 0x40
-	LegoU32 m_entryCapacity;         // 0x74
-	LegoU32 m_loadedEntryCount;      // 0x78
-	LegoBool32 m_binary;             // 0x7c
+	GolStringTable m_strings;         // 0x0c
+	GolExport* m_golExport;           // 0x20
+	GolD3DRenderDevice* m_renderer;   // 0x24
+	Entry0x30* m_entries;             // 0x28
+	GolModelBase** m_models;          // 0x2c
+	GolTextureList** m_textures;      // 0x30
+	GolMaterialLibrary** m_materials; // 0x34
+	OpalHaven0xf4* m_loadedEntries;   // 0x38
+	GolSceneNode* m_rootNode;         // 0x3c
+	CmbModelPart0x34 m_modelParts;    // 0x40
+	LegoU32 m_entryCapacity;          // 0x74
+	LegoU32 m_loadedEntryCount;       // 0x78
+	LegoBool32 m_binary;              // 0x7c
 };
 
 #endif // DRIVERCOSMETICTABLE_H

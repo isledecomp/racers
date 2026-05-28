@@ -2,14 +2,14 @@
 
 #include "app/golapp.h"
 #include "app/legoracers.h"
-#include "bronzefalcon0xc8770.h"
-#include "golfont0xa0.h"
+#include "font/golfont0xa0.h"
 #include "golhashtable.h"
 #include "golname.h"
 #include "golstream.h"
 #include "menu/menuscreenid.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "render/gold3drenderdevice.h"
 
 #include <string.h>
 

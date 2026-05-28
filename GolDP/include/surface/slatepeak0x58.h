@@ -1,0 +1,58 @@
+#ifndef GOLDP_SLATEPEAK0X58_H
+#define GOLDP_SLATEPEAK0X58_H
+
+#include "compat.h"
+#include "device/goldirectdrawpalette.h"
+#include "surface/azureridge0x38.h"
+#include "surface/goldepthbuffer.h"
+
+class GolD3DRenderDevice;
+
+// VTABLE: GOLDP 0x1005627c
+// SIZE 0x58
+class SlatePeak0x58 : public AzureRidge0x38 {
+public:
+	SlatePeak0x58();
+	~SlatePeak0x58() override;                                                         // vtable+0x00
+	void LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override;    // vtable+0x04
+	void UnlockPixels() override;                                                      // vtable+0x08
+	void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x0c
+	void UnlockAuxPixels() override;                                                   // vtable+0x10
+	void VTable0x14(undefined4*) override;                                             // vtable+0x14
+	void VTable0x18() override;                                                        // vtable+0x18
+	GolPaletteBase* GetPalette() override;                                             // vtable+0x1c
+	void Fill(LegoU32 p_color) override;                                               // vtable+0x20
+	void VTable0x28(Rect* p_destRect, SilverDune0x30* p_source,
+					Rect* p_sourceRect) override; // vtable+0x28
+	void VTable0x2c() override;                   // vtable+0x2c
+	void VTable0x30(
+		GolDrawState* p_drawState,
+		undefined4 p_width,
+		undefined4 p_height,
+		undefined4 p_bpp
+	) override;                 // vtable+0x30
+	void VTable0x34() override; // vtable+0x34
+
+	// SYNTHETIC: GOLDP 0x10003170
+	// SlatePeak0x58::`scalar deleting destructor'
+
+	LPDIRECTDRAWSURFACE4 GetDisplaySurface() const { return m_displaySurface; }
+	LPDIRECTDRAWSURFACE4 GetRenderSurface() const { return m_renderSurface; }
+
+protected:
+	friend class GolDepthBuffer;
+	friend class GolD3DRenderDevice;
+
+	LegoS32 AttachDepthBuffer(GolDepthBuffer* p_depthBuffer);
+	void DetachDepthBuffer(GolDepthBuffer* p_depthBuffer);
+	void SetDisplayPalette(GolD3DRenderDevice* p_renderer);
+
+	GolDirectDrawPalette m_palette;        // 0x38
+	GolDrawState* m_drawState;             // 0x44
+	LPDIRECTDRAWSURFACE4 m_displaySurface; // 0x48
+	LPDIRECTDRAWSURFACE4 m_renderSurface;  // 0x4c
+	LPDIRECTDRAWCLIPPER m_clipper;         // 0x50
+	GolDepthBuffer* m_depthBuffer;         // 0x54
+};
+
+#endif // GOLDP_SLATEPEAK0X58_H

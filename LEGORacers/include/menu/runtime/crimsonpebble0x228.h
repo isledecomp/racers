@@ -2,7 +2,6 @@
 #define CRIMSONPEBBLE0X228_H
 
 #include "audio/soundnode.h"
-#include "color.h"
 #include "decomp.h"
 #include "golfileparser.h"
 #include "golmath.h"
@@ -12,22 +11,23 @@
 #include "golstringtable.h"
 #include "goltxtparser.h"
 #include "menu/menuanimationlist.h"
+#include "surface/color.h"
 #include "types.h"
 #include "util/bluebellfog0x4.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class CrimsonPebble0x228;
 class CrimsonPebbleAnimation0x33c;
 class GolExport;
 class GolFont0xa0;
 class GolFontTable;
 class GolFileParser;
-class FloatyBoat0x28;
+class GolWorldEntity;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
 class OpalHaven0xf4;
 class Particle0x18c;
-class WhiteFalcon0x140;
+class GolRenderDevice;
 class UtopianPan0xa4;
 class SaffronQuartz0x2c;
 class SoundManager;
@@ -35,7 +35,7 @@ class SoundGroup;
 class SoundInstance;
 class StreamingSoundInstance;
 class MenuAnimationList;
-class AmberLens0x344;
+class GolCamera;
 class AwakeKite0x20;
 class DuskwindBananaRelic0x24;
 struct Rect;
@@ -46,9 +46,9 @@ class CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x14();
 	virtual ~CrimsonPebbleEvent0x14();                                       // vtable+0x00
-	virtual void VTable0x04(FloatyBoat0x28* p_arg);                          // vtable+0x04
-	virtual void VTable0x08(FloatyBoat0x28* p_arg);                          // vtable+0x08
-	virtual void VTable0x0c(FloatyBoat0x28* p_arg);                          // vtable+0x0c
+	virtual void VTable0x04(GolWorldEntity* p_arg);                          // vtable+0x04
+	virtual void VTable0x08(GolWorldEntity* p_arg);                          // vtable+0x08
+	virtual void VTable0x0c(GolWorldEntity* p_arg);                          // vtable+0x0c
 	virtual void VTable0x10(const GolVec3*, const GolVec3*, const GolVec3*); // vtable+0x10
 	virtual void VTable0x14();                                               // vtable+0x14
 	virtual void VTable0x18();                                               // vtable+0x18
@@ -62,8 +62,8 @@ public:
 	// CrimsonPebbleEvent0x14::`scalar deleting destructor'
 
 protected:
-	FloatyBoat0x28* m_unk0x04; // 0x04
-	FloatyBoat0x28* m_unk0x08; // 0x08
+	GolWorldEntity* m_unk0x04; // 0x04
+	GolWorldEntity* m_unk0x08; // 0x08
 	OpalHaven0xf4* m_unk0x0c;  // 0x0c
 	undefined4 m_unk0x10;      // 0x10
 };
@@ -71,7 +71,7 @@ protected:
 // SIZE 0x2c
 struct CrimsonPebbleEventValueSource0x2c {
 	undefined m_unk0x00[0x28]; // 0x00
-	FloatyBoat0x28* m_unk0x28; // 0x28
+	GolWorldEntity* m_unk0x28; // 0x28
 };
 
 // SIZE 0x24
@@ -84,7 +84,7 @@ struct CrimsonPebbleEventValuePayload0x24 {
 struct CrimsonPebbleEventSelectorPayload0x28 {
 	undefined m_unk0x00[0x20]; // 0x00
 	undefined4 m_unk0x20;      // 0x20
-	FloatyBoat0x28* m_unk0x24; // 0x24
+	GolWorldEntity* m_unk0x24; // 0x24
 };
 
 // SIZE 0x44
@@ -153,7 +153,7 @@ public:
 
 	void VTable0x14() override;                      // vtable+0x14
 	void VTable0x18() override;                      // vtable+0x18
-	void VTable0x08(FloatyBoat0x28* p_arg) override; // vtable+0x08
+	void VTable0x08(GolWorldEntity* p_arg) override; // vtable+0x08
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner);
@@ -197,8 +197,8 @@ class CrimsonPebbleEvent0x50 : public CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x50();
 
-	void VTable0x04(FloatyBoat0x28* p_arg) override;                                      // vtable+0x04
-	void VTable0x0c(FloatyBoat0x28* p_arg) override;                                      // vtable+0x0c
+	void VTable0x04(GolWorldEntity* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(GolWorldEntity* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -232,8 +232,8 @@ public:
 
 	CrimsonPebbleEvent0x50Derived();
 
-	void VTable0x04(FloatyBoat0x28* p_arg) override;                                      // vtable+0x04
-	void VTable0x0c(FloatyBoat0x28* p_arg) override;                                      // vtable+0x0c
+	void VTable0x04(GolWorldEntity* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(GolWorldEntity* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -266,7 +266,7 @@ public:
 		GolFileParser* p_parser,
 		CrimsonPebble0x228* p_owner,
 		MenuAnimationList* p_animationList,
-		BronzeFalcon0xc8770* p_renderer
+		GolD3DRenderDevice* p_renderer
 	);
 
 	// SYNTHETIC: LEGORACERS 0x004a22b0
@@ -304,7 +304,7 @@ public:
 	void VTable0x18() override;                                       // vtable+0x18
 	virtual void VTable0x1c(LegoS32* p_width, LegoS32* p_height) = 0; // vtable+0x1c
 	virtual void VTable0x20(
-		WhiteFalcon0x140* p_renderer,
+		GolRenderDevice* p_renderer,
 		LegoS32 p_x,
 		LegoS32 p_y,
 		undefined4,
@@ -316,13 +316,13 @@ public:
 	void Reset();
 	void Clear();
 	void FUN_004a3550(LegoFloat p_elapsedSeconds);
-	void FUN_004a35a0(BronzeFalcon0xc8770* p_renderer);
-	void FUN_004a36e0(BronzeFalcon0xc8770* p_renderer, LegoFloat p_width, LegoFloat p_height);
+	void FUN_004a35a0(GolD3DRenderDevice* p_renderer);
+	void FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height);
 	void ParseVisualToken(
 		GolFileParser* p_parser,
 		GolFileParser::ParserTokenType p_token,
 		CrimsonPebble0x228* p_owner,
-		WhiteFalcon0x140* p_renderer
+		GolRenderDevice* p_renderer
 	);
 
 	// SYNTHETIC: LEGORACERS 0x004a32d0
@@ -368,7 +368,7 @@ public:
 
 	void VTable0x1c(LegoS32* p_width, LegoS32* p_height) override; // vtable+0x1c
 	void VTable0x20(
-		WhiteFalcon0x140* p_renderer,
+		GolRenderDevice* p_renderer,
 		LegoS32 p_x,
 		LegoS32 p_y,
 		undefined4 p_width,
@@ -379,8 +379,8 @@ public:
 
 	void Reset();
 	void Clear();
-	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer);
-	void FUN_004a3910(BronzeFalcon0xc8770* p_renderer);
+	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer);
+	void FUN_004a3910(GolD3DRenderDevice* p_renderer);
 
 	// SYNTHETIC: LEGORACERS 0x004a2690
 	// CrimsonPebbleVisual0x64::`vector deleting destructor'
@@ -399,7 +399,7 @@ public:
 
 	void VTable0x1c(LegoS32* p_width, LegoS32* p_height) override; // vtable+0x1c
 	void VTable0x20(
-		WhiteFalcon0x140* p_renderer,
+		GolRenderDevice* p_renderer,
 		LegoS32 p_x,
 		LegoS32 p_y,
 		undefined4,
@@ -410,8 +410,8 @@ public:
 
 	void Reset();
 	void Clear();
-	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer);
-	void RefreshString(CrimsonPebble0x228* p_owner, WhiteFalcon0x140* p_renderer);
+	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer);
+	void RefreshString(CrimsonPebble0x228* p_owner, GolRenderDevice* p_renderer);
 
 	// SYNTHETIC: LEGORACERS 0x004a2480
 	// CrimsonPebbleText0x70::`vector deleting destructor'
@@ -460,7 +460,7 @@ public:
 
 		void Parse(
 			MabMaterialAnimation0x14* p_materialAnimation,
-			BronzeFalcon0xc8770* p_renderer,
+			GolD3DRenderDevice* p_renderer,
 			GolFileParser* p_parser,
 			CrimsonPebbleAnimation0x33c* p_param4
 		);
@@ -494,12 +494,12 @@ public:
 	WoozyTrade* FUN_00489d70(const LegoChar* p_param1, GolVec3* p_param2, GolVec3* p_param3, GolVec3* p_param4);
 	void FUN_00489f00(WoozyTrade* p_param);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
-	void FUN_00489ff0(BronzeFalcon0xc8770* p_renderer);
-	void FUN_0048a040(BronzeFalcon0xc8770* p_renderer);
+	void FUN_00489ff0(GolD3DRenderDevice* p_renderer);
+	void FUN_0048a040(GolD3DRenderDevice* p_renderer);
 	void FUN_00489af0(
 		LegoU32 p_unk0x04,
 		GolExport* p_golExport,
-		BronzeFalcon0xc8770* p_renderer,
+		GolD3DRenderDevice* p_renderer,
 		MabMaterialAnimation0x14* p_materialAnimation,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
@@ -544,7 +544,7 @@ public:
 	LegoBool32 HasFileWithSuffix(const LegoChar* p_fileName, const LegoChar* p_suffix);
 	void FUN_004a0730(
 		GolExport* p_golExport,
-		BronzeFalcon0xc8770* p_renderer,
+		GolD3DRenderDevice* p_renderer,
 		SoundManager* p_soundManager,
 		SaffronQuartz0x2c* p_unk0x10,
 		const LegoChar* p_fileName,
@@ -577,10 +577,10 @@ public:
 		GolNameTable& p_unk0x10
 	);
 	void FUN_004a2dc0(LegoU32 p_elapsedMs);
-	void FUN_004a2f30(BronzeFalcon0xc8770* p_renderer);
-	void FUN_004a2f80(AmberLens0x344* p_lens);
-	void FUN_004a3070(BronzeFalcon0xc8770* p_renderer);
-	void FUN_004a30b0(BronzeFalcon0xc8770* p_renderer);
+	void FUN_004a2f30(GolD3DRenderDevice* p_renderer);
+	void FUN_004a2f80(GolCamera* p_lens);
+	void FUN_004a3070(GolD3DRenderDevice* p_renderer);
+	void FUN_004a30b0(GolD3DRenderDevice* p_renderer);
 	void FUN_004a3150();
 	GolStringTable* GetStringTableByIndex(LegoU32 p_index);
 
@@ -592,9 +592,9 @@ public:
 	CrimsonPebbleAnimation0x33c* GetAnimationByIndex(LegoU32 p_index) const { return &m_unk0x6c[p_index]; }
 	LegoU32 GetSoundGroupCount() const { return m_unk0x84; }
 	SoundGroup* GetSoundGroupByIndex(LegoU32 p_index) const { return m_unk0x88[p_index]; }
-	FloatyBoat0x28* FUN_004a3230(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_004a3240(const LegoChar* p_name);
-	FloatyBoat0x28* FUN_004a3250(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3230(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3240(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3250(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
 	// CrimsonPebble0x228::`scalar deleting destructor'
@@ -603,7 +603,7 @@ public:
 
 private:
 	GolExport* m_unk0x04;                            // 0x004
-	BronzeFalcon0xc8770* m_unk0x08;                  // 0x008
+	GolD3DRenderDevice* m_unk0x08;                   // 0x008
 	SoundManager* m_soundManager;                    // 0x00c
 	SaffronQuartz0x2c* m_unk0x10;                    // 0x010
 	SoundNode m_unk0x14;                             // 0x014

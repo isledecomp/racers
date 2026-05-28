@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "menu/screens/imaginarynotion0x290.h"
 #include "menu/style/porcelainveil0x50.h"
-#include "whitefalcon0x140.h"
+#include "render/golrenderdevice.h"
 
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
@@ -99,20 +99,20 @@ protected:
 		undefined2 p_unk0x0c,
 		undefined2 p_unk0x10
 	);
-	void FUN_0047fec0(WhiteFalcon0x140::MaterialColor* p_unk0x04, WhiteFalcon0x140::Light* p_unk0x08);
+	void FUN_0047fec0(GolRenderDevice::MaterialColor* p_unk0x04, GolRenderDevice::Light* p_unk0x08);
 	LegoBool32 FUN_00480440(MenuToolContext0x4bc8* p_context);
 	void FUN_004804c0(MenuToolContext0x4bc8* p_context);
 
-	PorcelainVeil0x50 m_unk0x290;               // 0x290
-	FieldAt0x2e0 m_unk0x2e0;                    // 0x2e0
-	WhiteFalcon0x140::Light m_unk0x340;         // 0x340
-	WhiteFalcon0x140::MaterialColor m_unk0x350; // 0x350
-	MenuToolContext0x4bc8* m_context;           // 0x354
-	ObscureIcon0x1a8* m_unk0x358;               // 0x358
-	ObscureVantage0x58* m_unk0x35c;             // 0x35c
-	LegoU16 m_unk0x360;                         // 0x360
-	LegoU16 m_menuId;                           // 0x362
-	LegoBool32 m_unk0x364;                      // 0x364
+	PorcelainVeil0x50 m_unk0x290;              // 0x290
+	FieldAt0x2e0 m_unk0x2e0;                   // 0x2e0
+	GolRenderDevice::Light m_unk0x340;         // 0x340
+	GolRenderDevice::MaterialColor m_unk0x350; // 0x350
+	MenuToolContext0x4bc8* m_context;          // 0x354
+	ObscureIcon0x1a8* m_unk0x358;              // 0x358
+	ObscureVantage0x58* m_unk0x35c;            // 0x35c
+	LegoU16 m_unk0x360;                        // 0x360
+	LegoU16 m_menuId;                          // 0x362
+	LegoBool32 m_unk0x364;                     // 0x364
 };
 
 #endif // IMAGINARYTOOL0X368_H

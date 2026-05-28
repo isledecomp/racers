@@ -1,25 +1,25 @@
 #include "util/tanzanitewisp0x88.h"
 
-#include "../../GolDP/src/gdbmodelindexarray0xc.h"
-#include "amberhaze0x1c.h"
-#include "bronzefalcon0xc8770.h"
-#include "color.h"
-#include "gdbmodel0x48.h"
-#include "gdbvertexarray0xc.h"
-#include "gol.h"
+#include "core/gol.h"
 #include "golbmpfile.h"
 #include "golerror.h"
 #include "golhashtable.h"
 #include "golmath.h"
 #include "golname.h"
 #include "golstream.h"
-#include "igdbmodel0x40.h"
-#include "igdbmodelindexarray0x8.h"
-#include "magentaribbon0x20.h"
-#include "purpledune0x7c.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "mesh/gdbmodelindexarray0xc.h"
+#include "mesh/gdbvertexarray0xc.h"
+#include "mesh/golmodel.h"
+#include "mesh/golmodelbase.h"
+#include "mesh/golmodelmaterialtable.h"
+#include "mesh/igdbmodelindexarray0x8.h"
 #include "racer/lavendervault0x764.h"
 #include "racer/turquoiseglowcolor.h"
-#include "shadowwolf0xc.h"
+#include "render/gold3drenderdevice.h"
+#include "surface/color.h"
+#include "surface/purpledune0x7c.h"
 #include "util/garnetflare0x60.h"
 
 #include <stdlib.h>
@@ -191,7 +191,7 @@ void TanzaniteWisp0x88::FUN_0049d420(LegoS32 p_faceIndex)
 }
 
 // FUNCTION: LEGORACERS 0x0049d570
-void TanzaniteWisp0x88::FUN_0049d570(IGdbModel0x40* p_model, ModelSummary0x14* p_summary)
+void TanzaniteWisp0x88::FUN_0049d570(GolModelBase* p_model, ModelSummary0x14* p_summary)
 {
 	p_summary->m_model = p_model;
 
@@ -220,8 +220,8 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d5c0() const
 // STUB: LEGORACERS 0x0049d600
 void TanzaniteWisp0x88::FUN_0049d600()
 {
-	ShadowWolf0xc* outputMaterials = m_unk0x64.m_model->GetMaterialTable();
-	ShadowWolf0xc* headMaterials = m_unk0x50.m_model->GetMaterialTable();
+	GolModelMaterialTable* outputMaterials = m_unk0x64.m_model->GetMaterialTable();
+	GolModelMaterialTable* headMaterials = m_unk0x50.m_model->GetMaterialTable();
 	LegoU32 outputIndex = static_cast<LegoU32>(m_unk0x3c.m_unk0x0c);
 
 	for (LegoS32 i = 0; i < m_unk0x50.m_unk0x0c; i++) {
@@ -239,7 +239,7 @@ void TanzaniteWisp0x88::FUN_0049d600()
 }
 
 // STUB: LEGORACERS 0x0049d670
-LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
+LegoBool32 TanzaniteWisp0x88::FUN_0049d670(GolModelBase* p_model) const
 {
 	if (p_model == NULL || p_model->GetGroups() == NULL) {
 		return TRUE;
@@ -257,9 +257,9 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d670(IGdbModel0x40* p_model) const
 }
 
 // STUB: LEGORACERS 0x0049d6e0
-IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
+GolModelBase* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 {
-	IGdbModel0x40* model = m_golExport->VTable0x14();
+	GolModelBase* model = m_golExport->VTable0x14();
 	if (model == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -286,8 +286,8 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 
 // STUB: LEGORACERS 0x0049d790
 void TanzaniteWisp0x88::CopyModelVertices(
-	IGdbModel0x40* p_sourceModel,
-	IGdbModel0x40* p_destModel,
+	GolModelBase* p_sourceModel,
+	GolModelBase* p_destModel,
 	LegoU32 p_vertexOffset
 )
 {
@@ -321,7 +321,7 @@ void TanzaniteWisp0x88::CopyModelVertices(
 }
 
 // STUB: LEGORACERS 0x0049d880
-void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40* p_destModel, LegoU32 p_indexOffset)
+void TanzaniteWisp0x88::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
 {
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
 	IGdbModelIndexArray0x8* destIndexArrayBase;
@@ -347,13 +347,13 @@ void TanzaniteWisp0x88::FUN_0049d880(IGdbModel0x40* p_sourceModel, IGdbModel0x40
 // STUB: LEGORACERS 0x0049d920
 void TanzaniteWisp0x88::FUN_0049d920()
 {
-	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;
-	IGdbModel0x40* outputModel = m_unk0x64.m_model;
+	GolModelBase* bodyModel = m_unk0x3c.m_model;
+	GolModelBase* outputModel = m_unk0x64.m_model;
 	CopyModelVertices(bodyModel, outputModel, 0);
 	FUN_0049d880(bodyModel, outputModel, 0);
 
-	ShadowWolf0xc* bodyMaterials = bodyModel->GetMaterialTable();
-	ShadowWolf0xc* outputMaterials = outputModel->GetMaterialTable();
+	GolModelMaterialTable* bodyMaterials = bodyModel->GetMaterialTable();
+	GolModelMaterialTable* outputMaterials = outputModel->GetMaterialTable();
 	for (LegoU32 i = 0; i < bodyMaterials->GetCount(); i++) {
 		outputMaterials->SetPosition(i, bodyMaterials->GetMaterial(i));
 	}
@@ -370,7 +370,7 @@ void TanzaniteWisp0x88::FUN_0049d970()
 // STUB: LEGORACERS 0x0049d9b0
 void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
-	ShadowWolf0xc* materialTable = m_unk0x64.m_model->GetMaterialTable();
+	GolModelMaterialTable* materialTable = m_unk0x64.m_model->GetMaterialTable();
 	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
 	if (params == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -406,9 +406,9 @@ void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const 
 }
 
 // FUNCTION: LEGORACERS 0x0049dab0
-IGdbModel0x40* TanzaniteWisp0x88::FUN_0049dab0(
+GolModelBase* TanzaniteWisp0x88::FUN_0049dab0(
 	TurquoiseGlowColor* p_color,
-	IGdbModel0x40* p_model,
+	GolModelBase* p_model,
 	undefined4 p_vertexType
 )
 {
@@ -439,17 +439,13 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049dab0(
 }
 
 // FUNCTION: LEGORACERS 0x0049db90
-IGdbModel0x40* TanzaniteWisp0x88::FUN_0049db90(
-	TurquoiseGlowColor* p_color,
-	IGdbModel0x40* p_model,
-	undefined4 p_unk0x0c
-)
+GolModelBase* TanzaniteWisp0x88::FUN_0049db90(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c)
 {
 	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
 	LegoS32 torsoLegIndex =
 		2 * partConfig->GetLegVariant(p_color->m_unk0x03) + partConfig->GetTorsoVariant(p_color->m_unk0x02);
-	IGdbModel0x40* torsoLegModel = m_unk0x38->FUN_00498510(torsoLegIndex);
-	IGdbModel0x40* headModel = m_unk0x38->FUN_004984d0(p_color->m_unk0x00);
+	GolModelBase* torsoLegModel = m_unk0x38->FUN_00498510(torsoLegIndex);
+	GolModelBase* headModel = m_unk0x38->FUN_004984d0(p_color->m_unk0x00);
 
 	FUN_0049d570(torsoLegModel, &m_unk0x3c);
 	FUN_0049d570(headModel, &m_unk0x50);
@@ -458,7 +454,7 @@ IGdbModel0x40* TanzaniteWisp0x88::FUN_0049db90(
 }
 
 // FUNCTION: LEGORACERS 0x0049dc10
-WhiteFalconNode0x18* TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor* p_color)
+GolSceneNode* TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor* p_color)
 {
 	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
 	LegoS32 torsoLegIndex =
@@ -476,7 +472,7 @@ void TanzaniteWisp0x88::FUN_0049dc90(undefined4* p_dest)
 }
 
 // FUNCTION: LEGORACERS 0x0049dce0
-void TanzaniteWisp0x88::FUN_0049dce0(IGdbModel0x40* p_model, TurquoiseGlowColor* p_color)
+void TanzaniteWisp0x88::FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* p_color)
 {
 	GolName materialName;
 	m_unk0x38->GetPartConfig()->FUN_00498f70(p_color->m_unk0x01, materialName, materialName);
@@ -488,17 +484,17 @@ void TanzaniteWisp0x88::FUN_0049dce0(IGdbModel0x40* p_model, TurquoiseGlowColor*
 // STUB: LEGORACERS 0x0049dd50
 void TanzaniteWisp0x88::FUN_0049dd50()
 {
-	IGdbModel0x40* bodyModel = m_unk0x3c.m_model;
-	IGdbModel0x40* headModel = m_unk0x50.m_model;
-	IGdbModel0x40* outputModel = m_unk0x64.m_model;
+	GolModelBase* bodyModel = m_unk0x3c.m_model;
+	GolModelBase* headModel = m_unk0x50.m_model;
+	GolModelBase* outputModel = m_unk0x64.m_model;
 	const LegoU32* bodyGroups = bodyModel->GetGroups();
 	const LegoU32* headGroups = headModel->GetGroups();
 	LegoU32* outputGroups = outputModel->GetMutableGroups();
 
 	GolName faceName;
 	::strncpy(faceName, "face", sizeof(GolName));
-	LegoU32 faceGroup = GdbModel0x48::c_groupTypeMaterial |
-						(bodyModel->GetMaterialTable()->FindEntryIndexByName(faceName) & 0x00ffffff);
+	LegoU32 faceGroup =
+		GolModel::c_groupTypeMaterial | (bodyModel->GetMaterialTable()->FindEntryIndexByName(faceName) & 0x00ffffff);
 
 	LegoS32 bodyIndex = 0;
 	while (TRUE) {
@@ -513,12 +509,12 @@ void TanzaniteWisp0x88::FUN_0049dd50()
 	LegoS32 outputIndex = bodyIndex - 1;
 	while (bodyIndex < m_unk0x3c.m_unk0x08) {
 		LegoU32 group = bodyGroups[bodyIndex];
-		LegoU32 groupType = group & GdbModel0x48::c_groupTypeMask;
-		if (groupType == GdbModel0x48::c_groupTypeMatrix) {
+		LegoU32 groupType = group & GolModel::c_groupTypeMask;
+		if (groupType == GolModel::c_groupTypeMatrix) {
 			outputGroups[outputIndex++] = group;
 		}
 
-		if (groupType == GdbModel0x48::c_groupTypeMaterial || groupType == GdbModel0x48::c_groupTypeEnd) {
+		if (groupType == GolModel::c_groupTypeMaterial || groupType == GolModel::c_groupTypeEnd) {
 			break;
 		}
 
@@ -527,23 +523,23 @@ void TanzaniteWisp0x88::FUN_0049dd50()
 
 	for (LegoS32 headIndex = 0; headIndex < m_unk0x50.m_unk0x08; headIndex++) {
 		LegoU32 group = headGroups[headIndex];
-		LegoU32 groupType = group & GdbModel0x48::c_groupTypeMask;
+		LegoU32 groupType = group & GolModel::c_groupTypeMask;
 
-		if (groupType == GdbModel0x48::c_groupTypeTriangles) {
+		if (groupType == GolModel::c_groupTypeTriangles) {
 			group = (group & 0x0fc00000) | (group & 0x003f0000) | ((group + m_unk0x3c.m_unk0x00) & 0x0000ffff);
 		}
-		else if (groupType == GdbModel0x48::c_groupTypeTriangleBatch) {
-			group = GdbModel0x48::c_groupTypeTriangleBatch | (group & 0x007f0000) |
+		else if (groupType == GolModel::c_groupTypeTriangleBatch) {
+			group = GolModel::c_groupTypeTriangleBatch | (group & 0x007f0000) |
 					((group + m_unk0x3c.m_unk0x04) & 0x0000ffff);
 		}
-		else if (groupType == GdbModel0x48::c_groupTypeMaterial) {
+		else if (groupType == GolModel::c_groupTypeMaterial) {
 			DuskwindBananaRelic0x24* material = headModel->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
 			GolName materialName;
 			::memcpy(materialName, material->GetName(), sizeof(GolName));
-			group = GdbModel0x48::c_groupTypeMaterial |
+			group = GolModel::c_groupTypeMaterial |
 					(outputModel->GetMaterialTable()->FindEntryIndexByName(materialName) & 0x00ffffff);
 		}
-		else if (groupType == GdbModel0x48::c_groupTypeEnd) {
+		else if (groupType == GolModel::c_groupTypeEnd) {
 			break;
 		}
 

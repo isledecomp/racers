@@ -8,8 +8,8 @@
 #include "menu/widgets/obscurevantage0x58.h"
 #include "types.h"
 
-class AmberLens0x344;
-class ZoweeBlubberworth0xf0;
+class GolCamera;
+class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004b1dfc
 // SIZE: 0xdc
@@ -55,29 +55,29 @@ protected:
 	void FUN_00465e40(Rect* p_rect);
 	void FUN_00465ea0();
 
-	ObscureLink0x1c* m_unk0x58;       // 0x58
-	ZoweeBlubberworth0xf0* m_unk0x5c; // 0x5c
-	ZoweeBlubberworth0xf0* m_unk0x60; // 0x60
-	AmberLens0x344* m_unk0x64;        // 0x64
-	AmberLens0x344* m_unk0x68;        // 0x68
-	undefined4 m_unk0x6c;             // 0x6c
-	GolVec3 m_unk0x70;                // 0x70
-	GolVec3 m_unk0x7c;                // 0x7c
-	undefined4 m_unk0x88;             // 0x88
-	LegoFloat m_unk0x8c;              // 0x8c
-	GolVec3 m_unk0x90;                // 0x90
-	GolVec3 m_unk0x9c;                // 0x9c
-	GolVec3 m_unk0xa8;                // 0xa8
-	LegoFloat m_unk0xb4;              // 0xb4
-	LegoFloat m_unk0xb8;              // 0xb8
-	LegoFloat m_unk0xbc;              // 0xbc
-	LegoFloat m_unk0xc0;              // 0xc0
-	LegoFloat m_unk0xc4;              // 0xc4
-	LegoFloat m_unk0xc8;              // 0xc8
-	LegoFloat m_unk0xcc;              // 0xcc
-	LegoFloat m_unk0xd0;              // 0xd0
-	LegoFloat m_unk0xd4;              // 0xd4
-	LegoFloat m_unk0xd8;              // 0xd8
+	ObscureLink0x1c* m_unk0x58;  // 0x58
+	GolWorldDatabase* m_unk0x5c; // 0x5c
+	GolWorldDatabase* m_unk0x60; // 0x60
+	GolCamera* m_unk0x64;        // 0x64
+	GolCamera* m_unk0x68;        // 0x68
+	undefined4 m_unk0x6c;        // 0x6c
+	GolVec3 m_unk0x70;           // 0x70
+	GolVec3 m_unk0x7c;           // 0x7c
+	undefined4 m_unk0x88;        // 0x88
+	LegoFloat m_unk0x8c;         // 0x8c
+	GolVec3 m_unk0x90;           // 0x90
+	GolVec3 m_unk0x9c;           // 0x9c
+	GolVec3 m_unk0xa8;           // 0xa8
+	LegoFloat m_unk0xb4;         // 0xb4
+	LegoFloat m_unk0xb8;         // 0xb8
+	LegoFloat m_unk0xbc;         // 0xbc
+	LegoFloat m_unk0xc0;         // 0xc0
+	LegoFloat m_unk0xc4;         // 0xc4
+	LegoFloat m_unk0xc8;         // 0xc8
+	LegoFloat m_unk0xcc;         // 0xcc
+	LegoFloat m_unk0xd0;         // 0xd0
+	LegoFloat m_unk0xd4;         // 0xd4
+	LegoFloat m_unk0xd8;         // 0xd8
 };
 
 #endif // OBSCURESIGIL0XDC

@@ -1,14 +1,14 @@
 #include "racer/drivercosmetictable.h"
 
-#include "amberhaze0x1c.h"
-#include "bronzefalcon0xc8770.h"
-#include "gol.h"
+#include "core/gol.h"
 #include "golbinparser.h"
 #include "golerror.h"
-#include "igdbmodel0x40.h"
-#include "magentaribbon0x20.h"
+#include "golscenenode.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "mesh/golmodelbase.h"
+#include "render/gold3drenderdevice.h"
 #include "util/opalhaven0xf4.h"
-#include "whitefalconnode0x18.h"
 
 #include <string.h>
 
@@ -276,17 +276,17 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_models = new IGdbModel0x40*[m_entryCapacity];
+		m_models = new GolModelBase*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_textures = new MagentaRibbon0x20*[m_entryCapacity];
+		m_textures = new GolTextureList*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_materials = new AmberHaze0x1c*[m_entryCapacity];
+		m_materials = new GolMaterialLibrary*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

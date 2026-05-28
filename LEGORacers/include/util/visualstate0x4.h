@@ -1,8 +1,8 @@
 #ifndef VISUALSTATE0X4_H
 #define VISUALSTATE0X4_H
 
-#include "color.h"
 #include "decomp.h"
+#include "surface/color.h"
 #include "types.h"
 
 #pragma pack(push, 1)

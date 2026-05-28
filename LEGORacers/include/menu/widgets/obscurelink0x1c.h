@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "types.h"
 
-class BronzeFalcon0xc8770;
+class GolD3DRenderDevice;
 class GolExport;
 class ObscureSigil0xdc;
 
@@ -15,9 +15,9 @@ class ObscureLink0x1c {
 public:
 	// SIZE 0x0c
 	struct CreateParams0x0c {
-		GolExport* m_golExport;          // 0x00
-		BronzeFalcon0xc8770* m_renderer; // 0x04
-		ObscureSigil0xdc* m_unk0x08;     // 0x08
+		GolExport* m_golExport;         // 0x00
+		GolD3DRenderDevice* m_renderer; // 0x04
+		ObscureSigil0xdc* m_unk0x08;    // 0x08
 	};
 
 	ObscureLink0x1c();
@@ -35,12 +35,12 @@ public:
 	// ObscureLink0x1c::`scalar deleting destructor'
 
 protected:
-	ObscureLink0x1c* m_unk0x04;     // 0x04
-	ObscureLink0x1c* m_unk0x08;     // 0x08
-	GolExport* m_unk0x0c;           // 0x0c
-	BronzeFalcon0xc8770* m_unk0x10; // 0x10
-	ObscureSigil0xdc* m_unk0x14;    // 0x14
-	LegoBool32 m_unk0x18;           // 0x18
+	ObscureLink0x1c* m_unk0x04;    // 0x04
+	ObscureLink0x1c* m_unk0x08;    // 0x08
+	GolExport* m_unk0x0c;          // 0x0c
+	GolD3DRenderDevice* m_unk0x10; // 0x10
+	ObscureSigil0xdc* m_unk0x14;   // 0x14
+	LegoBool32 m_unk0x18;          // 0x18
 };
 
 #endif // OBSCURELINK0X1C_H

@@ -32,14 +32,14 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 	return ImaginaryTool0x368::VTable0x8c(p_context, p_createParams) != FALSE;
 }
 
-// FUNCTION: LEGORACERS 0x00482160
+// STUB: LEGORACERS 0x00482160
 void NewRacerScreen::VTable0x4c()
 {
 	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
 
-	LegoBool32 active = TRUE;
-	MenuToolContext0x4bc8* context = m_context;
 	LegoU32 memoryCardIndex = m_unk0x76c;
+	MenuToolContext0x4bc8* context = m_context;
+	LegoBool32 active = TRUE;
 	PeridotTraceBase0x24* trace;
 
 	if (memoryCardIndex >= 2) {
@@ -66,8 +66,8 @@ void NewRacerScreen::VTable0x4c()
 		}
 	}
 
-	if (context->m_unk0x4b40.GetUnk0x78() & 8) {
-		PeridotTraceBase0x24::Record* record = trace->FUN_0042b8f0(context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248());
+	if (m_context->m_unk0x4b40.GetUnk0x78() & 8) {
+		PeridotTraceBase0x24::Record* record = trace->FUN_0042b8f0(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248());
 		m_unk0x360 = c_menuGarage;
 
 		PeridotTraceBase0x24::Record* oldRecord = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248();
@@ -83,6 +83,8 @@ void NewRacerScreen::VTable0x4c()
 		m_unk0x360 = c_menuEditDriver;
 		m_unk0x364 = active;
 	}
+
+	STUB(0x00482160);
 }
 
 // FUNCTION: LEGORACERS 0x00482310

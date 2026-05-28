@@ -6,18 +6,18 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
-#include "golwdbentity.h"
+#include "golworldentity.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
-#include "scene/golwdbcollidableentity.h"
-#include "scene/golwdbmodelentity.h"
-#include "scene/golwdbskinnedentity.h"
+#include "scene/golcollidableentity.h"
+#include "scene/golmodelentity.h"
+#include "scene/golskinnedentity.h"
 #include "util/bluebellfog0x4.h"
 #include "util/opalhaven0xf4.h"
 #include "util/silverhollow0xb8.h"
-#include "world/golwdbdatabase.h"
+#include "world/golworlddatabase.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -274,7 +274,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 			Animation0x1c* end = animation + m_unk0x5c;
 
 			for (; animation < end; animation++) {
-				GolGdbMaterialList* materialTarget =
+				GolModelMaterialTable* materialTarget =
 					static_cast<SilverHollow0xb8*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
 				if (materialTarget == NULL) {
 					materialTarget =
@@ -1466,7 +1466,7 @@ void SaffronQuartz0x2c::FUN_00406b90(GolFileParser* p_parser)
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x1c = new GolWdbDatabase*[m_unk0x18];
+	m_unk0x1c = new GolWorldDatabase*[m_unk0x18];
 	m_unk0x20 = new LegoChar[m_unk0x18 * 9];
 
 	if (!m_unk0x1c || !m_unk0x20) {
@@ -1537,10 +1537,10 @@ GolCamera* SaffronQuartz0x2c::FUN_00406de0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e30
-GolWdbEntity* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWdbEntity* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1550,10 +1550,10 @@ GolWdbEntity* SaffronQuartz0x2c::FUN_00406e30(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e80
-GolWdbEntity* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWdbEntity* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
 		if (result) {
 			return result;
 		}
@@ -1563,10 +1563,10 @@ GolWdbEntity* SaffronQuartz0x2c::FUN_00406e80(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406ed0
-GolWdbEntity* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWdbEntity* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
+		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
 		if (result) {
 			return result;
 		}
@@ -1576,7 +1576,7 @@ GolWdbEntity* SaffronQuartz0x2c::FUN_00406ed0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406f20
-GolWdbEntity* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
+GolWorldEntity* SaffronQuartz0x2c::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
 {
 	return m_unk0x1c[p_index]->VTable0x48(p_modelIndex);
 }
@@ -1602,7 +1602,7 @@ MabMaterialAnimationItem0x18* SaffronQuartz0x2c::FUN_00406f60(
 LegoU32 SaffronQuartz0x2c::FUN_00406f90(LegoFloat p_scale)
 {
 	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWdbDatabase* resource = m_unk0x1c[i];
+		GolWorldDatabase* resource = m_unk0x1c[i];
 
 		for (LegoU32 j = 0; j < resource->GetUnk0x7c(); j++) {
 			GolCameraBase* lens = resource->VTable0x50(j);

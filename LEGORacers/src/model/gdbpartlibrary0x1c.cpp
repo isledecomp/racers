@@ -8,8 +8,8 @@
 #include "material/duskwindbananarelic0x24.h"
 #include "mesh/gdbmodelindexarray0xc.h"
 #include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golgdbmateriallist.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
+#include "mesh/golmodelmaterialtable.h"
 #include "mesh/igdbmodelindexarray0x8.h"
 #include "model/gdbpartdefinition0x0c.h"
 #include "model/gdbpartfacegroup0x14.h"
@@ -28,7 +28,7 @@ static const LegoU32 g_gdbPartModelDirty = 1;
 static LegoU16 g_copyBatchSourceVertices[g_gdbPartBatchVertexCapacity];
 
 // GLOBAL: LEGORACERS 0x004c2834
-static GolGdbModelBase* g_copyModel;
+static GolModelBase* g_copyModel;
 
 // GLOBAL: LEGORACERS 0x004c2838
 static GdbVertexArray0xc* g_copyVertexArray;
@@ -157,11 +157,7 @@ void GdbPartLibrary0x1c::Clear()
 }
 
 // STUB: LEGORACERS 0x00407950
-void GdbPartLibrary0x1c::CopyPartToModel(
-	GolD3DRenderDevice* p_renderer,
-	GolGdbModelBase* p_model,
-	const LegoChar* p_name
-)
+void GdbPartLibrary0x1c::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
 {
 	GdbPartDefinition0x0c* part = static_cast<GdbPartDefinition0x0c*>(GetName(p_name));
 	if (part == NULL) {
@@ -184,7 +180,7 @@ void GdbPartLibrary0x1c::CopyPartToModel(
 	g_copyGroupWrite = 0;
 	p_model->SetScale(part->m_scale);
 
-	GolGdbMaterialList* materialTable = p_model->GetMaterialTable();
+	GolModelMaterialTable* materialTable = p_model->GetMaterialTable();
 	if (materialTable->GetCount() < part->m_groupCount) {
 		if (materialTable->m_entries != NULL) {
 			delete[] materialTable->m_entries;

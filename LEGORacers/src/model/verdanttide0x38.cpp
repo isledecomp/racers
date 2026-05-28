@@ -5,10 +5,10 @@
 #include "golerror.h"
 #include "goltxtparser.h"
 #include "material/duskwindbananarelic0x24.h"
-#include "material/golmdbmateriallist.h"
+#include "material/golmateriallibrary.h"
 #include "model/legopiecelibrary.h"
 #include "render/gold3drenderdevice.h"
-#include "world/golwdbdatabase.h"
+#include "world/golworlddatabase.h"
 
 #include <stdlib.h>
 #include <string.h>
@@ -212,7 +212,7 @@ void VerdantTide0x38::FUN_00497c30(const LegoChar* p_filename, undefined4 p_bina
 }
 
 // FUNCTION: LEGORACERS 0x00497cf0
-GolWdbBillboard::Field0x2c* VerdantTide0x38::GetMaterialTable()
+GolBillboard::Field0x2c* VerdantTide0x38::GetMaterialTable()
 {
 	return m_materialTable.m_renderer != NULL ? &m_materialTable : NULL;
 }

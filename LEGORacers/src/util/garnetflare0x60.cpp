@@ -6,16 +6,16 @@
 #include "golname.h"
 #include "golstream.h"
 #include "material/duskwindbananarelic0x24.h"
-#include "material/golmdbmateriallist.h"
-#include "material/goltdbtexturelist.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
 #include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golgdbmateriallist.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
+#include "mesh/golmodelmaterialtable.h"
 #include "mesh/igdbmodelindexarray0x8.h"
 #include "racer/lavendervault0x764.h"
 #include "render/gold3drenderdevice.h"
-#include "scene/golwdbskinnedentity.h"
-#include "world/golwdbdatabase.h"
+#include "scene/golskinnedentity.h"
+#include "world/golworlddatabase.h"
 
 #include <string.h>
 
@@ -67,7 +67,7 @@ LegoS32 GarnetFlare0x60::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00497f10
-GolWdbDatabase* GarnetFlare0x60::FUN_00497f10(const LoadParams* p_params, LegoS32 p_resourceIndex)
+GolWorldDatabase* GarnetFlare0x60::FUN_00497f10(const LoadParams* p_params, LegoS32 p_resourceIndex)
 {
 	ReleaseResources();
 	m_golExport = p_params->m_golExport;
@@ -157,14 +157,14 @@ void GarnetFlare0x60::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 
 // STUB: LEGORACERS 0x004981a0
 static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
-	GolWdbSkinnedEntity* p_resourceModel,
+	GolSkinnedEntity* p_resourceModel,
 	LegoU32 p_oldIndex,
 	LegoU32 p_newIndex
 )
 {
 	STUB(0x004981a0);
 
-	GolGdbModelBase* model = p_resourceModel->GetModel(0);
+	GolModelBase* model = p_resourceModel->GetModel(0);
 	LegoU32 oldGroupTag = (p_oldIndex & 0x00ffffff) | 0x80000000;
 	LegoU32 result = oldGroupTag;
 	LegoU32 groupIndex = 0;
@@ -190,9 +190,9 @@ void GarnetFlare0x60::NormalizeHeadGroupOrder()
 
 	LegoS32 remainingModels = m_partResource->GetUnk0x54();
 	if (remainingModels > 0) {
-		GolWdbSkinnedEntity* resourceModel = m_partResource->GetUnk0xa0();
+		GolSkinnedEntity* resourceModel = m_partResource->GetUnk0xa0();
 		do {
-			GolGdbMaterialList* materialTable = resourceModel->GetMaterialTable(0);
+			GolModelMaterialTable* materialTable = resourceModel->GetMaterialTable(0);
 			if (materialTable == NULL) {
 				materialTable = resourceModel->GetModel(0)->GetMaterialTable();
 			}
@@ -231,7 +231,7 @@ void GarnetFlare0x60::ComputeMaxVertexCounts()
 {
 	GdbVertexArray0xc* vertexArray;
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
-		GolGdbModelBase* model = FUN_00498510(bodyIndex);
+		GolModelBase* model = FUN_00498510(bodyIndex);
 		model->VTable0x28(&vertexArray);
 		if (static_cast<LegoS32>(vertexArray->GetCount()) > m_unk0x44) {
 			m_unk0x44 = vertexArray->GetCount();
@@ -240,7 +240,7 @@ void GarnetFlare0x60::ComputeMaxVertexCounts()
 	}
 
 	for (LegoS32 hatIndex = 0; hatIndex < m_partConfig->GetHatCount(); hatIndex++) {
-		GolGdbModelBase* model = FUN_004984d0(hatIndex);
+		GolModelBase* model = FUN_004984d0(hatIndex);
 		model->VTable0x28(&vertexArray);
 		if (static_cast<LegoS32>(vertexArray->GetCount()) > m_unk0x48) {
 			m_unk0x48 = vertexArray->GetCount();
@@ -253,7 +253,7 @@ void GarnetFlare0x60::ComputeMaxVertexCounts()
 void GarnetFlare0x60::ComputeMaxIndexCounts()
 {
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
-		GolGdbModelBase* model = FUN_00498510(bodyIndex);
+		GolModelBase* model = FUN_00498510(bodyIndex);
 		LegoS32 count = model->GetIndexArray()->GetCount();
 		if (count > m_unk0x3c) {
 			m_unk0x3c = count;
@@ -261,7 +261,7 @@ void GarnetFlare0x60::ComputeMaxIndexCounts()
 	}
 
 	for (LegoS32 hatIndex = 0; hatIndex < m_partConfig->GetHatCount(); hatIndex++) {
-		GolGdbModelBase* model = FUN_004984d0(hatIndex);
+		GolModelBase* model = FUN_004984d0(hatIndex);
 		LegoS32 count = model->GetIndexArray()->GetCount();
 		if (count > m_unk0x40) {
 			m_unk0x40 = count;
@@ -273,7 +273,7 @@ void GarnetFlare0x60::ComputeMaxIndexCounts()
 void GarnetFlare0x60::ComputeMaxGroupCounts()
 {
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
-		GolGdbModelBase* model = FUN_00498510(bodyIndex);
+		GolModelBase* model = FUN_00498510(bodyIndex);
 		LegoS32 count = model->GetGroupCount();
 		if (count > m_unk0x4c) {
 			m_unk0x4c = count;
@@ -281,7 +281,7 @@ void GarnetFlare0x60::ComputeMaxGroupCounts()
 	}
 
 	for (LegoS32 hatIndex = 0; hatIndex < m_partConfig->GetHatCount(); hatIndex++) {
-		GolGdbModelBase* model = FUN_004984d0(hatIndex);
+		GolModelBase* model = FUN_004984d0(hatIndex);
 		LegoS32 count = model->GetGroupCount();
 		if (count > m_unk0x50) {
 			m_unk0x50 = count;
@@ -293,7 +293,7 @@ void GarnetFlare0x60::ComputeMaxGroupCounts()
 void GarnetFlare0x60::ComputeMaxMaterialCounts()
 {
 	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
-		GolGdbModelBase* model = FUN_00498510(bodyIndex);
+		GolModelBase* model = FUN_00498510(bodyIndex);
 		LegoS32 count = model->GetMaterialTable()->GetCount();
 		if (count > m_unk0x54) {
 			m_unk0x54 = count;
@@ -301,7 +301,7 @@ void GarnetFlare0x60::ComputeMaxMaterialCounts()
 	}
 
 	for (LegoS32 hatIndex = 0; hatIndex < m_partConfig->GetHatCount(); hatIndex++) {
-		GolGdbModelBase* model = FUN_004984d0(hatIndex);
+		GolModelBase* model = FUN_004984d0(hatIndex);
 		LegoS32 count = model->GetMaterialTable()->GetCount();
 		if (count > m_unk0x58) {
 			m_unk0x58 = count;
@@ -310,7 +310,7 @@ void GarnetFlare0x60::ComputeMaxMaterialCounts()
 }
 
 // FUNCTION: LEGORACERS 0x004984d0
-GolGdbModelBase* GarnetFlare0x60::FUN_004984d0(LegoS32 p_index)
+GolModelBase* GarnetFlare0x60::FUN_004984d0(LegoS32 p_index)
 {
 	GolName name;
 	m_partConfig->CopyHeadHatName(p_index, name);
@@ -319,7 +319,7 @@ GolGdbModelBase* GarnetFlare0x60::FUN_004984d0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00498510
-GolGdbModelBase* GarnetFlare0x60::FUN_00498510(LegoS32 p_index)
+GolModelBase* GarnetFlare0x60::FUN_00498510(LegoS32 p_index)
 {
 	GolName name;
 	if (m_resourceIndex == 1) {
@@ -329,7 +329,7 @@ GolGdbModelBase* GarnetFlare0x60::FUN_00498510(LegoS32 p_index)
 		m_partConfig->FUN_00499070(p_index, name);
 	}
 
-	GolWdbSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
 	return model->GetModel(0);
 }
 
@@ -344,7 +344,7 @@ GolSceneNode* GarnetFlare0x60::FUN_00498570(LegoS32 p_index)
 		m_partConfig->FUN_00499070(p_index, name);
 	}
 
-	GolWdbSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
 	return model->VTable0x58(0);
 }
 

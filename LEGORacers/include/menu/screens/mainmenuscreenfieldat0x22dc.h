@@ -10,7 +10,7 @@
 
 class GolD3DRenderDevice;
 class GolExport;
-class GolGdbModelBase;
+class GolModelBase;
 class ObscureSigil0xdc;
 class TanzaniteWisp0x88;
 class GolSceneNode;
@@ -48,7 +48,7 @@ private:
 	void FUN_0047df90();
 
 	OpalHaven0xf4 m_unk0x1c;             // 0x01c
-	GolGdbModelBase* m_unk0x110;         // 0x110
+	GolModelBase* m_unk0x110;            // 0x110
 	GolSceneNode* m_unk0x114;            // 0x114
 	CmbModelPart0x34 m_unk0x118;         // 0x118
 	undefined4 m_unk0x14c;               // 0x14c

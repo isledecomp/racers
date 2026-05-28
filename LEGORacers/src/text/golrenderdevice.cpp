@@ -1,16 +1,16 @@
 #include "render/golrenderdevice.h"
 
-#include "font/golfdbfontlist.h"
 #include "font/golfont0xa0.h"
+#include "font/golfontlibrary.h"
 #include "image/utopianpan0xa4.h"
-#include "material/golidbimagelist.h"
-#include "material/golmdbmateriallist.h"
-#include "material/goltdbtexturelist.h"
+#include "material/golimagelist.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
 
 // FUNCTION: LEGORACERS 0x00413170
 GolFont0xa0* GolRenderDevice::FindFontByName(const LegoChar* p_name)
 {
-	GolFdbFontList* node = m_fontLists;
+	GolFontLibrary* node = m_fontLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -29,7 +29,7 @@ GolFont0xa0* GolRenderDevice::FindFontByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x004131a0
 UtopianPan0xa4* GolRenderDevice::FindImageByName(const LegoChar* p_name)
 {
-	GolIdbImageList* node = m_imageLists;
+	GolImageList* node = m_imageLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -48,7 +48,7 @@ UtopianPan0xa4* GolRenderDevice::FindImageByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x004131d0
 GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 {
-	GolTdbTextureList* node = m_textureLists;
+	GolTextureList* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -67,7 +67,7 @@ GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x00413200
 DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 {
-	GolMdbMaterialList* node = m_materialLists;
+	GolMaterialLibrary* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {

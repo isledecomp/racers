@@ -7,11 +7,11 @@
 #include "util/silverhollow0xb8.h"
 
 class CmbModelPart0x34;
-class GolGdbModelBase;
+class GolModelBase;
 class GolSceneNode;
 
 // Completes the same 0x90..0xf4 tail that GOLDP keeps entirely in
-// GolWdbSkinnedEntity; the base SilverHollow0xb8 owns 0x90..0xb8 here.
+// GolSkinnedEntity; the base SilverHollow0xb8 owns 0x90..0xb8 here.
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
 class OpalHaven0xf4 : public SilverHollow0xb8 {
@@ -26,7 +26,7 @@ public:
 	void VTable0x5c(LegoU32 p_arg1) override;                                     // vtable+0x5c
 
 	void FUN_0040d550(
-		GolGdbModelBase* p_model,
+		GolModelBase* p_model,
 		GolSceneNode* p_node,
 		CmbModelPart0x34* p_modelParts,
 		LegoFloat p_modelDistance

@@ -2,14 +2,14 @@
 #define VERDANTTIDE0X38_H
 
 #include "decomp.h"
-#include "material/golmdbmateriallist.h"
-#include "scene/golwdbbillboard.h"
+#include "material/golmateriallibrary.h"
+#include "scene/golbillboard.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x24;
 class GolExport;
-class GolWdbDatabase;
+class GolWorldDatabase;
 
 // SIZE 0x38
 class VerdantTide0x38 {
@@ -36,7 +36,7 @@ public:
 	void FUN_004978f0(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00497a10(const LegoChar* p_filename, undefined4 p_binary);
 	void FUN_00497c30(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
-	GolWdbBillboard::Field0x2c* GetMaterialTable();
+	GolBillboard::Field0x2c* GetMaterialTable();
 	void ResetMaterialUsage();
 	void MarkMaterialUsed(LegoS32 p_materialIndex);
 	LegoS32 FindColorRecordIndexByName(const LegoChar* p_name) const;
@@ -51,18 +51,18 @@ private:
 	LegoS32 Reset();
 	void RebuildColorMaterialLookup();
 
-	GolExport* m_golExport;                     // 0x00
-	GolD3DRenderDevice* m_renderer;             // 0x04
-	GolWdbDatabase* m_wdf;                      // 0x08
-	GolMdbMaterialList* m_materials;            // 0x0c
-	GolWdbBillboard::Field0x2c m_materialTable; // 0x10
-	LegoS32 m_colorRecordCount;                 // 0x1c
-	ColorRecord0x10* m_colorRecords;            // 0x20
-	LegoS32* m_colorMaterialIndices;            // 0x24
-	MaterialUsage0x4* m_materialUsage;          // 0x28
-	LegoS32 m_materialCount;                    // 0x2c
-	LegoS32 m_usedMaterialCount;                // 0x30
-	LegoS32 m_transparentMaterialCount;         // 0x34
+	GolExport* m_golExport;                  // 0x00
+	GolD3DRenderDevice* m_renderer;          // 0x04
+	GolWorldDatabase* m_wdf;                 // 0x08
+	GolMaterialLibrary* m_materials;         // 0x0c
+	GolBillboard::Field0x2c m_materialTable; // 0x10
+	LegoS32 m_colorRecordCount;              // 0x1c
+	ColorRecord0x10* m_colorRecords;         // 0x20
+	LegoS32* m_colorMaterialIndices;         // 0x24
+	MaterialUsage0x4* m_materialUsage;       // 0x28
+	LegoS32 m_materialCount;                 // 0x2c
+	LegoS32 m_usedMaterialCount;             // 0x30
+	LegoS32 m_transparentMaterialCount;      // 0x34
 };
 
 #endif // VERDANTTIDE0X38_H

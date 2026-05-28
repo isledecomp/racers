@@ -16,25 +16,25 @@ public:
 	// GolDPExport::`scalar deleting destructor'
 
 	GolDrawState* GetDrawState() override;                     // vtable+0x04
-	GolWdbDatabase* VTable0x08() override;                     // vtable+0x08
-	GolTdbTextureList* CreateTextureList() override;           // vtable+0x0c
-	GolMdbMaterialList* CreateMaterialList() override;         // vtable+0x10
-	GolGdbModelBase* VTable0x14() override;                    // vtable+0x14
+	GolWorldDatabase* VTable0x08() override;                   // vtable+0x08
+	GolTextureList* CreateTextureList() override;              // vtable+0x0c
+	GolMaterialLibrary* CreateMaterialList() override;         // vtable+0x10
+	GolModelBase* VTable0x14() override;                       // vtable+0x14
 	GolSceneNode* VTable0x18() override;                       // vtable+0x18
-	GolBdbBoundingShape* CreateBoundingShape() override;       // vtable+0x1c
+	GolBoundingShape* CreateBoundingShape() override;          // vtable+0x1c
 	GolCamera* VTable0x20() override;                          // vtable+0x20
 	undefined4 VTable0x24() override;                          // vtable+0x24
 	WhiteBaffoon0x50* VTable0x28() override;                   // vtable+0x28
 	GolFontBase0x40* CreateFont() override;                    // vtable+0x2c
-	GolWdbEntity* VTable0x30() override;                       // vtable+0x30
+	GolWorldEntity* VTable0x30() override;                     // vtable+0x30
 	AwakeKite0x20* VTable0x34() override;                      // vtable+0x34
 	GolFontTable* CreateFontTable() override;                  // vtable+0x38
-	void VTable0x3c(GolWdbDatabase*) override;                 // vtable+0x3c
-	void DestroyTextureList(GolTdbTextureList*) override;      // vtable+0x40
-	void DestroyMaterialList(GolMdbMaterialList*) override;    // vtable+0x44
-	void VTable0x48(GolGdbModelBase*) override;                // vtable+0x48
+	void VTable0x3c(GolWorldDatabase*) override;               // vtable+0x3c
+	void DestroyTextureList(GolTextureList*) override;         // vtable+0x40
+	void DestroyMaterialList(GolMaterialLibrary*) override;    // vtable+0x44
+	void VTable0x48(GolModelBase*) override;                   // vtable+0x48
 	void VTable0x4c(GolSceneNode*) override;                   // vtable+0x4c
-	void DestroyBoundingShape(GolBdbBoundingShape*) override;  // vtable+0x50
+	void DestroyBoundingShape(GolBoundingShape*) override;     // vtable+0x50
 	void VTable0x54(GolCamera*) override;                      // vtable+0x54
 	void VTable0x58(undefined4*) override;                     // vtable+0x58
 	void VTable0x5c(WhiteBaffoon0x50*) override;               // vtable+0x5c

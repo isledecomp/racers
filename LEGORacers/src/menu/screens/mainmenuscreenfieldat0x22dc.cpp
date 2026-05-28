@@ -3,7 +3,7 @@
 #include "core/gol.h"
 #include "golerror.h"
 #include "golscenenode.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "util/tanzanitewisp0x88.h"
 
@@ -49,7 +49,7 @@ void MainMenuScreenFieldAt0x22dc::FUN_0047df90()
 	m_unk0x110->VTable0x18(m_unk0x10, 2, dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
 
 	undefined4 zero = 0;
-	GolGdbModelBase* nullModel = NULL;
+	GolModelBase* nullModel = NULL;
 	GolSceneNode* nullNode = NULL;
 	m_unk0x154.m_unk0x03 = zero;
 	m_unk0x154.m_unk0x02 = zero;
@@ -115,7 +115,7 @@ void MainMenuScreenFieldAt0x22dc::FUN_0047e160(LegoU8 p_unk0x04, LegoU8 p_unk0x0
 {
 	m_unk0x154.m_unk0x01 = p_unk0x04;
 	m_unk0x154.m_unk0x04 = p_unk0x08;
-	GolGdbModelBase* model = m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
+	GolModelBase* model = m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
 	m_unk0x150->FUN_0049dce0(model, &m_unk0x154);
 }
 

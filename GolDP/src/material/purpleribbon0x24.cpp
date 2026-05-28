@@ -62,7 +62,7 @@ void PurpleRibbon0x24::Clear()
 		delete[] m_items;
 		m_items = NULL;
 	}
-	GolTdbTextureList::Clear();
+	GolTextureList::Clear();
 }
 
 // FUNCTION: GOLDP 0x10015af0

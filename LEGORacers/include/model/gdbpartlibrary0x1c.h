@@ -11,7 +11,7 @@ class GolD3DRenderDevice;
 class GdbPartDefinition0x0c;
 class GdbPartVertexPool0x14;
 class GolFileParser;
-class GolGdbModelBase;
+class GolModelBase;
 
 // VTABLE: LEGORACERS 0x004af428
 // SIZE 0x1c
@@ -31,7 +31,7 @@ public:
 
 	void Reset();
 	void Load(const LegoChar* p_filename, LegoBool32 p_binary);
-	void CopyPartToModel(GolD3DRenderDevice* p_renderer, GolGdbModelBase* p_model, const LegoChar* p_name);
+	void CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name);
 
 private:
 	void ReadParts(GolFileParser& p_parser);

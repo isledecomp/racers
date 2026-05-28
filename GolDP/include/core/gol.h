@@ -9,22 +9,22 @@
 typedef void FatalErrorMessageCBFN(const LegoChar* p_message, const LegoChar* p_file, LegoS32 p_line);
 typedef void GolExitCBFN();
 
-class GolMdbMaterialList;
+class GolMaterialLibrary;
 class GolCamera;
 class AwakeKite0x20;
-class GolBdbBoundingShape;
-class GolWdbEntity;
+class GolBoundingShape;
+class GolWorldEntity;
 class GolDrawState;
 class GolFontBase0x40;
 class GolHashTable;
 class GolFileSource;
 class GolFontTable;
 class GolNameTable;
-class GolGdbModelBase;
-class GolTdbTextureList;
+class GolModelBase;
+class GolTextureList;
 class WhiteBaffoon0x50;
 class GolSceneNode;
-class GolWdbDatabase;
+class GolWorldDatabase;
 
 struct GolImport {
 	GolFileSource* m_fileSources;               // 0x00
@@ -47,33 +47,33 @@ protected:
 	virtual ~GolExport() {} // vtable+0x00
 
 public:
-	virtual GolDrawState* GetDrawState() = 0;                    // vtable+0x04
-	virtual GolWdbDatabase* VTable0x08() = 0;                    // vtable+0x08
-	virtual GolTdbTextureList* CreateTextureList() = 0;          // vtable+0x0c
-	virtual GolMdbMaterialList* CreateMaterialList() = 0;        // vtable+0x10
-	virtual GolGdbModelBase* VTable0x14() = 0;                   // vtable+0x14
-	virtual GolSceneNode* VTable0x18() = 0;                      // vtable+0x18
-	virtual GolBdbBoundingShape* CreateBoundingShape() = 0;      // vtable+0x1c
-	virtual GolCamera* VTable0x20() = 0;                         // vtable+0x20
-	virtual undefined4 VTable0x24() = 0;                         // vtable+0x24
-	virtual WhiteBaffoon0x50* VTable0x28() = 0;                  // vtable+0x28
-	virtual GolFontBase0x40* CreateFont() = 0;                   // vtable+0x2c
-	virtual GolWdbEntity* VTable0x30() = 0;                      // vtable+0x30
-	virtual AwakeKite0x20* VTable0x34() = 0;                     // vtable+0x34
-	virtual GolFontTable* CreateFontTable() = 0;                 // vtable+0x38
-	virtual void VTable0x3c(GolWdbDatabase*) = 0;                // vtable+0x3c
-	virtual void DestroyTextureList(GolTdbTextureList*) = 0;     // vtable+0x40
-	virtual void DestroyMaterialList(GolMdbMaterialList*) = 0;   // vtable+0x44
-	virtual void VTable0x48(GolGdbModelBase*) = 0;               // vtable+0x48
-	virtual void VTable0x4c(GolSceneNode*) = 0;                  // vtable+0x4c
-	virtual void DestroyBoundingShape(GolBdbBoundingShape*) = 0; // vtable+0x50
-	virtual void VTable0x54(GolCamera*) = 0;                     // vtable+0x54
-	virtual void VTable0x58(undefined4*) = 0;                    // vtable+0x58
-	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;              // vtable+0x5c
-	virtual void DestroyFont(GolFontBase0x40*) = 0;              // vtable+0x60
-	virtual void VTable0x64(undefined4*) = 0;                    // vtable+0x64
-	virtual void VTable0x68(AwakeKite0x20*) = 0;                 // vtable+0x68
-	virtual void DestroyFontTable(GolNameTable*) = 0;            // vtable+0x6c
+	virtual GolDrawState* GetDrawState() = 0;                  // vtable+0x04
+	virtual GolWorldDatabase* VTable0x08() = 0;                // vtable+0x08
+	virtual GolTextureList* CreateTextureList() = 0;           // vtable+0x0c
+	virtual GolMaterialLibrary* CreateMaterialList() = 0;      // vtable+0x10
+	virtual GolModelBase* VTable0x14() = 0;                    // vtable+0x14
+	virtual GolSceneNode* VTable0x18() = 0;                    // vtable+0x18
+	virtual GolBoundingShape* CreateBoundingShape() = 0;       // vtable+0x1c
+	virtual GolCamera* VTable0x20() = 0;                       // vtable+0x20
+	virtual undefined4 VTable0x24() = 0;                       // vtable+0x24
+	virtual WhiteBaffoon0x50* VTable0x28() = 0;                // vtable+0x28
+	virtual GolFontBase0x40* CreateFont() = 0;                 // vtable+0x2c
+	virtual GolWorldEntity* VTable0x30() = 0;                  // vtable+0x30
+	virtual AwakeKite0x20* VTable0x34() = 0;                   // vtable+0x34
+	virtual GolFontTable* CreateFontTable() = 0;               // vtable+0x38
+	virtual void VTable0x3c(GolWorldDatabase*) = 0;            // vtable+0x3c
+	virtual void DestroyTextureList(GolTextureList*) = 0;      // vtable+0x40
+	virtual void DestroyMaterialList(GolMaterialLibrary*) = 0; // vtable+0x44
+	virtual void VTable0x48(GolModelBase*) = 0;                // vtable+0x48
+	virtual void VTable0x4c(GolSceneNode*) = 0;                // vtable+0x4c
+	virtual void DestroyBoundingShape(GolBoundingShape*) = 0;  // vtable+0x50
+	virtual void VTable0x54(GolCamera*) = 0;                   // vtable+0x54
+	virtual void VTable0x58(undefined4*) = 0;                  // vtable+0x58
+	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;            // vtable+0x5c
+	virtual void DestroyFont(GolFontBase0x40*) = 0;            // vtable+0x60
+	virtual void VTable0x64(undefined4*) = 0;                  // vtable+0x64
+	virtual void VTable0x68(AwakeKite0x20*) = 0;               // vtable+0x68
+	virtual void DestroyFontTable(GolNameTable*) = 0;          // vtable+0x6c
 };
 
 typedef GolExport* GolEntryCBFN(GolImport*);

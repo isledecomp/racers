@@ -1,14 +1,14 @@
 #include "render/golrenderdevice.h"
 
-#include "font/golfdbfontlist.h"
+#include "font/golfontlibrary.h"
 #include "golmath.h"
 #include "golscenenode.h"
 #include "golsurfaceformat.h"
 #include "goltransformbase.h"
-#include "material/golidbimagelist.h"
-#include "material/golmdbmateriallist.h"
-#include "material/goltdbtexturelist.h"
-#include "scene/golwdbmodelentity.h"
+#include "material/golimagelist.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "scene/golmodelentity.h"
 
 #include <string.h>
 
@@ -192,7 +192,7 @@ void GolRenderDevice::Destroy()
 		m_textureFormats = NULL;
 	}
 
-	GolMdbMaterialList* amberHaze = m_materialLists;
+	GolMaterialLibrary* amberHaze = m_materialLists;
 	m_countTextureFormats = 0;
 	m_textureFormatIndex = 0;
 	m_requestedRedBitCount = 0;
@@ -203,28 +203,28 @@ void GolRenderDevice::Destroy()
 	m_requestedPaletteBitCount = 0;
 
 	while (amberHaze != NULL) {
-		GolMdbMaterialList* next = amberHaze->GetNext();
+		GolMaterialLibrary* next = amberHaze->GetNext();
 		amberHaze->Clear();
 		amberHaze = next;
 	}
 
-	GolTdbTextureList* magentaRibbon = m_textureLists;
+	GolTextureList* magentaRibbon = m_textureLists;
 	while (magentaRibbon != NULL) {
-		GolTdbTextureList* next = magentaRibbon->GetNext();
+		GolTextureList* next = magentaRibbon->GetNext();
 		magentaRibbon->Clear();
 		magentaRibbon = next;
 	}
 
-	GolIdbImageList* hypnoticNoise = m_imageLists;
+	GolImageList* hypnoticNoise = m_imageLists;
 	while (hypnoticNoise != NULL) {
-		GolIdbImageList* next = hypnoticNoise->GetNext();
+		GolImageList* next = hypnoticNoise->GetNext();
 		hypnoticNoise->Clear();
 		hypnoticNoise = next;
 	}
 
-	GolFdbFontList* cinderBasin = m_fontLists;
+	GolFontLibrary* cinderBasin = m_fontLists;
 	while (cinderBasin != NULL) {
-		GolFdbFontList* next = cinderBasin->GetNext();
+		GolFontLibrary* next = cinderBasin->GetNext();
 		cinderBasin->Clear();
 		cinderBasin = next;
 	}
@@ -238,26 +238,26 @@ void GolRenderDevice::ReleaseResources()
 		m_textureFormats = NULL;
 	}
 
-	GolMdbMaterialList* materialList = m_materialLists;
+	GolMaterialLibrary* materialList = m_materialLists;
 	m_countTextureFormats = 0;
 	while (materialList != NULL) {
 		materialList->VTable0x0c();
 		materialList = materialList->GetNext();
 	}
 
-	GolTdbTextureList* textureList = m_textureLists;
+	GolTextureList* textureList = m_textureLists;
 	while (textureList != NULL) {
 		textureList->VTable0x0c();
 		textureList = textureList->GetNext();
 	}
 
-	GolIdbImageList* imageList = m_imageLists;
+	GolImageList* imageList = m_imageLists;
 	while (imageList != NULL) {
 		imageList->VTable0x10();
 		imageList = imageList->GetNext();
 	}
 
-	GolFdbFontList* fontList = m_fontLists;
+	GolFontLibrary* fontList = m_fontLists;
 	while (fontList != NULL) {
 		fontList->ReleaseFontSurfaces();
 		fontList = fontList->GetNext();
@@ -275,25 +275,25 @@ void GolRenderDevice::ReleaseResources()
 // FUNCTION: GOLDP 0x10028a10
 LegoS32 GolRenderDevice::RestoreResources()
 {
-	GolIdbImageList* imageList = m_imageLists;
+	GolImageList* imageList = m_imageLists;
 	while (imageList != NULL) {
 		imageList->VTable0x14();
 		imageList = imageList->GetNext();
 	}
 
-	GolTdbTextureList* textureList = m_textureLists;
+	GolTextureList* textureList = m_textureLists;
 	while (textureList != NULL) {
 		textureList->VTable0x10();
 		textureList = textureList->GetNext();
 	}
 
-	GolMdbMaterialList* materialList = m_materialLists;
+	GolMaterialLibrary* materialList = m_materialLists;
 	while (materialList != NULL) {
 		materialList->VTable0x10();
 		materialList = materialList->GetNext();
 	}
 
-	GolFdbFontList* fontList = m_fontLists;
+	GolFontLibrary* fontList = m_fontLists;
 	while (fontList != NULL) {
 		fontList->RefreshFontSurfaces();
 		fontList = fontList->GetNext();
@@ -303,16 +303,16 @@ LegoS32 GolRenderDevice::RestoreResources()
 }
 
 // FUNCTION: GOLDP 0x10028a70
-void GolRenderDevice::AddFontList(GolFdbFontList* p_param)
+void GolRenderDevice::AddFontList(GolFontLibrary* p_param)
 {
 	p_param->SetNext(m_fontLists);
 	m_fontLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028a80
-void GolRenderDevice::RemoveFontList(GolFdbFontList* p_param)
+void GolRenderDevice::RemoveFontList(GolFontLibrary* p_param)
 {
-	GolFdbFontList* node = m_fontLists;
+	GolFontLibrary* node = m_fontLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
@@ -320,7 +320,7 @@ void GolRenderDevice::RemoveFontList(GolFdbFontList* p_param)
 			return;
 		}
 
-		GolFdbFontList* previous = node;
+		GolFontLibrary* previous = node;
 		node = node->GetNext();
 
 		while (node != NULL) {
@@ -337,16 +337,16 @@ void GolRenderDevice::RemoveFontList(GolFdbFontList* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028ad0
-void GolRenderDevice::AddImageList(GolIdbImageList* p_param)
+void GolRenderDevice::AddImageList(GolImageList* p_param)
 {
 	p_param->SetNext(m_imageLists);
 	m_imageLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028ae0
-void GolRenderDevice::RemoveImageList(GolIdbImageList* p_param)
+void GolRenderDevice::RemoveImageList(GolImageList* p_param)
 {
-	GolIdbImageList* node = m_imageLists;
+	GolImageList* node = m_imageLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
@@ -354,7 +354,7 @@ void GolRenderDevice::RemoveImageList(GolIdbImageList* p_param)
 			return;
 		}
 
-		GolIdbImageList* previous = node;
+		GolImageList* previous = node;
 		node = node->GetNext();
 
 		while (node != NULL) {
@@ -371,16 +371,16 @@ void GolRenderDevice::RemoveImageList(GolIdbImageList* p_param)
 }
 
 // FUNCTION: GOLDP 0x10028b30
-void GolRenderDevice::AddTextureList(GolTdbTextureList* p_param)
+void GolRenderDevice::AddTextureList(GolTextureList* p_param)
 {
 	p_param->SetNext(m_textureLists);
 	m_textureLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028b40
-void GolRenderDevice::RemoveTextureList(GolTdbTextureList* p_param)
+void GolRenderDevice::RemoveTextureList(GolTextureList* p_param)
 {
-	GolTdbTextureList* node = m_textureLists;
+	GolTextureList* node = m_textureLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
@@ -388,7 +388,7 @@ void GolRenderDevice::RemoveTextureList(GolTdbTextureList* p_param)
 			return;
 		}
 
-		GolTdbTextureList* previous = node;
+		GolTextureList* previous = node;
 		node = node->GetNext();
 
 		while (node != NULL) {
@@ -407,7 +407,7 @@ void GolRenderDevice::RemoveTextureList(GolTdbTextureList* p_param)
 // FUNCTION: GOLDP 0x10028b90
 GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 {
-	GolTdbTextureList* node = m_textureLists;
+	GolTextureList* node = m_textureLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -424,16 +424,16 @@ GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 }
 
 // FUNCTION: GOLDP 0x10028bc0
-void GolRenderDevice::AddMaterialList(GolMdbMaterialList* p_param)
+void GolRenderDevice::AddMaterialList(GolMaterialLibrary* p_param)
 {
 	p_param->SetNext(m_materialLists);
 	m_materialLists = p_param;
 }
 
 // FUNCTION: GOLDP 0x10028bd0
-void GolRenderDevice::RemoveMaterialList(GolMdbMaterialList* p_param)
+void GolRenderDevice::RemoveMaterialList(GolMaterialLibrary* p_param)
 {
-	GolMdbMaterialList* node = m_materialLists;
+	GolMaterialLibrary* node = m_materialLists;
 
 	if (node != NULL) {
 		if (p_param == node) {
@@ -441,7 +441,7 @@ void GolRenderDevice::RemoveMaterialList(GolMdbMaterialList* p_param)
 			return;
 		}
 
-		GolMdbMaterialList* previous = node;
+		GolMaterialLibrary* previous = node;
 		node = node->GetNext();
 
 		while (node != NULL) {
@@ -460,7 +460,7 @@ void GolRenderDevice::RemoveMaterialList(GolMdbMaterialList* p_param)
 // FUNCTION: GOLDP 0x10028c20
 DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 {
-	GolMdbMaterialList* node = m_materialLists;
+	GolMaterialLibrary* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
@@ -753,9 +753,9 @@ void GolRenderDevice::SelectTextureFormat(
 }
 
 // STUB: GOLDP 0x10029500
-void GolRenderDevice::VTable0xa4(GolWdbEntity* p_model)
+void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 {
-	GolWdbEntity::ResultStruct result;
+	GolWorldEntity::ResultStruct result;
 	p_model->VTable0x14(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
@@ -763,11 +763,11 @@ void GolRenderDevice::VTable0xa4(GolWdbEntity* p_model)
 
 	GolVec3 localRight;
 	GolVec3 localForward;
-	GolSceneNode* node = static_cast<GolWdbModelEntity*>(p_model)->VTable0x58(result.m_lodIndex);
+	GolSceneNode* node = static_cast<GolModelEntity*>(p_model)->VTable0x58(result.m_lodIndex);
 	if (node != NULL) {
 		GolVec3 worldRight;
 		GolVec3 worldForward;
-		static_cast<GolWdbModelEntity*>(p_model)->VTable0x5c(result.m_lodIndex);
+		static_cast<GolModelEntity*>(p_model)->VTable0x5c(result.m_lodIndex);
 		node->VTable0x18(0)->VTable0x20(&worldRight, &worldForward);
 		p_model->VTable0x34(worldRight, &localRight);
 		p_model->VTable0x34(worldForward, &localForward);
@@ -802,7 +802,7 @@ void GolRenderDevice::VTable0xa0()
 }
 
 // FUNCTION: GOLDP 0x10029840
-void GolRenderDevice::VTable0xa8(GolWdbEntity* p_param1, LegoFloat p_param2, LegoFloat p_param3)
+void GolRenderDevice::VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2, LegoFloat p_param3)
 {
 	VTable0x94(p_param1);
 }

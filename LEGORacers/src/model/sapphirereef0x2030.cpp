@@ -2,7 +2,7 @@
 
 #include "core/gol.h"
 #include "golerror.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
 #include "model/verdanttide0x38.h"
 #include "render/gold3drenderdevice.h"
 
@@ -66,7 +66,7 @@ SapphireReef0x2030::~SapphireReef0x2030()
 }
 
 // FUNCTION: LEGORACERS 0x00499eb0
-void SapphireReef0x2030::FUN_00499eb0(GolGdbModelBase* p_model)
+void SapphireReef0x2030::FUN_00499eb0(GolModelBase* p_model)
 {
 	p_model->VTable0x18(m_renderer, 2, 7500, 2500, 1610, 0);
 }
@@ -134,7 +134,7 @@ void SapphireReef0x2030::FUN_00499fc0(
 	m_auxModel->VTable0x18(m_renderer, 1, 384, 192, 112, 2);
 
 	if (m_verdantTide != NULL) {
-		GolGdbMaterialList* materialTable = m_auxModel->GetMaterialTable();
+		GolModelMaterialTable* materialTable = m_auxModel->GetMaterialTable();
 		materialTable->SetPosition(0, m_verdantTide->GetMaterial(0));
 		materialTable->SetPosition(1, m_verdantTide->GetMaterial(1));
 	}

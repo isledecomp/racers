@@ -2,13 +2,13 @@
 #define PURPLERIBBON0x25_H
 
 #include "decomp.h"
-#include "material/goltdbtexturelist.h"
+#include "material/goltexturelist.h"
 
 class PurpleDune0x7c;
 
 // VTABLE: GOLDP 0x100567f0
 // SIZE 0x24
-class PurpleRibbon0x24 : public GolTdbTextureList {
+class PurpleRibbon0x24 : public GolTextureList {
 public:
 	PurpleRibbon0x24();
 	~PurpleRibbon0x24() override;  // vtable+0x00

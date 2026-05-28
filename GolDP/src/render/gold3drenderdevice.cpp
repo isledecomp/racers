@@ -11,13 +11,13 @@
 #include "mesh/gdbmodelindexarray0xc.h"
 #include "mesh/gdbvertexarray0xc.h"
 #include "mesh/gdbvertexarraytypetwo0x20.h"
-#include "mesh/golgdbmodel.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodel.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drendersurface.h"
 #include "render/goldrawdpstate.h"
 #include "render/rectangle.h"
-#include "scene/golwdbbillboard.h"
-#include "scene/golwdbmodelentity.h"
+#include "scene/golbillboard.h"
+#include "scene/golmodelentity.h"
 #include "surface/falcondunebag0x10.h"
 #include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
@@ -691,9 +691,9 @@ void GolD3DRenderDevice::VTable0x5c()
 }
 
 // FUNCTION: GOLDP 0x10008880
-void GolD3DRenderDevice::FUN_10008880(GolWdbEntity* p_model, LegoU32 p_lodIndex)
+void GolD3DRenderDevice::FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex)
 {
-	GolWdbModelEntity* canoe = static_cast<GolWdbModelEntity*>(p_model);
+	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
 	m_unk0xc8520 = canoe->VTable0x58(p_lodIndex);
 	if (m_unk0xc8520 != NULL) {
 		canoe->VTable0x5c(p_lodIndex);
@@ -712,16 +712,16 @@ void GolD3DRenderDevice::FUN_10008880(GolWdbEntity* p_model, LegoU32 p_lodIndex)
 }
 
 // FUNCTION: GOLDP 0x10008910
-void GolD3DRenderDevice::VTable0x94(GolWdbEntity* p_model)
+void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 {
-	GolWdbEntity::ResultStruct result;
+	GolWorldEntity::ResultStruct result;
 	p_model->VTable0x14(m_unk0x4c, &result);
 	if (!result.m_visibility) {
 		return;
 	}
 
 	GolMatrix4* modelMatrix = &m_unk0xc8410;
-	GolWdbModelEntity* canoe = static_cast<GolWdbModelEntity*>(p_model);
+	GolModelEntity* canoe = static_cast<GolModelEntity*>(p_model);
 	canoe->FUN_10027e70(modelMatrix, result.m_lodIndex);
 
 	const GolVec3& position = canoe->GetPosition();
@@ -742,7 +742,7 @@ void GolD3DRenderDevice::VTable0x94(GolWdbEntity* p_model)
 		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
 	}
 
-	GolGdbModel* model = static_cast<GolGdbModel*>(canoe->GetModel(result.m_lodIndex));
+	GolModel* model = static_cast<GolModel*>(canoe->GetModel(result.m_lodIndex));
 	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
 	LegoU16 vertexType = vertexArray->GetVertexType();
 	if (m_unk0xc8568 != (vertexType == 2 || vertexType == 3)) {
@@ -754,7 +754,7 @@ void GolD3DRenderDevice::VTable0x94(GolWdbEntity* p_model)
 		FUN_1000add0(p_model, model);
 	}
 
-	GolGdbMaterialList* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
+	GolModelMaterialTable* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->FUN_10006c50(this, materialTable);
 }
@@ -778,7 +778,7 @@ void GolD3DRenderDevice::VTable0x8c(undefined4, undefined4, undefined4)
 }
 
 // STUB: GOLDP 0x10008f70
-void GolD3DRenderDevice::VTable0xa8(GolWdbEntity* p_model, LegoFloat, LegoFloat)
+void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat, LegoFloat)
 {
 	STUB(0x10008f70);
 	VTable0x94(p_model);
@@ -805,7 +805,7 @@ void GolD3DRenderDevice::VTable0x98(undefined4 p_arg1, undefined4 p_arg2, undefi
 }
 
 // STUB: GOLDP 0x100092a0
-void GolD3DRenderDevice::VTable0x90(GolWdbEntity*)
+void GolD3DRenderDevice::VTable0x90(GolWorldEntity*)
 {
 	STUB(0x100092a0);
 }
@@ -1096,7 +1096,7 @@ void GolD3DRenderDevice::VTable0x70(
 }
 
 // STUB: GOLDP 0x10009a70
-void GolD3DRenderDevice::VTable0xb4(GolWdbBillboard& p_param)
+void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 {
 	LegoBool32 visibility[2];
 	p_param.FUN_10029fa0(m_unk0x4c.m_position, visibility);
@@ -1917,9 +1917,9 @@ void GolD3DRenderDevice::FUN_1000acf0(LegoU32 p_index)
 }
 
 // STUB: GOLDP 0x1000add0
-void GolD3DRenderDevice::FUN_1000add0(GolWdbEntity* p_model, GolGdbModel* p_modelData)
+void GolD3DRenderDevice::FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData)
 {
-	GolWdbOrientedEntity* model = static_cast<GolWdbOrientedEntity*>(p_model);
+	GolOrientedEntity* model = static_cast<GolOrientedEntity*>(p_model);
 	model->FUN_10026c50(&m_unk0xc8450);
 
 	const GolVec3& position = model->GetPosition();

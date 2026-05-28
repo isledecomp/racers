@@ -9,22 +9,22 @@
 #include "surface/silverdune0x30.h"
 #include "types.h"
 
-class GolMdbMaterialList;
+class GolMaterialLibrary;
 class GolCamera;
 class GolD3DRenderDevice;
-class GolFdbFontList;
+class GolFontLibrary;
 class DuskwindBananaRelic0x24;
-class GolWdbEntity;
+class GolWorldEntity;
 class GolSurfaceFormat;
 class GolFont0xa0;
 class GolFontBase0x40;
 class GolString;
 class GolCommonDrawState;
 class GolNameTable;
-class GolIdbImageList;
-class GolWdbBillboard;
+class GolImageList;
+class GolBillboard;
 struct Rect;
-class GolTdbTextureList;
+class GolTextureList;
 class SlatePeak0x58;
 class UtopianPan0xa4;
 class GoldDune0x38;
@@ -183,17 +183,17 @@ public:
 	) = 0;                                                       // vtable+0x84
 	virtual void VTable0x88(undefined4, undefined4, undefined4); // vtable+0x88
 	virtual void VTable0x8c(undefined4, undefined4, undefined4); // vtable+0x8c
-	virtual void VTable0x90(GolWdbEntity*) = 0;                  // vtable+0x90
-	virtual void VTable0x94(GolWdbEntity*) = 0;                  // vtable+0x94
+	virtual void VTable0x90(GolWorldEntity*) = 0;                // vtable+0x90
+	virtual void VTable0x94(GolWorldEntity*) = 0;                // vtable+0x94
 	virtual void VTable0x98(undefined4, undefined4, undefined4); // vtable+0x98
 	virtual void VTable0x9c(undefined4, undefined4, undefined4); // vtable+0x9c
 	virtual void VTable0xa0();                                   // vtable+0xa0
-	virtual void VTable0xa4(GolWdbEntity*);                      // vtable+0xa4
-	virtual void VTable0xa8(GolWdbEntity* p_param1, LegoFloat p_param2,
+	virtual void VTable0xa4(GolWorldEntity*);                    // vtable+0xa4
+	virtual void VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2,
 							LegoFloat p_param3);                           // vtable+0xa8
 	virtual void VTable0xac(undefined4, undefined4);                       // vtable+0xac
 	virtual void VTable0xb0(undefined4, undefined4);                       // vtable+0xb0
-	virtual void VTable0xb4(GolWdbBillboard&) = 0;                         // vtable+0xb4
+	virtual void VTable0xb4(GolBillboard&) = 0;                            // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags); // vtable+0xb8
 	virtual void ClearAlphaOverride();                                     // vtable+0xbc
 	virtual void VTable0xc0(const ColorRGBA& p_param);                     // vtable+0xc0
@@ -219,15 +219,15 @@ public:
 	virtual LegoBool32 VTable0x110() const;
 
 	void Destroy();
-	void AddFontList(GolFdbFontList* p_param);
-	void RemoveFontList(GolFdbFontList* p_param);
-	void AddImageList(GolIdbImageList* p_param);
-	void RemoveImageList(GolIdbImageList* p_param);
-	void AddTextureList(GolTdbTextureList* p_param);
-	void RemoveTextureList(GolTdbTextureList* p_param);
+	void AddFontList(GolFontLibrary* p_param);
+	void RemoveFontList(GolFontLibrary* p_param);
+	void AddImageList(GolImageList* p_param);
+	void RemoveImageList(GolImageList* p_param);
+	void AddTextureList(GolTextureList* p_param);
+	void RemoveTextureList(GolTextureList* p_param);
 	GoldDune0x38* FindTextureByName(const LegoChar* p_name);
-	void AddMaterialList(GolMdbMaterialList* p_param);
-	void RemoveMaterialList(GolMdbMaterialList* p_param);
+	void AddMaterialList(GolMaterialLibrary* p_param);
+	void RemoveMaterialList(GolMaterialLibrary* p_param);
 	DuskwindBananaRelic0x24* FindMaterialByName(const LegoChar* p_name);
 
 #ifdef BUILDING_LEGORACERS
@@ -258,10 +258,10 @@ protected:
 	undefined4 m_unk0x2c;                        // 0x2c
 	LegoU32 m_countTextureFormats;               // 0x30
 	GolSurfaceFormat* m_textureFormats;          // 0x34
-	GolTdbTextureList* m_textureLists;           // 0x38
-	GolMdbMaterialList* m_materialLists;         // 0x3c
-	GolIdbImageList* m_imageLists;               // 0x40
-	GolFdbFontList* m_fontLists;                 // 0x44
+	GolTextureList* m_textureLists;              // 0x38
+	GolMaterialLibrary* m_materialLists;         // 0x3c
+	GolImageList* m_imageLists;                  // 0x40
+	GolFontLibrary* m_fontLists;                 // 0x44
 	GolD3DRenderDevice* m_nextDrawStateRenderer; // 0x48
 	GolViewFrustum m_unk0x4c;                    // 0x4c
 	ColorRGBA m_unk0x118;                        // 0x118

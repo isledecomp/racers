@@ -22,7 +22,7 @@ class GolExport;
 class GolFont0xa0;
 class GolFontTable;
 class GolFileParser;
-class GolWdbEntity;
+class GolWorldEntity;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
 class OpalHaven0xf4;
@@ -46,9 +46,9 @@ class CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x14();
 	virtual ~CrimsonPebbleEvent0x14();                                       // vtable+0x00
-	virtual void VTable0x04(GolWdbEntity* p_arg);                            // vtable+0x04
-	virtual void VTable0x08(GolWdbEntity* p_arg);                            // vtable+0x08
-	virtual void VTable0x0c(GolWdbEntity* p_arg);                            // vtable+0x0c
+	virtual void VTable0x04(GolWorldEntity* p_arg);                          // vtable+0x04
+	virtual void VTable0x08(GolWorldEntity* p_arg);                          // vtable+0x08
+	virtual void VTable0x0c(GolWorldEntity* p_arg);                          // vtable+0x0c
 	virtual void VTable0x10(const GolVec3*, const GolVec3*, const GolVec3*); // vtable+0x10
 	virtual void VTable0x14();                                               // vtable+0x14
 	virtual void VTable0x18();                                               // vtable+0x18
@@ -62,16 +62,16 @@ public:
 	// CrimsonPebbleEvent0x14::`scalar deleting destructor'
 
 protected:
-	GolWdbEntity* m_unk0x04;  // 0x04
-	GolWdbEntity* m_unk0x08;  // 0x08
-	OpalHaven0xf4* m_unk0x0c; // 0x0c
-	undefined4 m_unk0x10;     // 0x10
+	GolWorldEntity* m_unk0x04; // 0x04
+	GolWorldEntity* m_unk0x08; // 0x08
+	OpalHaven0xf4* m_unk0x0c;  // 0x0c
+	undefined4 m_unk0x10;      // 0x10
 };
 
 // SIZE 0x2c
 struct CrimsonPebbleEventValueSource0x2c {
 	undefined m_unk0x00[0x28]; // 0x00
-	GolWdbEntity* m_unk0x28;   // 0x28
+	GolWorldEntity* m_unk0x28; // 0x28
 };
 
 // SIZE 0x24
@@ -84,7 +84,7 @@ struct CrimsonPebbleEventValuePayload0x24 {
 struct CrimsonPebbleEventSelectorPayload0x28 {
 	undefined m_unk0x00[0x20]; // 0x00
 	undefined4 m_unk0x20;      // 0x20
-	GolWdbEntity* m_unk0x24;   // 0x24
+	GolWorldEntity* m_unk0x24; // 0x24
 };
 
 // SIZE 0x44
@@ -151,9 +151,9 @@ class CrimsonPebbleEvent0x48 : public CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x48();
 
-	void VTable0x14() override;                    // vtable+0x14
-	void VTable0x18() override;                    // vtable+0x18
-	void VTable0x08(GolWdbEntity* p_arg) override; // vtable+0x08
+	void VTable0x14() override;                      // vtable+0x14
+	void VTable0x18() override;                      // vtable+0x18
+	void VTable0x08(GolWorldEntity* p_arg) override; // vtable+0x08
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner);
@@ -185,8 +185,8 @@ class CrimsonPebbleEvent0x50 : public CrimsonPebbleEvent0x14 {
 public:
 	CrimsonPebbleEvent0x50();
 
-	void VTable0x04(GolWdbEntity* p_arg) override;                                        // vtable+0x04
-	void VTable0x0c(GolWdbEntity* p_arg) override;                                        // vtable+0x0c
+	void VTable0x04(GolWorldEntity* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(GolWorldEntity* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -220,8 +220,8 @@ public:
 
 	CrimsonPebbleEvent0x50Derived();
 
-	void VTable0x04(GolWdbEntity* p_arg) override;                                        // vtable+0x04
-	void VTable0x0c(GolWdbEntity* p_arg) override;                                        // vtable+0x0c
+	void VTable0x04(GolWorldEntity* p_arg) override;                                      // vtable+0x04
+	void VTable0x0c(GolWorldEntity* p_arg) override;                                      // vtable+0x0c
 	void VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c) override; // vtable+0x10
 	void VTable0x14() override;                                                           // vtable+0x14
 	void VTable0x18() override;                                                           // vtable+0x18
@@ -579,9 +579,9 @@ public:
 	CrimsonPebbleAnimation0x33c* GetAnimationByIndex(LegoU32 p_index) const { return &m_unk0x6c[p_index]; }
 	LegoU32 GetSoundGroupCount() const { return m_unk0x84; }
 	SoundGroup* GetSoundGroupByIndex(LegoU32 p_index) const { return m_unk0x88[p_index]; }
-	GolWdbEntity* FUN_004a3230(const LegoChar* p_name);
-	GolWdbEntity* FUN_004a3240(const LegoChar* p_name);
-	GolWdbEntity* FUN_004a3250(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3230(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3240(const LegoChar* p_name);
+	GolWorldEntity* FUN_004a3250(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x004a0390
 	// CrimsonPebble0x228::`scalar deleting destructor'

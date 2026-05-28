@@ -4,7 +4,7 @@
 #include "cmbmodelpartdata0x28.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
 
 #include <float.h>
 #include <math.h>
@@ -22,7 +22,7 @@ OpalHaven0xf4::OpalHaven0xf4()
 
 // FUNCTION: LEGORACERS 0x0040d550
 void OpalHaven0xf4::FUN_0040d550(
-	GolGdbModelBase* p_model,
+	GolModelBase* p_model,
 	GolSceneNode* p_node,
 	CmbModelPart0x34* p_modelParts,
 	LegoFloat p_modelDistance
@@ -407,7 +407,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 // STUB: LEGORACERS 0x0040e0b0
 void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
 {
-	GolGdbModelBase* model = m_models[p_index];
+	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
 		FUN_10026fa0(0.0f);
 		return;

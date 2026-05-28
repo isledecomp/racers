@@ -4,9 +4,9 @@
 #include "decomp.h"
 #include "types.h"
 
-class GolMdbMaterialList;
-class GolGdbModelBase;
-class GolTdbTextureList;
+class GolMaterialLibrary;
+class GolModelBase;
+class GolTextureList;
 
 // SIZE 0x5c
 class ScarletNova0x5c {
@@ -16,14 +16,14 @@ public:
 	undefined m_unk0x05[0x0c - 0x05]; // 0x05
 	undefined4 m_unk0x0c;             // 0x0c
 	undefined m_unk0x10[0x20 - 0x10]; // 0x10
-	GolGdbModelBase* m_unk0x20;       // 0x20
-	GolMdbMaterialList* m_unk0x24;    // 0x24
-	GolTdbTextureList* m_unk0x28;     // 0x28
+	GolModelBase* m_unk0x20;          // 0x20
+	GolMaterialLibrary* m_unk0x24;    // 0x24
+	GolTextureList* m_unk0x28;        // 0x28
 	LegoChar m_unk0x2c[14];           // 0x2c
 	undefined m_unk0x3a[0x44 - 0x3a]; // 0x3a
-	GolGdbModelBase* m_unk0x44;       // 0x44
-	GolMdbMaterialList* m_unk0x48;    // 0x48
-	GolTdbTextureList* m_unk0x4c;     // 0x4c
+	GolModelBase* m_unk0x44;          // 0x44
+	GolMaterialLibrary* m_unk0x48;    // 0x48
+	GolTextureList* m_unk0x4c;        // 0x4c
 	undefined m_unk0x50[0x5c - 0x50]; // 0x50
 };
 

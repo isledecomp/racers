@@ -99,7 +99,7 @@ public:
 	void SetColor(const ColorRGBA& p_color) { m_color = p_color; }
 
 protected:
-	friend class GolFdbFontList;
+	friend class GolFontLibrary;
 
 	// SIZE 0x0c
 	struct Glyph0x0c {

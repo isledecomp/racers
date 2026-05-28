@@ -4,9 +4,9 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golscenenode.h"
-#include "material/golmdbmateriallist.h"
-#include "material/goltdbtexturelist.h"
-#include "mesh/golgdbmodelbase.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "util/opalhaven0xf4.h"
 
@@ -276,17 +276,17 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_models = new GolGdbModelBase*[m_entryCapacity];
+		m_models = new GolModelBase*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_textures = new GolTdbTextureList*[m_entryCapacity];
+		m_textures = new GolTextureList*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_materials = new GolMdbMaterialList*[m_entryCapacity];
+		m_materials = new GolMaterialLibrary*[m_entryCapacity];
 		if (m_models == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

@@ -13,7 +13,7 @@
 
 class GolD3DRenderSurface;
 class GolCamera;
-class GolGdbModel;
+class GolModel;
 class GoldDune0x38;
 class GolDrawDPState;
 class GolD3DRenderDevice;
@@ -182,14 +182,14 @@ public:
 	) override;                                                             // vtable+0x84
 	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
 	void VTable0x8c(undefined4, undefined4, undefined4) override;           // vtable+0x8c
-	void VTable0x90(GolWdbEntity*) override;                                // vtable+0x90
-	void VTable0x94(GolWdbEntity*) override;                                // vtable+0x94
+	void VTable0x90(GolWorldEntity*) override;                              // vtable+0x90
+	void VTable0x94(GolWorldEntity*) override;                              // vtable+0x94
 	void VTable0x98(undefined4, undefined4, undefined4) override;           // vtable+0x98
 	void VTable0x9c(undefined4, undefined4, undefined4) override;           // vtable+0x9c
-	void VTable0xa8(GolWdbEntity*, LegoFloat, LegoFloat) override;          // vtable+0xa8
+	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;        // vtable+0xa8
 	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
 	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
-	void VTable0xb4(GolWdbBillboard&) override;                             // vtable+0xb4
+	void VTable0xb4(GolBillboard&) override;                                // vtable+0xb4
 	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
 	void ClearAlphaOverride() override;                                     // vtable+0xbc
 	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
@@ -230,7 +230,7 @@ public:
 	friend class GolDirectDrawPalette;
 	friend class SlatePeak0x58;
 	friend class GolD3DRenderSurface;
-	friend class GolGdbModel;
+	friend class GolModel;
 	friend class GolFont0xa0;
 	friend class UtopianPan0xa4;
 
@@ -246,7 +246,7 @@ private:
 	void FUN_1000a950(DuskwindBananaRelic0x24*);
 	void FUN_1000ac00(GoldDune0x38*);
 	void FUN_1000acf0(LegoU32 p_index);
-	void FUN_1000add0(GolWdbEntity* p_model, GolGdbModel* p_modelData);
+	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
 	void FUN_1000b0f0(LegoU32 p_index, const Light* p_param);
 	void FUN_1000b4a0();
 	void FUN_1000b8e0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
@@ -289,7 +289,7 @@ private:
 	void FUN_100128f0(undefined4, undefined4, undefined4);
 	void FUN_10012bf0(undefined4, undefined4, undefined4);
 	void FUN_10012f50();
-	void FUN_10008880(GolWdbEntity* p_model, LegoU32 p_lodIndex);
+	void FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex);
 	void FUN_10013110(undefined4, undefined4, undefined4);
 	void FUN_100132f0(undefined4, undefined4, undefined4);
 	void Reset();

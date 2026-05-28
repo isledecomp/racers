@@ -5,16 +5,16 @@
 #include "model/gdbpartlibrary0x1c.h"
 #include "types.h"
 
-class GolMdbMaterialList;
+class GolMaterialLibrary;
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x24;
-class GolWdbSkinnedEntity;
+class GolSkinnedEntity;
 class GolExport;
-class GolGdbModelBase;
+class GolModelBase;
 class LavenderVault0x764;
-class GolTdbTextureList;
+class GolTextureList;
 class GolSceneNode;
-class GolWdbDatabase;
+class GolWorldDatabase;
 
 // SIZE 0x60
 class GarnetFlare0x60 {
@@ -31,10 +31,10 @@ public:
 
 	GarnetFlare0x60();
 	~GarnetFlare0x60();
-	GolWdbDatabase* FUN_00497f10(const LoadParams* p_params, LegoS32 p_resourceIndex);
+	GolWorldDatabase* FUN_00497f10(const LoadParams* p_params, LegoS32 p_resourceIndex);
 	LegoBool32 ReleaseResources();
-	GolGdbModelBase* FUN_004984d0(LegoS32 p_index);
-	GolGdbModelBase* FUN_00498510(LegoS32 p_index);
+	GolModelBase* FUN_004984d0(LegoS32 p_index);
+	GolModelBase* FUN_00498510(LegoS32 p_index);
 	GolSceneNode* FUN_00498570(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498640(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498680(LegoS32 p_index);
@@ -62,11 +62,11 @@ private:
 	GdbPartLibrary0x1c m_partLibrary;   // 0x00
 	GolD3DRenderDevice* m_renderer;     // 0x1c
 	GolExport* m_golExport;             // 0x20
-	GolWdbDatabase* m_partResource;     // 0x24
-	GolGdbModelBase* m_unk0x28;         // 0x28
+	GolWorldDatabase* m_partResource;   // 0x24
+	GolModelBase* m_unk0x28;            // 0x28
 	LegoBool32 m_binary;                // 0x2c
-	GolMdbMaterialList* m_materialList; // 0x30
-	GolTdbTextureList* m_textureList;   // 0x34
+	GolMaterialLibrary* m_materialList; // 0x30
+	GolTextureList* m_textureList;      // 0x34
 	LavenderVault0x764* m_partConfig;   // 0x38
 	LegoS32 m_unk0x3c;                  // 0x3c
 	LegoS32 m_unk0x40;                  // 0x40

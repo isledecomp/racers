@@ -104,7 +104,7 @@ public:
 	void CopyParamsTo(DuskWindBananaRelicParams* p_params) const;
 	void FUN_100257e0(GolRenderDevice*, const DuskWindBananaRelicParams&);
 
-	friend class GolMdbMaterialList;
+	friend class GolMaterialLibrary;
 
 protected:
 	GoldDune0x38* m_unk0x04;

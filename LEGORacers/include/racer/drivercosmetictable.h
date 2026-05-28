@@ -11,11 +11,11 @@
 #include "racer/turquoiseglowcolor.h"
 #include "types.h"
 
-class GolMdbMaterialList;
+class GolMaterialLibrary;
 class GolD3DRenderDevice;
 class GolExport;
-class GolGdbModelBase;
-class GolTdbTextureList;
+class GolModelBase;
+class GolTextureList;
 class OpalHaven0xf4;
 class GolSceneNode;
 
@@ -77,9 +77,9 @@ private:
 	GolExport* m_golExport;           // 0x20
 	GolD3DRenderDevice* m_renderer;   // 0x24
 	Entry0x30* m_entries;             // 0x28
-	GolGdbModelBase** m_models;       // 0x2c
-	GolTdbTextureList** m_textures;   // 0x30
-	GolMdbMaterialList** m_materials; // 0x34
+	GolModelBase** m_models;          // 0x2c
+	GolTextureList** m_textures;      // 0x30
+	GolMaterialLibrary** m_materials; // 0x34
 	OpalHaven0xf4* m_loadedEntries;   // 0x38
 	GolSceneNode* m_rootNode;         // 0x3c
 	CmbModelPart0x34 m_modelParts;    // 0x40

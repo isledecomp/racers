@@ -1,6 +1,6 @@
 #include "core/goldpexport.h"
 
-#include "bounds/golbdbboundingshape.h"
+#include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "font/golfont0xa0.h"
@@ -12,10 +12,10 @@
 #include "material/amberhaze0x20.h"
 #include "material/awakekite0x20.h"
 #include "material/purpleribbon0x24.h"
-#include "mesh/golgdbmodel.h"
-#include "scene/golwdbbillboardex.h"
+#include "mesh/golmodel.h"
+#include "scene/golbillboardex.h"
 #include "types.h"
-#include "world/golwdbdatabaseex.h"
+#include "world/golworlddatabaseex.h"
 
 DECOMP_SIZE_ASSERT(GolExport, 0x4)
 DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
@@ -39,9 +39,9 @@ GolDrawState* GolDPExport::GetDrawState()
 }
 
 // FUNCTION: GOLDP 0x100150a0
-GolWdbDatabase* GolDPExport::VTable0x08()
+GolWorldDatabase* GolDPExport::VTable0x08()
 {
-	GolWdbDatabase* obj = new GolWdbDatabaseEx;
+	GolWorldDatabase* obj = new GolWorldDatabaseEx;
 
 	if (obj == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -51,9 +51,9 @@ GolWdbDatabase* GolDPExport::VTable0x08()
 }
 
 // FUNCTION: GOLDP 0x10015110
-GolTdbTextureList* GolDPExport::CreateTextureList()
+GolTextureList* GolDPExport::CreateTextureList()
 {
-	GolTdbTextureList* obj = new PurpleRibbon0x24;
+	GolTextureList* obj = new PurpleRibbon0x24;
 	if (obj == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -61,7 +61,7 @@ GolTdbTextureList* GolDPExport::CreateTextureList()
 }
 
 // FUNCTION: GOLDP 0x10015180
-GolMdbMaterialList* GolDPExport::CreateMaterialList()
+GolMaterialLibrary* GolDPExport::CreateMaterialList()
 {
 	AmberHaze0x20* result = new AmberHaze0x20;
 	if (result == NULL) {
@@ -71,9 +71,9 @@ GolMdbMaterialList* GolDPExport::CreateMaterialList()
 }
 
 // FUNCTION: GOLDP 0x100151f0
-GolGdbModelBase* GolDPExport::VTable0x14()
+GolModelBase* GolDPExport::VTable0x14()
 {
-	GolGdbModel* result = new GolGdbModel;
+	GolModel* result = new GolModel;
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -93,9 +93,9 @@ GolSceneNode* GolDPExport::VTable0x18()
 }
 
 // FUNCTION: GOLDP 0x100152d0
-GolBdbBoundingShape* GolDPExport::CreateBoundingShape()
+GolBoundingShape* GolDPExport::CreateBoundingShape()
 {
-	GolBdbBoundingShape* bdb = new GolBdbBoundingShape;
+	GolBoundingShape* bdb = new GolBoundingShape;
 	if (bdb == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -135,9 +135,9 @@ GolFontBase0x40* GolDPExport::CreateFont()
 }
 
 // FUNCTION: GOLDP 0x10015490
-GolWdbEntity* GolDPExport::VTable0x30()
+GolWorldEntity* GolDPExport::VTable0x30()
 {
-	GolWdbEntity* result = new GolWdbBillboardEx;
+	GolWorldEntity* result = new GolBillboardEx;
 	if (result == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -168,7 +168,7 @@ GolFontTable* GolDPExport::CreateFontTable()
 }
 
 // FUNCTION: GOLDP 0x100155e0
-void GolDPExport::VTable0x3c(GolWdbDatabase* p_obj)
+void GolDPExport::VTable0x3c(GolWorldDatabase* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -176,7 +176,7 @@ void GolDPExport::VTable0x3c(GolWdbDatabase* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::DestroyTextureList(GolTdbTextureList* p_obj)
+void GolDPExport::DestroyTextureList(GolTextureList* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -184,7 +184,7 @@ void GolDPExport::DestroyTextureList(GolTdbTextureList* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::DestroyMaterialList(GolMdbMaterialList* p_obj)
+void GolDPExport::DestroyMaterialList(GolMaterialLibrary* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -192,7 +192,7 @@ void GolDPExport::DestroyMaterialList(GolMdbMaterialList* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015620
-void GolDPExport::VTable0x48(GolGdbModelBase* p_obj)
+void GolDPExport::VTable0x48(GolModelBase* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;
@@ -208,7 +208,7 @@ void GolDPExport::VTable0x4c(GolSceneNode* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015600 FOLDED
-void GolDPExport::DestroyBoundingShape(GolBdbBoundingShape* p_obj)
+void GolDPExport::DestroyBoundingShape(GolBoundingShape* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

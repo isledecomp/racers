@@ -14,10 +14,10 @@ class BluebellFog0x4;
 class GolD3DRenderDevice;
 class GolExport;
 class GolFileParser;
-class GolWdbEntity;
+class GolWorldEntity;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
-class GolWdbDatabase;
+class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004af38c
 // SIZE 0x2c
@@ -109,7 +109,7 @@ public:
 
 		private:
 			LegoU32 m_unk0x20;            // 0x20
-			GolWdbEntity* m_unk0x24;      // 0x24
+			GolWorldEntity* m_unk0x24;    // 0x24
 			SaffronQuartz0x2c* m_unk0x28; // 0x28
 			ModelRef0x08 m_unk0x2c;       // 0x2c
 			GolVec3 m_unk0x34;            // 0x34
@@ -304,10 +304,10 @@ public:
 	void FUN_00406c50(LegoBool32 p_binary);
 	void FUN_00406cb0(GolFileParser* p_parser);
 	GolCamera* FUN_00406de0(const LegoChar* p_name);
-	GolWdbEntity* FUN_00406e30(const LegoChar* p_name);
-	GolWdbEntity* FUN_00406e80(const LegoChar* p_name);
-	GolWdbEntity* FUN_00406ed0(const LegoChar* p_name);
-	GolWdbEntity* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
+	GolWorldEntity* FUN_00406e30(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406e80(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406ed0(const LegoChar* p_name);
+	GolWorldEntity* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
 	MabMaterialAnimation0x14* FUN_00406f40(LegoU32 p_index, LegoU32 p_animationIndex);
 	MabMaterialAnimationItem0x18* FUN_00406f60(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
 	LegoU32 FUN_00406f90(LegoFloat p_scale);
@@ -325,7 +325,7 @@ private:
 	GolExport* m_golExport;         // 0x10
 	GolD3DRenderDevice* m_renderer; // 0x14
 	LegoU32 m_unk0x18;              // 0x18
-	GolWdbDatabase** m_unk0x1c;     // 0x1c
+	GolWorldDatabase** m_unk0x1c;   // 0x1c
 	LegoChar* m_unk0x20;            // 0x20
 	LegoU32 m_frameCount;           // 0x24
 	Frame0xb8* m_frames;            // 0x28

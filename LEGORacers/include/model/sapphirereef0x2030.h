@@ -3,12 +3,12 @@
 
 #include "decomp.h"
 #include "model/legopiecelibrary.h"
-#include "scene/golwdbbillboard.h"
+#include "scene/golbillboard.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class GolExport;
-class GolGdbModelBase;
+class GolModelBase;
 class VerdantTide0x38;
 
 // SIZE 0x2030
@@ -77,7 +77,7 @@ public:
 
 private:
 	void Reset();
-	void FUN_00499eb0(GolGdbModelBase* p_model);
+	void FUN_00499eb0(GolModelBase* p_model);
 	void FUN_00499ee0();
 	void FUN_00499f20();
 	void FUN_00499f80();
@@ -86,9 +86,9 @@ private:
 
 	GolExport* m_golExport;                         // 0x0000
 	GolD3DRenderDevice* m_renderer;                 // 0x0004
-	GolGdbModelBase* m_model;                       // 0x0008
+	GolModelBase* m_model;                          // 0x0008
 	undefined m_unk0x0c[0x0078 - 0x000c];           // 0x000c
-	GolWdbBillboard::Field0x2c* m_materialTable;    // 0x0078
+	GolBillboard::Field0x2c* m_materialTable;       // 0x0078
 	undefined m_unk0x7c[0x009c - 0x007c];           // 0x007c
 	VerdantTide0x38* m_verdantTide;                 // 0x009c
 	LegoPieceLibrary* m_pieceLibrary;               // 0x00a0
@@ -117,7 +117,7 @@ private:
 	LegoFloat m_unk0x1f14;                          // 0x1f14
 	LegoFloat m_unk0x1f18;                          // 0x1f18
 	undefined m_unk0x1f1c[0x1fc4 - 0x1f1c];         // 0x1f1c
-	GolGdbModelBase* m_auxModel;                    // 0x1fc4
+	GolModelBase* m_auxModel;                       // 0x1fc4
 	undefined m_unk0x1fc8[0x2028 - 0x1fc8];         // 0x1fc8
 	undefined4 m_unk0x2028;                         // 0x2028
 	undefined4 m_unk0x202c;                         // 0x202c

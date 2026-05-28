@@ -10,10 +10,10 @@
 #include "types.h"
 
 class GolExport;
-class GolMdbMaterialList;
+class GolMaterialLibrary;
 class GolD3DRenderDevice;
-class GolGdbModelBase;
-class GolTdbTextureList;
+class GolModelBase;
+class GolTextureList;
 class OpalHaven0xf4;
 class GolSceneNode;
 class GolFileParser;
@@ -82,9 +82,9 @@ private:
 	GolExport* m_unk0x0c;           // 0x0c
 	GolD3DRenderDevice* m_unk0x10;  // 0x10
 	Item0x104* m_unk0x14;           // 0x14
-	GolGdbModelBase** m_unk0x18;    // 0x18
-	GolTdbTextureList** m_unk0x1c;  // 0x1c
-	GolMdbMaterialList** m_unk0x20; // 0x20
+	GolModelBase** m_unk0x18;       // 0x18
+	GolTextureList** m_unk0x1c;     // 0x1c
+	GolMaterialLibrary** m_unk0x20; // 0x20
 	GolSceneNode** m_unk0x24;       // 0x24
 	CmbModelPart0x34* m_unk0x28;    // 0x28
 	OpalHaven0xf4* m_unk0x2c;       // 0x2c

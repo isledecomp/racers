@@ -1,12 +1,12 @@
 #include "util/silverhollow0xb8.h"
 
 #include "material/duskwindbananarelic0x24.h"
-#include "mesh/golgdbmodelbase.h"
+#include "mesh/golmodelbase.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(GolWdbOrientedEntity, 0x58)
+DECOMP_SIZE_ASSERT(GolOrientedEntity, 0x58)
 DECOMP_SIZE_ASSERT(SilverHollow0xb8, 0xb8)
 
 // GLOBAL: LEGORACERS 0x004af74c
@@ -44,7 +44,7 @@ SilverHollow0xb8::SilverHollow0xb8()
 }
 
 // FUNCTION: LEGORACERS 0x004111b0
-void SilverHollow0xb8::VTable0x50(GolGdbModelBase* p_model, LegoFloat p_modelDistance)
+void SilverHollow0xb8::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	if (m_flags & c_flagBit0) {
 		VTable0x54();
@@ -78,11 +78,11 @@ void SilverHollow0xb8::VTable0x54()
 		m_materialTables[i] = NULL;
 	}
 
-	GolWdbOrientedEntity::Reset();
+	GolOrientedEntity::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00411250
-void SilverHollow0xb8::FUN_00411250(GolGdbModelBase* p_model, LegoFloat p_modelDistance)
+void SilverHollow0xb8::FUN_00411250(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	LegoU32 i;
 	LegoU32 j;
@@ -153,7 +153,7 @@ void SilverHollow0xb8::VTable0x00()
 // FUNCTION: LEGORACERS 0x004113d0
 void SilverHollow0xb8::VTable0x4c(LegoU32 p_index)
 {
-	GolGdbModelBase* model = m_models[p_index];
+	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
 		FUN_10026fa0(0.0f);
 		return;
@@ -229,7 +229,7 @@ void SilverHollow0xb8::VTable0x1c(GolRenderDevice& p_renderer)
 void SilverHollow0xb8::VTable0x24(ColorTransform0x20* p_transform)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
-		GolGdbModelBase* model = m_models[i];
+		GolModelBase* model = m_models[i];
 		if (model == NULL) {
 			break;
 		}
@@ -303,9 +303,9 @@ void SilverHollow0xb8::FUN_00411730(LegoFloat p_arg)
 // FUNCTION: LEGORACERS 0x00411760
 LegoBool32 SilverHollow0xb8::VTable0x20()
 {
-	GolGdbMaterialList* materialTable = m_materialTables[0];
+	GolModelMaterialTable* materialTable = m_materialTables[0];
 	if (materialTable == NULL) {
-		GolGdbModelBase* model = m_models[0];
+		GolModelBase* model = m_models[0];
 		if (model == NULL) {
 			return FALSE;
 		}

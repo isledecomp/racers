@@ -2,7 +2,7 @@
 #define GOLTRANSFORMBASE_H
 
 #include "decomp.h"
-#include "golwdbentity.h"
+#include "golworldentity.h"
 #include "types.h"
 
 // VTABLE: GOLDP 0x10056cf0

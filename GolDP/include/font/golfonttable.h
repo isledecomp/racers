@@ -1,7 +1,7 @@
 #ifndef GOLDP_GOLFONTTABLE_H
 #define GOLDP_GOLFONTTABLE_H
 
-#include "font/golfdbfontlist.h"
+#include "font/golfontlibrary.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
@@ -9,7 +9,7 @@ class GolFont0xa0;
 
 // VTABLE: GOLDP 0x100562b4
 // SIZE 0x2c
-class GolFontTable : public GolFdbFontList {
+class GolFontTable : public GolFontLibrary {
 public:
 	GolFontTable();
 	~GolFontTable() override; // vtable+0x00

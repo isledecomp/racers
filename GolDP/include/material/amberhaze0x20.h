@@ -1,13 +1,13 @@
 #ifndef AMBERHAZE0X20_H
 #define AMBERHAZE0X20_H
 
-#include "material/golmdbmateriallist.h"
+#include "material/golmateriallibrary.h"
 
 class DuskwindBananaRelic0x30;
 
 // VTABLE: GOLDP 0x100563d0
 // SIZE 0x20
-class AmberHaze0x20 : public GolMdbMaterialList {
+class AmberHaze0x20 : public GolMaterialLibrary {
 public:
 	AmberHaze0x20();
 	~AmberHaze0x20() override; // vtable+0x00

@@ -5,9 +5,9 @@
 #include "golerror.h"
 #include "golname.h"
 #include "golscenenode.h"
-#include "material/golmdbmateriallist.h"
-#include "material/goltdbtexturelist.h"
-#include "mesh/golgdbmodelbase.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "util/opalhaven0xf4.h"
 
@@ -263,15 +263,15 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x18 = new GolGdbModelBase*[modelCount];
+		m_unk0x18 = new GolModelBase*[modelCount];
 		if (m_unk0x18 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x1c = new GolTdbTextureList*[modelCount];
+		m_unk0x1c = new GolTextureList*[modelCount];
 		if (m_unk0x1c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		m_unk0x20 = new GolMdbMaterialList*[modelCount];
+		m_unk0x20 = new GolMaterialLibrary*[modelCount];
 		if (m_unk0x20 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

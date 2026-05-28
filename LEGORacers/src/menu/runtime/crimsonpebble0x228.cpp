@@ -16,7 +16,7 @@
 #include "golscenenode.h"
 #include "golstream.h"
 #include "goltxtparser.h"
-#include "golwdbentity.h"
+#include "golworldentity.h"
 #include "image/utopianpan0xa4.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
@@ -400,7 +400,7 @@ void CrimsonPebbleEvent0x14::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x0049fde0
-void CrimsonPebbleEvent0x14::VTable0x0c(GolWdbEntity*)
+void CrimsonPebbleEvent0x14::VTable0x0c(GolWorldEntity*)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x14();
@@ -408,7 +408,7 @@ void CrimsonPebbleEvent0x14::VTable0x0c(GolWdbEntity*)
 }
 
 // FUNCTION: LEGORACERS 0x0049fdf0
-void CrimsonPebbleEvent0x14::VTable0x08(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x08(GolWorldEntity* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x0c(p_arg);
@@ -416,7 +416,7 @@ void CrimsonPebbleEvent0x14::VTable0x08(GolWdbEntity* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x0049fe10
-void CrimsonPebbleEvent0x14::VTable0x04(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x14::VTable0x04(GolWorldEntity* p_arg)
 {
 	if (m_unk0x10 == 0) {
 		VTable0x08(p_arg);
@@ -541,7 +541,7 @@ void CrimsonPebbleEventLink0x0c::FUN_004a00d0()
 // FUNCTION: LEGORACERS 0x004a00f0
 void CrimsonPebbleEventLink0x0c::FUN_004a00f0(CrimsonPebbleEventValuePayload0x24* p_payload)
 {
-	GolWdbEntity* value = p_payload->m_unk0x20->m_unk0x28;
+	GolWorldEntity* value = p_payload->m_unk0x20->m_unk0x28;
 	if (value) {
 		if (m_unk0x00) {
 			m_event->VTable0x04(value);
@@ -1980,19 +1980,19 @@ void CrimsonPebble0x228::FUN_004a3150()
 }
 
 // FUNCTION: LEGORACERS 0x004a3230
-GolWdbEntity* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
+GolWorldEntity* CrimsonPebble0x228::FUN_004a3230(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e30(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3240
-GolWdbEntity* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
+GolWorldEntity* CrimsonPebble0x228::FUN_004a3240(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406e80(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3250
-GolWdbEntity* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
+GolWorldEntity* CrimsonPebble0x228::FUN_004a3250(const LegoChar* p_name)
 {
 	return m_unk0x10->FUN_00406ed0(p_name);
 }
@@ -2206,7 +2206,7 @@ void CrimsonPebbleEvent0x50::VTable0x10(const GolVec3*, const GolVec3*, const Go
 }
 
 // FUNCTION: LEGORACERS 0x004a3d70
-void CrimsonPebbleEvent0x50::VTable0x0c(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x0c(GolWorldEntity* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2218,7 +2218,7 @@ void CrimsonPebbleEvent0x50::VTable0x0c(GolWdbEntity* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a3d90
-void CrimsonPebbleEvent0x50::VTable0x04(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x50::VTable0x04(GolWorldEntity* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2471,7 +2471,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x10(const GolVec3* p_a, const GolVec3
 }
 
 // FUNCTION: LEGORACERS 0x004a4480
-void CrimsonPebbleEvent0x50Derived::VTable0x0c(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x0c(GolWorldEntity* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x04 == NULL) {
@@ -2483,7 +2483,7 @@ void CrimsonPebbleEvent0x50Derived::VTable0x0c(GolWdbEntity* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004a44a0
-void CrimsonPebbleEvent0x50Derived::VTable0x04(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x50Derived::VTable0x04(GolWorldEntity* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x0c == NULL) {
@@ -2680,7 +2680,7 @@ void CrimsonPebbleEvent0x48::VTable0x14()
 }
 
 // FUNCTION: LEGORACERS 0x004a4cd0
-void CrimsonPebbleEvent0x48::VTable0x08(GolWdbEntity* p_arg)
+void CrimsonPebbleEvent0x48::VTable0x08(GolWorldEntity* p_arg)
 {
 	if (!m_active) {
 		if (m_unk0x08 == NULL) {

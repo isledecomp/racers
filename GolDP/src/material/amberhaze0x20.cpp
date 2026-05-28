@@ -48,7 +48,7 @@ void AmberHaze0x20::Clear()
 		m_items = NULL;
 	}
 
-	GolMdbMaterialList::Clear();
+	GolMaterialLibrary::Clear();
 }
 
 // FUNCTION: GOLDP 0x10006800

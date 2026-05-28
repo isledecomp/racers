@@ -24,8 +24,8 @@ GolFontTable::~GolFontTable()
 		m_fonts = NULL;
 	}
 
-	static_cast<GolFdbFontList*>(this)->ReleaseDefinitionBuffers();
-	GolFdbFontList::Clear();
+	static_cast<GolFontLibrary*>(this)->ReleaseDefinitionBuffers();
+	GolFontLibrary::Clear();
 }
 
 // FUNCTION: GOLDP 0x10004060
@@ -70,7 +70,7 @@ void GolFontTable::Clear()
 	}
 
 	ReleaseDefinitionBuffers();
-	GolFdbFontList::Clear();
+	GolFontLibrary::Clear();
 }
 
 // FUNCTION: GOLDP 0x10004270

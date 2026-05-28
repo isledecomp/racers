@@ -2,13 +2,13 @@
 #define GOLDP_AWAKEKITE0x20_H
 
 #include "golnametable.h"
-#include "material/golidbimagelist.h"
+#include "material/golimagelist.h"
 
 class GolD3DRenderDevice;
 
 // SIZE 0x20
 // VTABLE: GOLDP 0x10056364
-class AwakeKite0x20 : public GolIdbImageList {
+class AwakeKite0x20 : public GolImageList {
 public:
 	AwakeKite0x20();
 	~AwakeKite0x20() override;

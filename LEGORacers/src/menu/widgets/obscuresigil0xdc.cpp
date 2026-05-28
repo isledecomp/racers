@@ -6,7 +6,7 @@
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
-#include "world/golwdbdatabase.h"
+#include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc, 0xdc)
 DECOMP_SIZE_ASSERT(ObscureSigil0xdc::CreateParams0x84, 0x84)

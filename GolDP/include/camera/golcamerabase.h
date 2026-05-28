@@ -14,8 +14,8 @@ class GolTransform;
 class OpalHaven0xf4;
 typedef OpalHaven0xf4 AmberLensTrackedObject0xf4;
 #else
-class GolWdbSkinnedEntity;
-typedef GolWdbSkinnedEntity AmberLensTrackedObject0xf4;
+class GolSkinnedEntity;
+typedef GolSkinnedEntity AmberLensTrackedObject0xf4;
 #endif
 
 // VTABLE: GOLDP 0x10056cc0

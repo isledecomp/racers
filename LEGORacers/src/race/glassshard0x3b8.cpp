@@ -1,38 +1,61 @@
 #include "race/glassshard0x3b8.h"
 
+#include "core/gol.h"
+
 DECOMP_SIZE_ASSERT(GlassShard0x3b8, 0x3b8)
 
 // FUNCTION: LEGORACERS 0x00422350
 GlassShard0x3b8::GlassShard0x3b8()
 {
-	FUN_004223c0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004223b0
 GlassShard0x3b8::~GlassShard0x3b8()
 {
-	FUN_00422670();
+	Shutdown();
 }
 
 // STUB: LEGORACERS 0x004223c0
-void GlassShard0x3b8::FUN_004223c0()
+void GlassShard0x3b8::Reset()
 {
 	// TODO
 	STUB(0x4223c0);
 }
 
 // STUB: LEGORACERS 0x00422420
-void GlassShard0x3b8::FUN_00422420(GolD3DRenderDevice*, GolExport*, undefined4, undefined4)
+void GlassShard0x3b8::Initialize(GolD3DRenderDevice*, GolExport*, undefined4, undefined4)
 {
 	// TODO
 	STUB(0x422420);
 }
 
-// STUB: LEGORACERS 0x00422670
-void GlassShard0x3b8::FUN_00422670()
+// FUNCTION: LEGORACERS 0x00422670
+void GlassShard0x3b8::Shutdown()
 {
-	// TODO
-	STUB(0x422670);
+	m_unk0x20c.VTable0x54();
+	m_unk0x114.VTable0x54();
+	m_unk0x1c.VTable0x54();
+	m_unk0x300.VTable0x54();
+
+	if (m_unk0x04) {
+		m_golExport->VTable0x3c(m_unk0x04);
+		m_unk0x04 = NULL;
+	}
+	if (m_unk0x0c) {
+		delete[] m_unk0x0c;
+		m_unk0x0c = NULL;
+	}
+	if (m_unk0x10) {
+		delete[] m_unk0x10;
+		m_unk0x10 = NULL;
+	}
+	if (m_unk0x14) {
+		delete[] m_unk0x14;
+		m_unk0x14 = NULL;
+	}
+
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004230e0

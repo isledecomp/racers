@@ -55,7 +55,7 @@ LegoS32 RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 		if (g_hashTable) {
 			g_hashTable->SetCurrentEntryFromString("GAMEDATA\\COMMON");
 		}
-		m_unk0x3400.FUN_00422420(
+		m_unk0x3400.Initialize(
 			p_context->m_golApp->GetRenderer(),
 			p_context->m_golApp->GetGolExport(),
 			p_context->m_unk0x18,
@@ -90,7 +90,7 @@ void RaceModeRunner::Run()
 	}
 
 	m_unk0x98.Run();
-	m_unk0x3400.FUN_00422670();
+	m_unk0x3400.Shutdown();
 	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
 }
 
@@ -101,7 +101,7 @@ void RaceModeRunner::Shutdown()
 		g_hashTable->SetCurrentEntryFromString(NULL);
 	}
 
-	m_unk0x3400.FUN_00422670();
+	m_unk0x3400.Shutdown();
 	m_unk0x04.Shutdown();
 	m_unk0x98.Shutdown();
 	ReleaseContextAssets();

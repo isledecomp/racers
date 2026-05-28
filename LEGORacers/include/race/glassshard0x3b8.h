@@ -9,6 +9,7 @@
 #include "util/silverhollow0xb8.h"
 
 class GolExport;
+class GolWorldDatabase;
 
 // VTABLE: LEGORACERS 0x004b01a0
 // SIZE 0x3b8
@@ -20,9 +21,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00422390
 	// GlassShard0x3b8::`scalar deleting destructor'
 
-	void FUN_004223c0();
-	void FUN_00422420(GolD3DRenderDevice* p_unk0x04, GolExport* p_unk0x08, undefined4 p_unk0x0c, undefined4 p_unk0x10);
-	void FUN_00422670();
+	void Reset();
+	void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, undefined4 p_unk0x0c, undefined4 p_unk0x10);
+	void Shutdown();
 	void FUN_004230e0();
 	LegoBool32 FUN_004234b0();
 	undefined4* GetUnk0x14() { return m_unk0x14; }
@@ -34,7 +35,7 @@ private:
 		c_flag0x3b4Bit4 = 1 << 4,
 	};
 
-	undefined4* m_unk0x04;               // 0x04
+	GolWorldDatabase* m_unk0x04;         // 0x04
 	GolExport* m_golExport;              // 0x08
 	undefined4* m_unk0x0c;               // 0x0c
 	undefined4* m_unk0x10;               // 0x10

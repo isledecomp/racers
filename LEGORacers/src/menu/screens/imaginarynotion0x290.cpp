@@ -168,7 +168,7 @@ void ImaginaryNotion0x290::Reset()
 	m_soundGroupBinding = NULL;
 	m_inputManager = NULL;
 	m_unk0x284 = NULL;
-	m_unk0xc4 = NULL;
+	m_cursorHelper = NULL;
 	m_menuStyles = NULL;
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
@@ -186,7 +186,7 @@ LegoBool32 ImaginaryNotion0x290::Initialize(MenuToolCreateParams0x30* p_createPa
 	m_inputManager = p_createParams->m_inputManager;
 	m_unk0x288 = p_createParams->m_unk0x2c;
 	m_unk0x284 = p_createParams->m_unk0x20;
-	m_unk0xc4 = (FieldAt0xc4*) p_createParams->m_unk0x24;
+	m_cursorHelper = p_createParams->m_cursorHelper;
 	m_unk0x28c = p_createParams->m_menuId;
 	m_menuStyles = p_createParams->m_menuStyles;
 	m_inputEvents = p_createParams->m_inputEvents;

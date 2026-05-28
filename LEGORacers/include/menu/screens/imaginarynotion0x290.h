@@ -8,6 +8,7 @@
 #include "menu/style/menuinputbindingtable.h"
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscureicon0x1a8.h"
+#include "text/coppercrest0x40.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
@@ -39,19 +40,6 @@ public:
 		undefined4 m_unk0x48;             // 0x48
 		LegoU32 m_unk0x4c;                // 0x4c
 		LegoFloat m_unk0x50;              // 0x50
-	};
-
-	// SIZE unknown
-	class FieldAt0xc4 {
-	public:
-		void SetUnk0x41(undefined p_unk0x41) { m_unk0x41 = p_unk0x41; }
-		undefined4 GetUnk0x98() const { return m_unk0x98; }
-
-	private:
-		undefined m_unk0x00[0x41 - 0x00]; // 0x00
-		undefined m_unk0x41;              // 0x41
-		undefined m_unk0x42[0x98 - 0x42]; // 0x42
-		undefined4 m_unk0x98;             // 0x98
 	};
 
 	ImaginaryNotion0x290();
@@ -148,24 +136,24 @@ public:
 	// ImaginaryNotion0x290::`scalar deleting destructor'
 
 protected:
-	LegoBool32 m_initialized;               // 0x004
-	CeruleanEmperor0x4c m_unk0x08;          // 0x008
-	PorcelainVeil0x50* m_menuStyles;        // 0x054
-	MenuInputBindingTable m_unk0x58;        // 0x058
-	GolExport* m_golExport;                 // 0x0b4
-	GolD3DRenderDevice* m_renderer;         // 0x0b8
-	AwakeKite0x20* m_unk0xbc;               // 0x0bc
-	GolFontTable* m_fontTable;              // 0x0c0
-	FieldAt0xc4* m_unk0xc4;                 // 0x0c4
-	InputEventQueue* m_inputEvents;         // 0x0c8
-	InputManager* m_inputManager;           // 0x0cc
-	GolStringTable* m_menuNameStrings;      // 0x0d0
-	GolStringTable* m_menuTextStrings;      // 0x0d4
-	ObscureIcon0x1a8 m_unk0xd8;             // 0x0d8
-	SoundGroupBinding* m_soundGroupBinding; // 0x280
-	CrimsonSun0xa4* m_unk0x284;             // 0x284
-	undefined4 m_unk0x288;                  // 0x288
-	undefined2 m_unk0x28c;                  // 0x28c
+	LegoBool32 m_initialized;                    // 0x004
+	CeruleanEmperor0x4c m_unk0x08;               // 0x008
+	PorcelainVeil0x50* m_menuStyles;             // 0x054
+	MenuInputBindingTable m_unk0x58;             // 0x058
+	GolExport* m_golExport;                      // 0x0b4
+	GolD3DRenderDevice* m_renderer;              // 0x0b8
+	AwakeKite0x20* m_unk0xbc;                    // 0x0bc
+	GolFontTable* m_fontTable;                   // 0x0c0
+	CopperCrest0x40::Helper0x44* m_cursorHelper; // 0x0c4
+	InputEventQueue* m_inputEvents;              // 0x0c8
+	InputManager* m_inputManager;                // 0x0cc
+	GolStringTable* m_menuNameStrings;           // 0x0d0
+	GolStringTable* m_menuTextStrings;           // 0x0d4
+	ObscureIcon0x1a8 m_unk0xd8;                  // 0x0d8
+	SoundGroupBinding* m_soundGroupBinding;      // 0x280
+	CrimsonSun0xa4* m_unk0x284;                  // 0x284
+	undefined4 m_unk0x288;                       // 0x288
+	undefined2 m_unk0x28c;                       // 0x28c
 };
 
 #endif // IMAGINARYNOTION0X290_H

@@ -89,7 +89,7 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 
 	LegoBool32 result = ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams);
 	if (result) {
-		m_unk0xc4->SetUnk0x41(TRUE);
+		m_cursorHelper->SetCursorEnabled(TRUE);
 		m_unk0x368.m_unk0x2cc = 0;
 	}
 

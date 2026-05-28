@@ -4,6 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/mainmenuscreenfieldat0x498.h"
+#include "menu/widgets/obscureanchor0x5c.h"
 
 // VTABLE: LEGORACERS 0x004b3818
 // SIZE 0x770
@@ -22,7 +24,11 @@ public:
 	// NewRacerScreen::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x770 - 0x368]; // 0x368
+	ObscureAnchor0x5c m_unk0x368;          // 0x368
+	ObscureAnchor0x5c m_unk0x3c4;          // 0x3c4
+	ObscureAnchor0x5c m_unk0x420;          // 0x420
+	MainMenuScreenFieldAt0x498 m_unk0x47c; // 0x47c
+	LegoU32 m_unk0x76c;                    // 0x76c
 };
 
 #endif // NEWRACERSCREEN_H

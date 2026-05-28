@@ -416,7 +416,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_menuId = p_menuId;
 	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_unk0x18;
 	m_unk0x4d98.m_unk0x20 = &m_unk0x4bd0;
-	m_unk0x4d98.m_unk0x24 = m_textRenderer.GetUnk0x10();
+	m_unk0x4d98.m_cursorHelper = m_textRenderer.GetCursorHelper();
 	m_unk0x4d98.m_menuNameStrings = &m_menuNameStrings;
 	m_unk0x4d98.m_menuTextStrings = &m_menuTextStrings;
 

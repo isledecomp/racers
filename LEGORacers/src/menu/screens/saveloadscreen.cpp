@@ -41,7 +41,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 		return FALSE;
 	}
 
-	m_unk0xc4->SetUnk0x41(FALSE);
+	m_cursorHelper->SetCursorEnabled(FALSE);
 	return TRUE;
 }
 
@@ -123,7 +123,7 @@ LegoBool32 SaveLoadScreen::Destroy()
 		return TRUE;
 	}
 
-	m_unk0xc4->SetUnk0x41(TRUE);
+	m_cursorHelper->SetCursorEnabled(TRUE);
 	m_unk0x368 = 0;
 	return ImaginaryTool0x368::Destroy();
 }

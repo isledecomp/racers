@@ -181,3 +181,16 @@ PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b880()
 
 	return record;
 }
+
+// STUB: LEGORACERS 0x0042b8f0
+PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b8f0(Record*)
+{
+	STUB(0x0042b8f0);
+	return NULL;
+}
+
+// STUB: LEGORACERS 0x0042b920
+void PeridotTraceBase0x24::FUN_0042b920(Record*)
+{
+	STUB(0x0042b920);
+}

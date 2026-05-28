@@ -232,7 +232,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() & ~0x40000);
 	p_context->m_unk0x258.GetUnk0x1cfc().Reset();
 	m_unk0x1058.VTable0x4c(5);
-	m_unk0xc4->SetUnk0x41(TRUE);
+	m_cursorHelper->SetCursorEnabled(TRUE);
 	return TRUE;
 }
 

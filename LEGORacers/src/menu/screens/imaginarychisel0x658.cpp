@@ -99,7 +99,7 @@ LegoBool32 ImaginaryChisel0x658::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	m_unk0xc4->SetUnk0x41(FALSE);
+	m_cursorHelper->SetCursorEnabled(FALSE);
 	m_unk0x654 = TRUE;
 	return TRUE;
 }
@@ -137,7 +137,7 @@ LegoBool32 ImaginaryChisel0x658::VTable0x78(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00479a50
 void ImaginaryChisel0x658::VTable0x84()
 {
-	m_unk0xc4->SetUnk0x41(TRUE);
+	m_cursorHelper->SetCursorEnabled(TRUE);
 	m_context->m_menuStack.Pop();
 	m_context->m_menuStack.Push(c_menuMainMenu);
 }

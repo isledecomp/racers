@@ -27,11 +27,15 @@ LegoBool32 PickMemoryCardScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCrea
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x004849c0 FOLDED
+// FUNCTION: LEGORACERS 0x004849c0 FOLDED
 LegoBool32 PickMemoryCardScreen::Destroy()
 {
-	STUB(0x004849c0);
-	return FALSE;
+	if (!m_initialized) {
+		return TRUE;
+	}
+
+	m_cursorHelper->SetCursorEnabled(TRUE);
+	return ImaginaryTool0x368::Destroy();
 }
 
 // STUB: LEGORACERS 0x004849e0

@@ -106,8 +106,11 @@ public:
 	~PeridotTraceBase0x24();
 
 	Record* FUN_0042b880();
+	Record* FUN_0042b8f0(Record* p_record);
+	void FUN_0042b920(Record* p_record);
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
+	LegoS32 GetAvailableRecordCount() const { return m_unk0x1c - m_unk0x00; }
 	undefined4 GetUnk0x20() const { return m_unk0x20; }
 	void Destroy();
 
@@ -294,10 +297,13 @@ public:
 	static void CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count);
 
 	void Reset() { m_unk0x244 = 0; }
+	PeridotTraceBase0x24::Record* GetUnk0x248() const { return m_unk0x248; }
+	void SetUnk0x248(PeridotTraceBase0x24::Record* p_unk0x248) { m_unk0x248 = p_unk0x248; }
 
 private:
-	undefined4 m_unk0x244;               // 0x244
-	undefined m_unk0x248[0x250 - 0x248]; // 0x248
+	undefined4 m_unk0x244;                    // 0x244
+	PeridotTraceBase0x24::Record* m_unk0x248; // 0x248
+	undefined m_unk0x24c[0x250 - 0x24c];      // 0x24c
 };
 
 #endif // PERIDOTTRACE0X4E0_H

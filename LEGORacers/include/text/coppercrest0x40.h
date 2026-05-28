@@ -70,6 +70,8 @@ public:
 		LegoS32 FUN_00467d70();
 		LegoS32 FUN_00467d80(undefined4 p_elapsedMs);
 		LegoS32 FUN_00467e00();
+		void SetCursorEnabled(LegoU8 p_cursorEnabled) { m_cursorEnabled = p_cursorEnabled; }
+		LegoU8 IsCursorEnabled() const { return m_cursorEnabled; }
 
 		InputManager* m_inputManager;     // 0x00
 		GolExport* m_golExport;           // 0x04
@@ -82,7 +84,7 @@ public:
 		LegoS32 m_originX;                // 0x38
 		LegoS32 m_originY;                // 0x3c
 		LegoU8 m_isCursorVisible;         // 0x40
-		LegoU8 m_isCursorEnabled;         // 0x41
+		LegoU8 m_cursorEnabled;           // 0x41
 		undefined m_unk0x42[0x44 - 0x42]; // 0x42
 	};
 
@@ -100,7 +102,8 @@ public:
 
 	LegoS32 FUN_00469040(InitStruct* p_initStruct);
 	void FUN_00469550();
-	void* GetUnk0x10() { return &m_unk0x10; }
+	Helper0x44* GetCursorHelper() { return &m_unk0x10; }
+	Helper0x44* GetUnk0x10() { return GetCursorHelper(); }
 	ImaginaryNotion0x290* GetUnk0x54() { return m_unk0x54; }
 	void SetUnk0x54(ImaginaryNotion0x290* p_unk0x54) { m_unk0x54 = p_unk0x54; }
 	void SetCursorInside(LegoU8 p_cursorInside) { m_unk0x10.m_isCursorVisible = p_cursorInside; }

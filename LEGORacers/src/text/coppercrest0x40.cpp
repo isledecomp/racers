@@ -49,7 +49,7 @@ void CopperCrest0x40::Helper0x44::FUN_00467c80()
 	m_cursorY = 0;
 	m_cursorX = 0;
 	m_isCursorVisible = TRUE;
-	m_isCursorEnabled = TRUE;
+	m_cursorEnabled = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467cc0
@@ -90,7 +90,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d70()
 // FUNCTION: LEGORACERS 0x00467d80
 LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 {
-	if (m_golExport && m_isCursorVisible && m_isCursorEnabled) {
+	if (m_golExport && m_isCursorVisible && m_cursorEnabled) {
 		MouseInputDevice* mouse = m_inputManager->GetMouse();
 
 		m_cursorX += (LegoS32) mouse->GetAxisValue(1);
@@ -117,7 +117,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 // FUNCTION: LEGORACERS 0x00467e00
 LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
 {
-	if (m_golExport && m_isCursorVisible && m_isCursorEnabled) {
+	if (m_golExport && m_isCursorVisible && m_cursorEnabled) {
 		Rect destRect;
 
 		destRect.m_left = m_cursorX;

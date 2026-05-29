@@ -35,6 +35,9 @@ public:
 		VerdantTide0x38* m_unk0x80;       // 0x80
 	};
 
+	SiennaCircuit0x154();
+	~SiennaCircuit0x154();
+
 	LegoBool32 FUN_00485300(CreateParams0x84* p_createParams, CeruleanEmperor0x4c::Entry0x150* p_styleEntry);
 
 private:

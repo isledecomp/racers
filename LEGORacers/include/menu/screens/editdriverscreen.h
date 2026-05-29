@@ -14,7 +14,7 @@ public:
 	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override;                                        // vtable+0x18
 	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
-	void VTable0x44(undefined4) override;                                              // vtable+0x44
+	void VTable0x44(ObscureVantage0x58*) override;                                     // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	void Reset() override;                                                             // vtable+0x54
 	~EditDriverScreen() override;                                                      // vtable+0x68

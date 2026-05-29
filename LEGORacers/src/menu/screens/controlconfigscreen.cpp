@@ -40,7 +40,7 @@ void ControlConfigScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047abb0
-void ControlConfigScreen::VTable0x44(undefined4)
+void ControlConfigScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x0047abb0);
 }

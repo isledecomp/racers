@@ -498,23 +498,20 @@ LegoBool32 ObscureVantage0x58::ClipRect(Rect* p_rect, Rect* p_arg)
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00473160
+// FUNCTION: LEGORACERS 0x00473160
 Rect* ObscureVantage0x58::FUN_00473160(Rect* p_rect)
 {
-	Rect* result = p_rect;
-	LegoS32 oldTop = p_rect->m_top;
-	LegoS32 oldLeft = p_rect->m_left;
-	LegoS32 translatedLeft = oldLeft + m_unk0x4c - m_unk0x34.m_left;
-	LegoS32 translatedTop = oldTop + m_unk0x50 - m_unk0x34.m_top;
-	LegoS32 height = p_rect->m_bottom - oldTop;
-	LegoS32 translatedRight = translatedLeft + p_rect->m_right - oldLeft;
+	LegoS32 top = m_unk0x50 - m_unk0x34.m_top + p_rect->m_top;
+	LegoS32 left = m_unk0x4c - m_unk0x34.m_left + p_rect->m_left;
+	LegoS32 right = p_rect->m_right - p_rect->m_left + left;
+	LegoS32 bottom = p_rect->m_bottom - p_rect->m_top + top;
 
-	p_rect->m_left = translatedLeft;
-	p_rect->m_top = translatedTop;
-	p_rect->m_right = translatedRight;
-	p_rect->m_bottom = translatedTop + height;
+	p_rect->m_left = left;
+	p_rect->m_top = top;
+	p_rect->m_right = right;
+	p_rect->m_bottom = bottom;
 
-	return result;
+	return p_rect;
 }
 
 // FUNCTION: LEGORACERS 0x004731b0
@@ -671,4 +668,10 @@ ObscureVantage0x58* ObscureVantage0x58::VTable0x30(InputEventQueue::Event*, unde
 ObscureVantage0x58* ObscureVantage0x58::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x00473a20
+LegoBool32 ObscureVantage0x58::FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y)
+{
+	return p_x >= p_rect->m_left && p_x <= p_rect->m_right && p_y >= p_rect->m_top && p_y <= p_rect->m_bottom;
 }

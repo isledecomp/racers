@@ -3,29 +3,51 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/mainmenuscreenfieldat0x498.h"
+#include "menu/screens/obsidianmantle0x3b4.h"
+#include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
+#include "menu/widgets/obscurecarousel0x78.h"
+#include "menu/widgets/obscurelink0x1c.h"
+#include "menu/widgets/obscurerune0x4d8.h"
+#include "racer/siennacircuit0x154.h"
+
+class MenuToolContext0x4bc8;
+class MenuToolCreateParams0x30;
 
 // VTABLE: LEGORACERS 0x004b2cf8
 // SIZE 0x2b20
-class ImaginaryShape0x2b20 : public ImaginaryTool0x368 {
+class ImaginaryShape0x2b20 : public ObsidianMantle0x3b4 {
 public:
+	// VTABLE: LEGORACERS 0x004b2edc
+	// SIZE 0x2d0
+	class FieldAt0x2308 : public ObscureLink0x1c {
+	public:
+		FieldAt0x2308();
+		void Reset() override;                      // vtable+0x00
+		~FieldAt0x2308() override;                  // vtable+0x04
+		LegoBool32 VTable0x08() override;           // vtable+0x08
+		LegoBool32 VTable0x0c() override;           // vtable+0x0c
+		LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
+
+		// SYNTHETIC: LEGORACERS 0x004779b0
+		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'
+
+	private:
+		undefined m_unk0x1c[0x2d0 - 0x1c]; // 0x1c
+	};
+
 	ImaginaryShape0x2b20();
 
-	void VTable0x10(undefined4) override;                                               // vtable+0x10
-	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x14
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
-						  undefined4) override; // vtable+0x18
-	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
-						  undefined4) override;                 // vtable+0x1c
-	void VTable0x38(ObscureVantage0x58*) override;              // vtable+0x38
-	void VTable0x44(undefined4) override;                       // vtable+0x44
-	void VTable0x4c() override;                                 // vtable+0x4c
-	void Reset() override;                                      // vtable+0x54
-	~ImaginaryShape0x2b20() override;                           // vtable+0x68
-	LegoBool32 VTable0x78(undefined4) override;                 // vtable+0x78
-	LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2) override; // vtable+0x7c
-	void VTable0x80() override;                                 // vtable+0x80
-	void VTable0x84() override;                                 // vtable+0x84
+	void VTable0x10(ObscureVantage0x58*) override; // vtable+0x10
+	void VTable0x38(ObscureVantage0x58*) override; // vtable+0x38
+	void VTable0x44(ObscureVantage0x58*) override; // vtable+0x44
+	void VTable0x4c() override;                    // vtable+0x4c
+	void Reset() override;                         // vtable+0x54
+	~ImaginaryShape0x2b20() override;              // vtable+0x68
+	LegoBool32 VTable0x78(undefined4) override;    // vtable+0x78
+	void VTable0x80() override;                    // vtable+0x80
+	void VTable0x84() override;                    // vtable+0x84
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*,
 						  MenuToolCreateParams0x30*) override; // vtable+0x8c
 
@@ -33,7 +55,33 @@ public:
 	// ImaginaryShape0x2b20::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x2b20 - 0x368]; // 0x368
+	void FUN_00477050();
+	void FUN_00477130();
+	void FUN_00477290();
+	void FUN_004773a0();
+	void FUN_00477770();
+
+	ObscureAnchor0x5c m_unk0x3b4;            // 0x3b4
+	ObscureCarouselNavigator0x94 m_unk0x410; // 0x410
+	ObscureBanner0x9f4 m_unk0x4a4;           // 0x4a4
+	SiennaCircuit0x154 m_unk0xe98;           // 0xe98
+	ObscureBanner0x9f4 m_unk0xfec;           // 0xfec
+	ObscureAnchor0x5c m_unk0x19e0[12];       // 0x19e0
+	ObscureRune0x4d8 m_unk0x1e30;            // 0x1e30
+	FieldAt0x2308 m_unk0x2308;               // 0x2308
+	MainMenuScreenFieldAt0x498 m_unk0x25d8;  // 0x25d8
+	undefined4 m_unk0x28c8;                  // 0x28c8
+	undefined4 m_unk0x28cc;                  // 0x28cc
+	undefined4 m_unk0x28d0;                  // 0x28d0
+	undefined m_unk0x28d4[0x2ad8 - 0x28d4];  // 0x28d4
+	undefined4 m_unk0x2ad8;                  // 0x2ad8
+	undefined4 m_unk0x2adc;                  // 0x2adc
+	undefined4 m_unk0x2ae0;                  // 0x2ae0
+	undefined4 m_unk0x2ae4;                  // 0x2ae4
+	LegoU8 m_unk0x2ae8;                      // 0x2ae8
+	undefined m_unk0x2ae9[0x2aec - 0x2ae9];  // 0x2ae9
+	undefined4 m_unk0x2aec[0xc];             // 0x2aec
+	undefined4 m_unk0x2b1c;                  // 0x2b1c
 };
 
 #endif // IMAGINARYSHAPE0X2B20

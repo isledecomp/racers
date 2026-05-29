@@ -75,6 +75,7 @@ public:
 	ObscureVantage0x58* FUN_00472f10(undefined2);
 	ObscureVantage0x58* GetFirstChild() { return m_firstChild; }
 	ObscureVantage0x58* GetNextSibling() { return m_nextSibling; }
+	ObscureVantage0x58* GetPrevSibling() { return m_prevSibling; }
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
@@ -83,6 +84,7 @@ public:
 	void FUN_00472d70(Rect*, Rect*, UtopianPan0xa4*);
 	undefined2 FUN_00472da0(Rect*, Rect*, GolFontBase0x40*, GolString*, LegoS32, LegoS32);
 	Rect* FUN_00473160(Rect*);
+	LegoBool32 FUN_00473a20(Rect*, LegoS32, LegoS32);
 	void FUN_004731b0(undefined4&, undefined4&);
 	void FUN_00472fd0(Rect*, Rect*);
 	void FUN_00473050(Rect*, Rect*);

@@ -11,9 +11,9 @@ class GarageScreen : public ImaginaryTool0x368 {
 public:
 	GarageScreen();
 
-	void VTable0x10(undefined4) override;                                              // vtable+0x10
+	void VTable0x10(ObscureVantage0x58*) override;                                     // vtable+0x10
 	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
-	void VTable0x44(undefined4) override;                                              // vtable+0x44
+	void VTable0x44(ObscureVantage0x58*) override;                                     // vtable+0x44
 	void VTable0x4c() override;                                                        // vtable+0x4c
 	void Reset() override;                                                             // vtable+0x54
 	~GarageScreen() override;                                                          // vtable+0x68

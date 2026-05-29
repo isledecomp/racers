@@ -38,7 +38,7 @@ LegoBool32 ObscureTome0x3fc::FUN_0046ecd0(CreateParams0x60* p_createParams)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0046ed30
+// FUNCTION: LEGORACERS 0x0046ed30
 LegoBool32 ObscureTome0x3fc::FUN_0046ed30(CreateParams0x60* p_createParams)
 {
 	ObscureAnchor0x5c::CreateParams0x3c createParams;
@@ -49,11 +49,11 @@ LegoBool32 ObscureTome0x3fc::FUN_0046ed30(CreateParams0x60* p_createParams)
 		createParams.m_parent = this;
 		createParams.m_flags |= 1;
 		createParams.m_unk0x20 = 0x400;
-		createParams.m_unk0x22 = p_createParams->m_unk0x22;
 
 		UtopianPan0xa4* image = p_createParams->m_images[i];
 		createParams.m_unk0x38 = image;
 		m_images[i] = image;
+		createParams.m_unk0x22 = p_createParams->m_unk0x22;
 
 		if (!m_unk0xfc[i].FUN_0046f150(&createParams)) {
 			return FALSE;

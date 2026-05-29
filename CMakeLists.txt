@@ -349,7 +349,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/newracerscreen.cpp
   LEGORacers/src/menu/screens/controlconfigscreen.cpp
   LEGORacers/src/menu/screens/racemodesetupscreen.cpp
+  LEGORacers/src/menu/screens/obsidianmantle0x3b4.cpp
   LEGORacers/src/menu/screens/imaginaryshape0x2b20.cpp
+  LEGORacers/src/menu/screens/imaginaryshape0x2b20fieldat0x2308.cpp
   LEGORacers/src/menu/screens/multiplayerpickscreen.cpp
   LEGORacers/src/menu/screens/circuitselectscreen.cpp
   LEGORacers/src/menu/screens/imaginarytool0x368.cpp
@@ -374,6 +376,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/verdanttide0x38.cpp
   LEGORacers/src/racer/drivercosmetictable.cpp
   LEGORacers/src/racer/aquamarinespirit0x3c.cpp
+  LEGORacers/src/racer/siennacircuit0x154.cpp
   LEGORacers/src/race/data/championdefinitionlist.cpp
   LEGORacers/src/race/data/racedefinitionlist.cpp
   LEGORacers/src/race/data/racenamelist.cpp

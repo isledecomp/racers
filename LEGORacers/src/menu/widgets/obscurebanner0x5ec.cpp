@@ -1,5 +1,7 @@
 #include "menu/widgets/obscurebanner0x5ec.h"
 
+#include "input/inputdevice.h"
+
 DECOMP_SIZE_ASSERT(ObscureBanner0x5ec, 0x5ec)
 DECOMP_SIZE_ASSERT(ObscureBanner0x9f4, 0x9f4)
 
@@ -24,61 +26,165 @@ void ObscureBanner0x5ec::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
-// STUB: LEGORACERS 0x00467240
-void ObscureBanner0x5ec::VTable0x44(undefined4)
+// FUNCTION: LEGORACERS 0x00467240
+void ObscureBanner0x5ec::VTable0x44(undefined4 p_flags)
 {
-	STUB(0x00467240);
+	if (m_stateFlags & c_flagBit0) {
+		return;
+	}
+
+	if (m_unk0x1ac.GetFlags() & 1) {
+		m_unk0x1ac.VTable0x44(2);
+		m_unk0x3c8.VTable0x44(2);
+	}
+
+	ObscureIcon0x1a8::VTable0x44(p_flags);
 }
 
-// STUB: LEGORACERS 0x00467290
-void ObscureBanner0x5ec::VTable0x48(undefined4)
+// FUNCTION: LEGORACERS 0x00467290
+void ObscureBanner0x5ec::VTable0x48(undefined4 p_flags)
 {
-	STUB(0x00467290);
+	if (!(m_stateFlags & c_flagBit0)) {
+		return;
+	}
+
+	if (m_unk0x1ac.GetFlags() & 1) {
+		m_unk0x1ac.VTable0x48(5);
+		m_unk0x3c8.VTable0x48(5);
+	}
+
+	ObscureIcon0x1a8::VTable0x48(p_flags);
 }
 
-// STUB: LEGORACERS 0x004672e0
-void ObscureBanner0x5ec::VTable0x4c(undefined4)
+// FUNCTION: LEGORACERS 0x004672e0
+void ObscureBanner0x5ec::VTable0x4c(undefined4 p_flags)
 {
-	STUB(0x004672e0);
+	ObscureIcon0x1a8::VTable0x4c(p_flags);
+
+	if (m_unk0x1ac.GetFlags() & 1) {
+		m_unk0x1ac.VTable0x4c(2);
+		m_unk0x3c8.VTable0x4c(2);
+	}
 }
 
-// STUB: LEGORACERS 0x00467320
-void ObscureBanner0x5ec::VTable0x50(undefined4)
+// FUNCTION: LEGORACERS 0x00467320
+void ObscureBanner0x5ec::VTable0x50(undefined4 p_flags)
 {
-	STUB(0x00467320);
+	ObscureIcon0x1a8::VTable0x50(p_flags);
+
+	if (m_unk0x1ac.GetFlags() & 1) {
+		m_unk0x1ac.VTable0x50(2);
+		m_unk0x3c8.VTable0x50(2);
+	}
 }
 
-// STUB: LEGORACERS 0x00467360
-void ObscureBanner0x5ec::VTable0x58(undefined4)
+// FUNCTION: LEGORACERS 0x00467360
+void ObscureBanner0x5ec::VTable0x58(undefined4 p_flags)
 {
-	STUB(0x00467360);
+	ObscureIcon0x1a8::VTable0x58(p_flags);
+
+	if (m_unk0x1ac.GetFlags() & 1) {
+		m_unk0x1ac.VTable0x58(2);
+		m_unk0x3c8.VTable0x58(2);
+	}
 }
 
-// STUB: LEGORACERS 0x004673a0
-undefined4 ObscureBanner0x5ec::VTable0x70(undefined4, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x004673a0
+undefined4 ObscureBanner0x5ec::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x004673a0);
-	return 0;
+	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
+		undefined4 x = p_x;
+		undefined4 y = p_y;
+		m_unk0x1ac.FUN_004731b0(x, y);
+		if (m_unk0x1ac.FUN_00472c40(x, y)) {
+			return InputDevice::c_sourceJoystickButton | 0xb;
+		}
+
+		x = p_x;
+		y = p_y;
+		m_unk0x3c8.FUN_004731b0(x, y);
+		if (m_unk0x3c8.FUN_00472c40(x, y)) {
+			return InputDevice::c_sourceJoystickButton | 0xa;
+		}
+	}
+
+	return p_event;
 }
 
-// STUB: LEGORACERS 0x00467450
-LegoBool32 ObscureBanner0x5ec::VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00467450
+LegoBool32 ObscureBanner0x5ec::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x00467450);
+	undefined4 x = p_x;
+	undefined4 y = p_y;
+
+	if (!(m_flags & 2)) {
+		return FALSE;
+	}
+
+	FUN_004731b0(x, y);
+
+	if (FUN_00472c40(x, y) && VTable0x2c(p_param1, x, y)) {
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x004674c0
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x004674c0
+ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(
+	InputEventQueue::Event* p_param1,
+	undefined4 p_x,
+	undefined4 p_y
+)
 {
-	STUB(0x004674c0);
+	undefined4 x = p_x;
+	undefined4 y = p_y;
+
+	if (!(m_flags & 2)) {
+		return FALSE;
+	}
+
+	FUN_004731b0(x, y);
+
+	ObscureVantageEventResultValue leafResult;
+
+	leafResult.m_widget = VTable0x30(p_param1, x, y);
+	return leafResult.m_result;
+}
+
+// FUNCTION: LEGORACERS 0x00467510
+ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(
+	InputEventQueue::Event* p_param1,
+	undefined4 p_x,
+	undefined4 p_y
+)
+{
+	undefined4 x = p_x;
+	undefined4 y = p_y;
+
+	if (!(m_flags & 2)) {
+		return FALSE;
+	}
+
+	FUN_004731b0(x, y);
+
+	ObscureVantageEventResultValue leafResult;
+
+	leafResult.m_widget = VTable0x34(p_param1, x, y);
+	return leafResult.m_result;
+}
+
+// STUB: LEGORACERS 0x00467560
+LegoBool32 ObscureBanner0x9f4::FUN_00467560(InputEventQueue::Event*, undefined4)
+{
+	STUB(0x00467560);
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00467510
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(InputEventQueue::Event*, undefined4, undefined4)
+// STUB: LEGORACERS 0x00467670
+LegoBool32 ObscureBanner0x9f4::FUN_00467670(InputEventQueue::Event*, undefined4)
 {
-	STUB(0x00467510);
+	STUB(0x00467670);
 	return FALSE;
 }
 
@@ -98,68 +204,181 @@ ObscureBanner0x9f4::~ObscureBanner0x9f4()
 void ObscureBanner0x9f4::Reset()
 {
 	m_unk0x5ec.VTable0x08();
-	m_unk0x9e8 = 0;
+	m_unk0x9e8 = NULL;
 	m_unk0x9f0 = 0;
 	m_unk0x9ec = 0;
 	ObscureBanner0x5ec::Reset();
 }
 
-// STUB: LEGORACERS 0x00467880
+// FUNCTION: LEGORACERS 0x00467880
 LegoBool32 ObscureBanner0x9f4::VTable0x08()
 {
-	STUB(0x00467880);
-	return ObscureIcon0x1a8::VTable0x08();
+	LegoBool32 result = TRUE;
+
+	if (result & m_flags) {
+		if (m_unk0x9e8) {
+			m_unk0x9e8->VTable0x08();
+		}
+
+		result = ObscureIcon0x1a8::VTable0x08();
+	}
+
+	return result;
 }
 
-// STUB: LEGORACERS 0x004678b0
-void ObscureBanner0x9f4::VTable0x14(VisualState0x4*)
+// FUNCTION: LEGORACERS 0x004678b0
+void ObscureBanner0x9f4::VTable0x14(VisualState0x4* p_visualState)
 {
-	STUB(0x004678b0);
+	if (m_unk0x9e8) {
+		m_unk0x9e8->VTable0x14(p_visualState);
+	}
+
+	ObscureVantage0x58::VTable0x14(p_visualState);
 }
 
-// STUB: LEGORACERS 0x004678e0
-ObscureVantageEventResult ObscureBanner0x9f4::VTable0x24(InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x004678e0
+ObscureVantageEventResult ObscureBanner0x9f4::VTable0x24(
+	InputEventQueue::Event* p_param1,
+	undefined4 p_x,
+	undefined4 p_y
+)
 {
-	STUB(0x004678e0);
-	return FALSE;
+	undefined4 x = p_x;
+	undefined4 y = p_y;
+
+	if (!(m_flags & 2)) {
+		return FALSE;
+	}
+
+	FUN_004731b0(x, y);
+
+	if (VTable0x30(p_param1, x, y)) {
+		return TRUE;
+	}
+
+	return m_unk0x9e8->VTable0x24(p_param1, x, y);
 }
 
-// STUB: LEGORACERS 0x00467960
+// FUNCTION: LEGORACERS 0x00467960
 void ObscureBanner0x9f4::VTable0x78()
 {
-	STUB(0x00467960);
+	if (m_unk0x9f0) {
+		return;
+	}
+
+	LegoU32 previousIndex = m_unk0x9e8->GetUnk0x6c();
+	m_unk0x9e8->VTable0x58();
+
+	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
+		m_eventHandler->VTable0x44(this);
+	}
+
+	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
 }
 
-// STUB: LEGORACERS 0x004679b0
+// FUNCTION: LEGORACERS 0x004679b0
 void ObscureBanner0x9f4::VTable0x7c()
 {
-	STUB(0x004679b0);
+	if (m_unk0x9f0) {
+		return;
+	}
+
+	LegoU32 previousIndex = m_unk0x9e8->GetUnk0x6c();
+	m_unk0x9e8->VTable0x54();
+
+	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
+		m_eventHandler->VTable0x44(this);
+	}
+
+	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
 }
 
-// STUB: LEGORACERS 0x00467a00
+// FUNCTION: LEGORACERS 0x00467a00
 undefined4 ObscureBanner0x9f4::VTable0x3c(undefined4)
 {
-	STUB(0x00467a00);
+	LegoU32 index = m_stateFlags & c_flagBit1;
+
+	if (m_unk0x9f0 && !(m_unk0x9e8->GetUnk0x54() & 1) && m_eventHandler) {
+		m_eventHandler->VTable0x48(this);
+		m_unk0x9f0 = 0;
+	}
+
+	m_unk0x9e8->VTable0x48(&m_unk0x5e8->m_unk0x9c[index], &m_unk0x5e8->m_unk0x9c[index + 1]);
+	m_unk0x9e8->VTable0x4c(&m_unk0x5e8->m_unk0x9c[index], &m_unk0x5e8->m_unk0x9c[index + 1]);
+
+	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
+		VTable0x78();
+	}
+	else if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
+		VTable0x7c();
+	}
+	else {
+		m_unk0x9e8->VTable0x4c(&m_unk0x5e8->m_unk0xac[index], &m_unk0x5e8->m_unk0xac[index + 1]);
+	}
+
 	return 0;
 }
 
-// STUB: LEGORACERS 0x00467ae0
-undefined4 ObscureBanner0x9f4::VTable0x74(undefined4)
+// FUNCTION: LEGORACERS 0x00467ae0
+undefined4 ObscureBanner0x9f4::VTable0x74(undefined4 p_event)
 {
-	STUB(0x00467ae0);
-	return 0;
+	switch (p_event) {
+	case InputDevice::c_sourceJoystickButton | 0x7:
+	case InputDevice::c_sourceJoystickAxisButton | 0x0:
+	case InputDevice::c_sourceJoystickButton | 0xa:
+	case InputDevice::c_sourceKeyboard | 0xcd:
+		return InputDevice::c_sourceJoystickButton | 0xa;
+	case InputDevice::c_sourceJoystickButton | 0x9:
+	case InputDevice::c_sourceJoystickButton | 0xb:
+	case InputDevice::c_sourceJoystickAxisButton | 0x1:
+	case InputDevice::c_sourceKeyboard | 0xcb:
+		return InputDevice::c_sourceJoystickButton | 0xb;
+	default:
+		return InputDevice::c_sourceJoystickButton | 0x1;
+	}
 }
 
-// STUB: LEGORACERS 0x00467b50
-ObscureVantage0x58* ObscureBanner0x9f4::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00467b50
+ObscureVantage0x58* ObscureBanner0x9f4::VTable0x30(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x00467b50);
+	LegoU8 stateFlags = m_stateFlags;
+	LegoU32 keyCode = p_param1->m_keyCode;
+
+	if ((stateFlags & c_flagBit0) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
+		((stateFlags & c_flagBit2) || !p_param1->m_isRepeat)) {
+
+		undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
+		undefined4 result = VTable0x74(mappedEvent);
+
+		stateFlags = m_stateFlags;
+		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_unk0x9ec) && FUN_00467560(p_param1, result)) {
+			m_activeKeyCode = p_param1->m_keyCode;
+			return this;
+		}
+	}
+
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00467be0
-ObscureVantage0x58* ObscureBanner0x9f4::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00467be0
+ObscureVantage0x58* ObscureBanner0x9f4::VTable0x34(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x00467be0);
-	return NULL;
+	LegoU32 keyCode = p_param1->m_keyCode;
+
+	if (m_activeKeyCode != keyCode) {
+		return NULL;
+	}
+
+	undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
+	undefined4 result = VTable0x74(mappedEvent);
+
+	LegoU8 stateFlags = m_stateFlags;
+	m_activeKeyCode = 0;
+
+	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) && ((stateFlags & c_flagBit1) || m_unk0x9ec)) {
+		FUN_00467670(p_param1, result);
+	}
+
+	VTable0x58(0);
+	return this;
 }

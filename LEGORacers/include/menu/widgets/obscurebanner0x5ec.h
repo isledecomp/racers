@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscuretome0x3fc.h"
 
@@ -10,6 +11,12 @@
 // SIZE 0x5ec
 class ObscureBanner0x5ec : public ObscureIcon0x1a8 {
 public:
+	struct CreateState {
+		undefined m_unk0x00[0x9c]; // 0x00
+		undefined4 m_unk0x9c[4];   // 0x9c
+		undefined4 m_unk0xac[4];   // 0xac
+	};
+
 	ObscureBanner0x5ec();
 	void Reset() override;                                                                          // vtable+0x00
 	~ObscureBanner0x5ec() override;                                                                 // vtable+0x04
@@ -34,7 +41,7 @@ protected:
 	ObscureGlyph0x21c m_unk0x1ac; // 0x1ac
 	ObscureGlyph0x21c m_unk0x3c8; // 0x3c8
 	undefined4 m_unk0x5e4;        // 0x5e4
-	undefined4 m_unk0x5e8;        // 0x5e8
+	CreateState* m_unk0x5e8;      // 0x5e8
 };
 
 // VTABLE: LEGORACERS 0x004b2020
@@ -58,10 +65,13 @@ public:
 	// ObscureBanner0x9f4::`scalar deleting destructor'
 
 protected:
-	ObscureTome0x3fc m_unk0x5ec; // 0x5ec
-	undefined4 m_unk0x9e8;       // 0x9e8
-	undefined4 m_unk0x9ec;       // 0x9ec
-	undefined4 m_unk0x9f0;       // 0x9f0
+	LegoBool32 FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result);
+	LegoBool32 FUN_00467670(InputEventQueue::Event* p_event, undefined4 p_result);
+
+	ObscureTome0x3fc m_unk0x5ec;     // 0x5ec
+	ObscureCarousel0x94* m_unk0x9e8; // 0x9e8
+	undefined4 m_unk0x9ec;           // 0x9ec
+	undefined4 m_unk0x9f0;           // 0x9f0
 };
 
 #endif // OBSCUREBANNER0X5EC_H

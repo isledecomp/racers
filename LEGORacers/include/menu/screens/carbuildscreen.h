@@ -20,7 +20,7 @@ public:
 	undefined4 VTable0x28(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x28
 	void VTable0x34(ObscureIcon0x1a8*) override;                                        // vtable+0x34
 	void VTable0x38(ObscureVantage0x58*) override;                                      // vtable+0x38
-	void VTable0x44(undefined4) override;                                               // vtable+0x44
+	void VTable0x44(ObscureVantage0x58*) override;                                      // vtable+0x44
 	void VTable0x4c() override;                                                         // vtable+0x4c
 	void Reset() override;                                                              // vtable+0x54
 	~CarBuildScreen() override;                                                         // vtable+0x68

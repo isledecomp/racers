@@ -73,13 +73,13 @@ LegoBool32 GarageScreen::VTable0x88()
 }
 
 // STUB: LEGORACERS 0x00489130
-void GarageScreen::VTable0x44(undefined4)
+void GarageScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x00489130);
 }
 
 // STUB: LEGORACERS 0x004891a0 FOLDED
-void GarageScreen::VTable0x10(undefined4)
+void GarageScreen::VTable0x10(ObscureVantage0x58*)
 {
 	STUB(0x004891a0);
 }

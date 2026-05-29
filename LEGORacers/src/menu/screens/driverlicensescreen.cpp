@@ -24,7 +24,7 @@ const LegoChar* g_cheatNames[] = {
 };
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void DriverLicenseScreen::VTable0x44(undefined4)
+void DriverLicenseScreen::VTable0x44(ObscureVantage0x58*)
 {
 }
 

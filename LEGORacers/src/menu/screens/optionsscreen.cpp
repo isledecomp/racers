@@ -46,7 +46,7 @@ void OptionsScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004833e0
-void OptionsScreen::VTable0x44(undefined4)
+void OptionsScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x004833e0);
 }

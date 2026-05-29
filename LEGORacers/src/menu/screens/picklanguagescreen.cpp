@@ -51,9 +51,9 @@ LegoBool32 PickLanguageScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, Menu
 }
 
 // FUNCTION: LEGORACERS 0x00484620
-void PickLanguageScreen::VTable0x44(undefined4 p_unk0x04)
+void PickLanguageScreen::VTable0x44(ObscureVantage0x58* p_unk0x04)
 {
-	if (p_unk0x04 == (undefined4) &m_unk0x43c) {
+	if (p_unk0x04 == &m_unk0x43c) {
 		GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
 		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetUnk0x6c());
 		state.SetUnk0x00(TRUE);

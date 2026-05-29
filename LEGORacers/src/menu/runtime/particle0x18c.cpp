@@ -9,16 +9,22 @@ void Particle0x18c::FUN_004513d0(GolD3DRenderDevice*)
 {
 }
 
-// STUB: LEGORACERS 0x004893f0
+// FUNCTION: LEGORACERS 0x004893f0
 Particle0x18c::Particle0x18c()
 {
-	STUB(0x004893f0);
+	FUN_004894a0();
 }
 
 // STUB: LEGORACERS 0x00489440
 Particle0x18c::~Particle0x18c()
 {
 	STUB(0x00489440);
+}
+
+// STUB: LEGORACERS 0x004894a0
+void Particle0x18c::FUN_004894a0()
+{
+	STUB(0x004894a0);
 }
 
 // STUB: LEGORACERS 0x00489520

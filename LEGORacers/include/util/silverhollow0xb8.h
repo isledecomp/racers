@@ -1,6 +1,7 @@
 #ifndef SILVERHOLLOW0XB8_H
 #define SILVERHOLLOW0XB8_H
 
+#include "cmbmodelpart0x34.h"
 #include "decomp.h"
 #include "golorientedentity.h"
 #include "types.h"
@@ -10,6 +11,11 @@ class CmbModelPart0x34;
 class GolModelMaterialTable;
 class GolRenderDevice;
 class GolSceneNode;
+
+class CmbModelWithLinkPart0x38 : public CmbModelPart0x34 {
+public:
+	CmbModelWithLinkPart0x38* m_unk0x34; // 0x34
+};
 
 // Shares its vtable shape and core 0x00..0x8f layout with GOLDP GolModelEntity.
 // LEGORACERS promotes the first FloatyFerry tail block, 0x90..0xb8, into this
@@ -46,9 +52,13 @@ public:
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 	LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
+	LegoU32 GetFlags0xb4U32() const { return m_flagsU320xb4; }
 	void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
+	void SetFlags0xb4U32(LegoU32 p_flags) { m_flagsU320xb4 = p_flags; }
 
 protected:
+	friend class SordidWatch0xe8;
+
 	enum {
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,
@@ -69,8 +79,9 @@ protected:
 	LegoS32 m_partIndices[3];                   // 0x9c
 	CmbModelPart0x34* m_modelParts[3];          // 0xa8
 	union {
-		LegoFloat m_unk0xb4; // 0xb4
-		LegoU8 m_flags0xb4;  // 0xb4
+		LegoFloat m_unk0xb4;    // 0xb4
+		LegoU8 m_flags0xb4;     // 0xb4
+		LegoU32 m_flagsU320xb4; // 0xb4
 	};
 };
 

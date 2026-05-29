@@ -3,9 +3,13 @@
 
 #include "decomp.h"
 #include "types.h"
+#include "util/silverhollow0xb8.h"
+
 
 class SordidWatch0xe8 {
 public:
+	SordidWatch0xe8();
+
 	struct SordidWatchInner0x38 {
 		undefined m_unk0x00[0x30];
 		undefined4 m_unk0x30;
@@ -14,18 +18,19 @@ public:
 
 	// size unknown, 0xe8 is a lower bound
 
-	undefined4 GetFlags() const { return m_flags; }
+	undefined4 GetFlags() const { return m_unk0x04.GetFlags0xb4(); }
 
 	void FUN_00412840();
 	void FUN_00412970();
 
 private:
-	undefined m_unk0x000[0xa8];       // 0x00
-	undefined4 m_unk0xa8;             // 0xa8
-	SordidWatchInner0x38* m_unk0xac;  // 0xac
-	SordidWatchInner0x38* m_unk0xb0;  // 0xb0
-	undefined4 m_unk0xb4;             // 0xb4
-	undefined4 m_flags;               // 0xb8
+	undefined m_unk0x000[4];    // 0x00
+	SilverHollow0xb8 m_unk0x04; // 0x04
+	// undefined4 m_unk0xa8;             // 0xa8
+	// SordidWatchInner0x38* m_unk0xac;  // 0xac
+	// SordidWatchInner0x38* m_unk0xb0;  // 0xb0
+	// undefined4 m_unk0xb4;             // 0xb4
+	// undefined4 m_flags;               // 0xb8
 	undefined m_unk0xb9[0xd0 - 0xbc]; // 0xb9
 	undefined4 m_unk0xd0;             // 0xd0
 	undefined4 m_unk0xd4;             // 0xd4

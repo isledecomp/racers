@@ -16,6 +16,8 @@ public:
 	~Particle0x18c();
 
 	LegoU8 GetFlags() const { return (LegoU8) m_unk0x008.GetFlags(); }
+
+	void FUN_004894a0();
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);

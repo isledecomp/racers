@@ -12,7 +12,7 @@ void Particle0x18c::FUN_004513d0(GolD3DRenderDevice*)
 // FUNCTION: LEGORACERS 0x004893f0
 Particle0x18c::Particle0x18c()
 {
-	FUN_004894a0();
+	Reset();
 }
 
 // STUB: LEGORACERS 0x00489440
@@ -21,10 +21,28 @@ Particle0x18c::~Particle0x18c()
 	STUB(0x00489440);
 }
 
-// STUB: LEGORACERS 0x004894a0
-void Particle0x18c::FUN_004894a0()
+// FUNCTION: LEGORACERS 0x004894a0
+void Particle0x18c::Reset()
 {
-	STUB(0x004894a0);
+	m_unk0x000 = 0;
+	m_unk0x004 = 0;
+	m_unk0x184 = 0;
+	m_unk0x188 = 0;
+	m_unk0x160.m_m[0][0] = 1.0;
+	m_unk0x160.m_m[0][1] = 0.0;
+	m_unk0x160.m_m[0][2] = 0.0;
+	m_unk0x160.m_m[1][0] = 0.0;
+	m_unk0x160.m_m[1][1] = 1.0;
+	m_unk0x160.m_m[1][2] = 0.0;
+	m_unk0x160.m_m[2][0] = 0.0;
+	m_unk0x160.m_m[2][1] = 0.0;
+	m_unk0x160.m_m[2][2] = 1.0;
+	m_unk0x154.m_x = 0.0;
+	m_unk0x154.m_y = 0.0;
+	m_unk0x154.m_z = 0.0;
+	m_unk0x150 = 0;
+	m_unk0x14c = 0;
+	m_unk0x148 = 0;
 }
 
 // STUB: LEGORACERS 0x00489520

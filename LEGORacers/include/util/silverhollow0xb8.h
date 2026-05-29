@@ -57,7 +57,7 @@ public:
 	void SetFlags0xb4U32(LegoU32 p_flags) { m_flagsU320xb4 = p_flags; }
 
 protected:
-	friend class SordidWatch0xe8;
+	friend class SordidWatch0x140;
 
 	enum {
 		c_flagBit0 = 1 << 0,

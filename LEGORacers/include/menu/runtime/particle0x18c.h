@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "golmath.h"
 #include "types.h"
-#include "util/sordidwatch0xe8.h"
+#include "util/sordidwatch0x140.h"
 
 class GolD3DRenderDevice;
 class GolExport;
@@ -17,7 +17,7 @@ public:
 
 	LegoU8 GetFlags() const { return (LegoU8) m_unk0x008.GetFlags(); }
 
-	void FUN_004894a0();
+	void Reset();
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);
@@ -29,11 +29,14 @@ public:
 private:
 	undefined4 m_unk0x000;               // 0x000
 	undefined4 m_unk0x004;               // 0x004
-	SordidWatch0xe8 m_unk0x008;          // 0x008
-	undefined m_unk0x0f0[0x154 - 0x0f0]; // 0x0c1
+	SordidWatch0x140 m_unk0x008;          // 0x008
+	undefined4 m_unk0x148;               // 0x184
+	undefined4 m_unk0x14c;               // 0x184
+	undefined4 m_unk0x150;               // 0x184
 	GolVec3 m_unk0x154;                  // 0x154
 	GolMatrix3 m_unk0x160;               // 0x160
-	undefined m_unk0x184[0x18c - 0x184]; // 0x184
+	undefined4 m_unk0x184;               // 0x184
+	undefined4 m_unk0x188;               // 0x188
 };
 
 #endif // PARTICLE0X18C_H

@@ -54,7 +54,7 @@ public:
 	// CmbModelPart0x34::`vector deleting destructor'
 
 private:
-	friend class SordidWatch0xe8;
+	friend class SordidWatch0x140;
 
 	CmbModelPartData0x18 m_data;      // 0x0c
 	CmbModelPartTrack0x14* m_unk0x24; // 0x24

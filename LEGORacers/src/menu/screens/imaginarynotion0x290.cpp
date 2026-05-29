@@ -16,6 +16,7 @@
 #include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscurelattice0x228.h"
+#include "menu/widgets/obscurerune0x4d8.h"
 #include "menu/widgets/obscuresigil0xdc.h"
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "menu/widgets/obscurevantage0x58.h"
@@ -648,11 +649,26 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undef
 	return p_unk0x04->FUN_00465820(&createParams, m_unk0x288);
 }
 
-// STUB: LEGORACERS 0x0046c510
-void ImaginaryNotion0x290::FUN_0046c510(undefined4*, undefined4, undefined2)
+// FUNCTION: LEGORACERS 0x0046c510
+LegoBool32 ImaginaryNotion0x290::FUN_0046c510(ObscureRune0x4d8* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c)
 {
-	// TODO
-	STUB(0x0046c510);
+	ObscureRune0x4d8::CreateParams0x88* sourceParams =
+		static_cast<ObscureRune0x4d8::CreateParams0x88*>(FUN_0046be10(p_unk0x0c));
+	if (!sourceParams) {
+		return FALSE;
+	}
+
+	ObscureRune0x4d8::CreateParams0x88 createParams = *sourceParams;
+	FUN_0046ba60(&createParams);
+
+	if (createParams.m_unk0x84) {
+		FUN_0046ba60(createParams.m_unk0x84);
+	}
+
+	createParams.m_unk0x7c = p_unk0x08;
+	createParams.m_unk0x5c = 1.0f;
+	createParams.m_unk0x80 = VTable0x6c();
+	return p_unk0x04->FUN_004661f0(&createParams, m_unk0x288);
 }
 
 // FUNCTION: LEGORACERS 0x0046c5b0

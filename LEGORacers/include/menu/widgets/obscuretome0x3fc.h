@@ -31,6 +31,7 @@ public:
 
 	LegoBool32 FUN_0046ecd0(CreateParams0x60* p_createParams);
 	void FUN_0046f050(VisualState0x4* p_visualState);
+	ObscureZebra0xa4* GetUnk0x58() { return &m_unk0x58; }
 
 	// SIZE 0x38
 	class CreateParamsPrefix0x38 : public ObscureVantage0x58::CreateParams0x38 {

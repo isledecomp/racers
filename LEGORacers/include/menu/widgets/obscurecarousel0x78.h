@@ -12,9 +12,8 @@ class SoundGroupBinding;
 class ObscureCarousel0x78 : public ObscureAnthem0x58 {
 public:
 	// SIZE 0x38
-	class CreateParams0x38 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x38 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
 	};
 
 	// SIZE 0x18

@@ -15,12 +15,11 @@ class UtopianPan0xa4;
 class ObscureTome0x3fc : public ObscureAnthem0x58 {
 public:
 	// SIZE 0x60
-	class CreateParams0x60 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x60 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		UtopianPan0xa4* m_images[8];      // 0x38
-		VisualState0x4 m_unk0x58;         // 0x58
-		LegoBool32 m_unk0x5c;             // 0x5c
+		UtopianPan0xa4* m_images[8]; // 0x38
+		VisualState0x4 m_unk0x58;    // 0x58
+		LegoBool32 m_unk0x5c;        // 0x5c
 	};
 
 	ObscureTome0x3fc();
@@ -34,9 +33,8 @@ public:
 	void FUN_0046f050(VisualState0x4* p_visualState);
 
 	// SIZE 0x38
-	class CreateParamsPrefix0x38 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParamsPrefix0x38 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
 	};
 
 private:

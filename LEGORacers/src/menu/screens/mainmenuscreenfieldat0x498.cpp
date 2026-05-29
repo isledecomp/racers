@@ -36,13 +36,13 @@ LegoBool32 MainMenuScreenFieldAt0x498::FUN_004824d0(CreateParams0xe0* p_createPa
 {
 	ObscureAnchor0x5c::CreateParams0x3c createParams;
 	::memset(&createParams, 0, sizeof(createParams));
-	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x30) + 8);
+	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x38));
 
-	LegoU8 flags = createParams.m_flagsAndName.m_flagsByte;
+	LegoU8 flags = createParams.m_flags;
 	createParams.m_rect.m_left = 0;
 	flags |= 1;
 	createParams.m_rect.m_top = 0;
-	createParams.m_flagsAndName.m_flagsByte = flags;
+	createParams.m_flags = flags;
 	createParams.m_rect.m_right = 0;
 	createParams.m_unk0x38 = m_unk0x1d8[0];
 	createParams.m_rect.m_bottom = 0;
@@ -58,7 +58,7 @@ LegoBool32 MainMenuScreenFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createPa
 	GolString string;
 	MainMenuScreenFieldAt0x420::CreateParams0x48 createParams;
 	::memset(&createParams, 0, sizeof(createParams));
-	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x30) + 8);
+	::memcpy(&createParams, p_createParams, sizeof(ObscureVantage0x58::CreateParams0x38));
 
 	p_createParams->m_unk0xcc->CopyStringByIndex(&string, p_createParams->m_unk0xd4);
 
@@ -77,7 +77,7 @@ LegoBool32 MainMenuScreenFieldAt0x498::FUN_00482540(CreateParams0xe0* p_createPa
 
 	LegoS32 right = m_unk0x208.GetRect()->m_right;
 	createParams.m_rect.m_right += right;
-	createParams.m_flagsAndName.m_flagsByte |= 3;
+	createParams.m_flags |= 3;
 	createParams.m_unk0x38 = p_createParams->m_unk0xcc;
 	createParams.m_unk0x3c = m_unk0x1c0[0];
 	createParams.m_unk0x40 = p_createParams->m_unk0xd4;

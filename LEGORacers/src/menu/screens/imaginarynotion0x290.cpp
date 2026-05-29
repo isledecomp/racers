@@ -14,6 +14,7 @@
 #include "menu/screens/mainmenuscreenfieldat0x420.h"
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscurecarousel0x78.h"
+#include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscuresigil0xdc.h"
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "menu/widgets/obscurevantage0x58.h"
@@ -344,7 +345,7 @@ LegoBool32 ImaginaryNotion0x290::VTable0x58(MenuToolCreateParams0x30* p_createPa
 }
 
 // FUNCTION: LEGORACERS 0x0046ba60
-void ImaginaryNotion0x290::FUN_0046ba60(ObscureVantage0x58::CreateParams0x30* p_createParams)
+void ImaginaryNotion0x290::FUN_0046ba60(ObscureVantage0x58::CreateParams0x38* p_createParams)
 {
 	if (!p_createParams->m_golExport) {
 		p_createParams->m_golExport = m_golExport;
@@ -367,11 +368,9 @@ void ImaginaryNotion0x290::FUN_0046ba60(ObscureVantage0x58::CreateParams0x30* p_
 	}
 
 	if (!p_createParams->m_parent && (p_createParams->m_flags & 1)) {
-		if (p_createParams->m_flagsAndName.m_unk0x2d[0]) {
+		if (p_createParams->m_name[0]) {
 			MenuInputBindingTable::Entry0x84* entry =
-				(MenuInputBindingTable::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(
-					p_createParams->m_flagsAndName.m_unk0x2d
-				);
+				(MenuInputBindingTable::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(p_createParams->m_name);
 
 			if (entry) {
 				p_createParams->m_unk0x26 = entry->m_unk0x20;
@@ -392,9 +391,7 @@ void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84* p_cr
 	if (!p_createParams->m_parent && p_createParams->m_unk0x74) {
 		if (p_createParams->m_unk0x4a) {
 			MenuInputBindingTable::Entry0x84* entry =
-				(MenuInputBindingTable::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(
-					p_createParams->m_flagsAndName.m_unk0x2d
-				);
+				(MenuInputBindingTable::Entry0x84*) GetMenuInputBindings()->FUN_0046aff0(p_createParams->m_name);
 			p_createParams->m_unk0x48 = entry->m_unk0x20;
 		}
 
@@ -551,12 +548,26 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c050(ObscureTome0x3fc* p_unk0x04, undef
 	return p_unk0x04->FUN_0046ecd0(&createParams);
 }
 
-// STUB: LEGORACERS 0x0046c110
-undefined4 ImaginaryNotion0x290::FUN_0046c110(undefined4*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c110
+LegoBool32 ImaginaryNotion0x290::FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
-	// TODO
-	STUB(0x0046c110);
-	return 0;
+	ObscureGlyph0x21c::CreateParams0x9c* sourceParams =
+		static_cast<ObscureGlyph0x21c::CreateParams0x9c*>(FUN_0046be10(p_unk0x08));
+	CeruleanEmperor0x4c::Entry0xa8* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0xa8*>(FUN_0046bd80(p_unk0x0c));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureGlyph0x21c::CreateParams0x9c createParams = *sourceParams;
+	FUN_0046bb10(&createParams);
+
+	for (LegoS32 i = 0; i < 6; i++) {
+		if (!createParams.m_images[i]) {
+			createParams.m_images[i] = styleEntry->m_unk0x90[i];
+		}
+	}
+
+	return p_unk0x04->FUN_004663d0(&createParams, (ObscureIcon0x1a8::CreateState0x90*) styleEntry);
 }
 
 // STUB: LEGORACERS 0x0046c1b0

@@ -16,9 +16,8 @@ class SoundGroupBinding;
 class ObscureIcon0x1a8 : public ObscureVantage0x58 {
 public:
 	// SIZE 0x84
-	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
 		LegoBool m_unk0x38;               // 0x38
 		undefined m_unk0x39[0x3c - 0x39]; // 0x39
 		undefined4 m_unk0x3c;             // 0x3c

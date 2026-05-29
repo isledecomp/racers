@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golname.h"
 #include "input/inputeventqueue.h"
 #include "menu/screens/imaginaryinterface.h"
 #include "render/rectangle.h"
@@ -31,8 +32,8 @@ union ObscureVantageEventResultValue {
 // SIZE 0x58
 class ObscureVantage0x58 {
 public:
-	// SIZE 0x30
-	class CreateParams0x30 {
+	// SIZE 0x38
+	class CreateParams0x38 {
 	public:
 		GolExport* m_golExport;                 // 0x00
 		GolD3DRenderDevice* m_renderer;         // 0x04
@@ -43,13 +44,9 @@ public:
 		VisualState0x4 m_unk0x22;               // 0x22
 		undefined2 m_unk0x26;                   // 0x26
 		ObscureVantage0x58* m_parent;           // 0x28
-		union {
-			undefined4 m_flags; // 0x2c
-			struct {
-				LegoU8 m_flagsByte;              // 0x2c
-				LegoChar m_unk0x2d[0x30 - 0x2d]; // 0x2d
-			} m_flagsAndName;
-		};
+		LegoU8 m_flags;                         // 0x2c
+		GolName m_name;                         // 0x2d
+		undefined m_unk0x35[0x38 - 0x35];       // 0x35
 	};
 
 	ObscureVantage0x58();
@@ -123,7 +120,7 @@ protected:
 	undefined m_unk0x54;  // 0x54
 
 protected:
-	LegoBool32 FUN_00472a60(CreateParams0x30* p_createParams);
+	LegoBool32 FUN_00472a60(CreateParams0x38* p_createParams);
 	void FUN_00472bc0();
 	void FUN_00472c10();
 };

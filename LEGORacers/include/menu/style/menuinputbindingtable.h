@@ -31,19 +31,16 @@ public:
 	};
 
 	// SIZE 0x38
-	class Entry0x38 : public ObscureVantage0x58::CreateParams0x30 {
+	class Entry0x38 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
 	};
 
 	// SIZE 0x3c
 	class Entry0x3c : public ObscureAnchor0x5c::CreateParams0x3c {};
 
 	// SIZE 0x48
-	class Entry0x48 : public ObscureVantage0x58::CreateParams0x30 {
+	class Entry0x48 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined4 m_unk0x30;      // 0x30
-		undefined4 m_unk0x34;      // 0x34
 		GolStringTable* m_unk0x38; // 0x38
 		GolFont0xa0* m_unk0x3c;    // 0x3c
 		undefined2 m_unk0x40;      // 0x40
@@ -58,18 +55,17 @@ public:
 	class Entry0x84 : public ObscureIcon0x1a8::CreateParams0x84 {};
 
 	// SIZE 0x88
-	class Entry0x88 : public ObscureVantage0x58::CreateParams0x30 {
+	class Entry0x88 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		LegoFloat m_unk0x38[9];           // 0x38
-		LegoFloat m_unk0x5c;              // 0x5c
-		LegoChar m_unk0x60[0x70 - 0x60];  // 0x60
-		undefined4 m_unk0x70;             // 0x70
-		LegoBool32 m_unk0x74;             // 0x74
-		undefined4 m_unk0x78;             // 0x78
-		undefined4 m_unk0x7c;             // 0x7c
-		LegoFloat m_unk0x80;              // 0x80
-		void* m_unk0x84;                  // 0x84
+		LegoFloat m_unk0x38[9];          // 0x38
+		LegoFloat m_unk0x5c;             // 0x5c
+		LegoChar m_unk0x60[0x70 - 0x60]; // 0x60
+		undefined4 m_unk0x70;            // 0x70
+		LegoBool32 m_unk0x74;            // 0x74
+		undefined4 m_unk0x78;            // 0x78
+		undefined4 m_unk0x7c;            // 0x7c
+		LegoFloat m_unk0x80;             // 0x80
+		void* m_unk0x84;                 // 0x84
 	};
 
 	// SIZE 0x98
@@ -140,19 +136,17 @@ public:
 	};
 
 	// SIZE 0x54
-	class Entry0x54 : public ObscureVantage0x58::CreateParams0x30 {
+	class Entry0x54 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		LegoChar m_unk0x38[0x48 - 0x38];  // 0x38
-		undefined4 m_unk0x48;             // 0x48
-		LegoU32 m_unk0x4c;                // 0x4c
-		LegoFloat m_unk0x50;              // 0x50
+		LegoChar m_unk0x38[0x48 - 0x38]; // 0x38
+		undefined4 m_unk0x48;            // 0x48
+		LegoU32 m_unk0x4c;               // 0x4c
+		LegoFloat m_unk0x50;             // 0x50
 	};
 
 	// SIZE 0x74
-	class Struct0x74 : public ObscureVantage0x58::CreateParams0x30 {
+	class Struct0x74 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
 		LegoS32 m_unk0x38;                // 0x38
 		Rect* m_unk0x3c;                  // 0x3c
 		LegoFloat m_unk0x40;              // 0x40
@@ -183,7 +177,7 @@ public:
 
 private:
 	void FUN_00469900(ResourceLoadParams* p_params);
-	void FUN_00469a20(ObscureVantage0x58::CreateParams0x30* p_entry);
+	void FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p_entry);
 	void FUN_00469c90(Entry0x98* p_entry);
 	void FUN_00469d20(LegoFloat* p_floats);
 	void FUN_00469d90(Entry0x3c* p_entry);

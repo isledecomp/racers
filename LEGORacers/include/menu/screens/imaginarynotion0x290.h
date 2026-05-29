@@ -20,6 +20,7 @@ class InputManager;
 class MainMenuScreenFieldAt0x420;
 class MenuToolCreateParams0x30;
 class ObscureCarousel0x78;
+class ObscureGlyph0x21c;
 class ObscureTome0x3fc;
 class ObscureVantage0x58;
 class ObscureSigil0xdc;
@@ -33,13 +34,12 @@ class AwakeKite0x20;
 class ImaginaryNotion0x290 : public ImaginaryInterface {
 public:
 	// SIZE 0x54
-	class FieldAt0x54 : public ObscureVantage0x58::CreateParams0x30 {
+	class FieldAt0x54 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		LegoChar m_unk0x38[0x48 - 0x38];  // 0x38
-		undefined4 m_unk0x48;             // 0x48
-		LegoU32 m_unk0x4c;                // 0x4c
-		LegoFloat m_unk0x50;              // 0x50
+		LegoChar m_unk0x38[0x48 - 0x38]; // 0x38
+		undefined4 m_unk0x48;            // 0x48
+		LegoU32 m_unk0x4c;               // 0x4c
+		LegoFloat m_unk0x50;             // 0x50
 	};
 
 	ImaginaryNotion0x290();
@@ -81,7 +81,7 @@ public:
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);
-	void FUN_0046ba60(ObscureVantage0x58::CreateParams0x30*);
+	void FUN_0046ba60(ObscureVantage0x58::CreateParams0x38*);
 	void FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*);
 	void FUN_0046bb90(undefined4*, undefined4);
 	void FUN_0046bc90(undefined4*, undefined4);
@@ -91,7 +91,7 @@ public:
 	LegoBool32 FUN_0046bef0(ObscureAnchor0x5c*, undefined2, undefined2);
 	LegoBool32 FUN_0046bf80(MainMenuScreenFieldAt0x420*, undefined2, undefined2, undefined2);
 	LegoBool32 FUN_0046c050(ObscureTome0x3fc*, undefined2, undefined2);
-	undefined4 FUN_0046c110(undefined4*, undefined2, undefined2);
+	LegoBool32 FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
 	LegoBool32 FUN_0046c240(ObscureCarousel0x78*, undefined2, undefined2);
 	void FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2);

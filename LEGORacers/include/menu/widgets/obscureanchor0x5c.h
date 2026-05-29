@@ -12,10 +12,9 @@ class UtopianPan0xa4;
 class ObscureAnchor0x5c : public ObscureAnthem0x58 {
 public:
 	// SIZE 0x3c
-	class CreateParams0x3c : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x3c : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		UtopianPan0xa4* m_unk0x38;        // 0x38
+		UtopianPan0xa4* m_unk0x38; // 0x38
 	};
 
 	ObscureAnchor0x5c();

@@ -34,7 +34,7 @@ void ObscureZebra0xa4::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004735a0
-LegoBool32 ObscureZebra0xa4::FUN_004735a0(CreateParams0x30* p_createParams)
+LegoBool32 ObscureZebra0xa4::FUN_004735a0(CreateParams0x38* p_createParams)
 {
 	VTable0x08();
 	return FUN_00472a60(p_createParams);

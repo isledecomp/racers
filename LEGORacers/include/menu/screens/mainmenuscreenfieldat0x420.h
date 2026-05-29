@@ -15,10 +15,8 @@ class GolStringTable;
 class MainMenuScreenFieldAt0x420 : public ObscureAnthem0x58 {
 public:
 	// SIZE 0x48
-	class CreateParams0x48 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x48 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined4 m_unk0x30;      // 0x30
-		undefined4 m_unk0x34;      // 0x34
 		GolStringTable* m_unk0x38; // 0x38
 		GolFont0xa0* m_unk0x3c;    // 0x3c
 		undefined2 m_unk0x40;      // 0x40

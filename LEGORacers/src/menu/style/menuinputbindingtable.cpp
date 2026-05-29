@@ -207,14 +207,14 @@ void MenuInputBindingTable::VTable0x14(undefined4 p_arg1)
 }
 
 // FUNCTION: LEGORACERS 0x00469a20
-void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x30* p_entry)
+void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p_entry)
 {
 	VisualState0x4* visualState = &p_entry->m_unk0x22;
 	visualState->m_unk0x00 = -1;
 
-	LegoU8 flags = p_entry->m_flagsAndName.m_flagsByte;
+	LegoU8 flags = p_entry->m_flags;
 	flags |= 1;
-	p_entry->m_flagsAndName.m_flagsByte = flags;
+	p_entry->m_flags = flags;
 	p_entry->m_unk0x20 = m_unk0x54++;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
@@ -234,20 +234,20 @@ void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x30* p
 		}
 		case GolFileParser::e_unknown0x32: {
 			LegoU8 value = m_parser->ReadInteger();
-			LegoU8 flags = p_entry->m_flagsAndName.m_flagsByte;
+			LegoU8 flags = p_entry->m_flags;
 			LegoU8 newFlags = flags;
 			newFlags ^= value;
 			newFlags &= 1;
 			newFlags ^= flags;
-			p_entry->m_flagsAndName.m_flagsByte = newFlags;
+			p_entry->m_flags = newFlags;
 			break;
 		}
 		case GolFileParser::e_unknown0x31:
-			::strncpy(p_entry->m_flagsAndName.m_unk0x2d, m_parser->ReadString(), 8);
+			::strncpy(p_entry->m_name, m_parser->ReadString(), 8);
 			break;
 		case GolFileParser::e_unknown0x2a:
 			FUN_0046b210(visualState->m_bytes);
-			p_entry->m_flagsAndName.m_flagsByte |= 2;
+			p_entry->m_flags |= 2;
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);
@@ -278,7 +278,7 @@ void MenuInputBindingTable::FUN_00469b50(Entry0x84* p_entry)
 		p_entry->m_unk0x74 = m_parser->ReadInteger();
 		return;
 	case GolFileParser::e_unknown0x31:
-		::strncpy(p_entry->m_flagsAndName.m_unk0x2d, m_parser->ReadString(), 8);
+		::strncpy(p_entry->m_name, m_parser->ReadString(), 8);
 		return;
 	case GolFileParser::e_unknown0x34:
 		p_entry->m_unk0x3c = m_parser->ReadInteger();
@@ -354,7 +354,7 @@ void MenuInputBindingTable::FUN_00469d90(Entry0x3c* p_entry)
 			break;
 		case GolFileParser::e_unknown0x2a:
 			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
-			p_entry->m_flagsAndName.m_flagsByte |= 2;
+			p_entry->m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x36:
 			FUN_00469a20(p_entry);
@@ -383,7 +383,7 @@ void MenuInputBindingTable::FUN_00469e20(Entry0x48* p_entry)
 			// Fall through.
 		case GolFileParser::e_unknown0x2a:
 			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
-			p_entry->m_flagsAndName.m_flagsByte |= 2;
+			p_entry->m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0x44 = m_parser->ReadInteger();
@@ -421,7 +421,7 @@ void MenuInputBindingTable::FUN_00469ee0(Entry0x60* p_entry)
 		case GolFileParser::e_unknown0x2a:
 			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
 			FUN_0046b210(p_entry->m_unk0x58.m_bytes);
-			p_entry->m_flagsAndName.m_flagsByte |= 2;
+			p_entry->m_flags |= 2;
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);

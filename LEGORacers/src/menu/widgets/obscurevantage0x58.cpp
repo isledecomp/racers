@@ -7,7 +7,7 @@
 
 DECOMP_SIZE_ASSERT(ObscureVantage0x58, 0x58)
 DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)
-DECOMP_SIZE_ASSERT(ObscureVantage0x58::CreateParams0x30, 0x30)
+DECOMP_SIZE_ASSERT(ObscureVantage0x58::CreateParams0x38, 0x38)
 
 // GLOBAL: LEGORACERS 0x004c7650
 Rect g_unk0x4c7650;
@@ -50,7 +50,7 @@ void ObscureVantage0x58::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00472a60
-LegoBool32 ObscureVantage0x58::FUN_00472a60(CreateParams0x30* p_createParams)
+LegoBool32 ObscureVantage0x58::FUN_00472a60(CreateParams0x38* p_createParams)
 {
 	VTable0x08();
 

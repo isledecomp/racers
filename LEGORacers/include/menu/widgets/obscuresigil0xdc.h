@@ -16,19 +16,18 @@ class GolWorldDatabase;
 class ObscureSigil0xdc : public ObscureVantage0x58 {
 public:
 	// SIZE 0x84
-	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x30 {
+	class CreateParams0x84 : public ObscureVantage0x58::CreateParams0x38 {
 	public:
-		undefined m_unk0x30[0x38 - 0x30]; // 0x30
-		GolVec3 m_unk0x38;                // 0x38
-		GolVec3 m_unk0x44;                // 0x44
-		GolVec3 m_unk0x50;                // 0x50
-		LegoFloat m_unk0x5c;              // 0x5c
-		LegoChar m_unk0x60[0x70 - 0x60];  // 0x60
-		undefined4 m_unk0x70;             // 0x70
-		LegoBool32 m_unk0x74;             // 0x74
-		undefined4 m_unk0x78;             // 0x78
-		undefined4 m_unk0x7c;             // 0x7c
-		LegoFloat m_unk0x80;              // 0x80
+		GolVec3 m_unk0x38;               // 0x38
+		GolVec3 m_unk0x44;               // 0x44
+		GolVec3 m_unk0x50;               // 0x50
+		LegoFloat m_unk0x5c;             // 0x5c
+		LegoChar m_unk0x60[0x70 - 0x60]; // 0x60
+		undefined4 m_unk0x70;            // 0x70
+		LegoBool32 m_unk0x74;            // 0x74
+		undefined4 m_unk0x78;            // 0x78
+		undefined4 m_unk0x7c;            // 0x7c
+		LegoFloat m_unk0x80;             // 0x80
 	};
 
 	ObscureSigil0xdc();

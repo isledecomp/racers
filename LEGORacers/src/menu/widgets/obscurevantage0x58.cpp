@@ -96,7 +96,7 @@ undefined4 ObscureVantage0x58::VTable0x3c(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0044e7f0 FOLDED
-undefined4 ObscureVantage0x58::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ObscureVantage0x58::VTable0x38(Rect*, Rect*)
 {
 	return NULL;
 }

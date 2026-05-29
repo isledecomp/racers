@@ -342,7 +342,7 @@ void ObscureSigil0xdc::FUN_00465ea0()
 }
 
 // FUNCTION: LEGORACERS 0x00465f20
-undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 {
 	m_renderer->VTable0xe4();
 	m_unk0x68 = m_renderer->GetUnk0x0c();
@@ -368,7 +368,7 @@ undefined4 ObscureSigil0xdc::VTable0x38(Rect*, Rect*)
 	m_renderer->VTable0xec(6);
 	m_renderer->VTable0xe8(FALSE);
 
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00465fe0

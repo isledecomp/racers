@@ -82,7 +82,7 @@ LegoBool32 ObscureGlyph0x21c::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x00466470
-undefined4 ObscureGlyph0x21c::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ObscureGlyph0x21c::VTable0x38(Rect*, Rect*)
 {
 	Rect rect;
 	rect.m_top = 0;
@@ -94,5 +94,5 @@ undefined4 ObscureGlyph0x21c::VTable0x38(Rect*, Rect*)
 	m_unk0x1c0.SetUnk0x58(m_unk0x1a8[m_visualStateIndex]);
 	m_unk0x1c0.VTable0x14(&m_unk0x174[m_visualStateIndex]);
 
-	return 0;
+	return NULL;
 }

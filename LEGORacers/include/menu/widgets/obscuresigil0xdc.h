@@ -38,7 +38,7 @@ public:
 	ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
 	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x38(Rect*, Rect*) override;                                             // vtable+0x38
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
 	undefined4 VTable0x3c(undefined4) override;                                               // vtable+0x3c
 	LegoBool32 FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);

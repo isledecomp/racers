@@ -15,6 +15,7 @@
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscureglyph0x21c.h"
+#include "menu/widgets/obscurelattice0x228.h"
 #include "menu/widgets/obscuresigil0xdc.h"
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "menu/widgets/obscurevantage0x58.h"
@@ -570,12 +571,28 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, unde
 	return p_unk0x04->FUN_004663d0(&createParams, (ObscureIcon0x1a8::CreateState0x90*) styleEntry);
 }
 
-// STUB: LEGORACERS 0x0046c1b0
-undefined4 ImaginaryNotion0x290::FUN_0046c1b0(undefined4*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c1b0
+LegoBool32 ImaginaryNotion0x290::FUN_0046c1b0(
+	ObscureLattice0x228* p_unk0x04,
+	undefined2 p_unk0x08,
+	undefined2 p_unk0x0c
+)
 {
-	// TODO
-	STUB(0x0046c1b0);
-	return 0;
+	ObscureLattice0x228::CreateParams0xa0* sourceParams =
+		static_cast<ObscureLattice0x228::CreateParams0xa0*>(FUN_0046be10(p_unk0x08));
+	CeruleanEmperor0x4c::Entry0x150* styleEntry = GetStyleEntry0x150(p_unk0x0c);
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureLattice0x228::CreateParams0xa0 createParams = *sourceParams;
+	FUN_0046bb10(&createParams);
+
+	if (!createParams.m_unk0x9c) {
+		createParams.m_unk0x9c = styleEntry->m_unk0xa8;
+	}
+
+	return p_unk0x04->FUN_004665f0(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c240

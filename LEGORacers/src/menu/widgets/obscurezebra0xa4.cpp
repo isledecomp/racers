@@ -51,7 +51,7 @@ void ObscureZebra0xa4::VTable0x14(VisualState0x4* p_param)
 }
 
 // FUNCTION: LEGORACERS 0x004735f0
-undefined4 ObscureZebra0xa4::VTable0x38(Rect*, Rect* p_rect)
+ObscureVantage0x58* ObscureZebra0xa4::VTable0x38(Rect*, Rect* p_rect)
 {
 	LegoU32 alphaFlags = 0;
 	LegoU32 alphaOverride = m_alphaOverride;
@@ -79,5 +79,5 @@ undefined4 ObscureZebra0xa4::VTable0x38(Rect*, Rect* p_rect)
 		m_renderer->ClearAlphaOverride();
 	}
 
-	return 0;
+	return NULL;
 }

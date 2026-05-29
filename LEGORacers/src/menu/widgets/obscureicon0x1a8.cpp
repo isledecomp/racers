@@ -24,9 +24,9 @@ LegoBool32 ObscureIcon0x1a8::VTable0x5c()
 
 // FUNCTION: LEGORACERS 0x004676c0
 #pragma code_seg(".text$obscureicon_vt38")
-undefined4 ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ObscureIcon0x1a8::VTable0x38(Rect*, Rect*)
 {
-	return 0;
+	return NULL;
 }
 #pragma code_seg()
 

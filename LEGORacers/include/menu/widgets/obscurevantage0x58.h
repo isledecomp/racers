@@ -64,7 +64,7 @@ public:
 	virtual ObscureVantage0x58* VTable0x2c(void*, undefined4, undefined4);                         // vtable+0x2c
 	virtual ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4);       // vtable+0x30
 	virtual ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4);       // vtable+0x34
-	virtual undefined4 VTable0x38(Rect*, Rect*);                                                   // vtable+0x38
+	virtual ObscureVantage0x58* VTable0x38(Rect*, Rect*);                                          // vtable+0x38
 	virtual undefined4 VTable0x3c(undefined4);                                                     // vtable+0x3c
 
 	void RemoveFromParent();

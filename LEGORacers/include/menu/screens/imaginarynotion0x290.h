@@ -21,6 +21,7 @@ class MainMenuScreenFieldAt0x420;
 class MenuToolCreateParams0x30;
 class ObscureCarousel0x78;
 class ObscureGlyph0x21c;
+class ObscureLattice0x228;
 class ObscureTome0x3fc;
 class ObscureVantage0x58;
 class ObscureSigil0xdc;
@@ -92,7 +93,7 @@ public:
 	LegoBool32 FUN_0046bf80(MainMenuScreenFieldAt0x420*, undefined2, undefined2, undefined2);
 	LegoBool32 FUN_0046c050(ObscureTome0x3fc*, undefined2, undefined2);
 	LegoBool32 FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
-	undefined4 FUN_0046c1b0(undefined4*, undefined2, undefined2);
+	LegoBool32 FUN_0046c1b0(ObscureLattice0x228*, undefined2, undefined2);
 	LegoBool32 FUN_0046c240(ObscureCarousel0x78*, undefined2, undefined2);
 	void FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2);
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);

@@ -25,11 +25,11 @@ public:
 	};
 
 	MainMenuScreenFieldAt0x420();
-	void Reset() override;                           // vtable+0x00
-	~MainMenuScreenFieldAt0x420() override;          // vtable+0x04
-	undefined4 VTable0x38(Rect*, Rect*) override;    // vtable+0x38
-	virtual void VTable0x40(GolString*, undefined4); // vtable+0x40
-	virtual void VTable0x44(undefined2, undefined4); // vtable+0x44
+	void Reset() override;                                 // vtable+0x00
+	~MainMenuScreenFieldAt0x420() override;                // vtable+0x04
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	virtual void VTable0x40(GolString*, undefined4);       // vtable+0x40
+	virtual void VTable0x44(undefined2, undefined4);       // vtable+0x44
 	LegoBool32 FUN_0046f520(CreateParams0x48* p_createParams, CeruleanEmperor0x4c::Entry0x14* p_unk0x08);
 	void FUN_0046f6b0(LegoS32 p_rightMargin);
 	void SetUnk0x60(GolFont0xa0* p_unk0x60) { m_unk0x60 = p_unk0x60; }

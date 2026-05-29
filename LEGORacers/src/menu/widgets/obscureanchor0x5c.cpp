@@ -43,7 +43,7 @@ LegoBool32 ObscureAnchor0x5c::FUN_0046f150(CreateParams0x3c* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0046f1a0
-undefined4 ObscureAnchor0x5c::VTable0x38(Rect* p_rect, Rect* p_arg)
+ObscureVantage0x58* ObscureAnchor0x5c::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
 	Rect sourceRect;
 	sourceRect.m_top = 0;
@@ -55,5 +55,5 @@ undefined4 ObscureAnchor0x5c::VTable0x38(Rect* p_rect, Rect* p_arg)
 	FUN_00473050(p_rect, &sourceRect);
 	FUN_00472d70(p_arg, &sourceRect, m_unk0x58);
 
-	return 0;
+	return NULL;
 }

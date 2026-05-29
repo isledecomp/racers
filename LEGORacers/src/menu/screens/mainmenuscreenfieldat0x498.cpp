@@ -152,14 +152,14 @@ void MainMenuScreenFieldAt0x498::VTable0x40(ImaginaryInterface* p_eventHandler)
 }
 
 // FUNCTION: LEGORACERS 0x00482910
-undefined4 MainMenuScreenFieldAt0x498::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* MainMenuScreenFieldAt0x498::VTable0x38(Rect*, Rect*)
 {
 	m_unk0x208.SetUnk0x58(m_unk0x1d8[m_visualStateIndex]);
 	m_unk0x208.VTable0x14(&m_unk0x1f0[m_visualStateIndex]);
 	m_unk0x264.SetUnk0x60(m_unk0x1c0[m_visualStateIndex]);
 	m_unk0x264.VTable0x14(&m_unk0x174[m_visualStateIndex]);
 
-	return 0;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00482980

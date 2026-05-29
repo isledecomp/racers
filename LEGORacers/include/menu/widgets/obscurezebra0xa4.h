@@ -11,10 +11,10 @@
 class ObscureZebra0xa4 : public ObscureVantage0x58 {
 public:
 	ObscureZebra0xa4();
-	void Reset() override;                        // vtable+0x00
-	~ObscureZebra0xa4() override;                 // vtable+0x04
-	void VTable0x14(VisualState0x4*) override;    // vtable+0x14
-	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	void Reset() override;                                 // vtable+0x00
+	~ObscureZebra0xa4() override;                          // vtable+0x04
+	void VTable0x14(VisualState0x4*) override;             // vtable+0x14
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 
 	LegoBool32 FUN_004735a0(CreateParams0x38* p_createParams);
 	void SetAlphaOverride(LegoU32 p_alphaOverride) { m_alphaOverride = p_alphaOverride; }

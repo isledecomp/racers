@@ -153,10 +153,10 @@ LegoS32 ObscureCarouselNavigator0x94::VTable0x58()
 }
 
 // STUB: LEGORACERS 0x0046dc70
-undefined4 ObscureCarouselNavigator0x94::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ObscureCarouselNavigator0x94::VTable0x38(Rect*, Rect*)
 {
 	STUB(0x0046dc70);
-	return 0;
+	return NULL;
 }
 
 // STUB: LEGORACERS 0x0046dd80

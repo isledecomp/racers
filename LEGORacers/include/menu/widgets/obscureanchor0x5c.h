@@ -19,9 +19,9 @@ public:
 
 	ObscureAnchor0x5c();
 
-	void Reset() override;                        // vtable+0x00
-	~ObscureAnchor0x5c() override;                // vtable+0x04
-	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	void Reset() override;                                 // vtable+0x00
+	~ObscureAnchor0x5c() override;                         // vtable+0x04
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 	LegoBool32 FUN_0046f150(CreateParams0x3c* p_createParams);
 	void SetUnk0x58(UtopianPan0xa4* p_unk0x58) { m_unk0x58 = p_unk0x58; }
 

@@ -84,12 +84,12 @@ protected:
 // SIZE 0x94
 class ObscureCarouselNavigator0x94 : public ObscureCarousel0x94 {
 public:
-	undefined4 VTable0x38(Rect*, Rect*) override;  // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;    // vtable+0x3c
-	void VTable0x44(undefined4) override;          // vtable+0x44
-	LegoS32 VTable0x54() override;                 // vtable+0x54
-	LegoS32 VTable0x58() override;                 // vtable+0x58
-	void VTable0x5c(ObscureVantage0x58*) override; // vtable+0x5c
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	undefined4 VTable0x3c(undefined4) override;            // vtable+0x3c
+	void VTable0x44(undefined4) override;                  // vtable+0x44
+	LegoS32 VTable0x54() override;                         // vtable+0x54
+	LegoS32 VTable0x58() override;                         // vtable+0x58
+	void VTable0x5c(ObscureVantage0x58*) override;         // vtable+0x5c
 
 	// SYNTHETIC: LEGORACERS 0x0046c870
 	// ObscureCarouselNavigator0x94::~ObscureCarouselNavigator0x94

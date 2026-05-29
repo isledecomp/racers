@@ -115,7 +115,7 @@ void MainMenuScreenFieldAt0x420::FUN_0046f6b0(LegoS32 p_rightMargin)
 }
 
 // FUNCTION: LEGORACERS 0x0046f6f0
-undefined4 MainMenuScreenFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
+ObscureVantage0x58* MainMenuScreenFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 lineCount = m_unk0x64.CountLines();
 	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
@@ -148,5 +148,5 @@ undefined4 MainMenuScreenFieldAt0x420::VTable0x38(Rect* p_rect, Rect* p_arg)
 		}
 	}
 
-	return 0;
+	return NULL;
 }

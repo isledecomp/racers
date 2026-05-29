@@ -316,6 +316,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/obscurecarousel0x78.cpp
   LEGORacers/src/menu/widgets/obscureglyph0x21c.cpp
   LEGORacers/src/menu/widgets/obscureicon0x1a8.cpp
+  LEGORacers/src/menu/widgets/obscurelattice0x228.cpp
   LEGORacers/src/menu/widgets/obscurelink0x1c.cpp
   LEGORacers/src/menu/widgets/obscurerune0x4d8.cpp
   LEGORacers/src/menu/widgets/obscuresigil0xdc.cpp

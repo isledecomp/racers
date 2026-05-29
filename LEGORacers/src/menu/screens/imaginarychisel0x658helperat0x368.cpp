@@ -171,10 +171,10 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x3c(undefined4 p_elapsedM
 }
 
 // FUNCTION: LEGORACERS 0x00466e40
-undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x38(Rect*, Rect*)
+ObscureVantage0x58* ImaginaryChisel0x658::HelperAt0x368::VTable0x38(Rect*, Rect*)
 {
 	if (m_unk0x2c8) {
-		return FALSE;
+		return NULL;
 	}
 
 	m_renderer->VTable0xe4();
@@ -185,7 +185,7 @@ undefined4 ImaginaryChisel0x658::HelperAt0x368::VTable0x38(Rect*, Rect*)
 	m_renderer->VTable0xec(0);
 	m_renderer->VTable0xe8(0);
 
-	return FALSE;
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00466ec0

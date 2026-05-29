@@ -17,10 +17,10 @@ public:
 	};
 
 	ObscureGlyph0x21c();
-	void Reset() override;                        // vtable+0x00
-	~ObscureGlyph0x21c() override;                // vtable+0x04
-	LegoBool32 VTable0x08() override;             // vtable+0x08
-	undefined4 VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	void Reset() override;                                 // vtable+0x00
+	~ObscureGlyph0x21c() override;                         // vtable+0x04
+	LegoBool32 VTable0x08() override;                      // vtable+0x08
+	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 
 	LegoBool32 FUN_004663d0(CreateParams0x9c* p_createParams, const ObscureIcon0x1a8::CreateState0x90* p_createState);
 

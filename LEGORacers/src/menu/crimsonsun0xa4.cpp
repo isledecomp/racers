@@ -198,7 +198,7 @@ void CrimsonSun0xa4::FieldAt0x6c8::VTable0x40(GolString* p_string, undefined4 p_
 }
 
 // FUNCTION: LEGORACERS 0x0046f9b0
-undefined4 CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect* p_rect, Rect* p_arg)
+ObscureVantage0x58* CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
 	if (!m_unk0x74) {
 		return MainMenuScreenFieldAt0x420::VTable0x38(p_rect, p_arg);
@@ -216,5 +216,5 @@ undefined4 CrimsonSun0xa4::FieldAt0x6c8::VTable0x38(Rect* p_rect, Rect* p_arg)
 	source.m_left = xOffset;
 
 	FUN_00472da0(&source, p_arg, m_unk0x60, &m_unk0x64, m_unk0x70, m_unk0x58->m_unk0x10);
-	return 0;
+	return NULL;
 }

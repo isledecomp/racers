@@ -18,8 +18,16 @@ void SordidWatch0xe8::FUN_00412840()
 	}
 }
 
-// STUB: LEGORACERS 0x00412970
+// FUNCTION: LEGORACERS 0x00412970
 void SordidWatch0xe8::FUN_00412970()
 {
-	STUB(0x00412970);
+	m_unk0xb4 = 0;
+	m_unk0xb0 = m_unk0xac;
+	for (LegoU32 i = 0; i < m_unk0xa8 - 1; i++) {
+		m_unk0xac[i].m_unk0x34 = &m_unk0xac[i + 1];
+		m_unk0xac[i].m_unk0x30 = 0;
+	}
+
+	m_unk0xac[m_unk0xa8 - 1].m_unk0x34 = 0;
+	m_unk0xac[m_unk0xa8 - 1].m_unk0x30 = 0;
 }

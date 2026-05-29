@@ -465,8 +465,8 @@ void CrimsonPebbleEvent0x14::FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2
 // STUB: LEGORACERS 0x0049ff70
 void CrimsonPebbleEvent0x14::ParseCommonToken(
 	GolFileParser* p_parser,
-	GolFileParser::ParserTokenType p_token,
-	CrimsonPebble0x228* p_owner
+	CrimsonPebble0x228* p_owner,
+	GolFileParser::ParserTokenType p_token
 )
 {
 	GolName name;
@@ -2192,7 +2192,7 @@ void CrimsonPebbleEvent0x50::Parse(GolFileParser* p_parser, CrimsonPebble0x228* 
 			m_unk0x48 |= 8;
 			break;
 		default:
-			ParseCommonToken(p_parser, token, p_owner);
+			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
 
@@ -2423,11 +2423,11 @@ void CrimsonPebbleEvent0x50Derived::Reset()
 	CrimsonPebbleEvent0x14::Reset();
 }
 
-// STUB: LEGORACERS 0x004a41a0
+// FUNCTION: LEGORACERS 0x004a41a0
 void CrimsonPebbleEvent0x50Derived::Parse(GolFileParser* p_parser, CrimsonPebble0x228* p_owner)
 {
 	if (m_unk0x14 != NULL) {
-		VTable0x14();
+		Reset();
 	}
 
 	p_parser->ReadLeftCurly();
@@ -2456,7 +2456,7 @@ void CrimsonPebbleEvent0x50Derived::Parse(GolFileParser* p_parser, CrimsonPebble
 			break;
 		default:
 			if (!ParseToken(p_parser, p_owner, token)) {
-				ParseCommonToken(p_parser, token, p_owner);
+				ParseCommonToken(p_parser, p_owner, token);
 			}
 			break;
 		}
@@ -2598,7 +2598,7 @@ void CrimsonPebbleMenuAnimationEvent0x2c::Parse(
 			m_unk0x22 = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
 		default:
-			ParseCommonToken(p_parser, token, p_owner);
+			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
 
@@ -2683,7 +2683,7 @@ void CrimsonPebbleEvent0x48::Parse(GolFileParser* p_parser, CrimsonPebble0x228* 
 			m_offsetDeltaZ = p_parser->ReadFloat();
 			break;
 		default:
-			ParseCommonToken(p_parser, token, p_owner);
+			ParseCommonToken(p_parser, p_owner, token);
 			break;
 		}
 

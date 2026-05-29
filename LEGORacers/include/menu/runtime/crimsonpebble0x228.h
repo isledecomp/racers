@@ -56,7 +56,7 @@ public:
 	void Reset();
 	void FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2);
 	void FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
-	void ParseCommonToken(GolFileParser* p_parser, GolFileParser::ParserTokenType p_token, CrimsonPebble0x228* p_owner);
+	void ParseCommonToken(GolFileParser* p_parser, CrimsonPebble0x228* p_owner, GolFileParser::ParserTokenType p_token);
 
 	// SYNTHETIC: LEGORACERS 0x0049fd90
 	// CrimsonPebbleEvent0x14::`scalar deleting destructor'

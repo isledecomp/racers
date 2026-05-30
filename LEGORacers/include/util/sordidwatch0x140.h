@@ -11,17 +11,18 @@ public:
 
 	undefined4 GetFlags() const { return m_unk0x010.GetFlags0xb4(); }
 
+	void Reset();
+	undefined4 FUN_00412760(undefined4* p_param1, LegoFloat p_param2);
 	void FUN_00412840();
 	void FUN_00412970();
-
-	void Reset();
+	undefined4 FUN_00412a00();
 
 private:
 	undefined4 m_unk0x000;             // 0x000
 	undefined4 m_unk0x004;             // 0x000
 	undefined4 m_unk0x008;             // 0x000
 	undefined4 m_unk0x00c;             // 0x000
-	SilverHollow0xb8 m_unk0x010;        // 0x004
+	SilverHollow0xb8 m_unk0x010;       // 0x004
 	undefined4 m_unk0xc8;              // 0x0c8
 	undefined4 m_unk0xcc;              // 0x0cc
 	undefined4 m_unk0xd0;              // 0x0d0

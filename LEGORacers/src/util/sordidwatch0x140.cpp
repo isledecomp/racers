@@ -44,6 +44,12 @@ void SordidWatch0x140::Reset()
 	m_unk0x13c = 0;
 }
 
+// STUB: LEGORACERS 0x00412760
+undefined4 SordidWatch0x140::FUN_00412760(undefined4* p_param1, LegoFloat p_param2)
+{
+	STUB(0x00412760);
+}
+
 // FUNCTION: LEGORACERS 0x00412840
 void SordidWatch0x140::FUN_00412840()
 {
@@ -77,4 +83,9 @@ void SordidWatch0x140::FUN_00412970()
 
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x34 = 0;
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x30 = 0;
+
+// STUB: LEGORACERS 0x00412760
+undefined4 SordidWatch0x140::FUN_00412a00()
+{
+	STUB(0x00412a00);
 }

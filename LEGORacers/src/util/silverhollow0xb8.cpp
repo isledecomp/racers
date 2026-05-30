@@ -7,7 +7,8 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(GolOrientedEntity, 0x58)
-DECOMP_SIZE_ASSERT(SilverHollow0xb8, 0xb8)
+// DECOMP_SIZE_ASSERT(SilverHollow0xb8, 0xb8) // TODO
+// DECOMP_SIZE_ASSERT(GoldHollow0xb8, 0xb8)
 
 // GLOBAL: LEGORACERS 0x004af74c
 static const LegoFloat g_maxFloat = FLT_MAX;

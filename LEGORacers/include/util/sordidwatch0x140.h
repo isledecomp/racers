@@ -13,7 +13,7 @@ public:
 	SordidWatch0x140();
 	~SordidWatch0x140();
 
-	undefined4 GetWhatever() const { return m_unk0x010.GetWhatever0xa8(); }
+	undefined4 GetWhatever() const { return (LegoU32)m_modelParts[0]; }
 
 	void Reset();
 
@@ -24,12 +24,27 @@ public:
 	void FUN_00412970();
 	GolWorldEntity* FUN_00412a00();
 
+	// LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
+	// void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
+	// LegoU32 GetWhatever0xa8() const { return (LegoU32)m_modelParts[0]; }
+	// void SetWhatever0xa8(LegoU32 p_flags) { m_modelParts[0] = (CmbModelPart0x34 *)p_flags; }
+
 private:
 	undefined4 m_unk0x000;             // 0x000
 	undefined4 m_unk0x004;             // 0x000
 	undefined4 m_unk0x008;             // 0x000
 	undefined4 m_unk0x00c;             // 0x000
 	SilverHollow0xb8 m_unk0x010;       // 0x004
+
+	// TODO: This block may be in a new subclass of SilverHollow0xb8
+	GolSceneNode* m_nodes[3];                   // 0x90
+	LegoS32 m_partIndices[3];                   // 0x9c
+	CmbModelPart0x34* m_modelParts[3];          // 0xa8
+	union {
+		LegoFloat m_unk0xb4;    // 0xb4
+		LegoU8 m_flags0xb4;     // 0xb4
+	};
+
 	undefined4 m_unk0xc8;              // 0x0c8
 	undefined4 m_unk0xcc;              // 0x0cc
 	undefined4 m_unk0xd0;              // 0x0d0

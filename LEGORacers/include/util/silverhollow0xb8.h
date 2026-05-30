@@ -51,10 +51,6 @@ public:
 	void FUN_00411730(LegoFloat p_arg);
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
-	LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
-	void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
-	LegoU32 GetWhatever0xa8() const { return (LegoU32)m_modelParts[0]; }
-	void SetWhatever0xa8(LegoU32 p_flags) { m_modelParts[0] = (CmbModelPart0x34 *)p_flags; }
 
 protected:
 	friend class SordidWatch0x140;
@@ -75,13 +71,13 @@ protected:
 	GolModelMaterialTable* m_materialTables[3]; // 0x6c
 	GolModelBase* m_models[3];                  // 0x78
 	LegoFloat m_modelDistances[3];              // 0x84
-	GolSceneNode* m_nodes[3];                   // 0x90
-	LegoS32 m_partIndices[3];                   // 0x9c
-	CmbModelPart0x34* m_modelParts[3];          // 0xa8
-	union {
-		LegoFloat m_unk0xb4;    // 0xb4
-		LegoU8 m_flags0xb4;     // 0xb4
-	};
+};
+
+// TODO: Is it inlined in OpalHaven, or embedded?
+struct SilverHollowSuffix {
+	GolSceneNode* m_nodes[3];          // 0x90
+	LegoS32 m_partIndices[3];          // 0x9c
+	CmbModelPart0x34* m_modelParts[3]; // 0xa8
 };
 
 #endif // SILVERHOLLOW0XB8_H

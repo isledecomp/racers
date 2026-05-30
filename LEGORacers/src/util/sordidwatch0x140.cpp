@@ -15,11 +15,11 @@ SordidWatch0x140::SordidWatch0x140()
 // FUNCTION: LEGORACERS 0x00412560
 SordidWatch0x140::~SordidWatch0x140()
 {
-  if (m_unk0x010.m_partIndices[0]) {
+  if (m_partIndices[0]) {
 	// TODO: What is the actual type of m_partIndices?
 	// It cannot be a pointer to something that has a destructor
-	delete ((undefined4*)m_unk0x010.m_partIndices[0]); // wrong, in to compile
-	m_unk0x010.m_partIndices[0] = 0;
+	delete ((undefined4*)m_partIndices[0]); // wrong, in to compile
+	m_partIndices[0] = 0;
   }
   m_unk0x010.VTable0x54();
   if (m_unk0x000) {
@@ -41,14 +41,14 @@ void SordidWatch0x140::Reset()
 	m_unk0x004 = 0;
 	m_unk0x008 = 0;
 	m_unk0x00c = 0;
-	m_unk0x010.m_nodes[0] = NULL;
-	m_unk0x010.m_nodes[1] = NULL;
-	m_unk0x010.m_nodes[2] = NULL;
-	m_unk0x010.m_partIndices[0] = 0;
-	m_unk0x010.m_modelParts[0] = NULL;
-	m_unk0x010.m_modelParts[1] = NULL;
-	m_unk0x010.m_modelParts[2] = NULL;
-	m_unk0x010.m_unk0xb4 = 0.0;
+	m_nodes[0] = NULL;
+	m_nodes[1] = NULL;
+	m_nodes[2] = NULL;
+	m_partIndices[0] = 0;
+	m_modelParts[0] = NULL;
+	m_modelParts[1] = NULL;
+	m_modelParts[2] = NULL;
+	m_unk0xb4 = 0.0;
 	m_unk0xc8 = 0;
 	m_unk0xcc = 0;
 	m_unk0xd0 = 0;
@@ -119,7 +119,7 @@ void SordidWatch0x140::FUN_00412840()
 {
 	// FIXME: wrong offsets now
 
-	if (m_unk0x010.GetWhatever0xa8() & 2) {
+	if ((LegoU32)m_modelParts[0] & 2) {
 		FUN_00412970();
 		m_unk0xd0 = 0;
 		m_unk0xd4 = 0;
@@ -127,7 +127,7 @@ void SordidWatch0x140::FUN_00412840()
 		m_unk0xdc = 0;
 		m_unk0xe0 = 0;
 		m_unk0xe4 = 0;
-		m_unk0x010.SetWhatever0xa8(m_unk0x010.GetWhatever0xa8() & ~0x1e);
+		m_modelParts[0] = (CmbModelPart0x34 *)((LegoU32)m_modelParts[0] & ~0x1e);
 	}
 }
 
@@ -150,17 +150,17 @@ void SordidWatch0x140::FUN_00412970()
 	// Working version with SilverHollow at 0x10
 	// TODO: This matches, but it is a semantic mess
 
-	m_unk0x010.m_partIndices[2] = 0;
-	m_unk0x010.m_partIndices[1] = m_unk0x010.m_partIndices[0];
+	m_partIndices[2] = 0;
+	m_partIndices[1] = m_partIndices[0];
 
-	for (LegoU32 i = 0; i < (undefined4) m_unk0x010.m_nodes[2] - 1; i++) {
-		((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[i].m_unk0x34 =
-			&((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[i + 1];
-		((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[i].m_unk0x30 = 0;
+	for (LegoU32 i = 0; i < (undefined4) m_nodes[2] - 1; i++) {
+		((CmbModelWithLinkPart0x38*) m_partIndices[0])[i].m_unk0x34 =
+			&((CmbModelWithLinkPart0x38*) m_partIndices[0])[i + 1];
+		((CmbModelWithLinkPart0x38*) m_partIndices[0])[i].m_unk0x30 = 0;
 	}
 
-	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x34 = 0;
-	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x30 = 0;
+	((CmbModelWithLinkPart0x38*) m_partIndices[0])[(undefined4) m_nodes[2] - 1].m_unk0x34 = 0;
+	((CmbModelWithLinkPart0x38*) m_partIndices[0])[(undefined4) m_nodes[2] - 1].m_unk0x30 = 0;
 
 }
 

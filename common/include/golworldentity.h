@@ -46,12 +46,16 @@ public:
 
 	void FUN_100286d0(GolVec3* p_center);
 	LegoFloat FUN_10028710();
+	void SetCenter(const GolVec3& p_center);
+
+	void SetVelocity(GolVec3& p_other) {
+		m_velocity.m_x = p_other.m_x;
+		m_velocity.m_y = p_other.m_y;
+		m_velocity.m_z = p_other.m_z;
+	}
 
 protected:
 	friend class GolWorldDatabase;
-	friend class SordidWatch0x140;
-
-	void SetCenter(const GolVec3& p_center);
 
 	GolVec3 m_center;   // 0x04
 	LegoFloat m_radius; // 0x10

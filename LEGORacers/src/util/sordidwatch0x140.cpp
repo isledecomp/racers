@@ -76,10 +76,9 @@ void SordidWatch0x140::FUN_00412430(
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3)
+undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3)
 {
-	// type is guessed and may be wrong
-	GolOrientedEntity* entity = (GolOrientedEntity*) FUN_00412a00();
+	SordidWatch0x140::SordidWatchInner0x38* entity = FUN_00412a00();
 
 	GolVec3 gstack18, localc;
 
@@ -97,13 +96,11 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 	}
 
 	entity->SetCenter(gstack18);
-	entity->m_velocity.m_x = p_param2->m_x;
-	entity->m_velocity.m_y = p_param2->m_y;
-	entity->m_velocity.m_z = p_param2->m_z;
+	entity->SetVelocity(*p_param2);
 
-	entity->m_orientation.m_m[0][0] = 0.0f;
-	entity->m_orientation.m_m[0][1] = p_param3;
-	entity->m_orientation.m_m[0][2] = 0.0f;
+	entity->m_unk0x28 = 0;
+	entity->m_unk0x2c = p_param3;
+	entity->m_unk0x30 = 0;
 
 	m_unk0xe8++;
 
@@ -131,35 +128,34 @@ void SordidWatch0x140::FUN_00412970()
 	m_unk0xb4 = 0;
 	m_unk0xb0 = m_unk0xac;
 	for (LegoU32 i = 0; i < m_unk0xa8 - 1; i++) {
-		m_unk0xac[i].m_unk0x34 = &m_unk0xac[i + 1];
+		m_unk0xac[i].m_next = &m_unk0xac[i + 1];
 		m_unk0xac[i].m_unk0x30 = 0;
 	}
-	m_unk0xac[m_unk0xa8 - 1].m_unk0x34 = NULL;
+	m_unk0xac[m_unk0xa8 - 1].m_next = NULL;
 	m_unk0xac[m_unk0xa8 - 1].m_unk0x30 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00412a00
-GolWorldEntity* SordidWatch0x140::FUN_00412a00()
+SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 {
-	SordidWatchInner0x38* current = m_unk0xb0;
-	SordidWatchInner0x38* next;
+	SordidWatchInner0x38* maxEntry = m_unk0xb0;
+	SordidWatchInner0x38* current;
 
-	current = m_unk0xb0;
-	if (current) {
-		m_unk0xb0 = current->m_unk0x34;
-		current->m_unk0x34 = m_unk0xb4;
-		m_unk0xb4 = current;
-		return current;
+	if (maxEntry) {
+		m_unk0xb0 = maxEntry->m_next;
+		maxEntry->m_next = m_unk0xb4;
+		m_unk0xb4 = maxEntry;
+		return maxEntry;
 	}
 	else {
-		current = m_unk0xb4;
-		LegoU32 max = current->m_unk0x28;
-		for (next = current->m_unk0x34; next != NULL; next = next->m_unk0x34) {
-			if (next->m_unk0x28 > max) {
-				current = next;
-				max = next->m_unk0x28;
+		maxEntry = m_unk0xb4;
+		LegoU32 maxValue = maxEntry->m_unk0x28;
+		for (current = maxEntry->m_next; current != NULL; current = current->m_next) {
+			if (current->m_unk0x28 > maxValue) {
+				maxEntry = current;
+				maxValue = current->m_unk0x28;
 			}
 		}
-		return current;
+		return maxEntry;
 	}
 }

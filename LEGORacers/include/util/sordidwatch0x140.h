@@ -14,7 +14,7 @@ public:
 		LegoU32 m_unk0x28;
 		undefined4 m_unk0x2c;
 		undefined4 m_unk0x30;
-		SordidWatchInner0x38* m_unk0x34;
+		SordidWatchInner0x38* m_next;
 	};
 
 	SordidWatch0x140();
@@ -26,10 +26,10 @@ public:
 
 	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, undefined4 p_param3, undefined4 p_param4);
 
-	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3);
+	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3);
 	void FUN_00412840();
 	void FUN_00412970();
-	GolWorldEntity* FUN_00412a00();
+	SordidWatchInner0x38* FUN_00412a00();
 
 	// LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
 	// void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }

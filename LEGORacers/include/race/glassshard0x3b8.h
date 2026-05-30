@@ -47,8 +47,10 @@ private:
 	undefined m_unk0x208[0x20c - 0x208]; // 0x208
 	OpalHaven0xf4 m_unk0x20c;            // 0x20c
 	SilverHollow0xb8 m_unk0x300;         // 0x300
-	SilverHollowSuffix m_unk0x390;       // 0x390
-	LegoU8 m_flags0xb4; // TODO rename
+	GolSceneNode* m_nodes[3];            // 0x390
+	LegoS32 m_partIndices[3];            // 0x39c
+	CmbModelPart0x34* m_modelParts[3];   // 0x3a8
+	LegoU8 m_flags0x3b4;                 // 0x3b4
 };
 
 #endif // GLASSSHARD0X3B8_H

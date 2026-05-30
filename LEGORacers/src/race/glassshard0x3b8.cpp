@@ -80,16 +80,15 @@ void GlassShard0x3b8::FUN_004230e0()
 		m_unk0x14 = previousBuffer;
 	}
 
-	m_flags0xb4 = (m_flags0xb4 & 0xfc) | c_flag0x3b4Bit4;
+	m_flags0x3b4 = (m_flags0x3b4 & 0xfc) | c_flag0x3b4Bit4;
 
-	// m_unk0x300.SetFlags0xb4((m_unk0x300.GetFlags0xb4() & 0xfc) | c_flag0x3b4Bit4);
 	m_unk0x18 = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x004234b0
 LegoBool32 GlassShard0x3b8::FUN_004234b0()
 {
-	LegoU8 flags = m_flags0xb4;
+	LegoU8 flags = m_flags0x3b4;
 	if (!(flags & (c_flag0x3b4Bit0 | c_flag0x3b4Bit4))) {
 		return FALSE;
 	}

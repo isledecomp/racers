@@ -75,11 +75,4 @@ protected:
 	LegoFloat m_modelDistances[3];              // 0x84
 };
 
-// TODO: Is it inlined in OpalHaven, or embedded?
-struct SilverHollowSuffix {
-	GolSceneNode* m_nodes[3];          // 0x90
-	LegoS32 m_partIndices[3];          // 0x9c
-	CmbModelPart0x34* m_modelParts[3]; // 0xa8
-};
-
 #endif // SILVERHOLLOW0XB8_H

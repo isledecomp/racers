@@ -10,7 +10,7 @@ public:
 	SordidWatch0x140();
 	~SordidWatch0x140();
 
-	undefined4 GetFlags() const { return m_unk0x010.GetFlags0xb4(); }
+	undefined4 GetWhatever() const { return m_unk0x010.GetWhatever0xa8(); }
 
 	void Reset();
 	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3);

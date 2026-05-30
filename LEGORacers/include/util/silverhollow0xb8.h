@@ -52,9 +52,9 @@ public:
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 	LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
-	LegoU32 GetFlags0xb4U32() const { return m_flagsU320xb4; }
 	void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
-	void SetFlags0xb4U32(LegoU32 p_flags) { m_flagsU320xb4 = p_flags; }
+	LegoU32 GetWhatever0xa8() const { return (LegoU32)m_modelParts[0]; }
+	void SetWhatever0xa8(LegoU32 p_flags) { m_modelParts[0] = (CmbModelPart0x34 *)p_flags; }
 
 protected:
 	friend class SordidWatch0x140;
@@ -81,7 +81,6 @@ protected:
 	union {
 		LegoFloat m_unk0xb4;    // 0xb4
 		LegoU8 m_flags0xb4;     // 0xb4
-		LegoU32 m_flagsU320xb4; // 0xb4
 	};
 };
 

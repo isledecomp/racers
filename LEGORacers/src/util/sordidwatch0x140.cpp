@@ -108,7 +108,7 @@ void SordidWatch0x140::FUN_00412840()
 {
 	// FIXME: wrong offsets now
 
-	if (m_unk0x010.GetFlags0xb4() & 2) {
+	if (m_unk0x010.GetWhatever0xa8() & 2) {
 		FUN_00412970();
 		m_unk0xd0 = 0;
 		m_unk0xd4 = 0;
@@ -116,13 +116,27 @@ void SordidWatch0x140::FUN_00412840()
 		m_unk0xdc = 0;
 		m_unk0xe0 = 0;
 		m_unk0xe4 = 0;
-		m_unk0x010.SetFlags0xb4U32(m_unk0x010.GetFlags0xb4U32() & ~0x1e);
+		m_unk0x010.SetWhatever0xa8(m_unk0x010.GetWhatever0xa8() & ~0x1e);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412970
 void SordidWatch0x140::FUN_00412970()
 {
+	/* Working version with SilverHollow at 0x04
+	m_unk0x04.m_modelParts[2] = NULL;
+	m_unk0x04.m_modelParts[1] = m_unk0x04.m_modelParts[0];
+	for (LegoU32 i = 0; i < m_unk0x04.m_partIndices[2] - 1; i++) {
+		((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i].m_unk0x34 =
+	&((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i + 1];
+		((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i].m_unk0x30 = 0;
+	}
+
+	((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[m_unk0x04.m_partIndices[2] - 1].m_unk0x34 = 0;
+	((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[m_unk0x04.m_partIndices[2] - 1].m_unk0x30 = 0;
+	*/
+
+	// Working version with SilverHollow at 0x10
 	// TODO: This matches, but it is a semantic mess
 
 	m_unk0x010.m_partIndices[2] = 0;
@@ -142,6 +156,8 @@ void SordidWatch0x140::FUN_00412970()
 // STUB: LEGORACERS 0x00412a00
 GolWorldEntity* SordidWatch0x140::FUN_00412a00()
 {
+	// This one has again VERY weird accesses into m_unk0x010
+
 	STUB(0x00412a00);
 	return NULL;
 }

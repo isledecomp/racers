@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "golstring.h"
 #include "menu/widgets/obscureicon0x1a8.h"
-#include "util/visualstate0x4.h"
+#include "render/rectangle.h"
 
 class GolFontBase0x40;
 class GolStringTable;
@@ -14,6 +14,19 @@ class GolStringTable;
 // SIZE 0x23c
 class IvoryTalon0x23c : public ObscureIcon0x1a8 {
 public:
+#pragma pack(push, 1)
+	// The four text-input sound-effect ids (key accepted, value cycled, key
+	// removed, input rejected), accessed individually as words but copied from
+	// the create params as two 32-bit units.
+	// SIZE 0x08
+	struct SoundIdSet {
+		union {
+			LegoU16 m_ids[4];        // 0x00
+			undefined4 m_idPairs[2]; // 0x00
+		};
+	};
+#pragma pack(pop)
+
 	// SIZE 0xa0
 	class CreateParams0xa0 : public ObscureIcon0x1a8::CreateParams0x84 {
 	public:
@@ -23,8 +36,8 @@ public:
 		GolFontBase0x40* m_unk0x8c;       // 0x8c
 		GolString* m_unk0x90;             // 0x90
 		undefined2 m_unk0x94;             // 0x94
-		VisualState0x4 m_unk0x96;         // 0x96
-		VisualState0x4 m_unk0x9a;         // 0x9a
+		SoundIdSet m_soundIds;            // 0x96
+		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
 	};
 
 	IvoryTalon0x23c();
@@ -42,19 +55,24 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00470f20
 	// IvoryTalon0x23c::`scalar deleting destructor'
 
+private:
+	ObscureVantage0x58* FUN_004713f0(InputEventQueue::Event* p_event);
+	ObscureVantage0x58* FUN_00471560(InputEventQueue::Event* p_event);
+
 protected:
-	VisualState0x4 m_unk0x1a8[2];               // 0x1a8
-	GolStringTable* m_unk0x1b0;                 // 0x1b0
-	undefined2 m_unk0x1b4[(0x1f4 - 0x1b4) / 2]; // 0x1b4
-	undefined2 m_unk0x1f4;                      // 0x1f4
-	undefined2 m_unk0x1f6;                      // 0x1f6
-	undefined4 m_unk0x1f8;                      // 0x1f8
-	GolString m_unk0x1fc;                       // 0x1fc
-	GolString m_unk0x208;                       // 0x208
-	GolFontBase0x40* m_unk0x214;                // 0x214
-	undefined m_unk0x218[0x238 - 0x218];        // 0x218
-	undefined2 m_unk0x238;                      // 0x238
-	undefined2 m_unk0x23a;                      // 0x23a
+	SoundIdSet m_soundIds;                    // 0x1a8
+	GolStringTable* m_stringTable;            // 0x1b0
+	undefined2 m_buffer[(0x1f4 - 0x1b4) / 2]; // 0x1b4
+	undefined2 m_unk0x1f4;                    // 0x1f4
+	undefined2 m_unk0x1f6;                    // 0x1f6
+	undefined4 m_unk0x1f8;                    // 0x1f8
+	GolString m_charset;                      // 0x1fc
+	GolString m_text;                         // 0x208
+	GolFontBase0x40* m_font;                  // 0x214
+	Rect m_unk0x218;                          // 0x218
+	undefined m_unk0x228[0x238 - 0x228];      // 0x228
+	undefined2 m_maxLength;                   // 0x238
+	undefined2 m_length;                      // 0x23a
 };
 
 #endif // IVORYTALON0X23C_H

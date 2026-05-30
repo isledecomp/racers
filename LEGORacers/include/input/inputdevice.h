@@ -73,6 +73,7 @@ public:
 		c_sourceMouse = 0x20000000,
 		c_sourceJoystickButton = 0x30000000,
 		c_sourceJoystickAxisButton = 0x40000000,
+		c_sourceCharacter = 0x70000000,
 		c_sourceMask = 0xf0000000,
 		c_keyCodeMask = 0x0000ffff,
 		c_pressed = 0x80,

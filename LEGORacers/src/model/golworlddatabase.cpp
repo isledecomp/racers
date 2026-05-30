@@ -1,8 +1,8 @@
 #include "world/golworlddatabase.h"
 
 #include "camera/golcamerabase.h"
-#include "mabmaterialanimation0x14.h"
 #include "golmodelentity.h"
+#include "mabmaterialanimation0x14.h"
 #include "scene/golskinnedentity.h"
 
 // FUNCTION: LEGORACERS 0x00416040

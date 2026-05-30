@@ -17,7 +17,7 @@ SordidWatch0x140::~SordidWatch0x140()
 {
 	if (m_unk0x0ac) {
 		delete[] m_unk0x0ac;
-		m_unk0x0ac = 0;
+		m_unk0x0ac = NULL;
 	}
 	m_unk0x010.VTable0x54();
 	if (m_unk0x000) {
@@ -41,7 +41,7 @@ void SordidWatch0x140::Reset()
 	m_unk0x0a0 = 0;
 	m_unk0x0a4 = 0;
 	m_unk0x0a8 = 0;
-	m_unk0x0ac = 0;
+	m_unk0x0ac = NULL;
 	m_unk0x0b8 = 0;
 	m_unk0x0bc = 0;
 	m_unk0x0c0 = 0;
@@ -76,26 +76,30 @@ void SordidWatch0x140::FUN_00412430(
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3)
+SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(
+	GolVec3* p_param1,
+	GolVec3* p_param2,
+	undefined4 p_param3
+)
 {
 	SordidWatch0x140::SordidWatchInner0x38* entity = FUN_00412a00();
 
-	GolVec3 gstack18, localc;
+	GolVec3 center, position;
 
 	if (!m_unk0x0e8) {
 		m_unk0x010.VTable0x08(*p_param1);
-		gstack18.m_x = 0.0f;
-		gstack18.m_y = 0.0f;
-		gstack18.m_z = 0.0f;
+		center.m_x = 0.0f;
+		center.m_y = 0.0f;
+		center.m_z = 0.0f;
 	}
 	else {
-		m_unk0x010.VTable0x04(&localc);
-		gstack18.m_x = p_param1->m_x - localc.m_x;
-		gstack18.m_y = p_param1->m_y - localc.m_y;
-		gstack18.m_z = p_param1->m_z - localc.m_z;
+		m_unk0x010.VTable0x04(&position);
+		center.m_x = p_param1->m_x - position.m_x;
+		center.m_y = p_param1->m_y - position.m_y;
+		center.m_z = p_param1->m_z - position.m_z;
 	}
 
-	entity->SetCenter(gstack18);
+	entity->SetCenter(center);
 	entity->SetVelocity(*p_param2);
 
 	entity->m_unk0x28 = 0;
@@ -104,7 +108,7 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 
 	m_unk0x0e8++;
 
-	return (undefined4) entity;
+	return entity;
 }
 
 // FUNCTION: LEGORACERS 0x00412840
@@ -125,11 +129,11 @@ void SordidWatch0x140::FUN_00412840()
 // FUNCTION: LEGORACERS 0x00412970
 void SordidWatch0x140::FUN_00412970()
 {
-	m_unk0x0b4 = 0;
+	m_unk0x0b4 = NULL;
 	m_unk0x0b0 = m_unk0x0ac;
 	for (LegoU32 i = 0; i < m_unk0x0a8 - 1; i++) {
 		m_unk0x0ac[i].m_next = &m_unk0x0ac[i + 1];
-		m_unk0x0ac[i].m_unk0x30 = 0;
+		m_unk0x0ac[i].m_unk0x30 = NULL;
 	}
 	m_unk0x0ac[m_unk0x0a8 - 1].m_next = NULL;
 	m_unk0x0ac[m_unk0x0a8 - 1].m_unk0x30 = 0;

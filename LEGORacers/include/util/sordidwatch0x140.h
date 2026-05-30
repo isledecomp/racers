@@ -26,17 +26,17 @@ public:
 
 	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, undefined4 p_param3, undefined4 p_param4);
 
-	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3);
+	SordidWatchInner0x38* FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3);
 	void FUN_00412840();
 	void FUN_00412970();
 	SordidWatchInner0x38* FUN_00412a00();
 
 private:
 	undefined4 m_unk0x000;              // 0x000
-	undefined4 m_unk0x004;              // 0x000
-	undefined4 m_unk0x008;              // 0x000
-	undefined4 m_unk0x00c;              // 0x000
-	SilverHollow0xb8 m_unk0x010;        // 0x004
+	undefined4 m_unk0x004;              // 0x004
+	undefined4 m_unk0x008;              // 0x008
+	undefined4 m_unk0x00c;              // 0x00c
+	SilverHollow0xb8 m_unk0x010;        // 0x010
 	undefined4 m_unk0x0a0;              // 0x0a0
 	undefined4 m_unk0x0a4;              // 0x0a4
 	undefined4 m_unk0x0a8;              // 0x0a8
@@ -56,7 +56,7 @@ private:
 	undefined4 m_unk0x0e0;              // 0x0e0
 	undefined4 m_unk0x0e4;              // 0x0e4
 	undefined4 m_unk0x0e8;              // 0x0e8
-	undefined m_unk0x0ec[0x120 - 0xec]; // 0x0e8
+	undefined m_unk0x0ec[0x120 - 0xec]; // 0x0ec
 	undefined4 m_unk0x120;              // 0x120
 	undefined4 m_unk0x134;              // 0x134
 	undefined4 m_unk0x12c;              // 0x12c

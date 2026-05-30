@@ -18,6 +18,7 @@ Particle0x18c::Particle0x18c()
 // FUNCTION: LEGORACERS 0x00489440
 Particle0x18c::~Particle0x18c()
 {
+	// TODO: Reset() and ~SordidWatch0x140 are thunked here
 	Reset();
 }
 

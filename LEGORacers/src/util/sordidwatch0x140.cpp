@@ -137,6 +137,8 @@ void SordidWatch0x140::FUN_00412970()
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x34 = 0;
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x30 = 0;
 
+}
+
 // STUB: LEGORACERS 0x00412a00
 GolWorldEntity* SordidWatch0x140::FUN_00412a00()
 {

@@ -15,7 +15,7 @@ public:
 	Particle0x18c();
 	~Particle0x18c();
 
-	LegoU8 GetWhatever() const { return (LegoU8) m_unk0x008.GetWhatever(); }
+	LegoU8 GetSordidUnk0xb8() const { return (LegoU8) m_unk0x008.GetUnk0xb8(); }
 
 	void Reset();
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);

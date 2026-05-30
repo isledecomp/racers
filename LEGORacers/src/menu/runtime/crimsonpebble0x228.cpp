@@ -207,7 +207,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489f00(WoozyTrade* p_param)
 void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetWhatever() & 0x02) {
+		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
 			m_particles[i].FUN_004897e0(p_elapsedMs);
 		}
 	}
@@ -217,7 +217,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489fa0(LegoU32 p_elapsedMs)
 void CrimsonPebbleAnimation0x33c::FUN_00489ff0(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetWhatever() & 0x02) {
+		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
 			m_particles[i].FUN_004513d0(p_renderer);
 		}
 	}
@@ -227,7 +227,7 @@ void CrimsonPebbleAnimation0x33c::FUN_00489ff0(GolD3DRenderDevice* p_renderer)
 void CrimsonPebbleAnimation0x33c::FUN_0048a040(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetWhatever() & 0x02) {
+		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
 			m_particles[i].FUN_00489960(p_renderer);
 		}
 	}

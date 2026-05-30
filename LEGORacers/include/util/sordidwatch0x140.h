@@ -10,10 +10,17 @@ class GolD3DRenderDevice;
 
 class SordidWatch0x140 {
 public:
+	struct SordidWatchInner0x38 : public GolWorldEntity {
+		LegoU32 m_unk0x28;
+		undefined4 m_unk0x2c;
+		undefined4 m_unk0x30;
+		SordidWatchInner0x38* m_unk0x34;
+	};
+
 	SordidWatch0x140();
 	~SordidWatch0x140();
 
-	undefined4 GetWhatever() const { return (LegoU32)m_modelParts[0]; }
+	undefined4 GetUnk0xb8() const { return m_unk0xb8; }
 
 	void Reset();
 
@@ -30,21 +37,21 @@ public:
 	// void SetWhatever0xa8(LegoU32 p_flags) { m_modelParts[0] = (CmbModelPart0x34 *)p_flags; }
 
 private:
-	undefined4 m_unk0x000;             // 0x000
-	undefined4 m_unk0x004;             // 0x000
-	undefined4 m_unk0x008;             // 0x000
-	undefined4 m_unk0x00c;             // 0x000
-	SilverHollow0xb8 m_unk0x010;       // 0x004
-
-	// TODO: This block may be in a new subclass of SilverHollow0xb8
-	GolSceneNode* m_nodes[3];                   // 0x90
-	LegoS32 m_partIndices[3];                   // 0x9c
-	CmbModelPart0x34* m_modelParts[3];          // 0xa8
-	union {
-		LegoFloat m_unk0xb4;    // 0xb4
-		LegoU8 m_flags0xb4;     // 0xb4
-	};
-
+	undefined4 m_unk0x000;       // 0x000
+	undefined4 m_unk0x004;       // 0x000
+	undefined4 m_unk0x008;       // 0x000
+	undefined4 m_unk0x00c;       // 0x000
+	SilverHollow0xb8 m_unk0x010; // 0x004
+	undefined4 m_unk0xa0;
+	undefined4 m_unk0xa4;
+	undefined4 m_unk0xa8;
+	SordidWatchInner0x38* m_unk0xac;
+	SordidWatchInner0x38* m_unk0xb0;
+	SordidWatchInner0x38* m_unk0xb4;
+	undefined4 m_unk0xb8;
+	undefined4 m_unk0xbc;
+	undefined4 m_unk0xc0;
+	undefined4 m_unk0xc4;
 	undefined4 m_unk0xc8;              // 0x0c8
 	undefined4 m_unk0xcc;              // 0x0cc
 	undefined4 m_unk0xd0;              // 0x0d0

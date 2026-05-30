@@ -17,6 +17,8 @@ public:
 	CmbModelWithLinkPart0x38* m_unk0x34; // 0x34
 };
 
+// FIXME: This block and potentially related ones need to be corrected! Also: Is this one the same as GolModelEntity now?
+
 // Shares its vtable shape and core 0x00..0x8f layout with GOLDP GolModelEntity.
 // LEGORACERS promotes the first FloatyFerry tail block, 0x90..0xb8, into this
 // complete class; GlassShard0x3b8 construction proves the 0xb8-byte size.

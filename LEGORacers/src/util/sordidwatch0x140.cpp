@@ -3,8 +3,8 @@
 #include "cmbmodelpart0x34.h"
 #include "menu/widgets/obscurebanner0x5ec.h"
 
-// TODO: Add when the size is known
-// DECOMP_SIZE_ASSERT(sordidwatch0x140, 0xTODO)
+DECOMP_SIZE_ASSERT(SordidWatch0x140, 0x140)
+DECOMP_SIZE_ASSERT(SordidWatch0x140::SordidWatchInner0x38, 0x38)
 
 // FUNCTION: LEGORACERS 0x00412360
 SordidWatch0x140::SordidWatch0x140()
@@ -15,23 +15,20 @@ SordidWatch0x140::SordidWatch0x140()
 // FUNCTION: LEGORACERS 0x00412560
 SordidWatch0x140::~SordidWatch0x140()
 {
-  if (m_partIndices[0]) {
-	// TODO: What is the actual type of m_partIndices?
-	// It cannot be a pointer to something that has a destructor
-	delete ((undefined4*)m_partIndices[0]); // wrong, in to compile
-	m_partIndices[0] = 0;
-  }
-  m_unk0x010.VTable0x54();
-  if (m_unk0x000) {
-    if (m_unk0x004) {
-		// proves m_unk0x000 is a pointer to a class, still unknown
-		// FIXME: hack to get a match, most likely not semantically correct
-		((ObscureBanner0x5ec*)m_unk0x000)->VTable0x48(m_unk0x004);
-      m_unk0x004 = 0;
-    }
-    m_unk0x000 = 0;
-  }
-  Reset();
+	if (m_unk0xac) {
+		delete[] m_unk0xac;
+		m_unk0xac = 0;
+	}
+	m_unk0x010.VTable0x54();
+	if (m_unk0x000) {
+		if (m_unk0x004) {
+			// FIXME: hack to get a match, most likely not the correct class
+			((ObscureBanner0x5ec*) m_unk0x000)->VTable0x48(m_unk0x004);
+			m_unk0x004 = 0;
+		}
+		m_unk0x000 = 0;
+	}
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00412390
@@ -41,14 +38,14 @@ void SordidWatch0x140::Reset()
 	m_unk0x004 = 0;
 	m_unk0x008 = 0;
 	m_unk0x00c = 0;
-	m_nodes[0] = NULL;
-	m_nodes[1] = NULL;
-	m_nodes[2] = NULL;
-	m_partIndices[0] = 0;
-	m_modelParts[0] = NULL;
-	m_modelParts[1] = NULL;
-	m_modelParts[2] = NULL;
-	m_unk0xb4 = 0.0;
+	m_unk0xa0 = 0;
+	m_unk0xa4 = 0;
+	m_unk0xa8 = 0;
+	m_unk0xac = 0;
+	m_unk0xb8 = 0;
+	m_unk0xbc = 0;
+	m_unk0xc0 = 0;
+	m_unk0xc4 = 0;
 	m_unk0xc8 = 0;
 	m_unk0xcc = 0;
 	m_unk0xd0 = 0;
@@ -91,9 +88,8 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 		gstack18.m_x = 0.0f;
 		gstack18.m_y = 0.0f;
 		gstack18.m_z = 0.0f;
-	} else {
-		// These vtable calls strongly suggest that the SilverHollow is at 0x10
-
+	}
+	else {
 		m_unk0x010.VTable0x04(&localc);
 		gstack18.m_x = p_param1->m_x - localc.m_x;
 		gstack18.m_y = p_param1->m_y - localc.m_y;
@@ -111,15 +107,13 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 
 	m_unk0xe8++;
 
-	return (undefined4)entity;
+	return (undefined4) entity;
 }
 
 // FUNCTION: LEGORACERS 0x00412840
 void SordidWatch0x140::FUN_00412840()
 {
-	// FIXME: wrong offsets now
-
-	if ((LegoU32)m_modelParts[0] & 2) {
+	if (m_unk0xb8 & 2) {
 		FUN_00412970();
 		m_unk0xd0 = 0;
 		m_unk0xd4 = 0;
@@ -127,48 +121,45 @@ void SordidWatch0x140::FUN_00412840()
 		m_unk0xdc = 0;
 		m_unk0xe0 = 0;
 		m_unk0xe4 = 0;
-		m_modelParts[0] = (CmbModelPart0x34 *)((LegoU32)m_modelParts[0] & ~0x1e);
+		m_unk0xb8 = m_unk0xb8 & ~0x1e;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412970
 void SordidWatch0x140::FUN_00412970()
 {
-	/* Working version with SilverHollow at 0x04
-	m_unk0x04.m_modelParts[2] = NULL;
-	m_unk0x04.m_modelParts[1] = m_unk0x04.m_modelParts[0];
-	for (LegoU32 i = 0; i < m_unk0x04.m_partIndices[2] - 1; i++) {
-		((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i].m_unk0x34 =
-	&((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i + 1];
-		((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[i].m_unk0x30 = 0;
+	m_unk0xb4 = 0;
+	m_unk0xb0 = m_unk0xac;
+	for (LegoU32 i = 0; i < m_unk0xa8 - 1; i++) {
+		m_unk0xac[i].m_unk0x34 = &m_unk0xac[i + 1];
+		m_unk0xac[i].m_unk0x30 = 0;
 	}
-
-	((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[m_unk0x04.m_partIndices[2] - 1].m_unk0x34 = 0;
-	((CmbModelWithLinkPart0x38*)m_unk0x04.m_modelParts[0])[m_unk0x04.m_partIndices[2] - 1].m_unk0x30 = 0;
-	*/
-
-	// Working version with SilverHollow at 0x10
-	// TODO: This matches, but it is a semantic mess
-
-	m_partIndices[2] = 0;
-	m_partIndices[1] = m_partIndices[0];
-
-	for (LegoU32 i = 0; i < (undefined4) m_nodes[2] - 1; i++) {
-		((CmbModelWithLinkPart0x38*) m_partIndices[0])[i].m_unk0x34 =
-			&((CmbModelWithLinkPart0x38*) m_partIndices[0])[i + 1];
-		((CmbModelWithLinkPart0x38*) m_partIndices[0])[i].m_unk0x30 = 0;
-	}
-
-	((CmbModelWithLinkPart0x38*) m_partIndices[0])[(undefined4) m_nodes[2] - 1].m_unk0x34 = 0;
-	((CmbModelWithLinkPart0x38*) m_partIndices[0])[(undefined4) m_nodes[2] - 1].m_unk0x30 = 0;
-
+	m_unk0xac[m_unk0xa8 - 1].m_unk0x34 = NULL;
+	m_unk0xac[m_unk0xa8 - 1].m_unk0x30 = 0;
 }
 
-// STUB: LEGORACERS 0x00412a00
+// FUNCTION: LEGORACERS 0x00412a00
 GolWorldEntity* SordidWatch0x140::FUN_00412a00()
 {
-	// This one has again VERY weird accesses into m_unk0x010
+	SordidWatchInner0x38* current = m_unk0xb0;
+	SordidWatchInner0x38* next;
 
-	STUB(0x00412a00);
-	return NULL;
+	current = m_unk0xb0;
+	if (current) {
+		m_unk0xb0 = current->m_unk0x34;
+		current->m_unk0x34 = m_unk0xb4;
+		m_unk0xb4 = current;
+		return current;
+	}
+	else {
+		current = m_unk0xb4;
+		LegoU32 max = current->m_unk0x28;
+		for (next = current->m_unk0x34; next != NULL; next = next->m_unk0x34) {
+			if (next->m_unk0x28 > max) {
+				current = next;
+				max = next->m_unk0x28;
+			}
+		}
+		return current;
+	}
 }

@@ -318,10 +318,12 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/obscureicon0x1a8.cpp
   LEGORacers/src/menu/widgets/obscurelattice0x228.cpp
   LEGORacers/src/menu/widgets/obscurelink0x1c.cpp
+  LEGORacers/src/menu/widgets/maroonatoll0x170.cpp
   LEGORacers/src/menu/widgets/obscurerune0x4d8.cpp
   LEGORacers/src/menu/widgets/obscuresigil0xdc.cpp
   LEGORacers/src/menu/widgets/obscuretome0x3fc.cpp
   LEGORacers/src/menu/widgets/obscurevantage0x58.cpp
+  LEGORacers/src/menu/widgets/violetshoal0xc0.cpp
   LEGORacers/src/menu/widgets/obscurezebra0xa4.cpp
   LEGORacers/src/menu/screens/editcarscreen.cpp
   LEGORacers/src/menu/screens/circuitracescreen.cpp
@@ -389,6 +391,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/gdbpositionvertexpool0x0c.cpp
   LEGORacers/src/util/garnetflare0x60.cpp
   LEGORacers/src/util/tanzanitewisp0x88.cpp
+  LEGORacers/src/util/tealcrucible0x50.cpp
   LEGORacers/src/util/sordidwatch0xe8.cpp
   LEGORacers/src/menu/chromespike0x4.cpp
   LEGORacers/src/text/coppercrest0x40.cpp

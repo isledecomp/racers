@@ -4,6 +4,14 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/mainmenuscreenfieldat0x22dc.h"
+#include "menu/screens/mainmenuscreenfieldat0x420.h"
+#include "menu/screens/mainmenuscreenfieldat0x498.h"
+#include "menu/widgets/maroonatoll0x170.h"
+#include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
+#include "menu/widgets/obscurerune0x4d8.h"
+#include "util/tealcrucible0x50.h"
 
 // VTABLE: LEGORACERS 0x004b332c
 // SIZE 0x4774
@@ -28,7 +36,42 @@ public:
 	// EditDriverScreen::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x4774 - 0x368]; // 0x0368
+	void FUN_0047d100(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
+	LegoBool32 FUN_0047d170(
+		MaroonAtoll0x170* p_unk0x04,
+		undefined2 p_unk0x08,
+		undefined2 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
+	void FUN_0047d230();
+	undefined4 FUN_0047d560();
+	undefined4 FUN_0047d5d0();
+	void FUN_0047d6f0();
+	void FUN_0047d740();
+	void FUN_0047d840();
+	void FUN_0047d8e0();
+	void FUN_0047d940();
+
+	ObscureAnchor0x5c m_unk0x368;            // 0x0368
+	ObscureAnchor0x5c m_unk0x3c4;            // 0x03c4
+	MaroonAtoll0x170 m_unk0x420[4];          // 0x0420
+	ObscureBanner0x9f4 m_unk0x9e0[4];        // 0x09e0
+	ObscureRune0x4d8 m_unk0x31b0;            // 0x31b0
+	MainMenuScreenFieldAt0x420 m_unk0x3688;  // 0x3688
+	MainMenuScreenFieldAt0x498 m_unk0x3700;  // 0x3700
+	MainMenuScreenFieldAt0x498 m_unk0x39f0;  // 0x39f0
+	MainMenuScreenFieldAt0x498 m_unk0x3ce0;  // 0x3ce0
+	MainMenuScreenFieldAt0x498 m_unk0x3fd0;  // 0x3fd0
+	MainMenuScreenFieldAt0x498 m_unk0x42c0;  // 0x42c0
+	TealCrucible0x50 m_unk0x45b0;            // 0x45b0
+	MainMenuScreenFieldAt0x22dc m_unk0x4600; // 0x4600
+	LegoU8 m_unk0x475c[4];                   // 0x475c
+	undefined m_unk0x4760[0x4764 - 0x4760];  // 0x4760
+	LegoU32 m_unk0x4764;                     // 0x4764
+	LegoU16 m_unk0x4768;                     // 0x4768
+	undefined m_unk0x476a[0x476c - 0x476a];  // 0x476a
+	LegoU32 m_unk0x476c;                     // 0x476c
+	LegoU32 m_unk0x4770;                     // 0x4770
 };
 
 #endif // EDITDRIVERSCREEN_H

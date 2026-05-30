@@ -25,16 +25,16 @@ void EmberVault0x330::FUN_00471930(CreateParams0xa0*)
 	undefined2 buf[2];
 	LegoU32 maxWidth = 0;
 
-	buf[0] = *m_unk0x1fc.FromCursor(0);
+	buf[0] = *m_charset.FromCursor(0);
 	buf[1] = 0;
 	localStr.CopyFromBufSelection(buf, 2);
 	localStr.ResetCursors();
 
-	for (LegoS32 i = 0; i < m_unk0x1fc.SelectionLength(); i++) {
+	for (LegoS32 i = 0; i < m_charset.SelectionLength(); i++) {
 		LegoS32 width;
 		LegoS32 height;
-		buf[0] = *m_unk0x1fc.FromCursor(i);
-		m_unk0x214->FUN_00408be0(&localStr, &width, &height);
+		buf[0] = *m_charset.FromCursor(i);
+		m_font->FUN_00408be0(&localStr, &width, &height);
 		if (width > maxWidth) {
 			maxWidth = width;
 		}
@@ -48,14 +48,14 @@ void EmberVault0x330::FUN_00471930(CreateParams0xa0*)
 void EmberVault0x330::FUN_00471a30()
 {
 	if (m_unk0x1f8 == 4) {
-		m_unk0x208.SetCursorEnd(m_unk0x208.SelectionLength() - 1);
+		m_text.SetCursorEnd(m_text.SelectionLength() - 1);
 	}
 
 	LegoS32 width;
 	LegoS32 height;
-	m_unk0x214->FUN_00408be0(&m_unk0x208, &width, &height);
+	m_font->FUN_00408be0(&m_text, &width, &height);
 
-	m_unk0x208.FirstLine();
+	m_text.FirstLine();
 	m_unk0x23c.FUN_00467fc0(m_unk0x34.m_left + width, m_unk0x34.m_bottom - 6);
 }
 
@@ -108,7 +108,7 @@ ObscureVantage0x58* EmberVault0x330::VTable0x38(Rect* p_param1, Rect* p_param2)
 			m_unk0x23c.SetParent(ObscureVantage0x58::m_parent);
 		}
 
-		if (m_unk0x23a == m_unk0x238) {
+		if (m_length == m_maxLength) {
 			m_unk0x23c.ClearFlags(2);
 		}
 		else {

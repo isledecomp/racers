@@ -57,7 +57,7 @@ void SordidWatch0x140::FUN_00412430(
 }
 
 // FUNCTION: LEGORACERS 0x00412560
-SordidWatch0x140::~SordidWatch0x140()
+void SordidWatch0x140::Destroy()
 {
 	if (m_unk0x0ac) {
 		delete[] m_unk0x0ac;
@@ -66,8 +66,7 @@ SordidWatch0x140::~SordidWatch0x140()
 	m_unk0x010.VTable0x54();
 	if (m_unk0x000) {
 		if (m_unk0x004) {
-			// FIXME: hack to get a match, most likely not the correct class
-			((ObscureBanner0x5ec*) m_unk0x000)->VTable0x48(m_unk0x004);
+			m_unk0x000->VTable0x48(m_unk0x004);
 			m_unk0x004 = 0;
 		}
 		m_unk0x000 = 0;
@@ -162,4 +161,13 @@ SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 		}
 		return maxEntry;
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004145e0
+SordidWatch0x140::SordidWatchInner0x38::SordidWatchInner0x38()
+{
+	m_unk0x28 = 0;
+	m_unk0x2c = 0;
+	m_unk0x30 = 0;
+	m_next = NULL;
 }

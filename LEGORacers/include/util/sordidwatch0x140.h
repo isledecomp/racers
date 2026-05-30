@@ -10,7 +10,11 @@ class GolD3DRenderDevice;
 
 class SordidWatch0x140 {
 public:
-	struct SordidWatchInner0x38 : public GolWorldEntity {
+	// VTABLE: LEGORACERS 0x004af8c0
+	class SordidWatchInner0x38 : public GolWorldEntity {
+	public:
+		SordidWatchInner0x38();
+
 		LegoU32 m_unk0x28;
 		undefined4 m_unk0x2c;
 		undefined4 m_unk0x30;
@@ -18,7 +22,9 @@ public:
 	};
 
 	SordidWatch0x140();
-	~SordidWatch0x140();
+	~SordidWatch0x140() { Destroy(); }
+
+	void Destroy();
 
 	undefined4 GetUnk0xb8() const { return m_unk0x0b8; }
 
@@ -32,8 +38,8 @@ public:
 	SordidWatchInner0x38* FUN_00412a00();
 
 private:
-	undefined4 m_unk0x000;              // 0x000
-	undefined4 m_unk0x004;              // 0x004
+	GolExport* m_unk0x000;              // 0x000
+	GolModelBase* m_unk0x004;           // 0x004
 	undefined4 m_unk0x008;              // 0x008
 	undefined4 m_unk0x00c;              // 0x00c
 	GolModelEntity m_unk0x010;          // 0x010

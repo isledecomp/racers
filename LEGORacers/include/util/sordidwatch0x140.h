@@ -20,7 +20,7 @@ public:
 	SordidWatch0x140();
 	~SordidWatch0x140();
 
-	undefined4 GetUnk0xb8() const { return m_unk0xb8; }
+	undefined4 GetUnk0xb8() const { return m_unk0x0b8; }
 
 	void Reset();
 
@@ -31,45 +31,40 @@ public:
 	void FUN_00412970();
 	SordidWatchInner0x38* FUN_00412a00();
 
-	// LegoU8 GetFlags0xb4() const { return m_flags0xb4; }
-	// void SetFlags0xb4(LegoU8 p_flags) { m_flags0xb4 = p_flags; }
-	// LegoU32 GetWhatever0xa8() const { return (LegoU32)m_modelParts[0]; }
-	// void SetWhatever0xa8(LegoU32 p_flags) { m_modelParts[0] = (CmbModelPart0x34 *)p_flags; }
-
 private:
-	undefined4 m_unk0x000;       // 0x000
-	undefined4 m_unk0x004;       // 0x000
-	undefined4 m_unk0x008;       // 0x000
-	undefined4 m_unk0x00c;       // 0x000
-	SilverHollow0xb8 m_unk0x010; // 0x004
-	undefined4 m_unk0xa0;
-	undefined4 m_unk0xa4;
-	undefined4 m_unk0xa8;
-	SordidWatchInner0x38* m_unk0xac;
-	SordidWatchInner0x38* m_unk0xb0;
-	SordidWatchInner0x38* m_unk0xb4;
-	undefined4 m_unk0xb8;
-	undefined4 m_unk0xbc;
-	undefined4 m_unk0xc0;
-	undefined4 m_unk0xc4;
-	undefined4 m_unk0xc8;              // 0x0c8
-	undefined4 m_unk0xcc;              // 0x0cc
-	undefined4 m_unk0xd0;              // 0x0d0
-	undefined4 m_unk0xd4;              // 0x0d4
-	undefined4 m_unk0xd8;              // 0x0d8
-	undefined4 m_unk0xdc;              // 0x0dc
-	undefined4 m_unk0xe0;              // 0x0e0
-	undefined4 m_unk0xe4;              // 0x0e4
-	undefined4 m_unk0xe8;              // 0x0e8
-	undefined m_unk0xec[0x120 - 0xec]; // 0x0e8
-	undefined4 m_unk0x120;             // 0x120
-	undefined4 m_unk0x134;             // 0x134
-	undefined4 m_unk0x12c;             // 0x12c
-	undefined4 m_unk0x130;             // 0x130
-	undefined4 m_unk0x124;             // 0x124
-	undefined4 m_unk0x128;             // 0x128
-	undefined4 m_unk0x138;             // 0x138
-	undefined4 m_unk0x13c;             // 0x13c
+	undefined4 m_unk0x000;              // 0x000
+	undefined4 m_unk0x004;              // 0x000
+	undefined4 m_unk0x008;              // 0x000
+	undefined4 m_unk0x00c;              // 0x000
+	SilverHollow0xb8 m_unk0x010;        // 0x004
+	undefined4 m_unk0x0a0;              // 0x0a0
+	undefined4 m_unk0x0a4;              // 0x0a4
+	undefined4 m_unk0x0a8;              // 0x0a8
+	SordidWatchInner0x38* m_unk0x0ac;   // 0x0ac
+	SordidWatchInner0x38* m_unk0x0b0;   // 0x0b0
+	SordidWatchInner0x38* m_unk0x0b4;   // 0x0b4
+	undefined4 m_unk0x0b8;              // 0x0b8
+	undefined4 m_unk0x0bc;              // 0x0bc
+	undefined4 m_unk0x0c0;              // 0x0c0
+	undefined4 m_unk0x0c4;              // 0x0c4
+	undefined4 m_unk0x0c8;              // 0x0c8
+	undefined4 m_unk0x0cc;              // 0x0cc
+	undefined4 m_unk0x0d0;              // 0x0d0
+	undefined4 m_unk0x0d4;              // 0x0d4
+	undefined4 m_unk0x0d8;              // 0x0d8
+	undefined4 m_unk0x0dc;              // 0x0dc
+	undefined4 m_unk0x0e0;              // 0x0e0
+	undefined4 m_unk0x0e4;              // 0x0e4
+	undefined4 m_unk0x0e8;              // 0x0e8
+	undefined m_unk0x0ec[0x120 - 0xec]; // 0x0e8
+	undefined4 m_unk0x120;              // 0x120
+	undefined4 m_unk0x134;              // 0x134
+	undefined4 m_unk0x12c;              // 0x12c
+	undefined4 m_unk0x130;              // 0x130
+	undefined4 m_unk0x124;              // 0x124
+	undefined4 m_unk0x128;              // 0x128
+	undefined4 m_unk0x138;              // 0x138
+	undefined4 m_unk0x13c;              // 0x13c
 };
 
 #endif // SORDIDWATCH0x140_H

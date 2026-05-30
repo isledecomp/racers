@@ -2,7 +2,7 @@
 
 #include "core/gol.h"
 
-// DECOMP_SIZE_ASSERT(GlassShard0x3b8, 0x3b8)
+DECOMP_SIZE_ASSERT(GlassShard0x3b8, 0x3b8)
 
 // FUNCTION: LEGORACERS 0x00422350
 GlassShard0x3b8::GlassShard0x3b8()

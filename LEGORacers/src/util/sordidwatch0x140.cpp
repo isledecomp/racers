@@ -15,9 +15,9 @@ SordidWatch0x140::SordidWatch0x140()
 // FUNCTION: LEGORACERS 0x00412560
 SordidWatch0x140::~SordidWatch0x140()
 {
-	if (m_unk0xac) {
-		delete[] m_unk0xac;
-		m_unk0xac = 0;
+	if (m_unk0x0ac) {
+		delete[] m_unk0x0ac;
+		m_unk0x0ac = 0;
 	}
 	m_unk0x010.VTable0x54();
 	if (m_unk0x000) {
@@ -38,22 +38,22 @@ void SordidWatch0x140::Reset()
 	m_unk0x004 = 0;
 	m_unk0x008 = 0;
 	m_unk0x00c = 0;
-	m_unk0xa0 = 0;
-	m_unk0xa4 = 0;
-	m_unk0xa8 = 0;
-	m_unk0xac = 0;
-	m_unk0xb8 = 0;
-	m_unk0xbc = 0;
-	m_unk0xc0 = 0;
-	m_unk0xc4 = 0;
-	m_unk0xc8 = 0;
-	m_unk0xcc = 0;
-	m_unk0xd0 = 0;
-	m_unk0xd4 = 0;
-	m_unk0xd8 = 0;
-	m_unk0xdc = 0;
-	m_unk0xe0 = 0;
-	m_unk0xe4 = 0;
+	m_unk0x0a0 = 0;
+	m_unk0x0a4 = 0;
+	m_unk0x0a8 = 0;
+	m_unk0x0ac = 0;
+	m_unk0x0b8 = 0;
+	m_unk0x0bc = 0;
+	m_unk0x0c0 = 0;
+	m_unk0x0c4 = 0;
+	m_unk0x0c8 = 0;
+	m_unk0x0cc = 0;
+	m_unk0x0d0 = 0;
+	m_unk0x0d4 = 0;
+	m_unk0x0d8 = 0;
+	m_unk0x0dc = 0;
+	m_unk0x0e0 = 0;
+	m_unk0x0e4 = 0;
 	m_unk0x120 = 0;
 	m_unk0x124 = 0;
 	m_unk0x128 = 0;
@@ -82,7 +82,7 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 
 	GolVec3 gstack18, localc;
 
-	if (!m_unk0xe8) {
+	if (!m_unk0x0e8) {
 		m_unk0x010.VTable0x08(*p_param1);
 		gstack18.m_x = 0.0f;
 		gstack18.m_y = 0.0f;
@@ -102,7 +102,7 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 	entity->m_unk0x2c = p_param3;
 	entity->m_unk0x30 = 0;
 
-	m_unk0xe8++;
+	m_unk0x0e8++;
 
 	return (undefined4) entity;
 }
@@ -110,45 +110,45 @@ undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, 
 // FUNCTION: LEGORACERS 0x00412840
 void SordidWatch0x140::FUN_00412840()
 {
-	if (m_unk0xb8 & 2) {
+	if (m_unk0x0b8 & 2) {
 		FUN_00412970();
-		m_unk0xd0 = 0;
-		m_unk0xd4 = 0;
-		m_unk0xd8 = 0;
-		m_unk0xdc = 0;
-		m_unk0xe0 = 0;
-		m_unk0xe4 = 0;
-		m_unk0xb8 = m_unk0xb8 & ~0x1e;
+		m_unk0x0d0 = 0;
+		m_unk0x0d4 = 0;
+		m_unk0x0d8 = 0;
+		m_unk0x0dc = 0;
+		m_unk0x0e0 = 0;
+		m_unk0x0e4 = 0;
+		m_unk0x0b8 = m_unk0x0b8 & ~0x1e;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412970
 void SordidWatch0x140::FUN_00412970()
 {
-	m_unk0xb4 = 0;
-	m_unk0xb0 = m_unk0xac;
-	for (LegoU32 i = 0; i < m_unk0xa8 - 1; i++) {
-		m_unk0xac[i].m_next = &m_unk0xac[i + 1];
-		m_unk0xac[i].m_unk0x30 = 0;
+	m_unk0x0b4 = 0;
+	m_unk0x0b0 = m_unk0x0ac;
+	for (LegoU32 i = 0; i < m_unk0x0a8 - 1; i++) {
+		m_unk0x0ac[i].m_next = &m_unk0x0ac[i + 1];
+		m_unk0x0ac[i].m_unk0x30 = 0;
 	}
-	m_unk0xac[m_unk0xa8 - 1].m_next = NULL;
-	m_unk0xac[m_unk0xa8 - 1].m_unk0x30 = 0;
+	m_unk0x0ac[m_unk0x0a8 - 1].m_next = NULL;
+	m_unk0x0ac[m_unk0x0a8 - 1].m_unk0x30 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00412a00
 SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 {
-	SordidWatchInner0x38* maxEntry = m_unk0xb0;
+	SordidWatchInner0x38* maxEntry = m_unk0x0b0;
 	SordidWatchInner0x38* current;
 
 	if (maxEntry) {
-		m_unk0xb0 = maxEntry->m_next;
-		maxEntry->m_next = m_unk0xb4;
-		m_unk0xb4 = maxEntry;
+		m_unk0x0b0 = maxEntry->m_next;
+		maxEntry->m_next = m_unk0x0b4;
+		m_unk0x0b4 = maxEntry;
 		return maxEntry;
 	}
 	else {
-		maxEntry = m_unk0xb4;
+		maxEntry = m_unk0x0b4;
 		LegoU32 maxValue = maxEntry->m_unk0x28;
 		for (current = maxEntry->m_next; current != NULL; current = current->m_next) {
 			if (current->m_unk0x28 > maxValue) {

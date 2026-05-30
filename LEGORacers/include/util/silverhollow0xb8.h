@@ -12,10 +12,6 @@ class GolModelMaterialTable;
 class GolRenderDevice;
 class GolSceneNode;
 
-class CmbModelWithLinkPart0x38 : public CmbModelPart0x34 {
-public:
-	CmbModelWithLinkPart0x38* m_unk0x34; // 0x34
-};
 
 // FIXME: This block and potentially related ones need to be corrected! Also: Is this one the same as GolModelEntity now?
 
@@ -55,8 +51,6 @@ public:
 	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 
 protected:
-	friend class SordidWatch0x140;
-
 	enum {
 		c_flagBit0 = 1 << 0,
 		c_flagBit1 = 1 << 1,

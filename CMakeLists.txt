@@ -318,7 +318,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/obscureicon0x1a8.cpp
   LEGORacers/src/menu/widgets/obscurelattice0x228.cpp
   LEGORacers/src/menu/widgets/obscurelink0x1c.cpp
+  LEGORacers/src/menu/widgets/embervault0x330.cpp
+  LEGORacers/src/menu/widgets/ivorytalon0x23c.cpp
   LEGORacers/src/menu/widgets/maroonatoll0x170.cpp
+  LEGORacers/src/menu/widgets/sablecrest0xc0.cpp
   LEGORacers/src/menu/widgets/obscurerune0x4d8.cpp
   LEGORacers/src/menu/widgets/obscuresigil0xdc.cpp
   LEGORacers/src/menu/widgets/obscuretome0x3fc.cpp

@@ -7,22 +7,29 @@ void VioletShoal0xc0::VTable0x5c(undefined4*, undefined4*)
 {
 }
 
-// STUB: LEGORACERS 0x0046ca00
+// FUNCTION: LEGORACERS 0x0046ca00
 VioletShoal0xc0::VioletShoal0xc0()
 {
-	STUB(0x0046ca00);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x0046ca80
+// FUNCTION: LEGORACERS 0x0046ca80
 VioletShoal0xc0::~VioletShoal0xc0()
 {
-	STUB(0x0046ca80);
+	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x0046cad0
+// FUNCTION: LEGORACERS 0x0046cad0
 void VioletShoal0xc0::Reset()
 {
-	STUB(0x0046cad0);
+	m_unk0xa4 = 1.0f;
+	m_unk0x80 = 0;
+	m_unk0x84 = 0;
+	m_unk0x7c = 0;
+	m_unk0xa0 = 0;
+	m_unk0x9c = 0;
+	m_unk0xbc = 0;
+	ObscureCarousel0x78::Reset();
 }
 
 // STUB: LEGORACERS 0x0046cba0

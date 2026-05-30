@@ -4,6 +4,7 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/obscurecarousel0x78.h"
+#include "render/golrenderdevice.h"
 
 // VTABLE: LEGORACERS 0x004b2450
 // SIZE 0xc0
@@ -30,14 +31,17 @@ public:
 	// VioletShoal0xc0::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x78[0x88 - 0x78]; // 0x78
-	undefined m_unk0x88[0x4];         // 0x88 (embedded sub-object, ctor 0x0040eac0)
-	undefined m_unk0x8c[0x9c - 0x8c]; // 0x8c (embedded sub-object, ctor 0x00408460)
-	undefined4 m_unk0x9c;             // 0x9c
-	undefined4 m_unk0xa0;             // 0xa0
-	LegoFloat m_unk0xa4;              // 0xa4
-	undefined m_unk0xa8[0xbc - 0xa8]; // 0xa8
-	undefined4 m_unk0xbc;             // 0xbc
+	undefined4 m_unk0x78;                     // 0x78
+	undefined4 m_unk0x7c;                     // 0x7c
+	undefined4 m_unk0x80;                     // 0x80
+	undefined4 m_unk0x84;                     // 0x84
+	GolRenderDevice::MaterialColor m_unk0x88; // 0x88
+	GolRenderDevice::Light m_unk0x8c;         // 0x8c
+	undefined4 m_unk0x9c;                     // 0x9c
+	undefined4 m_unk0xa0;                     // 0xa0
+	LegoFloat m_unk0xa4;                      // 0xa4
+	undefined m_unk0xa8[0xbc - 0xa8];         // 0xa8
+	undefined4 m_unk0xbc;                     // 0xbc
 };
 
 #endif // VIOLETSHOAL0XC0_H

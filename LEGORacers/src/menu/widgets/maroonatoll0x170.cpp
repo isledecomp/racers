@@ -1,23 +1,28 @@
 #include "menu/widgets/maroonatoll0x170.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(MaroonAtoll0x170, 0x170)
 
-// STUB: LEGORACERS 0x00483970
+// FUNCTION: LEGORACERS 0x00483970
 MaroonAtoll0x170::MaroonAtoll0x170()
 {
-	STUB(0x00483970);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x004839e0
+// FUNCTION: LEGORACERS 0x004839e0
 MaroonAtoll0x170::~MaroonAtoll0x170()
 {
-	STUB(0x004839e0);
+	VTable0x08();
 }
 
-// STUB: LEGORACERS 0x00483a30
+// FUNCTION: LEGORACERS 0x00483a30
 void MaroonAtoll0x170::Reset()
 {
-	STUB(0x00483a30);
+	m_unk0xcc = 0;
+	m_unk0xc0 = 0;
+	memset(&m_unk0xd0, 0, sizeof(m_unk0xd0));
+	VioletShoal0xc0::Reset();
 }
 
 // STUB: LEGORACERS 0x00483af0

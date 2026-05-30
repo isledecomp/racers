@@ -2,8 +2,8 @@
 #define SORDIDWATCH0x140_H
 
 #include "decomp.h"
+#include "golmodelentity.h"
 #include "types.h"
-#include "util/silverhollow0xb8.h"
 
 class GolExport;
 class GolD3DRenderDevice;
@@ -36,7 +36,7 @@ private:
 	undefined4 m_unk0x004;              // 0x004
 	undefined4 m_unk0x008;              // 0x008
 	undefined4 m_unk0x00c;              // 0x00c
-	SilverHollow0xb8 m_unk0x010;        // 0x010
+	GolModelEntity m_unk0x010;          // 0x010
 	undefined4 m_unk0x0a0;              // 0x0a0
 	undefined4 m_unk0x0a4;              // 0x0a4
 	undefined4 m_unk0x0a8;              // 0x0a8

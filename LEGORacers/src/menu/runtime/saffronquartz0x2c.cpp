@@ -6,17 +6,16 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmodelentity.h"
 #include "golworldentity.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "scene/golcollidableentity.h"
-#include "golmodelentity.h"
 #include "scene/golskinnedentity.h"
 #include "util/bluebellfog0x4.h"
 #include "util/opalhaven0xf4.h"
-#include "util/silverhollow0xb8.h"
 #include "world/golworlddatabase.h"
 
 #include <stdlib.h>
@@ -275,10 +274,10 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 
 			for (; animation < end; animation++) {
 				GolModelMaterialTable* materialTarget =
-					static_cast<SilverHollow0xb8*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
+					static_cast<GolModelEntity*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
 				if (materialTarget == NULL) {
 					materialTarget =
-						static_cast<SilverHollow0xb8*>(m_unk0x24)->GetModel(animation->m_unk0x18)->GetMaterialTable();
+						static_cast<GolModelEntity*>(m_unk0x24)->GetModel(animation->m_unk0x18)->GetMaterialTable();
 				}
 
 				animation->m_unk0x04->FUN_10025da0(materialTarget, animation->m_unk0x14, TRUE);

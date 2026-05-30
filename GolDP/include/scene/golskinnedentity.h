@@ -10,8 +10,7 @@ class GolModelBase;
 class GolSceneNode;
 
 // GOLDP keeps the node/model-part tail at 0x90..0xf4 in this derived class.
-// The first tail block, 0x90..0xb8, corresponds to fields owned directly by
-// LEGORACERS SilverHollow0xb8.
+// The first tail block, 0x90..0xb3, corresponds to fields found in OpalHaven0xf4 and GlassShard0x3b8.
 // VTABLE: GOLDP 0x10056fc8
 // SIZE 0xf4
 class GolSkinnedEntity : public GolModelEntity {

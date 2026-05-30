@@ -3,18 +3,17 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golmodelentity.h"
 #include "types.h"
-#include "util/silverhollow0xb8.h"
 
 class CmbModelPart0x34;
 class GolModelBase;
 class GolSceneNode;
 
-// Completes the same 0x90..0xf4 tail that GOLDP keeps entirely in
-// GolSkinnedEntity; the base SilverHollow0xb8 owns 0x90..0xb8 here.
+// The 0x90..0xf4 tail overlaps with GolSkinnedEntity and GlassShard0x3b8.
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
-class OpalHaven0xf4 : public SilverHollow0xb8 {
+class OpalHaven0xf4 : public GolModelEntity {
 public:
 	OpalHaven0xf4();
 

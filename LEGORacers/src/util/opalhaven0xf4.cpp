@@ -28,7 +28,7 @@ void OpalHaven0xf4::FUN_0040d550(
 	LegoFloat p_modelDistance
 )
 {
-	SilverHollow0xb8::VTable0x50(p_model, p_modelDistance);
+	GolModelEntity::VTable0x50(p_model, p_modelDistance);
 	m_nodes[0] = p_node;
 	m_modelParts[0] = p_modelParts;
 }
@@ -36,7 +36,7 @@ void OpalHaven0xf4::FUN_0040d550(
 // FUNCTION: LEGORACERS 0x0040d5d0
 void OpalHaven0xf4::VTable0x54()
 {
-	SilverHollow0xb8::VTable0x54();
+	GolModelEntity::VTable0x54();
 	Reset();
 }
 
@@ -314,7 +314,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
 	if (!(m_flags & c_flagPartAnimation)) {
-		SilverHollow0xb8::VTable0x10(p_elapsed);
+		GolModelEntity::VTable0x10(p_elapsed);
 		return;
 	}
 
@@ -375,7 +375,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 	}
 
 	if (m_flags & c_flagPartTransition) {
-		SilverHollow0xb8::VTable0x10(p_elapsed);
+		GolModelEntity::VTable0x10(p_elapsed);
 		return;
 	}
 
@@ -401,7 +401,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 		}
 	}
 
-	SilverHollow0xb8::VTable0x10(p_elapsed);
+	GolModelEntity::VTable0x10(p_elapsed);
 }
 
 // STUB: LEGORACERS 0x0040e0b0

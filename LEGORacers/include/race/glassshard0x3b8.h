@@ -3,10 +3,10 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golmodelentity.h"
 #include "render/gold3drenderdevice.h"
 #include "types.h"
 #include "util/opalhaven0xf4.h"
-#include "util/silverhollow0xb8.h"
 
 class GolExport;
 class GolWorldDatabase;
@@ -46,7 +46,7 @@ private:
 	OpalHaven0xf4 m_unk0x114;            // 0x114
 	undefined m_unk0x208[0x20c - 0x208]; // 0x208
 	OpalHaven0xf4 m_unk0x20c;            // 0x20c
-	SilverHollow0xb8 m_unk0x300;         // 0x300
+	GolModelEntity m_unk0x300;           // 0x300
 	GolSceneNode* m_nodes[3];            // 0x390
 	LegoS32 m_partIndices[3];            // 0x39c
 	CmbModelPart0x34* m_modelParts[3];   // 0x3a8

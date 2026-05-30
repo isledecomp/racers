@@ -387,6 +387,7 @@ LegoBool32 GolModelEntity::VTable0x20()
 }
 
 // FUNCTION: GOLDP 0x1001d700 FOLDED
+// FUNCTION: LEGORACERS 0x004113b0 FOLDED
 GolSceneNode* GolModelEntity::VTable0x58(undefined4)
 {
 	return NULL;

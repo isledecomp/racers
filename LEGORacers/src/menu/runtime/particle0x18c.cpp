@@ -45,10 +45,10 @@ void Particle0x18c::Reset()
 	m_unk0x148 = 0;
 }
 
-// STUB: LEGORACERS 0x00489520
+// FUNCTION: LEGORACERS 0x00489520
 void Particle0x18c::FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
-	STUB(0x00489540);
+	m_unk0x008.FUN_00412430(p_golExport, p_renderer, 0xc, 0x10);
 }
 
 // STUB: LEGORACERS 0x00489540

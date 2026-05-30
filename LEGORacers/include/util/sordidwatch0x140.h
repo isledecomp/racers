@@ -5,6 +5,9 @@
 #include "types.h"
 #include "util/silverhollow0xb8.h"
 
+class GolExport;
+class GolD3DRenderDevice;
+
 class SordidWatch0x140 {
 public:
 	SordidWatch0x140();
@@ -13,6 +16,9 @@ public:
 	undefined4 GetWhatever() const { return m_unk0x010.GetWhatever0xa8(); }
 
 	void Reset();
+
+	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, undefined4 p_param3, undefined4 p_param4);
+
 	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3);
 	void FUN_00412840();
 	void FUN_00412970();

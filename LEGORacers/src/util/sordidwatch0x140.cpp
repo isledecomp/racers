@@ -67,6 +67,17 @@ void SordidWatch0x140::Reset()
 	m_unk0x13c = 0;
 }
 
+// STUB: LEGORACERS 0x00412430
+void SordidWatch0x140::FUN_00412430(
+	GolExport* p_golExport,
+	GolD3DRenderDevice* p_renderer,
+	undefined4 p_param3,
+	undefined4 p_param4
+)
+{
+	STUB(0x00412430);
+}
+
 // FUNCTION: LEGORACERS 0x00412760
 undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3)
 {

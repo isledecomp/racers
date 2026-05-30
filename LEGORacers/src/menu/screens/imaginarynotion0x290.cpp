@@ -12,6 +12,7 @@
 #include "menu/menutoolcreateparams0x30.h"
 #include "menu/screens/imaginarychisel0x658.h"
 #include "menu/screens/mainmenuscreenfieldat0x420.h"
+#include "menu/widgets/ivorytalon0x23c.h"
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscureglyph0x21c.h"
@@ -686,12 +687,35 @@ undefined4 ImaginaryNotion0x290::FUN_0046c5b0(ObscureVantage0x58* p_unk0x04, und
 	return static_cast<ImaginaryChisel0x658::HelperAt0x368*>(p_unk0x04)->FUN_00466b50(&createParams, m_unk0x288);
 }
 
-// STUB: LEGORACERS 0x0046c610
-undefined4 ImaginaryNotion0x290::FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4)
+// FUNCTION: LEGORACERS 0x0046c610
+LegoBool32 ImaginaryNotion0x290::FUN_0046c610(
+	IvoryTalon0x23c* p_unk0x04,
+	undefined2 p_unk0x08,
+	undefined2 p_unk0x0c,
+	undefined2 p_unk0x10,
+	GolString* p_unk0x14
+)
 {
-	// TODO
-	STUB(0x0046c610);
-	return 0;
+	IvoryTalon0x23c::CreateParams0xa0* sourceParams =
+		static_cast<IvoryTalon0x23c::CreateParams0xa0*>(FUN_0046be10(p_unk0x08));
+	ObscureIcon0x1a8::CreateState0x90* styleEntry =
+		static_cast<ObscureIcon0x1a8::CreateState0x90*>(FUN_0046bd80(p_unk0x0c));
+	if (!sourceParams || !styleEntry || !p_unk0x10) {
+		return FALSE;
+	}
+
+	IvoryTalon0x23c::CreateParams0xa0 createParams = *sourceParams;
+	FUN_0046bb10(&createParams);
+
+	if (!createParams.m_unk0x84) {
+		createParams.m_unk0x84 = m_menuTextStrings;
+	}
+
+	createParams.m_unk0x88 = p_unk0x10;
+	createParams.m_unk0x90 = p_unk0x14;
+	createParams.m_unk0x8c = sourceParams->m_unk0x8c;
+
+	return p_unk0x04->VTable0x70(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c6f0

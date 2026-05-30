@@ -73,6 +73,7 @@ public:
 	ObscureVantage0x58* FUN_00472e60();
 	ObscureVantage0x58* FUN_00472ef0(LegoS32 p_unk0x04);
 	ObscureVantage0x58* FUN_00472f10(undefined2);
+	ObscureVantage0x58* GetParent() { return m_parent; }
 	ObscureVantage0x58* GetFirstChild() { return m_firstChild; }
 	ObscureVantage0x58* GetNextSibling() { return m_nextSibling; }
 	ObscureVantage0x58* GetPrevSibling() { return m_prevSibling; }

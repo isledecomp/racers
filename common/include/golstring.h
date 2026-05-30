@@ -36,6 +36,7 @@ public:
 	}
 
 	undefined2 SelectionLength() const { return m_cursorEnd - m_cursorStart; }
+	void SetCursorEnd(undefined2 p_cursorEnd) { m_cursorEnd = p_cursorEnd; }
 
 protected:
 	undefined2* m_chars;      // 0x00

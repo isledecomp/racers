@@ -9,6 +9,14 @@
 // SIZE 0xc0
 class SableCrest0xc0 : public ObscureZebra0xa4 {
 public:
+	// SIZE 0x44
+	class CreateParams0x44 : public ObscureVantage0x58::CreateParams0x38 {
+	public:
+		undefined4 m_unk0x38; // 0x38
+		undefined4 m_unk0x3c; // 0x3c
+		undefined4 m_unk0x40; // 0x40
+	};
+
 	SableCrest0xc0();
 
 	void Reset() override;                                 // vtable+0x00
@@ -16,6 +24,11 @@ public:
 	void VTable0x10(Rect*) override;                       // vtable+0x10
 	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 	undefined4 VTable0x3c(undefined4) override;            // vtable+0x3c
+
+	LegoBool32 FUN_00467f70(CreateParams0x44* p_createParams);
+	void FUN_00467fc0(LegoS32 p_x, LegoS32 p_y);
+	void FUN_00468000(LegoS32 p_width);
+	void FUN_00468040(LegoS32 p_height);
 
 	// SYNTHETIC: LEGORACERS 0x00467ec0
 	// SableCrest0xc0::`scalar deleting destructor'

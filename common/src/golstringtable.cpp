@@ -148,3 +148,16 @@ LegoS32 GolStringTable::CopyStringByIndex(GolString* p_string, LegoU16 p_index)
 
 	return p_string->CopyFromBufSelection(&m_stringData[m_stringOffsets[p_index]], 0);
 }
+
+// FUNCTION: LEGORACERS 0x0044e540
+undefined2* GolStringTable::GetStringBuffer(LegoU16 p_index)
+{
+	if (!m_stringData) {
+		return NULL;
+	}
+	else if (p_index > m_stringCount) {
+		return NULL;
+	}
+
+	return &m_stringData[m_stringOffsets[p_index]];
+}

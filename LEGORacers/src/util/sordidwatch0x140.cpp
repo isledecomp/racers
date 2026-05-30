@@ -44,10 +44,40 @@ void SordidWatch0x140::Reset()
 	m_unk0x13c = 0;
 }
 
-// STUB: LEGORACERS 0x00412760
-undefined4 SordidWatch0x140::FUN_00412760(undefined4* p_param1, LegoFloat p_param2)
+// FUNCTION: LEGORACERS 0x00412760
+undefined4 SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3)
 {
-	STUB(0x00412760);
+	// type is guessed and may be wrong
+	GolOrientedEntity* entity = (GolOrientedEntity*) FUN_00412a00();
+
+	GolVec3 gstack18, localc;
+
+	if (!m_unk0xe8) {
+		m_unk0x010.VTable0x08(*p_param1);
+		gstack18.m_x = 0.0f;
+		gstack18.m_y = 0.0f;
+		gstack18.m_z = 0.0f;
+	} else {
+		// These vtable calls strongly suggest that the SilverHollow is at 0x10
+
+		m_unk0x010.VTable0x04(&localc);
+		gstack18.m_x = p_param1->m_x - localc.m_x;
+		gstack18.m_y = p_param1->m_y - localc.m_y;
+		gstack18.m_z = p_param1->m_z - localc.m_z;
+	}
+
+	entity->SetCenter(gstack18);
+	entity->m_velocity.m_x = p_param2->m_x;
+	entity->m_velocity.m_y = p_param2->m_y;
+	entity->m_velocity.m_z = p_param2->m_z;
+
+	entity->m_orientation.m_m[0][0] = 0.0f;
+	entity->m_orientation.m_m[0][1] = p_param3;
+	entity->m_orientation.m_m[0][2] = 0.0f;
+
+	m_unk0xe8++;
+
+	return (undefined4)entity;
 }
 
 // FUNCTION: LEGORACERS 0x00412840
@@ -84,8 +114,9 @@ void SordidWatch0x140::FUN_00412970()
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x34 = 0;
 	((CmbModelWithLinkPart0x38*) m_unk0x010.m_partIndices[0])[(undefined4) m_unk0x010.m_nodes[2] - 1].m_unk0x30 = 0;
 
-// STUB: LEGORACERS 0x00412760
-undefined4 SordidWatch0x140::FUN_00412a00()
+// STUB: LEGORACERS 0x00412a00
+GolWorldEntity* SordidWatch0x140::FUN_00412a00()
 {
 	STUB(0x00412a00);
+	return NULL;
 }

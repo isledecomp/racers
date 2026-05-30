@@ -12,10 +12,10 @@ public:
 	undefined4 GetFlags() const { return m_unk0x010.GetFlags0xb4(); }
 
 	void Reset();
-	undefined4 FUN_00412760(undefined4* p_param1, LegoFloat p_param2);
+	undefined4 FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoFloat p_param3);
 	void FUN_00412840();
 	void FUN_00412970();
-	undefined4 FUN_00412a00();
+	GolWorldEntity* FUN_00412a00();
 
 private:
 	undefined4 m_unk0x000;             // 0x000
@@ -31,7 +31,8 @@ private:
 	undefined4 m_unk0xdc;              // 0x0dc
 	undefined4 m_unk0xe0;              // 0x0e0
 	undefined4 m_unk0xe4;              // 0x0e4
-	undefined m_unk0xe8[0x120 - 0xe8]; // 0x0e8
+	undefined4 m_unk0xe8;              // 0x0e8
+	undefined m_unk0xec[0x120 - 0xec]; // 0x0e8
 	undefined4 m_unk0x120;             // 0x120
 	undefined4 m_unk0x134;             // 0x134
 	undefined4 m_unk0x12c;             // 0x12c

@@ -7,6 +7,7 @@
 #include "menu/style/ceruleanemperor0x4c.h"
 #include "menu/style/menuinputbindingtable.h"
 #include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
 #include "menu/widgets/obscureicon0x1a8.h"
 #include "text/coppercrest0x40.h"
 #include "types.h"
@@ -87,7 +88,10 @@ public:
 	LegoBool32 FUN_0046b6e0(MenuToolCreateParams0x30*);
 	void FUN_0046ba60(ObscureVantage0x58::CreateParams0x38*);
 	void FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84*);
-	void FUN_0046bb90(undefined4*, undefined4);
+	void FUN_0046bb90(
+		ObscureBanner0x5ec::CreateParams0x90* p_createParams,
+		CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+	);
 	void FUN_0046bc90(undefined4*, undefined4);
 	void* FUN_0046bd80(undefined2);
 	void* FUN_0046be10(undefined2);
@@ -98,7 +102,12 @@ public:
 	LegoBool32 FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	LegoBool32 FUN_0046c1b0(ObscureLattice0x228*, undefined2, undefined2);
 	LegoBool32 FUN_0046c240(ObscureCarousel0x78*, undefined2, undefined2);
-	void FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2);
+	LegoBool32 FUN_0046c2b0(
+		ObscureBanner0x9f4* p_widget,
+		ObscureCarousel0x94* p_carousel,
+		undefined2 p_cpId,
+		undefined2 p_styleId
+	);
 	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
 	LegoBool32 FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	LegoBool32 FUN_0046c510(ObscureRune0x4d8* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);

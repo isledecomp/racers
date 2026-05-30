@@ -473,12 +473,12 @@ void CeruleanEmperor0x4c::FUN_004704b0(Entry0xbc* p_entry)
 				readBase++;
 				break;
 			case GolFileParser::e_unknown0x35:
-				p_entry->m_unk0x90 = static_cast<Entry0x90*>(FUN_00470e60(m_parser->ReadString()));
-				p_entry->m_unk0x94 = static_cast<Entry0x90*>(FUN_00470e60(m_parser->ReadString()));
+				p_entry->m_unk0x90 = static_cast<Entry0xa8*>(FUN_00470e60(m_parser->ReadString()));
+				p_entry->m_unk0x94 = static_cast<Entry0xa8*>(FUN_00470e60(m_parser->ReadString()));
 				readPair++;
 				break;
 			case GolFileParser::e_unknown0x34:
-				p_entry->m_unk0x98 = static_cast<Entry0x90*>(FUN_00470e60(m_parser->ReadString()));
+				p_entry->m_unk0x98 = static_cast<Entry0x2c*>(FUN_00470e60(m_parser->ReadString()));
 				readSingle++;
 				break;
 			case GolFileParser::e_unknown0x2a:

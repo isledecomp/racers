@@ -4,7 +4,6 @@
 
 DECOMP_SIZE_ASSERT(ObscureCarousel0x78, 0x78)
 DECOMP_SIZE_ASSERT(ObscureCarousel0x78::CreateParams0x38, 0x38)
-DECOMP_SIZE_ASSERT(ObscureCarousel0x78::StyleEntry0x18, 0x18)
 DECOMP_SIZE_ASSERT(ObscureCarousel0x94, 0x94)
 DECOMP_SIZE_ASSERT(ObscureCarouselNavigator0x94, 0x94)
 
@@ -34,7 +33,10 @@ void ObscureCarousel0x78::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046c970
-LegoBool32 ObscureCarousel0x78::FUN_0046c970(CreateParams0x38* p_createParams, StyleEntry0x18* p_styleEntry)
+LegoBool32 ObscureCarousel0x78::FUN_0046c970(
+	CreateParams0x38* p_createParams,
+	CeruleanEmperor0x4c::Entry0x18* p_styleEntry
+)
 {
 	VTable0x08();
 	m_unk0x58 = p_styleEntry;
@@ -72,12 +74,12 @@ ObscureVantage0x58* ObscureCarousel0x78::VTable0x30(InputEventQueue::Event*, und
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void ObscureCarousel0x78::VTable0x48(undefined4*, undefined4*)
+void ObscureCarousel0x78::VTable0x48(VisualState0x4*, VisualState0x4*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void ObscureCarousel0x78::VTable0x4c(undefined4*, undefined4*)
+void ObscureCarousel0x78::VTable0x4c(VisualState0x4*, VisualState0x4*)
 {
 }
 
@@ -143,7 +145,7 @@ void ObscureCarouselNavigator0x94::VTable0x5c(ObscureVantage0x58* p_child)
 {
 	Rect rect = *p_child->GetRect();
 
-	StyleEntry0x18* style = m_unk0x58;
+	CeruleanEmperor0x4c::Entry0x18* style = m_unk0x58;
 
 	LegoS32 right = rect.m_right;
 	LegoS32 left = rect.m_left;
@@ -205,13 +207,13 @@ LegoS32 ObscureCarouselNavigator0x94::VTable0x54()
 
 	if (!m_unk0x70) {
 		if (m_unk0x6c >= m_unk0x68 - 1 && !m_unk0x58->m_unk0x14) {
-			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x08);
+			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
 			return m_unk0x6c;
 		}
 
 		VTable0x44(m_unk0x34.m_right - m_unk0x34.m_left);
 		VTable0x50(FUN_0046c9a0(m_unk0x6c + 1));
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00);
+		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[0]);
 	}
 
 	return m_unk0x6c;
@@ -226,13 +228,13 @@ LegoS32 ObscureCarouselNavigator0x94::VTable0x58()
 
 	if (!m_unk0x70) {
 		if (m_unk0x6c == 0 && !m_unk0x58->m_unk0x14) {
-			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x08);
+			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
 			return m_unk0x6c;
 		}
 
 		VTable0x44(m_unk0x34.m_left - m_unk0x34.m_right);
 		VTable0x50(FUN_0046c9a0(m_unk0x6c - 1));
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x04);
+		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[1]);
 	}
 
 	return m_unk0x6c;

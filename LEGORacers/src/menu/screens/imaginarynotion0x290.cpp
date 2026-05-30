@@ -2,6 +2,7 @@
 
 #include "core/gol.h"
 #include "font/golfonttable.h"
+#include "golerror.h"
 #include "golname.h"
 #include "golstream.h"
 #include "golstring.h"
@@ -14,6 +15,7 @@
 #include "menu/screens/mainmenuscreenfieldat0x420.h"
 #include "menu/widgets/ivorytalon0x23c.h"
 #include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
 #include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscurelattice0x228.h"
@@ -413,10 +415,42 @@ void ImaginaryNotion0x290::FUN_0046bb10(ObscureIcon0x1a8::CreateParams0x84* p_cr
 }
 
 // STUB: LEGORACERS 0x0046bb90
-void ImaginaryNotion0x290::FUN_0046bb90(undefined4*, undefined4)
+void ImaginaryNotion0x290::FUN_0046bb90(
+	ObscureBanner0x5ec::CreateParams0x90* p_createParams,
+	CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+)
 {
-	// TODO
-	STUB(0x0046bb90);
+	LegoS32 i;
+
+	FUN_0046bb10(p_createParams);
+	FUN_0046bb10(p_createParams->m_unk0x84);
+	FUN_0046bb10(p_createParams->m_unk0x88);
+	FUN_0046ba60(p_createParams->m_unk0x8c);
+
+	p_createParams->m_unk0x84->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x88->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x84->m_unk0x80 = NULL;
+	p_createParams->m_unk0x88->m_unk0x80 = NULL;
+
+	for (i = 0; i < 6; i++) {
+		if (!p_createParams->m_unk0x84->m_images[i]) {
+			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->m_unk0x90->m_unk0x90[i];
+		}
+
+		if (!p_createParams->m_unk0x88->m_images[i]) {
+			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->m_unk0x94->m_unk0x90[i];
+		}
+	}
+
+	for (i = 0; i < 8; i++) {
+		if (!p_createParams->m_unk0x8c->m_images[6]) {
+			p_createParams->m_unk0x8c->m_images[6] = p_styleEntry->m_unk0x98->m_unk0x00[6];
+		}
+	}
+
+	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_unk0x98->m_unk0x28) {
+		p_createParams->m_unk0x8c->m_unk0x58 = p_styleEntry->m_unk0x98->m_unk0x24;
+	}
 }
 
 // STUB: LEGORACERS 0x0046bc90
@@ -570,7 +604,7 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c110(ObscureGlyph0x21c* p_unk0x04, unde
 		}
 	}
 
-	return p_unk0x04->FUN_004663d0(&createParams, (ObscureIcon0x1a8::CreateState0x90*) styleEntry);
+	return p_unk0x04->FUN_004663d0(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c1b0
@@ -606,8 +640,7 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c240(
 {
 	ObscureCarousel0x78::CreateParams0x38* sourceParams =
 		static_cast<ObscureCarousel0x78::CreateParams0x38*>(FUN_0046be10(p_unk0x08));
-	ObscureCarousel0x78::StyleEntry0x18* styleEntry =
-		static_cast<ObscureCarousel0x78::StyleEntry0x18*>(FUN_0046bd80(p_unk0x0c));
+	CeruleanEmperor0x4c::Entry0x18* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0x18*>(FUN_0046bd80(p_unk0x0c));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
 	}
@@ -618,11 +651,49 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c240(
 	return p_unk0x04->FUN_0046c970(&createParams, styleEntry);
 }
 
-// STUB: LEGORACERS 0x0046c2b0
-void ImaginaryNotion0x290::FUN_0046c2b0(ObscureIcon0x1a8*, ObscureVantage0x58*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c2b0
+LegoBool32 ImaginaryNotion0x290::FUN_0046c2b0(
+	ObscureBanner0x9f4* p_widget,
+	ObscureCarousel0x94* p_carousel,
+	undefined2 p_cpId,
+	undefined2 p_styleId
+)
 {
-	// TODO
-	STUB(0x0046c2b0);
+	ObscureBanner0x9f4::CreateParams0x98* sourceParams =
+		static_cast<ObscureBanner0x9f4::CreateParams0x98*>(FUN_0046be10(p_cpId));
+	CeruleanEmperor0x4c::Entry0xbc* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0xbc*>(FUN_0046bd80(p_styleId));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	ObscureBanner0x9f4::CreateParams0x98* bannerParams = new ObscureBanner0x9f4::CreateParams0x98;
+	ObscureGlyph0x21c::CreateParams0x9c* glyph1Params = new ObscureGlyph0x21c::CreateParams0x9c;
+	ObscureGlyph0x21c::CreateParams0x9c* glyph2Params = new ObscureGlyph0x21c::CreateParams0x9c;
+	ObscureTome0x3fc::CreateParams0x60* tomeParams = new ObscureTome0x3fc::CreateParams0x60;
+	if (!bannerParams || !glyph1Params || !glyph2Params || !tomeParams) {
+		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+	}
+
+	*bannerParams = *sourceParams;
+	*glyph1Params = *sourceParams->m_unk0x84;
+	*glyph2Params = *sourceParams->m_unk0x88;
+	*tomeParams = *sourceParams->m_unk0x8c;
+
+	bannerParams->m_unk0x88 = glyph2Params;
+	bannerParams->m_unk0x84 = glyph1Params;
+	bannerParams->m_unk0x8c = tomeParams;
+	bannerParams->m_unk0x90 = p_carousel;
+
+	FUN_0046bb90(bannerParams, styleEntry);
+
+	LegoBool32 result = p_widget->FUN_00467800(bannerParams, styleEntry);
+
+	delete bannerParams;
+	delete glyph1Params;
+	delete glyph2Params;
+	delete tomeParams;
+
+	return result;
 }
 
 // STUB: LEGORACERS 0x0046c400

@@ -40,13 +40,13 @@ LegoBool32 VioletShoal0xc0::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x0046d1d0
-void VioletShoal0xc0::VTable0x48(undefined4*, undefined4*)
+void VioletShoal0xc0::VTable0x48(VisualState0x4*, VisualState0x4*)
 {
 	STUB(0x0046d1d0);
 }
 
 // STUB: LEGORACERS 0x0046d210
-void VioletShoal0xc0::VTable0x4c(undefined4*, undefined4*)
+void VioletShoal0xc0::VTable0x4c(VisualState0x4*, VisualState0x4*)
 {
 	STUB(0x0046d210);
 }

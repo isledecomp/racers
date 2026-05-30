@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "goltxtparser.h"
 #include "menu/style/ceruleanknight0x20.h"
+#include "menu/widgets/obscureicon0x1a8.h"
 #include "render/rectangle.h"
 #include "types.h"
 #include "util/visualstate0x4.h"
@@ -55,16 +56,7 @@ public:
 	};
 
 	// SIZE 0x90
-	class Entry0x90 {
-	public:
-		VisualState0x4 m_unk0x00[6]; // 0x00
-		undefined2 m_unk0x18[5];     // 0x18
-		undefined2 m_unk0x22;        // 0x22
-		Rect m_unk0x24[6];           // 0x24
-		undefined4 m_unk0x84;        // 0x84
-		undefined4 m_unk0x88;        // 0x88
-		undefined4 m_unk0x8c;        // 0x8c
-	};
+	class Entry0x90 : public ObscureIcon0x1a8::CreateState0x90 {};
 
 	// SIZE 0xa8
 	class Entry0xa8 : public Entry0x90 {
@@ -117,9 +109,9 @@ public:
 	// SIZE 0xbc
 	class Entry0xbc : public Entry0x90 {
 	public:
-		Entry0x90* m_unk0x90;        // 0x90
-		Entry0x90* m_unk0x94;        // 0x94
-		Entry0x90* m_unk0x98;        // 0x98
+		Entry0xa8* m_unk0x90;        // 0x90
+		Entry0xa8* m_unk0x94;        // 0x94
+		Entry0x2c* m_unk0x98;        // 0x98
 		VisualState0x4 m_unk0x9c[4]; // 0x9c
 		VisualState0x4 m_unk0xac[4]; // 0xac
 	};

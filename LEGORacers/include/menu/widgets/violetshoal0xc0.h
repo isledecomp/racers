@@ -21,8 +21,8 @@ public:
 	undefined4 VTable0x3c(undefined4) override;                                               // vtable+0x3c
 	void VTable0x40() override;                                                               // vtable+0x40
 	void VTable0x44(undefined4) override;                                                     // vtable+0x44
-	void VTable0x48(undefined4*, undefined4*) override;                                       // vtable+0x48
-	void VTable0x4c(undefined4*, undefined4*) override;                                       // vtable+0x4c
+	void VTable0x48(VisualState0x4*, VisualState0x4*) override;                               // vtable+0x48
+	void VTable0x4c(VisualState0x4*, VisualState0x4*) override;                               // vtable+0x4c
 	LegoS32 VTable0x54() override;                                                            // vtable+0x54
 	LegoS32 VTable0x58() override;                                                            // vtable+0x58
 	virtual void VTable0x5c(undefined4*, undefined4*);                                        // vtable+0x5c

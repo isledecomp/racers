@@ -109,8 +109,8 @@ LegoBool32 MainMenuScreenFieldAt0x498::FUN_004826c0(
 	m_unk0x2dc = maxWidth;
 	::memcpy(m_unk0x1c0, p_createParams->m_unk0x84, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
 
-	if (FUN_00471e30(p_createParams, (ObscureIcon0x1a8::CreateState0x90*) p_styleEntry) &&
-		FUN_004824d0(p_createParams) && FUN_00482540(p_createParams, p_styleEntry)) {
+	if (FUN_00471e30(p_createParams, p_styleEntry) && FUN_004824d0(p_createParams) &&
+		FUN_00482540(p_createParams, p_styleEntry)) {
 		VTable0x10(&p_createParams->m_rect);
 		return TRUE;
 	}

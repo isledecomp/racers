@@ -78,10 +78,9 @@ void ObscureIcon0x1a8::FUN_00471d90(CreateParams0x84* p_createParams, const Crea
 	}
 
 	::memcpy(m_unk0x174, defaultRects, sizeof(m_unk0x174));
-
 	::memcpy(
 		m_soundIds,
-		p_createParams->m_unk0x7c ? p_createParams->m_unk0x6a : p_createState->m_unk0x18,
+		p_createParams->m_unk0x7c ? p_createParams->m_soundIds : p_createState->m_unk0x18,
 		sizeof(m_soundIds)
 	);
 	::memcpy(m_unk0x6c, p_createState->m_unk0x24, sizeof(m_unk0x6c));

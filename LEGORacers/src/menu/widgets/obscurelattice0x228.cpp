@@ -36,7 +36,7 @@ LegoBool32 ObscureLattice0x228::FUN_004665f0(
 	m_unk0x220 = p_createParams->m_unk0x9c;
 	m_unk0x21c = p_styleEntry;
 
-	return ObscureGlyph0x21c::FUN_004663d0(p_createParams, (const ObscureIcon0x1a8::CreateState0x90*) p_styleEntry);
+	return ObscureGlyph0x21c::FUN_004663d0(p_createParams, p_styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x00466620

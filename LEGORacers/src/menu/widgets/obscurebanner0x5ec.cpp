@@ -26,6 +26,48 @@ void ObscureBanner0x5ec::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
+// FUNCTION: LEGORACERS 0x004670a0
+LegoBool32 ObscureBanner0x5ec::FUN_004670a0(
+	CreateParams0x90* p_createParams,
+	const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+)
+{
+	static_cast<ObscureVantage0x58::CreateParams0x38*>(p_createParams->m_unk0x84)->m_parent = this;
+	static_cast<ObscureVantage0x58::CreateParams0x38*>(p_createParams->m_unk0x88)->m_parent = this;
+
+	if (!m_unk0x1ac.FUN_004663d0(p_createParams->m_unk0x84, p_styleEntry->m_unk0x90)) {
+		return FALSE;
+	}
+
+	if (!m_unk0x3c8.FUN_004663d0(p_createParams->m_unk0x88, p_styleEntry->m_unk0x94)) {
+		return FALSE;
+	}
+
+	if (m_stateFlags & c_flagBit0) {
+		m_unk0x1ac.VTable0x44(5);
+		m_unk0x3c8.VTable0x44(5);
+	}
+	else {
+		m_unk0x1ac.VTable0x48(5);
+		m_unk0x3c8.VTable0x48(5);
+	}
+
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x00467150
+LegoBool32 ObscureBanner0x5ec::FUN_00467150(
+	CreateParams0x90* p_createParams,
+	const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+)
+{
+	if (FUN_00471e30(p_createParams, p_styleEntry)) {
+		return FUN_004670a0(p_createParams, p_styleEntry);
+	}
+
+	return FALSE;
+}
+
 // FUNCTION: LEGORACERS 0x00467180
 void ObscureBanner0x5ec::FUN_00467180(undefined4 p_param)
 {
@@ -307,6 +349,33 @@ void ObscureBanner0x9f4::Reset()
 	m_unk0x9f0 = 0;
 	m_unk0x9ec = 0;
 	ObscureBanner0x5ec::Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004677e0
+LegoBool32 ObscureBanner0x5ec::FUN_004677e0(CreateParams0x90* p_createParams)
+{
+	p_createParams->m_unk0x8c->m_parent = this;
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x00467800
+LegoBool32 ObscureBanner0x9f4::FUN_00467800(
+	CreateParams0x98* p_createParams,
+	CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+)
+{
+	VTable0x08();
+
+	if (FUN_00467150(p_createParams, p_styleEntry) && FUN_004677e0(p_createParams)) {
+		m_unk0x5e8 = p_styleEntry;
+		m_unk0x9e8 = p_createParams->m_unk0x90;
+		m_unk0x9e8->VTable0x14(&m_unk0x174[m_visualStateIndex]);
+		m_unk0x9ec = p_createParams->m_unk0x94;
+		m_unk0x9e8->SetParent(this);
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00467880

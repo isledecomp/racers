@@ -188,6 +188,12 @@ LegoFloat ImaginaryTool0x368::VTable0x6c()
 }
 #pragma code_seg()
 
+// STUB: LEGORACERS 0x004803d0
+void ImaginaryTool0x368::FUN_004803d0()
+{
+	STUB(0x004803d0);
+}
+
 // FUNCTION: LEGORACERS 0x00480420 FOLDED
 LegoBool32 ImaginaryTool0x368::VTable0x88()
 {

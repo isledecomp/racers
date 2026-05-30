@@ -28,14 +28,14 @@ void GolString::CopyStringToBuf16(const LegoChar* p_src, undefined2* p_dst)
 }
 
 // FUNCTION: GOLDP 0x1002f950
-// FUNCTION: LEGORACERS 0x00449e10
+// FUNCTION: LEGORACERS 0x00449e10 FOLDED
 GolString::GolString()
 {
 	Reset();
 }
 
 // FUNCTION: GOLDP 0x1002f970
-// FUNCTION: LEGORACERS 0x00449e30
+// FUNCTION: LEGORACERS 0x00449e30 FOLDED
 GolString::~GolString()
 {
 	Reset();

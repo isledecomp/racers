@@ -1,17 +1,42 @@
 #include "menu/screens/controlconfigscreen.h"
 
-DECOMP_SIZE_ASSERT(ControlConfigScreen, 0x3360)
+#include "audio/soundgroupbinding.h"
+#include "input/inputdevice.h"
+#include "input/inputmanager.h"
+#include "menu/menutoolcontext0x4bc8.h"
+#include "menu/menutoolcreateparams0x30.h"
 
-// STUB: LEGORACERS 0x0047a550
-ControlConfigScreen::ControlConfigScreen()
+DECOMP_SIZE_ASSERT(ControlConfigScreen, 0x3360)
+DECOMP_SIZE_ASSERT(ControlConfigScreen::FieldAt0x32f4, 0xc)
+
+// FUNCTION: LEGORACERS 0x00449e10 FOLDED
+ControlConfigScreen::FieldAt0x32f4::FieldAt0x32f4()
 {
-	STUB(0x0047a550);
+	m_unk0x00 = 0;
+	m_unk0x08 = 0;
+	m_unk0x06 = 0;
+	m_unk0x04 = 0;
 }
 
-// STUB: LEGORACERS 0x0047a6b0
+// FUNCTION: LEGORACERS 0x00449e30 FOLDED
+ControlConfigScreen::FieldAt0x32f4::~FieldAt0x32f4()
+{
+	m_unk0x00 = 0;
+	m_unk0x08 = 0;
+	m_unk0x06 = 0;
+	m_unk0x04 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0047a550
+ControlConfigScreen::ControlConfigScreen()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0047a6b0
 ControlConfigScreen::~ControlConfigScreen()
 {
-	STUB(0x0047a6b0);
+	Destroy();
 }
 
 // STUB: LEGORACERS 0x0047a7d0
@@ -20,10 +45,29 @@ void ControlConfigScreen::Reset()
 	STUB(0x0047a7d0);
 }
 
-// STUB: LEGORACERS 0x0047a860
+// FUNCTION: LEGORACERS 0x0047a860
 void ControlConfigScreen::VTable0x4c()
 {
-	STUB(0x0047a860);
+	LegoU16 idBase = m_unk0x3a4 + 0x17;
+
+	FUN_0046bef0(&m_unk0x3a8, 0x49, 0x49);
+	FUN_0046bf80(&m_unk0x404, 0x3a, 0x3a, idBase);
+	m_unk0x404.FUN_0046f6b0(0x14);
+	FUN_0046c240(&m_unk0x780, 0x3e, 0x3b);
+	FUN_0046c2b0(&m_unk0x814, &m_unk0x780, 0x111, 0x4d);
+
+	for (LegoU32 i = 0; i < 9; i++) {
+		FUN_0047fdc0(&m_unk0x144c[i], i + 0x108, 0x42, 0x69);
+		FUN_0046bf80(&m_unk0x2ebc[i], i + 0x116, 0x37, i + 0x69);
+	}
+
+	FUN_0047fdc0(&m_unk0x47c, 0x3f, 0x46, 0x1e);
+}
+
+// STUB: LEGORACERS 0x0047a930
+void ControlConfigScreen::FUN_0047a930()
+{
+	STUB(0x0047a930);
 }
 
 // STUB: LEGORACERS 0x0047aaa0
@@ -39,10 +83,12 @@ void ControlConfigScreen::VTable0x84()
 	STUB(0x0047ab60);
 }
 
-// STUB: LEGORACERS 0x0047abb0
-void ControlConfigScreen::VTable0x44(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x0047abb0
+void ControlConfigScreen::VTable0x44(ObscureVantage0x58* p_unk0x04)
 {
-	STUB(0x0047abb0);
+	if (p_unk0x04 == &m_unk0x814) {
+		m_unk0x3a0 = m_unk0x780.GetUnk0x6c();
+	}
 }
 
 // STUB: LEGORACERS 0x0047abd0
@@ -51,10 +97,15 @@ void ControlConfigScreen::VTable0x34(ObscureIcon0x1a8*)
 	STUB(0x0047abd0);
 }
 
-// STUB: LEGORACERS 0x0047ac60
-void ControlConfigScreen::VTable0x38(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x0047ac60
+void ControlConfigScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
 {
-	STUB(0x0047ac60);
+	if (p_unk0x04 == &m_unk0x47c) {
+		m_unk0x360 = 8;
+		m_unk0x364 = TRUE;
+	}
+
+	m_unk0x35c = p_unk0x04;
 }
 
 // STUB: LEGORACERS 0x0047ac90
@@ -64,16 +115,35 @@ undefined4 ControlConfigScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue:
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0047ad90
+// FUNCTION: LEGORACERS 0x0047ad90
 undefined4 ControlConfigScreen::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	STUB(0x0047ad90);
-	return 0;
+	if (m_unk0x364) {
+		return TRUE;
+	}
+
+	return m_unk0x390;
 }
 
-// STUB: LEGORACERS 0x0047aeb0
-LegoBool32 ControlConfigScreen::VTable0x78(undefined4)
+// STUB: LEGORACERS 0x0047adb0
+void ControlConfigScreen::FUN_0047adb0()
 {
-	STUB(0x0047aeb0);
-	return FALSE;
+	STUB(0x0047adb0);
+}
+
+// FUNCTION: LEGORACERS 0x0047aeb0
+LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_unk0x04)
+{
+	FUN_0047adb0();
+
+	if (m_unk0x368[m_unk0x3a0]->GetDeviceType() == 3) {
+		m_unk0x144c[0].VTable0x44(0);
+		m_unk0x144c[1].VTable0x44(0);
+	}
+	else {
+		m_unk0x144c[0].VTable0x48(0);
+		m_unk0x144c[1].VTable0x48(0);
+	}
+
+	return ImaginaryTool0x368::VTable0x78(p_unk0x04);
 }

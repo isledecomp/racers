@@ -1,6 +1,7 @@
 #include "util/sordidwatch0x140.h"
 
 #include "cmbmodelpart0x34.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
 
 // TODO: Add when the size is known
 // DECOMP_SIZE_ASSERT(sordidwatch0x140, 0xTODO)
@@ -9,6 +10,28 @@
 SordidWatch0x140::SordidWatch0x140()
 {
 	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00412560
+SordidWatch0x140::~SordidWatch0x140()
+{
+  if (m_unk0x010.m_partIndices[0]) {
+	// TODO: What is the actual type of m_partIndices?
+	// It cannot be a pointer to something that has a destructor
+	delete ((undefined4*)m_unk0x010.m_partIndices[0]); // wrong, in to compile
+	m_unk0x010.m_partIndices[0] = 0;
+  }
+  m_unk0x010.VTable0x54();
+  if (m_unk0x000) {
+    if (m_unk0x004) {
+		// proves m_unk0x000 is a pointer to a class, still unknown
+		// FIXME: hack to get a match, most likely not semantically correct
+		((ObscureBanner0x5ec*)m_unk0x000)->VTable0x48(m_unk0x004);
+      m_unk0x004 = 0;
+    }
+    m_unk0x000 = 0;
+  }
+  Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00412390

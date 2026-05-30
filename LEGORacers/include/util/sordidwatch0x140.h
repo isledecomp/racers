@@ -8,6 +8,7 @@
 class SordidWatch0x140 {
 public:
 	SordidWatch0x140();
+	~SordidWatch0x140();
 
 	undefined4 GetFlags() const { return m_unk0x010.GetFlags0xb4(); }
 

@@ -31,6 +31,8 @@ public:
 	const GolVec3& GetPosition() const { return m_position; }
 
 protected:
+	friend class SordidWatch0x140;
+
 	GolMatrix3 m_orientation; // 0x28
 	GolVec3 m_position;       // 0x4c
 };

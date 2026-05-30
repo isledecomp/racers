@@ -49,6 +49,7 @@ public:
 
 protected:
 	friend class GolWorldDatabase;
+	friend class SordidWatch0x140;
 
 	void SetCenter(const GolVec3& p_center);
 

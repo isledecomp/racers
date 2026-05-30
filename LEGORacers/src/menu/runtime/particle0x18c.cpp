@@ -15,10 +15,10 @@ Particle0x18c::Particle0x18c()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00489440
+// FUNCTION: LEGORACERS 0x00489440
 Particle0x18c::~Particle0x18c()
 {
-	STUB(0x00489440);
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004894a0

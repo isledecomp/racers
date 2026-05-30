@@ -100,6 +100,7 @@ protected:
 		undefined2 p_unk0x10
 	);
 	void FUN_0047fec0(GolRenderDevice::MaterialColor* p_unk0x04, GolRenderDevice::Light* p_unk0x08);
+	void FUN_004803d0();
 	LegoBool32 FUN_00480440(MenuToolContext0x4bc8* p_context);
 	void FUN_004804c0(MenuToolContext0x4bc8* p_context);
 

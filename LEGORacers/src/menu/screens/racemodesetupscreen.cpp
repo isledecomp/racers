@@ -56,7 +56,7 @@ void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x00487e10
-void RaceModeSetupScreen::VTable0x44(undefined4)
+void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x00487e10);
 }

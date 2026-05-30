@@ -16,7 +16,7 @@ public:
 	virtual void VTable0x04(ObscureVantage0x58*) = 0;                                      // vtable+0x04
 	virtual void VTable0x08(ObscureVantage0x58*) = 0;                                      // vtable+0x08
 	virtual void VTable0x0c(ObscureVantage0x58*) = 0;                                      // vtable+0x0c
-	virtual void VTable0x10(undefined4) = 0;                                               // vtable+0x10
+	virtual void VTable0x10(ObscureVantage0x58*) = 0;                                      // vtable+0x10
 	virtual undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) = 0; // vtable+0x14
 	virtual undefined4 VTable0x18(
 		ObscureVantage0x58*,
@@ -39,8 +39,8 @@ public:
 	virtual void VTable0x38(ObscureVantage0x58*) = 0;                                      // vtable+0x38
 	virtual void VTable0x3c(ObscureIcon0x1a8*) = 0;                                        // vtable+0x3c
 	virtual void VTable0x40(ObscureIcon0x1a8*) = 0;                                        // vtable+0x40
-	virtual void VTable0x44(undefined4) = 0;                                               // vtable+0x44
-	virtual void VTable0x48(undefined4) = 0;                                               // vtable+0x48
+	virtual void VTable0x44(ObscureVantage0x58*) = 0;                                      // vtable+0x44
+	virtual void VTable0x48(ObscureVantage0x58*) = 0;                                      // vtable+0x48
 };
 
 #endif // IMAGINARYINTERFACE_H

@@ -79,7 +79,7 @@ void CarBuildScreen::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x00474820
-void CarBuildScreen::VTable0x44(undefined4)
+void CarBuildScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x00474820);
 }

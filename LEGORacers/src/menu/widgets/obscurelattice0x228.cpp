@@ -74,7 +74,7 @@ void ObscureLattice0x228::FUN_00466690(LegoU32 p_code)
 				m_unk0x224 = id;
 
 				if (m_eventHandler) {
-					m_eventHandler->VTable0x44((undefined4) this);
+					m_eventHandler->VTable0x44(this);
 				}
 			}
 		}
@@ -113,11 +113,16 @@ ObscureVantage0x58* ObscureLattice0x228::VTable0x38(Rect* p_arg1, Rect* p_arg2)
 	return this;
 }
 
-// STUB: LEGORACERS 0x00466800
-ObscureVantage0x58* ObscureLattice0x228::FUN_00466800(InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00466800
+ObscureVantage0x58* ObscureLattice0x228::FUN_00466800(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
 {
-	// TODO
-	STUB(0x00466800);
+	for (LegoS32 i = 0; i < m_unk0x21c->m_unk0xac; i++) {
+		if (FUN_00473a20(&m_unk0x21c->m_unk0xd0[i], p_x, p_y)) {
+			FUN_00466690(m_unk0x21c->m_unk0xb0[i] | c_sourceRegion);
+			return this;
+		}
+	}
+
 	return NULL;
 }
 

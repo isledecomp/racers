@@ -73,12 +73,12 @@ public:
 		VerdantTide0x38* p_unk0x10
 	);
 	void FUN_0049ad00();
+	void FUN_00499ee0();
 	void Destroy();
 
 private:
 	void Reset();
 	void FUN_00499eb0(GolModelBase* p_model);
-	void FUN_00499ee0();
 	void FUN_00499f20();
 	void FUN_00499f80();
 	void FUN_0049b720();

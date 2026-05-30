@@ -15,7 +15,7 @@ PickRacerScreen::~PickRacerScreen()
 }
 
 // STUB: LEGORACERS 0x004891a0 FOLDED
-void PickRacerScreen::VTable0x10(undefined4)
+void PickRacerScreen::VTable0x10(ObscureVantage0x58*)
 {
 	STUB(0x004891a0);
 }
@@ -40,7 +40,7 @@ void PickRacerScreen::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x00485090
-void PickRacerScreen::VTable0x44(undefined4)
+void PickRacerScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x00485090);
 }

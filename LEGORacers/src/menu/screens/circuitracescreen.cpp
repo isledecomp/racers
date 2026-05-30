@@ -40,7 +40,7 @@ void CircuitRaceScreen::VTable0x38(ObscureVantage0x58*)
 }
 
 // STUB: LEGORACERS 0x0047a0e0
-void CircuitRaceScreen::VTable0x44(undefined4)
+void CircuitRaceScreen::VTable0x44(ObscureVantage0x58*)
 {
 	STUB(0x0047a0e0);
 }

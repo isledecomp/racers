@@ -65,6 +65,7 @@ public:
 	undefined4 GetUnk0x78() const { return m_unk0x78; }
 	void SetUnk0x78(undefined4 p_unk0x78) { m_unk0x78 = p_unk0x78; }
 	LegoS32 GetUnk0x84() const { return m_unk0x84; }
+	void SetUnk0x84(LegoS32 p_unk0x84) { m_unk0x84 = p_unk0x84; }
 
 private:
 	friend class MenuManager;

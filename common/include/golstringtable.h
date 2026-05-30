@@ -17,6 +17,7 @@ public:
 	virtual void ReleaseBuffers();                    // vtable+0x0c
 
 	LegoS32 CopyStringByIndex(GolString* p_string, LegoU16 p_index);
+	undefined2* GetStringBuffer(LegoU16 p_index);
 	LegoS32 UseOwnedBuffers();
 
 	// SYNTHETIC: LEGORACERS 0x004a1480

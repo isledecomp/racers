@@ -15,8 +15,10 @@ class GolD3DRenderDevice;
 class CrimsonSun0xa4;
 class GolExport;
 class GolFontTable;
+class GolString;
 class GolStringTable;
 class InputManager;
+class IvoryTalon0x23c;
 class MainMenuScreenFieldAt0x420;
 class MenuToolCreateParams0x30;
 class ObscureCarousel0x78;
@@ -50,7 +52,7 @@ public:
 	void VTable0x04(ObscureVantage0x58*) override;                                      // vtable+0x04
 	void VTable0x08(ObscureVantage0x58*) override;                                      // vtable+0x08
 	void VTable0x0c(ObscureVantage0x58*) override;                                      // vtable+0x0c
-	void VTable0x10(undefined4) override;                                               // vtable+0x10
+	void VTable0x10(ObscureVantage0x58*) override;                                      // vtable+0x10
 	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x14
 	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
 						  undefined4) override; // vtable+0x18
@@ -65,8 +67,8 @@ public:
 	void VTable0x38(ObscureVantage0x58*) override;                                      // vtable+0x38
 	void VTable0x3c(ObscureIcon0x1a8*) override;                                        // vtable+0x3c
 	void VTable0x40(ObscureIcon0x1a8*) override;                                        // vtable+0x40
-	void VTable0x44(undefined4) override;                                               // vtable+0x44
-	void VTable0x48(undefined4) override;                                               // vtable+0x48
+	void VTable0x44(ObscureVantage0x58*) override;                                      // vtable+0x44
+	void VTable0x48(ObscureVantage0x58*) override;                                      // vtable+0x48
 	virtual void VTable0x4c() = 0;                                                      // vtable+0x4c
 	virtual undefined4 VTable0x50();                                                    // vtable+0x50
 	virtual void Reset();                                                               // vtable+0x54
@@ -101,7 +103,7 @@ public:
 	LegoBool32 FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	LegoBool32 FUN_0046c510(ObscureRune0x4d8* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0046c5b0(ObscureVantage0x58*, undefined2);
-	undefined4 FUN_0046c610(undefined4*, undefined2, undefined2, undefined2, undefined4);
+	LegoBool32 FUN_0046c610(IvoryTalon0x23c*, undefined2, undefined2, undefined2, GolString*);
 	undefined4 FUN_0046c6f0(ObscureIcon0x1a8*, ObscureIcon0x1a8*, undefined2);
 	undefined4 FUN_0046c730(ObscureIcon0x1a8*, undefined2);
 	void FUN_0046c760();

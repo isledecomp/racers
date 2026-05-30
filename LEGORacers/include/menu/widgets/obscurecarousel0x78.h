@@ -34,8 +34,8 @@ public:
 	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	virtual void VTable0x40() = 0;                                                            // vtable+0x40
 	virtual void VTable0x44(undefined4) = 0;                                                  // vtable+0x44
-	virtual void VTable0x48(undefined4, undefined4);                                          // vtable+0x48
-	virtual void VTable0x4c(undefined4, undefined4);                                          // vtable+0x4c
+	virtual void VTable0x48(undefined4*, undefined4*);                                        // vtable+0x48
+	virtual void VTable0x4c(undefined4*, undefined4*);                                        // vtable+0x4c
 	virtual void VTable0x50(undefined4) = 0;                                                  // vtable+0x50
 	virtual LegoS32 VTable0x54() = 0;                                                         // vtable+0x54
 	virtual LegoS32 VTable0x58() = 0;                                                         // vtable+0x58
@@ -46,6 +46,8 @@ public:
 	// ObscureCarousel0x78::`scalar deleting destructor'
 
 protected:
+	LegoS32 FUN_0046c9a0(LegoS32 p_index);
+
 	StyleEntry0x18* m_unk0x58;    // 0x58
 	SoundGroupBinding* m_unk0x5c; // 0x5c
 	LegoS32 m_unk0x60;            // 0x60

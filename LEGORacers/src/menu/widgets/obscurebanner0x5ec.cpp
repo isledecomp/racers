@@ -26,6 +26,50 @@ void ObscureBanner0x5ec::Reset()
 	ObscureIcon0x1a8::Reset();
 }
 
+// FUNCTION: LEGORACERS 0x00467180
+void ObscureBanner0x5ec::FUN_00467180(undefined4 p_param)
+{
+	if (m_unk0x54 & 1) {
+		return;
+	}
+
+	m_unk0x5e4 = -1;
+
+	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
+		VTable0x78();
+
+		if (p_param) {
+			m_unk0x1ac.VTable0x58(2);
+			VTable0x58(0);
+		}
+	}
+	else {
+		m_unk0x3c8.VTable0x58(2);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004671e0
+void ObscureBanner0x5ec::FUN_004671e0(undefined4 p_param)
+{
+	if (m_unk0x54 & 1) {
+		return;
+	}
+
+	m_unk0x5e4 = 1;
+
+	if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
+		VTable0x7c();
+
+		if (p_param) {
+			m_unk0x3c8.VTable0x58(2);
+			VTable0x58(0);
+		}
+	}
+	else {
+		m_unk0x1ac.VTable0x58(2);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00467240
 void ObscureBanner0x5ec::VTable0x44(undefined4 p_flags)
 {
@@ -174,18 +218,73 @@ ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(
 	return leafResult.m_result;
 }
 
-// STUB: LEGORACERS 0x00467560
-LegoBool32 ObscureBanner0x9f4::FUN_00467560(InputEventQueue::Event*, undefined4)
+// FUNCTION: LEGORACERS 0x00467560
+LegoBool32 ObscureBanner0x9f4::FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result)
 {
-	STUB(0x00467560);
+	switch (p_result) {
+	case InputDevice::c_sourceJoystickButton | 0xa:
+		if (m_unk0x3c8.GetUnk0x54() & 1) {
+			return TRUE;
+		}
+
+		if (p_event->m_isRepeat && (m_unk0x3c8.GetStateFlags() & c_flagBit2)) {
+			FUN_004671e0(0);
+			return TRUE;
+		}
+
+		if (m_stateFlags & c_flagBit2) {
+			return TRUE;
+		}
+
+		m_unk0x3c8.VTable0x54(2);
+		FUN_004671e0(0);
+		VTable0x54(0);
+		return TRUE;
+
+	case InputDevice::c_sourceJoystickButton | 0xb:
+		if (m_unk0x1ac.GetUnk0x54() & 1) {
+			return TRUE;
+		}
+
+		if (p_event->m_isRepeat && (m_unk0x1ac.GetStateFlags() & c_flagBit2)) {
+			FUN_00467180(0);
+			return TRUE;
+		}
+
+		if (m_stateFlags & c_flagBit2) {
+			return TRUE;
+		}
+
+		m_unk0x1ac.VTable0x54(2);
+		FUN_00467180(0);
+		VTable0x54(0);
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00467670
-LegoBool32 ObscureBanner0x9f4::FUN_00467670(InputEventQueue::Event*, undefined4)
+// FUNCTION: LEGORACERS 0x00467670
+LegoBool32 ObscureBanner0x9f4::FUN_00467670(InputEventQueue::Event*, undefined4 p_result)
 {
-	STUB(0x00467670);
-	return FALSE;
+	if (p_result == (InputDevice::c_sourceJoystickButton | 0x1)) {
+		return FALSE;
+	}
+
+	ObscureGlyph0x21c* glyph;
+	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
+		glyph = &m_unk0x1ac;
+	}
+	else if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
+		glyph = &m_unk0x3c8;
+	}
+	else {
+		return FALSE;
+	}
+
+	glyph->VTable0x58(1);
+	VTable0x58(1);
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004676d0

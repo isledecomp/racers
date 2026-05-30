@@ -238,11 +238,53 @@ LegoS32 ObscureCarouselNavigator0x94::VTable0x58()
 	return m_unk0x6c;
 }
 
-// STUB: LEGORACERS 0x0046dc70
-ObscureVantage0x58* ObscureCarouselNavigator0x94::VTable0x38(Rect*, Rect*)
+// FUNCTION: LEGORACERS 0x0046dc70
+ObscureVantage0x58* ObscureCarouselNavigator0x94::VTable0x38(Rect* p_param1, Rect* p_param2)
 {
-	STUB(0x0046dc70);
-	return NULL;
+	Rect* lastChildRect = m_lastChild->GetRect();
+	ObscureVantage0x58* child = m_firstChild;
+
+	if (!m_unk0x58->m_unk0x14 || !child) {
+		return NULL;
+	}
+
+	do {
+		child->VTable0x1c(p_param1, p_param2);
+		child = child->GetNextSibling();
+	} while (child);
+
+	LegoS32 width;
+	if (m_unk0x58->m_unk0x10) {
+		width = m_unk0x34.m_right - m_unk0x34.m_left;
+	}
+	else {
+		width = lastChildRect->m_right - lastChildRect->m_left;
+	}
+
+	LegoS32 savedLeft = m_unk0x4c;
+	LegoS32 roundedExtent = ((lastChildRect->m_right + width - 1) / width) * width;
+
+	if (width + savedLeft > roundedExtent) {
+		m_unk0x4c = 0;
+
+		Rect local1 = *p_param1;
+		Rect local2;
+		local2.m_top = p_param2->m_top;
+		local2.m_bottom = p_param2->m_bottom;
+		local2.m_right = p_param2->m_right;
+		local2.m_left = p_param2->m_left + (roundedExtent - savedLeft);
+
+		local1.m_left = 0;
+		local1.m_right = p_param2->m_right - local2.m_left;
+
+		for (child = m_firstChild; child; child = child->GetNextSibling()) {
+			child->VTable0x1c(&local1, &local2);
+		}
+
+		m_unk0x4c = savedLeft;
+	}
+
+	return this;
 }
 
 // FUNCTION: LEGORACERS 0x0046dd80

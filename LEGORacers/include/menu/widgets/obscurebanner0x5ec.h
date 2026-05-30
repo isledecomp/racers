@@ -37,6 +37,9 @@ public:
 	// ObscureBanner0x5ec::`scalar deleting destructor'
 
 protected:
+	void FUN_00467180(undefined4 p_param);
+	void FUN_004671e0(undefined4 p_param);
+
 	undefined4 m_unk0x1a8;        // 0x1a8
 	ObscureGlyph0x21c m_unk0x1ac; // 0x1ac
 	ObscureGlyph0x21c m_unk0x3c8; // 0x3c8

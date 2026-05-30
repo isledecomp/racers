@@ -2,13 +2,13 @@
 
 #include "font/golfontlibrary.h"
 #include "golmath.h"
+#include "golmodelentity.h"
 #include "golscenenode.h"
 #include "golsurfaceformat.h"
 #include "goltransformbase.h"
 #include "material/golimagelist.h"
 #include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
-#include "golmodelentity.h"
 
 #include <string.h>
 

@@ -48,7 +48,8 @@ public:
 	LegoFloat FUN_10028710();
 	void SetCenter(const GolVec3& p_center);
 
-	void SetVelocity(GolVec3& p_other) {
+	void SetVelocity(GolVec3& p_other)
+	{
 		m_velocity.m_x = p_other.m_x;
 		m_velocity.m_y = p_other.m_y;
 		m_velocity.m_z = p_other.m_z;

@@ -8,6 +8,7 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
+#include "golmodelentity.h"
 #include "golscenenode.h"
 #include "mabmaterialanimation0x14.h"
 #include "mabmaterialanimationitem0x18.h"
@@ -17,7 +18,6 @@
 #include "scene/golbillboard.h"
 #include "scene/golboundedentity.h"
 #include "scene/golcollidableentity.h"
-#include "golmodelentity.h"
 #include "scene/golskinnedentity.h"
 
 #include <float.h>

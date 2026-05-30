@@ -12,25 +12,6 @@ SordidWatch0x140::SordidWatch0x140()
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x00412560
-SordidWatch0x140::~SordidWatch0x140()
-{
-	if (m_unk0x0ac) {
-		delete[] m_unk0x0ac;
-		m_unk0x0ac = NULL;
-	}
-	m_unk0x010.VTable0x54();
-	if (m_unk0x000) {
-		if (m_unk0x004) {
-			// FIXME: hack to get a match, most likely not the correct class
-			((ObscureBanner0x5ec*) m_unk0x000)->VTable0x48(m_unk0x004);
-			m_unk0x004 = 0;
-		}
-		m_unk0x000 = 0;
-	}
-	Reset();
-}
-
 // FUNCTION: LEGORACERS 0x00412390
 void SordidWatch0x140::Reset()
 {
@@ -62,6 +43,25 @@ void SordidWatch0x140::Reset()
 	m_unk0x134 = 0;
 	m_unk0x138 = 0;
 	m_unk0x13c = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00412560
+SordidWatch0x140::~SordidWatch0x140()
+{
+	if (m_unk0x0ac) {
+		delete[] m_unk0x0ac;
+		m_unk0x0ac = NULL;
+	}
+	m_unk0x010.VTable0x54();
+	if (m_unk0x000) {
+		if (m_unk0x004) {
+			// FIXME: hack to get a match, most likely not the correct class
+			((ObscureBanner0x5ec*) m_unk0x000)->VTable0x48(m_unk0x004);
+			m_unk0x004 = 0;
+		}
+		m_unk0x000 = 0;
+	}
+	Reset();
 }
 
 // STUB: LEGORACERS 0x00412430

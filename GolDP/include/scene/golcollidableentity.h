@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 
 class GolRenderDevice;
 class GolBoundingShape;

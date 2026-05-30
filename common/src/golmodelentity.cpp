@@ -1,4 +1,4 @@
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 
 #include "material/duskwindbananarelic0x24.h"
 #include "mesh/golmodelbase.h"
@@ -9,12 +9,25 @@
 DECOMP_SIZE_ASSERT(GolModelEntity, 0x90)
 
 // GLOBAL: GOLDP 0x1005726c
-static LegoFloat g_negativeOneFloat = -1.0f;
+// GLOBAL: LEGORACERS 0x004af750
+const LegoFloat g_negativeOneFloat = -1.0f;
 
 // GLOBAL: GOLDP 0x10057268
-static const LegoFloat g_maxFloat = FLT_MAX;
+// GLOBAL: LEGORACERS 0x004af74c
+const LegoFloat g_maxFloat = FLT_MAX;
+
+// GLOBAL: LEGORACERS 0x004af7b4
+const LegoFloat g_unk0x004af7b4 = 1.0f / 65536.0f;
+
+// GLOBAL: LEGORACERS 0x004af7b8
+const LegoFloat g_unk0x004af7b8 = 1000.0f / 65536.0f;
+
+// GLOBAL: LEGORACERS 0x004af7bc
+const LegoFloat g_unk0x004af7bc = 65.536f;
+
 
 // FUNCTION: GOLDP 0x10027b50
+// FUNCTION: LEGORACERS 0x00411150
 GolModelEntity::GolModelEntity()
 {
 	LegoU32 i;
@@ -34,6 +47,7 @@ GolModelEntity::GolModelEntity()
 }
 
 // FUNCTION: GOLDP 0x10027bb0
+// FUNCTION: LEGORACERS 0x004111b0
 void GolModelEntity::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	if (m_flags & c_flagBit0) {
@@ -52,6 +66,7 @@ void GolModelEntity::VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance
 }
 
 // FUNCTION: GOLDP 0x10027c00
+// FUNCTION: LEGORACERS 0x00411200
 void GolModelEntity::VTable0x54()
 {
 	LegoU32 i;
@@ -72,6 +87,7 @@ void GolModelEntity::VTable0x54()
 }
 
 // FUNCTION: GOLDP 0x10027c50
+// FUNCTION: LEGORACERS 0x00411250
 void GolModelEntity::FUN_10027c50(GolModelBase* p_model, LegoFloat p_modelDistance)
 {
 	LegoU32 i;
@@ -128,6 +144,7 @@ void GolModelEntity::FUN_10027cc0(const GolVec3& p_vector, GolModelEntity::Resul
 }
 
 // FUNCTION: GOLDP 0x10027d80
+// FUNCTION: LEGORACERS 0x004112c0
 void GolModelEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	LegoU32 i;
@@ -168,12 +185,14 @@ void GolModelEntity::FUN_10027e70(GolMatrix4* p_dest, LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10027e90
+// FUNCTION: LEGORACERS 0x004113c0
 void GolModelEntity::VTable0x00()
 {
 	VTable0x4c(0);
 }
 
 // FUNCTION: GOLDP 0x10027ea0
+// FUNCTION: LEGORACERS 0x004113d0
 void GolModelEntity::VTable0x4c(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
@@ -195,6 +214,7 @@ void GolModelEntity::VTable0x4c(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10027f40
+// FUNCTION: LEGORACERS 0x00411470
 void GolModelEntity::VTable0x10(LegoS32 p_elapsed)
 {
 	GolVec3 v;
@@ -210,6 +230,7 @@ void GolModelEntity::VTable0x10(LegoS32 p_elapsed)
 }
 
 // FUNCTION: GOLDP 0x10027fe0
+// FUNCTION: LEGORACERS 0x00411510
 void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat* p_destScalar)
 {
 	if (!p_index) {
@@ -225,39 +246,8 @@ void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat
 	}
 }
 
-LegoFloat GolModelEntity::FUN_00411640() const
-{
-	return static_cast<LegoFloat>(m_unk0x60) * (1.0f / 65536.0f);
-}
-
-LegoFloat GolModelEntity::FUN_00411660() const
-{
-	return static_cast<LegoFloat>(m_unk0x62) * (1.0f / 65536.0f);
-}
-
-void GolModelEntity::FUN_00411680(LegoFloat p_arg)
-{
-	m_flags |= c_flagBit3;
-	m_unk0x60 = static_cast<LegoU16>(p_arg * (1000.0f / 65536.0f));
-}
-
-void GolModelEntity::FUN_004116b0(LegoFloat p_arg)
-{
-	m_flags |= c_flagBit3;
-	m_unk0x62 = static_cast<LegoU16>(p_arg * (1000.0f / 65536.0f));
-}
-
-LegoFloat GolModelEntity::FUN_004116e0() const
-{
-	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x64)) * (1000.0f / 65536.0f);
-}
-
-LegoFloat GolModelEntity::FUN_004116f0() const
-{
-	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x68)) * (1000.0f / 65536.0f);
-}
-
 // FUNCTION: GOLDP 0x10028030
+// STUB: LEGORACERS 0x00411560
 void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
@@ -279,6 +269,7 @@ void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 }
 
 // FUNCTION: GOLDP 0x100280c0
+// FUNCTION: LEGORACERS 0x004115f0
 void GolModelEntity::VTable0x24(ColorTransform0x20* p_transform)
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
@@ -291,6 +282,7 @@ void GolModelEntity::VTable0x24(ColorTransform0x20* p_transform)
 }
 
 // FUNCTION: GOLDP 0x100280f0
+// FUNCTION: LEGORACERS 0x00411620
 void GolModelEntity::VTable0x28()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_models); i++) {
@@ -301,21 +293,85 @@ void GolModelEntity::VTable0x28()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00411640
+LegoFloat GolModelEntity::FUN_00411640() const
+{
+#ifdef BUILDING_GOL
+	return static_cast<LegoFloat>(m_unk0x60) * (1.0f / 65536.0f);
+#else
+	return static_cast<LegoFloat>(m_unk0x60) * g_unk0x004af7b4;
+#endif
+}
+
+// FUNCTION: LEGORACERS 0x00411660
+LegoFloat GolModelEntity::FUN_00411660() const
+{
+	// return static_cast<LegoFloat>(m_unk0x62) * (1.0f / 65536.0f);
+	// return static_cast<LegoFloat>(m_unk0x62) * g_unk0x004af7b4;
+
+#ifdef BUILDING_GOL
+	return static_cast<LegoFloat>(m_unk0x62) * (1.0f / 65536.0f);
+#else
+	return static_cast<LegoFloat>(m_unk0x62) * g_unk0x004af7b4;
+#endif
+}
+
+// FUNCTION: LEGORACERS 0x00411680
+void GolModelEntity::FUN_00411680(LegoFloat p_arg)
+{
+	m_flags |= c_flagBit3;
+	// m_unk0x60 = static_cast<LegoU16>(p_arg * (1000.0f / 65536.0f));
+	m_unk0x60 = static_cast<LegoU16>(p_arg * g_unk0x004af7b8);
+}
+
+// FUNCTION: LEGORACERS 0x004116b0
+void GolModelEntity::FUN_004116b0(LegoFloat p_arg)
+{
+	m_flags |= c_flagBit3;
+	// m_unk0x62 = static_cast<LegoU16>(p_arg * (1000.0f / 65536.0f));
+	m_unk0x62 = static_cast<LegoU16>(p_arg * g_unk0x004af7b8);
+}
+
+// FUNCTION: LEGORACERS 0x004116e0
+LegoFloat GolModelEntity::FUN_004116e0() const
+{
+	// return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x64)) * (1000.0f / 65536.0f);
+	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x64)) * g_unk0x004af7b8;
+}
+
+// FUNCTION: LEGORACERS 0x004116f0
+LegoFloat GolModelEntity::FUN_004116f0() const
+{
+	// return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x68)) * (1000.0f / 65536.0f);
+	return static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x68)) * g_unk0x004af7b8;
+}
+
 // FUNCTION: GOLDP 0x10028110
+// FUNCTION: LEGORACERS 0x00411700
 void GolModelEntity::FUN_00411700(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
+#ifdef BUILDING_GOL
 	m_unk0x64 = static_cast<LegoS32>(p_arg * 65.536f);
+#else
+	m_unk0x64 = static_cast<LegoS32>(p_arg * g_unk0x004af7bc);
+#endif
 }
 
 // FUNCTION: GOLDP 0x10028140
+// FUNCTION: LEGORACERS 0x00411730
 void GolModelEntity::FUN_00411730(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
+#ifdef BUILDING_GOL
 	m_unk0x68 = static_cast<LegoS32>(p_arg * 65.536f);
+#else
+	m_unk0x68 = static_cast<LegoS32>(p_arg * g_unk0x004af7bc);
+#endif
 }
 
 // FUNCTION: GOLDP 0x10028170
+// FUNCTION: LEGORACERS 0x00411760
 LegoBool32 GolModelEntity::VTable0x20()
 {
 	GolModelMaterialTable* materialTable = m_materialTables[0];
@@ -345,6 +401,7 @@ GolSceneNode* GolModelEntity::VTable0x58(undefined4)
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void GolModelEntity::VTable0x5c(undefined4)
 {
 	// empty

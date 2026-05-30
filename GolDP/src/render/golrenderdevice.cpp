@@ -8,7 +8,7 @@
 #include "material/golimagelist.h"
 #include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 
 #include <string.h>
 

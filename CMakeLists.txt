@@ -110,6 +110,7 @@ set(COMMON_SOURCES
   common/src/golbillboardfield0x2c.cpp
   common/src/golworldentity.cpp
   common/src/golorientedentity.cpp
+  common/src/golmodelentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
 )
@@ -120,7 +121,6 @@ set(COMMON_SOURCES
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
   GolDP/src/bounds/golboundingshape.cpp
-  GolDP/src/scene/golmodelentity.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
   GolDP/src/font/golfontbase0x40.cpp
   GolDP/src/render/goldrawstate.cpp
@@ -224,7 +224,6 @@ add_library(goldp SHARED
   GolDP/src/camera/golscenetransformnode.cpp
   GolDP/src/bounds/golboundingvolume.cpp
   GolDP/src/scene/golboundedentity.cpp
-  GolDP/src/scene/golmodelentity.cpp
   GolDP/src/scene/golcollidableentity.cpp
   GolDP/src/scene/golskinnedentity.cpp
   util/decomp.cpp
@@ -303,7 +302,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
   LEGORacers/src/util/opalhaven0xf4.cpp
-  LEGORacers/src/util/silverhollow0xb8.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp
   LEGORacers/src/model/golworlddatabase.cpp

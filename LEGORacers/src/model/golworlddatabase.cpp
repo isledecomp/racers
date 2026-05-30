@@ -2,7 +2,7 @@
 
 #include "camera/golcamerabase.h"
 #include "mabmaterialanimation0x14.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 #include "scene/golskinnedentity.h"
 
 // FUNCTION: LEGORACERS 0x00416040

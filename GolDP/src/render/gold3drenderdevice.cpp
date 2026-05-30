@@ -17,7 +17,7 @@
 #include "render/goldrawdpstate.h"
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 #include "surface/falcondunebag0x10.h"
 #include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"

@@ -17,7 +17,7 @@
 #include "scene/golbillboard.h"
 #include "scene/golboundedentity.h"
 #include "scene/golcollidableentity.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 #include "scene/golskinnedentity.h"
 
 #include <float.h>

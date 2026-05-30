@@ -14,6 +14,7 @@ class GolWorldDatabase;
 // GOLDP array construction proves this complete class has a 0x90-byte stride; the
 // node/model-part tail starts in GolSkinnedEntity here.
 // VTABLE: GOLDP 0x10057270
+// VTABLE: LEGORACERS 0x004af754
 // SIZE 0x90
 class GolModelEntity : public GolOrientedEntity {
 public:

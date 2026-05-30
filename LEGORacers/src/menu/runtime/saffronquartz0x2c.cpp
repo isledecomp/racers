@@ -12,7 +12,7 @@
 #include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "scene/golcollidableentity.h"
-#include "scene/golmodelentity.h"
+#include "golmodelentity.h"
 #include "scene/golskinnedentity.h"
 #include "util/bluebellfog0x4.h"
 #include "util/opalhaven0xf4.h"

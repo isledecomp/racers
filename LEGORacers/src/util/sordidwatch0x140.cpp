@@ -1,10 +1,16 @@
 #include "util/sordidwatch0x140.h"
 
 #include "cmbmodelpart0x34.h"
+#include "core/goldpexport.h"
+#include "golerror.h"
 #include "menu/widgets/obscurebanner0x5ec.h"
+#include "mesh/golmodelbase.h"
 
 DECOMP_SIZE_ASSERT(SordidWatch0x140, 0x140)
 DECOMP_SIZE_ASSERT(SordidWatch0x140::SordidWatchInner0x38, 0x38)
+
+// GLOBAL: LEGORACERS 0x004af86c
+const LegoFloat g_maxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x00412360
 SordidWatch0x140::SordidWatch0x140()

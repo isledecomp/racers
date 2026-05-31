@@ -1,43 +1,123 @@
 #include "menu/screens/circuitselectscreen.h"
 
+#include "audio/musicgroup.h"
+#include "audio/musicinstance.h"
+#include "golhashtable.h"
+#include "golstring.h"
+#include "menu/menuscreenid.h"
+#include "menu/menutoolcontext0x4bc8.h"
+#include "menu/menutoolcreateparams0x30.h"
+
+#include <stdio.h>
+
 DECOMP_SIZE_ASSERT(CircuitSelectScreen, 0x658)
 
-// STUB: LEGORACERS 0x00479a80
+// FUNCTION: LEGORACERS 0x00479a80
 CircuitSelectScreen::CircuitSelectScreen()
 {
-	STUB(0x00479a80);
 }
 
-// STUB: LEGORACERS 0x00479ac0
+// FUNCTION: LEGORACERS 0x00479ac0
 CircuitSelectScreen::~CircuitSelectScreen()
 {
-	STUB(0x00479ac0);
+	Destroy();
 }
 
-// STUB: LEGORACERS 0x00479b10
-LegoBool32 CircuitSelectScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x00479b10
+LegoBool32 CircuitSelectScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x00479b10);
-	return FALSE;
+	if (m_initialized) {
+		Destroy();
+	}
+
+	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
+		return FALSE;
+	}
+
+	LegoS32 musicId = 1;
+	switch (m_unk0x28c - c_menuCircuit1) {
+	case 0:
+		musicId = 5;
+		break;
+	case 1:
+		musicId = 6;
+		break;
+	case 2:
+		musicId = 7;
+		break;
+	case 3:
+		musicId = 8;
+		break;
+	case 4:
+		musicId = 9;
+		break;
+	case 5:
+		musicId = 10;
+		break;
+	}
+
+	FUN_00480470(p_context, musicId, FALSE);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00479bd0
+// FUNCTION: LEGORACERS 0x00479bd0
 LegoBool32 CircuitSelectScreen::Destroy()
 {
-	STUB(0x00479bd0);
-	return FALSE;
+	if (!m_initialized) {
+		return TRUE;
+	}
+
+	if (m_context) {
+		if (m_context->m_unk0x4b40.GetMusicGroup()) {
+			if (m_context->m_unk0x4b40.GetMusicInstance()) {
+				m_context->m_unk0x4b40.GetMusicInstance()->Stop();
+				m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
+				m_context->m_unk0x4b40.SetMusicInstance(NULL);
+			}
+		}
+	}
+
+	return ImaginaryChisel0x658::Destroy();
 }
 
-// STUB: LEGORACERS 0x00479c40
+// FUNCTION: LEGORACERS 0x00479c40
 void CircuitSelectScreen::VTable0x4c()
 {
-	STUB(0x00479c40);
+	struct ResourcePathLocals {
+		LegoChar m_name[12];
+		GolString m_string;
+		LegoChar m_path[20];
+	} locals;
+
+	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_unk0x28c);
+	locals.m_string.CopyToString(locals.m_name);
+	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(locals.m_path);
+	}
+
+	FUN_0046c5b0(&m_unk0x368, m_unk0x28c);
+	m_unk0x368.m_unk0x2cc = FALSE;
 }
 
-// STUB: LEGORACERS 0x00479d10
+// FUNCTION: LEGORACERS 0x00479d10
 void CircuitSelectScreen::VTable0x84()
 {
-	STUB(0x00479d10);
+	m_context->m_menuStack.Pop();
+
+	if (m_context->m_menuStack.Peek() == c_menuMainMenu) {
+		m_context->m_menuStack.ResetSize();
+		m_context->m_menuStack.Push(c_menuMainMenu);
+	}
+	else {
+		m_context->m_menuStack.ResetSize();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED

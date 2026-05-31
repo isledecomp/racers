@@ -460,14 +460,20 @@ public:
 		);
 		void GetVectorAt(GolVec3* p_vec, int p_index);
 
+		LegoU32 GetUnk0x04() { return m_unk0x04; }
+		LegoS32 GetUnk0x14() { return m_unk0x14; }
+		LegoU8 GetUnk0x18() { return m_unk0x18; }
+		LegoS32 GetUnk0x30() { return m_unk0x30; }
+		LegoS32 GetUnk0x34() { return m_unk0x34; }
+
 	private:
 		GolVec3* m_unk0x00;                            // 0x00
-		LegoS32 m_unk0x04;                             // 0x04
+		LegoU32 m_unk0x04;                             // 0x04
 		LegoFloat m_unk0x08;                           // 0x08
 		LegoFloat m_unk0x0c;                           // 0x0c
 		LegoFloat m_unk0x10;                           // 0x10
 		LegoS32 m_unk0x14;                             // 0x14
-		LegoS8 m_unk0x18;                              // 0x18
+		LegoU8 m_unk0x18;                              // 0x18
 		LegoS8 m_unk0x19;                              // 0x19
 		LegoFloat m_unk0x1c;                           // 0x1c
 		LegoFloat m_unk0x20;                           // 0x20

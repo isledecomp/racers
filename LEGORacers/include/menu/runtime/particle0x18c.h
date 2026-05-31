@@ -32,9 +32,7 @@ private:
 	CrimsonPebbleAnimation0x33c::Runtime0x44* m_unk0x000; // 0x000
 	undefined4 m_unk0x004;                                // 0x004
 	SordidWatch0x140 m_unk0x008;                          // 0x008
-	LegoFloat m_unk0x148;                                 // 0x184
-	LegoFloat m_unk0x14c;                                 // 0x184
-	LegoFloat m_unk0x150;                                 // 0x184
+	GolVec3 m_unk0x148;                                   // 0x148
 	GolVec3 m_unk0x154;                                   // 0x154
 	GolMatrix3 m_unk0x160;                                // 0x160
 	undefined4 m_unk0x184;                                // 0x184

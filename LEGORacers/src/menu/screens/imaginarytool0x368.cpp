@@ -4,6 +4,7 @@
 #include "audio/musicinstance.h"
 #include "golerror.h"
 #include "golstring.h"
+#include "input/inputmanager.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/screens/mainmenuscreenfieldat0x498.h"
 #include "racer/siennacircuit0x154.h"
@@ -188,10 +189,13 @@ LegoFloat ImaginaryTool0x368::VTable0x6c()
 }
 #pragma code_seg()
 
-// STUB: LEGORACERS 0x004803d0
+// FUNCTION: LEGORACERS 0x004803d0
 void ImaginaryTool0x368::FUN_004803d0()
 {
-	STUB(0x004803d0);
+	m_context->m_inputBindings.Shutdown();
+	m_inputManager->Initialize();
+	m_context->m_inputBindings.Initialize(m_inputManager);
+	m_context->m_unk0x258.FUN_004437a0(m_inputManager);
 }
 
 // FUNCTION: LEGORACERS 0x00480420 FOLDED

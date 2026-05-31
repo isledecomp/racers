@@ -53,6 +53,23 @@ public:
 	void FUN_00411730(LegoFloat p_arg);
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	GolModelMaterialTable* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
+	LegoBool32 HasModel() const { return m_flags & c_flagBit0; }
+	void CopyOrientationAndPositionFrom(const GolModelEntity& p_other)
+	{
+		m_orientation.m_m[0][0] = p_other.m_orientation.m_m[0][0];
+		m_orientation.m_m[0][1] = p_other.m_orientation.m_m[0][1];
+		m_orientation.m_m[0][2] = p_other.m_orientation.m_m[0][2];
+		m_orientation.m_m[1][0] = p_other.m_orientation.m_m[1][0];
+		m_orientation.m_m[1][1] = p_other.m_orientation.m_m[1][1];
+		m_orientation.m_m[1][2] = p_other.m_orientation.m_m[1][2];
+		m_orientation.m_m[2][0] = p_other.m_orientation.m_m[2][0];
+		m_orientation.m_m[2][1] = p_other.m_orientation.m_m[2][1];
+		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
+		m_position = p_other.m_position;
+	}
+	void InvalidateRadius() { m_radius = -1.0f; }
+	GolModelMaterialTable* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
+	void SetPrimaryMaterialTable(GolModelMaterialTable* p_materialTable) { m_materialTables[0] = p_materialTable; }
 
 protected:
 	friend class GolWorldDatabase;

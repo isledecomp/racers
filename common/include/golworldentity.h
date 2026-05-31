@@ -55,6 +55,13 @@ public:
 		m_velocity.m_z = p_other.m_z;
 	}
 
+	void ClearVelocity()
+	{
+		m_velocity.m_x = 0.0f;
+		m_velocity.m_y = 0.0f;
+		m_velocity.m_z = 0.0f;
+	}
+
 protected:
 	friend class GolWorldDatabase;
 

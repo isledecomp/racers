@@ -17,7 +17,7 @@ public:
 	void VTable0x50(undefined4) override; // vtable+0x50
 	LegoS32 VTable0x54() override;        // vtable+0x54
 	LegoS32 VTable0x58() override;        // vtable+0x58
-	virtual void VTable0x60();            // vtable+0x60
+	void VTable0x60(LegoS32) override;    // vtable+0x60
 
 	// SYNTHETIC: LEGORACERS 0x004839c0
 	// MaroonAtoll0x170::`scalar deleting destructor'

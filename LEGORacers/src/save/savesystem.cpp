@@ -207,3 +207,11 @@ LegoU32 SaveSystem::FUN_00443760()
 
 	return 6;
 }
+
+// FUNCTION: LEGORACERS 0x004437a0
+void SaveSystem::FUN_004437a0(InputManager* p_inputManager)
+{
+	m_unk0x18c4.FUN_0042ef80(&m_unk0x108);
+	m_unk0x18c4.InitializeInputBindings(p_inputManager);
+	m_unk0x18c4.FUN_0042eb60(&m_unk0x108, m_unk0x18c4.GetUnk0x04());
+}

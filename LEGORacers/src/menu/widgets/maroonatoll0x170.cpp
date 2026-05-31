@@ -33,7 +33,7 @@ LegoBool32 MaroonAtoll0x170::VTable0x08()
 }
 
 // STUB: LEGORACERS 0x00483f70
-void MaroonAtoll0x170::VTable0x60()
+void MaroonAtoll0x170::VTable0x60(LegoS32)
 {
 	STUB(0x00483f70);
 }

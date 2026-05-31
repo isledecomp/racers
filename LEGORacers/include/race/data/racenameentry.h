@@ -22,6 +22,13 @@ public:
 		GolStringTable* p_stringTable
 	);
 	void Reset();
+	LegoChar* GetName() { return m_name; }
+	LegoChar* GetUnk0x0cName() { return m_unk0x0c; }
+	LegoChar* GetUnk0x14Name() { return m_unk0x14; }
+	LegoChar* GetUnk0x1cName() { return m_unk0x1c; }
+	LegoBool32 GetUnk0x2c() const { return m_unk0x2c; }
+	GolStringTable* GetStringTable() const { return m_stringTable; }
+	LegoU16 GetUnk0x34() const { return m_unk0x34; }
 
 private:
 	enum {

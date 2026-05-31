@@ -1,75 +1,322 @@
 #include "menu/screens/racemodesetupscreen.h"
 
+#include "golname.h"
+#include "golstringtable.h"
+#include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "race/data/racenameentry.h"
+#include "save/savesystem.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(RaceModeSetupScreen, 0x2e60)
 
-// STUB: LEGORACERS 0x00487850
+// GLOBAL: LEGORACERS 0x004c2204
+LegoChar g_veronicaVoltageName[] = "VV";
+
+// FUNCTION: LEGORACERS 0x00487850
 RaceModeSetupScreen::RaceModeSetupScreen()
 {
-	STUB(0x00487850);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x004879b0
+// FUNCTION: LEGORACERS 0x004879b0
 RaceModeSetupScreen::~RaceModeSetupScreen()
 {
-	STUB(0x004879b0);
+	Destroy();
 }
 
-// STUB: LEGORACERS 0x00487ae0
+// FUNCTION: LEGORACERS 0x00487ae0
 void RaceModeSetupScreen::Reset()
 {
-	STUB(0x00487ae0);
+	m_unk0x2e08 = 0;
+	m_unk0x2e0c = 0;
+	m_unk0x2e10 = 0;
+	::memset(m_unk0x2e14, 0, sizeof(m_unk0x2e14));
+	::memset(m_unk0x2e32, 0, sizeof(m_unk0x2e32));
+	m_unk0x2e48.CopyFromBufSelection(m_unk0x2e14, sizeOfArray(m_unk0x2e14) - 1);
+	m_unk0x2e54.CopyFromBufSelection(m_unk0x2e32, sizeOfArray(m_unk0x2e32) - 1);
+	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x00487b50
+// FUNCTION: LEGORACERS 0x00487b50
 void RaceModeSetupScreen::VTable0x4c()
 {
 	FUN_0046bef0(&m_unk0x1908, 0x49, 0x49);
 	SingleRaceSelectBase::VTable0x4c();
 
-	STUB(0x00487b50);
+	undefined4 textId;
+	if (m_menuId != 6) {
+		textId = 0x0f;
+	}
+	else {
+		textId = 0x0e + ((m_context->m_unk0x4b40.GetUnk0x78() & 2) ? 0x0b : 0);
+	}
+
+	FUN_0046bf80(&m_unk0x1964, 0x3a, 0x3a, textId);
+	m_unk0x1964.FUN_0046f6b0(0x14);
+	FUN_0046c240(&m_unk0x1fc0, 0x3d, 0x3b);
+	FUN_0046c2b0(&m_unk0x2054, &m_unk0x1fc0, 0x69, 0x4c);
+	FUN_0047fdc0(&m_unk0x19dc, 0x40, 0x46, 0x72);
+	FUN_0047fdc0(&m_unk0x1ccc, 0x3f, 0x43, 2);
+
+	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
+		FUN_0046bf80(&m_unk0x2a48[i], 0x96, 0x37, 0x70);
+	}
+
+	if (m_menuId == 0x1d) {
+		FUN_0046bf80(&m_unk0x2c28, 0x6a, 0x37, 0x70);
+		FUN_0046bf80(&m_unk0x2ca0, 0x6c, 0x37, 0x70);
+		FUN_0046bf80(&m_unk0x2d18, 0x6b, 0x37, 0x70);
+		m_unk0x2e10 = 1;
+		FUN_004881a0();
+		FUN_0046bf80(&m_unk0x2d90, 0x6d, 0x37, 0x49);
+		m_unk0x2d90.ClearFlags(2);
+	}
 }
 
-// STUB: LEGORACERS 0x00487ca0
+// FUNCTION: LEGORACERS 0x00487ca0
 LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 6;
+	m_unk0x1fbc = p_context->m_context->m_unk0x100;
 
 	LegoBool32 result = SingleRaceSelectBase::VTable0x8c(p_context, p_createParams);
+	if (!result) {
+		return FALSE;
+	}
 
-	STUB(0x00487ca0);
-	return result;
+	VTable0x44(&m_unk0xbe8);
+	m_unk0x19dc.VTable0x4c(0);
+	m_unk0x2e08 = 2500;
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00487d10
-void RaceModeSetupScreen::VTable0x3c(ObscureIcon0x1a8*)
+// FUNCTION: LEGORACERS 0x00487d10
+void RaceModeSetupScreen::VTable0x3c(ObscureIcon0x1a8* p_unk0x04)
 {
-	STUB(0x00487d10);
+	m_unk0x358 = p_unk0x04;
+	FUN_00488010();
 }
 
-// STUB: LEGORACERS 0x00487d40
-void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x00487d40
+void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58* p_source)
 {
-	STUB(0x00487d40);
+	ObscureVantage0x58* source = p_source;
+	if (source == &m_unk0x19dc) {
+		RaceDefinitionList::RaceDefinition* raceDefinition = m_unk0x1904;
+		if (raceDefinition) {
+			LegoRacers::Context* context = m_context->m_context;
+			::memcpy(context->m_unk0x2d, raceDefinition->GetName(), sizeof(GolName));
+
+			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x1fc0.GetUnk0x6c());
+			if (raceNameEntry) {
+				::memcpy(context->m_raceSlots[0].m_unk0x08, raceNameEntry->GetName(), sizeof(GolName));
+				::memcpy(context->m_raceSlots[0].m_raceName, raceNameEntry->GetUnk0x0cName(), sizeof(GolName));
+				context->m_raceSlots[0].m_unk0x00 = TRUE;
+				context->m_raceSlots[0].m_unk0x04 = raceNameEntry->GetUnk0x2c();
+			}
+
+			m_unk0x360 = 0x13;
+		}
+	}
+	else if (source == &m_unk0x1ccc) {
+		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		m_unk0x360 = 2;
+	}
+
+	if (m_unk0x360 != 0xffff) {
+		m_unk0x364 = TRUE;
+	}
+
+	m_unk0x35c = source;
 }
 
 // STUB: LEGORACERS 0x00487e10
-void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58*)
+void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
 {
+	GolString string;
+	LegoBool32 isComplete = FALSE;
+
+	if (p_source == &m_unk0xbe8) {
+		LegoU32 raceDefinitionIndex = m_unk0xb54.GetUnk0x6c();
+		if (raceDefinitionIndex >= m_context->m_raceList.GetEntryCount()) {
+			m_unk0x1904 = NULL;
+		}
+		else {
+			m_unk0x1904 = &m_context->m_raceList.GetEntries()[raceDefinitionIndex];
+		}
+
+		if (m_unk0x1904) {
+			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(m_unk0x1904));
+			LegoU8 flags = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1f0();
+			if (flags & mask) {
+				isComplete = TRUE;
+			}
+		}
+
+		m_unk0x1fc0.ObscureCarousel0x94::VTable0x40();
+		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
+			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
+			if (raceNameEntry) {
+				raceNameEntry->GetStringTable()->CopyStringByIndex(&string, raceNameEntry->GetUnk0x34());
+				m_unk0x2a48[i].VTable0x40(&string, TRUE);
+				m_unk0x1fc0.FUN_0046d9c0(&m_unk0x2a48[i]);
+			}
+		}
+		m_unk0x1fc0.VTable0x50(0);
+
+		if (isComplete) {
+			m_unk0x19dc.VTable0x44(5);
+			m_unk0x1860.ClearFlags(2);
+		}
+		else {
+			m_unk0x19dc.VTable0x48(5);
+			m_unk0x1860.SetFlags(2);
+		}
+	}
+
+	FUN_00488010();
 	STUB(0x00487e10);
 }
 
-// STUB: LEGORACERS 0x00487f90
+// FUNCTION: LEGORACERS 0x00487f90
 void RaceModeSetupScreen::VTable0x84()
 {
-	STUB(0x00487f90);
+	if (m_unk0x360 == 2) {
+		m_context->m_context->m_unk0x100 = m_unk0x1fbc;
+		m_context->m_menuStack.Pop();
+		return;
+	}
+
+	if (m_menuId == 6) {
+		m_context->m_context->m_unk0x24 = 1;
+	}
+	else {
+		m_context->m_context->m_unk0x24 = 2;
+		m_context->m_context->m_unk0x100 = 0;
+	}
+
+	m_context->m_menuStack.Push(m_unk0x360);
 }
 
-// STUB: LEGORACERS 0x00488150
-LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4)
+// FUNCTION: LEGORACERS 0x00488010
+void RaceModeSetupScreen::FUN_00488010()
 {
-	STUB(0x00488150);
-	return FALSE;
+	GolName frameName;
+	GolName driverName;
+	GolName raceName;
+	driverName[0] = '\0';
+
+	LegoU32 selectedEntryIndex = m_unk0x1fc0.GetUnk0x6c();
+	RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(selectedEntryIndex);
+	if (!raceNameEntry) {
+		return;
+	}
+
+	::memcpy(frameName, raceNameEntry->GetUnk0x14Name(), sizeof(GolName));
+	if (m_menuId != 0x1d) {
+		::memcpy(driverName, raceNameEntry->GetUnk0x1cName(), sizeof(GolName));
+	}
+	else {
+		::strcpy(driverName, g_veronicaVoltageName);
+	}
+
+	GolNameTable* frameNames = &m_unk0x368.m_unk0x58;
+	SaffronQuartz0x2c::Frame0xb8* frame;
+	if (!frameNames->GetNameEntries()) {
+		frame = NULL;
+	}
+	else {
+		frame = static_cast<SaffronQuartz0x2c::Frame0xb8*>(frameNames->GetName(frameName));
+	}
+
+	LegoChar* raceNameSource = raceNameEntry->GetName();
+	::memcpy(raceName, raceNameSource, sizeof(GolName));
+	m_unk0x2e0c = m_context->m_raceNames.GetEntryIndexByName(raceName);
+	if (frame && frame != m_unk0x368.m_unk0x2b0) {
+		m_unk0x368.FUN_00466d00(frame);
+		m_unk0x368.m_unk0x2b0->SetFlags(SaffronQuartz0x2c::Frame0xb8::c_flagLoop);
+		m_unk0x2e10 = TRUE;
+		FUN_004881a0();
+	}
+
+	LegoU32 raceDefinitionIndex = m_context->m_raceList.GetEntryIndex(m_unk0x1904);
+	LegoU32 visualStateIndex = raceDefinitionIndex * 4;
+	visualStateIndex += selectedEntryIndex;
+	FUN_00488cb0(visualStateIndex);
+	if (driverName[0]) {
+		FUN_00488b40(driverName);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00488150
+LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4 p_elapsed)
+{
+	if (p_elapsed > m_unk0x2e08) {
+		m_unk0x2e10 = (m_unk0x2e10 == 0);
+		FUN_004881a0();
+	}
+	else {
+		m_unk0x2e08 -= p_elapsed;
+	}
+
+	return ImaginaryChisel0x658::VTable0x78(p_elapsed);
+}
+
+// FUNCTION: LEGORACERS 0x004881a0
+void RaceModeSetupScreen::FUN_004881a0()
+{
+	GolString string;
+	LegoU32 bestTime = 0xffffffff;
+
+	if (m_menuId != 0x1d) {
+		return;
+	}
+
+	::memset(m_unk0x2e14, 0, sizeof(m_unk0x2e14));
+	::memset(m_unk0x2e32, 0, sizeof(m_unk0x2e32));
+
+	undefined2 buffer[15];
+	::memset(buffer, 0, sizeof(buffer));
+	string.CopyFromBufSelection(buffer, 14);
+
+	LegoBool32 alternate = (m_unk0x2e10 == FALSE);
+	LegoU16 unlockedMask = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f240();
+	LegoU32 time = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f290(m_unk0x2e0c, alternate, &string);
+	if (time && time < 0xffffffff) {
+		bestTime = time;
+		m_unk0x2e48.GolStrcpy(&string);
+	}
+
+	if (m_unk0x2e10) {
+		m_unk0x2d18.VTable0x44(0x46, 0);
+	}
+	else {
+		m_unk0x2d18.VTable0x44(0x47, 0);
+	}
+
+	if (bestTime != 0xffffffff) {
+		LegoChar time[9];
+		FUN_004246d0(time, bestTime);
+		GolString::CopyStringToBuf16(time, m_unk0x2e32);
+		m_unk0x2ca0.VTable0x40(&m_unk0x2e48, 0);
+	}
+	else if (m_unk0x2e10) {
+		m_unk0x2ca0.VTable0x44(0xbe, 0);
+	}
+	else {
+		m_unk0x2ca0.VTable0x44(0xbf, 0);
+	}
+
+	m_unk0x2c28.VTable0x40(&m_unk0x2e54, 0);
+	m_unk0x2e08 = 2500;
+
+	if (static_cast<LegoU16>(unlockedMask & (1 << m_unk0x2e0c))) {
+		m_unk0x2d90.SetFlags(2);
+	}
+	else {
+		m_unk0x2d90.ClearFlags(2);
+	}
 }

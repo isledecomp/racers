@@ -55,6 +55,26 @@ void PeridotTraceBase0x24::Record::Destroy()
 	Initialize();
 }
 
+// FUNCTION: LEGORACERS 0x0042b400
+void PeridotTraceBuffer0x250::CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count)
+{
+	LegoU32 i = 0;
+	while (i < p_count) {
+		undefined2 c = static_cast<undefined2>((p_source[1] << 8) + p_source[0]);
+		if (!c) {
+			break;
+		}
+
+		*p_string->FromCursor(i) = c;
+		p_source += 2;
+		i++;
+	}
+
+	*p_string->FromCursor(i) = 0;
+	p_string->SetCursorEnd(static_cast<undefined2>(i));
+	p_string->SetCursorStart(0);
+}
+
 // FUNCTION: LEGORACERS 0x0042b560
 void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count)
 {

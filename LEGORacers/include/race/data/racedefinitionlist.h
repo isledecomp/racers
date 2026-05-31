@@ -31,6 +31,8 @@ public:
 		{
 			m_raceNameEntries[p_index] = p_raceNameEntry;
 		}
+		LegoChar* GetName() { return m_name; }
+		RaceNameEntry* GetRaceNameEntry(LegoU32 p_index) const { return m_raceNameEntries[p_index]; }
 
 	private:
 		enum {
@@ -60,6 +62,17 @@ public:
 	// RaceDefinitionList::`scalar deleting destructor'
 
 	void Load(GolStringTable* p_stringTable, const LegoChar* p_fileName, undefined4 p_binary);
+	RaceDefinition* GetEntry(LegoU32 p_index) const
+	{
+		if (p_index >= m_entryCount) {
+			return NULL;
+		}
+
+		return &m_entries[p_index];
+	}
+	RaceDefinition* GetEntries() const { return m_entries; }
+	LegoU32 GetEntryCount() const { return m_entryCount; }
+	LegoU32 GetEntryIndex(RaceDefinition* p_entry) const;
 
 private:
 	enum {

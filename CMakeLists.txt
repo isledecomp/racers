@@ -299,6 +299,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/glassblock0x3368.cpp
   LEGORacers/src/race/azurecircuit0x320.cpp
   LEGORacers/src/race/glassshard0x3b8.cpp
+  LEGORacers/src/race/racetimeformatter.cpp
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
   LEGORacers/src/util/opalhaven0xf4.cpp

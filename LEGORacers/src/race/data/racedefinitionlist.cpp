@@ -166,3 +166,15 @@ void RaceDefinitionList::Clear()
 
 	m_entryCount = 0;
 }
+
+// FUNCTION: LEGORACERS 0x0041f400
+LegoU32 RaceDefinitionList::GetEntryIndex(RaceDefinition* p_entry) const
+{
+	for (LegoU32 i = 0; i < m_entryCount; i++) {
+		if (&m_entries[i] == p_entry) {
+			return i;
+		}
+	}
+
+	return 0;
+}

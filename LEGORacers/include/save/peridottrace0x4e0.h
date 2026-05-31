@@ -247,8 +247,10 @@ public:
 	void FUN_0042f020(const DisplayDriverGuid& p_guid);
 	void FUN_0042f060(DisplayDriverGuid& p_guid);
 	void FUN_0042f200(LegoU8 p_unk0x04);
+	LegoU16 FUN_0042f240() const;
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;
+	LegoU32 FUN_0042f290(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, GolString* p_string) const;
 	LegoBool32 FUN_0042f310(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, LegoU32 p_unk0x0c, GolString* p_string);
 
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
@@ -294,6 +296,7 @@ private:
 // SIZE 0x250
 class PeridotTraceBuffer0x250 : public PeridotTraceBase0x24::Record {
 public:
+	static void CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count);
 	static void CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count);
 
 	void Reset() { m_unk0x244 = 0; }

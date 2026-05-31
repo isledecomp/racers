@@ -3,6 +3,7 @@
 #include "golhashtable.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "util/visualstate0x4.h"
 
 DECOMP_SIZE_ASSERT(SingleRaceSelectBase, 0x1908)
 
@@ -95,4 +96,27 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 
 	STUB(0x00488ac0);
 	return result;
+}
+
+// STUB: LEGORACERS 0x00488b40
+void SingleRaceSelectBase::FUN_00488b40(const LegoChar*)
+{
+	STUB(0x00488b40);
+}
+
+// STUB: LEGORACERS 0x00488cb0
+void SingleRaceSelectBase::FUN_00488cb0(LegoS32 p_index)
+{
+	static const VisualState0x4 g_visualStates[] = {
+		{{0xffadadad}},
+		{{0xff00dfff}},
+		{{0xffb4dce6}},
+		{{0xffdf3d25}},
+	};
+	static const LegoU8 g_visualStateMap[] = {
+		1, 0, 3, 2, 1, 0, 3, 2, 0, 1, 2, 3, 2, 0, 3, 1, 2, 0, 3, 1, 3, 1, 2, 0,
+	};
+
+	m_unk0x758.FUN_0046f050(const_cast<VisualState0x4*>(&g_visualStates[g_visualStateMap[p_index]]));
+	STUB(0x00488cb0);
 }

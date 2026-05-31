@@ -1,5 +1,6 @@
 #include "golhashtable.h"
 #include "golstream.h"
+#include "golstring.h"
 #include "input/inputdevice.h"
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
@@ -526,6 +527,12 @@ void GameState::FUN_0042f200(LegoU8 p_unk0x04)
 	m_state.m_unk0x24 |= p_unk0x04;
 }
 
+// FUNCTION: LEGORACERS 0x0042f240
+LegoU16 GameState::FUN_0042f240() const
+{
+	return m_state.m_unk0x26;
+}
+
 // FUNCTION: LEGORACERS 0x0042f250
 LegoBool32 GameState::FUN_0042f250(LegoU32 p_unk0x04)
 {
@@ -544,6 +551,27 @@ LegoBool32 GameState::FUN_0042f250(LegoU32 p_unk0x04)
 LegoBool32 GameState::FUN_0042f280() const
 {
 	return m_state.m_unk0x26 == 0x0fff;
+}
+
+// FUNCTION: LEGORACERS 0x0042f290
+LegoU32 GameState::FUN_0042f290(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, GolString* p_string) const
+{
+	if (p_unk0x04 < 13 || (p_unk0x04 -= 13) < 13) {
+		LegoBool32 alternate = p_unk0x08;
+		LegoU32 result;
+		if (!alternate) {
+			result = m_state.m_unk0x28[p_unk0x04];
+			PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_state.m_unk0x90[p_unk0x04], 14);
+		}
+		else {
+			result = m_state.m_unk0x5c[p_unk0x04];
+			PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_state.m_unk0x1fc[p_unk0x04], 14);
+		}
+
+		return result;
+	}
+
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042f310

@@ -7,9 +7,9 @@
 #include "mabmaterialanimationitem0x8.h"
 #include "menu/widgets/obscurebanner0x5ec.h"
 #include "mesh/golmodelbase.h"
+#include "util/sordidwatchinner0x38.h"
 
 DECOMP_SIZE_ASSERT(SordidWatch0x140, 0x140)
-DECOMP_SIZE_ASSERT(SordidWatch0x140::SordidWatchInner0x38, 0x38)
 
 // GLOBAL: LEGORACERS 0x004af86c
 const LegoFloat g_maxFloat = FLT_MAX;
@@ -85,7 +85,7 @@ void SordidWatch0x140::FUN_00412430(
 	// LINE: LEGORACERS 0x004124b5
 	m_unk0x010.VTable0x50(m_unk0x004, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
-	m_unk0x0ac = new SordidWatch0x140::SordidWatchInner0x38[m_unk0x0a8];
+	m_unk0x0ac = new SordidWatchInner0x38[m_unk0x0a8];
 
 	if (!m_unk0x0ac) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
@@ -115,13 +115,9 @@ void SordidWatch0x140::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(
-	GolVec3* p_param1,
-	GolVec3* p_param2,
-	undefined4 p_param3
-)
+SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3)
 {
-	SordidWatch0x140::SordidWatchInner0x38* entity = FUN_00412a00();
+	SordidWatchInner0x38* entity = FUN_00412a00();
 
 	GolVec3 center, position;
 
@@ -230,7 +226,7 @@ void SordidWatch0x140::FUN_00412970()
 }
 
 // FUNCTION: LEGORACERS 0x00412a00
-SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
+SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 {
 	SordidWatchInner0x38* maxEntry = m_unk0x0b0;
 	SordidWatchInner0x38* current;
@@ -252,30 +248,4 @@ SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 		}
 		return maxEntry;
 	}
-}
-
-// FUNCTION: LEGORACERS 0x004145e0
-SordidWatch0x140::SordidWatchInner0x38::SordidWatchInner0x38()
-{
-	m_unk0x28 = 0;
-	m_unk0x2c = 0;
-	m_unk0x30 = NULL;
-	m_next = NULL;
-}
-
-// FUNCTION: LEGORACERS 0x00414600
-void SordidWatch0x140::SordidWatchInner0x38::FUN_00414600(LegoFloat p_deltaT, GolVec3* p_acceleration)
-{
-	GolVec3 deltaVelocity;
-
-	LegoFloat halfDeltaT = p_deltaT * 0.5f;
-	deltaVelocity.m_x = p_deltaT * p_acceleration->m_x;
-	deltaVelocity.m_y = p_deltaT * p_acceleration->m_y;
-	deltaVelocity.m_z = p_deltaT * p_acceleration->m_z;
-	m_center.m_x += deltaVelocity.m_x * halfDeltaT + m_velocity.m_x * p_deltaT;
-	m_center.m_y += deltaVelocity.m_y * halfDeltaT + m_velocity.m_y * p_deltaT;
-	m_center.m_z += deltaVelocity.m_z * halfDeltaT + m_velocity.m_z * p_deltaT;
-	m_velocity.m_x += deltaVelocity.m_x;
-	m_velocity.m_y += deltaVelocity.m_y;
-	m_velocity.m_z += deltaVelocity.m_z;
 }

@@ -395,6 +395,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/tanzanitewisp0x88.cpp
   LEGORacers/src/util/tealcrucible0x50.cpp
   LEGORacers/src/util/sordidwatch0x140.cpp
+  LEGORacers/src/util/sordidwatchinner0x38.cpp
   LEGORacers/src/menu/chromespike0x4.cpp
   LEGORacers/src/text/coppercrest0x40.cpp
   LEGORacers/src/menu/style/porcelainveil0x50.cpp

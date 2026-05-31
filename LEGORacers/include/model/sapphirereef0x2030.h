@@ -65,6 +65,7 @@ public:
 
 	SapphireReef0x2030();
 	~SapphireReef0x2030();
+	void FUN_004992f0(GolModelBase* p_model);
 	LegoBool32 FUN_0049a0e0();
 	void FUN_00499fc0(
 		GolExport* p_golExport,
@@ -75,6 +76,7 @@ public:
 	void FUN_0049ad00();
 	void FUN_00499ee0();
 	void Destroy();
+	LegoBool32* GetUnk0x30() { return m_unk0x30; }
 
 private:
 	void Reset();
@@ -87,7 +89,11 @@ private:
 	GolExport* m_golExport;                         // 0x0000
 	GolD3DRenderDevice* m_renderer;                 // 0x0004
 	GolModelBase* m_model;                          // 0x0008
-	undefined m_unk0x0c[0x0078 - 0x000c];           // 0x000c
+	undefined4 m_unk0x0c;                           // 0x000c
+	undefined4 m_unk0x10;                           // 0x0010
+	GolModelBase* m_unk0x14[7];                     // 0x0014
+	LegoBool32 m_unk0x30[7];                        // 0x0030
+	undefined m_unk0x4c[0x0078 - 0x004c];           // 0x004c
 	GolBillboard::Field0x2c* m_materialTable;       // 0x0078
 	undefined m_unk0x7c[0x009c - 0x007c];           // 0x007c
 	VerdantTide0x38* m_verdantTide;                 // 0x009c

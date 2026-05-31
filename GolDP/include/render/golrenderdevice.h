@@ -240,6 +240,8 @@ public:
 
 	undefined4 GetFlags() { return m_flags; }
 	GolCamera* GetUnk0x0c() { return m_unk0x0c; }
+	MaterialColor* GetCurrentMaterialColor() { return const_cast<MaterialColor*>(m_unk0x120); }
+	Light* GetCurrentLight(LegoU32 p_index) { return const_cast<Light*>(m_unk0x124[p_index]); }
 
 protected:
 	friend class GolCommonDrawState;

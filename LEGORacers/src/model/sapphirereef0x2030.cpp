@@ -23,6 +23,17 @@ void SapphireReef0x2030::Field0xbc::Clear()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004992f0
+void SapphireReef0x2030::FUN_004992f0(GolModelBase* p_model)
+{
+	for (LegoS32 i = 0; i < 7; i++) {
+		if (m_unk0x14[i] == p_model) {
+			m_unk0x30[i] = TRUE;
+			return;
+		}
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00499d00
 void SapphireReef0x2030::Reset()
 {

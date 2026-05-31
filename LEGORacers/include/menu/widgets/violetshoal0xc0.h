@@ -57,6 +57,8 @@ public:
 protected:
 	void FUN_0046d010(Item0xd0* p_item);
 	void FUN_0046cd30();
+	void FUN_0046cdc0();
+	void FUN_0046cdf0();
 	void FUN_0046d040(Item0xd0* p_item, GolVec3* p_position);
 
 	undefined4 m_unk0x78;                     // 0x78

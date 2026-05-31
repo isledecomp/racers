@@ -97,6 +97,23 @@ void VioletShoal0xc0::FUN_0046cd30()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0046cdc0
+void VioletShoal0xc0::FUN_0046cdc0()
+{
+	m_unk0x84 = m_renderer->GetUnk0x0c();
+	m_renderer->VTable0x20(m_unk0x80);
+	m_renderer->VTable0x5c();
+}
+
+// FUNCTION: LEGORACERS 0x0046cdf0
+void VioletShoal0xc0::FUN_0046cdf0()
+{
+	if (m_unk0x84) {
+		m_renderer->VTable0x20(m_unk0x84);
+		m_renderer->VTable0x5c();
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0046d010
 void VioletShoal0xc0::FUN_0046d010(Item0xd0* p_item)
 {
@@ -307,10 +324,36 @@ ObscureVantage0x58* VioletShoal0xc0::VTable0x30(InputEventQueue::Event* p_event,
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x0046d670
+// FUNCTION: LEGORACERS 0x0046d670
 ObscureVantage0x58* VioletShoal0xc0::VTable0x38(Rect*, Rect*)
 {
-	STUB(0x0046d670);
+	Item0xd0* item = m_unk0x7c;
+
+	m_renderer->VTable0xe4();
+	FUN_0046cdc0();
+	m_renderer->VTable0xec(m_unk0x78);
+
+	GolVec3 direction = m_renderer->GetCurrentLight(0)->m_direction;
+	m_unk0x8c.SetDirection(direction);
+
+	m_renderer->VTable0x28();
+	m_renderer->VTable0x2c(&m_unk0x88);
+	m_renderer->VTable0x30(&m_unk0x8c);
+
+	LegoU8 hasModelFlag = 1;
+	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+		if (item->m_entity.HasModel() & hasModelFlag) {
+			m_renderer->GetCurrentMaterialColor()->SetColor(item->m_unk0xc8.m_color);
+			m_renderer->GetCurrentLight(0)->SetColor(item->m_unk0xcc.m_color);
+			m_renderer->VTable0x60();
+			m_renderer->VTable0x94(&item->m_entity);
+		}
+	}
+
+	FUN_0046cdf0();
+	m_renderer->VTable0xec(6);
+	m_renderer->VTable0xe8(FALSE);
+
 	return NULL;
 }
 

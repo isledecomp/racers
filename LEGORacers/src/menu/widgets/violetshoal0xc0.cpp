@@ -122,12 +122,15 @@ void VioletShoal0xc0::FUN_0046d010(Item0xd0* p_item)
 	p_item->m_modelRadius += p_item->m_modelRadius;
 }
 
-// STUB: LEGORACERS 0x0046d040
+// FUNCTION: LEGORACERS 0x0046d040
 void VioletShoal0xc0::FUN_0046d040(Item0xd0* p_item, GolVec3* p_position)
 {
+	LegoFloat scale;
+	LegoFloat radius[2];
+	LegoFloat itemY;
+	LegoFloat itemZ;
 	GolVec3 center;
 	GolVec3 oldPosition;
-	LegoFloat radius;
 
 	LegoFloat x = p_item->m_modelRadius - p_item->m_unk0x28;
 
@@ -142,9 +145,9 @@ void VioletShoal0xc0::FUN_0046d040(Item0xd0* p_item, GolVec3* p_position)
 		x = minX;
 	}
 
-	LegoFloat itemY = p_item->m_unk0x20;
-	LegoFloat itemZ = p_item->m_unk0x24;
-	LegoFloat scale = (m_unk0xb4 - x) / m_unk0xb4;
+	itemY = p_item->m_unk0x20;
+	itemZ = p_item->m_unk0x24;
+	scale = (m_unk0xb4 - x) / m_unk0xb4;
 	GolModelEntity* entity = &p_item->m_entity;
 
 	entity->VTable0x04(&oldPosition);
@@ -154,12 +157,24 @@ void VioletShoal0xc0::FUN_0046d040(Item0xd0* p_item, GolVec3* p_position)
 	p_position->m_z = scale * itemZ;
 	entity->VTable0x08(*p_position);
 
-	entity->FUN_10027fe0(0, &center, &radius);
+	entity->FUN_10027fe0(0, &center, radius);
 
 	p_position->m_x -= center.m_x - p_position->m_x;
 	p_position->m_y -= center.m_y - p_position->m_y;
 	p_position->m_z -= center.m_z - p_position->m_z;
 	entity->VTable0x08(oldPosition);
+}
+
+// FUNCTION: LEGORACERS 0x0046d140
+GolModelEntity* VioletShoal0xc0::GetItemEntity(LegoS32 p_index)
+{
+	return &m_unk0x7c[p_index].m_entity;
+}
+
+// FUNCTION: LEGORACERS 0x0046d160
+GolModelBase* VioletShoal0xc0::GetItemModel(LegoS32 p_index)
+{
+	return m_unk0x7c[p_index].m_model;
 }
 
 // FUNCTION: LEGORACERS 0x0046d180

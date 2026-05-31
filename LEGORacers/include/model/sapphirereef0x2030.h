@@ -65,7 +65,6 @@ public:
 
 	SapphireReef0x2030();
 	~SapphireReef0x2030();
-	void FUN_004992f0(GolModelBase* p_model);
 	LegoBool32 FUN_0049a0e0();
 	void FUN_00499fc0(
 		GolExport* p_golExport,

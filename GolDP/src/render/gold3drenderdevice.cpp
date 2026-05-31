@@ -754,7 +754,7 @@ void GolD3DRenderDevice::VTable0x94(GolWorldEntity* p_model)
 		FUN_1000add0(p_model, model);
 	}
 
-	GolModelMaterialTable* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
+	MaterialTable0x0c* materialTable = canoe->GetMaterialTable(result.m_lodIndex);
 	FUN_10008880(p_model, result.m_lodIndex);
 	model->FUN_10006c50(this, materialTable);
 }

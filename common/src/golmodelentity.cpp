@@ -1,6 +1,7 @@
 #include "golmodelentity.h"
 
 #include "material/duskwindbananarelic0x24.h"
+#include "material/materialtable0x0c.h"
 #include "mesh/golmodelbase.h"
 #include "render/golrenderdevice.h"
 
@@ -370,7 +371,7 @@ void GolModelEntity::FUN_00411730(LegoFloat p_arg)
 // FUNCTION: LEGORACERS 0x00411760
 LegoBool32 GolModelEntity::VTable0x20()
 {
-	GolModelMaterialTable* materialTable = m_materialTables[0];
+	MaterialTable0x0c* materialTable = m_materialTables[0];
 	if (materialTable == NULL) {
 		GolModelBase* model = m_models[0];
 		if (model == NULL) {
@@ -379,8 +380,8 @@ LegoBool32 GolModelEntity::VTable0x20()
 		materialTable = model->GetMaterialTable();
 	}
 
-	for (LegoU32 i = 0; i < materialTable->GetCount(); i++) {
-		DuskwindBananaRelic0x24* material = materialTable->GetMaterial(i);
+	for (LegoU32 i = 0; i < materialTable->m_count; i++) {
+		DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(i));
 		if (material != NULL && (material->GetUnk0x08() & (DuskwindBananaRelic0x24::c_flag0x08Bit8 |
 														   DuskwindBananaRelic0x24::c_flag0x08Bit12))) {
 			return TRUE;

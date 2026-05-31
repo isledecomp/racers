@@ -60,6 +60,8 @@ protected:
 	void FUN_0046cdc0();
 	void FUN_0046cdf0();
 	void FUN_0046d040(Item0xd0* p_item, GolVec3* p_position);
+	GolModelEntity* GetItemEntity(LegoS32 p_index);
+	GolModelBase* GetItemModel(LegoS32 p_index);
 
 	undefined4 m_unk0x78;                     // 0x78
 	Item0xd0* m_unk0x7c;                      // 0x7c

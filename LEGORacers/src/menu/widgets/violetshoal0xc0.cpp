@@ -126,9 +126,8 @@ void VioletShoal0xc0::FUN_0046d010(Item0xd0* p_item)
 void VioletShoal0xc0::FUN_0046d040(Item0xd0* p_item, GolVec3* p_position)
 {
 	LegoFloat scale;
-	LegoFloat radius[2];
-	LegoFloat itemY;
-	LegoFloat itemZ;
+	LegoFloat radius;
+	GolVec3 itemPosition;
 	GolVec3 center;
 	GolVec3 oldPosition;
 
@@ -145,19 +144,19 @@ void VioletShoal0xc0::FUN_0046d040(Item0xd0* p_item, GolVec3* p_position)
 		x = minX;
 	}
 
-	itemY = p_item->m_unk0x20;
-	itemZ = p_item->m_unk0x24;
+	itemPosition.m_y = p_item->m_unk0x20;
+	itemPosition.m_z = p_item->m_unk0x24;
 	scale = (m_unk0xb4 - x) / m_unk0xb4;
 	GolModelEntity* entity = &p_item->m_entity;
 
 	entity->VTable0x04(&oldPosition);
 
 	p_position->m_x = x;
-	p_position->m_y = scale * itemY;
-	p_position->m_z = scale * itemZ;
+	p_position->m_y = scale * itemPosition.m_y;
+	p_position->m_z = scale * itemPosition.m_z;
 	entity->VTable0x08(*p_position);
 
-	entity->FUN_10027fe0(0, &center, radius);
+	entity->FUN_10027fe0(0, &center, &radius);
 
 	p_position->m_x -= center.m_x - p_position->m_x;
 	p_position->m_y -= center.m_y - p_position->m_y;

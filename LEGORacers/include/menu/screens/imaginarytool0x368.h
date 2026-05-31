@@ -87,6 +87,11 @@ public:
 	// ImaginaryTool0x368::`scalar deleting destructor'
 
 protected:
+	void FUN_0047ff50(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
+	void FUN_00480210(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
+	void FUN_00480310();
+	void FUN_004803a0();
+
 	FieldAt0x2e0::Entry0xe0* GetToolInputBindingEntry0xe0(undefined2 p_id)
 	{
 		return static_cast<FieldAt0x2e0::Entry0xe0*>(FUN_0046be10(p_id));

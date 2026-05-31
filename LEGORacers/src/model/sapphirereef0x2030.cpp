@@ -78,6 +78,13 @@ void SapphireReef0x2030::FUN_00499ee0()
 	FUN_00499f20();
 }
 
+// FUNCTION: LEGORACERS 0x00499f00
+void SapphireReef0x2030::FUN_00499f00()
+{
+	m_model->VTable0x24();
+	FUN_00499f80();
+}
+
 // FUNCTION: LEGORACERS 0x00499f20
 void SapphireReef0x2030::FUN_00499f20()
 {

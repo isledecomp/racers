@@ -33,10 +33,6 @@ public:
 	//  MainMenuScreen::`scalar deleting destructor'
 
 protected:
-	void FUN_0047ff50(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
-	void FUN_00480210(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
-	void FUN_00480310();
-	void FUN_004803a0();
 	void FUN_00480e40();
 
 	ObscureAnchor0x5c m_unk0x368;            // 0x0368

@@ -74,6 +74,7 @@ public:
 	);
 	void FUN_0049ad00();
 	void FUN_00499ee0();
+	void FUN_00499f00();
 	void Destroy();
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
 

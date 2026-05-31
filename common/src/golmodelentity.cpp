@@ -246,13 +246,17 @@ void GolModelEntity::FUN_10027fe0(LegoU32 p_index, GolVec3* p_destVec, LegoFloat
 }
 
 // FUNCTION: GOLDP 0x10028030
-// STUB: LEGORACERS 0x00411560
+// FUNCTION: LEGORACERS 0x00411560
 void GolModelEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_flags & (c_flagBit3 | c_flagBit2)) {
 		if (m_unk0x60 == 0 && m_unk0x62 == 0) {
 			if (m_flags & c_flagBit2) {
 				p_renderer.VTable0xa4(this);
+				return;
+			}
+			else {
+				p_renderer.VTable0x94(this);
 				return;
 			}
 		}

@@ -57,13 +57,13 @@ void SordidWatch0x140::Reset()
 void SordidWatch0x140::FUN_00412430(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
-	undefined4 p_param3,
-	undefined4 p_param4
+	LegoU32 p_param3,
+	LegoU32 p_param4
 )
 {
 	// Most likely matches semantically, but the registers and some other details are still wrong
 
-	if (m_unk0x0b8 & 1) {
+	if (m_unk0x0b8 & c_flagInitialized) {
 		Destroy();
 	}
 
@@ -91,7 +91,7 @@ void SordidWatch0x140::FUN_00412430(
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	m_unk0x0b8 = 1;
+	m_unk0x0b8 = c_flagInitialized;
 
 	FUN_00412970();
 }
@@ -115,7 +115,7 @@ void SordidWatch0x140::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3)
+SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3)
 {
 	SordidWatchInner0x38* entity = FUN_00412a00();
 
@@ -153,14 +153,14 @@ void SordidWatch0x140::FUN_00412820()
 		FUN_00412840();
 	}
 	else {
-		m_unk0x0b8 |= 0x10;
+		m_unk0x0b8 |= c_flagPendingReset;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412840
 void SordidWatch0x140::FUN_00412840()
 {
-	if (m_unk0x0b8 & 2) {
+	if (m_unk0x0b8 & c_flagActive) {
 		FUN_00412970();
 		m_unk0x0d0 = NULL;
 		m_unk0x0d4 = NULL;
@@ -168,17 +168,17 @@ void SordidWatch0x140::FUN_00412840()
 		m_unk0x0dc = 0;
 		m_unk0x0e0 = 0;
 		m_unk0x0e4 = 0;
-		m_unk0x0b8 = m_unk0x0b8 & ~0x1e;
+		m_unk0x0b8 &= ~(c_flagActive | c_flagBit2 | c_flagBit3 | c_flagPendingReset);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412890
 void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
 {
-	if (((m_unk0x0b8 & 1) != 0) && ((m_unk0x0b8 & 2) != 0)) {
-		m_unk0x0b8 = m_unk0x0b8 & 0xfffffff7;
+	if ((m_unk0x0b8 & c_flagInitialized) && (m_unk0x0b8 & c_flagActive)) {
+		m_unk0x0b8 &= ~c_flagBit3;
 		if (!m_unk0x0b4) {
-			if ((m_unk0x0b8 & 0x10) != 0) {
+			if (m_unk0x0b8 & c_flagPendingReset) {
 				FUN_00412840();
 			}
 		}
@@ -201,8 +201,13 @@ void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
 					m_unk0x0b0 = current;
 				}
 				else {
-					current->m_unk0x30 =
-						m_unk0x0d0 ? m_unk0x0d0->FUN_00410560(current->m_unk0x28, m_unk0x0cc, m_unk0x0c8) : m_unk0x0d4;
+					if (m_unk0x0d0) {
+						LegoS32 elapsedMs = current->m_unk0x28;
+						current->m_unk0x30 = m_unk0x0d0->FUN_00410560(elapsedMs, m_unk0x0cc, m_unk0x0c8);
+					}
+					else {
+						current->m_unk0x30 = m_unk0x0d4;
+					}
 
 					current->FUN_00414600(p_param * 0.001f, &m_unk0x0bc);
 					other = current;

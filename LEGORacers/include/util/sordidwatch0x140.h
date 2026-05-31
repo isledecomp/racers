@@ -33,7 +33,9 @@ public:
 	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, undefined4 p_param3, undefined4 p_param4);
 
 	SordidWatchInner0x38* FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, undefined4 p_param3);
+	void FUN_00412820();
 	void FUN_00412840();
+	void FUN_00412890(LegoS32 p_param);
 	void FUN_00412970();
 	SordidWatchInner0x38* FUN_00412a00();
 

@@ -101,6 +101,14 @@ void Particle0x18c::FUN_004897a0()
 	m_unk0x004 = 0;
 }
 
+// FUNCTION: LEGORACERS 0x004897c0
+void Particle0x18c::FUN_004897c0()
+{
+	m_unk0x000 = 0;
+	m_unk0x008.FUN_00412820();
+	m_unk0x004 = 0;
+}
+
 // STUB: LEGORACERS 0x004897e0
 void Particle0x18c::FUN_004897e0(LegoU32)
 {

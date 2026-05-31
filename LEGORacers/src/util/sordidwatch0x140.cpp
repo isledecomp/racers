@@ -59,7 +59,39 @@ void SordidWatch0x140::FUN_00412430(
 	undefined4 p_param4
 )
 {
-	STUB(0x00412430);
+	// Most likely matches semantically, but the registers and some other details are still wrong
+
+	if (m_unk0x0b8 & 1) {
+		Destroy();
+	}
+
+	m_unk0x000 = p_golExport;
+	m_unk0x0a0 = 2 * p_param4;
+	m_unk0x0a4 = p_param3;
+	m_unk0x0a8 = p_param4;
+
+	m_unk0x004 = p_golExport->VTable0x14();
+
+	m_unk0x004->VTable0x18(
+		p_renderer,
+		1,
+		3 * m_unk0x0a0,
+		m_unk0x0a0,
+		m_unk0x0a4 + 2 * (m_unk0x0a4 + m_unk0x0a0 / 10) + 1,
+		m_unk0x0a4
+	);
+	// LINE: LEGORACERS 0x004124b5
+	m_unk0x010.VTable0x50(m_unk0x004, g_maxFloat);
+	// LINE: LEGORACERS 0x004124c8
+	m_unk0x0ac = new SordidWatch0x140::SordidWatchInner0x38[m_unk0x0a8];
+
+	if (!m_unk0x0ac) {
+		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
+	}
+
+	m_unk0x0b8 = 1;
+
+	FUN_00412970();
 }
 
 // FUNCTION: LEGORACERS 0x00412560
@@ -116,6 +148,17 @@ SordidWatch0x140::SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(
 	return entity;
 }
 
+// FUNCTION: LEGORACERS 0x00412820
+void SordidWatch0x140::FUN_00412820()
+{
+	if (!m_unk0x0b4) {
+		FUN_00412840();
+	}
+	else {
+		m_unk0x0b8 |= 0x10;
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00412840
 void SordidWatch0x140::FUN_00412840()
 {
@@ -129,6 +172,12 @@ void SordidWatch0x140::FUN_00412840()
 		m_unk0x0e4 = 0;
 		m_unk0x0b8 = m_unk0x0b8 & ~0x1e;
 	}
+}
+
+// STUB: LEGORACERS 0x00412890
+void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
+{
+	STUB(0x00412890);
 }
 
 // FUNCTION: LEGORACERS 0x00412970

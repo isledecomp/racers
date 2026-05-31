@@ -359,7 +359,7 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 			m_unk0x04 = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();
 
-			m_unk0x00 = new ListTypeAt0x00[m_unk0x04];
+			m_unk0x00 = new GolVec3[m_unk0x04];
 
 			if (!m_unk0x00) {
 				GolFatalError(c_golErrorOutOfMemory, NULL, 0);
@@ -367,9 +367,9 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 			p_parser->ReadLeftCurly();
 
 			for (i = 0; i < m_unk0x04; i++) {
-				m_unk0x00[i].m_unk0x00 = p_parser->ReadFloat();
-				m_unk0x00[i].m_unk0x04 = p_parser->ReadFloat();
-				m_unk0x00[i].m_unk0x08 = p_parser->ReadFloat();
+				m_unk0x00[i].m_x = p_parser->ReadFloat();
+				m_unk0x00[i].m_y = p_parser->ReadFloat();
+				m_unk0x00[i].m_z = p_parser->ReadFloat();
 			}
 
 			p_parser->ReadRightCurly();
@@ -379,6 +379,14 @@ void CrimsonPebbleAnimation0x33c::Runtime0x44::Parse(
 		}
 		token = p_parser->GetNextToken();
 	}
+}
+
+// FUNCTION: LEGORACERS 0x0048a3b0
+void CrimsonPebbleAnimation0x33c::Runtime0x44::GetVectorAt(GolVec3* p_vec, int p_index)
+{
+	p_vec->m_x = m_unk0x00[p_index].m_x;
+	p_vec->m_y = m_unk0x00[p_index].m_y;
+	p_vec->m_z = m_unk0x00[p_index].m_z;
 }
 
 // FUNCTION: LEGORACERS 0x0049fd70

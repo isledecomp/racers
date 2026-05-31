@@ -446,12 +446,6 @@ public:
 	// SIZE 0x44
 	class Runtime0x44 {
 	public:
-		struct ListTypeAt0x00 {
-			LegoFloat m_unk0x00;
-			LegoFloat m_unk0x04;
-			LegoFloat m_unk0x08;
-		};
-
 		Runtime0x44();
 		~Runtime0x44();
 
@@ -464,9 +458,10 @@ public:
 			GolFileParser* p_parser,
 			CrimsonPebbleAnimation0x33c* p_param4
 		);
+		void GetVectorAt(GolVec3* p_vec, int p_index);
 
 	private:
-		ListTypeAt0x00* m_unk0x00;                     // 0x00
+		GolVec3* m_unk0x00;                            // 0x00
 		LegoS32 m_unk0x04;                             // 0x04
 		LegoFloat m_unk0x08;                           // 0x08
 		LegoFloat m_unk0x0c;                           // 0x0c

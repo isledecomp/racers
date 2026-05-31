@@ -44,11 +44,11 @@ void SordidWatch0x140::Reset()
 	m_unk0x0e0 = 0;
 	m_unk0x0e4 = 0;
 	m_unk0x120 = 0;
-	m_unk0x124 = 0;
-	m_unk0x128 = 0;
+	m_unk0x134 = 0;
 	m_unk0x12c = 0;
 	m_unk0x130 = 0;
-	m_unk0x134 = 0;
+	m_unk0x124 = 0;
+	m_unk0x128 = 0;
 	m_unk0x138 = 0;
 	m_unk0x13c = 0;
 }

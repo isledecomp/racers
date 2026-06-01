@@ -241,6 +241,7 @@ public:
 	void Initialize(InputManager* p_inputManager);
 	void Reset();
 	void InitializeInputBindings(InputManager* p_inputManager);
+	void FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
 	void FUN_0042eb60(PeridotTrace0x4a8*, undefined4);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
 	void SetLanguageResourcePath();
@@ -255,6 +256,10 @@ public:
 
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
 	void SetLanguageIndex(LegoU8 p_languageIndex) { m_state.m_languageIndex = p_languageIndex; }
+	LegoU8 GetSelectedInputBindingEntryIndex(LegoU32 p_playerIndex) const
+	{
+		return m_state.m_inputBindings.GetSelectedEntryIndex(p_playerIndex);
+	}
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	undefined4 GetUnk0x04() const { return m_unk0x04; }
 	LegoU8 GetUnk0x0c() const { return m_state.m_unk0x0c; }
@@ -279,7 +284,6 @@ private:
 	void Initialize();
 	void FUN_0042ea50(LegoU32 p_playerIndex);
 	LegoU32 FUN_0042eac0(LegoU32 p_playerIndex);
-	void FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
 	LegoBool32 FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event);
 	LegoU32 FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	void FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry);

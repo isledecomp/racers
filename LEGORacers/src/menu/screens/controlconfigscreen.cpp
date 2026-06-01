@@ -3,8 +3,12 @@
 #include "audio/soundgroupbinding.h"
 #include "input/inputdevice.h"
 #include "input/inputmanager.h"
+#include "input/joystickdevice.h"
+#include "input/keyboarddevice.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(ControlConfigScreen, 0x3360)
 DECOMP_SIZE_ASSERT(ControlConfigScreen::FieldAt0x32f4, 0xc)
@@ -39,10 +43,29 @@ ControlConfigScreen::~ControlConfigScreen()
 	Destroy();
 }
 
-// STUB: LEGORACERS 0x0047a7d0
+// FUNCTION: LEGORACERS 0x0047a7d0
 void ControlConfigScreen::Reset()
 {
-	STUB(0x0047a7d0);
+	InputDevice** devices = m_unk0x368;
+	LegoS32* bindings = m_unk0x37c;
+
+	m_unk0x39c = 0;
+	m_unk0x3a0 = 0;
+	m_unk0x3a4 = 0;
+	m_unk0x390 = 0;
+	m_unk0x394 = NULL;
+	m_unk0x398 = NULL;
+
+	::memset(devices, 0, sizeof(m_unk0x368));
+	::memset(bindings, 0, sizeof(m_unk0x37c));
+
+	undefined4* text = m_unk0x76c;
+	::memset(text, 0, sizeof(m_unk0x76c) + sizeof(m_unk0x77c));
+	text[0] = 0x002e002e;
+	text[1] = 0x002e002e;
+	text[2] = 0x002e002e;
+	text[3] = 0x002e002e;
+	ImaginaryTool0x368::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047a860
@@ -67,20 +90,83 @@ void ControlConfigScreen::VTable0x4c()
 // STUB: LEGORACERS 0x0047a930
 void ControlConfigScreen::FUN_0047a930()
 {
-	STUB(0x0047a930);
+	FUN_004803d0();
+	m_unk0x39c = m_inputManager->GetJoystickCount();
+	if (m_unk0x39c > 2) {
+		m_unk0x39c = 2;
+	}
+
+	LegoS32 i;
+	for (i = 0; i < 2; i++) {
+		InputDevice* device = m_inputManager->GetJoystick(i);
+		if (device) {
+			LegoU16 id;
+			switch (device->GetDeviceSubType()) {
+			case 4:
+				id = 0x113;
+				break;
+			case 6:
+				id = 0x114;
+				break;
+			default:
+				id = 0x112;
+				break;
+			}
+
+			FUN_0046bef0(&m_unk0x1208[i], id, id);
+			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[i]);
+			m_unk0x368[i] = device;
+			m_unk0x37c[i] = i;
+		}
+	}
+
+	if (m_inputManager->IsKeyboardAvailable()) {
+		InputDevice* keyboard = m_inputManager->GetKeyboard();
+		for (LegoU32 i = 2; i < 5; i++) {
+			FUN_0046bef0(&m_unk0x1208[m_unk0x39c], 0x115, 0x115);
+			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[m_unk0x39c]);
+			m_unk0x368[m_unk0x39c] = keyboard;
+			m_unk0x37c[m_unk0x39c] = i;
+			m_unk0x39c++;
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x0047aaa0
-LegoBool32 ControlConfigScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0047aaa0
+LegoBool32 ControlConfigScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x0047aaa0);
-	return FALSE;
+	if (p_createParams->m_menuId == 0x0b) {
+		m_unk0x3a4 = 1;
+	}
+
+	p_createParams->m_menuId = 9;
+	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+		return FALSE;
+	}
+
+	FUN_0047a930();
+	LegoS32 selectedEntryIndex = m_context->m_unk0x258.GetUnk0x18c4().GetSelectedInputBindingEntryIndex(m_unk0x3a4);
+
+	for (LegoU32 i = 0; i < m_unk0x39c; i++) {
+		if (m_unk0x37c[i] == selectedEntryIndex) {
+			m_unk0x3a0 = i;
+			break;
+		}
+	}
+
+	m_unk0x780.VTable0x50(m_unk0x3a0);
+	m_unk0x144c[0].VTable0x4c(4);
+	VTable0x78(0);
+
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0047ab60
+// FUNCTION: LEGORACERS 0x0047ab60
 void ControlConfigScreen::VTable0x84()
 {
-	STUB(0x0047ab60);
+	m_context->m_unk0x258.GetUnk0x18c4().FUN_0042eb20(m_unk0x3a4, m_unk0x37c[m_unk0x3a0]);
+	m_context->m_menuStack.Pop();
+	m_context->m_menuStack.Push(0x30);
 }
 
 // FUNCTION: LEGORACERS 0x0047abb0

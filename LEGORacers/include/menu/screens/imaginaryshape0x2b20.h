@@ -29,6 +29,8 @@ public:
 		LegoBool32 VTable0x08() override;           // vtable+0x08
 		LegoBool32 VTable0x0c() override;           // vtable+0x0c
 		LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
+		void FUN_00478120();
+		void FUN_004783d0();
 
 		// SYNTHETIC: LEGORACERS 0x004779b0
 		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'

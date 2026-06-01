@@ -56,7 +56,7 @@ void SiennaCircuit0x154::Reset()
 // FUNCTION: LEGORACERS 0x00485300
 LegoBool32 SiennaCircuit0x154::FUN_00485300(
 	CreateParams0x84* p_createParams,
-	CeruleanEmperor0x4c::Entry0x150* p_styleEntry
+	CeruleanEmperor0x4c::Entry0x18* p_styleEntry
 )
 {
 	m_unk0xc0 = p_createParams->m_unk0x74;

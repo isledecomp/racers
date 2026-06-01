@@ -14,6 +14,18 @@ class GolModelBase;
 // SIZE 0xc0
 class VioletShoal0xc0 : public ObscureCarousel0x78 {
 public:
+	// SIZE 0x74
+	class CreateParams0x74 : public ObscureCarousel0x78::CreateParams0x38 {
+	public:
+		LegoS32 m_unk0x38;      // 0x38
+		Rect* m_unk0x3c;        // 0x3c
+		LegoFloat m_unk0x40;    // 0x40
+		LegoS32 m_unk0x44;      // 0x44
+		LegoFloat m_unk0x48[9]; // 0x48
+		LegoU32 m_unk0x6c;      // 0x6c
+		LegoFloat m_unk0x70;    // 0x70
+	};
+
 	// SIZE 0xd0
 	class Item0xd0 {
 	public:
@@ -55,14 +67,14 @@ public:
 	// VioletShoal0xc0::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_0046cb10(
-		ObscureCarousel0x78::CreateParams0x38* p_createParams,
-		CeruleanEmperor0x4c::Entry0x150* p_styleEntry
-	);
+	LegoBool32 FUN_0046cb10(CreateParams0x74* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry);
+	void FUN_0046cc10(CreateParams0x74* p_createParams);
 	void FUN_0046d010(Item0xd0* p_item);
 	void FUN_0046cd30();
 	void FUN_0046cdc0();
 	void FUN_0046cdf0();
+	void FUN_0046ce10(CreateParams0x74* p_createParams);
+	void FUN_0046cf20();
 	void FUN_0046d040(Item0xd0* p_item, GolVec3* p_position);
 	GolModelEntity* GetItemEntity(LegoS32 p_index);
 	GolModelBase* GetItemModel(LegoS32 p_index);

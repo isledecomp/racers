@@ -2,12 +2,14 @@
 
 #include "camera/golcamera.h"
 #include "core/gol.h"
+#include "golerror.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
 
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(VioletShoal0xc0, 0xc0)
+DECOMP_SIZE_ASSERT(VioletShoal0xc0::CreateParams0x74, 0x74)
 DECOMP_SIZE_ASSERT(VioletShoal0xc0::Item0xd0, 0xd0)
 
 // GLOBAL: LEGORACERS 0x004b009c
@@ -46,11 +48,30 @@ void VioletShoal0xc0::Reset()
 	ObscureCarousel0x78::Reset();
 }
 
-// STUB: LEGORACERS 0x0046cb10
-LegoBool32 VioletShoal0xc0::FUN_0046cb10(ObscureCarousel0x78::CreateParams0x38*, CeruleanEmperor0x4c::Entry0x150*)
+// FUNCTION: LEGORACERS 0x0046cb10
+LegoBool32 VioletShoal0xc0::FUN_0046cb10(CreateParams0x74* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry)
 {
-	STUB(0x0046cb10);
-	return FALSE;
+	if (!ObscureCarousel0x78::FUN_0046c970(p_createParams, p_styleEntry)) {
+		return FALSE;
+	}
+
+	m_unk0xbc = p_createParams->m_unk0x40;
+	m_unk0x78 = p_createParams->m_unk0x6c;
+	FUN_0046cc10(p_createParams);
+
+	FUN_0046cdc0();
+	FUN_0046ce10(p_createParams);
+	FUN_0046cdf0();
+
+	VisualState0x4 state;
+	state.m_color.m_red = 0xff;
+	state.m_color.m_grn = 0xff;
+	state.m_color.m_blu = 0xff;
+	state.m_color.m_alp = 0xff;
+	VTable0x48(&state, &state);
+	VTable0x4c(&state, &state);
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046cba0
@@ -77,6 +98,40 @@ LegoBool32 VioletShoal0xc0::VTable0x08()
 	}
 
 	return result;
+}
+
+// STUB: LEGORACERS 0x0046cc10
+void VioletShoal0xc0::FUN_0046cc10(CreateParams0x74* p_createParams)
+{
+	m_unk0xb4 = p_createParams->m_unk0x48[7];
+	m_unk0x80 = m_golExport->VTable0x20();
+	m_unk0x80->m_unk0x08 = p_createParams->m_unk0x48[6];
+	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
+	m_unk0x80->m_unk0x10 = m_unk0xb4;
+	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
+	m_unk0x80->m_unk0x14 = p_createParams->m_unk0x48[8];
+	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
+
+	GolVec3 position;
+	GolVec3 target;
+	GolVec3 up;
+	position.m_x = m_unk0xb4;
+	position.m_y = 0.0f;
+	position.m_z = 0.0f;
+	target.m_x = 0.0f;
+	target.m_y = 0.0f;
+	target.m_z = 0.0f;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
+	m_unk0x80->FUN_004046a0(&position, &target, &up);
+	FUN_0046cd30();
+
+	Rect* viewport = &m_unk0x80->m_viewport;
+	LegoFloat aspect = static_cast<LegoFloat>(viewport->m_right - viewport->m_left) /
+					   static_cast<LegoFloat>(viewport->m_bottom - viewport->m_top);
+	m_unk0x80->FUN_00404740(aspect * p_createParams->m_unk0x70);
 }
 
 // FUNCTION: LEGORACERS 0x0046cd30
@@ -118,6 +173,63 @@ void VioletShoal0xc0::FUN_0046cdf0()
 	if (m_unk0x84) {
 		m_renderer->VTable0x20(m_unk0x84);
 		m_renderer->VTable0x5c();
+	}
+}
+
+// STUB: LEGORACERS 0x0046ce10
+void VioletShoal0xc0::FUN_0046ce10(CreateParams0x74* p_createParams)
+{
+	m_unk0x60 = p_createParams->m_unk0x38;
+	m_unk0x64 = p_createParams->m_unk0x44;
+
+	m_unk0x7c = new Item0xd0[m_unk0x60];
+	if (!m_unk0x7c) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	Item0xd0* item = m_unk0x7c;
+	for (LegoS32 i = 0; i < m_unk0x60; i++) {
+		item->m_model = m_golExport->VTable0x14();
+		if (!item->m_model) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		item->m_rect = p_createParams->m_unk0x3c[i];
+		item++;
+	}
+
+	FUN_0046cf20();
+}
+
+// STUB: LEGORACERS 0x0046cf20
+void VioletShoal0xc0::FUN_0046cf20()
+{
+	LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
+	LegoS32 height = m_unk0x34.m_bottom - m_unk0x34.m_top;
+	LegoS32 halfWidth = -(width >> 1);
+	m_unk0x44 = (m_unk0x80->m_unk0x18 + m_unk0x80->m_unk0x18) / static_cast<LegoFloat>(width);
+	m_unk0x48 = (m_unk0x80->m_unk0x1c + m_unk0x80->m_unk0x1c) / static_cast<LegoFloat>(height);
+
+	Item0xd0* item = m_unk0x7c;
+	Rect* rect = &item->m_rect;
+	for (LegoS32 i = 0; i < m_unk0x60; i++) {
+		item->m_unk0x00 = static_cast<LegoFloat>(rect->m_left + halfWidth) * m_unk0x44;
+		item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_unk0x44;
+		item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_unk0x48;
+		item->m_unk0x0c = 0.0f;
+		item->m_unk0x24 = 0.0f;
+		item->m_unk0x20 = (item->m_unk0x08 + item->m_unk0x00) * 0.5f;
+
+		LegoFloat range = item->m_unk0x08 - item->m_unk0x00;
+		if (range > item->m_unk0x04) {
+			item->m_unk0x28 = item->m_unk0x04;
+		}
+		else {
+			item->m_unk0x28 = range;
+		}
+
+		item++;
+		rect = &item->m_rect;
 	}
 }
 

@@ -101,7 +101,7 @@ LegoBool32 ImaginaryTool0x368::Destroy()
 undefined4 ImaginaryTool0x368::FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
 	MenuInputBindingTable::Entry0x84* inputBindingEntry = GetInputBindingEntry0x84(p_unk0x08);
-	CeruleanEmperor0x4c::Entry0x150* styleEntry = GetStyleEntry0x150(p_unk0x0c);
+	CeruleanEmperor0x4c::Entry0x18* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0x18*>(FUN_0046bd80(p_unk0x0c));
 	if (!inputBindingEntry || !styleEntry) {
 		return 0;
 	}

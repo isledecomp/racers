@@ -19,19 +19,8 @@ class VerdantTide0x38;
 class SiennaCircuit0x154 : public VioletShoal0xc0 {
 public:
 	// SIZE 0x84
-	class CreateParams0x84 : public ObscureCarousel0x78::CreateParams0x38 {
+	class CreateParams0x84 : public VioletShoal0xc0::CreateParams0x74 {
 	public:
-		LegoBool m_unk0x38;               // 0x38
-		undefined m_unk0x39[0x3c - 0x39]; // 0x39
-		undefined4 m_unk0x3c;             // 0x3c
-		undefined2 m_unk0x40;             // 0x40
-		undefined m_unk0x42[0x44 - 0x42]; // 0x42
-		ObscureIcon0x1a8* m_parent;       // 0x44
-		undefined2 m_unk0x48;             // 0x48
-		LegoU8 m_unk0x4a;                 // 0x4a
-		undefined m_unk0x4b[0x6c - 0x4b]; // 0x4b
-		LegoU32 m_unk0x6c;                // 0x6c
-		LegoFloat m_unk0x70;              // 0x70
 		TopazBurst0x14* m_unk0x74;        // 0x74
 		LegoPieceLibrary* m_pieceLibrary; // 0x78
 		SapphireReef0x2030* m_unk0x7c;    // 0x7c
@@ -50,7 +39,7 @@ public:
 	void VTable0x5c(undefined4, GolModelEntity*) override; // vtable+0x5c
 	void VTable0x60(LegoS32) override;                     // vtable+0x60
 
-	LegoBool32 FUN_00485300(CreateParams0x84* p_createParams, CeruleanEmperor0x4c::Entry0x150* p_styleEntry);
+	LegoBool32 FUN_00485300(CreateParams0x84* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry);
 	LegoS32 FUN_004853a0();
 	void FUN_004853f0();
 	void FUN_00485440(LegoS32 p_unk0x04);

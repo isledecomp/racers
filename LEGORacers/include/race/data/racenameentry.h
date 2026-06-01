@@ -2,11 +2,12 @@
 #define RACENAMEENTRY_H
 
 #include "golname.h"
+#include "golstringtable.h"
 #include "race/data/racedefinitionlist.h"
 #include "types.h"
 
 class GolFileParser;
-class GolStringTable;
+class GolString;
 
 // SIZE 0x38
 class RaceNameEntry {
@@ -29,6 +30,7 @@ public:
 	LegoBool32 GetUnk0x2c() const { return m_unk0x2c; }
 	GolStringTable* GetStringTable() const { return m_stringTable; }
 	LegoU16 GetUnk0x34() const { return m_unk0x34; }
+	void CopyDisplayString(GolString* p_string) const { m_stringTable->CopyStringByIndex(p_string, m_unk0x34); }
 
 private:
 	enum {

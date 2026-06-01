@@ -3,10 +3,12 @@
 
 #include "decomp.h"
 #include "render/golrenderdevice.h"
+#include "render/rectangle.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x24;
+class GolCameraBase;
 
 // SIZE 0x8
 class MenuAnimationList {
@@ -20,27 +22,12 @@ public:
 			c_flagExpired = 0x04,
 		};
 
-		struct ScreenRect {
-			LegoS32 m_left;   // 0x00
-			LegoS32 m_top;    // 0x04
-			LegoS32 m_right;  // 0x08
-			LegoS32 m_bottom; // 0x0c
-		};
-
-		// SIZE 0x120
-		struct ScreenRectSource {
-			undefined m_unk0x000[0x110 - 0x000]; // 0x000
-			ScreenRect m_rect;                   // 0x110
-
-			const ScreenRect* GetRect() const { return &m_rect; }
-		};
-
 		// SIZE 0x78
 		struct DrawScratch {
 			LegoFloat m_topAsFloat;                        // 0x00
 			LegoU8 m_alpha;                                // 0x04
 			undefined m_unk0x05[0x08 - 0x05];              // 0x05
-			ScreenRect m_rect;                             // 0x08
+			Rect m_rect;                                   // 0x08
 			GolRenderDevice::TexturedVertex m_topLeft;     // 0x18
 			GolRenderDevice::TexturedVertex m_bottomRight; // 0x30
 			GolRenderDevice::TexturedVertex m_bottomLeft;  // 0x48
@@ -54,7 +41,7 @@ public:
 			LegoU32 p_durationMs,
 			LegoBool32 p_fadeOut,
 			DuskwindBananaRelic0x24* p_material,
-			const ScreenRectSource* p_rectSource
+			const GolCameraBase* p_rectSource
 		);
 		void Reset();
 		void Deactivate();
@@ -66,8 +53,8 @@ public:
 	private:
 		void Clear();
 
-		DuskwindBananaRelic0x24* m_material;  // 0x00
-		const ScreenRectSource* m_rectSource; // 0x04
+		DuskwindBananaRelic0x24* m_material; // 0x00
+		const GolCameraBase* m_rectSource;   // 0x04
 		union {
 			struct {
 				LegoU8 m_red;        // 0x08
@@ -91,7 +78,7 @@ public:
 		LegoU32 p_durationMs,
 		LegoBool32 p_fadeOut,
 		DuskwindBananaRelic0x24* p_material,
-		const Entry::ScreenRectSource* p_rectSource
+		const GolCameraBase* p_rectSource
 	);
 	void Deactivate(Entry* p_entry);
 	LegoBool32 HasActive() const;

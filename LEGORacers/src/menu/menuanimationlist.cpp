@@ -1,13 +1,12 @@
 #include "menu/menuanimationlist.h"
 
+#include "camera/golcamerabase.h"
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
 
 DECOMP_SIZE_ASSERT(MenuAnimationList, 0x8)
 DECOMP_SIZE_ASSERT(MenuAnimationList::Entry, 0x18)
-DECOMP_SIZE_ASSERT(MenuAnimationList::Entry::ScreenRect, 0x10)
-DECOMP_SIZE_ASSERT(MenuAnimationList::Entry::ScreenRectSource, 0x120)
 DECOMP_SIZE_ASSERT(MenuAnimationList::Entry::DrawScratch, 0x78)
 
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED
@@ -54,7 +53,7 @@ void MenuAnimationList::Entry::Activate(
 	LegoU32 p_durationMs,
 	LegoBool32 p_fadeOut,
 	DuskwindBananaRelic0x24* p_material,
-	const ScreenRectSource* p_rectSource
+	const GolCameraBase* p_rectSource
 )
 {
 	m_material = p_material;
@@ -107,7 +106,7 @@ void MenuAnimationList::Entry::Draw(GolD3DRenderDevice* p_renderer)
 	}
 
 	if (m_rectSource) {
-		scratch.m_rect = *m_rectSource->GetRect();
+		scratch.m_rect = *m_rectSource->GetViewport();
 	}
 	else {
 		scratch.m_rect.m_top = 0;
@@ -220,7 +219,7 @@ MenuAnimationList::Entry* MenuAnimationList::Activate(
 	LegoU32 p_durationMs,
 	LegoBool32 p_fadeOut,
 	DuskwindBananaRelic0x24* p_material,
-	const Entry::ScreenRectSource* p_rectSource
+	const GolCameraBase* p_rectSource
 )
 {
 	LegoU32 i = 0;

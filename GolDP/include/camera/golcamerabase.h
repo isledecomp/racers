@@ -44,6 +44,7 @@ public:
 	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
 	void FUN_00404740(LegoFloat p_aspect);
 	void FUN_004047b0();
+	const Rect* GetViewport() const { return &m_viewport; }
 
 	GolTransform* m_unk0x04;               // 0x04
 	LegoFloat m_unk0x08;                   // 0x08

@@ -9,6 +9,7 @@
 class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
+class GolModelEntity;
 class VerdantTide0x38;
 
 // SIZE 0x2030
@@ -65,7 +66,6 @@ public:
 
 	SapphireReef0x2030();
 	~SapphireReef0x2030();
-	void FUN_004992f0(GolModelBase* p_model);
 	LegoBool32 FUN_0049a0e0();
 	void FUN_00499fc0(
 		GolExport* p_golExport,
@@ -75,8 +75,20 @@ public:
 	);
 	void FUN_0049ad00();
 	void FUN_00499ee0();
+	void FUN_00499f00();
 	void Destroy();
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
+	void FUN_0049b170(
+		GolModelEntity* p_entity,
+		LegoPieceLibrary::PieceRecord* p_pieceRecord,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10,
+		undefined4 p_unk0x14,
+		undefined4 p_unk0x18,
+		undefined4 p_unk0x1c,
+		undefined4 p_unk0x20
+	);
+	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
 
 private:
 	void Reset();

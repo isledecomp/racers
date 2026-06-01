@@ -4,6 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/screens/imaginaryshape0x2b20.h"
+#include "menu/widgets/obscureglyph0x21c.h"
+#include "menu/widgets/obscurelattice0x228.h"
 
 // VTABLE: LEGORACERS 0x004b2a38
 // SIZE 0x3c34
@@ -31,7 +33,39 @@ public:
 	// CarBuildScreen::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x3c34 - 0x2b20]; // 0x0368
+	undefined4 FUN_00473b80(undefined4 p_unk0x04, undefined4 p_unk0x08);
+	LegoBool32 FUN_00473ee0(
+		ObscureVantage0x58* p_source,
+		InputEventQueue::Event* p_event,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
+	LegoBool32 FUN_00474330(
+		ObscureVantage0x58* p_source,
+		InputEventQueue::Event* p_event,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
+	LegoBool32 FUN_00474470(
+		ObscureVantage0x58* p_source,
+		InputEventQueue::Event* p_event,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10
+	);
+	void FUN_00474940();
+	void FUN_004774e0(undefined4 p_unk0x04, undefined4 p_unk0x08);
+
+	ObscureLattice0x228 m_unk0x2b20;        // 0x2b20
+	ObscureLattice0x228 m_unk0x2d48;        // 0x2d48
+	ObscureGlyph0x21c m_unk0x2f70;          // 0x2f70
+	ObscureGlyph0x21c m_unk0x318c;          // 0x318c
+	ObscureGlyph0x21c m_unk0x33a8;          // 0x33a8
+	ObscureGlyph0x21c m_unk0x35c4;          // 0x35c4
+	ObscureGlyph0x21c m_unk0x37e0;          // 0x37e0
+	ObscureGlyph0x21c m_unk0x39fc;          // 0x39fc
+	LegoU32 m_unk0x3c18;                    // 0x3c18
+	LegoU32 m_unk0x3c1c;                    // 0x3c1c
+	undefined m_unk0x3c20[0x3c34 - 0x3c20]; // 0x3c20
 };
 
 #endif // CARBUILDSCREEN_H

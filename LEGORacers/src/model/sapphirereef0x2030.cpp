@@ -23,17 +23,6 @@ void SapphireReef0x2030::Field0xbc::Clear()
 	}
 }
 
-// FUNCTION: LEGORACERS 0x004992f0
-void SapphireReef0x2030::FUN_004992f0(GolModelBase* p_model)
-{
-	for (LegoS32 i = 0; i < 7; i++) {
-		if (m_unk0x14[i] == p_model) {
-			m_unk0x30[i] = TRUE;
-			return;
-		}
-	}
-}
-
 // FUNCTION: LEGORACERS 0x00499d00
 void SapphireReef0x2030::Reset()
 {
@@ -87,6 +76,13 @@ void SapphireReef0x2030::FUN_00499ee0()
 {
 	FUN_00499eb0(m_model);
 	FUN_00499f20();
+}
+
+// FUNCTION: LEGORACERS 0x00499f00
+void SapphireReef0x2030::FUN_00499f00()
+{
+	m_model->VTable0x24();
+	FUN_00499f80();
 }
 
 // FUNCTION: LEGORACERS 0x00499f20
@@ -191,6 +187,21 @@ void SapphireReef0x2030::FUN_0049ad00()
 	}
 }
 
+// STUB: LEGORACERS 0x0049b170
+void SapphireReef0x2030::FUN_0049b170(
+	GolModelEntity*,
+	LegoPieceLibrary::PieceRecord*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	STUB(0x0049b170);
+}
+
 // FUNCTION: LEGORACERS 0x0049b720
 void SapphireReef0x2030::FUN_0049b720()
 {
@@ -218,6 +229,12 @@ void SapphireReef0x2030::FUN_0049b740(undefined4 p_unk0x04)
 	m_unk0x1f10 = m_unk0x1f04;
 	m_unk0x1f14 = m_unk0x1f08;
 	m_unk0x1f18 = m_unk0x1f0c;
+}
+
+// STUB: LEGORACERS 0x0049b8b0
+void SapphireReef0x2030::FUN_0049b8b0(LegoPieceLibrary::PieceRecord*, undefined4)
+{
+	STUB(0x0049b8b0);
 }
 
 // FUNCTION: LEGORACERS 0x0049df20

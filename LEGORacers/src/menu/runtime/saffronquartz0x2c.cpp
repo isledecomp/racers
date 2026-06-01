@@ -273,7 +273,7 @@ void SaffronQuartz0x2c::Frame0xb8::Model0x68::VTable0x10(Frame0xb8* p_frame, Blu
 			Animation0x1c* end = animation + m_unk0x5c;
 
 			for (; animation < end; animation++) {
-				GolModelMaterialTable* materialTarget =
+				MaterialTable0x0c* materialTarget =
 					static_cast<GolModelEntity*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
 				if (materialTarget == NULL) {
 					materialTarget =

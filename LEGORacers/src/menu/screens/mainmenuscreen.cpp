@@ -1,14 +1,10 @@
 #include "menu/screens/mainmenuscreen.h"
 
 #include "audio/soundgroupbinding.h"
-#include "golhashtable.h"
-#include "golstream.h"
 #include "input/inputmanager.h"
 #include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
-#include "model/sapphirereef0x2030.h"
-#include "racer/drivercosmetictable.h"
 
 #include <string.h>
 
@@ -16,117 +12,6 @@ DECOMP_SIZE_ASSERT(MainMenuScreen, 0x2450)
 
 // GLOBAL: LEGORACERS 0x004c214c
 static LegoU8 g_unk0x004c214c[] = {0x13, 0x12, 0x16, 0x15, 0x14, 0x17, 0, 0};
-
-// FUNCTION: LEGORACERS 0x0047ff50
-void MainMenuScreen::FUN_0047ff50(MenuToolContext0x4bc8* p_context, undefined4 p_binary)
-{
-	if (!p_context) {
-		p_context = m_context;
-	}
-
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
-	}
-
-	LegoPieceLibrary* pieceLibrary = &p_context->m_pieceLibrary;
-	GolExport* golExport = p_context->m_context->m_golApp->GetGolExport();
-	GolD3DRenderDevice* renderer = p_context->m_context->m_golApp->GetRenderer();
-	VerdantTide0x38* pieceResource;
-
-	if (p_binary) {
-		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_unk0x18);
-		pieceResource = &p_context->m_unk0x4224;
-		pieceResource->FUN_004978f0(golExport, renderer);
-		pieceResource->FUN_00497c30("LPieceHi.WDF", p_context->m_context->m_unk0x18, TRUE);
-	}
-	else {
-		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_unk0x18);
-		pieceResource = &p_context->m_unk0x4224;
-		pieceResource->FUN_004978f0(golExport, renderer);
-		pieceResource->FUN_00497c30("LPieceLo.WDF", p_context->m_context->m_unk0x18, TRUE);
-	}
-
-	pieceResource->FUN_00497a10("L_Colors.LEG", p_context->m_context->m_unk0x18);
-	p_context->m_unk0x21f4.FUN_00499fc0(golExport, renderer, pieceLibrary, pieceResource);
-	p_context->m_unk0x21f4.FUN_0049ad00();
-	p_context->m_unk0x21a4.FUN_0049ce80("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_unk0x18);
-
-	AquamarineSpirit0x3c::Params params;
-	params.m_unk0x00 = golExport;
-	params.m_unk0x04 = renderer;
-	params.m_unk0x08 = -1;
-	params.m_filename = "chassis.cmf";
-	params.m_unk0x10 = p_context->m_context->m_unk0x18;
-
-	p_context->m_unk0x42dc.FUN_0041db10(&params);
-	p_context->m_unk0x42dc.FUN_0041e570();
-
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA");
-	}
-}
-
-// FUNCTION: LEGORACERS 0x00480210
-void MainMenuScreen::FUN_00480210(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08)
-{
-	if (!p_context) {
-		p_context = m_context;
-	}
-
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
-	}
-
-	TanzaniteWisp0x88::LoadParams menuResourceParams;
-	GarnetFlare0x60::LoadParams resourceParams;
-	memset(&resourceParams, 0, sizeof(resourceParams));
-	memset(&menuResourceParams, 0, sizeof(menuResourceParams));
-
-	p_context->m_unk0x437c.Load("bodypart.pcf", p_context->m_context->m_unk0x18);
-	resourceParams.m_golExport = p_context->m_context->m_golApp->GetGolExport();
-	resourceParams.m_renderer = p_context->m_context->m_golApp->GetRenderer();
-	resourceParams.m_unk0x0c = &p_context->m_unk0x437c;
-	resourceParams.m_binary = p_context->m_context->m_unk0x18;
-	resourceParams.m_unk0x14 = TRUE;
-	p_context->m_unk0x4ae0.FUN_00497f10(&resourceParams, p_unk0x08);
-
-	menuResourceParams.m_golExport = resourceParams.m_golExport;
-	menuResourceParams.m_renderer = resourceParams.m_renderer;
-	menuResourceParams.m_unk0x0c = &p_context->m_unk0x4ae0;
-	menuResourceParams.m_menuId = 12;
-	p_context->m_unk0x4b40.FUN_0049d1d0(&menuResourceParams);
-
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA");
-	}
-}
-
-// FUNCTION: LEGORACERS 0x00480310
-void MainMenuScreen::FUN_00480310()
-{
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
-	}
-
-	DriverCosmeticTable::LoadParams params;
-	params.m_golExport = m_context->m_context->m_golApp->GetGolExport();
-	params.m_renderer = m_context->m_context->m_golApp->GetRenderer();
-	params.m_unk0x08 = 0;
-	params.m_filename = "drivers.ddf";
-	params.m_unk0x10 = m_context->m_context->m_unk0x18;
-	m_context->m_unk0x425c.Load(&params);
-
-	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA");
-	}
-}
-
-// FUNCTION: LEGORACERS 0x004803a0
-void MainMenuScreen::FUN_004803a0()
-{
-	DriverCosmeticTable* drivers = &m_context->m_unk0x425c;
-	drivers->Clear();
-}
 
 // FUNCTION: LEGORACERS 0x00480b70
 MainMenuScreen::MainMenuScreen()
@@ -305,13 +190,12 @@ void MainMenuScreen::VTable0x84()
 // STUB: LEGORACERS 0x004812f0
 undefined4 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	undefined4 result = TRUE;
-
-	if (!m_unk0x364) {
-		result = FALSE;
+	undefined4 result = m_unk0x364;
+	if (result) {
+		return TRUE;
 	}
 
-	return result;
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00481310

@@ -5,6 +5,8 @@
 #include "decomp.h"
 #include "menu/screens/imaginarytool0x368.h"
 
+class GameState;
+
 // VTABLE: LEGORACERS 0x004b2b04
 // SIZE 0x6750
 class OptionsScreen : public ImaginaryTool0x368 {
@@ -24,7 +26,19 @@ public:
 	// OptionsScreen::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x6750 - 0x368]; // 0x0368
+	void FUN_00482de0();
+	LegoBool32 FUN_004831d0(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams);
+
+	LegoBool m_unk0x368;                    // 0x0368
+	LegoBool m_unk0x369;                    // 0x0369
+	undefined m_unk0x36a[0x36c - 0x36a];    // 0x036a
+	undefined4 m_unk0x36c;                  // 0x036c
+	GameState* m_unk0x370;                  // 0x0370
+	undefined m_unk0x374[0x51a8 - 0x374];   // 0x0374
+	undefined4 m_unk0x51a8;                 // 0x51a8
+	undefined m_unk0x51ac[0x646c - 0x51ac]; // 0x51ac
+	undefined m_unk0x646c[0x1f4];           // 0x646c
+	undefined m_unk0x6660[0x6750 - 0x6660]; // 0x6660
 };
 
 #endif // OPTIONSSCREEN_H

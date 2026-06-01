@@ -57,7 +57,7 @@ void GolBillboard::FUN_10029e90(
 {
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
-	VTable0x4c(p_container->GetPosition(p_index), p_width, p_height, p_maxDistanceSquared);
+	VTable0x4c(static_cast<undefined4*>(p_container->GetPosition(p_index)), p_width, p_height, p_maxDistanceSquared);
 	m_flags |= c_flagBit2;
 }
 
@@ -118,7 +118,7 @@ void GolBillboard::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
 undefined4* GolBillboard::FUN_1002a020()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = m_positionContainer->GetPosition(m_positionIndex);
+		m_position = static_cast<undefined4*>(m_positionContainer->GetPosition(m_positionIndex));
 	}
 
 	return m_position;
@@ -134,7 +134,7 @@ void GolBillboard::VTable0x1c(GolRenderDevice& p_renderer)
 LegoBool32 GolBillboard::VTable0x20()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = m_positionContainer->GetPosition(m_positionIndex);
+		m_position = static_cast<undefined4*>(m_positionContainer->GetPosition(m_positionIndex));
 	}
 
 	return m_position[2] & 0x1100;

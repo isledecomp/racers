@@ -55,11 +55,17 @@ public:
 	// VioletShoal0xc0::`scalar deleting destructor'
 
 protected:
+	LegoBool32 FUN_0046cb10(
+		ObscureCarousel0x78::CreateParams0x38* p_createParams,
+		CeruleanEmperor0x4c::Entry0x150* p_styleEntry
+	);
 	void FUN_0046d010(Item0xd0* p_item);
 	void FUN_0046cd30();
 	void FUN_0046cdc0();
 	void FUN_0046cdf0();
 	void FUN_0046d040(Item0xd0* p_item, GolVec3* p_position);
+	GolModelEntity* GetItemEntity(LegoS32 p_index);
+	GolModelBase* GetItemModel(LegoS32 p_index);
 
 	undefined4 m_unk0x78;                     // 0x78
 	Item0xd0* m_unk0x7c;                      // 0x7c
@@ -73,7 +79,7 @@ protected:
 	undefined m_unk0xa8[0xb4 - 0xa8];         // 0xa8
 	LegoFloat m_unk0xb4;                      // 0xb4
 	undefined4 m_unk0xb8;                     // 0xb8
-	undefined4 m_unk0xbc;                     // 0xbc
+	LegoFloat m_unk0xbc;                      // 0xbc
 };
 
 #endif // VIOLETSHOAL0XC0_H

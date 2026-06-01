@@ -192,22 +192,24 @@ void GarnetFlare0x60::NormalizeHeadGroupOrder()
 	if (remainingModels > 0) {
 		GolSkinnedEntity* resourceModel = m_partResource->GetUnk0xa0();
 		do {
-			GolModelMaterialTable* materialTable = resourceModel->GetMaterialTable(0);
+			MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
 			if (materialTable == NULL) {
 				materialTable = resourceModel->GetModel(0)->GetMaterialTable();
 			}
 
 			LegoS32 materialIndex = 1;
-			LegoS32 materialCount = materialTable->GetCount();
+			LegoS32 materialCount = materialTable->m_count;
 			if (materialCount > 1) {
 				do {
-					DuskwindBananaRelic0x24* material = materialTable->GetMaterial(materialIndex);
+					DuskwindBananaRelic0x24* material =
+						static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(materialIndex));
 					if (material != NULL) {
 						GolName materialName;
 						::memcpy(materialName, material->GetName(), sizeof(materialName));
 
 						if (::strncmp(materialName, g_gdbFaceMaterialName, sizeof(materialName)) == 0) {
-							DuskwindBananaRelic0x24* firstMaterial = materialTable->GetMaterial(0);
+							DuskwindBananaRelic0x24* firstMaterial =
+								static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
 							materialTable->SetPosition(0, material);
 							materialTable->SetPosition(materialIndex, firstMaterial);
 							ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);

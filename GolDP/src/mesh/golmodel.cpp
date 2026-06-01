@@ -147,7 +147,7 @@ void GolModel::VTable0x14(GolFileParser& p_parser)
 }
 
 // STUB: GOLDP 0x10006c50
-void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, GolModelMaterialTable* p_materialTable)
+void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p_materialTable)
 {
 	if (p_materialTable == NULL) {
 		p_materialTable = &m_unk0x04;
@@ -202,7 +202,9 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, GolModelMaterialTabl
 		LegoU32 groupType = groupData & c_groupTypeMask;
 		if (groupType <= c_groupTypeMaterial) {
 			if (groupType == c_groupTypeMaterial) {
-				DuskwindBananaRelic0x24* material = p_materialTable->GetMaterial(groupData & c_materialMatrixIndexMask);
+				DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(
+					p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask)
+				);
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
 				p_renderer->FUN_1000ac00(material->GetUnk0x04());
 			}

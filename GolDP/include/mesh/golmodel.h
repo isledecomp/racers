@@ -7,6 +7,7 @@
 
 class GdbVertexArray0xc;
 class GolD3DRenderDevice;
+struct MaterialTable0x0c;
 
 // VTABLE: GOLDP 0x100563fc
 // SIZE 0x48
@@ -53,7 +54,7 @@ public:
 	) override;                                                                                         // vtable+0x18
 	void VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
 	void VTable0x24() override;                                                                         // vtable+0x24
-	void FUN_10006c50(GolD3DRenderDevice* p_renderer, GolModelMaterialTable* p_materialTable);
+	void FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p_materialTable);
 	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
 	GdbVertexArray0xc* GetModelVertexArray() const { return m_unk0x40; }
 

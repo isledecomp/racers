@@ -1,10 +1,16 @@
 #include "menu/widgets/maroonatoll0x170.h"
 
 #include "audio/soundgroupbinding.h"
+#include "mesh/golmodelbase.h"
+#include "mesh/golmodelmaterialtable.h"
 
+#include <float.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MaroonAtoll0x170, 0x170)
+
+// GLOBAL: LEGORACERS 0x004b39d0
+LegoFloat g_maroonAtollMaxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x00483970
 MaroonAtoll0x170::MaroonAtoll0x170()
@@ -47,10 +53,68 @@ LegoBool32 MaroonAtoll0x170::VTable0x08()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00483f70
-void MaroonAtoll0x170::VTable0x60(LegoS32)
+// FUNCTION: LEGORACERS 0x00483c20
+void MaroonAtoll0x170::CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::Field0x2c* p_materialTable)
 {
-	STUB(0x00483f70);
+	GolModelMaterialTable* source = p_model->GetMaterialTable();
+	LegoS32 count = source->GetCount();
+	for (LegoS32 i = 0; i < count; i++) {
+		void* material = source->GetPosition(i);
+		if (material) {
+			p_materialTable->SetPosition(i, material);
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00483f70
+void MaroonAtoll0x170::VTable0x60(LegoS32 p_index)
+{
+	GolModelEntity* entity = GetItemEntity(p_index);
+	LegoS32 modelIndex = m_unk0xd0[FUN_0046c9a0(m_unk0xb8 + p_index)];
+	GolModelBase* model;
+	void* material;
+	LegoChar materialName[8];
+
+	switch (m_unk0xcc) {
+	case 0:
+		model = m_unk0xc4->FUN_00499320(modelIndex);
+		material = model->GetMaterialTable()->GetPosition(0);
+		m_unk0xc4->FUN_004992f0(model);
+		materialName[0] = '\0';
+		break;
+	case 1:
+		model = m_unk0xc4->FUN_00499380(0);
+		material = m_unk0xc4->FUN_00499470(modelIndex);
+		::strncpy(materialName, "face", sizeof(materialName));
+		break;
+	case 2:
+		model = m_unk0xc4->FUN_004993d0(modelIndex);
+		material = m_unk0xc4->FUN_004994b0(modelIndex);
+		::strncpy(materialName, "torso", sizeof(materialName));
+		break;
+	case 3:
+		model = m_unk0xc4->FUN_00499420(modelIndex);
+		material = m_unk0xc4->FUN_004994f0(modelIndex);
+		::strncpy(materialName, "legs", sizeof(materialName));
+		break;
+	default:
+		model = NULL;
+		material = NULL;
+		break;
+	}
+
+	entity->VTable0x50(model, g_maroonAtollMaxFloat);
+
+	GolBillboard::Field0x2c* materialTable = &m_materialTables[FUN_0046c9a0(m_unk0xb8 + p_index)];
+	CopyModelMaterialTable(model, materialTable);
+
+	LegoS32 materialIndex = model->GetMaterialTable()->FindEntryIndexByName(materialName);
+	if (materialIndex != -1) {
+		materialTable->SetPosition(materialIndex, material);
+		entity->SetPrimaryMaterialTable(materialTable);
+	}
+
+	VioletShoal0xc0::VTable0x60(p_index);
 }
 
 // FUNCTION: LEGORACERS 0x00484100

@@ -84,6 +84,7 @@ public:
 	void DetachFromParent();
 	ObscureIcon0x1a8* GetFirstChild() { return m_firstChild; }
 	LegoU8 GetStateFlags() const { return m_stateFlags; }
+	undefined2 GetUnk0x168() const { return m_unk0x168; }
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// ObscureIcon0x1a8::`scalar deleting destructor'

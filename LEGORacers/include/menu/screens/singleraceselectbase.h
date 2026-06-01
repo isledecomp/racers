@@ -9,6 +9,8 @@
 #include "race/data/racedefinitionlist.h"
 #include "util/opalhaven0xf4.h"
 
+class GolModelBase;
+
 // VTABLE: LEGORACERS 0x004b3f00
 // SIZE 0x1908
 class SingleRaceSelectBase : public ImaginaryChisel0x658 {
@@ -29,7 +31,7 @@ protected:
 
 	LegoChar m_unk0x658[8];                          // 0x0658
 	OpalHaven0xf4 m_unk0x660;                        // 0x0660
-	undefined4 m_unk0x754;                           // 0x0754
+	GolModelBase* m_unk0x754;                        // 0x0754
 	ObscureTome0x3fc m_unk0x758;                     // 0x0758
 	ObscureCarouselNavigator0x94 m_unk0xb54;         // 0x0b54
 	ObscureBanner0x9f4 m_unk0xbe8;                   // 0x0be8

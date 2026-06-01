@@ -28,6 +28,18 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x08()
 	return FALSE;
 }
 
+// STUB: LEGORACERS 0x00478120
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478120()
+{
+	STUB(0x00478120);
+}
+
+// STUB: LEGORACERS 0x004783d0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004783d0()
+{
+	STUB(0x004783d0);
+}
+
 // STUB: LEGORACERS 0x004788f0
 LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x0c()
 {

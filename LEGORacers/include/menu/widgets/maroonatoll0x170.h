@@ -4,8 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/violetshoal0xc0.h"
-#include "model/sapphirereef0x2030.h"
 #include "scene/golbillboard.h"
+#include "util/tealcrucible0x50.h"
 
 // VTABLE: LEGORACERS 0x004b39d4
 // SIZE 0x170
@@ -25,11 +25,13 @@ public:
 	// MaroonAtoll0x170::`scalar deleting destructor'
 
 protected:
+	void CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::Field0x2c* p_materialTable);
+
 	GolBillboard::Field0x2c* m_materialTables; // 0xc0
-	SapphireReef0x2030* m_unk0xc4;             // 0xc4
+	TealCrucible0x50* m_unk0xc4;               // 0xc4
 	undefined4 m_unk0xc8;                      // 0xc8
 	undefined4 m_unk0xcc;                      // 0xcc
-	undefined m_unk0xd0[0x170 - 0xd0];         // 0xd0
+	LegoS32 m_unk0xd0[(0x170 - 0xd0) / 4];     // 0xd0
 };
 
 #endif // MAROONATOLL0X170_H

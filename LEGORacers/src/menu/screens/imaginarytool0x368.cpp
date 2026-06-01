@@ -385,13 +385,6 @@ LegoBool32 ImaginaryTool0x368::VTable0x78(undefined4)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00485300
-LegoBool32 SiennaCircuit0x154::FUN_00485300(CreateParams0x84*, CeruleanEmperor0x4c::Entry0x150*)
-{
-	STUB(0x00485300);
-	return FALSE;
-}
-
 // FUNCTION: LEGORACERS 0x00487d30
 void ImaginaryTool0x368::VTable0x40(ObscureIcon0x1a8*)
 {

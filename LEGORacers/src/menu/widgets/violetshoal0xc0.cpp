@@ -46,6 +46,13 @@ void VioletShoal0xc0::Reset()
 	ObscureCarousel0x78::Reset();
 }
 
+// STUB: LEGORACERS 0x0046cb10
+LegoBool32 VioletShoal0xc0::FUN_0046cb10(ObscureCarousel0x78::CreateParams0x38*, CeruleanEmperor0x4c::Entry0x150*)
+{
+	STUB(0x0046cb10);
+	return FALSE;
+}
+
 // FUNCTION: LEGORACERS 0x0046cba0
 LegoBool32 VioletShoal0xc0::VTable0x08()
 {

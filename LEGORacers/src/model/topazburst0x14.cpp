@@ -27,6 +27,11 @@ TopazBurst0x14::Entry::~Entry()
 	FUN_0049cb00();
 }
 
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
+void TopazBurst0x14::Entry::FUN_004513d0(SapphireReef0x2030*)
+{
+}
+
 // FUNCTION: LEGORACERS 0x0049cb00
 void TopazBurst0x14::Entry::FUN_0049cb00()
 {
@@ -106,6 +111,70 @@ void TopazBurst0x14::Entry::Load(
 	}
 
 	delete parser;
+}
+
+// FUNCTION: LEGORACERS 0x0049cd20
+void TopazBurst0x14::Entry::FillChoiceIndices(LegoS32* p_dest, LegoS32 p_startIndex, LegoS32 p_count)
+{
+	LegoS32 startIndex = p_startIndex;
+	if (startIndex < 0) {
+		startIndex = 0;
+	}
+	if (startIndex >= m_choiceCount) {
+		startIndex %= m_choiceCount;
+	}
+
+	LegoS32 index = startIndex;
+	if (p_count) {
+		while (TRUE) {
+			*p_dest++ = index;
+			if (!--p_count) {
+				break;
+			}
+
+			if (++index == m_choiceCount) {
+				index = 0;
+			}
+			if (index == startIndex) {
+				if (p_count) {
+					startIndex = -1;
+					::memset(p_dest, -1, sizeof(LegoS32) * p_count);
+				}
+				break;
+			}
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0049cd70
+LegoS32 TopazBurst0x14::Entry::NormalizeChoiceIndex(LegoS32 p_index)
+{
+	if (p_index < 0) {
+		return -1;
+	}
+
+	FillChoiceIndices(&p_index, p_index, 1);
+	return p_index;
+}
+
+// FUNCTION: LEGORACERS 0x0049cda0
+LegoS32* TopazBurst0x14::Entry::GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex)
+{
+	*p_pieceType = m_choices[p_index].m_pieceType;
+	*p_colorRecordIndex = m_choices[p_index].m_colorRecordIndex;
+	return p_colorRecordIndex;
+}
+
+// FUNCTION: LEGORACERS 0x0049cdd0
+LegoS32 TopazBurst0x14::Entry::FindChoiceIndex(LegoS32 p_pieceType, LegoS32 p_colorRecordIndex)
+{
+	for (LegoS32 i = 0; i < m_choiceCount; i++) {
+		if (m_choices[i].m_pieceType == p_pieceType && m_choices[i].m_colorRecordIndex == p_colorRecordIndex) {
+			return i;
+		}
+	}
+
+	return -1;
 }
 
 // FUNCTION: LEGORACERS 0x0049ce10
@@ -197,4 +266,29 @@ void TopazBurst0x14::FUN_0049ce80(
 	}
 
 	delete[] entryFiles;
+}
+
+// FUNCTION: LEGORACERS 0x0049d0b0
+TopazBurst0x14::Entry* TopazBurst0x14::FindEntry(LegoS32 p_index)
+{
+	for (LegoS32 i = 0; i < m_entryCount; i++) {
+		if (m_entries[i].GetUnk0x08() == p_index) {
+			m_unk0x10 = &m_entries[i];
+			return &m_entries[i];
+		}
+	}
+
+	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x0049d0f0
+LegoS32 TopazBurst0x14::FindEntryIndex(LegoS32 p_index)
+{
+	for (LegoS32 i = 0; i < m_entryCount; i++) {
+		if (m_entries[i].GetUnk0x08() == p_index) {
+			return i;
+		}
+	}
+
+	return -1;
 }

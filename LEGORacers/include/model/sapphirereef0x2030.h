@@ -9,6 +9,7 @@
 class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
+class GolModelEntity;
 class VerdantTide0x38;
 
 // SIZE 0x2030
@@ -77,6 +78,17 @@ public:
 	void FUN_00499f00();
 	void Destroy();
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
+	void FUN_0049b170(
+		GolModelEntity* p_entity,
+		LegoPieceLibrary::PieceRecord* p_pieceRecord,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10,
+		undefined4 p_unk0x14,
+		undefined4 p_unk0x18,
+		undefined4 p_unk0x1c,
+		undefined4 p_unk0x20
+	);
+	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
 
 private:
 	void Reset();

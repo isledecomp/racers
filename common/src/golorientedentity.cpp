@@ -76,6 +76,41 @@ void GolOrientedEntity::VTable0x40(const GolVec3& p_v1, const GolVec3& p_v2)
 	row2[2] = perp.m_z;
 }
 
+// FUNCTION: LEGORACERS 0x00410b00
+void GolOrientedEntity::FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2)
+{
+	GolVec3 unit;
+	GolMath::NormalizeVector3(p_v1, &unit);
+
+	LegoFloat dot = p_v2.m_y;
+	dot *= unit.m_y;
+	dot += unit.m_z * p_v2.m_z;
+	dot += unit.m_x * p_v2.m_x;
+	GolVec3 mult = dot * unit;
+	GolVec3 perp;
+	perp.m_x = p_v2.m_x - mult.m_x;
+	perp.m_y = p_v2.m_y - mult.m_y;
+	perp.m_z = p_v2.m_z - mult.m_z;
+	GolMath::NormalizeVector3(perp, &perp);
+
+	GolVec3 cross;
+	cross.m_x = unit.m_y * perp.m_z - unit.m_z * perp.m_y;
+	cross.m_y = unit.m_z * perp.m_x - unit.m_x * perp.m_z;
+	cross.m_z = unit.m_x * perp.m_y - unit.m_y * perp.m_x;
+	LegoFloat* row0 = &m_orientation.m_m[0][0];
+	LegoFloat* row1 = &m_orientation.m_m[1][0];
+	LegoFloat* row2 = &m_orientation.m_m[2][0];
+	row0[0] = perp.m_x;
+	row0[1] = perp.m_y;
+	row1[0] = cross.m_x;
+	row0[2] = perp.m_z;
+	row1[1] = cross.m_y;
+	row1[2] = cross.m_z;
+	row2[0] = unit.m_x;
+	row2[1] = unit.m_y;
+	row2[2] = unit.m_z;
+}
+
 // FUNCTION: GOLDP 0x10026c50
 void GolOrientedEntity::FUN_10026c50(GolMatrix4* p_dest)
 {

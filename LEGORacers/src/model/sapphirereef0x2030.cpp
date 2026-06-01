@@ -187,6 +187,21 @@ void SapphireReef0x2030::FUN_0049ad00()
 	}
 }
 
+// STUB: LEGORACERS 0x0049b170
+void SapphireReef0x2030::FUN_0049b170(
+	GolModelEntity*,
+	LegoPieceLibrary::PieceRecord*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	STUB(0x0049b170);
+}
+
 // FUNCTION: LEGORACERS 0x0049b720
 void SapphireReef0x2030::FUN_0049b720()
 {
@@ -214,6 +229,12 @@ void SapphireReef0x2030::FUN_0049b740(undefined4 p_unk0x04)
 	m_unk0x1f10 = m_unk0x1f04;
 	m_unk0x1f14 = m_unk0x1f08;
 	m_unk0x1f18 = m_unk0x1f0c;
+}
+
+// STUB: LEGORACERS 0x0049b8b0
+void SapphireReef0x2030::FUN_0049b8b0(LegoPieceLibrary::PieceRecord*, undefined4)
+{
+	STUB(0x0049b8b0);
 }
 
 // FUNCTION: LEGORACERS 0x0049df20

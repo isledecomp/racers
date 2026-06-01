@@ -5,6 +5,7 @@
 #include "types.h"
 
 class LegoPieceLibrary;
+class SapphireReef0x2030;
 class VerdantTide0x38;
 
 // SIZE 0x14
@@ -22,13 +23,19 @@ public:
 	public:
 		Entry();
 		~Entry();
+		void FUN_004513d0(SapphireReef0x2030* p_unk0x04);
 		void SetIndex(LegoS32 p_index) { m_index = p_index; }
+		LegoS32 GetUnk0x08() const { return m_unk0x08; }
 		void Load(
 			const LegoChar* p_filename,
 			LegoPieceLibrary* p_pieceLibrary,
 			VerdantTide0x38* p_verdantTide,
 			undefined4 p_binary
 		);
+		void FillChoiceIndices(LegoS32* p_dest, LegoS32 p_startIndex, LegoS32 p_count);
+		LegoS32 NormalizeChoiceIndex(LegoS32 p_index);
+		LegoS32* GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex);
+		LegoS32 FindChoiceIndex(LegoS32 p_pieceType, LegoS32 p_colorRecordIndex);
 
 	private:
 		void FUN_0049cb00();
@@ -50,6 +57,8 @@ public:
 		VerdantTide0x38* p_unk0x0c,
 		undefined4 p_binary
 	);
+	Entry* FindEntry(LegoS32 p_index);
+	LegoS32 FindEntryIndex(LegoS32 p_index);
 
 private:
 	void FUN_0049ce40();
@@ -58,7 +67,7 @@ private:
 	LegoPieceLibrary* m_pieceLibrary; // 0x04
 	LegoS32 m_entryCount;             // 0x08
 	Entry* m_entries;                 // 0x0c
-	undefined4 m_unk0x10;             // 0x10
+	Entry* m_unk0x10;                 // 0x10
 };
 
 #endif // TOPAZBURST0X14_H

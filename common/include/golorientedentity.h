@@ -24,6 +24,7 @@ public:
 	void VTable0x48(GolVec3* p_dest1, GolVec3* p_dest2) const override;    // vtable+0x48
 
 	void Reset();
+	void FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2);
 	void FUN_10026c50(GolMatrix4* p_dest);
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fa0(LegoFloat p_scalar);

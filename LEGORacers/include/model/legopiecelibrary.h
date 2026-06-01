@@ -70,6 +70,7 @@ public:
 	void FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
 	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant) const;
 	PieceRecord* FindPieceRecordByName(const LegoChar* p_name) const;
+	LegoS32 GetMaxHighPieceOffset() const { return m_maxHighPieceOffset; }
 
 private:
 	void DestroyData();

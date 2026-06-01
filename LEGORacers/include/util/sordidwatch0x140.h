@@ -31,6 +31,7 @@ public:
 	void FUN_00412890(LegoS32 p_param);
 	void FUN_00412970();
 	SordidWatchInner0x38* FUN_00412a00();
+	void FUN_00412a50(GolD3DRenderDevice* p_renderer);
 
 private:
 	enum {

@@ -254,3 +254,9 @@ SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 		return maxEntry;
 	}
 }
+
+// STUB: LEGORACERS 0x00412a50
+void SordidWatch0x140::FUN_00412a50(GolD3DRenderDevice*)
+{
+	STUB(0x00412a50);
+}

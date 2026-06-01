@@ -72,19 +72,32 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreat
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0047b550
+// FUNCTION: LEGORACERS 0x0047b550
 LegoBool32 DriverLicenseScreen::Destroy()
 {
-	// TODO
-	STUB(0x0047b550);
-	return FALSE;
+	if (!m_initialized) {
+		return TRUE;
+	}
+
+	m_context->m_unk0x4b40.SetUnk0x10(TRUE);
+	return ImaginaryTool0x368::Destroy();
 }
 
-// STUB: LEGORACERS 0x0047b7f0
+// FUNCTION: LEGORACERS 0x0047b7f0
 void DriverLicenseScreen::VTable0x84()
 {
-	// TODO
-	STUB(0x0047b7f0);
+	m_context->m_menuStack.Pop();
+
+	switch (m_unk0x360) {
+	case 0x0f:
+	case 0x11:
+		m_context->m_menuStack.Push(m_unk0x360);
+		break;
+	}
+
+	if (m_unk0x23b8) {
+		m_context->m_menuStack.Push(0x30);
+	}
 }
 
 // STUB: LEGORACERS 0x0047b850

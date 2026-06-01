@@ -1,5 +1,7 @@
 #include "menu/screens/awardcinematicscreen.h"
 
+#include "menu/menuscreenid.h"
+
 DECOMP_SIZE_ASSERT(AwardCinematicScreen, 0x7b0)
 
 // STUB: LEGORACERS 0x00475c30
@@ -40,9 +42,12 @@ void AwardCinematicScreen::VTable0x84()
 	STUB(0x00476a00);
 }
 
-// STUB: LEGORACERS 0x00476ad0
-LegoBool32 AwardCinematicScreen::VTable0x78(undefined4)
+// FUNCTION: LEGORACERS 0x00476ad0
+LegoBool32 AwardCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 {
-	STUB(0x00476ad0);
-	return FALSE;
+	if (m_unk0x28c == c_menuCircuit7) {
+		m_unk0x368.m_unk0x2cc = TRUE;
+	}
+
+	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
 }

@@ -227,8 +227,8 @@ void Particle0x18c::FUN_004897e0(LegoU32 p_param1)
 	m_unk0x008.FUN_00412890(p_param1);
 }
 
-// STUB: LEGORACERS 0x00489960
-void Particle0x18c::FUN_00489960(GolD3DRenderDevice*)
+// FUNCTION: LEGORACERS 0x00489960
+void Particle0x18c::FUN_00489960(GolD3DRenderDevice* p_renderer)
 {
-	STUB(0x00489960);
+	m_unk0x008.FUN_00412a50(p_renderer);
 }

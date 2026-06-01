@@ -3,11 +3,11 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/imaginarychisel0x658.h"
 
 // VTABLE: LEGORACERS 0x004b2c5c
 // SIZE 0x7b0
-class AwardCinematicScreen : public ImaginaryTool0x368 {
+class AwardCinematicScreen : public ImaginaryChisel0x658 {
 public:
 	AwardCinematicScreen();
 
@@ -22,7 +22,7 @@ public:
 	// AwardCinematicScreen::`scalar deleting destructor'
 
 protected:
-	undefined m_unk0x368[0x7b0 - 0x368]; // 0x368
+	undefined m_unk0x658[0x7b0 - 0x658]; // 0x658
 };
 
 #endif // AWARDCINEMATICSCREEN_H

@@ -313,6 +313,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/widgets/obscureanthem0x58.cpp
   LEGORacers/src/menu/widgets/obscurebanner0x5ec.cpp
   LEGORacers/src/menu/widgets/obscurecarousel0x78.cpp
+  LEGORacers/src/menu/widgets/optionsscreenfieldat0x4178.cpp
   LEGORacers/src/menu/widgets/obscureglyph0x21c.cpp
   LEGORacers/src/menu/widgets/obscureicon0x1a8.cpp
   LEGORacers/src/menu/widgets/obscurelattice0x228.cpp
@@ -337,6 +338,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/golcamerabase.cpp
   LEGORacers/src/menu/runtime/saffronquartz0x2c.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp
+  LEGORacers/src/menu/screens/optionsscreenbase0x51ac.cpp
   LEGORacers/src/menu/screens/optionsscreen.cpp
   LEGORacers/src/menu/screens/carbuildscreen.cpp
   LEGORacers/src/menu/screens/mainmenuscreen.cpp

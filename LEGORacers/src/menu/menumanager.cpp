@@ -2,6 +2,7 @@
 
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
+#include "golbmpwriterfile.h"
 #include "golhashtable.h"
 #include "golname.h"
 #include "golstream.h"
@@ -14,6 +15,7 @@
 
 #include <golerror.h>
 #include <stddef.h>
+#include <stdio.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
@@ -736,11 +738,42 @@ void MenuManager::VTable0x00()
 	m_unk0x04.m_context->m_unk0x00 = FALSE;
 }
 
-// STUB: LEGORACERS 0x0042e720
+// FUNCTION: LEGORACERS 0x0042e720
 void MenuManager::FUN_0042e720()
 {
-	// TODO
-	STUB(0x42e720);
+	enum {
+		c_maxScreenshotIndex = 9999
+	};
+
+	GolBmpWriterFile bmpWriter;
+	GolHashTable::Entry* currentEntry;
+	LegoChar fileName[32];
+	LegoU32 screenshotIndex;
+
+	if (g_hashTable) {
+		currentEntry = g_hashTable->GetCurrentEntry();
+		g_hashTable->SetCurrentEntryFromString(NULL);
+	}
+	else {
+		currentEntry = NULL;
+	}
+
+	for (screenshotIndex = 0; screenshotIndex <= c_maxScreenshotIndex; screenshotIndex++) {
+		sprintf(fileName, "LEGO%d.bmp", screenshotIndex);
+		if (GolStream::FindFile(fileName) != GolStream::e_ioSuccess) {
+			break;
+		}
+	}
+
+	if (screenshotIndex <= c_maxScreenshotIndex) {
+		bmpWriter.VTable0x08(fileName);
+		bmpWriter.WriteSurface(m_renderer->GetRenderTargetInfo());
+		bmpWriter.Destroy();
+
+		if (g_hashTable) {
+			g_hashTable->SetCurrentEntry(currentEntry);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042e810

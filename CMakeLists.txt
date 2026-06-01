@@ -85,6 +85,8 @@ set(COMMON_SOURCES
   common/src/golimgfile.cpp
   common/src/goltgafile.cpp
   common/src/golbmpfile.cpp
+  common/src/golimgfilewriter.cpp
+  common/src/golbmpwriterfile.cpp
   common/src/goldecompress.cpp
   common/src/golcpu.cpp
   common/src/golhashtable.cpp

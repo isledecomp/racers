@@ -106,6 +106,7 @@ LegoU32 GolSurfaceFormat::FUN_1001cc10() const
 }
 
 // FUNCTION: GOLDP 0x1001cc40
+// FUNCTION: LEGORACERS 0x004072d0
 LegoU32 GolSurfaceFormat::GetPaletteBitCount() const
 {
 	LegoU16 mask = m_paletteMask;

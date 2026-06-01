@@ -30,6 +30,9 @@ public:
 	// OptionsScreenFieldAt0x4178Base0x6dc::`scalar deleting destructor'
 
 protected:
+	LegoU16 GetUnk0x6e0() const;
+	LegoU16 GetUnk0x6e2() const;
+
 	ObscureAnchor0x5c m_unk0x5ec;        // 0x5ec
 	ObscureAnchor0x5c m_unk0x648;        // 0x648
 	undefined m_unk0x6a4[0x6bc - 0x6a4]; // 0x6a4
@@ -59,9 +62,22 @@ public:
 	// OptionsScreenFieldAt0x4178::`scalar deleting destructor'
 
 private:
+	friend class OptionsScreenFieldAt0x4178Base0x6dc;
+
 	undefined m_unk0x6dc[0x6e0 - 0x6dc]; // 0x6dc
-	undefined2 m_unk0x6e0;               // 0x6e0
-	undefined m_unk0x6e2[0x6ec - 0x6e2]; // 0x6e2
+	LegoU16 m_unk0x6e0;                  // 0x6e0
+	LegoU16 m_unk0x6e2;                  // 0x6e2
+	undefined m_unk0x6e4[0x6ec - 0x6e4]; // 0x6e4
 };
+
+inline LegoU16 OptionsScreenFieldAt0x4178Base0x6dc::GetUnk0x6e0() const
+{
+	return static_cast<const OptionsScreenFieldAt0x4178*>(this)->m_unk0x6e0;
+}
+
+inline LegoU16 OptionsScreenFieldAt0x4178Base0x6dc::GetUnk0x6e2() const
+{
+	return static_cast<const OptionsScreenFieldAt0x4178*>(this)->m_unk0x6e2;
+}
 
 #endif // OPTIONSSCREENFIELDAT0X4178_H

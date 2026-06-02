@@ -67,16 +67,17 @@ void SableCrest0xc0::FUN_00468000(LegoS32 p_width)
 	ObscureVantage0x58::VTable0x10(&rect);
 }
 
-// STUB: LEGORACERS 0x00468040
+// FUNCTION: LEGORACERS 0x00468040
 void SableCrest0xc0::FUN_00468040(LegoS32 p_height)
 {
-	m_unk0xbc = p_height;
+	LegoS32 height = p_height;
+	m_unk0xbc = height;
 
 	Rect rect;
 	rect.m_left = m_unk0x34.m_left;
-	rect.m_right = m_unk0x34.m_left + m_unk0xb8;
+	rect.m_right = rect.m_left + m_unk0xb8;
 	rect.m_top = m_unk0x34.m_top;
-	rect.m_bottom = m_unk0x34.m_top + p_height;
+	rect.m_bottom = rect.m_top + height;
 
 	ObscureVantage0x58::VTable0x10(&rect);
 }

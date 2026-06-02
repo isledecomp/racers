@@ -4,8 +4,11 @@
 #include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "save/peridottrace0x4e0.h"
 
 DECOMP_SIZE_ASSERT(OptionsScreenBase0x51ac, 0x51ac)
+
+extern LegoFloat g_unk0x4b05d8;
 
 // FUNCTION: LEGORACERS 0x004829a0
 OptionsScreenBase0x51ac::OptionsScreenBase0x51ac()
@@ -29,28 +32,79 @@ void OptionsScreenBase0x51ac::Reset()
 	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x00482e00
+// FUNCTION: LEGORACERS 0x00482e00
 void OptionsScreenBase0x51ac::FUN_00482e00()
 {
-	STUB(0x00482e00);
+	FUN_0046bef0(&m_unk0x374, 0x49, 0x49);
+	FUN_0046bf80(&m_unk0x3d0, 0x3a, 0x3a, 0x10);
+	m_unk0x3d0.FUN_0046f6b0(20);
 }
 
-// STUB: LEGORACERS 0x00482e40
+// FUNCTION: LEGORACERS 0x00482e40
 void OptionsScreenBase0x51ac::FUN_00482e40()
 {
-	STUB(0x00482e40);
+	FUN_0047fdc0(&m_unk0x448, 0xed, 0x42, 0x11);
+	VTable0x98();
+	FUN_0047fdc0(&m_unk0x738, 0xef, 0x42, 0x13);
+	FUN_0047fdc0(&m_unk0xa28, 0xf0, 0x42, 0x17);
+	FUN_0047fdc0(&m_unk0xd18, 0xf1, 0x42, 0x18);
+	FUN_0047fdc0(&m_unk0x12f8, 0xf2, 0x42, 0x9c);
+	FUN_0047fdc0(&m_unk0x1008, 0x27, 0x42, 0x58);
+	FUN_0047fdc0(&m_unk0x18d8, 0x3f, 0x43, 2);
 }
 
-// STUB: LEGORACERS 0x00482ef0
+// FUNCTION: LEGORACERS 0x00482ef0
 void OptionsScreenBase0x51ac::FUN_00482ef0()
 {
-	STUB(0x00482ef0);
+	FUN_0046c240(&m_unk0x2fb0, 0x3d, 0x3b);
+	FUN_0046c240(&m_unk0x3044, 0x3d, 0x3b);
+	FUN_0046c2b0(&m_unk0x1bc8, &m_unk0x2fb0, 0xf3, 0x4c);
+	FUN_0046c2b0(&m_unk0x25bc, &m_unk0x3044, 0xf4, 0x4c);
+	FUN_0046bf80(&m_unk0x3600[0], 0x100, 0x37, 0x59);
+	FUN_0046bf80(&m_unk0x3600[1], 0x101, 0x37, 0x5a);
+
+	LegoS32 i;
+	for (i = 0; i < 6; i++) {
+		FUN_0046bf80(&m_unk0x30d8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x60));
+		m_unk0x2fb0.FUN_0046d9c0(&m_unk0x30d8[i]);
+	}
+
+	m_unk0x2fb0.VTable0x50(m_unk0x370->GetUnk0x0c());
+	VTable0x44(&m_unk0x1bc8);
+
+	for (i = 0; i < 5; i++) {
+		FUN_0046bf80(&m_unk0x33a8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x61));
+		m_unk0x3044.FUN_0046d9c0(&m_unk0x33a8[i]);
+	}
+
+	m_unk0x3044.VTable0x50(m_unk0x370->GetUnk0x23() - 1);
+	VTable0x44(&m_unk0x25bc);
+	FUN_00483730();
 }
 
-// STUB: LEGORACERS 0x00483030
+// FUNCTION: LEGORACERS 0x00483030
 void OptionsScreenBase0x51ac::FUN_00483030()
 {
-	STUB(0x00483030);
+	FUN_0046c400(&m_unk0x4178, 0xf9, 0xec);
+	FUN_0046c400(&m_unk0x4864, 0xfa, 0xec);
+	FUN_0046c240(&m_unk0x40e4, 0xfb, 0x3b);
+	FUN_0046c2b0(&m_unk0x36f0, &m_unk0x40e4, 0xfc, 0x4c);
+
+	m_unk0x4178.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetUnk0x1f() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	m_unk0x4864.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetUnk0x20() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	VTable0x44(&m_unk0x4178);
+	VTable0x44(&m_unk0x4864);
+
+	for (LegoS32 i = 0; i < 3; i++) {
+		FUN_0046bf80(&m_unk0x5040[i], static_cast<undefined2>(i + 0x104), 0x37, static_cast<undefined2>(i + 0x5d));
+	}
+
+	FUN_0046bf80(&m_unk0x4f50, 0x107, 0x37, 0xa7);
+	FUN_0046bf80(&m_unk0x4fc8, 0x107, 0x37, 0xa8);
+	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4f50);
+	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4fc8);
+	VTable0x44(&m_unk0x36f0);
+	FUN_00483800();
 }
 
 // FUNCTION: LEGORACERS 0x004831a0
@@ -155,22 +209,116 @@ void OptionsScreenBase0x51ac::VTable0x98()
 {
 }
 
-// STUB: LEGORACERS 0x004835a0
+// FUNCTION: LEGORACERS 0x004835a0
 void OptionsScreenBase0x51ac::VTable0x9c()
 {
-	STUB(0x004835a0);
+	m_unk0x448.SetFlags(2);
+	m_unk0x738.SetFlags(2);
+	m_unk0xa28.SetFlags(2);
+	m_unk0xd18.SetFlags(2);
+	m_unk0x12f8.SetFlags(2);
+	m_unk0x1008.SetFlags(2);
+
+	m_unk0x448.VTable0x4c(4);
+	m_unk0x3d0.VTable0x44(0x10, TRUE);
+	m_unk0x3d0.FUN_0046f6b0(20);
+	m_unk0x18d8.FUN_00482790(2);
 }
 
-// STUB: LEGORACERS 0x00483640
+// FUNCTION: LEGORACERS 0x00483640
 void OptionsScreenBase0x51ac::VTable0xa0()
 {
-	STUB(0x00483640);
+	m_unk0x448.ClearFlags(2);
+	m_unk0x738.ClearFlags(2);
+	m_unk0xa28.ClearFlags(2);
+	m_unk0xd18.ClearFlags(2);
+	m_unk0x12f8.ClearFlags(2);
+	m_unk0x1008.ClearFlags(2);
 }
 
-// STUB: LEGORACERS 0x00483850
+// FUNCTION: LEGORACERS 0x004836a0
+void OptionsScreenBase0x51ac::FUN_004836a0()
+{
+	m_unk0x3d0.VTable0x44(0x11, TRUE);
+	m_unk0x3d0.FUN_0046f6b0(20);
+	m_unk0x18d8.FUN_00482790(0x10);
+
+	m_unk0x1bc8.SetFlags(2);
+	m_unk0x25bc.SetFlags(2);
+	m_unk0x3600[0].SetFlags(2);
+	m_unk0x3600[1].SetFlags(2);
+
+	VTable0x44(&m_unk0x1bc8);
+	VTable0x44(&m_unk0x25bc);
+	m_unk0x1bc8.VTable0x4c(4);
+}
+
+// FUNCTION: LEGORACERS 0x00483730
+void OptionsScreenBase0x51ac::FUN_00483730()
+{
+	m_unk0x1bc8.ClearFlags(2);
+	m_unk0x25bc.ClearFlags(2);
+	m_unk0x3600[0].ClearFlags(2);
+	m_unk0x3600[1].ClearFlags(2);
+}
+
+// FUNCTION: LEGORACERS 0x00483770
+void OptionsScreenBase0x51ac::FUN_00483770()
+{
+	m_unk0x4178.SetFlags(2);
+	m_unk0x4864.SetFlags(2);
+
+	for (LegoS32 i = 0; i < 3; i++) {
+		m_unk0x5040[i].SetFlags(2);
+	}
+
+	VTable0x44(&m_unk0x36f0);
+	m_unk0x4178.VTable0x4c(4);
+	m_unk0x3d0.VTable0x44(0x13, TRUE);
+	m_unk0x3d0.FUN_0046f6b0(20);
+	m_unk0x18d8.FUN_00482790(0x10);
+}
+
+// FUNCTION: LEGORACERS 0x00483800
+void OptionsScreenBase0x51ac::FUN_00483800()
+{
+	m_unk0x4178.ClearFlags(2);
+	m_unk0x4864.ClearFlags(2);
+	m_unk0x36f0.ClearFlags(2);
+
+	for (LegoS32 i = 0; i < 3; i++) {
+		m_unk0x5040[i].ClearFlags(2);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00483850
 void OptionsScreenBase0x51ac::VTable0xa4()
 {
-	STUB(0x00483850);
+	switch (m_unk0x368) {
+	case 0:
+		VTable0xa0();
+		break;
+	case 1:
+		FUN_00483730();
+		break;
+	case 2:
+		FUN_00483800();
+		break;
+	}
+
+	switch (m_unk0x369) {
+	case 0:
+		VTable0x9c();
+		break;
+	case 1:
+		FUN_004836a0();
+		break;
+	case 2:
+		FUN_00483770();
+		break;
+	}
+
+	m_unk0x368 = m_unk0x369;
 }
 
 // FUNCTION: LEGORACERS 0x004838e0

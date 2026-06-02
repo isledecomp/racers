@@ -31,6 +31,8 @@ public:
 	// OptionsScreenFieldAt0x4178Base0x6e4::`scalar deleting destructor'
 
 protected:
+	friend class ImaginaryNotion0x290;
+
 	LegoBool32 FUN_0046dfb0(
 		MenuInputBindingTable::Entry0xb8* p_createParams,
 		CeruleanEmperor0x4c::Entry0xbcWithImages* p_styleEntry

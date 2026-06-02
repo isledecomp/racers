@@ -24,6 +24,7 @@
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "menu/widgets/obscurevantage0x58.h"
 #include "menu/widgets/obscurezebra0xa4.h"
+#include "menu/widgets/optionsscreenfieldat0x4178.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 #include "render/goldrawstate.h"
@@ -453,11 +454,40 @@ void ImaginaryNotion0x290::FUN_0046bb90(
 	}
 }
 
-// STUB: LEGORACERS 0x0046bc90
-void ImaginaryNotion0x290::FUN_0046bc90(undefined4*, undefined4)
+// FUNCTION: LEGORACERS 0x0046bc90
+void ImaginaryNotion0x290::FUN_0046bc90(
+	MenuInputBindingTable::Entry0xb8* p_createParams,
+	CeruleanEmperor0x4c::Entry0xbcWithImages* p_styleEntry
+)
 {
-	// TODO
-	STUB(0x0046bc90);
+	FUN_0046bb10(p_createParams);
+	FUN_0046bb10(p_createParams->m_unk0x84);
+	FUN_0046bb10(p_createParams->m_unk0x88);
+	FUN_0046ba60(p_createParams->m_unk0x90);
+	FUN_0046ba60(p_createParams->m_unk0x8c);
+
+	p_createParams->m_unk0x84->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x84->m_unk0x80 = NULL;
+	p_createParams->m_unk0x88->m_unk0x38 = p_createParams->m_unk0x38;
+	p_createParams->m_unk0x88->m_unk0x80 = NULL;
+
+	for (LegoS32 i = 0; i < 6; i++) {
+		if (!p_createParams->m_unk0x84->m_images[i]) {
+			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_unk0x90[i];
+		}
+
+		if (!p_createParams->m_unk0x88->m_images[i]) {
+			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_unk0x90[i];
+		}
+	}
+
+	if (!p_createParams->m_unk0x90->m_unk0x38) {
+		p_createParams->m_unk0x90->m_unk0x38 = p_styleEntry->m_unk0x9c->m_unk0x00;
+	}
+
+	if (!p_createParams->m_unk0x8c->m_unk0x38) {
+		p_createParams->m_unk0x8c->m_unk0x38 = p_styleEntry->m_unk0x98->m_unk0x00;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0046bd80
@@ -696,12 +726,25 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c2b0(
 	return result;
 }
 
-// STUB: LEGORACERS 0x0046c400
-undefined4 ImaginaryNotion0x290::FUN_0046c400(undefined4*, undefined2, undefined2)
+// FUNCTION: LEGORACERS 0x0046c400
+LegoBool32 ImaginaryNotion0x290::FUN_0046c400(
+	OptionsScreenFieldAt0x4178Base0x6e4* p_widget,
+	undefined2 p_cpId,
+	undefined2 p_styleId
+)
 {
-	// TODO
-	STUB(0x0046c400);
-	return 0;
+	MenuInputBindingTable::Entry0xb8* sourceParams =
+		static_cast<MenuInputBindingTable::Entry0xb8*>(FUN_0046be10(p_cpId));
+	CeruleanEmperor0x4c::Entry0xbcWithImages* styleEntry =
+		static_cast<CeruleanEmperor0x4c::Entry0xbcWithImages*>(FUN_0046bd80(p_styleId));
+	if (!sourceParams || !styleEntry) {
+		return FALSE;
+	}
+
+	MenuInputBindingTable::Entry0xb8 createParams = *sourceParams;
+	FUN_0046bc90(&createParams, styleEntry);
+
+	return p_widget->FUN_0046dfb0(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c480

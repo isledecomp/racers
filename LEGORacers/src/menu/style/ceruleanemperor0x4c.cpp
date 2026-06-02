@@ -535,8 +535,8 @@ void CeruleanEmperor0x4c::FUN_00470650(Entry0xbcWithImages* p_entry)
 				readPrimaryPair++;
 				break;
 			case GolFileParser::e_unknown0x32:
-				p_entry->m_unk0x9c = static_cast<Entry0x90*>(FUN_00470e60(m_parser->ReadString()));
-				p_entry->m_unk0x98 = static_cast<Entry0x90*>(FUN_00470e60(m_parser->ReadString()));
+				p_entry->m_unk0x9c = static_cast<Entry0x0c*>(FUN_00470e60(m_parser->ReadString()));
+				p_entry->m_unk0x98 = static_cast<Entry0x0c*>(FUN_00470e60(m_parser->ReadString()));
 				readSecondaryPair++;
 				break;
 			case GolFileParser::e_unknown0x28:

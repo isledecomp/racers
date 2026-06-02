@@ -40,9 +40,13 @@ protected:
 	void FUN_00482e40();
 	void FUN_00482ef0();
 	void FUN_00483030();
+	void FUN_004836a0();
+	void FUN_00483730();
+	void FUN_00483770();
+	void FUN_00483800();
 
-	LegoBool m_unk0x368;                       // 0x0368
-	LegoBool m_unk0x369;                       // 0x0369
+	LegoU8 m_unk0x368;                         // 0x0368
+	LegoU8 m_unk0x369;                         // 0x0369
 	undefined m_unk0x36a[0x36c - 0x36a];       // 0x036a
 	undefined4 m_unk0x36c;                     // 0x036c
 	GameState* m_unk0x370;                     // 0x0370

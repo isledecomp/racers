@@ -30,6 +30,7 @@ class ObscureTome0x3fc;
 class ObscureVantage0x58;
 class ObscureSigil0xdc;
 class ObscureZebra0xa4;
+class OptionsScreenFieldAt0x4178Base0x6e4;
 class PorcelainVeil0x50;
 class SoundGroupBinding;
 class AwakeKite0x20;
@@ -92,7 +93,10 @@ public:
 		ObscureBanner0x5ec::CreateParams0x90* p_createParams,
 		CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
 	);
-	void FUN_0046bc90(undefined4*, undefined4);
+	void FUN_0046bc90(
+		MenuInputBindingTable::Entry0xb8* p_createParams,
+		CeruleanEmperor0x4c::Entry0xbcWithImages* p_styleEntry
+	);
 	void* FUN_0046bd80(undefined2);
 	void* FUN_0046be10(undefined2);
 	void FUN_0046bea0(ObscureZebra0xa4*, undefined2);
@@ -108,7 +112,7 @@ public:
 		undefined2 p_cpId,
 		undefined2 p_styleId
 	);
-	undefined4 FUN_0046c400(undefined4*, undefined2, undefined2);
+	LegoBool32 FUN_0046c400(OptionsScreenFieldAt0x4178Base0x6e4*, undefined2, undefined2);
 	LegoBool32 FUN_0046c480(ObscureSigil0xdc* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	LegoBool32 FUN_0046c510(ObscureRune0x4d8* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0046c5b0(ObscureVantage0x58*, undefined2);

@@ -6,6 +6,8 @@
 #include "goltxtparser.h"
 #include "menu/style/ceruleanknight0x20.h"
 #include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscurebanner0x5ec.h"
+#include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscureicon0x1a8.h"
 #include "menu/widgets/obscuretome0x3fc.h"
 #include "types.h"
@@ -102,17 +104,14 @@ public:
 	};
 
 	// SIZE 0xb8
-	class Entry0xb8 : public Entry0x84 {
+	class Entry0xb8 : public ObscureBanner0x5ec::CreateParams0x8c {
 	public:
-		void* m_unk0x84;              // 0x84
-		void* m_unk0x88;              // 0x88
-		void* m_unk0x8c;              // 0x8c
-		void* m_unk0x90;              // 0x90
-		UtopianPan0xa4* m_unk0x94[6]; // 0x94
-		undefined2 m_unk0xac;         // 0xac
-		undefined2 m_unk0xae;         // 0xae
-		undefined4 m_unk0xb0;         // 0xb0
-		undefined4 m_unk0xb4;         // 0xb4
+		ObscureAnchor0x5c::CreateParams0x3c* m_unk0x8c; // 0x8c
+		ObscureAnchor0x5c::CreateParams0x3c* m_unk0x90; // 0x90
+		UtopianPan0xa4* m_unk0x94[6];                   // 0x94
+		ObscureIcon0x1a8::SoundIdPair0x4 m_unk0xac;     // 0xac
+		LegoS32 m_unk0xb0;                              // 0xb0
+		LegoS32 m_unk0xb4;                              // 0xb4
 	};
 
 	// SIZE 0xec
@@ -207,8 +206,8 @@ private:
 	void FUN_0046aea0();
 
 protected:
-	void FUN_00469b20(Entry0x84* p_entry);
-	void FUN_00469b50(Entry0x84* p_entry);
+	void FUN_00469b20(ObscureIcon0x1a8::CreateParams0x84* p_entry);
+	void FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_entry);
 
 	Entry0x38* m_unk0x20;         // 0x20
 	Entry0x3c* m_unk0x24;         // 0x24

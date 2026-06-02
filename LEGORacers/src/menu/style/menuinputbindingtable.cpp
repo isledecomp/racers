@@ -257,7 +257,7 @@ void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p
 }
 
 // FUNCTION: LEGORACERS 0x00469b20
-void MenuInputBindingTable::FUN_00469b20(Entry0x84* p_entry)
+void MenuInputBindingTable::FUN_00469b20(ObscureIcon0x1a8::CreateParams0x84* p_entry)
 {
 	p_entry->m_unk0x38 = TRUE;
 	p_entry->m_unk0x74 = TRUE;
@@ -265,7 +265,7 @@ void MenuInputBindingTable::FUN_00469b20(Entry0x84* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00469b50
-void MenuInputBindingTable::FUN_00469b50(Entry0x84* p_entry)
+void MenuInputBindingTable::FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_entry)
 {
 	switch (m_parser->GetCurrentToken()) {
 	case GolFileParser::e_unknown0x36:
@@ -586,12 +586,16 @@ void MenuInputBindingTable::FUN_0046a310(Entry0xb8* p_entry)
 			p_entry->m_unk0xb0 = m_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x3b:
-			p_entry->m_unk0x84 = FUN_0046aff0(m_parser->ReadString());
-			p_entry->m_unk0x88 = FUN_0046aff0(m_parser->ReadString());
+			p_entry->m_unk0x84 =
+				static_cast<ObscureGlyph0x21c::CreateParams0x9c*>(FUN_0046aff0(m_parser->ReadString()));
+			p_entry->m_unk0x88 =
+				static_cast<ObscureGlyph0x21c::CreateParams0x9c*>(FUN_0046aff0(m_parser->ReadString()));
 			break;
 		case GolFileParser::e_unknown0x38:
-			p_entry->m_unk0x90 = FUN_0046aff0(m_parser->ReadString());
-			p_entry->m_unk0x8c = FUN_0046aff0(m_parser->ReadString());
+			p_entry->m_unk0x90 =
+				static_cast<ObscureAnchor0x5c::CreateParams0x3c*>(FUN_0046aff0(m_parser->ReadString()));
+			p_entry->m_unk0x8c =
+				static_cast<ObscureAnchor0x5c::CreateParams0x3c*>(FUN_0046aff0(m_parser->ReadString()));
 			break;
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 6; i++) {
@@ -601,8 +605,8 @@ void MenuInputBindingTable::FUN_0046a310(Entry0xb8* p_entry)
 		}
 		case GolFileParser::e_unknown0x2b:
 			FUN_00469b50(p_entry);
-			p_entry->m_unk0xac = m_parser->ReadInteger();
-			p_entry->m_unk0xae = m_parser->ReadInteger();
+			p_entry->m_unk0xac.m_unk0x00 = m_parser->ReadInteger();
+			p_entry->m_unk0xac.m_unk0x02 = m_parser->ReadInteger();
 			break;
 		default:
 			FUN_00469b50(p_entry);

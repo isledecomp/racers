@@ -13,6 +13,7 @@ DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x14, 0x14)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x18, 0x18)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x2c, 0x2c)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x90, 0x90)
+DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x98, 0x98)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0xa8, 0xa8)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x100, 0x100)
 DECOMP_SIZE_ASSERT(CeruleanEmperor0x4c::Entry0x104, 0x104)
@@ -544,8 +545,8 @@ void CeruleanEmperor0x4c::FUN_00470650(Entry0xbcWithImages* p_entry)
 				}
 				break;
 			case GolFileParser::e_unknown0x2b:
-				p_entry->m_unk0xb8 = m_parser->ReadInteger();
-				p_entry->m_unk0xba = m_parser->ReadInteger();
+				p_entry->m_unk0xb8.m_unk0x00 = m_parser->ReadInteger();
+				p_entry->m_unk0xb8.m_unk0x02 = m_parser->ReadInteger();
 				break;
 			default:
 				m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

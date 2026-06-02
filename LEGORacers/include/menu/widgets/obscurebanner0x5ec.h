@@ -12,12 +12,17 @@
 // SIZE 0x5ec
 class ObscureBanner0x5ec : public ObscureIcon0x1a8 {
 public:
-	// SIZE 0x90
-	class CreateParams0x90 : public ObscureIcon0x1a8::CreateParams0x84 {
+	// SIZE 0x8c
+	class CreateParams0x8c : public ObscureIcon0x1a8::CreateParams0x84 {
 	public:
 		ObscureGlyph0x21c::CreateParams0x9c* m_unk0x84; // 0x84
 		ObscureGlyph0x21c::CreateParams0x9c* m_unk0x88; // 0x88
-		ObscureTome0x3fc::CreateParams0x60* m_unk0x8c;  // 0x8c
+	};
+
+	// SIZE 0x90
+	class CreateParams0x90 : public CreateParams0x8c {
+	public:
+		ObscureTome0x3fc::CreateParams0x60* m_unk0x8c; // 0x8c
 	};
 
 	ObscureBanner0x5ec();
@@ -40,17 +45,19 @@ public:
 	// ObscureBanner0x5ec::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_004670a0(CreateParams0x90* p_createParams, const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry);
-	LegoBool32 FUN_00467150(CreateParams0x90* p_createParams, const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry);
+	LegoBool32 FUN_004670a0(CreateParams0x8c* p_createParams, const CeruleanEmperor0x4c::Entry0x98* p_styleEntry);
+	LegoBool32 FUN_00467150(CreateParams0x8c* p_createParams, const CeruleanEmperor0x4c::Entry0x98* p_styleEntry);
 	LegoBool32 FUN_004677e0(CreateParams0x90* p_createParams);
 	void FUN_00467180(undefined4 p_param);
 	void FUN_004671e0(undefined4 p_param);
+	LegoBool32 FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result);
+	LegoBool32 FUN_00467670(InputEventQueue::Event* p_event, undefined4 p_result);
 
-	undefined4 m_unk0x1a8;                      // 0x1a8
-	ObscureGlyph0x21c m_unk0x1ac;               // 0x1ac
-	ObscureGlyph0x21c m_unk0x3c8;               // 0x3c8
-	undefined4 m_unk0x5e4;                      // 0x5e4
-	CeruleanEmperor0x4c::Entry0xbc* m_unk0x5e8; // 0x5e8
+	undefined4 m_unk0x1a8;                        // 0x1a8
+	ObscureGlyph0x21c m_unk0x1ac;                 // 0x1ac
+	ObscureGlyph0x21c m_unk0x3c8;                 // 0x3c8
+	undefined4 m_unk0x5e4;                        // 0x5e4
+	CeruleanEmperor0x4c::Entry0x98* m_styleEntry; // 0x5e8
 };
 
 // VTABLE: LEGORACERS 0x004b2020
@@ -83,8 +90,10 @@ public:
 	// ObscureBanner0x9f4::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result);
-	LegoBool32 FUN_00467670(InputEventQueue::Event* p_event, undefined4 p_result);
+	CeruleanEmperor0x4c::Entry0xbc* GetStyleEntry()
+	{
+		return static_cast<CeruleanEmperor0x4c::Entry0xbc*>(m_styleEntry);
+	}
 
 	ObscureTome0x3fc m_unk0x5ec;     // 0x5ec
 	ObscureCarousel0x94* m_unk0x9e8; // 0x9e8

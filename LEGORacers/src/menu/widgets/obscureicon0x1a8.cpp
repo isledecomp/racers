@@ -6,6 +6,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8, 0x1a8)
+DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::SoundIdPair0x4, 0x04)
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateParams0x84, 0x84)
 DECOMP_SIZE_ASSERT(ObscureIcon0x1a8::CreateState0x90, 0x90)
 

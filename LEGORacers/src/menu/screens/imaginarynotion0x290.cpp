@@ -434,11 +434,11 @@ void ImaginaryNotion0x290::FUN_0046bb90(
 
 	for (i = 0; i < 6; i++) {
 		if (!p_createParams->m_unk0x84->m_images[i]) {
-			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->m_unk0x90->m_unk0x90[i];
+			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_unk0x90[i];
 		}
 
 		if (!p_createParams->m_unk0x88->m_images[i]) {
-			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->m_unk0x94->m_unk0x90[i];
+			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_unk0x90[i];
 		}
 	}
 

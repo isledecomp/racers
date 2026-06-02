@@ -28,8 +28,8 @@ void ObscureBanner0x5ec::Reset()
 
 // FUNCTION: LEGORACERS 0x004670a0
 LegoBool32 ObscureBanner0x5ec::FUN_004670a0(
-	CreateParams0x90* p_createParams,
-	const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+	CreateParams0x8c* p_createParams,
+	const CeruleanEmperor0x4c::Entry0x98* p_styleEntry
 )
 {
 	static_cast<ObscureVantage0x58::CreateParams0x38*>(p_createParams->m_unk0x84)->m_parent = this;
@@ -57,8 +57,8 @@ LegoBool32 ObscureBanner0x5ec::FUN_004670a0(
 
 // FUNCTION: LEGORACERS 0x00467150
 LegoBool32 ObscureBanner0x5ec::FUN_00467150(
-	CreateParams0x90* p_createParams,
-	const CeruleanEmperor0x4c::Entry0xbc* p_styleEntry
+	CreateParams0x8c* p_createParams,
+	const CeruleanEmperor0x4c::Entry0x98* p_styleEntry
 )
 {
 	if (FUN_00471e30(p_createParams, p_styleEntry)) {
@@ -261,7 +261,7 @@ ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(
 }
 
 // FUNCTION: LEGORACERS 0x00467560
-LegoBool32 ObscureBanner0x9f4::FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result)
+LegoBool32 ObscureBanner0x5ec::FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result)
 {
 	switch (p_result) {
 	case InputDevice::c_sourceJoystickButton | 0xa:
@@ -307,7 +307,7 @@ LegoBool32 ObscureBanner0x9f4::FUN_00467560(InputEventQueue::Event* p_event, und
 }
 
 // FUNCTION: LEGORACERS 0x00467670
-LegoBool32 ObscureBanner0x9f4::FUN_00467670(InputEventQueue::Event*, undefined4 p_result)
+LegoBool32 ObscureBanner0x5ec::FUN_00467670(InputEventQueue::Event*, undefined4 p_result)
 {
 	if (p_result == (InputDevice::c_sourceJoystickButton | 0x1)) {
 		return FALSE;
@@ -367,7 +367,7 @@ LegoBool32 ObscureBanner0x9f4::FUN_00467800(
 	VTable0x08();
 
 	if (FUN_00467150(p_createParams, p_styleEntry) && FUN_004677e0(p_createParams)) {
-		m_unk0x5e8 = p_styleEntry;
+		m_styleEntry = p_styleEntry;
 		m_unk0x9e8 = p_createParams->m_unk0x90;
 		m_unk0x9e8->VTable0x14(&m_unk0x174[m_visualStateIndex]);
 		m_unk0x9ec = p_createParams->m_unk0x94;
@@ -471,8 +471,8 @@ undefined4 ObscureBanner0x9f4::VTable0x3c(undefined4)
 		m_unk0x9f0 = 0;
 	}
 
-	m_unk0x9e8->VTable0x48(&m_unk0x5e8->m_unk0x9c[index], &m_unk0x5e8->m_unk0x9c[index + 1]);
-	m_unk0x9e8->VTable0x4c(&m_unk0x5e8->m_unk0x9c[index], &m_unk0x5e8->m_unk0x9c[index + 1]);
+	m_unk0x9e8->VTable0x48(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_unk0x9e8->VTable0x4c(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
 
 	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
 		VTable0x78();
@@ -481,7 +481,9 @@ undefined4 ObscureBanner0x9f4::VTable0x3c(undefined4)
 		VTable0x7c();
 	}
 	else {
-		m_unk0x9e8->VTable0x4c(&m_unk0x5e8->m_unk0xac[index], &m_unk0x5e8->m_unk0xac[index + 1]);
+		ObscureCarousel0x94* carousel = m_unk0x9e8;
+		CeruleanEmperor0x4c::Entry0xbc* styleEntry = GetStyleEntry();
+		carousel->VTable0x4c(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
 	}
 
 	return 0;

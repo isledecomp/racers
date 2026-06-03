@@ -29,6 +29,10 @@ public:
 	// OptionsScreen::`scalar deleting destructor'
 
 protected:
+	void FUN_00475a30();
+	void FUN_00475aa0();
+	void FUN_00475b10();
+
 	MainMenuScreenFieldAt0x498 m_unk0x51ac;      // 0x51ac
 	MainMenuScreenFieldAt0x498 m_unk0x549c;      // 0x549c
 	ObscureCarouselNavigator0x94 m_unk0x578c;    // 0x578c

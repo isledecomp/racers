@@ -59,20 +59,62 @@ void OptionsScreen::VTable0x38(ObscureVantage0x58* p_widget)
 	m_unk0x35c = p_widget;
 }
 
-// STUB: LEGORACERS 0x00475a10
+// FUNCTION: LEGORACERS 0x00475a10
 void OptionsScreen::VTable0x9c()
 {
-	STUB(0x00475a10);
+	m_unk0x51ac.SetFlags(2);
+	OptionsScreenBase0x51ac::VTable0x9c();
 }
 
-// STUB: LEGORACERS 0x00475a20
+// FUNCTION: LEGORACERS 0x00475a20
 void OptionsScreen::VTable0xa0()
 {
-	STUB(0x00475a20);
+	m_unk0x51ac.ClearFlags(2);
+	OptionsScreenBase0x51ac::VTable0xa0();
 }
 
-// STUB: LEGORACERS 0x00475ad0
+// FUNCTION: LEGORACERS 0x00475a30
+void OptionsScreen::FUN_00475a30()
+{
+	m_unk0x5820.SetFlags(2);
+
+	for (LegoS32 i = 0; i < 2; i++) {
+		m_unk0x6660[i].SetFlags(2);
+	}
+
+	m_unk0x3d0.VTable0x44(0x12, TRUE);
+	m_unk0x3d0.FUN_0046f6b0(20);
+	m_unk0x18d8.FUN_00482790(0x10);
+	m_unk0x5820.VTable0x4c(4);
+}
+
+// FUNCTION: LEGORACERS 0x00475aa0
+void OptionsScreen::FUN_00475aa0()
+{
+	m_unk0x5820.ClearFlags(2);
+
+	for (LegoS32 i = 0; i < 2; i++) {
+		m_unk0x6660[i].ClearFlags(2);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00475ad0
 void OptionsScreen::VTable0xa4()
 {
-	STUB(0x00475ad0);
+	if (m_unk0x368 == 3) {
+		FUN_00475aa0();
+		FUN_00475b10();
+	}
+
+	if (m_unk0x369 == 3) {
+		FUN_00475a30();
+	}
+
+	OptionsScreenBase0x51ac::VTable0xa4();
+}
+
+// STUB: LEGORACERS 0x00475b10
+void OptionsScreen::FUN_00475b10()
+{
+	STUB(0x00475b10);
 }

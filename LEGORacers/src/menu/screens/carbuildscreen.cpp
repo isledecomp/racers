@@ -4,16 +4,20 @@
 
 DECOMP_SIZE_ASSERT(CarBuildScreen, 0x3c34)
 
-// STUB: LEGORACERS 0x004736b0
+// GLOBAL: LEGORACERS 0x004af668
+LegoFloat g_carBuildPreviewMouseScale = 0.01f;
+
+// FUNCTION: LEGORACERS 0x004736b0
 CarBuildScreen::CarBuildScreen()
 {
-	STUB(0x004736b0);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x004737b0
+// FUNCTION: LEGORACERS 0x004737b0
 CarBuildScreen::~CarBuildScreen()
 {
-	STUB(0x004737b0);
+	m_unk0x3c20.ReleaseOwnedBuffers();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004738a0
@@ -210,10 +214,39 @@ void CarBuildScreen::VTable0x34(ObscureIcon0x1a8* p_icon)
 	}
 }
 
-// STUB: LEGORACERS 0x00474750
-void CarBuildScreen::VTable0x38(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x00474750
+void CarBuildScreen::VTable0x38(ObscureVantage0x58* p_source)
 {
-	STUB(0x00474750);
+	if (m_unk0x2ae0 != 6) {
+		m_unk0x35c = p_source;
+		m_unk0x2ae4 = 1;
+
+		if (p_source == &m_unk0x2f70) {
+			if (m_unk0x2308.FUN_00478730()) {
+				m_unk0x2ae4 = 6;
+				m_unk0x2adc = 4;
+			}
+			return;
+		}
+		else if (p_source == &m_unk0x318c) {
+			m_unk0x2308.FUN_00478560();
+			m_soundGroupBinding->FUN_0046e970(0x16);
+			return;
+		}
+		else if (p_source == &m_unk0x33a8) {
+			if (FUN_00477540()) {
+				m_unk0x2ae4 = 5;
+			}
+			return;
+		}
+		else if (p_source == &m_unk0x39fc) {
+			m_unk0x360 = 0x11;
+			m_unk0x364 = 1;
+			return;
+		}
+	}
+
+	ImaginaryShape0x2b20::VTable0x38(p_source);
 }
 
 // STUB: LEGORACERS 0x00474820
@@ -250,8 +283,25 @@ LegoBool32 CarBuildScreen::VTable0x78(undefined4 p_elapsed)
 	return ImaginaryShape0x2b20::VTable0x78(p_elapsed);
 }
 
-// STUB: LEGORACERS 0x004774e0
-void CarBuildScreen::FUN_004774e0(undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x004774e0
+void CarBuildScreen::FUN_004774e0(LegoS32 p_deltaX, LegoS32 p_deltaY)
 {
-	STUB(0x004774e0);
+	if (m_unk0x2ae0 == 6) {
+		return;
+	}
+
+	if (p_deltaX) {
+		m_unk0x2308.FUN_00477fc0(-(static_cast<LegoFloat>(p_deltaX) * g_carBuildPreviewMouseScale));
+	}
+
+	if (p_deltaY) {
+		m_unk0x2308.FUN_00478180(static_cast<LegoFloat>(p_deltaY) * g_carBuildPreviewMouseScale);
+	}
+}
+
+// STUB: LEGORACERS 0x00477540
+LegoBool32 CarBuildScreen::FUN_00477540()
+{
+	STUB(0x00477540);
+	return FALSE;
 }

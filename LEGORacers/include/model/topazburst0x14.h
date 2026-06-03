@@ -59,6 +59,7 @@ public:
 	);
 	Entry* FindEntry(LegoS32 p_index);
 	LegoS32 FindEntryIndex(LegoS32 p_index);
+	Entry* GetEntries() const { return m_entries; }
 
 private:
 	void FUN_0049ce40();

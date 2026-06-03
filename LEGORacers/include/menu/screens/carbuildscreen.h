@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golstringtable.h"
 #include "menu/screens/imaginaryshape0x2b20.h"
 #include "menu/widgets/obscureglyph0x21c.h"
 #include "menu/widgets/obscurelattice0x228.h"
@@ -53,19 +54,20 @@ protected:
 		undefined4 p_unk0x10
 	);
 	void FUN_00474940();
-	void FUN_004774e0(undefined4 p_unk0x04, undefined4 p_unk0x08);
+	void FUN_004774e0(LegoS32 p_deltaX, LegoS32 p_deltaY);
+	LegoBool32 FUN_00477540();
 
-	ObscureLattice0x228 m_unk0x2b20;        // 0x2b20
-	ObscureLattice0x228 m_unk0x2d48;        // 0x2d48
-	ObscureGlyph0x21c m_unk0x2f70;          // 0x2f70
-	ObscureGlyph0x21c m_unk0x318c;          // 0x318c
-	ObscureGlyph0x21c m_unk0x33a8;          // 0x33a8
-	ObscureGlyph0x21c m_unk0x35c4;          // 0x35c4
-	ObscureGlyph0x21c m_unk0x37e0;          // 0x37e0
-	ObscureGlyph0x21c m_unk0x39fc;          // 0x39fc
-	LegoU32 m_unk0x3c18;                    // 0x3c18
-	LegoU32 m_unk0x3c1c;                    // 0x3c1c
-	undefined m_unk0x3c20[0x3c34 - 0x3c20]; // 0x3c20
+	ObscureLattice0x228 m_unk0x2b20; // 0x2b20
+	ObscureLattice0x228 m_unk0x2d48; // 0x2d48
+	ObscureGlyph0x21c m_unk0x2f70;   // 0x2f70
+	ObscureGlyph0x21c m_unk0x318c;   // 0x318c
+	ObscureGlyph0x21c m_unk0x33a8;   // 0x33a8
+	ObscureGlyph0x21c m_unk0x35c4;   // 0x35c4
+	ObscureGlyph0x21c m_unk0x37e0;   // 0x37e0
+	ObscureGlyph0x21c m_unk0x39fc;   // 0x39fc
+	LegoU32 m_unk0x3c18;             // 0x3c18
+	LegoU32 m_unk0x3c1c;             // 0x3c1c
+	GolStringTable m_unk0x3c20;      // 0x3c20
 };
 
 #endif // CARBUILDSCREEN_H

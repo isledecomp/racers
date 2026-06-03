@@ -28,16 +28,43 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x08()
 	return FALSE;
 }
 
+// STUB: LEGORACERS 0x00477fc0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477fc0(LegoFloat)
+{
+	STUB(0x00477fc0);
+	return FALSE;
+}
+
 // STUB: LEGORACERS 0x00478120
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478120()
 {
 	STUB(0x00478120);
 }
 
+// STUB: LEGORACERS 0x00478180
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat)
+{
+	STUB(0x00478180);
+	return FALSE;
+}
+
 // STUB: LEGORACERS 0x004783d0
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004783d0()
 {
 	STUB(0x004783d0);
+}
+
+// STUB: LEGORACERS 0x00478560
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478560()
+{
+	STUB(0x00478560);
+}
+
+// STUB: LEGORACERS 0x00478730
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478730()
+{
+	STUB(0x00478730);
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x004788f0

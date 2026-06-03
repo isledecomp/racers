@@ -83,6 +83,7 @@ public:
 			PeridotTraceBase0x24* p_owner
 		);
 		void Destroy();
+		void FUN_0042b6d0();
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -115,6 +116,8 @@ public:
 	void Destroy();
 
 private:
+	friend struct Record;
+
 	void Initialize();
 	void FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_0042b7f0();
@@ -269,6 +272,7 @@ public:
 	LegoU32 GetLanguageIndex() const { return m_state.m_languageIndex; }
 	LegoU8 GetUnk0x22() const { return GetLanguageIndex(); }
 	LegoU8 GetUnk0x23() const { return m_state.m_unk0x23; }
+	LegoU8 FUN_0042f1e0() const;
 	LegoU8 FUN_0042f1f0() const;
 
 private:
@@ -303,6 +307,7 @@ public:
 	static void CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count);
 	static void CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count);
 
+	void FUN_0042b4f0(const LegoU8* p_source);
 	void Reset() { m_unk0x244 = 0; }
 	PeridotTraceBase0x24::Record* GetUnk0x248() const { return m_unk0x248; }
 	void SetUnk0x248(PeridotTraceBase0x24::Record* p_unk0x248) { m_unk0x248 = p_unk0x248; }

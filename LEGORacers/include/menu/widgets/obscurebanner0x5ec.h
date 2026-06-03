@@ -67,7 +67,7 @@ public:
 	// SIZE 0x98
 	class CreateParams0x98 : public ObscureBanner0x5ec::CreateParams0x90 {
 	public:
-		ObscureCarousel0x94* m_unk0x90; // 0x90
+		ObscureCarousel0x78* m_unk0x90; // 0x90
 		undefined4 m_unk0x94;           // 0x94
 	};
 
@@ -96,7 +96,7 @@ protected:
 	}
 
 	ObscureTome0x3fc m_unk0x5ec;     // 0x5ec
-	ObscureCarousel0x94* m_unk0x9e8; // 0x9e8
+	ObscureCarousel0x78* m_unk0x9e8; // 0x9e8
 	undefined4 m_unk0x9ec;           // 0x9ec
 	undefined4 m_unk0x9f0;           // 0x9f0
 };

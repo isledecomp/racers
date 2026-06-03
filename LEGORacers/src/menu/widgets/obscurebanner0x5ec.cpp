@@ -481,7 +481,7 @@ undefined4 ObscureBanner0x9f4::VTable0x3c(undefined4)
 		VTable0x7c();
 	}
 	else {
-		ObscureCarousel0x94* carousel = m_unk0x9e8;
+		ObscureCarousel0x78* carousel = m_unk0x9e8;
 		CeruleanEmperor0x4c::Entry0xbc* styleEntry = GetStyleEntry();
 		carousel->VTable0x4c(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
 	}

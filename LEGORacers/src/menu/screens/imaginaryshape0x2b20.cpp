@@ -32,9 +32,9 @@ void ImaginaryShape0x2b20::Reset()
 	m_unk0x28cc = 0;
 	m_unk0x28c8 = 0;
 	m_unk0x2b1c = 0;
-	m_unk0x2ae8 = 0;
+	m_partCategoryUnlockFlags = 0;
 
-	memset(m_unk0x2aec, 0, sizeof(m_unk0x2aec));
+	memset(m_partCategoryAvailable, 0, sizeof(m_partCategoryAvailable));
 
 	ObsidianMantle0x3b4::Reset();
 }
@@ -45,22 +45,45 @@ void ImaginaryShape0x2b20::FUN_00477050()
 	STUB(0x00477050);
 }
 
-// STUB: LEGORACERS 0x00477130
+// FUNCTION: LEGORACERS 0x00477130
 void ImaginaryShape0x2b20::FUN_00477130()
 {
-	STUB(0x00477130);
+	FUN_0046c240(&m_unk0x410, 0x3e, 0xaf);
+	FUN_0046c2b0(&m_unk0x4a4, &m_unk0x410, 0xaa, 0x4d);
+
+	for (LegoU32 i = 0; i < 12; i++) {
+		FUN_0046bef0(&m_unk0x19e0[i], 0x9d, static_cast<undefined2>(i + 0x9e));
+	}
 }
 
-// STUB: LEGORACERS 0x00477190
+// FUNCTION: LEGORACERS 0x00477190
 void ImaginaryShape0x2b20::VTable0x4c()
 {
-	STUB(0x00477190);
+	FUN_0046bef0(&m_unk0x3b4, 0x49, 0x49);
+	FUN_00477050();
+	FUN_00477130();
+	FUN_0047fcf0(&m_unk0xe98, 0xae, 0x3b);
+	FUN_0046c2b0(&m_unk0xfec, &m_unk0xe98, 0xac, 0xcc);
+
+	m_unk0xe98.FUN_00485440(m_context->m_unk0x21a4.GetEntries()[m_partCategoryAvailable[0]].GetUnk0x08());
 }
 
-// STUB: LEGORACERS 0x00477210
+// FUNCTION: LEGORACERS 0x00477210
 void ImaginaryShape0x2b20::VTable0x80()
 {
-	STUB(0x00477210);
+	ColorRGBA lightColor;
+	ColorRGBA materialColor;
+
+	materialColor.m_blu = 0x78;
+	materialColor.m_grn = 0x78;
+	materialColor.m_red = 0x78;
+	materialColor.m_alp = 0x78;
+	lightColor.m_blu = 0xff;
+	lightColor.m_grn = 0xff;
+	lightColor.m_red = 0xff;
+	lightColor.m_alp = 0xff;
+
+	FUN_0047fec0(&materialColor, &lightColor);
 }
 
 // FUNCTION: LEGORACERS 0x00477250
@@ -80,6 +103,34 @@ LegoBool32 ImaginaryShape0x2b20::VTable0x8c(MenuToolContext0x4bc8* p_unk0x04, Me
 void ImaginaryShape0x2b20::FUN_00477290()
 {
 	STUB(0x00477290);
+
+	m_partCategoryUnlockFlags = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1e0();
+
+	LegoS32 i;
+	for (i = 0; i < c_alwaysAvailablePartCategoryCount; i++) {
+		m_partCategoryAvailable[i] = TRUE;
+	}
+
+	LegoU8 mask = 1;
+	for (i = 0; i < c_saveUnlockedPartCategoryCount; i++) {
+		if (m_partCategoryUnlockFlags & mask) {
+			m_partCategoryAvailable[i + c_alwaysAvailablePartCategoryCount] = TRUE;
+		}
+		mask <<= 1;
+	}
+
+	for (i = 0; i < m_context->m_unk0x21f4.GetUnk0xd4(); i++) {
+		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_unk0x21f4.FUN_0049bd50(i));
+		m_partCategoryAvailable[index] = TRUE;
+	}
+
+	for (i = 0; i < c_partCategoryCount; i++) {
+		if (m_partCategoryAvailable[i]) {
+			m_unk0x410.FUN_0046d9c0(&m_unk0x19e0[i]);
+		}
+	}
+
+	m_unk0x410.VTable0x50(0);
 }
 
 // FUNCTION: LEGORACERS 0x00477380
@@ -89,10 +140,12 @@ void ImaginaryShape0x2b20::VTable0x84()
 	m_context->m_menuStack.Pop();
 }
 
-// STUB: LEGORACERS 0x004773a0
+// FUNCTION: LEGORACERS 0x004773a0
 void ImaginaryShape0x2b20::FUN_004773a0()
 {
-	STUB(0x004773a0);
+	memset(m_carBuildSaveBuffer, 0, c_carBuildSaveBufferSize);
+	m_context->m_unk0x21f4.FUN_0049c820(m_carBuildSaveBuffer);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4f0(m_carBuildSaveBuffer);
 }
 
 // FUNCTION: LEGORACERS 0x00477630

@@ -159,18 +159,15 @@ undefined4 ImaginaryTool0x368::FUN_0047fdc0(
 }
 
 // FUNCTION: LEGORACERS 0x0047fec0
-void ImaginaryTool0x368::FUN_0047fec0(
-	GolRenderDevice::MaterialColor* p_materialColor,
-	GolRenderDevice::Light* p_lightColor
-)
+void ImaginaryTool0x368::FUN_0047fec0(const ColorRGBA* p_materialColor, const ColorRGBA* p_lightColor)
 {
 	GolVec3 lightDirection;
 	lightDirection.m_x = -1.0f;
 	lightDirection.m_y = -1.0f;
 	lightDirection.m_z = -1.0f;
 
-	m_unk0x350.SetColor(p_materialColor->GetColor());
-	m_unk0x340.SetColor(p_lightColor->GetColor());
+	m_unk0x350.SetColor(*p_materialColor);
+	m_unk0x340.SetColor(*p_lightColor);
 	m_unk0x340.SetDirection(lightDirection);
 
 	m_renderer->VTable0x28();

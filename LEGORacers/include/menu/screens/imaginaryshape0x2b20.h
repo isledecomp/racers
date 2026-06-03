@@ -19,6 +19,13 @@ class MenuToolCreateParams0x30;
 // SIZE 0x2b20
 class ImaginaryShape0x2b20 : public ObsidianMantle0x3b4 {
 public:
+	enum {
+		c_carBuildSaveBufferSize = 0x202,
+		c_partCategoryCount = 12,
+		c_alwaysAvailablePartCategoryCount = 4,
+		c_saveUnlockedPartCategoryCount = c_partCategoryCount - c_alwaysAvailablePartCategoryCount
+	};
+
 	// VTABLE: LEGORACERS 0x004b2edc
 	// SIZE 0x2d0
 	class FieldAt0x2308 : public ObscureLink0x1c {
@@ -29,8 +36,12 @@ public:
 		LegoBool32 VTable0x08() override;           // vtable+0x08
 		LegoBool32 VTable0x0c() override;           // vtable+0x0c
 		LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
+		LegoBool32 FUN_00477fc0(LegoFloat p_delta);
 		void FUN_00478120();
+		LegoBool32 FUN_00478180(LegoFloat p_delta);
 		void FUN_004783d0();
+		void FUN_00478560();
+		LegoBool32 FUN_00478730();
 
 		// SYNTHETIC: LEGORACERS 0x004779b0
 		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'
@@ -75,14 +86,15 @@ protected:
 	undefined4 m_unk0x28c8;                  // 0x28c8
 	undefined4 m_unk0x28cc;                  // 0x28cc
 	undefined4 m_unk0x28d0;                  // 0x28d0
-	undefined m_unk0x28d4[0x2ad8 - 0x28d4];  // 0x28d4
+	LegoU8 m_carBuildSaveBuffer[0x202];      // 0x28d4
+	undefined m_unk0x2ad6[0x2ad8 - 0x2ad6];  // 0x2ad6
 	undefined4 m_unk0x2ad8;                  // 0x2ad8
 	undefined4 m_unk0x2adc;                  // 0x2adc
 	undefined4 m_unk0x2ae0;                  // 0x2ae0
 	undefined4 m_unk0x2ae4;                  // 0x2ae4
-	LegoU8 m_unk0x2ae8;                      // 0x2ae8
+	LegoU8 m_partCategoryUnlockFlags;        // 0x2ae8
 	undefined m_unk0x2ae9[0x2aec - 0x2ae9];  // 0x2ae9
-	undefined4 m_unk0x2aec[0xc];             // 0x2aec
+	LegoBool32 m_partCategoryAvailable[12];  // 0x2aec
 	undefined4 m_unk0x2b1c;                  // 0x2b1c
 };
 

@@ -10,6 +10,7 @@
 
 DECOMP_SIZE_ASSERT(SapphireReef0x2030, 0x2030)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xa4, 0x14)
+DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xa4::Entry0x1c, 0x1c)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xbc, 0x14)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xbc::Entry0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0x1e30Entry0x28, 0x28)
@@ -237,6 +238,18 @@ void SapphireReef0x2030::FUN_0049b8b0(LegoPieceLibrary::PieceRecord*, undefined4
 	STUB(0x0049b8b0);
 }
 
+// FUNCTION: LEGORACERS 0x0049bd50
+LegoS32 SapphireReef0x2030::FUN_0049bd50(LegoS32 p_index) const
+{
+	return m_unk0xa4.m_entries[p_index].m_unk0x08;
+}
+
+// FUNCTION: LEGORACERS 0x0049c820
+void SapphireReef0x2030::FUN_0049c820(LegoU8* p_dest)
+{
+	m_unk0xa4.FUN_0049fca0(p_dest);
+}
+
 // FUNCTION: LEGORACERS 0x0049df20
 void SapphireReef0x2030::Field0xbc::Entry0x0c::Reset()
 {
@@ -290,7 +303,7 @@ void SapphireReef0x2030::Field0xbc::ResetEntries()
 SapphireReef0x2030::Field0xa4::Field0xa4()
 {
 	m_unk0x10 = NULL;
-	m_unk0x0c = NULL;
+	m_entries = NULL;
 	m_unk0x08 = 0;
 	m_count = 0;
 	m_unk0x00 = 0;
@@ -305,9 +318,9 @@ SapphireReef0x2030::Field0xa4::~Field0xa4()
 // FUNCTION: LEGORACERS 0x0049f8b0
 void SapphireReef0x2030::Field0xa4::Clear()
 {
-	if (m_unk0x0c != NULL) {
-		delete[] m_unk0x0c;
-		m_unk0x0c = NULL;
+	if (m_entries != NULL) {
+		delete[] m_entries;
+		m_entries = NULL;
 	}
 	m_unk0x08 = 0;
 	m_count = 0;
@@ -318,12 +331,18 @@ void SapphireReef0x2030::Field0xa4::Clear()
 LegoBool32 SapphireReef0x2030::Field0xa4::Initialize(LegoS32 p_count)
 {
 	Clear();
-	m_unk0x0c = new LegoU8[28 * p_count];
-	if (m_unk0x0c != NULL) {
+	m_entries = new Entry0x1c[p_count];
+	if (m_entries != NULL) {
 		m_count = p_count;
 		return TRUE;
 	}
 
 	m_count = 0;
 	return FALSE;
+}
+
+// STUB: LEGORACERS 0x0049fca0
+void SapphireReef0x2030::Field0xa4::FUN_0049fca0(LegoU8*)
+{
+	STUB(0x0049fca0);
 }

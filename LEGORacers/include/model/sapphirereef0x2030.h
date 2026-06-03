@@ -19,15 +19,24 @@ public:
 
 	// SIZE 0x14
 	struct Field0xa4 {
+		// SIZE 0x1c
+		struct Entry0x1c {
+			undefined4 m_unk0x00;             // 0x00
+			undefined4 m_unk0x04;             // 0x04
+			LegoS32 m_unk0x08;                // 0x08
+			undefined m_unk0x0c[0x1c - 0x0c]; // 0x0c
+		};
+
 		Field0xa4();
 		~Field0xa4();
 		void Clear();
 		LegoBool32 Initialize(LegoS32 p_count);
+		void FUN_0049fca0(LegoU8* p_dest);
 
 		undefined4 m_unk0x00; // 0x00
 		LegoS32 m_count;      // 0x04
 		undefined4 m_unk0x08; // 0x08
-		LegoU8* m_unk0x0c;    // 0x0c
+		Entry0x1c* m_entries; // 0x0c
 		Field0xbc* m_unk0x10; // 0x10
 	};
 
@@ -89,6 +98,9 @@ public:
 		undefined4 p_unk0x20
 	);
 	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
+	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
+	void FUN_0049c820(LegoU8* p_dest);
+	LegoS32 GetUnk0xd4() const { return m_unk0xd4; }
 
 private:
 	void Reset();

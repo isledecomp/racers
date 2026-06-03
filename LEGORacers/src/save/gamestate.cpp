@@ -514,6 +514,12 @@ LegoU32 GameState::GetRegistryLanguageIndex()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0042f1e0
+LegoU8 GameState::FUN_0042f1e0() const
+{
+	return m_state.m_unk0x24;
+}
+
 // FUNCTION: LEGORACERS 0x0042f1f0
 LegoU8 GameState::FUN_0042f1f0() const
 {

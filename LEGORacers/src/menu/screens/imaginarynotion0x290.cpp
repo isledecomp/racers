@@ -684,7 +684,7 @@ LegoBool32 ImaginaryNotion0x290::FUN_0046c240(
 // FUNCTION: LEGORACERS 0x0046c2b0
 LegoBool32 ImaginaryNotion0x290::FUN_0046c2b0(
 	ObscureBanner0x9f4* p_widget,
-	ObscureCarousel0x94* p_carousel,
+	ObscureCarousel0x78* p_carousel,
 	undefined2 p_cpId,
 	undefined2 p_styleId
 )

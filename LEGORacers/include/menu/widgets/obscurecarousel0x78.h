@@ -29,6 +29,7 @@ public:
 	virtual LegoS32 VTable0x58() = 0;                                                         // vtable+0x58
 
 	LegoBool32 FUN_0046c970(CreateParams0x38* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry);
+	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 
 	// SYNTHETIC: LEGORACERS 0x0046c8d0
 	// ObscureCarousel0x78::`scalar deleting destructor'
@@ -58,7 +59,6 @@ public:
 	virtual void VTable0x5c(ObscureVantage0x58*) = 0; // vtable+0x5c
 
 	void FUN_0046d9c0(ObscureVantage0x58* p_unk0x04);
-	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 
 	// SYNTHETIC: LEGORACERS 0x0046d870
 	// ObscureCarousel0x94::`scalar deleting destructor'

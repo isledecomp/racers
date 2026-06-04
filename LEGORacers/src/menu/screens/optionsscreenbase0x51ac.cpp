@@ -1,5 +1,7 @@
 #include "menu/screens/optionsscreenbase0x51ac.h"
 
+#include "audio/musicinstance.h"
+#include "audio/soundmanager.h"
 #include "input/inputmanager.h"
 #include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcontext0x4bc8.h"
@@ -198,10 +200,54 @@ void OptionsScreenBase0x51ac::VTable0x38(ObscureVantage0x58* p_widget)
 	m_unk0x35c = p_widget;
 }
 
-// STUB: LEGORACERS 0x004833e0
-void OptionsScreenBase0x51ac::VTable0x44(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x004833e0
+void OptionsScreenBase0x51ac::VTable0x44(ObscureVantage0x58* p_widget)
 {
-	STUB(0x004833e0);
+	if (p_widget == &m_unk0x4178) {
+		LegoFloat volume = m_unk0x4178.GetUnk0x6c0() * 0.05f;
+		m_unk0x370->SetUnk0x1f(static_cast<LegoU8>(volume * 255.0f));
+
+		if (m_context->m_context->m_soundManager) {
+			m_context->m_context->m_soundManager->SetMusicVolumeScale(1.0f);
+
+			MusicInstance* musicInstance = m_context->m_unk0x4b40.GetMusicInstance();
+			if (musicInstance) {
+				musicInstance->SetVolume(volume);
+			}
+
+			m_context->m_context->m_soundManager->SetMusicVolumeScale(volume);
+		}
+	}
+	else if (p_widget == &m_unk0x4864) {
+		LegoFloat volume = m_unk0x4864.GetUnk0x6c0() * 0.05f;
+		m_unk0x370->SetUnk0x20(static_cast<LegoU8>(volume * 255.0f));
+
+		SoundManager* soundManager = m_context->m_context->m_soundManager;
+		if (soundManager) {
+			soundManager->SetVolumeScale(volume);
+		}
+	}
+	else if (p_widget == &m_unk0x1bc8) {
+		m_context->m_context->m_unk0x100 = m_unk0x2fb0.GetUnk0x6c();
+		m_unk0x370->SetUnk0x0c(m_context->m_context->m_unk0x100);
+	}
+	else if (p_widget == &m_unk0x25bc) {
+		m_context->m_context->m_unk0x2c = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);
+		m_unk0x370->SetUnk0x23(m_context->m_context->m_unk0x2c);
+	}
+	else if (p_widget == &m_unk0x36f0) {
+		m_unk0x370->SetUnk0x21(m_unk0x40e4.GetUnk0x6c() == 0);
+
+		SoundManager* soundManager = m_context->m_context->m_soundManager;
+		if (soundManager) {
+			if (m_unk0x370->GetUnk0x21()) {
+				soundManager->ClearUnk0x04Flag0x04();
+			}
+			else {
+				soundManager->SetUnk0x04Flag0x04();
+			}
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED

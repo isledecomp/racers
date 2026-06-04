@@ -27,6 +27,8 @@ public:
 	virtual void VTable0x8c() = 0;                                                            // vtable+0x8c
 	virtual void VTable0x90(LegoS32) = 0;                                                     // vtable+0x90
 
+	LegoS32 GetUnk0x6c0() const { return m_unk0x6c0; }
+
 	// SYNTHETIC: LEGORACERS 0x0046ded0
 	// OptionsScreenFieldAt0x4178Base0x6e4::`scalar deleting destructor'
 

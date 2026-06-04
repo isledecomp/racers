@@ -74,7 +74,7 @@ protected:
 	MainMenuScreenFieldAt0x420 m_unk0x4f50;    // 0x4f50
 	MainMenuScreenFieldAt0x420 m_unk0x4fc8;    // 0x4fc8
 	MainMenuScreenFieldAt0x420 m_unk0x5040[3]; // 0x5040
-	undefined4 m_unk0x51a8;                    // 0x51a8
+	LegoS32 m_unk0x51a8;                       // 0x51a8
 };
 
 #endif // OPTIONSSCREENBASE0X51AC_H

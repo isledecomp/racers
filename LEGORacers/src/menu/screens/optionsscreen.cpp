@@ -1,7 +1,11 @@
 #include "menu/screens/optionsscreen.h"
 
+#include "app/golapp.h"
+#include "golstring.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "render/goldrawstate.h"
+#include "util/displaydriverguid.h"
 
 #include <string.h>
 
@@ -27,10 +31,54 @@ void OptionsScreen::Reset()
 	OptionsScreenBase0x51ac::Reset();
 }
 
-// STUB: LEGORACERS 0x00475730
+// FUNCTION: LEGORACERS 0x00475730
 void OptionsScreen::VTable0x98()
 {
-	STUB(0x00475730);
+	GolDrawState* drawState = m_context->m_context->m_golApp->GetDrawState();
+	GolString string;
+	DisplayDriverGuid selectedDriverGuid;
+	DisplayDriverGuid driverGuid;
+	LegoS32 selectedDriverIndex = 0;
+	LegoS32 i;
+
+	FUN_0047fdc0(&m_unk0x51ac, 0xee, 0x42, 0x12);
+	FUN_0046c240(&m_unk0x578c, 0xf6, 0x3b);
+	FUN_0046c2b0(&m_unk0x5820, &m_unk0x578c, 0xf5, 0x4c);
+
+	GUID* currentDriverGuid = drawState->GetCurrentDriverGuid();
+	if (!currentDriverGuid) {
+		drawState->GetDriverGuid(0, &selectedDriverGuid.m_guid);
+	}
+	else {
+		selectedDriverGuid.m_guid = *currentDriverGuid;
+	}
+
+	m_unk0x51a8 = drawState->GetDriverCount();
+
+	for (i = 0; i < m_unk0x51a8 && i < 5; i++) {
+		FUN_0046bf80(&m_unk0x6214[i], 0xf7, 0xf5, 0x12);
+
+		undefined2* driverNameBuffer = reinterpret_cast<undefined2*>(&m_unk0x646c[i * 0x64]);
+		GolString::CopyStringToBuf16(drawState->GetDriverName(i), driverNameBuffer);
+		string.CopyFromBufSelection(driverNameBuffer, ::strlen(drawState->GetDriverName(i)) + 1);
+		string.ToUpperCase();
+		m_unk0x6214[i].VTable0x40(&string, 0);
+		m_unk0x578c.FUN_0046d9c0(&m_unk0x6214[i]);
+
+		drawState->GetDriverGuid(i, &driverGuid.m_guid);
+		if (::memcmp(&driverGuid, &selectedDriverGuid, sizeof(GUID)) == 0) {
+			selectedDriverIndex = i;
+		}
+	}
+
+	m_unk0x578c.VTable0x50(selectedDriverIndex);
+	VTable0x44(&m_unk0x5820);
+
+	for (i = 0; i < 2; i++) {
+		FUN_0046bf80(&m_unk0x6660[i], static_cast<undefined2>(i + 0x102), 0x37, static_cast<undefined2>(i + 0x5b));
+	}
+
+	FUN_00475aa0();
 }
 
 // FUNCTION: LEGORACERS 0x00475970
@@ -113,8 +161,47 @@ void OptionsScreen::VTable0xa4()
 	OptionsScreenBase0x51ac::VTable0xa4();
 }
 
-// STUB: LEGORACERS 0x00475b10
+// FUNCTION: LEGORACERS 0x00475b10
 void OptionsScreen::FUN_00475b10()
 {
-	STUB(0x00475b10);
+	GolDrawState* drawState = m_context->m_context->m_golApp->GetDrawState();
+	LegoU32 driverIndex = m_unk0x578c.GetUnk0x6c();
+	LegoU32 flags;
+	const LegoChar* driverName = drawState->GetDriverDescription(driverIndex);
+	DisplayDriverGuid driverGuid;
+
+	drawState->GetDriverGuid(driverIndex, &driverGuid.m_guid);
+	m_unk0x370->FUN_0042f020(driverGuid);
+
+	LegoU32 deviceIndex = 0;
+	while (deviceIndex < drawState->GetDeviceCount(driverIndex) &&
+		   !drawState->IsDeviceHwAccelerated(driverIndex, deviceIndex)) {
+		deviceIndex++;
+	}
+
+	flags = 0;
+	if (deviceIndex < drawState->GetDeviceCount(driverIndex)) {
+		const LegoChar* deviceName = drawState->GetDeviceName(driverIndex, deviceIndex);
+		drawState->VTable0x0c(driverName, deviceName);
+		flags = GolDrawState::c_flagBit14;
+	}
+
+	LegoU32 appFlags = m_context->m_context->m_golApp->GetFlags();
+	LegoU32 drawStateFlags = 0;
+	if (appFlags & GolApp::c_flagFullscreen) {
+		drawStateFlags = GolApp::c_flagFullscreen;
+	}
+	if (appFlags & GolApp::c_flagBit4) {
+		drawStateFlags |= GolApp::c_flagBit4;
+	}
+	if (appFlags & GolApp::c_flagBit8) {
+		drawStateFlags |= GolApp::c_flagBit8;
+	}
+
+	drawState->VTable0x50();
+	LegoS32 height = drawState->m_height;
+	LegoS32 width = drawState->m_width;
+	undefined4 bpp = drawState->m_bpp;
+	drawState
+		->VTable0x54(width, height, bpp, m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags);
 }

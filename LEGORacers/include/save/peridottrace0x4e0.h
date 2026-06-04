@@ -260,6 +260,31 @@ public:
 	LegoBool32 FUN_0042f310(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, LegoU32 p_unk0x0c, GolString* p_string);
 
 	void SetUnk0x00(undefined4 p_arg1) { m_unk0x00 = p_arg1; }
+	void SetUnk0x0c(LegoU32 p_unk0x0c)
+	{
+		m_unk0x00 = 1;
+		m_state.m_unk0x0c = static_cast<LegoU8>(p_unk0x0c);
+	}
+	void SetUnk0x1f(LegoU8 p_unk0x1f)
+	{
+		m_state.m_unk0x1f = p_unk0x1f;
+		m_unk0x00 = 1;
+	}
+	void SetUnk0x20(LegoU8 p_unk0x20)
+	{
+		m_state.m_unk0x20 = p_unk0x20;
+		m_unk0x00 = 1;
+	}
+	void SetUnk0x21(LegoU8 p_unk0x21)
+	{
+		m_state.m_unk0x21 = p_unk0x21;
+		m_unk0x00 = 1;
+	}
+	void SetUnk0x23(LegoU32 p_unk0x23)
+	{
+		m_unk0x00 = 1;
+		m_state.m_unk0x23 = static_cast<LegoU8>(p_unk0x23);
+	}
 	void SetLanguageIndex(LegoU8 p_languageIndex) { m_state.m_languageIndex = p_languageIndex; }
 	LegoU8 GetSelectedInputBindingEntryIndex(LegoU32 p_playerIndex) const
 	{

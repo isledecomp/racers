@@ -32,7 +32,13 @@ public:
 	// CarBuildScreen::`scalar deleting destructor'
 
 protected:
-	undefined4 FUN_00473b80(undefined4 p_unk0x04, undefined4 p_unk0x08);
+	enum {
+		c_carBuildRegionSource = 0x50000000,
+		c_carBuildDragThreshold = 5,
+		c_carBuildDragDelay = 100
+	};
+
+	void FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY);
 	LegoBool32 FUN_00473ee0(
 		ObscureVantage0x58* p_source,
 		InputEventQueue::Event* p_event,
@@ -45,6 +51,7 @@ protected:
 		undefined4 p_unk0x0c,
 		undefined4 p_unk0x10
 	);
+	LegoBool32 FUN_004743f0(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	LegoBool32 FUN_00474470(
 		ObscureVantage0x58* p_source,
 		InputEventQueue::Event* p_event,

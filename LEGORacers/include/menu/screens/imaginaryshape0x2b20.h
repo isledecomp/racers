@@ -42,12 +42,15 @@ public:
 		void FUN_004783d0();
 		void FUN_00478560();
 		LegoBool32 FUN_00478730();
+		LegoS8 GetUnk0x298() const { return m_unk0x298; }
 
 		// SYNTHETIC: LEGORACERS 0x004779b0
 		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'
 
 	private:
-		undefined m_unk0x1c[0x2d0 - 0x1c]; // 0x1c
+		undefined m_unk0x1c[0x298 - 0x1c];   // 0x1c
+		LegoS8 m_unk0x298;                   // 0x298
+		undefined m_unk0x299[0x2d0 - 0x299]; // 0x299
 	};
 
 	ImaginaryShape0x2b20();
@@ -72,6 +75,7 @@ protected:
 	void FUN_00477130();
 	void FUN_00477290();
 	void FUN_004773a0();
+	LegoBool32 FUN_004773e0(undefined4 p_unk0x04, undefined4 p_unk0x08, undefined4 p_unk0x0c, undefined4 p_unk0x10);
 	void FUN_00477770();
 
 	ObscureAnchor0x5c m_unk0x3b4;            // 0x3b4

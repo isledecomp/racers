@@ -1,11 +1,27 @@
 #include "menu/screens/carbuildscreen.h"
 
 #include "audio/soundgroupbinding.h"
+#include "golhashtable.h"
+#include "golstream.h"
+#include "input/inputdevice.h"
+#include "menu/menutoolcontext0x4bc8.h"
 
 DECOMP_SIZE_ASSERT(CarBuildScreen, 0x3c34)
 
 // GLOBAL: LEGORACERS 0x004af668
 LegoFloat g_carBuildPreviewMouseScale = 0.01f;
+
+// GLOBAL: LEGORACERS 0x004c1d78
+const LegoS32 g_carBuildDragHorizontalOffsets[] = {-1, -1, 0,  1,  1,  1,  0,  -1, -1, -1, -1, 0,  1,  1,  1,  0,
+												   0,  -1, -1, -1, 0,  1,  1,  1,  1,  0,  -1, -1, -1, 0,  1,  1,
+												   1,  1,  0,  -1, -1, -1, 0,  1,  1,  1,  1,  0,  -1, -1, -1, 0,
+												   0,  1,  1,  1,  0,  -1, -1, -1, -1, 0,  1,  1,  1,  0,  -1, -1};
+
+// GLOBAL: LEGORACERS 0x004c1e78
+const LegoS32 g_carBuildDragVerticalOffsets[] = {0,  1,  1,  1,  0,  -1, -1, -1, -1, 0,  1,  1,  1,  0,  -1, -1,
+												 -1, -1, 0,  1,  1,  1,  0,  -1, -1, -1, -1, 0,  1,  1,  1,  0,
+												 0,  -1, -1, -1, 0,  1,  1,  1,  1,  0,  -1, -1, -1, 0,  1,  1,
+												 1,  1,  0,  -1, -1, -1, 0,  1,  1,  1,  1,  0,  -1, -1, -1, 0};
 
 // FUNCTION: LEGORACERS 0x004736b0
 CarBuildScreen::CarBuildScreen()
@@ -49,18 +65,71 @@ void CarBuildScreen::VTable0x4c()
 	FUN_0046c110(&m_unk0x39fc, 0x3f, 0xb0);
 }
 
-// STUB: LEGORACERS 0x004739a0
-LegoBool32 CarBuildScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x004739a0
+LegoBool32 CarBuildScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x004739a0);
-	return FALSE;
+	if (!ImaginaryShape0x2b20::VTable0x8c(p_context, p_createParams)) {
+		return FALSE;
+	}
+
+	p_context->m_unk0x258.GetUnk0x18c4().SetLanguageResourcePath();
+	m_unk0x3c20.UseOwnedBuffers();
+	m_unk0x3c20.Load("carbuild.srf");
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+
+	m_unk0x4a4.VTable0x4c(4);
+	return m_initialized;
 }
 
-// STUB: LEGORACERS 0x00473b80
-undefined4 CarBuildScreen::FUN_00473b80(undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00473b80
+void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 {
-	STUB(0x00473b80);
-	return 0;
+	if (m_unk0x3c1c) {
+		return;
+	}
+
+	LegoS32 keyCode = c_carBuildRegionSource;
+	if (p_deltaX >= c_carBuildDragThreshold) {
+		if (p_deltaY >= c_carBuildDragThreshold) {
+			keyCode = c_carBuildRegionSource | 4;
+		}
+		else if (p_deltaY > -c_carBuildDragThreshold) {
+			keyCode = c_carBuildRegionSource | 3;
+		}
+		else {
+			keyCode = c_carBuildRegionSource | 2;
+		}
+	}
+	else if (p_deltaX <= -c_carBuildDragThreshold) {
+		if (p_deltaY >= c_carBuildDragThreshold) {
+			keyCode = c_carBuildRegionSource | 6;
+		}
+		else if (p_deltaY <= -c_carBuildDragThreshold) {
+			keyCode = c_carBuildRegionSource | 8;
+		}
+		else {
+			keyCode = c_carBuildRegionSource | 7;
+		}
+	}
+	else if (p_deltaY >= c_carBuildDragThreshold) {
+		keyCode = c_carBuildRegionSource | 5;
+	}
+	else if (p_deltaY <= -c_carBuildDragThreshold) {
+		keyCode = c_carBuildRegionSource | 1;
+	}
+
+	LegoS32 regionId = keyCode & InputDevice::c_keyCodeMask;
+	if (!regionId) {
+		return;
+	}
+
+	LegoS32 index = regionId - 1;
+	LegoS32 tableIndex = index + m_unk0x2308.GetUnk0x298() * 8;
+	FUN_004773e0(g_carBuildDragHorizontalOffsets[tableIndex], g_carBuildDragVerticalOffsets[tableIndex], index & 1, 0);
+	m_unk0x3c1c = c_carBuildDragDelay;
 }
 
 // STUB: LEGORACERS 0x00473ee0
@@ -77,10 +146,30 @@ LegoBool32 CarBuildScreen::FUN_00474330(ObscureVantage0x58*, InputEventQueue::Ev
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00474470
-LegoBool32 CarBuildScreen::FUN_00474470(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+// STUB: LEGORACERS 0x004743f0
+LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event*, undefined4, undefined4)
 {
-	STUB(0x00474470);
+	STUB(0x004743f0);
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x00474470
+LegoBool32 CarBuildScreen::FUN_00474470(
+	ObscureVantage0x58* p_source,
+	InputEventQueue::Event* p_event,
+	undefined4 p_unk0x0c,
+	undefined4 p_unk0x10
+)
+{
+	if (p_source == GetUnk0xd8()) {
+		return FUN_004743f0(p_event, p_unk0x0c, p_unk0x10);
+	}
+
+	if (p_source == &m_unk0xe98) {
+		VTable0x44(&m_unk0xfec);
+		return TRUE;
+	}
+
 	return FALSE;
 }
 

@@ -148,6 +148,13 @@ void ImaginaryShape0x2b20::FUN_004773a0()
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4f0(m_carBuildSaveBuffer);
 }
 
+// STUB: LEGORACERS 0x004773e0
+LegoBool32 ImaginaryShape0x2b20::FUN_004773e0(undefined4, undefined4, undefined4, undefined4)
+{
+	STUB(0x004773e0);
+	return FALSE;
+}
+
 // FUNCTION: LEGORACERS 0x00477630
 void ImaginaryShape0x2b20::VTable0x38(ObscureVantage0x58* p_unk0x04)
 {

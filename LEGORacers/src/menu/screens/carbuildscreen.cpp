@@ -85,7 +85,7 @@ LegoBool32 CarBuildScreen::FUN_00474470(ObscureVantage0x58*, InputEventQueue::Ev
 }
 
 // FUNCTION: LEGORACERS 0x004744c0
-undefined4 CarBuildScreen::VTable0x18(
+LegoBool32 CarBuildScreen::VTable0x18(
 	ObscureVantage0x58* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4 p_unk0x0c,
@@ -100,21 +100,21 @@ undefined4 CarBuildScreen::VTable0x18(
 				case 1:
 					return FUN_00474470(p_source, p_event, p_unk0x0c, p_unk0x10);
 				case 2:
-					return 0;
+					return FALSE;
 				case 3:
-					return 0;
+					return FALSE;
 				default:
-					return 0;
+					return FALSE;
 				}
 			}
 		}
 	}
 
-	return 1;
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00474550
-undefined4 CarBuildScreen::VTable0x1c(
+LegoBool32 CarBuildScreen::VTable0x1c(
 	ObscureVantage0x58* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4 p_unk0x0c,
@@ -122,19 +122,19 @@ undefined4 CarBuildScreen::VTable0x1c(
 )
 {
 	if (m_unk0x2ae0 == 6) {
-		return 1;
+		return TRUE;
 	}
 
 	ObsidianMantle0x3b4::VTable0x1c(p_source, p_event, p_unk0x0c, p_unk0x10);
 	if (p_source == GetUnk0xd8() && FUN_00474330(p_source, p_event, p_unk0x0c, p_unk0x10)) {
-		return 1;
+		return TRUE;
 	}
 
 	if ((p_event->m_keyCode & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 		m_unk0x2ae4 = 1;
 	}
 
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x004745e0

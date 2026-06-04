@@ -23,14 +23,12 @@ public:
 	// FUNCTION: LEGORACERS 0x00476e80
 	~ObsidianMantle0x3b4() override {} // vtable+0x68
 
-	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override; // vtable+0x14
-	undefined4 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
-						  undefined4) override; // vtable+0x18
-	undefined4 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4,
-						  undefined4) override;   // vtable+0x1c
-	void Reset() override;                        // vtable+0x54
-	LegoBool32 VTable0x78(undefined4) override;   // vtable+0x78
-	LegoBool32 VTable0x7c(Rect*, Rect*) override; // vtable+0x7c
+	undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) override;                   // vtable+0x14
+	LegoBool32 VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
+	LegoBool32 VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x1c
+	void Reset() override;                                                                                // vtable+0x54
+	LegoBool32 VTable0x78(undefined4) override;                                                           // vtable+0x78
+	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                         // vtable+0x7c
 
 	// SYNTHETIC: LEGORACERS 0x00476ed0
 	// ObsidianMantle0x3b4::`scalar deleting destructor'

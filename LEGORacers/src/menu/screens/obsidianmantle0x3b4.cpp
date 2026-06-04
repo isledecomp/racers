@@ -70,7 +70,7 @@ undefined4 ObsidianMantle0x3b4::VTable0x14(ObscureVantage0x58* p_vantage, void* 
 }
 
 // FUNCTION: LEGORACERS 0x00474e00 FOLDED
-undefined4 ObsidianMantle0x3b4::VTable0x18(
+LegoBool32 ObsidianMantle0x3b4::VTable0x18(
 	ObscureVantage0x58* p_unk0x04,
 	InputEventQueue::Event* p_unk0x08,
 	undefined4 p_unk0x0c,
@@ -85,7 +85,7 @@ undefined4 ObsidianMantle0x3b4::VTable0x18(
 }
 
 // FUNCTION: LEGORACERS 0x00474e00 FOLDED
-undefined4 ObsidianMantle0x3b4::VTable0x1c(
+LegoBool32 ObsidianMantle0x3b4::VTable0x1c(
 	ObscureVantage0x58* p_unk0x04,
 	InputEventQueue::Event* p_unk0x08,
 	undefined4 p_unk0x0c,

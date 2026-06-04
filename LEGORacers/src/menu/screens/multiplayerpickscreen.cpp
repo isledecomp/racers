@@ -34,10 +34,10 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCre
 }
 
 // STUB: LEGORACERS 0x00481c80
-undefined4 MultiplayerPickScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MultiplayerPickScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	STUB(0x00481c80);
-	return 0;
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00481f50

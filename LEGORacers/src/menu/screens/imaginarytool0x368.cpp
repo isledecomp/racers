@@ -318,13 +318,13 @@ LegoBool32 ImaginaryTool0x368::VTable0x88()
 }
 
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ImaginaryTool0x368::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x364;
 }
 
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
-undefined4 ImaginaryTool0x368::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ImaginaryTool0x368::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x364;
 }

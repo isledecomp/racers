@@ -4,10 +4,22 @@
 #include "decomp.h"
 #include "input/inputeventqueue.h"
 #include "surface/silverdune0x30.h"
+#include "types.h"
 
 class ObscureIcon0x1a8;
-
 class ObscureVantage0x58;
+
+union ObscureVantageEventResultValue {
+	ObscureVantage0x58* m_widget;
+	LegoBool32 m_result;
+
+	ObscureVantageEventResultValue() {}
+	ObscureVantageEventResultValue(ObscureVantage0x58* p_widget) : m_widget(p_widget) {}
+	ObscureVantageEventResultValue(int p_result) : m_result(p_result) {}
+	ObscureVantageEventResultValue(LegoBool32 p_result) : m_result(p_result) {}
+
+	operator LegoBool32() const { return m_result; }
+};
 
 // VTABLE: LEGORACERS 0x004b2388
 class ImaginaryInterface {
@@ -18,13 +30,13 @@ public:
 	virtual void VTable0x0c(ObscureVantage0x58*) = 0;                                      // vtable+0x0c
 	virtual void VTable0x10(ObscureVantage0x58*) = 0;                                      // vtable+0x10
 	virtual undefined4 VTable0x14(ObscureVantage0x58*, void*, undefined4, undefined4) = 0; // vtable+0x14
-	virtual undefined4 VTable0x18(
+	virtual LegoBool32 VTable0x18(
 		ObscureVantage0x58*,
 		InputEventQueue::Event*,
 		undefined4,
 		undefined4
 	) = 0; // vtable+0x18
-	virtual undefined4 VTable0x1c(
+	virtual LegoBool32 VTable0x1c(
 		ObscureVantage0x58*,
 		InputEventQueue::Event*,
 		undefined4,

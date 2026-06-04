@@ -286,13 +286,13 @@ void CrimsonSun0xa4::Entry0x74c::FUN_004687a0()
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
-undefined4 CrimsonSun0xa4::Entry0x74c::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x2bc != 2;
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
-undefined4 CrimsonSun0xa4::Entry0x74c::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 CrimsonSun0xa4::Entry0x74c::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	return m_unk0x2bc != 2;
 }

@@ -150,20 +150,20 @@ void EditDriverScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047da50
-undefined4 EditDriverScreen::VTable0x18(ObscureVantage0x58* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 EditDriverScreen::VTable0x18(ObscureVantage0x58* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
-		return 1;
+		return TRUE;
 	}
 
 	for (LegoS32 i = 0; i < 4; i++) {
 		if (p_unk0x04 == &m_unk0x420[i]) {
 			VTable0x44(&m_unk0x9e0[i]);
-			return 1;
+			return TRUE;
 		}
 	}
 
-	return 0;
+	return FALSE;
 }
 
 // STUB: LEGORACERS 0x0047dab0

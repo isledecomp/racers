@@ -246,6 +246,8 @@ public:
 	void InitializeInputBindings(InputManager* p_inputManager);
 	void FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
 	void FUN_0042eb60(PeridotTrace0x4a8*, undefined4);
+	LegoU32 FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
+	void FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
 	void SetLanguageResourcePath();
 	void FUN_0042f020(const DisplayDriverGuid& p_guid);
@@ -289,9 +291,7 @@ private:
 	void FUN_0042ea50(LegoU32 p_playerIndex);
 	LegoU32 FUN_0042eac0(LegoU32 p_playerIndex);
 	LegoBool32 FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event);
-	LegoU32 FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	void FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry);
-	void FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
 	LegoU32 FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	LegoU32 GetRegistryLanguageIndex();
 

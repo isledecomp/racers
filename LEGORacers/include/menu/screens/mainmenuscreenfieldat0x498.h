@@ -8,6 +8,7 @@
 #include "menu/widgets/obscureicon0x1a8.h"
 
 class GolFont0xa0;
+class GolString;
 class GolStringTable;
 class UtopianPan0xa4;
 
@@ -38,6 +39,7 @@ public:
 	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
 	void VTable0x40(ImaginaryInterface*) override;                                            // vtable+0x40
 	void FUN_00482790(undefined4);
+	void FUN_00482810(GolString* p_string);
 	LegoBool32 FUN_004826c0(CreateParams0xe0* p_createParams, CeruleanEmperor0x4c::Entry0x104* p_styleEntry);
 
 	// SYNTHETIC: LEGORACERS 0x00482400

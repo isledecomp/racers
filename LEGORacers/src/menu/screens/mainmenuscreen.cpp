@@ -188,18 +188,18 @@ void MainMenuScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004812f0
-undefined4 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	undefined4 result = m_unk0x364;
+	LegoBool32 result = m_unk0x364;
 	if (result) {
 		return TRUE;
 	}
 
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00481310
-undefined4 MainMenuScreen::VTable0x1c(
+LegoBool32 MainMenuScreen::VTable0x1c(
 	ObscureVantage0x58* p_icon,
 	InputEventQueue::Event* p_item,
 	undefined4,
@@ -232,7 +232,7 @@ undefined4 MainMenuScreen::VTable0x1c(
 		}
 	}
 
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00481450

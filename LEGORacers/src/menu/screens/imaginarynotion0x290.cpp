@@ -938,15 +938,15 @@ undefined4 ImaginaryNotion0x290::VTable0x14(ObscureVantage0x58*, void*, undefine
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ImaginaryNotion0x290::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED
-undefined4 ImaginaryNotion0x290::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ImaginaryNotion0x290::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return 0;
+	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c860 FOLDED

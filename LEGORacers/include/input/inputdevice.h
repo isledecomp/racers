@@ -128,6 +128,7 @@ public:
 	undefined4 GetDeviceSubType() const { return m_deviceSubType; }
 	undefined4 GetDeviceType() const { return m_deviceType; }
 	undefined4 GetDeviceId() const { return m_deviceId; }
+	LegoU32 GetAxisMask() const { return m_axisMask; }
 	void SetForceFeedbackAvailable(undefined4 p_forceFeedbackAvailable)
 	{
 		m_forceFeedbackAvailable = p_forceFeedbackAvailable;

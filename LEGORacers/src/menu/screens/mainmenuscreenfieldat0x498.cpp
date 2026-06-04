@@ -144,6 +144,20 @@ void MainMenuScreenFieldAt0x498::FUN_00482790(undefined4 p_unk0x04)
 	VTable0x10(&m_unk0x34);
 }
 
+// FUNCTION: LEGORACERS 0x00482810
+void MainMenuScreenFieldAt0x498::FUN_00482810(GolString* p_string)
+{
+	m_unk0x264.VTable0x40(p_string, TRUE);
+
+	if (m_unk0x2dc && m_unk0x264.GetRect()->m_right - m_unk0x264.GetRect()->m_left > m_unk0x2dc) {
+		Rect rect = *m_unk0x264.GetRect();
+		rect.m_right = rect.m_left + m_unk0x2dc;
+		m_unk0x264.VTable0x10(&rect);
+	}
+
+	VTable0x10(&m_unk0x34);
+}
+
 // FUNCTION: LEGORACERS 0x00482890
 void MainMenuScreenFieldAt0x498::VTable0x10(Rect* p_rect)
 {

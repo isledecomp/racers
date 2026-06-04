@@ -217,11 +217,7 @@ LegoBool32 ObscureBanner0x5ec::VTable0x20(CopperCrest0x40::Helper0x44* p_param1,
 }
 
 // FUNCTION: LEGORACERS 0x004674c0
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(
-	InputEventQueue::Event* p_param1,
-	undefined4 p_x,
-	undefined4 p_y
-)
+LegoBool32 ObscureBanner0x5ec::VTable0x24(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -232,18 +228,11 @@ ObscureVantageEventResult ObscureBanner0x5ec::VTable0x24(
 
 	FUN_004731b0(x, y);
 
-	ObscureVantageEventResultValue leafResult;
-
-	leafResult.m_widget = VTable0x30(p_param1, x, y);
-	return leafResult.m_result;
+	return ObscureVantageEventResultValue(VTable0x30(p_param1, x, y));
 }
 
 // FUNCTION: LEGORACERS 0x00467510
-ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(
-	InputEventQueue::Event* p_param1,
-	undefined4 p_x,
-	undefined4 p_y
-)
+LegoBool32 ObscureBanner0x5ec::VTable0x28(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -254,10 +243,7 @@ ObscureVantageEventResult ObscureBanner0x5ec::VTable0x28(
 
 	FUN_004731b0(x, y);
 
-	ObscureVantageEventResultValue leafResult;
-
-	leafResult.m_widget = VTable0x34(p_param1, x, y);
-	return leafResult.m_result;
+	return ObscureVantageEventResultValue(VTable0x34(p_param1, x, y));
 }
 
 // FUNCTION: LEGORACERS 0x00467560
@@ -405,11 +391,7 @@ void ObscureBanner0x9f4::VTable0x14(VisualState0x4* p_visualState)
 }
 
 // FUNCTION: LEGORACERS 0x004678e0
-ObscureVantageEventResult ObscureBanner0x9f4::VTable0x24(
-	InputEventQueue::Event* p_param1,
-	undefined4 p_x,
-	undefined4 p_y
-)
+LegoBool32 ObscureBanner0x9f4::VTable0x24(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;

@@ -26,20 +26,20 @@ public:
 	};
 
 	ObscureBanner0x5ec();
-	void Reset() override;                                                                          // vtable+0x00
-	~ObscureBanner0x5ec() override;                                                                 // vtable+0x04
-	LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4) override;           // vtable+0x20
-	ObscureVantageEventResult VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x24
-	ObscureVantageEventResult VTable0x28(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x28
-	void VTable0x44(undefined4) override;                                                           // vtable+0x44
-	void VTable0x48(undefined4) override;                                                           // vtable+0x48
-	void VTable0x4c(undefined4) override;                                                           // vtable+0x4c
-	void VTable0x50(undefined4) override;                                                           // vtable+0x50
-	void VTable0x58(undefined4) override;                                                           // vtable+0x58
-	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                              // vtable+0x70
-	virtual undefined4 VTable0x74(undefined4) = 0;                                                  // vtable+0x74
-	virtual void VTable0x78() = 0;                                                                  // vtable+0x78
-	virtual void VTable0x7c() = 0;                                                                  // vtable+0x7c
+	void Reset() override;                                                                // vtable+0x00
+	~ObscureBanner0x5ec() override;                                                       // vtable+0x04
+	LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4) override; // vtable+0x20
+	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x24
+	LegoBool32 VTable0x28(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x28
+	void VTable0x44(undefined4) override;                                                 // vtable+0x44
+	void VTable0x48(undefined4) override;                                                 // vtable+0x48
+	void VTable0x4c(undefined4) override;                                                 // vtable+0x4c
+	void VTable0x50(undefined4) override;                                                 // vtable+0x50
+	void VTable0x58(undefined4) override;                                                 // vtable+0x58
+	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                    // vtable+0x70
+	virtual undefined4 VTable0x74(undefined4) = 0;                                        // vtable+0x74
+	virtual void VTable0x78() = 0;                                                        // vtable+0x78
+	virtual void VTable0x7c() = 0;                                                        // vtable+0x7c
 
 	// SYNTHETIC: LEGORACERS 0x00466fd0
 	// ObscureBanner0x5ec::`scalar deleting destructor'
@@ -72,17 +72,17 @@ public:
 	};
 
 	ObscureBanner0x9f4();
-	void Reset() override;                                                                          // vtable+0x00
-	~ObscureBanner0x9f4() override;                                                                 // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                               // vtable+0x08
-	void VTable0x14(VisualState0x4*) override;                                                      // vtable+0x14
-	ObscureVantageEventResult VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x24
-	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override;       // vtable+0x30
-	ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override;       // vtable+0x34
-	undefined4 VTable0x3c(undefined4) override;                                                     // vtable+0x3c
-	undefined4 VTable0x74(undefined4) override;                                                     // vtable+0x74
-	void VTable0x78() override;                                                                     // vtable+0x78
-	void VTable0x7c() override;                                                                     // vtable+0x7c
+	void Reset() override;                                                                    // vtable+0x00
+	~ObscureBanner0x9f4() override;                                                           // vtable+0x04
+	LegoBool32 VTable0x08() override;                                                         // vtable+0x08
+	void VTable0x14(VisualState0x4*) override;                                                // vtable+0x14
+	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;          // vtable+0x24
+	ObscureVantage0x58* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	ObscureVantage0x58* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
+	undefined4 VTable0x3c(undefined4) override;                                               // vtable+0x3c
+	undefined4 VTable0x74(undefined4) override;                                               // vtable+0x74
+	void VTable0x78() override;                                                               // vtable+0x78
+	void VTable0x7c() override;                                                               // vtable+0x7c
 
 	LegoBool32 FUN_00467800(CreateParams0x98* p_createParams, CeruleanEmperor0x4c::Entry0xbc* p_styleEntry);
 

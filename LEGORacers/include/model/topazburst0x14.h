@@ -50,6 +50,7 @@ public:
 	TopazBurst0x14();
 	~TopazBurst0x14();
 
+	void FUN_0049ce40();
 	void SetUnk0x00(VerdantTide0x38* p_verdantTide) { m_verdantTide = p_verdantTide; }
 	void FUN_0049ce80(
 		const LegoChar* p_filename,
@@ -62,8 +63,6 @@ public:
 	Entry* GetEntries() const { return m_entries; }
 
 private:
-	void FUN_0049ce40();
-
 	VerdantTide0x38* m_verdantTide;   // 0x00
 	LegoPieceLibrary* m_pieceLibrary; // 0x04
 	LegoS32 m_entryCount;             // 0x08

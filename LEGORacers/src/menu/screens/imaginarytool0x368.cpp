@@ -225,6 +225,29 @@ void ImaginaryTool0x368::FUN_0047ff50(MenuToolContext0x4bc8* p_context, undefine
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004800c0
+void ImaginaryTool0x368::FUN_004800c0(MenuToolContext0x4bc8* p_context)
+{
+	if (!p_context) {
+		p_context = m_context;
+	}
+
+	p_context->m_unk0x21a4.FUN_0049ce40();
+	p_context->m_unk0x21f4.Destroy();
+	p_context->m_unk0x4224.Destroy();
+	p_context->m_pieceLibrary.Destroy();
+
+	GolNameTable* racerDefinitions = &p_context->m_unk0x42dc;
+	racerDefinitions->Clear();
+}
+
+// FUNCTION: LEGORACERS 0x004801e0
+void ImaginaryTool0x368::FUN_004801e0()
+{
+	m_context->m_championDefinitions.Clear();
+	m_context->m_unk0x42dc.Clear();
+}
+
 // FUNCTION: LEGORACERS 0x00480210
 void ImaginaryTool0x368::FUN_00480210(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08)
 {

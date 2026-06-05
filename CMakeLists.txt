@@ -111,6 +111,7 @@ set(COMMON_SOURCES
   common/src/materialtable0x0c.cpp
   common/src/golbillboardfield0x2c.cpp
   common/src/golworldentity.cpp
+  common/src/golworldentitygroup0x38.cpp
   common/src/golorientedentity.cpp
   common/src/golmodelentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
@@ -354,6 +355,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/saveloadscreen.cpp
   LEGORacers/src/menu/screens/imaginarynotion0x290.cpp
   LEGORacers/src/menu/screens/awardcinematicscreen.cpp
+  LEGORacers/src/menu/screens/awardcinematicscreenfieldat0x658.cpp
   LEGORacers/src/menu/screens/newracerscreen.cpp
   LEGORacers/src/menu/screens/controlconfigscreen.cpp
   LEGORacers/src/menu/screens/racemodesetupscreen.cpp

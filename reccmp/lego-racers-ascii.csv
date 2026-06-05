@@ -103,6 +103,7 @@ address,type,x-text
 0x4b2f80,string,"norwegi"
 0x4b2f88,string,"dutch"
 0x4b2f90,string,"finnish"
+0x4b3ef8,string,"guy1"
 0x4b42a4,string,"piltop"
 0x4b42ac,string,"pilcol"
 0x4b4320,string,"blowup"

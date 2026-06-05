@@ -4,7 +4,9 @@
 #include "golhashtable.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
+#include "scene/golskinnedentity.h"
 #include "util/visualstate0x4.h"
+#include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(SingleRaceSelectBase, 0x1908)
 
@@ -123,10 +125,59 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00488b40
-void SingleRaceSelectBase::FUN_00488b40(const LegoChar*)
+// FUNCTION: LEGORACERS 0x00488b40
+void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 {
-	STUB(0x00488b40);
+	GolSkinnedEntity* modelEntity = NULL;
+	LegoU32 i = 0;
+	SaffronQuartz0x2c::Frame0xb8* frame = m_unk0x368.m_unk0x2b0;
+
+	while (!modelEntity) {
+		if (i >= m_unk0x368.m_unk0x58.GetWorldDatabaseCount()) {
+			break;
+		}
+
+		GolWorldDatabase* worldDatabase = m_unk0x368.m_unk0x58.GetWorldDatabase(i);
+		if (!modelEntity && worldDatabase->GetUnk0xc0NameEntries()) {
+			modelEntity = worldDatabase->GetUnk0xc0Name("guy1");
+		}
+
+		i++;
+	}
+
+	LegoChar* name = m_unk0x658;
+	if (::strncmp(name, p_name, sizeof(m_unk0x658)) != 0) {
+		::strncpy(name, p_name, sizeof(m_unk0x658));
+
+		if (m_unk0x660.HasModel()) {
+			m_unk0x660.VTable0x54();
+			m_context->m_unk0x4b40.RefreshMenuResources();
+		}
+
+		if (m_unk0x754) {
+			m_golExport->VTable0x48(m_unk0x754);
+			m_unk0x754 = NULL;
+		}
+
+		TurquoiseGlowColor color;
+		m_context->m_unk0x425c.FUN_00421020(name, &color);
+		m_unk0x754 = m_context->m_unk0x4b40.FUN_0049db90(&color, NULL, 0);
+		m_unk0x660.FUN_0040d550(
+			m_unk0x754,
+			modelEntity->VTable0x58(0),
+			modelEntity->GetModelPart(),
+			modelEntity->GetModelDistance(0)
+		);
+	}
+
+	if (m_unk0x660.HasModel()) {
+		for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
+			SaffronQuartz0x2c::Frame0xb8::Model0x68* model = frame->GetModel(i);
+			if (model->GetEntity() == modelEntity) {
+				model->SetEntity(&m_unk0x660);
+			}
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00488cb0

@@ -103,6 +103,8 @@ public:
 			LegoU32 FUN_00404a10(SaffronQuartz0x2c* p_parent, GolFileParser* p_parser);
 			LegoU32 FUN_00404c90();
 			void FUN_00404e80();
+			GolWorldEntity* GetEntity() const { return m_unk0x24; }
+			void SetEntity(GolWorldEntity* p_entity) { m_unk0x24 = p_entity; }
 
 			// SYNTHETIC: LEGORACERS 0x00405df0
 			// SaffronQuartz0x2c::Frame0xb8::Model0x68::`vector deleting destructor'
@@ -254,6 +256,9 @@ public:
 		LegoU32 GetUnk0x44() const { return m_unk0x44; }
 		LegoU32 GetUnk0x48() const { return m_unk0x48; }
 		LegoU32 GetUnk0x58() const { return m_unk0x58; }
+		LegoU32 GetModelCount() const { return m_unk0x0c; }
+		Model0x68* GetModel(LegoU32 p_index) const { return &m_unk0x10[p_index]; }
+		Model0x68* GetModels() const { return m_unk0x10; }
 		void SetFlags(LegoU32 p_flags) { m_unk0x44 |= p_flags; }
 
 	private:
@@ -314,6 +319,8 @@ public:
 
 	void SetUnk0x0c(BluebellFog0x4* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 	BluebellFog0x4* GetUnk0x0c() const { return m_unk0x0c; }
+	LegoU32 GetWorldDatabaseCount() const { return m_unk0x18; }
+	GolWorldDatabase* GetWorldDatabase(LegoU32 p_index) const { return m_unk0x1c[p_index]; }
 	LegoU32 GetFrameCount() const { return m_frameCount; }
 	Frame0xb8* GetFrames() const { return m_frames; }
 

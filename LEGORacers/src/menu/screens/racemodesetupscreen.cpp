@@ -133,7 +133,7 @@ void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58* p_source)
 	m_unk0x35c = source;
 }
 
-// STUB: LEGORACERS 0x00487e10
+// FUNCTION: LEGORACERS 0x00487e10
 void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
 {
 	GolString string;
@@ -141,12 +141,7 @@ void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
 
 	if (p_source == &m_unk0xbe8) {
 		LegoU32 raceDefinitionIndex = m_unk0xb54.GetUnk0x6c();
-		if (raceDefinitionIndex >= m_context->m_raceList.GetEntryCount()) {
-			m_unk0x1904 = NULL;
-		}
-		else {
-			m_unk0x1904 = &m_context->m_raceList.GetEntries()[raceDefinitionIndex];
-		}
+		m_unk0x1904 = m_context->m_raceList.GetEntry(raceDefinitionIndex);
 
 		if (m_unk0x1904) {
 			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(m_unk0x1904));
@@ -156,11 +151,11 @@ void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
 			}
 		}
 
-		m_unk0x1fc0.ObscureCarousel0x94::VTable0x40();
+		m_unk0x1fc0.FUN_0046da60();
 		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
 			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
 			if (raceNameEntry) {
-				raceNameEntry->GetStringTable()->CopyStringByIndex(&string, raceNameEntry->GetUnk0x34());
+				raceNameEntry->CopyDisplayString(&string);
 				m_unk0x2a48[i].VTable0x40(&string, TRUE);
 				m_unk0x1fc0.FUN_0046d9c0(&m_unk0x2a48[i]);
 			}
@@ -178,7 +173,6 @@ void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
 	}
 
 	FUN_00488010();
-	STUB(0x00487e10);
 }
 
 // FUNCTION: LEGORACERS 0x00487f90

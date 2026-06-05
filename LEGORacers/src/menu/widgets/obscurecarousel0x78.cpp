@@ -140,6 +140,40 @@ void ObscureCarousel0x94::FUN_0046d9c0(ObscureVantage0x58* p_unk0x04)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0046da00
+void ObscureCarousel0x94::FUN_0046da00(ObscureVantage0x58* p_child)
+{
+	ObscureVantage0x58* child = p_child->GetNextSibling();
+	p_child->RemoveFromParent();
+	m_unk0x68--;
+
+	while (child) {
+		VTable0x5c(child);
+		if (child == m_unk0x78) {
+			VTable0x50(m_unk0x6c - 1);
+		}
+
+		child = child->GetNextSibling();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0046da40
+ObscureVantage0x58* ObscureCarousel0x94::FUN_0046da40(LegoS32 p_index)
+{
+	ObscureVantage0x58* child = FUN_00472ef0(p_index);
+	FUN_0046da00(child);
+
+	return child;
+}
+
+// FUNCTION: LEGORACERS 0x0046da60
+void ObscureCarousel0x94::FUN_0046da60()
+{
+	while (m_unk0x68) {
+		FUN_0046da40(0);
+	}
+}
+
 // STUB: LEGORACERS 0x0046da80
 void ObscureCarouselNavigator0x94::VTable0x5c(ObscureVantage0x58* p_child)
 {

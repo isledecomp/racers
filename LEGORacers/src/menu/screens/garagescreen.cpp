@@ -52,10 +52,20 @@ LegoBool32 GarageScreen::VTable0x78(undefined4)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00486020 FOLDED
+// FUNCTION: LEGORACERS 0x00486020 FOLDED
 void GarageScreen::VTable0x80()
 {
-	STUB(0x00486020);
+	ColorRGBA materialColor;
+	ColorRGBA lightColor;
+
+	materialColor.m_red = 0x78;
+	materialColor.m_grn = 0x78;
+	materialColor.m_blu = 0x78;
+	lightColor.m_red = 0xff;
+	lightColor.m_grn = 0xff;
+	lightColor.m_blu = 0xff;
+
+	FUN_0047fec0(&materialColor, &lightColor);
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED

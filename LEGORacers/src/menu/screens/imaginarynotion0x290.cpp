@@ -46,110 +46,82 @@ undefined4 ImaginaryNotion0x290::VTable0x50()
 	return 1;
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+#pragma code_seg(".text$fold_44f590")
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x00(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x04(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x08(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x0c(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x10(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x20(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x24(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x2c(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x30(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x34(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x38(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x3c(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x40(ObscureIcon0x1a8*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x44(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void ImaginaryNotion0x290::VTable0x48(ObscureVantage0x58*)
 {
-	// TODO
-	STUB(0x0044f590);
 }
+#pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046b380
 ImaginaryNotion0x290::ImaginaryNotion0x290()

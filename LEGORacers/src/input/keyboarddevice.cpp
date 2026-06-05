@@ -136,8 +136,9 @@ void KeyboardInputDevice::SetButtonState(undefined4 p_event, LegoU8 p_state, Leg
 	}
 }
 
-// STUB: LEGORACERS 0x0044f590 FOLDED
+// FUNCTION: LEGORACERS 0x0044f590 FOLDED
+#pragma code_seg(".text$fold_44f590")
 void KeyboardInputDevice::SetDeadZonePercent(LegoU32)
 {
-	STUB(0x44f590);
 }
+#pragma code_seg()

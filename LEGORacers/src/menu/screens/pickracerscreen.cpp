@@ -64,10 +64,20 @@ void PickRacerScreen::Reset()
 	STUB(0x00488eb0);
 }
 
-// STUB: LEGORACERS 0x00486020 FOLDED
+// FUNCTION: LEGORACERS 0x00486020 FOLDED
 void PickRacerScreen::VTable0x80()
 {
-	STUB(0x00486020);
+	ColorRGBA materialColor;
+	ColorRGBA lightColor;
+
+	materialColor.m_red = 0x78;
+	materialColor.m_grn = 0x78;
+	materialColor.m_blu = 0x78;
+	lightColor.m_red = 0xff;
+	lightColor.m_grn = 0xff;
+	lightColor.m_blu = 0xff;
+
+	FUN_0047fec0(&materialColor, &lightColor);
 }
 
 // STUB: LEGORACERS 0x004860f0 FOLDED

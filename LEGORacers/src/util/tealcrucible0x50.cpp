@@ -1,7 +1,10 @@
 #include "util/tealcrucible0x50.h"
 
 #include "core/gol.h"
+#include "golerror.h"
+#include "golhashtable.h"
 #include "golmodelentity.h"
+#include "golstream.h"
 #include "mesh/golmodelbase.h"
 #include "model/gdbpartlibrary0x1c.h"
 #include "racer/lavendervault0x764.h"
@@ -11,6 +14,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(TealCrucible0x50, 0x50)
+DECOMP_SIZE_ASSERT(TealCrucible0x50::LoadParams, 0x18)
 
 // FUNCTION: LEGORACERS 0x00499110
 TealCrucible0x50::TealCrucible0x50()
@@ -32,9 +36,30 @@ void TealCrucible0x50::Reset()
 	m_worldDatabase = NULL;
 	m_cosmeticTable = NULL;
 	m_partLibrary = NULL;
-	m_materialTable = NULL;
+	m_resourceIndex = 0;
 	::memset(m_unk0x30, 0, sizeof(m_unk0x30));
 	::memset(m_unk0x14, 0, sizeof(m_unk0x14));
+}
+
+// FUNCTION: LEGORACERS 0x00499160
+LegoBool32 TealCrucible0x50::FUN_00499160(const LoadParams* p_params, LegoS32 p_resourceIndex)
+{
+	FUN_004991c0();
+
+	m_golExport = p_params->m_golExport;
+	m_renderer = p_params->m_renderer;
+	m_cosmeticTable = p_params->m_cosmeticTable;
+	m_resourceIndex = p_resourceIndex;
+	m_partLibrary = p_params->m_partLibrary;
+
+	FUN_00499210(p_params->m_binary);
+	FUN_00499290();
+
+	GolModelBase* model = FUN_00499320(0);
+	model->GetMutableGroups()[0] = 0xc0000000;
+	model->SetDirty(TRUE);
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004991c0
@@ -54,6 +79,43 @@ LegoBool32 TealCrucible0x50::FUN_004991c0()
 
 	Reset();
 	return m_worldDatabase == NULL;
+}
+
+// FUNCTION: LEGORACERS 0x00499210
+void TealCrucible0x50::FUN_00499210(LegoBool32 p_binary)
+{
+	const LegoChar* headModelFileName = m_cosmeticTable->GetHeadModelFileName();
+	const LegoChar* headModelDirectory = m_cosmeticTable->GetHeadModelDirectory();
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(headModelDirectory);
+	}
+
+	m_worldDatabase = m_golExport->VTable0x08();
+	if (m_worldDatabase == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_worldDatabase->VTable0x14(m_renderer, headModelFileName, p_binary, 1.0f);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499290
+void TealCrucible0x50::FUN_00499290()
+{
+	for (LegoS32 i = 0; i < 7; i++) {
+		m_unk0x14[i] = m_golExport->VTable0x14();
+		if (m_unk0x14[i] == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_unk0x14[i]->VTable0x18(m_renderer, 2, 0x258, 0x12c, 0x64, 3);
+	}
+
+	::memset(m_unk0x30, 0, sizeof(m_unk0x30));
 }
 
 // FUNCTION: LEGORACERS 0x004992f0

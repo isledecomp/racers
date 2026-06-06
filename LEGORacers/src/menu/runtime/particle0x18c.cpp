@@ -73,7 +73,7 @@ LegoU16 g_unk0x004befec[1024] = {
 };
 
 // GLOBAL: LEGORACERS 0x004c6ee4
-undefined4 g_unk0x004c6ee4 = 0;
+LegoU32 g_unk0x004c6ee4 = 0;
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void Particle0x18c::FUN_004513d0(GolD3DRenderDevice*)

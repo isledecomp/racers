@@ -45,6 +45,8 @@ public:
 	void CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const;
 	void BuildFaceExpressionName(LegoS32 p_faceIndex, LegoS32 p_expressionIndex, LegoChar* p_buffer) const;
 	LegoS32 GetFaceCount() const { return m_countFaces; }
+	LegoS32 GetTorsoCount() const { return m_countTorsos; }
+	LegoS32 GetLegCount() const { return m_countLegs; }
 	LegoS32 GetTorsoVariant(LegoS32 p_index) const { return m_unk0x344[p_index]; }
 	LegoS32 GetLegVariant(LegoS32 p_index) const { return m_unk0x4dc[p_index]; }
 	LegoS32 GetTorsoLegIndex(LegoS32 p_torsoIndex, LegoS32 p_legIndex) const
@@ -52,6 +54,12 @@ public:
 		return GetTorsoVariant(p_torsoIndex) + 2 * GetLegVariant(p_legIndex);
 	}
 	LegoS32 GetHatCount() const { return m_countHats; }
+	LegoU8 GetHatUnlockFlag(LegoS32 p_index) const { return m_unk0x158[p_index]; }
+	LegoU8 GetFaceUnlockFlag(LegoS32 p_index) const { return m_unk0x224[p_index]; }
+	LegoU8 GetTorsoUnlockFlag(LegoS32 p_index) const { return m_unk0x3bc[p_index]; }
+	LegoU8 GetLegUnlockFlag(LegoS32 p_index) const { return m_unk0x554[p_index]; }
+	const LegoChar* GetHeadModelFileName() const { return m_unk0x6da; }
+	const LegoChar* GetHeadModelDirectory() const { return m_unk0x701; }
 	const LegoChar* GetBodyModelFileName(LegoS32 p_index) const { return &m_unk0x6e7[p_index * 13]; }
 	const LegoChar* GetBodyModelDirectory(LegoS32 p_index) const { return &m_unk0x701[p_index * 32]; }
 

@@ -41,6 +41,7 @@ public:
 	DuskwindBananaRelic0x24* FUN_00498640(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498680(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_004986c0(LegoS32 p_index);
+	GdbPartLibrary0x1c* GetPartLibrary() { return &m_partLibrary; }
 	LavenderVault0x764* GetPartConfig() const { return m_partConfig; }
 	LegoS32 GetUnk0x3c() const { return m_unk0x3c; }
 	LegoS32 GetUnk0x40() const { return m_unk0x40; }

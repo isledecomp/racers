@@ -35,16 +35,11 @@ public:
 	// EditDriverScreen::`scalar deleting destructor'
 
 protected:
-	void FUN_0047d100(MenuToolContext0x4bc8* p_context, undefined4 p_unk0x08);
-	LegoBool32 FUN_0047d170(
-		MaroonAtoll0x170* p_unk0x04,
-		undefined2 p_unk0x08,
-		undefined2 p_unk0x0c,
-		undefined4 p_unk0x10
-	);
+	void FUN_0047d100(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams);
+	LegoBool32 FUN_0047d170(MaroonAtoll0x170* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c, LegoU32 p_unk0x10);
 	void FUN_0047d230();
-	undefined4 FUN_0047d560();
-	undefined4 FUN_0047d5d0();
+	LegoBool32 FUN_0047d560();
+	LegoS32 FUN_0047d5d0();
 	void FUN_0047d6f0();
 	void FUN_0047d740();
 	void FUN_0047d840();

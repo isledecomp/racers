@@ -55,3 +55,25 @@ void SoundGroupBinding::FUN_0046e970(LegoU32 p_index)
 		m_soundGroup->PlaySoundByIndex(m_unk0x08 + p_index - 1);
 	}
 }
+
+// FUNCTION: LEGORACERS 0x0046e9a0
+void SoundGroupBinding::FUN_0046e9a0(
+	LegoU32 p_index,
+	SoundVector* p_position,
+	LegoFloat p_minDistance,
+	LegoFloat p_maxDistance,
+	LegoFloat p_volume,
+	LegoFloat p_frequencyScale
+)
+{
+	if (m_soundGroup && p_index) {
+		m_soundGroup->PlaySpatialSound(
+			m_unk0x08 + p_index - 1,
+			p_position,
+			p_minDistance,
+			p_maxDistance,
+			p_volume,
+			p_frequencyScale
+		);
+	}
+}

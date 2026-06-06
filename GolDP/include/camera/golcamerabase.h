@@ -23,17 +23,17 @@ typedef GolSkinnedEntity AmberLensTrackedObject0xf4;
 class GolCameraBase {
 public:
 	GolCameraBase();
-	virtual void VTable0x00() = 0;                                                             // vtable+0x00
-	virtual void VTable0x04() = 0;                                                             // vtable+0x04
-	virtual ~GolCameraBase();                                                                  // vtable+0x08
-	virtual void VTable0x0c(Rect* p_rect) = 0;                                                 // vtable+0x0c
-	virtual void VTable0x10(const GolVec4* p_bounds) = 0;                                      // vtable+0x10
-	virtual void VTable0x14(GolMatrix4* p_dest) = 0;                                           // vtable+0x14
-	virtual void VTable0x18(GolMatrix4* p_dest) = 0;                                           // vtable+0x18
-	virtual void VTable0x1c(const GolVec3* p_src, GolVec3* p_dest) = 0;                        // vtable+0x1c
-	virtual void VTable0x20(const GolVec3* p_src, GolVec3* p_dest);                            // vtable+0x20
-	virtual void VTable0x24(undefined4 p_unk0x04, undefined4 p_unk0x08, undefined4 p_unk0x0c); // vtable+0x24
-	virtual void VTable0x28() = 0;                                                             // vtable+0x28
+	virtual void VTable0x00() = 0;                                                           // vtable+0x00
+	virtual void VTable0x04() = 0;                                                           // vtable+0x04
+	virtual ~GolCameraBase();                                                                // vtable+0x08
+	virtual void VTable0x0c(Rect* p_rect) = 0;                                               // vtable+0x0c
+	virtual void VTable0x10(const GolVec4* p_bounds) = 0;                                    // vtable+0x10
+	virtual void VTable0x14(GolMatrix4* p_dest) = 0;                                         // vtable+0x14
+	virtual void VTable0x18(GolMatrix4* p_dest) = 0;                                         // vtable+0x18
+	virtual void VTable0x1c(const GolVec3* p_src, GolVec3* p_dest) = 0;                      // vtable+0x1c
+	virtual void VTable0x20(const GolVec3* p_src, GolVec3* p_dest);                          // vtable+0x20
+	virtual LegoBool32 VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolVec4* p_bounds); // vtable+0x24
+	virtual void VTable0x28() = 0;                                                           // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x1001bf90
 	// GolCameraBase::`scalar deleting destructor'

@@ -1,6 +1,7 @@
 #include "menu/screens/carbuildscreen.h"
 
 #include "audio/soundgroupbinding.h"
+#include "audio/soundnode.h"
 #include "golhashtable.h"
 #include "golstream.h"
 #include "input/inputdevice.h"
@@ -282,11 +283,165 @@ void CarBuildScreen::VTable0xc0()
 {
 }
 
-// STUB: LEGORACERS 0x00473ee0
-LegoBool32 CarBuildScreen::FUN_00473ee0(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+// FUNCTION: LEGORACERS 0x00473ee0
+LegoBool32 CarBuildScreen::FUN_00473ee0(ObscureVantage0x58*, InputEventQueue::Event* p_event, undefined4, undefined4)
 {
-	STUB(0x00473ee0);
-	return FALSE;
+	LegoU32 keyCode = p_event->m_keyCode;
+	if ((keyCode & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
+		return FALSE;
+	}
+
+	LegoS32 categoryIndex = m_unk0x2308.GetUnk0x298();
+	undefined4 nextMode = 1;
+	LegoBool32 result = TRUE;
+	LegoU32 sound = 0;
+	LegoBool32 moved;
+	SoundVector position;
+
+	switch (keyCode) {
+	case c_carBuildKeyboardLeft:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 6],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 6],
+			0x10,
+			FALSE
+		);
+		break;
+	case c_carBuildKeyboardRight:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 2],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 2],
+			0x10,
+			FALSE
+		);
+		break;
+	case c_carBuildKeyboardDown:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 4],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 4],
+			0x10,
+			FALSE
+		);
+		break;
+	case c_carBuildKeyboardUp:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8],
+			0x10,
+			FALSE
+		);
+		break;
+	case c_carBuildKeyboardEnd:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 5],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 5],
+			0x10,
+			TRUE
+		);
+		break;
+	case c_carBuildKeyboardPageDownNum:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 3],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 3],
+			0x10,
+			TRUE
+		);
+		break;
+	case c_carBuildKeyboardNumpad7:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 7],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 7],
+			0x10,
+			TRUE
+		);
+		break;
+	case c_carBuildKeyboardPageUpNum:
+		FUN_004773e0(
+			g_carBuildDragHorizontalOffsets[categoryIndex * 8 + 1],
+			g_carBuildDragVerticalOffsets[categoryIndex * 8 + 1],
+			0x10,
+			TRUE
+		);
+		break;
+	case c_carBuildKeyboardNumpad5:
+		m_unk0x2308.FUN_00478560();
+		sound = 0x16;
+		break;
+	case c_carBuildKeyboardA:
+		moved = m_unk0x2308.FUN_00478080(-1, TRUE);
+		goto playMovementSound;
+	case c_carBuildKeyboardD:
+		moved = m_unk0x2308.FUN_00478080(1, TRUE);
+		goto playMovementSound;
+	case c_carBuildKeyboardS:
+		moved = m_unk0x2308.FUN_004782f0(1, TRUE);
+		goto playMovementSound;
+	case c_carBuildKeyboardX:
+		moved = m_unk0x2308.FUN_004782f0(-1, TRUE);
+
+	playMovementSound: {
+		LegoU32 spatialSound;
+		LegoFloat volume;
+		if (moved) {
+			spatialSound = 6;
+			volume = 0.6f;
+		}
+		else {
+			spatialSound = 8;
+			volume = 0.7f;
+		}
+
+		position.m_x = 0.0f;
+		position.m_y = 0.0f;
+		position.m_z = 0.0f;
+		m_soundGroupBinding->FUN_0046e9a0(spatialSound & 0xffff, &position, 100.0f, 200.0f, volume, 1.0f);
+		m_unk0x2ae4 = nextMode;
+		return result;
+	}
+	case c_carBuildKeyboardPlus:
+		if (m_unk0x2308.FUN_00478730()) {
+			nextMode = 6;
+			m_unk0x2adc = 4;
+		}
+		break;
+	case c_carBuildKeyboardMinus:
+		if (FUN_00477540()) {
+			nextMode = 5;
+		}
+		break;
+	case c_carBuildKeyboardInsert:
+		if (!(m_unk0x4a4.GetStateFlags() & ObscureIcon0x1a8::c_flagBit2)) {
+			m_unk0x4a4.GetUnk0x1ac().VTable0x54(1);
+			m_unk0x4a4.FUN_00467180(0);
+		}
+		break;
+	case c_carBuildKeyboardPageUp:
+		if (!(m_unk0x4a4.GetStateFlags() & ObscureIcon0x1a8::c_flagBit2)) {
+			m_unk0x4a4.GetUnk0x3c8().VTable0x54(1);
+			m_unk0x4a4.FUN_004671e0(0);
+		}
+		break;
+	case c_carBuildKeyboardDelete:
+		if (!(m_unk0xfec.GetStateFlags() & ObscureIcon0x1a8::c_flagBit2)) {
+			m_unk0xfec.GetUnk0x1ac().VTable0x54(1);
+			m_unk0xfec.FUN_00467180(0);
+		}
+		break;
+	case c_carBuildKeyboardPageDown:
+		if (!(m_unk0xfec.GetStateFlags() & ObscureIcon0x1a8::c_flagBit2)) {
+			m_unk0xfec.GetUnk0x3c8().VTable0x54(1);
+			m_unk0xfec.FUN_004671e0(0);
+		}
+		break;
+	default:
+		nextMode = m_unk0x2ae0;
+		result = FALSE;
+		break;
+	}
+
+	m_soundGroupBinding->FUN_0046e970(sound & 0xffff);
+	m_unk0x2ae4 = nextMode;
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00474330
@@ -587,6 +742,54 @@ void CarBuildScreen::VTable0x44(ObscureVantage0x58* p_source)
 void CarBuildScreen::FUN_00474940()
 {
 	STUB(0x00474940);
+
+	CopperCrest0x40::Helper0x44* helper = m_cursorHelper;
+	if (!helper || !helper->m_isCursorVisible) {
+		return;
+	}
+
+	Rect rect;
+	m_unk0x1e30.FUN_00465b60(m_unk0x2308.GetUnk0x58(), &rect);
+	m_unk0x37e0.VTable0x10(&rect);
+	m_unk0x1e30.FUN_00465b60(m_unk0x2308.GetUnk0x1a4(), &rect);
+	m_unk0x35c4.VTable0x10(&rect);
+
+	LegoS32 x = helper->m_cursorX + helper->m_originX;
+	LegoS32 y = helper->m_cursorY + helper->m_originY;
+
+	if (m_unk0x1e30.FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
+		if (m_unk0x1e30.FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
+			if (m_unk0x2308.GetUnk0x294() != 1) {
+				m_unk0x374 = NULL;
+				m_unk0x37e0.VTable0x50(6);
+				m_unk0x35c4.VTable0x4c(6);
+				m_unk0x2308.FUN_00479310();
+			}
+			return;
+		}
+
+		if (m_unk0x1e30.FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
+			if (m_unk0x2308.GetUnk0x294() != 2) {
+				m_unk0x374 = NULL;
+				m_unk0x35c4.VTable0x50(6);
+				m_unk0x37e0.VTable0x4c(6);
+				m_unk0x2308.FUN_00479300();
+			}
+			return;
+		}
+	}
+
+	if ((m_unk0x35c4.GetStateFlags() & ObscureIcon0x1a8::c_flagBit1) ||
+		(m_unk0x37e0.GetStateFlags() & ObscureIcon0x1a8::c_flagBit1)) {
+		m_unk0x35c4.VTable0x50(7);
+		m_unk0x37e0.VTable0x50(7);
+		m_unk0x374 = NULL;
+		ImaginaryShape0x2b20::VTable0x78(0);
+		m_unk0x374 = m_unk0xd8.FUN_00471f90();
+		m_unk0x358 = m_unk0x374;
+	}
+
+	m_unk0x2308.FUN_00479320();
 }
 
 // FUNCTION: LEGORACERS 0x00474b10

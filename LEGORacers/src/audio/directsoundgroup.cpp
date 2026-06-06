@@ -219,7 +219,7 @@ void DirectSoundGroup::DestroySoundInstance(SoundInstance* p_sound)
 // FUNCTION: LEGORACERS 0x0041b300
 void DirectSoundGroup::PlaySpatialSound(
 	LegoU32 p_index,
-	SoundNode* p_node,
+	SoundVector* p_position,
 	LegoFloat p_minDistance,
 	LegoFloat p_maxDistance,
 	LegoFloat p_volume,
@@ -232,7 +232,7 @@ void DirectSoundGroup::PlaySpatialSound(
 		LegoFloat minDistSq = p_minDistance * p_minDistance;
 		LegoFloat maxDistSq = p_maxDistance * p_maxDistance;
 		sound->GetSoundBuffer()->m_stopWhenPaused = TRUE;
-		sound->m_position = p_node->m_position;
+		sound->m_position = *p_position;
 		sound->m_minDistanceSquared = minDistSq;
 		sound->m_maxDistanceSquared = maxDistSq;
 		sound->SetVolume(p_volume);

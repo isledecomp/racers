@@ -69,7 +69,7 @@ SoundInstance* NullSoundGroup::CreateSoundInstance(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0041c330
-void NullSoundGroup::PlaySpatialSound(LegoU32, SoundNode*, LegoFloat, LegoFloat, LegoFloat, LegoFloat)
+void NullSoundGroup::PlaySpatialSound(LegoU32, SoundVector*, LegoFloat, LegoFloat, LegoFloat, LegoFloat)
 {
 }
 

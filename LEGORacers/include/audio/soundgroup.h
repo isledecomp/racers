@@ -8,7 +8,7 @@
 class SoundManager;
 class SoundInstance;
 class StreamingSoundInstance;
-struct SoundNode;
+struct SoundVector;
 
 // SIZE 0x10
 class SoundGroup : public GolListLink {
@@ -21,7 +21,7 @@ public:
 	virtual LegoU32 GetSoundCount() = 0;           // vtable+0x0c
 	virtual void PlaySpatialSound(
 		LegoU32 p_index,
-		SoundNode* p_node,
+		SoundVector* p_position,
 		LegoFloat p_minDistance,
 		LegoFloat p_maxDistance,
 		LegoFloat p_volume,

@@ -247,9 +247,10 @@ void GolCameraBase::FUN_1001c450(GolViewFrustum* p_view)
 }
 
 // STUB: GOLDP 0x1001c900
-void GolCameraBase::VTable0x24(undefined4, undefined4, undefined4)
+LegoBool32 GolCameraBase::VTable0x24(GolVec3*, LegoFloat, GolVec4*)
 {
 	STUB(0x1001c900);
+	return FALSE;
 }
 
 // FUNCTION: GOLDP 0x1001cb30

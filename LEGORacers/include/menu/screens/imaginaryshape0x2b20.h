@@ -16,6 +16,7 @@
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
 class SoundGroupBinding;
+class GolWorldEntity;
 
 // VTABLE: LEGORACERS 0x004b2cf8
 // SIZE 0x2b20
@@ -67,6 +68,8 @@ public:
 		void FUN_00479300();
 		void FUN_00479310();
 		void FUN_00479320();
+		GolWorldEntity* GetUnk0x58() { return reinterpret_cast<GolWorldEntity*>(&m_unk0x1c[0x58 - 0x1c]); }
+		GolWorldEntity* GetUnk0x1a4() { return reinterpret_cast<GolWorldEntity*>(&m_unk0x1c[0x1a4 - 0x1c]); }
 		LegoS32 GetUnk0x294() const { return m_unk0x294; }
 		LegoS8 GetUnk0x298() const { return m_unk0x298; }
 

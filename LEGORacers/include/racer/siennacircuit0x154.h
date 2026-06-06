@@ -44,6 +44,7 @@ public:
 	void FUN_004853f0();
 	void FUN_00485440(LegoS32 p_unk0x04);
 	void FUN_004856c0(LegoS32 p_unk0x04, LegoS32 p_unk0x08);
+	LegoS32 GetUnk0xd4(LegoS32 p_index) const { return m_unk0xd4[p_index]; }
 
 	// SYNTHETIC: LEGORACERS 0x00485250
 	// SiennaCircuit0x154::`scalar deleting destructor'

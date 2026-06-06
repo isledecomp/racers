@@ -58,6 +58,7 @@ public:
 	void VTable0x50(undefined4) override;             // vtable+0x50
 	virtual void VTable0x5c(ObscureVantage0x58*) = 0; // vtable+0x5c
 
+	void FUN_0046d920(ObscureVantage0x58* p_child);
 	void FUN_0046d9c0(ObscureVantage0x58* p_unk0x04);
 	void FUN_0046da00(ObscureVantage0x58* p_child);
 	ObscureVantage0x58* FUN_0046da40(LegoS32 p_index);

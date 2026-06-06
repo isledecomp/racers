@@ -40,6 +40,8 @@ public:
 	virtual undefined4 VTable0x74(undefined4) = 0;                                        // vtable+0x74
 	virtual void VTable0x78() = 0;                                                        // vtable+0x78
 	virtual void VTable0x7c() = 0;                                                        // vtable+0x7c
+	ObscureGlyph0x21c& GetUnk0x1ac() { return m_unk0x1ac; }
+	ObscureGlyph0x21c& GetUnk0x3c8() { return m_unk0x3c8; }
 	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
 
 	// SYNTHETIC: LEGORACERS 0x00466fd0

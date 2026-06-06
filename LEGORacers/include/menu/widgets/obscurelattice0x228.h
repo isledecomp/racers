@@ -29,6 +29,7 @@ public:
 	void VTable0x58(undefined4) override;                                                     // vtable+0x58
 
 	LegoBool32 FUN_004665f0(CreateParams0xa0* p_createParams, CeruleanEmperor0x4c::Entry0x150* p_styleEntry);
+	LegoU32 GetUnk0x224() const { return m_unk0x224; }
 
 	// SYNTHETIC: LEGORACERS 0x00466560
 	// ObscureLattice0x228::`scalar deleting destructor'

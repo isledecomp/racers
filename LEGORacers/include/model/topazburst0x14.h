@@ -26,6 +26,7 @@ public:
 		void FUN_004513d0(SapphireReef0x2030* p_unk0x04);
 		void SetIndex(LegoS32 p_index) { m_index = p_index; }
 		LegoS32 GetUnk0x08() const { return m_unk0x08; }
+		LegoS32 GetIndex() const { return m_index; }
 		void Load(
 			const LegoChar* p_filename,
 			LegoPieceLibrary* p_pieceLibrary,
@@ -61,6 +62,7 @@ public:
 	Entry* FindEntry(LegoS32 p_index);
 	LegoS32 FindEntryIndex(LegoS32 p_index);
 	Entry* GetEntries() const { return m_entries; }
+	Entry* GetUnk0x10() const { return m_unk0x10; }
 
 private:
 	VerdantTide0x38* m_verdantTide;   // 0x00

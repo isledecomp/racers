@@ -36,19 +36,29 @@ public:
 		LegoBool32 VTable0x08() override;           // vtable+0x08
 		LegoBool32 VTable0x0c() override;           // vtable+0x0c
 		LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
+		void FUN_00477e40(LegoS32 p_unk0x04);
 		LegoBool32 FUN_00477fc0(LegoFloat p_delta);
+		LegoBool32 FUN_00478080(LegoS32 p_delta, LegoBool32 p_unk0x08);
 		void FUN_00478120();
 		LegoBool32 FUN_00478180(LegoFloat p_delta);
+		LegoBool32 FUN_004782f0(LegoS32 p_delta, LegoBool32 p_unk0x08);
 		void FUN_004783d0();
+		LegoBool32 FUN_004784d0(LegoBool32 p_unk0x04);
 		void FUN_00478560();
 		LegoBool32 FUN_00478730();
+		LegoBool32 FUN_004787e0(LegoS32* p_unk0x04, LegoS32* p_unk0x08, LegoS32* p_unk0x0c);
+		void FUN_00479300();
+		void FUN_00479310();
+		void FUN_00479320();
+		LegoS32 GetUnk0x294() const { return m_unk0x294; }
 		LegoS8 GetUnk0x298() const { return m_unk0x298; }
 
 		// SYNTHETIC: LEGORACERS 0x004779b0
 		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'
 
 	private:
-		undefined m_unk0x1c[0x298 - 0x1c];   // 0x1c
+		undefined m_unk0x1c[0x294 - 0x1c];   // 0x1c
+		LegoS32 m_unk0x294;                  // 0x294
 		LegoS8 m_unk0x298;                   // 0x298
 		undefined m_unk0x299[0x2d0 - 0x299]; // 0x299
 	};

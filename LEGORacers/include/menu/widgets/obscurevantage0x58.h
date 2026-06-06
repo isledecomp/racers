@@ -63,6 +63,7 @@ public:
 	undefined4 FUN_00472c40(LegoS32, LegoS32);
 	ObscureVantage0x58* FindRoot();
 	ObscureVantage0x58* FUN_00472e60();
+	void FUN_00472bc0();
 	ObscureVantage0x58* FUN_00472ef0(LegoS32 p_unk0x04);
 	ObscureVantage0x58* FUN_00472f10(undefined2);
 	ObscureVantage0x58* GetParent() { return m_parent; }
@@ -117,7 +118,6 @@ protected:
 
 protected:
 	LegoBool32 FUN_00472a60(CreateParams0x38* p_createParams);
-	void FUN_00472bc0();
 	void FUN_00472c10();
 };
 

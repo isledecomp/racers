@@ -35,9 +35,17 @@ protected:
 	enum {
 		c_carBuildRegionSource = 0x50000000,
 		c_carBuildDragThreshold = 5,
-		c_carBuildDragDelay = 100
+		c_carBuildDragDelay = 100,
+		c_carBuildClickDelay = 500,
+		c_carBuildKeyboardPageUp = InputDevice::c_sourceKeyboard | 0xc9,
+		c_carBuildKeyboardPageDown = InputDevice::c_sourceKeyboard | 0xd1,
+		c_carBuildKeyboardInsert = InputDevice::c_sourceKeyboard | 0xd2,
+		c_carBuildKeyboardDelete = InputDevice::c_sourceKeyboard | 0xd3,
+		c_carBuildMouseButton0 = InputDevice::c_sourceMouse,
+		c_carBuildMouseButton1 = InputDevice::c_sourceMouse | 1
 	};
 
+	LegoBool32 FUN_00473a50(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY);
 	LegoBool32 FUN_00473ee0(
 		ObscureVantage0x58* p_source,

@@ -4,6 +4,8 @@
 #include "menu/menuscreenid.h"
 #include "menu/menutoolcontext0x4bc8.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(GarageScreen, 0x6410)
 
 // FUNCTION: LEGORACERS 0x0047e2b0
@@ -182,16 +184,64 @@ void GarageScreen::FUN_0047e9f0(MenuToolContext0x4bc8* p_context)
 	m_unk0x2704[0] = modelState.FUN_00442e80(0xffff2);
 }
 
-// STUB: LEGORACERS 0x0047ea50
+// FUNCTION: LEGORACERS 0x0047ea50
 void GarageScreen::FUN_0047ea50()
 {
-	STUB(0x0047ea50);
+	PeridotTraceBase0x24* trace = NULL;
+	RacerPickModelState0x28* modelState = &m_unk0x22dc[0];
+	PeridotTraceBase0x24::Record* record = modelState->FUN_004430b0();
+	PeridotTraceBase0x24::Record* nextRecord = modelState->FUN_00442fe0();
+
+	switch (record->m_unk0x08) {
+	case 1:
+		trace = &m_context->m_unk0x258.GetUnk0x108();
+		break;
+	case 2:
+		trace = &m_context->m_unk0x258.GetUnk0xa58()[record->m_unk0x0c];
+		break;
+	}
+
+	trace->FUN_0042b920(record);
+	m_unk0x364 = TRUE;
+	m_unk0x360 = c_menuGarage;
+	modelState->FUN_00442ef0(modelState->GetUnk0x24());
+
+	if (nextRecord != NULL && nextRecord != record) {
+		modelState->FUN_004430e0(nextRecord);
+	}
+
+	FUN_0047e9f0(m_context);
+	FUN_0047e740();
+
+	if (m_unk0x2704[0]) {
+		m_unk0x4998.VTable0x4c(5);
+	}
 }
 
-// STUB: LEGORACERS 0x0047eb20
+// FUNCTION: LEGORACERS 0x0047eb20
 void GarageScreen::FUN_0047eb20()
 {
-	STUB(0x0047eb20);
+	LegoRacers::Context* context = m_context->m_context;
+	GolName name;
+	::strcpy(name, "test");
+
+	RaceNameEntry* raceName = static_cast<RaceNameEntry*>(m_context->m_raceNames.GetName(name));
+
+	context->m_unk0x2d[0] = '\0';
+	context->m_unk0x24 = TRUE;
+	::memcpy(context->m_raceSlots[0].m_raceName, raceName->GetUnk0x0cName(), sizeof(GolName));
+	::memcpy(context->m_raceSlots[0].m_unk0x08, raceName->GetName(), sizeof(GolName));
+	context->m_raceSlots[0].m_unk0x00 = TRUE;
+	context->m_raceSlots[0].m_unk0x04 = raceName->GetUnk0x2c();
+	context->m_unk0x100 = TRUE;
+	context->m_unk0x1e |= 2;
+
+	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(1);
+	undefined4 flags = m_context->m_unk0x4b40.GetUnk0x78();
+	flags &= 0xfffffffd;
+	m_context->m_unk0x4b40.SetUnk0x78(flags);
+	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(m_unk0x22dc[0].FUN_004430b0());
+	m_unk0x360 = 0x41;
 }
 
 // FUNCTION: LEGORACERS 0x0047ec00

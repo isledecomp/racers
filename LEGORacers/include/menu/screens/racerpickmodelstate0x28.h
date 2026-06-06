@@ -20,6 +20,7 @@ public:
 	PeridotTraceBase0x24::Record* FUN_00442fe0();
 	PeridotTraceBase0x24::Record* FUN_00443050();
 	PeridotTraceBase0x24::Record* FUN_004430b0();
+	PeridotTraceBase0x24::Record* FUN_004430e0(PeridotTraceBase0x24::Record* p_record);
 	undefined4 GetUnk0x24() const { return m_unk0x24; }
 
 private:

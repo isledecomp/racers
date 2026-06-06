@@ -30,23 +30,14 @@
 // LIBRARY: GOLDP 0x1004b513
 // ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
+// LIBRARY: GOLDP 0x1004b571
+// __onexit
+
+// LIBRARY: GOLDP 0x1004b5ef
+// _atexit
+
 // LIBRARY: GOLDP 0x1004b630
 // _qsort
-
-// LIBRARY: GOLDP 0x1004ba3b
-// _isalpha
-
-// LIBRARY: GOLDP 0x1004ba70
-// _strrchr
-
-// LIBRARY: GOLDP 0x1004ba97
-// _toupper
-
-// LIBRARY: GOLDP 0x1004bbd2
-// __tell
-
-// LIBRARY: GOLDP 0x1004bbe3
-// __lseek
 
 // LIBRARY: GOLDP 0x1004b7fe
 // __purecall
@@ -60,8 +51,23 @@
 // LIBRARY: GOLDP 0x1004b930
 // _strncmp
 
+// LIBRARY: GOLDP 0x1004ba3b
+// _isalpha
+
+// LIBRARY: GOLDP 0x1004ba70
+// _strrchr
+
+// LIBRARY: GOLDP 0x1004ba97
+// _toupper
+
 // LIBRARY: GOLDP 0x1004bb06
 // __toupper_lk
+
+// LIBRARY: GOLDP 0x1004bbd2
+// __tell
+
+// LIBRARY: GOLDP 0x1004bbe3
+// __lseek
 
 // LIBRARY: GOLDP 0x1004bc48
 // __lseek_lk
@@ -155,8 +161,17 @@
 // LIBRARY: GOLDP 0x1004e322
 // __cexit
 
-// LIBRARY: GOLDP 0x1004f8fc
-// __ioinit
+// LIBRARY: GOLDP 0x1004e3d6
+// __lockexit
+
+// LIBRARY: GOLDP 0x1004e3df
+// __unlockexit
+
+// LIBRARY: GOLDP 0x1004e402
+// _realloc
+
+// LIBRARY: GOLDP 0x1004e72a
+//  __msize
 
 // LIBRARY: GOLDP 0x1004f24c
 // __isctype
@@ -193,6 +208,9 @@
 
 // LIBRARY: GOLDP 0x1004f8da
 // __unlock_fhandle
+
+// LIBRARY: GOLDP 0x1004f8fc
+// __ioinit
 
 // LIBRARY: GOLDP 0x1004fab8
 // __ioterm
@@ -297,6 +315,9 @@
 // GLOBAL: GOLDP 0x1005f440
 // __NLG_Destination
 
+// GLOBAL: GOLDP 0x1005f458
+// __FPinit
+
 // GLOBAL: GOLDP 0x1005f600
 // ___tlsindex
 
@@ -323,6 +344,9 @@
 
 // GLOBAL: GOLDP 0x1005fb58
 // ___badioinfo
+
+// GLOBAL: GOLDP 0x10061cc0
+//  __iob
 
 // GLOBAL: GOLDP 0x10065f00
 // __aenvptr
@@ -369,8 +393,17 @@
 // GLOBAL: GOLDP 0x10066108
 // ?_pnhHeap@@3P6AHI@ZA
 
+// GLOBAL: GOLDP 0x100664a8
+// ___piob
+
+// GLOBAL: GOLDP 0x100674c0
+// __nstream
+
 // GLOBAL: GOLDP 0x10067500
 // ___pioinfo
+
+// GLOBAL: GOLDP 0x10067600
+// __nhandle
 
 // GLOBAL: GOLDP 0x10067604
 // ___setlc_active
@@ -378,14 +411,17 @@
 // GLOBAL: GOLDP 0x10067608
 // ___unguarded_readlc_active
 
-// GLOBAL: GOLDP 0x10067600
-// __nhandle
-
 // GLOBAL: GOLDP 0x1006760c
 // ___env_initialized
 
 // GLOBAL: GOLDP 0x10067610
 // ___mbctype_initialized
+
+// GLOBAL: GOLDP 0x10067614
+// ___onexitend
+
+// GLOBAL: GOLDP 0x10067618
+// ___onexitbegin
 
 // GLOBAL: GOLDP 0x1006761c
 // __acmdln

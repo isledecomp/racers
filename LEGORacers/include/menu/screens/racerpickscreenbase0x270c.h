@@ -39,6 +39,7 @@ public:
 protected:
 	void FUN_00485bb0();
 	void FUN_00485c80(MenuToolContext0x4bc8* p_context, LegoU32 p_mask);
+	void FUN_00485da0();
 	void FUN_004861b0();
 	void FUN_00486250(LegoS32 p_index);
 	void FUN_00486400(LegoS32 p_index);
@@ -49,6 +50,7 @@ protected:
 	void FUN_004865c0();
 	void FUN_004866e0(LegoS32 p_index);
 	void FUN_00486810(LegoS32 p_index);
+	void FUN_00486890(LegoS32 p_index);
 
 	CmbModelPart0x34 m_modelParts;                    // 0x0368
 	AwardCinematicScreen::FieldAt0x658 m_unk0x39c[4]; // 0x039c

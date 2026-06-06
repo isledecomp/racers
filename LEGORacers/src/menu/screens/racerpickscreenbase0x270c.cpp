@@ -1,6 +1,7 @@
 #include "menu/screens/racerpickscreenbase0x270c.h"
 
 #include "core/gol.h"
+#include "golerror.h"
 #include "golhashtable.h"
 #include "golscenenode.h"
 #include "golstream.h"
@@ -22,6 +23,9 @@ extern LegoU32 g_unk0x004c6ee4;
 
 // GLOBAL: LEGORACERS 0x004c21bc
 LegoU16 g_unk0x004c21bc[8] = {116, 117, 119, 120, 121, 122, 123, 0};
+
+// GLOBAL: LEGORACERS 0x004c21cc
+LegoU16 g_unk0x004c21cc[3] = {124, 126, 127};
 
 // GLOBAL: LEGORACERS 0x004b3c74
 LegoFloat g_racerPickMaxFloat = FLT_MAX;
@@ -62,10 +66,28 @@ void RacerPickScreenBase0x270c::Reset()
 	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x00485bb0
+// FUNCTION: LEGORACERS 0x00485bb0
 void RacerPickScreenBase0x270c::FUN_00485bb0()
 {
-	STUB(0x00485bb0);
+	FUN_00485da0();
+
+	m_unk0x73c[0] = m_context->m_unk0x21f4.GetUnk0x84();
+
+	for (LegoS32 i = 0; i < m_unk0x77c; i++) {
+		if (m_unk0x73c[i] == NULL) {
+			m_unk0x73c[i] = m_golExport->VTable0x14();
+			if (m_unk0x73c[i] == NULL) {
+				GOL_FATALERROR(c_golErrorOutOfMemory);
+			}
+
+			m_context->m_unk0x21f4.FUN_00499eb0(m_unk0x73c[i]);
+		}
+
+		m_unk0x4fc[i].VTable0x50(m_unk0x73c[i], g_racerPickMaxFloat);
+		m_unk0x4fc[i].SetPrimaryMaterialTable(m_context->m_unk0x4224.GetMaterialTable());
+	}
+
+	m_modelParts.VTable0x14("rsanim", m_context->m_context->m_unk0x18);
 }
 
 // STUB: LEGORACERS 0x00485c80
@@ -103,6 +125,28 @@ void RacerPickScreenBase0x270c::FUN_00485c80(MenuToolContext0x4bc8* p_context, L
 				break;
 			}
 		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00485da0
+void RacerPickScreenBase0x270c::FUN_00485da0()
+{
+	undefined4 modelParams[5];
+
+	m_context->m_unk0x4b40.FUN_0049dc90(modelParams);
+
+	for (LegoS32 i = 0; i < m_unk0x77c; i++) {
+		m_unk0x4ec[i] = m_golExport->VTable0x14();
+		if (m_unk0x4ec[i] == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_unk0x4dc[i] = m_golExport->VTable0x18();
+		if (m_unk0x4dc[i] == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+
+		m_unk0x4ec[i]->VTable0x18(m_renderer, 2, modelParams[0], modelParams[1], modelParams[2], modelParams[3]);
 	}
 }
 
@@ -437,6 +481,29 @@ void RacerPickScreenBase0x270c::FUN_00486810(LegoS32 p_index)
 
 	entity->FUN_0040dad0(static_cast<undefined2>(partIndex));
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
+}
+
+// FUNCTION: LEGORACERS 0x00486890
+void RacerPickScreenBase0x270c::FUN_00486890(LegoS32 p_index)
+{
+	GolString string;
+	LegoChar modelName[8];
+
+	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
+	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+	LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+	LegoS32 textIdIndex = static_cast<LegoS32>(random) % 3;
+	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c21cc[textIdIndex]);
+	string.CopyToBuf8(modelName);
+
+	LegoS32 partIndex = m_modelParts.GetPartIndex(modelName);
+	OpalHaven0xf4* entity = &m_unk0x232c[modelIndex];
+	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
+
+	LegoU32 flags = entity->GetFlags();
+	flags &= ~0x40000;
+	flags |= 0x10000;
+	entity->SetFlags(flags);
 }
 
 // FUNCTION: LEGORACERS 0x004869b0

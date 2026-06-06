@@ -44,6 +44,8 @@ public:
 	LegoBool32 FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);
 	void FUN_00465b60(GolWorldEntity* p_entity, Rect* p_rect);
+	GolWorldDatabase* GetUnk0x5c() const { return m_unk0x5c; }
+	GolWorldDatabase** GetUnk0x5cAddress() { return &m_unk0x5c; }
 	GolWorldDatabase* GetUnk0x60() const { return m_unk0x60; }
 
 	// SYNTHETIC: LEGORACERS 0x00465730

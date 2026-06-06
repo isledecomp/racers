@@ -87,6 +87,7 @@ public:
 	void FUN_0049ad00();
 	void FUN_00499ee0();
 	void FUN_00499f00();
+	void FUN_00499eb0(GolModelBase* p_model);
 	void Destroy();
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
 	void FUN_0049a160(
@@ -113,6 +114,7 @@ public:
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
 	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
+	GolModelBase* GetUnk0x84() const { return m_unk0x84; }
 	LegoS32 GetUnk0xd4() const { return m_unk0xd4; }
 	OpalHaven0xf4* GetUnk0x0c() { return reinterpret_cast<OpalHaven0xf4*>(&m_unk0x0c); }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
@@ -120,7 +122,6 @@ public:
 
 private:
 	void Reset();
-	void FUN_00499eb0(GolModelBase* p_model);
 	void FUN_00499f20();
 	void FUN_00499f80();
 	void FUN_0049b720();
@@ -134,7 +135,9 @@ private:
 	LegoBool32 m_unk0x30[7];                        // 0x0030
 	undefined m_unk0x4c[0x0078 - 0x004c];           // 0x004c
 	GolBillboard::Field0x2c* m_materialTable;       // 0x0078
-	undefined m_unk0x7c[0x009c - 0x007c];           // 0x007c
+	undefined m_unk0x7c[0x0084 - 0x007c];           // 0x007c
+	GolModelBase* m_unk0x84;                        // 0x0084
+	undefined m_unk0x88[0x009c - 0x0088];           // 0x0088
 	VerdantTide0x38* m_verdantTide;                 // 0x009c
 	LegoPieceLibrary* m_pieceLibrary;               // 0x00a0
 	Field0xa4 m_unk0xa4;                            // 0x00a4

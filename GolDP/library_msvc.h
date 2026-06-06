@@ -312,6 +312,18 @@
 // GLOBAL: GOLDP 0x10059990
 // ___lookuptable
 
+// GLOBAL: GOLDP 0x1005c000
+// ___xc_a
+
+// GLOBAL: GOLDP 0x1005c038
+// ___xc_z
+
+// GLOBAL: GOLDP 0x1005c03c
+// ___xi_a
+
+// GLOBAL: GOLDP 0x1005c050
+// ___xi_z
+
 // GLOBAL: GOLDP 0x1005f440
 // __NLG_Destination
 

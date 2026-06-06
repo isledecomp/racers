@@ -1,6 +1,8 @@
 #include "menu/screens/imaginaryshape0x2b20.h"
 
+#include "audio/soundgroupbinding.h"
 #include "decomp.h"
+#include "golstream.h"
 #include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcontext0x4bc8.h"
 
@@ -39,10 +41,36 @@ void ImaginaryShape0x2b20::Reset()
 	ObsidianMantle0x3b4::Reset();
 }
 
-// STUB: LEGORACERS 0x00477050
+// FUNCTION: LEGORACERS 0x00477050
 void ImaginaryShape0x2b20::FUN_00477050()
 {
-	STUB(0x00477050);
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\GARAGE");
+	}
+
+	FUN_0046c510(&m_unk0x1e30, 0, 3);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+
+	FieldAt0x2308::CreateParams0x30 params;
+	::memset(&params, 0, sizeof(params));
+	params.m_golExport = m_golExport;
+	params.m_renderer = m_renderer;
+	params.m_unk0x08 = &m_unk0x1e30;
+	params.m_soundGroupBinding = m_soundGroupBinding;
+	params.m_context = m_context;
+	params.m_screen = this;
+	params.m_unk0x1c.m_x = 0.0f;
+	params.m_unk0x1c.m_y = 0.0f;
+	params.m_unk0x1c.m_z = 1.0f;
+	params.m_unk0x28 = 0.001f;
+	params.m_unk0x2c = m_context->m_context->m_unk0x18;
+	m_unk0x2308.FUN_00477ae0(&params);
+
+	m_unk0x1e30.FUN_00465b40(&m_unk0x2308);
+	m_unk0x2308.FUN_00478180(0.0f);
 }
 
 // FUNCTION: LEGORACERS 0x00477130
@@ -99,19 +127,18 @@ LegoBool32 ImaginaryShape0x2b20::VTable0x8c(MenuToolContext0x4bc8* p_unk0x04, Me
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00477290
+// FUNCTION: LEGORACERS 0x00477290
 void ImaginaryShape0x2b20::FUN_00477290()
 {
-	STUB(0x00477290);
-
-	m_partCategoryUnlockFlags = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1e0();
+	SaveSystem* saveSystem = &m_context->m_unk0x258;
+	m_partCategoryUnlockFlags = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
 
 	LegoS32 i;
 	for (i = 0; i < c_alwaysAvailablePartCategoryCount; i++) {
 		m_partCategoryAvailable[i] = TRUE;
 	}
 
-	LegoU8 mask = 1;
+	LegoS32 mask = 1;
 	for (i = 0; i < c_saveUnlockedPartCategoryCount; i++) {
 		if (m_partCategoryUnlockFlags & mask) {
 			m_partCategoryAvailable[i + c_alwaysAvailablePartCategoryCount] = TRUE;
@@ -149,10 +176,41 @@ void ImaginaryShape0x2b20::FUN_004773a0()
 }
 
 // STUB: LEGORACERS 0x004773e0
-LegoBool32 ImaginaryShape0x2b20::FUN_004773e0(undefined4, undefined4, undefined4, undefined4)
+LegoBool32 ImaginaryShape0x2b20::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10)
 {
-	STUB(0x004773e0);
-	return FALSE;
+	LegoU32 fallbackSound = p_sound ? 8 : 0;
+
+	if (m_unk0x2ae0 == 6) {
+		return FALSE;
+	}
+
+	if (p_deltaX && p_deltaY && !p_unk0x10) {
+		if (m_unk0x2308.FUN_004785b0(p_deltaX) && m_unk0x2308.FUN_00478670(p_deltaY)) {
+			m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
+			return TRUE;
+		}
+
+		m_unk0x2308.FUN_004785b0(-p_deltaX);
+		m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
+		return FALSE;
+	}
+
+	LegoBool32 result = m_unk0x2308.FUN_004785b0(p_deltaX);
+	result |= m_unk0x2308.FUN_00478670(p_deltaY);
+	if (result) {
+		m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
+		return result;
+	}
+
+	m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00477600
+void ImaginaryShape0x2b20::VTable0xc4()
+{
+	FUN_0047fdc0(&m_unk0x25d8, 0x99, 0x42, 0x72);
+	FUN_0046c730(&m_unk0x25d8, 0xba);
 }
 
 // FUNCTION: LEGORACERS 0x00477630
@@ -163,22 +221,93 @@ void ImaginaryShape0x2b20::VTable0x38(ObscureVantage0x58* p_unk0x04)
 	}
 }
 
-// STUB: LEGORACERS 0x00477650
-void ImaginaryShape0x2b20::VTable0x44(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x00477650
+void ImaginaryShape0x2b20::VTable0x44(ObscureVantage0x58* p_source)
 {
-	STUB(0x00477650);
+	if (m_unk0x2ae0 == 6) {
+		return;
+	}
+
+	if (p_source == &m_unk0xfec) {
+		m_unk0x2308.FUN_00477e40(m_unk0xe98.GetUnk0xd4(m_unk0xe98.GetUnk0x6c()));
+		return;
+	}
+
+	if (p_source == &m_unk0x4a4) {
+		ObscureVantage0x58* child = m_unk0x410.GetUnk0x78();
+		LegoU32 i;
+		for (i = 0; i < c_partCategoryCount; i++) {
+			if (child == &m_unk0x19e0[i]) {
+				SiennaCircuit0x154* circuit = &m_unk0xe98;
+				circuit->FUN_00485440(m_context->m_unk0x21a4.GetEntries()[i].GetUnk0x08());
+				m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
+				return;
+			}
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x00477700
-void ImaginaryShape0x2b20::VTable0x10(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x00477700
+void ImaginaryShape0x2b20::VTable0x10(ObscureVantage0x58* p_source)
 {
-	STUB(0x00477700);
+	if (p_source == &m_unk0x1e30) {
+		switch (m_unk0x2adc) {
+		case 4: {
+			SiennaCircuit0x154* circuit = &m_unk0xe98;
+			circuit->FUN_004853f0();
+			circuit->VTable0x50(circuit->FUN_0046c9a0(m_unk0xe98.GetUnk0x6c()));
+			m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
+		}
+		case 5:
+			m_unk0x2ae4 = 1;
+			break;
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x00477770
+// FUNCTION: LEGORACERS 0x00477770
 void ImaginaryShape0x2b20::FUN_00477770()
 {
-	STUB(0x00477770);
+	switch (m_unk0x2ae0) {
+	case 1:
+		VTable0xa8();
+		break;
+	case 2:
+		VTable0xb0();
+		break;
+	case 3:
+		VTable0xb8();
+		break;
+	case 6:
+		VTable0xc0();
+		break;
+	}
+
+	switch (m_unk0x2ae4) {
+	case 1:
+		VTable0xa4();
+		if (m_unk0xd8.GetFlags() & 8) {
+			m_unk0xd8.FUN_00472c10();
+		}
+		break;
+	case 2:
+		VTable0xac();
+		break;
+	case 3:
+		VTable0xb4();
+		break;
+	case 5:
+		m_unk0x2ae4 = 6;
+		m_unk0x2adc = 5;
+		m_unk0x2308.FUN_004792d0();
+		break;
+	case 6:
+		VTable0xbc();
+		break;
+	}
+
+	m_unk0x35c = NULL;
+	m_unk0x2ae0 = m_unk0x2ae4;
 }
 
 // FUNCTION: LEGORACERS 0x00477880

@@ -19,6 +19,8 @@ public:
 	// ObscureAnchor0x7c::`scalar deleting destructor'
 
 protected:
+	void FUN_0046f2c0(Rect* p_rect);
+
 	Rect m_unk0x5c; // 0x5c
 	Rect m_unk0x6c; // 0x6c
 };

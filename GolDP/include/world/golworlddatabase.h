@@ -161,7 +161,9 @@ public:
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
 	GolSkinnedEntity* GetUnk0xa0() const { return m_unk0xa0; }
+	GolRenderDevice::MaterialColor* GetUnk0xac() { return m_unk0xac; }
 	const GolRenderDevice::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
+	GolRenderDevice::Light* GetUnk0xb0() { return m_unk0xb0; }
 	const GolRenderDevice::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);

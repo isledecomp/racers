@@ -92,6 +92,7 @@ public:
 	ObscureIcon0x1a8* GetFirstChild() { return m_firstChild; }
 	LegoU8 GetStateFlags() const { return m_stateFlags; }
 	undefined2 GetUnk0x168() const { return m_unk0x168; }
+	ObscureIcon0x1a8* FUN_00471f90();
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// ObscureIcon0x1a8::`scalar deleting destructor'
@@ -99,7 +100,6 @@ public:
 protected:
 	void FUN_00471d90(CreateParams0x84* p_createParams, const CreateState0x90* p_createState);
 	ObscureIcon0x1a8* FindRoot();
-	ObscureIcon0x1a8* FUN_00471f90();
 	void FUN_00471fb0(undefined4 p_flags);
 	void FUN_00472010(undefined4 p_flags);
 	void RefreshVisualState();

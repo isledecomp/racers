@@ -26,12 +26,16 @@ public:
 	// RacerPickScreenBase0x3ff4::`scalar deleting destructor'
 
 protected:
-	void FUN_004890c0(undefined4 p_param);
+	void FUN_00489050(LegoS32 p_index);
+	void FUN_004890c0(LegoS32 p_index);
+	void FUN_004891f0(LegoS32 p_index);
+	void FUN_00489250(LegoS32 p_index);
+	void FUN_00489320(LegoS32 p_index);
 
 	ObscureCarouselNavigator0x94 m_unk0x270c[2]; // 0x270c
 	MainMenuScreenFieldAt0x420 m_unk0x2834[6];   // 0x2834
 	GolString m_unk0x2b04[6];                    // 0x2b04
-	undefined m_unk0x2b4c[0x2c0c - 0x2b4c];      // 0x2b4c
+	undefined2 m_unk0x2b4c[6][0x10];             // 0x2b4c
 	ObscureBanner0x9f4 m_unk0x2c0c[2];           // 0x2c0c
 };
 

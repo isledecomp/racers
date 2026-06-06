@@ -174,3 +174,21 @@ PeridotTraceBase0x24::Record* RacerPickModelState0x28::FUN_004430b0()
 
 	return trace->FUN_0042b990(m_unk0x1c);
 }
+
+// STUB: LEGORACERS 0x004430e0
+PeridotTraceBase0x24::Record* RacerPickModelState0x28::FUN_004430e0(PeridotTraceBase0x24::Record* p_record)
+{
+	if (m_unk0x20 != 0) {
+		PeridotTraceBase0x24::Record* firstRecord = FUN_004430b0();
+		PeridotTraceBase0x24::Record* record;
+
+		while ((record = FUN_00442fe0()) != firstRecord && record != p_record) {
+		}
+
+		if (record == p_record) {
+			return record;
+		}
+	}
+
+	return NULL;
+}

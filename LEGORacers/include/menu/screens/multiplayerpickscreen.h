@@ -8,6 +8,8 @@
 #include "menu/screens/racerpickscreenbase0x270c.h"
 #include "menu/widgets/obscureanchor0x5c.h"
 
+class InputDevice;
+
 // VTABLE: LEGORACERS 0x004b3774
 // SIZE 0x2cc4
 class MultiplayerPickScreen : public RacerPickScreenBase0x270c {
@@ -26,17 +28,22 @@ public:
 	// MultiplayerPickScreen::`scalar deleting destructor'
 
 protected:
+	InputDevice* FUN_00481960(LegoU32 p_deviceType, LegoU32 p_deviceId);
+	void FUN_004819b0();
+	void FUN_00481b10(LegoS32 p_index);
+	void FUN_00481b60(LegoS32 p_index);
+	void FUN_00481bf0(LegoS32 p_index);
+
 	ObscureAnchor0x5c m_unk0x270c;             // 0x270c
 	ObscureAnchor0x5c m_unk0x2768[6];          // 0x2768
 	MainMenuScreenFieldAt0x420 m_unk0x2990;    // 0x2990
 	MainMenuScreenFieldAt0x420 m_unk0x2a08;    // 0x2a08
 	MainMenuScreenFieldAt0x420 m_unk0x2a80;    // 0x2a80
 	MainMenuScreenFieldAt0x420 m_unk0x2af8;    // 0x2af8
-	undefined4 m_unk0x2b70;                    // 0x2b70
-	undefined4 m_unk0x2b74;                    // 0x2b74
-	undefined4 m_unk0x2b78;                    // 0x2b78
+	InputDevice* m_unk0x2b70[2];               // 0x2b70
+	undefined2* m_unk0x2b78;                   // 0x2b78
 	GolString m_unk0x2b7c[2];                  // 0x2b7c
-	undefined m_unk0x2b94[0x2bd4 - 0x2b94];    // 0x2b94
+	undefined2 m_unk0x2b94[2][16];             // 0x2b94
 	MainMenuScreenFieldAt0x420 m_unk0x2bd4[2]; // 0x2bd4
 };
 

@@ -8,7 +8,7 @@
 
 class SoundInstance;
 class SoundManager;
-struct SoundNode;
+struct SoundVector;
 class NullSoundInstance;
 class NullStreamingSoundInstance;
 class StreamingSoundInstance;
@@ -25,7 +25,7 @@ public:
 	LegoU32 GetSoundCount() override;           // vtable+0x0c
 	void PlaySpatialSound(
 		LegoU32 p_index,
-		SoundNode* p_node,
+		SoundVector* p_position,
 		LegoFloat p_minDistance,
 		LegoFloat p_maxDistance,
 		LegoFloat p_volume,

@@ -4,6 +4,7 @@
 #include "camera/golcamerabase.h"
 #include "core/gol.h"
 #include "golerror.h"
+#include "golworldentity.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
 #include "world/golworlddatabase.h"
@@ -211,6 +212,28 @@ ObscureLink0x1c* ObscureSigil0xdc::FUN_00465b40(ObscureLink0x1c* p_unk0x04)
 	}
 
 	return p_unk0x04->FUN_0046b350(m_unk0x58);
+}
+
+// FUNCTION: LEGORACERS 0x00465b60
+void ObscureSigil0xdc::FUN_00465b60(GolWorldEntity* p_entity, Rect* p_rect)
+{
+	GolVec3 center;
+	p_entity->FUN_100286d0(&center);
+
+	LegoFloat radius = p_entity->FUN_10028710();
+	GolVec4 bounds;
+	if (m_unk0x64->VTable0x24(&center, radius, &bounds)) {
+		p_rect->m_top = static_cast<LegoS32>(bounds.m_y);
+		p_rect->m_left = static_cast<LegoS32>(bounds.m_x);
+		p_rect->m_right = static_cast<LegoS32>(bounds.m_z);
+		p_rect->m_bottom = static_cast<LegoS32>(bounds.m_u);
+	}
+	else {
+		p_rect->m_left = 0;
+		p_rect->m_top = 0;
+		p_rect->m_right = 0;
+		p_rect->m_bottom = 0;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00465c00

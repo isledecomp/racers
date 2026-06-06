@@ -88,6 +88,7 @@ public:
 	LegoBool GetUnk0x54() const { return m_unk0x54; }
 	void ClearFlags(LegoU8 p_flags) { m_flags &= ~p_flags; }
 	void SetFlags(LegoU8 p_flags) { m_flags |= p_flags; }
+	void FUN_00472c10();
 
 	// SYNTHETIC: LEGORACERS 0x004729d0
 	// ObscureVantage0x58::`scalar deleting destructor'
@@ -118,7 +119,6 @@ protected:
 
 protected:
 	LegoBool32 FUN_00472a60(CreateParams0x38* p_createParams);
-	void FUN_00472c10();
 };
 
 #endif // OBSCUREVANTAGE0X58_H

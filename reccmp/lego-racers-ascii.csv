@@ -371,6 +371,7 @@ address,type,x-text
 0x4c20a8,string,"Builder"
 0x4c20d0,string,"MENUDATA\\CB_SET"
 0x4c20e0,string,"cbanim"
+0x4c20f8,string,"test"
 0x4c2110,string,"champs.ccf"
 0x4c211c,string,"drivers.ddf"
 0x4c2130,string,"MENUDATA\\MAININTR"

@@ -27,6 +27,17 @@ public:
 	~CarBuildScreen() override;                                                                           // vtable+0x68
 	LegoBool32 VTable0x78(undefined4) override;                                                           // vtable+0x78
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override;                    // vtable+0x8c
+	GolString* VTable0x98(undefined4) override;                                                           // vtable+0x98
+	GolFont0xa0* VTable0x9c(undefined4) override;                                                         // vtable+0x9c
+	void VTable0xa0(undefined4, undefined4, undefined4*, undefined4) override;                            // vtable+0xa0
+	void VTable0xa4() override;                                                                           // vtable+0xa4
+	void VTable0xa8() override;                                                                           // vtable+0xa8
+	void VTable0xac() override;                                                                           // vtable+0xac
+	void VTable0xb0() override;                                                                           // vtable+0xb0
+	void VTable0xb4() override;                                                                           // vtable+0xb4
+	void VTable0xb8() override;                                                                           // vtable+0xb8
+	void VTable0xbc() override;                                                                           // vtable+0xbc
+	void VTable0xc0() override;                                                                           // vtable+0xc0
 
 	// SYNTHETIC: LEGORACERS 0x00473790
 	// CarBuildScreen::`scalar deleting destructor'
@@ -37,6 +48,21 @@ protected:
 		c_carBuildDragThreshold = 5,
 		c_carBuildDragDelay = 100,
 		c_carBuildClickDelay = 500,
+		c_carBuildKeyboardA = InputDevice::c_sourceKeyboard | 0x1e,
+		c_carBuildKeyboardS = InputDevice::c_sourceKeyboard | 0x1f,
+		c_carBuildKeyboardD = InputDevice::c_sourceKeyboard | 0x20,
+		c_carBuildKeyboardX = InputDevice::c_sourceKeyboard | 0x2d,
+		c_carBuildKeyboardNumpad7 = InputDevice::c_sourceKeyboard | 0x47,
+		c_carBuildKeyboardUp = InputDevice::c_sourceKeyboard | 0x48,
+		c_carBuildKeyboardPageUpNum = InputDevice::c_sourceKeyboard | 0x49,
+		c_carBuildKeyboardMinus = InputDevice::c_sourceKeyboard | 0x4a,
+		c_carBuildKeyboardLeft = InputDevice::c_sourceKeyboard | 0x4b,
+		c_carBuildKeyboardNumpad5 = InputDevice::c_sourceKeyboard | 0x4c,
+		c_carBuildKeyboardRight = InputDevice::c_sourceKeyboard | 0x4d,
+		c_carBuildKeyboardPlus = InputDevice::c_sourceKeyboard | 0x4e,
+		c_carBuildKeyboardEnd = InputDevice::c_sourceKeyboard | 0x4f,
+		c_carBuildKeyboardDown = InputDevice::c_sourceKeyboard | 0x50,
+		c_carBuildKeyboardPageDownNum = InputDevice::c_sourceKeyboard | 0x51,
 		c_carBuildKeyboardPageUp = InputDevice::c_sourceKeyboard | 0xc9,
 		c_carBuildKeyboardPageDown = InputDevice::c_sourceKeyboard | 0xd1,
 		c_carBuildKeyboardInsert = InputDevice::c_sourceKeyboard | 0xd2,

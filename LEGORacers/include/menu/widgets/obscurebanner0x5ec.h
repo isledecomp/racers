@@ -43,6 +43,8 @@ public:
 	ObscureGlyph0x21c& GetUnk0x1ac() { return m_unk0x1ac; }
 	ObscureGlyph0x21c& GetUnk0x3c8() { return m_unk0x3c8; }
 	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
+	void FUN_00467180(undefined4 p_param);
+	void FUN_004671e0(undefined4 p_param);
 
 	// SYNTHETIC: LEGORACERS 0x00466fd0
 	// ObscureBanner0x5ec::`scalar deleting destructor'
@@ -51,8 +53,6 @@ protected:
 	LegoBool32 FUN_004670a0(CreateParams0x8c* p_createParams, const CeruleanEmperor0x4c::Entry0x98* p_styleEntry);
 	LegoBool32 FUN_00467150(CreateParams0x8c* p_createParams, const CeruleanEmperor0x4c::Entry0x98* p_styleEntry);
 	LegoBool32 FUN_004677e0(CreateParams0x90* p_createParams);
-	void FUN_00467180(undefined4 p_param);
-	void FUN_004671e0(undefined4 p_param);
 	LegoBool32 FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result);
 	LegoBool32 FUN_00467670(InputEventQueue::Event* p_event, undefined4 p_result);
 
@@ -88,6 +88,7 @@ public:
 	void VTable0x7c() override;                                                               // vtable+0x7c
 
 	LegoBool32 FUN_00467800(CreateParams0x98* p_createParams, CeruleanEmperor0x4c::Entry0xbc* p_styleEntry);
+	void SetUnk0x9ec(undefined4 p_unk0x9ec) { m_unk0x9ec = p_unk0x9ec; }
 
 	// SYNTHETIC: LEGORACERS 0x00467730
 	// ObscureBanner0x9f4::`scalar deleting destructor'

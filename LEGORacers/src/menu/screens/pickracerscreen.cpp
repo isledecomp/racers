@@ -1,5 +1,6 @@
 #include "menu/screens/pickracerscreen.h"
 
+#include "menu/menuscreenid.h"
 #include "menu/menutoolcontext0x4bc8.h"
 
 DECOMP_SIZE_ASSERT(PickRacerScreen, 0x4c8c)
@@ -25,7 +26,8 @@ void PickRacerScreen::VTable0x4c()
 	RacerPickScreenBase0x3ff4::VTable0x4c();
 
 	if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
-		textId = static_cast<undefined2>(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() + 0x15);
+		textId = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244AsU16();
+		textId += 0x15;
 	}
 
 	FUN_0046bf80(&m_unk0x4050, 0x3a, 0x3a, textId);
@@ -36,17 +38,89 @@ void PickRacerScreen::VTable0x4c()
 	FUN_0047fdc0(&m_unk0x4998, 0x3f, 0x45, 0x1f);
 }
 
-// STUB: LEGORACERS 0x00484e40
-LegoBool32 PickRacerScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x00484e40
+LegoBool32 PickRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x00484e40);
-	return FALSE;
+	undefined4 params[3];
+	params[0] = 1;
+	params[1] = 1;
+	params[2] = 0xffff3;
+
+	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+		FUN_00480210(p_context, FALSE);
+	}
+
+	if (!RacerPickScreenBase0x3ff4::VTable0xa0(p_context, p_createParams, params)) {
+		return FALSE;
+	}
+
+	VTable0x80();
+
+	if (p_context->m_unk0x4b40.GetUnk0x78() & 2) {
+		m_unk0x2c0c[0].SetUnk0x9ec(TRUE);
+
+		if (p_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() == 0) {
+			m_unk0x40c8.ClearFlags(2);
+			m_unk0x43b8.VTable0x4c(0);
+		}
+		else {
+			m_unk0x43b8.ClearFlags(2);
+			m_unk0x40c8.VTable0x4c(0);
+		}
+	}
+	else {
+		m_unk0x43b8.ClearFlags(2);
+		m_unk0x40c8.VTable0x4c(0);
+	}
+
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x00484f40
-void PickRacerScreen::VTable0x38(ObscureVantage0x58*)
+void PickRacerScreen::VTable0x38(ObscureVantage0x58* p_source)
 {
-	STUB(0x00484f40);
+	if (p_source == &m_unk0x46a8) {
+		m_unk0x360 = static_cast<LegoU16>(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() + c_menuControl1);
+		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+	}
+	else if (p_source == &m_unk0x40c8) {
+		if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+			m_context->m_context->m_unk0x100 = 0;
+		}
+
+		FUN_00486810(0);
+
+		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
+		LegoU32 playerIndex = buffer.GetUnk0x244();
+		buffer.SetUnk0x248(playerIndex, m_unk0x22dc[0].FUN_004430b0());
+		buffer.SetUnk0x244(playerIndex + 1);
+		m_unk0x360 = 0x41;
+	}
+	else if (p_source == &m_unk0x43b8) {
+		FUN_00486810(0);
+
+		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
+		LegoU32 playerIndex = buffer.GetUnk0x244();
+		buffer.SetUnk0x248(playerIndex, m_unk0x22dc[0].FUN_004430b0());
+		buffer.SetUnk0x244(playerIndex + 1);
+		m_unk0x360 = c_menuPickRacerP2;
+	}
+	else if (p_source == &m_unk0x4998) {
+		m_unk0x360 = 0x3f;
+
+		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
+		if (buffer.GetUnk0x244() != 0) {
+			buffer.SetUnk0x244(buffer.GetUnk0x244() - 1);
+		}
+
+		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+	}
+
+	if (m_unk0x360 != 0xffff) {
+		m_unk0x364 = TRUE;
+	}
+
+	m_unk0x35c = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x00485090
@@ -55,8 +129,44 @@ void PickRacerScreen::VTable0x44(ObscureVantage0x58* p_source)
 	RacerPickScreenBase0x3ff4::VTable0x44(p_source);
 }
 
-// STUB: LEGORACERS 0x004850a0
+// FUNCTION: LEGORACERS 0x004850a0
 void PickRacerScreen::VTable0x84()
 {
-	STUB(0x004850a0);
+	switch (m_unk0x360) {
+	case c_menuControl1:
+	case c_menuControl2:
+	case c_menuPickRacerP2:
+		m_context->m_menuStack.Push(m_unk0x360);
+		FUN_004861b0();
+		return;
+	case 0x3f:
+		m_context->m_menuStack.Pop();
+		FUN_004861b0();
+		return;
+	case 0x41:
+		if (m_context->m_context->m_unk0x24 == 0 && m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() == 1) {
+			RaceDefinitionList::RaceDefinition* raceDefinition = static_cast<RaceDefinitionList::RaceDefinition*>(
+				m_context->m_raceList.GetName(m_context->m_context->m_unk0x2d)
+			);
+			LegoU32 raceIndex = m_context->m_raceList.GetEntryIndex(raceDefinition);
+			m_context->m_menuStack.Push(static_cast<LegoU16>(raceIndex + c_menuCircuit1));
+			m_context->m_context->m_unk0x100 = 5;
+		}
+		else {
+			m_context->m_menuStack.ResetSize();
+		}
+
+		if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+			m_context->m_context->m_unk0x100 = 0;
+		}
+		else {
+			m_context->m_context->m_unk0x100 += m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244();
+		}
+
+		m_unk0x364 = TRUE;
+		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		break;
+	}
+
+	FUN_004861b0();
 }

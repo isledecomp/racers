@@ -14,6 +14,7 @@ class GolString;
 class InputManager;
 class PeridotTraceBuffer0x250;
 class PeridotTrace0x4e0;
+struct TurquoiseGlowColor;
 
 // SIZE 0x28
 struct PeridotTraceInputBindingEntry {
@@ -84,6 +85,9 @@ public:
 		);
 		void Destroy();
 		void FUN_0042b6d0();
+		void FUN_0042b330(TurquoiseGlowColor* p_color) const;
+		void FUN_0042b360(LegoU8* p_dest) const;
+		void FUN_0042b380(undefined4* p_dest) const;
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -109,6 +113,7 @@ public:
 	Record* FUN_0042b880();
 	Record* FUN_0042b8f0(Record* p_record);
 	void FUN_0042b920(Record* p_record);
+	Record* FUN_0042b990(LegoU32 p_index);
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	LegoS32 GetAvailableRecordCount() const { return m_unk0x1c - m_unk0x00; }
@@ -334,6 +339,7 @@ public:
 
 	void FUN_0042b4f0(const LegoU8* p_source);
 	void Reset() { m_unk0x244 = 0; }
+	undefined2 GetUnk0x244() const { return static_cast<undefined2>(m_unk0x244); }
 	PeridotTraceBase0x24::Record* GetUnk0x248() const { return m_unk0x248; }
 	void SetUnk0x248(PeridotTraceBase0x24::Record* p_unk0x248) { m_unk0x248 = p_unk0x248; }
 

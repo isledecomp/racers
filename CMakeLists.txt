@@ -338,6 +338,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/garagescreen.cpp
   LEGORacers/src/menu/screens/imaginarychisel0x658.cpp
   LEGORacers/src/menu/screens/imaginarychisel0x658helperat0x368.cpp
+  LEGORacers/src/menu/screens/racerpickmodelslot0xa0.cpp
+  LEGORacers/src/menu/screens/racerpickmodelstate0x28.cpp
+  LEGORacers/src/menu/screens/racerpickscreenbase0x270c.cpp
+  LEGORacers/src/menu/screens/racerpickscreenbase0x3ff4.cpp
   LEGORacers/src/util/golcamerabase.cpp
   LEGORacers/src/menu/runtime/saffronquartz0x2c.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp

@@ -1,29 +1,48 @@
 #include "menu/screens/multiplayerpickscreen.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(MultiplayerPickScreen, 0x2cc4)
 
-// STUB: LEGORACERS 0x004815f0
+// FUNCTION: LEGORACERS 0x004815f0
 MultiplayerPickScreen::MultiplayerPickScreen()
 {
-	STUB(0x004815f0);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x00481710
+// FUNCTION: LEGORACERS 0x00481710
 MultiplayerPickScreen::~MultiplayerPickScreen()
 {
-	STUB(0x00481710);
+	Destroy();
 }
 
-// STUB: LEGORACERS 0x00481800
+// FUNCTION: LEGORACERS 0x00481800
 void MultiplayerPickScreen::Reset()
 {
-	STUB(0x00481800);
+	m_unk0x2b70 = 0;
+	m_unk0x2b74 = 0;
+	m_unk0x2b78 = 0;
+	::memset(m_unk0x2b94, 0, sizeof(m_unk0x2b94));
+	RacerPickScreenBase0x270c::Reset();
 }
 
-// STUB: LEGORACERS 0x00481830
+// FUNCTION: LEGORACERS 0x00481830
 void MultiplayerPickScreen::VTable0x4c()
 {
-	STUB(0x00481830);
+	FUN_0046bef0(&m_unk0x270c, 0x49, 0x49);
+	RacerPickScreenBase0x270c::VTable0x4c();
+	FUN_0046bf80(&m_unk0x2990, 0xf0, 0x37, 0x56);
+	FUN_0046bf80(&m_unk0x2a08, 0xf1, 0x37, 0x57);
+	FUN_0046bf80(&m_unk0x2bd4[0], 0x8e, 0x37, 0x56);
+	FUN_0046bf80(&m_unk0x2bd4[1], 0x8f, 0x37, 0x56);
+	FUN_0046bef0(&m_unk0x2768[0], 0x86, 0x4b);
+	FUN_0046bef0(&m_unk0x2768[1], 0x87, 0x4b);
+	FUN_0046bef0(&m_unk0x2768[2], 0x88, 0x4a);
+	FUN_0046bef0(&m_unk0x2768[3], 0x89, 0x4a);
+	FUN_0046bef0(&m_unk0x2768[4], 0x8c, 0x50);
+	FUN_0046bef0(&m_unk0x2768[5], 0x8d, 0x51);
+	FUN_0046bf80(&m_unk0x2a80, 0x8a, 0x37, 0x72);
+	FUN_0046bf80(&m_unk0x2af8, 0x8b, 0x37, 0x1f);
 }
 
 // STUB: LEGORACERS 0x00481a30
@@ -51,34 +70,4 @@ LegoBool32 MultiplayerPickScreen::VTable0x78(undefined4)
 {
 	STUB(0x00481fc0);
 	return 0;
-}
-
-// FUNCTION: LEGORACERS 0x00486020 FOLDED
-void MultiplayerPickScreen::VTable0x80()
-{
-	ColorRGBA materialColor;
-	ColorRGBA lightColor;
-
-	materialColor.m_red = 0x78;
-	materialColor.m_grn = 0x78;
-	materialColor.m_blu = 0x78;
-	lightColor.m_red = 0xff;
-	lightColor.m_grn = 0xff;
-	lightColor.m_blu = 0xff;
-
-	FUN_0047fec0(&materialColor, &lightColor);
-}
-
-// STUB: LEGORACERS 0x004860f0 FOLDED
-LegoBool32 MultiplayerPickScreen::Destroy()
-{
-	STUB(0x004860f0);
-	return FALSE;
-}
-
-// STUB: LEGORACERS 0x004869b0 FOLDED
-LegoBool32 MultiplayerPickScreen::VTable0x88()
-{
-	STUB(0x004869b0);
-	return FALSE;
 }

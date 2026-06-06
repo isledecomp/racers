@@ -1,29 +1,39 @@
 #include "menu/screens/pickracerscreen.h"
 
+#include "menu/menutoolcontext0x4bc8.h"
+
 DECOMP_SIZE_ASSERT(PickRacerScreen, 0x4c8c)
 
-// STUB: LEGORACERS 0x00484c10
+// FUNCTION: LEGORACERS 0x00484c10
 PickRacerScreen::PickRacerScreen()
 {
-	STUB(0x00484c10);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x00484ce0
+// FUNCTION: LEGORACERS 0x00484ce0
 PickRacerScreen::~PickRacerScreen()
 {
-	STUB(0x00484ce0);
+	Destroy();
 }
 
-// STUB: LEGORACERS 0x004891a0 FOLDED
-void PickRacerScreen::VTable0x10(ObscureVantage0x58*)
-{
-	STUB(0x004891a0);
-}
-
-// STUB: LEGORACERS 0x00484d90
+// FUNCTION: LEGORACERS 0x00484d90
 void PickRacerScreen::VTable0x4c()
 {
-	STUB(0x00484d90);
+	undefined2 textId = 0x14;
+
+	FUN_0046bef0(&m_unk0x3ff4, 0x49, 0x49);
+	RacerPickScreenBase0x3ff4::VTable0x4c();
+
+	if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+		textId = static_cast<undefined2>(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() + 0x15);
+	}
+
+	FUN_0046bf80(&m_unk0x4050, 0x3a, 0x3a, textId);
+	m_unk0x4050.FUN_0046f6b0(0x14);
+	FUN_0047fdc0(&m_unk0x46a8, 9, 0x42, 0xb9);
+	FUN_0047fdc0(&m_unk0x40c8, 0x41, 0x46, 0x72);
+	FUN_0047fdc0(&m_unk0x43b8, 0x40, 0x46, 0x72);
+	FUN_0047fdc0(&m_unk0x4998, 0x3f, 0x45, 0x1f);
 }
 
 // STUB: LEGORACERS 0x00484e40
@@ -39,57 +49,14 @@ void PickRacerScreen::VTable0x38(ObscureVantage0x58*)
 	STUB(0x00484f40);
 }
 
-// STUB: LEGORACERS 0x00485090
-void PickRacerScreen::VTable0x44(ObscureVantage0x58*)
+// FUNCTION: LEGORACERS 0x00485090
+void PickRacerScreen::VTable0x44(ObscureVantage0x58* p_source)
 {
-	STUB(0x00485090);
+	RacerPickScreenBase0x3ff4::VTable0x44(p_source);
 }
 
 // STUB: LEGORACERS 0x004850a0
 void PickRacerScreen::VTable0x84()
 {
 	STUB(0x004850a0);
-}
-
-// STUB: LEGORACERS 0x00486a00
-LegoBool32 PickRacerScreen::VTable0x78(undefined4)
-{
-	STUB(0x00486a00);
-	return FALSE;
-}
-
-// STUB: LEGORACERS 0x00488eb0
-void PickRacerScreen::Reset()
-{
-	STUB(0x00488eb0);
-}
-
-// FUNCTION: LEGORACERS 0x00486020 FOLDED
-void PickRacerScreen::VTable0x80()
-{
-	ColorRGBA materialColor;
-	ColorRGBA lightColor;
-
-	materialColor.m_red = 0x78;
-	materialColor.m_grn = 0x78;
-	materialColor.m_blu = 0x78;
-	lightColor.m_red = 0xff;
-	lightColor.m_grn = 0xff;
-	lightColor.m_blu = 0xff;
-
-	FUN_0047fec0(&materialColor, &lightColor);
-}
-
-// STUB: LEGORACERS 0x004860f0 FOLDED
-LegoBool32 PickRacerScreen::Destroy()
-{
-	STUB(0x004860f0);
-	return FALSE;
-}
-
-// STUB: LEGORACERS 0x004869b0 FOLDED
-LegoBool32 PickRacerScreen::VTable0x88()
-{
-	STUB(0x004869b0);
-	return FALSE;
 }

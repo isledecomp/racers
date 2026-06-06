@@ -2,6 +2,7 @@
 
 #include "golerror.h"
 #include "golstring.h"
+#include "racer/turquoiseglowcolor.h"
 
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::Record, 0x244)
@@ -53,6 +54,28 @@ void PeridotTraceBase0x24::Record::FUN_0042b2f0(
 void PeridotTraceBase0x24::Record::Destroy()
 {
 	Initialize();
+}
+
+// FUNCTION: LEGORACERS 0x0042b330
+void PeridotTraceBase0x24::Record::FUN_0042b330(TurquoiseGlowColor* p_color) const
+{
+	p_color->m_unk0x01 = m_data[0x1c];
+	p_color->m_unk0x00 = m_data[0x1d];
+	p_color->m_unk0x03 = m_data[0x1e];
+	p_color->m_unk0x02 = m_data[0x1f];
+	p_color->m_unk0x04 = m_data[0x20] & 0x7f;
+}
+
+// FUNCTION: LEGORACERS 0x0042b360
+void PeridotTraceBase0x24::Record::FUN_0042b360(LegoU8* p_dest) const
+{
+	::memcpy(p_dest, &m_data[0x29], 0x202);
+}
+
+// FUNCTION: LEGORACERS 0x0042b380
+void PeridotTraceBase0x24::Record::FUN_0042b380(undefined4* p_dest) const
+{
+	::memcpy(p_dest, &m_data[0x21], 8);
 }
 
 // FUNCTION: LEGORACERS 0x0042b400
@@ -228,4 +251,16 @@ PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b8f0(Record*)
 void PeridotTraceBase0x24::FUN_0042b920(Record*)
 {
 	STUB(0x0042b920);
+}
+
+// FUNCTION: LEGORACERS 0x0042b990
+PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b990(LegoU32 p_index)
+{
+	Record* record = m_unk0x18;
+
+	while (p_index-- != 0) {
+		record = record->m_next;
+	}
+
+	return record;
 }

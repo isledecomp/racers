@@ -77,6 +77,9 @@ protected:
 // SIZE 0x94
 class ObscureCarouselNavigator0x94 : public ObscureCarousel0x94 {
 public:
+	// FUNCTION: LEGORACERS 0x00488dd0
+	ObscureCarouselNavigator0x94() {}
+
 	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 	undefined4 VTable0x3c(undefined4) override;            // vtable+0x3c
 	void VTable0x44(undefined4) override;                  // vtable+0x44

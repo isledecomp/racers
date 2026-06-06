@@ -40,6 +40,7 @@ public:
 	virtual undefined4 VTable0x74(undefined4) = 0;                                        // vtable+0x74
 	virtual void VTable0x78() = 0;                                                        // vtable+0x78
 	virtual void VTable0x7c() = 0;                                                        // vtable+0x7c
+	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
 
 	// SYNTHETIC: LEGORACERS 0x00466fd0
 	// ObscureBanner0x5ec::`scalar deleting destructor'

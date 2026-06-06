@@ -9,11 +9,80 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(SapphireReef0x2030, 0x2030)
+DECOMP_SIZE_ASSERT(SapphireReef0x2030::Placement0x30, 0x30)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xa4, 0x14)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xa4::Entry0x1c, 0x1c)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xbc, 0x14)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0xbc::Entry0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0x1e30Entry0x28, 0x28)
+
+// FUNCTION: LEGORACERS 0x00499530
+void SapphireReef0x2030::Placement0x30::Reset()
+{
+	m_unk0x00 = 0;
+	m_unk0x0c = 0;
+	m_unk0x28 = 0;
+	m_unk0x2c = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00499540
+SapphireReef0x2030::Placement0x30::Placement0x30()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00499550
+SapphireReef0x2030::Placement0x30::~Placement0x30()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x00499560
+void SapphireReef0x2030::Placement0x30::Destroy()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
+void SapphireReef0x2030::Placement0x30::FUN_004513d0(SapphireReef0x2030*)
+{
+}
+
+// STUB: LEGORACERS 0x00499890
+void SapphireReef0x2030::Placement0x30::FUN_00499890(LegoPieceLibrary::PieceRecord*, LegoS32, LegoS32)
+{
+	STUB(0x00499890);
+}
+
+// STUB: LEGORACERS 0x00499a60
+void SapphireReef0x2030::Placement0x30::FUN_00499a60()
+{
+	STUB(0x00499a60);
+}
+
+// FUNCTION: LEGORACERS 0x00499b00
+void SapphireReef0x2030::Placement0x30::FUN_00499b00()
+{
+	if (m_unk0x28 & 1) {
+		if (m_unk0x24 > 6 || m_unk0x20 > 10) {
+			m_unk0x28++;
+		}
+	}
+	else if (m_unk0x20 > 6 || m_unk0x24 > 10) {
+		m_unk0x28++;
+	}
+
+	m_unk0x28 = (m_unk0x28 + 1) & 3;
+	FUN_00499a60();
+}
+
+// FUNCTION: LEGORACERS 0x00499ca0
+void SapphireReef0x2030::Placement0x30::FUN_00499ca0(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation)
+{
+	*p_x = m_unk0x18;
+	*p_y = m_unk0x1c;
+	*p_rotation = m_unk0x28;
+}
 
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
 void SapphireReef0x2030::Field0xbc::Clear()
@@ -261,6 +330,12 @@ void SapphireReef0x2030::FUN_0049b920(undefined4, undefined4)
 LegoS32 SapphireReef0x2030::FUN_0049bd50(LegoS32 p_index) const
 {
 	return m_unk0xa4.m_entries[p_index].m_unk0x08;
+}
+
+// STUB: LEGORACERS 0x0049c230
+void SapphireReef0x2030::FUN_0049c230(Placement0x30*, GolModelEntity*)
+{
+	STUB(0x0049c230);
 }
 
 // STUB: LEGORACERS 0x0049c7f0

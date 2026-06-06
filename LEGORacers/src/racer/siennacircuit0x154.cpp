@@ -17,7 +17,7 @@ DECOMP_SIZE_ASSERT(SiennaCircuit0x154, 0x154)
 DECOMP_SIZE_ASSERT(SiennaCircuit0x154::CreateParams0x84, 0x84)
 
 // GLOBAL: LEGORACERS 0x004b02f8
-const LegoFloat g_siennaCircuitTwoPi = 6.2831855f;
+extern const LegoFloat g_siennaCircuitTwoPi = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004b3c0c
 LegoFloat g_siennaCircuitMaxFloat = FLT_MAX;

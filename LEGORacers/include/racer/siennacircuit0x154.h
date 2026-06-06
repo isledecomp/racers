@@ -14,6 +14,8 @@ class ObscureIcon0x1a8;
 class SapphireReef0x2030;
 class VerdantTide0x38;
 
+extern const LegoFloat g_siennaCircuitTwoPi;
+
 // VTABLE: LEGORACERS 0x004b3c10
 // SIZE 0x154
 class SiennaCircuit0x154 : public VioletShoal0xc0 {

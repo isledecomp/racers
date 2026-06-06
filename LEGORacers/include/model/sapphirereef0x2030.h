@@ -16,6 +16,36 @@ class VerdantTide0x38;
 // SIZE 0x2030
 class SapphireReef0x2030 {
 public:
+	// SIZE 0x30
+	class Placement0x30 {
+	public:
+		Placement0x30();
+		~Placement0x30();
+
+		void Reset();
+		void Destroy();
+		void FUN_004513d0(SapphireReef0x2030* p_unk0x04);
+		void FUN_00499890(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x0c);
+		void FUN_00499a60();
+		void FUN_00499b00();
+		void FUN_00499ca0(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation);
+		void FUN_00499cc0(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
+
+	private:
+		undefined4 m_unk0x00; // 0x00
+		LegoS32 m_unk0x04;    // 0x04
+		LegoS32 m_unk0x08;    // 0x08
+		undefined4 m_unk0x0c; // 0x0c
+		undefined4 m_unk0x10; // 0x10
+		undefined4 m_unk0x14; // 0x14
+		LegoS32 m_unk0x18;    // 0x18
+		LegoS32 m_unk0x1c;    // 0x1c
+		LegoS32 m_unk0x20;    // 0x20
+		LegoS32 m_unk0x24;    // 0x24
+		LegoS32 m_unk0x28;    // 0x28
+		LegoS32 m_unk0x2c;    // 0x2c
+	};
+
 	struct Field0xbc;
 
 	// SIZE 0x14
@@ -112,6 +142,7 @@ public:
 	void FUN_0049b740(undefined4 p_unk0x04);
 	void FUN_0049b920(undefined4 p_unk0x04, undefined4 p_unk0x08);
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
+	void FUN_0049c230(Placement0x30* p_placement, GolModelEntity* p_entity);
 	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
 	GolModelBase* GetUnk0x84() const { return m_unk0x84; }

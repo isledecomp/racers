@@ -4,6 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "golmath.h"
+#include "golmodelentity.h"
+#include "menu/screens/awardcinematicscreen.h"
 #include "menu/screens/mainmenuscreenfieldat0x498.h"
 #include "menu/screens/obsidianmantle0x3b4.h"
 #include "menu/widgets/obscureanchor0x5c.h"
@@ -11,11 +13,16 @@
 #include "menu/widgets/obscurecarousel0x78.h"
 #include "menu/widgets/obscurelink0x1c.h"
 #include "menu/widgets/obscurerune0x4d8.h"
+#include "model/sapphirereef0x2030.h"
 #include "racer/siennacircuit0x154.h"
+#include "render/golrenderdevice.h"
+#include "util/opalhaven0xf4.h"
 
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
 class SoundGroupBinding;
+class GolModelBase;
+class GolSceneNode;
 class GolWorldEntity;
 
 // VTABLE: LEGORACERS 0x004b2cf8
@@ -50,7 +57,7 @@ public:
 		LegoBool32 VTable0x08() override;           // vtable+0x08
 		LegoBool32 VTable0x0c() override;           // vtable+0x0c
 		LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
-		void FUN_00477ae0(CreateParams0x30* p_createParams);
+		LegoBool32 FUN_00477ae0(CreateParams0x30* p_createParams);
 		void FUN_00477e40(LegoS32 p_unk0x04);
 		LegoBool32 FUN_00477fc0(LegoFloat p_delta);
 		LegoBool32 FUN_00478080(LegoS32 p_delta, LegoBool32 p_unk0x08);
@@ -68,8 +75,8 @@ public:
 		void FUN_00479300();
 		void FUN_00479310();
 		void FUN_00479320();
-		GolWorldEntity* GetUnk0x58() { return reinterpret_cast<GolWorldEntity*>(&m_unk0x1c[0x58 - 0x1c]); }
-		GolWorldEntity* GetUnk0x1a4() { return reinterpret_cast<GolWorldEntity*>(&m_unk0x1c[0x1a4 - 0x1c]); }
+		GolWorldEntity* GetUnk0x58() { return &m_unk0x58; }
+		GolWorldEntity* GetUnk0x1a4() { return &m_unk0x1a4; }
 		LegoS32 GetUnk0x294() const { return m_unk0x294; }
 		LegoS8 GetUnk0x298() const { return m_unk0x298; }
 
@@ -77,17 +84,52 @@ public:
 		// ImaginaryShape0x2b20::FieldAt0x2308::`scalar deleting destructor'
 
 	private:
-		undefined m_unk0x1c[0x244 - 0x1c];   // 0x1c
-		undefined4 m_unk0x244;               // 0x244
-		undefined4 m_unk0x248;               // 0x248
-		undefined4 m_unk0x24c;               // 0x24c
-		undefined m_unk0x250[0x270 - 0x250]; // 0x250
-		undefined4 m_unk0x270;               // 0x270
-		undefined4 m_unk0x274;               // 0x274
-		undefined m_unk0x278[0x294 - 0x278]; // 0x278
-		LegoS32 m_unk0x294;                  // 0x294
-		LegoS8 m_unk0x298;                   // 0x298
-		undefined m_unk0x299[0x2d0 - 0x299]; // 0x299
+		void FUN_00477bf0();
+		void FUN_00477c50();
+		void FUN_00477cc0(undefined4 p_unk0x04);
+		void FUN_00477dc0();
+		void FUN_00477f00(LegoS32 p_unk0x04);
+		void FUN_00477f30(LegoFloat p_unk0x04);
+
+		ImaginaryShape0x2b20* m_unk0x1c;              // 0x1c
+		SoundGroupBinding* m_unk0x20;                 // 0x20
+		MenuToolContext0x4bc8* m_unk0x24;             // 0x24
+		SapphireReef0x2030::Placement0x30 m_unk0x28;  // 0x28
+		AwardCinematicScreen::FieldAt0x658 m_unk0x58; // 0x58
+		OpalHaven0xf4 m_unk0xa8;                      // 0xa8
+		GolSceneNode* m_unk0x19c;                     // 0x19c
+		undefined4 m_unk0x1a0;                        // 0x1a0
+		GolModelEntity m_unk0x1a4;                    // 0x1a4
+		GolModelBase* m_unk0x234;                     // 0x234
+		GolModelBase* m_unk0x238;                     // 0x238
+		GolRenderDevice::MaterialColor m_unk0x23c;    // 0x23c
+		undefined4 m_unk0x240;                        // 0x240
+		undefined4 m_unk0x244;                        // 0x244
+		undefined4 m_unk0x248;                        // 0x248
+		undefined4 m_unk0x24c;                        // 0x24c
+		GolVec3 m_unk0x250;                           // 0x250
+		undefined4 m_unk0x25c;                        // 0x25c
+		undefined4 m_unk0x260;                        // 0x260
+		undefined4 m_unk0x264;                        // 0x264
+		undefined4 m_unk0x268;                        // 0x268
+		undefined4 m_unk0x26c;                        // 0x26c
+		undefined4 m_unk0x270;                        // 0x270
+		undefined4 m_unk0x274;                        // 0x274
+		LegoBool m_unk0x278;                          // 0x278
+		undefined m_unk0x279[0x288 - 0x279];          // 0x279
+		undefined4 m_unk0x288;                        // 0x288
+		undefined4 m_unk0x28c;                        // 0x28c
+		LegoBool m_unk0x290;                          // 0x290
+		undefined m_unk0x291[0x294 - 0x291];          // 0x291
+		LegoS32 m_unk0x294;                           // 0x294
+		LegoS8 m_unk0x298;                            // 0x298
+		undefined m_unk0x299[0x29c - 0x299];          // 0x299
+		undefined4 m_unk0x29c;                        // 0x29c
+		undefined4 m_unk0x2a0;                        // 0x2a0
+		undefined4 m_unk0x2a4;                        // 0x2a4
+		LegoFloat m_unk0x2a8[8];                      // 0x2a8
+		LegoFloat m_unk0x2c8;                         // 0x2c8
+		undefined4 m_unk0x2cc;                        // 0x2cc
 	};
 
 	ImaginaryShape0x2b20();
@@ -102,19 +144,19 @@ public:
 	void VTable0x80() override;                    // vtable+0x80
 	void VTable0x84() override;                    // vtable+0x84
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*,
-						  MenuToolCreateParams0x30*) override;                    // vtable+0x8c
-	virtual GolString* VTable0x98(undefined4) = 0;                                // vtable+0x98
-	virtual GolFont0xa0* VTable0x9c(undefined4) = 0;                              // vtable+0x9c
-	virtual void VTable0xa0(undefined4, undefined4, undefined4*, undefined4) = 0; // vtable+0xa0
-	virtual void VTable0xa4() = 0;                                                // vtable+0xa4
-	virtual void VTable0xa8() = 0;                                                // vtable+0xa8
-	virtual void VTable0xac() = 0;                                                // vtable+0xac
-	virtual void VTable0xb0() = 0;                                                // vtable+0xb0
-	virtual void VTable0xb4() = 0;                                                // vtable+0xb4
-	virtual void VTable0xb8() = 0;                                                // vtable+0xb8
-	virtual void VTable0xbc() = 0;                                                // vtable+0xbc
-	virtual void VTable0xc0() = 0;                                                // vtable+0xc0
-	virtual void VTable0xc4();                                                    // vtable+0xc4
+						  MenuToolCreateParams0x30*) override;            // vtable+0x8c
+	GolString* VTable0x98(undefined4) override = 0;                       // vtable+0x98
+	GolFont0xa0* VTable0x9c(undefined4) override = 0;                     // vtable+0x9c
+	void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override = 0; // vtable+0xa0
+	virtual void VTable0xa4() = 0;                                        // vtable+0xa4
+	virtual void VTable0xa8() = 0;                                        // vtable+0xa8
+	virtual void VTable0xac() = 0;                                        // vtable+0xac
+	virtual void VTable0xb0() = 0;                                        // vtable+0xb0
+	virtual void VTable0xb4() = 0;                                        // vtable+0xb4
+	virtual void VTable0xb8() = 0;                                        // vtable+0xb8
+	virtual void VTable0xbc() = 0;                                        // vtable+0xbc
+	virtual void VTable0xc0() = 0;                                        // vtable+0xc0
+	virtual void VTable0xc4();                                            // vtable+0xc4
 
 	// SYNTHETIC: LEGORACERS 0x00476e60
 	// ImaginaryShape0x2b20::`scalar deleting destructor'

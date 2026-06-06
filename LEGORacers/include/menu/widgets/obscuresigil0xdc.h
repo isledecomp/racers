@@ -42,6 +42,7 @@ public:
 	undefined4 VTable0x3c(undefined4) override;                                               // vtable+0x3c
 	LegoBool32 FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);
+	GolWorldDatabase* GetUnk0x60() const { return m_unk0x60; }
 
 	// SYNTHETIC: LEGORACERS 0x00465730
 	// ObscureSigil0xdc::`scalar deleting destructor'

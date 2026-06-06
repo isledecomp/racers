@@ -25,31 +25,34 @@ public:
 
 	RacerPickModelSlot0xa0();
 
-	void Reset() override;                      // vtable+0x00
-	~RacerPickModelSlot0xa0() override;         // vtable+0x04
-	LegoBool32 VTable0x0c() override;           // vtable+0x0c
-	LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
+	void Reset() override;                             // vtable+0x00
+	~RacerPickModelSlot0xa0() override;                // vtable+0x04
+	LegoBool32 VTable0x0c() override;                  // vtable+0x0c
+	LegoBool32 VTable0x10(LegoU32 p_elapsed) override; // vtable+0x10
 
 	LegoBool32 FUN_004875d0(CreateParams0x48* p_createParams);
 	void FUN_00487600(GolWorldEntity* p_entity);
+	GolWorldEntity* GetUnk0x68() const { return m_unk0x68; }
 
 	// SYNTHETIC: LEGORACERS 0x00487500
 	// RacerPickModelSlot0xa0::`scalar deleting destructor'
 
 private:
+	LegoBool32 FUN_00487630(LegoU32 p_elapsed);
+	LegoBool32 FUN_00487690(LegoU32 p_elapsed);
+	LegoBool32 FUN_004876f0(LegoS32 p_elapsed);
+
 	CreateParams0x48 m_unk0x1c; // 0x1c
 	GolWorldEntity* m_unk0x64;  // 0x64
 	GolWorldEntity* m_unk0x68;  // 0x68
 	GolWorldEntity* m_unk0x6c;  // 0x6c
-	undefined4 m_unk0x70;       // 0x70
-	undefined4 m_unk0x74;       // 0x74
-	LegoFloat m_unk0x78;        // 0x78
+	GolVec3 m_unk0x70;          // 0x70
 	undefined4 m_unk0x7c;       // 0x7c
 	undefined4 m_unk0x80;       // 0x80
 	undefined4 m_unk0x84;       // 0x84
 	GolVec3 m_unk0x88;          // 0x88
-	LegoS32 m_unk0x94;          // 0x94
-	LegoS32 m_unk0x98;          // 0x98
+	LegoU32 m_unk0x94;          // 0x94
+	LegoU32 m_unk0x98;          // 0x98
 	LegoBool32 m_unk0x9c;       // 0x9c
 };
 

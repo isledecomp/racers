@@ -2,11 +2,23 @@
 
 #include "core/gol.h"
 #include "golhashtable.h"
+#include "golscenenode.h"
 #include "golstream.h"
+#include "golstring.h"
+#include "golstringtable.h"
+#include "menu/menutoolcontext0x4bc8.h"
+#include "scene/golskinnedentity.h"
+#include "world/golworlddatabase.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(RacerPickScreenBase0x270c, 0x270c)
+
+extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004c6ee4;
+
+// GLOBAL: LEGORACERS 0x004c21bc
+LegoU16 g_unk0x004c21bc[8] = {116, 117, 119, 120, 121, 122, 123, 0};
 
 // FUNCTION: LEGORACERS 0x00485890
 RacerPickScreenBase0x270c::RacerPickScreenBase0x270c()
@@ -34,20 +46,53 @@ void RacerPickScreenBase0x270c::Reset()
 	::memset(m_unk0x73c, 0, sizeof(m_unk0x73c));
 	::memset(m_unk0x780, 0, sizeof(m_unk0x780));
 
-	m_unk0x760 = 1.0f;
-	m_unk0x74c = 1.0f;
-	m_unk0x75c = 0;
-	m_unk0x758 = 0;
-	m_unk0x754 = 0;
-	m_unk0x750 = 0;
+	m_unk0x758.m_z = 1.0f;
+	m_unk0x74c.m_x = 1.0f;
+	m_unk0x758.m_y = 0.0f;
+	m_unk0x758.m_x = 0.0f;
+	m_unk0x74c.m_z = 0.0f;
+	m_unk0x74c.m_y = 0.0f;
 
 	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x00485e50
+// FUNCTION: LEGORACERS 0x00485e50
 void RacerPickScreenBase0x270c::VTable0x98()
 {
-	STUB(0x00485e50);
+	LegoS32 i;
+	GolVec3 slotPosition0;
+	GolVec3 slotPosition1;
+	RacerPickModelSlot0xa0::CreateParams0x48 createParams;
+
+	slotPosition1.m_x = -0.938000023f;
+	slotPosition1.m_y = -0.898000002f;
+	LegoS32 count = m_unk0x26fc;
+	slotPosition1.m_z = 1.486999989f;
+	slotPosition0.m_x = -11.520000457f;
+	slotPosition0.m_y = -6.767000198f;
+	slotPosition0.m_z = 0.0f;
+	i = 0;
+
+	if (count > 0) {
+		do {
+			::memset(&createParams, 0, sizeof(createParams));
+
+			createParams.m_golExport = m_golExport;
+			createParams.m_renderer = m_renderer;
+			createParams.m_unk0x08 = &m_unk0x98c[i];
+			createParams.m_unk0x2c = slotPosition0;
+			m_unk0x1ddc[i].FUN_004875d0(&createParams);
+
+			createParams.m_unk0x2c = slotPosition1;
+			createParams.m_unk0x44 = TRUE;
+			m_unk0x205c[i].FUN_004875d0(&createParams);
+
+			m_unk0x98c[i].FUN_00465b40(&m_unk0x1ddc[i]);
+			m_unk0x98c[i].FUN_00465b40(&m_unk0x205c[i]);
+
+			i++;
+		} while (i < m_unk0x26fc);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00485f70
@@ -133,6 +178,28 @@ void RacerPickScreenBase0x270c::FUN_00486400(LegoS32 p_index)
 	m_unk0x774[p_index] = TRUE;
 }
 
+// FUNCTION: LEGORACERS 0x00486440
+void RacerPickScreenBase0x270c::FUN_00486440(LegoS32 p_index)
+{
+	PeridotTraceBase0x24::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
+	LegoS32 textId = 0x2e;
+
+	switch (record->m_unk0x08) {
+	case 1:
+		textId = 0x36;
+		break;
+	case 2:
+		break;
+	default:
+		textId = 0x37;
+		break;
+	}
+
+	if (m_unk0x1cec[p_index].GetFlags() & 1) {
+		m_unk0x1cec[p_index].VTable0x44(static_cast<undefined2>(textId), 0);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004864a0
 void RacerPickScreenBase0x270c::FUN_004864a0(LegoS32 p_index)
 {
@@ -153,6 +220,60 @@ void RacerPickScreenBase0x270c::FUN_004864f0(LegoS32 p_index)
 	m_unk0x774[p_index] = TRUE;
 }
 
+// FUNCTION: LEGORACERS 0x00486540
+void RacerPickScreenBase0x270c::FUN_00486540()
+{
+	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		GolWorldEntity* entity = m_unk0x205c[i].GetUnk0x68();
+
+		GolVec3 direction;
+		direction.m_x = 0.963630974f;
+		direction.m_y = -0.267237991f;
+		direction.m_z = 0.0f;
+
+		GolVec3 up;
+		up.m_y = 0.0f;
+		up.m_x = 0.0f;
+		up.m_z = 1.0f;
+
+		if (entity != NULL) {
+			entity->VTable0x40(direction, up);
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004865c0
+void RacerPickScreenBase0x270c::FUN_004865c0()
+{
+	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		GolWorldEntity* target = m_unk0x1ddc[i].GetUnk0x68();
+		if (target != NULL) {
+			GolWorldDatabase* database = m_unk0x98c[i].GetUnk0x60();
+			GolSkinnedEntity* source;
+			if (database->GetUnk0xc0NameEntries() == NULL) {
+				source = NULL;
+			}
+			else {
+				source = database->GetUnk0xc0Name("crsdow");
+			}
+
+			source->VTable0x5c(0);
+			GolSceneNode* node = source->VTable0x58(0);
+
+			GolVec3 localVector;
+			GolVec3 direction;
+			node->FUN_004132a0(0, &m_unk0x74c, &localVector);
+			source->VTable0x34(localVector, &direction);
+
+			GolVec3 up;
+			node->FUN_004132a0(0, &m_unk0x758, &localVector);
+			source->VTable0x34(localVector, &up);
+
+			target->VTable0x40(direction, up);
+		}
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004866e0
 void RacerPickScreenBase0x270c::FUN_004866e0(LegoS32 p_index)
 {
@@ -162,10 +283,34 @@ void RacerPickScreenBase0x270c::FUN_004866e0(LegoS32 p_index)
 	m_unk0x76c[p_index] = FALSE;
 }
 
-// STUB: LEGORACERS 0x00486730
-void RacerPickScreenBase0x270c::VTable0x9c()
+// FUNCTION: LEGORACERS 0x00486730
+LegoS32 RacerPickScreenBase0x270c::VTable0x9c()
 {
-	STUB(0x00486730);
+	GolString string;
+	LegoChar modelName[8];
+
+	LegoS32 divisor = 7;
+	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+	LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+	LegoU16 textIdIndex = static_cast<LegoU16>(static_cast<LegoS32>(random) % divisor);
+	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c21bc[textIdIndex]);
+	string.CopyToBuf8(modelName);
+	return m_modelParts.GetPartIndex(modelName);
+}
+
+// FUNCTION: LEGORACERS 0x00486810
+void RacerPickScreenBase0x270c::FUN_00486810(LegoS32 p_index)
+{
+	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
+	OpalHaven0xf4* entity = &m_unk0x232c[modelIndex];
+	LegoS32 partIndex;
+
+	do {
+		partIndex = VTable0x9c();
+	} while (partIndex == entity->GetActiveState());
+
+	entity->FUN_0040dad0(static_cast<undefined2>(partIndex));
+	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x004869b0
@@ -184,9 +329,37 @@ LegoBool32 RacerPickScreenBase0x270c::VTable0x88()
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00486a00
-LegoBool32 RacerPickScreenBase0x270c::VTable0x78(undefined4)
+// FUNCTION: LEGORACERS 0x00486a00
+LegoBool32 RacerPickScreenBase0x270c::VTable0x78(undefined4 p_elapsed)
 {
-	STUB(0x00486a00);
-	return FALSE;
+	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		LegoS32 modelIndex = m_unk0x780[i] + (m_unk0x2700 * i);
+
+		switch (m_unk0x774[i]) {
+		default: {
+			if (m_unk0x232c[modelIndex].GetFlags() & 1) {
+				OpalHaven0xf4* entity = &m_unk0x232c[modelIndex];
+				if (entity->FUN_0040e360() && m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248(i) == NULL &&
+					!m_unk0x364) {
+					FUN_00486810(i);
+				}
+			}
+			break;
+		}
+		case TRUE:
+			m_unk0x1ddc[i].FUN_00487600(&m_unk0x39c[modelIndex]);
+			m_unk0x205c[i].FUN_00487600(&m_unk0x232c[modelIndex]);
+			FUN_00486540();
+			FUN_00486440(i);
+			m_unk0x774[i] = FALSE;
+
+			if (!m_unk0x364) {
+				FUN_00486810(i);
+			}
+			break;
+		}
+	}
+
+	FUN_004865c0();
+	return ImaginaryTool0x368::VTable0x78(p_elapsed);
 }

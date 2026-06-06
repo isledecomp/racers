@@ -30,7 +30,7 @@ public:
 	void VTable0x80() override;                                                                    // vtable+0x80
 	LegoBool32 VTable0x88() override;                                                              // vtable+0x88
 	virtual void VTable0x98();                                                                     // vtable+0x98
-	virtual void VTable0x9c();                                                                     // vtable+0x9c
+	virtual LegoS32 VTable0x9c();                                                                  // vtable+0x9c
 	virtual LegoBool32 VTable0xa0(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*, undefined4*); // vtable+0xa0
 
 	// SYNTHETIC: LEGORACERS 0x004859e0
@@ -39,9 +39,13 @@ public:
 protected:
 	void FUN_00486250(LegoS32 p_index);
 	void FUN_00486400(LegoS32 p_index);
+	void FUN_00486440(LegoS32 p_index);
 	void FUN_004864a0(LegoS32 p_index);
 	void FUN_004864f0(LegoS32 p_index);
+	void FUN_00486540();
+	void FUN_004865c0();
 	void FUN_004866e0(LegoS32 p_index);
+	void FUN_00486810(LegoS32 p_index);
 
 	CmbModelPart0x34 m_modelParts;                    // 0x0368
 	AwardCinematicScreen::FieldAt0x658 m_unk0x39c[4]; // 0x039c
@@ -49,12 +53,8 @@ protected:
 	GolModelBase* m_unk0x4ec[4];                      // 0x04ec
 	GolModelEntity m_unk0x4fc[4];                     // 0x04fc
 	GolModelBase* m_unk0x73c[4];                      // 0x073c
-	LegoFloat m_unk0x74c;                             // 0x074c
-	undefined4 m_unk0x750;                            // 0x0750
-	undefined4 m_unk0x754;                            // 0x0754
-	undefined4 m_unk0x758;                            // 0x0758
-	undefined4 m_unk0x75c;                            // 0x075c
-	LegoFloat m_unk0x760;                             // 0x0760
+	GolVec3 m_unk0x74c;                               // 0x074c
+	GolVec3 m_unk0x758;                               // 0x0758
 	undefined4 m_unk0x764;                            // 0x0764
 	undefined4 m_unk0x768;                            // 0x0768
 	LegoBool32 m_unk0x76c[2];                         // 0x076c

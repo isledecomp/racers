@@ -30,6 +30,7 @@ public:
 	LegoBool32 VTable0x0c() override;           // vtable+0x0c
 	LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
 
+	LegoBool32 FUN_004875d0(CreateParams0x48* p_createParams);
 	void FUN_00487600(GolWorldEntity* p_entity);
 
 	// SYNTHETIC: LEGORACERS 0x00487500

@@ -8,6 +8,9 @@
 #include "menu/screens/imaginarychisel0x658.h"
 #include "util/opalhaven0xf4.h"
 
+class AquamarineSpirit0x3c;
+class SapphireReef0x2030;
+
 // VTABLE: LEGORACERS 0x004b2c5c
 // SIZE 0x7b0
 class AwardCinematicScreen : public ImaginaryChisel0x658 {
@@ -16,6 +19,15 @@ public:
 	// SIZE 0x50
 	class FieldAt0x658 : public GolWorldEntityGroup0x38 {
 	public:
+		// SIZE 0x18
+		struct CreateParams0x18 {
+			AquamarineSpirit0x3c* m_unk0x00; // 0x00
+			SapphireReef0x2030* m_unk0x04;   // 0x04
+			OpalHaven0xf4* m_unk0x08;        // 0x08
+			OpalHaven0xf4* m_unk0x0c;        // 0x0c
+			GolName m_unk0x10;               // 0x10
+		};
+
 		// SIZE 0xd0
 		struct Lookup0xd0 {
 			undefined m_unk0x00[0xc4]; // 0x00
@@ -27,17 +39,20 @@ public:
 
 		void VTable0x08(const GolVec3& p_center) override;                         // vtable+0x08
 		void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
+		LegoBool32 FUN_00479510(CreateParams0x18* p_createParams);
 		LegoBool32 FUN_00479590();
 
 		// SYNTHETIC: LEGORACERS 0x00479460
 		// AwardCinematicScreen::FieldAt0x658::`scalar deleting destructor'
 
 	private:
-		GolNameTable* m_unk0x38;   // 0x38
-		undefined4 m_unk0x3c;      // 0x3c
-		GolWorldEntity* m_unk0x40; // 0x40
-		GolWorldEntity* m_unk0x44; // 0x44
-		GolName m_unk0x48;         // 0x48
+		void FUN_004794d0(OpalHaven0xf4* p_entity);
+
+		AquamarineSpirit0x3c* m_unk0x38; // 0x38
+		SapphireReef0x2030* m_unk0x3c;   // 0x3c
+		OpalHaven0xf4* m_unk0x40;        // 0x40
+		OpalHaven0xf4* m_unk0x44;        // 0x44
+		GolName m_unk0x48;               // 0x48
 	};
 
 	AwardCinematicScreen();

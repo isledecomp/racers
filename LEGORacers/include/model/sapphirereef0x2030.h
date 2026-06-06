@@ -10,6 +10,7 @@ class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
 class GolModelEntity;
+class OpalHaven0xf4;
 class VerdantTide0x38;
 
 // SIZE 0x2030
@@ -32,6 +33,7 @@ public:
 		void Clear();
 		LegoBool32 Initialize(LegoS32 p_count);
 		void FUN_0049fca0(LegoU8* p_dest);
+		void FUN_0049fd60();
 
 		undefined4 m_unk0x00; // 0x00
 		LegoS32 m_count;      // 0x04
@@ -87,6 +89,14 @@ public:
 	void FUN_00499f00();
 	void Destroy();
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
+	void FUN_0049a160(
+		LegoPieceLibrary::PieceRecord* p_pieceRecord,
+		undefined4 p_unk0x08,
+		undefined4 p_unk0x0c,
+		undefined4 p_unk0x10,
+		undefined4 p_unk0x14,
+		undefined4 p_unk0x18
+	);
 	void FUN_0049b170(
 		GolModelEntity* p_entity,
 		LegoPieceLibrary::PieceRecord* p_pieceRecord,
@@ -98,9 +108,15 @@ public:
 		undefined4 p_unk0x20
 	);
 	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
+	void FUN_0049b740(undefined4 p_unk0x04);
+	void FUN_0049b920(undefined4 p_unk0x04, undefined4 p_unk0x08);
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
+	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
 	LegoS32 GetUnk0xd4() const { return m_unk0xd4; }
+	OpalHaven0xf4* GetUnk0x0c() { return reinterpret_cast<OpalHaven0xf4*>(&m_unk0x0c); }
+	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
+	void SetUnk0xd4(undefined4 p_unk0xd4) { m_unk0xd4 = p_unk0xd4; }
 
 private:
 	void Reset();
@@ -108,7 +124,6 @@ private:
 	void FUN_00499f20();
 	void FUN_00499f80();
 	void FUN_0049b720();
-	void FUN_0049b740(undefined4 p_unk0x04);
 
 	GolExport* m_golExport;                         // 0x0000
 	GolD3DRenderDevice* m_renderer;                 // 0x0004

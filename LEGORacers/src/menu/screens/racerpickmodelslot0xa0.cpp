@@ -41,6 +41,14 @@ void RacerPickModelSlot0xa0::Reset()
 	m_unk0x9c = TRUE;
 }
 
+// FUNCTION: LEGORACERS 0x004875d0
+LegoBool32 RacerPickModelSlot0xa0::FUN_004875d0(CreateParams0x48* p_createParams)
+{
+	VTable0x08();
+	m_unk0x1c = *p_createParams;
+	return ObscureLink0x1c::FUN_0046b300(p_createParams);
+}
+
 // FUNCTION: LEGORACERS 0x00487600
 void RacerPickModelSlot0xa0::FUN_00487600(GolWorldEntity* p_entity)
 {

@@ -1,7 +1,13 @@
 #include "menu/screens/driverlicensescreen.h"
 
+#include "input/inputdevice.h"
+#include "input/keyboarddevice.h"
+#include "menu/crimsonsun0xa4.h"
 #include "menu/menutoolcontext0x4bc8.h"
+#include "menu/menutoolcreateparams0x30.h"
+#include "surface/color.h"
 
+#include <ctype.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(DriverLicenseScreen, 0x23bc)
@@ -33,43 +39,135 @@ void DriverLicenseScreen::VTable0x94(undefined4)
 {
 }
 
-// STUB: LEGORACERS 0x0047af30
+// FUNCTION: LEGORACERS 0x0047af30
 DriverLicenseScreen::DriverLicenseScreen()
 {
-	// TODO
-	STUB(0x0047af30);
+	Reset();
 }
 
-// STUB: LEGORACERS 0x0047b090
+// FUNCTION: LEGORACERS 0x0047b090
 DriverLicenseScreen::~DriverLicenseScreen()
 {
-	// TODO
-	STUB(0x0047b090);
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047b1d0
 void DriverLicenseScreen::Reset()
 {
-	memset(m_cheatBuffer, 0, sizeof(m_cheatBuffer));
-	m_cheatString.CopyFromBufSelection(m_cheatBuffer, c_cheatBufferLength);
+	memset(GetCheatBuffer(), 0, sizeof(undefined2) * c_cheatBufferStorageLength);
+	m_cheatString.CopyFromBufSelection(GetCheatBuffer(), c_cheatBufferLength);
 	m_unk0x23b4 = TRUE;
 	m_unk0x23b8 = FALSE;
 	ImaginaryTool0x368::Reset();
 }
 
-// STUB: LEGORACERS 0x0047b300
-void DriverLicenseScreen::VTable0x4c()
+// FUNCTION: LEGORACERS 0x0047b220
+void DriverLicenseScreen::FUN_0047b220()
 {
-	// TODO
-	STUB(0x0047b300);
+	FUN_0046c510(&m_unk0x1648, 0, 0xd0);
+
+	MainMenuScreenFieldAt0x22dc::CreateParams createParams;
+	::memset(&createParams, 0, sizeof(createParams));
+	createParams.m_golExport = m_golExport;
+	createParams.m_renderer = m_renderer;
+	createParams.m_unk0x08 = &m_unk0x1648;
+	createParams.m_unk0x0c = &m_context->m_unk0x4b40;
+	createParams.m_position.m_x = -5.3593369f;
+	createParams.m_position.m_y = -3.1500180f;
+	createParams.m_position.m_z = 0.0f;
+
+	m_unk0x224c.FUN_0047e0a0(&createParams);
+	m_unk0x1648.FUN_00465b40(&m_unk0x224c);
+
+	GolVec3 direction;
+	direction.m_x = 1.0f;
+	direction.m_y = 0.0f;
+	direction.m_z = 0.0f;
+
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = -0.0348990f;
+	up.m_z = 0.9993910f;
+	m_unk0x224c.GetUnk0x1c()->VTable0x40(direction, up);
 }
 
-// STUB: LEGORACERS 0x0047b470
-LegoBool32 DriverLicenseScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0047b300
+void DriverLicenseScreen::VTable0x4c()
 {
-	// TODO
-	STUB(0x0047b470);
-	return FALSE;
+	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
+	FUN_0046bef0(&m_unk0x3e4, 0xd6, 0xd6);
+	FUN_0046c050(&m_unk0x1b20, 0xd9, 0x48);
+	m_unk0x1b20.ClearFlags(2);
+
+	FUN_0046bf80(&m_unk0x720, 0x3a, 0x3a, 0x0a);
+	m_unk0x720.FUN_0046f6b0(0x14);
+
+	FUN_0046c610(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
+	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
+
+	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x44, 0x0b);
+		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x43, 9);
+	}
+	else {
+		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x46, 0x72);
+		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x45, 0x1f);
+	}
+
+	PeridotTraceBuffer0x250& record = m_context->m_unk0x258.GetUnk0x1cfc();
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x440); i++) {
+		switch (record.FUN_0042b610(i)) {
+		case 1:
+			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdd);
+			break;
+		case 2:
+			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xde);
+			break;
+		case 3:
+			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdf);
+			break;
+		}
+	}
+
+	FUN_0047b220();
+}
+
+// FUNCTION: LEGORACERS 0x0047b470
+LegoBool32 DriverLicenseScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+{
+	MenuToolContext0x4bc8* context = p_context;
+	if (!context->m_unk0x4b40.HasMenuResources()) {
+		FUN_00480210(context, FALSE);
+	}
+
+	if (!ImaginaryTool0x368::VTable0x8c(context, p_createParams)) {
+		return FALSE;
+	}
+
+	OpalHaven0xf4* opalHaven;
+	ColorRGBA materialColor;
+	ColorRGBA lightColor;
+	materialColor.m_red = 0x78;
+	materialColor.m_grn = 0x78;
+	materialColor.m_blu = 0x78;
+	lightColor.m_red = 0xb4;
+	lightColor.m_grn = 0xb4;
+	lightColor.m_blu = 0xb4;
+	FUN_0047fec0(&materialColor, &lightColor);
+
+	FUN_0047b6b0();
+	m_unk0x224c.GetUnk0x118()->VTable0x14("cmaman", context->m_context->m_unk0x18);
+	opalHaven = m_unk0x224c.GetUnk0x1c();
+	opalHaven->FUN_0040dad0(0);
+	opalHaven->SetFlags(opalHaven->GetFlags() | 0x10000);
+
+	if (context->m_inputBindings.HasInputManager() && !context->m_inputBindings.HasKeyboard()) {
+		m_unk0x1f1c.FUN_00471100(4);
+	}
+
+	static_cast<ObscureIcon0x1a8*>(&m_unk0x1f1c)->VTable0x4c(4);
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047b550
@@ -81,6 +179,74 @@ LegoBool32 DriverLicenseScreen::Destroy()
 
 	m_context->m_unk0x4b40.SetUnk0x10(TRUE);
 	return ImaginaryTool0x368::Destroy();
+}
+
+// STUB: LEGORACERS 0x0047b580
+LegoBool32 DriverLicenseScreen::FUN_0047b580()
+{
+	GolString name;
+	TurquoiseGlowColor color;
+	undefined2 buffer[24];
+
+	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		return TRUE;
+	}
+
+	::memset(buffer, 0, sizeof(buffer));
+	name.CopyFromBufSelection(buffer, 0x17);
+	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
+
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(&name);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
+
+	if (!name.GolStrcmp(&m_cheatString)) {
+		return TRUE;
+	}
+
+	return color.m_unk0x00 != GetUnk0x2244().m_unk0x04;
+}
+
+// FUNCTION: LEGORACERS 0x0047b6b0
+void DriverLicenseScreen::FUN_0047b6b0()
+{
+	TurquoiseGlowColor* color;
+	GolString* cheatString = &m_cheatString;
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(cheatString);
+
+	color = &GetUnk0x2244();
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(color);
+
+	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
+	MainMenuScreenFieldAt0x22dc* preview = &m_unk0x224c;
+	preview->FUN_0047e210(color);
+	LegoU32 colorValue = GetUnk0x2244().m_unk0x01;
+	LegoU32 colorIndex = GetUnk0x2244().m_unk0x04;
+	preview->FUN_0047e160(colorValue, colorIndex);
+
+	if (cheatString->SelectionLength() == 0) {
+		m_menuTextStrings->CopyStringByIndex(cheatString, 0x3a);
+	}
+
+	m_unk0x1f1c.FUN_004711f0(cheatString);
+}
+
+// STUB: LEGORACERS 0x0047b750
+void DriverLicenseScreen::FUN_0047b750()
+{
+	if (m_cheatString.SelectionLength() == 0) {
+		m_unk0x360 = 0xffff;
+		m_unk0x364 = FALSE;
+		return;
+	}
+
+	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b530(&m_cheatString);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&GetUnk0x2244());
+
+	if (!(m_context->m_unk0x4b40.GetUnk0x78() & 1)) {
+		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
+		m_unk0x23b8 = TRUE;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0047b7f0
@@ -101,24 +267,67 @@ void DriverLicenseScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047b850
-void DriverLicenseScreen::VTable0x38(ObscureVantage0x58*)
+void DriverLicenseScreen::VTable0x38(ObscureVantage0x58* p_source)
 {
-	// TODO
-	STUB(0x0047b850);
+	if (p_source == &m_unk0x798) {
+		LegoS32 colorIndex = GetUnk0x2244().m_unk0x04;
+		colorIndex++;
+		GetUnk0x2244().m_unk0x04 = static_cast<LegoU8>(colorIndex % 6);
+		m_unk0x224c.FUN_0047e160(GetUnk0x2244().m_unk0x01, GetUnk0x2244().m_unk0x04);
+	}
+	else if (p_source == &m_unk0xd78) {
+		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+			m_unk0x360 = 0x11;
+		}
+		else {
+			m_unk0x360 = 3;
+		}
+		FUN_0047b750();
+		ApplyCheatCode();
+	}
+	else if (p_source == &m_unk0xa88) {
+		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+			m_unk0x360 = 0x0f;
+			FUN_0047b750();
+			ApplyCheatCode();
+		}
+		else if (FUN_0047b580()) {
+			FUN_0047fdc0(&m_unk0x1068, 0x99, 0x46, 0x20);
+			FUN_0047fdc0(&m_unk0x1358, 0x99, 0x45, 0x1f);
+			FUN_0046c6f0(&m_unk0x1068, &m_unk0x1358, 0x7b);
+		}
+		else {
+			m_unk0x360 = 3;
+		}
+	}
+	else if (p_source == &m_unk0x1068) {
+		m_unk0x360 = 3;
+		m_unk0x284->FUN_00468cf0();
+	}
+	else if (p_source == &m_unk0x1358) {
+		m_unk0x284->FUN_00468cf0();
+	}
+
+	if (m_unk0x360 != 0xffff) {
+		m_unk0x364 = TRUE;
+	}
+	m_unk0x35c = p_source;
 }
 
-// STUB: LEGORACERS 0x0047b9c0
-void DriverLicenseScreen::VTable0x40(ObscureIcon0x1a8*)
+// FUNCTION: LEGORACERS 0x0047b9c0
+void DriverLicenseScreen::VTable0x40(ObscureIcon0x1a8* p_source)
 {
-	// TODO
-	STUB(0x0047b9c0);
+	if (p_source == &m_unk0x1f1c) {
+		m_unk0x1b20.ClearFlags(2);
+	}
 }
 
-// STUB: LEGORACERS 0x0047b9e0
-void DriverLicenseScreen::VTable0x3c(ObscureIcon0x1a8*)
+// FUNCTION: LEGORACERS 0x0047b9e0
+void DriverLicenseScreen::VTable0x3c(ObscureIcon0x1a8* p_source)
 {
-	// TODO
-	STUB(0x0047b9e0);
+	if (p_source == &m_unk0x1f1c) {
+		m_unk0x1b20.SetFlags(2);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0047ba00
@@ -187,9 +396,19 @@ void DriverLicenseScreen::ApplyCheatCode()
 	}
 }
 
-// STUB: LEGORACERS 0x0047bbf0
-void DriverLicenseScreen::VTable0x90(undefined4)
+// FUNCTION: LEGORACERS 0x0047bbf0
+void DriverLicenseScreen::VTable0x90(undefined4 p_keyCode)
 {
-	// TODO
-	STUB(0x0047bbf0);
+	LegoU32 keyCode = p_keyCode;
+	InputDevice* keyboard = m_inputManager->GetKeyboard();
+
+	LegoU16 character = static_cast<LegoU16>(keyCode);
+	if (character >= 0x80 && character > 0xe0) {
+		keyCode += 0xffe0;
+	}
+	else if (islower(character)) {
+		keyCode += 0xffe0;
+	}
+
+	m_inputEvents->OnKeyDown(keyboard, (keyCode & InputDevice::c_keyCodeMask) | InputDevice::c_sourceCharacter, 0);
 }

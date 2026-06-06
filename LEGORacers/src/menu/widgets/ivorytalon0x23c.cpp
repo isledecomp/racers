@@ -63,6 +63,39 @@ LegoBool32 IvoryTalon0x23c::VTable0x70(
 	return FUN_00471e30(p_createParams, p_createState);
 }
 
+// FUNCTION: LEGORACERS 0x00471100
+void IvoryTalon0x23c::FUN_00471100(undefined4 p_unk0x04)
+{
+	m_unk0x1f8 = p_unk0x04;
+
+	if (p_unk0x04 == 4) {
+		if (m_length) {
+			m_length--;
+			m_unk0x1f4 = 0;
+
+			while (m_unk0x1f4 < m_charset.SelectionLength()) {
+				if (*m_text.FromCursor(m_length) == *m_charset.FromCursor(m_unk0x1f4)) {
+					m_text.FirstLine();
+					return;
+				}
+
+				m_unk0x1f4++;
+			}
+		}
+
+		*m_text.FromCursor(m_length) = *m_charset.FromCursor(0);
+		m_unk0x1f4 = 0;
+		m_text.FirstLine();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004711f0
+void IvoryTalon0x23c::FUN_004711f0(GolString* p_string)
+{
+	m_text.GolStrcpy(p_string);
+	m_length = m_text.SelectionLength();
+}
+
 // FUNCTION: LEGORACERS 0x00471220
 void IvoryTalon0x23c::VTable0x4c(undefined4 p_flags)
 {

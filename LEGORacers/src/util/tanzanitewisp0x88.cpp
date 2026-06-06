@@ -462,6 +462,15 @@ GolSceneNode* TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor* p_color)
 	return m_unk0x38->FUN_00498570(torsoLegIndex);
 }
 
+// FUNCTION: LEGORACERS 0x0049dc50
+CmbModelPart0x34* TanzaniteWisp0x88::FUN_0049dc50(TurquoiseGlowColor* p_color)
+{
+	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
+	LegoS32 torsoLegIndex =
+		2 * partConfig->GetLegVariant(p_color->m_unk0x03) + partConfig->GetTorsoVariant(p_color->m_unk0x02);
+	return m_unk0x38->FUN_004985e0(torsoLegIndex);
+}
+
 // FUNCTION: LEGORACERS 0x0049dc90
 void TanzaniteWisp0x88::FUN_0049dc90(undefined4* p_dest)
 {

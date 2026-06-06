@@ -5,6 +5,15 @@
 #include "decomp.h"
 #include "golstring.h"
 #include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/mainmenuscreenfieldat0x22dc.h"
+#include "menu/screens/mainmenuscreenfieldat0x420.h"
+#include "menu/screens/mainmenuscreenfieldat0x498.h"
+#include "menu/widgets/embervault0x330.h"
+#include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/widgets/obscureanchor0x7c.h"
+#include "menu/widgets/obscurerune0x4d8.h"
+#include "menu/widgets/obscuretome0x3fc.h"
+#include "racer/turquoiseglowcolor.h"
 
 // VTABLE: LEGORACERS 0x004b31f8
 // SIZE 0x23bc
@@ -31,6 +40,13 @@ public:
 	// DriverLicenseScreen::`scalar deleting destructor'
 
 protected:
+	void FUN_0047b220();
+	LegoBool32 FUN_0047b580();
+	void FUN_0047b6b0();
+	void FUN_0047b750();
+	undefined2* GetCheatBuffer() { return m_unk0x1f1c.GetUnk0x300(); }
+	TurquoiseGlowColor& GetUnk0x2244() { return *m_unk0x1f1c.GetUnk0x328(); }
+
 	enum {
 		c_nslwj = 1 << 0,
 		c_flyskyhgh = 1 << 1,
@@ -52,12 +68,22 @@ protected:
 		c_cheatBufferStorageLength = c_cheatBufferLength + 1
 	};
 
-	undefined m_unk0x368[0x221c - 0x368];                 // 0x0368
-	undefined2 m_cheatBuffer[c_cheatBufferStorageLength]; // 0x221c
-	undefined m_unk0x223a[0x23a8 - 0x223a];               // 0x223a
-	GolString m_cheatString;                              // 0x23a8
-	LegoBool32 m_unk0x23b4;                               // 0x23b4
-	LegoBool32 m_unk0x23b8;                               // 0x23b8
+	ObscureAnchor0x7c m_unk0x368;            // 0x0368
+	ObscureAnchor0x5c m_unk0x3e4;            // 0x03e4
+	ObscureAnchor0x5c m_unk0x440[8];         // 0x0440
+	MainMenuScreenFieldAt0x420 m_unk0x720;   // 0x0720
+	MainMenuScreenFieldAt0x498 m_unk0x798;   // 0x0798
+	MainMenuScreenFieldAt0x498 m_unk0xa88;   // 0x0a88
+	MainMenuScreenFieldAt0x498 m_unk0xd78;   // 0x0d78
+	MainMenuScreenFieldAt0x498 m_unk0x1068;  // 0x1068
+	MainMenuScreenFieldAt0x498 m_unk0x1358;  // 0x1358
+	ObscureRune0x4d8 m_unk0x1648;            // 0x1648
+	ObscureTome0x3fc m_unk0x1b20;            // 0x1b20
+	EmberVault0x330 m_unk0x1f1c;             // 0x1f1c
+	MainMenuScreenFieldAt0x22dc m_unk0x224c; // 0x224c
+	GolString m_cheatString;                 // 0x23a8
+	LegoBool32 m_unk0x23b4;                  // 0x23b4
+	LegoBool32 m_unk0x23b8;                  // 0x23b8
 };
 
 #endif // DRIVERLICENSESCREEN_H

@@ -13,7 +13,7 @@ GolRenderDevice::MaterialColor::MaterialColor()
 }
 
 // FUNCTION: GOLDP 0x10024770
-// FUNCTION: LEGORACERS 0x00442e60
+// FUNCTION: LEGORACERS 0x00442e60 FOLDED
 void GolRenderDevice::MaterialColor::SetColor(ColorRGBA p_color)
 {
 	m_color = p_color;

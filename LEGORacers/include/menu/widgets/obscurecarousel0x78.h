@@ -63,6 +63,7 @@ public:
 	void FUN_0046da00(ObscureVantage0x58* p_child);
 	ObscureVantage0x58* FUN_0046da40(LegoS32 p_index);
 	void FUN_0046da60();
+	ObscureVantage0x58* GetUnk0x78() const { return m_unk0x78; }
 
 	// SYNTHETIC: LEGORACERS 0x0046d870
 	// ObscureCarousel0x94::`scalar deleting destructor'

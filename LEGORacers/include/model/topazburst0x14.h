@@ -37,6 +37,7 @@ public:
 		LegoS32 NormalizeChoiceIndex(LegoS32 p_index);
 		LegoS32* GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex);
 		LegoS32 FindChoiceIndex(LegoS32 p_pieceType, LegoS32 p_colorRecordIndex);
+		const LegoChar* GetName() const { return m_name; }
 
 	private:
 		void FUN_0049cb00();
@@ -63,6 +64,7 @@ public:
 	LegoS32 FindEntryIndex(LegoS32 p_index);
 	Entry* GetEntries() const { return m_entries; }
 	Entry* GetUnk0x10() const { return m_unk0x10; }
+	void SetUnk0x10(Entry* p_unk0x10) { m_unk0x10 = p_unk0x10; }
 
 private:
 	VerdantTide0x38* m_verdantTide;   // 0x00

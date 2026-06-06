@@ -26,8 +26,10 @@ public:
 	~SaveSystem();
 
 	PeridotTrace0x4a8& GetUnk0x108() { return m_unk0x108; }
+	PeridotTrace0x4a8& GetUnk0x5b0() { return m_unk0x5b0; }
 	MarigoldTrail0x108& GetUnk0x00() { return m_unk0x00; }
 	PeridotTrace0x4e0* GetUnk0xa58() { return m_unk0xa58; }
+	PeridotTrace0x4a8& GetUnk0x1418() { return m_unk0x1418; }
 	LegoU32 GetUnk0x18c0() const { return m_unk0x18c0; }
 	GameState& GetUnk0x18c4() { return m_unk0x18c4; }
 	LegoU8 GetLanguageIndex() const { return m_unk0x18c4.GetLanguageIndex(); }

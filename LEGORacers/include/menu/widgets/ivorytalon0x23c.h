@@ -51,6 +51,9 @@ public:
 	void VTable0x4c(undefined4) override;                                                       // vtable+0x4c
 	void VTable0x50(undefined4) override;                                                       // vtable+0x50
 	virtual LegoBool32 VTable0x70(CreateParams0xa0*, const ObscureIcon0x1a8::CreateState0x90*); // vtable+0x70
+	void FUN_00471100(undefined4 p_unk0x04);
+	void FUN_004711f0(GolString* p_string);
+	undefined2* GetBuffer() { return m_buffer; }
 
 	// SYNTHETIC: LEGORACERS 0x00470f20
 	// IvoryTalon0x23c::`scalar deleting destructor'

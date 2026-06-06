@@ -16,6 +16,7 @@ class MusicGroup;
 class GarnetFlare0x60;
 class GolModelBase;
 class GolSceneNode;
+class CmbModelPart0x34;
 struct TurquoiseGlowColor;
 
 // SIZE 0x88
@@ -47,6 +48,7 @@ public:
 	void RefreshMenuResources();
 	GolModelBase* FUN_0049db90(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
 	GolSceneNode* FUN_0049dc10(TurquoiseGlowColor* p_color);
+	CmbModelPart0x34* FUN_0049dc50(TurquoiseGlowColor* p_color);
 	void FUN_0049dc90(undefined4* p_dest);
 	void FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* p_color);
 

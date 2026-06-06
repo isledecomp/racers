@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "menu/widgets/ivorytalon0x23c.h"
 #include "menu/widgets/sablecrest0xc0.h"
+#include "racer/turquoiseglowcolor.h"
 
 // VTABLE: LEGORACERS 0x004b28d0
 // SIZE 0x330
@@ -17,6 +18,9 @@ public:
 	ObscureVantage0x58* VTable0x38(Rect*, Rect*) override;                                       // vtable+0x38
 	LegoBool32 VTable0x70(CreateParams0xa0*, const ObscureIcon0x1a8::CreateState0x90*) override; // vtable+0x70
 
+	undefined2* GetUnk0x300() { return m_unk0x300; }
+	TurquoiseGlowColor* GetUnk0x328() { return &m_unk0x328; }
+
 	// SYNTHETIC: LEGORACERS 0x004718b0
 	// EmberVault0x330::`scalar deleting destructor'
 
@@ -26,7 +30,11 @@ protected:
 	LegoBool32 FUN_00471aa0(CreateParams0xa0* p_createParams);
 
 	SableCrest0xc0 m_unk0x23c;           // 0x23c
-	undefined m_unk0x2fc[0x330 - 0x2fc]; // 0x2fc
+	undefined m_unk0x2fc[0x300 - 0x2fc]; // 0x2fc
+	undefined2 m_unk0x300[15];           // 0x300
+	undefined m_unk0x31e[0x328 - 0x31e]; // 0x31e
+	TurquoiseGlowColor m_unk0x328;       // 0x328
+	undefined m_unk0x32d[0x330 - 0x32d]; // 0x32d
 };
 
 #endif // EMBERVAULT0X330_H

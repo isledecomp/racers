@@ -177,6 +177,19 @@ void SapphireReef0x2030::Destroy()
 	Reset();
 }
 
+// STUB: LEGORACERS 0x0049a160
+void SapphireReef0x2030::FUN_0049a160(
+	LegoPieceLibrary::PieceRecord*,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4,
+	undefined4
+)
+{
+	STUB(0x0049a160);
+}
+
 // FUNCTION: LEGORACERS 0x0049ad00
 void SapphireReef0x2030::FUN_0049ad00()
 {
@@ -238,10 +251,22 @@ void SapphireReef0x2030::FUN_0049b8b0(LegoPieceLibrary::PieceRecord*, undefined4
 	STUB(0x0049b8b0);
 }
 
+// STUB: LEGORACERS 0x0049b920
+void SapphireReef0x2030::FUN_0049b920(undefined4, undefined4)
+{
+	STUB(0x0049b920);
+}
+
 // FUNCTION: LEGORACERS 0x0049bd50
 LegoS32 SapphireReef0x2030::FUN_0049bd50(LegoS32 p_index) const
 {
 	return m_unk0xa4.m_entries[p_index].m_unk0x08;
+}
+
+// STUB: LEGORACERS 0x0049c7f0
+void SapphireReef0x2030::FUN_0049c7f0(LegoU8*)
+{
+	STUB(0x0049c7f0);
 }
 
 // FUNCTION: LEGORACERS 0x0049c820
@@ -345,4 +370,10 @@ LegoBool32 SapphireReef0x2030::Field0xa4::Initialize(LegoS32 p_count)
 void SapphireReef0x2030::Field0xa4::FUN_0049fca0(LegoU8*)
 {
 	STUB(0x0049fca0);
+}
+
+// STUB: LEGORACERS 0x0049fd60
+void SapphireReef0x2030::Field0xa4::FUN_0049fd60()
+{
+	STUB(0x0049fd60);
 }

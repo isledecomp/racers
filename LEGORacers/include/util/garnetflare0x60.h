@@ -15,6 +15,7 @@ class LavenderVault0x764;
 class GolTextureList;
 class GolSceneNode;
 class GolWorldDatabase;
+class CmbModelPart0x34;
 
 // SIZE 0x60
 class GarnetFlare0x60 {
@@ -36,6 +37,7 @@ public:
 	GolModelBase* FUN_004984d0(LegoS32 p_index);
 	GolModelBase* FUN_00498510(LegoS32 p_index);
 	GolSceneNode* FUN_00498570(LegoS32 p_index);
+	CmbModelPart0x34* FUN_004985e0(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498640(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498680(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_004986c0(LegoS32 p_index);
@@ -48,6 +50,7 @@ public:
 	LegoS32 GetUnk0x50() const { return m_unk0x50; }
 	LegoS32 GetUnk0x54() const { return m_unk0x54; }
 	LegoS32 GetUnk0x58() const { return m_unk0x58; }
+	void SetUnk0x5c(LegoS32 p_unk0x5c) { m_resourceIndex = p_unk0x5c; }
 
 private:
 	LegoS32 Reset();

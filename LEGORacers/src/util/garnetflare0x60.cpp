@@ -350,6 +350,21 @@ GolSceneNode* GarnetFlare0x60::FUN_00498570(LegoS32 p_index)
 	return model->VTable0x58(0);
 }
 
+// FUNCTION: LEGORACERS 0x004985e0
+CmbModelPart0x34* GarnetFlare0x60::FUN_004985e0(LegoS32 p_index)
+{
+	GolName name;
+	if (m_resourceIndex == 1) {
+		m_partConfig->FUN_00499070(4, name);
+	}
+	else {
+		m_partConfig->FUN_00499070(p_index, name);
+	}
+
+	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	return model->GetModelPart(0);
+}
+
 // FUNCTION: LEGORACERS 0x00498640
 DuskwindBananaRelic0x24* GarnetFlare0x60::FUN_00498640(LegoS32 p_index)
 {

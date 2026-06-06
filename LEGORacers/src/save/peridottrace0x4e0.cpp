@@ -73,9 +73,15 @@ void PeridotTraceBase0x24::Record::FUN_0042b360(LegoU8* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x0042b380
-void PeridotTraceBase0x24::Record::FUN_0042b380(undefined4* p_dest) const
+void PeridotTraceBase0x24::Record::FUN_0042b380(GolName p_dest) const
 {
 	::memcpy(p_dest, &m_data[0x21], 8);
+}
+
+// FUNCTION: LEGORACERS 0x0042b3a0
+void PeridotTraceBase0x24::Record::FUN_0042b3a0(GolString* p_string) const
+{
+	PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_data, 0x0e);
 }
 
 // FUNCTION: LEGORACERS 0x0042b400
@@ -98,10 +104,55 @@ void PeridotTraceBuffer0x250::CopyBufferToString(GolString* p_string, const Lego
 	p_string->SetCursorStart(0);
 }
 
+// FUNCTION: LEGORACERS 0x0042b460
+LegoBool32 PeridotTraceBase0x24::Record::FUN_0042b460() const
+{
+	return m_data[0x20] & 0x80;
+}
+
+// FUNCTION: LEGORACERS 0x0042b470
+void PeridotTraceBase0x24::Record::FUN_0042b470()
+{
+	FUN_0042b6d0();
+	m_data[0x20] |= 0x80;
+}
+
+// FUNCTION: LEGORACERS 0x0042b490
+void PeridotTraceBase0x24::Record::FUN_0042b490()
+{
+	FUN_0042b6d0();
+	m_data[0x20] &= 0x7f;
+}
+
+// FUNCTION: LEGORACERS 0x0042b4b0
+void PeridotTraceBase0x24::Record::FUN_0042b4b0(const TurquoiseGlowColor* p_color)
+{
+	m_data[0x1c] = p_color->m_unk0x01;
+	m_data[0x1d] = p_color->m_unk0x00;
+	m_data[0x1e] = p_color->m_unk0x03;
+	m_data[0x1f] = p_color->m_unk0x02;
+	m_data[0x20] = (m_data[0x20] & 0x80) | p_color->m_unk0x04;
+	FUN_0042b6d0();
+}
+
 // FUNCTION: LEGORACERS 0x0042b4f0
 void PeridotTraceBuffer0x250::FUN_0042b4f0(const LegoU8* p_source)
 {
 	memcpy(&m_data[0x29], p_source, 0x202);
+	FUN_0042b6d0();
+}
+
+// FUNCTION: LEGORACERS 0x0042b510
+void PeridotTraceBase0x24::Record::FUN_0042b510(const GolName p_source)
+{
+	::memcpy(&m_data[0x21], p_source, 8);
+	FUN_0042b6d0();
+}
+
+// FUNCTION: LEGORACERS 0x0042b530
+void PeridotTraceBase0x24::Record::FUN_0042b530(GolString* p_string)
+{
+	PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_data, 0x0e);
 	FUN_0042b6d0();
 }
 
@@ -127,6 +178,30 @@ void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, LegoU8* p_
 		*dest++ = 0;
 		*dest++ = 0;
 	}
+}
+
+// FUNCTION: LEGORACERS 0x0042b5c0
+void PeridotTraceBase0x24::Record::FUN_0042b5c0(const Record* p_source)
+{
+	if (m_unk0x08 == 0) {
+		FUN_0042b2f0(p_source->m_unk0x08, p_source->m_unk0x0c, 0, NULL);
+	}
+
+	::memcpy(m_data, p_source->m_data, sizeof(m_data));
+	FUN_0042b6d0();
+}
+
+// FUNCTION: LEGORACERS 0x0042b610
+LegoU32 PeridotTraceBase0x24::Record::FUN_0042b610(undefined4 p_index) const
+{
+	LegoU16 value = m_data[0x22c];
+	LegoU16 low = m_data[0x22b];
+	value <<= 8;
+	value += low;
+
+	LegoU8 shift = static_cast<LegoU8>(p_index);
+	shift <<= 1;
+	return (value >> shift) & 3;
 }
 
 // FUNCTION: LEGORACERS 0x0042b6d0

@@ -3,6 +3,7 @@
 
 #include "decomp.h"
 #include "golfile.h"
+#include "golname.h"
 #include "save/peridottraceroot0x108.h"
 #include "types.h"
 #include "util/displaydriverguid.h"
@@ -87,7 +88,16 @@ public:
 		void FUN_0042b6d0();
 		void FUN_0042b330(TurquoiseGlowColor* p_color) const;
 		void FUN_0042b360(LegoU8* p_dest) const;
-		void FUN_0042b380(undefined4* p_dest) const;
+		void FUN_0042b380(GolName p_dest) const;
+		void FUN_0042b3a0(GolString* p_string) const;
+		LegoBool32 FUN_0042b460() const;
+		void FUN_0042b470();
+		void FUN_0042b490();
+		void FUN_0042b4b0(const TurquoiseGlowColor* p_color);
+		void FUN_0042b510(const GolName p_source);
+		void FUN_0042b530(GolString* p_string);
+		void FUN_0042b5c0(const Record* p_source);
+		LegoU32 FUN_0042b610(undefined4 p_index) const;
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -290,6 +300,30 @@ public:
 		m_unk0x00 = 1;
 		m_state.m_unk0x23 = static_cast<LegoU8>(p_unk0x23);
 	}
+	void SetInputBindingPlayer0Unk0x00(undefined4 p_unk0x00)
+	{
+		m_state.m_inputBindings.m_players[0].m_unk0x00 = static_cast<LegoU8>(p_unk0x00);
+		m_unk0x00 = 1;
+	}
+	void SetInputBindingPlayer0Unk0x01(undefined4 p_unk0x01)
+	{
+		m_state.m_inputBindings.m_players[0].m_unk0x01 = static_cast<LegoU8>(p_unk0x01);
+		m_unk0x00 = 1;
+	}
+	void SetInputBindingPlayer0Unk0x02(undefined4 p_unk0x02)
+	{
+		m_state.m_inputBindings.m_players[0].m_unk0x02 = static_cast<LegoU8>(p_unk0x02);
+		m_unk0x00 = 1;
+	}
+	void SetInputBindingPlayer0RecordValues(const PeridotTraceBase0x24::Record* p_record)
+	{
+		m_state.m_inputBindings.m_players[0].m_unk0x01 = p_record->m_unk0x08;
+		m_unk0x00 = 1;
+		m_state.m_inputBindings.m_players[0].m_unk0x02 = p_record->m_unk0x0c;
+		m_unk0x00 = 1;
+		m_state.m_inputBindings.m_players[0].m_unk0x00 = p_record->m_unk0x10;
+		m_unk0x00 = 1;
+	}
 	void SetLanguageIndex(LegoU8 p_languageIndex) { m_state.m_languageIndex = p_languageIndex; }
 	LegoU8 GetSelectedInputBindingEntryIndex(LegoU32 p_playerIndex) const
 	{
@@ -297,6 +331,7 @@ public:
 	}
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	undefined4 GetUnk0x04() const { return m_unk0x04; }
+	PeridotTracePersistentState& GetState() { return m_state; }
 	LegoU8 GetUnk0x0c() const { return m_state.m_unk0x0c; }
 	LegoU8 GetUnk0x1f() const { return m_state.m_unk0x1f; }
 	LegoU8 GetUnk0x20() const { return m_state.m_unk0x20; }

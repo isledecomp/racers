@@ -1,5 +1,7 @@
 #include "menu/screens/racerpickmodelstate0x28.h"
 
+#include "save/savesystem.h"
+
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(RacerPickModelState0x28, 0x28)
@@ -13,13 +15,85 @@ RacerPickModelState0x28::RacerPickModelState0x28()
 // FUNCTION: LEGORACERS 0x00442e30
 void RacerPickModelState0x28::Reset()
 {
-	m_unk0x00 = 0;
+	m_unk0x00 = NULL;
 
 	::memset(m_unk0x04, 0, sizeof(m_unk0x04));
 	m_unk0x18 = 0;
 	m_unk0x1c = 0;
 	m_unk0x20 = 0;
 	m_unk0x24 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00442e60 FOLDED
+void RacerPickModelState0x28::FUN_00442e60(SaveSystem* p_saveSystem)
+{
+	m_unk0x00 = p_saveSystem;
+}
+
+// STUB: LEGORACERS 0x00442e80
+LegoU32 RacerPickModelState0x28::FUN_00442e80(LegoU32 p_mask) const
+{
+	LegoU32 count = 0;
+
+	if (p_mask & 0x01) {
+		count += m_unk0x00->GetUnk0x5b0().GetUnk0x00();
+	}
+	if (p_mask & 0x02) {
+		count += m_unk0x00->GetUnk0x108().GetUnk0x00();
+	}
+	if (p_mask & 0x04) {
+		count += m_unk0x00->GetUnk0x1418().GetUnk0x00();
+	}
+
+	PeridotTrace0x4e0* traces = m_unk0x00->GetUnk0xa58();
+	for (LegoU32 i = 0; i < m_unk0x00->GetUnk0x18c0(); i++) {
+		if (p_mask & (0x10 << i)) {
+			count += traces[i].GetUnk0x00();
+		}
+	}
+
+	return count;
+}
+
+// STUB: LEGORACERS 0x00442ef0
+PeridotTraceBase0x24::Record* RacerPickModelState0x28::FUN_00442ef0(LegoU32 p_mask)
+{
+	m_unk0x24 = p_mask;
+	m_unk0x18 = 0;
+	m_unk0x1c = 0;
+	m_unk0x20 = 0;
+
+	if (p_mask & 0x01) {
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x5b0();
+	}
+	if (p_mask & 0x02) {
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x108();
+	}
+	if (p_mask & 0x04) {
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x1418();
+	}
+
+	PeridotTrace0x4e0* traces = m_unk0x00->GetUnk0xa58();
+	for (LegoU32 i = 0; i < m_unk0x00->GetUnk0x18c0(); i++) {
+		if (p_mask & (0x10 << i)) {
+			m_unk0x04[m_unk0x20++] = &traces[i];
+		}
+	}
+
+	if (m_unk0x20 == 0) {
+		return NULL;
+	}
+
+	while (m_unk0x18 < m_unk0x20 && m_unk0x04[m_unk0x18]->GetUnk0x00() == 0) {
+		m_unk0x18++;
+	}
+
+	if (m_unk0x18 >= m_unk0x20) {
+		m_unk0x18 = 0;
+		return NULL;
+	}
+
+	return m_unk0x04[m_unk0x18]->FUN_0042b990(0);
 }
 
 // FUNCTION: LEGORACERS 0x00442fe0

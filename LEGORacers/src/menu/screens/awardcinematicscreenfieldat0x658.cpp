@@ -1,6 +1,11 @@
 #include "menu/screens/awardcinematicscreen.h"
+#include "model/sapphirereef0x2030.h"
+#include "racer/aquamarinespirit0x3c.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(AwardCinematicScreen::FieldAt0x658, 0x50)
+DECOMP_SIZE_ASSERT(AwardCinematicScreen::FieldAt0x658::CreateParams0x18, 0x18)
 DECOMP_SIZE_ASSERT(AwardCinematicScreen::FieldAt0x658::Lookup0xd0, 0xd0)
 
 // FUNCTION: LEGORACERS 0x00479440
@@ -12,6 +17,36 @@ AwardCinematicScreen::FieldAt0x658::FieldAt0x658()
 AwardCinematicScreen::FieldAt0x658::~FieldAt0x658()
 {
 	FUN_00479590();
+}
+
+// FUNCTION: LEGORACERS 0x004794d0
+void AwardCinematicScreen::FieldAt0x658::FUN_004794d0(OpalHaven0xf4* p_entity)
+{
+	p_entity->SetFlags(p_entity->GetFlags() | 0x10000);
+	p_entity->FUN_0040dad0(0);
+	p_entity->FUN_10028710();
+	FUN_00411ec0(p_entity);
+}
+
+// FUNCTION: LEGORACERS 0x00479510
+LegoBool32 AwardCinematicScreen::FieldAt0x658::FUN_00479510(CreateParams0x18* p_createParams)
+{
+	FUN_00479590();
+
+	::memcpy(&m_unk0x38, p_createParams, sizeof(*p_createParams));
+	FUN_00411e30(4);
+
+	if (m_unk0x40 == NULL) {
+		m_unk0x40 = p_createParams->m_unk0x04->GetUnk0x0c();
+	}
+	FUN_00411ec0(m_unk0x40);
+
+	FUN_004794d0(m_unk0x38->FUN_0041e5b0(m_unk0x48));
+	if (m_unk0x44) {
+		FUN_004794d0(m_unk0x44);
+	}
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00479590

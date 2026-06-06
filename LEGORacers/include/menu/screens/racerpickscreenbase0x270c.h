@@ -37,6 +37,9 @@ public:
 	// RacerPickScreenBase0x270c::`scalar deleting destructor'
 
 protected:
+	void FUN_00485bb0();
+	void FUN_00485c80(MenuToolContext0x4bc8* p_context, LegoU32 p_mask);
+	void FUN_004861b0();
 	void FUN_00486250(LegoS32 p_index);
 	void FUN_00486400(LegoS32 p_index);
 	void FUN_00486440(LegoS32 p_index);

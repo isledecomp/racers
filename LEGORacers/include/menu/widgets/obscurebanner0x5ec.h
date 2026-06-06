@@ -88,6 +88,7 @@ public:
 	void VTable0x7c() override;                                                               // vtable+0x7c
 
 	LegoBool32 FUN_00467800(CreateParams0x98* p_createParams, CeruleanEmperor0x4c::Entry0xbc* p_styleEntry);
+	void SetUnk0x9ec(undefined4 p_unk0x9ec) { m_unk0x9ec = p_unk0x9ec; }
 
 	// SYNTHETIC: LEGORACERS 0x00467730
 	// ObscureBanner0x9f4::`scalar deleting destructor'

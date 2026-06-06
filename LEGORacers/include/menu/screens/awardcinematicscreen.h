@@ -9,6 +9,7 @@
 #include "util/opalhaven0xf4.h"
 
 class AquamarineSpirit0x3c;
+class GolWorldEntity;
 class SapphireReef0x2030;
 
 // VTABLE: LEGORACERS 0x004b2c5c
@@ -23,7 +24,7 @@ public:
 		struct CreateParams0x18 {
 			AquamarineSpirit0x3c* m_unk0x00; // 0x00
 			SapphireReef0x2030* m_unk0x04;   // 0x04
-			OpalHaven0xf4* m_unk0x08;        // 0x08
+			GolWorldEntity* m_unk0x08;       // 0x08
 			OpalHaven0xf4* m_unk0x0c;        // 0x0c
 			GolName m_unk0x10;               // 0x10
 		};
@@ -50,7 +51,7 @@ public:
 
 		AquamarineSpirit0x3c* m_unk0x38; // 0x38
 		SapphireReef0x2030* m_unk0x3c;   // 0x3c
-		OpalHaven0xf4* m_unk0x40;        // 0x40
+		GolWorldEntity* m_unk0x40;       // 0x40
 		OpalHaven0xf4* m_unk0x44;        // 0x44
 		GolName m_unk0x48;               // 0x48
 	};

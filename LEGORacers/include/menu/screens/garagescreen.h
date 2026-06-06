@@ -27,7 +27,14 @@ public:
 protected:
 	void FUN_0047e550();
 	void FUN_0047e600();
+	void FUN_0047e740();
+	void FUN_0047e900();
+	void FUN_0047e950();
 	void FUN_0047e9c0();
+	void FUN_0047e9f0(MenuToolContext0x4bc8* p_context);
+	void FUN_0047ea50();
+	void FUN_0047eb20();
+	void FUN_0047efe0();
 
 	ObscureAnchor0x5c m_unk0x3ff4;          // 0x3ff4
 	MainMenuScreenFieldAt0x420 m_unk0x4050; // 0x4050

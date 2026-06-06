@@ -7,9 +7,12 @@
 #include "golstring.h"
 #include "golstringtable.h"
 #include "menu/menutoolcontext0x4bc8.h"
+#include "mesh/golmodelbase.h"
+#include "racer/turquoiseglowcolor.h"
 #include "scene/golskinnedentity.h"
 #include "world/golworlddatabase.h"
 
+#include <float.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(RacerPickScreenBase0x270c, 0x270c)
@@ -19,6 +22,9 @@ extern LegoU32 g_unk0x004c6ee4;
 
 // GLOBAL: LEGORACERS 0x004c21bc
 LegoU16 g_unk0x004c21bc[8] = {116, 117, 119, 120, 121, 122, 123, 0};
+
+// GLOBAL: LEGORACERS 0x004b3c74
+LegoFloat g_racerPickMaxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x00485890
 RacerPickScreenBase0x270c::RacerPickScreenBase0x270c()
@@ -54,6 +60,50 @@ void RacerPickScreenBase0x270c::Reset()
 	m_unk0x74c.m_y = 0.0f;
 
 	ImaginaryTool0x368::Reset();
+}
+
+// STUB: LEGORACERS 0x00485bb0
+void RacerPickScreenBase0x270c::FUN_00485bb0()
+{
+	STUB(0x00485bb0);
+}
+
+// STUB: LEGORACERS 0x00485c80
+void RacerPickScreenBase0x270c::FUN_00485c80(MenuToolContext0x4bc8* p_context, LegoU32 p_mask)
+{
+	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		RacerPickModelState0x28* modelState = &m_unk0x22dc[i];
+
+		modelState->FUN_00442e60(&p_context->m_unk0x258);
+		modelState->FUN_00442ef0(p_mask);
+		m_unk0x2704[i] = modelState->FUN_00442e80(p_mask);
+
+		if (m_unk0x2704[i]) {
+			PeridotTraceBase0x24::Record* firstRecord = modelState->FUN_004430b0();
+			PeridotTraceInputBindingPlayerState& player =
+				p_context->m_unk0x258.GetUnk0x18c4().GetState().m_inputBindings.m_players[i];
+
+			while (TRUE) {
+				PeridotTraceBase0x24::Record* record = modelState->FUN_00442fe0();
+
+				if (record->m_unk0x08 == player.m_unk0x01 && record->m_unk0x0c == player.m_unk0x02 &&
+					record->m_unk0x10 == player.m_unk0x00) {
+					if (firstRecord != record) {
+						break;
+					}
+				}
+				else if (firstRecord != record) {
+					continue;
+				}
+
+				do {
+					record = modelState->FUN_00442fe0();
+				} while (record->m_unk0x08 == 3 && firstRecord != record);
+
+				break;
+			}
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00485e50
@@ -135,11 +185,33 @@ void RacerPickScreenBase0x270c::VTable0x80()
 	FUN_0047fec0(&materialColor, &lightColor);
 }
 
-// STUB: LEGORACERS 0x00486060
-LegoBool32 RacerPickScreenBase0x270c::VTable0xa0(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*, undefined4*)
+// FUNCTION: LEGORACERS 0x00486060
+LegoBool32 RacerPickScreenBase0x270c::VTable0xa0(
+	MenuToolContext0x4bc8* p_context,
+	MenuToolCreateParams0x30* p_createParams,
+	undefined4* p_params
+)
 {
-	STUB(0x00486060);
-	return FALSE;
+	m_unk0x26fc = p_params[0];
+	m_unk0x2700 = p_params[1];
+	m_unk0x77c = m_unk0x2700 * m_unk0x26fc;
+
+	if (!p_context->m_unk0x21f4.FUN_0049a0e0()) {
+		FUN_0047ff50(p_context, TRUE);
+	}
+
+	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+		FUN_00480210(p_context, FALSE);
+	}
+
+	FUN_00485c80(p_context, p_params[2]);
+
+	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+		return FALSE;
+	}
+
+	FUN_00485bb0();
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004860f0
@@ -163,10 +235,64 @@ LegoBool32 RacerPickScreenBase0x270c::Destroy()
 	return ImaginaryTool0x368::Destroy();
 }
 
-// STUB: LEGORACERS 0x00486250
-void RacerPickScreenBase0x270c::FUN_00486250(LegoS32)
+// STUB: LEGORACERS 0x004861b0
+void RacerPickScreenBase0x270c::FUN_004861b0()
 {
-	STUB(0x00486250);
+	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		PeridotTraceBase0x24::Record* record = m_unk0x22dc[i].FUN_004430b0();
+
+		if (record != NULL) {
+			GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
+			PeridotTraceInputBindingPlayerState& player = state.GetState().m_inputBindings.m_players[i];
+
+			player.m_unk0x01 = static_cast<LegoU8>(record->m_unk0x08);
+			state.SetUnk0x00(1);
+			player.m_unk0x02 = static_cast<LegoU8>(record->m_unk0x0c);
+			state.SetUnk0x00(1);
+			player.m_unk0x00 = static_cast<LegoU8>(record->m_unk0x10);
+			state.SetUnk0x00(1);
+		}
+	}
+
+	if (m_context->m_menuStack.Peek() != 0x30) {
+		m_context->m_menuStack.Push(0x30);
+	}
+}
+
+// STUB: LEGORACERS 0x00486250
+void RacerPickScreenBase0x270c::FUN_00486250(LegoS32 p_index)
+{
+	PeridotTraceBase0x24::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
+	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
+
+	TurquoiseGlowColor color;
+	record->FUN_0042b330(&color);
+
+	if (m_unk0x77c == 1) {
+		m_context->m_unk0x4b40.RefreshMenuResources();
+	}
+
+	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
+	GolModelBase* model = m_context->m_unk0x4b40.FUN_0049db90(&color, m_unk0x4ec[modelIndex], 0);
+	m_context->m_unk0x4b40.FUN_0049dce0(model, &color);
+
+	GolSceneNode* node = m_context->m_unk0x4b40.FUN_0049dc10(&color);
+	m_unk0x4dc[modelIndex]->VTable0x10(node);
+	m_unk0x232c[modelIndex].FUN_0040d550(model, m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
+
+	record->FUN_0042b360(m_unk0x788);
+	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x788);
+	m_context->m_unk0x21f4.FUN_0049b740(0);
+	m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+
+	AwardCinematicScreen::FieldAt0x658::CreateParams0x18 createParams;
+	createParams.m_unk0x00 = &m_context->m_unk0x42dc;
+	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
+	createParams.m_unk0x08 = &m_unk0x4fc[modelIndex];
+	createParams.m_unk0x0c = NULL;
+	record->FUN_0042b380(createParams.m_unk0x10);
+
+	m_unk0x39c[modelIndex].FUN_00479510(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x00486400

@@ -1,5 +1,9 @@
 #include "menu/screens/garagescreen.h"
 
+#include "menu/crimsonsun0xa4.h"
+#include "menu/menuscreenid.h"
+#include "menu/menutoolcontext0x4bc8.h"
+
 DECOMP_SIZE_ASSERT(GarageScreen, 0x6410)
 
 // FUNCTION: LEGORACERS 0x0047e2b0
@@ -53,11 +57,111 @@ void GarageScreen::VTable0x4c()
 	FUN_0047e600();
 }
 
-// STUB: LEGORACERS 0x0047e680
-LegoBool32 GarageScreen::VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*)
+// FUNCTION: LEGORACERS 0x0047e680
+LegoBool32 GarageScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
 {
-	STUB(0x0047e680);
-	return FALSE;
+	if (!FUN_00480440(p_context)) {
+		FUN_00480470(p_context, TRUE, TRUE);
+	}
+
+	if (p_context->m_menuStack.GetSize() == 1) {
+		p_context->m_menuStack.ResetSize();
+		p_context->m_menuStack.Push(c_menuMainMenu);
+		p_context->m_menuStack.Push(c_menuGarage);
+	}
+
+	p_context->m_unk0x4b40.SetUnk0x78(p_context->m_unk0x4b40.GetUnk0x78() & ~9);
+	p_context->m_context->m_unk0x1e &= ~2;
+	p_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(0);
+
+	undefined4 params[3];
+	params[0] = 1;
+	params[1] = 1;
+	params[2] = 0xffff2;
+
+	if (!RacerPickScreenBase0x3ff4::VTable0xa0(p_context, p_createParams, params)) {
+		return FALSE;
+	}
+
+	VTable0x80();
+	FUN_0047e740();
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0047e740
+void GarageScreen::FUN_0047e740()
+{
+	m_unk0x40c8.SetFlags(2);
+	m_unk0x43b8.SetFlags(2);
+	m_unk0x46a8.SetFlags(2);
+	m_unk0x4998.SetFlags(2);
+	m_unk0x4c88.SetFlags(2);
+	FUN_004891f0(0);
+	m_unk0x5848.FUN_00482790(2);
+	m_unk0x4050.VTable0x44(3, TRUE);
+	m_unk0x4050.FUN_0046f6b0(0x14);
+
+	if (m_unk0x2704[0]) {
+		m_unk0x43b8.VTable0x44(5);
+		m_unk0x4998.VTable0x44(5);
+		m_unk0x4c88.VTable0x44(5);
+
+		if (m_unk0x2704[0] == 0xd1) {
+			m_unk0x40c8.VTable0x48(5);
+			m_unk0x46a8.VTable0x48(5);
+			m_unk0x43b8.VTable0x4c(4);
+		}
+		else {
+			m_unk0x40c8.VTable0x44(5);
+			m_unk0x46a8.VTable0x44(5);
+			m_unk0x40c8.VTable0x4c(4);
+		}
+
+		if (static_cast<LegoS32>(m_unk0x2704[0]) > 1) {
+			FUN_00489250(0);
+			FUN_00486400(0);
+			FUN_004890c0(0);
+		}
+		else {
+			FUN_00489320(0);
+			FUN_00486400(0);
+			FUN_004890c0(0);
+		}
+	}
+	else {
+		m_unk0x40c8.VTable0x44(5);
+		m_unk0x43b8.VTable0x48(5);
+		m_unk0x46a8.VTable0x48(5);
+		m_unk0x4998.VTable0x48(5);
+		m_unk0x4c88.VTable0x48(5);
+		m_unk0x40c8.VTable0x4c(5);
+		FUN_00489320(0);
+		FUN_004866e0(0);
+		FUN_004890c0(0);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0047e900
+void GarageScreen::FUN_0047e900()
+{
+	m_unk0x40c8.ClearFlags(2);
+	m_unk0x43b8.ClearFlags(2);
+	m_unk0x46a8.ClearFlags(2);
+	m_unk0x4998.ClearFlags(2);
+	m_unk0x4c88.ClearFlags(2);
+	FUN_00489320(0);
+}
+
+// FUNCTION: LEGORACERS 0x0047e950
+void GarageScreen::FUN_0047e950()
+{
+	m_unk0x4f78.SetFlags(2);
+	m_unk0x5268.SetFlags(2);
+	m_unk0x5558.SetFlags(2);
+	m_unk0x5268.VTable0x4c(5);
+	m_unk0x5848.FUN_00482790(3);
+	m_unk0x4050.VTable0x44(4, TRUE);
+	m_unk0x4050.FUN_0046f6b0(0x14);
 }
 
 // FUNCTION: LEGORACERS 0x0047e9c0
@@ -68,21 +172,171 @@ void GarageScreen::FUN_0047e9c0()
 	m_unk0x5558.ClearFlags(2);
 }
 
-// STUB: LEGORACERS 0x0047ec00
-void GarageScreen::VTable0x84()
+// FUNCTION: LEGORACERS 0x0047e9f0
+void GarageScreen::FUN_0047e9f0(MenuToolContext0x4bc8* p_context)
 {
-	STUB(0x0047ec00);
+	RacerPickModelState0x28 modelState;
+
+	modelState.FUN_00442e60(&p_context->m_unk0x258);
+	modelState.FUN_00442ef0(0xffff2);
+	m_unk0x2704[0] = modelState.FUN_00442e80(0xffff2);
 }
 
-// STUB: LEGORACERS 0x0047ee50
-void GarageScreen::VTable0x38(ObscureVantage0x58*)
+// STUB: LEGORACERS 0x0047ea50
+void GarageScreen::FUN_0047ea50()
 {
-	STUB(0x0047ee50);
+	STUB(0x0047ea50);
+}
+
+// STUB: LEGORACERS 0x0047eb20
+void GarageScreen::FUN_0047eb20()
+{
+	STUB(0x0047eb20);
+}
+
+// FUNCTION: LEGORACERS 0x0047ec00
+void GarageScreen::VTable0x84()
+{
+	switch (m_unk0x360) {
+	case c_menuGarage:
+		m_context->m_menuStack.Push(c_menuSaveAll);
+		return;
+	case c_menuMainMenu:
+		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, NULL);
+		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(1, NULL);
+		m_context->m_menuStack.Pop();
+		FUN_004804c0(m_context);
+		FUN_004861b0();
+		return;
+	case c_menuPickMem:
+		m_context->m_menuStack.Push(c_menuPickMem);
+		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b2f0(4, 0, 0, NULL);
+		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 1);
+		FUN_004861b0();
+		return;
+	case c_menuEditDriver:
+	case c_menuDriverLicense:
+	case c_menuEditCar: {
+		PeridotTraceBase0x24::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, record);
+		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b5c0(record);
+		m_context->m_menuStack.Push(m_unk0x360);
+		FUN_004861b0();
+		return;
+	}
+	case 0x41:
+		m_context->m_menuStack.ResetSize();
+		FUN_004861b0();
+		return;
+	case c_menuNewRacer:
+		m_context->m_menuStack.Push(c_menuPickMem);
+		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, m_unk0x22dc[0].FUN_004430b0());
+		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 8);
+		FUN_004861b0();
+		return;
+	}
+
+	m_context->m_menuStack.Push(m_unk0x360);
+	FUN_004861b0();
+}
+
+// FUNCTION: LEGORACERS 0x0047ee50
+void GarageScreen::VTable0x38(ObscureVantage0x58* p_source)
+{
+	if (p_source == &m_unk0x5848) {
+		if (!m_unk0x6408) {
+			m_unk0x360 = c_menuMainMenu;
+		}
+		else {
+			m_unk0x640c = 0;
+		}
+	}
+	else if (m_unk0x6408 == 1) {
+		if (p_source == &m_unk0x4f78) {
+			m_unk0x360 = c_menuEditCar;
+		}
+		else if (p_source == &m_unk0x5268) {
+			m_unk0x360 = c_menuEditDriver;
+		}
+		else if (p_source == &m_unk0x5558) {
+			m_unk0x360 = c_menuDriverLicense;
+		}
+	}
+	else if (m_unk0x6408 == 0) {
+		if (p_source == &m_unk0x40c8) {
+			m_unk0x360 = c_menuNewRacer;
+		}
+		else if (p_source == &m_unk0x43b8) {
+			m_unk0x640c = 1;
+		}
+		else if (p_source == &m_unk0x46a8) {
+			m_unk0x360 = c_menuPickMem;
+		}
+		else if (p_source == &m_unk0x4998) {
+			FUN_0047fdc0(&m_unk0x5b38, 0x99, 0x46, 0x73);
+			FUN_0047fdc0(&m_unk0x5e28, 0x99, 0x45, 0x74);
+			FUN_0046c6f0(&m_unk0x5b38, &m_unk0x5e28, 0x76);
+		}
+		else if (p_source == &m_unk0x4c88) {
+			FUN_0047eb20();
+		}
+		else if (p_source == &m_unk0x5b38) {
+			FUN_0047ea50();
+			m_unk0x284->FUN_00468cf0();
+		}
+		else if (p_source == &m_unk0x5e28) {
+			m_unk0x284->FUN_00468cf0();
+		}
+	}
+
+	if (m_unk0x360 != 0xffff) {
+		m_unk0x364 = TRUE;
+		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+	}
+
+	m_unk0x35c = p_source;
+}
+
+// STUB: LEGORACERS 0x0047efe0
+void GarageScreen::FUN_0047efe0()
+{
+	switch (m_unk0x6408) {
+	case 0:
+		FUN_0047e900();
+		break;
+	case 1:
+		FUN_0047e9c0();
+		break;
+	}
+
+	m_unk0x6408 = m_unk0x640c;
+
+	switch (m_unk0x6408) {
+	case 1:
+		FUN_0047e950();
+		break;
+	case 0:
+		FUN_0047e740();
+		break;
+	}
 }
 
 // STUB: LEGORACERS 0x0047f030
-LegoBool32 GarageScreen::VTable0x78(undefined4)
+LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 {
-	STUB(0x0047f030);
-	return FALSE;
+	if (m_unk0x640c != m_unk0x6408 && !(m_unk0x35c->GetUnk0x54() & 1)) {
+		FUN_0047efe0();
+	}
+
+	RacerPickModelState0x28* modelState = &m_unk0x22dc[0];
+	if (modelState->FUN_004430b0() != NULL) {
+		if (modelState->FUN_004430b0()->m_unk0x08 == 1) {
+			m_unk0x46a8.FUN_00482790(0x2b);
+		}
+		else {
+			m_unk0x46a8.FUN_00482790(0x2a);
+		}
+	}
+
+	return RacerPickScreenBase0x270c::VTable0x78(p_elapsed);
 }

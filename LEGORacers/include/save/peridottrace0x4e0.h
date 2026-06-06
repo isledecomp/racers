@@ -374,10 +374,13 @@ public:
 
 	void FUN_0042b4f0(const LegoU8* p_source);
 	void Reset() { m_unk0x244 = 0; }
-	undefined2 GetUnk0x244() const { return static_cast<undefined2>(m_unk0x244); }
+	undefined4 GetUnk0x244() const { return m_unk0x244; }
+	undefined2 GetUnk0x244AsU16() const { return static_cast<undefined2>(m_unk0x244); }
 	PeridotTraceBase0x24::Record* GetUnk0x248() const { return m_unk0x248[0]; }
 	PeridotTraceBase0x24::Record* GetUnk0x248(LegoU32 p_index) const { return m_unk0x248[p_index]; }
+	void SetUnk0x244(undefined4 p_unk0x244) { m_unk0x244 = p_unk0x244; }
 	void SetUnk0x248(PeridotTraceBase0x24::Record* p_unk0x248) { m_unk0x248[0] = p_unk0x248; }
+	void SetUnk0x248(LegoU32 p_index, PeridotTraceBase0x24::Record* p_unk0x248) { m_unk0x248[p_index] = p_unk0x248; }
 
 private:
 	undefined4 m_unk0x244;                       // 0x244

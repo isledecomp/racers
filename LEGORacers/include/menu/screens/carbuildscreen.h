@@ -27,6 +27,17 @@ public:
 	~CarBuildScreen() override;                                                                           // vtable+0x68
 	LegoBool32 VTable0x78(undefined4) override;                                                           // vtable+0x78
 	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override;                    // vtable+0x8c
+	GolString* VTable0x98(undefined4) override;                                                           // vtable+0x98
+	GolFont0xa0* VTable0x9c(undefined4) override;                                                         // vtable+0x9c
+	void VTable0xa0(undefined4, undefined4, undefined4*, undefined4) override;                            // vtable+0xa0
+	void VTable0xa4() override;                                                                           // vtable+0xa4
+	void VTable0xa8() override;                                                                           // vtable+0xa8
+	void VTable0xac() override;                                                                           // vtable+0xac
+	void VTable0xb0() override;                                                                           // vtable+0xb0
+	void VTable0xb4() override;                                                                           // vtable+0xb4
+	void VTable0xb8() override;                                                                           // vtable+0xb8
+	void VTable0xbc() override;                                                                           // vtable+0xbc
+	void VTable0xc0() override;                                                                           // vtable+0xc0
 
 	// SYNTHETIC: LEGORACERS 0x00473790
 	// CarBuildScreen::`scalar deleting destructor'

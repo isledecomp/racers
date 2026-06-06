@@ -6,10 +6,18 @@
 #include "input/inputdevice.h"
 #include "menu/menutoolcontext0x4bc8.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(CarBuildScreen, 0x3c34)
 
 // GLOBAL: LEGORACERS 0x004af668
 LegoFloat g_carBuildPreviewMouseScale = 0.01f;
+
+// GLOBAL: LEGORACERS 0x004c1d12
+const LegoU16 g_carBuildTextIds[] = {0, 0, 1, 2, 3, 4, 5, 6, 7, 8, 0};
+
+// GLOBAL: LEGORACERS 0x004c1d38
+const LegoChar g_carBuildHelpFontName[8] = {'f', 'o', 'n', 't', '_', 'h', 'l', 'p'};
 
 // GLOBAL: LEGORACERS 0x004c1d78
 const LegoS32 g_carBuildDragHorizontalOffsets[] = {-1, -1, 0,  1,  1,  1,  0,  -1, -1, -1, -1, 0,  1,  1,  1,  0,
@@ -184,6 +192,94 @@ void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 	LegoS32 tableIndex = index + m_unk0x2308.GetUnk0x298() * 8;
 	FUN_004773e0(g_carBuildDragHorizontalOffsets[tableIndex], g_carBuildDragVerticalOffsets[tableIndex], index & 1, 0);
 	m_unk0x3c1c = c_carBuildDragDelay;
+}
+
+// FUNCTION: LEGORACERS 0x00473c40
+void CarBuildScreen::VTable0xa4()
+{
+	if (m_unk0x2b20.GetStateFlags() & 4) {
+		m_unk0x2b20.VTable0x58(0);
+	}
+
+	if (m_unk0x2d48.GetStateFlags() & 4) {
+		m_unk0x2d48.VTable0x58(0);
+	}
+
+	m_cursorHelper->SetCursorEnabled(TRUE);
+}
+
+// FUNCTION: LEGORACERS 0x00473c90
+void CarBuildScreen::VTable0xb4()
+{
+	m_unk0x4a4.VTable0x48(0);
+	m_unk0xfec.VTable0x48(0);
+	m_unk0x2d48.VTable0x48(0);
+	m_unk0x2f70.VTable0x48(0);
+	m_unk0x318c.VTable0x48(0);
+	m_unk0x33a8.VTable0x48(0);
+	m_unk0x39fc.VTable0x48(0);
+	m_unk0x2b20.VTable0x4c(5);
+}
+
+// FUNCTION: LEGORACERS 0x00473d20
+void CarBuildScreen::VTable0xb8()
+{
+	if (m_unk0x2b20.GetStateFlags() & 4) {
+		m_unk0x2b20.VTable0x58(5);
+	}
+
+	m_unk0x4a4.VTable0x44(0);
+	m_unk0xfec.VTable0x44(0);
+	m_unk0x2d48.VTable0x44(0);
+	m_unk0x2f70.VTable0x44(0);
+	m_unk0x318c.VTable0x44(0);
+	m_unk0x33a8.VTable0x44(0);
+	m_unk0x39fc.VTable0x44(0);
+	m_cursorHelper->SetCursorEnabled(TRUE);
+}
+
+// FUNCTION: LEGORACERS 0x00473dc0
+void CarBuildScreen::VTable0xac()
+{
+	m_unk0x4a4.VTable0x48(0);
+	m_unk0xfec.VTable0x48(0);
+	m_unk0x2b20.VTable0x48(0);
+	m_unk0x2f70.VTable0x48(0);
+	m_unk0x318c.VTable0x48(0);
+	m_unk0x33a8.VTable0x48(0);
+	m_unk0x2d48.VTable0x4c(5);
+	m_cursorHelper->SetCursorEnabled(FALSE);
+}
+
+// FUNCTION: LEGORACERS 0x00473e50
+void CarBuildScreen::VTable0xb0()
+{
+	if (m_unk0x2d48.GetStateFlags() & 4) {
+		m_unk0x2d48.VTable0x58(5);
+	}
+
+	m_unk0x4a4.VTable0x44(0);
+	m_unk0xfec.VTable0x44(0);
+	m_unk0x2b20.VTable0x44(0);
+	m_unk0x2f70.VTable0x44(0);
+	m_unk0x318c.VTable0x44(0);
+	m_unk0x33a8.VTable0x44(0);
+	m_cursorHelper->SetCursorEnabled(TRUE);
+}
+
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED
+void CarBuildScreen::VTable0xa8()
+{
+}
+
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED
+void CarBuildScreen::VTable0xbc()
+{
+}
+
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED
+void CarBuildScreen::VTable0xc0()
+{
 }
 
 // STUB: LEGORACERS 0x00473ee0
@@ -513,6 +609,35 @@ LegoBool32 CarBuildScreen::VTable0x78(undefined4 p_elapsed)
 	}
 
 	return ImaginaryShape0x2b20::VTable0x78(p_elapsed);
+}
+
+// FUNCTION: LEGORACERS 0x00474b70
+GolString* CarBuildScreen::VTable0x98(undefined4 p_index)
+{
+	if (!p_index) {
+		return NULL;
+	}
+
+	m_unk0x3c20.CopyStringByIndex(&m_unk0x3a8, g_carBuildTextIds[p_index]);
+	return &m_unk0x3a8;
+}
+
+// FUNCTION: LEGORACERS 0x00474ba0
+GolFont0xa0* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
+{
+	if (!p_unk0x04) {
+		return NULL;
+	}
+
+	LegoChar fontName[sizeof(g_carBuildHelpFontName)];
+	::memcpy(fontName, g_carBuildHelpFontName, sizeof(fontName));
+	return m_renderer->FindFontByName(fontName);
+}
+
+// FUNCTION: LEGORACERS 0x00474be0
+void CarBuildScreen::VTable0xa0(undefined4, undefined4, undefined4* p_unk0x0c, undefined4)
+{
+	*p_unk0x0c = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004774e0

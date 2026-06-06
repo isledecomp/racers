@@ -2,6 +2,7 @@
 #include "menu/screens/imaginaryshape0x2b20.h"
 
 DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20::FieldAt0x2308, 0x2d0)
+DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20::FieldAt0x2308::CreateParams0x30, 0x30)
 
 // STUB: LEGORACERS 0x004778f0
 ImaginaryShape0x2b20::FieldAt0x2308::FieldAt0x2308()
@@ -19,6 +20,12 @@ ImaginaryShape0x2b20::FieldAt0x2308::~FieldAt0x2308()
 void ImaginaryShape0x2b20::FieldAt0x2308::Reset()
 {
 	STUB(0x00477a40);
+}
+
+// STUB: LEGORACERS 0x00477ae0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477ae0(CreateParams0x30*)
+{
+	STUB(0x00477ae0);
 }
 
 // STUB: LEGORACERS 0x00477b80
@@ -87,6 +94,20 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478560()
 	STUB(0x00478560);
 }
 
+// STUB: LEGORACERS 0x004785b0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004785b0(LegoS32)
+{
+	STUB(0x004785b0);
+	return FALSE;
+}
+
+// STUB: LEGORACERS 0x00478670
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478670(LegoS32)
+{
+	STUB(0x00478670);
+	return FALSE;
+}
+
 // STUB: LEGORACERS 0x00478730
 LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478730()
 {
@@ -113,6 +134,15 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x10(undefined4)
 {
 	STUB(0x00478be0);
 	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x004792d0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004792d0()
+{
+	m_unk0x24c = 2000;
+	m_unk0x244 = 0;
+	m_unk0x248 |= 8;
+	m_unk0x274 = m_unk0x270;
 }
 
 // FUNCTION: LEGORACERS 0x00479300

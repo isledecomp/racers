@@ -29,14 +29,13 @@ public:
 	virtual LegoS32 VTable0x58() = 0;                                                         // vtable+0x58
 
 	LegoBool32 FUN_0046c970(CreateParams0x38* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry);
+	LegoS32 FUN_0046c9a0(LegoS32 p_index);
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 
 	// SYNTHETIC: LEGORACERS 0x0046c8d0
 	// ObscureCarousel0x78::`scalar deleting destructor'
 
 protected:
-	LegoS32 FUN_0046c9a0(LegoS32 p_index);
-
 	CeruleanEmperor0x4c::Entry0x18* m_unk0x58; // 0x58
 	SoundGroupBinding* m_unk0x5c;              // 0x5c
 	LegoS32 m_unk0x60;                         // 0x60

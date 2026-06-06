@@ -52,6 +52,9 @@
 // LIBRARY: LEGORACERS 0x004a8498
 // _DirectInputCreateA@16
 
+// LIBRARY: LEGORACERS 0x004a880e
+// __controlfp
+
 // GLOBAL: LEGORACERS 0x004be000
 // ___xc_a
 

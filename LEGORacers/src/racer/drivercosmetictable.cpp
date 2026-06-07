@@ -1,6 +1,7 @@
 #include "racer/drivercosmetictable.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golscenenode.h"
@@ -8,7 +9,6 @@
 #include "material/goltexturelist.h"
 #include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
-#include "util/animatedmodelentity.h"
 
 #include <string.h>
 
@@ -271,7 +271,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 	}
 
 	if (m_entryCapacity != 0) {
-		m_loadedEntries = new AnimatedModelEntity[m_entryCapacity];
+		m_loadedEntries = new GolAnimatedEntity[m_entryCapacity];
 		if (m_loadedEntries == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -313,13 +313,13 @@ void DriverCosmeticTable::LoadStrings()
 }
 
 // FUNCTION: LEGORACERS 0x00420ed0
-AnimatedModelEntity* DriverCosmeticTable::LoadEntry(const LegoChar* p_name)
+GolAnimatedEntity* DriverCosmeticTable::LoadEntry(const LegoChar* p_name)
 {
 	return LoadEntry(static_cast<Entry0x30*>(GetName(p_name)));
 }
 
 // FUNCTION: LEGORACERS 0x00420ef0
-AnimatedModelEntity* DriverCosmeticTable::LoadEntry(Entry0x30* p_entry)
+GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry0x30* p_entry)
 {
 	LegoChar name[sizeof(GolName) + 1];
 

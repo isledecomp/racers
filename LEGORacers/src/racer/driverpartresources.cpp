@@ -1,6 +1,7 @@
 #include "racer/driverpartresources.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golerror.h"
 #include "golhashtable.h"
 #include "golname.h"
@@ -14,7 +15,6 @@
 #include "mesh/igdbmodelindexarray0x8.h"
 #include "racer/lavendervault0x764.h"
 #include "render/gold3drenderdevice.h"
-#include "scene/golskinnedentity.h"
 #include "world/golworlddatabase.h"
 
 #include <string.h>
@@ -157,7 +157,7 @@ void DriverPartResources::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 
 // STUB: LEGORACERS 0x004981a0
 static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
-	GolSkinnedEntity* p_resourceModel,
+	GolAnimatedEntity* p_resourceModel,
 	LegoU32 p_oldIndex,
 	LegoU32 p_newIndex
 )
@@ -190,7 +190,7 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 
 	LegoS32 remainingModels = m_partResource->GetUnk0x54();
 	if (remainingModels > 0) {
-		GolSkinnedEntity* resourceModel = m_partResource->GetUnk0xa0();
+		GolAnimatedEntity* resourceModel = m_partResource->GetUnk0xa0();
 		do {
 			MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
 			if (materialTable == NULL) {
@@ -331,7 +331,7 @@ GolModelBase* DriverPartResources::FUN_00498510(LegoS32 p_index)
 		m_partConfig->FUN_00499070(p_index, name);
 	}
 
-	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
 	return model->GetModel(0);
 }
 
@@ -346,7 +346,7 @@ GolSceneNode* DriverPartResources::FUN_00498570(LegoS32 p_index)
 		m_partConfig->FUN_00499070(p_index, name);
 	}
 
-	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
 	return model->VTable0x58(0);
 }
 
@@ -361,7 +361,7 @@ CmbModelPart0x34* DriverPartResources::FUN_004985e0(LegoS32 p_index)
 		m_partConfig->FUN_00499070(p_index, name);
 	}
 
-	GolSkinnedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
 	return model->GetModelPart(0);
 }
 

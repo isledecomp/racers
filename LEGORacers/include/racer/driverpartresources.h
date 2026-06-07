@@ -8,7 +8,7 @@
 class GolMaterialLibrary;
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x24;
-class GolSkinnedEntity;
+class GolAnimatedEntity;
 class GolExport;
 class GolModelBase;
 class LavenderVault0x764;

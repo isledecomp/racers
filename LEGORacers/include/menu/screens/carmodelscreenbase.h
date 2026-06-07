@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "menu/screens/awardcinematicscreen.h"
@@ -16,7 +17,6 @@
 #include "model/carbuildmodel.h"
 #include "racer/siennacircuit0x154.h"
 #include "render/golrenderdevice.h"
-#include "util/animatedmodelentity.h"
 
 class MenuGameContext;
 class MenuScreenCreateParams;
@@ -117,7 +117,7 @@ public:
 		MenuGameContext* m_unk0x24;                       // 0x24
 		CarBuildModel::Placement m_unk0x28;               // 0x28
 		AwardCinematicScreen::SceneEntityGroup m_unk0x58; // 0x58
-		AnimatedModelEntity m_unk0xa8;                    // 0xa8
+		GolAnimatedEntity m_unk0xa8;                      // 0xa8
 		GolSceneNode* m_unk0x19c;                         // 0x19c
 		CmbModelPart0x34* m_unk0x1a0;                     // 0x1a0
 		GolModelEntity m_unk0x1a4;                        // 0x1a4

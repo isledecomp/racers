@@ -5,6 +5,7 @@
 #include "camera/golcamerabase.h"
 #include "camera/goltransform.h"
 #include "cmbmodelpart0x34.h"
+#include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmath.h"
@@ -18,7 +19,6 @@
 #include "scene/golbillboard.h"
 #include "scene/golboundedentity.h"
 #include "scene/golcollidableentity.h"
-#include "scene/golskinnedentity.h"
 
 #include <float.h>
 
@@ -1310,7 +1310,7 @@ void GolWorldDatabase::VTable0x04()
 	}
 
 	if (m_unk0x54 != 0) {
-		m_unk0xa0 = new GolSkinnedEntity[m_unk0x54];
+		m_unk0xa0 = new GolAnimatedEntity[m_unk0x54];
 		if (m_unk0xa0 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -1433,7 +1433,7 @@ void GolWorldDatabase::FUN_1002e640()
 
 	for (i = 0; i < m_unk0x54; i++) {
 		WdbModel0x8c* model = &m_unk0x58[i];
-		GolSkinnedEntity* runtime = &m_unk0xa0[i];
+		GolAnimatedEntity* runtime = &m_unk0xa0[i];
 
 		if (model->m_unk0x08[0] >= 0 && static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
@@ -1483,7 +1483,7 @@ void GolWorldDatabase::FUN_1002e640()
 			}
 		}
 		else {
-			runtime->FUN_10023490(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
+			runtime->FUN_0040d550(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
 				if (model->m_unk0x08[lod] < 0) {
 					break;
@@ -1511,7 +1511,7 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x44 >= 0) {
-			runtime->FUN_10023a70(model->m_unk0x44);
+			runtime->FUN_0040dad0(model->m_unk0x44);
 			runtime->SetPartAnimationEnabled(TRUE);
 		}
 		else {
@@ -1694,7 +1694,7 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 	p_lens->m_flags |= 1;
 
 	if (camera->m_unk0x08 >= 0) {
-		GolSkinnedEntity* model = &m_unk0xa0[camera->m_unk0x08];
+		GolAnimatedEntity* model = &m_unk0xa0[camera->m_unk0x08];
 		p_lens->FUN_1001cb30(model, camera->m_unk0x0c);
 
 		if (camera->m_unk0x14[0] != '\0') {
@@ -1702,7 +1702,7 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 		}
 
 		if (camera->m_unk0x10 >= 0) {
-			model->FUN_10023a70(camera->m_unk0x10);
+			model->FUN_0040dad0(camera->m_unk0x10);
 			model->SetPartAnimationEnabled(TRUE);
 		}
 		else {

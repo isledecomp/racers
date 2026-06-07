@@ -20,7 +20,7 @@ AwardCinematicScreen::SceneEntityGroup::~SceneEntityGroup()
 }
 
 // FUNCTION: LEGORACERS 0x004794d0
-void AwardCinematicScreen::SceneEntityGroup::FUN_004794d0(AnimatedModelEntity* p_entity)
+void AwardCinematicScreen::SceneEntityGroup::FUN_004794d0(GolAnimatedEntity* p_entity)
 {
 	p_entity->SetFlags(p_entity->GetFlags() | 0x10000);
 	p_entity->FUN_0040dad0(0);

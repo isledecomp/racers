@@ -10,7 +10,7 @@ class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
 class GolModelEntity;
-class AnimatedModelEntity;
+class GolAnimatedEntity;
 class LegoColorTable;
 
 // SIZE 0x2030
@@ -173,7 +173,7 @@ public:
 	void FUN_0049c820(LegoU8* p_dest);
 	GolModelBase* GetUnk0x84() const { return m_unk0x84; }
 	LegoS32 GetPlacedPieceCount() const { return m_placedPieceCount; }
-	AnimatedModelEntity* GetUnk0x0c() { return reinterpret_cast<AnimatedModelEntity*>(&m_unk0x0c); }
+	GolAnimatedEntity* GetUnk0x0c() { return reinterpret_cast<GolAnimatedEntity*>(&m_unk0x0c); }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
 	void SetPlacedPieceCount(undefined4 p_unk0xd4) { m_placedPieceCount = p_unk0xd4; }
 	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }

@@ -114,6 +114,7 @@ set(COMMON_SOURCES
   common/src/golworldentitygroup0x38.cpp
   common/src/golorientedentity.cpp
   common/src/golmodelentity.cpp
+  common/src/golanimatedentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
   common/src/duskwindbananarelic0x24.cpp
@@ -229,7 +230,6 @@ add_library(goldp SHARED
   GolDP/src/bounds/golboundingvolume.cpp
   GolDP/src/scene/golboundedentity.cpp
   GolDP/src/scene/golcollidableentity.cpp
-  GolDP/src/scene/golskinnedentity.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )
@@ -305,7 +305,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racetimeformatter.cpp
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
-  LEGORacers/src/util/animatedmodelentity.cpp
   LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp

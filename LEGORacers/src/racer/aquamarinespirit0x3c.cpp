@@ -1,6 +1,7 @@
 #include "racer/aquamarinespirit0x3c.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
@@ -9,7 +10,6 @@
 #include "material/goltexturelist.h"
 #include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
-#include "util/animatedmodelentity.h"
 
 #include <string.h>
 
@@ -259,7 +259,7 @@ void AquamarineSpirit0x3c::FUN_0041db10(const Params* p_params)
 	}
 	else {
 		LegoU32 modelCount = 2 * m_unk0x30;
-		m_unk0x2c = new AnimatedModelEntity[modelCount];
+		m_unk0x2c = new GolAnimatedEntity[modelCount];
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -349,8 +349,8 @@ void AquamarineSpirit0x3c::FUN_0041e210(GolFileParser* p_parser, LegoU32 p_index
 // FUNCTION: LEGORACERS 0x0041e330
 LegoU32 AquamarineSpirit0x3c::FUN_0041e330(
 	const LegoChar* p_name,
-	AnimatedModelEntity** p_primary,
-	AnimatedModelEntity** p_secondary
+	GolAnimatedEntity** p_primary,
+	GolAnimatedEntity** p_secondary
 )
 {
 	Item0x104* item = static_cast<Item0x104*>(GetName(p_name));
@@ -360,8 +360,8 @@ LegoU32 AquamarineSpirit0x3c::FUN_0041e330(
 // FUNCTION: LEGORACERS 0x0041e360
 LegoU32 AquamarineSpirit0x3c::FUN_0041e360(
 	Item0x104* p_item,
-	AnimatedModelEntity** p_primary,
-	AnimatedModelEntity** p_secondary
+	GolAnimatedEntity** p_primary,
+	GolAnimatedEntity** p_secondary
 )
 {
 	*p_primary = &m_unk0x2c[m_unk0x34];
@@ -416,14 +416,14 @@ LegoU32 AquamarineSpirit0x3c::FUN_0041e360(
 void AquamarineSpirit0x3c::FUN_0041e570()
 {
 	for (LegoU32 i = 0; i < m_unk0x30; i++) {
-		AnimatedModelEntity* primary;
-		AnimatedModelEntity* secondary;
+		GolAnimatedEntity* primary;
+		GolAnimatedEntity* secondary;
 		FUN_0041e360(&m_unk0x14[i], &primary, &secondary);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041e5b0
-AnimatedModelEntity* AquamarineSpirit0x3c::FUN_0041e5b0(const LegoChar* p_name)
+GolAnimatedEntity* AquamarineSpirit0x3c::FUN_0041e5b0(const LegoChar* p_name)
 {
 	if (*p_name) {
 		Item0x104* item = static_cast<Item0x104*>(GetName(p_name));

@@ -254,7 +254,7 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3*, LegoFloat, GolVec4*)
 }
 
 // FUNCTION: GOLDP 0x1001cb30
-void GolCameraBase::FUN_1001cb30(AmberLensTrackedObject0xf4* p_arg1, LegoU32 p_arg2)
+void GolCameraBase::FUN_1001cb30(GolAnimatedEntity* p_arg1, LegoU32 p_arg2)
 {
 	m_unk0x28 = p_arg1;
 	m_unk0x2c = p_arg2;

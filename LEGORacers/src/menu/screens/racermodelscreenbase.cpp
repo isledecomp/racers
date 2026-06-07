@@ -1,6 +1,7 @@
 #include "menu/screens/racermodelscreenbase.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golerror.h"
 #include "golhashtable.h"
 #include "golscenenode.h"
@@ -10,7 +11,6 @@
 #include "menu/menugamecontext.h"
 #include "mesh/golmodelbase.h"
 #include "racer/turquoiseglowcolor.h"
-#include "scene/golskinnedentity.h"
 #include "world/golworlddatabase.h"
 
 #include <float.h>
@@ -419,7 +419,7 @@ void RacerModelScreenBase::FUN_004865c0()
 		GolWorldEntity* target = m_unk0x1ddc[i].GetUnk0x68();
 		if (target != NULL) {
 			GolWorldDatabase* database = m_unk0x98c[i].GetUnk0x60();
-			GolSkinnedEntity* source;
+			GolAnimatedEntity* source;
 			if (database->GetUnk0xc0NameEntries() == NULL) {
 				source = NULL;
 			}
@@ -472,7 +472,7 @@ LegoS32 RacerModelScreenBase::VTable0x9c()
 void RacerModelScreenBase::FUN_00486810(LegoS32 p_index)
 {
 	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
-	AnimatedModelEntity* entity = &m_unk0x232c[modelIndex];
+	GolAnimatedEntity* entity = &m_unk0x232c[modelIndex];
 	LegoS32 partIndex;
 
 	do {
@@ -497,7 +497,7 @@ void RacerModelScreenBase::FUN_00486890(LegoS32 p_index)
 	string.CopyToBuf8(modelName);
 
 	LegoS32 partIndex = m_modelParts.GetPartIndex(modelName);
-	AnimatedModelEntity* entity = &m_unk0x232c[modelIndex];
+	GolAnimatedEntity* entity = &m_unk0x232c[modelIndex];
 	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 
 	LegoU32 flags = entity->GetFlags();
@@ -531,7 +531,7 @@ LegoBool32 RacerModelScreenBase::VTable0x78(undefined4 p_elapsed)
 		switch (m_unk0x774[i]) {
 		default: {
 			if (m_unk0x232c[modelIndex].GetFlags() & 1) {
-				AnimatedModelEntity* entity = &m_unk0x232c[modelIndex];
+				GolAnimatedEntity* entity = &m_unk0x232c[modelIndex];
 				if (entity->FUN_0040e360() && m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248(i) == NULL &&
 					!m_unk0x364) {
 					FUN_00486810(i);

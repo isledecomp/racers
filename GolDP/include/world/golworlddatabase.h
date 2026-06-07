@@ -18,7 +18,7 @@ class GolFileParser;
 class GolWorldEntity;
 class GolModelEntity;
 class GolBoundedEntity;
-class GolSkinnedEntity;
+class GolAnimatedEntity;
 class GolCollidableEntity;
 class GolBillboard;
 class GolModelBase;
@@ -160,7 +160,7 @@ public:
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
-	GolSkinnedEntity* GetUnk0xa0() const { return m_unk0xa0; }
+	GolAnimatedEntity* GetUnk0xa0() const { return m_unk0xa0; }
 	GolRenderDevice::MaterialColor* GetUnk0xac() { return m_unk0xac; }
 	const GolRenderDevice::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
 	GolRenderDevice::Light* GetUnk0xb0() { return m_unk0xb0; }
@@ -168,20 +168,20 @@ public:
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);
 	GolNameTable::Entry* GetUnk0xc0NameEntries() const { return m_unk0xc0.GetNameEntries(); }
-	GolSkinnedEntity* GetUnk0xc0Name(const LegoChar* p_name) const
+	GolAnimatedEntity* GetUnk0xc0Name(const LegoChar* p_name) const
 	{
-		return static_cast<GolSkinnedEntity*>(m_unk0xc0.GetName(p_name));
+		return static_cast<GolAnimatedEntity*>(m_unk0xc0.GetName(p_name));
 	}
 	GolModelEntity* FindUnk0xb4(const LegoChar* p_name) const
 	{
 		return m_unk0xb4.GetNameEntries() ? static_cast<GolModelEntity*>(m_unk0xb4.GetName(p_name)) : NULL;
 	}
-	GolSkinnedEntity* FindUnk0xc0(const LegoChar* p_name) const
+	GolAnimatedEntity* FindUnk0xc0(const LegoChar* p_name) const
 	{
 		if (m_unk0xc0.GetNameEntries() == NULL) {
 			return NULL;
 		}
-		return static_cast<GolSkinnedEntity*>(m_unk0xc0.GetName(p_name));
+		return static_cast<GolAnimatedEntity*>(m_unk0xc0.GetName(p_name));
 	}
 	GolCollidableEntity* FindUnk0xcc(const LegoChar* p_name) const
 	{
@@ -255,7 +255,7 @@ protected:
 	LegoFloat m_unk0x94;                       // 0x94
 	GolBoundingVolume* m_unk0x98;              // 0x98
 	GolModelEntity* m_unk0x9c;                 // 0x9c
-	GolSkinnedEntity* m_unk0xa0;               // 0xa0
+	GolAnimatedEntity* m_unk0xa0;              // 0xa0
 	GolCollidableEntity* m_unk0xa4;            // 0xa4
 	GolBoundedEntity* m_unk0xa8;               // 0xa8
 	GolRenderDevice::MaterialColor* m_unk0xac; // 0xac

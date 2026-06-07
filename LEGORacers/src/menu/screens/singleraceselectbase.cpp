@@ -1,11 +1,11 @@
 #include "menu/screens/singleraceselectbase.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golhashtable.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/widgets/visualstatecolor.h"
-#include "scene/golskinnedentity.h"
 #include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(SingleRaceSelectBase, 0x1908)
@@ -128,7 +128,7 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScre
 // FUNCTION: LEGORACERS 0x00488b40
 void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 {
-	GolSkinnedEntity* modelEntity = NULL;
+	GolAnimatedEntity* modelEntity = NULL;
 	LegoU32 i = 0;
 	CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
 

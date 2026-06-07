@@ -3,10 +3,10 @@
 
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golmath.h"
 #include "menu/widgets/menusceneelement.h"
 #include "racer/turquoiseglowcolor.h"
-#include "util/animatedmodelentity.h"
 
 class GolD3DRenderDevice;
 class GolExport;
@@ -32,7 +32,7 @@ public:
 	LegoBool32 VTable0x0c() override;           // vtable+0x0c
 	LegoBool32 VTable0x10(undefined4) override; // vtable+0x10
 
-	AnimatedModelEntity* GetUnk0x1c() { return &m_unk0x1c; }
+	GolAnimatedEntity* GetUnk0x1c() { return &m_unk0x1c; }
 	CmbModelPart0x34* GetUnk0x118() { return &m_unk0x118; }
 	LegoBool32 FUN_0047e0a0(CreateParams* p_createParams);
 	void FUN_0047e130(LegoU8 p_unk0x04);
@@ -47,7 +47,7 @@ public:
 private:
 	void FUN_0047df90();
 
-	AnimatedModelEntity m_unk0x1c;       // 0x01c
+	GolAnimatedEntity m_unk0x1c;         // 0x01c
 	GolModelBase* m_unk0x110;            // 0x110
 	GolSceneNode* m_unk0x114;            // 0x114
 	CmbModelPart0x34 m_unk0x118;         // 0x118

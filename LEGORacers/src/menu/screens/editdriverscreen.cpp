@@ -236,15 +236,15 @@ LegoS32 EditDriverScreen::FUN_0047d5d0()
 // FUNCTION: LEGORACERS 0x0047d6f0
 void EditDriverScreen::FUN_0047d6f0()
 {
-	AnimatedModelEntity* opalHaven = m_unk0x4600.GetUnk0x1c();
+	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
 	LegoS32 partIndex;
 
 	do {
 		partIndex = FUN_0047d5d0();
-	} while (partIndex == opalHaven->GetActiveState());
+	} while (partIndex == entity->GetActiveState());
 
-	opalHaven->FUN_0040dad0(static_cast<undefined2>(partIndex));
-	opalHaven->SetFlags((opalHaven->GetFlags() & ~0x40000) | 0x10000);
+	entity->FUN_0040dad0(static_cast<undefined2>(partIndex));
+	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x0047d740
@@ -259,10 +259,10 @@ void EditDriverScreen::FUN_0047d740()
 	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20c8[textIdIndex]);
 	string.CopyToBuf8(name);
 
-	AnimatedModelEntity* opalHaven = m_unk0x4600.GetUnk0x1c();
+	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
 	LegoS32 partIndex = m_unk0x4600.GetUnk0x118()->GetPartIndex(name);
-	opalHaven->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
-	opalHaven->SetFlags((opalHaven->GetFlags() & ~0x40000) | 0x10000);
+	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
+	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x0047d840
@@ -313,9 +313,9 @@ void EditDriverScreen::FUN_0047d940()
 // FUNCTION: LEGORACERS 0x0047d9a0
 LegoBool32 EditDriverScreen::VTable0x88()
 {
-	AnimatedModelEntity* opalHaven = m_unk0x4600.GetUnk0x1c();
+	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
 
-	return opalHaven->FUN_0040e360() || !(opalHaven->GetFlags() & 0x10000);
+	return entity->FUN_0040e360() || !(entity->GetFlags() & 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x0047d9d0
@@ -447,8 +447,8 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 			FUN_0047d940();
 		}
 
-		AnimatedModelEntity* opalHaven = m_unk0x4600.GetUnk0x1c();
-		opalHaven->SetFlags(opalHaven->GetFlags() & ~0x10000);
+		GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
+		entity->SetFlags(entity->GetFlags() & ~0x10000);
 
 		if (m_unk0x284->GetUnk0x9c()) {
 			m_unk0x284->FUN_00468cf0();

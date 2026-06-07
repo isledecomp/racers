@@ -1,5 +1,5 @@
-#ifndef ANIMATEDMODELENTITY_H
-#define ANIMATEDMODELENTITY_H
+#ifndef GOLANIMATEDENTITY_H
+#define GOLANIMATEDENTITY_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -10,19 +10,19 @@ class CmbModelPart0x34;
 class GolModelBase;
 class GolSceneNode;
 
-// The 0x90..0xf4 tail overlaps with GolSkinnedEntity and GlassShard0x3b8.
+// VTABLE: GOLDP 0x10056fc8
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
-class AnimatedModelEntity : public GolModelEntity {
+class GolAnimatedEntity : public GolModelEntity {
 public:
-	AnimatedModelEntity();
+	GolAnimatedEntity();
 
-	void VTable0x10(LegoS32 p_elapsed) override;                                  // vtable+0x10
-	void VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result) override; // vtable+0x14
-	void VTable0x4c(LegoU32 p_index) override;                                    // vtable+0x4c
-	void VTable0x54() override;                                                   // vtable+0x54
-	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                            // vtable+0x58
-	void VTable0x5c(LegoU32 p_arg1) override;                                     // vtable+0x5c
+	void VTable0x10(LegoS32 p_elapsed) override;                                    // vtable+0x10
+	void VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
+	void VTable0x4c(LegoU32 p_index) override;                                      // vtable+0x4c
+	void VTable0x54() override;                                                     // vtable+0x54
+	GolSceneNode* VTable0x58(LegoU32 p_arg1) override;                              // vtable+0x58
+	void VTable0x5c(LegoU32 p_arg1) override;                                       // vtable+0x5c
 
 	void FUN_0040d550(
 		GolModelBase* p_model,
@@ -30,6 +30,14 @@ public:
 		CmbModelPart0x34* p_modelParts,
 		LegoFloat p_modelDistance
 	);
+	void FUN_100234c0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance);
+	void FUN_10023940(
+		GolModelBase* p_model,
+		GolSceneNode* p_node,
+		CmbModelPart0x34* p_modelParts,
+		LegoFloat p_modelDistance
+	);
+	void FUN_100239e0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance);
 	void FUN_0040dad0(undefined2 p_unk0x04);
 	void FUN_0040db80(
 		LegoU32 p_partIndex,
@@ -40,8 +48,18 @@ public:
 		LegoBool32 p_loop
 	);
 	LegoBool32 FUN_0040e360();
+	CmbModelPart0x34* GetModelPart(LegoU32 p_index = 0) const { return m_modelParts[p_index]; }
 	LegoU32 GetFlags() const { return m_flags; }
 	void SetFlags(LegoU32 p_flags) { m_flags = p_flags; }
+	void SetPartAnimationEnabled(LegoBool32 p_enabled)
+	{
+		if (p_enabled) {
+			m_flags |= c_flagPartAnimation;
+		}
+		else {
+			m_flags &= ~c_flagPartAnimation;
+		}
+	}
 	LegoU16 GetActiveState() const { return (m_flags & 0x20000) ? m_unk0xd8 : m_unk0xbc; }
 	LegoFloat GetActiveValue() const { return (m_flags & 0x20000) ? m_unk0xd0 : m_unk0xb4; }
 
@@ -80,4 +98,4 @@ private:
 	LegoFloat m_unk0xf0;               // 0xf0
 };
 
-#endif // ANIMATEDMODELENTITY_H
+#endif // GOLANIMATEDENTITY_H

@@ -1,4 +1,4 @@
-#include "util/animatedmodelentity.h"
+#include "golanimatedentity.h"
 
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
@@ -9,19 +9,22 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(AnimatedModelEntity, 0xf4)
+DECOMP_SIZE_ASSERT(GolAnimatedEntity, 0xf4)
 
+// GLOBAL: GOLDP 0x10056fc4
 // GLOBAL: LEGORACERS 0x004af5e8
 static const LegoFloat g_maxFloat = FLT_MAX;
 
+// FUNCTION: GOLDP 0x10023420
 // FUNCTION: LEGORACERS 0x0040d530
-AnimatedModelEntity::AnimatedModelEntity()
+GolAnimatedEntity::GolAnimatedEntity()
 {
 	Reset();
 }
 
+// FUNCTION: GOLDP 0x10023490
 // FUNCTION: LEGORACERS 0x0040d550
-void AnimatedModelEntity::FUN_0040d550(
+void GolAnimatedEntity::FUN_0040d550(
 	GolModelBase* p_model,
 	GolSceneNode* p_node,
 	CmbModelPart0x34* p_modelParts,
@@ -33,15 +36,31 @@ void AnimatedModelEntity::FUN_0040d550(
 	m_modelParts[0] = p_modelParts;
 }
 
+// FUNCTION: GOLDP 0x100234c0
+void GolAnimatedEntity::FUN_100234c0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance)
+{
+	m_modelDistances[0] = p_modelDistance;
+	m_radius = 0.0f;
+	m_unk0x60 = 0;
+	m_unk0x62 = 0;
+	m_unk0x64 = 0;
+	m_unk0x68 = 0;
+	m_unk0x58 = 1.0f;
+	m_nodes[0] = p_node;
+	m_modelParts[0] = p_modelParts;
+	m_flags |= c_flagBit0;
+}
+
+// FUNCTION: GOLDP 0x10023510
 // FUNCTION: LEGORACERS 0x0040d5d0
-void AnimatedModelEntity::VTable0x54()
+void GolAnimatedEntity::VTable0x54()
 {
 	GolModelEntity::VTable0x54();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0040d5f0
-void AnimatedModelEntity::Reset()
+void GolAnimatedEntity::Reset()
 {
 	LegoU32 i;
 
@@ -63,7 +82,7 @@ void AnimatedModelEntity::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0040d650
-void AnimatedModelEntity::FUN_0040d650()
+void GolAnimatedEntity::FUN_0040d650()
 {
 	LegoU32 i;
 
@@ -72,8 +91,9 @@ void AnimatedModelEntity::FUN_0040d650()
 	}
 }
 
+// STUB: GOLDP 0x10023580
 // STUB: LEGORACERS 0x0040d670
-void AnimatedModelEntity::VTable0x5c(LegoU32 p_index)
+void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 {
 	if (!(m_flags & c_flagPartAnimation)) {
 		return;
@@ -194,14 +214,78 @@ void AnimatedModelEntity::VTable0x5c(LegoU32 p_index)
 	}
 }
 
+// FUNCTION: GOLDP 0x10023940
+void GolAnimatedEntity::FUN_10023940(
+	GolModelBase* p_model,
+	GolSceneNode* p_node,
+	CmbModelPart0x34* p_modelParts,
+	LegoFloat p_modelDistance
+)
+{
+	LegoU32 i;
+
+	for (i = 0; i < 2; i++) {
+		if (m_models[i] == NULL) {
+			break;
+		}
+		if (p_modelDistance < m_modelDistances[i]) {
+			LegoU32 j;
+			for (j = 2; j > i; j--) {
+				m_models[j] = m_models[j - 1];
+				m_nodes[j] = m_nodes[j - 1];
+				m_modelParts[j] = m_modelParts[j - 1];
+				m_modelDistances[j] = m_modelDistances[j - 1];
+			}
+			break;
+		}
+	}
+
+	m_models[i] = p_model;
+	m_nodes[i] = p_node;
+	m_partIndices[i] = -1;
+	m_modelParts[i] = p_modelParts;
+	m_modelDistances[i] = p_modelDistance;
+}
+
+// FUNCTION: GOLDP 0x100239e0
+void GolAnimatedEntity::FUN_100239e0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance)
+{
+	LegoU32 i;
+
+	for (i = 0; i < 2; i++) {
+		if (m_nodes[i] == NULL) {
+			break;
+		}
+		if (p_modelDistance < m_modelDistances[i]) {
+			LegoU32 j;
+			for (j = 2; j > i; j--) {
+				m_nodes[j] = m_nodes[j - 1];
+				m_modelParts[j] = m_modelParts[j - 1];
+				m_modelDistances[j] = m_modelDistances[j - 1];
+			}
+			break;
+		}
+	}
+	m_nodes[i] = p_node;
+	m_partIndices[i] = -1;
+	m_modelParts[i] = p_modelParts;
+	m_modelDistances[i] = p_modelDistance;
+}
+
+// This function factors into FUN_0040dae0/FUN_0040d650, which matches LEGORACERS
+// (/Ob1) but not GOLDP: GOLDP's standalone FUN_10023a70 was compiled /Ob1, while
+// common_goldp forces /Ob2 (needed for the ctor/VTable0x54 inlining). The /Ob2
+// inline of this factored form does not reproduce the original. TODO: recover a
+// GOLDP-matching form (e.g. a per-source /Ob1 override) and restore FUNCTION.
+// STUB: GOLDP 0x10023a70
 // FUNCTION: LEGORACERS 0x0040dad0
-void AnimatedModelEntity::FUN_0040dad0(undefined2 p_partIndex)
+void GolAnimatedEntity::FUN_0040dad0(undefined2 p_partIndex)
 {
 	FUN_0040dae0(p_partIndex, 0);
 }
 
 // STUB: LEGORACERS 0x0040dae0
-void AnimatedModelEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
+void GolAnimatedEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 {
 	FUN_0040d650();
 
@@ -231,7 +315,7 @@ void AnimatedModelEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 }
 
 // FUNCTION: LEGORACERS 0x0040db80
-void AnimatedModelEntity::FUN_0040db80(
+void GolAnimatedEntity::FUN_0040db80(
 	LegoU32 p_partIndex,
 	LegoS32 p_transitionTime,
 	LegoFloat p_time,
@@ -309,8 +393,9 @@ void AnimatedModelEntity::FUN_0040db80(
 	m_unk0xdc = partData[queuedPartIndex].GetUnk0x04();
 }
 
+// STUB: GOLDP 0x10023b10
 // STUB: LEGORACERS 0x0040dd60
-void AnimatedModelEntity::VTable0x10(LegoS32 p_elapsed)
+void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
 	if (!(m_flags & c_flagPartAnimation)) {
@@ -404,8 +489,9 @@ void AnimatedModelEntity::VTable0x10(LegoS32 p_elapsed)
 	GolModelEntity::VTable0x10(p_elapsed);
 }
 
+// STUB: GOLDP 0x10023ef0
 // STUB: LEGORACERS 0x0040e0b0
-void AnimatedModelEntity::VTable0x4c(LegoU32 p_index)
+void GolAnimatedEntity::VTable0x4c(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
@@ -457,8 +543,9 @@ void AnimatedModelEntity::VTable0x4c(LegoU32 p_index)
 	FUN_10026fa0(radius * scale);
 }
 
+// FUNCTION: GOLDP 0x100240b0
 // FUNCTION: LEGORACERS 0x0040e270
-void AnimatedModelEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result)
+void GolAnimatedEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result)
 {
 	GolVec3 position;
 	FUN_100286d0(&position);
@@ -491,7 +578,7 @@ void AnimatedModelEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p
 }
 
 // FUNCTION: LEGORACERS 0x0040e360
-LegoBool32 AnimatedModelEntity::FUN_0040e360()
+LegoBool32 GolAnimatedEntity::FUN_0040e360()
 {
 	LegoU32 flags = m_flags;
 	const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
@@ -500,8 +587,9 @@ LegoBool32 AnimatedModelEntity::FUN_0040e360()
 		   (!(flags & c_flagLoopCurrentPart) && static_cast<LegoFloat>(activePart.GetFrameCount() - 1) <= m_unk0xb4);
 }
 
+// FUNCTION: GOLDP 0x100241a0
 // FUNCTION: LEGORACERS 0x0040e480
-GolSceneNode* AnimatedModelEntity::VTable0x58(LegoU32 p_arg1)
+GolSceneNode* GolAnimatedEntity::VTable0x58(LegoU32 p_arg1)
 {
 	return m_nodes[p_arg1];
 }

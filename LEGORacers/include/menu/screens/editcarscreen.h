@@ -3,6 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "golanimatedentity.h"
 #include "golname.h"
 #include "menu/screens/awardcinematicscreen.h"
 #include "menu/screens/menugamescreen.h"
@@ -15,7 +16,6 @@
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextlabel.h"
 #include "save/peridottrace0x4e0.h"
-#include "util/animatedmodelentity.h"
 
 class CmbModelPart0x34;
 class GolModelBase;
@@ -72,7 +72,7 @@ protected:
 	LegoU8 m_unk0x325c[0x202];                          // 0x325c
 	undefined m_padding0x345e[0x3460 - 0x345e];         // 0x345e
 	AwardCinematicScreen::SceneEntityGroup m_unk0x3460; // 0x3460
-	AnimatedModelEntity m_unk0x34b0;                    // 0x34b0
+	GolAnimatedEntity m_unk0x34b0;                      // 0x34b0
 	GolModelBase* m_unk0x35a4;                          // 0x35a4
 	GolSceneNode* m_unk0x35a8;                          // 0x35a8
 	CmbModelPart0x34* m_unk0x35ac;                      // 0x35ac

@@ -144,7 +144,7 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 		return FALSE;
 	}
 
-	AnimatedModelEntity* opalHaven;
+	GolAnimatedEntity* entity;
 	ColorRGBA materialColor;
 	ColorRGBA lightColor;
 	materialColor.m_red = 0x78;
@@ -157,9 +157,9 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 
 	FUN_0047b6b0();
 	m_unk0x224c.GetUnk0x118()->VTable0x14("cmaman", context->m_context->m_unk0x18);
-	opalHaven = m_unk0x224c.GetUnk0x1c();
-	opalHaven->FUN_0040dad0(0);
-	opalHaven->SetFlags(opalHaven->GetFlags() | 0x10000);
+	entity = m_unk0x224c.GetUnk0x1c();
+	entity->FUN_0040dad0(0);
+	entity->SetFlags(entity->GetFlags() | 0x10000);
 
 	if (context->m_inputBindings.HasInputManager() && !context->m_inputBindings.HasKeyboard()) {
 		m_unk0x1f1c.FUN_00471100(4);

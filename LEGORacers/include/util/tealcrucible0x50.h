@@ -6,7 +6,7 @@
 #include "scene/golbillboard.h"
 #include "types.h"
 
-class GdbPartLibrary0x1c;
+class GdbPartLibrary;
 class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
@@ -18,7 +18,7 @@ class TealCrucible0x50 {
 public:
 	// SIZE 0x18
 	struct LoadParams {
-		GdbPartLibrary0x1c* m_partLibrary;   // 0x00
+		GdbPartLibrary* m_partLibrary;       // 0x00
 		GolExport* m_golExport;              // 0x04
 		GolD3DRenderDevice* m_renderer;      // 0x08
 		LavenderVault0x764* m_cosmeticTable; // 0x0c
@@ -45,7 +45,7 @@ public:
 	LegoBool32* GetUnk0x30() { return m_unk0x30; }
 
 private:
-	GdbPartLibrary0x1c* m_partLibrary;   // 0x00
+	GdbPartLibrary* m_partLibrary;       // 0x00
 	GolD3DRenderDevice* m_renderer;      // 0x04
 	LavenderVault0x764* m_cosmeticTable; // 0x08
 	GolExport* m_golExport;              // 0x0c

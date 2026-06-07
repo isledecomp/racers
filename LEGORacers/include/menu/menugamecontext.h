@@ -4,10 +4,10 @@
 #include "app/legoracers.h"
 #include "decomp.h"
 #include "menu/menuanimationlist.h"
+#include "model/carbuildmodel.h"
+#include "model/carpartset.h"
+#include "model/legocolortable.h"
 #include "model/legopiecelibrary.h"
-#include "model/sapphirereef0x2030.h"
-#include "model/topazburst0x14.h"
-#include "model/verdanttide0x38.h"
 #include "race/data/championdefinitionlist.h"
 #include "race/data/racedefinitionlist.h"
 #include "race/data/racenamelist.h"
@@ -27,10 +27,10 @@ public:
 	StackOfLegoU16 m_menuStack;                   // 0x04
 	OnyxBreeze0x248 m_inputBindings;              // 0x10
 	SaveSystem m_unk0x258;                        // 0x258
-	TopazBurst0x14 m_unk0x21a4;                   // 0x21a4
+	CarPartSet m_unk0x21a4;                       // 0x21a4
 	LegoPieceLibrary m_pieceLibrary;              // 0x21b8
-	SapphireReef0x2030 m_unk0x21f4;               // 0x21f4
-	VerdantTide0x38 m_unk0x4224;                  // 0x4224
+	CarBuildModel m_unk0x21f4;                    // 0x21f4
+	LegoColorTable m_unk0x4224;                   // 0x4224
 	DriverCosmeticTable m_unk0x425c;              // 0x425c
 	AquamarineSpirit0x3c m_unk0x42dc;             // 0x42dc
 	ChampionDefinitionList m_championDefinitions; // 0x4318

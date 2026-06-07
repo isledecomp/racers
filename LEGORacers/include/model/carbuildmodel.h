@@ -1,5 +1,5 @@
-#ifndef SAPPHIREREEF0X2030_H
-#define SAPPHIREREEF0X2030_H
+#ifndef CARBUILDMODEL_H
+#define CARBUILDMODEL_H
 
 #include "decomp.h"
 #include "model/legopiecelibrary.h"
@@ -11,34 +11,34 @@ class GolExport;
 class GolModelBase;
 class GolModelEntity;
 class OpalHaven0xf4;
-class VerdantTide0x38;
+class LegoColorTable;
 
 // SIZE 0x2030
-class SapphireReef0x2030 {
+class CarBuildModel {
 public:
 	// SIZE 0x30
-	class Placement0x30 {
+	class Placement {
 	public:
-		Placement0x30();
-		~Placement0x30();
+		Placement();
+		~Placement();
 
 		void Reset();
 		void Destroy();
-		void FUN_004513d0(SapphireReef0x2030* p_unk0x04);
-		void FUN_00499890(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x0c);
+		void FUN_004513d0(CarBuildModel* p_unk0x04);
+		void SetPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x0c);
 		void FUN_00499a60();
-		void FUN_00499b00();
+		void Rotate();
 		void FUN_00499c20(LegoS32 p_delta);
 		void FUN_00499c60(LegoS32 p_delta);
-		void FUN_00499ca0(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation);
-		void FUN_00499cc0(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
+		void GetPlacement(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation);
+		void SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
 		LegoPieceLibrary::PieceRecord* GetPieceRecord() const { return m_pieceRecord; }
-		LegoS32 GetUnk0x10() const { return m_unk0x10; }
+		LegoS32 GetColorRecordIndex() const { return m_colorRecordIndex; }
 
 	private:
 		void FUN_00499570();
 		void FUN_00499640();
-		void FUN_00499710(LegoS32 p_anchor);
+		void SetAnchor(LegoS32 p_anchor);
 		void FUN_004997e0();
 		void FUN_00499b40();
 		void FUN_00499b90();
@@ -46,17 +46,17 @@ public:
 		void FUN_00499c00();
 
 		undefined4 m_unk0x00;                         // 0x00
-		LegoS32 m_unk0x04;                            // 0x04
-		LegoS32 m_unk0x08;                            // 0x08
+		LegoS32 m_x;                                  // 0x04
+		LegoS32 m_y;                                  // 0x08
 		LegoPieceLibrary::PieceRecord* m_pieceRecord; // 0x0c
-		LegoS32 m_unk0x10;                            // 0x10
+		LegoS32 m_colorRecordIndex;                   // 0x10
 		undefined4 m_unk0x14;                         // 0x14
-		LegoS32 m_unk0x18;                            // 0x18
-		LegoS32 m_unk0x1c;                            // 0x1c
-		LegoS32 m_unk0x20;                            // 0x20
-		LegoS32 m_unk0x24;                            // 0x24
-		LegoS32 m_unk0x28;                            // 0x28
-		LegoS32 m_unk0x2c;                            // 0x2c
+		LegoS32 m_gridX;                              // 0x18
+		LegoS32 m_gridY;                              // 0x1c
+		LegoS32 m_width;                              // 0x20
+		LegoS32 m_height;                             // 0x24
+		LegoS32 m_rotation;                           // 0x28
+		LegoS32 m_anchor;                             // 0x2c
 	};
 
 	struct Field0xbc;
@@ -118,16 +118,16 @@ public:
 		undefined m_unk0x0e[0x28 - 0x0e]; // 0x0e
 	};
 
-	SapphireReef0x2030();
-	~SapphireReef0x2030();
-	LegoBool32 FUN_0049a0e0();
-	void FUN_00499fc0(
+	CarBuildModel();
+	~CarBuildModel();
+	LegoBool32 IsInitialized();
+	void Initialize(
 		GolExport* p_golExport,
 		GolD3DRenderDevice* p_renderer,
 		LegoPieceLibrary* p_pieceLibrary,
-		VerdantTide0x38* p_unk0x10
+		LegoColorTable* p_unk0x10
 	);
-	void FUN_0049ad00();
+	void FindHighBasePiece();
 	void FUN_00499ee0();
 	void FUN_00499f00();
 	void FUN_00499eb0(GolModelBase* p_model);
@@ -168,21 +168,21 @@ public:
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
 	void FUN_0049bdc0();
 	void FUN_0049bdd0(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08);
-	void FUN_0049c230(Placement0x30* p_placement, GolModelEntity* p_entity);
+	void FUN_0049c230(Placement* p_placement, GolModelEntity* p_entity);
 	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
 	GolModelBase* GetUnk0x84() const { return m_unk0x84; }
-	LegoS32 GetUnk0xd4() const { return m_unk0xd4; }
+	LegoS32 GetPlacedPieceCount() const { return m_placedPieceCount; }
 	OpalHaven0xf4* GetUnk0x0c() { return reinterpret_cast<OpalHaven0xf4*>(&m_unk0x0c); }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
-	void SetUnk0xd4(undefined4 p_unk0xd4) { m_unk0xd4 = p_unk0xd4; }
+	void SetPlacedPieceCount(undefined4 p_unk0xd4) { m_placedPieceCount = p_unk0xd4; }
 	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }
 	LegoS32 GetUnk0x2028() const { return m_unk0x2028; }
 
 private:
 	void Reset();
-	void FUN_00499f20();
-	void FUN_00499f80();
+	void AllocateBuffers();
+	void FreeBuffers();
 	void FUN_0049b720();
 
 	GolExport* m_golExport;                         // 0x0000
@@ -197,13 +197,13 @@ private:
 	undefined m_unk0x7c[0x0084 - 0x007c];           // 0x007c
 	GolModelBase* m_unk0x84;                        // 0x0084
 	undefined m_unk0x88[0x009c - 0x0088];           // 0x0088
-	VerdantTide0x38* m_verdantTide;                 // 0x009c
+	LegoColorTable* m_verdantTide;                  // 0x009c
 	LegoPieceLibrary* m_pieceLibrary;               // 0x00a0
 	Field0xa4 m_unk0xa4;                            // 0x00a4
 	undefined4 m_unk0xb8;                           // 0x00b8
 	Field0xbc m_unk0xbc;                            // 0x00bc
 	undefined4 m_unk0xd0;                           // 0x00d0
-	undefined4 m_unk0xd4;                           // 0x00d4
+	undefined4 m_placedPieceCount;                  // 0x00d4
 	LegoU8 m_hasHighBasePiece;                      // 0x00d8
 	undefined m_unk0xd9;                            // 0x00d9
 	LegoBool m_unk0xda;                             // 0x00da
@@ -232,4 +232,4 @@ private:
 	undefined4 m_unk0x202c;                         // 0x202c
 };
 
-#endif // SAPPHIREREEF0X2030_H
+#endif // CARBUILDMODEL_H

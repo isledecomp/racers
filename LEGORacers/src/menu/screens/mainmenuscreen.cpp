@@ -94,7 +94,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		FUN_00480210(p_context, 0);
 	}
 
-	if (!p_context->m_unk0x21f4.FUN_0049a0e0()) {
+	if (!p_context->m_unk0x21f4.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
 	}
 

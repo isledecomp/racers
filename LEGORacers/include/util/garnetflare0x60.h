@@ -2,7 +2,7 @@
 #define GARNETFLARE0X60_H
 
 #include "decomp.h"
-#include "model/gdbpartlibrary0x1c.h"
+#include "model/gdbpartlibrary.h"
 #include "types.h"
 
 class GolMaterialLibrary;
@@ -41,7 +41,7 @@ public:
 	DuskwindBananaRelic0x24* FUN_00498640(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_00498680(LegoS32 p_index);
 	DuskwindBananaRelic0x24* FUN_004986c0(LegoS32 p_index);
-	GdbPartLibrary0x1c* GetPartLibrary() { return &m_partLibrary; }
+	GdbPartLibrary* GetPartLibrary() { return &m_partLibrary; }
 	LavenderVault0x764* GetPartConfig() const { return m_partConfig; }
 	LegoS32 GetUnk0x3c() const { return m_unk0x3c; }
 	LegoS32 GetUnk0x40() const { return m_unk0x40; }
@@ -63,7 +63,7 @@ private:
 	void ComputeMaxGroupCounts();
 	void ComputeMaxMaterialCounts();
 
-	GdbPartLibrary0x1c m_partLibrary;   // 0x00
+	GdbPartLibrary m_partLibrary;       // 0x00
 	GolD3DRenderDevice* m_renderer;     // 0x1c
 	GolExport* m_golExport;             // 0x20
 	GolWorldDatabase* m_partResource;   // 0x24

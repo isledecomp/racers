@@ -93,7 +93,7 @@ void CarModelScreenBase::VTable0x4c()
 	FUN_0047fcf0(&m_unk0xe98, 0xae, 0x3b);
 	CreateSelector(&m_unk0xfec, &m_unk0xe98, 0xac, 0xcc);
 
-	m_unk0xe98.FUN_00485440(m_context->m_unk0x21a4.GetEntries()[m_partCategoryAvailable[0]].GetUnk0x08());
+	m_unk0xe98.FUN_00485440(m_context->m_unk0x21a4.GetEntries()[m_partCategoryAvailable[0]].GetPieceType());
 }
 
 // FUNCTION: LEGORACERS 0x00477210
@@ -146,7 +146,7 @@ void CarModelScreenBase::FUN_00477290()
 		mask <<= 1;
 	}
 
-	for (i = 0; i < m_context->m_unk0x21f4.GetUnk0xd4(); i++) {
+	for (i = 0; i < m_context->m_unk0x21f4.GetPlacedPieceCount(); i++) {
 		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_unk0x21f4.FUN_0049bd50(i));
 		m_partCategoryAvailable[index] = TRUE;
 	}
@@ -239,7 +239,7 @@ void CarModelScreenBase::VTable0x44(MenuWidget* p_source)
 		for (i = 0; i < c_partCategoryCount; i++) {
 			if (child == &m_unk0x19e0[i]) {
 				SiennaCircuit0x154* circuit = &m_unk0xe98;
-				circuit->FUN_00485440(m_context->m_unk0x21a4.GetEntries()[i].GetUnk0x08());
+				circuit->FUN_00485440(m_context->m_unk0x21a4.GetEntries()[i].GetPieceType());
 				m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
 				return;
 			}

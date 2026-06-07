@@ -1,5 +1,5 @@
 #include "menu/screens/awardcinematicscreen.h"
-#include "model/sapphirereef0x2030.h"
+#include "model/carbuildmodel.h"
 #include "racer/aquamarinespirit0x3c.h"
 
 #include <string.h>

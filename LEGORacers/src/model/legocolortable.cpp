@@ -1,4 +1,4 @@
-#include "model/verdanttide0x38.h"
+#include "model/legocolortable.h"
 
 #include "core/gol.h"
 #include "golbinparser.h"
@@ -13,21 +13,21 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(VerdantTide0x38, 0x38)
-DECOMP_SIZE_ASSERT(VerdantTide0x38::ColorRecord0x10, 0x10)
-DECOMP_SIZE_ASSERT(VerdantTide0x38::MaterialUsage0x4, 0x04)
+DECOMP_SIZE_ASSERT(LegoColorTable, 0x38)
+DECOMP_SIZE_ASSERT(LegoColorTable::ColorRecord, 0x10)
+DECOMP_SIZE_ASSERT(LegoColorTable::MaterialUsage, 0x04)
 
 static LegoS32 CompareColorRecords(const void* p_lhs, const void* p_rhs);
 
 // FUNCTION: LEGORACERS 0x00497830
-LegoChar* VerdantTide0x38::ColorRecord0x10::SetName(const LegoChar* p_name)
+LegoChar* LegoColorTable::ColorRecord::SetName(const LegoChar* p_name)
 {
 	::memset(m_name, 0, sizeof(m_name));
 	return ::strncpy(m_name, p_name, sizeof(m_name));
 }
 
 // FUNCTION: LEGORACERS 0x00497860
-LegoS32 VerdantTide0x38::Reset()
+LegoS32 LegoColorTable::Reset()
 {
 	m_golExport = NULL;
 	m_renderer = NULL;
@@ -42,19 +42,19 @@ LegoS32 VerdantTide0x38::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00497880
-VerdantTide0x38::VerdantTide0x38()
+LegoColorTable::LegoColorTable()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004978a0
-VerdantTide0x38::~VerdantTide0x38()
+LegoColorTable::~LegoColorTable()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004978f0
-void VerdantTide0x38::FUN_004978f0(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
+void LegoColorTable::Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
 	Destroy();
 	m_golExport = p_golExport;
@@ -62,7 +62,7 @@ void VerdantTide0x38::FUN_004978f0(GolExport* p_golExport, GolD3DRenderDevice* p
 }
 
 // FUNCTION: LEGORACERS 0x00497910
-void VerdantTide0x38::Destroy()
+void LegoColorTable::Destroy()
 {
 	if (m_materialTable.m_renderer != NULL) {
 		m_materialTable.Clear();
@@ -87,14 +87,14 @@ void VerdantTide0x38::Destroy()
 }
 
 // STUB: LEGORACERS 0x00497980
-void VerdantTide0x38::RebuildColorMaterialLookup()
+void LegoColorTable::RebuildColorMaterialLookup()
 {
 	STUB(0x00497980);
 
 	LegoS32 materialCount = static_cast<LegoS32>(m_materialTable.m_count);
 
 	for (LegoS32 i = 0; i < m_colorRecordCount; i++) {
-		ColorRecord0x10& record = m_colorRecords[i];
+		ColorRecord& record = m_colorRecords[i];
 		m_colorMaterialIndices[record.m_materialIndex] = -1;
 		for (LegoS32 j = 0; j < materialCount; j++) {
 			DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(m_materialTable.m_entries[j]);
@@ -108,7 +108,7 @@ void VerdantTide0x38::RebuildColorMaterialLookup()
 }
 
 // FUNCTION: LEGORACERS 0x00497a10
-void VerdantTide0x38::FUN_00497a10(const LegoChar* p_filename, undefined4 p_binary)
+void LegoColorTable::LoadColors(const LegoChar* p_filename, undefined4 p_binary)
 {
 	if (m_colorRecords != NULL) {
 		delete[] m_colorRecords;
@@ -144,7 +144,7 @@ void VerdantTide0x38::FUN_00497a10(const LegoChar* p_filename, undefined4 p_bina
 		parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 	m_colorRecordCount = LegoPieceLibrary::ReadBracketedCountAndLeftCurly(parser);
-	m_colorRecords = new ColorRecord0x10[m_colorRecordCount];
+	m_colorRecords = new ColorRecord[m_colorRecordCount];
 	m_colorMaterialIndices = new LegoS32[m_colorRecordCount];
 	if (m_colorRecords == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -158,7 +158,7 @@ void VerdantTide0x38::FUN_00497a10(const LegoChar* p_filename, undefined4 p_bina
 		m_colorRecords[i].SetName(parser->ReadString());
 	}
 
-	::qsort(m_colorRecords, m_colorRecordCount, sizeof(ColorRecord0x10), CompareColorRecords);
+	::qsort(m_colorRecords, m_colorRecordCount, sizeof(ColorRecord), CompareColorRecords);
 	if (parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		parser->HandleUnexpectedToken(GolFileParser::e_rightCurly);
 	}
@@ -170,8 +170,8 @@ void VerdantTide0x38::FUN_00497a10(const LegoChar* p_filename, undefined4 p_bina
 // FUNCTION: LEGORACERS 0x00497c00
 static LegoS32 CompareColorRecords(const void* p_lhs, const void* p_rhs)
 {
-	const VerdantTide0x38::ColorRecord0x10* lhs = static_cast<const VerdantTide0x38::ColorRecord0x10*>(p_lhs);
-	const VerdantTide0x38::ColorRecord0x10* rhs = static_cast<const VerdantTide0x38::ColorRecord0x10*>(p_rhs);
+	const LegoColorTable::ColorRecord* lhs = static_cast<const LegoColorTable::ColorRecord*>(p_lhs);
+	const LegoColorTable::ColorRecord* rhs = static_cast<const LegoColorTable::ColorRecord*>(p_rhs);
 
 	LegoS32 result = ::strncmp(lhs->m_name, rhs->m_name, sizeof(lhs->m_name));
 	if (result == 0) {
@@ -182,7 +182,7 @@ static LegoS32 CompareColorRecords(const void* p_lhs, const void* p_rhs)
 }
 
 // FUNCTION: LEGORACERS 0x00497c30
-void VerdantTide0x38::FUN_00497c30(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c)
+void LegoColorTable::LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c)
 {
 	if (m_materialTable.m_renderer != NULL) {
 		m_materialTable.Clear();
@@ -207,18 +207,18 @@ void VerdantTide0x38::FUN_00497c30(const LegoChar* p_filename, undefined4 p_bina
 		m_materialTable.SetPosition(i, m_materials->GetItem(i));
 	}
 
-	m_materialUsage = new MaterialUsage0x4[m_materialCount];
+	m_materialUsage = new MaterialUsage[m_materialCount];
 	RebuildColorMaterialLookup();
 }
 
 // FUNCTION: LEGORACERS 0x00497cf0
-GolBillboard::Field0x2c* VerdantTide0x38::GetMaterialTable()
+GolBillboard::Field0x2c* LegoColorTable::GetMaterialTable()
 {
 	return m_materialTable.m_renderer != NULL ? &m_materialTable : NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00497d00
-void VerdantTide0x38::ResetMaterialUsage()
+void LegoColorTable::ResetMaterialUsage()
 {
 	if (m_materialUsage != NULL) {
 		::memset(m_materialUsage, 0, sizeof(*m_materialUsage) * m_materialCount);
@@ -228,11 +228,11 @@ void VerdantTide0x38::ResetMaterialUsage()
 }
 
 // STUB: LEGORACERS 0x00497d40
-void VerdantTide0x38::MarkMaterialUsed(LegoS32 p_materialIndex)
+void LegoColorTable::MarkMaterialUsed(LegoS32 p_materialIndex)
 {
 	STUB(0x00497d40);
 
-	MaterialUsage0x4* usage = &m_materialUsage[p_materialIndex];
+	MaterialUsage* usage = &m_materialUsage[p_materialIndex];
 	if (!usage->m_used) {
 		usage->m_used = TRUE;
 		usage->m_order = static_cast<LegoU16>(m_usedMaterialCount);
@@ -247,7 +247,7 @@ void VerdantTide0x38::MarkMaterialUsed(LegoS32 p_materialIndex)
 }
 
 // STUB: LEGORACERS 0x00497d80
-LegoS32 VerdantTide0x38::FindColorRecordIndexByName(const LegoChar* p_name) const
+LegoS32 LegoColorTable::FindColorRecordIndexByName(const LegoChar* p_name) const
 {
 	STUB(0x00497d80);
 
@@ -279,13 +279,13 @@ LegoS32 VerdantTide0x38::FindColorRecordIndexByName(const LegoChar* p_name) cons
 }
 
 // FUNCTION: LEGORACERS 0x00497e00
-LegoS32 VerdantTide0x38::GetMaterialIndexForColorRecord(LegoS32 p_index) const
+LegoS32 LegoColorTable::GetMaterialIndexForColorRecord(LegoS32 p_index) const
 {
 	return m_colorMaterialIndices[p_index];
 }
 
 // FUNCTION: LEGORACERS 0x00497e10
-LegoS32 VerdantTide0x38::FindColorRecordIndexByMaterialIndex(LegoS32 p_materialIndex) const
+LegoS32 LegoColorTable::FindColorRecordIndexByMaterialIndex(LegoS32 p_materialIndex) const
 {
 	for (LegoS32 i = 0; i < m_colorRecordCount; i++) {
 		if (p_materialIndex == m_colorMaterialIndices[i]) {

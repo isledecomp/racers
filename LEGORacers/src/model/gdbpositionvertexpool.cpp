@@ -1,14 +1,14 @@
-#include "model/gdbpositionvertexpool0x0c.h"
+#include "model/gdbpositionvertexpool.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GdbPositionVertexPool0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(GdbPositionVertexPool, 0x0c)
 
 // FUNCTION: LEGORACERS 0x00415dd0
-GdbPositionVertexPool0x0c::GdbPositionVertexPool0x0c()
+GdbPositionVertexPool::GdbPositionVertexPool()
 {
 	m_count = 0;
 	m_vertexType = 5;
@@ -16,13 +16,13 @@ GdbPositionVertexPool0x0c::GdbPositionVertexPool0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00415e10
-GdbPositionVertexPool0x0c::~GdbPositionVertexPool0x0c()
+GdbPositionVertexPool::~GdbPositionVertexPool()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00415e20
-void GdbPositionVertexPool0x0c::Read(GolFileParser& p_parser)
+void GdbPositionVertexPool::Read(GolFileParser& p_parser)
 {
 	if (m_count != 0) {
 		Clear();
@@ -49,7 +49,7 @@ void GdbPositionVertexPool0x0c::Read(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00415ef0
-void GdbPositionVertexPool0x0c::Allocate(LegoU16 p_count)
+void GdbPositionVertexPool::Allocate(LegoU16 p_count)
 {
 	if (m_count != 0) {
 		Clear();
@@ -63,7 +63,7 @@ void GdbPositionVertexPool0x0c::Allocate(LegoU16 p_count)
 }
 
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
-void GdbPositionVertexPool0x0c::Clear()
+void GdbPositionVertexPool::Clear()
 {
 	if (m_positions != NULL) {
 		delete[] m_positions;
@@ -72,7 +72,7 @@ void GdbPositionVertexPool0x0c::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x00415f60
-void GdbPositionVertexPool0x0c::GetPosition(LegoU32 p_index, GolVec3* p_dest) const
+void GdbPositionVertexPool::GetPosition(LegoU32 p_index, GolVec3* p_dest) const
 {
 	p_dest->m_x = m_positions[p_index].m_x;
 	p_dest->m_y = m_positions[p_index].m_y;
@@ -80,14 +80,14 @@ void GdbPositionVertexPool0x0c::GetPosition(LegoU32 p_index, GolVec3* p_dest) co
 }
 
 // FUNCTION: LEGORACERS 0x00415f90
-void GdbPositionVertexPool0x0c::GetTexCoord(LegoU32, GolVec2* p_dest) const
+void GdbPositionVertexPool::GetTexCoord(LegoU32, GolVec2* p_dest) const
 {
 	p_dest->m_x = 0.0f;
 	p_dest->m_y = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00415fb0
-void GdbPositionVertexPool0x0c::GetNormal(LegoU32, GolVec3* p_dest) const
+void GdbPositionVertexPool::GetNormal(LegoU32, GolVec3* p_dest) const
 {
 	p_dest->m_x = 0.0f;
 	p_dest->m_y = 0.0f;
@@ -95,7 +95,7 @@ void GdbPositionVertexPool0x0c::GetNormal(LegoU32, GolVec3* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00415fd0
-void GdbPositionVertexPool0x0c::GetColor(LegoU32, ColorRGBA* p_dest) const
+void GdbPositionVertexPool::GetColor(LegoU32, ColorRGBA* p_dest) const
 {
 	p_dest->m_red = 0;
 	p_dest->m_grn = 0;
@@ -104,7 +104,7 @@ void GdbPositionVertexPool0x0c::GetColor(LegoU32, ColorRGBA* p_dest) const
 }
 
 // FUNCTION: LEGORACERS 0x00415ff0
-void GdbPositionVertexPool0x0c::SetPosition(LegoU32 p_index, const GolVec3* p_src)
+void GdbPositionVertexPool::SetPosition(LegoU32 p_index, const GolVec3* p_src)
 {
 	m_positions[p_index].m_x = p_src->m_x;
 	m_positions[p_index].m_y = p_src->m_y;
@@ -112,31 +112,31 @@ void GdbPositionVertexPool0x0c::SetPosition(LegoU32 p_index, const GolVec3* p_sr
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GdbPositionVertexPool0x0c::VTable0x10()
+void GdbPositionVertexPool::VTable0x10()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GdbPositionVertexPool0x0c::VTable0x38()
+void GdbPositionVertexPool::VTable0x38()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GdbPositionVertexPool0x0c::VTable0x34(const LegoChar*)
+void GdbPositionVertexPool::VTable0x34(const LegoChar*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbPositionVertexPool0x0c::SetTexCoord(LegoU32, const GolVec2*)
+void GdbPositionVertexPool::SetTexCoord(LegoU32, const GolVec2*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbPositionVertexPool0x0c::SetNormal(LegoU32, const GolVec3*)
+void GdbPositionVertexPool::SetNormal(LegoU32, const GolVec3*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GdbPositionVertexPool0x0c::SetColor(LegoU32, const ColorRGBA*)
+void GdbPositionVertexPool::SetColor(LegoU32, const ColorRGBA*)
 {
 }

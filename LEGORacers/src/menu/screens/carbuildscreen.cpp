@@ -874,7 +874,7 @@ LegoBool32 CarBuildScreen::FUN_00477540()
 			circuit->FUN_00485440(carSetPartId);
 			circuit->FUN_004856c0(pieceType, colorRecordIndex);
 
-			m_unk0x410.FUN_0046d920(&m_unk0x19e0[m_context->m_unk0x21a4.GetUnk0x10()->GetIndex()]);
+			m_unk0x410.FUN_0046d920(&m_unk0x19e0[m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex()]);
 			m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
 			m_unk0x2ae4 = 5;
 			return TRUE;

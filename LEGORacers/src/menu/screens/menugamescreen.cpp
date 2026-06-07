@@ -190,25 +190,25 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 	LegoPieceLibrary* pieceLibrary = &p_context->m_pieceLibrary;
 	GolExport* golExport = p_context->m_context->m_golApp->GetGolExport();
 	GolD3DRenderDevice* renderer = p_context->m_context->m_golApp->GetRenderer();
-	VerdantTide0x38* pieceResource;
+	LegoColorTable* pieceResource;
 
 	if (p_binary) {
 		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_unk0x18);
 		pieceResource = &p_context->m_unk0x4224;
-		pieceResource->FUN_004978f0(golExport, renderer);
-		pieceResource->FUN_00497c30("LPieceHi.WDF", p_context->m_context->m_unk0x18, TRUE);
+		pieceResource->Initialize(golExport, renderer);
+		pieceResource->LoadMaterials("LPieceHi.WDF", p_context->m_context->m_unk0x18, TRUE);
 	}
 	else {
 		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_unk0x18);
 		pieceResource = &p_context->m_unk0x4224;
-		pieceResource->FUN_004978f0(golExport, renderer);
-		pieceResource->FUN_00497c30("LPieceLo.WDF", p_context->m_context->m_unk0x18, TRUE);
+		pieceResource->Initialize(golExport, renderer);
+		pieceResource->LoadMaterials("LPieceLo.WDF", p_context->m_context->m_unk0x18, TRUE);
 	}
 
-	pieceResource->FUN_00497a10("L_Colors.LEG", p_context->m_context->m_unk0x18);
-	p_context->m_unk0x21f4.FUN_00499fc0(golExport, renderer, pieceLibrary, pieceResource);
-	p_context->m_unk0x21f4.FUN_0049ad00();
-	p_context->m_unk0x21a4.FUN_0049ce80("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_unk0x18);
+	pieceResource->LoadColors("L_Colors.LEG", p_context->m_context->m_unk0x18);
+	p_context->m_unk0x21f4.Initialize(golExport, renderer, pieceLibrary, pieceResource);
+	p_context->m_unk0x21f4.FindHighBasePiece();
+	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_unk0x18);
 
 	AquamarineSpirit0x3c::Params params;
 	params.m_unk0x00 = golExport;
@@ -232,7 +232,7 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 		p_context = m_context;
 	}
 
-	p_context->m_unk0x21a4.FUN_0049ce40();
+	p_context->m_unk0x21a4.Clear();
 	p_context->m_unk0x21f4.Destroy();
 	p_context->m_unk0x4224.Destroy();
 	p_context->m_pieceLibrary.Destroy();

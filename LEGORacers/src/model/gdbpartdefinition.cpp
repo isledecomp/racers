@@ -1,11 +1,11 @@
-#include "model/gdbpartdefinition0x0c.h"
+#include "model/gdbpartdefinition.h"
 
 #include "golfileparser.h"
 
-DECOMP_SIZE_ASSERT(GdbPartDefinition0x0c, 0x0c)
+DECOMP_SIZE_ASSERT(GdbPartDefinition, 0x0c)
 
 // FUNCTION: LEGORACERS 0x00407440
-GdbPartDefinition0x0c::GdbPartDefinition0x0c()
+GdbPartDefinition::GdbPartDefinition()
 {
 	m_groupCount = 0;
 	m_scale = 1.0f;
@@ -13,13 +13,13 @@ GdbPartDefinition0x0c::GdbPartDefinition0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00407460
-GdbPartDefinition0x0c::~GdbPartDefinition0x0c()
+GdbPartDefinition::~GdbPartDefinition()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00407470
-void GdbPartDefinition0x0c::Read(GolFileParser& p_parser)
+void GdbPartDefinition::Read(GolFileParser& p_parser)
 {
 	if (m_groups != NULL) {
 		Clear();
@@ -31,7 +31,7 @@ void GdbPartDefinition0x0c::Read(GolFileParser& p_parser)
 		switch (token) {
 		case GolFileParser::e_unknown0x2b: {
 			m_groupCount = p_parser.ReadBracketedCountAndLeftCurly();
-			m_groups = new GdbPartFaceGroup0x14[m_groupCount];
+			m_groups = new GdbPartFaceGroup[m_groupCount];
 			for (LegoU32 i = 0; i < m_groupCount; i++) {
 				m_groups[i].Read(p_parser);
 			}
@@ -51,7 +51,7 @@ void GdbPartDefinition0x0c::Read(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00407580
-void GdbPartDefinition0x0c::Clear()
+void GdbPartDefinition::Clear()
 {
 	if (m_groups != NULL) {
 		delete[] m_groups;

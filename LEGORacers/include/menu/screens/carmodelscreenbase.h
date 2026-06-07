@@ -13,7 +13,7 @@
 #include "menu/widgets/menusceneelement.h"
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"
-#include "model/sapphirereef0x2030.h"
+#include "model/carbuildmodel.h"
 #include "racer/siennacircuit0x154.h"
 #include "render/golrenderdevice.h"
 #include "util/opalhaven0xf4.h"
@@ -115,7 +115,7 @@ public:
 		CarModelScreenBase* m_unk0x1c;                    // 0x1c
 		SoundGroupBinding* m_unk0x20;                     // 0x20
 		MenuGameContext* m_unk0x24;                       // 0x24
-		SapphireReef0x2030::Placement0x30 m_unk0x28;      // 0x28
+		CarBuildModel::Placement m_unk0x28;               // 0x28
 		AwardCinematicScreen::SceneEntityGroup m_unk0x58; // 0x58
 		OpalHaven0xf4 m_unk0xa8;                          // 0xa8
 		GolSceneNode* m_unk0x19c;                         // 0x19c

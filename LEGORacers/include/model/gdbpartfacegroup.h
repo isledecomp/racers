@@ -1,5 +1,5 @@
-#ifndef GDBPARTFACEGROUP0X14_H
-#define GDBPARTFACEGROUP0X14_H
+#ifndef GDBPARTFACEGROUP_H
+#define GDBPARTFACEGROUP_H
 
 #include "decomp.h"
 #include "golname.h"
@@ -8,10 +8,10 @@
 class GolFileParser;
 
 // SIZE 0x14
-class GdbPartFaceGroup0x14 {
+class GdbPartFaceGroup {
 public:
-	GdbPartFaceGroup0x14();
-	~GdbPartFaceGroup0x14();
+	GdbPartFaceGroup();
+	~GdbPartFaceGroup();
 
 	void Clear();
 	void Read(GolFileParser& p_parser);
@@ -22,4 +22,4 @@ public:
 	LegoU32 m_unk0x10;       // 0x10
 };
 
-#endif // GDBPARTFACEGROUP0X14_H
+#endif // GDBPARTFACEGROUP_H

@@ -5,14 +5,14 @@
 #include "decomp.h"
 #include "menu/style/menustyletable.h"
 #include "menu/widgets/menumodelcarousel.h"
-#include "model/topazburst0x14.h"
+#include "model/carpartset.h"
 #include "types.h"
 
 class GolModelEntity;
 class LegoPieceLibrary;
 class MenuIcon;
-class SapphireReef0x2030;
-class VerdantTide0x38;
+class CarBuildModel;
+class LegoColorTable;
 
 extern const LegoFloat g_siennaCircuitTwoPi;
 
@@ -23,10 +23,10 @@ public:
 	// SIZE 0x84
 	class CreateParams : public MenuModelCarousel::CreateParams {
 	public:
-		TopazBurst0x14* m_unk0x74;        // 0x74
+		CarPartSet* m_unk0x74;            // 0x74
 		LegoPieceLibrary* m_pieceLibrary; // 0x78
-		SapphireReef0x2030* m_unk0x7c;    // 0x7c
-		VerdantTide0x38* m_unk0x80;       // 0x80
+		CarBuildModel* m_unk0x7c;         // 0x7c
+		LegoColorTable* m_unk0x80;        // 0x80
 	};
 
 	SiennaCircuit0x154();
@@ -52,11 +52,11 @@ public:
 	// SiennaCircuit0x154::`scalar deleting destructor'
 
 private:
-	TopazBurst0x14* m_unk0xc0;        // 0xc0
+	CarPartSet* m_unk0xc0;            // 0xc0
 	LegoPieceLibrary* m_pieceLibrary; // 0xc4
-	SapphireReef0x2030* m_unk0xc8;    // 0xc8
-	VerdantTide0x38* m_unk0xcc;       // 0xcc
-	TopazBurst0x14::Entry* m_unk0xd0; // 0xd0
+	CarBuildModel* m_unk0xc8;         // 0xc8
+	LegoColorTable* m_unk0xcc;        // 0xcc
+	CarPartSet::Entry* m_unk0xd0;     // 0xd0
 	LegoS32 m_unk0xd4[30];            // 0xd4
 	LegoS32 m_unk0x14c;               // 0x14c
 	LegoFloat m_unk0x150;             // 0x150

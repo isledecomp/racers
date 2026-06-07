@@ -1,5 +1,5 @@
-#ifndef GDBPOSITIONVERTEXPOOL0X0C_H
-#define GDBPOSITIONVERTEXPOOL0X0C_H
+#ifndef GDBPOSITIONVERTEXPOOL_H
+#define GDBPOSITIONVERTEXPOOL_H
 
 #include "decomp.h"
 #include "golmath.h"
@@ -10,10 +10,10 @@ class GolFileParser;
 
 // VTABLE: LEGORACERS 0x004af964
 // SIZE 0x0c
-class GdbPositionVertexPool0x0c {
+class GdbPositionVertexPool {
 public:
-	GdbPositionVertexPool0x0c();
-	virtual ~GdbPositionVertexPool0x0c();                             // vtable+0x00
+	GdbPositionVertexPool();
+	virtual ~GdbPositionVertexPool();                                 // vtable+0x00
 	virtual void Allocate(LegoU16 p_count);                           // vtable+0x04
 	virtual void Read(GolFileParser& p_parser);                       // vtable+0x08
 	virtual void Clear();                                             // vtable+0x0c
@@ -30,7 +30,7 @@ public:
 	virtual void VTable0x38();                                        // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x00415df0
-	// GdbPositionVertexPool0x0c::`scalar deleting destructor'
+	// GdbPositionVertexPool::`scalar deleting destructor'
 
 protected:
 	LegoU16 m_count;      // 0x04
@@ -38,4 +38,4 @@ protected:
 	GolVec3* m_positions; // 0x08
 };
 
-#endif // GDBPOSITIONVERTEXPOOL0X0C_H
+#endif // GDBPOSITIONVERTEXPOOL_H

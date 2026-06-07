@@ -1,22 +1,22 @@
-#ifndef GDBPARTVERTEXPOOL0X14_H
-#define GDBPARTVERTEXPOOL0X14_H
+#ifndef GDBPARTVERTEXPOOL_H
+#define GDBPARTVERTEXPOOL_H
 
 #include "compat.h"
 #include "decomp.h"
-#include "model/gdbpositionvertexpool0x0c.h"
+#include "model/gdbpositionvertexpool.h"
 #include "surface/color.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004af4b4
 // SIZE 0x14
-class GdbPartVertexPool0x14 : public GdbPositionVertexPool0x0c {
+class GdbPartVertexPool : public GdbPositionVertexPool {
 public:
 	// SIZE 0x0e
-	struct Vertex0x0e {
+	struct Vertex {
 		// SIZE 0x04
 		union Tail0x04 {
 			// SIZE 0x04
-			struct Normal0x04 {
+			struct Normal {
 				LegoS8 m_nx;   // 0x00
 				LegoS8 m_ny;   // 0x01
 				LegoS8 m_nz;   // 0x02
@@ -34,8 +34,8 @@ public:
 		Tail0x04 m_tail; // 0x0a
 	};
 
-	GdbPartVertexPool0x14();
-	~GdbPartVertexPool0x14() override;
+	GdbPartVertexPool();
+	~GdbPartVertexPool() override;
 
 	void Clear() override;
 	void Read(GolFileParser& p_parser, LegoU16 p_vertexType);
@@ -50,11 +50,11 @@ public:
 	LegoU16 GetVertexType() const { return m_vertexType; }
 
 	// SYNTHETIC: LEGORACERS 0x00408000
-	// GdbPartVertexPool0x14::`scalar deleting destructor'
+	// GdbPartVertexPool::`scalar deleting destructor'
 
 private:
-	Vertex0x0e* m_vertices; // 0x0c
-	LegoU32 m_unk0x10;      // 0x10
+	Vertex* m_vertices; // 0x0c
+	LegoU32 m_unk0x10;  // 0x10
 };
 
-#endif // GDBPARTVERTEXPOOL0X14_H
+#endif // GDBPARTVERTEXPOOL_H

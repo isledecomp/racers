@@ -382,14 +382,14 @@ add_executable(legoracers WIN32
   LEGORacers/src/save/peridottraceactionbase0x34.cpp
   LEGORacers/src/save/gamestate.cpp
   LEGORacers/src/save/savesystem.cpp
-  LEGORacers/src/model/topazburst0x14.cpp
+  LEGORacers/src/model/carpartset.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
   LEGORacers/src/menu/runtime/cutsceneparticle.cpp
   LEGORacers/src/menu/runtime/cutsceneplayer.cpp
   LEGORacers/src/menu/runtime/cutscenetextvisual.cpp
   LEGORacers/src/menu/runtime/cutscenevisual.cpp
-  LEGORacers/src/model/sapphirereef0x2030.cpp
-  LEGORacers/src/model/verdanttide0x38.cpp
+  LEGORacers/src/model/carbuildmodel.cpp
+  LEGORacers/src/model/legocolortable.cpp
   LEGORacers/src/racer/drivercosmetictable.cpp
   LEGORacers/src/racer/aquamarinespirit0x3c.cpp
   LEGORacers/src/racer/siennacircuit0x154.cpp
@@ -398,11 +398,11 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/data/racenamelist.cpp
   LEGORacers/src/menu/menuanimationlist.cpp
   LEGORacers/src/racer/lavendervault0x764.cpp
-  LEGORacers/src/model/gdbpartdefinition0x0c.cpp
-  LEGORacers/src/model/gdbpartlibrary0x1c.cpp
-  LEGORacers/src/model/gdbpartfacegroup0x14.cpp
-  LEGORacers/src/model/gdbpartvertexpool0x14.cpp
-  LEGORacers/src/model/gdbpositionvertexpool0x0c.cpp
+  LEGORacers/src/model/gdbpartdefinition.cpp
+  LEGORacers/src/model/gdbpartlibrary.cpp
+  LEGORacers/src/model/gdbpartfacegroup.cpp
+  LEGORacers/src/model/gdbpartvertexpool.cpp
+  LEGORacers/src/model/gdbpositionvertexpool.cpp
   LEGORacers/src/util/garnetflare0x60.cpp
   LEGORacers/src/util/tanzanitewisp0x88.cpp
   LEGORacers/src/util/tealcrucible0x50.cpp

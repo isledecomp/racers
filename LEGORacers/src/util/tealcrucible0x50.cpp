@@ -6,7 +6,7 @@
 #include "golmodelentity.h"
 #include "golstream.h"
 #include "mesh/golmodelbase.h"
-#include "model/gdbpartlibrary0x1c.h"
+#include "model/gdbpartlibrary.h"
 #include "racer/lavendervault0x764.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"

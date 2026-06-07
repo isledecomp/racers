@@ -1,4 +1,4 @@
-#include "model/gdbpartlibrary0x1c.h"
+#include "model/gdbpartlibrary.h"
 
 #include "golbinparser.h"
 #include "golerror.h"
@@ -11,15 +11,15 @@
 #include "mesh/golmodelbase.h"
 #include "mesh/golmodelmaterialtable.h"
 #include "mesh/igdbmodelindexarray0x8.h"
-#include "model/gdbpartdefinition0x0c.h"
-#include "model/gdbpartfacegroup0x14.h"
-#include "model/gdbpartvertexpool0x14.h"
+#include "model/gdbpartdefinition.h"
+#include "model/gdbpartfacegroup.h"
+#include "model/gdbpartvertexpool.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GdbPartLibrary0x1c, 0x1c)
-DECOMP_SIZE_ASSERT(GdbPartLibrary0x1c::GdbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(GdbPartLibrary, 0x1c)
+DECOMP_SIZE_ASSERT(GdbPartLibrary::GdbTxtParser, 0x1fc)
 
 static const LegoU32 g_gdbPartBatchVertexCapacity = 0x40;
 static const LegoU32 g_gdbPartModelDirty = 1;
@@ -54,19 +54,19 @@ static LegoU32 g_copyGroupWrite;
 static LegoS32 __stdcall FindCopyBatchVertex(LegoU32 p_sourceVertex);
 
 // FUNCTION: LEGORACERS 0x004075c0
-GdbPartLibrary0x1c::GdbPartLibrary0x1c()
+GdbPartLibrary::GdbPartLibrary()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00407630
-GdbPartLibrary0x1c::~GdbPartLibrary0x1c()
+GdbPartLibrary::~GdbPartLibrary()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00407680
-void GdbPartLibrary0x1c::Reset()
+void GdbPartLibrary::Reset()
 {
 	m_vertexPool = NULL;
 	m_partCount = 0;
@@ -75,7 +75,7 @@ void GdbPartLibrary0x1c::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00407690
-void GdbPartLibrary0x1c::Load(const LegoChar* p_filename, LegoBool32 p_binary)
+void GdbPartLibrary::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 {
 	if (m_vertexPool != NULL) {
 		Clear();
@@ -96,7 +96,7 @@ void GdbPartLibrary0x1c::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 		}
 	}
 
-	m_vertexPool = new GdbPartVertexPool0x14;
+	m_vertexPool = new GdbPartVertexPool;
 	if (m_vertexPool == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -126,12 +126,12 @@ void GdbPartLibrary0x1c::Load(const LegoChar* p_filename, LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x00407810
-void GdbPartLibrary0x1c::ReadParts(GolFileParser& p_parser)
+void GdbPartLibrary::ReadParts(GolFileParser& p_parser)
 {
 	m_partCount = p_parser.ReadBracketedCountAndLeftCurly();
 	GolNameTable::Allocate(m_partCount);
 
-	m_parts = new GdbPartDefinition0x0c[m_partCount];
+	m_parts = new GdbPartDefinition[m_partCount];
 	for (LegoU32 i = 0; i < m_partCount; i++) {
 		GolName name;
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2c);
@@ -143,7 +143,7 @@ void GdbPartLibrary0x1c::ReadParts(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00407900
-void GdbPartLibrary0x1c::Clear()
+void GdbPartLibrary::Clear()
 {
 	if (m_parts != NULL) {
 		delete[] m_parts;
@@ -157,9 +157,9 @@ void GdbPartLibrary0x1c::Clear()
 }
 
 // STUB: LEGORACERS 0x00407950
-void GdbPartLibrary0x1c::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
+void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
 {
-	GdbPartDefinition0x0c* part = static_cast<GdbPartDefinition0x0c*>(GetName(p_name));
+	GdbPartDefinition* part = static_cast<GdbPartDefinition*>(GetName(p_name));
 	if (part == NULL) {
 		LegoChar message[64];
 		::strncpy(message, p_name, sizeof(GolName));
@@ -204,7 +204,7 @@ void GdbPartLibrary0x1c::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolMode
 	}
 
 	for (LegoU32 groupIndex = 0; groupIndex < part->m_groupCount; groupIndex++) {
-		GdbPartFaceGroup0x14& group = part->m_groups[groupIndex];
+		GdbPartFaceGroup& group = part->m_groups[groupIndex];
 		CopyPartGroupStart(p_renderer, groupIndex, group.m_materialName);
 
 		LegoU16* index = group.m_indices;
@@ -224,7 +224,7 @@ void GdbPartLibrary0x1c::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolMode
 }
 
 // STUB: LEGORACERS 0x00407b40
-void GdbPartLibrary0x1c::CopyPartGroupStart(
+void GdbPartLibrary::CopyPartGroupStart(
 	GolD3DRenderDevice* p_renderer,
 	LegoU32 p_groupIndex,
 	const LegoChar* p_materialName
@@ -240,7 +240,7 @@ void GdbPartLibrary0x1c::CopyPartGroupStart(
 }
 
 // STUB: LEGORACERS 0x00407ba0
-void GdbPartLibrary0x1c::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
+void GdbPartLibrary::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
 {
 	LegoS32 addedCount = 0;
 	LegoS32 batchIndex0 = FindCopyBatchVertex(p_index0);
@@ -303,7 +303,7 @@ static LegoS32 __stdcall FindCopyBatchVertex(LegoU32 p_sourceVertex)
 }
 
 // FUNCTION: LEGORACERS 0x00407ca0
-LegoS32 GdbPartLibrary0x1c::CopyBatchVertex(LegoU32 p_sourceVertex)
+LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 {
 	g_copyBatchSourceVertices[g_copyBatchVertexCount] = static_cast<LegoU16>(p_sourceVertex);
 	LegoU32 targetVertex = g_copyBatchVertexStart + g_copyBatchVertexCount;
@@ -331,7 +331,7 @@ LegoS32 GdbPartLibrary0x1c::CopyBatchVertex(LegoU32 p_sourceVertex)
 }
 
 // STUB: LEGORACERS 0x00407d60
-void GdbPartLibrary0x1c::FlushCopyBatch()
+void GdbPartLibrary::FlushCopyBatch()
 {
 	if (g_copyBatchIndexCount == 0) {
 		return;

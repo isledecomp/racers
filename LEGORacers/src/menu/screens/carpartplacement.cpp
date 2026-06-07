@@ -194,18 +194,18 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477dc0()
 // FUNCTION: LEGORACERS 0x00477e40
 void CarModelScreenBase::CarPartPlacement::FUN_00477e40(LegoS32 p_unk0x04)
 {
-	TopazBurst0x14::Entry* entry = m_unk0x24->m_unk0x21a4.GetUnk0x10();
+	CarPartSet::Entry* entry = m_unk0x24->m_unk0x21a4.GetSelectedEntry();
 	LegoS32 colorRecordIndex;
 	m_unk0x25c = p_unk0x04;
 	entry->GetChoice(p_unk0x04, &p_unk0x04, &colorRecordIndex);
 
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_unk0x24->m_pieceLibrary.FindPieceRecord(p_unk0x04, TRUE);
-	m_unk0x28.FUN_00499890(pieceRecord, colorRecordIndex, entry->GetUnk0x08());
+	m_unk0x28.SetPiece(pieceRecord, colorRecordIndex, entry->GetPieceType());
 
 	LegoS32 x;
 	LegoS32 y;
 	LegoS32 rotation;
-	m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+	m_unk0x28.GetPlacement(&x, &y, &rotation);
 
 	m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
 	m_unk0x24->m_unk0x21f4.FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
@@ -462,7 +462,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004784d0(LegoBool32 p_rotat
 // FUNCTION: LEGORACERS 0x00478560
 void CarModelScreenBase::CarPartPlacement::FUN_00478560()
 {
-	m_unk0x28.FUN_00499b00();
+	m_unk0x28.Rotate();
 	m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
 	m_unk0x24->m_unk0x21f4.FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
 	m_unk0x1a4.VTable0x08(m_unk0x250);
@@ -478,9 +478,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004785b0(LegoS32 p_delta)
 	LegoS32 oldRotation;
 	LegoS32 newRotation;
 
-	m_unk0x28.FUN_00499ca0(&oldX, &oldY, &oldRotation);
+	m_unk0x28.GetPlacement(&oldX, &oldY, &oldRotation);
 	m_unk0x28.FUN_00499c20(p_delta);
-	m_unk0x28.FUN_00499ca0(&newX, &newY, &newRotation);
+	m_unk0x28.GetPlacement(&newX, &newY, &newRotation);
 	if (oldX == newX && oldY == newY && oldRotation == newRotation) {
 		return FALSE;
 	}
@@ -501,9 +501,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478670(LegoS32 p_delta)
 	LegoS32 oldRotation;
 	LegoS32 newRotation;
 
-	m_unk0x28.FUN_00499ca0(&oldX, &oldY, &oldRotation);
+	m_unk0x28.GetPlacement(&oldX, &oldY, &oldRotation);
 	m_unk0x28.FUN_00499c60(p_delta);
-	m_unk0x28.FUN_00499ca0(&newX, &newY, &newRotation);
+	m_unk0x28.GetPlacement(&newX, &newY, &newRotation);
 	if (oldX == newX && oldY == newY && oldRotation == newRotation) {
 		return FALSE;
 	}
@@ -521,7 +521,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478730()
 	LegoS32 y;
 	LegoS32 rotation;
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_unk0x28.GetPieceRecord();
-	m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+	m_unk0x28.GetPlacement(&x, &y, &rotation);
 
 	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(pieceRecord, x, y, rotation);
 	if (result < 0) {
@@ -549,8 +549,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 	LegoS32* p_unk0x0c
 )
 {
-	SapphireReef0x2030* carModel = &m_unk0x24->m_unk0x21f4;
-	LegoS32 count = carModel->GetUnk0xd4();
+	CarBuildModel* carModel = &m_unk0x24->m_unk0x21f4;
+	LegoS32 count = carModel->GetPlacedPieceCount();
 
 	if (count == 1) {
 		m_unk0x20->FUN_0046e970(18);
@@ -569,8 +569,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 	carModel->FUN_0049bdc0();
 	carModel->FUN_0049b740(TRUE);
 	carModel->FUN_0049b920(1, 127);
-	m_unk0x28.FUN_00499890(pieceRecord, *p_unk0x0c, 0);
-	m_unk0x28.FUN_00499cc0(x, y, rotation, 0);
+	m_unk0x28.SetPiece(pieceRecord, *p_unk0x0c, 0);
+	m_unk0x28.SetPlacement(x, y, rotation, 0);
 	carModel->FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
 	*p_unk0x08 = pieceRecord->m_pieceType;
 	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
@@ -736,7 +736,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 	LegoS32 x;
 	LegoS32 y;
 	LegoS32 rotation;
-	m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+	m_unk0x28.GetPlacement(&x, &y, &rotation);
 
 	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(m_unk0x28.GetPieceRecord(), x, y, rotation);
 	LegoU8 feedbackFlags = m_unk0x278;
@@ -894,7 +894,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004790f0(LegoS32 p_elapsed)
 		LegoS32 x;
 		LegoS32 y;
 		LegoS32 rotation;
-		m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+		m_unk0x28.GetPlacement(&x, &y, &rotation);
 
 		m_unk0x248 &= ~c_flagCommittingPart;
 		m_unk0x24c = 0;
@@ -906,8 +906,8 @@ void CarModelScreenBase::CarPartPlacement::FUN_004790f0(LegoS32 p_elapsed)
 			x,
 			y,
 			rotation,
-			m_unk0x28.GetUnk0x10(),
-			m_unk0x24->m_unk0x21a4.GetUnk0x10()->GetUnk0x08()
+			m_unk0x28.GetColorRecordIndex(),
+			m_unk0x24->m_unk0x21a4.GetSelectedEntry()->GetPieceType()
 		);
 		m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
 		m_unk0x24->m_unk0x21f4.FUN_0049b920(1, 127);

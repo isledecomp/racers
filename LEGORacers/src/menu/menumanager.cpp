@@ -615,8 +615,8 @@ void MenuManager::FUN_0042d730()
 		context->m_unk0x100 = selectedCount;
 	}
 
-	if (m_unk0x04.m_unk0x21f4.FUN_0049a0e0()) {
-		m_unk0x04.m_unk0x21a4.FUN_0049ce40();
+	if (m_unk0x04.m_unk0x21f4.IsInitialized()) {
+		m_unk0x04.m_unk0x21a4.Clear();
 		m_unk0x04.m_unk0x21f4.Destroy();
 		m_unk0x04.m_unk0x4224.Destroy();
 		m_unk0x04.m_pieceLibrary.Destroy();
@@ -627,10 +627,10 @@ void MenuManager::FUN_0042d730()
 	}
 
 	m_unk0x04.m_pieceLibrary.FUN_0049ee30("LPieceLo.leg", context->m_unk0x18);
-	m_unk0x04.m_unk0x4224.FUN_004978f0(m_golExport, m_renderer);
-	m_unk0x04.m_unk0x4224.FUN_00497c30("LPieceLo.WDF", context->m_unk0x18, FALSE);
-	m_unk0x04.m_unk0x4224.FUN_00497a10("L_Colors.LEG", context->m_unk0x18);
-	m_unk0x04.m_unk0x21f4.FUN_00499fc0(m_golExport, m_renderer, &m_unk0x04.m_pieceLibrary, &m_unk0x04.m_unk0x4224);
+	m_unk0x04.m_unk0x4224.Initialize(m_golExport, m_renderer);
+	m_unk0x04.m_unk0x4224.LoadMaterials("LPieceLo.WDF", context->m_unk0x18, FALSE);
+	m_unk0x04.m_unk0x4224.LoadColors("L_Colors.LEG", context->m_unk0x18);
+	m_unk0x04.m_unk0x21f4.Initialize(m_golExport, m_renderer, &m_unk0x04.m_pieceLibrary, &m_unk0x04.m_unk0x4224);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");

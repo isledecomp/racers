@@ -240,7 +240,7 @@ LegoBool32 RacerModelScreenBase::VTable0xa0(
 	m_unk0x2700 = p_params[1];
 	m_unk0x77c = m_unk0x2700 * m_unk0x26fc;
 
-	if (!p_context->m_unk0x21f4.FUN_0049a0e0()) {
+	if (!p_context->m_unk0x21f4.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
 	}
 

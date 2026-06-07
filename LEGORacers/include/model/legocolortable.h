@@ -1,5 +1,5 @@
-#ifndef VERDANTTIDE0X38_H
-#define VERDANTTIDE0X38_H
+#ifndef LEGOCOLORTABLE_H
+#define LEGOCOLORTABLE_H
 
 #include "decomp.h"
 #include "material/golmateriallibrary.h"
@@ -12,10 +12,10 @@ class GolExport;
 class GolWorldDatabase;
 
 // SIZE 0x38
-class VerdantTide0x38 {
+class LegoColorTable {
 public:
 	// SIZE 0x10
-	struct ColorRecord0x10 {
+	struct ColorRecord {
 		LegoChar* SetName(const LegoChar* p_name);
 
 		LegoChar m_name[10];        // 0x00
@@ -24,18 +24,18 @@ public:
 	};
 
 	// SIZE 0x04
-	struct MaterialUsage0x4 {
+	struct MaterialUsage {
 		LegoU8 m_used;           // 0x00
 		undefined m_padding0x01; // 0x01
 		LegoU16 m_order;         // 0x02
 	};
 
-	VerdantTide0x38();
-	~VerdantTide0x38();
+	LegoColorTable();
+	~LegoColorTable();
 	void Destroy();
-	void FUN_004978f0(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
-	void FUN_00497a10(const LegoChar* p_filename, undefined4 p_binary);
-	void FUN_00497c30(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
+	void Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
+	void LoadColors(const LegoChar* p_filename, undefined4 p_binary);
+	void LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
 	GolBillboard::Field0x2c* GetMaterialTable();
 	void ResetMaterialUsage();
 	void MarkMaterialUsed(LegoS32 p_materialIndex);
@@ -57,12 +57,12 @@ private:
 	GolMaterialLibrary* m_materials;         // 0x0c
 	GolBillboard::Field0x2c m_materialTable; // 0x10
 	LegoS32 m_colorRecordCount;              // 0x1c
-	ColorRecord0x10* m_colorRecords;         // 0x20
+	ColorRecord* m_colorRecords;             // 0x20
 	LegoS32* m_colorMaterialIndices;         // 0x24
-	MaterialUsage0x4* m_materialUsage;       // 0x28
+	MaterialUsage* m_materialUsage;          // 0x28
 	LegoS32 m_materialCount;                 // 0x2c
 	LegoS32 m_usedMaterialCount;             // 0x30
 	LegoS32 m_transparentMaterialCount;      // 0x34
 };
 
-#endif // VERDANTTIDE0X38_H
+#endif // LEGOCOLORTABLE_H

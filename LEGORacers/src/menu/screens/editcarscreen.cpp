@@ -139,7 +139,7 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 {
 	FUN_0047c400(p_context, p_createParams);
 
-	if (!p_context->m_unk0x21f4.FUN_0049a0e0()) {
+	if (!p_context->m_unk0x21f4.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
 	}
 
@@ -203,7 +203,7 @@ void EditCarScreen::FUN_0047c320()
 		mask <<= 1;
 	}
 
-	for (i = 0; i < m_context->m_unk0x21f4.GetUnk0xd4(); i++) {
+	for (i = 0; i < m_context->m_unk0x21f4.GetPlacedPieceCount(); i++) {
 		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_unk0x21f4.FUN_0049bd50(i));
 		m_unk0x3688[index] = TRUE;
 	}
@@ -242,7 +242,7 @@ void EditCarScreen::FUN_0047c450()
 	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x325c);
 	FUN_0047c320();
 
-	if (m_context->m_unk0x21f4.GetUnk0xd4()) {
+	if (m_context->m_unk0x21f4.GetPlacedPieceCount()) {
 		LegoChar name[9];
 
 		m_context->m_unk0x21f4.FUN_0049b740(0);
@@ -253,8 +253,8 @@ void EditCarScreen::FUN_0047c450()
 		name[8] = '\0';
 
 		LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
-		TopazBurst0x14::Entry* entry = m_context->m_unk0x21a4.FindEntry(pieceRecord->m_pieceType);
-		m_context->m_unk0x21a4.SetUnk0x10(entry);
+		CarPartSet::Entry* entry = m_context->m_unk0x21a4.FindEntry(pieceRecord->m_pieceType);
+		m_context->m_unk0x21a4.SetSelectedEntry(entry);
 
 		LegoS32 index = entry->GetIndex();
 		if (m_unk0x3688[index]) {
@@ -321,7 +321,7 @@ void EditCarScreen::FUN_0047c720()
 // STUB: LEGORACERS 0x0047c790
 void EditCarScreen::FUN_0047c790()
 {
-	if (m_context->m_unk0x21f4.GetUnk0xd4() > 1) {
+	if (m_context->m_unk0x21f4.GetPlacedPieceCount() > 1) {
 		if (!m_unk0x3678->FUN_0042b460()) {
 			m_unk0x2418.VTable0x48(5);
 			m_unk0xef4.VTable0x44(5);
@@ -351,9 +351,9 @@ void EditCarScreen::FUN_0047c810()
 		if (::strncmp(m_unk0x367c, name, sizeof(name)) == 0) {
 			record->FUN_0042b360(m_unk0x325c);
 
-			SapphireReef0x2030* model = &m_context->m_unk0x21f4;
+			CarBuildModel* model = &m_context->m_unk0x21f4;
 			model->GetUnk0xa4().FUN_0049fd60();
-			model->SetUnk0xd4(0);
+			model->SetPlacedPieceCount(0);
 			m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x325c);
 			m_context->m_unk0x21f4.FUN_0049b740(0);
 			m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
@@ -467,19 +467,19 @@ void EditCarScreen::VTable0x44(MenuWidget* p_source)
 		return;
 	}
 
-	SapphireReef0x2030* model = &m_context->m_unk0x21f4;
+	CarBuildModel* model = &m_context->m_unk0x21f4;
 	model->GetUnk0xa4().FUN_0049fd60();
-	model->SetUnk0xd4(0);
+	model->SetPlacedPieceCount(0);
 
 	MenuWidget* selectedChild = m_unk0x2384.GetUnk0x78();
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
 		if (selectedChild == &m_unk0x2e0c[i]) {
-			m_context->m_unk0x21a4.SetUnk0x10(&m_context->m_unk0x21a4.GetEntries()[i]);
+			m_context->m_unk0x21a4.SetSelectedEntry(&m_context->m_unk0x21a4.GetEntries()[i]);
 			break;
 		}
 	}
 
-	TopazBurst0x14::Entry* entry = m_context->m_unk0x21a4.GetUnk0x10();
+	CarPartSet::Entry* entry = m_context->m_unk0x21a4.GetSelectedEntry();
 	::strncpy(m_unk0x367c, entry->GetName(), sizeof(m_unk0x367c));
 
 	LegoChar name[9];

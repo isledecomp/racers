@@ -5,9 +5,9 @@
 #include "decomp.h"
 #include "golmath.h"
 #include "mesh/golmodelbase.h"
+#include "model/carbuildmodel.h"
+#include "model/carpartset.h"
 #include "model/legopiecelibrary.h"
-#include "model/sapphirereef0x2030.h"
-#include "model/topazburst0x14.h"
 #include "render/gold3drenderdevice.h"
 
 #include <float.h>

@@ -8,7 +8,7 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "model/sapphirereef0x2030.h"
+#include "model/carbuildmodel.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -38,7 +38,7 @@ LegoBool32 AwardCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScre
 	m_unk0x7a8 = 0;
 	m_unk0x7a4 = 0;
 
-	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_unk0x21f4.FUN_0049a0e0()) {
+	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_unk0x21f4.IsInitialized()) {
 		p_context->m_unk0x21f4.FUN_00499f00();
 	}
 
@@ -114,7 +114,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	LegoBool32 result = MenuSceneScreen::Destroy();
 	if (m_unk0x28c == c_menuWinRrCar) {
 		MenuGameContext* context = m_context;
-		if (context->m_unk0x21f4.FUN_0049a0e0()) {
+		if (context->m_unk0x21f4.IsInitialized()) {
 			m_context->m_unk0x21f4.FUN_00499ee0();
 		}
 	}

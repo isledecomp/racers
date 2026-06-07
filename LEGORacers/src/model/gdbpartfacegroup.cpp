@@ -1,14 +1,14 @@
-#include "model/gdbpartfacegroup0x14.h"
+#include "model/gdbpartfacegroup.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GdbPartFaceGroup0x14, 0x14)
+DECOMP_SIZE_ASSERT(GdbPartFaceGroup, 0x14)
 
 // FUNCTION: LEGORACERS 0x00407e70
-GdbPartFaceGroup0x14::GdbPartFaceGroup0x14()
+GdbPartFaceGroup::GdbPartFaceGroup()
 {
 	m_indices = NULL;
 	m_materialName[0] = '\0';
@@ -17,13 +17,13 @@ GdbPartFaceGroup0x14::GdbPartFaceGroup0x14()
 }
 
 // FUNCTION: LEGORACERS 0x00407e80
-GdbPartFaceGroup0x14::~GdbPartFaceGroup0x14()
+GdbPartFaceGroup::~GdbPartFaceGroup()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00407e90
-void GdbPartFaceGroup0x14::Read(GolFileParser& p_parser)
+void GdbPartFaceGroup::Read(GolFileParser& p_parser)
 {
 	p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2b);
 	p_parser.ReadLeftCurly();
@@ -57,7 +57,7 @@ void GdbPartFaceGroup0x14::Read(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00407f60
-void GdbPartFaceGroup0x14::Clear()
+void GdbPartFaceGroup::Clear()
 {
 	if (m_indices != NULL) {
 		delete[] m_indices;

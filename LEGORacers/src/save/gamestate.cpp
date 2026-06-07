@@ -533,6 +533,13 @@ void GameState::FUN_0042f200(LegoU8 p_unk0x04)
 	m_state.m_unk0x24 |= p_unk0x04;
 }
 
+// FUNCTION: LEGORACERS 0x0042f220
+void GameState::FUN_0042f220(LegoU8 p_unk0x04)
+{
+	m_unk0x00 = 1;
+	m_state.m_unk0x25 |= p_unk0x04;
+}
+
 // FUNCTION: LEGORACERS 0x0042f240
 LegoU16 GameState::FUN_0042f240() const
 {

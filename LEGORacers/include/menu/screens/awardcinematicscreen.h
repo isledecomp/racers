@@ -6,6 +6,8 @@
 #include "golnametable.h"
 #include "golworldentitygroup0x38.h"
 #include "menu/screens/imaginarychisel0x658.h"
+#include "race/data/racedefinitionlist.h"
+#include "save/peridottrace0x4e0.h"
 #include "util/opalhaven0xf4.h"
 
 class AquamarineSpirit0x3c;
@@ -69,6 +71,11 @@ public:
 	// AwardCinematicScreen::`scalar deleting destructor'
 
 protected:
+	LegoBool32 FUN_004767b0();
+	LegoBool32 FUN_00476890(PeridotTraceBase0x24* p_trace, RaceDefinitionList::RaceDefinition* p_raceDefinition);
+	LegoBool32 FUN_004768f0(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
+	LegoBool32 FUN_00476990(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
+
 	FieldAt0x658 m_unk0x658;  // 0x658
 	OpalHaven0xf4 m_unk0x6a8; // 0x6a8
 	GolModelBase* m_unk0x79c; // 0x79c

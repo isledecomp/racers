@@ -204,6 +204,38 @@ LegoU32 PeridotTraceBase0x24::Record::FUN_0042b610(undefined4 p_index) const
 	return (value >> shift) & 3;
 }
 
+// STUB: LEGORACERS 0x0042b640
+LegoBool32 PeridotTraceBase0x24::Record::FUN_0042b640(LegoU32 p_index, LegoU32 p_value)
+{
+	Record* record = this;
+
+	if (p_value > 3) {
+		return FALSE;
+	}
+
+	LegoU16 value = static_cast<LegoU16>((record->m_data[0x22c] << 8) + record->m_data[0x22b]);
+	LegoU16 updated = value;
+
+	LegoU16 existing = value;
+	existing >>= static_cast<LegoU16>(p_index << 1);
+	existing &= 3;
+	if (existing && static_cast<LegoU16>(p_value) >= existing) {
+		return FALSE;
+	}
+
+	LegoU32 shift = p_index + p_index;
+	existing = 3;
+	existing <<= shift;
+	p_value <<= shift;
+	updated &= ~existing;
+	updated |= static_cast<LegoU16>(p_value);
+	record->m_data[0x22b] = static_cast<LegoU8>(updated);
+	record->m_data[0x22c] = static_cast<LegoU8>(updated >> 8);
+	record->FUN_0042b6d0();
+
+	return TRUE;
+}
+
 // FUNCTION: LEGORACERS 0x0042b6d0
 void PeridotTraceBase0x24::Record::FUN_0042b6d0()
 {
@@ -338,4 +370,20 @@ PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b990(LegoU32 p_index
 	}
 
 	return record;
+}
+
+// FUNCTION: LEGORACERS 0x0042b9b0
+PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b9b0(undefined4 p_unk0x04)
+{
+	Record* record = m_unk0x18;
+
+	while (record != NULL) {
+		if (record->m_unk0x10 == p_unk0x04) {
+			return record;
+		}
+
+		record = record->m_next;
+	}
+
+	return NULL;
 }

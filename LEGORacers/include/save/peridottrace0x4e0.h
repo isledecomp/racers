@@ -98,6 +98,7 @@ public:
 		void FUN_0042b530(GolString* p_string);
 		void FUN_0042b5c0(const Record* p_source);
 		LegoU32 FUN_0042b610(undefined4 p_index) const;
+		LegoBool32 FUN_0042b640(LegoU32 p_index, LegoU32 p_value);
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04
@@ -124,6 +125,7 @@ public:
 	Record* FUN_0042b8f0(Record* p_record);
 	void FUN_0042b920(Record* p_record);
 	Record* FUN_0042b990(LegoU32 p_index);
+	Record* FUN_0042b9b0(undefined4 p_unk0x04);
 	undefined4 GetUnk0x00() const { return m_unk0x00; }
 	LegoBool32 HasUnk0x04() const { return m_unk0x04 != 0; }
 	LegoS32 GetAvailableRecordCount() const { return m_unk0x1c - m_unk0x00; }
@@ -268,6 +270,7 @@ public:
 	void FUN_0042f020(const DisplayDriverGuid& p_guid);
 	void FUN_0042f060(DisplayDriverGuid& p_guid);
 	void FUN_0042f200(LegoU8 p_unk0x04);
+	void FUN_0042f220(LegoU8 p_unk0x04);
 	LegoU16 FUN_0042f240() const;
 	LegoBool32 FUN_0042f250(LegoU32 p_unk0x04);
 	LegoBool32 FUN_0042f280() const;

@@ -64,6 +64,7 @@ public:
 	OpalHaven0xf4* LoadEntry(const LegoChar* p_name);
 	void FUN_00421050(LegoU32 p_index, TurquoiseGlowColor* p_color);
 	void FUN_00421020(const LegoChar* p_name, TurquoiseGlowColor* p_color);
+	LegoBool32 HasEntries() const { return m_entries != NULL; }
 
 	// SYNTHETIC: LEGORACERS 0x004206f0
 	// DriverCosmeticTable::`scalar deleting destructor'

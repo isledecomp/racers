@@ -32,7 +32,9 @@ public:
 			m_raceNameEntries[p_index] = p_raceNameEntry;
 		}
 		LegoChar* GetName() { return m_name; }
+		const LegoChar* GetMenuName() const { return m_menuName; }
 		RaceNameEntry* GetRaceNameEntry(LegoU32 p_index) const { return m_raceNameEntries[p_index]; }
+		LegoS32 GetStringIndex() const { return m_stringIndex; }
 
 	private:
 		enum {

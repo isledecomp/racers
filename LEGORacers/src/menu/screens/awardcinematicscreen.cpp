@@ -4,10 +4,14 @@
 #include "audio/musicinstance.h"
 #include "core/gol.h"
 #include "golhashtable.h"
+#include "golstring.h"
 #include "menu/menuscreenid.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/menutoolcreateparams0x30.h"
 #include "model/sapphirereef0x2030.h"
+
+#include <stdio.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(AwardCinematicScreen, 0x7b0)
 
@@ -121,7 +125,138 @@ LegoBool32 AwardCinematicScreen::Destroy()
 // STUB: LEGORACERS 0x00475f40
 void AwardCinematicScreen::VTable0x4c()
 {
-	STUB(0x00475f40);
+	struct ResourcePathLocals {
+		LegoChar m_name[12];
+		GolString m_string;
+		LegoChar m_path[20];
+	} locals;
+
+	if (m_unk0x28c != c_menuWinVvCar) {
+		if (!m_context->m_unk0x4b40.HasMenuResources()) {
+			FUN_00480210(m_context, FALSE);
+		}
+
+		if (!m_context->m_unk0x425c.HasEntries()) {
+			FUN_00480310();
+		}
+	}
+
+	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_unk0x28c);
+	locals.m_string.CopyToString(locals.m_name);
+	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString(locals.m_path);
+	}
+
+	FUN_0046c5b0(&m_unk0x368, m_unk0x28c);
+	m_unk0x368.m_unk0x2cc = FALSE;
+	FUN_004767b0();
+}
+
+// FUNCTION: LEGORACERS 0x004767b0
+LegoBool32 AwardCinematicScreen::FUN_004767b0()
+{
+	GameState* gameState = &m_context->m_unk0x258.GetUnk0x18c4();
+	LegoU16 menuId = m_unk0x28c;
+
+	if (menuId != c_menuChampAward1 && menuId != c_menuChampAward2 && menuId != c_menuChampAward3) {
+		return FALSE;
+	}
+
+	LegoRacers::Context* context = m_context->m_context;
+	PeridotTraceBase0x24* trace = NULL;
+
+	switch (context->m_unk0x330) {
+	case 1:
+	case 3:
+		trace = &m_context->m_unk0x258.GetUnk0x108();
+		break;
+	case 2:
+		trace = &m_context->m_unk0x258.GetUnk0xa58()[context->m_unk0x334];
+		break;
+	default:
+		return FALSE;
+	}
+
+	if (trace == NULL) {
+		return FALSE;
+	}
+
+	RaceDefinitionList::RaceDefinition* raceDefinition =
+		static_cast<RaceDefinitionList::RaceDefinition*>(m_context->m_raceList.GetName(context->m_unk0x2d));
+	m_unk0x7a4 = FUN_00476890(trace, raceDefinition);
+
+	if (m_unk0x28c != c_menuChampAward1 && m_unk0x28c != c_menuChampAward2) {
+		return FALSE;
+	}
+
+	m_unk0x7a8 = FUN_00476990(gameState, raceDefinition);
+	m_unk0x7ac = FUN_004768f0(gameState, raceDefinition);
+	return m_unk0x7ac;
+}
+
+// FUNCTION: LEGORACERS 0x00476890
+LegoBool32 AwardCinematicScreen::FUN_00476890(
+	PeridotTraceBase0x24* p_trace,
+	RaceDefinitionList::RaceDefinition* p_raceDefinition
+)
+{
+	PeridotTraceBase0x24::Record* record = p_trace->FUN_0042b9b0(m_context->m_context->m_unk0x338);
+	if (record == NULL) {
+		return FALSE;
+	}
+
+	return record->FUN_0042b640(m_context->m_raceList.GetEntryIndex(p_raceDefinition), m_unk0x28c - 0x15);
+}
+
+// FUNCTION: LEGORACERS 0x004768f0
+LegoBool32 AwardCinematicScreen::FUN_004768f0(
+	GameState* p_gameState,
+	RaceDefinitionList::RaceDefinition* p_raceDefinition
+)
+{
+	GolName menuName;
+	::memcpy(menuName, p_raceDefinition->GetMenuName(), sizeof(menuName));
+
+	if (menuName[0] != '\0') {
+		RaceDefinitionList::RaceDefinition* menuRaceDefinition =
+			static_cast<RaceDefinitionList::RaceDefinition*>(m_context->m_raceList.GetName(menuName));
+		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(menuRaceDefinition));
+
+		if (!(p_gameState->FUN_0042f1f0() & mask)) {
+			p_gameState->FUN_0042f220(mask);
+			m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 4);
+			return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x00476990
+LegoBool32 AwardCinematicScreen::FUN_00476990(
+	GameState* p_gameState,
+	RaceDefinitionList::RaceDefinition* p_raceDefinition
+)
+{
+	if (m_unk0x28c != c_menuChampAward1) {
+		return FALSE;
+	}
+
+	m_unk0x7a0 = p_raceDefinition->GetStringIndex();
+	if (m_unk0x7a0 == -1) {
+		return FALSE;
+	}
+
+	LegoU8 mask = static_cast<LegoU8>(1 << m_unk0x7a0);
+	if (p_gameState->FUN_0042f1e0() & mask) {
+		m_unk0x7a0 = -1;
+		return FALSE;
+	}
+
+	p_gameState->FUN_0042f200(mask);
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00476a00

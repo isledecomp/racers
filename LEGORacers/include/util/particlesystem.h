@@ -1,5 +1,5 @@
-#ifndef SORDIDWATCH0x140_H
-#define SORDIDWATCH0x140_H
+#ifndef PARTICLESYSTEM_H
+#define PARTICLESYSTEM_H
 
 #include "decomp.h"
 #include "golmodelentity.h"
@@ -10,12 +10,12 @@ class GolExport;
 class GolD3DRenderDevice;
 class MabMaterialAnimationItem0x18;
 class MabMaterialAnimationItem0x8;
-class SordidWatchInner0x38;
+class Particle;
 
-class SordidWatch0x140 {
+class ParticleSystem {
 public:
-	SordidWatch0x140();
-	~SordidWatch0x140() { Destroy(); }
+	ParticleSystem();
+	~ParticleSystem() { Destroy(); }
 
 	void Destroy();
 
@@ -25,12 +25,12 @@ public:
 
 	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, LegoU32 p_param3, LegoU32 p_param4);
 
-	SordidWatchInner0x38* FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3);
+	Particle* FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3);
 	void FUN_00412820();
 	void FUN_00412840();
 	void FUN_00412890(LegoS32 p_param);
 	void FUN_00412970();
-	SordidWatchInner0x38* FUN_00412a00();
+	Particle* FUN_00412a00();
 	void FUN_00412a50(GolD3DRenderDevice* p_renderer);
 
 private:
@@ -50,9 +50,9 @@ private:
 	LegoU32 m_unk0x0a0;                       // 0x0a0
 	LegoU32 m_unk0x0a4;                       // 0x0a4
 	LegoU32 m_unk0x0a8;                       // 0x0a8
-	SordidWatchInner0x38* m_unk0x0ac;         // 0x0ac
-	SordidWatchInner0x38* m_unk0x0b0;         // 0x0b0
-	SordidWatchInner0x38* m_unk0x0b4;         // 0x0b4
+	Particle* m_unk0x0ac;                     // 0x0ac
+	Particle* m_unk0x0b0;                     // 0x0b0
+	Particle* m_unk0x0b4;                     // 0x0b4
 	LegoU32 m_unk0x0b8;                       // 0x0b8
 	GolVec3 m_unk0x0bc;                       // 0x0bc
 	LegoU32 m_unk0x0c8;                       // 0x0c8
@@ -75,4 +75,4 @@ private:
 	undefined4 m_unk0x13c;                    // 0x13c
 };
 
-#endif // SORDIDWATCH0x140_H
+#endif // PARTICLESYSTEM_H

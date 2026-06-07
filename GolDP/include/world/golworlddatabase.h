@@ -106,7 +106,7 @@ struct WdbLight0x10 {
 // VTABLE: GOLDP 0x100576ec
 // SIZE 0xf0
 class GolWorldDatabase {
-	friend class TealCrucible0x50;
+	friend class DriverHeadBuilder;
 
 public:
 	// VTABLE: GOLDP 0x10057744

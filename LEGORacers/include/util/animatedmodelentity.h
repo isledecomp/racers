@@ -1,5 +1,5 @@
-#ifndef OPALHAVEN0XF4_H
-#define OPALHAVEN0XF4_H
+#ifndef ANIMATEDMODELENTITY_H
+#define ANIMATEDMODELENTITY_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -13,9 +13,9 @@ class GolSceneNode;
 // The 0x90..0xf4 tail overlaps with GolSkinnedEntity and GlassShard0x3b8.
 // VTABLE: LEGORACERS 0x004af5ec
 // SIZE 0xf4
-class OpalHaven0xf4 : public GolModelEntity {
+class AnimatedModelEntity : public GolModelEntity {
 public:
-	OpalHaven0xf4();
+	AnimatedModelEntity();
 
 	void VTable0x10(LegoS32 p_elapsed) override;                                  // vtable+0x10
 	void VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result) override; // vtable+0x14
@@ -80,4 +80,4 @@ private:
 	LegoFloat m_unk0xf0;               // 0xf0
 };
 
-#endif // OPALHAVEN0XF4_H
+#endif // ANIMATEDMODELENTITY_H

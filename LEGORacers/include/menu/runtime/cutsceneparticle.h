@@ -5,7 +5,7 @@
 #include "golmath.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "types.h"
-#include "util/sordidwatch0x140.h"
+#include "util/particlesystem.h"
 
 class GolD3DRenderDevice;
 class GolExport;
@@ -31,7 +31,7 @@ public:
 private:
 	CutsceneAnimation::Runtime* m_unk0x000; // 0x000
 	undefined4 m_unk0x004;                  // 0x004
-	SordidWatch0x140 m_unk0x008;            // 0x008
+	ParticleSystem m_unk0x008;              // 0x008
 	GolVec3 m_unk0x148;                     // 0x148
 	GolVec3 m_unk0x154;                     // 0x154
 	GolMatrix3 m_unk0x160;                  // 0x160

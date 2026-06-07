@@ -1,5 +1,5 @@
-#ifndef ONYXBREEZE0X248_H
-#define ONYXBREEZE0X248_H
+#ifndef MENUINPUTHANDLER_H
+#define MENUINPUTHANDLER_H
 
 #include "decomp.h"
 #include "input/inputdevice.h"
@@ -9,10 +9,10 @@ class InputManager;
 class MouseInputDevice;
 
 // SIZE 0x248
-class OnyxBreeze0x248 {
+class MenuInputHandler {
 public:
-	OnyxBreeze0x248();
-	~OnyxBreeze0x248();
+	MenuInputHandler();
+	~MenuInputHandler();
 
 	void Initialize(InputManager* p_inputManager);
 	void Shutdown();
@@ -32,4 +32,4 @@ private:
 	InputDevice::DirectionalTrigger m_unk0x224; // 0x224
 };
 
-#endif // ONYXBREEZE0X248_H
+#endif // MENUINPUTHANDLER_H

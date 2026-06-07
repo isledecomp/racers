@@ -456,7 +456,7 @@ void MenuStyleTable::FUN_004704b0(SelectorStyle* p_entry)
 	LegoBool readBase = FALSE;
 	LegoBool readSingle = FALSE;
 	LegoBool readPair = FALSE;
-	VisualState0x4* visualState;
+	VisualStateColor* visualState;
 	LegoS32 i;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {

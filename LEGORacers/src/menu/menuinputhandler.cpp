@@ -1,27 +1,27 @@
-#include "util/onyxbreeze0x248.h"
+#include "menu/menuinputhandler.h"
 
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
 #include "input/mousedevice.h"
 
-DECOMP_SIZE_ASSERT(OnyxBreeze0x248, 0x248)
+DECOMP_SIZE_ASSERT(MenuInputHandler, 0x248)
 
 // FUNCTION: LEGORACERS 0x0041f7b0
-OnyxBreeze0x248::OnyxBreeze0x248()
+MenuInputHandler::MenuInputHandler()
 {
 	m_inputManager = NULL;
 	m_mouse = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041f810
-OnyxBreeze0x248::~OnyxBreeze0x248()
+MenuInputHandler::~MenuInputHandler()
 {
 	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x0041f870
-void OnyxBreeze0x248::Initialize(InputManager* p_inputManager)
+void MenuInputHandler::Initialize(InputManager* p_inputManager)
 {
 	if (m_inputManager != NULL) {
 		Shutdown();
@@ -70,7 +70,7 @@ void OnyxBreeze0x248::Initialize(InputManager* p_inputManager)
 }
 
 // FUNCTION: LEGORACERS 0x0041f9c0
-void OnyxBreeze0x248::Shutdown()
+void MenuInputHandler::Shutdown()
 {
 	if (m_inputManager != NULL) {
 		KeyboardInputDevice* keyboard = m_inputManager->GetKeyboard();
@@ -111,13 +111,13 @@ void OnyxBreeze0x248::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x0041faa0
-LegoBool32 OnyxBreeze0x248::HasKeyboard() const
+LegoBool32 MenuInputHandler::HasKeyboard() const
 {
 	return m_inputManager->GetKeyboard() != NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041fac0
-void OnyxBreeze0x248::FUN_0041fac0()
+void MenuInputHandler::FUN_0041fac0()
 {
 	for (LegoS32 i = 0; i < m_inputManager->GetJoystickCount(); i++) {
 		JoystickInputDevice* joystick = m_inputManager->GetJoystick(i);

@@ -1,5 +1,5 @@
-#ifndef VISUALSTATE0X4_H
-#define VISUALSTATE0X4_H
+#ifndef VISUALSTATECOLOR_H
+#define VISUALSTATECOLOR_H
 
 #include "decomp.h"
 #include "surface/color.h"
@@ -8,7 +8,7 @@
 #pragma pack(push, 1)
 
 // SIZE 0x04
-class VisualState0x4 {
+class VisualStateColor {
 public:
 	union {
 		undefined4 m_unk0x00; // 0x00
@@ -19,4 +19,4 @@ public:
 
 #pragma pack(pop)
 
-#endif // VISUALSTATE0X4_H
+#endif // VISUALSTATECOLOR_H

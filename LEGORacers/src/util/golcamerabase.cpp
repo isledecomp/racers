@@ -3,7 +3,7 @@
 #include "camera/goltransform.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 // FUNCTION: LEGORACERS 0x004046a0
 void GolCameraBase::FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)

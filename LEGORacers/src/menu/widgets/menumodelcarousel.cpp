@@ -63,7 +63,7 @@ LegoBool32 MenuModelCarousel::FUN_0046cb10(CreateParams* p_createParams, MenuSty
 	FUN_0046ce10(p_createParams);
 	FUN_0046cdf0();
 
-	VisualState0x4 state;
+	VisualStateColor state;
 	state.m_color.m_red = 0xff;
 	state.m_color.m_grn = 0xff;
 	state.m_color.m_blu = 0xff;
@@ -308,7 +308,7 @@ void MenuModelCarousel::VTable0x60(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0046d1d0
-void MenuModelCarousel::VTable0x48(VisualState0x4* p_unk0x04, VisualState0x4* p_unk0x08)
+void MenuModelCarousel::VTable0x48(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
 {
 	Item* item = m_unk0x7c;
 	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
@@ -318,7 +318,7 @@ void MenuModelCarousel::VTable0x48(VisualState0x4* p_unk0x04, VisualState0x4* p_
 }
 
 // FUNCTION: LEGORACERS 0x0046d210
-void MenuModelCarousel::VTable0x4c(VisualState0x4* p_unk0x04, VisualState0x4* p_unk0x08)
+void MenuModelCarousel::VTable0x4c(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
 {
 	Item* item = &m_unk0x7c[m_unk0x64];
 	item->m_unk0xc8.m_unk0x00 = p_unk0x04->m_unk0x00;

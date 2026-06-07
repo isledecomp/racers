@@ -78,7 +78,7 @@ public:
 	void Reset() override;                                                            // vtable+0x00
 	~MenuSelector() override;                                                         // vtable+0x04
 	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	void VTable0x14(VisualState0x4*) override;                                        // vtable+0x14
+	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
 	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;  // vtable+0x24
 	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34

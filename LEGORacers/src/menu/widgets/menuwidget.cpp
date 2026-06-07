@@ -6,7 +6,7 @@
 #include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(MenuWidget, 0x58)
-DECOMP_SIZE_ASSERT(VisualState0x4, 0x04)
+DECOMP_SIZE_ASSERT(VisualStateColor, 0x04)
 DECOMP_SIZE_ASSERT(MenuWidget::CreateParams, 0x38)
 
 // GLOBAL: LEGORACERS 0x004c7650
@@ -420,7 +420,7 @@ void MenuWidget::VTable0x10(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x00472fc0
-void MenuWidget::VTable0x14(VisualState0x4* p_param)
+void MenuWidget::VTable0x14(VisualStateColor* p_param)
 {
 	m_color = p_param->m_color;
 }

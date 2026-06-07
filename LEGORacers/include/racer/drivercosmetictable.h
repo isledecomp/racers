@@ -16,7 +16,7 @@ class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
 class GolTextureList;
-class OpalHaven0xf4;
+class AnimatedModelEntity;
 class GolSceneNode;
 
 // VTABLE: LEGORACERS 0x004b00a4
@@ -61,7 +61,7 @@ public:
 	void Clear() override; // vtable+0x08
 	void Load(LoadParams* p_params);
 	void LoadStrings();
-	OpalHaven0xf4* LoadEntry(const LegoChar* p_name);
+	AnimatedModelEntity* LoadEntry(const LegoChar* p_name);
 	void FUN_00421050(LegoU32 p_index, TurquoiseGlowColor* p_color);
 	void FUN_00421020(const LegoChar* p_name, TurquoiseGlowColor* p_color);
 	LegoBool32 HasEntries() const { return m_entries != NULL; }
@@ -72,21 +72,21 @@ public:
 private:
 	void Reset();
 	void ClearEntries();
-	OpalHaven0xf4* LoadEntry(Entry0x30* p_entry);
+	AnimatedModelEntity* LoadEntry(Entry0x30* p_entry);
 
-	GolStringTable m_strings;         // 0x0c
-	GolExport* m_golExport;           // 0x20
-	GolD3DRenderDevice* m_renderer;   // 0x24
-	Entry0x30* m_entries;             // 0x28
-	GolModelBase** m_models;          // 0x2c
-	GolTextureList** m_textures;      // 0x30
-	GolMaterialLibrary** m_materials; // 0x34
-	OpalHaven0xf4* m_loadedEntries;   // 0x38
-	GolSceneNode* m_rootNode;         // 0x3c
-	CmbModelPart0x34 m_modelParts;    // 0x40
-	LegoU32 m_entryCapacity;          // 0x74
-	LegoU32 m_loadedEntryCount;       // 0x78
-	LegoBool32 m_binary;              // 0x7c
+	GolStringTable m_strings;             // 0x0c
+	GolExport* m_golExport;               // 0x20
+	GolD3DRenderDevice* m_renderer;       // 0x24
+	Entry0x30* m_entries;                 // 0x28
+	GolModelBase** m_models;              // 0x2c
+	GolTextureList** m_textures;          // 0x30
+	GolMaterialLibrary** m_materials;     // 0x34
+	AnimatedModelEntity* m_loadedEntries; // 0x38
+	GolSceneNode* m_rootNode;             // 0x3c
+	CmbModelPart0x34 m_modelParts;        // 0x40
+	LegoU32 m_entryCapacity;              // 0x74
+	LegoU32 m_loadedEntryCount;           // 0x78
+	LegoBool32 m_binary;                  // 0x7c
 };
 
 #endif // DRIVERCOSMETICTABLE_H

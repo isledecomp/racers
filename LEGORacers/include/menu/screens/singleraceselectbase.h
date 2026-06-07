@@ -7,7 +7,7 @@
 #include "menu/widgets/menuframe.h"
 #include "menu/widgets/menuselector.h"
 #include "race/data/racedefinitionlist.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 class GolModelBase;
 
@@ -30,7 +30,7 @@ protected:
 	void FUN_00488cb0(LegoS32 p_index);
 
 	LegoChar m_unk0x658[8];                          // 0x0658
-	OpalHaven0xf4 m_unk0x660;                        // 0x0660
+	AnimatedModelEntity m_unk0x660;                  // 0x0660
 	GolModelBase* m_unk0x754;                        // 0x0754
 	MenuFrame m_unk0x758;                            // 0x0758
 	MenuCarouselNavigator m_unk0xb54;                // 0x0b54

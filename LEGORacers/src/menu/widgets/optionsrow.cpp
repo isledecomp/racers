@@ -74,7 +74,7 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 }
 
 // FUNCTION: LEGORACERS 0x0046e090
-void OptionsRowBase::VTable0x14(VisualState0x4* p_visualState)
+void OptionsRowBase::VTable0x14(VisualStateColor* p_visualState)
 {
 	m_unk0x648.VTable0x14(p_visualState);
 	m_unk0x5ec.VTable0x14(p_visualState);

@@ -15,10 +15,10 @@ class GolWorldDatabase;
 // GOLDP array construction proves this complete class has a 0x90-byte stride.
 // There is some structural overlap in the subsequent fields between
 // - GolSkinnedEntity (GOLDP, subclass)
-// - OpalHaven0xf4 (LEGORACERS, subclass)
+// - AnimatedModelEntity (LEGORACERS, subclass)
 // - GlassShard0x3b8 (LEGORACERS, member field)
 // but inserting an intermediate subclass with these shared fields leads to mismatches.
-// Furthermore, SordidWatch0x140 (LEGORACERS) has a member of this type with different subsequent fields.
+// Furthermore, ParticleSystem (LEGORACERS) has a member of this type with different subsequent fields.
 //
 // VTABLE: GOLDP 0x10057270
 // VTABLE: LEGORACERS 0x004af754

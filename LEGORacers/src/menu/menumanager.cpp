@@ -721,7 +721,7 @@ void MenuManager::FUN_0042de90(LegoBool32 p_arg)
 
 	m_unk0x04.m_unk0x437c.Load("bodypart.pcf", m_unk0x04.m_context->m_unk0x18);
 
-	GarnetFlare0x60::LoadParams partParams;
+	DriverPartResources::LoadParams partParams;
 	partParams.m_golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
 	partParams.m_renderer = m_unk0x04.m_context->m_golApp->GetRenderer();
 	partParams.m_unk0x0c = &m_unk0x04.m_unk0x437c;
@@ -729,7 +729,7 @@ void MenuManager::FUN_0042de90(LegoBool32 p_arg)
 	partParams.m_unk0x14 = p_arg == FALSE;
 	m_unk0x04.m_unk0x4ae0.FUN_00497f10(&partParams, p_arg);
 
-	TanzaniteWisp0x88::LoadParams menuParams;
+	DriverModelBuilder::LoadParams menuParams;
 	menuParams.m_golExport = partParams.m_golExport;
 	menuParams.m_renderer = partParams.m_renderer;
 	menuParams.m_menuId = 6;

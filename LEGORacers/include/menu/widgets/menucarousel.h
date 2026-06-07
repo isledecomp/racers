@@ -18,12 +18,12 @@ public:
 	MenuCarousel();
 	void Reset() override;                                                            // vtable+0x00
 	~MenuCarousel() override;                                                         // vtable+0x04
-	void VTable0x14(VisualState0x4*) override;                                        // vtable+0x14
+	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
 	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	virtual void VTable0x40() = 0;                                                    // vtable+0x40
 	virtual void VTable0x44(undefined4) = 0;                                          // vtable+0x44
-	virtual void VTable0x48(VisualState0x4*, VisualState0x4*);                        // vtable+0x48
-	virtual void VTable0x4c(VisualState0x4*, VisualState0x4*);                        // vtable+0x4c
+	virtual void VTable0x48(VisualStateColor*, VisualStateColor*);                    // vtable+0x48
+	virtual void VTable0x4c(VisualStateColor*, VisualStateColor*);                    // vtable+0x4c
 	virtual void VTable0x50(undefined4) = 0;                                          // vtable+0x50
 	virtual LegoS32 VTable0x54() = 0;                                                 // vtable+0x54
 	virtual LegoS32 VTable0x58() = 0;                                                 // vtable+0x58

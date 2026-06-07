@@ -8,7 +8,7 @@
 #include "menu/screens/menuscenescreen.h"
 #include "race/data/racedefinitionlist.h"
 #include "save/peridottrace0x4e0.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 class AquamarineSpirit0x3c;
 class GolWorldEntity;
@@ -27,7 +27,7 @@ public:
 			AquamarineSpirit0x3c* m_unk0x00; // 0x00
 			CarBuildModel* m_unk0x04;        // 0x04
 			GolWorldEntity* m_unk0x08;       // 0x08
-			OpalHaven0xf4* m_unk0x0c;        // 0x0c
+			AnimatedModelEntity* m_unk0x0c;  // 0x0c
 			GolName m_unk0x10;               // 0x10
 		};
 
@@ -49,12 +49,12 @@ public:
 		// AwardCinematicScreen::SceneEntityGroup::`scalar deleting destructor'
 
 	private:
-		void FUN_004794d0(OpalHaven0xf4* p_entity);
+		void FUN_004794d0(AnimatedModelEntity* p_entity);
 
 		AquamarineSpirit0x3c* m_unk0x38; // 0x38
 		CarBuildModel* m_unk0x3c;        // 0x3c
 		GolWorldEntity* m_unk0x40;       // 0x40
-		OpalHaven0xf4* m_unk0x44;        // 0x44
+		AnimatedModelEntity* m_unk0x44;  // 0x44
 		GolName m_unk0x48;               // 0x48
 	};
 
@@ -76,13 +76,13 @@ protected:
 	LegoBool32 FUN_004768f0(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
 	LegoBool32 FUN_00476990(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
 
-	SceneEntityGroup m_unk0x658; // 0x658
-	OpalHaven0xf4 m_unk0x6a8;    // 0x6a8
-	GolModelBase* m_unk0x79c;    // 0x79c
-	LegoS32 m_unk0x7a0;          // 0x7a0
-	undefined4 m_unk0x7a4;       // 0x7a4
-	undefined4 m_unk0x7a8;       // 0x7a8
-	undefined4 m_unk0x7ac;       // 0x7ac
+	SceneEntityGroup m_unk0x658;    // 0x658
+	AnimatedModelEntity m_unk0x6a8; // 0x6a8
+	GolModelBase* m_unk0x79c;       // 0x79c
+	LegoS32 m_unk0x7a0;             // 0x7a0
+	undefined4 m_unk0x7a4;          // 0x7a4
+	undefined4 m_unk0x7a8;          // 0x7a8
+	undefined4 m_unk0x7ac;          // 0x7ac
 };
 
 #endif // AWARDCINEMATICSCREEN_H

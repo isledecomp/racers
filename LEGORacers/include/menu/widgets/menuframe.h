@@ -18,7 +18,7 @@ public:
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
 		UtopianPan0xa4* m_images[8]; // 0x38
-		VisualState0x4 m_unk0x58;    // 0x58
+		VisualStateColor m_unk0x58;  // 0x58
 		LegoBool32 m_unk0x5c;        // 0x5c
 	};
 
@@ -30,7 +30,7 @@ public:
 	// MenuFrame::`scalar deleting destructor'
 
 	LegoBool32 FUN_0046ecd0(CreateParams* p_createParams);
-	void FUN_0046f050(VisualState0x4* p_visualState);
+	void FUN_0046f050(VisualStateColor* p_visualState);
 	MenuTriangle* GetUnk0x58() { return &m_unk0x58; }
 
 	// SIZE 0x38

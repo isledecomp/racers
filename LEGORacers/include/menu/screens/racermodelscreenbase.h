@@ -11,7 +11,7 @@
 #include "menu/screens/racerunlockstate.h"
 #include "menu/widgets/menuframedsceneview.h"
 #include "menu/widgets/menutextlabel.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 class GolModelBase;
 class GolSceneNode;
@@ -72,7 +72,7 @@ protected:
 	RacerModelSlot m_unk0x1ddc[4];                        // 0x1ddc
 	RacerModelSlot m_unk0x205c[4];                        // 0x205c
 	RacerUnlockState m_unk0x22dc[2];                      // 0x22dc
-	OpalHaven0xf4 m_unk0x232c[4];                         // 0x232c
+	AnimatedModelEntity m_unk0x232c[4];                   // 0x232c
 	LegoS32 m_unk0x26fc;                                  // 0x26fc
 	LegoS32 m_unk0x2700;                                  // 0x2700
 	undefined4 m_unk0x2704[2];                            // 0x2704

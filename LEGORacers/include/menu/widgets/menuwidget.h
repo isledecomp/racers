@@ -6,12 +6,12 @@
 #include "golname.h"
 #include "input/inputeventqueue.h"
 #include "menu/screens/menuscreeninterface.h"
+#include "menu/widgets/visualstatecolor.h"
 #include "render/rectangle.h"
 #include "surface/color.h"
 #include "surface/silverdune0x30.h"
 #include "text/coppercrest0x40.h"
 #include "types.h"
-#include "util/visualstate0x4.h"
 
 class GolD3DRenderDevice;
 class GolFontBase0x40;
@@ -33,7 +33,7 @@ public:
 		MenuScreenInterface* m_eventHandler;    // 0x0c
 		Rect m_rect;                            // 0x10
 		undefined2 m_unk0x20;                   // 0x20
-		VisualState0x4 m_unk0x22;               // 0x22
+		VisualStateColor m_unk0x22;             // 0x22
 		undefined2 m_unk0x26;                   // 0x26
 		MenuWidget* m_parent;                   // 0x28
 		LegoU8 m_flags;                         // 0x2c
@@ -47,7 +47,7 @@ public:
 	virtual LegoBool32 VTable0x08();                                                     // vtable+0x08
 	virtual void SetParent(MenuWidget*);                                                 // vtable+0x0c
 	virtual void VTable0x10(Rect*);                                                      // vtable+0x10
-	virtual void VTable0x14(VisualState0x4*);                                            // vtable+0x14
+	virtual void VTable0x14(VisualStateColor*);                                          // vtable+0x14
 	virtual LegoBool32 VTable0x18(undefined4);                                           // vtable+0x18
 	virtual undefined4 VTable0x1c(Rect*, Rect*);                                         // vtable+0x1c
 	virtual LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4); // vtable+0x20
@@ -105,9 +105,9 @@ protected:
 	GolD3DRenderDevice* m_renderer; // 0x24
 	MenuScreenInterface* m_unk0x28; // 0x28
 	union {
-		ColorRGBA m_color;            // 0x2c
-		LegoU32 m_colorPacked;        // 0x2c
-		VisualState0x4 m_visualState; // 0x2c
+		ColorRGBA m_color;              // 0x2c
+		LegoU32 m_colorPacked;          // 0x2c
+		VisualStateColor m_visualState; // 0x2c
 	};
 	undefined2 m_unk0x30; // 0x30
 	Rect m_unk0x34;       // 0x34

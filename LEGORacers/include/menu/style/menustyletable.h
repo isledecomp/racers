@@ -6,9 +6,9 @@
 #include "goltxtparser.h"
 #include "menu/style/menuresourcetable.h"
 #include "menu/widgets/menuicon.h"
+#include "menu/widgets/visualstatecolor.h"
 #include "render/rectangle.h"
 #include "types.h"
-#include "util/visualstate0x4.h"
 
 class GolD3DRenderDevice;
 class GolFont0xa0;
@@ -22,19 +22,19 @@ public:
 	// SIZE 0x0c
 	class ImageStyle {
 	public:
-		UtopianPan0xa4* m_unk0x00; // 0x00
-		VisualState0x4 m_unk0x04;  // 0x04
-		LegoBool32 m_unk0x08;      // 0x08
+		UtopianPan0xa4* m_unk0x00;  // 0x00
+		VisualStateColor m_unk0x04; // 0x04
+		LegoBool32 m_unk0x08;       // 0x08
 	};
 
 	// SIZE 0x14
 	class TextStyle {
 	public:
-		GolFont0xa0* m_unk0x00;   // 0x00
-		VisualState0x4 m_unk0x04; // 0x04
-		LegoS32 m_unk0x08;        // 0x08
-		LegoBool32 m_unk0x0c;     // 0x0c
-		LegoS32 m_unk0x10;        // 0x10
+		GolFont0xa0* m_unk0x00;     // 0x00
+		VisualStateColor m_unk0x04; // 0x04
+		LegoS32 m_unk0x08;          // 0x08
+		LegoBool32 m_unk0x0c;       // 0x0c
+		LegoS32 m_unk0x10;          // 0x10
 	};
 
 	// SIZE 0x18
@@ -50,8 +50,8 @@ public:
 	class FrameStyle {
 	public:
 		UtopianPan0xa4* m_unk0x00[8]; // 0x00
-		VisualState0x4 m_unk0x20;     // 0x20
-		VisualState0x4 m_unk0x24;     // 0x24
+		VisualStateColor m_unk0x20;   // 0x20
+		VisualStateColor m_unk0x24;   // 0x24
 		LegoBool32 m_unk0x28;         // 0x28
 	};
 
@@ -74,14 +74,14 @@ public:
 	// SIZE 0x104
 	class TextButtonStyle : public IconStyle {
 	public:
-		GolFont0xa0* m_unk0x90[6];    // 0x90
-		UtopianPan0xa4* m_unk0xa8[6]; // 0xa8
-		VisualState0x4 m_unk0xc0[6];  // 0xc0
-		VisualState0x4 m_unk0xd8;     // 0xd8
-		Rect m_unk0xdc;               // 0xdc
-		Rect m_unk0xec;               // 0xec
-		undefined4 m_unk0xfc;         // 0xfc
-		undefined4 m_unk0x100;        // 0x100
+		GolFont0xa0* m_unk0x90[6];     // 0x90
+		UtopianPan0xa4* m_unk0xa8[6];  // 0xa8
+		VisualStateColor m_unk0xc0[6]; // 0xc0
+		VisualStateColor m_unk0xd8;    // 0xd8
+		Rect m_unk0xdc;                // 0xdc
+		Rect m_unk0xec;                // 0xec
+		undefined4 m_unk0xfc;          // 0xfc
+		undefined4 m_unk0x100;         // 0x100
 	};
 
 	// SIZE 0x100
@@ -116,9 +116,9 @@ public:
 	// SIZE 0xbc
 	class SelectorStyle : public SelectorStyleBase {
 	public:
-		FrameStyle* m_unk0x98;       // 0x98
-		VisualState0x4 m_unk0x9c[4]; // 0x9c
-		VisualState0x4 m_unk0xac[4]; // 0xac
+		FrameStyle* m_unk0x98;         // 0x98
+		VisualStateColor m_unk0x9c[4]; // 0x9c
+		VisualStateColor m_unk0xac[4]; // 0xac
 
 		ButtonStyle* GetUnk0x90() const { return static_cast<ButtonStyle*>(m_unk0x90); }
 		ButtonStyle* GetUnk0x94() const { return static_cast<ButtonStyle*>(m_unk0x94); }

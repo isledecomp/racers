@@ -4,6 +4,7 @@
 #include "app/legoracers.h"
 #include "decomp.h"
 #include "menu/menuanimationlist.h"
+#include "menu/menuinputhandler.h"
 #include "model/carbuildmodel.h"
 #include "model/carpartset.h"
 #include "model/legocolortable.h"
@@ -13,19 +14,18 @@
 #include "race/data/racenamelist.h"
 #include "racer/aquamarinespirit0x3c.h"
 #include "racer/drivercosmetictable.h"
+#include "racer/drivermodelbuilder.h"
+#include "racer/driverpartresources.h"
 #include "racer/lavendervault0x764.h"
 #include "save/savesystem.h"
-#include "util/garnetflare0x60.h"
-#include "util/onyxbreeze0x248.h"
 #include "util/stackoflegou16.h"
-#include "util/tanzanitewisp0x88.h"
 
 // SIZE 0x4bc8
 class MenuGameContext {
 public:
 	LegoRacers::Context* m_context;               // 0x00
 	StackOfLegoU16 m_menuStack;                   // 0x04
-	OnyxBreeze0x248 m_inputBindings;              // 0x10
+	MenuInputHandler m_inputBindings;             // 0x10
 	SaveSystem m_unk0x258;                        // 0x258
 	CarPartSet m_unk0x21a4;                       // 0x21a4
 	LegoPieceLibrary m_pieceLibrary;              // 0x21b8
@@ -38,8 +38,8 @@ public:
 	RaceNameList m_raceNames;                     // 0x4360
 	MenuAnimationList m_menuAnimations;           // 0x4374
 	LavenderVault0x764 m_unk0x437c;               // 0x437c
-	GarnetFlare0x60 m_unk0x4ae0;                  // 0x4ae0
-	TanzaniteWisp0x88 m_unk0x4b40;                // 0x4b40
+	DriverPartResources m_unk0x4ae0;              // 0x4ae0
+	DriverModelBuilder m_unk0x4b40;               // 0x4b40
 };
 
 #endif // MENUGAMECONTEXT_H

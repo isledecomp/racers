@@ -1,4 +1,4 @@
-#include "util/sordidwatch0x140.h"
+#include "util/particlesystem.h"
 
 #include "cmbmodelpart0x34.h"
 #include "core/goldpexport.h"
@@ -7,21 +7,21 @@
 #include "mabmaterialanimationitem0x8.h"
 #include "menu/widgets/menuselector.h"
 #include "mesh/golmodelbase.h"
-#include "util/sordidwatchinner0x38.h"
+#include "util/particle.h"
 
-DECOMP_SIZE_ASSERT(SordidWatch0x140, 0x140)
+DECOMP_SIZE_ASSERT(ParticleSystem, 0x140)
 
 // GLOBAL: LEGORACERS 0x004af86c
 const LegoFloat g_maxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x00412360
-SordidWatch0x140::SordidWatch0x140()
+ParticleSystem::ParticleSystem()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00412390
-void SordidWatch0x140::Reset()
+void ParticleSystem::Reset()
 {
 	m_unk0x000 = NULL;
 	m_unk0x004 = NULL;
@@ -54,7 +54,7 @@ void SordidWatch0x140::Reset()
 }
 
 // STUB: LEGORACERS 0x00412430
-void SordidWatch0x140::FUN_00412430(
+void ParticleSystem::FUN_00412430(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
 	LegoU32 p_param3,
@@ -85,7 +85,7 @@ void SordidWatch0x140::FUN_00412430(
 	// LINE: LEGORACERS 0x004124b5
 	m_unk0x010.VTable0x50(m_unk0x004, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
-	m_unk0x0ac = new SordidWatchInner0x38[m_unk0x0a8];
+	m_unk0x0ac = new Particle[m_unk0x0a8];
 
 	if (!m_unk0x0ac) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
@@ -97,7 +97,7 @@ void SordidWatch0x140::FUN_00412430(
 }
 
 // FUNCTION: LEGORACERS 0x00412560
-void SordidWatch0x140::Destroy()
+void ParticleSystem::Destroy()
 {
 	if (m_unk0x0ac) {
 		delete[] m_unk0x0ac;
@@ -115,9 +115,9 @@ void SordidWatch0x140::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3)
+Particle* ParticleSystem::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3)
 {
-	SordidWatchInner0x38* entity = FUN_00412a00();
+	Particle* entity = FUN_00412a00();
 
 	GolVec3 center, position;
 
@@ -147,7 +147,7 @@ SordidWatchInner0x38* SordidWatch0x140::FUN_00412760(GolVec3* p_param1, GolVec3*
 }
 
 // FUNCTION: LEGORACERS 0x00412820
-void SordidWatch0x140::FUN_00412820()
+void ParticleSystem::FUN_00412820()
 {
 	if (!m_unk0x0b4) {
 		FUN_00412840();
@@ -158,7 +158,7 @@ void SordidWatch0x140::FUN_00412820()
 }
 
 // FUNCTION: LEGORACERS 0x00412840
-void SordidWatch0x140::FUN_00412840()
+void ParticleSystem::FUN_00412840()
 {
 	if (m_unk0x0b8 & c_flagActive) {
 		FUN_00412970();
@@ -173,7 +173,7 @@ void SordidWatch0x140::FUN_00412840()
 }
 
 // FUNCTION: LEGORACERS 0x00412890
-void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
+void ParticleSystem::FUN_00412890(LegoS32 p_param)
 {
 	if ((m_unk0x0b8 & c_flagInitialized) && (m_unk0x0b8 & c_flagActive)) {
 		m_unk0x0b8 &= ~c_flagBit3;
@@ -183,10 +183,10 @@ void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
 			}
 		}
 		else {
-			SordidWatchInner0x38 *next, *other;
+			Particle *next, *other;
 			other = NULL;
 
-			for (SordidWatchInner0x38* current = m_unk0x0b4; current != NULL; current = next) {
+			for (Particle* current = m_unk0x0b4; current != NULL; current = next) {
 				next = current->m_next;
 				current->m_unk0x28 += p_param;
 				if (current->m_unk0x28 > current->m_unk0x2c) {
@@ -218,7 +218,7 @@ void SordidWatch0x140::FUN_00412890(LegoS32 p_param)
 }
 
 // FUNCTION: LEGORACERS 0x00412970
-void SordidWatch0x140::FUN_00412970()
+void ParticleSystem::FUN_00412970()
 {
 	m_unk0x0b4 = NULL;
 	m_unk0x0b0 = m_unk0x0ac;
@@ -231,10 +231,10 @@ void SordidWatch0x140::FUN_00412970()
 }
 
 // FUNCTION: LEGORACERS 0x00412a00
-SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
+Particle* ParticleSystem::FUN_00412a00()
 {
-	SordidWatchInner0x38* maxEntry = m_unk0x0b0;
-	SordidWatchInner0x38* current;
+	Particle* maxEntry = m_unk0x0b0;
+	Particle* current;
 
 	if (maxEntry) {
 		m_unk0x0b0 = maxEntry->m_next;
@@ -256,7 +256,7 @@ SordidWatchInner0x38* SordidWatch0x140::FUN_00412a00()
 }
 
 // STUB: LEGORACERS 0x00412a50
-void SordidWatch0x140::FUN_00412a50(GolD3DRenderDevice*)
+void ParticleSystem::FUN_00412a50(GolD3DRenderDevice*)
 {
 	STUB(0x00412a50);
 }

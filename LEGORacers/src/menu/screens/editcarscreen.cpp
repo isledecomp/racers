@@ -12,9 +12,9 @@
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
 #include "mesh/golmodelbase.h"
+#include "racer/drivermodelbuilder.h"
 #include "racer/turquoiseglowcolor.h"
 #include "surface/color.h"
-#include "util/tanzanitewisp0x88.h"
 
 #include <float.h>
 #include <string.h>

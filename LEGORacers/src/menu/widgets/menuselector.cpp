@@ -378,7 +378,7 @@ LegoBool32 MenuSelector::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x004678b0
-void MenuSelector::VTable0x14(VisualState0x4* p_visualState)
+void MenuSelector::VTable0x14(VisualStateColor* p_visualState)
 {
 	if (m_unk0x9e8) {
 		m_unk0x9e8->VTable0x14(p_visualState);

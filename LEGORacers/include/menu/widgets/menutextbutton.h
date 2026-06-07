@@ -19,15 +19,15 @@ public:
 	// SIZE 0xe0
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
-		GolFont0xa0* m_unk0x84[6];    // 0x84
-		UtopianPan0xa4* m_unk0x9c[6]; // 0x9c
-		VisualState0x4 m_unk0xb4[6];  // 0xb4
-		GolStringTable* m_unk0xcc;    // 0xcc
-		undefined4 m_unk0xd0;         // 0xd0
-		undefined2 m_unk0xd4;         // 0xd4
-		undefined2 m_unk0xd6;         // 0xd6
-		undefined4 m_unk0xd8;         // 0xd8
-		undefined4 m_unk0xdc;         // 0xdc
+		GolFont0xa0* m_unk0x84[6];     // 0x84
+		UtopianPan0xa4* m_unk0x9c[6];  // 0x9c
+		VisualStateColor m_unk0xb4[6]; // 0xb4
+		GolStringTable* m_unk0xcc;     // 0xcc
+		undefined4 m_unk0xd0;          // 0xd0
+		undefined2 m_unk0xd4;          // 0xd4
+		undefined2 m_unk0xd6;          // 0xd6
+		undefined4 m_unk0xd8;          // 0xd8
+		undefined4 m_unk0xdc;          // 0xdc
 	};
 
 	MenuTextButton();
@@ -53,7 +53,7 @@ private:
 	MenuStyleTable::TextStyle m_unk0x1ac;        // 0x1ac
 	GolFont0xa0* m_unk0x1c0[6];                  // 0x1c0
 	UtopianPan0xa4* m_unk0x1d8[6];               // 0x1d8
-	VisualState0x4 m_unk0x1f0[6];                // 0x1f0
+	VisualStateColor m_unk0x1f0[6];              // 0x1f0
 	MenuImage m_unk0x208;                        // 0x208
 	MenuTextLabel m_unk0x264;                    // 0x264
 	LegoS32 m_unk0x2dc;                          // 0x2dc

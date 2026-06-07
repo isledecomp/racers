@@ -25,7 +25,7 @@ class GolFileParser;
 class GolWorldEntity;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
-class OpalHaven0xf4;
+class AnimatedModelEntity;
 class CutsceneParticle;
 class GolRenderDevice;
 class UtopianPan0xa4;
@@ -62,10 +62,10 @@ public:
 	// CutsceneEvent::`scalar deleting destructor'
 
 protected:
-	GolWorldEntity* m_unk0x04; // 0x04
-	GolWorldEntity* m_unk0x08; // 0x08
-	OpalHaven0xf4* m_unk0x0c;  // 0x0c
-	undefined4 m_unk0x10;      // 0x10
+	GolWorldEntity* m_unk0x04;      // 0x04
+	GolWorldEntity* m_unk0x08;      // 0x08
+	AnimatedModelEntity* m_unk0x0c; // 0x0c
+	undefined4 m_unk0x10;           // 0x10
 };
 
 // SIZE 0x2c

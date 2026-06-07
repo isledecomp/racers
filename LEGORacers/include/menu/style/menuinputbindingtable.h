@@ -10,8 +10,8 @@
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
+#include "menu/widgets/visualstatecolor.h"
 #include "types.h"
-#include "util/visualstate0x4.h"
 
 class GolD3DRenderDevice;
 class GolFont0xa0;

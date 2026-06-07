@@ -150,7 +150,7 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x0046f050
-void MenuFrame::FUN_0046f050(VisualState0x4* p_visualState)
+void MenuFrame::FUN_0046f050(VisualStateColor* p_visualState)
 {
 	for (LegoS32 i = 0; i < 8; i++) {
 		m_unk0xfc[i].VTable0x14(p_visualState);

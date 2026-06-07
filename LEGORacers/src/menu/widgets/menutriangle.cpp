@@ -41,7 +41,7 @@ LegoBool32 MenuTriangle::FUN_004735a0(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x004735c0
-void MenuTriangle::VTable0x14(VisualState0x4* p_param)
+void MenuTriangle::VTable0x14(VisualStateColor* p_param)
 {
 	m_vertices[0].m_color = p_param->m_color;
 	m_vertices[1].m_color = p_param->m_color;

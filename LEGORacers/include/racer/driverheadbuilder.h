@@ -1,5 +1,5 @@
-#ifndef TEALCRUCIBLE0X50_H
-#define TEALCRUCIBLE0X50_H
+#ifndef DRIVERHEADBUILDER_H
+#define DRIVERHEADBUILDER_H
 
 #include "compat.h"
 #include "decomp.h"
@@ -14,7 +14,7 @@ class GolWorldDatabase;
 class LavenderVault0x764;
 
 // SIZE 0x50
-class TealCrucible0x50 {
+class DriverHeadBuilder {
 public:
 	// SIZE 0x18
 	struct LoadParams {
@@ -26,8 +26,8 @@ public:
 		undefined4 m_unk0x14;                // 0x14
 	};
 
-	TealCrucible0x50();
-	~TealCrucible0x50();
+	DriverHeadBuilder();
+	~DriverHeadBuilder();
 
 	void Reset();
 	LegoBool32 FUN_00499160(const LoadParams* p_params, LegoS32 p_resourceIndex);
@@ -55,4 +55,4 @@ private:
 	LegoS32 m_resourceIndex;             // 0x4c
 };
 
-#endif // TEALCRUCIBLE0X50_H
+#endif // DRIVERHEADBUILDER_H

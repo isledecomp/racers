@@ -305,7 +305,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racetimeformatter.cpp
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
-  LEGORacers/src/util/opalhaven0xf4.cpp
+  LEGORacers/src/util/animatedmodelentity.cpp
   LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp
@@ -373,7 +373,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/menugamescreen.cpp
   LEGORacers/src/menu/screens/buttonbindingtable.cpp
   LEGORacers/src/menu/screens/driverlicensescreen.cpp
-  LEGORacers/src/util/onyxbreeze0x248.cpp
+  LEGORacers/src/menu/menuinputhandler.cpp
   LEGORacers/src/input/inputeventqueue.cpp
   LEGORacers/src/save/peridottracerootentrybase0x8.cpp
   LEGORacers/src/save/peridottraceroot0x108.cpp
@@ -403,11 +403,11 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/gdbpartfacegroup.cpp
   LEGORacers/src/model/gdbpartvertexpool.cpp
   LEGORacers/src/model/gdbpositionvertexpool.cpp
-  LEGORacers/src/util/garnetflare0x60.cpp
-  LEGORacers/src/util/tanzanitewisp0x88.cpp
-  LEGORacers/src/util/tealcrucible0x50.cpp
-  LEGORacers/src/util/sordidwatch0x140.cpp
-  LEGORacers/src/util/sordidwatchinner0x38.cpp
+  LEGORacers/src/racer/driverpartresources.cpp
+  LEGORacers/src/racer/drivermodelbuilder.cpp
+  LEGORacers/src/racer/driverheadbuilder.cpp
+  LEGORacers/src/util/particlesystem.cpp
+  LEGORacers/src/util/particle.cpp
   LEGORacers/src/menu/menuscreenfactory.cpp
   LEGORacers/src/text/coppercrest0x40.cpp
   LEGORacers/src/menu/style/sharedmenustyletable.cpp

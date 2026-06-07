@@ -4,8 +4,8 @@
 #include "golerror.h"
 #include "golscenenode.h"
 #include "mesh/golmodelbase.h"
+#include "racer/drivermodelbuilder.h"
 #include "render/gold3drenderdevice.h"
-#include "util/tanzanitewisp0x88.h"
 
 #include <float.h>
 #include <string.h>

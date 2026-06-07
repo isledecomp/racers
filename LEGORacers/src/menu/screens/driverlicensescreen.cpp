@@ -144,7 +144,7 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 		return FALSE;
 	}
 
-	OpalHaven0xf4* opalHaven;
+	AnimatedModelEntity* opalHaven;
 	ColorRGBA materialColor;
 	ColorRGBA lightColor;
 	materialColor.m_red = 0x78;

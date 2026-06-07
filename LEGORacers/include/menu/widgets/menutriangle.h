@@ -13,7 +13,7 @@ public:
 	MenuTriangle();
 	void Reset() override;                         // vtable+0x00
 	~MenuTriangle() override;                      // vtable+0x04
-	void VTable0x14(VisualState0x4*) override;     // vtable+0x14
+	void VTable0x14(VisualStateColor*) override;   // vtable+0x14
 	MenuWidget* VTable0x38(Rect*, Rect*) override; // vtable+0x38
 
 	LegoBool32 FUN_004735a0(CreateParams* p_createParams);

@@ -14,8 +14,8 @@
 #include "render/gold3drenderdevice.h"
 #include "scene/golcollidableentity.h"
 #include "scene/golskinnedentity.h"
+#include "util/animatedmodelentity.h"
 #include "util/bluebellfog0x4.h"
-#include "util/opalhaven0xf4.h"
 #include "world/golworlddatabase.h"
 
 #include <stdlib.h>
@@ -284,9 +284,9 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 		}
 
 		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
-			static_cast<OpalHaven0xf4*>(m_unk0x24)->FUN_0040dad0(static_cast<undefined2>(m_unk0x58));
-			static_cast<OpalHaven0xf4*>(m_unk0x24)->SetFlags(
-				static_cast<OpalHaven0xf4*>(m_unk0x24)->GetFlags() | 0x10000
+			static_cast<AnimatedModelEntity*>(m_unk0x24)->FUN_0040dad0(static_cast<undefined2>(m_unk0x58));
+			static_cast<AnimatedModelEntity*>(m_unk0x24)->SetFlags(
+				static_cast<AnimatedModelEntity*>(m_unk0x24)->GetFlags() | 0x10000
 			);
 		}
 

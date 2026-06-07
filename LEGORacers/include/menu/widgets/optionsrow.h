@@ -14,7 +14,7 @@ public:
 	OptionsRowBase();
 	void Reset() override;                                                            // vtable+0x00
 	~OptionsRowBase() override;                                                       // vtable+0x04
-	void VTable0x14(VisualState0x4*) override;                                        // vtable+0x14
+	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
 	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
 	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c

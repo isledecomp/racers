@@ -29,20 +29,20 @@ public:
 	// SIZE 0xd0
 	class Item {
 	public:
-		LegoFloat m_unk0x00;      // 0x00
-		LegoFloat m_unk0x04;      // 0x04
-		LegoFloat m_unk0x08;      // 0x08
-		LegoFloat m_unk0x0c;      // 0x0c
-		Rect m_rect;              // 0x10
-		LegoFloat m_unk0x20;      // 0x20
-		LegoFloat m_unk0x24;      // 0x24
-		LegoFloat m_unk0x28;      // 0x28
-		GolModelBase* m_model;    // 0x2c
-		LegoFloat m_modelRadius;  // 0x30
-		GolModelEntity m_entity;  // 0x34
-		undefined4 m_unk0xc4;     // 0xc4
-		VisualState0x4 m_unk0xc8; // 0xc8
-		VisualState0x4 m_unk0xcc; // 0xcc
+		LegoFloat m_unk0x00;        // 0x00
+		LegoFloat m_unk0x04;        // 0x04
+		LegoFloat m_unk0x08;        // 0x08
+		LegoFloat m_unk0x0c;        // 0x0c
+		Rect m_rect;                // 0x10
+		LegoFloat m_unk0x20;        // 0x20
+		LegoFloat m_unk0x24;        // 0x24
+		LegoFloat m_unk0x28;        // 0x28
+		GolModelBase* m_model;      // 0x2c
+		LegoFloat m_modelRadius;    // 0x30
+		GolModelEntity m_entity;    // 0x34
+		undefined4 m_unk0xc4;       // 0xc4
+		VisualStateColor m_unk0xc8; // 0xc8
+		VisualStateColor m_unk0xcc; // 0xcc
 	};
 
 	MenuModelCarousel();
@@ -56,8 +56,8 @@ public:
 	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
 	void VTable0x40() override;                                                       // vtable+0x40
 	void VTable0x44(undefined4) override;                                             // vtable+0x44
-	void VTable0x48(VisualState0x4*, VisualState0x4*) override;                       // vtable+0x48
-	void VTable0x4c(VisualState0x4*, VisualState0x4*) override;                       // vtable+0x4c
+	void VTable0x48(VisualStateColor*, VisualStateColor*) override;                   // vtable+0x48
+	void VTable0x4c(VisualStateColor*, VisualStateColor*) override;                   // vtable+0x4c
 	LegoS32 VTable0x54() override;                                                    // vtable+0x54
 	LegoS32 VTable0x58() override;                                                    // vtable+0x58
 	virtual void VTable0x5c(undefined4, GolModelEntity*);                             // vtable+0x5c

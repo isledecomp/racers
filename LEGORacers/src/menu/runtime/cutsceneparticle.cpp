@@ -89,7 +89,7 @@ CutsceneParticle::CutsceneParticle()
 // FUNCTION: LEGORACERS 0x00489440
 CutsceneParticle::~CutsceneParticle()
 {
-	// TODO: Reset() and ~SordidWatch0x140 are thunked here
+	// TODO: Reset() and ~ParticleSystem are thunked here
 	Reset();
 }
 

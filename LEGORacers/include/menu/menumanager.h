@@ -12,6 +12,7 @@
 #include "menu/menuanimationlist.h"
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
+#include "menu/menuinputhandler.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenfactory.h"
 #include "menu/style/sharedmenustyletable.h"
@@ -24,16 +25,15 @@
 #include "race/data/racenamelist.h"
 #include "racer/aquamarinespirit0x3c.h"
 #include "racer/drivercosmetictable.h"
+#include "racer/drivermodelbuilder.h"
+#include "racer/driverpartresources.h"
 #include "racer/lavendervault0x764.h"
 #include "render/gold3drenderdevice.h"
 #include "save/savesystem.h"
 #include "text/coppercrest0x40.h"
 #include "types.h"
 #include "util/cactusinterface0x4.h"
-#include "util/garnetflare0x60.h"
-#include "util/onyxbreeze0x248.h"
 #include "util/stackoflegou16.h"
-#include "util/tanzanitewisp0x88.h"
 
 class AmethystBreeze0x104;
 class GolExport;

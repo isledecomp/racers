@@ -4,14 +4,14 @@
 #include "golhashtable.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
+#include "menu/widgets/visualstatecolor.h"
 #include "scene/golskinnedentity.h"
-#include "util/visualstate0x4.h"
 #include "world/golworlddatabase.h"
 
 DECOMP_SIZE_ASSERT(SingleRaceSelectBase, 0x1908)
 
 // GLOBAL: LEGORACERS 0x004c2278
-static VisualState0x4 g_singleRaceVisualStates[] = {
+static VisualStateColor g_singleRaceVisualStates[] = {
 	{{0xffadadad}},
 	{{0xff00dfff}},
 	{{0xffb4dce6}},

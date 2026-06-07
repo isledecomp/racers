@@ -6,7 +6,7 @@
 #include "golmodelentity.h"
 #include "render/gold3drenderdevice.h"
 #include "types.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 class GolExport;
 class GolWorldDatabase;
@@ -41,11 +41,11 @@ private:
 	undefined4* m_unk0x10;               // 0x10
 	undefined4* m_unk0x14;               // 0x14
 	undefined4* m_unk0x18;               // 0x18
-	OpalHaven0xf4 m_unk0x1c;             // 0x1c
+	AnimatedModelEntity m_unk0x1c;       // 0x1c
 	undefined m_unk0x110[0x114 - 0x110]; // 0x110
-	OpalHaven0xf4 m_unk0x114;            // 0x114
+	AnimatedModelEntity m_unk0x114;      // 0x114
 	undefined m_unk0x208[0x20c - 0x208]; // 0x208
-	OpalHaven0xf4 m_unk0x20c;            // 0x20c
+	AnimatedModelEntity m_unk0x20c;      // 0x20c
 	GolModelEntity m_unk0x300;           // 0x300
 	GolSceneNode* m_nodes[3];            // 0x390
 	LegoS32 m_partIndices[3];            // 0x39c

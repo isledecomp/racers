@@ -53,7 +53,7 @@ LegoS32 MenuCarousel::FUN_0046c9a0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9c0
-void MenuCarousel::VTable0x14(VisualState0x4* p_visualState)
+void MenuCarousel::VTable0x14(VisualStateColor* p_visualState)
 {
 	for (MenuWidget* child = m_firstChild; child; child = child->GetNextSibling()) {
 		child->VTable0x14(p_visualState);
@@ -71,12 +71,12 @@ MenuWidget* MenuCarousel::VTable0x30(InputEventQueue::Event*, undefined4, undefi
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void MenuCarousel::VTable0x48(VisualState0x4*, VisualState0x4*)
+void MenuCarousel::VTable0x48(VisualStateColor*, VisualStateColor*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void MenuCarousel::VTable0x4c(VisualState0x4*, VisualState0x4*)
+void MenuCarousel::VTable0x4c(VisualStateColor*, VisualStateColor*)
 {
 }
 

@@ -210,7 +210,7 @@ void MenuInputBindingTable::VTable0x14(undefined4 p_arg1)
 // FUNCTION: LEGORACERS 0x00469a20
 void MenuInputBindingTable::ParseWidgetBase(MenuWidget::CreateParams* p_entry)
 {
-	VisualState0x4* visualState = &p_entry->m_unk0x22;
+	VisualStateColor* visualState = &p_entry->m_unk0x22;
 	visualState->m_unk0x00 = -1;
 
 	LegoU8 flags = p_entry->m_flags;

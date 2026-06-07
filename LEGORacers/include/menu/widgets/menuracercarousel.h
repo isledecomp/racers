@@ -4,8 +4,8 @@
 #include "compat.h"
 #include "decomp.h"
 #include "menu/widgets/menumodelcarousel.h"
+#include "racer/driverheadbuilder.h"
 #include "scene/golbillboard.h"
-#include "util/tealcrucible0x50.h"
 
 class MenuGameContext;
 class SaveSystem;
@@ -18,9 +18,9 @@ public:
 	// SIZE 0x80
 	class CreateParams : public MenuModelCarousel::CreateParams {
 	public:
-		MenuGameContext* m_context;  // 0x74
-		TealCrucible0x50* m_unk0x78; // 0x78
-		LegoU32 m_unk0x7c;           // 0x7c
+		MenuGameContext* m_context;   // 0x74
+		DriverHeadBuilder* m_unk0x78; // 0x78
+		LegoU32 m_unk0x7c;            // 0x7c
 	};
 
 	MenuRacerCarousel();
@@ -51,7 +51,7 @@ protected:
 	void FUN_00483ee0();
 
 	GolBillboard::Field0x2c* m_materialTables; // 0xc0
-	TealCrucible0x50* m_unk0xc4;               // 0xc4
+	DriverHeadBuilder* m_unk0xc4;              // 0xc4
 	MenuGameContext* m_unk0xc8;                // 0xc8
 	LegoU32 m_unk0xcc;                         // 0xcc
 	LegoS32 m_unk0xd0[(0x170 - 0xd0) / 4];     // 0xd0

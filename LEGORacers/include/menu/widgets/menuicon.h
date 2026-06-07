@@ -47,7 +47,7 @@ public:
 		undefined2 m_unk0x48;             // 0x48
 		LegoU8 m_unk0x4a;                 // 0x4a
 		undefined m_unk0x4b[0x52 - 0x4b]; // 0x4b
-		VisualState0x4 m_unk0x52[6];      // 0x52
+		VisualStateColor m_unk0x52[6];    // 0x52
 		union {
 			undefined m_unk0x6a[0x74 - 0x6a]; // 0x6a
 			undefined2 m_soundIds[5];         // 0x6a
@@ -61,13 +61,13 @@ public:
 	// SIZE 0x90
 	class CreateState {
 	public:
-		VisualState0x4 m_unk0x00[6]; // 0x00
-		undefined2 m_unk0x18[5];     // 0x18
-		undefined2 m_unk0x22;        // 0x22
-		Rect m_unk0x24[6];           // 0x24
-		undefined4 m_unk0x84;        // 0x84
-		undefined4 m_unk0x88;        // 0x88
-		undefined4 m_unk0x8c;        // 0x8c
+		VisualStateColor m_unk0x00[6]; // 0x00
+		undefined2 m_unk0x18[5];       // 0x18
+		undefined2 m_unk0x22;          // 0x22
+		Rect m_unk0x24[6];             // 0x24
+		undefined4 m_unk0x84;          // 0x84
+		undefined4 m_unk0x88;          // 0x88
+		undefined4 m_unk0x8c;          // 0x8c
 	};
 
 	enum {
@@ -142,7 +142,7 @@ protected:
 	undefined2 m_unk0x168;                  // 0x168
 	SoundGroupBinding* m_soundGroupBinding; // 0x16c
 	MenuScreenInterface* m_eventHandler;    // 0x170
-	VisualState0x4 m_unk0x174[6];           // 0x174
+	VisualStateColor m_unk0x174[6];         // 0x174
 	LegoU16 m_soundIds[5];                  // 0x18c
 	undefined m_unk0x196[0x198 - 0x196];    // 0x196
 	MenuIcon* m_activeChild;                // 0x198

@@ -1,5 +1,5 @@
-#ifndef TANZANITEWISP0X88_H
-#define TANZANITEWISP0X88_H
+#ifndef DRIVERMODELBUILDER_H
+#define DRIVERMODELBUILDER_H
 
 #include "decomp.h"
 #include "material/duskwindbananarelic0x24.h"
@@ -13,17 +13,17 @@ class GolTextureList;
 class MusicInstance;
 class MenuManager;
 class MusicGroup;
-class GarnetFlare0x60;
+class DriverPartResources;
 class GolModelBase;
 class GolSceneNode;
 class CmbModelPart0x34;
 struct TurquoiseGlowColor;
 
 // SIZE 0x88
-class TanzaniteWisp0x88 {
+class DriverModelBuilder {
 public:
 	// SIZE 0x14
-	struct ModelSummary0x14 {
+	struct ModelSummary {
 		LegoS32 m_unk0x00;     // 0x00
 		LegoS32 m_unk0x04;     // 0x04
 		LegoS32 m_unk0x08;     // 0x08
@@ -36,11 +36,11 @@ public:
 		GolExport* m_golExport;         // 0x00
 		GolD3DRenderDevice* m_renderer; // 0x04
 		undefined4 m_menuId;            // 0x08
-		GarnetFlare0x60* m_unk0x0c;     // 0x0c
+		DriverPartResources* m_unk0x0c; // 0x0c
 	};
 
-	TanzaniteWisp0x88();
-	~TanzaniteWisp0x88();
+	DriverModelBuilder();
+	~DriverModelBuilder();
 
 	void ResetMenuState();
 	undefined4 FUN_0049d1d0(const LoadParams* p_params);
@@ -77,7 +77,7 @@ private:
 	void FUN_0049d2e0(const LegoChar* p_name, GolBmpFile* p_imageFile);
 	void FUN_0049d3a0(const LegoChar* p_name);
 	void FUN_0049d420(LegoS32 p_faceIndex);
-	void FUN_0049d570(GolModelBase* p_model, ModelSummary0x14* p_summary);
+	void FUN_0049d570(GolModelBase* p_model, ModelSummary* p_summary);
 	LegoBool32 FUN_0049d5c0() const;
 	void FUN_0049d600();
 	LegoBool32 FUN_0049d670(GolModelBase* p_model) const;
@@ -100,14 +100,14 @@ private:
 	GolTextureList* m_menuResource0;     // 0x1c
 	GolMaterialLibrary* m_menuResource1; // 0x20
 	DuskWindBananaRelicParams m_unk0x24; // 0x24
-	GarnetFlare0x60* m_unk0x38;          // 0x38
-	ModelSummary0x14 m_unk0x3c;          // 0x3c
-	ModelSummary0x14 m_unk0x50;          // 0x50
-	ModelSummary0x14 m_unk0x64;          // 0x64
+	DriverPartResources* m_unk0x38;      // 0x38
+	ModelSummary m_unk0x3c;              // 0x3c
+	ModelSummary m_unk0x50;              // 0x50
+	ModelSummary m_unk0x64;              // 0x64
 	undefined4 m_unk0x78;                // 0x78
 	MusicGroup* m_musicGroup;            // 0x7c
 	MusicInstance* m_musicInstance;      // 0x80
 	LegoS32 m_unk0x84;                   // 0x84
 };
 
-#endif // TANZANITEWISP0X88_H
+#endif // DRIVERMODELBUILDER_H

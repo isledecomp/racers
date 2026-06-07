@@ -259,8 +259,8 @@ void MenuGameScreen::FUN_00480210(MenuGameContext* p_context, undefined4 p_unk0x
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
 	}
 
-	TanzaniteWisp0x88::LoadParams menuResourceParams;
-	GarnetFlare0x60::LoadParams resourceParams;
+	DriverModelBuilder::LoadParams menuResourceParams;
+	DriverPartResources::LoadParams resourceParams;
 	memset(&resourceParams, 0, sizeof(resourceParams));
 	memset(&menuResourceParams, 0, sizeof(menuResourceParams));
 

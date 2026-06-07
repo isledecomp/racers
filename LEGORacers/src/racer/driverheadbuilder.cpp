@@ -1,4 +1,4 @@
-#include "util/tealcrucible0x50.h"
+#include "racer/driverheadbuilder.h"
 
 #include "core/gol.h"
 #include "golerror.h"
@@ -13,23 +13,23 @@
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(TealCrucible0x50, 0x50)
-DECOMP_SIZE_ASSERT(TealCrucible0x50::LoadParams, 0x18)
+DECOMP_SIZE_ASSERT(DriverHeadBuilder, 0x50)
+DECOMP_SIZE_ASSERT(DriverHeadBuilder::LoadParams, 0x18)
 
 // FUNCTION: LEGORACERS 0x00499110
-TealCrucible0x50::TealCrucible0x50()
+DriverHeadBuilder::DriverHeadBuilder()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00499120
-TealCrucible0x50::~TealCrucible0x50()
+DriverHeadBuilder::~DriverHeadBuilder()
 {
 	FUN_004991c0();
 }
 
 // FUNCTION: LEGORACERS 0x00499130
-void TealCrucible0x50::Reset()
+void DriverHeadBuilder::Reset()
 {
 	m_golExport = NULL;
 	m_renderer = NULL;
@@ -42,7 +42,7 @@ void TealCrucible0x50::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00499160
-LegoBool32 TealCrucible0x50::FUN_00499160(const LoadParams* p_params, LegoS32 p_resourceIndex)
+LegoBool32 DriverHeadBuilder::FUN_00499160(const LoadParams* p_params, LegoS32 p_resourceIndex)
 {
 	FUN_004991c0();
 
@@ -63,7 +63,7 @@ LegoBool32 TealCrucible0x50::FUN_00499160(const LoadParams* p_params, LegoS32 p_
 }
 
 // FUNCTION: LEGORACERS 0x004991c0
-LegoBool32 TealCrucible0x50::FUN_004991c0()
+LegoBool32 DriverHeadBuilder::FUN_004991c0()
 {
 	if (m_worldDatabase == NULL) {
 		return TRUE;
@@ -82,7 +82,7 @@ LegoBool32 TealCrucible0x50::FUN_004991c0()
 }
 
 // FUNCTION: LEGORACERS 0x00499210
-void TealCrucible0x50::FUN_00499210(LegoBool32 p_binary)
+void DriverHeadBuilder::FUN_00499210(LegoBool32 p_binary)
 {
 	const LegoChar* headModelFileName = m_cosmeticTable->GetHeadModelFileName();
 	const LegoChar* headModelDirectory = m_cosmeticTable->GetHeadModelDirectory();
@@ -104,7 +104,7 @@ void TealCrucible0x50::FUN_00499210(LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x00499290
-void TealCrucible0x50::FUN_00499290()
+void DriverHeadBuilder::FUN_00499290()
 {
 	for (LegoS32 i = 0; i < 7; i++) {
 		m_unk0x14[i] = m_golExport->VTable0x14();
@@ -119,7 +119,7 @@ void TealCrucible0x50::FUN_00499290()
 }
 
 // FUNCTION: LEGORACERS 0x004992f0
-void TealCrucible0x50::FUN_004992f0(GolModelBase* p_model)
+void DriverHeadBuilder::FUN_004992f0(GolModelBase* p_model)
 {
 	for (LegoS32 i = 0; i < 7; i++) {
 		if (m_unk0x14[i] == p_model) {
@@ -130,7 +130,7 @@ void TealCrucible0x50::FUN_004992f0(GolModelBase* p_model)
 }
 
 // FUNCTION: LEGORACERS 0x00499320
-GolModelBase* TealCrucible0x50::FUN_00499320(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::FUN_00499320(LegoS32 p_index)
 {
 	GolName name;
 	m_cosmeticTable->CopyHatName(p_index, name);
@@ -147,7 +147,7 @@ GolModelBase* TealCrucible0x50::FUN_00499320(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499380
-GolModelBase* TealCrucible0x50::FUN_00499380(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::FUN_00499380(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
@@ -166,7 +166,7 @@ GolModelBase* TealCrucible0x50::FUN_00499380(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004993d0
-GolModelBase* TealCrucible0x50::FUN_004993d0(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::FUN_004993d0(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
@@ -185,7 +185,7 @@ GolModelBase* TealCrucible0x50::FUN_004993d0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499420
-GolModelBase* TealCrucible0x50::FUN_00499420(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::FUN_00499420(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
@@ -204,7 +204,7 @@ GolModelBase* TealCrucible0x50::FUN_00499420(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499470
-void* TealCrucible0x50::FUN_00499470(LegoS32 p_index)
+void* DriverHeadBuilder::FUN_00499470(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
@@ -213,7 +213,7 @@ void* TealCrucible0x50::FUN_00499470(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004994b0
-void* TealCrucible0x50::FUN_004994b0(LegoS32 p_index)
+void* DriverHeadBuilder::FUN_004994b0(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
@@ -222,7 +222,7 @@ void* TealCrucible0x50::FUN_004994b0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004994f0
-void* TealCrucible0x50::FUN_004994f0(LegoS32 p_index)
+void* DriverHeadBuilder::FUN_004994f0(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;

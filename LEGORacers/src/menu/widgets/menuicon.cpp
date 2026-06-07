@@ -73,7 +73,7 @@ void MenuIcon::Reset()
 // FUNCTION: LEGORACERS 0x00471d90
 void MenuIcon::FUN_00471d90(CreateParams* p_createParams, const CreateState* p_createState)
 {
-	const VisualState0x4* defaultRects = p_createParams->m_unk0x52;
+	const VisualStateColor* defaultRects = p_createParams->m_unk0x52;
 	if (!p_createParams->m_unk0x78) {
 		defaultRects = p_createState->m_unk0x00;
 	}

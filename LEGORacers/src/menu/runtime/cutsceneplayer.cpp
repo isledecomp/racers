@@ -29,7 +29,7 @@
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 #include <string.h>
 
@@ -502,7 +502,7 @@ void CutsceneEvent::ParseCommonToken(
 	case GolFileParser::e_unknown0x5d:
 		m_unk0x04 = p_owner->FUN_004a3240(name);
 		m_unk0x08 = m_unk0x04;
-		m_unk0x0c = static_cast<OpalHaven0xf4*>(m_unk0x04);
+		m_unk0x0c = static_cast<AnimatedModelEntity*>(m_unk0x04);
 		if (m_unk0x04) {
 			return;
 		}
@@ -2268,7 +2268,7 @@ void CutsceneAnimationEvent::VTable0x04(GolWorldEntity* p_arg)
 {
 	if (m_unk0x18 == NULL) {
 		if (m_unk0x0c == NULL) {
-			m_unk0x0c = static_cast<OpalHaven0xf4*>(p_arg);
+			m_unk0x0c = static_cast<AnimatedModelEntity*>(p_arg);
 		}
 
 		VTable0x14();
@@ -2577,7 +2577,7 @@ void CutsceneStreamingSoundEvent::VTable0x04(GolWorldEntity* p_arg)
 {
 	if (m_unk0x30 == NULL) {
 		if (m_unk0x0c == NULL) {
-			m_unk0x0c = static_cast<OpalHaven0xf4*>(p_arg);
+			m_unk0x0c = static_cast<AnimatedModelEntity*>(p_arg);
 			m_unk0x04 = p_arg;
 		}
 

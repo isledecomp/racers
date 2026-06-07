@@ -1,9 +1,9 @@
-#include "util/sordidwatchinner0x38.h"
+#include "util/particle.h"
 
-DECOMP_SIZE_ASSERT(SordidWatchInner0x38, 0x38)
+DECOMP_SIZE_ASSERT(Particle, 0x38)
 
 // FUNCTION: LEGORACERS 0x004145e0
-SordidWatchInner0x38::SordidWatchInner0x38()
+Particle::Particle()
 {
 	m_unk0x28 = 0;
 	m_unk0x2c = 0;
@@ -12,7 +12,7 @@ SordidWatchInner0x38::SordidWatchInner0x38()
 }
 
 // FUNCTION: LEGORACERS 0x00414600
-void SordidWatchInner0x38::FUN_00414600(LegoFloat p_deltaT, GolVec3* p_acceleration)
+void Particle::FUN_00414600(LegoFloat p_deltaT, GolVec3* p_acceleration)
 {
 	GolVec3 deltaVelocity;
 

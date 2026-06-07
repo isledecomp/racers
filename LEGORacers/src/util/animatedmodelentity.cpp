@@ -1,4 +1,4 @@
-#include "util/opalhaven0xf4.h"
+#include "util/animatedmodelentity.h"
 
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
@@ -9,19 +9,19 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(OpalHaven0xf4, 0xf4)
+DECOMP_SIZE_ASSERT(AnimatedModelEntity, 0xf4)
 
 // GLOBAL: LEGORACERS 0x004af5e8
 static const LegoFloat g_maxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x0040d530
-OpalHaven0xf4::OpalHaven0xf4()
+AnimatedModelEntity::AnimatedModelEntity()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0040d550
-void OpalHaven0xf4::FUN_0040d550(
+void AnimatedModelEntity::FUN_0040d550(
 	GolModelBase* p_model,
 	GolSceneNode* p_node,
 	CmbModelPart0x34* p_modelParts,
@@ -34,14 +34,14 @@ void OpalHaven0xf4::FUN_0040d550(
 }
 
 // FUNCTION: LEGORACERS 0x0040d5d0
-void OpalHaven0xf4::VTable0x54()
+void AnimatedModelEntity::VTable0x54()
 {
 	GolModelEntity::VTable0x54();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0040d5f0
-void OpalHaven0xf4::Reset()
+void AnimatedModelEntity::Reset()
 {
 	LegoU32 i;
 
@@ -63,7 +63,7 @@ void OpalHaven0xf4::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0040d650
-void OpalHaven0xf4::FUN_0040d650()
+void AnimatedModelEntity::FUN_0040d650()
 {
 	LegoU32 i;
 
@@ -73,7 +73,7 @@ void OpalHaven0xf4::FUN_0040d650()
 }
 
 // STUB: LEGORACERS 0x0040d670
-void OpalHaven0xf4::VTable0x5c(LegoU32 p_index)
+void AnimatedModelEntity::VTable0x5c(LegoU32 p_index)
 {
 	if (!(m_flags & c_flagPartAnimation)) {
 		return;
@@ -195,13 +195,13 @@ void OpalHaven0xf4::VTable0x5c(LegoU32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0040dad0
-void OpalHaven0xf4::FUN_0040dad0(undefined2 p_partIndex)
+void AnimatedModelEntity::FUN_0040dad0(undefined2 p_partIndex)
 {
 	FUN_0040dae0(p_partIndex, 0);
 }
 
 // STUB: LEGORACERS 0x0040dae0
-void OpalHaven0xf4::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
+void AnimatedModelEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 {
 	FUN_0040d650();
 
@@ -231,7 +231,7 @@ void OpalHaven0xf4::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 }
 
 // FUNCTION: LEGORACERS 0x0040db80
-void OpalHaven0xf4::FUN_0040db80(
+void AnimatedModelEntity::FUN_0040db80(
 	LegoU32 p_partIndex,
 	LegoS32 p_transitionTime,
 	LegoFloat p_time,
@@ -310,7 +310,7 @@ void OpalHaven0xf4::FUN_0040db80(
 }
 
 // STUB: LEGORACERS 0x0040dd60
-void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
+void AnimatedModelEntity::VTable0x10(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
 	if (!(m_flags & c_flagPartAnimation)) {
@@ -405,7 +405,7 @@ void OpalHaven0xf4::VTable0x10(LegoS32 p_elapsed)
 }
 
 // STUB: LEGORACERS 0x0040e0b0
-void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
+void AnimatedModelEntity::VTable0x4c(LegoU32 p_index)
 {
 	GolModelBase* model = m_models[p_index];
 	if (model == NULL) {
@@ -458,7 +458,7 @@ void OpalHaven0xf4::VTable0x4c(LegoU32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0040e270
-void OpalHaven0xf4::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result)
+void AnimatedModelEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_result)
 {
 	GolVec3 position;
 	FUN_100286d0(&position);
@@ -491,7 +491,7 @@ void OpalHaven0xf4::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_resul
 }
 
 // FUNCTION: LEGORACERS 0x0040e360
-LegoBool32 OpalHaven0xf4::FUN_0040e360()
+LegoBool32 AnimatedModelEntity::FUN_0040e360()
 {
 	LegoU32 flags = m_flags;
 	const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
@@ -501,7 +501,7 @@ LegoBool32 OpalHaven0xf4::FUN_0040e360()
 }
 
 // FUNCTION: LEGORACERS 0x0040e480
-GolSceneNode* OpalHaven0xf4::VTable0x58(LegoU32 p_arg1)
+GolSceneNode* AnimatedModelEntity::VTable0x58(LegoU32 p_arg1)
 {
 	return m_nodes[p_arg1];
 }

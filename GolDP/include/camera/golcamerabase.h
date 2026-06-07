@@ -11,8 +11,8 @@
 class GolTransform;
 
 #ifdef BUILDING_LEGORACERS
-class OpalHaven0xf4;
-typedef OpalHaven0xf4 AmberLensTrackedObject0xf4;
+class AnimatedModelEntity;
+typedef AnimatedModelEntity AmberLensTrackedObject0xf4;
 #else
 class GolSkinnedEntity;
 typedef GolSkinnedEntity AmberLensTrackedObject0xf4;

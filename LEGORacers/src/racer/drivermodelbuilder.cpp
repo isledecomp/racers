@@ -1,4 +1,4 @@
-#include "util/tanzanitewisp0x88.h"
+#include "racer/drivermodelbuilder.h"
 
 #include "core/gol.h"
 #include "golbmpfile.h"
@@ -15,33 +15,33 @@
 #include "mesh/golmodelbase.h"
 #include "mesh/golmodelmaterialtable.h"
 #include "mesh/igdbmodelindexarray0x8.h"
+#include "racer/driverpartresources.h"
 #include "racer/lavendervault0x764.h"
 #include "racer/turquoiseglowcolor.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/color.h"
 #include "surface/purpledune0x7c.h"
-#include "util/garnetflare0x60.h"
 
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(TanzaniteWisp0x88, 0x88)
-DECOMP_SIZE_ASSERT(TanzaniteWisp0x88::ModelSummary0x14, 0x14)
+DECOMP_SIZE_ASSERT(DriverModelBuilder, 0x88)
+DECOMP_SIZE_ASSERT(DriverModelBuilder::ModelSummary, 0x14)
 
 // FUNCTION: LEGORACERS 0x0049d120
-TanzaniteWisp0x88::TanzaniteWisp0x88()
+DriverModelBuilder::DriverModelBuilder()
 {
 	ResetMenuState();
 }
 
 // FUNCTION: LEGORACERS 0x0049d130
-TanzaniteWisp0x88::~TanzaniteWisp0x88()
+DriverModelBuilder::~DriverModelBuilder()
 {
 	ReleaseMenuResources();
 }
 
 // FUNCTION: LEGORACERS 0x0049d140
-void TanzaniteWisp0x88::ResetMenuState()
+void DriverModelBuilder::ResetMenuState()
 {
 	m_unk0x10 = 1;
 	m_menuId = 0;
@@ -56,7 +56,7 @@ void TanzaniteWisp0x88::ResetMenuState()
 }
 
 // FUNCTION: LEGORACERS 0x0049d170
-void TanzaniteWisp0x88::CreateMenuResources()
+void DriverModelBuilder::CreateMenuResources()
 {
 	m_menuResource0 = m_golExport->CreateTextureList();
 	m_menuResource1 = m_golExport->CreateMaterialList();
@@ -69,7 +69,7 @@ void TanzaniteWisp0x88::CreateMenuResources()
 }
 
 // FUNCTION: LEGORACERS 0x0049d1d0
-undefined4 TanzaniteWisp0x88::FUN_0049d1d0(const LoadParams* p_params)
+undefined4 DriverModelBuilder::FUN_0049d1d0(const LoadParams* p_params)
 {
 	ReleaseMenuResources();
 	m_golExport = p_params->m_golExport;
@@ -83,7 +83,7 @@ undefined4 TanzaniteWisp0x88::FUN_0049d1d0(const LoadParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0049d210
-LegoBool32 TanzaniteWisp0x88::ReleaseMenuResources()
+LegoBool32 DriverModelBuilder::ReleaseMenuResources()
 {
 	if (!m_menuId) {
 		return TRUE;
@@ -102,7 +102,7 @@ LegoBool32 TanzaniteWisp0x88::ReleaseMenuResources()
 }
 
 // FUNCTION: LEGORACERS 0x0049d260
-void TanzaniteWisp0x88::RefreshMenuResources()
+void DriverModelBuilder::RefreshMenuResources()
 {
 	m_unk0x04 = 0;
 	m_unk0x08 = 0;
@@ -113,7 +113,7 @@ void TanzaniteWisp0x88::RefreshMenuResources()
 }
 
 // FUNCTION: LEGORACERS 0x0049d2a0
-void TanzaniteWisp0x88::InitializeDefaultMaterialParams()
+void DriverModelBuilder::InitializeDefaultMaterialParams()
 {
 	DuskwindBananaRelic0x24* material = m_unk0x38->FUN_00498640(0);
 	material->CopyParamsTo(&m_unk0x24);
@@ -128,7 +128,7 @@ void TanzaniteWisp0x88::InitializeDefaultMaterialParams()
 }
 
 // FUNCTION: LEGORACERS 0x0049d2e0
-void TanzaniteWisp0x88::FUN_0049d2e0(const LegoChar* p_name, GolBmpFile* p_imageFile)
+void DriverModelBuilder::FUN_0049d2e0(const LegoChar* p_name, GolBmpFile* p_imageFile)
 {
 	PurpleDune0x7c* texture = m_menuResource0->GetItem(m_unk0x04++);
 
@@ -145,7 +145,7 @@ void TanzaniteWisp0x88::FUN_0049d2e0(const LegoChar* p_name, GolBmpFile* p_image
 }
 
 // FUNCTION: LEGORACERS 0x0049d3a0
-void TanzaniteWisp0x88::FUN_0049d3a0(const LegoChar* p_name)
+void DriverModelBuilder::FUN_0049d3a0(const LegoChar* p_name)
 {
 	DuskwindBananaRelic0x24* sourceMaterial = m_unk0x38->FUN_00498640(0);
 	DuskWindBananaRelicParams params;
@@ -159,7 +159,7 @@ void TanzaniteWisp0x88::FUN_0049d3a0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x0049d420
-void TanzaniteWisp0x88::FUN_0049d420(LegoS32 p_faceIndex)
+void DriverModelBuilder::FUN_0049d420(LegoS32 p_faceIndex)
 {
 	GolBmpFile* imageFile = new GolBmpFile;
 	if (imageFile == NULL) {
@@ -191,7 +191,7 @@ void TanzaniteWisp0x88::FUN_0049d420(LegoS32 p_faceIndex)
 }
 
 // FUNCTION: LEGORACERS 0x0049d570
-void TanzaniteWisp0x88::FUN_0049d570(GolModelBase* p_model, ModelSummary0x14* p_summary)
+void DriverModelBuilder::FUN_0049d570(GolModelBase* p_model, ModelSummary* p_summary)
 {
 	p_summary->m_model = p_model;
 
@@ -205,7 +205,7 @@ void TanzaniteWisp0x88::FUN_0049d570(GolModelBase* p_model, ModelSummary0x14* p_
 }
 
 // FUNCTION: LEGORACERS 0x0049d5c0
-LegoBool32 TanzaniteWisp0x88::FUN_0049d5c0() const
+LegoBool32 DriverModelBuilder::FUN_0049d5c0() const
 {
 	if (m_unk0x50.m_unk0x00 + m_unk0x3c.m_unk0x00 > m_unk0x64.m_unk0x00) {
 		return FALSE;
@@ -218,7 +218,7 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d5c0() const
 }
 
 // STUB: LEGORACERS 0x0049d600
-void TanzaniteWisp0x88::FUN_0049d600()
+void DriverModelBuilder::FUN_0049d600()
 {
 	GolModelMaterialTable* outputMaterials = m_unk0x64.m_model->GetMaterialTable();
 	GolModelMaterialTable* headMaterials = m_unk0x50.m_model->GetMaterialTable();
@@ -239,7 +239,7 @@ void TanzaniteWisp0x88::FUN_0049d600()
 }
 
 // STUB: LEGORACERS 0x0049d670
-LegoBool32 TanzaniteWisp0x88::FUN_0049d670(GolModelBase* p_model) const
+LegoBool32 DriverModelBuilder::FUN_0049d670(GolModelBase* p_model) const
 {
 	if (p_model == NULL || p_model->GetGroups() == NULL) {
 		return TRUE;
@@ -257,7 +257,7 @@ LegoBool32 TanzaniteWisp0x88::FUN_0049d670(GolModelBase* p_model) const
 }
 
 // STUB: LEGORACERS 0x0049d6e0
-GolModelBase* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
+GolModelBase* DriverModelBuilder::FUN_0049d6e0(undefined2 p_vertexType)
 {
 	GolModelBase* model = m_golExport->VTable0x14();
 	if (model == NULL) {
@@ -285,7 +285,7 @@ GolModelBase* TanzaniteWisp0x88::FUN_0049d6e0(undefined2 p_vertexType)
 }
 
 // STUB: LEGORACERS 0x0049d790
-void TanzaniteWisp0x88::CopyModelVertices(
+void DriverModelBuilder::CopyModelVertices(
 	GolModelBase* p_sourceModel,
 	GolModelBase* p_destModel,
 	LegoU32 p_vertexOffset
@@ -321,7 +321,7 @@ void TanzaniteWisp0x88::CopyModelVertices(
 }
 
 // STUB: LEGORACERS 0x0049d880
-void TanzaniteWisp0x88::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
+void DriverModelBuilder::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
 {
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
 	IGdbModelIndexArray0x8* destIndexArrayBase;
@@ -345,7 +345,7 @@ void TanzaniteWisp0x88::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* 
 }
 
 // STUB: LEGORACERS 0x0049d920
-void TanzaniteWisp0x88::FUN_0049d920()
+void DriverModelBuilder::FUN_0049d920()
 {
 	GolModelBase* bodyModel = m_unk0x3c.m_model;
 	GolModelBase* outputModel = m_unk0x64.m_model;
@@ -360,7 +360,7 @@ void TanzaniteWisp0x88::FUN_0049d920()
 }
 
 // FUNCTION: LEGORACERS 0x0049d970
-void TanzaniteWisp0x88::FUN_0049d970()
+void DriverModelBuilder::FUN_0049d970()
 {
 	CopyModelVertices(m_unk0x50.m_model, m_unk0x64.m_model, m_unk0x3c.m_unk0x00);
 	FUN_0049d880(m_unk0x50.m_model, m_unk0x64.m_model, m_unk0x3c.m_unk0x04);
@@ -368,7 +368,7 @@ void TanzaniteWisp0x88::FUN_0049d970()
 }
 
 // STUB: LEGORACERS 0x0049d9b0
-void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
+void DriverModelBuilder::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
 	GolModelMaterialTable* materialTable = m_unk0x64.m_model->GetMaterialTable();
 	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
@@ -406,7 +406,7 @@ void TanzaniteWisp0x88::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const 
 }
 
 // FUNCTION: LEGORACERS 0x0049dab0
-GolModelBase* TanzaniteWisp0x88::FUN_0049dab0(
+GolModelBase* DriverModelBuilder::FUN_0049dab0(
 	TurquoiseGlowColor* p_color,
 	GolModelBase* p_model,
 	undefined4 p_vertexType
@@ -439,7 +439,7 @@ GolModelBase* TanzaniteWisp0x88::FUN_0049dab0(
 }
 
 // FUNCTION: LEGORACERS 0x0049db90
-GolModelBase* TanzaniteWisp0x88::FUN_0049db90(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c)
+GolModelBase* DriverModelBuilder::FUN_0049db90(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c)
 {
 	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
 	LegoS32 torsoLegIndex =
@@ -454,7 +454,7 @@ GolModelBase* TanzaniteWisp0x88::FUN_0049db90(TurquoiseGlowColor* p_color, GolMo
 }
 
 // FUNCTION: LEGORACERS 0x0049dc10
-GolSceneNode* TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor* p_color)
+GolSceneNode* DriverModelBuilder::FUN_0049dc10(TurquoiseGlowColor* p_color)
 {
 	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
 	LegoS32 torsoLegIndex =
@@ -463,7 +463,7 @@ GolSceneNode* TanzaniteWisp0x88::FUN_0049dc10(TurquoiseGlowColor* p_color)
 }
 
 // FUNCTION: LEGORACERS 0x0049dc50
-CmbModelPart0x34* TanzaniteWisp0x88::FUN_0049dc50(TurquoiseGlowColor* p_color)
+CmbModelPart0x34* DriverModelBuilder::FUN_0049dc50(TurquoiseGlowColor* p_color)
 {
 	LavenderVault0x764* partConfig = m_unk0x38->GetPartConfig();
 	LegoS32 torsoLegIndex =
@@ -472,7 +472,7 @@ CmbModelPart0x34* TanzaniteWisp0x88::FUN_0049dc50(TurquoiseGlowColor* p_color)
 }
 
 // FUNCTION: LEGORACERS 0x0049dc90
-void TanzaniteWisp0x88::FUN_0049dc90(undefined4* p_dest)
+void DriverModelBuilder::FUN_0049dc90(undefined4* p_dest)
 {
 	p_dest[0] = m_unk0x38->GetUnk0x48() + m_unk0x38->GetUnk0x44() + 9;
 	p_dest[1] = m_unk0x38->GetUnk0x40() + m_unk0x38->GetUnk0x3c() + 9;
@@ -481,7 +481,7 @@ void TanzaniteWisp0x88::FUN_0049dc90(undefined4* p_dest)
 }
 
 // FUNCTION: LEGORACERS 0x0049dce0
-void TanzaniteWisp0x88::FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* p_color)
+void DriverModelBuilder::FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* p_color)
 {
 	GolName materialName;
 	m_unk0x38->GetPartConfig()->FUN_00498f70(p_color->m_unk0x01, materialName, materialName);
@@ -491,7 +491,7 @@ void TanzaniteWisp0x88::FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* 
 }
 
 // STUB: LEGORACERS 0x0049dd50
-void TanzaniteWisp0x88::FUN_0049dd50()
+void DriverModelBuilder::FUN_0049dd50()
 {
 	GolModelBase* bodyModel = m_unk0x3c.m_model;
 	GolModelBase* headModel = m_unk0x50.m_model;

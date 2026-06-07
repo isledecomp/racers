@@ -1,5 +1,5 @@
-#ifndef GARNETFLARE0X60_H
-#define GARNETFLARE0X60_H
+#ifndef DRIVERPARTRESOURCES_H
+#define DRIVERPARTRESOURCES_H
 
 #include "decomp.h"
 #include "model/gdbpartlibrary.h"
@@ -18,7 +18,7 @@ class GolWorldDatabase;
 class CmbModelPart0x34;
 
 // SIZE 0x60
-class GarnetFlare0x60 {
+class DriverPartResources {
 public:
 	// SIZE 0x18
 	struct LoadParams {
@@ -30,8 +30,8 @@ public:
 		undefined4 m_unk0x14;           // 0x14
 	};
 
-	GarnetFlare0x60();
-	~GarnetFlare0x60();
+	DriverPartResources();
+	~DriverPartResources();
 	GolWorldDatabase* FUN_00497f10(const LoadParams* p_params, LegoS32 p_resourceIndex);
 	LegoBool32 ReleaseResources();
 	GolModelBase* FUN_004984d0(LegoS32 p_index);
@@ -83,4 +83,4 @@ private:
 	LegoS32 m_resourceIndex;            // 0x5c
 };
 
-#endif // GARNETFLARE0X60_H
+#endif // DRIVERPARTRESOURCES_H

@@ -20,52 +20,6 @@ DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20::FieldAt0x2308::CreateParams0x30, 0x30)
 LegoFloat g_fieldAt0x2308AngleStep = 0.0f;
 
 extern const LegoFloat g_unk0x4b2160;
-extern const LegoFloat g_violetShoalTwo;
-
-// GLOBAL: LEGORACERS 0x004af674
-static const LegoFloat g_fieldAt0x2308CameraZOffset = 4.0f;
-
-// GLOBAL: LEGORACERS 0x004af388
-static const LegoFloat g_fieldAt0x2308PlacementStepMax = 1.0f;
-
-// GLOBAL: LEGORACERS 0x004b0098
-static const LegoFloat g_fieldAt0x2308AngleCount = 8.0f;
-
-// GLOBAL: LEGORACERS 0x004b02f4
-static const LegoFloat g_fieldAt0x2308CosIndexScale = -162.97466f;
-
-// GLOBAL: LEGORACERS 0x004b0414
-static const LegoFloat g_fieldAt0x2308PlacementStepMin = 0.3f;
-
-// GLOBAL: LEGORACERS 0x004b0428
-static const LegoFloat g_fieldAt0x2308HalfPi = 1.5707964f;
-
-// GLOBAL: LEGORACERS 0x004b0538
-static const LegoFloat g_fieldAt0x2308HeightScale = 0.4f;
-
-// GLOBAL: LEGORACERS 0x004b2e74
-static const LegoFloat g_fieldAt0x2308PlacementLowerRate = 0.01f;
-
-// GLOBAL: LEGORACERS 0x004b2e78
-static const LegoFloat g_fieldAt0x2308PlacementRaiseRate = 0.01f;
-
-// GLOBAL: LEGORACERS 0x004b2e7c
-static const LegoFloat g_fieldAt0x2308ResetRaiseRate = 0.006f;
-
-// GLOBAL: LEGORACERS 0x004b2e68
-static const LegoFloat g_fieldAt0x2308MaxFloat = FLT_MAX;
-
-// GLOBAL: LEGORACERS 0x004b2ed4
-static const LegoFloat g_fieldAt0x2308PlacementRaiseLimit = 1.2f;
-
-// GLOBAL: LEGORACERS 0x004b2ed8
-static const LegoFloat g_fieldAt0x2308CommitProgressStart = 1.0f;
-
-// GLOBAL: LEGORACERS 0x004b2ef8
-static const LegoFloat g_fieldAt0x2308PlacementDeltaScale = 0.33333334f;
-
-// GLOBAL: LEGORACERS 0x004b2efc
-static const LegoFloat g_fieldAt0x2308HeightOffset = 8.4f;
 
 // FUNCTION: LEGORACERS 0x004778f0
 ImaginaryShape0x2b20::FieldAt0x2308::FieldAt0x2308()
@@ -175,7 +129,7 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477bf0()
 	GolVec3 targetPosition;
 	FUN_00479330(&m_unk0x27c, 0);
 	LegoFloat targetZ = m_unk0x250.m_z;
-	targetZ += g_fieldAt0x2308CameraZOffset;
+	targetZ += 4.0f;
 	targetPosition.m_x = m_unk0x250.m_x;
 	targetPosition.m_y = m_unk0x250.m_y;
 	targetPosition.m_z = targetZ;
@@ -194,7 +148,7 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477c50()
 
 	LegoS32 maxHighPieceOffset = m_unk0x24->m_pieceLibrary.GetMaxHighPieceOffset();
 	m_unk0x234->VTable0x18(m_unk0x10, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
-	m_unk0x1a4.VTable0x50(m_unk0x234, g_fieldAt0x2308MaxFloat);
+	m_unk0x1a4.VTable0x50(m_unk0x234, FLT_MAX);
 }
 
 // FUNCTION: LEGORACERS 0x00477cc0
@@ -218,7 +172,7 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477cc0(undefined4)
 	}
 
 	m_unk0x1a0 = m_unk0x24->m_unk0x4b40.FUN_0049dc50(&color);
-	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, g_fieldAt0x2308MaxFloat);
+	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, FLT_MAX);
 }
 
 // FUNCTION: LEGORACERS 0x00477dc0
@@ -294,10 +248,10 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477fc0(LegoFloat p_delta)
 
 	m_unk0x2c8 += p_delta;
 	if (m_unk0x2c8 < 0.0f) {
-		m_unk0x2c8 += g_fieldAt0x2308AngleCount;
+		m_unk0x2c8 += 8.0f;
 	}
-	else if (m_unk0x2c8 >= g_fieldAt0x2308AngleCount) {
-		m_unk0x2c8 -= g_fieldAt0x2308AngleCount;
+	else if (m_unk0x2c8 >= 8.0f) {
+		m_unk0x2c8 -= 8.0f;
 	}
 
 	LegoS32 index = static_cast<LegoS32>(m_unk0x2c8);
@@ -362,7 +316,7 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat p_delta)
 			return FALSE;
 		}
 	}
-	else if (m_unk0x288 >= g_violetShoalTwo) {
+	else if (m_unk0x288 >= 2.0f) {
 		return FALSE;
 	}
 
@@ -370,7 +324,7 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat p_delta)
 	if (m_unk0x288 < 0.0f) {
 		m_unk0x288 = 0.0f;
 	}
-	else if (m_unk0x288 > g_violetShoalTwo) {
+	else if (m_unk0x288 > 2.0f) {
 		m_unk0x288 = 2.0f;
 	}
 
@@ -387,7 +341,7 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat p_delta)
 
 	GolVec3 targetPosition;
 	LegoFloat targetZ = m_unk0x250.m_z;
-	targetZ += g_fieldAt0x2308CameraZOffset;
+	targetZ += 4.0f;
 	targetPosition.m_x = m_unk0x250.m_x;
 	targetPosition.m_y = m_unk0x250.m_y;
 	m_unk0x27c.m_x = ((maxPosition.m_x - minPosition.m_x) * interpolation) + minPosition.m_x;
@@ -583,7 +537,7 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478730()
 
 	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
 	m_unk0x248 |= c_flagCommittingPart;
-	m_unk0x274 = g_fieldAt0x2308CommitProgressStart;
+	m_unk0x274 = 1.0f;
 	m_unk0x24c = 2500;
 	return TRUE;
 }
@@ -700,30 +654,29 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478c70(LegoS32 p_elapsed)
 		}
 	}
 
-	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * g_fieldAt0x2308HeightScale) +
-				 (g_fieldAt0x2308CommitProgressStart - g_fieldAt0x2308HeightOffset);
+	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * 0.4f) + (1.0f - 8.4f);
 
 	feedbackFlags = m_unk0x278;
 	if (feedbackFlags & c_placementFeedbackMask) {
 		if (feedbackFlags & c_placementFeedbackLowering) {
 			LegoFloat delta = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x26c - m_unk0x270));
-			delta *= g_fieldAt0x2308PlacementDeltaScale;
-			if (delta > g_fieldAt0x2308PlacementStepMax) {
-				delta = g_fieldAt0x2308PlacementStepMax;
+			delta *= 0.33333334f;
+			if (delta > 1.0f) {
+				delta = 1.0f;
 			}
-			else if (delta < g_fieldAt0x2308PlacementStepMin) {
-				delta = g_fieldAt0x2308PlacementStepMin;
+			else if (delta < 0.3f) {
+				delta = 0.3f;
 			}
 
-			m_unk0x26c -= delta * g_fieldAt0x2308PlacementLowerRate * p_elapsed;
+			m_unk0x26c -= delta * 0.01f * p_elapsed;
 			if (m_unk0x26c <= m_unk0x270) {
 				m_unk0x264 = 0;
 				m_unk0x26c = m_unk0x270;
 			}
 		}
 		else if (feedbackFlags & c_placementFeedbackRaising) {
-			m_unk0x26c += p_elapsed * g_fieldAt0x2308PlacementRaiseRate;
-			LegoFloat limit = g_fieldAt0x2308CommitProgressStart - (g_fieldAt0x2308PlacementRaiseLimit * 2.0f);
+			m_unk0x26c += p_elapsed * 0.01f;
+			LegoFloat limit = 1.0f - (1.2f * 2.0f);
 			if (m_unk0x26c >= limit) {
 				m_unk0x264 = 0;
 				m_unk0x26c = limit;
@@ -767,16 +720,16 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478ef0(LegoS32 p_elapsed)
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x2a0);
 	scaledTime /= static_cast<LegoFloat>(m_unk0x2a4);
-	scaledTime *= g_fieldAt0x2308HalfPi;
-	scaledTime *= g_fieldAt0x2308CosIndexScale;
+	scaledTime *= 1.5707964f;
+	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
 	LegoFloat targetAngle = m_unk0x2a8[m_unk0x298];
 
-	if (targetAngle > m_unk0x29c + g_fieldAt0x2308HalfPi) {
+	if (targetAngle > m_unk0x29c + 1.5707964f) {
 		targetAngle -= g_siennaCircuitTwoPi;
 	}
-	else if (targetAngle < m_unk0x29c - g_fieldAt0x2308HalfPi) {
+	else if (targetAngle < m_unk0x29c - 1.5707964f) {
 		targetAngle += g_siennaCircuitTwoPi;
 	}
 
@@ -800,8 +753,8 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478fd0(LegoS32 p_elapsed)
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x28c);
 	scaledTime *= g_unk0x4b2160;
-	scaledTime *= g_fieldAt0x2308HalfPi;
-	scaledTime *= g_fieldAt0x2308CosIndexScale;
+	scaledTime *= 1.5707964f;
+	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
 	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
 
@@ -816,7 +769,7 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478fd0(LegoS32 p_elapsed)
 	GolVec3 lookAt;
 	lookAt.m_x = m_unk0x250.m_x;
 	lookAt.m_y = m_unk0x250.m_y;
-	lookAt.m_z = m_unk0x250.m_z + g_fieldAt0x2308CameraZOffset;
+	lookAt.m_z = m_unk0x250.m_z + 4.0f;
 	m_unk0x14->FUN_00465ab0(&position, &lookAt);
 }
 
@@ -861,7 +814,7 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004790f0(LegoS32 p_elapsed)
 		m_unk0x24c -= p_elapsed;
 	}
 
-	m_unk0x274 -= p_elapsed * g_fieldAt0x2308PlacementLowerRate;
+	m_unk0x274 -= p_elapsed * 0.01f;
 	if (m_unk0x274 < m_unk0x270) {
 		m_unk0x24c = 0;
 		m_unk0x274 = m_unk0x270;
@@ -881,10 +834,10 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00479250(LegoS32 p_elapsed)
 		m_unk0x24c -= p_elapsed;
 	}
 
-	m_unk0x274 += p_elapsed * g_fieldAt0x2308ResetRaiseRate;
-	if (m_unk0x274 > g_fieldAt0x2308CommitProgressStart) {
+	m_unk0x274 += p_elapsed * 0.006f;
+	if (m_unk0x274 > 1.0f) {
 		m_unk0x24c = 0;
-		m_unk0x274 = g_fieldAt0x2308CommitProgressStart;
+		m_unk0x274 = 1.0f;
 	}
 }
 

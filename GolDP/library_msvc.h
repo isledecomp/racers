@@ -276,6 +276,9 @@
 // LIBRARY: GOLDP 0x10052980
 // _memset
 
+// LIBRARY: GOLDP 0x100529f0
+// _memcpy
+
 // LIBRARY: GOLDP 0x100529d8
 // __fptrap
 
@@ -287,6 +290,9 @@
 
 // LIBRARY: GOLDP 0x10052fff
 // __setmode_lk
+
+// LIBRARY: GOLDP 0x10053060
+// __setmbcp
 
 // LIBRARY: GOLDP 0x10053438
 // ___initmbctable
@@ -311,6 +317,18 @@
 
 // GLOBAL: GOLDP 0x10059990
 // ___lookuptable
+
+// GLOBAL: GOLDP 0x1005c000
+// ___xc_a
+
+// GLOBAL: GOLDP 0x1005c038
+// ___xc_z
+
+// GLOBAL: GOLDP 0x1005c03c
+// ___xi_a
+
+// GLOBAL: GOLDP 0x1005c050
+// ___xi_z
 
 // GLOBAL: GOLDP 0x1005f440
 // __NLG_Destination
@@ -348,6 +366,9 @@
 // GLOBAL: GOLDP 0x10061cc0
 //  __iob
 
+// GLOBAL: GOLDP 0x10062078
+// ___lc_time_curr
+
 // GLOBAL: GOLDP 0x10065f00
 // __aenvptr
 
@@ -369,8 +390,17 @@
 // GLOBAL: GOLDP 0x10065f20
 // __winminor
 
+// GLOBAL: GOLDP 0x10065f24
+// ___argc
+
+// GLOBAL: GOLDP 0x10065f28
+// ___argv
+
 // GLOBAL: GOLDP 0x10065f30
 // __environ
+
+// GLOBAL: GOLDP 0x10065f40
+// __pgmptr
 
 // GLOBAL: GOLDP 0x10065f4c
 // __C_Termination_Done
@@ -392,6 +422,21 @@
 
 // GLOBAL: GOLDP 0x10066108
 // ?_pnhHeap@@3P6AHI@ZA
+
+// GLOBAL: GOLDP 0x10066270
+// ___mbcodepage
+
+// GLOBAL: GOLDP 0x10066280
+// ___mbulinfo
+
+// GLOBAL: GOLDP 0x1006628c
+// ___ismbcodepage
+
+// GLOBAL: GOLDP 0x100663a0
+// __mbctype
+
+// GLOBAL: GOLDP 0x100664a4
+// ___mblcid
 
 // GLOBAL: GOLDP 0x100664a8
 // ___piob

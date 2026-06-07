@@ -36,9 +36,9 @@ template <class T, class TListTraits = GolListBaseLinkTraits<T> >
 struct GolList {
 	GolList()
 	{
+		m_sentinel.m_prev = NULL;
 		m_sentinel.m_next = (GolListLink*) &m_first;
 		m_first = (GolListLink*) &m_sentinel;
-		m_sentinel.m_prev = NULL;
 	}
 
 	static GolListLink* GetLink(T& p_item) { return TListTraits::GetLink(p_item); }

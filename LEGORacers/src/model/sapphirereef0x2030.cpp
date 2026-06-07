@@ -48,16 +48,352 @@ void SapphireReef0x2030::Placement0x30::FUN_004513d0(SapphireReef0x2030*)
 {
 }
 
-// STUB: LEGORACERS 0x00499890
-void SapphireReef0x2030::Placement0x30::FUN_00499890(LegoPieceLibrary::PieceRecord*, LegoS32, LegoS32)
+// FUNCTION: LEGORACERS 0x00499570
+void SapphireReef0x2030::Placement0x30::FUN_00499570()
 {
-	STUB(0x00499890);
+	if (m_unk0x28 & 1) {
+		switch (m_unk0x2c) {
+		case 0:
+			m_unk0x18 = m_unk0x04;
+			m_unk0x1c = m_unk0x08;
+			return;
+		case 1:
+			m_unk0x18 = m_unk0x04;
+			m_unk0x1c = m_unk0x08 - m_unk0x20;
+			return;
+		case 2:
+			m_unk0x18 = m_unk0x04 - m_unk0x24;
+			m_unk0x1c = m_unk0x08;
+			return;
+		case 3:
+			m_unk0x18 = m_unk0x04 - m_unk0x24;
+			m_unk0x1c = m_unk0x08 - m_unk0x20;
+			return;
+		}
+	}
+	else {
+		switch (m_unk0x2c) {
+		case 0:
+			m_unk0x18 = m_unk0x04;
+			m_unk0x1c = m_unk0x08;
+			return;
+		case 1:
+			m_unk0x18 = m_unk0x04;
+			m_unk0x1c = m_unk0x08 - m_unk0x24;
+			return;
+		case 2:
+			m_unk0x18 = m_unk0x04 - m_unk0x20;
+			m_unk0x1c = m_unk0x08;
+			return;
+		case 3:
+			m_unk0x18 = m_unk0x04 - m_unk0x20;
+			m_unk0x1c = m_unk0x08 - m_unk0x24;
+			return;
+		}
+	}
 }
 
-// STUB: LEGORACERS 0x00499a60
+// FUNCTION: LEGORACERS 0x00499640
+void SapphireReef0x2030::Placement0x30::FUN_00499640()
+{
+	if (m_unk0x28 & 1) {
+		switch (m_unk0x2c) {
+		case 0:
+			m_unk0x04 = m_unk0x18;
+			m_unk0x08 = m_unk0x1c;
+			return;
+		case 1:
+			m_unk0x04 = m_unk0x18;
+			m_unk0x08 = m_unk0x1c + m_unk0x20;
+			return;
+		case 2:
+			m_unk0x04 = m_unk0x18 + m_unk0x24;
+			m_unk0x08 = m_unk0x1c;
+			return;
+		case 3:
+			m_unk0x04 = m_unk0x18 + m_unk0x24;
+			m_unk0x08 = m_unk0x1c + m_unk0x20;
+			return;
+		}
+	}
+	else {
+		switch (m_unk0x2c) {
+		case 0:
+			m_unk0x04 = m_unk0x18;
+			m_unk0x08 = m_unk0x1c;
+			return;
+		case 1:
+			m_unk0x04 = m_unk0x18;
+			m_unk0x08 = m_unk0x1c + m_unk0x24;
+			return;
+		case 2:
+			m_unk0x04 = m_unk0x18 + m_unk0x20;
+			m_unk0x08 = m_unk0x1c;
+			return;
+		case 3:
+			m_unk0x04 = m_unk0x18 + m_unk0x20;
+			m_unk0x08 = m_unk0x1c + m_unk0x24;
+			return;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499710
+void SapphireReef0x2030::Placement0x30::FUN_00499710(LegoS32 p_anchor)
+{
+	LegoS32 isRotated = m_unk0x28 & 1;
+
+	if (isRotated) {
+		switch (m_unk0x2c) {
+		case 1:
+			m_unk0x08 -= m_unk0x20;
+			break;
+		case 2:
+			m_unk0x04 -= m_unk0x24;
+			break;
+		case 3:
+			m_unk0x04 -= m_unk0x24;
+			m_unk0x08 -= m_unk0x20;
+			break;
+		}
+	}
+	else {
+		switch (m_unk0x2c) {
+		case 1:
+			m_unk0x08 -= m_unk0x24;
+			break;
+		case 2:
+			m_unk0x04 -= m_unk0x20;
+			break;
+		case 3:
+			m_unk0x04 -= m_unk0x20;
+			m_unk0x08 -= m_unk0x24;
+			break;
+		}
+	}
+
+	m_unk0x2c = p_anchor;
+
+	if (isRotated) {
+		switch (p_anchor) {
+		case 3:
+			m_unk0x04 += m_unk0x24;
+			// fall through
+		case 1:
+			m_unk0x08 = m_unk0x08 + m_unk0x20;
+			return;
+		case 2:
+			m_unk0x04 += m_unk0x24;
+			return;
+		}
+	}
+	else {
+		switch (p_anchor) {
+		case 3:
+			m_unk0x04 += m_unk0x20;
+			// fall through
+		case 1:
+			m_unk0x08 = m_unk0x08 + m_unk0x24;
+			return;
+		case 2:
+			m_unk0x04 += m_unk0x20;
+			return;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004997e0
+void SapphireReef0x2030::Placement0x30::FUN_004997e0()
+{
+	switch (m_unk0x2c) {
+	case 0:
+		if (m_unk0x04 >= 5) {
+			if (m_unk0x08 >= 3) {
+				FUN_00499710(3);
+			}
+			else {
+				FUN_00499710(2);
+			}
+		}
+		else if (m_unk0x08 >= 3) {
+			FUN_00499710(1);
+		}
+		break;
+	case 1:
+		if (m_unk0x04 >= 5) {
+			if (m_unk0x08 >= 3) {
+				FUN_00499710(3);
+			}
+			else {
+				FUN_00499710(2);
+			}
+		}
+		else if (m_unk0x08 < 3) {
+			FUN_00499710(0);
+		}
+		break;
+	case 2:
+		if (m_unk0x04 < 5) {
+			if (m_unk0x08 >= 3) {
+				FUN_00499710(1);
+			}
+			else {
+				FUN_00499710(0);
+			}
+		}
+		else if (m_unk0x08 >= 3) {
+			FUN_00499710(3);
+		}
+		break;
+	case 3:
+		if (m_unk0x04 < 5) {
+			if (m_unk0x08 >= 3) {
+				FUN_00499710(1);
+			}
+			else {
+				FUN_00499710(0);
+			}
+		}
+		else if (m_unk0x08 < 3) {
+			FUN_00499710(2);
+		}
+		break;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499890
+void SapphireReef0x2030::Placement0x30::FUN_00499890(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_unk0x08,
+	LegoS32 p_unk0x0c
+)
+{
+	m_unk0x20 = p_pieceRecord->GetWidth();
+	m_unk0x24 = p_pieceRecord->GetHeight();
+	m_unk0x10 = p_unk0x08;
+	m_unk0x14 = p_unk0x0c;
+
+	if (m_pieceRecord == NULL) {
+		m_unk0x2c = 0;
+		m_unk0x28 = 0;
+		m_unk0x18 = (10 - m_unk0x20) >> 1;
+		m_unk0x1c = (6 - m_unk0x24) >> 1;
+		if (m_unk0x18 < 0 || m_unk0x1c < 0) {
+			m_unk0x28 = 1;
+			m_unk0x18 = (10 - m_unk0x24) >> 1;
+			m_unk0x1c = (6 - m_unk0x20) >> 1;
+		}
+	}
+	else {
+		if (m_unk0x28 & 1) {
+			if (m_unk0x20 > 6 || m_unk0x24 > 10) {
+				m_unk0x28++;
+			}
+		}
+		else if (m_unk0x20 > 10 || m_unk0x24 > 6) {
+			m_unk0x28++;
+		}
+
+		m_unk0x28 &= 3;
+
+		if (m_unk0x28 & 1) {
+			switch (m_unk0x2c) {
+			case 0:
+				m_unk0x18 = m_unk0x04;
+				m_unk0x1c = m_unk0x08;
+				break;
+			case 1:
+				m_unk0x18 = m_unk0x04;
+				m_unk0x1c = m_unk0x08 - m_unk0x20;
+				break;
+			case 2:
+				m_unk0x18 = m_unk0x04 - m_unk0x24;
+				m_unk0x1c = m_unk0x08;
+				break;
+			case 3:
+				m_unk0x18 = m_unk0x04 - m_unk0x24;
+				m_unk0x1c = m_unk0x08 - m_unk0x20;
+				break;
+			}
+
+			if (m_unk0x18 + m_unk0x24 > 10) {
+				m_unk0x18 = 10 - m_unk0x24;
+			}
+			if (m_unk0x1c + m_unk0x20 > 6) {
+				m_unk0x1c = 6 - m_unk0x20;
+			}
+		}
+		else {
+			switch (m_unk0x2c) {
+			case 0:
+				m_unk0x18 = m_unk0x04;
+				m_unk0x1c = m_unk0x08;
+				break;
+			case 1:
+				m_unk0x18 = m_unk0x04;
+				m_unk0x1c = m_unk0x08 - m_unk0x24;
+				break;
+			case 2:
+				m_unk0x18 = m_unk0x04 - m_unk0x20;
+				m_unk0x1c = m_unk0x08;
+				break;
+			case 3:
+				m_unk0x18 = m_unk0x04 - m_unk0x20;
+				m_unk0x1c = m_unk0x08 - m_unk0x24;
+				break;
+			}
+
+			if (m_unk0x18 + m_unk0x20 > 10) {
+				m_unk0x18 = 10 - m_unk0x20;
+			}
+			if (m_unk0x1c + m_unk0x24 > 6) {
+				m_unk0x1c = 6 - m_unk0x24;
+			}
+		}
+	}
+
+	if (m_unk0x18 < 0) {
+		m_unk0x18 = 0;
+	}
+	if (m_unk0x1c < 0) {
+		m_unk0x1c = 0;
+	}
+
+	m_pieceRecord = p_pieceRecord;
+	FUN_00499640();
+	FUN_004997e0();
+}
+
+// FUNCTION: LEGORACERS 0x00499a60
 void SapphireReef0x2030::Placement0x30::FUN_00499a60()
 {
-	STUB(0x00499a60);
+	FUN_00499570();
+
+	if (m_unk0x18 < 0) {
+		m_unk0x18 = 0;
+	}
+	if (m_unk0x1c < 0) {
+		m_unk0x1c = 0;
+	}
+
+	if (m_unk0x28 & 1) {
+		if (m_unk0x18 + m_unk0x24 > 10) {
+			m_unk0x18 = 10 - m_unk0x24;
+		}
+		if (m_unk0x1c + m_unk0x20 > 6) {
+			m_unk0x1c = 6 - m_unk0x20;
+		}
+	}
+	else {
+		if (m_unk0x18 + m_unk0x20 > 10) {
+			m_unk0x18 = 10 - m_unk0x20;
+		}
+		if (m_unk0x1c + m_unk0x24 > 6) {
+			m_unk0x1c = 6 - m_unk0x24;
+		}
+	}
+
+	FUN_00499640();
 }
 
 // FUNCTION: LEGORACERS 0x00499b00
@@ -76,16 +412,92 @@ void SapphireReef0x2030::Placement0x30::FUN_00499b00()
 	FUN_00499a60();
 }
 
-// STUB: LEGORACERS 0x00499c20
-void SapphireReef0x2030::Placement0x30::FUN_00499c20(LegoS32)
+// FUNCTION: LEGORACERS 0x00499b40
+void SapphireReef0x2030::Placement0x30::FUN_00499b40()
 {
-	STUB(0x00499c20);
+	if (m_unk0x28 & 1) {
+		if (m_unk0x18 + m_unk0x24 < 10) {
+			m_unk0x18++;
+			FUN_00499640();
+			FUN_004997e0();
+			return;
+		}
+	}
+	else if (m_unk0x18 + m_unk0x20 < 10) {
+		m_unk0x18++;
+		FUN_00499640();
+		FUN_004997e0();
+	}
 }
 
-// STUB: LEGORACERS 0x00499c60
-void SapphireReef0x2030::Placement0x30::FUN_00499c60(LegoS32)
+// FUNCTION: LEGORACERS 0x00499b90
+void SapphireReef0x2030::Placement0x30::FUN_00499b90()
 {
-	STUB(0x00499c60);
+	if (m_unk0x18 > 0) {
+		m_unk0x18--;
+		FUN_00499640();
+		FUN_004997e0();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499bb0
+void SapphireReef0x2030::Placement0x30::FUN_00499bb0()
+{
+	if (m_unk0x28 & 1) {
+		if (m_unk0x1c + m_unk0x20 < 6) {
+			m_unk0x1c++;
+			FUN_00499640();
+			FUN_004997e0();
+			return;
+		}
+	}
+	else if (m_unk0x1c + m_unk0x24 < 6) {
+		m_unk0x1c++;
+		FUN_00499640();
+		FUN_004997e0();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499c00
+void SapphireReef0x2030::Placement0x30::FUN_00499c00()
+{
+	if (m_unk0x1c > 0) {
+		m_unk0x1c--;
+		FUN_00499640();
+		FUN_004997e0();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499c20
+void SapphireReef0x2030::Placement0x30::FUN_00499c20(LegoS32 p_delta)
+{
+	if (p_delta > 0) {
+		for (LegoS32 i = p_delta; i != 0; i--) {
+			FUN_00499b40();
+		}
+	}
+	else if (p_delta < 0) {
+		LegoS32 i = -p_delta;
+		do {
+			FUN_00499b90();
+		} while (--i != 0);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00499c60
+void SapphireReef0x2030::Placement0x30::FUN_00499c60(LegoS32 p_delta)
+{
+	if (p_delta > 0) {
+		for (LegoS32 i = p_delta; i != 0; i--) {
+			FUN_00499bb0();
+		}
+	}
+	else if (p_delta < 0) {
+		LegoS32 i = -p_delta;
+		do {
+			FUN_00499c00();
+		} while (--i != 0);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00499ca0
@@ -96,10 +508,14 @@ void SapphireReef0x2030::Placement0x30::FUN_00499ca0(LegoS32* p_x, LegoS32* p_y,
 	*p_rotation = m_unk0x28;
 }
 
-// STUB: LEGORACERS 0x00499cc0
-void SapphireReef0x2030::Placement0x30::FUN_00499cc0(LegoS32, LegoS32, LegoS32, LegoS32)
+// FUNCTION: LEGORACERS 0x00499cc0
+void SapphireReef0x2030::Placement0x30::FUN_00499cc0(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor)
 {
-	STUB(0x00499cc0);
+	m_unk0x04 = p_x;
+	m_unk0x08 = p_y;
+	m_unk0x28 = p_rotation & 3;
+	m_unk0x2c = p_anchor & 3;
+	FUN_00499890(m_pieceRecord, m_unk0x10, m_unk0x14);
 }
 
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED

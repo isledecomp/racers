@@ -36,6 +36,15 @@ public:
 		LegoS32 GetUnk0x10() const { return m_unk0x10; }
 
 	private:
+		void FUN_00499570();
+		void FUN_00499640();
+		void FUN_00499710(LegoS32 p_anchor);
+		void FUN_004997e0();
+		void FUN_00499b40();
+		void FUN_00499b90();
+		void FUN_00499bb0();
+		void FUN_00499c00();
+
 		undefined4 m_unk0x00;                         // 0x00
 		LegoS32 m_unk0x04;                            // 0x04
 		LegoS32 m_unk0x08;                            // 0x08

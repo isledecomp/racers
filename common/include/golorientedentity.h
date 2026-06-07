@@ -27,7 +27,6 @@ public:
 	void FUN_00410b00(const GolVec3& p_v1, const GolVec3& p_v2);
 	void FUN_10026c50(GolMatrix4* p_dest);
 	void FUN_10026f70(const GolVec3& p_v);
-	void FUN_10026fa0(LegoFloat p_scalar);
 	void FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const;
 	const GolVec3& GetPosition() const { return m_position; }
 

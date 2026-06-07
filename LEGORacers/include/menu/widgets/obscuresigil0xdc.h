@@ -43,10 +43,12 @@ public:
 	undefined4 VTable0x3c(undefined4) override;                                               // vtable+0x3c
 	LegoBool32 FUN_00465820(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	ObscureLink0x1c* FUN_00465b40(ObscureLink0x1c* p_unk0x04);
+	void FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
 	void FUN_00465b60(GolWorldEntity* p_entity, Rect* p_rect);
 	GolWorldDatabase* GetUnk0x5c() const { return m_unk0x5c; }
 	GolWorldDatabase** GetUnk0x5cAddress() { return &m_unk0x5c; }
 	GolWorldDatabase* GetUnk0x60() const { return m_unk0x60; }
+	GolCamera* GetUnk0x64() const { return m_unk0x64; }
 
 	// SYNTHETIC: LEGORACERS 0x00465730
 	// ObscureSigil0xdc::`scalar deleting destructor'
@@ -54,7 +56,6 @@ public:
 protected:
 	void FUN_00465900(CreateParams0x84* p_createParams, undefined4 p_unk0x08);
 	void FUN_004659b0(CreateParams0x84* p_createParams);
-	void FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08);
 	void FUN_00465c00(undefined4 p_elapsedMs);
 	void FUN_00465e40(Rect* p_rect);
 	void FUN_00465ea0();

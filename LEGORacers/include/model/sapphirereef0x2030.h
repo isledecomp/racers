@@ -28,22 +28,26 @@ public:
 		void FUN_00499890(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x0c);
 		void FUN_00499a60();
 		void FUN_00499b00();
+		void FUN_00499c20(LegoS32 p_delta);
+		void FUN_00499c60(LegoS32 p_delta);
 		void FUN_00499ca0(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation);
 		void FUN_00499cc0(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
+		LegoPieceLibrary::PieceRecord* GetPieceRecord() const { return m_pieceRecord; }
+		LegoS32 GetUnk0x10() const { return m_unk0x10; }
 
 	private:
-		undefined4 m_unk0x00; // 0x00
-		LegoS32 m_unk0x04;    // 0x04
-		LegoS32 m_unk0x08;    // 0x08
-		undefined4 m_unk0x0c; // 0x0c
-		undefined4 m_unk0x10; // 0x10
-		undefined4 m_unk0x14; // 0x14
-		LegoS32 m_unk0x18;    // 0x18
-		LegoS32 m_unk0x1c;    // 0x1c
-		LegoS32 m_unk0x20;    // 0x20
-		LegoS32 m_unk0x24;    // 0x24
-		LegoS32 m_unk0x28;    // 0x28
-		LegoS32 m_unk0x2c;    // 0x2c
+		undefined4 m_unk0x00;                         // 0x00
+		LegoS32 m_unk0x04;                            // 0x04
+		LegoS32 m_unk0x08;                            // 0x08
+		LegoPieceLibrary::PieceRecord* m_pieceRecord; // 0x0c
+		LegoS32 m_unk0x10;                            // 0x10
+		undefined4 m_unk0x14;                         // 0x14
+		LegoS32 m_unk0x18;                            // 0x18
+		LegoS32 m_unk0x1c;                            // 0x1c
+		LegoS32 m_unk0x20;                            // 0x20
+		LegoS32 m_unk0x24;                            // 0x24
+		LegoS32 m_unk0x28;                            // 0x28
+		LegoS32 m_unk0x2c;                            // 0x2c
 	};
 
 	struct Field0xbc;
@@ -128,6 +132,7 @@ public:
 		undefined4 p_unk0x14,
 		undefined4 p_unk0x18
 	);
+	LegoS32 FUN_0049a1e0(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation);
 	void FUN_0049b170(
 		GolModelEntity* p_entity,
 		LegoPieceLibrary::PieceRecord* p_pieceRecord,
@@ -141,7 +146,18 @@ public:
 	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
 	void FUN_0049b740(undefined4 p_unk0x04);
 	void FUN_0049b920(undefined4 p_unk0x04, undefined4 p_unk0x08);
+	void FUN_0049bce0(
+		LegoS32 p_index,
+		LegoPieceLibrary::PieceRecord** p_pieceRecord,
+		LegoS32* p_x,
+		LegoS32* p_y,
+		LegoS32* p_anchor,
+		LegoS32* p_rotation,
+		LegoS32* p_unk0x20,
+		LegoS32* p_unk0x24
+	);
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
+	void FUN_0049bdc0();
 	void FUN_0049c230(Placement0x30* p_placement, GolModelEntity* p_entity);
 	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
@@ -150,6 +166,8 @@ public:
 	OpalHaven0xf4* GetUnk0x0c() { return reinterpret_cast<OpalHaven0xf4*>(&m_unk0x0c); }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
 	void SetUnk0xd4(undefined4 p_unk0xd4) { m_unk0xd4 = p_unk0xd4; }
+	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }
+	LegoS32 GetUnk0x2028() const { return m_unk0x2028; }
 
 private:
 	void Reset();
@@ -179,7 +197,9 @@ private:
 	LegoU8 m_hasHighBasePiece;                      // 0x00d8
 	undefined m_unk0xd9;                            // 0x00d9
 	LegoBool m_unk0xda;                             // 0x00da
-	undefined m_unk0xdb[0x00de - 0x00db];           // 0x00db
+	undefined m_unk0xdb;                            // 0x00db
+	LegoU8 m_unk0xdc;                               // 0x00dc
+	undefined m_unk0xdd;                            // 0x00dd
 	LegoU16 m_unk0xde;                              // 0x00de
 	LegoPieceLibrary::PieceRecord* m_highBasePiece; // 0x00e0
 	undefined m_unk0xe4[0x1e30 - 0x00e4];           // 0x00e4
@@ -198,7 +218,7 @@ private:
 	undefined m_unk0x1f1c[0x1fc4 - 0x1f1c];         // 0x1f1c
 	GolModelBase* m_auxModel;                       // 0x1fc4
 	undefined m_unk0x1fc8[0x2028 - 0x1fc8];         // 0x1fc8
-	undefined4 m_unk0x2028;                         // 0x2028
+	LegoS32 m_unk0x2028;                            // 0x2028
 	undefined4 m_unk0x202c;                         // 0x202c
 };
 

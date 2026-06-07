@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(CrimsonSun0xa4::Entry0x74c, 0x74c)
 DECOMP_SIZE_ASSERT(CrimsonSun0xa4::Entry0x74c::CreateParams0x18, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b2160
-const LegoFloat g_unk0x4b2160 = 0.0033333334f;
+extern const LegoFloat g_unk0x4b2160 = 0.0033333334f;
 
 // FUNCTION: LEGORACERS 0x00468140
 CrimsonSun0xa4::Entry0x74c::Entry0x74c()

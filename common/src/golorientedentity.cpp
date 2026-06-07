@@ -281,15 +281,6 @@ void GolOrientedEntity::FUN_10026f70(const GolVec3& p_v)
 	m_maxX = m_center.m_x + m_radius;
 }
 
-// FUNCTION: GOLDP 0x10026fa0 FOLDED
-// FUNCTION: LEGORACERS 0x00410f10
-void GolOrientedEntity::FUN_10026fa0(LegoFloat p_scalar)
-{
-	m_radius = p_scalar;
-	m_minX = m_center.m_x - p_scalar;
-	m_maxX = p_scalar + m_center.m_x;
-}
-
 // FUNCTION: GOLDP 0x10026fc0
 void GolOrientedEntity::FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const
 {

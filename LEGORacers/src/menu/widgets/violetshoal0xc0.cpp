@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(VioletShoal0xc0::CreateParams0x74, 0x74)
 DECOMP_SIZE_ASSERT(VioletShoal0xc0::Item0xd0, 0xd0)
 
 // GLOBAL: LEGORACERS 0x004b009c
-const LegoFloat g_violetShoalTwo = 2.0f;
+extern const LegoFloat g_violetShoalTwo = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b244c
 const LegoFloat g_violetShoalMaxFloat = FLT_MAX;

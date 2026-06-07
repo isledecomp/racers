@@ -21,6 +21,7 @@
 class MenuToolContext0x4bc8;
 class MenuToolCreateParams0x30;
 class SoundGroupBinding;
+class CmbModelPart0x34;
 class GolModelBase;
 class GolSceneNode;
 class GolWorldEntity;
@@ -40,6 +41,18 @@ public:
 	// SIZE 0x2d0
 	class FieldAt0x2308 : public ObscureLink0x1c {
 	public:
+		enum {
+			c_flagRotatingAroundCar = 1 << 0,
+			c_flagPitchChanging = 1 << 1,
+			c_flagCommittingPart = 1 << 2,
+			c_flagResettingView = 1 << 3,
+			c_placementFeedbackLowering = 1 << 0,
+			c_placementFeedbackHold = 1 << 1,
+			c_placementFeedbackRaising = 1 << 2,
+			c_placementFeedbackMask =
+				c_placementFeedbackLowering | c_placementFeedbackHold | c_placementFeedbackRaising,
+		};
+
 		// SIZE 0x30
 		struct CreateParams0x30 : public ObscureLink0x1c::CreateParams0x0c {
 			undefined4 m_unk0x0c;                   // 0x0c
@@ -90,6 +103,14 @@ public:
 		void FUN_00477dc0();
 		void FUN_00477f00(LegoS32 p_unk0x04);
 		void FUN_00477f30(LegoFloat p_unk0x04);
+		void FUN_00478c70(LegoS32 p_elapsed);
+		void FUN_00478e90(LegoS32 p_elapsed);
+		void FUN_00478ec0(LegoS32 p_elapsed);
+		void FUN_00478ef0(LegoS32 p_elapsed);
+		void FUN_00478fd0(LegoS32 p_elapsed);
+		void FUN_004790f0(LegoS32 p_elapsed);
+		void FUN_00479250(LegoS32 p_elapsed);
+		void FUN_00479330(GolVec3* p_dest, LegoS32 p_index);
 
 		ImaginaryShape0x2b20* m_unk0x1c;              // 0x1c
 		SoundGroupBinding* m_unk0x20;                 // 0x20
@@ -98,38 +119,39 @@ public:
 		AwardCinematicScreen::FieldAt0x658 m_unk0x58; // 0x58
 		OpalHaven0xf4 m_unk0xa8;                      // 0xa8
 		GolSceneNode* m_unk0x19c;                     // 0x19c
-		undefined4 m_unk0x1a0;                        // 0x1a0
+		CmbModelPart0x34* m_unk0x1a0;                 // 0x1a0
 		GolModelEntity m_unk0x1a4;                    // 0x1a4
 		GolModelBase* m_unk0x234;                     // 0x234
 		GolModelBase* m_unk0x238;                     // 0x238
 		GolRenderDevice::MaterialColor m_unk0x23c;    // 0x23c
 		undefined4 m_unk0x240;                        // 0x240
 		undefined4 m_unk0x244;                        // 0x244
-		undefined4 m_unk0x248;                        // 0x248
-		undefined4 m_unk0x24c;                        // 0x24c
+		LegoU32 m_unk0x248;                           // 0x248
+		LegoU32 m_unk0x24c;                           // 0x24c
 		GolVec3 m_unk0x250;                           // 0x250
 		undefined4 m_unk0x25c;                        // 0x25c
 		undefined4 m_unk0x260;                        // 0x260
-		undefined4 m_unk0x264;                        // 0x264
-		undefined4 m_unk0x268;                        // 0x268
-		undefined4 m_unk0x26c;                        // 0x26c
-		undefined4 m_unk0x270;                        // 0x270
-		undefined4 m_unk0x274;                        // 0x274
-		LegoBool m_unk0x278;                          // 0x278
-		undefined m_unk0x279[0x288 - 0x279];          // 0x279
-		undefined4 m_unk0x288;                        // 0x288
-		undefined4 m_unk0x28c;                        // 0x28c
-		LegoBool m_unk0x290;                          // 0x290
+		LegoU32 m_unk0x264;                           // 0x264
+		LegoU32 m_unk0x268;                           // 0x268
+		LegoFloat m_unk0x26c;                         // 0x26c
+		LegoFloat m_unk0x270;                         // 0x270
+		LegoFloat m_unk0x274;                         // 0x274
+		LegoU8 m_unk0x278;                            // 0x278
+		undefined m_unk0x279[0x27c - 0x279];          // 0x279
+		GolVec3 m_unk0x27c;                           // 0x27c
+		LegoFloat m_unk0x288;                         // 0x288
+		LegoU32 m_unk0x28c;                           // 0x28c
+		LegoU8 m_unk0x290;                            // 0x290
 		undefined m_unk0x291[0x294 - 0x291];          // 0x291
 		LegoS32 m_unk0x294;                           // 0x294
 		LegoS8 m_unk0x298;                            // 0x298
 		undefined m_unk0x299[0x29c - 0x299];          // 0x299
-		undefined4 m_unk0x29c;                        // 0x29c
-		undefined4 m_unk0x2a0;                        // 0x2a0
-		undefined4 m_unk0x2a4;                        // 0x2a4
+		LegoFloat m_unk0x29c;                         // 0x29c
+		LegoU32 m_unk0x2a0;                           // 0x2a0
+		LegoU32 m_unk0x2a4;                           // 0x2a4
 		LegoFloat m_unk0x2a8[8];                      // 0x2a8
 		LegoFloat m_unk0x2c8;                         // 0x2c8
-		undefined4 m_unk0x2cc;                        // 0x2cc
+		LegoFloat m_unk0x2cc;                         // 0x2cc
 	};
 
 	ImaginaryShape0x2b20();

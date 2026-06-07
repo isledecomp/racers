@@ -1,13 +1,71 @@
+#include "audio/soundgroupbinding.h"
+#include "camera/golcamera.h"
 #include "core/gol.h"
 #include "decomp.h"
+#include "golerror.h"
+#include "golscenenode.h"
 #include "menu/menutoolcontext0x4bc8.h"
 #include "menu/screens/imaginaryshape0x2b20.h"
+#include "mesh/golmodelbase.h"
+#include "racer/turquoiseglowcolor.h"
+
+#include <float.h>
+#include <math.h>
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20::FieldAt0x2308, 0x2d0)
 DECOMP_SIZE_ASSERT(ImaginaryShape0x2b20::FieldAt0x2308::CreateParams0x30, 0x30)
 
 // GLOBAL: LEGORACERS 0x004c7668
 LegoFloat g_fieldAt0x2308AngleStep = 0.0f;
+
+extern const LegoFloat g_unk0x4b2160;
+extern const LegoFloat g_violetShoalTwo;
+
+// GLOBAL: LEGORACERS 0x004af674
+static const LegoFloat g_fieldAt0x2308CameraZOffset = 4.0f;
+
+// GLOBAL: LEGORACERS 0x004af388
+static const LegoFloat g_fieldAt0x2308PlacementStepMax = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b0098
+static const LegoFloat g_fieldAt0x2308AngleCount = 8.0f;
+
+// GLOBAL: LEGORACERS 0x004b02f4
+static const LegoFloat g_fieldAt0x2308CosIndexScale = -162.97466f;
+
+// GLOBAL: LEGORACERS 0x004b0414
+static const LegoFloat g_fieldAt0x2308PlacementStepMin = 0.3f;
+
+// GLOBAL: LEGORACERS 0x004b0428
+static const LegoFloat g_fieldAt0x2308HalfPi = 1.5707964f;
+
+// GLOBAL: LEGORACERS 0x004b0538
+static const LegoFloat g_fieldAt0x2308HeightScale = 0.4f;
+
+// GLOBAL: LEGORACERS 0x004b2e74
+static const LegoFloat g_fieldAt0x2308PlacementLowerRate = 0.01f;
+
+// GLOBAL: LEGORACERS 0x004b2e78
+static const LegoFloat g_fieldAt0x2308PlacementRaiseRate = 0.01f;
+
+// GLOBAL: LEGORACERS 0x004b2e7c
+static const LegoFloat g_fieldAt0x2308ResetRaiseRate = 0.006f;
+
+// GLOBAL: LEGORACERS 0x004b2e68
+static const LegoFloat g_fieldAt0x2308MaxFloat = FLT_MAX;
+
+// GLOBAL: LEGORACERS 0x004b2ed4
+static const LegoFloat g_fieldAt0x2308PlacementRaiseLimit = 1.2f;
+
+// GLOBAL: LEGORACERS 0x004b2ed8
+static const LegoFloat g_fieldAt0x2308CommitProgressStart = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b2ef8
+static const LegoFloat g_fieldAt0x2308PlacementDeltaScale = 0.33333334f;
+
+// GLOBAL: LEGORACERS 0x004b2efc
+static const LegoFloat g_fieldAt0x2308HeightOffset = 8.4f;
 
 // FUNCTION: LEGORACERS 0x004778f0
 ImaginaryShape0x2b20::FieldAt0x2308::FieldAt0x2308()
@@ -111,28 +169,72 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x08()
 	return ObscureLink0x1c::VTable0x08();
 }
 
-// STUB: LEGORACERS 0x00477bf0
+// FUNCTION: LEGORACERS 0x00477bf0
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477bf0()
 {
-	STUB(0x00477bf0);
+	GolVec3 targetPosition;
+	FUN_00479330(&m_unk0x27c, 0);
+	LegoFloat targetZ = m_unk0x250.m_z;
+	targetZ += g_fieldAt0x2308CameraZOffset;
+	targetPosition.m_x = m_unk0x250.m_x;
+	targetPosition.m_y = m_unk0x250.m_y;
+	targetPosition.m_z = targetZ;
+	m_unk0x290 = 0;
+	m_unk0x288 = 0;
+	m_unk0x14->FUN_00465ab0(&m_unk0x27c, &targetPosition);
 }
 
-// STUB: LEGORACERS 0x00477c50
+// FUNCTION: LEGORACERS 0x00477c50
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477c50()
 {
-	STUB(0x00477c50);
+	m_unk0x234 = m_unk0x0c->VTable0x14();
+	if (m_unk0x234 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoS32 maxHighPieceOffset = m_unk0x24->m_pieceLibrary.GetMaxHighPieceOffset();
+	m_unk0x234->VTable0x18(m_unk0x10, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
+	m_unk0x1a4.VTable0x50(m_unk0x234, g_fieldAt0x2308MaxFloat);
 }
 
-// STUB: LEGORACERS 0x00477cc0
+// FUNCTION: LEGORACERS 0x00477cc0
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477cc0(undefined4)
 {
-	STUB(0x00477cc0);
+	TurquoiseGlowColor color;
+	m_unk0x24->m_unk0x4b40.SetUnk0x10(0xffff);
+	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
+
+	m_unk0x238 = m_unk0x24->m_unk0x4b40.FUN_0049db90(&color, NULL, 0);
+	if (m_unk0x238 == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x24->m_unk0x4b40.FUN_0049dce0(m_unk0x238, &color);
+
+	m_unk0x19c = m_unk0x0c->VTable0x18();
+	m_unk0x19c->VTable0x10(m_unk0x24->m_unk0x4b40.FUN_0049dc10(&color));
+	if (m_unk0x19c == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_unk0x1a0 = m_unk0x24->m_unk0x4b40.FUN_0049dc50(&color);
+	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, g_fieldAt0x2308MaxFloat);
 }
 
-// STUB: LEGORACERS 0x00477dc0
+// FUNCTION: LEGORACERS 0x00477dc0
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477dc0()
 {
-	STUB(0x00477dc0);
+	AwardCinematicScreen::FieldAt0x658::CreateParams0x18 createParams;
+	::memset(&createParams, 0, sizeof(createParams));
+	createParams.m_unk0x00 = &m_unk0x24->m_unk0x42dc;
+	createParams.m_unk0x04 = &m_unk0x24->m_unk0x21f4;
+	createParams.m_unk0x08 = m_unk0x24->m_unk0x21f4.GetUnk0x0c();
+	createParams.m_unk0x0c = &m_unk0xa8;
+	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_unk0x10);
+
+	m_unk0x58.FUN_00479510(&createParams);
+	m_unk0x58.VTable0x08(m_unk0x250);
+	m_unk0x58.VTable0x00();
 }
 
 // FUNCTION: LEGORACERS 0x00477e40
@@ -165,57 +267,242 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477f00(LegoS32 p_unk0x04)
 	FUN_00477f30(m_unk0x2a8[m_unk0x298]);
 }
 
-// STUB: LEGORACERS 0x00477f30
-void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477f30(LegoFloat)
+// FUNCTION: LEGORACERS 0x00477f30
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477f30(LegoFloat p_unk0x04)
 {
-	STUB(0x00477f30);
+	GolVec3 direction;
+	GolVec3 up;
+
+	direction.m_x = 1.0f;
+	direction.m_y = 0.0f;
+	direction.m_z = 0.0f;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
+	GolMath::FUN_004496a0(&direction, &direction, &up, p_unk0x04);
+	m_unk0x58.VTable0x40(direction, up);
+	m_unk0x1a4.VTable0x40(direction, up);
 }
 
-// STUB: LEGORACERS 0x00477fc0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477fc0(LegoFloat)
+// FUNCTION: LEGORACERS 0x00477fc0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00477fc0(LegoFloat p_delta)
 {
-	STUB(0x00477fc0);
-	return FALSE;
+	if ((m_unk0x248 & c_flagRotatingAroundCar) || p_delta == 0.0f) {
+		return FALSE;
+	}
+
+	m_unk0x2c8 += p_delta;
+	if (m_unk0x2c8 < 0.0f) {
+		m_unk0x2c8 += g_fieldAt0x2308AngleCount;
+	}
+	else if (m_unk0x2c8 >= g_fieldAt0x2308AngleCount) {
+		m_unk0x2c8 -= g_fieldAt0x2308AngleCount;
+	}
+
+	LegoS32 index = static_cast<LegoS32>(m_unk0x2c8);
+	m_unk0x29c = m_unk0x2a8[index] + ((m_unk0x2c8 - index) * g_fieldAt0x2308AngleStep);
+	FUN_00477f30(m_unk0x29c);
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00478080
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478080(LegoS32, LegoBool32)
+// FUNCTION: LEGORACERS 0x00478080
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478080(LegoS32 p_delta, LegoBool32 p_setCurrentAngle)
 {
-	STUB(0x00478080);
-	return FALSE;
+	if (m_unk0x248 & c_flagRotatingAroundCar) {
+		return FALSE;
+	}
+
+	m_unk0x248 |= c_flagRotatingAroundCar;
+	m_unk0x2a0 = 150;
+	m_unk0x2a4 = 150;
+
+	if (p_setCurrentAngle) {
+		m_unk0x29c = m_unk0x2a8[m_unk0x298];
+	}
+
+	m_unk0x298 += static_cast<LegoS8>(p_delta);
+	if (m_unk0x298 < 0) {
+		m_unk0x298 += 8;
+	}
+	else {
+		m_unk0x298 %= 8;
+	}
+
+	m_unk0x2c8 = m_unk0x298;
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00478120
+// FUNCTION: LEGORACERS 0x00478120
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478120()
 {
-	STUB(0x00478120);
+	if (m_unk0x248 & c_flagRotatingAroundCar) {
+		return;
+	}
+
+	LegoS32 index = static_cast<LegoS32>(m_unk0x2c8 + 0.5f);
+	if (index == 8) {
+		index = 0;
+	}
+
+	if (index != m_unk0x298 || static_cast<LegoFloat>(index) != m_unk0x2c8) {
+		FUN_00478080(index - m_unk0x298, FALSE);
+	}
 }
 
-// STUB: LEGORACERS 0x00478180
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat)
+// FUNCTION: LEGORACERS 0x00478180
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478180(LegoFloat p_delta)
 {
-	STUB(0x00478180);
-	return FALSE;
+	if ((m_unk0x248 & c_flagPitchChanging) || p_delta == 0.0f) {
+		return FALSE;
+	}
+
+	if (p_delta <= 0.0f) {
+		if (m_unk0x288 <= 0.0f) {
+			return FALSE;
+		}
+	}
+	else if (m_unk0x288 >= g_violetShoalTwo) {
+		return FALSE;
+	}
+
+	m_unk0x288 += p_delta;
+	if (m_unk0x288 < 0.0f) {
+		m_unk0x288 = 0.0f;
+	}
+	else if (m_unk0x288 > g_violetShoalTwo) {
+		m_unk0x288 = 2.0f;
+	}
+
+	LegoS32 index = static_cast<LegoS32>(m_unk0x288);
+	if (index == 2) {
+		index = 1;
+	}
+
+	LegoFloat interpolation = m_unk0x288 - static_cast<LegoFloat>(index);
+	GolVec3 minPosition;
+	GolVec3 maxPosition;
+	FUN_00479330(&minPosition, index);
+	FUN_00479330(&maxPosition, index + 1);
+
+	GolVec3 targetPosition;
+	LegoFloat targetZ = m_unk0x250.m_z;
+	targetZ += g_fieldAt0x2308CameraZOffset;
+	targetPosition.m_x = m_unk0x250.m_x;
+	targetPosition.m_y = m_unk0x250.m_y;
+	m_unk0x27c.m_x = ((maxPosition.m_x - minPosition.m_x) * interpolation) + minPosition.m_x;
+	m_unk0x27c.m_y = ((maxPosition.m_y - minPosition.m_y) * interpolation) + minPosition.m_y;
+	m_unk0x27c.m_z = ((maxPosition.m_z - minPosition.m_z) * interpolation) + minPosition.m_z;
+	targetPosition.m_z = targetZ;
+	m_unk0x14->FUN_00465ab0(&m_unk0x27c, &targetPosition);
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x004782f0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004782f0(LegoS32, LegoBool32)
+// FUNCTION: LEGORACERS 0x004782f0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004782f0(LegoS32 p_delta, LegoBool32 p_setCurrentPosition)
 {
-	STUB(0x004782f0);
-	return FALSE;
+	if (m_unk0x248 & c_flagPitchChanging) {
+		return FALSE;
+	}
+
+	LegoBool32 deltaNonPositive = p_delta <= 0;
+	if (p_delta < 0) {
+		if (m_unk0x290 == 0) {
+			return FALSE;
+		}
+		deltaNonPositive = p_delta <= 0;
+	}
+	if (!deltaNonPositive && m_unk0x290 == 2) {
+		return FALSE;
+	}
+
+	if (p_setCurrentPosition) {
+		FUN_00479330(&m_unk0x27c, m_unk0x290);
+	}
+
+	if (p_delta < 0) {
+		if (-p_delta <= m_unk0x290) {
+			m_unk0x290 += static_cast<LegoS8>(p_delta);
+		}
+		else {
+			m_unk0x290 = 0;
+		}
+	}
+	else {
+		m_unk0x290 += static_cast<LegoU8>(p_delta);
+		if (m_unk0x290 >= 2) {
+			m_unk0x290 = 2;
+		}
+	}
+
+	LegoU32 flags = m_unk0x248;
+	flags |= c_flagPitchChanging;
+	LegoS32 pitchIndex = m_unk0x290;
+	m_unk0x28c = 300;
+	m_unk0x248 = flags;
+	m_unk0x288 = static_cast<LegoFloat>(pitchIndex);
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x004783d0
+// FUNCTION: LEGORACERS 0x004783d0
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004783d0()
 {
-	STUB(0x004783d0);
+	if (m_unk0x248 & c_flagPitchChanging) {
+		return;
+	}
+
+	GolVec3 cameraPosition;
+	m_unk0x14->GetUnk0x64()->GetUnk0x04()->GetPosition(&cameraPosition);
+
+	LegoU32 closestIndex = 0;
+	GolVec3 position;
+	FUN_00479330(&position, 0);
+	LegoFloat closestDistance = GOL_SQUARED(cameraPosition.m_z - position.m_z) +
+								GOL_SQUARED(cameraPosition.m_y - position.m_y) +
+								GOL_SQUARED(cameraPosition.m_x - position.m_x);
+
+	for (LegoU32 i = 1; i < 3; i++) {
+		FUN_00479330(&position, i);
+		LegoFloat distance = GOL_SQUARED(cameraPosition.m_z - position.m_z) +
+							 GOL_SQUARED(cameraPosition.m_y - position.m_y) +
+							 GOL_SQUARED(cameraPosition.m_x - position.m_x);
+		if (distance < closestDistance) {
+			closestDistance = distance;
+			closestIndex = i;
+		}
+	}
+
+	if (closestDistance == 0.0f) {
+		m_unk0x290 = static_cast<LegoU8>(closestIndex);
+	}
+	else {
+		FUN_004782f0(closestIndex - m_unk0x290, FALSE);
+	}
 }
 
-// STUB: LEGORACERS 0x004784d0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004784d0(LegoBool32)
+// FUNCTION: LEGORACERS 0x004784d0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004784d0(LegoBool32 p_rotateFirst)
 {
-	STUB(0x004784d0);
-	return FALSE;
+	if (m_unk0x248 & c_flagPitchChanging) {
+		return FALSE;
+	}
+
+	if (p_rotateFirst) {
+		if (!FUN_00478080(9 - m_unk0x298, TRUE)) {
+			return FALSE;
+		}
+
+		FUN_00479330(&m_unk0x27c, m_unk0x290);
+		m_unk0x28c = 300;
+	}
+	else {
+		m_unk0x28c = 1;
+	}
+
+	m_unk0x290 = 1;
+	m_unk0x248 |= c_flagPitchChanging;
+	m_unk0x288 = 1.0f;
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00478560
@@ -227,32 +514,110 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478560()
 	m_unk0x1a4.VTable0x08(m_unk0x250);
 }
 
-// STUB: LEGORACERS 0x004785b0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004785b0(LegoS32)
+// FUNCTION: LEGORACERS 0x004785b0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004785b0(LegoS32 p_delta)
 {
-	STUB(0x004785b0);
-	return FALSE;
+	LegoS32 oldX;
+	LegoS32 newX;
+	LegoS32 oldY;
+	LegoS32 newY;
+	LegoS32 oldRotation;
+	LegoS32 newRotation;
+
+	m_unk0x28.FUN_00499ca0(&oldX, &oldY, &oldRotation);
+	m_unk0x28.FUN_00499c20(p_delta);
+	m_unk0x28.FUN_00499ca0(&newX, &newY, &newRotation);
+	if (oldX == newX && oldY == newY && oldRotation == newRotation) {
+		return FALSE;
+	}
+
+	m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
+	m_unk0x24->m_unk0x21f4.FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
+	m_unk0x1a4.VTable0x08(m_unk0x250);
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00478670
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478670(LegoS32)
+// FUNCTION: LEGORACERS 0x00478670
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478670(LegoS32 p_delta)
 {
-	STUB(0x00478670);
-	return FALSE;
+	LegoS32 oldX;
+	LegoS32 newX;
+	LegoS32 oldY;
+	LegoS32 newY;
+	LegoS32 oldRotation;
+	LegoS32 newRotation;
+
+	m_unk0x28.FUN_00499ca0(&oldX, &oldY, &oldRotation);
+	m_unk0x28.FUN_00499c60(p_delta);
+	m_unk0x28.FUN_00499ca0(&newX, &newY, &newRotation);
+	if (oldX == newX && oldY == newY && oldRotation == newRotation) {
+		return FALSE;
+	}
+
+	m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
+	m_unk0x24->m_unk0x21f4.FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
+	m_unk0x1a4.VTable0x08(m_unk0x250);
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00478730
+// FUNCTION: LEGORACERS 0x00478730
 LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478730()
 {
-	STUB(0x00478730);
-	return FALSE;
+	LegoS32 x;
+	LegoS32 y;
+	LegoS32 rotation;
+	LegoPieceLibrary::PieceRecord* pieceRecord = m_unk0x28.GetPieceRecord();
+	m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+
+	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(pieceRecord, x, y, rotation);
+	if (result < 0) {
+		if (result != -7) {
+			m_unk0x20->FUN_0046e970(18);
+		}
+		else {
+			m_unk0x1c->VTable0xc4();
+		}
+
+		return FALSE;
+	}
+
+	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
+	m_unk0x248 |= c_flagCommittingPart;
+	m_unk0x274 = g_fieldAt0x2308CommitProgressStart;
+	m_unk0x24c = 2500;
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x004787e0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004787e0(LegoS32*, LegoS32*, LegoS32*)
+// FUNCTION: LEGORACERS 0x004787e0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004787e0(LegoS32* p_unk0x04, LegoS32* p_unk0x08, LegoS32* p_unk0x0c)
 {
-	STUB(0x004787e0);
-	return FALSE;
+	SapphireReef0x2030* carModel = &m_unk0x24->m_unk0x21f4;
+	LegoS32 count = carModel->GetUnk0xd4();
+
+	if (count == 1) {
+		m_unk0x20->FUN_0046e970(18);
+		*p_unk0x0c = 0;
+		*p_unk0x08 = 0;
+		*p_unk0x04 = 0;
+		return FALSE;
+	}
+
+	LegoPieceLibrary::PieceRecord* pieceRecord;
+	LegoS32 x;
+	LegoS32 y;
+	LegoS32 anchor;
+	LegoS32 rotation;
+	carModel->FUN_0049bce0(count - 1, &pieceRecord, &x, &y, &anchor, &rotation, p_unk0x0c, p_unk0x04);
+	carModel->FUN_0049bdc0();
+	carModel->FUN_0049b740(TRUE);
+	carModel->FUN_0049b920(1, 127);
+	m_unk0x28.FUN_00499890(pieceRecord, *p_unk0x0c, 0);
+	m_unk0x28.FUN_00499cc0(x, y, rotation, 0);
+	carModel->FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
+	*p_unk0x08 = pieceRecord->m_pieceType;
+	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
+	m_unk0x20->FUN_0046e970(13);
+	return TRUE;
 }
 
 // STUB: LEGORACERS 0x004788f0
@@ -262,11 +627,265 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x0c()
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x00478be0
-LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x10(undefined4)
+// FUNCTION: LEGORACERS 0x00478be0
+LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x10(undefined4 p_elapsed)
 {
-	STUB(0x00478be0);
-	return FALSE;
+	FUN_00478c70(p_elapsed);
+
+	if (p_elapsed >= m_unk0x268) {
+		m_unk0x268 = m_unk0x268 - p_elapsed + 1000;
+	}
+	else {
+		m_unk0x268 -= p_elapsed;
+	}
+
+	m_unk0xa8.VTable0x10(p_elapsed);
+
+	if (m_unk0x248) {
+		if (m_unk0x248 & c_flagRotatingAroundCar) {
+			FUN_00478ef0(p_elapsed);
+		}
+		if (m_unk0x248 & c_flagPitchChanging) {
+			FUN_00478fd0(p_elapsed);
+		}
+		if (m_unk0x248 & c_flagCommittingPart) {
+			FUN_004790f0(p_elapsed);
+		}
+		if (m_unk0x248 & c_flagResettingView) {
+			FUN_00479250(p_elapsed);
+		}
+	}
+
+	return TRUE;
+}
+
+// STUB: LEGORACERS 0x00478c70
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478c70(LegoS32 p_elapsed)
+{
+	if (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) {
+		return;
+	}
+
+	LegoS32 x;
+	LegoS32 y;
+	LegoS32 rotation;
+	m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+
+	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(m_unk0x28.GetPieceRecord(), x, y, rotation);
+	LegoU8 feedbackFlags = m_unk0x278;
+	if (result < 0) {
+		m_unk0x278 = feedbackFlags & ~c_placementFeedbackMask;
+		m_unk0x26c = m_unk0x270;
+	}
+	else if (!feedbackFlags) {
+		FUN_00478ec0(0);
+	}
+
+	feedbackFlags = m_unk0x278;
+	if (feedbackFlags & c_placementFeedbackMask) {
+		if (p_elapsed >= m_unk0x264) {
+			if (feedbackFlags & c_placementFeedbackLowering) {
+				m_unk0x264 = 0;
+				m_unk0x278 = (feedbackFlags & ~c_placementFeedbackLowering) | c_placementFeedbackHold;
+			}
+			else if (feedbackFlags & c_placementFeedbackHold) {
+				FUN_00478e90(p_elapsed - m_unk0x264);
+			}
+			else if (feedbackFlags & c_placementFeedbackRaising) {
+				FUN_00478ec0(p_elapsed - m_unk0x264);
+			}
+		}
+		else {
+			m_unk0x264 -= p_elapsed;
+		}
+	}
+
+	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * g_fieldAt0x2308HeightScale) +
+				 (g_fieldAt0x2308CommitProgressStart - g_fieldAt0x2308HeightOffset);
+
+	feedbackFlags = m_unk0x278;
+	if (feedbackFlags & c_placementFeedbackMask) {
+		if (feedbackFlags & c_placementFeedbackLowering) {
+			LegoFloat delta = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x26c - m_unk0x270));
+			delta *= g_fieldAt0x2308PlacementDeltaScale;
+			if (delta > g_fieldAt0x2308PlacementStepMax) {
+				delta = g_fieldAt0x2308PlacementStepMax;
+			}
+			else if (delta < g_fieldAt0x2308PlacementStepMin) {
+				delta = g_fieldAt0x2308PlacementStepMin;
+			}
+
+			m_unk0x26c -= delta * g_fieldAt0x2308PlacementLowerRate * p_elapsed;
+			if (m_unk0x26c <= m_unk0x270) {
+				m_unk0x264 = 0;
+				m_unk0x26c = m_unk0x270;
+			}
+		}
+		else if (feedbackFlags & c_placementFeedbackRaising) {
+			m_unk0x26c += p_elapsed * g_fieldAt0x2308PlacementRaiseRate;
+			LegoFloat limit = g_fieldAt0x2308CommitProgressStart - (g_fieldAt0x2308PlacementRaiseLimit * 2.0f);
+			if (m_unk0x26c >= limit) {
+				m_unk0x264 = 0;
+				m_unk0x26c = limit;
+			}
+		}
+	}
+	else {
+		m_unk0x264 = 2500;
+		m_unk0x26c = m_unk0x270;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00478e90
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478e90(LegoS32 p_elapsed)
+{
+	m_unk0x264 = 2500 - p_elapsed;
+	m_unk0x278 = (m_unk0x278 & ~(c_placementFeedbackLowering | c_placementFeedbackHold)) | c_placementFeedbackRaising;
+}
+
+// FUNCTION: LEGORACERS 0x00478ec0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478ec0(LegoS32 p_elapsed)
+{
+	m_unk0x264 = 2500 - p_elapsed;
+	m_unk0x278 = (m_unk0x278 & ~(c_placementFeedbackHold | c_placementFeedbackRaising)) | c_placementFeedbackLowering;
+}
+
+// STUB: LEGORACERS 0x00478ef0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478ef0(LegoS32 p_elapsed)
+{
+	if (m_unk0x2a0 == 0) {
+		return;
+	}
+
+	if (p_elapsed >= m_unk0x2a0) {
+		m_unk0x2a0 = 0;
+		m_unk0x248 &= ~c_flagRotatingAroundCar;
+	}
+	else {
+		m_unk0x2a0 -= p_elapsed;
+	}
+
+	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x2a0);
+	scaledTime /= static_cast<LegoFloat>(m_unk0x2a4);
+	scaledTime *= g_fieldAt0x2308HalfPi;
+	scaledTime *= g_fieldAt0x2308CosIndexScale;
+	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
+	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+	LegoFloat targetAngle = m_unk0x2a8[m_unk0x298];
+
+	if (targetAngle > m_unk0x29c + g_fieldAt0x2308HalfPi) {
+		targetAngle -= g_siennaCircuitTwoPi;
+	}
+	else if (targetAngle < m_unk0x29c - g_fieldAt0x2308HalfPi) {
+		targetAngle += g_siennaCircuitTwoPi;
+	}
+
+	FUN_00477f30(targetAngle + ((m_unk0x29c - targetAngle) * interpolation));
+}
+
+// STUB: LEGORACERS 0x00478fd0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00478fd0(LegoS32 p_elapsed)
+{
+	if (m_unk0x28c == 0) {
+		return;
+	}
+
+	if (p_elapsed >= m_unk0x28c) {
+		m_unk0x28c = 0;
+		m_unk0x248 &= ~c_flagPitchChanging;
+	}
+	else {
+		m_unk0x28c -= p_elapsed;
+	}
+
+	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x28c);
+	scaledTime *= g_unk0x4b2160;
+	scaledTime *= g_fieldAt0x2308HalfPi;
+	scaledTime *= g_fieldAt0x2308CosIndexScale;
+	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
+	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+
+	GolVec3 targetPosition;
+	FUN_00479330(&targetPosition, m_unk0x290);
+
+	GolVec3 position;
+	position.m_x = targetPosition.m_x + ((m_unk0x27c.m_x - targetPosition.m_x) * interpolation);
+	position.m_y = targetPosition.m_y + ((m_unk0x27c.m_y - targetPosition.m_y) * interpolation);
+	position.m_z = targetPosition.m_z + ((m_unk0x27c.m_z - targetPosition.m_z) * interpolation);
+
+	GolVec3 lookAt;
+	lookAt.m_x = m_unk0x250.m_x;
+	lookAt.m_y = m_unk0x250.m_y;
+	lookAt.m_z = m_unk0x250.m_z + g_fieldAt0x2308CameraZOffset;
+	m_unk0x14->FUN_00465ab0(&position, &lookAt);
+}
+
+// FUNCTION: LEGORACERS 0x004790f0
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_004790f0(LegoS32 p_elapsed)
+{
+	if (p_elapsed >= m_unk0x24c) {
+		LegoPieceLibrary::PieceRecord* pieceRecord = m_unk0x28.GetPieceRecord();
+		LegoS32 x;
+		LegoS32 y;
+		LegoS32 rotation;
+		m_unk0x28.FUN_00499ca0(&x, &y, &rotation);
+
+		m_unk0x248 &= ~c_flagCommittingPart;
+		m_unk0x24c = 0;
+		m_unk0x58.FUN_10026fa0(-1.0f);
+		m_unk0x58.VTable0x00();
+
+		m_unk0x24->m_unk0x21f4.FUN_0049a160(
+			pieceRecord,
+			x,
+			y,
+			rotation,
+			m_unk0x28.GetUnk0x10(),
+			m_unk0x24->m_unk0x21a4.GetUnk0x10()->GetUnk0x08()
+		);
+		m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
+		m_unk0x24->m_unk0x21f4.FUN_0049b920(1, 127);
+		m_unk0x1c->VTable0x10(m_unk0x14);
+
+		if (m_unk0x24->m_unk0x21f4.GetUnk0xdc()) {
+			m_unk0x1c->VTable0xc4();
+			m_unk0x24->m_unk0x21f4.FUN_0049bdc0();
+			m_unk0x24->m_unk0x21f4.FUN_0049b740(TRUE);
+			m_unk0x24->m_unk0x21f4.FUN_0049b920(1, 127);
+		}
+		else {
+			m_unk0x20->FUN_0046e970(10);
+		}
+	}
+	else {
+		m_unk0x24c -= p_elapsed;
+	}
+
+	m_unk0x274 -= p_elapsed * g_fieldAt0x2308PlacementLowerRate;
+	if (m_unk0x274 < m_unk0x270) {
+		m_unk0x24c = 0;
+		m_unk0x274 = m_unk0x270;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00479250
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00479250(LegoS32 p_elapsed)
+{
+	if (p_elapsed >= m_unk0x24c) {
+		LegoU32 flags = m_unk0x248 & ~c_flagResettingView;
+		m_unk0x24c = 0;
+		m_unk0x248 = flags;
+		m_unk0x1c->VTable0x10(m_unk0x14);
+	}
+	else {
+		m_unk0x24c -= p_elapsed;
+	}
+
+	m_unk0x274 += p_elapsed * g_fieldAt0x2308ResetRaiseRate;
+	if (m_unk0x274 > g_fieldAt0x2308CommitProgressStart) {
+		m_unk0x24c = 0;
+		m_unk0x274 = g_fieldAt0x2308CommitProgressStart;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004792d0
@@ -294,4 +913,61 @@ void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00479310()
 void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00479320()
 {
 	m_unk0x294 = 0;
+}
+
+// STUB: LEGORACERS 0x00479330
+void ImaginaryShape0x2b20::FieldAt0x2308::FUN_00479330(GolVec3* p_dest, LegoS32 p_index)
+{
+	GolVec3 minPosition;
+	GolVec3 maxPosition;
+
+	switch (p_index) {
+	case 1:
+		minPosition.m_x = 0.0f;
+		minPosition.m_y = -10.0f;
+		minPosition.m_z = 14.0f;
+		maxPosition.m_x = 0.0f;
+		maxPosition.m_y = -12.0f;
+		maxPosition.m_z = 17.0f;
+		break;
+	case 2:
+		minPosition.m_x = 0.0f;
+		minPosition.m_y = -0.3f;
+		minPosition.m_z = 17.0f;
+		maxPosition.m_x = 0.0f;
+		maxPosition.m_y = -0.3f;
+		maxPosition.m_z = 20.0f;
+		break;
+	default:
+		minPosition.m_x = 0.0f;
+		minPosition.m_y = -14.0f;
+		minPosition.m_z = 9.0f;
+		maxPosition.m_x = 0.0f;
+		maxPosition.m_y = -18.0f;
+		maxPosition.m_z = 10.0f;
+		break;
+	}
+
+	m_unk0x2cc = (m_unk0x58.FUN_10028710() - 5.9f) / (8.5f - 5.9f);
+	if (m_unk0x2cc > 1.0f) {
+		m_unk0x2cc = 1.0f;
+	}
+	else if (m_unk0x2cc < 0.0f) {
+		m_unk0x2cc = 0.0f;
+	}
+
+	LegoFloat value = minPosition.m_x;
+	value *= 1.0f - m_unk0x2cc;
+	value += maxPosition.m_x * m_unk0x2cc;
+	p_dest->m_x = value;
+
+	value = minPosition.m_y;
+	value *= 1.0f - m_unk0x2cc;
+	value += maxPosition.m_y * m_unk0x2cc;
+	p_dest->m_y = value;
+
+	value = minPosition.m_z;
+	value *= 1.0f - m_unk0x2cc;
+	value += maxPosition.m_z * m_unk0x2cc;
+	p_dest->m_z = value;
 }

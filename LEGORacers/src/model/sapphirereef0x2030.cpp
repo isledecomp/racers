@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(SapphireReef0x2030::Field0x1e30Entry0x28, 0x28)
 void SapphireReef0x2030::Placement0x30::Reset()
 {
 	m_unk0x00 = 0;
-	m_unk0x0c = 0;
+	m_pieceRecord = NULL;
 	m_unk0x28 = 0;
 	m_unk0x2c = 0;
 }
@@ -76,12 +76,30 @@ void SapphireReef0x2030::Placement0x30::FUN_00499b00()
 	FUN_00499a60();
 }
 
+// STUB: LEGORACERS 0x00499c20
+void SapphireReef0x2030::Placement0x30::FUN_00499c20(LegoS32)
+{
+	STUB(0x00499c20);
+}
+
+// STUB: LEGORACERS 0x00499c60
+void SapphireReef0x2030::Placement0x30::FUN_00499c60(LegoS32)
+{
+	STUB(0x00499c60);
+}
+
 // FUNCTION: LEGORACERS 0x00499ca0
 void SapphireReef0x2030::Placement0x30::FUN_00499ca0(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation)
 {
 	*p_x = m_unk0x18;
 	*p_y = m_unk0x1c;
 	*p_rotation = m_unk0x28;
+}
+
+// STUB: LEGORACERS 0x00499cc0
+void SapphireReef0x2030::Placement0x30::FUN_00499cc0(LegoS32, LegoS32, LegoS32, LegoS32)
+{
+	STUB(0x00499cc0);
 }
 
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
@@ -259,6 +277,13 @@ void SapphireReef0x2030::FUN_0049a160(
 	STUB(0x0049a160);
 }
 
+// STUB: LEGORACERS 0x0049a1e0
+LegoS32 SapphireReef0x2030::FUN_0049a1e0(LegoPieceLibrary::PieceRecord*, LegoS32, LegoS32, LegoS32)
+{
+	STUB(0x0049a1e0);
+	return 0;
+}
+
 // FUNCTION: LEGORACERS 0x0049ad00
 void SapphireReef0x2030::FUN_0049ad00()
 {
@@ -326,10 +351,31 @@ void SapphireReef0x2030::FUN_0049b920(undefined4, undefined4)
 	STUB(0x0049b920);
 }
 
+// STUB: LEGORACERS 0x0049bce0
+void SapphireReef0x2030::FUN_0049bce0(
+	LegoS32,
+	LegoPieceLibrary::PieceRecord**,
+	LegoS32*,
+	LegoS32*,
+	LegoS32*,
+	LegoS32*,
+	LegoS32*,
+	LegoS32*
+)
+{
+	STUB(0x0049bce0);
+}
+
 // FUNCTION: LEGORACERS 0x0049bd50
 LegoS32 SapphireReef0x2030::FUN_0049bd50(LegoS32 p_index) const
 {
 	return m_unk0xa4.m_entries[p_index].m_unk0x08;
+}
+
+// STUB: LEGORACERS 0x0049bdc0
+void SapphireReef0x2030::FUN_0049bdc0()
+{
+	STUB(0x0049bdc0);
 }
 
 // STUB: LEGORACERS 0x0049c230

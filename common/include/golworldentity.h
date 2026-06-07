@@ -46,6 +46,7 @@ public:
 
 	void FUN_100286d0(GolVec3* p_center);
 	LegoFloat FUN_10028710();
+	void FUN_10026fa0(LegoFloat p_scalar);
 	void SetCenter(const GolVec3& p_center);
 
 	void SetVelocity(GolVec3& p_other)

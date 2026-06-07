@@ -1,0 +1,42 @@
+#ifndef MENURESOURCETABLE_H
+#define MENURESOURCETABLE_H
+
+#include "compat.h"
+#include "decomp.h"
+#include "golfileparser.h"
+#include "golnametable.h"
+#include "types.h"
+
+class GolD3DRenderDevice;
+
+// VTABLE: LEGORACERS 0x004b2210
+// SIZE 0x20
+class MenuResourceTable : public GolNameTable {
+public:
+	MenuResourceTable();
+	~MenuResourceTable() override;           // vtable+0x00
+	void Clear() override;                   // vtable+0x08
+	virtual void VTable0x0c();               // vtable+0x0c
+	virtual void VTable0x10(undefined4) = 0; // vtable+0x10
+	virtual void VTable0x14(undefined4) = 0; // vtable+0x14
+	void* ResolveEntryByName(const LegoChar* p_name);
+
+	// SYNTHETIC: LEGORACERS 0x0046b070
+	// MenuResourceTable::`scalar deleting destructor'
+
+protected:
+	LegoBool32 FUN_0046b100();
+	LegoS32 FUN_0046b130();
+	LegoS32 FUN_0046b170();
+	void ReadRect(LegoS32* p_ints);
+	void ReadVisualState(LegoS8* p_ints);
+	void FUN_0046b250();
+
+	LegoBool m_unk0x0c;            // 0x0c
+	GolFileParser* m_parser;       // 0x10
+	GolD3DRenderDevice* m_unk0x14; // 0x14
+	undefined4 m_unk0x18;          // 0x18
+	undefined4 m_unk0x1c;          // 0x1c
+};
+
+#endif // MENURESOURCETABLE_H

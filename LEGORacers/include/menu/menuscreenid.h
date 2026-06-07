@@ -1,29 +1,29 @@
 #ifndef MENUSCREENID_H
 #define MENUSCREENID_H
 
-// Menu IDs dispatched in ChromeSpike0x4::FUN_0047f4e0 (LEGORACERS 0x0047f4e0).
+// Menu IDs dispatched in MenuScreenFactory::CreateScreen (LEGORACERS 0x0047f4e0).
 // Names taken verbatim from MENUDATA\MENUNAME.SRF (the game's own screen-name
-// string table), looked up at runtime by ImaginaryNotion0x290::VTable0x58 to
-// build each screen's .MIB filename (LEGORacers/src/menu/screens/imaginarynotion0x290.cpp).
+// string table), looked up at runtime by MenuScreen::VTable0x58 to
+// build each screen's .MIB filename (LEGORacers/src/menu/screens/menuscreen.cpp).
 enum {
 	c_menuSplash = 0x01,        // MENUNAME[1]  = "splash"
 	c_menuMainMenu = 0x02,      // MENUNAME[2]  = "mainmenu"
 	c_menuGarage = 0x03,        // MENUNAME[3]  = "garage"
-	c_menuUnk0x04 = 0x04,       // MENUNAME[4]  = "pickset", no ChromeSpike branch
+	c_menuUnk0x04 = 0x04,       // MENUNAME[4]  = "pickset", no MenuScreenFactory branch
 	c_menuCircuitRace = 0x05,   // MENUNAME[5]  = "circrace"
 	c_menuSingleRace = 0x06,    // MENUNAME[6]  = "singrace"
-	c_menuUnk0x07 = 0x07,       // MENUNAME[7]  = "tuneup", no ChromeSpike branch
+	c_menuUnk0x07 = 0x07,       // MENUNAME[7]  = "tuneup", no MenuScreenFactory branch
 	c_menuOptions = 0x08,       // MENUNAME[8]  = "options"
-	c_menuUnk0x09 = 0x09,       // MENUNAME[9]  = "control", no ChromeSpike branch
+	c_menuUnk0x09 = 0x09,       // MENUNAME[9]  = "control", no MenuScreenFactory branch
 	c_menuControl1 = 0x0a,      // MENUNAME[10] = "control1"
 	c_menuControl2 = 0x0b,      // MENUNAME[11] = "control2"
 	c_menuPickMem = 0x0c,       // MENUNAME[12] = "pickmem"
-	c_menuUnk0x0d = 0x0d,       // MENUNAME[13] = "pause", no ChromeSpike branch
+	c_menuUnk0x0d = 0x0d,       // MENUNAME[13] = "pause", no MenuScreenFactory branch
 	c_menuCarBuild = 0x0e,      // MENUNAME[14] = "carbuild"
 	c_menuEditDriver = 0x0f,    // MENUNAME[15] = "editdrvr"
 	c_menuDriverLicense = 0x10, // MENUNAME[16] = "drvrlice"
 	c_menuEditCar = 0x11,       // MENUNAME[17] = "editcar"
-	c_menuUnk0x12 = 0x12,       // MENUNAME[18] = "selchas", no ChromeSpike branch
+	c_menuUnk0x12 = 0x12,       // MENUNAME[18] = "selchas", no MenuScreenFactory branch
 	c_menuPickRacer = 0x13,     // MENUNAME[19] = "pickrcr"
 	c_menuPickRacerP1 = 0x14,   // MENUNAME[20] = "pickrcr"
 	c_menuPickRacerP2 = 0x15,   // MENUNAME[21] = "pickrcr"
@@ -55,7 +55,7 @@ enum {
 	c_menuLcCreate = 0x2f,      // MENUNAME[47] = "lccreate"
 	c_menuSaveAll = 0x30,       // MENUNAME[48] = "saveall"
 	c_menuSaveCard = 0x31,      // MENUNAME[49] = "savecard"
-	c_menuUnk0x32 = 0x32,       // MENUNAME[50] = "savegame", no ChromeSpike branch
+	c_menuUnk0x32 = 0x32,       // MENUNAME[50] = "savegame", no MenuScreenFactory branch
 	c_menuNewRacer = 0x90       // MENUNAME[144] = "newracer"
 };
 

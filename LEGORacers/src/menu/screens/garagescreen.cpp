@@ -1,8 +1,8 @@
 #include "menu/screens/garagescreen.h"
 
-#include "menu/crimsonsun0xa4.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
 
 #include <string.h>
 
@@ -25,7 +25,7 @@ void GarageScreen::Reset()
 {
 	m_unk0x640c = 0;
 	m_unk0x6408 = 0;
-	RacerPickScreenBase0x3ff4::Reset();
+	RacerPickScreenBase::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047e550
@@ -37,7 +37,7 @@ void GarageScreen::FUN_0047e550()
 	FUN_0047fdc0(&m_unk0x4998, 0x93, 0x42, 0x2c);
 	FUN_0047fdc0(&m_unk0x4c88, 0x94, 0x42, 0x2d);
 	FUN_0047fdc0(&m_unk0x5848, 0x3f, 0x43, 3);
-	FUN_0046bf80(&m_unk0x4050, 0x3a, 0x3a, 3);
+	CreateTextLabel(&m_unk0x4050, 0x3a, 0x3a, 3);
 	m_unk0x4050.FUN_0046f6b0(0x14);
 }
 
@@ -53,14 +53,14 @@ void GarageScreen::FUN_0047e600()
 // FUNCTION: LEGORACERS 0x0047e650
 void GarageScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x3ff4, 0x49, 0x49);
-	RacerPickScreenBase0x3ff4::VTable0x4c();
+	CreateImage(&m_unk0x3ff4, 0x49, 0x49);
+	RacerPickScreenBase::VTable0x4c();
 	FUN_0047e550();
 	FUN_0047e600();
 }
 
 // FUNCTION: LEGORACERS 0x0047e680
-LegoBool32 GarageScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!FUN_00480440(p_context)) {
 		FUN_00480470(p_context, TRUE, TRUE);
@@ -81,7 +81,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCr
 	params[1] = 1;
 	params[2] = 0xffff2;
 
-	if (!RacerPickScreenBase0x3ff4::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerPickScreenBase::VTable0xa0(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
@@ -175,9 +175,9 @@ void GarageScreen::FUN_0047e9c0()
 }
 
 // FUNCTION: LEGORACERS 0x0047e9f0
-void GarageScreen::FUN_0047e9f0(MenuToolContext0x4bc8* p_context)
+void GarageScreen::FUN_0047e9f0(MenuGameContext* p_context)
 {
-	RacerPickModelState0x28 modelState;
+	RacerUnlockState modelState;
 
 	modelState.FUN_00442e60(&p_context->m_unk0x258);
 	modelState.FUN_00442ef0(0xffff2);
@@ -188,7 +188,7 @@ void GarageScreen::FUN_0047e9f0(MenuToolContext0x4bc8* p_context)
 void GarageScreen::FUN_0047ea50()
 {
 	PeridotTraceBase0x24* trace = NULL;
-	RacerPickModelState0x28* modelState = &m_unk0x22dc[0];
+	RacerUnlockState* modelState = &m_unk0x22dc[0];
 	PeridotTraceBase0x24::Record* record = modelState->FUN_004430b0();
 	PeridotTraceBase0x24::Record* nextRecord = modelState->FUN_00442fe0();
 
@@ -291,7 +291,7 @@ void GarageScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047ee50
-void GarageScreen::VTable0x38(ObscureVantage0x58* p_source)
+void GarageScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x5848) {
 		if (!m_unk0x6408) {
@@ -378,7 +378,7 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		FUN_0047efe0();
 	}
 
-	RacerPickModelState0x28* modelState = &m_unk0x22dc[0];
+	RacerUnlockState* modelState = &m_unk0x22dc[0];
 	if (modelState->FUN_004430b0() != NULL) {
 		if (modelState->FUN_004430b0()->m_unk0x08 == 1) {
 			m_unk0x46a8.FUN_00482790(0x2b);
@@ -388,5 +388,5 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		}
 	}
 
-	return RacerPickScreenBase0x270c::VTable0x78(p_elapsed);
+	return RacerModelScreenBase::VTable0x78(p_elapsed);
 }

@@ -5,8 +5,8 @@
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "save/peridottrace0x4e0.h"
 
 #include <string.h>
@@ -62,7 +62,7 @@ void ControlConfigScreen::Reset()
 		m_ellipsisText[i] = '.';
 	}
 
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047a860
@@ -70,15 +70,15 @@ void ControlConfigScreen::VTable0x4c()
 {
 	LegoU16 idBase = m_unk0x3a4 + 0x17;
 
-	FUN_0046bef0(&m_unk0x3a8, 0x49, 0x49);
-	FUN_0046bf80(&m_unk0x404, 0x3a, 0x3a, idBase);
+	CreateImage(&m_unk0x3a8, 0x49, 0x49);
+	CreateTextLabel(&m_unk0x404, 0x3a, 0x3a, idBase);
 	m_unk0x404.FUN_0046f6b0(0x14);
-	FUN_0046c240(&m_unk0x780, 0x3e, 0x3b);
-	FUN_0046c2b0(&m_unk0x814, &m_unk0x780, 0x111, 0x4d);
+	CreateCarousel(&m_unk0x780, 0x3e, 0x3b);
+	CreateSelector(&m_unk0x814, &m_unk0x780, 0x111, 0x4d);
 
 	for (LegoU32 i = 0; i < 9; i++) {
 		FUN_0047fdc0(&m_unk0x144c[i], i + 0x108, 0x42, 0x69);
-		FUN_0046bf80(&m_unk0x2ebc[i], i + 0x116, 0x37, i + 0x69);
+		CreateTextLabel(&m_unk0x2ebc[i], i + 0x116, 0x37, i + 0x69);
 	}
 
 	FUN_0047fdc0(&m_unk0x47c, 0x3f, 0x46, 0x1e);
@@ -110,7 +110,7 @@ void ControlConfigScreen::FUN_0047a930()
 				break;
 			}
 
-			FUN_0046bef0(&m_unk0x1208[i], id, id);
+			CreateImage(&m_unk0x1208[i], id, id);
 			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[i]);
 			m_unk0x368[i] = device;
 			m_unk0x37c[i] = i;
@@ -120,7 +120,7 @@ void ControlConfigScreen::FUN_0047a930()
 	if (m_inputManager->IsKeyboardAvailable()) {
 		InputDevice* keyboard = m_inputManager->GetKeyboard();
 		for (LegoU32 i = 2; i < 5; i++) {
-			FUN_0046bef0(&m_unk0x1208[m_unk0x39c], 0x115, 0x115);
+			CreateImage(&m_unk0x1208[m_unk0x39c], 0x115, 0x115);
 			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[m_unk0x39c]);
 			m_unk0x368[m_unk0x39c] = keyboard;
 			m_unk0x37c[m_unk0x39c] = i;
@@ -130,14 +130,14 @@ void ControlConfigScreen::FUN_0047a930()
 }
 
 // FUNCTION: LEGORACERS 0x0047aaa0
-LegoBool32 ControlConfigScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (p_createParams->m_menuId == 0x0b) {
 		m_unk0x3a4 = 1;
 	}
 
 	p_createParams->m_menuId = 9;
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -167,7 +167,7 @@ void ControlConfigScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047abb0
-void ControlConfigScreen::VTable0x44(ObscureVantage0x58* p_unk0x04)
+void ControlConfigScreen::VTable0x44(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x814) {
 		m_unk0x3a0 = m_unk0x780.GetUnk0x6c();
@@ -175,7 +175,7 @@ void ControlConfigScreen::VTable0x44(ObscureVantage0x58* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0047abd0
-void ControlConfigScreen::VTable0x34(ObscureIcon0x1a8* p_source)
+void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
 {
 	LegoS32 eventIndex = p_source->GetUnk0x30() - m_unk0x144c[0].GetUnk0x30();
 
@@ -190,7 +190,7 @@ void ControlConfigScreen::VTable0x34(ObscureIcon0x1a8* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047ac60
-void ControlConfigScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
+void ControlConfigScreen::VTable0x38(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x47c) {
 		m_unk0x360 = 8;
@@ -201,7 +201,7 @@ void ControlConfigScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0047ac90
-LegoBool32 ControlConfigScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event* p_item, undefined4, undefined4)
+LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
@@ -239,13 +239,13 @@ LegoBool32 ControlConfigScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue:
 }
 
 // FUNCTION: LEGORACERS 0x0047ad90
-LegoBool32 ControlConfigScreen::VTable0x1c(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 ControlConfigScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;
 	}
 
-	return ObscureVantageEventResultValue(m_unk0x390);
+	return MenuEventResult(m_unk0x390);
 }
 
 // FUNCTION: LEGORACERS 0x0047adb0
@@ -256,7 +256,7 @@ void ControlConfigScreen::FUN_0047adb0()
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x144c); i++) {
 		m_unk0x32f4[i].CopyFromBufSelection(m_ellipsisText, 0);
 
-		if (!(m_unk0x144c[i].GetStateFlags() & ObscureIcon0x1a8::c_flagBit2)) {
+		if (!(m_unk0x144c[i].GetStateFlags() & MenuIcon::c_flagBit2)) {
 			LegoU32 event = state.FUN_0042ed80(m_unk0x3a4, m_unk0x37c[m_unk0x3a0], i);
 
 			if (event) {
@@ -301,5 +301,5 @@ LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x144c[1].VTable0x48(0);
 	}
 
-	return ImaginaryTool0x368::VTable0x78(p_unk0x04);
+	return MenuGameScreen::VTable0x78(p_unk0x04);
 }

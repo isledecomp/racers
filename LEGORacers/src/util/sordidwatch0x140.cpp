@@ -5,7 +5,7 @@
 #include "golerror.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "mabmaterialanimationitem0x8.h"
-#include "menu/widgets/obscurebanner0x5ec.h"
+#include "menu/widgets/menuselector.h"
 #include "mesh/golmodelbase.h"
 #include "util/sordidwatchinner0x38.h"
 

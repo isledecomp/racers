@@ -2,9 +2,9 @@
 
 #include "audio/soundgroupbinding.h"
 #include "input/inputmanager.h"
-#include "menu/crimsonsun0xa4.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 
 #include <string.h>
 
@@ -32,18 +32,18 @@ void MainMenuScreen::Reset()
 	m_unk0x2448 = 30000;
 	m_unk0x244c = 0;
 	m_unk0x2438 = NULL;
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00480e40
 void MainMenuScreen::FUN_00480e40()
 {
-	MainMenuScreenFieldAt0x22dc::CreateParams params;
+	MainMenuModelSlot::CreateParams params;
 	GolVec3 vector0;
 	GolVec3 vector1;
 	GolD3DRenderDevice* renderer;
 
-	FUN_0046c480(&m_unk0x21f8, 0, 0xd0);
+	CreateSceneView(&m_unk0x21f8, 0, 0xd0);
 
 	renderer = m_renderer;
 	::memset(&params, 0, sizeof(params));
@@ -71,8 +71,8 @@ void MainMenuScreen::FUN_00480e40()
 // FUNCTION: LEGORACERS 0x00480f20
 void MainMenuScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
-	FUN_0046bef0(&m_unk0x3c4, 0x52, 0x52);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x3c4, 0x52, 0x52);
 	FUN_00480e40();
 	FUN_0047fdc0(&m_unk0x1058, 3, 0x42, 0x25);
 	FUN_0047fdc0(&m_unk0x788, 0x55, 0x42, 0x21);
@@ -88,7 +88,7 @@ void MainMenuScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00481000
-LegoBool32 MainMenuScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!p_context->m_unk0x4b40.HasMenuResources()) {
 		FUN_00480210(p_context, 0);
@@ -98,11 +98,11 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 		FUN_0047ff50(p_context, TRUE);
 	}
 
-	if (!ImaginaryTool0x368::FUN_00480440(p_context)) {
+	if (!MenuGameScreen::FUN_00480440(p_context)) {
 		FUN_00480470(p_context, 0, TRUE);
 	}
 
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -129,11 +129,11 @@ LegoBool32 MainMenuScreen::Destroy()
 	}
 
 	FUN_004803a0();
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00481150
-void MainMenuScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
+void MainMenuScreen::VTable0x38(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x788) {
 		m_unk0x360 = 5;
@@ -152,7 +152,7 @@ void MainMenuScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
 	}
 	else if (p_unk0x04 == &m_unk0x1058) {
 		m_unk0x360 = 3;
-		ImaginaryTool0x368::FUN_004804c0(m_context);
+		MenuGameScreen::FUN_004804c0(m_context);
 	}
 	else if (p_unk0x04 == &m_unk0x1348) {
 		m_unk0x360 = 8;
@@ -188,7 +188,7 @@ void MainMenuScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x004812f0
-LegoBool32 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 MainMenuScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
 	LegoBool32 result = m_unk0x364;
 	if (result) {
@@ -199,12 +199,7 @@ LegoBool32 MainMenuScreen::VTable0x18(ObscureVantage0x58*, InputEventQueue::Even
 }
 
 // FUNCTION: LEGORACERS 0x00481310
-LegoBool32 MainMenuScreen::VTable0x1c(
-	ObscureVantage0x58* p_icon,
-	InputEventQueue::Event* p_item,
-	undefined4,
-	undefined4
-)
+LegoBool32 MainMenuScreen::VTable0x1c(MenuWidget* p_icon, InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;
@@ -285,7 +280,7 @@ LegoBool32 MainMenuScreen::VTable0x78(undefined4 p_elapsed)
 		m_unk0x364 = TRUE;
 	}
 
-	LegoBool32 result = ImaginaryTool0x368::VTable0x78(p_elapsed);
+	LegoBool32 result = MenuGameScreen::VTable0x78(p_elapsed);
 	if (!m_unk0x360) {
 		return TRUE;
 	}

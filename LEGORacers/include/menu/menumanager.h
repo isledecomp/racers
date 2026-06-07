@@ -9,12 +9,12 @@
 #include "golnametable.h"
 #include "golstring.h"
 #include "golstringtable.h"
-#include "menu/chromespike0x4.h"
-#include "menu/crimsonsun0xa4.h"
 #include "menu/menuanimationlist.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
-#include "menu/style/porcelainveil0x50.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
+#include "menu/menuscreenfactory.h"
+#include "menu/style/sharedmenustyletable.h"
 #include "model/legopiecelibrary.h"
 #include "model/sapphirereef0x2030.h"
 #include "model/topazburst0x14.h"
@@ -37,7 +37,7 @@
 
 class AmethystBreeze0x104;
 class GolExport;
-class ImaginaryTool0x368;
+class MenuGameScreen;
 class SoundGroup;
 
 // VTABLE: LEGORACERS 0x004b05a4
@@ -101,9 +101,9 @@ private:
 		AmethystBreeze0x104* p_rendererState
 	);
 
-	MenuToolContext0x4bc8 m_unk0x04;       // 0x04
-	ChromeSpike0x4 m_unk0x4bcc;            // 0x4bcc
-	CrimsonSun0xa4 m_unk0x4bd0;            // 0x4bd0
+	MenuGameContext m_unk0x04;             // 0x04
+	MenuScreenFactory m_unk0x4bcc;         // 0x4bcc
+	MenuDialog m_unk0x4bd0;                // 0x4bd0
 	CopperCrest0x40 m_textRenderer;        // 0x4c74
 	GolExport* m_golExport;                // 0x4cd4
 	GolD3DRenderDevice* m_renderer;        // 0x4cd8
@@ -116,9 +116,9 @@ private:
 	GolString m_unk0x4d24;                 // 0x4d24
 	GolString m_unk0x4d30;                 // 0x4d30
 	SoundGroupBinding m_soundGroupBinding; // 0x4d3c
-	PorcelainVeil0x50 m_menuStyles;        // 0x4d48
-	MenuToolCreateParams0x30 m_unk0x4d98;  // 0x4d98
-	ImaginaryTool0x368* m_unk0x4dc8;       // 0x4dc8
+	SharedMenuStyleTable m_menuStyles;     // 0x4d48
+	MenuScreenCreateParams m_unk0x4d98;    // 0x4d98
+	MenuGameScreen* m_unk0x4dc8;           // 0x4dc8
 	undefined4 m_unk0x4dcc;                // 0x4dcc
 	LegoBool32 m_running;                  // 0x4dd0
 };

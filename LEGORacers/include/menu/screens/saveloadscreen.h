@@ -3,26 +3,26 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "menu/crimsonsun0xa4.h"
-#include "menu/screens/imaginarytool0x368.h"
-#include "menu/screens/mainmenuscreenfieldat0x498.h"
-#include "menu/widgets/obscureanchor0x5c.h"
+#include "menu/menudialog.h"
+#include "menu/screens/menugamescreen.h"
+#include "menu/widgets/menuimage.h"
+#include "menu/widgets/menutextbutton.h"
 
 class SaveSystem;
 
 // VTABLE: LEGORACERS 0x004b3d1c
 // SIZE 0x1d7c
-class SaveLoadScreen : public ImaginaryTool0x368 {
+class SaveLoadScreen : public MenuGameScreen {
 public:
 	SaveLoadScreen();
 
-	void VTable0x38(ObscureVantage0x58*) override;                                     // vtable+0x38
-	void VTable0x4c() override;                                                        // vtable+0x4c
-	~SaveLoadScreen() override;                                                        // vtable+0x68
-	LegoBool32 Destroy() override;                                                     // vtable+0x74
-	LegoBool32 VTable0x78(undefined4) override;                                        // vtable+0x78
-	void VTable0x84() override;                                                        // vtable+0x84
-	LegoBool32 VTable0x8c(MenuToolContext0x4bc8*, MenuToolCreateParams0x30*) override; // vtable+0x8c
+	void VTable0x38(MenuWidget*) override;                                     // vtable+0x38
+	void VTable0x4c() override;                                                // vtable+0x4c
+	~SaveLoadScreen() override;                                                // vtable+0x68
+	LegoBool32 Destroy() override;                                             // vtable+0x74
+	LegoBool32 VTable0x78(undefined4) override;                                // vtable+0x78
+	void VTable0x84() override;                                                // vtable+0x84
+	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00486c80
 	// SaveLoadScreen::`scalar deleting destructor'
@@ -30,26 +30,26 @@ public:
 protected:
 	void FUN_00486e40(SaveSystem* p_unk0x04);
 
-	LegoS32 m_unk0x368;                      // 0x0368
-	LegoU32 m_unk0x36c;                      // 0x036c
-	LegoS32 m_unk0x370;                      // 0x0370
-	LegoBool32 m_unk0x374;                   // 0x0374
-	LegoBool32 m_unk0x378;                   // 0x0378
-	ObscureAnchor0x5c m_unk0x37c;            // 0x037c
-	ObscureAnchor0x5c m_unk0x3d8;            // 0x03d8
-	ObscureAnchor0x5c m_unk0x434;            // 0x0434
-	CrimsonSun0xa4::FieldAt0x6c8 m_unk0x490; // 0x0490
-	CrimsonSun0xa4::FieldAt0x6c8 m_unk0x508; // 0x0508
-	CrimsonSun0xa4::FieldAt0x6c8 m_unk0x580; // 0x0580
-	MainMenuScreenFieldAt0x498 m_unk0x5f8;   // 0x05f8
-	MainMenuScreenFieldAt0x498 m_unk0x8e8;   // 0x08e8
-	MainMenuScreenFieldAt0x498 m_unk0xbd8;   // 0x0bd8
-	MainMenuScreenFieldAt0x498 m_unk0xec8;   // 0x0ec8
-	MainMenuScreenFieldAt0x498 m_unk0x11b8;  // 0x11b8
-	MainMenuScreenFieldAt0x498 m_unk0x14a8;  // 0x14a8
-	MainMenuScreenFieldAt0x498 m_unk0x1798;  // 0x1798
-	MainMenuScreenFieldAt0x498 m_unk0x1a88;  // 0x1a88
-	undefined4 m_unk0x1d78;                  // 0x1d78
+	LegoS32 m_unk0x368;              // 0x0368
+	LegoU32 m_unk0x36c;              // 0x036c
+	LegoS32 m_unk0x370;              // 0x0370
+	LegoBool32 m_unk0x374;           // 0x0374
+	LegoBool32 m_unk0x378;           // 0x0378
+	MenuImage m_unk0x37c;            // 0x037c
+	MenuImage m_unk0x3d8;            // 0x03d8
+	MenuImage m_unk0x434;            // 0x0434
+	MenuDialog::TextLine m_unk0x490; // 0x0490
+	MenuDialog::TextLine m_unk0x508; // 0x0508
+	MenuDialog::TextLine m_unk0x580; // 0x0580
+	MenuTextButton m_unk0x5f8;       // 0x05f8
+	MenuTextButton m_unk0x8e8;       // 0x08e8
+	MenuTextButton m_unk0xbd8;       // 0x0bd8
+	MenuTextButton m_unk0xec8;       // 0x0ec8
+	MenuTextButton m_unk0x11b8;      // 0x11b8
+	MenuTextButton m_unk0x14a8;      // 0x14a8
+	MenuTextButton m_unk0x1798;      // 0x1798
+	MenuTextButton m_unk0x1a88;      // 0x1a88
+	undefined4 m_unk0x1d78;          // 0x1d78
 };
 
 #endif // SAVELOADSCREEN_H

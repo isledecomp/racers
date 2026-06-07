@@ -10,7 +10,7 @@
 #include "input/keyboarddevice.h"
 #include "material/awakekite0x20.h"
 #include "menu/menuscreenid.h"
-#include "menu/screens/imaginarytool0x368.h"
+#include "menu/screens/menugamescreen.h"
 #include "render/goldrawstate.h"
 #include "util/amethystbreeze0x104.h"
 
@@ -20,8 +20,8 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
-DECOMP_SIZE_ASSERT(MenuToolContext0x4bc8, 0x4bc8)
-DECOMP_SIZE_ASSERT(MenuToolCreateParams0x30, 0x30)
+DECOMP_SIZE_ASSERT(MenuGameContext, 0x4bc8)
+DECOMP_SIZE_ASSERT(MenuScreenCreateParams, 0x30)
 DECOMP_SIZE_ASSERT(GolCamera, 0x344)
 
 // GLOBAL: LEGORACERS 0x004b05d8
@@ -395,7 +395,7 @@ LegoBool32 MenuManager::LoadLocalizedMenuResources(LegoU32 p_languageIndex, Lego
 			g_hashTable->SetCurrentEntryFromString("MENUDATA");
 		}
 
-		CeruleanEmperor0x4c::ResourceLoadParams params;
+		MenuStyleTable::ResourceLoadParams params;
 		params.m_renderer = m_renderer;
 		params.m_unk0x04 = 0;
 		params.m_fileName = "gstyles";
@@ -435,7 +435,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 		}
 	}
 
-	m_unk0x4dc8 = m_unk0x4bcc.FUN_0047f4e0(p_menuId);
+	m_unk0x4dc8 = m_unk0x4bcc.CreateScreen(p_menuId);
 	m_textRenderer.SetUnk0x54(m_unk0x4dc8);
 	m_unk0x4dc8->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
 }

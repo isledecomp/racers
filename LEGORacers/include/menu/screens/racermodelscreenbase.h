@@ -1,0 +1,81 @@
+#ifndef RACERMODELSCREENBASE_H
+#define RACERMODELSCREENBASE_H
+
+#include "cmbmodelpart0x34.h"
+#include "compat.h"
+#include "decomp.h"
+#include "golmodelentity.h"
+#include "menu/screens/awardcinematicscreen.h"
+#include "menu/screens/menugamescreen.h"
+#include "menu/screens/racermodelslot.h"
+#include "menu/screens/racerunlockstate.h"
+#include "menu/widgets/menuframedsceneview.h"
+#include "menu/widgets/menutextlabel.h"
+#include "util/opalhaven0xf4.h"
+
+class GolModelBase;
+class GolSceneNode;
+
+// VTABLE: LEGORACERS 0x004b3c78
+// SIZE 0x270c
+class RacerModelScreenBase : public MenuGameScreen {
+public:
+	RacerModelScreenBase();
+
+	void VTable0x4c() override;                                                            // vtable+0x4c
+	void Reset() override;                                                                 // vtable+0x54
+	~RacerModelScreenBase() override;                                                      // vtable+0x68
+	LegoBool32 Destroy() override;                                                         // vtable+0x74
+	LegoBool32 VTable0x78(undefined4) override;                                            // vtable+0x78
+	void VTable0x80() override;                                                            // vtable+0x80
+	LegoBool32 VTable0x88() override;                                                      // vtable+0x88
+	virtual void VTable0x98();                                                             // vtable+0x98
+	virtual LegoS32 VTable0x9c();                                                          // vtable+0x9c
+	virtual LegoBool32 VTable0xa0(MenuGameContext*, MenuScreenCreateParams*, undefined4*); // vtable+0xa0
+
+	// SYNTHETIC: LEGORACERS 0x004859e0
+	// RacerModelScreenBase::`scalar deleting destructor'
+
+protected:
+	void FUN_00485bb0();
+	void FUN_00485c80(MenuGameContext* p_context, LegoU32 p_mask);
+	void FUN_00485da0();
+	void FUN_004861b0();
+	void FUN_00486250(LegoS32 p_index);
+	void FUN_00486400(LegoS32 p_index);
+	void FUN_00486440(LegoS32 p_index);
+	void FUN_004864a0(LegoS32 p_index);
+	void FUN_004864f0(LegoS32 p_index);
+	void FUN_00486540();
+	void FUN_004865c0();
+	void FUN_004866e0(LegoS32 p_index);
+	void FUN_00486810(LegoS32 p_index);
+	void FUN_00486890(LegoS32 p_index);
+
+	CmbModelPart0x34 m_modelParts;                        // 0x0368
+	AwardCinematicScreen::SceneEntityGroup m_unk0x39c[4]; // 0x039c
+	GolSceneNode* m_unk0x4dc[4];                          // 0x04dc
+	GolModelBase* m_unk0x4ec[4];                          // 0x04ec
+	GolModelEntity m_unk0x4fc[4];                         // 0x04fc
+	GolModelBase* m_unk0x73c[4];                          // 0x073c
+	GolVec3 m_unk0x74c;                                   // 0x074c
+	GolVec3 m_unk0x758;                                   // 0x0758
+	undefined4 m_unk0x764;                                // 0x0764
+	undefined4 m_unk0x768;                                // 0x0768
+	LegoBool32 m_unk0x76c[2];                             // 0x076c
+	LegoBool32 m_unk0x774[2];                             // 0x0774
+	LegoS32 m_unk0x77c;                                   // 0x077c
+	LegoS32 m_unk0x780[2];                                // 0x0780
+	undefined m_unk0x788[0x98c - 0x788];                  // 0x0788
+	MenuFramedSceneView m_unk0x98c[4];                    // 0x098c
+	MenuTextLabel m_unk0x1cec[2];                         // 0x1cec
+	RacerModelSlot m_unk0x1ddc[4];                        // 0x1ddc
+	RacerModelSlot m_unk0x205c[4];                        // 0x205c
+	RacerUnlockState m_unk0x22dc[2];                      // 0x22dc
+	OpalHaven0xf4 m_unk0x232c[4];                         // 0x232c
+	LegoS32 m_unk0x26fc;                                  // 0x26fc
+	LegoS32 m_unk0x2700;                                  // 0x2700
+	undefined4 m_unk0x2704[2];                            // 0x2704
+};
+
+#endif // RACERMODELSCREENBASE_H

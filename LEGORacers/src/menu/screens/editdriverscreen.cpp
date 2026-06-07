@@ -5,9 +5,9 @@
 #include "golstream.h"
 #include "golstring.h"
 #include "golstringtable.h"
-#include "menu/crimsonsun0xa4.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "racer/turquoiseglowcolor.h"
 #include "save/peridottrace0x4e0.h"
 #include "surface/color.h"
@@ -15,7 +15,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(EditDriverScreen, 0x4774)
-DECOMP_SIZE_ASSERT(MaroonAtoll0x170, 0x170)
+DECOMP_SIZE_ASSERT(MenuRacerCarousel, 0x170)
 DECOMP_SIZE_ASSERT(TealCrucible0x50, 0x50)
 
 extern LegoU16 g_unk0x004befec[1024];
@@ -47,11 +47,11 @@ void EditDriverScreen::Reset()
 	m_unk0x4768 = 0;
 	m_unk0x4770 = 0;
 
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047d100
-void EditDriverScreen::FUN_0047d100(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	TealCrucible0x50::LoadParams params;
 	::memset(&params, 0, sizeof(params));
@@ -66,23 +66,23 @@ void EditDriverScreen::FUN_0047d100(MenuToolContext0x4bc8* p_context, MenuToolCr
 
 // FUNCTION: LEGORACERS 0x0047d170
 LegoBool32 EditDriverScreen::FUN_0047d170(
-	MaroonAtoll0x170* p_widget,
+	MenuRacerCarousel* p_widget,
 	undefined2 p_createParamId,
 	undefined2 p_styleId,
 	LegoU32 p_category
 )
 {
-	MaroonAtoll0x170::CreateParams0x80* sourceParams =
-		static_cast<MaroonAtoll0x170::CreateParams0x80*>(FUN_0046be10(p_createParamId));
-	CeruleanEmperor0x4c::Entry0x18* styleEntry = static_cast<CeruleanEmperor0x4c::Entry0x18*>(FUN_0046bd80(p_styleId));
+	MenuRacerCarousel::CreateParams* sourceParams =
+		static_cast<MenuRacerCarousel::CreateParams*>(GetBindingEntry(p_createParamId));
+	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_styleId));
 
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
 	}
 
-	MaroonAtoll0x170::CreateParams0x80 createParams;
+	MenuRacerCarousel::CreateParams createParams;
 	::memcpy(&createParams, sourceParams, sizeof(createParams));
-	FUN_0046ba60(&createParams);
+	ApplyWidgetDefaults(&createParams);
 
 	createParams.m_context = m_context;
 	createParams.m_unk0x6c = m_unk0x476c++;
@@ -99,13 +99,13 @@ void EditDriverScreen::FUN_0047d230()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\CB_SET");
 	}
 
-	FUN_0046c510(&m_unk0x31b0, 0, 0xd0);
+	CreateFramedSceneView(&m_unk0x31b0, 0, 0xd0);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
 	}
 
-	MainMenuScreenFieldAt0x22dc::CreateParams createParams;
+	MainMenuModelSlot::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
@@ -122,17 +122,17 @@ void EditDriverScreen::FUN_0047d230()
 // FUNCTION: LEGORACERS 0x0047d2f0
 void EditDriverScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
 	FUN_0047d170(&m_unk0x420[0], 0xcd, 0x3b, 0);
 	FUN_0047d170(&m_unk0x420[1], 0xce, 0x3b, 1);
 	FUN_0047d170(&m_unk0x420[2], 0xcd, 0x3b, 2);
 	FUN_0047d170(&m_unk0x420[3], 0xcd, 0x3b, 3);
-	FUN_0046c2b0(&m_unk0x9e0[0], &m_unk0x420[0], 0xc8, 0xcc);
-	FUN_0046c2b0(&m_unk0x9e0[1], &m_unk0x420[1], 0xc9, 0xcc);
-	FUN_0046c2b0(&m_unk0x9e0[2], &m_unk0x420[2], 0xca, 0xcc);
-	FUN_0046c2b0(&m_unk0x9e0[3], &m_unk0x420[3], 0xcb, 0xcc);
+	CreateSelector(&m_unk0x9e0[0], &m_unk0x420[0], 0xc8, 0xcc);
+	CreateSelector(&m_unk0x9e0[1], &m_unk0x420[1], 0xc9, 0xcc);
+	CreateSelector(&m_unk0x9e0[2], &m_unk0x420[2], 0xca, 0xcc);
+	CreateSelector(&m_unk0x9e0[3], &m_unk0x420[3], 0xcb, 0xcc);
 	FUN_0047d230();
-	FUN_0046bf80(&m_unk0x3688, 0x3a, 0x3a, 9);
+	CreateTextLabel(&m_unk0x3688, 0x3a, 0x3a, 9);
 	m_unk0x3688.FUN_0046f6b0(0x14);
 	FUN_0047fdc0(&m_unk0x3700, 0xd2, 0x42, 0x38);
 
@@ -147,13 +147,13 @@ void EditDriverScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047d460
-LegoBool32 EditDriverScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!p_context->m_unk0x4b40.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -181,7 +181,7 @@ LegoBool32 EditDriverScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTo
 // FUNCTION: LEGORACERS 0x0047d520
 LegoBool32 EditDriverScreen::Destroy()
 {
-	MenuToolContext0x4bc8* context = m_context;
+	MenuGameContext* context = m_context;
 
 	if (!m_initialized) {
 		return TRUE;
@@ -190,7 +190,7 @@ LegoBool32 EditDriverScreen::Destroy()
 	m_unk0x45b0.FUN_004991c0();
 	context->m_unk0x21f4.FUN_00499ee0();
 
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047d560
@@ -340,7 +340,7 @@ void EditDriverScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047da50
-LegoBool32 EditDriverScreen::VTable0x18(ObscureVantage0x58* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 EditDriverScreen::VTable0x18(MenuWidget* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;
@@ -357,7 +357,7 @@ LegoBool32 EditDriverScreen::VTable0x18(ObscureVantage0x58* p_unk0x04, InputEven
 }
 
 // FUNCTION: LEGORACERS 0x0047dab0
-void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
+void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 {
 	m_unk0x4764 = TRUE;
 
@@ -402,7 +402,7 @@ void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047dbf0
-void EditDriverScreen::VTable0x38(ObscureVantage0x58* p_source)
+void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x3700) {
 		LegoS32 i;
@@ -473,5 +473,5 @@ LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_unk0x04)
 		FUN_0047d6f0();
 	}
 
-	return ImaginaryTool0x368::VTable0x78(p_unk0x04);
+	return MenuGameScreen::VTable0x78(p_unk0x04);
 }

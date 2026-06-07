@@ -1,9 +1,9 @@
 #include "menu/screens/newracerscreen.h"
 
-#include "menu/crimsonsun0xa4.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 #include "save/peridottrace0x4e0.h"
 
 DECOMP_SIZE_ASSERT(NewRacerScreen, 0x770)
@@ -21,7 +21,7 @@ NewRacerScreen::~NewRacerScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00482120
-LegoBool32 NewRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -29,24 +29,24 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 
 	m_unk0x76c = p_context->m_unk0x4b40.GetUnk0x84();
 	p_createParams->m_cursorHelper->SetCursorEnabled(FALSE);
-	return ImaginaryTool0x368::VTable0x8c(p_context, p_createParams) != FALSE;
+	return MenuGameScreen::VTable0x8c(p_context, p_createParams) != FALSE;
 }
 
 // STUB: LEGORACERS 0x00482160
 void NewRacerScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
 
 	LegoU32 memoryCardIndex = m_unk0x76c;
-	MenuToolContext0x4bc8* context = m_context;
+	MenuGameContext* context = m_context;
 	LegoBool32 active = TRUE;
 	PeridotTraceBase0x24* trace;
 
 	if (memoryCardIndex >= 2) {
 		trace = &context->m_unk0x258.GetUnk0x108();
 		if (!trace->GetAvailableRecordCount()) {
-			FUN_0046bef0(&m_unk0x3c4, 0x53, 0x53);
-			FUN_0046bef0(&m_unk0x420, 0x54, 0x54);
+			CreateImage(&m_unk0x3c4, 0x53, 0x53);
+			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbb);
 			m_cursorHelper->SetCursorEnabled(active);
@@ -57,8 +57,8 @@ void NewRacerScreen::VTable0x4c()
 		PeridotTrace0x4e0* memoryCardTrace = &context->m_unk0x258.GetUnk0xa58()[memoryCardIndex];
 		trace = memoryCardTrace;
 		if (!memoryCardTrace->HasUnk0x4b4Flag0x01() || !memoryCardTrace->GetAvailableRecordCount()) {
-			FUN_0046bef0(&m_unk0x3c4, 0x53, 0x53);
-			FUN_0046bef0(&m_unk0x420, 0x54, 0x54);
+			CreateImage(&m_unk0x3c4, 0x53, 0x53);
+			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbc);
 			m_cursorHelper->SetCursorEnabled(active);
@@ -99,7 +99,7 @@ void NewRacerScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00482350
-void NewRacerScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
+void NewRacerScreen::VTable0x38(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x47c) {
 		m_unk0x284->FUN_00468cf0();
@@ -116,5 +116,5 @@ LegoBool32 NewRacerScreen::Destroy()
 	}
 
 	m_cursorHelper->SetCursorEnabled(TRUE);
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }

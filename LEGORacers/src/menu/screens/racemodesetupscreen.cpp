@@ -2,8 +2,8 @@
 
 #include "golname.h"
 #include "golstringtable.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "race/data/racenameentry.h"
 #include "save/savesystem.h"
 
@@ -36,13 +36,13 @@ void RaceModeSetupScreen::Reset()
 	::memset(m_unk0x2e32, 0, sizeof(m_unk0x2e32));
 	m_unk0x2e48.CopyFromBufSelection(m_unk0x2e14, sizeOfArray(m_unk0x2e14) - 1);
 	m_unk0x2e54.CopyFromBufSelection(m_unk0x2e32, sizeOfArray(m_unk0x2e32) - 1);
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00487b50
 void RaceModeSetupScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x1908, 0x49, 0x49);
+	CreateImage(&m_unk0x1908, 0x49, 0x49);
 	SingleRaceSelectBase::VTable0x4c();
 
 	undefined4 textId;
@@ -53,30 +53,30 @@ void RaceModeSetupScreen::VTable0x4c()
 		textId = 0x0e + ((m_context->m_unk0x4b40.GetUnk0x78() & 2) ? 0x0b : 0);
 	}
 
-	FUN_0046bf80(&m_unk0x1964, 0x3a, 0x3a, textId);
+	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, textId);
 	m_unk0x1964.FUN_0046f6b0(0x14);
-	FUN_0046c240(&m_unk0x1fc0, 0x3d, 0x3b);
-	FUN_0046c2b0(&m_unk0x2054, &m_unk0x1fc0, 0x69, 0x4c);
+	CreateCarousel(&m_unk0x1fc0, 0x3d, 0x3b);
+	CreateSelector(&m_unk0x2054, &m_unk0x1fc0, 0x69, 0x4c);
 	FUN_0047fdc0(&m_unk0x19dc, 0x40, 0x46, 0x72);
 	FUN_0047fdc0(&m_unk0x1ccc, 0x3f, 0x43, 2);
 
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
-		FUN_0046bf80(&m_unk0x2a48[i], 0x96, 0x37, 0x70);
+		CreateTextLabel(&m_unk0x2a48[i], 0x96, 0x37, 0x70);
 	}
 
 	if (m_menuId == 0x1d) {
-		FUN_0046bf80(&m_unk0x2c28, 0x6a, 0x37, 0x70);
-		FUN_0046bf80(&m_unk0x2ca0, 0x6c, 0x37, 0x70);
-		FUN_0046bf80(&m_unk0x2d18, 0x6b, 0x37, 0x70);
+		CreateTextLabel(&m_unk0x2c28, 0x6a, 0x37, 0x70);
+		CreateTextLabel(&m_unk0x2ca0, 0x6c, 0x37, 0x70);
+		CreateTextLabel(&m_unk0x2d18, 0x6b, 0x37, 0x70);
 		m_unk0x2e10 = 1;
 		FUN_004881a0();
-		FUN_0046bf80(&m_unk0x2d90, 0x6d, 0x37, 0x49);
+		CreateTextLabel(&m_unk0x2d90, 0x6d, 0x37, 0x49);
 		m_unk0x2d90.ClearFlags(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00487ca0
-LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 6;
@@ -94,16 +94,16 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, Men
 }
 
 // FUNCTION: LEGORACERS 0x00487d10
-void RaceModeSetupScreen::VTable0x3c(ObscureIcon0x1a8* p_unk0x04)
+void RaceModeSetupScreen::VTable0x3c(MenuIcon* p_unk0x04)
 {
 	m_unk0x358 = p_unk0x04;
 	FUN_00488010();
 }
 
 // FUNCTION: LEGORACERS 0x00487d40
-void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58* p_source)
+void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
 {
-	ObscureVantage0x58* source = p_source;
+	MenuWidget* source = p_source;
 	if (source == &m_unk0x19dc) {
 		RaceDefinitionList::RaceDefinition* raceDefinition = m_unk0x1904;
 		if (raceDefinition) {
@@ -134,7 +134,7 @@ void RaceModeSetupScreen::VTable0x38(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00487e10
-void RaceModeSetupScreen::VTable0x44(ObscureVantage0x58* p_source)
+void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
 {
 	GolString string;
 	LegoBool32 isComplete = FALSE;
@@ -218,12 +218,12 @@ void RaceModeSetupScreen::FUN_00488010()
 	}
 
 	GolNameTable* frameNames = &m_unk0x368.m_unk0x58;
-	SaffronQuartz0x2c::Frame0xb8* frame;
+	CutsceneDefinition::Frame* frame;
 	if (!frameNames->GetNameEntries()) {
 		frame = NULL;
 	}
 	else {
-		frame = static_cast<SaffronQuartz0x2c::Frame0xb8*>(frameNames->GetName(frameName));
+		frame = static_cast<CutsceneDefinition::Frame*>(frameNames->GetName(frameName));
 	}
 
 	LegoChar* raceNameSource = raceNameEntry->GetName();
@@ -231,7 +231,7 @@ void RaceModeSetupScreen::FUN_00488010()
 	m_unk0x2e0c = m_context->m_raceNames.GetEntryIndexByName(raceName);
 	if (frame && frame != m_unk0x368.m_unk0x2b0) {
 		m_unk0x368.FUN_00466d00(frame);
-		m_unk0x368.m_unk0x2b0->SetFlags(SaffronQuartz0x2c::Frame0xb8::c_flagLoop);
+		m_unk0x368.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 		m_unk0x2e10 = TRUE;
 		FUN_004881a0();
 	}
@@ -256,7 +256,7 @@ LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4 p_elapsed)
 		m_unk0x2e08 -= p_elapsed;
 	}
 
-	return ImaginaryChisel0x658::VTable0x78(p_elapsed);
+	return MenuSceneScreen::VTable0x78(p_elapsed);
 }
 
 // FUNCTION: LEGORACERS 0x004881a0

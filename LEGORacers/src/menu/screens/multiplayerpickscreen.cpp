@@ -4,7 +4,7 @@
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
 #include "input/mousedevice.h"
-#include "menu/menutoolcontext0x4bc8.h"
+#include "menu/menugamecontext.h"
 #include "world/golworlddatabase.h"
 
 #include <string.h>
@@ -30,26 +30,26 @@ void MultiplayerPickScreen::Reset()
 	m_unk0x2b70[1] = NULL;
 	m_unk0x2b78 = NULL;
 	::memset(m_unk0x2b94, 0, sizeof(m_unk0x2b94));
-	RacerPickScreenBase0x270c::Reset();
+	RacerModelScreenBase::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00481830
 void MultiplayerPickScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x270c, 0x49, 0x49);
-	RacerPickScreenBase0x270c::VTable0x4c();
-	FUN_0046bf80(&m_unk0x2990, 0xf0, 0x37, 0x56);
-	FUN_0046bf80(&m_unk0x2a08, 0xf1, 0x37, 0x57);
-	FUN_0046bf80(&m_unk0x2bd4[0], 0x8e, 0x37, 0x56);
-	FUN_0046bf80(&m_unk0x2bd4[1], 0x8f, 0x37, 0x56);
-	FUN_0046bef0(&m_unk0x2768[0], 0x86, 0x4b);
-	FUN_0046bef0(&m_unk0x2768[1], 0x87, 0x4b);
-	FUN_0046bef0(&m_unk0x2768[2], 0x88, 0x4a);
-	FUN_0046bef0(&m_unk0x2768[3], 0x89, 0x4a);
-	FUN_0046bef0(&m_unk0x2768[4], 0x8c, 0x50);
-	FUN_0046bef0(&m_unk0x2768[5], 0x8d, 0x51);
-	FUN_0046bf80(&m_unk0x2a80, 0x8a, 0x37, 0x72);
-	FUN_0046bf80(&m_unk0x2af8, 0x8b, 0x37, 0x1f);
+	CreateImage(&m_unk0x270c, 0x49, 0x49);
+	RacerModelScreenBase::VTable0x4c();
+	CreateTextLabel(&m_unk0x2990, 0xf0, 0x37, 0x56);
+	CreateTextLabel(&m_unk0x2a08, 0xf1, 0x37, 0x57);
+	CreateTextLabel(&m_unk0x2bd4[0], 0x8e, 0x37, 0x56);
+	CreateTextLabel(&m_unk0x2bd4[1], 0x8f, 0x37, 0x56);
+	CreateImage(&m_unk0x2768[0], 0x86, 0x4b);
+	CreateImage(&m_unk0x2768[1], 0x87, 0x4b);
+	CreateImage(&m_unk0x2768[2], 0x88, 0x4a);
+	CreateImage(&m_unk0x2768[3], 0x89, 0x4a);
+	CreateImage(&m_unk0x2768[4], 0x8c, 0x50);
+	CreateImage(&m_unk0x2768[5], 0x8d, 0x51);
+	CreateTextLabel(&m_unk0x2a80, 0x8a, 0x37, 0x72);
+	CreateTextLabel(&m_unk0x2af8, 0x8b, 0x37, 0x1f);
 }
 
 // FUNCTION: LEGORACERS 0x00481960
@@ -85,7 +85,7 @@ void MultiplayerPickScreen::FUN_004819b0()
 }
 
 // FUNCTION: LEGORACERS 0x00481a30
-LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	undefined4 params[3];
 	params[0] = 2;
@@ -94,7 +94,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, M
 	p_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, NULL);
 	params[2] = 0xffff3;
 
-	if (!RacerPickScreenBase0x270c::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerModelScreenBase::VTable0xa0(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
@@ -163,7 +163,7 @@ void MultiplayerPickScreen::FUN_00481bf0(LegoS32 p_index)
 
 // STUB: LEGORACERS 0x00481c80
 LegoBool32 MultiplayerPickScreen::VTable0x18(
-	ObscureVantage0x58* p_source,
+	MenuWidget* p_source,
 	InputEventQueue::Event* p_event,
 	undefined4,
 	undefined4
@@ -286,7 +286,7 @@ void MultiplayerPickScreen::VTable0x84()
 // FUNCTION: LEGORACERS 0x00481fc0
 LegoBool32 MultiplayerPickScreen::VTable0x78(undefined4 p_elapsed)
 {
-	LegoBool32 result = RacerPickScreenBase0x270c::VTable0x78(p_elapsed);
+	LegoBool32 result = RacerModelScreenBase::VTable0x78(p_elapsed);
 	FUN_004819b0();
 	return result;
 }

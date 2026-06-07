@@ -3,9 +3,9 @@
 #include "image/utopianpan0xa4.h"
 #include "input/inputmanager.h"
 #include "input/mousedevice.h"
-#include "menu/screens/imaginarynotion0x290.h"
-#include "menu/screens/imaginarytool0x368.h"
-#include "menu/widgets/obscureicon0x1a8.h"
+#include "menu/screens/menugamescreen.h"
+#include "menu/screens/menuscreen.h"
+#include "menu/widgets/menuicon.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 #include "render/goldrawstate.h"
@@ -218,7 +218,7 @@ LegoS32 CopperCrest0x40::VTable0x0c()
 // FUNCTION: LEGORACERS 0x004690b0
 void CopperCrest0x40::VTable0x14()
 {
-	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
 
 	if (!icon->VTable0x60()) {
 		icon->VTable0x68();
@@ -228,7 +228,7 @@ void CopperCrest0x40::VTable0x14()
 // FUNCTION: LEGORACERS 0x004690d0
 void CopperCrest0x40::VTable0x18()
 {
-	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
 
 	if (!icon->VTable0x64()) {
 		icon->VTable0x6c();
@@ -238,8 +238,8 @@ void CopperCrest0x40::VTable0x18()
 // FUNCTION: LEGORACERS 0x004690f0
 LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
 {
-	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
-	ObscureVantage0x58* active = icon->FUN_00472e60();
+	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuWidget* active = icon->FindFocusedLeaf();
 	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
 	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
 
@@ -274,8 +274,8 @@ LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
 // FUNCTION: LEGORACERS 0x004691e0
 void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 {
-	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
-	ObscureVantage0x58* active = icon->FUN_00472e60();
+	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuWidget* active = icon->FindFocusedLeaf();
 	UtopianPan0xa4* rendererObject = m_unk0x10.m_rendererObject;
 	LegoS32 right = m_unk0x58 - (rendererObject->m_width >> 2);
 	LegoS32 bottom = m_unk0x5c - (rendererObject->m_height >> 2);
@@ -302,7 +302,7 @@ void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
 }
 
 // FUNCTION: LEGORACERS 0x004692b0
-LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
+LegoS32 CopperCrest0x40::VTable0x04(MenuIcon*)
 {
 	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
 	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
@@ -347,7 +347,7 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 			case c_joystickButton1:
 				break;
 			default:
-				ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
+				MenuIcon* icon = m_unk0x54->GetUnk0xd8();
 
 				if (item->m_isPressed) {
 					icon->VTable0x24(item, x, y);
@@ -366,7 +366,7 @@ LegoS32 CopperCrest0x40::VTable0x04(ObscureIcon0x1a8*)
 // FUNCTION: LEGORACERS 0x004694b0
 LegoS32 CopperCrest0x40::VTable0x10(undefined4 p_elapsedMs)
 {
-	ObscureIcon0x1a8* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
 
 	if (icon) {
 		icon->VTable0x18(p_elapsedMs);

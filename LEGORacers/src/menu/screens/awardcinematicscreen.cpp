@@ -5,9 +5,9 @@
 #include "core/gol.h"
 #include "golhashtable.h"
 #include "golstring.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 #include "model/sapphirereef0x2030.h"
 
 #include <stdio.h>
@@ -28,7 +28,7 @@ AwardCinematicScreen::~AwardCinematicScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00475d30
-LegoBool32 AwardCinematicScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 AwardCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -42,7 +42,7 @@ LegoBool32 AwardCinematicScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, Me
 		p_context->m_unk0x21f4.FUN_00499f00();
 	}
 
-	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -111,9 +111,9 @@ LegoBool32 AwardCinematicScreen::Destroy()
 		}
 	}
 
-	LegoBool32 result = ImaginaryChisel0x658::Destroy();
+	LegoBool32 result = MenuSceneScreen::Destroy();
 	if (m_unk0x28c == c_menuWinRrCar) {
-		MenuToolContext0x4bc8* context = m_context;
+		MenuGameContext* context = m_context;
 		if (context->m_unk0x21f4.FUN_0049a0e0()) {
 			m_context->m_unk0x21f4.FUN_00499ee0();
 		}
@@ -149,7 +149,7 @@ void AwardCinematicScreen::VTable0x4c()
 		g_hashTable->SetCurrentEntryFromString(locals.m_path);
 	}
 
-	FUN_0046c5b0(&m_unk0x368, m_unk0x28c);
+	CreateRegion(&m_unk0x368, m_unk0x28c);
 	m_unk0x368.m_unk0x2cc = FALSE;
 	FUN_004767b0();
 }
@@ -307,5 +307,5 @@ LegoBool32 AwardCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x368.m_unk0x2cc = TRUE;
 	}
 
-	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }

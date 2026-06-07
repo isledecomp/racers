@@ -4,12 +4,12 @@
 #include "compat.h"
 #include "decomp.h"
 #include "goltxtparser.h"
-#include "menu/style/ceruleanknight0x20.h"
-#include "menu/widgets/obscureanchor0x5c.h"
-#include "menu/widgets/obscurebanner0x5ec.h"
-#include "menu/widgets/obscureglyph0x21c.h"
-#include "menu/widgets/obscureicon0x1a8.h"
-#include "menu/widgets/obscuretome0x3fc.h"
+#include "menu/style/menuresourcetable.h"
+#include "menu/widgets/menubutton.h"
+#include "menu/widgets/menuframe.h"
+#include "menu/widgets/menuicon.h"
+#include "menu/widgets/menuimage.h"
+#include "menu/widgets/menuselector.h"
 #include "types.h"
 #include "util/visualstate0x4.h"
 
@@ -20,7 +20,7 @@ class UtopianPan0xa4;
 
 // VTABLE: LEGORACERS 0x004b2180
 // SIZE 0x5c
-class MenuInputBindingTable : public CeruleanKnight0x20 {
+class MenuInputBindingTable : public MenuResourceTable {
 public:
 	// VTABLE: LEGORACERS 0x004b2198
 	// SIZE 0x1fc
@@ -33,15 +33,15 @@ public:
 	};
 
 	// SIZE 0x38
-	class Entry0x38 : public ObscureVantage0x58::CreateParams0x38 {
+	class RegionBinding : public MenuWidget::CreateParams {
 	public:
 	};
 
 	// SIZE 0x3c
-	class Entry0x3c : public ObscureAnchor0x5c::CreateParams0x3c {};
+	class ImageBinding : public MenuImage::CreateParams {};
 
 	// SIZE 0x48
-	class Entry0x48 : public ObscureVantage0x58::CreateParams0x38 {
+	class TextLabelBinding : public MenuWidget::CreateParams {
 	public:
 		GolStringTable* m_unk0x38; // 0x38
 		GolFont0xa0* m_unk0x3c;    // 0x3c
@@ -51,13 +51,13 @@ public:
 	};
 
 	// SIZE 0x60
-	class Entry0x60 : public ObscureTome0x3fc::CreateParams0x60 {};
+	class FrameBinding : public MenuFrame::CreateParams {};
 
 	// SIZE 0x84
-	class Entry0x84 : public ObscureIcon0x1a8::CreateParams0x84 {};
+	class IconBinding : public MenuIcon::CreateParams {};
 
 	// SIZE 0x88
-	class Entry0x88 : public ObscureVantage0x58::CreateParams0x38 {
+	class SceneBinding : public MenuWidget::CreateParams {
 	public:
 		LegoFloat m_unk0x38[9];          // 0x38
 		LegoFloat m_unk0x5c;             // 0x5c
@@ -71,7 +71,7 @@ public:
 	};
 
 	// SIZE 0x98
-	class Entry0x98 : public Entry0x84 {
+	class SelectorBinding : public IconBinding {
 	public:
 		void* m_unk0x84;      // 0x84
 		void* m_unk0x88;      // 0x88
@@ -81,19 +81,19 @@ public:
 	};
 
 	// SIZE 0x9c
-	class Entry0x9c : public Entry0x84 {
+	class ButtonBinding : public IconBinding {
 	public:
 		UtopianPan0xa4* m_unk0x84[6]; // 0x84
 	};
 
 	// SIZE 0xa0
-	class Entry0xa0 : public Entry0x9c {
+	class HotspotBinding : public ButtonBinding {
 	public:
 		UtopianPan0xa4* m_unk0x9c; // 0x9c
 	};
 
 	// SIZE 0xa0
-	class Entry0xa0WithFont : public Entry0x84 {
+	class TextFieldBinding : public IconBinding {
 	public:
 		undefined m_unk0x84[0x8c - 0x84]; // 0x84
 		GolFont0xa0* m_unk0x8c;           // 0x8c
@@ -104,18 +104,18 @@ public:
 	};
 
 	// SIZE 0xb8
-	class Entry0xb8 : public ObscureBanner0x5ec::CreateParams0x8c {
+	class CompositeBinding : public MenuSelectorBase::CreateParams {
 	public:
-		ObscureAnchor0x5c::CreateParams0x3c* m_unk0x8c; // 0x8c
-		ObscureAnchor0x5c::CreateParams0x3c* m_unk0x90; // 0x90
-		UtopianPan0xa4* m_unk0x94[6];                   // 0x94
-		ObscureIcon0x1a8::SoundIdPair0x4 m_unk0xac;     // 0xac
-		LegoS32 m_unk0xb0;                              // 0xb0
-		LegoS32 m_unk0xb4;                              // 0xb4
+		MenuImage::CreateParams* m_unk0x8c; // 0x8c
+		MenuImage::CreateParams* m_unk0x90; // 0x90
+		UtopianPan0xa4* m_unk0x94[6];       // 0x94
+		MenuIcon::SoundIdPair m_unk0xac;    // 0xac
+		LegoS32 m_unk0xb0;                  // 0xb0
+		LegoS32 m_unk0xb4;                  // 0xb4
 	};
 
 	// SIZE 0xec
-	class Entry0xec : public Entry0x84 {
+	class MultiStateBinding : public IconBinding {
 	public:
 		// SIZE 0x0c
 		class ImageTriplet {
@@ -135,7 +135,7 @@ public:
 	};
 
 	// SIZE 0x54
-	class Entry0x54 : public ObscureVantage0x58::CreateParams0x38 {
+	class SceneRefBinding : public MenuWidget::CreateParams {
 	public:
 		LegoChar m_unk0x38[0x48 - 0x38]; // 0x38
 		undefined4 m_unk0x48;            // 0x48
@@ -144,7 +144,7 @@ public:
 	};
 
 	// SIZE 0x74
-	class Struct0x74 : public ObscureVantage0x58::CreateParams0x38 {
+	class ModelCarouselBinding : public MenuWidget::CreateParams {
 	public:
 		LegoS32 m_unk0x38;                // 0x38
 		Rect* m_unk0x3c;                  // 0x3c
@@ -168,63 +168,69 @@ public:
 	void VTable0x10(undefined4) override; // vtable+0x10
 	void VTable0x14(undefined4) override; // vtable+0x14
 	LegoBool32 Load(ResourceLoadParams* p_params);
-	Entry0x3c* GetEntry0x3c(const LegoChar* p_name) { return static_cast<Entry0x3c*>(FUN_0046aff0(p_name)); }
-	Entry0x84* GetEntry0x84(const LegoChar* p_name) { return static_cast<Entry0x84*>(FUN_0046aff0(p_name)); }
+	ImageBinding* GetImageBinding(const LegoChar* p_name)
+	{
+		return static_cast<ImageBinding*>(ResolveEntryByName(p_name));
+	}
+	IconBinding* GetIconBinding(const LegoChar* p_name)
+	{
+		return static_cast<IconBinding*>(ResolveEntryByName(p_name));
+	}
 
 	// SYNTHETIC: LEGORACERS 0x00469600
 	// MenuInputBindingTable::`scalar deleting destructor'
 
 private:
 	void FUN_00469900(ResourceLoadParams* p_params);
-	void FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p_entry);
-	void FUN_00469c90(Entry0x98* p_entry);
-	void FUN_00469d20(LegoFloat* p_floats);
-	void FUN_00469d90(Entry0x3c* p_entry);
-	void FUN_00469e20(Entry0x48* p_entry);
-	void FUN_00469ee0(Entry0x60* p_entry);
-	void FUN_00469fd0(Entry0x9c* p_entry);
-	void FUN_0046a050(Entry0xec* p_entry);
-	void FUN_0046a110(Entry0xa0* p_entry);
-	void FUN_0046a190(Entry0x98* p_entry);
-	void FUN_0046a1f0(Struct0x74* p_entry);
-	void FUN_0046a310(Entry0xb8* p_entry);
-	void FUN_0046a490(Entry0x88* p_entry);
-	void FUN_0046a590(Entry0x54* p_entry);
-	void FUN_0046a640(Entry0xa0WithFont* p_entry);
-	void FUN_0046a750();
-	void FUN_0046a800();
-	void FUN_0046a8a0();
-	void FUN_0046a940();
-	void FUN_0046a9e0();
-	void FUN_0046aa90();
-	void FUN_0046ab40();
-	void FUN_0046abe0();
-	void FUN_0046ac90();
-	void FUN_0046ad40();
-	void FUN_0046adf0();
-	void FUN_0046af50();
-	void FUN_0046aea0();
+	void ParseWidgetBase(MenuWidget::CreateParams* p_entry);
+	void FUN_00469c90(SelectorBinding* p_entry);
+	void ReadNineFloats(LegoFloat* p_floats);
+	void FUN_00469d90(ImageBinding* p_entry);
+	void FUN_00469e20(TextLabelBinding* p_entry);
+	void FUN_00469ee0(FrameBinding* p_entry);
+	void FUN_00469fd0(ButtonBinding* p_entry);
+	void FUN_0046a050(MultiStateBinding* p_entry);
+	void FUN_0046a110(HotspotBinding* p_entry);
+	void FUN_0046a190(SelectorBinding* p_entry);
+	void FUN_0046a1f0(ModelCarouselBinding* p_entry);
+	void FUN_0046a310(CompositeBinding* p_entry);
+	void FUN_0046a490(SceneBinding* p_entry);
+	void FUN_0046a590(SceneRefBinding* p_entry);
+	void FUN_0046a640(TextFieldBinding* p_entry);
+	void ParseRegionBindings();
+	void ParseImageBindings();
+	void ParseTextLabelBindings();
+	void ParseFrameBindings();
+	void ParseButtonBindings();
+	void ParseMultiStateBindings();
+	void ParseHotspotBindings();
+	void ParseSelectorBindings();
+	void ParseModelCarouselBindings();
+	void ParseCompositeBindings();
+	void ParseSceneBindings();
+	void ParseTextFieldBindings();
+	void ParseSceneRefBindings();
 
 protected:
-	void FUN_00469b20(ObscureIcon0x1a8::CreateParams0x84* p_entry);
-	void FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_entry);
+	void FUN_00469b20(MenuIcon::CreateParams* p_entry);
+	void FUN_00469b50(MenuIcon::CreateParams* p_entry);
 
-	Entry0x38* m_unk0x20;         // 0x20
-	Entry0x3c* m_unk0x24;         // 0x24
-	Entry0x48* m_unk0x28;         // 0x28
-	Entry0x60* m_unk0x2c;         // 0x2c
-	Entry0x9c* m_unk0x30;         // 0x30
-	Entry0xec* m_unk0x34;         // 0x34
-	Entry0xa0* m_unk0x38;         // 0x38
-	Entry0x98* m_unk0x3c;         // 0x3c
-	Struct0x74* m_unk0x40;        // 0x40
-	Entry0xb8* m_unk0x44;         // 0x44
-	Entry0x88* m_unk0x48;         // 0x48
-	Entry0xa0WithFont* m_unk0x4c; // 0x4c
-	Entry0x54* m_unk0x50;         // 0x50
-	undefined2 m_unk0x54;         // 0x54
-	undefined m_unk0x56[2];       // 0x56
-	LegoS32 m_unk0x58;            // 0x58
+	RegionBinding* m_unk0x20;        // 0x20
+	ImageBinding* m_unk0x24;         // 0x24
+	TextLabelBinding* m_unk0x28;     // 0x28
+	FrameBinding* m_unk0x2c;         // 0x2c
+	ButtonBinding* m_unk0x30;        // 0x30
+	MultiStateBinding* m_unk0x34;    // 0x34
+	HotspotBinding* m_unk0x38;       // 0x38
+	SelectorBinding* m_unk0x3c;      // 0x3c
+	ModelCarouselBinding* m_unk0x40; // 0x40
+	CompositeBinding* m_unk0x44;     // 0x44
+	SceneBinding* m_unk0x48;         // 0x48
+	TextFieldBinding* m_unk0x4c;     // 0x4c
+	SceneRefBinding* m_unk0x50;      // 0x50
+	undefined2 m_unk0x54;            // 0x54
+	undefined m_unk0x56[2];          // 0x56
+	LegoS32 m_unk0x58;               // 0x58
 };
 
 #endif // MENUINPUTBINDINGTABLE_H

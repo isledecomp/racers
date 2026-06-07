@@ -1,8 +1,8 @@
 #include "menu/screens/saveloadscreen.h"
 
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 #include "save/peridottraceroot0x108.h"
 #include "save/savesystem.h"
 
@@ -26,7 +26,7 @@ SaveLoadScreen::~SaveLoadScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00486dd0
-LegoBool32 SaveLoadScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -37,7 +37,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 	m_unk0x370 = p_context->m_unk0x4b40.GetUnk0x84();
 	FUN_00486e40(&p_context->m_unk0x258);
 
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -125,7 +125,7 @@ LegoBool32 SaveLoadScreen::Destroy()
 
 	m_cursorHelper->SetCursorEnabled(TRUE);
 	m_unk0x368 = 0;
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00487020
@@ -148,7 +148,7 @@ LegoBool32 SaveLoadScreen::VTable0x78(undefined4)
 void SaveLoadScreen::VTable0x4c()
 {
 	if (!(m_context->m_unk0x4b40.GetUnk0x78() & 0x10)) {
-		FUN_0046bef0(&m_unk0x37c, 0x49, 0x49);
+		CreateImage(&m_unk0x37c, 0x49, 0x49);
 	}
 	else {
 		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~0x10);
@@ -163,32 +163,32 @@ void SaveLoadScreen::VTable0x4c()
 		m_unk0x378 = FALSE;
 	}
 
-	FUN_0046bef0(&m_unk0x3d8, 0x53, 0x53);
-	FUN_0046bef0(&m_unk0x434, 0x54, 0x54);
+	CreateImage(&m_unk0x3d8, 0x53, 0x53);
+	CreateImage(&m_unk0x434, 0x54, 0x54);
 
 	switch (m_unk0x368) {
 	case 8:
 	case 0x12:
 		return;
 	case 0x18:
-		FUN_0046bf80(&m_unk0x490, 0x142, 0x37, 0x89);
-		FUN_0046bf80(&m_unk0x508, 0x143, 0x37, 0x87);
-		FUN_0046bf80(&m_unk0x580, 0x144, 0x37, 0x37);
+		CreateTextLabel(&m_unk0x490, 0x142, 0x37, 0x89);
+		CreateTextLabel(&m_unk0x508, 0x143, 0x37, 0x87);
+		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
 		FUN_0047fdc0(&m_unk0x1a88, 0x40, 0x46, 0x72);
 		m_unk0x1a88.VTable0x4c(0);
 		return;
 	default:
 		if (m_unk0x36c != c_menuSaveAll && m_unk0x36c != c_menuSaveCard) {
-			FUN_0046bf80(&m_unk0x490, 0x145, 0x37, 0xa9);
+			CreateTextLabel(&m_unk0x490, 0x145, 0x37, 0xa9);
 		}
 
 	case 0x13:
-		FUN_0046bf80(&m_unk0x508, 0x143, 0x37, 0x37);
+		CreateTextLabel(&m_unk0x508, 0x143, 0x37, 0x37);
 
 	case 0x14:
 	case 0x16:
 	case 0x17:
-		FUN_0046bf80(&m_unk0x580, 0x144, 0x37, 0x37);
+		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
 		FUN_0047fdc0(&m_unk0x1a88, 0x40, 0x46, 0x72);
 		m_unk0x1a88.VTable0x4c(0);
 		return;
@@ -202,7 +202,7 @@ void SaveLoadScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00487220
-void SaveLoadScreen::VTable0x38(ObscureVantage0x58* p_unk0x04)
+void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x1a88) {
 		switch (m_unk0x368) {

@@ -2,8 +2,8 @@
 
 #include "app/golapp.h"
 #include "golstring.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "render/goldrawstate.h"
 #include "util/displaydriverguid.h"
 
@@ -28,7 +28,7 @@ void OptionsScreen::Reset()
 {
 	m_unk0x51a8 = 0;
 	::memset(m_unk0x646c, 0, sizeof(m_unk0x646c));
-	OptionsScreenBase0x51ac::Reset();
+	OptionsScreenBase::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00475730
@@ -42,8 +42,8 @@ void OptionsScreen::VTable0x98()
 	LegoS32 i;
 
 	FUN_0047fdc0(&m_unk0x51ac, 0xee, 0x42, 0x12);
-	FUN_0046c240(&m_unk0x578c, 0xf6, 0x3b);
-	FUN_0046c2b0(&m_unk0x5820, &m_unk0x578c, 0xf5, 0x4c);
+	CreateCarousel(&m_unk0x578c, 0xf6, 0x3b);
+	CreateSelector(&m_unk0x5820, &m_unk0x578c, 0xf5, 0x4c);
 
 	GUID* currentDriverGuid = drawState->GetCurrentDriverGuid();
 	if (!currentDriverGuid) {
@@ -56,7 +56,7 @@ void OptionsScreen::VTable0x98()
 	m_unk0x51a8 = drawState->GetDriverCount();
 
 	for (i = 0; i < m_unk0x51a8 && i < 5; i++) {
-		FUN_0046bf80(&m_unk0x6214[i], 0xf7, 0xf5, 0x12);
+		CreateTextLabel(&m_unk0x6214[i], 0xf7, 0xf5, 0x12);
 
 		undefined2* driverNameBuffer = reinterpret_cast<undefined2*>(&m_unk0x646c[i * 0x64]);
 		GolString::CopyStringToBuf16(drawState->GetDriverName(i), driverNameBuffer);
@@ -75,20 +75,20 @@ void OptionsScreen::VTable0x98()
 	VTable0x44(&m_unk0x5820);
 
 	for (i = 0; i < 2; i++) {
-		FUN_0046bf80(&m_unk0x6660[i], static_cast<undefined2>(i + 0x102), 0x37, static_cast<undefined2>(i + 0x5b));
+		CreateTextLabel(&m_unk0x6660[i], static_cast<undefined2>(i + 0x102), 0x37, static_cast<undefined2>(i + 0x5b));
 	}
 
 	FUN_00475aa0();
 }
 
 // FUNCTION: LEGORACERS 0x00475970
-LegoBool32 OptionsScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 OptionsScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	return OptionsScreenBase0x51ac::VTable0x8c(p_context, p_createParams) != FALSE;
+	return OptionsScreenBase::VTable0x8c(p_context, p_createParams) != FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00475990
-void OptionsScreen::VTable0x38(ObscureVantage0x58* p_widget)
+void OptionsScreen::VTable0x38(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x51ac) {
 		FUN_0047fdc0(&m_unk0x549c, 0x99, 0x46, 0x72);
@@ -99,7 +99,7 @@ void OptionsScreen::VTable0x38(ObscureVantage0x58* p_widget)
 		m_unk0x284->FUN_00468cf0();
 	}
 
-	OptionsScreenBase0x51ac::VTable0x38(p_widget);
+	OptionsScreenBase::VTable0x38(p_widget);
 	if (m_unk0x360 != 0xffff) {
 		m_unk0x364 = TRUE;
 	}
@@ -111,14 +111,14 @@ void OptionsScreen::VTable0x38(ObscureVantage0x58* p_widget)
 void OptionsScreen::VTable0x9c()
 {
 	m_unk0x51ac.SetFlags(2);
-	OptionsScreenBase0x51ac::VTable0x9c();
+	OptionsScreenBase::VTable0x9c();
 }
 
 // FUNCTION: LEGORACERS 0x00475a20
 void OptionsScreen::VTable0xa0()
 {
 	m_unk0x51ac.ClearFlags(2);
-	OptionsScreenBase0x51ac::VTable0xa0();
+	OptionsScreenBase::VTable0xa0();
 }
 
 // FUNCTION: LEGORACERS 0x00475a30
@@ -158,7 +158,7 @@ void OptionsScreen::VTable0xa4()
 		FUN_00475a30();
 	}
 
-	OptionsScreenBase0x51ac::VTable0xa4();
+	OptionsScreenBase::VTable0xa4();
 }
 
 // FUNCTION: LEGORACERS 0x00475b10

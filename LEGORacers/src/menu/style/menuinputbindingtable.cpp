@@ -3,27 +3,28 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
+#include "menu/style/menubindingtoken.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuInputBindingTable, 0x5c)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x38, 0x38)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x3c, 0x3c)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x48, 0x48)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x60, 0x60)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x84, 0x84)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x88, 0x88)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x98, 0x98)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x9c, 0x9c)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0xa0, 0xa0)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0xa0WithFont, 0xa0)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0xb8, 0xb8)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0xec, 0xec)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Entry0x54, 0x54)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::RegionBinding, 0x38)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::ImageBinding, 0x3c)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::TextLabelBinding, 0x48)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::FrameBinding, 0x60)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::IconBinding, 0x84)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::SceneBinding, 0x88)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::SelectorBinding, 0x98)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::ButtonBinding, 0x9c)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::HotspotBinding, 0xa0)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::TextFieldBinding, 0xa0)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::CompositeBinding, 0xb8)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::MultiStateBinding, 0xec)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::SceneRefBinding, 0x54)
 DECOMP_SIZE_ASSERT(MenuInputBindingTable::MidTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(MenuInputBindingTable::ResourceLoadParams, 0x0c)
-DECOMP_SIZE_ASSERT(MenuInputBindingTable::Struct0x74, 0x74)
+DECOMP_SIZE_ASSERT(MenuInputBindingTable::ModelCarouselBinding, 0x74)
 
 // FUNCTION: LEGORACERS 0x004695b0
 MenuInputBindingTable::MenuInputBindingTable()
@@ -54,7 +55,7 @@ void MenuInputBindingTable::VTable0x0c()
 	m_unk0x48 = 0;
 	m_unk0x4c = 0;
 	m_unk0x50 = 0;
-	CeruleanKnight0x20::VTable0x0c();
+	MenuResourceTable::VTable0x0c();
 }
 
 // FUNCTION: LEGORACERS 0x004696b0
@@ -121,7 +122,7 @@ void MenuInputBindingTable::Clear()
 		delete[] m_unk0x50;
 	}
 
-	CeruleanKnight0x20::Clear();
+	MenuResourceTable::Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00469810
@@ -159,55 +160,55 @@ void MenuInputBindingTable::FUN_00469900(ResourceLoadParams* p_params)
 void MenuInputBindingTable::VTable0x14(undefined4 p_arg1)
 {
 	switch (p_arg1) {
-	case 0x37:
-		FUN_0046a750();
+	case c_blockRegion:
+		ParseRegionBindings();
 		break;
-	case 0x38:
-		FUN_0046a800();
+	case c_blockImage:
+		ParseImageBindings();
 		break;
-	case 0x39:
-		FUN_0046a8a0();
+	case c_blockTextLabel:
+		ParseTextLabelBindings();
 		break;
-	case 0x3a:
-		FUN_0046a940();
+	case c_blockFrame:
+		ParseFrameBindings();
 		break;
-	case 0x3b:
-		FUN_0046a9e0();
+	case c_blockButton:
+		ParseButtonBindings();
 		break;
-	case 0x3c:
-		FUN_0046aa90();
+	case c_blockMultiState:
+		ParseMultiStateBindings();
 		break;
-	case 0x3d:
-		FUN_0046ab40();
+	case c_blockHotspot:
+		ParseHotspotBindings();
 		break;
-	case 0x3e:
-		FUN_0046abe0();
+	case c_blockSelector:
+		ParseSelectorBindings();
 		break;
-	case 0x3f:
-		FUN_0046ac90();
+	case c_blockModelCarousel:
+		ParseModelCarouselBindings();
 		break;
-	case 0x40:
-		FUN_0046ad40();
+	case c_blockComposite:
+		ParseCompositeBindings();
 		break;
 	case 0x41:
 	case 0x44:
 	default:
 		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 		break;
-	case 0x42:
-		FUN_0046adf0();
+	case c_blockScene:
+		ParseSceneBindings();
 		break;
-	case 0x43:
-		FUN_0046af50();
+	case c_blockTextField:
+		ParseTextFieldBindings();
 		break;
-	case 0x45:
-		FUN_0046aea0();
+	case c_blockSceneRef:
+		ParseSceneRefBindings();
 		break;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00469a20
-void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p_entry)
+void MenuInputBindingTable::ParseWidgetBase(MenuWidget::CreateParams* p_entry)
 {
 	VisualState0x4* visualState = &p_entry->m_unk0x22;
 	visualState->m_unk0x00 = -1;
@@ -224,7 +225,7 @@ void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x2f:
-			FUN_0046b1d0(&p_entry->m_rect.m_left);
+			ReadRect(&p_entry->m_rect.m_left);
 			break;
 		case GolFileParser::e_unknown0x30: {
 			LegoS32 value = m_parser->ReadInteger();
@@ -246,7 +247,7 @@ void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p
 			::strncpy(p_entry->m_name, m_parser->ReadString(), 8);
 			break;
 		case GolFileParser::e_unknown0x2a:
-			FUN_0046b210(visualState->m_bytes);
+			ReadVisualState(visualState->m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		default:
@@ -257,7 +258,7 @@ void MenuInputBindingTable::FUN_00469a20(ObscureVantage0x58::CreateParams0x38* p
 }
 
 // FUNCTION: LEGORACERS 0x00469b20
-void MenuInputBindingTable::FUN_00469b20(ObscureIcon0x1a8::CreateParams0x84* p_entry)
+void MenuInputBindingTable::FUN_00469b20(MenuIcon::CreateParams* p_entry)
 {
 	p_entry->m_unk0x38 = TRUE;
 	p_entry->m_unk0x74 = TRUE;
@@ -265,11 +266,11 @@ void MenuInputBindingTable::FUN_00469b20(ObscureIcon0x1a8::CreateParams0x84* p_e
 }
 
 // FUNCTION: LEGORACERS 0x00469b50
-void MenuInputBindingTable::FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_entry)
+void MenuInputBindingTable::FUN_00469b50(MenuIcon::CreateParams* p_entry)
 {
 	switch (m_parser->GetCurrentToken()) {
 	case GolFileParser::e_unknown0x36:
-		FUN_00469a20(p_entry);
+		ParseWidgetBase(p_entry);
 		return;
 	case GolFileParser::e_unknown0x33:
 		p_entry->m_unk0x38 = m_parser->ReadInteger();
@@ -288,7 +289,7 @@ void MenuInputBindingTable::FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_e
 		return;
 	case GolFileParser::e_unknown0x2a: {
 		for (LegoS32 i = 0; i < 6; i++) {
-			FUN_0046b210(p_entry->m_unk0x52[i].m_bytes);
+			ReadVisualState(p_entry->m_unk0x52[i].m_bytes);
 		}
 		p_entry->m_unk0x78 = TRUE;
 		return;
@@ -307,15 +308,15 @@ void MenuInputBindingTable::FUN_00469b50(ObscureIcon0x1a8::CreateParams0x84* p_e
 }
 
 // FUNCTION: LEGORACERS 0x00469c90
-void MenuInputBindingTable::FUN_00469c90(Entry0x98* p_entry)
+void MenuInputBindingTable::FUN_00469c90(SelectorBinding* p_entry)
 {
 	switch (m_parser->GetCurrentToken()) {
 	case GolFileParser::e_unknown0x3b:
-		p_entry->m_unk0x84 = FUN_0046aff0(m_parser->ReadString());
-		p_entry->m_unk0x88 = FUN_0046aff0(m_parser->ReadString());
+		p_entry->m_unk0x84 = ResolveEntryByName(m_parser->ReadString());
+		p_entry->m_unk0x88 = ResolveEntryByName(m_parser->ReadString());
 		return;
 	case GolFileParser::e_unknown0x3a:
-		p_entry->m_unk0x8c = FUN_0046aff0(m_parser->ReadString());
+		p_entry->m_unk0x8c = ResolveEntryByName(m_parser->ReadString());
 		return;
 	case GolFileParser::e_unknown0x33:
 		p_entry->m_unk0x94 = m_parser->ReadInteger();
@@ -327,7 +328,7 @@ void MenuInputBindingTable::FUN_00469c90(Entry0x98* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00469d20
-void MenuInputBindingTable::FUN_00469d20(LegoFloat* p_floats)
+void MenuInputBindingTable::ReadNineFloats(LegoFloat* p_floats)
 {
 	p_floats[0] = m_parser->ReadFloat();
 	p_floats[1] = m_parser->ReadFloat();
@@ -341,7 +342,7 @@ void MenuInputBindingTable::FUN_00469d20(LegoFloat* p_floats)
 }
 
 // FUNCTION: LEGORACERS 0x00469d90
-void MenuInputBindingTable::FUN_00469d90(Entry0x3c* p_entry)
+void MenuInputBindingTable::FUN_00469d90(ImageBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -353,11 +354,11 @@ void MenuInputBindingTable::FUN_00469d90(Entry0x3c* p_entry)
 			p_entry->m_unk0x38 = m_unk0x14->FindImageByName(m_parser->ReadString());
 			break;
 		case GolFileParser::e_unknown0x2a:
-			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
+			ReadVisualState(p_entry->m_unk0x22.m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);
@@ -367,7 +368,7 @@ void MenuInputBindingTable::FUN_00469d90(Entry0x3c* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00469e20
-void MenuInputBindingTable::FUN_00469e20(Entry0x48* p_entry)
+void MenuInputBindingTable::FUN_00469e20(TextLabelBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -376,13 +377,13 @@ void MenuInputBindingTable::FUN_00469e20(Entry0x48* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x29:
 			p_entry->m_unk0x3c = m_unk0x14->FindFontByName(m_parser->ReadString());
 			// Fall through.
 		case GolFileParser::e_unknown0x2a:
-			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
+			ReadVisualState(p_entry->m_unk0x22.m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		case GolFileParser::e_unknown0x33:
@@ -396,7 +397,7 @@ void MenuInputBindingTable::FUN_00469e20(Entry0x48* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00469ee0
-void MenuInputBindingTable::FUN_00469ee0(Entry0x60* p_entry)
+void MenuInputBindingTable::FUN_00469ee0(FrameBinding* p_entry)
 {
 	p_entry->m_unk0x5c = TRUE;
 
@@ -407,7 +408,7 @@ void MenuInputBindingTable::FUN_00469ee0(Entry0x60* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0x5c = m_parser->ReadInteger();
@@ -419,8 +420,8 @@ void MenuInputBindingTable::FUN_00469ee0(Entry0x60* p_entry)
 			break;
 		}
 		case GolFileParser::e_unknown0x2a:
-			FUN_0046b210(p_entry->m_unk0x22.m_bytes);
-			FUN_0046b210(p_entry->m_unk0x58.m_bytes);
+			ReadVisualState(p_entry->m_unk0x22.m_bytes);
+			ReadVisualState(p_entry->m_unk0x58.m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		default:
@@ -431,7 +432,7 @@ void MenuInputBindingTable::FUN_00469ee0(Entry0x60* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00469fd0
-void MenuInputBindingTable::FUN_00469fd0(Entry0x9c* p_entry)
+void MenuInputBindingTable::FUN_00469fd0(ButtonBinding* p_entry)
 {
 	FUN_00469b20(p_entry);
 
@@ -452,7 +453,7 @@ void MenuInputBindingTable::FUN_00469fd0(Entry0x9c* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a050
-void MenuInputBindingTable::FUN_0046a050(Entry0xec* p_entry)
+void MenuInputBindingTable::FUN_0046a050(MultiStateBinding* p_entry)
 {
 	FUN_00469b20(p_entry);
 
@@ -488,7 +489,7 @@ void MenuInputBindingTable::FUN_0046a050(Entry0xec* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a110
-void MenuInputBindingTable::FUN_0046a110(Entry0xa0* p_entry)
+void MenuInputBindingTable::FUN_0046a110(HotspotBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -511,7 +512,7 @@ void MenuInputBindingTable::FUN_0046a110(Entry0xa0* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a190
-void MenuInputBindingTable::FUN_0046a190(Entry0x98* p_entry)
+void MenuInputBindingTable::FUN_0046a190(SelectorBinding* p_entry)
 {
 	p_entry->m_unk0x38 = TRUE;
 	p_entry->m_unk0x74 = TRUE;
@@ -526,7 +527,7 @@ void MenuInputBindingTable::FUN_0046a190(Entry0x98* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a1f0
-void MenuInputBindingTable::FUN_0046a1f0(Struct0x74* p_entry)
+void MenuInputBindingTable::FUN_0046a1f0(ModelCarouselBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -535,7 +536,7 @@ void MenuInputBindingTable::FUN_0046a1f0(Struct0x74* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0x38 = m_parser->ReadInteger();
@@ -553,12 +554,12 @@ void MenuInputBindingTable::FUN_0046a1f0(Struct0x74* p_entry)
 			}
 
 			for (LegoS32 i = 0; i < p_entry->m_unk0x38; i++) {
-				FUN_0046b1d0(&p_entry->m_unk0x3c[i].m_left);
+				ReadRect(&p_entry->m_unk0x3c[i].m_left);
 			}
 			break;
 		}
 		case GolFileParser::e_unknown0x2e:
-			FUN_00469d20(p_entry->m_unk0x48);
+			ReadNineFloats(p_entry->m_unk0x48);
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_invalidKeyword);
@@ -568,7 +569,7 @@ void MenuInputBindingTable::FUN_0046a1f0(Struct0x74* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a310
-void MenuInputBindingTable::FUN_0046a310(Entry0xb8* p_entry)
+void MenuInputBindingTable::FUN_0046a310(CompositeBinding* p_entry)
 {
 	FUN_00469b20(p_entry);
 
@@ -579,23 +580,19 @@ void MenuInputBindingTable::FUN_0046a310(Entry0xb8* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0xb4 = m_parser->ReadInteger();
 			p_entry->m_unk0xb0 = m_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x3b:
-			p_entry->m_unk0x84 =
-				static_cast<ObscureGlyph0x21c::CreateParams0x9c*>(FUN_0046aff0(m_parser->ReadString()));
-			p_entry->m_unk0x88 =
-				static_cast<ObscureGlyph0x21c::CreateParams0x9c*>(FUN_0046aff0(m_parser->ReadString()));
+			p_entry->m_unk0x84 = static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_unk0x88 = static_cast<MenuButton::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 			break;
 		case GolFileParser::e_unknown0x38:
-			p_entry->m_unk0x90 =
-				static_cast<ObscureAnchor0x5c::CreateParams0x3c*>(FUN_0046aff0(m_parser->ReadString()));
-			p_entry->m_unk0x8c =
-				static_cast<ObscureAnchor0x5c::CreateParams0x3c*>(FUN_0046aff0(m_parser->ReadString()));
+			p_entry->m_unk0x90 = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
+			p_entry->m_unk0x8c = static_cast<MenuImage::CreateParams*>(ResolveEntryByName(m_parser->ReadString()));
 			break;
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 6; i++) {
@@ -616,7 +613,7 @@ void MenuInputBindingTable::FUN_0046a310(Entry0xb8* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a490
-void MenuInputBindingTable::FUN_0046a490(Entry0x88* p_entry)
+void MenuInputBindingTable::FUN_0046a490(SceneBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -625,16 +622,16 @@ void MenuInputBindingTable::FUN_0046a490(Entry0x88* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x2d:
 			::strncpy(p_entry->m_unk0x60, m_parser->ReadString(), 8);
 			break;
 		case GolFileParser::e_unknown0x3a:
-			p_entry->m_unk0x84 = FUN_0046aff0(m_parser->ReadString());
+			p_entry->m_unk0x84 = ResolveEntryByName(m_parser->ReadString());
 			break;
 		case GolFileParser::e_unknown0x2e:
-			FUN_00469d20(p_entry->m_unk0x38);
+			ReadNineFloats(p_entry->m_unk0x38);
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0x70 = m_parser->ReadInteger();
@@ -651,7 +648,7 @@ void MenuInputBindingTable::FUN_0046a490(Entry0x88* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a590
-void MenuInputBindingTable::FUN_0046a590(Entry0x54* p_entry)
+void MenuInputBindingTable::FUN_0046a590(SceneRefBinding* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -662,7 +659,7 @@ void MenuInputBindingTable::FUN_0046a590(Entry0x54* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x33:
 			p_entry->m_unk0x48 = m_parser->ReadInteger();
@@ -680,7 +677,7 @@ void MenuInputBindingTable::FUN_0046a590(Entry0x54* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a640
-void MenuInputBindingTable::FUN_0046a640(Entry0xa0WithFont* p_entry)
+void MenuInputBindingTable::FUN_0046a640(TextFieldBinding* p_entry)
 {
 	FUN_00469b20(p_entry);
 	p_entry->m_unk0x94 = 31;
@@ -692,7 +689,7 @@ void MenuInputBindingTable::FUN_0046a640(Entry0xa0WithFont* p_entry)
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x36:
-			FUN_00469a20(p_entry);
+			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x29:
 			p_entry->m_unk0x8c = m_unk0x14->FindFontByName(m_parser->ReadString());
@@ -719,11 +716,11 @@ void MenuInputBindingTable::FUN_0046a640(Entry0xa0WithFont* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0046a750
-void MenuInputBindingTable::FUN_0046a750()
+void MenuInputBindingTable::ParseRegionBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x20 = new Entry0x38[entryCount];
-	::memset(m_unk0x20, 0, sizeof(Entry0x38) * entryCount);
+	m_unk0x20 = new RegionBinding[entryCount];
+	::memset(m_unk0x20, 0, sizeof(RegionBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x37) {
@@ -733,16 +730,16 @@ void MenuInputBindingTable::FUN_0046a750()
 		GolName name;
 		::strncpy(name, m_parser->ReadString(), sizeof(name));
 		AddName(name, &m_unk0x20[i]);
-		FUN_00469a20(&m_unk0x20[i]);
+		ParseWidgetBase(&m_unk0x20[i]);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046a800
-void MenuInputBindingTable::FUN_0046a800()
+void MenuInputBindingTable::ParseImageBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x24 = new Entry0x3c[entryCount];
-	::memset(m_unk0x24, 0, sizeof(Entry0x3c) * entryCount);
+	m_unk0x24 = new ImageBinding[entryCount];
+	::memset(m_unk0x24, 0, sizeof(ImageBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x38) {
@@ -757,11 +754,11 @@ void MenuInputBindingTable::FUN_0046a800()
 }
 
 // FUNCTION: LEGORACERS 0x0046a8a0
-void MenuInputBindingTable::FUN_0046a8a0()
+void MenuInputBindingTable::ParseTextLabelBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x28 = new Entry0x48[entryCount];
-	::memset(m_unk0x28, 0, sizeof(Entry0x48) * entryCount);
+	m_unk0x28 = new TextLabelBinding[entryCount];
+	::memset(m_unk0x28, 0, sizeof(TextLabelBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x39) {
@@ -776,11 +773,11 @@ void MenuInputBindingTable::FUN_0046a8a0()
 }
 
 // FUNCTION: LEGORACERS 0x0046a940
-void MenuInputBindingTable::FUN_0046a940()
+void MenuInputBindingTable::ParseFrameBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x2c = new Entry0x60[entryCount];
-	::memset(m_unk0x2c, 0, sizeof(Entry0x60) * entryCount);
+	m_unk0x2c = new FrameBinding[entryCount];
+	::memset(m_unk0x2c, 0, sizeof(FrameBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3a) {
@@ -795,11 +792,11 @@ void MenuInputBindingTable::FUN_0046a940()
 }
 
 // FUNCTION: LEGORACERS 0x0046a9e0
-void MenuInputBindingTable::FUN_0046a9e0()
+void MenuInputBindingTable::ParseButtonBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x30 = new Entry0x9c[entryCount];
-	::memset(m_unk0x30, 0, sizeof(Entry0x9c) * entryCount);
+	m_unk0x30 = new ButtonBinding[entryCount];
+	::memset(m_unk0x30, 0, sizeof(ButtonBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3b) {
@@ -814,11 +811,11 @@ void MenuInputBindingTable::FUN_0046a9e0()
 }
 
 // FUNCTION: LEGORACERS 0x0046aa90
-void MenuInputBindingTable::FUN_0046aa90()
+void MenuInputBindingTable::ParseMultiStateBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x34 = new Entry0xec[entryCount];
-	::memset(m_unk0x34, 0, sizeof(Entry0xec) * entryCount);
+	m_unk0x34 = new MultiStateBinding[entryCount];
+	::memset(m_unk0x34, 0, sizeof(MultiStateBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3c) {
@@ -833,11 +830,11 @@ void MenuInputBindingTable::FUN_0046aa90()
 }
 
 // FUNCTION: LEGORACERS 0x0046ab40
-void MenuInputBindingTable::FUN_0046ab40()
+void MenuInputBindingTable::ParseHotspotBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x38 = new Entry0xa0[entryCount];
-	::memset(m_unk0x38, 0, sizeof(Entry0xa0) * entryCount);
+	m_unk0x38 = new HotspotBinding[entryCount];
+	::memset(m_unk0x38, 0, sizeof(HotspotBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3d) {
@@ -852,11 +849,11 @@ void MenuInputBindingTable::FUN_0046ab40()
 }
 
 // FUNCTION: LEGORACERS 0x0046abe0
-void MenuInputBindingTable::FUN_0046abe0()
+void MenuInputBindingTable::ParseSelectorBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x3c = new Entry0x98[entryCount];
-	::memset(m_unk0x3c, 0, sizeof(Entry0x98) * entryCount);
+	m_unk0x3c = new SelectorBinding[entryCount];
+	::memset(m_unk0x3c, 0, sizeof(SelectorBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3e) {
@@ -871,12 +868,12 @@ void MenuInputBindingTable::FUN_0046abe0()
 }
 
 // FUNCTION: LEGORACERS 0x0046ac90
-void MenuInputBindingTable::FUN_0046ac90()
+void MenuInputBindingTable::ParseModelCarouselBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
 	m_unk0x58 = entryCount;
-	m_unk0x40 = new Struct0x74[entryCount];
-	::memset(m_unk0x40, 0, sizeof(Struct0x74) * entryCount);
+	m_unk0x40 = new ModelCarouselBinding[entryCount];
+	::memset(m_unk0x40, 0, sizeof(ModelCarouselBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3f) {
@@ -891,11 +888,11 @@ void MenuInputBindingTable::FUN_0046ac90()
 }
 
 // FUNCTION: LEGORACERS 0x0046ad40
-void MenuInputBindingTable::FUN_0046ad40()
+void MenuInputBindingTable::ParseCompositeBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x44 = new Entry0xb8[entryCount];
-	::memset(m_unk0x44, 0, sizeof(Entry0xb8) * entryCount);
+	m_unk0x44 = new CompositeBinding[entryCount];
+	::memset(m_unk0x44, 0, sizeof(CompositeBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x40) {
@@ -910,11 +907,11 @@ void MenuInputBindingTable::FUN_0046ad40()
 }
 
 // FUNCTION: LEGORACERS 0x0046adf0
-void MenuInputBindingTable::FUN_0046adf0()
+void MenuInputBindingTable::ParseSceneBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x48 = new Entry0x88[entryCount];
-	::memset(m_unk0x48, 0, sizeof(Entry0x88) * entryCount);
+	m_unk0x48 = new SceneBinding[entryCount];
+	::memset(m_unk0x48, 0, sizeof(SceneBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x42) {
@@ -929,11 +926,11 @@ void MenuInputBindingTable::FUN_0046adf0()
 }
 
 // FUNCTION: LEGORACERS 0x0046aea0
-void MenuInputBindingTable::FUN_0046aea0()
+void MenuInputBindingTable::ParseSceneRefBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x50 = new Entry0x54[entryCount];
-	::memset(m_unk0x50, 0, sizeof(Entry0x54) * entryCount);
+	m_unk0x50 = new SceneRefBinding[entryCount];
+	::memset(m_unk0x50, 0, sizeof(SceneRefBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x45) {
@@ -948,11 +945,11 @@ void MenuInputBindingTable::FUN_0046aea0()
 }
 
 // FUNCTION: LEGORACERS 0x0046af50
-void MenuInputBindingTable::FUN_0046af50()
+void MenuInputBindingTable::ParseTextFieldBindings()
 {
 	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x4c = new Entry0xa0WithFont[entryCount];
-	::memset(m_unk0x4c, 0, sizeof(Entry0xa0WithFont) * entryCount);
+	m_unk0x4c = new TextFieldBinding[entryCount];
+	::memset(m_unk0x4c, 0, sizeof(TextFieldBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x43) {

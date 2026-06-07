@@ -378,6 +378,12 @@ void SapphireReef0x2030::FUN_0049bdc0()
 	STUB(0x0049bdc0);
 }
 
+// STUB: LEGORACERS 0x0049bdd0
+void SapphireReef0x2030::FUN_0049bdd0(GolD3DRenderDevice*, LegoFloat)
+{
+	STUB(0x0049bdd0);
+}
+
 // STUB: LEGORACERS 0x0049c230
 void SapphireReef0x2030::FUN_0049c230(Placement0x30*, GolModelEntity*)
 {

@@ -204,6 +204,18 @@ void GolSceneNode::VTable0x2c(LegoU32 p_index, GolMatrix34* p_dest) const
 	// empty
 }
 
+// FUNCTION: LEGORACERS 0x00413230
+void GolSceneNode::FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
+{
+	*p_param3 = *p_param2;
+
+	GolVec3 vec;
+	for (GolTransformBase* current = VTable0x18(p_param1); current != NULL; current = current->m_unk0x04) {
+		vec = *p_param3;
+		current->VTable0x04(&vec, p_param3);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004132a0
 void GolSceneNode::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3)
 {

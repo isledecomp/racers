@@ -4,6 +4,7 @@
 #include "audio/soundinstance.h"
 #include "audio/soundmanager.h"
 #include "audio/spatialsoundinstance.h"
+#include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "core/gol.h"
 #include "font/golfont0xa0.h"
@@ -24,6 +25,7 @@
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/particle0x18c.h"
 #include "menu/runtime/saffronquartz0x2c.h"
+#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
@@ -442,10 +444,25 @@ void CrimsonPebbleEvent0x14::VTable0x04(GolWorldEntity* p_arg)
 	}
 }
 
-// STUB: LEGORACERS 0x0049fe30
+// FUNCTION: LEGORACERS 0x0049fe30
 void CrimsonPebbleEvent0x14::FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2)
 {
-	STUB(0x0049fe30);
+	m_unk0x0c->VTable0x5c(0);
+	GolSceneNode* falconNode = m_unk0x0c->VTable0x58(0);
+
+	GolVec3 vec1;
+	GolVec3 vec2;
+	vec1.m_x = 0.0f;
+	vec1.m_y = 0.0f;
+	vec1.m_z = 0.0f;
+
+	falconNode->FUN_00413230(p_param1, &vec1, &vec2);
+
+	LegoFloat scale = m_unk0x0c->GetModel(0)->GetScale() * m_unk0x0c->GetUnk0x58();
+	vec2.m_x *= scale;
+	vec2.m_y *= scale;
+	vec2.m_z *= scale;
+	m_unk0x0c->VTable0x2c(vec2, p_param2);
 }
 
 // FUNCTION: LEGORACERS 0x0049fec0
@@ -2477,16 +2494,58 @@ void CrimsonPebbleEvent0x50Derived::Parse(GolFileParser* p_parser, CrimsonPebble
 	}
 }
 
-// STUB: LEGORACERS 0x004a42b0
+// FUNCTION: LEGORACERS 0x004a42b0
 void CrimsonPebbleEvent0x50Derived::VTable0x14()
 {
-	STUB(0x004a42b0);
+	if (m_unk0x30 == NULL) {
+		GolVec3 velocity;
+		GolVec3 position;
+		velocity.m_x = 0.0f;
+		velocity.m_y = 0.0f;
+		velocity.m_z = 0.0f;
+
+		if ((m_unk0x48 & c_flagBit2) && m_unk0x0c != NULL) {
+			FUN_0049fe30(m_unk0x4c, &position);
+			m_unk0x0c->GetVelocity(&velocity);
+		}
+		else if (m_unk0x48 & c_flagBit0) {
+			position = m_unk0x3c;
+		}
+		else if (m_unk0x04 != NULL) {
+			m_unk0x04->VTable0x04(&position);
+			m_unk0x04->GetVelocity(&velocity);
+		}
+		else {
+			position.m_x = 0.0f;
+			position.m_y = 0.0f;
+			position.m_z = 0.0f;
+		}
+
+		FUN_004a43a0(&position);
+		m_unk0x30->SetVelocity(velocity);
+	}
 }
 
 // STUB: LEGORACERS 0x004a43a0
-void CrimsonPebbleEvent0x50Derived::FUN_004a43a0(const GolVec3*)
+void CrimsonPebbleEvent0x50Derived::FUN_004a43a0(const GolVec3* p_position)
 {
-	STUB(0x004a43a0);
+	if (m_unk0x30 == NULL) {
+		m_unk0x30 = m_unk0x14->CreateStreamingSoundInstance(m_unk0x2e);
+		m_unk0x30->Play(m_unk0x2c);
+		m_unk0x30->SetVolume(m_unk0x1c);
+		m_unk0x30->SetFrequencyScale(m_unk0x24);
+		LegoFloat maxDistance = m_unk0x38;
+		LegoFloat minDistance = m_unk0x34;
+		m_unk0x30->SetDistanceRange(minDistance, maxDistance);
+
+		m_unk0x48 &= ~c_flagBit3;
+		if (m_unk0x48 & c_flagBit0) {
+			m_unk0x30->SetPosition(&m_unk0x3c);
+			return;
+		}
+
+		m_unk0x30->SetPosition(p_position);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4450
@@ -2540,7 +2599,38 @@ void CrimsonPebbleEvent0x50Derived::VTable0x18()
 // STUB: LEGORACERS 0x004a44f0
 void CrimsonPebbleEvent0x50Derived::FUN_004a44f0()
 {
-	STUB(0x004a44f0);
+	if (m_unk0x30) {
+		if (!m_unk0x30->IsPlaying()) {
+			if (m_unk0x48 & c_flagBit3) {
+				VTable0x18();
+				return;
+			}
+		}
+		else {
+			m_unk0x48 |= c_flagBit3;
+		}
+
+		GolVec3 position;
+		GolVec3 velocity;
+		GolWorldEntity* entity;
+
+		if (m_unk0x48 & c_flagBit2) {
+			FUN_0049fe30(m_unk0x4c, &position);
+			m_unk0x30->SetPosition(&position);
+			entity = m_unk0x0c;
+		}
+		else if (m_unk0x48 & c_flagBit1) {
+			m_unk0x04->VTable0x04(&position);
+			m_unk0x30->SetPosition(&position);
+			entity = m_unk0x04;
+		}
+		else {
+			return;
+		}
+
+		entity->GetVelocity(&velocity);
+		m_unk0x30->SetVelocity(velocity);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004a4970

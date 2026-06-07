@@ -158,6 +158,7 @@ public:
 	);
 	LegoS32 FUN_0049bd50(LegoS32 p_index) const;
 	void FUN_0049bdc0();
+	void FUN_0049bdd0(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08);
 	void FUN_0049c230(Placement0x30* p_placement, GolModelEntity* p_entity);
 	void FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);

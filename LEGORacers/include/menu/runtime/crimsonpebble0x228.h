@@ -227,6 +227,9 @@ private:
 class CrimsonPebbleEvent0x50Derived : public CrimsonPebbleEvent0x30 {
 public:
 	enum Flags {
+		c_flagBit0 = 1 << 0,
+		c_flagBit1 = 1 << 1,
+		c_flagBit2 = 1 << 2,
 		c_flagBit3 = 1 << 3,
 	};
 

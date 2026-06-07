@@ -54,6 +54,7 @@ public:
 	// SYNTHETIC: GOLDP 0x100299a0
 	// GolSceneNode::`scalar deleting destructor'
 
+	void FUN_00413230(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	void FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	LegoU32 GetUpdateSerial() const { return m_unk0x0c; }
 	LegoU32 GetCapacity() const { return m_capacity; }

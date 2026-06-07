@@ -574,11 +574,120 @@ LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::FUN_004787e0(LegoS32* p_unk0x04,
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x004788f0
+// FUNCTION: LEGORACERS 0x004788f0
 LegoBool32 ImaginaryShape0x2b20::FieldAt0x2308::VTable0x0c()
 {
-	STUB(0x004788f0);
-	return FALSE;
+	ColorRGBA originalColor = {0x78, 0x78, 0x78, 0xff};
+	ColorRGBA highlightColor = {0xb4, 0xb4, 0xb4, 0xff};
+	GolRenderDevice::MaterialColor* material = m_unk0x10->GetCurrentMaterialColor();
+
+	if (material == NULL) {
+		m_unk0x23c.SetColor(originalColor);
+		m_unk0x10->VTable0x2c(&m_unk0x23c);
+		material = &m_unk0x23c;
+	}
+
+	originalColor = material->GetColor();
+	if (m_unk0x294 == 2) {
+		material->SetColor(highlightColor);
+		m_unk0x10->VTable0x60();
+	}
+
+	m_unk0x58.VTable0x1c(*m_unk0x10);
+
+	if (m_unk0x294 == 2) {
+		material->SetColor(originalColor);
+		m_unk0x10->VTable0x60();
+	}
+
+	if (m_unk0x240) {
+		if (m_unk0x244) {
+			m_unk0x24->m_unk0x21f4.FUN_0049bdd0(m_unk0x10, 0.1f);
+		}
+
+		GolModelEntity* entity = &m_unk0x1a4;
+		GolVec3 position;
+		position.m_x = m_unk0x250.m_x;
+		position.m_y = m_unk0x250.m_y;
+		position.m_z = m_unk0x26c;
+		entity->VTable0x08(position);
+
+		if (m_unk0x294 == 1) {
+			material->SetColor(highlightColor);
+			m_unk0x10->VTable0x60();
+		}
+
+		if (!(m_unk0x248 & (c_flagCommittingPart | c_flagResettingView))) {
+			if ((m_unk0x278 & c_placementFeedbackMask) && m_unk0x290 != 2) {
+				m_unk0x10->SetAlphaOverride(0x40, 0);
+				m_unk0x10->VTable0x94(entity);
+				m_unk0x10->ClearAlphaOverride();
+			}
+		}
+
+		LegoU32 alpha;
+		if (m_unk0x278 & c_placementFeedbackMask) {
+			alpha = 0x96;
+			LegoFloat value = m_unk0x26c - m_unk0x270 - 1.2f;
+
+			if (value < 1.2f && m_unk0x290 != 2) {
+				if (value < 0.0f) {
+					alpha = 0;
+				}
+				else {
+					LegoFloat alphaValue = value;
+					alphaValue /= 1.2f;
+					alphaValue *= 150.0f;
+					alpha = static_cast<LegoU32>(alphaValue);
+				}
+			}
+		}
+		else {
+			LegoFloat scaledTime = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x268));
+			scaledTime *= 0.001f;
+			scaledTime *= g_siennaCircuitTwoPi;
+			scaledTime *= -162.97466f;
+			LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
+			LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+			interpolation *= 50.0f;
+			alpha = static_cast<LegoU32>(interpolation) + 0x64;
+		}
+
+		position.m_z = m_unk0x270;
+		entity->VTable0x08(position);
+
+		if (!(m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) && alpha > 0) {
+			m_unk0x10->SetAlphaOverride(alpha, 0);
+			m_unk0x10->VTable0x94(entity);
+			m_unk0x10->ClearAlphaOverride();
+		}
+
+		if (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) {
+			position.m_z = m_unk0x274;
+		}
+		else {
+			position.m_z = 1.0f;
+		}
+
+		entity->VTable0x08(position);
+
+		if (m_unk0x290 != 2 || (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView))) {
+			m_unk0x10->VTable0x94(entity);
+		}
+
+		entity->VTable0x08(m_unk0x250);
+
+		if (m_unk0x294 == 1) {
+			material->SetColor(originalColor);
+			m_unk0x10->VTable0x60();
+		}
+	}
+
+	if (!(m_unk0x248 & (c_flagCommittingPart | c_flagResettingView))) {
+		m_unk0x244 = TRUE;
+	}
+
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00478be0

@@ -656,7 +656,7 @@ ObscureVantage0x58* ObscureVantage0x58::VTable0x34(InputEventQueue::Event*, unde
 	return NULL;
 }
 
-// FUNCTION: LEGORACERS 0x00473a20
+// FUNCTION: LEGORACERS 0x00473a20 FOLDED
 LegoBool32 ObscureVantage0x58::FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y)
 {
 	return p_x >= p_rect->m_left && p_x <= p_rect->m_right && p_y >= p_rect->m_top && p_y <= p_rect->m_bottom;

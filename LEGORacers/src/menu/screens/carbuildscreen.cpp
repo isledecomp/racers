@@ -93,11 +93,15 @@ LegoBool32 CarBuildScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuTool
 	return m_initialized;
 }
 
-// STUB: LEGORACERS 0x00473a50
+// FUNCTION: LEGORACERS 0x00473a20 FOLDED
+LegoBool32 CarBuildScreen::FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y)
+{
+	return p_x >= p_rect->m_left && p_x <= p_rect->m_right && p_y >= p_rect->m_top && p_y <= p_rect->m_bottom;
+}
+
+// FUNCTION: LEGORACERS 0x00473a50
 LegoBool32 CarBuildScreen::FUN_00473a50(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c)
 {
-	STUB(0x00473a50);
-
 	if (p_event->m_isRepeat) {
 		return FALSE;
 	}
@@ -105,11 +109,11 @@ LegoBool32 CarBuildScreen::FUN_00473a50(InputEventQueue::Event* p_event, undefin
 	LegoS32 x = static_cast<LegoS32>(p_unk0x08);
 	LegoS32 y = static_cast<LegoS32>(p_unk0x0c);
 
-	if (!m_unk0x1e30.FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
+	if (!FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
 		return FALSE;
 	}
 
-	if (m_unk0x35c4.FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
+	if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 		if (m_unk0x3c18) {
 			if (m_unk0x2ae0 == 1) {
 				if (m_unk0x2308.FUN_00478730()) {
@@ -133,7 +137,7 @@ LegoBool32 CarBuildScreen::FUN_00473a50(InputEventQueue::Event* p_event, undefin
 		return TRUE;
 	}
 
-	if (m_unk0x37e0.FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
+	if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
 		m_unk0x2ae4 = 2;
 		m_unk0xd8.FUN_00472bc0();
 
@@ -483,7 +487,7 @@ LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event* p_event, undefin
 		LegoS32 x = helper->m_cursorX + helper->m_originX;
 		LegoS32 y = helper->m_cursorY + helper->m_originY;
 
-		if (m_unk0x35c4.FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
+		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			m_unk0x2308.FUN_00478560();
 			m_soundGroupBinding->FUN_0046e970(0x16);
 			return TRUE;
@@ -738,11 +742,9 @@ void CarBuildScreen::VTable0x44(ObscureVantage0x58* p_source)
 	}
 }
 
-// STUB: LEGORACERS 0x00474940
+// FUNCTION: LEGORACERS 0x00474940
 void CarBuildScreen::FUN_00474940()
 {
-	STUB(0x00474940);
-
 	CopperCrest0x40::Helper0x44* helper = m_cursorHelper;
 	if (!helper || !helper->m_isCursorVisible) {
 		return;
@@ -757,8 +759,8 @@ void CarBuildScreen::FUN_00474940()
 	LegoS32 x = helper->m_cursorX + helper->m_originX;
 	LegoS32 y = helper->m_cursorY + helper->m_originY;
 
-	if (m_unk0x1e30.FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
-		if (m_unk0x1e30.FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
+	if (FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
+		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 1) {
 				m_unk0x374 = NULL;
 				m_unk0x37e0.VTable0x50(6);
@@ -768,7 +770,7 @@ void CarBuildScreen::FUN_00474940()
 			return;
 		}
 
-		if (m_unk0x1e30.FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
+		if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 2) {
 				m_unk0x374 = NULL;
 				m_unk0x35c4.VTable0x50(6);

@@ -72,6 +72,7 @@ protected:
 	};
 
 	LegoBool32 FUN_00473a50(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	LegoBool32 FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y);
 	void FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY);
 	LegoBool32 FUN_00473ee0(
 		ObscureVantage0x58* p_source,

@@ -838,7 +838,7 @@ GolFont0xa0* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00474be0
-void CarBuildScreen::VTable0xa0(undefined4, undefined4, undefined4* p_unk0x0c, undefined4)
+void CarBuildScreen::VTable0xa0(LegoS32*, LegoS32*, LegoS32* p_unk0x0c, LegoS32*)
 {
 	*p_unk0x0c = 0;
 }

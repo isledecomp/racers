@@ -8,6 +8,8 @@
 #include "menu/widgets/obscureicon0x1a8.h"
 #include "render/rectangle.h"
 
+class GolFont0xa0;
+class GolString;
 class ObscureVantage0x58;
 
 // VTABLE: LEGORACERS 0x004b2dc0
@@ -29,6 +31,9 @@ public:
 	void Reset() override;                                                                                // vtable+0x54
 	LegoBool32 VTable0x78(undefined4) override;                                                           // vtable+0x78
 	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                         // vtable+0x7c
+	virtual GolString* VTable0x98(undefined4) = 0;                                                        // vtable+0x98
+	virtual GolFont0xa0* VTable0x9c(undefined4) = 0;                                                      // vtable+0x9c
+	virtual void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                                  // vtable+0xa0
 
 	// SYNTHETIC: LEGORACERS 0x00476ed0
 	// ObsidianMantle0x3b4::`scalar deleting destructor'
@@ -47,16 +52,13 @@ protected:
 	LegoU8 m_unk0x37c;            // 0x37c
 	LegoU8 m_unk0x37d;            // 0x37d
 	LegoU16 m_unk0x37e;           // 0x37e
-	undefined4 m_unk0x380;        // 0x380
-	undefined4 m_unk0x384;        // 0x384
-	undefined4 m_unk0x388;        // 0x388
-	undefined4 m_unk0x38c;        // 0x38c
-	undefined4 m_unk0x390;        // 0x390
-	undefined4 m_unk0x394;        // 0x394
-	undefined4 m_unk0x398;        // 0x398
-	undefined4 m_unk0x39c;        // 0x39c
-	undefined4 m_unk0x3a0;        // 0x3a0
-	undefined4 m_unk0x3a4;        // 0x3a4
+	Rect m_unk0x380;              // 0x380
+	LegoS32 m_unk0x390;           // 0x390
+	LegoS32 m_unk0x394;           // 0x394
+	LegoS32 m_unk0x398;           // 0x398
+	LegoS32 m_unk0x39c;           // 0x39c
+	GolString* m_unk0x3a0;        // 0x3a0
+	GolFont0xa0* m_unk0x3a4;      // 0x3a4
 	GolString m_unk0x3a8;         // 0x3a8
 };
 

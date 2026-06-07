@@ -128,6 +128,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/font/golfontbase0x40.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/surface/silverdune0x30.cpp
+  GolDP/src/image/utopianpan0xa4.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
   GolDP/src/render/golrenderdevice.cpp
   GolDP/src/material/duskwindbananarelic0x24.cpp
@@ -136,6 +137,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/font/golfont0xa0.cpp
   GolDP/src/surface/bronzedune0x4c.cpp
+  GolDP/src/surface/purpledune0x7c.cpp
   GolDP/src/material/purpleribbon0x24.cpp
   GolDP/src/material/amberhaze0x20.cpp
   GolDP/src/mesh/gdbvertexarray0xc.cpp

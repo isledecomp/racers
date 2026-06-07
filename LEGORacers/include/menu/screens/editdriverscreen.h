@@ -11,6 +11,7 @@
 #include "menu/widgets/obscureanchor0x5c.h"
 #include "menu/widgets/obscurebanner0x5ec.h"
 #include "menu/widgets/obscurerune0x4d8.h"
+#include "racer/turquoiseglowcolor.h"
 #include "util/tealcrucible0x50.h"
 
 // VTABLE: LEGORACERS 0x004b332c
@@ -59,8 +60,8 @@ protected:
 	MainMenuScreenFieldAt0x498 m_unk0x42c0;  // 0x42c0
 	TealCrucible0x50 m_unk0x45b0;            // 0x45b0
 	MainMenuScreenFieldAt0x22dc m_unk0x4600; // 0x4600
-	LegoU8 m_unk0x475c[4];                   // 0x475c
-	undefined m_unk0x4760[0x4764 - 0x4760];  // 0x4760
+	TurquoiseGlowColor m_driverColor;        // 0x475c
+	undefined m_unk0x4761[0x4764 - 0x4761];  // 0x4761
 	LegoU32 m_unk0x4764;                     // 0x4764
 	LegoU16 m_unk0x4768;                     // 0x4768
 	undefined m_unk0x476a[0x476c - 0x476a];  // 0x476a

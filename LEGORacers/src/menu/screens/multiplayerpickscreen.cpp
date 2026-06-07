@@ -98,7 +98,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, M
 		return FALSE;
 	}
 
-	m_unk0x2b78 = p_context->m_context->m_unk0x348[0];
+	m_unk0x2b78 = &p_context->m_context->m_inputBindings[0];
 	m_unk0x2b7c[0].CopyFromBufSelection(m_unk0x2b94[0], 0x10);
 	m_unk0x2b7c[1].CopyFromBufSelection(m_unk0x2b94[1], 0x10);
 	FUN_004803d0();

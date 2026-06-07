@@ -12,6 +12,7 @@
 #include "menu/menuscreenid.h"
 #include "menu/screens/imaginarytool0x368.h"
 #include "render/goldrawstate.h"
+#include "util/amethystbreeze0x104.h"
 
 #include <golerror.h>
 #include <stddef.h>
@@ -34,6 +35,9 @@ MenuManager* g_menuManager = NULL;
 
 // GLOBAL: LEGORACERS 0x004c4928
 DisplayDriverGuid g_displayDriverGuid = {0};
+
+extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004c6ee4;
 
 // FUNCTION: LEGORACERS 0x0042b1e0
 void MenuManager::Run(LegoRacers::Context* p_context)
@@ -323,17 +327,17 @@ void MenuManager::FUN_0042d0e0()
 		PeridotTrace0x4a8* trace = &m_unk0x04.m_unk0x258.GetUnk0x108();
 		::memcpy(
 			m_unk0x04.m_unk0x258.GetUnk0x108().GetUnk0x24(),
-			m_unk0x04.m_context->m_saveState.m_data,
-			sizeof(m_unk0x04.m_context->m_saveState.m_data)
+			&m_unk0x04.m_context->m_saveState,
+			sizeof(m_unk0x04.m_context->m_saveState)
 		);
 		m_unk0x04.m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit2;
 		m_unk0x04.m_unk0x258.GetUnk0x18c4().FUN_0042eb60(trace, m_unk0x04.m_unk0x258.GetUnk0x18c4().GetUnk0x04());
 	}
 
-	LegoRacers::Context::SaveRecord* saveRecord = m_unk0x04.m_context->m_saveRecords;
+	PeridotTraceRecordData* saveRecord = m_unk0x04.m_context->m_saveRecords;
 	for (LegoU32 i = 0; i < m_unk0x04.m_context->m_saveRecordCount; i++, saveRecord++) {
 		PeridotTraceBase0x24::Record* record = m_unk0x04.m_unk0x258.GetUnk0x108().FUN_0042b880();
-		::memcpy(record->m_data, saveRecord->m_data, sizeof(LegoRacers::Context::SaveRecord));
+		::memcpy(record->m_data, *saveRecord, sizeof(*saveRecord));
 	}
 }
 
@@ -525,8 +529,234 @@ void MenuManager::Run()
 // STUB: LEGORACERS 0x0042d730
 void MenuManager::FUN_0042d730()
 {
-	// TODO
-	STUB(0x42d730);
+	GolString string;
+	GolRenderDevice::MaterialColor materialColor;
+	GolRenderDevice::Light light;
+	AmethystBreeze0x104 rendererState;
+	LegoRacers::Context* context = m_unk0x04.m_context;
+	PeridotTrace0x4a8& trace = m_unk0x04.m_unk0x258.GetUnk0x108();
+	GameState& state = m_unk0x04.m_unk0x258.GetUnk0x18c4();
+	PeridotTraceBuffer0x250& selectedRecords = m_unk0x04.m_unk0x258.GetUnk0x1cfc();
+
+	if (context->m_unk0x24 == 0 || context->m_unk0x24 == 2) {
+		context->m_unk0x20 = 0;
+	}
+
+	for (LegoU32 saveIndex = 0; saveIndex < trace.GetUnk0x00(); saveIndex++) {
+		PeridotTraceBase0x24::Record* record = trace.FUN_0042b990(saveIndex);
+		::memcpy(context->m_saveRecords[saveIndex], record->m_data, sizeof(context->m_saveRecords[saveIndex]));
+	}
+	context->m_saveRecordCount = trace.GetUnk0x00();
+
+	state.FUN_0042ef80(&trace);
+	::memcpy(&context->m_saveState, trace.GetUnk0x24(), sizeof(context->m_saveState));
+	context->m_unk0x1e |= LegoRacers::Context::c_flagBit2;
+
+	LegoU32 selectedCount = selectedRecords.GetUnk0x244();
+	if (!selectedCount) {
+		context->m_unk0x100 = 6;
+		context->m_unk0x24 = 1;
+
+		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+		RaceNameEntry* raceName =
+			m_unk0x04.m_raceList.GetEntries()[0].GetRaceNameEntry(g_unk0x004befec[g_unk0x004c6ee4] % 4);
+
+		if (raceName) {
+			::memcpy(context->m_raceSlots[0].m_unk0x08, raceName->GetName(), sizeof(context->m_raceSlots[0].m_unk0x08));
+			::memcpy(
+				context->m_raceSlots[0].m_raceName,
+				raceName->GetUnk0x0cName(),
+				sizeof(context->m_raceSlots[0].m_raceName)
+			);
+			context->m_raceSlots[0].m_unk0x00 = 1;
+			context->m_raceSlots[0].m_unk0x04 = raceName->GetUnk0x2c();
+		}
+
+		context->m_unk0x2d[0] = 'c';
+		context->m_unk0x2d[1] = '0';
+		context->m_unk0x2d[2] = '\0';
+	}
+
+	if ((context->m_unk0x20 & 0x20) && ::strcmp(context->m_unk0x2d, "c6") == 0) {
+		context->m_raceSlots[0].m_unk0x04 = 1;
+	}
+
+	RaceDefinitionList::RaceDefinition* raceDefinition =
+		static_cast<RaceDefinitionList::RaceDefinition*>(m_unk0x04.m_raceList.GetName(context->m_unk0x2d));
+	if (raceDefinition != NULL && context->m_unk0x100 > raceDefinition->GetCourseCount()) {
+		context->m_unk0x100 = raceDefinition->GetCourseCount();
+	}
+
+	LegoRacers::Context::PlayerSetupSlot* slots = context->m_playerSetupSlots;
+	if (raceDefinition != NULL) {
+		for (LegoU32 courseIndex = 0; courseIndex < context->m_unk0x100; courseIndex++) {
+			::memcpy(
+				slots[courseIndex].m_courseName,
+				raceDefinition->GetCourseName(courseIndex),
+				sizeof(slots[courseIndex].m_courseName)
+			);
+			slots[courseIndex].m_flag = FALSE;
+			slots[courseIndex].m_unk0x10 = 2;
+			slots[courseIndex].m_color.m_unk0x00 = 0;
+			slots[courseIndex].m_color.m_unk0x01 = 0;
+			slots[courseIndex].m_color.m_unk0x02 = 0;
+			slots[courseIndex].m_color.m_unk0x03 = 0;
+			slots[courseIndex].m_color.m_unk0x04 = 0;
+			slots[courseIndex].m_unk0x59[0] = 0;
+		}
+	}
+
+	undefined2 emptyName[15];
+	::memset(emptyName, 0, sizeof(emptyName));
+	string.CopyFromBufSelection(emptyName, 14);
+
+	context->m_unk0x32c = selectedCount;
+	if (selectedCount > context->m_unk0x100) {
+		context->m_unk0x100 = selectedCount;
+	}
+
+	if (m_unk0x04.m_unk0x21f4.FUN_0049a0e0()) {
+		m_unk0x04.m_unk0x21a4.FUN_0049ce40();
+		m_unk0x04.m_unk0x21f4.Destroy();
+		m_unk0x04.m_unk0x4224.Destroy();
+		m_unk0x04.m_pieceLibrary.Destroy();
+	}
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
+	}
+
+	m_unk0x04.m_pieceLibrary.FUN_0049ee30("LPieceLo.leg", context->m_unk0x18);
+	m_unk0x04.m_unk0x4224.FUN_004978f0(m_golExport, m_renderer);
+	m_unk0x04.m_unk0x4224.FUN_00497c30("LPieceLo.WDF", context->m_unk0x18, FALSE);
+	m_unk0x04.m_unk0x4224.FUN_00497a10("L_Colors.LEG", context->m_unk0x18);
+	m_unk0x04.m_unk0x21f4.FUN_00499fc0(m_golExport, m_renderer, &m_unk0x04.m_pieceLibrary, &m_unk0x04.m_unk0x4224);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+
+	FUN_0042df70();
+	FUN_0042de90(TRUE);
+
+	LegoRacers::Context::PlayerRecordState* recordStates = context->m_playerRecordStates;
+	for (LegoU32 selectedIndex = 0; selectedIndex < selectedCount; selectedIndex++) {
+		PeridotTraceBase0x24::Record* record = selectedRecords.GetUnk0x248(selectedIndex);
+		LegoRacers::Context::PlayerSetupSlot* slot = &slots[selectedIndex];
+
+		rendererState.FUN_0040eb60();
+
+		ColorRGBA color;
+		color.m_red = 0x80;
+		color.m_grn = 0x80;
+		color.m_blu = 0x80;
+		color.m_alp = 0x80;
+		materialColor.SetColor(color);
+		rendererState.FUN_0040eb70(&materialColor);
+
+		color.m_red = 0xff;
+		color.m_grn = 0xff;
+		color.m_blu = 0xff;
+		color.m_alp = 0xff;
+		light.SetColor(color);
+
+		GolVec3 direction;
+		direction.m_x = -1.0f;
+		direction.m_y = 0.0f;
+		direction.m_z = -1.0f;
+		light.SetDirection(direction);
+		rendererState.FUN_0040eba0(&light);
+
+		record->FUN_0042b3a0(&string);
+		string.CopyToString(slot->m_playerName);
+
+		FUN_0042dcb0(record, slot, &rendererState);
+		FUN_0042dfa0(record, slot, &rendererState);
+
+		recordStates[selectedIndex].m_unk0x00 = record->m_unk0x08;
+		recordStates[selectedIndex].m_unk0x04 = record->m_unk0x0c;
+		recordStates[selectedIndex].m_unk0x08 = record->m_unk0x10;
+
+		record->FUN_0042b330(&slot->m_color);
+		slot->m_unk0x10 = 0;
+	}
+
+	for (LegoU32 clearIndex = 0; clearIndex < 4; clearIndex++) {
+		context->m_unk0x98[clearIndex] = 0;
+		context->m_unk0xa8[clearIndex] = 0;
+		context->m_unk0xb8[clearIndex] = 0;
+		context->m_unk0xc8[clearIndex] = 0;
+	}
+
+	if (!selectedCount) {
+		context->m_unk0x32c = m_unk0x04.m_inputBindings.GetInputManager()->GetJoystickCount();
+	}
+
+	for (LegoU32 playerIndex = 0; playerIndex < context->m_unk0x32c; playerIndex++) {
+		LegoU32 entryIndex = state.GetSelectedInputBindingEntryIndex(playerIndex);
+		state.FUN_0042ee10(playerIndex, entryIndex, &context->m_inputBindings[playerIndex]);
+	}
+
+	if (!selectedCount) {
+		context->m_unk0x32c = 0;
+	}
+}
+
+// STUB: LEGORACERS 0x0042dcb0
+void MenuManager::FUN_0042dcb0(
+	PeridotTraceBase0x24::Record* p_record,
+	LegoRacers::Context::PlayerSetupSlot* p_slot,
+	AmethystBreeze0x104* p_rendererState
+)
+{
+	STUB(0x0042dcb0);
+}
+
+// FUNCTION: LEGORACERS 0x0042de90
+void MenuManager::FUN_0042de90(LegoBool32 p_arg)
+{
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
+	}
+
+	m_unk0x04.m_unk0x437c.Load("bodypart.pcf", m_unk0x04.m_context->m_unk0x18);
+
+	GarnetFlare0x60::LoadParams partParams;
+	partParams.m_golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
+	partParams.m_renderer = m_unk0x04.m_context->m_golApp->GetRenderer();
+	partParams.m_unk0x0c = &m_unk0x04.m_unk0x437c;
+	partParams.m_binary = m_unk0x04.m_context->m_unk0x18;
+	partParams.m_unk0x14 = p_arg == FALSE;
+	m_unk0x04.m_unk0x4ae0.FUN_00497f10(&partParams, p_arg);
+
+	TanzaniteWisp0x88::LoadParams menuParams;
+	menuParams.m_golExport = partParams.m_golExport;
+	menuParams.m_renderer = partParams.m_renderer;
+	menuParams.m_menuId = 6;
+	menuParams.m_unk0x0c = &m_unk0x04.m_unk0x4ae0;
+	m_unk0x04.m_unk0x4b40.FUN_0049d1d0(&menuParams);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042df70
+void MenuManager::FUN_0042df70()
+{
+	m_unk0x04.m_unk0x4b40.ReleaseMenuResources();
+	m_unk0x04.m_unk0x4ae0.ReleaseResources();
+	m_unk0x04.m_unk0x437c.Destroy();
+}
+
+// STUB: LEGORACERS 0x0042dfa0
+void MenuManager::FUN_0042dfa0(
+	PeridotTraceBase0x24::Record* p_record,
+	LegoRacers::Context::PlayerSetupSlot* p_slot,
+	AmethystBreeze0x104* p_rendererState
+)
+{
+	STUB(0x0042dfa0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e1f0
@@ -671,7 +901,7 @@ LegoS32 MenuManager::FUN_0042e490()
 			raceIndex = m_unk0x04.m_raceNames.GetEntryIndexByName(context->m_raceSlots[i].m_unk0x08);
 			hasRaceIndex = TRUE;
 
-			const LegoChar* sourceName = context->m_unk0x108[context->m_unk0xa8[i]].m_unk0x2c;
+			const LegoChar* sourceName = context->m_playerSetupSlots[context->m_unk0xa8[i]].m_playerName;
 			::strncpy(name, sourceName, sizeof(name) - 1);
 			name[sizeof(name) - 1] = '\0';
 			GolString::CopyStringToBuf16(sourceName, wideName);
@@ -687,7 +917,7 @@ LegoS32 MenuManager::FUN_0042e490()
 				raceIndex = m_unk0x04.m_raceNames.GetEntryIndexByName(context->m_raceSlots[i].m_unk0x08);
 			}
 
-			const LegoChar* sourceName = context->m_unk0x108[context->m_unk0xc8[i]].m_unk0x2c;
+			const LegoChar* sourceName = context->m_playerSetupSlots[context->m_unk0xc8[i]].m_playerName;
 			::strncpy(name, sourceName, sizeof(name) - 1);
 			name[sizeof(name) - 1] = '\0';
 			GolString::CopyStringToBuf16(sourceName, wideName);

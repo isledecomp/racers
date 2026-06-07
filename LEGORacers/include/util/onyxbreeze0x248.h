@@ -18,6 +18,7 @@ public:
 	void Shutdown();
 
 	InputEventQueue* GetUnk0x208() { return &m_unk0x208; }
+	InputManager* GetInputManager() const { return m_inputManager; }
 	LegoBool32 HasInputManager() const { return m_inputManager != NULL; }
 	LegoBool32 HasKeyboard() const;
 

@@ -308,6 +308,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/glassstream0x94.cpp
   LEGORacers/src/race/celestialforge0x48.cpp
   LEGORacers/src/util/opalhaven0xf4.cpp
+  LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp
   LEGORacers/src/model/golworlddatabase.cpp

@@ -487,7 +487,7 @@ void CrimsonPebbleEvent0x14::FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2
 	m_unk0x0c->VTable0x34(vec2, p_param3);
 }
 
-// STUB: LEGORACERS 0x0049ff70
+// FUNCTION: LEGORACERS 0x0049ff70
 void CrimsonPebbleEvent0x14::ParseCommonToken(
 	GolFileParser* p_parser,
 	CrimsonPebble0x228* p_owner,
@@ -495,6 +495,7 @@ void CrimsonPebbleEvent0x14::ParseCommonToken(
 )
 {
 	GolName name;
+	LegoChar text[64];
 	::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
 	switch (p_token) {
@@ -502,35 +503,35 @@ void CrimsonPebbleEvent0x14::ParseCommonToken(
 		m_unk0x04 = p_owner->FUN_004a3240(name);
 		m_unk0x08 = m_unk0x04;
 		m_unk0x0c = static_cast<OpalHaven0xf4*>(m_unk0x04);
-		if (m_unk0x04 == NULL) {
-			LegoChar text[64];
-			::strncpy(text, name, sizeof(GolName));
-			text[sizeof(GolName)] = '\0';
-			::strcat(text, ": unable to find jointed model");
-			GOL_FATALERROR_MESSAGE(text);
+		if (m_unk0x04) {
+			return;
 		}
+		::strncpy(text, name, sizeof(GolName));
+		text[sizeof(GolName)] = '\0';
+		::strcat(text, ": unable to find jointed model");
+		GOL_FATALERROR_MESSAGE(text);
 		break;
 	case GolFileParser::e_unknown0x5e:
 		m_unk0x04 = p_owner->FUN_004a3230(name);
 		m_unk0x08 = m_unk0x04;
-		if (m_unk0x04 == NULL) {
-			LegoChar text[64];
-			::strncpy(text, name, sizeof(GolName));
-			text[sizeof(GolName)] = '\0';
-			::strcat(text, ": unable to find model");
-			GOL_FATALERROR_MESSAGE(text);
+		if (m_unk0x04) {
+			return;
 		}
+		::strncpy(text, name, sizeof(GolName));
+		text[sizeof(GolName)] = '\0';
+		::strcat(text, ": unable to find model");
+		GOL_FATALERROR_MESSAGE(text);
 		break;
 	case GolFileParser::e_unknown0x5f:
 		m_unk0x04 = p_owner->FUN_004a3250(name);
 		m_unk0x08 = m_unk0x04;
-		if (m_unk0x04 == NULL) {
-			LegoChar text[64];
-			::strncpy(text, name, sizeof(GolName));
-			text[sizeof(GolName)] = '\0';
-			::strcat(text, ": unable to find bsp model");
-			GOL_FATALERROR_MESSAGE(text);
+		if (m_unk0x04) {
+			return;
 		}
+		::strncpy(text, name, sizeof(GolName));
+		text[sizeof(GolName)] = '\0';
+		::strcat(text, ": unable to find bsp model");
+		GOL_FATALERROR_MESSAGE(text);
 		break;
 	default:
 		p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);

@@ -74,11 +74,9 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Reset()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00404a10
+// FUNCTION: LEGORACERS 0x00404a10
 LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
-	STUB(0x00404a10);
-
 	LegoU32 duration = 0;
 	m_unk0x28 = p_parent;
 
@@ -89,15 +87,6 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b:
-			m_unk0x0c = p_parser->ReadInteger();
-			break;
-		case GolFileParser::e_unknown0x2c:
-			duration = p_parser->ReadInteger();
-			break;
-		case GolFileParser::e_unknown0x2d:
-			m_unk0x58 = p_parser->ReadInteger();
-			break;
 		case GolFileParser::e_unknown0x2f:
 			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
 			m_unk0x20 = 1;
@@ -115,19 +104,16 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 			m_unk0x2c.m_indexedRef.m_modelIndex = p_parser->ReadInteger();
 			m_unk0x20 = 4;
 			break;
-		case GolFileParser::e_unknown0x33:
-			m_unk0x34.m_x = p_parser->ReadFloat();
-			m_unk0x34.m_y = p_parser->ReadFloat();
-			m_unk0x34.m_z = p_parser->ReadFloat();
+		case GolFileParser::e_unknown0x2b:
+			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x34:
-			m_unk0x40.m_x = p_parser->ReadFloat();
-			m_unk0x40.m_y = p_parser->ReadFloat();
-			m_unk0x40.m_z = p_parser->ReadFloat();
-			m_unk0x4c.m_x = p_parser->ReadFloat();
-			m_unk0x4c.m_y = p_parser->ReadFloat();
-			m_unk0x4c.m_z = p_parser->ReadFloat();
+		case GolFileParser::e_unknown0x2c:
+			duration = p_parser->ReadInteger();
 			break;
+		case GolFileParser::e_unknown0x2d:
+			m_unk0x58 = p_parser->ReadInteger();
+			break;
+
 		case GolFileParser::e_unknown0x36: {
 			m_unk0x5c = p_parser->ReadBracketedCountAndLeftCurly();
 			if (!m_unk0x5c) {
@@ -150,6 +136,19 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 			p_parser->ReadRightCurly();
 			break;
 		}
+		case GolFileParser::e_unknown0x33:
+			m_unk0x34.m_x = p_parser->ReadFloat();
+			m_unk0x34.m_y = p_parser->ReadFloat();
+			m_unk0x34.m_z = p_parser->ReadFloat();
+			break;
+		case GolFileParser::e_unknown0x34:
+			m_unk0x40.m_x = p_parser->ReadFloat();
+			m_unk0x40.m_y = p_parser->ReadFloat();
+			m_unk0x40.m_z = p_parser->ReadFloat();
+			m_unk0x4c.m_x = p_parser->ReadFloat();
+			m_unk0x4c.m_y = p_parser->ReadFloat();
+			m_unk0x4c.m_z = p_parser->ReadFloat();
+			break;
 		default:
 			break;
 		}
@@ -157,8 +156,8 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 		token = p_parser->GetNextToken();
 	}
 
-	duration += m_unk0x0c;
-	m_unk0x10 = duration;
+	// duration += m_unk0x0c;
+	m_unk0x10 = m_unk0x0c + duration;
 	return duration;
 }
 

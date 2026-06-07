@@ -77,10 +77,9 @@ LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::Reset()
 // FUNCTION: LEGORACERS 0x00404a10
 LegoU32 SaffronQuartz0x2c::Frame0xb8::Model0x68::FUN_00404a10(SaffronQuartz0x2c* p_parent, GolFileParser* p_parser)
 {
-	LegoU32 duration;
+	LegoU32 duration = 0;
 	m_unk0x28 = p_parent;
 
-	duration = 0;
 	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2e);
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();

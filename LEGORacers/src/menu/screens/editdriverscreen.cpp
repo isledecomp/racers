@@ -203,8 +203,9 @@ LegoBool32 EditDriverScreen::FUN_0047d560()
 	TurquoiseGlowColor color;
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
 
-	if (color.m_unk0x00 == m_unk0x475c[0] && color.m_unk0x01 == m_unk0x475c[1] && color.m_unk0x02 == m_unk0x475c[2]) {
-		return color.m_unk0x03 != m_unk0x475c[3];
+	if (color.m_unk0x00 == m_driverColor.m_components[0] && color.m_unk0x01 == m_driverColor.m_components[1] &&
+		color.m_unk0x02 == m_driverColor.m_components[2]) {
+		return color.m_unk0x03 != m_driverColor.m_components[3];
 	}
 
 	return TRUE;
@@ -267,15 +268,14 @@ void EditDriverScreen::FUN_0047d740()
 // FUNCTION: LEGORACERS 0x0047d840
 void EditDriverScreen::FUN_0047d840()
 {
-	TurquoiseGlowColor* color = reinterpret_cast<TurquoiseGlowColor*>(m_unk0x475c);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(color);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&m_driverColor);
 
-	m_unk0x420[0].FUN_00484170(m_unk0x475c[0]);
-	m_unk0x420[1].FUN_00484170(m_unk0x475c[1]);
-	m_unk0x420[2].FUN_00484170(m_unk0x475c[2]);
-	m_unk0x420[3].FUN_00484170(m_unk0x475c[3]);
+	m_unk0x420[0].FUN_00484170(m_driverColor.m_components[0]);
+	m_unk0x420[1].FUN_00484170(m_driverColor.m_components[1]);
+	m_unk0x420[2].FUN_00484170(m_driverColor.m_components[2]);
+	m_unk0x420[3].FUN_00484170(m_driverColor.m_components[3]);
 
-	m_unk0x4600.FUN_0047e210(color);
+	m_unk0x4600.FUN_0047e210(&m_driverColor);
 	m_unk0x9e0[0].VTable0x4c(4);
 	m_unk0x4764 = 0;
 }
@@ -283,7 +283,7 @@ void EditDriverScreen::FUN_0047d840()
 // FUNCTION: LEGORACERS 0x0047d8e0
 void EditDriverScreen::FUN_0047d8e0()
 {
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(reinterpret_cast<TurquoiseGlowColor*>(m_unk0x475c));
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&m_driverColor);
 
 	if ((m_context->m_unk0x4b40.GetUnk0x78() == 0) & TRUE) {
 		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
@@ -363,7 +363,7 @@ void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
 
 	if (p_source == &m_unk0x9e0[0]) {
 		LegoU32 index = m_unk0x420[0].GetSelectedValue();
-		m_unk0x475c[0] = static_cast<LegoU8>(index);
+		m_driverColor.m_components[0] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e130(index);
 		m_unk0x4768 = 0x83;
@@ -371,7 +371,7 @@ void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[1]) {
 		LegoU32 index = m_unk0x420[1].GetSelectedValue();
-		m_unk0x475c[1] = static_cast<LegoU8>(index);
+		m_driverColor.m_components[1] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e160(index, 0);
 		m_unk0x4768 = 0x83;
@@ -379,7 +379,7 @@ void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[2]) {
 		LegoU32 index = m_unk0x420[2].GetSelectedValue();
-		m_unk0x475c[2] = static_cast<LegoU8>(index);
+		m_driverColor.m_components[2] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e1b0(index);
 		m_unk0x4768 = 0x84;
@@ -387,7 +387,7 @@ void EditDriverScreen::VTable0x44(ObscureVantage0x58* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[3]) {
 		LegoU32 index = m_unk0x420[3].GetSelectedValue();
-		m_unk0x475c[3] = static_cast<LegoU8>(index);
+		m_driverColor.m_components[3] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e1e0(index);
 
@@ -412,11 +412,12 @@ void EditDriverScreen::VTable0x38(ObscureVantage0x58* p_source)
 			m_unk0x420[i].VTable0x50(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
 		}
 
-		for (i = 0; i < 4; i++) {
-			m_unk0x475c[i] = static_cast<LegoU8>(m_unk0x420[i].GetSelectedValue());
-		}
+		m_driverColor.m_components[0] = static_cast<LegoU8>(m_unk0x420[0].GetSelectedValue());
+		m_driverColor.m_components[1] = static_cast<LegoU8>(m_unk0x420[1].GetSelectedValue());
+		m_driverColor.m_components[2] = static_cast<LegoU8>(m_unk0x420[2].GetSelectedValue());
+		m_driverColor.m_components[3] = static_cast<LegoU8>(m_unk0x420[3].GetSelectedValue());
 
-		m_unk0x4600.FUN_0047e210(reinterpret_cast<TurquoiseGlowColor*>(m_unk0x475c));
+		m_unk0x4600.FUN_0047e210(&m_driverColor);
 	}
 	else if (p_source == &m_unk0x39f0) {
 		if (FUN_0047d560()) {

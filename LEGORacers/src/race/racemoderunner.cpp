@@ -118,32 +118,32 @@ void RaceModeRunner::ReleaseContextAssets()
 	GolExport* golExport = m_context->m_golApp->GetGolExport();
 
 	for (LegoU32 i = 0; i < m_context->m_unk0x32c; i++) {
-		ScarletNova0x5c& slot = m_context->m_unk0x108[i];
+		LegoRacers::Context::PlayerSetupSlot& slot = m_context->m_playerSetupSlots[i];
 
 		if (slot.m_flag) {
-			if (slot.m_unk0x20) {
-				golExport->VTable0x48(slot.m_unk0x20);
-				slot.m_unk0x20 = NULL;
+			if (slot.m_model) {
+				golExport->VTable0x48(slot.m_model);
+				slot.m_model = NULL;
 			}
-			if (slot.m_unk0x24) {
-				golExport->DestroyMaterialList(slot.m_unk0x24);
-				slot.m_unk0x24 = NULL;
+			if (slot.m_materials) {
+				golExport->DestroyMaterialList(slot.m_materials);
+				slot.m_materials = NULL;
 			}
-			if (slot.m_unk0x28) {
-				golExport->DestroyTextureList(slot.m_unk0x28);
-				slot.m_unk0x28 = NULL;
+			if (slot.m_textures) {
+				golExport->DestroyTextureList(slot.m_textures);
+				slot.m_textures = NULL;
 			}
-			if (slot.m_unk0x44) {
-				golExport->VTable0x48(slot.m_unk0x44);
-				slot.m_unk0x44 = NULL;
+			if (slot.m_altModel) {
+				golExport->VTable0x48(slot.m_altModel);
+				slot.m_altModel = NULL;
 			}
-			if (slot.m_unk0x48) {
-				golExport->DestroyMaterialList(slot.m_unk0x48);
-				slot.m_unk0x48 = NULL;
+			if (slot.m_altMaterials) {
+				golExport->DestroyMaterialList(slot.m_altMaterials);
+				slot.m_altMaterials = NULL;
 			}
-			if (slot.m_unk0x4c) {
-				golExport->DestroyTextureList(slot.m_unk0x4c);
-				slot.m_unk0x4c = NULL;
+			if (slot.m_altTextures) {
+				golExport->DestroyTextureList(slot.m_altTextures);
+				slot.m_altTextures = NULL;
 			}
 		}
 	}

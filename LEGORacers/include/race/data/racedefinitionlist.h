@@ -33,6 +33,8 @@ public:
 		}
 		LegoChar* GetName() { return m_name; }
 		const LegoChar* GetMenuName() const { return m_menuName; }
+		LegoU32 GetCourseCount() const { return m_courseCount; }
+		const LegoChar* GetCourseName(LegoU32 p_index) const { return m_courseNames[p_index]; }
 		RaceNameEntry* GetRaceNameEntry(LegoU32 p_index) const { return m_raceNameEntries[p_index]; }
 		LegoS32 GetStringIndex() const { return m_stringIndex; }
 

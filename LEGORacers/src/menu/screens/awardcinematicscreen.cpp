@@ -167,13 +167,13 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 	LegoRacers::Context* context = m_context->m_context;
 	PeridotTraceBase0x24* trace = NULL;
 
-	switch (context->m_unk0x330) {
+	switch (context->m_playerRecordStates[0].m_unk0x00) {
 	case 1:
 	case 3:
 		trace = &m_context->m_unk0x258.GetUnk0x108();
 		break;
 	case 2:
-		trace = &m_context->m_unk0x258.GetUnk0xa58()[context->m_unk0x334];
+		trace = &m_context->m_unk0x258.GetUnk0xa58()[context->m_playerRecordStates[0].m_unk0x04];
 		break;
 	default:
 		return FALSE;
@@ -202,7 +202,8 @@ LegoBool32 AwardCinematicScreen::FUN_00476890(
 	RaceDefinitionList::RaceDefinition* p_raceDefinition
 )
 {
-	PeridotTraceBase0x24::Record* record = p_trace->FUN_0042b9b0(m_context->m_context->m_unk0x338);
+	PeridotTraceBase0x24::Record* record =
+		p_trace->FUN_0042b9b0(m_context->m_context->m_playerRecordStates[0].m_unk0x08);
 	if (record == NULL) {
 		return FALSE;
 	}

@@ -17,7 +17,7 @@ void AzureCircuit0x320::FUN_0043beb0(LegoRacers::Context* p_context)
 
 		entryIndex = 0;
 		do {
-			if (!p_context->m_unk0x108[entryIndex].m_unk0x0c) {
+			if (!p_context->m_playerSetupSlots[entryIndex].m_unk0x10) {
 				Entry0xe34* entry = &m_unk0x140[entryIndex];
 				LegoU32 scoreCount = m_unk0x29c;
 				if (scoreCount <= entry->m_unk0xce4) {

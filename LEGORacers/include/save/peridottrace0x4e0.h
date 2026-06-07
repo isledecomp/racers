@@ -17,6 +17,8 @@ class PeridotTraceBuffer0x250;
 class PeridotTrace0x4e0;
 struct TurquoiseGlowColor;
 
+typedef undefined PeridotTraceRecordData[0x22d];
+
 // SIZE 0x28
 struct PeridotTraceInputBindingEntry {
 	LegoU8 m_deviceType;    // 0x00
@@ -105,7 +107,7 @@ public:
 		undefined4 m_unk0x08;          // 0x08
 		undefined4 m_unk0x0c;          // 0x0c
 		undefined4 m_unk0x10;          // 0x10
-		undefined m_data[0x22d];       // 0x14
+		PeridotTraceRecordData m_data; // 0x14
 		undefined m_unk0x241[0x244 - 0x241];
 
 	private:
@@ -114,8 +116,8 @@ public:
 
 	// SIZE 0x241
 	struct SerializedRecord {
-		undefined m_unk0x00[0x14]; // 0x00
-		undefined m_data[0x22d];   // 0x14
+		undefined m_unk0x00[0x14];     // 0x00
+		PeridotTraceRecordData m_data; // 0x14
 	};
 
 	PeridotTraceBase0x24();
@@ -264,6 +266,7 @@ public:
 	void FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
 	void FUN_0042eb60(PeridotTrace0x4a8*, undefined4);
 	LegoU32 FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
+	void FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry);
 	void FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
 	void FUN_0042ef80(PeridotTrace0x4a8*);
 	void SetLanguageResourcePath();
@@ -359,7 +362,6 @@ private:
 	void FUN_0042ea50(LegoU32 p_playerIndex);
 	LegoU32 FUN_0042eac0(LegoU32 p_playerIndex);
 	LegoBool32 FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event);
-	void FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry);
 	LegoU32 FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	LegoU32 GetRegistryLanguageIndex();
 

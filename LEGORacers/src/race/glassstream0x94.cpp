@@ -125,8 +125,8 @@ void GlassStream0x94::Run()
 
 	if (!(m_context->m_unk0x1e & LegoRacers::Context::c_flagBit3) && m_context->m_unk0x00) {
 		LegoU32 rankIndex = 0;
-		ScarletNova0x5c* slot = m_context->m_unk0x108;
-		undefined4 slotValue = slot->m_unk0x0c;
+		LegoRacers::Context::PlayerSetupSlot* slot = m_context->m_playerSetupSlots;
+		undefined4 slotValue = slot->m_unk0x10;
 
 		if (slotValue) {
 			LegoU32 slotCount = m_context->m_unk0x100;
@@ -134,7 +134,7 @@ void GlassStream0x94::Run()
 			while (slotValue && rankIndex < slotCount) {
 				slot++;
 				rankIndex++;
-				slotValue = slot->m_unk0x0c;
+				slotValue = slot->m_unk0x10;
 			}
 		}
 

@@ -1,7 +1,7 @@
 #include "menu/screens/pickracerscreen.h"
 
+#include "menu/menugamecontext.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
 
 DECOMP_SIZE_ASSERT(PickRacerScreen, 0x4c8c)
 
@@ -22,15 +22,15 @@ void PickRacerScreen::VTable0x4c()
 {
 	undefined2 textId = 0x14;
 
-	FUN_0046bef0(&m_unk0x3ff4, 0x49, 0x49);
-	RacerPickScreenBase0x3ff4::VTable0x4c();
+	CreateImage(&m_unk0x3ff4, 0x49, 0x49);
+	RacerPickScreenBase::VTable0x4c();
 
 	if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
 		textId = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244AsU16();
 		textId += 0x15;
 	}
 
-	FUN_0046bf80(&m_unk0x4050, 0x3a, 0x3a, textId);
+	CreateTextLabel(&m_unk0x4050, 0x3a, 0x3a, textId);
 	m_unk0x4050.FUN_0046f6b0(0x14);
 	FUN_0047fdc0(&m_unk0x46a8, 9, 0x42, 0xb9);
 	FUN_0047fdc0(&m_unk0x40c8, 0x41, 0x46, 0x72);
@@ -39,7 +39,7 @@ void PickRacerScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00484e40
-LegoBool32 PickRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	undefined4 params[3];
 	params[0] = 1;
@@ -50,7 +50,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToo
 		FUN_00480210(p_context, FALSE);
 	}
 
-	if (!RacerPickScreenBase0x3ff4::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerPickScreenBase::VTable0xa0(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
@@ -77,7 +77,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToo
 }
 
 // STUB: LEGORACERS 0x00484f40
-void PickRacerScreen::VTable0x38(ObscureVantage0x58* p_source)
+void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x46a8) {
 		m_unk0x360 = static_cast<LegoU16>(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() + c_menuControl1);
@@ -124,9 +124,9 @@ void PickRacerScreen::VTable0x38(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00485090
-void PickRacerScreen::VTable0x44(ObscureVantage0x58* p_source)
+void PickRacerScreen::VTable0x44(MenuWidget* p_source)
 {
-	RacerPickScreenBase0x3ff4::VTable0x44(p_source);
+	RacerPickScreenBase::VTable0x44(p_source);
 }
 
 // FUNCTION: LEGORACERS 0x004850a0

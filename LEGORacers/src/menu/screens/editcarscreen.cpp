@@ -7,10 +7,10 @@
 #include "golscenenode.h"
 #include "golstream.h"
 #include "material/awakekite0x20.h"
-#include "menu/crimsonsun0xa4.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 #include "mesh/golmodelbase.h"
 #include "racer/turquoiseglowcolor.h"
 #include "surface/color.h"
@@ -51,7 +51,7 @@ void EditCarScreen::Reset()
 	::memset(m_unk0x325c, 0, sizeof(m_unk0x325c));
 	m_unk0x36c0 = FALSE;
 
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047bfc0
@@ -61,13 +61,13 @@ void EditCarScreen::FUN_0047bfc0()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\GARAGE");
 	}
 
-	FUN_0046c510(&m_unk0x43c, 0, 3);
+	CreateFramedSceneView(&m_unk0x43c, 0, 3);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	RacerPickModelSlot0xa0::CreateParams0x48 createParams;
+	RacerModelSlot::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
@@ -84,20 +84,20 @@ void EditCarScreen::FUN_0047bfc0()
 // FUNCTION: LEGORACERS 0x0047c080
 void EditCarScreen::FUN_0047c080()
 {
-	FUN_0046c240(&m_unk0x2384, 0x3e, 0x3b);
-	FUN_0046c2b0(&m_unk0x2418, &m_unk0x2384, 0x95, 0x4d);
+	CreateCarousel(&m_unk0x2384, 0x3e, 0x3b);
+	CreateSelector(&m_unk0x2418, &m_unk0x2384, 0x95, 0x4d);
 
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
-		FUN_0046bef0(&m_unk0x2e0c[i], 0x9d, static_cast<undefined2>(0x9e + i));
+		CreateImage(&m_unk0x2e0c[i], 0x9d, static_cast<undefined2>(0x9e + i));
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c0e0
 void EditCarScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
 	FUN_0047bfc0();
-	FUN_0046bf80(&m_unk0x3c4, 0x3a, 0x3a, 0x0b);
+	CreateTextLabel(&m_unk0x3c4, 0x3a, 0x3a, 0x0b);
 	m_unk0x3c4.FUN_0046f6b0(0x14);
 
 	FUN_0047fdc0(&m_unk0x914, 0x9a, 0x42, 0x25);
@@ -135,7 +135,7 @@ void EditCarScreen::VTable0x80()
 }
 
 // FUNCTION: LEGORACERS 0x0047c210
-LegoBool32 EditCarScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	FUN_0047c400(p_context, p_createParams);
 
@@ -149,7 +149,7 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolC
 
 	p_context->m_unk0x4ae0.SetUnk0x5c(1);
 
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -181,7 +181,7 @@ LegoBool32 EditCarScreen::Destroy()
 		m_golExport->VTable0x48(m_unk0x35a4);
 	}
 
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047c320
@@ -216,7 +216,7 @@ void EditCarScreen::FUN_0047c320()
 }
 
 // FUNCTION: LEGORACERS 0x0047c400
-void EditCarScreen::FUN_0047c400(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+void EditCarScreen::FUN_0047c400(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (g_editCarImageList != NULL) {
 		return;
@@ -307,7 +307,7 @@ void EditCarScreen::FUN_0047c610()
 // FUNCTION: LEGORACERS 0x0047c720
 void EditCarScreen::FUN_0047c720()
 {
-	AwardCinematicScreen::FieldAt0x658::CreateParams0x18 createParams;
+	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_unk0x00 = &m_context->m_unk0x42dc;
 	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
 	createParams.m_unk0x08 = m_context->m_unk0x21f4.GetUnk0x0c();
@@ -383,7 +383,7 @@ LegoBool32 EditCarScreen::FUN_0047c900()
 }
 
 // FUNCTION: LEGORACERS 0x0047c980
-void EditCarScreen::VTable0x38(ObscureVantage0x58* p_source)
+void EditCarScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x914) {
 		m_unk0x360 = c_menuCarBuild;
@@ -461,7 +461,7 @@ void EditCarScreen::VTable0x38(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047cbc0
-void EditCarScreen::VTable0x44(ObscureVantage0x58* p_source)
+void EditCarScreen::VTable0x44(MenuWidget* p_source)
 {
 	if (p_source != &m_unk0x2418) {
 		return;
@@ -471,7 +471,7 @@ void EditCarScreen::VTable0x44(ObscureVantage0x58* p_source)
 	model->GetUnk0xa4().FUN_0049fd60();
 	model->SetUnk0xd4(0);
 
-	ObscureVantage0x58* selectedChild = m_unk0x2384.GetUnk0x78();
+	MenuWidget* selectedChild = m_unk0x2384.GetUnk0x78();
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
 		if (selectedChild == &m_unk0x2e0c[i]) {
 			m_context->m_unk0x21a4.SetUnk0x10(&m_context->m_unk0x21a4.GetEntries()[i]);
@@ -532,7 +532,7 @@ void EditCarScreen::VTable0x84()
 // FUNCTION: LEGORACERS 0x0047cde0
 void EditCarScreen::FUN_0047cde0()
 {
-	MenuToolContext0x4bc8* context = m_context;
+	MenuGameContext* context = m_context;
 	PeridotTraceBase0x24::Record* record = context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248();
 	GameState& state = context->m_unk0x258.GetUnk0x18c4();
 	undefined4 value = record->m_unk0x08;

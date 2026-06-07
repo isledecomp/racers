@@ -3,14 +3,14 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "menu/style/ceruleanemperor0x4c.h"
-#include "menu/widgets/violetshoal0xc0.h"
+#include "menu/style/menustyletable.h"
+#include "menu/widgets/menumodelcarousel.h"
 #include "model/topazburst0x14.h"
 #include "types.h"
 
 class GolModelEntity;
 class LegoPieceLibrary;
-class ObscureIcon0x1a8;
+class MenuIcon;
 class SapphireReef0x2030;
 class VerdantTide0x38;
 
@@ -18,10 +18,10 @@ extern const LegoFloat g_siennaCircuitTwoPi;
 
 // VTABLE: LEGORACERS 0x004b3c10
 // SIZE 0x154
-class SiennaCircuit0x154 : public VioletShoal0xc0 {
+class SiennaCircuit0x154 : public MenuModelCarousel {
 public:
 	// SIZE 0x84
-	class CreateParams0x84 : public VioletShoal0xc0::CreateParams0x74 {
+	class CreateParams : public MenuModelCarousel::CreateParams {
 	public:
 		TopazBurst0x14* m_unk0x74;        // 0x74
 		LegoPieceLibrary* m_pieceLibrary; // 0x78
@@ -41,7 +41,7 @@ public:
 	void VTable0x5c(undefined4, GolModelEntity*) override; // vtable+0x5c
 	void VTable0x60(LegoS32) override;                     // vtable+0x60
 
-	LegoBool32 FUN_00485300(CreateParams0x84* p_createParams, CeruleanEmperor0x4c::Entry0x18* p_styleEntry);
+	LegoBool32 FUN_00485300(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	LegoS32 FUN_004853a0();
 	void FUN_004853f0();
 	void FUN_00485440(LegoS32 p_unk0x04);

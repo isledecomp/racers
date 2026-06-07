@@ -1,8 +1,8 @@
 #include "menu/screens/pickmemorycardscreen.h"
 
-#include "menu/crimsonsun0xa4.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 
 DECOMP_SIZE_ASSERT(PickMemoryCardScreen, 0x2548)
 
@@ -22,18 +22,18 @@ PickMemoryCardScreen::~PickMemoryCardScreen()
 // FUNCTION: LEGORACERS 0x00484960
 void PickMemoryCardScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
 }
 
 // FUNCTION: LEGORACERS 0x00484980
-LegoBool32 PickMemoryCardScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 PickMemoryCardScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!ImaginaryTool0x368::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
 	m_cursorHelper->SetCursorEnabled(FALSE);
-	ImaginaryTool0x368::VTable0x80();
+	MenuGameScreen::VTable0x80();
 	return TRUE;
 }
 
@@ -45,11 +45,11 @@ LegoBool32 PickMemoryCardScreen::Destroy()
 	}
 
 	m_cursorHelper->SetCursorEnabled(TRUE);
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004849e0
-void PickMemoryCardScreen::VTable0x38(ObscureVantage0x58* p_source)
+void PickMemoryCardScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x4f4) {
 		m_context->m_unk0x4b40.SetUnk0x84(0);
@@ -123,5 +123,5 @@ LegoBool32 PickMemoryCardScreen::VTable0x78(undefined4 p_arg)
 	m_context->m_unk0x4b40.SetUnk0x84(0);
 	m_unk0x360 = 15;
 	m_unk0x364 = TRUE;
-	return ImaginaryTool0x368::VTable0x78(p_arg);
+	return MenuGameScreen::VTable0x78(p_arg);
 }

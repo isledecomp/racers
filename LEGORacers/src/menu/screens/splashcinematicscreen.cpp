@@ -4,9 +4,9 @@
 #include "audio/musicinstance.h"
 #include "golhashtable.h"
 #include "golstream.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 
 DECOMP_SIZE_ASSERT(SplashCinematicScreen, 0x658)
 
@@ -22,14 +22,14 @@ SplashCinematicScreen::~SplashCinematicScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00488410
-LegoBool32 SplashCinematicScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 SplashCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	Destroy();
 
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 1;
 
-	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -73,7 +73,7 @@ LegoBool32 SplashCinematicScreen::Destroy()
 		}
 	}
 
-	return ImaginaryChisel0x658::Destroy();
+	return MenuSceneScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00488550
@@ -107,7 +107,7 @@ void SplashCinematicScreen::VTable0x4c()
 		break;
 	}
 
-	FUN_0046c5b0(&m_unk0x368, m_menuId);
+	CreateRegion(&m_unk0x368, m_menuId);
 }
 
 // FUNCTION: LEGORACERS 0x00488630
@@ -145,5 +145,5 @@ LegoBool32 SplashCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x368.m_unk0x2cc = 1;
 	}
 
-	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }

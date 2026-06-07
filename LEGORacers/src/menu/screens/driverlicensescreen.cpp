@@ -2,9 +2,9 @@
 
 #include "input/inputdevice.h"
 #include "input/keyboarddevice.h"
-#include "menu/crimsonsun0xa4.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menudialog.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "surface/color.h"
 
 #include <ctype.h>
@@ -30,7 +30,7 @@ const LegoChar* g_cheatNames[] = {
 };
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void DriverLicenseScreen::VTable0x44(ObscureVantage0x58*)
+void DriverLicenseScreen::VTable0x44(MenuWidget*)
 {
 }
 
@@ -58,15 +58,15 @@ void DriverLicenseScreen::Reset()
 	m_cheatString.CopyFromBufSelection(GetCheatBuffer(), c_cheatBufferLength);
 	m_unk0x23b4 = TRUE;
 	m_unk0x23b8 = FALSE;
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047b220
 void DriverLicenseScreen::FUN_0047b220()
 {
-	FUN_0046c510(&m_unk0x1648, 0, 0xd0);
+	CreateFramedSceneView(&m_unk0x1648, 0, 0xd0);
 
-	MainMenuScreenFieldAt0x22dc::CreateParams createParams;
+	MainMenuModelSlot::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
@@ -94,15 +94,15 @@ void DriverLicenseScreen::FUN_0047b220()
 // FUNCTION: LEGORACERS 0x0047b300
 void DriverLicenseScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x368, 0x49, 0x49);
-	FUN_0046bef0(&m_unk0x3e4, 0xd6, 0xd6);
-	FUN_0046c050(&m_unk0x1b20, 0xd9, 0x48);
+	CreateImage(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_unk0x3e4, 0xd6, 0xd6);
+	CreateFrame(&m_unk0x1b20, 0xd9, 0x48);
 	m_unk0x1b20.ClearFlags(2);
 
-	FUN_0046bf80(&m_unk0x720, 0x3a, 0x3a, 0x0a);
+	CreateTextLabel(&m_unk0x720, 0x3a, 0x3a, 0x0a);
 	m_unk0x720.FUN_0046f6b0(0x14);
 
-	FUN_0046c610(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
+	CreateTextField(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
 	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
 
 	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
@@ -118,13 +118,13 @@ void DriverLicenseScreen::VTable0x4c()
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x440); i++) {
 		switch (record.FUN_0042b610(i)) {
 		case 1:
-			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdd);
+			CreateImage(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdd);
 			break;
 		case 2:
-			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xde);
+			CreateImage(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xde);
 			break;
 		case 3:
-			FUN_0046bef0(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdf);
+			CreateImage(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdf);
 			break;
 		}
 	}
@@ -133,14 +133,14 @@ void DriverLicenseScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047b470
-LegoBool32 DriverLicenseScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	MenuToolContext0x4bc8* context = p_context;
+	MenuGameContext* context = p_context;
 	if (!context->m_unk0x4b40.HasMenuResources()) {
 		FUN_00480210(context, FALSE);
 	}
 
-	if (!ImaginaryTool0x368::VTable0x8c(context, p_createParams)) {
+	if (!MenuGameScreen::VTable0x8c(context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -165,7 +165,7 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, Men
 		m_unk0x1f1c.FUN_00471100(4);
 	}
 
-	static_cast<ObscureIcon0x1a8*>(&m_unk0x1f1c)->VTable0x4c(4);
+	static_cast<MenuIcon*>(&m_unk0x1f1c)->VTable0x4c(4);
 
 	return TRUE;
 }
@@ -178,7 +178,7 @@ LegoBool32 DriverLicenseScreen::Destroy()
 	}
 
 	m_context->m_unk0x4b40.SetUnk0x10(TRUE);
-	return ImaginaryTool0x368::Destroy();
+	return MenuGameScreen::Destroy();
 }
 
 // STUB: LEGORACERS 0x0047b580
@@ -217,7 +217,7 @@ void DriverLicenseScreen::FUN_0047b6b0()
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(color);
 
 	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
-	MainMenuScreenFieldAt0x22dc* preview = &m_unk0x224c;
+	MainMenuModelSlot* preview = &m_unk0x224c;
 	preview->FUN_0047e210(color);
 	LegoU32 colorValue = GetUnk0x2244().m_unk0x01;
 	LegoU32 colorIndex = GetUnk0x2244().m_unk0x04;
@@ -267,7 +267,7 @@ void DriverLicenseScreen::VTable0x84()
 }
 
 // STUB: LEGORACERS 0x0047b850
-void DriverLicenseScreen::VTable0x38(ObscureVantage0x58* p_source)
+void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x798) {
 		LegoS32 colorIndex = GetUnk0x2244().m_unk0x04;
@@ -315,7 +315,7 @@ void DriverLicenseScreen::VTable0x38(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047b9c0
-void DriverLicenseScreen::VTable0x40(ObscureIcon0x1a8* p_source)
+void DriverLicenseScreen::VTable0x40(MenuIcon* p_source)
 {
 	if (p_source == &m_unk0x1f1c) {
 		m_unk0x1b20.ClearFlags(2);
@@ -323,7 +323,7 @@ void DriverLicenseScreen::VTable0x40(ObscureIcon0x1a8* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047b9e0
-void DriverLicenseScreen::VTable0x3c(ObscureIcon0x1a8* p_source)
+void DriverLicenseScreen::VTable0x3c(MenuIcon* p_source)
 {
 	if (p_source == &m_unk0x1f1c) {
 		m_unk0x1b20.SetFlags(2);

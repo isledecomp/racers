@@ -10,11 +10,11 @@
 class GolD3DRenderDevice;
 class GolExport;
 class GolCommonDrawState;
-class ImaginaryNotion0x290;
-class ImaginaryTool0x368;
+class MenuScreen;
+class MenuGameScreen;
 class InputManager;
 class MouseInputDevice;
-class ObscureIcon0x1a8;
+class MenuIcon;
 class UtopianPan0xa4;
 
 // VTABLE: LEGORACERS 0x004b2164
@@ -89,13 +89,13 @@ public:
 	};
 
 	CopperCrest0x40();
-	virtual LegoS32 VTable0x00();                  // vtable+0x00
-	virtual LegoS32 VTable0x04(ObscureIcon0x1a8*); // vtable+0x04
-	virtual ~CopperCrest0x40();                    // vtable+0x08
-	virtual LegoS32 VTable0x0c();                  // vtable+0x0c
-	virtual LegoS32 VTable0x10(undefined4);        // vtable+0x10
-	virtual void VTable0x14();                     // vtable+0x14
-	virtual void VTable0x18();                     // vtable+0x18
+	virtual LegoS32 VTable0x00();           // vtable+0x00
+	virtual LegoS32 VTable0x04(MenuIcon*);  // vtable+0x04
+	virtual ~CopperCrest0x40();             // vtable+0x08
+	virtual LegoS32 VTable0x0c();           // vtable+0x0c
+	virtual LegoS32 VTable0x10(undefined4); // vtable+0x10
+	virtual void VTable0x14();              // vtable+0x14
+	virtual void VTable0x18();              // vtable+0x18
 
 	// SYNTHETIC: LEGORACERS 0x00468f10
 	// CopperCrest0x40::`scalar deleting destructor'
@@ -104,8 +104,8 @@ public:
 	void FUN_00469550();
 	Helper0x44* GetCursorHelper() { return &m_unk0x10; }
 	Helper0x44* GetUnk0x10() { return GetCursorHelper(); }
-	ImaginaryNotion0x290* GetUnk0x54() { return m_unk0x54; }
-	void SetUnk0x54(ImaginaryNotion0x290* p_unk0x54) { m_unk0x54 = p_unk0x54; }
+	MenuScreen* GetUnk0x54() { return m_unk0x54; }
+	void SetUnk0x54(MenuScreen* p_unk0x54) { m_unk0x54 = p_unk0x54; }
 	void SetCursorInside(LegoU8 p_cursorInside) { m_unk0x10.m_isCursorVisible = p_cursorInside; }
 	void SetCursorPosition(undefined4 p_x, undefined4 p_y)
 	{
@@ -122,7 +122,7 @@ private:
 	InputManager* m_inputManager;    // 0x08
 	InputEventQueue* m_inputEvents;  // 0x0c
 	Helper0x44 m_unk0x10;            // 0x10
-	ImaginaryNotion0x290* m_unk0x54; // 0x54
+	MenuScreen* m_unk0x54;           // 0x54
 	LegoS32 m_unk0x58;               // 0x58
 	LegoS32 m_unk0x5c;               // 0x5c
 };

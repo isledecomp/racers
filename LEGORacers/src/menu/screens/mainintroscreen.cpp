@@ -4,9 +4,9 @@
 #include "audio/musicinstance.h"
 #include "golerror.h"
 #include "golhashtable.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
 
 DECOMP_SIZE_ASSERT(MainIntroScreen, 0x658)
 
@@ -22,13 +22,13 @@ MainIntroScreen::~MainIntroScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00480a40
-LegoBool32 MainIntroScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 MainIntroScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
 	}
 
-	if (!ImaginaryChisel0x658::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -54,7 +54,7 @@ void MainIntroScreen::VTable0x4c()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\MAININTR");
 	}
 
-	FUN_0046c5b0(&m_unk0x368, m_unk0x28c);
+	CreateRegion(&m_unk0x368, m_unk0x28c);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -72,7 +72,7 @@ void MainIntroScreen::VTable0x84()
 LegoBool32 MainIntroScreen::VTable0x78(undefined4 p_unk0x04)
 {
 	m_unk0x368.m_unk0x2cc = TRUE;
-	return ImaginaryChisel0x658::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED
@@ -88,5 +88,5 @@ LegoBool32 MainIntroScreen::Destroy()
 		}
 	}
 
-	return ImaginaryChisel0x658::Destroy();
+	return MenuSceneScreen::Destroy();
 }

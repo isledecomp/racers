@@ -14,7 +14,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(SiennaCircuit0x154, 0x154)
-DECOMP_SIZE_ASSERT(SiennaCircuit0x154::CreateParams0x84, 0x84)
+DECOMP_SIZE_ASSERT(SiennaCircuit0x154::CreateParams, 0x84)
 
 // GLOBAL: LEGORACERS 0x004b02f8
 extern const LegoFloat g_siennaCircuitTwoPi = 6.2831855f;
@@ -50,14 +50,11 @@ void SiennaCircuit0x154::Reset()
 	m_unk0x14c = 0;
 	m_unk0x150 = 0.0f;
 	::memset(m_unk0xd4, 0, sizeof(m_unk0xd4));
-	VioletShoal0xc0::Reset();
+	MenuModelCarousel::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00485300
-LegoBool32 SiennaCircuit0x154::FUN_00485300(
-	CreateParams0x84* p_createParams,
-	CeruleanEmperor0x4c::Entry0x18* p_styleEntry
-)
+LegoBool32 SiennaCircuit0x154::FUN_00485300(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
 {
 	m_unk0xc0 = p_createParams->m_unk0x74;
 	m_pieceLibrary = p_createParams->m_pieceLibrary;
@@ -81,7 +78,7 @@ LegoBool32 SiennaCircuit0x154::VTable0x08()
 			m_unk0x7c[i].m_model = NULL;
 		}
 
-		result = VioletShoal0xc0::VTable0x08();
+		result = MenuModelCarousel::VTable0x08();
 	}
 
 	return result;
@@ -146,7 +143,7 @@ void SiennaCircuit0x154::VTable0x60(LegoS32 p_index)
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
 	m_unk0xc8->FUN_0049b8b0(pieceRecord, 0);
 	m_unk0xc8->FUN_0049b170(entity, pieceRecord, 0, 0, 0, 0, colorRecordIndex, 239);
-	VioletShoal0xc0::VTable0x60(p_index);
+	MenuModelCarousel::VTable0x60(p_index);
 }
 
 // FUNCTION: LEGORACERS 0x00485550
@@ -242,7 +239,7 @@ LegoS32 SiennaCircuit0x154::VTable0x54()
 			return m_unk0x6c;
 		}
 
-		VioletShoal0xc0::VTable0x54();
+		MenuModelCarousel::VTable0x54();
 		VTable0x50(FUN_0046c9a0(m_unk0x6c + 1));
 
 		if (m_unk0x68 >= m_unk0x60 - 1 || m_unk0x68 - m_unk0x6c > m_unk0x60 - static_cast<LegoS32>(m_unk0x64) - 1) {
@@ -268,7 +265,7 @@ LegoS32 SiennaCircuit0x154::VTable0x58()
 			return m_unk0x6c;
 		}
 
-		VioletShoal0xc0::VTable0x58();
+		MenuModelCarousel::VTable0x58();
 		VTable0x50(FUN_0046c9a0(m_unk0x6c - 1));
 
 		if (m_unk0x68 >= m_unk0x60 - 1 || m_unk0x6c > static_cast<LegoS32>(m_unk0x64) - 1) {
@@ -288,5 +285,5 @@ undefined4 SiennaCircuit0x154::VTable0x3c(undefined4 p_elapsed)
 		m_unk0x150 -= g_siennaCircuitTwoPi;
 	}
 
-	return VioletShoal0xc0::VTable0x3c(p_elapsed);
+	return MenuModelCarousel::VTable0x3c(p_elapsed);
 }

@@ -299,8 +299,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/runtime/duskwindbananarelic0x24.cpp
   LEGORacers/src/race/racemoderunner.cpp
   LEGORacers/src/util/stackoflegou16.cpp
-  LEGORacers/src/menu/crimsonsun0xa4entry.cpp
-  LEGORacers/src/menu/crimsonsun0xa4.cpp
+  LEGORacers/src/menu/menudialogscreen.cpp
+  LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/glassblock0x3368.cpp
   LEGORacers/src/race/azurecircuit0x320.cpp
   LEGORacers/src/race/glassshard0x3b8.cpp
@@ -312,68 +312,68 @@ add_executable(legoracers WIN32
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp
   LEGORacers/src/model/golworlddatabase.cpp
-  LEGORacers/src/menu/style/ceruleanknight0x20.cpp
+  LEGORacers/src/menu/style/menuresourcetable.cpp
   LEGORacers/src/menu/style/menuinputbindingtable.cpp
-  LEGORacers/src/menu/style/ceruleanemperor0x4c.cpp
-  LEGORacers/src/menu/widgets/obscureanchor0x5c.cpp
-  LEGORacers/src/menu/widgets/obscureanchor0x7c.cpp
-  LEGORacers/src/menu/widgets/obscureanthem0x58.cpp
-  LEGORacers/src/menu/widgets/obscurebanner0x5ec.cpp
-  LEGORacers/src/menu/widgets/obscurecarousel0x78.cpp
-  LEGORacers/src/menu/widgets/optionsscreenfieldat0x4178.cpp
-  LEGORacers/src/menu/widgets/obscureglyph0x21c.cpp
-  LEGORacers/src/menu/widgets/obscureicon0x1a8.cpp
-  LEGORacers/src/menu/widgets/obscurelattice0x228.cpp
-  LEGORacers/src/menu/widgets/obscurelink0x1c.cpp
-  LEGORacers/src/menu/widgets/embervault0x330.cpp
-  LEGORacers/src/menu/widgets/ivorytalon0x23c.cpp
-  LEGORacers/src/menu/widgets/maroonatoll0x170.cpp
-  LEGORacers/src/menu/widgets/sablecrest0xc0.cpp
-  LEGORacers/src/menu/widgets/obscurerune0x4d8.cpp
-  LEGORacers/src/menu/widgets/obscuresigil0xdc.cpp
-  LEGORacers/src/menu/widgets/obscuretome0x3fc.cpp
-  LEGORacers/src/menu/widgets/obscurevantage0x58.cpp
-  LEGORacers/src/menu/widgets/violetshoal0xc0.cpp
-  LEGORacers/src/menu/widgets/obscurezebra0xa4.cpp
+  LEGORacers/src/menu/style/menustyletable.cpp
+  LEGORacers/src/menu/widgets/menuimage.cpp
+  LEGORacers/src/menu/widgets/menuclippedimage.cpp
+  LEGORacers/src/menu/widgets/menustaticwidget.cpp
+  LEGORacers/src/menu/widgets/menuselector.cpp
+  LEGORacers/src/menu/widgets/menucarousel.cpp
+  LEGORacers/src/menu/widgets/optionsrow.cpp
+  LEGORacers/src/menu/widgets/menubutton.cpp
+  LEGORacers/src/menu/widgets/menuicon.cpp
+  LEGORacers/src/menu/widgets/menuhotspotbutton.cpp
+  LEGORacers/src/menu/widgets/menusceneelement.cpp
+  LEGORacers/src/menu/widgets/menutextentry.cpp
+  LEGORacers/src/menu/widgets/menutextfield.cpp
+  LEGORacers/src/menu/widgets/menuracercarousel.cpp
+  LEGORacers/src/menu/widgets/menucolorbox.cpp
+  LEGORacers/src/menu/widgets/menuframedsceneview.cpp
+  LEGORacers/src/menu/widgets/menusceneview.cpp
+  LEGORacers/src/menu/widgets/menuframe.cpp
+  LEGORacers/src/menu/widgets/menuwidget.cpp
+  LEGORacers/src/menu/widgets/menumodelcarousel.cpp
+  LEGORacers/src/menu/widgets/menutriangle.cpp
   LEGORacers/src/menu/screens/editcarscreen.cpp
   LEGORacers/src/menu/screens/circuitracescreen.cpp
   LEGORacers/src/menu/screens/pickmemorycardscreen.cpp
   LEGORacers/src/menu/screens/editdriverscreen.cpp
   LEGORacers/src/menu/screens/garagescreen.cpp
-  LEGORacers/src/menu/screens/imaginarychisel0x658.cpp
-  LEGORacers/src/menu/screens/imaginarychisel0x658helperat0x368.cpp
-  LEGORacers/src/menu/screens/racerpickmodelslot0xa0.cpp
-  LEGORacers/src/menu/screens/racerpickmodelstate0x28.cpp
-  LEGORacers/src/menu/screens/racerpickscreenbase0x270c.cpp
-  LEGORacers/src/menu/screens/racerpickscreenbase0x3ff4.cpp
+  LEGORacers/src/menu/screens/menuscenescreen.cpp
+  LEGORacers/src/menu/screens/scenewidget.cpp
+  LEGORacers/src/menu/screens/racermodelslot.cpp
+  LEGORacers/src/menu/screens/racerunlockstate.cpp
+  LEGORacers/src/menu/screens/racermodelscreenbase.cpp
+  LEGORacers/src/menu/screens/racerpickscreenbase.cpp
   LEGORacers/src/util/golcamerabase.cpp
-  LEGORacers/src/menu/runtime/saffronquartz0x2c.cpp
+  LEGORacers/src/menu/runtime/cutscenedefinition.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp
-  LEGORacers/src/menu/screens/optionsscreenbase0x51ac.cpp
+  LEGORacers/src/menu/screens/optionsscreenbase.cpp
   LEGORacers/src/menu/screens/optionsscreen.cpp
   LEGORacers/src/menu/screens/carbuildscreen.cpp
   LEGORacers/src/menu/screens/mainmenuscreen.cpp
-  LEGORacers/src/menu/screens/mainmenuscreenfieldat0x22dc.cpp
-  LEGORacers/src/menu/screens/mainmenuscreenfieldat0x420.cpp
-  LEGORacers/src/menu/screens/mainmenuscreenfieldat0x498.cpp
+  LEGORacers/src/menu/screens/mainmenumodelslot.cpp
+  LEGORacers/src/menu/widgets/menutextlabel.cpp
+  LEGORacers/src/menu/widgets/menutextbutton.cpp
   LEGORacers/src/menu/screens/mainintroscreen.cpp
   LEGORacers/src/menu/screens/pickracerscreen.cpp
   LEGORacers/src/menu/screens/singleraceselectbase.cpp
   LEGORacers/src/menu/screens/splashcinematicscreen.cpp
   LEGORacers/src/menu/screens/saveloadscreen.cpp
-  LEGORacers/src/menu/screens/imaginarynotion0x290.cpp
+  LEGORacers/src/menu/screens/menuscreen.cpp
   LEGORacers/src/menu/screens/awardcinematicscreen.cpp
-  LEGORacers/src/menu/screens/awardcinematicscreenfieldat0x658.cpp
+  LEGORacers/src/menu/screens/sceneentitygroup.cpp
   LEGORacers/src/menu/screens/newracerscreen.cpp
   LEGORacers/src/menu/screens/controlconfigscreen.cpp
   LEGORacers/src/menu/screens/racemodesetupscreen.cpp
-  LEGORacers/src/menu/screens/obsidianmantle0x3b4.cpp
-  LEGORacers/src/menu/screens/imaginaryshape0x2b20.cpp
-  LEGORacers/src/menu/screens/imaginaryshape0x2b20fieldat0x2308.cpp
+  LEGORacers/src/menu/screens/carbuildscreenbase.cpp
+  LEGORacers/src/menu/screens/carmodelscreenbase.cpp
+  LEGORacers/src/menu/screens/carpartplacement.cpp
   LEGORacers/src/menu/screens/multiplayerpickscreen.cpp
   LEGORacers/src/menu/screens/circuitselectscreen.cpp
-  LEGORacers/src/menu/screens/imaginarytool0x368.cpp
-  LEGORacers/src/menu/screens/imaginarytool0x368fieldat0x2e0.cpp
+  LEGORacers/src/menu/screens/menugamescreen.cpp
+  LEGORacers/src/menu/screens/buttonbindingtable.cpp
   LEGORacers/src/menu/screens/driverlicensescreen.cpp
   LEGORacers/src/util/onyxbreeze0x248.cpp
   LEGORacers/src/input/inputeventqueue.cpp
@@ -386,10 +386,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/save/savesystem.cpp
   LEGORacers/src/model/topazburst0x14.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
-  LEGORacers/src/menu/runtime/particle0x18c.cpp
-  LEGORacers/src/menu/runtime/crimsonpebble0x228.cpp
-  LEGORacers/src/menu/runtime/crimsonpebbletext0x70.cpp
-  LEGORacers/src/menu/runtime/crimsonpebblevisual0x58.cpp
+  LEGORacers/src/menu/runtime/cutsceneparticle.cpp
+  LEGORacers/src/menu/runtime/cutsceneplayer.cpp
+  LEGORacers/src/menu/runtime/cutscenetextvisual.cpp
+  LEGORacers/src/menu/runtime/cutscenevisual.cpp
   LEGORacers/src/model/sapphirereef0x2030.cpp
   LEGORacers/src/model/verdanttide0x38.cpp
   LEGORacers/src/racer/drivercosmetictable.cpp
@@ -410,9 +410,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/tealcrucible0x50.cpp
   LEGORacers/src/util/sordidwatch0x140.cpp
   LEGORacers/src/util/sordidwatchinner0x38.cpp
-  LEGORacers/src/menu/chromespike0x4.cpp
+  LEGORacers/src/menu/menuscreenfactory.cpp
   LEGORacers/src/text/coppercrest0x40.cpp
-  LEGORacers/src/menu/style/porcelainveil0x50.cpp
+  LEGORacers/src/menu/style/sharedmenustyletable.cpp
   LEGORacers/src/video/videoplayer.cpp
   LEGORacers/src/app/guids.cpp
   LEGORacers/racers.rc

@@ -3,8 +3,8 @@
 #include "camera/golcamera.h"
 #include "golname.h"
 #include "golstring.h"
-#include "menu/menutoolcontext0x4bc8.h"
-#include "menu/menutoolcreateparams0x30.h"
+#include "menu/menugamecontext.h"
+#include "menu/menuscreencreateparams.h"
 #include "race/data/racenameentry.h"
 
 #include <string.h>
@@ -30,28 +30,28 @@ void CircuitRaceScreen::Reset()
 	m_unk0x2218 = 0;
 	m_unk0x2220 = 0;
 	m_unk0x2224 = FALSE;
-	ImaginaryTool0x368::Reset();
+	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00479f70
 void CircuitRaceScreen::VTable0x4c()
 {
-	FUN_0046bef0(&m_unk0x1908, 0x49, 0x49);
+	CreateImage(&m_unk0x1908, 0x49, 0x49);
 	SingleRaceSelectBase::VTable0x4c();
 
-	FUN_0046bf80(&m_unk0x1964, 0x3a, 0x3a, 0x0d);
+	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, 0x0d);
 	m_unk0x1964.FUN_0046f6b0(0x14);
-	FUN_0046bf80(&m_unk0x19dc, 0x5b, 0x37, 0x4a);
-	FUN_0046bf80(&m_unk0x1a54, 0x5c, 0x37, 0x4c);
-	FUN_0046bf80(&m_unk0x1acc, 0x5d, 0x37, 0x4a);
-	FUN_0046bf80(&m_unk0x1b44, 0x5f, 0x37, 0x4b);
-	FUN_0046bf80(&m_unk0x1bbc, 0x60, 0x37, 0x60);
+	CreateTextLabel(&m_unk0x19dc, 0x5b, 0x37, 0x4a);
+	CreateTextLabel(&m_unk0x1a54, 0x5c, 0x37, 0x4c);
+	CreateTextLabel(&m_unk0x1acc, 0x5d, 0x37, 0x4a);
+	CreateTextLabel(&m_unk0x1b44, 0x5f, 0x37, 0x4b);
+	CreateTextLabel(&m_unk0x1bbc, 0x60, 0x37, 0x60);
 	FUN_0047fdc0(&m_unk0x1f24, 0x40, 0x46, 0x72);
 	FUN_0047fdc0(&m_unk0x1c34, 0x3f, 0x43, 2);
 }
 
 // FUNCTION: LEGORACERS 0x0047a040
-LegoBool32 CircuitRaceScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuToolCreateParams0x30* p_createParams)
+LegoBool32 CircuitRaceScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!SingleRaceSelectBase::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
@@ -63,7 +63,7 @@ LegoBool32 CircuitRaceScreen::VTable0x8c(MenuToolContext0x4bc8* p_context, MenuT
 }
 
 // FUNCTION: LEGORACERS 0x0047a090
-void CircuitRaceScreen::VTable0x38(ObscureVantage0x58* p_source)
+void CircuitRaceScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x1f24) {
 		m_unk0x360 = 0x1e;
@@ -80,7 +80,7 @@ void CircuitRaceScreen::VTable0x38(ObscureVantage0x58* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047a0e0
-void CircuitRaceScreen::VTable0x44(ObscureVantage0x58*)
+void CircuitRaceScreen::VTable0x44(MenuWidget*)
 {
 	m_context->m_context->m_unk0x24 = 0;
 
@@ -157,17 +157,17 @@ void CircuitRaceScreen::FUN_0047a2b0()
 		::memcpy(driverName, raceNameEntry->GetUnk0x1cName(), sizeof(GolName));
 
 		GolNameTable* frameNames = &m_unk0x368.m_unk0x58;
-		SaffronQuartz0x2c::Frame0xb8* frame;
+		CutsceneDefinition::Frame* frame;
 		if (!frameNames->GetNameEntries()) {
 			frame = NULL;
 		}
 		else {
-			frame = static_cast<SaffronQuartz0x2c::Frame0xb8*>(frameNames->GetName(frameName));
+			frame = static_cast<CutsceneDefinition::Frame*>(frameNames->GetName(frameName));
 		}
 
 		if (frame && frame != m_unk0x368.m_unk0x2b0) {
 			m_unk0x368.FUN_00466d00(frame);
-			m_unk0x368.m_unk0x2b0->SetFlags(SaffronQuartz0x2c::Frame0xb8::c_flagLoop);
+			m_unk0x368.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 			m_unk0x2218 = 2000;
 			FUN_00488cb0(m_unk0x2220 + m_unk0x221c * 4);
 			raceNameEntry->CopyDisplayString(&string);
@@ -210,7 +210,7 @@ LegoBool32 CircuitRaceScreen::VTable0x78(undefined4 p_elapsed)
 		m_unk0x2214 = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
 	}
 
-	LegoBool32 result = ImaginaryChisel0x658::VTable0x78(p_elapsed);
+	LegoBool32 result = MenuSceneScreen::VTable0x78(p_elapsed);
 	if (m_unk0x2224) {
 		if (m_unk0x2214 && m_unk0x2214->IsActive()) {
 			m_context->m_menuAnimations.Deactivate(m_unk0x2214);

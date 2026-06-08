@@ -272,33 +272,27 @@ void GolAnimatedEntity::FUN_100239e0(GolSceneNode* p_node, CmbModelPart0x34* p_m
 	m_modelDistances[i] = p_modelDistance;
 }
 
-// This function factors into FUN_0040dae0/FUN_0040d650, which matches LEGORACERS
-// (/Ob1) but not GOLDP: GOLDP's standalone FUN_10023a70 was compiled /Ob1, while
-// common_goldp forces /Ob2 (needed for the ctor/VTable0x54 inlining). The /Ob2
-// inline of this factored form does not reproduce the original. TODO: recover a
-// GOLDP-matching form (e.g. a per-source /Ob1 override) and restore FUNCTION.
-// STUB: GOLDP 0x10023a70
 // FUNCTION: LEGORACERS 0x0040dad0
-void GolAnimatedEntity::FUN_0040dad0(undefined2 p_partIndex)
+void GolAnimatedEntity::FUN_0040dad0(LegoU32 p_partIndex)
 {
 	FUN_0040dae0(p_partIndex, 0);
 }
 
-// STUB: LEGORACERS 0x0040dae0
-void GolAnimatedEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
+// FUNCTION: LEGORACERS 0x0040dae0
+void GolAnimatedEntity::FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale)
 {
 	FUN_0040d650();
 
 	LegoU32 flags = m_flags;
 	flags &= ~c_flagsPartAnimationMask;
-	flags |= c_flagLoopCurrentPart;
 	m_unk0xbc = p_partIndex;
+	flags |= c_flagLoopCurrentPart;
+	p_partIndex &= 0xffff;
 	m_flags = flags;
-	m_radius = -1.0f;
 
-	CmbModelPartData0x28* partData = m_modelParts[0]->GetPartData();
-	LegoU32 partIndex = p_partIndex;
-	LegoFloat rate = partData[partIndex].GetUnk0x00();
+	CmbModelPart0x34* modelPart = m_modelParts[0];
+	m_radius = -1.0f;
+	LegoFloat rate = modelPart->GetPartData()[p_partIndex].GetUnk0x00();
 	m_unk0xb8 = rate;
 	if (p_timeScale != 0) {
 		LegoFloat timeScale = static_cast<LegoFloat>(p_timeScale);
@@ -309,7 +303,34 @@ void GolAnimatedEntity::FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale)
 	}
 	m_unk0xb4 = rate;
 
-	const GolVec3& offset = partData[partIndex].GetUnk0x04();
+	const GolVec3& offset = modelPart->GetPartData()[p_partIndex].GetUnk0x04();
+	m_unk0xc0 = offset;
+	m_velocity = offset;
+}
+
+// GOLDP compiles the time-scale-0 start as a single, standalone function, whereas
+// LEGORACERS factors it into FUN_0040dad0 -> FUN_0040dae0 -> FUN_0040d650.
+// The GOLDP call is probably also to FUN_0040dad0, but inlining isn't right.
+// FUNCTION: GOLDP 0x10023a70
+void GolAnimatedEntity::FUN_10023a70(LegoU32 p_partIndex)
+{
+	FUN_0040d650();
+
+	LegoU32 flags = m_flags;
+	flags &= ~c_flagsPartAnimationMask;
+	m_unk0xbc = p_partIndex;
+	flags |= c_flagLoopCurrentPart;
+	p_partIndex &= 0xffff;
+	m_flags = flags;
+
+	CmbModelPart0x34* modelPart = m_modelParts[0];
+	m_radius = -1.0f;
+	LegoFloat rate = modelPart->GetPartData()[p_partIndex].GetUnk0x00();
+	m_unk0xb8 = rate;
+	rate = 0.0f;
+	m_unk0xb4 = rate;
+
+	const GolVec3& offset = modelPart->GetPartData()[p_partIndex].GetUnk0x04();
 	m_unk0xc0 = offset;
 	m_velocity = offset;
 }
@@ -335,7 +356,7 @@ void GolAnimatedEntity::FUN_0040db80(
 			timeScale = 0;
 		}
 
-		FUN_0040dae0(static_cast<LegoU16>(p_partIndex), timeScale);
+		FUN_0040dae0(p_partIndex, timeScale);
 		if (!p_loop) {
 			m_flags &= ~c_flagLoopCurrentPart;
 		}

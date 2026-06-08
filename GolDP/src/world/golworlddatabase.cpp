@@ -1511,7 +1511,7 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x44 >= 0) {
-			runtime->FUN_0040dad0(model->m_unk0x44);
+			runtime->FUN_10023a70(model->m_unk0x44);
 			runtime->SetPartAnimationEnabled(TRUE);
 		}
 		else {
@@ -1702,7 +1702,7 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 		}
 
 		if (camera->m_unk0x10 >= 0) {
-			model->FUN_0040dad0(camera->m_unk0x10);
+			model->FUN_10023a70(camera->m_unk0x10);
 			model->SetPartAnimationEnabled(TRUE);
 		}
 		else {

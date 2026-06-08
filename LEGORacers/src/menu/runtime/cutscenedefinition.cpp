@@ -283,7 +283,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 		}
 
 		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
-			static_cast<GolAnimatedEntity*>(m_unk0x24)->FUN_0040dad0(static_cast<undefined2>(m_unk0x58));
+			static_cast<GolAnimatedEntity*>(m_unk0x24)->FUN_0040dad0(m_unk0x58);
 			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetFlags(
 				static_cast<GolAnimatedEntity*>(m_unk0x24)->GetFlags() | 0x10000
 			);
@@ -371,7 +371,7 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, Bluebell
 
 		p_frame->FUN_004066d0(m_unk0x20);
 		if (m_unk0x30 >= 0 && m_unk0x20->m_unk0x28) {
-			m_unk0x20->m_unk0x28->FUN_0040dad0(static_cast<undefined2>(m_unk0x30));
+			m_unk0x20->m_unk0x28->FUN_0040dad0(m_unk0x30);
 		}
 
 		Event::VTable0x10(p_frame, p_event);

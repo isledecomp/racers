@@ -479,7 +479,7 @@ void RacerModelScreenBase::FUN_00486810(LegoS32 p_index)
 		partIndex = VTable0x9c();
 	} while (partIndex == entity->GetActiveState());
 
-	entity->FUN_0040dad0(static_cast<undefined2>(partIndex));
+	entity->FUN_0040dad0(partIndex);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 

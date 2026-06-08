@@ -38,7 +38,8 @@ public:
 		LegoFloat p_modelDistance
 	);
 	void FUN_100239e0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance);
-	void FUN_0040dad0(undefined2 p_unk0x04);
+	void FUN_0040dad0(LegoU32 p_partIndex);
+	void FUN_10023a70(LegoU32 p_partIndex);
 	void FUN_0040db80(
 		LegoU32 p_partIndex,
 		LegoS32 p_transitionTime,
@@ -66,7 +67,7 @@ public:
 private:
 	void Reset();
 	void FUN_0040d650();
-	void FUN_0040dae0(LegoU16 p_partIndex, LegoS32 p_timeScale);
+	void FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale);
 
 	enum {
 		c_flagPartAnimation = 1 << 16,

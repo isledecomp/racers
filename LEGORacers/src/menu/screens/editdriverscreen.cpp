@@ -243,7 +243,7 @@ void EditDriverScreen::FUN_0047d6f0()
 		partIndex = FUN_0047d5d0();
 	} while (partIndex == entity->GetActiveState());
 
-	entity->FUN_0040dad0(static_cast<undefined2>(partIndex));
+	entity->FUN_0040dad0(partIndex);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 

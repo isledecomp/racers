@@ -109,12 +109,10 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				style.m_flags &= GolFontBase0x40::c_flagsWithoutBit4;
-				style.m_flags |= GolFontBase0x40::c_flagBit3;
+				style.m_flags = (style.m_flags & GolFontBase0x40::c_flagsWithoutBit4) | GolFontBase0x40::c_flagBit3;
 				break;
 			case GolFileParser::e_unknown0x29:
-				style.m_flags &= GolFontBase0x40::c_flagsWithoutBit3;
-				style.m_flags |= GolFontBase0x40::c_flagBit4;
+				style.m_flags = (style.m_flags & GolFontBase0x40::c_flagsWithoutBit3) | GolFontBase0x40::c_flagBit4;
 				break;
 			case GolFileParser::e_unknown0x2a:
 				style.m_flags |= GolFontBase0x40::c_flagBit5;
@@ -128,7 +126,7 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 			case GolFileParser::e_unknown0x2b: {
 				LegoU16 count;
 				undefined2 chars[100];
-				GolFontLibrary::ReadFontCharList(parser, chars, &count);
+				ReadFontCharList(parser, chars, &count);
 				m_unk0x20[i] = count;
 				VTable0x10(i);
 				::memcpy(m_unk0x1c[i], chars, 2 * count);
@@ -153,7 +151,7 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		}
 
 		font->m_nameParts[0] = name[0];
-		LegoU32 flags = style.m_flags;
+		LegoU16 flags = (LegoU16) style.m_flags;
 		font->m_nameParts[1] = name[1];
 		font->m_colorPacked = style.m_textColorPacked;
 		font->m_unk0x2c = flags;
@@ -179,7 +177,7 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 }
 
 // FUNCTION: GOLDP 0x1001dd20
-void __stdcall GolFontLibrary::ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count)
+void GolFontLibrary::ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count)
 {
 	*p_count = 0;
 

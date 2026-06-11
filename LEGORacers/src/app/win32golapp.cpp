@@ -413,8 +413,10 @@ void Win32GolApp::UpdateMousePosition()
 			m_eventHandler->VTable0x2c();
 		}
 		else {
-			LegoFloat xScale = (LegoFloat) (bottomRight.x - topLeft.x) / m_golDrawState->m_width;
-			LegoFloat yScale = (LegoFloat) (bottomRight.y - topLeft.y) / m_golDrawState->m_height;
+			LegoFloat width = (LegoFloat) m_golDrawState->m_width;
+			LegoFloat xScale = (LegoFloat) (bottomRight.x - topLeft.x) / width;
+			LegoFloat height = (LegoFloat) m_golDrawState->m_height;
+			LegoFloat yScale = (LegoFloat) (bottomRight.y - topLeft.y) / height;
 			cursorPos.x -= topLeft.x;
 			cursorPos.y -= topLeft.y;
 			cursorPos.x = static_cast<LONG>(static_cast<LegoFloat>(cursorPos.x) / xScale);

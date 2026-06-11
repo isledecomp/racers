@@ -199,9 +199,9 @@ void OptionsScreen::FUN_00475b10()
 	}
 
 	drawState->VTable0x50();
+	undefined4 bpp = drawState->m_bpp;
 	LegoS32 height = drawState->m_height;
 	LegoS32 width = drawState->m_width;
-	undefined4 bpp = drawState->m_bpp;
 	drawState
 		->VTable0x54(width, height, bpp, m_context->m_context->m_golApp->BuildDrawStateFlags(drawStateFlags) | flags);
 }

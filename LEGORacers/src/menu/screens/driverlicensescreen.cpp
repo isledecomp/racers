@@ -12,6 +12,9 @@
 
 DECOMP_SIZE_ASSERT(DriverLicenseScreen, 0x23bc)
 
+// GLOBAL: LEGORACERS 0x004c1fec
+LegoU32 g_unk0x4c1fec[2] = {1, 2};
+
 // GLOBAL: LEGORACERS 0x004c1ff4
 const LegoChar* g_cheatNames[] = {
 	"NSLWJ",

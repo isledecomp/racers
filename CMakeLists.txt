@@ -363,6 +363,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/sceneentitygroup.cpp
   LEGORacers/src/menu/screens/newracerscreen.cpp
   LEGORacers/src/menu/screens/controlconfigscreen.cpp
+  LEGORacers/src/menu/screens/driverlicensescreen.cpp
   LEGORacers/src/menu/screens/racemodesetupscreen.cpp
   LEGORacers/src/menu/screens/carbuildscreenbase.cpp
   LEGORacers/src/menu/screens/carmodelscreenbase.cpp
@@ -371,7 +372,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/circuitselectscreen.cpp
   LEGORacers/src/menu/screens/menugamescreen.cpp
   LEGORacers/src/menu/screens/buttonbindingtable.cpp
-  LEGORacers/src/menu/screens/driverlicensescreen.cpp
   LEGORacers/src/menu/menuinputhandler.cpp
   LEGORacers/src/input/inputeventqueue.cpp
   LEGORacers/src/save/peridottracerootentrybase0x8.cpp

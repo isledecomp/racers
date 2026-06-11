@@ -226,7 +226,8 @@ void GarageScreen::FUN_0047eb20()
 	GolName name;
 	::strcpy(name, "test");
 
-	RaceNameEntry* raceName = static_cast<RaceNameEntry*>(m_context->m_raceNames.GetName(name));
+	GolNameTable* raceNames = &m_context->m_raceNames;
+	RaceNameEntry* raceName = static_cast<RaceNameEntry*>(raceNames->GetName(name));
 
 	context->m_unk0x2d[0] = '\0';
 	context->m_unk0x24 = TRUE;
@@ -241,7 +242,8 @@ void GarageScreen::FUN_0047eb20()
 	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();
 	flags &= 0xfffffffd;
 	m_context->m_modelBuilder.SetUnk0x78(flags);
-	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(m_unk0x22dc[0].FUN_004430b0());
+	PeridotTraceBase0x24::Record* record = m_unk0x22dc[0].FUN_004430b0();
+	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(record);
 	m_unk0x360 = 0x41;
 }
 
@@ -302,41 +304,45 @@ void GarageScreen::VTable0x38(MenuWidget* p_source)
 			m_unk0x640c = 0;
 		}
 	}
-	else if (m_unk0x6408 == 1) {
-		if (p_source == &m_unk0x4f78) {
-			m_unk0x360 = c_menuEditCar;
-		}
-		else if (p_source == &m_unk0x5268) {
-			m_unk0x360 = c_menuEditDriver;
-		}
-		else if (p_source == &m_unk0x5558) {
-			m_unk0x360 = c_menuDriverLicense;
-		}
-	}
-	else if (m_unk0x6408 == 0) {
-		if (p_source == &m_unk0x40c8) {
-			m_unk0x360 = c_menuNewRacer;
-		}
-		else if (p_source == &m_unk0x43b8) {
-			m_unk0x640c = 1;
-		}
-		else if (p_source == &m_unk0x46a8) {
-			m_unk0x360 = c_menuPickMem;
-		}
-		else if (p_source == &m_unk0x4998) {
-			FUN_0047fdc0(&m_unk0x5b38, 0x99, 0x46, 0x73);
-			FUN_0047fdc0(&m_unk0x5e28, 0x99, 0x45, 0x74);
-			FUN_0046c6f0(&m_unk0x5b38, &m_unk0x5e28, 0x76);
-		}
-		else if (p_source == &m_unk0x4c88) {
-			FUN_0047eb20();
-		}
-		else if (p_source == &m_unk0x5b38) {
-			FUN_0047ea50();
-			m_unk0x284->FUN_00468cf0();
-		}
-		else if (p_source == &m_unk0x5e28) {
-			m_unk0x284->FUN_00468cf0();
+	else {
+		switch (m_unk0x6408) {
+		case 1:
+			if (p_source == &m_unk0x4f78) {
+				m_unk0x360 = c_menuEditCar;
+			}
+			else if (p_source == &m_unk0x5268) {
+				m_unk0x360 = c_menuEditDriver;
+			}
+			else if (p_source == &m_unk0x5558) {
+				m_unk0x360 = c_menuDriverLicense;
+			}
+			break;
+		case 0:
+			if (p_source == &m_unk0x40c8) {
+				m_unk0x360 = c_menuNewRacer;
+			}
+			else if (p_source == &m_unk0x43b8) {
+				m_unk0x640c = 1;
+			}
+			else if (p_source == &m_unk0x46a8) {
+				m_unk0x360 = c_menuPickMem;
+			}
+			else if (p_source == &m_unk0x4998) {
+				FUN_0047fdc0(&m_unk0x5b38, 0x99, 0x46, 0x73);
+				FUN_0047fdc0(&m_unk0x5e28, 0x99, 0x45, 0x74);
+				FUN_0046c6f0(&m_unk0x5b38, &m_unk0x5e28, 0x76);
+			}
+			else if (p_source == &m_unk0x4c88) {
+				FUN_0047eb20();
+			}
+			else if (p_source == &m_unk0x5b38) {
+				FUN_0047ea50();
+				m_unk0x284->FUN_00468cf0();
+			}
+			else if (p_source == &m_unk0x5e28) {
+				m_unk0x284->FUN_00468cf0();
+			}
+			break;
 		}
 	}
 

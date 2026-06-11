@@ -55,7 +55,7 @@ public:
 	void SetNext(GolFontLibrary* p_next) { m_next = p_next; }
 
 protected:
-	static void __stdcall ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count);
+	void ReadFontCharList(GolFileParser* p_parser, undefined2* p_chars, LegoU16* p_count);
 
 	GolD3DRenderDevice* m_renderer; // 0x0c
 	GolFontLibrary* m_next;         // 0x10

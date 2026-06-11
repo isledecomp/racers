@@ -205,8 +205,8 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
-	LegoS32 selectedDeviceIndex = m_unk0x3a0;
 	GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
+	LegoS32 selectedDeviceIndex = m_unk0x3a0;
 	InputDevice* device = m_unk0x368[selectedDeviceIndex];
 	LegoS32 entryIndex = m_unk0x37c[selectedDeviceIndex];
 

@@ -125,16 +125,14 @@ void MabMaterialAnimationItem0x18::FUN_004104c0(LegoS32 p_elapsedMs, MabMaterial
 
 	frame %= m_unk0x0a;
 
-	LegoS32 selectedFrame = lastFrame;
-	if (lastFrame >= static_cast<LegoS32>(firstFrame)) {
-		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
-		for (; selectedFrame >= static_cast<LegoS32>(firstFrame); selectedFrame--, item--) {
-			if (frame >= item->GetFrame()) {
-				break;
-			}
+	LegoS32 i;
+	for (i = lastFrame; i >= static_cast<LegoS32>(firstFrame); i--) {
+		if (frame >= p_items[i].GetFrame()) {
+			break;
 		}
 	}
 
+	LegoS32 selectedFrame = i;
 	if (selectedFrame < static_cast<LegoS32>(firstFrame)) {
 		selectedFrame = lastFrame;
 	}
@@ -156,15 +154,17 @@ DuskwindBananaRelic0x24* MabMaterialAnimationItem0x18::FUN_00410560(
 
 	LegoS32 firstFrame = m_unk0x06;
 	LegoS32 lastFrame = firstFrame + m_unk0x08 - 1;
-	LegoS32 selectedFrame = lastFrame;
-	if (selectedFrame >= firstFrame) {
-		MabMaterialAnimationItem0x8* item = &p_items[selectedFrame];
-		for (; selectedFrame >= firstFrame; selectedFrame--, item--) {
-			if (static_cast<LegoU32>(frame) >= item->GetFrame()) {
-				return p_items[selectedFrame].GetMaterial();
-			}
+	LegoS32 i;
+	for (i = lastFrame; i >= firstFrame; i--) {
+		if (static_cast<LegoU32>(frame) >= p_items[i].GetFrame()) {
+			break;
 		}
 	}
 
-	return p_items[lastFrame].GetMaterial();
+	LegoS32 selectedFrame = i;
+	if (selectedFrame < firstFrame) {
+		selectedFrame = lastFrame;
+	}
+
+	return p_items[selectedFrame].GetMaterial();
 }

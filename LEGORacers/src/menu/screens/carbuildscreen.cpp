@@ -194,8 +194,12 @@ void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 	}
 
 	LegoS32 index = regionId - 1;
-	LegoS32 tableIndex = index + m_unk0x2308.GetUnk0x298() * 8;
-	FUN_004773e0(g_carBuildDragHorizontalOffsets[tableIndex], g_carBuildDragVerticalOffsets[tableIndex], index & 1, 0);
+	FUN_004773e0(
+		g_carBuildDragHorizontalOffsets[m_unk0x2308.GetUnk0x298() * 8 + index],
+		g_carBuildDragVerticalOffsets[m_unk0x2308.GetUnk0x298() * 8 + index],
+		index & 1,
+		0
+	);
 	m_unk0x3c1c = c_carBuildDragDelay;
 }
 

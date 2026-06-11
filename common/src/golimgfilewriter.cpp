@@ -35,15 +35,10 @@ void GolImgFileWriter::VTable0x08(const LegoChar* p_fileName)
 	}
 
 	if (dotIndex < 0) {
-		const LegoChar* suffix;
-		size_t lenSuffix;
+		const LegoChar* suffix = GetSuffix();
 
-		suffix = GetSuffix();
-		lenSuffix = strlen(suffix);
-
-		lenFileName += lenSuffix;
-		lenFileName++;
-		m_filePath = new LegoChar[lenFileName];
+		lenFileName += strlen(suffix);
+		m_filePath = new LegoChar[lenFileName + 1];
 		if (!m_filePath) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}

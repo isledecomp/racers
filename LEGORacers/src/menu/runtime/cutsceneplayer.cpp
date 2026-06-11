@@ -1863,8 +1863,7 @@ void CutscenePlayer::FUN_004a2dc0(LegoU32 p_elapsedMs)
 		LegoU32 i;
 
 		for (i = 0; i < m_unk0xb4; i++) {
-			CutsceneMoveEvent* entries = m_unk0xb8;
-			entries[i].FUN_004a4d10(elapsedSeconds);
+			m_unk0xb8[i].FUN_004a4d10(elapsedSeconds);
 		}
 
 		for (i = 0; i < m_unk0xc8; i++) {

@@ -16,6 +16,12 @@
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement, 0x2d0)
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 
+// GLOBAL: LEGORACERS 0x004b2e68
+LegoFloat g_unk0x4b2e68 = FLT_MAX;
+
+// GLOBAL: LEGORACERS 0x004b2ed8
+LegoFloat g_unk0x4b2ed8 = 1.0f;
+
 // GLOBAL: LEGORACERS 0x004c7668
 LegoFloat g_fieldAt0x2308AngleStep = 0.0f;
 
@@ -128,8 +134,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477bf0()
 {
 	GolVec3 targetPosition;
 	FUN_00479330(&m_unk0x27c, 0);
-	LegoFloat targetZ = m_unk0x250.m_z;
-	targetZ += 4.0f;
+	LegoFloat targetZ = m_unk0x250.m_z + 4.0f;
 	targetPosition.m_x = m_unk0x250.m_x;
 	targetPosition.m_y = m_unk0x250.m_y;
 	targetPosition.m_z = targetZ;
@@ -148,7 +153,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477c50()
 
 	LegoS32 maxHighPieceOffset = m_unk0x24->m_pieceLibrary.GetMaxHighPieceOffset();
 	m_unk0x234->VTable0x18(m_unk0x10, 2, maxHighPieceOffset * 3, maxHighPieceOffset, 100, 5);
-	m_unk0x1a4.VTable0x50(m_unk0x234, FLT_MAX);
+	m_unk0x1a4.VTable0x50(m_unk0x234, g_unk0x4b2e68);
 }
 
 // FUNCTION: LEGORACERS 0x00477cc0
@@ -172,7 +177,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477cc0(undefined4)
 	}
 
 	m_unk0x1a0 = m_unk0x24->m_modelBuilder.GetBodyModelPart(&cosmetics);
-	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, FLT_MAX);
+	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, g_unk0x4b2e68);
 }
 
 // FUNCTION: LEGORACERS 0x00477dc0
@@ -537,7 +542,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478730()
 
 	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
 	m_unk0x248 |= c_flagCommittingPart;
-	m_unk0x274 = 1.0f;
+	m_unk0x274 = g_unk0x4b2ed8;
 	m_unk0x24c = 2500;
 	return TRUE;
 }
@@ -670,7 +675,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 			position.m_z = m_unk0x274;
 		}
 		else {
-			position.m_z = 1.0f;
+			position.m_z = g_unk0x4b2ed8;
 		}
 
 		entity->VTable0x08(position);
@@ -774,8 +779,8 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 		if (feedbackFlags & c_placementFeedbackLowering) {
 			LegoFloat delta = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x26c - m_unk0x270));
 			delta *= 0.33333334f;
-			if (delta > 1.0f) {
-				delta = 1.0f;
+			if (delta > g_unk0x4b2ed8) {
+				delta = g_unk0x4b2ed8;
 			}
 			else if (delta < 0.3f) {
 				delta = 0.3f;
@@ -948,9 +953,9 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479250(LegoS32 p_elapsed)
 	}
 
 	m_unk0x274 += p_elapsed * 0.006f;
-	if (m_unk0x274 > 1.0f) {
+	if (m_unk0x274 > g_unk0x4b2ed8) {
 		m_unk0x24c = 0;
-		m_unk0x274 = 1.0f;
+		m_unk0x274 = g_unk0x4b2ed8;
 	}
 }
 

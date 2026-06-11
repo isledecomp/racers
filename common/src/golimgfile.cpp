@@ -498,9 +498,10 @@ void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;
+	LegoU32 u32;
 	if (m_hasColorKey) {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src;
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -525,7 +526,7 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 	}
 	else {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src;
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -546,9 +547,10 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 i;
+	LegoU32 u32;
 	if (m_hasColorKey) {
 		for (i = 0; i < m_width; i++) {
-			LegoU32 u32 = *p_src;
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -574,7 +576,7 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 	}
 	else {
 		for (i = 0; i < m_width; i++) {
-			LegoU32 u32 = *p_src;
+			u32 = *p_src;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -598,9 +600,10 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::FUN_10021130(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
+	LegoU32 u32;
 	if (m_hasColorKey) {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			u32 = *p_src << 0;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;
@@ -621,7 +624,7 @@ void GolImgFile::FUN_10021130(const LegoU8* p_src, LegoU32* p_dst)
 	}
 	else {
 		for (; p_dst < endDst; p_dst++) {
-			LegoU32 u32 = *p_src << 0;
+			u32 = *p_src << 0;
 			p_src += (m_srcStrideMask >> 0) & 0x1;
 			u32 |= *p_src << 8;
 			p_src += (m_srcStrideMask >> 1) & 0x1;

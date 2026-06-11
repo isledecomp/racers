@@ -252,7 +252,8 @@ void MenuCarouselNavigator::VTable0x44(undefined4 p_unk0x04)
 	m_unk0x74 = count;
 	m_unk0x54 |= 1;
 	m_unk0x70 = 1;
-	m_unk0x8c = (LegoFloat) (LegoS32) p_unk0x04 / count;
+	LegoFloat divisor = (LegoFloat) count;
+	m_unk0x8c = (LegoFloat) (LegoS32) p_unk0x04 / divisor;
 	m_unk0x90 = (LegoFloat) m_unk0x4c;
 }
 
@@ -369,7 +370,9 @@ undefined4 MenuCarouselNavigator::VTable0x3c(undefined4 p_unk0x04)
 			p_unk0x04 = remaining;
 		}
 
-		LegoFloat delta = m_unk0x8c * (LegoFloat) (LegoS32) p_unk0x04;
+		LegoFloat step = m_unk0x8c;
+		LegoFloat scaled = (LegoFloat) (LegoS32) p_unk0x04;
+		LegoFloat delta = step * scaled;
 
 		m_unk0x74 = remaining - p_unk0x04;
 		m_unk0x90 = m_unk0x90 + delta;

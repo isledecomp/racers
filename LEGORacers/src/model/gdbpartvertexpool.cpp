@@ -11,7 +11,11 @@ DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04, 0x04)
 DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04::Normal, 0x04)
 
 static const LegoFloat g_gdbPartScaleNumerator = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004af4ac
 static const LegoFloat g_gdbPartTexCoordDivisor = 4096.0f;
+
+// GLOBAL: LEGORACERS 0x004af4b0
 static const LegoFloat g_gdbPartNormalDivisor = 127.0f;
 
 // GLOBAL: LEGORACERS 0x004c2854
@@ -141,7 +145,7 @@ void GdbPartVertexPool::SetTexCoord(LegoU32 p_index, const GolVec2* p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_u = static_cast<LegoS16>(g_gdbPartTexCoordDivisor * p_src->m_x);
-	vertex->m_v = static_cast<LegoS16>(p_src->m_y * 4096.0f);
+	vertex->m_v = static_cast<LegoS16>(p_src->m_y * g_gdbPartTexCoordDivisor);
 }
 
 // FUNCTION: LEGORACERS 0x004083e0
@@ -149,8 +153,8 @@ void GdbPartVertexPool::SetNormal(LegoU32 p_index, const GolVec3* p_src)
 {
 	Vertex* vertex = &m_vertices[p_index];
 	vertex->m_tail.m_normal.m_nx = static_cast<LegoS8>(g_gdbPartNormalDivisor * p_src->m_x);
-	vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_src->m_y * 127.0f);
-	vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_src->m_z * 127.0f);
+	vertex->m_tail.m_normal.m_ny = static_cast<LegoS8>(p_src->m_y * g_gdbPartNormalDivisor);
+	vertex->m_tail.m_normal.m_nz = static_cast<LegoS8>(p_src->m_z * g_gdbPartNormalDivisor);
 	vertex->m_tail.m_normal.m_argb = 0xff;
 }
 

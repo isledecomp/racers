@@ -1066,7 +1066,8 @@ void CutsceneDefinition::Frame::FUN_00406390(LegoS32 p_elapsedMs)
 		}
 		else {
 			double frameElapsed = static_cast<double>(static_cast<LegoS32>(elapsed - m_unk0x50));
-			frameElapsed = frameElapsed / static_cast<double>(static_cast<LegoS32>(m_unk0x54));
+			double frameDivisor = static_cast<double>(static_cast<LegoS32>(m_unk0x54));
+			frameElapsed = frameElapsed / frameDivisor;
 			m_unk0xa4 = static_cast<LegoFloat>(frameElapsed + m_unk0xa4);
 		}
 

@@ -1712,7 +1712,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 			FUN_10012f50();
 		}
 		else {
-			if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+			if (m_unk0xc83c8 & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
 				if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
 					if (newFlags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
 						m_d3dDevice->SetTextureStageState(0, D3DTSS_ALPHAOP, D3DTOP_MODULATE);

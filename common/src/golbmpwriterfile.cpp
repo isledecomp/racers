@@ -113,14 +113,14 @@ void GolBmpWriterFile::WriteSurface(const SlatePeak0x58* p_surface)
 void GolBmpWriterFile::WriteHeader()
 {
 	LegoU8 header[0x36];
-	LegoU32 imageByteSize = m_rowByteStride * m_height;
+	LegoU32 imageByteSize;
 	LegoU32 fileSize;
-
-	m_imageOffset = sizeof(header) + m_paletteEntryCount * sizeof(LegoU32);
-	fileSize = m_imageOffset + imageByteSize;
 
 	header[0x00] = 'B';
 	header[0x01] = 'M';
+	m_imageOffset = sizeof(header) + m_paletteEntryCount * sizeof(LegoU32);
+	imageByteSize = m_rowByteStride * m_height;
+	fileSize = m_imageOffset + imageByteSize;
 	header[0x02] = static_cast<LegoU8>(fileSize);
 	header[0x03] = static_cast<LegoU8>(fileSize >> 8);
 	header[0x04] = static_cast<LegoU8>(fileSize >> 16);
@@ -204,16 +204,16 @@ void GolBmpWriterFile::WritePalette()
 		if (m_paletteEntryCount > 0) {
 			LegoU32 chunkEnd = 0x10;
 			do {
-				LegoU8* color = &m_palette[0].m_grn;
-				LegoU32 i = chunkEnd;
+				LegoU32 i = 0;
+				LegoU32 n = chunkEnd;
 
-				while (i > 0) {
-					*writePtr++ = color[1];
-					color += sizeof(ColorRGBA);
-					*writePtr++ = color[-4];
-					*writePtr++ = color[-5];
+				while (n > 0) {
+					*writePtr++ = m_palette[i].m_blu;
+					*writePtr++ = m_palette[i].m_grn;
+					*writePtr++ = m_palette[i].m_red;
 					*writePtr++ = 0xff;
-					i--;
+					i++;
+					n--;
 				}
 
 				chunkEnd += 0x10;

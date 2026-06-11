@@ -243,6 +243,7 @@ public:
 
 	void Reset();
 	void Parse(GolFileParser* p_parser, CutscenePlayer* p_owner);
+	void FUN_004a42a0();
 	void FUN_004a43a0(const GolVec3* p_position);
 	void FUN_004a44f0();
 

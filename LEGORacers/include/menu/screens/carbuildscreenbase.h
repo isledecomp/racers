@@ -23,7 +23,7 @@ public:
 	};
 
 	// FUNCTION: LEGORACERS 0x00476e80
-	~CarBuildScreenBase() override {} // vtable+0x68
+	// CarBuildScreenBase::~CarBuildScreenBase
 
 	undefined4 VTable0x14(MenuWidget*, void*, undefined4, undefined4) override;                   // vtable+0x14
 	LegoBool32 VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18

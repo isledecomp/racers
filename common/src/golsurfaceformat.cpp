@@ -1,6 +1,7 @@
 #include "golsurfaceformat.h"
 
 // FUNCTION: GOLDP 0x1001cb50
+// FUNCTION: LEGORACERS 0x00407210
 LegoU32 GolSurfaceFormat::GetRedBitCount() const
 {
 	LegoU32 mask = m_redBitMask;
@@ -22,6 +23,7 @@ LegoU32 GolSurfaceFormat::GetRedBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cb80
+// FUNCTION: LEGORACERS 0x00407240
 LegoU32 GolSurfaceFormat::GetGreenBitCount() const
 {
 	LegoU32 mask = m_grnBitMask;
@@ -43,6 +45,7 @@ LegoU32 GolSurfaceFormat::GetGreenBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cbb0
+// FUNCTION: LEGORACERS 0x00407270
 LegoU32 GolSurfaceFormat::GetBlueBitCount() const
 {
 	LegoU32 mask = m_bluBitMask;
@@ -64,6 +67,7 @@ LegoU32 GolSurfaceFormat::GetBlueBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cbe0
+// FUNCTION: LEGORACERS 0x004072a0
 LegoU32 GolSurfaceFormat::GetAlphaBitCount() const
 {
 	LegoU32 mask = m_alpBitMask;
@@ -129,6 +133,7 @@ LegoU32 GolSurfaceFormat::GetPaletteBitCount() const
 }
 
 // FUNCTION: GOLDP 0x1001cc70
+// FUNCTION: LEGORACERS 0x00407300
 LegoU32 GolSurfaceFormat::GetRedBitShift() const
 {
 	LegoU32 mask = m_redBitMask;
@@ -146,6 +151,7 @@ LegoU32 GolSurfaceFormat::GetRedBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001cc90
+// FUNCTION: LEGORACERS 0x00407320
 LegoU32 GolSurfaceFormat::GetGreenBitShift() const
 {
 	LegoU32 mask = m_grnBitMask;
@@ -163,6 +169,7 @@ LegoU32 GolSurfaceFormat::GetGreenBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccb0
+// FUNCTION: LEGORACERS 0x00407340
 LegoU32 GolSurfaceFormat::GetBlueBitShift() const
 {
 	LegoU32 mask = m_bluBitMask;
@@ -180,6 +187,7 @@ LegoU32 GolSurfaceFormat::GetBlueBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccd0
+// FUNCTION: LEGORACERS 0x00407360
 LegoU32 GolSurfaceFormat::GetAlphaBitShift() const
 {
 	LegoU32 mask = m_alpBitMask;
@@ -197,150 +205,25 @@ LegoU32 GolSurfaceFormat::GetAlphaBitShift() const
 }
 
 // FUNCTION: GOLDP 0x1001ccf0
+// FUNCTION: LEGORACERS 0x00407380
 LegoU32 GolSurfaceFormat::MapRGBA(const ColorRGBA& p_rgba) const
 {
-	LegoU32 redMask = m_redBitMask;
-	LegoU32 mask = redMask;
-	LegoU32 redCount;
-	if (mask == 0) {
-		redCount = 0;
-	}
-	else {
-		while (!(mask & 1)) {
-			mask >>= 1;
-		}
-		redCount = 0;
-		while (mask & 1) {
-			mask >>= 1;
-			redCount++;
-		}
-	}
-	LegoU32 redRightShift = 8 - redCount;
+	LegoU32 redShift = 8 - GetRedBitCount();
+	LegoU32 grnShift = 8 - GetGreenBitCount();
+	LegoU32 bluShift = 8 - GetBlueBitCount();
+	LegoU32 alpShift = 8 - GetAlphaBitCount();
 
-	LegoU32 grnMask = m_grnBitMask;
-	mask = grnMask;
-	LegoU32 grnCount;
-	if (mask == 0) {
-		grnCount = 0;
-	}
-	else {
-		while (!(mask & 1)) {
-			mask >>= 1;
-		}
-		grnCount = 0;
-		while (mask & 1) {
-			mask >>= 1;
-			grnCount++;
-		}
-	}
-	LegoU32 grnRightShift = 8 - grnCount;
+	LegoU32 red = p_rgba.m_red >> redShift;
+	LegoU32 grn = p_rgba.m_grn >> grnShift;
+	LegoU32 blu = p_rgba.m_blu >> bluShift;
+	LegoU32 alp = p_rgba.m_alp >> alpShift;
 
-	LegoU32 bluMask = m_bluBitMask;
-	mask = bluMask;
-	if (mask != 0) {
-		while (!(mask & 1)) {
-			mask >>= 1;
-		}
-		LegoU32 bluCount = 0;
-		while (mask & 1) {
-			mask >>= 1;
-			bluCount++;
-		}
-		mask = bluCount;
-	}
-	mask = 8 - mask;
-
-	LegoU32 alpMask = m_alpBitMask;
-	LegoU32 alpWork = alpMask;
-	LegoU32 alpCount;
-	if (alpWork == 0) {
-		alpCount = 0;
-	}
-	else {
-		while (!(alpWork & 1)) {
-			alpWork >>= 1;
-		}
-		alpCount = 0;
-		while (alpWork & 1) {
-			alpWork >>= 1;
-			alpCount++;
-		}
-	}
-
-	LegoU32 blu;
-	LegoU32 red;
-	LegoU32 grn;
-
-	red = p_rgba.m_red >> redRightShift;
-	grn = p_rgba.m_grn >> grnRightShift;
-	blu = p_rgba.m_blu >> mask;
-	LegoU32 alp = p_rgba.m_alp >> (8 - alpCount);
-
-	{
-		LegoU32 shift = redMask;
-		if (shift == 0) {
-			shift = 32;
-		}
-		else {
-			LegoU32 count = 0;
-			while (!(shift & 1)) {
-				shift >>= 1;
-				count++;
-			}
-			shift = count;
-		}
-		red <<= shift;
-	}
-
-	{
-		LegoU32 shift = grnMask;
-		if (shift == 0) {
-			shift = 32;
-		}
-		else {
-			LegoU32 count = 0;
-			while (!(shift & 1)) {
-				shift >>= 1;
-				count++;
-			}
-			shift = count;
-		}
-		grn <<= shift;
-	}
+	red <<= GetRedBitShift();
+	grn <<= GetGreenBitShift();
 	red |= grn;
-
-	{
-		LegoU32 shift = bluMask;
-		if (shift == 0) {
-			shift = 32;
-		}
-		else {
-			LegoU32 count = 0;
-			while (!(shift & 1)) {
-				shift >>= 1;
-				count++;
-			}
-			shift = count;
-		}
-		blu <<= shift;
-	}
+	blu <<= GetBlueBitShift();
 	red |= blu;
-
-	{
-		LegoU32 shift = alpMask;
-		if (shift == 0) {
-			shift = 32;
-		}
-		else {
-			LegoU32 count = 0;
-			while (!(shift & 1)) {
-				shift >>= 1;
-				count++;
-			}
-			shift = count;
-		}
-		alp <<= shift;
-	}
+	alp <<= GetAlphaBitShift();
 
 	return red | alp;
 }

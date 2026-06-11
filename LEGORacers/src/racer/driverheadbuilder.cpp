@@ -99,7 +99,7 @@ void DriverHeadBuilder::LoadHeadResource(LegoBool32 p_binary)
 	m_worldDatabase->VTable0x14(m_renderer, headModelFileName, p_binary, 1.0f);
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 }
 

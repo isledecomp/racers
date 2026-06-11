@@ -2451,7 +2451,7 @@ void CutsceneStreamingSoundEvent::Reset()
 void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer* p_owner)
 {
 	if (m_unk0x14 != NULL) {
-		Reset();
+		FUN_004a42a0();
 	}
 
 	p_parser->ReadLeftCurly();
@@ -2491,6 +2491,12 @@ void CutsceneStreamingSoundEvent::Parse(GolFileParser* p_parser, CutscenePlayer*
 	if (m_unk0x14 == NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004a42a0
+void CutsceneStreamingSoundEvent::FUN_004a42a0()
+{
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a42b0

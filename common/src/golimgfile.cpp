@@ -219,6 +219,7 @@ LegoU32 GolImgFile::FUN_10020370(const ColorRGBA& p_rgba)
 }
 
 // FUNCTION: GOLDP 0x100204d0
+// FUNCTION: LEGORACERS 0x0040aed0
 void GolImgFile::FUN_100204d0(const GolSurfaceFormat& p_format, ColorRGBA* p_colorKey)
 {
 	const GolSurfaceFormat& destFormat = p_format;
@@ -332,6 +333,7 @@ void GolImgFile::FUN_100204d0(const GolSurfaceFormat& p_format, ColorRGBA* p_col
 }
 
 // STUB: GOLDP 0x100207e0
+// STUB: LEGORACERS 0x0040b1e0
 void GolImgFile::FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFormat& p_format)
 {
 	const LegoU8* src = static_cast<const LegoU8*>(p_src);

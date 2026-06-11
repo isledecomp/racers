@@ -36,7 +36,7 @@ public:
 	CmbModelPart0x34* GetUnk0x118() { return &m_unk0x118; }
 	LegoBool32 FUN_0047e0a0(CreateParams* p_createParams);
 	void FUN_0047e130(LegoU8 p_unk0x04);
-	void FUN_0047e160(LegoU8 p_unk0x04, LegoU8 p_unk0x08);
+	void FUN_0047e160(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 	void FUN_0047e1b0(LegoU8 p_unk0x04);
 	void FUN_0047e1e0(LegoU8 p_unk0x04);
 	void FUN_0047e210(DriverCosmetics* p_cosmetics);

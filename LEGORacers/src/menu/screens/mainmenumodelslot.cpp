@@ -111,7 +111,7 @@ void MainMenuModelSlot::FUN_0047e130(LegoU8 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0047e160
-void MainMenuModelSlot::FUN_0047e160(LegoU8 p_unk0x04, LegoU8 p_unk0x08)
+void MainMenuModelSlot::FUN_0047e160(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 {
 	m_cosmetics.m_faceIndex = p_unk0x04;
 	m_cosmetics.m_expressionIndex = p_unk0x08;

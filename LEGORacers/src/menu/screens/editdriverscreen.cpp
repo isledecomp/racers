@@ -102,7 +102,7 @@ void EditDriverScreen::FUN_0047d230()
 	CreateFramedSceneView(&m_unk0x31b0, 0, 0xd0);
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
 	MainMenuModelSlot::CreateParams createParams;
@@ -442,6 +442,9 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = 0x10;
 		}
+		else {
+			m_unk0x360 = 3;
+		}
 	}
 	else if (p_source == &m_unk0x3fd0) {
 		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
@@ -451,7 +454,7 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 		GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
 		entity->SetFlags(entity->GetFlags() & ~0x10000);
 
-		if (m_unk0x284->GetUnk0x9c()) {
+		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 

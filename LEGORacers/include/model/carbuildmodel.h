@@ -174,6 +174,7 @@ public:
 	GolModelBase* GetUnk0x84() const { return m_unk0x84; }
 	LegoS32 GetPlacedPieceCount() const { return m_placedPieceCount; }
 	GolAnimatedEntity* GetUnk0x0c() { return reinterpret_cast<GolAnimatedEntity*>(&m_unk0x0c); }
+	GolAnimatedEntity* GetUnk0x1f34() { return reinterpret_cast<GolAnimatedEntity*>(&m_unk0x1f34); }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
 	void SetPlacedPieceCount(undefined4 p_unk0xd4) { m_placedPieceCount = p_unk0xd4; }
 	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }
@@ -225,7 +226,9 @@ private:
 	LegoFloat m_unk0x1f10;                          // 0x1f10
 	LegoFloat m_unk0x1f14;                          // 0x1f14
 	LegoFloat m_unk0x1f18;                          // 0x1f18
-	undefined m_unk0x1f1c[0x1fc4 - 0x1f1c];         // 0x1f1c
+	undefined m_unk0x1f1c[0x1f34 - 0x1f1c];         // 0x1f1c
+	undefined4 m_unk0x1f34;                         // 0x1f34
+	undefined m_unk0x1f38[0x1fc4 - 0x1f38];         // 0x1f38
 	GolModelBase* m_auxModel;                       // 0x1fc4
 	undefined m_unk0x1fc8[0x2028 - 0x1fc8];         // 0x1fc8
 	LegoS32 m_unk0x2028;                            // 0x2028

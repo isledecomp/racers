@@ -15,7 +15,7 @@ class Particle;
 class ParticleSystem {
 public:
 	ParticleSystem();
-	~ParticleSystem() { Destroy(); }
+	~ParticleSystem();
 
 	void Destroy();
 

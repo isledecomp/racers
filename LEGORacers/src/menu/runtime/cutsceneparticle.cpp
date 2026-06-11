@@ -89,7 +89,12 @@ CutsceneParticle::CutsceneParticle()
 // FUNCTION: LEGORACERS 0x00489440
 CutsceneParticle::~CutsceneParticle()
 {
-	// TODO: Reset() and ~ParticleSystem are thunked here
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x00489490
+void CutsceneParticle::Destroy()
+{
 	Reset();
 }
 

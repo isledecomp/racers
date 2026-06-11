@@ -22,6 +22,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004016a0 FOLDED
 	// GolBmpFile::`scalar deleting destructor'
 
+	// SYNTHETIC: GOLDP 0x1001f1d0 FOLDED
+	// GolBmpFile::~GolBmpFile
+
 private:
 	LegoChar m_unk0x5b0[0x40];  // 0x5b0
 	LegoU8 m_unk0x5f0[3 * 256]; // 0x5f0

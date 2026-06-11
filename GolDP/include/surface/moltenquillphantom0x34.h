@@ -12,9 +12,6 @@ class MoltenQuillPhantom0x34 : public SilverDune0x30 {
 public:
 	MoltenQuillPhantom0x34();
 
-	// SYNTHETIC: GOLDP 0x10004470 FOLDED
-	// MoltenQuillPhantom0x34::~MoltenQuillPhantom0x34
-
 	// SYNTHETIC: GOLDP 0x1002f380 FOLDED
 	// MoltenQuillPhantom0x34::`scalar deleting destructor'
 

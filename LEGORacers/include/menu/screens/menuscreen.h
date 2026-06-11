@@ -97,7 +97,7 @@ public:
 	);
 	void* GetStyleEntry(undefined2);
 	void* GetBindingEntry(undefined2);
-	void CreateTriangle(MenuTriangle*, undefined2);
+	LegoBool32 CreateTriangle(MenuTriangle*, undefined2);
 	LegoBool32 CreateImage(MenuImage*, undefined2, undefined2);
 	LegoBool32 CreateTextLabel(MenuTextLabel*, undefined2, undefined2, undefined2);
 	LegoBool32 CreateFrame(MenuFrame*, undefined2, undefined2);

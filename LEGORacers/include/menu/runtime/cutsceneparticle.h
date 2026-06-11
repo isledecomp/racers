@@ -18,6 +18,7 @@ public:
 
 	LegoU8 GetSordidUnk0xb8() const { return (LegoU8) m_unk0x008.GetUnk0xb8(); }
 
+	void Destroy();
 	void Reset();
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);

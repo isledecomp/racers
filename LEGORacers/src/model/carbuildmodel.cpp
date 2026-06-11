@@ -1,6 +1,7 @@
 #include "model/carbuildmodel.h"
 
 #include "core/gol.h"
+#include "golanimatedentity.h"
 #include "golerror.h"
 #include "mesh/golmodelbase.h"
 #include "model/legocolortable.h"
@@ -666,6 +667,8 @@ void CarBuildModel::Destroy()
 {
 	m_unk0xbc.Clear();
 	m_unk0xa4.Clear();
+	GetUnk0x0c()->VTable0x54();
+	GetUnk0x1f34()->VTable0x54();
 
 	if (m_golExport != NULL) {
 		if (m_model != NULL) {

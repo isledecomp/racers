@@ -16,6 +16,9 @@ public:
 	// SYNTHETIC: GOLDP 0x100184c0
 	// GolCommonDrawState::`scalar deleting destructor'
 
+	// SYNTHETIC: GOLDP 0x10001100
+	// GolCommonDrawState::~GolCommonDrawState
+
 	LegoS32 VTable0x44(LegoU32 p_width, LegoU32 p_height, LegoU32 p_bpp,
 					   LegoU32 p_flags) override; // vtable+0x44
 	void VTable0x48() override;                   // vtable+0x48

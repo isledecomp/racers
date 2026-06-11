@@ -489,18 +489,18 @@ void* MenuScreen::GetBindingEntry(undefined2 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0046bea0
-void MenuScreen::CreateTriangle(MenuTriangle* p_unk0x04, undefined2 p_unk0x08)
+LegoBool32 MenuScreen::CreateTriangle(MenuTriangle* p_unk0x04, undefined2 p_unk0x08)
 {
 	MenuInputBindingTable::RegionBinding* sourceParams =
 		static_cast<MenuInputBindingTable::RegionBinding*>(GetBindingEntry(p_unk0x08));
 	if (sourceParams == NULL) {
-		return;
+		return FALSE;
 	}
 
 	MenuInputBindingTable::RegionBinding createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	p_unk0x04->FUN_004735a0(&createParams);
+	return p_unk0x04->FUN_004735a0(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bef0
@@ -577,6 +577,9 @@ LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_unk0x04, undefined2 p_unk0x08, u
 	ApplyWidgetDefaults(&createParams);
 
 	for (LegoS32 i = 0; i < 8; i++) {
+		if (!createParams.m_images[i]) {
+			createParams.m_images[i] = styleEntry->m_unk0x00[i];
+		}
 		if (!createParams.m_images[i]) {
 			createParams.m_images[i] = styleEntry->m_unk0x00[i];
 		}

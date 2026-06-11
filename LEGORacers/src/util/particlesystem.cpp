@@ -20,6 +20,12 @@ ParticleSystem::ParticleSystem()
 	Reset();
 }
 
+// FUNCTION: LEGORACERS 0x00412380
+ParticleSystem::~ParticleSystem()
+{
+	Destroy();
+}
+
 // FUNCTION: LEGORACERS 0x00412390
 void ParticleSystem::Reset()
 {

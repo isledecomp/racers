@@ -154,8 +154,8 @@ GolHashTable::Entry* GolHashTable::AddString(const LegoChar* p_string)
 
 	Entry* entry = FindEntry(p_string);
 	if (!entry) {
-		LegoU32 bucket = HashString(p_string);
-		entry = AddEntry(&m_buckets[bucket], p_string);
+		Entry** slot = &m_buckets[HashString(p_string)];
+		entry = AddEntry(slot, p_string);
 	}
 
 	ReleaseMutex(m_mutex);

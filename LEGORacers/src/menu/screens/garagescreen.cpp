@@ -182,6 +182,7 @@ void GarageScreen::FUN_0047e9f0(MenuGameContext* p_context)
 	modelState.FUN_00442e60(&p_context->m_unk0x258);
 	modelState.FUN_00442ef0(0xffff2);
 	m_unk0x2704[0] = modelState.FUN_00442e80(0xffff2);
+	modelState.FUN_00442e70();
 }
 
 // FUNCTION: LEGORACERS 0x0047ea50

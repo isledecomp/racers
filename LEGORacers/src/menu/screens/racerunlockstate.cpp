@@ -30,6 +30,12 @@ void RacerUnlockState::FUN_00442e60(SaveSystem* p_saveSystem)
 	m_unk0x00 = p_saveSystem;
 }
 
+// FUNCTION: LEGORACERS 0x00442e70
+void RacerUnlockState::FUN_00442e70()
+{
+	Reset();
+}
+
 // STUB: LEGORACERS 0x00442e80
 LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 {

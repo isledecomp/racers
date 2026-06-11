@@ -15,6 +15,7 @@ public:
 
 	void FUN_00442e60(SaveSystem* p_saveSystem);
 	void Reset();
+	void FUN_00442e70();
 	LegoU32 FUN_00442e80(LegoU32 p_mask) const;
 	PeridotTraceBase0x24::Record* FUN_00442ef0(LegoU32 p_mask);
 	PeridotTraceBase0x24::Record* FUN_00442fe0();

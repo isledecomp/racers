@@ -1,10 +1,10 @@
-#ifndef TURQUOISEGLOWCOLOR_H
-#define TURQUOISEGLOWCOLOR_H
+#ifndef DRIVERCOSMETICS_H
+#define DRIVERCOSMETICS_H
 
 #include "types.h"
 
 // SIZE 0x05
-struct TurquoiseGlowColor {
+struct DriverCosmetics {
 	union {
 		struct {
 			LegoU8 m_hatIndex;        // 0x00
@@ -17,4 +17,4 @@ struct TurquoiseGlowColor {
 	};
 };
 
-#endif // TURQUOISEGLOWCOLOR_H
+#endif // DRIVERCOSMETICS_H

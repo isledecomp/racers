@@ -159,9 +159,9 @@ void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 			m_unk0x754 = NULL;
 		}
 
-		TurquoiseGlowColor color;
-		m_context->m_cosmeticTable.CopyCosmetics(name, &color);
-		m_unk0x754 = m_context->m_modelBuilder.BuildDriverModel(&color, NULL, 0);
+		DriverCosmetics cosmetics;
+		m_context->m_cosmeticTable.CopyCosmetics(name, &cosmetics);
+		m_unk0x754 = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
 		m_unk0x660.FUN_0040d550(
 			m_unk0x754,
 			modelEntity->VTable0x58(0),

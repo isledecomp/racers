@@ -14,7 +14,7 @@
 
 DECOMP_SIZE_ASSERT(DriverCosmeticTable, 0x80)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::DdfTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(TurquoiseGlowColor, 0x05)
+DECOMP_SIZE_ASSERT(DriverCosmetics, 0x05)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::LoadParams, 0x14)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::Entry, 0x30)
 
@@ -162,11 +162,11 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			m_entries[i].m_unk0x28 = 0;
 			m_entries[i].m_unk0x29 = 0;
 			m_entries[i].m_unk0x2a = 0;
-			m_entries[i].m_color.m_hatIndex = 0;
-			m_entries[i].m_color.m_faceIndex = 0;
-			m_entries[i].m_color.m_torsoIndex = 0;
-			m_entries[i].m_color.m_legIndex = 0;
-			m_entries[i].m_color.m_expressionIndex = 0;
+			m_entries[i].m_cosmetics.m_hatIndex = 0;
+			m_entries[i].m_cosmetics.m_faceIndex = 0;
+			m_entries[i].m_cosmetics.m_torsoIndex = 0;
+			m_entries[i].m_cosmetics.m_legIndex = 0;
+			m_entries[i].m_cosmetics.m_expressionIndex = 0;
 
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			::strncpy(name, parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
@@ -228,19 +228,19 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 					m_entries[i].m_unk0x2a = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x35:
-					m_entries[i].m_color.m_hatIndex = parser->ReadInteger();
+					m_entries[i].m_cosmetics.m_hatIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x36:
-					m_entries[i].m_color.m_faceIndex = parser->ReadInteger();
+					m_entries[i].m_cosmetics.m_faceIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x37:
-					m_entries[i].m_color.m_torsoIndex = parser->ReadInteger();
+					m_entries[i].m_cosmetics.m_torsoIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x38:
-					m_entries[i].m_color.m_legIndex = parser->ReadInteger();
+					m_entries[i].m_cosmetics.m_legIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x39:
-					m_entries[i].m_color.m_expressionIndex = parser->ReadInteger();
+					m_entries[i].m_cosmetics.m_expressionIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x3a:
 					m_entries[i].m_unk0x22 = parser->ReadInteger();
@@ -346,25 +346,25 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00421020
-void DriverCosmeticTable::CopyCosmetics(const LegoChar* p_name, TurquoiseGlowColor* p_color)
+void DriverCosmeticTable::CopyCosmetics(const LegoChar* p_name, DriverCosmetics* p_cosmetics)
 {
 	Entry* entry = static_cast<Entry*>(GetName(p_name));
 
-	p_color->m_hatIndex = entry->m_color.m_hatIndex;
-	p_color->m_faceIndex = entry->m_color.m_faceIndex;
-	p_color->m_torsoIndex = entry->m_color.m_torsoIndex;
-	p_color->m_legIndex = entry->m_color.m_legIndex;
-	p_color->m_expressionIndex = entry->m_color.m_expressionIndex;
+	p_cosmetics->m_hatIndex = entry->m_cosmetics.m_hatIndex;
+	p_cosmetics->m_faceIndex = entry->m_cosmetics.m_faceIndex;
+	p_cosmetics->m_torsoIndex = entry->m_cosmetics.m_torsoIndex;
+	p_cosmetics->m_legIndex = entry->m_cosmetics.m_legIndex;
+	p_cosmetics->m_expressionIndex = entry->m_cosmetics.m_expressionIndex;
 }
 
 // FUNCTION: LEGORACERS 0x00421050
-void DriverCosmeticTable::CopyCosmetics(LegoU32 p_index, TurquoiseGlowColor* p_color)
+void DriverCosmeticTable::CopyCosmetics(LegoU32 p_index, DriverCosmetics* p_cosmetics)
 {
 	Entry& entry = m_entries[p_index];
 
-	p_color->m_hatIndex = entry.m_color.m_hatIndex;
-	p_color->m_faceIndex = entry.m_color.m_faceIndex;
-	p_color->m_torsoIndex = entry.m_color.m_torsoIndex;
-	p_color->m_legIndex = entry.m_color.m_legIndex;
-	p_color->m_expressionIndex = entry.m_color.m_expressionIndex;
+	p_cosmetics->m_hatIndex = entry.m_cosmetics.m_hatIndex;
+	p_cosmetics->m_faceIndex = entry.m_cosmetics.m_faceIndex;
+	p_cosmetics->m_torsoIndex = entry.m_cosmetics.m_torsoIndex;
+	p_cosmetics->m_legIndex = entry.m_cosmetics.m_legIndex;
+	p_cosmetics->m_expressionIndex = entry.m_cosmetics.m_expressionIndex;
 }

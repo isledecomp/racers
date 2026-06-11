@@ -8,7 +8,7 @@
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 #include "save/peridottrace0x4e0.h"
 #include "surface/color.h"
 
@@ -200,12 +200,13 @@ LegoBool32 EditDriverScreen::FUN_0047d560()
 		return FALSE;
 	}
 
-	TurquoiseGlowColor color;
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
+	DriverCosmetics cosmetics;
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
 
-	if (color.m_hatIndex == m_driverColor.m_components[0] && color.m_faceIndex == m_driverColor.m_components[1] &&
-		color.m_torsoIndex == m_driverColor.m_components[2]) {
-		return color.m_legIndex != m_driverColor.m_components[3];
+	if (cosmetics.m_hatIndex == m_driverCosmetics.m_components[0] &&
+		cosmetics.m_faceIndex == m_driverCosmetics.m_components[1] &&
+		cosmetics.m_torsoIndex == m_driverCosmetics.m_components[2]) {
+		return cosmetics.m_legIndex != m_driverCosmetics.m_components[3];
 	}
 
 	return TRUE;
@@ -268,14 +269,14 @@ void EditDriverScreen::FUN_0047d740()
 // FUNCTION: LEGORACERS 0x0047d840
 void EditDriverScreen::FUN_0047d840()
 {
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&m_driverColor);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&m_driverCosmetics);
 
-	m_unk0x420[0].FUN_00484170(m_driverColor.m_components[0]);
-	m_unk0x420[1].FUN_00484170(m_driverColor.m_components[1]);
-	m_unk0x420[2].FUN_00484170(m_driverColor.m_components[2]);
-	m_unk0x420[3].FUN_00484170(m_driverColor.m_components[3]);
+	m_unk0x420[0].FUN_00484170(m_driverCosmetics.m_components[0]);
+	m_unk0x420[1].FUN_00484170(m_driverCosmetics.m_components[1]);
+	m_unk0x420[2].FUN_00484170(m_driverCosmetics.m_components[2]);
+	m_unk0x420[3].FUN_00484170(m_driverCosmetics.m_components[3]);
 
-	m_unk0x4600.FUN_0047e210(&m_driverColor);
+	m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
 	m_unk0x9e0[0].VTable0x4c(4);
 	m_unk0x4764 = 0;
 }
@@ -283,7 +284,7 @@ void EditDriverScreen::FUN_0047d840()
 // FUNCTION: LEGORACERS 0x0047d8e0
 void EditDriverScreen::FUN_0047d8e0()
 {
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&m_driverColor);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&m_driverCosmetics);
 
 	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
 		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
@@ -363,7 +364,7 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 
 	if (p_source == &m_unk0x9e0[0]) {
 		LegoU32 index = m_unk0x420[0].GetSelectedValue();
-		m_driverColor.m_components[0] = static_cast<LegoU8>(index);
+		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e130(index);
 		m_unk0x4768 = 0x83;
@@ -371,7 +372,7 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[1]) {
 		LegoU32 index = m_unk0x420[1].GetSelectedValue();
-		m_driverColor.m_components[1] = static_cast<LegoU8>(index);
+		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e160(index, 0);
 		m_unk0x4768 = 0x83;
@@ -379,7 +380,7 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[2]) {
 		LegoU32 index = m_unk0x420[2].GetSelectedValue();
-		m_driverColor.m_components[2] = static_cast<LegoU8>(index);
+		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e1b0(index);
 		m_unk0x4768 = 0x84;
@@ -387,7 +388,7 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x9e0[3]) {
 		LegoU32 index = m_unk0x420[3].GetSelectedValue();
-		m_driverColor.m_components[3] = static_cast<LegoU8>(index);
+		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(index);
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e1e0(index);
 
@@ -412,12 +413,12 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 			m_unk0x420[i].VTable0x50(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
 		}
 
-		m_driverColor.m_components[0] = static_cast<LegoU8>(m_unk0x420[0].GetSelectedValue());
-		m_driverColor.m_components[1] = static_cast<LegoU8>(m_unk0x420[1].GetSelectedValue());
-		m_driverColor.m_components[2] = static_cast<LegoU8>(m_unk0x420[2].GetSelectedValue());
-		m_driverColor.m_components[3] = static_cast<LegoU8>(m_unk0x420[3].GetSelectedValue());
+		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(m_unk0x420[0].GetSelectedValue());
+		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(m_unk0x420[1].GetSelectedValue());
+		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(m_unk0x420[2].GetSelectedValue());
+		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(m_unk0x420[3].GetSelectedValue());
 
-		m_unk0x4600.FUN_0047e210(&m_driverColor);
+		m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
 	}
 	else if (p_source == &m_unk0x39f0) {
 		if (FUN_0047d560()) {

@@ -597,11 +597,11 @@ void MenuManager::FUN_0042d730()
 			);
 			slots[courseIndex].m_flag = FALSE;
 			slots[courseIndex].m_unk0x10 = 2;
-			slots[courseIndex].m_color.m_hatIndex = 0;
-			slots[courseIndex].m_color.m_faceIndex = 0;
-			slots[courseIndex].m_color.m_torsoIndex = 0;
-			slots[courseIndex].m_color.m_legIndex = 0;
-			slots[courseIndex].m_color.m_expressionIndex = 0;
+			slots[courseIndex].m_cosmetics.m_hatIndex = 0;
+			slots[courseIndex].m_cosmetics.m_faceIndex = 0;
+			slots[courseIndex].m_cosmetics.m_torsoIndex = 0;
+			slots[courseIndex].m_cosmetics.m_legIndex = 0;
+			slots[courseIndex].m_cosmetics.m_expressionIndex = 0;
 			slots[courseIndex].m_unk0x59[0] = 0;
 		}
 	}
@@ -677,7 +677,7 @@ void MenuManager::FUN_0042d730()
 		recordStates[selectedIndex].m_unk0x04 = record->m_unk0x0c;
 		recordStates[selectedIndex].m_unk0x08 = record->m_unk0x10;
 
-		record->FUN_0042b330(&slot->m_color);
+		record->FUN_0042b330(&slot->m_cosmetics);
 		slot->m_unk0x10 = 0;
 	}
 

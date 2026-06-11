@@ -17,7 +17,7 @@ class DriverPartResources;
 class GolModelBase;
 class GolSceneNode;
 class CmbModelPart0x34;
-struct TurquoiseGlowColor;
+struct DriverCosmetics;
 
 // SIZE 0x88
 class DriverModelBuilder {
@@ -46,11 +46,11 @@ public:
 	undefined4 Load(const LoadParams* p_params);
 	LegoBool32 ReleaseMenuResources();
 	void RefreshMenuResources();
-	GolModelBase* BuildDriverModel(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
-	GolSceneNode* GetBodySceneNode(TurquoiseGlowColor* p_color);
-	CmbModelPart0x34* GetBodyModelPart(TurquoiseGlowColor* p_color);
+	GolModelBase* BuildDriverModel(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolSceneNode* GetBodySceneNode(DriverCosmetics* p_cosmetics);
+	CmbModelPart0x34* GetBodyModelPart(DriverCosmetics* p_cosmetics);
 	void GetMaxMergedCounts(undefined4* p_dest);
-	void ApplyFaceExpression(GolModelBase* p_model, TurquoiseGlowColor* p_color);
+	void ApplyFaceExpression(GolModelBase* p_model, DriverCosmetics* p_cosmetics);
 
 	void Reset()
 	{
@@ -87,7 +87,7 @@ private:
 	void FUN_0049d920();
 	void MergeHeadModel();
 	void FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name);
-	GolModelBase* MergeModels(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
 	void FUN_0049dd50();
 
 	undefined4 m_menuId;                               // 0x00

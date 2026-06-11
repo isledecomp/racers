@@ -6,7 +6,7 @@
 #include "golanimatedentity.h"
 #include "golmath.h"
 #include "menu/widgets/menusceneelement.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 
 class GolD3DRenderDevice;
 class GolExport;
@@ -39,7 +39,7 @@ public:
 	void FUN_0047e160(LegoU8 p_unk0x04, LegoU8 p_unk0x08);
 	void FUN_0047e1b0(LegoU8 p_unk0x04);
 	void FUN_0047e1e0(LegoU8 p_unk0x04);
-	void FUN_0047e210(TurquoiseGlowColor* p_color);
+	void FUN_0047e210(DriverCosmetics* p_cosmetics);
 
 	// SYNTHETIC: LEGORACERS 0x0047dee0
 	// MainMenuModelSlot::`scalar deleting destructor'
@@ -53,7 +53,7 @@ private:
 	CmbModelPart0x34 m_unk0x118;         // 0x118
 	undefined4 m_unk0x14c;               // 0x14c
 	DriverModelBuilder* m_unk0x150;      // 0x150
-	TurquoiseGlowColor m_unk0x154;       // 0x154
+	DriverCosmetics m_cosmetics;         // 0x154
 	undefined m_unk0x159[0x15c - 0x159]; // 0x159
 };
 

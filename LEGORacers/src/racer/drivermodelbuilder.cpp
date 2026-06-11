@@ -15,9 +15,9 @@
 #include "mesh/golmodelbase.h"
 #include "mesh/golmodelmaterialtable.h"
 #include "mesh/igdbmodelindexarray0x8.h"
+#include "racer/drivercosmetics.h"
 #include "racer/driverpartcatalog.h"
 #include "racer/driverpartresources.h"
-#include "racer/turquoiseglowcolor.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/color.h"
 #include "surface/purpledune0x7c.h"
@@ -407,7 +407,7 @@ void DriverModelBuilder::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const
 
 // FUNCTION: LEGORACERS 0x0049dab0
 GolModelBase* DriverModelBuilder::MergeModels(
-	TurquoiseGlowColor* p_color,
+	DriverCosmetics* p_cosmetics,
 	GolModelBase* p_model,
 	undefined4 p_vertexType
 )
@@ -428,50 +428,50 @@ GolModelBase* DriverModelBuilder::MergeModels(
 	FUN_0049d920();
 	MergeHeadModel();
 	FUN_0049dd50();
-	LoadFaceExpressionMaterials(p_color->m_faceIndex);
+	LoadFaceExpressionMaterials(p_cosmetics->m_faceIndex);
 
 	p_model->SetScale(m_bodySummary.m_model->GetScale());
-	FUN_0049d9b0(m_partResources->FindFaceMaterial(p_color->m_faceIndex), "face");
-	FUN_0049d9b0(m_partResources->FindTorsoMaterial(p_color->m_torsoIndex), "torso");
-	FUN_0049d9b0(m_partResources->FindLegMaterial(p_color->m_legIndex), "legs");
+	FUN_0049d9b0(m_partResources->FindFaceMaterial(p_cosmetics->m_faceIndex), "face");
+	FUN_0049d9b0(m_partResources->FindTorsoMaterial(p_cosmetics->m_torsoIndex), "torso");
+	FUN_0049d9b0(m_partResources->FindLegMaterial(p_cosmetics->m_legIndex), "legs");
 
 	return p_model;
 }
 
 // FUNCTION: LEGORACERS 0x0049db90
 GolModelBase* DriverModelBuilder::BuildDriverModel(
-	TurquoiseGlowColor* p_color,
+	DriverCosmetics* p_cosmetics,
 	GolModelBase* p_model,
 	undefined4 p_unk0x0c
 )
 {
 	DriverPartCatalog* partCatalog = m_partResources->GetPartCatalog();
-	LegoS32 torsoLegIndex =
-		2 * partCatalog->GetLegVariant(p_color->m_legIndex) + partCatalog->GetTorsoVariant(p_color->m_torsoIndex);
+	LegoS32 torsoLegIndex = 2 * partCatalog->GetLegVariant(p_cosmetics->m_legIndex) +
+							partCatalog->GetTorsoVariant(p_cosmetics->m_torsoIndex);
 	GolModelBase* torsoLegModel = m_partResources->GetBodyModel(torsoLegIndex);
-	GolModelBase* headModel = m_partResources->LoadHatModel(p_color->m_hatIndex);
+	GolModelBase* headModel = m_partResources->LoadHatModel(p_cosmetics->m_hatIndex);
 
 	SummarizeModel(torsoLegModel, &m_bodySummary);
 	SummarizeModel(headModel, &m_headSummary);
 
-	return MergeModels(p_color, p_model, p_unk0x0c);
+	return MergeModels(p_cosmetics, p_model, p_unk0x0c);
 }
 
 // FUNCTION: LEGORACERS 0x0049dc10
-GolSceneNode* DriverModelBuilder::GetBodySceneNode(TurquoiseGlowColor* p_color)
+GolSceneNode* DriverModelBuilder::GetBodySceneNode(DriverCosmetics* p_cosmetics)
 {
 	DriverPartCatalog* partCatalog = m_partResources->GetPartCatalog();
-	LegoS32 torsoLegIndex =
-		2 * partCatalog->GetLegVariant(p_color->m_legIndex) + partCatalog->GetTorsoVariant(p_color->m_torsoIndex);
+	LegoS32 torsoLegIndex = 2 * partCatalog->GetLegVariant(p_cosmetics->m_legIndex) +
+							partCatalog->GetTorsoVariant(p_cosmetics->m_torsoIndex);
 	return m_partResources->GetBodySceneNode(torsoLegIndex);
 }
 
 // FUNCTION: LEGORACERS 0x0049dc50
-CmbModelPart0x34* DriverModelBuilder::GetBodyModelPart(TurquoiseGlowColor* p_color)
+CmbModelPart0x34* DriverModelBuilder::GetBodyModelPart(DriverCosmetics* p_cosmetics)
 {
 	DriverPartCatalog* partCatalog = m_partResources->GetPartCatalog();
-	LegoS32 torsoLegIndex =
-		2 * partCatalog->GetLegVariant(p_color->m_legIndex) + partCatalog->GetTorsoVariant(p_color->m_torsoIndex);
+	LegoS32 torsoLegIndex = 2 * partCatalog->GetLegVariant(p_cosmetics->m_legIndex) +
+							partCatalog->GetTorsoVariant(p_cosmetics->m_torsoIndex);
 	return m_partResources->GetBodyModelPart(torsoLegIndex);
 }
 
@@ -485,13 +485,13 @@ void DriverModelBuilder::GetMaxMergedCounts(undefined4* p_dest)
 }
 
 // FUNCTION: LEGORACERS 0x0049dce0
-void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, TurquoiseGlowColor* p_color)
+void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, DriverCosmetics* p_cosmetics)
 {
 	GolName materialName;
-	m_partResources->GetPartCatalog()->CopyDefaultFaceName(p_color->m_faceIndex, materialName, materialName);
+	m_partResources->GetPartCatalog()->CopyDefaultFaceName(p_cosmetics->m_faceIndex, materialName, materialName);
 	LegoS32 materialIndex = p_model->GetMaterialTable()->FindEntryIndexByName(materialName);
 	m_partResources->GetPartCatalog()
-		->BuildFaceExpressionName(p_color->m_faceIndex, p_color->m_expressionIndex, materialName);
+		->BuildFaceExpressionName(p_cosmetics->m_faceIndex, p_cosmetics->m_expressionIndex, materialName);
 	p_model->GetMaterialTable()->AssignEntryByName(materialIndex, materialName);
 }
 

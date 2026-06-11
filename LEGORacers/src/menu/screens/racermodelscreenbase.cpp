@@ -10,7 +10,7 @@
 #include "golstringtable.h"
 #include "menu/menugamecontext.h"
 #include "mesh/golmodelbase.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 #include "world/golworlddatabase.h"
 
 #include <float.h>
@@ -309,18 +309,18 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	PeridotTraceBase0x24::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
 	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
 
-	TurquoiseGlowColor color;
-	record->FUN_0042b330(&color);
+	DriverCosmetics cosmetics;
+	record->FUN_0042b330(&cosmetics);
 
 	if (m_unk0x77c == 1) {
 		m_context->m_modelBuilder.RefreshMenuResources();
 	}
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
-	GolModelBase* model = m_context->m_modelBuilder.BuildDriverModel(&color, m_unk0x4ec[modelIndex], 0);
-	m_context->m_modelBuilder.ApplyFaceExpression(model, &color);
+	GolModelBase* model = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, m_unk0x4ec[modelIndex], 0);
+	m_context->m_modelBuilder.ApplyFaceExpression(model, &cosmetics);
 
-	GolSceneNode* node = m_context->m_modelBuilder.GetBodySceneNode(&color);
+	GolSceneNode* node = m_context->m_modelBuilder.GetBodySceneNode(&cosmetics);
 	m_unk0x4dc[modelIndex]->VTable0x10(node);
 	m_unk0x232c[modelIndex].FUN_0040d550(model, m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 

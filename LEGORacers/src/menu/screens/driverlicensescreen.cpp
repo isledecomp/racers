@@ -185,7 +185,7 @@ LegoBool32 DriverLicenseScreen::Destroy()
 LegoBool32 DriverLicenseScreen::FUN_0047b580()
 {
 	GolString name;
-	TurquoiseGlowColor color;
+	DriverCosmetics cosmetics;
 	undefined2 buffer[24];
 
 	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
@@ -197,28 +197,28 @@ LegoBool32 DriverLicenseScreen::FUN_0047b580()
 	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
 
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(&name);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
 
 	if (!name.GolStrcmp(&m_cheatString)) {
 		return TRUE;
 	}
 
-	return color.m_hatIndex != GetUnk0x2244().m_expressionIndex;
+	return cosmetics.m_hatIndex != GetUnk0x2244().m_expressionIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0047b6b0
 void DriverLicenseScreen::FUN_0047b6b0()
 {
-	TurquoiseGlowColor* color;
+	DriverCosmetics* cosmetics;
 	GolString* cheatString = &m_cheatString;
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(cheatString);
 
-	color = &GetUnk0x2244();
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(color);
+	cosmetics = &GetUnk0x2244();
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(cosmetics);
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	MainMenuModelSlot* preview = &m_unk0x224c;
-	preview->FUN_0047e210(color);
+	preview->FUN_0047e210(cosmetics);
 	LegoU32 colorValue = GetUnk0x2244().m_faceIndex;
 	LegoU32 colorIndex = GetUnk0x2244().m_expressionIndex;
 	preview->FUN_0047e160(colorValue, colorIndex);

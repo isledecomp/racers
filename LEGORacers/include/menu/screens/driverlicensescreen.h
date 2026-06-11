@@ -13,7 +13,7 @@
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextentry.h"
 #include "menu/widgets/menutextlabel.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 
 // VTABLE: LEGORACERS 0x004b31f8
 // SIZE 0x23bc
@@ -45,7 +45,7 @@ protected:
 	void FUN_0047b6b0();
 	void FUN_0047b750();
 	undefined2* GetCheatBuffer() { return m_unk0x1f1c.GetUnk0x300(); }
-	TurquoiseGlowColor& GetUnk0x2244() { return *m_unk0x1f1c.GetUnk0x328(); }
+	DriverCosmetics& GetUnk0x2244() { return *m_unk0x1f1c.GetUnk0x328(); }
 
 	enum {
 		c_nslwj = 1 << 0,

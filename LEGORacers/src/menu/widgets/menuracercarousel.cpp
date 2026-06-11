@@ -5,8 +5,8 @@
 #include "menu/menugamecontext.h"
 #include "mesh/golmodelbase.h"
 #include "mesh/golmodelmaterialtable.h"
+#include "racer/drivercosmetics.h"
 #include "racer/driverpartcatalog.h"
-#include "racer/turquoiseglowcolor.h"
 #include "save/savesystem.h"
 
 #include <float.h>
@@ -109,10 +109,10 @@ void MenuRacerCarousel::CopyModelMaterialTable(GolModelBase* p_model, GolBillboa
 void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetHatCount(); i++) {
-		TurquoiseGlowColor color;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
+		DriverCosmetics cosmetics;
+		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
 
-		if (color.m_hatIndex != i) {
+		if (cosmetics.m_hatIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetHatUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
@@ -132,10 +132,10 @@ void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSyste
 void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetFaceCount(); i++) {
-		TurquoiseGlowColor color;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
+		DriverCosmetics cosmetics;
+		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
 
-		if (color.m_faceIndex != i) {
+		if (cosmetics.m_faceIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetFaceUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
@@ -155,10 +155,10 @@ void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSyste
 void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetTorsoCount(); i++) {
-		TurquoiseGlowColor color;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
+		DriverCosmetics cosmetics;
+		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
 
-		if (color.m_torsoIndex != i) {
+		if (cosmetics.m_torsoIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetTorsoUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
@@ -178,10 +178,10 @@ void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSyste
 void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetLegCount(); i++) {
-		TurquoiseGlowColor color;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
+		DriverCosmetics cosmetics;
+		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
 
-		if (color.m_legIndex != i) {
+		if (cosmetics.m_legIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetLegUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {

@@ -15,7 +15,7 @@ class GolString;
 class InputManager;
 class PeridotTraceBuffer0x250;
 class PeridotTrace0x4e0;
-struct TurquoiseGlowColor;
+struct DriverCosmetics;
 
 typedef undefined PeridotTraceRecordData[0x22d];
 
@@ -88,14 +88,14 @@ public:
 		);
 		void Destroy();
 		void FUN_0042b6d0();
-		void FUN_0042b330(TurquoiseGlowColor* p_color) const;
+		void FUN_0042b330(DriverCosmetics* p_cosmetics) const;
 		void FUN_0042b360(LegoU8* p_dest) const;
 		void FUN_0042b380(GolName p_dest) const;
 		void FUN_0042b3a0(GolString* p_string) const;
 		LegoBool32 FUN_0042b460() const;
 		void FUN_0042b470();
 		void FUN_0042b490();
-		void FUN_0042b4b0(const TurquoiseGlowColor* p_color);
+		void FUN_0042b4b0(const DriverCosmetics* p_cosmetics);
 		void FUN_0042b510(const GolName p_source);
 		void FUN_0042b530(GolString* p_string);
 		void FUN_0042b5c0(const Record* p_source);

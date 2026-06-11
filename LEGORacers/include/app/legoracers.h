@@ -6,7 +6,7 @@
 #include "audio/nullsoundmanager.h"
 #include "decomp.h"
 #include "golname.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 #include "save/peridottrace0x4e0.h"
 #include "types.h"
 #include "util/cactusinterface0x4.h"
@@ -46,7 +46,7 @@ public:
 			GolModelBase* m_altModel;           // 0x48
 			GolMaterialLibrary* m_altMaterials; // 0x4c
 			GolTextureList* m_altTextures;      // 0x50
-			TurquoiseGlowColor m_color;         // 0x54
+			DriverCosmetics m_cosmetics;        // 0x54
 			undefined m_unk0x59[0x5c - 0x59];   // 0x59
 		};
 

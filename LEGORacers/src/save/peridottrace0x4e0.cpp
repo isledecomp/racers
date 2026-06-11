@@ -2,7 +2,7 @@
 
 #include "golerror.h"
 #include "golstring.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
 DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::Record, 0x244)
@@ -57,13 +57,13 @@ void PeridotTraceBase0x24::Record::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0042b330
-void PeridotTraceBase0x24::Record::FUN_0042b330(TurquoiseGlowColor* p_color) const
+void PeridotTraceBase0x24::Record::FUN_0042b330(DriverCosmetics* p_cosmetics) const
 {
-	p_color->m_faceIndex = m_data[0x1c];
-	p_color->m_hatIndex = m_data[0x1d];
-	p_color->m_legIndex = m_data[0x1e];
-	p_color->m_torsoIndex = m_data[0x1f];
-	p_color->m_expressionIndex = m_data[0x20] & 0x7f;
+	p_cosmetics->m_faceIndex = m_data[0x1c];
+	p_cosmetics->m_hatIndex = m_data[0x1d];
+	p_cosmetics->m_legIndex = m_data[0x1e];
+	p_cosmetics->m_torsoIndex = m_data[0x1f];
+	p_cosmetics->m_expressionIndex = m_data[0x20] & 0x7f;
 }
 
 // FUNCTION: LEGORACERS 0x0042b360
@@ -125,13 +125,13 @@ void PeridotTraceBase0x24::Record::FUN_0042b490()
 }
 
 // FUNCTION: LEGORACERS 0x0042b4b0
-void PeridotTraceBase0x24::Record::FUN_0042b4b0(const TurquoiseGlowColor* p_color)
+void PeridotTraceBase0x24::Record::FUN_0042b4b0(const DriverCosmetics* p_cosmetics)
 {
-	m_data[0x1c] = p_color->m_faceIndex;
-	m_data[0x1d] = p_color->m_hatIndex;
-	m_data[0x1e] = p_color->m_legIndex;
-	m_data[0x1f] = p_color->m_torsoIndex;
-	m_data[0x20] = (m_data[0x20] & 0x80) | p_color->m_expressionIndex;
+	m_data[0x1c] = p_cosmetics->m_faceIndex;
+	m_data[0x1d] = p_cosmetics->m_hatIndex;
+	m_data[0x1e] = p_cosmetics->m_legIndex;
+	m_data[0x1f] = p_cosmetics->m_torsoIndex;
+	m_data[0x20] = (m_data[0x20] & 0x80) | p_cosmetics->m_expressionIndex;
 	FUN_0042b6d0();
 }
 

@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "menu/widgets/menucolorbox.h"
 #include "menu/widgets/menutextfield.h"
-#include "racer/turquoiseglowcolor.h"
+#include "racer/drivercosmetics.h"
 
 // VTABLE: LEGORACERS 0x004b28d0
 // SIZE 0x330
@@ -19,7 +19,7 @@ public:
 	LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*) override;      // vtable+0x70
 
 	undefined2* GetUnk0x300() { return m_unk0x300; }
-	TurquoiseGlowColor* GetUnk0x328() { return &m_unk0x328; }
+	DriverCosmetics* GetUnk0x328() { return &m_unk0x328; }
 
 	// SYNTHETIC: LEGORACERS 0x004718b0
 	// MenuTextEntry::`scalar deleting destructor'
@@ -33,7 +33,7 @@ protected:
 	undefined m_unk0x2fc[0x300 - 0x2fc]; // 0x2fc
 	undefined2 m_unk0x300[15];           // 0x300
 	undefined m_unk0x31e[0x328 - 0x31e]; // 0x31e
-	TurquoiseGlowColor m_unk0x328;       // 0x328
+	DriverCosmetics m_unk0x328;          // 0x328
 	undefined m_unk0x32d[0x330 - 0x32d]; // 0x32d
 };
 

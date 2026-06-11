@@ -12,8 +12,8 @@
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
 #include "mesh/golmodelbase.h"
+#include "racer/drivercosmetics.h"
 #include "racer/drivermodelbuilder.h"
-#include "racer/turquoiseglowcolor.h"
 #include "surface/color.h"
 
 #include <float.h>
@@ -283,24 +283,24 @@ void EditCarScreen::FUN_0047c5a0()
 // FUNCTION: LEGORACERS 0x0047c610
 void EditCarScreen::FUN_0047c610()
 {
-	TurquoiseGlowColor color;
+	DriverCosmetics cosmetics;
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
-	m_unk0x35a4 = m_context->m_modelBuilder.BuildDriverModel(&color, NULL, 0);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
+	m_unk0x35a4 = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
 	if (m_unk0x35a4 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_context->m_modelBuilder.ApplyFaceExpression(m_unk0x35a4, &color);
+	m_context->m_modelBuilder.ApplyFaceExpression(m_unk0x35a4, &cosmetics);
 
 	m_unk0x35a8 = m_golExport->VTable0x18();
-	m_unk0x35a8->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&color));
+	m_unk0x35a8->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	if (m_unk0x35a8 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x35ac = m_context->m_modelBuilder.GetBodyModelPart(&color);
+	m_unk0x35ac = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
 	m_unk0x34b0.FUN_0040d550(m_unk0x35a4, m_unk0x35a8, m_unk0x35ac, g_editCarMaxFloat);
 }
 

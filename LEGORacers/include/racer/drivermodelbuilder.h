@@ -24,33 +24,33 @@ class DriverModelBuilder {
 public:
 	// SIZE 0x14
 	struct ModelSummary {
-		LegoS32 m_unk0x00;     // 0x00
-		LegoS32 m_unk0x04;     // 0x04
-		LegoS32 m_unk0x08;     // 0x08
-		LegoS32 m_unk0x0c;     // 0x0c
-		GolModelBase* m_model; // 0x10
+		LegoS32 m_vertexCount;   // 0x00
+		LegoS32 m_indexCount;    // 0x04
+		LegoS32 m_groupCount;    // 0x08
+		LegoS32 m_materialCount; // 0x0c
+		GolModelBase* m_model;   // 0x10
 	};
 
 	// SIZE 0x10
 	struct LoadParams {
-		GolExport* m_golExport;         // 0x00
-		GolD3DRenderDevice* m_renderer; // 0x04
-		undefined4 m_menuId;            // 0x08
-		DriverPartResources* m_unk0x0c; // 0x0c
+		GolExport* m_golExport;               // 0x00
+		GolD3DRenderDevice* m_renderer;       // 0x04
+		undefined4 m_menuId;                  // 0x08
+		DriverPartResources* m_partResources; // 0x0c
 	};
 
 	DriverModelBuilder();
 	~DriverModelBuilder();
 
 	void ResetMenuState();
-	undefined4 FUN_0049d1d0(const LoadParams* p_params);
+	undefined4 Load(const LoadParams* p_params);
 	LegoBool32 ReleaseMenuResources();
 	void RefreshMenuResources();
-	GolModelBase* FUN_0049db90(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
-	GolSceneNode* FUN_0049dc10(TurquoiseGlowColor* p_color);
-	CmbModelPart0x34* FUN_0049dc50(TurquoiseGlowColor* p_color);
-	void FUN_0049dc90(undefined4* p_dest);
-	void FUN_0049dce0(GolModelBase* p_model, TurquoiseGlowColor* p_color);
+	GolModelBase* BuildDriverModel(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolSceneNode* GetBodySceneNode(TurquoiseGlowColor* p_color);
+	CmbModelPart0x34* GetBodyModelPart(TurquoiseGlowColor* p_color);
+	void GetMaxMergedCounts(undefined4* p_dest);
+	void ApplyFaceExpression(GolModelBase* p_model, TurquoiseGlowColor* p_color);
 
 	void Reset()
 	{
@@ -63,7 +63,7 @@ public:
 	MusicInstance* GetMusicInstance() { return m_musicInstance; }
 	void SetMusicInstance(MusicInstance* p_musicInstance) { m_musicInstance = p_musicInstance; }
 	LegoBool32 HasMenuResources() const { return m_menuId != 0; }
-	void SetUnk0x10(undefined4 p_unk0x10) { m_unk0x10 = p_unk0x10; }
+	void SetExpressionMask(undefined4 p_expressionMask) { m_expressionMask = p_expressionMask; }
 	undefined4 GetUnk0x78() const { return m_unk0x78; }
 	void SetUnk0x78(undefined4 p_unk0x78) { m_unk0x78 = p_unk0x78; }
 	LegoS32 GetUnk0x84() const { return m_unk0x84; }
@@ -74,40 +74,40 @@ private:
 
 	void CreateMenuResources();
 	void InitializeDefaultMaterialParams();
-	void FUN_0049d2e0(const LegoChar* p_name, GolBmpFile* p_imageFile);
-	void FUN_0049d3a0(const LegoChar* p_name);
-	void FUN_0049d420(LegoS32 p_faceIndex);
-	void FUN_0049d570(GolModelBase* p_model, ModelSummary* p_summary);
-	LegoBool32 FUN_0049d5c0() const;
+	void LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_imageFile);
+	void CreateFaceMaterial(const LegoChar* p_name);
+	void LoadFaceExpressionMaterials(LegoS32 p_faceIndex);
+	void SummarizeModel(GolModelBase* p_model, ModelSummary* p_summary);
+	LegoBool32 FitsOutputModel() const;
 	void FUN_0049d600();
 	LegoBool32 FUN_0049d670(GolModelBase* p_model) const;
 	GolModelBase* FUN_0049d6e0(undefined2 p_vertexType);
 	void CopyModelVertices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_vertexOffset);
 	void FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
 	void FUN_0049d920();
-	void FUN_0049d970();
+	void MergeHeadModel();
 	void FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name);
-	GolModelBase* FUN_0049dab0(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
+	GolModelBase* MergeModels(TurquoiseGlowColor* p_color, GolModelBase* p_model, undefined4 p_unk0x0c);
 	void FUN_0049dd50();
 
-	undefined4 m_menuId;                 // 0x00
-	undefined4 m_unk0x04;                // 0x04
-	undefined4 m_unk0x08;                // 0x08
-	undefined4 m_unk0x0c;                // 0x0c
-	undefined4 m_unk0x10;                // 0x10
-	GolExport* m_golExport;              // 0x14
-	GolD3DRenderDevice* m_renderer;      // 0x18
-	GolTextureList* m_menuResource0;     // 0x1c
-	GolMaterialLibrary* m_menuResource1; // 0x20
-	DuskWindBananaRelicParams m_unk0x24; // 0x24
-	DriverPartResources* m_unk0x38;      // 0x38
-	ModelSummary m_unk0x3c;              // 0x3c
-	ModelSummary m_unk0x50;              // 0x50
-	ModelSummary m_unk0x64;              // 0x64
-	undefined4 m_unk0x78;                // 0x78
-	MusicGroup* m_musicGroup;            // 0x7c
-	MusicInstance* m_musicInstance;      // 0x80
-	LegoS32 m_unk0x84;                   // 0x84
+	undefined4 m_menuId;                               // 0x00
+	undefined4 m_textureCount;                         // 0x04
+	undefined4 m_materialCount;                        // 0x08
+	undefined4 m_unk0x0c;                              // 0x0c
+	undefined4 m_expressionMask;                       // 0x10
+	GolExport* m_golExport;                            // 0x14
+	GolD3DRenderDevice* m_renderer;                    // 0x18
+	GolTextureList* m_textureList;                     // 0x1c
+	GolMaterialLibrary* m_materialList;                // 0x20
+	DuskWindBananaRelicParams m_defaultMaterialParams; // 0x24
+	DriverPartResources* m_partResources;              // 0x38
+	ModelSummary m_bodySummary;                        // 0x3c
+	ModelSummary m_headSummary;                        // 0x50
+	ModelSummary m_outputSummary;                      // 0x64
+	undefined4 m_unk0x78;                              // 0x78
+	MusicGroup* m_musicGroup;                          // 0x7c
+	MusicInstance* m_musicInstance;                    // 0x80
+	LegoS32 m_unk0x84;                                 // 0x84
 };
 
 #endif // DRIVERMODELBUILDER_H

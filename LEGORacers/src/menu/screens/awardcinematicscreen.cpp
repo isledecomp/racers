@@ -104,10 +104,12 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	m_unk0x7a0 = -1;
 
 	if (m_context) {
-		if (m_context->m_unk0x4b40.GetMusicGroup() && m_context->m_unk0x4b40.GetMusicInstance()) {
-			m_context->m_unk0x4b40.GetMusicInstance()->Stop();
-			m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
-			m_context->m_unk0x4b40.SetMusicInstance(NULL);
+		if (m_context->m_modelBuilder.GetMusicGroup() && m_context->m_modelBuilder.GetMusicInstance()) {
+			m_context->m_modelBuilder.GetMusicInstance()->Stop();
+			m_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(
+				m_context->m_modelBuilder.GetMusicInstance()
+			);
+			m_context->m_modelBuilder.SetMusicInstance(NULL);
 		}
 	}
 
@@ -132,11 +134,11 @@ void AwardCinematicScreen::VTable0x4c()
 	} locals;
 
 	if (m_unk0x28c != c_menuWinVvCar) {
-		if (!m_context->m_unk0x4b40.HasMenuResources()) {
+		if (!m_context->m_modelBuilder.HasMenuResources()) {
 			FUN_00480210(m_context, FALSE);
 		}
 
-		if (!m_context->m_unk0x425c.HasEntries()) {
+		if (!m_context->m_cosmeticTable.HasEntries()) {
 			FUN_00480310();
 		}
 	}
@@ -227,7 +229,7 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 
 		if (!(p_gameState->FUN_0042f1f0() & mask)) {
 			p_gameState->FUN_0042f220(mask);
-			m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 4);
+			m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 4);
 			return TRUE;
 		}
 	}
@@ -296,7 +298,7 @@ void AwardCinematicScreen::VTable0x84()
 
 	if (m_unk0x7a4 || m_unk0x7a8 || m_unk0x7ac) {
 		m_context->m_menuStack.Push(c_menuSaveAll);
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 0x10);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 0x10);
 	}
 }
 

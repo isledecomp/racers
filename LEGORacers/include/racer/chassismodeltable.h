@@ -1,5 +1,5 @@
-#ifndef AQUAMARINESPIRIT0X3C_H
-#define AQUAMARINESPIRIT0X3C_H
+#ifndef CHASSISMODELTABLE_H
+#define CHASSISMODELTABLE_H
 
 #include "cmbmodelpart0x34.h"
 #include "decomp.h"
@@ -20,34 +20,34 @@ class GolFileParser;
 
 // VTABLE: LEGORACERS 0x004afe70
 // SIZE 0x3c
-class AquamarineSpirit0x3c : public GolNameTable {
+class ChassisModelTable : public GolNameTable {
 public:
 	// VTABLE: LEGORACERS 0x004afe7c
 	// SIZE 0x1fc
 	class CmbTxtParser : public GolTxtParser {};
 
-	AquamarineSpirit0x3c();
-	~AquamarineSpirit0x3c() override; // vtable+0x00
+	ChassisModelTable();
+	~ChassisModelTable() override; // vtable+0x00
 	void Clear() override;
 
 	// SYNTHETIC: LEGORACERS 0x0041d910
-	// AquamarineSpirit0x3c::`scalar deleting destructor'
+	// ChassisModelTable::`scalar deleting destructor'
 
 	struct Params {
-		GolExport* m_unk0x00;          // 0x00
-		GolD3DRenderDevice* m_unk0x04; // 0x04
-		LegoS32 m_unk0x08;             // 0x08
-		const LegoChar* m_filename;    // 0x0c
-		LegoBool32 m_unk0x10;          // 0x10
+		GolExport* m_golExport;         // 0x00
+		GolD3DRenderDevice* m_renderer; // 0x04
+		LegoS32 m_instantiateCount;     // 0x08
+		const LegoChar* m_filename;     // 0x0c
+		LegoBool32 m_binary;            // 0x10
 	};
 
 	void FUN_0041db10(const Params* p_params);
-	LegoU32 FUN_0041e330(const LegoChar* p_name, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
-	void FUN_0041e570();
-	GolAnimatedEntity* FUN_0041e5b0(const LegoChar* p_name);
+	LegoU32 InstantiateModels(const LegoChar* p_name, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
+	void InstantiateAllModels();
+	GolAnimatedEntity* GetPrimaryModel(const LegoChar* p_name);
 
 	// SIZE 0x104
-	struct Item0x104 {
+	struct Item {
 		GolName m_materialNames[2];          // 0x000
 		GolName m_textureNames[2];           // 0x010
 		GolName m_modelNames[2];             // 0x020
@@ -74,23 +74,23 @@ public:
 	};
 
 private:
-	void FUN_0041d980();
+	void Reset();
 	void FUN_0041dae0();
-	void FUN_0041e210(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant);
-	LegoU32 FUN_0041e360(Item0x104* p_item, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
+	void ParseVariantNames(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant);
+	LegoU32 InstantiateModels(Item* p_item, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
 
-	GolExport* m_unk0x0c;           // 0x0c
-	GolD3DRenderDevice* m_unk0x10;  // 0x10
-	Item0x104* m_unk0x14;           // 0x14
-	GolModelBase** m_unk0x18;       // 0x18
-	GolTextureList** m_unk0x1c;     // 0x1c
-	GolMaterialLibrary** m_unk0x20; // 0x20
-	GolSceneNode** m_unk0x24;       // 0x24
-	CmbModelPart0x34* m_unk0x28;    // 0x28
-	GolAnimatedEntity* m_unk0x2c;   // 0x2c
-	LegoU32 m_unk0x30;              // 0x30
-	LegoU32 m_unk0x34;              // 0x34
-	LegoBool32 m_unk0x38;           // 0x38
+	GolExport* m_golExport;                // 0x0c
+	GolD3DRenderDevice* m_renderer;        // 0x10
+	Item* m_items;                         // 0x14
+	GolModelBase** m_models;               // 0x18
+	GolTextureList** m_textureLists;       // 0x1c
+	GolMaterialLibrary** m_materialLists;  // 0x20
+	GolSceneNode** m_sceneNodes;           // 0x24
+	CmbModelPart0x34* m_modelParts;        // 0x28
+	GolAnimatedEntity* m_animatedEntities; // 0x2c
+	LegoU32 m_instantiateCount;            // 0x30
+	LegoU32 m_instantiatedCount;           // 0x34
+	LegoBool32 m_binary;                   // 0x38
 };
 
-#endif // AQUAMARINESPIRIT0X3C_H
+#endif // CHASSISMODELTABLE_H

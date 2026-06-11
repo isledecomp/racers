@@ -133,7 +133,7 @@ void RacerModelScreenBase::FUN_00485da0()
 {
 	undefined4 modelParams[5];
 
-	m_context->m_unk0x4b40.FUN_0049dc90(modelParams);
+	m_context->m_modelBuilder.GetMaxMergedCounts(modelParams);
 
 	for (LegoS32 i = 0; i < m_unk0x77c; i++) {
 		m_unk0x4ec[i] = m_golExport->VTable0x14();
@@ -244,7 +244,7 @@ LegoBool32 RacerModelScreenBase::VTable0xa0(
 		FUN_0047ff50(p_context, TRUE);
 	}
 
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
@@ -313,14 +313,14 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	record->FUN_0042b330(&color);
 
 	if (m_unk0x77c == 1) {
-		m_context->m_unk0x4b40.RefreshMenuResources();
+		m_context->m_modelBuilder.RefreshMenuResources();
 	}
 
-	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
-	GolModelBase* model = m_context->m_unk0x4b40.FUN_0049db90(&color, m_unk0x4ec[modelIndex], 0);
-	m_context->m_unk0x4b40.FUN_0049dce0(model, &color);
+	m_context->m_modelBuilder.SetExpressionMask(0xffff);
+	GolModelBase* model = m_context->m_modelBuilder.BuildDriverModel(&color, m_unk0x4ec[modelIndex], 0);
+	m_context->m_modelBuilder.ApplyFaceExpression(model, &color);
 
-	GolSceneNode* node = m_context->m_unk0x4b40.FUN_0049dc10(&color);
+	GolSceneNode* node = m_context->m_modelBuilder.GetBodySceneNode(&color);
 	m_unk0x4dc[modelIndex]->VTable0x10(node);
 	m_unk0x232c[modelIndex].FUN_0040d550(model, m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
@@ -330,11 +330,11 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
 
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
-	createParams.m_unk0x00 = &m_context->m_unk0x42dc;
+	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
 	createParams.m_unk0x08 = &m_unk0x4fc[modelIndex];
 	createParams.m_unk0x0c = NULL;
-	record->FUN_0042b380(createParams.m_unk0x10);
+	record->FUN_0042b380(createParams.m_chassisName);
 
 	m_unk0x39c[modelIndex].FUN_00479510(&createParams);
 }

@@ -390,13 +390,13 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/carbuildmodel.cpp
   LEGORacers/src/model/legocolortable.cpp
   LEGORacers/src/racer/drivercosmetictable.cpp
-  LEGORacers/src/racer/aquamarinespirit0x3c.cpp
-  LEGORacers/src/racer/siennacircuit0x154.cpp
+  LEGORacers/src/racer/chassismodeltable.cpp
+  LEGORacers/src/racer/carpartcarousel.cpp
   LEGORacers/src/race/data/championdefinitionlist.cpp
   LEGORacers/src/race/data/racedefinitionlist.cpp
   LEGORacers/src/race/data/racenamelist.cpp
   LEGORacers/src/menu/menuanimationlist.cpp
-  LEGORacers/src/racer/lavendervault0x764.cpp
+  LEGORacers/src/racer/driverpartcatalog.cpp
   LEGORacers/src/model/gdbpartdefinition.cpp
   LEGORacers/src/model/gdbpartlibrary.cpp
   LEGORacers/src/model/gdbpartfacegroup.cpp

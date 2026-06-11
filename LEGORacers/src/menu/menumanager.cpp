@@ -73,7 +73,7 @@ void MenuManager::Reset()
 {
 	m_unk0x04.m_context = NULL;
 	m_unk0x04.m_unk0x258.GetUnk0x1cfc().Reset();
-	m_unk0x04.m_unk0x4b40.Reset();
+	m_unk0x04.m_modelBuilder.Reset();
 	m_golExport = NULL;
 	m_renderer = NULL;
 	m_soundGroup = NULL;
@@ -235,14 +235,14 @@ void MenuManager::ShutdownInputBindings()
 // FUNCTION: LEGORACERS 0x0042cf00
 void MenuManager::InitializeAudio()
 {
-	m_unk0x04.m_unk0x4b40.m_musicGroup = m_unk0x04.m_context->m_soundManager->CreateMusicGroup();
-	if (!m_unk0x04.m_unk0x4b40.m_musicGroup) {
+	m_unk0x04.m_modelBuilder.m_musicGroup = m_unk0x04.m_context->m_soundManager->CreateMusicGroup();
+	if (!m_unk0x04.m_modelBuilder.m_musicGroup) {
 		GOL_FATALERROR(c_golErrorGeneral);
 	}
 
-	m_unk0x04.m_unk0x4b40.m_musicGroup->Load("legomsc");
+	m_unk0x04.m_modelBuilder.m_musicGroup->Load("legomsc");
 	LegoRacers::Context* context = m_unk0x04.m_context;
-	m_unk0x04.m_unk0x4b40.m_musicInstance = NULL;
+	m_unk0x04.m_modelBuilder.m_musicInstance = NULL;
 	m_soundGroup = context->GetSoundManager()->CreateSoundGroup();
 	if (!m_soundGroup) {
 		GOL_FATALERROR(c_golErrorGeneral);
@@ -255,26 +255,26 @@ void MenuManager::InitializeAudio()
 // FUNCTION: LEGORACERS 0x0042cf90
 void MenuManager::ShutdownAudio()
 {
-	if (m_unk0x04.m_unk0x4b40.m_musicInstance) {
-		m_unk0x04.m_unk0x4b40.m_musicInstance->Stop();
-		m_unk0x04.m_unk0x4b40.m_musicGroup->DestroyMusicInstance(m_unk0x04.m_unk0x4b40.m_musicInstance);
+	if (m_unk0x04.m_modelBuilder.m_musicInstance) {
+		m_unk0x04.m_modelBuilder.m_musicInstance->Stop();
+		m_unk0x04.m_modelBuilder.m_musicGroup->DestroyMusicInstance(m_unk0x04.m_modelBuilder.m_musicInstance);
 	}
 
 	m_soundGroupBinding.ResetSoundGroup();
 	m_soundGroup->Unload();
 
-	if (m_unk0x04.m_unk0x4b40.m_musicGroup) {
-		m_unk0x04.m_unk0x4b40.m_musicGroup->Unload();
+	if (m_unk0x04.m_modelBuilder.m_musicGroup) {
+		m_unk0x04.m_modelBuilder.m_musicGroup->Unload();
 	}
 
 	m_unk0x04.m_context->GetSoundManager()->DestroySoundGroup(m_soundGroup);
 
-	if (m_unk0x04.m_unk0x4b40.m_musicGroup) {
-		m_unk0x04.m_context->GetSoundManager()->DestroyMusicGroup(m_unk0x04.m_unk0x4b40.m_musicGroup);
+	if (m_unk0x04.m_modelBuilder.m_musicGroup) {
+		m_unk0x04.m_context->GetSoundManager()->DestroyMusicGroup(m_unk0x04.m_modelBuilder.m_musicGroup);
 	}
 
-	m_unk0x04.m_unk0x4b40.m_musicGroup = NULL;
-	m_unk0x04.m_unk0x4b40.m_musicInstance = NULL;
+	m_unk0x04.m_modelBuilder.m_musicGroup = NULL;
+	m_unk0x04.m_modelBuilder.m_musicInstance = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0042d020
@@ -367,9 +367,9 @@ void MenuManager::UnloadMenuData()
 	m_unk0x04.m_pieceLibrary.Destroy();
 	m_unk0x04.m_unk0x21f4.Destroy();
 	m_unk0x04.m_unk0x4224.Destroy();
-	m_unk0x04.m_unk0x4b40.ReleaseMenuResources();
-	m_unk0x04.m_unk0x4ae0.ReleaseResources();
-	m_unk0x04.m_unk0x437c.Destroy();
+	m_unk0x04.m_modelBuilder.ReleaseMenuResources();
+	m_unk0x04.m_partResources.ReleaseResources();
+	m_unk0x04.m_partCatalog.Destroy();
 	m_unk0x4bcc.Shutdown();
 	m_unk0x04.m_menuAnimations.Reset();
 }
@@ -597,11 +597,11 @@ void MenuManager::FUN_0042d730()
 			);
 			slots[courseIndex].m_flag = FALSE;
 			slots[courseIndex].m_unk0x10 = 2;
-			slots[courseIndex].m_color.m_unk0x00 = 0;
-			slots[courseIndex].m_color.m_unk0x01 = 0;
-			slots[courseIndex].m_color.m_unk0x02 = 0;
-			slots[courseIndex].m_color.m_unk0x03 = 0;
-			slots[courseIndex].m_color.m_unk0x04 = 0;
+			slots[courseIndex].m_color.m_hatIndex = 0;
+			slots[courseIndex].m_color.m_faceIndex = 0;
+			slots[courseIndex].m_color.m_torsoIndex = 0;
+			slots[courseIndex].m_color.m_legIndex = 0;
+			slots[courseIndex].m_color.m_expressionIndex = 0;
 			slots[courseIndex].m_unk0x59[0] = 0;
 		}
 	}
@@ -719,22 +719,22 @@ void MenuManager::FUN_0042de90(LegoBool32 p_arg)
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
 	}
 
-	m_unk0x04.m_unk0x437c.Load("bodypart.pcf", m_unk0x04.m_context->m_unk0x18);
+	m_unk0x04.m_partCatalog.Load("bodypart.pcf", m_unk0x04.m_context->m_unk0x18);
 
 	DriverPartResources::LoadParams partParams;
 	partParams.m_golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
 	partParams.m_renderer = m_unk0x04.m_context->m_golApp->GetRenderer();
-	partParams.m_unk0x0c = &m_unk0x04.m_unk0x437c;
+	partParams.m_partCatalog = &m_unk0x04.m_partCatalog;
 	partParams.m_binary = m_unk0x04.m_context->m_unk0x18;
-	partParams.m_unk0x14 = p_arg == FALSE;
-	m_unk0x04.m_unk0x4ae0.FUN_00497f10(&partParams, p_arg);
+	partParams.m_textureBinaryMode = p_arg == FALSE;
+	m_unk0x04.m_partResources.Load(&partParams, p_arg);
 
 	DriverModelBuilder::LoadParams menuParams;
 	menuParams.m_golExport = partParams.m_golExport;
 	menuParams.m_renderer = partParams.m_renderer;
 	menuParams.m_menuId = 6;
-	menuParams.m_unk0x0c = &m_unk0x04.m_unk0x4ae0;
-	m_unk0x04.m_unk0x4b40.FUN_0049d1d0(&menuParams);
+	menuParams.m_partResources = &m_unk0x04.m_partResources;
+	m_unk0x04.m_modelBuilder.Load(&menuParams);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -744,9 +744,9 @@ void MenuManager::FUN_0042de90(LegoBool32 p_arg)
 // FUNCTION: LEGORACERS 0x0042df70
 void MenuManager::FUN_0042df70()
 {
-	m_unk0x04.m_unk0x4b40.ReleaseMenuResources();
-	m_unk0x04.m_unk0x4ae0.ReleaseResources();
-	m_unk0x04.m_unk0x437c.Destroy();
+	m_unk0x04.m_modelBuilder.ReleaseMenuResources();
+	m_unk0x04.m_partResources.ReleaseResources();
+	m_unk0x04.m_partCatalog.Destroy();
 }
 
 // STUB: LEGORACERS 0x0042dfa0
@@ -773,8 +773,8 @@ void MenuManager::FUN_0042e1f0()
 		musicVolume = state.GetUnk0x1f() * g_unk0x4b05d8;
 		m_unk0x04.m_context->GetSoundManager()->SetMusicVolumeScale(1.0f);
 
-		if (m_unk0x04.m_unk0x4b40.m_musicInstance) {
-			m_unk0x04.m_unk0x4b40.m_musicInstance->SetVolume(musicVolume);
+		if (m_unk0x04.m_modelBuilder.m_musicInstance) {
+			m_unk0x04.m_modelBuilder.m_musicInstance->SetVolume(musicVolume);
 		}
 		m_unk0x04.m_context->GetSoundManager()->SetMusicVolumeScale(musicVolume);
 		m_unk0x04.m_context->GetSoundManager()->SetVolumeScale(state.GetUnk0x20() * g_unk0x4b05d8);

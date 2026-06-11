@@ -27,7 +27,7 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		Destroy();
 	}
 
-	m_unk0x76c = p_context->m_unk0x4b40.GetUnk0x84();
+	m_unk0x76c = p_context->m_modelBuilder.GetUnk0x84();
 	p_createParams->m_cursorHelper->SetCursorEnabled(FALSE);
 	return MenuGameScreen::VTable0x8c(p_context, p_createParams) != FALSE;
 }
@@ -66,7 +66,7 @@ void NewRacerScreen::VTable0x4c()
 		}
 	}
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 8) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 8) {
 		PeridotTraceBase0x24::Record* record = trace->FUN_0042b8f0(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248());
 		m_unk0x360 = c_menuGarage;
 

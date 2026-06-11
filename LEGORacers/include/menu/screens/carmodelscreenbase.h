@@ -15,7 +15,7 @@
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"
 #include "model/carbuildmodel.h"
-#include "racer/siennacircuit0x154.h"
+#include "racer/carpartcarousel.h"
 #include "render/golrenderdevice.h"
 
 class MenuGameContext;
@@ -194,7 +194,7 @@ protected:
 	MenuImage m_unk0x3b4;                   // 0x3b4
 	MenuCarouselNavigator m_unk0x410;       // 0x410
 	MenuSelector m_unk0x4a4;                // 0x4a4
-	SiennaCircuit0x154 m_unk0xe98;          // 0xe98
+	CarPartCarousel m_partCarousel;         // 0xe98
 	MenuSelector m_unk0xfec;                // 0xfec
 	MenuImage m_unk0x19e0[12];              // 0x19e0
 	MenuFramedSceneView m_unk0x1e30;        // 0x1e30

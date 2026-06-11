@@ -10,7 +10,7 @@
 #include "race/data/racedefinitionlist.h"
 #include "save/peridottrace0x4e0.h"
 
-class AquamarineSpirit0x3c;
+class ChassisModelTable;
 class GolWorldEntity;
 class CarBuildModel;
 
@@ -24,17 +24,11 @@ public:
 	public:
 		// SIZE 0x18
 		struct CreateParams {
-			AquamarineSpirit0x3c* m_unk0x00; // 0x00
-			CarBuildModel* m_unk0x04;        // 0x04
-			GolWorldEntity* m_unk0x08;       // 0x08
-			GolAnimatedEntity* m_unk0x0c;    // 0x0c
-			GolName m_unk0x10;               // 0x10
-		};
-
-		// SIZE 0xd0
-		struct LookupEntry {
-			undefined m_unk0x00[0xc4]; // 0x00
-			GolVec3 m_unk0xc4;         // 0xc4
+			ChassisModelTable* m_chassisModels; // 0x00
+			CarBuildModel* m_unk0x04;           // 0x04
+			GolWorldEntity* m_unk0x08;          // 0x08
+			GolAnimatedEntity* m_unk0x0c;       // 0x0c
+			GolName m_chassisName;              // 0x10
 		};
 
 		SceneEntityGroup();
@@ -51,11 +45,11 @@ public:
 	private:
 		void FUN_004794d0(GolAnimatedEntity* p_entity);
 
-		AquamarineSpirit0x3c* m_unk0x38; // 0x38
-		CarBuildModel* m_unk0x3c;        // 0x3c
-		GolWorldEntity* m_unk0x40;       // 0x40
-		GolAnimatedEntity* m_unk0x44;    // 0x44
-		GolName m_unk0x48;               // 0x48
+		ChassisModelTable* m_chassisModels; // 0x38
+		CarBuildModel* m_unk0x3c;           // 0x3c
+		GolWorldEntity* m_unk0x40;          // 0x40
+		GolAnimatedEntity* m_unk0x44;       // 0x44
+		GolName m_chassisName;              // 0x48
 	};
 
 	AwardCinematicScreen();

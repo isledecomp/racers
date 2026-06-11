@@ -1,12 +1,11 @@
 #include "menu/screens/awardcinematicscreen.h"
 #include "model/carbuildmodel.h"
-#include "racer/aquamarinespirit0x3c.h"
+#include "racer/chassismodeltable.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(AwardCinematicScreen::SceneEntityGroup, 0x50)
 DECOMP_SIZE_ASSERT(AwardCinematicScreen::SceneEntityGroup::CreateParams, 0x18)
-DECOMP_SIZE_ASSERT(AwardCinematicScreen::SceneEntityGroup::LookupEntry, 0xd0)
 
 // FUNCTION: LEGORACERS 0x00479440
 AwardCinematicScreen::SceneEntityGroup::SceneEntityGroup()
@@ -33,7 +32,7 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::FUN_00479510(CreateParams* p_
 {
 	FUN_00479590();
 
-	::memcpy(&m_unk0x38, p_createParams, sizeof(*p_createParams));
+	::memcpy(&m_chassisModels, p_createParams, sizeof(*p_createParams));
 	FUN_00411e30(4);
 
 	if (m_unk0x40 == NULL) {
@@ -41,7 +40,7 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::FUN_00479510(CreateParams* p_
 	}
 	FUN_00411ec0(m_unk0x40);
 
-	FUN_004794d0(m_unk0x38->FUN_0041e5b0(m_unk0x48));
+	FUN_004794d0(m_chassisModels->GetPrimaryModel(m_chassisName));
 	if (m_unk0x44) {
 		FUN_004794d0(m_unk0x44);
 	}
@@ -67,9 +66,10 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x08(const GolVec3& p_center)
 	if (m_unk0x44) {
 		for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 			if (m_unk0x44 == m_entities[i]) {
-				LookupEntry* lookup = static_cast<LookupEntry*>(m_unk0x38->GetName(m_unk0x48));
+				ChassisModelTable::Item* item =
+					static_cast<ChassisModelTable::Item*>(m_chassisModels->GetName(m_chassisName));
 				GolVec3 center;
-				m_unk0x40->VTable0x2c(lookup->m_unk0xc4, &center);
+				m_unk0x40->VTable0x2c(item->m_unk0xc4, &center);
 				m_unk0x44->VTable0x08(center);
 			}
 		}
@@ -84,11 +84,11 @@ void AwardCinematicScreen::SceneEntityGroup::VTable0x40(const GolVec3& p_directi
 	if (m_unk0x44) {
 		for (LegoU32 i = 0; i < static_cast<LegoU32>(m_count); i++) {
 			if (m_unk0x44 == m_entities[i]) {
-				GolNameTable* nameTable = m_unk0x38;
-				const LegoChar* name = m_unk0x48;
-				LookupEntry* lookup = static_cast<LookupEntry*>(nameTable->GetName(name));
+				GolNameTable* nameTable = m_chassisModels;
+				const LegoChar* name = m_chassisName;
+				ChassisModelTable::Item* item = static_cast<ChassisModelTable::Item*>(nameTable->GetName(name));
 				GolVec3 center;
-				m_unk0x40->VTable0x2c(lookup->m_unk0xc4, &center);
+				m_unk0x40->VTable0x2c(item->m_unk0xc4, &center);
 				m_unk0x44->VTable0x08(center);
 			}
 		}

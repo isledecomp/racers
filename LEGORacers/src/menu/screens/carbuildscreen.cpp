@@ -513,7 +513,7 @@ LegoBool32 CarBuildScreen::FUN_00474470(
 		return FUN_004743f0(p_event, p_unk0x0c, p_unk0x10);
 	}
 
-	if (p_source == &m_unk0xe98) {
+	if (p_source == &m_partCarousel) {
 		VTable0x44(&m_unk0xfec);
 		return TRUE;
 	}
@@ -870,12 +870,12 @@ LegoBool32 CarBuildScreen::FUN_00477540()
 		m_unk0x2308.FUN_004787e0(&carSetPartId, &pieceType, &colorRecordIndex);
 
 		if (carSetPartId) {
-			SiennaCircuit0x154* circuit = &m_unk0xe98;
-			circuit->FUN_00485440(carSetPartId);
-			circuit->FUN_004856c0(pieceType, colorRecordIndex);
+			CarPartCarousel* partCarousel = &m_partCarousel;
+			partCarousel->SelectPartByType(carSetPartId);
+			partCarousel->SelectChoice(pieceType, colorRecordIndex);
 
 			m_unk0x410.FUN_0046d920(&m_unk0x19e0[m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex()]);
-			m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
+			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
 			m_unk0x2ae4 = 5;
 			return TRUE;
 		}

@@ -207,7 +207,7 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 		if (m_context->m_context->m_soundManager) {
 			m_context->m_context->m_soundManager->SetMusicVolumeScale(1.0f);
 
-			MusicInstance* musicInstance = m_context->m_unk0x4b40.GetMusicInstance();
+			MusicInstance* musicInstance = m_context->m_modelBuilder.GetMusicInstance();
 			if (musicInstance) {
 				musicInstance->SetVolume(volume);
 			}

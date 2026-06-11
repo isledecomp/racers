@@ -104,7 +104,7 @@ void EditCarScreen::VTable0x4c()
 	FUN_0047fdc0(&m_unk0xef4, 0x9b, 0x42, 0x3c);
 	FUN_0047fdc0(&m_unk0xc04, 0x9c, 0x42, 0x3d);
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 		FUN_0047fdc0(&m_unk0x11e4, 0x40, 0x46, 0x1e);
 		FUN_0047fdc0(&m_unk0x14d4, 0x3f, 0x43, 0x0a);
 	}
@@ -143,11 +143,11 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 		FUN_0047ff50(p_context, TRUE);
 	}
 
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
-	p_context->m_unk0x4ae0.SetUnk0x5c(1);
+	p_context->m_partResources.SetResourceIndex(1);
 
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
@@ -285,22 +285,22 @@ void EditCarScreen::FUN_0047c610()
 {
 	TurquoiseGlowColor color;
 
-	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
+	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
-	m_unk0x35a4 = m_context->m_unk0x4b40.FUN_0049db90(&color, NULL, 0);
+	m_unk0x35a4 = m_context->m_modelBuilder.BuildDriverModel(&color, NULL, 0);
 	if (m_unk0x35a4 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_context->m_unk0x4b40.FUN_0049dce0(m_unk0x35a4, &color);
+	m_context->m_modelBuilder.ApplyFaceExpression(m_unk0x35a4, &color);
 
 	m_unk0x35a8 = m_golExport->VTable0x18();
-	m_unk0x35a8->VTable0x10(m_context->m_unk0x4b40.FUN_0049dc10(&color));
+	m_unk0x35a8->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&color));
 	if (m_unk0x35a8 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x35ac = m_context->m_unk0x4b40.FUN_0049dc50(&color);
+	m_unk0x35ac = m_context->m_modelBuilder.GetBodyModelPart(&color);
 	m_unk0x34b0.FUN_0040d550(m_unk0x35a4, m_unk0x35a8, m_unk0x35ac, g_editCarMaxFloat);
 }
 
@@ -308,11 +308,11 @@ void EditCarScreen::FUN_0047c610()
 void EditCarScreen::FUN_0047c720()
 {
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
-	createParams.m_unk0x00 = &m_context->m_unk0x42dc;
+	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
 	createParams.m_unk0x08 = m_context->m_unk0x21f4.GetUnk0x0c();
 	createParams.m_unk0x0c = &m_unk0x34b0;
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_unk0x10);
+	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_chassisName);
 
 	m_unk0x3460.FUN_00479510(&createParams);
 	m_unk0x35b0.FUN_00487600(&m_unk0x3460);
@@ -410,15 +410,15 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 		FUN_0047c790();
 	}
 	else if (p_source == &m_unk0x11e4) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
-			m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~1);
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+			m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~1);
 			FUN_0047cde0();
 		}
 		FUN_0047c5a0();
 		m_unk0x360 = c_menuGarage;
 	}
 	else if (p_source == &m_unk0x14d4) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = c_menuDriverLicense;
 		}
 		else if (FUN_0047c900()) {
@@ -503,7 +503,7 @@ void EditCarScreen::VTable0x84()
 	switch (m_unk0x360) {
 	case c_menuDriverLicense:
 		m_context->m_menuStack.Pop();
-		m_context->m_unk0x4ae0.SetUnk0x5c(0);
+		m_context->m_partResources.SetResourceIndex(0);
 		if (g_editCarImageList) {
 			m_golExport->VTable0x68(g_editCarImageList);
 			g_editCarImageList = NULL;
@@ -520,7 +520,7 @@ void EditCarScreen::VTable0x84()
 		if (m_unk0x36c0) {
 			m_context->m_menuStack.Push(c_menuSaveAll);
 		}
-		m_context->m_unk0x4ae0.SetUnk0x5c(0);
+		m_context->m_partResources.SetResourceIndex(0);
 		if (g_editCarImageList) {
 			m_golExport->VTable0x68(g_editCarImageList);
 			g_editCarImageList = NULL;

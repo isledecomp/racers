@@ -73,11 +73,13 @@ LegoBool32 CircuitSelectScreen::Destroy()
 	}
 
 	if (m_context) {
-		if (m_context->m_unk0x4b40.GetMusicGroup()) {
-			if (m_context->m_unk0x4b40.GetMusicInstance()) {
-				m_context->m_unk0x4b40.GetMusicInstance()->Stop();
-				m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
-				m_context->m_unk0x4b40.SetMusicInstance(NULL);
+		if (m_context->m_modelBuilder.GetMusicGroup()) {
+			if (m_context->m_modelBuilder.GetMusicInstance()) {
+				m_context->m_modelBuilder.GetMusicInstance()->Stop();
+				m_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(
+					m_context->m_modelBuilder.GetMusicInstance()
+				);
+				m_context->m_modelBuilder.SetMusicInstance(NULL);
 			}
 		}
 	}

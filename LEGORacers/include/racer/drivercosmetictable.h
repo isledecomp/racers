@@ -31,17 +31,17 @@ public:
 	struct LoadParams {
 		GolExport* m_golExport;         // 0x00
 		GolD3DRenderDevice* m_renderer; // 0x04
-		undefined4 m_unk0x08;           // 0x08
+		undefined4 m_entryCapacity;     // 0x08
 		LegoChar* m_filename;           // 0x0c
-		undefined4 m_unk0x10;           // 0x10
+		undefined4 m_binary;            // 0x10
 	};
 
 	// SIZE 0x30
-	struct Entry0x30 {
+	struct Entry {
 		LegoU16 m_unk0x00;          // 0x00
-		GolName m_unk0x02;          // 0x02
-		GolName m_unk0x0a;          // 0x0a
-		GolName m_unk0x12;          // 0x12
+		GolName m_materialName;     // 0x02
+		GolName m_textureName;      // 0x0a
+		GolName m_modelName;        // 0x12
 		GolName m_unk0x1a;          // 0x1a
 		LegoU8 m_unk0x22;           // 0x22
 		LegoU8 m_unk0x23;           // 0x23
@@ -62,8 +62,8 @@ public:
 	void Load(LoadParams* p_params);
 	void LoadStrings();
 	GolAnimatedEntity* LoadEntry(const LegoChar* p_name);
-	void FUN_00421050(LegoU32 p_index, TurquoiseGlowColor* p_color);
-	void FUN_00421020(const LegoChar* p_name, TurquoiseGlowColor* p_color);
+	void CopyCosmetics(LegoU32 p_index, TurquoiseGlowColor* p_color);
+	void CopyCosmetics(const LegoChar* p_name, TurquoiseGlowColor* p_color);
 	LegoBool32 HasEntries() const { return m_entries != NULL; }
 
 	// SYNTHETIC: LEGORACERS 0x004206f0
@@ -72,12 +72,12 @@ public:
 private:
 	void Reset();
 	void ClearEntries();
-	GolAnimatedEntity* LoadEntry(Entry0x30* p_entry);
+	GolAnimatedEntity* LoadEntry(Entry* p_entry);
 
 	GolStringTable m_strings;           // 0x0c
 	GolExport* m_golExport;             // 0x20
 	GolD3DRenderDevice* m_renderer;     // 0x24
-	Entry0x30* m_entries;               // 0x28
+	Entry* m_entries;                   // 0x28
 	GolModelBase** m_models;            // 0x2c
 	GolTextureList** m_textures;        // 0x30
 	GolMaterialLibrary** m_materials;   // 0x34

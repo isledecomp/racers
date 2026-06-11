@@ -58,10 +58,10 @@ void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreate
 
 	params.m_golExport = p_createParams->m_golExport;
 	params.m_renderer = p_createParams->m_renderer;
-	params.m_cosmeticTable = &p_context->m_unk0x437c;
+	params.m_partCatalog = &p_context->m_partCatalog;
 	params.m_binary = p_context->m_context->m_unk0x18;
-	params.m_partLibrary = p_context->m_unk0x4ae0.GetPartLibrary();
-	m_unk0x45b0.FUN_00499160(&params, 2);
+	params.m_partLibrary = p_context->m_partResources.GetPartLibrary();
+	m_headBuilder.Load(&params, 2);
 }
 
 // FUNCTION: LEGORACERS 0x0047d170
@@ -86,7 +86,7 @@ LegoBool32 EditDriverScreen::FUN_0047d170(
 
 	createParams.m_context = m_context;
 	createParams.m_unk0x6c = m_unk0x476c++;
-	createParams.m_unk0x78 = &m_unk0x45b0;
+	createParams.m_headBuilder = &m_headBuilder;
 	createParams.m_unk0x7c = p_category;
 	createParams.m_unk0x70 = VTable0x6c();
 	return p_widget->FUN_00483a60(&createParams, styleEntry);
@@ -110,7 +110,7 @@ void EditDriverScreen::FUN_0047d230()
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
 	createParams.m_unk0x08 = &m_unk0x31b0;
-	createParams.m_unk0x0c = &m_context->m_unk0x4b40;
+	createParams.m_unk0x0c = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3590002f;
 	createParams.m_position.m_y = -3.1500001f;
 	createParams.m_position.m_z = 0.026000001f;
@@ -136,7 +136,7 @@ void EditDriverScreen::VTable0x4c()
 	m_unk0x3688.FUN_0046f6b0(0x14);
 	FUN_0047fdc0(&m_unk0x3700, 0xd2, 0x42, 0x38);
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 		FUN_0047fdc0(&m_unk0x3ce0, 0x40, 0x44, 0x0a);
 	}
 	else {
@@ -149,7 +149,7 @@ void EditDriverScreen::VTable0x4c()
 // FUNCTION: LEGORACERS 0x0047d460
 LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
@@ -187,7 +187,7 @@ LegoBool32 EditDriverScreen::Destroy()
 		return TRUE;
 	}
 
-	m_unk0x45b0.FUN_004991c0();
+	m_headBuilder.ReleaseResources();
 	context->m_unk0x21f4.FUN_00499ee0();
 
 	return MenuGameScreen::Destroy();
@@ -196,16 +196,16 @@ LegoBool32 EditDriverScreen::Destroy()
 // FUNCTION: LEGORACERS 0x0047d560
 LegoBool32 EditDriverScreen::FUN_0047d560()
 {
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 		return FALSE;
 	}
 
 	TurquoiseGlowColor color;
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
 
-	if (color.m_unk0x00 == m_driverColor.m_components[0] && color.m_unk0x01 == m_driverColor.m_components[1] &&
-		color.m_unk0x02 == m_driverColor.m_components[2]) {
-		return color.m_unk0x03 != m_driverColor.m_components[3];
+	if (color.m_hatIndex == m_driverColor.m_components[0] && color.m_faceIndex == m_driverColor.m_components[1] &&
+		color.m_torsoIndex == m_driverColor.m_components[2]) {
+		return color.m_legIndex != m_driverColor.m_components[3];
 	}
 
 	return TRUE;
@@ -285,7 +285,7 @@ void EditDriverScreen::FUN_0047d8e0()
 {
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&m_driverColor);
 
-	if ((m_context->m_unk0x4b40.GetUnk0x78() == 0) & TRUE) {
+	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
 		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
 		m_unk0x4770 = TRUE;
 	}
@@ -334,7 +334,7 @@ void EditDriverScreen::VTable0x84()
 			m_context->m_menuStack.Push(0x30);
 		}
 
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~1);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~1);
 		break;
 	}
 }
@@ -425,7 +425,7 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x1f);
 			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x7b);
 		}
-		else if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		else if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			FUN_0047fdc0(&m_unk0x3fd0, 0x99, 0x46, 0x73);
 			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x74);
 			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x77);
@@ -438,12 +438,12 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 		FUN_0047d8e0();
 		FUN_0047d740();
 
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = 0x10;
 		}
 	}
 	else if (p_source == &m_unk0x3fd0) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			FUN_0047d940();
 		}
 

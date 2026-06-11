@@ -48,7 +48,7 @@ void MainMenuScreen::FUN_00480e40()
 	renderer = m_renderer;
 	::memset(&params, 0, sizeof(params));
 	params.m_golExport = m_golExport;
-	params.m_unk0x0c = &m_context->m_unk0x4b40;
+	params.m_unk0x0c = &m_context->m_modelBuilder;
 	params.m_unk0x08 = &m_unk0x21f8;
 	params.m_renderer = renderer;
 	params.m_position.m_x = 18.18122864f;
@@ -90,7 +90,7 @@ void MainMenuScreen::VTable0x4c()
 // FUNCTION: LEGORACERS 0x00481000
 LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, 0);
 	}
 
@@ -109,7 +109,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	FUN_00480310();
 	LegoU32 index = p_context->m_unk0x258.FUN_00443760();
 	TurquoiseGlowColor color;
-	p_context->m_unk0x425c.FUN_00421050(g_unk0x004c214c[index], &color);
+	p_context->m_cosmeticTable.CopyCosmetics(g_unk0x004c214c[index], &color);
 	m_unk0x22dc.FUN_0047e210(&color);
 	m_unk0x22dc.GetUnk0x118()->VTable0x14("legoman", p_context->m_context->m_unk0x18);
 	m_unk0x2438->FUN_0040dad0(0);
@@ -137,15 +137,15 @@ void MainMenuScreen::VTable0x38(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x788) {
 		m_unk0x360 = 5;
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
 	}
 	else if (p_unk0x04 == &m_unk0x498) {
 		m_unk0x360 = 6;
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
 	}
 	else if (p_unk0x04 == &m_unk0xa78) {
 		m_unk0x360 = 6;
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 2);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 2);
 	}
 	else if (p_unk0x04 == &m_unk0xd68) {
 		m_unk0x360 = 0x1d;
@@ -260,10 +260,10 @@ LegoBool32 MainMenuScreen::VTable0x78(undefined4 p_elapsed)
 		}
 	}
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 4) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 4) {
 		FUN_0047fdc0(&m_unk0x1f08, 0x99, 0x46, 0x72);
 		FUN_0046c730(&m_unk0x1f08, 0x7c);
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~4);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~4);
 	}
 
 	if (!m_unk0x2448) {

@@ -7,7 +7,7 @@
 #include "golstream.h"
 #include "mesh/golmodelbase.h"
 #include "model/gdbpartlibrary.h"
-#include "racer/lavendervault0x764.h"
+#include "racer/driverpartcatalog.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
 
@@ -25,7 +25,7 @@ DriverHeadBuilder::DriverHeadBuilder()
 // FUNCTION: LEGORACERS 0x00499120
 DriverHeadBuilder::~DriverHeadBuilder()
 {
-	FUN_004991c0();
+	ReleaseResources();
 }
 
 // FUNCTION: LEGORACERS 0x00499130
@@ -34,28 +34,28 @@ void DriverHeadBuilder::Reset()
 	m_golExport = NULL;
 	m_renderer = NULL;
 	m_worldDatabase = NULL;
-	m_cosmeticTable = NULL;
+	m_partCatalog = NULL;
 	m_partLibrary = NULL;
 	m_resourceIndex = 0;
-	::memset(m_unk0x30, 0, sizeof(m_unk0x30));
-	::memset(m_unk0x14, 0, sizeof(m_unk0x14));
+	::memset(m_hatModelUsed, 0, sizeof(m_hatModelUsed));
+	::memset(m_hatModels, 0, sizeof(m_hatModels));
 }
 
 // FUNCTION: LEGORACERS 0x00499160
-LegoBool32 DriverHeadBuilder::FUN_00499160(const LoadParams* p_params, LegoS32 p_resourceIndex)
+LegoBool32 DriverHeadBuilder::Load(const LoadParams* p_params, LegoS32 p_resourceIndex)
 {
-	FUN_004991c0();
+	ReleaseResources();
 
 	m_golExport = p_params->m_golExport;
 	m_renderer = p_params->m_renderer;
-	m_cosmeticTable = p_params->m_cosmeticTable;
+	m_partCatalog = p_params->m_partCatalog;
 	m_resourceIndex = p_resourceIndex;
 	m_partLibrary = p_params->m_partLibrary;
 
-	FUN_00499210(p_params->m_binary);
-	FUN_00499290();
+	LoadHeadResource(p_params->m_binary);
+	CreateHatModels();
 
-	GolModelBase* model = FUN_00499320(0);
+	GolModelBase* model = LoadHatModel(0);
 	model->GetMutableGroups()[0] = 0xc0000000;
 	model->SetDirty(TRUE);
 
@@ -63,7 +63,7 @@ LegoBool32 DriverHeadBuilder::FUN_00499160(const LoadParams* p_params, LegoS32 p
 }
 
 // FUNCTION: LEGORACERS 0x004991c0
-LegoBool32 DriverHeadBuilder::FUN_004991c0()
+LegoBool32 DriverHeadBuilder::ReleaseResources()
 {
 	if (m_worldDatabase == NULL) {
 		return TRUE;
@@ -72,8 +72,8 @@ LegoBool32 DriverHeadBuilder::FUN_004991c0()
 	m_golExport->VTable0x3c(m_worldDatabase);
 
 	for (LegoS32 i = 0; i < 7; i++) {
-		if (m_unk0x14[i] != NULL) {
-			m_golExport->VTable0x48(m_unk0x14[i]);
+		if (m_hatModels[i] != NULL) {
+			m_golExport->VTable0x48(m_hatModels[i]);
 		}
 	}
 
@@ -82,10 +82,10 @@ LegoBool32 DriverHeadBuilder::FUN_004991c0()
 }
 
 // FUNCTION: LEGORACERS 0x00499210
-void DriverHeadBuilder::FUN_00499210(LegoBool32 p_binary)
+void DriverHeadBuilder::LoadHeadResource(LegoBool32 p_binary)
 {
-	const LegoChar* headModelFileName = m_cosmeticTable->GetHeadModelFileName();
-	const LegoChar* headModelDirectory = m_cosmeticTable->GetHeadModelDirectory();
+	const LegoChar* headModelFileName = m_partCatalog->GetHeadModelFileName();
+	const LegoChar* headModelDirectory = m_partCatalog->GetHeadModelDirectory();
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString(headModelDirectory);
@@ -104,42 +104,42 @@ void DriverHeadBuilder::FUN_00499210(LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x00499290
-void DriverHeadBuilder::FUN_00499290()
+void DriverHeadBuilder::CreateHatModels()
 {
 	for (LegoS32 i = 0; i < 7; i++) {
-		m_unk0x14[i] = m_golExport->VTable0x14();
-		if (m_unk0x14[i] == NULL) {
+		m_hatModels[i] = m_golExport->VTable0x14();
+		if (m_hatModels[i] == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		m_unk0x14[i]->VTable0x18(m_renderer, 2, 0x258, 0x12c, 0x64, 3);
+		m_hatModels[i]->VTable0x18(m_renderer, 2, 0x258, 0x12c, 0x64, 3);
 	}
 
-	::memset(m_unk0x30, 0, sizeof(m_unk0x30));
+	::memset(m_hatModelUsed, 0, sizeof(m_hatModelUsed));
 }
 
 // FUNCTION: LEGORACERS 0x004992f0
-void DriverHeadBuilder::FUN_004992f0(GolModelBase* p_model)
+void DriverHeadBuilder::MarkHatModelUsed(GolModelBase* p_model)
 {
 	for (LegoS32 i = 0; i < 7; i++) {
-		if (m_unk0x14[i] == p_model) {
-			m_unk0x30[i] = TRUE;
+		if (m_hatModels[i] == p_model) {
+			m_hatModelUsed[i] = TRUE;
 			return;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00499320
-GolModelBase* DriverHeadBuilder::FUN_00499320(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::LoadHatModel(LegoS32 p_index)
 {
 	GolName name;
-	m_cosmeticTable->CopyHatName(p_index, name);
+	m_partCatalog->CopyHatName(p_index, name);
 
 	for (LegoS32 modelIndex = 0; modelIndex < 7; modelIndex++) {
-		if (m_unk0x30[modelIndex] == 0) {
-			m_partLibrary->CopyPartToModel(m_renderer, m_unk0x14[modelIndex], name);
-			m_unk0x30[modelIndex] = TRUE;
-			return m_unk0x14[modelIndex];
+		if (m_hatModelUsed[modelIndex] == 0) {
+			m_partLibrary->CopyPartToModel(m_renderer, m_hatModels[modelIndex], name);
+			m_hatModelUsed[modelIndex] = TRUE;
+			return m_hatModels[modelIndex];
 		}
 	}
 
@@ -147,11 +147,11 @@ GolModelBase* DriverHeadBuilder::FUN_00499320(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499380
-GolModelBase* DriverHeadBuilder::FUN_00499380(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::GetFaceModel(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00498f70(p_index, modelName, materialName);
+	m_partCatalog->CopyDefaultFaceName(p_index, modelName, materialName);
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
@@ -166,11 +166,11 @@ GolModelBase* DriverHeadBuilder::FUN_00499380(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004993d0
-GolModelBase* DriverHeadBuilder::FUN_004993d0(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::GetTorsoModel(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00498fd0(p_index, modelName, materialName);
+	m_partCatalog->CopyTorsoName(p_index, modelName, materialName);
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
@@ -185,11 +185,11 @@ GolModelBase* DriverHeadBuilder::FUN_004993d0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499420
-GolModelBase* DriverHeadBuilder::FUN_00499420(LegoS32 p_index)
+GolModelBase* DriverHeadBuilder::GetLegModel(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00499020(p_index, modelName, materialName);
+	m_partCatalog->CopyLegName(p_index, modelName, materialName);
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
@@ -204,28 +204,28 @@ GolModelBase* DriverHeadBuilder::FUN_00499420(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00499470
-void* DriverHeadBuilder::FUN_00499470(LegoS32 p_index)
+void* DriverHeadBuilder::FindFaceMaterial(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00498f70(p_index, modelName, materialName);
+	m_partCatalog->CopyDefaultFaceName(p_index, modelName, materialName);
 	return m_renderer->FindMaterialByName(materialName);
 }
 
 // FUNCTION: LEGORACERS 0x004994b0
-void* DriverHeadBuilder::FUN_004994b0(LegoS32 p_index)
+void* DriverHeadBuilder::FindTorsoMaterial(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00498fd0(p_index, modelName, materialName);
+	m_partCatalog->CopyTorsoName(p_index, modelName, materialName);
 	return m_renderer->FindMaterialByName(materialName);
 }
 
 // FUNCTION: LEGORACERS 0x004994f0
-void* DriverHeadBuilder::FUN_004994f0(LegoS32 p_index)
+void* DriverHeadBuilder::FindLegMaterial(LegoS32 p_index)
 {
 	GolName modelName;
 	GolName materialName;
-	m_cosmeticTable->FUN_00499020(p_index, modelName, materialName);
+	m_partCatalog->CopyLegName(p_index, modelName, materialName);
 	return m_renderer->FindMaterialByName(materialName);
 }

@@ -71,7 +71,7 @@ void DriverLicenseScreen::FUN_0047b220()
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
 	createParams.m_unk0x08 = &m_unk0x1648;
-	createParams.m_unk0x0c = &m_context->m_unk0x4b40;
+	createParams.m_unk0x0c = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3593369f;
 	createParams.m_position.m_y = -3.1500180f;
 	createParams.m_position.m_z = 0.0f;
@@ -105,7 +105,7 @@ void DriverLicenseScreen::VTable0x4c()
 	CreateTextField(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
 	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x44, 0x0b);
 		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x43, 9);
 	}
@@ -136,7 +136,7 @@ void DriverLicenseScreen::VTable0x4c()
 LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	MenuGameContext* context = p_context;
-	if (!context->m_unk0x4b40.HasMenuResources()) {
+	if (!context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(context, FALSE);
 	}
 
@@ -177,7 +177,7 @@ LegoBool32 DriverLicenseScreen::Destroy()
 		return TRUE;
 	}
 
-	m_context->m_unk0x4b40.SetUnk0x10(TRUE);
+	m_context->m_modelBuilder.SetExpressionMask(TRUE);
 	return MenuGameScreen::Destroy();
 }
 
@@ -188,7 +188,7 @@ LegoBool32 DriverLicenseScreen::FUN_0047b580()
 	TurquoiseGlowColor color;
 	undefined2 buffer[24];
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 		return TRUE;
 	}
 
@@ -203,7 +203,7 @@ LegoBool32 DriverLicenseScreen::FUN_0047b580()
 		return TRUE;
 	}
 
-	return color.m_unk0x00 != GetUnk0x2244().m_unk0x04;
+	return color.m_hatIndex != GetUnk0x2244().m_expressionIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0047b6b0
@@ -216,11 +216,11 @@ void DriverLicenseScreen::FUN_0047b6b0()
 	color = &GetUnk0x2244();
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(color);
 
-	m_context->m_unk0x4b40.SetUnk0x10(0xffff);
+	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	MainMenuModelSlot* preview = &m_unk0x224c;
 	preview->FUN_0047e210(color);
-	LegoU32 colorValue = GetUnk0x2244().m_unk0x01;
-	LegoU32 colorIndex = GetUnk0x2244().m_unk0x04;
+	LegoU32 colorValue = GetUnk0x2244().m_faceIndex;
+	LegoU32 colorIndex = GetUnk0x2244().m_expressionIndex;
 	preview->FUN_0047e160(colorValue, colorIndex);
 
 	if (cheatString->SelectionLength() == 0) {
@@ -243,7 +243,7 @@ void DriverLicenseScreen::FUN_0047b750()
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b530(&m_cheatString);
 	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&GetUnk0x2244());
 
-	if (!(m_context->m_unk0x4b40.GetUnk0x78() & 1)) {
+	if (!(m_context->m_modelBuilder.GetUnk0x78() & 1)) {
 		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
 		m_unk0x23b8 = TRUE;
 	}
@@ -270,13 +270,13 @@ void DriverLicenseScreen::VTable0x84()
 void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x798) {
-		LegoS32 colorIndex = GetUnk0x2244().m_unk0x04;
+		LegoS32 colorIndex = GetUnk0x2244().m_expressionIndex;
 		colorIndex++;
-		GetUnk0x2244().m_unk0x04 = static_cast<LegoU8>(colorIndex % 6);
-		m_unk0x224c.FUN_0047e160(GetUnk0x2244().m_unk0x01, GetUnk0x2244().m_unk0x04);
+		GetUnk0x2244().m_expressionIndex = static_cast<LegoU8>(colorIndex % 6);
+		m_unk0x224c.FUN_0047e160(GetUnk0x2244().m_faceIndex, GetUnk0x2244().m_expressionIndex);
 	}
 	else if (p_source == &m_unk0xd78) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = 0x11;
 		}
 		else {
@@ -286,7 +286,7 @@ void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 		ApplyCheatCode();
 	}
 	else if (p_source == &m_unk0xa88) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = 0x0f;
 			FUN_0047b750();
 			ApplyCheatCode();

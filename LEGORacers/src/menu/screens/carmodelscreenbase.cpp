@@ -90,10 +90,10 @@ void CarModelScreenBase::VTable0x4c()
 	CreateImage(&m_unk0x3b4, 0x49, 0x49);
 	FUN_00477050();
 	FUN_00477130();
-	FUN_0047fcf0(&m_unk0xe98, 0xae, 0x3b);
-	CreateSelector(&m_unk0xfec, &m_unk0xe98, 0xac, 0xcc);
+	FUN_0047fcf0(&m_partCarousel, 0xae, 0x3b);
+	CreateSelector(&m_unk0xfec, &m_partCarousel, 0xac, 0xcc);
 
-	m_unk0xe98.FUN_00485440(m_context->m_unk0x21a4.GetEntries()[m_partCategoryAvailable[0]].GetPieceType());
+	m_partCarousel.SelectPartByType(m_context->m_unk0x21a4.GetEntries()[m_partCategoryAvailable[0]].GetPieceType());
 }
 
 // FUNCTION: LEGORACERS 0x00477210
@@ -229,7 +229,7 @@ void CarModelScreenBase::VTable0x44(MenuWidget* p_source)
 	}
 
 	if (p_source == &m_unk0xfec) {
-		m_unk0x2308.FUN_00477e40(m_unk0xe98.GetUnk0xd4(m_unk0xe98.GetUnk0x6c()));
+		m_unk0x2308.FUN_00477e40(m_partCarousel.GetChoiceIndex(m_partCarousel.GetUnk0x6c()));
 		return;
 	}
 
@@ -238,9 +238,9 @@ void CarModelScreenBase::VTable0x44(MenuWidget* p_source)
 		LegoU32 i;
 		for (i = 0; i < c_partCategoryCount; i++) {
 			if (child == &m_unk0x19e0[i]) {
-				SiennaCircuit0x154* circuit = &m_unk0xe98;
-				circuit->FUN_00485440(m_context->m_unk0x21a4.GetEntries()[i].GetPieceType());
-				m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
+				CarPartCarousel* partCarousel = &m_partCarousel;
+				partCarousel->SelectPartByType(m_context->m_unk0x21a4.GetEntries()[i].GetPieceType());
+				m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
 				return;
 			}
 		}
@@ -253,10 +253,10 @@ void CarModelScreenBase::VTable0x10(MenuWidget* p_source)
 	if (p_source == &m_unk0x1e30) {
 		switch (m_unk0x2adc) {
 		case 4: {
-			SiennaCircuit0x154* circuit = &m_unk0xe98;
-			circuit->FUN_004853f0();
-			circuit->VTable0x50(circuit->FUN_0046c9a0(m_unk0xe98.GetUnk0x6c()));
-			m_unk0x2308.FUN_00477e40(circuit->GetUnk0xd4(circuit->GetUnk0x6c()));
+			CarPartCarousel* partCarousel = &m_partCarousel;
+			partCarousel->RefreshChoiceIndices();
+			partCarousel->VTable0x50(partCarousel->FUN_0046c9a0(m_partCarousel.GetUnk0x6c()));
+			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
 		}
 		case 5:
 			m_unk0x2ae4 = 1;

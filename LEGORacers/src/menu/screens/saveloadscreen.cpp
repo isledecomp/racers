@@ -34,7 +34,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 
 	m_unk0x36c = p_createParams->m_menuId;
 	p_createParams->m_menuId = 0x32;
-	m_unk0x370 = p_context->m_unk0x4b40.GetUnk0x84();
+	m_unk0x370 = p_context->m_modelBuilder.GetUnk0x84();
 	FUN_00486e40(&p_context->m_unk0x258);
 
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
@@ -147,11 +147,11 @@ LegoBool32 SaveLoadScreen::VTable0x78(undefined4)
 // FUNCTION: LEGORACERS 0x00487060
 void SaveLoadScreen::VTable0x4c()
 {
-	if (!(m_context->m_unk0x4b40.GetUnk0x78() & 0x10)) {
+	if (!(m_context->m_modelBuilder.GetUnk0x78() & 0x10)) {
 		CreateImage(&m_unk0x37c, 0x49, 0x49);
 	}
 	else {
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~0x10);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~0x10);
 	}
 
 	if (!m_unk0x368) {

@@ -8,15 +8,15 @@
 #include "input/inputmanager.h"
 #include "menu/menugamecontext.h"
 #include "menu/widgets/menutextbutton.h"
-#include "racer/siennacircuit0x154.h"
+#include "racer/carpartcarousel.h"
 #include "render/gold3drenderdevice.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(MenuGameScreen, 0x368)
 DECOMP_SIZE_ASSERT(MenuGameScreen::ButtonBindingTable::ButtonBinding, 0xe0)
-DECOMP_SIZE_ASSERT(SiennaCircuit0x154, 0x154)
-DECOMP_SIZE_ASSERT(SiennaCircuit0x154::CreateParams, 0x84)
+DECOMP_SIZE_ASSERT(CarPartCarousel, 0x154)
+DECOMP_SIZE_ASSERT(CarPartCarousel::CreateParams, 0x84)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void MenuGameScreen::VTable0x80()
@@ -88,8 +88,8 @@ LegoBool32 MenuGameScreen::Destroy()
 		return TRUE;
 	}
 
-	if (m_context->m_unk0x4b40.HasMenuResources()) {
-		m_context->m_unk0x4b40.RefreshMenuResources();
+	if (m_context->m_modelBuilder.HasMenuResources()) {
+		m_context->m_modelBuilder.RefreshMenuResources();
 	}
 
 	m_renderer->VTable0x28();
@@ -98,7 +98,7 @@ LegoBool32 MenuGameScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0047fcf0
-undefined4 MenuGameScreen::FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
 {
 	MenuInputBindingTable::IconBinding* inputBindingEntry = GetIconBinding(p_unk0x08);
 	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_unk0x0c));
@@ -106,19 +106,19 @@ undefined4 MenuGameScreen::FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined
 		return 0;
 	}
 
-	SiennaCircuit0x154::CreateParams createParams;
+	CarPartCarousel::CreateParams createParams;
 	::memcpy(&createParams, inputBindingEntry, sizeof(createParams));
 	ApplyWidgetDefaults(&createParams);
 
 	MenuGameContext* context = m_context;
-	createParams.m_unk0x74 = &context->m_unk0x21a4;
+	createParams.m_partSet = &context->m_unk0x21a4;
 	createParams.m_pieceLibrary = &context->m_pieceLibrary;
-	createParams.m_unk0x7c = &context->m_unk0x21f4;
-	createParams.m_unk0x80 = &context->m_unk0x4224;
+	createParams.m_buildModel = &context->m_unk0x21f4;
+	createParams.m_colorTable = &context->m_unk0x4224;
 	createParams.m_unk0x70 = VTable0x6c();
 	createParams.m_unk0x6c = 5;
 
-	return p_unk0x04->FUN_00485300(&createParams, styleEntry);
+	return p_unk0x04->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0047fdc0
@@ -210,15 +210,15 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 	p_context->m_unk0x21f4.FindHighBasePiece();
 	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_unk0x18);
 
-	AquamarineSpirit0x3c::Params params;
-	params.m_unk0x00 = golExport;
-	params.m_unk0x04 = renderer;
-	params.m_unk0x08 = -1;
+	ChassisModelTable::Params params;
+	params.m_golExport = golExport;
+	params.m_renderer = renderer;
+	params.m_instantiateCount = -1;
 	params.m_filename = "chassis.cmf";
-	params.m_unk0x10 = p_context->m_context->m_unk0x18;
+	params.m_binary = p_context->m_context->m_unk0x18;
 
-	p_context->m_unk0x42dc.FUN_0041db10(&params);
-	p_context->m_unk0x42dc.FUN_0041e570();
+	p_context->m_chassisModels.FUN_0041db10(&params);
+	p_context->m_chassisModels.InstantiateAllModels();
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -237,15 +237,15 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 	p_context->m_unk0x4224.Destroy();
 	p_context->m_pieceLibrary.Destroy();
 
-	GolNameTable* racerDefinitions = &p_context->m_unk0x42dc;
-	racerDefinitions->Clear();
+	GolNameTable* chassisModels = &p_context->m_chassisModels;
+	chassisModels->Clear();
 }
 
 // FUNCTION: LEGORACERS 0x004801e0
 void MenuGameScreen::FUN_004801e0()
 {
 	m_context->m_championDefinitions.Clear();
-	m_context->m_unk0x42dc.Clear();
+	m_context->m_chassisModels.Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00480210
@@ -264,19 +264,19 @@ void MenuGameScreen::FUN_00480210(MenuGameContext* p_context, undefined4 p_unk0x
 	memset(&resourceParams, 0, sizeof(resourceParams));
 	memset(&menuResourceParams, 0, sizeof(menuResourceParams));
 
-	p_context->m_unk0x437c.Load("bodypart.pcf", p_context->m_context->m_unk0x18);
+	p_context->m_partCatalog.Load("bodypart.pcf", p_context->m_context->m_unk0x18);
 	resourceParams.m_golExport = p_context->m_context->m_golApp->GetGolExport();
 	resourceParams.m_renderer = p_context->m_context->m_golApp->GetRenderer();
-	resourceParams.m_unk0x0c = &p_context->m_unk0x437c;
+	resourceParams.m_partCatalog = &p_context->m_partCatalog;
 	resourceParams.m_binary = p_context->m_context->m_unk0x18;
-	resourceParams.m_unk0x14 = TRUE;
-	p_context->m_unk0x4ae0.FUN_00497f10(&resourceParams, p_unk0x08);
+	resourceParams.m_textureBinaryMode = TRUE;
+	p_context->m_partResources.Load(&resourceParams, p_unk0x08);
 
 	menuResourceParams.m_golExport = resourceParams.m_golExport;
 	menuResourceParams.m_renderer = resourceParams.m_renderer;
-	menuResourceParams.m_unk0x0c = &p_context->m_unk0x4ae0;
+	menuResourceParams.m_partResources = &p_context->m_partResources;
 	menuResourceParams.m_menuId = 12;
-	p_context->m_unk0x4b40.FUN_0049d1d0(&menuResourceParams);
+	p_context->m_modelBuilder.Load(&menuResourceParams);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -293,10 +293,10 @@ void MenuGameScreen::FUN_00480310()
 	DriverCosmeticTable::LoadParams params;
 	params.m_golExport = m_context->m_context->m_golApp->GetGolExport();
 	params.m_renderer = m_context->m_context->m_golApp->GetRenderer();
-	params.m_unk0x08 = 0;
+	params.m_entryCapacity = 0;
 	params.m_filename = "drivers.ddf";
-	params.m_unk0x10 = m_context->m_context->m_unk0x18;
-	m_context->m_unk0x425c.Load(&params);
+	params.m_binary = m_context->m_context->m_unk0x18;
+	m_context->m_cosmeticTable.Load(&params);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -306,8 +306,8 @@ void MenuGameScreen::FUN_00480310()
 // FUNCTION: LEGORACERS 0x004803a0
 void MenuGameScreen::FUN_004803a0()
 {
-	DriverCosmeticTable* drivers = &m_context->m_unk0x425c;
-	drivers->Clear();
+	DriverCosmeticTable* cosmeticTable = &m_context->m_cosmeticTable;
+	cosmeticTable->Clear();
 }
 
 // TODO: Temporary workaround until we figure out how the original code was written.
@@ -355,7 +355,7 @@ LegoBool32 MenuGameScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*, unde
 // FUNCTION: LEGORACERS 0x00480440
 LegoBool32 MenuGameScreen::FUN_00480440(MenuGameContext* p_context)
 {
-	MusicInstance* musicInstance = p_context->m_unk0x4b40.GetMusicInstance();
+	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicInstance();
 	return musicInstance && musicInstance->IsPlaying();
 }
 
@@ -364,22 +364,22 @@ void MenuGameScreen::FUN_00480470(MenuGameContext* p_context, undefined4 p_unk0x
 {
 	FUN_004804c0(p_context);
 
-	MusicInstance* musicInstance = p_context->m_unk0x4b40.GetMusicGroup()->CreateMusicInstance(p_unk0x08);
-	p_context->m_unk0x4b40.SetMusicInstance(musicInstance);
+	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicGroup()->CreateMusicInstance(p_unk0x08);
+	p_context->m_modelBuilder.SetMusicInstance(musicInstance);
 
 	if (!musicInstance) {
 		GOL_FATALERROR(c_golErrorGeneral);
 	}
 
-	p_context->m_unk0x4b40.GetMusicInstance()->Play(p_unk0x0c);
+	p_context->m_modelBuilder.GetMusicInstance()->Play(p_unk0x0c);
 }
 
 // FUNCTION: LEGORACERS 0x004804c0
 void MenuGameScreen::FUN_004804c0(MenuGameContext* p_context)
 {
 	if (FUN_00480440(p_context)) {
-		p_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(p_context->m_unk0x4b40.GetMusicInstance());
-		p_context->m_unk0x4b40.SetMusicInstance(NULL);
+		p_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(p_context->m_modelBuilder.GetMusicInstance());
+		p_context->m_modelBuilder.SetMusicInstance(NULL);
 	}
 }
 

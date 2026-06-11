@@ -1,27 +1,27 @@
-#include "racer/lavendervault0x764.h"
+#include "racer/driverpartcatalog.h"
 
 #include "golbinparser.h"
 #include "golerror.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(LavenderVault0x764, 0x764)
-DECOMP_SIZE_ASSERT(LavenderVault0x764::PcbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(DriverPartCatalog, 0x764)
+DECOMP_SIZE_ASSERT(DriverPartCatalog::PcbTxtParser, 0x1fc)
 
 // FUNCTION: LEGORACERS 0x00498700
-LavenderVault0x764::LavenderVault0x764()
+DriverPartCatalog::DriverPartCatalog()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00498710
-LavenderVault0x764::~LavenderVault0x764()
+DriverPartCatalog::~DriverPartCatalog()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00498720
-void LavenderVault0x764::Reset()
+void DriverPartCatalog::Reset()
 {
 	m_loaded = FALSE;
 	m_countLegs = 0;
@@ -31,7 +31,7 @@ void LavenderVault0x764::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00498740
-LegoBool32 LavenderVault0x764::Load(const LegoChar* p_path, LegoBool32 p_binary)
+LegoBool32 DriverPartCatalog::Load(const LegoChar* p_path, LegoBool32 p_binary)
 {
 	GolFileParser* parser;
 	Destroy();
@@ -61,7 +61,7 @@ LegoBool32 LavenderVault0x764::Load(const LegoChar* p_path, LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x00498850
-LegoBool32 LavenderVault0x764::Destroy()
+LegoBool32 DriverPartCatalog::Destroy()
 {
 	if (m_loaded) {
 		Reset();
@@ -71,7 +71,7 @@ LegoBool32 LavenderVault0x764::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00498870
-LegoS32 LavenderVault0x764::ReadBracketedCount(GolFileParser& p_parser) const
+LegoS32 DriverPartCatalog::ReadBracketedCount(GolFileParser& p_parser) const
 {
 	p_parser.ReadLeftBracket();
 	LegoS32 number = p_parser.ReadInteger();
@@ -80,37 +80,37 @@ LegoS32 LavenderVault0x764::ReadBracketedCount(GolFileParser& p_parser) const
 }
 
 // FUNCTION: LEGORACERS 0x004988a0
-void LavenderVault0x764::FUN_004988a0(GolFileParser& p_parser)
+void DriverPartCatalog::ReadModelFileNames(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
 	ReadBracketedCount(p_parser);
 	p_parser.ReadLeftCurly();
 	str = p_parser.ReadStringWithMaxLength(13);
-	::memcpy(m_unk0x6da, str, 13);
+	::memcpy(m_headModelFileName, str, 13);
 	str = p_parser.ReadStringWithMaxLength(13);
-	::memcpy(m_unk0x6e7, str, 13);
+	::memcpy(m_bodyModelFileNames[0], str, 13);
 	str = p_parser.ReadStringWithMaxLength(13);
-	::memcpy(m_unk0x6f4, str, 13);
+	::memcpy(m_bodyModelFileNames[1], str, 13);
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498930
-void LavenderVault0x764::FUN_00498930(GolFileParser& p_parser)
+void DriverPartCatalog::ReadModelDirectories(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
 	ReadBracketedCount(p_parser);
 	p_parser.ReadLeftCurly();
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x701) - 1);
-	::memcpy(m_unk0x701, str, sizeof(m_unk0x701) - 1);
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x721) - 1);
-	::memcpy(m_unk0x721, str, sizeof(m_unk0x721) - 1);
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_modelDirectories[0]) - 1);
+	::memcpy(m_modelDirectories[0], str, sizeof(m_modelDirectories[0]) - 1);
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_modelDirectories[1]) - 1);
+	::memcpy(m_modelDirectories[1], str, sizeof(m_modelDirectories[1]) - 1);
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498990
-void LavenderVault0x764::ReadHats(GolFileParser& p_parser)
+void DriverPartCatalog::ReadHats(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -124,14 +124,14 @@ void LavenderVault0x764::ReadHats(GolFileParser& p_parser)
 	for (LegoS32 i = 0; i < m_countHats; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_hatNames[i]));
 		::memcpy(m_hatNames[i], str, sizeof(m_hatNames[i]));
-		m_unk0x158[i] = p_parser.ReadInteger();
+		m_hatUnlockFlags[i] = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498a10
-void LavenderVault0x764::ReadFaces(GolFileParser& p_parser)
+void DriverPartCatalog::ReadFaces(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -141,13 +141,13 @@ void LavenderVault0x764::ReadFaces(GolFileParser& p_parser)
 	}
 
 	p_parser.ReadLeftCurly();
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x180));
-	::memcpy(m_unk0x180, str, sizeof(m_unk0x180));
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_faceDirectory));
+	::memcpy(m_faceDirectory, str, sizeof(m_faceDirectory));
 
 	for (LegoS32 i = 0; i < m_countFaces; i++) {
 		str = p_parser.ReadString();
 		::strcpy(m_faceNames[i], str);
-		m_unk0x224[i] = p_parser.ReadInteger();
+		m_faceUnlockFlags[i] = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();
@@ -160,7 +160,7 @@ void LavenderVault0x764::ReadFaces(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498bc0
-void LavenderVault0x764::ReadTorsos(GolFileParser& p_parser)
+void DriverPartCatalog::ReadTorsos(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -170,23 +170,23 @@ void LavenderVault0x764::ReadTorsos(GolFileParser& p_parser)
 	}
 
 	p_parser.ReadLeftCurly();
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x242[0]));
-	::memcpy(&m_unk0x242[0], str, sizeof(m_unk0x242[0]));
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x242[1]));
-	::memcpy(&m_unk0x242[1], str, sizeof(m_unk0x242[1]));
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_torsoVariantDirs[0]));
+	::memcpy(&m_torsoVariantDirs[0], str, sizeof(m_torsoVariantDirs[0]));
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_torsoVariantDirs[1]));
+	::memcpy(&m_torsoVariantDirs[1], str, sizeof(m_torsoVariantDirs[1]));
 
 	for (LegoS32 i = 0; i < m_countTorsos; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_torsoNames[i]));
 		::memcpy(m_torsoNames[i], str, sizeof(m_torsoNames[i]));
-		m_unk0x344[i] = p_parser.ReadInteger();
-		m_unk0x3bc[i] = p_parser.ReadInteger();
+		m_torsoVariants[i] = p_parser.ReadInteger();
+		m_torsoUnlockFlags[i] = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498c90
-void LavenderVault0x764::ReadLegs(GolFileParser& p_parser)
+void DriverPartCatalog::ReadLegs(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -196,23 +196,23 @@ void LavenderVault0x764::ReadLegs(GolFileParser& p_parser)
 	}
 
 	p_parser.ReadLeftCurly();
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x3da[0]));
-	::strncpy(m_unk0x3da[0], str, sizeof(m_unk0x3da[0]));
-	str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x3da[1]));
-	::strncpy(m_unk0x3da[1], str, sizeof(m_unk0x3da[1]));
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_legVariantDirs[0]));
+	::strncpy(m_legVariantDirs[0], str, sizeof(m_legVariantDirs[0]));
+	str = p_parser.ReadStringWithMaxLength(sizeof(m_legVariantDirs[1]));
+	::strncpy(m_legVariantDirs[1], str, sizeof(m_legVariantDirs[1]));
 
 	for (LegoS32 i = 0; i < m_countLegs; i++) {
 		str = p_parser.ReadStringWithMaxLength(sizeof(m_legNames[i]));
 		::strncpy(m_legNames[i], str, sizeof(m_legNames[i]));
-		m_unk0x4dc[i] = p_parser.ReadInteger();
-		m_unk0x554[i] = p_parser.ReadInteger();
+		m_legVariants[i] = p_parser.ReadInteger();
+		m_legUnlockFlags[i] = p_parser.ReadInteger();
 	}
 
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498d70
-void LavenderVault0x764::ReadHeadHats(GolFileParser& p_parser)
+void DriverPartCatalog::ReadHeadHats(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -232,23 +232,23 @@ void LavenderVault0x764::ReadHeadHats(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498de0
-void LavenderVault0x764::FUN_00498de0(GolFileParser& p_parser)
+void DriverPartCatalog::ReadBodyModelNames(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
-	m_unk0x014 = ReadBracketedCount(p_parser);
+	m_bodyModelNameCount = ReadBracketedCount(p_parser);
 	p_parser.ReadLeftCurly();
 
-	for (LegoS32 i = 0; i < m_unk0x014; i++) {
-		str = p_parser.ReadStringWithMaxLength(sizeof(m_unk0x6b2[i]));
-		::strncpy(m_unk0x6b2[i], str, sizeof(m_unk0x6b2[i]));
+	for (LegoS32 i = 0; i < m_bodyModelNameCount; i++) {
+		str = p_parser.ReadStringWithMaxLength(sizeof(m_bodyModelNames[i]));
+		::strncpy(m_bodyModelNames[i], str, sizeof(m_bodyModelNames[i]));
 	}
 
 	p_parser.ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00498e40
-void LavenderVault0x764::FUN_00498e40(GolFileParser& p_parser)
+void DriverPartCatalog::FUN_00498e40(GolFileParser& p_parser)
 {
 	const LegoChar* str;
 
@@ -264,17 +264,17 @@ void LavenderVault0x764::FUN_00498e40(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498e90
-void LavenderVault0x764::ReadFile(GolFileParser& p_parser)
+void DriverPartCatalog::ReadFile(GolFileParser& p_parser)
 {
 	GolFileParser::ParserTokenType token;
 
 	while ((token = p_parser.GetNextToken()) != 0) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			FUN_004988a0(p_parser);
+			ReadModelFileNames(p_parser);
 			break;
 		case GolFileParser::e_unknown0x28:
-			FUN_00498930(p_parser);
+			ReadModelDirectories(p_parser);
 			break;
 		case GolFileParser::e_unknown0x29:
 			ReadHats(p_parser);
@@ -292,7 +292,7 @@ void LavenderVault0x764::ReadFile(GolFileParser& p_parser)
 			ReadHeadHats(p_parser);
 			break;
 		case GolFileParser::e_unknown0x2e:
-			FUN_00498de0(p_parser);
+			ReadBodyModelNames(p_parser);
 			break;
 		case GolFileParser::e_unknown0x2f:
 			FUN_00498e40(p_parser);
@@ -305,47 +305,51 @@ void LavenderVault0x764::ReadFile(GolFileParser& p_parser)
 }
 
 // FUNCTION: LEGORACERS 0x00498f50
-void LavenderVault0x764::CopyHatName(LegoS32 p_index, LegoChar* p_buffer) const
+void DriverPartCatalog::CopyHatName(LegoS32 p_index, LegoChar* p_buffer) const
 {
 	::strncpy(p_buffer, m_hatNames[p_index], sizeof(m_hatNames[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00498f70
-void LavenderVault0x764::FUN_00498f70(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
+void DriverPartCatalog::CopyDefaultFaceName(LegoS32 p_index, LegoChar* p_directory, LegoChar* p_name) const
 {
-	::strncpy(p_buffer1, m_unk0x180, sizeof(m_unk0x180));
-	::strcpy(p_buffer2, m_faceNames[p_index]);
-	::strncat(p_buffer2, m_faceExpressions[0], sizeOfArray(m_faceExpressions) - 1);
+	::strncpy(p_directory, m_faceDirectory, sizeof(m_faceDirectory));
+	::strcpy(p_name, m_faceNames[p_index]);
+	::strncat(p_name, m_faceExpressions[0], sizeOfArray(m_faceExpressions) - 1);
 }
 
 // FUNCTION: LEGORACERS 0x00498fd0
-void LavenderVault0x764::FUN_00498fd0(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
+void DriverPartCatalog::CopyTorsoName(LegoS32 p_index, LegoChar* p_directory, LegoChar* p_name) const
 {
-	::strncpy(p_buffer1, m_unk0x242[m_unk0x344[p_index]], sizeof(m_unk0x242[m_unk0x344[p_index]]));
-	::strncpy(p_buffer2, m_torsoNames[p_index], sizeof(m_torsoNames[p_index]));
+	::strncpy(
+		p_directory,
+		m_torsoVariantDirs[m_torsoVariants[p_index]],
+		sizeof(m_torsoVariantDirs[m_torsoVariants[p_index]])
+	);
+	::strncpy(p_name, m_torsoNames[p_index], sizeof(m_torsoNames[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499020
-void LavenderVault0x764::FUN_00499020(LegoS32 p_index, LegoChar* p_buffer1, LegoChar* p_buffer2) const
+void DriverPartCatalog::CopyLegName(LegoS32 p_index, LegoChar* p_directory, LegoChar* p_name) const
 {
-	::strncpy(p_buffer1, m_unk0x3da[m_unk0x4dc[p_index]], sizeof(m_unk0x3da[m_unk0x4dc[p_index]]));
-	::strncpy(p_buffer2, m_legNames[p_index], sizeof(m_legNames[p_index]));
+	::strncpy(p_directory, m_legVariantDirs[m_legVariants[p_index]], sizeof(m_legVariantDirs[m_legVariants[p_index]]));
+	::strncpy(p_name, m_legNames[p_index], sizeof(m_legNames[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499070
-void LavenderVault0x764::FUN_00499070(LegoS32 p_index, LegoChar* p_buffer) const
+void DriverPartCatalog::CopyBodyModelName(LegoS32 p_index, LegoChar* p_buffer) const
 {
-	::strncpy(p_buffer, m_unk0x6b2[p_index], sizeof(m_unk0x6b2[p_index]));
+	::strncpy(p_buffer, m_bodyModelNames[p_index], sizeof(m_bodyModelNames[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x00499090
-void LavenderVault0x764::CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const
+void DriverPartCatalog::CopyHeadHatName(LegoS32 p_index, LegoChar* p_buffer) const
 {
 	::strncpy(p_buffer, m_headHatNames[p_index], sizeof(m_headHatNames[p_index]));
 }
 
 // FUNCTION: LEGORACERS 0x004990b0
-void LavenderVault0x764::BuildFaceExpressionName(
+void DriverPartCatalog::BuildFaceExpressionName(
 	LegoS32 p_faceIndex,
 	LegoS32 p_expressionIndex,
 	LegoChar* p_buffer

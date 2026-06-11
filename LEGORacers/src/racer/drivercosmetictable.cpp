@@ -16,7 +16,7 @@ DECOMP_SIZE_ASSERT(DriverCosmeticTable, 0x80)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::DdfTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(TurquoiseGlowColor, 0x05)
 DECOMP_SIZE_ASSERT(DriverCosmeticTable::LoadParams, 0x14)
-DECOMP_SIZE_ASSERT(DriverCosmeticTable::Entry0x30, 0x30)
+DECOMP_SIZE_ASSERT(DriverCosmeticTable::Entry, 0x30)
 
 // GLOBAL: LEGORACERS 0x004b00a0
 LegoFloat g_unk0x004b00a0 = 250000.0f;
@@ -115,7 +115,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 {
 	m_golExport = p_params->m_golExport;
 	m_renderer = p_params->m_renderer;
-	m_binary = p_params->m_unk0x10;
+	m_binary = p_params->m_binary;
 
 	GolFileParser* parser;
 	if (m_binary) {
@@ -138,7 +138,7 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 
 	LegoU32 entryCount = parser->ReadBracketedCountAndLeftCurly();
 	if (entryCount != 0) {
-		m_entries = new Entry0x30[entryCount];
+		m_entries = new Entry[entryCount];
 		if (m_entries == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -149,9 +149,9 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			GolName name;
 
 			m_entries[i].m_unk0x00 = 0;
-			m_entries[i].m_unk0x02[0] = '\0';
-			m_entries[i].m_unk0x0a[0] = '\0';
-			m_entries[i].m_unk0x12[0] = '\0';
+			m_entries[i].m_materialName[0] = '\0';
+			m_entries[i].m_textureName[0] = '\0';
+			m_entries[i].m_modelName[0] = '\0';
 			m_entries[i].m_unk0x1a[0] = '\0';
 			m_entries[i].m_unk0x22 = 0;
 			m_entries[i].m_unk0x23 = 0;
@@ -162,11 +162,11 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 			m_entries[i].m_unk0x28 = 0;
 			m_entries[i].m_unk0x29 = 0;
 			m_entries[i].m_unk0x2a = 0;
-			m_entries[i].m_color.m_unk0x00 = 0;
-			m_entries[i].m_color.m_unk0x01 = 0;
-			m_entries[i].m_color.m_unk0x02 = 0;
-			m_entries[i].m_color.m_unk0x03 = 0;
-			m_entries[i].m_color.m_unk0x04 = 0;
+			m_entries[i].m_color.m_hatIndex = 0;
+			m_entries[i].m_color.m_faceIndex = 0;
+			m_entries[i].m_color.m_torsoIndex = 0;
+			m_entries[i].m_color.m_legIndex = 0;
+			m_entries[i].m_color.m_expressionIndex = 0;
 
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			::strncpy(name, parser->ReadStringWithMaxLength(sizeOfArray(name)), sizeOfArray(name));
@@ -180,23 +180,23 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 					break;
 				case GolFileParser::e_unknown0x28:
 					::strncpy(
-						m_entries[i].m_unk0x02,
-						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_unk0x02)),
-						sizeOfArray(m_entries[i].m_unk0x02)
+						m_entries[i].m_materialName,
+						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_materialName)),
+						sizeOfArray(m_entries[i].m_materialName)
 					);
 					break;
 				case GolFileParser::e_unknown0x29:
 					::strncpy(
-						m_entries[i].m_unk0x0a,
-						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_unk0x0a)),
-						sizeOfArray(m_entries[i].m_unk0x0a)
+						m_entries[i].m_textureName,
+						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_textureName)),
+						sizeOfArray(m_entries[i].m_textureName)
 					);
 					break;
 				case GolFileParser::e_unknown0x2a:
 					::strncpy(
-						m_entries[i].m_unk0x12,
-						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_unk0x12)),
-						sizeOfArray(m_entries[i].m_unk0x12)
+						m_entries[i].m_modelName,
+						parser->ReadStringWithMaxLength(sizeOfArray(m_entries[i].m_modelName)),
+						sizeOfArray(m_entries[i].m_modelName)
 					);
 					break;
 				case GolFileParser::e_unknown0x2b:
@@ -228,19 +228,19 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 					m_entries[i].m_unk0x2a = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x35:
-					m_entries[i].m_color.m_unk0x00 = parser->ReadInteger();
+					m_entries[i].m_color.m_hatIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x36:
-					m_entries[i].m_color.m_unk0x01 = parser->ReadInteger();
+					m_entries[i].m_color.m_faceIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x37:
-					m_entries[i].m_color.m_unk0x02 = parser->ReadInteger();
+					m_entries[i].m_color.m_torsoIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x38:
-					m_entries[i].m_color.m_unk0x03 = parser->ReadInteger();
+					m_entries[i].m_color.m_legIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x39:
-					m_entries[i].m_color.m_unk0x04 = parser->ReadInteger();
+					m_entries[i].m_color.m_expressionIndex = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x3a:
 					m_entries[i].m_unk0x22 = parser->ReadInteger();
@@ -263,11 +263,11 @@ void DriverCosmeticTable::Load(LoadParams* p_params)
 		delete parser;
 	}
 
-	if (p_params->m_unk0x08 == 0xffffffff) {
+	if (p_params->m_entryCapacity == 0xffffffff) {
 		m_entryCapacity = entryCount;
 	}
 	else {
-		m_entryCapacity = p_params->m_unk0x08;
+		m_entryCapacity = p_params->m_entryCapacity;
 	}
 
 	if (m_entryCapacity != 0) {
@@ -315,26 +315,26 @@ void DriverCosmeticTable::LoadStrings()
 // FUNCTION: LEGORACERS 0x00420ed0
 GolAnimatedEntity* DriverCosmeticTable::LoadEntry(const LegoChar* p_name)
 {
-	return LoadEntry(static_cast<Entry0x30*>(GetName(p_name)));
+	return LoadEntry(static_cast<Entry*>(GetName(p_name)));
 }
 
 // FUNCTION: LEGORACERS 0x00420ef0
-GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry0x30* p_entry)
+GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 {
 	LegoChar name[sizeof(GolName) + 1];
 
 	m_textures[m_loadedEntryCount] = m_golExport->CreateTextureList();
-	::strncpy(name, p_entry->m_unk0x0a, sizeof(GolName));
+	::strncpy(name, p_entry->m_textureName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
 	m_textures[m_loadedEntryCount]->VTable0x24(m_renderer, name, m_binary);
 
 	m_materials[m_loadedEntryCount] = m_golExport->CreateMaterialList();
-	::strncpy(name, p_entry->m_unk0x02, sizeof(GolName));
+	::strncpy(name, p_entry->m_materialName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
 	m_materials[m_loadedEntryCount]->VTable0x24(m_renderer, name, m_binary);
 
 	m_models[m_loadedEntryCount] = m_golExport->VTable0x14();
-	::strncpy(name, p_entry->m_unk0x12, sizeof(GolName));
+	::strncpy(name, p_entry->m_modelName, sizeof(GolName));
 	name[sizeof(GolName)] = '\0';
 	m_models[m_loadedEntryCount]->VTable0x1c(m_renderer, name, m_binary);
 
@@ -346,25 +346,25 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry0x30* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x00421020
-void DriverCosmeticTable::FUN_00421020(const LegoChar* p_name, TurquoiseGlowColor* p_color)
+void DriverCosmeticTable::CopyCosmetics(const LegoChar* p_name, TurquoiseGlowColor* p_color)
 {
-	Entry0x30* entry = static_cast<Entry0x30*>(GetName(p_name));
+	Entry* entry = static_cast<Entry*>(GetName(p_name));
 
-	p_color->m_unk0x00 = entry->m_color.m_unk0x00;
-	p_color->m_unk0x01 = entry->m_color.m_unk0x01;
-	p_color->m_unk0x02 = entry->m_color.m_unk0x02;
-	p_color->m_unk0x03 = entry->m_color.m_unk0x03;
-	p_color->m_unk0x04 = entry->m_color.m_unk0x04;
+	p_color->m_hatIndex = entry->m_color.m_hatIndex;
+	p_color->m_faceIndex = entry->m_color.m_faceIndex;
+	p_color->m_torsoIndex = entry->m_color.m_torsoIndex;
+	p_color->m_legIndex = entry->m_color.m_legIndex;
+	p_color->m_expressionIndex = entry->m_color.m_expressionIndex;
 }
 
 // FUNCTION: LEGORACERS 0x00421050
-void DriverCosmeticTable::FUN_00421050(LegoU32 p_index, TurquoiseGlowColor* p_color)
+void DriverCosmeticTable::CopyCosmetics(LegoU32 p_index, TurquoiseGlowColor* p_color)
 {
-	Entry0x30& entry = m_entries[p_index];
+	Entry& entry = m_entries[p_index];
 
-	p_color->m_unk0x00 = entry.m_color.m_unk0x00;
-	p_color->m_unk0x01 = entry.m_color.m_unk0x01;
-	p_color->m_unk0x02 = entry.m_color.m_unk0x02;
-	p_color->m_unk0x03 = entry.m_color.m_unk0x03;
-	p_color->m_unk0x04 = entry.m_color.m_unk0x04;
+	p_color->m_hatIndex = entry.m_color.m_hatIndex;
+	p_color->m_faceIndex = entry.m_color.m_faceIndex;
+	p_color->m_torsoIndex = entry.m_color.m_torsoIndex;
+	p_color->m_legIndex = entry.m_color.m_legIndex;
+	p_color->m_expressionIndex = entry.m_color.m_expressionIndex;
 }

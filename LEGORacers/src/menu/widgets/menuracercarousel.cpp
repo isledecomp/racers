@@ -5,7 +5,7 @@
 #include "menu/menugamecontext.h"
 #include "mesh/golmodelbase.h"
 #include "mesh/golmodelmaterialtable.h"
-#include "racer/lavendervault0x764.h"
+#include "racer/driverpartcatalog.h"
 #include "racer/turquoiseglowcolor.h"
 #include "save/savesystem.h"
 
@@ -43,7 +43,7 @@ void MenuRacerCarousel::Reset()
 LegoBool32 MenuRacerCarousel::FUN_00483a60(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
 {
 	m_unk0xc8 = p_createParams->m_context;
-	m_unk0xc4 = p_createParams->m_unk0x78;
+	m_headBuilder = p_createParams->m_headBuilder;
 	m_unk0xcc = p_createParams->m_unk0x7c;
 	FUN_00483ee0();
 
@@ -106,14 +106,14 @@ void MenuRacerCarousel::CopyModelMaterialTable(GolModelBase* p_model, GolBillboa
 }
 
 // FUNCTION: LEGORACERS 0x00483c60
-void MenuRacerCarousel::FUN_00483c60(LavenderVault0x764* p_config, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
-	for (LegoS32 i = 0; i < p_config->GetHatCount(); i++) {
+	for (LegoS32 i = 0; i < p_partCatalog->GetHatCount(); i++) {
 		TurquoiseGlowColor color;
 		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
 
-		if (color.m_unk0x00 != i) {
-			LegoS32 unlockFlag = p_config->GetHatUnlockFlag(i);
+		if (color.m_hatIndex != i) {
+			LegoS32 unlockFlag = p_partCatalog->GetHatUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
 					continue;
@@ -129,14 +129,14 @@ void MenuRacerCarousel::FUN_00483c60(LavenderVault0x764* p_config, SaveSystem* p
 }
 
 // FUNCTION: LEGORACERS 0x00483d00
-void MenuRacerCarousel::FUN_00483d00(LavenderVault0x764* p_config, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
-	for (LegoS32 i = 0; i < p_config->GetFaceCount(); i++) {
+	for (LegoS32 i = 0; i < p_partCatalog->GetFaceCount(); i++) {
 		TurquoiseGlowColor color;
 		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
 
-		if (color.m_unk0x01 != i) {
-			LegoS32 unlockFlag = p_config->GetFaceUnlockFlag(i);
+		if (color.m_faceIndex != i) {
+			LegoS32 unlockFlag = p_partCatalog->GetFaceUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
 					continue;
@@ -152,14 +152,14 @@ void MenuRacerCarousel::FUN_00483d00(LavenderVault0x764* p_config, SaveSystem* p
 }
 
 // FUNCTION: LEGORACERS 0x00483da0
-void MenuRacerCarousel::FUN_00483da0(LavenderVault0x764* p_config, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
-	for (LegoS32 i = 0; i < p_config->GetTorsoCount(); i++) {
+	for (LegoS32 i = 0; i < p_partCatalog->GetTorsoCount(); i++) {
 		TurquoiseGlowColor color;
 		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
 
-		if (color.m_unk0x02 != i) {
-			LegoS32 unlockFlag = p_config->GetTorsoUnlockFlag(i);
+		if (color.m_torsoIndex != i) {
+			LegoS32 unlockFlag = p_partCatalog->GetTorsoUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
 					continue;
@@ -175,14 +175,14 @@ void MenuRacerCarousel::FUN_00483da0(LavenderVault0x764* p_config, SaveSystem* p
 }
 
 // FUNCTION: LEGORACERS 0x00483e40
-void MenuRacerCarousel::FUN_00483e40(LavenderVault0x764* p_config, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
-	for (LegoS32 i = 0; i < p_config->GetLegCount(); i++) {
+	for (LegoS32 i = 0; i < p_partCatalog->GetLegCount(); i++) {
 		TurquoiseGlowColor color;
 		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&color);
 
-		if (color.m_unk0x03 != i) {
-			LegoS32 unlockFlag = p_config->GetLegUnlockFlag(i);
+		if (color.m_legIndex != i) {
+			LegoS32 unlockFlag = p_partCatalog->GetLegUnlockFlag(i);
 			if (unlockFlag == 0x80) {
 				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
 					continue;
@@ -201,21 +201,21 @@ void MenuRacerCarousel::FUN_00483e40(LavenderVault0x764* p_config, SaveSystem* p
 void MenuRacerCarousel::FUN_00483ee0()
 {
 	SaveSystem* saveSystem = &m_unk0xc8->m_unk0x258;
-	LavenderVault0x764* config = &m_unk0xc8->m_unk0x437c;
+	DriverPartCatalog* partCatalog = &m_unk0xc8->m_partCatalog;
 	LegoU32 unlockFlags = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
 
 	switch (m_unk0xcc) {
 	case 0:
-		FUN_00483c60(config, saveSystem, unlockFlags);
+		FUN_00483c60(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 1:
-		FUN_00483d00(config, saveSystem, unlockFlags);
+		FUN_00483d00(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 2:
-		FUN_00483da0(config, saveSystem, unlockFlags);
+		FUN_00483da0(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 3:
-		FUN_00483e40(config, saveSystem, unlockFlags);
+		FUN_00483e40(partCatalog, saveSystem, unlockFlags);
 		break;
 	}
 }
@@ -231,24 +231,24 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 
 	switch (m_unk0xcc) {
 	case 0:
-		model = m_unk0xc4->FUN_00499320(modelIndex);
+		model = m_headBuilder->LoadHatModel(modelIndex);
 		material = model->GetMaterialTable()->GetPosition(0);
-		m_unk0xc4->FUN_004992f0(model);
+		m_headBuilder->MarkHatModelUsed(model);
 		materialName[0] = '\0';
 		break;
 	case 1:
-		model = m_unk0xc4->FUN_00499380(0);
-		material = m_unk0xc4->FUN_00499470(modelIndex);
+		model = m_headBuilder->GetFaceModel(0);
+		material = m_headBuilder->FindFaceMaterial(modelIndex);
 		::strncpy(materialName, "face", sizeof(materialName));
 		break;
 	case 2:
-		model = m_unk0xc4->FUN_004993d0(modelIndex);
-		material = m_unk0xc4->FUN_004994b0(modelIndex);
+		model = m_headBuilder->GetTorsoModel(modelIndex);
+		material = m_headBuilder->FindTorsoMaterial(modelIndex);
 		::strncpy(materialName, "torso", sizeof(materialName));
 		break;
 	case 3:
-		model = m_unk0xc4->FUN_00499420(modelIndex);
-		material = m_unk0xc4->FUN_004994f0(modelIndex);
+		model = m_headBuilder->GetLegModel(modelIndex);
+		material = m_headBuilder->FindLegMaterial(modelIndex);
 		::strncpy(materialName, "legs", sizeof(materialName));
 		break;
 	default:
@@ -280,7 +280,7 @@ void MenuRacerCarousel::VTable0x50(undefined4 p_index)
 
 		if (!m_unk0x70) {
 			if (!m_unk0xcc) {
-				::memset(m_unk0xc4->GetUnk0x30(), 0, 7 * sizeof(LegoBool32));
+				::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 			}
 
 			for (LegoS32 i = 0; i < m_unk0x60; i++) {
@@ -329,10 +329,10 @@ LegoS32 MenuRacerCarousel::VTable0x54()
 	}
 
 	if (!m_unk0xcc) {
-		::memset(m_unk0xc4->GetUnk0x30(), 0, 7 * sizeof(LegoBool32));
+		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_unk0x60; i++) {
-			m_unk0xc4->FUN_004992f0(m_unk0x7c[i].m_model);
+			m_headBuilder->MarkHatModelUsed(m_unk0x7c[i].m_model);
 		}
 	}
 
@@ -366,10 +366,10 @@ LegoS32 MenuRacerCarousel::VTable0x58()
 	}
 
 	if (!m_unk0xcc) {
-		::memset(m_unk0xc4->GetUnk0x30(), 0, 7 * sizeof(LegoBool32));
+		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_unk0x60; i++) {
-			m_unk0xc4->FUN_004992f0(m_unk0x7c[i].m_model);
+			m_headBuilder->MarkHatModelUsed(m_unk0x7c[i].m_model);
 		}
 	}
 

@@ -29,8 +29,8 @@ CarModelScreenBase::CarPartPlacement::CarPartPlacement()
 	for (LegoS32 i = 0; i < 8; i++) {
 		m_unk0x2a8[i] = angle;
 		angle += g_fieldAt0x2308AngleStep;
-		if (angle >= g_siennaCircuitTwoPi) {
-			angle -= g_siennaCircuitTwoPi;
+		if (angle >= g_twoPi) {
+			angle -= g_twoPi;
 		}
 	}
 
@@ -155,23 +155,23 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477c50()
 void CarModelScreenBase::CarPartPlacement::FUN_00477cc0(undefined4)
 {
 	TurquoiseGlowColor color;
-	m_unk0x24->m_unk0x4b40.SetUnk0x10(0xffff);
+	m_unk0x24->m_modelBuilder.SetExpressionMask(0xffff);
 	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&color);
 
-	m_unk0x238 = m_unk0x24->m_unk0x4b40.FUN_0049db90(&color, NULL, 0);
+	m_unk0x238 = m_unk0x24->m_modelBuilder.BuildDriverModel(&color, NULL, 0);
 	if (m_unk0x238 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x24->m_unk0x4b40.FUN_0049dce0(m_unk0x238, &color);
+	m_unk0x24->m_modelBuilder.ApplyFaceExpression(m_unk0x238, &color);
 
 	m_unk0x19c = m_unk0x0c->VTable0x18();
-	m_unk0x19c->VTable0x10(m_unk0x24->m_unk0x4b40.FUN_0049dc10(&color));
+	m_unk0x19c->VTable0x10(m_unk0x24->m_modelBuilder.GetBodySceneNode(&color));
 	if (m_unk0x19c == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x1a0 = m_unk0x24->m_unk0x4b40.FUN_0049dc50(&color);
+	m_unk0x1a0 = m_unk0x24->m_modelBuilder.GetBodyModelPart(&color);
 	m_unk0xa8.FUN_0040d550(m_unk0x238, m_unk0x19c, m_unk0x1a0, FLT_MAX);
 }
 
@@ -180,11 +180,11 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477dc0()
 {
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
-	createParams.m_unk0x00 = &m_unk0x24->m_unk0x42dc;
+	createParams.m_chassisModels = &m_unk0x24->m_chassisModels;
 	createParams.m_unk0x04 = &m_unk0x24->m_unk0x21f4;
 	createParams.m_unk0x08 = m_unk0x24->m_unk0x21f4.GetUnk0x0c();
 	createParams.m_unk0x0c = &m_unk0xa8;
-	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_unk0x10);
+	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_chassisName);
 
 	m_unk0x58.FUN_00479510(&createParams);
 	m_unk0x58.VTable0x08(m_unk0x250);
@@ -649,10 +649,10 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 		else {
 			LegoFloat scaledTime = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x268));
 			scaledTime *= 0.001f;
-			scaledTime *= g_siennaCircuitTwoPi;
+			scaledTime *= g_twoPi;
 			scaledTime *= -162.97466f;
 			LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-			LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+			LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
 			interpolation *= 50.0f;
 			alpha = static_cast<LegoU32>(interpolation) + 0x64;
 		}
@@ -836,14 +836,14 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478ef0(LegoS32 p_elapsed)
 	scaledTime *= 1.5707964f;
 	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
 	LegoFloat targetAngle = m_unk0x2a8[m_unk0x298];
 
 	if (targetAngle > m_unk0x29c + 1.5707964f) {
-		targetAngle -= g_siennaCircuitTwoPi;
+		targetAngle -= g_twoPi;
 	}
 	else if (targetAngle < m_unk0x29c - 1.5707964f) {
-		targetAngle += g_siennaCircuitTwoPi;
+		targetAngle += g_twoPi;
 	}
 
 	FUN_00477f30(targetAngle + ((m_unk0x29c - targetAngle) * interpolation));
@@ -869,7 +869,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoS32 p_elapsed)
 	scaledTime *= 1.5707964f;
 	scaledTime *= -162.97466f;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_siennaCircuitTwoPi * index) / 1024.0f));
+	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
 
 	GolVec3 targetPosition;
 	FUN_00479330(&targetPosition, m_unk0x290);

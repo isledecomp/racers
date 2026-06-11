@@ -72,7 +72,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 		p_context->m_menuStack.Push(c_menuGarage);
 	}
 
-	p_context->m_unk0x4b40.SetUnk0x78(p_context->m_unk0x4b40.GetUnk0x78() & ~9);
+	p_context->m_modelBuilder.SetUnk0x78(p_context->m_modelBuilder.GetUnk0x78() & ~9);
 	p_context->m_context->m_unk0x1e &= ~2;
 	p_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(0);
 
@@ -237,9 +237,9 @@ void GarageScreen::FUN_0047eb20()
 	context->m_unk0x1e |= 2;
 
 	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(1);
-	undefined4 flags = m_context->m_unk0x4b40.GetUnk0x78();
+	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();
 	flags &= 0xfffffffd;
-	m_context->m_unk0x4b40.SetUnk0x78(flags);
+	m_context->m_modelBuilder.SetUnk0x78(flags);
 	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(m_unk0x22dc[0].FUN_004430b0());
 	m_unk0x360 = 0x41;
 }
@@ -261,7 +261,7 @@ void GarageScreen::VTable0x84()
 	case c_menuPickMem:
 		m_context->m_menuStack.Push(c_menuPickMem);
 		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b2f0(4, 0, 0, NULL);
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 1);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 1);
 		FUN_004861b0();
 		return;
 	case c_menuEditDriver:
@@ -281,7 +281,7 @@ void GarageScreen::VTable0x84()
 	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
 		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, m_unk0x22dc[0].FUN_004430b0());
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() | 8);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 8);
 		FUN_004861b0();
 		return;
 	}

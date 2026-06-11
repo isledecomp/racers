@@ -50,7 +50,7 @@ void RaceModeSetupScreen::VTable0x4c()
 		textId = 0x0f;
 	}
 	else {
-		textId = 0x0e + ((m_context->m_unk0x4b40.GetUnk0x78() & 2) ? 0x0b : 0);
+		textId = 0x0e + ((m_context->m_modelBuilder.GetUnk0x78() & 2) ? 0x0b : 0);
 	}
 
 	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, textId);
@@ -122,7 +122,7 @@ void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
 		}
 	}
 	else if (source == &m_unk0x1ccc) {
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
 		m_unk0x360 = 2;
 	}
 

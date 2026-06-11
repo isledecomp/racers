@@ -116,7 +116,7 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScre
 
 	m_cursorHelper->SetCursorEnabled(TRUE);
 
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(m_context, 0);
 	}
 
@@ -151,7 +151,7 @@ void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 
 		if (m_unk0x660.HasModel()) {
 			m_unk0x660.VTable0x54();
-			m_context->m_unk0x4b40.RefreshMenuResources();
+			m_context->m_modelBuilder.RefreshMenuResources();
 		}
 
 		if (m_unk0x754) {
@@ -160,8 +160,8 @@ void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 		}
 
 		TurquoiseGlowColor color;
-		m_context->m_unk0x425c.FUN_00421020(name, &color);
-		m_unk0x754 = m_context->m_unk0x4b40.FUN_0049db90(&color, NULL, 0);
+		m_context->m_cosmeticTable.CopyCosmetics(name, &color);
+		m_unk0x754 = m_context->m_modelBuilder.BuildDriverModel(&color, NULL, 0);
 		m_unk0x660.FUN_0040d550(
 			m_unk0x754,
 			modelEntity->VTable0x58(0),

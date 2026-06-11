@@ -25,7 +25,7 @@ void PickRacerScreen::VTable0x4c()
 	CreateImage(&m_unk0x3ff4, 0x49, 0x49);
 	RacerPickScreenBase::VTable0x4c();
 
-	if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+	if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
 		textId = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244AsU16();
 		textId += 0x15;
 	}
@@ -46,7 +46,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	params[1] = 1;
 	params[2] = 0xffff3;
 
-	if (!p_context->m_unk0x4b40.HasMenuResources()) {
+	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
@@ -56,7 +56,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 
 	VTable0x80();
 
-	if (p_context->m_unk0x4b40.GetUnk0x78() & 2) {
+	if (p_context->m_modelBuilder.GetUnk0x78() & 2) {
 		m_unk0x2c0c[0].SetUnk0x9ec(TRUE);
 
 		if (p_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() == 0) {
@@ -84,7 +84,7 @@ void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
 	}
 	else if (p_source == &m_unk0x40c8) {
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
 			m_context->m_context->m_unk0x100 = 0;
 		}
 
@@ -156,7 +156,7 @@ void PickRacerScreen::VTable0x84()
 			m_context->m_menuStack.ResetSize();
 		}
 
-		if (m_context->m_unk0x4b40.GetUnk0x78() & 2) {
+		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
 			m_context->m_context->m_unk0x100 = 0;
 		}
 		else {
@@ -164,7 +164,7 @@ void PickRacerScreen::VTable0x84()
 		}
 
 		m_unk0x364 = TRUE;
-		m_context->m_unk0x4b40.SetUnk0x78(m_context->m_unk0x4b40.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
 		break;
 	}
 

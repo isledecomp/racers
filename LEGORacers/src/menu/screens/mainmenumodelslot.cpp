@@ -41,21 +41,21 @@ void MainMenuModelSlot::Reset()
 // FUNCTION: LEGORACERS 0x0047df90
 void MainMenuModelSlot::FUN_0047df90()
 {
-	m_unk0x150->SetUnk0x10(TRUE);
+	m_unk0x150->SetExpressionMask(TRUE);
 	m_unk0x110 = m_unk0x0c->VTable0x14();
 
 	undefined4 dimensions[5];
-	m_unk0x150->FUN_0049dc90(dimensions);
+	m_unk0x150->GetMaxMergedCounts(dimensions);
 	m_unk0x110->VTable0x18(m_unk0x10, 2, dimensions[0], dimensions[1], dimensions[2], dimensions[3]);
 
 	undefined4 zero = 0;
 	GolModelBase* nullModel = NULL;
 	GolSceneNode* nullNode = NULL;
-	m_unk0x154.m_unk0x03 = zero;
-	m_unk0x154.m_unk0x02 = zero;
-	m_unk0x154.m_unk0x01 = zero;
-	m_unk0x154.m_unk0x00 = zero;
-	m_unk0x110 = m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, zero);
+	m_unk0x154.m_legIndex = zero;
+	m_unk0x154.m_torsoIndex = zero;
+	m_unk0x154.m_faceIndex = zero;
+	m_unk0x154.m_hatIndex = zero;
+	m_unk0x110 = m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, zero);
 	if (m_unk0x110 == nullModel) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -65,7 +65,7 @@ void MainMenuModelSlot::FUN_0047df90()
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x114->VTable0x10(m_unk0x150->FUN_0049dc10(&m_unk0x154));
+	m_unk0x114->VTable0x10(m_unk0x150->GetBodySceneNode(&m_unk0x154));
 	m_unk0x1c.FUN_0040d550(m_unk0x110, m_unk0x114, &m_unk0x118, g_fltMax0x004b33c4);
 }
 
@@ -106,38 +106,38 @@ LegoBool32 MainMenuModelSlot::VTable0x08()
 // FUNCTION: LEGORACERS 0x0047e130
 void MainMenuModelSlot::FUN_0047e130(LegoU8 p_unk0x04)
 {
-	m_unk0x154.m_unk0x00 = p_unk0x04;
-	m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
+	m_unk0x154.m_hatIndex = p_unk0x04;
+	m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e160
 void MainMenuModelSlot::FUN_0047e160(LegoU8 p_unk0x04, LegoU8 p_unk0x08)
 {
-	m_unk0x154.m_unk0x01 = p_unk0x04;
-	m_unk0x154.m_unk0x04 = p_unk0x08;
-	GolModelBase* model = m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
-	m_unk0x150->FUN_0049dce0(model, &m_unk0x154);
+	m_unk0x154.m_faceIndex = p_unk0x04;
+	m_unk0x154.m_expressionIndex = p_unk0x08;
+	GolModelBase* model = m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, 0);
+	m_unk0x150->ApplyFaceExpression(model, &m_unk0x154);
 }
 
 // FUNCTION: LEGORACERS 0x0047e1b0
 void MainMenuModelSlot::FUN_0047e1b0(LegoU8 p_unk0x04)
 {
-	m_unk0x154.m_unk0x02 = p_unk0x04;
-	m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
+	m_unk0x154.m_torsoIndex = p_unk0x04;
+	m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e1e0
 void MainMenuModelSlot::FUN_0047e1e0(LegoU8 p_unk0x04)
 {
-	m_unk0x154.m_unk0x03 = p_unk0x04;
-	m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
+	m_unk0x154.m_legIndex = p_unk0x04;
+	m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e210
 void MainMenuModelSlot::FUN_0047e210(TurquoiseGlowColor* p_color)
 {
 	m_unk0x154 = *p_color;
-	m_unk0x150->FUN_0049db90(&m_unk0x154, m_unk0x110, 0);
+	m_unk0x150->BuildDriverModel(&m_unk0x154, m_unk0x110, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e250

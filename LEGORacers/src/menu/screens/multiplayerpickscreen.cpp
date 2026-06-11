@@ -212,7 +212,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 			case 0x3000000b:
 			case 0x40000001:
 				if (record == NULL) {
-					m_context->m_unk0x4b40.RefreshMenuResources();
+					m_context->m_modelBuilder.RefreshMenuResources();
 					FUN_004864f0(i);
 					FUN_00481b10(i);
 
@@ -228,7 +228,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 			case 0x3000000a:
 			case 0x40000000:
 				if (record == NULL) {
-					m_context->m_unk0x4b40.RefreshMenuResources();
+					m_context->m_modelBuilder.RefreshMenuResources();
 					FUN_004864a0(i);
 					FUN_00481b10(i);
 

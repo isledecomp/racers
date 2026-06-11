@@ -32,17 +32,17 @@ LegoBool32 MainIntroScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 		return FALSE;
 	}
 
-	if (p_context->m_unk0x4b40.GetMusicInstance()) {
-		p_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(p_context->m_unk0x4b40.GetMusicInstance());
-		p_context->m_unk0x4b40.SetMusicInstance(NULL);
+	if (p_context->m_modelBuilder.GetMusicInstance()) {
+		p_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(p_context->m_modelBuilder.GetMusicInstance());
+		p_context->m_modelBuilder.SetMusicInstance(NULL);
 	}
 
-	p_context->m_unk0x4b40.SetMusicInstance(p_context->m_unk0x4b40.GetMusicGroup()->CreateMusicInstance(19));
-	if (!p_context->m_unk0x4b40.GetMusicInstance()) {
+	p_context->m_modelBuilder.SetMusicInstance(p_context->m_modelBuilder.GetMusicGroup()->CreateMusicInstance(19));
+	if (!p_context->m_modelBuilder.GetMusicInstance()) {
 		GOL_FATALERROR(c_golErrorGeneral);
 	}
 
-	p_context->m_unk0x4b40.GetMusicInstance()->Play(TRUE);
+	p_context->m_modelBuilder.GetMusicInstance()->Play(TRUE);
 	m_unk0x368.m_unk0x2cc = FALSE;
 	return TRUE;
 }
@@ -79,11 +79,13 @@ LegoBool32 MainIntroScreen::VTable0x78(undefined4 p_unk0x04)
 LegoBool32 MainIntroScreen::Destroy()
 {
 	if (m_context) {
-		if (m_context->m_unk0x4b40.GetMusicGroup()) {
-			if (m_context->m_unk0x4b40.GetMusicInstance()) {
-				m_context->m_unk0x4b40.GetMusicInstance()->Stop();
-				m_context->m_unk0x4b40.GetMusicGroup()->DestroyMusicInstance(m_context->m_unk0x4b40.GetMusicInstance());
-				m_context->m_unk0x4b40.SetMusicInstance(NULL);
+		if (m_context->m_modelBuilder.GetMusicGroup()) {
+			if (m_context->m_modelBuilder.GetMusicInstance()) {
+				m_context->m_modelBuilder.GetMusicInstance()->Stop();
+				m_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(
+					m_context->m_modelBuilder.GetMusicInstance()
+				);
+				m_context->m_modelBuilder.SetMusicInstance(NULL);
 			}
 		}
 	}

@@ -13,7 +13,7 @@ class MenuTextButton;
 class MenuWidget;
 class GolFont0xa0;
 class UtopianPan0xa4;
-class SiennaCircuit0x154;
+class CarPartCarousel;
 
 // VTABLE: LEGORACERS 0x004b3518
 // SIZE 0x368
@@ -97,7 +97,7 @@ protected:
 		return static_cast<ButtonBindingTable::ButtonBinding*>(GetBindingEntry(p_id));
 	}
 
-	undefined4 FUN_0047fcf0(SiennaCircuit0x154* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
+	undefined4 FUN_0047fcf0(CarPartCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 FUN_0047fdc0(
 		MenuTextButton* p_unk0x04,
 		undefined2 p_unk0x08,

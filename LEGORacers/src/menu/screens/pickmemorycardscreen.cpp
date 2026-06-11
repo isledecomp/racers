@@ -52,27 +52,27 @@ LegoBool32 PickMemoryCardScreen::Destroy()
 void PickMemoryCardScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x4f4) {
-		m_context->m_unk0x4b40.SetUnk0x84(0);
+		m_context->m_modelBuilder.SetUnk0x84(0);
 		m_unk0x360 = 15;
 		m_unk0x364 = TRUE;
 	}
 	else if (p_source == &m_unk0x7e4) {
-		m_context->m_unk0x4b40.SetUnk0x84(1);
+		m_context->m_modelBuilder.SetUnk0x84(1);
 		m_unk0x360 = 15;
 		m_unk0x364 = TRUE;
 	}
 	else if (p_source == &m_unk0xad4) {
-		m_context->m_unk0x4b40.SetUnk0x84(2);
+		m_context->m_modelBuilder.SetUnk0x84(2);
 		m_unk0x360 = 15;
 		m_unk0x364 = TRUE;
 	}
 	else if (p_source == &m_unk0xdc4) {
-		m_context->m_unk0x4b40.SetUnk0x84(3);
+		m_context->m_modelBuilder.SetUnk0x84(3);
 		m_unk0x360 = 15;
 		m_unk0x364 = TRUE;
 	}
 	else if (p_source == &m_unk0x10b4) {
-		m_context->m_unk0x4b40.SetUnk0x84(2);
+		m_context->m_modelBuilder.SetUnk0x84(2);
 		m_unk0x360 = 15;
 		m_unk0x364 = TRUE;
 	}
@@ -100,13 +100,13 @@ void PickMemoryCardScreen::VTable0x84()
 	case 15:
 		m_context->m_menuStack.Pop();
 
-		if (!(m_context->m_unk0x4b40.GetUnk0x78() & 8)) {
+		if (!(m_context->m_modelBuilder.GetUnk0x78() & 8)) {
 			m_context->m_menuStack.Push(m_unk0x360);
 		}
 
 		m_context->m_menuStack.Push(144);
 
-		if ((LegoU32) m_context->m_unk0x4b40.GetUnk0x84() < 2) {
+		if ((LegoU32) m_context->m_modelBuilder.GetUnk0x84() < 2) {
 			m_context->m_menuStack.Push(47);
 		}
 		break;
@@ -120,7 +120,7 @@ void PickMemoryCardScreen::VTable0x84()
 // FUNCTION: LEGORACERS 0x00484be0
 LegoBool32 PickMemoryCardScreen::VTable0x78(undefined4 p_arg)
 {
-	m_context->m_unk0x4b40.SetUnk0x84(0);
+	m_context->m_modelBuilder.SetUnk0x84(0);
 	m_unk0x360 = 15;
 	m_unk0x364 = TRUE;
 	return MenuGameScreen::VTable0x78(p_arg);

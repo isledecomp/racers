@@ -59,11 +59,11 @@ void PeridotTraceBase0x24::Record::Destroy()
 // FUNCTION: LEGORACERS 0x0042b330
 void PeridotTraceBase0x24::Record::FUN_0042b330(TurquoiseGlowColor* p_color) const
 {
-	p_color->m_unk0x01 = m_data[0x1c];
-	p_color->m_unk0x00 = m_data[0x1d];
-	p_color->m_unk0x03 = m_data[0x1e];
-	p_color->m_unk0x02 = m_data[0x1f];
-	p_color->m_unk0x04 = m_data[0x20] & 0x7f;
+	p_color->m_faceIndex = m_data[0x1c];
+	p_color->m_hatIndex = m_data[0x1d];
+	p_color->m_legIndex = m_data[0x1e];
+	p_color->m_torsoIndex = m_data[0x1f];
+	p_color->m_expressionIndex = m_data[0x20] & 0x7f;
 }
 
 // FUNCTION: LEGORACERS 0x0042b360
@@ -127,11 +127,11 @@ void PeridotTraceBase0x24::Record::FUN_0042b490()
 // FUNCTION: LEGORACERS 0x0042b4b0
 void PeridotTraceBase0x24::Record::FUN_0042b4b0(const TurquoiseGlowColor* p_color)
 {
-	m_data[0x1c] = p_color->m_unk0x01;
-	m_data[0x1d] = p_color->m_unk0x00;
-	m_data[0x1e] = p_color->m_unk0x03;
-	m_data[0x1f] = p_color->m_unk0x02;
-	m_data[0x20] = (m_data[0x20] & 0x80) | p_color->m_unk0x04;
+	m_data[0x1c] = p_color->m_faceIndex;
+	m_data[0x1d] = p_color->m_hatIndex;
+	m_data[0x1e] = p_color->m_legIndex;
+	m_data[0x1f] = p_color->m_torsoIndex;
+	m_data[0x20] = (m_data[0x20] & 0x80) | p_color->m_expressionIndex;
 	FUN_0042b6d0();
 }
 

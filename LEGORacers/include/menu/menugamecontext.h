@@ -12,11 +12,11 @@
 #include "race/data/championdefinitionlist.h"
 #include "race/data/racedefinitionlist.h"
 #include "race/data/racenamelist.h"
-#include "racer/aquamarinespirit0x3c.h"
+#include "racer/chassismodeltable.h"
 #include "racer/drivercosmetictable.h"
 #include "racer/drivermodelbuilder.h"
+#include "racer/driverpartcatalog.h"
 #include "racer/driverpartresources.h"
-#include "racer/lavendervault0x764.h"
 #include "save/savesystem.h"
 #include "util/stackoflegou16.h"
 
@@ -31,15 +31,15 @@ public:
 	LegoPieceLibrary m_pieceLibrary;              // 0x21b8
 	CarBuildModel m_unk0x21f4;                    // 0x21f4
 	LegoColorTable m_unk0x4224;                   // 0x4224
-	DriverCosmeticTable m_unk0x425c;              // 0x425c
-	AquamarineSpirit0x3c m_unk0x42dc;             // 0x42dc
+	DriverCosmeticTable m_cosmeticTable;          // 0x425c
+	ChassisModelTable m_chassisModels;            // 0x42dc
 	ChampionDefinitionList m_championDefinitions; // 0x4318
 	RaceDefinitionList m_raceList;                // 0x434c
 	RaceNameList m_raceNames;                     // 0x4360
 	MenuAnimationList m_menuAnimations;           // 0x4374
-	LavenderVault0x764 m_unk0x437c;               // 0x437c
-	DriverPartResources m_unk0x4ae0;              // 0x4ae0
-	DriverModelBuilder m_unk0x4b40;               // 0x4b40
+	DriverPartCatalog m_partCatalog;              // 0x437c
+	DriverPartResources m_partResources;          // 0x4ae0
+	DriverModelBuilder m_modelBuilder;            // 0x4b40
 };
 
 #endif // MENUGAMECONTEXT_H

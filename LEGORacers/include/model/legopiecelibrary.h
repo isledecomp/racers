@@ -16,7 +16,16 @@ public:
 
 	// SIZE 0x02
 	struct ShapeCell {
+		LegoS32 FUN_0049ea40();
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);
+		LegoS32 GetClampedLower()
+		{
+			LegoS32 lower = m_second & 0x3f;
+			if (lower > (m_first & 0x3f)) {
+				lower = 0;
+			}
+			return lower;
+		}
 
 		LegoU8 m_first;  // 0x00
 		LegoU8 m_second; // 0x01

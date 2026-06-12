@@ -353,7 +353,7 @@ void EditCarScreen::FUN_0047c810()
 			record->FUN_0042b360(m_unk0x325c);
 
 			CarBuildModel* model = &m_context->m_unk0x21f4;
-			model->GetUnk0xa4().FUN_0049fd60();
+			model->GetPieceList().FUN_0049fd60();
 			model->SetPlacedPieceCount(0);
 			m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x325c);
 			m_context->m_unk0x21f4.FUN_0049b740(0);
@@ -467,7 +467,7 @@ void EditCarScreen::VTable0x44(MenuWidget* p_source)
 	}
 
 	CarBuildModel* model = &m_context->m_unk0x21f4;
-	model->GetUnk0xa4().FUN_0049fd60();
+	model->GetPieceList().FUN_0049fd60();
 	model->SetPlacedPieceCount(0);
 
 	MenuWidget* selectedChild = m_unk0x2384.GetUnk0x78();

@@ -35,6 +35,17 @@ LegoS32 LegoPieceLibrary::ReadBracketedCountAndLeftCurly(GolFileParser* p_parser
 	return result;
 }
 
+// FUNCTION: LEGORACERS 0x0049ea40
+LegoS32 LegoPieceLibrary::ShapeCell::FUN_0049ea40()
+{
+	LegoS32 result = (m_second & g_shapeCellValueMask) - (m_first & g_shapeCellValueMask);
+	if (result < 0) {
+		result = 0;
+	}
+
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x0049ea60
 LegoPieceLibrary::ShapeCell* LegoPieceLibrary::ShapeCell::GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation)
 {

@@ -388,6 +388,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/runtime/cutscenetextvisual.cpp
   LEGORacers/src/menu/runtime/cutscenevisual.cpp
   LEGORacers/src/model/carbuildmodel.cpp
+  LEGORacers/src/model/carbuildpiecelist.cpp
   LEGORacers/src/model/legocolortable.cpp
   LEGORacers/src/racer/drivercosmetictable.cpp
   LEGORacers/src/racer/chassismodeltable.cpp

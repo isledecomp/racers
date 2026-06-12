@@ -28,6 +28,10 @@ address,type,size
 0x4b0180,float,4
 0x4b0188,float,4
 0x4b018c,float,4
+0x4b0414,float,4
+0x4b0540,float,4
+0x4b0548,float,4
+0x4b0554,float,4
 0x4b09c0,float,4
 0x4b0df0,float,8
 0x4b1370,float,4
@@ -85,6 +89,7 @@ address,type,size
 0x4b1680,float,4
 0x4b1684,float,4
 0x4b1688,float,4
+0x4b1e3c,float,4
 0x4b2a34,float,4
 0x4b2b00,float,4
 0x4b2cf4,float,4

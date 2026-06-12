@@ -281,7 +281,9 @@ LegoS32 CarPartCarousel::VTable0x58()
 // FUNCTION: LEGORACERS 0x00485840
 undefined4 CarPartCarousel::VTable0x3c(undefined4 p_elapsed)
 {
-	if ((m_rotationAngle += m_unk0xbc * (LegoS32) p_elapsed) > g_twoPi) {
+	LegoFloat step = m_unk0xbc;
+	LegoFloat scaled = (LegoFloat) (LegoS32) p_elapsed;
+	if ((m_rotationAngle += step * scaled) > g_twoPi) {
 		m_rotationAngle -= g_twoPi;
 	}
 

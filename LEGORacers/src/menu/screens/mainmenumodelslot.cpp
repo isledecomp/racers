@@ -104,7 +104,7 @@ LegoBool32 MainMenuModelSlot::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x0047e130
-void MainMenuModelSlot::FUN_0047e130(LegoU8 p_unk0x04)
+void MainMenuModelSlot::FUN_0047e130(LegoU32 p_unk0x04)
 {
 	m_cosmetics.m_hatIndex = p_unk0x04;
 	m_unk0x150->BuildDriverModel(&m_cosmetics, m_unk0x110, 0);
@@ -120,14 +120,14 @@ void MainMenuModelSlot::FUN_0047e160(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x0047e1b0
-void MainMenuModelSlot::FUN_0047e1b0(LegoU8 p_unk0x04)
+void MainMenuModelSlot::FUN_0047e1b0(LegoU32 p_unk0x04)
 {
 	m_cosmetics.m_torsoIndex = p_unk0x04;
 	m_unk0x150->BuildDriverModel(&m_cosmetics, m_unk0x110, 0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e1e0
-void MainMenuModelSlot::FUN_0047e1e0(LegoU8 p_unk0x04)
+void MainMenuModelSlot::FUN_0047e1e0(LegoU32 p_unk0x04)
 {
 	m_cosmetics.m_legIndex = p_unk0x04;
 	m_unk0x150->BuildDriverModel(&m_cosmetics, m_unk0x110, 0);

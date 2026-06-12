@@ -118,7 +118,13 @@ void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
 				context->m_raceSlots[0].m_unk0x04 = raceNameEntry->GetUnk0x2c();
 			}
 
-			m_unk0x360 = 0x13;
+			// Both branches assign the same id in the original; the flag test is real but inert
+			if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
+				m_unk0x360 = 0x13;
+			}
+			else {
+				m_unk0x360 = 0x13;
+			}
 		}
 	}
 	else if (source == &m_unk0x1ccc) {

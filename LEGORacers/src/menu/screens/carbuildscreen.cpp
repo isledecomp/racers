@@ -295,6 +295,7 @@ void CarBuildScreen::VTable0xc0()
 LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_event, undefined4, undefined4)
 {
 	LegoU32 keyCode = p_event->m_keyCode;
+	LegoU32 sound = 0;
 	if ((keyCode & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
 		return FALSE;
 	}
@@ -302,7 +303,6 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 	LegoS32 categoryIndex = m_unk0x2308.GetUnk0x298();
 	undefined4 nextMode = 1;
 	LegoBool32 result = TRUE;
-	LegoU32 sound = 0;
 	LegoBool32 moved;
 	SoundVector position;
 
@@ -486,6 +486,8 @@ LegoBool32 CarBuildScreen::FUN_00474330(MenuWidget*, InputEventQueue::Event* p_e
 LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c)
 {
 	switch (p_event->m_keyCode) {
+	default:
+		return FALSE;
 	case c_carBuildMouseButton1: {
 		CopperCrest0x40::Helper0x44* helper = m_cursorHelper;
 		LegoS32 x = helper->m_cursorX + helper->m_originX;

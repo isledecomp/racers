@@ -13,6 +13,8 @@
 #include <math.h>
 #include <string.h>
 
+extern const LegoFloat g_violetShoalTwo;
+
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement, 0x2d0)
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 
@@ -281,11 +283,11 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478080(LegoS32 p_delta, L
 	}
 
 	m_unk0x298 += static_cast<LegoS8>(p_delta);
-	if (m_unk0x298 < 0) {
-		m_unk0x298 += 8;
+	if (m_unk0x298 >= 0) {
+		m_unk0x298 %= 8;
 	}
 	else {
-		m_unk0x298 %= 8;
+		m_unk0x298 += 8;
 	}
 
 	m_unk0x2c8 = m_unk0x298;
@@ -316,12 +318,12 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478180(LegoFloat p_delta)
 		return FALSE;
 	}
 
-	if (p_delta <= 0.0f) {
-		if (m_unk0x288 <= 0.0f) {
+	if (p_delta > 0.0f) {
+		if (m_unk0x288 >= g_violetShoalTwo) {
 			return FALSE;
 		}
 	}
-	else if (m_unk0x288 >= 2.0f) {
+	else if (m_unk0x288 <= 0.0f) {
 		return FALSE;
 	}
 
@@ -329,7 +331,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478180(LegoFloat p_delta)
 	if (m_unk0x288 < 0.0f) {
 		m_unk0x288 = 0.0f;
 	}
-	else if (m_unk0x288 > 2.0f) {
+	else if (m_unk0x288 > g_violetShoalTwo) {
 		m_unk0x288 = 2.0f;
 	}
 
@@ -347,9 +349,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478180(LegoFloat p_delta)
 	GolVec3 targetPosition;
 	LegoFloat targetZ = m_unk0x250.m_z;
 	targetZ += 4.0f;
+	m_unk0x27c.m_x = ((maxPosition.m_x - minPosition.m_x) * interpolation) + minPosition.m_x;
 	targetPosition.m_x = m_unk0x250.m_x;
 	targetPosition.m_y = m_unk0x250.m_y;
-	m_unk0x27c.m_x = ((maxPosition.m_x - minPosition.m_x) * interpolation) + minPosition.m_x;
 	m_unk0x27c.m_y = ((maxPosition.m_y - minPosition.m_y) * interpolation) + minPosition.m_y;
 	m_unk0x27c.m_z = ((maxPosition.m_z - minPosition.m_z) * interpolation) + minPosition.m_z;
 	targetPosition.m_z = targetZ;

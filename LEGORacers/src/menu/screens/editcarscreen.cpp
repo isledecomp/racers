@@ -247,16 +247,16 @@ void EditCarScreen::FUN_0047c450()
 
 		m_context->m_unk0x21f4.FUN_0049b740(0);
 		m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
-		m_unk0x3678->FUN_0042b380(m_unk0x367c);
+		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(m_unk0x367c);
 
 		::strncpy(name, m_unk0x367c, 8);
 		name[8] = '\0';
 
 		LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
-		CarPartSet::Entry* entry = m_context->m_unk0x21a4.FindEntry(pieceRecord->m_pieceType);
-		m_context->m_unk0x21a4.SetSelectedEntry(entry);
+		LegoS32 pieceType = pieceRecord->m_pieceType;
+		m_context->m_unk0x21a4.SetSelectedEntry(m_context->m_unk0x21a4.FindEntry(pieceType));
 
-		LegoS32 index = entry->GetIndex();
+		LegoS32 index = m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex();
 		if (m_unk0x3688[index]) {
 			m_unk0x2384.FUN_0046d920(&m_unk0x2e0c[index]);
 		}

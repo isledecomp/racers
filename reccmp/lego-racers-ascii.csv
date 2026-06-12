@@ -349,7 +349,6 @@ address,type,x-text
 0x4c1cfc,string,".msd"
 0x4c1d04,string,".msb"
 0x4c1d28,string,"carbuild.srf"
-0x4c1d38,string,"font_hlp"
 0x4c1d5c,string,"MENUDATA\\%s"
 0x4c1d68,string,"CHAMP"
 0x4c1f78,string,"MENUDATA\\GARAGE"

@@ -223,8 +223,9 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 	::memcpy(menuName, p_raceDefinition->GetMenuName(), sizeof(menuName));
 
 	if (menuName[0] != '\0') {
+		RaceDefinitionList* raceList = &m_context->m_raceList;
 		RaceDefinitionList::RaceDefinition* menuRaceDefinition =
-			static_cast<RaceDefinitionList::RaceDefinition*>(m_context->m_raceList.GetName(menuName));
+			static_cast<RaceDefinitionList::RaceDefinition*>(raceList->GetName(menuName));
 		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(menuRaceDefinition));
 
 		if (!(p_gameState->FUN_0042f1f0() & mask)) {

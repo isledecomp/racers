@@ -16,13 +16,17 @@ public:
 	CutsceneParticle();
 	~CutsceneParticle();
 
-	LegoU8 GetSordidUnk0xb8() const { return (LegoU8) m_unk0x008.GetUnk0xb8(); }
+	LegoBool32 IsActive() const { return m_unk0x008.IsActive(); }
+	CutsceneAnimation::Runtime* GetRuntime() const { return m_unk0x000; }
+	CutsceneParticleRef* GetRef() const { return m_ref; }
+	void SetRef(CutsceneParticleRef* p_ref) { m_ref = p_ref; }
 
 	void Destroy();
 	void Reset();
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);
+	void ActivateRuntime(CutsceneAnimation::Runtime* p_runtime);
 	void FUN_004897a0();
 	void FUN_004897c0();
 	void FUN_004897e0(LegoU32 p_elapsedMs);
@@ -31,7 +35,7 @@ public:
 
 private:
 	CutsceneAnimation::Runtime* m_unk0x000; // 0x000
-	undefined4 m_unk0x004;                  // 0x004
+	CutsceneParticleRef* m_ref;             // 0x004
 	ParticleSystem m_unk0x008;              // 0x008
 	GolVec3 m_unk0x148;                     // 0x148
 	GolVec3 m_unk0x154;                     // 0x154

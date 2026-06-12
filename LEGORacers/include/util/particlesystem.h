@@ -19,11 +19,31 @@ public:
 
 	void Destroy();
 
-	undefined4 GetUnk0xb8() const { return m_unk0x0b8; }
+	LegoBool32 IsActive() const { return m_unk0x0b8 & c_flagActive; }
 
 	void Reset();
 
 	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, LegoU32 p_param3, LegoU32 p_param4);
+	void ConfigureMaterialAnimation(
+		MabMaterialAnimationItem0x18* p_animation,
+		MabMaterialAnimationItem0x8* p_items,
+		LegoU32 p_itemCount,
+		LegoFloat p_unk0x1c,
+		LegoFloat p_unk0x20,
+		LegoFloat p_unk0x24,
+		LegoFloat p_unk0x28,
+		LegoFloat p_radius,
+		const GolVec3* p_position
+	);
+	void ConfigureMaterial(
+		DuskwindBananaRelic0x24* p_material,
+		LegoFloat p_unk0x1c,
+		LegoFloat p_unk0x20,
+		LegoFloat p_unk0x24,
+		LegoFloat p_unk0x28,
+		LegoFloat p_radius,
+		const GolVec3* p_position
+	);
 
 	Particle* FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3);
 	void FUN_00412820();
@@ -42,6 +62,15 @@ private:
 		c_flagPendingReset = 0x1 << 4,
 	};
 
+	void ConfigureCommon(
+		LegoFloat p_unk0x1c,
+		LegoFloat p_unk0x20,
+		LegoFloat p_unk0x24,
+		LegoFloat p_unk0x28,
+		LegoFloat p_radius,
+		const GolVec3* p_position
+	);
+
 	GolExport* m_unk0x000;                    // 0x000
 	GolModelBase* m_unk0x004;                 // 0x004
 	undefined4 m_unk0x008;                    // 0x008
@@ -59,10 +88,10 @@ private:
 	MabMaterialAnimationItem0x8* m_unk0x0cc;  // 0x0cc
 	MabMaterialAnimationItem0x18* m_unk0x0d0; // 0x0d0
 	DuskwindBananaRelic0x24* m_unk0x0d4;      // 0x0d4
-	undefined4 m_unk0x0d8;                    // 0x0d8
-	undefined4 m_unk0x0dc;                    // 0x0dc
-	undefined4 m_unk0x0e0;                    // 0x0e0
-	undefined4 m_unk0x0e4;                    // 0x0e4
+	LegoFloat m_unk0x0d8;                     // 0x0d8
+	LegoFloat m_unk0x0dc;                     // 0x0dc
+	LegoFloat m_unk0x0e0;                     // 0x0e0
+	LegoFloat m_unk0x0e4;                     // 0x0e4
 	undefined4 m_unk0x0e8;                    // 0x0e8
 	undefined m_unk0x0ec[0x120 - 0xec];       // 0x0ec
 	undefined4 m_unk0x120;                    // 0x120

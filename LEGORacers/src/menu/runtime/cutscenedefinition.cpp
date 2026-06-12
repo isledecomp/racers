@@ -160,11 +160,9 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 	return duration;
 }
 
-// STUB: LEGORACERS 0x00404c90
+// FUNCTION: LEGORACERS 0x00404c90
 LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 {
-	STUB(0x00404c90);
-
 	if (!m_unk0x24) {
 		LegoChar message[64];
 
@@ -205,15 +203,16 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 		}
 	}
 
-	if (m_unk0x5c && (m_unk0x20 == 1 || m_unk0x20 == 2 || m_unk0x20 == 3)) {
-		for (LegoU32 i = 0; i < m_unk0x5c; i++) {
-			m_unk0x60[i].m_unk0x00 = m_unk0x28->FUN_00406f40(m_unk0x60[i].m_unk0x08, m_unk0x60[i].m_unk0x0c);
-			m_unk0x60[i].m_unk0x04 =
-				m_unk0x28->FUN_00406f60(m_unk0x60[i].m_unk0x08, m_unk0x60[i].m_unk0x0c, m_unk0x60[i].m_unk0x10);
+	if (m_unk0x5c && (m_unk0x20 == 2 || m_unk0x20 == 1 || m_unk0x20 == 3)) {
+		Animation* animation = m_unk0x60;
+		Animation* end = animation + m_unk0x5c;
+
+		for (; animation < end; animation++) {
+			animation->m_unk0x00 = m_unk0x28->FUN_00406f40(animation->m_unk0x08, animation->m_unk0x0c);
+			animation->m_unk0x04 =
+				m_unk0x28->FUN_00406f60(animation->m_unk0x08, animation->m_unk0x0c, animation->m_unk0x10);
 		}
 	}
-
-	return m_unk0x5c;
 }
 
 // FUNCTION: LEGORACERS 0x00404e80
@@ -284,9 +283,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 
 		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
 			static_cast<GolAnimatedEntity*>(m_unk0x24)->FUN_0040dad0(m_unk0x58);
-			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetFlags(
-				static_cast<GolAnimatedEntity*>(m_unk0x24)->GetFlags() | 0x10000
-			);
+			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(TRUE);
 		}
 
 		Event::VTable0x10(p_frame, p_event);
@@ -296,12 +293,14 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 	}
 }
 
-// STUB: LEGORACERS 0x00405020
+// FUNCTION: LEGORACERS 0x00405020
 void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
 {
-	STUB(0x00405020);
-
 	if (m_unk0x24) {
+		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
+			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(FALSE);
+		}
+
 		Event::VTable0x14(p_frame, p_event);
 		if (p_event) {
 			p_event->VTable0x14(p_frame, m_name, this);
@@ -484,26 +483,30 @@ void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x14(Frame* p_frame
 	m_unk0x40 = NULL;
 }
 
-// STUB: LEGORACERS 0x004054a0
+// FUNCTION: LEGORACERS 0x004054a0
 void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x04(undefined4 p_elapsedMs)
 {
-	STUB(0x004054a0);
+	LegoU32 elapsedMs = p_elapsedMs;
 
 	if (m_unk0x3c & 1) {
-		if (static_cast<LegoU32>(p_elapsedMs) <= m_unk0x38) {
-			m_unk0x38 -= static_cast<LegoU32>(p_elapsedMs);
-		}
-		else if (m_unk0x3c & 2) {
-			m_unk0x3c &= ~2;
-			m_unk0x38 = m_unk0x34;
-			m_unk0x40->FUN_004067f0(&m_unk0x20);
+		if (elapsedMs > m_unk0x38) {
+			if (m_unk0x3c & 2) {
+				m_unk0x3c &= ~2;
+				m_unk0x38 = m_unk0x34;
+				m_unk0x40->FUN_004067f0(&m_unk0x20);
+			}
+			else {
+				m_unk0x38 = m_unk0x30;
+				m_unk0x3c |= 2;
+				m_unk0x40->FUN_00406790(&m_unk0x20);
+			}
 		}
 		else {
-			m_unk0x38 = m_unk0x30;
-			m_unk0x3c |= 2;
-			m_unk0x40->FUN_00406790(&m_unk0x20);
+			m_unk0x38 -= elapsedMs;
 		}
 	}
+
+	Event::VTable0x04(elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00405520
@@ -672,26 +675,30 @@ void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x14(Frame* p_frame, Bl
 	m_unk0x34 = NULL;
 }
 
-// STUB: LEGORACERS 0x00405810
+// FUNCTION: LEGORACERS 0x00405810
 void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x04(undefined4 p_elapsedMs)
 {
-	STUB(0x00405810);
+	LegoU32 elapsedMs = p_elapsedMs;
 
 	if (m_unk0x30 & 1) {
-		if (static_cast<LegoU32>(p_elapsedMs) <= m_unk0x2c) {
-			m_unk0x2c -= static_cast<LegoU32>(p_elapsedMs);
-		}
-		else if (m_unk0x30 & 2) {
-			m_unk0x30 &= ~2;
-			m_unk0x2c = m_unk0x28;
-			m_unk0x34->FUN_00406770(&m_unk0x20);
+		if (elapsedMs > m_unk0x2c) {
+			if (m_unk0x30 & 2) {
+				m_unk0x30 &= ~2;
+				m_unk0x2c = m_unk0x28;
+				m_unk0x34->FUN_00406770(&m_unk0x20);
+			}
+			else {
+				m_unk0x2c = m_unk0x24;
+				m_unk0x30 |= 2;
+				m_unk0x34->FUN_00406760(&m_unk0x20);
+			}
 		}
 		else {
-			m_unk0x2c = m_unk0x24;
-			m_unk0x30 |= 2;
-			m_unk0x34->FUN_00406760(&m_unk0x20);
+			m_unk0x2c -= elapsedMs;
 		}
 	}
+
+	Event::VTable0x04(elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00405890
@@ -747,8 +754,6 @@ void CutsceneDefinition::Frame::Reset()
 // STUB: LEGORACERS 0x00405950
 void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
-	STUB(0x00405950);
-
 	if (m_unk0x00) {
 		Destroy();
 	}

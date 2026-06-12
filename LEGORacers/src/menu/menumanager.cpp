@@ -2,18 +2,31 @@
 
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
 #include "golhashtable.h"
+#include "golmodelentity.h"
 #include "golname.h"
 #include "golstream.h"
 #include "input/inputmanager.h"
 #include "input/keyboarddevice.h"
 #include "material/awakekite0x20.h"
+#include "material/duskwindbananarelic0x24.h"
+#include "material/golmateriallibrary.h"
+#include "material/goltexturelist.h"
 #include "menu/menuscreenid.h"
 #include "menu/screens/menugamescreen.h"
+#include "mesh/gdbvertexarray0xc.h"
+#include "mesh/golmodelbase.h"
+#include "mesh/golmodelmaterialtable.h"
+#include "render/golcommondrawstate.h"
 #include "render/goldrawstate.h"
+#include "surface/golddune0x38.h"
+#include "surface/purpledune0x7c.h"
 #include "util/amethystbreeze0x104.h"
 
+#include <float.h>
 #include <golerror.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -23,6 +36,9 @@ DECOMP_SIZE_ASSERT(MenuManager, 0x4dd4)
 DECOMP_SIZE_ASSERT(MenuGameContext, 0x4bc8)
 DECOMP_SIZE_ASSERT(MenuScreenCreateParams, 0x30)
 DECOMP_SIZE_ASSERT(GolCamera, 0x344)
+
+// GLOBAL: LEGORACERS 0x004b05a0
+const LegoFloat g_menuManagerMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b05d8
 LegoFloat g_unk0x4b05d8 = 1.0f / 255.0f;
@@ -595,14 +611,14 @@ void MenuManager::FUN_0042d730()
 				raceDefinition->GetCourseName(courseIndex),
 				sizeof(slots[courseIndex].m_courseName)
 			);
-			slots[courseIndex].m_flag = FALSE;
+			slots[courseIndex].m_chassisName[0] = '\0';
 			slots[courseIndex].m_unk0x10 = 2;
 			slots[courseIndex].m_cosmetics.m_hatIndex = 0;
 			slots[courseIndex].m_cosmetics.m_faceIndex = 0;
 			slots[courseIndex].m_cosmetics.m_torsoIndex = 0;
 			slots[courseIndex].m_cosmetics.m_legIndex = 0;
 			slots[courseIndex].m_cosmetics.m_expressionIndex = 0;
-			slots[courseIndex].m_unk0x59[0] = 0;
+			slots[courseIndex].m_previewFaceIndex = 0;
 		}
 	}
 
@@ -702,14 +718,75 @@ void MenuManager::FUN_0042d730()
 	}
 }
 
-// STUB: LEGORACERS 0x0042dcb0
+// FUNCTION: LEGORACERS 0x0042dcb0
 void MenuManager::FUN_0042dcb0(
 	PeridotTraceBase0x24::Record* p_record,
 	LegoRacers::Context::PlayerSetupSlot* p_slot,
 	AmethystBreeze0x104* p_rendererState
 )
 {
-	STUB(0x0042dcb0);
+	GolModelEntity entity;
+
+	p_slot->m_courseName[0] = '\0';
+	p_record->FUN_0042b380(p_slot->m_chassisName);
+
+	GolExport* golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
+	GolD3DRenderDevice* renderer = golExport->GetDrawState()->m_currentRenderer;
+	CarBuildModel& carBuildModel = m_unk0x04.m_unk0x21f4;
+
+	if (!carBuildModel.FUN_0049c7f0(p_record->GetCarData())) {
+		GOL_FATALERROR_MESSAGE("Unable to load mesh builder with car data");
+	}
+
+	carBuildModel.FUN_0049b740(0);
+	carBuildModel.FUN_0049b920(0, 0xff);
+
+	undefined4 textureCount;
+	undefined4 materialCount;
+
+	materialCount = carBuildModel.GetUnk0x1ee8();
+	textureCount = carBuildModel.GetUnk0x1eec();
+
+	GolMaterialLibrary* materials = p_slot->m_materials;
+	if (materials) {
+		golExport->DestroyMaterialList(materials);
+		p_slot->m_materials = NULL;
+	}
+	p_slot->m_materials = golExport->CreateMaterialList();
+	p_slot->m_materials->VTable0x1c(renderer, materialCount);
+
+	if (p_slot->m_textures) {
+		golExport->DestroyTextureList(p_slot->m_textures);
+		p_slot->m_textures = NULL;
+	}
+	p_slot->m_textures = golExport->CreateTextureList();
+	p_slot->m_textures->VTable0x1c(renderer, textureCount);
+
+	if (p_slot->m_model) {
+		golExport->VTable0x48(p_slot->m_model);
+		p_slot->m_model = NULL;
+	}
+	p_slot->m_model = golExport->VTable0x14();
+	p_slot->m_model->VTable0x18(
+		renderer,
+		3,
+		carBuildModel.GetUnk0x1ef8(),
+		carBuildModel.GetUnk0x1ef4(),
+		carBuildModel.GetUnk0x1ef0(),
+		materialCount
+	);
+
+	carBuildModel.FUN_0049c840(p_slot->m_model, p_slot->m_materials, p_slot->m_textures);
+	p_slot->m_unk0x14 = carBuildModel.FUN_0049c6a0(&p_slot->m_unk0x18, &p_slot->m_unk0x1c, &p_slot->m_unk0x20);
+
+	entity.VTable0x50(p_slot->m_model, g_menuManagerMaxFloat);
+	renderer->VTable0x9c(&entity, p_rendererState, 0);
+	entity.VTable0x54();
+
+	GdbVertexArray0xc* vertexArray;
+	p_slot->m_model->VTable0x28(&vertexArray);
+	vertexArray->VTable0x10();
+	p_slot->m_model->VTable0x2c(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0042de90
@@ -756,7 +833,79 @@ void MenuManager::FUN_0042dfa0(
 	AmethystBreeze0x104* p_rendererState
 )
 {
-	STUB(0x0042dfa0);
+	GolAnimatedEntity entity;
+	CmbModelPart0x34 modelParts;
+	LegoU32 textureCount;
+	DriverCosmetics cosmetics;
+	GolModelMaterialTable* materialTable;
+	LegoU32 materialCount;
+	DuskWindBananaRelicParams params;
+
+	p_record->FUN_0042b330(&cosmetics);
+
+	DriverModelBuilder* modelBuilder = &m_unk0x04.m_modelBuilder;
+	p_slot->m_altModel = modelBuilder->BuildDriverModel(&cosmetics, NULL, 3);
+	p_slot->m_previewFaceIndex = cosmetics.m_faceIndex;
+	materialTable = p_slot->m_altModel->GetMaterialTable();
+	textureCount = 0;
+
+	for (materialCount = 0; materialCount < materialTable->GetCount(); materialCount++) {
+		DuskwindBananaRelic0x24* material = materialTable->GetMaterial(materialCount);
+		if (material == NULL) {
+			break;
+		}
+
+		if (material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+			textureCount++;
+		}
+	}
+
+	GolExport* golExport = m_unk0x04.m_context->m_golApp->GetGolExport();
+	GolD3DRenderDevice* renderer = golExport->GetDrawState()->m_currentRenderer;
+
+	p_slot->m_altMaterials = golExport->CreateMaterialList();
+	p_slot->m_altMaterials->VTable0x1c(renderer, materialCount);
+	p_slot->m_altTextures = golExport->CreateTextureList();
+	p_slot->m_altTextures->VTable0x1c(renderer, textureCount);
+
+	textureCount = 0;
+	for (LegoU32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
+		DuskwindBananaRelic0x24* sourceMaterial = materialTable->GetMaterial(materialIndex);
+		sourceMaterial->CopyParamsTo(&params);
+
+		if (sourceMaterial->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+			PurpleDune0x7c* texture = p_slot->m_altTextures->GetItem(textureCount++);
+			texture->SetName(static_cast<PurpleDune0x7c*>(params.m_unk0x04)->GetName());
+			texture->SetSourceTextureDefinition(
+				params.m_unk0x04->GetUnk0x34(),
+				params.m_unk0x04->GetUnk0x36(),
+				params.m_unk0x04->GetColorKey()
+			);
+			params.m_unk0x04 = texture;
+		}
+		else {
+			params.m_unk0x04 = NULL;
+		}
+
+		params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flagBit0;
+		DuskwindBananaRelic0x24* material = p_slot->m_altMaterials->GetItem(materialIndex);
+		material->FUN_100257e0(renderer, params);
+		materialTable->SetPosition(materialIndex, material);
+	}
+
+	entity.FUN_0040d550(
+		p_slot->m_altModel,
+		modelBuilder->GetBodySceneNode(&cosmetics),
+		&modelParts,
+		g_menuManagerMaxFloat
+	);
+	renderer->VTable0x9c(&entity, p_rendererState, 0);
+	entity.VTable0x54();
+
+	GdbVertexArray0xc* vertexArray;
+	p_slot->m_altModel->VTable0x28(&vertexArray);
+	vertexArray->VTable0x10();
+	p_slot->m_altModel->VTable0x2c(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0042e1f0

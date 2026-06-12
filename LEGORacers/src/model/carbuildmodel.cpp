@@ -628,7 +628,7 @@ void CarBuildModel::Initialize(
 	}
 
 	m_verdantTide = p_verdantTide;
-	m_materialTable = p_verdantTide != NULL ? p_verdantTide->GetMaterialTable() : NULL;
+	m_unk0x0c.SetPrimaryMaterialTable(p_verdantTide != NULL ? p_verdantTide->GetMaterialTable() : NULL);
 	m_pieceLibrary = p_pieceLibrary;
 	m_golExport = p_golExport;
 	m_renderer = p_renderer;
@@ -809,16 +809,30 @@ void CarBuildModel::FUN_0049c230(Placement*, GolModelEntity*)
 	STUB(0x0049c230);
 }
 
+// STUB: LEGORACERS 0x0049c6a0
+LegoS32 CarBuildModel::FUN_0049c6a0(LegoFloat*, LegoFloat*, LegoFloat*)
+{
+	STUB(0x0049c6a0);
+	return 0;
+}
+
 // STUB: LEGORACERS 0x0049c7f0
-void CarBuildModel::FUN_0049c7f0(LegoU8*)
+LegoBool32 CarBuildModel::FUN_0049c7f0(LegoU8*)
 {
 	STUB(0x0049c7f0);
+	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0049c820
 void CarBuildModel::FUN_0049c820(LegoU8* p_dest)
 {
 	m_unk0xa4.FUN_0049fca0(p_dest);
+}
+
+// STUB: LEGORACERS 0x0049c840
+void CarBuildModel::FUN_0049c840(GolModelBase*, GolMaterialLibrary*, GolTextureList*)
+{
+	STUB(0x0049c840);
 }
 
 // FUNCTION: LEGORACERS 0x0049df20

@@ -101,6 +101,8 @@ public:
 		void FUN_0042b5c0(const Record* p_source);
 		LegoU32 FUN_0042b610(undefined4 p_index) const;
 		LegoBool32 FUN_0042b640(LegoU32 p_index, LegoU32 p_value);
+		LegoU8* GetCarData() { return &m_data[0x29]; }
+		const LegoU8* GetCarData() const { return &m_data[0x29]; }
 
 		PeridotTraceBase0x24* m_owner; // 0x00
 		Record* m_next;                // 0x04

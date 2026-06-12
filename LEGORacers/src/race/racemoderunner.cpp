@@ -120,7 +120,7 @@ void RaceModeRunner::ReleaseContextAssets()
 	for (LegoU32 i = 0; i < m_context->m_unk0x32c; i++) {
 		LegoRacers::Context::PlayerSetupSlot& slot = m_context->m_playerSetupSlots[i];
 
-		if (slot.m_flag) {
+		if (slot.m_chassisName[0]) {
 			if (slot.m_model) {
 				golExport->VTable0x48(slot.m_model);
 				slot.m_model = NULL;

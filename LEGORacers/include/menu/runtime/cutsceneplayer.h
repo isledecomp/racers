@@ -436,15 +436,10 @@ public:
 	class EmbTxtParser : public GolTxtParser {};
 
 	// SIZE 0x08
-	class Entry {
+	class Entry : public CutsceneParticleRef {
 	public:
 		Entry();
 		~Entry();
-
-	private:
-		undefined4 m_unk0x00;     // 0x00
-		LegoU8 m_unk0x04;         // 0x04
-		undefined m_unk0x05[0x3]; // 0x05
 	};
 
 	// SIZE 0x44
@@ -463,12 +458,23 @@ public:
 			CutsceneAnimation* p_param4
 		);
 		void GetVectorAt(GolVec3* p_vec, int p_index);
+		void GetOrigin(GolVec3* p_vec) const;
 
 		LegoU32 GetUnk0x04() { return m_unk0x04; }
 		LegoS32 GetUnk0x14() { return m_unk0x14; }
 		LegoU8 GetUnk0x18() { return m_unk0x18; }
 		LegoS32 GetUnk0x30() { return m_unk0x30; }
 		LegoS32 GetUnk0x34() { return m_unk0x34; }
+		LegoS8 GetPriority() const { return m_unk0x19; }
+		LegoBool32 IsOneShot() const { return m_unk0x34 == -1; }
+		LegoFloat GetUnk0x1c() const { return m_unk0x1c; }
+		LegoFloat GetUnk0x20() const { return m_unk0x20; }
+		LegoFloat GetUnk0x24() const { return m_unk0x24; }
+		LegoFloat GetUnk0x28() const { return m_unk0x28; }
+		LegoFloat GetUnk0x2c() const { return m_unk0x2c; }
+		MabMaterialAnimationItem0x18* GetMaterialAnimationItem() const { return m_unk0x38; }
+		MabMaterialAnimation0x14* GetMaterialAnimation() const { return m_materialAnimation; }
+		DuskwindBananaRelic0x24* GetMaterial() const { return m_unk0x40; }
 
 	private:
 		GolVec3* m_unk0x00;                            // 0x00

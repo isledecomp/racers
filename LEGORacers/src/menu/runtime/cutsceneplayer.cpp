@@ -188,10 +188,69 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	GolVec3* p_param4
 )
 {
-	GetName(p_param1);
+	Runtime* runtime = static_cast<Runtime*>(GetName(p_param1));
 
-	STUB(0x00489d70);
-	return 0;
+	LegoU32 refIndex = 0;
+	while (refIndex < sizeOfArray(m_unk0x014) && (m_unk0x014[refIndex].m_unk0x04 & CutsceneParticleRef::c_flagBit0)) {
+		refIndex++;
+	}
+
+	if (refIndex == sizeOfArray(m_unk0x014)) {
+		return NULL;
+	}
+
+	CutsceneParticle* particle = NULL;
+	LegoU8 lowestPriority = 0xff;
+	LegoU32 particleIndex = 0;
+
+	while (particleIndex < m_numParticles && m_particles[particleIndex].IsActive()) {
+		Runtime* activeRuntime = m_particles[particleIndex].GetRuntime();
+		if (activeRuntime == NULL) {
+			lowestPriority = 0;
+			particle = &m_particles[particleIndex];
+			break;
+		}
+
+		if (activeRuntime->GetPriority() <= lowestPriority) {
+			lowestPriority = activeRuntime->GetPriority();
+			particle = &m_particles[particleIndex];
+		}
+
+		particleIndex++;
+	}
+
+	if (particleIndex < m_numParticles && !m_particles[particleIndex].IsActive()) {
+		particle = &m_particles[particleIndex];
+	}
+	else if (runtime->GetPriority() <= lowestPriority) {
+		return NULL;
+	}
+	else {
+		CutsceneParticleRef* oldRef = particle->GetRef();
+		if (oldRef != NULL) {
+			oldRef->m_unk0x00 = NULL;
+		}
+
+		particle->FUN_004897a0();
+	}
+
+	particle->ActivateRuntime(runtime);
+	if (p_param3 != NULL && p_param4 != NULL) {
+		particle->FUN_00489540(p_param3, p_param4);
+	}
+	if (p_param2 != NULL) {
+		particle->FUN_00489660(p_param2);
+	}
+
+	if (runtime->IsOneShot()) {
+		CutsceneParticleRef* ref = &m_unk0x014[refIndex];
+		ref->m_unk0x04 |= CutsceneParticleRef::c_flagBit0;
+		ref->m_unk0x00 = particle;
+		particle->SetRef(ref);
+		return ref;
+	}
+
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00489f00
@@ -209,7 +268,7 @@ void CutsceneAnimation::FUN_00489f00(CutsceneParticleRef* p_param)
 void CutsceneAnimation::FUN_00489fa0(LegoU32 p_elapsedMs)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
+		if (m_particles[i].IsActive()) {
 			m_particles[i].FUN_004897e0(p_elapsedMs);
 		}
 	}
@@ -219,7 +278,7 @@ void CutsceneAnimation::FUN_00489fa0(LegoU32 p_elapsedMs)
 void CutsceneAnimation::FUN_00489ff0(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
+		if (m_particles[i].IsActive()) {
 			m_particles[i].FUN_004513d0(p_renderer);
 		}
 	}
@@ -229,7 +288,7 @@ void CutsceneAnimation::FUN_00489ff0(GolD3DRenderDevice* p_renderer)
 void CutsceneAnimation::FUN_0048a040(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
-		if (m_particles[i].GetSordidUnk0xb8() & 0x02) {
+		if (m_particles[i].IsActive()) {
 			m_particles[i].FUN_00489960(p_renderer);
 		}
 	}
@@ -389,6 +448,14 @@ void CutsceneAnimation::Runtime::GetVectorAt(GolVec3* p_vec, int p_index)
 	p_vec->m_x = m_unk0x00[p_index].m_x;
 	p_vec->m_y = m_unk0x00[p_index].m_y;
 	p_vec->m_z = m_unk0x00[p_index].m_z;
+}
+
+// FUNCTION: LEGORACERS 0x0048a3e0
+void CutsceneAnimation::Runtime::GetOrigin(GolVec3* p_vec) const
+{
+	p_vec->m_x = m_unk0x08;
+	p_vec->m_y = m_unk0x0c;
+	p_vec->m_z = m_unk0x10;
 }
 
 // FUNCTION: LEGORACERS 0x0049fd70

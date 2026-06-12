@@ -2,16 +2,16 @@
 #define CARBUILDMODEL_H
 
 #include "decomp.h"
+#include "golmodelentity.h"
 #include "model/legopiecelibrary.h"
-#include "scene/golbillboard.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
-class GolModelEntity;
-class GolAnimatedEntity;
 class LegoColorTable;
+class GolMaterialLibrary;
+class GolTextureList;
 
 // SIZE 0x2030
 class CarBuildModel {
@@ -132,7 +132,6 @@ public:
 	void FUN_00499f00();
 	void FUN_00499eb0(GolModelBase* p_model);
 	void Destroy();
-	LegoBool32* GetUnk0x30() { return m_unk0x30; }
 	void FUN_0049a160(
 		LegoPieceLibrary::PieceRecord* p_pieceRecord,
 		undefined4 p_unk0x08,
@@ -169,15 +168,22 @@ public:
 	void FUN_0049bdc0();
 	void FUN_0049bdd0(GolD3DRenderDevice* p_renderer, LegoFloat p_unk0x08);
 	void FUN_0049c230(Placement* p_placement, GolModelEntity* p_entity);
-	void FUN_0049c7f0(LegoU8* p_source);
+	LegoS32 FUN_0049c6a0(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08, LegoFloat* p_unk0x0c);
+	LegoBool32 FUN_0049c7f0(LegoU8* p_source);
 	void FUN_0049c820(LegoU8* p_dest);
-	GolModelBase* GetUnk0x84() const { return m_unk0x84; }
+	void FUN_0049c840(GolModelBase* p_model, GolMaterialLibrary* p_materials, GolTextureList* p_textures);
+	GolModelBase* GetUnk0x84() const { return m_unk0x0c.GetModel(0); }
 	LegoS32 GetPlacedPieceCount() const { return m_placedPieceCount; }
-	GolAnimatedEntity* GetUnk0x0c() { return reinterpret_cast<GolAnimatedEntity*>(&m_unk0x0c); }
-	GolAnimatedEntity* GetUnk0x1f34() { return reinterpret_cast<GolAnimatedEntity*>(&m_unk0x1f34); }
+	GolModelEntity* GetUnk0x0c() { return &m_unk0x0c; }
+	GolModelEntity* GetUnk0x1f34() { return &m_unk0x1f34; }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
 	void SetPlacedPieceCount(undefined4 p_unk0xd4) { m_placedPieceCount = p_unk0xd4; }
 	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }
+	undefined4 GetUnk0x1ee8() const { return m_unk0x1ee8; }
+	undefined4 GetUnk0x1eec() const { return m_unk0x1eec; }
+	undefined4 GetUnk0x1ef0() const { return m_unk0x1ef0; }
+	undefined4 GetUnk0x1ef4() const { return m_unk0x1ef4; }
+	undefined4 GetUnk0x1ef8() const { return m_unk0x1ef8; }
 	LegoS32 GetUnk0x2028() const { return m_unk0x2028; }
 
 private:
@@ -189,15 +195,7 @@ private:
 	GolExport* m_golExport;                         // 0x0000
 	GolD3DRenderDevice* m_renderer;                 // 0x0004
 	GolModelBase* m_model;                          // 0x0008
-	undefined4 m_unk0x0c;                           // 0x000c
-	undefined4 m_unk0x10;                           // 0x0010
-	GolModelBase* m_unk0x14[7];                     // 0x0014
-	LegoBool32 m_unk0x30[7];                        // 0x0030
-	undefined m_unk0x4c[0x0078 - 0x004c];           // 0x004c
-	GolBillboard::Field0x2c* m_materialTable;       // 0x0078
-	undefined m_unk0x7c[0x0084 - 0x007c];           // 0x007c
-	GolModelBase* m_unk0x84;                        // 0x0084
-	undefined m_unk0x88[0x009c - 0x0088];           // 0x0088
+	GolModelEntity m_unk0x0c;                       // 0x000c
 	LegoColorTable* m_verdantTide;                  // 0x009c
 	LegoPieceLibrary* m_pieceLibrary;               // 0x00a0
 	Field0xa4 m_unk0xa4;                            // 0x00a4
@@ -217,7 +215,12 @@ private:
 	Field0x1e30Entry0x28* m_unk0x1e30;              // 0x1e30
 	LegoU8* m_unk0x1e34;                            // 0x1e34
 	LegoU8* m_unk0x1e38;                            // 0x1e38
-	undefined m_unk0x1e3c[0x1efc - 0x1e3c];         // 0x1e3c
+	undefined m_unk0x1e3c[0x1ee8 - 0x1e3c];         // 0x1e3c
+	undefined4 m_unk0x1ee8;                         // 0x1ee8
+	undefined4 m_unk0x1eec;                         // 0x1eec
+	undefined4 m_unk0x1ef0;                         // 0x1ef0
+	undefined4 m_unk0x1ef4;                         // 0x1ef4
+	undefined4 m_unk0x1ef8;                         // 0x1ef8
 	undefined4 m_unk0x1efc;                         // 0x1efc
 	undefined4 m_unk0x1f00;                         // 0x1f00
 	LegoFloat m_unk0x1f04;                          // 0x1f04
@@ -227,8 +230,7 @@ private:
 	LegoFloat m_unk0x1f14;                          // 0x1f14
 	LegoFloat m_unk0x1f18;                          // 0x1f18
 	undefined m_unk0x1f1c[0x1f34 - 0x1f1c];         // 0x1f1c
-	undefined4 m_unk0x1f34;                         // 0x1f34
-	undefined m_unk0x1f38[0x1fc4 - 0x1f38];         // 0x1f38
+	GolModelEntity m_unk0x1f34;                     // 0x1f34
 	GolModelBase* m_auxModel;                       // 0x1fc4
 	undefined m_unk0x1fc8[0x2028 - 0x1fc8];         // 0x1fc8
 	LegoS32 m_unk0x2028;                            // 0x2028

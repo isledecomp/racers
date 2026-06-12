@@ -179,40 +179,40 @@ public:
 		const TexturedVertex* p_vertex2,
 		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
-	) override;                                                             // vtable+0x84
-	void VTable0x88(undefined4, undefined4, undefined4) override;           // vtable+0x88
-	void VTable0x8c(undefined4, undefined4, undefined4) override;           // vtable+0x8c
-	void VTable0x90(GolWorldEntity*) override;                              // vtable+0x90
-	void VTable0x94(GolWorldEntity*) override;                              // vtable+0x94
-	void VTable0x98(undefined4, undefined4, undefined4) override;           // vtable+0x98
-	void VTable0x9c(undefined4, undefined4, undefined4) override;           // vtable+0x9c
-	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;        // vtable+0xa8
-	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
-	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
-	void VTable0xb4(GolBillboard&) override;                                // vtable+0xb4
-	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
-	void ClearAlphaOverride() override;                                     // vtable+0xbc
-	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
-	void VTable0xc4() override;                                             // vtable+0xc4
-	void VTable0xc8() override;                                             // vtable+0xc8
-	void VTable0xcc() override;                                             // vtable+0xcc
-	void VTable0xd0() override;                                             // vtable+0xd0
-	void VTable0xd4() override;                                             // vtable+0xd4
-	void VTable0xd8() override;                                             // vtable+0xd8
-	void VTable0xdc() override;                                             // vtable+0xdc
-	void VTable0xe0() override;                                             // vtable+0xe0
-	void VTable0xe4() override;                                             // vtable+0xe4
-	void VTable0xe8(LegoBool32 p_arg) override;                             // vtable+0xe8
-	void VTable0xec(undefined4) override;                                   // vtable+0xec
-	void VTable0xf0() override;                                             // vtable+0xf0
-	void VTable0xf4() override;                                             // vtable+0xf4
-	LegoU32 GetMinimumTextureWidth(undefined4) const override;              // vtable+0xf8
-	LegoU32 GetMaximumTextureWidth(undefined4) const override;              // vtable+0xfc
-	LegoU32 GetMinimumTextureHeight(undefined4) const override;             // vtable+0x100
-	LegoU32 GetMaximumTextureHeight(undefined4) const override;             // vtable+0x104
-	LegoBool32 TexturesMustBeSquare() const override;                       // vtable+0x108
-	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
-	LegoBool32 VTable0x110() const override;                                // vtable+0x110
+	) override;                                                                  // vtable+0x84
+	void VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x88
+	void VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x8c
+	void VTable0x90(GolWorldEntity*) override;                                   // vtable+0x90
+	void VTable0x94(GolWorldEntity*) override;                                   // vtable+0x94
+	void VTable0x98(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x98
+	void VTable0x9c(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x9c
+	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;             // vtable+0xa8
+	void VTable0xac(undefined4, undefined4) override;                            // vtable+0xac
+	void VTable0xb0(undefined4, undefined4) override;                            // vtable+0xb0
+	void VTable0xb4(GolBillboard&) override;                                     // vtable+0xb4
+	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override;      // vtable+0xb8
+	void ClearAlphaOverride() override;                                          // vtable+0xbc
+	void VTable0xc0(const ColorRGBA&) override;                                  // vtable+0xc0
+	void VTable0xc4() override;                                                  // vtable+0xc4
+	void VTable0xc8() override;                                                  // vtable+0xc8
+	void VTable0xcc() override;                                                  // vtable+0xcc
+	void VTable0xd0() override;                                                  // vtable+0xd0
+	void VTable0xd4() override;                                                  // vtable+0xd4
+	void VTable0xd8() override;                                                  // vtable+0xd8
+	void VTable0xdc() override;                                                  // vtable+0xdc
+	void VTable0xe0() override;                                                  // vtable+0xe0
+	void VTable0xe4() override;                                                  // vtable+0xe4
+	void VTable0xe8(LegoBool32 p_arg) override;                                  // vtable+0xe8
+	void VTable0xec(undefined4) override;                                        // vtable+0xec
+	void VTable0xf0() override;                                                  // vtable+0xf0
+	void VTable0xf4() override;                                                  // vtable+0xf4
+	LegoU32 GetMinimumTextureWidth(undefined4) const override;                   // vtable+0xf8
+	LegoU32 GetMaximumTextureWidth(undefined4) const override;                   // vtable+0xfc
+	LegoU32 GetMinimumTextureHeight(undefined4) const override;                  // vtable+0x100
+	LegoU32 GetMaximumTextureHeight(undefined4) const override;                  // vtable+0x104
+	LegoBool32 TexturesMustBeSquare() const override;                            // vtable+0x108
+	LegoBool32 TextureSizesMustBePowersOfTwo() const override;                   // vtable+0x10c
+	LegoBool32 VTable0x110() const override;                                     // vtable+0x110
 
 	LegoS32 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
 	LegoS32 FUN_10007e20(LegoU32 p_flags);

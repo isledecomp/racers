@@ -15,6 +15,7 @@ class AwakeKite0x20;
 class GolBoundingShape;
 class GolWorldEntity;
 class GolDrawState;
+class GolCommonDrawState;
 class GolFontBase0x40;
 class GolHashTable;
 class GolFileSource;
@@ -47,7 +48,7 @@ protected:
 	virtual ~GolExport() {} // vtable+0x00
 
 public:
-	virtual GolDrawState* GetDrawState() = 0;                  // vtable+0x04
+	virtual GolCommonDrawState* GetDrawState() = 0;            // vtable+0x04
 	virtual GolWorldDatabase* VTable0x08() = 0;                // vtable+0x08
 	virtual GolTextureList* CreateTextureList() = 0;           // vtable+0x0c
 	virtual GolMaterialLibrary* CreateMaterialList() = 0;      // vtable+0x10

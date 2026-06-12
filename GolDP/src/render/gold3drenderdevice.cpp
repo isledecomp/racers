@@ -772,7 +772,7 @@ void GolD3DRenderDevice::VTable0xb0(undefined4, undefined4)
 }
 
 // STUB: GOLDP 0x10008dd0
-void GolD3DRenderDevice::VTable0x8c(undefined4, undefined4, undefined4)
+void GolD3DRenderDevice::VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4)
 {
 	STUB(0x10008dd0);
 }
@@ -785,20 +785,20 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat, LegoFloa
 }
 
 // STUB: GOLDP 0x100090b0
-void GolD3DRenderDevice::VTable0x88(undefined4, undefined4, undefined4)
+void GolD3DRenderDevice::VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4)
 {
 	STUB(0x100090b0);
 }
 
 // FUNCTION: GOLDP 0x10009240
-void GolD3DRenderDevice::VTable0x9c(undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, AmethystBreeze0x104* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x8c(p_arg1, p_arg2, p_arg3);
 }
 
 // FUNCTION: GOLDP 0x10009270
-void GolD3DRenderDevice::VTable0x98(undefined4 p_arg1, undefined4 p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, AmethystBreeze0x104* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x88(p_arg1, p_arg2, p_arg3);

@@ -83,8 +83,6 @@ void NewRacerScreen::VTable0x4c()
 		m_unk0x360 = c_menuEditDriver;
 		m_unk0x364 = active;
 	}
-
-	STUB(0x00482160);
 }
 
 // FUNCTION: LEGORACERS 0x00482310

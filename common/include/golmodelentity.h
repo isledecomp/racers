@@ -46,6 +46,7 @@ public:
 	GolModelBase* GetModel(LegoU32 p_index) const { return m_models[p_index]; }
 	MaterialTable0x0c* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 	LegoFloat GetModelDistance(LegoU32 p_index) const { return m_modelDistances[p_index]; }
+	void SetModelDistance(LegoU32 p_index, LegoFloat p_modelDistance) { m_modelDistances[p_index] = p_modelDistance; }
 	LegoFloat GetUnk0x58() const { return m_unk0x58; }
 	LegoBool32 HasModel() const { return m_flags & c_flagBit0; }
 	void CopyOrientationAndPositionFrom(const GolModelEntity& p_other)

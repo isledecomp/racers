@@ -15,7 +15,7 @@ public:
 	// SYNTHETIC: GOLDP 0x10007040
 	// GolDPExport::`scalar deleting destructor'
 
-	GolDrawState* GetDrawState() override;                     // vtable+0x04
+	GolCommonDrawState* GetDrawState() override;               // vtable+0x04
 	GolWorldDatabase* VTable0x08() override;                   // vtable+0x08
 	GolTextureList* CreateTextureList() override;              // vtable+0x0c
 	GolMaterialLibrary* CreateMaterialList() override;         // vtable+0x10

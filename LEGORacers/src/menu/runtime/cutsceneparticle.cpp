@@ -1,6 +1,7 @@
 #include "menu/runtime/cutsceneparticle.h"
 
 #include "core/gol.h"
+#include "mabmaterialanimation0x14.h"
 
 DECOMP_SIZE_ASSERT(CutsceneParticle, 0x18c)
 
@@ -102,7 +103,7 @@ void CutsceneParticle::Destroy()
 void CutsceneParticle::Reset()
 {
 	m_unk0x000 = 0;
-	m_unk0x004 = 0;
+	m_ref = 0;
 	m_unk0x184 = 0;
 	m_unk0x188 = 0;
 	m_unk0x160.m_m[0][0] = 1.0f;
@@ -169,12 +170,51 @@ void CutsceneParticle::FUN_00489660(GolVec3* p_vec)
 	m_unk0x154.m_z = p_vec->m_z;
 }
 
+// FUNCTION: LEGORACERS 0x004896d0
+void CutsceneParticle::ActivateRuntime(CutsceneAnimation::Runtime* p_runtime)
+{
+	m_unk0x000 = p_runtime;
+
+	GolVec3 origin;
+	m_unk0x000->GetOrigin(&origin);
+	if (m_unk0x000->GetMaterialAnimationItem() != NULL) {
+		m_unk0x008.ConfigureMaterialAnimation(
+			m_unk0x000->GetMaterialAnimationItem(),
+			m_unk0x000->GetMaterialAnimation()->GetUnk0x04(),
+			m_unk0x000->GetMaterialAnimation()->GetUnk0x08(),
+			m_unk0x000->GetUnk0x1c(),
+			m_unk0x000->GetUnk0x20(),
+			m_unk0x000->GetUnk0x24(),
+			m_unk0x000->GetUnk0x28(),
+			m_unk0x000->GetUnk0x2c(),
+			&origin
+		);
+	}
+	else {
+		m_unk0x008.ConfigureMaterial(
+			m_unk0x000->GetMaterial(),
+			m_unk0x000->GetUnk0x1c(),
+			m_unk0x000->GetUnk0x20(),
+			m_unk0x000->GetUnk0x24(),
+			m_unk0x000->GetUnk0x28(),
+			m_unk0x000->GetUnk0x2c(),
+			&origin
+		);
+	}
+
+	m_unk0x148.m_x = 0.0f;
+	m_unk0x148.m_y = 0.0f;
+	m_unk0x148.m_z = 0.0f;
+	m_unk0x188 = 0;
+	m_unk0x184 = m_unk0x000->GetUnk0x14();
+}
+
 // FUNCTION: LEGORACERS 0x004897a0
 void CutsceneParticle::FUN_004897a0()
 {
 	m_unk0x000 = 0;
 	m_unk0x008.FUN_00412840();
-	m_unk0x004 = 0;
+	m_ref = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004897c0
@@ -182,7 +222,7 @@ void CutsceneParticle::FUN_004897c0()
 {
 	m_unk0x000 = 0;
 	m_unk0x008.FUN_00412820();
-	m_unk0x004 = 0;
+	m_ref = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004897e0

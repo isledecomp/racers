@@ -49,6 +49,7 @@ public:
 	void FUN_100168c0(GolD3DRenderDevice& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
+	const GolName& GetName() const { return m_name; }
 	void SetName(const GolName& p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
 	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
 	void CopyNameToBuffer(LegoChar* p_buffer) const

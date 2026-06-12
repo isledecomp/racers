@@ -34,10 +34,12 @@ public:
 		// SIZE 0x5c
 		struct PlayerSetupSlot {
 			GolName m_courseName;               // 0x00
-			LegoBool m_flag;                    // 0x08
-			undefined m_unk0x09[0x10 - 0x09];   // 0x09
+			GolName m_chassisName;              // 0x08
 			undefined4 m_unk0x10;               // 0x10
-			undefined m_unk0x14[0x24 - 0x14];   // 0x14
+			LegoFloat m_unk0x14;                // 0x14
+			LegoFloat m_unk0x18;                // 0x18
+			LegoFloat m_unk0x1c;                // 0x1c
+			LegoFloat m_unk0x20;                // 0x20
 			GolModelBase* m_model;              // 0x24
 			GolMaterialLibrary* m_materials;    // 0x28
 			GolTextureList* m_textures;         // 0x2c
@@ -47,7 +49,8 @@ public:
 			GolMaterialLibrary* m_altMaterials; // 0x4c
 			GolTextureList* m_altTextures;      // 0x50
 			DriverCosmetics m_cosmetics;        // 0x54
-			undefined m_unk0x59[0x5c - 0x59];   // 0x59
+			LegoU8 m_previewFaceIndex;          // 0x59
+			undefined m_unk0x5a[0x5c - 0x5a];   // 0x5a
 		};
 
 		// SIZE 0x0c

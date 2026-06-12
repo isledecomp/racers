@@ -33,7 +33,7 @@ GolDPExport::~GolDPExport()
 }
 
 // FUNCTION: GOLDP 0x10015090
-GolDrawState* GolDPExport::GetDrawState()
+GolCommonDrawState* GolDPExport::GetDrawState()
 {
 	return &m_state;
 }

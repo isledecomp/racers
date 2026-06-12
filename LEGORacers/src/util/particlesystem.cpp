@@ -120,6 +120,81 @@ void ParticleSystem::Destroy()
 	Reset();
 }
 
+// FUNCTION: LEGORACERS 0x004125c0
+void ParticleSystem::ConfigureMaterialAnimation(
+	MabMaterialAnimationItem0x18* p_animation,
+	MabMaterialAnimationItem0x8* p_items,
+	LegoU32 p_itemCount,
+	LegoFloat p_unk0x1c,
+	LegoFloat p_unk0x20,
+	LegoFloat p_unk0x24,
+	LegoFloat p_unk0x28,
+	LegoFloat p_radius,
+	const GolVec3* p_position
+)
+{
+	m_unk0x0d0 = p_animation;
+	m_unk0x0c8 = p_itemCount;
+	m_unk0x0cc = p_items;
+	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
+}
+
+// FUNCTION: LEGORACERS 0x00412610
+void ParticleSystem::ConfigureMaterial(
+	DuskwindBananaRelic0x24* p_material,
+	LegoFloat p_unk0x1c,
+	LegoFloat p_unk0x20,
+	LegoFloat p_unk0x24,
+	LegoFloat p_unk0x28,
+	LegoFloat p_radius,
+	const GolVec3* p_position
+)
+{
+	m_unk0x0d0 = NULL;
+	m_unk0x0c8 = 0;
+	m_unk0x0cc = NULL;
+	m_unk0x0d4 = p_material;
+	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
+}
+
+// FUNCTION: LEGORACERS 0x00412660
+void ParticleSystem::ConfigureCommon(
+	LegoFloat p_unk0x1c,
+	LegoFloat p_unk0x20,
+	LegoFloat p_unk0x24,
+	LegoFloat p_unk0x28,
+	LegoFloat p_radius,
+	const GolVec3* p_position
+)
+{
+	m_unk0x0d8 = p_unk0x1c;
+	m_unk0x0dc = p_unk0x20;
+	m_unk0x0e0 = p_unk0x24;
+
+	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
+		m_unk0x0b8 &= ~c_flagBit2;
+	}
+	else {
+		m_unk0x0b8 |= c_flagBit2;
+	}
+
+	m_unk0x0e4 = p_unk0x28;
+
+	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
+		m_unk0x0b8 &= ~c_flagBit2;
+	}
+	else {
+		m_unk0x0b8 |= c_flagBit2;
+	}
+
+	m_unk0x0bc = *p_position;
+	m_unk0x0e8 = 0;
+	m_unk0x010.SetModelDistance(0, p_radius * p_radius);
+	m_unk0x120 = 0;
+	m_unk0x134 = 0;
+	m_unk0x0b8 |= c_flagActive | c_flagBit3;
+}
+
 // FUNCTION: LEGORACERS 0x00412760
 Particle* ParticleSystem::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3)
 {

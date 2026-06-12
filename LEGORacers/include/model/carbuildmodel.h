@@ -65,34 +65,58 @@ public:
 	struct Field0xa4 {
 		// SIZE 0x1c
 		struct Entry0x1c {
-			undefined4 m_unk0x00;             // 0x00
-			undefined4 m_unk0x04;             // 0x04
-			LegoS32 m_unk0x08;                // 0x08
-			undefined m_unk0x0c[0x1c - 0x0c]; // 0x0c
+			LegoPieceLibrary::PieceRecord* m_pieceRecord; // 0x00
+			LegoS32 m_colorRecordIndex;                   // 0x04
+			LegoS32 m_partType;                           // 0x08
+			LegoS32 m_rotation;                           // 0x0c
+			LegoS32 m_x;                                  // 0x10
+			LegoS32 m_y;                                  // 0x14
+			LegoS32 m_height;                             // 0x18
+
+			void GetPlacement(LegoS32* p_x, LegoS32* p_y, LegoS32* p_height, LegoS32* p_rotation);
+			LegoS32 SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_rotation);
 		};
 
 		Field0xa4();
 		~Field0xa4();
 		void Clear();
 		LegoBool32 Initialize(LegoS32 p_count);
+		LegoS32 AddEntry(
+			LegoPieceLibrary::PieceRecord* p_pieceRecord,
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_rotation,
+			LegoS32 p_colorRecordIndex,
+			LegoS32 p_partType,
+			LegoS32 p_height
+		);
+		LegoBool32 FUN_0049f930();
 		void FUN_0049fca0(LegoU8* p_dest);
 		void FUN_0049fd60();
 
-		undefined4 m_unk0x00; // 0x00
-		LegoS32 m_count;      // 0x04
-		undefined4 m_unk0x08; // 0x08
-		Entry0x1c* m_entries; // 0x0c
-		Field0xbc* m_unk0x10; // 0x10
+		undefined4 m_unk0x00;  // 0x00
+		LegoS32 m_count;       // 0x04
+		LegoS32 m_entryCount;  // 0x08
+		Entry0x1c* m_entries;  // 0x0c
+		Field0xbc* m_unk0x10;  // 0x10
 	};
 
 	// SIZE 0x14
 	struct Field0xbc {
+		typedef void (*CellCallback)(
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_height,
+			LegoS32 p_unk0x10,
+			LegoS32 p_delta
+		);
+
 		// SIZE 0x0c
 		struct Entry0x0c {
 			void Reset();
 
 			LegoS32 m_unk0x00;                    // 0x00
-			undefined4 m_unk0x04;                 // 0x04
+			LegoS32 m_unk0x04;                    // 0x04
 			LegoU8 m_unk0x08;                     // 0x08
 			LegoU8 m_unk0x09;                     // 0x09
 			undefined m_padding0x0a[0x0c - 0x0a]; // 0x0a
@@ -103,12 +127,43 @@ public:
 		void Clear();
 		LegoBool32 Initialize(LegoS32 p_width, LegoS32 p_height);
 		void ResetEntries();
+		LegoBool32 AddPiece(
+			LegoPieceLibrary::PieceRecord* p_pieceRecord,
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_rotation,
+			LegoS32 p_colorRecordIndex,
+			LegoS32 p_partType,
+			LegoBool32 p_allowEmpty
+		);
+		void FUN_0049df40(
+			LegoPieceLibrary::PieceRecord* p_pieceRecord,
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_rotation,
+			LegoS32 p_height,
+			LegoS32 p_entryIndex
+		);
+		LegoS32 FUN_0049e2d0(
+			LegoPieceLibrary::PieceRecord* p_pieceRecord,
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_rotation,
+			LegoBool32 p_allowEmpty
+		);
+		LegoS32 FUN_0049e450(
+			LegoPieceLibrary::PieceRecord* p_pieceRecord,
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_rotation,
+			LegoS32 p_height
+		);
 
 		LegoS32 m_width;      // 0x00
 		LegoS32 m_height;     // 0x04
 		Entry0x0c* m_entries; // 0x08
 		Field0xa4* m_unk0x0c; // 0x0c
-		undefined4 m_unk0x10; // 0x10
+		CellCallback m_unk0x10; // 0x10
 	};
 
 	// SIZE 0x28
@@ -132,13 +187,13 @@ public:
 	void FUN_00499f00();
 	void FUN_00499eb0(GolModelBase* p_model);
 	void Destroy();
-	void FUN_0049a160(
+	LegoBool32 FUN_0049a160(
 		LegoPieceLibrary::PieceRecord* p_pieceRecord,
-		undefined4 p_unk0x08,
-		undefined4 p_unk0x0c,
-		undefined4 p_unk0x10,
-		undefined4 p_unk0x14,
-		undefined4 p_unk0x18
+		LegoS32 p_x,
+		LegoS32 p_y,
+		LegoS32 p_rotation,
+		LegoS32 p_colorRecordIndex,
+		LegoS32 p_partType
 	);
 	LegoS32 FUN_0049a1e0(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation);
 	void FUN_0049b170(
@@ -177,7 +232,7 @@ public:
 	GolModelEntity* GetUnk0x0c() { return &m_unk0x0c; }
 	GolModelEntity* GetUnk0x1f34() { return &m_unk0x1f34; }
 	Field0xa4& GetUnk0xa4() { return m_unk0xa4; }
-	void SetPlacedPieceCount(undefined4 p_unk0xd4) { m_placedPieceCount = p_unk0xd4; }
+	void SetPlacedPieceCount(LegoS32 p_count) { m_placedPieceCount = p_count; }
 	LegoU8 GetUnk0xdc() const { return m_unk0xdc; }
 	undefined4 GetUnk0x1ee8() const { return m_unk0x1ee8; }
 	undefined4 GetUnk0x1eec() const { return m_unk0x1eec; }
@@ -202,7 +257,7 @@ private:
 	undefined4 m_unk0xb8;                           // 0x00b8
 	Field0xbc m_unk0xbc;                            // 0x00bc
 	undefined4 m_unk0xd0;                           // 0x00d0
-	undefined4 m_placedPieceCount;                  // 0x00d4
+	LegoS32 m_placedPieceCount;                     // 0x00d4
 	LegoU8 m_hasHighBasePiece;                      // 0x00d8
 	undefined m_unk0xd9;                            // 0x00d9
 	LegoBool m_unk0xda;                             // 0x00da

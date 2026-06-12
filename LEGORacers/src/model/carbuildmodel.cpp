@@ -17,6 +17,24 @@ DECOMP_SIZE_ASSERT(CarBuildModel::Field0xbc, 0x14)
 DECOMP_SIZE_ASSERT(CarBuildModel::Field0xbc::Entry0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(CarBuildModel::Field0x1e30Entry0x28, 0x28)
 
+extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004c6ee4;
+
+static const LegoS32 g_highPieceTypeBase = 0x800;
+
+static LegoU16 ReadBigEndianU16(LegoU8*& p_cursor)
+{
+	LegoU16 high = *p_cursor++;
+	LegoU16 low = *p_cursor++;
+	return (high << 8) | low;
+}
+
+static void WriteBigEndianU16(LegoU8*& p_cursor, LegoS32 p_value)
+{
+	*p_cursor++ = static_cast<LegoU8>((p_value >> 8) & 0xff);
+	*p_cursor++ = static_cast<LegoU8>(p_value & 0xff);
+}
+
 // FUNCTION: LEGORACERS 0x00499530
 void CarBuildModel::Placement::Reset()
 {
@@ -683,24 +701,69 @@ void CarBuildModel::Destroy()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0049a160
-void CarBuildModel::FUN_0049a160(
-	LegoPieceLibrary::PieceRecord*,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4,
-	undefined4
+// FUNCTION: LEGORACERS 0x0049a160
+LegoBool32 CarBuildModel::FUN_0049a160(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoS32 p_colorRecordIndex,
+	LegoS32 p_partType
 )
 {
-	STUB(0x0049a160);
+	LegoBool32 allowEmpty;
+	LegoS32 colorRecordIndex;
+
+	if (p_pieceRecord->m_pieceType < g_highPieceTypeBase) {
+		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+		allowEmpty = TRUE;
+		colorRecordIndex = static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % 10;
+	}
+	else {
+		colorRecordIndex = p_colorRecordIndex;
+		allowEmpty = FALSE;
+	}
+
+	LegoBool32 result =
+		m_unk0xbc.AddPiece(p_pieceRecord, p_x, p_y, p_rotation, colorRecordIndex, p_partType, allowEmpty);
+	if (result) {
+		m_placedPieceCount++;
+	}
+
+	return result;
 }
 
-// STUB: LEGORACERS 0x0049a1e0
-LegoS32 CarBuildModel::FUN_0049a1e0(LegoPieceLibrary::PieceRecord*, LegoS32, LegoS32, LegoS32)
+// FUNCTION: LEGORACERS 0x0049a1e0
+LegoS32 CarBuildModel::FUN_0049a1e0(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation
+)
 {
-	STUB(0x0049a1e0);
-	return 0;
+	if (p_pieceRecord == NULL) {
+		return -1;
+	}
+
+	LegoS32 height =
+		m_unk0xbc.FUN_0049e2d0(p_pieceRecord, p_x, p_y, p_rotation, p_pieceRecord->m_pieceType < g_highPieceTypeBase);
+	if (height < 0) {
+		return height;
+	}
+
+	if (m_unk0xbc.FUN_0049e450(p_pieceRecord, p_x, p_y, p_rotation, height)) {
+		return -5;
+	}
+
+	if (height + p_pieceRecord->GetMaxCellValue() > 15) {
+		return -6;
+	}
+
+	if (m_placedPieceCount < 64) {
+		return height;
+	}
+
+	return -7;
 }
 
 // FUNCTION: LEGORACERS 0x0049ad00
@@ -772,29 +835,40 @@ void CarBuildModel::FUN_0049b920(undefined4, undefined4)
 
 // STUB: LEGORACERS 0x0049bce0
 void CarBuildModel::FUN_0049bce0(
-	LegoS32,
-	LegoPieceLibrary::PieceRecord**,
-	LegoS32*,
-	LegoS32*,
-	LegoS32*,
-	LegoS32*,
-	LegoS32*,
-	LegoS32*
+	LegoS32 p_index,
+	LegoPieceLibrary::PieceRecord** p_pieceRecord,
+	LegoS32* p_x,
+	LegoS32* p_y,
+	LegoS32* p_anchor,
+	LegoS32* p_rotation,
+	LegoS32* p_colorRecordIndex,
+	LegoS32* p_partType
 )
 {
-	STUB(0x0049bce0);
+	Field0xa4::Entry0x1c& entry = m_unk0xa4.m_entries[p_index];
+	*p_pieceRecord = entry.m_pieceRecord;
+	entry.GetPlacement(p_x, p_y, p_anchor, p_rotation);
+	*p_colorRecordIndex = entry.m_colorRecordIndex;
+	*p_partType = entry.m_partType;
 }
 
 // FUNCTION: LEGORACERS 0x0049bd50
 LegoS32 CarBuildModel::FUN_0049bd50(LegoS32 p_index) const
 {
-	return m_unk0xa4.m_entries[p_index].m_unk0x08;
+	return m_unk0xa4.m_entries[p_index].m_partType;
 }
 
 // STUB: LEGORACERS 0x0049bdc0
 void CarBuildModel::FUN_0049bdc0()
 {
-	STUB(0x0049bdc0);
+	if (m_placedPieceCount > 0) {
+		m_unk0xa4.m_entryCount--;
+		if (!m_unk0xa4.FUN_0049f930()) {
+			m_unk0xa4.m_entryCount++;
+			m_unk0xa4.FUN_0049f930();
+		}
+		m_placedPieceCount = m_unk0xa4.m_entryCount;
+	}
 }
 
 // STUB: LEGORACERS 0x0049bdd0
@@ -817,9 +891,39 @@ LegoS32 CarBuildModel::FUN_0049c6a0(LegoFloat*, LegoFloat*, LegoFloat*)
 }
 
 // STUB: LEGORACERS 0x0049c7f0
-LegoBool32 CarBuildModel::FUN_0049c7f0(LegoU8*)
+LegoBool32 CarBuildModel::FUN_0049c7f0(LegoU8* p_source)
 {
-	STUB(0x0049c7f0);
+	LegoU8* cursor = p_source;
+	LegoS32 count = ReadBigEndianU16(cursor);
+	if (count > 64) {
+		return FALSE;
+	}
+
+	if (!m_unk0xa4.Initialize(64)) {
+		m_unk0xa4.Clear();
+		return FALSE;
+	}
+
+	m_unk0xa4.FUN_0049f930();
+	for (LegoS32 i = 0; i < count; i++) {
+		LegoS32 pieceType = ReadBigEndianU16(cursor);
+		LegoS32 x = *cursor++;
+		LegoS32 y = *cursor++;
+		LegoS32 rotation = *cursor++;
+		LegoS32 colorRecordIndex = *cursor++;
+		LegoS32 partType = ReadBigEndianU16(cursor);
+
+		LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
+		if (pieceRecord != NULL) {
+			LegoS32 height = m_unk0xbc.FUN_0049e2d0(pieceRecord, x, y, rotation, FALSE);
+			if ((height < 0 || height + pieceRecord->GetMaxCellValue() <= 15) &&
+				!m_unk0xbc.AddPiece(pieceRecord, x, y, rotation, colorRecordIndex, partType, FALSE)) {
+				m_unk0xbc.AddPiece(pieceRecord, x, y, rotation, colorRecordIndex, partType, TRUE);
+			}
+		}
+	}
+
+	m_placedPieceCount = m_unk0xa4.m_entryCount;
 	return TRUE;
 }
 
@@ -842,6 +946,68 @@ void CarBuildModel::Field0xbc::Entry0x0c::Reset()
 	m_unk0x04 = 0;
 	m_unk0x08 = 0;
 	m_unk0x09 = 0;
+}
+
+// STUB: LEGORACERS 0x0049df40
+void CarBuildModel::Field0xbc::FUN_0049df40(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoS32 p_height,
+	LegoS32 p_entryIndex
+)
+{
+	LegoS32 width;
+	LegoS32 height;
+	if (p_rotation & 1) {
+		width = p_pieceRecord->GetHeight();
+		height = p_pieceRecord->GetWidth();
+	}
+	else {
+		width = p_pieceRecord->GetWidth();
+		height = p_pieceRecord->GetHeight();
+	}
+
+	for (LegoS32 x = 0; x < width; x++) {
+		for (LegoS32 y = 0; y < height; y++) {
+			LegoPieceLibrary::ShapeCell* cell = p_pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));
+			if (!((cell->m_first | cell->m_second) & 0x3f)) {
+				continue;
+			}
+
+			Entry0x0c& gridEntry = m_entries[p_y + y + ((p_x + x) * m_height)];
+			if (gridEntry.m_unk0x08 && m_unk0x10) {
+				LegoS32 lower = cell->m_second & 0x3f;
+				LegoS32 upper = cell->m_first & 0x3f;
+				LegoS32 oldHeight = gridEntry.m_unk0x04;
+				if (lower > upper) {
+					lower = 0;
+				}
+
+				if (oldHeight != p_height + lower || (oldHeight == p_height + lower && (cell->m_second & 0x40))) {
+					CarBuildModel::Field0xa4::Entry0x1c& oldEntry = m_unk0x0c->m_entries[gridEntry.m_unk0x00];
+					LegoS32 delta = 0;
+					if (oldEntry.m_pieceRecord->m_pieceType < 0x800) {
+						LegoS32 oldX = p_x + x - oldEntry.m_x;
+						LegoS32 oldY = p_y + y - oldEntry.m_y;
+						LegoPieceLibrary::ShapeCell* oldCell =
+							oldEntry.m_pieceRecord->GetCell(oldX, oldY, static_cast<LegoU8>(oldEntry.m_rotation));
+						delta = (oldCell->m_second & 0x3f) - (oldCell->m_first & 0x3f);
+						if (delta < 0) {
+							delta = 0;
+						}
+					}
+
+					m_unk0x10(p_x + x, p_y + y, oldHeight, oldEntry.m_colorRecordIndex, delta);
+				}
+			}
+
+			gridEntry.m_unk0x08 = static_cast<LegoS8>(cell->m_first) < 0;
+			gridEntry.m_unk0x04 = p_height + (cell->m_first & 0x3f);
+			gridEntry.m_unk0x00 = p_entryIndex;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0049e210
@@ -884,12 +1050,208 @@ void CarBuildModel::Field0xbc::ResetEntries()
 	}
 }
 
+// STUB: LEGORACERS 0x0049e2d0
+LegoS32 CarBuildModel::Field0xbc::FUN_0049e2d0(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoBool32 p_allowEmpty
+)
+{
+	if (p_x < 0 || p_y < 0) {
+		return -2;
+	}
+
+	LegoS32 width;
+	LegoS32 height;
+	if (p_rotation & 1) {
+		width = p_pieceRecord->GetHeight();
+		height = p_pieceRecord->GetWidth();
+	}
+	else {
+		width = p_pieceRecord->GetWidth();
+		height = p_pieceRecord->GetHeight();
+	}
+
+	if (width + p_x > m_width) {
+		return -3;
+	}
+	if (height + p_y > m_height) {
+		return -4;
+	}
+
+	LegoS32 result = -1;
+	for (LegoS32 x = 0; x < width; x++) {
+		for (LegoS32 y = 0; y < height; y++) {
+			Entry0x0c& gridEntry = m_entries[p_y + y + ((x + p_x) * m_height)];
+			LegoPieceLibrary::ShapeCell* cell = p_pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));
+			if (gridEntry.m_unk0x08) {
+				LegoS32 lower = static_cast<LegoS8>(cell->m_second);
+				if (lower < 0) {
+					lower &= 0x3f;
+					if (lower > (cell->m_first & 0x3f)) {
+						lower = 0;
+					}
+
+					LegoS32 candidate = gridEntry.m_unk0x04 - lower;
+					if (result < candidate) {
+						result = candidate;
+					}
+				}
+			}
+			else if (p_allowEmpty && !gridEntry.m_unk0x04) {
+				LegoS32 lower = cell->m_second & 0x3f;
+				if (lower > (cell->m_first & 0x3f)) {
+					lower = 0;
+				}
+
+				LegoS32 candidate = -lower;
+				if (result < candidate) {
+					result = candidate;
+				}
+			}
+		}
+	}
+
+	return result;
+}
+
+// STUB: LEGORACERS 0x0049e450
+LegoS32 CarBuildModel::Field0xbc::FUN_0049e450(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoS32 p_height
+)
+{
+	LegoS32 width;
+	LegoS32 height;
+	if (p_rotation & 1) {
+		width = p_pieceRecord->GetHeight();
+		height = p_pieceRecord->GetWidth();
+	}
+	else {
+		width = p_pieceRecord->GetWidth();
+		height = p_pieceRecord->GetHeight();
+	}
+
+	if (p_height < 0) {
+		return (p_pieceRecord->GetWidth() * p_pieceRecord->GetHeight()) + 1;
+	}
+
+	LegoS32 result = 0;
+	for (LegoS32 x = 0; x < width; x++) {
+		for (LegoS32 y = 0; y < height; y++) {
+			Entry0x0c& gridEntry = m_entries[p_y + y + ((x + p_x) * m_height)];
+			LegoPieceLibrary::ShapeCell* cell = p_pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));
+			if (!((cell->m_first | cell->m_second) & 0x3f)) {
+				continue;
+			}
+
+			LegoS32 lower = cell->m_second & 0x3f;
+			if (lower > (cell->m_first & 0x3f)) {
+				lower = 0;
+			}
+
+			LegoS32 entryHeight = gridEntry.m_unk0x04 - p_height;
+			if (entryHeight > lower || (entryHeight == lower && gridEntry.m_unk0x08 && !(cell->m_second & 0xc0))) {
+				result++;
+			}
+		}
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x0049e710
+LegoBool32 CarBuildModel::Field0xbc::AddPiece(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoS32 p_colorRecordIndex,
+	LegoS32 p_partType,
+	LegoBool32 p_allowEmpty
+)
+{
+	LegoS32 height = FUN_0049e2d0(p_pieceRecord, p_x, p_y, p_rotation, p_allowEmpty);
+	if (height < 0) {
+		return FALSE;
+	}
+
+	if (FUN_0049e450(p_pieceRecord, p_x, p_y, p_rotation, height)) {
+		return FALSE;
+	}
+
+	LegoS32 entryIndex =
+		m_unk0x0c->AddEntry(p_pieceRecord, p_x, p_y, p_rotation, p_colorRecordIndex, p_partType, height);
+	if (entryIndex == -1) {
+		return FALSE;
+	}
+
+	FUN_0049df40(p_pieceRecord, p_x, p_y, p_rotation, height, entryIndex);
+	return TRUE;
+}
+
+// FUNCTION: LEGORACERS 0x0049f6b0
+void CarBuildModel::Field0xa4::Entry0x1c::GetPlacement(
+	LegoS32* p_x,
+	LegoS32* p_y,
+	LegoS32* p_height,
+	LegoS32* p_rotation
+)
+{
+	*p_x = m_x;
+	*p_y = m_y;
+	*p_height = m_height;
+	*p_rotation = m_rotation;
+}
+
+// STUB: LEGORACERS 0x0049f6e0
+LegoS32 CarBuildModel::Field0xa4::Entry0x1c::SetPlacement(
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_height,
+	LegoS32 p_rotation
+)
+{
+	m_y = p_y;
+	m_x = p_x;
+	m_height = p_height;
+	m_rotation = p_rotation & 3;
+	return p_height;
+}
+
+// STUB: LEGORACERS 0x0049f710
+LegoS32 CarBuildModel::Field0xa4::AddEntry(
+	LegoPieceLibrary::PieceRecord* p_pieceRecord,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_rotation,
+	LegoS32 p_colorRecordIndex,
+	LegoS32 p_partType,
+	LegoS32 p_height
+)
+{
+	Entry0x1c& entry = m_entries[m_entryCount];
+	entry.m_pieceRecord = p_pieceRecord;
+	entry.m_colorRecordIndex = p_colorRecordIndex;
+	entry.m_partType = p_partType;
+	entry.SetPlacement(p_x, p_y, p_height, p_rotation);
+
+	LegoS32 result = m_entryCount;
+	m_entryCount++;
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x0049f880
 CarBuildModel::Field0xa4::Field0xa4()
 {
 	m_unk0x10 = NULL;
 	m_entries = NULL;
-	m_unk0x08 = 0;
+	m_entryCount = 0;
 	m_count = 0;
 	m_unk0x00 = 0;
 }
@@ -907,7 +1269,7 @@ void CarBuildModel::Field0xa4::Clear()
 		delete[] m_entries;
 		m_entries = NULL;
 	}
-	m_unk0x08 = 0;
+	m_entryCount = 0;
 	m_count = 0;
 	m_unk0x00 = 0;
 }
@@ -926,14 +1288,67 @@ LegoBool32 CarBuildModel::Field0xa4::Initialize(LegoS32 p_count)
 	return FALSE;
 }
 
-// STUB: LEGORACERS 0x0049fca0
-void CarBuildModel::Field0xa4::FUN_0049fca0(LegoU8*)
+// STUB: LEGORACERS 0x0049f930
+LegoBool32 CarBuildModel::Field0xa4::FUN_0049f930()
 {
-	STUB(0x0049fca0);
+	LegoBool32 result = TRUE;
+	m_unk0x10->ResetEntries();
+
+	for (LegoS32 i = 0; i < m_entryCount; i++) {
+		Entry0x1c& entry = m_entries[i];
+		LegoS32 height = m_unk0x10->FUN_0049e2d0(entry.m_pieceRecord, entry.m_x, entry.m_y, entry.m_rotation, FALSE);
+		if (height == -1) {
+			height = m_unk0x10->FUN_0049e2d0(entry.m_pieceRecord, entry.m_x, entry.m_y, entry.m_rotation, TRUE);
+			if (height == -1) {
+				result = FALSE;
+			}
+		}
+
+		if (entry.m_height == -1) {
+			entry.m_height = height;
+		}
+		else if (height != entry.m_height) {
+			result = FALSE;
+		}
+
+		if (m_unk0x10->FUN_0049e450(entry.m_pieceRecord, entry.m_x, entry.m_y, entry.m_rotation, height)) {
+			result = FALSE;
+		}
+		else {
+			m_unk0x10->FUN_0049df40(entry.m_pieceRecord, entry.m_x, entry.m_y, entry.m_rotation, height, i);
+		}
+	}
+
+	return result;
 }
 
-// STUB: LEGORACERS 0x0049fd60
+// STUB: LEGORACERS 0x0049fca0
+void CarBuildModel::Field0xa4::FUN_0049fca0(LegoU8* p_dest)
+{
+	LegoU8* cursor = p_dest;
+	WriteBigEndianU16(cursor, m_entryCount);
+
+	for (LegoS32 i = 0; i < m_entryCount; i++) {
+		Entry0x1c& entry = m_entries[i];
+		WriteBigEndianU16(cursor, entry.m_pieceRecord->m_pieceType);
+
+		LegoS32 x;
+		LegoS32 y;
+		LegoS32 height;
+		LegoS32 rotation;
+		entry.GetPlacement(&x, &y, &height, &rotation);
+
+		*cursor++ = static_cast<LegoU8>(x);
+		*cursor++ = static_cast<LegoU8>(y);
+		*cursor++ = static_cast<LegoU8>(rotation);
+		*cursor++ = static_cast<LegoU8>(entry.m_colorRecordIndex);
+		WriteBigEndianU16(cursor, entry.m_partType);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0049fd60
 void CarBuildModel::Field0xa4::FUN_0049fd60()
 {
-	STUB(0x0049fd60);
+	m_entryCount = 0;
+	FUN_0049f930();
 }

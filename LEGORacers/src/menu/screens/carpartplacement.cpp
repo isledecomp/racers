@@ -366,14 +366,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004782f0(LegoS32 p_delta, L
 		return FALSE;
 	}
 
-	LegoBool32 deltaNonPositive = p_delta <= 0;
-	if (p_delta < 0) {
-		if (m_unk0x290 == 0) {
-			return FALSE;
-		}
-		deltaNonPositive = p_delta <= 0;
-	}
-	if (!deltaNonPositive && m_unk0x290 == 2) {
+	if ((p_delta < 0 && m_unk0x290 == 0) || (p_delta > 0 && m_unk0x290 == 2)) {
 		return FALSE;
 	}
 
@@ -382,11 +375,11 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004782f0(LegoS32 p_delta, L
 	}
 
 	if (p_delta < 0) {
-		if (-p_delta <= m_unk0x290) {
-			m_unk0x290 += static_cast<LegoS8>(p_delta);
+		if (-p_delta > m_unk0x290) {
+			m_unk0x290 = 0;
 		}
 		else {
-			m_unk0x290 = 0;
+			m_unk0x290 += static_cast<LegoS8>(p_delta);
 		}
 	}
 	else {

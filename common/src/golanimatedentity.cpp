@@ -397,8 +397,7 @@ void GolAnimatedEntity::FUN_0040db80(
 
 	LegoU32 queuedPartIndex = static_cast<LegoU16>(p_partIndex);
 	LegoBool32 updateQueued = p_updateQueued;
-	CmbModelPartData0x28* partData = m_modelParts[0]->GetPartData();
-	m_unk0xd4 = partData[queuedPartIndex].GetUnk0x00();
+	m_unk0xd4 = m_modelParts[0]->GetPartData()[queuedPartIndex].GetUnk0x00();
 	m_unk0xec = 0.0f;
 	m_unk0xd0 = p_time;
 	LegoBool32 updateCurrent = p_updateCurrent;
@@ -411,7 +410,7 @@ void GolAnimatedEntity::FUN_0040db80(
 		m_unk0xc0.m_z = 0.0f;
 	}
 
-	m_unk0xdc = partData[queuedPartIndex].GetUnk0x04();
+	m_unk0xdc = m_modelParts[0]->GetPartData()[queuedPartIndex].GetUnk0x04();
 }
 
 // STUB: GOLDP 0x10023b10

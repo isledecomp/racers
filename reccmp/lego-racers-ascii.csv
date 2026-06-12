@@ -188,8 +188,6 @@ address,type,x-text
 0x4be604,string,"Activate Window\n"
 0x4be618,string,"--App was enabled\n"
 0x4be62c,string,"Deactivate Window\n"
-0x4be7e4,string,".pcm"
-0x4be7ec,string,".tun"
 0x4be800,string,"skymat"
 0x4be808,string,".skb"
 0x4be810,string,".ccb"

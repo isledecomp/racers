@@ -27,10 +27,10 @@ MenuWidget::~MenuWidget()
 // FUNCTION: LEGORACERS 0x00472a00
 void MenuWidget::Reset()
 {
-	m_unk0x54 &= 0xfe;
-	m_flags = (m_flags & 0xf2) | 2;
 	m_golExport = NULL;
+	m_unk0x54 &= 0xfe;
 	m_renderer = NULL;
+	m_flags = (m_flags & 0xf2) | 2;
 	m_unk0x18 = 0;
 	m_nextSibling = 0;
 	m_prevSibling = 0;
@@ -219,24 +219,24 @@ Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
 	LegoU32 destWidth = p_dest->m_right - p_dest->m_left;
 	LegoU32 destHeight = p_dest->m_bottom - p_dest->m_top;
 
-	if (sourceWidth <= destWidth) {
-		p_dest->m_left = sourceLeft;
-		p_dest->m_right = p_source->m_right;
-	}
-	else {
+	if (sourceWidth > destWidth) {
 		LegoU32 inset = (sourceWidth - destWidth) >> 1;
 		p_dest->m_left = sourceLeft + inset;
 		p_dest->m_right = p_source->m_right - inset;
 	}
-
-	if (sourceHeight <= destHeight) {
-		p_dest->m_top = p_source->m_top;
-		p_dest->m_bottom = p_source->m_bottom;
-	}
 	else {
+		p_dest->m_left = sourceLeft;
+		p_dest->m_right = p_source->m_right;
+	}
+
+	if (sourceHeight > destHeight) {
 		LegoU32 inset = (sourceHeight - destHeight) >> 1;
 		p_dest->m_top = p_source->m_top + inset;
 		p_dest->m_bottom = p_source->m_bottom - inset;
+	}
+	else {
+		p_dest->m_top = p_source->m_top;
+		p_dest->m_bottom = p_source->m_bottom;
 	}
 
 	return p_dest;

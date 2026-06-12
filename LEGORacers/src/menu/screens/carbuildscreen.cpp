@@ -702,14 +702,14 @@ void CarBuildScreen::VTable0x44(MenuWidget* p_source)
 		LegoS32 categoryIndex = m_unk0x2308.GetUnk0x298();
 		LegoU32 regionId = index;
 		index--;
-		LegoS32 tableIndex = index + (categoryIndex * 8);
 
 		if (regionId) {
-			LegoU32 direction = index & 1;
-			LegoS32 verticalOffset = g_carBuildDragVerticalOffsets[tableIndex];
-			LegoS32 horizontalOffset = g_carBuildDragHorizontalOffsets[tableIndex];
-
-			FUN_004773e0(horizontalOffset, verticalOffset, 0x10, direction);
+			FUN_004773e0(
+				g_carBuildDragHorizontalOffsets[index + (categoryIndex * 8)],
+				g_carBuildDragVerticalOffsets[index + (categoryIndex * 8)],
+				0x10,
+				index & 1
+			);
 		}
 
 		m_unk0x3c1c = c_carBuildDragDelay;

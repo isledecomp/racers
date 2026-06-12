@@ -35,7 +35,7 @@ public:
 		);
 		void FillChoiceIndices(LegoS32* p_dest, LegoS32 p_startIndex, LegoS32 p_count);
 		LegoS32 NormalizeChoiceIndex(LegoS32 p_index);
-		LegoS32* GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex);
+		void GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex);
 		LegoS32 FindChoiceIndex(LegoS32 p_pieceType, LegoS32 p_colorRecordIndex);
 		const LegoChar* GetName() const { return m_name; }
 

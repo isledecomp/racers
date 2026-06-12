@@ -167,6 +167,11 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 	}
 
 	LegoRacers::Context* context = m_context->m_context;
+
+	if (context->m_playerRecordStates[0].m_unk0x00 == 0) {
+		return FALSE;
+	}
+
 	PeridotTraceBase0x24* trace = NULL;
 
 	switch (context->m_playerRecordStates[0].m_unk0x00) {

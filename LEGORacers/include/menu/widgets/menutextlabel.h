@@ -28,7 +28,7 @@ public:
 	void Reset() override;                           // vtable+0x00
 	~MenuTextLabel() override;                       // vtable+0x04
 	MenuWidget* VTable0x38(Rect*, Rect*) override;   // vtable+0x38
-	virtual void VTable0x40(GolString*, undefined4); // vtable+0x40
+	virtual void VTable0x40(GolString*, LegoS32);    // vtable+0x40
 	virtual void VTable0x44(undefined2, undefined4); // vtable+0x44
 	LegoBool32 FUN_0046f520(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08);
 	void FUN_0046f6b0(LegoS32 p_rightMargin);

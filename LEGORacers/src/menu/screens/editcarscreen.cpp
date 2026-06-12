@@ -188,14 +188,15 @@ LegoBool32 EditCarScreen::Destroy()
 void EditCarScreen::FUN_0047c320()
 {
 	LegoS32 i;
+	LegoU32 mask = 1;
 
-	m_unk0x3684 = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1e0();
+	SaveSystem* saveSystem = &m_context->m_unk0x258;
+	m_unk0x3684 = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
 
 	for (i = 0; i < 4; i++) {
 		m_unk0x3688[i] = TRUE;
 	}
 
-	LegoU32 mask = 1;
 	for (i = 0; i < 8; i++) {
 		if (m_unk0x3684 & mask) {
 			m_unk0x3688[i + 4] = TRUE;
@@ -389,22 +390,22 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 		m_unk0x360 = c_menuCarBuild;
 	}
 	else if (p_source == &m_unk0xc04) {
-		if (m_unk0x3678 && m_unk0x3678->FUN_0042b460()) {
+		if (m_unk0x3678->FUN_0042b460()) {
 			VTable0x38(&m_unk0x1da4);
 		}
 		else {
 			FUN_0047fdc0(&m_unk0x1da4, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x46, 0x1f);
+			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
 			FUN_0046c6f0(&m_unk0x1da4, &m_unk0x1ab4, 0x7b);
 		}
 	}
 	else if (p_source == &m_unk0xef4) {
-		if (m_unk0x3678 && m_unk0x3678->FUN_0042b460()) {
+		if (m_unk0x3678->FUN_0042b460()) {
 			VTable0x38(&m_unk0x2094);
 		}
 		else {
 			FUN_0047fdc0(&m_unk0x2094, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x46, 0x1f);
+			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
 			FUN_0046c6f0(&m_unk0x2094, &m_unk0x1ab4, 0x7b);
 		}
 		FUN_0047c790();
@@ -423,7 +424,7 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 		}
 		else if (FUN_0047c900()) {
 			FUN_0047fdc0(&m_unk0x17c4, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x46, 0x1f);
+			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
 			FUN_0046c6f0(&m_unk0x17c4, &m_unk0x1ab4, 0x7b);
 		}
 		else {
@@ -432,24 +433,22 @@ void EditCarScreen::VTable0x38(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x17c4) {
 		m_unk0x360 = c_menuGarage;
-		if (m_unk0x284 && m_unk0x284->GetUnk0x9c()) {
+		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 	}
 	else if (p_source == &m_unk0x1ab4) {
-		if (m_unk0x284 && m_unk0x284->GetUnk0x9c()) {
-			m_unk0x284->FUN_00468cf0();
-		}
+		m_unk0x284->FUN_00468cf0();
 	}
 	else if (p_source == &m_unk0x1da4) {
 		FUN_0047c810();
-		if (m_unk0x284 && m_unk0x284->GetUnk0x9c()) {
+		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 	}
 	else if (p_source == &m_unk0x2094) {
 		VTable0x44(&m_unk0x2418);
-		if (m_unk0x284 && m_unk0x284->GetUnk0x9c()) {
+		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 	}

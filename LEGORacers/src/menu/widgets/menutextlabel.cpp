@@ -62,22 +62,22 @@ void MenuTextLabel::VTable0x44(undefined2 p_unk0x04, undefined4 p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x0046f600
-void MenuTextLabel::VTable0x40(GolString* p_string, undefined4 p_unk0x08)
+void MenuTextLabel::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 {
 	m_unk0x64.CopyFromGolString(p_string);
 	m_unk0x64.ToUpperCase();
 
 	if (!m_unk0x34.m_right || !m_unk0x34.m_bottom || p_unk0x08) {
+		LegoS32 height;
+
 		m_unk0x64.FirstLine();
 		m_unk0x34.m_bottom = m_unk0x34.m_top;
 		m_unk0x34.m_right = m_unk0x34.m_left;
 
 		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
-			LegoS32 width;
-			LegoS32 height;
-			m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
+			m_unk0x60->FUN_00408be0(&m_unk0x64, &p_unk0x08, &height);
 
-			LegoU32 right = m_unk0x34.m_left + width;
+			LegoU32 right = m_unk0x34.m_left + p_unk0x08;
 			LegoU32 currentRight = m_unk0x34.m_right;
 			if (right > currentRight) {
 				m_unk0x34.m_right = right;

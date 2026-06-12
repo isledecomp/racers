@@ -189,16 +189,18 @@ void GolFontBase0x40::FUN_1001e420(LegoU32* p_rowSignature, LegoU8* p_pixels, Le
 	LegoU16 bitsPerPixel = g_unk0x10063c9c->GetTextureFormat().m_bitsPerPixel;
 
 	if (bitsPerPixel == 4) {
-		for (LegoU32 i = 0; i < font->m_unk0x1c; i++) {
-			p_rowSignature[i] = *p_pixels & 0x0f;
+		LegoU32 i = 0;
+		while (i < font->m_unk0x1c) {
+			p_rowSignature[i++] = *p_pixels & 0x0f;
 			p_pixels += p_pitch;
 		}
 	}
 	else {
 		LegoU32 mask = (1 << bitsPerPixel) - 1;
-		for (LegoU32 i = 0; i < font->m_unk0x1c; i++) {
+		LegoU32 i = 0;
+		while (i < font->m_unk0x1c) {
 			LegoU32 pixel = p_pixels[0] | (p_pixels[1] << 8) | (p_pixels[2] << 16) | (p_pixels[3] << 24);
-			p_rowSignature[i] = mask & pixel;
+			p_rowSignature[i++] = mask & pixel;
 			p_pixels += p_pitch;
 		}
 	}

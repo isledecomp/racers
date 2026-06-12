@@ -56,8 +56,8 @@ void EditDriverScreen::FUN_0047d100(MenuGameContext* p_context, MenuScreenCreate
 	DriverHeadBuilder::LoadParams params;
 	::memset(&params, 0, sizeof(params));
 
-	params.m_golExport = p_createParams->m_golExport;
 	params.m_renderer = p_createParams->m_renderer;
+	params.m_golExport = p_createParams->m_golExport;
 	params.m_partCatalog = &p_context->m_partCatalog;
 	params.m_binary = p_context->m_context->m_unk0x18;
 	params.m_partLibrary = p_context->m_partResources.GetPartLibrary();

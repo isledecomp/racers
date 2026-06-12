@@ -23,9 +23,6 @@ const LegoFloat g_unk0x004af7b4 = 1.0f / 65536.0f;
 // GLOBAL: LEGORACERS 0x004af7b8
 const LegoFloat g_unk0x004af7b8 = 1000.0f / 65536.0f;
 
-// GLOBAL: LEGORACERS 0x004af7bc
-const LegoFloat g_unk0x004af7bc = 65.536f;
-
 // FUNCTION: GOLDP 0x10027b50
 // FUNCTION: LEGORACERS 0x00411150
 GolModelEntity::GolModelEntity()
@@ -321,14 +318,14 @@ LegoFloat GolModelEntity::FUN_00411660() const
 void GolModelEntity::FUN_00411680(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x60 = static_cast<LegoU16>(p_arg * g_unk0x004af7b8);
+	m_unk0x60 = static_cast<LegoU16>(p_arg * 65536.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004116b0
 void GolModelEntity::FUN_004116b0(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-	m_unk0x62 = static_cast<LegoU16>(p_arg * g_unk0x004af7b8);
+	m_unk0x62 = static_cast<LegoU16>(p_arg * 65536.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004116e0
@@ -348,11 +345,7 @@ LegoFloat GolModelEntity::FUN_004116f0() const
 void GolModelEntity::FUN_00411700(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-#ifdef BUILDING_GOL
 	m_unk0x64 = static_cast<LegoS32>(p_arg * 65.536f);
-#else
-	m_unk0x64 = static_cast<LegoS32>(p_arg * g_unk0x004af7bc);
-#endif
 }
 
 // FUNCTION: GOLDP 0x10028140
@@ -360,11 +353,7 @@ void GolModelEntity::FUN_00411700(LegoFloat p_arg)
 void GolModelEntity::FUN_00411730(LegoFloat p_arg)
 {
 	m_flags |= c_flagBit3;
-#ifdef BUILDING_GOL
 	m_unk0x68 = static_cast<LegoS32>(p_arg * 65.536f);
-#else
-	m_unk0x68 = static_cast<LegoS32>(p_arg * g_unk0x004af7bc);
-#endif
 }
 
 // FUNCTION: GOLDP 0x10028170

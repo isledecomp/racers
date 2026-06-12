@@ -138,7 +138,9 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 	LegoS32 colorRecordIndex;
 
 	m_currentEntry->GetChoice(choiceIndex, &pieceType, &colorRecordIndex);
-	entity->VTable0x50(model, g_maxFloat);
+
+	LegoFloat maxDistance = g_maxFloat;
+	entity->VTable0x50(model, maxDistance);
 
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
 	m_buildModel->FUN_0049b8b0(pieceRecord, 0);
@@ -149,8 +151,10 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00485550
 void CarPartCarousel::VTable0x5c(undefined4, GolModelEntity* p_entity)
 {
+	LegoFloat vectorX = g_carPartCarouselVectorX;
+	LegoFloat vectorZ = g_carPartCarouselVectorZ;
 	GolVec3 axis = {1.0f, 0.0f, 0.0f};
-	GolVec3 vector = {g_carPartCarouselVectorX, 0.0f, g_carPartCarouselVectorZ};
+	GolVec3 vector = {vectorX, 0.0f, vectorZ};
 
 	GolMath::FUN_004496a0(&axis, &axis, &vector, m_rotationAngle);
 	p_entity->FUN_00410b00(vector, axis);
@@ -191,19 +195,17 @@ void CarPartCarousel::VTable0x50(undefined4 p_index)
 				}
 
 				LegoS32 baseIndex = static_cast<LegoS32>(m_unk0x64);
+				LegoS32 nextVisibleIndex = baseIndex + 1;
 				LegoS32 count;
-				if (m_unk0x6c < baseIndex) {
-					count = m_unk0x60 - baseIndex - 1;
-				}
-				else {
+				if (m_unk0x6c >= baseIndex) {
 					count = m_unk0x68 - m_unk0x6c;
 				}
+				else {
+					count = m_unk0x60 - baseIndex - 1;
+				}
 
-				if (count) {
-					LegoS32 nextVisibleIndex = baseIndex + 1;
-					do {
-						VTable0x60(nextVisibleIndex++);
-					} while (--count);
+				while (count--) {
+					VTable0x60(nextVisibleIndex++);
 				}
 			}
 

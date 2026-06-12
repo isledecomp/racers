@@ -158,11 +158,10 @@ LegoS32 CarPartSet::Entry::NormalizeChoiceIndex(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0049cda0
-LegoS32* CarPartSet::Entry::GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex)
+void CarPartSet::Entry::GetChoice(LegoS32 p_index, LegoS32* p_pieceType, LegoS32* p_colorRecordIndex)
 {
 	*p_pieceType = m_choices[p_index].m_pieceType;
 	*p_colorRecordIndex = m_choices[p_index].m_colorRecordIndex;
-	return p_colorRecordIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0049cdd0

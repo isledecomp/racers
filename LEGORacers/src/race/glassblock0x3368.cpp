@@ -61,12 +61,12 @@ void GlassBlock0x3368::Run()
 
 	m_unk0x3344 = 0.0f;
 	m_unk0x332c = 0;
-	m_unk0x3328 = 1;
-	m_renderer->VTable0x44();
 
 	LegoU32 frameSampleCount = 0;
-	LegoU32 frameSampleElapsedMs[1];
-	frameSampleElapsedMs[0] = 0;
+	LegoU32 frameSampleElapsedMs = 0;
+
+	m_unk0x3328 = 1;
+	m_renderer->VTable0x44();
 
 	while (m_unk0x3334) {
 		if (!m_golApp->Tick(this)) {
@@ -118,19 +118,17 @@ void GlassBlock0x3368::Run()
 
 			if (m_unk0x333c) {
 				LegoS32 currentTime = timeGetTime();
-				LegoU32 elapsedMs = currentTime - previousTime;
-				m_unk0x3340 += elapsedMs;
-				frameSampleElapsedMs[0] += elapsedMs;
+				m_unk0x3340 += currentTime - previousTime;
+				frameSampleElapsedMs += currentTime - previousTime;
 				frameSampleCount++;
+				previousTime = currentTime;
 
 				if (frameSampleCount >= 64) {
-					frameSampleElapsedMs[0] >>= 6;
+					frameSampleElapsedMs >>= 6;
 					frameSampleCount = 0;
-					m_unk0x3344 = 1.0f / (static_cast<LegoFloat>((LegoS32) frameSampleElapsedMs[0]) * 0.001f);
-					frameSampleElapsedMs[0] = 0;
+					m_unk0x3344 = 1.0f / (static_cast<LegoFloat>((LegoS32) frameSampleElapsedMs) * 0.001f);
+					frameSampleElapsedMs = 0;
 				}
-
-				previousTime = currentTime;
 			}
 
 			m_unk0x333c++;

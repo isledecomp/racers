@@ -130,6 +130,7 @@ LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_unk0x04, MenuScreen
 // FUNCTION: LEGORACERS 0x00477290
 void CarModelScreenBase::FUN_00477290()
 {
+	LegoS32 mask = 1;
 	SaveSystem* saveSystem = &m_context->m_unk0x258;
 	m_partCategoryUnlockFlags = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
 
@@ -138,7 +139,6 @@ void CarModelScreenBase::FUN_00477290()
 		m_partCategoryAvailable[i] = TRUE;
 	}
 
-	LegoS32 mask = 1;
 	for (i = 0; i < c_saveUnlockedPartCategoryCount; i++) {
 		if (m_partCategoryUnlockFlags & mask) {
 			m_partCategoryAvailable[i + c_alwaysAvailablePartCategoryCount] = TRUE;

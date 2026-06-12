@@ -73,8 +73,9 @@ void GolBmpFile::VTable0x00()
 	LegoU8 header[0xe];
 	LegoS32 amountRead;
 	LegoU32 i;
-	LegoU32 bpp = 0;
 	LegoU32 compression = 0;
+	LegoU32 bpp = 0;
+	LegoU32 imageOffset;
 	LegoU8* paletteBuffer;
 
 	LegoS32 result = m_file.BufferedRead(0, header, sizeof(header), &amountRead);
@@ -82,7 +83,8 @@ void GolBmpFile::VTable0x00()
 		GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 	}
 
-	if (BUF_U16LE(header, 0) != TWOCC('B', 'M')) {
+	LegoU16 magic = BUF_U16LE(header, 0);
+	if (magic != TWOCC('B', 'M')) {
 		bpp = header[0] & 0x3c;
 		if (bpp != 4 && bpp != 8 && bpp != 24 && bpp != 32) {
 			GOL_FATALERROR_MESSAGE("Invalid BMP file");
@@ -94,13 +96,14 @@ void GolBmpFile::VTable0x00()
 			m_paletteSize = header[0x1] + 1;
 		}
 
-		LegoU32 imageOffset = 6;
+		imageOffset = 6;
 		m_width = BUF_U16LE(header, 0x2);
 		m_height = BUF_U16LE(header, 0x4);
 
 		if (bpp <= 8) {
-			if (3 * m_paletteSize > sizeof(m_unk0x5f0)) {
-				paletteBuffer = new LegoU8[3 * m_paletteSize];
+			LegoU32 paletteBytes = 3 * m_paletteSize;
+			if (paletteBytes > sizeof(m_unk0x5f0)) {
+				paletteBuffer = new LegoU8[paletteBytes];
 			}
 			else {
 				paletteBuffer = m_unk0x5f0;
@@ -109,19 +112,18 @@ void GolBmpFile::VTable0x00()
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			result = m_file.BufferedRead(6, paletteBuffer, 3 * m_paletteSize, &amountRead);
+			result = m_file.BufferedRead(6, paletteBuffer, paletteBytes, &amountRead);
 			if (result != GolStream::e_ioSuccess) {
 				GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 			}
-			imageOffset += 3 * m_paletteSize;
+			imageOffset += paletteBytes;
 
-			LegoU8* palettePtr;
-			ColorRGBA* paletteColor;
-			for (palettePtr = paletteBuffer, paletteColor = m_palette, i = 0; i < m_paletteSize; i++, paletteColor++) {
-				paletteColor->m_blu = *palettePtr++;
-				paletteColor->m_grn = *palettePtr++;
-				paletteColor->m_red = *palettePtr++;
-				paletteColor->m_alp = 0xff;
+			LegoU8* palettePtr = paletteBuffer;
+			for (i = 0; i < m_paletteSize; i++) {
+				m_palette[i].m_blu = *palettePtr++;
+				m_palette[i].m_grn = *palettePtr++;
+				m_palette[i].m_red = *palettePtr++;
+				m_palette[i].m_alp = 0xff;
 			}
 
 			if (paletteBuffer != m_unk0x5f0) {
@@ -172,14 +174,12 @@ void GolBmpFile::VTable0x00()
 					GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 				}
 
-				LegoU8* palettePtr;
-				ColorRGBA* paletteColor;
-				for (palettePtr = paletteBuffer, paletteColor = m_palette, i = 0; i < m_paletteSize;
-					 i++, paletteColor++) {
-					paletteColor->m_blu = *palettePtr++;
-					paletteColor->m_grn = *palettePtr++;
-					paletteColor->m_red = *palettePtr++;
-					paletteColor->m_alp = 0xff;
+				LegoU8* palettePtr = paletteBuffer;
+				for (i = 0; i < m_paletteSize; i++) {
+					m_palette[i].m_blu = *palettePtr++;
+					m_palette[i].m_grn = *palettePtr++;
+					m_palette[i].m_red = *palettePtr++;
+					m_palette[i].m_alp = 0xff;
 				}
 
 				if (paletteBuffer != m_unk0x5f0) {
@@ -220,15 +220,13 @@ void GolBmpFile::VTable0x00()
 					GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 				}
 
-				LegoU8* palettePtr;
-				ColorRGBA* paletteColor;
-				for (palettePtr = paletteBuffer, paletteColor = m_palette, i = 0; i < m_paletteSize;
-					 i++, paletteColor++) {
-					paletteColor->m_blu = *palettePtr++;
-					paletteColor->m_grn = *palettePtr++;
-					paletteColor->m_red = *palettePtr++;
+				LegoU8* palettePtr = paletteBuffer;
+				for (i = 0; i < m_paletteSize; i++) {
+					m_palette[i].m_blu = *palettePtr++;
+					m_palette[i].m_grn = *palettePtr++;
+					m_palette[i].m_red = *palettePtr++;
 					palettePtr++;
-					paletteColor->m_alp = 0xff;
+					m_palette[i].m_alp = 0xff;
 				}
 
 				if (paletteBuffer != m_unk0x5f0) {
@@ -269,15 +267,13 @@ void GolBmpFile::VTable0x00()
 					GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 				}
 
-				LegoU8* palettePtr;
-				ColorRGBA* paletteColor;
-				for (palettePtr = paletteBuffer, paletteColor = m_palette, i = 0; i < m_paletteSize;
-					 i++, paletteColor++) {
-					paletteColor->m_blu = *palettePtr++;
-					paletteColor->m_grn = *palettePtr++;
-					paletteColor->m_red = *palettePtr++;
+				LegoU8* palettePtr = paletteBuffer;
+				for (i = 0; i < m_paletteSize; i++) {
+					m_palette[i].m_blu = *palettePtr++;
+					m_palette[i].m_grn = *palettePtr++;
+					m_palette[i].m_red = *palettePtr++;
 					palettePtr++;
-					paletteColor->m_alp = 0xff;
+					m_palette[i].m_alp = 0xff;
 				}
 
 				if (paletteBuffer != m_unk0x5f0) {

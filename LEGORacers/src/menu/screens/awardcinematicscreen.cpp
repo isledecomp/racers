@@ -159,7 +159,7 @@ void AwardCinematicScreen::VTable0x4c()
 // FUNCTION: LEGORACERS 0x004767b0
 LegoBool32 AwardCinematicScreen::FUN_004767b0()
 {
-	GameState* gameState = &m_context->m_unk0x258.GetUnk0x18c4();
+	GameState* gameState = &m_context->m_saveSystem.GetGameState();
 	LegoU16 menuId = m_unk0x28c;
 
 	if (menuId != c_menuChampAward1 && menuId != c_menuChampAward2 && menuId != c_menuChampAward3) {
@@ -172,27 +172,27 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 		return FALSE;
 	}
 
-	PeridotTraceBase0x24* trace = NULL;
+	SaveRecordList* records = NULL;
 
 	switch (context->m_playerRecordStates[0].m_unk0x00) {
 	case 1:
 	case 3:
-		trace = &m_context->m_unk0x258.GetUnk0x108();
+		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		trace = &m_context->m_unk0x258.GetUnk0xa58()[context->m_playerRecordStates[0].m_unk0x04];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[context->m_playerRecordStates[0].m_unk0x04];
 		break;
 	default:
 		return FALSE;
 	}
 
-	if (trace == NULL) {
+	if (records == NULL) {
 		return FALSE;
 	}
 
 	RaceDefinitionList::RaceDefinition* raceDefinition =
 		static_cast<RaceDefinitionList::RaceDefinition*>(m_context->m_raceList.GetName(context->m_unk0x2d));
-	m_unk0x7a4 = FUN_00476890(trace, raceDefinition);
+	m_unk0x7a4 = FUN_00476890(records, raceDefinition);
 
 	if (m_unk0x28c != c_menuChampAward1 && m_unk0x28c != c_menuChampAward2) {
 		return FALSE;
@@ -205,12 +205,11 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 
 // FUNCTION: LEGORACERS 0x00476890
 LegoBool32 AwardCinematicScreen::FUN_00476890(
-	PeridotTraceBase0x24* p_trace,
+	SaveRecordList* p_records,
 	RaceDefinitionList::RaceDefinition* p_raceDefinition
 )
 {
-	PeridotTraceBase0x24::Record* record =
-		p_trace->FUN_0042b9b0(m_context->m_context->m_playerRecordStates[0].m_unk0x08);
+	SaveRecordList::Record* record = p_records->FindRecordById(m_context->m_context->m_playerRecordStates[0].m_unk0x08);
 	if (record == NULL) {
 		return FALSE;
 	}
@@ -233,8 +232,8 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 			static_cast<RaceDefinitionList::RaceDefinition*>(raceList->GetName(menuName));
 		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(menuRaceDefinition));
 
-		if (!(p_gameState->FUN_0042f1f0() & mask)) {
-			p_gameState->FUN_0042f220(mask);
+		if (!(p_gameState->GetUnlockedCircuits() & mask)) {
+			p_gameState->UnlockCircuits(mask);
 			m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 4);
 			return TRUE;
 		}
@@ -259,12 +258,12 @@ LegoBool32 AwardCinematicScreen::FUN_00476990(
 	}
 
 	LegoU8 mask = static_cast<LegoU8>(1 << m_unk0x7a0);
-	if (p_gameState->FUN_0042f1e0() & mask) {
+	if (p_gameState->GetPartUnlockFlags() & mask) {
 		m_unk0x7a0 = -1;
 		return FALSE;
 	}
 
-	p_gameState->FUN_0042f200(mask);
+	p_gameState->UnlockParts(mask);
 	return TRUE;
 }
 

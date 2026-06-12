@@ -15,7 +15,7 @@
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextlabel.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 class CmbModelPart0x34;
 class GolModelBase;
@@ -78,7 +78,7 @@ protected:
 	CmbModelPart0x34* m_unk0x35ac;                      // 0x35ac
 	RacerModelSlot m_unk0x35b0;                         // 0x35b0
 	RacerUnlockState m_unk0x3650;                       // 0x3650
-	PeridotTraceBuffer0x250* m_unk0x3678;               // 0x3678
+	ActiveRecordBuffer* m_unk0x3678;                    // 0x3678
 	GolName m_unk0x367c;                                // 0x367c
 	LegoU32 m_unk0x3684;                                // 0x3684
 	LegoU32 m_unk0x3688[12];                            // 0x3688

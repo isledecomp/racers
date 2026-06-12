@@ -327,7 +327,7 @@ void MenuGameScreen::FUN_004803d0()
 	m_context->m_inputBindings.Shutdown();
 	m_inputManager->Initialize();
 	m_context->m_inputBindings.Initialize(m_inputManager);
-	m_context->m_unk0x258.FUN_004437a0(m_inputManager);
+	m_context->m_saveSystem.ReinitializeInputBindings(m_inputManager);
 }
 
 // FUNCTION: LEGORACERS 0x00480420 FOLDED

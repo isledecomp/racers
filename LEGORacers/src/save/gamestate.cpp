@@ -5,7 +5,7 @@
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 #include <string.h>
 #include <windows.h>
@@ -13,10 +13,10 @@
 DECOMP_SIZE_ASSERT(GameState, 0x438)
 DECOMP_SIZE_ASSERT(DisplayDriverGuid::SerializedWord, 0x04)
 DECOMP_SIZE_ASSERT(DisplayDriverGuid::Serialized, 0x10)
-DECOMP_SIZE_ASSERT(PeridotTraceInputBindingEntry, 0x28)
-DECOMP_SIZE_ASSERT(PeridotTraceInputBindingPlayerState, 0x04)
-DECOMP_SIZE_ASSERT(PeridotTraceInputBindingState, 0xd0)
-DECOMP_SIZE_ASSERT(PeridotTracePersistentState, 0x42c)
+DECOMP_SIZE_ASSERT(InputBindingEntry, 0x28)
+DECOMP_SIZE_ASSERT(InputBindingPlayerState, 0x04)
+DECOMP_SIZE_ASSERT(InputBindingState, 0xd0)
+DECOMP_SIZE_ASSERT(PersistentGameState, 0x42c)
 
 // GLOBAL: LEGORACERS 0x004b0624
 const LegoU32 g_keyboardInputBindingEvents[3][9] = {
@@ -76,14 +76,14 @@ GameState::~GameState()
 // FUNCTION: LEGORACERS 0x0042e8a0
 void GameState::Initialize()
 {
-	m_unk0x00 = 0;
-	m_unk0x04 = 0xffffffff;
+	m_dirty = 0;
+	m_activeSaveIndex = 0xffffffff;
 
 	m_state.Clear();
-	m_state.m_unk0x0c = 5;
+	m_state.m_racerCount = 5;
 	m_state.m_unk0x1e = 0x80;
-	m_state.m_unk0x1f = 0xff;
-	m_state.m_unk0x20 = 0xff;
+	m_state.m_musicVolume = 0xff;
+	m_state.m_soundVolume = 0xff;
 	m_state.m_unk0x21 = 1;
 	m_state.m_languageIndex = GetRegistryLanguageIndex();
 	m_state.m_unk0x23 = 3;
@@ -104,8 +104,8 @@ void GameState::Initialize(InputManager* p_inputManager)
 	Reset();
 	m_inputManager = p_inputManager;
 	InitializeInputBindings(p_inputManager);
-	FUN_0042f020(g_displayDriverGuid);
-	m_unk0x00 = 0;
+	SetDisplayDriverGuid(g_displayDriverGuid);
+	m_dirty = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042e950
@@ -121,7 +121,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 	LegoS32 j;
 
 	for (i = 0; i < 2; i++) {
-		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
 		JoystickInputDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
 
 		if (joystick == NULL) {
@@ -133,7 +133,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 			entry->m_deviceSubType = joystick->GetDeviceSubType();
 		}
 
-		entry->m_unk0x02 = i;
+		entry->m_deviceId = i;
 		::memset(entry->m_events, 0, sizeof(entry->m_events));
 
 		if (joystick != NULL) {
@@ -158,9 +158,9 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 			m_state.m_inputBindings.m_entries[4].m_deviceSubType = keyboard->GetDeviceSubType();
 		}
 
-		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
 		entry->m_deviceType = 3;
-		entry->m_unk0x02 = 0;
+		entry->m_deviceId = 0;
 
 		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
 			entry->m_events[j] = g_keyboardInputBindingEvents[i][j];
@@ -176,26 +176,26 @@ void GameState::FUN_0042ea50(LegoU32 p_playerIndex)
 
 	for (LegoU32 i = 0; i < c_joystickBindingCount; i++) {
 		if (otherEntryIndex != i) {
-			PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
-			if (m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02) != NULL) {
-				FUN_0042eb20(p_playerIndex, i);
+			InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+			if (m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) != NULL) {
+				SelectInputBinding(p_playerIndex, i);
 				return;
 			}
 		}
 	}
 
-	FUN_0042eb20(p_playerIndex, FUN_0042eac0(p_playerIndex));
+	SelectInputBinding(p_playerIndex, FindAvailableInputBindingEntry(p_playerIndex));
 }
 
 // FUNCTION: LEGORACERS 0x0042eac0
-LegoU32 GameState::FUN_0042eac0(LegoU32 p_playerIndex)
+LegoU32 GameState::FindAvailableInputBindingEntry(LegoU32 p_playerIndex)
 {
 	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
 	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
 
 	if (p_playerIndex && otherEntryIndex < c_joystickBindingCount) {
-		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
-		LegoU32 deviceId = entry->m_unk0x02;
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
+		LegoU32 deviceId = entry->m_deviceId;
 		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(deviceId);
 
 		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) >= c_inputBindingEventCount) {
@@ -208,11 +208,11 @@ LegoU32 GameState::FUN_0042eac0(LegoU32 p_playerIndex)
 }
 
 // FUNCTION: LEGORACERS 0x0042eb20
-void GameState::FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
+void GameState::SelectInputBinding(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
 {
 	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
 
-	m_unk0x00 = 1;
+	m_dirty = 1;
 	m_state.m_inputBindings.SetSelectedEntryIndex(p_playerIndex, static_cast<LegoU8>(p_entryIndex));
 
 	if (p_entryIndex == m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex)) {
@@ -221,21 +221,21 @@ void GameState::FUN_0042eb20(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
 }
 
 // STUB: LEGORACERS 0x0042eb60
-void GameState::FUN_0042eb60(PeridotTrace0x4a8* p_trace, undefined4 p_index)
+void GameState::FUN_0042eb60(SaveGame* p_saveGame, undefined4 p_index)
 {
-	PeridotTracePersistentState state;
+	PersistentGameState state;
 	LegoU32 i;
 
-	m_unk0x04 = p_index;
-	m_unk0x00 = 0;
-	p_trace->FUN_00442a00(&state);
+	m_activeSaveIndex = p_index;
+	m_dirty = 0;
+	p_saveGame->FUN_00442a00(&state);
 
-	m_state.m_unk0x0c = state.m_unk0x0c;
+	m_state.m_racerCount = state.m_racerCount;
 	m_state.m_displayDriverGuid = state.m_displayDriverGuid;
 	m_state.m_unk0x1d = state.m_unk0x1d;
 	m_state.m_unk0x1e = state.m_unk0x1e;
-	m_state.m_unk0x1f = state.m_unk0x1f;
-	m_state.m_unk0x20 = state.m_unk0x20;
+	m_state.m_musicVolume = state.m_musicVolume;
+	m_state.m_soundVolume = state.m_soundVolume;
 	m_state.m_unk0x21 = state.m_unk0x21;
 	m_state.m_languageIndex = state.m_languageIndex;
 	m_state.m_unk0x23 = state.m_unk0x23;
@@ -252,31 +252,31 @@ void GameState::FUN_0042eb60(PeridotTrace0x4a8* p_trace, undefined4 p_index)
 			);
 		}
 
-		sourceBindingEntry += sizeof(PeridotTraceInputBindingEntry);
-		destBindingEntry += sizeof(PeridotTraceInputBindingEntry);
+		sourceBindingEntry += sizeof(InputBindingEntry);
+		destBindingEntry += sizeof(InputBindingEntry);
 	}
 
-	PeridotTraceInputBindingPlayerState* sourcePlayer = state.m_inputBindings.m_players;
-	PeridotTraceInputBindingPlayerState* destPlayer = m_state.m_inputBindings.m_players;
+	InputBindingPlayerState* sourcePlayer = state.m_inputBindings.m_players;
+	InputBindingPlayerState* destPlayer = m_state.m_inputBindings.m_players;
 	LegoU8* selectedEntryIndex = &destPlayer->m_selectedEntryIndex;
 	for (i = 0; i < c_joystickBindingCount; i++) {
 		*destPlayer = *sourcePlayer;
 
-		PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[*selectedEntryIndex];
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[*selectedEntryIndex];
 
 		if (entry->m_deviceType == c_joystickDeviceType &&
-			m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02) == NULL) {
+			m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) == NULL) {
 			FUN_0042ea50(i);
 		}
 
 		sourcePlayer++;
 		destPlayer++;
-		selectedEntryIndex += sizeof(PeridotTraceInputBindingPlayerState);
+		selectedEntryIndex += sizeof(InputBindingPlayerState);
 	}
 
-	m_state.m_unk0x24 = state.m_unk0x24;
-	m_state.m_unk0x25 = state.m_unk0x25;
-	m_state.m_unk0x26 = state.m_unk0x26;
+	m_state.m_partUnlockFlags = state.m_partUnlockFlags;
+	m_state.m_unlockedCircuits = state.m_unlockedCircuits;
+	m_state.m_unlockedRaces = state.m_unlockedRaces;
 
 	for (i = 0; i < sizeOfArray(m_state.m_unk0x28); i++) {
 		m_state.m_unk0x28[i] = state.m_unk0x28[i];
@@ -287,9 +287,9 @@ void GameState::FUN_0042eb60(PeridotTrace0x4a8* p_trace, undefined4 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0042ed10
-LegoBool32 GameState::FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event)
+LegoBool32 GameState::IsInputEventBound(LegoU32 p_entryIndex, LegoU32 p_event)
 {
-	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 	LegoS32 i;
 	LegoS32 j;
 
@@ -317,7 +317,7 @@ LegoBool32 GameState::FUN_0042ed10(LegoU32 p_entryIndex, LegoU32 p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0042ed80
-LegoU32 GameState::FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex)
+LegoU32 GameState::GetInputEvent(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 {
 	LegoU32 event = m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex];
 
@@ -325,16 +325,16 @@ LegoU32 GameState::FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, Leg
 		return event;
 	}
 
-	event = FUN_0042ef00(p_entryIndex, p_eventIndex);
+	event = GetDefaultInputEvent(p_entryIndex, p_eventIndex);
 	if (event) {
-		if (!FUN_0042ed10(p_entryIndex, event)) {
+		if (!IsInputEventBound(p_entryIndex, event)) {
 			FUN_0042ee70(p_entryIndex, p_eventIndex, event);
 			return event;
 		}
 	}
 
 	if (p_entryIndex < 1 && p_eventIndex > 1) {
-		LegoU32 fallbackEntryIndex = FUN_0042eac0(p_playerIndex);
+		LegoU32 fallbackEntryIndex = FindAvailableInputBindingEntry(p_playerIndex);
 		return m_state.m_inputBindings.m_entries[fallbackEntryIndex].m_events[p_eventIndex];
 	}
 
@@ -342,16 +342,16 @@ LegoU32 GameState::FUN_0042ed80(LegoU32 p_playerIndex, LegoU32 p_entryIndex, Leg
 }
 
 // FUNCTION: LEGORACERS 0x0042ee10
-void GameState::FUN_0042ee10(LegoU32 p_playerIndex, LegoU32 p_entryIndex, PeridotTraceInputBindingEntry* p_entry)
+void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex, InputBindingEntry* p_entry)
 {
 	LegoS32 i;
 
 	p_entry->m_deviceType = m_state.m_inputBindings.m_entries[p_entryIndex].m_deviceType;
-	p_entry->m_unk0x02 = m_state.m_inputBindings.m_entries[p_entryIndex].m_unk0x02;
+	p_entry->m_deviceId = m_state.m_inputBindings.m_entries[p_entryIndex].m_deviceId;
 	p_entry->m_deviceSubType = m_state.m_inputBindings.m_entries[p_entryIndex].m_deviceSubType;
 
 	for (i = 0; i < c_inputBindingEventCount; i++) {
-		p_entry->m_events[i] = FUN_0042ed80(p_playerIndex, p_entryIndex, i);
+		p_entry->m_events[i] = GetInputEvent(p_playerIndex, p_entryIndex, i);
 	}
 }
 
@@ -374,7 +374,7 @@ void GameState::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32
 	}
 	else {
 		for (i = 0; i < c_inputBindingEntryCount; i++) {
-			PeridotTraceInputBindingEntry* otherEntry = &m_state.m_inputBindings.m_entries[i];
+			InputBindingEntry* otherEntry = &m_state.m_inputBindings.m_entries[i];
 
 			for (j = 0; j < c_inputBindingEventCount; j++) {
 				if (otherEntry->m_events[j] == p_event) {
@@ -385,13 +385,13 @@ void GameState::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32
 	}
 
 	m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex] = p_event;
-	m_unk0x00 = 1;
+	m_dirty = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042ef00
-LegoU32 GameState::FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
+LegoU32 GameState::GetDefaultInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 {
-	PeridotTraceInputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 	LegoU32 result = 0;
 
 	if (entry->m_deviceType == c_joystickDeviceType) {
@@ -399,7 +399,7 @@ LegoU32 GameState::FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 			return result;
 		}
 
-		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_unk0x02);
+		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(entry->m_deviceId);
 		p_eventIndex -= 2;
 
 		if (joystick != NULL && static_cast<LegoU32>(joystick->GetButtonCountFast()) > p_eventIndex) {
@@ -414,9 +414,9 @@ LegoU32 GameState::FUN_0042ef00(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 }
 
 // FUNCTION: LEGORACERS 0x0042ef80
-void GameState::FUN_0042ef80(PeridotTrace0x4a8* p_trace)
+void GameState::WriteToSaveGame(SaveGame* p_saveGame)
 {
-	p_trace->FUN_00442c20(&m_state);
+	p_saveGame->FUN_00442c20(&m_state);
 }
 
 // FUNCTION: LEGORACERS 0x0042ef90
@@ -433,11 +433,11 @@ void GameState::SetLanguageResourcePath()
 }
 
 // FUNCTION: LEGORACERS 0x0042f020
-void GameState::FUN_0042f020(const DisplayDriverGuid& p_guid)
+void GameState::SetDisplayDriverGuid(const DisplayDriverGuid& p_guid)
 {
 	const LegoU32* source = p_guid.GetWords();
 
-	m_unk0x00 = 1;
+	m_dirty = 1;
 
 	DisplayDriverGuid::SerializedWord* dest = m_state.m_displayDriverGuid.m_words;
 	for (LegoU32 i = 0; i < sizeOfArray(m_state.m_displayDriverGuid.m_words); i++, source++, dest++) {
@@ -446,7 +446,7 @@ void GameState::FUN_0042f020(const DisplayDriverGuid& p_guid)
 }
 
 // FUNCTION: LEGORACERS 0x0042f060
-void GameState::FUN_0042f060(DisplayDriverGuid& p_guid)
+void GameState::GetDisplayDriverGuid(DisplayDriverGuid& p_guid)
 {
 	const DisplayDriverGuid::SerializedWord* source = m_state.m_displayDriverGuid.m_words;
 	LegoU32* dest = p_guid.GetWords();
@@ -515,70 +515,70 @@ LegoU32 GameState::GetRegistryLanguageIndex()
 }
 
 // FUNCTION: LEGORACERS 0x0042f1e0
-LegoU8 GameState::FUN_0042f1e0() const
+LegoU8 GameState::GetPartUnlockFlags() const
 {
-	return m_state.m_unk0x24;
+	return m_state.m_partUnlockFlags;
 }
 
 // FUNCTION: LEGORACERS 0x0042f1f0
-LegoU8 GameState::FUN_0042f1f0() const
+LegoU8 GameState::GetUnlockedCircuits() const
 {
-	return m_state.m_unk0x25 | 1;
+	return m_state.m_unlockedCircuits | 1;
 }
 
 // FUNCTION: LEGORACERS 0x0042f200
-void GameState::FUN_0042f200(LegoU8 p_unk0x04)
+void GameState::UnlockParts(LegoU8 p_flags)
 {
-	m_unk0x00 = 1;
-	m_state.m_unk0x24 |= p_unk0x04;
+	m_dirty = 1;
+	m_state.m_partUnlockFlags |= p_flags;
 }
 
 // FUNCTION: LEGORACERS 0x0042f220
-void GameState::FUN_0042f220(LegoU8 p_unk0x04)
+void GameState::UnlockCircuits(LegoU8 p_flags)
 {
-	m_unk0x00 = 1;
-	m_state.m_unk0x25 |= p_unk0x04;
+	m_dirty = 1;
+	m_state.m_unlockedCircuits |= p_flags;
 }
 
 // FUNCTION: LEGORACERS 0x0042f240
-LegoU16 GameState::FUN_0042f240() const
+LegoU16 GameState::GetUnlockedRaces() const
 {
-	return m_state.m_unk0x26;
+	return m_state.m_unlockedRaces;
 }
 
 // FUNCTION: LEGORACERS 0x0042f250
-LegoBool32 GameState::FUN_0042f250(LegoU32 p_unk0x04)
+LegoBool32 GameState::UnlockRace(LegoU32 p_mask)
 {
 	LegoBool32 result = FALSE;
 
-	if (!static_cast<LegoU16>(m_state.m_unk0x26 & p_unk0x04)) {
+	if (!static_cast<LegoU16>(m_state.m_unlockedRaces & p_mask)) {
 		result = TRUE;
-		m_state.m_unk0x26 |= p_unk0x04;
-		m_unk0x00 = result;
+		m_state.m_unlockedRaces |= p_mask;
+		m_dirty = result;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0042f280
-LegoBool32 GameState::FUN_0042f280() const
+LegoBool32 GameState::AreAllRacesUnlocked() const
 {
-	return m_state.m_unk0x26 == 0x0fff;
+	return m_state.m_unlockedRaces == 0x0fff;
 }
 
 // FUNCTION: LEGORACERS 0x0042f290
-LegoU32 GameState::FUN_0042f290(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, GolString* p_string) const
+LegoU32 GameState::GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, GolString* p_string) const
 {
-	if (p_unk0x04 < 13 || (p_unk0x04 -= 13) < 13) {
-		LegoBool32 alternate = p_unk0x08;
+	if (p_raceIndex < 13 || (p_raceIndex -= 13) < 13) {
+		LegoBool32 alternate = p_alternate;
 		LegoU32 result;
 		if (!alternate) {
-			result = m_state.m_unk0x28[p_unk0x04];
-			PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_state.m_unk0x90[p_unk0x04], 14);
+			result = m_state.m_unk0x28[p_raceIndex];
+			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_unk0x90[p_raceIndex], 14);
 		}
 		else {
-			result = m_state.m_unk0x5c[p_unk0x04];
-			PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_state.m_unk0x1fc[p_unk0x04], 14);
+			result = m_state.m_unk0x5c[p_raceIndex];
+			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_unk0x1fc[p_raceIndex], 14);
 		}
 
 		return result;
@@ -588,36 +588,36 @@ LegoU32 GameState::FUN_0042f290(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, GolStri
 }
 
 // FUNCTION: LEGORACERS 0x0042f310
-LegoBool32 GameState::FUN_0042f310(LegoU32 p_unk0x04, LegoBool32 p_unk0x08, LegoU32 p_unk0x0c, GolString* p_string)
+LegoBool32 GameState::SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, LegoU32 p_time, GolString* p_string)
 {
-	if (p_unk0x04 >= 13) {
-		p_unk0x04 -= 13;
-		if (p_unk0x04 >= 13) {
+	if (p_raceIndex >= 13) {
+		p_raceIndex -= 13;
+		if (p_raceIndex >= 13) {
 			return FALSE;
 		}
 	}
 
 	LegoU32 current;
-	if (!p_unk0x08) {
-		current = m_state.m_unk0x28[p_unk0x04];
+	if (!p_alternate) {
+		current = m_state.m_unk0x28[p_raceIndex];
 	}
 	else {
-		current = m_state.m_unk0x5c[p_unk0x04];
+		current = m_state.m_unk0x5c[p_raceIndex];
 	}
 
-	if (current && p_unk0x0c >= current) {
+	if (current && p_time >= current) {
 		return FALSE;
 	}
 
-	if (!p_unk0x08) {
-		m_state.m_unk0x28[p_unk0x04] = p_unk0x0c;
-		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_state.m_unk0x90[p_unk0x04], 14);
+	if (!p_alternate) {
+		m_state.m_unk0x28[p_raceIndex] = p_time;
+		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_unk0x90[p_raceIndex], 14);
 	}
 	else {
-		m_state.m_unk0x5c[p_unk0x04] = p_unk0x0c;
-		PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_state.m_unk0x1fc[p_unk0x04], 14);
+		m_state.m_unk0x5c[p_raceIndex] = p_time;
+		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_unk0x1fc[p_raceIndex], 14);
 	}
 
-	m_unk0x00 = 1;
+	m_dirty = 1;
 	return TRUE;
 }

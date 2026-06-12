@@ -374,11 +374,11 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/buttonbindingtable.cpp
   LEGORacers/src/menu/menuinputhandler.cpp
   LEGORacers/src/input/inputeventqueue.cpp
-  LEGORacers/src/save/peridottracerootentrybase0x8.cpp
-  LEGORacers/src/save/peridottraceroot0x108.cpp
-  LEGORacers/src/save/peridottrace0x4e0.cpp
-  LEGORacers/src/save/peridottrace0x4a8.cpp
-  LEGORacers/src/save/peridottraceactionbase0x34.cpp
+  LEGORacers/src/save/saveslotbase.cpp
+  LEGORacers/src/save/savedirectory.cpp
+  LEGORacers/src/save/saverecordlist.cpp
+  LEGORacers/src/save/savegame.cpp
+  LEGORacers/src/save/savegamefile.cpp
   LEGORacers/src/save/gamestate.cpp
   LEGORacers/src/save/savesystem.cpp
   LEGORacers/src/model/carpartset.cpp

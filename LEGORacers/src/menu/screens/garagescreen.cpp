@@ -74,7 +74,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 
 	p_context->m_modelBuilder.SetUnk0x78(p_context->m_modelBuilder.GetUnk0x78() & ~9);
 	p_context->m_context->m_unk0x1e &= ~2;
-	p_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(0);
+	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(0);
 
 	undefined4 params[3];
 	params[0] = 1;
@@ -179,7 +179,7 @@ void GarageScreen::FUN_0047e9f0(MenuGameContext* p_context)
 {
 	RacerUnlockState modelState;
 
-	modelState.FUN_00442e60(&p_context->m_unk0x258);
+	modelState.FUN_00442e60(&p_context->m_saveSystem);
 	modelState.FUN_00442ef0(0xffff2);
 	m_unk0x2704[0] = modelState.FUN_00442e80(0xffff2);
 	modelState.FUN_00442e70();
@@ -188,21 +188,21 @@ void GarageScreen::FUN_0047e9f0(MenuGameContext* p_context)
 // FUNCTION: LEGORACERS 0x0047ea50
 void GarageScreen::FUN_0047ea50()
 {
-	PeridotTraceBase0x24* trace = NULL;
+	SaveRecordList* records = NULL;
 	RacerUnlockState* modelState = &m_unk0x22dc[0];
-	PeridotTraceBase0x24::Record* record = modelState->FUN_004430b0();
-	PeridotTraceBase0x24::Record* nextRecord = modelState->FUN_00442fe0();
+	SaveRecordList::Record* record = modelState->FUN_004430b0();
+	SaveRecordList::Record* nextRecord = modelState->FUN_00442fe0();
 
 	switch (record->m_unk0x08) {
 	case 1:
-		trace = &m_context->m_unk0x258.GetUnk0x108();
+		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		trace = &m_context->m_unk0x258.GetUnk0xa58()[record->m_unk0x0c];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_unk0x0c];
 		break;
 	}
 
-	trace->FUN_0042b920(record);
+	records->FUN_0042b920(record);
 	m_unk0x364 = TRUE;
 	m_unk0x360 = c_menuGarage;
 	modelState->FUN_00442ef0(modelState->GetUnk0x24());
@@ -238,12 +238,12 @@ void GarageScreen::FUN_0047eb20()
 	context->m_unk0x100 = TRUE;
 	context->m_unk0x1e |= 2;
 
-	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x244(1);
+	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(1);
 	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();
 	flags &= 0xfffffffd;
 	m_context->m_modelBuilder.SetUnk0x78(flags);
-	PeridotTraceBase0x24::Record* record = m_unk0x22dc[0].FUN_004430b0();
-	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(record);
+	SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
 	m_unk0x360 = 0x41;
 }
 
@@ -255,24 +255,24 @@ void GarageScreen::VTable0x84()
 		m_context->m_menuStack.Push(c_menuSaveAll);
 		return;
 	case c_menuMainMenu:
-		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, NULL);
-		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(1, NULL);
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, NULL);
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(1, NULL);
 		m_context->m_menuStack.Pop();
 		FUN_004804c0(m_context);
 		FUN_004861b0();
 		return;
 	case c_menuPickMem:
 		m_context->m_menuStack.Push(c_menuPickMem);
-		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b2f0(4, 0, 0, NULL);
+		m_context->m_saveSystem.GetActiveRecord().FUN_0042b2f0(4, 0, 0, NULL);
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 1);
 		FUN_004861b0();
 		return;
 	case c_menuEditDriver:
 	case c_menuDriverLicense:
 	case c_menuEditCar: {
-		PeridotTraceBase0x24::Record* record = m_unk0x22dc[0].FUN_004430b0();
-		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, record);
-		m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b5c0(record);
+		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
+		m_context->m_saveSystem.GetActiveRecord().CopyFrom(record);
 		m_context->m_menuStack.Push(m_unk0x360);
 		FUN_004861b0();
 		return;
@@ -283,7 +283,7 @@ void GarageScreen::VTable0x84()
 		return;
 	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
-		m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(0, m_unk0x22dc[0].FUN_004430b0());
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, m_unk0x22dc[0].FUN_004430b0());
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 8);
 		FUN_004861b0();
 		return;

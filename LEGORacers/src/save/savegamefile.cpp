@@ -1,11 +1,11 @@
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
-DECOMP_SIZE_ASSERT(PeridotTraceActionFile0x30, 0x30)
-DECOMP_SIZE_ASSERT(PeridotTraceActionBase0x34, 0x34)
-DECOMP_SIZE_ASSERT(PeridotTraceAction0x34, 0x34)
+DECOMP_SIZE_ASSERT(SaveGameFile, 0x30)
+DECOMP_SIZE_ASSERT(MemoryCardFileBase, 0x34)
+DECOMP_SIZE_ASSERT(MemoryCardFile, 0x34)
 
 // FUNCTION: LEGORACERS 0x0044e0a0
-PeridotTraceActionFile0x30::~PeridotTraceActionFile0x30()
+SaveGameFile::~SaveGameFile()
 {
 	if (m_buffer) {
 		delete[] m_buffer;
@@ -16,13 +16,13 @@ PeridotTraceActionFile0x30::~PeridotTraceActionFile0x30()
 }
 
 // FUNCTION: LEGORACERS 0x0044e130
-LegoS32 PeridotTraceActionFile0x30::BufferedOpen(const LegoChar*, LegoS32, LegoU32)
+LegoS32 SaveGameFile::BufferedOpen(const LegoChar*, LegoS32, LegoU32)
 {
 	return e_ioFileNotFound;
 }
 
 // FUNCTION: LEGORACERS 0x0044e1e0
-LegoS32 PeridotTraceActionFile0x30::Dispose()
+LegoS32 SaveGameFile::Dispose()
 {
 	if (!(m_mode & c_modeKeepBuffer) && m_buffer) {
 		delete[] m_buffer;
@@ -39,7 +39,7 @@ LegoS32 PeridotTraceActionFile0x30::Dispose()
 }
 
 // FUNCTION: LEGORACERS 0x00450e30
-PeridotTraceActionBase0x34::PeridotTraceActionBase0x34()
+MemoryCardFileBase::MemoryCardFileBase()
 {
 	m_unk0x30 = 0;
 }

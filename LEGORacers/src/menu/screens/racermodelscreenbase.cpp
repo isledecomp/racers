@@ -96,20 +96,20 @@ void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_ma
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		RacerUnlockState* modelState = &m_unk0x22dc[i];
 
-		modelState->FUN_00442e60(&p_context->m_unk0x258);
+		modelState->FUN_00442e60(&p_context->m_saveSystem);
 		modelState->FUN_00442ef0(p_mask);
 		m_unk0x2704[i] = modelState->FUN_00442e80(p_mask);
 
 		if (m_unk0x2704[i]) {
-			PeridotTraceBase0x24::Record* firstRecord = modelState->FUN_004430b0();
-			PeridotTraceInputBindingPlayerState& player =
-				p_context->m_unk0x258.GetUnk0x18c4().GetState().m_inputBindings.m_players[i];
+			SaveRecordList::Record* firstRecord = modelState->FUN_004430b0();
+			InputBindingPlayerState& player =
+				p_context->m_saveSystem.GetGameState().GetState().m_inputBindings.m_players[i];
 
 			while (TRUE) {
-				PeridotTraceBase0x24::Record* record = modelState->FUN_00442fe0();
+				SaveRecordList::Record* record = modelState->FUN_00442fe0();
 
 				if (record->m_unk0x08 == player.m_unk0x01 && record->m_unk0x0c == player.m_unk0x02 &&
-					record->m_unk0x10 == player.m_unk0x00) {
+					record->m_recordId == player.m_unk0x00) {
 					if (firstRecord != record) {
 						break;
 					}
@@ -283,18 +283,18 @@ LegoBool32 RacerModelScreenBase::Destroy()
 void RacerModelScreenBase::FUN_004861b0()
 {
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-		PeridotTraceBase0x24::Record* record = m_unk0x22dc[i].FUN_004430b0();
+		SaveRecordList::Record* record = m_unk0x22dc[i].FUN_004430b0();
 
 		if (record != NULL) {
-			GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
-			PeridotTraceInputBindingPlayerState& player = state.GetState().m_inputBindings.m_players[i];
+			GameState& state = m_context->m_saveSystem.GetGameState();
+			InputBindingPlayerState& player = state.GetState().m_inputBindings.m_players[i];
 
 			player.m_unk0x01 = static_cast<LegoU8>(record->m_unk0x08);
-			state.SetUnk0x00(1);
+			state.SetDirty(1);
 			player.m_unk0x02 = static_cast<LegoU8>(record->m_unk0x0c);
-			state.SetUnk0x00(1);
-			player.m_unk0x00 = static_cast<LegoU8>(record->m_unk0x10);
-			state.SetUnk0x00(1);
+			state.SetDirty(1);
+			player.m_unk0x00 = static_cast<LegoU8>(record->m_recordId);
+			state.SetDirty(1);
 		}
 	}
 
@@ -306,11 +306,11 @@ void RacerModelScreenBase::FUN_004861b0()
 // STUB: LEGORACERS 0x00486250
 void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 {
-	PeridotTraceBase0x24::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
+	SaveRecordList::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
 	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
 
 	DriverCosmetics cosmetics;
-	record->FUN_0042b330(&cosmetics);
+	record->GetCosmetics(&cosmetics);
 
 	if (m_unk0x77c == 1) {
 		m_context->m_modelBuilder.RefreshMenuResources();
@@ -324,7 +324,7 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	m_unk0x4dc[modelIndex]->VTable0x10(node);
 	m_unk0x232c[modelIndex].FUN_0040d550(model, m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
-	record->FUN_0042b360(m_unk0x788);
+	record->CopyCarData(m_unk0x788);
 	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x788);
 	m_context->m_unk0x21f4.FUN_0049b740(0);
 	m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
@@ -334,7 +334,7 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
 	createParams.m_unk0x08 = &m_unk0x4fc[modelIndex];
 	createParams.m_unk0x0c = NULL;
-	record->FUN_0042b380(createParams.m_chassisName);
+	record->GetChassisName(createParams.m_chassisName);
 
 	m_unk0x39c[modelIndex].FUN_00479510(&createParams);
 }
@@ -351,7 +351,7 @@ void RacerModelScreenBase::FUN_00486400(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00486440
 void RacerModelScreenBase::FUN_00486440(LegoS32 p_index)
 {
-	PeridotTraceBase0x24::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
+	SaveRecordList::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
 	LegoS32 textId = 0x2e;
 
 	switch (record->m_unk0x08) {
@@ -532,7 +532,7 @@ LegoBool32 RacerModelScreenBase::VTable0x78(undefined4 p_elapsed)
 		default: {
 			if (m_unk0x232c[modelIndex].GetFlags() & 1) {
 				GolAnimatedEntity* entity = &m_unk0x232c[modelIndex];
-				if (entity->FUN_0040e360() && m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248(i) == NULL &&
+				if (entity->FUN_0040e360() && m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL &&
 					!m_unk0x364) {
 					FUN_00486810(i);
 				}

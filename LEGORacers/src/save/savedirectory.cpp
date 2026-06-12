@@ -1,4 +1,4 @@
-#include "save/peridottraceroot0x108.h"
+#include "save/savedirectory.h"
 
 #include "golerror.h"
 #include "golstream.h"
@@ -10,10 +10,10 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(PeridotTraceRootEntry0x10, 0x10)
-DECOMP_SIZE_ASSERT(PeridotTraceRootEntryDerived0x10, 0x10)
-DECOMP_SIZE_ASSERT(PeridotTraceRootBase0x08, 0x08)
-DECOMP_SIZE_ASSERT(PeridotTraceRoot0x108, 0x108)
+DECOMP_SIZE_ASSERT(SaveSlot, 0x10)
+DECOMP_SIZE_ASSERT(SaveDirectorySlot, 0x10)
+DECOMP_SIZE_ASSERT(SaveDirectoryBase, 0x08)
+DECOMP_SIZE_ASSERT(SaveDirectory, 0x108)
 
 // GLOBAL: LEGORACERS 0x004c73f4
 LegoChar g_saveCurrentDirectory[256];
@@ -22,24 +22,24 @@ LegoChar g_saveCurrentDirectory[256];
 LegoChar g_saveFileName[256];
 
 // FUNCTION: LEGORACERS 0x00450eb0
-PeridotTraceRoot0x108::PeridotTraceRoot0x108()
+SaveDirectory::SaveDirectory()
 {
 	m_directoryPath = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00450f10
-PeridotTraceRootEntryDerived0x10::PeridotTraceRootEntryDerived0x10()
+SaveDirectorySlot::SaveDirectorySlot()
 {
 }
 
 // FUNCTION: LEGORACERS 0x00450f60
-PeridotTraceRoot0x108::~PeridotTraceRoot0x108()
+SaveDirectory::~SaveDirectory()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00450fc0
-void PeridotTraceRoot0x108::FUN_00450fc0(const LegoChar* p_path)
+void SaveDirectory::Initialize(const LegoChar* p_path)
 {
 	if (m_directoryPath) {
 		Clear();
@@ -54,72 +54,72 @@ void PeridotTraceRoot0x108::FUN_00450fc0(const LegoChar* p_path)
 
 	LegoU32 i = 0;
 	for (; i < sizeOfArray(m_entries); i++) {
-		m_entries[i].FUN_00451130(this, i);
+		m_entries[i].Initialize(this, i);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00451040
-void PeridotTraceRoot0x108::Clear()
+void SaveDirectory::Clear()
 {
 	if (m_directoryPath) {
 		delete[] m_directoryPath;
 		m_directoryPath = NULL;
 	}
 
-	PeridotTraceRootEntry0x10* entry = m_entries;
+	SaveSlot* entry = m_entries;
 	for (LegoS32 i = 0; i < sizeOfArray(m_entries); i++, entry++) {
 		entry->Reset();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00451080 FOLDED
-LegoU32 PeridotTraceRoot0x108::GetEntryCount()
+LegoU32 SaveDirectory::GetEntryCount()
 {
 	return 16;
 }
 
 // FUNCTION: LEGORACERS 0x00451090
-PeridotTraceRootEntry0x10* PeridotTraceRoot0x108::GetEntry(LegoU32 p_index)
+SaveSlot* SaveDirectory::GetEntry(LegoU32 p_index)
 {
 	return &m_entries[p_index];
 }
 
 // FUNCTION: LEGORACERS 0x004510a0
-PeridotTraceRootEntry0x10::PeridotTraceRootEntry0x10()
+SaveSlot::SaveSlot()
 {
-	m_root = NULL;
+	m_directory = NULL;
 	m_index = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004510e0
-PeridotTraceRootEntry0x10::~PeridotTraceRootEntry0x10()
+SaveSlot::~SaveSlot()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00451130
-void PeridotTraceRootEntry0x10::FUN_00451130(PeridotTraceRoot0x108* p_root, LegoU32 p_index)
+void SaveSlot::Initialize(SaveDirectory* p_directory, LegoU32 p_index)
 {
-	m_root = p_root;
+	m_directory = p_directory;
 	m_index = p_index;
-	VTable0x04();
+	EnsureDirectoryExists();
 }
 
 // FUNCTION: LEGORACERS 0x00451150
-void PeridotTraceRootEntry0x10::Reset()
+void SaveSlot::Reset()
 {
-	m_root = NULL;
+	m_directory = NULL;
 	m_index = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00451160
-LegoS32 PeridotTraceRootEntry0x10::VTable0x04()
+LegoS32 SaveSlot::EnsureDirectoryExists()
 {
 	_getcwd(g_saveCurrentDirectory, sizeof(g_saveCurrentDirectory));
 	BuildDirectoryPath(g_saveFileName);
 
 	if (_chdir(g_saveFileName)) {
-		VTable0x08();
+		CreateDirectories();
 	}
 	else {
 		_chdir(g_saveCurrentDirectory);
@@ -129,9 +129,9 @@ LegoS32 PeridotTraceRootEntry0x10::VTable0x04()
 }
 
 // FUNCTION: LEGORACERS 0x004511c0
-LegoS32 PeridotTraceRootEntry0x10::VTable0x08()
+LegoS32 SaveSlot::CreateDirectories()
 {
-	_mkdir(m_root->GetDirectoryPath());
+	_mkdir(m_directory->GetDirectoryPath());
 	BuildDirectoryPath(g_saveFileName);
 	_mkdir(g_saveFileName);
 
@@ -139,7 +139,7 @@ LegoS32 PeridotTraceRootEntry0x10::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x00451200
-LegoS32 PeridotTraceRootEntry0x10::VTable0x0c(const LegoChar* p_fileName)
+LegoS32 SaveSlot::CheckFileExists(const LegoChar* p_fileName)
 {
 	BuildFilePath(p_fileName, g_saveFileName);
 	if (_access(g_saveFileName, 0) < 0 && errno == ENOENT) {
@@ -150,7 +150,7 @@ LegoS32 PeridotTraceRootEntry0x10::VTable0x0c(const LegoChar* p_fileName)
 }
 
 // FUNCTION: LEGORACERS 0x00451240
-LegoS32 PeridotTraceRootEntry0x10::VTable0x14(const LegoChar* p_fileName)
+LegoS32 SaveSlot::RemoveFile(const LegoChar* p_fileName)
 {
 	BuildFilePath(p_fileName, g_saveFileName);
 	if (::remove(g_saveFileName) < 0) {
@@ -165,7 +165,7 @@ LegoS32 PeridotTraceRootEntry0x10::VTable0x14(const LegoChar* p_fileName)
 }
 
 // FUNCTION: LEGORACERS 0x004512a0
-LegoS32 PeridotTraceRootEntry0x10::BuildFilePath(const LegoChar* p_fileName, LegoChar* p_buffer)
+LegoS32 SaveSlot::BuildFilePath(const LegoChar* p_fileName, LegoChar* p_buffer)
 {
 	BuildDirectoryPath(p_buffer);
 	::strcat(p_buffer, p_fileName);
@@ -174,9 +174,9 @@ LegoS32 PeridotTraceRootEntry0x10::BuildFilePath(const LegoChar* p_fileName, Leg
 }
 
 // FUNCTION: LEGORACERS 0x004512e0
-LegoS32 PeridotTraceRootEntry0x10::BuildDirectoryPath(LegoChar* p_buffer)
+LegoS32 SaveSlot::BuildDirectoryPath(LegoChar* p_buffer)
 {
-	::strcpy(p_buffer, m_root->GetDirectoryPath());
+	::strcpy(p_buffer, m_directory->GetDirectoryPath());
 
 	LegoU32 offset = ::strlen(p_buffer);
 	if (p_buffer[offset - 1] != '\\') {

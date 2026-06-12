@@ -151,7 +151,7 @@ void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
 
 		if (m_unk0x1904) {
 			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(m_unk0x1904));
-			LegoU8 flags = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1f0();
+			LegoU8 flags = m_context->m_saveSystem.GetGameState().GetUnlockedCircuits();
 			if (flags & mask) {
 				isComplete = TRUE;
 			}
@@ -283,8 +283,8 @@ void RaceModeSetupScreen::FUN_004881a0()
 	string.CopyFromBufSelection(buffer, 14);
 
 	LegoBool32 alternate = (m_unk0x2e10 == FALSE);
-	LegoU16 unlockedMask = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f240();
-	LegoU32 time = m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f290(m_unk0x2e0c, alternate, &string);
+	LegoU16 unlockedMask = m_context->m_saveSystem.GetGameState().GetUnlockedRaces();
+	LegoU32 time = m_context->m_saveSystem.GetGameState().GetBestTime(m_unk0x2e0c, alternate, &string);
 	if (time && time < 0xffffffff) {
 		bestTime = time;
 		m_unk0x2e48.GolStrcpy(&string);

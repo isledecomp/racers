@@ -26,7 +26,7 @@ void PickRacerScreen::VTable0x4c()
 	RacerPickScreenBase::VTable0x4c();
 
 	if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
-		textId = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244AsU16();
+		textId = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCountAsU16();
 		textId += 0x15;
 	}
 
@@ -59,7 +59,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	if (p_context->m_modelBuilder.GetUnk0x78() & 2) {
 		m_unk0x2c0c[0].SetUnk0x9ec(TRUE);
 
-		if (p_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() == 0) {
+		if (p_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 0) {
 			m_unk0x40c8.ClearFlags(2);
 			m_unk0x43b8.VTable0x4c(0);
 		}
@@ -80,7 +80,8 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x46a8) {
-		m_unk0x360 = static_cast<LegoU16>(m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() + c_menuControl1);
+		m_unk0x360 =
+			static_cast<LegoU16>(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() + c_menuControl1);
 		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
 	}
 	else if (p_source == &m_unk0x40c8) {
@@ -90,27 +91,27 @@ void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 
 		FUN_00486810(0);
 
-		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
-		LegoU32 playerIndex = buffer.GetUnk0x244();
-		buffer.SetUnk0x248(playerIndex, m_unk0x22dc[0].FUN_004430b0());
-		buffer.SetUnk0x244(playerIndex + 1);
+		ActiveRecordBuffer& buffer = m_context->m_saveSystem.GetActiveRecord();
+		LegoU32 playerIndex = buffer.GetSelectedRecordCount();
+		buffer.SetSelectedRecord(playerIndex, m_unk0x22dc[0].FUN_004430b0());
+		buffer.SetSelectedRecordCount(playerIndex + 1);
 		m_unk0x360 = 0x41;
 	}
 	else if (p_source == &m_unk0x43b8) {
 		FUN_00486810(0);
 
-		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
-		LegoU32 playerIndex = buffer.GetUnk0x244();
-		buffer.SetUnk0x248(playerIndex, m_unk0x22dc[0].FUN_004430b0());
-		buffer.SetUnk0x244(playerIndex + 1);
+		ActiveRecordBuffer& buffer = m_context->m_saveSystem.GetActiveRecord();
+		LegoU32 playerIndex = buffer.GetSelectedRecordCount();
+		buffer.SetSelectedRecord(playerIndex, m_unk0x22dc[0].FUN_004430b0());
+		buffer.SetSelectedRecordCount(playerIndex + 1);
 		m_unk0x360 = c_menuPickRacerP2;
 	}
 	else if (p_source == &m_unk0x4998) {
 		m_unk0x360 = 0x3f;
 
-		PeridotTraceBuffer0x250& buffer = m_context->m_unk0x258.GetUnk0x1cfc();
-		if (buffer.GetUnk0x244() != 0) {
-			buffer.SetUnk0x244(buffer.GetUnk0x244() - 1);
+		ActiveRecordBuffer& buffer = m_context->m_saveSystem.GetActiveRecord();
+		if (buffer.GetSelectedRecordCount() != 0) {
+			buffer.SetSelectedRecordCount(buffer.GetSelectedRecordCount() - 1);
 		}
 
 		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
@@ -144,7 +145,8 @@ void PickRacerScreen::VTable0x84()
 		FUN_004861b0();
 		return;
 	case 0x41:
-		if (m_context->m_context->m_unk0x24 == 0 && m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244() == 1) {
+		if (m_context->m_context->m_unk0x24 == 0 &&
+			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 1) {
 			RaceDefinitionList::RaceDefinition* raceDefinition = static_cast<RaceDefinitionList::RaceDefinition*>(
 				m_context->m_raceList.GetName(m_context->m_context->m_unk0x2d)
 			);
@@ -160,7 +162,7 @@ void PickRacerScreen::VTable0x84()
 			m_context->m_context->m_unk0x100 = 0;
 		}
 		else {
-			m_context->m_context->m_unk0x100 += m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x244();
+			m_context->m_context->m_unk0x100 += m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount();
 		}
 
 		m_unk0x364 = TRUE;

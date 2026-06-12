@@ -78,7 +78,7 @@ void RacerPickScreenBase::FUN_00489050(LegoS32 p_index)
 
 	for (LegoS32 i = 0; i < 3; i++) {
 		LegoS32 widgetIndex = p_index * 3 + i;
-		modelState->FUN_00442fe0()->FUN_0042b3a0(&m_unk0x2b04[widgetIndex]);
+		modelState->FUN_00442fe0()->GetName(&m_unk0x2b04[widgetIndex]);
 		m_unk0x2834[widgetIndex].VTable0x40(&m_unk0x2b04[widgetIndex], 0);
 	}
 

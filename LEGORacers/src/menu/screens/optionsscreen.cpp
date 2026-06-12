@@ -171,7 +171,7 @@ void OptionsScreen::FUN_00475b10()
 	DisplayDriverGuid driverGuid;
 
 	drawState->GetDriverGuid(driverIndex, &driverGuid.m_guid);
-	m_unk0x370->FUN_0042f020(driverGuid);
+	m_unk0x370->SetDisplayDriverGuid(driverGuid);
 
 	LegoU32 deviceIndex = 0;
 	while (deviceIndex < drawState->GetDeviceCount(driverIndex) &&

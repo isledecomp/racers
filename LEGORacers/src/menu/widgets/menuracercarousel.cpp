@@ -110,12 +110,12 @@ void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSyste
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetHatCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
+		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_hatIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetHatUnlockFlag(i);
 			if (unlockFlag == 0x80) {
-				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
+				if (!p_saveSystem->GetGameState().AreAllRacesUnlocked()) {
 					continue;
 				}
 			}
@@ -133,12 +133,12 @@ void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSyste
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetFaceCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
+		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_faceIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetFaceUnlockFlag(i);
 			if (unlockFlag == 0x80) {
-				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
+				if (!p_saveSystem->GetGameState().AreAllRacesUnlocked()) {
 					continue;
 				}
 			}
@@ -156,12 +156,12 @@ void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSyste
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetTorsoCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
+		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_torsoIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetTorsoUnlockFlag(i);
 			if (unlockFlag == 0x80) {
-				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
+				if (!p_saveSystem->GetGameState().AreAllRacesUnlocked()) {
 					continue;
 				}
 			}
@@ -179,12 +179,12 @@ void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSyste
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetLegCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b330(&cosmetics);
+		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_legIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetLegUnlockFlag(i);
 			if (unlockFlag == 0x80) {
-				if (!p_saveSystem->GetUnk0x18c4().FUN_0042f280()) {
+				if (!p_saveSystem->GetGameState().AreAllRacesUnlocked()) {
 					continue;
 				}
 			}
@@ -200,9 +200,9 @@ void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSyste
 // FUNCTION: LEGORACERS 0x00483ee0
 void MenuRacerCarousel::FUN_00483ee0()
 {
-	SaveSystem* saveSystem = &m_unk0xc8->m_unk0x258;
+	SaveSystem* saveSystem = &m_unk0xc8->m_saveSystem;
 	DriverPartCatalog* partCatalog = &m_unk0xc8->m_partCatalog;
-	LegoU32 unlockFlags = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
+	LegoU32 unlockFlags = saveSystem->GetGameState().GetPartUnlockFlags();
 
 	switch (m_unk0xcc) {
 	case 0:

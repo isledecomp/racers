@@ -3,7 +3,7 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "save/peridottraceroot0x108.h"
+#include "save/savedirectory.h"
 #include "save/savesystem.h"
 
 DECOMP_SIZE_ASSERT(SaveLoadScreen, 0x1d7c)
@@ -35,7 +35,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	m_unk0x36c = p_createParams->m_menuId;
 	p_createParams->m_menuId = 0x32;
 	m_unk0x370 = p_context->m_modelBuilder.GetUnk0x84();
-	FUN_00486e40(&p_context->m_unk0x258);
+	FUN_00486e40(&p_context->m_saveSystem);
 
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
@@ -55,7 +55,7 @@ void SaveLoadScreen::FUN_00486e40(SaveSystem* p_unk0x04)
 	case c_menuLoadAll: {
 		emptyCount = 0;
 		statusEightCount = 0;
-		m_unk0x370 = p_unk0x04->GetUnk0x18c0() - 1;
+		m_unk0x370 = p_unk0x04->GetMemoryCardSaveCount() - 1;
 		while (m_unk0x370 >= 0) {
 			LegoS32 status = p_unk0x04->FUN_00443420(m_unk0x370, TRUE);
 			m_unk0x368 = status;
@@ -83,7 +83,7 @@ void SaveLoadScreen::FUN_00486e40(SaveSystem* p_unk0x04)
 		m_unk0x368 = p_unk0x04->FUN_00443420(m_unk0x370, FALSE);
 		break;
 	case c_menuLcCreate: {
-		LegoU32 status = p_unk0x04->GetUnk0xa58()[m_unk0x370].GetUnk0x00();
+		LegoU32 status = p_unk0x04->GetMemoryCardSaves()[m_unk0x370].GetRecordCount();
 		if (status > 0) {
 			m_unk0x368 = p_unk0x04->FUN_004434a0(m_unk0x370);
 		}
@@ -94,7 +94,7 @@ void SaveLoadScreen::FUN_00486e40(SaveSystem* p_unk0x04)
 		break;
 	}
 	case c_menuSaveAll: {
-		m_unk0x370 = p_unk0x04->GetUnk0x18c0() - 1;
+		m_unk0x370 = p_unk0x04->GetMemoryCardSaveCount() - 1;
 		m_unk0x368 = 0;
 		while (m_unk0x370 >= 0) {
 			LegoS32 status = p_unk0x04->FUN_004434a0(m_unk0x370);
@@ -214,7 +214,7 @@ void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
 		case 0x13:
 		case 0x14:
 		case 0x18:
-			FUN_00486e40(&m_context->m_unk0x258);
+			FUN_00486e40(&m_context->m_saveSystem);
 			break;
 		}
 
@@ -223,11 +223,11 @@ void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
 	}
 
 	if (p_unk0x04 == &m_unk0x14a8 && m_unk0x368 == 0x19) {
-		PeridotTraceRootEntry0x10* entry = m_context->m_unk0x258.GetUnk0x00().GetEntry(m_unk0x370);
-		LegoS32 status = entry->VTable0x08();
+		SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_unk0x370);
+		LegoS32 status = entry->CreateDirectories();
 		m_unk0x368 = status;
 		if (!status) {
-			m_unk0x368 = m_context->m_unk0x258.FUN_00443420(m_unk0x370, TRUE);
+			m_unk0x368 = m_context->m_saveSystem.FUN_00443420(m_unk0x370, TRUE);
 		}
 
 		m_unk0x374 = TRUE;
@@ -242,7 +242,7 @@ void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
 
 	if (p_unk0x04 == &m_unk0x14a8 || p_unk0x04 == &m_unk0x11b8) {
 		if (m_unk0x368 == 0x15) {
-			FUN_00486e40(&m_context->m_unk0x258);
+			FUN_00486e40(&m_context->m_saveSystem);
 			m_unk0x374 = TRUE;
 			return;
 		}
@@ -253,45 +253,45 @@ void SaveLoadScreen::VTable0x38(MenuWidget* p_unk0x04)
 
 	if (p_unk0x04 == &m_unk0x1798) {
 		if (m_unk0x368 == 0x15) {
-			PeridotTraceRootEntry0x10* entry = m_context->m_unk0x258.GetUnk0x00().GetEntry(m_unk0x370);
-			entry->VTable0x08();
+			SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_unk0x370);
+			entry->CreateDirectories();
 			m_unk0x374 = TRUE;
 			return;
 		}
 
-		FUN_00486e40(&m_context->m_unk0x258);
+		FUN_00486e40(&m_context->m_saveSystem);
 		m_unk0x374 = TRUE;
 		return;
 	}
 
 	if (p_unk0x04 == &m_unk0x5f8) {
 		m_unk0x370 = 0;
-		m_context->m_unk0x258.GetUnk0x00().GetEntry(0)->VTable0x04();
-		m_unk0x368 = m_context->m_unk0x258.FUN_00443420(0, TRUE);
+		m_context->m_saveSystem.GetDirectory().GetEntry(0)->EnsureDirectoryExists();
+		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(0, TRUE);
 		m_unk0x374 = TRUE;
 		return;
 	}
 
 	if (p_unk0x04 == &m_unk0x8e8) {
 		m_unk0x370 = 1;
-		m_context->m_unk0x258.GetUnk0x00().GetEntry(1)->VTable0x04();
-		m_unk0x368 = m_context->m_unk0x258.FUN_00443420(1, TRUE);
+		m_context->m_saveSystem.GetDirectory().GetEntry(1)->EnsureDirectoryExists();
+		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(1, TRUE);
 		m_unk0x374 = TRUE;
 		return;
 	}
 
 	if (p_unk0x04 == &m_unk0xbd8) {
 		m_unk0x370 = 2;
-		m_context->m_unk0x258.GetUnk0x00().GetEntry(2)->VTable0x04();
-		m_unk0x368 = m_context->m_unk0x258.FUN_00443420(2, TRUE);
+		m_context->m_saveSystem.GetDirectory().GetEntry(2)->EnsureDirectoryExists();
+		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(2, TRUE);
 		m_unk0x374 = TRUE;
 		return;
 	}
 
 	if (p_unk0x04 == &m_unk0xec8) {
 		m_unk0x370 = 3;
-		m_context->m_unk0x258.GetUnk0x00().GetEntry(3)->VTable0x04();
-		m_unk0x368 = m_context->m_unk0x258.FUN_00443420(3, TRUE);
+		m_context->m_saveSystem.GetDirectory().GetEntry(3)->EnsureDirectoryExists();
+		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(3, TRUE);
 		m_unk0x374 = TRUE;
 		return;
 	}

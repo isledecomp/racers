@@ -3,7 +3,7 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 DECOMP_SIZE_ASSERT(PickLanguageScreen, 0x15ec)
 
@@ -39,7 +39,7 @@ void PickLanguageScreen::VTable0x4c()
 // FUNCTION: LEGORACERS 0x004845c0
 LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	LegoU32 languageIndex = p_context->m_unk0x258.GetLanguageIndex();
+	LegoU32 languageIndex = p_context->m_saveSystem.GetLanguageIndex();
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
 	}
@@ -54,9 +54,9 @@ LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreen
 void PickLanguageScreen::VTable0x44(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x43c) {
-		GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
+		GameState& state = m_context->m_saveSystem.GetGameState();
 		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetUnk0x6c());
-		state.SetUnk0x00(TRUE);
+		state.SetDirty(TRUE);
 	}
 }
 

@@ -131,8 +131,8 @@ LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_unk0x04, MenuScreen
 void CarModelScreenBase::FUN_00477290()
 {
 	LegoS32 mask = 1;
-	SaveSystem* saveSystem = &m_context->m_unk0x258;
-	m_partCategoryUnlockFlags = saveSystem->GetUnk0x18c4().FUN_0042f1e0();
+	SaveSystem* saveSystem = &m_context->m_saveSystem;
+	m_partCategoryUnlockFlags = saveSystem->GetGameState().GetPartUnlockFlags();
 
 	LegoS32 i;
 	for (i = 0; i < c_alwaysAvailablePartCategoryCount; i++) {
@@ -172,7 +172,7 @@ void CarModelScreenBase::FUN_004773a0()
 {
 	memset(m_carBuildSaveBuffer, 0, c_carBuildSaveBufferSize);
 	m_context->m_unk0x21f4.FUN_0049c820(m_carBuildSaveBuffer);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4f0(m_carBuildSaveBuffer);
+	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_carBuildSaveBuffer);
 }
 
 // STUB: LEGORACERS 0x004773e0

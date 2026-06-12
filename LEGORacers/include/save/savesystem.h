@@ -2,8 +2,8 @@
 #define SAVESYSTEM_H
 
 #include "decomp.h"
-#include "save/peridottrace0x4e0.h"
-#include "save/peridottraceroot0x108.h"
+#include "save/savedirectory.h"
+#include "save/savegame.h"
 #include "types.h"
 
 class InputManager;
@@ -13,49 +13,48 @@ class SaveSystem {
 public:
 	// VTABLE: LEGORACERS 0x004b0b94
 	// SIZE 0x108
-	class MarigoldTrail0x108 : public PeridotTraceRoot0x108 {
+	class Directory : public SaveDirectory {
 	public:
 		// SYNTHETIC: LEGORACERS 0x004431e0
-		// SaveSystem::MarigoldTrail0x108::~MarigoldTrail0x108
+		// SaveSystem::Directory::~Directory
 
 		// SYNTHETIC: LEGORACERS 0x004431f0
-		// SaveSystem::MarigoldTrail0x108::`scalar deleting destructor'
+		// SaveSystem::Directory::`scalar deleting destructor'
 	};
 
 	SaveSystem();
 	~SaveSystem();
 
-	PeridotTrace0x4a8& GetUnk0x108() { return m_unk0x108; }
-	PeridotTrace0x4a8& GetUnk0x5b0() { return m_unk0x5b0; }
-	MarigoldTrail0x108& GetUnk0x00() { return m_unk0x00; }
-	PeridotTrace0x4e0* GetUnk0xa58() { return m_unk0xa58; }
-	PeridotTrace0x4a8& GetUnk0x1418() { return m_unk0x1418; }
-	LegoU32 GetUnk0x18c0() const { return m_unk0x18c0; }
-	GameState& GetUnk0x18c4() { return m_unk0x18c4; }
-	LegoU8 GetLanguageIndex() const { return m_unk0x18c4.GetLanguageIndex(); }
-	LegoU8 GetUnk0x18e6() const { return GetLanguageIndex(); }
-	PeridotTraceBuffer0x250& GetUnk0x1cfc() { return m_unk0x1cfc; }
+	SaveGame& GetSessionSave() { return m_sessionSave; }
+	SaveGame& GetDefaultSave() { return m_defaultSave; }
+	Directory& GetDirectory() { return m_directory; }
+	MemoryCardSaveGame* GetMemoryCardSaves() { return m_memoryCardSaves; }
+	SaveGame& GetQuickBuildSave() { return m_quickBuildSave; }
+	LegoU32 GetMemoryCardSaveCount() const { return m_memoryCardSaveCount; }
+	GameState& GetGameState() { return m_gameState; }
+	LegoU8 GetLanguageIndex() const { return m_gameState.GetLanguageIndex(); }
+	ActiveRecordBuffer& GetActiveRecord() { return m_activeRecord; }
 
-	void FUN_004432d0();
-	void FUN_004432e0(InputManager* p_inputManager, LegoBool32 p_arg2);
-	undefined4 FUN_00443420(LegoU32 p_index, undefined4 p_arg2);
+	void Reset();
+	void Initialize(InputManager* p_inputManager, LegoBool32 p_createIfMissing);
+	undefined4 FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissing);
 	undefined4 FUN_004434a0(undefined4);
-	void FUN_00443520(undefined4);
-	void FUN_004435c0();
-	void FUN_00443620(const LegoChar*, PeridotTrace0x4a8*);
-	void FUN_004436e0();
-	LegoU32 FUN_00443760();
-	void FUN_004437a0(InputManager* p_inputManager);
+	void LoadMemoryCardSaves(undefined4 p_createIfMissing);
+	void LoadFirstOpenSave();
+	void LoadSaveFile(const LegoChar*, SaveGame*);
+	void Destroy();
+	LegoU32 GetMaxUnlockedCircuitIndex();
+	void ReinitializeInputBindings(InputManager* p_inputManager);
 
 private:
-	MarigoldTrail0x108 m_unk0x00;        // 0x00
-	PeridotTrace0x4a8 m_unk0x108;        // 0x108
-	PeridotTrace0x4a8 m_unk0x5b0;        // 0x5b0
-	PeridotTrace0x4e0 m_unk0xa58[2];     // 0xa58
-	PeridotTrace0x4a8 m_unk0x1418;       // 0x1418
-	LegoU32 m_unk0x18c0;                 // 0x18c0
-	GameState m_unk0x18c4;               // 0x18c4
-	PeridotTraceBuffer0x250 m_unk0x1cfc; // 0x1cfc
+	Directory m_directory;                   // 0x00
+	SaveGame m_sessionSave;                  // 0x108
+	SaveGame m_defaultSave;                  // 0x5b0
+	MemoryCardSaveGame m_memoryCardSaves[2]; // 0xa58
+	SaveGame m_quickBuildSave;               // 0x1418
+	LegoU32 m_memoryCardSaveCount;           // 0x18c0
+	GameState m_gameState;                   // 0x18c4
+	ActiveRecordBuffer m_activeRecord;       // 0x1cfc
 };
 
 #endif // SAVESYSTEM_H

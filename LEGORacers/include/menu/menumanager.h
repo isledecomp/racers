@@ -89,14 +89,14 @@ private:
 	void UnloadMenuImages();
 	void FUN_0042d730();
 	void FUN_0042dcb0(
-		PeridotTraceBase0x24::Record* p_record,
+		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
 		AmethystBreeze0x104* p_rendererState
 	);
 	void FUN_0042de90(LegoBool32 p_arg);
 	void FUN_0042df70();
 	void FUN_0042dfa0(
-		PeridotTraceBase0x24::Record* p_record,
+		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
 		AmethystBreeze0x104* p_rendererState
 	);

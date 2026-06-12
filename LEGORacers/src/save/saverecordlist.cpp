@@ -1,43 +1,42 @@
-#include "save/peridottrace0x4e0.h"
-
 #include "golerror.h"
 #include "golstring.h"
 #include "racer/drivercosmetics.h"
+#include "save/savegame.h"
 
-DECOMP_SIZE_ASSERT(PeridotTraceBase0x24, 0x24)
-DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::Record, 0x244)
-DECOMP_SIZE_ASSERT(PeridotTraceBase0x24::SerializedRecord, 0x241)
-DECOMP_SIZE_ASSERT(PeridotTraceBuffer0x250, 0x250)
+DECOMP_SIZE_ASSERT(SaveRecordList, 0x24)
+DECOMP_SIZE_ASSERT(SaveRecordList::Record, 0x244)
+DECOMP_SIZE_ASSERT(SaveRecordList::SerializedRecord, 0x241)
+DECOMP_SIZE_ASSERT(ActiveRecordBuffer, 0x250)
 
 // FUNCTION: LEGORACERS 0x0042b290
-PeridotTraceBase0x24::Record::Record()
+SaveRecordList::Record::Record()
 {
 	m_next = NULL;
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0042b2b0
-PeridotTraceBase0x24::Record::~Record()
+SaveRecordList::Record::~Record()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042b2c0
-void PeridotTraceBase0x24::Record::Initialize()
+void SaveRecordList::Record::Initialize()
 {
 	m_owner = NULL;
 	::memset(m_data, 0, sizeof(m_data));
 	m_unk0x08 = 0;
 	m_unk0x0c = 0;
-	m_unk0x10 = 0;
+	m_recordId = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042b2f0
-void PeridotTraceBase0x24::Record::FUN_0042b2f0(
+void SaveRecordList::Record::FUN_0042b2f0(
 	undefined4 p_unk0x08,
 	undefined4 p_unk0x0c,
-	undefined4 p_unk0x10,
-	PeridotTraceBase0x24* p_owner
+	undefined4 p_recordId,
+	SaveRecordList* p_owner
 )
 {
 	if (m_unk0x08) {
@@ -47,17 +46,17 @@ void PeridotTraceBase0x24::Record::FUN_0042b2f0(
 	m_owner = p_owner;
 	m_unk0x08 = p_unk0x08;
 	m_unk0x0c = p_unk0x0c;
-	m_unk0x10 = p_unk0x10;
+	m_recordId = p_recordId;
 }
 
 // FUNCTION: LEGORACERS 0x0042b320
-void PeridotTraceBase0x24::Record::Destroy()
+void SaveRecordList::Record::Destroy()
 {
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0042b330
-void PeridotTraceBase0x24::Record::FUN_0042b330(DriverCosmetics* p_cosmetics) const
+void SaveRecordList::Record::GetCosmetics(DriverCosmetics* p_cosmetics) const
 {
 	p_cosmetics->m_faceIndex = m_data[0x1c];
 	p_cosmetics->m_hatIndex = m_data[0x1d];
@@ -67,25 +66,25 @@ void PeridotTraceBase0x24::Record::FUN_0042b330(DriverCosmetics* p_cosmetics) co
 }
 
 // FUNCTION: LEGORACERS 0x0042b360
-void PeridotTraceBase0x24::Record::FUN_0042b360(LegoU8* p_dest) const
+void SaveRecordList::Record::CopyCarData(LegoU8* p_dest) const
 {
 	::memcpy(p_dest, &m_data[0x29], 0x202);
 }
 
 // FUNCTION: LEGORACERS 0x0042b380
-void PeridotTraceBase0x24::Record::FUN_0042b380(GolName p_dest) const
+void SaveRecordList::Record::GetChassisName(GolName p_dest) const
 {
 	::memcpy(p_dest, &m_data[0x21], 8);
 }
 
 // FUNCTION: LEGORACERS 0x0042b3a0
-void PeridotTraceBase0x24::Record::FUN_0042b3a0(GolString* p_string) const
+void SaveRecordList::Record::GetName(GolString* p_string) const
 {
-	PeridotTraceBuffer0x250::CopyBufferToString(p_string, m_data, 0x0e);
+	ActiveRecordBuffer::CopyBufferToString(p_string, m_data, 0x0e);
 }
 
 // FUNCTION: LEGORACERS 0x0042b400
-void PeridotTraceBuffer0x250::CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count)
+void ActiveRecordBuffer::CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count)
 {
 	LegoU32 i = 0;
 	while (i < p_count) {
@@ -105,59 +104,59 @@ void PeridotTraceBuffer0x250::CopyBufferToString(GolString* p_string, const Lego
 }
 
 // FUNCTION: LEGORACERS 0x0042b460
-LegoBool32 PeridotTraceBase0x24::Record::FUN_0042b460() const
+LegoBool32 SaveRecordList::Record::IsCarSaved() const
 {
 	return m_data[0x20] & 0x80;
 }
 
 // FUNCTION: LEGORACERS 0x0042b470
-void PeridotTraceBase0x24::Record::FUN_0042b470()
+void SaveRecordList::Record::MarkCarSaved()
 {
-	FUN_0042b6d0();
+	MarkDirty();
 	m_data[0x20] |= 0x80;
 }
 
 // FUNCTION: LEGORACERS 0x0042b490
-void PeridotTraceBase0x24::Record::FUN_0042b490()
+void SaveRecordList::Record::MarkCarModified()
 {
-	FUN_0042b6d0();
+	MarkDirty();
 	m_data[0x20] &= 0x7f;
 }
 
 // FUNCTION: LEGORACERS 0x0042b4b0
-void PeridotTraceBase0x24::Record::FUN_0042b4b0(const DriverCosmetics* p_cosmetics)
+void SaveRecordList::Record::SetCosmetics(const DriverCosmetics* p_cosmetics)
 {
 	m_data[0x1c] = p_cosmetics->m_faceIndex;
 	m_data[0x1d] = p_cosmetics->m_hatIndex;
 	m_data[0x1e] = p_cosmetics->m_legIndex;
 	m_data[0x1f] = p_cosmetics->m_torsoIndex;
 	m_data[0x20] = (m_data[0x20] & 0x80) | p_cosmetics->m_expressionIndex;
-	FUN_0042b6d0();
+	MarkDirty();
 }
 
 // FUNCTION: LEGORACERS 0x0042b4f0
-void PeridotTraceBuffer0x250::FUN_0042b4f0(const LegoU8* p_source)
+void ActiveRecordBuffer::SetCarData(const LegoU8* p_source)
 {
 	memcpy(&m_data[0x29], p_source, 0x202);
-	FUN_0042b6d0();
+	MarkDirty();
 }
 
 // FUNCTION: LEGORACERS 0x0042b510
-void PeridotTraceBase0x24::Record::FUN_0042b510(const GolName p_source)
+void SaveRecordList::Record::SetChassisName(const GolName p_source)
 {
 	::memcpy(&m_data[0x21], p_source, 8);
-	FUN_0042b6d0();
+	MarkDirty();
 }
 
 // FUNCTION: LEGORACERS 0x0042b530
-void PeridotTraceBase0x24::Record::FUN_0042b530(GolString* p_string)
+void SaveRecordList::Record::SetName(GolString* p_string)
 {
-	PeridotTraceBuffer0x250::CopyStringToBuffer(p_string, m_data, 0x0e);
-	FUN_0042b6d0();
+	ActiveRecordBuffer::CopyStringToBuffer(p_string, m_data, 0x0e);
+	MarkDirty();
 }
 
 // FUNCTION: LEGORACERS 0x0042b560
-void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count)
+void ActiveRecordBuffer::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest, LegoU32 p_count)
 {
 	LegoU32 length = p_string->SelectionLength();
 	if (length > p_count) {
@@ -181,35 +180,35 @@ void PeridotTraceBuffer0x250::CopyStringToBuffer(GolString* p_string, LegoU8* p_
 }
 
 // FUNCTION: LEGORACERS 0x0042b5c0
-void PeridotTraceBase0x24::Record::FUN_0042b5c0(const Record* p_source)
+void SaveRecordList::Record::CopyFrom(const Record* p_source)
 {
 	if (m_unk0x08 == 0) {
 		FUN_0042b2f0(p_source->m_unk0x08, p_source->m_unk0x0c, 0, NULL);
 	}
 
 	::memcpy(m_data, p_source->m_data, sizeof(m_data));
-	FUN_0042b6d0();
+	MarkDirty();
 }
 
 // FUNCTION: LEGORACERS 0x0042b610
-LegoU32 PeridotTraceBase0x24::Record::FUN_0042b610(undefined4 p_index) const
+LegoU32 SaveRecordList::Record::GetTrophy(undefined4 p_raceIndex) const
 {
 	LegoU16 value = m_data[0x22c];
 	LegoU16 low = m_data[0x22b];
 	value <<= 8;
 	value += low;
 
-	LegoU8 shift = static_cast<LegoU8>(p_index);
+	LegoU8 shift = static_cast<LegoU8>(p_raceIndex);
 	shift <<= 1;
 	return (value >> shift) & 3;
 }
 
 // STUB: LEGORACERS 0x0042b640
-LegoBool32 PeridotTraceBase0x24::Record::FUN_0042b640(LegoU32 p_index, LegoU32 p_value)
+LegoBool32 SaveRecordList::Record::FUN_0042b640(LegoU32 p_raceIndex, LegoU32 p_trophy)
 {
 	Record* record = this;
 
-	if (p_value > 3) {
+	if (p_trophy > 3) {
 		return FALSE;
 	}
 
@@ -217,76 +216,76 @@ LegoBool32 PeridotTraceBase0x24::Record::FUN_0042b640(LegoU32 p_index, LegoU32 p
 	LegoU16 updated = value;
 
 	LegoU16 existing = value;
-	existing >>= static_cast<LegoU16>(p_index << 1);
+	existing >>= static_cast<LegoU16>(p_raceIndex << 1);
 	existing &= 3;
-	if (existing && static_cast<LegoU16>(p_value) >= existing) {
+	if (existing && static_cast<LegoU16>(p_trophy) >= existing) {
 		return FALSE;
 	}
 
-	LegoU32 shift = p_index + p_index;
+	LegoU32 shift = p_raceIndex + p_raceIndex;
 	existing = 3;
 	existing <<= shift;
-	p_value <<= shift;
+	p_trophy <<= shift;
 	updated &= ~existing;
-	updated |= static_cast<LegoU16>(p_value);
+	updated |= static_cast<LegoU16>(p_trophy);
 	record->m_data[0x22b] = static_cast<LegoU8>(updated);
 	record->m_data[0x22c] = static_cast<LegoU8>(updated >> 8);
-	record->FUN_0042b6d0();
+	record->MarkDirty();
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0042b6d0
-void PeridotTraceBase0x24::Record::FUN_0042b6d0()
+void SaveRecordList::Record::MarkDirty()
 {
 	if (m_owner) {
-		m_owner->m_unk0x20 = 1;
+		m_owner->m_dirty = 1;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042b6e0
-PeridotTraceBase0x24::PeridotTraceBase0x24()
+SaveRecordList::SaveRecordList()
 {
 	Initialize();
 }
 
 // FUNCTION: LEGORACERS 0x0042b6f0 FOLDED
-PeridotTraceBase0x24::~PeridotTraceBase0x24()
+SaveRecordList::~SaveRecordList()
 {
-	FUN_0042b7f0();
+	FreeRecords();
 }
 
 // FUNCTION: LEGORACERS 0x0042b6f0 FOLDED
-void PeridotTraceBase0x24::Destroy()
+void SaveRecordList::Destroy()
 {
-	FUN_0042b7f0();
+	FreeRecords();
 }
 
 // FUNCTION: LEGORACERS 0x0042b700
-void PeridotTraceBase0x24::Initialize()
+void SaveRecordList::Initialize()
 {
-	m_unk0x20 = 0;
-	m_unk0x00 = 0;
-	m_unk0x1c = 0;
-	m_unk0x04 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
+	m_dirty = 0;
+	m_recordCount = 0;
+	m_recordCapacity = 0;
+	m_records = 0;
+	m_freeRecords = 0;
+	m_usedRecords = 0;
 	m_unk0x08 = 0;
 	m_unk0x0c = 0;
 	m_unk0x10 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042b720
-void PeridotTraceBase0x24::FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+void SaveRecordList::AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c)
 {
-	if (m_unk0x04) {
-		FUN_0042b7f0();
+	if (m_records) {
+		FreeRecords();
 	}
 
-	m_unk0x20 = 0;
-	m_unk0x1c = p_count;
-	m_unk0x04 = new Record[p_count];
-	if (!m_unk0x04) {
+	m_dirty = 0;
+	m_recordCapacity = p_count;
+	m_records = new Record[p_count];
+	if (!m_records) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
@@ -296,44 +295,44 @@ void PeridotTraceBase0x24::FUN_0042b720(LegoU32 p_count, undefined4 p_unk0x08, u
 }
 
 // FUNCTION: LEGORACERS 0x0042b7f0
-void PeridotTraceBase0x24::FUN_0042b7f0()
+void SaveRecordList::FreeRecords()
 {
-	if (m_unk0x04) {
-		delete[] m_unk0x04;
-		m_unk0x04 = NULL;
+	if (m_records) {
+		delete[] m_records;
+		m_records = NULL;
 	}
 
 	Initialize();
 }
 
 // STUB: LEGORACERS 0x0042b830
-void PeridotTraceBase0x24::FUN_0042b830()
+void SaveRecordList::FUN_0042b830()
 {
-	m_unk0x14 = m_unk0x04;
+	m_freeRecords = m_records;
 
-	for (LegoU32 i = 1; i < m_unk0x1c; i++) {
-		m_unk0x04[i - 1].m_next = &m_unk0x04[i];
+	for (LegoU32 i = 1; i < m_recordCapacity; i++) {
+		m_records[i - 1].m_next = &m_records[i];
 	}
 
-	m_unk0x18 = NULL;
+	m_usedRecords = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0042b880
-PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b880()
+SaveRecordList::Record* SaveRecordList::AllocateRecord()
 {
-	Record* record = m_unk0x14;
+	Record* record = m_freeRecords;
 	if (!record) {
 		return NULL;
 	}
 
-	m_unk0x00++;
-	m_unk0x20 = 1;
-	m_unk0x14 = record->m_next;
-	record->FUN_0042b2f0(m_unk0x08, m_unk0x0c, m_unk0x00, this);
+	m_recordCount++;
+	m_dirty = 1;
+	m_freeRecords = record->m_next;
+	record->FUN_0042b2f0(m_unk0x08, m_unk0x0c, m_recordCount, this);
 	record->m_next = NULL;
 
-	if (m_unk0x18) {
-		Record* tail = m_unk0x18;
+	if (m_usedRecords) {
+		Record* tail = m_usedRecords;
 		while (tail->m_next) {
 			tail = tail->m_next;
 		}
@@ -341,29 +340,29 @@ PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b880()
 		tail->m_next = record;
 	}
 	else {
-		m_unk0x18 = record;
+		m_usedRecords = record;
 	}
 
 	return record;
 }
 
 // STUB: LEGORACERS 0x0042b8f0
-PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b8f0(Record*)
+SaveRecordList::Record* SaveRecordList::FUN_0042b8f0(Record*)
 {
 	STUB(0x0042b8f0);
 	return NULL;
 }
 
 // STUB: LEGORACERS 0x0042b920
-void PeridotTraceBase0x24::FUN_0042b920(Record*)
+void SaveRecordList::FUN_0042b920(Record*)
 {
 	STUB(0x0042b920);
 }
 
 // FUNCTION: LEGORACERS 0x0042b990
-PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b990(LegoU32 p_index)
+SaveRecordList::Record* SaveRecordList::GetRecord(LegoU32 p_index)
 {
-	Record* record = m_unk0x18;
+	Record* record = m_usedRecords;
 
 	while (p_index-- != 0) {
 		record = record->m_next;
@@ -373,12 +372,12 @@ PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b990(LegoU32 p_index
 }
 
 // FUNCTION: LEGORACERS 0x0042b9b0
-PeridotTraceBase0x24::Record* PeridotTraceBase0x24::FUN_0042b9b0(undefined4 p_unk0x04)
+SaveRecordList::Record* SaveRecordList::FindRecordById(undefined4 p_recordId)
 {
-	Record* record = m_unk0x18;
+	Record* record = m_usedRecords;
 
 	while (record != NULL) {
-		if (record->m_unk0x10 == p_unk0x04) {
+		if (record->m_recordId == p_recordId) {
 			return record;
 		}
 

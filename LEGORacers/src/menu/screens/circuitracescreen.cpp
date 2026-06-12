@@ -111,7 +111,7 @@ void CircuitRaceScreen::VTable0x44(MenuWidget*)
 			}
 		}
 
-		if (m_context->m_unk0x258.GetUnk0x18c4().FUN_0042f1f0() & mask) {
+		if (m_context->m_saveSystem.GetGameState().GetUnlockedCircuits() & mask) {
 			m_unk0x1f24.VTable0x44(5);
 			m_unk0x1860.ClearFlags(2);
 		}

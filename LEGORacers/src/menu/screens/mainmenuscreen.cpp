@@ -107,7 +107,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	}
 
 	FUN_00480310();
-	LegoU32 index = p_context->m_unk0x258.FUN_00443760();
+	LegoU32 index = p_context->m_saveSystem.GetMaxUnlockedCircuitIndex();
 	DriverCosmetics cosmetics;
 	p_context->m_cosmeticTable.CopyCosmetics(g_unk0x004c214c[index], &cosmetics);
 	m_unk0x22dc.FUN_0047e210(&cosmetics);
@@ -115,7 +115,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	m_unk0x2438->FUN_0040dad0(0);
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() & ~0x40000);
-	p_context->m_unk0x258.GetUnk0x1cfc().Reset();
+	p_context->m_saveSystem.GetActiveRecord().Reset();
 	m_unk0x1058.VTable0x4c(5);
 	m_cursorHelper->SetCursorEnabled(TRUE);
 	return TRUE;

@@ -42,19 +42,19 @@ LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 	LegoU32 count = 0;
 
 	if (p_mask & 0x01) {
-		count += m_unk0x00->GetUnk0x5b0().GetUnk0x00();
+		count += m_unk0x00->GetDefaultSave().GetRecordCount();
 	}
 	if (p_mask & 0x02) {
-		count += m_unk0x00->GetUnk0x108().GetUnk0x00();
+		count += m_unk0x00->GetSessionSave().GetRecordCount();
 	}
 	if (p_mask & 0x04) {
-		count += m_unk0x00->GetUnk0x1418().GetUnk0x00();
+		count += m_unk0x00->GetQuickBuildSave().GetRecordCount();
 	}
 
-	PeridotTrace0x4e0* traces = m_unk0x00->GetUnk0xa58();
-	for (LegoU32 i = 0; i < m_unk0x00->GetUnk0x18c0(); i++) {
+	MemoryCardSaveGame* saves = m_unk0x00->GetMemoryCardSaves();
+	for (LegoU32 i = 0; i < m_unk0x00->GetMemoryCardSaveCount(); i++) {
 		if (p_mask & (0x10 << i)) {
-			count += traces[i].GetUnk0x00();
+			count += saves[i].GetRecordCount();
 		}
 	}
 
@@ -62,7 +62,7 @@ LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 }
 
 // STUB: LEGORACERS 0x00442ef0
-PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
+SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 {
 	m_unk0x24 = p_mask;
 	m_unk0x18 = 0;
@@ -70,19 +70,19 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 	m_unk0x20 = 0;
 
 	if (p_mask & 0x01) {
-		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x5b0();
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetDefaultSave();
 	}
 	if (p_mask & 0x02) {
-		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x108();
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetSessionSave();
 	}
 	if (p_mask & 0x04) {
-		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetUnk0x1418();
+		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetQuickBuildSave();
 	}
 
-	PeridotTrace0x4e0* traces = m_unk0x00->GetUnk0xa58();
-	for (LegoU32 i = 0; i < m_unk0x00->GetUnk0x18c0(); i++) {
+	MemoryCardSaveGame* saves = m_unk0x00->GetMemoryCardSaves();
+	for (LegoU32 i = 0; i < m_unk0x00->GetMemoryCardSaveCount(); i++) {
 		if (p_mask & (0x10 << i)) {
-			m_unk0x04[m_unk0x20++] = &traces[i];
+			m_unk0x04[m_unk0x20++] = &saves[i];
 		}
 	}
 
@@ -90,7 +90,7 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 		return NULL;
 	}
 
-	while (m_unk0x18 < m_unk0x20 && m_unk0x04[m_unk0x18]->GetUnk0x00() == 0) {
+	while (m_unk0x18 < m_unk0x20 && m_unk0x04[m_unk0x18]->GetRecordCount() == 0) {
 		m_unk0x18++;
 	}
 
@@ -99,11 +99,11 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 		return NULL;
 	}
 
-	return m_unk0x04[m_unk0x18]->FUN_0042b990(0);
+	return m_unk0x04[m_unk0x18]->GetRecord(0);
 }
 
 // FUNCTION: LEGORACERS 0x00442fe0
-PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442fe0()
+SaveRecordList::Record* RacerUnlockState::FUN_00442fe0()
 {
 	LegoU32 count = m_unk0x20;
 	if (count == 0) {
@@ -113,7 +113,7 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442fe0()
 	LegoU32 startIndex = m_unk0x18;
 	m_unk0x1c++;
 
-	if (m_unk0x1c >= m_unk0x04[m_unk0x18]->GetUnk0x00()) {
+	if (m_unk0x1c >= m_unk0x04[m_unk0x18]->GetRecordCount()) {
 		m_unk0x1c = 0;
 
 		for (;;) {
@@ -122,7 +122,7 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442fe0()
 				m_unk0x18 = 0;
 			}
 
-			if (m_unk0x04[m_unk0x18]->GetUnk0x00()) {
+			if (m_unk0x04[m_unk0x18]->GetRecordCount()) {
 				break;
 			}
 
@@ -132,11 +132,11 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00442fe0()
 		}
 	}
 
-	return m_unk0x04[m_unk0x18]->FUN_0042b990(m_unk0x1c);
+	return m_unk0x04[m_unk0x18]->GetRecord(m_unk0x1c);
 }
 
 // FUNCTION: LEGORACERS 0x00443050
-PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00443050()
+SaveRecordList::Record* RacerUnlockState::FUN_00443050()
 {
 	LegoU32 count = m_unk0x20;
 	if (count == 0) {
@@ -151,7 +151,7 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00443050()
 			}
 
 			m_unk0x18--;
-			m_unk0x1c = m_unk0x04[m_unk0x18]->GetUnk0x00();
+			m_unk0x1c = m_unk0x04[m_unk0x18]->GetRecordCount();
 			if (m_unk0x1c != 0) {
 				break;
 			}
@@ -163,30 +163,30 @@ PeridotTraceBase0x24::Record* RacerUnlockState::FUN_00443050()
 	}
 
 	m_unk0x1c--;
-	return m_unk0x04[m_unk0x18]->FUN_0042b990(m_unk0x1c);
+	return m_unk0x04[m_unk0x18]->GetRecord(m_unk0x1c);
 }
 
 // FUNCTION: LEGORACERS 0x004430b0
-PeridotTraceBase0x24::Record* RacerUnlockState::FUN_004430b0()
+SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
 {
 	if (m_unk0x20 == 0) {
 		return NULL;
 	}
 
-	PeridotTraceBase0x24* trace = m_unk0x04[m_unk0x18];
-	if (m_unk0x1c >= trace->GetUnk0x00()) {
+	SaveRecordList* records = m_unk0x04[m_unk0x18];
+	if (m_unk0x1c >= records->GetRecordCount()) {
 		return NULL;
 	}
 
-	return trace->FUN_0042b990(m_unk0x1c);
+	return records->GetRecord(m_unk0x1c);
 }
 
 // STUB: LEGORACERS 0x004430e0
-PeridotTraceBase0x24::Record* RacerUnlockState::FUN_004430e0(PeridotTraceBase0x24::Record* p_record)
+SaveRecordList::Record* RacerUnlockState::FUN_004430e0(SaveRecordList::Record* p_record)
 {
 	if (m_unk0x20 != 0) {
-		PeridotTraceBase0x24::Record* firstRecord = FUN_004430b0();
-		PeridotTraceBase0x24::Record* record;
+		SaveRecordList::Record* firstRecord = FUN_004430b0();
+		SaveRecordList::Record* record;
 
 		while ((record = FUN_00442fe0()) != firstRecord && record != p_record) {
 		}

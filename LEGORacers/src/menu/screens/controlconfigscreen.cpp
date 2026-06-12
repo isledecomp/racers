@@ -7,7 +7,7 @@
 #include "input/keyboarddevice.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 #include <string.h>
 
@@ -142,7 +142,7 @@ LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	}
 
 	FUN_0047a930();
-	LegoS32 selectedEntryIndex = m_context->m_unk0x258.GetUnk0x18c4().GetSelectedInputBindingEntryIndex(m_unk0x3a4);
+	LegoS32 selectedEntryIndex = m_context->m_saveSystem.GetGameState().GetSelectedInputBindingEntryIndex(m_unk0x3a4);
 
 	for (LegoU32 i = 0; i < m_unk0x39c; i++) {
 		if (m_unk0x37c[i] == selectedEntryIndex) {
@@ -161,7 +161,7 @@ LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 // FUNCTION: LEGORACERS 0x0047ab60
 void ControlConfigScreen::VTable0x84()
 {
-	m_context->m_unk0x258.GetUnk0x18c4().FUN_0042eb20(m_unk0x3a4, m_unk0x37c[m_unk0x3a0]);
+	m_context->m_saveSystem.GetGameState().SelectInputBinding(m_unk0x3a4, m_unk0x37c[m_unk0x3a0]);
 	m_context->m_menuStack.Pop();
 	m_context->m_menuStack.Push(0x30);
 }
@@ -184,7 +184,7 @@ void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
 		m_unk0x394 = device->GetCustomButtonMapping();
 		m_unk0x398 = device->GetCustomAxisMapping();
 		device->SetEventMappings(NULL, NULL);
-		m_context->m_unk0x258.GetUnk0x18c4().FUN_0042ee70(m_unk0x37c[m_unk0x3a0], eventIndex, 0);
+		m_context->m_saveSystem.GetGameState().FUN_0042ee70(m_unk0x37c[m_unk0x3a0], eventIndex, 0);
 		m_unk0x390 = p_source;
 	}
 }
@@ -205,7 +205,7 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
-	GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
+	GameState& state = m_context->m_saveSystem.GetGameState();
 	LegoS32 selectedDeviceIndex = m_unk0x3a0;
 	InputDevice* device = m_unk0x368[selectedDeviceIndex];
 	LegoS32 entryIndex = m_unk0x37c[selectedDeviceIndex];
@@ -251,13 +251,13 @@ LegoBool32 ControlConfigScreen::VTable0x1c(MenuWidget*, InputEventQueue::Event*,
 // FUNCTION: LEGORACERS 0x0047adb0
 void ControlConfigScreen::FUN_0047adb0()
 {
-	GameState& state = m_context->m_unk0x258.GetUnk0x18c4();
+	GameState& state = m_context->m_saveSystem.GetGameState();
 
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x144c); i++) {
 		m_unk0x32f4[i].CopyFromBufSelection(m_ellipsisText, 0);
 
 		if (!(m_unk0x144c[i].GetStateFlags() & MenuIcon::c_flagBit2)) {
-			LegoU32 event = state.FUN_0042ed80(m_unk0x3a4, m_unk0x37c[m_unk0x3a0], i);
+			LegoU32 event = state.GetInputEvent(m_unk0x3a4, m_unk0x37c[m_unk0x3a0], i);
 
 			if (event) {
 				InputDevice* device;

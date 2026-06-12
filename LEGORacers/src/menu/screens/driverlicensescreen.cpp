@@ -117,9 +117,9 @@ void DriverLicenseScreen::VTable0x4c()
 		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x45, 0x1f);
 	}
 
-	PeridotTraceBuffer0x250& record = m_context->m_unk0x258.GetUnk0x1cfc();
+	ActiveRecordBuffer& record = m_context->m_saveSystem.GetActiveRecord();
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x440); i++) {
-		switch (record.FUN_0042b610(i)) {
+		switch (record.GetTrophy(i)) {
 		case 1:
 			CreateImage(&m_unk0x440[i], static_cast<undefined2>(i + 0xe0), 0xdd);
 			break;
@@ -199,8 +199,8 @@ LegoBool32 DriverLicenseScreen::FUN_0047b580()
 	name.CopyFromBufSelection(buffer, 0x17);
 	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
 
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(&name);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
+	m_context->m_saveSystem.GetActiveRecord().GetName(&name);
+	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&cosmetics);
 
 	if (!name.GolStrcmp(&m_cheatString)) {
 		return TRUE;
@@ -214,10 +214,10 @@ void DriverLicenseScreen::FUN_0047b6b0()
 {
 	DriverCosmetics* cosmetics;
 	GolString* cheatString = &m_cheatString;
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b3a0(cheatString);
+	m_context->m_saveSystem.GetActiveRecord().GetName(cheatString);
 
 	cosmetics = &GetUnk0x2244();
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(cosmetics);
+	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(cosmetics);
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	MainMenuModelSlot* preview = &m_unk0x224c;
@@ -243,11 +243,13 @@ void DriverLicenseScreen::FUN_0047b750()
 	}
 
 	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b530(&m_cheatString);
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&GetUnk0x2244());
+	m_context->m_saveSystem.GetActiveRecord().SetName(&m_cheatString);
+	m_context->m_saveSystem.GetActiveRecord().SetCosmetics(&GetUnk0x2244());
 
 	if (!(m_context->m_modelBuilder.GetUnk0x78() & 1)) {
-		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
+			&m_context->m_saveSystem.GetActiveRecord()
+		);
 		m_unk0x23b8 = TRUE;
 	}
 }

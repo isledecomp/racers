@@ -81,7 +81,7 @@ LegoBool32 CarBuildScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		return FALSE;
 	}
 
-	p_context->m_unk0x258.GetUnk0x18c4().SetLanguageResourcePath();
+	p_context->m_saveSystem.GetGameState().SetLanguageResourcePath();
 	m_unk0x3c20.UseOwnedBuffers();
 	m_unk0x3c20.Load("carbuild.srf");
 

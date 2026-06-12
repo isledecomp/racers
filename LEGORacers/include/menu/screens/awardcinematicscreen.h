@@ -8,7 +8,7 @@
 #include "golworldentitygroup0x38.h"
 #include "menu/screens/menuscenescreen.h"
 #include "race/data/racedefinitionlist.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 class ChassisModelTable;
 class GolWorldEntity;
@@ -66,7 +66,7 @@ public:
 
 protected:
 	LegoBool32 FUN_004767b0();
-	LegoBool32 FUN_00476890(PeridotTraceBase0x24* p_trace, RaceDefinitionList::RaceDefinition* p_raceDefinition);
+	LegoBool32 FUN_00476890(SaveRecordList* p_records, RaceDefinitionList::RaceDefinition* p_raceDefinition);
 	LegoBool32 FUN_004768f0(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
 	LegoBool32 FUN_00476990(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
 

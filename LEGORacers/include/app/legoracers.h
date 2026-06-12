@@ -7,7 +7,7 @@
 #include "decomp.h"
 #include "golname.h"
 #include "racer/drivercosmetics.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 #include "types.h"
 #include "util/cactusinterface0x4.h"
 
@@ -75,40 +75,40 @@ public:
 			c_inputBindingEntryCount = 2,
 		};
 
-		LegoBool32 m_unk0x00;                                                    // 0x00
-		Win32GolApp* m_golApp;                                                   // 0x04
-		SoundManager* m_soundManager;                                            // 0x08
-		LegoFloat m_unk0x0c;                                                     // 0x0c
-		LegoFloat m_unk0x10;                                                     // 0x10
-		LegoFloat m_unk0x14;                                                     // 0x14
-		undefined4 m_unk0x18;                                                    // 0x18
-		LegoU16 m_unk0x1c;                                                       // 0x1c
-		LegoU8 m_unk0x1e;                                                        // 0x1e
-		undefined m_unk0x1f;                                                     // 0x1f
-		LegoU32 m_unk0x20;                                                       // 0x20
-		undefined4 m_unk0x24;                                                    // 0x24
-		LegoU32 m_languageIndex;                                                 // 0x28
-		undefined m_unk0x2c;                                                     // 0x2c
-		GolName m_unk0x2d;                                                       // 0x2d
-		undefined m_unk0x35[0x38 - 0x35];                                        // 0x35
-		RaceSlot m_raceSlots[4];                                                 // 0x38
-		undefined4 m_unk0x98[4];                                                 // 0x98
-		LegoU32 m_unk0xa8[4];                                                    // 0xa8
-		undefined4 m_unk0xb8[4];                                                 // 0xb8
-		LegoU32 m_unk0xc8[4];                                                    // 0xc8
-		undefined4 m_unk0xd8;                                                    // 0xd8
-		LegoChar m_gameDataDirectory[18];                                        // 0xdc
-		LegoChar m_commonDataDirectory[18];                                      // 0xee
-		undefined4 m_unk0x100;                                                   // 0x100
-		PlayerSetupSlot m_playerSetupSlots[c_playerSetupSlotCount];              // 0x104
-		undefined4 m_unk0x32c;                                                   // 0x32c
-		PlayerRecordState m_playerRecordStates[c_playerRecordStateCount];        // 0x330
-		PeridotTraceInputBindingEntry m_inputBindings[c_inputBindingEntryCount]; // 0x348
-		undefined4 m_unk0x398;                                                   // 0x398
-		LegoU32 m_saveRecordCount;                                               // 0x39c
-		PeridotTraceRecordData m_saveRecords[5];                                 // 0x3a0
-		PeridotTracePersistentState m_saveState;                                 // 0xe81
-		undefined m_unk0x12ad[0x12b0 - 0x12ad];                                  // 0x12ad
+		LegoBool32 m_unk0x00;                                             // 0x00
+		Win32GolApp* m_golApp;                                            // 0x04
+		SoundManager* m_soundManager;                                     // 0x08
+		LegoFloat m_unk0x0c;                                              // 0x0c
+		LegoFloat m_unk0x10;                                              // 0x10
+		LegoFloat m_unk0x14;                                              // 0x14
+		undefined4 m_unk0x18;                                             // 0x18
+		LegoU16 m_unk0x1c;                                                // 0x1c
+		LegoU8 m_unk0x1e;                                                 // 0x1e
+		undefined m_unk0x1f;                                              // 0x1f
+		LegoU32 m_unk0x20;                                                // 0x20
+		undefined4 m_unk0x24;                                             // 0x24
+		LegoU32 m_languageIndex;                                          // 0x28
+		undefined m_unk0x2c;                                              // 0x2c
+		GolName m_unk0x2d;                                                // 0x2d
+		undefined m_unk0x35[0x38 - 0x35];                                 // 0x35
+		RaceSlot m_raceSlots[4];                                          // 0x38
+		undefined4 m_unk0x98[4];                                          // 0x98
+		LegoU32 m_unk0xa8[4];                                             // 0xa8
+		undefined4 m_unk0xb8[4];                                          // 0xb8
+		LegoU32 m_unk0xc8[4];                                             // 0xc8
+		undefined4 m_unk0xd8;                                             // 0xd8
+		LegoChar m_gameDataDirectory[18];                                 // 0xdc
+		LegoChar m_commonDataDirectory[18];                               // 0xee
+		undefined4 m_unk0x100;                                            // 0x100
+		PlayerSetupSlot m_playerSetupSlots[c_playerSetupSlotCount];       // 0x104
+		undefined4 m_unk0x32c;                                            // 0x32c
+		PlayerRecordState m_playerRecordStates[c_playerRecordStateCount]; // 0x330
+		InputBindingEntry m_inputBindings[c_inputBindingEntryCount];      // 0x348
+		undefined4 m_unk0x398;                                            // 0x398
+		LegoU32 m_saveRecordCount;                                        // 0x39c
+		SaveRecordData m_saveRecords[5];                                  // 0x3a0
+		PersistentGameState m_saveState;                                  // 0xe81
+		undefined m_unk0x12ad[0x12b0 - 0x12ad];                           // 0x12ad
 
 		SoundManager* GetSoundManager() { return m_soundManager; }
 		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }

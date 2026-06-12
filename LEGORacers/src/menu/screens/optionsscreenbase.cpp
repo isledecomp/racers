@@ -6,7 +6,7 @@
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 
 DECOMP_SIZE_ASSERT(OptionsScreenBase, 0x51ac)
 
@@ -71,7 +71,7 @@ void OptionsScreenBase::FUN_00482ef0()
 		m_unk0x2fb0.FUN_0046d9c0(&m_unk0x30d8[i]);
 	}
 
-	m_unk0x2fb0.VTable0x50(m_unk0x370->GetUnk0x0c());
+	m_unk0x2fb0.VTable0x50(m_unk0x370->GetRacerCount());
 	VTable0x44(&m_unk0x1bc8);
 
 	for (i = 0; i < 5; i++) {
@@ -92,8 +92,8 @@ void OptionsScreenBase::FUN_00483030()
 	CreateCarousel(&m_unk0x40e4, 0xfb, 0x3b);
 	CreateSelector(&m_unk0x36f0, &m_unk0x40e4, 0xfc, 0x4c);
 
-	m_unk0x4178.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetUnk0x1f() * g_unk0x4b05d8 * 20.0f + 0.5f));
-	m_unk0x4864.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetUnk0x20() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	m_unk0x4178.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetMusicVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
+	m_unk0x4864.VTable0x90(static_cast<LegoS32>(m_unk0x370->GetSoundVolume() * g_unk0x4b05d8 * 20.0f + 0.5f));
 	VTable0x44(&m_unk0x4178);
 	VTable0x44(&m_unk0x4864);
 
@@ -122,7 +122,7 @@ void OptionsScreenBase::VTable0x4c()
 // FUNCTION: LEGORACERS 0x004831d0
 LegoBool32 OptionsScreenBase::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	m_unk0x370 = &p_context->m_unk0x258.GetUnk0x18c4();
+	m_unk0x370 = &p_context->m_saveSystem.GetGameState();
 
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
 		return FALSE;
@@ -202,7 +202,7 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x4178) {
 		LegoFloat volume = m_unk0x4178.GetUnk0x6c0() * 0.05f;
-		m_unk0x370->SetUnk0x1f(static_cast<LegoU8>(volume * 255.0f));
+		m_unk0x370->SetMusicVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		if (m_context->m_context->m_soundManager) {
 			m_context->m_context->m_soundManager->SetMusicVolumeScale(1.0f);
@@ -217,7 +217,7 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 	}
 	else if (p_widget == &m_unk0x4864) {
 		LegoFloat volume = m_unk0x4864.GetUnk0x6c0() * 0.05f;
-		m_unk0x370->SetUnk0x20(static_cast<LegoU8>(volume * 255.0f));
+		m_unk0x370->SetSoundVolume(static_cast<LegoU8>(volume * 255.0f));
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;
 		if (soundManager) {
@@ -226,7 +226,7 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 	}
 	else if (p_widget == &m_unk0x1bc8) {
 		m_context->m_context->m_unk0x100 = m_unk0x2fb0.GetUnk0x6c();
-		m_unk0x370->SetUnk0x0c(m_context->m_context->m_unk0x100);
+		m_unk0x370->SetRacerCount(m_context->m_context->m_unk0x100);
 	}
 	else if (p_widget == &m_unk0x25bc) {
 		m_context->m_context->m_unk0x2c = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);

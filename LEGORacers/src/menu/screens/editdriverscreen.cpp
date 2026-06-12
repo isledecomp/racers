@@ -9,7 +9,7 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "racer/drivercosmetics.h"
-#include "save/peridottrace0x4e0.h"
+#include "save/savegame.h"
 #include "surface/color.h"
 
 #include <string.h>
@@ -201,7 +201,7 @@ LegoBool32 EditDriverScreen::FUN_0047d560()
 	}
 
 	DriverCosmetics cosmetics;
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
+	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&cosmetics);
 
 	if (cosmetics.m_hatIndex == m_driverCosmetics.m_components[0] &&
 		cosmetics.m_faceIndex == m_driverCosmetics.m_components[1] &&
@@ -269,7 +269,7 @@ void EditDriverScreen::FUN_0047d740()
 // FUNCTION: LEGORACERS 0x0047d840
 void EditDriverScreen::FUN_0047d840()
 {
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&m_driverCosmetics);
+	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&m_driverCosmetics);
 
 	m_unk0x420[0].FUN_00484170(m_driverCosmetics.m_components[0]);
 	m_unk0x420[1].FUN_00484170(m_driverCosmetics.m_components[1]);
@@ -284,10 +284,12 @@ void EditDriverScreen::FUN_0047d840()
 // FUNCTION: LEGORACERS 0x0047d8e0
 void EditDriverScreen::FUN_0047d8e0()
 {
-	m_context->m_unk0x258.GetUnk0x1cfc().FUN_0042b4b0(&m_driverCosmetics);
+	m_context->m_saveSystem.GetActiveRecord().SetCosmetics(&m_driverCosmetics);
 
 	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
-		m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248()->FUN_0042b5c0(&m_context->m_unk0x258.GetUnk0x1cfc());
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
+			&m_context->m_saveSystem.GetActiveRecord()
+		);
 		m_unk0x4770 = TRUE;
 	}
 }
@@ -295,20 +297,20 @@ void EditDriverScreen::FUN_0047d8e0()
 // FUNCTION: LEGORACERS 0x0047d940
 void EditDriverScreen::FUN_0047d940()
 {
-	PeridotTraceBase0x24::Record* record = m_context->m_unk0x258.GetUnk0x1cfc().GetUnk0x248();
-	PeridotTraceBase0x24* trace = NULL;
+	SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
+	SaveRecordList* records = NULL;
 
 	switch (record->m_unk0x08) {
 	case 1:
-		trace = &m_context->m_unk0x258.GetUnk0x108();
+		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		trace = &m_context->m_unk0x258.GetUnk0xa58()[record->m_unk0x0c];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_unk0x0c];
 		break;
 	}
 
-	trace->FUN_0042b920(record);
-	m_context->m_unk0x258.GetUnk0x1cfc().SetUnk0x248(NULL);
+	records->FUN_0042b920(record);
+	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(NULL);
 }
 
 // FUNCTION: LEGORACERS 0x0047d9a0

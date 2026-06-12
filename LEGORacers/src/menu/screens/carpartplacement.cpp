@@ -163,7 +163,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477cc0(undefined4)
 {
 	DriverCosmetics cosmetics;
 	m_unk0x24->m_modelBuilder.SetExpressionMask(0xffff);
-	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b330(&cosmetics);
+	m_unk0x24->m_saveSystem.GetActiveRecord().GetCosmetics(&cosmetics);
 
 	m_unk0x238 = m_unk0x24->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
 	if (m_unk0x238 == NULL) {
@@ -191,7 +191,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00477dc0()
 	createParams.m_unk0x04 = &m_unk0x24->m_unk0x21f4;
 	createParams.m_unk0x08 = m_unk0x24->m_unk0x21f4.GetUnk0x0c();
 	createParams.m_unk0x0c = &m_unk0xa8;
-	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b380(createParams.m_chassisName);
+	m_unk0x24->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
 	m_unk0x58.FUN_00479510(&createParams);
 	m_unk0x58.VTable0x08(m_unk0x250);
@@ -535,7 +535,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478730()
 		return FALSE;
 	}
 
-	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
+	m_unk0x24->m_saveSystem.GetActiveRecord().MarkCarModified();
 	m_unk0x248 |= c_flagCommittingPart;
 	m_unk0x274 = g_unk0x4b2ed8;
 	m_unk0x24c = 2500;
@@ -573,7 +573,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 	m_unk0x28.SetPlacement(x, y, rotation, 0);
 	carModel->FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
 	*p_unk0x08 = pieceRecord->m_pieceType;
-	m_unk0x24->m_unk0x258.GetUnk0x1cfc().FUN_0042b490();
+	m_unk0x24->m_saveSystem.GetActiveRecord().MarkCarModified();
 	m_unk0x20->FUN_0046e970(13);
 	return TRUE;
 }

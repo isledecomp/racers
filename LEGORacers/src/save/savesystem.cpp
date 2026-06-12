@@ -7,7 +7,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(SaveSystem, 0x1f4c)
-DECOMP_SIZE_ASSERT(SaveSystem::MarigoldTrail0x108, 0x108)
+DECOMP_SIZE_ASSERT(SaveSystem::Directory, 0x108)
 
 // GLOBAL: LEGORACERS 0x004bef80
 const LegoChar* g_defaultSaveFileName = "default.lrs";
@@ -18,27 +18,27 @@ const LegoChar* g_quickBuildSaveFileName = "qbuild.lrs";
 // FUNCTION: LEGORACERS 0x00443120
 SaveSystem::SaveSystem()
 {
-	FUN_004432d0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443210
 SaveSystem::~SaveSystem()
 {
-	FUN_004436e0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004432d0
-void SaveSystem::FUN_004432d0()
+void SaveSystem::Reset()
 {
-	m_unk0x18c0 = 0;
+	m_memoryCardSaveCount = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004432e0
-void SaveSystem::FUN_004432e0(InputManager* p_inputManager, LegoBool32 p_arg2)
+void SaveSystem::Initialize(InputManager* p_inputManager, LegoBool32 p_createIfMissing)
 {
 	char path[128];
 
-	m_unk0x18c4.Initialize(p_inputManager);
+	m_gameState.Initialize(p_inputManager);
 	if (g_searchPaths[0] != NULL) {
 		::strcpy(path, g_searchPaths[0]);
 		size_t len = strlen(path);
@@ -52,38 +52,38 @@ void SaveSystem::FUN_004432e0(InputManager* p_inputManager, LegoBool32 p_arg2)
 	}
 
 	::strcat(path, "Save\\");
-	m_unk0x00.FUN_00450fc0(path);
-	m_unk0x108.FUN_004426d0(5, 1, 0);
-	m_unk0x18c4.FUN_0042ef80(&m_unk0x108);
-	FUN_00443520(p_arg2);
-	m_unk0x5b0.FUN_004426d0(4, 3, 0);
-	FUN_00443620(g_defaultSaveFileName, &m_unk0x5b0);
-	m_unk0x1418.FUN_004426d0(36, 3, 0);
-	FUN_00443620(g_quickBuildSaveFileName, &m_unk0x1418);
-	m_unk0x1cfc.FUN_0042b2f0(4, 0, 0, 0);
+	m_directory.Initialize(path);
+	m_sessionSave.Initialize(5, 1, 0);
+	m_gameState.WriteToSaveGame(&m_sessionSave);
+	LoadMemoryCardSaves(p_createIfMissing);
+	m_defaultSave.Initialize(4, 3, 0);
+	LoadSaveFile(g_defaultSaveFileName, &m_defaultSave);
+	m_quickBuildSave.Initialize(36, 3, 0);
+	LoadSaveFile(g_quickBuildSaveFileName, &m_quickBuildSave);
+	m_activeRecord.FUN_0042b2f0(4, 0, 0, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00443420
-undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_arg2)
+undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissing)
 {
-	PeridotTrace0x4e0* entry = &m_unk0xa58[p_index];
-	undefined4 status = entry->FUN_00443910();
+	MemoryCardSaveGame* save = &m_memoryCardSaves[p_index];
+	undefined4 status = save->FUN_00443910();
 
 	if (status == 0) {
-		undefined4 result = entry->FUN_00443980();
+		undefined4 result = save->FUN_00443980();
 
-		if (result == 0 && m_unk0x18c4.GetUnk0x04() == -1) {
-			m_unk0x18c4.FUN_0042eb60(entry, p_index);
+		if (result == 0 && m_gameState.GetActiveSaveIndex() == -1) {
+			m_gameState.FUN_0042eb60(save, p_index);
 		}
 
 		return result;
 	}
 	else if (status == 8) {
-		if (p_arg2 != 0) {
-			undefined4 result = entry->FUN_00443940();
+		if (p_createIfMissing != 0) {
+			undefined4 result = save->FUN_00443940();
 
-			if (m_unk0x18c4.GetUnk0x04() == -1) {
-				m_unk0x18c4.FUN_0042eb60(entry, p_index);
+			if (m_gameState.GetActiveSaveIndex() == -1) {
+				m_gameState.FUN_0042eb60(save, p_index);
 			}
 
 			return result;
@@ -96,58 +96,58 @@ undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_arg2)
 // FUNCTION: LEGORACERS 0x004434a0
 undefined4 SaveSystem::FUN_004434a0(undefined4 p_index)
 {
-	if (m_unk0x18c4.GetUnk0x00() && m_unk0x18c4.GetUnk0x04() == p_index) {
-		m_unk0x18c4.FUN_0042ef80(&m_unk0xa58[p_index]);
-		m_unk0x18c4.SetUnk0x00(0);
-		return m_unk0xa58[p_index].FUN_004439b0();
+	if (m_gameState.IsDirty() && m_gameState.GetActiveSaveIndex() == p_index) {
+		m_gameState.WriteToSaveGame(&m_memoryCardSaves[p_index]);
+		m_gameState.SetDirty(0);
+		return m_memoryCardSaves[p_index].FUN_004439b0();
 	}
 
-	if (m_unk0xa58[p_index].GetUnk0x20()) {
-		return m_unk0xa58[p_index].FUN_004439b0();
+	if (m_memoryCardSaves[p_index].IsDirty()) {
+		return m_memoryCardSaves[p_index].FUN_004439b0();
 	}
 
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00443520
-void SaveSystem::FUN_00443520(undefined4 p_unk0x04)
+void SaveSystem::LoadMemoryCardSaves(undefined4 p_createIfMissing)
 {
-	PeridotTraceRootBase0x08& root = m_unk0x00;
-	m_unk0x18c0 = root.GetEntryCount();
-	if (m_unk0x18c0 > 2) {
-		m_unk0x18c0 = 2;
+	SaveDirectoryBase& root = m_directory;
+	m_memoryCardSaveCount = root.GetEntryCount();
+	if (m_memoryCardSaveCount > 2) {
+		m_memoryCardSaveCount = 2;
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
-		PeridotTrace0x4e0* trace = &m_unk0xa58[i];
-		trace->FUN_004438a0(root.GetEntry(i), 100, 2, i);
-		m_unk0x18c4.FUN_0042ef80(trace);
+	for (LegoU32 i = 0; i < m_memoryCardSaveCount; i++) {
+		MemoryCardSaveGame* save = &m_memoryCardSaves[i];
+		save->Initialize(root.GetEntry(i), 100, 2, i);
+		m_gameState.WriteToSaveGame(save);
 
-		undefined4 status = trace->FUN_00443910();
+		undefined4 status = save->FUN_00443910();
 		if (status == 0) {
-			trace->FUN_00443980();
+			save->FUN_00443980();
 		}
-		else if (status == 8 && p_unk0x04) {
-			trace->FUN_00443940();
+		else if (status == 8 && p_createIfMissing) {
+			save->FUN_00443940();
 		}
 	}
 
-	FUN_004435c0();
+	LoadFirstOpenSave();
 }
 
 // FUNCTION: LEGORACERS 0x004435c0
-void SaveSystem::FUN_004435c0()
+void SaveSystem::LoadFirstOpenSave()
 {
-	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
-		if (m_unk0xa58[i].HasUnk0x4b4Flag0x01() && m_unk0x18c4.GetUnk0x04() == 0xffffffff) {
-			m_unk0x18c4.FUN_0042eb60(&m_unk0xa58[i], i);
+	for (LegoU32 i = 0; i < m_memoryCardSaveCount; i++) {
+		if (m_memoryCardSaves[i].HasUnk0x4b4Flag0x01() && m_gameState.GetActiveSaveIndex() == 0xffffffff) {
+			m_gameState.FUN_0042eb60(&m_memoryCardSaves[i], i);
 			return;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00443620
-void SaveSystem::FUN_00443620(const LegoChar* p_fileName, PeridotTrace0x4a8* p_arg2)
+void SaveSystem::LoadSaveFile(const LegoChar* p_fileName, SaveGame* p_saveGame)
 {
 	GolFile* file = new GolFile;
 	if (file == NULL) {
@@ -162,7 +162,7 @@ void SaveSystem::FUN_00443620(const LegoChar* p_fileName, PeridotTrace0x4a8* p_a
 		return;
 	}
 
-	if (p_arg2->FUN_00442770(*file)) {
+	if (p_saveGame->FUN_00442770(*file)) {
 		GOL_FATALERROR_MESSAGE("Corrupt install - invalid default save file");
 	}
 
@@ -173,27 +173,27 @@ void SaveSystem::FUN_00443620(const LegoChar* p_fileName, PeridotTrace0x4a8* p_a
 }
 
 // FUNCTION: LEGORACERS 0x004436e0
-void SaveSystem::FUN_004436e0()
+void SaveSystem::Destroy()
 {
-	m_unk0x1cfc.Destroy();
-	m_unk0x108.Destroy();
-	m_unk0x5b0.Destroy();
-	m_unk0x1418.Destroy();
+	m_activeRecord.Destroy();
+	m_sessionSave.Destroy();
+	m_defaultSave.Destroy();
+	m_quickBuildSave.Destroy();
 
-	for (LegoU32 i = 0; i < m_unk0x18c0; i++) {
-		m_unk0xa58[i].FUN_004438e0();
+	for (LegoU32 i = 0; i < m_memoryCardSaveCount; i++) {
+		m_memoryCardSaves[i].Destroy();
 	}
 
-	PeridotTraceRootBase0x08& root = m_unk0x00;
+	SaveDirectoryBase& root = m_directory;
 	root.Clear();
-	m_unk0x18c4.Reset();
-	FUN_004432d0();
+	m_gameState.Reset();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443760
-LegoU32 SaveSystem::FUN_00443760()
+LegoU32 SaveSystem::GetMaxUnlockedCircuitIndex()
 {
-	LegoU8 flags = m_unk0x18c4.FUN_0042f1f0();
+	LegoU8 flags = m_gameState.GetUnlockedCircuits();
 
 	LegoU32 mask = 2;
 	for (LegoU32 index = 1; index < 7;) {
@@ -209,9 +209,9 @@ LegoU32 SaveSystem::FUN_00443760()
 }
 
 // FUNCTION: LEGORACERS 0x004437a0
-void SaveSystem::FUN_004437a0(InputManager* p_inputManager)
+void SaveSystem::ReinitializeInputBindings(InputManager* p_inputManager)
 {
-	m_unk0x18c4.FUN_0042ef80(&m_unk0x108);
-	m_unk0x18c4.InitializeInputBindings(p_inputManager);
-	m_unk0x18c4.FUN_0042eb60(&m_unk0x108, m_unk0x18c4.GetUnk0x04());
+	m_gameState.WriteToSaveGame(&m_sessionSave);
+	m_gameState.InitializeInputBindings(p_inputManager);
+	m_gameState.FUN_0042eb60(&m_sessionSave, m_gameState.GetActiveSaveIndex());
 }

@@ -28,7 +28,7 @@ public:
 	MenuSelectorBase();
 	void Reset() override;                                                                // vtable+0x00
 	~MenuSelectorBase() override;                                                         // vtable+0x04
-	LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4) override; // vtable+0x20
+	LegoBool32 VTable0x20(MenuInputDispatcher::Cursor*, undefined4, undefined4) override; // vtable+0x20
 	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x24
 	LegoBool32 VTable0x28(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x28
 	void VTable0x44(undefined4) override;                                                 // vtable+0x44

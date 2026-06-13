@@ -1,7 +1,7 @@
 #include "app/golapp.h"
 
+#include "app/golappeventhandler.h"
 #include "render/goldrawstate.h"
-#include "util/cactusinterface0x4.h"
 
 DECOMP_SIZE_ASSERT(GolApp, 0x830)
 

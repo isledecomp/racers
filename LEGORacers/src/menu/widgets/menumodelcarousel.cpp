@@ -105,11 +105,11 @@ void MenuModelCarousel::FUN_0046cc10(CreateParams* p_createParams)
 {
 	m_unk0xb4 = p_createParams->m_unk0x48[7];
 	m_unk0x80 = m_golExport->VTable0x20();
-	m_unk0x80->m_unk0x08 = p_createParams->m_unk0x48[6];
+	m_unk0x80->m_fov = p_createParams->m_unk0x48[6];
 	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
-	m_unk0x80->m_unk0x10 = m_unk0xb4;
+	m_unk0x80->m_nearClip = m_unk0xb4;
 	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
-	m_unk0x80->m_unk0x14 = p_createParams->m_unk0x48[8];
+	m_unk0x80->m_farClip = p_createParams->m_unk0x48[8];
 	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
 
 	GolVec3 position;
@@ -125,13 +125,13 @@ void MenuModelCarousel::FUN_0046cc10(CreateParams* p_createParams)
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	m_unk0x80->FUN_004046a0(&position, &target, &up);
+	m_unk0x80->LookAt(&position, &target, &up);
 	FUN_0046cd30();
 
 	Rect* viewport = &m_unk0x80->m_viewport;
 	LegoFloat aspect = static_cast<LegoFloat>(viewport->m_right - viewport->m_left) /
 					   static_cast<LegoFloat>(viewport->m_bottom - viewport->m_top);
-	m_unk0x80->FUN_00404740(aspect * p_createParams->m_unk0x70);
+	m_unk0x80->SetAspectRatio(aspect * p_createParams->m_unk0x70);
 }
 
 // FUNCTION: LEGORACERS 0x0046cd30
@@ -207,8 +207,8 @@ void MenuModelCarousel::FUN_0046cf20()
 	LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
 	LegoS32 height = m_unk0x34.m_bottom - m_unk0x34.m_top;
 	LegoS32 halfWidth = -(width >> 1);
-	m_unk0x44 = (m_unk0x80->m_unk0x18 + m_unk0x80->m_unk0x18) / static_cast<LegoFloat>(width);
-	m_unk0x48 = (m_unk0x80->m_unk0x1c + m_unk0x80->m_unk0x1c) / static_cast<LegoFloat>(height);
+	m_unk0x44 = (m_unk0x80->m_nearHalfWidth + m_unk0x80->m_nearHalfWidth) / static_cast<LegoFloat>(width);
+	m_unk0x48 = (m_unk0x80->m_nearHalfHeight + m_unk0x80->m_nearHalfHeight) / static_cast<LegoFloat>(height);
 
 	Item* item = m_unk0x7c;
 	Rect* rect = &item->m_rect;

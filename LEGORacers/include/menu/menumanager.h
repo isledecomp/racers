@@ -1,6 +1,7 @@
 #ifndef MENUMANAGER_H
 #define MENUMANAGER_H
 
+#include "app/golappeventhandler.h"
 #include "app/legoracers.h"
 #include "audio/soundgroupbinding.h"
 #include "compat.h"
@@ -12,6 +13,7 @@
 #include "menu/menuanimationlist.h"
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
+#include "menu/menuinputdispatcher.h"
 #include "menu/menuinputhandler.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenfactory.h"
@@ -30,9 +32,7 @@
 #include "racer/driverpartresources.h"
 #include "render/gold3drenderdevice.h"
 #include "save/savesystem.h"
-#include "text/coppercrest0x40.h"
 #include "types.h"
-#include "util/cactusinterface0x4.h"
 #include "util/stackoflegou16.h"
 
 class AmethystBreeze0x104;
@@ -42,10 +42,10 @@ class SoundGroup;
 
 // VTABLE: LEGORACERS 0x004b05a4
 // SIZE 0x4dd4
-class MenuManager : public CactusInterface0x4 {
+class MenuManager : public GolAppEventHandler {
 private:
 	enum {
-		c_menuTextRendererObjectName = 0x36,
+		c_menuCursorImageName = 0x36,
 	};
 
 public:
@@ -65,7 +65,7 @@ public:
 	void Reset();
 	LegoS32 Initialize(LegoRacers::Context* p_context);
 	LegoS32 Shutdown();
-	void InitializeTextRenderer();
+	void InitializeInputDispatcher();
 	void FUN_0042cde0();
 	void ReleaseRendererObject();
 	void InitializeInputBindings();
@@ -104,7 +104,7 @@ private:
 	MenuGameContext m_unk0x04;             // 0x04
 	MenuScreenFactory m_unk0x4bcc;         // 0x4bcc
 	MenuDialog m_unk0x4bd0;                // 0x4bd0
-	CopperCrest0x40 m_textRenderer;        // 0x4c74
+	MenuInputDispatcher m_inputDispatcher; // 0x4c74
 	GolExport* m_golExport;                // 0x4cd4
 	GolD3DRenderDevice* m_renderer;        // 0x4cd8
 	AwakeKite0x20* m_imageTable;           // 0x4cdc

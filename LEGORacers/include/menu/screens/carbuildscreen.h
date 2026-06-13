@@ -28,7 +28,7 @@ public:
 	LegoBool32 VTable0x78(undefined4) override;                                                   // vtable+0x78
 	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                    // vtable+0x8c
 	GolString* VTable0x98(undefined4) override;                                                   // vtable+0x98
-	GolFont0xa0* VTable0x9c(undefined4) override;                                                 // vtable+0x9c
+	GolFont* VTable0x9c(undefined4) override;                                                     // vtable+0x9c
 	void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override;                             // vtable+0xa0
 	void VTable0xa4() override;                                                                   // vtable+0xa4
 	void VTable0xa8() override;                                                                   // vtable+0xa8

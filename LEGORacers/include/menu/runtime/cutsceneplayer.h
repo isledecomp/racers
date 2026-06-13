@@ -19,7 +19,7 @@ class GolD3DRenderDevice;
 class CutscenePlayer;
 class CutsceneAnimation;
 class GolExport;
-class GolFont0xa0;
+class GolFont;
 class GolFontTable;
 class GolFileParser;
 class GolWorldEntity;
@@ -423,7 +423,7 @@ public:
 private:
 	GolString m_string;    // 0x58
 	LegoChar* m_rawString; // 0x64
-	GolFont0xa0* m_font;   // 0x68
+	GolFont* m_font;       // 0x68
 	LegoU32 m_stringIndex; // 0x6c
 };
 

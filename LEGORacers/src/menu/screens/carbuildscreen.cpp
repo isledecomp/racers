@@ -214,7 +214,7 @@ void CarBuildScreen::VTable0xa4()
 		m_unk0x2d48.VTable0x58(0);
 	}
 
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x00473c90
@@ -244,7 +244,7 @@ void CarBuildScreen::VTable0xb8()
 	m_unk0x318c.VTable0x44(0);
 	m_unk0x33a8.VTable0x44(0);
 	m_unk0x39fc.VTable0x44(0);
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x00473dc0
@@ -257,7 +257,7 @@ void CarBuildScreen::VTable0xac()
 	m_unk0x318c.VTable0x48(0);
 	m_unk0x33a8.VTable0x48(0);
 	m_unk0x2d48.VTable0x4c(5);
-	m_cursorHelper->SetCursorEnabled(FALSE);
+	m_cursor->SetCursorEnabled(FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x00473e50
@@ -273,7 +273,7 @@ void CarBuildScreen::VTable0xb0()
 	m_unk0x2f70.VTable0x44(0);
 	m_unk0x318c.VTable0x44(0);
 	m_unk0x33a8.VTable0x44(0);
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
@@ -489,9 +489,9 @@ LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event* p_event, undefin
 	default:
 		return FALSE;
 	case c_carBuildMouseButton1: {
-		CopperCrest0x40::Helper0x44* helper = m_cursorHelper;
-		LegoS32 x = helper->m_cursorX + helper->m_originX;
-		LegoS32 y = helper->m_cursorY + helper->m_originY;
+		MenuInputDispatcher::Cursor* cursor = m_cursor;
+		LegoS32 x = cursor->m_cursorX + cursor->m_originX;
+		LegoS32 y = cursor->m_cursorY + cursor->m_originY;
 
 		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			m_unk0x2308.FUN_00478560();
@@ -595,11 +595,11 @@ void CarBuildScreen::VTable0x20(MenuWidget* p_source)
 			return;
 		}
 
-		m_cursorHelper->SetCursorEnabled(FALSE);
+		m_cursor->SetCursorEnabled(FALSE);
 	}
 
 	if (p_source == &m_unk0x2b20) {
-		m_cursorHelper->SetCursorEnabled(FALSE);
+		m_cursor->SetCursorEnabled(FALSE);
 	}
 }
 
@@ -620,11 +620,11 @@ void CarBuildScreen::VTable0x24(MenuWidget* p_source)
 			return;
 		}
 
-		m_cursorHelper->SetCursorEnabled(TRUE);
+		m_cursor->SetCursorEnabled(TRUE);
 	}
 
 	if (p_source == &m_unk0x2b20) {
-		m_cursorHelper->SetCursorEnabled(TRUE);
+		m_cursor->SetCursorEnabled(TRUE);
 	}
 }
 
@@ -751,8 +751,8 @@ void CarBuildScreen::VTable0x44(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x00474940
 void CarBuildScreen::FUN_00474940()
 {
-	CopperCrest0x40::Helper0x44* helper = m_cursorHelper;
-	if (!helper || !helper->m_isCursorVisible) {
+	MenuInputDispatcher::Cursor* cursor = m_cursor;
+	if (!cursor || !cursor->m_isCursorVisible) {
 		return;
 	}
 
@@ -762,8 +762,8 @@ void CarBuildScreen::FUN_00474940()
 	m_unk0x1e30.FUN_00465b60(m_unk0x2308.GetUnk0x1a4(), &rect);
 	m_unk0x35c4.VTable0x10(&rect);
 
-	LegoS32 x = helper->m_cursorX + helper->m_originX;
-	LegoS32 y = helper->m_cursorY + helper->m_originY;
+	LegoS32 x = cursor->m_cursorX + cursor->m_originX;
+	LegoS32 y = cursor->m_cursorY + cursor->m_originY;
 
 	if (FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
 		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
@@ -833,7 +833,7 @@ GolString* CarBuildScreen::VTable0x98(undefined4 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00474ba0
-GolFont0xa0* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
+GolFont* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
 {
 	if (!p_unk0x04) {
 		return NULL;

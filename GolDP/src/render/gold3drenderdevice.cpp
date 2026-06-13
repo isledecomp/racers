@@ -3,7 +3,7 @@
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "camera/goltransform.h"
-#include "font/golfontbase0x40.h"
+#include "font/golfontbase.h"
 #include "golerror.h"
 #include "golmath.h"
 #include "golmodelentity.h"
@@ -686,7 +686,7 @@ void GolD3DRenderDevice::VTable0x5c()
 
 	m_unk0xc8490 = &lens->m_unk0x120.m_unk0x190;
 	m_unk0xc8494 = &lens->m_unk0x120.m_unk0x1d0;
-	::memcpy(&m_unk0x4c, &lens->m_unk0x34, sizeof(m_unk0x4c));
+	::memcpy(&m_unk0x4c, &lens->m_viewFrustum, sizeof(m_unk0x4c));
 	::memcpy(m_unk0xc8400, &lens->m_unk0x120.m_unk0x210, sizeof(m_unk0xc8400));
 }
 
@@ -1103,7 +1103,7 @@ void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 	if (visibility[0]) {
 		GolVec3 forward;
 		GolVec3 right;
-		GolTransformBase* orbit = m_unk0x0c->m_unk0x04;
+		GolTransformBase* orbit = m_unk0x0c->m_transform;
 		orbit->VTable0x1c(&right, &forward);
 
 		forward.m_x = -forward.m_x;
@@ -1125,7 +1125,7 @@ void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 // FUNCTION: GOLDP 0x10009b40
 void GolD3DRenderDevice::VTable0x68(
 	const LegoChar* p_unk0x04,
-	GolFontBase0x40* p_font,
+	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
 	LegoS32 p_unk0x10,
 	LegoFloat p_unk0x14,
@@ -1134,13 +1134,13 @@ void GolD3DRenderDevice::VTable0x68(
 	undefined4 p_unk0x20
 )
 {
-	p_font->FUN_1001eaa0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	p_font->DrawString(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009b70
 LegoS32 GolD3DRenderDevice::VTable0x64(
 	GolString* p_unk0x04,
-	GolFontBase0x40* p_font,
+	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
 	LegoS32 p_unk0x10,
 	LegoFloat p_unk0x14,
@@ -1149,13 +1149,13 @@ LegoS32 GolD3DRenderDevice::VTable0x64(
 	undefined4 p_unk0x20
 )
 {
-	return p_font->FUN_1001eb70(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	return p_font->DrawString(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009ba0
 LegoS32 GolD3DRenderDevice::VTable0x6c(
 	GolString* p_unk0x04,
-	GolFontBase0x40* p_font,
+	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
 	LegoS32 p_unk0x10,
 	LegoFloat p_unk0x14,
@@ -1164,7 +1164,7 @@ LegoS32 GolD3DRenderDevice::VTable0x6c(
 	undefined4 p_unk0x20
 )
 {
-	return p_font->FUN_1001eca0(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	return p_font->DrawStringFitted(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009bd0

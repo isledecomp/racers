@@ -12,7 +12,7 @@
 
 #include <windows.h>
 
-class CactusInterface0x4;
+class GolAppEventHandler;
 
 // VTABLE: LEGORACERS 0x004af9f4
 // SIZE 0x944
@@ -43,7 +43,7 @@ public:
 	) override;                                                // vtable+0x28
 	void ShutdownDisplay() override;                           // vtable+0x2c
 	void ToggleFullscreen() override;                          // vtable+0x30
-	LegoS32 Tick(CactusInterface0x4* p_eventHandler) override; // vtable+0x34
+	LegoS32 Tick(GolAppEventHandler* p_eventHandler) override; // vtable+0x34
 	InputManager* GetInputManager() override;                  // vtable+0x38
 	virtual void OnAppDeactivated();                           // vtable+0x3c
 	virtual void OnAppActivated();                             // vtable+0x40

@@ -7,7 +7,7 @@
 #include "menu/style/menustyletable.h"
 #include "menu/widgets/menustaticwidget.h"
 
-class GolFont0xa0;
+class GolFont;
 class GolStringTable;
 
 // VTABLE: LEGORACERS 0x004b273c
@@ -18,7 +18,7 @@ public:
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
 		GolStringTable* m_unk0x38; // 0x38
-		GolFont0xa0* m_unk0x3c;    // 0x3c
+		GolFont* m_unk0x3c;        // 0x3c
 		undefined2 m_unk0x40;      // 0x40
 		undefined m_unk0x42[2];    // 0x42
 		undefined4 m_unk0x44;      // 0x44
@@ -32,7 +32,7 @@ public:
 	virtual void VTable0x44(undefined2, undefined4); // vtable+0x44
 	LegoBool32 FUN_0046f520(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08);
 	void FUN_0046f6b0(LegoS32 p_rightMargin);
-	void SetUnk0x60(GolFont0xa0* p_unk0x60) { m_unk0x60 = p_unk0x60; }
+	void SetUnk0x60(GolFont* p_unk0x60) { m_unk0x60 = p_unk0x60; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f470
 	// MenuTextLabel::`scalar deleting destructor'
@@ -40,7 +40,7 @@ public:
 protected:
 	MenuStyleTable::TextStyle* m_unk0x58; // 0x58
 	GolStringTable* m_unk0x5c;            // 0x5c
-	GolFont0xa0* m_unk0x60;               // 0x60
+	GolFont* m_unk0x60;                   // 0x60
 	GolString m_unk0x64;                  // 0x64
 	LegoS32 m_unk0x70;                    // 0x70
 	LegoBool32 m_unk0x74;                 // 0x74

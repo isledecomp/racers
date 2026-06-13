@@ -213,7 +213,7 @@ void CutsceneParticle::ActivateRuntime(CutsceneAnimation::Runtime* p_runtime)
 void CutsceneParticle::FUN_004897a0()
 {
 	m_unk0x000 = 0;
-	m_unk0x008.FUN_00412840();
+	m_unk0x008.Deactivate();
 	m_ref = 0;
 }
 
@@ -221,7 +221,7 @@ void CutsceneParticle::FUN_004897a0()
 void CutsceneParticle::FUN_004897c0()
 {
 	m_unk0x000 = 0;
-	m_unk0x008.FUN_00412820();
+	m_unk0x008.RequestDeactivate();
 	m_ref = 0;
 }
 
@@ -262,14 +262,14 @@ void CutsceneParticle::FUN_004897e0(LegoU32 p_param1)
 				localc.m_y += m_unk0x148.m_y;
 				localc.m_z += m_unk0x148.m_z;
 
-				m_unk0x008.FUN_00412760(&m_unk0x154, &localc, m_unk0x000->GetUnk0x30());
+				m_unk0x008.SpawnParticle(&m_unk0x154, &localc, m_unk0x000->GetUnk0x30());
 			}
 
 			m_unk0x184 = 0;
 		}
 	}
 
-	m_unk0x008.FUN_00412890(p_param1);
+	m_unk0x008.Update(p_param1);
 }
 
 // FUNCTION: LEGORACERS 0x00489960

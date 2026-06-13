@@ -104,7 +104,7 @@ void LegoRacers::Run()
 		return;
 	}
 
-	CactusInterface0x4::VTable0x00();
+	GolAppEventHandler::VTable0x00();
 
 	if (m_cutscenes) {
 		VideoPlayer::Begin(&m_golApp, 640, 480);

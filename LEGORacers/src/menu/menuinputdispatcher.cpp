@@ -1,4 +1,4 @@
-#include "text/coppercrest0x40.h"
+#include "menu/menuinputdispatcher.h"
 
 #include "image/utopianpan0xa4.h"
 #include "input/inputmanager.h"
@@ -12,38 +12,38 @@
 
 #include <memory.h>
 
-DECOMP_SIZE_ASSERT(CopperCrest0x40, 0x60)
-DECOMP_SIZE_ASSERT(CopperCrest0x40::Helper0x44, 0x44)
-DECOMP_SIZE_ASSERT(CopperCrest0x40::Helper0x44::InitStruct, 0x24)
-DECOMP_SIZE_ASSERT(CopperCrest0x40::InitStruct, 0x18)
+DECOMP_SIZE_ASSERT(MenuInputDispatcher, 0x60)
+DECOMP_SIZE_ASSERT(MenuInputDispatcher::Cursor, 0x44)
+DECOMP_SIZE_ASSERT(MenuInputDispatcher::Cursor::InitStruct, 0x24)
+DECOMP_SIZE_ASSERT(MenuInputDispatcher::InitStruct, 0x18)
 
 // GLOBAL: LEGORACERS 0x004c7648
-LegoBool32 g_unk0x4c7648;
+LegoBool32 g_shiftPressed;
 
 // GLOBAL: LEGORACERS 0x004c764c
-LegoBool32 g_unk0x4c764c;
+LegoBool32 g_controlPressed;
 
 // FUNCTION: LEGORACERS 0x00467c60
-CopperCrest0x40::Helper0x44::Helper0x44()
+MenuInputDispatcher::Cursor::Cursor()
 {
-	FUN_00467c80();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00467c70
-CopperCrest0x40::Helper0x44::~Helper0x44()
+MenuInputDispatcher::Cursor::~Cursor()
 {
-	FUN_00467d70();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00467c80
-void CopperCrest0x40::Helper0x44::FUN_00467c80()
+void MenuInputDispatcher::Cursor::Reset()
 {
 	::memset(&m_bounds, 0, sizeof(m_bounds));
 	::memset(&m_sourceRect, 0, sizeof(m_sourceRect));
 	m_golExport = NULL;
 	m_renderer = NULL;
 	m_inputManager = NULL;
-	m_rendererObject = NULL;
+	m_cursorImage = NULL;
 	m_originY = 0;
 	m_originX = 0;
 	m_cursorY = 0;
@@ -53,9 +53,9 @@ void CopperCrest0x40::Helper0x44::FUN_00467c80()
 }
 
 // FUNCTION: LEGORACERS 0x00467cc0
-LegoS32 CopperCrest0x40::Helper0x44::FUN_00467cc0(InitStruct* p_initStruct)
+LegoS32 MenuInputDispatcher::Cursor::Initialize(InitStruct* p_initStruct)
 {
-	if (m_golExport && !FUN_00467d70()) {
+	if (m_golExport && !Shutdown()) {
 		return FALSE;
 	}
 
@@ -64,7 +64,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467cc0(InitStruct* p_initStruct)
 	}
 
 	m_bounds = *p_initStruct->m_bounds;
-	m_rendererObject = p_initStruct->m_rendererObject;
+	m_cursorImage = p_initStruct->m_cursorImage;
 	m_golExport = p_initStruct->m_golExport;
 	m_renderer = p_initStruct->m_renderer;
 	m_inputManager = p_initStruct->m_inputManager;
@@ -74,21 +74,21 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467cc0(InitStruct* p_initStruct)
 	m_originY = p_initStruct->m_initialOriginY;
 	m_sourceRect.m_top = 0;
 	m_sourceRect.m_left = 0;
-	m_sourceRect.m_right = m_rendererObject->m_width;
-	m_sourceRect.m_bottom = m_rendererObject->m_height;
+	m_sourceRect.m_right = m_cursorImage->m_width;
+	m_sourceRect.m_bottom = m_cursorImage->m_height;
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467d70
-LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d70()
+LegoS32 MenuInputDispatcher::Cursor::Shutdown()
 {
-	FUN_00467c80();
+	Reset();
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467d80
-LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
+LegoS32 MenuInputDispatcher::Cursor::UpdatePosition(undefined4)
 {
 	if (m_golExport && m_isCursorVisible && m_cursorEnabled) {
 		MouseInputDevice* mouse = m_inputManager->GetMouse();
@@ -115,7 +115,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467d80(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x00467e00
-LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
+LegoS32 MenuInputDispatcher::Cursor::Draw()
 {
 	if (m_golExport && m_isCursorVisible && m_cursorEnabled) {
 		Rect destRect;
@@ -125,7 +125,7 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
 		destRect.m_top = m_cursorY;
 		destRect.m_bottom = m_cursorY + m_sourceRect.m_right;
 
-		m_renderer->VTable0x7c(m_rendererObject, 0, &destRect, &m_sourceRect, 0);
+		m_renderer->VTable0x7c(m_cursorImage, 0, &destRect, &m_sourceRect, 0);
 		return TRUE;
 	}
 
@@ -133,81 +133,81 @@ LegoS32 CopperCrest0x40::Helper0x44::FUN_00467e00()
 }
 
 // FUNCTION: LEGORACERS 0x00468ec0
-CopperCrest0x40::CopperCrest0x40()
+MenuInputDispatcher::MenuInputDispatcher()
 {
-	VTable0x00();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00468f30
-CopperCrest0x40::~CopperCrest0x40()
+MenuInputDispatcher::~MenuInputDispatcher()
 {
-	VTable0x0c();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00468f80
-LegoS32 CopperCrest0x40::VTable0x00()
+LegoS32 MenuInputDispatcher::Reset()
 {
 	m_inputManager = NULL;
 	m_inputEvents = NULL;
-	m_unk0x54 = NULL;
-	m_unk0x58 = 0;
-	m_unk0x5c = 0;
+	m_activeScreen = NULL;
+	m_screenWidth = 0;
+	m_screenHeight = 0;
 
-	return m_unk0x10.FUN_00467d70();
+	return m_cursor.Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00468fa0
-LegoS32 CopperCrest0x40::FUN_00468fa0(InitStruct* p_initStruct)
+LegoS32 MenuInputDispatcher::InitializeCursor(InitStruct* p_initStruct)
 {
-	m_unk0x58 = m_drawState->m_width;
-	m_unk0x5c = m_drawState->m_height;
+	m_screenWidth = m_drawState->m_width;
+	m_screenHeight = m_drawState->m_height;
 
-	if (!p_initStruct->m_inputManager->IsMouseAvailable() || !p_initStruct->m_rendererObject) {
+	if (!p_initStruct->m_inputManager->IsMouseAvailable() || !p_initStruct->m_cursorImage) {
 		return TRUE;
 	}
 
 	Rect bounds;
-	Helper0x44::InitStruct helperInit;
+	Cursor::InitStruct cursorInit;
 
 	bounds.m_left = 0;
 	bounds.m_top = 0;
-	bounds.m_right = m_unk0x58 - p_initStruct->m_rendererObject->m_width;
-	LegoS32 bottom = m_unk0x5c;
-	bottom -= p_initStruct->m_rendererObject->m_height;
+	bounds.m_right = m_screenWidth - p_initStruct->m_cursorImage->m_width;
+	LegoS32 bottom = m_screenHeight;
+	bottom -= p_initStruct->m_cursorImage->m_height;
 	bounds.m_bottom = bottom;
 
-	helperInit.m_rendererObject = p_initStruct->m_rendererObject;
-	helperInit.m_golExport = p_initStruct->m_golExport;
-	helperInit.m_renderer = p_initStruct->m_renderer;
-	helperInit.m_inputManager = p_initStruct->m_inputManager;
-	helperInit.m_bounds = &bounds;
-	helperInit.m_initialCursorX = 0;
-	helperInit.m_initialCursorY = 0;
-	helperInit.m_initialOriginX = 0;
-	helperInit.m_initialOriginY = 0;
+	cursorInit.m_cursorImage = p_initStruct->m_cursorImage;
+	cursorInit.m_golExport = p_initStruct->m_golExport;
+	cursorInit.m_renderer = p_initStruct->m_renderer;
+	cursorInit.m_inputManager = p_initStruct->m_inputManager;
+	cursorInit.m_bounds = &bounds;
+	cursorInit.m_initialCursorX = 0;
+	cursorInit.m_initialCursorY = 0;
+	cursorInit.m_initialOriginX = 0;
+	cursorInit.m_initialOriginY = 0;
 
-	return m_unk0x10.FUN_00467cc0(&helperInit);
+	return m_cursor.Initialize(&cursorInit);
 }
 
 // FUNCTION: LEGORACERS 0x00469040
-LegoS32 CopperCrest0x40::FUN_00469040(InitStruct* p_initStruct)
+LegoS32 MenuInputDispatcher::Initialize(InitStruct* p_initStruct)
 {
 	m_inputManager = p_initStruct->m_inputManager;
 	m_inputEvents = p_initStruct->m_inputEvents;
 	m_drawState = p_initStruct->m_renderer->GetDrawState();
 
-	return FUN_00468fa0(p_initStruct);
+	return InitializeCursor(p_initStruct);
 }
 
 // FUNCTION: LEGORACERS 0x00469070
-LegoS32 CopperCrest0x40::VTable0x0c()
+LegoS32 MenuInputDispatcher::Shutdown()
 {
 	if (!m_drawState) {
 		return TRUE;
 	}
 
-	if (m_unk0x10.FUN_00467d70()) {
-		VTable0x00();
+	if (m_cursor.Shutdown()) {
+		Reset();
 
 		return m_drawState == NULL;
 	}
@@ -216,9 +216,9 @@ LegoS32 CopperCrest0x40::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x004690b0
-void CopperCrest0x40::VTable0x14()
+void MenuInputDispatcher::FocusNext()
 {
-	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 	if (!icon->VTable0x60()) {
 		icon->VTable0x68();
@@ -226,9 +226,9 @@ void CopperCrest0x40::VTable0x14()
 }
 
 // FUNCTION: LEGORACERS 0x004690d0
-void CopperCrest0x40::VTable0x18()
+void MenuInputDispatcher::FocusPrevious()
 {
-	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 	if (!icon->VTable0x64()) {
 		icon->VTable0x6c();
@@ -236,15 +236,15 @@ void CopperCrest0x40::VTable0x18()
 }
 
 // FUNCTION: LEGORACERS 0x004690f0
-LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
+LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_item)
 {
-	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 	MenuWidget* active = icon->FindFocusedLeaf();
-	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
-	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
+	undefined4 x = m_cursor.m_originX + m_cursor.m_cursorX;
+	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
 
 	if (p_item->m_isPressed) {
-		if (m_unk0x54->VTable0x18(icon, p_item, x, y)) {
+		if (m_activeScreen->VTable0x18(icon, p_item, x, y)) {
 			return TRUE;
 		}
 		if (active) {
@@ -256,7 +256,7 @@ LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
 		}
 	}
 	else {
-		if (m_unk0x54->VTable0x1c(icon, p_item, x, y)) {
+		if (m_activeScreen->VTable0x1c(icon, p_item, x, y)) {
 			return TRUE;
 		}
 		if (active) {
@@ -272,61 +272,61 @@ LegoS32 CopperCrest0x40::FUN_004690f0(InputEventQueue::Event* p_item)
 }
 
 // FUNCTION: LEGORACERS 0x004691e0
-void CopperCrest0x40::FUN_004691e0(MouseInputDevice* p_mouse)
+void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
 {
-	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 	MenuWidget* active = icon->FindFocusedLeaf();
-	UtopianPan0xa4* rendererObject = m_unk0x10.m_rendererObject;
-	LegoS32 right = m_unk0x58 - (rendererObject->m_width >> 2);
-	LegoS32 bottom = m_unk0x5c - (rendererObject->m_height >> 2);
-	Rect* bounds = &m_unk0x10.m_bounds;
+	UtopianPan0xa4* cursorImage = m_cursor.m_cursorImage;
+	LegoS32 right = m_screenWidth - (cursorImage->m_width >> 2);
+	LegoS32 bottom = m_screenHeight - (cursorImage->m_height >> 2);
+	Rect* bounds = &m_cursor.m_bounds;
 
 	bounds->m_left = 0;
-	Helper0x44* helper = &m_unk0x10;
+	Cursor* cursor = &m_cursor;
 	bounds->m_top = 0;
 	bounds->m_right = right;
 	bounds->m_bottom = bottom;
 
-	undefined4 x = helper->m_originX + helper->m_cursorX;
-	undefined4 y = helper->m_originY + helper->m_cursorY;
+	undefined4 x = cursor->m_originX + cursor->m_cursorX;
+	undefined4 y = cursor->m_originY + cursor->m_cursorY;
 
-	if (!m_unk0x54->VTable0x14(icon, helper, x, y)) {
+	if (!m_activeScreen->VTable0x14(icon, cursor, x, y)) {
 		if (active) {
-			if (active->VTable0x2c(helper, (LegoS32) p_mouse->GetAxisValue(1), (LegoS32) p_mouse->GetAxisValue(2))) {
+			if (active->VTable0x2c(cursor, (LegoS32) p_mouse->GetAxisValue(1), (LegoS32) p_mouse->GetAxisValue(2))) {
 				return;
 			}
 		}
 
-		icon->VTable0x20(helper, x, y);
+		icon->VTable0x20(cursor, x, y);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004692b0
-LegoS32 CopperCrest0x40::VTable0x04(MenuIcon*)
+LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 {
-	undefined4 x = m_unk0x10.m_originX + m_unk0x10.m_cursorX;
-	undefined4 y = m_unk0x10.m_originY + m_unk0x10.m_cursorY;
+	undefined4 x = m_cursor.m_originX + m_cursor.m_cursorX;
+	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
 	InputEventQueue::Event* item;
 
 	while (m_inputEvents->GetSize()) {
 		item = m_inputEvents->Dequeue();
-		if (!FUN_004690f0(item)) {
+		if (!DispatchMouseButtonEvent(item)) {
 			switch (item->m_keyCode) {
 			case c_keyboardLeftShift:
 			case c_keyboardRightShift:
-				g_unk0x4c7648 = item->m_isPressed != FALSE;
+				g_shiftPressed = item->m_isPressed != FALSE;
 				break;
 			case c_keyboardLeftControl:
 			case c_keyboardRightControl:
-				g_unk0x4c764c = item->m_isPressed != FALSE;
+				g_controlPressed = item->m_isPressed != FALSE;
 				break;
 			case c_keyboardTab:
 				if (item->m_isPressed) {
-					if (g_unk0x4c7648) {
-						VTable0x18();
+					if (g_shiftPressed) {
+						FocusPrevious();
 					}
 					else {
-						VTable0x14();
+						FocusNext();
 					}
 				}
 				break;
@@ -334,20 +334,20 @@ LegoS32 CopperCrest0x40::VTable0x04(MenuIcon*)
 			case c_joystickButton8:
 			case c_joystickAxisButton2:
 				if (item->m_isPressed) {
-					VTable0x14();
+					FocusNext();
 				}
 				break;
 			case c_keyboardUp:
 			case c_joystickButton6:
 			case c_joystickAxisButton3:
 				if (item->m_isPressed) {
-					VTable0x18();
+					FocusPrevious();
 				}
 				break;
 			case c_joystickButton1:
 				break;
 			default:
-				MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+				MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 				if (item->m_isPressed) {
 					icon->VTable0x24(item, x, y);
@@ -364,26 +364,26 @@ LegoS32 CopperCrest0x40::VTable0x04(MenuIcon*)
 }
 
 // FUNCTION: LEGORACERS 0x004694b0
-LegoS32 CopperCrest0x40::VTable0x10(undefined4 p_elapsedMs)
+LegoS32 MenuInputDispatcher::Update(undefined4 p_elapsedMs)
 {
-	MenuIcon* icon = m_unk0x54->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 	if (icon) {
 		icon->VTable0x18(p_elapsedMs);
-		if (!VTable0x04(icon)) {
+		if (!ProcessInputEvents(icon)) {
 			return FALSE;
 		}
 	}
 
-	if (m_unk0x10.m_golExport) {
+	if (m_cursor.m_golExport) {
 		MouseInputDevice* mouse = m_inputManager->GetMouse();
 
 		if (mouse->GetAxisValue(1) != 0.0f || mouse->GetAxisValue(2) != 0.0f) {
-			FUN_004691e0(mouse);
+			DispatchMouseMove(mouse);
 		}
 
 		if (m_drawState->m_flags & GolDrawState::c_flagBit9) {
-			m_unk0x10.FUN_00467d80(p_elapsedMs);
+			m_cursor.UpdatePosition(p_elapsedMs);
 		}
 	}
 
@@ -391,7 +391,7 @@ LegoS32 CopperCrest0x40::VTable0x10(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00469550
-void CopperCrest0x40::FUN_00469550()
+void MenuInputDispatcher::DrawCursor()
 {
 	Rect rect1;
 	Rect rect2;
@@ -403,7 +403,7 @@ void CopperCrest0x40::FUN_00469550()
 	rect2.m_right = rect1.m_right = m_drawState->m_width;
 	rect2.m_bottom = rect1.m_bottom = m_drawState->m_height;
 
-	if (m_unk0x54->VTable0x7c(&rect2, &rect1)) {
-		m_unk0x10.FUN_00467e00();
+	if (m_activeScreen->VTable0x7c(&rect2, &rect1)) {
+		m_cursor.Draw();
 	}
 }

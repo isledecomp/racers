@@ -1,6 +1,6 @@
 #include "render/golrenderdevice.h"
 
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "font/golfontlibrary.h"
 #include "image/utopianpan0xa4.h"
 #include "material/golimagelist.h"
@@ -8,13 +8,13 @@
 #include "material/goltexturelist.h"
 
 // FUNCTION: LEGORACERS 0x00413170
-GolFont0xa0* GolRenderDevice::FindFontByName(const LegoChar* p_name)
+GolFont* GolRenderDevice::FindFontByName(const LegoChar* p_name)
 {
 	GolFontLibrary* node = m_fontLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			GolFont0xa0* value = static_cast<GolFont0xa0*>(node->GetName(p_name));
+			GolFont* value = static_cast<GolFont*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}
@@ -84,11 +84,11 @@ DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_n
 }
 
 // FUNCTION: LEGORACERS 0x00415d60
-LegoS32 GolViewFrustum::FUN_1002bc20(const GolVec3& p_center, LegoFloat p_radius) const
+LegoS32 GolViewFrustum::ClassifySphere(const GolVec3& p_center, LegoFloat p_radius) const
 {
 	LegoS32 insideCount = 0;
-	const Plane0x10* plane = m_planes;
-	const Plane0x10* end = m_planes + sizeOfArray(m_planes);
+	const Plane* plane = m_planes;
+	const Plane* end = m_planes + sizeOfArray(m_planes);
 
 	for (; plane < end; plane++) {
 		LegoFloat distance = plane->m_normal.m_z * p_center.m_z;

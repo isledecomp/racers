@@ -145,15 +145,15 @@ void MenuSceneView::FUN_004659b0(CreateParams* p_createParams)
 		LegoU32 dirtyFlag = GolCamera::c_flagBit1;
 		GolCamera* lens = m_unk0x64;
 		LegoFloat value = cameraVectors[2].m_x;
-		lens->m_unk0x08 = value;
+		lens->m_fov = value;
 		lens->m_flags |= dirtyFlag;
 		lens = m_unk0x64;
 		value = cameraVectors[2].m_y;
-		lens->m_unk0x10 = value;
+		lens->m_nearClip = value;
 		lens->m_flags |= dirtyFlag;
 		lens = m_unk0x64;
 		value = cameraVectors[2].m_z;
-		lens->m_unk0x14 = value;
+		lens->m_farClip = value;
 		lens->m_flags |= dirtyFlag;
 
 		FUN_00465ab0(cameraVectors, cameraVectors + 1);
@@ -171,7 +171,7 @@ void MenuSceneView::FUN_004659b0(CreateParams* p_createParams)
 	LegoFloat divisor = static_cast<LegoFloat>(height);
 	aspect /= divisor;
 	aspect *= p_createParams->m_unk0x80;
-	m_unk0x64->FUN_00404740(aspect);
+	m_unk0x64->SetAspectRatio(aspect);
 }
 
 // FUNCTION: LEGORACERS 0x00465ab0
@@ -200,7 +200,7 @@ void MenuSceneView::FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
 		m_unk0x7c.m_z = z * scale;
 	}
 
-	m_unk0x64->FUN_004046a0(&m_unk0x70, &m_unk0x7c, &up);
+	m_unk0x64->LookAt(&m_unk0x70, &m_unk0x7c, &up);
 }
 
 // FUNCTION: LEGORACERS 0x00465b40
@@ -239,7 +239,7 @@ void MenuSceneView::FUN_00465b60(GolWorldEntity* p_entity, Rect* p_rect)
 // FUNCTION: LEGORACERS 0x00465c00
 void MenuSceneView::FUN_00465c00(undefined4 p_elapsedMs)
 {
-	if (m_unk0x64->m_unk0x28) {
+	if (m_unk0x64->m_trackedEntity) {
 		return;
 	}
 
@@ -252,16 +252,16 @@ void MenuSceneView::FUN_00465c00(undefined4 p_elapsedMs)
 
 	if (turn != 0.0f) {
 		GolCamera* lens = m_unk0x64;
-		LegoFloat value = lens->m_unk0x08;
+		LegoFloat value = lens->m_fov;
 		LegoU32 flags = lens->m_flags;
 		value += turn;
 		lens->m_flags = flags | GolCamera::c_flagBit1;
-		lens->m_unk0x08 = value;
+		lens->m_fov = value;
 	}
 
 	GolVec3* forward = &m_unk0x90;
 	GolVec3* right = &m_unk0x9c;
-	m_unk0x64->GetUnk0x04()->VTable0x1c(right, forward);
+	m_unk0x64->GetTransform()->VTable0x1c(right, forward);
 
 	GolVec3* axis = &m_unk0xa8;
 	LegoFloat axisX = right->m_y;
@@ -293,7 +293,7 @@ void MenuSceneView::FUN_00465c00(undefined4 p_elapsedMs)
 	GolMath::FUN_004496a0(&rotatedRight, right, forward, angle);
 
 	GolVec3 position;
-	m_unk0x64->GetUnk0x04()->GetPosition(&position);
+	m_unk0x64->GetTransform()->GetPosition(&position);
 	LegoFloat forwardDelta = -forward->m_x;
 	forwardDelta *= m_unk0xb8;
 	LegoFloat rightDelta = -right->m_x;
@@ -312,11 +312,11 @@ void MenuSceneView::FUN_00465c00(undefined4 p_elapsedMs)
 	forwardDelta = -m_unk0x90.m_z;
 	forwardDelta *= m_unk0xb8;
 	position.m_z += (rightDelta + forwardDelta) * elapsed;
-	lens->GetUnk0x04()->SetPosition(&position);
+	lens->GetTransform()->SetPosition(&position);
 
 	lens->m_flags |= GolCamera::c_flagBit0;
 	GolCamera* currentLens = m_unk0x64;
-	currentLens->GetUnk0x04()->VTable0x24(right, forward);
+	currentLens->GetTransform()->VTable0x24(right, forward);
 	currentLens->m_flags |= GolCamera::c_flagBit0;
 }
 

@@ -2,7 +2,7 @@
 
 #include "app/golapp.h"
 #include "app/legoracers.h"
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golhashtable.h"
 #include "golname.h"
 #include "golstream.h"
@@ -44,7 +44,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	GolName fontName;
 	::strncpy(fontName, "font_ths", sizeof(fontName));
 
-	GolFont0xa0* font = m_renderer->FindFontByName(fontName);
+	GolFont* font = m_renderer->FindFontByName(fontName);
 	if (font) {
 		font->SetColor(0xff, 0xff, 0xff, 0xff);
 	}
@@ -99,7 +99,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	m_cursorHelper->SetCursorEnabled(FALSE);
+	m_cursor->SetCursorEnabled(FALSE);
 	m_unk0x654 = TRUE;
 	return TRUE;
 }
@@ -137,7 +137,7 @@ LegoBool32 MenuSceneScreen::VTable0x78(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00479a50
 void MenuSceneScreen::VTable0x84()
 {
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 	m_context->m_menuStack.Pop();
 	m_context->m_menuStack.Push(c_menuMainMenu);
 }

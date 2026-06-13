@@ -1,6 +1,6 @@
 #include "menu/widgets/menuwidget.h"
 
-#include "font/golfontbase0x40.h"
+#include "font/golfontbase.h"
 #include "golstring.h"
 #include "image/utopianpan0xa4.h"
 #include "render/gold3drenderdevice.h"
@@ -244,7 +244,7 @@ Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
 
 // FUNCTION: LEGORACERS 0x00472d00
 Rect* MenuWidget::MeasureText(
-	GolFontBase0x40* p_font,
+	GolFontBase* p_font,
 	GolString* p_string,
 	Rect* p_source,
 	Rect* p_dest,
@@ -258,7 +258,7 @@ Rect* MenuWidget::MeasureText(
 		p_font->FUN_00408d50(p_string, p_wrapWidth, 0, m_unk0x44, m_unk0x48, &width, &height);
 	}
 	else {
-		p_font->FUN_00408be0(p_string, &width, &height);
+		p_font->MeasureString(p_string, &width, &height);
 	}
 
 	p_dest->m_left = 0;
@@ -279,7 +279,7 @@ void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, UtopianPan0xa4*
 undefined2 MenuWidget::DrawString(
 	Rect* p_source,
 	Rect* p_dest,
-	GolFontBase0x40* p_font,
+	GolFontBase* p_font,
 	GolString* p_string,
 	LegoS32 p_wrapWidth,
 	LegoS32 p_unk0x18
@@ -565,7 +565,7 @@ undefined4 MenuWidget::VTable0x1c(Rect* p_rect, Rect* p_arg)
 }
 
 // FUNCTION: LEGORACERS 0x004732d0
-LegoBool32 MenuWidget::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuWidget::VTable0x20(MenuInputDispatcher::Cursor* p_cursor, undefined4 p_x, undefined4 p_y)
 {
 	MenuWidget* child = m_firstChild;
 	undefined4 x = p_x;
@@ -575,14 +575,14 @@ LegoBool32 MenuWidget::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefin
 
 	if ((m_flags & 2) && HitTest(x, y)) {
 		while (child) {
-			if (child->VTable0x20(p_param1, x, y)) {
+			if (child->VTable0x20(p_cursor, x, y)) {
 				return TRUE;
 			}
 
 			child = child->m_nextSibling;
 		}
 
-		if (VTable0x2c(p_param1, x, y)) {
+		if (VTable0x2c(p_cursor, x, y)) {
 			return TRUE;
 		}
 	}

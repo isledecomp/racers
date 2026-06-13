@@ -114,7 +114,7 @@ public:
 	void VTable0x60() override;                                              // vtable+0x60
 	LegoS32 VTable0x64(
 		GolString*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -124,7 +124,7 @@ public:
 	) override; // vtable+0x64
 	void VTable0x68(
 		const LegoChar*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -134,7 +134,7 @@ public:
 	) override; // vtable+0x68
 	LegoS32 VTable0x6c(
 		GolString*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -231,7 +231,7 @@ public:
 	friend class SlatePeak0x58;
 	friend class GolD3DRenderSurface;
 	friend class GolModel;
-	friend class GolFont0xa0;
+	friend class GolFont;
 	friend class UtopianPan0xa4;
 
 private:

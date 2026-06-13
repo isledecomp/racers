@@ -5,16 +5,16 @@
 #include "decomp.h"
 #include "golname.h"
 #include "input/inputeventqueue.h"
+#include "menu/menuinputdispatcher.h"
 #include "menu/screens/menuscreeninterface.h"
 #include "menu/widgets/visualstatecolor.h"
 #include "render/rectangle.h"
 #include "surface/color.h"
 #include "surface/silverdune0x30.h"
-#include "text/coppercrest0x40.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
-class GolFontBase0x40;
+class GolFontBase;
 class GolExport;
 class GolString;
 class SoundGroupBinding;
@@ -50,7 +50,7 @@ public:
 	virtual void VTable0x14(VisualStateColor*);                                          // vtable+0x14
 	virtual LegoBool32 VTable0x18(undefined4);                                           // vtable+0x18
 	virtual undefined4 VTable0x1c(Rect*, Rect*);                                         // vtable+0x1c
-	virtual LegoBool32 VTable0x20(CopperCrest0x40::Helper0x44*, undefined4, undefined4); // vtable+0x20
+	virtual LegoBool32 VTable0x20(MenuInputDispatcher::Cursor*, undefined4, undefined4); // vtable+0x20
 	virtual LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4);      // vtable+0x24
 	virtual LegoBool32 VTable0x28(InputEventQueue::Event*, undefined4, undefined4);      // vtable+0x28
 	virtual MenuWidget* VTable0x2c(void*, undefined4, undefined4);                       // vtable+0x2c
@@ -74,9 +74,9 @@ public:
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
 	Rect* FUN_00472c80(Rect*, Rect*);
-	Rect* MeasureText(GolFontBase0x40*, GolString*, Rect*, Rect*, LegoS32);
+	Rect* MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
 	void DrawImage(Rect*, Rect*, UtopianPan0xa4*);
-	undefined2 DrawString(Rect*, Rect*, GolFontBase0x40*, GolString*, LegoS32, LegoS32);
+	undefined2 DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);
 	Rect* TranslateRectByOffset(Rect*);
 	LegoBool32 FUN_00473a20(Rect*, LegoS32, LegoS32);
 	void ScreenToLocal(undefined4&, undefined4&);

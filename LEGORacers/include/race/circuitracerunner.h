@@ -1,18 +1,18 @@
 #ifndef CIRCUITRACERUNNER_H
 #define CIRCUITRACERUNNER_H
 
+#include "app/golappeventhandler.h"
 #include "app/legoracers.h"
 #include "compat.h"
 #include "decomp.h"
 #include "race/circuitstandings.h"
 #include "types.h"
-#include "util/cactusinterface0x4.h"
 
 class RaceSession;
 
 // VTABLE: LEGORACERS 0x004aff70
 // SIZE 0x94
-class CircuitRaceRunner : public CactusInterface0x4 {
+class CircuitRaceRunner : public GolAppEventHandler {
 public:
 	CircuitRaceRunner();
 	virtual ~CircuitRaceRunner(); // vtable+0x30

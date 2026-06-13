@@ -28,7 +28,7 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	}
 
 	m_unk0x76c = p_context->m_modelBuilder.GetUnk0x84();
-	p_createParams->m_cursorHelper->SetCursorEnabled(FALSE);
+	p_createParams->m_cursor->SetCursorEnabled(FALSE);
 	return MenuGameScreen::VTable0x8c(p_context, p_createParams) != FALSE;
 }
 
@@ -49,7 +49,7 @@ void NewRacerScreen::VTable0x4c()
 			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbb);
-			m_cursorHelper->SetCursorEnabled(active);
+			m_cursor->SetCursorEnabled(active);
 			return;
 		}
 	}
@@ -61,7 +61,7 @@ void NewRacerScreen::VTable0x4c()
 			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbc);
-			m_cursorHelper->SetCursorEnabled(active);
+			m_cursor->SetCursorEnabled(active);
 			return;
 		}
 	}
@@ -114,6 +114,6 @@ LegoBool32 NewRacerScreen::Destroy()
 		return TRUE;
 	}
 
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 	return MenuGameScreen::Destroy();
 }

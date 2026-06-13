@@ -6,7 +6,7 @@
 #include "goltransformbase.h"
 
 // FUNCTION: LEGORACERS 0x004046a0
-void GolCameraBase::FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)
+void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)
 {
 	GolVec3 up;
 	GolVec3 forward;
@@ -18,15 +18,15 @@ void GolCameraBase::FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3
 	up.m_y = -p_up->m_y;
 	up.m_z = -p_up->m_z;
 
-	m_unk0x04->VTable0x24(&forward, &up);
-	m_unk0x04->SetPosition(p_position);
+	m_transform->VTable0x24(&forward, &up);
+	m_transform->SetPosition(p_position);
 }
 
 // FUNCTION: LEGORACERS 0x00404740
-void GolCameraBase::FUN_00404740(LegoFloat p_aspect)
+void GolCameraBase::SetAspectRatio(LegoFloat p_aspect)
 {
 	if (p_aspect > 0.0f) {
-		m_unk0x0c = p_aspect;
+		m_aspectRatio = p_aspect;
 		m_flags |= 8;
 	}
 	else {
@@ -37,15 +37,15 @@ void GolCameraBase::FUN_00404740(LegoFloat p_aspect)
 }
 
 // FUNCTION: LEGORACERS 0x004047b0
-void GolCameraBase::FUN_004047b0()
+void GolCameraBase::UpdateFromTrackedEntity()
 {
-	if (m_unk0x28 == NULL) {
+	if (m_trackedEntity == NULL) {
 		return;
 	}
 
-	m_unk0x28->VTable0x5c(0);
-	GolSceneNode* frameSet = m_unk0x28->VTable0x58(0);
-	GolTransformBase* orbit = frameSet->VTable0x18(m_unk0x2c);
+	m_trackedEntity->VTable0x5c(0);
+	GolSceneNode* frameSet = m_trackedEntity->VTable0x58(0);
+	GolTransformBase* orbit = frameSet->VTable0x18(m_trackedNodeIndex);
 
 	GolVec3 position;
 	GolVec3 right;
@@ -66,15 +66,15 @@ void GolCameraBase::FUN_004047b0()
 		forward = transformedForward;
 	}
 
-	m_unk0x28->VTable0x2c(position, &transformedPosition);
-	m_unk0x28->VTable0x34(right, &transformedRight);
-	m_unk0x28->VTable0x34(forward, &transformedForward);
+	m_trackedEntity->VTable0x2c(position, &transformedPosition);
+	m_trackedEntity->VTable0x34(right, &transformedRight);
+	m_trackedEntity->VTable0x34(forward, &transformedForward);
 
-	m_unk0x04->SetPosition(&transformedPosition);
+	m_transform->SetPosition(&transformedPosition);
 	transformedForward.m_x = -transformedForward.m_x;
 	m_flags |= 1;
 	transformedForward.m_y = -transformedForward.m_y;
 	transformedForward.m_z = -transformedForward.m_z;
-	m_unk0x04->VTable0x24(&transformedRight, &transformedForward);
+	m_transform->VTable0x24(&transformedRight, &transformedForward);
 	m_flags |= 1;
 }

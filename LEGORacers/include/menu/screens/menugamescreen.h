@@ -11,7 +11,7 @@ class MenuGameContext;
 class MenuScreenCreateParams;
 class MenuTextButton;
 class MenuWidget;
-class GolFont0xa0;
+class GolFont;
 class UtopianPan0xa4;
 class CarPartCarousel;
 
@@ -37,7 +37,7 @@ public:
 		// SIZE 0xe0
 		class ButtonBinding : public MenuInputBindingTable::IconBinding {
 		public:
-			GolFont0xa0* m_unk0x84[6];        // 0x84
+			GolFont* m_unk0x84[6];            // 0x84
 			UtopianPan0xa4* m_unk0x9c[6];     // 0x9c
 			VisualStateColor m_unk0xb4[6];    // 0xb4
 			undefined m_unk0xcc[0xd0 - 0xcc]; // 0xcc

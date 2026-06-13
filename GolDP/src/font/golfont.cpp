@@ -1,4 +1,4 @@
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 
 #include "decomp.h"
 #include "device/golpalettebase.h"
@@ -15,12 +15,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GolFont0xa0, 0xa0)
+DECOMP_SIZE_ASSERT(GolFont, 0xa0)
 
 // GLOBAL: GOLDP 0x10062568
 static GolImgFile g_unk0x10062568;
 
-extern SilverDune0x30* g_unk0x10063c9c;
+extern SilverDune0x30* g_fontSourceImage;
 
 extern GolTgaFile g_unk0x10063ca0;
 
@@ -29,41 +29,41 @@ extern GolBmpFile g_unk0x10064280;
 extern const ColorRGBA g_unk0x10057668;
 
 // FUNCTION: GOLDP 0x100043d0
-GolFont0xa0::GolFont0xa0()
+GolFont::GolFont()
 {
-	m_unk0x90 = NULL;
-	m_unk0x9c = NULL;
+	m_textures = NULL;
+	m_materials = NULL;
 	m_renderer = NULL;
 }
 
 // FUNCTION: GOLDP 0x10004480
-GolFont0xa0::~GolFont0xa0()
+GolFont::~GolFont()
 {
 	Clear();
 }
 
 // FUNCTION: GOLDP 0x10004520
-void GolFont0xa0::Clear()
+void GolFont::Clear()
 {
-	m_unk0x40.VTable0x38();
+	m_sourceImage.VTable0x38();
 	ReleaseSurfaces();
-	GolFontBase0x40::Clear();
+	GolFontBase::Clear();
 }
 
 // FUNCTION: GOLDP 0x10004570
-void GolFont0xa0::VTable0x00(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
+void GolFont::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 {
 	GolSurfaceFormat sourceFormat;
 
 	GolImgFile* imageFile = &g_unk0x10063ca0;
-	if (!(m_unk0x2c & c_flagBit4)) {
+	if (!(m_flags & c_flagBit4)) {
 		imageFile = &g_unk0x10064280;
 	}
 
 	imageFile->VTable0x08(p_name);
 	LegoU32 sourceHeight = imageFile->GetHeight();
 	sourceFormat = imageFile->GetTextureFormat();
-	m_unk0x1c = sourceHeight;
+	m_fontHeight = sourceHeight;
 
 	if (sourceFormat.m_paletteMask && sourceFormat.m_bitsPerPixel == 4) {
 		::memset(&sourceFormat, 0, sizeof(sourceFormat));
@@ -72,77 +72,77 @@ void GolFont0xa0::VTable0x00(const LegoChar* p_name, GolD3DRenderDevice* p_rende
 	}
 
 	LegoU32 sourceWidth = imageFile->GetWidth();
-	g_unk0x10063c9c = &m_unk0x40;
-	m_unk0x40.VTable0x34(*p_renderer, sourceFormat, sourceWidth, m_unk0x1c);
-	imageFile->VTable0x20(&m_unk0x40, m_unk0x2c & c_flagBit2, NULL);
+	g_fontSourceImage = &m_sourceImage;
+	m_sourceImage.VTable0x34(*p_renderer, sourceFormat, sourceWidth, m_fontHeight);
+	imageFile->VTable0x20(&m_sourceImage, m_flags & c_flagBit2, NULL);
 	imageFile->Destroy();
 
-	FUN_1001e190(p_name);
+	ScanGlyphs(p_name);
 
 	GolSurfaceFormat textureFormat;
-	g_unk0x10063c9c = &m_unk0x40;
-	GolSurfaceFormat surfaceFormat = m_unk0x40.GetTextureFormat();
-	LegoU32 selectFlags = m_unk0x2c & c_flagBit5;
+	g_fontSourceImage = &m_sourceImage;
+	GolSurfaceFormat surfaceFormat = m_sourceImage.GetTextureFormat();
+	LegoU32 selectFlags = m_flags & c_flagBit5;
 	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, selectFlags);
-	FUN_1001e5e0(p_renderer, &textureFormat);
+	PackGlyphTextures(p_renderer, &textureFormat);
 	VTable0x04(p_renderer, &textureFormat);
-	FUN_10004d70(p_renderer, &surfaceFormat, &textureFormat);
+	CopyGlyphsToTextures(p_renderer, &surfaceFormat, &textureFormat);
 
-	::qsort(m_unk0x28, m_unk0x24, sizeof(Glyph0x0c), GolFontBase0x40::CompareGlyphChars);
+	::qsort(m_glyphs, m_glyphCount, sizeof(Glyph), GolFontBase::CompareGlyphChars);
 }
 
 // FUNCTION: GOLDP 0x100046e0
-void GolFont0xa0::ReleaseSurfaces()
+void GolFont::ReleaseSurfaces()
 {
-	if (m_unk0x9c != NULL) {
-		delete[] m_unk0x9c;
-		m_unk0x9c = NULL;
+	if (m_materials != NULL) {
+		delete[] m_materials;
+		m_materials = NULL;
 	}
 
-	if (m_unk0x90 != NULL) {
-		delete[] m_unk0x90;
-		m_unk0x90 = NULL;
+	if (m_textures != NULL) {
+		delete[] m_textures;
+		m_textures = NULL;
 	}
 }
 
 // FUNCTION: GOLDP 0x10004720
-void GolFont0xa0::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
+void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 {
 	GolSurfaceFormat textureFormat;
 
-	g_unk0x10063c9c = &m_unk0x40;
-	GolSurfaceFormat sourceFormat = m_unk0x40.GetTextureFormat();
-	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_unk0x2c & c_flagBit5);
-	FUN_1001e5e0(p_renderer, &textureFormat);
+	g_fontSourceImage = &m_sourceImage;
+	GolSurfaceFormat sourceFormat = m_sourceImage.GetTextureFormat();
+	p_renderer->SelectTextureFormat(sourceFormat, &textureFormat, m_flags & c_flagBit5);
+	PackGlyphTextures(p_renderer, &textureFormat);
 	VTable0x04(p_renderer, &textureFormat);
-	FUN_10004d70(p_renderer, &sourceFormat, &textureFormat);
+	CopyGlyphsToTextures(p_renderer, &sourceFormat, &textureFormat);
 }
 
 // STUB: GOLDP 0x100047b0
-void GolFont0xa0::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
+void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
 	STUB(0x100047b0);
 
-	m_unk0x90 = new PurpleDune0x7c[m_unk0x04];
-	if (m_unk0x90 == NULL) {
+	m_textures = new PurpleDune0x7c[m_surfaceCount];
+	if (m_textures == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x9c = new DuskwindBananaRelic0x30[m_unk0x04];
-	if (m_unk0x9c == NULL) {
+	m_materials = new DuskwindBananaRelic0x30[m_surfaceCount];
+	if (m_materials == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 i = 0;
-	PurpleDune0x7c* texture = m_unk0x90;
-	DuskwindBananaRelic0x30* material = m_unk0x9c;
+	PurpleDune0x7c* texture = m_textures;
+	DuskwindBananaRelic0x30* material = m_materials;
 
-	for (; i < m_unk0x04 - 1; i++) {
-		if (m_unk0x2c & c_flagBit5) {
+	for (; i < m_surfaceCount - 1; i++) {
+		if (m_flags & c_flagBit5) {
 			texture->SetColorKey(m_colorKey);
 		}
 
-		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_unk0x08, m_unk0x0c);
+		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
 
 		DuskWindBananaRelicParams params;
 		params.m_unk0x00 = c_fontMaterialFlags;
@@ -167,15 +167,15 @@ void GolFont0xa0::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 		material++;
 	}
 
-	i = m_unk0x04 - 1;
-	texture = &m_unk0x90[i];
-	material = &m_unk0x9c[i];
+	i = m_surfaceCount - 1;
+	texture = &m_textures[i];
+	material = &m_materials[i];
 
-	if (m_unk0x2c & c_flagBit5) {
+	if (m_flags & c_flagBit5) {
 		texture->SetColorKey(m_colorKey);
 	}
 
-	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_unk0x10, m_unk0x14);
+	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
 	texture->SetName(m_name);
 
 	DuskWindBananaRelicParams params;
@@ -199,32 +199,32 @@ void GolFont0xa0::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p
 }
 
 // FUNCTION: GOLDP 0x10004b60
-PurpleDune0x7c* GolFont0xa0::VTable0x08(LegoU32 p_index)
+PurpleDune0x7c* GolFont::GetTexture(LegoU32 p_index)
 {
-	return &m_unk0x90[p_index];
+	return &m_textures[p_index];
 }
 
 // FUNCTION: GOLDP 0x10004b80
-void GolFont0xa0::VTable0x0c(GolRenderDevice* p_renderer, LegoU32)
+void GolFont::VTable0x0c(GolRenderDevice* p_renderer, LegoU32)
 {
 	m_renderer = static_cast<GolD3DRenderDevice*>(p_renderer);
 }
 
 // FUNCTION: GOLDP 0x10004b90
-void GolFont0xa0::VTable0x10(LegoU32 p_index)
+void GolFont::SelectSurface(LegoU32 p_index)
 {
 	LegoU32 index = p_index;
-	DuskwindBananaRelic0x30* material = &m_unk0x9c[index];
+	DuskwindBananaRelic0x30* material = &m_materials[index];
 	(m_renderer->*m_renderer->m_unk0xc876c)(material);
 
-	GoldDune0x38* texture = &m_unk0x90[index];
+	GoldDune0x38* texture = &m_textures[index];
 	m_renderer->FUN_1000ac00(texture);
-	m_unk0x94 = 1.0f / static_cast<LegoFloat>(m_unk0x90[index].GetWidth());
-	m_unk0x98 = 1.0f / static_cast<LegoFloat>(m_unk0x90[index].GetHeight());
+	m_inverseTextureWidth = 1.0f / static_cast<LegoFloat>(m_textures[index].GetWidth());
+	m_inverseTextureHeight = 1.0f / static_cast<LegoFloat>(m_textures[index].GetHeight());
 }
 
 // STUB: GOLDP 0x10004c20
-void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
+void GolFont::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 {
 	STUB(0x10004c20);
 
@@ -249,11 +249,13 @@ void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 	vertices[3].rhw = 1.0f;
 	vertices[3].sy = vertices[1].sy;
 
-	vertices[0].tu = static_cast<LegoFloat>(p_sourceRect->m_left) * m_unk0x94 + (m_unk0x94 * 0.25f);
-	vertices[0].tv = static_cast<LegoFloat>(p_sourceRect->m_top) * m_unk0x98;
+	vertices[0].tu =
+		static_cast<LegoFloat>(p_sourceRect->m_left) * m_inverseTextureWidth + (m_inverseTextureWidth * 0.25f);
+	vertices[0].tv = static_cast<LegoFloat>(p_sourceRect->m_top) * m_inverseTextureHeight;
 	vertices[1].tu = vertices[0].tu;
-	vertices[1].tv = static_cast<LegoFloat>(sourceBottom) * m_unk0x98;
-	vertices[2].tu = static_cast<LegoFloat>(p_sourceRect->m_right) * m_unk0x94 + (m_unk0x94 * 0.25f);
+	vertices[1].tv = static_cast<LegoFloat>(sourceBottom) * m_inverseTextureHeight;
+	vertices[2].tu =
+		static_cast<LegoFloat>(p_sourceRect->m_right) * m_inverseTextureWidth + (m_inverseTextureWidth * 0.25f);
 	vertices[2].tv = vertices[0].tv;
 	vertices[3].tu = vertices[2].tu;
 	vertices[3].tv = vertices[1].tv;
@@ -274,21 +276,21 @@ void GolFont0xa0::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 }
 
 // FUNCTION: GOLDP 0x10004d70
-void GolFont0xa0::FUN_10004d70(
+void GolFont::CopyGlyphsToTextures(
 	GolD3DRenderDevice* p_renderer,
 	const GolSurfaceFormat* p_sourceFormat,
 	GolSurfaceFormat* p_textureFormat
 )
 {
-	GolFont0xa0* font = this;
+	GolFont* font = this;
 	LegoU32 currentSurface = 0;
-	PurpleDune0x7c* texture = font->VTable0x08(currentSurface);
+	PurpleDune0x7c* texture = font->GetTexture(currentSurface);
 
 	ColorRGBA* paletteEntries;
 	LegoU32 paletteSize;
 	if (p_sourceFormat->m_paletteMask) {
-		paletteEntries = font->m_unk0x40.GetPaletteEntries();
-		paletteSize = font->m_unk0x40.GetPaletteSize();
+		paletteEntries = font->m_sourceImage.GetPaletteEntries();
+		paletteSize = font->m_sourceImage.GetPaletteSize();
 	}
 	else {
 		paletteEntries = NULL;
@@ -296,7 +298,7 @@ void GolFont0xa0::FUN_10004d70(
 	}
 
 	ColorRGBA* colorKey;
-	if (font->m_unk0x2c & c_flagBit5) {
+	if (font->m_flags & c_flagBit5) {
 		if (p_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
 			g_unk0x10062568.SetUnk0x0a0(g_unk0x10057668);
 		}
@@ -311,24 +313,24 @@ void GolFont0xa0::FUN_10004d70(
 
 	LegoU8* sourcePixels;
 	LegoU32 sourcePitch;
-	font->m_unk0x40.LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
+	font->m_sourceImage.LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
 
 	LegoU8* destPixels;
 	LegoU32 destPitch;
 	texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
 
-	for (LegoU32 i = 0; i < font->m_unk0x24; i++) {
-		if (font->m_unk0x28[i].m_unk0x04 != currentSurface) {
+	for (LegoU32 i = 0; i < font->m_glyphCount; i++) {
+		if (font->m_glyphs[i].m_surfaceIndex != currentSurface) {
 			texture->UnlockPixels();
-			currentSurface = font->m_unk0x28[i].m_unk0x04;
-			texture = font->VTable0x08(currentSurface);
+			currentSurface = font->m_glyphs[i].m_surfaceIndex;
+			texture = font->GetTexture(currentSurface);
 			texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
 		}
 
 		g_unk0x10062568.FUN_100226c0(
 			*p_sourceFormat,
-			font->m_unk0x28[i].m_width,
-			font->m_unk0x1c,
+			font->m_glyphs[i].m_width,
+			font->m_fontHeight,
 			sourcePitch,
 			paletteEntries,
 			paletteSize
@@ -336,17 +338,17 @@ void GolFont0xa0::FUN_10004d70(
 
 		LegoU8* source =
 			sourcePixels +
-			((static_cast<LegoU32>(p_sourceFormat->m_bitsPerPixel) * font->m_unk0x28[i].m_unk0x02 + 7) >> 3);
+			((static_cast<LegoU32>(p_sourceFormat->m_bitsPerPixel) * font->m_glyphs[i].m_sourceX + 7) >> 3);
 		LegoU8* dest =
-			destPixels + destPitch * font->m_unk0x28[i].m_unk0x08 +
-			((static_cast<LegoU32>(p_textureFormat->m_bitsPerPixel) * font->m_unk0x28[i].m_unk0x06 + 7) >> 3);
+			destPixels + destPitch * font->m_glyphs[i].m_textureY +
+			((static_cast<LegoU32>(p_textureFormat->m_bitsPerPixel) * font->m_glyphs[i].m_textureX + 7) >> 3);
 
 		GolPaletteBase* palette = p_textureFormat->m_paletteMask ? texture->GetPalette() : NULL;
 		g_unk0x10062568.FUN_10022730(
 			source,
 			dest,
-			font->m_unk0x28[i].m_width,
-			font->m_unk0x1c,
+			font->m_glyphs[i].m_width,
+			font->m_fontHeight,
 			destPitch,
 			*p_textureFormat,
 			palette,
@@ -356,11 +358,11 @@ void GolFont0xa0::FUN_10004d70(
 	}
 
 	texture->UnlockPixels();
-	font->m_unk0x40.UnlockPixels();
+	font->m_sourceImage.UnlockPixels();
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
-void GolFont0xa0::VTable0x18()
+void GolFont::VTable0x18()
 {
 	// empty
 }

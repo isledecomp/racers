@@ -12,12 +12,12 @@ class Particle : public GolWorldEntity {
 public:
 	Particle();
 
-	void FUN_00414600(LegoFloat p_deltaT, GolVec3* p_acceleration);
+	void Integrate(LegoFloat p_deltaT, GolVec3* p_acceleration);
 
-	LegoU32 m_unk0x28;                  // 0x28
-	LegoU32 m_unk0x2c;                  // 0x2c
-	DuskwindBananaRelic0x24* m_unk0x30; // 0x30
-	Particle* m_next;                   // 0x34
+	LegoU32 m_ageMs;                     // 0x28
+	LegoU32 m_lifetimeMs;                // 0x2c
+	DuskwindBananaRelic0x24* m_material; // 0x30
+	Particle* m_next;                    // 0x34
 };
 
 #endif // PARTICLE_H

@@ -18,8 +18,8 @@ class AmethystBreeze0x104;
 class GolModelEntity;
 class GolWorldEntity;
 class GolSurfaceFormat;
-class GolFont0xa0;
-class GolFontBase0x40;
+class GolFont;
+class GolFontBase;
 class GolString;
 class GolCommonDrawState;
 class GolNameTable;
@@ -117,7 +117,7 @@ public:
 	virtual void VTable0x60();                                              // vtable+0x60
 	virtual LegoS32 VTable0x64(
 		GolString*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -127,7 +127,7 @@ public:
 	) = 0; // vtable+0x64
 	virtual void VTable0x68(
 		const LegoChar*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -137,7 +137,7 @@ public:
 	) = 0; // vtable+0x68
 	virtual LegoS32 VTable0x6c(
 		GolString*,
-		GolFontBase0x40*,
+		GolFontBase*,
 		LegoS32,
 		LegoS32,
 		LegoFloat,
@@ -233,7 +233,7 @@ public:
 	DuskwindBananaRelic0x24* FindMaterialByName(const LegoChar* p_name);
 
 #ifdef BUILDING_LEGORACERS
-	GolFont0xa0* FindFontByName(const LegoChar* p_name);
+	GolFont* FindFontByName(const LegoChar* p_name);
 	UtopianPan0xa4* FindImageByName(const LegoChar* p_name);
 #endif
 

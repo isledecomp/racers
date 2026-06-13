@@ -7,7 +7,7 @@
 #include "menu/widgets/menuicon.h"
 #include "render/rectangle.h"
 
-class GolFontBase0x40;
+class GolFontBase;
 class GolStringTable;
 
 // VTABLE: LEGORACERS 0x004b285c
@@ -33,7 +33,7 @@ public:
 		GolStringTable* m_unk0x84;        // 0x84
 		undefined2 m_unk0x88;             // 0x88
 		undefined m_unk0x8a[0x8c - 0x8a]; // 0x8a
-		GolFontBase0x40* m_unk0x8c;       // 0x8c
+		GolFontBase* m_unk0x8c;           // 0x8c
 		GolString* m_unk0x90;             // 0x90
 		undefined2 m_unk0x94;             // 0x94
 		SoundIdSet m_soundIds;            // 0x96
@@ -71,7 +71,7 @@ protected:
 	undefined4 m_unk0x1f8;                    // 0x1f8
 	GolString m_charset;                      // 0x1fc
 	GolString m_text;                         // 0x208
-	GolFontBase0x40* m_font;                  // 0x214
+	GolFontBase* m_font;                      // 0x214
 	Rect m_unk0x218;                          // 0x218
 	undefined m_unk0x228[0x238 - 0x228];      // 0x228
 	undefined2 m_maxLength;                   // 0x238

@@ -3,8 +3,8 @@
 #include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
-#include "font/golfont0xa0.h"
-#include "font/golfontbase0x40.h"
+#include "font/golfont.h"
+#include "font/golfontbase.h"
 #include "font/golfonttable.h"
 #include "golerror.h"
 #include "golscenenode.h"
@@ -125,9 +125,9 @@ WhiteBaffoon0x50* GolDPExport::VTable0x28()
 }
 
 // FUNCTION: GOLDP 0x10015420
-GolFontBase0x40* GolDPExport::CreateFont()
+GolFontBase* GolDPExport::CreateFont()
 {
-	GolFont0xa0* font = new GolFont0xa0;
+	GolFont* font = new GolFont;
 	if (font == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -232,7 +232,7 @@ void GolDPExport::VTable0x5c(WhiteBaffoon0x50* p_obj)
 }
 
 // FUNCTION: GOLDP 0x10015680
-void GolDPExport::DestroyFont(GolFontBase0x40* p_obj)
+void GolDPExport::DestroyFont(GolFontBase* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

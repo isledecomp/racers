@@ -1,5 +1,6 @@
 #include "app/win32golapp.h"
 
+#include "app/golappeventhandler.h"
 #include "core/gol.h"
 #include "golerror.h"
 #include "golfsutil.h"
@@ -7,7 +8,6 @@
 #include "input/directinputmanager.h"
 #include "input/mousedevice.h"
 #include "render/golcommondrawstate.h"
-#include "util/cactusinterface0x4.h"
 
 #include <mmsystem.h>
 #include <stdio.h>
@@ -427,7 +427,7 @@ void Win32GolApp::UpdateMousePosition()
 }
 
 // FUNCTION: LEGORACERS 0x00416ef0
-LegoS32 Win32GolApp::Tick(CactusInterface0x4* p_eventHandler)
+LegoS32 Win32GolApp::Tick(GolAppEventHandler* p_eventHandler)
 {
 	m_eventHandler = p_eventHandler;
 	UpdateMousePosition();

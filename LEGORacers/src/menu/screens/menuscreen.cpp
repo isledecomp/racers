@@ -147,7 +147,7 @@ void MenuScreen::Reset()
 	m_soundGroupBinding = NULL;
 	m_inputManager = NULL;
 	m_unk0x284 = NULL;
-	m_cursorHelper = NULL;
+	m_cursor = NULL;
 	m_menuStyles = NULL;
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
@@ -165,7 +165,7 @@ LegoBool32 MenuScreen::Initialize(MenuScreenCreateParams* p_createParams)
 	m_inputManager = p_createParams->m_inputManager;
 	m_unk0x288 = p_createParams->m_unk0x2c;
 	m_unk0x284 = p_createParams->m_unk0x20;
-	m_cursorHelper = p_createParams->m_cursorHelper;
+	m_cursor = p_createParams->m_cursor;
 	m_unk0x28c = p_createParams->m_menuId;
 	m_menuStyles = p_createParams->m_menuStyles;
 	m_inputEvents = p_createParams->m_inputEvents;
@@ -262,7 +262,7 @@ LegoBool32 MenuScreen::FUN_0046b6e0(MenuScreenCreateParams* p_createParams)
 
 	if (!GolStream::FindFile(fileName)) {
 		m_fontTable = m_golExport->CreateFontTable();
-		m_fontTable->VTable0x20(m_renderer, fileName, p_createParams->m_unk0x2c);
+		m_fontTable->LoadFontDefinitions(m_renderer, fileName, p_createParams->m_unk0x2c);
 	}
 
 	return TRUE;

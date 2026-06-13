@@ -41,7 +41,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		return FALSE;
 	}
 
-	m_cursorHelper->SetCursorEnabled(FALSE);
+	m_cursor->SetCursorEnabled(FALSE);
 	return TRUE;
 }
 
@@ -123,7 +123,7 @@ LegoBool32 SaveLoadScreen::Destroy()
 		return TRUE;
 	}
 
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 	m_unk0x368 = 0;
 	return MenuGameScreen::Destroy();
 }

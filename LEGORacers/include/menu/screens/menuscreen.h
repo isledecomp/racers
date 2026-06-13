@@ -3,13 +3,13 @@
 
 #include "compat.h"
 #include "decomp.h"
+#include "menu/menuinputdispatcher.h"
 #include "menu/screens/menuscreeninterface.h"
 #include "menu/style/menuinputbindingtable.h"
 #include "menu/style/menustyletable.h"
 #include "menu/widgets/menuicon.h"
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menuselector.h"
-#include "text/coppercrest0x40.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
@@ -154,24 +154,24 @@ public:
 	// MenuScreen::`scalar deleting destructor'
 
 protected:
-	LegoBool32 m_initialized;                    // 0x004
-	MenuStyleTable m_unk0x08;                    // 0x008
-	SharedMenuStyleTable* m_menuStyles;          // 0x054
-	MenuInputBindingTable m_unk0x58;             // 0x058
-	GolExport* m_golExport;                      // 0x0b4
-	GolD3DRenderDevice* m_renderer;              // 0x0b8
-	AwakeKite0x20* m_unk0xbc;                    // 0x0bc
-	GolFontTable* m_fontTable;                   // 0x0c0
-	CopperCrest0x40::Helper0x44* m_cursorHelper; // 0x0c4
-	InputEventQueue* m_inputEvents;              // 0x0c8
-	InputManager* m_inputManager;                // 0x0cc
-	GolStringTable* m_menuNameStrings;           // 0x0d0
-	GolStringTable* m_menuTextStrings;           // 0x0d4
-	MenuIcon m_unk0xd8;                          // 0x0d8
-	SoundGroupBinding* m_soundGroupBinding;      // 0x280
-	MenuDialog* m_unk0x284;                      // 0x284
-	undefined4 m_unk0x288;                       // 0x288
-	undefined2 m_unk0x28c;                       // 0x28c
+	LegoBool32 m_initialized;               // 0x004
+	MenuStyleTable m_unk0x08;               // 0x008
+	SharedMenuStyleTable* m_menuStyles;     // 0x054
+	MenuInputBindingTable m_unk0x58;        // 0x058
+	GolExport* m_golExport;                 // 0x0b4
+	GolD3DRenderDevice* m_renderer;         // 0x0b8
+	AwakeKite0x20* m_unk0xbc;               // 0x0bc
+	GolFontTable* m_fontTable;              // 0x0c0
+	MenuInputDispatcher::Cursor* m_cursor;  // 0x0c4
+	InputEventQueue* m_inputEvents;         // 0x0c8
+	InputManager* m_inputManager;           // 0x0cc
+	GolStringTable* m_menuNameStrings;      // 0x0d0
+	GolStringTable* m_menuTextStrings;      // 0x0d4
+	MenuIcon m_unk0xd8;                     // 0x0d8
+	SoundGroupBinding* m_soundGroupBinding; // 0x280
+	MenuDialog* m_unk0x284;                 // 0x284
+	undefined4 m_unk0x288;                  // 0x288
+	undefined2 m_unk0x28c;                  // 0x28c
 };
 
 #endif // MENUSCREEN_H

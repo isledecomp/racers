@@ -127,7 +127,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
   GolDP/src/bounds/golboundingshape.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
-  GolDP/src/font/golfontbase0x40.cpp
+  GolDP/src/font/golfontbase.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/surface/silverdune0x30.cpp
   GolDP/src/image/utopianpan0xa4.cpp
@@ -136,7 +136,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/render/gold3drendersurface.cpp
   GolDP/src/surface/falcondunebag0x10.cpp
   GolDP/src/surface/goldepthbuffer.cpp
-  GolDP/src/font/golfont0xa0.cpp
+  GolDP/src/font/golfont.cpp
   GolDP/src/surface/bronzedune0x4c.cpp
   GolDP/src/surface/purpledune0x7c.cpp
   GolDP/src/material/purpleribbon0x24.cpp
@@ -194,7 +194,7 @@ add_library(goldp SHARED
   GolDP/src/material/golmateriallibrary.cpp
   GolDP/src/material/amberhaze0x20.cpp
   GolDP/src/font/golfontlibrary.cpp
-  GolDP/src/font/golfontbase0x40.cpp
+  GolDP/src/font/golfontbase.cpp
   GolDP/src/material/goltexturelist.cpp
   GolDP/src/material/purpleribbon0x24.cpp
   GolDP/src/surface/purpledune0x7c.cpp
@@ -204,7 +204,7 @@ add_library(goldp SHARED
   GolDP/src/material/awakekite0x20.cpp
   GolDP/src/material/golimagelist.cpp
   GolDP/src/font/golfonttable.cpp
-  GolDP/src/font/golfont0xa0.cpp
+  GolDP/src/font/golfont.cpp
   GolDP/src/surface/moltenquillphantom0x34.cpp
   GolDP/src/surface/golddune0x38.cpp
   GolDP/src/surface/bronzedune0x4c.cpp
@@ -259,8 +259,8 @@ set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 add_executable(legoracers WIN32
   LEGORacers/src/app/main.cpp
   LEGORacers/src/app/gamemain.cpp
-  LEGORacers/src/util/cactusinterface0x4.cpp
-  LEGORacers/src/text/golfontbase0x40.cpp
+  LEGORacers/src/app/golappeventhandler.cpp
+  LEGORacers/src/gol/golfontbase.cpp
   LEGORacers/src/app/legoracers.cpp
   LEGORacers/src/app/win32golapp.cpp
   LEGORacers/src/audio/musicinstance.cpp
@@ -307,7 +307,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/circuitstandings.cpp
   LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
-  LEGORacers/src/text/golrenderdevice.cpp
+  LEGORacers/src/gol/golrenderdevice.cpp
   LEGORacers/src/model/golworlddatabase.cpp
   LEGORacers/src/menu/style/menuresourcetable.cpp
   LEGORacers/src/menu/style/menuinputbindingtable.cpp
@@ -343,7 +343,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/racerunlockstate.cpp
   LEGORacers/src/menu/screens/racermodelscreenbase.cpp
   LEGORacers/src/menu/screens/racerpickscreenbase.cpp
-  LEGORacers/src/util/golcamerabase.cpp
+  LEGORacers/src/gol/golcamerabase.cpp
   LEGORacers/src/menu/runtime/cutscenedefinition.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp
   LEGORacers/src/menu/screens/optionsscreenbase.cpp
@@ -409,7 +409,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/particlesystem.cpp
   LEGORacers/src/util/particle.cpp
   LEGORacers/src/menu/menuscreenfactory.cpp
-  LEGORacers/src/text/coppercrest0x40.cpp
+  LEGORacers/src/menu/menuinputdispatcher.cpp
   LEGORacers/src/menu/style/sharedmenustyletable.cpp
   LEGORacers/src/video/videoplayer.cpp
   LEGORacers/src/app/guids.cpp

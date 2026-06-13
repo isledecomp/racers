@@ -147,7 +147,7 @@ LegoFloat g_arccosTable[1024] = {
 DECOMP_SIZE_ASSERT(GolRenderDevice::TexturedVertex, 0x18)
 DECOMP_SIZE_ASSERT(GolRenderDevice::MaterialColor, 0x04)
 DECOMP_SIZE_ASSERT(GolRenderDevice::Light, 0x10)
-DECOMP_SIZE_ASSERT(GolViewFrustum::Plane0x10, 0x10)
+DECOMP_SIZE_ASSERT(GolViewFrustum::Plane, 0x10)
 DECOMP_SIZE_ASSERT(GolViewFrustum, 0xcc)
 DECOMP_SIZE_ASSERT(GolRenderDevice, 0x140)
 
@@ -939,11 +939,11 @@ void GolRenderDevice::VTable0x9c(GolModelEntity*, AmethystBreeze0x104*, undefine
 }
 
 // FUNCTION: GOLDP 0x1002bc20
-LegoS32 GolViewFrustum::FUN_1002bc20(const GolVec3& p_center, LegoFloat p_radius) const
+LegoS32 GolViewFrustum::ClassifySphere(const GolVec3& p_center, LegoFloat p_radius) const
 {
 	LegoS32 insideCount = 0;
-	const Plane0x10* plane = m_planes;
-	const Plane0x10* end = m_planes + sizeOfArray(m_planes);
+	const Plane* plane = m_planes;
+	const Plane* end = m_planes + sizeOfArray(m_planes);
 
 	for (; plane < end; plane++) {
 		LegoFloat distance = plane->m_normal.m_z * p_center.m_z;

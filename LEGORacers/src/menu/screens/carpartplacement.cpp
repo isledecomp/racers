@@ -406,7 +406,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004783d0()
 	}
 
 	GolVec3 cameraPosition;
-	m_unk0x14->GetUnk0x64()->GetUnk0x04()->GetPosition(&cameraPosition);
+	m_unk0x14->GetUnk0x64()->GetTransform()->GetPosition(&cameraPosition);
 
 	LegoU32 closestIndex = 0;
 	GolVec3 position;

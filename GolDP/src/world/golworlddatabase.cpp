@@ -1681,21 +1681,21 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 {
 	WdbCamera0x4c* camera = &m_unk0x80[p_cameraIndex];
 
-	p_lens->m_unk0x10 = camera->GetUnk0x40();
+	p_lens->m_nearClip = camera->GetUnk0x40();
 	p_lens->m_flags |= 2;
-	p_lens->m_unk0x14 = camera->GetUnk0x44();
+	p_lens->m_farClip = camera->GetUnk0x44();
 	p_lens->m_flags |= 2;
-	p_lens->m_unk0x08 = camera->GetUnk0x48();
+	p_lens->m_fov = camera->GetUnk0x48();
 	p_lens->m_flags |= 2;
 
-	p_lens->m_unk0x04->SetPosition(&camera->m_unk0x1c);
+	p_lens->m_transform->SetPosition(&camera->m_unk0x1c);
 	p_lens->m_flags |= 1;
-	p_lens->m_unk0x04->VTable0x24(&camera->m_unk0x28, &camera->m_unk0x34);
+	p_lens->m_transform->VTable0x24(&camera->m_unk0x28, &camera->m_unk0x34);
 	p_lens->m_flags |= 1;
 
 	if (camera->m_unk0x08 >= 0) {
 		GolAnimatedEntity* model = &m_unk0xa0[camera->m_unk0x08];
-		p_lens->FUN_1001cb30(model, camera->m_unk0x0c);
+		p_lens->SetTrackedEntity(model, camera->m_unk0x0c);
 
 		if (camera->m_unk0x14[0] != '\0') {
 			camera->m_unk0x10 = model->GetModelPart()->GetPartIndex(camera->m_unk0x14);

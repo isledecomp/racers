@@ -116,7 +116,7 @@ void SplashCinematicScreen::VTable0x4c()
 void SplashCinematicScreen::VTable0x84()
 {
 	m_context->m_menuStack.Pop();
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 
 	switch (m_menuId) {
 	case c_menuN64Intro:

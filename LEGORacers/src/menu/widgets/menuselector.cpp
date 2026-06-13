@@ -198,7 +198,7 @@ undefined4 MenuSelectorBase::VTable0x70(undefined4 p_event, undefined4 p_x, unde
 }
 
 // FUNCTION: LEGORACERS 0x00467450
-LegoBool32 MenuSelectorBase::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuSelectorBase::VTable0x20(MenuInputDispatcher::Cursor* p_cursor, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -209,7 +209,7 @@ LegoBool32 MenuSelectorBase::VTable0x20(CopperCrest0x40::Helper0x44* p_param1, u
 
 	ScreenToLocal(x, y);
 
-	if (HitTest(x, y) && VTable0x2c(p_param1, x, y)) {
+	if (HitTest(x, y) && VTable0x2c(p_cursor, x, y)) {
 		return TRUE;
 	}
 

@@ -83,7 +83,7 @@ void GolWorldEntity::VTable0x14(const GolViewFrustum& p_view, ViewResult* p_resu
 	}
 
 	p_result->m_lodIndex = 0;
-	p_result->m_visibility = p_view.FUN_1002bc20(m_center, m_radius);
+	p_result->m_visibility = p_view.ClassifySphere(m_center, m_radius);
 }
 
 // FUNCTION: GOLDP 0x10028610

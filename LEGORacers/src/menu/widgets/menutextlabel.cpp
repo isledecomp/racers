@@ -1,6 +1,6 @@
 #include "menu/widgets/menutextlabel.h"
 
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golstringtable.h"
 
 DECOMP_SIZE_ASSERT(MenuTextLabel, 0x78)
@@ -75,7 +75,7 @@ void MenuTextLabel::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 		m_unk0x34.m_right = m_unk0x34.m_left;
 
 		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
-			m_unk0x60->FUN_00408be0(&m_unk0x64, &p_unk0x08, &height);
+			m_unk0x60->MeasureString(&m_unk0x64, &p_unk0x08, &height);
 
 			LegoU32 right = m_unk0x34.m_left + p_unk0x08;
 			LegoU32 currentRight = m_unk0x34.m_right;

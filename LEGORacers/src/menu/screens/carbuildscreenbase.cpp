@@ -1,7 +1,7 @@
 #include "menu/screens/carbuildscreenbase.h"
 
 #include "decomp.h"
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "render/gold3drenderdevice.h"
 
 #include <math.h>
@@ -231,7 +231,7 @@ LegoBool32 CarBuildScreenBase::VTable0x7c(Rect* p_clipRect, Rect* p_sourceRect)
 
 		if (!m_unk0x398) {
 			LegoS32 fontHeight;
-			m_unk0x3a4->FUN_00408be0(m_unk0x3a0, &width, &fontHeight);
+			m_unk0x3a4->MeasureString(m_unk0x3a0, &width, &fontHeight);
 			m_unk0x39c = 1;
 
 			m_unk0x398 = static_cast<LegoS32>(

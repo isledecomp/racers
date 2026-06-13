@@ -1,6 +1,6 @@
 #include "font/golfontlibrary.h"
 
-#include "font/golfontbase0x40.h"
+#include "font/golfontbase.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golhashtable.h"
@@ -21,7 +21,7 @@ GolFontLibrary::GolFontLibrary()
 {
 	m_renderer = NULL;
 	m_numItems = 0;
-	m_unk0x24 = 0;
+	m_hashTableCheckpoint = 0;
 }
 
 // FUNCTION: GOLDP 0x1001d870
@@ -40,7 +40,11 @@ GolFontLibrary::~GolFontLibrary()
 }
 
 // FUNCTION: GOLDP 0x1001d8f0
-void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
+void GolFontLibrary::LoadFontDefinitions(
+	GolD3DRenderDevice* p_renderer,
+	const LegoChar* p_fileName,
+	LegoBool32 p_binary
+)
 {
 	if (m_numItems > 0) {
 		Clear();
@@ -79,13 +83,13 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 	}
 
 	GolNameTable::Allocate(m_numItems);
-	m_unk0x24 = g_hashTable ? (undefined4) g_hashTable->GetCurrentEntry() : 0;
+	m_hashTableCheckpoint = g_hashTable ? (undefined4) g_hashTable->GetCurrentEntry() : 0;
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 
-		GolFontBase0x40* font = GetItem(i);
+		GolFontBase* font = GetItem(i);
 
 		FourBytes name[2];
 		::strncpy(&name[0].m_bytes[0], parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
@@ -94,13 +98,13 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		parser->ReadLeftCurly();
 
 		FontParseStyle style;
-		style.m_foregroundColor.m_alp = 0xff;
+		style.m_colorKey.m_alp = 0xff;
 		style.m_textColor.m_alp = 0xff;
 
 		style.m_flags = 0;
-		style.m_foregroundColor.m_red = 0;
-		style.m_foregroundColor.m_grn = 0;
-		style.m_foregroundColor.m_blu = 0;
+		style.m_colorKey.m_red = 0;
+		style.m_colorKey.m_grn = 0;
+		style.m_colorKey.m_blu = 0;
 		style.m_textColor.m_red = 0xff;
 		style.m_textColor.m_grn = 0xff;
 		style.m_textColor.m_blu = 0xff;
@@ -109,30 +113,30 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				style.m_flags = (style.m_flags & GolFontBase0x40::c_flagsWithoutBit4) | GolFontBase0x40::c_flagBit3;
+				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBit4) | GolFontBase::c_flagBit3;
 				break;
 			case GolFileParser::e_unknown0x29:
-				style.m_flags = (style.m_flags & GolFontBase0x40::c_flagsWithoutBit3) | GolFontBase0x40::c_flagBit4;
+				style.m_flags = (style.m_flags & GolFontBase::c_flagsWithoutBit3) | GolFontBase::c_flagBit4;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				style.m_flags |= GolFontBase0x40::c_flagBit5;
-				style.m_foregroundColor.m_red = parser->ReadInteger();
-				style.m_foregroundColor.m_grn = parser->ReadInteger();
-				style.m_foregroundColor.m_blu = parser->ReadInteger();
+				style.m_flags |= GolFontBase::c_flagBit5;
+				style.m_colorKey.m_red = parser->ReadInteger();
+				style.m_colorKey.m_grn = parser->ReadInteger();
+				style.m_colorKey.m_blu = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2c:
-				font->m_unk0x20 = parser->ReadInteger();
+				font->m_charSpacing = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2b: {
 				LegoU16 count;
 				undefined2 chars[100];
 				ReadFontCharList(parser, chars, &count);
-				m_unk0x20[i] = count;
-				VTable0x10(i);
-				::memcpy(m_unk0x1c[i], chars, 2 * count);
-				m_unk0x1c[i][count] = 0;
+				m_charCounts[i] = count;
+				AllocateDefinitionBuffer(i);
+				::memcpy(m_charCodes[i], chars, 2 * count);
+				m_charCodes[i][count] = 0;
 
-				if (!m_unk0x18[i].CopyFromBufSelection(m_unk0x1c[i], m_unk0x20[i] + 1)) {
+				if (!m_charStrings[i].CopyFromBufSelection(m_charCodes[i], m_charCounts[i] + 1)) {
 					GOL_FATALERROR(c_golErrorGeneral);
 				}
 				break;
@@ -154,11 +158,11 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		LegoU16 flags = (LegoU16) style.m_flags;
 		font->m_nameParts[1] = name[1];
 		font->m_colorPacked = style.m_textColorPacked;
-		font->m_unk0x2c = flags;
+		font->m_flags = flags;
 
-		if (flags & GolFontBase0x40::c_flagBit5) {
-			font->m_colorKeyPacked = style.m_foregroundColorPacked;
-			font->m_unk0x2c = flags | GolFontBase0x40::c_flagBit11;
+		if (flags & GolFontBase::c_flagBit5) {
+			font->m_colorKeyPacked = style.m_colorKeyPacked;
+			font->m_flags = flags | GolFontBase::c_flagBit11;
 		}
 	}
 
@@ -167,12 +171,12 @@ void GolFontLibrary::VTable0x20(GolD3DRenderDevice* p_renderer, const LegoChar* 
 	delete parser;
 
 	if (g_hashTable) {
-		g_hashTable->SetCurrentEntry((GolHashTable::Entry*) m_unk0x24);
+		g_hashTable->SetCurrentEntry((GolHashTable::Entry*) m_hashTableCheckpoint);
 	}
 
 	for (LegoU32 j = 0; j < m_numItems; j++) {
-		GolFontBase0x40* font = GetItem(j);
-		font->FUN_1001df80(m_renderer, &m_unk0x18[j], m_unk0x20[j]);
+		GolFontBase* font = GetItem(j);
+		font->CreateGlyphs(m_renderer, &m_charStrings[j], m_charCounts[j]);
 	}
 }
 

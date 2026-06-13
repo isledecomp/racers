@@ -43,6 +43,6 @@ void GolWorldDatabase::FUN_00416090(LegoS32 p_elapsedMs)
 	}
 
 	for (i = 0; i < m_unk0x7c; i++) {
-		VTable0x50(i)->FUN_004047b0();
+		VTable0x50(i)->UpdateFromTrackedEntity();
 	}
 }

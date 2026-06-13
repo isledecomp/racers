@@ -171,7 +171,7 @@ void GolModelEntity::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_re
 	}
 
 	FUN_100286d0(&position);
-	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
+	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10027e70

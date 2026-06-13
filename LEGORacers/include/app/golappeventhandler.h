@@ -1,12 +1,12 @@
-#ifndef CACTUSINTERFACE0x4_H
-#define CACTUSINTERFACE0x4_H
+#ifndef GOLAPPEVENTHANDLER_H
+#define GOLAPPEVENTHANDLER_H
 
 #include "decomp.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004affa4
 // SIZE 0x4
-class CactusInterface0x4 {
+class GolAppEventHandler {
 public:
 	virtual void VTable0x00();                       // vtable+0x00
 	virtual void VTable0x04();                       // vtable+0x04
@@ -22,4 +22,4 @@ public:
 	virtual void VTable0x2c();                       // vtable+0x2c
 };
 
-#endif // CACTUSINTERFACE0x4_H
+#endif // GOLAPPEVENTHANDLER_H

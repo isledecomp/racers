@@ -14,7 +14,7 @@
 #include "types.h"
 
 class GolD3DRenderDevice;
-class GolFont0xa0;
+class GolFont;
 class GolStringTable;
 class UtopianPan0xa4;
 
@@ -44,7 +44,7 @@ public:
 	class TextLabelBinding : public MenuWidget::CreateParams {
 	public:
 		GolStringTable* m_unk0x38; // 0x38
-		GolFont0xa0* m_unk0x3c;    // 0x3c
+		GolFont* m_unk0x3c;        // 0x3c
 		undefined2 m_unk0x40;      // 0x40
 		undefined m_unk0x42[2];    // 0x42
 		undefined4 m_unk0x44;      // 0x44
@@ -96,7 +96,7 @@ public:
 	class TextFieldBinding : public IconBinding {
 	public:
 		undefined m_unk0x84[0x8c - 0x84]; // 0x84
-		GolFont0xa0* m_unk0x8c;           // 0x8c
+		GolFont* m_unk0x8c;               // 0x8c
 		undefined m_unk0x90[0x94 - 0x90]; // 0x90
 		undefined2 m_unk0x94;             // 0x94
 		undefined2 m_unk0x96[4];          // 0x96
@@ -125,8 +125,8 @@ public:
 			UtopianPan0xa4* m_unk0x08; // 0x08
 		};
 
-		undefined4 m_unk0x84;      // 0x84
-		GolFont0xa0* m_unk0x88[6]; // 0x88
+		undefined4 m_unk0x84;  // 0x84
+		GolFont* m_unk0x88[6]; // 0x88
 		union {
 			ImageTriplet m_unk0xa0[6];            // 0xa0
 			UtopianPan0xa4* m_utopianunk0xa0[18]; // 0xa0

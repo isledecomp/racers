@@ -332,8 +332,8 @@ MenuWidget* OptionsRow::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 	}
 
 	if (!(m_unk0x1ac.GetStateFlags() & c_flagBit2) && !(m_unk0x3c8.GetStateFlags() & c_flagBit2)) {
-		CopperCrest0x40::Helper0x44* helper = static_cast<CopperCrest0x40::Helper0x44*>(p_item);
-		helper->m_bounds = m_unk0x6d0;
+		MenuInputDispatcher::Cursor* cursor = static_cast<MenuInputDispatcher::Cursor*>(p_item);
+		cursor->m_bounds = m_unk0x6d0;
 
 		Rect rect = *m_unk0x5ec.GetRect();
 		LegoS32 width = rect.m_right - rect.m_left;

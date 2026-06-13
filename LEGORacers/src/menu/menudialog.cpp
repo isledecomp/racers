@@ -1,8 +1,8 @@
 #include "menu/menudialog.h"
 
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golerror.h"
-#include "text/coppercrest0x40.h"
+#include "menu/menuinputdispatcher.h"
 
 DECOMP_SIZE_ASSERT(MenuDialog, 0xa4)
 DECOMP_SIZE_ASSERT(MenuDialog::TextLine, 0x78)
@@ -26,8 +26,8 @@ MenuDialog::~MenuDialog()
 LegoS32 MenuDialog::Reset()
 {
 	m_entries = NULL;
-	m_unk0x90 = NULL;
-	m_unk0x94 = NULL;
+	m_inputDispatcher = NULL;
+	m_previousScreen = NULL;
 	m_count = 0;
 	m_unk0x9c = 0;
 	m_unk0xa0 = 0;
@@ -53,13 +53,13 @@ LegoS32 MenuDialog::FUN_00468ab0()
 LegoBool32 MenuDialog::FUN_00468af0(
 	MenuScreenCreateParams* p_createParams,
 	LegoS32 p_count,
-	CopperCrest0x40* p_copperCrest
+	MenuInputDispatcher* p_inputDispatcher
 )
 {
 	FUN_00468ab0();
 
 	m_createParams = *p_createParams;
-	m_unk0x90 = p_copperCrest;
+	m_inputDispatcher = p_inputDispatcher;
 	m_count = p_count;
 	m_entries = new DialogScreen[p_count];
 
@@ -84,7 +84,7 @@ MenuDialog::DialogScreen* MenuDialog::FUN_00468c50(
 )
 {
 	if (!m_unk0x9c) {
-		m_unk0x94 = m_unk0x90->GetUnk0x54();
+		m_previousScreen = m_inputDispatcher->GetActiveScreen();
 	}
 
 	DialogScreen::CreateParams createParams;
@@ -97,7 +97,7 @@ MenuDialog::DialogScreen* MenuDialog::FUN_00468c50(
 
 	DialogScreen* entry = &m_entries[m_unk0x9c];
 	entry->FUN_00468300(&createParams);
-	m_unk0x90->SetUnk0x54(entry);
+	m_inputDispatcher->SetActiveScreen(entry);
 	m_unk0x9c++;
 
 	return entry;
@@ -116,10 +116,10 @@ void MenuDialog::FUN_00468d20()
 	m_entries[m_unk0x9c].Destroy();
 
 	if (m_unk0x9c > 0) {
-		m_unk0x90->SetUnk0x54(&m_entries[m_unk0x9c]);
+		m_inputDispatcher->SetActiveScreen(&m_entries[m_unk0x9c]);
 	}
 	else {
-		m_unk0x90->SetUnk0x54(m_unk0x94);
+		m_inputDispatcher->SetActiveScreen(m_previousScreen);
 	}
 }
 
@@ -138,15 +138,15 @@ void MenuDialog::FUN_00468da0(LegoU32 p_elapsedMs)
 void MenuDialog::FUN_00468e20()
 {
 	if (m_unk0x9c) {
-		m_unk0x90->SetUnk0x54(m_unk0x94);
-		m_unk0x90->FUN_00469550();
+		m_inputDispatcher->SetActiveScreen(m_previousScreen);
+		m_inputDispatcher->DrawCursor();
 
 		for (LegoU32 i = 0; i < m_unk0x9c; i++) {
-			m_unk0x90->SetUnk0x54(&m_entries[i]);
-			m_unk0x90->FUN_00469550();
+			m_inputDispatcher->SetActiveScreen(&m_entries[i]);
+			m_inputDispatcher->DrawCursor();
 		}
 
-		m_unk0x90->SetUnk0x54(&m_entries[m_unk0x9c - 1]);
+		m_inputDispatcher->SetActiveScreen(&m_entries[m_unk0x9c - 1]);
 	}
 }
 
@@ -172,7 +172,7 @@ void MenuDialog::TextLine::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 
 	m_unk0x64.CopyFromGolString(originalString);
 	if (m_unk0x34.m_right) {
-		m_unk0x60->FUN_00408be0(&m_unk0x64, &width, &height);
+		m_unk0x60->MeasureString(&m_unk0x64, &width, &height);
 
 		if (width < m_unk0x34.m_right - m_unk0x34.m_left) {
 			m_unk0x74 = FALSE;

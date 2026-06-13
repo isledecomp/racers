@@ -1,6 +1,6 @@
 #include "menu/widgets/menutextbutton.h"
 
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golstringtable.h"
 #include "image/utopianpan0xa4.h"
 
@@ -63,7 +63,7 @@ LegoBool32 MenuTextButton::FUN_00482540(CreateParams* p_createParams, MenuStyleT
 	p_createParams->m_unk0xcc->CopyStringByIndex(&string, p_createParams->m_unk0xd4);
 
 	Rect source;
-	p_createParams->m_unk0x84[0]->FUN_00408be0(&string, &source.m_right, &source.m_bottom);
+	p_createParams->m_unk0x84[0]->MeasureString(&string, &source.m_right, &source.m_bottom);
 
 	if (m_unk0x2dc && source.m_right > m_unk0x2dc) {
 		source.m_right = m_unk0x2dc;

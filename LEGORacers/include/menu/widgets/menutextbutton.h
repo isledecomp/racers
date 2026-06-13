@@ -7,7 +7,7 @@
 #include "menu/widgets/menuimage.h"
 #include "menu/widgets/menutextlabel.h"
 
-class GolFont0xa0;
+class GolFont;
 class GolString;
 class GolStringTable;
 class UtopianPan0xa4;
@@ -19,7 +19,7 @@ public:
 	// SIZE 0xe0
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
-		GolFont0xa0* m_unk0x84[6];     // 0x84
+		GolFont* m_unk0x84[6];         // 0x84
 		UtopianPan0xa4* m_unk0x9c[6];  // 0x9c
 		VisualStateColor m_unk0xb4[6]; // 0xb4
 		GolStringTable* m_unk0xcc;     // 0xcc
@@ -51,7 +51,7 @@ private:
 
 	MenuStyleTable::TextButtonStyle* m_unk0x1a8; // 0x1a8
 	MenuStyleTable::TextStyle m_unk0x1ac;        // 0x1ac
-	GolFont0xa0* m_unk0x1c0[6];                  // 0x1c0
+	GolFont* m_unk0x1c0[6];                      // 0x1c0
 	UtopianPan0xa4* m_unk0x1d8[6];               // 0x1d8
 	VisualStateColor m_unk0x1f0[6];              // 0x1f0
 	MenuImage m_unk0x208;                        // 0x208

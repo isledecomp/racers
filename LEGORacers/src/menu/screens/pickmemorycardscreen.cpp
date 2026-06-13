@@ -32,7 +32,7 @@ LegoBool32 PickMemoryCardScreen::VTable0x8c(MenuGameContext* p_context, MenuScre
 		return FALSE;
 	}
 
-	m_cursorHelper->SetCursorEnabled(FALSE);
+	m_cursor->SetCursorEnabled(FALSE);
 	MenuGameScreen::VTable0x80();
 	return TRUE;
 }
@@ -44,7 +44,7 @@ LegoBool32 PickMemoryCardScreen::Destroy()
 		return TRUE;
 	}
 
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 	return MenuGameScreen::Destroy();
 }
 

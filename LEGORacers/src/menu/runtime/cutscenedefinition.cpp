@@ -369,8 +369,8 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, Bluebell
 		}
 
 		p_frame->FUN_004066d0(m_unk0x20);
-		if (m_unk0x30 >= 0 && m_unk0x20->m_unk0x28) {
-			m_unk0x20->m_unk0x28->FUN_0040dad0(m_unk0x30);
+		if (m_unk0x30 >= 0 && m_unk0x20->m_trackedEntity) {
+			m_unk0x20->m_trackedEntity->FUN_0040dad0(m_unk0x30);
 		}
 
 		Event::VTable0x10(p_frame, p_event);
@@ -395,7 +395,7 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x14(Frame* p_frame, Bluebell
 // FUNCTION: LEGORACERS 0x00405270
 void CutsceneDefinition::Frame::CameraEvent::VTable0x04(undefined4)
 {
-	m_unk0x20->FUN_004047b0();
+	m_unk0x20->UpdateFromTrackedEntity();
 }
 
 // FUNCTION: LEGORACERS 0x00405280
@@ -1607,7 +1607,7 @@ LegoU32 CutsceneDefinition::FUN_00406f90(LegoFloat p_scale)
 			GolCameraBase* lens = resource->VTable0x50(j);
 
 			if (p_scale > 0.0f) {
-				lens->m_unk0x0c = p_scale;
+				lens->m_aspectRatio = p_scale;
 				lens->m_flags |= 8;
 			}
 			else {

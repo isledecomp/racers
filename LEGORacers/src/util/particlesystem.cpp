@@ -29,22 +29,22 @@ ParticleSystem::~ParticleSystem()
 // FUNCTION: LEGORACERS 0x00412390
 void ParticleSystem::Reset()
 {
-	m_unk0x000 = NULL;
-	m_unk0x004 = NULL;
+	m_golExport = NULL;
+	m_model = NULL;
 	m_unk0x008 = 0;
 	m_unk0x00c = 0;
 	m_unk0x0a0 = 0;
 	m_unk0x0a4 = 0;
-	m_unk0x0a8 = 0;
-	m_unk0x0ac = NULL;
-	m_unk0x0b8 = 0;
-	m_unk0x0bc.m_x = 0.0f;
-	m_unk0x0bc.m_y = 0.0f;
-	m_unk0x0bc.m_z = 0.0f;
-	m_unk0x0c8 = 0;
-	m_unk0x0cc = NULL;
-	m_unk0x0d0 = NULL;
-	m_unk0x0d4 = NULL;
+	m_particleCapacity = 0;
+	m_particles = NULL;
+	m_flags = 0;
+	m_acceleration.m_x = 0.0f;
+	m_acceleration.m_y = 0.0f;
+	m_acceleration.m_z = 0.0f;
+	m_materialItemCount = 0;
+	m_materialItems = NULL;
+	m_materialAnimation = NULL;
+	m_material = NULL;
 	m_unk0x0d8 = 0;
 	m_unk0x0dc = 0;
 	m_unk0x0e0 = 0;
@@ -69,18 +69,18 @@ void ParticleSystem::FUN_00412430(
 {
 	// Most likely matches semantically, but the registers and some other details are still wrong
 
-	if (m_unk0x0b8 & c_flagInitialized) {
+	if (m_flags & c_flagInitialized) {
 		Destroy();
 	}
 
-	m_unk0x000 = p_golExport;
+	m_golExport = p_golExport;
 	m_unk0x0a0 = 2 * p_param4;
 	m_unk0x0a4 = p_param3;
-	m_unk0x0a8 = p_param4;
+	m_particleCapacity = p_param4;
 
-	m_unk0x004 = p_golExport->VTable0x14();
+	m_model = p_golExport->VTable0x14();
 
-	m_unk0x004->VTable0x18(
+	m_model->VTable0x18(
 		p_renderer,
 		1,
 		3 * m_unk0x0a0,
@@ -89,33 +89,33 @@ void ParticleSystem::FUN_00412430(
 		m_unk0x0a4
 	);
 	// LINE: LEGORACERS 0x004124b5
-	m_unk0x010.VTable0x50(m_unk0x004, g_maxFloat);
+	m_modelEntity.VTable0x50(m_model, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
-	m_unk0x0ac = new Particle[m_unk0x0a8];
+	m_particles = new Particle[m_particleCapacity];
 
-	if (!m_unk0x0ac) {
+	if (!m_particles) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
-	m_unk0x0b8 = c_flagInitialized;
+	m_flags = c_flagInitialized;
 
-	FUN_00412970();
+	ResetParticlePool();
 }
 
 // FUNCTION: LEGORACERS 0x00412560
 void ParticleSystem::Destroy()
 {
-	if (m_unk0x0ac) {
-		delete[] m_unk0x0ac;
-		m_unk0x0ac = NULL;
+	if (m_particles) {
+		delete[] m_particles;
+		m_particles = NULL;
 	}
-	m_unk0x010.VTable0x54();
-	if (m_unk0x000) {
-		if (m_unk0x004) {
-			m_unk0x000->VTable0x48(m_unk0x004);
-			m_unk0x004 = NULL;
+	m_modelEntity.VTable0x54();
+	if (m_golExport) {
+		if (m_model) {
+			m_golExport->VTable0x48(m_model);
+			m_model = NULL;
 		}
-		m_unk0x000 = NULL;
+		m_golExport = NULL;
 	}
 	Reset();
 }
@@ -133,9 +133,9 @@ void ParticleSystem::ConfigureMaterialAnimation(
 	const GolVec3* p_position
 )
 {
-	m_unk0x0d0 = p_animation;
-	m_unk0x0c8 = p_itemCount;
-	m_unk0x0cc = p_items;
+	m_materialAnimation = p_animation;
+	m_materialItemCount = p_itemCount;
+	m_materialItems = p_items;
 	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
 }
 
@@ -150,10 +150,10 @@ void ParticleSystem::ConfigureMaterial(
 	const GolVec3* p_position
 )
 {
-	m_unk0x0d0 = NULL;
-	m_unk0x0c8 = 0;
-	m_unk0x0cc = NULL;
-	m_unk0x0d4 = p_material;
+	m_materialAnimation = NULL;
+	m_materialItemCount = 0;
+	m_materialItems = NULL;
+	m_material = p_material;
 	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
 }
 
@@ -172,125 +172,126 @@ void ParticleSystem::ConfigureCommon(
 	m_unk0x0e0 = p_unk0x24;
 
 	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
-		m_unk0x0b8 &= ~c_flagBit2;
+		m_flags &= ~c_flagBit2;
 	}
 	else {
-		m_unk0x0b8 |= c_flagBit2;
+		m_flags |= c_flagBit2;
 	}
 
 	m_unk0x0e4 = p_unk0x28;
 
 	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
-		m_unk0x0b8 &= ~c_flagBit2;
+		m_flags &= ~c_flagBit2;
 	}
 	else {
-		m_unk0x0b8 |= c_flagBit2;
+		m_flags |= c_flagBit2;
 	}
 
-	m_unk0x0bc = *p_position;
-	m_unk0x0e8 = 0;
-	m_unk0x010.SetModelDistance(0, p_radius * p_radius);
+	m_acceleration = *p_position;
+	m_spawnedCount = 0;
+	m_modelEntity.SetModelDistance(0, p_radius * p_radius);
 	m_unk0x120 = 0;
 	m_unk0x134 = 0;
-	m_unk0x0b8 |= c_flagActive | c_flagBit3;
+	m_flags |= c_flagActive | c_flagBit3;
 }
 
 // FUNCTION: LEGORACERS 0x00412760
-Particle* ParticleSystem::FUN_00412760(GolVec3* p_param1, GolVec3* p_param2, LegoU32 p_param3)
+Particle* ParticleSystem::SpawnParticle(GolVec3* p_position, GolVec3* p_velocity, LegoU32 p_lifetimeMs)
 {
-	Particle* entity = FUN_00412a00();
+	Particle* particle = AllocateParticle();
 
 	GolVec3 center, position;
 
-	if (!m_unk0x0e8) {
-		m_unk0x010.VTable0x08(*p_param1);
+	if (!m_spawnedCount) {
+		m_modelEntity.VTable0x08(*p_position);
 		center.m_x = 0.0f;
 		center.m_y = 0.0f;
 		center.m_z = 0.0f;
 	}
 	else {
-		m_unk0x010.VTable0x04(&position);
-		center.m_x = p_param1->m_x - position.m_x;
-		center.m_y = p_param1->m_y - position.m_y;
-		center.m_z = p_param1->m_z - position.m_z;
+		m_modelEntity.VTable0x04(&position);
+		center.m_x = p_position->m_x - position.m_x;
+		center.m_y = p_position->m_y - position.m_y;
+		center.m_z = p_position->m_z - position.m_z;
 	}
 
-	entity->SetCenter(center);
-	entity->SetVelocity(*p_param2);
+	particle->SetCenter(center);
+	particle->SetVelocity(*p_velocity);
 
-	entity->m_unk0x28 = 0;
-	entity->m_unk0x2c = p_param3;
-	entity->m_unk0x30 = NULL;
+	particle->m_ageMs = 0;
+	particle->m_lifetimeMs = p_lifetimeMs;
+	particle->m_material = NULL;
 
-	m_unk0x0e8++;
+	m_spawnedCount++;
 
-	return entity;
+	return particle;
 }
 
 // FUNCTION: LEGORACERS 0x00412820
-void ParticleSystem::FUN_00412820()
+void ParticleSystem::RequestDeactivate()
 {
-	if (!m_unk0x0b4) {
-		FUN_00412840();
+	if (!m_activeList) {
+		Deactivate();
 	}
 	else {
-		m_unk0x0b8 |= c_flagPendingReset;
+		m_flags |= c_flagPendingReset;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412840
-void ParticleSystem::FUN_00412840()
+void ParticleSystem::Deactivate()
 {
-	if (m_unk0x0b8 & c_flagActive) {
-		FUN_00412970();
-		m_unk0x0d0 = NULL;
-		m_unk0x0d4 = NULL;
+	if (m_flags & c_flagActive) {
+		ResetParticlePool();
+		m_materialAnimation = NULL;
+		m_material = NULL;
 		m_unk0x0d8 = 0;
 		m_unk0x0dc = 0;
 		m_unk0x0e0 = 0;
 		m_unk0x0e4 = 0;
-		m_unk0x0b8 &= ~(c_flagActive | c_flagBit2 | c_flagBit3 | c_flagPendingReset);
+		m_flags &= ~(c_flagActive | c_flagBit2 | c_flagBit3 | c_flagPendingReset);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00412890
-void ParticleSystem::FUN_00412890(LegoS32 p_param)
+void ParticleSystem::Update(LegoS32 p_elapsedMs)
 {
-	if ((m_unk0x0b8 & c_flagInitialized) && (m_unk0x0b8 & c_flagActive)) {
-		m_unk0x0b8 &= ~c_flagBit3;
-		if (!m_unk0x0b4) {
-			if (m_unk0x0b8 & c_flagPendingReset) {
-				FUN_00412840();
+	if ((m_flags & c_flagInitialized) && (m_flags & c_flagActive)) {
+		m_flags &= ~c_flagBit3;
+		if (!m_activeList) {
+			if (m_flags & c_flagPendingReset) {
+				Deactivate();
 			}
 		}
 		else {
 			Particle *next, *other;
 			other = NULL;
 
-			for (Particle* current = m_unk0x0b4; current != NULL; current = next) {
+			for (Particle* current = m_activeList; current != NULL; current = next) {
 				next = current->m_next;
-				current->m_unk0x28 += p_param;
-				if (current->m_unk0x28 > current->m_unk0x2c) {
+				current->m_ageMs += p_elapsedMs;
+				if (current->m_ageMs > current->m_lifetimeMs) {
 					if (!other) {
-						m_unk0x0b4 = next;
+						m_activeList = next;
 					}
 					else {
 						other->m_next = next;
 					}
-					current->m_next = m_unk0x0b0;
-					current->m_unk0x30 = NULL;
-					m_unk0x0b0 = current;
+					current->m_next = m_freeList;
+					current->m_material = NULL;
+					m_freeList = current;
 				}
 				else {
-					if (m_unk0x0d0) {
-						LegoS32 elapsedMs = current->m_unk0x28;
-						current->m_unk0x30 = m_unk0x0d0->FUN_00410560(elapsedMs, m_unk0x0cc, m_unk0x0c8);
+					if (m_materialAnimation) {
+						LegoS32 ageMs = current->m_ageMs;
+						current->m_material =
+							m_materialAnimation->FUN_00410560(ageMs, m_materialItems, m_materialItemCount);
 					}
 					else {
-						current->m_unk0x30 = m_unk0x0d4;
+						current->m_material = m_material;
 					}
 
-					current->FUN_00414600(p_param * 0.001f, &m_unk0x0bc);
+					current->Integrate(p_elapsedMs * 0.001f, &m_acceleration);
 					other = current;
 				}
 			}
@@ -299,40 +300,40 @@ void ParticleSystem::FUN_00412890(LegoS32 p_param)
 }
 
 // FUNCTION: LEGORACERS 0x00412970
-void ParticleSystem::FUN_00412970()
+void ParticleSystem::ResetParticlePool()
 {
-	m_unk0x0b4 = NULL;
-	m_unk0x0b0 = m_unk0x0ac;
-	for (LegoU32 i = 0; i < m_unk0x0a8 - 1; i++) {
-		m_unk0x0ac[i].m_next = &m_unk0x0ac[i + 1];
-		m_unk0x0ac[i].m_unk0x30 = NULL;
+	m_activeList = NULL;
+	m_freeList = m_particles;
+	for (LegoU32 i = 0; i < m_particleCapacity - 1; i++) {
+		m_particles[i].m_next = &m_particles[i + 1];
+		m_particles[i].m_material = NULL;
 	}
-	m_unk0x0ac[m_unk0x0a8 - 1].m_next = NULL;
-	m_unk0x0ac[m_unk0x0a8 - 1].m_unk0x30 = NULL;
+	m_particles[m_particleCapacity - 1].m_next = NULL;
+	m_particles[m_particleCapacity - 1].m_material = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00412a00
-Particle* ParticleSystem::FUN_00412a00()
+Particle* ParticleSystem::AllocateParticle()
 {
-	Particle* maxEntry = m_unk0x0b0;
+	Particle* particle = m_freeList;
 	Particle* current;
 
-	if (maxEntry) {
-		m_unk0x0b0 = maxEntry->m_next;
-		maxEntry->m_next = m_unk0x0b4;
-		m_unk0x0b4 = maxEntry;
-		return maxEntry;
+	if (particle) {
+		m_freeList = particle->m_next;
+		particle->m_next = m_activeList;
+		m_activeList = particle;
+		return particle;
 	}
 	else {
-		maxEntry = m_unk0x0b4;
-		LegoU32 maxValue = maxEntry->m_unk0x28;
-		for (current = maxEntry->m_next; current != NULL; current = current->m_next) {
-			if (current->m_unk0x28 > maxValue) {
-				maxEntry = current;
-				maxValue = current->m_unk0x28;
+		particle = m_activeList;
+		LegoU32 maxAge = particle->m_ageMs;
+		for (current = particle->m_next; current != NULL; current = current->m_next) {
+			if (current->m_ageMs > maxAge) {
+				particle = current;
+				maxAge = current->m_ageMs;
 			}
 		}
-		return maxEntry;
+		return particle;
 	}
 }
 

@@ -7,7 +7,7 @@
 #include "golhashtable.h"
 #include "types.h"
 
-class CactusInterface0x4;
+class GolAppEventHandler;
 class GolD3DRenderDevice;
 class GolDrawState;
 class GolExport;
@@ -62,7 +62,7 @@ public:
 	);                                                            // vtable+0x28
 	virtual void ShutdownDisplay() = 0;                           // vtable+0x2c
 	virtual void ToggleFullscreen() = 0;                          // vtable+0x30
-	virtual LegoS32 Tick(CactusInterface0x4* p_eventHandler) = 0; // vtable+0x34
+	virtual LegoS32 Tick(GolAppEventHandler* p_eventHandler) = 0; // vtable+0x34
 	virtual InputManager* GetInputManager() = 0;                  // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x004163b0
@@ -91,7 +91,7 @@ protected:
 	LegoU32 m_width;                    // 0x810
 	LegoU32 m_height;                   // 0x814
 	LegoU32 m_bpp;                      // 0x818
-	CactusInterface0x4* m_eventHandler; // 0x81c
+	GolAppEventHandler* m_eventHandler; // 0x81c
 	LegoU32 m_lastFrameTimeMs;          // 0x820
 	LegoU32 m_frameDeltaMs;             // 0x824
 	LegoU32 m_maxFrameDeltaMs;          // 0x828

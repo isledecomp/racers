@@ -1,13 +1,13 @@
 #ifndef RACESESSION_H
 #define RACESESSION_H
 
+#include "app/golappeventhandler.h"
 #include "app/legoracers.h"
 #include "compat.h"
 #include "decomp.h"
 #include "input/inputeventqueue.h"
 #include "race/racestate.h"
 #include "types.h"
-#include "util/cactusinterface0x4.h"
 
 class GolD3DRenderDevice;
 class CircuitStandings;
@@ -18,7 +18,7 @@ class Win32GolApp;
 
 // VTABLE: LEGORACERS 0x004b07f4
 // SIZE 0x3368
-class RaceSession : public CactusInterface0x4 {
+class RaceSession : public GolAppEventHandler {
 public:
 	RaceSession();
 	void VTable0x00() override; // vtable+0x00

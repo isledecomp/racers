@@ -11,7 +11,7 @@
 #include "types.h"
 
 class GolD3DRenderDevice;
-class GolFont0xa0;
+class GolFont;
 class SharedMenuStyleTable;
 class UtopianPan0xa4;
 
@@ -30,7 +30,7 @@ public:
 	// SIZE 0x14
 	class TextStyle {
 	public:
-		GolFont0xa0* m_unk0x00;     // 0x00
+		GolFont* m_unk0x00;         // 0x00
 		VisualStateColor m_unk0x04; // 0x04
 		LegoS32 m_unk0x08;          // 0x08
 		LegoBool32 m_unk0x0c;       // 0x0c
@@ -74,7 +74,7 @@ public:
 	// SIZE 0x104
 	class TextButtonStyle : public IconStyle {
 	public:
-		GolFont0xa0* m_unk0x90[6];     // 0x90
+		GolFont* m_unk0x90[6];         // 0x90
 		UtopianPan0xa4* m_unk0xa8[6];  // 0xa8
 		VisualStateColor m_unk0xc0[6]; // 0xc0
 		VisualStateColor m_unk0xd8;    // 0xd8
@@ -95,7 +95,7 @@ public:
 			UtopianPan0xa4* m_unk0x08; // 0x08
 		};
 
-		GolFont0xa0* m_unk0x90[6]; // 0x90
+		GolFont* m_unk0x90[6]; // 0x90
 		union {
 			ImageTriplet m_unk0xa8[6];            // 0xa8
 			UtopianPan0xa4* m_utopianunk0xa8[18]; // 0xa8

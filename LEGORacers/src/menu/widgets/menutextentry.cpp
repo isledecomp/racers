@@ -1,6 +1,6 @@
 #include "menu/widgets/menutextentry.h"
 
-#include "font/golfontbase0x40.h"
+#include "font/golfontbase.h"
 
 #include <string.h>
 
@@ -34,7 +34,7 @@ void MenuTextEntry::FUN_00471930(CreateParams*)
 		LegoS32 width;
 		LegoS32 height;
 		buf[0] = *m_charset.FromCursor(i);
-		m_font->FUN_00408be0(&localStr, &width, &height);
+		m_font->MeasureString(&localStr, &width, &height);
 		if (width > maxWidth) {
 			maxWidth = width;
 		}
@@ -53,7 +53,7 @@ void MenuTextEntry::FUN_00471a30()
 
 	LegoS32 width;
 	LegoS32 height;
-	m_font->FUN_00408be0(&m_text, &width, &height);
+	m_font->MeasureString(&m_text, &width, &height);
 
 	m_text.FirstLine();
 	m_unk0x23c.FUN_00467fc0(m_unk0x34.m_left + width, m_unk0x34.m_bottom - 6);

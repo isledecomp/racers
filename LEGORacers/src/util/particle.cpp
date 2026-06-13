@@ -5,14 +5,14 @@ DECOMP_SIZE_ASSERT(Particle, 0x38)
 // FUNCTION: LEGORACERS 0x004145e0
 Particle::Particle()
 {
-	m_unk0x28 = 0;
-	m_unk0x2c = 0;
-	m_unk0x30 = NULL;
+	m_ageMs = 0;
+	m_lifetimeMs = 0;
+	m_material = NULL;
 	m_next = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00414600
-void Particle::FUN_00414600(LegoFloat p_deltaT, GolVec3* p_acceleration)
+void Particle::Integrate(LegoFloat p_deltaT, GolVec3* p_acceleration)
 {
 	GolVec3 deltaVelocity;
 

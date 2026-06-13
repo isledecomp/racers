@@ -122,7 +122,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	FUN_0042cde0();
 	InitializeInputBindings();
 	InitializeAudio();
-	InitializeTextRenderer();
+	InitializeInputDispatcher();
 
 	if (FUN_0042e490()) {
 		flag = TRUE;
@@ -143,7 +143,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	LegoU16 top = m_unk0x04.m_menuStack.Peek();
 	FUN_0042d3e0(top);
 
-	m_unk0x4bd0.FUN_00468af0(&m_unk0x4d98, 2, &m_textRenderer);
+	m_unk0x4bd0.FUN_00468af0(&m_unk0x4d98, 2, &m_inputDispatcher);
 	return 1;
 }
 
@@ -163,7 +163,7 @@ LegoS32 MenuManager::Shutdown()
 			}
 		}
 
-		m_textRenderer.VTable0x0c();
+		m_inputDispatcher.Shutdown();
 		m_unk0x4bd0.FUN_00468ab0();
 		UnloadMenuData();
 		ReleaseRendererObject();
@@ -178,21 +178,21 @@ LegoS32 MenuManager::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x0042cd60
-void MenuManager::InitializeTextRenderer()
+void MenuManager::InitializeInputDispatcher()
 {
 	GolName name;
-	CopperCrest0x40::InitStruct initStruct;
+	MenuInputDispatcher::InitStruct initStruct;
 
-	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d24, c_menuTextRendererObjectName);
+	m_menuNameStrings.CopyStringByIndex(&m_unk0x4d24, c_menuCursorImageName);
 	m_unk0x4d24.CopyToBuf8(name);
 
 	initStruct.m_golExport = m_golExport;
 	initStruct.m_renderer = m_renderer;
-	initStruct.m_rendererObject = m_renderer->FindImageByName(name);
+	initStruct.m_cursorImage = m_renderer->FindImageByName(name);
 	initStruct.m_inputManager = m_unk0x04.m_context->m_golApp->GetInputManager();
 	initStruct.m_inputEvents = m_unk0x04.m_inputBindings.GetUnk0x208();
 
-	m_textRenderer.FUN_00469040(&initStruct);
+	m_inputDispatcher.Initialize(&initStruct);
 }
 
 // FUNCTION: LEGORACERS 0x0042cde0
@@ -203,11 +203,11 @@ void MenuManager::FUN_0042cde0()
 	GolVec3 right;
 	GolCamera* lens = m_golExport->VTable0x20();
 
-	lens->m_unk0x08 = m_unk0x04.m_context->GetUnk0x0c();
+	lens->m_fov = m_unk0x04.m_context->GetUnk0x0c();
 	lens->m_flags |= GolCamera::c_flagBit1;
-	lens->m_unk0x10 = m_unk0x04.m_context->GetUnk0x10();
+	lens->m_nearClip = m_unk0x04.m_context->GetUnk0x10();
 	lens->m_flags |= GolCamera::c_flagBit1;
-	lens->m_unk0x14 = m_unk0x04.m_context->GetUnk0x14();
+	lens->m_farClip = m_unk0x04.m_context->GetUnk0x14();
 	lens->m_flags |= GolCamera::c_flagBit1;
 
 	position.m_x = 0.0f;
@@ -220,9 +220,9 @@ void MenuManager::FUN_0042cde0()
 	right.m_y = 0.0f;
 	right.m_z = 0.0f;
 
-	lens->GetUnk0x04()->SetPosition(&position);
+	lens->GetTransform()->SetPosition(&position);
 	lens->m_flags |= GolCamera::c_flagBit0;
-	lens->GetUnk0x04()->VTable0x24(&right, &forward);
+	lens->GetTransform()->VTable0x24(&right, &forward);
 	lens->m_flags |= GolCamera::c_flagBit0;
 	m_renderer->VTable0x20(lens);
 }
@@ -441,7 +441,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	m_unk0x4d98.m_menuId = p_menuId;
 	m_unk0x4d98.m_unk0x2c = m_unk0x04.m_context->m_unk0x18;
 	m_unk0x4d98.m_unk0x20 = &m_unk0x4bd0;
-	m_unk0x4d98.m_cursorHelper = m_textRenderer.GetCursorHelper();
+	m_unk0x4d98.m_cursor = m_inputDispatcher.GetCursor();
 	m_unk0x4d98.m_menuNameStrings = &m_menuNameStrings;
 	m_unk0x4d98.m_menuTextStrings = &m_menuTextStrings;
 
@@ -455,7 +455,7 @@ void MenuManager::FUN_0042d3e0(LegoU16 p_menuId)
 	}
 
 	m_unk0x4dc8 = m_unk0x4bcc.CreateScreen(p_menuId);
-	m_textRenderer.SetUnk0x54(m_unk0x4dc8);
+	m_inputDispatcher.SetActiveScreen(m_unk0x4dc8);
 	m_unk0x4dc8->VTable0x8c(&m_unk0x04, &m_unk0x4d98);
 }
 
@@ -488,7 +488,7 @@ void MenuManager::Run()
 		if (!golApp->IsDisabled()) {
 			stack = &m_unk0x04.m_menuStack;
 			previousMenu = stack->Peek();
-			m_unk0x04.m_context->m_running = m_textRenderer.VTable0x10(frameDeltaMs);
+			m_unk0x04.m_context->m_running = m_inputDispatcher.Update(frameDeltaMs);
 
 			if (m_unk0x4bd0.GetUnk0x9c() > 0) {
 				m_unk0x4bd0.FUN_00468da0(frameDeltaMs);
@@ -516,7 +516,7 @@ void MenuManager::Run()
 				m_unk0x4bd0.FUN_00468e20();
 			}
 			else {
-				m_textRenderer.FUN_00469550();
+				m_inputDispatcher.DrawCursor();
 			}
 
 			menuAnimations->Draw(m_renderer);
@@ -1174,17 +1174,17 @@ void MenuManager::VTable0x1c(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0042e830
 void MenuManager::VTable0x28()
 {
-	m_textRenderer.SetCursorInside(1);
+	m_inputDispatcher.SetCursorInside(1);
 }
 
 // FUNCTION: LEGORACERS 0x0042e840
 void MenuManager::VTable0x2c()
 {
-	m_textRenderer.SetCursorInside(0);
+	m_inputDispatcher.SetCursorInside(0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e850
 void MenuManager::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
 {
-	m_textRenderer.SetCursorPosition(p_arg1, p_arg2);
+	m_inputDispatcher.SetCursorPosition(p_arg1, p_arg2);
 }

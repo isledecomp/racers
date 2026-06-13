@@ -34,27 +34,27 @@ public:
 
 	void FUN_1001bfc0(GolViewFrustum* p_view);
 	void FUN_1001c450(GolViewFrustum* p_view);
-	void FUN_1001cb30(GolAnimatedEntity* p_arg1, LegoU32 p_arg2);
-	void FUN_004046a0(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
-	void FUN_00404740(LegoFloat p_aspect);
-	void FUN_004047b0();
+	void SetTrackedEntity(GolAnimatedEntity* p_trackedEntity, LegoU32 p_trackedNodeIndex);
+	void LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
+	void SetAspectRatio(LegoFloat p_aspect);
+	void UpdateFromTrackedEntity();
 	const Rect* GetViewport() const { return &m_viewport; }
 
-	GolTransform* m_unk0x04;      // 0x04
-	LegoFloat m_unk0x08;          // 0x08
-	LegoFloat m_unk0x0c;          // 0x0c
-	LegoFloat m_unk0x10;          // 0x10
-	LegoFloat m_unk0x14;          // 0x14
-	LegoFloat m_unk0x18;          // 0x18
-	LegoFloat m_unk0x1c;          // 0x1c
-	LegoFloat m_unk0x20;          // 0x20
-	LegoFloat m_unk0x24;          // 0x24
-	GolAnimatedEntity* m_unk0x28; // 0x28
-	LegoU32 m_unk0x2c;            // 0x2c
-	LegoU32 m_flags;              // 0x30
-	GolViewFrustum m_unk0x34;     // 0x34
-	GolVec4 m_unk0x100;           // 0x100
-	Rect m_viewport;              // 0x110
+	GolTransform* m_transform;          // 0x04
+	LegoFloat m_fov;                    // 0x08
+	LegoFloat m_aspectRatio;            // 0x0c
+	LegoFloat m_nearClip;               // 0x10
+	LegoFloat m_farClip;                // 0x14
+	LegoFloat m_nearHalfWidth;          // 0x18
+	LegoFloat m_nearHalfHeight;         // 0x1c
+	LegoFloat m_farHalfWidth;           // 0x20
+	LegoFloat m_farHalfHeight;          // 0x24
+	GolAnimatedEntity* m_trackedEntity; // 0x28
+	LegoU32 m_trackedNodeIndex;         // 0x2c
+	LegoU32 m_flags;                    // 0x30
+	GolViewFrustum m_viewFrustum;       // 0x34
+	GolVec4 m_viewBounds;               // 0x100
+	Rect m_viewport;                    // 0x110
 };
 
 #endif // GOLCAMERABASE_H

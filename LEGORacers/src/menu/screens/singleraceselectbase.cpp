@@ -114,7 +114,7 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScre
 		return result;
 	}
 
-	m_cursorHelper->SetCursorEnabled(TRUE);
+	m_cursor->SetCursorEnabled(TRUE);
 
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(m_context, 0);

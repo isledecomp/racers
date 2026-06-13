@@ -7,7 +7,7 @@
 #include "audio/streamingsoundinstance.h"
 #include "camera/golcamera.h"
 #include "core/gol.h"
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "font/golfonttable.h"
 #include "golanimatedentity.h"
 #include "golbinparser.h"
@@ -1983,9 +1983,9 @@ void CutscenePlayer::FUN_004a2f80(GolCamera* p_lens)
 	GolVec3 right;
 	GolVec3 forward;
 
-	p_lens->GetUnk0x04()->GetPosition(&position);
-	p_lens->GetUnk0x04()->GetRight(&right);
-	p_lens->GetUnk0x04()->GetForward(&forward);
+	p_lens->GetTransform()->GetPosition(&position);
+	p_lens->GetTransform()->GetRight(&right);
+	p_lens->GetTransform()->GetForward(&forward);
 
 	SoundNode* node = &m_unk0x14;
 

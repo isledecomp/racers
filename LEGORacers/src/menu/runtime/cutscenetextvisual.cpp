@@ -1,4 +1,4 @@
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golerror.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "render/golrenderdevice.h"
@@ -105,10 +105,10 @@ void CutsceneTextVisual::Clear()
 void CutsceneTextVisual::VTable0x1c(LegoS32* p_width, LegoS32* p_height)
 {
 	if (m_rawString != NULL) {
-		m_font->FUN_00408ca0(m_rawString, p_width, p_height);
+		m_font->MeasureString(m_rawString, p_width, p_height);
 	}
 	else {
-		m_font->FUN_00408be0(&m_string, p_width, p_height);
+		m_font->MeasureString(&m_string, p_width, p_height);
 	}
 }
 

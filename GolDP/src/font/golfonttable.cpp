@@ -1,7 +1,7 @@
 #include "font/golfonttable.h"
 
 #include "decomp.h"
-#include "font/golfont0xa0.h"
+#include "font/golfont.h"
 #include "golerror.h"
 #include "golstring.h"
 
@@ -11,9 +11,9 @@ DECOMP_SIZE_ASSERT(GolFontTable, 0x2c)
 GolFontTable::GolFontTable()
 {
 	m_fonts = NULL;
-	m_unk0x18 = NULL;
-	m_unk0x1c = NULL;
-	m_unk0x20 = NULL;
+	m_charStrings = NULL;
+	m_charCodes = NULL;
+	m_charCounts = NULL;
 }
 
 // FUNCTION: GOLDP 0x10003ff0
@@ -31,32 +31,32 @@ GolFontTable::~GolFontTable()
 // FUNCTION: GOLDP 0x10004060
 void GolFontTable::AllocateItems()
 {
-	m_fonts = new GolFont0xa0[m_numItems];
+	m_fonts = new GolFont[m_numItems];
 	if (m_fonts == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x18 = new GolString[m_numItems];
-	if (m_unk0x18 == NULL) {
+	m_charStrings = new GolString[m_numItems];
+	if (m_charStrings == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x1c = new undefined2*[m_numItems];
-	if (m_unk0x1c == NULL) {
+	m_charCodes = new undefined2*[m_numItems];
+	if (m_charCodes == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x20 = new LegoU16[m_numItems];
-	if (m_unk0x20 == NULL) {
+	m_charCounts = new LegoU16[m_numItems];
+	if (m_charCounts == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
 
 // FUNCTION: GOLDP 0x100041f0
-void GolFontTable::VTable0x10(undefined4 p_index)
+void GolFontTable::AllocateDefinitionBuffer(undefined4 p_index)
 {
-	m_unk0x1c[p_index] = new undefined2[m_unk0x20[p_index] + 1];
-	if (m_unk0x1c[p_index] == NULL) {
+	m_charCodes[p_index] = new undefined2[m_charCounts[p_index] + 1];
+	if (m_charCodes[p_index] == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 }
@@ -76,29 +76,29 @@ void GolFontTable::Clear()
 // FUNCTION: GOLDP 0x10004270
 void GolFontTable::ReleaseDefinitionBuffers()
 {
-	if (m_unk0x18 != NULL) {
-		delete[] m_unk0x18;
-		m_unk0x18 = NULL;
+	if (m_charStrings != NULL) {
+		delete[] m_charStrings;
+		m_charStrings = NULL;
 	}
 
-	if (m_unk0x1c != NULL) {
+	if (m_charCodes != NULL) {
 		for (LegoU32 i = 0; i < m_numItems; i++) {
-			delete[] m_unk0x1c[i];
-			m_unk0x1c[i] = NULL;
+			delete[] m_charCodes[i];
+			m_charCodes[i] = NULL;
 		}
 
-		delete[] m_unk0x1c;
-		m_unk0x1c = NULL;
+		delete[] m_charCodes;
+		m_charCodes = NULL;
 	}
 
-	if (m_unk0x20 != NULL) {
-		delete[] m_unk0x20;
-		m_unk0x20 = NULL;
+	if (m_charCounts != NULL) {
+		delete[] m_charCounts;
+		m_charCounts = NULL;
 	}
 }
 
 // FUNCTION: GOLDP 0x10004300
-GolFontBase0x40* GolFontTable::GetItem(LegoU32 p_index)
+GolFontBase* GolFontTable::GetItem(LegoU32 p_index)
 {
 	return &m_fonts[p_index];
 }

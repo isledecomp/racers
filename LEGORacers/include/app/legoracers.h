@@ -1,6 +1,7 @@
 #ifndef LEGORACERS_H
 #define LEGORACERS_H
 
+#include "app/golappeventhandler.h"
 #include "app/win32golapp.h"
 #include "audio/directsoundmanager.h"
 #include "audio/nullsoundmanager.h"
@@ -9,7 +10,6 @@
 #include "racer/drivercosmetics.h"
 #include "save/savegame.h"
 #include "types.h"
-#include "util/cactusinterface0x4.h"
 
 class GolMaterialLibrary;
 class GolModelBase;
@@ -17,7 +17,7 @@ class GolTextureList;
 
 // VTABLE: LEGORACERS 0x004b0568
 // SIZE 0x1d6c
-class LegoRacers : public CactusInterface0x4 {
+class LegoRacers : public GolAppEventHandler {
 public:
 	// SIZE 0x18
 	struct RaceSlot {

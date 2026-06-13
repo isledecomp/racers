@@ -85,7 +85,7 @@ void GolBillboard::VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_resu
 		}
 	}
 
-	p_result->m_visibility = p_view.FUN_1002bc20(position, FUN_10028710());
+	p_result->m_visibility = p_view.ClassifySphere(position, FUN_10028710());
 }
 
 // FUNCTION: GOLDP 0x10026fa0 FOLDED

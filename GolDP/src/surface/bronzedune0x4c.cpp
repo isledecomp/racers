@@ -7,9 +7,6 @@ DECOMP_SIZE_ASSERT(BronzeDune0x4c, 0x4c)
 // GLOBAL: GOLDP 0x10063c50
 BronzeDune0x4c g_bronzeDune0x4c;
 
-// GLOBAL: GOLDP 0x10063c9c
-SilverDune0x30* g_fontSourceImage;
-
 // FUNCTION: GOLDP 0x10004f80
 void BronzeDune0x4c::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {

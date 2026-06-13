@@ -1,7 +1,7 @@
 #ifndef GOLFONT_H
 #define GOLFONT_H
 
-#include "font/golfontbase.h"
+#include "golfontbase.h"
 #include "surface/bronzedune0x4c.h"
 
 class GolD3DRenderDevice;

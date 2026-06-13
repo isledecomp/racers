@@ -1,6 +1,6 @@
 #include "menu/widgets/menuwidget.h"
 
-#include "font/golfontbase.h"
+#include "golfontbase.h"
 #include "golstring.h"
 #include "image/utopianpan0xa4.h"
 #include "render/gold3drenderdevice.h"

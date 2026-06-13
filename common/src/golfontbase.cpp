@@ -1,4 +1,4 @@
-#include "font/golfontbase.h"
+#include "golfontbase.h"
 
 #include "decomp.h"
 #include "golerror.h"
@@ -9,15 +9,18 @@
 #include "surface/silverdune0x30.h"
 #include "surface/slatepeak0x58.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFontBase, 0x40)
 
 // GLOBAL: GOLDP 0x10063bd0
+// GLOBAL: LEGORACERS 0x004c2860
 static LegoU8 g_glyphIndexBuffer[0x80];
 
-extern SilverDune0x30* g_fontSourceImage;
+// GLOBAL: GOLDP 0x10063c9c
+SilverDune0x30* g_fontSourceImage;
 
 // FUNCTION: GOLDP 0x1001dea0
 GolFontBase::GolFontBase()
@@ -448,6 +451,404 @@ void GolFontBase::FUN_1001e970(GolString* p_string, LegoS32* p_width, LegoS32* p
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00408be0
+void GolFontBase::MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height)
+{
+	GolFontBase* font = this;
+
+	if (p_string == NULL) {
+		if (p_width != NULL) {
+			*p_width = 0;
+		}
+
+		if (p_height != NULL) {
+			*p_height = 0;
+		}
+
+		return;
+	}
+
+	if (p_height != NULL) {
+		*p_height = font->m_fontHeight;
+	}
+
+	if (p_width != NULL) {
+		LegoS32 width = 0;
+		LegoU32 length = p_string->SelectionLength();
+
+		for (LegoU32 i = 0; i < length; i++) {
+			if (*p_string->FromCursor(i) == ' ') {
+				width += font->m_charSpacing + font->m_spaceWidth;
+			}
+			else {
+				LegoU16 textChar = *p_string->FromCursor(i);
+				LegoU32 glyphIndex = FindGlyphIndex(textChar);
+				width += font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+			}
+		}
+
+		width -= font->m_charSpacing;
+
+		*p_width = width < 0 ? 0 : width;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00408ca0
+void GolFontBase::MeasureString(const LegoChar* p_string, LegoS32* p_width, LegoS32* p_height)
+{
+	GolFontBase* font = this;
+
+	if (p_string == NULL) {
+		if (p_width != NULL) {
+			*p_width = 0;
+		}
+
+		if (p_height != NULL) {
+			*p_height = 0;
+		}
+
+		return;
+	}
+
+	if (p_height != NULL) {
+		*p_height = font->m_fontHeight;
+	}
+
+	if (p_width != NULL) {
+		LegoS32 width = 0;
+		LegoU32 length = ::strlen(p_string);
+
+		for (LegoU32 i = 0; i < length; i++) {
+			if (p_string[i] == ' ') {
+				width += font->m_charSpacing + font->m_spaceWidth;
+			}
+			else {
+				LegoS16 textChar = p_string[i];
+				LegoU32 glyphIndex = FindGlyphIndex(textChar);
+				width += font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+			}
+		}
+
+		width -= font->m_charSpacing;
+
+		*p_width = width < 0 ? 0 : width;
+	}
+}
+
+// STUB: LEGORACERS 0x00408d50
+void GolFontBase::FUN_00408d50(
+	GolString* p_string,
+	LegoS32 p_wrapWidth,
+	LegoS32 p_unk0x10,
+	LegoFloat p_scaleX,
+	LegoFloat p_scaleY,
+	LegoS32* p_width,
+	LegoS32* p_height
+)
+{
+	STUB(0x00408d50);
+
+	GolFontBase* font = this;
+
+	*p_height = 0;
+	*p_width = 0;
+
+	LegoU8 lineBreak = TRUE;
+
+	if (p_string == NULL) {
+		return;
+	}
+
+	LegoU32 length = p_string->SelectionLength();
+	if (length == 0) {
+		return;
+	}
+
+	if (p_unk0x10 < 0) {
+		*p_height = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(-p_unk0x10) * p_scaleY));
+	}
+
+	LegoU32 wrapWidth = static_cast<LegoU32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
+	LegoS32 lineHeight =
+		static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(font->m_fontHeight + p_unk0x10) * p_scaleY));
+	*p_height += lineHeight;
+
+	LegoU32 i = 0;
+	while (i < length) {
+		if (!lineBreak) {
+			while (*p_string->FromCursor(i) == ' ') {
+				i++;
+			}
+		}
+
+		lineBreak = FALSE;
+		LegoU32 lineStart = i;
+		LegoU32 lastIndex = i - 1;
+		LegoU32 wordWidth = 0;
+		LegoU32 lineWidth = 0;
+
+		while (i < length) {
+			LegoU16 textChar = *p_string->FromCursor(i);
+			if (textChar == '\n' || textChar == '\r') {
+				break;
+			}
+
+			LegoU32 charWidth;
+			if (textChar == ' ') {
+				if (wordWidth != 0 && *p_string->FromCursor(lastIndex) != ' ') {
+					lineStart = i;
+					wordWidth = 0;
+				}
+
+				charWidth = font->m_charSpacing + font->m_spaceWidth;
+			}
+			else {
+				LegoU32 glyphIndex = font->FindGlyphIndex(textChar);
+				charWidth = font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+			}
+
+			wordWidth += charWidth;
+			lineWidth += charWidth;
+			i++;
+			lastIndex++;
+
+			if (lineWidth > wrapWidth) {
+				break;
+			}
+		}
+
+		if (lineWidth > wrapWidth) {
+			if (wordWidth == lineWidth) {
+				lineStart++;
+
+				while (lineWidth > wrapWidth && i > lineStart) {
+					i--;
+					LegoU16 textChar = *p_string->FromCursor(i);
+					LegoU32 charWidth;
+
+					if (textChar == ' ') {
+						charWidth = font->m_charSpacing + font->m_spaceWidth;
+					}
+					else {
+						LegoU32 glyphIndex = font->FindGlyphIndex(textChar);
+						charWidth = font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+					}
+
+					lineWidth -= charWidth;
+				}
+			}
+			else {
+				i = lineStart;
+				lineWidth -= wordWidth;
+			}
+		}
+
+		lineWidth -= font->m_charSpacing;
+		if (static_cast<LegoU32>(*p_width) < lineWidth) {
+			*p_width = lineWidth;
+		}
+
+		if (*p_string->FromCursor(i) == '\r') {
+			i++;
+			lineBreak = TRUE;
+		}
+
+		if (*p_string->FromCursor(i) == '\n') {
+			i++;
+			lineBreak = TRUE;
+		}
+
+		if (i < length) {
+			*p_height += lineHeight;
+		}
+	}
+
+	if (font->m_charSpacing < 0) {
+		*p_width -= font->m_charSpacing;
+	}
+
+	*p_width = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(*p_width) * p_scaleX));
+}
+
+// FUNCTION: LEGORACERS 0x00408fe0
+undefined2 GolFontBase::FUN_00408fe0(
+	GolString* p_string,
+	GolRenderDevice* p_renderer,
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_wrapWidth,
+	LegoS32 p_unk0x18,
+	LegoFloat p_scaleX,
+	LegoFloat p_scaleY,
+	Rect* p_rect,
+	ColorRGBA* p_color,
+	LegoS32 p_unk0x2c
+)
+{
+	GolFontBase* font = this;
+	LegoU8 lineBreak = TRUE;
+
+	if (p_string->SelectionLength()) {
+		p_wrapWidth = static_cast<LegoS32>(::floor(static_cast<LegoFloat>(p_wrapWidth) / p_scaleX));
+		p_unk0x18 += font->m_fontHeight;
+		p_unk0x18 = static_cast<LegoS32>(::ceil(static_cast<LegoFloat>(p_unk0x18) * p_scaleY));
+		LegoU32 length = p_string->SelectionLength();
+
+		if (length) {
+			LegoU32 i = 0;
+			while (i < length) {
+				if (!lineBreak) {
+					while (*p_string->FromCursor(i) == ' ') {
+						i++;
+					}
+				}
+
+				lineBreak = FALSE;
+				LegoU32 lineStart = i;
+				LegoU32 breakIndex = i;
+				LegoU32 wordWidth = 0;
+				LegoU32 lineWidth = 0;
+				LegoU32 lastIndex = i - 1;
+
+				while (lineWidth <= static_cast<LegoU32>(p_wrapWidth)) {
+					if (i >= length) {
+						break;
+					}
+
+					if (*p_string->FromCursor(i) == '\n') {
+						break;
+					}
+
+					if (*p_string->FromCursor(i) == '\r') {
+						break;
+					}
+
+					LegoU16 textChar = *p_string->FromCursor(i);
+					LegoU32 charWidth;
+					if (textChar == ' ') {
+						if (wordWidth != 0 && *p_string->FromCursor(lastIndex) != ' ') {
+							breakIndex = i;
+							wordWidth = 0;
+						}
+
+						charWidth = font->m_charSpacing + font->m_spaceWidth;
+					}
+					else {
+						LegoU32 glyphIndex = font->FindGlyphIndex(textChar);
+						charWidth = font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+					}
+
+					wordWidth += charWidth;
+					lineWidth += charWidth;
+					i++;
+					lastIndex++;
+				}
+
+				if (lineWidth > static_cast<LegoU32>(p_wrapWidth)) {
+					if (wordWidth == lineWidth) {
+						breakIndex++;
+
+						while (lineWidth > static_cast<LegoU32>(p_wrapWidth) && i > breakIndex) {
+							i--;
+							LegoU16 textChar = *p_string->FromCursor(i);
+							LegoU32 charWidth;
+
+							if (textChar == ' ') {
+								charWidth = font->m_charSpacing + font->m_spaceWidth;
+							}
+							else {
+								LegoU32 glyphIndex = font->FindGlyphIndex(textChar);
+								charWidth = font->m_glyphs[glyphIndex].m_width + font->m_charSpacing;
+							}
+
+							lineWidth -= charWidth;
+						}
+					}
+					else {
+						i = breakIndex;
+						lineWidth -= wordWidth;
+					}
+				}
+
+				LegoS32 drawX = p_x;
+				if (p_unk0x2c == 1 && static_cast<LegoU32>(p_wrapWidth) > lineWidth) {
+					drawX += (p_wrapWidth - lineWidth) >> 1;
+				}
+
+				while (lineStart < i) {
+					LegoU32 count = i - lineStart;
+					if (count > sizeOfArray(g_glyphIndexBuffer)) {
+						count = sizeOfArray(g_glyphIndexBuffer);
+					}
+
+					for (LegoU32 j = 0; j < count; j++) {
+						LegoU16 textChar = *p_string->FromCursor(lineStart);
+						g_glyphIndexBuffer[j] = static_cast<LegoU8>(font->FindGlyphIndex(textChar));
+						lineStart++;
+					}
+
+					drawX = font->DrawGlyphRun(
+						count,
+						p_renderer,
+						drawX,
+						p_y,
+						p_scaleX,
+						p_scaleY,
+						p_rect,
+						reinterpret_cast<undefined4>(p_color)
+					);
+				}
+
+				p_y += p_unk0x18;
+
+				if (*p_string->FromCursor(i) == '\r') {
+					i++;
+					lineBreak = TRUE;
+				}
+
+				if (*p_string->FromCursor(i) == '\n') {
+					i++;
+					lineBreak = TRUE;
+				}
+			}
+		}
+	}
+
+	if (FALSE) {
+		return 0;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004092b0
+LegoU32 GolFontBase::FindGlyphIndex(LegoU16 p_char)
+{
+	LegoS32 low = 0;
+	LegoS32 high = m_glyphCount - 1;
+	LegoS32 mid = static_cast<LegoU32>(m_glyphCount) >> 1;
+
+	while (low <= high) {
+		LegoU16 glyphChar = m_glyphs[mid].m_char;
+		if (glyphChar == p_char) {
+			break;
+		}
+
+		if (glyphChar > p_char) {
+			high = mid - 1;
+		}
+		else {
+			low = mid + 1;
+		}
+
+		mid = (high + low) >> 1;
+	}
+
+	if (low > high) {
+		mid = 0;
+	}
+
+	return mid;
+}
+
 // FUNCTION: GOLDP 0x1001eaa0
 void GolFontBase::DrawString(
 	const LegoChar* p_string,
@@ -608,6 +1009,7 @@ LegoS32 GolFontBase::DrawStringFitted(
 }
 
 // FUNCTION: GOLDP 0x1001ed00
+// FUNCTION: LEGORACERS 0x00409300
 LegoS32 GolFontBase::DrawGlyphRun(
 	LegoU32 p_count,
 	GolRenderDevice* p_renderer,
@@ -705,6 +1107,7 @@ LegoS32 GolFontBase::DrawGlyphRun(
 }
 
 // FUNCTION: GOLDP 0x1001ef60
+// FUNCTION: LEGORACERS 0x00409560
 LegoBool32 GolFontBase::ComputeClipRect(GolRenderDevice* p_renderer, Rect* p_rect, Rect* p_result)
 {
 	Rect* result = p_result;
@@ -761,6 +1164,7 @@ LegoBool32 GolFontBase::ComputeClipRect(GolRenderDevice* p_renderer, Rect* p_rec
 }
 
 // FUNCTION: GOLDP 0x1001f090
+// FUNCTION: LEGORACERS 0x00409690
 void GolFontBase::ClipRects(
 	Rect* p_clipRect,
 	Rect* p_sourceRect,

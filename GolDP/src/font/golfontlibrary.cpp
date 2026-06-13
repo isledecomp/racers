@@ -1,8 +1,8 @@
 #include "font/golfontlibrary.h"
 
-#include "font/golfontbase.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golfontbase.h"
 #include "golhashtable.h"
 #include "golstream.h"
 #include "golstring.h"

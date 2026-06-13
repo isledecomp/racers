@@ -1,6 +1,6 @@
 #include "menu/widgets/menutextentry.h"
 
-#include "font/golfontbase.h"
+#include "golfontbase.h"
 
 #include <string.h>
 

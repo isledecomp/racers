@@ -100,6 +100,7 @@ set(COMMON_SOURCES
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp
+  common/src/golfontbase.cpp
   common/src/goltransformbase.cpp
   common/src/golscenenode.cpp
   common/src/whitefalcon0x140light.cpp
@@ -127,7 +128,6 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
   GolDP/src/bounds/golboundingshape.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
-  GolDP/src/font/golfontbase.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/surface/silverdune0x30.cpp
   GolDP/src/image/utopianpan0xa4.cpp
@@ -194,7 +194,6 @@ add_library(goldp SHARED
   GolDP/src/material/golmateriallibrary.cpp
   GolDP/src/material/amberhaze0x20.cpp
   GolDP/src/font/golfontlibrary.cpp
-  GolDP/src/font/golfontbase.cpp
   GolDP/src/material/goltexturelist.cpp
   GolDP/src/material/purpleribbon0x24.cpp
   GolDP/src/surface/purpledune0x7c.cpp
@@ -260,7 +259,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/app/main.cpp
   LEGORacers/src/app/gamemain.cpp
   LEGORacers/src/app/golappeventhandler.cpp
-  LEGORacers/src/gol/golfontbase.cpp
   LEGORacers/src/app/legoracers.cpp
   LEGORacers/src/app/win32golapp.cpp
   LEGORacers/src/audio/musicinstance.cpp

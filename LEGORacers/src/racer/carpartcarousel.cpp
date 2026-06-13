@@ -22,11 +22,7 @@ extern const LegoFloat g_twoPi = 6.2831855f;
 // GLOBAL: LEGORACERS 0x004b3c0c
 LegoFloat g_maxFloat = FLT_MAX;
 
-// GLOBAL: LEGORACERS 0x004bf9b4
-LegoFloat g_carPartCarouselVectorZ = 0.76516724f;
-
-// GLOBAL: LEGORACERS 0x004c05b4
-LegoFloat g_carPartCarouselVectorX = 0.64383155f;
+extern LegoFloat g_cosineTable[1024];
 
 // FUNCTION: LEGORACERS 0x00485200
 CarPartCarousel::CarPartCarousel()
@@ -151,8 +147,8 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00485550
 void CarPartCarousel::VTable0x5c(undefined4, GolModelEntity* p_entity)
 {
-	LegoFloat vectorX = g_carPartCarouselVectorX;
-	LegoFloat vectorZ = g_carPartCarouselVectorZ;
+	LegoFloat vectorX = g_cosineTable[c_vectorXCosineIndex];
+	LegoFloat vectorZ = g_cosineTable[c_vectorZCosineIndex];
 	GolVec3 axis = {1.0f, 0.0f, 0.0f};
 	GolVec3 vector = {vectorX, 0.0f, vectorZ};
 

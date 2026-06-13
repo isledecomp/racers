@@ -169,6 +169,8 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 	undefined4
 )
 {
+	STUB(0x00481c80);
+
 	LegoBool32 result = TRUE;
 
 	if (m_unk0x364) {
@@ -179,17 +181,15 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 		return FALSE;
 	}
 
-	ActiveRecordBuffer& buffer = m_context->m_saveSystem.GetActiveRecord();
-
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		if (p_event->m_device == m_unk0x2b70[i]) {
-			SaveRecordList::Record* record = buffer.GetSelectedRecord(i);
+			SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i);
 
 			switch (p_event->m_keyCode) {
 			case 0x10000001:
 			case 0x30000005:
 				if (record != NULL) {
-					buffer.SetSelectedRecord(i, NULL);
+					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, NULL);
 					FUN_00481bf0(i);
 				}
 				else {
@@ -199,9 +199,10 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 				}
 				break;
 			case 0x10000039:
+			case 0x1000009c:
 			case 0x30000004:
 				if (record == NULL) {
-					buffer.SetSelectedRecord(i, m_unk0x22dc[i].FUN_004430b0());
+					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, m_unk0x22dc[i].FUN_004430b0());
 					FUN_00481b60(i);
 					m_unk0x360 = 0x41;
 					FUN_00486890(i);
@@ -251,7 +252,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 
 	if (m_unk0x360 == 0x41) {
 		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-			if (buffer.GetSelectedRecord(i) == NULL) {
+			if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
 				m_unk0x360 = 0xffff;
 				break;
 			}

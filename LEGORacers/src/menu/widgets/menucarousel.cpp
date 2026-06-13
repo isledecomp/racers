@@ -62,6 +62,7 @@ void MenuCarousel::VTable0x14(VisualStateColor* p_visualState)
 	MenuWidget::VTable0x14(p_visualState);
 }
 
+// Keep this null-return override in the scene-widget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
 MenuWidget* MenuCarousel::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
@@ -198,41 +199,37 @@ void MenuScrollCarousel::FUN_0046da60()
 	}
 }
 
-// STUB: LEGORACERS 0x0046da80
+// FUNCTION: LEGORACERS 0x0046da80
 void MenuCarouselNavigator::VTable0x5c(MenuWidget* p_child)
 {
 	Rect rect = *p_child->GetRect();
 
 	MenuStyleTable::CarouselStyle* style = m_unk0x58;
-
-	LegoS32 right = rect.m_right;
-	LegoS32 left = rect.m_left;
+	LegoS32 width = rect.m_right;
 	if (style->m_unk0x10) {
-		right = m_unk0x34.m_right;
-		left = m_unk0x34.m_left;
+		width = m_unk0x34.m_right;
+		width -= m_unk0x34.m_left;
 	}
-
-	LegoS32 width = right - left;
+	else {
+		width -= rect.m_left;
+	}
 
 	Rect slot;
 	MenuWidget* prev = p_child->GetPrevSibling();
 	if (prev) {
-		left = prev->GetRect()->m_right;
-		slot.m_left = left;
+		slot.m_left = prev->GetRect()->m_right;
 
 		if (style->m_unk0x10) {
-			left = ((left + width - 1) / width) * width;
-			slot.m_left = left;
+			slot.m_left = ((slot.m_left + width - 1) / width) * width;
 		}
 	}
 	else {
-		left = 0;
-		slot.m_left = left;
+		slot.m_left = 0;
 	}
 
 	slot.m_top = rect.m_top;
 	slot.m_bottom = rect.m_bottom;
-	slot.m_right = left + width;
+	slot.m_right = slot.m_left + width;
 
 	if (style->m_unk0x10) {
 		FUN_00472c80(&slot, &rect);

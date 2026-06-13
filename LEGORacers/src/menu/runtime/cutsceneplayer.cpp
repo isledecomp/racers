@@ -188,6 +188,8 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	GolVec3* p_param4
 )
 {
+	STUB(0x00489d70);
+
 	Runtime* runtime = static_cast<Runtime*>(GetName(p_param1));
 
 	LegoU32 refIndex = 0;
@@ -199,33 +201,35 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 		return NULL;
 	}
 
-	CutsceneParticle* particle = NULL;
 	LegoU8 lowestPriority = 0xff;
-	LegoU32 particleIndex = 0;
+	CutsceneParticle* particle = NULL;
+	LegoU32 particleIndex;
 
-	while (particleIndex < m_numParticles && m_particles[particleIndex].IsActive()) {
-		Runtime* activeRuntime = m_particles[particleIndex].GetRuntime();
-		if (activeRuntime == NULL) {
-			lowestPriority = 0;
-			particle = &m_particles[particleIndex];
+	for (particleIndex = 0; particleIndex < m_numParticles; particleIndex++) {
+		CutsceneParticle* currentParticle = &m_particles[particleIndex];
+		if (!currentParticle->IsActive()) {
+			particle = currentParticle;
 			break;
 		}
 
-		if (activeRuntime->GetPriority() <= lowestPriority) {
-			lowestPriority = activeRuntime->GetPriority();
-			particle = &m_particles[particleIndex];
+		Runtime* activeRuntime = currentParticle->GetRuntime();
+		if (activeRuntime != NULL) {
+			if (activeRuntime->GetPriority() <= lowestPriority) {
+				lowestPriority = activeRuntime->GetPriority();
+				particle = currentParticle;
+			}
+		}
+		else {
+			lowestPriority = 0;
+			particle = currentParticle;
+		}
+	}
+
+	if (particleIndex >= m_numParticles) {
+		if (runtime->GetPriority() <= lowestPriority) {
+			return NULL;
 		}
 
-		particleIndex++;
-	}
-
-	if (particleIndex < m_numParticles && !m_particles[particleIndex].IsActive()) {
-		particle = &m_particles[particleIndex];
-	}
-	else if (runtime->GetPriority() <= lowestPriority) {
-		return NULL;
-	}
-	else {
 		CutsceneParticleRef* oldRef = particle->GetRef();
 		if (oldRef != NULL) {
 			oldRef->m_unk0x00 = NULL;
@@ -1632,6 +1636,8 @@ void CutscenePlayer::FUN_004a2730(
 	GolNameTable& p_unk0x10
 )
 {
+	STUB(0x004a2730);
+
 	if (p_unk0x0c != NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
@@ -1979,6 +1985,8 @@ void CutscenePlayer::FUN_004a2f30(GolD3DRenderDevice* p_renderer)
 // STUB: LEGORACERS 0x004a2f80
 void CutscenePlayer::FUN_004a2f80(GolCamera* p_lens)
 {
+	STUB(0x004a2f80);
+
 	GolVec3 position;
 	GolVec3 right;
 	GolVec3 forward;
@@ -2309,11 +2317,37 @@ void CutsceneAnimationEvent::VTable0x14()
 	}
 }
 
-// STUB: LEGORACERS 0x004a3c90
-void CutsceneAnimationEvent::VTable0x10(const GolVec3*, const GolVec3*, const GolVec3*)
+// FUNCTION: LEGORACERS 0x004a3c90
+void CutsceneAnimationEvent::VTable0x10(const GolVec3* p_a, const GolVec3* p_b, const GolVec3* p_c)
 {
 	if (m_unk0x18 == NULL) {
-		VTable0x14();
+		if ((m_unk0x48 & 8) && m_unk0x0c) {
+			FUN_0049fe30(m_unk0x4c, &m_unk0x24);
+			FUN_0049fec0(m_unk0x4c, &m_unk0x30, &m_unk0x3c);
+			FUN_004a3db0();
+			return;
+		}
+
+		if (!(m_unk0x48 & 1)) {
+			if (m_unk0x04 != NULL) {
+				m_unk0x04->VTable0x04(&m_unk0x24);
+			}
+			else {
+				m_unk0x24 = *p_a;
+			}
+		}
+
+		if (!(m_unk0x48 & 2)) {
+			if (m_unk0x04 != NULL) {
+				m_unk0x04->VTable0x48(&m_unk0x30, &m_unk0x3c);
+			}
+			else {
+				m_unk0x30 = *p_b;
+				m_unk0x3c = *p_c;
+			}
+		}
+
+		FUN_004a3db0();
 	}
 }
 
@@ -2600,6 +2634,8 @@ void CutsceneStreamingSoundEvent::VTable0x14()
 // STUB: LEGORACERS 0x004a43a0
 void CutsceneStreamingSoundEvent::FUN_004a43a0(const GolVec3* p_position)
 {
+	STUB(0x004a43a0);
+
 	if (m_unk0x30 == NULL) {
 		m_unk0x30 = m_unk0x14->CreateStreamingSoundInstance(m_unk0x2e);
 		m_unk0x30->Play(m_unk0x2c);
@@ -2670,6 +2706,8 @@ void CutsceneStreamingSoundEvent::VTable0x18()
 // STUB: LEGORACERS 0x004a44f0
 void CutsceneStreamingSoundEvent::FUN_004a44f0()
 {
+	STUB(0x004a44f0);
+
 	if (m_unk0x30) {
 		if (!m_unk0x30->IsPlaying()) {
 			if (m_unk0x48 & c_flagBit3) {
@@ -2724,7 +2762,7 @@ void CutsceneMenuAnimationEvent::Reset()
 	m_unk0x23 = 0;
 }
 
-// STUB: LEGORACERS 0x004a49e0
+// FUNCTION: LEGORACERS 0x004a49e0
 void CutsceneMenuAnimationEvent::Parse(
 	GolFileParser* p_parser,
 	CutscenePlayer* p_owner,
@@ -2733,8 +2771,8 @@ void CutsceneMenuAnimationEvent::Parse(
 )
 {
 	GolName materialName;
-	LegoBool hasMaterialName = FALSE;
 
+	materialName[0] = '\0';
 	m_unk0x14 = p_animationList;
 	p_parser->ReadLeftCurly();
 
@@ -2746,20 +2784,21 @@ void CutsceneMenuAnimationEvent::Parse(
 			break;
 		case GolFileParser::e_unknown0x62: {
 			GolFileParser::ParserTokenType mode = p_parser->GetNextToken();
-			if (mode == GolFileParser::e_unknown0x63) {
+			switch (mode) {
+			case GolFileParser::e_unknown0x63:
 				m_unk0x28 |= 1;
-			}
-			else if (mode == GolFileParser::e_unknown0x64) {
+				break;
+			case GolFileParser::e_unknown0x64:
 				m_unk0x28 |= 2;
-			}
-			else {
+				break;
+			default:
 				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
 			}
 			break;
 		}
 		case GolFileParser::e_unknown0x65:
 			::strncpy(materialName, p_parser->ReadString(), sizeof(GolName));
-			hasMaterialName = TRUE;
 			break;
 		case GolFileParser::e_unknown0x66:
 			m_unk0x20 = static_cast<LegoU8>(p_parser->ReadInteger());
@@ -2774,7 +2813,7 @@ void CutsceneMenuAnimationEvent::Parse(
 		token = p_parser->GetNextToken();
 	}
 
-	if (hasMaterialName) {
+	if (materialName[0] != '\0') {
 		m_unk0x18 = p_renderer->FindMaterialByName(materialName);
 	}
 }

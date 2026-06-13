@@ -27,6 +27,29 @@ public:
 	// SIZE 0x1fc
 	class CdbTxtParser : public GolTxtParser {};
 
+	enum ParserToken {
+		c_tokenCameraBlock = 0x29,
+		c_tokenCameraName = 0x2a,
+		c_tokenStartFrame = 0x2b,
+		c_tokenDuration = 0x2c,
+		c_tokenAnimationSequence = 0x2d,
+		c_tokenModelBlock = 0x2e,
+		c_tokenStaticModelName = 0x2f,
+		c_tokenJointedModelName = 0x30,
+		c_tokenBspModelName = 0x31,
+		c_tokenIndexedModelRef = 0x32,
+		c_tokenLocation = 0x33,
+		c_tokenOrientation = 0x34,
+		c_tokenAmbientLightBlock = 0x35,
+		c_tokenMaterialAnimationRefs = 0x36,
+		c_tokenTransformBlock = 0x37,
+		c_tokenLightColor = 0x38,
+		c_tokenLightDirection = 0x39,
+		c_tokenDirectionalLightBlock = 0x3a,
+		c_tokenSpeed = 0x3b,
+		c_tokenBlinkTiming = 0x3c,
+	};
+
 	// SIZE 0xb8
 	class Frame {
 	public:
@@ -67,13 +90,21 @@ public:
 		// SIZE 0x68
 		class ModelEvent : public Event {
 		public:
+			enum ModelRefType {
+				c_modelRefNone = 0,
+				c_modelRefStaticModel = 1,
+				c_modelRefJointedModel = 2,
+				c_modelRefBspModel = 3,
+				c_modelRefIndexedModel = 4,
+			};
+
 			// SIZE 0x08
 			struct ModelIndexRef {
 				LegoU32 m_resourceIndex; // 0x00
 				LegoU32 m_modelIndex;    // 0x04
 			};
 
-			// Tagged by m_unk0x20: cases 1-3 use m_name, case 4 uses m_indexedRef.
+			// Tagged by m_modelRefType: name refs use m_name, indexed refs use m_indexedRef.
 			// SIZE 0x08
 			union ModelRef {
 				GolName m_name;             // 0x00
@@ -110,7 +141,7 @@ public:
 			// CutsceneDefinition::Frame::ModelEvent::`vector deleting destructor'
 
 		private:
-			LegoU32 m_unk0x20;             // 0x20
+			ModelRefType m_modelRefType;   // 0x20
 			GolWorldEntity* m_unk0x24;     // 0x24
 			CutsceneDefinition* m_unk0x28; // 0x28
 			ModelRef m_unk0x2c;            // 0x2c

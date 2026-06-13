@@ -272,7 +272,7 @@ void GolWorldEntity::VTable0x24(ColorTransform0x20*)
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolWorldEntity::VTable0x3c(const GolMatrix34&)
+void GolWorldEntity::VTable0x3c(const GolMatrix3&)
 {
 	// empty
 }

@@ -221,6 +221,8 @@ LegoBool32 DriverModelBuilder::FitsOutputModel() const
 // STUB: LEGORACERS 0x0049d600
 void DriverModelBuilder::FUN_0049d600()
 {
+	STUB(0x0049d600);
+
 	GolModelMaterialTable* outputMaterials = m_outputSummary.m_model->GetMaterialTable();
 	GolModelMaterialTable* headMaterials = m_headSummary.m_model->GetMaterialTable();
 	LegoU32 outputIndex = static_cast<LegoU32>(m_bodySummary.m_materialCount);
@@ -242,6 +244,8 @@ void DriverModelBuilder::FUN_0049d600()
 // STUB: LEGORACERS 0x0049d670
 LegoBool32 DriverModelBuilder::FUN_0049d670(GolModelBase* p_model) const
 {
+	STUB(0x0049d670);
+
 	if (p_model == NULL || p_model->GetGroups() == NULL) {
 		return TRUE;
 	}
@@ -260,16 +264,17 @@ LegoBool32 DriverModelBuilder::FUN_0049d670(GolModelBase* p_model) const
 // STUB: LEGORACERS 0x0049d6e0
 GolModelBase* DriverModelBuilder::FUN_0049d6e0(undefined2 p_vertexType)
 {
+	STUB(0x0049d6e0);
+
 	GolModelBase* model = m_golExport->VTable0x14();
 	if (model == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
+	GdbVertexArray0xc* vertexArray;
+	m_bodySummary.m_model->VTable0x28(&vertexArray);
 	if (p_vertexType == 0) {
-		GdbVertexArray0xc* vertexArray;
-		m_bodySummary.m_model->VTable0x28(&vertexArray);
 		p_vertexType = vertexArray->GetVertexType();
-		m_bodySummary.m_model->VTable0x2c(0, FALSE);
 	}
 
 	model->VTable0x18(
@@ -292,6 +297,8 @@ void DriverModelBuilder::CopyModelVertices(
 	LegoU32 p_vertexOffset
 )
 {
+	STUB(0x0049d790);
+
 	GdbVertexArray0xc* sourceVertices;
 	GdbVertexArray0xc* destVertices;
 	p_sourceModel->VTable0x28(&sourceVertices);
@@ -324,6 +331,8 @@ void DriverModelBuilder::CopyModelVertices(
 // STUB: LEGORACERS 0x0049d880
 void DriverModelBuilder::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
 {
+	STUB(0x0049d880);
+
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
 	IGdbModelIndexArray0x8* destIndexArrayBase;
 	p_sourceModel->VTable0x30(&sourceIndexArrayBase);
@@ -348,6 +357,8 @@ void DriverModelBuilder::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase*
 // STUB: LEGORACERS 0x0049d920
 void DriverModelBuilder::FUN_0049d920()
 {
+	STUB(0x0049d920);
+
 	GolModelBase* bodyModel = m_bodySummary.m_model;
 	GolModelBase* outputModel = m_outputSummary.m_model;
 	CopyModelVertices(bodyModel, outputModel, 0);
@@ -371,6 +382,8 @@ void DriverModelBuilder::MergeHeadModel()
 // STUB: LEGORACERS 0x0049d9b0
 void DriverModelBuilder::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
+	STUB(0x0049d9b0);
+
 	GolModelMaterialTable* materialTable = m_outputSummary.m_model->GetMaterialTable();
 	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
 	if (params == NULL) {
@@ -499,6 +512,8 @@ void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, DriverCosmet
 // STUB: LEGORACERS 0x0049dd50
 void DriverModelBuilder::FUN_0049dd50()
 {
+	STUB(0x0049dd50);
+
 	GolModelBase* bodyModel = m_bodySummary.m_model;
 	GolModelBase* headModel = m_headSummary.m_model;
 	GolModelBase* outputModel = m_outputSummary.m_model;

@@ -49,6 +49,7 @@ public:
 	GolWorldDatabase** GetUnk0x5cAddress() { return &m_unk0x5c; }
 	GolWorldDatabase* GetUnk0x60() const { return m_unk0x60; }
 	GolCamera* GetUnk0x64() const { return m_unk0x64; }
+	void SetUnk0x6c(undefined4 p_unk0x6c) { m_unk0x6c = p_unk0x6c; }
 
 	// SYNTHETIC: LEGORACERS 0x00465730
 	// MenuSceneView::`scalar deleting destructor'

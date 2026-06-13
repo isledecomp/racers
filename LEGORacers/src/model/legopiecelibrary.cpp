@@ -21,6 +21,12 @@ LegoPieceLibrary* g_pieceLibraryList;
 static const LegoS32 g_highPieceTypeBase = 0x800;
 static const LegoU8 g_shapeCellValueMask = 0x3f;
 
+// GLOBAL: LEGORACERS 0x004b4948
+static const LegoFloat g_pieceLibraryColorScale = 1.0f / 256.0f;
+
+// GLOBAL: LEGORACERS 0x004b494c
+static const LegoFloat g_pieceLibraryTextureCoordinateScale = 1.0f / 1024.0f;
+
 static void SkipCurrentBlock(GolFileParser& p_parser);
 static LegoS32 ComparePieceRecords(const void* p_lhs, const void* p_rhs);
 
@@ -70,6 +76,13 @@ LegoPieceLibrary::ShapeCell* LegoPieceLibrary::ShapeCell::GetCell(LegoS32 p_x, L
 	}
 
 	return &cells[index];
+}
+
+// FUNCTION: LEGORACERS 0x0049eae0
+LegoS32 LegoPieceLibrary::ShapeCell::FUN_0049eae0()
+{
+	LegoS32 index = static_cast<LegoS32>(m_second) * static_cast<LegoS32>(m_first) + 1;
+	return (this[index].m_second << 8) + this[index].m_first;
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
@@ -123,29 +136,26 @@ LegoS32 LegoPieceLibrary::PieceRecord::SetName(const LegoChar* p_name)
 	LegoS32 length = 0;
 	LegoChar value = *p_name;
 
-	if (value != 0) {
-		do {
-			if (length >= 8) {
-				m_name[8] = 0;
-				return length;
-			}
-
-			p_name++;
-			m_name[length] = value;
-			length++;
-			value = *p_name;
-		} while (value != 0);
-
+	while (value) {
 		if (length >= 8) {
-			m_name[8] = 0;
-			return length;
+			break;
 		}
+
+		p_name++;
+		m_name[length] = value;
+		length++;
+		value = *p_name;
 	}
 
-	::memset(&m_name[length], 0, 8 - length);
+	if (length < 8) {
+		::memset(&m_name[length], 0, 8 - length);
+		m_name[8] = 0;
+		return 0;
+	}
+
 	m_name[8] = 0;
 
-	return 0;
+	return length;
 }
 
 // STUB: LEGORACERS 0x0049ebf0
@@ -155,19 +165,19 @@ LegoS32 LegoPieceLibrary::PieceRecord::CompareName(const LegoChar* p_name) const
 
 	LegoChar value = m_name[0];
 	const LegoChar* cursor = m_name;
-	if (value != '\0') {
+
+	if (value) {
 		do {
 			LegoS32 result = tolower(*p_name);
-			LegoS32 lowerValue = tolower(value);
-			result -= lowerValue;
-			if (result != 0) {
+			result -= tolower(value);
+			if (result) {
 				return result;
 			}
 
 			value = cursor[1];
 			p_name++;
 			cursor++;
-		} while (value != '\0');
+		} while (value);
 	}
 
 	return tolower(*p_name);
@@ -252,8 +262,37 @@ void LegoPieceLibrary::Reset()
 	m_maxLowPieceOffset = 0;
 }
 
+// FUNCTION: LEGORACERS 0x0049ed60
+LegoBool32 LegoPieceLibrary::IsColorBlack(LegoS32 p_index) const
+{
+	Color* color = &m_colors[p_index];
+	if (static_cast<LegoU8>(color->m_red) == 0 && static_cast<LegoU8>(color->m_green) == 0 &&
+		static_cast<LegoU8>(color->m_blue) == 0) {
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x0049ed90
+void LegoPieceLibrary::GetColor(LegoS32 p_index, LegoFloat* p_red, LegoFloat* p_green, LegoFloat* p_blue) const
+{
+	Color* color = &m_colors[p_index];
+	*p_red = static_cast<LegoFloat>(color->m_red) * g_pieceLibraryColorScale;
+	*p_green = static_cast<LegoFloat>(color->m_green) * g_pieceLibraryColorScale;
+	*p_blue = static_cast<LegoFloat>(color->m_blue) * g_pieceLibraryColorScale;
+}
+
+// FUNCTION: LEGORACERS 0x0049edf0
+void LegoPieceLibrary::GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, LegoFloat* p_v) const
+{
+	TextureCoordinate* textureCoordinate = &m_textureCoordinates[p_index];
+	*p_u = static_cast<LegoFloat>(textureCoordinate->m_u) * g_pieceLibraryTextureCoordinateScale;
+	*p_v = static_cast<LegoFloat>(textureCoordinate->m_v) * g_pieceLibraryTextureCoordinateScale;
+}
+
 // STUB: LEGORACERS 0x0049ee30
-void LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary)
+LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary)
 {
 	STUB(0x0049ee30);
 
@@ -331,7 +370,7 @@ void LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_bin
 		case GolFileParser::e_unknown0x2a: {
 			m_colorTripleCount = ReadBracketedCountAndLeftCurly(parser);
 			m_colorTriples = new LegoU8[m_colorTripleCount * 3];
-			if (m_colorTriples == NULL) {
+			if (m_colors == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			LegoS32 i;
@@ -445,6 +484,8 @@ void LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_bin
 	if (m_maxLowPieceOffset < lowPieceOffset) {
 		m_maxLowPieceOffset = lowPieceOffset;
 	}
+
+	return lowPieceOffset;
 }
 
 // FUNCTION: LEGORACERS 0x0049f410
@@ -482,13 +523,14 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 			LegoS32 right = count;
 			LegoS32 left = 0;
 			LegoS32 middle = count >> 1;
-			LegoU32 currentType = pieces[middle].m_pieceType;
-			if (p_pieceType == static_cast<LegoS32>(currentType)) {
+			LegoS32 currentType = pieces[middle].m_pieceType;
+			LegoS32 pieceType = p_pieceType;
+			if (pieceType == currentType) {
 				return pieces[middle].GetVariant(p_variant);
 			}
 
 			while (middle != left) {
-				if (p_pieceType >= static_cast<LegoS32>(currentType)) {
+				if (pieceType >= currentType) {
 					left = middle;
 				}
 				else {
@@ -497,7 +539,7 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 
 				middle = (right + left) >> 1;
 				currentType = pieces[middle].m_pieceType;
-				if (p_pieceType == static_cast<LegoS32>(currentType)) {
+				if (pieceType == currentType) {
 					return pieces[middle].GetVariant(p_variant);
 				}
 			}
@@ -531,4 +573,66 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::PieceRecord::GetVariant(LegoS32
 
 	PieceRecord* firstVariant = this - m_variantIndex;
 	return &firstVariant[p_variant];
+}
+
+// STUB: LEGORACERS 0x0049f560
+LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
+	LegoS32 p_x,
+	LegoS32 p_y,
+	LegoS32 p_height,
+	LegoS32 p_rotation,
+	LegoS32* p_unk0x14,
+	LegoS32* p_unk0x18,
+	LegoS32* p_unk0x1c
+)
+{
+	STUB(0x0049f560);
+
+	*p_unk0x1c = 0;
+	*p_unk0x18 = 0;
+	*p_unk0x14 = 0;
+
+	LegoS32 rotation = p_rotation & 3;
+	LegoS32 width;
+	LegoS32 height;
+	if (rotation & 1) {
+		width = GetHeight();
+		height = GetWidth();
+	}
+	else {
+		width = GetWidth();
+		height = GetHeight();
+	}
+
+	LegoS32 result = 0;
+	for (LegoS32 y = 0; y < height; y++) {
+		for (LegoS32 x = 0; x < width; x++) {
+			ShapeCell* cell = GetCell(x, y, static_cast<LegoU8>(rotation));
+			LegoS32 upper = cell->m_first & g_shapeCellValueMask;
+			LegoS32 lower = cell->m_second & g_shapeCellValueMask;
+			if (lower > upper) {
+				lower = 0;
+			}
+
+			LegoS32 delta = upper - lower;
+			result += delta;
+			*p_unk0x14 += delta * (x + p_x);
+			*p_unk0x18 += delta * (y + p_y);
+			for (LegoS32 z = lower; z < upper; z++) {
+				*p_unk0x1c += z + p_height;
+			}
+		}
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x0049f690
+LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f690() const
+{
+	if (m_pieceType < g_highPieceTypeBase) {
+		return m_shapeData->FUN_0049eae0();
+	}
+
+	return 0xffff;
 }

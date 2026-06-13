@@ -86,22 +86,19 @@ void LegoColorTable::Destroy()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00497980
+// FUNCTION: LEGORACERS 0x00497980
 void LegoColorTable::RebuildColorMaterialLookup()
 {
-	STUB(0x00497980);
-
 	LegoS32 materialCount = static_cast<LegoS32>(m_materialTable.m_count);
 
 	for (LegoS32 i = 0; i < m_colorRecordCount; i++) {
-		ColorRecord& record = m_colorRecords[i];
-		m_colorMaterialIndices[record.m_materialIndex] = -1;
+		m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = -1;
 		for (LegoS32 j = 0; j < materialCount; j++) {
 			DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(m_materialTable.m_entries[j]);
 			DuskWindName0x8 materialName = material->GetNameRecord();
-			if (::strncmp(materialName.m_unk0x0, record.m_name, sizeof(GolName)) == 0) {
-				m_colorMaterialIndices[record.m_materialIndex] = j;
-				break;
+			if (::strncmp(materialName.m_unk0x0, m_colorRecords[i].m_name, sizeof(GolName)) == 0) {
+				m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = j;
+				j = materialCount;
 			}
 		}
 	}
@@ -227,15 +224,13 @@ void LegoColorTable::ResetMaterialUsage()
 	}
 }
 
-// STUB: LEGORACERS 0x00497d40
+// FUNCTION: LEGORACERS 0x00497d40
 void LegoColorTable::MarkMaterialUsed(LegoS32 p_materialIndex)
 {
-	STUB(0x00497d40);
-
-	MaterialUsage* usage = &m_materialUsage[p_materialIndex];
-	if (!usage->m_used) {
-		usage->m_used = TRUE;
-		usage->m_order = static_cast<LegoU16>(m_usedMaterialCount);
+	LegoU8 used = m_materialUsage[p_materialIndex].m_used;
+	if (!used) {
+		m_materialUsage[p_materialIndex].m_used = TRUE;
+		m_materialUsage[p_materialIndex].m_order = static_cast<LegoU16>(m_usedMaterialCount);
 		m_usedMaterialCount++;
 
 		DuskwindBananaRelic0x24* material =
@@ -246,33 +241,28 @@ void LegoColorTable::MarkMaterialUsed(LegoS32 p_materialIndex)
 	}
 }
 
-// STUB: LEGORACERS 0x00497d80
+// FUNCTION: LEGORACERS 0x00497d80
 LegoS32 LegoColorTable::FindColorRecordIndexByName(const LegoChar* p_name) const
 {
-	STUB(0x00497d80);
-
 	LegoS32 right = m_colorRecordCount;
-	LegoS32 left = 0;
 	LegoS32 middle = right >> 1;
+	LegoS32 left = 0;
 	LegoS32 comparison = ::strncmp(m_colorRecords[middle].m_name, p_name, sizeof(m_colorRecords[middle].m_name));
 
-	if (comparison != 0) {
-		while (middle != right) {
-			if (comparison < 0) {
-				left = middle;
-			}
-			else {
-				right = middle;
-			}
-
-			middle = (right + left) >> 1;
-			comparison = ::strncmp(m_colorRecords[middle].m_name, p_name, sizeof(m_colorRecords[middle].m_name));
-			if (comparison == 0) {
-				return m_colorRecords[middle].m_materialIndex;
-			}
+	while (comparison != 0) {
+		if (middle == right) {
+			return -1;
 		}
 
-		return -1;
+		if (comparison < 0) {
+			left = middle;
+		}
+		else {
+			right = middle;
+		}
+
+		middle = (right + left) >> 1;
+		comparison = ::strncmp(m_colorRecords[middle].m_name, p_name, sizeof(m_colorRecords[middle].m_name));
 	}
 
 	return m_colorRecords[middle].m_materialIndex;

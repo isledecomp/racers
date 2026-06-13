@@ -347,7 +347,7 @@ void MenuManager::FUN_0042d0e0()
 			sizeof(m_unk0x04.m_context->m_saveState)
 		);
 		m_unk0x04.m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit2;
-		m_unk0x04.m_saveSystem.GetGameState().FUN_0042eb60(
+		m_unk0x04.m_saveSystem.GetGameState().LoadFromSaveGame(
 			saveGame,
 			m_unk0x04.m_saveSystem.GetGameState().GetActiveSaveIndex()
 		);
@@ -548,6 +548,8 @@ void MenuManager::Run()
 // STUB: LEGORACERS 0x0042d730
 void MenuManager::FUN_0042d730()
 {
+	STUB(0x0042d730);
+
 	GolString string;
 	GolRenderDevice::MaterialColor materialColor;
 	GolRenderDevice::Light light;
@@ -697,9 +699,9 @@ void MenuManager::FUN_0042d730()
 		FUN_0042dcb0(record, slot, &rendererState);
 		FUN_0042dfa0(record, slot, &rendererState);
 
-		recordStates[selectedIndex].m_unk0x00 = record->m_unk0x08;
-		recordStates[selectedIndex].m_unk0x04 = record->m_unk0x0c;
-		recordStates[selectedIndex].m_unk0x08 = record->m_recordId;
+		recordStates[selectedIndex].m_recordSource = record->m_recordSource;
+		recordStates[selectedIndex].m_saveIndex = record->m_saveIndex;
+		recordStates[selectedIndex].m_recordId = record->m_recordId;
 
 		record->GetCosmetics(&slot->m_cosmetics);
 		slot->m_unk0x10 = 0;
@@ -841,6 +843,8 @@ void MenuManager::FUN_0042dfa0(
 	AmethystBreeze0x104* p_rendererState
 )
 {
+	STUB(0x0042dfa0);
+
 	GolAnimatedEntity entity;
 	CmbModelPart0x34 modelParts;
 	LegoU32 textureCount;
@@ -1036,6 +1040,8 @@ LegoBool32 MenuManager::FUN_0042e450()
 // STUB: LEGORACERS 0x0042e490
 LegoS32 MenuManager::FUN_0042e490()
 {
+	STUB(0x0042e490);
+
 	LegoU8 flags = m_unk0x04.m_context->m_unk0x1e;
 
 	if (!(flags & LegoRacers::Context::c_flagBestTimesPending)) {
@@ -1128,10 +1134,6 @@ void MenuManager::VTable0x00()
 // FUNCTION: LEGORACERS 0x0042e720
 void MenuManager::FUN_0042e720()
 {
-	enum {
-		c_maxScreenshotIndex = 9999
-	};
-
 	GolBmpWriterFile bmpWriter;
 	GolHashTable::Entry* currentEntry;
 	LegoChar fileName[32];

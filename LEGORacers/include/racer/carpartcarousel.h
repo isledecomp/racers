@@ -52,6 +52,11 @@ public:
 	// CarPartCarousel::`scalar deleting destructor'
 
 private:
+	enum {
+		c_vectorZCosineIndex = 114,
+		c_vectorXCosineIndex = 882,
+	};
+
 	CarPartSet* m_partSet;             // 0xc0
 	LegoPieceLibrary* m_pieceLibrary;  // 0xc4
 	CarBuildModel* m_buildModel;       // 0xc8

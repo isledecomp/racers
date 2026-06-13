@@ -26,26 +26,26 @@ void SaveRecordList::Record::Initialize()
 {
 	m_owner = NULL;
 	::memset(m_data, 0, sizeof(m_data));
-	m_unk0x08 = 0;
-	m_unk0x0c = 0;
+	m_recordSource = 0;
+	m_saveIndex = 0;
 	m_recordId = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042b2f0
 void SaveRecordList::Record::FUN_0042b2f0(
-	undefined4 p_unk0x08,
-	undefined4 p_unk0x0c,
-	undefined4 p_recordId,
+	LegoU32 p_recordSource,
+	LegoU32 p_saveIndex,
+	LegoU32 p_recordId,
 	SaveRecordList* p_owner
 )
 {
-	if (m_unk0x08) {
+	if (m_recordSource) {
 		Destroy();
 	}
 
 	m_owner = p_owner;
-	m_unk0x08 = p_unk0x08;
-	m_unk0x0c = p_unk0x0c;
+	m_recordSource = p_recordSource;
+	m_saveIndex = p_saveIndex;
 	m_recordId = p_recordId;
 }
 
@@ -182,11 +182,18 @@ void ActiveRecordBuffer::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest,
 // FUNCTION: LEGORACERS 0x0042b5c0
 void SaveRecordList::Record::CopyFrom(const Record* p_source)
 {
-	if (m_unk0x08 == 0) {
-		FUN_0042b2f0(p_source->m_unk0x08, p_source->m_unk0x0c, 0, NULL);
+	if (m_recordSource == 0) {
+		FUN_0042b2f0(p_source->m_recordSource, p_source->m_saveIndex, 0, NULL);
 	}
 
 	::memcpy(m_data, p_source->m_data, sizeof(m_data));
+	MarkDirty();
+}
+
+// FUNCTION: LEGORACERS 0x0042b600
+void SaveRecordList::Record::SetRecordId(LegoU32 p_recordId)
+{
+	m_recordId = p_recordId;
 	MarkDirty();
 }
 
@@ -203,8 +210,8 @@ LegoU32 SaveRecordList::Record::GetTrophy(undefined4 p_raceIndex) const
 	return (value >> shift) & 3;
 }
 
-// STUB: LEGORACERS 0x0042b640
-LegoBool32 SaveRecordList::Record::FUN_0042b640(LegoU32 p_raceIndex, LegoU32 p_trophy)
+// FUNCTION: LEGORACERS 0x0042b640
+LegoBool32 SaveRecordList::Record::SetTrophy(LegoU32 p_raceIndex, LegoU32 p_trophy)
 {
 	Record* record = this;
 
@@ -212,24 +219,28 @@ LegoBool32 SaveRecordList::Record::FUN_0042b640(LegoU32 p_raceIndex, LegoU32 p_t
 		return FALSE;
 	}
 
-	LegoU16 value = static_cast<LegoU16>((record->m_data[0x22c] << 8) + record->m_data[0x22b]);
-	LegoU16 updated = value;
+	LegoU16 value = record->m_data[0x22c];
+	LegoU16 low = record->m_data[0x22b];
+	value <<= 8;
+	value += low;
 
 	LegoU16 existing = value;
-	existing >>= static_cast<LegoU16>(p_raceIndex << 1);
+	LegoU16 shift = static_cast<LegoU16>(p_raceIndex);
+	shift <<= 1;
+	existing >>= shift;
 	existing &= 3;
 	if (existing && static_cast<LegoU16>(p_trophy) >= existing) {
 		return FALSE;
 	}
 
-	LegoU32 shift = p_raceIndex + p_raceIndex;
-	existing = 3;
-	existing <<= shift;
-	p_trophy <<= shift;
-	updated &= ~existing;
-	updated |= static_cast<LegoU16>(p_trophy);
-	record->m_data[0x22b] = static_cast<LegoU8>(updated);
-	record->m_data[0x22c] = static_cast<LegoU8>(updated >> 8);
+	LegoU32 bitShift = p_raceIndex << 1;
+	LegoU32 mask = 3;
+	mask <<= bitShift;
+	p_trophy <<= bitShift;
+	value &= ~mask;
+	value |= static_cast<LegoU16>(p_trophy);
+	record->m_data[0x22b] = static_cast<LegoU8>(value);
+	record->m_data[0x22c] = static_cast<LegoU8>(value >> 8);
 	record->MarkDirty();
 
 	return TRUE;
@@ -291,7 +302,7 @@ void SaveRecordList::AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, unde
 
 	m_unk0x08 = p_unk0x08;
 	m_unk0x0c = p_unk0x0c;
-	FUN_0042b830();
+	RebuildFreeList();
 }
 
 // FUNCTION: LEGORACERS 0x0042b7f0
@@ -306,12 +317,19 @@ void SaveRecordList::FreeRecords()
 }
 
 // STUB: LEGORACERS 0x0042b830
-void SaveRecordList::FUN_0042b830()
+void SaveRecordList::RebuildFreeList()
 {
+	STUB(0x0042b830);
+
 	m_freeRecords = m_records;
 
-	for (LegoU32 i = 1; i < m_recordCapacity; i++) {
-		m_records[i - 1].m_next = &m_records[i];
+	LegoU32 i = 0;
+	LegoU32 lastRecordIndex = m_recordCapacity - 1;
+	if (lastRecordIndex != 0) {
+		do {
+			i++;
+			m_records[i - 1].m_next = &m_records[i];
+		} while (i < lastRecordIndex);
 	}
 
 	m_usedRecords = NULL;
@@ -346,17 +364,45 @@ SaveRecordList::Record* SaveRecordList::AllocateRecord()
 	return record;
 }
 
-// STUB: LEGORACERS 0x0042b8f0
-SaveRecordList::Record* SaveRecordList::FUN_0042b8f0(Record*)
+// FUNCTION: LEGORACERS 0x0042b8f0
+SaveRecordList::Record* SaveRecordList::AllocateRecordCopy(Record* p_record)
 {
-	STUB(0x0042b8f0);
-	return NULL;
+	Record* copy = AllocateRecord();
+	m_dirty = 1;
+	copy->CopyFrom(p_record);
+	return copy;
 }
 
-// STUB: LEGORACERS 0x0042b920
-void SaveRecordList::FUN_0042b920(Record*)
+// FUNCTION: LEGORACERS 0x0042b920
+void SaveRecordList::RemoveRecord(Record* p_record)
 {
-	STUB(0x0042b920);
+	Record* previous = NULL;
+	Record* record = m_usedRecords;
+	Record* head = record;
+	LegoU32 recordId = 0;
+	m_dirty = 1;
+
+	while (record != NULL && record != p_record) {
+		previous = record;
+		record = record->m_next;
+	}
+
+	m_recordCount--;
+
+	if (previous != NULL) {
+		previous->m_next = record->m_next;
+	}
+	else {
+		m_usedRecords = head->m_next;
+	}
+
+	record->m_next = m_freeRecords;
+	m_freeRecords = record;
+	p_record->Destroy();
+
+	for (record = m_usedRecords; record != NULL; record = record->m_next) {
+		record->SetRecordId(recordId++);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042b990

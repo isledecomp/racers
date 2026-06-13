@@ -2,8 +2,8 @@
 #define SAVEGAME_H
 
 #include "decomp.h"
-#include "golfile.h"
 #include "golname.h"
+#include "save/memorycardfilebase.h"
 #include "save/savedirectory.h"
 #include "types.h"
 #include "util/displaydriverguid.h"
@@ -30,10 +30,10 @@ struct InputBindingEntry {
 
 // SIZE 0x04
 struct InputBindingPlayerState {
-	LegoU8 m_unk0x00;            // 0x00
-	LegoU8 m_unk0x01;            // 0x01
-	LegoU8 m_unk0x02;            // 0x02
-	LegoU8 m_selectedEntryIndex; // 0x03
+	LegoU8 m_selectedRecordId;     // 0x00
+	LegoU8 m_selectedRecordSource; // 0x01
+	LegoU8 m_selectedSaveIndex;    // 0x02
+	LegoU8 m_selectedEntryIndex;   // 0x03
 };
 
 // SIZE 0xd0
@@ -80,7 +80,7 @@ public:
 		Record();
 		~Record();
 
-		void FUN_0042b2f0(undefined4 p_unk0x08, undefined4 p_unk0x0c, undefined4 p_recordId, SaveRecordList* p_owner);
+		void FUN_0042b2f0(LegoU32 p_recordSource, LegoU32 p_saveIndex, LegoU32 p_recordId, SaveRecordList* p_owner);
 		void Destroy();
 		void MarkDirty();
 		void GetCosmetics(DriverCosmetics* p_cosmetics) const;
@@ -94,16 +94,17 @@ public:
 		void SetChassisName(const GolName p_source);
 		void SetName(GolString* p_string);
 		void CopyFrom(const Record* p_source);
+		void SetRecordId(LegoU32 p_recordId);
 		LegoU32 GetTrophy(undefined4 p_raceIndex) const;
-		LegoBool32 FUN_0042b640(LegoU32 p_raceIndex, LegoU32 p_trophy);
+		LegoBool32 SetTrophy(LegoU32 p_raceIndex, LegoU32 p_trophy);
 		LegoU8* GetCarData() { return &m_data[0x29]; }
 		const LegoU8* GetCarData() const { return &m_data[0x29]; }
 
 		SaveRecordList* m_owner; // 0x00
 		Record* m_next;          // 0x04
-		undefined4 m_unk0x08;    // 0x08
-		undefined4 m_unk0x0c;    // 0x0c
-		undefined4 m_recordId;   // 0x10
+		LegoU32 m_recordSource;  // 0x08
+		LegoU32 m_saveIndex;     // 0x0c
+		LegoU32 m_recordId;      // 0x10
 		SaveRecordData m_data;   // 0x14
 		undefined m_unk0x241[0x244 - 0x241];
 
@@ -121,8 +122,8 @@ public:
 	~SaveRecordList();
 
 	Record* AllocateRecord();
-	Record* FUN_0042b8f0(Record* p_record);
-	void FUN_0042b920(Record* p_record);
+	Record* AllocateRecordCopy(Record* p_record);
+	void RemoveRecord(Record* p_record);
 	Record* GetRecord(LegoU32 p_index);
 	Record* FindRecordById(undefined4 p_recordId);
 	LegoU32 GetRecordCount() const { return m_recordCount; }
@@ -137,7 +138,7 @@ private:
 	void Initialize();
 	void AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FreeRecords();
-	void FUN_0042b830();
+	void RebuildFreeList();
 
 	friend class SaveGame;
 	friend class MemoryCardSaveGame;
@@ -161,13 +162,17 @@ public:
 
 	LegoU8* GetFileImage() { return m_fileImage; }
 	void Initialize(undefined4 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
-	undefined4 FUN_00442770(GolFile& p_file);
+	LegoS32 LoadFromFile(GolFile& p_file);
 	void FUN_00442a00(PersistentGameState* p_state);
 	void FUN_00442c20(PersistentGameState* p_state);
-	undefined4 FUN_004439b0();
 
-private:
 	enum {
+		c_saveFileMagic0 = 'L',
+		c_saveFileMagic1 = 'R',
+		c_saveFileHeaderSize = 0x477,
+		c_saveFileBlockDataSize = 0x7f,
+		c_saveFileBlockSize = 0x80,
+		c_saveFileInvalidStatus = 17,
 		c_scoreRecordsOffset = 0x09,
 		c_scoreRecordSize = 0x40,
 		c_persistentHeaderOffset = 0x349,
@@ -177,37 +182,16 @@ private:
 		c_inputBindingHeaderSize = 8,
 	};
 
-	LegoU8 m_fileImage[0x4a4 - 0x24]; // 0x24
-	undefined4 m_unk0x4a4;
-};
-
-// VTABLE: LEGORACERS 0x004b0fac
-// SIZE 0x30
-class SaveGameFile : public GolFile {
-public:
-	~SaveGameFile() override; // vtable+0x18
-
-	LegoS32 BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, LegoU32 p_bufferSize) override; // vtable+0x1c
-	LegoS32 Dispose() override;                                                                      // vtable+0x20
-
-	// SYNTHETIC: LEGORACERS 0x0044e110
-	// SaveGameFile::`scalar deleting destructor'
-};
-
-// VTABLE: LEGORACERS 0x004b1288
-// SIZE 0x34
-class MemoryCardFileBase : public SaveGameFile {
-public:
-	MemoryCardFileBase();
-
-	// SYNTHETIC: LEGORACERS 0x00450e70 FOLDED
-	// MemoryCardFileBase::~MemoryCardFileBase
-
-	// SYNTHETIC: LEGORACERS 0x00450e50 FOLDED
-	// MemoryCardFileBase::`scalar deleting destructor'
-
 private:
-	undefined4 m_unk0x30; // 0x30
+	friend class MemoryCardSaveGame;
+
+	LegoS32 WriteFileImage(GolFile& p_file);
+	LegoS32 WriteBlocks(GolStream* p_file, const LegoU8* p_source, LegoU32 p_size);
+	LegoS32 ReadBlocks(GolStream& p_file, LegoU8* p_dest, LegoU32 p_size);
+	LegoU32 CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size);
+
+	LegoU8 m_fileImage[0x4a4 - 0x24]; // 0x24
+	LegoU32 m_fileOffset;             // 0x4a4
 };
 
 // VTABLE: LEGORACERS 0x004b0ba4
@@ -231,11 +215,16 @@ public:
 
 	void Initialize(SaveSlot* p_slot, undefined4 p_count, undefined4 p_unk0x0c, undefined4 p_unk0x10);
 	void Destroy();
-	undefined4 FUN_00443910();
-	undefined4 FUN_00443940();
-	undefined4 FUN_00443980();
+	LegoS32 OpenExistingFile();
+	LegoS32 CreateSaveFile();
+	LegoS32 LoadFromFile();
+	LegoS32 SaveToFile();
 
 private:
+	enum {
+		c_fileBufferSize = 0x3e00,
+	};
+
 	SaveSlot* m_slot;      // 0x4a8
 	MemoryCardFile m_file; // 0x4ac
 };
@@ -250,10 +239,10 @@ public:
 	void Reset();
 	void InitializeInputBindings(InputManager* p_inputManager);
 	void SelectInputBinding(LegoU32 p_playerIndex, LegoU32 p_entryIndex);
-	void FUN_0042eb60(SaveGame*, undefined4);
+	void LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex);
 	LegoU32 GetInputEvent(LegoU32 p_playerIndex, LegoU32 p_entryIndex, LegoU32 p_eventIndex);
 	void GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex, InputBindingEntry* p_entry);
-	void FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
+	void SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event);
 	void WriteToSaveGame(SaveGame*);
 	void SetLanguageResourcePath();
 	void SetDisplayDriverGuid(const DisplayDriverGuid& p_guid);
@@ -294,26 +283,26 @@ public:
 	}
 	void SetInputBindingPlayer0Unk0x00(undefined4 p_unk0x00)
 	{
-		m_state.m_inputBindings.m_players[0].m_unk0x00 = static_cast<LegoU8>(p_unk0x00);
+		m_state.m_inputBindings.m_players[0].m_selectedRecordId = static_cast<LegoU8>(p_unk0x00);
 		m_dirty = 1;
 	}
 	void SetInputBindingPlayer0Unk0x01(undefined4 p_unk0x01)
 	{
-		m_state.m_inputBindings.m_players[0].m_unk0x01 = static_cast<LegoU8>(p_unk0x01);
+		m_state.m_inputBindings.m_players[0].m_selectedRecordSource = static_cast<LegoU8>(p_unk0x01);
 		m_dirty = 1;
 	}
 	void SetInputBindingPlayer0Unk0x02(undefined4 p_unk0x02)
 	{
-		m_state.m_inputBindings.m_players[0].m_unk0x02 = static_cast<LegoU8>(p_unk0x02);
+		m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = static_cast<LegoU8>(p_unk0x02);
 		m_dirty = 1;
 	}
 	void SetInputBindingPlayer0RecordValues(const SaveRecordList::Record* p_record)
 	{
-		m_state.m_inputBindings.m_players[0].m_unk0x01 = p_record->m_unk0x08;
+		m_state.m_inputBindings.m_players[0].m_selectedRecordSource = static_cast<LegoU8>(p_record->m_recordSource);
 		m_dirty = 1;
-		m_state.m_inputBindings.m_players[0].m_unk0x02 = p_record->m_unk0x0c;
+		m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = static_cast<LegoU8>(p_record->m_saveIndex);
 		m_dirty = 1;
-		m_state.m_inputBindings.m_players[0].m_unk0x00 = p_record->m_recordId;
+		m_state.m_inputBindings.m_players[0].m_selectedRecordId = static_cast<LegoU8>(p_record->m_recordId);
 		m_dirty = 1;
 	}
 	void SetLanguageIndex(LegoU8 p_languageIndex) { m_state.m_languageIndex = p_languageIndex; }
@@ -344,7 +333,7 @@ private:
 	};
 
 	void Initialize();
-	void FUN_0042ea50(LegoU32 p_playerIndex);
+	void SelectFallbackInputBinding(LegoU32 p_playerIndex);
 	LegoU32 FindAvailableInputBindingEntry(LegoU32 p_playerIndex);
 	LegoBool32 IsInputEventBound(LegoU32 p_entryIndex, LegoU32 p_event);
 	LegoU32 GetDefaultInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex);

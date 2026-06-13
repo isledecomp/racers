@@ -127,6 +127,8 @@ LegoBool32 AwardCinematicScreen::Destroy()
 // STUB: LEGORACERS 0x00475f40
 void AwardCinematicScreen::VTable0x4c()
 {
+	STUB(0x00475f40);
+
 	struct ResourcePathLocals {
 		LegoChar m_name[12];
 		GolString m_string;
@@ -168,19 +170,19 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 
 	LegoRacers::Context* context = m_context->m_context;
 
-	if (context->m_playerRecordStates[0].m_unk0x00 == 0) {
+	if (context->m_playerRecordStates[0].m_recordSource == 0) {
 		return FALSE;
 	}
 
 	SaveRecordList* records = NULL;
 
-	switch (context->m_playerRecordStates[0].m_unk0x00) {
+	switch (context->m_playerRecordStates[0].m_recordSource) {
 	case 1:
 	case 3:
 		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		records = &m_context->m_saveSystem.GetMemoryCardSaves()[context->m_playerRecordStates[0].m_unk0x04];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[context->m_playerRecordStates[0].m_saveIndex];
 		break;
 	default:
 		return FALSE;
@@ -211,12 +213,13 @@ LegoBool32 AwardCinematicScreen::FUN_00476890(
 	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
 {
-	SaveRecordList::Record* record = p_records->FindRecordById(m_context->m_context->m_playerRecordStates[0].m_unk0x08);
+	SaveRecordList::Record* record =
+		p_records->FindRecordById(m_context->m_context->m_playerRecordStates[0].m_recordId);
 	if (record == NULL) {
 		return FALSE;
 	}
 
-	return record->FUN_0042b640(m_context->m_circuitList.GetEntryIndex(p_circuitDefinition), m_unk0x28c - 0x15);
+	return record->SetTrophy(m_context->m_circuitList.GetEntryIndex(p_circuitDefinition), m_unk0x28c - 0x15);
 }
 
 // FUNCTION: LEGORACERS 0x004768f0

@@ -10,6 +10,7 @@
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(OptionsScreen, 0x6750)
+DECOMP_SIZE_ASSERT(OptionsScreen::DriverNameBuffer, 0x64)
 
 // FUNCTION: LEGORACERS 0x00475510
 OptionsScreen::OptionsScreen()
@@ -27,7 +28,7 @@ OptionsScreen::~OptionsScreen()
 void OptionsScreen::Reset()
 {
 	m_unk0x51a8 = 0;
-	::memset(m_unk0x646c, 0, sizeof(m_unk0x646c));
+	::memset(m_driverNameBuffers, 0, sizeof(m_driverNameBuffers));
 	OptionsScreenBase::Reset();
 }
 
@@ -58,7 +59,7 @@ void OptionsScreen::VTable0x98()
 	for (i = 0; i < m_unk0x51a8 && i < 5; i++) {
 		CreateTextLabel(&m_unk0x6214[i], 0xf7, 0xf5, 0x12);
 
-		undefined2* driverNameBuffer = reinterpret_cast<undefined2*>(&m_unk0x646c[i * 0x64]);
+		undefined2* driverNameBuffer = m_driverNameBuffers[i].m_data;
 		GolString::CopyStringToBuf16(drawState->GetDriverName(i), driverNameBuffer);
 		string.CopyFromBufSelection(driverNameBuffer, ::strlen(drawState->GetDriverName(i)) + 1);
 		string.ToUpperCase();

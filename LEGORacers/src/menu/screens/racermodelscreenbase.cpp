@@ -93,23 +93,29 @@ void RacerModelScreenBase::FUN_00485bb0()
 // STUB: LEGORACERS 0x00485c80
 void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_mask)
 {
+	STUB(0x00485c80);
+
+	SaveSystem* saveSystem = &p_context->m_saveSystem;
+
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		RacerUnlockState* modelState = &m_unk0x22dc[i];
 
-		modelState->FUN_00442e60(&p_context->m_saveSystem);
+		modelState->FUN_00442e60(saveSystem);
 		modelState->FUN_00442ef0(p_mask);
 		m_unk0x2704[i] = modelState->FUN_00442e80(p_mask);
 
 		if (m_unk0x2704[i]) {
 			SaveRecordList::Record* firstRecord = modelState->FUN_004430b0();
-			InputBindingPlayerState& player =
-				p_context->m_saveSystem.GetGameState().GetState().m_inputBindings.m_players[i];
+			InputBindingPlayerState* player = &saveSystem->GetGameState().GetState().m_inputBindings.m_players[i];
+			LegoU32 selectedRecordId = player->m_selectedRecordId;
+			LegoU32 selectedRecordSource = player->m_selectedRecordSource;
+			LegoU32 selectedSaveIndex = player->m_selectedSaveIndex;
 
 			while (TRUE) {
 				SaveRecordList::Record* record = modelState->FUN_00442fe0();
 
-				if (record->m_unk0x08 == player.m_unk0x01 && record->m_unk0x0c == player.m_unk0x02 &&
-					record->m_recordId == player.m_unk0x00) {
+				if (record->m_recordSource == selectedRecordSource && record->m_saveIndex == selectedSaveIndex &&
+					record->m_recordId == selectedRecordId) {
 					if (firstRecord != record) {
 						break;
 					}
@@ -120,7 +126,7 @@ void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_ma
 
 				do {
 					record = modelState->FUN_00442fe0();
-				} while (record->m_unk0x08 == 3 && firstRecord != record);
+				} while (record->m_recordSource == 3 && firstRecord != record);
 
 				break;
 			}
@@ -282,18 +288,21 @@ LegoBool32 RacerModelScreenBase::Destroy()
 // STUB: LEGORACERS 0x004861b0
 void RacerModelScreenBase::FUN_004861b0()
 {
+	STUB(0x004861b0);
+
+	GameState& state = m_context->m_saveSystem.GetGameState();
+
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		SaveRecordList::Record* record = m_unk0x22dc[i].FUN_004430b0();
 
 		if (record != NULL) {
-			GameState& state = m_context->m_saveSystem.GetGameState();
 			InputBindingPlayerState& player = state.GetState().m_inputBindings.m_players[i];
 
-			player.m_unk0x01 = static_cast<LegoU8>(record->m_unk0x08);
+			player.m_selectedRecordSource = record->m_recordSource;
 			state.SetDirty(1);
-			player.m_unk0x02 = static_cast<LegoU8>(record->m_unk0x0c);
+			player.m_selectedSaveIndex = record->m_saveIndex;
 			state.SetDirty(1);
-			player.m_unk0x00 = static_cast<LegoU8>(record->m_recordId);
+			player.m_selectedRecordId = record->m_recordId;
 			state.SetDirty(1);
 		}
 	}
@@ -303,7 +312,7 @@ void RacerModelScreenBase::FUN_004861b0()
 	}
 }
 
-// STUB: LEGORACERS 0x00486250
+// FUNCTION: LEGORACERS 0x00486250
 void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 {
 	SaveRecordList::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
@@ -320,20 +329,20 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 	GolModelBase* model = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, m_unk0x4ec[modelIndex], 0);
 	m_context->m_modelBuilder.ApplyFaceExpression(model, &cosmetics);
 
-	GolSceneNode* node = m_context->m_modelBuilder.GetBodySceneNode(&cosmetics);
-	m_unk0x4dc[modelIndex]->VTable0x10(node);
-	m_unk0x232c[modelIndex].FUN_0040d550(model, m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
+	m_unk0x4dc[modelIndex]->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
+	m_unk0x232c[modelIndex]
+		.FUN_0040d550(m_unk0x4ec[modelIndex], m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
 	record->CopyCarData(m_unk0x788);
 	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x788);
 	m_context->m_unk0x21f4.FUN_0049b740(0);
-	m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+	m_context->m_unk0x21f4.FUN_0049bc60(m_unk0x73c[modelIndex], 1, 0x7f);
 
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
+	createParams.m_unk0x0c = NULL;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
 	createParams.m_unk0x08 = &m_unk0x4fc[modelIndex];
-	createParams.m_unk0x0c = NULL;
 	record->GetChassisName(createParams.m_chassisName);
 
 	m_unk0x39c[modelIndex].FUN_00479510(&createParams);
@@ -354,7 +363,7 @@ void RacerModelScreenBase::FUN_00486440(LegoS32 p_index)
 	SaveRecordList::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
 	LegoS32 textId = 0x2e;
 
-	switch (record->m_unk0x08) {
+	switch (record->m_recordSource) {
 	case 1:
 		textId = 0x36;
 		break;

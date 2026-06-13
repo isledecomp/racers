@@ -129,10 +129,12 @@ void CutsceneVisual::FUN_004a3550(LegoFloat p_elapsedSeconds)
 	}
 }
 
-// STUB: LEGORACERS 0x004a35a0
+// FUNCTION: LEGORACERS 0x004a35a0
 void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & 0x40) {
+		LegoS32 sourceWidth;
+		LegoS32 sourceHeight;
 		LegoS32 renderTargetWidth = p_renderer->GetRenderTargetInfo()->GetWidth();
 		LegoFloat width = static_cast<LegoFloat>(renderTargetWidth);
 		LegoS32 renderTargetHeight = p_renderer->GetRenderTargetInfo()->GetHeight();
@@ -143,16 +145,25 @@ void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 		}
 
 		if (m_unk0x1c >= 0.0f && m_unk0x20 >= 0.0f) {
-			LegoS32 x = static_cast<LegoS32>(m_unk0x1c * width);
-			LegoS32 y = static_cast<LegoS32>(m_unk0x20 * height);
-			LegoS32 drawWidth = static_cast<LegoS32>(m_unk0x2c * width);
-			LegoS32 drawHeight = static_cast<LegoS32>(m_unk0x30 * height);
+			LegoFloat scaledX = m_unk0x1c;
+			scaledX *= width;
+			LegoS32 x = static_cast<LegoS32>(scaledX);
+
+			LegoFloat scaledY = m_unk0x20;
+			scaledY *= height;
+			LegoS32 y = static_cast<LegoS32>(scaledY);
+
+			LegoFloat scaledWidth = m_unk0x2c;
+			scaledWidth *= width;
+			LegoS32 drawWidth = static_cast<LegoS32>(scaledWidth);
+
+			LegoFloat scaledHeight = m_unk0x30;
+			scaledHeight *= height;
+			LegoS32 drawHeight = static_cast<LegoS32>(scaledHeight);
 
 			if (drawWidth) {
 				if (drawHeight && drawWidth + x <= static_cast<LegoU32>(renderTargetWidth) &&
 					y + drawHeight <= static_cast<LegoU32>(renderTargetHeight)) {
-					LegoS32 sourceWidth;
-					LegoS32 sourceHeight;
 					VTable0x1c(&sourceWidth, &sourceHeight);
 
 					LegoFloat scaleY = static_cast<LegoFloat>(drawHeight) / static_cast<LegoFloat>(sourceHeight);
@@ -167,6 +178,8 @@ void CutsceneVisual::FUN_004a35a0(GolD3DRenderDevice* p_renderer)
 // STUB: LEGORACERS 0x004a36e0
 void CutsceneVisual::FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_width, LegoFloat p_height)
 {
+	STUB(0x004a36e0);
+
 	const Rect* viewport = &p_renderer->GetUnk0x0c()->m_viewport;
 	LegoS32 viewportX = viewport->m_left;
 	LegoS32 viewportY = viewport->m_top;
@@ -181,22 +194,24 @@ void CutsceneVisual::FUN_004a36e0(GolD3DRenderDevice* p_renderer, LegoFloat p_wi
 	LegoBool32 hasHeight;
 	LegoBool32 hasWidth = flags & c_flagWidth;
 	if (hasWidth) {
-		imageWidth = static_cast<LegoS32>(m_unk0x2c * p_width);
+		LegoFloat width = m_unk0x2c;
+		imageWidth = static_cast<LegoS32>(width * p_width);
 	}
 
 	hasHeight = flags & c_flagHeight;
 	if (hasHeight) {
-		imageHeight = static_cast<LegoS32>(m_unk0x30 * p_height);
+		LegoFloat height = m_unk0x30;
+		imageHeight = static_cast<LegoS32>(height * p_height);
 	}
 
-	LegoS32 y = viewportY + ((viewportHeight - imageHeight) / 2);
+	viewportY += (viewportHeight - imageHeight) / 2;
 	if (!(flags & c_flagPositionX)) {
-		LegoS32 x = viewportX + ((viewportWidth - imageWidth) / 2);
-		m_unk0x1c = static_cast<LegoFloat>(x) / p_width;
+		viewportX += (viewportWidth - imageWidth) / 2;
+		m_unk0x1c = static_cast<LegoFloat>(viewportX) / p_width;
 	}
 
 	if (!(flags & c_flagPositionY)) {
-		m_unk0x20 = static_cast<LegoFloat>(y) / p_height;
+		m_unk0x20 = static_cast<LegoFloat>(viewportY) / p_height;
 	}
 
 	if (!hasWidth) {

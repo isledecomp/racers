@@ -46,6 +46,7 @@ class MenuManager : public GolAppEventHandler {
 private:
 	enum {
 		c_menuCursorImageName = 0x36,
+		c_maxScreenshotIndex = 9999,
 	};
 
 public:

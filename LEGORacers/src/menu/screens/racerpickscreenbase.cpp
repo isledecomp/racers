@@ -148,32 +148,44 @@ void RacerPickScreenBase::FUN_004891f0(LegoS32 p_index)
 	}
 }
 
-// STUB: LEGORACERS 0x00489250
+// FUNCTION: LEGORACERS 0x00489250
 void RacerPickScreenBase::FUN_00489250(LegoS32 p_index)
 {
 	if (p_index > 0) {
 		m_unk0x2c0c[p_index].VTable0x44(5);
-		m_unk0x2c0c[p_index].SetUnk0x9ec(m_unk0x2704[p_index] != 0);
+		if (m_unk0x2704[p_index]) {
+			m_unk0x98c[p_index].SetUnk0x6c(TRUE);
+		}
+		else {
+			m_unk0x98c[p_index].SetUnk0x6c(FALSE);
+		}
 		return;
 	}
-
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-		m_unk0x2c0c[i].VTable0x44(5);
-		m_unk0x2c0c[i].SetUnk0x9ec(m_unk0x2704[i] != 0);
+	else {
+		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+			m_unk0x2c0c[i].VTable0x44(5);
+			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
+		}
 	}
 }
 
-// STUB: LEGORACERS 0x00489320
+// FUNCTION: LEGORACERS 0x00489320
 void RacerPickScreenBase::FUN_00489320(LegoS32 p_index)
 {
 	if (p_index > 0) {
 		m_unk0x2c0c[p_index].VTable0x48(5);
-		m_unk0x2c0c[p_index].SetUnk0x9ec(m_unk0x2704[p_index] != 0);
+		if (m_unk0x2704[p_index]) {
+			m_unk0x98c[p_index].SetUnk0x6c(TRUE);
+		}
+		else {
+			m_unk0x98c[p_index].SetUnk0x6c(FALSE);
+		}
 		return;
 	}
-
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-		m_unk0x2c0c[i].VTable0x48(5);
-		m_unk0x2c0c[i].SetUnk0x9ec(m_unk0x2704[i] != 0);
+	else {
+		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+			m_unk0x2c0c[i].VTable0x48(5);
+			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
+		}
 	}
 }

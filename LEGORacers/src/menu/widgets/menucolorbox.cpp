@@ -54,15 +54,17 @@ void MenuColorBox::FUN_00467fc0(LegoS32 p_x, LegoS32 p_y)
 	MenuWidget::VTable0x10(&rect);
 }
 
-// STUB: LEGORACERS 0x00468000
+// FUNCTION: LEGORACERS 0x00468000
 void MenuColorBox::FUN_00468000(LegoS32 p_width)
 {
+	LegoS32 width = p_width;
+	m_unk0xb8 = width;
+
 	Rect rect;
 	rect.m_left = m_unk0x34.m_left;
-	rect.m_right = m_unk0x34.m_left + p_width;
-	m_unk0xb8 = p_width;
+	rect.m_right = rect.m_left + width;
 	rect.m_top = m_unk0x34.m_top;
-	rect.m_bottom = m_unk0x34.m_top + m_unk0xbc;
+	rect.m_bottom = rect.m_top + m_unk0xbc;
 
 	MenuWidget::VTable0x10(&rect);
 }

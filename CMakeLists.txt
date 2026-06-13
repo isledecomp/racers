@@ -379,6 +379,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/save/saverecordlist.cpp
   LEGORacers/src/save/savegame.cpp
   LEGORacers/src/save/savegamefile.cpp
+  LEGORacers/src/save/memorycardfilebase.cpp
   LEGORacers/src/save/gamestate.cpp
   LEGORacers/src/save/savesystem.cpp
   LEGORacers/src/model/carpartset.cpp

@@ -18,7 +18,7 @@ public:
 	void VTable0x30(const GolVec3& p_src, GolVec3* p_dest) const override; // vtable+0x30
 	void VTable0x34(const GolVec3& p_src, GolVec3* p_dest) override;       // vtable+0x34
 	void VTable0x38(const GolVec3& p_src, GolVec3* p_dest) const override; // vtable+0x38
-	void VTable0x3c(const GolMatrix34&) override;                          // vtable+0x3c
+	void VTable0x3c(const GolMatrix3&) override;                           // vtable+0x3c
 	void VTable0x40(const GolVec3& p_v1, const GolVec3& p_v2) override;    // vtable+0x40
 	void VTable0x44(GolMatrix3*) const override;                           // vtable+0x44
 	void VTable0x48(GolVec3* p_dest1, GolVec3* p_dest2) const override;    // vtable+0x48

@@ -210,14 +210,24 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 		   p_y <= (m_unk0x34.m_bottom - m_unk0x34.m_top);
 }
 
-// FUNCTION: LEGORACERS 0x00472c80
+// STUB: LEGORACERS 0x00472c80
 Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
 {
+	STUB(0x00472c80);
+
+	LegoU32 sourceTop = p_source->m_top;
+	LegoU32 sourceHeight = p_source->m_bottom;
 	LegoS32 sourceLeft = p_source->m_left;
-	LegoU32 sourceHeight = p_source->m_bottom - p_source->m_top;
-	LegoU32 sourceWidth = p_source->m_right - p_source->m_left;
-	LegoU32 destWidth = p_dest->m_right - p_dest->m_left;
-	LegoU32 destHeight = p_dest->m_bottom - p_dest->m_top;
+	LegoU32 sourceWidth = p_source->m_right;
+	sourceHeight -= sourceTop;
+
+	LegoU32 destWidth = p_dest->m_right;
+	LegoS32 destLeft = p_dest->m_left;
+	sourceWidth -= sourceLeft;
+	destWidth -= destLeft;
+
+	LegoU32 destHeight = p_dest->m_bottom;
+	destHeight -= p_dest->m_top;
 
 	if (sourceWidth > destWidth) {
 		LegoU32 inset = (sourceWidth - destWidth) >> 1;

@@ -6,6 +6,7 @@
 #include "types.h"
 
 class SaveDirectory;
+class MemoryCardFileBase;
 
 // VTABLE: LEGORACERS 0x004b0f88
 // SIZE 0x08
@@ -49,6 +50,8 @@ public:
 	void Reset();
 
 private:
+	friend class MemoryCardFileBase;
+
 	LegoS32 BuildFilePath(const LegoChar* p_fileName, LegoChar* p_buffer);
 	LegoS32 BuildDirectoryPath(LegoChar* p_buffer);
 

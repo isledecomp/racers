@@ -21,8 +21,6 @@
 
 DECOMP_SIZE_ASSERT(DriverPartResources, 0x60)
 
-static const LegoChar g_gdbFaceMaterialName[] = "face";
-
 // GLOBAL: LEGORACERS 0x004be390
 static LegoS32 g_resourceBinaryMode = TRUE;
 
@@ -155,32 +153,31 @@ void DriverPartResources::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 	m_materialList->VTable0x24(m_renderer, "bodypart.mdf", p_binary);
 }
 
-// STUB: LEGORACERS 0x004981a0
+// FUNCTION: LEGORACERS 0x004981a0
 static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
 	GolAnimatedEntity* p_resourceModel,
 	LegoU32 p_oldIndex,
 	LegoU32 p_newIndex
 )
 {
-	STUB(0x004981a0);
-
 	GolModelBase* model = p_resourceModel->GetModel(0);
 	LegoU32 oldGroupTag = (p_oldIndex & 0x00ffffff) | 0x80000000;
-	LegoU32 result = oldGroupTag;
-	LegoU32 groupIndex = 0;
-	LegoU32 groupCount = model->GetGroupCount();
+	LegoS32 groupIndex = 0;
+	LegoS32 groupCount = static_cast<LegoS32>(model->GetGroupCount());
 	LegoU32* groups = model->GetMutableGroups();
 
+	LegoS32 currentIndex;
 	do {
+		currentIndex = groupIndex;
 		groupIndex++;
-	} while (groups[groupIndex - 1] != oldGroupTag && groupIndex < groupCount);
+	} while (groups[currentIndex] != oldGroupTag && groupIndex < groupCount);
 
 	if (groupIndex != groupCount) {
-		result = (p_newIndex & 0x00ffffff) | 0x80000000;
-		groups[groupIndex - 1] = result;
+		oldGroupTag = (p_newIndex & 0x00ffffff) | 0x80000000;
+		groups[groupIndex - 1] = oldGroupTag;
 	}
 
-	return result;
+	return oldGroupTag;
 }
 
 // STUB: LEGORACERS 0x004981f0
@@ -207,7 +204,7 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 						GolName materialName;
 						::memcpy(materialName, material->GetName(), sizeof(materialName));
 
-						if (::strncmp(materialName, g_gdbFaceMaterialName, sizeof(materialName)) == 0) {
+						if (::strncmp(materialName, "face", sizeof(materialName)) == 0) {
 							DuskwindBananaRelic0x24* firstMaterial =
 								static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
 							materialTable->SetPosition(0, material);

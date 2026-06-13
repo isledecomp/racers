@@ -1,8 +1,6 @@
-#include "save/savegame.h"
+#include "save/savegamefile.h"
 
 DECOMP_SIZE_ASSERT(SaveGameFile, 0x30)
-DECOMP_SIZE_ASSERT(MemoryCardFileBase, 0x34)
-DECOMP_SIZE_ASSERT(MemoryCardFile, 0x34)
 
 // FUNCTION: LEGORACERS 0x0044e0a0
 SaveGameFile::~SaveGameFile()
@@ -21,6 +19,50 @@ LegoS32 SaveGameFile::BufferedOpen(const LegoChar*, LegoS32, LegoU32)
 	return e_ioFileNotFound;
 }
 
+// FUNCTION: LEGORACERS 0x0044e140
+LegoS32 SaveGameFile::VTable0x3c(
+	SaveSlot* p_slot,
+	const LegoChar* p_fileName,
+	LegoS32 p_mode,
+	LegoU32 p_bufferSize,
+	undefined4 p_unk0x14
+)
+{
+	m_mode = p_mode;
+	m_flags = 0;
+	m_unk0x10 = 0;
+	m_bufferStart = 0;
+	m_bufferEnd = 0;
+	m_position = 0;
+
+	LegoS32 result = VTable0x38(p_slot, p_fileName, p_unk0x14);
+	if (result != e_ioSuccess) {
+		return result;
+	}
+
+	m_flags = c_flagOpen;
+	if ((p_mode & c_modeKeepBuffer) && m_buffer) {
+		return e_ioSuccess;
+	}
+
+	if (m_buffer) {
+		delete m_buffer;
+		m_buffer = NULL;
+	}
+
+	if (p_bufferSize) {
+		p_bufferSize += p_bufferSize & 1;
+		m_buffer = new LegoU8[p_bufferSize];
+		if (!m_buffer) {
+			Dispose();
+			return e_ioOutOfMemory;
+		}
+	}
+
+	m_bufferCapacity = p_bufferSize;
+	return e_ioSuccess;
+}
+
 // FUNCTION: LEGORACERS 0x0044e1e0
 LegoS32 SaveGameFile::Dispose()
 {
@@ -36,10 +78,4 @@ LegoS32 SaveGameFile::Dispose()
 	m_mode = 0;
 	m_flags = 0;
 	return result;
-}
-
-// FUNCTION: LEGORACERS 0x00450e30
-MemoryCardFileBase::MemoryCardFileBase()
-{
-	m_unk0x30 = 0;
 }

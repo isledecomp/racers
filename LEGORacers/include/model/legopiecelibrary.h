@@ -18,6 +18,7 @@ public:
 	struct ShapeCell {
 		LegoS32 FUN_0049ea40();
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation);
+		LegoS32 FUN_0049eae0();
 		LegoS32 GetClampedLower()
 		{
 			LegoS32 lower = m_second & 0x3f;
@@ -41,6 +42,16 @@ public:
 		LegoS32 GetMaxCellValue() const;
 		LegoS32 CompareName(const LegoChar* p_name) const;
 		PieceRecord* GetVariant(LegoS32 p_variant);
+		LegoS32 FUN_0049f690() const;
+		LegoS32 FUN_0049f560(
+			LegoS32 p_x,
+			LegoS32 p_y,
+			LegoS32 p_height,
+			LegoS32 p_rotation,
+			LegoS32* p_unk0x14,
+			LegoS32* p_unk0x18,
+			LegoS32* p_unk0x1c
+		);
 		ShapeCell* GetCell(LegoS32 p_x, LegoS32 p_y, LegoU8 p_orientation) const
 		{
 			return m_shapeData->GetCell(p_x, p_y, p_orientation);
@@ -76,7 +87,12 @@ public:
 	static LegoS32 ReadBracketedCountAndLeftCurly(GolFileParser* p_parser);
 
 	void Destroy();
-	void FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
+	LegoS32 FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary);
+	LegoBool32 IsColorBlack(LegoS32 p_index) const;
+	void GetColor(LegoS32 p_index, LegoFloat* p_red, LegoFloat* p_green, LegoFloat* p_blue) const;
+	void GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, LegoFloat* p_v) const;
+	const LegoU8* GetColorTriple(LegoS32 p_index) const { return &m_colorTriples[p_index * 3]; }
+	const LegoU16* GetIndexCursor(LegoU32 p_index) const { return &m_indices[p_index]; }
 	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant) const;
 	PieceRecord* FindPieceRecordByName(const LegoChar* p_name) const;
 	LegoS32 GetMaxHighPieceOffset() const { return m_maxHighPieceOffset; }

@@ -106,8 +106,8 @@ public:
 		void FUN_00478c70(LegoS32 p_elapsed);
 		void FUN_00478e90(LegoS32 p_elapsed);
 		void FUN_00478ec0(LegoS32 p_elapsed);
-		void FUN_00478ef0(LegoS32 p_elapsed);
-		void FUN_00478fd0(LegoS32 p_elapsed);
+		void FUN_00478ef0(LegoU32 p_elapsed);
+		void FUN_00478fd0(LegoU32 p_elapsed);
 		void FUN_004790f0(LegoS32 p_elapsed);
 		void FUN_00479250(LegoS32 p_elapsed);
 		void FUN_00479330(GolVec3* p_dest, LegoS32 p_index);
@@ -140,15 +140,15 @@ public:
 		undefined m_unk0x279[0x27c - 0x279];              // 0x279
 		GolVec3 m_unk0x27c;                               // 0x27c
 		LegoFloat m_unk0x288;                             // 0x288
-		LegoU32 m_unk0x28c;                               // 0x28c
+		LegoS32 m_unk0x28c;                               // 0x28c
 		LegoU8 m_unk0x290;                                // 0x290
 		undefined m_unk0x291[0x294 - 0x291];              // 0x291
 		LegoS32 m_unk0x294;                               // 0x294
 		LegoS8 m_unk0x298;                                // 0x298
 		undefined m_unk0x299[0x29c - 0x299];              // 0x299
 		LegoFloat m_unk0x29c;                             // 0x29c
-		LegoU32 m_unk0x2a0;                               // 0x2a0
-		LegoU32 m_unk0x2a4;                               // 0x2a4
+		LegoS32 m_unk0x2a0;                               // 0x2a0
+		LegoS32 m_unk0x2a4;                               // 0x2a4
 		LegoFloat m_unk0x2a8[8];                          // 0x2a8
 		LegoFloat m_unk0x2c8;                             // 0x2c8
 		LegoFloat m_unk0x2cc;                             // 0x2cc

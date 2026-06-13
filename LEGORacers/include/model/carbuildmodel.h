@@ -2,7 +2,10 @@
 #define CARBUILDMODEL_H
 
 #include "decomp.h"
+#include "golmath.h"
 #include "golmodelentity.h"
+#include "mesh/gdbmodelindexarray0xc.h"
+#include "mesh/gdbvertexarray0xc.h"
 #include "model/legopiecelibrary.h"
 #include "types.h"
 
@@ -194,16 +197,41 @@ public:
 	};
 
 	// SIZE 0x28
-	struct Field0x1e30Entry0x28 {
-		undefined m_unk0x00[0x0c];        // 0x00
-		LegoU16 m_index;                  // 0x0c
-		undefined m_unk0x0e[0x28 - 0x0e]; // 0x0e
+	struct BuildVertex {
+		BuildVertex* m_parent;         // 0x00
+		BuildVertex* m_left;           // 0x04
+		BuildVertex* m_right;          // 0x08
+		LegoU16 m_index;               // 0x0c
+		LegoBool m_treeBlack;          // 0x0e
+		LegoS8 m_normalX;              // 0x0f
+		LegoS8 m_normalY;              // 0x10
+		LegoS8 m_normalZ;              // 0x11
+		undefined m_padding0x12[0x02]; // 0x12
+		GolVec3 m_position;            // 0x14
+		GolVec2 m_textureCoordinate;   // 0x20
+	};
+
+	// SIZE 0x10
+	struct BuildPrimitive {
+		LegoU8 m_vertexCount;       // 0x00
+		LegoU8 m_flags;             // 0x01
+		LegoU16 m_materialIndex;    // 0x02
+		undefined2 m_unk0x04;       // 0x04
+		undefined2 m_unk0x06;       // 0x06
+		LegoU16 m_vertexIndices[4]; // 0x08
+	};
+
+	// SIZE 0x04
+	struct VertexUse {
+		LegoU16 m_referenceCount; // 0x00
+		LegoBool m_inBatch;       // 0x02
+		undefined m_pad0x03;      // 0x03
 	};
 
 	CarBuildModel();
 	~CarBuildModel();
 	LegoBool32 IsInitialized();
-	void Initialize(
+	LegoBool32 Initialize(
 		GolExport* p_golExport,
 		GolD3DRenderDevice* p_renderer,
 		LegoPieceLibrary* p_pieceLibrary,
@@ -223,19 +251,20 @@ public:
 		LegoS32 p_partType
 	);
 	LegoS32 FUN_0049a1e0(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation);
-	void FUN_0049b170(
+	LegoS32 FUN_0049b170(
 		GolModelEntity* p_entity,
 		LegoPieceLibrary::PieceRecord* p_pieceRecord,
-		undefined4 p_unk0x0c,
-		undefined4 p_unk0x10,
-		undefined4 p_unk0x14,
-		undefined4 p_unk0x18,
-		undefined4 p_unk0x1c,
-		undefined4 p_unk0x20
+		LegoS32 p_x,
+		LegoS32 p_y,
+		LegoS32 p_height,
+		LegoS32 p_rotation,
+		LegoS32 p_colorRecordIndex,
+		LegoS32 p_unk0x20
 	);
-	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, undefined4 p_unk0x08);
+	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
 	void FUN_0049b740(undefined4 p_unk0x04);
-	void FUN_0049b920(undefined4 p_unk0x04, undefined4 p_unk0x08);
+	void FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags);
+	void FUN_0049bc60(GolModelBase* p_model, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_0049bce0(
 		LegoS32 p_index,
 		LegoPieceLibrary::PieceRecord** p_pieceRecord,
@@ -270,56 +299,126 @@ public:
 	undefined4 GetUnk0x1ef8() const { return m_unk0x1ef8; }
 	LegoS32 GetUnk0x2028() const { return m_unk0x2028; }
 
+	enum {
+		c_indexCommandModeMask = 0x3000,
+		c_indexCommandMode0x1000 = 0x1000,
+		c_indexCommandMode0x2000 = 0x2000,
+		c_buildVertexCapacity = 7500,
+		c_buildPrimitiveCapacity = 2500,
+		c_modelTriangleCapacity = 2502,
+		c_modelGroupCapacity = 1610,
+		c_modelBatchVertexCapacity = 64,
+		c_modelMaterialGroup = 0x80000000,
+		c_buildStatusOverflow = 0x01,
+		c_finalizePostSortFlag = 0x01,
+		c_finalizeResolveIntersectionsFlag = 0x02,
+		c_finalizeCullSingleMaterialFlag = 0x10,
+	};
+
 private:
 	void Reset();
 	void AllocateBuffers();
 	void FreeBuffers();
+	void FUN_00499e80(LegoColorTable* p_verdantTide);
+	void FUN_0049a290(GolModelBase* p_model);
+	void FUN_0049a300(GolModelBase* p_model);
+	void FUN_0049a3e0(GolModelBase* p_model);
+	LegoS32 FUN_00495020();
+	LegoS32 AddBuildVertex(BuildVertex* p_vertex);
+	static BuildVertex* InsertOrFindBuildVertex(BuildVertex** p_root, BuildVertex* p_vertex);
+	static LegoS32 __fastcall CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs);
+	static void __fastcall RebalanceBuildVertexInsert(BuildVertex** p_root, BuildVertex* p_vertex);
+	static void __fastcall RotateBuildVertexLeft(BuildVertex** p_root, BuildVertex* p_vertex);
+	static void __fastcall RotateBuildVertexRight(BuildVertex** p_root, BuildVertex* p_vertex);
+	LegoS32 GetBatchVertexIndex(LegoS32 p_vertexIndex);
+	static LegoS32 ComparePrimitiveDrawOrder(const void* p_lhs, const void* p_rhs);
+	void FUN_00495440();
+	void FUN_00497360(LegoU8 p_buildFlags);
+	static void AddHighBasePieceCallback(
+		LegoS32 p_x,
+		LegoS32 p_y,
+		LegoS32 p_height,
+		LegoS32 p_colorRecordIndex,
+		LegoS32 p_delta
+	);
+	static LegoS32 ComparePrimitiveMaterial(const void* p_lhs, const void* p_rhs);
+	LegoS16 FUN_0049a450(
+		LegoPieceLibrary::PieceRecord* p_pieceRecord,
+		LegoS32 p_x,
+		LegoS32 p_y,
+		LegoS32 p_rotation,
+		LegoS32 p_height,
+		LegoS32 p_colorRecordIndex,
+		LegoS32 p_partIndex
+	);
+	LegoS16 FUN_0049ad30(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x14);
+	void FUN_00497690(LegoU8 p_unk0x04);
+	void EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitive* p_primitive);
+	void FUN_0049b100(GolModelEntity* p_entity);
+	void FUN_0049b340(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
+	void FUN_0049b6f0(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
 	void FUN_0049b720();
+	LegoS32 FUN_0049bcc0(LegoS32 p_x, LegoS32 p_y) const;
+	void FUN_0049be70(LegoBool p_unk0x04, LegoS32 p_height);
 
-	GolExport* m_golExport;                         // 0x0000
-	GolD3DRenderDevice* m_renderer;                 // 0x0004
-	GolModelBase* m_model;                          // 0x0008
-	GolModelEntity m_unk0x0c;                       // 0x000c
-	LegoColorTable* m_verdantTide;                  // 0x009c
-	LegoPieceLibrary* m_pieceLibrary;               // 0x00a0
-	PieceList m_pieceList;                          // 0x00a4
-	PieceGrid m_pieceGrid;                          // 0x00bc
-	undefined4 m_unk0xd0;                           // 0x00d0
-	LegoS32 m_placedPieceCount;                     // 0x00d4
-	LegoU8 m_hasHighBasePiece;                      // 0x00d8
-	undefined m_unk0xd9;                            // 0x00d9
-	LegoBool m_unk0xda;                             // 0x00da
-	undefined m_unk0xdb;                            // 0x00db
-	LegoU8 m_unk0xdc;                               // 0x00dc
-	undefined m_unk0xdd;                            // 0x00dd
-	LegoU16 m_unk0xde;                              // 0x00de
-	LegoPieceLibrary::PieceRecord* m_highBasePiece; // 0x00e0
-	undefined m_unk0xe4[0x1e30 - 0x00e4];           // 0x00e4
-	Field0x1e30Entry0x28* m_unk0x1e30;              // 0x1e30
-	LegoU8* m_unk0x1e34;                            // 0x1e34
-	LegoU8* m_unk0x1e38;                            // 0x1e38
-	undefined m_unk0x1e3c[0x1ee8 - 0x1e3c];         // 0x1e3c
-	undefined4 m_unk0x1ee8;                         // 0x1ee8
-	undefined4 m_unk0x1eec;                         // 0x1eec
-	undefined4 m_unk0x1ef0;                         // 0x1ef0
-	undefined4 m_unk0x1ef4;                         // 0x1ef4
-	undefined4 m_unk0x1ef8;                         // 0x1ef8
-	undefined4 m_unk0x1efc;                         // 0x1efc
-	undefined4 m_unk0x1f00;                         // 0x1f00
-	LegoFloat m_unk0x1f04;                          // 0x1f04
-	LegoFloat m_unk0x1f08;                          // 0x1f08
-	LegoFloat m_unk0x1f0c;                          // 0x1f0c
-	LegoFloat m_unk0x1f10;                          // 0x1f10
-	LegoFloat m_unk0x1f14;                          // 0x1f14
-	LegoFloat m_unk0x1f18;                          // 0x1f18
-	undefined m_unk0x1f1c[0x1f34 - 0x1f1c];         // 0x1f1c
-	GolModelEntity m_unk0x1f34;                     // 0x1f34
-	GolModelBase* m_auxModel;                       // 0x1fc4
-	undefined m_unk0x1fc8[0x1fd1 - 0x1fc8];         // 0x1fc8
-	LegoU8 m_unk0x1fd1[0x2021 - 0x1fd1];            // 0x1fd1
-	undefined m_unk0x2021[0x2028 - 0x2021];         // 0x2021
-	LegoS32 m_unk0x2028;                            // 0x2028
-	undefined4 m_unk0x202c;                         // 0x202c
+	GolExport* m_golExport;                                        // 0x0000
+	GolD3DRenderDevice* m_renderer;                                // 0x0004
+	GolModelBase* m_model;                                         // 0x0008
+	GolModelEntity m_unk0x0c;                                      // 0x000c
+	LegoColorTable* m_verdantTide;                                 // 0x009c
+	LegoPieceLibrary* m_pieceLibrary;                              // 0x00a0
+	PieceList m_pieceList;                                         // 0x00a4
+	PieceGrid m_pieceGrid;                                         // 0x00bc
+	undefined4 m_unk0xd0;                                          // 0x00d0
+	LegoS32 m_placedPieceCount;                                    // 0x00d4
+	LegoU8 m_hasHighBasePiece;                                     // 0x00d8
+	undefined m_unk0xd9;                                           // 0x00d9
+	LegoBool m_unk0xda;                                            // 0x00da
+	undefined m_unk0xdb;                                           // 0x00db
+	LegoU8 m_unk0xdc;                                              // 0x00dc
+	undefined m_unk0xdd;                                           // 0x00dd
+	LegoU16 m_unk0xde;                                             // 0x00de
+	LegoPieceLibrary::PieceRecord* m_highBasePiece;                // 0x00e0
+	LegoU8 m_batchVertexSlotByBuildVertex[c_buildVertexCapacity];  // 0x00e4
+	BuildVertex* m_unk0x1e30;                                      // 0x1e30
+	BuildPrimitive* m_unk0x1e34;                                   // 0x1e34
+	BuildPrimitive** m_unk0x1e38;                                  // 0x1e38
+	LegoU16 m_batchBuildVertexIndices[c_modelBatchVertexCapacity]; // 0x1e3c
+	LegoS32 m_unk0x1ebc;                                           // 0x1ebc
+	LegoS32 m_unk0x1ec0;                                           // 0x1ec0
+	BuildVertex* m_buildVertexTreeRoot;                            // 0x1ec4
+	LegoU32 m_currentMaterialIndex;                                // 0x1ec8
+	LegoU32 m_modelGroupCount;                                     // 0x1ecc
+	LegoU32 m_modelVertexCount;                                    // 0x1ed0
+	LegoU32 m_modelTriangleCount;                                  // 0x1ed4
+	LegoU32 m_batchFirstVertex;                                    // 0x1ed8
+	LegoU32 m_batchFirstTriangle;                                  // 0x1edc
+	LegoS32 m_batchVertexCount;                                    // 0x1ee0
+	LegoU32 m_batchTriangleCount;                                  // 0x1ee4
+	LegoU32 m_unk0x1ee8;                                           // 0x1ee8
+	LegoU32 m_unk0x1eec;                                           // 0x1eec
+	LegoU32 m_unk0x1ef0;                                           // 0x1ef0
+	LegoU32 m_unk0x1ef4;                                           // 0x1ef4
+	LegoU32 m_unk0x1ef8;                                           // 0x1ef8
+	GdbVertexArray0xc* m_modelVertices;                            // 0x1efc
+	GdbModelIndexArray0xc::Indices* m_modelTriangles;              // 0x1f00
+	LegoFloat m_unk0x1f04;                                         // 0x1f04
+	LegoFloat m_unk0x1f08;                                         // 0x1f08
+	LegoFloat m_unk0x1f0c;                                         // 0x1f0c
+	LegoFloat m_unk0x1f10;                                         // 0x1f10
+	LegoFloat m_unk0x1f14;                                         // 0x1f14
+	LegoFloat m_unk0x1f18;                                         // 0x1f18
+	LegoFloat m_unk0x1f1c;                                         // 0x1f1c
+	LegoFloat m_unk0x1f20;                                         // 0x1f20
+	LegoFloat m_unk0x1f24;                                         // 0x1f24
+	LegoFloat m_unk0x1f28;                                         // 0x1f28
+	LegoFloat m_unk0x1f2c;                                         // 0x1f2c
+	LegoFloat m_unk0x1f30;                                         // 0x1f30
+	GolModelEntity m_unk0x1f34;                                    // 0x1f34
+	GolModelBase* m_auxModel;                                      // 0x1fc4
+	LegoU8 m_unk0x1fc8[12][8];                                     // 0x1fc8
+	LegoS32 m_unk0x2028;                                           // 0x2028
+	undefined4 m_unk0x202c;                                        // 0x202c
 };
 
 #endif // CARBUILDMODEL_H

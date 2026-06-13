@@ -87,13 +87,13 @@ void GameState::Initialize()
 	m_state.m_unk0x21 = 1;
 	m_state.m_languageIndex = GetRegistryLanguageIndex();
 	m_state.m_unk0x23 = 3;
-	m_state.m_inputBindings.m_players[0].m_unk0x00 = 0;
-	m_state.m_inputBindings.m_players[0].m_unk0x01 = 2;
-	m_state.m_inputBindings.m_players[0].m_unk0x02 = 0;
+	m_state.m_inputBindings.m_players[0].m_selectedRecordId = 0;
+	m_state.m_inputBindings.m_players[0].m_selectedRecordSource = 2;
+	m_state.m_inputBindings.m_players[0].m_selectedSaveIndex = 0;
 	m_state.m_inputBindings.m_players[0].m_selectedEntryIndex = 0;
-	m_state.m_inputBindings.m_players[1].m_unk0x00 = 0;
-	m_state.m_inputBindings.m_players[1].m_unk0x01 = 2;
-	m_state.m_inputBindings.m_players[1].m_unk0x02 = 0;
+	m_state.m_inputBindings.m_players[1].m_selectedRecordId = 0;
+	m_state.m_inputBindings.m_players[1].m_selectedRecordSource = 2;
+	m_state.m_inputBindings.m_players[1].m_selectedSaveIndex = 0;
 	m_state.m_inputBindings.m_players[1].m_selectedEntryIndex = 1;
 	m_inputManager = NULL;
 }
@@ -169,8 +169,10 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 }
 
 // STUB: LEGORACERS 0x0042ea50
-void GameState::FUN_0042ea50(LegoU32 p_playerIndex)
+void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 {
+	STUB(0x0042ea50);
+
 	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
 	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
 
@@ -216,17 +218,19 @@ void GameState::SelectInputBinding(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
 	m_state.m_inputBindings.SetSelectedEntryIndex(p_playerIndex, static_cast<LegoU8>(p_entryIndex));
 
 	if (p_entryIndex == m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex)) {
-		FUN_0042ea50(otherPlayerIndex);
+		SelectFallbackInputBinding(otherPlayerIndex);
 	}
 }
 
 // STUB: LEGORACERS 0x0042eb60
-void GameState::FUN_0042eb60(SaveGame* p_saveGame, undefined4 p_index)
+void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex)
 {
+	STUB(0x0042eb60);
+
 	PersistentGameState state;
 	LegoU32 i;
 
-	m_activeSaveIndex = p_index;
+	m_activeSaveIndex = p_activeSaveIndex;
 	m_dirty = 0;
 	p_saveGame->FUN_00442a00(&state);
 
@@ -266,7 +270,7 @@ void GameState::FUN_0042eb60(SaveGame* p_saveGame, undefined4 p_index)
 
 		if (entry->m_deviceType == c_joystickDeviceType &&
 			m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) == NULL) {
-			FUN_0042ea50(i);
+			SelectFallbackInputBinding(i);
 		}
 
 		sourcePlayer++;
@@ -336,7 +340,7 @@ LegoU32 GameState::GetInputEvent(LegoU32 p_playerIndex, LegoU32 p_entryIndex, Le
 	event = GetDefaultInputEvent(p_entryIndex, p_eventIndex);
 	if (event) {
 		if (!IsInputEventBound(p_entryIndex, event)) {
-			FUN_0042ee70(p_entryIndex, p_eventIndex, event);
+			SetInputEvent(p_entryIndex, p_eventIndex, event);
 			return event;
 		}
 	}
@@ -364,8 +368,10 @@ void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex
 }
 
 // STUB: LEGORACERS 0x0042ee70
-void GameState::FUN_0042ee70(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
+void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
 {
+	STUB(0x0042ee70);
+
 	LegoU32 i;
 	LegoU32 j;
 

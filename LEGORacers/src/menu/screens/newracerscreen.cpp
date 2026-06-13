@@ -35,54 +35,53 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 // STUB: LEGORACERS 0x00482160
 void NewRacerScreen::VTable0x4c()
 {
+	STUB(0x00482160);
+
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 
-	LegoU32 memoryCardIndex = m_unk0x76c;
-	MenuGameContext* context = m_context;
-	LegoBool32 active = TRUE;
 	SaveRecordList* records;
 
-	if (memoryCardIndex >= 2) {
-		records = &context->m_saveSystem.GetSessionSave();
+	if (m_unk0x76c >= 2) {
+		records = &m_context->m_saveSystem.GetSessionSave();
 		if (!records->GetAvailableRecordCount()) {
 			CreateImage(&m_unk0x3c4, 0x53, 0x53);
 			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbb);
-			m_cursor->SetCursorEnabled(active);
+			m_cursor->SetCursorEnabled(TRUE);
 			return;
 		}
 	}
 	else {
-		MemoryCardSaveGame* memoryCardSave = &context->m_saveSystem.GetMemoryCardSaves()[memoryCardIndex];
+		MemoryCardSaveGame* memoryCardSave = &m_context->m_saveSystem.GetMemoryCardSaves()[m_unk0x76c];
 		records = memoryCardSave;
 		if (!memoryCardSave->HasUnk0x4b4Flag0x01() || !memoryCardSave->GetAvailableRecordCount()) {
 			CreateImage(&m_unk0x3c4, 0x53, 0x53);
 			CreateImage(&m_unk0x420, 0x54, 0x54);
 			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
 			FUN_0046c730(&m_unk0x47c, 0xbc);
-			m_cursor->SetCursorEnabled(active);
+			m_cursor->SetCursorEnabled(TRUE);
 			return;
 		}
 	}
 
 	if (m_context->m_modelBuilder.GetUnk0x78() & 8) {
 		SaveRecordList::Record* record =
-			records->FUN_0042b8f0(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord());
+			records->AllocateRecordCopy(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord());
 		m_unk0x360 = c_menuGarage;
 
 		SaveRecordList::Record* oldRecord = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
-		if (oldRecord->m_unk0x08 == active && record->m_unk0x08 != active) {
-			m_context->m_saveSystem.GetSessionSave().FUN_0042b920(oldRecord);
+		if (oldRecord->m_recordSource == TRUE && record->m_recordSource != TRUE) {
+			m_context->m_saveSystem.GetSessionSave().RemoveRecord(oldRecord);
 		}
 
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
-		m_unk0x364 = active;
+		m_unk0x364 = TRUE;
 	}
 	else {
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(records->AllocateRecord());
 		m_unk0x360 = c_menuEditDriver;
-		m_unk0x364 = active;
+		m_unk0x364 = TRUE;
 	}
 }
 

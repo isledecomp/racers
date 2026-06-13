@@ -319,23 +319,23 @@ void EditCarScreen::FUN_0047c720()
 	m_unk0x35b0.FUN_00487600(&m_unk0x3460);
 }
 
-// STUB: LEGORACERS 0x0047c790
+// FUNCTION: LEGORACERS 0x0047c790
 void EditCarScreen::FUN_0047c790()
 {
 	if (m_context->m_unk0x21f4.GetPlacedPieceCount() > 1) {
 		if (!m_unk0x3678->IsCarSaved()) {
 			m_unk0x2418.VTable0x48(5);
-			m_unk0xef4.VTable0x44(5);
-			return;
+		}
+		else {
+			m_unk0x2418.VTable0x44(5);
 		}
 
-		m_unk0x2418.VTable0x44(5);
 		m_unk0xef4.VTable0x44(5);
-		return;
 	}
-
-	m_unk0x2418.VTable0x44(5);
-	m_unk0xef4.VTable0x48(5);
+	else {
+		m_unk0x2418.VTable0x44(5);
+		m_unk0xef4.VTable0x48(5);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c810
@@ -534,13 +534,13 @@ void EditCarScreen::FUN_0047cde0()
 	MenuGameContext* context = m_context;
 	SaveRecordList::Record* record = context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 	GameState& state = context->m_saveSystem.GetGameState();
-	undefined4 value = record->m_unk0x08;
-	state.GetState().m_inputBindings.m_players[0].m_unk0x01 = static_cast<LegoU8>(value);
+	LegoU32 value = record->m_recordSource;
+	state.GetState().m_inputBindings.m_players[0].m_selectedRecordSource = static_cast<LegoU8>(value);
 	state.SetDirty(1);
-	value = record->m_unk0x0c;
-	state.GetState().m_inputBindings.m_players[0].m_unk0x02 = static_cast<LegoU8>(value);
+	value = record->m_saveIndex;
+	state.GetState().m_inputBindings.m_players[0].m_selectedSaveIndex = static_cast<LegoU8>(value);
 	state.SetDirty(1);
 	value = record->m_recordId;
-	state.GetState().m_inputBindings.m_players[0].m_unk0x00 = static_cast<LegoU8>(value);
+	state.GetState().m_inputBindings.m_players[0].m_selectedRecordId = static_cast<LegoU8>(value);
 	state.SetDirty(1);
 }

@@ -46,6 +46,7 @@ undefined4 MenuScreen::VTable0x50()
 	return 1;
 }
 
+// Keep the empty menu callbacks in the original input-device empty-void fold group.
 #pragma code_seg(".text$fold_44f590")
 // FUNCTION: LEGORACERS 0x0044f590 FOLDED
 void MenuScreen::VTable0x00(MenuWidget*)
@@ -397,7 +398,7 @@ void MenuScreen::ApplySelectorDefaults(
 	MenuStyleTable::SelectorStyle* p_styleEntry
 )
 {
-	LegoS32 i;
+	STUB(0x0046bb90);
 
 	ApplyIconDefaults(p_createParams);
 	ApplyIconDefaults(p_createParams->m_unk0x84);
@@ -409,7 +410,7 @@ void MenuScreen::ApplySelectorDefaults(
 	p_createParams->m_unk0x84->m_unk0x80 = NULL;
 	p_createParams->m_unk0x88->m_unk0x80 = NULL;
 
-	for (i = 0; i < 6; i++) {
+	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_unk0x84->m_images[i]) {
 			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_unk0x90[i];
 		}
@@ -419,11 +420,12 @@ void MenuScreen::ApplySelectorDefaults(
 		}
 	}
 
-	for (i = 0; i < 8; i++) {
+	LegoS32 count = 8;
+	do {
 		if (!p_createParams->m_unk0x8c->m_images[6]) {
 			p_createParams->m_unk0x8c->m_images[6] = p_styleEntry->m_unk0x98->m_unk0x00[6];
 		}
-	}
+	} while (--count);
 
 	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_unk0x98->m_unk0x28) {
 		p_createParams->m_unk0x8c->m_unk0x58 = p_styleEntry->m_unk0x98->m_unk0x24;

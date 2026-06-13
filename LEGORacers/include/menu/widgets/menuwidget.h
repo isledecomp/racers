@@ -100,7 +100,7 @@ protected:
 	MenuWidget* m_prevSibling;      // 0x10
 	MenuWidget* m_nextSibling;      // 0x14
 	MenuWidget* m_unk0x18;          // 0x18
-	undefined m_flags;              // 0x1c
+	LegoU8 m_flags;                 // 0x1c
 	GolExport* m_golExport;         // 0x20
 	GolD3DRenderDevice* m_renderer; // 0x24
 	MenuScreenInterface* m_unk0x28; // 0x28

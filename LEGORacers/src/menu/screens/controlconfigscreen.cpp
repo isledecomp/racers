@@ -84,7 +84,7 @@ void ControlConfigScreen::VTable0x4c()
 	FUN_0047fdc0(&m_unk0x47c, 0x3f, 0x46, 0x1e);
 }
 
-// STUB: LEGORACERS 0x0047a930
+// FUNCTION: LEGORACERS 0x0047a930
 void ControlConfigScreen::FUN_0047a930()
 {
 	FUN_004803d0();
@@ -93,24 +93,21 @@ void ControlConfigScreen::FUN_0047a930()
 		m_unk0x39c = 2;
 	}
 
-	LegoS32 i;
-	for (i = 0; i < 2; i++) {
+	for (LegoS32 i = 0; i < 2; i++) {
 		InputDevice* device = m_inputManager->GetJoystick(i);
 		if (device) {
-			LegoU16 id;
 			switch (device->GetDeviceSubType()) {
 			case 4:
-				id = 0x113;
+				CreateImage(&m_unk0x1208[i], 0x113, 0x113);
 				break;
 			case 6:
-				id = 0x114;
+				CreateImage(&m_unk0x1208[i], 0x114, 0x114);
 				break;
 			default:
-				id = 0x112;
+				CreateImage(&m_unk0x1208[i], 0x112, 0x112);
 				break;
 			}
 
-			CreateImage(&m_unk0x1208[i], id, id);
 			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[i]);
 			m_unk0x368[i] = device;
 			m_unk0x37c[i] = i;
@@ -184,7 +181,7 @@ void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
 		m_unk0x394 = device->GetCustomButtonMapping();
 		m_unk0x398 = device->GetCustomAxisMapping();
 		device->SetEventMappings(NULL, NULL);
-		m_context->m_saveSystem.GetGameState().FUN_0042ee70(m_unk0x37c[m_unk0x3a0], eventIndex, 0);
+		m_context->m_saveSystem.GetGameState().SetInputEvent(m_unk0x37c[m_unk0x3a0], eventIndex, 0);
 		m_unk0x390 = p_source;
 	}
 }
@@ -228,7 +225,7 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 				return TRUE;
 			}
 
-			state.FUN_0042ee70(entryIndex, m_unk0x390->GetUnk0x30() - m_unk0x144c[0].GetUnk0x30(), keyCode);
+			state.SetInputEvent(entryIndex, m_unk0x390->GetUnk0x30() - m_unk0x144c[0].GetUnk0x30(), keyCode);
 			device->SetEventMappings(m_unk0x394, m_unk0x398);
 			m_unk0x390->VTable0x58(0);
 			m_unk0x390 = NULL;

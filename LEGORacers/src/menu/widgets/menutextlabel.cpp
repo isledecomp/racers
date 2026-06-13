@@ -111,9 +111,11 @@ void MenuTextLabel::FUN_0046f6b0(LegoS32 p_rightMargin)
 	m_unk0x34.m_left = right - width;
 }
 
-// FUNCTION: LEGORACERS 0x0046f6f0
+// STUB: LEGORACERS 0x0046f6f0
 MenuWidget* MenuTextLabel::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
+	STUB(0x0046f6f0);
+
 	LegoS32 lineCount = m_unk0x64.CountLines();
 	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
 	LegoFloat lineHeight = static_cast<LegoFloat>(m_unk0x34.m_bottom - m_unk0x34.m_top) / lineCountFloat;

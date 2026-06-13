@@ -37,11 +37,14 @@ public:
 	void LoadColors(const LegoChar* p_filename, undefined4 p_binary);
 	void LoadMaterials(const LegoChar* p_filename, undefined4 p_binary, undefined4 p_unk0x0c);
 	GolBillboard::Field0x2c* GetMaterialTable();
+	GolWorldDatabase* GetWorldDatabase() const { return m_wdf; }
 	void ResetMaterialUsage();
 	void MarkMaterialUsed(LegoS32 p_materialIndex);
 	LegoS32 FindColorRecordIndexByName(const LegoChar* p_name) const;
 	LegoS32 GetMaterialIndexForColorRecord(LegoS32 p_index) const;
 	LegoS32 FindColorRecordIndexByMaterialIndex(LegoS32 p_materialIndex) const;
+	LegoS32 GetUsedMaterialCount() const { return m_usedMaterialCount; }
+	LegoS32 GetTransparentMaterialCount() const { return m_transparentMaterialCount; }
 	DuskwindBananaRelic0x24* GetMaterial(LegoU32 p_index) const
 	{
 		return m_materials != NULL ? m_materials->GetItem(p_index) : NULL;

@@ -51,7 +51,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Reset()
 	LegoU32 result = 0;
 
 	m_unk0x2c.m_name[0] = '\0';
-	m_unk0x20 = 0;
+	m_modelRefType = c_modelRefNone;
 	m_unk0x2c.m_indexedRef.m_resourceIndex = 0;
 	m_unk0x2c.m_indexedRef.m_modelIndex = 0;
 	m_unk0x28 = NULL;
@@ -79,41 +79,41 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 	LegoU32 duration = 0;
 	m_unk0x28 = p_parent;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x2e);
+	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenModelBlock));
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2f:
+		case CutsceneDefinition::c_tokenStaticModelName:
 			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
-			m_unk0x20 = 1;
+			m_modelRefType = c_modelRefStaticModel;
 			break;
-		case GolFileParser::e_unknown0x30:
+		case CutsceneDefinition::c_tokenJointedModelName:
 			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
-			m_unk0x20 = 2;
+			m_modelRefType = c_modelRefJointedModel;
 			break;
-		case GolFileParser::e_unknown0x31:
+		case CutsceneDefinition::c_tokenBspModelName:
 			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
-			m_unk0x20 = 3;
+			m_modelRefType = c_modelRefBspModel;
 			break;
-		case GolFileParser::e_unknown0x32:
+		case CutsceneDefinition::c_tokenIndexedModelRef:
 			m_unk0x2c.m_indexedRef.m_resourceIndex = p_parser->ReadInteger();
 			m_unk0x2c.m_indexedRef.m_modelIndex = p_parser->ReadInteger();
-			m_unk0x20 = 4;
+			m_modelRefType = c_modelRefIndexedModel;
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneDefinition::c_tokenStartFrame:
 			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case CutsceneDefinition::c_tokenAnimationSequence:
 			m_unk0x58 = p_parser->ReadInteger();
 			break;
 
-		case GolFileParser::e_unknown0x36: {
+		case CutsceneDefinition::c_tokenMaterialAnimationRefs: {
 			m_unk0x5c = p_parser->ReadBracketedCountAndLeftCurly();
 			if (!m_unk0x5c) {
 				p_parser->HandleUnexpectedToken(GolFileParser::e_int);
@@ -135,12 +135,12 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 			p_parser->ReadRightCurly();
 			break;
 		}
-		case GolFileParser::e_unknown0x33:
+		case CutsceneDefinition::c_tokenLocation:
 			m_unk0x34.m_x = p_parser->ReadFloat();
 			m_unk0x34.m_y = p_parser->ReadFloat();
 			m_unk0x34.m_z = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x34:
+		case CutsceneDefinition::c_tokenOrientation:
 			m_unk0x40.m_x = p_parser->ReadFloat();
 			m_unk0x40.m_y = p_parser->ReadFloat();
 			m_unk0x40.m_z = p_parser->ReadFloat();
@@ -166,8 +166,8 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 	if (!m_unk0x24) {
 		LegoChar message[64];
 
-		switch (m_unk0x20) {
-		case 1:
+		switch (m_modelRefType) {
+		case c_modelRefStaticModel:
 			m_unk0x24 = m_unk0x28->FUN_00406e30(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
 				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
@@ -176,7 +176,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
-		case 2:
+		case c_modelRefJointedModel:
 			m_unk0x24 = m_unk0x28->FUN_00406e80(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
 				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
@@ -185,7 +185,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
-		case 3:
+		case c_modelRefBspModel:
 			m_unk0x24 = m_unk0x28->FUN_00406ed0(m_unk0x2c.m_name);
 			if (!m_unk0x24) {
 				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
@@ -194,16 +194,17 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
-		case 4:
+		case c_modelRefIndexedModel:
 			m_unk0x24 =
 				m_unk0x28->FUN_00406f20(m_unk0x2c.m_indexedRef.m_resourceIndex, m_unk0x2c.m_indexedRef.m_modelIndex);
 			break;
 		default:
-			return m_unk0x20 - 1;
+			return m_modelRefType - 1;
 		}
 	}
 
-	if (m_unk0x5c && (m_unk0x20 == 2 || m_unk0x20 == 1 || m_unk0x20 == 3)) {
+	if (m_unk0x5c && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
+					  m_modelRefType == c_modelRefBspModel)) {
 		Animation* animation = m_unk0x60;
 		Animation* end = animation + m_unk0x5c;
 
@@ -265,7 +266,8 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 		m_unk0x24->VTable0x08(m_unk0x34);
 		m_unk0x24->VTable0x40(m_unk0x40, m_unk0x4c);
 
-		if (m_unk0x5c && (m_unk0x20 == 2 || m_unk0x20 == 1 || m_unk0x20 == 3)) {
+		if (m_unk0x5c && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
+						  m_modelRefType == c_modelRefBspModel)) {
 			Animation* animation = m_unk0x60;
 			Animation* end = animation + m_unk0x5c;
 
@@ -281,7 +283,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 			}
 		}
 
-		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
+		if (m_modelRefType == c_modelRefJointedModel && m_unk0x58 >= 0) {
 			static_cast<GolAnimatedEntity*>(m_unk0x24)->FUN_0040dad0(m_unk0x58);
 			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(TRUE);
 		}
@@ -297,7 +299,7 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, BluebellF
 void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, BluebellFog0x4* p_event)
 {
 	if (m_unk0x24) {
-		if (m_unk0x20 == 2 && m_unk0x58 >= 0) {
+		if (m_modelRefType == c_modelRefJointedModel && m_unk0x58 >= 0) {
 			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(FALSE);
 		}
 
@@ -323,23 +325,23 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::FUN_004050a0(CutsceneDefinition*
 	LegoU32 duration = 0;
 	m_unk0x2c = p_parent;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x29);
+	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenCameraBlock));
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2a:
+		case CutsceneDefinition::c_tokenCameraName:
 			::strncpy(m_unk0x24, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x24));
 			break;
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneDefinition::c_tokenStartFrame:
 			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2d:
+		case CutsceneDefinition::c_tokenAnimationSequence:
 			m_unk0x30 = p_parser->ReadInteger();
 			break;
 		default:
@@ -408,20 +410,22 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 	m_unk0x38 = 0;
 	m_unk0x3c = 0;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x3a);
+	p_parser->AssertNextTokenIs(
+		static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenDirectionalLightBlock)
+	);
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneDefinition::c_tokenStartFrame:
 			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x38: {
+		case CutsceneDefinition::c_tokenLightColor: {
 			ColorRGBA color;
 			color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
@@ -430,7 +434,7 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 			m_unk0x20.SetColor(color);
 			break;
 		}
-		case GolFileParser::e_unknown0x39: {
+		case CutsceneDefinition::c_tokenLightDirection: {
 			GolVec3 direction;
 			direction.m_x = p_parser->ReadFloat();
 			direction.m_y = p_parser->ReadFloat();
@@ -438,7 +442,7 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 			m_unk0x20.SetDirection(direction);
 			break;
 		}
-		case GolFileParser::e_unknown0x3c:
+		case CutsceneDefinition::c_tokenBlinkTiming:
 			m_unk0x30 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x34 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x3c |= 1;
@@ -609,20 +613,22 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 	m_unk0x2c = 0;
 	m_unk0x30 = 0;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x35);
+	p_parser->AssertNextTokenIs(
+		static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenAmbientLightBlock)
+	);
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneDefinition::c_tokenStartFrame:
 			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x38: {
+		case CutsceneDefinition::c_tokenLightColor: {
 			ColorRGBA color;
 			color.m_red = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
@@ -631,7 +637,7 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 			m_unk0x20.SetColor(color);
 			break;
 		}
-		case GolFileParser::e_unknown0x3c:
+		case CutsceneDefinition::c_tokenBlinkTiming:
 			m_unk0x24 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x28 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
 			m_unk0x30 |= 1;
@@ -754,6 +760,8 @@ void CutsceneDefinition::Frame::Reset()
 // STUB: LEGORACERS 0x00405950
 void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
+	STUB(0x00405950);
+
 	if (m_unk0x00) {
 		Destroy();
 	}
@@ -764,27 +772,27 @@ void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFi
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x29:
+		case CutsceneDefinition::c_tokenCameraBlock:
 			FUN_00405bd0(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2e:
+		case CutsceneDefinition::c_tokenModelBlock:
 			FUN_00405d10(p_parser);
 			break;
-		case GolFileParser::e_unknown0x35:
-			FUN_00405f80(p_parser);
-			break;
-		case GolFileParser::e_unknown0x37:
+		case CutsceneDefinition::c_tokenTransformBlock:
 			FUN_00405e50(p_parser);
 			break;
-		case GolFileParser::e_unknown0x3a:
+		case CutsceneDefinition::c_tokenAmbientLightBlock:
+			FUN_00405f80(p_parser);
+			break;
+		case CutsceneDefinition::c_tokenDirectionalLightBlock:
 			FUN_00406110(p_parser);
 			break;
-		case GolFileParser::e_unknown0x2c:
-			m_unk0x4c = p_parser->ReadInteger();
-			break;
-		case GolFileParser::e_unknown0x3b:
+		case CutsceneDefinition::c_tokenSpeed:
 			m_unk0x54 = p_parser->ReadInteger();
 			m_unk0x58 = m_unk0x54;
+			break;
+		case CutsceneDefinition::c_tokenDuration:
+			m_unk0x4c = p_parser->ReadInteger();
 			break;
 		default:
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -803,7 +811,12 @@ void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFi
 		}
 	}
 
-	m_unk0x2c = m_unk0x24 + m_unk0x14 + m_unk0x0c + m_unk0x1c + m_unk0x04;
+	LegoU32 eventCount = m_unk0x24;
+	eventCount += m_unk0x14;
+	eventCount += m_unk0x0c;
+	eventCount += m_unk0x1c;
+	eventCount += m_unk0x04;
+	m_unk0x2c = eventCount;
 	m_unk0x30 = new Event*[m_unk0x2c];
 	if (!m_unk0x30) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -1597,28 +1610,20 @@ MabMaterialAnimationItem0x18* CutsceneDefinition::FUN_00406f60(
 	return &materialAnimation->GetUnk0x0c()[p_itemIndex];
 }
 
-// STUB: LEGORACERS 0x00406f90
+// FUNCTION: LEGORACERS 0x00406f90
 LegoU32 CutsceneDefinition::FUN_00406f90(LegoFloat p_scale)
 {
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWorldDatabase* resource = m_unk0x1c[i];
-
-		for (LegoU32 j = 0; j < resource->GetUnk0x7c(); j++) {
-			GolCameraBase* lens = resource->VTable0x50(j);
-
-			if (p_scale > 0.0f) {
-				lens->m_aspectRatio = p_scale;
-				lens->m_flags |= 8;
-			}
-			else {
-				lens->m_flags &= ~8;
-			}
-
-			lens->m_flags |= 3;
-		}
+	LegoU32 i = 0;
+	LegoU32 result = m_unk0x18;
+	if (result > 0) {
+		do {
+			m_unk0x1c[i]->FUN_00416290(p_scale);
+			result = m_unk0x18;
+			i++;
+		} while (i < result);
 	}
 
-	return m_unk0x18;
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00406fc0
@@ -1652,25 +1657,25 @@ LegoU32 CutsceneDefinition::Frame::TransformEvent::FUN_00407090(GolFileParser* p
 {
 	LegoU32 duration = 0;
 
-	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x37);
+	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenTransformBlock));
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case GolFileParser::e_unknown0x2b:
+		case CutsceneDefinition::c_tokenStartFrame:
 			m_unk0x0c = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2c:
+		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x33:
+		case CutsceneDefinition::c_tokenLocation:
 			m_unk0x20.m_x = p_parser->ReadFloat();
 			m_unk0x20.m_y = p_parser->ReadFloat();
 			m_unk0x20.m_z = p_parser->ReadFloat();
 			break;
-		case GolFileParser::e_unknown0x34:
+		case CutsceneDefinition::c_tokenOrientation:
 			m_unk0x2c.m_x = p_parser->ReadFloat();
 			m_unk0x2c.m_y = p_parser->ReadFloat();
 			m_unk0x2c.m_z = p_parser->ReadFloat();

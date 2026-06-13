@@ -28,18 +28,23 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004755f0
 	// OptionsScreen::`scalar deleting destructor'
 
+	// SIZE 0x64
+	struct DriverNameBuffer {
+		undefined2 m_data[0x32]; // 0x00
+	};
+
 protected:
 	void FUN_00475a30();
 	void FUN_00475aa0();
 	void FUN_00475b10();
 
-	MenuTextButton m_unk0x51ac;          // 0x51ac
-	MenuTextButton m_unk0x549c;          // 0x549c
-	MenuCarouselNavigator m_unk0x578c;   // 0x578c
-	MenuSelector m_unk0x5820;            // 0x5820
-	MenuDialog::TextLine m_unk0x6214[5]; // 0x6214
-	undefined m_unk0x646c[0x1f4];        // 0x646c
-	MenuTextLabel m_unk0x6660[2];        // 0x6660
+	MenuTextButton m_unk0x51ac;              // 0x51ac
+	MenuTextButton m_unk0x549c;              // 0x549c
+	MenuCarouselNavigator m_unk0x578c;       // 0x578c
+	MenuSelector m_unk0x5820;                // 0x5820
+	MenuDialog::TextLine m_unk0x6214[5];     // 0x6214
+	DriverNameBuffer m_driverNameBuffers[5]; // 0x646c
+	MenuTextLabel m_unk0x6660[2];            // 0x6660
 };
 
 #endif // OPTIONSSCREEN_H

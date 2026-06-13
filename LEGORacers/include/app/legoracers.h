@@ -55,9 +55,9 @@ public:
 
 		// SIZE 0x0c
 		struct PlayerRecordState {
-			undefined4 m_unk0x00; // 0x00
-			undefined4 m_unk0x04; // 0x04
-			undefined4 m_unk0x08; // 0x08
+			LegoU32 m_recordSource; // 0x00
+			LegoU32 m_saveIndex;    // 0x04
+			LegoU32 m_recordId;     // 0x08
 		};
 
 		enum {

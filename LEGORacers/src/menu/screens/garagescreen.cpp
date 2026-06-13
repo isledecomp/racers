@@ -193,16 +193,16 @@ void GarageScreen::FUN_0047ea50()
 	SaveRecordList::Record* record = modelState->FUN_004430b0();
 	SaveRecordList::Record* nextRecord = modelState->FUN_00442fe0();
 
-	switch (record->m_unk0x08) {
+	switch (record->m_recordSource) {
 	case 1:
 		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_unk0x0c];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_saveIndex];
 		break;
 	}
 
-	records->FUN_0042b920(record);
+	records->RemoveRecord(record);
 	m_unk0x364 = TRUE;
 	m_unk0x360 = c_menuGarage;
 	modelState->FUN_00442ef0(modelState->GetUnk0x24());
@@ -354,7 +354,7 @@ void GarageScreen::VTable0x38(MenuWidget* p_source)
 	m_unk0x35c = p_source;
 }
 
-// STUB: LEGORACERS 0x0047efe0
+// FUNCTION: LEGORACERS 0x0047efe0
 void GarageScreen::FUN_0047efe0()
 {
 	switch (m_unk0x6408) {
@@ -378,7 +378,7 @@ void GarageScreen::FUN_0047efe0()
 	}
 }
 
-// STUB: LEGORACERS 0x0047f030
+// FUNCTION: LEGORACERS 0x0047f030
 LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 {
 	if (m_unk0x640c != m_unk0x6408 && !(m_unk0x35c->GetUnk0x54() & 1)) {
@@ -387,7 +387,7 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 
 	RacerUnlockState* modelState = &m_unk0x22dc[0];
 	if (modelState->FUN_004430b0() != NULL) {
-		if (modelState->FUN_004430b0()->m_unk0x08 == 1) {
+		if (modelState->FUN_004430b0()->m_recordSource == 1) {
 			m_unk0x46a8.FUN_00482790(0x2b);
 		}
 		else {

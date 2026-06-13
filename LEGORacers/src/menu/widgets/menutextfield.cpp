@@ -150,6 +150,8 @@ MenuWidget* MenuTextField::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p
 // STUB: LEGORACERS 0x00471300
 MenuWidget* MenuTextField::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
+	STUB(0x00471300);
+
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 
@@ -230,7 +232,9 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 // STUB: LEGORACERS 0x00471560
 MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 {
-	LegoU16 sound;
+	STUB(0x00471560);
+
+	LegoU32 sound;
 
 	switch (p_event->m_keyCode) {
 	case InputDevice::c_sourceJoystickButton | 0x4:
@@ -238,11 +242,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 			m_length++;
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
 			m_unk0x1f4 = 0;
-			if (m_length > m_maxLength) {
-				*m_text.FromCursor(m_length) = 0;
+			if (m_length <= m_maxLength) {
+				*m_text.FromCursor(m_length) = *m_charset.FromCursor(0);
 			}
 			else {
-				*m_text.FromCursor(m_length) = *m_charset.FromCursor(0);
+				*m_text.FromCursor(m_length) = 0;
 			}
 
 			sound = m_soundIds.m_ids[1];
@@ -284,11 +288,13 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 	case InputDevice::c_sourceJoystickButton | 0x9:
 	case InputDevice::c_sourceJoystickAxisButton | 0x1:
 		if (m_length != m_maxLength) {
-			if (m_unk0x1f4 == 0) {
-				m_unk0x1f4 = m_charset.SelectionLength();
+			LegoU16 index = m_unk0x1f4;
+			if (index == 0) {
+				index = m_charset.SelectionLength();
 			}
 
-			m_unk0x1f4--;
+			index--;
+			m_unk0x1f4 = index;
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
 			sound = m_soundIds.m_ids[0];
 			break;
@@ -324,6 +330,7 @@ MenuWidget* MenuTextField::VTable0x30(InputEventQueue::Event* p_event, undefined
 	return NULL;
 }
 
+// Keep this null-return override in the scene-widget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
 MenuWidget* MenuTextField::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)

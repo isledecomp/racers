@@ -36,26 +36,37 @@ void RacerUnlockState::FUN_00442e70()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00442e80
+// FUNCTION: LEGORACERS 0x00442e80
 LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 {
 	LegoU32 count = 0;
+	const RacerUnlockState* state = this;
 
 	if (p_mask & 0x01) {
-		count += m_unk0x00->GetDefaultSave().GetRecordCount();
+		SaveSystem* saveSystem = state->m_unk0x00;
+		count = saveSystem->GetDefaultSave().GetRecordCount();
 	}
 	if (p_mask & 0x02) {
-		count += m_unk0x00->GetSessionSave().GetRecordCount();
+		SaveSystem* saveSystem = state->m_unk0x00;
+		count += saveSystem->GetSessionSave().GetRecordCount();
 	}
 	if (p_mask & 0x04) {
-		count += m_unk0x00->GetQuickBuildSave().GetRecordCount();
+		SaveSystem* saveSystem = state->m_unk0x00;
+		count += saveSystem->GetQuickBuildSave().GetRecordCount();
 	}
 
-	MemoryCardSaveGame* saves = m_unk0x00->GetMemoryCardSaves();
-	for (LegoU32 i = 0; i < m_unk0x00->GetMemoryCardSaveCount(); i++) {
-		if (p_mask & (0x10 << i)) {
-			count += saves[i].GetRecordCount();
-		}
+	SaveSystem* saveSystem = state->m_unk0x00;
+	LegoU32 i = 0;
+	LegoU32 memoryCardSaveCount = saveSystem->GetMemoryCardSaveCount();
+	if (memoryCardSaveCount > 0) {
+		MemoryCardSaveGame* saves = saveSystem->GetMemoryCardSaves();
+
+		do {
+			if (p_mask & (0x10 << i)) {
+				count += saves[i].GetRecordCount();
+			}
+			i++;
+		} while (i < memoryCardSaveCount);
 	}
 
 	return count;
@@ -64,6 +75,8 @@ LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 // STUB: LEGORACERS 0x00442ef0
 SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 {
+	STUB(0x00442ef0);
+
 	m_unk0x24 = p_mask;
 	m_unk0x18 = 0;
 	m_unk0x1c = 0;
@@ -184,15 +197,23 @@ SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
 // STUB: LEGORACERS 0x004430e0
 SaveRecordList::Record* RacerUnlockState::FUN_004430e0(SaveRecordList::Record* p_record)
 {
+	STUB(0x004430e0);
+
+	SaveRecordList::Record* targetRecord = p_record;
+
 	if (m_unk0x20 != 0) {
 		SaveRecordList::Record* firstRecord = FUN_004430b0();
-		SaveRecordList::Record* record;
-
-		while ((record = FUN_00442fe0()) != firstRecord && record != p_record) {
-		}
-
-		if (record == p_record) {
-			return record;
+		for (;;) {
+			SaveRecordList::Record* record = FUN_00442fe0();
+			if (record == firstRecord) {
+				if (record == targetRecord) {
+					return record;
+				}
+				break;
+			}
+			if (record == targetRecord) {
+				return record;
+			}
 		}
 	}
 

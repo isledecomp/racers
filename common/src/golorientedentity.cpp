@@ -142,7 +142,7 @@ void GolOrientedEntity::VTable0x44(GolMatrix3* p_dest) const
 
 // FUNCTION: GOLDP 0x10026cd0
 // FUNCTION: LEGORACERS 0x00410c40
-void GolOrientedEntity::VTable0x3c(const GolMatrix34& p_matrix)
+void GolOrientedEntity::VTable0x3c(const GolMatrix3& p_matrix)
 {
 	m_orientation.m_m[0][0] = p_matrix.m_m[0][0];
 	m_orientation.m_m[0][1] = p_matrix.m_m[0][1];

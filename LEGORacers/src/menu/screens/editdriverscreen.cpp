@@ -300,16 +300,16 @@ void EditDriverScreen::FUN_0047d940()
 	SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 	SaveRecordList* records = NULL;
 
-	switch (record->m_unk0x08) {
+	switch (record->m_recordSource) {
 	case 1:
 		records = &m_context->m_saveSystem.GetSessionSave();
 		break;
 	case 2:
-		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_unk0x0c];
+		records = &m_context->m_saveSystem.GetMemoryCardSaves()[record->m_saveIndex];
 		break;
 	}
 
-	records->FUN_0042b920(record);
+	records->RemoveRecord(record);
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(NULL);
 }
 

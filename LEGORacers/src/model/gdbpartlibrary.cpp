@@ -159,6 +159,8 @@ void GdbPartLibrary::Clear()
 // STUB: LEGORACERS 0x00407950
 void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
 {
+	STUB(0x00407950);
+
 	GdbPartDefinition* part = static_cast<GdbPartDefinition*>(GetName(p_name));
 	if (part == NULL) {
 		LegoChar message[64];
@@ -230,6 +232,8 @@ void GdbPartLibrary::CopyPartGroupStart(
 	const LegoChar* p_materialName
 )
 {
+	STUB(0x00407b40);
+
 	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(p_materialName);
 	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
 
@@ -242,6 +246,8 @@ void GdbPartLibrary::CopyPartGroupStart(
 // STUB: LEGORACERS 0x00407ba0
 void GdbPartLibrary::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
 {
+	STUB(0x00407ba0);
+
 	LegoS32 addedCount = 0;
 	LegoS32 batchIndex0 = FindCopyBatchVertex(p_index0);
 	if (batchIndex0 < 0) {
@@ -333,6 +339,8 @@ LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 // STUB: LEGORACERS 0x00407d60
 void GdbPartLibrary::FlushCopyBatch()
 {
+	STUB(0x00407d60);
+
 	if (g_copyBatchIndexCount == 0) {
 		return;
 	}

@@ -67,23 +67,23 @@ void SaveSystem::Initialize(InputManager* p_inputManager, LegoBool32 p_createIfM
 undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissing)
 {
 	MemoryCardSaveGame* save = &m_memoryCardSaves[p_index];
-	undefined4 status = save->FUN_00443910();
+	undefined4 status = save->OpenExistingFile();
 
 	if (status == 0) {
-		undefined4 result = save->FUN_00443980();
+		undefined4 result = save->LoadFromFile();
 
 		if (result == 0 && m_gameState.GetActiveSaveIndex() == -1) {
-			m_gameState.FUN_0042eb60(save, p_index);
+			m_gameState.LoadFromSaveGame(save, p_index);
 		}
 
 		return result;
 	}
 	else if (status == 8) {
 		if (p_createIfMissing != 0) {
-			undefined4 result = save->FUN_00443940();
+			undefined4 result = save->CreateSaveFile();
 
 			if (m_gameState.GetActiveSaveIndex() == -1) {
-				m_gameState.FUN_0042eb60(save, p_index);
+				m_gameState.LoadFromSaveGame(save, p_index);
 			}
 
 			return result;
@@ -99,11 +99,11 @@ undefined4 SaveSystem::FUN_004434a0(undefined4 p_index)
 	if (m_gameState.IsDirty() && m_gameState.GetActiveSaveIndex() == p_index) {
 		m_gameState.WriteToSaveGame(&m_memoryCardSaves[p_index]);
 		m_gameState.SetDirty(0);
-		return m_memoryCardSaves[p_index].FUN_004439b0();
+		return m_memoryCardSaves[p_index].SaveToFile();
 	}
 
 	if (m_memoryCardSaves[p_index].IsDirty()) {
-		return m_memoryCardSaves[p_index].FUN_004439b0();
+		return m_memoryCardSaves[p_index].SaveToFile();
 	}
 
 	return 0;
@@ -123,12 +123,12 @@ void SaveSystem::LoadMemoryCardSaves(undefined4 p_createIfMissing)
 		save->Initialize(root.GetEntry(i), 100, 2, i);
 		m_gameState.WriteToSaveGame(save);
 
-		undefined4 status = save->FUN_00443910();
+		undefined4 status = save->OpenExistingFile();
 		if (status == 0) {
-			save->FUN_00443980();
+			save->LoadFromFile();
 		}
 		else if (status == 8 && p_createIfMissing) {
-			save->FUN_00443940();
+			save->CreateSaveFile();
 		}
 	}
 
@@ -140,7 +140,7 @@ void SaveSystem::LoadFirstOpenSave()
 {
 	for (LegoU32 i = 0; i < m_memoryCardSaveCount; i++) {
 		if (m_memoryCardSaves[i].HasUnk0x4b4Flag0x01() && m_gameState.GetActiveSaveIndex() == 0xffffffff) {
-			m_gameState.FUN_0042eb60(&m_memoryCardSaves[i], i);
+			m_gameState.LoadFromSaveGame(&m_memoryCardSaves[i], i);
 			return;
 		}
 	}
@@ -162,7 +162,7 @@ void SaveSystem::LoadSaveFile(const LegoChar* p_fileName, SaveGame* p_saveGame)
 		return;
 	}
 
-	if (p_saveGame->FUN_00442770(*file)) {
+	if (p_saveGame->LoadFromFile(*file)) {
 		GOL_FATALERROR_MESSAGE("Corrupt install - invalid default save file");
 	}
 
@@ -213,5 +213,5 @@ void SaveSystem::ReinitializeInputBindings(InputManager* p_inputManager)
 {
 	m_gameState.WriteToSaveGame(&m_sessionSave);
 	m_gameState.InitializeInputBindings(p_inputManager);
-	m_gameState.FUN_0042eb60(&m_sessionSave, m_gameState.GetActiveSaveIndex());
+	m_gameState.LoadFromSaveGame(&m_sessionSave, m_gameState.GetActiveSaveIndex());
 }

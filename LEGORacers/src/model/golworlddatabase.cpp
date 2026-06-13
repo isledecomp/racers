@@ -46,3 +46,19 @@ void GolWorldDatabase::FUN_00416090(LegoS32 p_elapsedMs)
 		VTable0x50(i)->UpdateFromTrackedEntity();
 	}
 }
+
+// FUNCTION: LEGORACERS 0x00416290
+LegoU32 GolWorldDatabase::FUN_00416290(LegoFloat p_scale)
+{
+	LegoU32 i = 0;
+	LegoU32 result = m_unk0x7c;
+	if (result > 0) {
+		do {
+			VTable0x50(i)->SetAspectRatio(p_scale);
+			result = m_unk0x7c;
+			i++;
+		} while (i < result);
+	}
+
+	return result;
+}

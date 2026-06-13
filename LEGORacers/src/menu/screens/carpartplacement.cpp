@@ -21,11 +21,207 @@ DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 // GLOBAL: LEGORACERS 0x004b2e68
 LegoFloat g_unk0x4b2e68 = FLT_MAX;
 
+// GLOBAL: LEGORACERS 0x004b2e80
+const LegoFloat g_carPartCameraPositions[] = {
+	0.0f, -14.0f, 9.0f,  0.0f, -10.0f, 14.0f, 0.0f, -0.3f, 17.0f, 0.0f,
+	0.0f, -18.0f, 10.0f, 0.0f, -12.0f, 17.0f, 0.0f, -0.3f, 20.0f,
+};
+
+// GLOBAL: LEGORACERS 0x004b2ecc
+extern const LegoFloat g_carPartCameraMinDistance = 5.9f;
+
+// GLOBAL: LEGORACERS 0x004b2ed0
+extern const LegoFloat g_carPartCameraMaxDistance = 8.5f;
+
+// GLOBAL: LEGORACERS 0x004b2ed4
+extern const LegoFloat g_carPartHoverHeight = 1.2f;
+
 // GLOBAL: LEGORACERS 0x004b2ed8
 LegoFloat g_unk0x4b2ed8 = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004c7668
 LegoFloat g_fieldAt0x2308AngleStep = 0.0f;
+
+// GLOBAL: LEGORACERS 0x004b02f4
+extern const LegoFloat g_negativeRadiansToTableIndex = -162.97466f;
+
+// GLOBAL: LEGORACERS 0x004b0428
+extern const LegoFloat g_halfPi = 1.5707964f;
+
+// GLOBAL: LEGORACERS 0x004bf7ec
+LegoFloat g_cosineTable[1024] = {
+	1.0f,           0.999981165f,   0.999924719f,   0.999830604f,   0.999698818f,   0.999529421f,
+	0.999322414f,   0.999077737f,   0.99879545f,    0.998475552f,   0.998118103f,   0.997723043f,
+	0.997290432f,   0.996820271f,   0.996312618f,   0.995767415f,   0.99518472f,    0.994564593f,
+	0.993906975f,   0.993211925f,   0.992479563f,   0.991709769f,   0.990902662f,   0.990058184f,
+	0.989176512f,   0.988257587f,   0.987301409f,   0.986308098f,   0.985277653f,   0.984210074f,
+	0.983105481f,   0.981963873f,   0.980785251f,   0.979569793f,   0.97831738f,    0.977028131f,
+	0.975702107f,   0.974339366f,   0.972939968f,   0.971503913f,   0.970031261f,   0.968522072f,
+	0.966976464f,   0.965394437f,   0.963776052f,   0.962121427f,   0.960430503f,   0.958703458f,
+	0.956940353f,   0.955141187f,   0.953306019f,   0.95143503f,    0.949528158f,   0.947585583f,
+	0.945607305f,   0.943593442f,   0.941544056f,   0.939459205f,   0.937339008f,   0.935183525f,
+	0.932992816f,   0.93076694f,    0.928506076f,   0.926210225f,   0.923879504f,   0.921514034f,
+	0.919113874f,   0.916679084f,   0.914209783f,   0.91170603f,    0.909168005f,   0.906595707f,
+	0.903989315f,   0.901348829f,   0.898674488f,   0.895966232f,   0.893224299f,   0.890448749f,
+	0.887639642f,   0.884797096f,   0.881921291f,   0.879012227f,   0.876070082f,   0.873094976f,
+	0.870086968f,   0.867046237f,   0.863972843f,   0.860866964f,   0.857728601f,   0.854557991f,
+	0.851355195f,   0.848120332f,   0.84485358f,    0.841554999f,   0.838224709f,   0.834862888f,
+	0.831469595f,   0.82804507f,    0.824589312f,   0.8211025f,     0.817584813f,   0.81403631f,
+	0.81045717f,    0.806847572f,   0.803207517f,   0.799537241f,   0.795836926f,   0.792106569f,
+	0.78834641f,    0.784556568f,   0.780737221f,   0.77688849f,    0.773010433f,   0.769103348f,
+	0.765167236f,   0.761202395f,   0.757208824f,   0.753186822f,   0.749136388f,   0.745057762f,
+	0.740951121f,   0.736816585f,   0.732654274f,   0.728464365f,   0.724247098f,   0.720002532f,
+	0.715730846f,   0.711432219f,   0.707106769f,   0.702754736f,   0.698376238f,   0.693971455f,
+	0.689540565f,   0.685083687f,   0.680601001f,   0.676092684f,   0.671558976f,   0.666999936f,
+	0.662415802f,   0.657806695f,   0.653172851f,   0.64851439f,    0.643831551f,   0.639124453f,
+	0.634393275f,   0.629638255f,   0.624859512f,   0.620057225f,   0.615231574f,   0.610382795f,
+	0.605511069f,   0.600616455f,   0.59569931f,    0.590759695f,   0.585797846f,   0.580813944f,
+	0.575808167f,   0.570780754f,   0.565731823f,   0.560661554f,   0.555570245f,   0.550457954f,
+	0.545324981f,   0.540171444f,   0.534997642f,   0.529803634f,   0.524589658f,   0.519356012f,
+	0.514102757f,   0.50883013f,    0.50353837f,    0.498227656f,   0.492898196f,   0.487550169f,
+	0.482183784f,   0.47679922f,    0.471396744f,   0.465976506f,   0.460538715f,   0.455083579f,
+	0.449611336f,   0.444122136f,   0.438616246f,   0.433093816f,   0.427555084f,   0.422000259f,
+	0.416429549f,   0.410843164f,   0.405241311f,   0.399624199f,   0.393992037f,   0.388345033f,
+	0.382683426f,   0.377007425f,   0.371317208f,   0.365612984f,   0.359895051f,   0.354163527f,
+	0.348418683f,   0.342660725f,   0.336889863f,   0.331106305f,   0.32531029f,    0.319502026f,
+	0.313681751f,   0.307849646f,   0.302005947f,   0.296150893f,   0.290284663f,   0.284407526f,
+	0.27851969f,    0.272621363f,   0.266712755f,   0.260794103f,   0.254865646f,   0.248927608f,
+	0.242980182f,   0.237023607f,   0.231058106f,   0.225083917f,   0.219101235f,   0.213110313f,
+	0.207111374f,   0.201104641f,   0.195090324f,   0.18906866f,    0.183039889f,   0.177004218f,
+	0.170961887f,   0.164913118f,   0.15885815f,    0.152797192f,   0.146730468f,   0.140658244f,
+	0.134580702f,   0.128498107f,   0.122410677f,   0.116318628f,   0.110222206f,   0.104121633f,
+	0.0980171412f,  0.0919089541f,  0.0857973099f,  0.0796824396f,  0.0735645667f,  0.0674439222f,
+	0.061320737f,   0.0551952422f,  0.0490676723f,  0.0429382585f,  0.0368072242f,  0.0306748021f,
+	0.024541229f,   0.0184067301f,  0.0122715384f,  0.00613588514f, 0.0f,           -0.00613588514f,
+	-0.0122715384f, -0.0184067301f, -0.024541229f,  -0.0306748021f, -0.0368072242f, -0.0429382585f,
+	-0.0490676723f, -0.0551952422f, -0.061320737f,  -0.0674439222f, -0.0735645667f, -0.0796824396f,
+	-0.0857973099f, -0.0919089541f, -0.0980171412f, -0.104121633f,  -0.110222206f,  -0.116318628f,
+	-0.122410677f,  -0.128498107f,  -0.134580702f,  -0.140658244f,  -0.146730468f,  -0.152797192f,
+	-0.15885815f,   -0.164913118f,  -0.170961887f,  -0.177004218f,  -0.183039889f,  -0.18906866f,
+	-0.195090324f,  -0.201104641f,  -0.207111374f,  -0.213110313f,  -0.219101235f,  -0.225083917f,
+	-0.231058106f,  -0.237023607f,  -0.242980182f,  -0.248927608f,  -0.254865646f,  -0.260794103f,
+	-0.266712755f,  -0.272621363f,  -0.27851969f,   -0.284407526f,  -0.290284663f,  -0.296150893f,
+	-0.302005947f,  -0.307849646f,  -0.313681751f,  -0.319502026f,  -0.32531029f,   -0.331106305f,
+	-0.336889863f,  -0.342660725f,  -0.348418683f,  -0.354163527f,  -0.359895051f,  -0.365612984f,
+	-0.371317208f,  -0.377007425f,  -0.382683426f,  -0.388345033f,  -0.393992037f,  -0.399624199f,
+	-0.405241311f,  -0.410843164f,  -0.416429549f,  -0.422000259f,  -0.427555084f,  -0.433093816f,
+	-0.438616246f,  -0.444122136f,  -0.449611336f,  -0.455083579f,  -0.460538715f,  -0.465976506f,
+	-0.471396744f,  -0.47679922f,   -0.482183784f,  -0.487550169f,  -0.492898196f,  -0.498227656f,
+	-0.50353837f,   -0.50883013f,   -0.514102757f,  -0.519356012f,  -0.524589658f,  -0.529803634f,
+	-0.534997642f,  -0.540171444f,  -0.545324981f,  -0.550457954f,  -0.555570245f,  -0.560661554f,
+	-0.565731823f,  -0.570780754f,  -0.575808167f,  -0.580813944f,  -0.585797846f,  -0.590759695f,
+	-0.59569931f,   -0.600616455f,  -0.605511069f,  -0.610382795f,  -0.615231574f,  -0.620057225f,
+	-0.624859512f,  -0.629638255f,  -0.634393275f,  -0.639124453f,  -0.643831551f,  -0.64851439f,
+	-0.653172851f,  -0.657806695f,  -0.662415802f,  -0.666999936f,  -0.671558976f,  -0.676092684f,
+	-0.680601001f,  -0.685083687f,  -0.689540565f,  -0.693971455f,  -0.698376238f,  -0.702754736f,
+	-0.707106769f,  -0.711432219f,  -0.715730846f,  -0.720002532f,  -0.724247098f,  -0.728464365f,
+	-0.732654274f,  -0.736816585f,  -0.740951121f,  -0.745057762f,  -0.749136388f,  -0.753186822f,
+	-0.757208824f,  -0.761202395f,  -0.765167236f,  -0.769103348f,  -0.773010433f,  -0.77688849f,
+	-0.780737221f,  -0.784556568f,  -0.78834641f,   -0.792106569f,  -0.795836926f,  -0.799537241f,
+	-0.803207517f,  -0.806847572f,  -0.81045717f,   -0.81403631f,   -0.817584813f,  -0.8211025f,
+	-0.824589312f,  -0.82804507f,   -0.831469595f,  -0.834862888f,  -0.838224709f,  -0.841554999f,
+	-0.84485358f,   -0.848120332f,  -0.851355195f,  -0.854557991f,  -0.857728601f,  -0.860866964f,
+	-0.863972843f,  -0.867046237f,  -0.870086968f,  -0.873094976f,  -0.876070082f,  -0.879012227f,
+	-0.881921291f,  -0.884797096f,  -0.887639642f,  -0.890448749f,  -0.893224299f,  -0.895966232f,
+	-0.898674488f,  -0.901348829f,  -0.903989315f,  -0.906595707f,  -0.909168005f,  -0.91170603f,
+	-0.914209783f,  -0.916679084f,  -0.919113874f,  -0.921514034f,  -0.923879504f,  -0.926210225f,
+	-0.928506076f,  -0.93076694f,   -0.932992816f,  -0.935183525f,  -0.937339008f,  -0.939459205f,
+	-0.941544056f,  -0.943593442f,  -0.945607305f,  -0.947585583f,  -0.949528158f,  -0.95143503f,
+	-0.953306019f,  -0.955141187f,  -0.956940353f,  -0.958703458f,  -0.960430503f,  -0.962121427f,
+	-0.963776052f,  -0.965394437f,  -0.966976464f,  -0.968522072f,  -0.970031261f,  -0.971503913f,
+	-0.972939968f,  -0.974339366f,  -0.975702107f,  -0.977028131f,  -0.97831738f,   -0.979569793f,
+	-0.980785251f,  -0.981963873f,  -0.983105481f,  -0.984210074f,  -0.985277653f,  -0.986308098f,
+	-0.987301409f,  -0.988257587f,  -0.989176512f,  -0.990058184f,  -0.990902662f,  -0.991709769f,
+	-0.992479563f,  -0.993211925f,  -0.993906975f,  -0.994564593f,  -0.99518472f,   -0.995767415f,
+	-0.996312618f,  -0.996820271f,  -0.997290432f,  -0.997723043f,  -0.998118103f,  -0.998475552f,
+	-0.99879545f,   -0.999077737f,  -0.999322414f,  -0.999529421f,  -0.999698818f,  -0.999830604f,
+	-0.999924719f,  -0.999981165f,  -1.0f,          -0.999981165f,  -0.999924719f,  -0.999830604f,
+	-0.999698818f,  -0.999529421f,  -0.999322414f,  -0.999077737f,  -0.99879545f,   -0.998475552f,
+	-0.998118103f,  -0.997723043f,  -0.997290432f,  -0.996820271f,  -0.996312618f,  -0.995767415f,
+	-0.99518472f,   -0.994564593f,  -0.993906975f,  -0.993211925f,  -0.992479563f,  -0.991709769f,
+	-0.990902662f,  -0.990058184f,  -0.989176512f,  -0.988257587f,  -0.987301409f,  -0.986308098f,
+	-0.985277653f,  -0.984210074f,  -0.983105481f,  -0.981963873f,  -0.980785251f,  -0.979569793f,
+	-0.97831738f,   -0.977028131f,  -0.975702107f,  -0.974339366f,  -0.972939968f,  -0.971503913f,
+	-0.970031261f,  -0.968522072f,  -0.966976464f,  -0.965394437f,  -0.963776052f,  -0.962121427f,
+	-0.960430503f,  -0.958703458f,  -0.956940353f,  -0.955141187f,  -0.953306019f,  -0.95143503f,
+	-0.949528158f,  -0.947585583f,  -0.945607305f,  -0.943593442f,  -0.941544056f,  -0.939459205f,
+	-0.937339008f,  -0.935183525f,  -0.932992816f,  -0.93076694f,   -0.928506076f,  -0.926210225f,
+	-0.923879504f,  -0.921514034f,  -0.919113874f,  -0.916679084f,  -0.914209783f,  -0.91170603f,
+	-0.909168005f,  -0.906595707f,  -0.903989315f,  -0.901348829f,  -0.898674488f,  -0.895966232f,
+	-0.893224299f,  -0.890448749f,  -0.887639642f,  -0.884797096f,  -0.881921291f,  -0.879012227f,
+	-0.876070082f,  -0.873094976f,  -0.870086968f,  -0.867046237f,  -0.863972843f,  -0.860866964f,
+	-0.857728601f,  -0.854557991f,  -0.851355195f,  -0.848120332f,  -0.84485358f,   -0.841554999f,
+	-0.838224709f,  -0.834862888f,  -0.831469595f,  -0.82804507f,   -0.824589312f,  -0.8211025f,
+	-0.817584813f,  -0.81403631f,   -0.81045717f,   -0.806847572f,  -0.803207517f,  -0.799537241f,
+	-0.795836926f,  -0.792106569f,  -0.78834641f,   -0.784556568f,  -0.780737221f,  -0.77688849f,
+	-0.773010433f,  -0.769103348f,  -0.765167236f,  -0.761202395f,  -0.757208824f,  -0.753186822f,
+	-0.749136388f,  -0.745057762f,  -0.740951121f,  -0.736816585f,  -0.732654274f,  -0.728464365f,
+	-0.724247098f,  -0.720002532f,  -0.715730846f,  -0.711432219f,  -0.707106769f,  -0.702754736f,
+	-0.698376238f,  -0.693971455f,  -0.689540565f,  -0.685083687f,  -0.680601001f,  -0.676092684f,
+	-0.671558976f,  -0.666999936f,  -0.662415802f,  -0.657806695f,  -0.653172851f,  -0.64851439f,
+	-0.643831551f,  -0.639124453f,  -0.634393275f,  -0.629638255f,  -0.624859512f,  -0.620057225f,
+	-0.615231574f,  -0.610382795f,  -0.605511069f,  -0.600616455f,  -0.59569931f,   -0.590759695f,
+	-0.585797846f,  -0.580813944f,  -0.575808167f,  -0.570780754f,  -0.565731823f,  -0.560661554f,
+	-0.555570245f,  -0.550457954f,  -0.545324981f,  -0.540171444f,  -0.534997642f,  -0.529803634f,
+	-0.524589658f,  -0.519356012f,  -0.514102757f,  -0.50883013f,   -0.50353837f,   -0.498227656f,
+	-0.492898196f,  -0.487550169f,  -0.482183784f,  -0.47679922f,   -0.471396744f,  -0.465976506f,
+	-0.460538715f,  -0.455083579f,  -0.449611336f,  -0.444122136f,  -0.438616246f,  -0.433093816f,
+	-0.427555084f,  -0.422000259f,  -0.416429549f,  -0.410843164f,  -0.405241311f,  -0.399624199f,
+	-0.393992037f,  -0.388345033f,  -0.382683426f,  -0.377007425f,  -0.371317208f,  -0.365612984f,
+	-0.359895051f,  -0.354163527f,  -0.348418683f,  -0.342660725f,  -0.336889863f,  -0.331106305f,
+	-0.32531029f,   -0.319502026f,  -0.313681751f,  -0.307849646f,  -0.302005947f,  -0.296150893f,
+	-0.290284663f,  -0.284407526f,  -0.27851969f,   -0.272621363f,  -0.266712755f,  -0.260794103f,
+	-0.254865646f,  -0.248927608f,  -0.242980182f,  -0.237023607f,  -0.231058106f,  -0.225083917f,
+	-0.219101235f,  -0.213110313f,  -0.207111374f,  -0.201104641f,  -0.195090324f,  -0.18906866f,
+	-0.183039889f,  -0.177004218f,  -0.170961887f,  -0.164913118f,  -0.15885815f,   -0.152797192f,
+	-0.146730468f,  -0.140658244f,  -0.134580702f,  -0.128498107f,  -0.122410677f,  -0.116318628f,
+	-0.110222206f,  -0.104121633f,  -0.0980171412f, -0.0919089541f, -0.0857973099f, -0.0796824396f,
+	-0.0735645667f, -0.0674439222f, -0.061320737f,  -0.0551952422f, -0.0490676723f, -0.0429382585f,
+	-0.0368072242f, -0.0306748021f, -0.024541229f,  -0.0184067301f, -0.0122715384f, -0.00613588514f,
+	0.0f,           0.00613588514f, 0.0122715384f,  0.0184067301f,  0.024541229f,   0.0306748021f,
+	0.0368072242f,  0.0429382585f,  0.0490676723f,  0.0551952422f,  0.061320737f,   0.0674439222f,
+	0.0735645667f,  0.0796824396f,  0.0857973099f,  0.0919089541f,  0.0980171412f,  0.104121633f,
+	0.110222206f,   0.116318628f,   0.122410677f,   0.128498107f,   0.134580702f,   0.140658244f,
+	0.146730468f,   0.152797192f,   0.15885815f,    0.164913118f,   0.170961887f,   0.177004218f,
+	0.183039889f,   0.18906866f,    0.195090324f,   0.201104641f,   0.207111374f,   0.213110313f,
+	0.219101235f,   0.225083917f,   0.231058106f,   0.237023607f,   0.242980182f,   0.248927608f,
+	0.254865646f,   0.260794103f,   0.266712755f,   0.272621363f,   0.27851969f,    0.284407526f,
+	0.290284663f,   0.296150893f,   0.302005947f,   0.307849646f,   0.313681751f,   0.319502026f,
+	0.32531029f,    0.331106305f,   0.336889863f,   0.342660725f,   0.348418683f,   0.354163527f,
+	0.359895051f,   0.365612984f,   0.371317208f,   0.377007425f,   0.382683426f,   0.388345033f,
+	0.393992037f,   0.399624199f,   0.405241311f,   0.410843164f,   0.416429549f,   0.422000259f,
+	0.427555084f,   0.433093816f,   0.438616246f,   0.444122136f,   0.449611336f,   0.455083579f,
+	0.460538715f,   0.465976506f,   0.471396744f,   0.47679922f,    0.482183784f,   0.487550169f,
+	0.492898196f,   0.498227656f,   0.50353837f,    0.50883013f,    0.514102757f,   0.519356012f,
+	0.524589658f,   0.529803634f,   0.534997642f,   0.540171444f,   0.545324981f,   0.550457954f,
+	0.555570245f,   0.560661554f,   0.565731823f,   0.570780754f,   0.575808167f,   0.580813944f,
+	0.585797846f,   0.590759695f,   0.59569931f,    0.600616455f,   0.605511069f,   0.610382795f,
+	0.615231574f,   0.620057225f,   0.624859512f,   0.629638255f,   0.634393275f,   0.639124453f,
+	0.643831551f,   0.64851439f,    0.653172851f,   0.657806695f,   0.662415802f,   0.666999936f,
+	0.671558976f,   0.676092684f,   0.680601001f,   0.685083687f,   0.689540565f,   0.693971455f,
+	0.698376238f,   0.702754736f,   0.707106769f,   0.711432219f,   0.715730846f,   0.720002532f,
+	0.724247098f,   0.728464365f,   0.732654274f,   0.736816585f,   0.740951121f,   0.745057762f,
+	0.749136388f,   0.753186822f,   0.757208824f,   0.761202395f,   0.765167236f,   0.769103348f,
+	0.773010433f,   0.77688849f,    0.780737221f,   0.784556568f,   0.78834641f,    0.792106569f,
+	0.795836926f,   0.799537241f,   0.803207517f,   0.806847572f,   0.81045717f,    0.81403631f,
+	0.817584813f,   0.8211025f,     0.824589312f,   0.82804507f,    0.831469595f,   0.834862888f,
+	0.838224709f,   0.841554999f,   0.84485358f,    0.848120332f,   0.851355195f,   0.854557991f,
+	0.857728601f,   0.860866964f,   0.863972843f,   0.867046237f,   0.870086968f,   0.873094976f,
+	0.876070082f,   0.879012227f,   0.881921291f,   0.884797096f,   0.887639642f,   0.890448749f,
+	0.893224299f,   0.895966232f,   0.898674488f,   0.901348829f,   0.903989315f,   0.906595707f,
+	0.909168005f,   0.91170603f,    0.914209783f,   0.916679084f,   0.919113874f,   0.921514034f,
+	0.923879504f,   0.926210225f,   0.928506076f,   0.93076694f,    0.932992816f,   0.935183525f,
+	0.937339008f,   0.939459205f,   0.941544056f,   0.943593442f,   0.945607305f,   0.947585583f,
+	0.949528158f,   0.95143503f,    0.953306019f,   0.955141187f,   0.956940353f,   0.958703458f,
+	0.960430503f,   0.962121427f,   0.963776052f,   0.965394437f,   0.966976464f,   0.968522072f,
+	0.970031261f,   0.971503913f,   0.972939968f,   0.974339366f,   0.975702107f,   0.977028131f,
+	0.97831738f,    0.979569793f,   0.980785251f,   0.981963873f,   0.983105481f,   0.984210074f,
+	0.985277653f,   0.986308098f,   0.987301409f,   0.988257587f,   0.989176512f,   0.990058184f,
+	0.990902662f,   0.991709769f,   0.992479563f,   0.993211925f,   0.993906975f,   0.994564593f,
+	0.99518472f,    0.995767415f,   0.996312618f,   0.996820271f,   0.997290432f,   0.997723043f,
+	0.998118103f,   0.998475552f,   0.99879545f,    0.999077737f,   0.999322414f,   0.999529421f,
+	0.999698818f,   0.999830604f,   0.999924719f,   0.999981165f,
+};
 
 extern const LegoFloat g_unk0x4b2160;
 
@@ -650,9 +846,9 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 			LegoFloat scaledTime = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x268));
 			scaledTime *= 0.001f;
 			scaledTime *= g_twoPi;
-			scaledTime *= -162.97466f;
+			scaledTime *= g_negativeRadiansToTableIndex;
 			LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-			LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
+			LegoFloat interpolation = g_cosineTable[index];
 			interpolation *= 50.0f;
 			alpha = static_cast<LegoU32>(interpolation) + 0x64;
 		}
@@ -726,7 +922,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x10(undefined4 p_elapsed
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00478c70
+// FUNCTION: LEGORACERS 0x00478c70
 void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 {
 	if (m_unk0x248 & (c_flagCommittingPart | c_flagResettingView)) {
@@ -736,19 +932,21 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 	LegoS32 x;
 	LegoS32 y;
 	LegoS32 rotation;
+	LegoPieceLibrary::PieceRecord* pieceRecord = m_unk0x28.GetPieceRecord();
 	m_unk0x28.GetPlacement(&x, &y, &rotation);
 
-	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(m_unk0x28.GetPieceRecord(), x, y, rotation);
-	LegoU8 feedbackFlags = m_unk0x278;
-	if (result < 0) {
-		m_unk0x278 = feedbackFlags & ~c_placementFeedbackMask;
+	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(pieceRecord, x, y, rotation);
+	if (result >= 0) {
+		if (!m_unk0x278) {
+			FUN_00478ec0(0);
+		}
+	}
+	else {
+		m_unk0x278 &= ~c_placementFeedbackMask;
 		m_unk0x26c = m_unk0x270;
 	}
-	else if (!feedbackFlags) {
-		FUN_00478ec0(0);
-	}
 
-	feedbackFlags = m_unk0x278;
+	LegoU8 feedbackFlags = m_unk0x278;
 	if (feedbackFlags & c_placementFeedbackMask) {
 		if (p_elapsed >= m_unk0x264) {
 			if (feedbackFlags & c_placementFeedbackLowering) {
@@ -767,21 +965,24 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 		}
 	}
 
-	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * 0.4f) + (1.0f - 8.4f);
+	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * 0.4f) + (g_unk0x4b2ed8 - 8.4f);
 
 	feedbackFlags = m_unk0x278;
 	if (feedbackFlags & c_placementFeedbackMask) {
 		if (feedbackFlags & c_placementFeedbackLowering) {
 			LegoFloat delta = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x26c - m_unk0x270));
 			delta *= 0.33333334f;
-			if (delta > g_unk0x4b2ed8) {
-				delta = g_unk0x4b2ed8;
+			if (delta > 1.0f) {
+				delta = 1.0f;
 			}
 			else if (delta < 0.3f) {
 				delta = 0.3f;
 			}
 
-			m_unk0x26c -= delta * 0.01f * p_elapsed;
+			delta *= 0.01f;
+			LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
+			delta *= elapsed;
+			m_unk0x26c -= delta;
 			if (m_unk0x26c <= m_unk0x270) {
 				m_unk0x264 = 0;
 				m_unk0x26c = m_unk0x270;
@@ -789,7 +990,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 		}
 		else if (feedbackFlags & c_placementFeedbackRaising) {
 			m_unk0x26c += p_elapsed * 0.01f;
-			LegoFloat limit = 1.0f - (1.2f * 2.0f);
+			LegoFloat limit = g_unk0x4b2ed8 - (g_carPartHoverHeight + g_carPartHoverHeight);
 			if (m_unk0x26c >= limit) {
 				m_unk0x264 = 0;
 				m_unk0x26c = limit;
@@ -816,14 +1017,14 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478ec0(LegoS32 p_elapsed)
 	m_unk0x278 = (m_unk0x278 & ~(c_placementFeedbackHold | c_placementFeedbackRaising)) | c_placementFeedbackLowering;
 }
 
-// STUB: LEGORACERS 0x00478ef0
-void CarModelScreenBase::CarPartPlacement::FUN_00478ef0(LegoS32 p_elapsed)
+// FUNCTION: LEGORACERS 0x00478ef0
+void CarModelScreenBase::CarPartPlacement::FUN_00478ef0(LegoU32 p_elapsed)
 {
 	if (m_unk0x2a0 == 0) {
 		return;
 	}
 
-	if (p_elapsed >= m_unk0x2a0) {
+	if (p_elapsed >= static_cast<LegoU32>(m_unk0x2a0)) {
 		m_unk0x2a0 = 0;
 		m_unk0x248 &= ~c_flagRotatingAroundCar;
 	}
@@ -832,31 +1033,34 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478ef0(LegoS32 p_elapsed)
 	}
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x2a0);
-	scaledTime /= static_cast<LegoFloat>(m_unk0x2a4);
-	scaledTime *= 1.5707964f;
-	scaledTime *= -162.97466f;
+	LegoFloat totalTime = static_cast<LegoFloat>(m_unk0x2a4);
+	scaledTime /= totalTime;
+	scaledTime *= g_halfPi;
+	scaledTime *= g_negativeRadiansToTableIndex;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
+	LegoFloat interpolation = g_cosineTable[index];
 	LegoFloat targetAngle = m_unk0x2a8[m_unk0x298];
 
-	if (targetAngle > m_unk0x29c + 1.5707964f) {
+	LegoFloat upperLimit = m_unk0x29c;
+	upperLimit += g_halfPi;
+	if (targetAngle > upperLimit) {
 		targetAngle -= g_twoPi;
 	}
-	else if (targetAngle < m_unk0x29c - 1.5707964f) {
+	else if (targetAngle < m_unk0x29c - g_halfPi) {
 		targetAngle += g_twoPi;
 	}
 
 	FUN_00477f30(targetAngle + ((m_unk0x29c - targetAngle) * interpolation));
 }
 
-// STUB: LEGORACERS 0x00478fd0
-void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoS32 p_elapsed)
+// FUNCTION: LEGORACERS 0x00478fd0
+void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoU32 p_elapsed)
 {
 	if (m_unk0x28c == 0) {
 		return;
 	}
 
-	if (p_elapsed >= m_unk0x28c) {
+	if (p_elapsed >= static_cast<LegoU32>(m_unk0x28c)) {
 		m_unk0x28c = 0;
 		m_unk0x248 &= ~c_flagPitchChanging;
 	}
@@ -866,22 +1070,27 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478fd0(LegoS32 p_elapsed)
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_unk0x28c);
 	scaledTime *= g_unk0x4b2160;
-	scaledTime *= 1.5707964f;
-	scaledTime *= -162.97466f;
+	scaledTime *= g_halfPi;
+	scaledTime *= g_negativeRadiansToTableIndex;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;
-	LegoFloat interpolation = static_cast<LegoFloat>(::cos((g_twoPi * index) / 1024.0f));
+	LegoFloat interpolation = g_cosineTable[index];
 
 	GolVec3 targetPosition;
 	FUN_00479330(&targetPosition, m_unk0x290);
 
-	GolVec3 position;
-	position.m_x = targetPosition.m_x + ((m_unk0x27c.m_x - targetPosition.m_x) * interpolation);
-	position.m_y = targetPosition.m_y + ((m_unk0x27c.m_y - targetPosition.m_y) * interpolation);
-	position.m_z = targetPosition.m_z + ((m_unk0x27c.m_z - targetPosition.m_z) * interpolation);
+	GolVec3 delta;
+	delta.m_x = m_unk0x27c.m_x - targetPosition.m_x;
+	delta.m_y = m_unk0x27c.m_y - targetPosition.m_y;
 
 	GolVec3 lookAt;
 	lookAt.m_x = m_unk0x250.m_x;
 	lookAt.m_y = m_unk0x250.m_y;
+
+	GolVec3 position;
+	delta.m_z = m_unk0x27c.m_z - targetPosition.m_z;
+	position.m_x = targetPosition.m_x + (delta.m_x * interpolation);
+	position.m_y = targetPosition.m_y + (delta.m_y * interpolation);
+	position.m_z = targetPosition.m_z + (delta.m_z * interpolation);
 	lookAt.m_z = m_unk0x250.m_z + 4.0f;
 	m_unk0x14->FUN_00465ab0(&position, &lookAt);
 }
@@ -981,40 +1190,11 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479320()
 	m_unk0x294 = 0;
 }
 
-// STUB: LEGORACERS 0x00479330
+// FUNCTION: LEGORACERS 0x00479330
 void CarModelScreenBase::CarPartPlacement::FUN_00479330(GolVec3* p_dest, LegoS32 p_index)
 {
-	GolVec3 minPosition;
-	GolVec3 maxPosition;
-
-	switch (p_index) {
-	case 1:
-		minPosition.m_x = 0.0f;
-		minPosition.m_y = -10.0f;
-		minPosition.m_z = 14.0f;
-		maxPosition.m_x = 0.0f;
-		maxPosition.m_y = -12.0f;
-		maxPosition.m_z = 17.0f;
-		break;
-	case 2:
-		minPosition.m_x = 0.0f;
-		minPosition.m_y = -0.3f;
-		minPosition.m_z = 17.0f;
-		maxPosition.m_x = 0.0f;
-		maxPosition.m_y = -0.3f;
-		maxPosition.m_z = 20.0f;
-		break;
-	default:
-		minPosition.m_x = 0.0f;
-		minPosition.m_y = -14.0f;
-		minPosition.m_z = 9.0f;
-		maxPosition.m_x = 0.0f;
-		maxPosition.m_y = -18.0f;
-		maxPosition.m_z = 10.0f;
-		break;
-	}
-
-	m_unk0x2cc = (m_unk0x58.FUN_10028710() - 5.9f) / (8.5f - 5.9f);
+	m_unk0x2cc = (m_unk0x58.FUN_10028710() - g_carPartCameraMinDistance) /
+				 (g_carPartCameraMaxDistance - g_carPartCameraMinDistance);
 	if (m_unk0x2cc > 1.0f) {
 		m_unk0x2cc = 1.0f;
 	}
@@ -1022,18 +1202,18 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479330(GolVec3* p_dest, LegoS32
 		m_unk0x2cc = 0.0f;
 	}
 
-	LegoFloat value = minPosition.m_x;
+	LegoFloat value = g_carPartCameraPositions[p_index * 3];
 	value *= 1.0f - m_unk0x2cc;
-	value += maxPosition.m_x * m_unk0x2cc;
+	value += g_carPartCameraPositions[p_index * 3 + 10] * m_unk0x2cc;
 	p_dest->m_x = value;
 
-	value = minPosition.m_y;
+	value = g_carPartCameraPositions[p_index * 3 + 1];
 	value *= 1.0f - m_unk0x2cc;
-	value += maxPosition.m_y * m_unk0x2cc;
+	value += g_carPartCameraPositions[p_index * 3 + 11] * m_unk0x2cc;
 	p_dest->m_y = value;
 
-	value = minPosition.m_z;
+	value = g_carPartCameraPositions[p_index * 3 + 2];
 	value *= 1.0f - m_unk0x2cc;
-	value += maxPosition.m_z * m_unk0x2cc;
+	value += g_carPartCameraPositions[p_index * 3 + 12] * m_unk0x2cc;
 	p_dest->m_z = value;
 }

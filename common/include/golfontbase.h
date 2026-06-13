@@ -52,7 +52,6 @@ public:
 	LegoU32 PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat);
 	LegoS32 DrawString(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoS32 DrawStringFitted(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
-	void FUN_1001e970(GolString*, LegoS32*, LegoS32*);
 	LegoS32 DrawGlyphRun(LegoU32, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoBool32 ComputeClipRect(GolRenderDevice*, Rect*, Rect*);
 	void ClipRects(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);

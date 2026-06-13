@@ -54,15 +54,30 @@ void GolMath::FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, 
 }
 
 // STUB: LEGORACERS 0x00449170
-void GolMath::FUN_00449170(LegoFloat, LegoFloat*, LegoFloat*)
+void GolMath::FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
 {
 	STUB(0x00449170);
+
+	*p_sin = static_cast<LegoFloat>(sin(p_angle));
+	*p_cos = static_cast<LegoFloat>(cos(p_angle));
 }
 
 // STUB: LEGORACERS 0x00449190
-void GolMath::FUN_00449190(const LegoFloat*, const LegoFloat*, LegoFloat*)
+void GolMath::FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
 {
 	STUB(0x00449190);
+
+	p_dest[0] = (p_left[1] * p_right[3] + p_left[2] * p_right[6]) + p_left[0] * p_right[0];
+	p_dest[1] = (p_right[4] * p_left[1] + p_right[7] * p_left[2]) + p_right[1] * p_left[0];
+	p_dest[2] = (p_right[8] * p_left[2] + p_left[1] * p_right[5]) + p_right[2] * p_left[0];
+
+	p_dest[3] = (p_left[4] * p_right[3] + p_left[5] * p_right[6]) + p_left[3] * p_right[0];
+	p_dest[4] = (p_left[5] * p_right[7] + p_left[3] * p_right[1]) + p_left[4] * p_right[4];
+	p_dest[5] = (p_left[3] * p_right[2] + p_right[8] * p_left[5]) + p_left[4] * p_right[5];
+
+	p_dest[6] = (p_left[8] * p_right[6] + p_right[3] * p_left[7]) + p_left[6] * p_right[0];
+	p_dest[7] = (p_right[1] * p_left[6] + p_left[8] * p_right[7]) + p_right[4] * p_left[7];
+	p_dest[8] = (p_left[7] * p_right[5] + p_left[8] * p_right[8]) + p_left[6] * p_right[2];
 }
 
 // FUNCTION: GOLDP 0x1002f4e0
@@ -112,10 +127,33 @@ void __fastcall GolMath::NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest)
 	}
 }
 
-// STUB: LEGORACERS 0x00449340
-void GolMath::FUN_00449340(const GolQuat*, LegoFloat*)
+// FUNCTION: LEGORACERS 0x00449340
+void GolMath::FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest)
 {
-	STUB(0x00449340);
+	LegoFloat scale = 2.0f / (p_quat->m_x * p_quat->m_x + p_quat->m_y * p_quat->m_y + p_quat->m_z * p_quat->m_z +
+							  p_quat->m_w * p_quat->m_w);
+	LegoFloat sx = scale * p_quat->m_x;
+	LegoFloat sy = p_quat->m_y * scale;
+	LegoFloat sz = scale * p_quat->m_z;
+	LegoFloat wx = p_quat->m_w * sx;
+	LegoFloat wy = p_quat->m_w * sy;
+	LegoFloat wz = p_quat->m_w * sz;
+	LegoFloat xx = sx * p_quat->m_x;
+	LegoFloat xy = sy * p_quat->m_x;
+	LegoFloat xz = sz * p_quat->m_x;
+	LegoFloat yy = p_quat->m_y * sy;
+	LegoFloat yz = p_quat->m_y * sz;
+	LegoFloat zz = sz * p_quat->m_z;
+
+	p_dest[0] = 1.0f - (zz + yy);
+	p_dest[1] = xy - wz;
+	p_dest[2] = xz + wy;
+	p_dest[3] = xy + wz;
+	p_dest[4] = 1.0f - (zz + xx);
+	p_dest[5] = yz - wx;
+	p_dest[6] = xz - wy;
+	p_dest[7] = yz + wx;
+	p_dest[8] = 1.0f - (yy + xx);
 }
 
 // FUNCTION: GOLDP 0x1002f5a0
@@ -279,27 +317,180 @@ void GolMath::FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3*
 }
 
 // STUB: LEGORACERS 0x004497f0
-LegoBool32 GolMath::FUN_004497f0(const GolVec3*, const LegoFloat*)
+LegoBool32 GolMath::FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_triangle)
 {
 	STUB(0x004497f0);
-	return FALSE;
+
+	LegoFloat normalX = p_triangle[9];
+	if (normalX < 0.0f) {
+		normalX = -normalX;
+	}
+
+	LegoFloat normalY = p_triangle[10];
+	if (normalY < 0.0f) {
+		normalY = -normalY;
+	}
+
+	LegoFloat normalZ = p_triangle[11];
+	if (normalZ < 0.0f) {
+		normalZ = -normalZ;
+	}
+
+	LegoFloat a0;
+	LegoFloat a1;
+	LegoFloat b0;
+	LegoFloat b1;
+	LegoFloat c0;
+	LegoFloat c1;
+	LegoFloat point0;
+	LegoFloat point1;
+
+	if (normalX > normalY) {
+		if (normalZ > normalX) {
+			a0 = p_triangle[0];
+			a1 = p_triangle[1];
+			b0 = p_triangle[3];
+			b1 = p_triangle[4];
+			c0 = p_triangle[6];
+			c1 = p_triangle[7];
+			point0 = p_point->m_x;
+			point1 = p_point->m_y;
+		}
+		else {
+			a0 = p_triangle[1];
+			a1 = p_triangle[2];
+			b0 = p_triangle[4];
+			b1 = p_triangle[5];
+			c0 = p_triangle[7];
+			c1 = p_triangle[8];
+			point0 = p_point->m_y;
+			point1 = p_point->m_z;
+		}
+	}
+	else if (normalZ > normalY) {
+		a0 = p_triangle[0];
+		a1 = p_triangle[1];
+		b0 = p_triangle[3];
+		b1 = p_triangle[4];
+		c0 = p_triangle[6];
+		c1 = p_triangle[7];
+		point0 = p_point->m_x;
+		point1 = p_point->m_y;
+	}
+	else {
+		a0 = p_triangle[0];
+		a1 = p_triangle[2];
+		b0 = p_triangle[3];
+		b1 = p_triangle[5];
+		c0 = p_triangle[6];
+		c1 = p_triangle[8];
+		point0 = p_point->m_x;
+		point1 = p_point->m_z;
+	}
+
+	LegoFloat edgeAC0 = c0 - a0;
+	LegoFloat edgeAC1 = a1 - c1;
+	LegoFloat edgeACDotC = edgeAC1 * c0 + edgeAC0 * c1;
+	LegoFloat edgeAB0 = a0 - b0;
+	LegoFloat edgeAB1 = b1 - a1;
+	LegoFloat edgeABDotB = edgeAB1 * b0 + edgeAB0 * b1;
+	LegoFloat edgeCB0 = b0 - c0;
+	LegoFloat edgeCB1 = c1 - b1;
+	LegoFloat edgeCBDotC = edgeCB1 * c0 + edgeCB0 * c1;
+
+	if (edgeCB1 * edgeAB0 + edgeCB0 * edgeAB1 <= edgeAC1 * point1 + edgeAC0 * point0) {
+		if (edgeAC1 * point1 + edgeAC0 * point0 < edgeACDotC) {
+			return FALSE;
+		}
+		if (edgeAB0 * point1 + edgeAB1 * point0 < edgeABDotB) {
+			return FALSE;
+		}
+		if (edgeCB0 * point1 + edgeCB1 * point0 < edgeCBDotC) {
+			return FALSE;
+		}
+	}
+	else {
+		if (edgeAC1 * point1 + edgeAC0 * point0 >= edgeACDotC) {
+			return FALSE;
+		}
+		if (edgeAB0 * point1 + edgeAB1 * point0 >= edgeABDotB) {
+			return FALSE;
+		}
+		if (edgeCB0 * point1 + edgeCB1 * point0 >= edgeCBDotC) {
+			return FALSE;
+		}
+	}
+
+	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00449a90
-LegoBool32 GolMath::FUN_00449a90(GolVec3*, GolVec3*, LegoFloat, LegoFloat, LegoFloat)
+// FUNCTION: LEGORACERS 0x00449a90
+LegoBool32 GolMath::FUN_00449a90(
+	GolVec3* p_target,
+	GolVec3* p_current,
+	LegoFloat p_minDistSq,
+	LegoFloat p_speed,
+	LegoFloat p_dt
+)
 {
-	STUB(0x00449a90);
+	GolVec3 delta;
+	delta.m_x = p_target->m_x - p_current->m_x;
+	delta.m_y = p_target->m_y - p_current->m_y;
+	delta.m_z = p_target->m_z - p_current->m_z;
+
+	LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
+	if (distanceSquared < p_minDistSq) {
+		return TRUE;
+	}
+
+	NormalizeVector3(delta, &delta);
+	LegoFloat step = p_speed * p_dt;
+	GolVec3 stepDelta;
+	LegoFloat y = delta.m_y;
+	stepDelta.m_x = step * delta.m_x;
+	stepDelta.m_y = y * step;
+	stepDelta.m_z = step * delta.m_z;
+
+	p_current->m_x += stepDelta.m_x;
+	p_current->m_y += stepDelta.m_y;
+	p_current->m_z += stepDelta.m_z;
+
+	GolVec3 remaining;
+	remaining.m_x = p_target->m_x - p_current->m_x;
+	remaining.m_y = p_target->m_y - p_current->m_y;
+	remaining.m_z = p_target->m_z - p_current->m_z;
+
+	if (remaining.m_z * delta.m_z + remaining.m_y * delta.m_y + remaining.m_x * delta.m_x <= 0.0f) {
+		return TRUE;
+	}
+
 	return FALSE;
 }
 
 // STUB: LEGORACERS 0x00449b90
-void GolMath::FUN_00449b90(LegoFloat, LegoFloat, LegoFloat, const LegoFloat*, GolVec3*)
+void GolMath::FUN_00449b90(LegoFloat p_x, LegoFloat p_y, LegoFloat p_z, const LegoFloat* p_matrix, GolVec3* p_dest)
 {
 	STUB(0x00449b90);
+
+	p_dest->m_x = (p_matrix[2] * p_z + p_matrix[1] * p_y) + p_x * p_matrix[0];
+	p_dest->m_y = (p_matrix[5] * p_z + p_matrix[4] * p_y) + p_matrix[3] * p_x;
+	p_dest->m_z = (p_matrix[8] * p_z + p_matrix[7] * p_y) + p_matrix[6] * p_x;
 }
 
 // STUB: LEGORACERS 0x00449bf0
-void GolMath::FUN_00449bf0(const LegoFloat*, const LegoFloat*, LegoFloat*)
+void GolMath::FUN_00449bf0(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest)
 {
 	STUB(0x00449bf0);
+
+	p_dest[0] = (p_left[1] * p_right[1] + p_left[2] * p_right[2]) + p_left[0] * p_right[0];
+	p_dest[1] = (p_right[4] * p_left[1] + p_right[5] * p_left[2]) + p_right[3] * p_left[0];
+	p_dest[2] = (p_right[8] * p_left[2] + p_left[1] * p_right[7]) + p_right[6] * p_left[0];
+
+	p_dest[3] = (p_left[4] * p_right[1] + p_left[5] * p_right[2]) + p_left[3] * p_right[0];
+	p_dest[4] = (p_left[5] * p_right[5] + p_left[3] * p_right[3]) + p_left[4] * p_right[4];
+	p_dest[5] = (p_left[3] * p_right[6] + p_right[8] * p_left[5]) + p_left[4] * p_right[7];
+
+	p_dest[6] = (p_left[8] * p_right[2] + p_right[1] * p_left[7]) + p_left[6] * p_right[0];
+	p_dest[7] = (p_right[3] * p_left[6] + p_left[8] * p_right[5]) + p_right[4] * p_left[7];
+	p_dest[8] = (p_left[7] * p_right[7] + p_left[8] * p_right[8]) + p_left[6] * p_right[6];
 }

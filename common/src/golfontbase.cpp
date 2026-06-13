@@ -387,70 +387,6 @@ LegoU32 GolFontBase::PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfac
 }
 
 // FUNCTION: GOLDP 0x1001e970
-void GolFontBase::FUN_1001e970(GolString* p_string, LegoS32* p_width, LegoS32* p_height)
-{
-	GolFontBase* font = this;
-
-	if (p_string == NULL) {
-		if (p_width != NULL) {
-			*p_width = 0;
-		}
-
-		if (p_height != NULL) {
-			*p_height = 0;
-		}
-
-		return;
-	}
-
-	if (p_height != NULL) {
-		*p_height = font->m_fontHeight;
-	}
-
-	if (p_width != NULL) {
-		LegoS32 width = 0;
-		LegoU32 length = p_string->SelectionLength();
-
-		for (LegoU32 i = 0; i < length; i++) {
-			if (*p_string->FromCursor(i) == ' ') {
-				width += font->m_charSpacing + font->m_spaceWidth;
-			}
-			else {
-				LegoU16 textChar = *p_string->FromCursor(i);
-				LegoS32 low = 0;
-				LegoS32 high = font->m_glyphCount - 1;
-				LegoS32 mid = static_cast<LegoU32>(font->m_glyphCount) >> 1;
-
-				while (low <= high) {
-					LegoU16 glyphChar = font->m_glyphs[mid].m_char;
-					if (glyphChar == textChar) {
-						break;
-					}
-
-					if (glyphChar > textChar) {
-						high = mid - 1;
-					}
-					else {
-						low = mid + 1;
-					}
-
-					mid = (high + low) >> 1;
-				}
-
-				if (low > high) {
-					mid = 0;
-				}
-
-				width += font->m_glyphs[mid].m_width + font->m_charSpacing;
-			}
-		}
-
-		width -= font->m_charSpacing;
-
-		*p_width = width < 0 ? 0 : width;
-	}
-}
-
 // FUNCTION: LEGORACERS 0x00408be0
 void GolFontBase::MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height)
 {
@@ -993,7 +929,7 @@ LegoS32 GolFontBase::DrawStringFitted(
 {
 	if (p_string->SelectionLength()) {
 		LegoS32 width;
-		FUN_1001e970(p_string, &width, NULL);
+		MeasureString(p_string, &width, NULL);
 
 		return DrawString(
 			p_string,

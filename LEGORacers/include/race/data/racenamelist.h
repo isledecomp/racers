@@ -5,7 +5,7 @@
 #include "decomp.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
-#include "race/data/racedefinitionlist.h"
+#include "race/data/circuitdefinitionlist.h"
 #include "race/data/racenameentry.h"
 #include "types.h"
 
@@ -29,7 +29,7 @@ public:
 	LegoU32 GetEntryIndexByName(LegoChar* p_name);
 	void Load(
 		GolStringTable* p_stringTable,
-		RaceDefinitionList* p_raceList,
+		CircuitDefinitionList* p_raceList,
 		const LegoChar* p_fileName,
 		undefined4 p_binary
 	);

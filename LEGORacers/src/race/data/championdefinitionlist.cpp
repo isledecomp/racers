@@ -24,9 +24,9 @@ void ChampionDefinitionList::Reset()
 	m_golExport = NULL;
 	m_unk0x10 = 0;
 	m_definitions = NULL;
-	m_unk0x18 = NULL;
-	m_unk0x1c = NULL;
-	m_unk0x20 = NULL;
+	m_models = NULL;
+	m_textureLists = NULL;
+	m_materialLists = NULL;
 	m_unk0x24 = NULL;
 	m_unk0x28 = 0;
 	m_entryCount = 0;
@@ -38,34 +38,34 @@ void ChampionDefinitionList::Clear()
 {
 	ClearDefinitions();
 
-	if (m_unk0x20 != NULL) {
+	if (m_materialLists != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->DestroyMaterialList(m_unk0x20[i]);
-			m_unk0x20[i] = NULL;
+			m_golExport->DestroyMaterialList(m_materialLists[i]);
+			m_materialLists[i] = NULL;
 		}
 
-		delete[] m_unk0x20;
-		m_unk0x20 = NULL;
+		delete[] m_materialLists;
+		m_materialLists = NULL;
 	}
 
-	if (m_unk0x1c != NULL) {
+	if (m_textureLists != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->DestroyTextureList(m_unk0x1c[i]);
-			m_unk0x1c[i] = NULL;
+			m_golExport->DestroyTextureList(m_textureLists[i]);
+			m_textureLists[i] = NULL;
 		}
 
-		delete[] m_unk0x1c;
-		m_unk0x1c = NULL;
+		delete[] m_textureLists;
+		m_textureLists = NULL;
 	}
 
-	if (m_unk0x18 != NULL) {
+	if (m_models != NULL) {
 		for (LegoU32 i = 0; i < m_entryCount; i++) {
-			m_golExport->VTable0x48(m_unk0x18[i]);
-			m_unk0x18[i] = NULL;
+			m_golExport->VTable0x48(m_models[i]);
+			m_models[i] = NULL;
 		}
 
-		delete[] m_unk0x18;
-		m_unk0x18 = NULL;
+		delete[] m_models;
+		m_models = NULL;
 	}
 
 	if (m_unk0x24 != NULL) {

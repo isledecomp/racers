@@ -44,16 +44,16 @@ private:
 	void Reset();
 	void ClearDefinitions();
 
-	GolExport* m_golExport;            // 0x0c
-	undefined4 m_unk0x10;              // 0x10
-	ChampionDefinition* m_definitions; // 0x14
-	GolModelBase** m_unk0x18;          // 0x18
-	GolTextureList** m_unk0x1c;        // 0x1c
-	GolMaterialLibrary** m_unk0x20;    // 0x20
-	undefined* m_unk0x24;              // 0x24
-	undefined4 m_unk0x28;              // 0x28
-	LegoU32 m_entryCount;              // 0x2c
-	undefined4 m_unk0x30;              // 0x30
+	GolExport* m_golExport;               // 0x0c
+	undefined4 m_unk0x10;                 // 0x10
+	ChampionDefinition* m_definitions;    // 0x14
+	GolModelBase** m_models;              // 0x18
+	GolTextureList** m_textureLists;      // 0x1c
+	GolMaterialLibrary** m_materialLists; // 0x20
+	undefined* m_unk0x24;                 // 0x24
+	undefined4 m_unk0x28;                 // 0x28
+	LegoU32 m_entryCount;                 // 0x2c
+	undefined4 m_unk0x30;                 // 0x30
 };
 
 #endif // CHAMPIONDEFINITIONLIST_H

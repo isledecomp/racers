@@ -65,10 +65,10 @@ struct PersistentGameState {
 	LegoU8 m_partUnlockFlags;                          // 0x018
 	LegoU8 m_unlockedCircuits;                         // 0x019
 	LegoU16 m_unlockedRaces;                           // 0x01a
-	LegoU32 m_unk0x28[13];                             // 0x01c
-	LegoU32 m_unk0x5c[13];                             // 0x050
-	LegoU8 m_unk0x90[13][28];                          // 0x084
-	LegoU8 m_unk0x1fc[13][28];                         // 0x1f0
+	LegoU32 m_bestLapTimes[13];                        // 0x01c
+	LegoU32 m_bestRaceTimes[13];                       // 0x050
+	LegoU8 m_bestLapHolderNames[13][28];               // 0x084
+	LegoU8 m_bestRaceHolderNames[13][28];              // 0x1f0
 	InputBindingState m_inputBindings;                 // 0x35c
 };
 
@@ -263,8 +263,8 @@ public:
 	LegoU16 GetUnlockedRaces() const;
 	LegoBool32 UnlockRace(LegoU32 p_mask);
 	LegoBool32 AreAllRacesUnlocked() const;
-	LegoU32 GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, GolString* p_string) const;
-	LegoBool32 SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, LegoU32 p_time, GolString* p_string);
+	LegoU32 GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_raceTime, GolString* p_string) const;
+	LegoBool32 SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_raceTime, LegoU32 p_time, GolString* p_string);
 
 	void SetDirty(LegoBool32 p_dirty) { m_dirty = p_dirty; }
 	void SetRacerCount(LegoU32 p_racerCount)

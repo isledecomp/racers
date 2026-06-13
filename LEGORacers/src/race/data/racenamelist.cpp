@@ -28,20 +28,20 @@ void RaceNameEntry::Clear()
 {
 	m_loaded = FALSE;
 	m_circuit = NULL;
-	m_raceDefinitionIndex = 0;
-	m_unk0x2c = FALSE;
+	m_positionInCircuit = 0;
+	m_mirror = FALSE;
 	m_stringTable = NULL;
-	m_unk0x34 = 0;
+	m_displayStringIndex = 0;
 	::memset(m_name, 0, sizeof(m_name));
-	::memset(m_unk0x0c, 0, sizeof(m_unk0x0c));
-	::memset(m_unk0x14, 0, sizeof(m_unk0x14));
-	::memset(m_unk0x1c, 0, sizeof(m_unk0x1c));
+	::memset(m_folderName, 0, sizeof(m_folderName));
+	::memset(m_themeName, 0, sizeof(m_themeName));
+	::memset(m_mascotName, 0, sizeof(m_mascotName));
 }
 
 // FUNCTION: LEGORACERS 0x004364f0
 void RaceNameEntry::Load(
 	GolFileParser& p_parser,
-	RaceDefinitionList* p_raceList,
+	CircuitDefinitionList* p_raceList,
 	const LegoChar* p_name,
 	GolStringTable* p_stringTable
 )
@@ -58,30 +58,30 @@ void RaceNameEntry::Load(
 	GolName circuitName;
 	while ((token = p_parser.GetNextToken()) != GolFileParser::e_rightCurly) {
 		switch (token) {
-		case c_tokenRaceDefinitionIndex:
-			m_raceDefinitionIndex = p_parser.ReadInteger();
+		case c_tokenPositionInCircuit:
+			m_positionInCircuit = p_parser.ReadInteger();
 			break;
-		case c_tokenUnk0x0cName:
-			::strncpy(m_unk0x0c, p_parser.ReadStringWithMaxLength(sizeof(m_unk0x0c)), sizeof(m_unk0x0c));
+		case c_tokenFolderName:
+			::strncpy(m_folderName, p_parser.ReadStringWithMaxLength(sizeof(m_folderName)), sizeof(m_folderName));
 			break;
 		case c_tokenCircuit:
 			::strncpy(circuitName, p_parser.ReadStringWithMaxLength(sizeof(circuitName)), sizeof(circuitName));
-			m_circuit = static_cast<RaceDefinitionList::RaceDefinition*>(p_raceList->GetName(circuitName));
+			m_circuit = static_cast<CircuitDefinitionList::CircuitDefinition*>(p_raceList->GetName(circuitName));
 			if (!m_circuit) {
 				GOL_FATALERROR_MESSAGE("Unable to find circuit");
 			}
 			break;
-		case c_tokenUnk0x34:
-			m_unk0x34 = static_cast<LegoU16>(p_parser.ReadInteger());
+		case c_tokenDisplayStringIndex:
+			m_displayStringIndex = static_cast<LegoU16>(p_parser.ReadInteger());
 			break;
-		case c_tokenUnk0x14Name:
-			::strncpy(m_unk0x14, p_parser.ReadStringWithMaxLength(sizeof(m_unk0x14)), sizeof(m_unk0x14));
+		case c_tokenThemeName:
+			::strncpy(m_themeName, p_parser.ReadStringWithMaxLength(sizeof(m_themeName)), sizeof(m_themeName));
 			break;
-		case c_tokenUnk0x1cName:
-			::strncpy(m_unk0x1c, p_parser.ReadStringWithMaxLength(sizeof(m_unk0x1c)), sizeof(m_unk0x1c));
+		case c_tokenMascotName:
+			::strncpy(m_mascotName, p_parser.ReadStringWithMaxLength(sizeof(m_mascotName)), sizeof(m_mascotName));
 			break;
-		case c_tokenFlag0x2c:
-			m_unk0x2c = TRUE;
+		case c_tokenMirror:
+			m_mirror = TRUE;
 			break;
 		default:
 			p_parser.HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -90,7 +90,7 @@ void RaceNameEntry::Load(
 	}
 
 	if (m_circuit) {
-		m_circuit->SetRaceNameEntry(m_raceDefinitionIndex, this);
+		m_circuit->SetRaceNameEntry(m_positionInCircuit, this);
 	}
 }
 
@@ -116,7 +116,7 @@ RaceNameList::~RaceNameList()
 // FUNCTION: LEGORACERS 0x004366f0
 void RaceNameList::Load(
 	GolStringTable* p_stringTable,
-	RaceDefinitionList* p_raceList,
+	CircuitDefinitionList* p_raceList,
 	const LegoChar* p_fileName,
 	undefined4 p_binary
 )

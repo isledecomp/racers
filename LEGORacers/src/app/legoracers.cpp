@@ -48,20 +48,20 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 
 	memset(&m_context, 0, sizeof(m_context));
 
-	m_context.m_unk0x00 = TRUE;
+	m_context.m_running = TRUE;
 	m_context.m_golApp = &m_golApp;
 	m_context.m_soundManager = m_soundManager;
 	m_context.m_unk0x0c = g_unk0x4b055c;
 	m_context.m_unk0x10 = g_unk0x4b0560;
 	m_context.m_unk0x14 = g_unk0x4b0564;
-	m_context.m_unk0x24 = 1;
-	m_context.m_unk0x32c = 1;
-	m_context.m_unk0x1c = c_menuLegal;
+	m_context.m_raceMode = Context::c_raceModeSingle;
+	m_context.m_playerCount = 1;
+	m_context.m_nextMenuId = c_menuLegal;
 	m_context.m_unk0x398 = 0;
-	m_context.m_raceSlots[0].m_unk0x00 = 1;
-	strncpy(m_context.m_raceSlots[0].m_unk0x08, "racec0r0", sizeof(m_context.m_raceSlots[0].m_unk0x08));
+	m_context.m_raceSlots[0].m_enabled = 1;
 	strncpy(m_context.m_raceSlots[0].m_raceName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_raceName));
-	strncpy(m_context.m_unk0x2d, "c0", sizeof(m_context.m_unk0x2d));
+	strncpy(m_context.m_raceSlots[0].m_folderName, "racec0r0", sizeof(m_context.m_raceSlots[0].m_folderName));
+	strncpy(m_context.m_circuitName, "c0", sizeof(m_context.m_circuitName));
 	m_context.m_unk0x18 = 1;
 }
 
@@ -116,9 +116,9 @@ void LegoRacers::Run()
 
 	FUN_0042be00();
 
-	while (m_context.m_unk0x00) {
+	while (m_context.m_running) {
 		FUN_0042bdc0();
-		if (!m_context.m_unk0x00) {
+		if (!m_context.m_running) {
 			break;
 		}
 		FUN_0042bde0();
@@ -134,7 +134,7 @@ void LegoRacers::ReleaseContextAssets()
 {
 	GolExport* golExport = m_context.m_golApp->GetGolExport();
 
-	for (LegoU32 i = 0; i < m_context.m_unk0x32c; i++) {
+	for (LegoU32 i = 0; i < m_context.m_playerCount; i++) {
 		LegoRacers::Context::PlayerSetupSlot& slot = m_context.m_playerSetupSlots[i];
 
 		if (slot.m_chassisName[0]) {

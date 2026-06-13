@@ -10,7 +10,7 @@
 #include "model/legocolortable.h"
 #include "model/legopiecelibrary.h"
 #include "race/data/championdefinitionlist.h"
-#include "race/data/racedefinitionlist.h"
+#include "race/data/circuitdefinitionlist.h"
 #include "race/data/racenamelist.h"
 #include "racer/chassismodeltable.h"
 #include "racer/drivercosmetictable.h"
@@ -34,7 +34,7 @@ public:
 	DriverCosmeticTable m_cosmeticTable;          // 0x425c
 	ChassisModelTable m_chassisModels;            // 0x42dc
 	ChampionDefinitionList m_championDefinitions; // 0x4318
-	RaceDefinitionList m_raceList;                // 0x434c
+	CircuitDefinitionList m_circuitList;          // 0x434c
 	RaceNameList m_raceNames;                     // 0x4360
 	MenuAnimationList m_menuAnimations;           // 0x4374
 	DriverPartCatalog m_partCatalog;              // 0x437c

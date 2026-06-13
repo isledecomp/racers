@@ -7,7 +7,7 @@
 #include "golnametable.h"
 #include "golworldentitygroup0x38.h"
 #include "menu/screens/menuscenescreen.h"
-#include "race/data/racedefinitionlist.h"
+#include "race/data/circuitdefinitionlist.h"
 #include "save/savegame.h"
 
 class ChassisModelTable;
@@ -66,9 +66,9 @@ public:
 
 protected:
 	LegoBool32 FUN_004767b0();
-	LegoBool32 FUN_00476890(SaveRecordList* p_records, RaceDefinitionList::RaceDefinition* p_raceDefinition);
-	LegoBool32 FUN_004768f0(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
-	LegoBool32 FUN_00476990(GameState* p_gameState, RaceDefinitionList::RaceDefinition* p_raceDefinition);
+	LegoBool32 FUN_00476890(SaveRecordList* p_records, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 FUN_004768f0(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 FUN_00476990(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
 
 	SceneEntityGroup m_unk0x658;  // 0x658
 	GolAnimatedEntity m_unk0x6a8; // 0x6a8

@@ -229,14 +229,14 @@ void GarageScreen::FUN_0047eb20()
 	GolNameTable* raceNames = &m_context->m_raceNames;
 	RaceNameEntry* raceName = static_cast<RaceNameEntry*>(raceNames->GetName(name));
 
-	context->m_unk0x2d[0] = '\0';
-	context->m_unk0x24 = TRUE;
-	::memcpy(context->m_raceSlots[0].m_raceName, raceName->GetUnk0x0cName(), sizeof(GolName));
-	::memcpy(context->m_raceSlots[0].m_unk0x08, raceName->GetName(), sizeof(GolName));
-	context->m_raceSlots[0].m_unk0x00 = TRUE;
-	context->m_raceSlots[0].m_unk0x04 = raceName->GetUnk0x2c();
-	context->m_unk0x100 = TRUE;
-	context->m_unk0x1e |= 2;
+	context->m_circuitName[0] = '\0';
+	context->m_raceMode = LegoRacers::Context::c_raceModeSingle;
+	::memcpy(context->m_raceSlots[0].m_folderName, raceName->GetFolderName(), sizeof(GolName));
+	::memcpy(context->m_raceSlots[0].m_raceName, raceName->GetName(), sizeof(GolName));
+	context->m_raceSlots[0].m_enabled = TRUE;
+	context->m_raceSlots[0].m_mirror = raceName->GetMirror();
+	context->m_racerCount = 1;
+	context->m_unk0x1e |= LegoRacers::Context::c_flagReturnToGarage;
 
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(1);
 	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();

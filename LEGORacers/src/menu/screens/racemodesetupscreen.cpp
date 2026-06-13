@@ -80,7 +80,7 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 {
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 6;
-	m_unk0x1fbc = p_context->m_context->m_unk0x100;
+	m_unk0x1fbc = p_context->m_context->m_racerCount;
 
 	LegoBool32 result = SingleRaceSelectBase::VTable0x8c(p_context, p_createParams);
 	if (!result) {
@@ -105,17 +105,17 @@ void RaceModeSetupScreen::VTable0x38(MenuWidget* p_source)
 {
 	MenuWidget* source = p_source;
 	if (source == &m_unk0x19dc) {
-		RaceDefinitionList::RaceDefinition* raceDefinition = m_unk0x1904;
-		if (raceDefinition) {
+		CircuitDefinitionList::CircuitDefinition* circuitDefinition = m_unk0x1904;
+		if (circuitDefinition) {
 			LegoRacers::Context* context = m_context->m_context;
-			::memcpy(context->m_unk0x2d, raceDefinition->GetName(), sizeof(GolName));
+			::memcpy(context->m_circuitName, circuitDefinition->GetName(), sizeof(GolName));
 
 			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x1fc0.GetUnk0x6c());
 			if (raceNameEntry) {
-				::memcpy(context->m_raceSlots[0].m_unk0x08, raceNameEntry->GetName(), sizeof(GolName));
-				::memcpy(context->m_raceSlots[0].m_raceName, raceNameEntry->GetUnk0x0cName(), sizeof(GolName));
-				context->m_raceSlots[0].m_unk0x00 = TRUE;
-				context->m_raceSlots[0].m_unk0x04 = raceNameEntry->GetUnk0x2c();
+				::memcpy(context->m_raceSlots[0].m_raceName, raceNameEntry->GetName(), sizeof(GolName));
+				::memcpy(context->m_raceSlots[0].m_folderName, raceNameEntry->GetFolderName(), sizeof(GolName));
+				context->m_raceSlots[0].m_enabled = TRUE;
+				context->m_raceSlots[0].m_mirror = raceNameEntry->GetMirror();
 			}
 
 			// Both branches assign the same id in the original; the flag test is real but inert
@@ -146,11 +146,11 @@ void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
 	LegoBool32 isComplete = FALSE;
 
 	if (p_source == &m_unk0xbe8) {
-		LegoU32 raceDefinitionIndex = m_unk0xb54.GetUnk0x6c();
-		m_unk0x1904 = m_context->m_raceList.GetEntry(raceDefinitionIndex);
+		LegoU32 circuitIndex = m_unk0xb54.GetUnk0x6c();
+		m_unk0x1904 = m_context->m_circuitList.GetEntry(circuitIndex);
 
 		if (m_unk0x1904) {
-			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(m_unk0x1904));
+			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_unk0x1904));
 			LegoU8 flags = m_context->m_saveSystem.GetGameState().GetUnlockedCircuits();
 			if (flags & mask) {
 				isComplete = TRUE;
@@ -185,17 +185,17 @@ void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
 void RaceModeSetupScreen::VTable0x84()
 {
 	if (m_unk0x360 == 2) {
-		m_context->m_context->m_unk0x100 = m_unk0x1fbc;
+		m_context->m_context->m_racerCount = m_unk0x1fbc;
 		m_context->m_menuStack.Pop();
 		return;
 	}
 
 	if (m_menuId == 6) {
-		m_context->m_context->m_unk0x24 = 1;
+		m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeSingle;
 	}
 	else {
-		m_context->m_context->m_unk0x24 = 2;
-		m_context->m_context->m_unk0x100 = 0;
+		m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeTimeRace;
+		m_context->m_context->m_racerCount = 0;
 	}
 
 	m_context->m_menuStack.Push(m_unk0x360);
@@ -215,9 +215,9 @@ void RaceModeSetupScreen::FUN_00488010()
 		return;
 	}
 
-	::memcpy(frameName, raceNameEntry->GetUnk0x14Name(), sizeof(GolName));
+	::memcpy(frameName, raceNameEntry->GetThemeName(), sizeof(GolName));
 	if (m_menuId != 0x1d) {
-		::memcpy(driverName, raceNameEntry->GetUnk0x1cName(), sizeof(GolName));
+		::memcpy(driverName, raceNameEntry->GetMascotName(), sizeof(GolName));
 	}
 	else {
 		::strcpy(driverName, g_veronicaVoltageName);
@@ -242,8 +242,8 @@ void RaceModeSetupScreen::FUN_00488010()
 		FUN_004881a0();
 	}
 
-	LegoU32 raceDefinitionIndex = m_context->m_raceList.GetEntryIndex(m_unk0x1904);
-	LegoU32 visualStateIndex = raceDefinitionIndex * 4;
+	LegoU32 circuitIndex = m_context->m_circuitList.GetEntryIndex(m_unk0x1904);
+	LegoU32 visualStateIndex = circuitIndex * 4;
 	visualStateIndex += selectedEntryIndex;
 	FUN_00488cb0(visualStateIndex);
 	if (driverName[0]) {
@@ -282,9 +282,9 @@ void RaceModeSetupScreen::FUN_004881a0()
 	::memset(buffer, 0, sizeof(buffer));
 	string.CopyFromBufSelection(buffer, 14);
 
-	LegoBool32 alternate = (m_unk0x2e10 == FALSE);
+	LegoBool32 raceTime = (m_unk0x2e10 == FALSE);
 	LegoU16 unlockedMask = m_context->m_saveSystem.GetGameState().GetUnlockedRaces();
-	LegoU32 time = m_context->m_saveSystem.GetGameState().GetBestTime(m_unk0x2e0c, alternate, &string);
+	LegoU32 time = m_context->m_saveSystem.GetGameState().GetBestTime(m_unk0x2e0c, raceTime, &string);
 	if (time && time < 0xffffffff) {
 		bestTime = time;
 		m_unk0x2e48.GolStrcpy(&string);

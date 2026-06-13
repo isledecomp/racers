@@ -86,7 +86,7 @@ void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x40c8) {
 		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
-			m_context->m_context->m_unk0x100 = 0;
+			m_context->m_context->m_racerCount = 0;
 		}
 
 		FUN_00486810(0);
@@ -145,24 +145,25 @@ void PickRacerScreen::VTable0x84()
 		FUN_004861b0();
 		return;
 	case 0x41:
-		if (m_context->m_context->m_unk0x24 == 0 &&
+		if (m_context->m_context->m_raceMode == LegoRacers::Context::c_raceModeCircuit &&
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 1) {
-			RaceDefinitionList::RaceDefinition* raceDefinition = static_cast<RaceDefinitionList::RaceDefinition*>(
-				m_context->m_raceList.GetName(m_context->m_context->m_unk0x2d)
-			);
-			LegoU32 raceIndex = m_context->m_raceList.GetEntryIndex(raceDefinition);
+			CircuitDefinitionList::CircuitDefinition* circuitDefinition =
+				static_cast<CircuitDefinitionList::CircuitDefinition*>(
+					m_context->m_circuitList.GetName(m_context->m_context->m_circuitName)
+				);
+			LegoU32 raceIndex = m_context->m_circuitList.GetEntryIndex(circuitDefinition);
 			m_context->m_menuStack.Push(static_cast<LegoU16>(raceIndex + c_menuCircuit1));
-			m_context->m_context->m_unk0x100 = 5;
+			m_context->m_context->m_racerCount = 5;
 		}
 		else {
 			m_context->m_menuStack.ResetSize();
 		}
 
 		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
-			m_context->m_context->m_unk0x100 = 0;
+			m_context->m_context->m_racerCount = 0;
 		}
 		else {
-			m_context->m_context->m_unk0x100 += m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount();
+			m_context->m_context->m_racerCount += m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount();
 		}
 
 		m_unk0x364 = TRUE;

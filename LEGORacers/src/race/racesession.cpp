@@ -1,29 +1,29 @@
-#include "race/glassblock0x3368.h"
+#include "race/racesession.h"
 
 #include "app/golapp.h"
 #include "golerror.h"
-#include "race/glassshard0x3b8.h"
+#include "race/timeracemanager.h"
 
 #include <mmsystem.h>
 
-DECOMP_SIZE_ASSERT(GlassBlock0x3368, 0x3368)
+DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
 
 // STUB: LEGORACERS 0x004316e0
-GlassBlock0x3368::GlassBlock0x3368()
+RaceSession::RaceSession()
 {
 	// TODO
 	STUB(0x4316e0);
 }
 
 // STUB: LEGORACERS 0x00431990
-GlassBlock0x3368::~GlassBlock0x3368()
+RaceSession::~RaceSession()
 {
 	// TODO
 	STUB(0x431990);
 }
 
 // STUB: LEGORACERS 0x00431e00
-LegoS32 GlassBlock0x3368::Initialize(LegoRacers::Context* p_context, const LegoChar*, undefined4, GlassShard0x3b8*)
+LegoS32 RaceSession::Initialize(LegoRacers::Context* p_context, const LegoChar*, undefined4, TimeRaceManager*)
 {
 #if 0
 	if (p_context->m_unk0x18) {
@@ -44,31 +44,31 @@ LegoS32 GlassBlock0x3368::Initialize(LegoRacers::Context* p_context, const LegoC
 }
 
 // FUNCTION: LEGORACERS 0x00432520
-void GlassBlock0x3368::VTable0x00()
+void RaceSession::VTable0x00()
 {
-	m_unk0x3334 = 0;
-	m_context->m_unk0x00 = 0;
+	m_running = 0;
+	m_context->m_running = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00432540
-void GlassBlock0x3368::Run()
+void RaceSession::Run()
 {
-	m_unk0x3334 = 1;
-	m_unk0x333c = 0;
+	m_running = 1;
+	m_frameCount = 0;
 	m_unk0x3340 = 0;
 
 	LegoS32 previousTime = timeGetTime();
 
-	m_unk0x3344 = 0.0f;
-	m_unk0x332c = 0;
+	m_fps = 0.0f;
+	m_elapsedMs = 0;
 
 	LegoU32 frameSampleCount = 0;
 	LegoU32 frameSampleElapsedMs = 0;
 
-	m_unk0x3328 = 1;
+	m_state = 1;
 	m_renderer->VTable0x44();
 
-	while (m_unk0x3334) {
+	while (m_running) {
 		if (!m_golApp->Tick(this)) {
 			break;
 		}
@@ -91,10 +91,10 @@ void GlassBlock0x3368::Run()
 
 		if (!m_golApp->IsDisabled()) {
 			if (!m_unk0x30c0) {
-				m_unk0x332c += m_golApp->GetFrameDeltaMs();
+				m_elapsedMs += m_golApp->GetFrameDeltaMs();
 			}
 
-			switch (m_unk0x3328) {
+			switch (m_state) {
 			case 1:
 				FUN_004349a0();
 				break;
@@ -116,7 +116,7 @@ void GlassBlock0x3368::Run()
 			FUN_004354d0();
 			m_golApp->PresentFrame();
 
-			if (m_unk0x333c) {
+			if (m_frameCount) {
 				LegoS32 currentTime = timeGetTime();
 				m_unk0x3340 += currentTime - previousTime;
 				frameSampleElapsedMs += currentTime - previousTime;
@@ -126,134 +126,134 @@ void GlassBlock0x3368::Run()
 				if (frameSampleCount >= 64) {
 					frameSampleElapsedMs >>= 6;
 					frameSampleCount = 0;
-					m_unk0x3344 = 1.0f / (static_cast<LegoFloat>((LegoS32) frameSampleElapsedMs) * 0.001f);
+					m_fps = 1.0f / (static_cast<LegoFloat>((LegoS32) frameSampleElapsedMs) * 0.001f);
 					frameSampleElapsedMs = 0;
 				}
 			}
 
-			m_unk0x333c++;
+			m_frameCount++;
 		}
 	}
 
 	m_renderer->VTable0xf4();
 	m_renderer->VTable0x38();
 	m_renderer->VTable0x48();
-	m_unk0x3bc.FUN_0043beb0(m_context);
+	m_raceState.RecordBestTimes(m_context);
 
-	AzureCircuit0x320::Field0x318* field = m_unk0x3bc.GetUnk0x318();
+	RaceState::Field0x318* field = m_raceState.GetUnk0x318();
 	if (field) {
 		m_context->m_unk0x398 = field->m_unk0xdb8;
 	}
 
-	if (m_context->m_unk0x00 && m_unk0x3364) {
-		m_context->m_unk0x1e |= LegoRacers::Context::c_flagBit4;
+	if (m_context->m_running && m_timeRaceManager) {
+		m_context->m_unk0x1e |= LegoRacers::Context::c_flagBestTimesPending;
 
-		if (m_unk0x3364->FUN_004234b0()) {
-			m_context->m_unk0x1e |= LegoRacers::Context::c_flagBit0;
+		if (m_timeRaceManager->HasBeatenRecord()) {
+			m_context->m_unk0x1e |= LegoRacers::Context::c_flagRecordBeaten;
 		}
 	}
 }
 
 // STUB: LEGORACERS 0x00432790
-void GlassBlock0x3368::Shutdown()
+void RaceSession::Shutdown()
 {
 	// TODO
 	STUB(0x432790);
 }
 
 // STUB: LEGORACERS 0x004349a0
-void GlassBlock0x3368::FUN_004349a0()
+void RaceSession::FUN_004349a0()
 {
 	// TODO
 	STUB(0x004349a0);
 }
 
 // STUB: LEGORACERS 0x00434b00
-void GlassBlock0x3368::FUN_00434b00()
+void RaceSession::FUN_00434b00()
 {
 	// TODO
 	STUB(0x00434b00);
 }
 
 // STUB: LEGORACERS 0x00434c80
-void GlassBlock0x3368::FUN_00434c80()
+void RaceSession::FUN_00434c80()
 {
 	// TODO
 	STUB(0x00434c80);
 }
 
 // STUB: LEGORACERS 0x00434eb0
-void GlassBlock0x3368::FUN_00434eb0()
+void RaceSession::FUN_00434eb0()
 {
 	// TODO
 	STUB(0x00434eb0);
 }
 
 // STUB: LEGORACERS 0x00435180
-void GlassBlock0x3368::FUN_00435180()
+void RaceSession::FUN_00435180()
 {
 	// TODO
 	STUB(0x00435180);
 }
 
 // STUB: LEGORACERS 0x00435220
-void GlassBlock0x3368::VTable0x30()
+void RaceSession::VTable0x30()
 {
 	// TODO
 	STUB(0x435220);
 }
 
 // STUB: LEGORACERS 0x004354d0
-void GlassBlock0x3368::FUN_004354d0()
+void RaceSession::FUN_004354d0()
 {
 	// TODO
 	STUB(0x004354d0);
 }
 
 // STUB: LEGORACERS 0x00435940
-void GlassBlock0x3368::VTable0x34()
+void RaceSession::VTable0x34()
 {
 	// TODO
 	STUB(0x00435940);
 }
 
 // STUB: LEGORACERS 0x00435960
-void GlassBlock0x3368::VTable0x38()
+void RaceSession::VTable0x38()
 {
 	// TODO
 	STUB(0x00435960);
 }
 
 // STUB: LEGORACERS 0x00435a00
-void GlassBlock0x3368::VTable0x3c()
+void RaceSession::VTable0x3c()
 {
 	// TODO
 	STUB(0x00435a00);
 }
 
 // STUB: LEGORACERS 0x00435a90
-void GlassBlock0x3368::VTable0x40()
+void RaceSession::VTable0x40()
 {
 	// TODO
 	STUB(0x00435a90);
 }
 
 // STUB: LEGORACERS 0x00435c00
-void GlassBlock0x3368::VTable0x44(undefined4)
+void RaceSession::VTable0x44(undefined4)
 {
 	// TODO
 	STUB(0x00435c00);
 }
 
 // STUB: LEGORACERS 0x00435cc0
-void GlassBlock0x3368::VTable0x48(undefined4)
+void RaceSession::VTable0x48(undefined4)
 {
 	// TODO
 	STUB(0x00435cc0);
 }
 
 // STUB: LEGORACERS 0x00436010
-void GlassBlock0x3368::FUN_00436010()
+void RaceSession::FUN_00436010()
 {
 	// TODO
 	STUB(0x00436010);

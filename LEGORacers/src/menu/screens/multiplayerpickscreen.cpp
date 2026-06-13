@@ -274,7 +274,7 @@ void MultiplayerPickScreen::VTable0x84()
 		break;
 	case 0x41:
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(2);
-		m_context->m_context->m_unk0x100 = 2;
+		m_context->m_context->m_racerCount = 2;
 		m_unk0x364 = TRUE;
 		m_context->m_menuStack.ResetSize();
 		break;

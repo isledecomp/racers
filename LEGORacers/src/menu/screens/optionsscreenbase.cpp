@@ -225,8 +225,8 @@ void OptionsScreenBase::VTable0x44(MenuWidget* p_widget)
 		}
 	}
 	else if (p_widget == &m_unk0x1bc8) {
-		m_context->m_context->m_unk0x100 = m_unk0x2fb0.GetUnk0x6c();
-		m_unk0x370->SetRacerCount(m_context->m_context->m_unk0x100);
+		m_context->m_context->m_racerCount = m_unk0x2fb0.GetUnk0x6c();
+		m_unk0x370->SetRacerCount(m_context->m_context->m_racerCount);
 	}
 	else if (p_widget == &m_unk0x25bc) {
 		m_context->m_context->m_unk0x2c = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);

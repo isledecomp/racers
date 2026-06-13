@@ -1,32 +1,32 @@
-#ifndef GLASSBLOCK0X3368_H
-#define GLASSBLOCK0X3368_H
+#ifndef RACESESSION_H
+#define RACESESSION_H
 
 #include "app/legoracers.h"
 #include "compat.h"
 #include "decomp.h"
 #include "input/inputeventqueue.h"
-#include "race/azurecircuit0x320.h"
+#include "race/racestate.h"
 #include "types.h"
 #include "util/cactusinterface0x4.h"
 
 class GolD3DRenderDevice;
-class CelestialForge0x48;
-class GlassShard0x3b8;
+class CircuitStandings;
+class TimeRaceManager;
 class GolExport;
 class SoundManager;
 class Win32GolApp;
 
 // VTABLE: LEGORACERS 0x004b07f4
 // SIZE 0x3368
-class GlassBlock0x3368 : public CactusInterface0x4 {
+class RaceSession : public CactusInterface0x4 {
 public:
-	GlassBlock0x3368();
+	RaceSession();
 	void VTable0x00() override; // vtable+0x00
 	LegoS32 Initialize(
 		LegoRacers::Context* p_context,
 		const LegoChar* p_raceName,
-		undefined4 p_unk0x0c,
-		GlassShard0x3b8* p_glassShard
+		undefined4 p_mirror,
+		TimeRaceManager* p_timeRaceManager
 	);
 	void Shutdown();
 	void Run();
@@ -37,11 +37,11 @@ public:
 	virtual void VTable0x40();           // vtable+0x40
 	virtual void VTable0x44(undefined4); // vtable+0x44
 	virtual void VTable0x48(undefined4); // vtable+0x48
-	virtual ~GlassBlock0x3368();         // vtable+0x4c
-	void FUN_00432530(CelestialForge0x48* p_unk0x18) { m_unk0x18 = p_unk0x18; }
+	virtual ~RaceSession();              // vtable+0x4c
+	void SetStandings(CircuitStandings* p_standings) { m_standings = p_standings; }
 
 	// SYNTHETIC: LEGORACERS 0x00431960
-	// GlassBlock0x3368::`scalar deleting destructor'
+	// RaceSession::`scalar deleting destructor'
 
 private:
 	void FUN_004349a0();
@@ -57,23 +57,23 @@ private:
 	SoundManager* m_soundManager;           // 0x0c
 	GolExport* m_golExport;                 // 0x10
 	GolD3DRenderDevice* m_renderer;         // 0x14
-	CelestialForge0x48* m_unk0x18;          // 0x18
+	CircuitStandings* m_standings;          // 0x18
 	undefined m_unk0x1c[0x220 - 0x1c];      // 0x1c
 	InputEventQueue m_inputEvents;          // 0x220
 	undefined m_unk0x23c[0x3bc - 0x23c];    // 0x23c
-	AzureCircuit0x320 m_unk0x3bc;           // 0x3bc
+	RaceState m_raceState;                  // 0x3bc
 	undefined m_unk0x6dc[0x30c0 - 0x6dc];   // 0x6dc
 	undefined4 m_unk0x30c0;                 // 0x30c0
 	undefined m_unk0x30c4[0x3328 - 0x30c4]; // 0x30c4
-	undefined4 m_unk0x3328;                 // 0x3328
-	LegoU32 m_unk0x332c;                    // 0x332c
+	undefined4 m_state;                     // 0x3328
+	LegoU32 m_elapsedMs;                    // 0x332c
 	undefined4 m_unk0x3330;                 // 0x3330
-	undefined4 m_unk0x3334;                 // 0x3334
+	undefined4 m_running;                   // 0x3334
 	LegoBool m_unk0x3338;                   // 0x3338
 	undefined m_unk0x3339[0x333c - 0x3339]; // 0x3339
-	LegoU32 m_unk0x333c;                    // 0x333c
+	LegoU32 m_frameCount;                   // 0x333c
 	LegoU32 m_unk0x3340;                    // 0x3340
-	LegoFloat m_unk0x3344;                  // 0x3344
+	LegoFloat m_fps;                        // 0x3344
 	undefined m_unk0x3348;                  // 0x3348
 	undefined m_unk0x3349[0x3350 - 0x3349]; // 0x3349
 	undefined4 m_unk0x3350;                 // 0x3350
@@ -81,7 +81,7 @@ private:
 	undefined4 m_unk0x3358;                 // 0x3358
 	undefined4 m_unk0x335c;                 // 0x335c
 	undefined4 m_unk0x3360;                 // 0x3360
-	GlassShard0x3b8* m_unk0x3364;           // 0x3364
+	TimeRaceManager* m_timeRaceManager;     // 0x3364
 };
 
-#endif // GLASSBLOCK0X3368_H
+#endif // RACESESSION_H

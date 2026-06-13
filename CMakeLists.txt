@@ -299,12 +299,12 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/stackoflegou16.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
-  LEGORacers/src/race/glassblock0x3368.cpp
-  LEGORacers/src/race/azurecircuit0x320.cpp
-  LEGORacers/src/race/glassshard0x3b8.cpp
+  LEGORacers/src/race/racesession.cpp
+  LEGORacers/src/race/racestate.cpp
+  LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/race/racetimeformatter.cpp
-  LEGORacers/src/race/glassstream0x94.cpp
-  LEGORacers/src/race/celestialforge0x48.cpp
+  LEGORacers/src/race/circuitracerunner.cpp
+  LEGORacers/src/race/circuitstandings.cpp
   LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/text/golrenderdevice.cpp
@@ -394,7 +394,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/racer/chassismodeltable.cpp
   LEGORacers/src/racer/carpartcarousel.cpp
   LEGORacers/src/race/data/championdefinitionlist.cpp
-  LEGORacers/src/race/data/racedefinitionlist.cpp
+  LEGORacers/src/race/data/circuitdefinitionlist.cpp
   LEGORacers/src/race/data/racenamelist.cpp
   LEGORacers/src/menu/menuanimationlist.cpp
   LEGORacers/src/racer/driverpartcatalog.cpp

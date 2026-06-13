@@ -21,7 +21,7 @@
 #include "model/legocolortable.h"
 #include "model/legopiecelibrary.h"
 #include "race/data/championdefinitionlist.h"
-#include "race/data/racedefinitionlist.h"
+#include "race/data/circuitdefinitionlist.h"
 #include "race/data/racenamelist.h"
 #include "racer/chassismodeltable.h"
 #include "racer/drivercosmetictable.h"

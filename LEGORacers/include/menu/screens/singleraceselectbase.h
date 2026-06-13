@@ -7,7 +7,7 @@
 #include "menu/widgets/menucarousel.h"
 #include "menu/widgets/menuframe.h"
 #include "menu/widgets/menuselector.h"
-#include "race/data/racedefinitionlist.h"
+#include "race/data/circuitdefinitionlist.h"
 
 class GolModelBase;
 
@@ -29,15 +29,15 @@ protected:
 	void FUN_00488b40(const LegoChar* p_name);
 	void FUN_00488cb0(LegoS32 p_index);
 
-	LegoChar m_unk0x658[8];                          // 0x0658
-	GolAnimatedEntity m_unk0x660;                    // 0x0660
-	GolModelBase* m_unk0x754;                        // 0x0754
-	MenuFrame m_unk0x758;                            // 0x0758
-	MenuCarouselNavigator m_unk0xb54;                // 0x0b54
-	MenuSelector m_unk0xbe8;                         // 0x0be8
-	MenuImage m_unk0x15dc[7];                        // 0x15dc
-	MenuTriangle m_unk0x1860;                        // 0x1860
-	RaceDefinitionList::RaceDefinition* m_unk0x1904; // 0x1904
+	LegoChar m_unk0x658[8];                                // 0x0658
+	GolAnimatedEntity m_unk0x660;                          // 0x0660
+	GolModelBase* m_unk0x754;                              // 0x0754
+	MenuFrame m_unk0x758;                                  // 0x0758
+	MenuCarouselNavigator m_unk0xb54;                      // 0x0b54
+	MenuSelector m_unk0xbe8;                               // 0x0be8
+	MenuImage m_unk0x15dc[7];                              // 0x15dc
+	MenuTriangle m_unk0x1860;                              // 0x1860
+	CircuitDefinitionList::CircuitDefinition* m_unk0x1904; // 0x1904
 };
 
 #endif // SINGLERACESELECTBASE_H

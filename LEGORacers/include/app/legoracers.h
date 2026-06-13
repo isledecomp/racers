@@ -21,10 +21,10 @@ class LegoRacers : public CactusInterface0x4 {
 public:
 	// SIZE 0x18
 	struct RaceSlot {
-		undefined4 m_unk0x00; // 0x00
-		undefined4 m_unk0x04; // 0x04
-		GolName m_unk0x08;    // 0x08
-		GolName m_raceName;   // 0x10
+		undefined4 m_enabled; // 0x00
+		undefined4 m_mirror;  // 0x04
+		GolName m_raceName;   // 0x08
+		GolName m_folderName; // 0x10
 	};
 
 #pragma pack(push, 1)
@@ -33,7 +33,7 @@ public:
 	public:
 		// SIZE 0x5c
 		struct PlayerSetupSlot {
-			GolName m_courseName;               // 0x00
+			GolName m_driverName;               // 0x00
 			GolName m_chassisName;              // 0x08
 			undefined4 m_unk0x10;               // 0x10
 			LegoFloat m_unk0x14;                // 0x14
@@ -61,13 +61,13 @@ public:
 		};
 
 		enum {
-			c_flagBit0 = 1 << 0,
-			c_flagBit1 = 1 << 1,
+			c_flagRecordBeaten = 1 << 0,
+			c_flagReturnToGarage = 1 << 1,
 			c_flagBit2 = 1 << 2,
-			c_flagBit3 = 1 << 3,
-			c_flagBit4 = 1 << 4,
-			c_flagBit5 = 1 << 5,
-			c_flagBit6 = 1 << 6,
+			c_flagAbortRace = 1 << 3,
+			c_flagBestTimesPending = 1 << 4,
+			c_flagRestartCircuit = 1 << 5,
+			c_flagFirstRace = 1 << 6,
 			c_flagBit7 = 1 << 7,
 
 			c_playerSetupSlotCount = 6,
@@ -75,33 +75,39 @@ public:
 			c_inputBindingEntryCount = 2,
 		};
 
-		LegoBool32 m_unk0x00;                                             // 0x00
+		enum {
+			c_raceModeCircuit = 0,
+			c_raceModeSingle = 1,
+			c_raceModeTimeRace = 2,
+		};
+
+		LegoBool32 m_running;                                             // 0x00
 		Win32GolApp* m_golApp;                                            // 0x04
 		SoundManager* m_soundManager;                                     // 0x08
 		LegoFloat m_unk0x0c;                                              // 0x0c
 		LegoFloat m_unk0x10;                                              // 0x10
 		LegoFloat m_unk0x14;                                              // 0x14
 		undefined4 m_unk0x18;                                             // 0x18
-		LegoU16 m_unk0x1c;                                                // 0x1c
+		LegoU16 m_nextMenuId;                                             // 0x1c
 		LegoU8 m_unk0x1e;                                                 // 0x1e
 		undefined m_unk0x1f;                                              // 0x1f
 		LegoU32 m_unk0x20;                                                // 0x20
-		undefined4 m_unk0x24;                                             // 0x24
+		undefined4 m_raceMode;                                            // 0x24
 		LegoU32 m_languageIndex;                                          // 0x28
 		undefined m_unk0x2c;                                              // 0x2c
-		GolName m_unk0x2d;                                                // 0x2d
+		GolName m_circuitName;                                            // 0x2d
 		undefined m_unk0x35[0x38 - 0x35];                                 // 0x35
 		RaceSlot m_raceSlots[4];                                          // 0x38
-		undefined4 m_unk0x98[4];                                          // 0x98
-		LegoU32 m_unk0xa8[4];                                             // 0xa8
-		undefined4 m_unk0xb8[4];                                          // 0xb8
-		LegoU32 m_unk0xc8[4];                                             // 0xc8
-		undefined4 m_unk0xd8;                                             // 0xd8
+		LegoU32 m_bestLapTimes[4];                                        // 0x98
+		LegoU32 m_bestLapHolders[4];                                      // 0xa8
+		LegoU32 m_bestRaceTimes[4];                                       // 0xb8
+		LegoU32 m_bestRaceHolders[4];                                     // 0xc8
+		LegoU32 m_currentRaceIndex;                                       // 0xd8
 		LegoChar m_gameDataDirectory[18];                                 // 0xdc
 		LegoChar m_commonDataDirectory[18];                               // 0xee
-		undefined4 m_unk0x100;                                            // 0x100
+		undefined4 m_racerCount;                                          // 0x100
 		PlayerSetupSlot m_playerSetupSlots[c_playerSetupSlotCount];       // 0x104
-		undefined4 m_unk0x32c;                                            // 0x32c
+		undefined4 m_playerCount;                                         // 0x32c
 		PlayerRecordState m_playerRecordStates[c_playerRecordStateCount]; // 0x330
 		InputBindingEntry m_inputBindings[c_inputBindingEntryCount];      // 0x348
 		undefined4 m_unk0x398;                                            // 0x398

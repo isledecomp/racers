@@ -190,23 +190,25 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 		return FALSE;
 	}
 
-	RaceDefinitionList::RaceDefinition* raceDefinition =
-		static_cast<RaceDefinitionList::RaceDefinition*>(m_context->m_raceList.GetName(context->m_unk0x2d));
-	m_unk0x7a4 = FUN_00476890(records, raceDefinition);
+	CircuitDefinitionList::CircuitDefinition* circuitDefinition =
+		static_cast<CircuitDefinitionList::CircuitDefinition*>(
+			m_context->m_circuitList.GetName(context->m_circuitName)
+		);
+	m_unk0x7a4 = FUN_00476890(records, circuitDefinition);
 
 	if (m_unk0x28c != c_menuChampAward1 && m_unk0x28c != c_menuChampAward2) {
 		return FALSE;
 	}
 
-	m_unk0x7a8 = FUN_00476990(gameState, raceDefinition);
-	m_unk0x7ac = FUN_004768f0(gameState, raceDefinition);
+	m_unk0x7a8 = FUN_00476990(gameState, circuitDefinition);
+	m_unk0x7ac = FUN_004768f0(gameState, circuitDefinition);
 	return m_unk0x7ac;
 }
 
 // FUNCTION: LEGORACERS 0x00476890
 LegoBool32 AwardCinematicScreen::FUN_00476890(
 	SaveRecordList* p_records,
-	RaceDefinitionList::RaceDefinition* p_raceDefinition
+	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
 {
 	SaveRecordList::Record* record = p_records->FindRecordById(m_context->m_context->m_playerRecordStates[0].m_unk0x08);
@@ -214,23 +216,23 @@ LegoBool32 AwardCinematicScreen::FUN_00476890(
 		return FALSE;
 	}
 
-	return record->FUN_0042b640(m_context->m_raceList.GetEntryIndex(p_raceDefinition), m_unk0x28c - 0x15);
+	return record->FUN_0042b640(m_context->m_circuitList.GetEntryIndex(p_circuitDefinition), m_unk0x28c - 0x15);
 }
 
 // FUNCTION: LEGORACERS 0x004768f0
 LegoBool32 AwardCinematicScreen::FUN_004768f0(
 	GameState* p_gameState,
-	RaceDefinitionList::RaceDefinition* p_raceDefinition
+	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
 {
 	GolName menuName;
-	::memcpy(menuName, p_raceDefinition->GetMenuName(), sizeof(menuName));
+	::memcpy(menuName, p_circuitDefinition->GetMenuName(), sizeof(menuName));
 
 	if (menuName[0] != '\0') {
-		RaceDefinitionList* raceList = &m_context->m_raceList;
-		RaceDefinitionList::RaceDefinition* menuRaceDefinition =
-			static_cast<RaceDefinitionList::RaceDefinition*>(raceList->GetName(menuName));
-		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(menuRaceDefinition));
+		CircuitDefinitionList* circuitList = &m_context->m_circuitList;
+		CircuitDefinitionList::CircuitDefinition* menuCircuitDefinition =
+			static_cast<CircuitDefinitionList::CircuitDefinition*>(circuitList->GetName(menuName));
+		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(menuCircuitDefinition));
 
 		if (!(p_gameState->GetUnlockedCircuits() & mask)) {
 			p_gameState->UnlockCircuits(mask);
@@ -245,14 +247,14 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 // FUNCTION: LEGORACERS 0x00476990
 LegoBool32 AwardCinematicScreen::FUN_00476990(
 	GameState* p_gameState,
-	RaceDefinitionList::RaceDefinition* p_raceDefinition
+	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
 {
 	if (m_unk0x28c != c_menuChampAward1) {
 		return FALSE;
 	}
 
-	m_unk0x7a0 = p_raceDefinition->GetStringIndex();
+	m_unk0x7a0 = p_circuitDefinition->GetStringIndex();
 	if (m_unk0x7a0 == -1) {
 		return FALSE;
 	}

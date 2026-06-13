@@ -82,32 +82,32 @@ void CircuitRaceScreen::VTable0x38(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047a0e0
 void CircuitRaceScreen::VTable0x44(MenuWidget*)
 {
-	m_context->m_context->m_unk0x24 = 0;
+	m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeCircuit;
 
 	m_unk0x221c = m_unk0xb54.GetUnk0x6c();
 	m_unk0x1a54.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x4c), 0);
 	m_unk0x1bbc.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
 
-	if (m_unk0x221c < m_context->m_raceList.GetEntryCount()) {
-		m_unk0x1904 = &m_context->m_raceList.GetEntries()[m_unk0x221c];
+	if (m_unk0x221c < m_context->m_circuitList.GetEntryCount()) {
+		m_unk0x1904 = &m_context->m_circuitList.GetEntries()[m_unk0x221c];
 		LegoRacers::Context* context = m_context->m_context;
-		::memcpy(context->m_unk0x2d, m_unk0x1904->GetName(), sizeof(GolName));
+		::memcpy(context->m_circuitName, m_unk0x1904->GetName(), sizeof(GolName));
 
-		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_raceList.GetEntryIndex(m_unk0x1904));
+		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_unk0x1904));
 		for (LegoU32 i = 0; i < sizeOfArray(context->m_raceSlots); i++) {
 			LegoRacers::RaceSlot* slot = &context->m_raceSlots[i];
 			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
 			if (raceNameEntry) {
-				::memcpy(slot->m_unk0x08, raceNameEntry->GetName(), sizeof(GolName));
-				::memcpy(slot->m_raceName, raceNameEntry->GetUnk0x0cName(), sizeof(GolName));
-				slot->m_unk0x00 = TRUE;
-				slot->m_unk0x04 = raceNameEntry->GetUnk0x2c();
+				::memcpy(slot->m_raceName, raceNameEntry->GetName(), sizeof(GolName));
+				::memcpy(slot->m_folderName, raceNameEntry->GetFolderName(), sizeof(GolName));
+				slot->m_enabled = TRUE;
+				slot->m_mirror = raceNameEntry->GetMirror();
 			}
 			else {
-				slot->m_unk0x08[0] = '\0';
 				slot->m_raceName[0] = '\0';
-				slot->m_unk0x00 = FALSE;
-				slot->m_unk0x04 = 0;
+				slot->m_folderName[0] = '\0';
+				slot->m_enabled = FALSE;
+				slot->m_mirror = 0;
 			}
 		}
 
@@ -153,8 +153,8 @@ void CircuitRaceScreen::FUN_0047a2b0()
 
 	RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x2220);
 	if (raceNameEntry) {
-		::memcpy(frameName, raceNameEntry->GetUnk0x14Name(), sizeof(GolName));
-		::memcpy(driverName, raceNameEntry->GetUnk0x1cName(), sizeof(GolName));
+		::memcpy(frameName, raceNameEntry->GetThemeName(), sizeof(GolName));
+		::memcpy(driverName, raceNameEntry->GetMascotName(), sizeof(GolName));
 
 		GolNameTable* frameNames = &m_unk0x368.m_unk0x58;
 		CutsceneDefinition::Frame* frame;

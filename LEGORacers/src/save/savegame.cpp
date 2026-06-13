@@ -78,11 +78,11 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 		static_cast<LegoU16>(ReadLittleEndianU32(&data[c_scoreRecordsOffset + (13 * c_scoreRecordSize)]) >> 16);
 
 	source = &data[c_scoreRecordsOffset];
-	for (i = 0; i < sizeOfArray(p_state->m_unk0x28); i++) {
-		p_state->m_unk0x28[i] = ReadLittleEndianU32(source);
-		::memcpy(p_state->m_unk0x90[i], &source[4], sizeof(p_state->m_unk0x90[i]));
-		p_state->m_unk0x5c[i] = ReadLittleEndianU32(&source[0x20]);
-		::memcpy(p_state->m_unk0x1fc[i], &source[0x24], sizeof(p_state->m_unk0x1fc[i]));
+	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
+		p_state->m_bestLapTimes[i] = ReadLittleEndianU32(source);
+		::memcpy(p_state->m_bestLapHolderNames[i], &source[4], sizeof(p_state->m_bestLapHolderNames[i]));
+		p_state->m_bestRaceTimes[i] = ReadLittleEndianU32(&source[0x20]);
+		::memcpy(p_state->m_bestRaceHolderNames[i], &source[0x24], sizeof(p_state->m_bestRaceHolderNames[i]));
 
 		source += c_scoreRecordSize;
 	}
@@ -128,11 +128,11 @@ void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 	data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 3] = static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
 
 	dest = &data[c_scoreRecordsOffset];
-	for (i = 0; i < sizeOfArray(p_state->m_unk0x28); i++) {
-		WriteLittleEndianU32(dest, p_state->m_unk0x28[i]);
-		::memcpy(&dest[4], p_state->m_unk0x90[i], sizeof(p_state->m_unk0x90[i]));
-		WriteLittleEndianU32(&dest[0x20], p_state->m_unk0x5c[i]);
-		::memcpy(&dest[0x24], p_state->m_unk0x1fc[i], sizeof(p_state->m_unk0x1fc[i]));
+	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
+		WriteLittleEndianU32(dest, p_state->m_bestLapTimes[i]);
+		::memcpy(&dest[4], p_state->m_bestLapHolderNames[i], sizeof(p_state->m_bestLapHolderNames[i]));
+		WriteLittleEndianU32(&dest[0x20], p_state->m_bestRaceTimes[i]);
+		::memcpy(&dest[0x24], p_state->m_bestRaceHolderNames[i], sizeof(p_state->m_bestRaceHolderNames[i]));
 
 		dest += c_scoreRecordSize;
 	}

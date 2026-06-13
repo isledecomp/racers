@@ -278,11 +278,19 @@ void GameState::FUN_0042eb60(SaveGame* p_saveGame, undefined4 p_index)
 	m_state.m_unlockedCircuits = state.m_unlockedCircuits;
 	m_state.m_unlockedRaces = state.m_unlockedRaces;
 
-	for (i = 0; i < sizeOfArray(m_state.m_unk0x28); i++) {
-		m_state.m_unk0x28[i] = state.m_unk0x28[i];
-		m_state.m_unk0x5c[i] = state.m_unk0x5c[i];
-		::memcpy(m_state.m_unk0x90[i], state.m_unk0x90[i], sizeof(m_state.m_unk0x90[i]));
-		::memcpy(m_state.m_unk0x1fc[i], state.m_unk0x1fc[i], sizeof(m_state.m_unk0x1fc[i]));
+	for (i = 0; i < sizeOfArray(m_state.m_bestLapTimes); i++) {
+		m_state.m_bestLapTimes[i] = state.m_bestLapTimes[i];
+		m_state.m_bestRaceTimes[i] = state.m_bestRaceTimes[i];
+		::memcpy(
+			m_state.m_bestLapHolderNames[i],
+			state.m_bestLapHolderNames[i],
+			sizeof(m_state.m_bestLapHolderNames[i])
+		);
+		::memcpy(
+			m_state.m_bestRaceHolderNames[i],
+			state.m_bestRaceHolderNames[i],
+			sizeof(m_state.m_bestRaceHolderNames[i])
+		);
 	}
 }
 
@@ -567,18 +575,18 @@ LegoBool32 GameState::AreAllRacesUnlocked() const
 }
 
 // FUNCTION: LEGORACERS 0x0042f290
-LegoU32 GameState::GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, GolString* p_string) const
+LegoU32 GameState::GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_raceTime, GolString* p_string) const
 {
 	if (p_raceIndex < 13 || (p_raceIndex -= 13) < 13) {
-		LegoBool32 alternate = p_alternate;
+		LegoBool32 raceTime = p_raceTime;
 		LegoU32 result;
-		if (!alternate) {
-			result = m_state.m_unk0x28[p_raceIndex];
-			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_unk0x90[p_raceIndex], 14);
+		if (!raceTime) {
+			result = m_state.m_bestLapTimes[p_raceIndex];
+			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_bestLapHolderNames[p_raceIndex], 14);
 		}
 		else {
-			result = m_state.m_unk0x5c[p_raceIndex];
-			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_unk0x1fc[p_raceIndex], 14);
+			result = m_state.m_bestRaceTimes[p_raceIndex];
+			ActiveRecordBuffer::CopyBufferToString(p_string, m_state.m_bestRaceHolderNames[p_raceIndex], 14);
 		}
 
 		return result;
@@ -588,7 +596,7 @@ LegoU32 GameState::GetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, GolS
 }
 
 // FUNCTION: LEGORACERS 0x0042f310
-LegoBool32 GameState::SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, LegoU32 p_time, GolString* p_string)
+LegoBool32 GameState::SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_raceTime, LegoU32 p_time, GolString* p_string)
 {
 	if (p_raceIndex >= 13) {
 		p_raceIndex -= 13;
@@ -598,24 +606,24 @@ LegoBool32 GameState::SetBestTime(LegoU32 p_raceIndex, LegoBool32 p_alternate, L
 	}
 
 	LegoU32 current;
-	if (!p_alternate) {
-		current = m_state.m_unk0x28[p_raceIndex];
+	if (!p_raceTime) {
+		current = m_state.m_bestLapTimes[p_raceIndex];
 	}
 	else {
-		current = m_state.m_unk0x5c[p_raceIndex];
+		current = m_state.m_bestRaceTimes[p_raceIndex];
 	}
 
 	if (current && p_time >= current) {
 		return FALSE;
 	}
 
-	if (!p_alternate) {
-		m_state.m_unk0x28[p_raceIndex] = p_time;
-		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_unk0x90[p_raceIndex], 14);
+	if (!p_raceTime) {
+		m_state.m_bestLapTimes[p_raceIndex] = p_time;
+		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_bestLapHolderNames[p_raceIndex], 14);
 	}
 	else {
-		m_state.m_unk0x5c[p_raceIndex] = p_time;
-		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_unk0x1fc[p_raceIndex], 14);
+		m_state.m_bestRaceTimes[p_raceIndex] = p_time;
+		ActiveRecordBuffer::CopyStringToBuffer(p_string, m_state.m_bestRaceHolderNames[p_raceIndex], 14);
 	}
 
 	m_dirty = 1;

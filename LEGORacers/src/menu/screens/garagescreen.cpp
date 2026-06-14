@@ -261,7 +261,7 @@ void GarageScreen::VTable0x84()
 		FUN_004804c0(m_context);
 		FUN_004861b0();
 		return;
-	case c_menuPickMem:
+	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
 		m_context->m_saveSystem.GetActiveRecord().FUN_0042b2f0(4, 0, 0, NULL);
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 1);
@@ -270,10 +270,13 @@ void GarageScreen::VTable0x84()
 	case c_menuEditDriver:
 	case c_menuDriverLicense:
 	case c_menuEditCar: {
-		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
-		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
-		m_context->m_saveSystem.GetActiveRecord().CopyFrom(record);
-		m_context->m_menuStack.Push(m_unk0x360);
+		{
+			RacerUnlockState* modelState = &m_unk0x22dc[0];
+			SaveRecordList::Record* record = modelState->FUN_004430b0();
+			m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
+			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->FUN_004430b0());
+			m_context->m_menuStack.Push(m_unk0x360);
+		}
 		FUN_004861b0();
 		return;
 	}
@@ -281,12 +284,14 @@ void GarageScreen::VTable0x84()
 		m_context->m_menuStack.ResetSize();
 		FUN_004861b0();
 		return;
-	case c_menuNewRacer:
+	case c_menuPickMem: {
 		m_context->m_menuStack.Push(c_menuPickMem);
-		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, m_unk0x22dc[0].FUN_004430b0());
+		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 8);
 		FUN_004861b0();
 		return;
+	}
 	}
 
 	m_context->m_menuStack.Push(m_unk0x360);

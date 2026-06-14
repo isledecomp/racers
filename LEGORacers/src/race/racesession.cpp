@@ -3,6 +3,7 @@
 #include "app/golapp.h"
 #include "golerror.h"
 #include "race/timeracemanager.h"
+#include "render/gold3drenderdevice.h"
 
 #include <mmsystem.h>
 
@@ -210,11 +211,15 @@ void RaceSession::FUN_004354d0()
 	STUB(0x004354d0);
 }
 
-// STUB: LEGORACERS 0x00435940
+// FUNCTION: LEGORACERS 0x00435940
 void RaceSession::VTable0x34()
 {
-	// TODO
-	STUB(0x00435940);
+	if (m_unk0x3358) {
+		m_renderer->VTable0x54(2);
+	}
+	else {
+		m_renderer->VTable0x54(6);
+	}
 }
 
 // STUB: LEGORACERS 0x00435960

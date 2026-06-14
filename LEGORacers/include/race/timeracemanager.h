@@ -23,7 +23,7 @@ public:
 	// TimeRaceManager::`scalar deleting destructor'
 
 	void Reset();
-	void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, undefined4 p_unk0x0c, undefined4 p_mirror);
+	void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoBool32 p_binary, LegoBool32 p_mirror);
 	void Shutdown();
 	void UpdateBestRun();
 	LegoBool32 HasBeatenRecord();
@@ -32,26 +32,35 @@ public:
 private:
 	enum {
 		c_flag0x3b4Bit0 = 1 << 0,
+		c_flag0x3b4Bit2 = 1 << 2,
 		c_flag0x3b4Bit3 = 1 << 3,
 		c_flag0x3b4Bit4 = 1 << 4,
+		c_flag0x3b4Bit5 = 1 << 5,
+		c_lapCount = 3,
+		c_lapTimeCapacity = 0x970,
+		c_recordLapTimeBaseIndex = 0x966,
 	};
 
-	GolWorldDatabase* m_worldDatabase;   // 0x04
-	GolExport* m_golExport;              // 0x08
-	LegoU32* m_recordLapTimes;           // 0x0c
-	LegoU32* m_bestLapTimes;             // 0x10
-	LegoU32* m_scratchLapTimes;          // 0x14
-	RaceState::Racer* m_racer;           // 0x18
-	GolAnimatedEntity m_unk0x1c;         // 0x1c
-	undefined m_unk0x110[0x114 - 0x110]; // 0x110
-	GolAnimatedEntity m_unk0x114;        // 0x114
-	undefined m_unk0x208[0x20c - 0x208]; // 0x208
-	GolAnimatedEntity m_unk0x20c;        // 0x20c
-	GolModelEntity m_unk0x300;           // 0x300
-	GolSceneNode* m_nodes[3];            // 0x390
-	LegoS32 m_partIndices[3];            // 0x39c
-	CmbModelPart0x34* m_modelParts[3];   // 0x3a8
-	LegoU8 m_flags0x3b4;                 // 0x3b4
+	GolWorldDatabase* m_worldDatabase; // 0x04
+	GolExport* m_golExport;            // 0x08
+	LegoU32* m_recordLapTimes;         // 0x0c
+	LegoU32* m_bestLapTimes;           // 0x10
+	LegoU32* m_scratchLapTimes;        // 0x14
+	RaceState::Racer* m_racer;         // 0x18
+	GolAnimatedEntity m_unk0x1c;       // 0x1c
+	GolAnimatedEntity* m_unk0x110;     // 0x110
+	GolAnimatedEntity m_unk0x114;      // 0x114
+	GolAnimatedEntity* m_unk0x208;     // 0x208
+	GolAnimatedEntity m_unk0x20c;      // 0x20c
+	GolModelEntity m_unk0x300;         // 0x300
+	GolModelEntity* m_unk0x390;        // 0x390
+	undefined4 m_unk0x394;             // 0x394
+	undefined4 m_unk0x398;             // 0x398
+	undefined4 m_unk0x39c;             // 0x39c
+	GolVec3 m_unk0x3a0;                // 0x3a0
+	undefined4 m_unk0x3ac;             // 0x3ac
+	undefined4 m_unk0x3b0;             // 0x3b0
+	LegoU8 m_flags0x3b4;               // 0x3b4
 };
 
 #endif // TIMERACEMANAGER_H

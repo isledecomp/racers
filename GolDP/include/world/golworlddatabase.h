@@ -160,6 +160,7 @@ public:
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
+	GolModelEntity* GetUnk0x9c() const { return m_unk0x9c; }
 	GolAnimatedEntity* GetUnk0xa0() const { return m_unk0xa0; }
 	GolRenderDevice::MaterialColor* GetUnk0xac() { return m_unk0xac; }
 	const GolRenderDevice::MaterialColor* GetUnk0xac() const { return m_unk0xac; }

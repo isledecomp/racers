@@ -2,6 +2,8 @@
 
 #include "golerror.h"
 
+#include <math.h>
+
 DECOMP_SIZE_ASSERT(GolWorldEntityGroup0x38, 0x38)
 
 // FUNCTION: LEGORACERS 0x00411dd0
@@ -62,7 +64,45 @@ void GolWorldEntityGroup0x38::FUN_00411ec0(GolWorldEntity* p_entity)
 // STUB: LEGORACERS 0x00411ef0
 void GolWorldEntityGroup0x38::VTable0x00()
 {
-	STUB(0x00411ef0);
+	LegoFloat radius;
+	GolVec3 delta;
+	GolVec3 offset;
+	GolVec3 center;
+	GolVec3 firstCenter;
+
+	offset.m_z = 0.0f;
+	offset.m_y = 0.0f;
+	offset.m_x = 0.0f;
+
+	m_entities[0]->FUN_100286d0(&firstCenter);
+
+	LegoU32 i;
+	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
+		m_entities[i]->FUN_100286d0(&center);
+		center -= firstCenter;
+		offset += center;
+	}
+
+	offset *= m_inverseCount;
+
+	radius = 0.0f;
+	for (i = 0; i < static_cast<LegoU32>(m_count); i++) {
+		m_entities[i]->FUN_100286d0(&center);
+		center -= firstCenter;
+		delta = center - offset;
+
+		LegoFloat childRadius = m_entities[i]->FUN_10028710();
+		LegoFloat distance =
+			childRadius +
+			static_cast<LegoFloat>(::sqrt(delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x));
+		if (distance > radius) {
+			radius = distance;
+		}
+	}
+
+	offset += firstCenter;
+	SetCenter(offset);
+	FUN_10026fa0(radius);
 }
 
 // FUNCTION: LEGORACERS 0x004120b0

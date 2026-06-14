@@ -30,6 +30,7 @@ DECOMP_SIZE_ASSERT(GolD3DRenderDevice::TextureFormat, 0x18)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::Field0xc83b4, 0x10)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::VertexCacheEntry, 0x20)
 DECOMP_SIZE_ASSERT(GolD3DRenderDevice::CommandVertex, 0x20)
+DECOMP_SIZE_ASSERT(GolD3DRenderDevice::Field0xc8524::DrawCommand, 0x1c)
 DECOMP_SIZE_ASSERT(ColorRGBA, 0x4)
 DECOMP_SIZE_ASSERT(D3DTLVERTEX, 0x20)
 DECOMP_SIZE_ASSERT(Rect, 0x10)
@@ -230,13 +231,13 @@ void GolD3DRenderDevice::Reset()
 	m_unk0xc8520 = 0;
 	m_unk0xc8524 = 0;
 	m_unk0xc8528 = 0;
-	::memset(&m_unk0xc8530, 0, 0xc854c - 0xc8530);
+	::memset(&m_unk0xc8530, 0, sizeof(m_unk0xc8530));
 	::memset(&m_unk0xc854c, 0, 0xc8568 - 0xc854c);
-	m_unk0xc8530 = this;
-	m_unk0xc853c = m_unk0xc428c;
-	m_unk0xc8538 = NULL;
-	m_unk0xc854c.m_unk0x00 = this;
-	m_unk0xc854c.m_unk0x0c = m_unk0xc428c;
+	m_unk0xc8530.m_renderer = this;
+	m_unk0xc8530.m_vertices = m_unk0xc428c;
+	m_unk0xc8530.m_material = NULL;
+	m_unk0xc854c.m_renderer = this;
+	m_unk0xc854c.m_vertices = m_unk0xc428c;
 	m_unk0xc8410.m_m[0][0] = 1.0f;
 	m_unk0xc8450.m_m[0][0] = 1.0f;
 	m_unk0xc8410.m_m[0][1] = 0.0f;
@@ -771,10 +772,72 @@ void GolD3DRenderDevice::VTable0xb0(undefined4, undefined4)
 	STUB(0x10008c30);
 }
 
-// STUB: GOLDP 0x10008dd0
-void GolD3DRenderDevice::VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+// FUNCTION: GOLDP 0x10008dd0
+void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, Field0xc8524* p_renderState, undefined4 p_lodIndex)
 {
-	STUB(0x10008dd0);
+	GolWorldEntity::ResultStruct result;
+	if (p_lodIndex == static_cast<undefined4>(-1)) {
+		p_model->VTable0x14(m_unk0x4c, &result);
+		if (!result.m_visibility) {
+			return;
+		}
+	}
+	else {
+		result.m_lodIndex = p_lodIndex;
+	}
+
+	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	m_unk0xc8524 = p_renderState;
+	m_unk0xc8530.m_model = p_model;
+	m_unk0xc854c.m_model = p_model;
+	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+
+	const GolVec3& position = p_model->GetPosition();
+	modelMatrix->m_m[3][0] = position.m_x;
+	modelMatrix->m_m[3][1] = position.m_y;
+	modelMatrix->m_m[3][2] = position.m_z;
+
+	if (!m_unk0xc8528) {
+		m_unk0xc83e4 = TRUE;
+		m_unk0xc8518 = m_unk0xc8498;
+		FUN_10012f50();
+	}
+	else {
+		p_renderState->VTable0x00(this, p_model, result.m_lodIndex);
+	}
+
+	m_unk0xc8518 = modelMatrix;
+	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
+	LegoU16 vertexType = model->GetVertexArray()->GetVertexType();
+	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
+	if (m_unk0xc8568) {
+		FUN_1000add0(p_model, model);
+		m_unk0xc8518 = &m_unk0xc8450;
+		m_unk0xc852c = p_model->GetModel(result.m_lodIndex)->GetScale() * p_model->GetUnk0x58();
+	}
+
+	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	m_unk0xc8520 = p_model->VTable0x58(result.m_lodIndex);
+	if (m_unk0xc8520 != NULL) {
+		p_model->VTable0x5c(result.m_lodIndex);
+		if (m_unk0xc8568) {
+			m_unk0xc8520->VTable0x20(m_unk0xc8450);
+		}
+		else {
+			m_unk0xc8520->VTable0x20(*modelMatrix);
+		}
+	}
+
+	FUN_10012f50();
+	model->FUN_10006c50(this, materialTable);
+
+	m_unk0xc8524 = NULL;
+	m_unk0xc8528 = FALSE;
+	FUN_10012f50();
+
+	if (m_unk0xc8528) {
+		p_renderState->VTable0x04(this, p_model, result.m_lodIndex);
+	}
 }
 
 // STUB: GOLDP 0x10008f70
@@ -785,20 +848,20 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat, LegoFloa
 }
 
 // STUB: GOLDP 0x100090b0
-void GolD3DRenderDevice::VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+void GolD3DRenderDevice::VTable0x88(GolModelEntity*, Field0xc8524*, undefined4)
 {
 	STUB(0x100090b0);
 }
 
 // FUNCTION: GOLDP 0x10009240
-void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, AmethystBreeze0x104* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x9c(GolModelEntity* p_arg1, Field0xc8524* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x8c(p_arg1, p_arg2, p_arg3);
 }
 
 // FUNCTION: GOLDP 0x10009270
-void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, AmethystBreeze0x104* p_arg2, undefined4 p_arg3)
+void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, Field0xc8524* p_arg2, undefined4 p_arg3)
 {
 	m_unk0xc8528 = TRUE;
 	VTable0x88(p_arg1, p_arg2, p_arg3);
@@ -897,7 +960,7 @@ void GolD3DRenderDevice::VTable0xf0()
 		m_unk0x0c->VTable0x0c(&rect);
 	}
 
-	m_unk0xc8538 = NULL;
+	m_unk0xc8530.m_material = NULL;
 }
 
 // FUNCTION: GOLDP 0x10009640
@@ -1520,7 +1583,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 {
 	LegoU32 newFlags = p_material->GetUnk0x08();
 
-	m_unk0xc8538 = p_material;
+	m_unk0xc8530.m_material = p_material;
 	if (m_unk0xc8568 != 0) {
 		DuskwindBananaRelicColor c = p_material->GetColor0x10();
 		m_unk0xc8570 = static_cast<LegoU32>(m_unk0xc856c.m_red * c.m_unk0x0) >> 8;
@@ -1753,7 +1816,7 @@ void GolD3DRenderDevice::FUN_1000a2c0(DuskwindBananaRelic0x24* p_material)
 void GolD3DRenderDevice::FUN_1000a950(DuskwindBananaRelic0x24* p_material)
 {
 	LegoU32 newFlags = p_material->GetUnk0x08();
-	m_unk0xc8538 = p_material;
+	m_unk0xc8530.m_material = p_material;
 
 	LegoU32 textureCount;
 	if (p_material->GetUnk0x04() == NULL) {
@@ -1986,8 +2049,8 @@ void GolD3DRenderDevice::VTable0x28()
 	m_unk0xc856c.m_blu = 0xff;
 	m_unk0xc856c.m_alp = 0xff;
 
-	if (m_unk0xc8538 != NULL) {
-		DuskwindBananaRelicColor color = m_unk0xc8538->GetColor0x10();
+	if (m_unk0xc8530.m_material != NULL) {
+		DuskwindBananaRelicColor color = m_unk0xc8530.m_material->GetColor0x10();
 		m_unk0xc8570 = color.m_unk0x0 & 0xff;
 		m_unk0xc8574 = color.m_unk0x1 & 0xff;
 		m_unk0xc8578 = color.m_unk0x2 & 0xff;
@@ -2001,8 +2064,8 @@ void GolD3DRenderDevice::VTable0x2c(const MaterialColor* p_param)
 	GolRenderDevice::VTable0x2c(p_param);
 	m_unk0xc856c = p_param->m_color;
 
-	if (m_unk0xc8538 != NULL) {
-		DuskwindBananaRelicColor color = m_unk0xc8538->GetColor0x10();
+	if (m_unk0xc8530.m_material != NULL) {
+		DuskwindBananaRelicColor color = m_unk0xc8530.m_material->GetColor0x10();
 		m_unk0xc8570 = (static_cast<LegoU32>(m_unk0xc856c.m_red) * static_cast<LegoU32>(color.m_unk0x0 & 0xff)) >> 8;
 		m_unk0xc8574 = (static_cast<LegoU32>(m_unk0xc856c.m_grn) * static_cast<LegoU32>(color.m_unk0x1 & 0xff)) >> 8;
 		m_unk0xc8578 = (static_cast<LegoU32>(m_unk0xc856c.m_blu) * static_cast<LegoU32>(color.m_unk0x2 & 0xff)) >> 8;
@@ -2033,8 +2096,8 @@ void GolD3DRenderDevice::FUN_1000b0f0(LegoU32 p_index, const Light* p_param)
 	m_unk0xc85f0[p_index] = p_param->m_direction;
 
 	DuskwindBananaRelicColor color;
-	if (m_unk0xc8538 != NULL) {
-		color = m_unk0xc8538->GetColor0x0c();
+	if (m_unk0xc8530.m_material != NULL) {
+		color = m_unk0xc8530.m_material->GetColor0x0c();
 	}
 	else {
 		color.m_unk0x0 = 0;
@@ -2929,9 +2992,9 @@ void GolD3DRenderDevice::FUN_1000d210(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->m_v = uv->m_y;
 	}
 
-	m_unk0xc8540 = p_outputFirst;
-	m_unk0xc8544 = p_firstVertex;
-	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8530.m_outputFirst = p_outputFirst;
+	m_unk0xc8530.m_firstVertex = p_firstVertex;
+	m_unk0xc8530.m_vertexCount = p_vertexCount;
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
@@ -2976,9 +3039,9 @@ void GolD3DRenderDevice::FUN_1000d440(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	m_unk0xc8540 = p_outputFirst;
-	m_unk0xc8544 = p_firstVertex;
-	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8530.m_outputFirst = p_outputFirst;
+	m_unk0xc8530.m_firstVertex = p_firstVertex;
+	m_unk0xc8530.m_vertexCount = p_vertexCount;
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
@@ -3023,9 +3086,9 @@ void GolD3DRenderDevice::FUN_1000d5d0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex++;
 	}
 
-	m_unk0xc8540 = p_outputFirst;
-	m_unk0xc8544 = p_firstVertex;
-	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8530.m_outputFirst = p_outputFirst;
+	m_unk0xc8530.m_firstVertex = p_firstVertex;
+	m_unk0xc8530.m_vertexCount = p_vertexCount;
 	m_unk0xc8524->VTable0x08(&m_unk0xc8530);
 }
 
@@ -3072,9 +3135,9 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		}
 	}
 
-	m_unk0xc8540 = p_outputFirst;
-	m_unk0xc8544 = p_firstVertex;
-	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8530.m_outputFirst = p_outputFirst;
+	m_unk0xc8530.m_firstVertex = p_firstVertex;
+	m_unk0xc8530.m_vertexCount = p_vertexCount;
 	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -3153,9 +3216,9 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		}
 	}
 
-	m_unk0xc8540 = p_outputFirst;
-	m_unk0xc8544 = p_firstVertex;
-	m_unk0xc8548 = p_vertexCount;
+	m_unk0xc8530.m_outputFirst = p_outputFirst;
+	m_unk0xc8530.m_firstVertex = p_firstVertex;
+	m_unk0xc8530.m_vertexCount = p_vertexCount;
 	m_unk0xc8524->VTable0x10(&m_unk0xc8530);
 
 	LegoU32 cacheIndex = m_unk0xc3848;
@@ -3428,7 +3491,7 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 // STUB: GOLDP 0x1000eb90
 void GolD3DRenderDevice::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
-	DuskwindBananaRelic0x24* material = m_unk0xc8538;
+	DuskwindBananaRelic0x24* material = m_unk0xc8530.m_material;
 	undefined4 firstTriangle = p_firstTriangle;
 	m_unk0xc8560 = firstTriangle;
 	m_unk0xc854c.m_material = material;

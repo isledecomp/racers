@@ -5,6 +5,7 @@
 #include "decomp.h"
 #include "golmath.h"
 #include "golsurfaceformat.h"
+#include "render/gold3drenderstate.h"
 #include "surface/color.h"
 #include "surface/silverdune0x30.h"
 #include "types.h"
@@ -14,7 +15,6 @@ class GolCamera;
 class GolD3DRenderDevice;
 class GolFontLibrary;
 class DuskwindBananaRelic0x24;
-class AmethystBreeze0x104;
 class GolModelEntity;
 class GolWorldEntity;
 class GolSurfaceFormat;
@@ -183,12 +183,12 @@ public:
 		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
 	) = 0;                                                                                    // vtable+0x84
-	virtual void VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4);               // vtable+0x88
-	virtual void VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4);               // vtable+0x8c
+	virtual void VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x88
+	virtual void VTable0x8c(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x8c
 	virtual void VTable0x90(GolWorldEntity*) = 0;                                             // vtable+0x90
 	virtual void VTable0x94(GolWorldEntity*) = 0;                                             // vtable+0x94
-	virtual void VTable0x98(GolModelEntity*, AmethystBreeze0x104*, undefined4);               // vtable+0x98
-	virtual void VTable0x9c(GolModelEntity*, AmethystBreeze0x104*, undefined4);               // vtable+0x9c
+	virtual void VTable0x98(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x98
+	virtual void VTable0x9c(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x9c
 	virtual void VTable0xa0(GolWorldEntity*, const GolVec3*, const GolVec3*, const GolVec3*); // vtable+0xa0
 	virtual void VTable0xa4(GolWorldEntity*);                                                 // vtable+0xa4
 	virtual void VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2,

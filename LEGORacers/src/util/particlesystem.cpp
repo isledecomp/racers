@@ -1,13 +1,21 @@
 #include "util/particlesystem.h"
 
+#include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "core/goldpexport.h"
 #include "golerror.h"
+#include "goltransformbase.h"
 #include "mabmaterialanimationitem0x18.h"
 #include "mabmaterialanimationitem0x8.h"
+#include "material/duskwindbananarelic0x24.h"
 #include "menu/widgets/menuselector.h"
+#include "mesh/gdbmodelindexarray0xc.h"
+#include "mesh/gdbvertexarray0xc.h"
 #include "mesh/golmodelbase.h"
+#include "render/gold3drenderdevice.h"
 #include "util/particle.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(ParticleSystem, 0x140)
 
@@ -31,8 +39,8 @@ void ParticleSystem::Reset()
 {
 	m_golExport = NULL;
 	m_model = NULL;
-	m_unk0x008 = 0;
-	m_unk0x00c = 0;
+	m_vertices = NULL;
+	m_indices = NULL;
 	m_unk0x0a0 = 0;
 	m_unk0x0a4 = 0;
 	m_particleCapacity = 0;
@@ -49,14 +57,14 @@ void ParticleSystem::Reset()
 	m_unk0x0dc = 0;
 	m_unk0x0e0 = 0;
 	m_unk0x0e4 = 0;
-	m_unk0x120 = 0;
-	m_unk0x134 = 0;
-	m_unk0x12c = 0;
-	m_unk0x130 = 0;
-	m_unk0x124 = 0;
-	m_unk0x128 = 0;
-	m_unk0x138 = 0;
-	m_unk0x13c = 0;
+	m_materialCount = 0;
+	m_groupCount = 0;
+	m_vertexCount = 0;
+	m_triangleCount = 0;
+	m_firstBatchVertex = 0;
+	m_firstBatchTriangle = 0;
+	m_batchVertexCount = 0;
+	m_batchTriangleCount = 0;
 }
 
 // STUB: LEGORACERS 0x00412430
@@ -190,8 +198,8 @@ void ParticleSystem::ConfigureCommon(
 	m_acceleration = *p_position;
 	m_spawnedCount = 0;
 	m_modelEntity.SetModelDistance(0, p_radius * p_radius);
-	m_unk0x120 = 0;
-	m_unk0x134 = 0;
+	m_materialCount = 0;
+	m_groupCount = 0;
 	m_flags |= c_flagActive | c_flagBit3;
 }
 
@@ -338,7 +346,225 @@ Particle* ParticleSystem::AllocateParticle()
 }
 
 // STUB: LEGORACERS 0x00412a50
-void ParticleSystem::FUN_00412a50(GolD3DRenderDevice*)
+void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 {
-	STUB(0x00412a50);
+	LegoU32 flags = m_flags;
+	if (flags & c_flagInitialized) {
+		if (flags & c_flagActive) {
+			if (m_activeList) {
+				if (flags & c_flagBit3) {
+					Update(0);
+				}
+
+				m_flags |= c_flagBit3;
+
+				GolCamera* camera = p_renderer->GetUnk0x0c();
+				GolVec3 center;
+				GolVec3 cameraPosition;
+				m_modelEntity.VTable0x04(&center);
+				camera->GetTransform()->GetPosition(&cameraPosition);
+
+				LegoFloat deltaX = cameraPosition.m_x - center.m_x;
+				LegoFloat deltaY = cameraPosition.m_y - center.m_y;
+				LegoFloat deltaZ = cameraPosition.m_z - center.m_z;
+				LegoFloat distanceSquared = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+				if (distanceSquared <= m_modelEntity.GetModelDistance(0)) {
+					GolTransformBase* cameraTransform = camera->GetTransform();
+					cameraTransform->GetUp(&m_cameraUp);
+					cameraTransform->GetForward(&m_cameraForward);
+
+					LegoFloat scale = m_unk0x0d8;
+					m_scaledCameraUp.m_x = scale * m_cameraUp.m_x;
+					m_scaledCameraUp.m_y = scale * m_cameraUp.m_y;
+					m_scaledCameraUp.m_z = scale * m_cameraUp.m_z;
+
+					scale = m_unk0x0dc;
+					m_scaledCameraForward.m_x = scale * m_cameraForward.m_x;
+					m_scaledCameraForward.m_y = scale * m_cameraForward.m_y;
+					m_scaledCameraForward.m_z = scale * m_cameraForward.m_z;
+
+					m_materialCount = 0;
+					m_groupCount = 0;
+					m_vertexCount = 0;
+					m_triangleCount = 0;
+					m_firstBatchVertex = 0;
+					m_firstBatchTriangle = 0;
+					m_batchVertexCount = 0;
+					m_batchTriangleCount = 0;
+
+					m_model->VTable0x28(&m_vertices);
+
+					IGdbModelIndexArray0x8* indexArray;
+					m_model->VTable0x30(&indexArray);
+					m_indices = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
+
+					Particle* particle = m_activeList;
+					while (particle) {
+						DuskwindBananaRelic0x24* material = particle->m_material;
+						Particle* next = particle->m_next;
+						if (material) {
+							FUN_00412c60(material);
+							do {
+								if (particle->m_material == material) {
+									FUN_00412ce0(particle);
+									particle->m_material = NULL;
+								}
+
+								particle = particle->m_next;
+							} while (particle);
+
+							particle = next;
+						}
+						else {
+							particle = next;
+						}
+					}
+
+					if (m_batchTriangleCount) {
+						FUN_00413090();
+					}
+
+					m_model->GetMutableGroups()[m_groupCount] = 0xc0000000;
+					m_model->SetDirty(TRUE);
+					m_model->VTable0x34(0);
+					m_model->VTable0x2c(0, FALSE);
+					p_renderer->VTable0x94(&m_modelEntity);
+				}
+			}
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00412c60
+void ParticleSystem::FUN_00412c60(DuskwindBananaRelic0x24* p_material)
+{
+	if (m_batchTriangleCount) {
+		FUN_00413090();
+	}
+
+	m_model->GetMaterialTable()->SetPosition(m_materialCount, p_material);
+	::memcpy(&m_particleColor, &p_material->GetColor0x0c(), sizeof(m_particleColor));
+
+	LegoU32 materialCount = m_materialCount;
+	LegoU32 groupCount = m_groupCount++;
+	m_materialCount++;
+
+	GolModelBase* model = m_model;
+	model->GetMutableGroups()[groupCount] = 0x80000000;
+	model->GetMutableGroups()[groupCount] |= materialCount & 0x00ffffff;
+	model->SetDirty(TRUE);
+}
+
+// FUNCTION: LEGORACERS 0x00412ce0
+void ParticleSystem::FUN_00412ce0(Particle* p_particle)
+{
+	if (m_batchTriangleCount + 1 >= 10) {
+		if (m_triangleCount + 1 >= m_unk0x0a0) {
+			return;
+		}
+
+		FUN_00413090();
+	}
+
+	if (m_flags & c_flagBit2) {
+		LegoFloat ageMs = static_cast<LegoFloat>((LegoS32) p_particle->m_ageMs);
+		LegoFloat lifetimeMs = static_cast<LegoFloat>((LegoS32) p_particle->m_lifetimeMs);
+		LegoFloat amount = ageMs / lifetimeMs;
+		LegoFloat upScale = m_unk0x0e0 * amount + m_unk0x0d8;
+		LegoFloat forwardScale = m_unk0x0e4 * amount + m_unk0x0dc;
+		if (upScale <= 0.0f || forwardScale <= 0.0f) {
+			return;
+		}
+
+		m_scaledCameraUp.m_x = upScale * m_cameraUp.m_x;
+		m_scaledCameraUp.m_y = m_cameraUp.m_y * upScale;
+		m_scaledCameraUp.m_z = m_cameraUp.m_z * upScale;
+		m_scaledCameraForward.m_x = forwardScale * m_cameraForward.m_x;
+		m_scaledCameraForward.m_y = m_cameraForward.m_y * forwardScale;
+		m_scaledCameraForward.m_z = m_cameraForward.m_z * forwardScale;
+	}
+
+	GolVec3 position;
+	p_particle->FUN_100286d0(&position);
+
+	position.m_x -= m_scaledCameraUp.m_x * 0.5f + m_scaledCameraForward.m_x * 0.5f;
+	position.m_y -= m_scaledCameraUp.m_y * 0.5f + m_scaledCameraForward.m_y * 0.5f;
+	position.m_z -= m_scaledCameraUp.m_z * 0.5f + m_scaledCameraForward.m_z * 0.5f;
+
+	GolVec2 texCoord;
+	texCoord.m_x = 0.01f;
+	texCoord.m_y = 0.01f;
+	m_vertices->VTable0x24(m_vertexCount, position);
+	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
+	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+
+	position.m_x += m_scaledCameraUp.m_x;
+	position.m_y += m_scaledCameraUp.m_y;
+	position.m_z += m_scaledCameraUp.m_z;
+	texCoord.m_x = 0.98f;
+	m_vertices->VTable0x24(m_vertexCount, position);
+	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
+	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+
+	position.m_x += m_scaledCameraForward.m_x;
+	position.m_y += m_scaledCameraForward.m_y;
+	position.m_z += m_scaledCameraForward.m_z;
+	texCoord.m_y = 0.98f;
+	m_vertices->VTable0x24(m_vertexCount, position);
+	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
+	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+
+	position.m_x -= m_scaledCameraUp.m_x;
+	position.m_y -= m_scaledCameraUp.m_y;
+	position.m_z -= m_scaledCameraUp.m_z;
+	texCoord.m_x = 0.01f;
+	m_vertices->VTable0x24(m_vertexCount, position);
+	m_vertices->VTable0x30(m_vertexCount, m_particleColor);
+	m_vertices->VTable0x28(m_vertexCount++, texCoord);
+
+	GdbModelIndexArray0xc::Indices* indices = &m_indices[m_triangleCount++];
+	indices->m_c = m_batchVertexCount;
+	indices->m_b = m_batchVertexCount + 1;
+	indices->m_a = m_batchVertexCount + 2;
+
+	indices = &m_indices[m_triangleCount++];
+	indices->m_c = m_batchVertexCount;
+	indices->m_b = m_batchVertexCount + 2;
+	indices->m_a = m_batchVertexCount + 3;
+
+	m_batchVertexCount += 4;
+	m_batchTriangleCount += 2;
+}
+
+// STUB: LEGORACERS 0x00413090
+void ParticleSystem::FUN_00413090()
+{
+	LegoU32 groupCount = m_groupCount;
+	LegoU32 batchVertexCount = m_batchVertexCount;
+	LegoU32 firstBatchVertex = m_firstBatchVertex;
+	LegoU32 nextGroupCount = groupCount + 1;
+	m_groupCount = nextGroupCount;
+
+	GolModelBase* model = m_model;
+	model->GetMutableGroups()[groupCount] = 0;
+	model->GetMutableGroups()[groupCount] |= ((batchVertexCount + 0xffff) << 16) & 0x003f0000;
+	model->GetMutableGroups()[groupCount] |= firstBatchVertex & 0xffff;
+	model->SetDirty(TRUE);
+
+	LegoU32 groupCount2 = m_groupCount;
+	LegoU32 batchTriangleCount = m_batchTriangleCount;
+	LegoU32 firstBatchTriangle = m_firstBatchTriangle;
+	LegoU32 nextGroupCount2 = groupCount2 + 1;
+	m_groupCount = nextGroupCount2;
+	model->GetMutableGroups()[groupCount2] = 0x20000000;
+	model->GetMutableGroups()[groupCount2] |= (batchTriangleCount & 0x7f) << 16;
+	model->GetMutableGroups()[groupCount2] |= firstBatchTriangle & 0xffff;
+	model->SetDirty(TRUE);
+
+	LegoU32 triangleCount = m_triangleCount;
+	m_batchVertexCount = 0;
+	m_batchTriangleCount = 0;
+	LegoU32 vertexCount = m_vertexCount;
+	m_firstBatchVertex = vertexCount;
+	m_firstBatchTriangle = triangleCount;
 }

@@ -969,25 +969,25 @@ void GolRenderDevice::VTable0x60()
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+void GolRenderDevice::VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+void GolRenderDevice::VTable0x8c(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x98(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+void GolRenderDevice::VTable0x98(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
-void GolRenderDevice::VTable0x9c(GolModelEntity*, AmethystBreeze0x104*, undefined4)
+void GolRenderDevice::VTable0x9c(GolModelEntity*, GolD3DRenderState*, undefined4)
 {
 	// empty
 }

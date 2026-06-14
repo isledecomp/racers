@@ -47,43 +47,9 @@ public:
 		LegoFloat m_v;       // 0x1c
 	};
 
-	// SIZE 0x20
-	struct CommandVertex {
-		LegoFloat m_x; // 0x00
-		LegoFloat m_y; // 0x04
-		LegoFloat m_z; // 0x08
-		LegoFloat m_u; // 0x0c
-		LegoFloat m_v; // 0x10
-		union {
-			struct {
-				LegoFloat m_nx; // 0x14
-				LegoFloat m_ny; // 0x18
-				LegoFloat m_nz; // 0x1c
-			};
-			struct {
-				LegoU32 m_color;      // 0x14
-				undefined4 m_unused0; // 0x18
-				undefined4 m_unused1; // 0x1c
-			};
-		};
-	};
-
-	// SIZE 0x10
-	struct Field0xc854c {
-		void* m_unk0x00;                     // 0x00
-		undefined4 m_unk0x04;                // 0x04
-		DuskwindBananaRelic0x24* m_material; // 0x08
-		void* m_unk0x0c;                     // 0x0c
-	};
-
-	class Field0xc8524 {
-	public:
-		virtual void VTable0x00() = 0;                        // vtable+0x00
-		virtual void VTable0x04() = 0;                        // vtable+0x04
-		virtual void VTable0x08(void* p_command) = 0;         // vtable+0x08
-		virtual void VTable0x0c(Field0xc854c* p_command) = 0; // vtable+0x0c
-		virtual void VTable0x10(void* p_command) = 0;         // vtable+0x10
-	};
+	typedef GolD3DRenderState::CommandVertex CommandVertex;
+	typedef GolD3DRenderState Field0xc8524;
+	typedef GolD3DRenderState::MaterialCommand Field0xc854c;
 
 	GolD3DRenderDevice();
 
@@ -179,40 +145,40 @@ public:
 		const TexturedVertex* p_vertex2,
 		DuskwindBananaRelic0x24* p_material,
 		undefined4 p_flags
-	) override;                                                                  // vtable+0x84
-	void VTable0x88(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x88
-	void VTable0x8c(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x8c
-	void VTable0x90(GolWorldEntity*) override;                                   // vtable+0x90
-	void VTable0x94(GolWorldEntity*) override;                                   // vtable+0x94
-	void VTable0x98(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x98
-	void VTable0x9c(GolModelEntity*, AmethystBreeze0x104*, undefined4) override; // vtable+0x9c
-	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;             // vtable+0xa8
-	void VTable0xac(undefined4, undefined4) override;                            // vtable+0xac
-	void VTable0xb0(undefined4, undefined4) override;                            // vtable+0xb0
-	void VTable0xb4(GolBillboard&) override;                                     // vtable+0xb4
-	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override;      // vtable+0xb8
-	void ClearAlphaOverride() override;                                          // vtable+0xbc
-	void VTable0xc0(const ColorRGBA&) override;                                  // vtable+0xc0
-	void VTable0xc4() override;                                                  // vtable+0xc4
-	void VTable0xc8() override;                                                  // vtable+0xc8
-	void VTable0xcc() override;                                                  // vtable+0xcc
-	void VTable0xd0() override;                                                  // vtable+0xd0
-	void VTable0xd4() override;                                                  // vtable+0xd4
-	void VTable0xd8() override;                                                  // vtable+0xd8
-	void VTable0xdc() override;                                                  // vtable+0xdc
-	void VTable0xe0() override;                                                  // vtable+0xe0
-	void VTable0xe4() override;                                                  // vtable+0xe4
-	void VTable0xe8(LegoBool32 p_arg) override;                                  // vtable+0xe8
-	void VTable0xec(undefined4) override;                                        // vtable+0xec
-	void VTable0xf0() override;                                                  // vtable+0xf0
-	void VTable0xf4() override;                                                  // vtable+0xf4
-	LegoU32 GetMinimumTextureWidth(undefined4) const override;                   // vtable+0xf8
-	LegoU32 GetMaximumTextureWidth(undefined4) const override;                   // vtable+0xfc
-	LegoU32 GetMinimumTextureHeight(undefined4) const override;                  // vtable+0x100
-	LegoU32 GetMaximumTextureHeight(undefined4) const override;                  // vtable+0x104
-	LegoBool32 TexturesMustBeSquare() const override;                            // vtable+0x108
-	LegoBool32 TextureSizesMustBePowersOfTwo() const override;                   // vtable+0x10c
-	LegoBool32 VTable0x110() const override;                                     // vtable+0x110
+	) override;                                                             // vtable+0x84
+	void VTable0x88(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x88
+	void VTable0x8c(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x8c
+	void VTable0x90(GolWorldEntity*) override;                              // vtable+0x90
+	void VTable0x94(GolWorldEntity*) override;                              // vtable+0x94
+	void VTable0x98(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x98
+	void VTable0x9c(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x9c
+	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;        // vtable+0xa8
+	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
+	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
+	void VTable0xb4(GolBillboard&) override;                                // vtable+0xb4
+	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
+	void ClearAlphaOverride() override;                                     // vtable+0xbc
+	void VTable0xc0(const ColorRGBA&) override;                             // vtable+0xc0
+	void VTable0xc4() override;                                             // vtable+0xc4
+	void VTable0xc8() override;                                             // vtable+0xc8
+	void VTable0xcc() override;                                             // vtable+0xcc
+	void VTable0xd0() override;                                             // vtable+0xd0
+	void VTable0xd4() override;                                             // vtable+0xd4
+	void VTable0xd8() override;                                             // vtable+0xd8
+	void VTable0xdc() override;                                             // vtable+0xdc
+	void VTable0xe0() override;                                             // vtable+0xe0
+	void VTable0xe4() override;                                             // vtable+0xe4
+	void VTable0xe8(LegoBool32 p_arg) override;                             // vtable+0xe8
+	void VTable0xec(undefined4) override;                                   // vtable+0xec
+	void VTable0xf0() override;                                             // vtable+0xf0
+	void VTable0xf4() override;                                             // vtable+0xf4
+	LegoU32 GetMinimumTextureWidth(undefined4) const override;              // vtable+0xf8
+	LegoU32 GetMaximumTextureWidth(undefined4) const override;              // vtable+0xfc
+	LegoU32 GetMinimumTextureHeight(undefined4) const override;             // vtable+0x100
+	LegoU32 GetMaximumTextureHeight(undefined4) const override;             // vtable+0x104
+	LegoBool32 TexturesMustBeSquare() const override;                       // vtable+0x108
+	LegoBool32 TextureSizesMustBePowersOfTwo() const override;              // vtable+0x10c
+	LegoBool32 VTable0x110() const override;                                // vtable+0x110
 
 	LegoS32 FUN_10007d90(GolDrawDPState*, SlatePeak0x58*, LegoU32 p_flags);
 	LegoS32 FUN_10007e20(LegoU32 p_flags);
@@ -361,13 +327,7 @@ private:
 	Field0xc8524* m_unk0xc8524;                                                    // 0xc8524
 	undefined4 m_unk0xc8528;                                                       // 0xc8528
 	LegoFloat m_unk0xc852c;                                                        // 0xc852c
-	void* m_unk0xc8530;                                                            // 0xc8530
-	undefined4 m_unk0xc8534;                                                       // 0xc8534
-	DuskwindBananaRelic0x24* m_unk0xc8538;                                         // 0xc8538
-	void* m_unk0xc853c;                                                            // 0xc853c
-	LegoU32 m_unk0xc8540;                                                          // 0xc8540
-	LegoU32 m_unk0xc8544;                                                          // 0xc8544
-	LegoU32 m_unk0xc8548;                                                          // 0xc8548
+	Field0xc8524::DrawCommand m_unk0xc8530;                                        // 0xc8530
 	Field0xc854c m_unk0xc854c;                                                     // 0xc854c
 	LegoU8* m_unk0xc855c;                                                          // 0xc855c
 	LegoU32 m_unk0xc8560;                                                          // 0xc8560

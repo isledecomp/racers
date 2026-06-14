@@ -4,7 +4,9 @@
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "cmbmodelpart0x34.h"
+#include "golanimatedentity.h"
 #include "golerror.h"
+#include "golmodelentity.h"
 #include "mabmaterialanimation0x14.h"
 #include "material/amberhaze0x20.h"
 #include "material/purpleribbon0x24.h"
@@ -12,6 +14,7 @@
 #include "mesh/golmodelmaterialtable.h"
 #include "render/gold3drenderdevice.h"
 #include "scene/golbillboardex.h"
+#include "scene/golcollidableentity.h"
 
 #include <string.h>
 
@@ -285,26 +288,38 @@ void GolWorldDatabaseEx::VTable0x18()
 	GolWorldDatabase::VTable0x18();
 }
 
-// STUB: GOLDP 0x100181b0
-void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice*)
+// FUNCTION: GOLDP 0x100181b0
+void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice* p_renderer)
 {
-	STUB(0x100181b0);
+	LegoU32 i;
+	for (i = 0; i < m_unk0x5c; i++) {
+		p_renderer->VTable0x90(&m_unk0xa4[i]);
+	}
 }
 
-// STUB: GOLDP 0x100181f0
-void GolWorldDatabaseEx::VTable0x20(GolRenderDevice*)
+// FUNCTION: GOLDP 0x100181f0
+void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
 {
-	STUB(0x100181f0);
+	LegoU32 i;
+	for (i = 0; i < m_unk0x4c; i++) {
+		m_unk0x9c[i].VTable0x1c(*p_renderer);
+	}
 }
 
-// STUB: GOLDP 0x10018230
-void GolWorldDatabaseEx::VTable0x24(GolRenderDevice*)
+// FUNCTION: GOLDP 0x10018230
+void GolWorldDatabaseEx::VTable0x24(GolRenderDevice* p_renderer)
 {
-	STUB(0x10018230);
+	LegoU32 i;
+	for (i = 0; i < m_unk0x54; i++) {
+		m_unk0xa0[i].VTable0x1c(*p_renderer);
+	}
 }
 
-// STUB: GOLDP 0x10018270
-void GolWorldDatabaseEx::VTable0x28(GolRenderDevice*)
+// FUNCTION: GOLDP 0x10018270
+void GolWorldDatabaseEx::VTable0x28(GolRenderDevice* p_renderer)
 {
-	STUB(0x10018270);
+	LegoU32 i;
+	for (i = 0; i < m_unk0x6c; i++) {
+		p_renderer->VTable0xb4(m_unk0x100[i]);
+	}
 }

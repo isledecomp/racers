@@ -71,6 +71,10 @@ public:
 	LegoU32 GetWidth() const { return m_width; }
 	LegoU32 GetHeight() const { return m_height; }
 	LegoU32 GetUnk0x3c() const { return m_unk0x3c; }
+	LegoU32 GetTileColumnCount() const { return m_unk0x2c; }
+	LegoU32 GetTileRowCount() const { return m_unk0x30; }
+	LegoS32 GetTileWidth(LegoU32 p_column) const { return m_unk0x04[p_column]; }
+	LegoS32 GetTileHeight(LegoU32 p_row) const { return m_unk0x08[p_row]; }
 
 	// SYNTHETIC: GOLDP 0x1001f240
 	// WhiteBaffoon0x50::`scalar deleting destructor'

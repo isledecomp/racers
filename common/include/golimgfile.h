@@ -12,6 +12,7 @@
 
 class GolPaletteBase;
 class SilverDune0x30;
+class WhiteBaffoon0x50;
 
 // SIZE 0x5b0
 // VTABLE: GOLDP 0x10056f04
@@ -20,14 +21,20 @@ class GolImgFile {
 public:
 	GolImgFile();
 
-	virtual void VTable0x00();                                                                  // vtable+0x00
-	virtual ~GolImgFile();                                                                      // vtable+0x04
-	virtual void VTable0x08(const LegoChar* p_fileName);                                        // vtable+0x08
-	virtual void Destroy();                                                                     // vtable+0x0c
-	virtual const LegoChar* GetSuffix();                                                        // vtable+0x10
-	virtual void VTable0x14(undefined4, undefined4, undefined4, undefined4);                    // vtable+0x14
-	virtual void VTable0x18(LegoU8* p_buffer);                                                  // vtable+0x18
-	virtual void VTable0x1c(void*, undefined4, ColorRGBA*);                                     // vtable+0x1c
+	virtual void VTable0x00();                           // vtable+0x00
+	virtual ~GolImgFile();                               // vtable+0x04
+	virtual void VTable0x08(const LegoChar* p_fileName); // vtable+0x08
+	virtual void Destroy();                              // vtable+0x0c
+	virtual const LegoChar* GetSuffix();                 // vtable+0x10
+	virtual void VTable0x14(
+		LegoU8* p_buffer,
+		SilverDune0x30* p_texture,
+		LegoU32 p_flags,
+		ColorRGBA* p_colorKey
+	);                                         // vtable+0x14
+	virtual void VTable0x18(LegoU8* p_buffer); // vtable+0x18
+	virtual void VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags,
+							ColorRGBA* p_colorKey);                                             // vtable+0x1c
 	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1001ff30

@@ -1,16 +1,20 @@
 #include "golfontbase.h"
 
 #include "decomp.h"
+#include "golbmpfile.h"
 #include "golerror.h"
 #include "golstring.h"
+#include "goltgafile.h"
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
+#include "surface/purpledune0x7c.h"
 #include "surface/silverdune0x30.h"
 #include "surface/slatepeak0x58.h"
 
 #include <math.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(GolFontBase, 0x40)
@@ -91,10 +95,41 @@ void GolFontBase::Clear()
 }
 
 // STUB: GOLDP 0x1001e070
-void GolFontBase::Load(const LegoChar*, GolD3DRenderDevice*)
+void GolFontBase::Load(const LegoChar* p_name, GolD3DRenderDevice* p_renderer)
 {
-	// TODO
-	STUB(0x1001e070);
+	GolTgaFile tgaFile;
+	GolBmpFile bmpFile;
+	GolImgFile* imageFile = &tgaFile;
+	if (!(m_flags & c_flagBit4)) {
+		imageFile = &bmpFile;
+	}
+
+	imageFile->VTable0x08(p_name);
+	m_fontHeight = imageFile->GetHeight();
+
+	if (g_fontSourceImage == NULL) {
+		imageFile->Destroy();
+		GOL_FATALERROR_MESSAGE("Font source image storage is not initialized");
+	}
+
+	ColorRGBA* colorKey = NULL;
+	if (m_flags & c_flagBit5) {
+		colorKey = &m_colorKey;
+	}
+
+	imageFile->VTable0x20(g_fontSourceImage, m_flags & c_flagBit2, colorKey);
+	imageFile->Destroy();
+
+	ScanGlyphs(p_name);
+
+	GolSurfaceFormat surfaceFormat = g_fontSourceImage->GetTextureFormat();
+	GolSurfaceFormat textureFormat;
+	p_renderer->SelectTextureFormat(surfaceFormat, &textureFormat, m_flags & c_flagBit5);
+	PackGlyphTextures(p_renderer, &textureFormat);
+	VTable0x04(p_renderer, &textureFormat);
+	CopyGlyphsToTextures();
+
+	::qsort(m_glyphs, m_glyphCount, sizeof(Glyph), CompareGlyphChars);
 }
 
 // FUNCTION: GOLDP 0x1001e190
@@ -384,6 +419,41 @@ LegoU32 GolFontBase::PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfac
 			m_textureWidth = p_renderer->GetMaximumTextureWidth(bitsPerPixel);
 		}
 	}
+}
+
+// STUB: GOLDP 0x1001e870
+void GolFontBase::CopyGlyphsToTextures()
+{
+	LegoU32 currentSurface = 0;
+	PurpleDune0x7c* texture = GetTexture(currentSurface);
+	Rect sourceRect;
+	sourceRect.m_top = 0;
+	sourceRect.m_bottom = m_fontHeight;
+
+	LegoU8* sourcePixels;
+	LegoU32 sourcePitch;
+	g_fontSourceImage->LockPixels(&sourcePixels, &sourcePitch, SilverDune0x30::c_lockRequestRead);
+
+	LegoU8* texturePixels;
+	LegoU32 texturePitch;
+	texture->LockPixels(&texturePixels, &texturePitch, SilverDune0x30::c_lockRequestWrite);
+
+	for (LegoU32 i = 0; i < m_glyphCount; i++) {
+		Glyph* glyph = &m_glyphs[i];
+		if (glyph->m_surfaceIndex != currentSurface) {
+			texture->UnlockPixels();
+			currentSurface = glyph->m_surfaceIndex;
+			texture = GetTexture(currentSurface);
+			texture->LockPixels(&texturePixels, &texturePitch, SilverDune0x30::c_lockRequestWrite);
+		}
+
+		sourceRect.m_left = glyph->m_sourceX;
+		sourceRect.m_right = sourceRect.m_left + glyph->m_width;
+		texture->Blit(glyph->m_textureX, glyph->m_textureY, g_fontSourceImage, &sourceRect);
+	}
+
+	texture->UnlockPixels();
+	g_fontSourceImage->UnlockPixels();
 }
 
 // FUNCTION: GOLDP 0x1001e970

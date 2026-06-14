@@ -10,12 +10,17 @@ class GolBmpFile : public GolImgFile {
 public:
 	GolBmpFile();
 
-	void VTable0x00() override;                                                                  // vtable+0x00
-	void VTable0x08(const LegoChar* p_fileName) override;                                        // vtable+0x08
-	const LegoChar* GetSuffix() override;                                                        // vtable+0x10
-	void VTable0x14(undefined4, undefined4, undefined4, undefined4) override;                    // vtable+0x14
+	void VTable0x00() override;                           // vtable+0x00
+	void VTable0x08(const LegoChar* p_fileName) override; // vtable+0x08
+	const LegoChar* GetSuffix() override;                 // vtable+0x10
+	void VTable0x14(
+		LegoU8* p_buffer,
+		SilverDune0x30* p_texture,
+		LegoU32 p_flags,
+		ColorRGBA* p_colorKey
+	) override;                                                                                  // vtable+0x14
 	void VTable0x18(LegoU8* p_buffer) override;                                                  // vtable+0x18
-	void VTable0x1c(void*, undefined4, ColorRGBA*) override;                                     // vtable+0x1c
+	void VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey) override; // vtable+0x1c
 	void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey) override; // vtable+0x20
 
 	// SYNTHETIC: GOLDP 0x1002a4d0 FOLDED

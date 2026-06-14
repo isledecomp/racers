@@ -19,7 +19,7 @@ GolBillboard::Field0x2c::~Field0x2c()
 	Clear();
 }
 
-// FUNCTION: LEGORACERS 0x004105d0
+// FUNCTION: LEGORACERS 0x004105d0 FOLDED
 // FUNCTION: GOLDP 0x10025df0 FOLDED
 void GolBillboard::Field0x2c::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)
 {
@@ -37,7 +37,7 @@ void GolBillboard::Field0x2c::Initialize(GolRenderDevice* p_renderer, LegoU32 p_
 	::memset(m_entries, 0, sizeof(*m_entries) * m_count);
 }
 
-// FUNCTION: LEGORACERS 0x00410630
+// FUNCTION: LEGORACERS 0x00410630 FOLDED
 // FUNCTION: GOLDP 0x100260d0 FOLDED
 void GolBillboard::Field0x2c::Clear()
 {

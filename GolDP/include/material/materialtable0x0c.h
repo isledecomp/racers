@@ -8,8 +8,10 @@ class GolRenderDevice;
 
 // SIZE 0x0c
 struct MaterialTable0x0c {
+	void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
+	void Clear();
 	LegoS32 FindEntryIndexByName(const LegoChar* p_name) const;
-	void* AssignEntryByName(LegoS32 p_index, const LegoChar* p_name);
+	void AssignEntryByName(LegoS32 p_index, const LegoChar* p_name);
 	void SetPosition(LegoU32 p_index, void* p_position);
 	void* GetPosition(LegoU32 p_index) const { return m_entries[p_index]; }
 

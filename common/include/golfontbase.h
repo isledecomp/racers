@@ -50,6 +50,7 @@ public:
 	void ReadSeparatorSignature(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch);
 	LegoBool32 IsSeparatorColumn(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch, LegoBool32 p_highNibble);
 	LegoU32 PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat);
+	void CopyGlyphsToTextures();
 	LegoS32 DrawString(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoS32 DrawStringFitted(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoS32 DrawGlyphRun(LegoU32, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);

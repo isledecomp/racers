@@ -28,7 +28,7 @@ public:
 		void Reset();
 		void Destroy();
 		void FUN_004513d0(CarBuildModel* p_unk0x04);
-		void SetPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x0c);
+		void SetPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_partType);
 		void FUN_00499a60();
 		void Rotate();
 		void FUN_00499c20(LegoS32 p_delta);
@@ -37,6 +37,7 @@ public:
 		void SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
 		LegoPieceLibrary::PieceRecord* GetPieceRecord() const { return m_pieceRecord; }
 		LegoS32 GetColorRecordIndex() const { return m_colorRecordIndex; }
+		LegoS32 GetPartType() const { return m_partType; }
 
 	private:
 		void FUN_00499570();
@@ -53,7 +54,7 @@ public:
 		LegoS32 m_y;                                  // 0x08
 		LegoPieceLibrary::PieceRecord* m_pieceRecord; // 0x0c
 		LegoS32 m_colorRecordIndex;                   // 0x10
-		undefined4 m_unk0x14;                         // 0x14
+		LegoS32 m_partType;                           // 0x14
 		LegoS32 m_gridX;                              // 0x18
 		LegoS32 m_gridY;                              // 0x1c
 		LegoS32 m_width;                              // 0x20
@@ -216,9 +217,19 @@ public:
 		LegoU8 m_vertexCount;       // 0x00
 		LegoU8 m_flags;             // 0x01
 		LegoU16 m_materialIndex;    // 0x02
-		undefined2 m_unk0x04;       // 0x04
-		undefined2 m_unk0x06;       // 0x06
+		LegoU16 m_partIndex;        // 0x04
+		LegoU16 m_commandFlags;     // 0x06
 		LegoU16 m_vertexIndices[4]; // 0x08
+	};
+
+	// SIZE 0x18
+	struct BuildPrimitiveBounds {
+		LegoFloat m_minX; // 0x00
+		LegoFloat m_maxX; // 0x04
+		LegoFloat m_minY; // 0x08
+		LegoFloat m_maxY; // 0x0c
+		LegoFloat m_minZ; // 0x10
+		LegoFloat m_maxZ; // 0x14
 	};
 
 	// SIZE 0x04
@@ -226,6 +237,11 @@ public:
 		LegoU16 m_referenceCount; // 0x00
 		LegoBool m_inBatch;       // 0x02
 		undefined m_pad0x03;      // 0x03
+	};
+
+	// SIZE 0x01
+	struct OverlayCell {
+		LegoU8 m_flags; // 0x00
 	};
 
 	CarBuildModel();
@@ -262,7 +278,7 @@ public:
 		LegoS32 p_unk0x20
 	);
 	void FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation);
-	void FUN_0049b740(undefined4 p_unk0x04);
+	void FUN_0049b740(LegoBool32 p_restoreCachedOffset);
 	void FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags);
 	void FUN_0049bc60(GolModelBase* p_model, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 	void FUN_0049bce0(
@@ -309,10 +325,30 @@ public:
 		c_modelGroupCapacity = 1610,
 		c_modelBatchVertexCapacity = 64,
 		c_modelMaterialGroup = 0x80000000,
+		c_buildPrimitiveFlagAllBlack = 0x01,
+		c_buildPrimitiveFlagSameX = 0x02,
+		c_buildPrimitiveFlagSameY = 0x04,
+		c_buildPrimitiveFlagSameZ = 0x08,
+		c_buildPrimitiveFlagParallelogram = 0x80,
+		c_buildPrimitiveInitialFlags = 0x0f,
+		c_buildPrimitiveCommandMask = 0x0fff,
+		c_buildPrimitiveCommandMaterial1 = 0x0001,
+		c_buildPrimitiveCommandMaterial2 = 0x0002,
+		c_buildPrimitiveCommandTextureBit = 0x0800,
+		c_buildAxisX = 0,
+		c_buildAxisY = 1,
+		c_buildAxisZ = 2,
 		c_buildStatusOverflow = 0x01,
 		c_finalizePostSortFlag = 0x01,
 		c_finalizeResolveIntersectionsFlag = 0x02,
 		c_finalizeCullSingleMaterialFlag = 0x10,
+		c_overlayCellFlag0x01 = 0x01,
+		c_overlayCellFlag0x02 = 0x02,
+		c_overlayCellFlag0x04 = 0x04,
+		c_overlayCellFlag0x08 = 0x08,
+		c_overlayCellFlagOccupied = 0x10,
+		c_overlayCellFlagDraw = 0x20,
+		c_overlayCellFlagOccupiedDraw = c_overlayCellFlagOccupied | c_overlayCellFlagDraw,
 	};
 
 private:
@@ -332,8 +368,16 @@ private:
 	static void __fastcall RotateBuildVertexRight(BuildVertex** p_root, BuildVertex* p_vertex);
 	LegoS32 GetBatchVertexIndex(LegoS32 p_vertexIndex);
 	static LegoS32 ComparePrimitiveDrawOrder(const void* p_lhs, const void* p_rhs);
-	void FUN_00495440();
-	void FUN_00497360(LegoU8 p_buildFlags);
+	static void GetBuildPrimitiveBounds(BuildPrimitive* p_primitive, BuildPrimitiveBounds* p_bounds);
+	LegoS32 FUN_00495440();
+	static void InterpolateBuildVertex(
+		BuildVertex* p_dest,
+		BuildVertex* p_left,
+		BuildVertex* p_right,
+		LegoFloat p_leftScale,
+		LegoFloat p_rightScale
+	);
+	LegoS32 FUN_00497360(LegoS8 p_buildFlags);
 	static void AddHighBasePieceCallback(
 		LegoS32 p_x,
 		LegoS32 p_y,
@@ -349,7 +393,7 @@ private:
 		LegoS32 p_rotation,
 		LegoS32 p_height,
 		LegoS32 p_colorRecordIndex,
-		LegoS32 p_partIndex
+		LegoU16 p_partIndex
 	);
 	LegoS16 FUN_0049ad30(LegoS32 p_x, LegoS32 p_y, LegoS32 p_height, LegoS32 p_colorRecordIndex, LegoS32 p_unk0x14);
 	void FUN_00497690(LegoU8 p_unk0x04);
@@ -359,7 +403,7 @@ private:
 	void FUN_0049b6f0(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
 	void FUN_0049b720();
 	LegoS32 FUN_0049bcc0(LegoS32 p_x, LegoS32 p_y) const;
-	void FUN_0049be70(LegoBool p_unk0x04, LegoS32 p_height);
+	void FUN_0049be70(LegoBool32 p_unk0x04, LegoS32 p_height);
 
 	GolExport* m_golExport;                                        // 0x0000
 	GolD3DRenderDevice* m_renderer;                                // 0x0004
@@ -371,21 +415,21 @@ private:
 	PieceGrid m_pieceGrid;                                         // 0x00bc
 	undefined4 m_unk0xd0;                                          // 0x00d0
 	LegoS32 m_placedPieceCount;                                    // 0x00d4
-	LegoU8 m_hasHighBasePiece;                                     // 0x00d8
-	undefined m_unk0xd9;                                           // 0x00d9
+	LegoBool m_hasHighBasePiece;                                   // 0x00d8
+	LegoBool m_unk0xd9;                                            // 0x00d9
 	LegoBool m_unk0xda;                                            // 0x00da
-	undefined m_unk0xdb;                                           // 0x00db
+	LegoBool m_unk0xdb;                                            // 0x00db
 	LegoU8 m_unk0xdc;                                              // 0x00dc
 	undefined m_unk0xdd;                                           // 0x00dd
 	LegoU16 m_unk0xde;                                             // 0x00de
 	LegoPieceLibrary::PieceRecord* m_highBasePiece;                // 0x00e0
 	LegoU8 m_batchVertexSlotByBuildVertex[c_buildVertexCapacity];  // 0x00e4
-	BuildVertex* m_unk0x1e30;                                      // 0x1e30
-	BuildPrimitive* m_unk0x1e34;                                   // 0x1e34
-	BuildPrimitive** m_unk0x1e38;                                  // 0x1e38
+	BuildVertex* m_buildVertices;                                  // 0x1e30
+	BuildPrimitive* m_buildPrimitives;                             // 0x1e34
+	BuildPrimitive** m_buildPrimitiveOrder;                        // 0x1e38
 	LegoU16 m_batchBuildVertexIndices[c_modelBatchVertexCapacity]; // 0x1e3c
-	LegoS32 m_unk0x1ebc;                                           // 0x1ebc
-	LegoS32 m_unk0x1ec0;                                           // 0x1ec0
+	LegoS32 m_buildPrimitiveCount;                                 // 0x1ebc
+	LegoS32 m_buildVertexCount;                                    // 0x1ec0
 	BuildVertex* m_buildVertexTreeRoot;                            // 0x1ec4
 	LegoU32 m_currentMaterialIndex;                                // 0x1ec8
 	LegoU32 m_modelGroupCount;                                     // 0x1ecc
@@ -416,7 +460,7 @@ private:
 	LegoFloat m_unk0x1f30;                                         // 0x1f30
 	GolModelEntity m_unk0x1f34;                                    // 0x1f34
 	GolModelBase* m_auxModel;                                      // 0x1fc4
-	LegoU8 m_unk0x1fc8[12][8];                                     // 0x1fc8
+	OverlayCell m_overlayCells[12][8];                             // 0x1fc8
 	LegoS32 m_unk0x2028;                                           // 0x2028
 	undefined4 m_unk0x202c;                                        // 0x202c
 };

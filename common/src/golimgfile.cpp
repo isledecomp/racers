@@ -1057,7 +1057,7 @@ const LegoChar* GolImgFile::GetSuffix()
 
 // FUNCTION: GOLDP 0x100226b0
 // FUNCTION: LEGORACERS 0x00413790
-void GolImgFile::VTable0x14(undefined4, undefined4, undefined4, undefined4)
+void GolImgFile::VTable0x14(LegoU8*, SilverDune0x30*, LegoU32, ColorRGBA*)
 {
 	// empty
 }
@@ -1394,7 +1394,7 @@ void GolImgFile::FUN_10022b80(LegoU8* p_top, LegoU8* p_bottom, LegoU8* p_dst)
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
 // FUNCTION: LEGORACERS 0x00416030 FOLDED
-void GolImgFile::VTable0x1c(void*, undefined4, ColorRGBA*)
+void GolImgFile::VTable0x1c(WhiteBaffoon0x50*, LegoU32, ColorRGBA*)
 {
 	// empty
 }

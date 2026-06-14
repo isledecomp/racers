@@ -42,9 +42,10 @@ public:
 	void SetTextureDefinition(LegoU16 p_unk0x34, LegoU16 p_unk0x36, const ColorRGBA& p_colorKey)
 	{
 		m_unk0x34 = p_unk0x34;
-		m_unk0x36 = p_unk0x36;
+		p_unk0x36 |= c_unk0x36Bit11;
 		m_colorKey = p_colorKey;
 		m_colorKey.m_alp = 0;
+		m_unk0x36 = p_unk0x36;
 	}
 	void SetSourceTextureDefinition(LegoU16 p_unk0x34, LegoU16 p_unk0x36, const ColorRGBA& p_colorKey)
 	{

@@ -2,6 +2,8 @@
 
 #include "goldecompress.h"
 #include "golerror.h"
+#include "image/whitebaffoon0x50.h"
+#include "surface/purpledune0x7c.h"
 #include "surface/silverdune0x30.h"
 
 #include <string.h>
@@ -322,8 +324,154 @@ void GolTgaFile::VTable0x18(LegoU8* p_buffer)
 
 // STUB: GOLDP 0x1002ae50
 // STUB: LEGORACERS 0x00414120
-void GolTgaFile::VTable0x1c(void*, undefined4, ColorRGBA*)
+void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
-	// TODO
-	STUB(0x1002ae50);
+	LegoU32 tileColumnCount = p_image->GetTileColumnCount();
+	LegoU32 tileRowCount = p_image->GetTileRowCount();
+	LegoU32 tileCount = tileColumnCount * tileRowCount;
+	GolSurfaceFormat format;
+	LegoU32 column;
+	LegoU32 row;
+	LegoU32 y;
+
+	if (m_height != p_image->GetHeight() || m_width != p_image->GetWidth()) {
+		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
+	}
+
+	format = p_image->VTable0x1c(0, 0)->GetTextureFormat();
+	FUN_100204d0(format, p_colorKey);
+	if (format.m_paletteMask != 0 && m_paletteSize != 0) {
+		for (column = 0; column < tileColumnCount; column++) {
+			for (row = 0; row < tileRowCount; row++) {
+				FUN_100200f0(p_image->VTable0x1c(column, row)->GetPalette(), p_colorKey);
+			}
+		}
+	}
+
+	LegoU8** tilePixels = new LegoU8*[tileCount];
+	if (tilePixels == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoU32* tilePitches = new LegoU32[tileCount];
+	if (tilePitches == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	for (column = 0; column < tileColumnCount; column++) {
+		for (row = 0; row < tileRowCount; row++) {
+			LegoU32 index = row + column * tileRowCount;
+			p_image->VTable0x1c(column, row)
+				->LockPixels(
+					&tilePixels[index],
+					&tilePitches[index],
+					SilverDune0x30::c_lockRequestRead | SilverDune0x30::c_lockRequestWrite
+				);
+		}
+	}
+
+	LegoU32 fileOffset = m_posImageData;
+	LegoS32 tileRow = 0;
+	LegoS32 rowInTile = 0;
+	LegoS32 rowStep = 1;
+	if (!p_flags) {
+		rowStep = -1;
+		tileRow = tileRowCount - 1;
+
+		LegoS32 totalTileHeight = 0;
+		LegoS32 lastTileHeight = 0;
+		for (row = 0; row < tileRowCount; row++) {
+			lastTileHeight = p_image->GetTileHeight(row);
+			totalTileHeight += lastTileHeight;
+		}
+
+		rowInTile = lastTileHeight - totalTileHeight + m_height - 1;
+	}
+
+	LegoU8* fileRow = new LegoU8[m_rowByteStride + 2];
+	if (fileRow == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoU8* sourceRow = fileRow;
+	if (m_imageType >= 9) {
+		sourceRow = new LegoU8[m_rowByteStride + 2];
+		if (sourceRow == NULL) {
+			GOL_FATALERROR(c_golErrorOutOfMemory);
+		}
+	}
+
+	LegoU8* convertedRow = new LegoU8[4 * m_width + 8];
+	if (convertedRow == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	LegoU32 pixelByteStep = format.m_bitsPerPixel >> 3;
+	for (y = 0; y < m_height; y++) {
+		LegoS32 amount;
+		LegoS32 result = m_file.BufferedRead(fileOffset, fileRow, m_rowByteStride, &amount);
+		if (result != GolStream::e_ioSuccess) {
+			for (column = 0; column < tileColumnCount; column++) {
+				for (row = 0; row < tileRowCount; row++) {
+					p_image->VTable0x1c(column, row)->UnlockPixels();
+				}
+			}
+			GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
+		}
+
+		if (m_imageType >= 9) {
+			FUN_1002ad40(fileRow, sourceRow);
+		}
+
+		FUN_100207e0(sourceRow, convertedRow, format);
+
+		LegoU32 sourceOffset = 0;
+		for (column = 0; column < tileColumnCount; column++) {
+			if (rowInTile == 0x7fffffff) {
+				rowInTile = p_image->GetTileHeight(tileRow) - 1;
+			}
+
+			LegoU32 rowBytes = pixelByteStep * p_image->GetTileWidth(column);
+			LegoU32 totalRowBytes = pixelByteStep * m_width;
+			if (rowBytes + sourceOffset > totalRowBytes) {
+				rowBytes = totalRowBytes - sourceOffset;
+			}
+
+			LegoU32 index = tileRow + column * tileRowCount;
+			::memcpy(tilePixels[index] + rowInTile * tilePitches[index], convertedRow + sourceOffset, rowBytes);
+			sourceOffset += rowBytes;
+		}
+
+		fileOffset += amount;
+		rowInTile += rowStep;
+		if (rowInTile == p_image->GetTileHeight(tileRow)) {
+			rowInTile = 0;
+			tileRow++;
+		}
+		else if (rowInTile == -1) {
+			rowInTile = 0x7fffffff;
+			tileRow--;
+		}
+	}
+
+	delete[] convertedRow;
+	if (m_imageType >= 9) {
+		delete[] sourceRow;
+	}
+	delete[] fileRow;
+	delete[] tilePixels;
+	delete[] tilePitches;
+
+	for (column = 0; column < tileColumnCount; column++) {
+		for (row = 0; row < tileRowCount; row++) {
+			p_image->VTable0x1c(column, row)->UnlockPixels();
+		}
+	}
+
+	LegoU32 flags = p_image->GetUnk0x3c();
+	flags = (flags & 0xfffffff1) | WhiteBaffoon0x50::c_flagBit3;
+	p_image->m_unk0x3c = flags;
+	if ((flags & (WhiteBaffoon0x50::c_flagBit4 | WhiteBaffoon0x50::c_flagBit5)) == 0) {
+		p_image->m_unk0x3c = flags | WhiteBaffoon0x50::c_flagBit4;
+	}
 }

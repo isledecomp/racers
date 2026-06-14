@@ -1,5 +1,6 @@
 #include "model/carbuildmodel.h"
 
+#include "audio/directsoundconversions.h"
 #include "core/gol.h"
 #include "golanimatedentity.h"
 #include "material/duskwindbananarelic0x24.h"
@@ -24,7 +25,9 @@ DECOMP_SIZE_ASSERT(CarBuildModel::PieceGrid, 0x14)
 DECOMP_SIZE_ASSERT(CarBuildModel::PieceGrid::Entry0x0c, 0x0c)
 DECOMP_SIZE_ASSERT(CarBuildModel::BuildVertex, 0x28)
 DECOMP_SIZE_ASSERT(CarBuildModel::BuildPrimitive, 0x10)
+DECOMP_SIZE_ASSERT(CarBuildModel::BuildPrimitiveBounds, 0x18)
 DECOMP_SIZE_ASSERT(CarBuildModel::VertexUse, 0x04)
+DECOMP_SIZE_ASSERT(CarBuildModel::OverlayCell, 0x01)
 
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
@@ -37,17 +40,38 @@ static CarBuildModel::BuildVertex* g_carBuildModelSortVertices;
 // GLOBAL: LEGORACERS 0x004ceba8
 static CarBuildModel* g_carBuildModelCellCallback;
 
+// GLOBAL: LEGORACERS 0x004c7674
+static CarBuildModel::VertexUse g_carBuildModelVertexUses[CarBuildModel::c_buildVertexCapacity];
+
 // GLOBAL: LEGORACERS 0x004b4930
 static const LegoFloat g_carBuildModelMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b4934
 static const LegoFloat g_carBuildModelNormalScale = 1.0f / 127.0f;
 
+// GLOBAL: LEGORACERS 0x004b480c
+static const LegoFloat g_carBuildModelNegativePlaneEpsilon = -0.0049999999f;
+
+// GLOBAL: LEGORACERS 0x004b0538
+static const LegoFloat g_carBuildModelHeightScale = 0.4f;
+
+// GLOBAL: LEGORACERS 0x004b053c
+static const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
+
+// GLOBAL: LEGORACERS 0x004b4938
+static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;
+
+// GLOBAL: LEGORACERS 0x004b4940
+static const LegoFloat g_carBuildModelCenterYOffset = 2.5f;
+
+// GLOBAL: LEGORACERS 0x004b4944
+static const LegoFloat g_carBuildModelCenterXOffset = 4.5f;
+
 // FUNCTION: LEGORACERS 0x00495020
 LegoS32 CarBuildModel::FUN_00495020()
 {
 	m_buildVertexTreeRoot = NULL;
-	m_unk0x1ec0 = 0;
+	m_buildVertexCount = 0;
 
 	return 0;
 }
@@ -55,18 +79,18 @@ LegoS32 CarBuildModel::FUN_00495020()
 // FUNCTION: LEGORACERS 0x00495030
 LegoS32 CarBuildModel::AddBuildVertex(BuildVertex* p_vertex)
 {
-	BuildVertex* vertex = &m_unk0x1e30[m_unk0x1ec0];
+	BuildVertex* vertex = &m_buildVertices[m_buildVertexCount];
 	*vertex = *p_vertex;
-	m_unk0x1e30[m_unk0x1ec0].m_index = static_cast<LegoU16>(m_unk0x1ec0);
+	m_buildVertices[m_buildVertexCount].m_index = static_cast<LegoU16>(m_buildVertexCount);
 
-	BuildVertex* existing = InsertOrFindBuildVertex(&m_buildVertexTreeRoot, &m_unk0x1e30[m_unk0x1ec0]);
+	BuildVertex* existing = InsertOrFindBuildVertex(&m_buildVertexTreeRoot, &m_buildVertices[m_buildVertexCount]);
 	if (existing != NULL) {
 		return existing->m_index;
 	}
 
-	m_unk0x1ec0++;
+	m_buildVertexCount++;
 
-	return m_unk0x1ec0 - 1;
+	return m_buildVertexCount - 1;
 }
 
 // FUNCTION: LEGORACERS 0x004950c0
@@ -116,58 +140,73 @@ CarBuildModel::BuildVertex* CarBuildModel::InsertOrFindBuildVertex(BuildVertex**
 // STUB: LEGORACERS 0x00495160
 LegoS32 __fastcall CarBuildModel::CompareBuildVertex(const BuildVertex* p_lhs, const BuildVertex* p_rhs)
 {
-	STUB(0x00495160);
-
-	if (p_lhs->m_position.m_x != p_rhs->m_position.m_x) {
-		return p_lhs->m_position.m_x > p_rhs->m_position.m_x ? 1 : -1;
-	}
-	if (p_lhs->m_position.m_y != p_rhs->m_position.m_y) {
-		return p_lhs->m_position.m_y > p_rhs->m_position.m_y ? 1 : -1;
-	}
-	if (p_lhs->m_position.m_z != p_rhs->m_position.m_z) {
-		return p_lhs->m_position.m_z > p_rhs->m_position.m_z ? 1 : -1;
-	}
-	if (p_lhs->m_normalX != p_rhs->m_normalX) {
-		return p_lhs->m_normalX - p_rhs->m_normalX;
-	}
-	if (p_lhs->m_normalY != p_rhs->m_normalY) {
-		return p_lhs->m_normalY - p_rhs->m_normalY;
-	}
-	if (p_lhs->m_normalZ != p_rhs->m_normalZ) {
-		return p_lhs->m_normalZ - p_rhs->m_normalZ;
-	}
-	if (p_lhs->m_textureCoordinate.m_x != p_rhs->m_textureCoordinate.m_x) {
-		return p_lhs->m_textureCoordinate.m_x > p_rhs->m_textureCoordinate.m_x ? 1 : -1;
-	}
-	if (p_lhs->m_textureCoordinate.m_y != p_rhs->m_textureCoordinate.m_y) {
-		return p_lhs->m_textureCoordinate.m_y > p_rhs->m_textureCoordinate.m_y ? 1 : -1;
+	LegoS32 lhsKey;
+	LegoS32 rhsKey;
+	::memcpy(&lhsKey, &p_lhs->m_position.m_x, sizeof(lhsKey));
+	::memcpy(&rhsKey, &p_rhs->m_position.m_x, sizeof(rhsKey));
+	LegoS32 result = lhsKey - rhsKey;
+	if (result != 0) {
+		return result;
 	}
 
-	return 0;
+	::memcpy(&lhsKey, &p_lhs->m_position.m_y, sizeof(lhsKey));
+	::memcpy(&rhsKey, &p_rhs->m_position.m_y, sizeof(rhsKey));
+	result = lhsKey - rhsKey;
+	if (result != 0) {
+		return result;
+	}
+
+	::memcpy(&lhsKey, &p_lhs->m_position.m_z, sizeof(lhsKey));
+	::memcpy(&rhsKey, &p_rhs->m_position.m_z, sizeof(rhsKey));
+	result = lhsKey - rhsKey;
+	if (result != 0) {
+		return result;
+	}
+
+	result = static_cast<LegoU8>(p_lhs->m_normalX) - static_cast<LegoU8>(p_rhs->m_normalX);
+	if (result != 0) {
+		return result;
+	}
+
+	result = static_cast<LegoU8>(p_lhs->m_normalY) - static_cast<LegoU8>(p_rhs->m_normalY);
+	if (result != 0) {
+		return result;
+	}
+
+	result = static_cast<LegoU8>(p_lhs->m_normalZ) - static_cast<LegoU8>(p_rhs->m_normalZ);
+	if (result != 0) {
+		return result;
+	}
+
+	::memcpy(&lhsKey, &p_lhs->m_textureCoordinate.m_x, sizeof(lhsKey));
+	::memcpy(&rhsKey, &p_rhs->m_textureCoordinate.m_x, sizeof(rhsKey));
+	result = lhsKey - rhsKey;
+	if (result != 0) {
+		return result;
+	}
+
+	::memcpy(&lhsKey, &p_lhs->m_textureCoordinate.m_y, sizeof(lhsKey));
+	::memcpy(&rhsKey, &p_rhs->m_textureCoordinate.m_y, sizeof(rhsKey));
+	return lhsKey - rhsKey;
 }
 
-// STUB: LEGORACERS 0x004951c0
+// FUNCTION: LEGORACERS 0x004951c0
 void __fastcall CarBuildModel::RebalanceBuildVertexInsert(BuildVertex** p_root, BuildVertex* p_vertex)
 {
-	STUB(0x004951c0);
-
 	p_vertex->m_treeBlack = FALSE;
 
 	while (p_vertex->m_parent != NULL && !p_vertex->m_parent->m_treeBlack) {
-		BuildVertex* parent = p_vertex->m_parent;
-		BuildVertex* grandparent = parent->m_parent;
-
-		if (parent == grandparent->m_left) {
-			BuildVertex* uncle = grandparent->m_right;
+		if (p_vertex->m_parent == p_vertex->m_parent->m_parent->m_left) {
+			BuildVertex* uncle = p_vertex->m_parent->m_parent->m_right;
 			if (uncle != NULL && !uncle->m_treeBlack) {
 				uncle->m_treeBlack = TRUE;
-				parent->m_treeBlack = TRUE;
-				grandparent->m_treeBlack = FALSE;
-				p_vertex = grandparent;
+				p_vertex->m_parent->m_treeBlack = TRUE;
+				p_vertex = p_vertex->m_parent->m_parent;
+				p_vertex->m_treeBlack = FALSE;
 			}
 			else {
-				if (p_vertex == parent->m_right) {
-					p_vertex = parent;
+				if (p_vertex == p_vertex->m_parent->m_right) {
+					p_vertex = p_vertex->m_parent;
 					RotateBuildVertexLeft(p_root, p_vertex);
 				}
 
@@ -177,16 +216,16 @@ void __fastcall CarBuildModel::RebalanceBuildVertexInsert(BuildVertex** p_root, 
 			}
 		}
 		else {
-			BuildVertex* uncle = grandparent->m_left;
+			BuildVertex* uncle = p_vertex->m_parent->m_parent->m_left;
 			if (uncle != NULL && !uncle->m_treeBlack) {
 				uncle->m_treeBlack = TRUE;
-				parent->m_treeBlack = TRUE;
-				grandparent->m_treeBlack = FALSE;
-				p_vertex = grandparent;
+				p_vertex->m_parent->m_treeBlack = TRUE;
+				p_vertex = p_vertex->m_parent->m_parent;
+				p_vertex->m_treeBlack = FALSE;
 			}
 			else {
-				if (p_vertex == parent->m_left) {
-					p_vertex = parent;
+				if (p_vertex == p_vertex->m_parent->m_left) {
+					p_vertex = p_vertex->m_parent;
 					RotateBuildVertexRight(p_root, p_vertex);
 				}
 
@@ -211,17 +250,16 @@ void __fastcall CarBuildModel::RotateBuildVertexLeft(BuildVertex** p_root, Build
 	}
 
 	BuildVertex* parent = p_vertex->m_parent;
+	pivot->m_parent = parent;
 	if (parent != NULL) {
-		pivot->m_parent = parent;
-		if (p_vertex == parent->m_left) {
-			parent->m_left = pivot;
+		if (p_vertex == p_vertex->m_parent->m_left) {
+			p_vertex->m_parent->m_left = pivot;
 		}
 		else {
-			parent->m_right = pivot;
+			p_vertex->m_parent->m_right = pivot;
 		}
 	}
 	else {
-		pivot->m_parent = parent;
 		*p_root = pivot;
 	}
 
@@ -240,17 +278,16 @@ void __fastcall CarBuildModel::RotateBuildVertexRight(BuildVertex** p_root, Buil
 	}
 
 	BuildVertex* parent = p_vertex->m_parent;
+	pivot->m_parent = parent;
 	if (parent != NULL) {
-		pivot->m_parent = parent;
-		if (p_vertex == parent->m_left) {
-			parent->m_left = pivot;
+		if (p_vertex == p_vertex->m_parent->m_left) {
+			p_vertex->m_parent->m_left = pivot;
 		}
 		else {
-			parent->m_right = pivot;
+			p_vertex->m_parent->m_right = pivot;
 		}
 	}
 	else {
-		pivot->m_parent = parent;
 		*p_root = pivot;
 	}
 
@@ -258,53 +295,522 @@ void __fastcall CarBuildModel::RotateBuildVertexRight(BuildVertex** p_root, Buil
 	p_vertex->m_parent = pivot;
 }
 
-// STUB: LEGORACERS 0x00495310
+// FUNCTION: LEGORACERS 0x00495310
 LegoS32 CarBuildModel::ComparePrimitiveDrawOrder(const void* p_lhs, const void* p_rhs)
 {
-	STUB(0x00495310);
-
 	const BuildPrimitive* lhs = *static_cast<BuildPrimitive* const*>(p_lhs);
 	const BuildPrimitive* rhs = *static_cast<BuildPrimitive* const*>(p_rhs);
 
 	LegoS32 result = lhs->m_materialIndex - rhs->m_materialIndex;
 	if (result == 0) {
-		LegoFloat zDiff = g_carBuildModelSortVertices[lhs->m_vertexIndices[0]].m_position.m_z -
+		LegoFloat delta = g_carBuildModelSortVertices[lhs->m_vertexIndices[0]].m_position.m_z -
 						  g_carBuildModelSortVertices[rhs->m_vertexIndices[0]].m_position.m_z;
-		if (zDiff < 0.0f) {
-			result = -1;
-		}
-		else if (zDiff > 0.0f) {
-			result = 1;
-		}
+		::memcpy(&result, &delta, sizeof(result));
 	}
 
 	return result;
 }
 
-// STUB: LEGORACERS 0x00495440
-void CarBuildModel::FUN_00495440()
+// FUNCTION: LEGORACERS 0x00495360
+void CarBuildModel::GetBuildPrimitiveBounds(BuildPrimitive* p_primitive, BuildPrimitiveBounds* p_bounds)
 {
-	STUB(0x00495440);
+	BuildVertex* vertex = &g_carBuildModelSortVertices[p_primitive->m_vertexIndices[0]];
+
+	p_bounds->m_minX = p_bounds->m_maxX = vertex->m_position.m_x;
+	p_bounds->m_minY = p_bounds->m_maxY = vertex->m_position.m_y;
+	p_bounds->m_minZ = p_bounds->m_maxZ = vertex->m_position.m_z;
+
+	for (LegoS32 i = 1; i < p_primitive->m_vertexCount; i++) {
+		vertex = &g_carBuildModelSortVertices[p_primitive->m_vertexIndices[i]];
+
+		if (p_bounds->m_minX > vertex->m_position.m_x) {
+			p_bounds->m_minX = vertex->m_position.m_x;
+		}
+		if (p_bounds->m_maxX < vertex->m_position.m_x) {
+			p_bounds->m_maxX = vertex->m_position.m_x;
+		}
+		if (p_bounds->m_minY > vertex->m_position.m_y) {
+			p_bounds->m_minY = vertex->m_position.m_y;
+		}
+		if (p_bounds->m_maxY < vertex->m_position.m_y) {
+			p_bounds->m_maxY = vertex->m_position.m_y;
+		}
+		if (p_bounds->m_minZ > vertex->m_position.m_z) {
+			p_bounds->m_minZ = vertex->m_position.m_z;
+		}
+		if (p_bounds->m_maxZ < vertex->m_position.m_z) {
+			p_bounds->m_maxZ = vertex->m_position.m_z;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00495440
+LegoS32 CarBuildModel::FUN_00495440()
+{
+#define SWAP_ACTIVE_BUILD_PRIMITIVES()                                                                                 \
+	do {                                                                                                               \
+		swappedPrimitive = m_buildPrimitiveOrder[lhsIndex];                                                            \
+		m_buildPrimitiveOrder[lhsIndex] = m_buildPrimitiveOrder[rhsIndex];                                             \
+		m_buildPrimitiveOrder[rhsIndex] = swappedPrimitive;                                                            \
+		swappedBounds = lhsBounds;                                                                                     \
+		lhsBounds = rhsBounds;                                                                                         \
+		rhsBounds = swappedBounds;                                                                                     \
+	} while (0)
+
+#define ROTATE_BUILD_PRIMITIVE_TO_MIN(coordMember, minField)                                                           \
+	for (;;) {                                                                                                         \
+		BuildVertex* vertices = m_buildVertices;                                                                       \
+		LegoS32 old0 = primitive->m_vertexIndices[0];                                                                  \
+		if (vertices[old0].m_position.coordMember == lhsBounds.minField &&                                             \
+			vertices[primitive->m_vertexIndices[1]].m_position.coordMember == lhsBounds.minField) {                    \
+			break;                                                                                                     \
+		}                                                                                                              \
+		LegoU16 old3 = primitive->m_vertexIndices[3];                                                                  \
+		primitive->m_vertexIndices[0] = primitive->m_vertexIndices[1];                                                 \
+		LegoU16 old2 = primitive->m_vertexIndices[2];                                                                  \
+		primitive->m_vertexIndices[1] = old3;                                                                          \
+		primitive->m_vertexIndices[3] = old2;                                                                          \
+		primitive->m_vertexIndices[2] = old0;                                                                          \
+	}
+
+#define ROTATE_BUILD_PRIMITIVE_TO_MAX(coordMember, maxField)                                                           \
+	while (m_buildVertices[primitive->m_vertexIndices[2]].m_position.coordMember != lhsBounds.maxField ||              \
+		   m_buildVertices[primitive->m_vertexIndices[3]].m_position.coordMember != lhsBounds.maxField) {              \
+		LegoU16 old2 = primitive->m_vertexIndices[2];                                                                  \
+		LegoS32 old0 = primitive->m_vertexIndices[0];                                                                  \
+		primitive->m_vertexIndices[0] = primitive->m_vertexIndices[1];                                                 \
+		LegoU16 old3 = primitive->m_vertexIndices[3];                                                                  \
+		primitive->m_vertexIndices[3] = old2;                                                                          \
+		primitive->m_vertexIndices[1] = old3;                                                                          \
+		primitive->m_vertexIndices[2] = old0;                                                                          \
+	}
+
+#define ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MIN()                                                                         \
+	do {                                                                                                               \
+		outsidePrimitive = m_buildPrimitiveOrder[m_buildPrimitiveCount];                                               \
+		m_buildPrimitiveOrder[m_buildPrimitiveCount] = m_buildPrimitiveOrder[planePrimitiveCount];                     \
+		m_buildPrimitiveOrder[planePrimitiveCount] = outsidePrimitive;                                                 \
+		planePrimitiveCount++;                                                                                         \
+		m_buildPrimitiveCount++;                                                                                       \
+		*outsidePrimitive = *primitive;                                                                                \
+		if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {                                                       \
+			m_unk0xdc |= c_buildStatusOverflow;                                                                        \
+			return m_buildPrimitiveCount;                                                                              \
+		}                                                                                                              \
+	} while (0)
+
+#define ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MAX()                                                                         \
+	outsidePrimitive = m_buildPrimitiveOrder[m_buildPrimitiveCount];                                                   \
+	m_buildPrimitiveOrder[m_buildPrimitiveCount] = m_buildPrimitiveOrder[planePrimitiveCount];                         \
+	m_buildPrimitiveOrder[planePrimitiveCount] = outsidePrimitive;                                                     \
+	planePrimitiveCount++;                                                                                             \
+	m_buildPrimitiveCount++;                                                                                           \
+	*outsidePrimitive = *primitive;                                                                                    \
+	if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {                                                           \
+		m_unk0xdc |= c_buildStatusOverflow;                                                                            \
+		return m_buildPrimitiveCount;                                                                                  \
+	}
+
+#define SET_SPLIT_VERTEX_POSITION_X(vertex, boundsField, splitCoordinate)                                              \
+	lhsBounds.boundsField = (splitCoordinate);                                                                         \
+	splitVertex.m_position.m_x = lhsBounds.boundsField;                                                                \
+	splitVertex.m_position.m_y = (vertex)->m_position.m_y;                                                             \
+	splitVertex.m_position.m_z = (vertex)->m_position.m_z
+
+#define SET_SPLIT_VERTEX_POSITION_Y(vertex, boundsField, splitCoordinate)                                              \
+	splitVertex.m_position.m_x = (vertex)->m_position.m_x;                                                             \
+	lhsBounds.boundsField = (splitCoordinate);                                                                         \
+	splitVertex.m_position.m_y = lhsBounds.boundsField;                                                                \
+	splitVertex.m_position.m_z = (vertex)->m_position.m_z
+
+#define SET_SPLIT_VERTEX_POSITION_Z(vertex, boundsField, splitCoordinate)                                              \
+	splitVertex.m_position.m_x = (vertex)->m_position.m_x;                                                             \
+	splitVertex.m_position.m_y = (vertex)->m_position.m_y;                                                             \
+	lhsBounds.boundsField = (splitCoordinate);                                                                         \
+	splitVertex.m_position.m_z = lhsBounds.boundsField
+
+#define CLIP_BUILD_PRIMITIVE_MIN(coordMember, minField, maxField, secondCoordMember, setPosition)                      \
+	if (lhsBounds.minField != rhsBounds.minField) {                                                                    \
+		if (rhsBounds.minField < lhsBounds.minField) {                                                                 \
+			SWAP_ACTIVE_BUILD_PRIMITIVES();                                                                            \
+		}                                                                                                              \
+		primitive = m_buildPrimitiveOrder[lhsIndex];                                                                   \
+		ROTATE_BUILD_PRIMITIVE_TO_MIN(coordMember, minField);                                                          \
+		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MIN();                                                                        \
+		rightScale = rhsBounds.minField - lhsBounds.minField;                                                          \
+		firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                              \
+		firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                             \
+		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		setPosition(firstLowVertex, minField, rhsBounds.minField);                                                     \
+		leftScale = 1.0f - rightScale;                                                                                 \
+		InterpolateBuildVertex(&splitVertex, firstLowVertex, firstHighVertex, leftScale, rightScale);                  \
+		splitFirstIndex = static_cast<LegoU16>(AddBuildVertex(&splitVertex));                                          \
+		outsidePrimitive->m_vertexIndices[2] = splitFirstIndex;                                                        \
+		primitive->m_vertexIndices[0] = splitFirstIndex;                                                               \
+		secondLowVertex = &m_buildVertices[primitive->m_vertexIndices[1]];                                             \
+		secondHighVertex = &m_buildVertices[primitive->m_vertexIndices[3]];                                            \
+		splitVertex.m_position.secondCoordMember = secondLowVertex->m_position.secondCoordMember;                      \
+		InterpolateBuildVertex(&splitVertex, secondLowVertex, secondHighVertex, leftScale, rightScale);                \
+		splitSecondIndex = static_cast<LegoU16>(AddBuildVertex(&splitVertex));                                         \
+		outsidePrimitive->m_vertexIndices[3] = splitSecondIndex;                                                       \
+		primitive->m_vertexIndices[1] = splitSecondIndex;                                                              \
+	}
+
+#define CLIP_BUILD_PRIMITIVE_MAX(coordMember, minField, maxField, secondCoordMember, setPosition)                      \
+	if (lhsBounds.maxField != rhsBounds.maxField) {                                                                    \
+		if (rhsBounds.maxField > lhsBounds.maxField) {                                                                 \
+			SWAP_ACTIVE_BUILD_PRIMITIVES();                                                                            \
+		}                                                                                                              \
+		primitive = m_buildPrimitiveOrder[lhsIndex];                                                                   \
+		ROTATE_BUILD_PRIMITIVE_TO_MAX(coordMember, maxField);                                                          \
+		ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MAX();                                                                        \
+		rightScale = rhsBounds.maxField - lhsBounds.minField;                                                          \
+		firstLowVertex = &m_buildVertices[primitive->m_vertexIndices[0]];                                              \
+		firstHighVertex = &m_buildVertices[primitive->m_vertexIndices[2]];                                             \
+		rightScale = rightScale / (lhsBounds.maxField - lhsBounds.minField);                                           \
+		setPosition(firstLowVertex, maxField, rhsBounds.maxField);                                                     \
+		leftScale = 1.0f - rightScale;                                                                                 \
+		InterpolateBuildVertex(&splitVertex, firstLowVertex, firstHighVertex, leftScale, rightScale);                  \
+		splitFirstIndex = static_cast<LegoU16>(AddBuildVertex(&splitVertex));                                          \
+		outsidePrimitive->m_vertexIndices[0] = splitFirstIndex;                                                        \
+		primitive->m_vertexIndices[2] = splitFirstIndex;                                                               \
+		secondLowVertex = &m_buildVertices[primitive->m_vertexIndices[1]];                                             \
+		secondHighVertex = &m_buildVertices[primitive->m_vertexIndices[3]];                                            \
+		splitVertex.m_position.secondCoordMember = secondLowVertex->m_position.secondCoordMember;                      \
+		InterpolateBuildVertex(&splitVertex, secondLowVertex, secondHighVertex, leftScale, rightScale);                \
+		splitSecondIndex = static_cast<LegoU16>(AddBuildVertex(&splitVertex));                                         \
+		outsidePrimitive->m_vertexIndices[1] = splitSecondIndex;                                                       \
+		primitive->m_vertexIndices[3] = splitSecondIndex;                                                              \
+	}
+
+#define REMOVE_MATCHED_BUILD_PRIMITIVES()                                                                              \
+	do {                                                                                                               \
+		planePrimitiveCount--;                                                                                         \
+		m_buildPrimitiveCount--;                                                                                       \
+		BuildPrimitive* removedPrimitive = m_buildPrimitiveOrder[rhsIndex];                                            \
+		m_buildPrimitiveOrder[rhsIndex] = m_buildPrimitiveOrder[planePrimitiveCount];                                  \
+		m_buildPrimitiveOrder[planePrimitiveCount] = m_buildPrimitiveOrder[m_buildPrimitiveCount];                     \
+		m_buildPrimitiveOrder[m_buildPrimitiveCount] = removedPrimitive;                                               \
+		planePrimitiveCount--;                                                                                         \
+		m_buildPrimitiveCount--;                                                                                       \
+		removedPrimitive = m_buildPrimitiveOrder[lhsIndex];                                                            \
+		m_buildPrimitiveOrder[lhsIndex] = m_buildPrimitiveOrder[planePrimitiveCount];                                  \
+		m_buildPrimitiveOrder[planePrimitiveCount] = m_buildPrimitiveOrder[m_buildPrimitiveCount];                     \
+		m_buildPrimitiveOrder[m_buildPrimitiveCount] = removedPrimitive;                                               \
+		rhsIndex = lhsIndex;                                                                                           \
+		GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);                                          \
+	} while (0)
+
+	LegoS32 i;
+	LegoU16 splitFirstIndex;
+	LegoU16 splitSecondIndex;
+	LegoFloat leftScale;
+	LegoFloat rightScale;
+	BuildPrimitive* primitive;
+	BuildPrimitive* outsidePrimitive;
+	BuildPrimitive* swappedPrimitive;
+	BuildPrimitiveBounds swappedBounds;
+	BuildVertex* firstLowVertex;
+	BuildVertex* firstHighVertex;
+	BuildVertex* secondLowVertex;
+	BuildVertex* secondHighVertex;
+	BuildVertex splitVertex;
+
+	{
+		LegoS32 planePrimitiveCount = 0;
+		for (i = 0; i < m_buildPrimitiveCount; i++) {
+			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
+			if ((primitive->m_flags & 0x89) == 0x89 && primitive->m_vertexCount == 4) {
+				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
+				m_buildPrimitiveOrder[planePrimitiveCount - 1] = primitive;
+			}
+		}
+
+		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+			BuildPrimitiveBounds lhsBounds;
+			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
+
+			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+				BuildPrimitiveBounds rhsBounds;
+				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
+
+				LegoFloat planeDelta = lhsBounds.m_minZ - rhsBounds.m_minZ;
+				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
+				if (g_carBuildModelNegativePlaneEpsilon < planeDelta && planeDelta < g_minAudibleSoundVolume &&
+					lhs->m_partIndex != rhs->m_partIndex && lhsBounds.m_minX < rhsBounds.m_maxX &&
+					rhsBounds.m_minX < lhsBounds.m_maxX && lhsBounds.m_minY < rhsBounds.m_maxY &&
+					rhsBounds.m_minY < lhsBounds.m_maxY) {
+					CLIP_BUILD_PRIMITIVE_MIN(m_y, m_minY, m_maxY, m_x, SET_SPLIT_VERTEX_POSITION_Y);
+					CLIP_BUILD_PRIMITIVE_MAX(m_y, m_minY, m_maxY, m_x, SET_SPLIT_VERTEX_POSITION_Y);
+					CLIP_BUILD_PRIMITIVE_MIN(m_x, m_minX, m_maxX, m_y, SET_SPLIT_VERTEX_POSITION_X);
+					CLIP_BUILD_PRIMITIVE_MAX(m_x, m_minX, m_maxX, m_y, SET_SPLIT_VERTEX_POSITION_X);
+					REMOVE_MATCHED_BUILD_PRIMITIVES();
+				}
+			}
+		}
+	}
+
+	{
+		LegoS32 planePrimitiveCount = 0;
+		for (i = 0; i < m_buildPrimitiveCount; i++) {
+			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
+			if ((primitive->m_flags & 0x85) == 0x85 && primitive->m_vertexCount == 4) {
+				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
+				m_buildPrimitiveOrder[planePrimitiveCount - 1] = primitive;
+			}
+		}
+
+		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+			BuildPrimitiveBounds lhsBounds;
+			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
+
+			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+				BuildPrimitiveBounds rhsBounds;
+				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
+
+				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
+				if (lhsBounds.m_minY == rhsBounds.m_minY && lhs->m_partIndex != rhs->m_partIndex &&
+					lhsBounds.m_minX < rhsBounds.m_maxX && rhsBounds.m_minX < lhsBounds.m_maxX &&
+					lhsBounds.m_minZ < rhsBounds.m_maxZ && rhsBounds.m_minZ < lhsBounds.m_maxZ) {
+					CLIP_BUILD_PRIMITIVE_MIN(m_z, m_minZ, m_maxZ, m_x, SET_SPLIT_VERTEX_POSITION_Z);
+					CLIP_BUILD_PRIMITIVE_MAX(m_z, m_minZ, m_maxZ, m_x, SET_SPLIT_VERTEX_POSITION_Z);
+					CLIP_BUILD_PRIMITIVE_MIN(m_x, m_minX, m_maxX, m_z, SET_SPLIT_VERTEX_POSITION_X);
+					CLIP_BUILD_PRIMITIVE_MAX(m_x, m_minX, m_maxX, m_z, SET_SPLIT_VERTEX_POSITION_X);
+					REMOVE_MATCHED_BUILD_PRIMITIVES();
+				}
+			}
+		}
+	}
+
+	LegoS32 result = m_buildPrimitiveCount;
+	{
+		LegoS32 planePrimitiveCount = 0;
+		for (i = 0; i < result; i++) {
+			BuildPrimitive* primitive = m_buildPrimitiveOrder[i];
+			if ((primitive->m_flags & 0x83) == 0x83 && primitive->m_vertexCount == 4) {
+				m_buildPrimitiveOrder[i] = m_buildPrimitiveOrder[planePrimitiveCount++];
+				m_buildPrimitiveOrder[planePrimitiveCount - 1] = primitive;
+			}
+			result = m_buildPrimitiveCount;
+		}
+
+		for (LegoS32 lhsIndex = 0; lhsIndex < planePrimitiveCount - 1; lhsIndex++) {
+			BuildPrimitiveBounds lhsBounds;
+			GetBuildPrimitiveBounds(m_buildPrimitiveOrder[lhsIndex], &lhsBounds);
+
+			for (LegoS32 rhsIndex = lhsIndex + 1; rhsIndex < planePrimitiveCount; rhsIndex++) {
+				BuildPrimitiveBounds rhsBounds;
+				GetBuildPrimitiveBounds(m_buildPrimitiveOrder[rhsIndex], &rhsBounds);
+
+				BuildPrimitive* lhs = m_buildPrimitiveOrder[lhsIndex];
+				BuildPrimitive* rhs = m_buildPrimitiveOrder[rhsIndex];
+				if (lhsBounds.m_minX == rhsBounds.m_minX && lhs->m_partIndex != rhs->m_partIndex &&
+					lhsBounds.m_minY < rhsBounds.m_maxY && rhsBounds.m_minY < lhsBounds.m_maxY &&
+					lhsBounds.m_minZ < rhsBounds.m_maxZ && rhsBounds.m_minZ < lhsBounds.m_maxZ) {
+					CLIP_BUILD_PRIMITIVE_MIN(m_z, m_minZ, m_maxZ, m_y, SET_SPLIT_VERTEX_POSITION_Z);
+					CLIP_BUILD_PRIMITIVE_MAX(m_z, m_minZ, m_maxZ, m_y, SET_SPLIT_VERTEX_POSITION_Z);
+					CLIP_BUILD_PRIMITIVE_MIN(m_y, m_minY, m_maxY, m_z, SET_SPLIT_VERTEX_POSITION_Y);
+					CLIP_BUILD_PRIMITIVE_MAX(m_y, m_minY, m_maxY, m_z, SET_SPLIT_VERTEX_POSITION_Y);
+					REMOVE_MATCHED_BUILD_PRIMITIVES();
+				}
+			}
+
+			result = planePrimitiveCount - 1;
+		}
+	}
+
+#undef REMOVE_MATCHED_BUILD_PRIMITIVES
+#undef CLIP_BUILD_PRIMITIVE_MAX
+#undef CLIP_BUILD_PRIMITIVE_MIN
+#undef SET_SPLIT_VERTEX_POSITION_Z
+#undef SET_SPLIT_VERTEX_POSITION_Y
+#undef SET_SPLIT_VERTEX_POSITION_X
+#undef ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MAX
+#undef ALLOCATE_OUTSIDE_BUILD_PRIMITIVE_MIN
+#undef ROTATE_BUILD_PRIMITIVE_TO_MAX
+#undef ROTATE_BUILD_PRIMITIVE_TO_MIN
+#undef SWAP_ACTIVE_BUILD_PRIMITIVES
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x004972a0
+void CarBuildModel::InterpolateBuildVertex(
+	BuildVertex* p_dest,
+	BuildVertex* p_left,
+	BuildVertex* p_right,
+	LegoFloat p_leftScale,
+	LegoFloat p_rightScale
+)
+{
+	LegoFloat leftX = p_left->m_textureCoordinate.m_x;
+	LegoFloat rightX = p_right->m_textureCoordinate.m_x;
+	p_dest->m_textureCoordinate.m_x = leftX * p_leftScale + rightX * p_rightScale;
+
+	LegoFloat leftY = p_left->m_textureCoordinate.m_y;
+	LegoFloat rightY = p_right->m_textureCoordinate.m_y;
+	p_dest->m_textureCoordinate.m_y = leftY * p_leftScale + rightY * p_rightScale;
+
+	p_dest->m_normalX = static_cast<LegoS8>(p_left->m_normalX * p_leftScale + p_right->m_normalX * p_rightScale);
+	p_dest->m_normalY = static_cast<LegoS8>(p_left->m_normalY * p_leftScale + p_right->m_normalY * p_rightScale);
+	p_dest->m_normalZ = static_cast<LegoS8>(p_left->m_normalZ * p_leftScale + p_right->m_normalZ * p_rightScale);
 }
 
 // STUB: LEGORACERS 0x00497360
-void CarBuildModel::FUN_00497360(LegoU8)
+LegoS32 CarBuildModel::FUN_00497360(LegoS8 p_buildFlags)
 {
-	STUB(0x00497360);
-}
+	::memset(g_carBuildModelVertexUses, 0, sizeof(g_carBuildModelVertexUses));
 
-// STUB: LEGORACERS 0x00497690
-void CarBuildModel::FUN_00497690(LegoU8 p_buildFlags)
-{
-	STUB(0x00497690);
+	LegoS32 primitiveIndex = 0;
+	LegoS32 previousMaterialIndex = -1;
+	LegoS32 accumulatedReferenceCount = 0;
+	m_batchVertexCount = 0;
 
-	LegoS32 i;
+	LegoS32 vertexCount = 2;
+	LegoS32 materialRunEnd = primitiveIndex;
+	LegoS32 currentMaterialIndex = previousMaterialIndex;
+	LegoS32 lastPrimitiveIndex = m_buildPrimitiveCount - 1;
 
-	for (i = m_unk0x1ebc; i < c_buildPrimitiveCapacity; i++) {
-		m_unk0x1e38[i] = &m_unk0x1e34[i];
+	if (lastPrimitiveIndex <= 0) {
+		return lastPrimitiveIndex;
 	}
 
-	g_carBuildModelSortVertices = m_unk0x1e30;
+	while (TRUE) {
+		LegoS32 batchVertexCount = m_batchVertexCount;
+		LegoS32 bestAddedVertexCount = 0x42;
+		LegoS32 bestPrimitiveIndex = 0;
+
+		if (batchVertexCount) {
+			BuildPrimitive** primitiveOrder = m_buildPrimitiveOrder;
+			if (previousMaterialIndex == primitiveOrder[primitiveIndex]->m_materialIndex) {
+				LegoS32 searchEnd;
+				if (p_buildFlags & 0x80) {
+					searchEnd = materialRunEnd;
+				}
+				else {
+					searchEnd = primitiveIndex + c_modelBatchVertexCapacity;
+					if (searchEnd > materialRunEnd) {
+						searchEnd = materialRunEnd;
+					}
+				}
+
+				for (LegoS32 candidate = primitiveIndex; candidate < searchEnd; candidate++) {
+					BuildPrimitive* primitive = primitiveOrder[candidate];
+					LegoS32 addedVertexCount = primitive->m_vertexCount;
+					vertexCount = addedVertexCount;
+
+					for (LegoS32 i = 0; i < vertexCount; i++) {
+						if (g_carBuildModelVertexUses[primitive->m_vertexIndices[i]].m_inBatch) {
+							addedVertexCount--;
+						}
+					}
+
+					if (addedVertexCount == 0) {
+						bestPrimitiveIndex = candidate;
+						bestAddedVertexCount = 0;
+						candidate = m_buildPrimitiveCount;
+					}
+					else if (addedVertexCount < bestAddedVertexCount) {
+						bestAddedVertexCount = addedVertexCount;
+						bestPrimitiveIndex = candidate;
+					}
+				}
+			}
+		}
+
+		if (previousMaterialIndex != m_buildPrimitiveOrder[primitiveIndex]->m_materialIndex) {
+			if (batchVertexCount > 0) {
+				for (LegoS32 i = 0; i < m_batchVertexCount; i++) {
+					g_carBuildModelVertexUses[m_batchBuildVertexIndices[i]].m_inBatch = FALSE;
+				}
+			}
+
+			currentMaterialIndex = m_buildPrimitiveOrder[primitiveIndex]->m_materialIndex;
+			materialRunEnd = primitiveIndex;
+			if (materialRunEnd < m_buildPrimitiveCount) {
+				while (TRUE) {
+					BuildPrimitive* primitive = m_buildPrimitiveOrder[materialRunEnd];
+					if (currentMaterialIndex != primitive->m_materialIndex) {
+						break;
+					}
+
+					vertexCount = primitive->m_vertexCount;
+					for (LegoS32 i = 0; i < vertexCount; i++) {
+						g_carBuildModelVertexUses[primitive->m_vertexIndices[i]].m_referenceCount++;
+					}
+
+					materialRunEnd++;
+					if (materialRunEnd >= m_buildPrimitiveCount) {
+						break;
+					}
+				}
+			}
+		}
+
+		if (static_cast<LegoU32>(bestAddedVertexCount + m_batchVertexCount) > c_modelBatchVertexCapacity) {
+			bestPrimitiveIndex = 0;
+			LegoS32 bestReferenceCount = 0x7fffffff;
+			for (LegoS32 candidate = primitiveIndex; candidate < materialRunEnd; candidate++) {
+				BuildPrimitive* primitive = m_buildPrimitiveOrder[candidate];
+
+				if (vertexCount > 0) {
+					for (LegoS32 i = 0; i < vertexCount; i++) {
+						accumulatedReferenceCount +=
+							g_carBuildModelVertexUses[primitive->m_vertexIndices[i]].m_referenceCount;
+					}
+				}
+
+				if (accumulatedReferenceCount < bestReferenceCount) {
+					bestReferenceCount = accumulatedReferenceCount;
+					bestPrimitiveIndex = candidate;
+				}
+			}
+
+			if (m_batchVertexCount > 0) {
+				for (LegoS32 i = 0; i < m_batchVertexCount; i++) {
+					g_carBuildModelVertexUses[m_batchBuildVertexIndices[i]].m_inBatch = FALSE;
+				}
+			}
+			m_batchVertexCount = 0;
+		}
+
+		if (bestPrimitiveIndex) {
+			BuildPrimitive* primitive = m_buildPrimitiveOrder[primitiveIndex];
+			m_buildPrimitiveOrder[primitiveIndex] = m_buildPrimitiveOrder[bestPrimitiveIndex];
+			m_buildPrimitiveOrder[bestPrimitiveIndex] = primitive;
+		}
+
+		BuildPrimitive* primitive = m_buildPrimitiveOrder[primitiveIndex];
+		for (LegoS32 i = 0; i < primitive->m_vertexCount; i++) {
+			LegoS32 vertexIndex = primitive->m_vertexIndices[i];
+			g_carBuildModelVertexUses[vertexIndex].m_referenceCount--;
+			if (!g_carBuildModelVertexUses[vertexIndex].m_inBatch) {
+				g_carBuildModelVertexUses[vertexIndex].m_inBatch = TRUE;
+				m_batchBuildVertexIndices[m_batchVertexCount] = vertexIndex;
+				m_batchVertexCount++;
+			}
+		}
+
+		primitiveIndex++;
+		if (primitiveIndex >= m_buildPrimitiveCount - 1) {
+			return m_buildPrimitiveCount - 1;
+		}
+		previousMaterialIndex = currentMaterialIndex;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00497690
+void CarBuildModel::FUN_00497690(LegoU8 p_buildFlags)
+{
+	LegoS32 i;
+
+	for (i = m_buildPrimitiveCount; i < c_buildPrimitiveCapacity; i++) {
+		m_buildPrimitiveOrder[i] = &m_buildPrimitives[i];
+	}
+
+	g_carBuildModelSortVertices = m_buildVertices;
 
 	if (p_buildFlags & c_finalizeResolveIntersectionsFlag) {
 		FUN_00495440();
@@ -314,36 +820,37 @@ void CarBuildModel::FUN_00497690(LegoU8 p_buildFlags)
 	}
 
 	if (p_buildFlags & c_finalizeCullSingleMaterialFlag) {
-		for (i = 0; i < m_unk0x1ebc; i++) {
-			BuildPrimitive* primitive = m_unk0x1e38[i];
-			if (primitive->m_unk0x06 == 1) {
-				m_unk0x1ebc--;
-				m_unk0x1e38[i] = m_unk0x1e38[m_unk0x1ebc];
-				m_unk0x1e38[m_unk0x1ebc] = primitive;
+		for (i = 0; i < m_buildPrimitiveCount; i++) {
+			if (m_buildPrimitiveOrder[i]->m_commandFlags == c_buildPrimitiveCommandMaterial1) {
+				m_buildPrimitiveCount--;
 				i--;
+				BuildPrimitive* primitive = m_buildPrimitiveOrder[i + 1];
+				m_buildPrimitiveOrder[i + 1] = m_buildPrimitiveOrder[m_buildPrimitiveCount];
+				m_buildPrimitiveOrder[m_buildPrimitiveCount] = primitive;
 			}
 		}
 	}
 
-	for (i = 0; i < m_unk0x1ebc; i++) {
-		BuildPrimitive* primitive = m_unk0x1e38[i];
-		if (primitive->m_vertexCount == 4) {
-			primitive->m_vertexCount = 3;
+	LegoS32 splitPrimitiveCount = m_buildPrimitiveCount;
+	for (i = 0; i < splitPrimitiveCount; i++) {
+		if (m_buildPrimitiveOrder[i]->m_vertexCount == 4) {
+			m_buildPrimitiveOrder[i]->m_vertexCount = 3;
 
-			BuildPrimitive* splitPrimitive = m_unk0x1e38[m_unk0x1ebc];
-			*splitPrimitive = *primitive;
-			splitPrimitive->m_vertexIndices[0] = primitive->m_vertexIndices[2];
-			splitPrimitive->m_vertexIndices[2] = primitive->m_vertexIndices[3];
-			m_unk0x1ebc++;
+			*m_buildPrimitiveOrder[m_buildPrimitiveCount] = *m_buildPrimitiveOrder[i];
+			m_buildPrimitiveOrder[m_buildPrimitiveCount]->m_vertexIndices[0] =
+				m_buildPrimitiveOrder[i]->m_vertexIndices[2];
+			m_buildPrimitiveOrder[m_buildPrimitiveCount]->m_vertexIndices[2] =
+				m_buildPrimitiveOrder[i]->m_vertexIndices[3];
+			m_buildPrimitiveCount++;
 
-			if (m_unk0x1ebc >= c_buildPrimitiveCapacity) {
+			if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {
 				m_unk0xdc |= c_buildStatusOverflow;
 				return;
 			}
 		}
 	}
 
-	::qsort(m_unk0x1e38, m_unk0x1ebc, sizeof(BuildPrimitive*), ComparePrimitiveDrawOrder);
+	::qsort(m_buildPrimitiveOrder, m_buildPrimitiveCount, sizeof(BuildPrimitive*), ComparePrimitiveDrawOrder);
 
 	if (p_buildFlags & c_finalizePostSortFlag) {
 		FUN_00497360(p_buildFlags);
@@ -599,13 +1106,13 @@ void CarBuildModel::Placement::FUN_004997e0()
 void CarBuildModel::Placement::SetPiece(
 	LegoPieceLibrary::PieceRecord* p_pieceRecord,
 	LegoS32 p_unk0x08,
-	LegoS32 p_unk0x0c
+	LegoS32 p_partType
 )
 {
 	m_width = p_pieceRecord->GetWidth();
 	m_height = p_pieceRecord->GetHeight();
 	m_colorRecordIndex = p_unk0x08;
-	m_unk0x14 = p_unk0x0c;
+	m_partType = p_partType;
 
 	if (m_pieceRecord == NULL) {
 		m_anchor = 0;
@@ -849,7 +1356,7 @@ void CarBuildModel::Placement::SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_
 	m_y = p_y;
 	m_rotation = p_rotation & 3;
 	m_anchor = p_anchor & 3;
-	SetPiece(m_pieceRecord, m_colorRecordIndex, m_unk0x14);
+	SetPiece(m_pieceRecord, m_colorRecordIndex, m_partType);
 }
 
 // FUNCTION: LEGORACERS 0x00415f40 FOLDED
@@ -888,9 +1395,9 @@ CarBuildModel::CarBuildModel()
 {
 	m_pieceList.m_pieceGrid = &m_pieceGrid;
 	m_pieceGrid.m_pieceList = &m_pieceList;
-	m_unk0x1e30 = NULL;
-	m_unk0x1e34 = NULL;
-	m_unk0x1e38 = NULL;
+	m_buildVertices = NULL;
+	m_buildPrimitives = NULL;
+	m_buildPrimitiveOrder = NULL;
 	::memset(m_batchVertexSlotByBuildVertex, 0, sizeof(m_batchVertexSlotByBuildVertex));
 	Reset();
 }
@@ -936,24 +1443,24 @@ void CarBuildModel::FUN_00499f00()
 // FUNCTION: LEGORACERS 0x00499f20
 void CarBuildModel::AllocateBuffers()
 {
-	m_unk0x1e30 = new BuildVertex[c_buildVertexCapacity];
-	m_unk0x1e34 = new BuildPrimitive[c_buildPrimitiveCapacity];
-	m_unk0x1e38 = new BuildPrimitive*[c_buildPrimitiveCapacity];
+	m_buildVertices = new BuildVertex[c_buildVertexCapacity];
+	m_buildPrimitives = new BuildPrimitive[c_buildPrimitiveCapacity];
+	m_buildPrimitiveOrder = new BuildPrimitive*[c_buildPrimitiveCapacity];
 
 	for (LegoS32 i = 0; i < c_buildVertexCapacity; i++) {
-		m_unk0x1e30[i].m_index = static_cast<LegoU16>(i);
+		m_buildVertices[i].m_index = static_cast<LegoU16>(i);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00499f80
 void CarBuildModel::FreeBuffers()
 {
-	delete[] m_unk0x1e30;
-	delete[] m_unk0x1e34;
-	delete[] m_unk0x1e38;
-	m_unk0x1e30 = NULL;
-	m_unk0x1e34 = NULL;
-	m_unk0x1e38 = NULL;
+	delete[] m_buildVertices;
+	delete[] m_buildPrimitives;
+	delete[] m_buildPrimitiveOrder;
+	m_buildVertices = NULL;
+	m_buildPrimitives = NULL;
+	m_buildPrimitiveOrder = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00499fc0
@@ -1103,30 +1610,34 @@ void CarBuildModel::FUN_0049a290(GolModelBase* p_model)
 	m_modelTriangles = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
 }
 
-// STUB: LEGORACERS 0x0049a300
+// FUNCTION: LEGORACERS 0x0049a300
 void CarBuildModel::FUN_0049a300(GolModelBase* p_model)
 {
-	STUB(0x0049a300);
-
 	LegoU32 groupIndex = m_modelGroupCount;
+	LegoU32 batchVertexCount = m_batchVertexCount;
+	LegoU32 batchFirstVertex = m_batchFirstVertex;
 	m_modelGroupCount++;
 
-	LegoU32* groups = p_model->GetMutableGroups();
-	groups[groupIndex] = ((m_batchVertexCount + 0xffff) << 16) & 0x003f0000;
-	groups[groupIndex] |= m_batchFirstVertex & 0xffff;
+	p_model->GetMutableGroups()[groupIndex] = 0;
+	p_model->GetMutableGroups()[groupIndex] |= ((batchVertexCount + 0xffff) << 16) & 0x003f0000;
+	p_model->GetMutableGroups()[groupIndex] |= batchFirstVertex & 0xffff;
 	p_model->SetDirty(TRUE);
 
-	groupIndex = m_modelGroupCount;
+	LegoU32 batchTriangleCount = m_batchTriangleCount;
+	LegoU32 groupIndex2 = m_modelGroupCount;
+	LegoU32 batchFirstTriangle = m_batchFirstTriangle;
 	m_modelGroupCount++;
-	groups[groupIndex] = 0x20000000;
-	groups[groupIndex] |= (m_batchTriangleCount & 0x7f) << 16;
-	groups[groupIndex] |= m_batchFirstTriangle & 0xffff;
+	p_model->GetMutableGroups()[groupIndex2] = 0x20000000;
+	p_model->GetMutableGroups()[groupIndex2] |= (batchTriangleCount & 0x7f) << 16;
+	p_model->GetMutableGroups()[groupIndex2] |= batchFirstTriangle & 0xffff;
 	p_model->SetDirty(TRUE);
 
+	LegoU32 modelTriangleCount = m_modelTriangleCount;
 	m_batchVertexCount = 0;
 	m_batchTriangleCount = 0;
-	m_batchFirstVertex = m_modelVertexCount;
-	m_batchFirstTriangle = m_modelTriangleCount;
+	LegoU32 modelVertexCount = m_modelVertexCount;
+	m_batchFirstVertex = modelVertexCount;
+	m_batchFirstTriangle = modelTriangleCount;
 }
 
 // FUNCTION: LEGORACERS 0x0049a3e0
@@ -1152,169 +1663,313 @@ LegoS16 CarBuildModel::FUN_0049a450(
 	LegoS32 p_rotation,
 	LegoS32 p_height,
 	LegoS32 p_colorRecordIndex,
-	LegoS32 p_partIndex
+	LegoU16 p_partIndex
 )
 {
-	STUB(0x0049a450);
-
-	if (m_unk0x1ebc >= c_buildPrimitiveCapacity || p_pieceRecord->m_baseOffset == 0) {
-		if (m_unk0x1ebc >= c_buildPrimitiveCapacity) {
-			m_unk0xdc |= c_buildStatusOverflow;
-		}
-		return 0;
-	}
-
-	LegoPieceLibrary* library = p_pieceRecord->m_library;
-	const LegoU16* cursor = library->GetIndexCursor(p_pieceRecord->m_unk0x18);
-	LegoS32 remaining = p_pieceRecord->m_baseOffset;
-	LegoS32 rotation = p_rotation & 3;
-	LegoFloat xOrigin = static_cast<LegoFloat>(p_x);
-	LegoFloat yOrigin = static_cast<LegoFloat>(p_y);
-	LegoFloat zOrigin = static_cast<LegoFloat>(p_height);
-	LegoFloat width = static_cast<LegoFloat>(p_pieceRecord->GetWidth());
-	LegoFloat height = static_cast<LegoFloat>(p_pieceRecord->GetHeight());
-	LegoS32 colorMaterialIndex =
-		m_verdantTide != NULL ? m_verdantTide->GetMaterialIndexForColorRecord(p_colorRecordIndex) : p_colorRecordIndex;
 	BuildPrimitive* primitive = NULL;
-	LegoBool32 hasNormalIndex = FALSE;
-	LegoBool32 hasTextureIndex = FALSE;
-	LegoBool32 hasSharedNormalIndex = FALSE;
+	LegoFloat sourceX;
+	LegoFloat sourceY;
+	LegoFloat sourceZ;
+	LegoS32 i;
 	LegoS32 normalIndex = -1;
-	LegoS16 result = 0;
+	LegoBool32 hasTextureIndex = FALSE;
+	LegoBool32 hasNormalIndex = FALSE;
+	LegoS32 result = m_buildPrimitiveCount;
 
-	while (remaining-- != 0 && !(m_unk0xdc & c_buildStatusOverflow)) {
-		LegoU16 command = *cursor++;
-		LegoS32 mode = command & c_indexCommandModeMask;
-		LegoS32 vertexCount = 3;
+	if (result < c_buildPrimitiveCapacity) {
+		LegoS32 colorMaterialIndex = m_verdantTide->GetMaterialIndexForColorRecord(p_colorRecordIndex);
+		LegoFloat xOrigin = static_cast<LegoFloat>(p_x);
+		LegoFloat yOrigin = static_cast<LegoFloat>(p_y);
+		LegoFloat zOrigin = static_cast<LegoFloat>(p_height);
+		LegoS32 rotation = p_rotation & 3;
+		LegoPieceLibrary* library = p_pieceRecord->m_library;
 
-		if (mode == c_indexCommandMode0x2000) {
-			if (primitive == NULL) {
-				continue;
-			}
+		BuildVertex vertex;
+		vertex.m_position.m_x = 0.0f;
+		vertex.m_position.m_y = 0.0f;
+		vertex.m_position.m_z = 0.0f;
+		vertex.m_textureCoordinate.m_x = 0.0f;
+		vertex.m_textureCoordinate.m_y = 0.0f;
+		vertex.m_normalX = 127;
+		vertex.m_normalY = 0;
+		vertex.m_normalZ = 0;
 
-			primitive->m_vertexCount = 4;
-			vertexCount = 1;
-		}
-		else {
-			if (m_unk0x1ebc >= c_buildPrimitiveCapacity) {
-				m_unk0xdc |= c_buildStatusOverflow;
-				break;
-			}
+		LegoFloat width = static_cast<LegoFloat>(p_pieceRecord->GetWidth());
+		LegoFloat pieceHeight = static_cast<LegoFloat>(p_pieceRecord->GetHeight());
+		LegoS32 remaining = p_pieceRecord->m_indexCommandCount;
+		const LegoU16* cursor = library->GetIndexCursor(p_pieceRecord->m_indexOffset);
 
-			primitive = &m_unk0x1e34[m_unk0x1ebc];
-			m_unk0x1e38[m_unk0x1ebc] = primitive;
-			m_unk0x1ebc++;
+		if (remaining != 0) {
+			do {
+				LegoS32 primitiveCount = m_buildPrimitiveCount;
+				LegoU32 command = *cursor++;
+				LegoS32 mode = command & c_indexCommandModeMask;
 
-			hasTextureIndex = mode == c_indexCommandMode0x1000;
-			hasNormalIndex = (command >> 14) & 1;
-			hasSharedNormalIndex = (command >> 15) & 1;
+				if (mode == c_indexCommandMode0x2000) {
+					m_buildPrimitiveCount = primitiveCount - 1;
+					primitive->m_vertexCount = 4;
 
-			LegoU16 materialIndex = command & 0x07ff;
-			primitive->m_vertexCount = 3;
-			primitive->m_flags = 0x0f;
-			primitive->m_unk0x04 = static_cast<undefined2>(p_partIndex);
-			primitive->m_unk0x06 = command & 0x0fff;
+					LegoS32 coordinateIndex = *cursor++;
+					if (!library->IsColorBlack(coordinateIndex)) {
+						primitive->m_flags &= ~c_buildPrimitiveFlagAllBlack;
+					}
 
-			if (materialIndex < 3) {
-				if (!m_unk0xd9 && m_unk0xdb && materialIndex == 2) {
-					primitive->m_materialIndex = static_cast<LegoU16>(colorMaterialIndex + 1);
+					library->GetColor(coordinateIndex, &sourceX, &sourceY, &sourceZ);
+
+					switch (rotation) {
+					case 0:
+						vertex.m_position.m_x = sourceX + xOrigin;
+						vertex.m_position.m_y = sourceY + yOrigin;
+						break;
+					case 1:
+						vertex.m_position.m_x = sourceY + xOrigin;
+						vertex.m_position.m_y = (width - sourceX) + yOrigin;
+						break;
+					case 2:
+						vertex.m_position.m_x = (width - sourceX) + xOrigin;
+						vertex.m_position.m_y = (pieceHeight - sourceY) + yOrigin;
+						break;
+					case 3:
+						vertex.m_position.m_x = (pieceHeight - sourceY) + xOrigin;
+						vertex.m_position.m_y = sourceX + yOrigin;
+						break;
+					}
+					vertex.m_position.m_z = sourceZ + zOrigin;
+
+					LegoFloat missingX =
+						m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_x +
+						m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_x -
+						(vertex.m_position.m_x + m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_x);
+					LegoFloat missingY =
+						m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_y +
+						m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_y -
+						(vertex.m_position.m_y + m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_y);
+					LegoFloat missingZ =
+						m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_z +
+						m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_z -
+						(vertex.m_position.m_z + m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_z);
+
+					if (missingX == 0.0f && missingY == 0.0f && missingZ == 0.0f) {
+						primitive->m_flags |= c_buildPrimitiveFlagParallelogram;
+					}
+
+					if (vertex.m_position.m_x != m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_x ||
+						vertex.m_position.m_x != m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_x ||
+						vertex.m_position.m_x != m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_x) {
+						primitive->m_flags &= ~c_buildPrimitiveFlagSameX;
+					}
+					if (vertex.m_position.m_y != m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_y ||
+						vertex.m_position.m_y != m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_y ||
+						vertex.m_position.m_y != m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_y) {
+						primitive->m_flags &= ~c_buildPrimitiveFlagSameY;
+					}
+					if (vertex.m_position.m_z != m_buildVertices[primitive->m_vertexIndices[0]].m_position.m_z ||
+						vertex.m_position.m_z != m_buildVertices[primitive->m_vertexIndices[1]].m_position.m_z ||
+						vertex.m_position.m_z != m_buildVertices[primitive->m_vertexIndices[2]].m_position.m_z) {
+						primitive->m_flags &= ~c_buildPrimitiveFlagSameZ;
+					}
+
+					if (hasNormalIndex) {
+						normalIndex = *cursor++;
+					}
+
+					const LegoU8* normal = library->GetColorTriple(normalIndex);
+					LegoS8 normalX = static_cast<LegoS8>(normal[0]);
+					LegoS8 normalY = static_cast<LegoS8>(normal[1]);
+					vertex.m_normalZ = static_cast<LegoS8>(normal[2]);
+
+					switch (rotation) {
+					case 0:
+						vertex.m_normalX = normalX;
+						vertex.m_normalY = normalY;
+						break;
+					case 1:
+						vertex.m_normalX = normalY;
+						vertex.m_normalY = -normalX;
+						break;
+					case 2:
+						vertex.m_normalX = -normalX;
+						vertex.m_normalY = -normalY;
+						break;
+					case 3:
+						vertex.m_normalX = -normalY;
+						vertex.m_normalY = normalX;
+						break;
+					}
+
+					if (hasTextureIndex) {
+						LegoS32 textureIndex = *cursor++;
+						library->GetTextureCoordinate(
+							textureIndex,
+							&vertex.m_textureCoordinate.m_x,
+							&vertex.m_textureCoordinate.m_y
+						);
+					}
+					else if (
+						!m_unk0xd9 && m_unk0xdb &&
+						(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
+						 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
+					) {
+						vertex.m_textureCoordinate.m_x =
+							(vertex.m_position.m_x - xOrigin) * g_carBuildModelTextureCoordinateScale;
+						vertex.m_textureCoordinate.m_y =
+							(vertex.m_position.m_y - yOrigin) * g_carBuildModelTextureCoordinateScale;
+					}
+					else {
+						vertex.m_textureCoordinate.m_x = 0.0f;
+						vertex.m_textureCoordinate.m_y = 0.0f;
+					}
+
+					if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {
+						m_unk0xdc |= c_buildStatusOverflow;
+						return static_cast<LegoS16>(m_buildPrimitiveCount);
+					}
+					primitive->m_vertexIndices[3] = AddBuildVertex(&vertex);
 				}
 				else {
-					primitive->m_materialIndex = static_cast<LegoU16>(colorMaterialIndex);
+					primitive = &m_buildPrimitives[primitiveCount];
+					m_buildPrimitiveOrder[primitiveCount] = primitive;
+
+					hasTextureIndex = mode == c_indexCommandMode0x1000;
+					hasNormalIndex = (command >> 14) & 1;
+					LegoBool32 hasSharedNormalIndex = (command >> 15) & 1;
+					LegoU16 commandFlags = command & c_buildPrimitiveCommandMask;
+					LegoU16 materialIndex = command & 0x07ff;
+
+					primitive->m_vertexCount = 3;
+					primitive->m_flags = c_buildPrimitiveInitialFlags;
+					primitive->m_commandFlags = commandFlags;
+					primitive->m_materialIndex = materialIndex;
+					primitive->m_partIndex = p_partIndex;
+
+					if (materialIndex >= 3) {
+						if (!m_unk0xd9 && m_unk0xdb && (command & c_buildPrimitiveCommandTextureBit)) {
+							primitive->m_materialIndex = materialIndex + 1;
+						}
+					}
+					else if (!m_unk0xd9 && m_unk0xdb && materialIndex == 2) {
+						primitive->m_materialIndex = static_cast<LegoU16>(colorMaterialIndex + 1);
+					}
+					else {
+						primitive->m_materialIndex = static_cast<LegoU16>(colorMaterialIndex);
+					}
+
+					LegoU16* vertexIndex = primitive->m_vertexIndices;
+					for (i = 0; i < 3; i++) {
+						LegoS32 coordinateIndex = *cursor++;
+						if (!library->IsColorBlack(coordinateIndex)) {
+							primitive->m_flags &= ~c_buildPrimitiveFlagAllBlack;
+						}
+
+						library->GetColor(coordinateIndex, &sourceX, &sourceY, &sourceZ);
+
+						switch (rotation) {
+						case 0:
+							vertex.m_position.m_x = sourceX + xOrigin;
+							vertex.m_position.m_y = sourceY + yOrigin;
+							break;
+						case 1:
+							vertex.m_position.m_x = sourceY + xOrigin;
+							vertex.m_position.m_y = (width - sourceX) + yOrigin;
+							break;
+						case 2:
+							vertex.m_position.m_x = (width - sourceX) + xOrigin;
+							vertex.m_position.m_y = (pieceHeight - sourceY) + yOrigin;
+							break;
+						case 3:
+							vertex.m_position.m_x = (pieceHeight - sourceY) + xOrigin;
+							vertex.m_position.m_y = sourceX + yOrigin;
+							break;
+						}
+						vertex.m_position.m_z = sourceZ + zOrigin;
+
+						for (LegoS32 j = 0; j < i; j++) {
+							if (vertex.m_position.m_x !=
+								m_buildVertices[primitive->m_vertexIndices[j]].m_position.m_x) {
+								primitive->m_flags &= ~c_buildPrimitiveFlagSameX;
+							}
+							if (vertex.m_position.m_y !=
+								m_buildVertices[primitive->m_vertexIndices[j]].m_position.m_y) {
+								primitive->m_flags &= ~c_buildPrimitiveFlagSameY;
+							}
+							if (vertex.m_position.m_z !=
+								m_buildVertices[primitive->m_vertexIndices[j]].m_position.m_z) {
+								primitive->m_flags &= ~c_buildPrimitiveFlagSameZ;
+							}
+						}
+
+						if (!hasSharedNormalIndex && (hasNormalIndex || i == 0)) {
+							normalIndex = *cursor++;
+						}
+
+						const LegoU8* normal = library->GetColorTriple(normalIndex);
+						LegoS8 normalX = static_cast<LegoS8>(normal[0]);
+						LegoS8 normalY = static_cast<LegoS8>(normal[1]);
+						vertex.m_normalZ = static_cast<LegoS8>(normal[2]);
+
+						switch (rotation) {
+						case 0:
+							vertex.m_normalX = normalX;
+							vertex.m_normalY = normalY;
+							break;
+						case 1:
+							vertex.m_normalX = normalY;
+							vertex.m_normalY = -normalX;
+							break;
+						case 2:
+							vertex.m_normalX = -normalX;
+							vertex.m_normalY = -normalY;
+							break;
+						case 3:
+							vertex.m_normalX = -normalY;
+							vertex.m_normalY = normalX;
+							break;
+						}
+
+						if (hasTextureIndex) {
+							LegoS32 textureIndex = *cursor++;
+							library->GetTextureCoordinate(
+								textureIndex,
+								&vertex.m_textureCoordinate.m_x,
+								&vertex.m_textureCoordinate.m_y
+							);
+						}
+						else if (
+							!m_unk0xd9 && m_unk0xdb &&
+							(primitive->m_commandFlags == c_buildPrimitiveCommandMaterial2 ||
+							 primitive->m_commandFlags & c_buildPrimitiveCommandTextureBit)
+						) {
+							vertex.m_textureCoordinate.m_x =
+								(vertex.m_position.m_x - xOrigin) * g_carBuildModelTextureCoordinateScale;
+							vertex.m_textureCoordinate.m_y =
+								(vertex.m_position.m_y - yOrigin) * g_carBuildModelTextureCoordinateScale;
+						}
+						else {
+							vertex.m_textureCoordinate.m_x = 0.0f;
+							vertex.m_textureCoordinate.m_y = 0.0f;
+						}
+
+						*vertexIndex = AddBuildVertex(&vertex);
+						vertexIndex++;
+					}
 				}
-			}
-			else if (!m_unk0xd9 && m_unk0xdb && (command & 0x0800)) {
-				primitive->m_materialIndex = materialIndex + 1;
-			}
-			else {
-				primitive->m_materialIndex = materialIndex;
-			}
+
+				LegoS32 newPrimitiveCount = m_buildPrimitiveCount + 1;
+				m_buildPrimitiveCount = newPrimitiveCount;
+				if (m_buildPrimitiveCount >= c_buildPrimitiveCapacity) {
+					m_unk0xdc |= c_buildStatusOverflow;
+					return static_cast<LegoS16>(newPrimitiveCount);
+				}
+
+				remaining--;
+			} while (remaining != 0);
 		}
 
-		for (LegoS32 i = 0; i < vertexCount; i++) {
-			LegoS32 coordinateIndex = *cursor++;
-			if (!library->IsColorBlack(coordinateIndex)) {
-				primitive->m_flags &= ~1;
-			}
-
-			LegoFloat sourceX;
-			LegoFloat sourceY;
-			LegoFloat sourceZ;
-			library->GetColor(coordinateIndex, &sourceX, &sourceY, &sourceZ);
-
-			BuildVertex vertex;
-			::memset(&vertex, 0, sizeof(vertex));
-
-			switch (rotation) {
-			case 1:
-				vertex.m_position.m_x = sourceY + xOrigin;
-				vertex.m_position.m_y = (width - sourceX) + yOrigin;
-				break;
-			case 2:
-				vertex.m_position.m_x = (width - sourceX) + xOrigin;
-				vertex.m_position.m_y = (height - sourceY) + yOrigin;
-				break;
-			case 3:
-				vertex.m_position.m_x = (height - sourceY) + xOrigin;
-				vertex.m_position.m_y = sourceX + yOrigin;
-				break;
-			default:
-				vertex.m_position.m_x = sourceX + xOrigin;
-				vertex.m_position.m_y = sourceY + yOrigin;
-				break;
-			}
-			vertex.m_position.m_z = sourceZ + zOrigin;
-
-			if (!hasSharedNormalIndex && (hasNormalIndex || i == 0)) {
-				normalIndex = *cursor++;
-			}
-
-			if (normalIndex >= 0) {
-				const LegoU8* normal = library->GetColorTriple(normalIndex);
-				LegoS8 normalX = static_cast<LegoS8>(normal[0]);
-				LegoS8 normalY = static_cast<LegoS8>(normal[1]);
-				vertex.m_normalZ = static_cast<LegoS8>(normal[2]);
-
-				switch (rotation) {
-				case 1:
-					vertex.m_normalX = normalY;
-					vertex.m_normalY = -normalX;
-					break;
-				case 2:
-					vertex.m_normalX = -normalX;
-					vertex.m_normalY = -normalY;
-					break;
-				case 3:
-					vertex.m_normalX = -normalY;
-					vertex.m_normalY = normalX;
-					break;
-				default:
-					vertex.m_normalX = normalX;
-					vertex.m_normalY = normalY;
-					break;
-				}
-			}
-
-			if (hasTextureIndex) {
-				LegoS32 textureIndex = *cursor++;
-				library->GetTextureCoordinate(
-					textureIndex,
-					&vertex.m_textureCoordinate.m_x,
-					&vertex.m_textureCoordinate.m_y
-				);
-			}
-			else if (!m_unk0xd9 && m_unk0xdb && (primitive->m_unk0x06 == 2 || (primitive->m_unk0x06 & 0x0800))) {
-				vertex.m_textureCoordinate.m_x = (vertex.m_position.m_x - xOrigin) * 0.5f;
-				vertex.m_textureCoordinate.m_y = (vertex.m_position.m_y - yOrigin) * 0.5f;
-			}
-
-			LegoS32 vertexIndex = mode == c_indexCommandMode0x2000 ? 3 : i;
-			primitive->m_vertexIndices[vertexIndex] = AddBuildVertex(&vertex);
-			result = primitive->m_vertexIndices[vertexIndex];
-		}
+		return static_cast<LegoS16>(remaining);
 	}
 
-	return result;
+	m_unk0xdc |= c_buildStatusOverflow;
+	return static_cast<LegoS16>(result);
 }
 
 // FUNCTION: LEGORACERS 0x0049ad00
@@ -1328,7 +1983,7 @@ void CarBuildModel::FindHighBasePiece()
 	}
 }
 
-// STUB: LEGORACERS 0x0049ad30
+// FUNCTION: LEGORACERS 0x0049ad30
 LegoS16 CarBuildModel::FUN_0049ad30(
 	LegoS32 p_x,
 	LegoS32 p_y,
@@ -1337,8 +1992,6 @@ LegoS16 CarBuildModel::FUN_0049ad30(
 	LegoS32 p_unk0x14
 )
 {
-	STUB(0x0049ad30);
-
 	LegoS32 colorRecordIndex;
 	if (p_unk0x14) {
 		colorRecordIndex = m_verdantTide->FindColorRecordIndexByMaterialIndex(p_unk0x14);
@@ -1376,11 +2029,9 @@ LegoS32 CarBuildModel::GetBatchVertexIndex(LegoS32 p_vertexIndex)
 	return -1;
 }
 
-// STUB: LEGORACERS 0x0049ade0
+// FUNCTION: LEGORACERS 0x0049ade0
 void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitive* p_primitive)
 {
-	STUB(0x0049ade0);
-
 	ColorRGBA color;
 	color.m_red = 0xff;
 	color.m_grn = 0xff;
@@ -1395,12 +2046,14 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 
 	LegoS32 batchIndices[4];
 	LegoS32 newVertexCount = 0;
-	LegoS32 i;
 
-	for (i = 0; i < p_primitive->m_vertexCount; i++) {
-		batchIndices[i] = GetBatchVertexIndex(p_primitive->m_vertexIndices[i]);
-		if (batchIndices[i] == -1) {
-			newVertexCount++;
+	{
+		LegoS32 i;
+		for (i = 0; i < p_primitive->m_vertexCount; i++) {
+			batchIndices[i] = GetBatchVertexIndex(p_primitive->m_vertexIndices[i]);
+			if (batchIndices[i] == -1) {
+				newVertexCount++;
+			}
 		}
 	}
 
@@ -1409,49 +2062,59 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 		return;
 	}
 
-	if (m_batchVertexCount + newVertexCount > c_modelBatchVertexCapacity) {
+	if (static_cast<LegoU32>(m_batchVertexCount + newVertexCount) > c_modelBatchVertexCapacity) {
 		FUN_0049a300(model);
-		for (i = 0; i < sizeOfArray(batchIndices); i++) {
-			batchIndices[i] = -1;
+		{
+			LegoS32 i;
+			for (i = 0; i < sizeOfArray(batchIndices); i++) {
+				batchIndices[i] = -1;
+			}
 		}
 	}
 
-	if (m_currentMaterialIndex != p_primitive->m_materialIndex) {
+	LegoU32 materialIndex = p_primitive->m_materialIndex;
+	if (m_currentMaterialIndex != materialIndex) {
 		if (m_batchTriangleCount) {
 			FUN_0049a300(model);
 		}
 
 		LegoU32 groupIndex = m_modelGroupCount++;
-		m_currentMaterialIndex = p_primitive->m_materialIndex;
-		model->GetMutableGroups()[groupIndex] = c_modelMaterialGroup | (m_currentMaterialIndex & 0x00ffffff);
+		m_currentMaterialIndex = materialIndex;
+		model->GetMutableGroups()[groupIndex] = c_modelMaterialGroup;
+		model->GetMutableGroups()[groupIndex] |= materialIndex & 0x00ffffff;
 		model->SetDirty(TRUE);
 
-		for (i = 0; i < sizeOfArray(batchIndices); i++) {
-			batchIndices[i] = -1;
+		{
+			LegoS32 i;
+			for (i = 0; i < sizeOfArray(batchIndices); i++) {
+				batchIndices[i] = -1;
+			}
 		}
 	}
 
-	for (i = 0; i < p_primitive->m_vertexCount; i++) {
-		if (batchIndices[i] == -1) {
-			LegoU16 buildVertexIndex = p_primitive->m_vertexIndices[i];
-			LegoU32 batchVertexIndex = m_batchVertexCount;
-			BuildVertex* buildVertex = &m_unk0x1e30[buildVertexIndex];
+	{
+		LegoS32 i;
+		for (i = 0; i < p_primitive->m_vertexCount; i++) {
+			if (batchIndices[i] == -1) {
+				LegoS32 buildVertexIndex = p_primitive->m_vertexIndices[i];
 
-			m_batchBuildVertexIndices[batchVertexIndex] = buildVertexIndex;
-			m_batchVertexSlotByBuildVertex[buildVertexIndex] = static_cast<LegoU8>(batchVertexIndex);
-			batchIndices[i] = batchVertexIndex;
-			m_batchVertexCount++;
+				m_batchBuildVertexIndices[m_batchVertexCount] = static_cast<LegoU16>(buildVertexIndex);
+				m_batchVertexSlotByBuildVertex[buildVertexIndex] = static_cast<LegoU8>(m_batchVertexCount);
+				batchIndices[i] = m_batchVertexCount;
+				m_batchVertexCount++;
 
-			m_modelVertices->VTable0x24(m_modelVertexCount, buildVertex->m_position);
+				BuildVertex* buildVertex = &m_buildVertices[buildVertexIndex];
+				m_modelVertices->VTable0x24(m_modelVertexCount, buildVertex->m_position);
 
-			GolVec3 normal;
-			normal.m_x = static_cast<LegoFloat>(buildVertex->m_normalX) * g_carBuildModelNormalScale;
-			normal.m_y = static_cast<LegoFloat>(buildVertex->m_normalY) * g_carBuildModelNormalScale;
-			normal.m_z = static_cast<LegoFloat>(buildVertex->m_normalZ) * g_carBuildModelNormalScale;
-			m_modelVertices->VTable0x2c(m_modelVertexCount, normal);
-			m_modelVertices->VTable0x28(m_modelVertexCount, buildVertex->m_textureCoordinate);
-			m_modelVertices->VTable0x30(m_modelVertexCount, color);
-			m_modelVertexCount++;
+				GolVec3 normal;
+				normal.m_x = static_cast<LegoFloat>(buildVertex->m_normalX) * g_carBuildModelNormalScale;
+				normal.m_y = static_cast<LegoFloat>(buildVertex->m_normalY) * g_carBuildModelNormalScale;
+				normal.m_z = static_cast<LegoFloat>(buildVertex->m_normalZ) * g_carBuildModelNormalScale;
+				m_modelVertices->VTable0x2c(m_modelVertexCount, normal);
+				m_modelVertices->VTable0x28(m_modelVertexCount, buildVertex->m_textureCoordinate);
+				m_modelVertices->VTable0x30(m_modelVertexCount, color);
+				m_modelVertexCount++;
+			}
 		}
 	}
 
@@ -1459,7 +2122,6 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 	indices->m_a = static_cast<LegoU8>(batchIndices[0]);
 	indices->m_b = static_cast<LegoU8>(batchIndices[1]);
 	indices->m_c = static_cast<LegoU8>(batchIndices[2]);
-	indices->m_x = 0;
 
 	if (p_primitive->m_vertexCount == 4) {
 		indices++;
@@ -1468,7 +2130,6 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 		indices->m_a = static_cast<LegoU8>(batchIndices[2]);
 		indices->m_b = static_cast<LegoU8>(batchIndices[1]);
 		indices->m_c = static_cast<LegoU8>(batchIndices[3]);
-		indices->m_x = 0;
 	}
 	else {
 		m_batchTriangleCount++;
@@ -1478,8 +2139,8 @@ void CarBuildModel::EmitPrimitiveToModel(GolModelEntity* p_entity, BuildPrimitiv
 // FUNCTION: LEGORACERS 0x0049b100
 void CarBuildModel::FUN_0049b100(GolModelEntity* p_entity)
 {
-	for (LegoS32 i = 0; i < m_unk0x1ebc; i++) {
-		EmitPrimitiveToModel(p_entity, m_unk0x1e38[i]);
+	for (LegoS32 i = 0; i < m_buildPrimitiveCount; i++) {
+		EmitPrimitiveToModel(p_entity, m_buildPrimitiveOrder[i]);
 		if (m_unk0xdc & 1) {
 			return;
 		}
@@ -1489,17 +2150,13 @@ void CarBuildModel::FUN_0049b100(GolModelEntity* p_entity)
 // STUB: LEGORACERS 0x0049b150
 LegoS32 CarBuildModel::ComparePrimitiveMaterial(const void* p_lhs, const void* p_rhs)
 {
-	STUB(0x0049b150);
-
-	const BuildPrimitive* rhs = *static_cast<BuildPrimitive* const*>(p_rhs);
 	const BuildPrimitive* lhs = *static_cast<BuildPrimitive* const*>(p_lhs);
-	LegoS32 result = lhs->m_materialIndex;
-	result -= rhs->m_materialIndex;
+	const BuildPrimitive* rhs = *static_cast<BuildPrimitive* const*>(p_rhs);
 
-	return result;
+	return lhs->m_materialIndex - rhs->m_materialIndex;
 }
 
-// STUB: LEGORACERS 0x0049b170
+// FUNCTION: LEGORACERS 0x0049b170
 LegoS32 CarBuildModel::FUN_0049b170(
 	GolModelEntity* p_entity,
 	LegoPieceLibrary::PieceRecord* p_pieceRecord,
@@ -1511,12 +2168,10 @@ LegoS32 CarBuildModel::FUN_0049b170(
 	LegoS32
 )
 {
-	STUB(0x0049b170);
-
 	GolModelBase* model = p_entity->GetModel(0);
 	LegoPieceLibrary::PieceRecord* pieceRecord = p_pieceRecord->GetVariant(1);
-	m_unk0xdb = m_unk0xda;
 	m_unk0xd9 = m_hasHighBasePiece;
+	m_unk0xdb = m_unk0xda;
 	m_unk0xde = 0xef;
 	m_unk0xdc = 0;
 
@@ -1525,7 +2180,7 @@ LegoS32 CarBuildModel::FUN_0049b170(
 	}
 
 	FUN_00495020();
-	m_unk0x1ebc = 0;
+	m_buildPrimitiveCount = 0;
 	FUN_0049a450(pieceRecord, p_x, p_y, p_rotation, p_height, p_colorRecordIndex, 0);
 
 	if (m_unk0xd9) {
@@ -1543,7 +2198,7 @@ LegoS32 CarBuildModel::FUN_0049b170(
 		for (LegoS32 x = 0; x < width; x++) {
 			for (LegoS32 y = 0; y < height; y++) {
 				LegoU8 cellFlags = pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation))->m_first;
-				if (static_cast<LegoS8>(cellFlags) < 0) {
+				if (cellFlags & 0x80) {
 					FUN_0049ad30(p_x + x, p_y + y, p_height + (cellFlags & 0x3f), p_colorRecordIndex, 0);
 				}
 			}
@@ -1552,10 +2207,10 @@ LegoS32 CarBuildModel::FUN_0049b170(
 
 	FUN_00497690(0xef);
 
-	for (LegoS32 i = 0; i < m_unk0x1ec0; i++) {
-		m_unk0x1e30[i].m_position.m_x += m_unk0x1f04;
-		m_unk0x1e30[i].m_position.m_y += m_unk0x1f08;
-		m_unk0x1e30[i].m_position.m_z = (m_unk0x1e30[i].m_position.m_z * 0.4f) + m_unk0x1f0c;
+	for (LegoS32 i = 0; i < m_buildVertexCount; i++) {
+		m_buildVertices[i].m_position.m_x += m_unk0x1f04;
+		m_buildVertices[i].m_position.m_y += m_unk0x1f08;
+		m_buildVertices[i].m_position.m_z = (m_buildVertices[i].m_position.m_z * 0.4f) + m_unk0x1f0c;
 	}
 
 	FUN_0049a290(model);
@@ -1569,8 +2224,8 @@ LegoS32 CarBuildModel::FUN_0049b170(
 void CarBuildModel::FUN_0049b340(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_rotation)
 {
 	LegoPieceLibrary* library = p_pieceRecord->m_library;
-	const LegoU16* indexCursor = library->GetIndexCursor(p_pieceRecord->m_unk0x18);
-	LegoS32 indexCount = p_pieceRecord->m_baseOffset;
+	const LegoU16* indexCursor = library->GetIndexCursor(p_pieceRecord->m_indexOffset);
+	LegoS32 indexCount = p_pieceRecord->m_indexCommandCount;
 	if (indexCount == 0) {
 		m_unk0x1f30 = 0.0f;
 		m_unk0x1f2c = 0.0f;
@@ -1595,7 +2250,7 @@ void CarBuildModel::FUN_0049b340(LegoPieceLibrary::PieceRecord* p_pieceRecord, L
 	LegoBool32 hasExtraIndex = FALSE;
 	LegoBool32 hasTextureIndex = FALSE;
 	do {
-		LegoU16 command = *indexCursor++;
+		LegoU32 command = *indexCursor++;
 		LegoS32 mode = command & c_indexCommandModeMask;
 		if (mode == c_indexCommandMode0x2000) {
 			library->GetColor(*indexCursor++, &x, &y, &z);
@@ -1716,38 +2371,43 @@ void CarBuildModel::FUN_0049b720()
 	m_unk0x1f0c = 0.0f;
 }
 
-// STUB: LEGORACERS 0x0049b740
-void CarBuildModel::FUN_0049b740(undefined4 p_unk0x04)
+// FUNCTION: LEGORACERS 0x0049b740
+void CarBuildModel::FUN_0049b740(LegoBool32 p_restoreCachedOffset)
 {
-	STUB(0x0049b740);
-
-	if (p_unk0x04 != NULL) {
+	if (p_restoreCachedOffset) {
 		FUN_0049b6f0(m_unk0x1f10, m_unk0x1f14, m_unk0x1f18);
 		return;
 	}
 
 	if (m_placedPieceCount) {
-		LegoPieceLibrary::PieceRecord* pieceRecord;
+		LegoS32 partType;
+		LegoPieceLibrary* library;
+		LegoS32 rotation;
 		LegoS32 x;
 		LegoS32 y;
 		LegoS32 height;
-		LegoS32 rotation;
 		LegoS32 colorRecordIndex;
-		LegoS32 partType;
+		LegoPieceLibrary::PieceRecord* pieceRecord;
 		FUN_0049bce0(0, &pieceRecord, &x, &y, &height, &rotation, &colorRecordIndex, &partType);
 
-		LegoS32 anchorColor = pieceRecord->FUN_0049f690();
-		if (anchorColor != 0xffff) {
-			pieceRecord->m_library->GetColor(anchorColor, &m_unk0x1f04, &m_unk0x1f08, &m_unk0x1f0c);
-			m_unk0x1f0c *= -0.4f;
+		library = pieceRecord->m_library;
+		partType = pieceRecord->FUN_0049f690();
+		if (partType != 0xffff) {
+			library->GetColor(partType, &m_unk0x1f04, &m_unk0x1f08, &m_unk0x1f0c);
+			m_unk0x1f0c *= g_carBuildModelNegativeHeightScale;
 			m_unk0x1f04 = -m_unk0x1f04;
 			m_unk0x1f08 = -m_unk0x1f08;
 		}
 		else {
 			FUN_0049b340(pieceRecord, rotation);
-			m_unk0x1f04 = -((m_unk0x1f20 + m_unk0x1f1c) * 0.5f) - static_cast<LegoFloat>(x);
-			m_unk0x1f08 = -((m_unk0x1f28 + m_unk0x1f24) * 0.5f) - static_cast<LegoFloat>(y);
-			m_unk0x1f0c = -m_unk0x1f2c - (static_cast<LegoFloat>(height) * 0.4f);
+			LegoFloat xOffset = static_cast<LegoFloat>(x);
+			m_unk0x1f04 = -((m_unk0x1f20 + m_unk0x1f1c) * 0.5f) - xOffset;
+
+			LegoFloat yOffset = static_cast<LegoFloat>(y);
+			m_unk0x1f08 = -((m_unk0x1f28 + m_unk0x1f24) * 0.5f) - yOffset;
+
+			LegoFloat heightOffset = static_cast<LegoFloat>(height);
+			m_unk0x1f0c = -m_unk0x1f2c - (heightOffset * g_carBuildModelHeightScale);
 		}
 	}
 	else {
@@ -1772,19 +2432,18 @@ void CarBuildModel::FUN_0049b8b0(LegoPieceLibrary::PieceRecord* p_pieceRecord, L
 // STUB: LEGORACERS 0x0049b920
 void CarBuildModel::FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags)
 {
-	STUB(0x0049b920);
-
 	LegoS32 activePieceCount = m_placedPieceCount;
+	LegoS32 i;
 	m_unk0xde = static_cast<LegoU16>(p_buildFlags);
 	m_pieceList.SetVariant(p_variant, TRUE);
 	m_unk0xdc = 0;
-	m_unk0x1ebc = 0;
+	m_buildPrimitiveCount = 0;
 
 	LegoU8 startFlags;
 	do {
 		FUN_00495020();
 		m_unk0xdc <<= 1;
-		m_unk0x1ebc = 0;
+		m_buildPrimitiveCount = 0;
 		if ((m_unk0xdc & 0xf8) && activePieceCount > 1) {
 			activePieceCount--;
 			m_unk0xdc &= 7;
@@ -1804,14 +2463,14 @@ void CarBuildModel::FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags)
 			m_unk0xdb = m_unk0xda;
 		}
 
-		for (LegoS32 i = 0; i < activePieceCount; i++) {
+		for (i = 0; i < activePieceCount; i++) {
 			PieceList::Entry0x1c* entry = &m_pieceList.m_entries[i];
 			LegoS32 x;
 			LegoS32 y;
 			LegoS32 height;
 			LegoS32 rotation;
 			entry->GetPlacement(&x, &y, &height, &rotation);
-			FUN_0049a450(entry->m_pieceRecord, x, y, rotation, height, entry->m_colorRecordIndex, entry->m_partType);
+			FUN_0049a450(entry->m_pieceRecord, x, y, rotation, height, entry->m_colorRecordIndex, i);
 		}
 
 		if (!(m_unk0xdc & 1)) {
@@ -1826,15 +2485,20 @@ void CarBuildModel::FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags)
 					FUN_00497690(static_cast<LegoU8>(p_buildFlags));
 				}
 				else {
-					::qsort(m_unk0x1e38, m_unk0x1ebc, sizeof(BuildPrimitive*), ComparePrimitiveMaterial);
+					::qsort(
+						m_buildPrimitiveOrder,
+						m_buildPrimitiveCount,
+						sizeof(BuildPrimitive*),
+						ComparePrimitiveMaterial
+					);
 				}
 			}
 
 			if (!(m_unk0xdc & 1)) {
-				for (LegoS32 i = 0; i < m_unk0x1ec0; i++) {
-					m_unk0x1e30[i].m_position.m_x += m_unk0x1f04;
-					m_unk0x1e30[i].m_position.m_y += m_unk0x1f08;
-					m_unk0x1e30[i].m_position.m_z = (m_unk0x1e30[i].m_position.m_z * 0.4f) + m_unk0x1f0c;
+				for (i = 0; i < m_buildVertexCount; i++) {
+					m_buildVertices[i].m_position.m_x = m_unk0x1f04 + m_buildVertices[i].m_position.m_x;
+					m_buildVertices[i].m_position.m_y += m_unk0x1f08;
+					m_buildVertices[i].m_position.m_z = (m_buildVertices[i].m_position.m_z * 0.4f) + m_unk0x1f0c;
 				}
 
 				FUN_0049a290(m_model);
@@ -1848,13 +2512,13 @@ void CarBuildModel::FUN_0049b920(LegoS32 p_variant, LegoU32 p_buildFlags)
 		m_unk0xdc |= 8;
 	}
 
-	if (m_verdantTide != NULL && m_unk0x1ebc != 0) {
+	if (m_verdantTide != NULL && m_buildPrimitiveCount != 0) {
 		m_verdantTide->ResetMaterialUsage();
-		m_currentMaterialIndex = m_unk0x1e38[0]->m_materialIndex;
+		m_currentMaterialIndex = m_buildPrimitiveOrder[0]->m_materialIndex;
 		m_verdantTide->MarkMaterialUsed(m_currentMaterialIndex);
 
-		for (LegoS32 i = 1; i < m_unk0x1ebc; i++) {
-			LegoU32 materialIndex = m_unk0x1e38[i]->m_materialIndex;
+		for (i = 1; i < m_buildPrimitiveCount; i++) {
+			LegoU32 materialIndex = m_buildPrimitiveOrder[i]->m_materialIndex;
 			if (m_currentMaterialIndex != materialIndex) {
 				m_currentMaterialIndex = materialIndex;
 				m_verdantTide->MarkMaterialUsed(materialIndex);
@@ -1956,91 +2620,99 @@ void CarBuildModel::FUN_0049bdd0(GolD3DRenderDevice* p_renderer, LegoFloat p_unk
 // FUNCTION: LEGORACERS 0x0049be50
 void CarBuildModel::FUN_0049be50(LegoS32 p_x, LegoS32 p_y)
 {
-	if (m_unk0x1fc8[p_x + 1][p_y + 1] & 0x10) {
-		m_unk0x1fc8[p_x + 1][p_y + 1] |= 0x20;
+	if (m_overlayCells[p_x + 1][p_y + 1].m_flags & c_overlayCellFlagOccupied) {
+		m_overlayCells[p_x + 1][p_y + 1].m_flags |= c_overlayCellFlagDraw;
 	}
 }
 
-// STUB: LEGORACERS 0x0049be70
-void CarBuildModel::FUN_0049be70(LegoBool p_unk0x04, LegoS32 p_height)
+// FUNCTION: LEGORACERS 0x0049be70
+void CarBuildModel::FUN_0049be70(LegoBool32 p_unk0x04, LegoS32 p_height)
 {
-	STUB(0x0049be70);
+	LegoS32 disabled = FALSE;
+	LegoS32 enabled = TRUE;
 
-	LegoBool useUpperTexCoord = p_unk0x04 & 1;
+	ColorRGBA color;
+	color.m_red = 0xff;
+	color.m_grn = 0xff;
+	color.m_blu = 0xff;
+	color.m_alp = 0xff;
+
+	p_unk0x04 &= enabled;
 	if (p_height < 0) {
 		p_height = m_unk0x2028;
 	}
 
 	FUN_0049a290(m_auxModel);
 
-	LegoU32 groupIndex = m_unk0x1ef0;
-	m_unk0x202c = 0;
-	m_unk0x1ef0++;
-	m_auxModel->GetMutableGroups()[groupIndex] = 0x80000001;
-	m_auxModel->SetDirty(TRUE);
+	LegoU32 groupIndex = m_modelGroupCount;
+	m_unk0x202c = disabled;
+	m_modelGroupCount++;
+	m_auxModel->GetMutableGroups()[groupIndex] = c_modelMaterialGroup;
+	m_auxModel->GetMutableGroups()[groupIndex] |= enabled;
+	m_auxModel->SetDirty(enabled);
 
-	LegoFloat z = (static_cast<LegoFloat>(p_height) * 0.4f) + m_unk0x1f0c;
-	GolVec3 normal;
-	normal.m_x = 0.0f;
-	normal.m_y = 0.0f;
-	normal.m_z = 1.0f;
+	GolVec3 position;
+	position.m_z = (static_cast<LegoFloat>(p_height) * 0.4f) + m_unk0x1f0c;
+	GolVec2 texCoord;
+	LegoS32 quadVertexCount = 4;
+	LegoS32 quadTriangleCount = 2;
 
-	for (LegoS32 x = 0; x < 12; x++) {
-		for (LegoS32 y = 0; y < 8; y++) {
-			if ((m_unk0x1fc8[x][y] & 0x10) && (m_unk0x1fc8[x][y] & 0x20)) {
-				if (m_batchVertexCount + 4 > 0x40) {
+	LegoS32 x = disabled;
+	for (; x < 12; x++) {
+		for (LegoS32 y = disabled; y < 8; y++) {
+			if ((m_overlayCells[x][y].m_flags & c_overlayCellFlagOccupied) &&
+				(m_overlayCells[x][y].m_flags & c_overlayCellFlagDraw)) {
+				if (static_cast<LegoU32>(m_batchVertexCount + quadVertexCount) > c_modelBatchVertexCapacity) {
 					m_unk0x202c += m_batchTriangleCount;
 					FUN_0049a300(m_auxModel);
 				}
 
-				GolVec3 position;
 				position.m_x = static_cast<LegoFloat>(x - 1) + m_unk0x1f04;
 				position.m_y = static_cast<LegoFloat>(y - 1) + m_unk0x1f08;
-				position.m_z = z;
-
-				GolVec2 texCoord;
 				texCoord.m_x = 0.5f;
-				texCoord.m_y = useUpperTexCoord ? 0.5f : 0.0f;
+				texCoord.m_y = 0.5f;
+				if (!p_unk0x04) {
+					texCoord.m_y = 0.0f;
+				}
 
-				LegoU32 vertexIndex = m_unk0x1ef8;
-				m_modelVertices->VTable0x24(vertexIndex, position);
-				m_modelVertices->VTable0x28(vertexIndex, texCoord);
-				m_modelVertices->VTable0x2c(vertexIndex, normal);
+				m_modelVertices->VTable0x24(m_modelVertexCount, position);
+				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
+				m_modelVertices->VTable0x30(m_modelVertexCount, color);
 
-				vertexIndex++;
+				m_modelVertexCount++;
 				position.m_x += 1.0f;
 				texCoord.m_x += 0.49f;
-				m_modelVertices->VTable0x24(vertexIndex, position);
-				m_modelVertices->VTable0x28(vertexIndex, texCoord);
-				m_modelVertices->VTable0x2c(vertexIndex, normal);
+				m_modelVertices->VTable0x24(m_modelVertexCount, position);
+				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
+				m_modelVertices->VTable0x30(m_modelVertexCount, color);
 
-				vertexIndex++;
+				m_modelVertexCount++;
 				position.m_y += 1.0f;
 				texCoord.m_y += 0.49f;
-				m_modelVertices->VTable0x24(vertexIndex, position);
-				m_modelVertices->VTable0x28(vertexIndex, texCoord);
-				m_modelVertices->VTable0x2c(vertexIndex, normal);
+				m_modelVertices->VTable0x24(m_modelVertexCount, position);
+				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
+				m_modelVertices->VTable0x30(m_modelVertexCount, color);
 
-				vertexIndex++;
+				m_modelVertexCount++;
 				position.m_x -= 1.0f;
 				texCoord.m_x -= 0.49f;
-				m_modelVertices->VTable0x24(vertexIndex, position);
-				m_modelVertices->VTable0x28(vertexIndex, texCoord);
-				m_modelVertices->VTable0x2c(vertexIndex, normal);
+				m_modelVertices->VTable0x24(m_modelVertexCount, position);
+				m_modelVertices->VTable0x28(m_modelVertexCount, texCoord);
+				m_modelVertices->VTable0x30(m_modelVertexCount, color);
 
-				m_modelTriangles[m_unk0x1ef4].m_a = static_cast<LegoU8>(m_batchVertexCount);
-				m_modelTriangles[m_unk0x1ef4].m_b = static_cast<LegoU8>(m_batchVertexCount + 1);
-				m_modelTriangles[m_unk0x1ef4].m_c = static_cast<LegoU8>(m_batchVertexCount + 3);
-				m_modelTriangles[m_unk0x1ef4].m_x = 0;
-				m_modelTriangles[m_unk0x1ef4 + 1].m_a = static_cast<LegoU8>(m_batchVertexCount + 3);
-				m_modelTriangles[m_unk0x1ef4 + 1].m_b = static_cast<LegoU8>(m_batchVertexCount + 1);
-				m_modelTriangles[m_unk0x1ef4 + 1].m_c = static_cast<LegoU8>(m_batchVertexCount + 2);
-				m_modelTriangles[m_unk0x1ef4 + 1].m_x = 0;
+				m_modelVertexCount++;
+				GdbModelIndexArray0xc::Indices* triangles = &m_modelTriangles[m_modelTriangleCount];
+				triangles[0].m_a = static_cast<LegoU8>(m_batchVertexCount);
+				triangles[0].m_b = static_cast<LegoU8>(m_batchVertexCount + 1);
+				triangles[0].m_c = static_cast<LegoU8>(m_batchVertexCount + 3);
+				triangles++;
+				triangles[0].m_a = static_cast<LegoU8>(m_batchVertexCount + 3);
+				triangles[0].m_b = static_cast<LegoU8>(m_batchVertexCount + 1);
+				triangles[0].m_c = static_cast<LegoU8>(m_batchVertexCount + 2);
 
-				m_batchVertexCount += 4;
-				m_unk0x1ef8 += 4;
-				m_unk0x1ef4 += 2;
-				m_batchTriangleCount += 2;
+				m_batchVertexCount += quadVertexCount;
+				m_modelTriangleCount += quadTriangleCount;
+				m_batchTriangleCount += quadTriangleCount;
 			}
 		}
 	}
@@ -2056,28 +2728,26 @@ void CarBuildModel::FUN_0049be70(LegoBool p_unk0x04, LegoS32 p_height)
 // STUB: LEGORACERS 0x0049c230
 void CarBuildModel::FUN_0049c230(Placement* p_placement, GolModelEntity* p_entity)
 {
-	STUB(0x0049c230);
-
 	GolModelBase* model = p_entity->GetModel(0);
-	::memset(m_unk0x1fc8, 0, sizeof(m_unk0x1fc8));
+	::memset(m_overlayCells, 0, sizeof(m_overlayCells));
 	FUN_0049b740(TRUE);
 
+	LegoS32 x;
+	LegoS32 entryHeight;
 	LegoPieceLibrary::PieceRecord* pieceRecord = p_placement->GetPieceRecord();
+	LegoS32 rotation;
 	if (pieceRecord != NULL) {
-		LegoS32 x;
 		LegoS32 y;
-		LegoS32 rotation;
 		p_placement->GetPlacement(&x, &y, &rotation);
 
-		FUN_0049b170(p_entity, pieceRecord, x, y, 21, rotation, p_placement->GetColorRecordIndex(), 239);
+		LegoS32 partType = p_placement->GetPartType();
+		LegoS32 colorRecordIndex = p_placement->GetColorRecordIndex();
+		FUN_0049b170(p_entity, pieceRecord, x, y, 21, rotation, colorRecordIndex, 239);
 
 		if (pieceRecord->m_pieceType == 0x7ff) {
 			LegoS32 entryIndex = FUN_0049bcc0(x, y);
 			if (entryIndex >= 0) {
-				LegoS32 height;
-				LegoS32 colorRecordIndex;
-				LegoS32 partType;
-				FUN_0049bce0(entryIndex, &pieceRecord, &x, &y, &height, &rotation, &colorRecordIndex, &partType);
+				FUN_0049bce0(entryIndex, &pieceRecord, &x, &y, &entryHeight, &rotation, &colorRecordIndex, &partType);
 				if (pieceRecord->m_pieceType < g_highPieceTypeBase) {
 					entryIndex = -1;
 				}
@@ -2086,29 +2756,30 @@ void CarBuildModel::FUN_0049c230(Placement* p_placement, GolModelEntity* p_entit
 			m_unk0x2028 = 18;
 			if (entryIndex < 0) {
 				p_placement->GetPlacement(&x, &y, &rotation);
-				m_unk0x1fc8[x + 1][y + 1] |= 0x30;
+				m_overlayCells[x + 1][y + 1].m_flags |= c_overlayCellFlagOccupiedDraw;
 				FUN_0049be70(FALSE, -1);
 				return;
 			}
 
+			LegoPieceLibrary::PieceRecord* overlayPieceRecord = pieceRecord;
 			LegoS32 width;
 			LegoS32 height;
 			if (rotation & 1) {
-				width = pieceRecord->GetHeight();
-				height = pieceRecord->GetWidth();
+				width = overlayPieceRecord->GetHeight();
+				height = overlayPieceRecord->GetWidth();
 			}
 			else {
-				width = pieceRecord->GetWidth();
-				height = pieceRecord->GetHeight();
+				width = overlayPieceRecord->GetWidth();
+				height = overlayPieceRecord->GetHeight();
 			}
 
 			for (LegoS32 i = 0; i < width; i++) {
 				for (LegoS32 j = 0; j < height; j++) {
 					LegoPieceLibrary::ShapeCell* cell = pieceRecord->GetCell(i, j, static_cast<LegoU8>(rotation));
 					if ((cell->m_first | cell->m_second) & 0x3f) {
-						m_unk0x1fc8[x + i + 1][y + j + 1] |= 0x10;
+						m_overlayCells[x + i + 1][y + j + 1].m_flags |= c_overlayCellFlagOccupied;
 						if (entryIndex != FUN_0049bcc0(x + i, y + j)) {
-							m_unk0x1fc8[x + i + 1][y + j + 1] |= 0x20;
+							m_overlayCells[x + i + 1][y + j + 1].m_flags |= c_overlayCellFlagDraw;
 						}
 					}
 				}
@@ -2117,26 +2788,27 @@ void CarBuildModel::FUN_0049c230(Placement* p_placement, GolModelEntity* p_entit
 		else {
 			m_unk0x2028 = 0;
 
+			LegoPieceLibrary::PieceRecord* overlayPieceRecord = pieceRecord;
 			LegoS32 width;
 			LegoS32 height;
 			if (rotation & 1) {
-				width = pieceRecord->GetHeight();
-				height = pieceRecord->GetWidth();
+				width = overlayPieceRecord->GetHeight();
+				height = overlayPieceRecord->GetWidth();
 			}
 			else {
-				width = pieceRecord->GetWidth();
-				height = pieceRecord->GetHeight();
+				width = overlayPieceRecord->GetWidth();
+				height = overlayPieceRecord->GetHeight();
 			}
 
 			for (LegoS32 i = 0; i < width; i++) {
 				for (LegoS32 j = 0; j < height; j++) {
 					LegoPieceLibrary::ShapeCell* cell = pieceRecord->GetCell(i, j, static_cast<LegoU8>(rotation));
 					if ((cell->m_first | cell->m_second) & 0x3f) {
-						m_unk0x1fc8[x + i + 1][y + j + 1] |= 0x10;
-						m_unk0x1fc8[x + i + 1][y + j + 2] |= 0x01;
-						m_unk0x1fc8[x + i + 2][y + j + 1] |= 0x02;
-						m_unk0x1fc8[x + i + 1][y + j] |= 0x04;
-						m_unk0x1fc8[x + i][y + j + 1] |= 0x08;
+						m_overlayCells[x + i + 1][y + j + 1].m_flags |= c_overlayCellFlagOccupied;
+						m_overlayCells[x + i + 1][y + j + 2].m_flags |= c_overlayCellFlag0x01;
+						m_overlayCells[x + i + 2][y + j + 1].m_flags |= c_overlayCellFlag0x02;
+						m_overlayCells[x + i + 1][y + j].m_flags |= c_overlayCellFlag0x04;
+						m_overlayCells[x + i][y + j + 1].m_flags |= c_overlayCellFlag0x08;
 
 						LegoS32 gridHeight = m_pieceGrid.m_entries[y + j + ((x + i) * m_pieceGrid.m_height)].m_height;
 						if (m_unk0x2028 < gridHeight) {
@@ -2162,25 +2834,26 @@ void CarBuildModel::FUN_0049c230(Placement* p_placement, GolModelEntity* p_entit
 	else {
 		FUN_0049a290(model);
 		FUN_0049a3e0(model);
-		FUN_0049a290(m_auxModel);
-		FUN_0049a3e0(m_auxModel);
+		GolModelBase* auxModel = m_auxModel;
+		FUN_0049a290(auxModel);
+		FUN_0049a3e0(auxModel);
 	}
 }
 
 // STUB: LEGORACERS 0x0049c6a0
 LegoS32 CarBuildModel::FUN_0049c6a0(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08, LegoFloat* p_unk0x0c)
 {
-	STUB(0x0049c6a0);
-
 	LegoS32 zTotal = 0;
 	LegoS32 yTotal = 0;
 	LegoS32 xTotal = 0;
 	LegoS32 result = 0;
 
-	LegoS32 remaining = m_pieceList.m_entryCount;
-	if (remaining > 0) {
-		PieceList::Entry0x1c* entry = m_pieceList.m_entries;
+	LegoS32 entryCount = m_pieceList.m_entryCount;
+	if (entryCount > 0) {
+		LegoS32 entryIndex = 0;
+		LegoS32 remaining = entryCount;
 		do {
+			PieceList::Entry0x1c* entry = &m_pieceList.m_entries[entryIndex];
 			LegoPieceLibrary::PieceRecord* pieceRecord = entry->m_pieceRecord;
 			if (pieceRecord->m_pieceType >= g_highPieceTypeBase) {
 				LegoS32 x;
@@ -2193,20 +2866,20 @@ LegoS32 CarBuildModel::FUN_0049c6a0(LegoFloat* p_unk0x04, LegoFloat* p_unk0x08, 
 				LegoS32 pieceY;
 				LegoS32 pieceZ;
 				LegoS32 count = pieceRecord->FUN_0049f560(x, y, height, rotation, &pieceX, &pieceY, &pieceZ);
+				result += count;
 				xTotal += pieceX;
 				yTotal += pieceY;
 				zTotal += pieceZ;
-				result += count;
 			}
 
-			entry++;
+			entryIndex++;
 		} while (--remaining != 0);
 	}
 
 	if (result) {
 		LegoFloat count = static_cast<LegoFloat>(result);
-		*p_unk0x04 = static_cast<LegoFloat>(xTotal) / count - 4.5f;
-		*p_unk0x08 = static_cast<LegoFloat>(yTotal) / count - 2.5f;
+		*p_unk0x04 = static_cast<LegoFloat>(xTotal) / count - g_carBuildModelCenterXOffset;
+		*p_unk0x08 = static_cast<LegoFloat>(yTotal) / count - g_carBuildModelCenterYOffset;
 		*p_unk0x0c = static_cast<LegoFloat>(zTotal) / count;
 	}
 	else {
@@ -2236,97 +2909,72 @@ void CarBuildModel::FUN_0049c820(LegoU8* p_dest)
 // STUB: LEGORACERS 0x0049c840
 void CarBuildModel::FUN_0049c840(GolModelBase* p_model, GolMaterialLibrary* p_materials, GolTextureList* p_textures)
 {
-	STUB(0x0049c840);
-
-	MaterialTable0x0c* materialTable = m_verdantTide->GetMaterialTable();
-	const LegoU32* sourceGroups = m_model->GetGroups();
-	LegoS32 materialCount = static_cast<LegoS32>(materialTable->m_count);
-	LegoU16 materialOrders[256];
-	LegoU8 materialUsed[256];
-
-	::memset(materialOrders, 0, sizeof(materialOrders));
-	::memset(materialUsed, 0, sizeof(materialUsed));
-
+	GdbVertexArray0xc* sourceVertices;
+	GdbVertexArray0xc* destVertices;
 	LegoS32 i;
-	LegoS32 usedMaterialCount = 0;
-	for (i = 0; i < static_cast<LegoS32>(m_unk0x1ef0); i++) {
-		LegoU32 group = sourceGroups[i];
-		if ((group & 0xe0000000) == 0x80000000) {
-			LegoU32 materialIndex = group & 0xffff;
-			if (!materialUsed[materialIndex]) {
-				materialUsed[materialIndex] = TRUE;
-				materialOrders[materialIndex] = static_cast<LegoU16>(usedMaterialCount);
-				usedMaterialCount++;
-			}
-		}
-	}
+	LegoS32 materialCount = m_verdantTide->GetMaterialCount();
+	const LegoColorTable::MaterialUsage* materialUsage = m_verdantTide->GetMaterialUsage();
+	ColorRGBA color;
+	MaterialTable0x0c* materialTable = m_verdantTide->GetMaterialTable();
+	GolModelBase* outputModel = p_model;
+	IGdbModelIndexArray0x8* sourceIndexArray;
+	IGdbModelIndexArray0x8* destIndexArray;
+	GolVec2 texCoord;
+	GolVec3 position;
+	GolVec3 normal;
+	DuskWindBananaRelicParams params;
 
-	LegoS32 textureIndex = 0;
 	LegoS32 outputMaterialIndex = 0;
+	LegoS32 textureIndex = 0;
 	for (i = 0; i < materialCount; i++) {
-		if (materialUsed[i]) {
+		if (materialUsage[i].m_used) {
 			DuskwindBananaRelic0x24* sourceMaterial =
 				static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(i));
 
-			DuskWindBananaRelicParams params;
 			sourceMaterial->CopyParamsTo(&params);
 			params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flagBit0;
 
 			DuskwindBananaRelic0x24* outputMaterial = p_materials->GetItem(outputMaterialIndex);
 			if (sourceMaterial->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
 				PurpleDune0x7c* outputTexture = p_textures->GetItem(textureIndex);
-				GoldDune0x38* sourceTexture = sourceMaterial->GetUnk0x04();
-				PurpleDune0x7c* sourcePurpleTexture = static_cast<PurpleDune0x7c*>(sourceTexture);
+				PurpleDune0x7c* sourceTexture = static_cast<PurpleDune0x7c*>(sourceMaterial->GetUnk0x04());
 
-				outputTexture->SetName(sourcePurpleTexture->GetName());
-				outputTexture->SetSourceTextureDefinition(
-					sourceTexture->GetUnk0x34(),
-					sourceTexture->GetUnk0x36(),
-					sourceTexture->GetColorKey()
-				);
+				outputTexture->CopySourceTextureDefinitionFrom(sourceTexture);
 				params.m_unk0x04 = outputTexture;
 				textureIndex++;
 			}
 
 			outputMaterial->FUN_100257e0(m_renderer, params);
-			p_model->GetMaterialTable()->SetPosition(outputMaterialIndex, outputMaterial);
+			outputModel->GetMaterialTable()->SetPosition(outputMaterialIndex, outputMaterial);
 			outputMaterialIndex++;
 		}
 	}
 
-	LegoU32* destGroups = p_model->GetMutableGroups();
 	for (i = 0; i < static_cast<LegoS32>(m_unk0x1ef0); i++) {
-		LegoU32 group = sourceGroups[i];
+		LegoU32 group = m_model->GetGroups()[i];
 		if ((group & 0xe0000000) == 0x80000000) {
 			LegoU32 materialIndex = group & 0xffff;
-			destGroups[i] = 0x80000000 | (materialOrders[materialIndex] & 0xffffff);
-			p_model->SetDirty(TRUE);
+			outputModel->GetMutableGroups()[i] = 0x80000000;
+			outputModel->GetMutableGroups()[i] |= materialUsage[materialIndex].m_order & 0xffffff;
+			outputModel->SetDirty(TRUE);
 		}
 		else {
-			destGroups[i] = group;
+			outputModel->GetMutableGroups()[i] = group;
 		}
 	}
 
-	IGdbModelIndexArray0x8* sourceIndexArray;
-	IGdbModelIndexArray0x8* destIndexArray;
+	m_model->VTable0x28(&sourceVertices);
 	m_model->VTable0x30(&sourceIndexArray);
-	p_model->VTable0x30(&destIndexArray);
 	const GdbModelIndexArray0xc::Indices* sourceIndices =
 		static_cast<GdbModelIndexArray0xc*>(sourceIndexArray)->GetIndices();
+
+	outputModel->VTable0x28(&destVertices);
+	outputModel->VTable0x30(&destIndexArray);
 	GdbModelIndexArray0xc::Indices* destIndices =
 		static_cast<GdbModelIndexArray0xc*>(destIndexArray)->GetMutableIndices();
 	::memcpy(destIndices, sourceIndices, sizeof(*destIndices) * m_unk0x1ef4);
 
-	GdbVertexArray0xc* sourceVertices;
-	GdbVertexArray0xc* destVertices;
-	m_model->VTable0x28(&sourceVertices);
-	p_model->VTable0x28(&destVertices);
 	for (i = 0; i < static_cast<LegoS32>(m_unk0x1ef8); i++) {
-		GolVec3 position;
-		GolVec2 texCoord;
-		GolVec3 normal;
-		ColorRGBA color;
-
 		sourceVertices->VTable0x14(i, &position);
 		destVertices->VTable0x24(i, position);
 		sourceVertices->VTable0x18(i, &texCoord);
@@ -2339,8 +2987,8 @@ void CarBuildModel::FUN_0049c840(GolModelBase* p_model, GolMaterialLibrary* p_ma
 
 	m_model->VTable0x34(FALSE);
 	m_model->VTable0x2c(FALSE, FALSE);
-	p_model->VTable0x34(TRUE);
-	p_model->VTable0x2c(TRUE, TRUE);
+	outputModel->VTable0x34(TRUE);
+	outputModel->VTable0x2c(TRUE, TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x0049df20

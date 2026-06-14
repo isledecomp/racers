@@ -45,6 +45,8 @@ public:
 	LegoS32 FindColorRecordIndexByMaterialIndex(LegoS32 p_materialIndex) const;
 	LegoS32 GetUsedMaterialCount() const { return m_usedMaterialCount; }
 	LegoS32 GetTransparentMaterialCount() const { return m_transparentMaterialCount; }
+	LegoS32 GetMaterialCount() const { return m_materialCount; }
+	const MaterialUsage* GetMaterialUsage() const { return m_materialUsage; }
 	DuskwindBananaRelic0x24* GetMaterial(LegoU32 p_index) const
 	{
 		return m_materials != NULL ? m_materials->GetItem(p_index) : NULL;

@@ -34,13 +34,14 @@ public:
 
 	// SIZE 0x1c
 	struct PieceRecord {
+		PieceRecord();
 		~PieceRecord();
 
-		LegoS32 SetName(const LegoChar* p_name);
+		LegoS32 SetName(LegoChar* p_name);
 		LegoS32 GetWidth() const;
 		LegoS32 GetHeight() const;
 		LegoS32 GetMaxCellValue() const;
-		LegoS32 CompareName(const LegoChar* p_name) const;
+		LegoS32 CompareName(LegoChar* p_name);
 		PieceRecord* GetVariant(LegoS32 p_variant);
 		LegoS32 FUN_0049f690() const;
 		LegoS32 FUN_0049f560(
@@ -64,8 +65,8 @@ public:
 		undefined m_padding0x0f;     // 0x0f
 		ShapeCell* m_shapeData;      // 0x10
 		LegoU16 m_pieceType;         // 0x14
-		LegoU16 m_baseOffset;        // 0x16
-		LegoU32 m_unk0x18;           // 0x18
+		LegoU16 m_indexCommandCount; // 0x16
+		LegoU32 m_indexOffset;       // 0x18
 	};
 
 	// SIZE 0x06
@@ -93,8 +94,8 @@ public:
 	void GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, LegoFloat* p_v) const;
 	const LegoU8* GetColorTriple(LegoS32 p_index) const { return &m_colorTriples[p_index * 3]; }
 	const LegoU16* GetIndexCursor(LegoU32 p_index) const { return &m_indices[p_index]; }
-	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant) const;
-	PieceRecord* FindPieceRecordByName(const LegoChar* p_name) const;
+	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant);
+	PieceRecord* FindPieceRecordByName(LegoChar* p_name) const;
 	LegoS32 GetMaxHighPieceOffset() const { return m_maxHighPieceOffset; }
 
 private:

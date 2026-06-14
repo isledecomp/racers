@@ -52,6 +52,16 @@ public:
 	const GolName& GetName() const { return m_name; }
 	void SetName(const GolName& p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
 	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
+	void CopySourceTextureDefinitionFrom(const PurpleDune0x7c* p_texture)
+	{
+		::memcpy(m_name, p_texture->m_name, sizeof(m_name));
+		m_unk0x36 = p_texture->m_unk0x36;
+		m_unk0x34 = p_texture->m_unk0x34;
+		ColorRGBA colorKey = p_texture->m_colorKey;
+		m_unk0x36 |= GoldDune0x38::c_unk0x36Bit11;
+		m_colorKey = colorKey;
+		m_colorKey.m_alp = 0;
+	}
 	void CopyNameToBuffer(LegoChar* p_buffer) const
 	{
 		::memcpy(p_buffer, m_name, sizeof(m_name));

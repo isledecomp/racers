@@ -114,11 +114,9 @@ void ChassisModelTable::FUN_0041dae0()
 	}
 }
 
-// STUB: LEGORACERS 0x0041db10
-void ChassisModelTable::FUN_0041db10(const Params* p_params)
+// FUNCTION: LEGORACERS 0x0041db10
+LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
 {
-	STUB(0x0041db10);
-
 	if (m_items != NULL) {
 		Clear();
 	}
@@ -136,9 +134,6 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 	}
 	else {
 		parser = new CmbTxtParser;
-		if (parser == NULL) {
-			GOL_FATALERROR(c_golErrorOutOfMemory);
-		}
 	}
 
 	parser->OpenFileForRead(p_params->m_filename);
@@ -152,14 +147,15 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 		GolNameTable::Allocate(count);
 	}
 
-	if (p_params->m_instantiateCount != -1) {
-		m_instantiateCount = static_cast<LegoU32>(p_params->m_instantiateCount);
-	}
-	else {
+	if (p_params->m_instantiateCount == -1) {
 		m_instantiateCount = count;
 	}
+	else {
+		m_instantiateCount = static_cast<LegoU32>(p_params->m_instantiateCount);
+	}
 	::memset(m_items, 0, count * sizeof(Item));
-	for (LegoU32 i = 0; i < count; i++) {
+	LegoU32 i;
+	for (i = 0; i < count; i++) {
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 		GolName name;
 		::strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
@@ -175,6 +171,13 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 				break;
 			case GolFileParser::e_unknown0x29:
 				ParseVariantNames(parser, i, 1);
+				break;
+			case GolFileParser::e_unknown0x39:
+				::strncpy(
+					m_items[i].m_unk0x50,
+					parser->ReadStringWithMaxLength(sizeof(m_items[i].m_unk0x50)),
+					sizeof(m_items[i].m_unk0x50)
+				);
 				break;
 			case GolFileParser::e_unknown0x2a:
 				m_items[i].m_unk0xb8.m_x = parser->ReadFloat();
@@ -228,16 +231,6 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 			case GolFileParser::e_unknown0x33:
 				m_items[i].m_unk0xf4 = parser->ReadInteger();
 				break;
-			default:
-				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-				break;
-			case GolFileParser::e_unknown0x39:
-				::strncpy(
-					m_items[i].m_unk0x50,
-					parser->ReadStringWithMaxLength(sizeof(m_items[i].m_unk0x50)),
-					sizeof(m_items[i].m_unk0x50)
-				);
-				break;
 			case GolFileParser::e_unknown0x3a:
 				m_items[i].m_unk0x100 = static_cast<LegoU8>(parser->ReadInteger());
 				break;
@@ -247,6 +240,9 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 			case GolFileParser::e_unknown0x3c:
 				m_items[i].m_unk0x101 = static_cast<LegoU8>(parser->ReadInteger());
 				break;
+			default:
+				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
 			}
 		}
 		AddName(name, &m_items[i]);
@@ -254,11 +250,10 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 	parser->ReadRightCurly();
 	parser->Dispose();
 	delete parser;
-	if (m_instantiateCount == 0) {
-		m_instantiatedCount = 0;
-	}
-	else {
-		LegoU32 modelCount = 2 * m_instantiateCount;
+
+	LegoU32 result = m_instantiateCount;
+	if (result != 0) {
+		LegoU32 modelCount = 2 * result;
 		m_animatedEntities = new GolAnimatedEntity[modelCount];
 		if (m_animatedEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -283,14 +278,20 @@ void ChassisModelTable::FUN_0041db10(const Params* p_params)
 		if (m_modelParts == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-		for (LegoU32 i = 0; i < modelCount; i++) {
-			m_models[i] = NULL;
-			m_textureLists[i] = NULL;
-			m_materialLists[i] = NULL;
-			m_sceneNodes[i] = NULL;
+
+		result = 0;
+		if ((m_instantiateCount & 0x7fffffff) != 0) {
+			do {
+				result++;
+				m_models[result - 1] = NULL;
+				m_textureLists[result - 1] = NULL;
+				m_materialLists[result - 1] = NULL;
+			} while (result < 2 * m_instantiateCount);
 		}
-		m_instantiatedCount = 0;
 	}
+	m_instantiatedCount = 0;
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0041e210

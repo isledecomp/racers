@@ -81,7 +81,7 @@ private:
 	LegoBool32 FitsOutputModel() const;
 	void FUN_0049d600();
 	LegoBool32 FUN_0049d670(GolModelBase* p_model) const;
-	GolModelBase* FUN_0049d6e0(undefined2 p_vertexType);
+	GolModelBase* FUN_0049d6e0(undefined4 p_vertexType);
 	void CopyModelVertices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_vertexOffset);
 	void FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
 	void FUN_0049d920();

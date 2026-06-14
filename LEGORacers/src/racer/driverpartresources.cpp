@@ -183,8 +183,6 @@ static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
 // STUB: LEGORACERS 0x004981f0
 void DriverPartResources::NormalizeHeadGroupOrder()
 {
-	STUB(0x004981f0);
-
 	LegoS32 remainingModels = m_partResource->GetUnk0x54();
 	if (remainingModels > 0) {
 		GolAnimatedEntity* resourceModel = m_partResource->GetUnk0xa0();
@@ -201,10 +199,10 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 					DuskwindBananaRelic0x24* material =
 						static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(materialIndex));
 					if (material != NULL) {
-						GolName materialName;
-						::memcpy(materialName, material->GetName(), sizeof(materialName));
+						DuskWindName0x8 materialName;
+						materialName = material->GetNameRecord();
 
-						if (::strncmp(materialName, "face", sizeof(materialName)) == 0) {
+						if (::strncmp(materialName.m_unk0x0, "face", sizeof(GolName)) == 0) {
 							DuskwindBananaRelic0x24* firstMaterial =
 								static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
 							materialTable->SetPosition(0, material);

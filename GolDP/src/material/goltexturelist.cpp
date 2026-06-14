@@ -46,7 +46,7 @@ GolTextureList::~GolTextureList()
 	}
 }
 
-// STUB: GOLDP 0x1002b5a0
+// FUNCTION: GOLDP 0x1002b5a0
 void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary)
 {
 	if (m_renderer != NULL) {
@@ -88,15 +88,10 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 	AllocateItems();
 
 	for (LegoU32 i = 0; i < m_numItems; i++) {
-		GolName textureName = {0};
+		GolName textureName;
 		ColorRGBA colorKey;
-		LegoU16 mipmapCount = 0;
-		LegoU16 flags = 0;
-
-		colorKey.m_red = 0;
-		colorKey.m_grn = 0;
-		colorKey.m_blu = 0;
-		colorKey.m_alp = 0;
+		LegoU16 mipmapCount;
+		LegoU16 flags;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 		PurpleDune0x7c* texture = GetItem(i);
@@ -110,6 +105,12 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 		}
 
 		parser->ReadLeftCurly();
+		mipmapCount = 0;
+		flags = 0;
+		colorKey.m_red = 0;
+		colorKey.m_grn = 0;
+		colorKey.m_blu = 0;
+
 		for (GolFileParser::ParserTokenType token = parser->GetNextToken(); token != GolFileParser::e_rightCurly;
 			 token = parser->GetNextToken()) {
 			switch (token) {
@@ -146,7 +147,6 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 			}
 		}
 
-		flags |= GoldDune0x38::c_unk0x36Bit11;
 		texture->SetName(textureName);
 		texture->SetTextureDefinition(mipmapCount, flags, colorKey);
 	}
@@ -154,16 +154,20 @@ void GolTextureList::VTable0x24(GolD3DRenderDevice* p_renderer, const LegoChar* 
 	parser->ReadRightCurly();
 	parser->Dispose();
 
-	if (g_unk0x1005cf0c != 0) {
+	if (g_unk0x1005cf0c) {
 		LoadTextures();
 	}
 
 	delete parser;
 }
 
-// STUB: GOLDP 0x1002b890
+// FUNCTION: GOLDP 0x1002b890
 void GolTextureList::LoadTextures()
 {
+	MagentaRibbonSourceItem0x2c sourceItem;
+	GolSurfaceFormat textureFormat;
+	LegoChar textureName[sizeof(GolName) + 1];
+
 	if (m_unk0x14 != NULL) {
 		for (LegoU32 i = 0; i < m_numItems; i++) {
 			GoldDune0x38* texture = GetItem(i);
@@ -171,7 +175,6 @@ void GolTextureList::LoadTextures()
 				continue;
 			}
 
-			MagentaRibbonSourceItem0x2c sourceItem;
 			m_unk0x14->VTable0x00(i, &sourceItem);
 
 			LegoU16 flags = sourceItem.m_flags;
@@ -182,9 +185,9 @@ void GolTextureList::LoadTextures()
 				flags |= GoldDune0x38::c_unk0x36Bit7;
 			}
 
+			texture->SetTextureFlags(flags);
 			texture->SetSourceTextureDefinition(sourceItem.m_mipmapCount, flags, sourceItem.m_colorKey);
 
-			GolSurfaceFormat textureFormat;
 			m_renderer
 				->SelectTextureFormat(sourceItem.m_textureFormat, &textureFormat, flags & GoldDune0x38::c_unk0x36Bit5);
 			VTable0x18(i, textureFormat, sourceItem.m_width, sourceItem.m_height);
@@ -203,15 +206,18 @@ void GolTextureList::LoadTextures()
 			continue;
 		}
 
-		LegoChar textureName[sizeof(GolName) + 1];
-		texture->CopyNameToBuffer(textureName);
-		if (textureName[0] == '\0') {
+		const GolName& sourceName = texture->GetName();
+		if (sourceName[0] == '\0') {
 			continue;
 		}
 
-		GolImgFile* imageFile = &g_unk0x10063ca0;
-		if (texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit3) {
-			imageFile = &g_unk0x10064280;
+		::memcpy(textureName, sourceName, sizeof(GolName));
+		textureName[sizeof(GolName)] = '\0';
+
+		LegoU8 textureFlags = static_cast<LegoU8>(texture->GetUnk0x36());
+		GolImgFile* imageFile = &g_unk0x10064280;
+		if (!(textureFlags & GoldDune0x38::c_unk0x36Bit3)) {
+			imageFile = &g_unk0x10063ca0;
 		}
 
 		imageFile->VTable0x08(textureName);

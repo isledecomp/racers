@@ -85,6 +85,11 @@ LegoS32 LegoPieceLibrary::ShapeCell::FUN_0049eae0()
 	return (this[index].m_second << 8) + this[index].m_first;
 }
 
+// FUNCTION: LEGORACERS 0x0049eb10 FOLDED
+LegoPieceLibrary::PieceRecord::PieceRecord()
+{
+}
+
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 LegoPieceLibrary::PieceRecord::~PieceRecord()
 {
@@ -129,10 +134,8 @@ LegoS32 LegoPieceLibrary::PieceRecord::GetMaxCellValue() const
 }
 
 // STUB: LEGORACERS 0x0049eb90
-LegoS32 LegoPieceLibrary::PieceRecord::SetName(const LegoChar* p_name)
+LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 {
-	STUB(0x0049eb90);
-
 	LegoS32 length = 0;
 	LegoChar value = *p_name;
 
@@ -159,12 +162,10 @@ LegoS32 LegoPieceLibrary::PieceRecord::SetName(const LegoChar* p_name)
 }
 
 // STUB: LEGORACERS 0x0049ebf0
-LegoS32 LegoPieceLibrary::PieceRecord::CompareName(const LegoChar* p_name) const
+LegoS32 LegoPieceLibrary::PieceRecord::CompareName(LegoChar* p_name)
 {
-	STUB(0x0049ebf0);
-
 	LegoChar value = m_name[0];
-	const LegoChar* cursor = m_name;
+	LegoChar* cursor = m_name;
 
 	if (value) {
 		do {
@@ -294,8 +295,6 @@ void LegoPieceLibrary::GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, Leg
 // STUB: LEGORACERS 0x0049ee30
 LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary)
 {
-	STUB(0x0049ee30);
-
 	GolFileParser* parser;
 	if (p_binary) {
 		parser = new GolBinParser;
@@ -333,8 +332,8 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 				piece.SetName(parser->ReadString());
 				piece.m_pieceType = static_cast<LegoU16>(parser->ReadInteger());
 				piece.m_shapeData = &m_shapeData[parser->ReadInteger()];
-				piece.m_baseOffset = static_cast<LegoU16>(parser->ReadInteger());
-				piece.m_unk0x18 = parser->ReadInteger();
+				piece.m_indexCommandCount = static_cast<LegoU16>(parser->ReadInteger());
+				piece.m_indexOffset = parser->ReadInteger();
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -451,7 +450,7 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 
 	PieceRecord* highBasePiece = FindPieceRecord(g_highPieceTypeBase, 1);
 	if (highBasePiece != NULL) {
-		highPieceBaseOffset = highBasePiece->m_baseOffset;
+		highPieceBaseOffset = highBasePiece->m_indexCommandCount;
 	}
 
 	LegoS32 i;
@@ -459,7 +458,7 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 	LegoS32 y;
 	for (i = 0; i < m_pieceCount; i++) {
 		PieceRecord& piece = m_pieces[i];
-		LegoS32 offset = piece.m_baseOffset;
+		LegoS32 offset = piece.m_indexCommandCount;
 		for (y = 0; y < piece.GetHeight(); y++) {
 			for (x = 0; x < piece.GetWidth(); x++) {
 				if (static_cast<LegoS8>(piece.GetCell(x, y, 0)->m_first) < 0) {
@@ -505,17 +504,15 @@ static LegoS32 ComparePieceRecords(const void* p_lhs, const void* p_rhs)
 
 	LegoS32 result = lhs->m_pieceType - rhs->m_pieceType;
 	if (result == 0) {
-		result = lhs->m_baseOffset - rhs->m_baseOffset;
+		result = lhs->m_indexCommandCount - rhs->m_indexCommandCount;
 	}
 
 	return result;
 }
 
 // STUB: LEGORACERS 0x0049f460
-LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant) const
+LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant)
 {
-	STUB(0x0049f460);
-
 	PieceRecord* pieces = m_pieces;
 	if (pieces != NULL) {
 		LegoS32 count = m_pieceCount;
@@ -524,13 +521,12 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 			LegoS32 left = 0;
 			LegoS32 middle = count >> 1;
 			LegoS32 currentType = pieces[middle].m_pieceType;
-			LegoS32 pieceType = p_pieceType;
-			if (pieceType == currentType) {
+			if (p_pieceType == currentType) {
 				return pieces[middle].GetVariant(p_variant);
 			}
 
 			while (middle != left) {
-				if (pieceType >= currentType) {
+				if (p_pieceType >= currentType) {
 					left = middle;
 				}
 				else {
@@ -539,7 +535,7 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 
 				middle = (right + left) >> 1;
 				currentType = pieces[middle].m_pieceType;
-				if (pieceType == currentType) {
+				if (p_pieceType == currentType) {
 					return pieces[middle].GetVariant(p_variant);
 				}
 			}
@@ -550,7 +546,7 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 }
 
 // FUNCTION: LEGORACERS 0x0049f4e0
-LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecordByName(const LegoChar* p_name) const
+LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecordByName(LegoChar* p_name) const
 {
 	for (LegoS32 i = 0; i < m_pieceCount; i++) {
 		if (m_pieces[i].CompareName(p_name) == 0) {
@@ -575,7 +571,7 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::PieceRecord::GetVariant(LegoS32
 	return &firstVariant[p_variant];
 }
 
-// STUB: LEGORACERS 0x0049f560
+// FUNCTION: LEGORACERS 0x0049f560
 LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
 	LegoS32 p_x,
 	LegoS32 p_y,
@@ -586,42 +582,55 @@ LegoS32 LegoPieceLibrary::PieceRecord::FUN_0049f560(
 	LegoS32* p_unk0x1c
 )
 {
-	STUB(0x0049f560);
+	LegoS32 result = 0;
 
-	*p_unk0x1c = 0;
-	*p_unk0x18 = 0;
-	*p_unk0x14 = 0;
+	*p_unk0x1c = result;
+	PieceRecord* pieceRecord = this;
+	*p_unk0x18 = result;
+	*p_unk0x14 = result;
+	p_rotation &= 3;
 
-	LegoS32 rotation = p_rotation & 3;
 	LegoS32 width;
 	LegoS32 height;
-	if (rotation & 1) {
+	if (p_rotation & 1) {
 		width = GetHeight();
-		height = GetWidth();
+		height = pieceRecord->GetWidth();
 	}
 	else {
 		width = GetWidth();
-		height = GetHeight();
+		height = pieceRecord->GetHeight();
 	}
 
-	LegoS32 result = 0;
-	for (LegoS32 y = 0; y < height; y++) {
-		for (LegoS32 x = 0; x < width; x++) {
-			ShapeCell* cell = GetCell(x, y, static_cast<LegoU8>(rotation));
-			LegoS32 upper = cell->m_first & g_shapeCellValueMask;
-			LegoS32 lower = cell->m_second & g_shapeCellValueMask;
-			if (lower > upper) {
-				lower = 0;
+	LegoS32 y = 0;
+	LegoS32 yCount = height;
+	if (height > 0) {
+		do {
+			LegoS32 x = 0;
+			if (width > 0) {
+				LegoS32 yOffset = y + p_y;
+				do {
+					ShapeCell* cell = pieceRecord->GetCell(x, y, static_cast<LegoU8>(p_rotation));
+					LegoS32 lower = cell->m_second & g_shapeCellValueMask;
+					LegoS32 upper = cell->m_first & g_shapeCellValueMask;
+					if (lower > upper) {
+						lower = 0;
+					}
+
+					LegoS32 delta = upper - lower;
+					result += delta;
+					*p_unk0x14 += delta * (x + p_x);
+					*p_unk0x18 += delta * yOffset;
+					for (LegoS32 z = lower; z < upper; z++) {
+						*p_unk0x1c += z + p_height;
+					}
+
+					pieceRecord = this;
+					x++;
+				} while (x < width);
 			}
 
-			LegoS32 delta = upper - lower;
-			result += delta;
-			*p_unk0x14 += delta * (x + p_x);
-			*p_unk0x18 += delta * (y + p_y);
-			for (LegoS32 z = lower; z < upper; z++) {
-				*p_unk0x1c += z + p_height;
-			}
-		}
+			y++;
+		} while (y < yCount);
 	}
 
 	return result;

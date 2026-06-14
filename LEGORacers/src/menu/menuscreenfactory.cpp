@@ -164,7 +164,7 @@ MenuGameScreen* MenuScreenFactory::CreateScreen(LegoU16 p_menuId)
 	return screen;
 }
 
-// FUNCTION: LEGORACERS 0x0049eb10
+// FUNCTION: LEGORACERS 0x0049eb10 FOLDED
 MenuScreenFactory::MenuScreenFactory()
 {
 }

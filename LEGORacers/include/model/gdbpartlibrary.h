@@ -37,6 +37,7 @@ private:
 	void ReadParts(GolFileParser& p_parser);
 	void CopyPartGroupStart(GolD3DRenderDevice* p_renderer, LegoU32 p_groupIndex, const LegoChar* p_materialName);
 	void EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2);
+	LegoS32 FindCopyBatchVertex(LegoU32 p_sourceVertex);
 	LegoS32 CopyBatchVertex(LegoU32 p_sourceVertex);
 	void FlushCopyBatch();
 

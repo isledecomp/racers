@@ -795,10 +795,64 @@ void GolRenderDevice::VTable0xa4(GolWorldEntity* p_model)
 	}
 }
 
-// STUB: GOLDP 0x10029680
-void GolRenderDevice::VTable0xa0()
+// FUNCTION: GOLDP 0x10029680
+void GolRenderDevice::VTable0xa0(
+	GolWorldEntity* p_model,
+	const GolVec3* p_uAxis,
+	const GolVec3* p_vAxis,
+	const GolVec3* p_normal
+)
 {
-	STUB(0x10029680);
+	GolWorldEntity::ResultStruct result;
+	p_model->VTable0x14(m_unk0x4c, &result);
+	if (!result.m_visibility) {
+		return;
+	}
+
+	GolVec3 localRight;
+	GolVec3 localForward;
+	p_model->VTable0x48(&localRight, &localForward);
+
+	LegoFloat normalDotRight = p_normal->m_z * localRight.m_z;
+	normalDotRight += p_normal->m_y * localRight.m_y;
+	normalDotRight += p_normal->m_x * localRight.m_x;
+	GolVec3 scaledNormal;
+	scaledNormal.m_x = normalDotRight * p_normal->m_x;
+	scaledNormal.m_y = normalDotRight * p_normal->m_y;
+	scaledNormal.m_z = normalDotRight * p_normal->m_z;
+	GolVec3 projectedRight;
+	projectedRight.m_x = localRight.m_x - scaledNormal.m_x;
+	projectedRight.m_y = localRight.m_y - scaledNormal.m_y;
+	projectedRight.m_z = localRight.m_z - scaledNormal.m_z;
+
+	LegoFloat u;
+	LegoFloat v;
+	if (projectedRight.m_x == 0.0f && projectedRight.m_y == 0.0f && projectedRight.m_z == 0.0f) {
+		u = 0.0f;
+		v = 0.5f;
+	}
+	else {
+		GolMath::NormalizeVector3(projectedRight, &projectedRight);
+		LegoFloat uDot = p_uAxis->m_z * projectedRight.m_z;
+		uDot += p_uAxis->m_y * projectedRight.m_y;
+		uDot += p_uAxis->m_x * projectedRight.m_x;
+		u = g_arccosTable[static_cast<LegoS32>((uDot + 1.0f) * 511.5f)] * 0.31830987f;
+		u *= 0.5f;
+
+		LegoFloat vAxisDot = p_vAxis->m_z * projectedRight.m_z;
+		vAxisDot += p_vAxis->m_y * projectedRight.m_y;
+		vAxisDot += p_vAxis->m_x * projectedRight.m_x;
+		if (vAxisDot < 0.0f) {
+			u = 1.0f - u;
+		}
+
+		LegoFloat normalDotForward = p_normal->m_z * localForward.m_z;
+		normalDotForward += p_normal->m_y * localForward.m_y;
+		normalDotForward += p_normal->m_x * localForward.m_x;
+		v = g_arccosTable[static_cast<LegoS32>((normalDotForward + 1.0f) * 511.5f)] * 0.31830987f;
+	}
+
+	VTable0xa8(p_model, u, v);
 }
 
 // FUNCTION: GOLDP 0x10029840

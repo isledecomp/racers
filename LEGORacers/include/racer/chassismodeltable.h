@@ -41,7 +41,7 @@ public:
 		LegoBool32 m_binary;            // 0x10
 	};
 
-	void FUN_0041db10(const Params* p_params);
+	LegoU32 FUN_0041db10(const Params* p_params);
 	LegoU32 InstantiateModels(const LegoChar* p_name, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
 	void InstantiateAllModels();
 	GolAnimatedEntity* GetPrimaryModel(const LegoChar* p_name);

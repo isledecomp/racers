@@ -25,20 +25,20 @@ void RacerModelSlot::Reset()
 {
 	STUB(0x00487570);
 
+	undefined4 zero = 0;
 	::memset(&m_unk0x1c, 0, sizeof(m_unk0x1c));
 
-	GolVec3* vector = &m_unk0x88;
-	LegoS32 zero = 0;
+	undefined4* vector = m_unk0x88;
 	m_unk0x68 = NULL;
-	vector->m_x = static_cast<LegoFloat>(zero);
+	*vector++ = zero;
 	m_unk0x6c = NULL;
 	m_unk0x64 = NULL;
 	m_unk0x70.m_y = 0.0f;
-	vector->m_y = static_cast<LegoFloat>(zero);
+	*vector++ = zero;
 	m_unk0x70.m_x = 0.0f;
 	m_unk0x70.m_z = 1.0f;
 	m_unk0x84 = 0;
-	vector->m_z = static_cast<LegoFloat>(zero);
+	*vector = zero;
 	m_unk0x80 = 0;
 	m_unk0x7c = 0;
 	m_unk0x98 = 0;

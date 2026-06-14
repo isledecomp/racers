@@ -28,7 +28,9 @@ public:
 
 	const Indices* GetIndices() const { return m_unk0x08; }
 	Indices* GetMutableIndices() { return m_unk0x08; }
-	LegoU8* GetIndexBytes() const { return reinterpret_cast<LegoU8*>(m_unk0x08); }
+	const Indices* GetIndex(LegoU32 p_index) const { return m_unk0x08 + p_index; }
+	Indices* GetMutableIndex(LegoU32 p_index) { return m_unk0x08 + p_index; }
+	LegoU8* GetIndexBytes() const { return &m_unk0x08->m_a; }
 	void SetIndices(LegoU32 p_index, LegoU8 p_a, LegoU8 p_b, LegoU8 p_c)
 	{
 		m_unk0x08[p_index].m_a = p_a;

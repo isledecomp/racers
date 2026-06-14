@@ -234,9 +234,8 @@ LegoBool32 CarBuildScreenBase::VTable0x7c(Rect* p_clipRect, Rect* p_sourceRect)
 			m_unk0x3a4->MeasureString(m_unk0x3a0, &width, &fontHeight);
 			m_unk0x39c = 1;
 
-			m_unk0x398 = static_cast<LegoS32>(
-				::sqrt(static_cast<LegoFloat>(fontHeight + 1) * 3.0f * static_cast<LegoFloat>(width))
-			);
+			LegoFloat measuredWidth = static_cast<LegoFloat>(width);
+			m_unk0x398 = static_cast<LegoS32>(::sqrt((static_cast<LegoFloat>(fontHeight + 1) * 3.0f) * measuredWidth));
 
 			LegoS32 maxWidth = p_clipRect->m_right - (fontHeight * 2) - p_clipRect->m_left;
 			if (m_unk0x398 > maxWidth) {

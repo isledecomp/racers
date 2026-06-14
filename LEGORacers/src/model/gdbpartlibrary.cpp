@@ -51,8 +51,6 @@ static LegoU32 g_copyBatchIndexCount;
 // GLOBAL: LEGORACERS 0x004c2850
 static LegoU32 g_copyGroupWrite;
 
-static LegoS32 __stdcall FindCopyBatchVertex(LegoU32 p_sourceVertex);
-
 // FUNCTION: LEGORACERS 0x004075c0
 GdbPartLibrary::GdbPartLibrary()
 {
@@ -159,8 +157,6 @@ void GdbPartLibrary::Clear()
 // STUB: LEGORACERS 0x00407950
 void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
 {
-	STUB(0x00407950);
-
 	GdbPartDefinition* part = static_cast<GdbPartDefinition*>(GetName(p_name));
 	if (part == NULL) {
 		LegoChar message[64];
@@ -173,35 +169,26 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 	IGdbModelIndexArray0x8* indexArrayBase;
 	g_copyModel = p_model;
 	p_model->VTable0x28(&g_copyVertexArray);
-	p_model->VTable0x30(&indexArrayBase);
+	g_copyModel->VTable0x30(&indexArrayBase);
 	g_copyIndices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase)->GetMutableIndices();
 	g_copyBatchVertexStart = 0;
 	g_copyBatchVertexCount = 0;
 	g_copyIndexStart = 0;
 	g_copyBatchIndexCount = 0;
 	g_copyGroupWrite = 0;
-	p_model->SetScale(part->m_scale);
+	g_copyModel->SetScale(part->m_scale);
 
-	GolModelMaterialTable* materialTable = p_model->GetMaterialTable();
+	GolModelMaterialTable* materialTable = g_copyModel->GetMaterialTable();
 	if (materialTable->GetCount() < part->m_groupCount) {
-		if (materialTable->m_entries != NULL) {
-			delete[] materialTable->m_entries;
-			materialTable->m_entries = NULL;
-		}
-		materialTable->m_renderer = p_renderer;
-		materialTable->m_count = part->m_groupCount;
-		materialTable->m_entries = new void*[part->m_groupCount];
-		if (materialTable->m_entries == NULL) {
-			GOL_FATALERROR(c_golErrorOutOfMemory);
-		}
-		::memset(materialTable->m_entries, 0, sizeof(*materialTable->m_entries) * materialTable->m_count);
+		materialTable->Clear();
+		materialTable->Initialize(p_renderer, part->m_groupCount);
 	}
 	for (LegoU32 materialIndex = 0; materialIndex < materialTable->GetCount(); materialIndex++) {
 		materialTable->m_entries[materialIndex] = NULL;
 	}
 
-	LegoU32* groups = p_model->GetMutableGroups();
-	for (LegoU32 clearIndex = 0; clearIndex < p_model->GetGroupCount(); clearIndex++) {
+	LegoU32* groups = g_copyModel->GetMutableGroups();
+	for (LegoU32 clearIndex = 0; clearIndex < g_copyModel->GetGroupCount(); clearIndex++) {
 		groups[clearIndex] = 0;
 	}
 
@@ -220,9 +207,9 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 	}
 
 	groups[g_copyGroupWrite++] = 0xc0000000;
-	p_model->SetDirty(TRUE);
-	p_model->VTable0x34(g_gdbPartModelDirty);
-	p_model->VTable0x2c(g_gdbPartModelDirty, TRUE);
+	g_copyModel->SetDirty(TRUE);
+	g_copyModel->VTable0x34(g_gdbPartModelDirty);
+	g_copyModel->VTable0x2c(g_gdbPartModelDirty, TRUE);
 }
 
 // STUB: LEGORACERS 0x00407b40
@@ -232,22 +219,19 @@ void GdbPartLibrary::CopyPartGroupStart(
 	const LegoChar* p_materialName
 )
 {
-	STUB(0x00407b40);
-
 	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(p_materialName);
 	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
 
 	LegoU32 groupWrite = g_copyGroupWrite++;
 	LegoU32* groups = g_copyModel->GetMutableGroups();
-	groups[groupWrite] = 0x80000000 | (p_groupIndex & 0x00ffffff);
+	groups[groupWrite] = 0x80000000;
+	groups[groupWrite] |= p_groupIndex & 0x00ffffff;
 	g_copyModel->SetDirty(TRUE);
 }
 
-// STUB: LEGORACERS 0x00407ba0
+// FUNCTION: LEGORACERS 0x00407ba0
 void GdbPartLibrary::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU32 p_index2)
 {
-	STUB(0x00407ba0);
-
 	LegoS32 addedCount = 0;
 	LegoS32 batchIndex0 = FindCopyBatchVertex(p_index0);
 	if (batchIndex0 < 0) {
@@ -297,7 +281,7 @@ void GdbPartLibrary::EmitCopyTriangle(LegoU32 p_index0, LegoU32 p_index1, LegoU3
 }
 
 // FUNCTION: LEGORACERS 0x00407c70
-static LegoS32 __stdcall FindCopyBatchVertex(LegoU32 p_sourceVertex)
+LegoS32 GdbPartLibrary::FindCopyBatchVertex(LegoU32 p_sourceVertex)
 {
 	for (LegoU32 index = 0; index < g_copyBatchVertexCount; index++) {
 		if (g_copyBatchSourceVertices[index] == p_sourceVertex) {
@@ -339,33 +323,22 @@ LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 // STUB: LEGORACERS 0x00407d60
 void GdbPartLibrary::FlushCopyBatch()
 {
-	STUB(0x00407d60);
-
 	if (g_copyBatchIndexCount == 0) {
 		return;
 	}
 
-	LegoU32* groups = g_copyModel->GetMutableGroups();
 	LegoU32 groupWrite = g_copyGroupWrite++;
-	LegoU32* group = &groups[groupWrite];
-	*group = 0;
-	LegoU32 groupTag = *group;
-	groupTag |= ((g_copyBatchVertexCount + 0xffff) << 16) & 0x003f0000;
-	*group = groupTag;
-	groupTag = *group;
-	groupTag |= g_copyBatchVertexStart & 0xffff;
-	*group = groupTag;
+	LegoU32 batchVertexStart = g_copyBatchVertexStart;
+	LegoU32* groups = g_copyModel->GetMutableGroups();
+	groups[groupWrite] = 0;
+	groups[groupWrite] |= ((g_copyBatchVertexCount + 0xffff) << 16) & 0x003f0000;
+	groups[groupWrite] |= batchVertexStart & 0xffff;
 	g_copyModel->SetDirty(TRUE);
 
 	groupWrite = g_copyGroupWrite++;
-	group = &groups[groupWrite];
-	*group = 0x20000000;
-	groupTag = *group;
-	groupTag |= (g_copyBatchIndexCount & 0x7f) << 16;
-	*group = groupTag;
-	groupTag = *group;
-	groupTag |= g_copyIndexStart & 0xffff;
-	*group = groupTag;
+	groups[groupWrite] = 0x20000000;
+	groups[groupWrite] |= (g_copyBatchIndexCount & 0x7f) << 16;
+	groups[groupWrite] |= g_copyIndexStart & 0xffff;
 	g_copyModel->SetDirty(TRUE);
 
 	g_copyBatchVertexStart += g_copyBatchVertexCount;

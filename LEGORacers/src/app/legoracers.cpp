@@ -170,14 +170,14 @@ void LegoRacers::ReleaseContextAssets()
 void LegoRacers::FUN_0042bdc0()
 {
 	MenuManager::Run(&m_context);
-	m_golApp.ClearFileSourceDirectoryCaches();
+	m_golApp.ClearJamDirectoryCache();
 }
 
 // FUNCTION: LEGORACERS 0x0042bde0
 void LegoRacers::FUN_0042bde0()
 {
 	RaceModeRunner::Run(&m_context);
-	m_golApp.ClearFileSourceDirectoryCaches();
+	m_golApp.ClearJamDirectoryCache();
 }
 
 // FUNCTION: LEGORACERS 0x0042be00

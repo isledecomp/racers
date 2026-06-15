@@ -19,8 +19,8 @@ HANDLE g_hMutex;
 // FUNCTION: LEGORACERS 0x00450d80
 void CreateGolImport(GolImport* p_import)
 {
-	p_import->m_fileSources = g_fileSources;
-	p_import->m_fileSourceCount = g_fileSourceCount;
+	p_import->m_jamFileSystems = g_jamFileSystems;
+	p_import->m_jamFileSystemCount = g_jamFileSystemCount;
 	p_import->m_searchPathCount = g_searchPathCount;
 	for (LegoU32 i = 0; i < p_import->m_searchPathCount; i++) {
 		p_import->m_searchPaths[i] = g_searchPaths[i];
@@ -35,8 +35,8 @@ void CreateGolImport(GolImport* p_import)
 // FUNCTION: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
-	g_fileSourceCount = p_import->m_fileSourceCount;
-	g_fileSources = p_import->m_fileSources;
+	g_jamFileSystemCount = p_import->m_jamFileSystemCount;
+	g_jamFileSystems = p_import->m_jamFileSystems;
 	GolStream::FUN_100320d0();
 	for (LegoU32 i = 0; i < p_import->m_searchPathCount; i++) {
 		GolStream::FUN_10032110(p_import->m_searchPaths[i]);

@@ -40,7 +40,7 @@ Win32GolApp::~Win32GolApp()
 }
 
 // FUNCTION: LEGORACERS 0x004165e0
-void Win32GolApp::Initialize(const LegoChar* p_windowName, const LegoChar* p_fileName)
+void Win32GolApp::Initialize(const LegoChar* p_windowName, const LegoChar* p_jamList)
 {
 	LegoChar buffer[64];
 
@@ -77,8 +77,8 @@ void Win32GolApp::Initialize(const LegoChar* p_windowName, const LegoChar* p_fil
 
 	g_hashTable = &GolApp::GetHashTable();
 
-	if (p_fileName) {
-		AddFileSourcesFromList(p_fileName);
+	if (p_jamList) {
+		AddJamFileSystems(p_jamList);
 	}
 
 	m_fullscreenStyle = WS_POPUP | WS_CLIPCHILDREN;
@@ -136,9 +136,9 @@ void Win32GolApp::Destroy()
 		m_hWnd = 0;
 	}
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_fileSources); i++) {
-		if (m_fileSources[i].GetStream()) {
-			m_fileSources[i].Reset();
+	for (LegoU32 i = 0; i < sizeOfArray(m_jamFileSystems); i++) {
+		if (m_jamFileSystems[i].GetStream()) {
+			m_jamFileSystems[i].Reset();
 			m_files[i].Dispose();
 		}
 	}
@@ -151,20 +151,20 @@ void Win32GolApp::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00416860
-void Win32GolApp::AddFileSourcesFromList(const LegoChar* p_fileList)
+void Win32GolApp::AddJamFileSystems(const LegoChar* p_jamList)
 {
-	if (!p_fileList) {
+	if (!p_jamList) {
 		return;
 	}
 
-	LegoChar* buffer = new LegoChar[strlen(p_fileList) + 1];
+	LegoChar* buffer = new LegoChar[strlen(p_jamList) + 1];
 	LegoChar* saved = buffer;
 
 	if (buffer) {
-		strcpy(buffer, p_fileList);
+		strcpy(buffer, p_jamList);
 
 		while (buffer) {
-			if (m_fileSourceCount >= sizeOfArray(m_fileSources)) {
+			if (m_jamFileSystemCount >= sizeOfArray(m_jamFileSystems)) {
 				break;
 			}
 
@@ -173,9 +173,9 @@ void Win32GolApp::AddFileSourcesFromList(const LegoChar* p_fileList)
 				*newline = '\0';
 			}
 
-			if (!m_files[m_fileSourceCount].BufferedOpen(buffer, GolStream::c_modeRead, 0x8000)) {
-				m_fileSources[m_fileSourceCount].AttachStream(&m_files[m_fileSourceCount]);
-				m_fileSourceCount++;
+			if (!m_files[m_jamFileSystemCount].BufferedOpen(buffer, GolStream::c_modeRead, 0x8000)) {
+				m_jamFileSystems[m_jamFileSystemCount].Init(&m_files[m_jamFileSystemCount]);
+				m_jamFileSystemCount++;
 			}
 
 			if (!newline) {
@@ -184,9 +184,9 @@ void Win32GolApp::AddFileSourcesFromList(const LegoChar* p_fileList)
 			buffer = newline + 1;
 		}
 
-		if (m_fileSourceCount > 0) {
-			g_fileSourceCount = m_fileSourceCount;
-			g_fileSources = m_fileSources;
+		if (m_jamFileSystemCount > 0) {
+			g_jamFileSystemCount = m_jamFileSystemCount;
+			g_jamFileSystems = m_jamFileSystems;
 		}
 
 		delete[] saved;

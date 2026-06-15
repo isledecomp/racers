@@ -72,7 +72,7 @@ LegoS32 RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 	}
 
 	p_context->m_currentRaceIndex = 0;
-	p_context->m_golApp->ClearFileSourceDirectoryCaches();
+	p_context->m_golApp->ClearJamDirectoryCache();
 
 	if (!p_context->m_raceMode) {
 		return m_circuitRunner.Initialize(m_context, &m_session);

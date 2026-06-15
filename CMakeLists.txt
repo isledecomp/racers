@@ -95,8 +95,8 @@ set(COMMON_SOURCES
   common/src/golbinparser.cpp
   common/src/golconstants.cpp
   common/src/goltxtparser.cpp
-  common/src/golfilesource.cpp
-  common/src/goldirentry.cpp
+  common/src/jamfilesystem.cpp
+  common/src/jamdirectory.cpp
   common/src/golmath.cpp
   common/src/golstring.cpp
   common/src/golstringtable.cpp

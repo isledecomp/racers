@@ -1,11 +1,11 @@
-#include "golfilesource.h"
+#include "jamfilesystem.h"
 
 #include "golerror.h"
 #include "golstream.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GolFileSource, 0x34)
+DECOMP_SIZE_ASSERT(JamFileSystem, 0x34)
 
 // GLOBAL: LEGORACERS 0x004c1a3c
 const LegoChar* g_jamReadError = "Error reading JAM file.";
@@ -14,27 +14,27 @@ const LegoChar* g_jamReadError = "Error reading JAM file.";
 LegoChar g_jamSignature[] = "LJAM";
 
 // GLOBAL: LEGORACERS 0x004c73a4
-LegoChar g_nameBuffer[GOL_NAME_LENGTH];
+LegoChar g_nameBuffer[DIR_NAME_LENGHT];
 
 // GLOBAL: LEGORACERS 0x004c73b0
 LegoChar g_jamReadBuffer[20];
 
 // FUNCTION: LEGORACERS 0x0044d820
-GolFileSource::GolFileSource()
+JamFileSystem::JamFileSystem()
 {
 	m_stream = NULL;
 	m_state = 0;
-	m_foundEntry = NULL;
+	m_foundFile = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0044d860
-GolFileSource::~GolFileSource()
+JamFileSystem::~JamFileSystem()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0044d870
-void GolFileSource::AttachStream(GolStream* p_stream)
+void JamFileSystem::Init(GolStream* p_stream)
 {
 	m_stream = p_stream;
 	m_state = 0;
@@ -50,7 +50,7 @@ void GolFileSource::AttachStream(GolStream* p_stream)
 }
 
 // FUNCTION: LEGORACERS 0x0044d8e0
-void GolFileSource::Reset()
+void JamFileSystem::Reset()
 {
 	m_rootDir.DeleteChildren();
 	m_stream = NULL;
@@ -58,9 +58,9 @@ void GolFileSource::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0044d900
-LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* p_size)
+LegoS32 JamFileSystem::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* p_size)
 {
-	GolDirEntry* node = &m_rootDir;
+	JamDirectory* dir = &m_rootDir;
 	LegoS32 pos = -1;
 
 	while (TRUE) {
@@ -69,7 +69,7 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 		pos++;
 
 		while (ch && ch != '\\') {
-			if (nameLen >= GOL_NAME_LENGTH) {
+			if (nameLen >= DIR_NAME_LENGHT) {
 				return GolStream::e_ioNameTooLong;
 			}
 
@@ -79,7 +79,7 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 			pos++;
 		}
 
-		if (nameLen < GOL_NAME_LENGTH) {
+		if (nameLen < DIR_NAME_LENGHT) {
 			g_nameBuffer[nameLen] = '\0';
 		}
 
@@ -87,13 +87,13 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 			break;
 		}
 
-		node = node->FindDir(g_nameBuffer, m_stream);
-		if (!node) {
+		dir = dir->FindDir(g_nameBuffer, m_stream);
+		if (!dir) {
 			return GolStream::e_ioFileNotFound;
 		}
 	}
 
-	GolDirEntry::FileEntry* entry = node->FindFile(g_nameBuffer, m_stream);
+	JamDirectory::JamFile* entry = dir->FindFile(g_nameBuffer, m_stream);
 	if (!entry) {
 		return GolStream::e_ioFileNotFound;
 	}
@@ -105,9 +105,9 @@ LegoS32 GolFileSource::Open(LegoChar* p_fileName, LegoS32* p_position, LegoS32* 
 }
 
 // FUNCTION: LEGORACERS 0x0044d9c0
-LegoS32 GolFileSource::Find(LegoChar* p_fileName)
+LegoS32 JamFileSystem::Find(LegoChar* p_fileName)
 {
-	GolDirEntry* node = &m_rootDir;
+	JamDirectory* dir = &m_rootDir;
 	LegoS32 pos = -1;
 
 	while (TRUE) {
@@ -116,7 +116,7 @@ LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 		pos++;
 
 		while (ch && ch != '\\') {
-			if (nameLen >= GOL_NAME_LENGTH) {
+			if (nameLen >= DIR_NAME_LENGHT) {
 				return GolStream::e_ioNameTooLong;
 			}
 
@@ -126,7 +126,7 @@ LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 			pos++;
 		}
 
-		if (nameLen < GOL_NAME_LENGTH) {
+		if (nameLen < DIR_NAME_LENGHT) {
 			g_nameBuffer[nameLen] = '\0';
 		}
 
@@ -134,30 +134,30 @@ LegoS32 GolFileSource::Find(LegoChar* p_fileName)
 			break;
 		}
 
-		node = node->FindDir(g_nameBuffer, m_stream);
-		if (!node) {
+		dir = dir->FindDir(g_nameBuffer, m_stream);
+		if (!dir) {
 			return GolStream::e_ioFileNotFound;
 		}
 	}
 
-	GolDirEntry::FileEntry* entry = node->FindFile(g_nameBuffer, m_stream);
+	JamDirectory::JamFile* entry = dir->FindFile(g_nameBuffer, m_stream);
 	if (!entry) {
 		return GolStream::e_ioFileNotFound;
 	}
 
-	m_foundEntry = entry;
+	m_foundFile = entry;
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0044da60
-LegoS32 GolFileSource::Close()
+LegoS32 JamFileSystem::Close()
 {
 	m_state = 0;
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0044da70
-LegoS32 GolFileSource::Read(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoU32 p_maxSize, LegoS32* p_lenRead)
+LegoS32 JamFileSystem::ReadLine(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoU32 p_maxSize, LegoS32* p_lenRead)
 {
 	*p_lenRead = 0;
 
@@ -240,13 +240,13 @@ LegoS32 GolFileSource::Read(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoU
 }
 
 // FUNCTION: LEGORACERS 0x0044dbb0
-LegoS32 GolFileSource::ForwardRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
+LegoS32 JamFileSystem::ReadRaw(LegoU32 p_offset, void* p_buf, LegoU32 p_size, LegoS32* p_lenRead)
 {
 	return m_stream->BufferedRead(p_offset, p_buf, p_size, p_lenRead);
 }
 
 // FUNCTION: LEGORACERS 0x0044dbd0
-void GolFileSource::ClearDirectoryTree()
+void JamFileSystem::ClearDirectoryTree()
 {
 	m_rootDir.DeleteChildren();
 }

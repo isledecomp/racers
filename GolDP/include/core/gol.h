@@ -18,7 +18,7 @@ class GolDrawState;
 class GolCommonDrawState;
 class GolFontBase;
 class GolHashTable;
-class GolFileSource;
+class JamFileSystem;
 class GolFontTable;
 class GolNameTable;
 class GolModelBase;
@@ -28,8 +28,8 @@ class GolSceneNode;
 class GolWorldDatabase;
 
 struct GolImport {
-	GolFileSource* m_fileSources;               // 0x00
-	LegoU32 m_fileSourceCount;                  // 0x04
+	JamFileSystem* m_jamFileSystems;               // 0x00
+	LegoU32 m_jamFileSystemCount;                  // 0x04
 	LegoChar* m_searchPaths[4];                 // 0x08
 	LegoU32 m_searchPathCount;                  // 0x18
 	GolHashTable* m_hashTable;                  // 0x1c

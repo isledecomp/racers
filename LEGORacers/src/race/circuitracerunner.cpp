@@ -122,7 +122,7 @@ void CircuitRaceRunner::Run()
 			m_session->SetStandings(&m_standings);
 			m_session->Run();
 			m_session->Shutdown();
-			m_context->m_golApp->ClearFileSourceDirectoryCaches();
+			m_context->m_golApp->ClearJamDirectoryCache();
 		}
 
 		m_context->m_currentRaceIndex++;

@@ -19,7 +19,7 @@ void GolApp::ResetRuntimeState()
 	m_bpp = 0;
 	m_lastFrameTimeMs = 0;
 	m_frameDeltaMs = 0;
-	m_fileSourceCount = 0;
+	m_jamFileSystemCount = 0;
 	m_disabled = FALSE;
 	m_eventHandler = NULL;
 }
@@ -64,9 +64,9 @@ void GolApp::InitializeDisplayWithDevice(
 }
 
 // FUNCTION: LEGORACERS 0x00416490
-void GolApp::ClearFileSourceDirectoryCaches()
+void GolApp::ClearJamDirectoryCache()
 {
-	for (LegoU32 i = 0; i < m_fileSourceCount; i++) {
-		m_fileSources[i].ClearDirectoryTree();
+	for (LegoU32 i = 0; i < m_jamFileSystemCount; i++) {
+		m_jamFileSystems[i].ClearDirectoryTree();
 	}
 }

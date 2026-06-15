@@ -2,7 +2,7 @@
 
 #include "golerror.h"
 #include "golfile.h"
-#include "golfilesource.h"
+#include "jamfilesystem.h"
 #include "golfsutil.h"
 #include "golhashtable.h"
 #include "types.h"
@@ -22,11 +22,11 @@ LegoChar* g_searchPaths[4];
 
 // GLOBAL: GOLDP 0x10065e78
 // GLOBAL: LEGORACERS 0x004c7394
-GolFileSource* g_fileSources;
+JamFileSystem* g_jamFileSystems;
 
 // GLOBAL: GOLDP 0x10065e7c
 // GLOBAL: LEGORACERS 0x004c7398
-LegoU32 g_fileSourceCount;
+LegoU32 g_jamFileSystemCount;
 
 // GLOBAL: GOLDP 0x10065e80
 // GLOBAL: LEGORACERS 0x004c739c
@@ -106,11 +106,11 @@ LegoS32 GolStream::FindFile(const LegoChar* p_fileName)
 
 		LegoU32 i = 0;
 		while (result == e_ioFileNotFound) {
-			if (i >= g_fileSourceCount) {
+			if (i >= g_jamFileSystemCount) {
 				break;
 			}
 
-			result = g_fileSources[i].Find(g_pathBuffer);
+			result = g_jamFileSystems[i].Find(g_pathBuffer);
 			i++;
 		}
 
@@ -148,7 +148,7 @@ LegoS32 GolStream::OpenFileSource()
 {
 	LegoS32 result = e_ioFileNotFound;
 
-	if (!g_fileSources) {
+	if (!g_jamFileSystems) {
 		return result;
 	}
 
@@ -156,8 +156,8 @@ LegoS32 GolStream::OpenFileSource()
 		return result;
 	}
 
-	for (LegoU32 i = 0; i < g_fileSourceCount; i++) {
-		result = g_fileSources[i].Open(g_pathBuffer, &m_position, &m_size);
+	for (LegoU32 i = 0; i < g_jamFileSystemCount; i++) {
+		result = g_jamFileSystems[i].Open(g_pathBuffer, &m_position, &m_size);
 		if (result == e_ioSuccess) {
 			m_handle = i;
 			m_flags = c_flagOpen | c_flagMapped;
@@ -256,7 +256,7 @@ LegoS32 GolStream::BufferedOpen(const LegoChar* p_fileName, LegoS32 p_mode, Lego
 LegoS32 GolStream::Dispose()
 {
 	if (m_flags & c_flagMapped) {
-		LegoS32 result = g_fileSources[m_handle].Close();
+		LegoS32 result = g_jamFileSystems[m_handle].Close();
 		m_handle = -1;
 		m_mode = 0;
 		m_flags = 0;
@@ -333,7 +333,7 @@ LegoS32 GolStream::BufferedRead(LegoU32 p_offset, void* p_buf, LegoU32 p_size, L
 
 		LegoS32 savedLen = *lenRead;
 		GolFsLock();
-		LegoS32 result = g_fileSources[m_handle].ForwardRead(offset + m_position, buf, p_size, lenRead);
+		LegoS32 result = g_jamFileSystems[m_handle].ReadRaw(offset + m_position, buf, p_size, lenRead);
 		GolFsUnlock();
 		*lenRead += savedLen;
 		return result;
@@ -465,7 +465,7 @@ LegoS32 GolStream::ReadLine(void* p_buf, LegoU32 p_size)
 			p_size = size - pos;
 		}
 
-		result = g_fileSources[m_handle].Read(pos + m_position, p_buf, p_size, maxSize, (LegoS32*) &p_buf);
+		result = g_jamFileSystems[m_handle].ReadLine(pos + m_position, p_buf, p_size, maxSize, (LegoS32*) &p_buf);
 
 		if (!result) {
 			m_unk0x10 += (LegoS32) p_buf;

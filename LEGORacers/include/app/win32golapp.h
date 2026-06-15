@@ -77,7 +77,7 @@ public:
 	LegoU32 GetWindowMode() { return m_windowMode; }
 	LegoBool32 IsDisabled() { return m_disabled; }
 
-	void AddFileSourcesFromList(const LegoChar* p_fileList);
+	void AddJamFileSystems(const LegoChar* p_fileList);
 	LegoBool32 IsCursorInClientArea(HWND p_hWnd);
 	void ChangeWindowState(LegoU32 p_mode);
 

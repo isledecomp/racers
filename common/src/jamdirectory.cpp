@@ -1,12 +1,12 @@
-#include "goldirentry.h"
+#include "jamdirectory.h"
 
 #include "golerror.h"
 #include "golstream.h"
 
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(GolDirEntry, 0x24)
-DECOMP_SIZE_ASSERT(GolDirEntry::FileEntry, 0x14)
+DECOMP_SIZE_ASSERT(JamDirectory, 0x24)
+DECOMP_SIZE_ASSERT(JamDirectory::JamFile, 0x14)
 
 extern const LegoChar* g_jamReadError;
 extern LegoChar g_jamReadBuffer[20];
@@ -24,7 +24,7 @@ extern LegoChar g_jamReadBuffer[20];
 	} while (0)
 
 // FUNCTION: LEGORACERS 0x0044dbe0
-GolDirEntry::GolDirEntry()
+JamDirectory::JamDirectory()
 {
 	m_name[0] = '\0';
 	m_loaded = FALSE;
@@ -36,7 +36,7 @@ GolDirEntry::GolDirEntry()
 }
 
 // FUNCTION: LEGORACERS 0x0044dc00
-void GolDirEntry::DeleteChildren()
+void JamDirectory::DeleteChildren()
 {
 	m_loaded = FALSE;
 
@@ -58,14 +58,14 @@ void GolDirEntry::DeleteChildren()
 }
 
 // FUNCTION: LEGORACERS 0x0044dc60
-GolDirEntry* GolDirEntry::FindDir(LegoChar* p_name, GolStream* p_stream)
+JamDirectory* JamDirectory::FindDir(LegoChar* p_name, GolStream* p_stream)
 {
 	if (!m_loaded) {
 		Load(p_stream);
 	}
 
 	for (LegoU32 i = 0; i < m_dirCount; i++) {
-		if (!strncmp(m_dirs[i].m_name, p_name, GOL_NAME_LENGTH)) {
+		if (!strncmp(m_dirs[i].m_name, p_name, DIR_NAME_LENGHT)) {
 			return &m_dirs[i];
 		}
 	}
@@ -74,14 +74,14 @@ GolDirEntry* GolDirEntry::FindDir(LegoChar* p_name, GolStream* p_stream)
 }
 
 // FUNCTION: LEGORACERS 0x0044dcc0
-GolDirEntry::FileEntry* GolDirEntry::FindFile(LegoChar* p_name, GolStream* p_stream)
+JamDirectory::JamFile* JamDirectory::FindFile(LegoChar* p_name, GolStream* p_stream)
 {
 	if (!m_loaded) {
 		Load(p_stream);
 	}
 
 	for (LegoU32 i = 0; i < m_fileCount; i++) {
-		if (!strncmp(m_files[i].m_name, p_name, GOL_NAME_LENGTH)) {
+		if (!strncmp(m_files[i].m_name, p_name, DIR_NAME_LENGHT)) {
 			return &m_files[i];
 		}
 	}
@@ -90,7 +90,7 @@ GolDirEntry::FileEntry* GolDirEntry::FindFile(LegoChar* p_name, GolStream* p_str
 }
 
 // FUNCTION: LEGORACERS 0x0044dd20
-void GolDirEntry::Load(GolStream* p_stream)
+void JamDirectory::Load(GolStream* p_stream)
 {
 	if (m_loaded) {
 		return;
@@ -111,7 +111,7 @@ void GolDirEntry::Load(GolStream* p_stream)
 	}
 
 	if (m_fileCount) {
-		m_files = new FileEntry[m_fileCount];
+		m_files = new JamFile[m_fileCount];
 		if (!m_files) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -122,7 +122,7 @@ void GolDirEntry::Load(GolStream* p_stream)
 			}
 
 			offset += bytesRead;
-			memcpy(m_files[i].m_name, g_jamReadBuffer, GOL_NAME_LENGTH);
+			memcpy(m_files[i].m_name, g_jamReadBuffer, DIR_NAME_LENGHT);
 			READ_LITTLE_ENDIAN_U32(&g_jamReadBuffer[12], m_files[i].m_position);
 			READ_LITTLE_ENDIAN_U32(&g_jamReadBuffer[16], m_files[i].m_size);
 		}
@@ -140,7 +140,7 @@ void GolDirEntry::Load(GolStream* p_stream)
 	}
 
 	if (m_dirCount) {
-		m_dirs = new GolDirEntry[m_dirCount];
+		m_dirs = new JamDirectory[m_dirCount];
 		if (!m_dirs) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -151,7 +151,7 @@ void GolDirEntry::Load(GolStream* p_stream)
 			}
 
 			offset += bytesRead;
-			memcpy(m_dirs[i].m_name, g_jamReadBuffer, GOL_NAME_LENGTH);
+			memcpy(m_dirs[i].m_name, g_jamReadBuffer, DIR_NAME_LENGHT);
 			m_dirs[i].m_loaded = FALSE;
 			READ_LITTLE_ENDIAN_U32(&g_jamReadBuffer[12], m_dirs[i].m_contentsOffset);
 		}

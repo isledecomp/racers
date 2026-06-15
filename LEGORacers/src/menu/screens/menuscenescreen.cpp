@@ -34,7 +34,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	}
 
 	m_renderer = p_createParams->m_renderer;
-	p_context->m_context->m_golApp->ClearFileSourceDirectoryCaches();
+	p_context->m_context->m_golApp->ClearJamDirectoryCache();
 	m_unk0x650 = m_renderer->GetUnk0x0c();
 
 	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {

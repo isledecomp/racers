@@ -7,12 +7,12 @@
 #include <ctype.h>
 
 class GolHashTable;
-class GolFileSource;
+class JamFileSystem;
 
 extern LegoChar g_pathBuffer[256];
 extern LegoChar* g_searchPaths[4];
-extern GolFileSource* g_fileSources;
-extern LegoU32 g_fileSourceCount;
+extern JamFileSystem* g_jamFileSystems;
+extern LegoU32 g_jamFileSystemCount;
 extern LegoU32 g_searchPathCount;
 extern GolHashTable* g_hashTable;
 

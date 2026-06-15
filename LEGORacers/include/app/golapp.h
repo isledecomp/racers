@@ -3,7 +3,7 @@
 
 #include "decomp.h"
 #include "golfile.h"
-#include "golfilesource.h"
+#include "jamfilesystem.h"
 #include "golhashtable.h"
 #include "types.h"
 
@@ -34,6 +34,10 @@ public:
 		c_flagBit14 = 1 << 14,
 		c_flagAlphaTransparency = 1 << 15,
 		c_flagBit17 = 1 << 17,
+	};
+
+	enum {
+		c_maxJamFileSystems = 20
 	};
 
 	GolApp();
@@ -76,13 +80,13 @@ public:
 
 	void ResetRuntimeState();
 	void NotifyCloseRequested();
-	void ClearFileSourceDirectoryCaches();
+	void ClearJamDirectoryCache();
 
 protected:
 	LegoU32 m_flags;                    // 0x04
-	GolFile m_files[20];                // 0x08
-	GolFileSource m_fileSources[20];    // 0x3c8
-	LegoU32 m_fileSourceCount;          // 0x7d8
+	GolFile m_files[c_maxJamFileSystems];                // 0x08
+	JamFileSystem m_jamFileSystems[c_maxJamFileSystems];    // 0x3c8
+	LegoU32 m_jamFileSystemCount;          // 0x7d8
 	GolHashTable m_hashTable;           // 0x7dc
 	GolExport* m_golExport;             // 0x800
 	GolDrawState* m_golDrawState;       // 0x804

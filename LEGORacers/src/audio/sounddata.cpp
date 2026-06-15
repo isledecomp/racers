@@ -39,7 +39,7 @@ void SoundData::Reset()
 void SoundData::Release()
 {
 	if (m_data) {
-		operator delete(m_data);
+		delete[] m_data;
 	}
 
 	Reset();

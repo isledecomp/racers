@@ -25,6 +25,7 @@ address,type,x-text
 0x4b0968,string,"carsprk"
 0x4b0a24,string,"carshad"
 0x4b0ac4,string,"tiresmk"
+0x4b0acc,string,"dust"
 0x4b0ad4,string,"carsmke"
 0x4b0adc,string,"carland"
 0x4b0b00,string,"trbskid"

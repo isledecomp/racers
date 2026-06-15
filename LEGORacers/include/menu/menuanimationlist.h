@@ -84,6 +84,7 @@ public:
 	LegoBool32 HasActive() const;
 	void Update(LegoU32 p_elapsedMs);
 	void Draw(GolD3DRenderDevice* p_renderer);
+	void FUN_00494fe0();
 
 private:
 	Entry* m_entries; // 0x00

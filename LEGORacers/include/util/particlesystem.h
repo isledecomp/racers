@@ -75,7 +75,7 @@ private:
 	);
 	void FUN_00412c60(DuskwindBananaRelic0x24* p_material);
 	void FUN_00412ce0(Particle* p_particle);
-	void FUN_00413090();
+	LegoU32 FUN_00413090();
 
 	GolExport* m_golExport;                            // 0x000
 	GolModelBase* m_model;                             // 0x004

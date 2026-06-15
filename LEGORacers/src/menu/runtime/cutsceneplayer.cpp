@@ -180,6 +180,12 @@ void CutsceneAnimation::FUN_00489af0(
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00489d50
+LegoBool32 CutsceneAnimation::FUN_00489d50(const LegoChar* p_param)
+{
+	return GetName(p_param) != NULL;
+}
+
 // STUB: LEGORACERS 0x00489d70
 CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	const LegoChar* p_param1,
@@ -262,6 +268,17 @@ void CutsceneAnimation::FUN_00489f00(CutsceneParticleRef* p_param)
 {
 	if (p_param->m_unk0x00) {
 		p_param->m_unk0x00->FUN_004897a0();
+	}
+
+	p_param->m_unk0x00 = NULL;
+	p_param->m_unk0x04 &= ~CutsceneParticleRef::c_flagBit0;
+}
+
+// FUNCTION: LEGORACERS 0x00489f30
+void CutsceneAnimation::FUN_00489f30(CutsceneParticleRef* p_param)
+{
+	if (p_param->m_unk0x00) {
+		p_param->m_unk0x00->FUN_004897c0();
 	}
 
 	p_param->m_unk0x00 = NULL;

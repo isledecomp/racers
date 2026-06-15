@@ -274,3 +274,17 @@ void MenuAnimationList::Draw(GolD3DRenderDevice* p_renderer)
 		}
 	}
 }
+
+// FUNCTION: LEGORACERS 0x00494fe0
+void MenuAnimationList::FUN_00494fe0()
+{
+	LegoU32 result = m_count;
+
+	for (LegoU32 i = 0; i < result; i++) {
+		if (m_entries[i].IsActive()) {
+			m_entries[i].Deactivate();
+		}
+
+		result = m_count;
+	}
+}

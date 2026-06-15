@@ -15,6 +15,17 @@ class GolSceneNode;
 // SIZE 0xf4
 class GolAnimatedEntity : public GolModelEntity {
 public:
+	enum {
+		c_flagPartAnimation = 1 << 16,
+		c_flagPartTransition = 1 << 17,
+		c_flagLoopCurrentPart = 1 << 18,
+		c_flagPartAnimationDone = 1 << 19,
+		c_flagRestartQueuedPart = 1 << 20,
+		c_flagLoopQueuedPart = 1 << 22,
+		c_flagLoopWrapped = 1 << 25,
+		c_flagsPartAnimationMask = 0x005a0000,
+	};
+
 	GolAnimatedEntity();
 
 	void VTable0x10(LegoS32 p_elapsed) override;                                    // vtable+0x10
@@ -49,9 +60,11 @@ public:
 		LegoBool32 p_loop
 	);
 	LegoBool32 FUN_0040e360();
+	void FUN_0040d650();
 	CmbModelPart0x34* GetModelPart(LegoU32 p_index = 0) const { return m_modelParts[p_index]; }
 	LegoU32 GetFlags() const { return m_flags; }
 	void SetFlags(LegoU32 p_flags) { m_flags = p_flags; }
+	void SetActiveValue(LegoFloat p_value) { m_unk0xb4 = p_value; }
 	void SetPartAnimationEnabled(LegoBool32 p_enabled)
 	{
 		if (p_enabled) {
@@ -66,19 +79,7 @@ public:
 
 private:
 	void Reset();
-	void FUN_0040d650();
 	void FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale);
-
-	enum {
-		c_flagPartAnimation = 1 << 16,
-		c_flagPartTransition = 1 << 17,
-		c_flagLoopCurrentPart = 1 << 18,
-		c_flagPartAnimationDone = 1 << 19,
-		c_flagRestartQueuedPart = 1 << 20,
-		c_flagLoopQueuedPart = 1 << 22,
-		c_flagLoopWrapped = 1 << 25,
-		c_flagsPartAnimationMask = 0x005a0000,
-	};
 
 	GolSceneNode* m_nodes[3];          // 0x90
 	LegoS32 m_partIndices[3];          // 0x9c

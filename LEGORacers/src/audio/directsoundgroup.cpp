@@ -98,7 +98,7 @@ void DirectSoundGroup::Load(const LegoChar* p_name)
 					currentPath += c_audioPathLength;
 				}
 
-				operator delete(soundPaths);
+				delete[] soundPaths;
 			}
 		}
 		else {

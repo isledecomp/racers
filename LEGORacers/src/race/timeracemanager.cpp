@@ -158,6 +158,31 @@ void TimeRaceManager::Shutdown()
 	Reset();
 }
 
+// STUB: LEGORACERS 0x00422710
+void TimeRaceManager::FUN_00422710(LegoU32)
+{
+	STUB(0x00422710);
+}
+
+// STUB: LEGORACERS 0x00422960
+void TimeRaceManager::FUN_00422960(GolD3DRenderDevice*)
+{
+	// TODO
+	STUB(0x00422960);
+}
+
+// STUB: LEGORACERS 0x00422de0
+void TimeRaceManager::FUN_00422de0()
+{
+	STUB(0x00422de0);
+}
+
+// STUB: LEGORACERS 0x00422eb0
+void TimeRaceManager::FUN_00422eb0(RaceState::Racer*)
+{
+	STUB(0x00422eb0);
+}
+
 // FUNCTION: LEGORACERS 0x004230e0
 void TimeRaceManager::UpdateBestRun()
 {

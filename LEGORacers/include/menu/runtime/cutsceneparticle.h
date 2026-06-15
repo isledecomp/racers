@@ -19,6 +19,7 @@ public:
 	LegoBool32 IsActive() const { return m_unk0x008.IsActive(); }
 	CutsceneAnimation::Runtime* GetRuntime() const { return m_unk0x000; }
 	CutsceneParticleRef* GetRef() const { return m_ref; }
+	GolMatrix3* GetUnk0x160() { return &m_unk0x160; }
 	void SetRef(CutsceneParticleRef* p_ref) { m_ref = p_ref; }
 
 	void Destroy();

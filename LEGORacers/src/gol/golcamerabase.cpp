@@ -22,6 +22,15 @@ void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up
 	m_transform->SetPosition(p_position);
 }
 
+// FUNCTION: LEGORACERS 0x00404710
+void GolCameraBase::FUN_00404710(LegoFloat p_fov, LegoFloat p_nearClip, LegoFloat p_farClip, LegoFloat p_aspectRatio)
+{
+	m_fov = p_fov;
+	m_nearClip = p_nearClip;
+	m_farClip = p_farClip;
+	SetAspectRatio(p_aspectRatio);
+}
+
 // FUNCTION: LEGORACERS 0x00404740
 void GolCameraBase::SetAspectRatio(LegoFloat p_aspect)
 {
@@ -34,6 +43,20 @@ void GolCameraBase::SetAspectRatio(LegoFloat p_aspect)
 	}
 
 	m_flags |= 3;
+}
+
+// FUNCTION: LEGORACERS 0x00404780
+void GolCameraBase::SetTrackedEntity(GolAnimatedEntity* p_trackedEntity, LegoU32 p_trackedNodeIndex)
+{
+	m_trackedEntity = p_trackedEntity;
+	m_trackedNodeIndex = p_trackedNodeIndex;
+}
+
+// FUNCTION: LEGORACERS 0x004047a0
+void GolCameraBase::ClearTrackedEntity()
+{
+	m_trackedEntity = NULL;
+	m_trackedNodeIndex = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004047b0

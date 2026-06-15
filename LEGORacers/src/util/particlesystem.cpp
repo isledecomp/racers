@@ -67,7 +67,7 @@ void ParticleSystem::Reset()
 	m_batchTriangleCount = 0;
 }
 
-// STUB: LEGORACERS 0x00412430
+// FUNCTION: LEGORACERS 0x00412430
 void ParticleSystem::FUN_00412430(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
@@ -75,8 +75,6 @@ void ParticleSystem::FUN_00412430(
 	LegoU32 p_param4
 )
 {
-	// Most likely matches semantically, but the registers and some other details are still wrong
-
 	if (m_flags & c_flagInitialized) {
 		Destroy();
 	}
@@ -87,21 +85,18 @@ void ParticleSystem::FUN_00412430(
 	m_particleCapacity = p_param4;
 
 	m_model = p_golExport->VTable0x14();
+	LegoU32 vertexCapacity = m_unk0x0a0;
+	LegoU32 triangleCapacity = m_unk0x0a4;
+	LegoU32 groupCapacity = triangleCapacity + 2 * (triangleCapacity + vertexCapacity / 10) + 1;
 
-	m_model->VTable0x18(
-		p_renderer,
-		1,
-		3 * m_unk0x0a0,
-		m_unk0x0a0,
-		m_unk0x0a4 + 2 * (m_unk0x0a4 + m_unk0x0a0 / 10) + 1,
-		m_unk0x0a4
-	);
+	m_model->VTable0x18(p_renderer, 1, 3 * vertexCapacity, vertexCapacity, groupCapacity, triangleCapacity);
 	// LINE: LEGORACERS 0x004124b5
 	m_modelEntity.VTable0x50(m_model, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
-	m_particles = new Particle[m_particleCapacity];
+	Particle* particles = new Particle[m_particleCapacity];
+	m_particles = particles;
 
-	if (!m_particles) {
+	if (!particles) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}
 
@@ -349,6 +344,7 @@ Particle* ParticleSystem::AllocateParticle()
 void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 {
 	LegoU32 flags = m_flags;
+
 	if (flags & c_flagInitialized) {
 		if (flags & c_flagActive) {
 			if (m_activeList) {
@@ -536,14 +532,13 @@ void ParticleSystem::FUN_00412ce0(Particle* p_particle)
 	m_batchTriangleCount += 2;
 }
 
-// STUB: LEGORACERS 0x00413090
-void ParticleSystem::FUN_00413090()
+// FUNCTION: LEGORACERS 0x00413090
+LegoU32 ParticleSystem::FUN_00413090()
 {
 	LegoU32 groupCount = m_groupCount;
 	LegoU32 batchVertexCount = m_batchVertexCount;
 	LegoU32 firstBatchVertex = m_firstBatchVertex;
-	LegoU32 nextGroupCount = groupCount + 1;
-	m_groupCount = nextGroupCount;
+	m_groupCount = groupCount + 1;
 
 	GolModelBase* model = m_model;
 	model->GetMutableGroups()[groupCount] = 0;
@@ -554,8 +549,8 @@ void ParticleSystem::FUN_00413090()
 	LegoU32 groupCount2 = m_groupCount;
 	LegoU32 batchTriangleCount = m_batchTriangleCount;
 	LegoU32 firstBatchTriangle = m_firstBatchTriangle;
-	LegoU32 nextGroupCount2 = groupCount2 + 1;
-	m_groupCount = nextGroupCount2;
+	m_groupCount = groupCount2 + 1;
+	model = m_model;
 	model->GetMutableGroups()[groupCount2] = 0x20000000;
 	model->GetMutableGroups()[groupCount2] |= (batchTriangleCount & 0x7f) << 16;
 	model->GetMutableGroups()[groupCount2] |= firstBatchTriangle & 0xffff;
@@ -567,4 +562,6 @@ void ParticleSystem::FUN_00413090()
 	LegoU32 vertexCount = m_vertexCount;
 	m_firstBatchVertex = vertexCount;
 	m_firstBatchTriangle = triangleCount;
+
+	return triangleCount;
 }

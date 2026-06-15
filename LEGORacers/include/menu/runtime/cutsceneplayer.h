@@ -502,6 +502,7 @@ public:
 
 	void Clear() override; // vtable+0x08
 
+	LegoBool32 FUN_00489d50(const LegoChar* p_param);
 	CutsceneParticleRef* FUN_00489d70(
 		const LegoChar* p_param1,
 		GolVec3* p_param2,
@@ -509,6 +510,7 @@ public:
 		GolVec3* p_param4
 	);
 	void FUN_00489f00(CutsceneParticleRef* p_param);
+	void FUN_00489f30(CutsceneParticleRef* p_param);
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(GolD3DRenderDevice* p_renderer);
 	void FUN_0048a040(GolD3DRenderDevice* p_renderer);

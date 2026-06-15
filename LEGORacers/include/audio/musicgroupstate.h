@@ -24,6 +24,8 @@ public:
 	// SYNTHETIC: LEGORACERS 0x00417bc0
 	// MusicGroupState::`scalar deleting destructor'
 
+	LegoU32 GetMusicCount() const { return m_musicCount; }
+
 protected:
 	LegoU32 m_musicCount; // 0x04
 };

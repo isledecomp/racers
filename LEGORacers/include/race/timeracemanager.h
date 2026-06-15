@@ -25,6 +25,10 @@ public:
 	void Reset();
 	void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoBool32 p_binary, LegoBool32 p_mirror);
 	void Shutdown();
+	void FUN_00422710(LegoU32 p_elapsedMs);
+	void FUN_00422960(GolD3DRenderDevice* p_renderer);
+	void FUN_00422de0();
+	void FUN_00422eb0(RaceState::Racer* p_racer);
 	void UpdateBestRun();
 	LegoBool32 HasBeatenRecord();
 	LegoU32* GetScratchLapTimes() { return m_scratchLapTimes; }

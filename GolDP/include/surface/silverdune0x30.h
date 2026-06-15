@@ -45,6 +45,8 @@ public:
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
 	LegoU16 GetWidth() const { return m_width; }
 	LegoU16 GetHeight() const { return m_height; }
+	LegoU32 GetWidthU32() const { return m_width; }
+	LegoU32 GetHeightU32() const { return m_height; }
 	GolSurfaceFormat& GetTextureFormat() { return m_textureFormat; }
 	const GolSurfaceFormat& GetTextureFormat() const { return m_textureFormat; }
 

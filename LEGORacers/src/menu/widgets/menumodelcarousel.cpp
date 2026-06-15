@@ -87,7 +87,7 @@ LegoBool32 MenuModelCarousel::VTable0x08()
 				}
 			}
 
-			operator delete(m_unk0x7c);
+			delete[] m_unk0x7c;
 		}
 
 		if (m_unk0x80) {

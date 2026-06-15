@@ -35,9 +35,12 @@ public:
 	void FUN_1001bfc0(GolViewFrustum* p_view);
 	void FUN_1001c450(GolViewFrustum* p_view);
 	void SetTrackedEntity(GolAnimatedEntity* p_trackedEntity, LegoU32 p_trackedNodeIndex);
+	void ClearTrackedEntity();
 	void LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);
+	void FUN_00404710(LegoFloat p_fov, LegoFloat p_nearClip, LegoFloat p_farClip, LegoFloat p_aspectRatio);
 	void SetAspectRatio(LegoFloat p_aspect);
 	void UpdateFromTrackedEntity();
+	LegoFloat GetFov() const { return m_fov; }
 	const Rect* GetViewport() const { return &m_viewport; }
 
 	GolTransform* m_transform;          // 0x04

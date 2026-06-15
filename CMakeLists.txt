@@ -295,12 +295,50 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/menumanager.cpp
   LEGORacers/src/race/racemoderunner.cpp
   LEGORacers/src/util/stackoflegou16.cpp
+  LEGORacers/src/util/marblepath0x114.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
+  LEGORacers/src/race/racesessionfield0x2080.cpp
+  LEGORacers/src/race/racesessionfield0x2098.cpp
+  LEGORacers/src/race/racesessionfield0x213c.cpp
+  LEGORacers/src/race/racesessionfield0x2148.cpp
+  LEGORacers/src/race/racesessionfield0x23c.cpp
+  LEGORacers/src/race/racesessionfield0x27c8.cpp
+  LEGORacers/src/race/racesessionfield0x27d4.cpp
+  LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
+  LEGORacers/src/race/racestatefield0xc70.cpp
+  LEGORacers/src/race/racesessionfield0x2ad4.cpp
+  LEGORacers/src/race/racesessionfield0x27e0.cpp
+  LEGORacers/src/race/racesessionfield0x27f4.cpp
+  LEGORacers/src/race/racesessionfield0x280c.cpp
+  LEGORacers/src/race/racesessionfield0x2804.cpp
+  LEGORacers/src/race/racesessionfield0x2f90.cpp
+  LEGORacers/src/race/racesessionfield0x30c4.cpp
+  LEGORacers/src/race/racesessionfield0x3104.cpp
+  LEGORacers/src/race/racesessionfield0x32b4.cpp
+  LEGORacers/src/race/racesessionfield0x32b4field0x004.cpp
+  LEGORacers/src/race/racesessionfield0x32b4field0x058.cpp
+  LEGORacers/src/race/racesessionfield0x32c4.cpp
+  LEGORacers/src/race/racesessionfield0x258.cpp
+  LEGORacers/src/race/racesessionfield0x3300.cpp
+  LEGORacers/src/race/racesessionfield0x340.cpp
+  LEGORacers/src/race/racesessionfield0x6dc.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0x3c.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0x270.cpp
+  LEGORacers/src/race/racesessionfield0x6dcresources.cpp
   LEGORacers/src/race/racestate.cpp
+  LEGORacers/src/race/racestatefield0x00c.cpp
+  LEGORacers/src/race/racestatefield0x004.cpp
+  LEGORacers/src/race/racestatefield0x0f0.cpp
+  LEGORacers/src/race/racestatefield0x2a0.cpp
+  LEGORacers/src/race/racestatefield0xd5c.cpp
+  LEGORacers/src/race/racestatefield0xc70field0x000.cpp
+  LEGORacers/src/race/racestatefield0xc70field0x050.cpp
   LEGORacers/src/race/timeracemanager.cpp
-  LEGORacers/src/race/racetimeformatter.cpp
+  LEGORacers/src/race/cobalttrail0x140.cpp
+  LEGORacers/src/race/slatebridge0x68.cpp
   LEGORacers/src/race/circuitracerunner.cpp
   LEGORacers/src/race/circuitstandings.cpp
   LEGORacers/src/util/amethystbreeze0x104.cpp

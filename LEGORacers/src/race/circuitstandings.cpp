@@ -1,6 +1,11 @@
 #include "race/circuitstandings.h"
 
+#include <memory.h>
+
 DECOMP_SIZE_ASSERT(CircuitStandings, 0x48)
+
+// GLOBAL: LEGORACERS 0x004b0b58
+const LegoU32 g_unk0x004b0b58[6] = {30, 20, 10, 3, 2, 1};
 
 // FUNCTION: LEGORACERS 0x00440220
 CircuitStandings::CircuitStandings()
@@ -53,6 +58,23 @@ void CircuitStandings::Shutdown()
 	Reset();
 }
 
+// FUNCTION: LEGORACERS 0x004402b0
+void CircuitStandings::FUN_004402b0()
+{
+	undefined4* values = m_unk0x28;
+	LegoS32 remaining = sizeOfArray(m_unk0x28);
+	do {
+		*values++ = 0;
+	} while (--remaining);
+}
+
+// FUNCTION: LEGORACERS 0x004402c0
+void CircuitStandings::FUN_004402c0(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+{
+	m_unk0x28[p_unk0x04] = g_unk0x004b0b58[p_unk0x08];
+	m_points[p_unk0x04] += g_unk0x004b0b58[p_unk0x08];
+}
+
 // FUNCTION: LEGORACERS 0x004402f0
 undefined4 CircuitStandings::GetPoints(LegoU32 p_index)
 {
@@ -71,6 +93,23 @@ LegoS32 CircuitStandings::GetRank(LegoU32 p_index)
 	}
 
 	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00440330
+void CircuitStandings::FUN_00440330(LegoU32 p_elapsedMs)
+{
+	if (p_elapsedMs > m_unk0x40) {
+		m_unk0x40 = 400;
+	}
+	else {
+		m_unk0x40 -= p_elapsedMs;
+	}
+}
+
+// STUB: LEGORACERS 0x00440350
+void CircuitStandings::FUN_00440350(LegoBool32)
+{
+	STUB(0x00440350);
 }
 
 // FUNCTION: LEGORACERS 0x00440860

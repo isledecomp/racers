@@ -77,13 +77,49 @@ public:
 				undefined4 m_unk0x004; // 0x004
 				undefined4 m_unk0x008; // 0x008
 				Entry* m_unk0x00c;     // 0x00c
+				Entry* m_unk0x010;     // 0x010
 			};
 
 			struct Field0x90 {
+				enum {
+					c_invalidIndex = 0xffff,
+				};
+
+				struct Node {
+					struct Branch {
+						GolVec3 m_unk0x000;   // 0x000
+						LegoFloat m_unk0x00c; // 0x00c
+						LegoU32 m_unk0x010;   // 0x010
+						LegoU32 m_unk0x014;   // 0x014
+						LegoU16 m_unk0x018;   // 0x018
+						LegoU16 m_unk0x01a;   // 0x01a
+					};
+
+					union Payload {
+						Branch m_branch;
+						Entry m_entry;
+					};
+
+					Entry* GetEntry() { return &m_unk0x004.m_entry; }
+
+					LegoU16 m_unk0x000; // 0x000
+					LegoU16 m_unk0x002; // 0x002
+					Payload m_unk0x004; // 0x004
+				};
+
 				void FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
 
-				undefined m_unk0x000[0x024 - 0x000]; // 0x000
-				Entry* m_unk0x024;                   // 0x024
+				undefined4 m_unk0x000; // 0x000
+				LegoU32 m_unk0x004;    // 0x004
+				Node* m_unk0x008;      // 0x008
+				Node* m_unk0x00c;      // 0x00c
+				LegoU32 m_unk0x010;    // 0x010
+				undefined4 m_unk0x014; // 0x014
+				undefined4 m_unk0x018; // 0x018
+				undefined4 m_unk0x01c; // 0x01c
+				undefined4 m_unk0x020; // 0x020
+				Entry* m_unk0x024;     // 0x024
+				Entry* m_unk0x028;     // 0x028
 			};
 
 			struct Params {
@@ -103,7 +139,7 @@ public:
 			void FUN_00414f40(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 			void FUN_00415810(ProjectedVertex* p_unk0x04, ProjectedVertex* p_unk0x08, ProjectedVertex* p_unk0x0c);
 			void FUN_00415980();
-			void FUN_00415a60();
+			GolVec3* FUN_00415a60();
 
 		private:
 			GdbVertexArray0xc* m_unk0x114; // 0x114

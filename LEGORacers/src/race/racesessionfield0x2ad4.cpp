@@ -86,10 +86,37 @@ void RaceCameraController::FUN_004282a0(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
 	m_unk0x088 = m_unk0x048;
 }
 
-// STUB: LEGORACERS 0x004282d0
-void RaceCameraController::FUN_004282d0(GolVec3*, GolVec3*, GolMatrix3*)
+// FUNCTION: LEGORACERS 0x004282d0
+void RaceCameraController::FUN_004282d0(GolVec3* p_unk0x04, GolVec3* p_unk0x08, GolMatrix3* p_unk0x0c)
 {
-	STUB(0x004282d0);
+	GolVec3* source = p_unk0x04;
+	GolVec3* up = &p_unk0x0c->m_rows[1];
+	GolVec3* back = &p_unk0x0c->m_rows[2];
+
+	GolMath::NormalizeVector3(*source, back);
+
+	GolVec3 forward;
+	GolMath::NormalizeVector3(*source, &forward);
+
+	LegoFloat dot = p_unk0x08->m_z * forward.m_z;
+	dot += p_unk0x08->m_y * forward.m_y;
+	dot += forward.m_x * p_unk0x08->m_x;
+
+	GolVec3 projection;
+	projection.m_x = forward.m_x * dot;
+	projection.m_y = forward.m_y * dot;
+	projection.m_z = forward.m_z * dot;
+
+	up->m_x = p_unk0x08->m_x - projection.m_x;
+	up->m_y = p_unk0x08->m_y - projection.m_y;
+	up->m_z = p_unk0x08->m_z - projection.m_z;
+
+	GolMath::NormalizeVector3(*up, up);
+
+	GolVec3* right = &p_unk0x0c->m_rows[0];
+	right->m_x = up->m_y * back->m_z - up->m_z * back->m_y;
+	right->m_y = up->m_z * back->m_x - back->m_z * up->m_x;
+	right->m_z = back->m_y * up->m_x - up->m_y * back->m_x;
 }
 
 // FUNCTION: LEGORACERS 0x00428390

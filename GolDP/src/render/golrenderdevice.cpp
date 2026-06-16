@@ -1025,13 +1025,13 @@ void GolRenderDevice::VTable0x34(LegoS32 p_unk0x04, const LegoFloat* p_unk0x08)
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolRenderDevice::VTable0xac(undefined4, undefined4)
+void GolRenderDevice::VTable0xac(GolModelEntity*, undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED
-void GolRenderDevice::VTable0xb0(undefined4, undefined4)
+void GolRenderDevice::VTable0xb0(GolModelEntity*, undefined4)
 {
 	// empty
 }

@@ -1,5 +1,6 @@
 #include "scene/golbillboard.h"
 
+#include "material/duskwindbananarelic0x24.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>
@@ -28,7 +29,7 @@ GolBillboard::GolBillboard()
 
 // FUNCTION: GOLDP 0x10029e30
 void GolBillboard::VTable0x4c(
-	undefined4* p_position,
+	DuskwindBananaRelic0x24* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
 	LegoFloat p_maxDistanceSquared
@@ -57,7 +58,12 @@ void GolBillboard::FUN_10029e90(
 {
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
-	VTable0x4c(static_cast<undefined4*>(p_container->GetPosition(p_index)), p_width, p_height, p_maxDistanceSquared);
+	VTable0x4c(
+		static_cast<DuskwindBananaRelic0x24*>(p_container->GetPosition(p_index)),
+		p_width,
+		p_height,
+		p_maxDistanceSquared
+	);
 	m_flags |= c_flagBit2;
 }
 
@@ -115,10 +121,10 @@ void GolBillboard::FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result)
 }
 
 // FUNCTION: GOLDP 0x1002a020
-undefined4* GolBillboard::FUN_1002a020()
+DuskwindBananaRelic0x24* GolBillboard::FUN_1002a020()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = static_cast<undefined4*>(m_positionContainer->GetPosition(m_positionIndex));
+		m_position = static_cast<DuskwindBananaRelic0x24*>(m_positionContainer->GetPosition(m_positionIndex));
 	}
 
 	return m_position;
@@ -134,8 +140,8 @@ void GolBillboard::VTable0x1c(GolRenderDevice& p_renderer)
 LegoBool32 GolBillboard::VTable0x20()
 {
 	if (m_flags & c_flagBit2) {
-		m_position = static_cast<undefined4*>(m_positionContainer->GetPosition(m_positionIndex));
+		m_position = static_cast<DuskwindBananaRelic0x24*>(m_positionContainer->GetPosition(m_positionIndex));
 	}
 
-	return m_position[2] & 0x1100;
+	return m_position->GetUnk0x08() & 0x1100;
 }

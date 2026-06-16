@@ -13,12 +13,18 @@ class GolSoftwareRenderer {
 public:
 	// SIZE 0x14
 	struct Command0x14 {
-		Command0x14* m_next;  // 0x00
-		LegoFloat m_unk0x04;  // 0x04
-		undefined2 m_unk0x08; // 0x08
-		undefined2 m_unk0x0a; // 0x0a
-		undefined2 m_unk0x0c; // 0x0c
-		LegoU8* m_unk0x10;    // 0x10
+		union SortKey {
+			LegoFloat m_value; // 0x00
+			LegoU8 m_bytes[4]; // 0x00
+		};
+
+		Command0x14* m_next;    // 0x00
+		SortKey m_sortKey;      // 0x04
+		LegoU16 m_vertexIndex0; // 0x08
+		LegoU16 m_vertexIndex1; // 0x0a
+		LegoU16 m_vertexIndex2; // 0x0c
+		undefined2 m_unk0x0e;   // 0x0e
+		LegoU8* m_rasterizer;   // 0x10
 	};
 
 	enum PixelFormat {
@@ -52,8 +58,8 @@ public:
 	void FUN_100411b0(LegoU8* p_buffer, DuskwindBananaRelic0x24* p_material, LegoU32 p_index);
 	void FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, LegoFloat);
 	void FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count);
-	void FUN_10041830(LegoS32 p_count, LegoBool32 p_sort);
-	void FUN_10041a20(LegoBool32 p_sort);
+	void FUN_10041830(LegoS32 p_count, LegoBool p_sort);
+	void FUN_10041a20(LegoBool p_sort);
 
 private:
 	typedef void (*RasterizerCallback)();
@@ -76,10 +82,10 @@ private:
 	LegoFloat m_unk0x3c;                            // 0x3c
 	LegoS32 m_nodeCapacity;                         // 0x40
 	Command0x14* m_nodes;                           // 0x44
-	undefined m_unk0x48[0x4c - 0x48];               // 0x48
+	LegoS32 m_commandCount;                         // 0x48
 	D3DTLVERTEX* m_unk0x4c;                         // 0x4c
 	undefined4 m_unk0x50;                           // 0x50
-	Command0x14* m_unk0x54;                         // 0x54
+	Command0x14* m_commandHead;                     // 0x54
 };
 
 #endif // GOLSOFTWARERENDERER_H

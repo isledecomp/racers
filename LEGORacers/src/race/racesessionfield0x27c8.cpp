@@ -1,3 +1,4 @@
+#include "core/gol.h"
 #include "decomp.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
@@ -10,10 +11,59 @@ void RaceSession::Field0x27c8::Item::FUN_004513d0(GolD3DRenderDevice*)
 {
 }
 
-// STUB: LEGORACERS 0x00492960
+// FUNCTION: LEGORACERS 0x00492960
 void RaceSession::Field0x27c8::Item::Destroy()
 {
-	STUB(0x00492960);
+	if (m_unk0x008) {
+		m_unk0x004->VTable0x48(m_unk0x008);
+		m_unk0x008 = NULL;
+	}
+
+	m_unk0x00c.VTable0x54();
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00492990
+void RaceSession::Field0x27c8::Item::Reset()
+{
+	LegoU32 zero = 0;
+
+	m_unk0x004 = NULL;
+	m_unk0x008 = NULL;
+	m_flags0x09c = static_cast<LegoU8>(zero);
+	m_unk0x0a0[0] = zero;
+	m_unk0x0a0[1] = zero;
+	m_unk0x0a0[2] = zero;
+	m_unk0x0a0[3] = zero;
+	m_unk0x0a0[4] = zero;
+	m_unk0x0a0[5] = zero;
+	m_unk0x0a0[6] = zero;
+	m_unk0x0a0[7] = zero;
+	m_unk0x0a0[8] = zero;
+	m_unk0x0a0[9] = zero;
+	m_unk0x0a0[10] = zero;
+	m_unk0x0a0[11] = zero;
+	m_unk0x0a0[12] = zero;
+	m_unk0x0a0[13] = zero;
+	m_unk0x0d8[0] = 0xff;
+	m_unk0x0d8[1] = 0xff;
+	m_unk0x0d8[2] = 0xff;
+	m_unk0x0d8[3] = 0xff;
+
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x0dc); i++) {
+		m_unk0x0dc[i][0] = zero;
+		m_unk0x0dc[i][16] = zero;
+		m_unk0x0dc[i][17] = zero;
+		m_unk0x0dc[i][18] = zero;
+
+		LegoU32* field = &m_unk0x0dc[i][3];
+		for (LegoU32 j = 0; j < 5; j++) {
+			field[-2] = zero;
+			field[-1] = zero;
+			field[0] = zero;
+			field += 3;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00493790

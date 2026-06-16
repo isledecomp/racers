@@ -27,7 +27,7 @@ undefined4 GolDPExport::VTable0x24()
 	return 0;
 }
 
-// STUB: GOLDP 0x10007060
+// FUNCTION: GOLDP 0x10007060
 GolDPExport::~GolDPExport()
 {
 }

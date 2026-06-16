@@ -1,7 +1,14 @@
+#include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
 
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c::Field0x08, 0x04)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c, 0x68)
+
+// GLOBAL: LEGORACERS 0x004b1480
+extern const LegoFloat g_unk0x004b1480 = 5.0f;
+
+// GLOBAL: LEGORACERS 0x004b1488
+extern const LegoFloat g_unk0x004b1488 = 25.0f;
 
 // FUNCTION: LEGORACERS 0x00453790
 LegoU8 RaceState::Racer::Field0xd5c::FUN_00453790(GolVec3 p_unk0x04)
@@ -48,9 +55,22 @@ LegoU8 RaceState::Racer::Field0xd5c::FUN_004537f0()
 	return result;
 }
 
-// STUB: LEGORACERS 0x00453840
-LegoS32 RaceState::Racer::Field0xd5c::FUN_00453840(GolVec3*)
+// FUNCTION: LEGORACERS 0x00453840
+LegoS32 RaceState::Racer::Field0xd5c::FUN_00453840(GolVec3* p_unk0x04)
 {
-	STUB(0x00453840);
-	return 0;
+	GolVec3 start;
+	GolVec3 end;
+	RaceSessionField0x32b4::Field0x0c record;
+
+	start.m_x = p_unk0x04->m_x;
+	start.m_y = p_unk0x04->m_y;
+	start.m_z = p_unk0x04->m_z + g_unk0x004b1488;
+
+	end.m_x = p_unk0x04->m_x;
+	end.m_y = p_unk0x04->m_y;
+	end.m_z = p_unk0x04->m_z - g_unk0x004b1488;
+
+	LegoS32 result = m_unk0x04->m_unk0x68->FUN_0041f4d0(&start, &end, &record, p_unk0x04, NULL);
+	p_unk0x04->m_z = p_unk0x04->m_z + g_unk0x004b1480;
+	return result;
 }

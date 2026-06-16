@@ -106,7 +106,10 @@ struct GolQuat {
 
 // SIZE 0x24
 struct GolMatrix3 {
-	LegoFloat m_m[3][3];
+	union {
+		LegoFloat m_m[3][3]; // 0x00
+		GolVec3 m_rows[3];   // 0x00
+	};
 };
 
 // SIZE 0x30

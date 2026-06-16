@@ -6,6 +6,8 @@
 #include "race/racesession.h"
 
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004, 0x11c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Entry, 0x14)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node, 0x20)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex, 0x20)
 
 // GLOBAL: LEGORACERS 0x004c47a8
@@ -38,10 +40,164 @@ LegoFloat g_unk0x004c3e1c;
 // GLOBAL: LEGORACERS 0x004c3e28
 RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex g_unk0x004c3e28[76];
 
-// STUB: LEGORACERS 0x00403cc0
-void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3*, LegoU32)
+// FUNCTION: LEGORACERS 0x00403cc0
+void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 {
-	STUB(0x00403cc0);
+	LegoFloat planeOffset;
+	m_unk0x010++;
+	Node* node = m_unk0x00c;
+
+	while (node->m_unk0x000 == 0) {
+		LegoFloat dot = node->m_unk0x004.m_branch.m_unk0x000.m_z;
+		dot *= p_unk0x04->m_z;
+		dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * p_unk0x04->m_y;
+		LegoFloat dotX = p_unk0x04->m_x;
+		dotX *= node->m_unk0x004.m_branch.m_unk0x000.m_x;
+		dot += dotX;
+		dot += node->m_unk0x004.m_branch.m_unk0x00c;
+
+		LegoU32 nodeIndex;
+		if (dot < 0.0f && node->m_unk0x004.m_branch.m_unk0x01a != c_invalidIndex) {
+			node->m_unk0x004.m_branch.m_unk0x014 = m_unk0x010;
+			nodeIndex = node->m_unk0x004.m_branch.m_unk0x01a;
+		}
+		else if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
+			node->m_unk0x004.m_branch.m_unk0x014 = m_unk0x010;
+			nodeIndex = node->m_unk0x004.m_branch.m_unk0x01a;
+		}
+		else {
+			node->m_unk0x004.m_branch.m_unk0x010 = m_unk0x010;
+			nodeIndex = node->m_unk0x004.m_branch.m_unk0x018;
+		}
+
+		node = &m_unk0x008[nodeIndex];
+	}
+
+	node->m_unk0x004.m_entry.m_unk0x010 = NULL;
+	node->m_unk0x004.m_entry.m_unk0x00c = NULL;
+	if (node->m_unk0x002 == c_invalidIndex) {
+		Entry* entry = node->GetEntry();
+		m_unk0x028 = entry;
+		m_unk0x024 = entry;
+		return;
+	}
+
+	LegoU32 count = p_unk0x08;
+	Node* firstNode = node;
+	Node* previousNode = node;
+	node = &m_unk0x008[node->m_unk0x002];
+	LegoU32 stamp;
+
+	for (;;) {
+		stamp = m_unk0x010;
+
+		if (node->m_unk0x004.m_branch.m_unk0x010 != stamp) {
+			if (node->m_unk0x004.m_branch.m_unk0x014 != stamp) {
+				LegoFloat dot = node->m_unk0x004.m_branch.m_unk0x000.m_z;
+				dot *= p_unk0x04->m_z;
+				dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * p_unk0x04->m_y;
+				dot += node->m_unk0x004.m_branch.m_unk0x000.m_x * p_unk0x04->m_x;
+
+				if (dot < -node->m_unk0x004.m_branch.m_unk0x00c) {
+					node->m_unk0x004.m_branch.m_unk0x014 = stamp;
+					if (node->m_unk0x004.m_branch.m_unk0x01a == c_invalidIndex) {
+						continue;
+					}
+
+					node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x01a];
+				}
+				else {
+					node->m_unk0x004.m_branch.m_unk0x010 = stamp;
+					if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
+						continue;
+					}
+
+					node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x018];
+				}
+			}
+			else {
+				node->m_unk0x004.m_branch.m_unk0x010 = stamp;
+				if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
+					continue;
+				}
+				LegoU32 i = 1;
+				if (count <= i) {
+					continue;
+				}
+
+				planeOffset = -node->m_unk0x004.m_branch.m_unk0x00c;
+				LegoFloat* vertexY = &p_unk0x04[i].m_y;
+				while (i < count) {
+					LegoFloat dot = vertexY[1] * node->m_unk0x004.m_branch.m_unk0x000.m_z;
+					dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * vertexY[0];
+					dot += vertexY[-1] * node->m_unk0x004.m_branch.m_unk0x000.m_x;
+					if (dot > planeOffset) {
+						break;
+					}
+
+					i++;
+					vertexY += 3;
+				}
+
+				if (i >= count) {
+					continue;
+				}
+
+				node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x018];
+			}
+		}
+		else {
+			if (node->m_unk0x004.m_branch.m_unk0x014 != stamp) {
+				node->m_unk0x004.m_branch.m_unk0x014 = stamp;
+				if (node->m_unk0x004.m_branch.m_unk0x01a == c_invalidIndex) {
+					continue;
+				}
+				LegoU32 i = 1;
+				if (count <= i) {
+					continue;
+				}
+
+				planeOffset = -node->m_unk0x004.m_branch.m_unk0x00c;
+				LegoFloat* vertexY = &p_unk0x04[i].m_y;
+				while (i < count) {
+					LegoFloat dot = vertexY[1] * node->m_unk0x004.m_branch.m_unk0x000.m_z;
+					dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * vertexY[0];
+					dot += vertexY[-1] * node->m_unk0x004.m_branch.m_unk0x000.m_x;
+					if (dot < planeOffset) {
+						break;
+					}
+
+					i++;
+					vertexY += 3;
+				}
+
+				if (i >= count) {
+					continue;
+				}
+
+				node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x01a];
+			}
+			else {
+				if (node->m_unk0x002 == c_invalidIndex) {
+					break;
+				}
+
+				node = &m_unk0x008[node->m_unk0x002];
+				continue;
+			}
+		}
+
+		if (node->m_unk0x000 != 0) {
+			previousNode->m_unk0x004.m_entry.m_unk0x00c = node->GetEntry();
+			node->m_unk0x004.m_entry.m_unk0x010 = previousNode->GetEntry();
+			node->m_unk0x004.m_entry.m_unk0x00c = NULL;
+			previousNode = node;
+			node = &m_unk0x008[node->m_unk0x002];
+		}
+	}
+
+	m_unk0x024 = firstNode->GetEntry();
+	m_unk0x028 = previousNode->GetEntry();
 }
 
 // FUNCTION: LEGORACERS 0x00414a30
@@ -647,8 +803,53 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00415980()
 	model->SetDirty(TRUE);
 }
 
-// STUB: LEGORACERS 0x00415a60
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00415a60()
+// FUNCTION: LEGORACERS 0x00415a60
+GolVec3* RaceSessionField0x27d4::Item::Field0x004::FUN_00415a60()
 {
-	STUB(0x00415a60);
+	LegoFloat scratch[13];
+
+	LegoFloat v1 = m_unk0x104 * 0.5f;
+	scratch[0] = m_unk0x108 * 0.5f;
+	GolVec3* result = &m_unk0x0e8;
+	scratch[4] = v1 * m_unk0x0c4.m_x;
+	scratch[5] = m_unk0x0c4.m_y;
+	scratch[5] *= v1;
+	LegoFloat v3 = v1 * m_unk0x0c4.m_z;
+	LegoFloat v4 = scratch[0] * m_unk0x0d0.m_x;
+	scratch[8] = m_unk0x0d0.m_y;
+	scratch[8] *= scratch[0];
+	scratch[9] = m_unk0x0d0.m_z;
+	scratch[9] *= scratch[0];
+	LegoFloat v5 = m_unk0x10c;
+	scratch[10] = v5 * m_unk0x0dc.m_x;
+	scratch[11] = m_unk0x0dc.m_y;
+	scratch[11] *= v5;
+	LegoFloat v6 = v5 * m_unk0x0dc.m_z;
+
+	g_unk0x004c47a8[0] = *result;
+
+	scratch[1] = result->m_x - v4;
+	scratch[2] = result->m_y - scratch[8];
+	scratch[3] = result->m_z - scratch[9];
+	scratch[1] = scratch[1] + scratch[10];
+	scratch[2] = scratch[2] + scratch[11];
+	LegoFloat v7 = v6 + scratch[3];
+	g_unk0x004c47a8[1].m_x = scratch[1] - scratch[4];
+	g_unk0x004c47a8[1].m_y = scratch[2] - scratch[5];
+	g_unk0x004c47a8[1].m_z = v7 - v3;
+	g_unk0x004c47a8[2].m_x = scratch[1] + scratch[4];
+	g_unk0x004c47a8[2].m_y = scratch[2] + scratch[5];
+	g_unk0x004c47a8[2].m_z = v7 + v3;
+
+	LegoFloat v8 = v4 + result->m_x;
+	scratch[2] = scratch[8] + result->m_y;
+	scratch[3] = scratch[9] + result->m_z;
+	g_unk0x004c47a8[3].m_x = v8 - scratch[4];
+	g_unk0x004c47a8[3].m_y = scratch[2] - scratch[5];
+	g_unk0x004c47a8[3].m_z = scratch[3] - v3;
+	g_unk0x004c47a8[4].m_x = v8 + scratch[4];
+	g_unk0x004c47a8[4].m_y = scratch[2] + scratch[5];
+	g_unk0x004c47a8[4].m_z = scratch[3] + v3;
+
+	return result;
 }

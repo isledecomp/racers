@@ -8,6 +8,7 @@
 #include "types.h"
 
 class DirectSoundGroup;
+class RaceState;
 
 // VTABLE: LEGORACERS 0x004afad0
 // SIZE 0x38
@@ -55,6 +56,7 @@ public:
 
 protected:
 	friend class DirectSoundGroup;
+	friend class RaceState;
 
 	void UpdateSpatialFromOrigin();
 	void UpdateSpatialFromNode(SoundNode* p_node);

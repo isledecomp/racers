@@ -1,16 +1,16 @@
-#include "race/racesession.h"
+#include "race/racesessionfield0x32b4.h"
 
 #include <math.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x32b4::Field0x0c, 0x34)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x32b4::Field0x10, 0x18)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x32b4::Field0x058::Field0x18, 0x0c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x32b4::Field0x000::Field0x0a8, 0x64)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x32b4, 0x10)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x0c, 0x34)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x10, 0x18)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::Field0x18, 0x0c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x000::Field0x0a8, 0x64)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4, 0x10)
 
 // FUNCTION: LEGORACERS 0x0041f430
-RaceSession::Field0x32b4::Field0x32b4()
+RaceSessionField0x32b4::RaceSessionField0x32b4()
 {
 	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
@@ -19,7 +19,7 @@ RaceSession::Field0x32b4::Field0x32b4()
 }
 
 // FUNCTION: LEGORACERS 0x0041f440
-RaceSession::Field0x32b4::Field0x000* RaceSession::Field0x32b4::FUN_0041f440(
+RaceSessionField0x32b4::Field0x000* RaceSessionField0x32b4::FUN_0041f440(
 	Field0x000* p_unk0x04,
 	LegoChar* p_unk0x08,
 	Field0x004* p_unk0x0c,
@@ -56,7 +56,7 @@ RaceSession::Field0x32b4::Field0x000* RaceSession::Field0x32b4::FUN_0041f440(
 }
 
 // STUB: LEGORACERS 0x0041f4d0
-LegoBool32 RaceSession::Field0x32b4::FUN_0041f4d0(
+LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	Field0x0c* p_unk0x0c,
@@ -66,8 +66,8 @@ LegoBool32 RaceSession::Field0x32b4::FUN_0041f4d0(
 {
 	LegoU32 count;
 	Field0x10* hitRecord;
-	Field0x32b4* session = this;
-	Field0x32b4* savedSession = this;
+	RaceSessionField0x32b4* session = this;
+	RaceSessionField0x32b4* savedSession = this;
 	GolVec3 direction;
 	GolVec3 center;
 	GolVec3 planeLocal;
@@ -162,7 +162,7 @@ fail:
 }
 
 // FUNCTION: LEGORACERS 0x0041f730
-LegoBool32 RaceSession::Field0x32b4::FUN_0041f730(
+LegoBool32 RaceSessionField0x32b4::FUN_0041f730(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	Field0x0c* p_unk0x0c,

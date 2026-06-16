@@ -153,8 +153,8 @@ public:
 	void VTable0x98(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x98
 	void VTable0x9c(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x9c
 	void VTable0xa8(GolWorldEntity*, LegoFloat, LegoFloat) override;        // vtable+0xa8
-	void VTable0xac(undefined4, undefined4) override;                       // vtable+0xac
-	void VTable0xb0(undefined4, undefined4) override;                       // vtable+0xb0
+	void VTable0xac(GolModelEntity*, undefined4) override;                  // vtable+0xac
+	void VTable0xb0(GolModelEntity*, undefined4) override;                  // vtable+0xb0
 	void VTable0xb4(GolBillboard&) override;                                // vtable+0xb4
 	void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags) override; // vtable+0xb8
 	void ClearAlphaOverride() override;                                     // vtable+0xbc
@@ -199,6 +199,7 @@ public:
 	friend class GolModel;
 	friend class GolFont;
 	friend class UtopianPan0xa4;
+	friend class GolBillboard;
 
 private:
 	static LegoFloat ScaleColorChannel(double p_color, double p_materialColor)
@@ -257,7 +258,7 @@ private:
 	void FUN_10012f50();
 	void FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex);
 	void FUN_10013110(undefined4, undefined4, undefined4);
-	void FUN_100132f0(undefined4, undefined4, undefined4);
+	void FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);
 	static HRESULT CALLBACK EnumerateTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);

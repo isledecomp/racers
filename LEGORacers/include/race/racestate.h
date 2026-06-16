@@ -25,6 +25,8 @@ class GolAnimatedEntity;
 class CutsceneAnimation;
 class CobaltTrail0x140;
 class RaceCameraController;
+class RaceEventTable0x90;
+class RaceSessionField0x32b4;
 class SoundGroup;
 class SoundManager;
 class SpatialSoundInstance;
@@ -296,6 +298,12 @@ public:
 
 		class Field0xd5c {
 		public:
+			class Field0x04 {
+			public:
+				undefined m_unk0x00[0x68 - 0x00];  // 0x00
+				RaceSessionField0x32b4* m_unk0x68; // 0x68
+			};
+
 			class Field0x08 {
 			public:
 				virtual void VTable0x00();                     // vtable+0x00
@@ -308,7 +316,8 @@ public:
 			LegoS32 FUN_00453840(GolVec3* p_unk0x04);
 
 		private:
-			undefined m_unk0x00[0x08 - 0x00]; // 0x00
+			undefined m_unk0x00[0x04 - 0x00]; // 0x00
+			Field0x04* m_unk0x04;             // 0x04
 			Field0x08 m_unk0x08;              // 0x08
 			undefined m_unk0x0c[0x3c - 0x0c]; // 0x0c
 			LegoU32 m_unk0x3c;                // 0x3c
@@ -321,9 +330,13 @@ public:
 			undefined m_unk0x65[0x68 - 0x65]; // 0x65
 		};
 
-		class Field0xadc {
+		typedef RaceEventTable0x90 Field0xadc;
+
+		class Field0xd9c {
 		public:
-			void FUN_00462580(LegoS32 p_unk0x04, LegoS32 p_unk0x08, GolVec3* p_unk0x0c);
+			virtual void VTable0x00() = 0; // vtable+0x00
+			virtual void VTable0x04() = 0; // vtable+0x04
+			virtual void VTable0x08() = 0; // vtable+0x08
 		};
 
 		// SIZE 0x54
@@ -342,6 +355,25 @@ public:
 			public:
 				void FUN_00448070();
 				undefined4 FUN_00449090();
+
+			private:
+				enum {
+					c_flags0x6c0Bit0 = 1 << 0,
+					c_flags0x6c0Bit9 = 1 << 9,
+					c_flags0x6c0Bit10 = 1 << 10,
+				};
+
+				undefined m_unk0x000[0x158 - 0x000];       // 0x000
+				RaceResourceManager* m_unk0x158;           // 0x158
+				undefined m_unk0x15c[0x6c0 - 0x15c];       // 0x15c
+				LegoU32 m_flags0x6c0;                      // 0x6c0
+				undefined m_unk0x6c4[0x6c8 - 0x6c4];       // 0x6c4
+				LegoFloat m_unk0x6c8;                      // 0x6c8
+				LegoFloat m_unk0x6cc;                      // 0x6cc
+				undefined m_unk0x6d0[0x6d8 - 0x6d0];       // 0x6d0
+				LegoU32 m_unk0x6d8;                        // 0x6d8
+				undefined m_unk0x6dc[0x6e8 - 0x6dc];       // 0x6dc
+				RaceResourceManager::Resource* m_unk0x6e8; // 0x6e8
 			};
 
 			// SIZE 0x30
@@ -421,12 +453,14 @@ public:
 			c_flags0xd04Bit10 = 1 << 10,
 			c_flags0xd04Bit11 = 1 << 11,
 			c_flags0xd04Bit12 = 1 << 12,
+			c_flags0xd04Bit20 = 0x00100000,
 			c_flags0xd04Bit22 = 0x00400000,
 			c_flags0xd04Bit24 = 0x01000000,
 			c_flags0xd04Bit25 = 0x02000000,
 			c_flags0xd04Bit27 = 0x08000000,
 			c_flags0xaa8Bit3 = 1 << 3,
 			c_flags0xaa8Bit12 = 1 << 12,
+			c_flags0xaa8Bit18 = 0x00040000,
 			c_randomTableMask = 0x3ff,
 			c_feedbackVariantCount = 6,
 			c_feedbackHighOffset = 6,
@@ -456,7 +490,10 @@ public:
 		undefined m_unk0xae0[0xb2c - 0xae0]; // 0xae0
 		undefined4 m_unk0xb2c;               // 0xb2c
 		LegoU32 m_unk0xb30;                  // 0xb30
-		undefined m_unk0xb34[0xc70 - 0xb34]; // 0xb34
+		undefined m_unk0xb34[0xbd0 - 0xb34]; // 0xb34
+		LegoFloat m_unk0xbd0;                // 0xbd0
+		LegoFloat m_unk0xbd4;                // 0xbd4
+		undefined m_unk0xbd8[0xc70 - 0xbd8]; // 0xbd8
 		Field0xc70 m_unk0xc70;               // 0xc70
 		undefined m_unk0xcc4[0xccc - 0xcc4]; // 0xcc4
 		LegoU32 m_unk0xccc;                  // 0xccc
@@ -488,7 +525,11 @@ public:
 		undefined m_unk0xd70[0xd84 - 0xd70]; // 0xd70
 		LegoU32 m_unk0xd84;                  // 0xd84
 		LegoU32 m_unk0xd88;                  // 0xd88
-		undefined m_unk0xd8c[0xdb4 - 0xd8c]; // 0xd8c
+		undefined m_unk0xd8c[0xd9c - 0xd8c]; // 0xd8c
+		Field0xd9c* m_unk0xd9c;              // 0xd9c
+		Field0xd9c* m_unk0xda0;              // 0xda0
+		Field0xd9c* m_unk0xda4;              // 0xda4
+		undefined m_unk0xda8[0xdb4 - 0xda8]; // 0xda8
 		RaceCameraController* m_unk0xdb4;    // 0xdb4
 		LegoU32 m_unk0xdb8;                  // 0xdb8
 		undefined m_unk0xdbc[0xe04 - 0xdbc]; // 0xdbc
@@ -515,24 +556,30 @@ public:
 		void FUN_0043d270();
 		void FUN_0043d3f0();
 
-		LegoEventQueue::Event* m_unk0x048;         // 0x048
-		LegoEventQueue::Event* m_unk0x04c;         // 0x04c
-		Racer* m_racers;                           // 0x050
-		LegoU32 m_racerCount;                      // 0x054
-		undefined4 m_unk0x058;                     // 0x058
-		RaceResourceManager* m_unk0x05c;           // 0x05c
-		undefined4 m_unk0x060;                     // 0x060
-		undefined4 m_unk0x064[6];                  // 0x064
-		RaceResourceManager::Resource* m_unk0x07c; // 0x07c
-		undefined4 m_unk0x080[3];                  // 0x080
-		undefined4 m_unk0x08c[2];                  // 0x08c
-		undefined4 m_unk0x094[2];                  // 0x094
-		undefined4 m_unk0x09c;                     // 0x09c
-		undefined4 m_unk0x0a0;                     // 0x0a0
-		GolVec3 m_unk0x0a4[6];                     // 0x0a4
-		GolVec3 m_unk0x0ec[6];                     // 0x0ec
-		GolVec3 m_unk0x134[6];                     // 0x134
-		LegoU32 m_unk0x17c[6];                     // 0x17c
+		LegoEventQueue::Event* m_unk0x048; // 0x048
+		LegoEventQueue::Event* m_unk0x04c; // 0x04c
+		Racer* m_racers;                   // 0x050
+		LegoU32 m_racerCount;              // 0x054
+		undefined4 m_unk0x058;             // 0x058
+		union {
+			RaceResourceManager* m_unk0x05c;  // 0x05c
+			Racer::Field0x004* m_soundSource; // 0x05c
+		};
+		undefined4 m_unk0x060;    // 0x060
+		undefined4 m_unk0x064[6]; // 0x064
+		union {
+			RaceResourceManager::Resource* m_unk0x07c; // 0x07c
+			SpatialSoundInstance* m_sound;             // 0x07c
+		};
+		undefined4 m_unk0x080[3]; // 0x080
+		undefined4 m_unk0x08c[2]; // 0x08c
+		undefined4 m_unk0x094[2]; // 0x094
+		undefined4 m_unk0x09c;    // 0x09c
+		undefined4 m_unk0x0a0;    // 0x0a0
+		GolVec3 m_unk0x0a4[6];    // 0x0a4
+		GolVec3 m_unk0x0ec[6];    // 0x0ec
+		GolVec3 m_unk0x134[6];    // 0x134
+		LegoU32 m_unk0x17c[6];    // 0x17c
 	};
 
 	// SIZE 0x1c

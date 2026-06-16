@@ -193,8 +193,8 @@ public:
 	virtual void VTable0xa4(GolWorldEntity*);                                                 // vtable+0xa4
 	virtual void VTable0xa8(GolWorldEntity* p_param1, LegoFloat p_param2,
 							LegoFloat p_param3);                           // vtable+0xa8
-	virtual void VTable0xac(undefined4, undefined4);                       // vtable+0xac
-	virtual void VTable0xb0(undefined4, undefined4);                       // vtable+0xb0
+	virtual void VTable0xac(GolModelEntity*, undefined4);                  // vtable+0xac
+	virtual void VTable0xb0(GolModelEntity*, undefined4);                  // vtable+0xb0
 	virtual void VTable0xb4(GolBillboard&) = 0;                            // vtable+0xb4
 	virtual void SetAlphaOverride(undefined4 p_alpha, undefined4 p_flags); // vtable+0xb8
 	virtual void ClearAlphaOverride();                                     // vtable+0xbc

@@ -1,11 +1,11 @@
 #include "decomp.h"
-#include "race/racesession.h"
+#include "race/raceeventdispatcher0x08.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2148, 0x08)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2148::Item, 0x10)
+DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08, 0x08)
+DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item, 0x10)
 
 // FUNCTION: LEGORACERS 0x0048a400
-RaceSession::Field0x2148::Item::Item()
+RaceEventDispatcher0x08::Item::Item()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = 0;
@@ -13,18 +13,18 @@ RaceSession::Field0x2148::Item::Item()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x00(undefined4)
+void RaceEventDispatcher0x08::Item::VTable0x00(undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0048a440
-RaceSession::Field0x2148::Item::~Item()
+RaceEventDispatcher0x08::Item::~Item()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0048a450
-LegoS32 RaceSession::Field0x2148::Item::Reset()
+LegoS32 RaceEventDispatcher0x08::Item::Reset()
 {
 	m_unk0x04 = 0;
 	m_unk0x0c = 0;
@@ -34,7 +34,7 @@ LegoS32 RaceSession::Field0x2148::Item::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0048a460
-void RaceSession::Field0x2148::Item::VTable0x14(undefined4)
+void RaceEventDispatcher0x08::Item::VTable0x14(undefined4)
 {
 	if (m_unk0x0c == 3) {
 		VTable0x08(NULL);
@@ -42,7 +42,7 @@ void RaceSession::Field0x2148::Item::VTable0x14(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0048a470
-void RaceSession::Field0x2148::Item::FUN_0048a470(void* p_unk0x04)
+void RaceEventDispatcher0x08::Item::FUN_0048a470(void* p_unk0x04)
 {
 	if (m_unk0x0c == 1) {
 		VTable0x04(p_unk0x04);
@@ -50,7 +50,7 @@ void RaceSession::Field0x2148::Item::FUN_0048a470(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0048a490
-void RaceSession::Field0x2148::Item::FUN_0048a490(void* p_unk0x04)
+void RaceEventDispatcher0x08::Item::FUN_0048a490(void* p_unk0x04)
 {
 	if (m_unk0x0c != 1) {
 		VTable0x08(p_unk0x04);
@@ -58,51 +58,51 @@ void RaceSession::Field0x2148::Item::FUN_0048a490(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x18(GolCamera*, undefined4)
+void RaceEventDispatcher0x08::Item::VTable0x18(GolCamera*, undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x1c(GolD3DRenderDevice*)
+void RaceEventDispatcher0x08::Item::VTable0x1c(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoBool32 RaceSession::Field0x2148::Item::VTable0x20()
+LegoBool32 RaceEventDispatcher0x08::Item::VTable0x20()
 {
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x24()
+void RaceEventDispatcher0x08::Item::VTable0x24()
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x28(LegoS32, void*)
+void RaceEventDispatcher0x08::Item::VTable0x28(LegoS32, void*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void RaceSession::Field0x2148::Item::VTable0x2c(LegoS32, void*)
+void RaceEventDispatcher0x08::Item::VTable0x2c(LegoS32, void*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x0048a4b0
-RaceSession::Field0x2148::Field0x2148()
+RaceEventDispatcher0x08::RaceEventDispatcher0x08()
 {
 	m_entries = NULL;
 	m_count = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0048a4c0
-RaceSession::Field0x2148::~Field0x2148()
+RaceEventDispatcher0x08::~RaceEventDispatcher0x08()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0048aa70
-void RaceSession::Field0x2148::Destroy()
+void RaceEventDispatcher0x08::Destroy()
 {
 	LegoU32 i;
 
@@ -120,7 +120,7 @@ void RaceSession::Field0x2148::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0048aad0
-void RaceSession::Field0x2148::FUN_0048aad0(LegoS32 p_unk0x04, void* p_unk0x08)
+void RaceEventDispatcher0x08::FUN_0048aad0(LegoS32 p_unk0x04, void* p_unk0x08)
 {
 	LegoU32 i;
 
@@ -135,7 +135,7 @@ void RaceSession::Field0x2148::FUN_0048aad0(LegoS32 p_unk0x04, void* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x0048ab20
-void RaceSession::Field0x2148::FUN_0048ab20(LegoS32 p_unk0x04, void* p_unk0x08)
+void RaceEventDispatcher0x08::FUN_0048ab20(LegoS32 p_unk0x04, void* p_unk0x08)
 {
 	LegoU32 i;
 
@@ -150,7 +150,7 @@ void RaceSession::Field0x2148::FUN_0048ab20(LegoS32 p_unk0x04, void* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x0048ab70
-void RaceSession::Field0x2148::FUN_0048ab70(LegoS32 p_unk0x04)
+void RaceEventDispatcher0x08::FUN_0048ab70(LegoS32 p_unk0x04)
 {
 	LegoU32 i;
 
@@ -163,7 +163,7 @@ void RaceSession::Field0x2148::FUN_0048ab70(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0048abb0
-void RaceSession::Field0x2148::FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c)
+void RaceEventDispatcher0x08::FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c)
 {
 	LegoU32 i;
 
@@ -184,7 +184,7 @@ void RaceSession::Field0x2148::FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08
 }
 
 // FUNCTION: LEGORACERS 0x0048ac30
-void RaceSession::Field0x2148::FUN_0048ac30(LegoS32 p_unk0x04, Context* p_context)
+void RaceEventDispatcher0x08::FUN_0048ac30(LegoS32 p_unk0x04, Context* p_context)
 {
 	undefined unk0x08[12];
 	LegoU32 i;
@@ -204,7 +204,7 @@ void RaceSession::Field0x2148::FUN_0048ac30(LegoS32 p_unk0x04, Context* p_contex
 }
 
 // FUNCTION: LEGORACERS 0x0048aca0
-void RaceSession::Field0x2148::FUN_0048aca0(LegoS32 p_unk0x04, Context* p_context)
+void RaceEventDispatcher0x08::FUN_0048aca0(LegoS32 p_unk0x04, Context* p_context)
 {
 	undefined unk0x08[12];
 	LegoU32 i;
@@ -224,7 +224,7 @@ void RaceSession::Field0x2148::FUN_0048aca0(LegoS32 p_unk0x04, Context* p_contex
 }
 
 // FUNCTION: LEGORACERS 0x0048ad10
-void RaceSession::Field0x2148::FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08, Context* p_context)
+void RaceEventDispatcher0x08::FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08, Context* p_context)
 {
 	undefined unk0x0c[12];
 	LegoU32 i;
@@ -255,7 +255,7 @@ void RaceSession::Field0x2148::FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08
 }
 
 // FUNCTION: LEGORACERS 0x0048add0
-void RaceSession::Field0x2148::FUN_0048add0(undefined4 p_unk0x04)
+void RaceEventDispatcher0x08::FUN_0048add0(undefined4 p_unk0x04)
 {
 	LegoU32 i;
 
@@ -265,7 +265,7 @@ void RaceSession::Field0x2148::FUN_0048add0(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0048ae00
-void RaceSession::Field0x2148::FUN_0048ae00(GolCamera* p_unk0x04, undefined4 p_unk0x08)
+void RaceEventDispatcher0x08::FUN_0048ae00(GolCamera* p_unk0x04, undefined4 p_unk0x08)
 {
 	LegoU32 i;
 
@@ -275,7 +275,7 @@ void RaceSession::Field0x2148::FUN_0048ae00(GolCamera* p_unk0x04, undefined4 p_u
 }
 
 // FUNCTION: LEGORACERS 0x0048ae30
-void RaceSession::Field0x2148::FUN_0048ae30(GolD3DRenderDevice* p_renderer)
+void RaceEventDispatcher0x08::FUN_0048ae30(GolD3DRenderDevice* p_renderer)
 {
 	LegoU32 i;
 
@@ -285,7 +285,7 @@ void RaceSession::Field0x2148::FUN_0048ae30(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0048ae60
-void RaceSession::Field0x2148::FUN_0048ae60()
+void RaceEventDispatcher0x08::FUN_0048ae60()
 {
 	LegoU32 i;
 

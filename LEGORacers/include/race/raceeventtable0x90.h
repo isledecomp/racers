@@ -1,0 +1,148 @@
+#ifndef RACEEVENTTABLE0X90_H
+#define RACEEVENTTABLE0X90_H
+
+#include "decomp.h"
+#include "golmath.h"
+#include "race/raceeventdispatcher0x08.h"
+#include "types.h"
+
+// SIZE 0x90
+class RaceEventTable0x90 {
+public:
+	LegoU32 FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x08);
+	void FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08);
+	void FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c);
+
+private:
+	// SIZE 0x20
+	class EntryBase {
+	public:
+		virtual void VTable0x00() = 0;         // vtable+0x00
+		virtual void VTable0x04(GolVec3*) = 0; // vtable+0x04
+		virtual void VTable0x08() = 0;         // vtable+0x08
+		virtual void VTable0x0c() = 0;         // vtable+0x0c
+
+		void FUN_0045ee50(GolVec3* p_unk0x04);
+		void FUN_0045ee70(GolVec3* p_unk0x04);
+
+		undefined m_unk0x04[0x14 - 0x04]; // 0x04
+		undefined4 m_unk0x14;             // 0x14
+		LegoS32 m_unk0x18;                // 0x18
+		LegoU8 m_flags0x1c;               // 0x1c
+		undefined m_unk0x1d[0x20 - 0x1d]; // 0x1d
+	};
+
+	// SIZE 0x5c
+	class Entry0x5c : public EntryBase {
+	public:
+		undefined m_unk0x20[0x5c - 0x20]; // 0x20
+	};
+
+	// SIZE 0x34
+	class Entry0x34 : public EntryBase {
+	public:
+		undefined m_unk0x20[0x34 - 0x20]; // 0x20
+	};
+
+	// SIZE 0x64
+	class Entry0x64 : public EntryBase {
+	public:
+		undefined m_unk0x20[0x64 - 0x20]; // 0x20
+	};
+
+	// SIZE 0x30
+	class Entry0x30 : public EntryBase {
+	public:
+		undefined4 m_unk0x20;             // 0x20
+		undefined m_unk0x24[0x2c - 0x24]; // 0x24
+		LegoU8 m_flags0x2c;               // 0x2c
+		undefined m_unk0x2d[0x30 - 0x2d]; // 0x2d
+	};
+
+	// SIZE 0x2c
+	class Entry0x2c : public EntryBase {
+	public:
+		undefined m_unk0x20[0x2c - 0x20]; // 0x20
+	};
+
+	// SIZE 0x48
+	class Entry0x48 : public EntryBase {
+	public:
+		undefined m_unk0x20[0x48 - 0x20]; // 0x20
+	};
+
+	// SIZE 0x24
+	class Entry0x24 : public EntryBase {
+	public:
+		undefined m_unk0x20[0x24 - 0x20]; // 0x20
+	};
+
+	// SIZE 0x38
+	class Entry0x38 : public EntryBase {
+	public:
+		undefined m_unk0x20[0x30 - 0x20]; // 0x20
+		undefined4 m_unk0x30;             // 0x30
+		LegoU8 m_flags0x34;               // 0x34
+		undefined m_unk0x35[0x38 - 0x35]; // 0x35
+	};
+
+	// SIZE 0x08
+	class Pair0x08 {
+	public:
+		undefined4 m_unk0x00; // 0x00
+		undefined4 m_unk0x04; // 0x04
+	};
+
+	// SIZE 0x14
+	class Field0x24Entry {
+	public:
+		undefined m_unk0x00[0x0c - 0x00]; // 0x00
+		undefined4 m_unk0x0c;             // 0x0c
+		LegoU8 m_flags0x10;               // 0x10
+		undefined m_unk0x11[0x14 - 0x11]; // 0x11
+	};
+
+	// SIZE 0x08
+	class Field0x24 {
+	public:
+		LegoU32 FUN_0045c660(undefined4 p_unk0x04);
+
+		Field0x24Entry* m_entries; // 0x00
+		LegoU32 m_count;           // 0x04
+	};
+
+	void FUN_00462350(undefined4 p_unk0x04);
+
+	undefined m_unk0x00[0x14 - 0x00];   // 0x00
+	RaceEventDispatcher0x08* m_unk0x14; // 0x14
+	undefined m_unk0x18[0x24 - 0x18];   // 0x18
+	Field0x24* m_unk0x24;               // 0x24
+	LegoU32 m_count0x5c;                // 0x28
+	LegoU32 m_count0x60;                // 0x2c
+	LegoU32 m_count0x64;                // 0x30
+	LegoU32 m_count0x68;                // 0x34
+	LegoU32 m_count0x6c;                // 0x38
+	LegoU32 m_count0x70;                // 0x3c
+	LegoU32 m_count0x74;                // 0x40
+	LegoU32 m_count0x7c;                // 0x44
+	LegoU32 m_count0x80;                // 0x48
+	LegoU32 m_count0x78;                // 0x4c
+	LegoU32 m_count0x84;                // 0x50
+	LegoU32 m_count0x88;                // 0x54
+	LegoU32 m_count0x8c;                // 0x58
+	Entry0x5c* m_unk0x5c;               // 0x5c
+	Entry0x34* m_unk0x60;               // 0x60
+	Entry0x34* m_unk0x64;               // 0x64
+	Entry0x64* m_unk0x68;               // 0x68
+	Pair0x08* m_unk0x6c;                // 0x6c
+	Entry0x34* m_unk0x70;               // 0x70
+	Entry0x30* m_unk0x74;               // 0x74
+	Entry0x2c* m_unk0x78;               // 0x78
+	Entry0x48* m_unk0x7c;               // 0x7c
+	Entry0x24* m_unk0x80;               // 0x80
+	Entry0x34* m_unk0x84;               // 0x84
+	Entry0x2c* m_unk0x88;               // 0x88
+	Entry0x38* m_unk0x8c;               // 0x8c
+};
+
+#endif

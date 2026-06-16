@@ -1,5 +1,20 @@
 #include "scene/golbillboardex.h"
 
+#include "material/duskwindbananarelic0x24.h"
+#include "render/gold3drenderdevice.h"
+
+// GLOBAL: GOLDP 0x10063570
+GolVec3 GolBillboard::g_billboardPositions[4];
+
+// GLOBAL: GOLDP 0x100635a0
+GolVec2 GolBillboard::g_billboardTexCoords[4];
+
+// GLOBAL: GOLDP 0x1005ca4c
+LegoU32 GolBillboard::g_billboardColors[4] = {0xffffffff, 0xffffffff, 0xffffffff, 0xffffffff};
+
+// GLOBAL: GOLDP 0x1005ca5c
+LegoU8 GolBillboard::g_billboardTriangleIndices[8] = {1, 2, 0, 0, 3, 2, 1, 0};
+
 // STUB: GOLDP 0x10014e50
 LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix)
 {
@@ -58,7 +73,7 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 // FUNCTION: GOLDP 0x10014fd0
 void GolBillboardEx::VTable0x4c(
-	undefined4* p_position,
+	DuskwindBananaRelic0x24* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
 	LegoFloat p_maxDistanceSquared
@@ -67,9 +82,24 @@ void GolBillboardEx::VTable0x4c(
 	GolBillboard::VTable0x4c(p_position, p_width, p_height, p_maxDistanceSquared);
 }
 
-// STUB: GOLDP 0x10014ff0
-void GolBillboard::FUN_10014ff0(GolD3DRenderDevice*)
+// FUNCTION: GOLDP 0x10014ff0
+void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
 {
-	// TODO
-	STUB(0x10014ff0);
+	DuskwindBananaRelic0x24* material = FUN_1002a020();
+	(p_renderer->*p_renderer->m_unk0xc876c)(material);
+	p_renderer->FUN_1000ac00(material->GetUnk0x04());
+
+	p_renderer->m_unk0xc4c0c = g_billboardPositions;
+	p_renderer->m_unk0xc4c10 = g_billboardTexCoords;
+	p_renderer->m_unk0xc4c14 = g_billboardColors;
+	p_renderer->m_unk0xc4c18 = g_billboardTriangleIndices;
+	p_renderer->m_unk0xc855c = g_billboardTriangleIndices;
+
+	g_billboardPositions[0].m_z = m_height;
+	g_billboardPositions[2].m_y = m_width;
+	g_billboardPositions[2].m_z = m_height;
+	g_billboardPositions[3].m_y = m_width;
+
+	(p_renderer->*p_renderer->m_drawTriangleFn1)(0, 0, 4);
+	(p_renderer->*p_renderer->m_drawTriangleFn2)(0, 2, 3);
 }

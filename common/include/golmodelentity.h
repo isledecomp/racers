@@ -62,6 +62,20 @@ public:
 		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
 		m_position = p_other.m_position;
 	}
+	void CopyOrientationAndPositionTo(GolModelEntity* p_dest) const
+	{
+		p_dest->m_orientation.m_m[0][0] = m_orientation.m_m[0][0];
+		p_dest->m_orientation.m_m[0][1] = m_orientation.m_m[0][1];
+		p_dest->m_orientation.m_m[0][2] = m_orientation.m_m[0][2];
+		p_dest->m_orientation.m_m[1][0] = m_orientation.m_m[1][0];
+		p_dest->m_orientation.m_m[1][1] = m_orientation.m_m[1][1];
+		p_dest->m_orientation.m_m[1][2] = m_orientation.m_m[1][2];
+		p_dest->m_orientation.m_m[2][0] = m_orientation.m_m[2][0];
+		p_dest->m_orientation.m_m[2][1] = m_orientation.m_m[2][1];
+		p_dest->m_orientation.m_m[2][2] = m_orientation.m_m[2][2];
+		p_dest->m_position = m_position;
+		p_dest->m_radius = -1.0f;
+	}
 	void InvalidateRadius() { m_radius = -1.0f; }
 	void SetUnk0x58AndInvalidateRadius(LegoFloat p_unk0x58)
 	{

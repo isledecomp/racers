@@ -9,6 +9,7 @@
 
 class GolD3DRenderDevice;
 class GolRenderDevice;
+class DuskwindBananaRelic0x24;
 
 // VTABLE: GOLDP 0x10057500
 // SIZE 0x4c
@@ -37,7 +38,7 @@ public:
 	void VTable0x1c(GolRenderDevice&) override;                                     // vtable+0x1c
 	LegoBool32 VTable0x20() override;                                               // vtable+0x20
 	virtual void VTable0x4c(
-		undefined4* p_position,
+		DuskwindBananaRelic0x24* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,
 		LegoFloat p_maxDistanceSquared
@@ -55,21 +56,26 @@ public:
 		LegoFloat p_maxDistanceSquared
 	);
 	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
-	undefined4* FUN_1002a020();
+	DuskwindBananaRelic0x24* FUN_1002a020();
 	Field0x2c* GetPositionContainer() const { return m_positionContainer; }
 	LegoU16 GetFlags() const { return m_flags; }
 	void SetWidth(LegoFloat p_width) { m_width = p_width; }
 	void SetHeight(LegoFloat p_height) { m_height = p_height; }
 
 private:
-	undefined4* m_position;         // 0x28
-	Field0x2c* m_positionContainer; // 0x2c
-	GolVec3 m_unk0x30;              // 0x30
-	LegoFloat m_width;              // 0x3c
-	LegoFloat m_height;             // 0x40
-	LegoFloat m_maxDistanceSquared; // 0x44
-	LegoU16 m_flags;                // 0x48
-	LegoU16 m_positionIndex;        // 0x4a
+	static GolVec3 g_billboardPositions[4];
+	static GolVec2 g_billboardTexCoords[4];
+	static LegoU32 g_billboardColors[4];
+	static LegoU8 g_billboardTriangleIndices[8];
+
+	DuskwindBananaRelic0x24* m_position; // 0x28
+	Field0x2c* m_positionContainer;      // 0x2c
+	GolVec3 m_unk0x30;                   // 0x30
+	LegoFloat m_width;                   // 0x3c
+	LegoFloat m_height;                  // 0x40
+	LegoFloat m_maxDistanceSquared;      // 0x44
+	LegoU16 m_flags;                     // 0x48
+	LegoU16 m_positionIndex;             // 0x4a
 };
 
 #endif // GOLBILLBOARD_H

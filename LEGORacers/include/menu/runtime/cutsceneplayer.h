@@ -511,6 +511,7 @@ public:
 	);
 	void FUN_00489f00(CutsceneParticleRef* p_param);
 	void FUN_00489f30(CutsceneParticleRef* p_param);
+	LegoU32 FUN_00489f60();
 	void FUN_00489fa0(LegoU32 p_elapsedMs);
 	void FUN_00489ff0(GolD3DRenderDevice* p_renderer);
 	void FUN_0048a040(GolD3DRenderDevice* p_renderer);

@@ -6,7 +6,6 @@ address,type,size
 0x4af388,float,4
 0x4af58c,float,4
 0x4af598,float,4
-0x4af674,float,4
 0x4af6fc,float,4
 0x4af7bc,float,4
 0x4af818,float,4
@@ -21,7 +20,6 @@ address,type,size
 0x4b0150,float,4
 0x4b0154,float,4
 0x4b0158,float,4
-0x4b015c,float,4
 0x4b0160,float,4
 0x4b0170,float,4
 0x4b0174,float,4

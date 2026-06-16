@@ -16,7 +16,7 @@ undefined4 RaceState::Racer::Field0xc70::FUN_004202c0()
 }
 
 // FUNCTION: LEGORACERS 0x004202f0
-GolVec4* RaceState::Racer::Field0xc70::FUN_004202f0(undefined4 p_unk0x04)
+GolVec4* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04)
 {
 	LegoU32 flags = m_unk0x014;
 	m_unk0x024 = 1000;
@@ -25,7 +25,7 @@ GolVec4* RaceState::Racer::Field0xc70::FUN_004202f0(undefined4 p_unk0x04)
 	m_unk0x014 = flags;
 	FUN_004202c0();
 
-	undefined4 value = m_unk0x004;
+	Field0x00c::Entry* value = m_unk0x004;
 	m_unk0x00c = 0;
 	m_unk0x050->FUN_004a5220(value);
 

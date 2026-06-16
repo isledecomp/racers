@@ -153,6 +153,7 @@ public:
 	LegoU32 GetUnk0x2c() const { return m_unk0x2c; }
 	LegoU32 GetUnk0x34() const { return m_unk0x34; }
 	LegoU32 GetUnk0x3c() const { return m_unk0x3c; }
+	LegoU32 GetUnk0x4c() const { return m_unk0x4c; }
 	LegoU32 GetUnk0x54() const { return m_unk0x54; }
 	LegoU32 GetUnk0x5c() const { return m_unk0x5c; }
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
@@ -169,6 +170,11 @@ public:
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);
 	LegoU32 FUN_00416290(LegoFloat p_scale);
+	GolNameTable::Entry* GetUnk0xb4NameEntries() const { return m_unk0xb4.GetNameEntries(); }
+	GolModelEntity* GetUnk0xb4Name(const LegoChar* p_name) const
+	{
+		return static_cast<GolModelEntity*>(m_unk0xb4.GetName(p_name));
+	}
 	GolNameTable::Entry* GetUnk0xc0NameEntries() const { return m_unk0xc0.GetNameEntries(); }
 	GolAnimatedEntity* GetUnk0xc0Name(const LegoChar* p_name) const
 	{

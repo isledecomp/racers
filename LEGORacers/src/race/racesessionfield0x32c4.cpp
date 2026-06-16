@@ -3,17 +3,18 @@
 #include <stdlib.h>
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x32c4, 0x3c)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x32c4::Field0x1c, 0xac)
 
 // FUNCTION: LEGORACERS 0x0045e350
 RaceSession::Field0x32c4::Field0x32c4()
 {
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x04); i++) {
-		m_unk0x04[i] = 0;
+		m_unk0x04[i] = NULL;
 		m_unk0x20[i] = NULL;
 	}
 
 	m_unk0x38 = 0;
-	m_unk0x1c = 0;
+	m_unk0x1c = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0045e3a0
@@ -26,7 +27,7 @@ RaceSession::Field0x32c4::~Field0x32c4()
 void RaceSession::Field0x32c4::Destroy()
 {
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x04); i++) {
-		m_unk0x04[i] = 0;
+		m_unk0x04[i] = NULL;
 
 		if (m_unk0x20[i]) {
 			delete[] m_unk0x20[i];
@@ -35,11 +36,65 @@ void RaceSession::Field0x32c4::Destroy()
 	}
 
 	m_unk0x38 = 0;
-	m_unk0x1c = 0;
+	m_unk0x1c = NULL;
 }
 
-// STUB: LEGORACERS 0x0045e470
-void RaceSession::Field0x32c4::FUN_0045e470(LegoU32)
+// FUNCTION: LEGORACERS 0x0045e470
+void RaceSession::Field0x32c4::FUN_0045e470(LegoU32 p_elapsedMs)
 {
-	STUB(0x0045e470);
+	if (m_unk0x38) {
+		while (p_elapsedMs > 0) {
+			LegoU8 elapsedStep;
+			LegoU8 savedElapsedStep;
+			if (p_elapsedMs > c_maxElapsedChunk) {
+				elapsedStep = static_cast<LegoU8>(-1);
+				savedElapsedStep = elapsedStep;
+			}
+			else {
+				savedElapsedStep = static_cast<LegoU8>(p_elapsedMs);
+				elapsedStep = static_cast<LegoU8>(p_elapsedMs);
+			}
+
+			for (LegoU32 racerIndex = 0; racerIndex < sizeOfArray(m_unk0x04); racerIndex++) {
+				LegoU32 entryIndex = 0;
+				if (m_unk0x38 > 0) {
+					LegoS32 soundOffset = 0;
+					do {
+						LegoU8 value = m_unk0x20[racerIndex][entryIndex];
+						LegoU8* timer = &m_unk0x20[racerIndex][entryIndex];
+						if (value > 0) {
+							if (elapsedStep >= value) {
+								*timer = 0;
+								m_unk0x04[racerIndex]->m_unk0x3e8.FUN_00448930(soundOffset + m_unk0x1c->m_unk0x0a8);
+								elapsedStep = savedElapsedStep;
+							}
+							else {
+								*timer = value - elapsedStep;
+							}
+						}
+
+						++entryIndex;
+						soundOffset += c_unk0x0a8Stride;
+					} while (entryIndex < m_unk0x38);
+				}
+			}
+
+			p_elapsedMs -= savedElapsedStep;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045e5b0
+LegoU32 RaceSession::Field0x32c4::FUN_0045e5b0()
+{
+	LegoU32 result = 0;
+
+	for (LegoS32 racerIndex = 0; racerIndex < c_racerCount; racerIndex++) {
+		result = 0;
+		for (; result < m_unk0x38; result++) {
+			m_unk0x20[racerIndex][result] = 0;
+		}
+	}
+
+	return result;
 }

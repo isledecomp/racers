@@ -168,16 +168,73 @@ undefined4 AmethystBreeze0x104::VTable0x10(DrawCommand*)
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0040edb0
-void AmethystBreeze0x104::FUN_0040edb0(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+// FUNCTION: LEGORACERS 0x0040edb0
+void AmethystBreeze0x104::FUN_0040edb0(const CommandVertex*, LegoU32, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x0040edb0);
+	for (LegoU32 i = p_firstVertex; i < p_firstVertex + p_vertexCount; i++) {
+		m_vertexArray->VTable0x30(i, m_activeMaterialColor);
+	}
 }
 
 // STUB: LEGORACERS 0x0040ede0
-void AmethystBreeze0x104::FUN_0040ede0(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040ede0(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040ede0);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040ef10

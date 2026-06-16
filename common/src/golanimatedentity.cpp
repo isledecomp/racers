@@ -215,6 +215,7 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 }
 
 // FUNCTION: GOLDP 0x10023940
+// FUNCTION: LEGORACERS 0x0040da30
 void GolAnimatedEntity::FUN_10023940(
 	GolModelBase* p_model,
 	GolSceneNode* p_node,

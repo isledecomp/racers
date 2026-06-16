@@ -28,6 +28,7 @@ address,type,x-text
 0x4b0acc,string,"dust"
 0x4b0ad4,string,"carsmke"
 0x4b0adc,string,"carland"
+0x4b0af8,string,"skid"
 0x4b0b00,string,"trbskid"
 0x4b1350,string,"brick1"
 0x4b1358,string,"brick2"

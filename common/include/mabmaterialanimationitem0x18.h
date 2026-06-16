@@ -32,6 +32,7 @@ public:
 		MabMaterialAnimationItem0x8* p_items,
 		LegoU32 p_itemCount
 	);
+	LegoBool32 IsConfigured() const { return m_flags & c_flagBit0; }
 	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
 
 private:

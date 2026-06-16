@@ -58,6 +58,8 @@ public:
 	undefined4* FUN_1002a020();
 	Field0x2c* GetPositionContainer() const { return m_positionContainer; }
 	LegoU16 GetFlags() const { return m_flags; }
+	void SetWidth(LegoFloat p_width) { m_width = p_width; }
+	void SetHeight(LegoFloat p_height) { m_height = p_height; }
 
 private:
 	undefined4* m_position;         // 0x28

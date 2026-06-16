@@ -44,10 +44,32 @@ void RaceSession::Field0x258::FUN_00430100()
 	m_unk0x004.m_unk0x05c = (m_unk0x004.m_unk0x05c & ~2) | 1;
 }
 
-// STUB: LEGORACERS 0x00430530
-void RaceSession::Field0x258::FUN_00430530(LegoU32)
+// STUB: LEGORACERS 0x00430120
+void RaceSession::Field0x258::FUN_00430120(LegoU32)
 {
-	STUB(0x00430530);
+	STUB(0x00430120);
+}
+
+// STUB: LEGORACERS 0x00430390
+void RaceSession::Field0x258::FUN_00430390()
+{
+	STUB(0x00430390);
+}
+
+// FUNCTION: LEGORACERS 0x00430530
+void RaceSession::Field0x258::FUN_00430530(LegoU32 p_elapsedMs)
+{
+	LegoU32 duration = m_unk0x004.m_unk0x060;
+	if (duration < p_elapsedMs) {
+		m_unk0x004.m_unk0x060 = 0;
+	}
+	else {
+		m_unk0x004.m_unk0x060 = duration - p_elapsedMs;
+	}
+
+	m_unk0x004.m_unk0x064 += p_elapsedMs;
+	FUN_00430120(p_elapsedMs);
+	FUN_00430390();
 }
 
 // FUNCTION: LEGORACERS 0x00430570

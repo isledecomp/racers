@@ -285,6 +285,22 @@ void CutsceneAnimation::FUN_00489f30(CutsceneParticleRef* p_param)
 	p_param->m_unk0x04 &= ~CutsceneParticleRef::c_flagBit0;
 }
 
+// FUNCTION: LEGORACERS 0x00489f60
+LegoU32 CutsceneAnimation::FUN_00489f60()
+{
+	LegoU32 result = m_numParticles;
+
+	for (LegoU32 i = 0; i < result; i++) {
+		if (m_particles[i].IsActive()) {
+			m_particles[i].FUN_004897a0();
+		}
+
+		result = m_numParticles;
+	}
+
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x00489fa0
 void CutsceneAnimation::FUN_00489fa0(LegoU32 p_elapsedMs)
 {

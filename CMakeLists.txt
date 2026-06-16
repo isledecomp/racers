@@ -295,6 +295,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/menumanager.cpp
   LEGORacers/src/race/racemoderunner.cpp
   LEGORacers/src/util/stackoflegou16.cpp
+  LEGORacers/src/util/legoeventqueue.cpp
+  LEGORacers/src/util/legoeventqueuefield0x10.cpp
+  LEGORacers/src/util/legoeventqueuefield0x30.cpp
+  LEGORacers/src/util/legoeventqueueevent.cpp
   LEGORacers/src/util/marblepath0x114.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
@@ -309,6 +313,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
   LEGORacers/src/race/racestatefield0xc70.cpp
   LEGORacers/src/race/racesessionfield0x2ad4.cpp
+  LEGORacers/src/race/racestatefield0x3e8helpers.cpp
   LEGORacers/src/race/racesessionfield0x27e0.cpp
   LEGORacers/src/race/racesessionfield0x27f4.cpp
   LEGORacers/src/race/racesessionfield0x280c.cpp
@@ -324,18 +329,20 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x3300.cpp
   LEGORacers/src/race/racesessionfield0x340.cpp
   LEGORacers/src/race/racesessionfield0x6dc.cpp
+  LEGORacers/src/race/racestatefield0x008.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
-  LEGORacers/src/race/racesessionfield0x6dcfield0x3c.cpp
+  LEGORacers/src/race/raceresourcemanager.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x270.cpp
   LEGORacers/src/race/racesessionfield0x6dcresources.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatefield0x00c.cpp
   LEGORacers/src/race/racestatefield0x004.cpp
+  LEGORacers/src/race/racestatefield0x3e8.cpp
+  LEGORacers/src/race/racestatefield0xadc.cpp
   LEGORacers/src/race/racestatefield0x0f0.cpp
   LEGORacers/src/race/racestatefield0x2a0.cpp
   LEGORacers/src/race/racestatefield0xd5c.cpp
   LEGORacers/src/race/racestatefield0xc70field0x000.cpp
-  LEGORacers/src/race/racestatefield0xc70field0x050.cpp
   LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/race/cobalttrail0x140.cpp
   LEGORacers/src/race/slatebridge0x68.cpp

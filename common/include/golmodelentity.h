@@ -63,6 +63,11 @@ public:
 		m_position = p_other.m_position;
 	}
 	void InvalidateRadius() { m_radius = -1.0f; }
+	void SetUnk0x58AndInvalidateRadius(LegoFloat p_unk0x58)
+	{
+		m_radius = -1.0f;
+		m_unk0x58 = p_unk0x58;
+	}
 	MaterialTable0x0c* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
 	void SetPrimaryMaterialTable(MaterialTable0x0c* p_materialTable) { m_materialTables[0] = p_materialTable; }
 

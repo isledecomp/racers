@@ -48,6 +48,9 @@ public:
 	LegoFloat FUN_10028710();
 	void FUN_10026fa0(LegoFloat p_scalar);
 	void SetCenter(const GolVec3& p_center);
+	LegoFloat GetRadius() const { return m_radius; }
+	LegoFloat GetMinX() const { return m_minX; }
+	LegoFloat GetMaxX() const { return m_maxX; }
 	void GetVelocity(GolVec3* p_dest) const
 	{
 		p_dest->m_x = m_velocity.m_x;

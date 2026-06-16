@@ -2,14 +2,11 @@
 #define SOUNDNODE_H
 
 #include "decomp.h"
+#include "golmath.h"
 #include "types.h"
 
 // SIZE 0x0c
-struct SoundVector {
-	LegoFloat m_x; // 0x00
-	LegoFloat m_y; // 0x04
-	LegoFloat m_z; // 0x08
-};
+struct SoundVector : public GolVec3 {};
 
 // SIZE 0x50
 struct SoundNode {

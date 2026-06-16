@@ -45,6 +45,12 @@ void RaceSession::Field0x6dc::Field0x1898::FUN_00452eb0()
 	m_unk0x170 = 0;
 }
 
+// STUB: LEGORACERS 0x00453690
+void RaceSession::Field0x6dc::Field0x68::FUN_00453690(LegoU32)
+{
+	STUB(0x00453690);
+}
+
 // FUNCTION: LEGORACERS 0x00453d90
 void RaceSession::Field0x6dc::Field0x18a4::FUN_00453d90()
 {
@@ -124,6 +130,12 @@ void RaceSession::Field0x6dc::Field0x1894::FUN_00457170()
 	m_unk0x05c = 0;
 	m_unk0x060 = 0;
 	m_unk0x18c = 0;
+}
+
+// STUB: LEGORACERS 0x00457710
+void RaceSession::Field0x6dc::Field0x68::FUN_00457710(LegoU32)
+{
+	STUB(0x00457710);
 }
 
 // FUNCTION: LEGORACERS 0x0045bd10

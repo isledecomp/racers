@@ -76,6 +76,8 @@ public:
 	}
 	LegoU16 GetActiveState() const { return (m_flags & 0x20000) ? m_unk0xd8 : m_unk0xbc; }
 	LegoFloat GetActiveValue() const { return (m_flags & 0x20000) ? m_unk0xd0 : m_unk0xb4; }
+	LegoFloat GetUnk0xb8() const { return m_unk0xb8; }
+	void SetUnk0xb8(LegoFloat p_unk0xb8) { m_unk0xb8 = p_unk0xb8; }
 
 private:
 	void Reset();

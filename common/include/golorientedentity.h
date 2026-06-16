@@ -28,7 +28,17 @@ public:
 	void FUN_10026c50(GolMatrix4* p_dest);
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const;
+	const GolMatrix3& GetOrientation() const { return m_orientation; }
 	const GolVec3& GetPosition() const { return m_position; }
+	void SetOrientationFromQuaternion(const GolQuat& p_rotation)
+	{
+		GolMath::FUN_00449340(&p_rotation, &m_orientation.m_m[0][0]);
+	}
+	void CopyPositionFrom(const GolOrientedEntity& p_other)
+	{
+		m_position = p_other.m_position;
+		m_radius = -1.0f;
+	}
 	void GetUnk0x34(GolVec3* p_dest) const
 	{
 		p_dest->m_x = m_orientation.m_m[1][0];

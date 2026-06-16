@@ -1,7 +1,7 @@
 #include "util/marblepath0x114.h"
 
 #include "decomp.h"
-#include "render/gold3drenderdevice.h"
+#include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(MarblePath0x114, 0x114)
 
@@ -24,7 +24,7 @@ void MarblePath0x114::FUN_004149f0()
 }
 
 // FUNCTION: LEGORACERS 0x00415a40
-void MarblePath0x114::FUN_00415a40(GolD3DRenderDevice* p_renderer)
+void MarblePath0x114::FUN_00415a40(GolRenderDevice* p_renderer)
 {
 	if (m_flags0x100 & c_flags0x100Bit2) {
 		p_renderer->VTable0x94(&m_unk0x010);

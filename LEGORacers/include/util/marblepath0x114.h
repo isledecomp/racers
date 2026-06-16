@@ -6,7 +6,7 @@
 #include "surface/color.h"
 #include "types.h"
 
-class GolD3DRenderDevice;
+class GolRenderDevice;
 class GdbVertexArray0xc;
 class GolModelBase;
 
@@ -37,7 +37,7 @@ public:
 	};
 
 	void FUN_004149f0();
-	void FUN_00415a40(GolD3DRenderDevice* p_renderer);
+	void FUN_00415a40(GolRenderDevice* p_renderer);
 	LegoU8 FUN_00415bf0(const ColorRGBA* p_color);
 	GolModelBase* GetUnk0x004() const { return m_unk0x004; }
 	LegoU32 GetUnk0x0b0() const { return m_unk0x0b0; }

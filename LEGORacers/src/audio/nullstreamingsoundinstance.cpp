@@ -5,6 +5,9 @@
 
 DECOMP_SIZE_ASSERT(NullStreamingSoundInstance, 0x44)
 
+// GLOBAL: LEGORACERS 0x004c6bc0
+NullStreamingSoundInstance g_nullStreamingSoundInstance;
+
 // FUNCTION: LEGORACERS 0x0041c180
 NullStreamingSoundInstance::NullStreamingSoundInstance()
 {

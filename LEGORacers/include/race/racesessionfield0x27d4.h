@@ -51,11 +51,13 @@ public:
 				c_projectedScratchVertexCount = 12,
 			};
 
+			// SIZE 0x04
 			union FloatBits {
 				LegoFloat m_float;
 				LegoU32 m_bits;
 			};
 
+			// SIZE 0x08
 			union ProjectedCoordinates {
 				struct {
 					FloatBits m_x; // 0x000
@@ -64,6 +66,7 @@ public:
 				GolVec2 m_vec; // 0x000
 			};
 
+			// SIZE 0x20
 			struct ProjectedVertex {
 				GolVec3 m_position;               // 0x000
 				ProjectedCoordinates m_projected; // 0x00c
@@ -72,6 +75,7 @@ public:
 				undefined4 m_unk0x01c;            // 0x01c
 			};
 
+			// SIZE 0x14
 			struct Entry {
 				undefined4 m_unk0x000; // 0x000
 				undefined4 m_unk0x004; // 0x004
@@ -80,12 +84,15 @@ public:
 				Entry* m_unk0x010;     // 0x010
 			};
 
+			// SIZE 0x2c
 			struct Field0x90 {
 				enum {
 					c_invalidIndex = 0xffff,
 				};
 
+				// SIZE 0x20
 				struct Node {
+					// SIZE 0x1c
 					struct Branch {
 						GolVec3 m_unk0x000;   // 0x000
 						LegoFloat m_unk0x00c; // 0x00c
@@ -95,6 +102,7 @@ public:
 						LegoU16 m_unk0x01a;   // 0x01a
 					};
 
+					// SIZE 0x1c
 					union Payload {
 						Branch m_branch;
 						Entry m_entry;
@@ -122,6 +130,7 @@ public:
 				Entry* m_unk0x028;     // 0x028
 			};
 
+			// SIZE 0x94
 			struct Params {
 				undefined m_unk0x000[0x078 - 0x000]; // 0x000
 				GolModelBase* m_unk0x078;            // 0x078

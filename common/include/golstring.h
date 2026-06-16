@@ -36,6 +36,7 @@ public:
 	}
 
 	undefined2 SelectionLength() const { return m_cursorEnd - m_cursorStart; }
+	LegoBool32 HasChars() const { return m_chars != NULL; }
 	void SetCursorEnd(undefined2 p_cursorEnd) { m_cursorEnd = p_cursorEnd; }
 	void SetCursorStart(undefined2 p_cursorStart) { m_cursorStart = p_cursorStart; }
 

@@ -30,6 +30,11 @@ public:
 		m_minDistanceSquared = p_minDistance * p_minDistance;
 		m_maxDistanceSquared = p_maxDistance * p_maxDistance;
 	}
+	void SetDistanceRangeWithMinSquared(LegoFloat p_minDistanceSquared, LegoFloat p_maxDistance)
+	{
+		m_minDistanceSquared = p_minDistanceSquared;
+		m_maxDistanceSquared = p_maxDistance * p_maxDistance;
+	}
 	void SetPosition(const GolVec3& p_position)
 	{
 		SoundVector* position = &m_position;

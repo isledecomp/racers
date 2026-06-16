@@ -2,6 +2,7 @@
 #include "race/raceeventdispatcher0x08.h"
 
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08, 0x08)
+DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Context, 0x60)
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item, 0x10)
 
 // FUNCTION: LEGORACERS 0x0048a400
@@ -58,7 +59,7 @@ void RaceEventDispatcher0x08::Item::FUN_0048a490(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void RaceEventDispatcher0x08::Item::VTable0x18(GolCamera*, undefined4)
+void RaceEventDispatcher0x08::Item::VTable0x18(GolCamera*, RaceState::Racer*)
 {
 }
 
@@ -265,7 +266,7 @@ void RaceEventDispatcher0x08::FUN_0048add0(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0048ae00
-void RaceEventDispatcher0x08::FUN_0048ae00(GolCamera* p_unk0x04, undefined4 p_unk0x08)
+void RaceEventDispatcher0x08::FUN_0048ae00(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08)
 {
 	LegoU32 i;
 

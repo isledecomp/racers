@@ -4,6 +4,8 @@
 #include "decomp.h"
 #include "types.h"
 
+class SoundManager;
+
 // SIZE 0x04
 class RaceResourceManager {
 public:
@@ -24,8 +26,8 @@ public:
 
 	void FUN_00443c10(Resource* p_resource);
 
-private:
-	undefined4 m_unk0x00; // 0x00
+protected:
+	SoundManager* m_soundManager; // 0x00
 };
 
 #endif // RACERESOURCEMANAGER_H

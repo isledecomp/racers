@@ -5,6 +5,8 @@
 #include "goltxtparser.h"
 #include "types.h"
 
+class GolViewFrustum;
+
 // VTABLE: GOLDP 0x10056b68
 // SIZE 0x2c
 class GolBoundingShape {
@@ -35,14 +37,29 @@ public:
 
 		LegoU16 m_type;
 		LegoU16 m_unk0x02;
-		union {
+
+		// SIZE 0x1c
+		struct Node {
+			undefined4 m_unk0x00;
+			undefined4 m_unk0x04;
+			undefined4 m_unk0x08;
+			Node* m_next;
+			Node* m_previous;
+			LegoS16 m_unk0x14;
+			LegoU16 m_unk0x16;
+			LegoU16 m_unk0x18;
+			LegoU16 m_unk0x1a;
+		};
+
+		// SIZE 0x1c
+		union Payload {
 			struct {
 				LegoFloat m_unk0x00;
 				LegoFloat m_unk0x04;
 				LegoFloat m_unk0x08;
 				LegoFloat m_unk0x0c;
-				undefined4 m_unk0x10;
-				undefined4 m_unk0x14;
+				LegoU32 m_unk0x10;
+				LegoU32 m_unk0x14;
 				LegoU16 m_unk0x18;
 				LegoU16 m_unk0x1a;
 			} m_t0;
@@ -50,13 +67,14 @@ public:
 				undefined4 m_unk0x00;
 				undefined4 m_unk0x04;
 				undefined4 m_unk0x08;
-				undefined4 m_unk0x0c;
-				undefined4 m_unk0x10;
-				undefined2 m_unk0x14;
-				undefined2 m_unk0x16;
-				undefined2 m_unk0x18;
+				StructField0x08* m_unk0x0c;
+				StructField0x08* m_unk0x10;
+				LegoS16 m_unk0x14;
+				LegoU16 m_unk0x16;
+				LegoU16 m_unk0x18;
 				undefined m_unk0x1a[0x1c - 0x1a];
 			} m_t1;
+			Node m_node;
 		} m_unk0x04;
 	};
 	// SIZE 0x18
@@ -74,8 +92,13 @@ public:
 	virtual void Deserialize(const LegoChar* p_path, LegoBool32 p_binary); // vtable+0x04
 	virtual void Destroy();                                                // vtable+0x08
 
-	void FUN_1001b2c0(undefined4*, undefined4*, undefined4*);
-	void FUN_1001b640(undefined4*, undefined4*, undefined4*, undefined4*);
+	void FUN_1001b2c0(const GolViewFrustum* p_frustum, StructField0x08::Node** p_first, StructField0x08::Node** p_last);
+	void FUN_1001b640(
+		const GolViewFrustum* p_frustum,
+		StructField0x08* p_entry,
+		StructField0x08::Node** p_first,
+		StructField0x08::Node** p_last
+	);
 
 	// SYNTHETIC: GOLDP 0x100179a0
 	// GolBoundingShape::`vector deleting destructor'
@@ -91,9 +114,9 @@ private:
 	LegoS32 m_unk0x14;
 	StructField0x18* m_unk0x18;
 	LegoS32 m_unk0x1c;
-	LegoS16* m_unk0x20;
-	undefined4 m_unk0x24;
-	undefined4 m_unk0x28;
+	LegoU16* m_unk0x20;
+	StructField0x08::Node* m_unk0x24;
+	StructField0x08::Node* m_unk0x28;
 };
 
 #endif // GOLBOUNDINGSHAPE_H

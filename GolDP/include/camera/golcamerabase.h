@@ -34,6 +34,7 @@ public:
 
 	void FUN_1001bfc0(GolViewFrustum* p_view);
 	void FUN_1001c450(GolViewFrustum* p_view);
+	static GolVec3* FUN_00404580(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest);
 	void SetTrackedEntity(GolAnimatedEntity* p_trackedEntity, LegoU32 p_trackedNodeIndex);
 	void ClearTrackedEntity();
 	void LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up);

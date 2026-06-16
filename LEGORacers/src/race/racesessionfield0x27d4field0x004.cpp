@@ -7,7 +7,13 @@
 
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004, 0x11c)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Entry, 0x14)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90, 0x2c)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node, 0x20)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node::Branch, 0x1c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node::Payload, 0x1c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::FloatBits, 0x04)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Params, 0x94)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedCoordinates, 0x08)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex, 0x20)
 
 // GLOBAL: LEGORACERS 0x004c47a8

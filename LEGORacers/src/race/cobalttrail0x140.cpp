@@ -940,7 +940,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	m_unk0x078 = racer->m_unk0xa00 * 0.2f + m_unk0x078 * 0.80000001f;
+	m_unk0x078 = racer->m_unk0x3e8.m_unk0x618 * 0.2f + m_unk0x078 * 0.80000001f;
 
 	switch (m_unk0x03c) {
 	case 1:

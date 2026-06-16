@@ -23,7 +23,14 @@
 #include <mmsystem.h>
 #include <stdio.h>
 
+extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004c6ee4;
+
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
+DECOMP_SIZE_ASSERT(RaceSession::InputEventSink, 0x04)
+DECOMP_SIZE_ASSERT(RaceSession::InputDispatchSource, 0x9c)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x3ac, 0x30)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x21c, 0xa4)
 
 // GLOBAL: LEGORACERS 0x004b07ec
 LegoFloat g_unk0x004b07ec = 1.2f;
@@ -34,9 +41,6 @@ extern const LegoFloat g_unk0x004b08bc = 25.0f;
 // GLOBAL: LEGORACERS 0x004bee74
 const LegoU16 g_unk0x004bee74[16] =
 	{0x0e, 0x0f, 0x11, 0x14, 0x0e, 0x10, 0x11, 0x00, 0x12, 0x13, 0x15, 0x16, 0x17, 0x18, 0x2c, 0x00};
-
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
 
 // FUNCTION: LEGORACERS 0x004316e0
 RaceSession::RaceSession()
@@ -1001,7 +1005,7 @@ void RaceSession::VTable0x30()
 		LegoU32 i;
 		if (!m_unk0x3350) {
 			for (i = 0; i < m_context->m_playerCount; i++) {
-				LegoFloat unk0xa00 = m_raceState.m_unk0x318[i]->m_unk0xa00;
+				LegoFloat unk0xa00 = m_raceState.m_unk0x318[i]->m_unk0x3e8.m_unk0x618;
 				m_unk0x340[i].FUN_00421e30(elapsedMs, unk0xa00);
 				m_unk0x258[i].FUN_00430530(elapsedMs);
 			}
@@ -1436,7 +1440,7 @@ void RaceSession::FUN_00436010()
 	}
 
 	if (m_standings) {
-		m_standings->m_unk0x44 = 0;
+		m_standings->m_isVisible = FALSE;
 	}
 
 	switch (m_unk0x30c0) {
@@ -1478,7 +1482,7 @@ void RaceSession::FUN_00436160()
 	}
 
 	if (m_standings) {
-		m_standings->m_unk0x44 = 1;
+		m_standings->m_isVisible = TRUE;
 	}
 
 	switch (m_unk0x30c0) {

@@ -5,7 +5,9 @@
 #include <stdlib.h>
 
 DECOMP_SIZE_ASSERT(GolSoftwareRenderer, 0x58)
+DECOMP_SIZE_ASSERT(GolSoftwareRenderer::RasterizerPipeline, 0x10)
 DECOMP_SIZE_ASSERT(GolSoftwareRenderer::Command0x14, 0x14)
+DECOMP_SIZE_ASSERT(GolSoftwareRenderer::Command0x14::SortKey, 0x04)
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
 void NoopSpanRasterizer()
@@ -14,7 +16,7 @@ void NoopSpanRasterizer()
 }
 
 // FUNCTION: GOLDP 0x1003ba20
-static void NoopTriangleRasterizer()
+static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
 {
 	// empty
 }
@@ -23,6 +25,11 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::Command0x14** p_buckets,
 	GolSoftwareRenderer::Command0x14* p_command,
 	LegoS32 p_count
+);
+
+static LegoU8 __fastcall BucketCommandsBySortByte0(
+	GolSoftwareRenderer::Command0x14** p_buckets,
+	GolSoftwareRenderer::Command0x14* p_command
 );
 
 // STUB: GOLDP 0x10041000
@@ -82,8 +89,85 @@ static LegoU8 __fastcall BucketCommandsBySortByte1(
 	return static_cast<LegoU8>(bucketIndex);
 }
 
+// STUB: GOLDP 0x10041090
+static LegoU8 __fastcall BucketCommandsBySortByte0(
+	GolSoftwareRenderer::Command0x14** p_buckets,
+	GolSoftwareRenderer::Command0x14* p_command
+)
+{
+	LegoU32 bucketIndex = 0;
+	GolSoftwareRenderer::Command0x14* command;
+
+	for (; p_command != NULL; p_buckets[bucketIndex] = command) {
+		bucketIndex = p_command->m_sortKey.m_bytes[0];
+		command = p_command;
+		p_command = p_command->m_next;
+		command->m_next = p_buckets[bucketIndex];
+	}
+
+	return static_cast<LegoU8>(bucketIndex);
+}
+
+// STUB: GOLDP 0x100410c0
+static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
+{
+	GolSoftwareRenderer::Command0x14* buckets0[256];
+	GolSoftwareRenderer::Command0x14* buckets1[256];
+
+	::memset(buckets0, 0, sizeof(buckets0));
+	BucketCommandsBySortByte0(buckets0, *p_head);
+
+	::memset(buckets1, 0, sizeof(buckets1));
+	GolSoftwareRenderer::Command0x14** bucket = &buckets0[255];
+	LegoS32 i = 256;
+	do {
+		BucketCommandsBySortByte1(buckets1, *bucket);
+		bucket--;
+		i--;
+	} while (i != 0);
+
+	::memset(buckets0, 0, sizeof(buckets0));
+	bucket = buckets1;
+	i = 256;
+	do {
+		BucketCommandsBySortByte2(buckets0, *bucket);
+		bucket++;
+		i--;
+	} while (i != 0);
+
+	::memset(buckets1, 0, sizeof(buckets1));
+	bucket = &buckets0[255];
+	i = 256;
+	do {
+		BucketCommandsBySortByte3(buckets1, *bucket);
+		bucket--;
+		i--;
+	} while (i != 0);
+
+	*p_head = NULL;
+	bucket = buckets1;
+	i = 256;
+	do {
+		GolSoftwareRenderer::Command0x14* command = *bucket;
+		if (command != NULL) {
+			do {
+				GolSoftwareRenderer::Command0x14* next = command->m_next;
+				command->m_next = *p_head;
+				*p_head = command;
+				command = next;
+			} while (command != NULL);
+		}
+		bucket++;
+		i--;
+	} while (i != 0);
+}
+
 // STUB: GOLDP 0x100411b0
-void GolSoftwareRenderer::FUN_100411b0(LegoU8* p_buffer, DuskwindBananaRelic0x24* p_material, LegoU32 p_index)
+void GolSoftwareRenderer::FUN_100411b0(
+	RasterizerPipeline* p_buffer,
+	DuskwindBananaRelic0x24* p_material,
+	LegoU32 p_index
+)
 {
 	// TODO
 	STUB(0x100411b0);
@@ -166,8 +250,20 @@ void GolSoftwareRenderer::FUN_100417a0(Command0x14* p_cmds, LegoU32 p_count, Leg
 // STUB: GOLDP 0x100417c0
 void GolSoftwareRenderer::FUN_100417c0(Command0x14* p_cmds, LegoU32 p_count)
 {
-	// TODO
-	STUB(0x100417c0);
+	while (p_count != 0) {
+		LegoFloat sortKey = m_unk0x4c[p_cmds->m_vertexIndex0].sz;
+
+		if (sortKey < m_unk0x4c[p_cmds->m_vertexIndex1].sz) {
+			sortKey = m_unk0x4c[p_cmds->m_vertexIndex1].sz;
+		}
+		if (sortKey < m_unk0x4c[p_cmds->m_vertexIndex2].sz) {
+			sortKey = m_unk0x4c[p_cmds->m_vertexIndex2].sz;
+		}
+
+		p_cmds->m_sortKey.m_value = sortKey;
+		p_cmds++;
+		p_count--;
+	}
 }
 
 // FUNCTION: GOLDP 0x10041830
@@ -269,8 +365,37 @@ static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	return result;
 }
 
-// STUB: GOLDP 0x10041a20
-void GolSoftwareRenderer::FUN_10041a20(LegoBool)
+// STUB: GOLDP 0x100419b0
+void GolSoftwareRenderer::DrawCommandList()
 {
-	STUB(0x10041a20);
+	Command0x14* command = m_commandHead;
+
+	if (command != NULL) {
+		do {
+			RasterizerPipeline* rasterizer = command->m_rasterizer;
+			m_spanRasterizer = rasterizer->m_spanRasterizer;
+			m_unk0x34 = rasterizer->m_texture;
+			rasterizer->m_triangleRasterizer(
+				this,
+				&m_unk0x4c[command->m_vertexIndex0],
+				&m_unk0x4c[command->m_vertexIndex1],
+				&m_unk0x4c[command->m_vertexIndex2]
+			);
+			command = command->m_next;
+		} while (command != NULL);
+	}
+}
+
+// FUNCTION: GOLDP 0x10041a20
+void GolSoftwareRenderer::FUN_10041a20(LegoBool p_sort)
+{
+	if (m_commandHead == NULL) {
+		return;
+	}
+
+	if (p_sort) {
+		SortCommandListBySortKey(&m_commandHead);
+	}
+
+	DrawCommandList();
 }

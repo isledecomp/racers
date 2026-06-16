@@ -2,6 +2,7 @@
 #include "race/racestate.h"
 #include "world/golworlddatabase.h"
 
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x008, 0x199c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x008::Action, 0x2c)
 
 extern const LegoFloat g_unk0x004b0958;

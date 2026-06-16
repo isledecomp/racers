@@ -1,6 +1,7 @@
 #include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
 
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c::Field0x04, 0x6c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c::Field0x08, 0x04)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c, 0x68)
 

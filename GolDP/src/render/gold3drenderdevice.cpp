@@ -1958,7 +1958,7 @@ void GolD3DRenderDevice::FUN_1000a950(DuskwindBananaRelic0x24* p_material)
 
 	if (textureCount > 0) {
 		for (LegoU32 i = 0; i < textureCount; i++) {
-			m_unk0xc83b4.m_unk0x00[i] = static_cast<DuskwindBananaRelic0x30*>(p_material)->GetUnk0x2c() + i * 16;
+			m_unk0xc83b4.m_unk0x00[i] = static_cast<DuskwindBananaRelic0x30*>(p_material)->GetUnk0x2c() + i;
 		}
 	}
 

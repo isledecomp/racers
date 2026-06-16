@@ -238,37 +238,493 @@ void AmethystBreeze0x104::FUN_0040ede0(
 }
 
 // STUB: LEGORACERS 0x0040ef10
-void AmethystBreeze0x104::FUN_0040ef10(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040ef10(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040ef10);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040f0a0
-void AmethystBreeze0x104::FUN_0040f0a0(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040f0a0(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040f0a0);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[2].m_x + vertex->m_ny * m_lightDirections[2].m_y +
+				  vertex->m_nz * m_lightDirections[2].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[2].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040f280
-void AmethystBreeze0x104::FUN_0040f280(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040f280(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040f280);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[2].m_x + vertex->m_ny * m_lightDirections[2].m_y +
+				  vertex->m_nz * m_lightDirections[2].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[2].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[3].m_x + vertex->m_ny * m_lightDirections[3].m_y +
+				  vertex->m_nz * m_lightDirections[3].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[3].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[3].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[3].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040f4c0
-void AmethystBreeze0x104::FUN_0040f4c0(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040f4c0(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040f4c0);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[2].m_x + vertex->m_ny * m_lightDirections[2].m_y +
+				  vertex->m_nz * m_lightDirections[2].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[2].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[3].m_x + vertex->m_ny * m_lightDirections[3].m_y +
+				  vertex->m_nz * m_lightDirections[3].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[3].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[3].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[3].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[4].m_x + vertex->m_ny * m_lightDirections[4].m_y +
+				  vertex->m_nz * m_lightDirections[4].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[4].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[4].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[4].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040f760
-void AmethystBreeze0x104::FUN_0040f760(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040f760(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040f760);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[2].m_x + vertex->m_ny * m_lightDirections[2].m_y +
+				  vertex->m_nz * m_lightDirections[2].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[2].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[3].m_x + vertex->m_ny * m_lightDirections[3].m_y +
+				  vertex->m_nz * m_lightDirections[3].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[3].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[3].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[3].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[4].m_x + vertex->m_ny * m_lightDirections[4].m_y +
+				  vertex->m_nz * m_lightDirections[4].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[4].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[4].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[4].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[5].m_x + vertex->m_ny * m_lightDirections[5].m_y +
+				  vertex->m_nz * m_lightDirections[5].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[5].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[5].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[5].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }
 
 // STUB: LEGORACERS 0x0040fa50
-void AmethystBreeze0x104::FUN_0040fa50(const CommandVertex*, LegoU32, LegoU32, LegoU32)
+void AmethystBreeze0x104::FUN_0040fa50(
+	const CommandVertex* p_vertices,
+	LegoU32 p_outputFirst,
+	LegoU32 p_firstVertex,
+	LegoU32 p_vertexCount
+)
 {
-	STUB(0x0040fa50);
+	const CommandVertex* vertex = p_vertices + p_outputFirst;
+	const CommandVertex* end = vertex + p_vertexCount;
+	LegoS32 redBase = m_activeMaterialColor.m_red;
+	LegoS32 grnBase = m_activeMaterialColor.m_grn;
+	LegoS32 bluBase = m_activeMaterialColor.m_blu;
+	ColorRGBA color;
+
+	color.m_alp = m_activeMaterialColor.m_alp;
+	if (vertex < end) {
+		do {
+			LegoFloat dot = vertex->m_nx * m_lightDirections[0].m_x + vertex->m_ny * m_lightDirections[0].m_y +
+							vertex->m_nz * m_lightDirections[0].m_z;
+			LegoS32 red = redBase - static_cast<LegoS32>(m_lightColorProducts[0].m_red * dot);
+			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
+			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[1].m_x + vertex->m_ny * m_lightDirections[1].m_y +
+				  vertex->m_nz * m_lightDirections[1].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[1].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[2].m_x + vertex->m_ny * m_lightDirections[2].m_y +
+				  vertex->m_nz * m_lightDirections[2].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[2].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[3].m_x + vertex->m_ny * m_lightDirections[3].m_y +
+				  vertex->m_nz * m_lightDirections[3].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[3].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[3].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[3].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[4].m_x + vertex->m_ny * m_lightDirections[4].m_y +
+				  vertex->m_nz * m_lightDirections[4].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[4].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[4].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[4].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[5].m_x + vertex->m_ny * m_lightDirections[5].m_y +
+				  vertex->m_nz * m_lightDirections[5].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[5].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[5].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[5].m_blu * dot);
+
+			dot = vertex->m_nx * m_lightDirections[6].m_x + vertex->m_ny * m_lightDirections[6].m_y +
+				  vertex->m_nz * m_lightDirections[6].m_z;
+			red -= static_cast<LegoS32>(m_lightColorProducts[6].m_red * dot);
+			grn -= static_cast<LegoS32>(m_lightColorProducts[6].m_grn * dot);
+			blu -= static_cast<LegoS32>(m_lightColorProducts[6].m_blu * dot);
+
+			if (red >= redBase) {
+				color.m_red = 0xff;
+				if (red <= 0xff) {
+					color.m_red = static_cast<LegoU8>(red);
+				}
+			}
+			else {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+
+			if (grn >= grnBase) {
+				color.m_grn = 0xff;
+				if (grn <= 0xff) {
+					color.m_grn = static_cast<LegoU8>(grn);
+				}
+			}
+			else {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+
+			if (blu >= bluBase) {
+				color.m_blu = 0xff;
+				if (blu <= 0xff) {
+					color.m_blu = static_cast<LegoU8>(blu);
+				}
+			}
+			else {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+
+			m_vertexArray->VTable0x30(p_firstVertex, color);
+			p_firstVertex++;
+			vertex++;
+		} while (vertex < end);
+	}
 }

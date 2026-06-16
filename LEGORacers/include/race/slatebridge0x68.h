@@ -46,11 +46,23 @@ private:
 		c_joystickButton14 = 0x3000000e,
 		c_joystickButton15 = 0x3000000f,
 		c_joystickAxisPositive = 0x40000002,
-		c_joystickAxisNegative = 0x40000003
+		c_joystickAxisNegative = 0x40000003,
+		c_promptColor = 0xffffffff,
+		c_selectedColor = 0xff24ffff,
+		c_optionColor = 0xff127f7f,
+		c_selectedAlpha = 0xff,
+		c_selectedAlphaFlag = 1,
+		c_selectedBlinkThresholdMs = 250,
+		c_selectedPulseAlphaCenter = 0xbf,
+		c_selectedPulseAlphaAmplitude = 64,
+		c_cosineTableMask = 0x3ff,
+		c_backdropAlpha = 64,
+		c_backdropAlphaFlag = 2
 	};
 
 	void Destroy();
 	void Reset();
+	void FUN_004276c0();
 
 	GolFontBase* m_font;            // 0x00
 	GolD3DRenderDevice* m_renderer; // 0x04
@@ -61,7 +73,7 @@ private:
 	undefined4 m_unk0x48;           // 0x48
 	LegoU32 m_unk0x4c;              // 0x4c
 	LegoU32 m_unk0x50;              // 0x50
-	undefined4 m_unk0x54;           // 0x54
+	LegoU32 m_unk0x54;              // 0x54
 	undefined4 m_unk0x58;           // 0x58
 	LegoS32 m_unk0x5c;              // 0x5c
 	LegoS32 m_unk0x60;              // 0x60

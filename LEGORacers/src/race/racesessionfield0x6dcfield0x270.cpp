@@ -4,6 +4,7 @@
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270, 0x270)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x34, 0x5c)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x224, 0x20)
 
 // GLOBAL: LEGORACERS 0x004b015c
 LegoFloat g_unk0x004b015c = 180.0f;

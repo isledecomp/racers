@@ -1,5 +1,9 @@
+#include "audio/soundnode.h"
 #include "decomp.h"
 #include "race/racesession.h"
+
+// GLOBAL: LEGORACERS 0x004b1484
+extern const LegoFloat g_unk0x004b1484 = 3.0f;
 
 // FUNCTION: LEGORACERS 0x00451a10
 void RaceSession::Field0x6dc::Field0x18a0::FUN_00451a10()
@@ -45,10 +49,107 @@ void RaceSession::Field0x6dc::Field0x1898::FUN_00452eb0()
 	m_unk0x170 = 0;
 }
 
-// STUB: LEGORACERS 0x00453690
-void RaceSession::Field0x6dc::Field0x68::FUN_00453690(LegoU32)
+// FUNCTION: LEGORACERS 0x00453690
+void RaceSession::Field0x6dc::Field0x68Field0x02c::FUN_00453690(LegoU32 p_elapsedMs)
 {
-	STUB(0x00453690);
+	if (m_unk0x3c == c_stateInactive) {
+		return;
+	}
+
+	FUN_00453a20(p_elapsedMs);
+
+	if (m_flags0x64 & c_flags0x64Bit0) {
+		m_unk0x60 += p_elapsedMs;
+		if (m_unk0x60 > 10000) {
+			FUN_004537f0();
+		}
+	}
+
+	LegoU32 state = m_unk0x3c;
+	if (state != c_stateActive) {
+		if (state == c_stateTransition && m_unk0x4c > 250) {
+			LegoU8 flags = m_flags0x64;
+			if (flags & c_flags0x64Bit1) {
+				m_flags0x64 = flags & ~c_flags0x64Bit1;
+				m_unk0x08.VTable0x08(&m_unk0x54);
+				m_unk0x3c = c_stateActive;
+			}
+			else {
+				m_unk0x3c = c_stateWait;
+			}
+
+			m_unk0x4c = 0;
+			FUN_00453ad0(FALSE);
+		}
+	}
+	else if (m_unk0x4c > 500) {
+		m_unk0x3c = c_stateIdle;
+		m_unk0x4c = 0;
+		FUN_00453ad0(TRUE);
+	}
+}
+
+void RaceSession::Field0x6dc::Field0x68Field0x02c::FUN_004537f0()
+{
+	LegoU8 flags = m_flags0x64;
+	LegoU32 state = m_unk0x3c;
+	flags &= ~c_flags0x64Bit0;
+	m_unk0x60 = 0;
+	m_flags0x64 = flags;
+
+	if (state) {
+		m_unk0x08.VTable0x08(&m_unk0x54);
+		m_unk0x3c = c_stateActive;
+	}
+	else {
+		m_unk0x3c = c_stateTransition;
+		m_flags0x64 = flags | c_flags0x64Bit1;
+	}
+
+	m_unk0x4c = 0;
+}
+
+// STUB: LEGORACERS 0x00453a20
+void RaceSession::Field0x6dc::Field0x68::FUN_00453a20(LegoU32 p_elapsedMs)
+{
+	if (m_unk0x3c == c_stateInactive) {
+		return;
+	}
+
+	LegoU32 elapsedMs = p_elapsedMs + m_unk0x4c;
+	m_unk0x4c = elapsedMs;
+
+	LegoS32 activeStateOffset = m_unk0x3c - c_stateActive;
+	if (activeStateOffset == 0) {
+		if (elapsedMs < 400) {
+			m_unk0x30 = (LegoS32) elapsedMs * 0.0024999999f;
+		}
+		else if (elapsedMs < 500) {
+			m_unk0x30 = 1.0f - (LegoS32) (elapsedMs - 400) * 0.0020000001f;
+		}
+	}
+	else if (activeStateOffset == 1 && elapsedMs <= 250) {
+		m_unk0x30 = (LegoS32) (250 - elapsedMs) * 0.0040000002f * 0.008f;
+	}
+
+	LegoU8 flags = m_flags0x50;
+	if (flags & c_flags0x50Bit1) {
+		m_flags0x50 = (flags & ~(c_flags0x50Bit1 | c_flags0x50Bit2)) | c_flags0x50Bit2;
+	}
+	else {
+		m_flags0x50 = flags & ~c_flags0x50Bit2;
+	}
+}
+
+// STUB: LEGORACERS 0x00453ad0
+void RaceSession::Field0x6dc::Field0x68::FUN_00453ad0(LegoBool32 p_unk0x04)
+{
+	if (p_unk0x04) {
+		m_unk0x30 = 0.80000001f;
+	}
+	else {
+		m_unk0x30 = 0.0f;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00453d90
@@ -133,9 +234,46 @@ void RaceSession::Field0x6dc::Field0x1894::FUN_00457170()
 }
 
 // STUB: LEGORACERS 0x00457710
-void RaceSession::Field0x6dc::Field0x68::FUN_00457710(LegoU32)
+void RaceSession::Field0x6dc::Field0x68Field0x028::FUN_00457710(LegoU32 p_elapsedMs)
 {
-	STUB(0x00457710);
+	if (m_unk0x3c == c_stateInactive) {
+		return;
+	}
+
+	FUN_00453a20(p_elapsedMs);
+
+	if (m_unk0x3c == c_stateWait) {
+		if (m_unk0x4c >= m_unk0x48) {
+			LegoU8 flags = m_flags0x50;
+			m_unk0x4c = 0;
+			m_unk0x3c = c_stateActive;
+			if (flags & c_flags0x50Bit0) {
+				goto playSound;
+			}
+		}
+	}
+	else if (m_unk0x3c == c_stateActive) {
+		if (m_unk0x4c > 500) {
+			m_unk0x3c = c_stateIdle;
+			m_unk0x4c = 0;
+			FUN_00453ad0(TRUE);
+		}
+	}
+	else if (m_unk0x3c == c_stateTransition && m_unk0x4c > 250) {
+		m_unk0x3c = m_unk0x40;
+		m_unk0x60 = m_unk0x64;
+		m_unk0x4c = 0;
+		m_unk0x54 = m_unk0x04->FUN_0045ba90(&m_unk0x60);
+		m_unk0x58 = m_unk0x04->FUN_0045bae0(&m_unk0x60);
+		FUN_00453ad0(FALSE);
+
+		if (m_unk0x3c == c_stateActive && (m_flags0x50 & c_flags0x50Bit0)) {
+		playSound:
+			SoundVector position;
+			m_unk0x08.VTable0x04(&position);
+			m_unk0x44->FUN_00443b80(0x0e, &position, g_unk0x004b1484, 150.0f, 1.0f, 1.0f);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0045bd10

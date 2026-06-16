@@ -7,7 +7,13 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc, 0x19a4)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68, 0x68)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x074, 0x174)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x074::Field0x170, 0x60)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x54, 0x04)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68, 0x54)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68::Field0x08, 0x04)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68Field0x028, 0x68)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68Field0x02c, 0x68)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x1958Resource, 0x30)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18bc, 0x80)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18bc::Entry, 0x14)
@@ -22,6 +28,7 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18ac, 0x224)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18b0, 0x2c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18b4, 0x34)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18b8, 0xe4)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x1880, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b1874
 extern const LegoFloat g_unk0x004b1874 = 0.0040000002f;
@@ -248,10 +255,10 @@ void RaceSession::Field0x6dc::FUN_00457a90()
 	m_unk0x1970 = 0;
 	m_unk0x1974 = 0;
 
-	undefined4* entry = m_unk0x1978;
+	Field0x1880** entry = m_unk0x1978;
 	LegoS32 count;
-	for (count = 8; count != 0; count--) {
-		*entry = 0;
+	for (count = c_unk0x1978SlotCount; count != 0; count--) {
+		*entry = NULL;
 		entry++;
 	}
 }
@@ -855,6 +862,40 @@ LegoU32 RaceSession::Field0x6dc::FUN_0045ba40(GolAnimatedEntity* p_entity)
 	m_unk0x187c--;
 
 	return m_unk0x187c;
+}
+
+// FUNCTION: LEGORACERS 0x0045ba90
+RaceSession::Field0x6dc::Field0x1880* RaceSession::Field0x6dc::FUN_0045ba90(LegoU32* p_unk0x04)
+{
+	switch (*p_unk0x04) {
+	case 1:
+		return m_unk0x1978[c_unk0x1978Slot1A];
+	case 2:
+		return m_unk0x1978[c_unk0x1978Slot2A];
+	case 3:
+		return m_unk0x1978[c_unk0x1978Slot3A];
+	case 4:
+		return m_unk0x1978[c_unk0x1978Slot4A];
+	default:
+		return NULL;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045bae0
+RaceSession::Field0x6dc::Field0x1880* RaceSession::Field0x6dc::FUN_0045bae0(LegoU32* p_unk0x04)
+{
+	switch (*p_unk0x04) {
+	case 1:
+		return m_unk0x1978[c_unk0x1978Slot1B];
+	case 2:
+		return m_unk0x1978[c_unk0x1978Slot2B];
+	case 3:
+		return m_unk0x1978[c_unk0x1978Slot3B];
+	case 4:
+		return m_unk0x1978[c_unk0x1978Slot4B];
+	default:
+		return NULL;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0045bb30

@@ -1,12 +1,39 @@
 #include "bounds/golboundingshape.h"
 
+#include "camera/golviewfrustum.h"
 #include "golbinparser.h"
 #include "golerror.h"
 
 DECOMP_SIZE_ASSERT(GolBoundingShape::BdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(GolBoundingShape::StructField0x08, 0x20)
+DECOMP_SIZE_ASSERT(GolBoundingShape::StructField0x08::Node, 0x1c)
+DECOMP_SIZE_ASSERT(GolBoundingShape::StructField0x08::Payload, 0x1c)
 DECOMP_SIZE_ASSERT(GolBoundingShape::StructField0x18, 0x18)
 DECOMP_SIZE_ASSERT(GolBoundingShape, 0x2c)
+
+static LegoFloat PlaneDot(const GolBoundingShape::StructField0x08* p_entry, const GolVec3& p_point)
+{
+	return p_entry->m_unk0x04.m_t0.m_unk0x08 * p_point.m_z + p_entry->m_unk0x04.m_t0.m_unk0x04 * p_point.m_y +
+		   p_entry->m_unk0x04.m_t0.m_unk0x00 * p_point.m_x;
+}
+
+static LegoBool32 HasPositiveCorner(const GolBoundingShape::StructField0x08* p_entry, const GolViewFrustum* p_frustum)
+{
+	LegoFloat threshold = -p_entry->m_unk0x04.m_t0.m_unk0x0c;
+	return PlaneDot(p_entry, p_frustum->m_corners[0]) >= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[3]) >= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[1]) >= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[2]) >= threshold;
+}
+
+static LegoBool32 HasNegativeCorner(const GolBoundingShape::StructField0x08* p_entry, const GolViewFrustum* p_frustum)
+{
+	LegoFloat threshold = -p_entry->m_unk0x04.m_t0.m_unk0x0c;
+	return PlaneDot(p_entry, p_frustum->m_corners[0]) <= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[3]) <= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[1]) <= threshold ||
+		   PlaneDot(p_entry, p_frustum->m_corners[2]) <= threshold;
+}
 
 // FUNCTION: GOLDP 0x1001adc0
 GolBoundingShape::GolBoundingShape()
@@ -71,7 +98,7 @@ void GolBoundingShape::Deserialize(const LegoChar* p_path, LegoBool32 p_binary)
 				parser->HandleUnexpectedToken(GolFileParser::ParserTokenType::e_int);
 			}
 
-			m_unk0x20 = new LegoS16[m_unk0x1c];
+			m_unk0x20 = new LegoU16[m_unk0x1c];
 			if (m_unk0x20 == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
@@ -228,15 +255,203 @@ void GolBoundingShape::Destroy()
 }
 
 // STUB: GOLDP 0x1001b2c0
-void GolBoundingShape::FUN_1001b2c0(undefined4*, undefined4*, undefined4*)
+void GolBoundingShape::FUN_1001b2c0(
+	const GolViewFrustum* p_frustum,
+	StructField0x08::Node** p_first,
+	StructField0x08::Node** p_last
+)
 {
-	// TODO
-	STUB(0x1001b2c0);
+	m_unk0x10++;
+	LegoU32 stamp = m_unk0x10;
+	StructField0x08* entry = m_unk0x0c;
+
+	while (entry->m_type == StructField0x08::e_type0) {
+		LegoFloat distance = PlaneDot(entry, p_frustum->m_position) + entry->m_unk0x04.m_t0.m_unk0x0c;
+		LegoU16 childIndex;
+
+		if (distance >= 0.0f || entry->m_unk0x04.m_t0.m_unk0x1a == StructField0x08::c_invalidIndex) {
+			if (entry->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+				entry->m_unk0x04.m_t0.m_unk0x14 = stamp;
+				childIndex = entry->m_unk0x04.m_t0.m_unk0x1a;
+			}
+			else {
+				entry->m_unk0x04.m_t0.m_unk0x10 = stamp;
+				childIndex = entry->m_unk0x04.m_t0.m_unk0x18;
+			}
+		}
+		else {
+			entry->m_unk0x04.m_t0.m_unk0x14 = stamp;
+			childIndex = entry->m_unk0x04.m_t0.m_unk0x1a;
+		}
+
+		entry = &m_unk0x08[childIndex];
+	}
+
+	entry->m_unk0x04.m_node.m_next = NULL;
+	entry->m_unk0x04.m_node.m_previous = NULL;
+	entry->m_unk0x04.m_node.m_unk0x1a = 1;
+
+	if (entry->m_unk0x02 == StructField0x08::c_invalidIndex) {
+		m_unk0x24 = &entry->m_unk0x04.m_node;
+		m_unk0x28 = &entry->m_unk0x04.m_node;
+		*p_first = &entry->m_unk0x04.m_node;
+		*p_last = &entry->m_unk0x04.m_node;
+		return;
+	}
+
+	if (m_unk0x20 != NULL) {
+		FUN_1001b640(p_frustum, entry, p_first, p_last);
+		m_unk0x24 = *p_first;
+		m_unk0x28 = *p_last;
+		return;
+	}
+
+	StructField0x08* firstEntry = entry;
+	StructField0x08* lastEntry = entry;
+	LegoU16 nextIndex = entry->m_unk0x02;
+
+	while (nextIndex != StructField0x08::c_invalidIndex) {
+		StructField0x08* current = &m_unk0x08[nextIndex];
+		LegoBool32 advanced = TRUE;
+
+		while (advanced) {
+			advanced = FALSE;
+
+			while (current->m_type == StructField0x08::e_type0) {
+				LegoU16 childIndex = StructField0x08::c_invalidIndex;
+
+				if (current->m_unk0x04.m_t0.m_unk0x10 != stamp) {
+					if (current->m_unk0x04.m_t0.m_unk0x14 == stamp) {
+						current->m_unk0x04.m_t0.m_unk0x10 = stamp;
+						if (current->m_unk0x04.m_t0.m_unk0x18 != StructField0x08::c_invalidIndex &&
+							HasPositiveCorner(current, p_frustum)) {
+							childIndex = current->m_unk0x04.m_t0.m_unk0x18;
+						}
+					}
+					else if (PlaneDot(current, p_frustum->m_position) >= -current->m_unk0x04.m_t0.m_unk0x0c) {
+						current->m_unk0x04.m_t0.m_unk0x10 = stamp;
+						if (current->m_unk0x04.m_t0.m_unk0x18 != StructField0x08::c_invalidIndex) {
+							childIndex = current->m_unk0x04.m_t0.m_unk0x18;
+						}
+					}
+					else {
+						current->m_unk0x04.m_t0.m_unk0x14 = stamp;
+						if (current->m_unk0x04.m_t0.m_unk0x1a != StructField0x08::c_invalidIndex) {
+							childIndex = current->m_unk0x04.m_t0.m_unk0x1a;
+						}
+					}
+
+					if (childIndex != StructField0x08::c_invalidIndex) {
+						current = &m_unk0x08[childIndex];
+						continue;
+					}
+				}
+
+				if (current->m_unk0x04.m_t0.m_unk0x14 != stamp) {
+					current->m_unk0x04.m_t0.m_unk0x14 = stamp;
+					if (current->m_unk0x04.m_t0.m_unk0x1a != StructField0x08::c_invalidIndex &&
+						HasNegativeCorner(current, p_frustum)) {
+						current = &m_unk0x08[current->m_unk0x04.m_t0.m_unk0x1a];
+						continue;
+					}
+				}
+
+				nextIndex = current->m_unk0x02;
+				break;
+			}
+
+			if (current->m_type != StructField0x08::e_type0) {
+				current->m_unk0x04.m_node.m_unk0x1a = 1;
+				LegoBool32 append = TRUE;
+
+				if (current->m_unk0x04.m_node.m_unk0x18 != StructField0x08::c_invalidIndex) {
+					LegoS32 classification = GolViewFrustum::FUN_1002bc90(
+						p_frustum,
+						3 * current->m_unk0x04.m_node.m_unk0x18,
+						&m_unk0x18[current->m_unk0x04.m_node.m_unk0x18].m_unk0x00
+					);
+					if (classification == 0) {
+						append = FALSE;
+					}
+					else if (classification == 2) {
+						current->m_unk0x04.m_node.m_unk0x1a = 0;
+					}
+				}
+
+				if (append) {
+					lastEntry->m_unk0x04.m_node.m_next = &current->m_unk0x04.m_node;
+					current->m_unk0x04.m_node.m_previous = &lastEntry->m_unk0x04.m_node;
+					current->m_unk0x04.m_node.m_next = NULL;
+					lastEntry = current;
+				}
+
+				nextIndex = current->m_unk0x02;
+				advanced = nextIndex != StructField0x08::c_invalidIndex;
+				if (advanced) {
+					current = &m_unk0x08[nextIndex];
+				}
+			}
+		}
+	}
+
+	m_unk0x24 = &firstEntry->m_unk0x04.m_node;
+	*p_first = &firstEntry->m_unk0x04.m_node;
+	m_unk0x28 = &lastEntry->m_unk0x04.m_node;
+	*p_last = &lastEntry->m_unk0x04.m_node;
 }
 
 // STUB: GOLDP 0x1001b640
-void GolBoundingShape::FUN_1001b640(undefined4*, undefined4*, undefined4*, undefined4*)
+void GolBoundingShape::FUN_1001b640(
+	const GolViewFrustum* p_frustum,
+	StructField0x08* p_entry,
+	StructField0x08::Node** p_first,
+	StructField0x08::Node** p_last
+)
 {
-	// TODO
-	STUB(0x1001b640);
+	LegoS16 indexListStart = p_entry->m_unk0x04.m_node.m_unk0x14;
+	StructField0x08::Node* first = &p_entry->m_unk0x04.m_node;
+	p_entry->m_unk0x04.m_node.m_next = NULL;
+	p_entry->m_unk0x04.m_node.m_previous = NULL;
+
+	if (indexListStart < 0 || p_entry->m_unk0x04.m_node.m_unk0x16 == 0) {
+		*p_last = first;
+		*p_first = first;
+		return;
+	}
+
+	StructField0x08* previous = p_entry;
+	LegoS32 i = 0;
+	LegoU16* childIndex = &m_unk0x20[indexListStart];
+
+	while (i < p_entry->m_unk0x04.m_node.m_unk0x16) {
+		StructField0x08* child = &m_unk0x08[*childIndex];
+		child->m_unk0x04.m_node.m_unk0x1a = 1;
+
+		if (child->m_unk0x04.m_node.m_unk0x18 == StructField0x08::c_invalidIndex) {
+			previous->m_unk0x04.m_node.m_next = &child->m_unk0x04.m_node;
+			child->m_unk0x04.m_node.m_previous = &previous->m_unk0x04.m_node;
+			child->m_unk0x04.m_node.m_next = NULL;
+			previous = child;
+		}
+		else {
+			LegoS32 classification =
+				GolViewFrustum::FUN_1002bc90(p_frustum, 0, &m_unk0x18[child->m_unk0x04.m_node.m_unk0x18].m_unk0x00);
+			if (classification != 0) {
+				if (classification == 2) {
+					child->m_unk0x04.m_node.m_unk0x1a = 0;
+				}
+
+				previous->m_unk0x04.m_node.m_next = &child->m_unk0x04.m_node;
+				child->m_unk0x04.m_node.m_previous = &previous->m_unk0x04.m_node;
+				child->m_unk0x04.m_node.m_next = NULL;
+				previous = child;
+			}
+		}
+
+		childIndex++;
+		i++;
+	}
+
+	*p_first = first;
+	*p_last = &previous->m_unk0x04.m_node;
 }

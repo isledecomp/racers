@@ -43,12 +43,12 @@ void DuskwindBananaRelic0x30::FUN_10006320(GolRenderDevice& p_renderer)
 			textureCount = 1;
 		}
 
-		m_unk0x2c = new LegoU8[textureCount * 16];
+		m_unk0x2c = new GolSoftwareRenderer::RasterizerPipeline[textureCount];
 		if (m_unk0x2c == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		::memset(m_unk0x2c, 0, textureCount * 16);
+		::memset(m_unk0x2c, 0, textureCount * sizeof(*m_unk0x2c));
 		if (m_unk0x04 == NULL) {
 			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c, this, 0);
 			FUN_100064d0(renderer);
@@ -56,7 +56,7 @@ void DuskwindBananaRelic0x30::FUN_10006320(GolRenderDevice& p_renderer)
 		}
 
 		for (LegoU32 i = 0; i < m_unk0x04->GetUnk0x34(); i++) {
-			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c + i * 16, this, i);
+			renderer->GetSoftwareRenderer().FUN_100411b0(m_unk0x2c + i, this, i);
 		}
 	}
 	else {
@@ -75,7 +75,7 @@ void DuskwindBananaRelic0x30::FUN_10006320(GolRenderDevice& p_renderer)
 void DuskwindBananaRelic0x30::Destroy()
 {
 	if (m_unk0x2c != NULL) {
-		delete m_unk0x2c;
+		delete[] m_unk0x2c;
 		m_unk0x2c = NULL;
 	}
 	if (m_unk0x24 != NULL) {

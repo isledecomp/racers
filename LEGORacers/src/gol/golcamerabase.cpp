@@ -5,6 +5,16 @@
 #include "golscenenode.h"
 #include "goltransformbase.h"
 
+// FUNCTION: LEGORACERS 0x00404580
+GolVec3* GolCameraBase::FUN_00404580(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+{
+	p_dest->m_x = p_left->m_x - p_right->m_x;
+	p_dest->m_y = p_left->m_y - p_right->m_y;
+	p_dest->m_z = p_left->m_z - p_right->m_z;
+
+	return p_left;
+}
+
 // FUNCTION: LEGORACERS 0x004046a0
 void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)
 {

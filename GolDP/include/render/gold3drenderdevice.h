@@ -32,7 +32,7 @@ public:
 
 	// SIZE 0x10
 	struct Field0xc83b4 {
-		LegoU8* m_unk0x00[4]; // 0x00
+		GolSoftwareRenderer::RasterizerPipeline* m_unk0x00[4]; // 0x00
 	};
 
 	// SIZE 0x20

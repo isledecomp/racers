@@ -25,6 +25,12 @@ extern const LegoFloat g_unk0x004b007c = 0.050000001f;
 // GLOBAL: LEGORACERS 0x004c4810
 LegoFloat g_unk0x004c4810;
 
+// FUNCTION: LEGORACERS 0x0041fb60
+RaceState::Racer::Field0xc70::~Field0xc70()
+{
+	Destroy();
+}
+
 // FUNCTION: LEGORACERS 0x0041fb70
 void RaceState::Racer::Field0xc70::Destroy()
 {

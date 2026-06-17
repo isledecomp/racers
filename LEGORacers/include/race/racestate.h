@@ -655,6 +655,7 @@ public:
 			void FUN_0043fa50(GolCamera* p_camera);
 			void FUN_0043fc20(GolD3DRenderDevice* p_renderer);
 			void FUN_0043fd70();
+			void FUN_0043fd90();
 			void FUN_0043fdb0();
 			void FUN_00440030();
 			void FUN_004400a0(ColorTransform0x20* p_unk0x04);
@@ -665,6 +666,7 @@ public:
 			void FUN_004401a0();
 			void FUN_004401b0();
 			void FUN_004401e0();
+			~Field0x018();
 
 			LegoU32 m_unk0x000;                                           // 0x000
 			GolWorldEntityGroup0x38 m_unk0x004;                           // 0x004
@@ -689,8 +691,8 @@ public:
 			LegoU8 m_unk0x1f4[4];                                         // 0x1f4
 			undefined4 m_unk0x1f8[4];                                     // 0x1f8
 			undefined4 m_unk0x208[4];                                     // 0x208
-			MaterialTable0x0c m_unk0x218;                                 // 0x218
-			MaterialTable0x0c m_unk0x224;                                 // 0x224
+			GolBillboard::Field0x2c m_unk0x218;                           // 0x218
+			GolBillboard::Field0x2c m_unk0x224;                           // 0x224
 			CutsceneParticleRef* m_unk0x230[4];                           // 0x230
 			GolName m_unk0x240[4];                                        // 0x240
 			LegoU32 m_unk0x260[4];                                        // 0x260
@@ -1247,6 +1249,7 @@ public:
 			void FUN_004203b0(LegoU32 p_elapsedMs);
 			void Destroy();
 			void Reset();
+			~Field0xc70();
 
 			union {
 				Field0x000* m_unk0x000;   // 0x00

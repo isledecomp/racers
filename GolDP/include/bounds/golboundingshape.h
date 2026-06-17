@@ -40,8 +40,8 @@ public:
 
 		// SIZE 0x1c
 		struct Node {
-			undefined4 m_unk0x00;
-			undefined4 m_unk0x04;
+			LegoU32 m_firstGroup;
+			LegoU32 m_groupCount;
 			undefined4 m_unk0x08;
 			Node* m_next;
 			Node* m_previous;

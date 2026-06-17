@@ -19,7 +19,7 @@ class GolDrawDPState;
 class GolD3DRenderDevice;
 class GolSceneNode;
 
-typedef void (GolD3DRenderDevice::*BronzeFalconDrawFunction)(undefined4, undefined4, undefined4);
+typedef void (GolD3DRenderDevice::*BronzeFalconDrawFunction)(LegoU32, LegoU32, LegoU32);
 
 // VTABLE: GOLDP 0x100565b8
 // SIZE 0xc8770
@@ -257,7 +257,7 @@ private:
 	void FUN_10012bf0(undefined4, undefined4, undefined4);
 	void FUN_10012f50();
 	void FUN_10008880(GolWorldEntity* p_model, LegoU32 p_lodIndex);
-	void FUN_10013110(undefined4, undefined4, undefined4);
+	void FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
 	void FUN_100132f0(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount);
 	void Reset();
 	static HRESULT CALLBACK CountTextureFormatsCallback(DDPIXELFORMAT* p_format, void* p_context);

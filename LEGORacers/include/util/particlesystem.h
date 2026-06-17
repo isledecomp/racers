@@ -23,6 +23,7 @@ public:
 	void Destroy();
 
 	LegoBool32 IsActive() const { return m_flags & c_flagActive; }
+	LegoU32 GetSpawnedCount() const { return m_spawnedCount; }
 
 	void Reset();
 
@@ -98,7 +99,7 @@ private:
 	LegoFloat m_unk0x0dc;                              // 0x0dc
 	LegoFloat m_unk0x0e0;                              // 0x0e0
 	LegoFloat m_unk0x0e4;                              // 0x0e4
-	undefined4 m_spawnedCount;                         // 0x0e8
+	LegoU32 m_spawnedCount;                            // 0x0e8
 	GolVec3 m_cameraForward;                           // 0x0ec
 	GolVec3 m_cameraUp;                                // 0x0f8
 	GolVec3 m_scaledCameraUp;                          // 0x104

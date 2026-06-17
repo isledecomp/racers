@@ -2076,6 +2076,12 @@ void RaceState::FUN_0043d120()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0043d620
+RaceState::Racer::Field0x018::~Field0x018()
+{
+	Reset();
+}
+
 // FUNCTION: LEGORACERS 0x0043d6a0
 void RaceState::Racer::Field0x018::Reset()
 {
@@ -2510,6 +2516,16 @@ void RaceState::Racer::Field0x018::FUN_0043fd70()
 {
 	FUN_0043dcd0();
 	FUN_0043da30();
+}
+
+// FUNCTION: LEGORACERS 0x0043fd90
+void RaceState::Racer::Field0x018::FUN_0043fd90()
+{
+	m_unk0x000 |= c_flags0x000Bit8;
+
+	if (m_racer->m_unk0xd08 != 2) {
+		FUN_0043dc00();
+	}
 }
 
 // STUB: LEGORACERS 0x0043fdb0

@@ -20,6 +20,7 @@ public:
 	CutsceneAnimation::Runtime* GetRuntime() const { return m_unk0x000; }
 	CutsceneParticleRef* GetRef() const { return m_ref; }
 	GolMatrix3* GetUnk0x160() { return &m_unk0x160; }
+	LegoU32 GetSpawnedCount() const { return m_unk0x008.GetSpawnedCount(); }
 	void SetRef(CutsceneParticleRef* p_ref) { m_ref = p_ref; }
 
 	void Destroy();
@@ -27,6 +28,7 @@ public:
 	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
 	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
 	void FUN_00489660(GolVec3* p_vec);
+	void FUN_00489690(GolVec3* p_vec);
 	void ActivateRuntime(CutsceneAnimation::Runtime* p_runtime);
 	void FUN_004897a0();
 	void FUN_004897c0();

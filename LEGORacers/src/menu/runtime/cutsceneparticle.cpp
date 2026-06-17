@@ -1,6 +1,7 @@
 #include "menu/runtime/cutsceneparticle.h"
 
 #include "core/gol.h"
+#include "golconstants.h"
 #include "mabmaterialanimation0x14.h"
 
 DECOMP_SIZE_ASSERT(CutsceneParticle, 0x18c)
@@ -176,6 +177,22 @@ void CutsceneParticle::FUN_00489660(GolVec3* p_vec)
 	m_unk0x154.m_x = p_vec->m_x;
 	m_unk0x154.m_y = p_vec->m_y;
 	m_unk0x154.m_z = p_vec->m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00489690
+void CutsceneParticle::FUN_00489690(GolVec3* p_vec)
+{
+	LegoFloat x = p_vec->m_x;
+	x *= g_floatConst1000;
+	m_unk0x148.m_x = x;
+
+	LegoFloat y = p_vec->m_y;
+	y *= g_floatConst1000;
+	m_unk0x148.m_y = y;
+
+	LegoFloat z = p_vec->m_z;
+	z *= g_floatConst1000;
+	m_unk0x148.m_z = z;
 }
 
 // FUNCTION: LEGORACERS 0x004896d0

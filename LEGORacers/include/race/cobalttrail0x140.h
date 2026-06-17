@@ -121,7 +121,7 @@ private:
 	LegoU8 m_unk0x038;                        // 0x038
 	undefined m_unk0x039;                     // 0x039
 	undefined m_unk0x03a;                     // 0x03a
-	undefined m_unk0x03b;                     // 0x03b
+	LegoBool m_unk0x03b;                      // 0x03b
 	LegoU8 m_unk0x03c;                        // 0x03c
 	TimeText m_unk0x03d;                      // 0x03d
 	TimeText m_unk0x046;                      // 0x046

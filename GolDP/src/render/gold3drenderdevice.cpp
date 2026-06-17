@@ -4304,7 +4304,7 @@ void GolD3DRenderDevice::FUN_10012f50()
 }
 
 // STUB: GOLDP 0x10013110
-void GolD3DRenderDevice::FUN_10013110(undefined4, undefined4, undefined4)
+void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
 	STUB(0x10013110);
 }

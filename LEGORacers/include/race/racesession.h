@@ -1370,16 +1370,33 @@ public:
 
 		void Destroy();
 
+		// VTABLE: LEGORACERS 0x004b4794
 		// SIZE 0x2a4
 		class Item {
 		public:
+			// SIZE 0x4c
+			class Field0x0dc {
+			public:
+				LegoU32 m_unk0x00;    // 0x00
+				GolVec3 m_unk0x04[5]; // 0x04
+				GolVec3 m_unk0x40;    // 0x40
+			};
+
 			enum {
 				c_flags0x09cBit0 = 1 << 0,
+				c_flags0x09cBit1 = 1 << 1,
+				c_flags0x09cBit3 = 1 << 3,
+				c_flags0x09cBit4 = 1 << 4,
 				c_flags0x09cBit5 = 1 << 5,
 			};
 
-			virtual void VTable0x00(undefined4 p_flags); // vtable+0x00
+			Item();
+			~Item();
+			virtual Item* VTable0x00(undefined4 p_flags); // vtable+0x00
 
+			void FUN_00492be0(LegoU32 p_elapsedMs);
+			void FUN_00492c30(LegoU32 p_elapsedMs);
+			void FUN_004931a0();
 			void FUN_004513d0(GolD3DRenderDevice* p_renderer);
 			void Destroy();
 			void FUN_00493790(GolD3DRenderDevice* p_renderer);
@@ -1396,14 +1413,24 @@ public:
 			GolModelEntity m_unk0x00c;           // 0x00c
 			LegoU8 m_flags0x09c;                 // 0x09c
 			undefined m_unk0x09d[0x0a0 - 0x09d]; // 0x09d
-			LegoU32 m_unk0x0a0[14];              // 0x0a0
-			LegoU8 m_unk0x0d8[4];                // 0x0d8
-			LegoU32 m_unk0x0dc[6][19];           // 0x0dc
+			LegoU32 m_unk0x0a0;                  // 0x0a0
+			LegoU32 m_unk0x0a4;                  // 0x0a4
+			LegoU32 m_unk0x0a8;                  // 0x0a8
+			LegoU32 m_unk0x0ac;                  // 0x0ac
+			LegoU32 m_unk0x0b0;                  // 0x0b0
+			LegoU32 m_unk0x0b4;                  // 0x0b4
+			LegoU32 m_unk0x0b8;                  // 0x0b8
+			LegoU32 m_unk0x0bc;                  // 0x0bc
+			LegoU32 m_unk0x0c0[4];               // 0x0c0
+			LegoFloat m_unk0x0d0;                // 0x0d0
+			LegoFloat m_unk0x0d4;                // 0x0d4
+			ColorRGBA m_unk0x0d8;                // 0x0d8
+			Field0x0dc m_unk0x0dc[6];            // 0x0dc
 		};
 
 		LegoU32 FUN_00493a60(GolD3DRenderDevice* p_renderer);
 		LegoU32 FUN_00493aa0(GolD3DRenderDevice* p_renderer);
-		void FUN_00493a20(LegoU32 p_elapsedMs);
+		LegoU32 FUN_00493a20(LegoU32 p_elapsedMs);
 
 	private:
 		Item* m_items;   // 0x04

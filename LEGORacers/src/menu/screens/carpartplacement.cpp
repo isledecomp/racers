@@ -14,6 +14,7 @@
 #include <string.h>
 
 extern const LegoFloat g_violetShoalTwo;
+extern const LegoFloat g_carBuildModelHeightScale;
 
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement, 0x2d0)
 DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
@@ -26,12 +27,6 @@ const LegoFloat g_carPartCameraPositions[] = {
 	0.0f, -14.0f, 9.0f,  0.0f, -10.0f, 14.0f, 0.0f, -0.3f, 17.0f, 0.0f,
 	0.0f, -18.0f, 10.0f, 0.0f, -12.0f, 17.0f, 0.0f, -0.3f, 20.0f,
 };
-
-// GLOBAL: LEGORACERS 0x004b2ecc
-extern const LegoFloat g_carPartCameraMinDistance = 5.9f;
-
-// GLOBAL: LEGORACERS 0x004b2ed0
-extern const LegoFloat g_carPartCameraMaxDistance = 8.5f;
 
 // GLOBAL: LEGORACERS 0x004b2ed4
 extern const LegoFloat g_carPartHoverHeight = 1.2f;
@@ -965,7 +960,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00478c70(LegoS32 p_elapsed)
 		}
 	}
 
-	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * 0.4f) + (g_unk0x4b2ed8 - 8.4f);
+	m_unk0x270 = (m_unk0x24->m_unk0x21f4.GetUnk0x2028() * g_carBuildModelHeightScale) + (g_unk0x4b2ed8 - 8.4f);
 
 	feedbackFlags = m_unk0x278;
 	if (feedbackFlags & c_placementFeedbackMask) {
@@ -1193,8 +1188,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_00479320()
 // FUNCTION: LEGORACERS 0x00479330
 void CarModelScreenBase::CarPartPlacement::FUN_00479330(GolVec3* p_dest, LegoS32 p_index)
 {
-	m_unk0x2cc = (m_unk0x58.FUN_10028710() - g_carPartCameraMinDistance) /
-				 (g_carPartCameraMaxDistance - g_carPartCameraMinDistance);
+	m_unk0x2cc = (m_unk0x58.FUN_10028710() - 5.9f) / (8.5f - 5.9f);
 	if (m_unk0x2cc > 1.0f) {
 		m_unk0x2cc = 1.0f;
 	}

@@ -1,19 +1,39 @@
 #include "core/gol.h"
 #include "decomp.h"
+#include "golerror.h"
 #include "mesh/gdbmodelindexarray0xc.h"
 #include "mesh/gdbvertexarray0xc.h"
 #include "mesh/golmodelbase.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
+#include <float.h>
+
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4, 0x0c)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item, 0x334)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::ModelEntry, 0x98)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::ModelSlot, 0x9c)
 
+// GLOBAL: LEGORACERS 0x004b4774
+const LegoFloat g_raceSessionField0x27d4MaxFloat = FLT_MAX;
+
+// GLOBAL: LEGORACERS 0x004b4778
+const LegoFloat g_raceSessionField0x27d4DefaultUnk0x10c = 15.0f;
+
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void RaceSessionField0x27d4::Item::FUN_004513d0(GolD3DRenderDevice*)
 {
+}
+
+RaceSessionField0x27d4::Item::Item()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00491b30
+RaceSessionField0x27d4::Item::~Item()
+{
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00491b80
@@ -32,7 +52,7 @@ void RaceSessionField0x27d4::Item::Destroy()
 	m_unk0x004.FUN_004149f0();
 
 	for (i = 0; i < sizeOfArray(m_unk0x120); i++) {
-		m_unk0x120[i].m_entry.VTable0x54();
+		m_unk0x120[i].m_entry.m_entity.VTable0x54();
 	}
 
 	Reset();
@@ -63,6 +83,39 @@ void RaceSessionField0x27d4::Item::Reset()
 		m_unk0x120[i].m_entry.m_unk0x90 = 0;
 		m_unk0x120[i].m_entry.m_unk0x94 = 0;
 	}
+}
+
+void RaceSessionField0x27d4::Item::FUN_00491c70(
+	GolD3DRenderDevice* p_renderer,
+	GolExport* p_golExport,
+	Field0x004::Params* p_params
+)
+{
+	Item* item = this;
+	item->m_unk0x2f8 = p_params;
+	item->m_unk0x2f4 = p_golExport;
+
+	item->m_unk0x004.FUN_00414950(p_golExport, p_renderer, 12);
+	item->m_unk0x004.GetUnk0x010().EnableFlagBit1();
+	item->m_unk0x004.m_unk0x10c = g_raceSessionField0x27d4DefaultUnk0x10c;
+
+	ModelSlot* slot = item->m_unk0x120;
+	LegoU32 count = sizeOfArray(m_unk0x120);
+	do {
+		slot->m_model = item->m_unk0x2f4->VTable0x14();
+		slot->m_model->VTable0x18(
+			p_renderer,
+			1,
+			item->m_unk0x004.m_unk0x0a0,
+			item->m_unk0x004.m_unk0x0a4,
+			item->m_unk0x004.m_unk0x0a4 * 2 + 2,
+			1
+		);
+		slot->m_entry.VTable0x50(slot->m_model, g_raceSessionField0x27d4MaxFloat);
+		slot->m_entry.EnableFlagBit1();
+		slot++;
+		count--;
+	} while (count);
 }
 
 // FUNCTION: LEGORACERS 0x00491d80
@@ -152,7 +205,7 @@ void RaceSessionField0x27d4::Item::FUN_00491e20(LegoU32 p_elapsedMs)
 
 			GolVec3 position;
 			m_unk0x004.GetUnk0x010().VTable0x04(&position);
-			m_unk0x120[m_unk0x320].m_entry.VTable0x08(position);
+			m_unk0x120[m_unk0x320].m_entry.m_entity.VTable0x08(position);
 
 			LegoU32 index = m_unk0x320;
 			LegoU32 zero = 0;
@@ -193,7 +246,7 @@ void RaceSessionField0x27d4::Item::FUN_00492180(GolD3DRenderDevice* p_renderer)
 		if (count) {
 			ModelSlot* slot = m_unk0x120;
 			do {
-				p_renderer->VTable0x94(&slot->m_entry);
+				p_renderer->VTable0x94(&slot->m_entry.m_entity);
 				slot++;
 				count--;
 			} while (count);
@@ -345,7 +398,7 @@ void RaceSessionField0x27d4::Destroy()
 
 		Item* items = m_items;
 		if (items) {
-			items->VTable0x00(3);
+			delete[] items;
 		}
 
 		m_items = NULL;
@@ -354,10 +407,27 @@ void RaceSessionField0x27d4::Destroy()
 	m_count = 0;
 }
 
-// STUB: LEGORACERS 0x00492760
-void RaceSessionField0x27d4::Item::VTable0x00(undefined4)
+// FUNCTION: LEGORACERS 0x00492680
+void RaceSessionField0x27d4::FUN_00492680(
+	GolD3DRenderDevice* p_renderer,
+	GolExport* p_golExport,
+	Item::Field0x004::Params* p_params,
+	LegoU32 p_count
+)
 {
-	STUB(0x00492760);
+	if (m_items) {
+		Destroy();
+	}
+
+	m_items = new Item[p_count];
+	if (m_items == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_count = p_count;
+	for (LegoU32 i = 0; i < m_count; i++) {
+		m_items[i].FUN_00491c70(p_renderer, p_golExport, p_params);
+	}
 }
 
 // STUB: LEGORACERS 0x004927c0

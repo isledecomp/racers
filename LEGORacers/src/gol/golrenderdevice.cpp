@@ -6,6 +6,7 @@
 #include "material/golimagelist.h"
 #include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
+#include "scene/golbillboard.h"
 
 // FUNCTION: LEGORACERS 0x00413170
 GolFont* GolRenderDevice::FindFontByName(const LegoChar* p_name)
@@ -81,6 +82,28 @@ DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_n
 	}
 
 	return NULL;
+}
+
+// STUB: LEGORACERS 0x004133a0
+LegoU32 GolBillboard::FUN_10029e90(
+	Field0x2c* p_container,
+	LegoS32 p_index,
+	LegoFloat p_width,
+	LegoFloat p_height,
+	LegoFloat p_maxDistanceSquared
+)
+{
+	m_positionContainer = p_container;
+	m_positionIndex = static_cast<LegoU16>(p_index);
+	LegoU32 result = VTable0x4c(
+		static_cast<DuskwindBananaRelic0x24*>(p_container->GetPosition(p_index)),
+		p_width,
+		p_height,
+		p_maxDistanceSquared
+	);
+	m_flags |= c_flagBit2;
+
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00415d60

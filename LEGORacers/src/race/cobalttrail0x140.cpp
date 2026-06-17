@@ -5,9 +5,11 @@
 #include "golmath.h"
 #include "golnametable.h"
 #include "image/utopianpan0xa4.h"
+#include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
 
+#include <math.h>
 #include <stdio.h>
 #include <string.h>
 
@@ -19,6 +21,15 @@ undefined2 g_unk0x004c4814[42];
 
 // GLOBAL: LEGORACERS 0x004afde0
 extern const LegoFloat g_unk0x004afde0 = 10.0f;
+
+// GLOBAL: LEGORACERS 0x004b02ac
+extern const LegoFloat g_unk0x004b02ac = 128.0f;
+
+// GLOBAL: LEGORACERS 0x004b02b0
+extern const LegoFloat g_unk0x004b02b0 = 0.03125f;
+
+// GLOBAL: LEGORACERS 0x004b02b4
+extern const LegoFloat g_unk0x004b02b4 = 16.0f;
 
 // GLOBAL: LEGORACERS 0x004b02d4
 extern const LegoFloat g_unk0x004b02d4 = -7.0f;
@@ -34,6 +45,223 @@ extern const LegoChar* g_unk0x004be8ac = "ignum";
 
 static const LegoChar* g_unk0x004b0270[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 static const LegoS16 g_unk0x004b0290[8] = {0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20};
+
+// STUB: LEGORACERS 0x00423fc0
+void CobaltTrail0x140::FUN_00423fc0(
+	const GolRenderDevice::TexturedVertex* p_unk0x04,
+	const GolRenderDevice::TexturedVertex* p_unk0x08,
+	const GolRenderDevice::TexturedVertex* p_unk0x0c
+)
+{
+	GolRenderDevice::TexturedVertex input[3];
+	GolRenderDevice::TexturedVertex output[4];
+	input[0] = *p_unk0x04;
+	input[1] = *p_unk0x08;
+	input[2] = *p_unk0x0c;
+
+	LegoS32 outputCount = 0;
+	GolRenderDevice::TexturedVertex previous = input[2];
+	LegoBool32 previousInside = previous.m_y >= m_unk0x12c;
+
+	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
+		const GolRenderDevice::TexturedVertex& current = input[i];
+		LegoBool32 currentInside = current.m_y >= m_unk0x12c;
+
+		if (currentInside) {
+			if (!previousInside) {
+				LegoFloat amount = (m_unk0x12c - previous.m_y) / (current.m_y - previous.m_y);
+				output[outputCount] = previous;
+				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+				outputCount++;
+			}
+			output[outputCount++] = current;
+		}
+		else if (previousInside) {
+			LegoFloat amount = (m_unk0x12c - previous.m_y) / (current.m_y - previous.m_y);
+			output[outputCount] = previous;
+			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+			outputCount++;
+		}
+
+		previous = current;
+		previousInside = currentInside;
+	}
+
+	if (outputCount >= 3) {
+		FUN_00424190(&output[0], &output[1], &output[2]);
+		if (outputCount == 4) {
+			FUN_00424190(&output[0], &output[2], &output[3]);
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x00424190
+void CobaltTrail0x140::FUN_00424190(
+	const GolRenderDevice::TexturedVertex* p_unk0x04,
+	const GolRenderDevice::TexturedVertex* p_unk0x08,
+	const GolRenderDevice::TexturedVertex* p_unk0x0c
+)
+{
+	GolRenderDevice::TexturedVertex input[3];
+	GolRenderDevice::TexturedVertex output[4];
+	input[0] = *p_unk0x04;
+	input[1] = *p_unk0x08;
+	input[2] = *p_unk0x0c;
+
+	LegoS32 outputCount = 0;
+	GolRenderDevice::TexturedVertex previous = input[2];
+	LegoBool32 previousInside = previous.m_x >= m_unk0x130;
+
+	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
+		const GolRenderDevice::TexturedVertex& current = input[i];
+		LegoBool32 currentInside = current.m_x >= m_unk0x130;
+
+		if (currentInside) {
+			if (!previousInside) {
+				LegoFloat amount = (m_unk0x130 - previous.m_x) / (current.m_x - previous.m_x);
+				output[outputCount] = previous;
+				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+				outputCount++;
+			}
+			output[outputCount++] = current;
+		}
+		else if (previousInside) {
+			LegoFloat amount = (m_unk0x130 - previous.m_x) / (current.m_x - previous.m_x);
+			output[outputCount] = previous;
+			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+			outputCount++;
+		}
+
+		previous = current;
+		previousInside = currentInside;
+	}
+
+	if (outputCount >= 3) {
+		FUN_00424340(&output[0], &output[1], &output[2]);
+		if (outputCount == 4) {
+			FUN_00424340(&output[0], &output[2], &output[3]);
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x00424340
+void CobaltTrail0x140::FUN_00424340(
+	const GolRenderDevice::TexturedVertex* p_unk0x04,
+	const GolRenderDevice::TexturedVertex* p_unk0x08,
+	const GolRenderDevice::TexturedVertex* p_unk0x0c
+)
+{
+	GolRenderDevice::TexturedVertex input[3];
+	GolRenderDevice::TexturedVertex output[4];
+	input[0] = *p_unk0x04;
+	input[1] = *p_unk0x08;
+	input[2] = *p_unk0x0c;
+
+	LegoS32 outputCount = 0;
+	GolRenderDevice::TexturedVertex previous = input[2];
+	LegoBool32 previousInside = previous.m_x <= m_unk0x138;
+
+	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
+		const GolRenderDevice::TexturedVertex& current = input[i];
+		LegoBool32 currentInside = current.m_x <= m_unk0x138;
+
+		if (currentInside) {
+			if (!previousInside) {
+				LegoFloat amount = (m_unk0x138 - previous.m_x) / (current.m_x - previous.m_x);
+				output[outputCount] = previous;
+				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+				outputCount++;
+			}
+			output[outputCount++] = current;
+		}
+		else if (previousInside) {
+			LegoFloat amount = (m_unk0x138 - previous.m_x) / (current.m_x - previous.m_x);
+			output[outputCount] = previous;
+			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+			outputCount++;
+		}
+
+		previous = current;
+		previousInside = currentInside;
+	}
+
+	if (outputCount >= 3) {
+		FUN_004244f0(&output[0], &output[1], &output[2]);
+		if (outputCount == 4) {
+			FUN_004244f0(&output[0], &output[2], &output[3]);
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x004244f0
+void CobaltTrail0x140::FUN_004244f0(
+	const GolRenderDevice::TexturedVertex* p_unk0x04,
+	const GolRenderDevice::TexturedVertex* p_unk0x08,
+	const GolRenderDevice::TexturedVertex* p_unk0x0c
+)
+{
+	GolRenderDevice::TexturedVertex input[3];
+	GolRenderDevice::TexturedVertex output[4];
+	input[0] = *p_unk0x04;
+	input[1] = *p_unk0x08;
+	input[2] = *p_unk0x0c;
+
+	LegoS32 outputCount = 0;
+	GolRenderDevice::TexturedVertex previous = input[2];
+	LegoBool32 previousInside = previous.m_y <= m_unk0x134;
+
+	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
+		const GolRenderDevice::TexturedVertex& current = input[i];
+		LegoBool32 currentInside = current.m_y <= m_unk0x134;
+
+		if (currentInside) {
+			if (!previousInside) {
+				LegoFloat amount = (m_unk0x134 - previous.m_y) / (current.m_y - previous.m_y);
+				output[outputCount] = previous;
+				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+				outputCount++;
+			}
+			output[outputCount++] = current;
+		}
+		else if (previousInside) {
+			LegoFloat amount = (m_unk0x134 - previous.m_y) / (current.m_y - previous.m_y);
+			output[outputCount] = previous;
+			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
+			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
+			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
+			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
+			outputCount++;
+		}
+
+		previous = current;
+		previousInside = currentInside;
+	}
+
+	for (LegoS32 j = 1; j + 1 < outputCount; j++) {
+		m_unk0x000->DrawTriangle(&output[0], &output[j], &output[j + 1], m_unk0x118, 0);
+	}
+}
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
 LegoU32 CobaltTrail0x140::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
@@ -77,10 +305,233 @@ LegoU32 CobaltTrail0x140::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
 	return extraMinutes;
 }
 
+// STUB: LEGORACERS 0x004247d0
+void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, LegoFloat p_directionY)
+{
+	const LegoFloat tipLength = 9.5f;
+	const LegoFloat baseLength = 6.5f;
+	const LegoFloat baseHalfWidth = 5.5f;
+	const LegoFloat tailLength = 5.0f;
+	const LegoFloat tailHalfWidth = 4.0f;
+	const LegoFloat tailEndLength = 8.0f;
+
+	GolRenderDevice::TexturedVertex vertices[6];
+	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
+		vertices[i].m_z = 0.0f;
+		vertices[i].m_u = 0.0f;
+		vertices[i].m_v = 0.0f;
+		vertices[i].m_color.m_red = 0;
+		vertices[i].m_color.m_grn = 0;
+		vertices[i].m_color.m_blu = 0;
+		vertices[i].m_color.m_alp = 0xff;
+	}
+
+	LegoFloat perpendicularX = p_directionY;
+	LegoFloat perpendicularY = -p_directionX;
+
+	LegoFloat localX[6];
+	LegoFloat localY[6];
+	localX[0] = p_directionX * tipLength;
+	localY[0] = p_directionY * tipLength;
+	localX[1] = perpendicularX * baseHalfWidth - p_directionX * baseLength;
+	localY[1] = perpendicularY * baseHalfWidth - p_directionY * baseLength;
+	localX[2] = -perpendicularX * baseHalfWidth - p_directionX * baseLength;
+	localY[2] = -perpendicularY * baseHalfWidth - p_directionY * baseLength;
+
+	localX[3] = p_directionX * tailEndLength;
+	localY[3] = p_directionY * tailEndLength;
+	localX[4] = perpendicularX * tailHalfWidth - p_directionX * tailLength;
+	localY[4] = perpendicularY * tailHalfWidth - p_directionY * tailLength;
+	localX[5] = -perpendicularX * tailHalfWidth - p_directionX * tailLength;
+	localY[5] = -perpendicularY * tailHalfWidth - p_directionY * tailLength;
+
+	for (LegoS32 j = 0; j < sizeOfArray(vertices); j++) {
+		vertices[j].m_x = localX[j] * m_unk0x104 + static_cast<LegoFloat>(p_x);
+		vertices[j].m_y = localY[j] * m_unk0x114 + static_cast<LegoFloat>(p_y);
+	}
+
+	DuskwindBananaRelic0x24* material = m_unk0x118;
+	m_unk0x118 = NULL;
+	FUN_00423fc0(&vertices[0], &vertices[1], &vertices[2]);
+	FUN_00423fc0(&vertices[3], &vertices[4], &vertices[5]);
+	m_unk0x118 = material;
+}
+
 // STUB: LEGORACERS 0x004249b0
 void CobaltTrail0x140::FUN_004249b0()
 {
-	STUB(0x004249b0);
+	const LegoFloat maxTextureCoordinate = 0.9990000129f;
+
+	LegoS32 markerWidth = static_cast<LegoS32>(m_unk0x104 * g_unk0x004b02b4);
+	LegoS32 markerHeight = static_cast<LegoS32>(m_unk0x114 * g_unk0x004b02b4);
+
+	m_unk0x12c = static_cast<LegoFloat>(m_unk0x094.m_top);
+	m_unk0x130 = static_cast<LegoFloat>(m_unk0x094.m_left);
+	m_unk0x134 = static_cast<LegoFloat>(m_unk0x094.m_bottom);
+	m_unk0x138 = static_cast<LegoFloat>(m_unk0x094.m_right);
+
+	GolRenderDevice::TexturedVertex vertices[4];
+	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
+		vertices[i].m_z = 0.0f;
+		vertices[i].m_color.m_red = 0xff;
+		vertices[i].m_color.m_grn = 0xff;
+		vertices[i].m_color.m_blu = 0xff;
+		vertices[i].m_color.m_alp = 0xc8;
+	}
+
+	LegoS32 verticalOffset = static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x100) * g_unk0x004b02b0 * m_unk0x114);
+	LegoS32 horizontalOffset = static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x100) * g_unk0x004b02b0 * m_unk0x104);
+	LegoS32 mapOriginY = m_unk0x094.m_bottom - verticalOffset;
+	LegoS32 mapOriginX = m_unk0x094.m_right - horizontalOffset;
+
+	LegoFloat referenceY;
+	if (m_unk0x03b) {
+		referenceY = -m_unk0x11c;
+	}
+	else {
+		referenceY = m_unk0x124;
+	}
+
+	LegoFloat rangeX = m_unk0x128 - m_unk0x120;
+	LegoFloat rangeY = m_unk0x11c - m_unk0x124;
+	LegoFloat scale = rangeX > rangeY ? g_unk0x004b02ac / rangeX : g_unk0x004b02ac / rangeY;
+	scale *= m_unk0x0f4;
+	LegoFloat scaleX = m_unk0x104 * scale;
+	LegoFloat scaleY = m_unk0x114 * scale;
+
+	if (m_unk0x118) {
+		if (m_unk0x03b) {
+			vertices[0].m_v = 0.0f;
+			vertices[1].m_v = 0.0f;
+			vertices[2].m_v = maxTextureCoordinate;
+			vertices[3].m_v = maxTextureCoordinate;
+		}
+		else {
+			vertices[0].m_v = maxTextureCoordinate;
+			vertices[1].m_v = maxTextureCoordinate;
+			vertices[2].m_v = 0.0f;
+			vertices[3].m_v = 0.0f;
+		}
+
+		vertices[0].m_x = static_cast<LegoFloat>(mapOriginX) + (m_unk0x120 - m_unk0x128) * scaleX;
+		vertices[0].m_y = static_cast<LegoFloat>(mapOriginY) + (m_unk0x124 - m_unk0x11c) * scaleY;
+		vertices[0].m_u = 0.0f;
+
+		vertices[1].m_x = static_cast<LegoFloat>(mapOriginX);
+		vertices[1].m_y = vertices[0].m_y;
+		vertices[1].m_u = maxTextureCoordinate;
+
+		vertices[2].m_x = static_cast<LegoFloat>(mapOriginX);
+		vertices[2].m_y = static_cast<LegoFloat>(mapOriginY);
+		vertices[2].m_u = maxTextureCoordinate;
+
+		vertices[3].m_x = vertices[0].m_x;
+		vertices[3].m_y = static_cast<LegoFloat>(mapOriginY);
+		vertices[3].m_u = 0.0f;
+
+		FUN_00423fc0(&vertices[0], &vertices[1], &vertices[2]);
+		FUN_00423fc0(&vertices[3], &vertices[0], &vertices[2]);
+	}
+
+	UtopianPan0xa4* markerResource = m_unk0x008->VTable0x20(10);
+	LegoS32 halfMarkerWidth = markerWidth >> 1;
+	LegoS32 halfMarkerHeight = markerHeight >> 1;
+	LegoS32 markerOriginX = mapOriginX - halfMarkerWidth;
+	LegoS32 markerOriginY = mapOriginY - halfMarkerHeight;
+
+	for (LegoS32 racerIndex = static_cast<LegoS32>(m_unk0x028->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
+		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
+		if (racer != m_unk0x02c) {
+			GolVec3 position;
+			racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+			Rect destRect;
+			destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+			destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_unk0x128) * scaleX);
+			destRect.m_bottom = destRect.m_top + markerHeight;
+			destRect.m_right = destRect.m_left + markerWidth;
+
+			Rect sourceRect;
+			if (racer->m_unk0xd08 == 2 && racerIndex == 1) {
+				sourceRect.m_left = 0x10;
+			}
+			else {
+				sourceRect.m_left = 0;
+			}
+			if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+				sourceRect.m_top = 0x10;
+			}
+			else {
+				sourceRect.m_top = 0;
+			}
+			sourceRect.m_right = sourceRect.m_left + 0x10;
+			sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+			m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+		}
+	}
+
+	if (m_unk0x030 && m_unk0x030->HasRecordGhostMarker()) {
+		GolVec3 position;
+		m_unk0x030->GetRecordGhostMarkerEntity()->VTable0x04(&position);
+
+		Rect destRect;
+		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+		destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_unk0x128) * scaleX);
+		destRect.m_bottom = destRect.m_top + markerHeight;
+		destRect.m_right = destRect.m_left + markerWidth;
+
+		Rect sourceRect;
+		sourceRect.m_left = 0x10;
+		if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+			sourceRect.m_top = 0x10;
+		}
+		else {
+			sourceRect.m_top = 0;
+		}
+		sourceRect.m_right = sourceRect.m_left + 0x10;
+		sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+		m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+	}
+
+	if (m_unk0x030 && m_unk0x030->HasBestGhostMarker()) {
+		GolVec3 position;
+		m_unk0x030->GetBestGhostMarkerEntity()->VTable0x04(&position);
+
+		Rect destRect;
+		destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
+		destRect.m_left = markerOriginX + static_cast<LegoS32>((position.m_x - m_unk0x128) * scaleX);
+		destRect.m_bottom = destRect.m_top + markerHeight;
+		destRect.m_right = destRect.m_left + markerWidth;
+
+		Rect sourceRect;
+		sourceRect.m_left = 0;
+		if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+			sourceRect.m_top = 0x10;
+		}
+		else {
+			sourceRect.m_top = 0;
+		}
+		sourceRect.m_right = sourceRect.m_left + 0x10;
+		sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+		m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+	}
+
+	GolVec3 currentPosition;
+	m_unk0x02c->m_unk0x018.m_unk0x044->VTable0x04(&currentPosition);
+
+	GolVec3 direction;
+	m_unk0x02c->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+	LegoFloat directionScale =
+		1.0f / static_cast<LegoFloat>(sqrt(direction.m_y * direction.m_y + direction.m_x * direction.m_x));
+	LegoFloat directionX = direction.m_x * directionScale;
+	LegoFloat directionY = -(direction.m_y * directionScale);
+
+	LegoS32 currentX = mapOriginX + static_cast<LegoS32>((currentPosition.m_x - m_unk0x128) * scaleX);
+	LegoS32 currentY = mapOriginY + static_cast<LegoS32>((referenceY - currentPosition.m_y) * scaleY);
+	FUN_004247d0(currentX, currentY, directionX, directionY);
 }
 
 // STUB: LEGORACERS 0x00424fb0
@@ -100,10 +551,11 @@ void CobaltTrail0x140::FUN_004258e0()
 	LegoS32 resource0Height = resource0->GetHeight();
 	double scaledHeight0 = static_cast<double>(resource0Height) * static_cast<double>(m_unk0x0f4);
 	LegoS32 height0 = static_cast<LegoS32>(scaledHeight0 * static_cast<double>(m_unk0x114));
-	m_unk0x000->VTable0x70(resource0, 0, m_unk0x09c - width0 - 2, m_unk0x0a0 - height0 - 2, width0, height0);
+	m_unk0x000
+		->VTable0x70(resource0, 0, m_unk0x094.m_right - width0 - 2, m_unk0x094.m_bottom - height0 - 2, width0, height0);
 
-	LegoFloat centerX = static_cast<LegoFloat>(m_unk0x09c - ((52 * width0) >> 7) - 2);
-	LegoFloat centerY = static_cast<LegoFloat>(m_unk0x0a0 - ((52 * height0) >> 7) - 2);
+	LegoFloat centerX = static_cast<LegoFloat>(m_unk0x094.m_right - ((52 * width0) >> 7) - 2);
+	LegoFloat centerY = static_cast<LegoFloat>(m_unk0x094.m_bottom - ((52 * height0) >> 7) - 2);
 	LegoFloat angle = m_unk0x078 * 18.0f;
 	if (angle < 0.0f) {
 		angle = 0.0f;
@@ -272,8 +724,8 @@ LegoS32 CobaltTrail0x140::FUN_00425d80(
 	GolNameTable* p_nameTable,
 	GolString* p_string,
 	ResourceTable* p_resourceTable,
-	RaceState* p_unk0x14,
-	undefined4 p_unk0x18,
+	RaceState::Racer::Field0x00c* p_unk0x14,
+	TimeRaceManager* p_unk0x18,
 	GolStringTable* p_stringTable,
 	RaceState::Racer::Field0x004* p_unk0x20,
 	LegoBool p_unk0x24,
@@ -329,11 +781,11 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 	STUB(0x00425e90);
 
 	m_unk0x038 = static_cast<LegoU8>(p_mode);
-	m_unk0x094 = 0;
+	m_unk0x094.m_left = 0;
 	LegoS32 width = m_unk0x0fc;
 	m_unk0x0f4 = 0.8f;
 	m_unk0x0f8 = 0.8f;
-	m_unk0x09c = width;
+	m_unk0x094.m_right = width;
 	m_unk0x0ec = 0.9f;
 	m_unk0x0f0 = 1.0f;
 
@@ -341,24 +793,24 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 	case 0:
 		return m_unk0x038;
 	case 1:
-		m_unk0x098 = 0;
-		m_unk0x0a0 = m_unk0x100;
+		m_unk0x094.m_top = 0;
+		m_unk0x094.m_bottom = m_unk0x100;
 		m_unk0x0f8 = 1.0f;
 		m_unk0x0f4 = 1.0f;
 		m_unk0x0f0 = 1.0f;
 		m_unk0x0ec = 1.0f;
 		break;
 	case 2:
-		m_unk0x098 = 0;
-		m_unk0x0a0 = m_unk0x100 >> 1;
+		m_unk0x094.m_top = 0;
+		m_unk0x094.m_bottom = m_unk0x100 >> 1;
 		break;
 	case 3:
-		m_unk0x0a0 = m_unk0x100;
-		m_unk0x098 = m_unk0x100 >> 1;
+		m_unk0x094.m_bottom = m_unk0x100;
+		m_unk0x094.m_top = m_unk0x100 >> 1;
 		break;
 	}
 
-	LegoU32 widthRange = width - m_unk0x094;
+	LegoU32 widthRange = width - m_unk0x094.m_left;
 
 	FUN_004246d0(m_unk0x03d.m_text, 0);
 	FUN_00425c70(m_unk0x03d.m_text, m_unk0x010);
@@ -373,11 +825,11 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 	v25 = static_cast<LegoS32>(static_cast<double>(v25) * m_unk0x0ec);
 	m_unk0x0e8 = static_cast<LegoS32>(static_cast<double>(p_mode) * m_unk0x10c);
 
-	v26 = m_unk0x09c - ((11 * m_unk0x0e8) >> 3);
+	v26 = m_unk0x094.m_right - ((11 * m_unk0x0e8) >> 3);
 	m_unk0x0ac = v26;
-	LegoS32 topTextY = m_unk0x098 - static_cast<LegoS32>(static_cast<double>(m_unk0x114) * g_unk0x004b02d4);
+	LegoS32 topTextY = m_unk0x094.m_top - static_cast<LegoS32>(static_cast<double>(m_unk0x114) * g_unk0x004b02d4);
 	m_unk0x0cc = topTextY;
-	m_unk0x0a8 = m_unk0x094 + (widthRange / 10);
+	m_unk0x0a8 = m_unk0x094.m_left + (widthRange / 10);
 	m_unk0x0c8 = topTextY;
 	m_unk0x0b0 = v26;
 
@@ -391,21 +843,21 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 
 	v27 = (static_cast<LegoU32>(21 * v25)) >> 3;
 	LegoS32 bottomTextY = static_cast<LegoS32>(static_cast<double>(v27) * m_unk0x114) + topTextY;
-	m_unk0x0a4 = (m_unk0x09c + m_unk0x094) >> 1;
+	m_unk0x0a4 = (m_unk0x094.m_right + m_unk0x094.m_left) >> 1;
 	m_unk0x0d4 = bottomTextY;
 	m_unk0x0c4 = bottomTextY;
 
 	m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x24);
 	m_unk0x020->MeasureString(&m_unk0x014, &p_mode, &v25);
 	m_unk0x0b8 = m_unk0x0a4 - (static_cast<LegoS32>(static_cast<double>(p_mode) * m_unk0x10c) >> 1);
-	m_unk0x0d8 = m_unk0x098 + ((m_unk0x0a0 - m_unk0x098) / 5);
+	m_unk0x0d8 = m_unk0x094.m_top + ((m_unk0x094.m_bottom - m_unk0x094.m_top) / 5);
 
 	UtopianPan0xa4* resource = m_unk0x008->VTable0x20(11);
-	m_unk0x0c0 = m_unk0x094 + (widthRange >> 5);
+	m_unk0x0c0 = m_unk0x094.m_left + (widthRange >> 5);
 
 	p_mode =
 		static_cast<LegoS32>((static_cast<double>(resource->GetHeight()) * m_unk0x0f0 + g_unk0x004afde0) * m_unk0x114);
-	m_unk0x0e0 = m_unk0x0a0 - p_mode;
+	m_unk0x0e0 = m_unk0x094.m_bottom - p_mode;
 
 	return p_mode;
 }
@@ -435,11 +887,11 @@ LegoS32 CobaltTrail0x140::FUN_004261f0(LegoS32 p_unk0x04, LegoS32 p_unk0x08)
 
 // FUNCTION: LEGORACERS 0x00426280
 void CobaltTrail0x140::FUN_00426280(
-	undefined4 p_unk0x04,
-	LegoS32 p_unk0x08,
-	LegoS32 p_unk0x0c,
-	LegoS32 p_unk0x10,
-	LegoS32 p_unk0x14,
+	DuskwindBananaRelic0x24* p_unk0x04,
+	LegoFloat p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14,
 	LegoBool p_unk0x18
 )
 {

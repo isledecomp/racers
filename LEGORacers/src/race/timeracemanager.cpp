@@ -18,12 +18,6 @@ DECOMP_SIZE_ASSERT(TimeRaceManager::GhostRunData::Sample, 0x0a)
 // GLOBAL: LEGORACERS 0x004af674
 extern const LegoFloat g_ghostSpeedScale = 4.0f;
 
-// GLOBAL: LEGORACERS 0x004b0188
-extern const LegoFloat g_ghostPositionScale = 32.0f;
-
-// GLOBAL: LEGORACERS 0x004b018c
-extern const LegoFloat g_ghostRotationScale = 127.0f;
-
 // GLOBAL: LEGORACERS 0x004b01a4
 extern const LegoFloat g_ghostAnimationRateScale = 1.8f;
 
@@ -214,11 +208,11 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 			m_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
 
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionX =
-				static_cast<LegoS16>(position.m_x * g_ghostPositionScale);
+				static_cast<LegoS16>(position.m_x * 32.0f);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionY =
-				static_cast<LegoS16>(position.m_y * g_ghostPositionScale);
+				static_cast<LegoS16>(position.m_y * 32.0f);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionZ =
-				static_cast<LegoS16>(position.m_z * g_ghostPositionScale);
+				static_cast<LegoS16>(position.m_z * 32.0f);
 
 			GolQuat rotation;
 			GolMatrix34 orientation;
@@ -234,13 +228,13 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 			orientation.m_m[2][2] = sourceOrientation.m_m[2][2];
 			GolMath::FUN_1002f5a0(orientation, &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
-				static_cast<LegoS8>(rotation.m_x * g_ghostRotationScale);
+				static_cast<LegoS8>(rotation.m_x * 127.0f);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
-				static_cast<LegoS8>(rotation.m_y * g_ghostRotationScale);
+				static_cast<LegoS8>(rotation.m_y * 127.0f);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationZ =
-				static_cast<LegoS8>(rotation.m_z * g_ghostRotationScale);
+				static_cast<LegoS8>(rotation.m_z * 127.0f);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationW =
-				static_cast<LegoS8>(rotation.m_w * g_ghostRotationScale);
+				static_cast<LegoS8>(rotation.m_w * 127.0f);
 
 			if (m_scratchRun->m_sampleCount == 0) {
 				m_scratchRun->m_initialPosition = position;
@@ -346,13 +340,13 @@ void TimeRaceManager::FUN_00422960(GolD3DRenderDevice* p_renderer)
 			GhostRunData::Sample* nextSample = sample + 1;
 
 			GolVec3 position;
-			position.m_x = static_cast<LegoFloat>(sample->m_positionX) / g_ghostPositionScale;
-			position.m_y = static_cast<LegoFloat>(sample->m_positionY) / g_ghostPositionScale;
-			position.m_z = static_cast<LegoFloat>(sample->m_positionZ) / g_ghostPositionScale;
+			position.m_x = static_cast<LegoFloat>(sample->m_positionX) / 32.0f;
+			position.m_y = static_cast<LegoFloat>(sample->m_positionY) / 32.0f;
+			position.m_z = static_cast<LegoFloat>(sample->m_positionZ) / 32.0f;
 
-			LegoFloat nextPositionX = static_cast<LegoFloat>(nextSample->m_positionX) / g_ghostPositionScale;
-			LegoFloat nextPositionY = static_cast<LegoFloat>(nextSample->m_positionY) / g_ghostPositionScale;
-			LegoFloat nextPositionZ = static_cast<LegoFloat>(nextSample->m_positionZ) / g_ghostPositionScale;
+			LegoFloat nextPositionX = static_cast<LegoFloat>(nextSample->m_positionX) / 32.0f;
+			LegoFloat nextPositionY = static_cast<LegoFloat>(nextSample->m_positionY) / 32.0f;
+			LegoFloat nextPositionZ = static_cast<LegoFloat>(nextSample->m_positionZ) / 32.0f;
 
 			GolVec3 delta;
 			delta.m_x = nextPositionX - position.m_x;
@@ -364,16 +358,16 @@ void TimeRaceManager::FUN_00422960(GolD3DRenderDevice* p_renderer)
 			position.m_z += delta.m_z * amount;
 
 			GolQuat rotation;
-			rotation.m_x = static_cast<LegoFloat>(sample->m_rotationX) / g_ghostRotationScale;
-			rotation.m_y = static_cast<LegoFloat>(sample->m_rotationY) / g_ghostRotationScale;
-			rotation.m_z = static_cast<LegoFloat>(sample->m_rotationZ) / g_ghostRotationScale;
-			rotation.m_w = static_cast<LegoFloat>(sample->m_rotationW) / g_ghostRotationScale;
+			rotation.m_x = static_cast<LegoFloat>(sample->m_rotationX) / 127.0f;
+			rotation.m_y = static_cast<LegoFloat>(sample->m_rotationY) / 127.0f;
+			rotation.m_z = static_cast<LegoFloat>(sample->m_rotationZ) / 127.0f;
+			rotation.m_w = static_cast<LegoFloat>(sample->m_rotationW) / 127.0f;
 
 			GolQuat nextRotation;
-			nextRotation.m_x = static_cast<LegoFloat>(nextSample->m_rotationX) / g_ghostRotationScale;
-			nextRotation.m_y = static_cast<LegoFloat>(nextSample->m_rotationY) / g_ghostRotationScale;
-			nextRotation.m_z = static_cast<LegoFloat>(nextSample->m_rotationZ) / g_ghostRotationScale;
-			nextRotation.m_w = static_cast<LegoFloat>(nextSample->m_rotationW) / g_ghostRotationScale;
+			nextRotation.m_x = static_cast<LegoFloat>(nextSample->m_rotationX) / 127.0f;
+			nextRotation.m_y = static_cast<LegoFloat>(nextSample->m_rotationY) / 127.0f;
+			nextRotation.m_z = static_cast<LegoFloat>(nextSample->m_rotationZ) / 127.0f;
+			nextRotation.m_w = static_cast<LegoFloat>(nextSample->m_rotationW) / 127.0f;
 
 			GolQuat interpolatedRotation;
 			GolMath::FUN_1002f890(rotation, nextRotation, amount, &interpolatedRotation);

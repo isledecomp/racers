@@ -5,6 +5,7 @@
 
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry::PathPoint, 0x0c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x13c, 0x4c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74c, 0x78)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x050, 0x78)
 

@@ -1,6 +1,7 @@
 #ifndef GOLMODEL_H
 #define GOLMODEL_H
 
+#include "bounds/golboundingshape.h"
 #include "compat.h"
 #include "decomp.h"
 #include "mesh/golmodelbase.h"
@@ -55,6 +56,11 @@ public:
 	void VTable0x1c(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoBool32 p_binary) override; // vtable+0x1c
 	void VTable0x24() override;                                                                         // vtable+0x24
 	void FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p_materialTable);
+	void FUN_10006e00(
+		GolD3DRenderDevice* p_renderer,
+		MaterialTable0x0c* p_materialTable,
+		GolBoundingShape::StructField0x08::Node* p_node
+	);
 	LegoU32 FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const;
 	GdbVertexArray0xc* GetModelVertexArray() const { return m_unk0x40; }
 

@@ -1,5 +1,6 @@
 #include "render/gold3drenderdevice.h"
 
+#include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "camera/goltransform.h"
@@ -18,6 +19,7 @@
 #include "render/goldrawdpstate.h"
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
+#include "scene/golcollidableentity.h"
 #include "surface/falcondunebag0x10.h"
 #include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
@@ -976,10 +978,79 @@ void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat, LegoFloa
 	VTable0x94(p_model);
 }
 
-// STUB: GOLDP 0x100090b0
-void GolD3DRenderDevice::VTable0x88(GolModelEntity*, Field0xc8524*, undefined4)
+// FUNCTION: GOLDP 0x100090b0
+void GolD3DRenderDevice::VTable0x88(GolModelEntity* p_model, Field0xc8524* p_renderState, undefined4 p_lodIndex)
 {
-	STUB(0x100090b0);
+	GolWorldEntity::ResultStruct result;
+	if (p_lodIndex == static_cast<undefined4>(-1)) {
+		p_model->VTable0x14(m_unk0x4c, &result);
+		if (!result.m_visibility) {
+			return;
+		}
+	}
+	else {
+		result.m_lodIndex = p_lodIndex;
+	}
+
+	m_unk0xc8524 = p_renderState;
+
+	GolBoundingShape::StructField0x08::Node* firstNode;
+	GolBoundingShape::StructField0x08::Node* lastNode;
+	static_cast<GolCollidableEntity*>(p_model)
+		->GetBoundingShape(result.m_lodIndex)
+		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
+
+	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	p_model->FUN_10027e70(modelMatrix, result.m_lodIndex);
+
+	const GolVec3& position = p_model->GetPosition();
+	modelMatrix->m_m[3][0] = position.m_x;
+	modelMatrix->m_m[3][1] = position.m_y;
+	modelMatrix->m_m[3][2] = position.m_z;
+
+	if (!m_unk0xc8528) {
+		m_unk0xc83e4 = TRUE;
+		m_unk0xc8518 = m_unk0xc8498;
+		FUN_10012f50();
+	}
+	else {
+		p_renderState->VTable0x00(this, p_model, result.m_lodIndex);
+	}
+
+	m_unk0xc8518 = modelMatrix;
+	GolModel* model = static_cast<GolModel*>(p_model->GetModel(result.m_lodIndex));
+	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	LegoU16 vertexType = vertexArray->GetVertexType();
+	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
+	if (m_unk0xc8568) {
+		FUN_1000add0(p_model, model);
+	}
+
+	MaterialTable0x0c* materialTable = p_model->GetMaterialTable(result.m_lodIndex);
+	GolBoundingShape::StructField0x08::Node* node;
+	LegoU32 nextOffset;
+	if (m_flags & c_flagBit5) {
+		node = firstNode;
+		nextOffset = 0;
+	}
+	else {
+		node = lastNode;
+		nextOffset = 1;
+	}
+
+	FUN_10012f50();
+	while (node != NULL) {
+		model->FUN_10006e00(this, materialTable, node);
+		node = (&node->m_next)[nextOffset];
+	}
+
+	m_unk0xc8524 = NULL;
+	m_unk0xc8528 = FALSE;
+	FUN_10012f50();
+
+	if (m_unk0xc8528) {
+		p_renderState->VTable0x04(this, p_model, result.m_lodIndex);
+	}
 }
 
 // FUNCTION: GOLDP 0x10009240
@@ -996,10 +1067,71 @@ void GolD3DRenderDevice::VTable0x98(GolModelEntity* p_arg1, Field0xc8524* p_arg2
 	VTable0x88(p_arg1, p_arg2, p_arg3);
 }
 
-// STUB: GOLDP 0x100092a0
-void GolD3DRenderDevice::VTable0x90(GolWorldEntity*)
+// FUNCTION: GOLDP 0x100092a0
+void GolD3DRenderDevice::VTable0x90(GolWorldEntity* p_model)
 {
-	STUB(0x100092a0);
+	GolWorldEntity::ResultStruct result;
+	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
+	p_model->VTable0x14(m_unk0x4c, &result);
+	if (!result.m_visibility) {
+		return;
+	}
+
+	GolBoundingShape::StructField0x08::Node* firstNode;
+	GolBoundingShape::StructField0x08::Node* lastNode;
+	static_cast<GolCollidableEntity*>(p_model)
+		->GetBoundingShape(result.m_lodIndex)
+		->FUN_1001b2c0(&m_unk0x4c, &firstNode, &lastNode);
+
+	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	modelEntity->FUN_10027e70(modelMatrix, result.m_lodIndex);
+
+	const GolVec3& position = modelEntity->GetPosition();
+	modelMatrix->m_m[3][0] = position.m_x;
+	modelMatrix->m_m[3][1] = position.m_y;
+	modelMatrix->m_m[3][2] = position.m_z;
+
+	GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+	GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+
+	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
+	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	LegoU16 vertexType = vertexArray->GetVertexType();
+	if (m_unk0xc8568 != (vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3)) {
+		m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
+		FUN_10012f50();
+	}
+
+	if (m_unk0xc8568) {
+		FUN_1000add0(p_model, model);
+	}
+
+	MaterialTable0x0c* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
+	GolBoundingShape::StructField0x08::Node* node;
+	LegoU32 nextOffset;
+	if (m_flags & c_flagBit5) {
+		node = firstNode;
+		nextOffset = 0;
+	}
+	else {
+		node = lastNode;
+		nextOffset = 1;
+	}
+
+	while (node != NULL) {
+		if (node->m_unk0x1a == 0) {
+			m_unk0xc83e4 = FALSE;
+			m_unk0xc8518 = &m_unk0xc84d8;
+		}
+		else {
+			m_unk0xc83e4 = TRUE;
+			m_unk0xc8518 = m_unk0xc8498;
+		}
+		FUN_10012f50();
+
+		model->FUN_10006e00(this, materialTable, node);
+		node = (&node->m_next)[nextOffset];
+	}
 }
 
 // FUNCTION: GOLDP 0x10009420
@@ -3714,16 +3846,126 @@ void GolD3DRenderDevice::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_t
 	}
 }
 
-// STUB: GOLDP 0x10010330
-void GolD3DRenderDevice::FUN_10010330(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10010330
+void GolD3DRenderDevice::FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32)
 {
-	STUB(0x10010330);
+	LegoU32 commandIndex = m_unk0xc86f4;
+	if (commandIndex + p_triangleCount >= static_cast<LegoU32>(m_unk0xc86f8)) {
+		return;
+	}
+
+	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
+	LegoU8* triangleEnd = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
+	p_triangleCount = 0;
+	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::Command0x14* commandStart = command;
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+
+	while (triangle < triangleEnd) {
+		command->m_vertexIndex0 = m_unk0xc3850[triangle[2]];
+		command->m_vertexIndex1 = m_unk0xc3850[triangle[1]];
+		command->m_vertexIndex2 = m_unk0xc3850[triangle[0]];
+
+		D3DTLVERTEX* vertex0 = &m_unk0x348[command->m_vertexIndex0];
+		D3DTLVERTEX* vertex1 = &m_unk0x348[command->m_vertexIndex1];
+		D3DTLVERTEX* vertex2 = &m_unk0x348[command->m_vertexIndex2];
+		LegoFloat area = ((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) -
+						 ((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx));
+
+		if (area >= 0.0f) {
+			triangle += 4;
+			continue;
+		}
+
+		LegoS32 areaBucket = -static_cast<LegoS32>(area);
+		LegoS32 rasterizerMask = rasterizerMaskBase;
+		p_firstTriangle = 0;
+
+		while (((areaBucket & rasterizerMask) == 0) & (static_cast<LegoS32>(p_firstTriangle) < maxRasterizerIndex)) {
+			rasterizerMask >>= 2;
+			p_firstTriangle++;
+		}
+
+		triangle += 4;
+		p_triangleCount++;
+		command->m_rasterizer = m_unk0xc83b4.m_unk0x00[p_firstTriangle];
+		command++;
+	}
+
+	if (p_triangleCount == 0) {
+		return;
+	}
+
+	if (m_flags & 0x20) {
+		m_softwareRenderer.FUN_100417c0(commandStart, p_triangleCount);
+	}
+	else {
+		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_unk0xc86fc);
+	}
+
+	m_unk0xc86f4 += p_triangleCount;
 }
 
-// STUB: GOLDP 0x10010500
-void GolD3DRenderDevice::FUN_10010500(undefined4, undefined4, undefined4)
+// FUNCTION: GOLDP 0x10010500
+void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32)
 {
-	STUB(0x10010500);
+	LegoU32 commandIndex = m_unk0xc86f4;
+	if (commandIndex + p_triangleCount >= static_cast<LegoU32>(m_unk0xc86f8)) {
+		return;
+	}
+
+	LegoU8* triangle = m_unk0xc4c18 + (p_firstTriangle * 4);
+	LegoU8* triangleEnd = m_unk0xc4c18 + ((p_firstTriangle + p_triangleCount) * 4);
+	p_triangleCount = 0;
+	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::Command0x14* commandStart = command;
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+
+	while (triangle < triangleEnd) {
+		command->m_vertexIndex0 = m_unk0xc3850[triangle[0]];
+		command->m_vertexIndex1 = m_unk0xc3850[triangle[1]];
+		command->m_vertexIndex2 = m_unk0xc3850[triangle[2]];
+
+		D3DTLVERTEX* vertex0 = &m_unk0x348[command->m_vertexIndex0];
+		D3DTLVERTEX* vertex1 = &m_unk0x348[command->m_vertexIndex1];
+		D3DTLVERTEX* vertex2 = &m_unk0x348[command->m_vertexIndex2];
+		LegoFloat area = ((vertex2->sy - vertex1->sy) * (vertex0->sx - vertex1->sx)) -
+						 ((vertex0->sy - vertex1->sy) * (vertex2->sx - vertex1->sx));
+
+		if (area >= 0.0f) {
+			triangle += 4;
+			continue;
+		}
+
+		LegoS32 areaBucket = static_cast<LegoS32>(area);
+		LegoS32 rasterizerMask = rasterizerMaskBase;
+		p_firstTriangle = 0;
+
+		while (((areaBucket & rasterizerMask) == 0) & (static_cast<LegoS32>(p_firstTriangle) < maxRasterizerIndex)) {
+			rasterizerMask >>= 2;
+			p_firstTriangle++;
+		}
+
+		triangle += 4;
+		p_triangleCount++;
+		command->m_rasterizer = m_unk0xc83b4.m_unk0x00[p_firstTriangle];
+		command++;
+	}
+
+	if (p_triangleCount == 0) {
+		return;
+	}
+
+	if (m_flags & 0x20) {
+		m_softwareRenderer.FUN_100417c0(commandStart, p_triangleCount);
+	}
+	else {
+		m_softwareRenderer.FUN_100417a0(commandStart, p_triangleCount, m_unk0xc86fc);
+	}
+
+	m_unk0xc86f4 += p_triangleCount;
 }
 
 // STUB: GOLDP 0x100106d0

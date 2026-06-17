@@ -4,13 +4,17 @@
 #include "decomp.h"
 #include "golstring.h"
 #include "race/racestate.h"
+#include "render/golrenderdevice.h"
+#include "render/rectangle.h"
 #include "types.h"
 
+class DuskwindBananaRelic0x24;
 class GolD3DRenderDevice;
 class GolFontBase;
 class GolNameTable;
 class GolStringTable;
 class RaceSession;
+class TimeRaceManager;
 class UtopianPan0xa4;
 
 // SIZE 0x140
@@ -41,11 +45,11 @@ public:
 
 	LegoS32 FUN_004261f0(LegoS32 p_unk0x04, LegoS32 p_unk0x08);
 	void FUN_00426280(
-		undefined4 p_unk0x04,
-		LegoS32 p_unk0x08,
-		LegoS32 p_unk0x0c,
-		LegoS32 p_unk0x10,
-		LegoS32 p_unk0x14,
+		DuskwindBananaRelic0x24* p_unk0x04,
+		LegoFloat p_unk0x08,
+		LegoFloat p_unk0x0c,
+		LegoFloat p_unk0x10,
+		LegoFloat p_unk0x14,
 		LegoBool p_unk0x18
 	);
 	RaceState::Racer* FUN_004262c0(RaceState::Racer* p_unk0x04);
@@ -60,6 +64,27 @@ private:
 
 	void FUN_004249b0();
 	void FUN_00424fb0();
+	void FUN_00423fc0(
+		const GolRenderDevice::TexturedVertex* p_unk0x04,
+		const GolRenderDevice::TexturedVertex* p_unk0x08,
+		const GolRenderDevice::TexturedVertex* p_unk0x0c
+	);
+	void FUN_00424190(
+		const GolRenderDevice::TexturedVertex* p_unk0x04,
+		const GolRenderDevice::TexturedVertex* p_unk0x08,
+		const GolRenderDevice::TexturedVertex* p_unk0x0c
+	);
+	void FUN_00424340(
+		const GolRenderDevice::TexturedVertex* p_unk0x04,
+		const GolRenderDevice::TexturedVertex* p_unk0x08,
+		const GolRenderDevice::TexturedVertex* p_unk0x0c
+	);
+	void FUN_004244f0(
+		const GolRenderDevice::TexturedVertex* p_unk0x04,
+		const GolRenderDevice::TexturedVertex* p_unk0x08,
+		const GolRenderDevice::TexturedVertex* p_unk0x0c
+	);
+	void FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, LegoFloat p_directionY);
 	LegoU32 FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time);
 	void FUN_004258e0();
 	void FUN_004263a0();
@@ -69,8 +94,8 @@ private:
 		GolNameTable* p_nameTable,
 		GolString* p_string,
 		ResourceTable* p_resourceTable,
-		RaceState* p_unk0x14,
-		undefined4 p_unk0x18,
+		RaceState::Racer::Field0x00c* p_unk0x14,
+		TimeRaceManager* p_unk0x18,
 		GolStringTable* p_stringTable,
 		RaceState::Racer::Field0x004* p_unk0x20,
 		LegoBool p_unk0x24,
@@ -89,9 +114,9 @@ private:
 	GolString m_unk0x014;                     // 0x014
 	GolFontBase* m_unk0x020;                  // 0x020
 	GolFontBase* m_unk0x024;                  // 0x024
-	RaceState* m_unk0x028;                    // 0x028
+	RaceState::Racer::Field0x00c* m_unk0x028; // 0x028
 	RaceState::Racer* m_unk0x02c;             // 0x02c
-	undefined4 m_unk0x030;                    // 0x030
+	TimeRaceManager* m_unk0x030;              // 0x030
 	LegoU32 m_unk0x034;                       // 0x034
 	LegoU8 m_unk0x038;                        // 0x038
 	undefined m_unk0x039;                     // 0x039
@@ -112,10 +137,7 @@ private:
 	LegoU32 m_unk0x088;                       // 0x088
 	LegoS32 m_unk0x08c;                       // 0x08c
 	LegoS32 m_unk0x090;                       // 0x090
-	LegoS32 m_unk0x094;                       // 0x094
-	LegoS32 m_unk0x098;                       // 0x098
-	LegoS32 m_unk0x09c;                       // 0x09c
-	LegoS32 m_unk0x0a0;                       // 0x0a0
+	Rect m_unk0x094;                          // 0x094
 	LegoS32 m_unk0x0a4;                       // 0x0a4
 	LegoS32 m_unk0x0a8;                       // 0x0a8
 	LegoS32 m_unk0x0ac;                       // 0x0ac
@@ -145,15 +167,15 @@ private:
 	LegoFloat m_unk0x10c;                     // 0x10c
 	LegoFloat m_unk0x110;                     // 0x110
 	LegoFloat m_unk0x114;                     // 0x114
-	undefined4 m_unk0x118;                    // 0x118
-	LegoS32 m_unk0x11c;                       // 0x11c
-	LegoS32 m_unk0x120;                       // 0x120
-	LegoS32 m_unk0x124;                       // 0x124
-	LegoS32 m_unk0x128;                       // 0x128
-	undefined4 m_unk0x12c;                    // 0x12c
-	undefined4 m_unk0x130;                    // 0x130
-	undefined4 m_unk0x134;                    // 0x134
-	undefined4 m_unk0x138;                    // 0x138
+	DuskwindBananaRelic0x24* m_unk0x118;      // 0x118
+	LegoFloat m_unk0x11c;                     // 0x11c
+	LegoFloat m_unk0x120;                     // 0x120
+	LegoFloat m_unk0x124;                     // 0x124
+	LegoFloat m_unk0x128;                     // 0x128
+	LegoFloat m_unk0x12c;                     // 0x12c
+	LegoFloat m_unk0x130;                     // 0x130
+	LegoFloat m_unk0x134;                     // 0x134
+	LegoFloat m_unk0x138;                     // 0x138
 	undefined4 m_unk0x13c;                    // 0x13c
 };
 

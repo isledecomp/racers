@@ -25,6 +25,7 @@ public:
 
 	void Destroy();
 
+	// VTABLE: LEGORACERS 0x004b4788
 	// SIZE 0x334
 	class Item {
 	public:
@@ -164,12 +165,24 @@ public:
 			c_flags0x328Bit5 = 1 << 5,
 		};
 
-		virtual void VTable0x00(undefined4 p_flags); // vtable+0x00
+		// SYNTHETIC: LEGORACERS 0x00492760
+		// RaceSessionField0x27d4::Item::`vector deleting destructor'
+		Item();
+		virtual ~Item(); // vtable+0x00
 
 		// SIZE 0x9c
-		struct ModelEntry : public GolModelEntity {
-			LegoU32 m_unk0x90; // 0x90
-			LegoU32 m_unk0x94; // 0x94
+		struct ModelEntry {
+			void VTable0x08(const GolVec3& p_position) { m_entity.VTable0x08(p_position); }
+			void VTable0x50(GolModelBase* p_model, LegoFloat p_modelDistance)
+			{
+				m_entity.VTable0x50(p_model, p_modelDistance);
+			}
+			void VTable0x54() { m_entity.VTable0x54(); }
+			void EnableFlagBit1() { m_entity.EnableFlagBit1(); }
+
+			GolModelEntity m_entity; // 0x00
+			LegoU32 m_unk0x90;       // 0x90
+			LegoU32 m_unk0x94;       // 0x94
 		};
 
 		// SIZE 0x9c
@@ -178,7 +191,6 @@ public:
 			ModelEntry m_entry;    // 0x04
 		};
 
-		~Item();
 		void Destroy();
 		LegoU8 FUN_00491d80(const ColorRGBA* p_color);
 		void FUN_00491d90(LegoU32 p_unk0x04);
@@ -194,6 +206,8 @@ public:
 
 	private:
 		friend class RaceSessionField0x27d4;
+
+		void FUN_00491c70(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, Field0x004::Params* p_params);
 
 		Field0x004 m_unk0x004;               // 0x004
 		ModelSlot m_unk0x120[3];             // 0x120
@@ -220,6 +234,12 @@ public:
 
 	LegoU32 FUN_004928b0(GolD3DRenderDevice* p_renderer);
 	LegoU32 FUN_004928f0(GolD3DRenderDevice* p_renderer);
+	void FUN_00492680(
+		GolD3DRenderDevice* p_renderer,
+		GolExport* p_golExport,
+		Item::Field0x004::Params* p_params,
+		LegoU32 p_count
+	);
 	Item* FUN_004927c0(LegoU32 p_unk0x04);
 	void FUN_00492820(Item* p_item, LegoU32 p_unk0x08);
 	void FUN_00492840();

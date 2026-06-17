@@ -20,6 +20,12 @@ public:
 		c_flagBit2 = 1 << 2,
 	};
 
+#ifdef BUILDING_LEGORACERS
+	typedef LegoU32 VTable0x4cReturn;
+#else
+	typedef void VTable0x4cReturn;
+#endif
+
 	// SIZE 0x0c
 	struct Field0x2c : public MaterialTable0x0c {
 		Field0x2c();
@@ -37,7 +43,7 @@ public:
 	void VTable0x14(const GolViewFrustum& p_view, ResultStruct* p_result) override; // vtable+0x14
 	void VTable0x1c(GolRenderDevice&) override;                                     // vtable+0x1c
 	LegoBool32 VTable0x20() override;                                               // vtable+0x20
-	virtual void VTable0x4c(
+	virtual VTable0x4cReturn VTable0x4c(
 		DuskwindBananaRelic0x24* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,
@@ -48,7 +54,7 @@ public:
 	LegoBool32 FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix);
 	void FUN_10014ff0(GolD3DRenderDevice* p_renderer);
 	void FUN_10026fa0(LegoFloat p_arg1);
-	void FUN_10029e90(
+	VTable0x4cReturn FUN_10029e90(
 		Field0x2c* p_container,
 		LegoS32 p_index,
 		LegoFloat p_width,

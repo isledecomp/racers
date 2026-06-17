@@ -5,7 +5,12 @@
 
 DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x0c, 0x34)
 DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x10, 0x18)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::VertexTable, 0x0c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::Node, 0x14)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::Triangle, 0x08)
 DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::Field0x18, 0x0c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058::TraversalEntry, 0x0c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x058, 0x64)
 DECOMP_SIZE_ASSERT(RaceSessionField0x32b4::Field0x000::Field0x0a8, 0x64)
 DECOMP_SIZE_ASSERT(RaceSessionField0x32b4, 0x10)
 

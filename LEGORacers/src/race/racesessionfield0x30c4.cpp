@@ -137,7 +137,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 			racer->m_unk0xe2c = NULL;
 		}
 
-		racer->FUN_004371c0(NULL, 0.0f);
+		racer->FUN_004371c0(NULL, NULL);
 		racer->m_unk0xc70.m_unk0x050 = m_raceState->GetUnk0x2a0();
 		racer->FUN_004374c0();
 		racer->FUN_00438500();

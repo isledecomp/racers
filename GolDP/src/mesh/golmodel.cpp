@@ -241,6 +241,16 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p
 	}
 }
 
+// STUB: GOLDP 0x10006e00
+void GolModel::FUN_10006e00(
+	GolD3DRenderDevice* p_renderer,
+	MaterialTable0x0c* p_materialTable,
+	GolBoundingShape::StructField0x08::Node* p_node
+)
+{
+	STUB(0x10006e00);
+}
+
 // FUNCTION: GOLDP 0x10006fa0
 LegoU32 GolModel::FUN_10006fa0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount) const
 {

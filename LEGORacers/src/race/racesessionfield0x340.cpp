@@ -130,6 +130,18 @@ LegoS32 RaceSession::Field0x340::FUN_00421f80(LegoFloat p_unk0x04)
 	return result;
 }
 
+// STUB: LEGORACERS 0x00422100
+void RaceState::Racer::Field0x014::FUN_00422100()
+{
+	if (m_unk0x00 && !m_unk0x18) {
+		m_unk0x10 = 0;
+		m_unk0x04 = 100;
+		m_unk0x0c = 100;
+		m_unk0x18 = 2;
+		m_unk0x1c = 0;
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00422130
 void RaceSession::Field0x340::FUN_00422130()
 {

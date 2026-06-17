@@ -244,8 +244,8 @@ private:
 	void FUN_1000ebd0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex);
 	void FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32 p_lastVertex);
 	void FUN_1000edf0(undefined4, undefined4, undefined4);
-	void FUN_10010330(undefined4, undefined4, undefined4);
-	void FUN_10010500(undefined4, undefined4, undefined4);
+	void FUN_10010330(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32);
+	void FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangleCount, LegoU32);
 	void FUN_100106d0(undefined4, undefined4, undefined4);
 	void FUN_10011e60(undefined4, undefined4, undefined4);
 	void FUN_10011ed0(undefined4, undefined4, undefined4);

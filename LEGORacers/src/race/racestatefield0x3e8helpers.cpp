@@ -32,7 +32,7 @@ extern LegoU32 g_unk0x004b0d80;
 // FUNCTION: LEGORACERS 0x00429120
 void RaceState::Racer::Field0x3e8::Reset()
 {
-	m_unk0x6f0 = 0;
+	m_unk0x6f0 = NULL;
 	m_unk0x6f4 = NULL;
 	m_unk0x6f8 = 0;
 	m_unk0x6fc = 0;
@@ -56,17 +56,46 @@ void RaceState::Racer::Field0x3e8::Reset()
 	m_unk0x680 = 0;
 	m_unk0x67c = 0;
 	m_unk0x748 = 0;
-	m_unk0x700 = 0;
-	m_unk0x704 = 0;
-	m_unk0x708 = 0;
-	m_unk0x70c = 0;
-	m_unk0x710 = 0;
-	m_unk0x714 = 0;
+	m_unk0x700.m_x = 0.0f;
+	m_unk0x700.m_y = 0.0f;
+	m_unk0x700.m_z = 0.0f;
+	m_unk0x70c.m_x = 0.0f;
+	m_unk0x70c.m_y = 0.0f;
+	m_unk0x70c.m_z = 0.0f;
+	m_unk0x70c.m_w = 1.0f;
 	m_soundResource = NULL;
 	m_unk0x7e8 = 1.0f;
 	m_unk0x7ec = 1.0f;
-	m_unk0x718 = 1.0f;
 	m_unk0x73c = -1;
+}
+
+// FUNCTION: LEGORACERS 0x00429210
+void RaceState::Racer::Field0x3e8::FUN_00429210(
+	Racer* p_racer,
+	RaceEventTable0x90* p_unk0x08,
+	undefined4 p_unk0x0c,
+	GolAnimatedEntity* p_unk0x10,
+	LegoS32 p_unk0x14,
+	undefined4 p_unk0x18,
+	Field0x004* p_unk0x1c,
+	LegoFloat p_unk0x20,
+	LegoFloat p_unk0x24,
+	LegoFloat p_unk0x28,
+	LegoFloat p_unk0x2c
+)
+{
+	if (m_unk0x6f0 != NULL) {
+		Destroy();
+	}
+
+	m_unk0x6f0 = p_racer;
+	m_unk0x6f4 = p_unk0x08;
+	m_unk0x6f8 = p_unk0x0c;
+	m_unk0x6fc = p_unk0x18;
+	FUN_00444d90(p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_unk0x2c);
+	p_unk0x10->VTable0x04(&m_unk0x700);
+	GolMath::FUN_1002f5a0(p_unk0x10->GetTransform(), &m_unk0x70c);
+	m_unk0x738 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004292b0
@@ -124,12 +153,12 @@ void RaceState::Racer::Field0x3e8::FUN_0042a670(Field0x00c::Entry* p_entry)
 
 	GolVec3 position = p_entry->m_unk0x008;
 	GolQuat rotation = p_entry->m_unk0x014;
-	m_unk0x13c->VTable0x08(&position);
-	GolMath::FUN_00449340(&rotation, &m_unk0x13c->m_unk0x28.m_m[0][0]);
-	m_unk0x13c->VTable0x2c(&m_unk0x014, &m_unk0x020);
+	m_unk0x13c->VTable0x08(position);
+	m_unk0x13c->SetOrientationFromQuaternion(rotation);
+	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);
 
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x370); i++) {
-		m_unk0x13c->VTable0x2c(&m_unk0x370[i], &m_unk0x3a0[i]);
+		m_unk0x13c->VTable0x2c(m_unk0x370[i], &m_unk0x3a0[i]);
 	}
 }
 
@@ -173,7 +202,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042b060()
 // FUNCTION: LEGORACERS 0x00440970
 void RaceState::Racer::Field0x3e8::FUN_00440970()
 {
-	m_unk0x004 = 0;
+	m_unk0x004 = NULL;
 	m_unk0x014.m_x = 0.0f;
 	m_unk0x014.m_y = 0.0f;
 	m_unk0x014.m_z = 0.0f;
@@ -198,10 +227,57 @@ void RaceState::Racer::Field0x3e8::FUN_00440970()
 	m_unk0x0cc = 1.0f;
 }
 
+// FUNCTION: LEGORACERS 0x004409f0
+void RaceState::Racer::Field0x3e8::FUN_004409f0(GolOrientedEntity* p_unk0x04, LegoFloat p_unk0x08)
+{
+	if (m_unk0x004 != NULL) {
+		FUN_00440970();
+	}
+
+	m_unk0x0cc = 1.0f / p_unk0x08;
+	m_unk0x004 = p_unk0x04;
+	m_unk0x0c8 = p_unk0x08;
+	m_unk0x008.m_x = 0.0f;
+	m_unk0x008.m_y = 0.0f;
+	m_unk0x008.m_z = 0.0f;
+	VTable0x00();
+	FUN_00440a60();
+}
+
 // FUNCTION: LEGORACERS 0x00440a50
 void RaceState::Racer::Field0x3e8::FUN_00440a50()
 {
 	FUN_00440970();
+}
+
+// FUNCTION: LEGORACERS 0x00440a60
+void RaceState::Racer::Field0x3e8::FUN_00440a60()
+{
+	m_unk0x004->FUN_00410f30(m_unk0x050, &m_unk0x074);
+}
+
+// FUNCTION: LEGORACERS 0x00441190
+void RaceState::Racer::Field0x3e8::FUN_00441190(GolVec3* p_unk0x04)
+{
+	::memcpy(&m_unk0x014, p_unk0x04, sizeof(m_unk0x014));
+	m_unk0x004->VTable0x2c(m_unk0x014, &m_unk0x020);
+}
+
+// FUNCTION: LEGORACERS 0x00441210
+void RaceState::Racer::Field0x3e8::FUN_00441210(
+	GolOrientedEntity* p_unk0x04,
+	LegoFloat p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14
+)
+{
+	m_unk0x0d0 = p_unk0x0c;
+	m_unk0x0d4 = p_unk0x10;
+	m_unk0x0d8 = p_unk0x14;
+	m_unk0x0dc = 1.0f;
+	m_racer = NULL;
+	FUN_004409f0(p_unk0x04, p_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x00444b40
@@ -293,6 +369,50 @@ void RaceState::Racer::Field0x3e8::FUN_00444b40()
 	m_unk0x5f4 = 1.0f;
 }
 
+// FUNCTION: LEGORACERS 0x00444d90
+void RaceState::Racer::Field0x3e8::FUN_00444d90(
+	GolAnimatedEntity* p_unk0x04,
+	LegoS32 p_unk0x08,
+	undefined4 p_unk0x0c,
+	Field0x004* p_unk0x10,
+	LegoFloat p_unk0x14,
+	LegoFloat p_unk0x18,
+	LegoFloat p_unk0x1c,
+	LegoFloat p_unk0x20
+)
+{
+	Field0x3e8* field = this;
+
+	if (field->m_unk0x004 != NULL) {
+		field->FUN_00444e90();
+	}
+
+	field->m_unk0x154 = 1;
+	field->m_unk0x140[0] = p_unk0x08;
+
+	if (p_unk0x0c != 0) {
+		field->m_unk0x140[1] = p_unk0x0c;
+		field->m_unk0x154 = 2;
+	}
+
+	field->m_unk0x158 = p_unk0x10;
+	field->m_unk0x13c = p_unk0x04;
+
+	GolOrientedEntity* entity = &field->m_unk0x0e4;
+	entity->CopyOrientationFrom(*p_unk0x04);
+	entity->CopyPositionFrom(*p_unk0x04);
+	field->FUN_00441210(entity, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+
+	LegoFloat scaledAngle = p_unk0x14;
+	scaledAngle *= 0.001f;
+	const GolMatrix3& orientation = entity->GetOrientation();
+	field->m_unk0x168.m_x = orientation.m_m[0][0];
+	field->m_unk0x168.m_y = orientation.m_m[0][1];
+	field->m_unk0x168.m_z = orientation.m_m[0][2];
+	scaledAngle *= 0.001f;
+	field->m_unk0x15c = scaledAngle;
+}
+
 // FUNCTION: LEGORACERS 0x00444e90
 void RaceState::Racer::Field0x3e8::FUN_00444e90()
 {
@@ -308,4 +428,21 @@ void RaceState::Racer::Field0x3e8::FUN_00444e90()
 		m_unk0x158->FUN_00443c10(m_unk0x6e8);
 		m_unk0x6e8 = NULL;
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00446e60
+void RaceState::Racer::Field0x3e8::FUN_00446e60(GolVec3* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+{
+	::memcpy(&m_unk0x358, p_unk0x04, sizeof(m_unk0x358));
+	m_unk0x364 = p_unk0x08;
+	m_unk0x368 = p_unk0x0c;
+	FUN_00448c70();
+}
+
+// FUNCTION: LEGORACERS 0x00446ea0
+void RaceState::Racer::Field0x3e8::FUN_00446ea0(LegoU32 p_unk0x04, GolVec3* p_unk0x08)
+{
+	GolVec3* source = &m_unk0x370[p_unk0x04];
+	*source = *p_unk0x08;
+	m_unk0x0e4.VTable0x2c(*source, &m_unk0x3a0[p_unk0x04]);
 }

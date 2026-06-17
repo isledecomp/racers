@@ -6,6 +6,83 @@ DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c, 0x2a0)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry, 0x48)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::StandingsDeltaEntry, 0x0c)
 
+// FUNCTION: LEGORACERS 0x0043c910
+RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043c910(
+	GolVec3* p_unk0x04,
+	GolVec3* p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14
+)
+{
+	LegoFloat farthestDistanceSquared = 0.0f;
+	LegoS32 resultIndex = -1;
+
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_racerCount); i++) {
+		Racer* racer = &m_racers[i];
+		Racer::Field0x018* racerField = &racer->m_unk0x018;
+
+		GolVec3 position;
+		racerField->m_unk0x044->VTable0x04(&position);
+
+		LegoFloat distanceSquared = (position.m_x - p_unk0x04->m_x) * (position.m_x - p_unk0x04->m_x) +
+									(position.m_y - p_unk0x04->m_y) * (position.m_y - p_unk0x04->m_y) +
+									(position.m_z - p_unk0x04->m_z) * (position.m_z - p_unk0x04->m_z);
+		if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
+			GolVec3 delta;
+			delta.m_x = position.m_x - p_unk0x04->m_x;
+			delta.m_y = position.m_y - p_unk0x04->m_y;
+			delta.m_z = position.m_z - p_unk0x04->m_z;
+			GolMath::NormalizeVector3(delta, &delta);
+
+			if (GOLVECTOR3_DOT(*p_unk0x08, delta) >= p_unk0x14 && distanceSquared > farthestDistanceSquared) {
+				resultIndex = i;
+				farthestDistanceSquared = distanceSquared;
+			}
+		}
+	}
+
+	if (resultIndex < 0) {
+		return NULL;
+	}
+
+	return &m_racers[resultIndex];
+}
+
+// STUB: LEGORACERS 0x0043ca60
+RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043ca60(
+	GolVec3* p_unk0x04,
+	GolVec3* p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14
+)
+{
+	LegoFloat nearestDistanceSquared = FLT_MAX;
+	Racer* result = NULL;
+
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_racerCount); i++) {
+		Racer* racer = &m_racers[i];
+
+		GolVec3 position;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+		GolVec3 delta = position - *p_unk0x04;
+		LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
+		if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
+			GolVec3 normalized;
+			GolMath::NormalizeVector3(delta, &normalized);
+
+			if (GOLVECTOR3_DOT(normalized, *p_unk0x08) >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
+				result = racer;
+				nearestDistanceSquared = distanceSquared;
+			}
+		}
+	}
+
+	return result;
+}
+
 // STUB: LEGORACERS 0x0043cf30
 RaceState::Racer::Field0x00c::StandingsDeltaEntry* RaceState::Racer::Field0x00c::FUN_0043cf30(
 	Racer* p_racer,

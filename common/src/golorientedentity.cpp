@@ -281,6 +281,57 @@ void GolOrientedEntity::FUN_10026f70(const GolVec3& p_v)
 	m_maxX = m_center.m_x + m_radius;
 }
 
+// FUNCTION: LEGORACERS 0x00410f30
+void GolOrientedEntity::FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const
+{
+	GolMatrix3 localMatrix;
+	LegoFloat value;
+	LegoFloat term;
+
+	value = m_orientation.m_m[1][0];
+	value *= p_matrix.m_m[1][0];
+	term = m_orientation.m_m[2][0];
+	term *= p_matrix.m_m[2][0];
+	value += term;
+	term = m_orientation.m_m[0][0];
+	term *= p_matrix.m_m[0][0];
+	localMatrix.m_m[0][0] = value + term;
+
+	value = p_matrix.m_m[2][1] * m_orientation.m_m[2][0];
+	value += m_orientation.m_m[1][0] * p_matrix.m_m[1][1];
+	localMatrix.m_m[0][1] = value + p_matrix.m_m[0][1] * m_orientation.m_m[0][0];
+
+	value = p_matrix.m_m[2][2] * m_orientation.m_m[2][0];
+	value += m_orientation.m_m[1][0] * p_matrix.m_m[1][2];
+	localMatrix.m_m[0][2] = value + p_matrix.m_m[0][2] * m_orientation.m_m[0][0];
+
+	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][0];
+	value += p_matrix.m_m[1][0] * m_orientation.m_m[1][1];
+	localMatrix.m_m[1][0] = value + m_orientation.m_m[0][1] * p_matrix.m_m[0][0];
+
+	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][1];
+	value += m_orientation.m_m[0][1] * p_matrix.m_m[0][1];
+	localMatrix.m_m[1][1] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][1];
+
+	value = m_orientation.m_m[2][1] * p_matrix.m_m[2][2];
+	value += m_orientation.m_m[0][1] * p_matrix.m_m[0][2];
+	localMatrix.m_m[1][2] = value + m_orientation.m_m[1][1] * p_matrix.m_m[1][2];
+
+	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][0];
+	value += p_matrix.m_m[1][0] * m_orientation.m_m[1][2];
+	localMatrix.m_m[2][0] = value + m_orientation.m_m[0][2] * p_matrix.m_m[0][0];
+
+	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][1];
+	value += m_orientation.m_m[0][2] * p_matrix.m_m[0][1];
+	localMatrix.m_m[2][1] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][1];
+
+	value = m_orientation.m_m[2][2] * p_matrix.m_m[2][2];
+	value += m_orientation.m_m[0][2] * p_matrix.m_m[0][2];
+	localMatrix.m_m[2][2] = value + m_orientation.m_m[1][2] * p_matrix.m_m[1][2];
+
+	GolMath::FUN_00449190(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
+}
+
 // FUNCTION: GOLDP 0x10026fc0
 void GolOrientedEntity::FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const
 {

@@ -53,7 +53,7 @@ static const LegoFloat g_carBuildModelNormalScale = 1.0f / 127.0f;
 static const LegoFloat g_carBuildModelNegativePlaneEpsilon = -0.0049999999f;
 
 // GLOBAL: LEGORACERS 0x004b0538
-static const LegoFloat g_carBuildModelHeightScale = 0.4f;
+extern const LegoFloat g_carBuildModelHeightScale = 0.4f;
 
 // GLOBAL: LEGORACERS 0x004b053c
 static const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;

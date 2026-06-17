@@ -98,6 +98,13 @@ private:
 		c_ghostPathUnknownToken = GolFileParser::e_unknown0x2b,
 	};
 
+public:
+	LegoBool32 HasBestGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit0) && !m_bestRun->m_finished; }
+	LegoBool32 HasRecordGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit3) && !m_recordRun->m_finished; }
+	GolAnimatedEntity* GetBestGhostMarkerEntity() { return &m_unk0x1c; }
+	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_unk0x110; }
+
+private:
 	void FUN_00423160(GhostRunData* p_ghostRun, const LegoChar* p_name);
 
 	GolWorldDatabase* m_worldDatabase; // 0x04

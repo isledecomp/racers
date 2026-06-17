@@ -57,6 +57,15 @@ void RaceState::Racer::Field0xc70::Reset()
 	m_unk0x050 = NULL;
 }
 
+// FUNCTION: LEGORACERS 0x0041fbd0
+void RaceState::Racer::Field0xc70::FUN_0041fbd0(Field0x3e8* p_unk0x04)
+{
+	if (m_field0x000) {
+		Destroy();
+	}
+	m_field0x000 = p_unk0x04;
+}
+
 // FUNCTION: LEGORACERS 0x0041fc00
 void RaceState::Racer::Field0xc70::FUN_0041fc00(LegoU32 p_elapsedMs)
 {

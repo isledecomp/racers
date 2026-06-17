@@ -25,11 +25,17 @@ LegoFloat g_unk0x004c3de8;
 // GLOBAL: LEGORACERS 0x004c3dec
 LegoFloat g_unk0x004c3dec;
 
+// GLOBAL: LEGORACERS 0x004c3df4
+LegoFloat g_unk0x004c3df4;
+
 // GLOBAL: LEGORACERS 0x004c3df8
 LegoFloat g_unk0x004c3df8;
 
 // GLOBAL: LEGORACERS 0x004c3dfc
 LegoFloat g_unk0x004c3dfc;
+
+// GLOBAL: LEGORACERS 0x004c3e04
+LegoFloat g_unk0x004c3e04;
 
 // GLOBAL: LEGORACERS 0x004c3e08
 LegoFloat g_unk0x004c3e08;
@@ -37,11 +43,17 @@ LegoFloat g_unk0x004c3e08;
 // GLOBAL: LEGORACERS 0x004c3e0c
 LegoFloat g_unk0x004c3e0c;
 
+// GLOBAL: LEGORACERS 0x004c3e14
+LegoFloat g_unk0x004c3e14;
+
 // GLOBAL: LEGORACERS 0x004c3e18
 LegoFloat g_unk0x004c3e18;
 
 // GLOBAL: LEGORACERS 0x004c3e1c
 LegoFloat g_unk0x004c3e1c;
+
+// GLOBAL: LEGORACERS 0x004c3e24
+LegoFloat g_unk0x004c3e24;
 
 // GLOBAL: LEGORACERS 0x004c3e28
 RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex g_unk0x004c3e28[76];

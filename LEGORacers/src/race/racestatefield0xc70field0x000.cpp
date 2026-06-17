@@ -3,9 +3,16 @@
 
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000, 0x868)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000::Field0x13c, 0x4c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000::Field0x198, 0x70)
 
 // GLOBAL: LEGORACERS 0x004b0d80
 LegoU32 g_unk0x004b0d80 = 0x3e4ccccd;
+
+// GLOBAL: LEGORACERS 0x004b0d84
+extern const LegoFloat g_unk0x004b0d84 = 0.30000001f;
+
+// GLOBAL: LEGORACERS 0x004b0d88
+extern const LegoFloat g_unk0x004b0d88 = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b0cd0
 extern const LegoFloat g_unk0x004b0cd0 = 40.0f;
@@ -27,9 +34,6 @@ extern const LegoFloat g_unk0x004b0470 = 0.155f;
 
 // GLOBAL: LEGORACERS 0x004b0550
 extern const LegoFloat g_unk0x004b0550 = 0.85000002f;
-
-// GLOBAL: LEGORACERS 0x004b0554
-extern const LegoFloat g_unk0x004b0554 = 0.89999998f;
 
 extern LegoFloat g_cosineTable[1024];
 
@@ -98,7 +102,7 @@ LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042aea0(LegoFloat p_un
 
 	if (!(m_flags0x6c0 & c_flags0x6c0Bit0)) {
 		LegoFloat dotValue = dot;
-		if (dotValue < g_unk0x004b0554) {
+		if (dotValue < 0.89999998f) {
 			return FALSE;
 		}
 	}
@@ -174,11 +178,23 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_0042b0c0()
 	m_unk0x7ec = 1.0f;
 }
 
-// STUB: LEGORACERS 0x00445cb0
+// FUNCTION: LEGORACERS 0x00445cb0
 LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_00445cb0()
 {
-	STUB(0x00445cb0);
-	return 0.0f;
+	LegoFloat scale = FUN_004489f0();
+	scale *= m_unk0x160 * m_unk0x15c;
+
+	if (scale == 0.0f) {
+		if (m_unk0x36c == 0) {
+			return g_unk0x004b0d88;
+		}
+
+		return g_unk0x004b0cd4;
+	}
+
+	LegoFloat value = m_unk0x618;
+	LegoFloat valueSquared = value * value;
+	return valueSquared * m_unk0x0c8 / scale;
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
@@ -245,7 +261,7 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00447f30(
 		LegoFloat dot = m_unk0x5f8.m_z * direction.m_z;
 		dot += m_unk0x5f8.m_y * direction.m_y;
 		dot += m_unk0x5f8.m_x * direction.m_x;
-		if (dot >= g_unk0x004b0554) {
+		if (dot >= 0.89999998f) {
 			return;
 		}
 	}
@@ -276,6 +292,27 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00448070()
 		m_unk0x158->FUN_00443c10(resource);
 		m_resource = NULL;
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004489f0
+LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_004489f0()
+{
+	LegoFloat total = 0.0f;
+	LegoS32 count = 0;
+
+	for (Field0x198* entry = m_unk0x198; entry < &m_unk0x198[4]; entry++) {
+		if (entry->m_flags0x48 & Field0x198::c_flags0x48Bit0) {
+			total += entry->m_unk0x5c;
+			count++;
+		}
+	}
+
+	if (count) {
+		LegoFloat countFloat = static_cast<LegoFloat>(count);
+		return total / countFloat * m_unk0x5f4;
+	}
+
+	return 0.0f;
 }
 
 // STUB: LEGORACERS 0x00449070

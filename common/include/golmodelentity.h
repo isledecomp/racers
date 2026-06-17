@@ -84,6 +84,7 @@ public:
 	}
 	MaterialTable0x0c* GetPrimaryMaterialTable() const { return m_materialTables[0]; }
 	void SetPrimaryMaterialTable(MaterialTable0x0c* p_materialTable) { m_materialTables[0] = p_materialTable; }
+	void EnableFlagBit1() { m_flags |= c_flagBit1; }
 
 protected:
 	friend class GolWorldDatabase;

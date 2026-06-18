@@ -7,6 +7,7 @@
 #include <d3dtypes.h>
 
 class DuskwindBananaRelic0x24;
+struct MipmapLevel;
 
 // SIZE 0x58
 class GolSoftwareRenderer {
@@ -23,8 +24,8 @@ public:
 	struct RasterizerPipeline {
 		TriangleRasterizerCallback m_triangleRasterizer; // 0x00
 		SpanRasterizerCallback m_spanRasterizer;         // 0x04
-		void* m_texture;                                 // 0x08
-		void* m_unk0x0c;                                 // 0x0c
+		MipmapLevel* m_texture;                          // 0x08
+		LegoU16* m_unk0x0c;                              // 0x0c
 	};
 
 	// SIZE 0x14
@@ -48,6 +49,16 @@ public:
 		e_format555 = 0,
 		e_format565 = 1,
 		e_formatIndex8 = 2,
+	};
+
+	enum {
+		c_flag0x2cBit0 = 1 << 0,
+		c_flag0x2cBit1 = 1 << 1,
+		c_flag0x2cBit2 = 1 << 2,
+		c_flag0x2cBit3 = 1 << 3,
+		c_flag0x2cBit4 = 1 << 4,
+		c_flag0x2cBit8 = 1 << 8,
+		c_flag0x2cBit9 = 1 << 9,
 	};
 
 	GolSoftwareRenderer();
@@ -78,9 +89,10 @@ public:
 	void FUN_10041830(LegoS32 p_count, LegoBool p_sort);
 	void FUN_10041a20(LegoBool p_sort);
 
+	MipmapLevel* GetUnk0x34() { return m_unk0x34; }
+	void SetUnk0x34(MipmapLevel* p_unk0x34) { m_unk0x34 = p_unk0x34; }
+
 private:
-	void FUN_10032c80();
-	void FUN_100330d0(void* p_textureLevel);
 	void DrawCommandList();
 
 	LegoU8* m_pixels;                                       // 0x00
@@ -96,7 +108,7 @@ private:
 	SpanRasterizerCallback m_spanRasterizer;                // 0x28
 	undefined4 m_unk0x2c;                                   // 0x2c
 	undefined m_unk0x30[0x34 - 0x30];                       // 0x30
-	void* m_unk0x34;                                        // 0x34
+	MipmapLevel* m_unk0x34;                                 // 0x34
 	LegoFloat m_unk0x38;                                    // 0x38
 	LegoFloat m_unk0x3c;                                    // 0x3c
 	LegoS32 m_nodeCapacity;                                 // 0x40

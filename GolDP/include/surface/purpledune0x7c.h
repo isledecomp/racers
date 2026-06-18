@@ -14,23 +14,33 @@ class GolPaletteBase;
 class GolCommonDrawState;
 class GolImgFile;
 
+// SIZE 0x18
+struct MipmapLevel {
+	enum {
+		c_unk0x13unknown0 = 0,
+		c_unk0x13unknown3 = 3,
+		c_unk0x13unknown4 = 4,
+		c_unk0x13unknown5 = 5,
+		c_unk0x13unknown6 = 6,
+		c_unk0x13unknown7 = 7,
+		c_unk0x13unknown8 = 8
+	};
+
+	LegoU8* m_pixels;       // 0x00
+	LegoU32 m_pitch;        // 0x04
+	LegoU32 m_width;        // 0x08
+	LegoU32 m_height;       // 0x0c
+	LegoU8 m_bitsPerPixel;  // 0x10
+	LegoU8 m_unk0x11;       // 0x11
+	LegoU8 m_bytesPerPixel; // 0x12
+	LegoS8 m_unk0x13;       // 0x13
+	LegoU16* m_paletteData; // 0x14
+};
+
 // VTABLE: GOLDP 0x1005681c
 // SIZE 0x7c
 class PurpleDune0x7c : public GoldDune0x38 {
 public:
-	// SIZE 0x18
-	struct MipmapLevel {
-		LegoU8* m_pixels;       // 0x00
-		LegoU32 m_pitch;        // 0x04
-		LegoU32 m_width;        // 0x08
-		LegoU32 m_height;       // 0x0c
-		LegoU8 m_bitsPerPixel;  // 0x10
-		LegoU8 m_unk0x11;       // 0x11
-		LegoU8 m_bytesPerPixel; // 0x12
-		LegoU8 m_unk0x13;       // 0x13
-		LegoU16* m_paletteData; // 0x14
-	};
-
 	PurpleDune0x7c();
 	~PurpleDune0x7c() override; // vtable+0x00
 
@@ -82,6 +92,8 @@ public:
 		::memcpy(p_buffer, m_name, sizeof(m_name));
 		p_buffer[sizeof(m_name)] = '\0';
 	}
+
+	MipmapLevel* GetMipmaps() { return m_mipmaps; }
 
 	// SYNTHETIC: GOLDP 0x10004aa0
 	// PurpleDune0x7c::`vector deleting destructor'

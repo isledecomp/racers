@@ -2,7 +2,8 @@
 
 #include "duskwindbananarelic0x24.h"
 #include "golcpu.h"
-#include "surface/golddune0x38.h"
+#include "render/golrasterizers1.h"
+#include "render/golrasterizers2.h"
 #include "surface/purpledune0x7c.h"
 
 #include <stdlib.h>
@@ -31,7 +32,7 @@ static LegoU8 __fastcall BucketCommandsBySortByte0(
 	GolSoftwareRenderer::Command0x14* p_command
 );
 
-static LegoU8 GetSoftwareTextureSizeCode(const PurpleDune0x7c::MipmapLevel* p_level)
+static LegoU8 GetSoftwareTextureSizeCode(const MipmapLevel* p_level)
 {
 	if (p_level == NULL || p_level->m_width != p_level->m_height) {
 		return 0;
@@ -53,42 +54,6 @@ static LegoU8 GetSoftwareTextureSizeCode(const PurpleDune0x7c::MipmapLevel* p_le
 	default:
 		return 0;
 	}
-}
-
-// STUB: GOLDP 0x10032c80
-void GolSoftwareRenderer::FUN_10032c80()
-{
-	m_unk0x2c &= 0x7fffffff;
-	m_currentTriangleRasterizer = NoopTriangleRasterizer;
-	m_triangleRasterizer = NoopTriangleRasterizer;
-
-	if (m_pixelFormat != e_formatIndex8) {
-		m_spanRasterizer = NoopSpanRasterizer;
-	}
-}
-
-// STUB: GOLDP 0x100330d0
-void GolSoftwareRenderer::FUN_100330d0(void* p_textureLevel)
-{
-	if (m_unk0x34 == p_textureLevel) {
-		return;
-	}
-
-	LegoS32 currentCode = -1;
-	if (m_unk0x34 != NULL) {
-		currentCode = static_cast<PurpleDune0x7c::MipmapLevel*>(m_unk0x34)->m_unk0x13;
-	}
-
-	m_unk0x34 = p_textureLevel;
-	if (p_textureLevel != NULL) {
-		PurpleDune0x7c::MipmapLevel* level = static_cast<PurpleDune0x7c::MipmapLevel*>(p_textureLevel);
-		level->m_unk0x13 = GetSoftwareTextureSizeCode(level);
-		if (currentCode == level->m_unk0x13) {
-			return;
-		}
-	}
-
-	FUN_10032c80();
 }
 
 // FUNCTION: GOLDP 0x1003ba20
@@ -227,74 +192,227 @@ static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
 	} while (i != 0);
 }
 
-// STUB: GOLDP 0x100411b0
+// FUNCTION: GOLDP 0x100411b0
 void GolSoftwareRenderer::FUN_100411b0(
 	RasterizerPipeline* p_buffer,
 	DuskwindBananaRelic0x24* p_material,
 	LegoU32 p_index
 )
 {
-	STUB(0x100411b0);
-
 	LegoU32 flags = p_material->GetUnk0x08();
-	LegoU32 rasterizerMode = flags;
-	GoldDune0x38* texture = p_material->GetUnk0x04();
+	LegoU32 rasterizerMode;
 
-	if (texture != NULL) {
+	PurpleDune0x7c* texture = reinterpret_cast<PurpleDune0x7c*>(p_material->GetUnk0x04());
+
+	if (texture) {
 		m_unk0x34 = NULL;
-		FUN_100330d0(static_cast<PurpleDune0x7c*>(texture)->GetMipmapLevel(p_index));
+		FUN_100330d0(this, &reinterpret_cast<PurpleDune0x7c*>(p_material->GetUnk0x04())->GetMipmaps()[p_index]);
+		rasterizerMode = c_flag0x2cBit8;
 
-		rasterizerMode = flags & DuskwindBananaRelic0x24::c_flag0x08Bit19 ? 0x300 : 0x100;
-		if (texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
-			rasterizerMode |= 2;
+		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit19) {
+			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
-		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit20) {
-			rasterizerMode |= 4;
+		if (texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
+			rasterizerMode |= c_flag0x2cBit1;
+		}
+
+		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+			rasterizerMode |= c_flag0x2cBit2;
 		}
 		else if (!(flags & DuskwindBananaRelic0x24::c_flag0x08Bit4)) {
 			if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
-				if (p_material->GetSrcBlend() == 1 && p_material->GetDestBlend() == 1) {
-					rasterizerMode |= 0x10;
+				if ((p_material->m_unk0x22 != 1) || (p_material->m_unk0x23 != 1)) {
+					rasterizerMode |= c_flag0x2cBit2;
 				}
 				else {
-					rasterizerMode |= 4;
+					rasterizerMode |= c_flag0x2cBit4; // TODO: this is folded with a wrong but equivalent line
 				}
 			}
-			else if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
-				rasterizerMode |= 9;
-			}
 			else {
-				rasterizerMode |= 8;
+				if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
+					rasterizerMode |= c_flag0x2cBit3 | c_flag0x2cBit0;
+				}
+				else {
+					rasterizerMode |= c_flag0x2cBit3;
+				}
 			}
 		}
 		else if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
-			rasterizerMode |= 4;
+			rasterizerMode |= c_flag0x2cBit2;
 		}
 	}
 	else {
-		FUN_100330d0(NULL);
-		rasterizerMode = ((flags & 0xff) >> 2) & 1;
+		FUN_100330d0(this, NULL);
+		// TODO: Can't get a `& 0xff` to appear
+		rasterizerMode = flags & DuskwindBananaRelic0x24::c_flag0x08Bit2 ? c_flag0x2cBit0 : 0;
 	}
 
 	m_unk0x2c = rasterizerMode;
 
 	if (m_pixelFormat == e_formatIndex8) {
 		p_buffer->m_spanRasterizer = NULL;
-		p_buffer->m_triangleRasterizer = NoopTriangleRasterizer;
+		if (m_unk0x34) {
+			switch (m_unk0x34->m_unk0x13) {
+			case MipmapLevel::c_unk0x13unknown3:
+				p_buffer->m_triangleRasterizer = FUN_10045520;
+				break;
+			case MipmapLevel::c_unk0x13unknown4:
+				p_buffer->m_triangleRasterizer = FUN_10044ce0;
+				break;
+			case MipmapLevel::c_unk0x13unknown5:
+				p_buffer->m_triangleRasterizer = FUN_100444a0;
+				break;
+			case MipmapLevel::c_unk0x13unknown6:
+				p_buffer->m_triangleRasterizer = FUN_10043c60;
+				break;
+			case MipmapLevel::c_unk0x13unknown7:
+				p_buffer->m_triangleRasterizer = FUN_10043420;
+				break;
+			case MipmapLevel::c_unk0x13unknown8:
+				p_buffer->m_triangleRasterizer = FUN_10042bd0;
+				break;
+			default:
+				p_buffer->m_triangleRasterizer = FUN_10041a50;
+			}
+		}
+		else {
+			if (rasterizerMode & c_flag0x2cBit0) {
+				p_buffer->m_triangleRasterizer = FUN_10042020;
+			}
+			else {
+				p_buffer->m_triangleRasterizer = FUN_10041a60;
+			}
+		}
 	}
 	else {
-		FUN_10032c80();
+		FUN_10032c80(this);
 		p_buffer->m_triangleRasterizer = m_triangleRasterizer;
 		p_buffer->m_spanRasterizer = m_spanRasterizer;
 	}
 
+	if (m_unk0x34) {
+		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit21) {
+			if (m_unk0x34->m_paletteData) {
+				if ((rasterizerMode & c_flag0x2cBit1)) {
+					if (m_spanRasterizer == FUN_10034980) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_100463b0;
+					}
+					else if (m_spanRasterizer == FUN_10035f00) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046340;
+					}
+					else if (m_spanRasterizer == FUN_10037480) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_100462d0;
+					}
+					else if (m_spanRasterizer == FUN_10038a00) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046260;
+					}
+					else if (m_spanRasterizer == FUN_10039f80) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_100461f0;
+					}
+					else if (m_spanRasterizer == FUN_1003b500) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046180;
+					}
+				}
+				else {
+					if (m_spanRasterizer == FUN_10034b10) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046120;
+					}
+					else if (m_spanRasterizer == FUN_10036090) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_100460c0;
+					}
+					else if (m_spanRasterizer == FUN_10037610) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046060;
+					}
+					else if (m_spanRasterizer == FUN_10038b90) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10046000;
+					}
+					else if (m_spanRasterizer == FUN_1003a110) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10045fa0;
+					}
+					else if (m_spanRasterizer == FUN_1003b690) {
+						p_buffer->m_triangleRasterizer = FUN_10046420;
+						p_buffer->m_spanRasterizer = FUN_10045f40;
+					}
+				}
+			}
+			else {
+				if (m_spanRasterizer == FUN_10034db0) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045ef0;
+				}
+				else if (m_spanRasterizer == FUN_10036330) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045ea0;
+				}
+				else if (m_spanRasterizer == FUN_100378b0) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045e50;
+				}
+				else if (m_spanRasterizer == FUN_10038e30) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045e00;
+				}
+				else if (m_spanRasterizer == FUN_1003a3b0) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045db0;
+				}
+				else if (m_spanRasterizer == FUN_1003b930) {
+					p_buffer->m_triangleRasterizer = FUN_10046420;
+					p_buffer->m_spanRasterizer = FUN_10045d60;
+				}
+			}
+
+			m_triangleRasterizer = p_buffer->m_triangleRasterizer;
+			m_spanRasterizer = p_buffer->m_spanRasterizer;
+		}
+		else {
+			if (!(rasterizerMode & c_flag0x2cBit9)) {
+				if (m_spanRasterizer == FUN_10034b10) {
+					p_buffer->m_triangleRasterizer = FUN_1004a6d0;
+				}
+				else if (m_spanRasterizer == FUN_10036090) {
+					p_buffer->m_triangleRasterizer = FUN_10049e40;
+				}
+				else if (m_spanRasterizer == FUN_10037610) {
+					p_buffer->m_triangleRasterizer = FUN_100495b0;
+				}
+				else if (m_spanRasterizer == FUN_10038b90) {
+					p_buffer->m_triangleRasterizer = FUN_10048d20;
+				}
+				else if (m_spanRasterizer == FUN_1003a110) {
+					p_buffer->m_triangleRasterizer = FUN_10048490;
+				}
+				else if (m_spanRasterizer == FUN_10038e30) {
+					p_buffer->m_triangleRasterizer = FUN_10046ba0;
+				}
+				else if (m_spanRasterizer == FUN_1003a3b0) {
+					p_buffer->m_triangleRasterizer = FUN_100473f0;
+				}
+				else if (m_spanRasterizer == FUN_1003b930) {
+					p_buffer->m_triangleRasterizer = FUN_10047c40;
+				}
+			}
+		}
+	}
+
 	p_buffer->m_texture = m_unk0x34;
-	if (m_unk0x34 != NULL) {
-		p_buffer->m_unk0x0c = static_cast<PurpleDune0x7c::MipmapLevel*>(m_unk0x34)->m_paletteData;
+	if (m_unk0x34) {
+		p_buffer->m_unk0x0c = m_unk0x34->m_paletteData;
 	}
 	else {
-		p_buffer->m_unk0x0c = 0;
+		p_buffer->m_unk0x0c = NULL;
 	}
 }
 

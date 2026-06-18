@@ -138,6 +138,8 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
   GolDP/src/render/goldrawstate.cpp
+  GolDP/src/render/golrasterizers1.cpp
+  GolDP/src/render/golrasterizers2.cpp
   GolDP/src/surface/silverdune0x30.cpp
   GolDP/src/image/utopianpan0xa4.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
@@ -181,6 +183,8 @@ add_library(goldp SHARED
   GolDP/src/render/golcommondrawstate.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/goldrawdpstate.cpp
+  GolDP/src/render/golrasterizers1.cpp
+  GolDP/src/render/golrasterizers2.cpp
   GolDP/src/core/goldpexport.cpp
   GolDP/src/world/golworlddatabaseex.cpp
   GolDP/src/device/goldirectdrawpalette.cpp

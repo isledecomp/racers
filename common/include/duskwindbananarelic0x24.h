@@ -109,6 +109,7 @@ public:
 	void FUN_100257e0(GolRenderDevice*, const DuskWindBananaRelicParams&);
 
 	friend class GolMaterialLibrary;
+	friend class GolSoftwareRenderer;
 
 protected:
 	GoldDune0x38* m_unk0x04;

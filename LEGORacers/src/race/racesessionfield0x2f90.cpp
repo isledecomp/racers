@@ -1,7 +1,7 @@
 #include "core/gol.h"
+#include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
-#include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golmodelbase.h"
+#include "golmodelbase.h"
 #include "race/racesession.h"
 #include "world/golworlddatabase.h"
 

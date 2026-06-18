@@ -1,9 +1,9 @@
 #include "core/gol.h"
 #include "decomp.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golerror.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golmodelbase.h"
+#include "golmodelbase.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 

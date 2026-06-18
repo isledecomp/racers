@@ -21,6 +21,7 @@ public:
 							LegoFloat p_modelDistance); // vtable+0x60
 
 	void FUN_1001acf0(GolModelBase* p_model, GolBoundingShape* p_shape, LegoFloat p_modelDistance);
+	void FUN_00403c60();
 	GolBoundingShape* GetBoundingShape(LegoU32 p_index) const { return m_boundingShapes[p_index]; }
 
 protected:

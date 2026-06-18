@@ -2,9 +2,9 @@
 
 #include "cmbmodelpart0x34.h"
 #include "cmbmodelpartdata0x28.h"
+#include "golmodelbase.h"
 #include "golscenenode.h"
 #include "goltransformbase.h"
-#include "mesh/golmodelbase.h"
 
 #include <float.h>
 #include <math.h>

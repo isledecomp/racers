@@ -153,3 +153,19 @@ void CmbModelPart0x34::VTable0x10(GolFileParser& p_parser)
 
 	p_parser.ReadRightCurly();
 }
+
+// STUB: LEGORACERS 0x004015e0
+void CmbModelPart0x34::FUN_004015e0()
+{
+	for (LegoU32 i = 0; i < m_unk0x30; i++) {
+		GolVec4 bounds = m_unk0x2c[i].m_unk0x10;
+		bounds.m_y = -bounds.m_y;
+		m_unk0x2c[i].m_unk0x10 = bounds;
+
+		GolVec3 position = m_unk0x2c[i].m_unk0x04;
+		position.m_y = -position.m_y;
+		m_unk0x2c[i].m_unk0x04 = position;
+	}
+
+	m_data.FUN_0040ea20();
+}

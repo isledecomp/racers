@@ -227,3 +227,23 @@ void GolSceneNode::FUN_004132a0(undefined4 p_param1, GolVec3* p_param2, GolVec3*
 		current->VTable0x0c(&vec, p_param3);
 	}
 }
+
+// FUNCTION: LEGORACERS 0x00413310
+void GolSceneNode::FUN_00413310()
+{
+	for (LegoU32 i = 0; i < m_capacity; i++) {
+		GolTransformBase* transform = VTable0x18(i);
+
+		GolVec3 position;
+		transform->GetPosition(&position);
+		position.m_y = -position.m_y;
+		transform->SetPosition(&position);
+
+		GolVec3 right;
+		GolVec3 forward;
+		transform->VTable0x20(&right, &forward);
+		right.m_y = -right.m_y;
+		forward.m_y = -forward.m_y;
+		transform->VTable0x28(&right, &forward);
+	}
+}

@@ -29,6 +29,7 @@ public:
 	void FUN_10026f70(const GolVec3& p_v);
 	void FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const;
 	void FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_dest) const;
+	void FUN_00411040();
 	GolMatrix3& GetOrientation() { return m_orientation; }
 	const GolMatrix3& GetOrientation() const { return m_orientation; }
 	const GolVec3& GetPosition() const { return m_position; }

@@ -2,7 +2,7 @@
 #define DRIVERMODELBUILDER_H
 
 #include "decomp.h"
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
 #include "types.h"
 
 class GolExport;

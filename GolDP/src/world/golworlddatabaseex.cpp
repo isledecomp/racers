@@ -1,20 +1,20 @@
 #include "world/golworlddatabaseex.h"
 
-#include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "cmbmodelpart0x34.h"
 #include "golanimatedentity.h"
+#include "golboundingshape.h"
+#include "golcollidableentity.h"
 #include "golerror.h"
 #include "golmodelentity.h"
+#include "golmodelmaterialtable.h"
 #include "mabmaterialanimation0x14.h"
 #include "material/amberhaze0x20.h"
 #include "material/purpleribbon0x24.h"
 #include "mesh/golmodel.h"
-#include "mesh/golmodelmaterialtable.h"
 #include "render/gold3drenderdevice.h"
 #include "scene/golbillboardex.h"
-#include "scene/golcollidableentity.h"
 
 #include <string.h>
 

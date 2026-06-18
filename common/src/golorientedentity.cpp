@@ -332,6 +332,23 @@ void GolOrientedEntity::FUN_00410f30(const GolMatrix3& p_matrix, GolMatrix3* p_d
 	GolMath::FUN_00449190(&localMatrix.m_m[0][0], &m_orientation.m_m[0][0], &p_dest->m_m[0][0]);
 }
 
+// FUNCTION: LEGORACERS 0x00411040
+void GolOrientedEntity::FUN_00411040()
+{
+	GolVec3 right;
+	right.m_x = m_orientation.m_m[0][0];
+	right.m_y = -m_orientation.m_m[0][1];
+	right.m_z = m_orientation.m_m[0][2];
+
+	GolVec3 forward;
+	forward.m_x = m_orientation.m_m[2][0];
+	forward.m_y = -m_orientation.m_m[2][1];
+	forward.m_z = m_orientation.m_m[2][2];
+
+	m_position.m_y = -m_position.m_y;
+	VTable0x40(right, forward);
+}
+
 // FUNCTION: GOLDP 0x10026fc0
 void GolOrientedEntity::FUN_10026fc0(GolMatrix4* p_dest, LegoFloat p_scale) const
 {

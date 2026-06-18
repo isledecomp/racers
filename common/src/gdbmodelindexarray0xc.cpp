@@ -1,4 +1,4 @@
-#include "mesh/gdbmodelindexarray0xc.h"
+#include "gdbmodelindexarray0xc.h"
 
 #include "golerror.h"
 #include "golfileparser.h"
@@ -52,6 +52,7 @@ void GdbModelIndexArray0xc::VTable0x04(GolFileParser& p_parser)
 }
 
 // FUNCTION: GOLDP 0x1002bfb0 FOLDED
+// FUNCTION: LEGORACERS 0x00415f40 FOLDED
 void GdbModelIndexArray0xc::VTable0x08()
 {
 	if (m_unk0x08 != NULL) {

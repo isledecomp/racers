@@ -1,8 +1,8 @@
 #include "golmodelentity.h"
 
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
+#include "golmodelbase.h"
 #include "material/materialtable0x0c.h"
-#include "mesh/golmodelbase.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>

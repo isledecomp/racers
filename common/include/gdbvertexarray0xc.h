@@ -22,6 +22,7 @@ struct ColorTransform0x20 {
 };
 
 // VTABLE: GOLDP 0x100576a8
+// VTABLE: LEGORACERS 0x004af964
 // SIZE 0xc
 class GdbVertexArray0xc {
 public:
@@ -42,17 +43,30 @@ public:
 	virtual void VTable0x34(const ColorTransform0x20& p_details);      // vtable+0x34
 	virtual void VTable0x38();                                         // vtable+0x38
 
+	// LEGORACERS and GOLDP order these shared methods differently in the common .cpp,
+	// so keep the conflicting LEGORACERS annotations here as by-name references.
+	// Maybe some of these are FOLDED.
+	// FUNCTION: LEGORACERS 0x00415f60
+	// GdbVertexArray0xc::VTable0x14
+
+	// FUNCTION: LEGORACERS 0x00415fb0
+	// GdbVertexArray0xc::VTable0x1c
+
+	// FUNCTION: LEGORACERS 0x00415ff0
+	// GdbVertexArray0xc::VTable0x24
+
 	// SYNTHETIC: GOLDP 0x1002be20
+	// SYNTHETIC: LEGORACERS 0x00415df0
 	// GdbVertexArray0xc::`scalar deleting destructor'
 
-	LegoU16 GetVertexType() const { return m_unk0x06; }
+	LegoU16 GetVertexType() const { return m_vertexType; }
 	LegoU16 GetCount() const { return m_count; }
-	GolVec3* GetPositions() const { return m_unk0x08; }
+	GolVec3* GetPositions() const { return m_positions; }
 
 protected:
 	LegoU16 m_count;      // 0x04
-	undefined2 m_unk0x06; // 0x06
-	GolVec3* m_unk0x08;   // 0x08
+	LegoU16 m_vertexType; // 0x06
+	GolVec3* m_positions; // 0x08
 };
 //
 // // SIZE 0x1c

@@ -2,8 +2,8 @@
 
 #include "core/gol.h"
 #include "golerror.h"
+#include "golmodelbase.h"
 #include "golscenenode.h"
-#include "mesh/golmodelbase.h"
 #include "racer/drivermodelbuilder.h"
 #include "render/gold3drenderdevice.h"
 

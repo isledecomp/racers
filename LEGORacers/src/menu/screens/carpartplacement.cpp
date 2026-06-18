@@ -3,10 +3,10 @@
 #include "core/gol.h"
 #include "decomp.h"
 #include "golerror.h"
+#include "golmodelbase.h"
 #include "golscenenode.h"
 #include "menu/menugamecontext.h"
 #include "menu/screens/carmodelscreenbase.h"
-#include "mesh/golmodelbase.h"
 #include "racer/drivercosmetics.h"
 
 #include <float.h>

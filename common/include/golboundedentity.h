@@ -14,6 +14,7 @@ public:
 	GolBoundedEntity();
 
 	void FUN_1001b760(GolBoundingVolume* p_arg);
+	void FUN_00403f80();
 
 protected:
 	friend class GolWorldDatabase;

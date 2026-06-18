@@ -18,6 +18,19 @@ class GolImgFile;
 // SIZE 0x7c
 class PurpleDune0x7c : public GoldDune0x38 {
 public:
+	// SIZE 0x18
+	struct MipmapLevel {
+		LegoU8* m_pixels;       // 0x00
+		LegoU32 m_pitch;        // 0x04
+		LegoU32 m_width;        // 0x08
+		LegoU32 m_height;       // 0x0c
+		LegoU8 m_bitsPerPixel;  // 0x10
+		LegoU8 m_unk0x11;       // 0x11
+		LegoU8 m_bytesPerPixel; // 0x12
+		LegoU8 m_unk0x13;       // 0x13
+		LegoU16* m_paletteData; // 0x14
+	};
+
 	PurpleDune0x7c();
 	~PurpleDune0x7c() override; // vtable+0x00
 
@@ -49,6 +62,8 @@ public:
 	void FUN_100168c0(GolD3DRenderDevice& p_renderer);
 
 	LPDIRECT3DTEXTURE2 GetDirect3DTexture() const { return m_d3dTexture; }
+	MipmapLevel* GetMipmapLevel(LegoU32 p_index) { return m_mipmaps == NULL ? NULL : &m_mipmaps[p_index]; }
+	const MipmapLevel* GetMipmapLevel(LegoU32 p_index) const { return m_mipmaps == NULL ? NULL : &m_mipmaps[p_index]; }
 	const GolName& GetName() const { return m_name; }
 	void SetName(const GolName& p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
 	void SetNameFromBuffer(const LegoChar* p_name) { ::memcpy(m_name, p_name, sizeof(m_name)); }
@@ -72,19 +87,6 @@ public:
 	// PurpleDune0x7c::`vector deleting destructor'
 
 private:
-	// SIZE 0x18
-	struct MipmapLevel {
-		LegoU8* m_pixels;       // 0x00
-		LegoU32 m_pitch;        // 0x04
-		LegoU32 m_width;        // 0x08
-		LegoU32 m_height;       // 0x0c
-		LegoU8 m_bitsPerPixel;  // 0x10
-		LegoU8 m_unk0x11;       // 0x11
-		LegoU8 m_bytesPerPixel; // 0x12
-		LegoU8 m_unk0x13;       // 0x13
-		LegoU16* m_paletteData; // 0x14
-	};
-
 	GolName m_name;                    // 0x38
 	GolPaletteBase* m_palette;         // 0x40
 	MipmapLevel* m_mipmaps;            // 0x44

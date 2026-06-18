@@ -1,5 +1,6 @@
-#include "scene/golcollidableentity.h"
+#include "golcollidableentity.h"
 
+#include "golboundingshape.h"
 #include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(GolCollidableEntity, 0x9c)
@@ -56,4 +57,15 @@ void GolCollidableEntity::FUN_1001acf0(GolModelBase* p_model, GolBoundingShape* 
 void GolCollidableEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	p_renderer.VTable0x90(this);
+}
+
+// FUNCTION: LEGORACERS 0x00403c60
+void GolCollidableEntity::FUN_00403c60()
+{
+	for (LegoU32 i = 0; i < sizeOfArray(m_boundingShapes); i++) {
+		if (m_boundingShapes[i] != NULL) {
+			m_boundingShapes[i]->FUN_00403f20();
+		}
+	}
+	FUN_00411040();
 }

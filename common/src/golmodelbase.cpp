@@ -1,11 +1,11 @@
-#include "mesh/golmodelbase.h"
+#include "golmodelbase.h"
 
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
 #include "goltxtparser.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
 
 #include <float.h>
 #include <math.h>
@@ -440,4 +440,36 @@ void GolModelBase::VTable0x3c(const ColorTransform0x20& p_details)
 void GolModelBase::VTable0x40()
 {
 	m_unk0x10->VTable0x38();
+}
+
+// STUB: LEGORACERS 0x00411090
+void GolModelBase::FUN_00411090()
+{
+	GdbVertexArray0xc* vertexArray = NULL;
+	VTable0x28(&vertexArray);
+
+	LegoU16 vertexCount = vertexArray->GetCount();
+	LegoU32 i;
+	for (i = 0; i < vertexCount; i++) {
+		GolVec3 vertex;
+		vertexArray->VTable0x14(i, &vertex);
+		vertex.m_y = -vertex.m_y;
+		vertexArray->VTable0x24(i, vertex);
+	}
+
+	VTable0x2c(1, TRUE);
+
+	IGdbModelIndexArray0x8* indexArray = NULL;
+	VTable0x30(&indexArray);
+
+	GdbModelIndexArray0xc* modelIndexArray = static_cast<GdbModelIndexArray0xc*>(indexArray);
+	GdbModelIndexArray0xc::Indices* indices = modelIndexArray->GetMutableIndices();
+	LegoU32 indexCount = indexArray->GetCount();
+	for (i = 0; i < indexCount; i++) {
+		LegoU8 value = indices[i].m_b;
+		indices[i].m_b = indices[i].m_c;
+		indices[i].m_c = value;
+	}
+
+	VTable0x34(1);
 }

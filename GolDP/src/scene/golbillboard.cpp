@@ -1,6 +1,6 @@
 #include "scene/golbillboard.h"
 
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>

@@ -1,6 +1,9 @@
 #include "render/golsoftwarerenderer.h"
 
+#include "duskwindbananarelic0x24.h"
 #include "golcpu.h"
+#include "surface/golddune0x38.h"
+#include "surface/purpledune0x7c.h"
 
 #include <stdlib.h>
 
@@ -15,11 +18,7 @@ void NoopSpanRasterizer()
 	// empty
 }
 
-// FUNCTION: GOLDP 0x1003ba20
-static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
-{
-	// empty
-}
+static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*);
 
 static LegoS32 __fastcall BucketCommandArrayBySortByte0(
 	GolSoftwareRenderer::Command0x14** p_buckets,
@@ -31,6 +30,72 @@ static LegoU8 __fastcall BucketCommandsBySortByte0(
 	GolSoftwareRenderer::Command0x14** p_buckets,
 	GolSoftwareRenderer::Command0x14* p_command
 );
+
+static LegoU8 GetSoftwareTextureSizeCode(const PurpleDune0x7c::MipmapLevel* p_level)
+{
+	if (p_level == NULL || p_level->m_width != p_level->m_height) {
+		return 0;
+	}
+
+	switch (p_level->m_width) {
+	case 8:
+		return 3;
+	case 16:
+		return 4;
+	case 32:
+		return 5;
+	case 64:
+		return 6;
+	case 128:
+		return 7;
+	case 256:
+		return 8;
+	default:
+		return 0;
+	}
+}
+
+// STUB: GOLDP 0x10032c80
+void GolSoftwareRenderer::FUN_10032c80()
+{
+	m_unk0x2c &= 0x7fffffff;
+	m_currentTriangleRasterizer = NoopTriangleRasterizer;
+	m_triangleRasterizer = NoopTriangleRasterizer;
+
+	if (m_pixelFormat != e_formatIndex8) {
+		m_spanRasterizer = NoopSpanRasterizer;
+	}
+}
+
+// STUB: GOLDP 0x100330d0
+void GolSoftwareRenderer::FUN_100330d0(void* p_textureLevel)
+{
+	if (m_unk0x34 == p_textureLevel) {
+		return;
+	}
+
+	LegoS32 currentCode = -1;
+	if (m_unk0x34 != NULL) {
+		currentCode = static_cast<PurpleDune0x7c::MipmapLevel*>(m_unk0x34)->m_unk0x13;
+	}
+
+	m_unk0x34 = p_textureLevel;
+	if (p_textureLevel != NULL) {
+		PurpleDune0x7c::MipmapLevel* level = static_cast<PurpleDune0x7c::MipmapLevel*>(p_textureLevel);
+		level->m_unk0x13 = GetSoftwareTextureSizeCode(level);
+		if (currentCode == level->m_unk0x13) {
+			return;
+		}
+	}
+
+	FUN_10032c80();
+}
+
+// FUNCTION: GOLDP 0x1003ba20
+static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
+{
+	// empty
+}
 
 // STUB: GOLDP 0x10041000
 static LegoU8 __fastcall BucketCommandsBySortByte3(
@@ -169,8 +234,68 @@ void GolSoftwareRenderer::FUN_100411b0(
 	LegoU32 p_index
 )
 {
-	// TODO
 	STUB(0x100411b0);
+
+	LegoU32 flags = p_material->GetUnk0x08();
+	LegoU32 rasterizerMode = flags;
+	GoldDune0x38* texture = p_material->GetUnk0x04();
+
+	if (texture != NULL) {
+		m_unk0x34 = NULL;
+		FUN_100330d0(static_cast<PurpleDune0x7c*>(texture)->GetMipmapLevel(p_index));
+
+		rasterizerMode = flags & DuskwindBananaRelic0x24::c_flag0x08Bit19 ? 0x300 : 0x100;
+		if (texture->GetUnk0x36() & GoldDune0x38::c_unk0x36Bit5) {
+			rasterizerMode |= 2;
+		}
+
+		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit20) {
+			rasterizerMode |= 4;
+		}
+		else if (!(flags & DuskwindBananaRelic0x24::c_flag0x08Bit4)) {
+			if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
+				if (p_material->GetSrcBlend() == 1 && p_material->GetDestBlend() == 1) {
+					rasterizerMode |= 0x10;
+				}
+				else {
+					rasterizerMode |= 4;
+				}
+			}
+			else if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
+				rasterizerMode |= 9;
+			}
+			else {
+				rasterizerMode |= 8;
+			}
+		}
+		else if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
+			rasterizerMode |= 4;
+		}
+	}
+	else {
+		FUN_100330d0(NULL);
+		rasterizerMode = ((flags & 0xff) >> 2) & 1;
+	}
+
+	m_unk0x2c = rasterizerMode;
+
+	if (m_pixelFormat == e_formatIndex8) {
+		p_buffer->m_spanRasterizer = NULL;
+		p_buffer->m_triangleRasterizer = NoopTriangleRasterizer;
+	}
+	else {
+		FUN_10032c80();
+		p_buffer->m_triangleRasterizer = m_triangleRasterizer;
+		p_buffer->m_spanRasterizer = m_spanRasterizer;
+	}
+
+	p_buffer->m_texture = m_unk0x34;
+	if (m_unk0x34 != NULL) {
+		p_buffer->m_unk0x0c = static_cast<PurpleDune0x7c::MipmapLevel*>(m_unk0x34)->m_paletteData;
+	}
+	else {
+		p_buffer->m_unk0x0c = 0;
+	}
 }
 
 // FUNCTION: GOLDP 0x100416a0

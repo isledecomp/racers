@@ -1,8 +1,8 @@
-#include "bounds/golboundingvolume.h"
+#include "golboundingvolume.h"
 
+#include "gdbvertexarray0xc.h"
 #include "golbinparser.h"
 #include "golerror.h"
-#include "mesh/gdbvertexarray0xc.h"
 
 DECOMP_SIZE_ASSERT(GolBoundingVolume, 0x64)
 DECOMP_SIZE_ASSERT(GolBoundingVolume::BvbTxtParser, 0x1fc)
@@ -287,4 +287,24 @@ undefined4 GolBoundingVolume::FUN_1001be50()
 	}
 	delete[] stack;
 	return maxStackSize + 1;
+}
+
+// FUNCTION: LEGORACERS 0x004045e0
+void GolBoundingVolume::FUN_004045e0()
+{
+	LegoU32 i;
+	for (i = 0; i < m_unk0x04; i++) {
+		m_unk0x08[i].m_unk0x00.m_y = -m_unk0x08[i].m_unk0x00.m_y;
+	}
+
+	GolVec3* vertices = m_unk0x0c->GetPositions();
+	for (i = 0; i < m_unk0x0c->GetCount(); i++) {
+		vertices[i].m_y = -vertices[i].m_y;
+	}
+
+	for (i = 0; i < m_unk0x10; i++) {
+		LegoU16 value = m_unk0x14[i].m_unk0x02;
+		m_unk0x14[i].m_unk0x02 = m_unk0x14[i].m_unk0x04;
+		m_unk0x14[i].m_unk0x04 = value;
+	}
 }

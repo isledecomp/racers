@@ -1,3 +1,4 @@
+#include "audio/soundnode.h"
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "decomp.h"
@@ -8,7 +9,6 @@
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(RaceCameraController, 0x150)
-DECOMP_SIZE_ASSERT(RaceCameraController::Field0x14c, 0x48)
 DECOMP_SIZE_ASSERT(RaceCameraController::Profile, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b0328
@@ -61,19 +61,21 @@ undefined4 RaceCameraController::FUN_00427c00()
 	}
 
 	GolAnimatedEntity* entity = m_unk0x0d4->m_unk0x018.m_unk0x044;
-	m_unk0x14c->m_unk0x0c = m_unk0x0d4->m_unk0x3e8.m_unk0x008;
+	m_unk0x14c->m_velocity.m_x = m_unk0x0d4->m_unk0x3e8.m_unk0x008.m_x;
+	m_unk0x14c->m_velocity.m_y = m_unk0x0d4->m_unk0x3e8.m_unk0x008.m_y;
+	m_unk0x14c->m_velocity.m_z = m_unk0x0d4->m_unk0x3e8.m_unk0x008.m_z;
 
-	entity->VTable0x48(&m_unk0x14c->m_unk0x18, &m_unk0x14c->m_unk0x24);
-	m_unk0x14c->m_unk0x30.m_x =
-		m_unk0x14c->m_unk0x24.m_y * m_unk0x14c->m_unk0x18.m_z - m_unk0x14c->m_unk0x24.m_z * m_unk0x14c->m_unk0x18.m_y;
-	m_unk0x14c->m_unk0x30.m_y =
-		m_unk0x14c->m_unk0x24.m_z * m_unk0x14c->m_unk0x18.m_x - m_unk0x14c->m_unk0x24.m_x * m_unk0x14c->m_unk0x18.m_z;
-	m_unk0x14c->m_unk0x30.m_z =
-		m_unk0x14c->m_unk0x18.m_y * m_unk0x14c->m_unk0x24.m_x - m_unk0x14c->m_unk0x24.m_y * m_unk0x14c->m_unk0x18.m_x;
-	GolMath::NormalizeVector3(m_unk0x14c->m_unk0x30, &m_unk0x14c->m_unk0x30);
+	entity->VTable0x48(&m_unk0x14c->m_right, &m_unk0x14c->m_forward);
+	m_unk0x14c->m_orientation.m_x =
+		m_unk0x14c->m_forward.m_y * m_unk0x14c->m_right.m_z - m_unk0x14c->m_forward.m_z * m_unk0x14c->m_right.m_y;
+	m_unk0x14c->m_orientation.m_y =
+		m_unk0x14c->m_forward.m_z * m_unk0x14c->m_right.m_x - m_unk0x14c->m_forward.m_x * m_unk0x14c->m_right.m_z;
+	m_unk0x14c->m_orientation.m_z =
+		m_unk0x14c->m_right.m_y * m_unk0x14c->m_forward.m_x - m_unk0x14c->m_forward.m_y * m_unk0x14c->m_right.m_x;
+	GolMath::NormalizeVector3(m_unk0x14c->m_orientation, &m_unk0x14c->m_orientation);
 	m_unk0x14c->m_unk0x44 = TRUE;
 
-	entity->VTable0x04(&m_unk0x14c->m_unk0x00);
+	entity->VTable0x04(&m_unk0x14c->m_position);
 	m_unk0x14c->m_unk0x44 = TRUE;
 
 	return 0;

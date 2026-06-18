@@ -2,7 +2,7 @@
 #define GDBMODELINDEXARRAY0XC_H
 
 #include "compat.h"
-#include "mesh/igdbmodelindexarray0x8.h"
+#include "igdbmodelindexarray0x8.h"
 #include "types.h"
 
 // VTABLE: GOLDP 0x1005759c

@@ -1,10 +1,10 @@
 #ifndef GOLCAMERABASE_H
 #define GOLCAMERABASE_H
 
-#include "camera/golviewfrustum.h"
 #include "compat.h"
 #include "decomp.h"
 #include "golmath.h"
+#include "golviewfrustum.h"
 #include "render/rectangle.h"
 #include "types.h"
 

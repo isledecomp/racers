@@ -103,13 +103,12 @@ LegoS32 SaveGame::LoadFromFile(GolFile& p_file)
 	return GolStream::e_ioSuccess;
 }
 
-// STUB: LEGORACERS 0x00442840
+// FUNCTION: LEGORACERS 0x00442840
 LegoS32 SaveGame::WriteBlocks(GolStream* p_file, const LegoU8* p_source, LegoU32 p_size)
 {
-	STUB(0x00442840);
-
 	SaveGame* saveGame = this;
 	const LegoU8* end = p_source + p_size;
+	LegoU32 fileOffset;
 
 	while (p_source < end) {
 		LegoU32 chunkSize = end - p_source;
@@ -129,8 +128,10 @@ LegoS32 SaveGame::WriteBlocks(GolStream* p_file, const LegoU8* p_source, LegoU32
 			return result;
 		}
 
+		fileOffset = saveGame->m_fileOffset;
+		fileOffset += c_saveFileBlockSize;
+		saveGame->m_fileOffset = fileOffset;
 		p_source += chunkSize;
-		saveGame->m_fileOffset += c_saveFileBlockSize;
 	}
 
 	return GolStream::e_ioSuccess;

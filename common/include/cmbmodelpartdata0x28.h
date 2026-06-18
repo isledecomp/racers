@@ -9,6 +9,8 @@ class GolFileParser;
 
 // SIZE 0x28
 class CmbModelPartData0x28 {
+	friend class CmbModelPart0x34;
+
 public:
 	CmbModelPartData0x28();
 	void FUN_10018670(GolFileParser& p_parser);

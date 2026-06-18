@@ -4,12 +4,12 @@
 #include "golanimatedentity.h"
 #include "golerror.h"
 #include "golhashtable.h"
+#include "golmodelbase.h"
 #include "golscenenode.h"
 #include "golstream.h"
 #include "golstring.h"
 #include "golstringtable.h"
 #include "menu/menugamecontext.h"
-#include "mesh/golmodelbase.h"
 #include "racer/drivercosmetics.h"
 #include "world/golworlddatabase.h"
 

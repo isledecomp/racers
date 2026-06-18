@@ -50,3 +50,25 @@ void RaceSession::Field0x3300::FUN_00443ac0(SoundManager* p_soundManager)
 		m_groups[i] = m_soundManager->CreateSoundGroup();
 	}
 }
+
+// FUNCTION: LEGORACERS 0x00443b00
+void RaceSession::Field0x3300::FUN_00443b00(const LegoChar* p_name)
+{
+	m_groups[0]->Load(p_name);
+}
+
+// FUNCTION: LEGORACERS 0x00443b10
+void RaceSession::Field0x3300::FUN_00443b10(const LegoChar* p_name1, const LegoChar* p_name2)
+{
+	m_groups[1]->Load(p_name1);
+
+	if (p_name2[0]) {
+		m_groups[2]->Load(p_name2);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00443b40
+void RaceSession::Field0x3300::FUN_00443b40(const LegoChar* p_name)
+{
+	m_groups[3]->Load(p_name);
+}

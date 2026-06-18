@@ -99,6 +99,7 @@ public:
 		StructField0x08::Node** p_first,
 		StructField0x08::Node** p_last
 	);
+	void FUN_00403f20();
 
 	// SYNTHETIC: GOLDP 0x100179a0
 	// GolBoundingShape::`vector deleting destructor'

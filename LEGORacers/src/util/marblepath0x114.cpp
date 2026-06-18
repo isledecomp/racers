@@ -2,7 +2,7 @@
 
 #include "core/gol.h"
 #include "decomp.h"
-#include "mesh/golmodelbase.h"
+#include "golmodelbase.h"
 #include "render/golrenderdevice.h"
 
 #include <float.h>

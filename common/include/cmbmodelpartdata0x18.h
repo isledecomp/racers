@@ -23,6 +23,7 @@ public:
 	CmbModelPartData0x18();
 	~CmbModelPartData0x18();
 	void Clear();
+	void FUN_0040ea20();
 
 	void FUN_100241d0(GolFileParser& p_parser);
 	LegoBool32 InterpolatePosition(

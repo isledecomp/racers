@@ -169,6 +169,7 @@ public:
 	const GolRenderDevice::Light* GetUnk0xb0() const { return m_unk0xb0; }
 	void FUN_00416040();
 	void FUN_00416090(LegoS32 p_elapsedMs);
+	void FUN_00416140();
 	LegoU32 FUN_00416290(LegoFloat p_scale);
 	GolNameTable::Entry* GetUnk0xb4NameEntries() const { return m_unk0xb4.GetNameEntries(); }
 	GolModelEntity* GetUnk0xb4Name(const LegoChar* p_name) const

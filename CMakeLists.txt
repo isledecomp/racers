@@ -87,6 +87,10 @@ set(COMMON_SOURCES
   common/src/golbmpfile.cpp
   common/src/golimgfilewriter.cpp
   common/src/golbmpwriterfile.cpp
+  common/src/golcollidableentity.cpp
+  common/src/golboundingshape.cpp
+  common/src/golboundedentity.cpp
+  common/src/golboundingvolume.cpp
   common/src/goldecompress.cpp
   common/src/golcpu.cpp
   common/src/golhashtable.cpp
@@ -114,6 +118,12 @@ set(COMMON_SOURCES
   common/src/golworldentity.cpp
   common/src/golworldentitygroup0x38.cpp
   common/src/golorientedentity.cpp
+  common/src/golviewfrustum.cpp
+  common/src/golmodelmaterialtable.cpp
+  common/src/golmodelbase.cpp
+  common/src/gdbvertexarray0xc.cpp
+  common/src/igdbmodelindexarray0x8.cpp
+  common/src/gdbmodelindexarray0xc.cpp
   common/src/golmodelentity.cpp
   common/src/golanimatedentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
@@ -126,7 +136,6 @@ set(COMMON_SOURCES
 # narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
-  GolDP/src/bounds/golboundingshape.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/surface/silverdune0x30.cpp
@@ -141,11 +150,7 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/surface/purpledune0x7c.cpp
   GolDP/src/material/purpleribbon0x24.cpp
   GolDP/src/material/amberhaze0x20.cpp
-  GolDP/src/mesh/gdbvertexarray0xc.cpp
   GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
-  GolDP/src/mesh/igdbmodelindexarray0x8.cpp
-  GolDP/src/mesh/gdbmodelindexarray0xc.cpp
-  GolDP/src/mesh/golmodelmaterialtable.cpp
   GolDP/src/mesh/golmodel.cpp
   GolDP/src/camera/golscenetransformnode.cpp
   GolDP/src/surface/bronzedunebag0xc.cpp
@@ -213,22 +218,13 @@ add_library(goldp SHARED
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/render/golsoftwarerenderer.cpp
   GolDP/src/surface/falcondunebag0x10.cpp
-  GolDP/src/bounds/golboundingshape.cpp
-  GolDP/src/mesh/golmodelmaterialtable.cpp
-  GolDP/src/mesh/golmodelbase.cpp
-  GolDP/src/mesh/gdbvertexarray0xc.cpp
   GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
   GolDP/src/mesh/gdbvertexarraytypetwo0x20.cpp
   GolDP/src/mesh/gdbvertexarraytypeone0x1c.cpp
   GolDP/src/mesh/gdbvertexarraytypethree0x20.cpp
   GolDP/src/mesh/gdbvertexarraymistery0x1c.cpp
   GolDP/src/mesh/golmodel.cpp
-  GolDP/src/mesh/igdbmodelindexarray0x8.cpp
-  GolDP/src/mesh/gdbmodelindexarray0xc.cpp
   GolDP/src/camera/golscenetransformnode.cpp
-  GolDP/src/bounds/golboundingvolume.cpp
-  GolDP/src/scene/golboundedentity.cpp
-  GolDP/src/scene/golcollidableentity.cpp
   util/decomp.cpp
   $<TARGET_OBJECTS:common_goldp>
 )
@@ -447,7 +443,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/model/gdbpartlibrary.cpp
   LEGORacers/src/model/gdbpartfacegroup.cpp
   LEGORacers/src/model/gdbpartvertexpool.cpp
-  LEGORacers/src/model/gdbpositionvertexpool.cpp
   LEGORacers/src/racer/driverpartresources.cpp
   LEGORacers/src/racer/drivermodelbuilder.cpp
   LEGORacers/src/racer/driverheadbuilder.cpp

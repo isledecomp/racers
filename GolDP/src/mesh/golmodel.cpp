@@ -1,11 +1,11 @@
 #include "mesh/golmodel.h"
 
+#include "duskwindbananarelic0x24.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golerror.h"
 #include "golfileparser.h"
-#include "material/duskwindbananarelic0x24.h"
 #include "mesh/gdbcommonvertexarray0x1c.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
 #include "mesh/gdbvertexarraymistery0x1c.h"
 #include "mesh/gdbvertexarraytypeone0x1c.h"
 #include "mesh/gdbvertexarraytypethree0x20.h"
@@ -248,7 +248,94 @@ void GolModel::FUN_10006e00(
 	GolBoundingShape::StructField0x08::Node* p_node
 )
 {
-	STUB(0x10006e00);
+	if (p_materialTable == NULL) {
+		p_materialTable = &m_unk0x04;
+	}
+
+	if (m_unk0x3c) {
+		LegoU32* group = m_unk0x24;
+		LegoU32* end = m_unk0x24 + m_countGroups;
+
+		for (; group < end; group++) {
+			LegoU32 groupData = *group;
+			LegoU32 groupType = groupData;
+			groupType &= c_groupTypeMask;
+			if (groupType == c_groupTypeTriangleBatch) {
+				LegoU32 firstTriangle = groupData;
+				LegoU32 triangleCount = groupData;
+				triangleCount >>= c_groupDataUpperWordShift;
+				triangleCount &= c_triangleCountMask;
+				firstTriangle &= c_materialMatrixIndexMask;
+				LegoU32 lastVertex = FUN_10006fa0(firstTriangle, triangleCount);
+				lastVertex &= c_vertexCountMask;
+				*group = ((((lastVertex | c_vertexIndexHighFlag) << 7) | (triangleCount & c_triangleCountMask))
+						  << c_groupDataUpperWordShift) |
+						 (firstTriangle & c_materialMatrixIndexMask);
+			}
+			else if (groupType == c_groupTypeEnd) {
+				break;
+			}
+		}
+
+		m_unk0x3c = FALSE;
+	}
+
+	GdbCommonVertexArray0x1c* vertexArray = static_cast<GdbCommonVertexArray0x1c*>(m_unk0x40);
+	p_renderer->m_unk0xc4c0c = vertexArray->GetPositions();
+	p_renderer->m_unk0xc4c10 = vertexArray->GetTextureCoordinates();
+	if (vertexArray->HasTransformedColors()) {
+		p_renderer->m_unk0xc4c14 = vertexArray->GetTransformedColors();
+	}
+	else {
+		p_renderer->m_unk0xc4c14 = vertexArray->GetColors();
+	}
+
+	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(m_unk0x18);
+	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
+	p_renderer->m_unk0xc855c = p_renderer->m_unk0xc4c18;
+
+	LegoU32* group = m_unk0x24 + p_node->m_firstGroup;
+	LegoU32* end = m_unk0x24 + (p_node->m_firstGroup + p_node->m_groupCount);
+	for (; group < end; group++) {
+		LegoU32 groupData = *group;
+		LegoU32 groupType = groupData & c_groupTypeMask;
+
+		if (groupType <= c_groupTypeMaterial) {
+			if (groupType == c_groupTypeMaterial) {
+				DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(
+					p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask)
+				);
+				(p_renderer->*p_renderer->m_unk0xc876c)(material);
+				p_renderer->FUN_1000ac00(material->GetUnk0x04());
+			}
+			else if (groupType == c_groupTypeTriangles) {
+				LegoU32 vertexCount = groupData >> c_groupDataUpperWordShift;
+				LegoU32 firstVertex = groupData;
+				vertexCount &= c_vertexCountMask;
+				firstVertex &= c_materialMatrixIndexMask;
+				vertexCount++;
+				(p_renderer->*p_renderer->m_drawTriangleFn1)(
+					(groupData >> c_matrixSelectShift) & c_vertexCountMask,
+					firstVertex,
+					vertexCount
+				);
+			}
+			else if (groupType == c_groupTypeTriangleBatch) {
+				LegoU32 lastVertex = groupData >> c_lastVertexShift;
+				LegoU32 triangleCount = groupData >> c_groupDataUpperWordShift;
+				lastVertex &= c_vertexCountMask;
+				triangleCount &= c_triangleCountMask;
+				(p_renderer->*p_renderer->m_drawTriangleFn2)(
+					groupData & c_materialMatrixIndexMask,
+					triangleCount,
+					lastVertex
+				);
+			}
+		}
+		else if (groupType == c_groupTypeEnd) {
+			break;
+		}
+	}
 }
 
 // FUNCTION: GOLDP 0x10006fa0

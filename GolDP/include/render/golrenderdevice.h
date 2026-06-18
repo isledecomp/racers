@@ -1,10 +1,10 @@
 #ifndef GOLRENDERDEVICE_H
 #define GOLRENDERDEVICE_H
 
-#include "camera/golviewfrustum.h"
 #include "decomp.h"
 #include "golmath.h"
 #include "golsurfaceformat.h"
+#include "golviewfrustum.h"
 #include "render/gold3drenderstate.h"
 #include "surface/color.h"
 #include "surface/silverdune0x30.h"

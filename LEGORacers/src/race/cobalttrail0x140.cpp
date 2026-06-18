@@ -5,6 +5,7 @@
 #include "golmath.h"
 #include "golnametable.h"
 #include "image/utopianpan0xa4.h"
+#include "race/racecameracontroller.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
@@ -537,7 +538,219 @@ void CobaltTrail0x140::FUN_004249b0()
 // STUB: LEGORACERS 0x00424fb0
 void CobaltTrail0x140::FUN_00424fb0()
 {
-	STUB(0x00424fb0);
+	const LegoFloat maxTextureCoordinate = 0.9990000129f;
+
+	LegoS32 markerWidth = static_cast<LegoS32>(m_unk0x104 * g_unk0x004b02b4);
+	LegoS32 markerHeight = static_cast<LegoS32>(m_unk0x114 * g_unk0x004b02b4);
+
+	GolRenderDevice::TexturedVertex vertices[8];
+	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
+		vertices[i].m_z = 0.0f;
+		vertices[i].m_color.m_red = 0xff;
+		vertices[i].m_color.m_grn = 0xff;
+		vertices[i].m_color.m_blu = 0xff;
+		vertices[i].m_color.m_alp = 0xc8;
+	}
+
+	LegoFloat directionLengthScale = m_unk0x0f4 * 0.12f * m_unk0x114;
+	LegoS32 verticalInset = static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x100) * g_unk0x004b02b0 * m_unk0x114);
+	LegoS32 horizontalInset = static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x100) * g_unk0x004b02b0 * m_unk0x104);
+	LegoS32 mapBottom = m_unk0x094.m_bottom - verticalInset;
+	LegoS32 mapRight = m_unk0x094.m_right - horizontalInset;
+
+	LegoFloat mapSize = m_unk0x0f4 * g_unk0x004b02ac;
+	LegoS32 mapHeight = static_cast<LegoS32>(m_unk0x114 * mapSize);
+	LegoS32 mapWidth = static_cast<LegoS32>(m_unk0x104 * mapSize);
+	LegoS32 mapTop = mapBottom - mapHeight;
+	LegoS32 mapLeft = mapRight - mapWidth;
+	LegoS32 mapCenterX = (mapLeft + mapRight) >> 1;
+	LegoS32 mapCenterY = (mapTop + mapBottom) >> 1;
+
+	m_unk0x12c = static_cast<LegoFloat>(mapTop);
+	m_unk0x130 = static_cast<LegoFloat>(mapLeft);
+	m_unk0x134 = static_cast<LegoFloat>(mapBottom);
+	m_unk0x138 = static_cast<LegoFloat>(mapRight);
+
+	UtopianPan0xa4* markerResource = m_unk0x008->VTable0x20(10);
+
+	GolVec3 currentPosition;
+	m_unk0x02c->m_unk0x018.m_unk0x044->VTable0x04(&currentPosition);
+
+	GolVec3 cameraDirection;
+	m_unk0x02c->m_unk0xdb4->FUN_00428500(&cameraDirection);
+
+	LegoFloat directionScale =
+		directionLengthScale / static_cast<LegoFloat>(sqrt(
+								   cameraDirection.m_y * cameraDirection.m_y + cameraDirection.m_x * cameraDirection.m_x
+							   ));
+	LegoFloat directionX = cameraDirection.m_x * directionScale;
+	LegoFloat directionY = cameraDirection.m_y * directionScale;
+
+	if (m_unk0x118) {
+		LegoFloat deltaY0;
+		LegoFloat deltaY1;
+		if (m_unk0x03b) {
+			deltaY0 = -m_unk0x124 - currentPosition.m_y;
+			deltaY1 = -m_unk0x11c - currentPosition.m_y;
+			vertices[0].m_v = 0.0f;
+			vertices[1].m_v = 0.0f;
+			vertices[2].m_v = maxTextureCoordinate;
+			vertices[3].m_v = maxTextureCoordinate;
+		}
+		else {
+			deltaY0 = m_unk0x11c - currentPosition.m_y;
+			deltaY1 = m_unk0x124 - currentPosition.m_y;
+			vertices[0].m_v = maxTextureCoordinate;
+			vertices[1].m_v = maxTextureCoordinate;
+			vertices[2].m_v = 0.0f;
+			vertices[3].m_v = 0.0f;
+		}
+
+		LegoFloat deltaX0 = m_unk0x120 - currentPosition.m_x;
+		LegoFloat deltaX1 = m_unk0x128 - currentPosition.m_x;
+		LegoFloat scaledDirectionX = directionX * m_unk0x108;
+		LegoFloat scaledDirectionY = directionY * m_unk0x108;
+
+		vertices[0].m_x = static_cast<LegoFloat>(mapCenterX) + deltaX0 * scaledDirectionY - deltaY0 * scaledDirectionX;
+		vertices[0].m_y = static_cast<LegoFloat>(mapCenterY) - deltaX0 * directionX - deltaY0 * directionY;
+		vertices[0].m_u = 0.0f;
+
+		vertices[1].m_x = static_cast<LegoFloat>(mapCenterX) + deltaX1 * scaledDirectionY - deltaY0 * scaledDirectionX;
+		vertices[1].m_y = static_cast<LegoFloat>(mapCenterY) - deltaX1 * directionX - deltaY0 * directionY;
+		vertices[1].m_u = maxTextureCoordinate;
+
+		vertices[2].m_x = static_cast<LegoFloat>(mapCenterX) + deltaX1 * scaledDirectionY - deltaY1 * scaledDirectionX;
+		vertices[2].m_y = static_cast<LegoFloat>(mapCenterY) - deltaX1 * directionX - deltaY1 * directionY;
+		vertices[2].m_u = maxTextureCoordinate;
+
+		vertices[3].m_x = static_cast<LegoFloat>(mapCenterX) + deltaX0 * scaledDirectionY - deltaY1 * scaledDirectionX;
+		vertices[3].m_y = static_cast<LegoFloat>(mapCenterY) - deltaX0 * directionX - deltaY1 * directionY;
+		vertices[3].m_u = 0.0f;
+
+		FUN_00423fc0(&vertices[0], &vertices[1], &vertices[3]);
+		FUN_00423fc0(&vertices[3], &vertices[1], &vertices[2]);
+	}
+
+	LegoS32 markerOriginX = mapCenterX - (markerWidth >> 1);
+	LegoS32 markerOriginY = mapCenterY - (markerHeight >> 1);
+	GolVec3 position;
+	Rect destRect;
+	Rect sourceRect;
+
+	for (LegoS32 racerIndex = static_cast<LegoS32>(m_unk0x028->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
+		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
+		if (racer != m_unk0x02c) {
+			racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+			LegoFloat deltaX = position.m_x - currentPosition.m_x;
+			LegoFloat deltaY = position.m_y - currentPosition.m_y;
+
+			destRect.m_left =
+				markerOriginX + static_cast<LegoS32>((deltaX * directionY - deltaY * directionX) * m_unk0x108);
+			destRect.m_top = markerOriginY - static_cast<LegoS32>(deltaY * directionY + deltaX * directionX);
+			destRect.m_right = destRect.m_left + markerWidth;
+			destRect.m_bottom = destRect.m_top + markerHeight;
+
+			if (racer->m_unk0xd08 == 2 && racerIndex == 1) {
+				sourceRect.m_left = 0x10;
+			}
+			else {
+				sourceRect.m_left = 0;
+			}
+			if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+				sourceRect.m_top = 0x10;
+			}
+			else {
+				sourceRect.m_top = 0;
+			}
+			sourceRect.m_right = sourceRect.m_left + 0x10;
+			sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+			m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+		}
+	}
+
+	if (m_unk0x030 && m_unk0x030->HasRecordGhostMarker()) {
+		m_unk0x030->GetRecordGhostMarkerEntity()->VTable0x04(&position);
+
+		LegoFloat deltaX = position.m_x - currentPosition.m_x;
+		LegoFloat deltaY = position.m_y - currentPosition.m_y;
+
+		destRect.m_left =
+			markerOriginX + static_cast<LegoS32>((deltaX * directionY - deltaY * directionX) * m_unk0x108);
+		destRect.m_top = markerOriginY - static_cast<LegoS32>(deltaY * directionY + deltaX * directionX);
+		destRect.m_right = destRect.m_left + markerWidth;
+		destRect.m_bottom = destRect.m_top + markerHeight;
+
+		sourceRect.m_left = 0x10;
+		if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+			sourceRect.m_top = 0x10;
+		}
+		else {
+			sourceRect.m_top = 0;
+		}
+		sourceRect.m_right = sourceRect.m_left + 0x10;
+		sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+		m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+	}
+
+	if (m_unk0x030 && m_unk0x030->HasBestGhostMarker()) {
+		m_unk0x030->GetBestGhostMarkerEntity()->VTable0x04(&position);
+
+		LegoFloat deltaX = position.m_x - currentPosition.m_x;
+		LegoFloat deltaY = position.m_y - currentPosition.m_y;
+
+		destRect.m_left =
+			markerOriginX + static_cast<LegoS32>((deltaX * directionY - deltaY * directionX) * m_unk0x108);
+		destRect.m_top = markerOriginY - static_cast<LegoS32>(deltaY * directionY + deltaX * directionX);
+		destRect.m_right = destRect.m_left + markerWidth;
+		destRect.m_bottom = destRect.m_top + markerHeight;
+
+		sourceRect.m_left = 0;
+		if (m_unk0x038 == 2 || m_unk0x038 == 3) {
+			sourceRect.m_top = 0x10;
+		}
+		else {
+			sourceRect.m_top = 0;
+		}
+		sourceRect.m_right = sourceRect.m_left + 0x10;
+		sourceRect.m_bottom = sourceRect.m_top + 0x10;
+
+		m_unk0x000->VTable0x7c(markerResource, 0, &destRect, &sourceRect, &m_unk0x094);
+	}
+
+	FUN_004247d0(mapCenterX, mapCenterY, 0.0f, -1.0f);
+
+	for (LegoS32 j = 0; j < sizeOfArray(vertices); j++) {
+		vertices[j].m_color.m_alp = 0xff;
+	}
+
+	vertices[0].m_x = static_cast<LegoFloat>(mapLeft);
+	vertices[0].m_y = static_cast<LegoFloat>(mapTop);
+	vertices[1].m_x = static_cast<LegoFloat>(mapRight);
+	vertices[1].m_y = vertices[0].m_y;
+	vertices[2].m_x = vertices[1].m_x;
+	vertices[2].m_y = static_cast<LegoFloat>(mapBottom);
+	vertices[3].m_x = vertices[0].m_x;
+	vertices[3].m_y = vertices[2].m_y;
+	vertices[4].m_x = vertices[0].m_x + 1.0f;
+	vertices[4].m_y = vertices[0].m_y + 1.0f;
+	vertices[5].m_x = vertices[1].m_x - 1.0f;
+	vertices[5].m_y = vertices[4].m_y;
+	vertices[6].m_x = vertices[2].m_x - 1.0f;
+	vertices[6].m_y = vertices[2].m_y - 1.0f;
+	vertices[7].m_x = vertices[4].m_x;
+	vertices[7].m_y = vertices[6].m_y;
+
+	m_unk0x000->DrawTriangle(&vertices[0], &vertices[1], &vertices[4], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[4], &vertices[1], &vertices[5], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[0], &vertices[4], &vertices[3], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[3], &vertices[4], &vertices[7], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[3], &vertices[7], &vertices[2], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[2], &vertices[7], &vertices[6], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[5], &vertices[1], &vertices[6], NULL, 0);
+	m_unk0x000->DrawTriangle(&vertices[6], &vertices[1], &vertices[2], NULL, 0);
 }
 
 // FUNCTION: LEGORACERS 0x004258e0

@@ -1,8 +1,8 @@
-#include "bounds/golboundingshape.h"
+#include "golboundingshape.h"
 
-#include "camera/golviewfrustum.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golviewfrustum.h"
 
 DECOMP_SIZE_ASSERT(GolBoundingShape::BdbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(GolBoundingShape::StructField0x08, 0x20)
@@ -252,6 +252,24 @@ void GolBoundingShape::Destroy()
 
 	m_unk0x24 = 0;
 	m_unk0x28 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00403f20
+void GolBoundingShape::FUN_00403f20()
+{
+	LegoU32 i;
+	for (i = 0; i < m_unk0x04; i++) {
+		StructField0x08* entry = &m_unk0x08[i];
+		if (entry->m_type == StructField0x08::e_type0) {
+			entry->m_unk0x04.m_t0.m_unk0x04 = -entry->m_unk0x04.m_t0.m_unk0x04;
+		}
+	}
+
+	LegoS32 j;
+	for (j = 0; j < m_unk0x14; j++) {
+		m_unk0x18[j].m_unk0x04 = -m_unk0x18[j].m_unk0x04;
+		m_unk0x18[j].m_unk0x10 = -m_unk0x18[j].m_unk0x10;
+	}
 }
 
 // STUB: GOLDP 0x1001b2c0

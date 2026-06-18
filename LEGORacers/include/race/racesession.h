@@ -38,12 +38,14 @@ class TimeRaceManager;
 class GolExport;
 class GolCamera;
 class GolFontBase;
+class GolFontTable;
 class GolNameTable;
 class GolWorldDatabase;
 class GolWorldEntity;
 class GolModelBase;
 class GolSceneNode;
 class AwakeKite0x20;
+class UtopianPan0xa4;
 class MusicGroup;
 class MusicInstance;
 class SoundGroup;
@@ -348,6 +350,9 @@ public:
 		~Field0x3300();
 		void FUN_00443a80();
 		void FUN_00443ac0(SoundManager* p_soundManager);
+		void FUN_00443b00(const LegoChar* p_name);
+		void FUN_00443b10(const LegoChar* p_name1, const LegoChar* p_name2);
+		void FUN_00443b40(const LegoChar* p_name);
 
 	private:
 		SoundManager* m_soundManager; // 0x00
@@ -1459,18 +1464,20 @@ public:
 		Field0x280c();
 		~Field0x280c();
 		void FUN_0042f430();
+		void FUN_0042f790(LegoFloat p_unk0x04);
+		void FUN_0042f7a0();
 
 	private:
-		undefined4 m_unk0x00;     // 0x00
-		GolExport* m_unk0x04;     // 0x04
-		AwakeKite0x20* m_unk0x08; // 0x08
-		undefined4 m_unk0x0c;     // 0x0c
-		undefined4 m_unk0x10;     // 0x10
-		undefined4 m_unk0x14;     // 0x14
-		undefined* m_unk0x18;     // 0x18
-		GolString m_unk0x1c;      // 0x1c
-		undefined4 m_unk0x28;     // 0x28
-		undefined4 m_unk0x2c;     // 0x2c
+		GolD3DRenderDevice* m_renderer; // 0x00
+		GolExport* m_unk0x04;           // 0x04
+		AwakeKite0x20* m_unk0x08;       // 0x08
+		UtopianPan0xa4* m_unk0x0c;      // 0x0c
+		LegoFloat m_unk0x10;            // 0x10
+		LegoS32 m_unk0x14;              // 0x14
+		LegoS32* m_unk0x18;             // 0x18
+		GolString m_unk0x1c;            // 0x1c
+		GolFontBase* m_unk0x28;         // 0x28
+		LegoS32 m_unk0x2c;              // 0x2c
 	};
 
 	typedef RaceCameraController Field0x2ad4;
@@ -1697,8 +1704,12 @@ public:
 private:
 	void FUN_00431bd0();
 	void FUN_004328d0();
+	void FUN_004328f0();
+	LegoU32 FUN_00432a50(LegoU32 p_index, LegoChar* p_buffer);
 	void FUN_00432b30();
+	void FUN_00432bc0();
 	void FUN_00432d70();
+	void FUN_00432dc0();
 	void FUN_00432df0();
 	void FUN_004330e0();
 	void FUN_00433460();
@@ -1723,6 +1734,7 @@ private:
 	void FUN_004358e0();
 	void FUN_00435920();
 	void FUN_00435ab0();
+	void FUN_00435ba0(LegoFloat p_unk0x04);
 	void FUN_00435bf0();
 	void FUN_00435f20();
 	void FUN_00436010();
@@ -1771,34 +1783,34 @@ private:
 	undefined m_unk0x120[0x12c - 0x120];    // 0x120
 	undefined m_unk0x12c;                   // 0x12c
 	undefined m_unk0x12d[0x146 - 0x12d];    // 0x12d
-	undefined m_unk0x146;                   // 0x146
-	undefined m_unk0x147[0x153 - 0x147];    // 0x147
-	undefined m_unk0x153;                   // 0x153
-	undefined m_unk0x154[0x160 - 0x154];    // 0x154
-	undefined m_unk0x160;                   // 0x160
-	undefined m_unk0x161[0x16d - 0x161];    // 0x161
-	undefined m_unk0x16d;                   // 0x16d
-	undefined m_unk0x16e[0x17a - 0x16e];    // 0x16e
-	undefined m_unk0x17a;                   // 0x17a
-	undefined m_unk0x17b[0x187 - 0x17b];    // 0x17b
-	undefined m_unk0x187;                   // 0x187
-	undefined m_unk0x188[0x194 - 0x188];    // 0x188
-	undefined m_unk0x194;                   // 0x194
-	undefined m_unk0x195[0x1a1 - 0x195];    // 0x195
-	undefined m_unk0x1a1;                   // 0x1a1
-	undefined m_unk0x1a2[0x1ae - 0x1a2];    // 0x1a2
-	undefined m_unk0x1ae;                   // 0x1ae
-	undefined m_unk0x1af[0x1bb - 0x1af];    // 0x1af
-	undefined m_unk0x1bb;                   // 0x1bb
-	undefined m_unk0x1bc[0x1c8 - 0x1bc];    // 0x1bc
-	undefined m_unk0x1c8;                   // 0x1c8
-	undefined m_unk0x1c9[0x1d5 - 0x1c9];    // 0x1c9
-	undefined m_unk0x1d5;                   // 0x1d5
-	undefined m_unk0x1d6[0x1e2 - 0x1d6];    // 0x1d6
-	undefined m_unk0x1e2;                   // 0x1e2
-	undefined m_unk0x1e3[0x1ef - 0x1e3];    // 0x1e3
-	undefined m_unk0x1ef;                   // 0x1ef
-	undefined m_unk0x1f0[0x1f8 - 0x1f0];    // 0x1f0
+	LegoChar m_unk0x146;                    // 0x146
+	LegoChar m_unk0x147[0x153 - 0x147];     // 0x147
+	LegoChar m_unk0x153;                    // 0x153
+	LegoChar m_unk0x154[0x160 - 0x154];     // 0x154
+	LegoChar m_unk0x160;                    // 0x160
+	LegoChar m_unk0x161[0x16d - 0x161];     // 0x161
+	LegoChar m_unk0x16d;                    // 0x16d
+	LegoChar m_unk0x16e[0x17a - 0x16e];     // 0x16e
+	LegoChar m_unk0x17a;                    // 0x17a
+	LegoChar m_unk0x17b[0x187 - 0x17b];     // 0x17b
+	LegoChar m_unk0x187;                    // 0x187
+	LegoChar m_unk0x188[0x194 - 0x188];     // 0x188
+	LegoChar m_unk0x194;                    // 0x194
+	LegoChar m_unk0x195[0x1a1 - 0x195];     // 0x195
+	LegoChar m_unk0x1a1;                    // 0x1a1
+	LegoChar m_unk0x1a2[0x1ae - 0x1a2];     // 0x1a2
+	LegoChar m_unk0x1ae;                    // 0x1ae
+	LegoChar m_unk0x1af[0x1bb - 0x1af];     // 0x1af
+	LegoChar m_unk0x1bb;                    // 0x1bb
+	LegoChar m_unk0x1bc[0x1c8 - 0x1bc];     // 0x1bc
+	LegoChar m_unk0x1c8;                    // 0x1c8
+	LegoChar m_unk0x1c9[0x1d5 - 0x1c9];     // 0x1c9
+	LegoChar m_unk0x1d5;                    // 0x1d5
+	LegoChar m_unk0x1d6[0x1e2 - 0x1d6];     // 0x1d6
+	LegoChar m_unk0x1e2;                    // 0x1e2
+	LegoChar m_unk0x1e3[0x1ef - 0x1e3];     // 0x1e3
+	LegoChar m_unk0x1ef;                    // 0x1ef
+	LegoChar m_unk0x1f0[0x1f8 - 0x1f0];     // 0x1f0
 	GolVec3 m_unk0x1f8;                     // 0x1f8
 	GolVec3 m_unk0x204;                     // 0x204
 	GolVec3 m_unk0x210;                     // 0x210
@@ -1841,11 +1853,11 @@ private:
 	LegoFloat m_unk0x2ac8;                  // 0x2ac8
 	GolCamera* m_unk0x2acc[2];              // 0x2acc
 	Field0x2ad4 m_unk0x2ad4[2];             // 0x2ad4
-	GolNameTable* m_unk0x2d74;              // 0x2d74
+	GolFontTable* m_unk0x2d74;              // 0x2d74
 	GolFontBase* m_unk0x2d78;               // 0x2d78
 	GolFontBase* m_unk0x2d7c;               // 0x2d7c
 	GolString m_unk0x2d80;                  // 0x2d80
-	undefined4 m_unk0x2d8c[0x80];           // 0x2d8c
+	undefined2 m_unk0x2d8c[0x100];          // 0x2d8c
 	AwakeKite0x20* m_unk0x2f8c;             // 0x2f8c
 	Field0x2f90 m_unk0x2f90;                // 0x2f90
 	SlateBridge0x68 m_unk0x3058;            // 0x3058

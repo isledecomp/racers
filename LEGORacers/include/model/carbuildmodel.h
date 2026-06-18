@@ -2,10 +2,10 @@
 #define CARBUILDMODEL_H
 
 #include "decomp.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golmath.h"
 #include "golmodelentity.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
 #include "model/legopiecelibrary.h"
 #include "types.h"
 

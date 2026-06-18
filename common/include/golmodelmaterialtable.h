@@ -9,6 +9,7 @@ class GolFileParser;
 class DuskwindBananaRelic0x24;
 class GolRenderDevice;
 
+// SIZE 0x0c
 class GolModelMaterialTable : public MaterialTable0x0c {
 public:
 	GolModelMaterialTable();

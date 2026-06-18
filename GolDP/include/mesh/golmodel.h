@@ -1,10 +1,10 @@
 #ifndef GOLMODEL_H
 #define GOLMODEL_H
 
-#include "bounds/golboundingshape.h"
 #include "compat.h"
 #include "decomp.h"
-#include "mesh/golmodelbase.h"
+#include "golboundingshape.h"
+#include "golmodelbase.h"
 
 class GdbVertexArray0xc;
 class GolD3DRenderDevice;

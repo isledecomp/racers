@@ -316,20 +316,22 @@ void SaveRecordList::FreeRecords()
 	Initialize();
 }
 
-// STUB: LEGORACERS 0x0042b830
+// FUNCTION: LEGORACERS 0x0042b830
 void SaveRecordList::RebuildFreeList()
 {
-	STUB(0x0042b830);
-
 	m_freeRecords = m_records;
 
 	LegoU32 i = 0;
-	LegoU32 lastRecordIndex = m_recordCapacity - 1;
-	if (lastRecordIndex != 0) {
+	if (m_recordCapacity - 1 != 0) {
+		Record* record = m_records;
+		LegoU32 nextRecordIndex = 1;
 		do {
+			Record* nextRecord = &m_records[nextRecordIndex];
 			i++;
-			m_records[i - 1].m_next = &m_records[i];
-		} while (i < lastRecordIndex);
+			record->m_next = nextRecord;
+			nextRecordIndex++;
+			record++;
+		} while (i < m_recordCapacity - 1);
 	}
 
 	m_usedRecords = NULL;

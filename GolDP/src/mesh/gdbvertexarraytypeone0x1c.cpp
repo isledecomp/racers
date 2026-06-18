@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(GdbVertexArrayTypeOne0x1c, 0x1c)
 // FUNCTION: GOLDP 0x10005f90
 GdbVertexArrayTypeOne0x1c::GdbVertexArrayTypeOne0x1c()
 {
-	m_unk0x06 = 1;
+	m_vertexType = 1;
 }
 
 // FUNCTION: GOLDP 0x10005fc0
@@ -30,8 +30,8 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 	p_parser.ReadRightBracket();
 	p_parser.ReadLeftCurly();
 
-	m_unk0x08 = new GolVec3[m_count];
-	if (m_unk0x08 == NULL) {
+	m_positions = new GolVec3[m_count];
+	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	m_unk0x0c = new GolVec2[m_count];
@@ -44,9 +44,9 @@ void GdbVertexArrayTypeOne0x1c::VTable0x08(GolFileParser& p_parser)
 	}
 
 	for (i = 0; i < m_count; i++) {
-		m_unk0x08[i].m_x = p_parser.ReadFloat();
-		m_unk0x08[i].m_y = p_parser.ReadFloat();
-		m_unk0x08[i].m_z = p_parser.ReadFloat();
+		m_positions[i].m_x = p_parser.ReadFloat();
+		m_positions[i].m_y = p_parser.ReadFloat();
+		m_positions[i].m_z = p_parser.ReadFloat();
 		m_unk0x0c[i].m_x = p_parser.ReadFloat();
 		m_unk0x0c[i].m_y = p_parser.ReadFloat();
 		LegoU32 red = p_parser.ReadInteger() & 0xff;
@@ -70,8 +70,8 @@ void GdbVertexArrayTypeOne0x1c::VTable0x04(LegoU16 p_count)
 
 	m_count = p_count;
 
-	m_unk0x08 = new GolVec3[m_count];
-	if (m_unk0x08 == NULL) {
+	m_positions = new GolVec3[m_count];
+	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	m_unk0x0c = new GolVec2[m_count];

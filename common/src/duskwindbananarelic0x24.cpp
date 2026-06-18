@@ -1,4 +1,4 @@
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
 
 #include "render/golrenderdevice.h"
 #include "surface/golddune0x38.h"

@@ -1,9 +1,9 @@
 #ifndef GOLMATERIALLIBRARY_H
 #define GOLMATERIALLIBRARY_H
 
+#include "duskwindbananarelic0x24.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
-#include "material/duskwindbananarelic0x24.h"
 
 class GolRenderDevice;
 

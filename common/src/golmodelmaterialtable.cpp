@@ -1,11 +1,11 @@
-#include "mesh/golmodelmaterialtable.h"
+#include "golmodelmaterialtable.h"
 
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmodelbase.h"
 #include "golname.h"
 #include "goltxtparser.h"
-#include "mesh/golmodelbase.h"
 #include "render/golrenderdevice.h"
 
 #include <stddef.h>
@@ -13,6 +13,7 @@
 DECOMP_SIZE_ASSERT(GolModelMaterialTable, 0x0c)
 
 // FUNCTION: GOLDP 0x10025de0 FOLDED
+// FUNCTION: LEGORACERS 0x004a00b0 FOLDED
 GolModelMaterialTable::GolModelMaterialTable()
 {
 	m_renderer = NULL;
@@ -21,6 +22,7 @@ GolModelMaterialTable::GolModelMaterialTable()
 }
 
 // FUNCTION: GOLDP 0x10025df0 FOLDED
+// FUNCTION: LEGORACERS 0x004105d0 FOLDED
 void GolModelMaterialTable::FUN_10025df0(GolRenderDevice* p_renderer, undefined4 p_arg2)
 {
 	if (m_renderer != NULL) {
@@ -108,12 +110,14 @@ void GolModelMaterialTable::FUN_10025f90(GolRenderDevice* p_renderer, GolFilePar
 }
 
 // FUNCTION: GOLDP 0x100260d0 FOLDED
+// FUNCTION: LEGORACERS 0x00410630 FOLDED
 GolModelMaterialTable::~GolModelMaterialTable()
 {
 	Destroy();
 }
 
 // FUNCTION: GOLDP 0x100260d0 FOLDED
+// FUNCTION: LEGORACERS 0x00410630 FOLDED
 void GolModelMaterialTable::Destroy()
 {
 	if (m_entries != NULL) {

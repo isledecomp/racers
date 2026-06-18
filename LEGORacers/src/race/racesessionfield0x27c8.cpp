@@ -1,6 +1,6 @@
 #include "core/gol.h"
 #include "decomp.h"
-#include "mesh/gdbmodelindexarray0xc.h"
+#include "gdbmodelindexarray0xc.h"
 #include "mesh/golmodel.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"

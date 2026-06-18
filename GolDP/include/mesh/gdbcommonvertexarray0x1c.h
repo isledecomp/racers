@@ -2,7 +2,7 @@
 #define GDBCOMMONVERTEXARRAY0x1C_H
 
 #include "compat.h"
-#include "mesh/gdbvertexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 
 // VTABLE: GOLDP 0x100568d0
 // SIZE 0x1c

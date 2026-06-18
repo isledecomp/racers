@@ -3,13 +3,14 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "model/gdbpositionvertexpool.h"
+#include "gdbvertexarray0xc.h"
+#include "golmath.h"
 #include "surface/color.h"
 #include "types.h"
 
 // VTABLE: LEGORACERS 0x004af4b4
 // SIZE 0x14
-class GdbPartVertexPool : public GdbPositionVertexPool {
+class GdbPartVertexPool : public GdbVertexArray0xc {
 public:
 	// SIZE 0x0e
 	struct Vertex {
@@ -37,17 +38,16 @@ public:
 	GdbPartVertexPool();
 	~GdbPartVertexPool() override;
 
-	void Clear() override;
+	void VTable0x0c() override;
 	void Read(GolFileParser& p_parser, LegoU16 p_vertexType);
-	void GetPosition(LegoU32 p_index, GolVec3* p_dest) const override;
-	void GetTexCoord(LegoU32 p_index, GolVec2* p_dest) const override;
-	void GetNormal(LegoU32 p_index, GolVec3* p_dest) const override;
-	void GetColor(LegoU32 p_index, ColorRGBA* p_dest) const override;
-	void SetPosition(LegoU32 p_index, const GolVec3* p_src) override;
-	void SetTexCoord(LegoU32 p_index, const GolVec2* p_src) override;
-	void SetNormal(LegoU32 p_index, const GolVec3* p_src) override;
-	void SetColor(LegoU32 p_index, const ColorRGBA* p_src) override;
-	LegoU16 GetVertexType() const { return m_vertexType; }
+	void VTable0x14(LegoU32 p_index, GolVec3* p_dest) const override;
+	void VTable0x18(LegoU32 p_index, GolVec2* p_dest) const override;
+	void VTable0x1c(LegoU32 p_index, GolVec3* p_dest) const override;
+	void VTable0x20(LegoU32 p_index, ColorRGBA* p_dest) const override;
+	void VTable0x24(LegoU32 p_index, const GolVec3& p_src) override;
+	void VTable0x28(LegoU32 p_index, const GolVec2& p_src) override;
+	void VTable0x2c(LegoU32 p_index, const GolVec3& p_src) override;
+	void VTable0x30(LegoU32 p_index, const ColorRGBA& p_src) override;
 
 	// SYNTHETIC: LEGORACERS 0x00408000
 	// GdbPartVertexPool::`scalar deleting destructor'

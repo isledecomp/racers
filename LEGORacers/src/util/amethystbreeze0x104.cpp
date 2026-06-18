@@ -1,8 +1,8 @@
 #include "util/amethystbreeze0x104.h"
 
+#include "duskwindbananarelic0x24.h"
+#include "golmodelbase.h"
 #include "golmodelentity.h"
-#include "material/duskwindbananarelic0x24.h"
-#include "mesh/golmodelbase.h"
 
 #include <string.h>
 

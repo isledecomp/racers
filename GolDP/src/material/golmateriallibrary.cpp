@@ -1,9 +1,9 @@
 #include "material/golmateriallibrary.h"
 
+#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golname.h"
-#include "material/duskwindbananarelic0x24.h"
 #include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(GolMaterialLibrary, 0x1c)

@@ -24,7 +24,7 @@ public:
 		TriangleRasterizerCallback m_triangleRasterizer; // 0x00
 		SpanRasterizerCallback m_spanRasterizer;         // 0x04
 		void* m_texture;                                 // 0x08
-		undefined4 m_unk0x0c;                            // 0x0c
+		void* m_unk0x0c;                                 // 0x0c
 	};
 
 	// SIZE 0x14
@@ -79,6 +79,8 @@ public:
 	void FUN_10041a20(LegoBool p_sort);
 
 private:
+	void FUN_10032c80();
+	void FUN_100330d0(void* p_textureLevel);
 	void DrawCommandList();
 
 	LegoU8* m_pixels;                                       // 0x00

@@ -1,25 +1,25 @@
 #include "render/gold3drenderdevice.h"
 
-#include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "camera/goltransform.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
+#include "golboundingshape.h"
+#include "golcollidableentity.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golmath.h"
+#include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golsurfaceformat.h"
 #include "image/utopianpan0xa4.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
 #include "mesh/gdbvertexarraytypetwo0x20.h"
 #include "mesh/golmodel.h"
-#include "mesh/golmodelbase.h"
 #include "render/gold3drendersurface.h"
 #include "render/goldrawdpstate.h"
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
-#include "scene/golcollidableentity.h"
 #include "surface/falcondunebag0x10.h"
 #include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
@@ -60,6 +60,185 @@ inline static LegoU32 BuildModelClipFlags(const GolD3DRenderDevice::VertexCacheE
 	LegoU32 highFlags =
 		(((w - x) & 0x80000000) >> 30) | (((w - y) & 0x80000000) >> 28) | (((w - z) & 0x80000000) >> 26);
 	return lowFlags | (highFlags & ~(lowFlags << 1));
+}
+
+inline static LegoFloat GetClipDistance(const GolD3DRenderDevice::VertexCacheEntry& p_vertex, LegoU32 p_plane)
+{
+	if (p_plane == 0x01) {
+		return p_vertex.m_x;
+	}
+	else if (p_plane == 0x02) {
+		return p_vertex.m_w - p_vertex.m_x;
+	}
+	else if (p_plane == 0x04) {
+		return p_vertex.m_y;
+	}
+	else if (p_plane == 0x08) {
+		return p_vertex.m_w - p_vertex.m_y;
+	}
+	else if (p_plane == 0x10) {
+		return p_vertex.m_z;
+	}
+
+	return p_vertex.m_w - p_vertex.m_z;
+}
+
+inline static LegoU32 InterpolateColor(LegoU32 p_from, LegoU32 p_to, LegoFloat p_amount)
+{
+	LegoU32 result = 0;
+
+	for (LegoU32 shift = 0; shift < 32; shift += 8) {
+		LegoS32 from = (p_from >> shift) & 0xff;
+		LegoS32 to = (p_to >> shift) & 0xff;
+		LegoU32 value = from + static_cast<LegoS32>(static_cast<LegoFloat>(to - from) * p_amount);
+		result |= (value & 0xff) << shift;
+	}
+
+	return result;
+}
+
+inline static void InterpolateClipVertex(
+	const GolD3DRenderDevice::VertexCacheEntry& p_fromCache,
+	const GolD3DRenderDevice::VertexCacheEntry& p_toCache,
+	const D3DTLVERTEX& p_fromVertex,
+	const D3DTLVERTEX& p_toVertex,
+	LegoFloat p_amount,
+	GolD3DRenderDevice::VertexCacheEntry& p_outputCache,
+	D3DTLVERTEX& p_outputVertex
+)
+{
+	p_outputCache.m_x = p_fromCache.m_x + (p_toCache.m_x - p_fromCache.m_x) * p_amount;
+	p_outputCache.m_y = p_fromCache.m_y + (p_toCache.m_y - p_fromCache.m_y) * p_amount;
+	p_outputCache.m_z = p_fromCache.m_z + (p_toCache.m_z - p_fromCache.m_z) * p_amount;
+	p_outputCache.m_w = p_fromCache.m_w + (p_toCache.m_w - p_fromCache.m_w) * p_amount;
+	p_outputCache.m_u = p_fromCache.m_u + (p_toCache.m_u - p_fromCache.m_u) * p_amount;
+	p_outputCache.m_v = p_fromCache.m_v + (p_toCache.m_v - p_fromCache.m_v) * p_amount;
+	p_outputCache.m_clipFlags = BuildModelClipFlags(p_outputCache);
+
+	p_outputVertex.color = InterpolateColor(p_fromVertex.color, p_toVertex.color, p_amount);
+	p_outputVertex.tu = p_fromVertex.tu + (p_toVertex.tu - p_fromVertex.tu) * p_amount;
+	p_outputVertex.tv = p_fromVertex.tv + (p_toVertex.tv - p_fromVertex.tv) * p_amount;
+}
+
+inline static void ProjectClipVertex(
+	const GolD3DRenderDevice::VertexCacheEntry& p_cache,
+	const LegoFloat* p_viewportScale,
+	D3DTLVERTEX& p_vertex
+)
+{
+	p_vertex.rhw = 1.0f / p_cache.m_w;
+	p_vertex.sx = p_cache.m_x * p_vertex.rhw * p_viewportScale[0] + p_viewportScale[2];
+	p_vertex.sy = p_cache.m_y * p_vertex.rhw * p_viewportScale[1] + p_viewportScale[3];
+	p_vertex.sz = p_cache.m_z * p_vertex.rhw;
+}
+
+inline static void ProjectClipVertexForPlane(
+	GolD3DRenderDevice::VertexCacheEntry& p_cache,
+	const LegoFloat* p_viewportScale,
+	D3DTLVERTEX& p_vertex,
+	LegoU32 p_plane,
+	LegoFloat p_nearClip,
+	LegoFloat p_farClip
+)
+{
+	if (p_plane == 0x01) {
+		p_cache.m_x = 0.0f;
+	}
+	else if (p_plane == 0x02) {
+		p_cache.m_x = p_cache.m_w;
+	}
+	else if (p_plane == 0x04) {
+		p_cache.m_y = 0.0f;
+	}
+	else if (p_plane == 0x08) {
+		p_cache.m_y = p_cache.m_w;
+	}
+	else if (p_plane == 0x10) {
+		p_cache.m_z = 0.0f;
+		p_cache.m_w = p_nearClip;
+	}
+	else if (p_plane == 0x20) {
+		p_cache.m_z = p_farClip;
+		p_cache.m_w = p_farClip;
+	}
+
+	p_cache.m_clipFlags = BuildModelClipFlags(p_cache);
+	p_vertex.rhw = 1.0f / p_cache.m_w;
+
+	if (p_plane == 0x01) {
+		p_vertex.sx = p_viewportScale[2];
+		p_vertex.sy = p_cache.m_y * p_vertex.rhw * p_viewportScale[1] + p_viewportScale[3];
+		p_vertex.sz = p_cache.m_z * p_vertex.rhw;
+	}
+	else if (p_plane == 0x02) {
+		p_vertex.sx = p_viewportScale[0] + p_viewportScale[2];
+		p_vertex.sy = p_cache.m_y * p_vertex.rhw * p_viewportScale[1] + p_viewportScale[3];
+		p_vertex.sz = p_cache.m_z * p_vertex.rhw;
+	}
+	else if (p_plane == 0x04) {
+		p_vertex.sx = p_cache.m_x * p_vertex.rhw * p_viewportScale[0] + p_viewportScale[2];
+		p_vertex.sy = p_viewportScale[3];
+		p_vertex.sz = p_cache.m_z * p_vertex.rhw;
+	}
+	else if (p_plane == 0x08) {
+		p_vertex.sx = p_cache.m_x * p_vertex.rhw * p_viewportScale[0] + p_viewportScale[2];
+		p_vertex.sy = p_viewportScale[1] + p_viewportScale[3];
+		p_vertex.sz = p_cache.m_z * p_vertex.rhw;
+	}
+	else if (p_plane == 0x10) {
+		p_vertex.sx = p_cache.m_x * p_vertex.rhw * p_viewportScale[0] + p_viewportScale[2];
+		p_vertex.sy = p_cache.m_y * p_vertex.rhw * p_viewportScale[1] + p_viewportScale[3];
+		p_vertex.sz = 0.0f;
+	}
+	else if (p_plane == 0x20) {
+		p_vertex.sx = p_cache.m_x * p_vertex.rhw * p_viewportScale[0] + p_viewportScale[2];
+		p_vertex.sy = p_cache.m_y * p_vertex.rhw * p_viewportScale[1] + p_viewportScale[3];
+		p_vertex.sz = 1.0f;
+	}
+	else {
+		ProjectClipVertex(p_cache, p_viewportScale, p_vertex);
+	}
+}
+
+inline static LegoU32 AddIndexedClipVertex(
+	GolD3DRenderDevice::VertexCacheEntry* p_cache,
+	D3DTLVERTEX* p_vertices,
+	const LegoFloat* p_viewportScale,
+	LegoU32 p_fromIndex,
+	LegoU32 p_toIndex,
+	LegoFloat p_amount,
+	LegoU32 p_plane,
+	LegoFloat p_nearClip,
+	LegoFloat p_farClip,
+	LegoU32& p_nextClipIndex,
+	LegoU32& p_nextVertexIndex
+)
+{
+	GolD3DRenderDevice::VertexCacheEntry& outputCache = p_cache[p_nextClipIndex];
+	D3DTLVERTEX& outputVertex = p_vertices[p_nextVertexIndex];
+	const GolD3DRenderDevice::VertexCacheEntry& fromCache = p_cache[p_fromIndex];
+	const GolD3DRenderDevice::VertexCacheEntry& toCache = p_cache[p_toIndex];
+	const D3DTLVERTEX& fromVertex = p_vertices[fromCache.m_unk0x10];
+	const D3DTLVERTEX& toVertex = p_vertices[toCache.m_unk0x10];
+	LegoU32 outputIndex = p_nextClipIndex;
+
+	p_nextClipIndex++;
+	InterpolateClipVertex(fromCache, toCache, fromVertex, toVertex, p_amount, outputCache, outputVertex);
+	outputCache.m_unk0x10 = p_nextVertexIndex;
+	ProjectClipVertexForPlane(outputCache, p_viewportScale, outputVertex, p_plane, p_nearClip, p_farClip);
+	p_nextVertexIndex++;
+
+	return outputIndex;
+}
+
+inline static LegoFloat ComputeScreenArea(
+	const D3DTLVERTEX& p_vertex0,
+	const D3DTLVERTEX& p_vertex1,
+	const D3DTLVERTEX& p_vertex2
+)
+{
+	return ((p_vertex2.sy - p_vertex1.sy) * (p_vertex0.sx - p_vertex1.sx)) -
+		   ((p_vertex0.sy - p_vertex1.sy) * (p_vertex2.sx - p_vertex1.sx));
 }
 
 // GLOBAL: GOLDP 0x10056540
@@ -3969,9 +4148,189 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 }
 
 // STUB: GOLDP 0x100106d0
-void GolD3DRenderDevice::FUN_100106d0(undefined4, undefined4, undefined4)
+void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
 	STUB(0x100106d0);
+
+	LegoU32 firstTriangle = p_firstTriangle;
+	LegoU32 triangleCount = p_triangleCount;
+	LegoU32 commandIndex = m_unk0xc86f4;
+	LegoFloat nearClip = m_unk0x0c->m_nearClip;
+	LegoFloat farClip = m_unk0x0c->m_farClip;
+	LegoU8* triangle = m_unk0xc4c18 + (firstTriangle * 4);
+	LegoU8* triangleEnd = m_unk0xc4c18 + ((firstTriangle + triangleCount) * 4);
+	GolSoftwareRenderer::Command0x14* command = m_unk0xc86f0 + commandIndex;
+	GolSoftwareRenderer::Command0x14* commandStart = command;
+	LegoU32 emittedCount = 0;
+	LegoS32 maxRasterizerIndex = static_cast<LegoS32>(m_unk0xc83ac);
+	LegoS32 rasterizerMaskBase = static_cast<LegoS32>(m_unk0xc83b0);
+	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & DuskwindBananaRelic0x24::c_flag0x08Bit14) != 0;
+	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
+
+	for (; triangle < triangleEnd; triangle += 4) {
+		LegoU32 indicesA[16];
+		LegoU32 indicesB[16];
+
+		if (flipped) {
+			indicesA[0] = triangle[2];
+			indicesA[1] = triangle[1];
+			indicesA[2] = triangle[0];
+		}
+		else {
+			indicesA[0] = triangle[0];
+			indicesA[1] = triangle[1];
+			indicesA[2] = triangle[2];
+		}
+
+		if (m_unk0xc38ec[indicesA[0]].m_clipFlags & m_unk0xc38ec[indicesA[1]].m_clipFlags &
+			m_unk0xc38ec[indicesA[2]].m_clipFlags) {
+			continue;
+		}
+
+		LegoU32 unionFlags = m_unk0xc38ec[indicesA[0]].m_clipFlags | m_unk0xc38ec[indicesA[1]].m_clipFlags |
+							 m_unk0xc38ec[indicesA[2]].m_clipFlags;
+
+		if (unionFlags == 0) {
+			const D3DTLVERTEX& vertex0 = m_unk0x348[m_unk0xc38ec[indicesA[0]].m_unk0x10];
+			const D3DTLVERTEX& vertex1 = m_unk0x348[m_unk0xc38ec[indicesA[1]].m_unk0x10];
+			const D3DTLVERTEX& vertex2 = m_unk0x348[m_unk0xc38ec[indicesA[2]].m_unk0x10];
+			LegoFloat area = ComputeScreenArea(vertex0, vertex1, vertex2);
+
+			if (area <= 0.0f) {
+				continue;
+			}
+
+			command->m_vertexIndex0 = static_cast<LegoU16>(m_unk0xc38ec[indicesA[2]].m_unk0x10);
+			command->m_vertexIndex1 = static_cast<LegoU16>(m_unk0xc38ec[indicesA[1]].m_unk0x10);
+			command->m_vertexIndex2 = static_cast<LegoU16>(m_unk0xc38ec[indicesA[0]].m_unk0x10);
+
+			LegoS32 areaBucket = static_cast<LegoS32>(area);
+			LegoS32 rasterizerMask = rasterizerMaskBase;
+			LegoU32 rasterizerIndex = 0;
+
+			while (((areaBucket & rasterizerMask) == 0) &
+				   (static_cast<LegoS32>(rasterizerIndex) < maxRasterizerIndex)) {
+				rasterizerMask >>= 2;
+				rasterizerIndex++;
+			}
+
+			emittedCount++;
+			command->m_rasterizer = m_unk0xc83b4.m_unk0x00[rasterizerIndex];
+			command++;
+			continue;
+		}
+
+		LegoU32 vertexCount = 3;
+		LegoU32 nextClipIndex = 0x40;
+		LegoU32* inputIndices = indicesA;
+		LegoU32* outputIndices = indicesB;
+
+		for (LegoU32 planeIndex = 0; planeIndex < sizeOfArray(g_clipPlanes); planeIndex++) {
+			LegoU32 plane = g_clipPlanes[planeIndex];
+			if ((unionFlags & plane) == 0) {
+				continue;
+			}
+
+			LegoU32 outputCount = 0;
+			LegoU32 previousIndex = inputIndices[vertexCount - 1];
+			LegoBool32 previousInside = (m_unk0xc38ec[previousIndex].m_clipFlags & plane) == 0;
+			LegoFloat previousDistance = GetClipDistance(m_unk0xc38ec[previousIndex], plane);
+			unionFlags = 0;
+
+			for (LegoU32 i = 0; i < vertexCount; i++) {
+				LegoU32 currentIndex = inputIndices[i];
+				LegoBool32 currentInside = (m_unk0xc38ec[currentIndex].m_clipFlags & plane) == 0;
+				LegoFloat currentDistance = GetClipDistance(m_unk0xc38ec[currentIndex], plane);
+
+				if (previousInside != currentInside) {
+					LegoFloat delta = previousDistance - currentDistance;
+					LegoFloat amount = 0.0f;
+					if (delta != 0.0f) {
+						amount = previousDistance / delta;
+					}
+
+					if (outputCount >= sizeOfArray(indicesB)) {
+						vertexCount = 0;
+						break;
+					}
+
+					LegoU32 clipIndex = AddIndexedClipVertex(
+						m_unk0xc38ec,
+						m_unk0x348,
+						m_unk0xc8400,
+						previousIndex,
+						currentIndex,
+						amount,
+						plane,
+						nearClip,
+						farClip,
+						nextClipIndex,
+						m_unk0xc3848
+					);
+					outputIndices[outputCount++] = clipIndex;
+					unionFlags |= m_unk0xc38ec[clipIndex].m_clipFlags;
+				}
+
+				if (currentInside) {
+					if (outputCount >= sizeOfArray(indicesB)) {
+						vertexCount = 0;
+						break;
+					}
+
+					outputIndices[outputCount++] = currentIndex;
+					unionFlags |= m_unk0xc38ec[currentIndex].m_clipFlags;
+				}
+
+				previousIndex = currentIndex;
+				previousInside = currentInside;
+				previousDistance = currentDistance;
+			}
+
+			if (vertexCount == 0 || outputCount < 3) {
+				vertexCount = 0;
+				break;
+			}
+
+			vertexCount = outputCount;
+			LegoU32* tempIndices = inputIndices;
+			inputIndices = outputIndices;
+			outputIndices = tempIndices;
+		}
+
+		if (vertexCount < 3) {
+			continue;
+		}
+
+		const D3DTLVERTEX& vertex0 = m_unk0x348[m_unk0xc38ec[inputIndices[0]].m_unk0x10];
+		const D3DTLVERTEX& vertex1 = m_unk0x348[m_unk0xc38ec[inputIndices[1]].m_unk0x10];
+		const D3DTLVERTEX& vertex2 = m_unk0x348[m_unk0xc38ec[inputIndices[2]].m_unk0x10];
+
+		if (ComputeScreenArea(vertex0, vertex1, vertex2) <= 0.0f) {
+			continue;
+		}
+
+		for (LegoU32 i = 1; i + 1 < vertexCount; i++) {
+			command->m_vertexIndex0 = static_cast<LegoU16>(m_unk0xc38ec[inputIndices[0]].m_unk0x10);
+			command->m_vertexIndex1 = static_cast<LegoU16>(m_unk0xc38ec[inputIndices[i + 1]].m_unk0x10);
+			command->m_vertexIndex2 = static_cast<LegoU16>(m_unk0xc38ec[inputIndices[i]].m_unk0x10);
+			emittedCount++;
+			command->m_rasterizer = m_unk0xc83b4.m_unk0x00[0];
+			command++;
+		}
+	}
+
+	if (emittedCount == 0) {
+		return;
+	}
+
+	if (m_flags & 0x20) {
+		m_softwareRenderer.FUN_100417c0(commandStart, emittedCount);
+	}
+	else {
+		m_softwareRenderer.FUN_100417a0(commandStart, emittedCount, m_unk0xc86fc);
+	}
+
+	m_unk0xc86f4 += emittedCount;
 }
 
 // FUNCTION: GOLDP 0x10011e60
@@ -4306,7 +4665,42 @@ void GolD3DRenderDevice::FUN_10012f50()
 // STUB: GOLDP 0x10013110
 void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVertex, LegoU32 p_vertexCount)
 {
-	STUB(0x10013110);
+	const GolVec3* source = m_unk0xc4c0c + p_firstVertex;
+	const GolVec3* sourceEnd = source + p_vertexCount;
+	LegoU16* vertexMap = m_unk0xc3850 + p_outputFirst;
+	D3DTLVERTEX* vertex = m_unk0x348 + ((m_unk0xc3848 & m_unk0xc384c) + (p_outputFirst & ~m_unk0xc384c));
+	LegoU16 savedMapEntry = vertexMap[p_vertexCount];
+	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
+	m_unk0xc3848 += p_vertexCount;
+
+	for (; source < sourceEnd; source++, vertex++, vertexMap++) {
+		vertex->sx = m_unk0xc8518->m_m[0][0] * source->m_x;
+		vertex->sy = m_unk0xc8518->m_m[0][1] * source->m_x;
+		vertex->sz = m_unk0xc8518->m_m[0][2] * source->m_x;
+		vertex->rhw = m_unk0xc8518->m_m[0][3] * source->m_x;
+
+		vertex->sx += m_unk0xc8518->m_m[1][0] * source->m_y;
+		vertex->sy += m_unk0xc8518->m_m[1][1] * source->m_y;
+		vertex->sz += m_unk0xc8518->m_m[1][2] * source->m_y;
+		vertex->rhw += m_unk0xc8518->m_m[1][3] * source->m_y;
+
+		vertex->sx += m_unk0xc8518->m_m[2][0] * source->m_z;
+		vertex->sy += m_unk0xc8518->m_m[2][1] * source->m_z;
+		vertex->sz += m_unk0xc8518->m_m[2][2] * source->m_z;
+		vertex->rhw += m_unk0xc8518->m_m[2][3] * source->m_z;
+
+		vertex->sx += m_unk0xc8518->m_m[3][0];
+		vertex->sy += m_unk0xc8518->m_m[3][1];
+		vertex->sz += m_unk0xc8518->m_m[3][2];
+		vertex->rhw = 1.0f / (m_unk0xc8518->m_m[3][3] + vertex->rhw);
+		vertexMap[1] = vertexMap[0] + 1;
+		vertex->color = 0;
+		vertex->sx *= vertex->rhw;
+		vertex->sy *= vertex->rhw;
+		vertex->sz *= vertex->rhw;
+	}
+
+	vertexMap[p_vertexCount] = savedMapEntry;
 }
 
 // FUNCTION: GOLDP 0x100132f0

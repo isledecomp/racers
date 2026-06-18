@@ -4,7 +4,7 @@
 #include "core/gol.h"
 #include "decomp.h"
 #include "golmath.h"
-#include "mesh/golmodelbase.h"
+#include "golmodelbase.h"
 #include "model/carbuildmodel.h"
 #include "model/carpartset.h"
 #include "model/legopiecelibrary.h"

@@ -41,7 +41,10 @@ public:
 			LegoFloat m_unk0x0d4;                // 0x0d4
 			LegoFloat m_unk0x0d8;                // 0x0d8
 			LegoFloat m_unk0x0dc;                // 0x0dc
-			Field0x0e0* m_unk0x0e0;              // 0x0e0
+			union {
+				Field0x0e0* m_unk0x0e0; // 0x0e0
+				void* m_owner;          // 0x0e0
+			};
 
 		private:
 			LegoBool32 FUN_00441790(
@@ -160,7 +163,6 @@ public:
 	void VTable0x10(LegoU32 p_elapsedMs) override;       // vtable+0x10
 	GolWorldEntity* VTable0x14(Event* p_event) override; // vtable+0x14
 
-protected:
 	// SIZE 0x24
 	class CollisionCallbackData {
 	public:
@@ -171,6 +173,7 @@ protected:
 		Descriptor::Field0x10* m_unk0x20; // 0x20
 	};
 
+protected:
 	void FUN_0043aa90();
 	void FUN_0043ab10(Event* p_event, LegoEventQueue* p_queue, CallbackData* p_data);
 	void FUN_0043ab90();

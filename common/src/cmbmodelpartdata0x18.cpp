@@ -251,3 +251,18 @@ void CmbModelPartData0x18::Clear()
 	m_frameCount = 0;
 	m_keyCount = 0;
 }
+
+// FUNCTION: LEGORACERS 0x0040ea20
+void CmbModelPartData0x18::FUN_0040ea20()
+{
+	LegoU32 i;
+
+	for (i = 0; i < m_vertexCount; i++) {
+		m_vertices[i].m_y = -m_vertices[i].m_y;
+	}
+
+	for (i = 0; i < m_frameCount; i++) {
+		m_frames[i].m_y = -m_frames[i].m_y;
+		m_frames[i].m_u = -m_frames[i].m_u;
+	}
+}

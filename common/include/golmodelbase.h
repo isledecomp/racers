@@ -3,8 +3,8 @@
 
 #include "decomp.h"
 #include "golmath.h"
+#include "golmodelmaterialtable.h"
 #include "goltxtparser.h"
-#include "mesh/golmodelmaterialtable.h"
 #include "types.h"
 
 class GdbVertexArray0xc;
@@ -50,6 +50,7 @@ public:
 	virtual void VTable0x40();                                                                         // vtable+0x40
 
 	void FUN_100272e0(LegoU32 p_countVertices, LegoU32 p_countGroups);
+	void FUN_00411090();
 	GolModelMaterialTable* GetMaterialTable() { return &m_unk0x04; }
 	GdbVertexArray0xc* GetVertexArray() const { return m_unk0x10; }
 	IGdbModelIndexArray0x8* GetIndexArray() const { return m_unk0x18; }

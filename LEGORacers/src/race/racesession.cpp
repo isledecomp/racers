@@ -8,11 +8,13 @@
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "core/gol.h"
+#include "font/golfonttable.h"
 #include "golbmpwriterfile.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golhashtable.h"
 #include "golstream.h"
+#include "material/awakekite0x20.h"
 #include "race/circuitstandings.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
@@ -22,6 +24,7 @@
 #include <memory.h>
 #include <mmsystem.h>
 #include <stdio.h>
+#include <string.h>
 
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
@@ -310,6 +313,90 @@ void RaceSession::FUN_004328d0()
 	m_unk0x21c = NULL;
 }
 
+// FUNCTION: LEGORACERS 0x004328f0
+void RaceSession::FUN_004328f0()
+{
+	LegoChar firstVoice[16];
+	LegoChar secondVoice[16];
+
+	firstVoice[0] = '\0';
+	secondVoice[0] = '\0';
+
+	m_unk0x3314 = m_soundManager->CreateMusicGroup();
+	m_unk0x3314->Load(&m_unk0x16d);
+
+	m_unk0x3300.FUN_00443ac0(m_soundManager);
+	m_unk0x3300.FUN_00443b40(&m_unk0x160);
+
+	LegoU32 index = FUN_00432a50(0, firstVoice);
+	if (m_timeRaceManager) {
+		strcpy(secondVoice, "voice29");
+	}
+	else if (m_context->m_playerCount > 1) {
+		FUN_00432a50(index + 1, secondVoice);
+	}
+	else {
+		strcpy(secondVoice, &m_unk0x153);
+	}
+
+	GolHashTable* hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString("GAMEDATA\\VOICES"));
+	}
+
+	m_unk0x3300.FUN_00443b10(firstVoice, secondVoice);
+
+	const LegoChar* commonDataDirectory = m_context->m_commonDataDirectory;
+	hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(commonDataDirectory));
+	}
+
+	m_unk0x3300.FUN_00443b00(&m_unk0x146);
+
+	for (LegoU32 i = 0; i < m_context->m_playerCount; i++) {
+		m_unk0x3318[i] = m_soundManager->CreateSoundNode();
+		m_soundManager->AddActiveSoundNode(m_unk0x3318[i]);
+		m_unk0x2ad4[i].m_unk0x14c = m_unk0x3318[i];
+	}
+}
+
+// STUB: LEGORACERS 0x00432a50
+LegoU32 RaceSession::FUN_00432a50(LegoU32 p_index, LegoChar* p_buffer)
+{
+	RaceSession* session = this;
+	LegoU32 index = p_index;
+	LegoRacers::Context* context = session->m_context;
+	LegoRacers::Context::PlayerSetupSlot* slot = &context->m_playerSetupSlots[index];
+
+	if (slot->m_unk0x10) {
+		while (index < context->m_racerCount) {
+			slot++;
+			index++;
+			if (!slot->m_unk0x10) {
+				break;
+			}
+		}
+	}
+
+	if (session->m_unk0x3350) {
+		index = 0;
+	}
+
+	strcpy(p_buffer, "voice");
+
+	LegoU8 tens = 0;
+	if (context->m_playerSetupSlots[index].m_previewFaceIndex >= 10) {
+		tens = context->m_playerSetupSlots[index].m_previewFaceIndex / 10;
+	}
+
+	p_buffer[5] = tens + '0';
+	p_buffer[7] = '\0';
+	p_buffer[6] = context->m_playerSetupSlots[index].m_previewFaceIndex - (tens * 10) + '0';
+
+	return index;
+}
+
 // FUNCTION: LEGORACERS 0x00432b30
 void RaceSession::FUN_00432b30()
 {
@@ -337,6 +424,62 @@ void RaceSession::FUN_00432b30()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00432bc0
+void RaceSession::FUN_00432bc0()
+{
+	LegoChar commonDataPath[28];
+	strcpy(commonDataPath, "GAMEDATA\\COMMON\\");
+
+	switch (m_context->m_languageIndex) {
+	case 0:
+		strcat(commonDataPath, "english");
+		break;
+	case 1:
+		strcat(commonDataPath, "spanish");
+		break;
+	case 2:
+		strcat(commonDataPath, "french");
+		break;
+	case 3:
+		strcat(commonDataPath, "german");
+		break;
+	case 4:
+		strcat(commonDataPath, "italian");
+		break;
+	case 5:
+		strcat(commonDataPath, "danish");
+		break;
+	case 6:
+		strcat(commonDataPath, "swedish");
+		break;
+	case 7:
+		strcat(commonDataPath, "norwegi");
+		break;
+	case 8:
+		strcat(commonDataPath, "dutch");
+		break;
+	case 10:
+		strcat(commonDataPath, "finnish");
+		break;
+	}
+
+	GolHashTable* hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(commonDataPath));
+	}
+
+	m_unk0x30f0.UseOwnedBuffers();
+	m_unk0x30f0.Load("game.srf");
+
+	m_raceState.m_unk0x000.LoadStrings();
+	m_unk0x2d80.CopyFromBufSelection(m_unk0x2d8c, 0x100);
+
+	m_unk0x2d74 = m_golExport->CreateFontTable();
+	m_unk0x2d74->LoadFontDefinitions(m_renderer, &m_unk0x17a, m_context->m_unk0x18);
+	m_unk0x2d78 = m_unk0x2d74->GetItem(0);
+	m_unk0x2d7c = m_unk0x2d74->GetItem(0);
+}
+
 // FUNCTION: LEGORACERS 0x00432d70
 void RaceSession::FUN_00432d70()
 {
@@ -349,6 +492,13 @@ void RaceSession::FUN_00432d70()
 
 	GolStringTable* stringTable = &m_unk0x30f0;
 	stringTable->ReleaseOwnedBuffers();
+}
+
+// FUNCTION: LEGORACERS 0x00432dc0
+void RaceSession::FUN_00432dc0()
+{
+	m_unk0x2f8c = m_golExport->VTable0x34();
+	m_unk0x2f8c->LoadImageDefinitions(m_renderer, &m_unk0x187, m_context->m_unk0x18);
 }
 
 // FUNCTION: LEGORACERS 0x00432df0
@@ -1315,6 +1465,17 @@ void RaceSession::FUN_00435ab0()
 			0
 		);
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00435ba0
+void RaceSession::FUN_00435ba0(LegoFloat p_unk0x04)
+{
+	m_renderer->VTable0x54(FALSE);
+	m_renderer->VTable0xec(FALSE);
+	m_unk0x280c.FUN_0042f790(p_unk0x04);
+	m_unk0x280c.FUN_0042f7a0();
+	m_renderer->VTable0xf0();
+	m_golApp->PresentFrame();
 }
 
 // FUNCTION: LEGORACERS 0x00435bf0

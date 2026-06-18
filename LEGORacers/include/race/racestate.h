@@ -47,8 +47,9 @@ public:
 	// SIZE 0xe34
 	class Racer {
 	public:
-		virtual void VTable0x00(undefined4* p_unk0x04); // vtable+0x00
-		virtual void VTable0x04(undefined4 p_flags);    // vtable+0x04
+		virtual void VTable0x00(LegoEventQueue::CallbackData* p_data); // vtable+0x00
+		virtual void VTable0x04(undefined4 p_flags);                   // vtable+0x04
+		~Racer();
 
 		class Field0x00c;
 
@@ -615,7 +616,9 @@ public:
 					c_flags0x6c0Bit1 = 1 << 1,
 				};
 
-				undefined m_unk0x000[0x1a4 - 0x000]; // 0x000
+				undefined m_unk0x000[0x008 - 0x000]; // 0x000
+				GolVec3 m_unk0x008;                  // 0x008
+				undefined m_unk0x014[0x1a4 - 0x014]; // 0x014
 				Field0x1a4 m_unk0x1a4[4];            // 0x1a4
 				undefined m_unk0x364[0x6c0 - 0x364]; // 0x364
 				LegoU32 m_flags0x6c0;                // 0x6c0
@@ -627,13 +630,16 @@ public:
 				c_flags0x000Bit3 = 1 << 3,
 				c_flags0x000Bit4 = 1 << 4,
 				c_flags0x000Bit8 = 1 << 8,
+				c_flags0x000Bit9 = 1 << 9,
 				c_flags0x000Bit10 = 1 << 10,
 				c_flags0x000Bit11 = 1 << 11,
 				c_flags0x000Bit12 = 1 << 12,
 				c_alphaOverrideFlag = 1,
 				c_fadeAlphaMax = 0xbf,
 				c_racerFlags0xd04Bit3 = 1 << 3,
+				c_racerFlags0xd04Bit4 = 1 << 4,
 				c_racerFlags0xd04Bit11 = 1 << 11,
+				c_randomTableMask = 0x3ff,
 				c_slotFlagsBit1 = 1 << 1,
 				c_slotFlagsBit2 = 1 << 2,
 			};
@@ -717,7 +723,7 @@ public:
 			LegoU32 m_unk0x3c0;                                           // 0x3c0
 			LegoU32 m_unk0x3c4;                                           // 0x3c4
 			undefined4 m_unk0x3c8;                                        // 0x3c8
-			undefined4 m_unk0x3cc;                                        // 0x3cc
+			LegoU32 m_unk0x3cc;                                           // 0x3cc
 		};
 
 		// SIZE 0x888
@@ -792,22 +798,27 @@ public:
 				undefined m_unk0x018[0x070 - 0x018]; // 0x18
 			};
 
-			virtual void VTable0x00();                    // vtable+0x00
-			virtual void VTable0x04(LegoU32 p_elapsedMs); // vtable+0x04
-			virtual void VTable0x08();                    // vtable+0x08
-			virtual void VTable0x0c();                    // vtable+0x0c
-			virtual void VTable0x10();                    // vtable+0x10
-			virtual void VTable0x14();                    // vtable+0x14
-			virtual void VTable0x18(LegoFloat p_unk0x04); // vtable+0x18
-			virtual void VTable0x1c();                    // vtable+0x1c
-			virtual void VTable0x20();                    // vtable+0x20
-			virtual void VTable0x24();                    // vtable+0x24
-			virtual void VTable0x28();                    // vtable+0x28
-			virtual void VTable0x2c();                    // vtable+0x2c
-			virtual void VTable0x30();                    // vtable+0x30
-			virtual void VTable0x34();                    // vtable+0x34
-			virtual void VTable0x38();                    // vtable+0x38
-			virtual void VTable0x3c();                    // vtable+0x3c
+			virtual void VTable0x00();                                        // vtable+0x00
+			virtual void VTable0x04(LegoU32 p_elapsedMs);                     // vtable+0x04
+			virtual void VTable0x08();                                        // vtable+0x08
+			virtual void VTable0x0c();                                        // vtable+0x0c
+			virtual void VTable0x10();                                        // vtable+0x10
+			virtual void VTable0x14();                                        // vtable+0x14
+			virtual void VTable0x18(LegoFloat p_unk0x04);                     // vtable+0x18
+			virtual void VTable0x1c();                                        // vtable+0x1c
+			virtual void VTable0x20(GolVec3* p_unk0x04, LegoFloat p_unk0x08); // vtable+0x20
+			virtual void VTable0x24(LegoFloat p_unk0x04, LegoFloat p_unk0x08,
+									undefined4 p_unk0x0c); // vtable+0x24
+			virtual void VTable0x28();                     // vtable+0x28
+			virtual void VTable0x2c();                     // vtable+0x2c
+			virtual void VTable0x30();                     // vtable+0x30
+			virtual void VTable0x34();                     // vtable+0x34
+			virtual void VTable0x38();                     // vtable+0x38
+			virtual void VTable0x3c();                     // vtable+0x3c
+			virtual void VTable0x40();                     // vtable+0x40
+			virtual void VTable0x44();                     // vtable+0x44
+			virtual void VTable0x48();                     // vtable+0x48
+			virtual void VTable0x4c();                     // vtable+0x4c
 
 			void FUN_00429210(
 				Racer* p_racer,
@@ -909,7 +920,7 @@ public:
 			GolVec3 m_unk0x358;                        // 0x358
 			LegoFloat m_unk0x364;                      // 0x364
 			LegoFloat m_unk0x368;                      // 0x368
-			undefined4 m_unk0x36c;                     // 0x36c
+			LegoU32 m_unk0x36c;                        // 0x36c
 			GolVec3 m_unk0x370[4];                     // 0x370
 			GolVec3 m_unk0x3a0[4];                     // 0x3a0
 			undefined4 m_unk0x3d0[4];                  // 0x3d0
@@ -966,7 +977,7 @@ public:
 			undefined4 m_unk0x6d0;                     // 0x6d0
 			undefined4 m_unk0x6d4;                     // 0x6d4
 			LegoU32 m_unk0x6d8;                        // 0x6d8
-			undefined4 m_unk0x6dc;                     // 0x6dc
+			LegoU32 m_unk0x6dc;                        // 0x6dc
 			undefined4 m_unk0x6e0;                     // 0x6e0
 			RaceResourceManager::Resource* m_unk0x6e4; // 0x6e4
 			RaceResourceManager::Resource* m_unk0x6e8; // 0x6e8
@@ -1330,6 +1341,7 @@ public:
 			c_flags0xd04Bit4 = 1 << 4,
 			c_flags0xd04Bit6 = 1 << 6,
 			c_flags0xd04Bit7 = 1 << 7,
+			c_flags0xd04Bit8 = 1 << 8,
 			c_flags0xd04Bit10 = 1 << 10,
 			c_flags0xd04Bit11 = 1 << 11,
 			c_flags0xd04Bit12 = 1 << 12,
@@ -1465,7 +1477,7 @@ public:
 		undefined4 m_unk0xd74;               // 0xd74
 		LegoU32 m_unk0xd78;                  // 0xd78
 		undefined4 m_unk0xd7c;               // 0xd7c
-		undefined m_unk0xd80[0xd84 - 0xd80]; // 0xd80
+		LegoU32 m_unk0xd80;                  // 0xd80
 		LegoU32 m_unk0xd84;                  // 0xd84
 		LegoU32 m_unk0xd88;                  // 0xd88
 		Field0xd8c* m_unk0xd8c;              // 0xd8c

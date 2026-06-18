@@ -2,7 +2,7 @@
 #define DUSKWINDBANANARELIC0x30_H
 
 #include "compat.h"
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
 #include "render/golsoftwarerenderer.h"
 
 #include <d3d.h>

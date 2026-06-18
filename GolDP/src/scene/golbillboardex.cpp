@@ -1,6 +1,6 @@
 #include "scene/golbillboardex.h"
 
-#include "material/duskwindbananarelic0x24.h"
+#include "duskwindbananarelic0x24.h"
 #include "render/gold3drenderdevice.h"
 
 // GLOBAL: GOLDP 0x10063570

@@ -3,8 +3,8 @@
 
 #include "decomp.h"
 #include "golmath.h"
+#include "golmodelmaterialtable.h"
 #include "goltxtparser.h"
-#include "mesh/golmodelmaterialtable.h"
 #include "types.h"
 
 class GdbVertexArray0xc;
@@ -41,6 +41,8 @@ public:
 
 	// SYNTHETIC: GOLDP 0x1002e5e0
 	// GolBoundingVolume::`vector deleting destructor'
+
+	void FUN_004045e0();
 
 private:
 	struct PolygonId0x08 {

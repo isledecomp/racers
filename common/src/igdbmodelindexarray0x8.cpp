@@ -1,4 +1,4 @@
-#include "mesh/igdbmodelindexarray0x8.h"
+#include "igdbmodelindexarray0x8.h"
 
 DECOMP_SIZE_ASSERT(IGdbModelIndexArray0x8, 0x8)
 

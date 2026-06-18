@@ -1,8 +1,8 @@
 #include "decomp.h"
-#include "material/duskwindbananarelic0x24.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golmodelbase.h"
+#include "duskwindbananarelic0x24.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
+#include "golmodelbase.h"
 #include "race/racesession.h"
 
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004, 0x11c)

@@ -1,10 +1,10 @@
 #include "model/legocolortable.h"
 
 #include "core/gol.h"
+#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "goltxtparser.h"
-#include "material/duskwindbananarelic0x24.h"
 #include "material/golmateriallibrary.h"
 #include "model/legopiecelibrary.h"
 #include "render/gold3drenderdevice.h"

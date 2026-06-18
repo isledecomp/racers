@@ -2,9 +2,9 @@
 
 #include "audio/soundgroupbinding.h"
 #include "golerror.h"
+#include "golmodelbase.h"
+#include "golmodelmaterialtable.h"
 #include "menu/menugamecontext.h"
-#include "mesh/golmodelbase.h"
-#include "mesh/golmodelmaterialtable.h"
 #include "racer/drivercosmetics.h"
 #include "racer/driverpartcatalog.h"
 #include "save/savesystem.h"

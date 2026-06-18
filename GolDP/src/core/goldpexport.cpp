@@ -1,10 +1,10 @@
 #include "core/goldpexport.h"
 
-#include "bounds/golboundingshape.h"
 #include "camera/golcamera.h"
 #include "camera/golscenetransformnode.h"
 #include "font/golfont.h"
 #include "font/golfonttable.h"
+#include "golboundingshape.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golscenenode.h"

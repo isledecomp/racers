@@ -8,22 +8,11 @@
 
 class GolCamera;
 class GolD3DRenderDevice;
+struct SoundNode;
 
 // SIZE 0x150
 class RaceCameraController {
 public:
-	// SIZE 0x48
-	class Field0x14c {
-	public:
-		GolVec3 m_unk0x00;                // 0x00
-		GolVec3 m_unk0x0c;                // 0x0c
-		GolVec3 m_unk0x18;                // 0x18
-		GolVec3 m_unk0x24;                // 0x24
-		GolVec3 m_unk0x30;                // 0x30
-		undefined m_unk0x3c[0x44 - 0x3c]; // 0x3c
-		LegoU32 m_unk0x44;                // 0x44
-	};
-
 	// SIZE 0x18
 	struct Profile {
 		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }
@@ -107,7 +96,7 @@ public:
 	LegoU32 m_unk0x140;                  // 0x140
 	GolD3DRenderDevice* m_renderer;      // 0x144
 	GolCamera* m_camera;                 // 0x148
-	Field0x14c* m_unk0x14c;              // 0x14c
+	SoundNode* m_unk0x14c;               // 0x14c
 };
 
 #endif // RACECAMERACONTROLLER_H

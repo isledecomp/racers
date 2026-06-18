@@ -1,16 +1,16 @@
 #include "model/gdbpartlibrary.h"
 
+#include "duskwindbananarelic0x24.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmodelbase.h"
+#include "golmodelmaterialtable.h"
 #include "golname.h"
 #include "goltxtparser.h"
-#include "material/duskwindbananarelic0x24.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
-#include "mesh/golmodelbase.h"
-#include "mesh/golmodelmaterialtable.h"
-#include "mesh/igdbmodelindexarray0x8.h"
+#include "igdbmodelindexarray0x8.h"
 #include "model/gdbpartdefinition.h"
 #include "model/gdbpartfacegroup.h"
 #include "model/gdbpartvertexpool.h"
@@ -299,21 +299,21 @@ LegoS32 GdbPartLibrary::CopyBatchVertex(LegoU32 p_sourceVertex)
 	LegoU32 targetVertex = g_copyBatchVertexStart + g_copyBatchVertexCount;
 
 	GolVec3 position;
-	m_vertexPool->GetPosition(p_sourceVertex, &position);
+	m_vertexPool->VTable0x14(p_sourceVertex, &position);
 	g_copyVertexArray->VTable0x24(targetVertex, position);
 
 	GolVec2 texCoord;
-	m_vertexPool->GetTexCoord(p_sourceVertex, &texCoord);
+	m_vertexPool->VTable0x18(p_sourceVertex, &texCoord);
 	g_copyVertexArray->VTable0x28(targetVertex, texCoord);
 
 	if (m_vertexPool->GetVertexType() == 1) {
 		ColorRGBA color;
-		m_vertexPool->GetColor(p_sourceVertex, &color);
+		m_vertexPool->VTable0x20(p_sourceVertex, &color);
 		g_copyVertexArray->VTable0x30(targetVertex, color);
 	}
 	else {
 		GolVec3 normal;
-		m_vertexPool->GetNormal(p_sourceVertex, &normal);
+		m_vertexPool->VTable0x1c(p_sourceVertex, &normal);
 		g_copyVertexArray->VTable0x2c(targetVertex, normal);
 	}
 

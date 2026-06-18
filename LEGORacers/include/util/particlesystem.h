@@ -2,9 +2,9 @@
 #define PARTICLESYSTEM_H
 
 #include "decomp.h"
+#include "gdbmodelindexarray0xc.h"
+#include "gdbvertexarray0xc.h"
 #include "golmodelentity.h"
-#include "mesh/gdbmodelindexarray0xc.h"
-#include "mesh/gdbvertexarray0xc.h"
 #include "surface/color.h"
 #include "types.h"
 

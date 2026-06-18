@@ -14,6 +14,7 @@
 #include "golconstants.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmodelbase.h"
 #include "golname.h"
 #include "golscenenode.h"
 #include "golstream.h"
@@ -26,7 +27,6 @@
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutscenedefinition.h"
 #include "menu/runtime/cutsceneparticle.h"
-#include "mesh/golmodelbase.h"
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
@@ -2039,16 +2039,16 @@ void CutscenePlayer::FUN_004a2f80(GolCamera* p_lens)
 	forward.m_y = -forward.m_y;
 	forward.m_z = -forward.m_z;
 
-	node->m_volume = right.m_x;
-	node->m_unk0x1c = right.m_y;
-	node->m_unk0x20 = right.m_z;
-	node->m_unk0x24 = forward.m_x;
-	node->m_unk0x28 = forward.m_y;
-	node->m_frequencyScale = forward.m_z;
+	node->m_right.m_x = right.m_x;
+	node->m_right.m_y = right.m_y;
+	node->m_right.m_z = right.m_z;
+	node->m_forward.m_x = forward.m_x;
+	node->m_forward.m_y = forward.m_y;
+	node->m_forward.m_z = forward.m_z;
 
-	node->m_orientation.m_x = (node->m_unk0x28 * node->m_unk0x20) - (node->m_frequencyScale * node->m_unk0x1c);
-	node->m_orientation.m_y = (node->m_frequencyScale * node->m_volume) - (node->m_unk0x20 * node->m_unk0x24);
-	node->m_orientation.m_z = (node->m_unk0x1c * node->m_unk0x24) - (node->m_unk0x28 * node->m_volume);
+	node->m_orientation.m_x = (node->m_forward.m_y * node->m_right.m_z) - (node->m_forward.m_z * node->m_right.m_y);
+	node->m_orientation.m_y = (node->m_forward.m_z * node->m_right.m_x) - (node->m_right.m_z * node->m_forward.m_x);
+	node->m_orientation.m_z = (node->m_right.m_y * node->m_forward.m_x) - (node->m_forward.m_y * node->m_right.m_x);
 
 	GolVec3 orientation;
 	orientation.m_x = node->m_orientation.m_x;

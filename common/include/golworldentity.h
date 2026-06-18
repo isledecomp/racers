@@ -1,10 +1,10 @@
 #ifndef GOLWORLDENTITY_H
 #define GOLWORLDENTITY_H
 
-#include "camera/golviewfrustum.h"
 #include "decomp.h"
+#include "gdbvertexarray0xc.h"
 #include "golmath.h"
-#include "mesh/gdbvertexarray0xc.h"
+#include "golviewfrustum.h"
 
 class GolRenderDevice;
 class GolWorldDatabase;

@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(GdbVertexArrayMistery0x1c, 0x1c)
 // FUNCTION: GOLDP 0x100156d0
 GdbVertexArrayMistery0x1c::GdbVertexArrayMistery0x1c()
 {
-	m_unk0x06 = 1;
+	m_vertexType = 1;
 }
 
 // FUNCTION: GOLDP 0x10006150 FOLDED
@@ -24,8 +24,8 @@ void GdbVertexArrayMistery0x1c::VTable0x04(LegoU16 p_count)
 
 	m_count = p_count;
 
-	m_unk0x08 = new GolVec3[m_count];
-	if (m_unk0x08 == NULL) {
+	m_positions = new GolVec3[m_count];
+	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	m_unk0x0c = new GolVec2[m_count];
@@ -61,8 +61,8 @@ void GdbVertexArrayMistery0x1c::VTable0x08(GolFileParser& p_parser)
 	p_parser.ReadRightBracket();
 	p_parser.ReadLeftCurly();
 
-	m_unk0x08 = new GolVec3[m_count];
-	if (m_unk0x08 == NULL) {
+	m_positions = new GolVec3[m_count];
+	if (m_positions == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 	m_unk0x0c = new GolVec2[m_count];
@@ -74,13 +74,13 @@ void GdbVertexArrayMistery0x1c::VTable0x08(GolFileParser& p_parser)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(m_unk0x08, 0, sizeof(GolVec3) * m_count);
+	::memset(m_positions, 0, sizeof(GolVec3) * m_count);
 	::memset(m_unk0x0c, 0, sizeof(GolVec2) * m_count);
 
 	for (i = 0; i < m_count; i++) {
-		m_unk0x08[i].m_x = p_parser.ReadFloat();
-		m_unk0x08[i].m_y = p_parser.ReadFloat();
-		m_unk0x08[i].m_z = p_parser.ReadFloat();
+		m_positions[i].m_x = p_parser.ReadFloat();
+		m_positions[i].m_y = p_parser.ReadFloat();
+		m_positions[i].m_z = p_parser.ReadFloat();
 		m_unk0x0c[i].m_x = p_parser.ReadFloat();
 		m_unk0x0c[i].m_y = p_parser.ReadFloat();
 		m_unk0x10[i] = ARGBU32(0xff, 0xff, 0xff, 0xff);

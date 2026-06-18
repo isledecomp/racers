@@ -459,54 +459,73 @@ public:
 			undefined4 m_unk0x16c;               // 0x16c
 		};
 
+		// VTABLE: LEGORACERS 0x004b0778
 		// SIZE 0xa8
-		class Field0xa8 {
+		class Field0xa8 : public LegoEventQueue::Callback {
 		public:
 			// SIZE 0x28
-			class Field0x44 {
+			class Params {
 			public:
-				undefined m_unk0x00[0x24 - 0x00]; // 0x00
-				undefined4 m_unk0x24;             // 0x24
+				RaceEventTable0x90::EntryBase* m_unk0x00; // 0x00
+				RaceSessionField0x32b4* m_unk0x04;        // 0x04
+				LegoFloat m_unk0x08;                      // 0x08
+				LegoEventQueue* m_unk0x0c;                // 0x0c
+				GolVec3 m_unk0x10;                        // 0x10
+				LegoFloat m_unk0x1c;                      // 0x1c
+				LegoU32 m_unk0x20;                        // 0x20
+				LegoFloat m_unk0x24;                      // 0x24
 			};
 
 			Field0xa8();
 			~Field0xa8();
-			virtual void VTable0x00(undefined4);                                                 // vtable+0x00
-			virtual void VTable0x04(undefined4, undefined4);                                     // vtable+0x04
-			virtual void VTable0x08(undefined4, undefined4, undefined4, undefined4, undefined4); // vtable+0x08
-			virtual void VTable0x0c(undefined4, undefined4, undefined4, undefined4, undefined4); // vtable+0x0c
-			virtual Field0xa8* VTable0x10(undefined4);                                           // vtable+0x10
-			virtual void VTable0x14();                                                           // vtable+0x14
-			virtual LegoS32 VTable0x18(undefined4);                                              // vtable+0x18
-			virtual void VTable0x1c(GolVec3*);                                                   // vtable+0x1c
+			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+			virtual void VTable0x04(Params* p_params, GolVec3* p_unk0x08);  // vtable+0x04
+			virtual void VTable0x08(                                                      // vtable+0x08
+				Params* p_params,
+				RaceState::Racer* p_racer,
+				GolVec3* p_unk0x0c,
+				GolVec3* p_unk0x10,
+				LegoBool32 p_unk0x14
+			);
+			virtual void VTable0x0c(                                                            // vtable+0x0c
+				Params* p_params,
+				RaceState::Racer* p_racer,
+				RaceState::Racer* p_targetRacer,
+				LegoBool32 p_unk0x10,
+				LegoBool32 p_unk0x14
+			);
+			virtual Field0xa8* VTable0x10(undefined4);       // vtable+0x10
+			virtual void VTable0x14();                       // vtable+0x14
+			virtual LegoS32 VTable0x18(LegoU32 p_elapsedMs); // vtable+0x18
+			virtual void VTable0x1c(GolVec3*);               // vtable+0x1c
 
 			void Reset();
+			void FUN_00430d40(Params* p_params);
+			void FUN_00431450(LegoFloat p_durationSeconds);
+			void FUN_004314d0(LegoEventQueue* p_eventQueue);
 
 		protected:
-			undefined4 m_unk0x004;               // 0x004
-			undefined4 m_unk0x008;               // 0x008
-			undefined4 m_unk0x00c;               // 0x00c
-			undefined4 m_unk0x010;               // 0x010
-			undefined4 m_unk0x014;               // 0x014
-			undefined4 m_unk0x018;               // 0x018
-			undefined4 m_unk0x01c;               // 0x01c
-			undefined4 m_unk0x020;               // 0x020
-			undefined4 m_unk0x024;               // 0x024
-			undefined m_unk0x028[0x034 - 0x028]; // 0x028
-			LegoFloat m_unk0x034;                // 0x034
-			LegoFloat m_unk0x038;                // 0x038
-			LegoFloat m_unk0x03c;                // 0x03c
-			LegoFloat m_unk0x040;                // 0x040
-			Field0x44* m_unk0x044;               // 0x044
-			LegoFloat m_unk0x048;                // 0x048
-			undefined4 m_unk0x04c;               // 0x04c
-			LegoS32 m_unk0x050;                  // 0x050
-			undefined4 m_unk0x054;               // 0x054
-			undefined4 m_unk0x058;               // 0x058
-			undefined m_unk0x05c[0x09c - 0x05c]; // 0x05c
-			undefined4 m_unk0x09c;               // 0x09c
-			undefined m_unk0x0a0[0x0a4 - 0x0a0]; // 0x0a0
-			undefined4 m_unk0x0a4;               // 0x0a4
+			undefined4 m_unk0x004;                        // 0x004
+			RaceEventTable0x90::EntryBase* m_unk0x008;    // 0x008
+			RaceSessionField0x32b4* m_unk0x00c;           // 0x00c
+			GolVec3 m_unk0x010;                           // 0x010
+			GolVec3 m_unk0x01c;                           // 0x01c
+			GolVec3 m_unk0x028;                           // 0x028
+			LegoFloat m_unk0x034;                         // 0x034
+			LegoFloat m_unk0x038;                         // 0x038
+			LegoFloat m_unk0x03c;                         // 0x03c
+			LegoFloat m_unk0x040;                         // 0x040
+			LegoEventQueue::Event* m_unk0x044;            // 0x044
+			LegoFloat m_unk0x048;                         // 0x048
+			LegoFloat m_unk0x04c;                         // 0x04c
+			LegoS32 m_unk0x050;                           // 0x050
+			undefined4 m_unk0x054;                        // 0x054
+			LegoU32 m_unk0x058;                           // 0x058
+			GolVec3 m_unk0x05c;                           // 0x05c
+			undefined m_unk0x068[0x09c - 0x068];          // 0x068
+			RaceState::Racer* m_unk0x09c;                 // 0x09c
+			RaceState::Racer* m_unk0x0a0;                 // 0x0a0
+			RaceEventDispatcher0x08::Context* m_unk0x0a4; // 0x0a4
 		};
 
 		class Field0x18ac;
@@ -624,11 +643,11 @@ public:
 			ResourceBase0x2c();
 
 		protected:
-			Field0x074* m_unk0x018; // 0x018
-			undefined4 m_unk0x01c;  // 0x01c
-			undefined4 m_unk0x020;  // 0x020
-			undefined4 m_unk0x024;  // 0x024
-			undefined4 m_unk0x028;  // 0x028
+			Field0x074* m_unk0x018;             // 0x018
+			undefined4 m_unk0x01c;              // 0x01c
+			RaceSessionField0x32b4* m_unk0x020; // 0x020
+			undefined4 m_unk0x024;              // 0x024
+			undefined4 m_unk0x028;              // 0x028
 		};
 
 		// SIZE 0x30
@@ -642,20 +661,17 @@ public:
 				Field0x64** m_unk0x01c;   // 0x01c
 				Field0x6dc* m_owner0x01c; // 0x01c
 			};
-			undefined4 m_unk0x020; // 0x020
-			undefined4 m_unk0x024; // 0x024
-			undefined4 m_unk0x028; // 0x028
-			undefined4 m_unk0x02c; // 0x02c
+			RaceSessionField0x32b4* m_unk0x020; // 0x020
+			undefined4 m_unk0x024;              // 0x024
+			undefined4 m_unk0x028;              // 0x028
+			undefined4 m_unk0x02c;              // 0x02c
 		};
 
+		// VTABLE: LEGORACERS 0x004b14b0
 		// SIZE 0x54
 		class Field0x68 : public LegoEventQueue::Callback {
 		public:
-			// SIZE 0x28
-			class Field0x08 : public GolWorldEntity {
-			public:
-				void ClearUnk0x1c() { m_velocity.m_x = 0.0f; }
-			};
+			typedef GolWorldEntity Field0x08;
 
 			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
 			virtual void VTable0x04(RaceState::Racer* p_racer) = 0;         // vtable+0x04
@@ -680,7 +696,7 @@ public:
 
 			void SetFlags0x50Bit0() { m_flags0x50 |= c_flags0x50Bit0; }
 			void ClearFlags0x50Bit0() { m_flags0x50 &= ~c_flags0x50Bit0; }
-			void ClearUnk0x24() { m_unk0x08.ClearUnk0x1c(); }
+			void ClearUnk0x24() { m_unk0x08.ClearVelocityX(); }
 			Field0x08* GetUnk0x08() { return &m_unk0x08; }
 
 		protected:
@@ -743,29 +759,7 @@ public:
 			LegoU32 m_unk0x64;                  // 0x64
 		};
 
-		// SIZE 0x68
-		class Field0x68Field0x02c : public Field0x68 {
-		public:
-			Field0x68Field0x02c();
-			~Field0x68Field0x02c() override;
-			void VTable0x04(RaceState::Racer* p_racer) override;
-			void VTable0x0c() override;
-
-			// SYNTHETIC: LEGORACERS 0x00459090
-			// RaceSession::Field0x6dc::Field0x68Field0x02c::`vector deleting destructor'
-
-			void FUN_00453610();
-			void FUN_00453620();
-			void FUN_00453690(LegoU32 p_elapsedMs);
-
-		private:
-			void FUN_004537f0();
-
-			GolVec3 m_unk0x54;                // 0x54
-			LegoU32 m_unk0x60;                // 0x60
-			LegoU8 m_flags0x64;               // 0x64
-			undefined m_unk0x65[0x68 - 0x65]; // 0x65
-		};
+		class Field0x68Field0x02c;
 
 		// SIZE 0x84
 		class Field0x1890 : public ResourceBase0x2c {
@@ -775,7 +769,7 @@ public:
 			void FUN_00455810(
 				Field0x6dc* p_unk0x04,
 				Field0x074* p_unk0x08,
-				undefined4 p_unk0x0c,
+				RaceSessionField0x32b4* p_unk0x0c,
 				undefined4 p_unk0x10,
 				Field0x0* p_unk0x14,
 				GolD3DRenderDevice* p_unk0x18,
@@ -810,7 +804,7 @@ public:
 				Field0x6dc* p_unk0x04,
 				Field0x074* p_unk0x08,
 				RaceSessionField0x27d4::Item::Field0x004::Params* p_unk0x0c,
-				undefined4 p_unk0x10,
+				RaceSessionField0x32b4* p_unk0x10,
 				undefined4 p_unk0x14,
 				GolRenderDevice* p_renderer,
 				Field0x0* p_export
@@ -836,7 +830,7 @@ public:
 			~Field0x1898();
 			void FUN_00452ee0(
 				Field0x074* p_unk0x04,
-				undefined4 p_unk0x08,
+				RaceSessionField0x32b4* p_unk0x08,
 				Field0x6dc* p_unk0x0c,
 				undefined4 p_unk0x10,
 				GolModelEntity* p_model
@@ -859,7 +853,7 @@ public:
 		public:
 			Field0x189c();
 			~Field0x189c();
-			void FUN_00452530(Field0x074* p_unk0x04, undefined4 p_unk0x08, Field0x6dc* p_unk0x0c);
+			void FUN_00452530(Field0x074* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, Field0x6dc* p_unk0x0c);
 			void FUN_004524f0();
 			void FUN_00452510();
 
@@ -877,7 +871,7 @@ public:
 		public:
 			Field0x18a0();
 			~Field0x18a0();
-			void FUN_004519d0(Field0x64** p_unk0x04, undefined4 p_unk0x08);
+			void FUN_004519d0(Field0x64** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 			void FUN_00451a10();
 
 		private:
@@ -893,7 +887,7 @@ public:
 		public:
 			Field0x18a4();
 			~Field0x18a4();
-			void FUN_00453cd0(Field0x6dc* p_unk0x04, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+			void FUN_00453cd0(Field0x6dc* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, undefined4 p_unk0x0c);
 			void FUN_00453d90();
 
 		private:
@@ -941,7 +935,7 @@ public:
 		public:
 			Field0x18ac();
 			~Field0x18ac();
-			void FUN_00456510(Field0x64** p_unk0x04, undefined4 p_unk0x08);
+			void FUN_00456510(Field0x64** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 			void FUN_00456540();
 
 		private:
@@ -1198,7 +1192,7 @@ public:
 			Field0x074* m_unk0x08;                                       // 0x08
 			RaceSessionField0x27d4::Item::Field0x004::Params* m_unk0x0c; // 0x0c
 			undefined4 m_unk0x10;                                        // 0x10
-			undefined4 m_unk0x14;                                        // 0x14
+			RaceSessionField0x32b4* m_unk0x14;                           // 0x14
 			RaceState::Racer::Field0x004* m_unk0x18;                     // 0x18
 			undefined4 m_unk0x1c;                                        // 0x1c
 			undefined4 m_unk0x20;                                        // 0x20
@@ -1215,6 +1209,7 @@ public:
 		friend class Field0x18a8;
 		friend class Field0x18bc;
 		friend class Field0x68Field0x028;
+		friend class RaceState::Racer::Field0xd5c;
 
 		void FUN_00457c20(const Params* p_params);
 		void FUN_00457c90(const LegoChar* p_unk0x04, const LegoChar* p_unk0x08, LegoBool32 p_binary);
@@ -1277,7 +1272,7 @@ public:
 		GolWorldDatabase* m_unk0x05c;                                 // 0x05c
 		GolWorldDatabase* m_unk0x060;                                 // 0x060
 		GolWorldDatabase* m_unk0x064;                                 // 0x064
-		undefined4 m_unk0x068;                                        // 0x068
+		RaceSessionField0x32b4* m_unk0x068;                           // 0x068
 		RaceSessionField0x27d4::Item::Field0x004::Params* m_unk0x06c; // 0x06c
 		undefined4 m_unk0x070;                                        // 0x070
 		Field0x074* m_unk0x074;                                       // 0x074
@@ -1770,6 +1765,8 @@ public:
 			~Item();
 			virtual Item* VTable0x00(undefined4 p_flags); // vtable+0x00
 
+			void FUN_00492a50(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
+			void FUN_00492a90(GolD3DRenderDevice* p_renderer, DuskwindBananaRelic0x24* p_material);
 			void FUN_00492be0(LegoU32 p_elapsedMs);
 			void FUN_00492c30(LegoU32 p_elapsedMs);
 			void FUN_004931a0();
@@ -1940,6 +1937,10 @@ public:
 	// VTABLE: LEGORACERS 0x004afd58
 	class Field0x2f90 : public GolNameTable {
 	public:
+		// VTABLE: LEGORACERS 0x004afd64
+		// SIZE 0x1fc
+		class SkbTxtParser : public GolTxtParser {};
+
 		// SIZE 0x10
 		struct Entry {
 			// SIZE 0x10
@@ -2040,6 +2041,7 @@ public:
 
 		void Reset();
 		void FUN_0041e770(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+		Entry* FUN_0041e940(LegoU32 p_unk0x04);
 		void FUN_0041e950();
 		LegoU32 FUN_0041ea60();
 		LegoU32 FUN_0041ea90(LegoU32 p_unk0x04, LegoU32* p_unk0x08);
@@ -2446,6 +2448,36 @@ private:
 	undefined4 m_unk0x335c;                 // 0x335c
 	undefined4 m_unk0x3360;                 // 0x3360
 	TimeRaceManager* m_timeRaceManager;     // 0x3364
+};
+
+// SIZE 0x68
+class RaceState::Racer::Field0xd5c : public RaceSession::Field0x6dc::Field0x68 {
+public:
+	LegoU8 FUN_00453790(GolVec3 p_unk0x04);
+	void FUN_004537f0();
+	LegoS32 FUN_00453840(GolVec3* p_unk0x04);
+
+protected:
+	GolVec3 m_unk0x54;                // 0x54
+	LegoU32 m_unk0x60;                // 0x60
+	LegoU8 m_flags0x64;               // 0x64
+	undefined m_unk0x65[0x68 - 0x65]; // 0x65
+};
+
+// SIZE 0x68
+class RaceSession::Field0x6dc::Field0x68Field0x02c : public RaceState::Racer::Field0xd5c {
+public:
+	Field0x68Field0x02c();
+	~Field0x68Field0x02c() override;
+	void VTable0x04(RaceState::Racer* p_racer) override;
+	void VTable0x0c() override;
+
+	// SYNTHETIC: LEGORACERS 0x00459090
+	// RaceSession::Field0x6dc::Field0x68Field0x02c::`vector deleting destructor'
+
+	void FUN_00453610();
+	void FUN_00453620();
+	void FUN_00453690(LegoU32 p_elapsedMs);
 };
 
 #endif // RACESESSION_H

@@ -129,6 +129,7 @@ set(COMMON_SOURCES
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
   common/src/duskwindbananarelic0x24.cpp
+  common/src/golmateriallibrary.cpp
 )
 
 #These GOLDP - only files currently need the same inline expansion behavior as common_goldp.
@@ -200,7 +201,6 @@ add_library(goldp SHARED
   GolDP/src/camera/golcamera.cpp
   GolDP/src/camera/goltransform.cpp
   GolDP/src/device/ddrawutil.cpp
-  GolDP/src/material/golmateriallibrary.cpp
   GolDP/src/material/amberhaze0x20.cpp
   GolDP/src/font/golfontlibrary.cpp
   GolDP/src/material/goltexturelist.cpp
@@ -334,6 +334,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racestatefield0x008.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x238.cpp
+  LEGORacers/src/util/racerbillboardrenderstate0x33c.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0xa8.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0xf8.cpp
   LEGORacers/src/race/raceresourcemanager.cpp
@@ -463,6 +464,7 @@ add_executable(legoracers WIN32
   LEGORacers/racers.rc
   util/decomp.cpp
   $<TARGET_OBJECTS:common_legoracers>
+  LEGORacers/src/gol/goltexturelist.cpp
 )
 target_compile_definitions(legoracers PRIVATE BUILDING_LEGORACERS)
 target_compile_definitions(legoracers PRIVATE DIRECTINPUT_VERSION=0x500)
@@ -512,6 +514,10 @@ if (MSVC_FOR_DECOMP)
   set_source_files_properties(
     ${GOLDP_INLINE_EXPANSION_SOURCES}
     PROPERTIES COMPILE_OPTIONS "/Ob2"
+  )
+  set_source_files_properties(
+    common/src/golmateriallibrary.cpp
+    PROPERTIES COMPILE_OPTIONS "/Ob1"
   )
 
 #These flags have been taken from the defaults for a Visual C++ 6.0 project(the compiler the

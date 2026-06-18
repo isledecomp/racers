@@ -150,8 +150,6 @@ MenuWidget* MenuTextField::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p
 // STUB: LEGORACERS 0x00471300
 MenuWidget* MenuTextField::VTable0x38(Rect* p_rect, Rect* p_arg)
 {
-	STUB(0x00471300);
-
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 
@@ -232,8 +230,6 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 // STUB: LEGORACERS 0x00471560
 MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 {
-	STUB(0x00471560);
-
 	LegoU32 sound;
 
 	switch (p_event->m_keyCode) {

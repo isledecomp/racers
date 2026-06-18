@@ -2175,7 +2175,40 @@ void RaceSession::FUN_00435d20(LegoBool32 p_mirror)
 // STUB: LEGORACERS 0x00435e70
 void RaceSession::FUN_00435e70()
 {
-	STUB(0x435e70);
+	LegoU32 materialIndex;
+	LegoU32 checkpointIndex;
+
+	if (m_unk0x3b8) {
+		GolModelMaterialTable* materials = m_unk0x3b8->GetUnk0x58()->GetUnk0x18();
+		materialIndex = 0;
+		checkpointIndex = 0;
+
+		if (materials->GetCount() > 0) {
+			do {
+				DuskwindBananaRelic0x24* material = materials->GetMaterial(materialIndex);
+				DuskWindName0x8 materialName = material->GetNameRecord();
+				if (materialName.m_unk0x0[0] >= '0' && materialName.m_unk0x0[0] <= '9') {
+					material->SetUnk0x14(m_unk0x27f4.FUN_0041e940(checkpointIndex));
+					material->EnableFlag0x08Bit18();
+					checkpointIndex++;
+				}
+				else {
+					void* materialPosition;
+					if (m_unk0x27e0.GetNameEntries() == NULL) {
+						materialPosition = NULL;
+					}
+					else {
+						materialPosition = m_unk0x27e0.GetName(materialName.m_unk0x0);
+					}
+
+					material->SetUnk0x14(materialPosition);
+					material->EnableFlag0x08Bit18();
+				}
+
+				materialIndex++;
+			} while (materialIndex < materials->GetCount());
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00435f20

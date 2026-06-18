@@ -171,12 +171,11 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 // STUB: LEGORACERS 0x0042ea50
 void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 {
-	STUB(0x0042ea50);
-
 	LegoU32 otherPlayerIndex = p_playerIndex == 0 ? 1 : 0;
 	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
+	LegoU32 i;
 
-	for (LegoU32 i = 0; i < c_joystickBindingCount; i++) {
+	for (i = 0; i < c_joystickBindingCount; i++) {
 		if (otherEntryIndex != i) {
 			InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
 			if (m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) != NULL) {
@@ -225,8 +224,6 @@ void GameState::SelectInputBinding(LegoU32 p_playerIndex, LegoU32 p_entryIndex)
 // STUB: LEGORACERS 0x0042eb60
 void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex)
 {
-	STUB(0x0042eb60);
-
 	PersistentGameState state;
 	LegoU32 i;
 
@@ -370,8 +367,6 @@ void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex
 // STUB: LEGORACERS 0x0042ee70
 void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
 {
-	STUB(0x0042ee70);
-
 	LegoU32 i;
 	LegoU32 j;
 

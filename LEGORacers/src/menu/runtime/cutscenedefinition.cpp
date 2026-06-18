@@ -760,8 +760,6 @@ void CutsceneDefinition::Frame::Reset()
 // STUB: LEGORACERS 0x00405950
 void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
-	STUB(0x00405950);
-
 	if (m_unk0x00) {
 		Destroy();
 	}

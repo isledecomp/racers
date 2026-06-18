@@ -1,13 +1,13 @@
 #include "render/golrenderdevice.h"
 
 #include "font/golfontlibrary.h"
+#include "golmateriallibrary.h"
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "golscenenode.h"
 #include "golsurfaceformat.h"
 #include "goltransformbase.h"
 #include "material/golimagelist.h"
-#include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
 
 #include <string.h>
@@ -421,40 +421,6 @@ GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 	}
 
 	return NULL;
-}
-
-// FUNCTION: GOLDP 0x10028bc0
-void GolRenderDevice::AddMaterialList(GolMaterialLibrary* p_param)
-{
-	p_param->SetNext(m_materialLists);
-	m_materialLists = p_param;
-}
-
-// FUNCTION: GOLDP 0x10028bd0
-void GolRenderDevice::RemoveMaterialList(GolMaterialLibrary* p_param)
-{
-	GolMaterialLibrary* node = m_materialLists;
-
-	if (node != NULL) {
-		if (p_param == node) {
-			m_materialLists = node->GetNext();
-			return;
-		}
-
-		GolMaterialLibrary* previous = node;
-		node = node->GetNext();
-
-		while (node != NULL) {
-			if (node == p_param) {
-				previous->SetNext(node->GetNext());
-				node->SetNext(NULL);
-				return;
-			}
-
-			previous = node;
-			node = node->GetNext();
-		}
-	}
 }
 
 // FUNCTION: GOLDP 0x10028c20

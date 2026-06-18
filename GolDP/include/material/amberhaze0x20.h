@@ -1,7 +1,7 @@
 #ifndef AMBERHAZE0X20_H
 #define AMBERHAZE0X20_H
 
-#include "material/golmateriallibrary.h"
+#include "golmateriallibrary.h"
 
 class DuskwindBananaRelic0x30;
 

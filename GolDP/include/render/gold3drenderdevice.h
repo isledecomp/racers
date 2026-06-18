@@ -330,9 +330,6 @@ private:
 	LegoFloat m_unk0xc852c;                                                        // 0xc852c
 	Field0xc8524::DrawCommand m_unk0xc8530;                                        // 0xc8530
 	Field0xc854c m_unk0xc854c;                                                     // 0xc854c
-	LegoU8* m_unk0xc855c;                                                          // 0xc855c
-	LegoU32 m_unk0xc8560;                                                          // 0xc8560
-	LegoU32 m_unk0xc8564;                                                          // 0xc8564
 	LegoBool32 m_unk0xc8568;                                                       // 0xc8568
 	ColorRGBA m_unk0xc856c;                                                        // 0xc856c
 	undefined4 m_unk0xc8570;                                                       // 0xc8570

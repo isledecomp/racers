@@ -93,8 +93,6 @@ void RacerModelScreenBase::FUN_00485bb0()
 // STUB: LEGORACERS 0x00485c80
 void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_mask)
 {
-	STUB(0x00485c80);
-
 	SaveSystem* saveSystem = &p_context->m_saveSystem;
 
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
@@ -285,24 +283,25 @@ LegoBool32 RacerModelScreenBase::Destroy()
 	return MenuGameScreen::Destroy();
 }
 
-// STUB: LEGORACERS 0x004861b0
+// FUNCTION: LEGORACERS 0x004861b0
 void RacerModelScreenBase::FUN_004861b0()
 {
-	STUB(0x004861b0);
-
 	GameState& state = m_context->m_saveSystem.GetGameState();
 
 	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
 		SaveRecordList::Record* record = m_unk0x22dc[i].FUN_004430b0();
 
 		if (record != NULL) {
-			InputBindingPlayerState& player = state.GetState().m_inputBindings.m_players[i];
+			LegoU32 recordSource = record->m_recordSource;
+			state.GetState().m_inputBindings.m_players[i].m_selectedRecordSource = static_cast<LegoU8>(recordSource);
+			state.SetDirty(1);
 
-			player.m_selectedRecordSource = record->m_recordSource;
+			LegoU32 saveIndex = record->m_saveIndex;
+			state.GetState().m_inputBindings.m_players[i].m_selectedSaveIndex = static_cast<LegoU8>(saveIndex);
 			state.SetDirty(1);
-			player.m_selectedSaveIndex = record->m_saveIndex;
-			state.SetDirty(1);
-			player.m_selectedRecordId = record->m_recordId;
+
+			LegoU32 recordId = record->m_recordId;
+			state.GetState().m_inputBindings.m_players[i].m_selectedRecordId = static_cast<LegoU8>(recordId);
 			state.SetDirty(1);
 		}
 	}

@@ -72,6 +72,8 @@ public:
 		m_velocity.m_z = 0.0f;
 	}
 
+	void ClearVelocityX() { m_velocity.m_x = 0.0f; }
+
 protected:
 	friend class GolWorldDatabase;
 

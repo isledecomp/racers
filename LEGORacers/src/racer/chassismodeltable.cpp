@@ -4,10 +4,10 @@
 #include "golanimatedentity.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmateriallibrary.h"
 #include "golmodelbase.h"
 #include "golname.h"
 #include "golscenenode.h"
-#include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "render/gold3drenderdevice.h"
 

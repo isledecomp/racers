@@ -1,4 +1,4 @@
-#include "material/golmateriallibrary.h"
+#include "golmateriallibrary.h"
 
 #include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
@@ -285,6 +285,7 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 }
 
 // FUNCTION: GOLDP 0x10026970
+// FUNCTION: LEGORACERS 0x00410810
 void GolMaterialLibrary::FUN_10026970()
 {
 	LegoU32 i;
@@ -369,4 +370,38 @@ void GolMaterialLibrary::VTable0x0c()
 void GolMaterialLibrary::VTable0x10()
 {
 	// empty
+}
+
+// FUNCTION: GOLDP 0x10028bc0
+void GolRenderDevice::AddMaterialList(GolMaterialLibrary* p_param)
+{
+	p_param->SetNext(m_materialLists);
+	m_materialLists = p_param;
+}
+
+// FUNCTION: GOLDP 0x10028bd0
+void GolRenderDevice::RemoveMaterialList(GolMaterialLibrary* p_param)
+{
+	GolMaterialLibrary* node = m_materialLists;
+
+	if (node != NULL) {
+		if (p_param == node) {
+			m_materialLists = node->GetNext();
+			return;
+		}
+
+		GolMaterialLibrary* previous = node;
+		node = node->GetNext();
+
+		while (node != NULL) {
+			if (node == p_param) {
+				previous->SetNext(node->GetNext());
+				node->SetNext(NULL);
+				return;
+			}
+
+			previous = node;
+			node = node->GetNext();
+		}
+	}
 }

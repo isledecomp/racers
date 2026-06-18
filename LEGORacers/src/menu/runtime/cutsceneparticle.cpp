@@ -133,8 +133,6 @@ void CutsceneParticle::FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* 
 // STUB: LEGORACERS 0x00489540
 void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 {
-	STUB(0x00489540);
-
 	// should be semantically correct, but does not match yet
 
 	LegoFloat dot;
@@ -253,8 +251,6 @@ void CutsceneParticle::FUN_004897c0()
 // STUB: LEGORACERS 0x004897e0
 void CutsceneParticle::FUN_004897e0(LegoU32 p_param1)
 {
-	STUB(0x004897e0);
-
 	// Matches up to allocation permutations and commutative multiplication
 
 	GolVec3 local18;

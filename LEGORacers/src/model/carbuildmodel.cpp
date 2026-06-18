@@ -6,8 +6,8 @@
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
+#include "golmateriallibrary.h"
 #include "golmodelbase.h"
-#include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "model/legocolortable.h"
 #include "render/gold3drenderdevice.h"
@@ -56,7 +56,7 @@ static const LegoFloat g_carBuildModelNegativePlaneEpsilon = -0.0049999999f;
 extern const LegoFloat g_carBuildModelHeightScale = 0.4f;
 
 // GLOBAL: LEGORACERS 0x004b053c
-static const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
+extern const LegoFloat g_carBuildModelTextureCoordinateScale = 0.25f;
 
 // GLOBAL: LEGORACERS 0x004b4938
 static const LegoFloat g_carBuildModelNegativeHeightScale = -0.4f;

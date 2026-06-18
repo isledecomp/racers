@@ -3933,9 +3933,9 @@ void GolD3DRenderDevice::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_t
 {
 	DuskwindBananaRelic0x24* material = m_unk0xc8530.m_material;
 	undefined4 firstTriangle = p_firstTriangle;
-	m_unk0xc8560 = firstTriangle;
+	m_unk0xc854c.m_firstTriangle = firstTriangle;
 	m_unk0xc854c.m_material = material;
-	m_unk0xc8564 = p_triangleCount;
+	m_unk0xc854c.m_triangleCount = p_triangleCount;
 	m_unk0xc8524->VTable0x0c(&m_unk0xc854c);
 }
 

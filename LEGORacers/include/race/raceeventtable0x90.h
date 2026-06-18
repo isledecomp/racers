@@ -14,8 +14,8 @@ public:
 	void FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c);
 	void FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08);
 	void FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08);
+	void FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08, void* p_unk0x0c);
 
-private:
 	// SIZE 0x20
 	class EntryBase {
 	public:
@@ -36,6 +36,7 @@ private:
 		undefined m_unk0x1d[0x20 - 0x1d]; // 0x1d
 	};
 
+private:
 	// SIZE 0x5c
 	class Entry0x5c : public EntryBase {
 	public:

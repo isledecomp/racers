@@ -147,6 +147,12 @@ void RaceSession::Field0x27f4::FUN_0041e770(const LegoChar* p_name, LegoBool32 p
 	FUN_0041e950();
 }
 
+// FUNCTION: LEGORACERS 0x0041e940 FOLDED
+RaceSession::Field0x27f4::Entry* RaceSession::Field0x27f4::FUN_0041e940(LegoU32 p_unk0x04)
+{
+	return &m_entries[p_unk0x04];
+}
+
 // STUB: LEGORACERS 0x0041e950
 void RaceSession::Field0x27f4::FUN_0041e950()
 {

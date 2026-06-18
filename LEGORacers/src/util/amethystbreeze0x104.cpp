@@ -8,7 +8,7 @@
 
 DECOMP_SIZE_ASSERT(AmethystBreeze0x104, 0x104)
 DECOMP_SIZE_ASSERT(GolD3DRenderState::CommandVertex, 0x20)
-DECOMP_SIZE_ASSERT(GolD3DRenderState::MaterialCommand, 0x10)
+DECOMP_SIZE_ASSERT(GolD3DRenderState::MaterialCommand, 0x1c)
 DECOMP_SIZE_ASSERT(GolD3DRenderState::DrawCommand, 0x1c)
 
 // GLOBAL: LEGORACERS 0x004be2d8

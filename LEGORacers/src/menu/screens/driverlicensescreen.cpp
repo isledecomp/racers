@@ -187,8 +187,6 @@ LegoBool32 DriverLicenseScreen::Destroy()
 // STUB: LEGORACERS 0x0047b580
 LegoBool32 DriverLicenseScreen::FUN_0047b580()
 {
-	STUB(0x0047b580);
-
 	GolString name;
 	DriverCosmetics cosmetics;
 	undefined2 buffer[24];
@@ -238,8 +236,6 @@ void DriverLicenseScreen::FUN_0047b6b0()
 // STUB: LEGORACERS 0x0047b750
 void DriverLicenseScreen::FUN_0047b750()
 {
-	STUB(0x0047b750);
-
 	if (m_cheatString.SelectionLength() == 0) {
 		m_unk0x360 = 0xffff;
 		m_unk0x364 = FALSE;
@@ -278,8 +274,6 @@ void DriverLicenseScreen::VTable0x84()
 // STUB: LEGORACERS 0x0047b850
 void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 {
-	STUB(0x0047b850);
-
 	if (p_source == &m_unk0x798) {
 		LegoS32 colorIndex = GetUnk0x2244().m_expressionIndex;
 		colorIndex++;

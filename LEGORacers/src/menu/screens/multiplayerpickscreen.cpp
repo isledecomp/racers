@@ -169,8 +169,6 @@ LegoBool32 MultiplayerPickScreen::VTable0x18(
 	undefined4
 )
 {
-	STUB(0x00481c80);
-
 	LegoBool32 result = TRUE;
 
 	if (m_unk0x364) {

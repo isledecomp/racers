@@ -192,7 +192,7 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p
 
 	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(m_unk0x18);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
-	p_renderer->m_unk0xc855c = p_renderer->m_unk0xc4c18;
+	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
 	LegoU32* group = m_unk0x24;
 	LegoU32* end = m_unk0x24 + m_countGroups;
@@ -292,7 +292,7 @@ void GolModel::FUN_10006e00(
 
 	GdbModelIndexArray0xc* indexArray = static_cast<GdbModelIndexArray0xc*>(m_unk0x18);
 	p_renderer->m_unk0xc4c18 = indexArray->GetIndexBytes();
-	p_renderer->m_unk0xc855c = p_renderer->m_unk0xc4c18;
+	p_renderer->m_unk0xc854c.m_indices = p_renderer->m_unk0xc4c18;
 
 	LegoU32* group = m_unk0x24 + p_node->m_firstGroup;
 	LegoU32* end = m_unk0x24 + (p_node->m_firstGroup + p_node->m_groupCount);

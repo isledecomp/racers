@@ -50,9 +50,11 @@ public:
 	public:
 		class Field0x5c {
 		public:
-			virtual void VTable0x00() = 0;           // vtable+0x00
-			virtual void VTable0x04(undefined*) = 0; // vtable+0x04
+			virtual void VTable0x00() = 0;      // vtable+0x00
+			virtual void VTable0x04(void*) = 0; // vtable+0x04
 		};
+
+		Field0x5c* GetUnk0x5c() const { return m_unk0x5c; }
 
 	private:
 		friend class RaceEventDispatcher0x08;
@@ -70,7 +72,7 @@ public:
 	void FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c);
 	void FUN_0048ac30(LegoS32 p_unk0x04, void* p_context);
 	void FUN_0048aca0(LegoS32 p_unk0x04, void* p_context);
-	void FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08, Context* p_context);
+	void FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_context);
 	void FUN_0048add0(undefined4 p_unk0x04);
 	void FUN_0048ae00(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08);
 	void FUN_0048ae30(GolD3DRenderDevice* p_renderer);

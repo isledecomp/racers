@@ -325,8 +325,6 @@ undefined4 OptionsRow::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4
 // STUB: LEGORACERS 0x0046e810
 MenuWidget* OptionsRow::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 {
-	STUB(0x0046e810);
-
 	MenuIcon::VTable0x2c(p_item, p_x, p_y);
 
 	if (!(m_flags & 8)) {

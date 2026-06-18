@@ -50,7 +50,7 @@ RaceSession::Field0x2098::Resource::~Resource()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0045eda0
+// FUNCTION: LEGORACERS 0x0045eda0
 void RaceSession::Field0x2098::Resource::Reset()
 {
 	m_unk0x04 = NULL;

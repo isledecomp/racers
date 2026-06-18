@@ -194,8 +194,6 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	GolVec3* p_param4
 )
 {
-	STUB(0x00489d70);
-
 	Runtime* runtime = static_cast<Runtime*>(GetName(p_param1));
 
 	LegoU32 refIndex = 0;
@@ -2018,8 +2016,6 @@ void CutscenePlayer::FUN_004a2f30(GolD3DRenderDevice* p_renderer)
 // STUB: LEGORACERS 0x004a2f80
 void CutscenePlayer::FUN_004a2f80(GolCamera* p_lens)
 {
-	STUB(0x004a2f80);
-
 	GolVec3 position;
 	GolVec3 right;
 	GolVec3 forward;
@@ -2667,8 +2663,6 @@ void CutsceneStreamingSoundEvent::VTable0x14()
 // STUB: LEGORACERS 0x004a43a0
 void CutsceneStreamingSoundEvent::FUN_004a43a0(const GolVec3* p_position)
 {
-	STUB(0x004a43a0);
-
 	if (m_unk0x30 == NULL) {
 		m_unk0x30 = m_unk0x14->CreateStreamingSoundInstance(m_unk0x2e);
 		m_unk0x30->Play(m_unk0x2c);
@@ -2739,8 +2733,6 @@ void CutsceneStreamingSoundEvent::VTable0x18()
 // STUB: LEGORACERS 0x004a44f0
 void CutsceneStreamingSoundEvent::FUN_004a44f0()
 {
-	STUB(0x004a44f0);
-
 	if (m_unk0x30) {
 		if (!m_unk0x30->IsPlaying()) {
 			if (m_unk0x48 & c_flagBit3) {

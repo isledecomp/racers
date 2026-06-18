@@ -1,11 +1,17 @@
 #include "core/gol.h"
 #include "decomp.h"
 #include "gdbmodelindexarray0xc.h"
+#include "golerror.h"
 #include "mesh/golmodel.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
+#include <float.h>
+
 extern LegoFloat g_unk0x4b05d8;
+
+// GLOBAL: LEGORACERS 0x004b4790
+const LegoFloat g_raceSessionField0x27c8MaxFloat = FLT_MAX;
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x27c8, 0x0c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x27c8::Item, 0x2a4)
@@ -79,6 +85,21 @@ void RaceSession::Field0x27c8::Item::Reset()
 			m_unk0x0dc[i].m_unk0x04[j].m_z = 0.0f;
 		}
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00492a50
+void RaceSession::Field0x27c8::Item::FUN_00492a50(GolD3DRenderDevice* p_renderer, GolExport* p_golExport)
+{
+	m_unk0x004 = p_golExport;
+	m_unk0x008 = p_golExport->VTable0x14();
+	m_unk0x008->VTable0x18(p_renderer, 1, 0x6a, 0x35, 4, 1);
+	m_unk0x00c.VTable0x50(m_unk0x008, g_raceSessionField0x27c8MaxFloat);
+}
+
+// FUNCTION: LEGORACERS 0x00492a90
+void RaceSession::Field0x27c8::Item::FUN_00492a90(GolD3DRenderDevice*, DuskwindBananaRelic0x24* p_material)
+{
+	m_unk0x008->GetMaterialTable()->SetPosition(0, p_material);
 }
 
 // STUB: LEGORACERS 0x00492be0
@@ -411,10 +432,26 @@ void RaceSession::Field0x27c8::Destroy()
 	m_count = 0;
 }
 
-// STUB: LEGORACERS 0x00493850
-void RaceSession::Field0x27c8::FUN_00493850(GolD3DRenderDevice*, GolExport*, LegoU32)
+// FUNCTION: LEGORACERS 0x00493850
+void RaceSession::Field0x27c8::FUN_00493850(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoU32 p_count)
 {
-	STUB(0x493850);
+	if (m_items) {
+		Destroy();
+	}
+
+	m_items = new Item[p_count];
+	if (m_items == NULL) {
+		GOL_FATALERROR(c_golErrorOutOfMemory);
+	}
+
+	m_count = p_count;
+	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName("streak");
+
+	LegoU32 i;
+	for (i = 0; i < m_count; i++) {
+		m_items[i].FUN_00492a50(p_renderer, p_golExport);
+		m_items[i].FUN_00492a90(p_renderer, material);
+	}
 }
 
 // STUB: LEGORACERS 0x00493950

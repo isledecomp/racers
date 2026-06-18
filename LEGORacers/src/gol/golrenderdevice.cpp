@@ -2,9 +2,9 @@
 
 #include "font/golfont.h"
 #include "font/golfontlibrary.h"
+#include "golmateriallibrary.h"
 #include "image/utopianpan0xa4.h"
 #include "material/golimagelist.h"
-#include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "scene/golbillboard.h"
 

@@ -398,8 +398,6 @@ void MenuScreen::ApplySelectorDefaults(
 	MenuStyleTable::SelectorStyle* p_styleEntry
 )
 {
-	STUB(0x0046bb90);
-
 	ApplyIconDefaults(p_createParams);
 	ApplyIconDefaults(p_createParams->m_unk0x84);
 	ApplyIconDefaults(p_createParams->m_unk0x88);

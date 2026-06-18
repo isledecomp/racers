@@ -18,6 +18,7 @@ class GolModelBase;
 class GolTextureList;
 class GolAnimatedEntity;
 class GolSceneNode;
+class RaceState;
 
 // VTABLE: LEGORACERS 0x004b00a4
 // SIZE 0x80
@@ -32,7 +33,7 @@ public:
 		GolExport* m_golExport;         // 0x00
 		GolD3DRenderDevice* m_renderer; // 0x04
 		undefined4 m_entryCapacity;     // 0x08
-		LegoChar* m_filename;           // 0x0c
+		const LegoChar* m_filename;     // 0x0c
 		undefined4 m_binary;            // 0x10
 	};
 
@@ -70,6 +71,8 @@ public:
 	// DriverCosmeticTable::`scalar deleting destructor'
 
 private:
+	friend class RaceState;
+
 	void Reset();
 	void ClearEntries();
 	GolAnimatedEntity* LoadEntry(Entry* p_entry);

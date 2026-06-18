@@ -17,6 +17,7 @@ class GolTextureList;
 class GolAnimatedEntity;
 class GolSceneNode;
 class GolFileParser;
+class RaceState;
 
 // VTABLE: LEGORACERS 0x004afe70
 // SIZE 0x3c
@@ -74,6 +75,8 @@ public:
 	};
 
 private:
+	friend class RaceState;
+
 	void Reset();
 	void FUN_0041dae0();
 	void ParseVariantNames(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant);

@@ -11,6 +11,9 @@
 // GLOBAL: LEGORACERS 0x004b1484
 extern const LegoFloat g_unk0x004b1484 = 3.0f;
 
+// GLOBAL: LEGORACERS 0x004b14ac
+extern const LegoFloat g_unk0x004b14ac = 0.80000001f;
+
 // GLOBAL: LEGORACERS 0x004b170c
 extern const LegoFloat g_unk0x004b170c = 30.0f;
 
@@ -83,7 +86,7 @@ RaceSession::Field0x6dc::Field0x18a0::~Field0x18a0()
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void RaceSession::Field0x6dc::Field0x18a0::FUN_004519d0(Field0x64** p_unk0x04, undefined4 p_unk0x08)
+void RaceSession::Field0x6dc::Field0x18a0::FUN_004519d0(Field0x64** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
 {
 	if (m_unk0x004 != 0) {
 		FUN_00451a10();
@@ -143,7 +146,7 @@ void RaceSession::Field0x6dc::Field0x189c::FUN_00452510()
 // FUNCTION: LEGORACERS 0x00452530
 void RaceSession::Field0x6dc::Field0x189c::FUN_00452530(
 	Field0x074* p_unk0x04,
-	undefined4 p_unk0x08,
+	RaceSessionField0x32b4* p_unk0x08,
 	Field0x6dc* p_unk0x0c
 )
 {
@@ -184,7 +187,7 @@ void RaceSession::Field0x6dc::Field0x1898::FUN_00452eb0()
 // FUNCTION: LEGORACERS 0x00452ee0
 void RaceSession::Field0x6dc::Field0x1898::FUN_00452ee0(
 	Field0x074* p_unk0x04,
-	undefined4 p_unk0x08,
+	RaceSessionField0x32b4* p_unk0x08,
 	Field0x6dc* p_unk0x0c,
 	undefined4 p_unk0x10,
 	GolModelEntity* p_model
@@ -289,39 +292,25 @@ void RaceSession::Field0x6dc::Field0x68Field0x02c::FUN_00453690(LegoU32 p_elapse
 	}
 }
 
-// STUB: LEGORACERS 0x00453750
-void RaceSession::Field0x6dc::Field0x68Field0x02c::VTable0x04(RaceState::Racer*)
+// FUNCTION: LEGORACERS 0x00453750
+void RaceSession::Field0x6dc::Field0x68Field0x02c::VTable0x04(RaceState::Racer* p_racer)
 {
-	STUB(0x00453750);
-}
-
-void RaceSession::Field0x6dc::Field0x68Field0x02c::FUN_004537f0()
-{
-	LegoU8 flags = m_flags0x64;
-	LegoU32 state = m_unk0x3c;
-	flags &= ~c_flags0x64Bit0;
-	m_unk0x60 = 0;
-	m_flags0x64 = flags;
-
-	if (state) {
-		m_unk0x08.VTable0x08(m_unk0x54);
-		m_unk0x3c = c_stateActive;
-	}
-	else {
+	if (m_unk0x3c == c_stateIdle && p_racer->FUN_00439420(this)) {
+		m_unk0x40 = c_stateWait;
 		m_unk0x3c = c_stateTransition;
-		m_flags0x64 = flags | c_flags0x64Bit1;
+		m_unk0x4c = 0;
+		m_flags0x64 &= ~c_flags0x64Bit0;
+		m_unk0x60 = 0;
 	}
-
-	m_unk0x4c = 0;
 }
 
-// STUB: LEGORACERS 0x00453910
+// FUNCTION: LEGORACERS 0x00453910
 RaceSession::Field0x6dc::Field0x68::Field0x68()
 {
 	FUN_00453970();
 }
 
-// STUB: LEGORACERS 0x00453960
+// FUNCTION: LEGORACERS 0x00453960
 RaceSession::Field0x6dc::Field0x68::~Field0x68()
 {
 	FUN_00453a10();
@@ -411,11 +400,11 @@ void RaceSession::Field0x6dc::Field0x68::FUN_00453a20(LegoU32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x00453ad0
+// FUNCTION: LEGORACERS 0x00453ad0
 void RaceSession::Field0x6dc::Field0x68::FUN_00453ad0(LegoBool32 p_unk0x04)
 {
 	if (p_unk0x04) {
-		m_unk0x30 = 0.80000001f;
+		m_unk0x30 = g_unk0x004b14ac;
 	}
 	else {
 		m_unk0x30 = 0.0f;
@@ -483,7 +472,7 @@ RaceSession::Field0x6dc::Field0x18a4::~Field0x18a4()
 // FUNCTION: LEGORACERS 0x00453cd0
 void RaceSession::Field0x6dc::Field0x18a4::FUN_00453cd0(
 	Field0x6dc* p_unk0x04,
-	undefined4 p_unk0x08,
+	RaceSessionField0x32b4* p_unk0x08,
 	undefined4 p_unk0x0c
 )
 {
@@ -686,7 +675,7 @@ void RaceSession::Field0x6dc::Field0x1890::FUN_004557e0()
 void RaceSession::Field0x6dc::Field0x1890::FUN_00455810(
 	Field0x6dc* p_unk0x04,
 	Field0x074* p_unk0x08,
-	undefined4 p_unk0x0c,
+	RaceSessionField0x32b4* p_unk0x0c,
 	undefined4,
 	Field0x0*,
 	GolD3DRenderDevice*,
@@ -725,7 +714,7 @@ RaceSession::Field0x6dc::Field0x18ac::~Field0x18ac()
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void RaceSession::Field0x6dc::Field0x18ac::FUN_00456510(Field0x64** p_unk0x04, undefined4 p_unk0x08)
+void RaceSession::Field0x6dc::Field0x18ac::FUN_00456510(Field0x64** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
 {
 	if (m_unk0x004 != 0) {
 		FUN_00456540();
@@ -778,7 +767,7 @@ void RaceSession::Field0x6dc::Field0x1894::FUN_004571b0(
 	Field0x6dc* p_unk0x04,
 	Field0x074* p_unk0x08,
 	RaceSessionField0x27d4::Item::Field0x004::Params* p_unk0x0c,
-	undefined4 p_unk0x10,
+	RaceSessionField0x32b4* p_unk0x10,
 	undefined4 p_unk0x14,
 	GolRenderDevice* p_renderer,
 	Field0x0* p_export

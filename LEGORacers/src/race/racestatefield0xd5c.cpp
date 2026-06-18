@@ -1,8 +1,5 @@
-#include "race/racesessionfield0x32b4.h"
-#include "race/racestate.h"
+#include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c::Field0x04, 0x6c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c::Field0x08, 0x04)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xd5c, 0x68)
 
 // GLOBAL: LEGORACERS 0x004b1480
@@ -21,39 +18,36 @@ LegoU8 RaceState::Racer::Field0xd5c::FUN_00453790(GolVec3 p_unk0x04)
 	position.m_z = p_unk0x04.m_z;
 
 	FUN_00453840(&position);
-	m_unk0x08.VTable0x08(&position);
+	m_unk0x08.VTable0x08(position);
 
-	LegoU8 flags = m_unk0x64;
+	LegoU8 flags = m_flags0x64;
 	m_unk0x3c = 2;
 	LegoU8 result = flags | 1;
 	m_unk0x4c = 0;
-	m_unk0x64 = result;
+	m_flags0x64 = result;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x004537f0
-LegoU8 RaceState::Racer::Field0xd5c::FUN_004537f0()
+void RaceState::Racer::Field0xd5c::FUN_004537f0()
 {
 	LegoU32 state = m_unk0x3c;
-	LegoU8 flags = m_unk0x64;
+	LegoU8 flags = m_flags0x64;
 	flags &= 0xfe;
 	m_unk0x60 = 0;
-	m_unk0x64 = flags;
+	m_flags0x64 = flags;
 
-	LegoU8 result;
-	result = flags;
 	if (!state) {
-		result |= 2;
+		flags |= 2;
 		m_unk0x3c = 3;
-		m_unk0x64 = result;
+		m_flags0x64 = flags;
 		m_unk0x4c = 0;
-		return result;
+		return;
 	}
 
-	result = m_unk0x08.VTable0x08(&m_unk0x54);
+	m_unk0x08.VTable0x08(m_unk0x54);
 	m_unk0x3c = 2;
 	m_unk0x4c = 0;
-	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00453840
@@ -71,7 +65,7 @@ LegoS32 RaceState::Racer::Field0xd5c::FUN_00453840(GolVec3* p_unk0x04)
 	end.m_y = p_unk0x04->m_y;
 	end.m_z = p_unk0x04->m_z - g_unk0x004b1488;
 
-	LegoS32 result = m_unk0x04->m_unk0x68->FUN_0041f4d0(&start, &end, &record, p_unk0x04, NULL);
+	LegoS32 result = m_unk0x04->m_unk0x068->FUN_0041f4d0(&start, &end, &record, p_unk0x04, NULL);
 	p_unk0x04->m_z = p_unk0x04->m_z + g_unk0x004b1480;
 	return result;
 }

@@ -183,8 +183,6 @@ LegoU32 SaveGame::CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size)
 // STUB: LEGORACERS 0x00442a00
 void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 {
-	STUB(0x00442a00);
-
 	const LegoU8* data = m_fileImage;
 	const LegoU8* source = &data[c_persistentHeaderOffset];
 	LegoU32 i;
@@ -235,8 +233,6 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 // STUB: LEGORACERS 0x00442c20
 void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 {
-	STUB(0x00442c20);
-
 	LegoU8* data = m_fileImage;
 	LegoU8* dest = &data[c_persistentHeaderOffset];
 	LegoU32 i;

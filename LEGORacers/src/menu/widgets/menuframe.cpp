@@ -79,8 +79,6 @@ LegoBool32 MenuFrame::FUN_0046edf0(CreateParams* p_createParams)
 // STUB: LEGORACERS 0x0046ee40
 void MenuFrame::VTable0x10(Rect* p_rect)
 {
-	STUB(0x0046ee40);
-
 	MenuWidget::VTable0x10(p_rect);
 
 	if (m_flags & 1) {

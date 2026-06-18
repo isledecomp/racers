@@ -13,6 +13,7 @@
 class GolPaletteBase;
 class GolCommonDrawState;
 class GolImgFile;
+class GolTextureList;
 
 // SIZE 0x18
 struct MipmapLevel {
@@ -99,6 +100,8 @@ public:
 	// PurpleDune0x7c::`vector deleting destructor'
 
 private:
+	friend class GolTextureList;
+
 	GolName m_name;                    // 0x38
 	GolPaletteBase* m_palette;         // 0x40
 	MipmapLevel* m_mipmaps;            // 0x44

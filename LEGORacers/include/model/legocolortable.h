@@ -2,7 +2,7 @@
 #define LEGOCOLORTABLE_H
 
 #include "decomp.h"
-#include "material/golmateriallibrary.h"
+#include "golmateriallibrary.h"
 #include "scene/golbillboard.h"
 #include "types.h"
 

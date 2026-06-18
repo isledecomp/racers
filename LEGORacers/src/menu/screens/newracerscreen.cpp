@@ -35,8 +35,6 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 // STUB: LEGORACERS 0x00482160
 void NewRacerScreen::VTable0x4c()
 {
-	STUB(0x00482160);
-
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 
 	SaveRecordList* records;

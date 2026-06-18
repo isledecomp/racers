@@ -8,6 +8,7 @@
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
 #include "golhashtable.h"
+#include "golmateriallibrary.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "golmodelmaterialtable.h"
@@ -16,7 +17,6 @@
 #include "input/inputmanager.h"
 #include "input/keyboarddevice.h"
 #include "material/awakekite0x20.h"
-#include "material/golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "menu/menuscreenid.h"
 #include "menu/screens/menugamescreen.h"
@@ -548,8 +548,6 @@ void MenuManager::Run()
 // STUB: LEGORACERS 0x0042d730
 void MenuManager::FUN_0042d730()
 {
-	STUB(0x0042d730);
-
 	GolString string;
 	GolRenderDevice::MaterialColor materialColor;
 	GolRenderDevice::Light light;
@@ -843,8 +841,6 @@ void MenuManager::FUN_0042dfa0(
 	AmethystBreeze0x104* p_rendererState
 )
 {
-	STUB(0x0042dfa0);
-
 	GolAnimatedEntity entity;
 	CmbModelPart0x34 modelParts;
 	LegoU32 textureCount;
@@ -1040,8 +1036,6 @@ LegoBool32 MenuManager::FUN_0042e450()
 // STUB: LEGORACERS 0x0042e490
 LegoS32 MenuManager::FUN_0042e490()
 {
-	STUB(0x0042e490);
-
 	LegoU8 flags = m_unk0x04.m_context->m_unk0x1e;
 
 	if (!(flags & LegoRacers::Context::c_flagBestTimesPending)) {

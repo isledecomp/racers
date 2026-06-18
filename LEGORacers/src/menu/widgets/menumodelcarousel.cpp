@@ -103,8 +103,6 @@ LegoBool32 MenuModelCarousel::VTable0x08()
 // STUB: LEGORACERS 0x0046cc10
 void MenuModelCarousel::FUN_0046cc10(CreateParams* p_createParams)
 {
-	STUB(0x0046cc10);
-
 	m_unk0xb4 = p_createParams->m_unk0x48[7];
 	m_unk0x80 = m_golExport->VTable0x20();
 	m_unk0x80->m_fov = p_createParams->m_unk0x48[6];
@@ -206,8 +204,6 @@ void MenuModelCarousel::FUN_0046ce10(CreateParams* p_createParams)
 // STUB: LEGORACERS 0x0046cf20
 void MenuModelCarousel::FUN_0046cf20()
 {
-	STUB(0x0046cf20);
-
 	LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
 	LegoS32 height = m_unk0x34.m_bottom - m_unk0x34.m_top;
 	LegoS32 halfWidth = -(width >> 1);

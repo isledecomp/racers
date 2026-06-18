@@ -127,8 +127,6 @@ LegoBool32 AwardCinematicScreen::Destroy()
 // STUB: LEGORACERS 0x00475f40
 void AwardCinematicScreen::VTable0x4c()
 {
-	STUB(0x00475f40);
-
 	struct ResourcePathLocals {
 		LegoChar m_name[12];
 		GolString m_string;

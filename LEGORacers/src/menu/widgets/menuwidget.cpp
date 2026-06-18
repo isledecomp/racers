@@ -213,43 +213,43 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 // STUB: LEGORACERS 0x00472c80
 Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
 {
-	STUB(0x00472c80);
-
-	LegoU32 sourceTop = p_source->m_top;
-	LegoU32 sourceHeight = p_source->m_bottom;
-	LegoS32 sourceLeft = p_source->m_left;
-	LegoU32 sourceWidth = p_source->m_right;
+	Rect* source = p_source;
+	LegoU32 sourceTop = source->m_top;
+	LegoU32 sourceHeight = source->m_bottom;
+	LegoS32 sourceLeft = source->m_left;
+	LegoU32 sourceWidth = source->m_right;
 	sourceHeight -= sourceTop;
-
-	LegoU32 destWidth = p_dest->m_right;
-	LegoS32 destLeft = p_dest->m_left;
 	sourceWidth -= sourceLeft;
+
+	Rect* dest = p_dest;
+	LegoU32 destWidth = dest->m_right;
+	LegoS32 destLeft = dest->m_left;
 	destWidth -= destLeft;
 
-	LegoU32 destHeight = p_dest->m_bottom;
-	destHeight -= p_dest->m_top;
+	LegoU32 destHeight = dest->m_bottom;
+	destHeight -= dest->m_top;
 
 	if (sourceWidth > destWidth) {
 		LegoU32 inset = (sourceWidth - destWidth) >> 1;
-		p_dest->m_left = sourceLeft + inset;
-		p_dest->m_right = p_source->m_right - inset;
+		dest->m_left = sourceLeft + inset;
+		dest->m_right = source->m_right - inset;
 	}
 	else {
-		p_dest->m_left = sourceLeft;
-		p_dest->m_right = p_source->m_right;
+		dest->m_left = sourceLeft;
+		dest->m_right = source->m_right;
 	}
 
 	if (sourceHeight > destHeight) {
 		LegoU32 inset = (sourceHeight - destHeight) >> 1;
-		p_dest->m_top = p_source->m_top + inset;
-		p_dest->m_bottom = p_source->m_bottom - inset;
+		dest->m_top = source->m_top + inset;
+		dest->m_bottom = source->m_bottom - inset;
 	}
 	else {
-		p_dest->m_top = p_source->m_top;
-		p_dest->m_bottom = p_source->m_bottom;
+		dest->m_top = source->m_top;
+		dest->m_bottom = source->m_bottom;
 	}
 
-	return p_dest;
+	return dest;
 }
 
 // FUNCTION: LEGORACERS 0x00472d00

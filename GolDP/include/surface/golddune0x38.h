@@ -5,6 +5,7 @@
 
 class GolRenderDevice;
 class GolImgFile;
+class GolTextureList;
 
 // VTABLE: GOLDP 0x1005766c
 // SIZE 0x38
@@ -71,6 +72,8 @@ public:
 	// GoldDune0x38::`scalar deleting destructor'
 
 protected:
+	friend class GolTextureList;
+
 	ColorRGBA m_colorKey; // 0x30
 	undefined2 m_unk0x34; // 0x34
 	LegoU16 m_unk0x36;    // 0x36

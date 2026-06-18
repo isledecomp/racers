@@ -50,10 +50,26 @@ void SlateBridge0x68::Reset()
 	m_unk0x64 = 0;
 }
 
-// STUB: LEGORACERS 0x004272c0
-void SlateBridge0x68::FUN_004272c0(GolFontBase*, GolD3DRenderDevice*, GolStringTable*, undefined4)
+// FUNCTION: LEGORACERS 0x004272c0
+void SlateBridge0x68::FUN_004272c0(
+	GolFontBase* p_font,
+	GolD3DRenderDevice* p_renderer,
+	GolStringTable* p_stringTable,
+	LegoU32 p_keyCode
+)
 {
-	STUB(0x4272c0);
+	if (m_font) {
+		Destroy();
+	}
+
+	m_renderer = p_renderer;
+	m_font = p_font;
+	m_stringTable = p_stringTable;
+	m_unk0x64 = p_keyCode;
+
+	if (p_keyCode == c_keyboardPrevious || p_keyCode == c_keyboardNext) {
+		m_unk0x64 = c_keyboardEnter;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00427310

@@ -31,12 +31,15 @@ public:
 		};
 	};
 
-	// SIZE 0x10
+	// SIZE 0x1c
 	struct MaterialCommand {
 		GolD3DRenderDevice* m_renderer;      // 0x00
 		GolModelEntity* m_model;             // 0x04
 		DuskwindBananaRelic0x24* m_material; // 0x08
 		const CommandVertex* m_vertices;     // 0x0c
+		LegoU8* m_indices;                   // 0x10
+		LegoU32 m_firstTriangle;             // 0x14
+		LegoU32 m_triangleCount;             // 0x18
 	};
 
 	// SIZE 0x1c

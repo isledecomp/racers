@@ -79,8 +79,6 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 // STUB: LEGORACERS 0x00484f40
 void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 {
-	STUB(0x00484f40);
-
 	MenuWidget* source = p_source;
 
 	if (source == &m_unk0x46a8) {

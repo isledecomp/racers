@@ -66,7 +66,7 @@ private:
 		GolFontBase* p_font,
 		GolD3DRenderDevice* p_renderer,
 		GolStringTable* p_stringTable,
-		undefined4 p_unk0x10
+		LegoU32 p_keyCode
 	);
 	void FUN_004276c0();
 

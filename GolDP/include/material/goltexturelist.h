@@ -9,6 +9,7 @@
 class GolD3DRenderDevice;
 class GoldDune0x38;
 class PurpleDune0x7c;
+class RaceState;
 
 // SIZE 0x2c
 struct MagentaRibbonSourceItem0x2c {
@@ -87,6 +88,8 @@ public:
 	LegoU32 GetItemCount() const { return m_numItems; }
 
 protected:
+	friend class RaceState;
+
 	void LoadTextures();
 
 	GolD3DRenderDevice* m_renderer;    // 0x0c

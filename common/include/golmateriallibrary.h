@@ -6,6 +6,7 @@
 #include "goltxtparser.h"
 
 class GolRenderDevice;
+class RaceState;
 
 class DuskwindBananaRelicProvider0x4 {
 public:
@@ -56,6 +57,8 @@ public:
 	LegoU32 GetItemCount() const { return m_numItems; }
 
 protected:
+	friend class RaceState;
+
 	void FUN_10026970();
 
 	GolRenderDevice* m_renderer;               // 0x0c

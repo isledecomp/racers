@@ -75,8 +75,6 @@ LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 // STUB: LEGORACERS 0x00442ef0
 SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 {
-	STUB(0x00442ef0);
-
 	m_unk0x24 = p_mask;
 	m_unk0x18 = 0;
 	m_unk0x1c = 0;
@@ -197,22 +195,16 @@ SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
 // STUB: LEGORACERS 0x004430e0
 SaveRecordList::Record* RacerUnlockState::FUN_004430e0(SaveRecordList::Record* p_record)
 {
-	STUB(0x004430e0);
-
-	SaveRecordList::Record* targetRecord = p_record;
-
 	if (m_unk0x20 != 0) {
+		SaveRecordList::Record* targetRecord = p_record;
 		SaveRecordList::Record* firstRecord = FUN_004430b0();
 		for (;;) {
 			SaveRecordList::Record* record = FUN_00442fe0();
-			if (record == firstRecord) {
-				if (record == targetRecord) {
-					return record;
-				}
-				break;
-			}
 			if (record == targetRecord) {
 				return record;
+			}
+			if (record == firstRecord) {
+				break;
 			}
 		}
 	}

@@ -8,6 +8,8 @@ class GolRenderDevice;
 
 // SIZE 0x0c
 struct MaterialTable0x0c {
+	MaterialTable0x0c* FUN_004a00b0();
+	void Destroy();
 	void Initialize(GolRenderDevice* p_renderer, LegoU32 p_count);
 	void Clear();
 	LegoS32 FindEntryIndexByName(const LegoChar* p_name) const;

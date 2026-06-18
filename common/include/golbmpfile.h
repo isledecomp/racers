@@ -30,6 +30,9 @@ public:
 	// SYNTHETIC: GOLDP 0x1001f1d0 FOLDED
 	// GolBmpFile::~GolBmpFile
 
+	// SYNTHETIC: LEGORACERS 0x0040a8a0 FOLDED
+	// ??1GolBmpFile@@UAE@XZ
+
 private:
 	LegoChar m_unk0x5b0[0x40];  // 0x5b0
 	LegoU8 m_unk0x5f0[3 * 256]; // 0x5f0

@@ -240,7 +240,7 @@ void GolDPExport::DestroyFont(GolFontBase* p_obj)
 }
 
 // FUNCTION: GOLDP 0x100156a0
-void GolDPExport::VTable0x64(undefined4* p_obj)
+void GolDPExport::VTable0x64(GolWorldEntity* p_obj)
 {
 	if (p_obj != NULL) {
 		delete p_obj;

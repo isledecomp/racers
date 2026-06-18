@@ -156,6 +156,7 @@ public:
 	LegoU32 GetUnk0x4c() const { return m_unk0x4c; }
 	LegoU32 GetUnk0x54() const { return m_unk0x54; }
 	LegoU32 GetUnk0x5c() const { return m_unk0x5c; }
+	LegoU32 GetUnk0x64() const { return m_unk0x64; }
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 	LegoU32 GetUnk0x74() const { return m_unk0x74; }
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
@@ -163,6 +164,8 @@ public:
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }
 	GolModelEntity* GetUnk0x9c() const { return m_unk0x9c; }
 	GolAnimatedEntity* GetUnk0xa0() const { return m_unk0xa0; }
+	GolCollidableEntity* GetUnk0xa4() const { return m_unk0xa4; }
+	GolBoundedEntity* GetUnk0xa8() const { return m_unk0xa8; }
 	GolRenderDevice::MaterialColor* GetUnk0xac() { return m_unk0xac; }
 	const GolRenderDevice::MaterialColor* GetUnk0xac() const { return m_unk0xac; }
 	GolRenderDevice::Light* GetUnk0xb0() { return m_unk0xb0; }
@@ -183,7 +186,11 @@ public:
 	}
 	GolModelEntity* FindUnk0xb4(const LegoChar* p_name) const
 	{
-		return m_unk0xb4.GetNameEntries() ? static_cast<GolModelEntity*>(m_unk0xb4.GetName(p_name)) : NULL;
+		if (m_unk0xb4.GetNameEntries() == NULL) {
+			return NULL;
+		}
+
+		return static_cast<GolModelEntity*>(m_unk0xb4.GetName(p_name));
 	}
 	GolAnimatedEntity* FindUnk0xc0(const LegoChar* p_name) const
 	{
@@ -196,9 +203,21 @@ public:
 	{
 		return m_unk0xcc.GetNameEntries() ? static_cast<GolCollidableEntity*>(m_unk0xcc.GetName(p_name)) : NULL;
 	}
+	GolBoundedEntity* FindUnk0xd8(const LegoChar* p_name) const
+	{
+		if (m_unk0xd8.GetNameEntries() == NULL) {
+			return NULL;
+		}
+
+		return static_cast<GolBoundedEntity*>(m_unk0xd8.GetName(p_name));
+	}
 	GolCamera* FindUnk0xe4(const LegoChar* p_name) const
 	{
-		return m_unk0xe4.GetNameEntries() ? static_cast<GolCamera*>(m_unk0xe4.GetName(p_name)) : NULL;
+		if (m_unk0xe4.GetNameEntries() == NULL) {
+			return NULL;
+		}
+
+		return static_cast<GolCamera*>(m_unk0xe4.GetName(p_name));
 	}
 
 protected:

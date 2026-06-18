@@ -1,4 +1,5 @@
 #include "camera/golcamerabase.h"
+#include "golfileparser.h"
 #include "race/racestate.h"
 
 #include <math.h>
@@ -536,6 +537,30 @@ void RaceState::Racer::Field0xc70::Field0x050::FUN_004a5750(GolVec3* p_delta)
 	startPoint->GetRotation(&m_unk0x54);
 	endPoint->GetRotation(&m_unk0x64);
 	FUN_004a5320(0.0f);
+}
+
+// FUNCTION: LEGORACERS 0x004a5e10
+void RaceState::Racer::Field0x00c::Entry::PathPoint::FUN_004a5e10(GolFileParser* p_parser, LegoBool32 p_mirror)
+{
+	m_unk0x00 = static_cast<LegoS16>(p_parser->ReadInteger());
+	m_unk0x02 = static_cast<LegoS16>(p_parser->ReadInteger());
+	m_unk0x04 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x05 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x06 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x07 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x08 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x09 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x0a = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_unk0x0b = static_cast<LegoU8>(p_parser->ReadInteger());
+
+	if (p_mirror) {
+		LegoS8 temp = m_unk0x09;
+		m_unk0x09 = m_unk0x0a;
+		m_unk0x0a = temp;
+		m_unk0x02 = -m_unk0x02;
+		m_unk0x06 = -m_unk0x06;
+		m_unk0x08 = -m_unk0x08;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004a5ec0

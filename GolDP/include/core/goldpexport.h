@@ -39,7 +39,7 @@ public:
 	void VTable0x58(undefined4*) override;                     // vtable+0x58
 	void VTable0x5c(WhiteBaffoon0x50*) override;               // vtable+0x5c
 	void DestroyFont(GolFontBase*) override;                   // vtable+0x60
-	void VTable0x64(undefined4*) override;                     // vtable+0x64
+	void VTable0x64(GolWorldEntity*) override;                 // vtable+0x64
 	void VTable0x68(AwakeKite0x20*) override;                  // vtable+0x68
 	void DestroyFontTable(GolNameTable* p_fontTable) override; // vtable+0x6c
 

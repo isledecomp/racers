@@ -43,6 +43,7 @@ public:
 	// GolBoundingVolume::`vector deleting destructor'
 
 	void FUN_004045e0();
+	GolModelMaterialTable* GetUnk0x18() { return &m_unk0x18; }
 
 private:
 	struct PolygonId0x08 {

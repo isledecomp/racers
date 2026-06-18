@@ -49,6 +49,36 @@ void RaceEventTable0x90::EntryBase::FUN_0045ee70(GolVec3* p_unk0x04)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0045eec0
+void RaceEventTable0x90::EntryBase::FUN_0045eec0(void* p_unk0x04)
+{
+	if (!(m_flags0x1c & 4) && (m_unk0x18 == 1 || m_unk0x18 == 4)) {
+		VTable0x00(p_unk0x04);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045eee0 FOLDED
+void RaceEventTable0x90::EntryBase::FUN_0045eee0(void* p_unk0x04)
+{
+	LegoU8 flags = m_flags0x1c;
+	if (flags & 4) {
+		LegoU32 state = m_unk0x18;
+		if (state == 1 || state == 4) {
+			VTable0x00(p_unk0x04);
+
+			if (!(m_flags0x1c & 2)) {
+				VTable0x08(p_unk0x04);
+			}
+
+			return;
+		}
+	}
+
+	if (m_unk0x18 != 1 && !(flags & 2)) {
+		VTable0x08(p_unk0x04);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00461ef0
 LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 {
@@ -452,4 +482,84 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	}
 
 	m_unk0x14->FUN_0048abb0(p_unk0x04, p_unk0x08, p_unk0x0c);
+}
+
+// FUNCTION: LEGORACERS 0x004628c0
+void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
+{
+	if (m_unk0x7c) {
+		for (LegoU32 i = 0; i < m_count0x7c; i++) {
+			if (m_unk0x7c[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x7c[i].FUN_0045eec0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x80) {
+		for (LegoU32 i = 0; i < m_count0x80; i++) {
+			if (m_unk0x80[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x80[i].FUN_0045eec0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x88) {
+		for (LegoU32 i = 0; i < m_count0x88; i++) {
+			if (m_unk0x88[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x88[i].FUN_0045eec0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x8c) {
+		for (LegoU32 i = 0; i < m_count0x8c; i++) {
+			if (m_unk0x8c[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x8c[i].FUN_0045eec0(p_unk0x08);
+			}
+		}
+	}
+
+	if (p_unk0x08) {
+		m_unk0x14->FUN_0048ac30(p_unk0x04, p_unk0x08);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004629d0
+void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
+{
+	if (m_unk0x7c) {
+		for (LegoU32 i = 0; i < m_count0x7c; i++) {
+			if (m_unk0x7c[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x7c[i].FUN_0045eee0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x80) {
+		for (LegoU32 i = 0; i < m_count0x80; i++) {
+			if (m_unk0x80[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x80[i].FUN_0045eee0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x88) {
+		for (LegoU32 i = 0; i < m_count0x88; i++) {
+			if (m_unk0x88[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x88[i].FUN_0045eee0(p_unk0x08);
+			}
+		}
+	}
+
+	if (m_unk0x8c) {
+		for (LegoU32 i = 0; i < m_count0x8c; i++) {
+			if (m_unk0x8c[i].m_unk0x14 == p_unk0x04) {
+				m_unk0x8c[i].FUN_0045eee0(p_unk0x08);
+			}
+		}
+	}
+
+	if (p_unk0x08) {
+		m_unk0x14->FUN_0048aca0(p_unk0x04, p_unk0x08);
+	}
 }

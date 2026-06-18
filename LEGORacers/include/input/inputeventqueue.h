@@ -21,12 +21,24 @@ public:
 
 	InputEventQueue();
 
-	void OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;   // vtable+0x00
-	void OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override;     // vtable+0x04
-	void OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) override; // vtable+0x08
-	virtual ~InputEventQueue();                                                                // vtable+0x0c
-	virtual LegoBool32 Allocate(LegoS32 p_capacity);                                           // vtable+0x10
-	virtual LegoBool32 Reset();                                                                // vtable+0x14
+	InputDevice::Callback::ResultValue OnKeyDown(
+		InputDevice* p_device,
+		undefined4 p_keyCode,
+		undefined4 p_arg3
+	) override; // vtable+0x00
+	InputDevice::Callback::ResultValue OnKeyUp(
+		InputDevice* p_device,
+		undefined4 p_keyCode,
+		undefined4 p_arg3
+	) override; // vtable+0x04
+	InputDevice::Callback::ResultValue OnKeyRepeat(
+		InputDevice* p_device,
+		undefined4 p_keyCode,
+		undefined4 p_arg3
+	) override;                                      // vtable+0x08
+	virtual ~InputEventQueue();                      // vtable+0x0c
+	virtual LegoBool32 Allocate(LegoS32 p_capacity); // vtable+0x10
+	virtual LegoBool32 Reset();                      // vtable+0x14
 
 	void Initialize();
 	Event* Dequeue();

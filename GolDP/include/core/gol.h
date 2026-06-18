@@ -72,7 +72,7 @@ public:
 	virtual void VTable0x58(undefined4*) = 0;                  // vtable+0x58
 	virtual void VTable0x5c(WhiteBaffoon0x50*) = 0;            // vtable+0x5c
 	virtual void DestroyFont(GolFontBase*) = 0;                // vtable+0x60
-	virtual void VTable0x64(undefined4*) = 0;                  // vtable+0x64
+	virtual void VTable0x64(GolWorldEntity*) = 0;              // vtable+0x64
 	virtual void VTable0x68(AwakeKite0x20*) = 0;               // vtable+0x68
 	virtual void DestroyFontTable(GolNameTable*) = 0;          // vtable+0x6c
 };

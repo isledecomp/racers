@@ -62,6 +62,12 @@ private:
 
 	void Destroy();
 	void Reset();
+	void FUN_004272c0(
+		GolFontBase* p_font,
+		GolD3DRenderDevice* p_renderer,
+		GolStringTable* p_stringTable,
+		undefined4 p_unk0x10
+	);
 	void FUN_004276c0();
 
 	GolFontBase* m_font;            // 0x00

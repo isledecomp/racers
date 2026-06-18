@@ -102,6 +102,12 @@ RaceEventDispatcher0x08::~RaceEventDispatcher0x08()
 	Destroy();
 }
 
+// STUB: LEGORACERS 0x0048a4d0
+void RaceEventDispatcher0x08::FUN_0048a4d0(void*, const LegoChar*, LegoBool32)
+{
+	STUB(0x48a4d0);
+}
+
 // FUNCTION: LEGORACERS 0x0048aa70
 void RaceEventDispatcher0x08::Destroy()
 {
@@ -185,8 +191,9 @@ void RaceEventDispatcher0x08::FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08,
 }
 
 // FUNCTION: LEGORACERS 0x0048ac30
-void RaceEventDispatcher0x08::FUN_0048ac30(LegoS32 p_unk0x04, Context* p_context)
+void RaceEventDispatcher0x08::FUN_0048ac30(LegoS32 p_unk0x04, void* p_context)
 {
+	Context* context = static_cast<Context*>(p_context);
 	undefined unk0x08[12];
 	LegoU32 i;
 
@@ -199,14 +206,15 @@ void RaceEventDispatcher0x08::FUN_0048ac30(LegoS32 p_unk0x04, Context* p_context
 			}
 		}
 
-		p_context->m_unk0x5c->VTable0x04(unk0x08);
+		context->m_unk0x5c->VTable0x04(unk0x08);
 		m_entries[i]->VTable0x28(p_unk0x04, unk0x08);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0048aca0
-void RaceEventDispatcher0x08::FUN_0048aca0(LegoS32 p_unk0x04, Context* p_context)
+void RaceEventDispatcher0x08::FUN_0048aca0(LegoS32 p_unk0x04, void* p_context)
 {
+	Context* context = static_cast<Context*>(p_context);
 	undefined unk0x08[12];
 	LegoU32 i;
 
@@ -219,7 +227,7 @@ void RaceEventDispatcher0x08::FUN_0048aca0(LegoS32 p_unk0x04, Context* p_context
 			}
 		}
 
-		p_context->m_unk0x5c->VTable0x04(unk0x08);
+		context->m_unk0x5c->VTable0x04(unk0x08);
 		m_entries[i]->VTable0x2c(p_unk0x04, unk0x08);
 	}
 }

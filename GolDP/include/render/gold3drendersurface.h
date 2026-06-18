@@ -11,9 +11,9 @@ class GolD3DRenderDevice;
 class GolD3DRenderSurface : public SlatePeak0x58 {
 public:
 	GolD3DRenderSurface();
-	~GolD3DRenderSurface() override;       // vtable+0x00
-	void VTable0x14(undefined4*) override; // vtable+0x14
-	void VTable0x34() override;            // vtable+0x34
+	~GolD3DRenderSurface() override;      // vtable+0x00
+	void VTable0x14(undefined4) override; // vtable+0x14
+	void VTable0x34() override;           // vtable+0x34
 
 	void FUN_10013600(GolD3DRenderDevice*, undefined2, undefined2);
 

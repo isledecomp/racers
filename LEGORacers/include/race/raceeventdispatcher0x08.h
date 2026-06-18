@@ -68,8 +68,8 @@ public:
 	void FUN_0048ab20(LegoS32 p_unk0x04, void* p_unk0x08);
 	void FUN_0048ab70(LegoS32 p_unk0x04);
 	void FUN_0048abb0(LegoS32 p_unk0x04, LegoS32 p_unk0x08, void* p_unk0x0c);
-	void FUN_0048ac30(LegoS32 p_unk0x04, Context* p_context);
-	void FUN_0048aca0(LegoS32 p_unk0x04, Context* p_context);
+	void FUN_0048ac30(LegoS32 p_unk0x04, void* p_context);
+	void FUN_0048aca0(LegoS32 p_unk0x04, void* p_context);
 	void FUN_0048ad10(LegoS32 p_unk0x04, LegoS32 p_unk0x08, Context* p_context);
 	void FUN_0048add0(undefined4 p_unk0x04);
 	void FUN_0048ae00(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08);
@@ -80,6 +80,7 @@ private:
 	friend class RaceSession;
 
 	void Destroy();
+	void FUN_0048a4d0(void* p_unk0x04, const LegoChar* p_name, LegoBool32 p_binary);
 
 	LegoU32 m_count;  // 0x00
 	Item** m_entries; // 0x04

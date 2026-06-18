@@ -8,12 +8,23 @@
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "core/gol.h"
+#include "duskwindbananarelic0x24.h"
 #include "font/golfonttable.h"
+#include "golbinparser.h"
 #include "golbmpwriterfile.h"
+#include "golboundedentity.h"
+#include "golboundingvolume.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golhashtable.h"
+#include "golmodelmaterialtable.h"
 #include "golstream.h"
+#include "input/directinputdevice.h"
+#include "input/inputdevice.h"
+#include "input/inputmanager.h"
+#include "input/joystickdevice.h"
+#include "input/keyboarddevice.h"
+#include "input/mousedevice.h"
 #include "material/awakekite0x20.h"
 #include "race/circuitstandings.h"
 #include "race/timeracemanager.h"
@@ -31,15 +42,19 @@ extern LegoU32 g_unk0x004c6ee4;
 
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
 DECOMP_SIZE_ASSERT(RaceSession::InputEventSink, 0x04)
-DECOMP_SIZE_ASSERT(RaceSession::InputDispatchSource, 0x9c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x3ac, 0x30)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x21c, 0xa4)
+DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004b07ec
 LegoFloat g_unk0x004b07ec = 1.2f;
 
 // GLOBAL: LEGORACERS 0x004b08bc
 extern const LegoFloat g_unk0x004b08bc = 25.0f;
+
+// GLOBAL: LEGORACERS 0x004bee30
+extern const LegoChar* g_sideWinderForceFeedName = "Microsoft SideWinder Force Feed";
+
+// GLOBAL: LEGORACERS 0x004bee64
+extern const LegoFloat g_unk0x004bee64[4] = {0.5f, 0.01f, 0.49f, 0.49f};
 
 // GLOBAL: LEGORACERS 0x004bee74
 const LegoU16 g_unk0x004bee74[16] =
@@ -99,7 +114,7 @@ void RaceSession::FUN_00431bd0()
 	m_unk0x1d5 = 0;
 	m_unk0x1ef = 0;
 	m_unk0x1e2 = 0;
-	m_unk0x3ac = 0;
+	m_unk0x3ac = NULL;
 	m_unk0x1f8.m_x = 0.0f;
 	m_unk0x1f8.m_y = 0.0f;
 	m_unk0x1f8.m_z = 0.0f;
@@ -114,13 +129,13 @@ void RaceSession::FUN_00431bd0()
 	m_unk0x2ac4 = 1023.0f;
 	m_unk0x2ac8 = -1023.0f;
 	m_unk0x390 = NULL;
-	m_unk0x394 = 0;
+	m_unk0x394 = NULL;
 	m_unk0x39c = NULL;
 	m_unk0x398 = NULL;
 	m_unk0x3a0 = NULL;
-	m_unk0x3b0 = 0;
-	m_unk0x3b4 = 0;
-	m_unk0x3b8 = 0;
+	m_unk0x3b0 = NULL;
+	m_unk0x3b4 = NULL;
+	m_unk0x3b8 = NULL;
 	m_unk0x2d74 = 0;
 	m_unk0x2d78 = 0;
 	m_unk0x2d7c = 0;
@@ -155,23 +170,194 @@ void RaceSession::FUN_00431bd0()
 }
 
 // STUB: LEGORACERS 0x00431e00
-LegoS32 RaceSession::Initialize(LegoRacers::Context* p_context, const LegoChar*, undefined4, TimeRaceManager*)
+LegoS32 RaceSession::Initialize(
+	LegoRacers::Context* p_context,
+	const LegoChar* p_raceName,
+	undefined4 p_mirror,
+	TimeRaceManager* p_timeRaceManager
+)
 {
-#if 0
+	GolFileParser* parser;
 	if (p_context->m_unk0x18) {
 		parser = new GolBinParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
-	} else {
+
+		parser->SetSuffix(".rab");
+	}
+	else {
 		parser = new RabTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
-#endif
-	// TODO
-	STUB(0x431e00);
+
+	parser->OpenFileForRead(p_raceName);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(c_rabToken0x35));
+	strcpy(&m_unk0x1c, parser->ReadStringWithMaxLength(0x3f));
+	parser->ReadLeftCurly();
+
+	GolFileParser::ParserTokenType token = parser->GetNextToken();
+	while (token != GolFileParser::e_rightCurly) {
+		switch (token) {
+		case c_rabToken0x27:
+			strcpy(&m_unk0x69, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x28:
+			m_unk0x204.m_x = parser->ReadFloat();
+			m_unk0x204.m_y = parser->ReadFloat();
+			m_unk0x204.m_z = parser->ReadFloat();
+			m_unk0x210.m_x = parser->ReadFloat();
+			m_unk0x210.m_y = parser->ReadFloat();
+			m_unk0x210.m_z = parser->ReadFloat();
+			break;
+		case c_rabToken0x29:
+			m_unk0x1f8.m_x = parser->ReadFloat();
+			m_unk0x1f8.m_y = parser->ReadFloat();
+			m_unk0x1f8.m_z = parser->ReadFloat();
+			break;
+		case c_rabToken0x2b:
+			strcpy(&m_unk0x9d, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0xaa, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0xb7, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x2c:
+			strcpy(&m_unk0x105, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x2d:
+			strcpy(&m_unk0x17a, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x2e:
+			strcpy(&m_unk0x5c, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x2f:
+			strcpy(&m_unk0x187, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x30:
+			strcpy(&m_unk0x16d, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x31:
+		case c_rabToken0x32:
+			parser->ReadStringWithMaxLength(0x0c);
+			break;
+		case c_rabToken0x33:
+			strcpy(&m_unk0xc4, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0xde, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0xd1, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x34:
+			strcpy(&m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x37:
+			strcpy(&m_unk0x112, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x38:
+			strcpy(&m_unk0x11f, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x39:
+			strcpy(&m_unk0xf8, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3a:
+			strcpy(&m_unk0x12c, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0x139, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3b:
+			strcpy(&m_unk0x76, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3c:
+			strcpy(&m_unk0x146, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3d:
+			strcpy(&m_unk0x153, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3f:
+			strcpy(&m_unk0x160, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x40:
+			strcpy(&m_unk0x83, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x41:
+			strcpy(&m_unk0x194, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x42:
+			strcpy(&m_unk0x1a1, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x43:
+			strcpy(&m_unk0x1ae, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x44:
+			strcpy(&m_unk0x1bb, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x45:
+			strcpy(&m_unk0x90, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x46:
+			m_unk0x2abc = parser->ReadFloat();
+			m_unk0x2ac4 = parser->ReadFloat();
+			m_unk0x2ac0 = parser->ReadFloat();
+			m_unk0x2ac8 = parser->ReadFloat();
+			break;
+		case c_rabToken0x48:
+			strcpy(&m_unk0x1c8, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0x1d5, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x49:
+			strncpy(&m_unk0x1ef, parser->ReadStringWithMaxLength(8), 8);
+			break;
+		case c_rabToken0x4a:
+			strcpy(&m_unk0x1e2, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		default:
+			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+			break;
+		}
+
+		token = parser->GetNextToken();
+	}
+
+	parser->Dispose();
+	if (parser != NULL) {
+		delete parser;
+	}
+
+	FUN_004327f0(p_context);
+
+	if (p_mirror) {
+		m_unk0x204.m_y = -m_unk0x204.m_y;
+		m_unk0x210.m_y = -m_unk0x210.m_y;
+		m_unk0x1f8.m_y = -m_unk0x1f8.m_y;
+	}
+
+	FUN_00434170();
+	FUN_00432bc0();
+
+	GolHashTable* hashTable = g_hashTable;
+	LegoChar* gameDataDirectory = m_context->m_gameDataDirectory;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
+	}
+
+	m_unk0x280c.FUN_0042f480(m_golExport, m_renderer, &m_unk0x30f0, m_unk0x2d7c, p_context->m_unk0x18);
+	m_golApp->ClearFlags(GolApp::c_flagBit14);
+	FUN_00435ba0(0.0f);
+
+	m_timeRaceManager = p_timeRaceManager;
+	if (p_timeRaceManager) {
+		p_timeRaceManager->FUN_00422de0();
+	}
+
+	m_elapsedMs = 0;
+	m_state = 1;
+	FUN_004328f0();
+	FUN_00435ba0(0.05f);
+	FUN_00432dc0();
+	FUN_00432e20(p_mirror);
+	FUN_00433480(p_mirror);
+	FUN_00435ba0(1.0f);
+	FUN_004343e0();
+	FUN_00434340();
+	m_renderer->VTable0x40();
 	return 0;
 }
 
@@ -300,6 +486,49 @@ void RaceSession::Shutdown()
 	FUN_00432b30();
 	FUN_004328d0();
 	FUN_00431bd0();
+}
+
+// FUNCTION: LEGORACERS 0x004327f0
+void RaceSession::FUN_004327f0(LegoRacers::Context* p_context)
+{
+	m_context = p_context;
+	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagRecordBeaten;
+
+	m_golApp = m_context->m_golApp;
+	m_soundManager = m_context->m_soundManager;
+	m_golExport = m_golApp->GetGolExport();
+	m_renderer = m_golApp->GetRenderer();
+	m_unk0x21c = m_golApp->GetInputManager();
+
+	LegoU32 one = 1;
+	if (m_context->m_playerCount > one) {
+		m_unk0x3354 = one;
+	}
+	else {
+		m_unk0x3354 = 0;
+	}
+
+	if (m_unk0x3354) {
+		m_renderer->VTable0x34(3, &g_unk0x004bee64[1]);
+		m_unk0x3348 = m_context->m_unk0x2c;
+	}
+	else {
+		m_renderer->VTable0x34(1, g_unk0x004bee64);
+		m_unk0x3348 = 3;
+	}
+
+	if (!m_context->m_playerCount) {
+		m_context->m_playerCount = one;
+		m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
+		m_unk0x3350 = one;
+	}
+	else {
+		m_unk0x3350 = 0;
+	}
+
+	if (m_context->m_unk0x1e & LegoRacers::Context::c_flagReturnToGarage) {
+		m_unk0x335c = one;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004328d0
@@ -512,6 +741,72 @@ void RaceSession::FUN_00432df0()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00432e20
+void RaceSession::FUN_00432e20(LegoBool32 p_mirror)
+{
+	m_unk0x39c = m_golExport->VTable0x08();
+	m_unk0x39c->VTable0x14(m_renderer, &m_unk0x83, m_context->m_unk0x18, 1.0f);
+	if (p_mirror) {
+		m_unk0x39c->FUN_00416140();
+	}
+	FUN_00435ba0(0.1f);
+
+	GolHashTable* hashTable = g_hashTable;
+	LegoChar* gameDataDirectory = m_context->m_gameDataDirectory;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(gameDataDirectory));
+	}
+
+	m_unk0x390 = m_golExport->VTable0x08();
+	m_unk0x390->VTable0x14(m_renderer, &m_unk0x5c, m_context->m_unk0x18, 1.0f);
+	if (p_mirror) {
+		m_unk0x390->FUN_00416140();
+	}
+	FUN_00435ba0(0.24f);
+
+	m_unk0x394 = m_unk0x390->GetUnk0xa4();
+	if (m_unk0x1ef) {
+		m_unk0x3ac = m_unk0x390->FindUnk0xe4(&m_unk0x1ef);
+	}
+	FUN_00435ba0(0.26f);
+
+	m_unk0x3a0 = m_golExport->VTable0x08();
+	m_unk0x3a0->VTable0x14(m_renderer, &m_unk0x9d, m_context->m_unk0x18, 1.0f);
+	if (p_mirror) {
+		m_unk0x3a0->FUN_00416140();
+	}
+	FUN_00435d20(p_mirror);
+	FUN_00435ba0(0.34f);
+
+	LegoChar name[sizeof(GolName)];
+	::strncpy(name, &m_unk0xaa, sizeof(name));
+	m_unk0x3b0 = m_unk0x3a0->FindUnk0xd8(name);
+	FUN_00435ba0(0.36f);
+
+	::strncpy(name, &m_unk0xb7, sizeof(name));
+	m_unk0x3b4 = m_unk0x3a0->FindUnk0xd8(name);
+
+	if (m_unk0x1d5) {
+		::strncpy(name, &m_unk0x1d5, sizeof(name));
+		m_unk0x3b8 = m_unk0x3a0->FindUnk0xd8(name);
+	}
+	FUN_00435ba0(0.38f);
+
+	m_unk0x398 = m_golExport->VTable0x08();
+	m_unk0x398->VTable0x14(m_renderer, &m_unk0x76, m_context->m_unk0x18, 1.0f);
+	if (p_mirror) {
+		m_unk0x398->FUN_00416140();
+	}
+	FUN_00435ba0(0.4f);
+
+	m_unk0x3a4 = m_golExport->VTable0x08();
+	m_unk0x3a4->VTable0x14(m_renderer, &m_unk0x90, m_context->m_unk0x18, 1.0f);
+	if (p_mirror) {
+		m_unk0x3a4->FUN_00416140();
+	}
+	FUN_00435ba0(0.42f);
+}
+
 // FUNCTION: LEGORACERS 0x004330e0
 void RaceSession::FUN_004330e0()
 {
@@ -540,10 +835,117 @@ void RaceSession::FUN_004330e0()
 	m_unk0x398 = NULL;
 	m_unk0x3a0 = NULL;
 	m_unk0x390 = NULL;
-	m_unk0x3b0 = 0;
-	m_unk0x3b4 = 0;
-	m_unk0x3b8 = 0;
-	m_unk0x3ac = 0;
+	m_unk0x3b0 = NULL;
+	m_unk0x3b4 = NULL;
+	m_unk0x3b8 = NULL;
+	m_unk0x3ac = NULL;
+}
+
+// STUB: LEGORACERS 0x00433190
+void RaceSession::FUN_00433190(LegoBool32 p_mirror)
+{
+	LegoChar fileName[12];
+	LegoU32 loaded = FALSE;
+	LegoU32 i;
+	LegoU32 type;
+	Field0x3104* current = m_unk0x3104;
+
+	for (i = 0; i < static_cast<LegoU32>(m_context->m_racerCount); i++) {
+		if (m_context->m_playerSetupSlots[i].m_unk0x10 == 2 || m_unk0x3350) {
+			fileName[0] = 'r';
+			fileName[1] = static_cast<LegoChar>(i + '0');
+			fileName[2] = '_';
+			fileName[4] = '_';
+			fileName[6] = '.';
+			fileName[7] = 'r';
+			fileName[8] = 'r';
+			fileName[9] = m_context->m_unk0x18 ? 'b' : 'f';
+			fileName[10] = '\0';
+
+			LegoU32 frontCount = 0;
+			LegoU32 middleCount = 0;
+			LegoU32 sideCount = 0;
+			LegoU32* count;
+
+			for (type = 0; type < 3; type++) {
+				switch (type) {
+				case 0:
+					fileName[3] = 'f';
+					count = &frontCount;
+					break;
+				case 1:
+					fileName[3] = 'm';
+					count = &middleCount;
+					break;
+				case 2:
+					fileName[3] = 's';
+					count = &sideCount;
+					break;
+				default:
+					count = NULL;
+					break;
+				}
+
+				fileName[5] = '0';
+				while (GolStream::FindFile(fileName) == GolStream::e_ioSuccess && *count < 10) {
+					(*count)++;
+					fileName[5] = static_cast<LegoChar>(*count + '0');
+				}
+			}
+
+			if (frontCount || middleCount || sideCount) {
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+
+				LegoU32 total = frontCount + middleCount + sideCount;
+				LegoU32 index = g_unk0x004befec[g_unk0x004c6ee4] % total;
+				if (index < frontCount) {
+					fileName[3] = 'f';
+				}
+				else {
+					index -= frontCount;
+					if (index < middleCount) {
+						fileName[3] = 'm';
+					}
+					else {
+						index -= middleCount;
+						fileName[3] = 's';
+					}
+				}
+				fileName[5] = static_cast<LegoChar>(index + '0');
+
+				current->FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+			}
+		}
+
+		current++;
+	}
+
+	for (i = 0; i < sizeOfArray(m_unk0x3104); i++) {
+		if (m_unk0x3104[i].m_unk0x04) {
+			loaded = TRUE;
+		}
+	}
+
+	if (!loaded) {
+		::strcpy(fileName, "r1_f_0");
+		::strcat(fileName, m_context->m_unk0x18 ? ".rrb" : ".rrf");
+
+		if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
+			m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+		}
+		else {
+			fileName[3] = 'm';
+			if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
+				m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+			}
+			else {
+				fileName[3] = 's';
+				if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
+					m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+				}
+			}
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00433460
@@ -555,6 +957,12 @@ void RaceSession::FUN_00433460()
 		current->FUN_004a50a0();
 		current++;
 	} while (--remaining);
+}
+
+// STUB: LEGORACERS 0x00433480
+void RaceSession::FUN_00433480(LegoBool32)
+{
+	STUB(0x433480);
 }
 
 // FUNCTION: LEGORACERS 0x00434000
@@ -702,21 +1110,25 @@ void RaceSession::FUN_00434300()
 void RaceSession::FUN_00434340()
 {
 	if (m_unk0x3ac) {
-		m_unk0x3ac->m_unk0x28->FUN_0040dad0(0);
-		m_unk0x3ac->m_unk0x28->SetFlags(m_unk0x3ac->m_unk0x28->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+		m_unk0x3ac->m_trackedEntity->FUN_0040dad0(0);
+		m_unk0x3ac->m_trackedEntity->SetFlags(
+			m_unk0x3ac->m_trackedEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation
+		);
 
-		GolAnimatedEntity* entity = m_unk0x3ac->m_unk0x28;
+		GolAnimatedEntity* entity = m_unk0x3ac->m_trackedEntity;
 		entity->FUN_0040d650();
 		entity->SetActiveValue(0.0f);
 
 		LegoU32 i = 0;
-		m_unk0x3ac->m_unk0x28->SetFlags(m_unk0x3ac->m_unk0x28->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
+		m_unk0x3ac->m_trackedEntity->SetFlags(
+			m_unk0x3ac->m_trackedEntity->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart
+		);
 
 		LegoU32 playerCount = m_context->m_playerCount;
 		if (playerCount > 0) {
 			GolCamera** camera = m_unk0x2acc;
 			do {
-				(*camera)->SetTrackedEntity(m_unk0x3ac->m_unk0x28, m_unk0x3ac->m_unk0x2c);
+				(*camera)->SetTrackedEntity(m_unk0x3ac->m_trackedEntity, m_unk0x3ac->m_trackedNodeIndex);
 				i++;
 				camera++;
 			} while (i < m_context->m_playerCount);
@@ -724,23 +1136,201 @@ void RaceSession::FUN_00434340()
 	}
 }
 
+// STUB: LEGORACERS 0x004343e0
+void RaceSession::FUN_004343e0()
+{
+	RaceSession* session = this;
+	InputEventQueue* inputEvents = &session->m_inputEvents;
+	inputEvents->Allocate(32);
+
+	MouseInputDevice* mouse = session->m_unk0x21c->GetMouse();
+	if (mouse) {
+		mouse->SetCallback(inputEvents);
+		mouse->SetExclusiveMode();
+		mouse->Acquire();
+	}
+
+	KeyboardInputDevice* keyboard = session->m_unk0x21c->GetKeyboard();
+	if (keyboard) {
+		session->m_unk0x23c.FUN_00427980(keyboard, inputEvents);
+		session->m_unk0x23c.FUN_004279c0();
+	}
+
+	LegoU32 playerCount;
+	if (session->m_unk0x3350) {
+		playerCount = 2;
+	}
+	else {
+		playerCount = session->m_context->m_playerCount;
+	}
+
+	if (playerCount > 0) {
+		Field0x258* field0x258 = session->m_unk0x258;
+		RaceState::Racer** racer = session->m_raceState.m_unk0x318;
+		LegoU32 playerIndex = 0;
+
+		do {
+			LegoBool32 bindingAcquired = FALSE;
+			Field0x258::Field0x04* inputSink = NULL;
+
+			if (!session->m_unk0x3350) {
+				field0x258->FUN_004300d0(*racer, inputEvents);
+				inputSink = &field0x258->m_unk0x004;
+			}
+
+			InputBindingEntry* binding = &session->m_context->m_inputBindings[playerIndex];
+			if (binding->m_deviceType == DIDEVTYPE_JOYSTICK && binding->m_deviceId < 16) {
+				JoystickInputDevice* joystick = session->m_unk0x21c->FindJoystickByDeviceId(binding->m_deviceId);
+				if (joystick && joystick->GetDeviceSubType() == binding->m_deviceSubType) {
+					joystick->SetCallback(inputEvents);
+					bindingAcquired = TRUE;
+					joystick->Acquire();
+
+					if (!session->m_unk0x3350) {
+						if (binding->m_deviceSubType == 4) {
+							joystick->SetAxisButtonEventsEnabled(TRUE);
+						}
+
+						LegoU32 event = binding->m_events[0];
+						DirectInputDevice* source;
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 0);
+
+						event = binding->m_events[1];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 1);
+
+						event = binding->m_events[2];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 2);
+
+						event = binding->m_events[3];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 3);
+
+						event = binding->m_events[4];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 4);
+
+						event = binding->m_events[5];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 5);
+
+						event = binding->m_events[6];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 6);
+
+						event = binding->m_events[7];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 7);
+
+						event = binding->m_events[8];
+						if ((event & InputDevice::c_sourceCharacter) == InputDevice::c_sourceKeyboard && keyboard) {
+							source = keyboard;
+						}
+						else {
+							source = joystick;
+						}
+						inputSink->FUN_004308f0(source, event, 8);
+
+						inputSink->FUN_00430930();
+					}
+				}
+			}
+
+			if (!session->m_unk0x3350) {
+				if (binding->m_deviceType == DIDEVTYPE_KEYBOARD && keyboard) {
+					inputSink->FUN_004308f0(keyboard, binding->m_events[0], 0);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[1], 1);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[2], 2);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[3], 3);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[4], 4);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[5], 5);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[6], 6);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[7], 7);
+					inputSink->FUN_004308f0(keyboard, binding->m_events[8], 8);
+					bindingAcquired = TRUE;
+				}
+
+				m_unk0x23c.FUN_004279a0(inputSink);
+
+				if (!bindingAcquired) {
+					GOL_FATALERROR_MESSAGE("Could not acquire controller for player");
+				}
+
+				session->m_unk0x340[playerIndex].FUN_00421e00(inputSink->m_unk0x02c[4]);
+				(*racer)->m_unk0x014 = &session->m_unk0x340[playerIndex];
+				field0x258->FUN_004307f0();
+			}
+
+			racer++;
+			playerIndex++;
+			field0x258++;
+			playerCount--;
+		} while (playerCount);
+	}
+
+	session->m_unk0x21c->PollDevices(0);
+	inputEvents->ClearQueue();
+}
+
 // FUNCTION: LEGORACERS 0x004348a0
 void RaceSession::FUN_004348a0()
 {
-	Field0x21c* field0x21c = m_unk0x21c;
-	if (!field0x21c) {
+	InputManager* inputManager = m_unk0x21c;
+	if (!inputManager) {
 		m_inputEvents.Reset();
 		return;
 	}
 
-	InputDispatchSource* source = field0x21c->m_unk0x0a0;
+	InputDevice* source = inputManager->GetMouse();
 	if (source) {
-		source->m_unk0x98 = NULL;
-		source->VTable0x54();
+		source->SetCallback(NULL);
+		source->Unacquire();
 	}
 
 	Field0x258* field0x258 = m_unk0x258;
-	Field0x340* field0x340 = m_unk0x340;
+	RaceForceFeedback* field0x340 = m_unk0x340;
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x258); i++) {
 		field0x340->FUN_00421de0();
 		field0x258->FUN_004300a0();
@@ -818,7 +1408,7 @@ void RaceSession::FUN_004349a0()
 			LegoU32 i = 0;
 			if (m_context->m_playerCount > 0) {
 				CobaltTrail0x140* cobaltTrail = m_unk0x283c;
-				Field0x340* field0x340 = m_unk0x340;
+				RaceForceFeedback* field0x340 = m_unk0x340;
 				RaceState::Racer** racer = m_raceState.m_unk0x318;
 				do {
 					(*racer)->FUN_0043a360();
@@ -1540,6 +2130,54 @@ void RaceSession::VTable0x48(LegoU32 p_keyCode)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00435d20
+void RaceSession::FUN_00435d20(LegoBool32 p_mirror)
+{
+	RaceSession* raceSession = this;
+
+	if (!raceSession->m_unk0x1ae) {
+		LegoU32 zero = 0;
+		for (LegoU32 i = zero; i < raceSession->m_unk0x3a0->GetUnk0x64(); i++) {
+			GolModelMaterialTable* materials = raceSession->m_unk0x3a0->GetUnk0xa8()[i].GetMaterialTable();
+
+			for (LegoU32 j = zero; j < materials->m_count; j++) {
+				DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
+				material->EnableFlag0x08Bit18();
+				material->SetUnk0x14(NULL);
+			}
+		}
+		return;
+	}
+
+	Field0x27e0* field0x27e0 = &raceSession->m_unk0x27e0;
+	field0x27e0->FUN_00444030(&raceSession->m_unk0x1ae, raceSession->m_context->m_unk0x18, p_mirror);
+
+	for (LegoU32 i = 0; i < raceSession->m_unk0x3a0->GetUnk0x64(); i++) {
+		GolModelMaterialTable* materials = raceSession->m_unk0x3a0->GetUnk0xa8()[i].GetMaterialTable();
+
+		for (LegoU32 j = 0; j < materials->m_count; j++) {
+			DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
+			DuskWindName0x8 materialName = material->GetNameRecord();
+
+			void* materialPosition;
+			if (field0x27e0->GetNameEntries() == NULL) {
+				materialPosition = NULL;
+			}
+			else {
+				materialPosition = field0x27e0->GetName(materialName.m_unk0x0);
+			}
+			material->SetUnk0x14(materialPosition);
+			material->EnableFlag0x08Bit18();
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x00435e70
+void RaceSession::FUN_00435e70()
+{
+	STUB(0x435e70);
+}
+
 // FUNCTION: LEGORACERS 0x00435f20
 void RaceSession::FUN_00435f20()
 {
@@ -1580,7 +2218,7 @@ void RaceSession::FUN_00436010()
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
 		Field0x258* field0x258 = m_unk0x258;
-		Field0x340* field0x340 = m_unk0x340;
+		RaceForceFeedback* field0x340 = m_unk0x340;
 
 		do {
 			field0x258->m_unk0x004.m_unk0x054 = 0;

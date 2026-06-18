@@ -71,6 +71,7 @@ public:
 	void SetBufferSize(undefined4 p_bufferSize);
 
 	const GUID& GetGuid() const { return m_deviceGuid; }
+	LPDIRECTINPUTDEVICE2A GetDevice() const { return m_device; }
 
 protected:
 	void ReadDeviceInfo();

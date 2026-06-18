@@ -31,7 +31,7 @@ public:
 	virtual void UnlockPixels();                                                               // vtable+0x08
 	virtual void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags);          // vtable+0x0c
 	virtual void UnlockAuxPixels();                                                            // vtable+0x10
-	virtual void VTable0x14(undefined4*);                                                      // vtable+0x14
+	virtual void VTable0x14(undefined4);                                                       // vtable+0x14
 	virtual void VTable0x18();                                                                 // vtable+0x18
 	virtual GolPaletteBase* GetPalette();                                                      // vtable+0x1c
 	virtual void Fill(LegoU32 p_color);                                                        // vtable+0x20

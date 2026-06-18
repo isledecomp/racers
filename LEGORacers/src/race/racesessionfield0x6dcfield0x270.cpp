@@ -1,15 +1,131 @@
 #include "decomp.h"
 #include "race/racesession.h"
+#include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270, 0x270)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x34, 0x5c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x224, 0x20)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x34, 0x90)
 
 // GLOBAL: LEGORACERS 0x004b015c
 LegoFloat g_unk0x004b015c = 180.0f;
 
 extern const LegoFloat g_violetShoalTwo;
+
+// FUNCTION: LEGORACERS 0x004210b0
+RaceSession::Field0x6dc::Field0x270::Field0x270()
+{
+	m_unk0x204.FUN_004a00b0();
+	m_unk0x04 = 0;
+	m_unk0x030 = NULL;
+	m_unk0x0c4 = NULL;
+	m_unk0x200 = NULL;
+	m_unk0x210 = NULL;
+	m_unk0x214 = NULL;
+	m_unk0x218 = NULL;
+	m_unk0x21c = 0;
+	m_unk0x220 = NULL;
+	m_unk0x224 = NULL;
+	m_unk0x228 = 0;
+	m_unk0x230 = 0;
+	m_unk0x234 = 0;
+	m_unk0x23c = 0.0f;
+	m_unk0x240 = 0.0f;
+	m_unk0x238 = 0;
+	m_unk0x244 = 100.0f;
+	m_unk0x258 = 1.0f;
+	m_unk0x25c = 1.0f;
+	m_unk0x260 = 1.0f;
+	m_unk0x264 = 1.0f;
+	m_next = NULL;
+	m_unk0x268 = 0;
+	m_unk0x22c = 0;
+	m_unk0x248 = g_violetShoalTwo;
+	m_unk0x24c = 0.0f;
+	m_unk0x250 = 0.0f;
+	m_unk0x254 = 0.0f;
+}
+
+// FUNCTION: LEGORACERS 0x004211e0
+RaceSession::Field0x6dc::Field0x270::~Field0x270()
+{
+	FUN_004214b0();
+	m_unk0x204.Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
+void RaceSession::Field0x6dc::Field0x270::VTable0x00()
+{
+}
+
+void RaceSession::Field0x6dc::Field0x270::VTable0x04(undefined4 p_flags)
+{
+	this->~Field0x270();
+	if (p_flags & 1) {
+		::operator delete(this);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00421250
+void RaceSession::Field0x6dc::Field0x270::FUN_00421250(const Params* p_params)
+{
+	if (m_unk0x04 != 0) {
+		FUN_004214b0();
+	}
+
+	m_unk0x030 = p_params->m_unk0x00;
+	m_unk0x200 = p_params->m_unk0x04;
+	m_unk0x210 = p_params->m_unk0x10;
+	m_unk0x214 = p_params->m_unk0x14;
+	m_unk0x218 = p_params->m_unk0x18;
+	m_unk0x224 = p_params->m_unk0x1c;
+	m_unk0x228 = p_params->m_unk0x28;
+	m_unk0x0e0 = p_params->m_unk0x24;
+	m_unk0x230 = p_params->m_unk0x2c;
+	m_unk0x234 = p_params->m_unk0x30;
+	m_unk0x258 = p_params->m_unk0x34;
+	m_unk0x25c = p_params->m_unk0x38;
+	m_unk0x260 = p_params->m_unk0x3c;
+	m_unk0x264 = p_params->m_unk0x40;
+	m_unk0x22c = p_params->m_unk0x44;
+
+	LegoFloat rate = 1.0f / (static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x230)) * 0.001f);
+	m_unk0x250 = rate + rate;
+	LegoFloat rateDelta = (1.0f - 0.050000001f) - m_unk0x250;
+	m_unk0x254 = (rateDelta + rateDelta) * (rate * rate);
+
+	LegoFloat endRate = g_unk0x004b015c / (static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x234)) * 0.001f);
+	m_unk0x238 = 0;
+	m_unk0x244 = -endRate;
+
+	if (p_params->m_unk0x0c != NULL || p_params->m_unk0x20 != NULL) {
+		m_unk0x0c4 = m_unk0x030->CreateBillboard();
+	}
+
+	if (p_params->m_unk0x20 != NULL) {
+		m_unk0x0c8.FUN_004103c0(*p_params->m_unk0x20);
+		m_unk0x0c8.FUN_10025da0(m_unk0x224->GetBillboardMaterialTable(), m_unk0x0e0, FALSE);
+		m_unk0x0c8
+			.FUN_004104c0(0, m_unk0x224->GetMaterialAnimationItems(), m_unk0x224->GetMaterialAnimationItemCount());
+		m_unk0x0c4->FUN_10029e90(m_unk0x224->GetBillboardMaterialTable(), m_unk0x0e0, 0.1f, 0.2f, 250000.0f);
+	}
+	else if (m_unk0x0c4 != NULL) {
+		m_unk0x0c4->VTable0x4c(p_params->m_unk0x0c, 0.1f, 0.2f, 250000.0f);
+	}
+
+	if (p_params->m_unk0x08 != NULL) {
+		m_unk0x034.VTable0x50(p_params->m_unk0x08->GetModel(0), 250000.0f);
+		m_unk0x034.FUN_00411680(p_params->m_unk0x08->FUN_00411640());
+		m_unk0x034.FUN_004116b0(p_params->m_unk0x08->FUN_00411660());
+		m_unk0x034.FUN_00411700(p_params->m_unk0x08->FUN_004116e0());
+		m_unk0x034.FUN_00411730(p_params->m_unk0x08->FUN_004116f0());
+	}
+
+	GolD3DRenderDevice* renderer = m_unk0x030->GetDrawState()->m_currentRenderer;
+	m_unk0x204.Initialize(renderer, 1);
+	m_unk0x0e4.FUN_00414950(m_unk0x030, renderer, 10);
+	m_unk0x0e4.GetUnk0x010().SetPrimaryMaterialTable(&m_unk0x204);
+	m_unk0x04 = 1;
+}
 
 // FUNCTION: LEGORACERS 0x004214b0
 void RaceSession::Field0x6dc::Field0x270::FUN_004214b0()
@@ -125,9 +241,8 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
 			value = 1.0f;
 		}
 
-		if (m_flags0x090 & c_flag0x090Bit0) {
-			m_unk0x034.SetUnk0x58(value);
-			m_unk0x034.SetUnk0x10(-1.0f);
+		if (m_unk0x034.HasModel()) {
+			m_unk0x034.SetUnk0x58ThenInvalidateRadius(value);
 		}
 
 		m_unk0x23c = (g_violetShoalTwo - (m_unk0x248 + m_unk0x248)) * 255.0f;
@@ -144,7 +259,11 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
 		}
 
 		if (m_unk0x0c8.IsConfigured()) {
-			m_unk0x0c8.FUN_004104c0(p_elapsedMs, m_unk0x224->GetUnk0x18(), m_unk0x224->GetUnk0x1c());
+			m_unk0x0c8.FUN_004104c0(
+				p_elapsedMs,
+				m_unk0x224->GetMaterialAnimationItems(),
+				m_unk0x224->GetMaterialAnimationItemCount()
+			);
 		}
 	}
 }
@@ -168,9 +287,9 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421ae0(GolD3DRenderDevice* p_ren
 			p_renderer->VTable0xb4(*m_unk0x0c4);
 		}
 
-		if (m_flags0x090 & c_flag0x090Bit0) {
+		if (m_unk0x034.HasModel()) {
 			p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_unk0x240), 1);
-			m_unk0x034.VTable0x1c(p_renderer);
+			m_unk0x034.VTable0x1c(*p_renderer);
 		}
 
 		p_renderer->ClearAlphaOverride();

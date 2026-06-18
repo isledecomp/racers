@@ -32,7 +32,7 @@ void RaceSession::Field0x30c4::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0043a690
-void RaceSession::Field0x30c4::FUN_0043a690(const Field0x30c4* p_source)
+void RaceSession::Field0x30c4::FUN_0043a690(const Params* p_source)
 {
 	m_context = p_source->m_context;
 	m_raceState = p_source->m_raceState;

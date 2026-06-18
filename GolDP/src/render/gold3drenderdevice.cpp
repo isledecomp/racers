@@ -1527,7 +1527,7 @@ LPDIRECTDRAW4 GolD3DRenderDevice::GetDirectDraw4() const
 }
 
 // FUNCTION: GOLDP 0x10009950
-const SlatePeak0x58* GolD3DRenderDevice::GetRenderTargetInfo()
+SlatePeak0x58* GolD3DRenderDevice::GetRenderTargetInfo()
 {
 	return m_renderTargetInfo;
 }

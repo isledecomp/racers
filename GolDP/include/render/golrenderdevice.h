@@ -95,7 +95,7 @@ public:
 		LegoBool32
 	);                                                                      // vtable+0x0c
 	virtual GolCommonDrawState* GetDrawState() = 0;                         // vtable+0x10
-	virtual const SlatePeak0x58* GetRenderTargetInfo() = 0;                 // vtable+0x14
+	virtual SlatePeak0x58* GetRenderTargetInfo() = 0;                       // vtable+0x14
 	virtual void VTable0x18() = 0;                                          // vtable+0x18
 	virtual void VTable0x1c(const ColorRGBA&) = 0;                          // vtable+0x1c
 	virtual void VTable0x20(GolCamera*) = 0;                                // vtable+0x20

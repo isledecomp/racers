@@ -77,6 +77,11 @@ public:
 		p_dest->m_radius = -1.0f;
 	}
 	void InvalidateRadius() { m_radius = -1.0f; }
+	void SetUnk0x58ThenInvalidateRadius(LegoFloat p_unk0x58)
+	{
+		m_unk0x58 = p_unk0x58;
+		m_radius = -1.0f;
+	}
 	void SetUnk0x58AndInvalidateRadius(LegoFloat p_unk0x58)
 	{
 		m_radius = -1.0f;

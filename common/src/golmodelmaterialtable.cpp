@@ -113,7 +113,12 @@ void GolModelMaterialTable::FUN_10025f90(GolRenderDevice* p_renderer, GolFilePar
 // FUNCTION: LEGORACERS 0x00410630 FOLDED
 GolModelMaterialTable::~GolModelMaterialTable()
 {
-	Destroy();
+	if (m_entries != NULL) {
+		delete[] m_entries;
+		m_entries = NULL;
+	}
+	m_renderer = NULL;
+	m_count = 0;
 }
 
 // FUNCTION: GOLDP 0x100260d0 FOLDED

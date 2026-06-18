@@ -12,18 +12,22 @@ public:
 	LegoU32 FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x08);
 	void FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08);
 	void FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c);
+	void FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08);
+	void FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08);
 
 private:
 	// SIZE 0x20
 	class EntryBase {
 	public:
-		virtual void VTable0x00() = 0;         // vtable+0x00
+		virtual void VTable0x00(void*) = 0;    // vtable+0x00
 		virtual void VTable0x04(GolVec3*) = 0; // vtable+0x04
-		virtual void VTable0x08() = 0;         // vtable+0x08
+		virtual void VTable0x08(void*) = 0;    // vtable+0x08
 		virtual void VTable0x0c() = 0;         // vtable+0x0c
 
 		void FUN_0045ee50(GolVec3* p_unk0x04);
 		void FUN_0045ee70(GolVec3* p_unk0x04);
+		void FUN_0045eec0(void* p_unk0x04);
+		void FUN_0045eee0(void* p_unk0x04);
 
 		undefined m_unk0x04[0x14 - 0x04]; // 0x04
 		undefined4 m_unk0x14;             // 0x14

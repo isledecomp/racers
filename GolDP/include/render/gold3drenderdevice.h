@@ -61,7 +61,7 @@ public:
 		LegoBool32
 	) override;                                                              // vtable+0x0c
 	GolCommonDrawState* GetDrawState() override;                             // vtable+0x10
-	const SlatePeak0x58* GetRenderTargetInfo() override;                     // vtable+0x14
+	SlatePeak0x58* GetRenderTargetInfo() override;                           // vtable+0x14
 	void VTable0x18() override;                                              // vtable+0x18
 	void VTable0x1c(const ColorRGBA&) override;                              // vtable+0x1c
 	void VTable0x20(GolCamera*) override;                                    // vtable+0x20

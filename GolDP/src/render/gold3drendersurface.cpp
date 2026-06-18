@@ -41,7 +41,7 @@ void GolD3DRenderSurface::FUN_10013600(GolD3DRenderDevice* p_renderer, undefined
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void GolD3DRenderSurface::VTable0x14(undefined4*)
+void GolD3DRenderSurface::VTable0x14(undefined4)
 {
 	// empty
 }

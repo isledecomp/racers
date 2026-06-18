@@ -18,7 +18,7 @@ public:
 	void UnlockPixels() override;                                                      // vtable+0x08
 	void LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags) override; // vtable+0x0c
 	void UnlockAuxPixels() override;                                                   // vtable+0x10
-	void VTable0x14(undefined4*) override;                                             // vtable+0x14
+	void VTable0x14(undefined4) override;                                              // vtable+0x14
 	void VTable0x18() override;                                                        // vtable+0x18
 	GolPaletteBase* GetPalette() override;                                             // vtable+0x1c
 	void Fill(LegoU32 p_color) override;                                               // vtable+0x20

@@ -411,6 +411,12 @@ void RaceSession::Field0x27c8::Destroy()
 	m_count = 0;
 }
 
+// STUB: LEGORACERS 0x00493850
+void RaceSession::Field0x27c8::FUN_00493850(GolD3DRenderDevice*, GolExport*, LegoU32)
+{
+	STUB(0x493850);
+}
+
 // STUB: LEGORACERS 0x00493950
 RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undefined4 p_flags)
 {

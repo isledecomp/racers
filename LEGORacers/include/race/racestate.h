@@ -24,8 +24,11 @@
 
 class GolCamera;
 class GolD3DRenderDevice;
+class GolExport;
+class GolFileParser;
 class GolRenderDevice;
 class GolWorldDatabase;
+class GolBoundedEntity;
 class GolAnimatedEntity;
 class MabMaterialAnimationItem0x8;
 class DuskwindBananaRelic0x24;
@@ -34,6 +37,7 @@ class CobaltTrail0x140;
 class RaceCameraController;
 class RaceEventTable0x90;
 class RaceSessionField0x32b4;
+class RaceForceFeedback;
 class SoundGroup;
 class SoundManager;
 class SpatialSoundInstance;
@@ -547,6 +551,7 @@ public:
 					GolQuat* GetRotation(GolQuat* p_rotation) const;
 					LegoFloat GetUnk0x09() const;
 					LegoFloat GetUnk0x0a() const;
+					void FUN_004a5e10(GolFileParser* p_parser, LegoBool32 p_mirror);
 
 					LegoS16 m_unk0x00; // 0x00
 					LegoS16 m_unk0x02; // 0x02
@@ -869,6 +874,7 @@ public:
 			void FUN_00444e90();
 			void FUN_00446e60(GolVec3* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
 			void FUN_00446ea0(LegoU32 p_unk0x04, GolVec3* p_unk0x08);
+			LegoU32 FUN_004488e0(LegoS32 p_unk0x04);
 			void FUN_00448930(LegoS32 p_unk0x04);
 			void FUN_00448c70();
 
@@ -1289,6 +1295,8 @@ public:
 
 		void FUN_00439100();
 		LegoU32 FUN_00439210(LegoU32 p_unk0x04);
+		LegoU32 GetUnk0xccc() const { return m_unk0xccc; }
+		LegoU32 GetUnk0xd04() const { return m_unk0xd04; }
 		void FUN_00439340();
 		void FUN_004393d0();
 		void FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle* p_unk0x08);
@@ -1314,6 +1322,7 @@ public:
 		void FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08);
 		void FUN_0043a360();
 		void FUN_0043a390();
+		void FUN_00437540(RaceCameraController* p_controller, LegoBool32 p_unk0x08);
 		LegoU32 FUN_00439770(LegoU32 p_unk0x04);
 		void FUN_00439870();
 		void FUN_00439b00();
@@ -1391,24 +1400,6 @@ public:
 			Field0xcc4* m_entries; // 0x00
 		};
 
-		// SIZE 0x28
-		class Field0x014 {
-		public:
-			void FUN_00422100();
-
-		private:
-			undefined4* m_unk0x00; // 0x00
-			LegoU32 m_unk0x04;     // 0x04
-			LegoU32 m_unk0x08;     // 0x08
-			LegoS32 m_unk0x0c;     // 0x0c
-			LegoU32 m_unk0x10;     // 0x10
-			LegoFloat m_unk0x14;   // 0x14
-			LegoU32 m_unk0x18;     // 0x18
-			LegoU32 m_unk0x1c;     // 0x1c
-			LegoU32 m_unk0x20;     // 0x20
-			undefined4* m_unk0x24; // 0x24
-		};
-
 		// SIZE 0x24
 		class Field0xcc4 {
 		public:
@@ -1426,7 +1417,7 @@ public:
 		Field0x008* m_unk0x008;              // 0x008
 		Field0x00c* m_unk0x00c;              // 0x00c
 		Field0x010* m_unk0x010;              // 0x010
-		Field0x014* m_unk0x014;              // 0x014
+		RaceForceFeedback* m_unk0x014;       // 0x014
 		Field0x018 m_unk0x018;               // 0x018
 		Field0x3e8 m_unk0x3e8;               // 0x3e8
 		Field0xc70 m_unk0xc70;               // 0xc70
@@ -1655,6 +1646,9 @@ private:
 
 	static RacerProgressEntry g_racerProgressEntries[c_racerProgressEntryCount];
 
+	void FUN_0043b190(void* p_unk0x04, void* p_unk0x08, LegoBool32 p_binary);
+	void FUN_0043bc10(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+	void FUN_0043be60(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
 	void FUN_0043bff0(GolD3DRenderDevice* p_renderer);
 	void FUN_0043c030(LegoU32 p_elapsedMs);
 	void FUN_0043c1b0();

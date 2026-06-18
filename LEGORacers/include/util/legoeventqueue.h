@@ -62,7 +62,7 @@ public:
 		undefined4 m_unk0x0c; // 0x0c
 		union {
 			LegoU32 m_unk0x10;             // 0x10
-			undefined* m_data;             // 0x10
+			void* m_data;                  // 0x10
 			GolWorldEntity* m_worldEntity; // 0x10
 			Field0x10* m_target;           // 0x10
 		};
@@ -93,6 +93,8 @@ public:
 		};
 	};
 
+	// VTABLE: LEGORACERS 0x004b016c
+	// SIZE 0x04
 	class Callback {
 	public:
 		virtual void VTable0x00(CallbackData* p_data) = 0; // vtable+0x00

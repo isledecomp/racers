@@ -42,6 +42,18 @@ void RaceSession::Field0x2f90::Reset()
 	m_unk0xac = 0.0f;
 }
 
+// STUB: LEGORACERS 0x0041c550
+void RaceSession::Field0x2f90::FUN_0041c550(
+	GolD3DRenderDevice*,
+	GolExport*,
+	const LegoChar*,
+	const LegoChar*,
+	LegoBool32
+)
+{
+	STUB(0x41c550);
+}
+
 // FUNCTION: LEGORACERS 0x0041cbe0
 void RaceSession::Field0x2f90::Clear()
 {

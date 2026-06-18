@@ -947,13 +947,19 @@ LegoS32 CobaltTrail0x140::FUN_00425d80(
 {
 	LegoChar name[8];
 
-	STUB(0x00425d80);
-
 	::strncpy(name, g_unk0x004be8a8, sizeof(name));
-	m_unk0x020 = p_nameTable->GetNameEntries() ? static_cast<GolFontBase*>(p_nameTable->GetName(name)) : NULL;
+	GolFontBase* font = NULL;
+	if (p_nameTable->GetNameEntries()) {
+		font = static_cast<GolFontBase*>(p_nameTable->GetName(name));
+	}
+	m_unk0x020 = font;
 
 	::strncpy(name, g_unk0x004be8ac, sizeof(name));
-	m_unk0x024 = p_nameTable->GetNameEntries() ? static_cast<GolFontBase*>(p_nameTable->GetName(name)) : NULL;
+	font = NULL;
+	if (p_nameTable->GetNameEntries()) {
+		font = static_cast<GolFontBase*>(p_nameTable->GetName(name));
+	}
+	m_unk0x024 = font;
 
 	m_unk0x02c = NULL;
 	m_unk0x034 = 0;
@@ -990,8 +996,6 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 	LegoS32 v25;
 	LegoS32 v26;
 	LegoS32 v27;
-
-	STUB(0x00425e90);
 
 	m_unk0x038 = static_cast<LegoU8>(p_mode);
 	m_unk0x094.m_left = 0;
@@ -1068,8 +1072,9 @@ LegoS32 CobaltTrail0x140::FUN_00425e90(LegoS32 p_mode)
 	UtopianPan0xa4* resource = m_unk0x008->VTable0x20(11);
 	m_unk0x0c0 = m_unk0x094.m_left + (widthRange >> 5);
 
-	p_mode =
-		static_cast<LegoS32>((static_cast<double>(resource->GetHeight()) * m_unk0x0f0 + g_unk0x004afde0) * m_unk0x114);
+	p_mode = static_cast<LegoS32>(
+		(static_cast<double>(static_cast<LegoS32>(resource->GetHeight())) * m_unk0x0f0 + g_unk0x004afde0) * m_unk0x114
+	);
 	m_unk0x0e0 = m_unk0x094.m_bottom - p_mode;
 
 	return p_mode;
@@ -1169,8 +1174,6 @@ void CobaltTrail0x140::FUN_004263a0()
 {
 	LegoU32 elapsedMs = m_unk0x034;
 	m_unk0x034 = 0;
-
-	STUB(0x004263a0);
 
 	RaceState::Racer* racer = m_unk0x02c;
 	if (racer == NULL || !m_unk0x038) {
@@ -1565,19 +1568,25 @@ void CobaltTrail0x140::FUN_004263a0()
 
 	if (itemResource || itemLevel) {
 		UtopianPan0xa4* background = m_unk0x008->VTable0x20(11);
-		LegoS32 width = static_cast<LegoS32>(static_cast<double>(background->GetWidth()) * m_unk0x0f0 * m_unk0x10c);
-		LegoS32 height = static_cast<LegoS32>(static_cast<double>(background->GetHeight()) * m_unk0x0f0 * m_unk0x114);
+		LegoS32 width = static_cast<LegoS32>(
+			static_cast<double>(static_cast<LegoS32>(background->GetWidth())) * m_unk0x0f0 * m_unk0x10c
+		);
+		LegoS32 height = static_cast<LegoS32>(
+			static_cast<double>(static_cast<LegoS32>(background->GetHeight())) * m_unk0x0f0 * m_unk0x114
+		);
 		m_unk0x000->VTable0x70(background, 0, m_unk0x0c0, m_unk0x0e0, width, height);
 
 		UtopianPan0xa4* colorResource = m_unk0x008->VTable0x20(12);
-		colorResource->m_colorKeyPacked = itemColor;
+		colorResource->m_unk0x4a.m_u32 = itemColor;
 		m_unk0x000->VTable0x70(colorResource, 0, m_unk0x0c0, m_unk0x0e0, width, height);
 
 		if (itemResource) {
-			LegoS32 itemWidth =
-				static_cast<LegoS32>(static_cast<double>(itemResource->GetWidth()) * m_unk0x0f0 * m_unk0x10c);
-			LegoS32 itemHeight =
-				static_cast<LegoS32>(static_cast<double>(itemResource->GetHeight()) * m_unk0x0f0 * m_unk0x114);
+			LegoS32 itemWidth = static_cast<LegoS32>(
+				static_cast<double>(static_cast<LegoS32>(itemResource->GetWidth())) * m_unk0x0f0 * m_unk0x10c
+			);
+			LegoS32 itemHeight = static_cast<LegoS32>(
+				static_cast<double>(static_cast<LegoS32>(itemResource->GetHeight())) * m_unk0x0f0 * m_unk0x114
+			);
 			m_unk0x000->VTable0x70(
 				itemResource,
 				0,
@@ -1590,10 +1599,12 @@ void CobaltTrail0x140::FUN_004263a0()
 
 		if (itemLevel) {
 			UtopianPan0xa4* levelResource = m_unk0x008->VTable0x20(itemLevel + 12);
-			LegoS32 levelWidth =
-				static_cast<LegoS32>(static_cast<double>(levelResource->GetWidth()) * m_unk0x0f0 * m_unk0x10c);
-			LegoS32 levelHeight =
-				static_cast<LegoS32>(static_cast<double>(levelResource->GetHeight()) * m_unk0x0f0 * m_unk0x114);
+			LegoS32 levelWidth = static_cast<LegoS32>(
+				static_cast<double>(static_cast<LegoS32>(levelResource->GetWidth())) * m_unk0x0f0 * m_unk0x10c
+			);
+			LegoS32 levelHeight = static_cast<LegoS32>(
+				static_cast<double>(static_cast<LegoS32>(levelResource->GetHeight())) * m_unk0x0f0 * m_unk0x114
+			);
 			m_unk0x000->VTable0x70(
 				levelResource,
 				0,

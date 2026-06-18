@@ -92,28 +92,52 @@ InputEventQueue::Event* InputEventQueue::Enqueue(InputDevice* p_device, LegoU32 
 }
 
 // FUNCTION: LEGORACERS 0x0044b870
-void InputEventQueue::OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+InputDevice::Callback::ResultValue InputEventQueue::OnKeyDown(
+	InputDevice* p_device,
+	undefined4 p_keyCode,
+	undefined4 p_arg3
+)
 {
 	Event* event = Enqueue(p_device, p_keyCode, p_arg3);
 	if (event != NULL) {
 		event->m_isPressed = TRUE;
 	}
+
+	InputDevice::Callback::Result result;
+	result.m_pointer = event;
+	return result.m_value;
 }
 
 // FUNCTION: LEGORACERS 0x0044b890
-void InputEventQueue::OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+InputDevice::Callback::ResultValue InputEventQueue::OnKeyUp(
+	InputDevice* p_device,
+	undefined4 p_keyCode,
+	undefined4 p_arg3
+)
 {
 	Event* event = Enqueue(p_device, p_keyCode, p_arg3);
+
+	InputDevice::Callback::Result result;
+	result.m_pointer = event;
+	return result.m_value;
 }
 
 // FUNCTION: LEGORACERS 0x0044b8b0
-void InputEventQueue::OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3)
+InputDevice::Callback::ResultValue InputEventQueue::OnKeyRepeat(
+	InputDevice* p_device,
+	undefined4 p_keyCode,
+	undefined4 p_arg3
+)
 {
 	Event* event = Enqueue(p_device, p_keyCode, p_arg3);
 	if (event != NULL) {
 		event->m_isPressed = TRUE;
 		event->m_isRepeat = TRUE;
 	}
+
+	InputDevice::Callback::Result result;
+	result.m_pointer = event;
+	return result.m_value;
 }
 
 // FUNCTION: LEGORACERS 0x0044b8e0

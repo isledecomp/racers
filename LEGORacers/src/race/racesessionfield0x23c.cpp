@@ -1,4 +1,5 @@
 #include "decomp.h"
+#include "input/directinputdevice.h"
 #include "race/racesession.h"
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x23c, 0x1c)
@@ -6,7 +7,7 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x23c, 0x1c)
 // STUB: LEGORACERS 0x00427900
 RaceSession::Field0x23c::Field0x23c()
 {
-	InputDispatchSource* source = NULL;
+	DirectInputDevice* source = NULL;
 	Field0x258::Field0x04* sink = NULL;
 
 	m_unk0x04 = source;
@@ -27,7 +28,7 @@ RaceSession::Field0x23c::~Field0x23c()
 LegoS32 RaceSession::Field0x23c::FUN_00427960()
 {
 	LegoS32 result = 0;
-	InputDispatchSource* source = NULL;
+	DirectInputDevice* source = NULL;
 	Field0x258::Field0x04* sink = NULL;
 
 	m_unk0x04 = source;
@@ -41,7 +42,7 @@ LegoS32 RaceSession::Field0x23c::FUN_00427960()
 }
 
 // FUNCTION: LEGORACERS 0x00427980
-void RaceSession::Field0x23c::FUN_00427980(InputDispatchSource* p_source, InputEventSink* p_fallback)
+void RaceSession::Field0x23c::FUN_00427980(DirectInputDevice* p_source, InputDevice::Callback* p_fallback)
 {
 	m_unk0x04 = p_source;
 	m_unk0x14 = p_fallback;
@@ -58,32 +59,36 @@ void RaceSession::Field0x23c::FUN_004279a0(Field0x258::Field0x04* p_sink)
 // FUNCTION: LEGORACERS 0x004279c0
 void RaceSession::Field0x23c::FUN_004279c0()
 {
-	m_unk0x04->m_unk0x98 = this;
-	if (!m_unk0x04->VTable0x18()) {
-		m_unk0x04->VTable0x50();
+	m_unk0x04->SetCallback(this);
+	if (!m_unk0x04->IsAcquired()) {
+		m_unk0x04->Acquire();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004279f0
 void RaceSession::Field0x23c::FUN_004279f0()
 {
-	m_unk0x04->VTable0x54();
+	m_unk0x04->Unacquire();
 }
 
 // FUNCTION: LEGORACERS 0x00427a00
-LegoS32 RaceSession::Field0x23c::VTable0x00(InputDispatchSource* p_source, undefined4 p_input, undefined4 p_time)
+InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
+	InputDevice* p_source,
+	undefined4 p_input,
+	undefined4 p_time
+)
 {
 	if (m_unk0x18) {
 		LegoU32 i = 0;
 		if (i < m_unk0x10) {
 			do {
 				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
-					InputDispatchSource* source;
+					DirectInputDevice* source;
 					if (m_unk0x08[i]->FUN_00430910(&source, j) != p_input || source != m_unk0x04) {
 						continue;
 					}
 
-					return m_unk0x08[i]->VTable0x00(p_source, p_input, p_time);
+					return m_unk0x08[i]->OnKeyDown(p_source, p_input, p_time);
 				}
 
 				i++;
@@ -92,26 +97,32 @@ LegoS32 RaceSession::Field0x23c::VTable0x00(InputDispatchSource* p_source, undef
 	}
 
 	if (m_unk0x14) {
-		return m_unk0x14->VTable0x00(p_source, p_input, p_time);
+		return m_unk0x14->OnKeyDown(p_source, p_input, p_time);
 	}
 
-	return FALSE;
+	InputDevice::Callback::Result result;
+	result.m_result = FALSE;
+	return result.m_value;
 }
 
 // STUB: LEGORACERS 0x00427aa0
-LegoS32 RaceSession::Field0x23c::VTable0x04(InputDispatchSource* p_source, undefined4 p_input, undefined4 p_time)
+InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyUp(
+	InputDevice* p_source,
+	undefined4 p_input,
+	undefined4 p_time
+)
 {
 	if (m_unk0x18) {
 		LegoU32 i = 0;
 		if (i < m_unk0x10) {
 			do {
 				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
-					InputDispatchSource* source;
+					DirectInputDevice* source;
 					if (m_unk0x08[i]->FUN_00430910(&source, j) != p_input || source != m_unk0x04) {
 						continue;
 					}
 
-					return m_unk0x08[i]->VTable0x04(p_source, p_input, p_time);
+					return m_unk0x08[i]->OnKeyUp(p_source, p_input, p_time);
 				}
 
 				i++;
@@ -120,10 +131,12 @@ LegoS32 RaceSession::Field0x23c::VTable0x04(InputDispatchSource* p_source, undef
 	}
 
 	if (m_unk0x14) {
-		return m_unk0x14->VTable0x04(p_source, p_input, p_time);
+		return m_unk0x14->OnKeyUp(p_source, p_input, p_time);
 	}
 
-	return FALSE;
+	InputDevice::Callback::Result result;
+	result.m_result = FALSE;
+	return result.m_value;
 }
 
 // FUNCTION: LEGORACERS 0x00427b40

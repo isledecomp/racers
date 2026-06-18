@@ -70,7 +70,7 @@ void SilverDune0x30::UnlockAuxPixels()
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
-void SilverDune0x30::VTable0x14(undefined4*)
+void SilverDune0x30::VTable0x14(undefined4)
 {
 	// empty
 }

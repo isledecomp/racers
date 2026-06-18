@@ -9,6 +9,7 @@
 #include "race/cobalttrail0x140.h"
 #include "race/racecameracontroller.h"
 #include "race/raceeventtable0x90.h"
+#include "race/raceforcefeedback.h"
 #include "render/gold3drenderdevice.h"
 
 #include <float.h>
@@ -21,7 +22,6 @@ extern LegoFloat g_minSoundPan;
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(RaceState::Racer, 0xe34)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x014, 0x28)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018, 0x3d0)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018::Field0x1dc, 0x6c4)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018::Field0x1dc::Field0x1a4, 0x70)
@@ -454,6 +454,12 @@ void RaceState::Racer::FUN_004374c0()
 	m_unk0xd14 = 1;
 	m_unk0xce8 = invalidValue;
 	m_unk0xd18 = invalidValue;
+}
+
+// STUB: LEGORACERS 0x00437540
+void RaceState::Racer::FUN_00437540(RaceCameraController*, LegoBool32)
+{
+	STUB(0x437540);
 }
 
 // STUB: LEGORACERS 0x00437740
@@ -2073,6 +2079,12 @@ void RaceState::Destroy()
 	Reset();
 }
 
+// STUB: LEGORACERS 0x0043b190
+void RaceState::FUN_0043b190(void*, void*, LegoBool32)
+{
+	STUB(0x43b190);
+}
+
 // STUB: LEGORACERS 0x0043b420
 void RaceState::Racer::VTable0x04(undefined4 p_flags)
 {
@@ -2101,6 +2113,18 @@ void RaceState::Racer::VTable0x04(undefined4 p_flags)
 	else {
 		this->~Racer();
 	}
+}
+
+// STUB: LEGORACERS 0x0043bc10
+void RaceState::FUN_0043bc10(const LegoChar*, LegoBool32, LegoBool32)
+{
+	STUB(0x43bc10);
+}
+
+// STUB: LEGORACERS 0x0043be60
+void RaceState::FUN_0043be60(GolD3DRenderDevice*, GolExport*)
+{
+	STUB(0x43be60);
 }
 
 // FUNCTION: LEGORACERS 0x0043beb0

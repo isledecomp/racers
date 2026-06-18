@@ -1,9 +1,9 @@
 #ifndef GOLBOUNDEDENTITY_H
 #define GOLBOUNDEDENTITY_H
 #include "decomp.h"
+#include "golboundingvolume.h"
 #include "golorientedentity.h"
 
-class GolBoundingVolume;
 class GolModelMaterialTable;
 class GolWorldDatabase;
 
@@ -15,6 +15,16 @@ public:
 
 	void FUN_1001b760(GolBoundingVolume* p_arg);
 	void FUN_00403f80();
+	GolBoundingVolume* GetUnk0x58() const { return m_unk0x58; }
+	GolModelMaterialTable* GetUnk0x5c() const { return m_unk0x5c; }
+	GolModelMaterialTable* GetMaterialTable() const
+	{
+		if (m_unk0x5c != NULL) {
+			return m_unk0x5c;
+		}
+
+		return m_unk0x58->GetUnk0x18();
+	}
 
 protected:
 	friend class GolWorldDatabase;

@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.25...4.2 FATAL_ERROR)
 
-# MSVC runtime library flags are selected by an abstraction
+#MSVC runtime library flags are selected by an abstraction
 cmake_policy(SET CMP0091 NEW)
 
 project(racers CXX)
@@ -40,7 +40,7 @@ endif()
 
 set(MSVC_FOR_DECOMP FALSE)
 if (MSVC)
-  # Visual C++ 6.0 -> cl version 12.x
+#Visual C++ 6.0->cl version 12.x
   if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "13.0")
     set(MSVC_FOR_DECOMP TRUE)
   endif()
@@ -131,9 +131,9 @@ set(COMMON_SOURCES
   common/src/duskwindbananarelic0x24.cpp
 )
 
-# These GOLDP-only files currently need the same inline expansion behavior as common_goldp.
-# This might represent another original static library or project grouping; keep the list
-# narrow until more source units show the same codegen fingerprint.
+#These GOLDP - only files currently need the same inline expansion behavior as common_goldp.
+#This might represent another original static library or project grouping; keep the list
+#narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/camera/golcamerabase.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
@@ -175,7 +175,7 @@ target_include_directories(common_legoracers PRIVATE
   "${PROJECT_SOURCE_DIR}/GolDP/include"
 )
 
-# --- GolDP.dll target ---
+#-- - GolDP.dll target -- -
 add_library(goldp SHARED
   GolDP/src/surface/bronzedunebag0xc.cpp
   GolDP/src/render/golcommondrawstate.cpp
@@ -250,7 +250,7 @@ set_property(TARGET goldp PROPERTY OUTPUT_NAME "GolDP")
 set_property(TARGET goldp PROPERTY PREFIX "")
 set_property(TARGET goldp PROPERTY SUFFIX ".dll")
 
-# --- LEGORacers.exe target ---
+#-- - LEGORacers.exe target -- -
 add_executable(legoracers WIN32
   LEGORacers/src/app/main.cpp
   LEGORacers/src/app/gamemain.cpp
@@ -290,6 +290,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/input/inputdevice.cpp
   LEGORacers/src/menu/menumanager.cpp
   LEGORacers/src/race/racemoderunner.cpp
+  LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/util/stackoflegou16.cpp
   LEGORacers/src/util/legoeventqueue.cpp
   LEGORacers/src/util/legoeventqueuefield0x10.cpp
@@ -328,6 +329,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x6dc.cpp
   LEGORacers/src/race/racestatefield0x008.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0x238.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0xa8.cpp
+  LEGORacers/src/race/racesessionfield0x6dcfield0xf8.cpp
   LEGORacers/src/race/raceresourcemanager.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x270.cpp
   LEGORacers/src/race/racesessionfield0x6dcresources.cpp
@@ -340,7 +344,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racestatefield0x2a0.cpp
   LEGORacers/src/race/racestatefield0xd5c.cpp
   LEGORacers/src/race/racestatefield0xc70field0x000.cpp
-  LEGORacers/src/race/timeracemanager.cpp
   LEGORacers/src/race/cobalttrail0x140.cpp
   LEGORacers/src/race/slatebridge0x68.cpp
   LEGORacers/src/race/circuitracerunner.cpp
@@ -483,12 +486,12 @@ set_property(SOURCE LEGORacers/racers.rc APPEND PROPERTY OBJECT_DEPENDS "${PROJE
 
 add_custom_target(game DEPENDS legoracers goldp)
 
-# --- Modern compiler compatibility ---
+#-- - Modern compiler compatibility -- -
 if (MSVC)
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "15")
     add_definitions(-D_CRT_SECURE_NO_WARNINGS)
   endif()
-  # Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
+#Visual Studio 2017 version 15.7 needs "/Zc:__cplusplus" for __cplusplus
   if (CMAKE_CXX_COMPILER_VERSION VERSION_GREATER_EQUAL "19.14.26428")
     add_compile_options(-Zc:__cplusplus)
   endif()
@@ -507,9 +510,9 @@ if (MSVC_FOR_DECOMP)
     PROPERTIES COMPILE_OPTIONS "/Ob2"
   )
 
-  # These flags have been taken from the defaults for a Visual C++ 6.0 project (the compiler the
-  # game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
-  # They ensure a recompilation that can be byte/instruction accurate to the original binaries.
+#These flags have been taken from the defaults for a Visual C++ 6.0 project(the compiler the
+#game was originally built with) and tweaked slightly to produce more debugging info for reccmp.
+#They ensure a recompilation that can be byte / instruction accurate to the original binaries.
   if (TARGET legoracers)
     target_link_options(legoracers PRIVATE "/OPT:NOREF,ICF")
   endif()
@@ -517,11 +520,11 @@ if (MSVC_FOR_DECOMP)
     target_link_options(goldp PRIVATE "/OPT:NOREF,ICF")
   endif()
 
-  # LegoRacers.exe links to MSVCRT.dll (/MD), GolDP.dll has embedded its runtime library (/MT)
+#LegoRacers.exe links to MSVCRT.dll(/ MD), GolDP.dll has embedded its runtime library(/ MT)
   set_property(TARGET legoracers common_legoracers PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
   set_property(TARGET goldp common_goldp PROPERTY MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 
-  # Embed debug information (/Z7) for Debug and RelWithDebInfo configuration type
+#Embed debug information(/ Z7) for Debug and RelWithDebInfo configuration type
   set_property(TARGET goldp legoracers common_goldp common_legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
   set(CMAKE_CXX_FLAGS "/W3 /GX /D \"WIN32\" /D \"_WINDOWS\"")

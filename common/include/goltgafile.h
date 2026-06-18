@@ -21,9 +21,6 @@ public:
 	// SYNTHETIC: LEGORACERS 0x004016a0 FOLDED
 	// GolTgaFile::`scalar deleting destructor'
 
-	// SYNTHETIC: LEGORACERS 0x0040a8a0 FOLDED
-	// GolTgaFile::~GolTgaFile
-
 	void FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst);
 
 private:

@@ -15,10 +15,25 @@ class InputDevice {
 public:
 	class Callback {
 	public:
-		virtual void OnKeyDown(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x00
-		virtual void OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0;   // vtable+0x04
-		virtual void OnKeyRepeat(InputDevice* p_device, undefined4 p_keyCode,
-								 undefined4 p_arg3) = 0; // vtable+0x08
+		typedef LegoU32 ResultValue;
+
+		union Result {
+			void* m_pointer;
+			LegoBool32 m_result;
+			ResultValue m_value;
+		};
+
+		virtual ResultValue OnKeyDown(
+			InputDevice* p_device,
+			undefined4 p_keyCode,
+			undefined4 p_arg3
+		) = 0;                                                                                           // vtable+0x00
+		virtual ResultValue OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x04
+		virtual ResultValue OnKeyRepeat(
+			InputDevice* p_device,
+			undefined4 p_keyCode,
+			undefined4 p_arg3
+		) = 0; // vtable+0x08
 	};
 
 	// VTABLE: LEGORACERS 0x004b0f18
@@ -128,12 +143,15 @@ public:
 	undefined4 GetDeviceSubType() const { return m_deviceSubType; }
 	undefined4 GetDeviceType() const { return m_deviceType; }
 	undefined4 GetDeviceId() const { return m_deviceId; }
+	const LegoChar* GetDeviceName() const { return m_deviceName; }
 	LegoU32 GetAxisMask() const { return m_axisMask; }
+	LegoBool32 IsForceFeedbackAvailable() const { return m_forceFeedbackAvailable; }
 	void SetForceFeedbackAvailable(undefined4 p_forceFeedbackAvailable)
 	{
 		m_forceFeedbackAvailable = p_forceFeedbackAvailable;
 	}
 	void SetCallback(Callback* p_callback) { m_callback = p_callback; }
+	Callback* GetCallback() const { return m_callback; }
 	void SetRepeatEnabled(LegoBool32 p_enabled) { m_repeatEnabled = p_enabled; }
 
 	// SYNTHETIC: LEGORACERS 0x0044b920

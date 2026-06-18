@@ -1,5 +1,27 @@
 #include "race/racestate.h"
 
+// FUNCTION: LEGORACERS 0x004488e0
+LegoU32 RaceState::Racer::Field0x3e8::FUN_004488e0(LegoS32 p_unk0x04)
+{
+	LegoU32 result = m_unk0x154;
+	LegoU32 i = 0;
+	if (result) {
+		for (; i < result; i++) {
+			if (m_unk0x140[i] == p_unk0x04) {
+				return result;
+			}
+		}
+	}
+
+	if (result < sizeOfArray(m_unk0x140)) {
+		m_unk0x140[result] = p_unk0x04;
+		result = m_unk0x154 + 1;
+		m_unk0x154 = result;
+	}
+
+	return result;
+}
+
 // FUNCTION: LEGORACERS 0x00448930
 void RaceState::Racer::Field0x3e8::FUN_00448930(LegoS32 p_unk0x04)
 {

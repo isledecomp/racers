@@ -50,6 +50,12 @@ void SlateBridge0x68::Reset()
 	m_unk0x64 = 0;
 }
 
+// STUB: LEGORACERS 0x004272c0
+void SlateBridge0x68::FUN_004272c0(GolFontBase*, GolD3DRenderDevice*, GolStringTable*, undefined4)
+{
+	STUB(0x4272c0);
+}
+
 // FUNCTION: LEGORACERS 0x00427310
 void SlateBridge0x68::FUN_00427310(
 	LegoU32 p_optionCount,

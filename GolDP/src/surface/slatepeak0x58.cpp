@@ -393,7 +393,7 @@ void SlatePeak0x58::UnlockAuxPixels()
 }
 
 // FUNCTION: GOLDP 0x10003a80
-void SlatePeak0x58::VTable0x14(undefined4* p_wait)
+void SlatePeak0x58::VTable0x14(undefined4 p_wait)
 {
 	RECT destRect;
 
@@ -421,7 +421,7 @@ void SlatePeak0x58::VTable0x14(undefined4* p_wait)
 	}
 
 	if ((m_unk0x34 & 2) && !(m_unk0x34 & 1)) {
-		if (p_wait != NULL) {
+		if (p_wait) {
 			LPDIRECTDRAWSURFACE4 displaySurface = m_displaySurface;
 			HRESULT result;
 			while ((result = displaySurface->Flip(NULL, 0)) == DDERR_SURFACEBUSY || result == DDERR_WASSTILLDRAWING) {

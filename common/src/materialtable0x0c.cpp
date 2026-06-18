@@ -10,6 +10,24 @@
 
 DECOMP_SIZE_ASSERT(MaterialTable0x0c, 0x0c)
 
+// FUNCTION: GOLDP 0x10025de0 FOLDED
+// FUNCTION: LEGORACERS 0x004a00b0 FOLDED
+MaterialTable0x0c* MaterialTable0x0c::FUN_004a00b0()
+{
+	m_renderer = NULL;
+	m_count = 0;
+	m_entries = NULL;
+
+	return this;
+}
+
+// FUNCTION: LEGORACERS 0x004105c0 FOLDED
+// FUNCTION: GOLDP 0x100260d0 FOLDED
+void MaterialTable0x0c::Destroy()
+{
+	Clear();
+}
+
 // FUNCTION: LEGORACERS 0x004105d0 FOLDED
 // FUNCTION: GOLDP 0x10025df0 FOLDED
 void MaterialTable0x0c::Initialize(GolRenderDevice* p_renderer, LegoU32 p_count)

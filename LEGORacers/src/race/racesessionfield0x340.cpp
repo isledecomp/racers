@@ -4,6 +4,9 @@
 
 DECOMP_SIZE_ASSERT(RaceForceFeedback, 0x28)
 
+static const LegoFloat g_unk0x004b0174 = 0.2f;
+static const LegoFloat g_unk0x004b0180 = 1000000.0f;
+
 // FUNCTION: LEGORACERS 0x00421da0
 RaceForceFeedback::RaceForceFeedback()
 {
@@ -110,6 +113,13 @@ void RaceForceFeedback::FUN_00421ef0()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00421f30
+void RaceForceFeedback::FUN_00421f30()
+{
+	m_unk0x18 = 2;
+	m_unk0x1c = 0;
+}
+
 // FUNCTION: LEGORACERS 0x00421f40
 LegoS32 RaceForceFeedback::FUN_00421f40()
 {
@@ -146,15 +156,88 @@ LegoS32 RaceForceFeedback::FUN_00421f80(LegoFloat p_unk0x04)
 	return result;
 }
 
-// STUB: LEGORACERS 0x00422100
+// FUNCTION: LEGORACERS 0x00421fe0
+void RaceForceFeedback::FUN_00421fe0(LegoFloat p_unk0x04)
+{
+	m_unk0x14 = p_unk0x04;
+
+	if (p_unk0x04 == 0.0f) {
+		if (m_unk0x1c) {
+			m_unk0x1c = 0;
+			FUN_00421ef0();
+			return;
+		}
+	}
+
+	if (!m_unk0x18) {
+		m_unk0x1c = 1;
+		FUN_00421f40();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00422030
+void RaceForceFeedback::FUN_00422030(LegoU32 p_unk0x04)
+{
+	LegoU32 zero = 0;
+
+	if (m_device) {
+		switch (p_unk0x04) {
+		case 0:
+			m_unk0x04 = 1000;
+			m_unk0x0c = 500;
+			m_unk0x10 = zero;
+			break;
+		case 1:
+			m_unk0x04 = 1500;
+			m_unk0x0c = 750;
+			m_unk0x10 = zero;
+			break;
+		case 2:
+			m_unk0x04 = 5000;
+			m_unk0x0c = 500;
+			m_unk0x10 = 100;
+			break;
+		case 3:
+			m_unk0x04 = 1000;
+			m_unk0x10 = zero;
+			m_unk0x0c = 1000;
+			break;
+		}
+
+		FUN_00421f30();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004220c0
+void RaceForceFeedback::FUN_004220c0()
+{
+	if (m_device) {
+		m_unk0x10 = 0;
+		m_unk0x04 = 500;
+		m_unk0x0c = 500;
+		FUN_00421f30();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004220e0
+void RaceForceFeedback::FUN_004220e0()
+{
+	if (m_device) {
+		m_unk0x10 = 0;
+		m_unk0x04 = 150;
+		m_unk0x0c = 150;
+		FUN_00421f30();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00422100
 void RaceForceFeedback::FUN_00422100()
 {
 	if (m_device && !m_unk0x18) {
 		m_unk0x10 = 0;
 		m_unk0x04 = 100;
 		m_unk0x0c = 100;
-		m_unk0x18 = 2;
-		m_unk0x1c = 0;
+		FUN_00421f30();
 	}
 }
 
@@ -212,46 +295,51 @@ void RaceForceFeedback::FUN_004221a0()
 	}
 }
 
-// STUB: LEGORACERS 0x004221d0
+// FUNCTION: LEGORACERS 0x004221d0
 void RaceForceFeedback::FUN_004221d0()
 {
+	DWORD axes[2];
+	LONG direction[2];
+	DIPERIODIC periodicParams;
+	DIEFFECT effectParams;
 	RaceForceFeedback* self = this;
 	DirectInputDevice* device = self->m_device;
 	LegoS32 zero = 0;
 
 	if (device) {
 		if (device->IsForceFeedbackAvailable()) {
-			LegoFloat period = 1000000.0f * 0.2f;
+			LegoFloat period = g_unk0x004b0174;
+			period *= g_unk0x004b0180;
 
-			DWORD axes[2];
 			axes[0] = zero;
 			axes[1] = DIJOFS_Y;
 
-			LONG direction[2];
 			direction[0] = zero;
 			direction[1] = zero;
 
-			DIPERIODIC periodicParams;
 			periodicParams.dwMagnitude = 2000;
 			periodicParams.lOffset = zero;
 			periodicParams.dwPhase = zero;
 			periodicParams.dwPeriod = static_cast<LegoS32>(period);
 
-			DIEFFECT effectParams = {
-				sizeof(effectParams),
-				DIEFF_POLAR | DIEFF_OBJECTOFFSETS,
-				INFINITE,
-				static_cast<DWORD>(zero),
-				10000,
-				DIEB_NOTRIGGER,
-				static_cast<DWORD>(zero),
-				sizeOfArray(axes),
-				axes,
-				direction,
-				NULL,
-				sizeof(periodicParams),
-				&periodicParams,
-			};
+			effectParams.dwDuration = INFINITE;
+			effectParams.dwTriggerButton = DIEB_NOTRIGGER;
+
+			DWORD* axesPtr = axes;
+			LONG* directionPtr = direction;
+			DIPERIODIC* periodicParamsPtr = &periodicParams;
+
+			effectParams.dwSize = sizeof(effectParams);
+			effectParams.dwFlags = DIEFF_POLAR | DIEFF_OBJECTOFFSETS;
+			effectParams.dwSamplePeriod = zero;
+			effectParams.dwGain = 10000;
+			effectParams.dwTriggerRepeatInterval = zero;
+			effectParams.cAxes = sizeOfArray(axes);
+			effectParams.rgdwAxes = axesPtr;
+			effectParams.rglDirection = directionPtr;
+			effectParams.lpEnvelope = NULL;
+			effectParams.cbTypeSpecificParams = sizeof(periodicParams);
+			effectParams.lpvTypeSpecificParams = periodicParamsPtr;
 
 			HRESULT result = device->GetDevice()->CreateEffect(GUID_Sine, &effectParams, &self->m_effect, NULL);
 			if (FAILED(result)) {

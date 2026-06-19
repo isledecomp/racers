@@ -32,6 +32,8 @@ public:
 		MabMaterialAnimationItem0x8* p_items,
 		LegoU32 p_itemCount
 	);
+	MaterialTable0x0c* GetUnk0x00() const { return m_unk0x00; }
+	LegoU16 GetUnk0x04() const { return m_unk0x04; }
 	LegoBool32 IsConfigured() const { return m_flags & c_flagBit0; }
 	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
 

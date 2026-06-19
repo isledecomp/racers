@@ -118,7 +118,7 @@ LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042aea0(LegoFloat p_un
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0042af90
+// STUB: LEGORACERS 0x0042af90 FOLDED
 SpatialSoundInstance* RaceState::Racer::Field0xc70::Field0x000::FUN_0042af90(LegoU32 p_unk0x04)
 {
 	if (m_unk0x740 != NULL) {
@@ -277,7 +277,7 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00447f30(
 	}
 }
 
-// FUNCTION: LEGORACERS 0x00448070
+// FUNCTION: LEGORACERS 0x00448070 FOLDED
 void RaceState::Racer::Field0xc70::Field0x000::FUN_00448070()
 {
 	LegoU32 flags = m_flags0x6c0;
@@ -315,7 +315,7 @@ LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_004489f0()
 	return 0.0f;
 }
 
-// STUB: LEGORACERS 0x00449070
+// FUNCTION: LEGORACERS 0x00449070
 undefined4 RaceState::Racer::Field0xc70::Field0x000::FUN_00449070(undefined4 p_unk0x04)
 {
 	LegoU32 flags = m_flags0x6c0;

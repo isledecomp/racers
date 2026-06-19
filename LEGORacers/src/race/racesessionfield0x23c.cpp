@@ -27,18 +27,14 @@ RaceSession::Field0x23c::~Field0x23c()
 // STUB: LEGORACERS 0x00427960
 LegoS32 RaceSession::Field0x23c::FUN_00427960()
 {
-	LegoS32 result = 0;
-	DirectInputDevice* source = NULL;
-	Field0x258::Field0x04* sink = NULL;
-
-	m_unk0x04 = source;
-	m_unk0x08[0] = sink;
-	m_unk0x08[1] = sink;
+	m_unk0x04 = NULL;
+	m_unk0x08[0] = NULL;
+	m_unk0x08[1] = NULL;
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
 	m_unk0x18 = 1;
 
-	return result;
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00427980

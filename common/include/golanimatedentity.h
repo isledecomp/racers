@@ -75,13 +75,17 @@ public:
 		}
 	}
 	LegoU16 GetActiveState() const { return (m_flags & 0x20000) ? m_unk0xd8 : m_unk0xbc; }
+	LegoU16 GetCurrentPartIndex() const { return m_unk0xbc; }
+	LegoU16 GetQueuedPartIndex() const { return m_unk0xd8; }
 	LegoFloat GetActiveValue() const { return (m_flags & 0x20000) ? m_unk0xd0 : m_unk0xb4; }
+	LegoFloat GetUnk0xb4() const { return m_unk0xb4; }
 	LegoFloat GetUnk0xb8() const { return m_unk0xb8; }
+	void SetQueuedPartIndex(LegoU16 p_partIndex) { m_unk0xd8 = p_partIndex; }
 	void SetUnk0xb8(LegoFloat p_unk0xb8) { m_unk0xb8 = p_unk0xb8; }
+	void FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale);
 
 private:
 	void Reset();
-	void FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale);
 
 	GolSceneNode* m_nodes[3];          // 0x90
 	LegoS32 m_partIndices[3];          // 0x9c

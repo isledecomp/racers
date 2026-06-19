@@ -483,3 +483,18 @@ void RaceSession::Field0x2f90::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
 		p_renderer->VTable0xe4();
 	}
 }
+
+// FUNCTION: LEGORACERS 0x0041d150
+void RaceSession::Field0x2f90::FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs)
+{
+	Entry* entry = static_cast<Entry*>(GolNameTable::GetName(p_name));
+	if (entry) {
+		m_unk0xb4 = m_unk0xb8;
+		LegoU32 index = static_cast<LegoU32>(entry - m_entries);
+		m_unk0xb8 = index;
+		if (index != m_unk0xb4) {
+			m_unk0xc0 = 0;
+			m_unk0xbc = p_durationMs;
+		}
+	}
+}

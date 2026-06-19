@@ -83,8 +83,6 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 	Field0x000::Field0x0a8* entity;
 	Field0x058* query;
 
-	STUB(0x0041f4d0);
-
 	direction.m_x = p_unk0x08->m_x - p_unk0x04->m_x;
 	direction.m_y = p_unk0x08->m_y - p_unk0x04->m_y;
 	direction.m_z = p_unk0x08->m_z - p_unk0x04->m_z;

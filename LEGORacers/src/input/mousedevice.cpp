@@ -14,7 +14,7 @@ LegoS32 MouseInputDevice::GetButtonCount()
 	return 4;
 }
 
-// FUNCTION: LEGORACERS 0x0044f580
+// FUNCTION: LEGORACERS 0x0044f580 FOLDED
 LegoS32 MouseInputDevice::GetAxisCount()
 {
 	return 3;

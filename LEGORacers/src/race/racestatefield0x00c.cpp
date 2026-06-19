@@ -1,4 +1,5 @@
 #include "race/racestate.h"
+#include "race/timeracemanager.h"
 
 #include <float.h>
 
@@ -63,9 +64,10 @@ RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043ca60(
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_racerCount); i++) {
 		Racer* racer = &m_racers[i];
+		Racer::Field0x018* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		racerField->m_unk0x044->VTable0x04(&position);
 
 		GolVec3 delta = position - *p_unk0x04;
 		LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
@@ -76,6 +78,121 @@ RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043ca60(
 			if (GOLVECTOR3_DOT(normalized, *p_unk0x08) >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
 				result = racer;
 				nearestDistanceSquared = distanceSquared;
+			}
+		}
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x0043cbb0
+RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043cbb0(
+	GolVec3* p_unk0x04,
+	LegoFloat p_unk0x08,
+	LegoFloat p_unk0x0c
+)
+{
+	LegoFloat nearestDistanceSquared = FLT_MAX;
+	LegoS32 resultIndex = -1;
+
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_racerCount); i++) {
+		Racer* racer = &m_racers[i];
+
+		GolVec3 position;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+		LegoFloat deltaX = position.m_x - p_unk0x04->m_x;
+		LegoFloat deltaY = position.m_y - p_unk0x04->m_y;
+		LegoFloat deltaZ = position.m_z - p_unk0x04->m_z;
+		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
+		if (distanceSquared >= p_unk0x08 && distanceSquared <= p_unk0x0c && distanceSquared < nearestDistanceSquared) {
+			resultIndex = i;
+			nearestDistanceSquared = distanceSquared;
+		}
+	}
+
+	if (resultIndex < 0) {
+		return NULL;
+	}
+
+	return &m_racers[resultIndex];
+}
+
+// STUB: LEGORACERS 0x0043cda0
+LegoU32 RaceState::Racer::Field0x00c::FUN_0043cda0(Racer* p_racer)
+{
+	TimeRaceManager* timeRaceManager = m_timeRaceManager;
+	LegoU32 lapsCompleted = p_racer->m_lapsCompleted;
+
+	if (timeRaceManager) {
+		LegoU32 racerLapTime = 0;
+		LegoU32 recordLapTime = 0;
+		LegoU32 bestLapTime = 0;
+
+		for (LegoU32 i = 0; i < lapsCompleted; i++) {
+			racerLapTime += p_racer->m_lapTimes[i];
+		}
+
+		if (timeRaceManager->HasRecordRunLapTimes()) {
+			const LegoU32* lapTimes = timeRaceManager->GetRecordLapTimes();
+			for (LegoU32 i = 0; i < lapsCompleted; i++) {
+				recordLapTime += lapTimes[i];
+			}
+		}
+
+		if (timeRaceManager->HasBestRunLapTimes()) {
+			const LegoU32* lapTimes = timeRaceManager->GetBestLapTimes();
+			for (LegoU32 i = 0; i < lapsCompleted; i++) {
+				bestLapTime += lapTimes[i];
+			}
+
+			if (bestLapTime != 0 && (recordLapTime == 0 || recordLapTime > bestLapTime)) {
+				recordLapTime = bestLapTime;
+			}
+		}
+
+		if (recordLapTime != 0 && recordLapTime < racerLapTime) {
+			return racerLapTime - recordLapTime;
+		}
+
+		return 0;
+	}
+
+	if (p_racer->m_lapTimes[5] == 1) {
+		return 0;
+	}
+
+	LegoS32 result = 0;
+	LegoU32 lapCount = m_lapCount;
+	if (lapsCompleted > lapCount) {
+		lapsCompleted = lapCount;
+	}
+
+	for (LegoU32 racerIndex = 0; racerIndex < m_racerCount; racerIndex++) {
+		Racer* otherRacer = &m_racers[racerIndex];
+		if (otherRacer == p_racer) {
+			continue;
+		}
+
+		LegoU32 otherLapsCompleted = otherRacer->m_lapsCompleted;
+		if (otherLapsCompleted > lapCount) {
+			otherLapsCompleted = lapCount;
+		}
+
+		if (lapsCompleted <= otherLapsCompleted) {
+			LegoS32 delta = 0;
+			for (LegoU32 completedLapIndex = 0; completedLapIndex < lapsCompleted; completedLapIndex++) {
+				delta += static_cast<LegoS32>(p_racer->m_lapTimes[completedLapIndex]) -
+						 static_cast<LegoS32>(otherRacer->m_lapTimes[completedLapIndex]);
+			}
+
+			for (LegoU32 remainingLapIndex = lapsCompleted; remainingLapIndex < otherLapsCompleted;
+				 remainingLapIndex++) {
+				delta += static_cast<LegoS32>(otherRacer->m_lapTimes[remainingLapIndex]);
+			}
+
+			if (delta > result) {
+				result = delta;
 			}
 		}
 	}

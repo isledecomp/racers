@@ -46,6 +46,8 @@ public:
 	LegoBool32 HasBeatenRecord();
 	GhostRunData* FUN_004234f0();
 	LegoU32* GetScratchLapTimes() { return m_scratchRun->m_lapTimes; }
+	const LegoU32* GetRecordLapTimes() const { return m_recordRun->m_lapTimes; }
+	const LegoU32* GetBestLapTimes() const { return m_bestRun->m_lapTimes; }
 
 	// SIZE 0x25c0
 	class GhostRunData {
@@ -101,6 +103,8 @@ private:
 public:
 	LegoBool32 HasBestGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit0) && !m_bestRun->m_finished; }
 	LegoBool32 HasRecordGhostMarker() const { return (m_flags0x3b4 & c_flag0x3b4Bit3) && !m_recordRun->m_finished; }
+	LegoBool32 HasBestRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit0; }
+	LegoBool32 HasRecordRunLapTimes() const { return m_flags0x3b4 & c_flag0x3b4Bit3; }
 	GolAnimatedEntity* GetBestGhostMarkerEntity() { return &m_unk0x1c; }
 	GolAnimatedEntity* GetRecordGhostMarkerEntity() { return m_unk0x110; }
 

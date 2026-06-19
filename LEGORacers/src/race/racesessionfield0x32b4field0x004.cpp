@@ -9,8 +9,10 @@ LegoU32 RaceEventTable0x90::Field0x24::FUN_0045c660(undefined4 p_unk0x04)
 	if (m_count > 0) {
 		Field0x24Entry* entry = m_entries;
 		while (i < m_count) {
-			if (entry->m_unk0x0c == p_unk0x04 && (entry->m_flags0x10 & 2)) {
-				entry->m_flags0x10 &= ~2;
+			if (entry->m_unk0x0c == p_unk0x04) {
+				if (entry->m_flags0x10 & 2) {
+					entry->m_flags0x10 &= ~2;
+				}
 			}
 
 			i++;

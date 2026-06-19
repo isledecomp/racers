@@ -14,7 +14,7 @@ RaceSession::Field0x6dc::Field0x238::Field0x238()
 	m_unk0x234 = 0;
 }
 
-// STUB: LEGORACERS 0x004442c0
+// FUNCTION: LEGORACERS 0x004442c0
 RaceSession::Field0x6dc::Field0xa8* RaceSession::Field0x6dc::Field0x238::VTable0x10(undefined4 p_flags)
 {
 	Field0x238* result = this;

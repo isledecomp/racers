@@ -184,6 +184,11 @@ public:
 	{
 		return static_cast<GolAnimatedEntity*>(m_unk0xc0.GetName(p_name));
 	}
+	GolNameTable::Entry* GetUnk0xccNameEntries() const { return m_unk0xcc.GetNameEntries(); }
+	GolCollidableEntity* GetUnk0xccName(const LegoChar* p_name) const
+	{
+		return static_cast<GolCollidableEntity*>(m_unk0xcc.GetName(p_name));
+	}
 	GolModelEntity* FindUnk0xb4(const LegoChar* p_name) const
 	{
 		if (m_unk0xb4.GetNameEntries() == NULL) {

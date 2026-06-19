@@ -1658,7 +1658,7 @@ void CutscenePlayer::FUN_004a26f0()
 	}
 }
 
-// STUB: LEGORACERS 0x004a2730
+// FUNCTION: LEGORACERS 0x004a2730
 void CutscenePlayer::FUN_004a2730(
 	GolFileParser* p_parser,
 	LegoU32 p_token,
@@ -1667,7 +1667,8 @@ void CutscenePlayer::FUN_004a2730(
 	GolNameTable& p_unk0x10
 )
 {
-	STUB(0x004a2730);
+	CutsceneEvent* event = NULL;
+	undefined4 mode = 0;
 
 	if (p_unk0x0c != NULL) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -1712,7 +1713,6 @@ void CutscenePlayer::FUN_004a2730(
 
 		GolFileParser::ParserTokenType targetToken = p_parser->GetNextToken();
 		GolFileParser::ParserTokenType modeToken = p_parser->GetNextToken();
-		undefined4 mode;
 		if (modeToken == GolFileParser::e_unknown0x4e) {
 			mode = 1;
 		}
@@ -1721,13 +1721,11 @@ void CutscenePlayer::FUN_004a2730(
 		}
 		else {
 			p_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
-			mode = 0;
 		}
 
 		GolName targetName;
 		::strncpy(targetName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
 
-		CutsceneEvent* event = NULL;
 		switch (targetToken) {
 		case GolFileParser::e_unknown0x2b:
 			event = static_cast<CutsceneEvent*>(m_unk0xa8.GetName(targetName));

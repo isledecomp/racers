@@ -28,10 +28,8 @@ public:
 	// GolBmpFile::`scalar deleting destructor'
 
 	// SYNTHETIC: GOLDP 0x1001f1d0 FOLDED
-	// GolBmpFile::~GolBmpFile
-
 	// SYNTHETIC: LEGORACERS 0x0040a8a0 FOLDED
-	// ??1GolBmpFile@@UAE@XZ
+	// GolBmpFile::~GolBmpFile
 
 private:
 	LegoChar m_unk0x5b0[0x40];  // 0x5b0

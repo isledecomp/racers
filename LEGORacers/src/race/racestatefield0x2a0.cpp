@@ -7,6 +7,7 @@
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry::PathPoint, 0x0c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x13c, 0x4c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::CollisionCacheRecord, 0x3c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74c, 0x78)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x050, 0x78)
 
@@ -162,7 +163,7 @@ void RaceState::Racer::Field0xc70::Field0x050::FUN_004a5220(Racer::Field0x00c::E
 }
 
 // STUB: LEGORACERS 0x004a5320
-void RaceState::Racer::Field0xc70::Field0x050::FUN_004a5320(LegoFloat p_unk0x04)
+void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 {
 	Racer::Field0x00c::Entry* entry = m_unk0x28;
 	if (entry) {

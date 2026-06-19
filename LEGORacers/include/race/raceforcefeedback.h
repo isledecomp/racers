@@ -15,6 +15,10 @@ public:
 	~RaceForceFeedback();
 
 	void FUN_00421e00(DirectInputDevice* p_device);
+	void FUN_00421fe0(LegoFloat p_unk0x04);
+	void FUN_00422030(LegoU32 p_unk0x04);
+	void FUN_004220c0();
+	void FUN_004220e0();
 	void FUN_00422100();
 	void FUN_00422130();
 	void FUN_00422150();
@@ -25,6 +29,7 @@ private:
 	void FUN_00421de0();
 	void FUN_00421e30(LegoU32 p_elapsedMs, LegoFloat p_unk0x08);
 	void FUN_00421ef0();
+	void FUN_00421f30();
 	LegoS32 FUN_00421f40();
 	LegoS32 FUN_00421f80(LegoFloat p_unk0x04);
 	void FUN_004221d0();

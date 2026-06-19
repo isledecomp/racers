@@ -26,7 +26,7 @@ LegoS32 KeyboardInputDevice::GetButtonCount()
 }
 #pragma code_seg()
 
-// FUNCTION: LEGORACERS 0x0044f2e0
+// FUNCTION: LEGORACERS 0x0044f2e0 FOLDED
 #pragma code_seg(".text$kbd_vt20")
 LegoS32 KeyboardInputDevice::GetAxisCount()
 {

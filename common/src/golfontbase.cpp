@@ -552,8 +552,6 @@ void GolFontBase::FUN_00408d50(
 	LegoS32* p_height
 )
 {
-	STUB(0x00408d50);
-
 	GolFontBase* font = this;
 
 	*p_height = 0;

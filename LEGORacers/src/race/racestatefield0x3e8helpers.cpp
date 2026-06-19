@@ -1,11 +1,55 @@
+#include "audio/spatialsoundinstance.h"
+#include "golconstants.h"
 #include "golmath.h"
 #include "race/raceeventtable0x90.h"
+#include "race/raceforcefeedback.h"
+#include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
 
+#include <float.h>
+#include <math.h>
 #include <string.h>
+
+extern LegoFloat g_arcCosineTable[1024];
+extern const LegoS32 g_raceStateField0x3e8MirrorEntryIndices[];
+extern const LegoS32 g_raceStateField0x3e8ContactEntryIndices0x4b0d50[];
+extern const LegoS32 g_raceStateField0x3e8ContactEntryIndices0x4b0d60[];
 
 // GLOBAL: LEGORACERS 0x004b0448
 extern const LegoFloat g_unk0x004b0448 = 120.0f;
+
+// GLOBAL: LEGORACERS 0x004b0438
+extern const LegoFloat g_unk0x004b0438 = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b043c
+extern const LegoFloat g_unk0x004b043c = 0.5f;
+
+// GLOBAL: LEGORACERS 0x004b0440
+extern const LegoFloat g_unk0x004b0440 = 2.0f;
+
+// GLOBAL: LEGORACERS 0x004b0458
+extern const LegoFloat g_unk0x004b0458 = 3.0f;
+
+// GLOBAL: LEGORACERS 0x004b045c
+extern const LegoFloat g_unk0x004b045c = 1.0f;
+
+// GLOBAL: LEGORACERS 0x004b0460
+extern const LegoFloat g_unk0x004b0460 = 0.5f;
+
+// GLOBAL: LEGORACERS 0x004b0464
+extern const LegoFloat g_unk0x004b0464 = 0.25f;
+
+// GLOBAL: LEGORACERS 0x004b0468
+extern const LegoFloat g_unk0x004b0468 = 0.008f;
+
+// GLOBAL: LEGORACERS 0x004b0474
+extern const LegoFloat g_unk0x004b0474 = 0.0089999996f;
+
+// GLOBAL: LEGORACERS 0x004b0478
+extern const LegoFloat g_unk0x004b0478 = 0.22f;
+
+// GLOBAL: LEGORACERS 0x004b047c
+extern const LegoFloat g_unk0x004b047c = 280.0f;
 
 // GLOBAL: LEGORACERS 0x004b0484
 extern const LegoFloat g_unk0x004b0484 = 300.0f;
@@ -22,11 +66,23 @@ extern const LegoFloat g_unk0x004b04a0 = 2.75f;
 // GLOBAL: LEGORACERS 0x004b04a4
 extern const LegoFloat g_unk0x004b04a4 = -0.5f;
 
+// GLOBAL: LEGORACERS 0x004b04a8
+extern const LegoFloat g_unk0x004b04a8 = 6.0f;
+
+// GLOBAL: LEGORACERS 0x004b04ac
+extern const LegoFloat g_unk0x004b04ac = 3.0f;
+
 // GLOBAL: LEGORACERS 0x004b04b0
 extern const LegoFloat g_unk0x004b04b0 = 15.0f;
 
 // GLOBAL: LEGORACERS 0x004b04d0
 extern const LegoFloat g_unk0x004b04d0 = 50.0f;
+
+// GLOBAL: LEGORACERS 0x004b04d8
+extern const LegoFloat g_unk0x004b04d8 = 340.0f;
+
+// GLOBAL: LEGORACERS 0x004b04dc
+extern const LegoFloat g_unk0x004b04dc = -250.0f;
 
 // GLOBAL: LEGORACERS 0x004b054c
 extern const LegoFloat g_unk0x004b054c = 0.003f;
@@ -34,8 +90,20 @@ extern const LegoFloat g_unk0x004b054c = 0.003f;
 // GLOBAL: LEGORACERS 0x004b0b90
 extern const LegoFloat g_unk0x004b0b90 = 0.083333336f;
 
+// GLOBAL: LEGORACERS 0x004b0cd8
+extern const LegoFloat g_unk0x004b0cd8 = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b0cdc
+extern const LegoFloat g_unk0x004b0cdc = 300.0f;
+
 // GLOBAL: LEGORACERS 0x004b0ce4
 extern const LegoFloat g_unk0x004b0ce4 = 39.0f;
+
+// GLOBAL: LEGORACERS 0x004b0ce8
+extern const LegoFloat g_unk0x004b0ce8 = 0.78539819f;
+
+// GLOBAL: LEGORACERS 0x004b0cec
+extern const LegoFloat g_unk0x004b0cec = 0.70710677f;
 
 // GLOBAL: LEGORACERS 0x004b0cf0
 extern const LegoFloat g_unk0x004b0cf0 = 110.0f;
@@ -49,9 +117,69 @@ extern const LegoFloat g_unk0x004b0d20 = 6.0f;
 // GLOBAL: LEGORACERS 0x004b0d24
 extern const LegoFloat g_unk0x004b0d24 = 3.0f;
 
+// GLOBAL: LEGORACERS 0x004b0d28
+extern const LegoFloat g_unk0x004b0d28 = 0.005f;
+
 extern LegoU32 g_unk0x004b0d80;
+extern const LegoFloat g_unk0x004b0cd0;
+extern const LegoFloat g_unk0x004b0d84;
+extern const LegoFloat g_carBuildModelHeightScale;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
+extern const LegoFloat g_unk0x004b0430;
+extern const LegoFloat g_unk0x004b0434;
 extern const LegoFloat g_unk0x004b0544;
+extern const LegoFloat g_ghostSpeedScale;
+extern const LegoFloat g_twoPi;
+
+// GLOBAL: LEGORACERS 0x004c4868
+RaceState::Racer::Field0x3e8::Field0x74c g_raceStateField0x3e8PathState0x004c4868;
+
+// GLOBAL: LEGORACERS 0x004c48e0
+GolMatrix3 g_raceStateField0x3e8PathOrientation0x004c48e0;
+
+// GLOBAL: LEGORACERS 0x004c6c04
+RaceState::Racer::Field0x3e8::SnapshotEntryBlock g_raceStateField0x3e8SnapshotEntries;
+
+// GLOBAL: LEGORACERS 0x004c6df0
+GolVec3 g_raceStateField0x3e8Snapshot0x000[4];
+
+// GLOBAL: LEGORACERS 0x004c6e20
+GolVec3 g_raceStateField0x3e8Snapshot0x030;
+
+// GLOBAL: LEGORACERS 0x004c6e2c
+undefined4 g_raceStateField0x3e8Snapshot0x03c;
+
+// GLOBAL: LEGORACERS 0x004c6e30
+GolVec3 g_raceStateField0x3e8Snapshot0x040[4];
+
+// GLOBAL: LEGORACERS 0x004c6e60
+GolVec3 g_raceStateField0x3e8Snapshot0x070[4];
+
+// GLOBAL: LEGORACERS 0x004c6e90
+GolVec3 g_raceStateField0x3e8Snapshot0x0a0;
+
+// GLOBAL: LEGORACERS 0x004c6e9c
+LegoFloat g_raceStateField0x3e8Snapshot0x0ac;
+
+// GLOBAL: LEGORACERS 0x004c6ea0
+LegoFloat g_raceStateField0x3e8Snapshot0x0b0;
+
+// GLOBAL: LEGORACERS 0x004c6ea4
+undefined4 g_raceStateField0x3e8Snapshot0x0b4;
+
+// GLOBAL: LEGORACERS 0x004c6ea8
+GolVec3 g_raceStateField0x3e8Snapshot0x0b8;
+
+// GLOBAL: LEGORACERS 0x004c6eb4
+GolMatrix3 g_raceStateField0x3e8Snapshot0x0c4;
+
+// GLOBAL: LEGORACERS 0x004c6ed8
+GolVec3 g_raceStateField0x3e8Snapshot0x0e8;
+
+inline static RaceSessionField0x32b4::Field0x000::Field0x0a8* GetRaceStateField0x3e8Resource(LegoS32 p_resource)
+{
+	return (RaceSessionField0x32b4::Field0x000::Field0x0a8*) p_resource;
+}
 
 // FUNCTION: LEGORACERS 0x00429120
 void RaceState::Racer::Field0x3e8::Reset()
@@ -157,10 +285,85 @@ void RaceState::Racer::Field0x3e8::FUN_004293c0()
 	}
 }
 
-// STUB: LEGORACERS 0x004293f0
-void RaceState::Racer::Field0x3e8::VTable0x04(LegoU32)
+// FUNCTION: LEGORACERS 0x004293f0
+void RaceState::Racer::Field0x3e8::VTable0x04(LegoU32 p_elapsedMs)
 {
-	STUB(0x4293f0);
+	GolVec3 soundPosition;
+	GolVec3 position;
+
+	if (m_unk0x744) {
+		FUN_00429d40(p_elapsedMs);
+	}
+	else {
+		FUN_00444ef0(p_elapsedMs);
+
+		if (m_unk0x36c == 4 && !m_unk0x3ec) {
+			LegoU32 racerFlags = m_unk0x6f0->m_unk0xd04;
+			if (!(racerFlags & Racer::c_flags0xd04Bit10) || !(racerFlags & Racer::c_flags0xd04Bit1)) {
+				GolOrientedEntity* entity0 = &m_unk0x0e4;
+				entity0->VTable0x04(&m_unk0x700);
+				GolMath::FUN_1002f5a0(m_unk0x0e4.GetTransform(), &m_unk0x70c);
+			}
+		}
+
+		GolOrientedEntity* entity = &m_unk0x0e4;
+		entity->VTable0x04(&position);
+		if (position.m_z < g_unk0x004b04dc || position.m_z > g_unk0x004b04d8) {
+			entity->VTable0x08(m_unk0x700);
+			GolMath::FUN_00449340(&m_unk0x70c, &m_unk0x0e4.GetOrientation().m_m[0][0]);
+			m_unk0x008.m_x = 0.0f;
+			m_unk0x008.m_y = 0.0f;
+			m_unk0x008.m_z = 0.0f;
+			m_unk0x0a4.m_x = 0.0f;
+			m_unk0x0a4.m_y = 0.0f;
+			m_unk0x0a4.m_z = 0.0f;
+		}
+
+		LegoU32 racerFlags = m_unk0x6f0->m_unk0xd04;
+		if ((racerFlags & Racer::c_flags0xd04Bit10) && (racerFlags & Racer::c_flags0xd04Bit1)) {
+			entity->VTable0x08(m_unk0x700);
+			GolMath::FUN_00449340(&m_unk0x70c, &m_unk0x0e4.GetOrientation().m_m[0][0]);
+			m_unk0x008.m_x = 0.0f;
+			m_unk0x008.m_y = 0.0f;
+			m_unk0x008.m_z = 0.0f;
+			m_unk0x0a4.m_x = 0.0f;
+			m_unk0x0a4.m_y = 0.0f;
+			m_unk0x0a4.m_z = 0.0f;
+		}
+	}
+
+	if (m_unk0x740 == NULL) {
+		return;
+	}
+
+	if (m_unk0x36c && !(m_flags0x6c0 & c_flags0x6c0Bit3) &&
+		(m_unk0x604 >= g_unk0x004b0474 || m_unk0x604 <= -g_unk0x004b0474)) {
+		LegoS32 soundAge = static_cast<LegoS32>(m_unk0x738);
+		soundAge += p_elapsedMs;
+		m_unk0x738 = soundAge;
+
+		m_unk0x13c->VTable0x04(&soundPosition);
+		m_unk0x740->SetPosition(soundPosition);
+		m_unk0x740->SetVelocity(m_unk0x008);
+
+		LegoFloat frequencyScale = m_unk0x604 / g_unk0x004b0478 + g_carBuildModelHeightScale;
+		if (frequencyScale < g_unk0x004b043c) {
+			frequencyScale = g_unk0x004b043c;
+		}
+		else if (frequencyScale > g_unk0x004b0440) {
+			frequencyScale = g_unk0x004b0440;
+		}
+		m_unk0x740->SetFrequencyScale(frequencyScale);
+
+		LegoFloat volume = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x738)) / g_unk0x004b047c;
+		if (volume > g_unk0x004b0438) {
+			volume = g_unk0x004b0438;
+		}
+		m_unk0x740->SetVolume(volume);
+	}
+	else {
+		FUN_0042b060();
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00429770
@@ -338,10 +541,23 @@ void RaceState::Racer::Field0x3e8::FUN_00429af0()
 	}
 }
 
-// STUB: LEGORACERS 0x00429b40
+// FUNCTION: LEGORACERS 0x00429b40
 void RaceState::Racer::Field0x3e8::VTable0x30()
 {
-	STUB(0x429b40);
+	if (!m_unk0x744) {
+		FUN_00448660();
+		return;
+	}
+
+	if (!(m_flags0x6c0 & c_flags0x6c0Bit3)) {
+		FUN_00429cf0(-0.003f, 250);
+		m_unk0x658 = 0;
+		m_flags0x6c0 |= c_flags0x6c0Bit3;
+		m_unk0x680 = 0;
+		m_unk0x67c = 0;
+		m_unk0x65c = g_unk0x004b04a8;
+		m_unk0x660 = g_unk0x004b04ac;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00429bc0
@@ -375,10 +591,29 @@ void RaceState::Racer::Field0x3e8::VTable0x3c()
 	}
 }
 
-// STUB: LEGORACERS 0x00429c40
-void RaceState::Racer::Field0x3e8::VTable0x24(LegoFloat, LegoFloat, undefined4)
+// FUNCTION: LEGORACERS 0x00429c40
+void RaceState::Racer::Field0x3e8::VTable0x24(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
-	STUB(0x429c40);
+	if (!m_unk0x744) {
+		FUN_00448160(p_unk0x04, p_unk0x08, p_unk0x0c);
+		return;
+	}
+
+	LegoU32 flags = m_flags0x6c0;
+	if (!(flags & c_flags0x6c0Bit1)) {
+		LegoFloat scaled = p_unk0x04;
+		scaled *= g_twoPi;
+		scaled /= p_unk0x08;
+		m_unk0x5e0 = static_cast<LegoS32>(scaled);
+		m_unk0x7d4 = p_unk0x08;
+		m_unk0x7d8 = 0;
+		m_flags0x6c0 = flags | c_flags0x6c0Bit1;
+
+		if (m_unk0x36c) {
+			LegoFloat value = g_unk0x004b0490;
+			m_unk0x74c.m_unk0x2c = value;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00429cd0
@@ -390,6 +625,296 @@ void RaceState::Racer::Field0x3e8::VTable0x2c()
 	else {
 		m_flags0x6c0 &= ~(c_flags0x6c0Bit1 | c_flags0x6c0Bit2);
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00429cf0
+void RaceState::Racer::Field0x3e8::FUN_00429cf0(LegoFloat p_unk0x04, LegoU32 p_unk0x08)
+{
+	if (!m_unk0x744) {
+		FUN_00445bb0(p_unk0x04, p_unk0x08);
+		return;
+	}
+
+	if (!m_unk0x5dc) {
+		m_unk0x7e0 = 0;
+		m_unk0x7dc = -p_unk0x04;
+		m_unk0x5dc = p_unk0x08;
+	}
+}
+
+// STUB: LEGORACERS 0x00429d40
+void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
+{
+	if (p_elapsedMs == 0) {
+		return;
+	}
+
+	if (m_unk0x748 != 0) {
+		return;
+	}
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit3) {
+		FUN_0042a100();
+	}
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit16) {
+		if (m_unk0x74c.m_unk0x30 < 2000.0f) {
+			m_unk0x7ec = ((2000.0f - m_unk0x74c.m_unk0x30) / 2000.0f) * (g_unk0x004b04a0 - 1.7f) + 1.7f;
+		}
+	}
+
+	FUN_0042a220();
+
+	LegoU32 elapsedMs = p_elapsedMs;
+	for (;;) {
+		if (elapsedMs == 0) {
+			break;
+		}
+
+		GolVec3 previousPosition;
+		m_unk0x13c->VTable0x04(&previousPosition);
+
+		LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs));
+		LegoU32 flags = m_flags0x6c0;
+		LegoU32 suspendedMask = flags & c_flags0x6c0Bit18;
+		if (suspendedMask || !(flags & (c_flags0x6c0Bit1 | c_flags0x6c0Bit16 | c_flags0x6c0Bit19)) || m_unk0x36c == 0) {
+			LegoFloat currentSpeed = m_unk0x74c.m_unk0x2c;
+			if (currentSpeed < m_unk0x7ec) {
+				LegoFloat rate;
+				if (suspendedMask) {
+					rate = 0.002f;
+				}
+				else if (flags & c_flags0x6c0Bit16) {
+					rate = 0.01f;
+				}
+				else {
+					rate = 0.00048828125f;
+				}
+
+				currentSpeed += rate * elapsed;
+				if (currentSpeed > m_unk0x7ec) {
+					currentSpeed = m_unk0x7ec;
+				}
+				m_unk0x74c.m_unk0x2c = currentSpeed;
+			}
+			else if (currentSpeed > m_unk0x7ec) {
+				LegoFloat rate;
+				if (suspendedMask) {
+					rate = 0.000732421875f;
+				}
+				else {
+					rate = 0.002f;
+				}
+
+				currentSpeed -= rate * elapsed;
+				if (currentSpeed < m_unk0x7ec) {
+					currentSpeed = m_unk0x7ec;
+				}
+				m_unk0x74c.m_unk0x2c = currentSpeed;
+			}
+		}
+
+		m_unk0x74c.FUN_004a5320(elapsed);
+
+		if (m_unk0x7c4.m_z > 0.0f) {
+			m_unk0x7c4.m_z -= 0.001953125f * elapsed;
+			if (m_unk0x7c4.m_z < 0.0f) {
+				m_unk0x7c4.m_z = 0.0f;
+			}
+		}
+		else if (m_unk0x7c4.m_z < 0.0f) {
+			m_unk0x7c4.m_z += 0.001953125f * elapsed;
+			if (m_unk0x7c4.m_z >= 0.0f) {
+				m_unk0x7c4.m_z = 0.0f;
+			}
+		}
+
+		if ((m_flags0x6c0 & c_flags0x6c0Bit3) || m_unk0x658 != 0.0f) {
+			FUN_004464a0(elapsedMs);
+		}
+
+		if (m_unk0x7c4.m_w == 0.0f || m_unk0x7c4.m_y == 0.0f) {
+			LegoFloat time = elapsed * 0.001f;
+			m_unk0x7c4.m_w += -100.0f * time;
+			m_unk0x7c4.m_y += time * m_unk0x7c4.m_w;
+			if (m_unk0x7c4.m_y <= 0.0f) {
+				m_unk0x7c4.m_y = 0.0f;
+				m_unk0x7c4.m_w = 0.0f;
+				m_flags0x6c0 &= ~c_flags0x6c0Bit7;
+			}
+		}
+
+		FUN_0042a290(elapsedMs);
+		FUN_0042a570();
+
+		GolVec3 currentPosition;
+		m_unk0x13c->VTable0x04(&currentPosition);
+
+		LegoFloat invElapsed = 1.0f / elapsed;
+		m_unk0x008.m_x = (currentPosition.m_x - previousPosition.m_x) * invElapsed;
+		m_unk0x008.m_y = (currentPosition.m_y - previousPosition.m_y) * invElapsed;
+		m_unk0x008.m_z = (currentPosition.m_z - previousPosition.m_z) * invElapsed;
+
+		FUN_00447330();
+		m_unk0x0e4.CopyOrientationFrom(*m_unk0x13c);
+		m_unk0x0e4.CopyPositionFrom(*m_unk0x13c);
+
+		if (m_unk0x3ec != 0) {
+			m_unk0x74c.m_unk0x2c = -0.1f;
+			FUN_00447880();
+			FUN_0042a220();
+			elapsedMs = m_unk0x3f0;
+		}
+		else {
+			elapsedMs = FUN_004478b0(elapsedMs, FALSE);
+		}
+
+		if (m_unk0x3ec == 0) {
+			break;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042a100
+void RaceState::Racer::Field0x3e8::FUN_0042a100()
+{
+	GolQuat rotation = m_unk0x74c.m_unk0x0c;
+	GolMath::FUN_00449340(&rotation, &g_raceStateField0x3e8PathOrientation0x004c48e0.m_m[0][0]);
+
+	GolVec3 currentDirection = g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[1];
+	g_raceStateField0x3e8PathState0x004c4868 = m_unk0x74c;
+	g_raceStateField0x3e8PathState0x004c4868.FUN_004a5320(500.0f);
+
+	rotation = g_raceStateField0x3e8PathState0x004c4868.m_unk0x0c;
+	GolMath::FUN_00449340(&rotation, &g_raceStateField0x3e8PathOrientation0x004c48e0.m_m[0][0]);
+
+	LegoFloat dot = g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[0].m_z * currentDirection.m_z;
+	dot += g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[0].m_y * currentDirection.m_y;
+	dot += g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[0].m_x * currentDirection.m_x;
+	dot *= 8.0f;
+
+	if (dot > 1.0f) {
+		dot = 1.0f;
+	}
+	else if (dot < -1.0f) {
+		dot = -1.0f;
+	}
+
+	m_unk0x67c = 0.78539819f * dot;
+}
+
+// STUB: LEGORACERS 0x0042a220
+void RaceState::Racer::Field0x3e8::FUN_0042a220()
+{
+	FUN_004474c0();
+
+	m_unk0x868.m_x = m_unk0x7c4.m_x;
+	m_unk0x868.m_z = m_unk0x7c4.m_z;
+	m_unk0x868.m_w = m_unk0x7c4.m_w;
+	m_unk0x7f0 = m_unk0x74c;
+	m_unk0x868.m_y = m_unk0x7c4.m_y;
+	m_unk0x878 = m_unk0x7d4;
+	m_unk0x87c = m_unk0x7d8;
+}
+
+// STUB: LEGORACERS 0x0042a290
+void RaceState::Racer::Field0x3e8::FUN_0042a290(LegoU32 p_elapsedMs)
+{
+	GolQuat rotation = m_unk0x74c.m_unk0x0c;
+	GolMath::FUN_00449340(&rotation, &m_unk0x13c->GetOrientation().m_m[0][0]);
+
+	if ((m_flags0x6c0 & c_flags0x6c0Bit3) || m_unk0x680 != 0.0f) {
+		const GolMatrix3& orientation = m_unk0x13c->GetOrientation();
+		GolVec3 axis = orientation.m_rows[0];
+		GolVec3 forward = orientation.m_rows[2];
+		GolVec3 rotatedForward;
+		GolMath::FUN_004496a0(&forward, &rotatedForward, &axis, m_unk0x680);
+		m_unk0x13c->VTable0x40(axis, rotatedForward);
+	}
+
+	LegoU32 elapsedMs = p_elapsedMs;
+	LegoU32 timer = m_unk0x5dc;
+	if (timer != 0 || m_unk0x7e0 != 0.0f) {
+		if (timer != 0) {
+			if (elapsedMs >= timer) {
+				m_unk0x5dc = 0;
+				m_unk0x7dc = -(m_unk0x7dc * g_carBuildModelTextureCoordinateScale);
+			}
+			else {
+				m_unk0x5dc = timer - elapsedMs;
+			}
+		}
+
+		LegoBool32 wasNonNegative = m_unk0x7e0 >= 0.0f;
+		const GolMatrix3& orientation = m_unk0x13c->GetOrientation();
+		GolVec3 axis = orientation.m_rows[0];
+		GolVec3 forward = orientation.m_rows[2];
+
+		m_unk0x7e0 += m_unk0x7dc * static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs));
+		LegoBool32 applyTiltRotation = TRUE;
+		if (m_unk0x5dc == 0) {
+			LegoBool32 isNonNegative = m_unk0x7e0 >= 0.0f;
+			if (wasNonNegative != isNonNegative) {
+				m_unk0x7e0 = 0.0f;
+				m_unk0x7e4 = 0.0f;
+				applyTiltRotation = FALSE;
+			}
+		}
+
+		if (applyTiltRotation) {
+			m_unk0x13c->VTable0x2c(m_unk0x358, &m_unk0x198[1].m_unk0x00c);
+
+			GolVec3 rotatedForward;
+			GolMath::FUN_004496a0(&forward, &rotatedForward, &axis, m_unk0x7e0);
+			m_unk0x13c->VTable0x40(axis, rotatedForward);
+
+			GolVec3 transformed;
+			m_unk0x13c->VTable0x2c(m_unk0x358, &transformed);
+			m_unk0x7e4 = transformed.m_z - m_unk0x198[1].m_unk0x00c.m_z;
+		}
+	}
+
+	if (m_unk0x5e0 == 0) {
+		return;
+	}
+
+	if (p_elapsedMs >= m_unk0x5e0) {
+		m_unk0x5e0 = 0;
+		VTable0x2c();
+		return;
+	}
+
+	m_unk0x5e0 -= p_elapsedMs;
+
+	GolVec3 right;
+	GolVec3 forward;
+	m_unk0x13c->VTable0x48(&right, &forward);
+
+	m_unk0x7d8 += m_unk0x7d4 * static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs));
+
+	GolVec3 rotatedRight;
+	GolMath::FUN_004496a0(&right, &rotatedRight, &forward, m_unk0x7d8);
+	m_unk0x13c->VTable0x40(rotatedRight, forward);
+}
+
+// STUB: LEGORACERS 0x0042a570
+void RaceState::Racer::Field0x3e8::FUN_0042a570()
+{
+	GolVec3 position = m_unk0x74c.m_unk0x00;
+	GolVec3 side = m_unk0x13c->GetOrientation().m_rows[1];
+	LegoFloat sideOffset = m_unk0x7c4.m_z;
+
+	position.m_z = position.m_z - m_unk0x7c4.m_x + m_unk0x7e4 + m_unk0x7c4.m_y + m_unk0x658;
+	position += side * sideOffset;
+	m_unk0x13c->VTable0x08(position);
+
+	m_unk0x36c = m_unk0x74c.m_unk0x1c;
+	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);
+	const GolVec3& right = m_unk0x13c->GetOrientation().m_rows[0];
+	m_unk0x168.m_x = right.m_x;
+	m_unk0x168.m_y = right.m_y;
+	m_unk0x168.m_z = right.m_z;
+	FUN_00440a60();
 }
 
 // FUNCTION: LEGORACERS 0x0042a670
@@ -446,10 +971,202 @@ LegoU32 RaceState::Racer::Field0x3e8::VTable0x0c(
 	return (~target->m_flags0x08 >> 16) & 1;
 }
 
-// STUB: LEGORACERS 0x0042a900
+// FUNCTION: LEGORACERS 0x0042a900
 void RaceState::Racer::Field0x3e8::VTable0x10()
 {
-	STUB(0x42a900);
+	Field0x3e8* self = this;
+	Field0x198* entry = self->m_unk0x198;
+	Field0x198* end = self->m_unk0x198 + sizeOfArray(self->m_unk0x198);
+
+	if (entry >= end) {
+		return;
+	}
+
+	do {
+		EventRecord* record = entry->m_unk0x03c;
+		EventTarget* target0;
+		if (record == NULL) {
+			target0 = NULL;
+		}
+		else {
+			target0 = record->m_target;
+		}
+
+		record = entry->m_unk0x040;
+		EventTarget* target1;
+		if (record == NULL) {
+			target1 = NULL;
+		}
+		else {
+			target1 = record->m_target;
+		}
+
+		if (target0) {
+			self->FUN_0042aad0(entry, target0);
+		}
+		else {
+			self->FUN_0042acb0(entry);
+			if (!target1) {
+				entry++;
+				continue;
+			}
+		}
+
+		EventRecord* record0 = entry->m_unk0x03c;
+		EventRecord* record1 = entry->m_unk0x040;
+		if (record0 != record1) {
+			LegoBool32 notify0 = target0 != NULL;
+			LegoBool32 notify1 = target1 != NULL;
+
+			for (Field0x198* other = self->m_unk0x198; other < end; other++) {
+				if (other == entry) {
+					continue;
+				}
+
+				EventRecord* otherRecord1 = other->m_unk0x040;
+				if (record0 == otherRecord1 || (record0 == other->m_unk0x03c && other < entry)) {
+					notify0 = FALSE;
+				}
+
+				if (record1 == other->m_unk0x03c || (record1 == otherRecord1 && other < entry)) {
+					notify1 = FALSE;
+				}
+			}
+
+			if (notify1) {
+				self->FUN_0042aa70(entry, target1);
+			}
+
+			if (notify0) {
+				self->FUN_0042aa30(entry, target0);
+			}
+		}
+
+		entry++;
+	} while (entry < end);
+}
+
+// FUNCTION: LEGORACERS 0x0042aa30
+void RaceState::Racer::Field0x3e8::FUN_0042aa30(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+{
+	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x0c) {
+		m_unk0x6f4->FUN_00461ef0(p_unk0x08->m_unk0x0c, &p_unk0x04->m_unk0x00c);
+		m_unk0x6f4->FUN_004628c0(p_unk0x08->m_unk0x0c, m_unk0x6f0);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042aa70
+void RaceState::Racer::Field0x3e8::FUN_0042aa70(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+{
+	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x34) {
+		if (p_unk0x08->m_unk0x34 == m_unk0x73c) {
+			FUN_0042b060();
+		}
+	}
+
+	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x10) {
+		m_unk0x6f4->FUN_00462140(p_unk0x08->m_unk0x10, &p_unk0x04->m_unk0x00c);
+		m_unk0x6f4->FUN_004629d0(p_unk0x08->m_unk0x10, m_unk0x6f0);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0042aad0
+void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+{
+	if (!(p_unk0x04->m_flags0x048 & 1)) {
+		FUN_0042acb0(p_unk0x04);
+		return;
+	}
+
+	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x34) {
+		FUN_0042af90(p_unk0x08->m_unk0x34);
+	}
+
+	LegoU32 disabledMask = c_flags0x6c0Bit20;
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x58) && !(m_flags0x6c0 & disabledMask)) {
+		LegoFloat value = p_unk0x08->m_unk0x58;
+		p_unk0x04->m_unk0x050 = value;
+		if (m_unk0x6f0->m_unk0x014) {
+			m_unk0x6f0->m_unk0x014->FUN_00421fe0(value);
+		}
+	}
+	else {
+		p_unk0x04->m_unk0x050 = 0.0f;
+		if (m_unk0x6f0->m_unk0x014) {
+			m_unk0x6f0->m_unk0x014->FUN_00421fe0(0.0f);
+		}
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x48) && !(m_flags0x6c0 & disabledMask)) {
+		LegoFloat value = p_unk0x08->m_unk0x48;
+		p_unk0x04->m_unk0x054 = value;
+	}
+	else {
+		p_unk0x04->m_unk0x054 = g_unk0x004b0460;
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x4c) && !(m_flags0x6c0 & disabledMask)) {
+		LegoFloat value = p_unk0x08->m_unk0x4c;
+		p_unk0x04->m_unk0x058 = value;
+	}
+	else {
+		p_unk0x04->m_unk0x058 = g_unk0x004b0464;
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x50) && !(m_flags0x6c0 & disabledMask)) {
+		LegoFloat value = p_unk0x08->m_unk0x50;
+		p_unk0x04->m_unk0x05c = value;
+	}
+	else {
+		p_unk0x04->m_unk0x05c = g_unk0x004b0458;
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x54) && !(m_flags0x6c0 & disabledMask)) {
+		LegoFloat value = p_unk0x08->m_unk0x54;
+		p_unk0x04->m_unk0x060 = value;
+	}
+	else {
+		p_unk0x04->m_unk0x060 = g_unk0x004b045c;
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x28) && !(m_flags0x6c0 & disabledMask)) {
+		p_unk0x04->m_unk0x064 = p_unk0x08->m_unk0x28;
+	}
+	else {
+		p_unk0x04->m_unk0x064.m_x = 0.0f;
+		p_unk0x04->m_unk0x064.m_y = 0.0f;
+		p_unk0x04->m_unk0x064.m_z = 0.0f;
+	}
+
+	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x40) &&
+		!(m_flags0x6c0 & (c_flags0x6c0Bit3 | c_flags0x6c0Bit7)) && m_unk0x618 > g_unk0x004b0468 &&
+		m_unk0x6f0->m_unk0xd08 != 2) {
+		GolName name;
+		::memcpy(name, p_unk0x08->m_unk0x40, sizeof(GolName));
+		m_unk0x6f0->m_unk0x018.FUN_0043dd50(p_unk0x04 - m_unk0x198, name);
+		return;
+	}
+
+	m_unk0x6f0->m_unk0x018.FUN_0043de90(p_unk0x04 - m_unk0x198);
+}
+
+// FUNCTION: LEGORACERS 0x0042acb0
+void RaceState::Racer::Field0x3e8::FUN_0042acb0(Field0x198* p_unk0x04)
+{
+	p_unk0x04->m_unk0x050 = 0.0f;
+	p_unk0x04->m_unk0x054 = g_unk0x004b0460;
+	p_unk0x04->m_unk0x058 = g_unk0x004b0464;
+	p_unk0x04->m_unk0x05c = g_unk0x004b0458;
+	p_unk0x04->m_unk0x060 = g_unk0x004b045c;
+	p_unk0x04->m_unk0x064.m_x = 0.0f;
+	p_unk0x04->m_unk0x064.m_y = 0.0f;
+	p_unk0x04->m_unk0x064.m_z = 0.0f;
+
+	LegoU32 index = p_unk0x04 - m_unk0x198;
+	m_unk0x6f0->m_unk0x018.FUN_0043de90(index);
+	if (m_unk0x6f0->m_unk0x014) {
+		m_unk0x6f0->m_unk0x014->FUN_00421fe0(0.0f);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0042ad30
@@ -486,6 +1203,33 @@ void RaceState::Racer::Field0x3e8::FUN_0042add0(LegoS32 p_unk0x04)
 	FUN_00429330();
 }
 
+// STUB: LEGORACERS 0x0042af90 FOLDED
+SpatialSoundInstance* RaceState::Racer::Field0x3e8::FUN_0042af90(LegoS32 p_unk0x04)
+{
+	if (m_unk0x740 != NULL) {
+		if (p_unk0x04 == m_unk0x73c) {
+			return m_unk0x740;
+		}
+
+		FUN_0042b060();
+	}
+
+	m_unk0x738 = 0;
+	m_unk0x73c = p_unk0x04;
+	m_unk0x740 = m_unk0x158->FUN_00443bd0(static_cast<LegoU32>(p_unk0x04));
+
+	if (m_unk0x740 != NULL) {
+		GolVec3 position;
+		m_unk0x740->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
+		m_unk0x740->Play(TRUE);
+		m_unk0x13c->VTable0x04(&position);
+		m_unk0x740->SetPosition(&position);
+		m_unk0x740->SetVelocity(m_unk0x008);
+	}
+
+	return m_unk0x740;
+}
+
 // FUNCTION: LEGORACERS 0x0042b060 FOLDED
 void RaceState::Racer::Field0x3e8::FUN_0042b060()
 {
@@ -512,18 +1256,18 @@ void RaceState::Racer::Field0x3e8::FUN_00440970()
 	m_unk0x020.m_y = 0.0f;
 	m_unk0x020.m_z = 0.0f;
 
-	m_unk0x098[0] = 0;
-	m_unk0x098[1] = 0;
-	m_unk0x098[2] = 0;
+	m_unk0x098.m_x = 0.0f;
+	m_unk0x098.m_y = 0.0f;
+	m_unk0x098.m_z = 0.0f;
 	m_unk0x0a4.m_x = 0.0f;
 	m_unk0x0a4.m_y = 0.0f;
 	m_unk0x0a4.m_z = 0.0f;
-	m_unk0x0b0[0] = 0;
-	m_unk0x0b0[1] = 0;
-	m_unk0x0b0[2] = 0;
-	m_unk0x0b0[3] = 0;
-	m_unk0x0b0[4] = 0;
-	m_unk0x0b0[5] = 0;
+	m_unk0x0b0.m_x = 0.0f;
+	m_unk0x0b0.m_y = 0.0f;
+	m_unk0x0b0.m_z = 0.0f;
+	m_unk0x0bc.m_x = 0.0f;
+	m_unk0x0bc.m_y = 0.0f;
+	m_unk0x0bc.m_z = 0.0f;
 
 	m_unk0x0c8 = 1.0f;
 	m_unk0x0cc = 1.0f;
@@ -558,6 +1302,146 @@ void RaceState::Racer::Field0x3e8::FUN_00440a60()
 	m_unk0x004->FUN_00410f30(m_unk0x050, &m_unk0x074);
 }
 
+// FUNCTION: LEGORACERS 0x00440a80
+void RaceState::Racer::Field0x3e8::FUN_00440a80()
+{
+	m_unk0x098.m_x = m_unk0x074.m_m[2][0] * m_unk0x0a4.m_z + m_unk0x074.m_m[1][0] * m_unk0x0a4.m_y +
+					 m_unk0x074.m_m[0][0] * m_unk0x0a4.m_x;
+	m_unk0x098.m_y = m_unk0x074.m_m[2][1] * m_unk0x0a4.m_z + m_unk0x074.m_m[1][1] * m_unk0x0a4.m_y +
+					 m_unk0x074.m_m[0][1] * m_unk0x0a4.m_x;
+	m_unk0x098.m_z = m_unk0x074.m_m[2][2] * m_unk0x0a4.m_z + m_unk0x074.m_m[1][2] * m_unk0x0a4.m_y +
+					 m_unk0x074.m_m[0][2] * m_unk0x0a4.m_x;
+}
+
+// FUNCTION: LEGORACERS 0x00440b10
+void RaceState::Racer::Field0x3e8::FUN_00440b10(GolVec3* p_unk0x04)
+{
+	m_unk0x0b0.m_x += p_unk0x04->m_x;
+	m_unk0x0b0.m_y += p_unk0x04->m_y;
+	m_unk0x0b0.m_z += p_unk0x04->m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00440b50
+void RaceState::Racer::Field0x3e8::FUN_00440b50(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+{
+	GolVec3 offset;
+	offset.m_x = p_unk0x08->m_x - m_unk0x020.m_x;
+	offset.m_y = p_unk0x08->m_y - m_unk0x020.m_y;
+	offset.m_z = p_unk0x08->m_z - m_unk0x020.m_z;
+
+	GolVec3 torque;
+	LegoFloat value = offset.m_y;
+	value *= p_unk0x04->m_z;
+	LegoFloat crossValue = p_unk0x04->m_y;
+	crossValue *= offset.m_z;
+	torque.m_x = value - crossValue;
+
+	value = offset.m_z;
+	value *= p_unk0x04->m_x;
+	crossValue = p_unk0x04->m_z;
+	crossValue *= offset.m_x;
+	torque.m_y = value - crossValue;
+
+	value = p_unk0x04->m_y;
+	value *= offset.m_x;
+	crossValue = offset.m_y;
+	crossValue *= p_unk0x04->m_x;
+	torque.m_z = value - crossValue;
+
+	m_unk0x0bc.m_x += torque.m_x;
+	m_unk0x0bc.m_y += torque.m_y;
+	m_unk0x0bc.m_z += torque.m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00440bd0
+void RaceState::Racer::Field0x3e8::FUN_00440bd0(GolVec3* p_unk0x04)
+{
+	GolVec3 local;
+	m_unk0x004->VTable0x38(*p_unk0x04, &local);
+
+	GolVec3 transformed;
+	transformed.m_x = m_unk0x02c.m_m[0][0];
+	transformed.m_x *= local.m_x;
+	transformed.m_y = m_unk0x02c.m_m[0][1];
+	transformed.m_y *= local.m_x;
+	transformed.m_z = m_unk0x02c.m_m[0][2];
+	transformed.m_z *= local.m_x;
+
+	LegoFloat value = m_unk0x02c.m_m[1][0];
+	value *= local.m_y;
+	transformed.m_x += value;
+	value = m_unk0x02c.m_m[1][1];
+	value *= local.m_y;
+	transformed.m_y += value;
+	value = m_unk0x02c.m_m[1][2];
+	value *= local.m_y;
+	transformed.m_z += value;
+
+	value = m_unk0x02c.m_m[2][0];
+	value *= local.m_z;
+	transformed.m_x += value;
+	value = m_unk0x02c.m_m[2][1];
+	value *= local.m_z;
+	transformed.m_y += value;
+	value = m_unk0x02c.m_m[2][2];
+	value *= local.m_z;
+	transformed.m_z += value;
+
+	GolVec3 world;
+	m_unk0x004->VTable0x34(transformed, &world);
+	m_unk0x0a4.m_x += world.m_x;
+	m_unk0x0a4.m_y += world.m_y;
+	m_unk0x0a4.m_z += world.m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00440cb0
+void RaceState::Racer::Field0x3e8::FUN_00440cb0(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+{
+	GolVec3 offset;
+	offset.m_x = p_unk0x08->m_x - m_unk0x020.m_x;
+	offset.m_y = p_unk0x08->m_y - m_unk0x020.m_y;
+	offset.m_z = p_unk0x08->m_z - m_unk0x020.m_z;
+
+	GolVec3 axis;
+	LegoFloat value = offset.m_y;
+	value *= p_unk0x04->m_z;
+	LegoFloat crossValue = p_unk0x04->m_y;
+	crossValue *= offset.m_z;
+	axis.m_x = value - crossValue;
+
+	value = offset.m_z;
+	value *= p_unk0x04->m_x;
+	crossValue = p_unk0x04->m_z;
+	crossValue *= offset.m_x;
+	axis.m_y = value - crossValue;
+
+	value = p_unk0x04->m_y;
+	value *= offset.m_x;
+	crossValue = offset.m_y;
+	crossValue *= p_unk0x04->m_x;
+	axis.m_z = value - crossValue;
+	GolMath::NormalizeVector3(axis, &axis);
+
+	LegoFloat dot = axis.m_z;
+	dot *= m_unk0x0a4.m_z;
+	value = m_unk0x0a4.m_y;
+	value *= axis.m_y;
+	dot += value;
+	value = axis.m_x;
+	value *= m_unk0x0a4.m_x;
+	dot += value;
+
+	if (dot >= 0.0f) {
+		GolVec3 scaled;
+		scaled.m_x = axis.m_x * dot;
+		scaled.m_y = axis.m_y * dot;
+		scaled.m_z = axis.m_z * dot;
+		m_unk0x0a4.m_x -= scaled.m_x;
+		m_unk0x0a4.m_y -= scaled.m_y;
+		m_unk0x0a4.m_z -= scaled.m_z;
+	}
+}
+
 // FUNCTION: LEGORACERS 0x00440da0
 void RaceState::Racer::Field0x3e8::FUN_00440da0(GolVec3* p_unk0x04)
 {
@@ -572,6 +1456,156 @@ void RaceState::Racer::Field0x3e8::FUN_00440da0(GolVec3* p_unk0x04)
 	m_unk0x0a4.m_x -= scaled.m_x;
 	m_unk0x0a4.m_y -= scaled.m_y;
 	m_unk0x0a4.m_z -= scaled.m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00440e10
+void RaceState::Racer::Field0x3e8::FUN_00440e10(LegoS32 p_elapsedMs)
+{
+	this->Field0x3e8::VTable0x00();
+
+	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+	{
+		GolVec3 linearDelta;
+		linearDelta.m_x = m_unk0x0b0.m_x;
+		linearDelta.m_x *= elapsed;
+		linearDelta.m_x *= m_unk0x0cc;
+		linearDelta.m_y = m_unk0x0b0.m_y;
+		linearDelta.m_y *= elapsed;
+		linearDelta.m_y *= m_unk0x0cc;
+		linearDelta.m_z = m_unk0x0b0.m_z;
+		linearDelta.m_z *= elapsed;
+		linearDelta.m_z *= m_unk0x0cc;
+
+		LegoFloat halfElapsed = elapsed * 0.5f;
+
+		GolVec3 position;
+		m_unk0x004->VTable0x04(&position);
+		LegoFloat velocityTerm = m_unk0x008.m_x;
+		velocityTerm *= elapsed;
+		LegoFloat accelerationTerm = halfElapsed;
+		accelerationTerm *= linearDelta.m_x;
+		position.m_x += velocityTerm + accelerationTerm;
+
+		velocityTerm = m_unk0x008.m_y;
+		velocityTerm *= elapsed;
+		accelerationTerm = halfElapsed;
+		accelerationTerm *= linearDelta.m_y;
+		position.m_y += velocityTerm + accelerationTerm;
+
+		velocityTerm = m_unk0x008.m_z;
+		velocityTerm *= elapsed;
+		accelerationTerm = halfElapsed;
+		accelerationTerm *= linearDelta.m_z;
+		position.m_z += velocityTerm + accelerationTerm;
+		m_unk0x004->VTable0x08(position);
+
+		if (linearDelta.m_x == 0.0f && linearDelta.m_y == 0.0f && linearDelta.m_z == 0.0f) {
+			const LegoFloat velocityThreshold = 9.9999997e-05f;
+
+			if (m_unk0x008.m_x < velocityThreshold && -velocityThreshold < m_unk0x008.m_x) {
+				m_unk0x008.m_x = 0.0f;
+			}
+			if (m_unk0x008.m_y < velocityThreshold && -velocityThreshold < m_unk0x008.m_y) {
+				m_unk0x008.m_y = 0.0f;
+			}
+			if (m_unk0x008.m_z < velocityThreshold && -velocityThreshold < m_unk0x008.m_z) {
+				m_unk0x008.m_z = 0.0f;
+			}
+		}
+
+		m_unk0x008.m_x += linearDelta.m_x;
+		m_unk0x008.m_y += linearDelta.m_y;
+		m_unk0x008.m_z += linearDelta.m_z;
+	}
+
+	LegoFloat angularStepZ;
+	LegoFloat angularStepY;
+	LegoFloat angularStepX;
+	angularStepX = m_unk0x098.m_x;
+	angularStepX *= elapsed;
+	angularStepY = m_unk0x098.m_y;
+	angularStepY *= elapsed;
+	angularStepZ = m_unk0x098.m_z;
+	angularStepZ *= elapsed;
+
+	GolVec3 right;
+	GolVec3 forward;
+	m_unk0x004->VTable0x48(&right, &forward);
+
+	GolVec3 newRight;
+	LegoFloat value = right.m_y;
+	value *= angularStepZ;
+	newRight.m_x = right.m_x - value;
+	value = right.m_z;
+	value *= angularStepY;
+	newRight.m_x += value;
+
+	value = right.m_x;
+	value *= angularStepZ;
+	newRight.m_y = right.m_y + value;
+	value = right.m_z;
+	value *= angularStepX;
+	newRight.m_y -= value;
+
+	value = right.m_x;
+	value *= angularStepY;
+	newRight.m_z = right.m_z - value;
+	value = right.m_y;
+	value *= angularStepX;
+	newRight.m_z += value;
+
+	GolVec3 newForward;
+	value = forward.m_y;
+	value *= angularStepZ;
+	newForward.m_x = forward.m_x - value;
+	value = forward.m_z;
+	value *= angularStepY;
+	newForward.m_x += value;
+
+	value = forward.m_x;
+	value *= angularStepZ;
+	newForward.m_y = forward.m_y + value;
+	value = forward.m_z;
+	value *= angularStepX;
+	newForward.m_y -= value;
+
+	value = forward.m_x;
+	value *= angularStepY;
+	newForward.m_z = forward.m_z - value;
+	value = forward.m_y;
+	value *= angularStepX;
+	newForward.m_z += value;
+	GolOrientedEntity* entity = m_unk0x004;
+	entity->VTable0x40(newRight, newForward);
+
+	LegoFloat angularDeltaY = m_unk0x0bc.m_y;
+	angularDeltaY *= elapsed;
+	LegoFloat angularDeltaZ = m_unk0x0bc.m_z;
+	angularDeltaZ *= elapsed;
+	LegoFloat velocityTerm = elapsed;
+	velocityTerm *= m_unk0x0bc.m_x;
+	m_unk0x0a4.m_x += velocityTerm;
+	m_unk0x0a4.m_y += angularDeltaY;
+	m_unk0x0a4.m_z += angularDeltaZ;
+
+	if (m_unk0x0bc.m_x == 0.0f && m_unk0x0bc.m_y == 0.0f && m_unk0x0bc.m_z == 0.0f) {
+		LegoFloat angularStepLengthSq =
+			angularStepX * angularStepX + angularStepY * angularStepY + angularStepZ * angularStepZ;
+		if (angularStepLengthSq < 0.00060000003f) {
+			m_unk0x098.m_x = 0.0f;
+			m_unk0x098.m_y = 0.0f;
+			m_unk0x098.m_z = 0.0f;
+			m_unk0x0a4.m_x = 0.0f;
+			m_unk0x0a4.m_y = 0.0f;
+			m_unk0x0a4.m_z = 0.0f;
+			m_unk0x0b0.m_x = 0.0f;
+			m_unk0x0b0.m_y = 0.0f;
+			m_unk0x0b0.m_z = 0.0f;
+			m_unk0x0bc.m_x = 0.0f;
+			m_unk0x0bc.m_y = 0.0f;
+			m_unk0x0bc.m_z = 0.0f;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00441190
@@ -642,25 +1676,25 @@ void RaceState::Racer::Field0x3e8::FUN_00444b40()
 	m_unk0x168.m_x = 1.0f;
 	m_unk0x168.m_y = 0.0f;
 	m_unk0x168.m_z = 0.0f;
-	m_unk0x174 = 0;
-	m_unk0x178 = 0;
-	m_unk0x17c = 0;
-	m_unk0x180 = 0;
-	m_unk0x184 = 0;
-	m_unk0x188 = 0;
-	m_unk0x630 = 0;
-	m_unk0x634 = 0;
-	m_unk0x638 = 0;
-	m_unk0x63c = 0;
-	m_unk0x640 = 0;
-	m_unk0x644 = 0;
+	m_unk0x174.m_x = 0.0f;
+	m_unk0x174.m_y = 0.0f;
+	m_unk0x174.m_z = 0.0f;
+	m_unk0x180.m_x = 0.0f;
+	m_unk0x180.m_y = 0.0f;
+	m_unk0x180.m_z = 0.0f;
+	m_unk0x630.m_x = 0;
+	m_unk0x630.m_y = 0;
+	m_unk0x630.m_z = 0;
+	m_unk0x63c.m_x = 0;
+	m_unk0x63c.m_y = 0;
+	m_unk0x63c.m_z = 0;
 	m_unk0x18c = 0;
 	m_unk0x190 = 0;
 	m_unk0x654 = -10.95f;
 	m_unk0x194 = g_unk0x004b0cf8;
-	m_unk0x60c = 0;
-	m_unk0x610 = 0;
-	m_unk0x614 = 0;
+	m_unk0x60c.m_x = 0.0f;
+	m_unk0x60c.m_y = 0.0f;
+	m_unk0x60c.m_z = 0.0f;
 	m_unk0x5f8.m_x = 1.0f;
 	m_unk0x5f8.m_y = 0.0f;
 	m_unk0x5f8.m_z = 0.0f;
@@ -673,9 +1707,9 @@ void RaceState::Racer::Field0x3e8::FUN_00444b40()
 	m_unk0x648 = 0;
 	m_unk0x64c = 0;
 	m_unk0x650 = 0;
-	m_unk0x690 = 0;
-	m_unk0x694 = 0;
-	m_unk0x698 = 0;
+	m_unk0x690.m_x = 0.0f;
+	m_unk0x690.m_y = 0.0f;
+	m_unk0x690.m_z = 0.0f;
 	m_unk0x3ec = 0;
 	m_unk0x3f0 = 0;
 
@@ -780,6 +1814,893 @@ void RaceState::Racer::Field0x3e8::FUN_00444e90()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00444ef0
+void RaceState::Racer::Field0x3e8::FUN_00444ef0(LegoU32 p_elapsedMs)
+{
+	LegoU32 elapsedMs = p_elapsedMs;
+	LegoBool32 recoveredCollision = FALSE;
+	GolVec3 direction;
+	GolVec3 position;
+
+	FUN_00447880();
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit7) {
+		if (elapsedMs >= m_unk0x6e0) {
+			VTable0x3c();
+		}
+		else {
+			m_unk0x6e0 -= elapsedMs;
+		}
+	}
+
+	LegoU32 flags = m_flags0x6c0;
+	if (flags & c_flags0x6c0Bit1) {
+		if (flags & c_flags0x6c0Bit2) {
+			m_flags0x6c0 = flags & ~c_flags0x6c0Bit2;
+		}
+		else {
+			LegoU32 timer = m_unk0x5e0;
+			if (elapsedMs >= timer) {
+				if (timer != 0) {
+					elapsedMs = timer;
+					m_unk0x5e0 = 0;
+				}
+				else {
+					VTable0x2c();
+				}
+			}
+			else {
+				m_unk0x5e0 = timer - elapsedMs;
+			}
+		}
+	}
+	else {
+		LegoU32 timer = m_unk0x5e0;
+		if (elapsedMs >= timer) {
+			const GolVec3& forward = m_unk0x0e4.GetOrientation().m_rows[2];
+			m_unk0x5e0 = 0;
+			direction.m_x = forward.m_x;
+			direction.m_y = forward.m_y;
+			direction.m_z = forward.m_z;
+			FUN_00440da0(&direction);
+			m_flags0x6c0 &= ~c_flags0x6c0Bit11;
+		}
+		else {
+			m_unk0x5e0 = timer - elapsedMs;
+		}
+	}
+
+	if (elapsedMs > m_unk0x5e4) {
+		m_unk0x5e4 = 0;
+	}
+	else {
+		m_unk0x5e4 -= elapsedMs;
+	}
+
+	if (m_unk0x5d8 != 0) {
+		if (elapsedMs >= m_unk0x5d8) {
+			const GolVec3& right = m_unk0x0e4.GetOrientation().m_rows[0];
+			m_unk0x5d8 = 0;
+			direction.m_x = right.m_x;
+			direction.m_y = right.m_y;
+			direction.m_z = right.m_z;
+			FUN_00440da0(&direction);
+		}
+		else {
+			m_unk0x5d8 -= elapsedMs;
+		}
+	}
+
+	if (m_unk0x5dc != 0) {
+		if (elapsedMs >= m_unk0x5dc) {
+			const GolVec3& up = m_unk0x0e4.GetOrientation().m_rows[1];
+			m_unk0x5dc = 0;
+			direction.m_x = up.m_x;
+			direction.m_y = up.m_y;
+			direction.m_z = up.m_z;
+			FUN_00440da0(&direction);
+		}
+		else {
+			m_unk0x5dc -= elapsedMs;
+		}
+	}
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit3) {
+		FUN_00448840();
+	}
+
+	m_unk0x3f0 = elapsedMs;
+	FUN_004474c0();
+
+	for (;;) {
+		if (m_unk0x3ec == 0) {
+			if (elapsedMs == 0) {
+				break;
+			}
+		}
+
+		if (elapsedMs != 0) {
+			FUN_00445500();
+			FUN_00440e10(elapsedMs);
+			FUN_00445d10();
+
+			if (m_flags0x6c0 & c_flags0x6c0Bit3) {
+				FUN_004464a0(elapsedMs);
+				FUN_004465c0(elapsedMs);
+			}
+			else {
+				FUN_00445dc0(elapsedMs);
+			}
+
+			FUN_00446fd0(elapsedMs);
+			FUN_00447330();
+			VTable0x10();
+			m_unk0x0e4.VTable0x2c(m_unk0x014, &m_unk0x020);
+			FUN_00440a60();
+		}
+
+		if (m_unk0x3ec != 0) {
+			if (elapsedMs != 0) {
+				LegoU32 result = FUN_004478b0(elapsedMs, !(m_flags0x6c0 & c_flags0x6c0Bit12));
+				if (m_unk0x3ec != 0) {
+					elapsedMs = result;
+					continue;
+				}
+			}
+
+			FUN_00447cf0();
+			FUN_00447330();
+			recoveredCollision = TRUE;
+			FUN_00447880();
+			FUN_004474c0();
+			m_unk0x3f0 -= elapsedMs;
+			elapsedMs = m_unk0x3f0;
+			continue;
+		}
+
+		elapsedMs = FUN_004478b0(elapsedMs, !(m_flags0x6c0 & c_flags0x6c0Bit12));
+		if (elapsedMs != 0) {
+			continue;
+		}
+
+		if (!recoveredCollision) {
+			continue;
+		}
+
+		break;
+	}
+
+	if (recoveredCollision) {
+		m_unk0x3ec = TRUE;
+	}
+
+	if (m_unk0x36c == 0) {
+		m_unk0x6dc += p_elapsedMs;
+	}
+	else {
+		m_unk0x6dc = 0;
+	}
+
+	m_unk0x0e4.VTable0x04(&position);
+
+	if (m_sound6e8 != NULL) {
+		m_sound6e8->SetPosition(position);
+		m_sound6e8->SetVelocity(m_unk0x008);
+
+		if (m_flags0x6c0 & c_flags0x6c0Bit10) {
+			m_sound6e8->SetFrequencyScale((m_float0x6d8 * 0.5f + 1.4f) - ((0.17f - m_unk0x618) * g_ghostSpeedScale));
+		}
+		else {
+			m_sound6e8->SetFrequencyScale(1.4f - ((0.17f - m_unk0x618) * g_ghostSpeedScale));
+		}
+	}
+
+	if (m_sound6e4 != NULL) {
+		m_sound6e4->SetPosition(position);
+	}
+
+	FUN_004452b0(p_elapsedMs);
+}
+
+// FUNCTION: LEGORACERS 0x004452b0
+void RaceState::Racer::Field0x3e8::FUN_004452b0(LegoS32 p_elapsedMs)
+{
+	LegoFloat targetAngle;
+	LegoFloat minTargetAngle;
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit3) {
+		targetAngle = -m_unk0x680;
+	}
+	else if (m_flags0x6c0 & c_flags0x6c0Bit10) {
+		if (m_unk0x64c <= -g_unk0x004b0cd0 || m_unk0x64c >= g_unk0x004b0cd0) {
+			targetAngle = m_unk0x64c;
+			targetAngle = 1.0f / targetAngle;
+			targetAngle = -targetAngle;
+			targetAngle *= g_unk0x004b0cd0;
+			targetAngle *= m_float0x6d8;
+
+			LegoFloat speedScale = m_unk0x604;
+			speedScale *= g_floatConst1000;
+			speedScale /= m_unk0x608;
+			targetAngle *= speedScale;
+
+			if (targetAngle > 0.5f) {
+				targetAngle = 0.5f;
+			}
+			else {
+				minTargetAngle = g_unk0x004b043c;
+				minTargetAngle = -minTargetAngle;
+				if (targetAngle < minTargetAngle) {
+					targetAngle = minTargetAngle;
+				}
+			}
+		}
+		else {
+			targetAngle = 0.0f;
+		}
+	}
+	else {
+		targetAngle = 0.0f;
+	}
+
+	if (targetAngle < m_unk0x6d4) {
+		m_unk0x6d4 -= static_cast<LegoFloat>(p_elapsedMs) * 0.0020000001f;
+		if (m_unk0x6d4 < targetAngle) {
+			m_unk0x6d4 = targetAngle;
+		}
+	}
+	else if (targetAngle > m_unk0x6d4) {
+		m_unk0x6d4 += static_cast<LegoFloat>(p_elapsedMs) * 0.0020000001f;
+		if (m_unk0x6d4 > targetAngle) {
+			m_unk0x6d4 = targetAngle;
+		}
+	}
+
+	LegoFloat angleMagnitude = m_unk0x6d4;
+	if (angleMagnitude < 0.0f) {
+		angleMagnitude = -angleMagnitude;
+	}
+
+	if (angleMagnitude != 0.0f) {
+		GolVec3 position;
+		GolVec3 right;
+		GolVec3 forward;
+		GolVec3 rotatedForward;
+
+		m_unk0x0e4.VTable0x48(&right, &forward);
+		m_unk0x0e4.VTable0x04(&position);
+
+		LegoFloat offset = static_cast<LegoFloat>(tan(angleMagnitude)) * (m_unk0x364 * 0.5f);
+		GolMath::FUN_004496a0(&forward, &rotatedForward, &right, m_unk0x6d4);
+		position.m_z += offset;
+		m_unk0x13c->VTable0x40(right, rotatedForward);
+		m_unk0x13c->VTable0x08(position);
+	}
+	else {
+		GolOrientedEntity* entity = m_unk0x13c;
+		entity->CopyOrientationFrom(m_unk0x0e4);
+		entity->CopyPositionFrom(m_unk0x0e4);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00445500
+void RaceState::Racer::Field0x3e8::FUN_00445500()
+{
+	LegoFloat steeringAmount = 0.0f;
+	GolVec3 force;
+
+	LegoFloat baseForce = -m_unk0x160;
+	baseForce *= m_unk0x15c;
+	LegoU32 flags0x6c0 = m_flags0x6c0;
+	m_unk0x650 = 0.0f;
+	m_unk0x164 = baseForce;
+
+	if (flags0x6c0 & c_flags0x6c0Bit0) {
+		const GolVec3& right = m_unk0x0e4.GetOrientation().m_rows[0];
+		steeringAmount = right.m_x * m_unk0x5f8.m_x + right.m_y * m_unk0x5f8.m_y + right.m_z * m_unk0x5f8.m_z;
+		if (steeringAmount <= 0.0f) {
+			FUN_00448070();
+		}
+	}
+
+	if (m_unk0x36c == 0) {
+		force.m_x = 0.0f;
+		force.m_z = m_unk0x164 * 4.0f;
+		force.m_y = 0.0f;
+		FUN_00440b10(&force);
+
+		LegoFloat scale = m_unk0x628 * m_unk0x15c;
+		force.m_x = m_unk0x168.m_x * scale;
+		force.m_y = m_unk0x168.m_y;
+		force.m_y *= scale;
+		force.m_z = m_unk0x168.m_z;
+		force.m_z *= scale;
+		LegoFloat forwardLimit = -m_unk0x164;
+		if (force.m_z > forwardLimit) {
+			force.m_z = forwardLimit;
+		}
+		FUN_00440b10(&force);
+
+		if (m_unk0x64c != 0.0f && !(m_flags0x6c0 & c_flags0x6c0Bit11)) {
+			FUN_00445c30(m_unk0x618 / m_unk0x64c, 200);
+		}
+	}
+	else {
+		LegoFloat average0x054 = FUN_00448990();
+		LegoFloat average0x058 = FUN_004489c0();
+		LegoFloat forceMagnitude = static_cast<LegoFloat>(
+			sqrt(m_unk0x180.m_z * m_unk0x180.m_z + m_unk0x180.m_y * m_unk0x180.m_y + m_unk0x180.m_x * m_unk0x180.m_x)
+		);
+		LegoFloat forceThreshold = m_unk0x160;
+		forceThreshold *= m_unk0x15c;
+		forceThreshold *= average0x054;
+		if (forceMagnitude > forceThreshold) {
+			FUN_00440b10(&m_unk0x180);
+		}
+
+		if (m_flags0x6c0 & c_flags0x6c0Bit3) {
+			Field0x198* entry = m_unk0x198;
+			GolVec3* axlePoint = &m_unk0x664;
+			for (LegoU32 i = 0; i < 2; i++) {
+				if (entry->m_flags0x048 & 1) {
+					if (m_unk0x36c < 1) {
+						FUN_00440b50(&entry->m_unk0x000, axlePoint);
+					}
+
+					FUN_00440cb0(&m_unk0x174, &m_unk0x664 + (i == 0));
+				}
+				entry++;
+				axlePoint++;
+			}
+		}
+		else if (m_unk0x5d8 == 0 && m_unk0x5dc == 0) {
+			Field0x198* entry = m_unk0x198;
+			const LegoS32* entryIndex = g_raceStateField0x3e8MirrorEntryIndices;
+			while (entryIndex < &g_raceStateField0x3e8MirrorEntryIndices[sizeOfArray(m_unk0x198)]) {
+				if (entry->m_flags0x048 & 1) {
+					if (m_unk0x36c < 3) {
+						FUN_00440b50(&entry->m_unk0x000, &entry->m_unk0x00c);
+					}
+
+					FUN_00440cb0(&m_unk0x174, &m_unk0x198[*entryIndex].m_unk0x00c);
+				}
+				entry++;
+				entryIndex++;
+			}
+		}
+
+		LegoFloat contactScale;
+		if (!(m_flags0x6c0 & (c_flags0x6c0Bit0 | c_flags0x6c0Bit1))) {
+			contactScale = 1.0f;
+		}
+		else {
+			LegoFloat scale = m_unk0x160;
+			scale *= m_unk0x15c;
+			scale *= average0x058;
+			scale *= m_unk0x6d0;
+			scale = -scale;
+			force.m_x = m_unk0x5f8.m_x * scale;
+			force.m_y = m_unk0x5f8.m_y;
+			force.m_y *= scale;
+			force.m_z = m_unk0x5f8.m_z;
+			force.m_z *= scale;
+			FUN_00440b10(&force);
+			contactScale = 1.0f - m_unk0x6d0;
+		}
+
+		if (!(m_flags0x6c0 & c_flags0x6c0Bit1) && !(m_flags0x6c0 & c_flags0x6c0Bit11)) {
+			LegoFloat scale = m_unk0x0c8 * -0.0099999998f;
+			scale *= contactScale;
+			force.m_x = m_unk0x61c.m_x * scale;
+			force.m_y = m_unk0x61c.m_y;
+			force.m_y *= scale;
+			force.m_z = m_unk0x61c.m_z;
+			force.m_z *= scale;
+			FUN_00440b10(&force);
+
+			if (m_unk0x628 != 0.0f) {
+				scale = m_unk0x628 * m_unk0x15c;
+				if (m_unk0x36c >= 3 && !(m_flags0x6c0 & c_flags0x6c0Bit0)) {
+					const GolVec3& right = m_unk0x0e4.GetOrientation().m_rows[0];
+					force.m_x = right.m_x * scale;
+					force.m_y = right.m_y;
+					force.m_y *= scale;
+					force.m_z = right.m_z;
+					force.m_z *= scale;
+				}
+				else {
+					force.m_x = m_unk0x168.m_x * scale;
+					force.m_y = m_unk0x168.m_y;
+					force.m_y *= scale;
+					force.m_z = m_unk0x168.m_z;
+					force.m_z *= scale;
+				}
+				FUN_00440b10(&force);
+			}
+			else {
+				scale = m_unk0x0c8 * -0.001f;
+				force.m_x = m_unk0x60c.m_x * scale;
+				force.m_y = m_unk0x60c.m_y;
+				force.m_y *= scale;
+				force.m_z = m_unk0x60c.m_z;
+				force.m_z *= scale;
+				FUN_00440b10(&force);
+			}
+
+			if (m_unk0x64c != 0.0f) {
+				force.m_x = -m_unk0x168.m_y;
+				force.m_y = m_unk0x168.m_x;
+				force.m_z = 0.0f;
+				GolMath::NormalizeVector3(force, &force);
+
+				scale = m_unk0x0c8;
+				scale *= m_unk0x618;
+				scale *= m_unk0x618;
+				scale /= m_unk0x64c;
+				m_unk0x648 = scale;
+				force.m_x = force.m_x * scale;
+				force.m_y *= scale;
+				force.m_z *= scale;
+				FUN_00440b10(&force);
+
+				if (m_flags0x6c0 & c_flags0x6c0Bit0) {
+					if (steeringAmount >= m_unk0x6c8) {
+						scale = m_unk0x618 / m_unk0x64c;
+						m_unk0x650 = scale;
+						steeringAmount = m_unk0x6c4;
+						steeringAmount *= scale;
+					}
+					else {
+						steeringAmount = 0.0f;
+					}
+				}
+				else {
+					if (m_unk0x618 < 0.03f && m_unk0x618 >= 0.00050000002f) {
+						scale = 0.03f / m_unk0x64c;
+					}
+					else {
+						scale = m_unk0x618 / m_unk0x64c;
+					}
+
+					m_unk0x650 = scale;
+					steeringAmount = scale;
+				}
+				FUN_00445c30(steeringAmount, 200);
+			}
+		}
+		else {
+			LegoFloat scale = m_unk0x0c8 * -0.0020000001f;
+			force.m_x = m_unk0x61c.m_x * scale;
+			force.m_y = m_unk0x61c.m_y;
+			force.m_y *= scale;
+			force.m_z = m_unk0x61c.m_z;
+			force.m_z *= scale;
+			FUN_00440b10(&force);
+		}
+	}
+
+	if (!(m_flags0x6c0 & (c_flags0x6c0Bit3 | c_flags0x6c0Bit7))) {
+		GolVec3 sum;
+		sum.m_x = 0.0f;
+		sum.m_y = 0.0f;
+		sum.m_z = 0.0f;
+		Field0x198* entry = m_unk0x198;
+		while (entry < &m_unk0x198[sizeOfArray(m_unk0x198)]) {
+			sum.m_x += entry->m_unk0x064.m_x;
+			sum.m_y += entry->m_unk0x064.m_y;
+			sum.m_z += entry->m_unk0x064.m_z;
+			entry++;
+		}
+
+		LegoFloat scale = m_unk0x15c * 0.25f;
+		force.m_x = sum.m_x * scale;
+		force.m_y = sum.m_y;
+		force.m_y *= scale;
+		force.m_z = sum.m_z;
+		force.m_z *= scale;
+		FUN_00440b10(&force);
+	}
+
+	LegoFloat drag = 0.0f;
+	if (!(m_flags0x6c0 & c_flags0x6c0Bit3)) {
+		Field0x198* entry = m_unk0x198;
+		while (entry < &m_unk0x198[sizeOfArray(m_unk0x198)]) {
+			drag += entry->m_unk0x050;
+			entry++;
+		}
+		drag *= 0.25f;
+	}
+	drag += m_unk0x5ec;
+	drag *= m_unk0x604;
+	drag = -drag;
+	force.m_x = m_unk0x008.m_x * drag;
+	force.m_y = m_unk0x008.m_y;
+	force.m_y *= drag;
+	force.m_z = m_unk0x008.m_z;
+	force.m_z *= drag;
+	FUN_00440b10(&force);
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit5) {
+		FUN_00440b10(&m_unk0x630);
+	}
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit6) {
+		FUN_00440b10(&m_unk0x63c);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00445bb0
+void RaceState::Racer::Field0x3e8::FUN_00445bb0(LegoFloat p_unk0x04, LegoU32 p_unk0x08)
+{
+	if (m_unk0x5d8) {
+		return;
+	}
+
+	m_unk0x5dc = p_unk0x08;
+
+	const GolMatrix34& transform = m_unk0x0e4.GetTransform();
+	GolVec3 direction;
+	direction.m_x = transform.m_m[1][0];
+	direction.m_y = transform.m_m[1][1];
+	direction.m_z = transform.m_m[1][2];
+	FUN_00440da0(&direction);
+
+	direction.m_x *= p_unk0x04;
+	direction.m_y *= p_unk0x04;
+	direction.m_z *= p_unk0x04;
+	FUN_00440bd0(&direction);
+}
+
+// FUNCTION: LEGORACERS 0x00445c30
+void RaceState::Racer::Field0x3e8::FUN_00445c30(LegoFloat p_unk0x04, LegoU32 p_unk0x08)
+{
+	m_unk0x5e0 = p_unk0x08;
+
+	const GolMatrix34& transform = m_unk0x0e4.GetTransform();
+	GolVec3 direction;
+	direction.m_x = transform.m_m[2][0];
+	direction.m_y = transform.m_m[2][1];
+	direction.m_z = transform.m_m[2][2];
+	FUN_00440da0(&direction);
+
+	direction.m_x *= p_unk0x04;
+	direction.m_y *= p_unk0x04;
+	direction.m_z *= p_unk0x04;
+	FUN_00440bd0(&direction);
+}
+
+// FUNCTION: LEGORACERS 0x00445d10
+void RaceState::Racer::Field0x3e8::FUN_00445d10()
+{
+	GolVec3 forward;
+	GolVec3 axis;
+	GolVec3 right;
+
+	m_unk0x0e4.VTable0x48(&right, &forward);
+	if (forward.m_z < g_unk0x004b0cec) {
+		axis.m_x = forward.m_y;
+		axis.m_y = -forward.m_x;
+		axis.m_z = 0.0f;
+		GolMath::NormalizeVector3(axis, &axis);
+
+		LegoFloat sine;
+		LegoFloat cosine;
+		GolMath::FUN_00449170(g_unk0x004b0ce8, &sine, &cosine);
+
+		forward.m_x = -(sine * axis.m_y);
+		forward.m_y = sine * axis.m_x;
+		forward.m_z = cosine;
+		m_unk0x0e4.FUN_00410b00(forward, right);
+	}
+}
+
+// STUB: LEGORACERS 0x00445dc0
+void RaceState::Racer::Field0x3e8::FUN_00445dc0(LegoU32 p_elapsedMs)
+{
+	typedef RaceSessionField0x32b4::Field0x000::Field0x0a8 CollisionResource;
+	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
+	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
+
+	LegoU32 flags = m_flags0x6c0;
+	if (flags & c_flags0x6c0Bit8) {
+		if (m_unk0x008.m_x == 0.0f && m_unk0x008.m_y == 0.0f && m_unk0x008.m_z == 0.0f && m_unk0x098.m_x == 0.0f &&
+			m_unk0x098.m_y == 0.0f && m_unk0x098.m_z == 0.0f) {
+			return;
+		}
+
+		m_flags0x6c0 = flags & ~c_flags0x6c0Bit8;
+	}
+
+	Field0x198* entries = m_unk0x198;
+	Field0x198* entriesEnd = &m_unk0x198[sizeOfArray(m_unk0x198)];
+	FUN_00448a50();
+
+	LegoU32 previousContactCount = m_unk0x36c;
+
+	GolVec3 position;
+	m_unk0x0e4.VTable0x04(&position);
+
+	LegoFloat verticalOffset = -(position.m_z - m_unk0x690.m_z);
+	if (verticalOffset < 0.0f) {
+		verticalOffset = 0.0f;
+	}
+
+	LegoFloat sweepHeight = m_unk0x13c->FUN_10028710() + verticalOffset;
+	LegoFloat sweepDistance;
+	LegoBool32 resetFromAir;
+	if (m_unk0x36c != 0 && !(m_flags0x6c0 & c_flags0x6c0Bit7)) {
+		sweepDistance = static_cast<LegoFloat>(p_elapsedMs) * 0.3f;
+		resetFromAir = FALSE;
+	}
+	else {
+		sweepDistance = 0.0f;
+		resetFromAir = TRUE;
+	}
+
+	m_unk0x36c = 0;
+	FUN_00448c70();
+
+	Field0x198* entry;
+	for (entry = entries; entry < entriesEnd; entry++) {
+		entry->m_flags0x048 &= ~(Field0x198::c_flags0x048Active | Field0x198::c_flags0x048Hit);
+		entry->m_unk0x000.m_z = 0.0f;
+		entry->m_unk0x000.m_y = 0.0f;
+		entry->m_unk0x000.m_x = 0.0f;
+		entry->m_unk0x04c = -FLT_MAX;
+	}
+
+	LegoFloat bestDistance = -FLT_MAX;
+	Field0x198* selectedEntry = NULL;
+	EventContext* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
+	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
+
+	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
+		CollisionResource* resource = GetRaceStateField0x3e8Resource(m_unk0x140[resourceIndex]);
+		FUN_00446e60((GolVec3*) resource, sweepHeight, sweepDistance);
+
+		entry = entries;
+		while (entry < entriesEnd) {
+			if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
+				CollisionQuery* query = resource->m_unk0x58;
+				if (!resource->m_unk0x5c) {
+					query->m_unk0x24 = &query->m_unk0x18;
+				}
+				else {
+					query->m_unk0x24 = resource->m_unk0x5c;
+				}
+
+				GolVec3 hitPoint;
+				CollisionHitRecord* hitRecord;
+				if (query->FUN_00403fa0(
+						&entry->m_unk0x018,
+						&entry->m_unk0x024,
+						collisionContext,
+						&hitPoint,
+						&hitRecord,
+						NULL
+					)) {
+					entry->m_unk0x03c = (EventRecord*) hitRecord;
+					entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
+					resource->VTable0x2c(hitPoint, &entry->m_unk0x030);
+
+					GolVec3 collisionNormal = eventContext->m_unk0x24;
+					resource->VTable0x34(collisionNormal, &entry->m_unk0x000);
+
+					LegoFloat deltaX = entry->m_unk0x024.m_x - hitPoint.m_x;
+					LegoFloat deltaY = entry->m_unk0x024.m_y - hitPoint.m_y;
+					LegoFloat deltaZ = entry->m_unk0x024.m_z - hitPoint.m_z;
+					entry->m_unk0x04c = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+					if (entry->m_unk0x04c > bestDistance) {
+						selectedEntry = entry;
+						bestDistance = entry->m_unk0x04c;
+					}
+				}
+			}
+
+			entry++;
+		}
+	}
+
+	CollisionResource* baseResource = GetRaceStateField0x3e8Resource(m_unk0x140[0]);
+	entry = entries;
+	while (entry < entriesEnd) {
+		if (entry->m_flags0x048 & Field0x198::c_flags0x048Hit) {
+			entry++;
+			continue;
+		}
+
+		entry->m_unk0x018.m_x = entry->m_unk0x00c.m_x;
+		entry->m_unk0x018.m_y = entry->m_unk0x00c.m_y;
+		entry->m_unk0x018.m_z = entry->m_unk0x00c.m_z + sweepHeight;
+		entry->m_unk0x024.m_x = entry->m_unk0x00c.m_x;
+		entry->m_unk0x024.m_y = entry->m_unk0x00c.m_y;
+		entry->m_unk0x024.m_z = entry->m_unk0x00c.m_z - sweepDistance;
+
+		if (!FUN_00448ae0(entry)) {
+			CollisionQuery* query = baseResource->m_unk0x58;
+			if (!baseResource->m_unk0x5c) {
+				query->m_unk0x24 = &query->m_unk0x18;
+			}
+			else {
+				query->m_unk0x24 = baseResource->m_unk0x5c;
+			}
+
+			CollisionHitRecord* hitRecord;
+			if (query->FUN_00403fa0(
+					&entry->m_unk0x018,
+					&entry->m_unk0x024,
+					collisionContext,
+					&entry->m_unk0x030,
+					&hitRecord,
+					NULL
+				)) {
+				entry->m_unk0x03c = (EventRecord*) hitRecord;
+				entry->m_unk0x044 = FUN_00448a70(eventContext, entry->m_unk0x03c);
+			}
+			else {
+				entry++;
+				continue;
+			}
+		}
+
+		entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_unk0x24;
+
+		LegoFloat deltaX = entry->m_unk0x024.m_x - entry->m_unk0x030.m_x;
+		LegoFloat deltaY = entry->m_unk0x024.m_y - entry->m_unk0x030.m_y;
+		LegoFloat deltaZ = entry->m_unk0x024.m_z - entry->m_unk0x030.m_z;
+		entry->m_unk0x04c = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+		if (entry->m_unk0x04c > bestDistance) {
+			selectedEntry = entry;
+			bestDistance = entry->m_unk0x04c;
+		}
+
+		entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
+		entry++;
+	}
+
+	if (selectedEntry == NULL) {
+		if (previousContactCount == 0) {
+			return;
+		}
+
+		m_unk0x008.m_z -= 0.15f;
+		return;
+	}
+
+	LegoFloat contactLimit = static_cast<LegoFloat>(sqrt(bestDistance)) - 4.0f;
+	if (contactLimit < 0.0f) {
+		contactLimit = 0.0f;
+	}
+
+	LegoFloat contactLimitSquared = contactLimit * contactLimit;
+	m_unk0x174.m_x = 0.0f;
+	m_unk0x174.m_y = 0.0f;
+	m_unk0x174.m_z = 0.0f;
+
+	entry = entries;
+	while (entry < entriesEnd) {
+		if (entry->m_unk0x04c >= contactLimitSquared) {
+			m_unk0x174.m_x += entry->m_unk0x000.m_x;
+			m_unk0x174.m_y += entry->m_unk0x000.m_y;
+			m_unk0x174.m_z += entry->m_unk0x000.m_z;
+			entry->m_flags0x048 |= Field0x198::c_flags0x048Active;
+			m_unk0x36c++;
+		}
+		else {
+			entry->m_flags0x048 &= ~Field0x198::c_flags0x048Active;
+			entry->m_unk0x000.m_x = 0.0f;
+			entry->m_unk0x000.m_y = 0.0f;
+			entry->m_unk0x000.m_z = 0.0f;
+		}
+
+		entry++;
+	}
+
+	FUN_00448430(selectedEntry);
+
+	if (m_unk0x36c >= 3) {
+		const GolMatrix34& transform = m_unk0x0e4.GetTransform();
+		m_unk0x174.m_x = transform.m_m[2][0];
+		m_unk0x174.m_y = transform.m_m[2][1];
+		m_unk0x174.m_z = transform.m_m[2][2];
+
+		entry = entries;
+		while (entry < entriesEnd) {
+			entry->m_flags0x048 |= Field0x198::c_flags0x048Active;
+			entry++;
+		}
+
+		m_unk0x36c = 4;
+	}
+	else {
+		GolMath::NormalizeVector3(m_unk0x174, &m_unk0x174);
+	}
+
+	if (resetFromAir) {
+		if (m_unk0x6dc > 400) {
+			LegoFloat dot =
+				m_unk0x008.m_z * m_unk0x174.m_z + m_unk0x008.m_y * m_unk0x174.m_y + m_unk0x008.m_x * m_unk0x174.m_x;
+			if (dot < 0.0f) {
+				if (dot < -0.03f) {
+					LegoFloat scaled = dot * 0.004f;
+					m_unk0x36c = 0;
+					m_unk0x008.m_z -= scaled;
+
+					entry = entries;
+					while (entry < entriesEnd) {
+						entry->m_flags0x048 &= ~Field0x198::c_flags0x048Active;
+						entry++;
+					}
+					return;
+				}
+
+				m_unk0x008.m_z -= dot;
+			}
+		}
+	}
+
+	LegoFloat responseScale = m_unk0x164 * m_unk0x174.m_z;
+	m_unk0x180.m_x = -(m_unk0x174.m_x * responseScale);
+	m_unk0x180.m_y = -(m_unk0x174.m_y * responseScale);
+	m_unk0x180.m_z = m_unk0x164 - m_unk0x174.m_z * responseScale;
+
+	g_raceStateField0x3e8Snapshot0x0b8.m_x = 0.0f;
+	g_raceStateField0x3e8Snapshot0x0b8.m_y = 0.0f;
+	g_raceStateField0x3e8Snapshot0x0b8.m_z = -(m_unk0x164 * (1.0f / static_cast<LegoFloat>(m_unk0x36c + 8)));
+
+	entry = entries;
+	while (entry < entriesEnd) {
+		if (entry->m_flags0x048 & Field0x198::c_flags0x048Active) {
+			entry->m_unk0x000 = g_raceStateField0x3e8Snapshot0x0b8;
+		}
+		entry++;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004464a0
+void RaceState::Racer::Field0x3e8::FUN_004464a0(LegoS32 p_elapsedMs)
+{
+	if (m_unk0x658 < m_unk0x65c) {
+		LegoFloat delta = m_unk0x660;
+		delta *= static_cast<LegoFloat>(p_elapsedMs);
+		delta *= 0.001f;
+		m_unk0x658 += delta;
+		if (m_unk0x658 > m_unk0x65c) {
+			m_unk0x658 = m_unk0x65c;
+		}
+	}
+	else if (m_unk0x658 > m_unk0x65c) {
+		LegoFloat delta = m_unk0x660;
+		delta *= static_cast<LegoFloat>(p_elapsedMs);
+		delta *= 0.001f;
+		m_unk0x658 -= delta;
+		if (m_unk0x658 < m_unk0x65c) {
+			m_unk0x658 = m_unk0x65c;
+		}
+	}
+
+	if (m_unk0x680 < m_unk0x67c) {
+		m_unk0x680 += static_cast<LegoFloat>(p_elapsedMs) * g_unk0x004b0d28;
+		if (m_unk0x680 > m_unk0x67c) {
+			m_unk0x680 = m_unk0x67c;
+		}
+	}
+	else if (m_unk0x680 > m_unk0x67c) {
+		m_unk0x680 -= static_cast<LegoFloat>(p_elapsedMs) * g_unk0x004b0d28;
+		if (m_unk0x680 < m_unk0x67c) {
+			m_unk0x680 = m_unk0x67c;
+		}
+	}
+}
+
+// STUB: LEGORACERS 0x004465c0
+void RaceState::Racer::Field0x3e8::FUN_004465c0(LegoU32)
+{
+	STUB(0x004465c0);
+}
+
 // FUNCTION: LEGORACERS 0x00446e60
 void RaceState::Racer::Field0x3e8::FUN_00446e60(GolVec3* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
@@ -795,6 +2716,602 @@ void RaceState::Racer::Field0x3e8::FUN_00446ea0(LegoU32 p_unk0x04, GolVec3* p_un
 	GolVec3* source = &m_unk0x370[p_unk0x04];
 	*source = *p_unk0x08;
 	m_unk0x0e4.VTable0x2c(*source, &m_unk0x3a0[p_unk0x04]);
+}
+
+// FUNCTION: LEGORACERS 0x00446fd0
+void RaceState::Racer::Field0x3e8::FUN_00446fd0(LegoU32 p_elapsedMs)
+{
+	LegoFloat cosine;
+	LegoFloat sine;
+	GolVec3 direction;
+	GolVec3 axis;
+
+	direction.m_x = m_unk0x0e4.GetOrientation().m_rows[0].m_x;
+	direction.m_y = m_unk0x0e4.GetOrientation().m_rows[0].m_y;
+	direction.m_z = m_unk0x0e4.GetOrientation().m_rows[0].m_z;
+
+	if (m_unk0x36c != 0) {
+		if (!(m_unk0x618 < 0.03f)) {
+			if (m_unk0x36c <= 2) {
+				LegoFloat dot = m_unk0x174.m_z;
+				dot *= direction.m_z;
+				LegoFloat value = m_unk0x174.m_y;
+				value *= direction.m_y;
+				dot += value;
+				value = direction.m_x;
+				value *= m_unk0x174.m_x;
+				dot += value;
+
+				axis.m_x = dot;
+				axis.m_x *= m_unk0x174.m_x;
+				axis.m_y = m_unk0x174.m_y;
+				axis.m_y *= dot;
+				dot *= m_unk0x174.m_z;
+
+				direction.m_x -= axis.m_x;
+				direction.m_y -= axis.m_y;
+				direction.m_z -= dot;
+				GolMath::NormalizeVector3(direction, &direction);
+			}
+			else {
+				if ((m_flags0x6c0 & c_flags0x6c0Bit0) && m_unk0x628 > 0.0f) {
+					GolVec3* current = &m_unk0x168;
+					LegoFloat dot = m_unk0x168.m_z;
+					dot *= direction.m_z;
+					LegoFloat value = current->m_y;
+					value *= direction.m_y;
+					dot += value;
+					value = direction.m_x;
+					value *= current->m_x;
+					dot += value;
+					if (dot > 1.0f) {
+						dot = 1.0f;
+					}
+
+					LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
+					LegoFloat angle = *(g_arcCosineTable - tableIndex);
+					LegoFloat step = m_unk0x650;
+					step *= static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+					if (step > 0.0f) {
+						angle += step;
+					}
+					else {
+						angle -= step;
+					}
+
+					if (angle > m_unk0x6cc) {
+						value = direction.m_z;
+						value *= current->m_y;
+						LegoFloat crossValue = current->m_z;
+						crossValue *= direction.m_y;
+						axis.m_x = value - crossValue;
+						value = current->m_z;
+						value *= direction.m_x;
+						crossValue = direction.m_z;
+						crossValue *= current->m_x;
+						axis.m_y = value - crossValue;
+						value = direction.m_y;
+						value *= current->m_x;
+						crossValue = current->m_y;
+						crossValue *= direction.m_x;
+						axis.m_z = value - crossValue;
+						GolMath::FUN_004496a0(&direction, current, &axis, m_unk0x6cc);
+						GolMath::NormalizeVector3(*current, current);
+						return;
+					}
+
+					GolMath::FUN_00449170(step, &sine, &cosine);
+					value = current->m_x;
+					value *= sine;
+					LegoFloat crossValue = m_unk0x168.m_y;
+					crossValue *= cosine;
+					current->m_x = value - crossValue;
+					value = m_unk0x168.m_y;
+					value *= sine;
+					crossValue = current->m_x;
+					crossValue *= cosine;
+					m_unk0x168.m_y = value + crossValue;
+					GolMath::NormalizeVector3(*current, current);
+					return;
+				}
+
+				FUN_00447230(p_elapsedMs, &direction);
+				return;
+			}
+		}
+	}
+
+	FUN_00447230(p_elapsedMs, &direction);
+}
+
+// FUNCTION: LEGORACERS 0x00447230
+void RaceState::Racer::Field0x3e8::FUN_00447230(LegoS32 p_elapsedMs, GolVec3* p_unk0x08)
+{
+	GolVec3* current = &m_unk0x168;
+	GolVec3* target = p_unk0x08;
+
+	LegoFloat dot = current->m_z;
+	dot *= target->m_z;
+	LegoFloat value = current->m_y;
+	value *= target->m_y;
+	dot += value;
+	value = target->m_x;
+	value *= current->m_x;
+	dot += value;
+
+	if (dot > 0.98000002f) {
+		current->m_x = target->m_x;
+		current->m_y = target->m_y;
+		current->m_z = target->m_z;
+		return;
+	}
+
+	LegoFloat maxStep = static_cast<LegoFloat>(p_elapsedMs);
+	maxStep *= 0.0025f;
+	LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
+	LegoFloat angle = *(g_arcCosineTable - tableIndex);
+	if (maxStep > angle) {
+		current->m_x = target->m_x;
+		current->m_y = target->m_y;
+		current->m_z = target->m_z;
+		return;
+	}
+
+	GolVec3 axis;
+	value = target->m_y;
+	value *= current->m_z;
+	LegoFloat crossValue = current->m_y;
+	crossValue *= target->m_z;
+	axis.m_x = value - crossValue;
+	value = target->m_z;
+	value *= current->m_x;
+	crossValue = current->m_z;
+	crossValue *= target->m_x;
+	axis.m_y = value - crossValue;
+	value = current->m_y;
+	value *= target->m_x;
+	crossValue = target->m_y;
+	crossValue *= current->m_x;
+	axis.m_z = value - crossValue;
+	GolMath::FUN_004496a0(current, current, &axis, maxStep);
+	GolMath::NormalizeVector3(*current, current);
+}
+
+// FUNCTION: LEGORACERS 0x00447330
+void RaceState::Racer::Field0x3e8::FUN_00447330()
+{
+	GolVec3* velocity = &m_unk0x008;
+
+	if (m_unk0x008.m_x == 0.0f && m_unk0x008.m_y == 0.0f && m_unk0x008.m_z == 0.0f) {
+		m_unk0x604 = 0.0f;
+		m_unk0x5f8.m_x = m_unk0x0e4.GetOrientation().m_rows[0].m_x;
+		m_unk0x5f8.m_y = m_unk0x0e4.GetOrientation().m_rows[0].m_y;
+		m_unk0x5f8.m_z = m_unk0x0e4.GetOrientation().m_rows[0].m_z;
+
+		if (m_unk0x098.m_x == 0.0f && m_unk0x098.m_y == 0.0f && m_unk0x098.m_z == 0.0f) {
+			m_flags0x6c0 |= c_flags0x6c0Bit8;
+		}
+		else {
+			m_flags0x6c0 &= ~c_flags0x6c0Bit8;
+		}
+	}
+	else {
+		LegoFloat speed = static_cast<LegoFloat>(
+			sqrt(velocity->m_x * velocity->m_x + velocity->m_y * velocity->m_y + velocity->m_z * velocity->m_z)
+		);
+		m_unk0x604 = speed;
+		GolMath::NormalizeVector3(*velocity, &m_unk0x5f8);
+		m_flags0x6c0 &= ~c_flags0x6c0Bit8;
+	}
+
+	LegoFloat forwardSpeed = velocity->m_z;
+	forwardSpeed *= m_unk0x168.m_z;
+	LegoFloat contribution = velocity->m_y;
+	contribution *= m_unk0x168.m_y;
+	forwardSpeed += contribution;
+	contribution = velocity->m_x;
+	contribution *= m_unk0x168.m_x;
+	forwardSpeed += contribution;
+	{
+		LegoFloat projected = forwardSpeed;
+		projected *= m_unk0x168.m_x;
+		m_unk0x60c.m_x = projected;
+
+		projected = m_unk0x168.m_y;
+		projected *= forwardSpeed;
+		m_unk0x60c.m_y = projected;
+
+		projected = m_unk0x168.m_z;
+		projected *= forwardSpeed;
+		m_unk0x60c.m_z = projected;
+	}
+
+	m_unk0x61c.m_x = velocity->m_x - forwardSpeed * m_unk0x168.m_x;
+	m_unk0x61c.m_y = velocity->m_y - m_unk0x168.m_y * forwardSpeed;
+	m_unk0x61c.m_z = velocity->m_z - m_unk0x168.m_z * forwardSpeed;
+	m_unk0x618 = forwardSpeed;
+}
+
+// FUNCTION: LEGORACERS 0x004474c0
+void RaceState::Racer::Field0x3e8::FUN_004474c0()
+{
+	Field0x3e8* self = this;
+	GolOrientedEntity* entity = &self->m_unk0x0e4;
+	entity->VTable0x04(&self->m_unk0x690);
+
+	self->m_unk0x684 = self->m_unk0x008;
+
+	entity->VTable0x44(&self->m_unk0x69c);
+
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[0][0] = self->m_unk0x074.m_m[0][0];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[0][1] = self->m_unk0x074.m_m[0][1];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[0][2] = self->m_unk0x074.m_m[0][2];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[1][0] = self->m_unk0x074.m_m[1][0];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[1][1] = self->m_unk0x074.m_m[1][1];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[1][2] = self->m_unk0x074.m_m[1][2];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[2][0] = self->m_unk0x074.m_m[2][0];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[2][1] = self->m_unk0x074.m_m[2][1];
+	g_raceStateField0x3e8Snapshot0x0c4.m_m[2][2] = self->m_unk0x074.m_m[2][2];
+	g_raceStateField0x3e8Snapshot0x0e8 = self->m_unk0x098;
+	g_raceStateField0x3e8Snapshot0x0a0 = self->m_unk0x0a4;
+	g_raceStateField0x3e8Snapshot0x0ac = self->m_unk0x658;
+	g_raceStateField0x3e8Snapshot0x0b0 = self->m_unk0x680;
+	g_raceStateField0x3e8Snapshot0x030 = self->m_unk0x168;
+
+	Field0x198* entry = self->m_unk0x198;
+	SnapshotEntry* snapshotEntry = g_raceStateField0x3e8SnapshotEntries.GetEntries();
+	while (entry < self->m_unk0x198 + sizeOfArray(self->m_unk0x198)) {
+		snapshotEntry->m_unk0x000 = entry->m_unk0x00c;
+
+		EventRecord* record = entry->m_unk0x03c;
+		entry->m_unk0x040 = record;
+		snapshotEntry->m_unk0x030 = record;
+
+		snapshotEntry->m_flags0x03c = entry->m_flags0x048;
+		snapshotEntry->m_unk0x044 = entry->m_unk0x050;
+		snapshotEntry->m_unk0x048 = entry->m_unk0x054;
+		snapshotEntry->m_unk0x04c = entry->m_unk0x058;
+		snapshotEntry->m_unk0x050 = entry->m_unk0x05c;
+		snapshotEntry->m_unk0x054 = entry->m_unk0x060;
+		snapshotEntry->m_unk0x058 = entry->m_unk0x064;
+
+		entry++;
+		snapshotEntry++;
+	}
+
+	GolVec3* source = self->m_unk0x3a0;
+	GolVec3* dest = g_raceStateField0x3e8Snapshot0x000;
+	while (dest < &g_raceStateField0x3e8Snapshot0x030) {
+		*dest = *source;
+		source++;
+		dest++;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00447690
+void RaceState::Racer::Field0x3e8::FUN_00447690()
+{
+	Field0x3e8* self = this;
+	GolOrientedEntity* entity = &self->m_unk0x0e4;
+	entity->VTable0x08(self->m_unk0x690);
+
+	self->m_unk0x008 = self->m_unk0x684;
+
+	entity->VTable0x3c(self->m_unk0x69c);
+
+	self->m_unk0x074.m_m[0][0] = g_raceStateField0x3e8Snapshot0x0c4.m_m[0][0];
+	self->m_unk0x074.m_m[0][1] = g_raceStateField0x3e8Snapshot0x0c4.m_m[0][1];
+	self->m_unk0x074.m_m[0][2] = g_raceStateField0x3e8Snapshot0x0c4.m_m[0][2];
+	self->m_unk0x074.m_m[1][0] = g_raceStateField0x3e8Snapshot0x0c4.m_m[1][0];
+	self->m_unk0x074.m_m[1][1] = g_raceStateField0x3e8Snapshot0x0c4.m_m[1][1];
+	self->m_unk0x074.m_m[1][2] = g_raceStateField0x3e8Snapshot0x0c4.m_m[1][2];
+	self->m_unk0x074.m_m[2][0] = g_raceStateField0x3e8Snapshot0x0c4.m_m[2][0];
+	self->m_unk0x074.m_m[2][1] = g_raceStateField0x3e8Snapshot0x0c4.m_m[2][1];
+	self->m_unk0x074.m_m[2][2] = g_raceStateField0x3e8Snapshot0x0c4.m_m[2][2];
+	self->m_unk0x098 = g_raceStateField0x3e8Snapshot0x0e8;
+	self->m_unk0x0a4 = g_raceStateField0x3e8Snapshot0x0a0;
+	self->m_unk0x658 = g_raceStateField0x3e8Snapshot0x0ac;
+	self->m_unk0x680 = g_raceStateField0x3e8Snapshot0x0b0;
+	self->m_unk0x168 = g_raceStateField0x3e8Snapshot0x030;
+
+	Field0x198* entry = self->m_unk0x198;
+	SnapshotEntry* snapshotEntry = g_raceStateField0x3e8SnapshotEntries.GetEntries();
+	while (entry < self->m_unk0x198 + sizeOfArray(self->m_unk0x198)) {
+		entry->m_unk0x00c = snapshotEntry->m_unk0x000;
+		entry->m_unk0x03c = snapshotEntry->m_unk0x030;
+		entry->m_flags0x048 = snapshotEntry->m_flags0x03c;
+		entry->m_unk0x050 = snapshotEntry->m_unk0x044;
+		entry->m_unk0x054 = snapshotEntry->m_unk0x048;
+		entry->m_unk0x058 = snapshotEntry->m_unk0x04c;
+		entry->m_unk0x05c = snapshotEntry->m_unk0x050;
+		entry->m_unk0x060 = snapshotEntry->m_unk0x054;
+		entry->m_unk0x064 = snapshotEntry->m_unk0x058;
+
+		entry++;
+		snapshotEntry++;
+	}
+
+	GolVec3* source = g_raceStateField0x3e8Snapshot0x000;
+	GolVec3* dest = self->m_unk0x3a0;
+	while (source < &g_raceStateField0x3e8Snapshot0x030) {
+		*dest = *source;
+		source++;
+		dest++;
+	}
+
+	entity->VTable0x2c(self->m_unk0x014, &self->m_unk0x020);
+	self->FUN_00447330();
+}
+
+// FUNCTION: LEGORACERS 0x00447880
+void RaceState::Racer::Field0x3e8::FUN_00447880()
+{
+	m_unk0x3d0[0] = 0;
+	m_unk0x3d0[1] = 0;
+	m_unk0x3d0[2] = 0;
+	m_unk0x3d0[3] = 0;
+	m_unk0x3ec = 0;
+}
+
+// STUB: LEGORACERS 0x004478b0
+LegoU32 RaceState::Racer::Field0x3e8::FUN_004478b0(LegoU32 p_elapsedMs, LegoBool32 p_unk0x08)
+{
+	typedef RaceSessionField0x32b4::Field0x000::Field0x0a8 CollisionResource;
+	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
+	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
+
+	CollisionHitRecord* hitRecord = NULL;
+	m_unk0x3ec = 0;
+	LegoFloat bestDistance = -FLT_MAX;
+	LegoFloat hitAmount;
+	LegoFloat selectedHitAmount = 0.0f;
+
+	GolOrientedEntity* entity = &m_unk0x0e4;
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x370); i++) {
+		entity->VTable0x2c(m_unk0x370[i], &m_unk0x3a0[i]);
+		m_unk0x3d0[i] = 0;
+	}
+
+	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
+		LegoS32 resourceAddress = m_unk0x140[resourceIndex];
+		CollisionResource* resource = GetRaceStateField0x3e8Resource(resourceAddress);
+
+		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
+			if (!m_unk0x3d0[pointIndex]) {
+				resource->VTable0x30(
+					g_raceStateField0x3e8Snapshot0x000[pointIndex],
+					&g_raceStateField0x3e8Snapshot0x070[pointIndex]
+				);
+				resource->VTable0x30(m_unk0x3a0[pointIndex], &g_raceStateField0x3e8Snapshot0x040[pointIndex]);
+
+				CollisionQuery* query = resource->m_unk0x58;
+				if (!resource->m_unk0x5c) {
+					query->m_unk0x24 = &query->m_unk0x18;
+				}
+				else {
+					query->m_unk0x24 = resource->m_unk0x5c;
+				}
+
+				GolVec3 hitPoint;
+				if (query->FUN_00403fa0(
+						&g_raceStateField0x3e8Snapshot0x070[pointIndex],
+						&g_raceStateField0x3e8Snapshot0x040[pointIndex],
+						(RaceSessionField0x32b4::Field0x0c*) g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
+						&hitPoint,
+						&hitRecord,
+						&hitAmount
+					)) {
+					GolVec3 worldNormal;
+					GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24;
+					resource->VTable0x34(collisionNormal, &worldNormal);
+
+					LegoFloat dot =
+						(hitPoint.m_x - g_raceStateField0x3e8Snapshot0x040[pointIndex].m_x) * collisionNormal.m_x;
+					dot += (hitPoint.m_y - g_raceStateField0x3e8Snapshot0x040[pointIndex].m_y) * collisionNormal.m_y;
+					dot += (hitPoint.m_z - g_raceStateField0x3e8Snapshot0x040[pointIndex].m_z) * collisionNormal.m_z;
+
+					if (dot > 0.0f) {
+						if (hitRecord && !VTable0x0c(
+											 &worldNormal,
+											 (EventRecord*) hitRecord,
+											 resourceAddress,
+											 g_raceStateField0x3e8SnapshotEntries.GetEventContext()
+										 )) {
+							continue;
+						}
+
+						LegoFloat deltaX = g_raceStateField0x3e8Snapshot0x040[pointIndex].m_x - hitPoint.m_x;
+						LegoFloat deltaY = g_raceStateField0x3e8Snapshot0x040[pointIndex].m_y - hitPoint.m_y;
+						LegoFloat deltaZ = g_raceStateField0x3e8Snapshot0x040[pointIndex].m_z - hitPoint.m_z;
+						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+						if (distance > bestDistance) {
+							bestDistance = distance;
+							m_unk0x3e0 = worldNormal;
+							m_unk0x3d0[pointIndex] = 1;
+							selectedHitAmount = hitAmount;
+							m_unk0x3ec++;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (p_unk0x08) {
+		LegoS32 resourceAddress = m_unk0x140[0];
+		CollisionResource* resource = GetRaceStateField0x3e8Resource(resourceAddress);
+
+		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
+			if (!m_unk0x3d0[pointIndex]) {
+				CollisionQuery* query = resource->m_unk0x58;
+				if (!resource->m_unk0x5c) {
+					query->m_unk0x24 = &query->m_unk0x18;
+				}
+				else {
+					query->m_unk0x24 = resource->m_unk0x5c;
+				}
+
+				GolVec3 hitPoint;
+				if (query->FUN_00403fa0(
+						&g_raceStateField0x3e8Snapshot0x000[pointIndex],
+						&m_unk0x3a0[pointIndex],
+						(RaceSessionField0x32b4::Field0x0c*) g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
+						&hitPoint,
+						&hitRecord,
+						&hitAmount
+					)) {
+					LegoFloat dot = (hitPoint.m_x - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_x) *
+									g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_x;
+					dot += (hitPoint.m_y - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_y) *
+						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_y;
+					dot += (hitPoint.m_z - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_z) *
+						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_z;
+
+					if (dot >= 0.0f) {
+						GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24;
+						if (hitRecord && !VTable0x0c(
+											 &collisionNormal,
+											 (EventRecord*) hitRecord,
+											 resourceAddress,
+											 g_raceStateField0x3e8SnapshotEntries.GetEventContext()
+										 )) {
+							continue;
+						}
+
+						LegoFloat deltaX = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_x - hitPoint.m_x;
+						LegoFloat deltaY = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_y - hitPoint.m_y;
+						LegoFloat deltaZ = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_z - hitPoint.m_z;
+						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+						if (distance > bestDistance) {
+							bestDistance = distance;
+							m_unk0x3e0 = collisionNormal;
+							m_unk0x3d0[pointIndex] = 1;
+							selectedHitAmount = hitAmount;
+							LegoU32 collisionCount = m_unk0x3ec;
+							collisionCount++;
+							m_unk0x3ec = collisionCount;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (!m_unk0x3ec) {
+		return 0;
+	}
+
+	LegoU32 result =
+		static_cast<LegoS32>(static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * selectedHitAmount);
+	if (result < 5) {
+		result = 0;
+	}
+	else {
+		result -= 5;
+	}
+	FUN_00447690();
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00447cf0
+void RaceState::Racer::Field0x3e8::FUN_00447cf0()
+{
+	GolVec3* velocity = &m_unk0x008;
+	GolVec3* direction = &m_unk0x3e0;
+
+	if (m_flags0x6c0 & c_flags0x6c0Bit0) {
+		FUN_00448070();
+	}
+
+	LegoFloat dot = velocity->m_z;
+	dot *= direction->m_z;
+	dot += velocity->m_y * direction->m_y;
+	LegoFloat contribution = velocity->m_x;
+	contribution *= direction->m_x;
+	dot += contribution;
+	if (dot < 0.0f) {
+		GolVec3 scaled;
+		scaled.m_x = direction->m_x * dot;
+		scaled.m_y = direction->m_y;
+		scaled.m_y *= dot;
+		scaled.m_z = direction->m_z;
+		scaled.m_z *= dot;
+		velocity->m_x -= scaled.m_x;
+		velocity->m_y -= scaled.m_y;
+		velocity->m_z -= scaled.m_z;
+	}
+
+	const GolMatrix3& orientation = m_unk0x0e4.GetOrientation();
+	LegoFloat row0X = orientation.m_rows[0].m_x;
+	LegoU32 flags = m_flags0x6c0;
+	LegoFloat row0Y = orientation.m_rows[0].m_y;
+	LegoFloat row0Z = orientation.m_rows[0].m_z;
+
+	if (!(flags & c_flags0x6c0Bit1)) {
+		LegoFloat rowDot = row0X * direction->m_x + row0Y * direction->m_y + row0Z * direction->m_z;
+
+		if (rowDot < 0.0f) {
+			LegoFloat sideDot = orientation.m_rows[1].m_x * direction->m_x +
+								orientation.m_rows[1].m_y * direction->m_y + orientation.m_rows[1].m_z * direction->m_z;
+
+			LegoFloat amount;
+			if (sideDot < 0.0f) {
+				amount = ((sideDot + 1.0f) * 0.5f) + 0.5f;
+				amount *= 0.0040000002f;
+				amount = -amount;
+			}
+			else {
+				amount = (((1.0f - sideDot) * 0.5f) + 0.5f) * 0.0040000002f;
+			}
+
+			FUN_00445c30(amount, 200);
+			m_flags0x6c0 |= c_flags0x6c0Bit11;
+		}
+	}
+
+	if (dot < 0.0f) {
+		LegoFloat scale = g_unk0x004b0d84 * dot;
+		LegoFloat scaledValue = direction->m_x;
+		scaledValue *= scale;
+		velocity->m_x -= scaledValue;
+		scaledValue = direction->m_y;
+		scaledValue *= scale;
+		velocity->m_y -= scaledValue;
+		scaledValue = 0.15000001f * dot;
+		scaledValue *= direction->m_z;
+		velocity->m_z -= scaledValue;
+	}
+
+	GolVec3 scaled;
+	scaled.m_x = direction->m_x * 0.0040000002f;
+	scaled.m_y = direction->m_y * 0.0040000002f;
+	scaled.m_z = direction->m_z * 0.0040000002f;
+	velocity->m_x += scaled.m_x;
+	velocity->m_y += scaled.m_y;
+	velocity->m_z += scaled.m_z;
+
+	if (!(velocity->m_z < g_unk0x004b0d84)) {
+		velocity->m_z = g_unk0x004b0d84;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00448070 FOLDED
+void RaceState::Racer::Field0x3e8::FUN_00448070()
+{
+	LegoU32 flags = m_flags0x6c0;
+	RaceResourceManager::Resource* resource = m_unk0x6e8;
+
+	flags &= ~(c_flags0x6c0Bit0 | c_flags0x6c0Bit9);
+	m_unk0x6c8 = -1.0f;
+	m_unk0x6cc = 3.1415927f;
+	m_flags0x6c0 = flags;
+
+	if (resource != NULL) {
+		m_unk0x158->FUN_00443c10(resource);
+		m_unk0x6e8 = NULL;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004480c0
@@ -823,6 +3340,45 @@ void RaceState::Racer::Field0x3e8::FUN_00448110(GolVec3* p_unk0x04, LegoFloat p_
 	m_unk0x008.m_x += scaled.m_x;
 	m_unk0x008.m_y += scaled.m_y;
 	m_unk0x008.m_z += p_unk0x04->m_z * scale;
+}
+
+// FUNCTION: LEGORACERS 0x00448160
+void RaceState::Racer::Field0x3e8::FUN_00448160(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+{
+	if (m_flags0x6c0 & c_flags0x6c0Bit1) {
+		return;
+	}
+
+	const GolMatrix34& transform = m_unk0x0e4.GetTransform();
+	GolVec3 direction;
+	direction.m_x = transform.m_m[2][0];
+	direction.m_y = transform.m_m[2][1];
+	direction.m_z = transform.m_m[2][2];
+	FUN_00440da0(&direction);
+
+	LegoS32 speed = static_cast<LegoS32>(g_twoPi / p_unk0x08);
+	m_unk0x5e8 = speed;
+	FUN_00445c30(p_unk0x08, static_cast<LegoS32>(static_cast<LegoFloat>(speed) * p_unk0x04));
+	m_flags0x6c0 = (m_flags0x6c0 & ~(c_flags0x6c0Bit1 | c_flags0x6c0Bit2 | 1)) | (c_flags0x6c0Bit1 | c_flags0x6c0Bit2);
+
+	if (p_unk0x0c > 0.0f) {
+		if (p_unk0x0c > p_unk0x04) {
+			p_unk0x0c = p_unk0x04;
+		}
+
+		m_unk0x5e4 = static_cast<LegoS32>(static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x5e8)) * p_unk0x0c);
+	}
+
+	if (!m_unk0x6e4) {
+		if (m_unk0x6ec) {
+			m_sound6e4 = m_unk0x158->FUN_00443bd0(0x3c);
+		}
+
+		if (m_sound6e4) {
+			m_sound6e4->SetDistanceRangeWithMinSquared(g_unk0x004b0cd8 * g_unk0x004b0cd8, g_unk0x004b0cdc);
+			m_sound6e4->Play(TRUE);
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00448290
@@ -891,6 +3447,104 @@ void RaceState::Racer::Field0x3e8::FUN_004483b0()
 	}
 }
 
+// FUNCTION: LEGORACERS 0x00448430
+void RaceState::Racer::Field0x3e8::FUN_00448430(Field0x198* p_unk0x04)
+{
+	GolVec3 position;
+	GolVec3 direction1;
+	GolVec3 direction0;
+	GolVec3 offset;
+	Field0x198* selectedEntry;
+	if (m_unk0x36c > 1 && !m_unk0x5d8 && !m_unk0x5dc) {
+		LegoU32 currentIndex = 0;
+		selectedEntry = m_unk0x198;
+
+		if (m_unk0x36c < 4) {
+			selectedEntry = p_unk0x04;
+			currentIndex = p_unk0x04 - m_unk0x198;
+		}
+
+		LegoU32 entryIndex = g_raceStateField0x3e8ContactEntryIndices0x4b0d50[currentIndex];
+		if (m_unk0x198[entryIndex].m_flags0x048 & 1) {
+			LegoU32 upperIndex;
+			if (entryIndex < currentIndex) {
+				upperIndex = currentIndex;
+			}
+			else {
+				upperIndex = entryIndex;
+				entryIndex = currentIndex;
+			}
+
+			const GolVec3& upper = m_unk0x198[upperIndex].m_unk0x030;
+			const GolVec3& lower = m_unk0x198[entryIndex].m_unk0x030;
+			direction0.m_x = lower.m_x - upper.m_x;
+			direction0.m_y = lower.m_y - upper.m_y;
+			direction0.m_z = lower.m_z - upper.m_z;
+		}
+		else {
+			direction0.m_x = m_unk0x0e4.GetOrientation().m_m[0][0];
+			direction0.m_y = m_unk0x0e4.GetOrientation().m_m[0][1];
+			direction0.m_z = m_unk0x0e4.GetOrientation().m_m[0][2];
+		}
+
+		entryIndex = g_raceStateField0x3e8ContactEntryIndices0x4b0d60[currentIndex];
+		if (m_unk0x198[entryIndex].m_flags0x048 & 1) {
+			LegoU32 lowerIndex;
+			if (entryIndex > currentIndex) {
+				lowerIndex = currentIndex;
+			}
+			else {
+				lowerIndex = entryIndex;
+				entryIndex = currentIndex;
+			}
+
+			const GolVec3& lower = m_unk0x198[lowerIndex].m_unk0x030;
+			const GolVec3& upper = m_unk0x198[entryIndex].m_unk0x030;
+			direction1.m_x = upper.m_x - lower.m_x;
+			direction1.m_y = upper.m_y - lower.m_y;
+			direction1.m_z = upper.m_z - lower.m_z;
+		}
+		else {
+			direction1.m_x = m_unk0x0e4.GetOrientation().m_m[1][0];
+			direction1.m_y = m_unk0x0e4.GetOrientation().m_m[1][1];
+			direction1.m_z = m_unk0x0e4.GetOrientation().m_m[1][2];
+		}
+
+		m_unk0x0e4.FUN_00410a00(direction0, direction1);
+	}
+	else {
+		selectedEntry = p_unk0x04;
+	}
+
+	offset.m_x = selectedEntry->m_unk0x030.m_x - selectedEntry->m_unk0x00c.m_x + m_unk0x18c;
+	offset.m_y = selectedEntry->m_unk0x030.m_y - selectedEntry->m_unk0x00c.m_y + m_unk0x190;
+	offset.m_z = selectedEntry->m_unk0x030.m_z - selectedEntry->m_unk0x00c.m_z + m_unk0x194;
+
+	GolOrientedEntity* entity = &m_unk0x0e4;
+	entity->VTable0x04(&position);
+	position += offset;
+	entity->VTable0x08(position);
+	FUN_00448c70();
+}
+
+// FUNCTION: LEGORACERS 0x00448660
+void RaceState::Racer::Field0x3e8::FUN_00448660()
+{
+	m_flags0x6c0 |= c_flags0x6c0Bit3;
+	FUN_00445bb0(-0.003f, 150);
+	m_unk0x658 = 0;
+	m_unk0x680 = 0;
+	m_unk0x67c = 0;
+	FUN_00448c70();
+
+	m_unk0x664.m_x = (m_unk0x198[0].m_unk0x00c.m_x + m_unk0x198[1].m_unk0x00c.m_x) * 0.5f;
+	m_unk0x664.m_y = (m_unk0x198[0].m_unk0x00c.m_y + m_unk0x198[1].m_unk0x00c.m_y) * 0.5f;
+	m_unk0x664.m_z = (m_unk0x198[0].m_unk0x00c.m_z + m_unk0x198[1].m_unk0x00c.m_z) * 0.5f;
+	m_unk0x670.m_x = (m_unk0x198[2].m_unk0x00c.m_x + m_unk0x198[3].m_unk0x00c.m_x) * 0.5f;
+	m_unk0x670.m_y = (m_unk0x198[2].m_unk0x00c.m_y + m_unk0x198[3].m_unk0x00c.m_y) * 0.5f;
+	m_unk0x670.m_z = (m_unk0x198[2].m_unk0x00c.m_z + m_unk0x198[3].m_unk0x00c.m_z) * 0.5f;
+}
+
 // FUNCTION: LEGORACERS 0x00448730
 void RaceState::Racer::Field0x3e8::FUN_00448730()
 {
@@ -904,13 +3558,13 @@ void RaceState::Racer::Field0x3e8::FUN_00448730()
 void RaceState::Racer::Field0x3e8::FUN_00448760(GolVec3* p_unk0x04)
 {
 	LegoFloat scale = m_unk0x15c;
-	m_unk0x630 = p_unk0x04->m_x * scale;
+	m_unk0x630.m_x = p_unk0x04->m_x * scale;
 	LegoFloat y = p_unk0x04->m_y;
 	y *= scale;
-	m_unk0x634 = y;
+	m_unk0x630.m_y = y;
 	LegoFloat z = p_unk0x04->m_z;
 	z *= scale;
-	m_unk0x638 = z;
+	m_unk0x630.m_z = z;
 	m_flags0x6c0 |= c_flags0x6c0Bit5;
 }
 
@@ -924,13 +3578,13 @@ void RaceState::Racer::Field0x3e8::FUN_004487a0()
 void RaceState::Racer::Field0x3e8::FUN_004487b0(GolVec3* p_unk0x04)
 {
 	LegoFloat scale = m_unk0x15c;
-	m_unk0x63c = p_unk0x04->m_x * scale;
+	m_unk0x63c.m_x = p_unk0x04->m_x * scale;
 	LegoFloat y = p_unk0x04->m_y;
 	y *= scale;
-	m_unk0x640 = y;
+	m_unk0x63c.m_y = y;
 	LegoFloat z = p_unk0x04->m_z;
 	z *= scale;
-	m_unk0x644 = z;
+	m_unk0x63c.m_z = z;
 	m_flags0x6c0 |= c_flags0x6c0Bit6;
 }
 

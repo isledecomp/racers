@@ -1563,7 +1563,7 @@ void RaceState::Racer::FUN_004397b0()
 	m_unk0x3e8.VTable0x3c();
 }
 
-// STUB: LEGORACERS 0x004397c0
+// FUNCTION: LEGORACERS 0x004397c0
 void RaceState::Racer::FUN_004397c0(LegoBool32 p_unk0x04)
 {
 	if (!(m_unk0xd04 & c_flags0xd04Bit7) || p_unk0x04 != m_unk0xc70.m_unk0x030) {
@@ -1633,6 +1633,66 @@ void RaceState::Racer::FUN_00439b00()
 	m_unk0x018.m_unk0x284.VTable0x54();
 	m_unk0x018.FUN_00440130();
 	m_unk0x3e8.FUN_004293c0();
+}
+
+// FUNCTION: LEGORACERS 0x00439b70
+void RaceState::Racer::FUN_00439b70()
+{
+	LegoU32 state = m_unk0xd0c;
+	if (state) {
+		LegoU32 oldState = m_unk0xd10;
+		m_unk0xd10 = state;
+		m_unk0xd14 = oldState;
+		m_unk0xd0c = 0;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00439ba0
+LegoU32 RaceState::Racer::FUN_00439ba0()
+{
+	LegoU32 result = m_unk0xd0c;
+	if (result != 1) {
+		if (result == 0 && m_unk0xd10 == 2 && m_unk0xd14 == 1) {
+			LegoU32 lapTransitionCount = m_unk0xce8 + 1;
+			m_unk0xce8 = lapTransitionCount;
+
+			if (static_cast<LegoS32>(lapTransitionCount) > 0) {
+				result = m_lapsCompleted;
+				if (lapTransitionCount > result) {
+					Field0x00c* field0x00c = m_unk0x00c;
+					m_lapsCompleted = result + 1;
+					result = field0x00c->FUN_0043cda0(this);
+					m_unk0xd88 = result;
+
+					if (result) {
+						result = m_unk0xce0;
+						if (m_lapsCompleted < result) {
+							m_unk0xd84 = 2000;
+						}
+					}
+				}
+			}
+		}
+
+		LegoU32 state = m_unk0xd0c;
+		m_unk0xd14 = m_unk0xd10;
+		m_unk0xd10 = state;
+		m_unk0xd0c = 1;
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x00439c40
+void RaceState::Racer::FUN_00439c40()
+{
+	LegoU32 state = m_unk0xd0c;
+	if (state != 2) {
+		LegoU32 oldState = m_unk0xd10;
+		m_unk0xd10 = state;
+		m_unk0xd14 = oldState;
+		m_unk0xd0c = 2;
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00439c70
@@ -1717,6 +1777,21 @@ void RaceState::Racer::FUN_00439cf0(LegoU32 p_elapsedMs)
 			}
 		}
 	}
+}
+
+// FUNCTION: LEGORACERS 0x00439e60
+void RaceState::Racer::FUN_00439e60(GolVec3* p_unk0x04)
+{
+	m_unk0xd04 |= c_flags0xd04Bit15;
+	m_unk0xdf8.m_x = p_unk0x04->m_x;
+	m_unk0xdf8.m_y = p_unk0x04->m_y;
+	m_unk0xdf8.m_z = p_unk0x04->m_z;
+}
+
+// FUNCTION: LEGORACERS 0x00439e90
+void RaceState::Racer::FUN_00439e90()
+{
+	m_unk0xd04 &= ~c_flags0xd04Bit15;
 }
 
 // FUNCTION: LEGORACERS 0x00439ea0

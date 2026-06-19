@@ -34,6 +34,7 @@ public:
 	);
 	MaterialTable0x0c* GetUnk0x00() const { return m_unk0x00; }
 	LegoU16 GetUnk0x04() const { return m_unk0x04; }
+	void SetUnk0x0c(LegoFloat p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
 	LegoBool32 IsConfigured() const { return m_flags & c_flagBit0; }
 	LegoBool32 IsAssigned() const { return m_flags & c_flagBit1; }
 

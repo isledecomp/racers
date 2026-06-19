@@ -58,6 +58,8 @@ private:
 
 	void Reset();
 	void ClearDefinitions();
+	GolModelEntity* FUN_0041d780(const LegoChar* p_name);
+	GolModelEntity* FUN_0041d7a0(ChampionDefinition* p_definition);
 
 	GolExport* m_golExport;               // 0x0c
 	GolD3DRenderDevice* m_renderer;       // 0x10

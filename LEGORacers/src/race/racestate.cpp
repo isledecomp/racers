@@ -22,12 +22,17 @@
 
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
+extern LegoFloat g_carBuildPreviewMouseScale;
 extern LegoFloat g_minSoundPan;
 
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(RaceState::Racer, 0xe34)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x36df0Params, 0x88)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x371c0, 0x30)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x371c0Vehicle, 0x88)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018, 0x3d0)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018::InitParams, 0x68)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018::Field0x1dc, 0x6c4)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x018::Field0x1dc::Field0x1a4, 0x70)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8, 0x888)
@@ -100,8 +105,17 @@ extern const LegoFloat g_unk0x004b0978 = 62500.0f;
 // GLOBAL: LEGORACERS 0x004b097c
 extern const LegoFloat g_unk0x004b097c = 0.95999998f;
 
+// GLOBAL: LEGORACERS 0x004b0984
+extern const LegoFloat g_unk0x004b0984 = 0.2f;
+
 // GLOBAL: LEGORACERS 0x004b09a8
 extern const LegoFloat g_unk0x004b09a8 = 3.5f;
+
+// GLOBAL: LEGORACERS 0x004b09b8
+extern const LegoFloat g_unk0x004b09b8 = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b09bc
+extern const LegoFloat g_unk0x004b09bc = 0.001953125f;
 
 // GLOBAL: LEGORACERS 0x004b09d0
 extern const LegoFloat g_unk0x004b09d0 = 1.5f;
@@ -320,6 +334,168 @@ void RaceState::Racer::Reset()
 	m_unk0xcd4 = 0;
 	m_unk0xce0 = 0;
 	m_unk0xd48 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00436df0
+void RaceState::Racer::FUN_00436df0(
+	RaceState::Field0x3b190Params0x08* p_context,
+	Field0x018::InitParams* p_field0x018Params,
+	Field0x36df0Params* p_params,
+	RaceState* p_raceState,
+	LegoU32 p_racerIndex
+)
+{
+	if (m_unk0x00c) {
+		Destroy();
+	}
+
+	m_unk0xe04 = p_racerIndex;
+	m_unk0xe2c = p_context->m_unk0x34;
+	m_resourceManager004 = p_context->m_resourceMgr;
+	m_unk0x008 = p_context->m_unk0x18;
+	m_unk0x010 = p_context->m_racerField0x010;
+	m_raceState00c = p_raceState;
+	m_lapTimes[5] = p_racerIndex + 1;
+	m_unk0xd54 = p_params->m_unk0x78;
+	m_unk0xcd0 = p_params->m_unk0x7c;
+	m_unk0xcd4 = p_params->m_unk0x80;
+	m_unk0xce0 = p_params->m_unk0x72;
+
+	if (p_params->m_stringChars) {
+		m_displayName.CopyFromBufSelection(p_params->m_stringChars, 0);
+	}
+	else {
+		GolString::CopyStringToBuf16(p_params->m_displayName, &m_unk0xdbc);
+		m_displayName.CopyFromBufSelection(&m_unk0xdbc, 0);
+	}
+
+	LegoU32 soundBase = p_params->m_unk0x74;
+	m_unk0xd40 = soundBase;
+	if (soundBase == 1000) {
+		m_unk0xd23 = 26;
+	}
+	else if (soundBase == 1100) {
+		m_unk0xd23 = 28;
+	}
+	else if (soundBase == 1112) {
+		m_unk0xd23 = 27;
+	}
+	else if (soundBase == 1124) {
+		m_unk0xd23 = 29;
+	}
+	else if (soundBase == 1136) {
+		m_unk0xd23 = 30;
+	}
+	else if (soundBase == 1148 || soundBase == 1160) {
+		m_unk0xd23 = 31;
+	}
+
+	LegoU32 colorValue = p_params->m_unk0x6c[0];
+	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd1c = static_cast<LegoU8>(colorScale * 255.0f);
+
+	colorValue = p_params->m_unk0x6c[1];
+	colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd1d = static_cast<LegoU8>(colorScale * 255.0f);
+
+	colorValue = p_params->m_unk0x6c[2];
+	colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd1e = static_cast<LegoU8>(colorScale * 255.0f);
+
+	colorValue = p_params->m_unk0x6c[3];
+	colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd1f = static_cast<LegoU8>(colorScale * 255.0f);
+
+	colorValue = p_params->m_unk0x6c[4];
+	colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd20 = static_cast<LegoU8>(colorScale * 255.0f);
+
+	colorValue = p_params->m_unk0x6c[5];
+	colorScale = static_cast<LegoFloat>(colorValue);
+	colorScale *= g_unk0x004c67a4;
+	colorScale *= g_carBuildPreviewMouseScale;
+	colorScale += g_unk0x004b0984;
+	if (colorScale > 1.0f) {
+		colorScale = 1.0f;
+	}
+	m_unk0xd21 = static_cast<LegoU8>(colorScale * 255.0f);
+
+	LegoS32 unk0xd22 = m_unk0xd1f;
+	unk0xd22 = m_unk0xd1d - unk0xd22;
+	unk0xd22 -= m_unk0xd1e;
+	unk0xd22 += m_unk0xd1c;
+	if (unk0xd22 < 0) {
+		m_unk0xd22 = 0;
+	}
+	else {
+		LegoFloat d22Scale = static_cast<LegoFloat>(unk0xd22);
+		d22Scale *= g_unk0x004b09bc;
+		d22Scale *= g_unk0x004b09b8;
+		m_unk0xd22 = static_cast<LegoU8>(d22Scale);
+	}
+
+	LegoU32 randomIndex = g_unk0x004c6ee4;
+	randomIndex++;
+	randomIndex &= c_randomTableMask;
+	g_unk0x004c6ee4 = randomIndex;
+	LegoU32 randomValue = g_unk0x004befec[randomIndex];
+	m_unk0xd34 = randomValue * 8 + 2000;
+
+	randomIndex = g_unk0x004c6ee4;
+	randomIndex++;
+	randomIndex &= c_randomTableMask;
+	g_unk0x004c6ee4 = randomIndex;
+	randomValue = g_unk0x004befec[randomIndex];
+	m_unk0xd44 = randomValue * 4 + 5000;
+
+	LegoU32 state = 2;
+	m_unk0xd08 = state;
+	if (p_context->m_flags0x3c & 1) {
+		m_unk0xd04 |= c_flags0xd04Bit26;
+	}
+	if (p_context->m_flags0x3c & 0x40) {
+		m_unk0xd04 |= c_flags0xd04Bit24;
+	}
+	if (p_context->m_flags0x3c & 0x80) {
+		m_unk0xd04 |= c_flags0xd04Bit25;
+	}
+	if (p_context->m_flags0x3c & state) {
+		m_unk0xd04 |= c_flags0xd04Bit27;
+	}
+
+	m_unk0x018.FUN_0043d7a0(p_field0x018Params, p_context);
+	FUN_004371c0(&p_context->m_field0x371c0, &p_params->m_vehicle);
+	FUN_004374c0();
 }
 
 // FUNCTION: LEGORACERS 0x004371c0
@@ -2843,6 +3019,72 @@ void RaceState::Racer::Field0x018::Reset()
 	m_unk0x3c4 = 0;
 	m_unk0x3c8 = 0;
 	m_unk0x3cc = 4;
+}
+
+// FUNCTION: LEGORACERS 0x0043d7a0
+void RaceState::Racer::Field0x018::FUN_0043d7a0(InitParams* p_params, RaceState::Field0x3b190Params0x08* p_context)
+{
+	if (m_unk0x000 & c_alphaOverrideFlag) {
+		Destroy();
+	}
+
+	m_unk0x03c = p_params->m_unk0x00;
+	m_unk0x040 = p_params->m_unk0x04;
+	m_unk0x044 = p_params->m_unk0x08;
+	m_unk0x048 = p_params->m_unk0x0c;
+	m_unk0x04c = p_params->m_unk0x10;
+	m_unk0x064 = p_context->m_unk0x08;
+	Racer* racer = p_params->m_racer;
+	m_racer = racer;
+	m_racerField0x3e8 = &racer->m_unk0x3e8;
+	m_unk0x27c = p_context->m_unk0x1c;
+	m_unk0x280 = p_context->m_unk0x20;
+	m_unk0x1e0 = p_context->m_unk0x24;
+	m_unk0x000 = c_alphaOverrideFlag | c_flags0x000Bit1;
+	if (p_context->m_unk0x30) {
+		m_unk0x000 = c_alphaOverrideFlag | c_flags0x000Bit1 | c_flags0x000Bit2;
+	}
+
+	m_unk0x198 = p_params->m_unk0x20;
+	m_unk0x19c = p_params->m_unk0x24;
+	m_unk0x1a0 = p_params->m_unk0x28;
+	m_unk0x1a4 = p_params->m_unk0x2c;
+	::strncpy(m_unk0x074, p_params->m_materialName, sizeof(m_unk0x074));
+
+	m_unk0x218.Initialize(p_context->m_renderer, 1);
+	m_unk0x218.AssignEntryByName(0, m_unk0x074);
+	m_unk0x224.Initialize(p_context->m_renderer, 1);
+	m_unk0x224.AssignEntryByName(0, "skid");
+
+	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+	m_unk0x388 = g_unk0x004befec[g_unk0x004c6ee4] % 2000;
+
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x1a8); i++) {
+		m_unk0x1a8[i] = p_params->m_unk0x38[i];
+	}
+
+	m_unk0x044->FUN_0040dad0(0);
+	m_unk0x044->SetFlags(m_unk0x044->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+
+	if (m_unk0x040) {
+		m_unk0x040->FUN_0040dad0(0);
+		m_unk0x040->SetFlags(m_unk0x040->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	}
+
+	m_unk0x048->FUN_0040dad0(9);
+	m_unk0x048->SetFlags(m_unk0x048->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+
+	if (p_context->m_flags0x3c & 0x200) {
+		m_unk0x000 |= c_flags0x000Bit10;
+	}
+	if (p_context->m_flags0x3c & 0x400) {
+		m_unk0x000 |= c_flags0x000Bit11;
+	}
+	if (p_context->m_flags0x3c & 0x800) {
+		m_unk0x000 |= c_flags0x000Bit12;
+	}
+
+	FUN_00440030();
 }
 
 // FUNCTION: LEGORACERS 0x0043d990

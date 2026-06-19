@@ -47,6 +47,26 @@ public:
 	MaterialTable0x0c* GetMaterialTable(LegoU32 p_index) const { return m_materialTables[p_index]; }
 	LegoFloat GetModelDistance(LegoU32 p_index) const { return m_modelDistances[p_index]; }
 	void SetModelDistance(LegoU32 p_index, LegoFloat p_modelDistance) { m_modelDistances[p_index] = p_modelDistance; }
+	void ClearModelDistances()
+	{
+		for (LegoS32 i = 0; i < 3; i++) {
+			m_modelDistances[i] = 0.0f;
+		}
+	}
+	void CopyModelDistancesFrom(const GolVec3& p_modelDistances)
+	{
+		const LegoFloat* modelDistances = &p_modelDistances.m_x;
+		for (LegoS32 i = 0; i < 3; i++) {
+			m_modelDistances[i] = modelDistances[i];
+		}
+	}
+	void CopyModelDistancesTo(GolVec3* p_modelDistances) const
+	{
+		LegoFloat* modelDistances = &p_modelDistances->m_x;
+		for (LegoS32 i = 0; i < 3; i++) {
+			modelDistances[i] = m_modelDistances[i];
+		}
+	}
 	LegoFloat GetUnk0x58() const { return m_unk0x58; }
 	LegoBool32 HasModel() const { return m_flags & c_flagBit0; }
 	void CopyOrientationAndPositionFrom(const GolModelEntity& p_other)

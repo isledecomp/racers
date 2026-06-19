@@ -53,7 +53,7 @@ RaceSession::Field0x6dc::Field0x270::~Field0x270()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x6dc::Field0x270::VTable0x00()
+void RaceSession::Field0x6dc::Field0x270::VTable0x00(LegoEventQueue::CallbackData*)
 {
 }
 
@@ -145,11 +145,96 @@ void RaceSession::Field0x6dc::Field0x270::FUN_004214b0()
 	m_unk0x04 = 0;
 }
 
+// STUB: LEGORACERS 0x00421520
+void RaceSession::Field0x6dc::Field0x270::FUN_00421520(
+	const GolVec3* p_position,
+	undefined4 p_unk0x08,
+	undefined4 p_unk0x0c
+)
+{
+	LegoFloat negativeLimit = -2048.0f;
+	if (p_position->m_x > 2048.0f || p_position->m_x < negativeLimit || p_position->m_y > 2048.0f ||
+		p_position->m_y < negativeLimit || p_position->m_z > 2048.0f || p_position->m_z < negativeLimit) {
+		m_unk0x04 = 1;
+		return;
+	}
+
+	m_unk0x04 = 2;
+	m_unk0x238 = m_unk0x230;
+	m_unk0x268 = p_unk0x08;
+	m_unk0x21c = p_unk0x0c;
+	m_unk0x23c = 255.0f;
+	m_unk0x240 = 0.0f;
+	m_unk0x248 = 0.050000001f;
+	m_unk0x24c = m_unk0x250;
+
+	m_unk0x008.VTable0x08(*p_position);
+	m_unk0x008.FUN_10026fa0(0.1f);
+
+	if (m_unk0x0c4 != NULL) {
+		m_unk0x0c4->SetWidth(0.1f);
+		m_unk0x0c4->SetHeight(0.2f);
+		m_unk0x0c4->VTable0x08(*p_position);
+	}
+
+	if (m_unk0x034.HasModel()) {
+		m_unk0x034.SetUnk0x58ThenInvalidateRadius(0.050000001f);
+		m_unk0x034.VTable0x08(*p_position);
+	}
+
+	m_unk0x0e4.m_unk0x0e8.m_x = p_position->m_x;
+	m_unk0x0e4.m_unk0x0e8.m_y = p_position->m_y;
+	m_unk0x0e4.m_unk0x0e8.m_z = p_position->m_z + 5.0f;
+
+	GolVec3 forward;
+	forward.m_x = 0.0f;
+	forward.m_y = 0.0f;
+	forward.m_z = -1.0f;
+
+	GolVec3 up;
+	up.m_x = 1.0f;
+	up.m_y = 0.0f;
+	up.m_z = 0.0f;
+	m_unk0x0e4.FUN_00414c90(&forward, &up);
+
+	if (m_unk0x220 != NULL) {
+		m_unk0x220->m_active = 0;
+	}
+
+	if (m_unk0x218 != NULL) {
+		LegoEventQueue::Callback* callback = this;
+		LegoEventQueue::Descriptor descriptor;
+		descriptor.m_unk0x00 = 4;
+		descriptor.m_unk0x04 = 1;
+		descriptor.m_unk0x08 = 0;
+		descriptor.m_unk0x0c = 0;
+		descriptor.m_data = &m_unk0x008;
+		m_unk0x220 = m_unk0x218->FUN_0042fb50(callback, &descriptor);
+	}
+	else {
+		m_unk0x220 = NULL;
+	}
+
+	if (m_unk0x0c8.IsConfigured()) {
+		m_unk0x0c8.FUN_00410470();
+		m_unk0x0c8.FUN_00410480();
+		m_unk0x0c8.FUN_10025da0(m_unk0x224->GetBillboardMaterialTable(), m_unk0x0e0, FALSE);
+	}
+
+	if (m_unk0x228 != NULL) {
+		GolVec3 particlePosition;
+		particlePosition.m_x = p_position->m_x;
+		particlePosition.m_y = p_position->m_y;
+		particlePosition.m_z = p_position->m_z;
+		m_unk0x228->FUN_00489d70("explode", &particlePosition, NULL, NULL);
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004217b0
 void RaceSession::Field0x6dc::Field0x270::FUN_004217b0()
 {
 	if (m_unk0x220 != NULL) {
-		m_unk0x220->ClearUnk0x24();
+		m_unk0x220->m_active = 0;
 		m_unk0x220 = NULL;
 	}
 
@@ -190,7 +275,7 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421850(LegoU32 p_elapsedMs)
 		if (p_elapsedMs >= duration) {
 			if (m_unk0x214 != NULL && m_unk0x268 != zero) {
 				if (m_unk0x220 != NULL) {
-					m_unk0x220->ClearUnk0x24();
+					m_unk0x220->m_active = 0;
 					m_unk0x220 = NULL;
 				}
 

@@ -108,8 +108,17 @@ extern const LegoFloat g_unk0x004b0cec = 0.70710677f;
 // GLOBAL: LEGORACERS 0x004b0cf0
 extern const LegoFloat g_unk0x004b0cf0 = 110.0f;
 
+// GLOBAL: LEGORACERS 0x004b0cf4
+extern const LegoFloat g_raceStateField0x3e8ContactLimitPadding = 0.4f;
+
 // GLOBAL: LEGORACERS 0x004b0cf8
 extern const LegoFloat g_unk0x004b0cf8 = 0.2f;
+
+// GLOBAL: LEGORACERS 0x004b0d00
+extern const LegoFloat g_raceStateField0x3e8SweepDistanceScale = 0.01f;
+
+// GLOBAL: LEGORACERS 0x004b0d04
+extern const LegoFloat g_raceStateField0x3e8AirborneDropStep = 0.008f;
 
 // GLOBAL: LEGORACERS 0x004b0d20
 extern const LegoFloat g_unk0x004b0d20 = 6.0f;
@@ -119,6 +128,12 @@ extern const LegoFloat g_unk0x004b0d24 = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b0d28
 extern const LegoFloat g_unk0x004b0d28 = 0.005f;
+
+// GLOBAL: LEGORACERS 0x004b0d2c
+extern const LegoFloat g_raceStateField0x3e8BounceThreshold = 0.05f;
+
+// GLOBAL: LEGORACERS 0x004b0d30
+extern const LegoFloat g_raceStateField0x3e8BounceScale = 1.3f;
 
 extern LegoU32 g_unk0x004b0d80;
 extern const LegoFloat g_unk0x004b0cd0;
@@ -2696,9 +2711,313 @@ void RaceState::Racer::Field0x3e8::FUN_004464a0(LegoS32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x004465c0
-void RaceState::Racer::Field0x3e8::FUN_004465c0(LegoU32)
+void RaceState::Racer::Field0x3e8::FUN_004465c0(LegoU32 p_elapsedMs)
 {
-	STUB(0x004465c0);
+	typedef RaceSessionField0x32b4::Field0x000::Field0x0a8 CollisionResource;
+	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
+	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
+
+	LegoU32 flags = m_flags0x6c0;
+	if (flags & c_flags0x6c0Bit8) {
+		if (m_unk0x008.m_x == 0.0f && m_unk0x008.m_y == 0.0f && m_unk0x008.m_z == 0.0f && m_unk0x098.m_x == 0.0f &&
+			m_unk0x098.m_y == 0.0f && m_unk0x098.m_z == 0.0f) {
+			return;
+		}
+
+		m_flags0x6c0 = flags & ~c_flags0x6c0Bit8;
+	}
+
+	FUN_00448a50();
+
+	LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+	FUN_00448c70();
+
+	LegoFloat average = m_unk0x198[0].m_unk0x00c.m_x;
+	average += m_unk0x198[1].m_unk0x00c.m_x;
+	m_unk0x664.m_x = average * 0.5f;
+	average = m_unk0x198[0].m_unk0x00c.m_y;
+	average += m_unk0x198[1].m_unk0x00c.m_y;
+	m_unk0x664.m_y = average * 0.5f;
+	average = m_unk0x198[0].m_unk0x00c.m_z;
+	average += m_unk0x198[1].m_unk0x00c.m_z;
+	m_unk0x664.m_z = average * 0.5f;
+	average = m_unk0x198[3].m_unk0x00c.m_x;
+	average += m_unk0x198[2].m_unk0x00c.m_x;
+	m_unk0x670.m_x = average * 0.5f;
+	average = m_unk0x198[2].m_unk0x00c.m_y;
+	average += m_unk0x198[3].m_unk0x00c.m_y;
+	m_unk0x670.m_y = average * 0.5f;
+	average = m_unk0x198[2].m_unk0x00c.m_z;
+	average += m_unk0x198[3].m_unk0x00c.m_z;
+	m_unk0x670.m_z = average * 0.5f;
+
+	LegoU32 previousContactCount = m_unk0x36c;
+
+	GolVec3 position;
+	m_unk0x0e4.VTable0x04(&position);
+
+	LegoFloat verticalOffset = -(position.m_z - m_unk0x690.m_z);
+	if (verticalOffset < 0.0f) {
+		verticalOffset = 0.0f;
+	}
+
+	LegoFloat sweepHeight = m_unk0x13c->FUN_10028710() + verticalOffset;
+	LegoBool32 resetFromAir;
+	LegoFloat sweepDistance;
+	if (m_unk0x36c != 0) {
+		sweepDistance = elapsedMs * g_raceStateField0x3e8SweepDistanceScale;
+		resetFromAir = FALSE;
+	}
+	else {
+		sweepDistance = 0.0f;
+		resetFromAir = TRUE;
+	}
+	sweepDistance += m_unk0x658;
+
+	Field0x198* entries = m_unk0x198;
+	Field0x198* entriesEnd = &m_unk0x198[2];
+	Field0x198* entry;
+	m_unk0x36c = 0;
+
+	GolVec3* sweepCenter = &m_unk0x664;
+	for (entry = entries; entry < entriesEnd; entry++, sweepCenter++) {
+		entry->m_unk0x018.m_x = sweepCenter->m_x;
+		entry->m_unk0x018.m_y = sweepCenter->m_y;
+		entry->m_unk0x018.m_z = sweepCenter->m_z + sweepHeight;
+		entry->m_unk0x024.m_x = sweepCenter->m_x;
+		entry->m_unk0x024.m_y = sweepCenter->m_y;
+		entry->m_unk0x024.m_z = sweepCenter->m_z - sweepDistance;
+		entry->m_flags0x048 &= ~(Field0x198::c_flags0x048Active | Field0x198::c_flags0x048Hit);
+		entry->m_unk0x000.m_x = 0.0f;
+		entry->m_unk0x000.m_y = 0.0f;
+		entry->m_unk0x000.m_z = 0.0f;
+		entry->m_unk0x04c = -FLT_MAX;
+	}
+
+	LegoFloat bestDistance = -FLT_MAX;
+	Field0x198* selectedEntry = NULL;
+	LegoS32 selectedIndex = 0;
+	EventContext* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
+	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
+
+	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
+		CollisionResource* resource = GetRaceStateField0x3e8Resource(m_unk0x140[resourceIndex]);
+
+		LegoS32 entryIndex = 0;
+		for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
+			if (entry->m_flags0x048 & Field0x198::c_flags0x048Hit) {
+				continue;
+			}
+
+			GolVec3 start;
+			GolVec3 end;
+			resource->VTable0x30(entry->m_unk0x018, &start);
+			resource->VTable0x30(entry->m_unk0x024, &end);
+
+			CollisionQuery* query = resource->m_unk0x58;
+			if (!resource->m_unk0x5c) {
+				query->m_unk0x24 = &query->m_unk0x18;
+			}
+			else {
+				query->m_unk0x24 = resource->m_unk0x5c;
+			}
+
+			GolVec3 hitPoint;
+			CollisionHitRecord* hitRecord;
+			if (!query->FUN_00403fa0(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
+				continue;
+			}
+
+			entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
+			resource->VTable0x2c(hitPoint, &entry->m_unk0x030);
+
+			GolVec3 collisionNormal = eventContext->m_unk0x24;
+			resource->VTable0x34(collisionNormal, &entry->m_unk0x000);
+
+			if (entryIndex == 0) {
+				m_unk0x198[0].m_unk0x03c = (EventRecord*) hitRecord;
+				m_unk0x198[1].m_unk0x03c = (EventRecord*) hitRecord;
+			}
+			else {
+				m_unk0x198[2].m_unk0x03c = (EventRecord*) hitRecord;
+				m_unk0x198[3].m_unk0x03c = (EventRecord*) hitRecord;
+			}
+
+			LegoFloat deltaX = end.m_x - hitPoint.m_x;
+			LegoFloat deltaY = end.m_y - hitPoint.m_y;
+			LegoFloat deltaZ = end.m_z - hitPoint.m_z;
+			entry->m_unk0x04c = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+			if (entry->m_unk0x04c > bestDistance) {
+				selectedEntry = entry;
+				selectedIndex = entryIndex;
+				bestDistance = entry->m_unk0x04c;
+			}
+		}
+	}
+
+	CollisionResource* baseResource = GetRaceStateField0x3e8Resource(m_unk0x140[0]);
+	LegoS32 entryIndex = 0;
+	for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
+		if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
+			if (!FUN_00448ae0(entry)) {
+				CollisionQuery* query = baseResource->m_unk0x58;
+				if (!baseResource->m_unk0x5c) {
+					query->m_unk0x24 = &query->m_unk0x18;
+				}
+				else {
+					query->m_unk0x24 = baseResource->m_unk0x5c;
+				}
+
+				CollisionHitRecord* hitRecord;
+				if (!query->FUN_00403fa0(
+						&entry->m_unk0x018,
+						&entry->m_unk0x024,
+						collisionContext,
+						&entry->m_unk0x030,
+						&hitRecord,
+						NULL
+					)) {
+					continue;
+				}
+
+				entry->m_unk0x044 = FUN_00448a70(eventContext, (EventRecord*) hitRecord);
+
+				if (entryIndex == 0) {
+					m_unk0x198[0].m_unk0x03c = (EventRecord*) hitRecord;
+					m_unk0x198[1].m_unk0x03c = (EventRecord*) hitRecord;
+				}
+				else {
+					m_unk0x198[2].m_unk0x03c = (EventRecord*) hitRecord;
+					m_unk0x198[3].m_unk0x03c = (EventRecord*) hitRecord;
+				}
+			}
+
+			entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_unk0x24;
+
+			LegoFloat deltaX = entry->m_unk0x024.m_x - entry->m_unk0x030.m_x;
+			LegoFloat deltaY = entry->m_unk0x024.m_y - entry->m_unk0x030.m_y;
+			LegoFloat deltaZ = entry->m_unk0x024.m_z - entry->m_unk0x030.m_z;
+			entry->m_unk0x04c = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
+
+			if (entry->m_unk0x04c > bestDistance) {
+				selectedEntry = entry;
+				selectedIndex = entryIndex;
+				bestDistance = entry->m_unk0x04c;
+			}
+
+			entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
+		}
+	}
+
+	if (selectedEntry == NULL) {
+		if (previousContactCount == 0) {
+			return;
+		}
+
+		m_unk0x008.m_z -= g_raceStateField0x3e8AirborneDropStep;
+		return;
+	}
+
+	LegoFloat contactLimit = static_cast<LegoFloat>(sqrt(bestDistance)) - g_raceStateField0x3e8ContactLimitPadding;
+	if (contactLimit < 0.0f) {
+		contactLimit = 0.0f;
+	}
+
+	LegoFloat contactLimitSquared = contactLimit * contactLimit;
+	m_unk0x174.m_x = 0.0f;
+	m_unk0x174.m_y = 0.0f;
+	m_unk0x174.m_z = 0.0f;
+
+	for (entry = entries; entry < entriesEnd; entry++) {
+		if (entry->m_unk0x04c >= contactLimitSquared) {
+			m_unk0x174.m_x += entry->m_unk0x000.m_x;
+			m_unk0x174.m_y += entry->m_unk0x000.m_y;
+			m_unk0x174.m_z += entry->m_unk0x000.m_z;
+			entry->m_flags0x048 |= Field0x198::c_flags0x048Active;
+			m_unk0x36c++;
+		}
+		else {
+			entry->m_flags0x048 &= ~Field0x198::c_flags0x048Active;
+			entry->m_unk0x000.m_x = 0.0f;
+			entry->m_unk0x000.m_y = 0.0f;
+			entry->m_unk0x000.m_z = 0.0f;
+		}
+	}
+
+	if (m_unk0x36c >= 2) {
+		GolVec3 direction;
+		direction.m_x = m_unk0x198[0].m_unk0x030.m_x - m_unk0x198[1].m_unk0x030.m_x;
+		direction.m_y = m_unk0x198[0].m_unk0x030.m_y - m_unk0x198[1].m_unk0x030.m_y;
+		direction.m_z = m_unk0x198[0].m_unk0x030.m_z - m_unk0x198[1].m_unk0x030.m_z;
+
+		GolVec3 up;
+		up.m_x = m_unk0x0e4.GetTransform().m_m[2][0];
+		up.m_y = m_unk0x0e4.GetTransform().m_m[2][1];
+		up.m_z = m_unk0x0e4.GetTransform().m_m[2][2];
+		m_unk0x0e4.VTable0x40(direction, up);
+
+		m_unk0x174.m_x = m_unk0x0e4.GetTransform().m_m[2][0];
+		m_unk0x174.m_y = m_unk0x0e4.GetTransform().m_m[2][1];
+		m_unk0x174.m_z = m_unk0x0e4.GetTransform().m_m[2][2];
+	}
+	else {
+		GolMath::NormalizeVector3(m_unk0x174, &m_unk0x174);
+	}
+
+	GolVec3* selectedCenter = selectedIndex == 0 ? &m_unk0x664 : &m_unk0x670;
+	GolVec3 delta;
+	delta.m_x = selectedEntry->m_unk0x030.m_x - selectedCenter->m_x;
+	delta.m_y = selectedEntry->m_unk0x030.m_y - selectedCenter->m_y;
+	delta.m_z = selectedEntry->m_unk0x030.m_z - selectedCenter->m_z + m_unk0x658;
+
+	GolVec3 newPosition;
+	m_unk0x0e4.VTable0x04(&newPosition);
+	newPosition.m_x += delta.m_x;
+	newPosition.m_y += delta.m_y;
+	newPosition.m_z += delta.m_z;
+	m_unk0x0e4.VTable0x08(newPosition);
+
+	m_unk0x664.m_x += delta.m_x;
+	m_unk0x664.m_y += delta.m_y;
+	m_unk0x664.m_z += delta.m_z;
+	m_unk0x670.m_x += delta.m_x;
+	m_unk0x670.m_y += delta.m_y;
+	m_unk0x670.m_z += delta.m_z;
+
+	if (resetFromAir) {
+		LegoFloat dot =
+			m_unk0x008.m_z * m_unk0x174.m_z + m_unk0x008.m_y * m_unk0x174.m_y + m_unk0x008.m_x * m_unk0x174.m_x;
+		if (dot < 0.0f) {
+			if (dot < -g_raceStateField0x3e8BounceThreshold) {
+				LegoFloat scaled = dot * g_raceStateField0x3e8BounceScale;
+				m_unk0x36c = 0;
+				m_unk0x008.m_z -= scaled;
+
+				for (entry = entries; entry < entriesEnd; entry++) {
+					entry->m_flags0x048 &= ~Field0x198::c_flags0x048Active;
+				}
+				return;
+			}
+
+			m_unk0x008.m_z -= dot;
+		}
+	}
+
+	LegoFloat responseScale = m_unk0x164 * m_unk0x174.m_z;
+	m_unk0x180.m_x = -(m_unk0x174.m_x * responseScale);
+	m_unk0x180.m_y = -(m_unk0x174.m_y * responseScale);
+	m_unk0x180.m_z = m_unk0x164 - m_unk0x174.m_z * responseScale;
+
+	g_raceStateField0x3e8Snapshot0x0b8.m_x = 0.0f;
+	g_raceStateField0x3e8Snapshot0x0b8.m_y = 0.0f;
+	g_raceStateField0x3e8Snapshot0x0b8.m_z = -(m_unk0x164 * 0.5f);
+
+	for (entry = entries; entry < entriesEnd; entry++) {
+		if (entry->m_flags0x048 & Field0x198::c_flags0x048Active) {
+			entry->m_unk0x000 = g_raceStateField0x3e8Snapshot0x0b8;
+		}
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00446e60

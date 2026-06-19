@@ -27,9 +27,12 @@ public:
 
 			class Field0x0e0 {
 			public:
+				LegoU32 GetUnk0xd04() const { return m_unk0xd04; }
+
 				undefined m_unk0x00[0x1c - 0x00];  // 0x00
 				GolWorldEntity m_unk0x1c;          // 0x1c
-				undefined m_unk0x44[0xd08 - 0x44]; // 0x44
+				undefined m_unk0x44[0xd04 - 0x44]; // 0x44
+				LegoU32 m_unk0xd04;                // 0xd04
 				LegoU32 m_unk0xd08;                // 0xd08
 			};
 

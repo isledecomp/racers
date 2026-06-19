@@ -1590,6 +1590,72 @@ void RaceSession::Field0x6dc::FUN_0045a8a0()
 	}
 }
 
+// STUB: LEGORACERS 0x0045b3a0
+RaceSession::Field0x6dc::Field0x270* __stdcall RaceSession::Field0x6dc::FUN_0045b3a0(Field0x270** p_head)
+{
+	Field0x270* selected = NULL;
+	Field0x270* selectedPrevious = NULL;
+	LegoU32 selectedRemaining = 0xffffffff;
+	LegoS32 targetState = 3;
+	LegoU32 pass = 0;
+	Field0x270* head = *p_head;
+
+	for (;;) {
+		Field0x270* previous = NULL;
+		Field0x270* current = head;
+
+		while (current != NULL) {
+			if (current->GetUnk0x04() == targetState && current->GetUnk0x238() < selectedRemaining) {
+				selectedRemaining = current->GetUnk0x238();
+				selected = current;
+				selectedPrevious = previous;
+			}
+
+			previous = current;
+			current = current->GetNext();
+		}
+
+		if (selected != NULL) {
+			break;
+		}
+
+		pass++;
+		targetState = 2;
+		if (pass >= 3) {
+			Field0x270* result = head;
+			*p_head = result->GetNext();
+			result->SetNext(NULL);
+			return result;
+		}
+	}
+
+	if (selectedPrevious == NULL) {
+		*p_head = selected->GetNext();
+		selected->SetNext(NULL);
+		return selected;
+	}
+
+	selectedPrevious->SetNext(selected->GetNext());
+	selected->SetNext(NULL);
+	return selected;
+}
+
+// FUNCTION: LEGORACERS 0x0045b470
+void RaceSession::Field0x6dc::FUN_0045b470(const GolVec3* p_position, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+{
+	Field0x270* item = m_unk0x1944;
+	if (item == NULL) {
+		item = FUN_0045b3a0(&m_unk0x193c);
+	}
+	else {
+		m_unk0x1944 = item->GetNext();
+	}
+
+	item->SetNext(m_unk0x193c);
+	m_unk0x193c = item;
+	item->FUN_00421520(p_position, p_unk0x08, p_unk0x0c);
+}
+
 // FUNCTION: LEGORACERS 0x0045b740
 void RaceSession::Field0x6dc::FUN_0045b740(RaceState::Racer* p_racer)
 {

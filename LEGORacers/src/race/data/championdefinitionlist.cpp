@@ -4,8 +4,10 @@
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golmateriallibrary.h"
+#include "golmodelbase.h"
 #include "golmodelentity.h"
 #include "material/goltexturelist.h"
+#include "render/gold3drenderdevice.h"
 
 #include <string.h>
 
@@ -13,6 +15,9 @@ DECOMP_SIZE_ASSERT(ChampionDefinitionList, 0x34)
 DECOMP_SIZE_ASSERT(ChampionDefinitionList::CcbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(ChampionDefinitionList::ChampionDefinition, 0x30)
 DECOMP_SIZE_ASSERT(ChampionDefinitionList::LoadParams, 0x14)
+
+// GLOBAL: LEGORACERS 0x004afde4
+extern const LegoFloat g_unk0x004afde4 = 250000.0f;
 
 // FUNCTION: LEGORACERS 0x0041d1a0
 ChampionDefinitionList::ChampionDefinitionList()
@@ -236,4 +241,37 @@ void ChampionDefinitionList::FUN_0041d370(const LoadParams* p_params)
 	}
 
 	m_entryCount = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0041d780
+GolModelEntity* ChampionDefinitionList::FUN_0041d780(const LegoChar* p_name)
+{
+	ChampionDefinition* definition = static_cast<ChampionDefinition*>(GetName(p_name));
+	return FUN_0041d7a0(definition);
+}
+
+// FUNCTION: LEGORACERS 0x0041d7a0
+GolModelEntity* ChampionDefinitionList::FUN_0041d7a0(ChampionDefinition* p_definition)
+{
+	LegoChar name[sizeof(GolName) + 1];
+
+	m_textureLists[m_entryCount] = m_golExport->CreateTextureList();
+	::strncpy(name, p_definition->m_unk0x08, sizeof(GolName));
+	name[sizeof(GolName)] = '\0';
+	m_textureLists[m_entryCount]->VTable0x24(m_renderer, p_definition->m_unk0x08, m_binary);
+
+	m_materialLists[m_entryCount] = m_golExport->CreateMaterialList();
+	::strncpy(name, p_definition->m_unk0x00, sizeof(GolName));
+	name[sizeof(GolName)] = '\0';
+	m_materialLists[m_entryCount]->VTable0x24(m_renderer, name, m_binary);
+
+	m_models[m_entryCount] = m_golExport->VTable0x14();
+	::strncpy(name, p_definition->m_unk0x10, sizeof(GolName));
+	name[sizeof(GolName)] = '\0';
+	m_models[m_entryCount]->VTable0x1c(m_renderer, name, m_binary);
+
+	m_modelEntities[m_entryCount].VTable0x50(m_models[m_entryCount], g_unk0x004afde4);
+	m_entryCount++;
+
+	return &m_modelEntities[m_entryCount - 1];
 }

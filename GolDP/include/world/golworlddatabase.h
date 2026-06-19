@@ -159,6 +159,7 @@ public:
 	LegoU32 GetUnk0x64() const { return m_unk0x64; }
 	LegoU32 GetUnk0x6c() const { return m_unk0x6c; }
 	LegoU32 GetUnk0x74() const { return m_unk0x74; }
+	GolName* GetUnk0x78() const { return m_unk0x78; }
 	LegoU32 GetUnk0x7c() const { return m_unk0x7c; }
 	LegoU32 GetUnk0x84() const { return m_unk0x84; }
 	LegoU32 GetUnk0x8c() const { return m_unk0x8c; }

@@ -505,6 +505,8 @@ public:
 			void FUN_00430d40(Params* p_params);
 			void FUN_00431450(LegoFloat p_durationSeconds);
 			void FUN_004314d0(LegoEventQueue* p_eventQueue);
+			LegoU32 GetUnk0x004() const { return m_unk0x004; }
+			const GolVec3& GetUnk0x028() const { return m_unk0x028; }
 
 		protected:
 			undefined4 m_unk0x004;                        // 0x004
@@ -1028,7 +1030,7 @@ public:
 		};
 
 		// SIZE 0x270
-		class Field0x270 {
+		class Field0x270 : public LegoEventQueue::Callback {
 		public:
 			typedef GolModelEntity Field0x34;
 
@@ -1044,7 +1046,7 @@ public:
 				Field0x6dc* m_unk0x1c;                                       // 0x1c
 				MabMaterialAnimationItem0x18* m_unk0x20;                     // 0x20
 				LegoU32 m_unk0x24;                                           // 0x24
-				undefined4 m_unk0x28;                                        // 0x28
+				CutsceneAnimation* m_unk0x28;                                // 0x28
 				LegoU32 m_unk0x2c;                                           // 0x2c
 				LegoU32 m_unk0x30;                                           // 0x30
 				LegoFloat m_unk0x34;                                         // 0x34
@@ -1054,16 +1056,18 @@ public:
 				undefined4 m_unk0x44;                                        // 0x44
 			};
 
-			virtual void VTable0x00();           // vtable+0x00
-			virtual void VTable0x04(undefined4); // vtable+0x04
+			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+			virtual void VTable0x04(undefined4);                            // vtable+0x04
 
 			Field0x270();
 			~Field0x270();
 			Field0x270* GetNext() { return m_next; }
 			LegoS32 GetUnk0x04() const { return m_unk0x04; }
+			LegoU32 GetUnk0x238() const { return m_unk0x238; }
 			void SetNext(Field0x270* p_next) { m_next = p_next; }
 			void FUN_00421250(const Params* p_params);
 			void FUN_004214b0();
+			void FUN_00421520(const GolVec3* p_position, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 			void FUN_004217b0();
 			void FUN_004217d0(LegoU32 p_elapsedMs);
 			void FUN_00421850(LegoU32 p_elapsedMs);
@@ -1085,9 +1089,9 @@ public:
 			DuskwindBananaRelic0x24* m_unk0x214;                          // 0x214
 			LegoEventQueue* m_unk0x218;                                   // 0x218
 			undefined4 m_unk0x21c;                                        // 0x21c
-			Field0x68* m_unk0x220;                                        // 0x220
+			LegoEventQueue::Event* m_unk0x220;                            // 0x220
 			Field0x6dc* m_unk0x224;                                       // 0x224
-			undefined4 m_unk0x228;                                        // 0x228
+			CutsceneAnimation* m_unk0x228;                                // 0x228
 			undefined4 m_unk0x22c;                                        // 0x22c
 			LegoU32 m_unk0x230;                                           // 0x230
 			LegoU32 m_unk0x234;                                           // 0x234
@@ -1177,6 +1181,7 @@ public:
 		void FUN_0045a490(LegoU32 p_elapsedMs);
 		void FUN_0045a7b0(LegoBool32 p_unk0x04);
 		void FUN_0045a8a0();
+		void FUN_0045b470(const GolVec3* p_position, undefined4 p_unk0x08, undefined4 p_unk0x0c);
 		void FUN_0045b740(RaceState::Racer* p_racer);
 		void FUN_0045b900();
 		LegoBool32 FUN_0045b9a0(RaceState::Racer* p_racer);
@@ -1233,6 +1238,7 @@ public:
 		LegoU32 FUN_0045ba40(GolAnimatedEntity* p_entity);
 		DuskwindBananaRelic0x24* FUN_0045ba90(LegoU32* p_unk0x04);
 		DuskwindBananaRelic0x24* FUN_0045bae0(LegoU32* p_unk0x04);
+		static Field0x270* __stdcall FUN_0045b3a0(Field0x270** p_head);
 
 		enum {
 			c_unk0x1978Slot1A = 0,
@@ -2249,6 +2255,18 @@ public:
 		// SIZE 0x2a4
 		class Item {
 		public:
+			// SIZE 0x1c
+			class Params {
+			public:
+				LegoU32 m_unk0x00;   // 0x00
+				LegoU32 m_unk0x04;   // 0x04
+				LegoU32 m_unk0x08;   // 0x08
+				LegoU32 m_unk0x0c;   // 0x0c
+				LegoU32 m_unk0x10;   // 0x10
+				LegoFloat m_unk0x14; // 0x14
+				LegoFloat m_unk0x18; // 0x18
+			};
+
 			// SIZE 0x4c
 			class Field0x0dc {
 			public:
@@ -2260,6 +2278,7 @@ public:
 			enum {
 				c_flags0x09cBit0 = 1 << 0,
 				c_flags0x09cBit1 = 1 << 1,
+				c_flags0x09cBit2 = 1 << 2,
 				c_flags0x09cBit3 = 1 << 3,
 				c_flags0x09cBit4 = 1 << 4,
 				c_flags0x09cBit5 = 1 << 5,
@@ -2271,8 +2290,19 @@ public:
 
 			void FUN_00492a50(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
 			void FUN_00492a90(GolD3DRenderDevice* p_renderer, DuskwindBananaRelic0x24* p_material);
+			void FUN_00492ab0(const ColorRGBA* p_color);
+			void FUN_00492ae0(Params* p_params);
+			void FUN_00492bd0();
 			void FUN_00492be0(LegoU32 p_elapsedMs);
 			void FUN_00492c30(LegoU32 p_elapsedMs);
+			void FUN_00492ee0(
+				LegoU32 p_elapsedMs,
+				GolVec3* p_positions,
+				LegoFloat p_unk0x0c,
+				LegoFloat p_unk0x10,
+				LegoFloat p_unk0x14
+			);
+			void FUN_00492f10(LegoU32 p_elapsedMs, GolVec3* p_positions);
 			void FUN_004931a0();
 			void FUN_004513d0(GolD3DRenderDevice* p_renderer);
 			void Destroy();
@@ -2298,7 +2328,10 @@ public:
 			LegoU32 m_unk0x0b4;                  // 0x0b4
 			LegoU32 m_unk0x0b8;                  // 0x0b8
 			LegoU32 m_unk0x0bc;                  // 0x0bc
-			LegoU32 m_unk0x0c0[4];               // 0x0c0
+			LegoU32 m_unk0x0c0;                  // 0x0c0
+			LegoFloat m_unk0x0c4;                // 0x0c4
+			LegoFloat m_unk0x0c8;                // 0x0c8
+			LegoFloat m_unk0x0cc;                // 0x0cc
 			LegoFloat m_unk0x0d0;                // 0x0d0
 			LegoFloat m_unk0x0d4;                // 0x0d4
 			ColorRGBA m_unk0x0d8;                // 0x0d8
@@ -2307,6 +2340,8 @@ public:
 
 		LegoU32 FUN_00493a60(GolD3DRenderDevice* p_renderer);
 		LegoU32 FUN_00493aa0(GolD3DRenderDevice* p_renderer);
+		Item* FUN_004939b0(Item::Params* p_params);
+		void FUN_00493a10(Item* p_item);
 		LegoU32 FUN_00493a20(LegoU32 p_elapsedMs);
 		void FUN_00493850(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoU32 p_count);
 

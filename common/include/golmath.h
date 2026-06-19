@@ -21,6 +21,13 @@ struct GolVec3 {
 	LegoFloat m_y;
 	LegoFloat m_z;
 
+	void Clear()
+	{
+		m_x = 0.0f;
+		m_y = 0.0f;
+		m_z = 0.0f;
+	}
+
 	GolVec3 operator+(const GolVec3& p_rhs) const
 	{
 		GolVec3 result;

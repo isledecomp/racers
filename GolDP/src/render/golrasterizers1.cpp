@@ -1,6 +1,7 @@
 #include "render/golrasterizers1.h"
 
 #include "decomp.h"
+#include "golcpu.h"
 #include "render/golsoftwarerenderer.h"
 
 // GLOBAL: GOLDP 0x10057a08
@@ -18,17 +19,217 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 	FUN_10036b00, FUN_10038080, FUN_10039600, FUN_1003ab80,
 };
 
-// STUB: GOLDP 0x10032c80
+// FUNCTION: GOLDP 0x10032c80
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
-	STUB(0x10032c80);
-	// p_renderer->m_unk0x2c &= 0x7fffffff;
-	// p_renderer->m_currentTriangleRasterizer = NoopTriangleRasterizer;
-	// p_renderer->m_triangleRasterizer = NoopTriangleRasterizer;
+	LegoU32 uVar1;
+	MipmapLevel* pMVar2;
+	LegoU16* puVar3;
+	int iVar4;
 
-	// if (p_renderer->m_pixelFormat != e_formatIndex8) {
-	// 	p_renderer->m_spanRasterizer = NoopSpanRasterizer;
-	// }
+	uVar1 = p_renderer->m_unk0x2c;
+	p_renderer->m_unk0x2c = uVar1 & 0x7fffffff;
+	if (p_renderer->m_pixelFormat) {
+		if (p_renderer->m_pixelFormat != '\x01') {
+			p_renderer->m_currentTriangleRasterizer = NoopTriangleRasterizer;
+			p_renderer->m_triangleRasterizer = NoopTriangleRasterizer;
+			p_renderer->m_currentTriangleRasterizer = NoopTriangleRasterizer;
+			return;
+		}
+		pMVar2 = p_renderer->m_unk0x34;
+		if ((pMVar2 == (MipmapLevel*) 0x0) || ((uVar1 & 0x100) == 0)) {
+			if ((uVar1 & 1) != 0) {
+				p_renderer->m_triangleRasterizer = FUN_10040670;
+				p_renderer->m_spanRasterizer = FUN_100334d0;
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			p_renderer->m_triangleRasterizer = FUN_1003f790;
+			p_renderer->m_spanRasterizer = FUN_100332a0;
+			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+			return;
+		}
+		iVar4 = (int) pMVar2->m_unk0x13;
+		if (iVar4 != 0) {
+			if (pMVar2->m_paletteData == NULL) {
+				if (uVar1 & 0x200) {
+					p_renderer->m_triangleRasterizer = FUN_1003e590;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003c780;
+				}
+				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0x38 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				if ((uVar1 & 2) != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0xe - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[8 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 4) != 0) {
+				if ((uVar1 & 0x200) == 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003ba30;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003d700;
+				}
+				if ((uVar1 & 2) != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0x50 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x44 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 8) != 0) {
+				if ((uVar1 & 0x200) == 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003ba30;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003d700;
+				}
+				if (g_cpuSupportsMMX != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0x2c - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x20 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 0x200) == 0) {
+				p_renderer->m_triangleRasterizer = FUN_1003c780;
+			}
+			else {
+				p_renderer->m_triangleRasterizer = FUN_1003e590;
+			}
+			if ((uVar1 & 2) != 0) {
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x1a - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			p_renderer->m_spanRasterizer = g_spanRasterizers[0x14 - iVar4];
+			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+			return;
+		}
+		puVar3 = pMVar2->m_paletteData;
+	}
+	else {
+		pMVar2 = p_renderer->m_unk0x34;
+		if ((pMVar2 == (MipmapLevel*) 0x0) || ((uVar1 & 0x100) == 0)) {
+			if ((uVar1 & 1) != 0) {
+				p_renderer->m_triangleRasterizer = FUN_1003fce0;
+				p_renderer->m_spanRasterizer = FUN_100332d0;
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			p_renderer->m_triangleRasterizer = FUN_1003f790;
+			p_renderer->m_spanRasterizer = FUN_10033270;
+			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+			return;
+		}
+		iVar4 = (int) pMVar2->m_unk0x13;
+		if (iVar4 != 0) {
+			if (pMVar2->m_paletteData == NULL) {
+				if ((uVar1 & 0x200) == 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003c780;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003e590;
+				}
+				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0x3e - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				if ((uVar1 & 2) != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0xe - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[8 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 4) != 0) {
+				if ((uVar1 & 0x200) == 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003ba30;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003d700;
+				}
+				if ((uVar1 & 2) != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[84 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x4a - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 8) == 0) {
+				if ((uVar1 & 0x200) == 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003c780;
+				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003e590;
+				}
+				if ((uVar1 & 2) != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[0x1a - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x14 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			if ((uVar1 & 0x200) == 0) {
+				p_renderer->m_triangleRasterizer = FUN_1003ba30;
+			}
+			else {
+				p_renderer->m_triangleRasterizer = FUN_1003d700;
+			}
+			if (g_cpuSupportsMMX != 0) {
+				p_renderer->m_spanRasterizer = g_spanRasterizers[0x32 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			p_renderer->m_spanRasterizer = g_spanRasterizers[0x26 - iVar4];
+			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+			return;
+		}
+		puVar3 = pMVar2->m_paletteData;
+	}
+
+	if (puVar3 == NULL) {
+		if ((uVar1 & 0x200) != 0) {
+			p_renderer->m_triangleRasterizer = FUN_1003ee90;
+			p_renderer->m_spanRasterizer = FUN_100336d0;
+			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+			return;
+		}
+		p_renderer->m_triangleRasterizer = FUN_1003cf40;
+		p_renderer->m_spanRasterizer = FUN_100336d0;
+		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+		return;
+	}
+	if ((uVar1 & 0x200) != 0) {
+		p_renderer->m_triangleRasterizer = FUN_1003e590;
+		p_renderer->m_spanRasterizer = FUN_10033890;
+		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+		return;
+	}
+	p_renderer->m_triangleRasterizer = FUN_1003c780;
+	p_renderer->m_spanRasterizer = FUN_10033890;
+	p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+	return;
 }
 
 // STUB: GOLDP 0x100330d0

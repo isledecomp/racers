@@ -119,4 +119,10 @@ private:
 	Command0x14* m_commandHead;                             // 0x54
 };
 
+// FUNCTION: GOLDP 0x1003ba20
+static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
+{
+	// empty
+}
+
 #endif // GOLSOFTWARERENDERER_H

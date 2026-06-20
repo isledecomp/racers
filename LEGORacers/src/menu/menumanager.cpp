@@ -7,6 +7,7 @@
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
+#include "golddune0x38.h"
 #include "golhashtable.h"
 #include "golmateriallibrary.h"
 #include "golmodelbase.h"
@@ -22,7 +23,6 @@
 #include "menu/screens/menugamescreen.h"
 #include "render/golcommondrawstate.h"
 #include "render/goldrawstate.h"
-#include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
 #include "util/amethystbreeze0x104.h"
 

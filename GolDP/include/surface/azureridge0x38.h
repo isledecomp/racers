@@ -2,7 +2,7 @@
 #define GOLDP_AZURERIDGE0X38_H
 
 #include "compat.h"
-#include "surface/silverdune0x30.h"
+#include "silverdune0x30.h"
 
 class GolDrawState;
 

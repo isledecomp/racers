@@ -281,6 +281,49 @@ void RaceSession::Field0x6dc::Field0xa8::VTable0x04(Params* p_params, GolVec3* p
 	FUN_004314d0(p_params->m_unk0x0c);
 }
 
+// STUB: LEGORACERS 0x00431310
+void RaceSession::Field0x6dc::Field0xa8::FUN_00431310(RaceState::Racer* p_racer)
+{
+	GolVec3 velocity;
+	velocity.m_x = 0.0f;
+	velocity.m_y = 0.0f;
+	velocity.m_z = 0.0f;
+
+	m_unk0x050 = 0;
+	m_unk0x004 = 1;
+	m_unk0x0a0 = m_unk0x09c;
+	if (m_unk0x0a0) {
+		m_unk0x0a0->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x01c);
+		m_unk0x01c.m_z += 5.0f;
+		velocity = m_unk0x0a0->m_unk0x3e8.m_unk0x008;
+	}
+	else {
+		m_unk0x01c = m_unk0x010;
+	}
+
+	m_unk0x09c = p_racer;
+	m_unk0x008->VTable0x04(&m_unk0x010);
+	m_unk0x0a4 = NULL;
+
+	GolVec3 delta;
+	delta.m_x = m_unk0x01c.m_x - m_unk0x010.m_x;
+	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
+	delta.m_z = m_unk0x01c.m_z - m_unk0x010.m_z;
+	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
+	if (distance == 0.0f) {
+		distance = 1.0f;
+	}
+
+	LegoFloat durationSeconds = distance / m_unk0x04c;
+	LegoFloat durationMs = durationSeconds * g_floatConst1000;
+	m_unk0x054 = static_cast<LegoS32>(durationMs);
+
+	m_unk0x01c.m_x += velocity.m_x * durationSeconds;
+	m_unk0x01c.m_y += velocity.m_y * durationSeconds;
+	m_unk0x01c.m_z += velocity.m_z * durationSeconds;
+	FUN_00431450(durationSeconds);
+}
+
 // FUNCTION: LEGORACERS 0x00431450
 void RaceSession::Field0x6dc::Field0xa8::FUN_00431450(LegoFloat p_durationSeconds)
 {
@@ -380,9 +423,9 @@ void RaceSession::Field0x6dc::Field0xa8::VTable0x00(LegoEventQueue::CallbackData
 	RaceState::Racer* previousContext = m_unk0x09c;
 	if (p_data->m_data != previousContext && m_unk0x004 == 1) {
 		m_unk0x004 = 2;
-		RaceEventDispatcher0x08::Context* context = static_cast<RaceEventDispatcher0x08::Context*>(p_data->m_data);
-		m_unk0x0a4 = context;
-		context->GetUnk0x5c()->VTable0x04(&m_unk0x028);
+		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+		m_unk0x0a4 = racer;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x028);
 	}
 }
 
@@ -392,4 +435,13 @@ void RaceSession::Field0x6dc::Field0xa8::VTable0x1c(GolVec3* p_unk0x04)
 	p_unk0x04->m_x = m_unk0x034;
 	p_unk0x04->m_y = m_unk0x038;
 	p_unk0x04->m_z = static_cast<LegoS32>(m_unk0x050) * 0.001f * m_unk0x040 + m_unk0x03c;
+}
+
+// FUNCTION: LEGORACERS 0x004316d0
+void RaceSession::Field0x6dc::Field0xa8::FUN_004316d0()
+{
+	if (m_unk0x044 != NULL) {
+		m_unk0x044->m_active = 0;
+		m_unk0x044 = NULL;
+	}
 }

@@ -56,8 +56,6 @@ void GolMath::FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, 
 // STUB: LEGORACERS 0x00449170
 void GolMath::FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
 {
-	STUB(0x00449170);
-
 	*p_sin = static_cast<LegoFloat>(sin(p_angle));
 	*p_cos = static_cast<LegoFloat>(cos(p_angle));
 }
@@ -350,8 +348,6 @@ void GolMath::FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3*
 // STUB: LEGORACERS 0x004497f0
 LegoBool32 GolMath::FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_triangle)
 {
-	STUB(0x004497f0);
-
 	LegoFloat normalX = p_triangle[9];
 	if (normalX < 0.0f) {
 		normalX = -normalX;

@@ -9,8 +9,8 @@
 #include "material/duskwindbananarelic0x30.h"
 #include "render/gold3drenderdevice.h"
 #include "render/rectangle.h"
+#include "silverdune0x30.h"
 #include "surface/purpledune0x7c.h"
-#include "surface/silverdune0x30.h"
 
 #include <stdlib.h>
 #include <string.h>

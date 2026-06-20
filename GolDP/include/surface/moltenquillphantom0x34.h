@@ -2,7 +2,7 @@
 #define MOLTENQUILLPHANTOM0X34_H
 
 #include "decomp.h"
-#include "surface/silverdune0x30.h"
+#include "silverdune0x30.h"
 
 class SlatePeak0x58;
 

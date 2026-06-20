@@ -37,6 +37,10 @@ public:
 							ColorRGBA* p_colorKey);                                             // vtable+0x1c
 	virtual void VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey); // vtable+0x20
 
+	// FUNCTION: GOLDP 0x100226b0
+	// FUNCTION: LEGORACERS 0x00413790
+	// GolImgFile::VTable0x14
+
 	// SYNTHETIC: GOLDP 0x1001ff30
 	// SYNTHETIC: LEGORACERS 0x0040a950
 	// GolImgFile::`scalar deleting destructor'
@@ -52,6 +56,10 @@ public:
 	LegoU32 FUN_10020370(const ColorRGBA&);
 	void FUN_100204d0(const GolSurfaceFormat&, ColorRGBA* p_colorKey);
 	void FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFormat& p_format);
+	void FUN_0040bbe0(const LegoU8* p_src, LegoU8* p_dst);
+	void FUN_0040bc30(const LegoU8* p_src, LegoU8* p_dst);
+	void FUN_0040bc80(const LegoU8* p_src, LegoU8* p_dst);
+	void FUN_0040bce0(const LegoU8* p_src, LegoU8* p_dst);
 	void FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst);
 	void FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst);
 	void FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst);

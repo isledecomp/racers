@@ -7,6 +7,7 @@
 #include "gdbvertexarray0xc.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
+#include "golddune0x38.h"
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golmath.h"
@@ -21,7 +22,6 @@
 #include "render/rectangle.h"
 #include "scene/golbillboard.h"
 #include "surface/falcondunebag0x10.h"
-#include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
 
 #include <stdio.h>
@@ -2685,7 +2685,6 @@ void GolD3DRenderDevice::VTable0x58(SlatePeak0x58* p_surface, undefined4 p_flags
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolD3DRenderDevice::VTable0x110() const
 {
-	MATCHING(0x100016f0);
 	return FALSE;
 }
 

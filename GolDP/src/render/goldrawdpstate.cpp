@@ -326,7 +326,6 @@ LegoBool32 GolDrawDPState::SupportsAdditiveBlend() const
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 GolDrawDPState::VTable0x94()
 {
-	MATCHING(0x100016f0);
 	return FALSE;
 }
 

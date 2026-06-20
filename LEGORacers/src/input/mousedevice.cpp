@@ -8,7 +8,7 @@ MouseInputDevice::MouseInputDevice()
 	Initialize();
 }
 
-// FUNCTION: LEGORACERS 0x0044f570
+// FUNCTION: LEGORACERS 0x0044f570 FOLDED
 LegoS32 MouseInputDevice::GetButtonCount()
 {
 	return 4;

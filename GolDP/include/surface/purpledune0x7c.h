@@ -1,10 +1,10 @@
 #ifndef PURPLEDUNE0x7C_H
 #define PURPLEDUNE0x7C_H
 
+#include "bronzedunebag0xc.h"
+#include "golddune0x38.h"
 #include "golname.h"
 #include "golsurfaceformat.h"
-#include "surface/bronzedunebag0xc.h"
-#include "surface/golddune0x38.h"
 
 #include <d3d.h>
 #include <ddraw.h>

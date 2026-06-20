@@ -1,13 +1,16 @@
-#include "surface/golddune0x38.h"
+#include "golddune0x38.h"
 
 #include "golimgfile.h"
 #include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(GoldDune0x38, 0x38)
 
-extern const ColorRGBA g_unk0x10057668;
+// GLOBAL: GOLDP 0x10057668
+// GLOBAL: LEGORACERS 0x004af924
+extern const ColorRGBA g_unk0x10057668 = {0, 0, 0, 0};
 
 // FUNCTION: GOLDP 0x1002bb00
+// FUNCTION: LEGORACERS 0x00415c20
 GoldDune0x38::GoldDune0x38()
 {
 	m_unk0x34 = 0;
@@ -15,6 +18,7 @@ GoldDune0x38::GoldDune0x38()
 }
 
 // FUNCTION: GOLDP 0x1002bb20
+// FUNCTION: LEGORACERS 0x00415c60
 void GoldDune0x38::VTable0x30(GolRenderDevice& p_renderer, GolImgFile* p_source)
 {
 	GoldDune0x38* texture = this;

@@ -1,10 +1,10 @@
 #include "image/whitebaffoon0x50.h"
 
 #include "golbmpfile.h"
+#include "golddune0x38.h"
 #include "golimgfile.h"
 #include "goltgafile.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/golddune0x38.h"
 #include "surface/purpledune0x7c.h"
 
 DECOMP_SIZE_ASSERT(FourBytes, 0x04)

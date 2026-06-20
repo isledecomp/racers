@@ -60,6 +60,20 @@ public:
 		LegoBool32 p_loop
 	);
 	LegoBool32 FUN_0040e360();
+	void FUN_0040e3c0(
+		LegoU32 p_modelIndex,
+		LegoU32 p_unk0x08,
+		LegoU32 p_partDataIndex,
+		LegoS32 p_frame,
+		GolVec3* p_dest
+	);
+	void FUN_0040e420(
+		LegoU32 p_modelIndex,
+		LegoU32 p_unk0x08,
+		LegoU32 p_partDataIndex,
+		LegoS32 p_frame,
+		GolQuat* p_dest
+	);
 	void FUN_0040d650();
 	CmbModelPart0x34* GetModelPart(LegoU32 p_index = 0) const { return m_modelParts[p_index]; }
 	LegoU32 GetFlags() const { return m_flags; }
@@ -81,6 +95,12 @@ public:
 	LegoFloat GetUnk0xb4() const { return m_unk0xb4; }
 	LegoFloat GetUnk0xb8() const { return m_unk0xb8; }
 	void SetQueuedPartIndex(LegoU16 p_partIndex) { m_unk0xd8 = p_partIndex; }
+	void QueuePartTransition(LegoU16 p_partIndex)
+	{
+		m_unk0xd8 = p_partIndex;
+		m_flags = (m_flags & ~(c_flagPartTransition | c_flagLoopCurrentPart | c_flagPartAnimationDone)) |
+				  c_flagRestartQueuedPart | c_flagLoopQueuedPart;
+	}
 	void SetUnk0xb8(LegoFloat p_unk0xb8) { m_unk0xb8 = p_unk0xb8; }
 	void FUN_0040dae0(LegoU32 p_partIndex, LegoS32 p_timeScale);
 

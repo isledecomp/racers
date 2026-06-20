@@ -72,7 +72,6 @@ void GolDrawState::VTable0x0c(const char* p_driverName, const char* p_deviceName
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoU32 GolDrawState::GetDriverCount()
 {
-	MATCHING(0x100016f0);
 	return 0;
 }
 
@@ -190,7 +189,6 @@ void GolDrawState::GetDeviceGuid(LegoU32 p_driverIndex, LegoU32 p_deviceIndex, G
 // STUB: GOLDP 0x100016f0 FOLDED
 GUID* GolDrawState::GetCurrentDriverGuid() const
 {
-	MATCHING(0x100016f0);
 	return NULL;
 }
 

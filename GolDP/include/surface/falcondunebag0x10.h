@@ -1,9 +1,9 @@
 #ifndef FALCONDUNEBAG0X10_H
 #define FALCONDUNEBAG0X10_H
 
+#include "bronzedunebag0xc.h"
 #include "decomp.h"
 #include "golsurfaceformat.h"
-#include "surface/bronzedunebag0xc.h"
 
 #include <windows.h>
 

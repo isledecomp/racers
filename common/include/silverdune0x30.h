@@ -1,5 +1,5 @@
-#ifndef GOLDP_SILVERDUNE0X30_H
-#define GOLDP_SILVERDUNE0X30_H
+#ifndef SILVERDUNE0X30_H
+#define SILVERDUNE0X30_H
 
 #include "decomp.h"
 #include "golsurfaceformat.h"
@@ -11,6 +11,7 @@ class GolPaletteBase;
 class GolD3DRenderDevice;
 
 // VTABLE: GOLDP 0x10056d3c
+// VTABLE: LEGORACERS 0x004af4f0
 // SIZE 0x30
 class SilverDune0x30 {
 public:
@@ -40,6 +41,7 @@ public:
 	virtual void VTable0x2c();                                                                 // vtable+0x2c
 
 	// SYNTHETIC: GOLDP 0x1001cf40
+	// SYNTHETIC: LEGORACERS 0x004084d0
 	// SilverDune0x30::`scalar deleting destructor'
 
 	LegoU16 GetPixelFlags() const { return m_pixelFlags; }
@@ -63,4 +65,4 @@ protected:
 	LegoU16 m_height;                 // 0x2c
 };
 
-#endif // GOLDP_SILVERDUNE0X30_H
+#endif // SILVERDUNE0X30_H

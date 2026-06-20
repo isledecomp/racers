@@ -9,8 +9,8 @@
 #include "menu/screens/menuscreeninterface.h"
 #include "menu/widgets/visualstatecolor.h"
 #include "render/rectangle.h"
+#include "silverdune0x30.h"
 #include "surface/color.h"
-#include "surface/silverdune0x30.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

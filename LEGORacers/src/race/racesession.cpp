@@ -960,9 +960,28 @@ void RaceSession::FUN_00433460()
 }
 
 // STUB: LEGORACERS 0x00433480
-void RaceSession::FUN_00433480(LegoBool32)
+void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 {
 	STUB(0x433480);
+
+	if (m_unk0x1c8) {
+		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_unk0x18, p_mirror);
+		FUN_00435e70();
+	}
+
+	FUN_00435ba0(0.45f);
+
+	MabMaterialAnimation0x14* materialAnimation = m_unk0x3a4->VTable0x4c(0);
+	m_unk0x248c.FUN_00489af0(4, m_golExport, m_renderer, materialAnimation, &m_unk0x139, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.48f);
+
+	m_unk0x27fc.Allocate(2);
+	m_unk0x27fc.Activate(500, TRUE, NULL, NULL);
+
+	m_unk0x27c8.FUN_00493850(m_renderer, m_golExport, 6);
+
+	FUN_00435ba0(0.51f);
 }
 
 // FUNCTION: LEGORACERS 0x00434000

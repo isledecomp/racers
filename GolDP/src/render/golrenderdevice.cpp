@@ -1035,6 +1035,5 @@ void GolRenderDevice::VTable0xf4()
 // STUB: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolRenderDevice::VTable0x110() const
 {
-	MATCHING(0x100016f0);
 	return FALSE;
 }

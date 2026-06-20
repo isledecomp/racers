@@ -76,6 +76,7 @@ private:
 	void Reset();
 	void ClearEntries();
 	GolAnimatedEntity* LoadEntry(Entry* p_entry);
+	undefined2* GetStringBuffer(const LegoChar* p_name);
 
 	GolStringTable m_strings;           // 0x0c
 	GolExport* m_golExport;             // 0x20

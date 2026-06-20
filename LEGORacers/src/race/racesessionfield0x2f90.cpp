@@ -18,11 +18,17 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90, 0xc8)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::SkbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::Entry, 0x10)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::Entry::Keyframe, 0x10)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::ModelBuilder, 0x01)
+DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::ModelBuilder::Params, 0x38)
 
 // GLOBAL: LEGORACERS 0x004afddc
 extern const LegoFloat g_unk0x004afddc = 40.0f;
 
 extern const LegoFloat g_unk0x004afde0;
+extern const LegoFloat g_twoPi;
+
+// GLOBAL: LEGORACERS 0x004b4764
+const LegoFloat g_raceSessionSkyModelNegativeHalfPi = -1.5707964f;
 
 // FUNCTION: LEGORACERS 0x0041c430
 RaceSession::Field0x2f90::Field0x2f90()
@@ -497,4 +503,205 @@ void RaceSession::Field0x2f90::FUN_0041d150(const LegoChar* p_name, LegoU32 p_du
 			m_unk0xbc = p_durationMs;
 		}
 	}
+}
+
+// FUNCTION: LEGORACERS 0x004907d0
+void RaceSession::Field0x2f90::ModelBuilder::FUN_004907d0(Params* p_params)
+{
+	if (p_params->m_unk0x2c) {
+		FUN_004910e0(p_params);
+	}
+	else {
+		FUN_004907f0(p_params);
+	}
+}
+
+// STUB: LEGORACERS 0x004907f0
+void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
+{
+	STUB(0x4907f0);
+
+	if (p_params->m_model == NULL || p_params->m_segmentCount == 0) {
+		return;
+	}
+
+	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
+	LegoS32 ringCount;
+	if (p_params->m_unk0x1c) {
+		ringCount = 1 - static_cast<LegoS32>(g_raceSessionSkyModelNegativeHalfPi / angleStep);
+	}
+	else {
+		ringCount = (p_params->m_segmentCount >> 1) - 1;
+	}
+
+	if (ringCount < 0) {
+		ringCount = 0;
+	}
+
+	LegoU32 vertexCount = static_cast<LegoU32>(ringCount) * p_params->m_segmentCount + 2;
+	LegoU32 triangleBudget = static_cast<LegoU32>(ringCount) * p_params->m_segmentCount * 2;
+	if (!p_params->m_unk0x20) {
+		vertexCount--;
+		triangleBudget -= p_params->m_segmentCount;
+	}
+	if (!p_params->m_unk0x24) {
+		vertexCount--;
+		triangleBudget -= p_params->m_segmentCount;
+	}
+
+	LegoU32 groupCount = static_cast<LegoU32>(ringCount) * 2 + 6;
+	p_params->m_model
+		->VTable0x18(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleBudget, groupCount, 1);
+
+	GdbVertexArray0xc* vertices = NULL;
+	p_params->m_model->VTable0x28(&vertices);
+	if (vertices == NULL) {
+		return;
+	}
+
+	ColorRGBA color;
+	color.m_red = 0xff;
+	color.m_grn = 0xff;
+	color.m_blu = 0xff;
+	color.m_alp = 0xff;
+
+	GolVec2 textureCoordinate;
+	textureCoordinate.m_x = 0.0f;
+	textureCoordinate.m_y = 0.0f;
+
+	LegoU32 vertexIndex = 0;
+	if (p_params->m_unk0x20) {
+		GolVec3 position;
+		position.m_x = p_params->m_origin.m_x;
+		position.m_y = p_params->m_origin.m_y;
+		position.m_z = p_params->m_origin.m_z + p_params->m_radius;
+		vertices->VTable0x24(vertexIndex, position);
+		vertices->VTable0x28(vertexIndex, textureCoordinate);
+		if (p_params->m_vertexType == 1) {
+			vertices->VTable0x30(vertexIndex, color);
+		}
+		else if (p_params->m_vertexType == 2) {
+			GolVec3 normal;
+			normal.m_x = 0.0f;
+			normal.m_y = 0.0f;
+			normal.m_z = 1.0f;
+			vertices->VTable0x2c(vertexIndex, normal);
+		}
+		vertexIndex++;
+	}
+
+	LegoS32 ring;
+	LegoU32 segment;
+	LegoFloat ringAngle = angleStep;
+	for (ring = 0; ring < ringCount; ring++) {
+		if (p_params->m_unk0x1c && ring == ringCount - 1) {
+			ringAngle = -g_raceSessionSkyModelNegativeHalfPi;
+		}
+
+		LegoFloat z = static_cast<LegoFloat>(::cos(ringAngle)) * p_params->m_radius + p_params->m_origin.m_z;
+		LegoFloat radius = static_cast<LegoFloat>(::sin(ringAngle)) * p_params->m_radius;
+		LegoFloat segmentAngle = 0.0f;
+
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			GolVec3 position;
+			position.m_x = static_cast<LegoFloat>(::cos(segmentAngle)) * radius + p_params->m_origin.m_x;
+			position.m_y = static_cast<LegoFloat>(::sin(segmentAngle)) * radius + p_params->m_origin.m_y;
+			position.m_z = z;
+
+			vertices->VTable0x24(vertexIndex, position);
+			vertices->VTable0x28(vertexIndex, textureCoordinate);
+			if (p_params->m_vertexType == 1) {
+				vertices->VTable0x30(vertexIndex, color);
+			}
+			else if (p_params->m_vertexType == 2) {
+				GolVec3 delta;
+				delta.m_x = position.m_x - p_params->m_origin.m_x;
+				delta.m_y = position.m_y - p_params->m_origin.m_y;
+				delta.m_z = position.m_z - p_params->m_origin.m_z;
+
+				GolVec3 normal;
+				GolMath::NormalizeVector3(delta, &normal);
+				vertices->VTable0x2c(vertexIndex, normal);
+			}
+
+			vertexIndex++;
+			segmentAngle += angleStep;
+		}
+
+		ringAngle += angleStep;
+	}
+
+	if (p_params->m_unk0x24) {
+		GolVec3 position;
+		position.m_x = p_params->m_origin.m_x;
+		position.m_y = p_params->m_origin.m_y;
+		if (p_params->m_unk0x1c) {
+			position.m_z = p_params->m_origin.m_z;
+		}
+		else {
+			position.m_z = p_params->m_origin.m_z - p_params->m_radius;
+		}
+		vertices->VTable0x24(vertexIndex, position);
+		vertices->VTable0x28(vertexIndex, textureCoordinate);
+		if (p_params->m_vertexType == 1) {
+			vertices->VTable0x30(vertexIndex, color);
+		}
+		else if (p_params->m_vertexType == 2) {
+			GolVec3 normal;
+			normal.m_x = 0.0f;
+			normal.m_y = 0.0f;
+			normal.m_z = -1.0f;
+			vertices->VTable0x2c(vertexIndex, normal);
+		}
+	}
+
+	IGdbModelIndexArray0x8* indexArrayBase = NULL;
+	p_params->m_model->VTable0x30(&indexArrayBase);
+	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
+
+	LegoU32 triangleIndex = 0;
+	LegoU32 firstRing = p_params->m_unk0x20 ? 1 : 0;
+	for (ring = 0; ring < ringCount - 1; ring++) {
+		LegoU32 lowerBase = firstRing + static_cast<LegoU32>(ring) * p_params->m_segmentCount;
+		LegoU32 upperBase = lowerBase + p_params->m_segmentCount;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU32 nextSegment = segment + 1;
+			if (nextSegment == p_params->m_segmentCount) {
+				nextSegment = 0;
+			}
+
+			indices->SetIndices(
+				triangleIndex++,
+				static_cast<LegoU8>(lowerBase + segment),
+				static_cast<LegoU8>(upperBase + segment),
+				static_cast<LegoU8>(upperBase + nextSegment)
+			);
+			indices->SetIndices(
+				triangleIndex++,
+				static_cast<LegoU8>(lowerBase + segment),
+				static_cast<LegoU8>(upperBase + nextSegment),
+				static_cast<LegoU8>(lowerBase + nextSegment)
+			);
+		}
+	}
+
+	LegoU32* groups = p_params->m_model->GetMutableGroups();
+	if (groups != NULL && groupCount >= 4) {
+		groups[0] = 0x80000000;
+		groups[1] = ((vertexCount + 0xffff) << 16) & 0x003f0000;
+		groups[2] = 0x20000000 | ((triangleIndex & 0x7f) << 16);
+		for (LegoU32 i = 3; i < groupCount; i++) {
+			groups[i] = 0xc0000000;
+		}
+	}
+
+	p_params->m_model->SetDirty(TRUE);
+	p_params->m_model->VTable0x34(1);
+}
+
+// STUB: LEGORACERS 0x004910e0
+void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
+{
+	STUB(0x4910e0);
+	FUN_004907f0(p_params);
 }

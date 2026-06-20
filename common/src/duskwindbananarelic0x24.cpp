@@ -1,7 +1,7 @@
 #include "duskwindbananarelic0x24.h"
 
+#include "golddune0x38.h"
 #include "render/golrenderdevice.h"
-#include "surface/golddune0x38.h"
 
 DECOMP_SIZE_ASSERT(DuskWindName0x8, 0x8)
 DECOMP_SIZE_ASSERT(DuskwindBananaRelic0x24, 0x24)

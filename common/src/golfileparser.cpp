@@ -125,9 +125,6 @@ void GolFileParser::OpenFileForRead(const LegoChar*)
 GolFileParser::ParserTokenType GolFileParser::GetNextToken()
 {
 	// TODO
-#ifdef BUILDING_GOL
-	MATCHING(0x100016f0);
-#endif
 	return e_syntaxerror;
 }
 

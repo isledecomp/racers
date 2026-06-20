@@ -108,6 +108,10 @@ set(COMMON_SOURCES
   common/src/goltransformbase.cpp
   common/src/golscenenode.cpp
   common/src/whitefalcon0x140light.cpp
+  common/src/silverdune0x30.cpp
+  common/src/golddune0x38.cpp
+  common/src/bronzedunebag0xc.cpp
+  common/src/bronzedune0x4c.cpp
   common/src/whitefalcon0x140materialcolor.cpp
   common/src/cmbmodelpart0x34.cpp
   common/src/cmbmodelpartdata0x18.cpp
@@ -141,7 +145,6 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/golrasterizers1.cpp
   GolDP/src/render/golrasterizers2.cpp
-  GolDP/src/surface/silverdune0x30.cpp
   GolDP/src/image/utopianpan0xa4.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
   GolDP/src/render/golrenderdevice.cpp
@@ -149,14 +152,12 @@ set(GOLDP_INLINE_EXPANSION_SOURCES
   GolDP/src/surface/falcondunebag0x10.cpp
   GolDP/src/surface/goldepthbuffer.cpp
   GolDP/src/font/golfont.cpp
-  GolDP/src/surface/bronzedune0x4c.cpp
   GolDP/src/surface/purpledune0x7c.cpp
   GolDP/src/material/purpleribbon0x24.cpp
   GolDP/src/material/amberhaze0x20.cpp
   GolDP/src/mesh/gdbcommonvertexarray0x1c.cpp
   GolDP/src/mesh/golmodel.cpp
   GolDP/src/camera/golscenetransformnode.cpp
-  GolDP/src/surface/bronzedunebag0xc.cpp
 )
 
 add_library(common_goldp OBJECT ${COMMON_SOURCES})
@@ -180,7 +181,6 @@ target_include_directories(common_legoracers PRIVATE
 
 #-- - GolDP.dll target -- -
 add_library(goldp SHARED
-  GolDP/src/surface/bronzedunebag0xc.cpp
   GolDP/src/render/golcommondrawstate.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/goldrawdpstate.cpp
@@ -192,7 +192,6 @@ add_library(goldp SHARED
   GolDP/src/device/goldevicelist.cpp
   GolDP/src/core/main.cpp
   GolDP/src/world/golworlddatabase.cpp
-  GolDP/src/surface/silverdune0x30.cpp
   GolDP/src/scene/golbillboard.cpp
   GolDP/src/scene/golbillboardex.cpp
   GolDP/src/surface/slatepeak0x58.cpp
@@ -214,8 +213,6 @@ add_library(goldp SHARED
   GolDP/src/font/golfonttable.cpp
   GolDP/src/font/golfont.cpp
   GolDP/src/surface/moltenquillphantom0x34.cpp
-  GolDP/src/surface/golddune0x38.cpp
-  GolDP/src/surface/bronzedune0x4c.cpp
   GolDP/src/image/whitebaffoon0x50.cpp
   GolDP/src/image/utopianpan0xa4.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
@@ -306,6 +303,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesession.cpp
   LEGORacers/src/race/racesessionfield0x2080.cpp
   LEGORacers/src/race/racesessionfield0x2098.cpp
+  LEGORacers/src/race/racesessionfield0x2098resource0x24.cpp
   LEGORacers/src/race/racesessionfield0x2098resource0x48.cpp
   LEGORacers/src/race/racesessionfield0x213c.cpp
   LEGORacers/src/race/racesessionfield0x2148.cpp

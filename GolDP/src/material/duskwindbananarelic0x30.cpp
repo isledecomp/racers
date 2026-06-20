@@ -1,9 +1,9 @@
 #include "material/duskwindbananarelic0x30.h"
 
+#include "golddune0x38.h"
 #include "golerror.h"
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/golddune0x38.h"
 
 #include <stdio.h>
 #include <string.h>

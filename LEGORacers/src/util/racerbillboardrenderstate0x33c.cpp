@@ -1,9 +1,9 @@
 #include "util/racerbillboardrenderstate0x33c.h"
 
 #include "device/golpalettebase.h"
+#include "golddune0x38.h"
 #include "golmodelentity.h"
 #include "render/gold3drenderdevice.h"
-#include "surface/golddune0x38.h"
 
 #include <string.h>
 

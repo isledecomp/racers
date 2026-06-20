@@ -8,8 +8,8 @@
 #include "render/gold3drenderdevice.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
+#include "silverdune0x30.h"
 #include "surface/purpledune0x7c.h"
-#include "surface/silverdune0x30.h"
 #include "surface/slatepeak0x58.h"
 
 #include <math.h>

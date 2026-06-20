@@ -1,10 +1,11 @@
-#include "surface/silverdune0x30.h"
+#include "silverdune0x30.h"
 
 #include "device/goldirectdrawpalette.h"
 
 DECOMP_SIZE_ASSERT(SilverDune0x30, 0x30)
 
 // FUNCTION: GOLDP 0x1001cf00
+// FUNCTION: LEGORACERS 0x00408490
 SilverDune0x30::SilverDune0x30()
 {
 	m_pixels = NULL;
@@ -17,11 +18,13 @@ SilverDune0x30::SilverDune0x30()
 }
 
 // FUNCTION: GOLDP 0x1001cf60
+// FUNCTION: LEGORACERS 0x004084f0
 SilverDune0x30::~SilverDune0x30()
 {
 }
 
 // FUNCTION: GOLDP 0x1001cf70
+// FUNCTION: LEGORACERS 0x00408500
 void SilverDune0x30::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
 	*p_pitch = m_pitch;
@@ -37,6 +40,7 @@ void SilverDune0x30::LockPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_f
 }
 
 // FUNCTION: GOLDP 0x1001cfb0
+// FUNCTION: LEGORACERS 0x00408540
 void SilverDune0x30::UnlockPixels()
 {
 	LegoU16 flags = m_pixelFlags;
@@ -47,6 +51,7 @@ void SilverDune0x30::UnlockPixels()
 }
 
 // FUNCTION: GOLDP 0x1001cfd0
+// FUNCTION: LEGORACERS 0x00408560
 void SilverDune0x30::LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 p_flags)
 {
 	*p_pitch = m_pitch;
@@ -62,6 +67,7 @@ void SilverDune0x30::LockAuxPixels(LegoU8** p_pixels, LegoU32* p_pitch, LegoU32 
 }
 
 // FUNCTION: GOLDP 0x1001d010
+// FUNCTION: LEGORACERS 0x004085a0
 void SilverDune0x30::UnlockAuxPixels()
 {
 	if (m_auxFlags & c_lockFlagLocked) {
@@ -70,25 +76,28 @@ void SilverDune0x30::UnlockAuxPixels()
 }
 
 // FUNCTION: GOLDP 0x1002c020 FOLDED
+// FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void SilverDune0x30::VTable0x14(undefined4)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void SilverDune0x30::VTable0x18()
 {
 	// empty
 }
 
-// STUB: GOLDP 0x100016f0 FOLDED
+// FUNCTION: GOLDP 0x100016f0 FOLDED
+// FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
 GolPaletteBase* SilverDune0x30::GetPalette()
 {
-	MATCHING(0x100016f0);
 	return NULL;
 }
 
 // FUNCTION: GOLDP 0x1001d030
+// FUNCTION: LEGORACERS 0x004085c0
 void SilverDune0x30::Fill(LegoU32 p_color)
 {
 	LegoU8* pixels;
@@ -181,6 +190,7 @@ void SilverDune0x30::Fill(LegoU32 p_color)
 }
 
 // FUNCTION: GOLDP 0x1001d240
+// STUB: LEGORACERS 0x004087d0
 void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Rect* p_sourceRect)
 {
 	LegoU8* destPixels;
@@ -331,12 +341,14 @@ void SilverDune0x30::Blit(LegoU32 p_x, LegoU32 p_y, SilverDune0x30* p_source, Re
 }
 
 // FUNCTION: GOLDP 0x100294f0 FOLDED
+// FUNCTION: LEGORACERS 0x00416030 FOLDED
 void SilverDune0x30::VTable0x28(Rect*, SilverDune0x30*, Rect*)
 {
 	// empty
 }
 
 // FUNCTION: GOLDP 0x10029920 FOLDED
+// FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void SilverDune0x30::VTable0x2c()
 {
 	// empty

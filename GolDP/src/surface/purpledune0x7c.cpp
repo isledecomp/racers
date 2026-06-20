@@ -13,8 +13,7 @@
 
 DECOMP_SIZE_ASSERT(PurpleDune0x7c, 0x7c)
 
-// GLOBAL: GOLDP 0x10057668
-extern const ColorRGBA g_unk0x10057668 = {0, 0, 0, 0};
+extern const ColorRGBA g_unk0x10057668;
 
 // GLOBAL: GOLDP 0x100635c0
 static GolImgFile g_unk0x100635c0;

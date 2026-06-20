@@ -149,7 +149,7 @@ void RaceSession::Field0x6dc::Field0x270::FUN_004214b0()
 void RaceSession::Field0x6dc::Field0x270::FUN_00421520(
 	const GolVec3* p_position,
 	undefined4 p_unk0x08,
-	undefined4 p_unk0x0c
+	RaceState::Racer* p_racer
 )
 {
 	LegoFloat negativeLimit = -2048.0f;
@@ -162,7 +162,7 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421520(
 	m_unk0x04 = 2;
 	m_unk0x238 = m_unk0x230;
 	m_unk0x268 = p_unk0x08;
-	m_unk0x21c = p_unk0x0c;
+	m_unk0x21c = p_racer;
 	m_unk0x23c = 255.0f;
 	m_unk0x240 = 0.0f;
 	m_unk0x248 = 0.050000001f;

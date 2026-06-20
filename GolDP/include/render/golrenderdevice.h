@@ -6,8 +6,8 @@
 #include "golsurfaceformat.h"
 #include "golviewfrustum.h"
 #include "render/gold3drenderstate.h"
+#include "silverdune0x30.h"
 #include "surface/color.h"
-#include "surface/silverdune0x30.h"
 #include "types.h"
 
 class GolMaterialLibrary;

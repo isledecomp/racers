@@ -37,6 +37,7 @@ void GolAnimatedEntity::FUN_0040d550(
 }
 
 // FUNCTION: GOLDP 0x100234c0
+// FUNCTION: LEGORACERS 0x0040d580
 void GolAnimatedEntity::FUN_100234c0(GolSceneNode* p_node, CmbModelPart0x34* p_modelParts, LegoFloat p_modelDistance)
 {
 	m_modelDistances[0] = p_modelDistance;
@@ -606,6 +607,52 @@ LegoBool32 GolAnimatedEntity::FUN_0040e360()
 
 	return (flags & c_flagPartAnimationDone) ||
 		   (!(flags & c_flagLoopCurrentPart) && static_cast<LegoFloat>(activePart.GetFrameCount() - 1) <= m_unk0xb4);
+}
+
+// STUB: LEGORACERS 0x0040e3c0
+void GolAnimatedEntity::FUN_0040e3c0(
+	LegoU32 p_modelIndex,
+	LegoU32 p_trackOffset,
+	LegoU32 p_partDataIndex,
+	LegoS32 p_frame,
+	GolVec3* p_dest
+)
+{
+	LegoFloat timeScale = m_unk0xb8;
+	CmbModelPart0x34* modelPart = m_modelParts[p_modelIndex];
+	CmbModelPartData0x28* partData = modelPart->GetPartData();
+	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
+	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;
+	const CmbModelPartData0x28& part = partData[p_partDataIndex];
+	LegoU32 trackIndex = part.GetTrackIndex();
+	trackIndex += p_trackOffset;
+	const CmbModelPartTrack0x14& track = modelPart->GetTrack(trackIndex);
+	LegoU16 frameCount = part.GetFrameCount();
+
+	animationData.InterpolatePosition(p_dest, track, time, frameCount);
+}
+
+// STUB: LEGORACERS 0x0040e420
+void GolAnimatedEntity::FUN_0040e420(
+	LegoU32 p_modelIndex,
+	LegoU32 p_trackOffset,
+	LegoU32 p_partDataIndex,
+	LegoS32 p_frame,
+	GolQuat* p_dest
+)
+{
+	LegoFloat timeScale = m_unk0xb8;
+	CmbModelPart0x34* modelPart = m_modelParts[p_modelIndex];
+	CmbModelPartData0x28* partData = modelPart->GetPartData();
+	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
+	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;
+	const CmbModelPartData0x28& part = partData[p_partDataIndex];
+	LegoU32 trackIndex = part.GetTrackIndex();
+	trackIndex += p_trackOffset;
+	const CmbModelPartTrack0x14& track = modelPart->GetTrack(trackIndex);
+	LegoU16 frameCount = part.GetFrameCount();
+
+	animationData.InterpolateRotation(p_dest, track, time, frameCount);
 }
 
 // FUNCTION: GOLDP 0x100241a0

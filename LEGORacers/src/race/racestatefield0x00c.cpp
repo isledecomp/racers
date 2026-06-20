@@ -7,6 +7,89 @@ DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c, 0x2a0)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry, 0x48)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::StandingsDeltaEntry, 0x0c)
 
+// STUB: LEGORACERS 0x0043c6e0
+RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043c6e0(
+	GolVec3* p_unk0x04,
+	GolVec3* p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14
+)
+{
+	LegoS32 i;
+	for (i = 0; i < static_cast<LegoS32>(m_racerCount);) {
+		GolVec3* origin = p_unk0x04;
+		Racer* racer = &m_racers[i];
+
+		GolVec3 position;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+		LegoFloat deltaX = position.m_x - origin->m_x;
+		LegoFloat deltaY = position.m_y - origin->m_y;
+		LegoFloat deltaZ = position.m_z - origin->m_z;
+		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
+		if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
+			GolVec3 delta;
+			delta.m_x = deltaX;
+			delta.m_y = deltaY;
+			delta.m_z = deltaZ;
+			GolMath::NormalizeVector3(delta, &delta);
+
+			if (GOLVECTOR3_DOT(*p_unk0x08, delta) >= p_unk0x14) {
+				return &m_racers[i];
+			}
+		}
+
+		i++;
+	}
+
+	return NULL;
+}
+
+// FUNCTION: LEGORACERS 0x0043c7f0
+RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043c7f0(
+	Racer* p_racer,
+	GolVec3* p_unk0x08,
+	GolVec3* p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14,
+	LegoFloat p_unk0x18
+)
+{
+	LegoS32 i;
+	for (i = 0; i < static_cast<LegoS32>(m_racerCount); i++) {
+		Racer* racer = &m_racers[i];
+		if (racer <= p_racer) {
+			continue;
+		}
+
+		GolVec3 position;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+		LegoFloat deltaX = position.m_x - p_unk0x08->m_x;
+		LegoFloat deltaY = position.m_y - p_unk0x08->m_y;
+		LegoFloat deltaZ = position.m_z - p_unk0x08->m_z;
+		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
+		if (distanceSquared >= p_unk0x10 && distanceSquared <= p_unk0x14) {
+			GolVec3 delta;
+			delta.m_x = deltaX;
+			delta.m_y = deltaY;
+			delta.m_z = deltaZ;
+			GolMath::NormalizeVector3(delta, &delta);
+
+			if (GOLVECTOR3_DOT(*p_unk0x0c, delta) >= p_unk0x18) {
+				break;
+			}
+		}
+	}
+
+	if (i >= static_cast<LegoS32>(m_racerCount)) {
+		return NULL;
+	}
+
+	return &m_racers[i];
+}
+
 // FUNCTION: LEGORACERS 0x0043c910
 RaceState::Racer* RaceState::Racer::Field0x00c::FUN_0043c910(
 	GolVec3* p_unk0x04,

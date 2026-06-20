@@ -68,6 +68,7 @@ public:
 		m_orientation.m_m[2][1] = p_other.m_orientation.m_m[2][1];
 		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
 	}
+	void FUN_0043ebd0(const GolOrientedEntity& p_other);
 	void CopyOrientationTo(GolMatrix3* p_orientation) const
 	{
 		p_orientation->m_m[0][0] = m_orientation.m_m[0][0];

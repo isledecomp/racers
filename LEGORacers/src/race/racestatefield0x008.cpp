@@ -28,6 +28,9 @@ DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x008::WarpAction, 0xe4)
 
 extern const LegoFloat g_unk0x004b0958;
 extern const LegoFloat g_unk0x004b095c;
+extern const LegoFloat g_unk0x004b0b4c;
+extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
+extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004b03f4
 extern const LegoFloat g_unk0x004b03f4 = 6.0f;
@@ -83,8 +86,57 @@ extern const LegoFloat g_unk0x004b1868 = 0.93000001f;
 // GLOBAL: LEGORACERS 0x004b186c
 extern const LegoFloat g_unk0x004b186c = 0.60000002f;
 
+// GLOBAL: LEGORACERS 0x004b1930
+extern const LegoFloat g_unk0x004b1930 = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b1934
+extern const LegoFloat g_unk0x004b1934 = 300.0f;
+
 // GLOBAL: LEGORACERS 0x004b1a6c
 extern const LegoFloat g_unk0x004b1a6c = 30.0f;
+
+RaceState::Racer::Field0x008::ActionBase::ActionBase()
+{
+	m_unk0x004 = 0;
+	m_unk0x008 = 0;
+	m_next = NULL;
+	m_unk0x010 = NULL;
+	m_unk0x014 = 0;
+}
+
+void RaceState::Racer::Field0x008::ActionBase::VTable0x00(undefined4)
+{
+}
+
+RaceState::Racer::Field0x008::ActionBase::~ActionBase()
+{
+}
+
+// FUNCTION: LEGORACERS 0x004513a0 FOLDED
+void RaceState::Racer::Field0x008::ActionBase::VTable0x08(LegoU32 p_elapsedMs)
+{
+	if (p_elapsedMs >= m_unk0x008) {
+		m_unk0x008 = 0;
+		VTable0x14();
+	}
+	else {
+		m_unk0x008 -= p_elapsedMs;
+	}
+}
+
+void RaceState::Racer::Field0x008::ActionBase::VTable0x0c(GolRenderDevice*)
+{
+}
+
+void RaceState::Racer::Field0x008::ActionBase::VTable0x10(GolRenderDevice*)
+{
+}
+
+// FUNCTION: LEGORACERS 0x004513e0 FOLDED
+void RaceState::Racer::Field0x008::ActionBase::VTable0x1c()
+{
+	m_unk0x004 = 1;
+}
 
 // FUNCTION: LEGORACERS 0x00451a50
 LegoU32 RaceState::Racer::Field0x008::CannonAction::FUN_00451a50(ActionSetup* p_unk0x04)
@@ -972,7 +1024,7 @@ void RaceState::Racer::Field0x008::FUN_0045b6f0(Racer* p_racer)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x0045b9e0
+// FUNCTION: LEGORACERS 0x0045b9e0 FOLDED
 GolAnimatedEntity* RaceState::Racer::Field0x008::FUN_0045b9e0()
 {
 	LegoU32 index = 0;
@@ -994,6 +1046,45 @@ GolAnimatedEntity* RaceState::Racer::Field0x008::FUN_0045b9e0()
 	m_unk0x1878 |= 1 << index;
 	m_unk0x187c = count + 1;
 	return &m_unk0x0a4[index];
+}
+
+void RaceState::Racer::Field0x008::FUN_0045ba40(GolAnimatedEntity* p_entity)
+{
+	LegoS32 index = p_entity - m_unk0x0a4;
+	m_unk0x1878 &= ~(1 << index);
+	m_unk0x187c--;
+}
+
+RaceState::Racer::Field0x008::Action::Action()
+{
+	m_unk0x018 = NULL;
+	m_unk0x01c = NULL;
+	m_unk0x020 = NULL;
+	m_unk0x024 = NULL;
+	m_unk0x028 = NULL;
+}
+
+RaceState::Racer::Field0x008::Action::~Action()
+{
+	FUN_0045bd10();
+}
+
+// FUNCTION: LEGORACERS 0x0045bcd0 FOLDED
+void RaceState::Racer::Field0x008::Action::FUN_0045bcd0(Field0x008* p_owner)
+{
+	if (m_unk0x004) {
+		FUN_0045bd10();
+	}
+
+	m_unk0x004 = 1;
+	m_unk0x024 = p_owner;
+}
+
+// FUNCTION: LEGORACERS 0x0045bd10 FOLDED
+void RaceState::Racer::Field0x008::Action::FUN_0045bd10()
+{
+	VTable0x1c();
+	m_unk0x004 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045bd30
@@ -1111,6 +1202,123 @@ void RaceState::Racer::Field0x008::Action::FUN_0045bd30(
 	m_unk0x01c->FUN_00411700(p_unk0x10->FUN_004116e0());
 	m_unk0x01c->FUN_00411730(p_unk0x10->FUN_004116f0());
 	m_unk0x01c->CopyPositionFrom(*m_unk0x018);
+}
+
+// FUNCTION: LEGORACERS 0x0045c060 FOLDED
+void RaceState::Racer::Field0x008::Action::VTable0x1c()
+{
+	if (m_unk0x01c) {
+		m_unk0x01c->VTable0x54();
+		m_unk0x024->FUN_0045ba40(m_unk0x01c);
+		m_unk0x01c = NULL;
+	}
+
+	if (m_unk0x018) {
+		m_unk0x018->VTable0x54();
+		m_unk0x024->FUN_0045ba40(m_unk0x018);
+		m_unk0x018 = NULL;
+	}
+
+	m_unk0x020 = NULL;
+	if (m_unk0x028) {
+		m_unk0x010->FUN_00443c10(m_res0x028);
+		m_unk0x028 = NULL;
+	}
+
+	m_unk0x004 = 1;
+}
+
+// FUNCTION: LEGORACERS 0x0045c0c0 FOLDED
+void RaceState::Racer::Field0x008::Action::VTable0x08(LegoU32 p_elapsedMs)
+{
+	if (m_unk0x004 == 6) {
+		return;
+	}
+
+	ActionBase::VTable0x08(p_elapsedMs);
+
+	GolVec3 position;
+	Racer::Field0x018* racerEntities = &m_unk0x020->m_unk0x018;
+	racerEntities->m_unk0x044->VTable0x04(&position);
+
+	GolVec3 velocity = m_unk0x020->m_unk0x3e8.m_unk0x008;
+	if (m_unk0x028) {
+		m_unk0x028->SetPosition(position);
+		m_unk0x028->SetVelocity(velocity);
+	}
+
+	m_unk0x018->VTable0x10(p_elapsedMs);
+	m_unk0x01c->VTable0x10(p_elapsedMs);
+}
+
+// FUNCTION: LEGORACERS 0x0045c160 FOLDED
+void RaceState::Racer::Field0x008::Action::VTable0x10(GolRenderDevice* p_renderer)
+{
+	if (m_unk0x004 == 6) {
+		return;
+	}
+
+	GolVec3 position;
+	m_unk0x020->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	LegoFloat positionZ = position.m_z;
+	positionZ += g_violetShoalTwo;
+	position.m_z = positionZ;
+	m_unk0x018->VTable0x08(position);
+
+	GolVec3 direction;
+	GolVec3 up;
+	m_unk0x020->m_unk0x018.m_unk0x044->VTable0x48(&direction, &up);
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+	m_unk0x018->VTable0x40(direction, up);
+
+	m_unk0x018->CopyOrientationAndPositionTo(m_unk0x01c);
+
+	if (m_unk0x004 == 4) {
+		LegoFloat alphaValue = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x008));
+		alphaValue *= 0.001f;
+		alphaValue *= g_unk0x004b0b4c;
+		LegoS32 alpha = static_cast<LegoS32>(alphaValue);
+		p_renderer->SetAlphaOverride(alpha, TRUE);
+	}
+
+	m_unk0x01c->VTable0x1c(*p_renderer);
+	m_unk0x018->VTable0x1c(*p_renderer);
+
+	if (m_unk0x004 == 4) {
+		p_renderer->ClearAlphaOverride();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045c2a0 FOLDED
+void RaceState::Racer::Field0x008::Action::VTable0x14()
+{
+	switch (m_unk0x004) {
+	case 3:
+		m_unk0x008 = 1000;
+		m_unk0x004 = 4;
+		break;
+	case 4: {
+		m_unk0x004 = 6;
+
+		SoundVector position;
+		Racer::Field0x018* racerEntities = &m_unk0x020->m_unk0x018;
+		racerEntities->m_unk0x044->VTable0x04(&position);
+		LegoFloat positionZ = position.m_z;
+		positionZ += g_raceSessionField0xf8CollisionStartOffset;
+		position.m_z = positionZ;
+		m_unk0x010->FUN_00443b80(0x3b, &position, g_unk0x004b1930, g_unk0x004b1934, 1.0f, 1.0f);
+		m_unk0x020->FUN_00439790();
+		break;
+	}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045c330 FOLDED
+LegoU32 RaceState::Racer::Field0x008::Action::VTable0x18()
+{
+	return 2;
 }
 
 // FUNCTION: LEGORACERS 0x0045c6a0

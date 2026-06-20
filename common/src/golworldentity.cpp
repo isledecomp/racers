@@ -239,13 +239,10 @@ void GolWorldEntity::VTable0x28()
 	// empty
 }
 
-// STUB: GOLDP 0x100016f0 FOLDED
+// FUNCTION: GOLDP 0x100016f0 FOLDED
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
 undefined4 GolWorldEntity::VTable0x20()
 {
-#ifdef BUILDING_GOL
-	MATCHING(0x100016f0);
-#endif
 	return 0;
 }
 

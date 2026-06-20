@@ -86,6 +86,7 @@ void GolImgFile::Destroy()
 }
 
 // FUNCTION: GOLDP 0x100200f0
+// FUNCTION: LEGORACERS 0x0040aaf0
 void GolImgFile::FUN_100200f0(GolPaletteBase* p_palette, ColorRGBA* p_colorKey)
 {
 	LegoS32 colorKeyIndex = -1;
@@ -174,6 +175,7 @@ void GolImgFile::FUN_100200f0(GolPaletteBase* p_palette, ColorRGBA* p_colorKey)
 }
 
 // FUNCTION: GOLDP 0x10020370
+// FUNCTION: LEGORACERS 0x0040ad70
 LegoU32 GolImgFile::FUN_10020370(const ColorRGBA& p_rgba)
 {
 	LegoU32 i;
@@ -333,54 +335,32 @@ void GolImgFile::FUN_100204d0(const GolSurfaceFormat& p_format, ColorRGBA* p_col
 }
 
 // STUB: GOLDP 0x100207e0
-// STUB: LEGORACERS 0x0040b1e0
+// FUNCTION: LEGORACERS 0x0040b1e0
 void GolImgFile::FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFormat& p_format)
 {
 	const LegoU8* src = static_cast<const LegoU8*>(p_src);
 	LegoU8* dst = static_cast<LegoU8*>(p_dst);
 
-	if (m_format.m_paletteMask != 0) {
+	if (m_format.m_paletteMask > 0) {
 		if (p_format.m_paletteMask != 0) {
 			if (m_format.m_bitsPerPixel == 4) {
 				if (p_format.m_bitsPerPixel == 4) {
-					LegoU8* end = dst + ((m_width + 1) >> 1);
 					if (m_unk0x5a8) {
-						for (; dst < end; dst++) {
-							LegoU8 source = *src++;
-							LegoU8 low = m_unk0x4a8[source & 0x0f];
-							LegoU8 high = m_unk0x4a8[source >> 4] << 4;
-							*dst = high | low;
-						}
+						FUN_0040bbe0(src, dst);
 					}
 					else {
-						for (; dst < end; dst++) {
-							LegoU8 source = *src++;
-							LegoU8 low = m_unk0x4a8[source >> 4];
-							LegoU8 high = m_unk0x4a8[source & 0x0f] << 4;
-							*dst = high | low;
-						}
+						FUN_0040bc30(src, dst);
 					}
 					return;
 				}
 
 				if (p_format.m_bitsPerPixel == 8) {
-					LegoU8* end = dst + m_width;
-					for (; dst + 1 < end; dst += 2) {
-						*dst = m_unk0x4a8[*src >> 4];
-						dst[1] = m_unk0x4a8[*src & 0x0f];
-						src++;
-					}
-					if (dst < end) {
-						*dst = m_unk0x4a8[*src & 0x0f];
-					}
+					FUN_0040bc80(src, dst);
 					return;
 				}
 			}
 			else if (m_format.m_bitsPerPixel == 8 && p_format.m_bitsPerPixel == 8) {
-				LegoU8* end = dst + m_width;
-				for (; dst < end; dst++) {
-					*dst = m_unk0x4a8[*src++];
-				}
+				FUN_0040bce0(src, dst);
 				return;
 			}
 		}
@@ -446,6 +426,7 @@ void GolImgFile::FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFo
 }
 
 // FUNCTION: GOLDP 0x10020b90
+// FUNCTION: LEGORACERS 0x0040b480
 void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* endDst = p_dst + m_width;
@@ -495,6 +476,7 @@ void GolImgFile::FUN_10020b90(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10020d60
+// FUNCTION: LEGORACERS 0x0040b650
 void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;
@@ -544,6 +526,7 @@ void GolImgFile::FUN_10020d60(const LegoU8* p_src, LegoU16* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10020f20
+// FUNCTION: LEGORACERS 0x0040b810
 void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 i;
@@ -597,6 +580,7 @@ void GolImgFile::FUN_10020f20(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10021130
+// FUNCTION: LEGORACERS 0x0040ba20
 void GolImgFile::FUN_10021130(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
@@ -640,7 +624,55 @@ void GolImgFile::FUN_10021130(const LegoU8* p_src, LegoU32* p_dst)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x0040bbe0
+void GolImgFile::FUN_0040bbe0(const LegoU8* p_src, LegoU8* p_dst)
+{
+	LegoU8* end = p_dst + ((m_width + 1) >> 1);
+	for (; p_dst < end; p_dst++) {
+		LegoU8 low = m_unk0x4a8[*p_src & 0x0f];
+		*p_dst = low;
+		*p_dst = (m_unk0x4a8[*p_src >> 4] << 4) | low;
+		p_src++;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0040bc30
+void GolImgFile::FUN_0040bc30(const LegoU8* p_src, LegoU8* p_dst)
+{
+	LegoU8* end = p_dst + ((m_width + 1) >> 1);
+	for (; p_dst < end; p_dst++) {
+		LegoU8 low = m_unk0x4a8[*p_src >> 4];
+		*p_dst = low;
+		*p_dst = (m_unk0x4a8[*p_src & 0x0f] << 4) | low;
+		p_src++;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0040bc80
+void GolImgFile::FUN_0040bc80(const LegoU8* p_src, LegoU8* p_dst)
+{
+	LegoU8* end = p_dst + m_width;
+	for (; p_dst + 1 < end; p_dst += 2) {
+		*p_dst = m_unk0x4a8[*p_src >> 4];
+		p_dst[1] = m_unk0x4a8[*p_src & 0x0f];
+		p_src++;
+	}
+	if (p_dst < end) {
+		*p_dst = m_unk0x4a8[*p_src & 0x0f];
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0040bce0
+void GolImgFile::FUN_0040bce0(const LegoU8* p_src, LegoU8* p_dst)
+{
+	LegoU8* end = p_dst + m_width;
+	for (; p_dst < end; p_dst++) {
+		*p_dst = m_unk0x4a8[*p_src++];
+	}
+}
+
 // STUB: GOLDP 0x100212f0
+// STUB: LEGORACERS 0x0040bd10
 void GolImgFile::FUN_100212f0(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* endDst = p_dst + m_width;
@@ -702,6 +734,7 @@ void GolImgFile::FUN_100212f0(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10021660
+// STUB: LEGORACERS 0x0040c080
 void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;
@@ -762,6 +795,7 @@ void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 }
 
 // STUB: GOLDP 0x100219e0
+// STUB: LEGORACERS 0x0040c400
 void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 i;
@@ -845,6 +879,7 @@ void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // STUB: GOLDP 0x10021e10
+// STUB: LEGORACERS 0x0040c830
 void GolImgFile::FUN_10021e10(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
@@ -906,6 +941,7 @@ void GolImgFile::FUN_10021e10(const LegoU8* p_src, LegoU32* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10022180
+// FUNCTION: LEGORACERS 0x0040cba0
 void GolImgFile::FUN_10022180(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* endDst = p_dst + m_width;
@@ -940,6 +976,7 @@ void GolImgFile::FUN_10022180(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // FUNCTION: GOLDP 0x100222c0
+// FUNCTION: LEGORACERS 0x0040cce0
 void GolImgFile::FUN_100222c0(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;
@@ -981,6 +1018,7 @@ void GolImgFile::FUN_100222c0(const LegoU8* p_src, LegoU16* p_dst)
 }
 
 // STUB: GOLDP 0x10022400
+// STUB: LEGORACERS 0x0040ce20
 void GolImgFile::FUN_10022400(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 i;
@@ -1016,6 +1054,7 @@ void GolImgFile::FUN_10022400(const LegoU8* p_src, LegoU8* p_dst)
 }
 
 // FUNCTION: GOLDP 0x10022560
+// FUNCTION: LEGORACERS 0x0040cf80
 void GolImgFile::FUN_10022560(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
@@ -1055,8 +1094,6 @@ const LegoChar* GolImgFile::GetSuffix()
 	return ".img";
 }
 
-// FUNCTION: GOLDP 0x100226b0
-// FUNCTION: LEGORACERS 0x00413790
 void GolImgFile::VTable0x14(LegoU8*, SilverDune0x30*, LegoU32, ColorRGBA*)
 {
 	// empty
@@ -1214,6 +1251,7 @@ void GolImgFile::FUN_10022880(
 }
 
 // FUNCTION: GOLDP 0x100229b0
+// FUNCTION: LEGORACERS 0x0040d0d0
 void GolImgFile::FUN_100229b0(LegoU8* p_row, LegoS32 p_xScale, LegoU32 p_scaledWidth, LegoU32 p_bitsPerPixel)
 {
 	LegoS32 x;

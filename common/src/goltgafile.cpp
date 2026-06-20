@@ -3,8 +3,8 @@
 #include "goldecompress.h"
 #include "golerror.h"
 #include "image/whitebaffoon0x50.h"
+#include "silverdune0x30.h"
 #include "surface/purpledune0x7c.h"
-#include "surface/silverdune0x30.h"
 
 #include <string.h>
 

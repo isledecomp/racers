@@ -368,3 +368,10 @@ void DriverCosmeticTable::CopyCosmetics(LegoU32 p_index, DriverCosmetics* p_cosm
 	p_cosmetics->m_legIndex = entry.m_cosmetics.m_legIndex;
 	p_cosmetics->m_expressionIndex = entry.m_cosmetics.m_expressionIndex;
 }
+
+// FUNCTION: LEGORACERS 0x00421090
+undefined2* DriverCosmeticTable::GetStringBuffer(const LegoChar* p_name)
+{
+	Entry* entry = static_cast<Entry*>(GetName(p_name));
+	return m_strings.GetStringBuffer(entry->m_unk0x00);
+}

@@ -1,8 +1,8 @@
 #ifndef GOLFONT_H
 #define GOLFONT_H
 
+#include "bronzedune0x4c.h"
 #include "golfontbase.h"
-#include "surface/bronzedune0x4c.h"
 
 class GolD3DRenderDevice;
 class DuskwindBananaRelic0x30;

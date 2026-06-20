@@ -1,9 +1,9 @@
 #ifndef GOLDP_UTOPIANPAN_H
 #define GOLDP_UTOPIANPAN_H
 
+#include "bronzedune0x4c.h"
 #include "decomp.h"
 #include "image/whitebaffoon0x50.h"
-#include "surface/bronzedune0x4c.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

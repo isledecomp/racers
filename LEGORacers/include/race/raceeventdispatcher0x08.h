@@ -3,6 +3,7 @@
 
 #include "decomp.h"
 #include "golmath.h"
+#include "golmodelentity.h"
 #include "golname.h"
 #include "golworldentity.h"
 #include "material/materialtable0x0c.h"
@@ -288,11 +289,45 @@ public:
 		void VTable0x14(undefined4 p_elapsedMs) override;                      // vtable+0x14
 		void VTable0x1c(GolD3DRenderDevice* p_renderer) override;              // vtable+0x1c
 
+		LegoS32 Reset();
+
 		// SYNTHETIC: LEGORACERS 0x0048c8c0
 		// RaceEventDispatcher0x08::Item0x2b::`scalar deleting destructor'
 
 	private:
-		undefined m_unk0x10[0x220 - 0x10]; // 0x10
+		enum {
+			c_randomTableMask = 0x3ff,
+			c_soundId0xbc5 = 0xbc5,
+			c_soundId0xbc7 = 0xbc7,
+			c_racerFlags0xd04Bit0 = 1 << 0,
+			c_racerSearchIntervalMs = 4000,
+			c_soundFrequencyUpdateMs = 500,
+			c_randomFrequencyVariantCount = 100,
+			c_trailFrameOffsetStep = 100,
+			c_trailFrameOffsetEnd = 400,
+		};
+
+		void FUN_0048c930();
+
+		GolWorldEntity m_unk0x10;         // 0x10
+		GolAnimatedEntity* m_unk0x38;     // 0x38
+		GolModelEntity* m_unk0x3c;        // 0x3c
+		LegoEventQueue* m_unk0x40;        // 0x40
+		LegoEventQueue::Event* m_unk0x44; // 0x44
+		CutsceneAnimation* m_unk0x48;     // 0x48
+		CutsceneParticleRef* m_unk0x4c;   // 0x4c
+		union {
+			SpatialSoundInstance* m_unk0x50;               // 0x50
+			RaceResourceManager::Resource* m_resource0x50; // 0x50
+		};
+		RaceState::Racer::Field0x004* m_unk0x54; // 0x54
+		RaceState::Racer::Field0x00c* m_unk0x58; // 0x58
+		undefined4 m_unk0x5c;                    // 0x5c
+		LegoS32 m_unk0x60;                       // 0x60
+		LegoU32 m_unk0x64;                       // 0x64
+		LegoFloat m_unk0x68;                     // 0x68
+		LegoU32 m_unk0x6c;                       // 0x6c
+		GolModelEntity m_unk0x70[3];             // 0x70
 	};
 
 	// VTABLE: LEGORACERS 0x004b44e0
@@ -659,7 +694,19 @@ public:
 		// RaceEventDispatcher0x08::Item0x3e::`scalar deleting destructor'
 
 	private:
-		undefined m_unk0x10[0x204 - 0x10]; // 0x10
+		void Reset();
+
+		undefined m_unk0x10[0x030 - 0x10];   // 0x10
+		GolVec3 m_unk0x030;                  // 0x30
+		undefined m_unk0x03c[0x0f4 - 0x03c]; // 0x3c
+		GolAnimatedEntity m_unk0x0f4;        // 0x0f4
+		GolAnimatedEntity* m_unk0x1e8;       // 0x1e8
+		LegoEventQueue* m_unk0x1ec;          // 0x1ec
+		LegoEventQueue::Event* m_unk0x1f0;   // 0x1f0
+		LegoFloat m_unk0x1f4;                // 0x1f4
+		LegoFloat m_unk0x1f8;                // 0x1f8
+		LegoFloat m_unk0x1fc;                // 0x1fc
+		LegoU32 m_unk0x200;                  // 0x200
 	};
 
 	// VTABLE: LEGORACERS 0x004b4370
@@ -759,6 +806,7 @@ public:
 		GolExport* GetUnk0x24() const { return m_unk0x24; }
 		GolD3DRenderDevice* GetUnk0x28() const { return m_unk0x28; }
 		GolNameTable* GetUnk0x2c() const { return m_unk0x2c; }
+		RaceState::Racer::Field0x00c* GetUnk0x30() const { return m_unk0x30; }
 		RaceSessionField0x32b4* GetUnk0x34() const { return m_unk0x34; }
 		RaceState::Racer::Field0x008* GetUnk0x38() const { return m_unk0x38; }
 		void* GetUnk0x38Raw() const { return m_unk0x38; }
@@ -781,7 +829,7 @@ public:
 		GolExport* m_unk0x24;                                        // 0x24
 		GolD3DRenderDevice* m_unk0x28;                               // 0x28
 		GolNameTable* m_unk0x2c;                                     // 0x2c
-		RaceState* m_unk0x30;                                        // 0x30
+		RaceState::Racer::Field0x00c* m_unk0x30;                     // 0x30
 		RaceSessionField0x32b4* m_unk0x34;                           // 0x34
 		RaceState::Racer::Field0x008* m_unk0x38;                     // 0x38
 		void* m_unk0x3c;                                             // 0x3c

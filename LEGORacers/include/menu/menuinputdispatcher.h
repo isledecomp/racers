@@ -4,7 +4,7 @@
 #include "decomp.h"
 #include "input/inputdevice.h"
 #include "input/inputeventqueue.h"
-#include "surface/silverdune0x30.h"
+#include "silverdune0x30.h"
 #include "types.h"
 
 class GolD3DRenderDevice;

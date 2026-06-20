@@ -23,7 +23,6 @@ DECOMP_SIZE_ASSERT(GolDPExport, 0xc8ac8)
 // STUB: GOLDP 0x100016f0 FOLDED
 undefined4 GolDPExport::VTable0x24()
 {
-	MATCHING(0x100016f0);
 	return 0;
 }
 

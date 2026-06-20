@@ -241,6 +241,12 @@ void FUN_10035a20()
 	STUB(0x10035a20);
 }
 
+// STUB: GOLDP 0x10035b60
+void FUN_10035b60()
+{
+	STUB(0x10035b60);
+}
+
 // STUB: GOLDP 0x10035ca0
 void FUN_10035ca0()
 {
@@ -251,12 +257,6 @@ void FUN_10035ca0()
 void FUN_10035dd0()
 {
 	STUB(0x10035dd0);
-}
-
-// STUB: GOLDP 0x10035b60
-void FUN_10035b60()
-{
-	STUB(0x10035b60);
 }
 
 // STUB: GOLDP 0x10035f00

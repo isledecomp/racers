@@ -1461,70 +1461,78 @@ void RaceState::Racer::FUN_00438e60(GolVec3* p_unk0x04)
 	m_unk0xd04 |= c_flags0xd04Bit8;
 }
 
-// STUB: LEGORACERS 0x00438f20
+// FUNCTION: LEGORACERS 0x00438f20
 void RaceState::Racer::FUN_00438f20()
 {
 	if (m_unk0x008->GetUnk0x187c() >= 20) {
 		m_unk0xcdc = 1000;
-		return;
 	}
+	else {
+		LegoU32 state = m_unk0xcd0;
+		if (state && state == m_unk0xccc && m_unk0xd58 < m_unk0xcd4) {
+			m_unk0xcdc = 1000;
+		}
+		else {
+			switch (m_unk0xccc) {
+			case 3:
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1e) {
+					m_unk0xcdc = 1000;
+				}
+				else {
+					if ((m_unk0xd04 & c_flags0xd04Bit12) && m_unk0xd58 == 3) {
+						return;
+					}
+					if (m_unk0x3e8.m_flags0x6c0 & c_flags0xaa8Bit1) {
+						return;
+					}
 
-	LegoU32 state = m_unk0xcd0;
-	if (state && state == m_unk0xccc && m_unk0xd58 < m_unk0xcd4) {
-		m_unk0xcdc = 1000;
-		return;
+					FUN_00439100();
+				}
+				return;
+			case 1: {
+				GolVec3 position;
+				m_unk0x018.m_unk0x044->VTable0x04(&position);
+
+				GolVec3 direction;
+				m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+
+				if (!m_unk0x00c
+						 ->FUN_0043ca60(&position, &direction, g_unk0x004b0974, g_unk0x004b0978, g_unk0x004b097c)) {
+					return;
+				}
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1c) {
+					m_unk0xcdc = 1000;
+				}
+				else {
+					FUN_00439100();
+				}
+				return;
+			}
+			case 4:
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1d) {
+					m_unk0xcdc = 1000;
+				}
+				else {
+					FUN_00439100();
+				}
+				return;
+			case 2:
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1f) {
+					m_unk0xcdc = 1000;
+				}
+				else {
+					FUN_00439100();
+				}
+				return;
+			default:
+				return;
+			}
+		}
 	}
-
-	switch (m_unk0xccc) {
-	case 3:
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1e) {
-			m_unk0xcdc = 1000;
-			return;
-		}
-		if ((m_unk0xd04 & c_flags0xd04Bit12) && m_unk0xd58 == 3) {
-			return;
-		}
-		if (m_unk0x3e8.m_flags0x6c0 & c_flags0xaa8Bit1) {
-			return;
-		}
-		break;
-	case 1: {
-		GolVec3 position;
-		m_unk0x018.m_unk0x044->VTable0x04(&position);
-
-		GolVec3 direction;
-		m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
-
-		if (!m_unk0x00c->FUN_0043ca60(&position, &direction, g_unk0x004b0974, g_unk0x004b0978, g_unk0x004b097c)) {
-			return;
-		}
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1c) {
-			m_unk0xcdc = 1000;
-			return;
-		}
-		break;
-	}
-	case 4:
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1d) {
-			m_unk0xcdc = 1000;
-			return;
-		}
-		break;
-	case 2:
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1f) {
-			m_unk0xcdc = 1000;
-			return;
-		}
-		break;
-	default:
-		return;
-	}
-
-	FUN_00439100();
 }
 
 // FUNCTION: LEGORACERS 0x00439100
@@ -2787,8 +2795,6 @@ void RaceState::FUN_0043b480(
 	undefined4 p_unk0x10
 )
 {
-	STUB(0x43b480);
-
 	Racer::Field0x36df0Params racerParams;
 	Racer::Field0x018::InitParams initParams;
 	::memset(&racerParams, 0, sizeof(racerParams));
@@ -3788,8 +3794,6 @@ void RaceState::Racer::Field0x018::FUN_0043df90()
 // STUB: LEGORACERS 0x0043e070
 void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 {
-	STUB(0x0043e070);
-
 	m_unk0x004.VTable0x00();
 
 	if (m_unk0x3c4) {

@@ -409,6 +409,7 @@ void RaceSession::Field0x258::FUN_004306d0(LegoBool32 p_enabled)
 // FUNCTION: LEGORACERS 0x00430710
 void RaceSession::Field0x258::FUN_00430710()
 {
+	LegoU32 duration = m_unk0x004.m_unk0x060;
 	LegoU32 flags = m_unk0x004.m_unk0x05c;
 	flags &= ~1;
 	m_unk0x004.m_unk0x05c = flags;
@@ -578,7 +579,7 @@ void RaceSession::Field0x258::Field0x04::FUN_00430980()
 	} while (--remaining);
 }
 
-// STUB: LEGORACERS 0x004309c0
+// FUNCTION: LEGORACERS 0x004309c0
 InputDevice::Callback::ResultValue RaceSession::Field0x258::Field0x04::OnKeyDown(
 	InputDevice* p_source,
 	undefined4 p_input,
@@ -587,40 +588,36 @@ InputDevice::Callback::ResultValue RaceSession::Field0x258::Field0x04::OnKeyDown
 {
 	if (m_unk0x054) {
 		for (LegoU32 i = 0; i < c_inputSlotCount; i++) {
-			if (m_unk0x008[i] == p_input && m_unk0x02c[i] == p_source) {
+			if (p_input == m_unk0x008[i] && p_source == m_unk0x02c[i]) {
 				switch (i) {
 				case 0:
 					m_unk0x004->FUN_00430570(TRUE);
-					break;
+					return TRUE;
 				case 1:
 					m_unk0x004->FUN_00430590(TRUE);
-					break;
+					return TRUE;
 				case 2:
 					m_unk0x004->FUN_004305b0(TRUE);
-					break;
+					return TRUE;
 				case 3:
 					m_unk0x004->FUN_004305e0(TRUE);
-					break;
+					return TRUE;
 				case 4:
 					m_unk0x004->FUN_00430620(TRUE);
-					break;
+					return TRUE;
 				case 5:
 					m_unk0x004->FUN_00430650(TRUE);
-					break;
+					return TRUE;
 				case 6:
 					m_unk0x004->FUN_00430680(TRUE);
-					break;
+					return TRUE;
 				case 7:
 					m_unk0x004->FUN_004306b0(TRUE);
-					break;
+					return TRUE;
 				case 8:
 					m_unk0x004->FUN_004306d0(TRUE);
-					break;
+					return TRUE;
 				}
-
-				InputDevice::Callback::Result result;
-				result.m_result = TRUE;
-				return result.m_value;
 			}
 		}
 	}
@@ -634,7 +631,7 @@ InputDevice::Callback::ResultValue RaceSession::Field0x258::Field0x04::OnKeyDown
 	return result.m_value;
 }
 
-// STUB: LEGORACERS 0x00430af0
+// FUNCTION: LEGORACERS 0x00430af0
 InputDevice::Callback::ResultValue RaceSession::Field0x258::Field0x04::OnKeyUp(
 	InputDevice* p_source,
 	undefined4 p_input,
@@ -643,40 +640,36 @@ InputDevice::Callback::ResultValue RaceSession::Field0x258::Field0x04::OnKeyUp(
 {
 	if (m_unk0x054) {
 		for (LegoU32 i = 0; i < c_inputSlotCount; i++) {
-			if (m_unk0x008[i] == p_input && m_unk0x02c[i] == p_source) {
+			if (p_input == m_unk0x008[i] && p_source == m_unk0x02c[i]) {
 				switch (i) {
 				case 0:
 					m_unk0x004->FUN_00430570(FALSE);
-					break;
+					return TRUE;
 				case 1:
 					m_unk0x004->FUN_00430590(FALSE);
-					break;
+					return TRUE;
 				case 2:
 					m_unk0x004->FUN_004305b0(FALSE);
-					break;
+					return TRUE;
 				case 3:
 					m_unk0x004->FUN_004305e0(FALSE);
-					break;
+					return TRUE;
 				case 4:
 					m_unk0x004->FUN_00430620(FALSE);
-					break;
+					return TRUE;
 				case 5:
 					m_unk0x004->FUN_00430650(FALSE);
-					break;
+					return TRUE;
 				case 6:
 					m_unk0x004->FUN_00430680(FALSE);
-					break;
+					return TRUE;
 				case 7:
 					m_unk0x004->FUN_004306b0(FALSE);
-					break;
+					return TRUE;
 				case 8:
 					m_unk0x004->FUN_004306d0(FALSE);
-					break;
+					return TRUE;
 				}
-
-				InputDevice::Callback::Result result;
-				result.m_result = TRUE;
-				return result.m_value;
 			}
 		}
 	}

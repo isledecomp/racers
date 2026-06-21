@@ -1513,16 +1513,19 @@ public:
 				c_flags0x014Bit8 = 1 << 8,
 			};
 
-			// SIZE 0x78
-			class Field0x050 : public Field0x3e8::Field0x74c {
-			public:
-				Field0x050();
-				~Field0x050();
+			// FUNCTION: LEGORACERS 0x004a5170 FOLDED
+			// RaceState::Racer::Field0xc70::Field0x050::Field0x050
 
-			private:
-				void Reset();
-				void Destroy();
-			};
+			// FUNCTION: LEGORACERS 0x004a5180 FOLDED
+			// RaceState::Racer::Field0xc70::Field0x050::~Field0x050
+
+			// FUNCTION: LEGORACERS 0x004a5190 FOLDED
+			// RaceState::Racer::Field0xc70::Field0x050::Reset
+
+			// FUNCTION: LEGORACERS 0x004a51f0 FOLDED
+			// RaceState::Racer::Field0xc70::Field0x050::Destroy
+
+			typedef Field0x3e8::Field0x74cInstance Field0x050;
 
 			void FUN_0041fbd0(Field0x3e8* p_unk0x04);
 			void FUN_0041fc00(LegoU32 p_elapsedMs);

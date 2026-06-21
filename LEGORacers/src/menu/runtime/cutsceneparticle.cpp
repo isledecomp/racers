@@ -135,7 +135,6 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 {
 	// should be semantically correct, but does not match yet
 
-	LegoFloat dot;
 	GolVec3 v0;
 	GolVec3 v1;
 	GolVec3 v2;
@@ -143,13 +142,12 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 
 	GolMath::NormalizeVector3(*p_param1, &v0);
 	GolMath::NormalizeVector3(*p_param1, &v1);
-	dot = p_param2->m_y * v1.m_y;
+	LegoFloat dot = p_param2->m_y;
+	dot *= v1.m_y;
 	dot += v1.m_z * p_param2->m_z;
 	dot += v1.m_x * p_param2->m_x;
 
-	v3.m_x = v1.m_x * dot;
-	v3.m_y = v1.m_y * dot;
-	v3.m_z = v1.m_z * dot;
+	v3 = dot * v1;
 
 	v2.m_x = p_param2->m_x - v3.m_x;
 	v2.m_y = p_param2->m_y - v3.m_y;
@@ -157,15 +155,26 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 
 	GolMath::NormalizeVector3(v2, &v2);
 
-	LegoFloat cross0 = v2.m_y * v0.m_z - v2.m_z * v0.m_y;
+	GolVec3 cross;
+	cross.m_x = v2.m_y;
+	cross.m_x *= v0.m_z;
+	cross.m_x -= v2.m_z * v0.m_y;
+
+	cross.m_y = v2.m_z;
+	cross.m_y *= v0.m_x;
+	cross.m_y -= v2.m_x * v0.m_z;
+
+	cross.m_z = v0.m_y;
+	cross.m_z *= v2.m_x;
+	cross.m_z -= v2.m_y * v0.m_x;
 
 	m_unk0x160.m_m[0][0] = v0.m_x;
 	m_unk0x160.m_m[0][1] = v0.m_y;
 	m_unk0x160.m_m[0][2] = v0.m_z;
-	m_unk0x160.m_m[1][1] = v2.m_z * v0.m_x - v0.m_z * v2.m_x;
-	m_unk0x160.m_m[1][2] = v0.m_y * v2.m_x - v2.m_y * v0.m_x;
+	m_unk0x160.m_m[1][0] = cross.m_x;
+	m_unk0x160.m_m[1][1] = cross.m_y;
+	m_unk0x160.m_m[1][2] = cross.m_z;
 	m_unk0x160.m_m[2][0] = v2.m_x;
-	m_unk0x160.m_m[1][0] = cross0;
 	m_unk0x160.m_m[2][1] = v2.m_y;
 	m_unk0x160.m_m[2][2] = v2.m_z;
 }
@@ -249,38 +258,64 @@ void CutsceneParticle::FUN_004897c0()
 	m_ref = 0;
 }
 
-// STUB: LEGORACERS 0x004897e0
-void CutsceneParticle::FUN_004897e0(LegoU32 p_param1)
+// FUNCTION: LEGORACERS 0x004897e0
+void CutsceneParticle::FUN_004897e0(LegoU32 p_elapsedMs)
 {
 	// Matches up to allocation permutations and commutative multiplication
 
 	GolVec3 local18;
 	GolVec3 localc;
+	LegoU32 elapsedSinceSpawn = m_unk0x184;
+	elapsedSinceSpawn += p_elapsedMs;
 
-	m_unk0x184 += p_param1;
-	m_unk0x188 += p_param1;
+	m_unk0x184 = elapsedSinceSpawn;
+	m_unk0x188 += p_elapsedMs;
 
 	if (m_unk0x000) {
 		// LINE: LEGORACERS 0x00489816
-		if (0 <= m_unk0x000->GetUnk0x34() && m_unk0x188 >= m_unk0x000->GetUnk0x34()) {
+		if (0 <= m_unk0x000->GetUnk0x34() && m_unk0x188 >= static_cast<LegoU32>(m_unk0x000->GetUnk0x34())) {
 			FUN_004897c0();
 			return;
 		}
 
-		if (m_unk0x184 >= m_unk0x000->GetUnk0x14()) {
+		if (elapsedSinceSpawn >= static_cast<LegoU32>(m_unk0x000->GetUnk0x14())) {
 			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
 
-			if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0x000->GetUnk0x18()) {
+			LegoU8 randomValue = static_cast<LegoU8>(g_unk0x004befec[g_unk0x004c6ee4]);
+			if (randomValue >= m_unk0x000->GetUnk0x18()) {
 				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
 
 				m_unk0x000->GetVectorAt(&local18, g_unk0x004befec[g_unk0x004c6ee4] % m_unk0x000->GetUnk0x04());
 
-				localc.m_x = m_unk0x160.m_m[2][0] * local18.m_z + m_unk0x160.m_m[1][0] * local18.m_y +
-							 m_unk0x160.m_m[0][0] * local18.m_x;
-				localc.m_y = m_unk0x160.m_m[2][1] * local18.m_z + m_unk0x160.m_m[1][1] * local18.m_y +
-							 m_unk0x160.m_m[0][1] * local18.m_x;
-				localc.m_z = m_unk0x160.m_m[2][2] * local18.m_z + m_unk0x160.m_m[1][2] * local18.m_y +
-							 m_unk0x160.m_m[0][2] * local18.m_x;
+				LegoFloat term = m_unk0x160.m_m[2][0];
+				term *= local18.m_z;
+				localc.m_x = term;
+				term = m_unk0x160.m_m[1][0];
+				term *= local18.m_y;
+				localc.m_x += term;
+				term = m_unk0x160.m_m[0][0];
+				term *= local18.m_x;
+				localc.m_x += term;
+
+				term = m_unk0x160.m_m[2][1];
+				term *= local18.m_z;
+				localc.m_y = term;
+				term = m_unk0x160.m_m[1][1];
+				term *= local18.m_y;
+				localc.m_y += term;
+				term = m_unk0x160.m_m[0][1];
+				term *= local18.m_x;
+				localc.m_y += term;
+
+				term = m_unk0x160.m_m[2][2];
+				term *= local18.m_z;
+				localc.m_z = term;
+				term = m_unk0x160.m_m[1][2];
+				term *= local18.m_y;
+				localc.m_z += term;
+				term = m_unk0x160.m_m[0][2];
+				term *= local18.m_x;
+				localc.m_z += term;
 
 				localc.m_x += m_unk0x148.m_x;
 				localc.m_y += m_unk0x148.m_y;
@@ -293,7 +328,7 @@ void CutsceneParticle::FUN_004897e0(LegoU32 p_param1)
 		}
 	}
 
-	m_unk0x008.Update(p_param1);
+	m_unk0x008.Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00489960

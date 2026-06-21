@@ -32,7 +32,7 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	return MenuGameScreen::VTable0x8c(p_context, p_createParams) != FALSE;
 }
 
-// STUB: LEGORACERS 0x00482160
+// FUNCTION: LEGORACERS 0x00482160
 void NewRacerScreen::VTable0x4c()
 {
 	CreateImage(&m_unk0x368, 0x49, 0x49);
@@ -77,7 +77,8 @@ void NewRacerScreen::VTable0x4c()
 		m_unk0x364 = TRUE;
 	}
 	else {
-		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(records->AllocateRecord());
+		SaveRecordList::Record* record = records->AllocateRecord();
+		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
 		m_unk0x360 = c_menuEditDriver;
 		m_unk0x364 = TRUE;
 	}

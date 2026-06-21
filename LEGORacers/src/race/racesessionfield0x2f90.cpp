@@ -30,6 +30,12 @@ extern const LegoFloat g_twoPi;
 // GLOBAL: LEGORACERS 0x004b4764
 const LegoFloat g_raceSessionSkyModelNegativeHalfPi = -1.5707964f;
 
+// GLOBAL: LEGORACERS 0x004b4768
+const LegoFloat g_raceSessionSkyModelInversePi = 0.31830987f;
+
+// GLOBAL: LEGORACERS 0x004b476c
+const LegoFloat g_raceSessionSkyModelInverseTwoPi = 0.15915494f;
+
 // FUNCTION: LEGORACERS 0x0041c430
 RaceSession::Field0x2f90::Field0x2f90()
 {
@@ -519,8 +525,6 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907d0(Params* p_params)
 // STUB: LEGORACERS 0x004907f0
 void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 {
-	STUB(0x4907f0);
-
 	if (p_params->m_model == NULL || p_params->m_segmentCount == 0) {
 		return;
 	}
@@ -702,6 +706,286 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 // STUB: LEGORACERS 0x004910e0
 void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 {
-	STUB(0x4910e0);
-	FUN_004907f0(p_params);
+	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
+	LegoS32 ringCount;
+	if (p_params->m_unk0x1c) {
+		ringCount = 1 - static_cast<LegoS32>(g_raceSessionSkyModelNegativeHalfPi / angleStep);
+	}
+	else {
+		ringCount = (p_params->m_segmentCount >> 1) - 1;
+	}
+
+	LegoU32 vertexCount =
+		static_cast<LegoU32>(ringCount + 2) * p_params->m_segmentCount + static_cast<LegoU32>(ringCount);
+	LegoU32 triangleCount = static_cast<LegoU32>(ringCount) * p_params->m_segmentCount * 2;
+	if (!p_params->m_unk0x20) {
+		vertexCount -= p_params->m_segmentCount;
+		triangleCount -= p_params->m_segmentCount;
+	}
+	if (!p_params->m_unk0x24) {
+		vertexCount -= p_params->m_segmentCount;
+		triangleCount -= p_params->m_segmentCount;
+	}
+
+	LegoU32 groupCount = static_cast<LegoU32>(ringCount) * 2 + 6;
+	p_params->m_model
+		->VTable0x18(p_params->m_renderer, p_params->m_vertexType, vertexCount, triangleCount, groupCount, 1);
+
+	LegoBool32 reverseWinding = p_params->m_unk0x28 != 0;
+
+	ColorRGBA color;
+	color.m_red = 0xff;
+	color.m_grn = 0xff;
+	color.m_blu = 0xff;
+	color.m_alp = 0xff;
+
+	GdbVertexArray0xc* vertices;
+	p_params->m_model->VTable0x28(&vertices);
+
+	LegoFloat textureHalfStep = 1.0f / (static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount)) * 2.0f);
+	LegoU32 vertexIndex = 0;
+	LegoU32 segment;
+
+	if (p_params->m_unk0x20) {
+		GolVec3 position;
+		position.m_x = p_params->m_origin.m_x;
+		position.m_y = p_params->m_origin.m_y;
+		position.m_z = p_params->m_origin.m_z + p_params->m_radius;
+
+		GolVec3 normal;
+		normal.m_x = 0.0f;
+		normal.m_y = 0.0f;
+		normal.m_z = 1.0f;
+
+		LegoFloat segmentAngle = 0.0f;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			vertices->VTable0x24(vertexIndex, position);
+			if (p_params->m_vertexType == 1) {
+				vertices->VTable0x30(vertexIndex, color);
+			}
+			else if (p_params->m_vertexType == 2) {
+				vertices->VTable0x2c(vertexIndex, normal);
+			}
+
+			GolVec2 textureCoordinate;
+			textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi + textureHalfStep;
+			textureCoordinate.m_y = 0.0f;
+			vertices->VTable0x28(vertexIndex, textureCoordinate);
+
+			vertexIndex++;
+			segmentAngle += angleStep;
+		}
+	}
+
+	LegoFloat ringAngle = angleStep;
+	LegoS32 ring;
+	for (ring = 0; ring < ringCount; ring++) {
+		if (p_params->m_unk0x1c && ring == ringCount - 1) {
+			ringAngle = 1.5707964f;
+		}
+
+		LegoFloat z = static_cast<LegoFloat>(::cos(ringAngle)) * p_params->m_radius + p_params->m_origin.m_z;
+		LegoFloat radius = static_cast<LegoFloat>(::sin(ringAngle)) * p_params->m_radius;
+		LegoFloat segmentAngle = 0.0f;
+
+		for (segment = 0; segment <= p_params->m_segmentCount; segment++) {
+			GolVec3 position;
+			if (segment < p_params->m_segmentCount) {
+				position.m_x = static_cast<LegoFloat>(::cos(segmentAngle)) * radius + p_params->m_origin.m_x;
+				position.m_y = static_cast<LegoFloat>(::sin(segmentAngle)) * radius + p_params->m_origin.m_y;
+				position.m_z = z;
+			}
+			else {
+				position.m_x = p_params->m_origin.m_x + radius;
+				position.m_y = p_params->m_origin.m_y;
+				position.m_z = z;
+			}
+
+			vertices->VTable0x24(vertexIndex, position);
+
+			GolVec3 normal;
+			normal.m_x = position.m_x - p_params->m_origin.m_x;
+			normal.m_y = position.m_y - p_params->m_origin.m_y;
+			normal.m_z = position.m_z - p_params->m_origin.m_z;
+			GolMath::NormalizeVector3(normal, &normal);
+
+			if (p_params->m_vertexType == 1) {
+				vertices->VTable0x30(vertexIndex, color);
+			}
+			else if (p_params->m_vertexType == 2) {
+				vertices->VTable0x2c(vertexIndex, normal);
+			}
+
+			GolVec2 textureCoordinate;
+			if (segment < p_params->m_segmentCount) {
+				textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi;
+			}
+			else {
+				textureCoordinate.m_x = 1.0f;
+			}
+			textureCoordinate.m_y = ringAngle * g_raceSessionSkyModelInversePi;
+			vertices->VTable0x28(vertexIndex, textureCoordinate);
+
+			vertexIndex++;
+			segmentAngle += angleStep;
+		}
+
+		ringAngle += angleStep;
+	}
+
+	if (p_params->m_unk0x24) {
+		GolVec3 position;
+		position.m_x = p_params->m_origin.m_x;
+		position.m_y = p_params->m_origin.m_y;
+		if (p_params->m_unk0x1c) {
+			position.m_z = p_params->m_origin.m_z;
+		}
+		else {
+			position.m_z = p_params->m_origin.m_z - p_params->m_radius;
+		}
+
+		GolVec3 normal;
+		normal.m_x = 0.0f;
+		normal.m_y = 0.0f;
+		normal.m_z = -1.0f;
+
+		LegoFloat segmentAngle = 0.0f;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			vertices->VTable0x24(vertexIndex, position);
+			if (p_params->m_vertexType == 1) {
+				vertices->VTable0x30(vertexIndex, color);
+			}
+			else if (p_params->m_vertexType == 2) {
+				vertices->VTable0x2c(vertexIndex, normal);
+			}
+
+			GolVec2 textureCoordinate;
+			textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi + textureHalfStep;
+			textureCoordinate.m_y = 1.0f;
+			vertices->VTable0x28(vertexIndex, textureCoordinate);
+
+			vertexIndex++;
+			segmentAngle += angleStep;
+		}
+	}
+
+	p_params->m_model->VTable0x2c(1, FALSE);
+
+	if (p_params->m_unk0x34 != NULL) {
+		p_params->m_unk0x34->VTable0x0c(triangleCount);
+	}
+
+	IGdbModelIndexArray0x8* indexArrayBase;
+	p_params->m_model->VTable0x30(&indexArrayBase);
+	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
+
+	LegoU32* groups = p_params->m_model->GetMutableGroups();
+	if (groups != NULL) {
+		LegoU32 groupIndex = 0;
+		groups[groupIndex++] = 0x80000000;
+
+		if (p_params->m_unk0x20 && groupIndex + 1 < groupCount) {
+			groups[groupIndex++] = ((p_params->m_segmentCount * 2) << 16) & 0x003f0000;
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16);
+		}
+
+		for (ring = 0; ring < ringCount - 1 && groupIndex + 1 < groupCount; ring++) {
+			groups[groupIndex++] = (((p_params->m_segmentCount * 2 + 1) & 0x3f) << 16);
+			groups[groupIndex++] = 0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16);
+		}
+
+		if (p_params->m_unk0x24 && groupIndex + 1 < groupCount) {
+			groups[groupIndex++] = ((p_params->m_segmentCount * 2) << 16) & 0x003f0000;
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16);
+		}
+
+		while (groupIndex < groupCount) {
+			groups[groupIndex++] = 0xc0000000;
+		}
+	}
+
+	LegoU32 triangleIndex = 0;
+	LegoU32 ringStart = p_params->m_unk0x20 ? p_params->m_segmentCount : 0;
+	if (p_params->m_unk0x20) {
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU8 index0 = static_cast<LegoU8>(segment);
+			LegoU8 index1 = static_cast<LegoU8>(ringStart + segment);
+			LegoU8 index2 = static_cast<LegoU8>(ringStart + segment + 1);
+			if (!reverseWinding) {
+				indices->SetIndices(triangleIndex, index0, index1, index2);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index1, index2);
+				}
+			}
+			else {
+				indices->SetIndices(triangleIndex, index0, index2, index1);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index2, index1);
+				}
+			}
+			triangleIndex++;
+		}
+	}
+
+	for (ring = 0; ring < ringCount - 1; ring++) {
+		LegoU32 lowerBase = ringStart + static_cast<LegoU32>(ring) * (p_params->m_segmentCount + 1);
+		LegoU32 upperBase = lowerBase + p_params->m_segmentCount + 1;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU8 lowerLeft = static_cast<LegoU8>(lowerBase + segment);
+			LegoU8 upperLeft = static_cast<LegoU8>(upperBase + segment);
+			LegoU8 upperRight = static_cast<LegoU8>(upperBase + segment + 1);
+			LegoU8 lowerRight = static_cast<LegoU8>(lowerBase + segment + 1);
+
+			if (!reverseWinding) {
+				indices->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
+				}
+				triangleIndex++;
+
+				indices->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
+				}
+			}
+			else {
+				indices->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
+				}
+				triangleIndex++;
+
+				indices->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
+				}
+			}
+			triangleIndex++;
+		}
+	}
+
+	if (p_params->m_unk0x24) {
+		LegoU32 bottomStart = ringStart + static_cast<LegoU32>(ringCount) * (p_params->m_segmentCount + 1);
+		LegoU32 lastRingStart = ringStart + static_cast<LegoU32>(ringCount - 1) * (p_params->m_segmentCount + 1);
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU8 index0 = static_cast<LegoU8>(lastRingStart + segment);
+			LegoU8 index1 = static_cast<LegoU8>(bottomStart + segment);
+			LegoU8 index2 = static_cast<LegoU8>(lastRingStart + segment + 1);
+			if (!reverseWinding) {
+				indices->SetIndices(triangleIndex, index0, index1, index2);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index1, index2);
+				}
+			}
+			else {
+				indices->SetIndices(triangleIndex, index0, index2, index1);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index2, index1);
+				}
+			}
+			triangleIndex++;
+		}
+	}
+
+	p_params->m_model->VTable0x34(1);
 }

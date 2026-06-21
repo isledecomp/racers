@@ -962,8 +962,6 @@ void RaceSession::FUN_00433460()
 // STUB: LEGORACERS 0x00433480
 void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 {
-	STUB(0x433480);
-
 	if (m_unk0x1c8) {
 		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_unk0x18, p_mirror);
 		FUN_00435e70();

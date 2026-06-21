@@ -16,6 +16,9 @@
 // LIBRARY: LEGORACERS 0x004a84b0
 // __ftol
 
+// LIBRARY: LEGORACERS 0x004a84b6
+// __CxxFrameHandler
+
 // LIBRARY: LEGORACERS 0x004a84bc
 // ??2@YAPAXI@Z
 
@@ -28,11 +31,29 @@
 // LIBRARY: LEGORACERS 0x004a85c4
 // ?__ArrayUnwind@@YGXPAXIHP6EX0@Z@Z
 
+// LIBRARY: LEGORACERS 0x004a8622
+// __CxxUnhandledExceptionFilter
+
+// LIBRARY: LEGORACERS 0x004a8638
+// _onexit
+
+// LIBRARY: LEGORACERS 0x004a8664
+// atexit
+
+// LIBRARY: LEGORACERS 0x004a8676
+// _CIacos
+
 // LIBRARY: LEGORACERS 0x004a867c
 // _WinMainCRTStartup
 
 // LIBRARY: LEGORACERS 0x004a87da
 // __except_handler3
+
+// LIBRARY: LEGORACERS 0x004a87e0
+// ?terminate@@YAXXZ
+
+// LIBRARY: LEGORACERS 0x004a87e6
+// __dllonexit
 
 // LIBRARY: LEGORACERS 0x004a87ec
 // __XcptFilter

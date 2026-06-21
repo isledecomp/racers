@@ -233,20 +233,23 @@ void DriverLicenseScreen::FUN_0047b6b0()
 	m_unk0x1f1c.FUN_004711f0(cheatString);
 }
 
-// STUB: LEGORACERS 0x0047b750
+// FUNCTION: LEGORACERS 0x0047b750
 void DriverLicenseScreen::FUN_0047b750()
 {
-	if (m_cheatString.SelectionLength() == 0) {
+	GolString* cheatString = &m_cheatString;
+
+	if (cheatString->SelectionLength() == 0) {
 		m_unk0x360 = 0xffff;
 		m_unk0x364 = FALSE;
 		return;
 	}
 
-	m_cheatString.CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
-	m_context->m_saveSystem.GetActiveRecord().SetName(&m_cheatString);
-	m_context->m_saveSystem.GetActiveRecord().SetCosmetics(&GetUnk0x2244());
+	cheatString->CopyFromBufSelection(m_unk0x1f1c.GetBuffer(), 0);
+	ActiveRecordBuffer& record = m_context->m_saveSystem.GetActiveRecord();
+	record.SetName(cheatString);
+	record.SetCosmetics(&GetUnk0x2244());
 
-	if (m_context->m_modelBuilder.GetUnk0x78() == 0) {
+	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
 		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
 			&m_context->m_saveSystem.GetActiveRecord()
 		);
@@ -271,9 +274,11 @@ void DriverLicenseScreen::VTable0x84()
 	}
 }
 
-// STUB: LEGORACERS 0x0047b850
+// FUNCTION: LEGORACERS 0x0047b850
 void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 {
+	LegoBool32 updateRecord = FALSE;
+
 	if (p_source == &m_unk0x798) {
 		LegoS32 colorIndex = GetUnk0x2244().m_expressionIndex;
 		colorIndex++;
@@ -287,14 +292,12 @@ void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 		else {
 			m_unk0x360 = 3;
 		}
-		FUN_0047b750();
-		ApplyCheatCode();
+		updateRecord = TRUE;
 	}
 	else if (p_source == &m_unk0xa88) {
 		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
 			m_unk0x360 = 0x0f;
-			FUN_0047b750();
-			ApplyCheatCode();
+			updateRecord = TRUE;
 		}
 		else if (FUN_0047b580()) {
 			FUN_0047fdc0(&m_unk0x1068, 0x99, 0x46, 0x20);
@@ -311,6 +314,11 @@ void DriverLicenseScreen::VTable0x38(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0x1358) {
 		m_unk0x284->FUN_00468cf0();
+	}
+
+	if (updateRecord) {
+		FUN_0047b750();
+		ApplyCheatCode();
 	}
 
 	if (m_unk0x360 != 0xffff) {

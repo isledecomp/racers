@@ -2,6 +2,8 @@
 #include "input/directinputdevice.h"
 #include "race/racesession.h"
 
+#include <string.h>
+
 DECOMP_SIZE_ASSERT(RaceSession::Field0x23c, 0x1c)
 
 // STUB: LEGORACERS 0x00427900
@@ -25,16 +27,13 @@ RaceSession::Field0x23c::~Field0x23c()
 }
 
 // STUB: LEGORACERS 0x00427960
-LegoS32 RaceSession::Field0x23c::FUN_00427960()
+void RaceSession::Field0x23c::FUN_00427960()
 {
 	m_unk0x04 = NULL;
-	m_unk0x08[0] = NULL;
-	m_unk0x08[1] = NULL;
+	memset(m_unk0x08, 0, sizeof(m_unk0x08));
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
 	m_unk0x18 = 1;
-
-	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00427980

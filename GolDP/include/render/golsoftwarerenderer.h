@@ -92,7 +92,7 @@ public:
 	MipmapLevel* GetUnk0x34() { return m_unk0x34; }
 	void SetUnk0x34(MipmapLevel* p_unk0x34) { m_unk0x34 = p_unk0x34; }
 
-private:
+	// private: // TODO: temporary
 	void DrawCommandList();
 
 	LegoU8* m_pixels;                                       // 0x00
@@ -100,7 +100,7 @@ private:
 	LegoU32 m_width;                                        // 0x08
 	LegoU32 m_height;                                       // 0x0c
 	LegoU8 m_bitsPerPixel;                                  // 0x10
-	LegoU8 m_pixelFormat;                                   // 0x11
+	LegoS8 m_pixelFormat;                                   // 0x11
 	LegoU8 m_bytesPerPixel;                                 // 0x12
 	undefined m_unk0x13[0x20 - 0x13];                       // 0x13
 	TriangleRasterizerCallback m_currentTriangleRasterizer; // 0x20

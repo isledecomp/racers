@@ -17,8 +17,8 @@ public:
 		enum {
 			e_pieces = 0x27,
 			e_indices = 0x28,
-			e_colors = 0x29,
-			e_colorTriples = 0x2a,
+			e_positions = 0x29,
+			e_normals = 0x2a,
 			e_textureCoordinates = 0x2b,
 			e_shapes = 0x2c,
 		};
@@ -84,10 +84,10 @@ public:
 	};
 
 	// SIZE 0x06
-	struct Color {
-		LegoS16 m_red;   // 0x00
-		LegoS16 m_green; // 0x02
-		LegoS16 m_blue;  // 0x04
+	struct Position {
+		LegoS16 m_x; // 0x00
+		LegoS16 m_y; // 0x02
+		LegoS16 m_z; // 0x04
 	};
 
 	// SIZE 0x04
@@ -103,10 +103,10 @@ public:
 
 	void Destroy();
 	LegoS32 Load(const LegoChar* p_filename, undefined4 p_binary);
-	LegoBool32 IsColorBlack(LegoS32 p_index) const;
-	void GetColor(LegoS32 p_index, LegoFloat* p_red, LegoFloat* p_green, LegoFloat* p_blue) const;
+	LegoBool32 IsOriginPosition(LegoS32 p_index) const;
+	void GetPosition(LegoS32 p_index, LegoFloat* p_x, LegoFloat* p_y, LegoFloat* p_z) const;
 	void GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, LegoFloat* p_v) const;
-	const LegoU8* GetColorTriple(LegoS32 p_index) const { return &m_colorTriples[p_index * 3]; }
+	const LegoU8* GetNormalVector(LegoS32 p_index) const { return &m_normals[p_index * 3]; }
 	const LegoU16* GetIndexCursor(LegoU32 p_index) const { return &m_indices[p_index]; }
 	PieceRecord* FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant);
 	PieceRecord* FindPieceRecordByName(LegoChar* p_name) const;
@@ -123,10 +123,10 @@ private:
 	ShapeCell* m_shapeData;                  // 0x10
 	LegoS32 m_indexCount;                    // 0x14
 	LegoU16* m_indices;                      // 0x18
-	LegoS32 m_colorCount;                    // 0x1c
-	Color* m_colors;                         // 0x20
-	LegoS32 m_colorTripleCount;              // 0x24
-	LegoU8* m_colorTriples;                  // 0x28
+	LegoS32 m_positionCount;                 // 0x1c
+	Position* m_positions;                   // 0x20
+	LegoS32 m_normalCount;                   // 0x24
+	LegoU8* m_normals;                       // 0x28
 	LegoS32 m_textureCoordinateCount;        // 0x2c
 	TextureCoordinate* m_textureCoordinates; // 0x30
 	LegoS32 m_maxHighPieceOffset;            // 0x34

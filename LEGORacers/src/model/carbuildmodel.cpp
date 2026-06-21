@@ -1710,11 +1710,11 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 					primitive->m_vertexCount = 4;
 
 					LegoS32 coordinateIndex = *cursor++;
-					if (!library->IsColorBlack(coordinateIndex)) {
-						primitive->m_flags &= ~c_buildPrimitiveFlagAllBlack;
+					if (!library->IsOriginPosition(coordinateIndex)) {
+						primitive->m_flags &= ~c_buildPrimitiveFlagAllOrigin;
 					}
 
-					library->GetColor(coordinateIndex, &sourceX, &sourceY, &sourceZ);
+					library->GetPosition(coordinateIndex, &sourceX, &sourceY, &sourceZ);
 
 					switch (rotation) {
 					case 0:
@@ -1773,7 +1773,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 						normalIndex = *cursor++;
 					}
 
-					const LegoU8* normal = library->GetColorTriple(normalIndex);
+					const LegoU8* normal = library->GetNormalVector(normalIndex);
 					LegoS8 normalX = static_cast<LegoS8>(normal[0]);
 					LegoS8 normalY = static_cast<LegoS8>(normal[1]);
 					vertex.m_normalZ = static_cast<LegoS8>(normal[2]);
@@ -1858,11 +1858,11 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 					LegoU16* vertexIndex = primitive->m_vertexIndices;
 					for (i = 0; i < 3; i++) {
 						LegoS32 coordinateIndex = *cursor++;
-						if (!library->IsColorBlack(coordinateIndex)) {
-							primitive->m_flags &= ~c_buildPrimitiveFlagAllBlack;
+						if (!library->IsOriginPosition(coordinateIndex)) {
+							primitive->m_flags &= ~c_buildPrimitiveFlagAllOrigin;
 						}
 
-						library->GetColor(coordinateIndex, &sourceX, &sourceY, &sourceZ);
+						library->GetPosition(coordinateIndex, &sourceX, &sourceY, &sourceZ);
 
 						switch (rotation) {
 						case 0:
@@ -1903,7 +1903,7 @@ LegoS16 CarBuildModel::EmitPieceGeometry(
 							normalIndex = *cursor++;
 						}
 
-						const LegoU8* normal = library->GetColorTriple(normalIndex);
+						const LegoU8* normal = library->GetNormalVector(normalIndex);
 						LegoS8 normalX = static_cast<LegoS8>(normal[0]);
 						LegoS8 normalY = static_cast<LegoS8>(normal[1]);
 						vertex.m_normalZ = static_cast<LegoS8>(normal[2]);
@@ -2243,7 +2243,7 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 	LegoFloat minX;
 	LegoFloat minY;
 	LegoFloat minZ;
-	library->GetColor(indexCursor[1], &minX, &minY, &minZ);
+	library->GetPosition(indexCursor[1], &minX, &minY, &minZ);
 	LegoFloat maxX = minX;
 	LegoFloat maxY = minY;
 	LegoFloat maxZ = minZ;
@@ -2254,7 +2254,7 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 		LegoU32 command = *indexCursor++;
 		LegoS32 mode = command & c_indexCommandModeMask;
 		if (mode == c_indexCommandQuad) {
-			library->GetColor(*indexCursor++, &x, &y, &z);
+			library->GetPosition(*indexCursor++, &x, &y, &z);
 
 			if (minX > x) {
 				minX = x;
@@ -2288,7 +2288,7 @@ void CarBuildModel::ComputePieceBounds(LegoPieceLibrary::PieceRecord* p_pieceRec
 			LegoBool32 hasSharedIndex = (command >> 15) & 1;
 
 			for (LegoS32 i = 0; i < 3; i++) {
-				library->GetColor(*indexCursor++, &x, &y, &z);
+				library->GetPosition(*indexCursor++, &x, &y, &z);
 
 				if (minX > x) {
 					minX = x;
@@ -2394,7 +2394,7 @@ void CarBuildModel::UpdateOffset(LegoBool32 p_restoreCachedOffset)
 		library = pieceRecord->m_library;
 		partType = pieceRecord->GetPartType();
 		if (partType != 0xffff) {
-			library->GetColor(partType, &m_offsetX, &m_offsetY, &m_offsetZ);
+			library->GetPosition(partType, &m_offsetX, &m_offsetY, &m_offsetZ);
 			m_offsetZ *= g_carBuildModelNegativeHeightScale;
 			m_offsetX = -m_offsetX;
 			m_offsetY = -m_offsetY;

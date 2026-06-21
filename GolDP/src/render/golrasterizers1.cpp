@@ -126,6 +126,30 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		}
 		else {
 			puVar3 = pMVar2->m_paletteData;
+			if (puVar3) {
+				if ((uVar1 & 0x200) != 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003e590;
+					p_renderer->m_spanRasterizer = FUN_10033890;
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_triangleRasterizer = FUN_1003c780;
+				p_renderer->m_spanRasterizer = FUN_10033890;
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			else {
+				if ((uVar1 & 0x200) != 0) {
+					p_renderer->m_triangleRasterizer = FUN_1003ee90;
+					p_renderer->m_spanRasterizer = FUN_100336d0;
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_triangleRasterizer = FUN_1003cf40;
+				p_renderer->m_spanRasterizer = FUN_100336d0;
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
 		}
 	}
 	else {
@@ -144,20 +168,69 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		}
 		iVar4 = (int) pMVar2->m_unk0x13;
 		if (iVar4 != 0) {
-			if (pMVar2->m_paletteData == NULL) {
-				if ((uVar1 & 0x200) == 0) {
-					p_renderer->m_triangleRasterizer = FUN_1003c780;
+			if (pMVar2->m_paletteData) {
+				if ((uVar1 & 4) != 0) {
+					if (uVar1 & 0x200) {
+						p_renderer->m_triangleRasterizer = FUN_1003d700;
+					}
+					else {
+						p_renderer->m_triangleRasterizer = FUN_1003ba30;
+					}
+					if ((uVar1 & 2) != 0) {
+						p_renderer->m_spanRasterizer = g_spanRasterizers[84 - iVar4];
+						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+						return;
+					}
+					// LINE: GOLDP 0x10032f55
+					p_renderer->m_spanRasterizer = g_spanRasterizers[74 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				if ((uVar1 & 8) == 0) {
+					if (uVar1 & 0x200) {
+						p_renderer->m_triangleRasterizer = FUN_1003e590;
+					}
+					else {
+						p_renderer->m_triangleRasterizer = FUN_1003c780;
+					}
+					if ((uVar1 & 2) != 0) {
+						p_renderer->m_spanRasterizer = g_spanRasterizers[26 - iVar4];
+						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+						return;
+					}
+					p_renderer->m_spanRasterizer = g_spanRasterizers[20 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				if (uVar1 & 0x200) {
+					p_renderer->m_triangleRasterizer = FUN_1003d700;
 				}
 				else {
+					p_renderer->m_triangleRasterizer = FUN_1003ba30;
+				}
+				if (g_cpuSupportsMMX != 0) {
+					p_renderer->m_spanRasterizer = g_spanRasterizers[50 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				p_renderer->m_spanRasterizer = g_spanRasterizers[38 - iVar4];
+				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				return;
+			}
+			else {
+				if (uVar1 & 0x200) {
 					p_renderer->m_triangleRasterizer = FUN_1003e590;
 				}
+				else {
+					p_renderer->m_triangleRasterizer = FUN_1003c780;
+				}
 				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
-					p_renderer->m_spanRasterizer = g_spanRasterizers[0x3e - iVar4];
+					p_renderer->m_spanRasterizer = g_spanRasterizers[62 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					return;
 				}
 				if ((uVar1 & 2) != 0) {
-					p_renderer->m_spanRasterizer = g_spanRasterizers[0xe - iVar4];
+					p_renderer->m_spanRasterizer = g_spanRasterizers[14 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					return;
 				}
@@ -165,80 +238,34 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				return;
 			}
-			if ((uVar1 & 4) != 0) {
-				if ((uVar1 & 0x200) == 0) {
-					p_renderer->m_triangleRasterizer = FUN_1003ba30;
-				}
-				else {
-					p_renderer->m_triangleRasterizer = FUN_1003d700;
-				}
-				if ((uVar1 & 2) != 0) {
-					p_renderer->m_spanRasterizer = g_spanRasterizers[84 - iVar4];
-					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-					return;
-				}
-				p_renderer->m_spanRasterizer = g_spanRasterizers[0x4a - iVar4];
-				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-				return;
-			}
-			if ((uVar1 & 8) == 0) {
-				if ((uVar1 & 0x200) == 0) {
-					p_renderer->m_triangleRasterizer = FUN_1003c780;
-				}
-				else {
-					p_renderer->m_triangleRasterizer = FUN_1003e590;
-				}
-				if ((uVar1 & 2) != 0) {
-					p_renderer->m_spanRasterizer = g_spanRasterizers[0x1a - iVar4];
-					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-					return;
-				}
-				p_renderer->m_spanRasterizer = g_spanRasterizers[0x14 - iVar4];
-				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-				return;
-			}
-			if ((uVar1 & 0x200) == 0) {
-				p_renderer->m_triangleRasterizer = FUN_1003ba30;
-			}
-			else {
-				p_renderer->m_triangleRasterizer = FUN_1003d700;
-			}
-			if (g_cpuSupportsMMX != 0) {
-				p_renderer->m_spanRasterizer = g_spanRasterizers[0x32 - iVar4];
-				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-				return;
-			}
-			p_renderer->m_spanRasterizer = g_spanRasterizers[0x26 - iVar4];
-			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-			return;
 		}
 		puVar3 = pMVar2->m_paletteData;
 	}
 
-	if (puVar3) {
-		if ((uVar1 & 0x200) != 0) {
-			p_renderer->m_triangleRasterizer = FUN_1003e590;
-			p_renderer->m_spanRasterizer = FUN_10033890;
-			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-			return;
-		}
-		p_renderer->m_triangleRasterizer = FUN_1003c780;
-		p_renderer->m_spanRasterizer = FUN_10033890;
-		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-		return;
-	}
-	else {
-		if ((uVar1 & 0x200) != 0) {
-			p_renderer->m_triangleRasterizer = FUN_1003ee90;
-			p_renderer->m_spanRasterizer = FUN_100336d0;
-			p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-			return;
-		}
-		p_renderer->m_triangleRasterizer = FUN_1003cf40;
-		p_renderer->m_spanRasterizer = FUN_100336d0;
-		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-		return;
-	}
+	// if (puVar3) {
+	// 	if ((uVar1 & 0x200) != 0) {
+	// 		p_renderer->m_triangleRasterizer = FUN_1003e590;
+	// 		p_renderer->m_spanRasterizer = FUN_10033890;
+	// 		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+	// 		return;
+	// 	}
+	// 	p_renderer->m_triangleRasterizer = FUN_1003c780;
+	// 	p_renderer->m_spanRasterizer = FUN_10033890;
+	// 	p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+	// 	return;
+	// }
+	// else {
+	// 	if ((uVar1 & 0x200) != 0) {
+	// 		p_renderer->m_triangleRasterizer = FUN_1003ee90;
+	// 		p_renderer->m_spanRasterizer = FUN_100336d0;
+	// 		p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+	// 		return;
+	// 	}
+	// 	p_renderer->m_triangleRasterizer = FUN_1003cf40;
+	// 	p_renderer->m_spanRasterizer = FUN_100336d0;
+	// 	p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+	// 	return;
+	// }
 }
 
 // STUB: GOLDP 0x100330d0

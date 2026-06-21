@@ -80,14 +80,13 @@ void RaceSession::Field0x32c4::FUN_0045e470(LegoU32 p_elapsedMs)
 			for (LegoU32 racerIndex = 0; racerIndex < sizeOfArray(m_unk0x04); racerIndex++) {
 				LegoU32 entryIndex = 0;
 				if (m_unk0x38 > 0) {
-					LegoS32 soundOffset = 0;
 					do {
 						LegoU8 value = m_unk0x20[racerIndex][entryIndex];
 						LegoU8* timer = &m_unk0x20[racerIndex][entryIndex];
 						if (value > 0) {
 							if (elapsedStep >= value) {
 								*timer = 0;
-								m_unk0x04[racerIndex]->m_unk0x3e8.FUN_00448930(soundOffset + m_unk0x1c->m_unk0x0a8);
+								m_unk0x04[racerIndex]->m_unk0x3e8.FUN_00448930(m_unk0x1c->m_unk0x0a8 + entryIndex);
 								elapsedStep = savedElapsedStep;
 							}
 							else {
@@ -96,7 +95,6 @@ void RaceSession::Field0x32c4::FUN_0045e470(LegoU32 p_elapsedMs)
 						}
 
 						++entryIndex;
-						soundOffset += c_unk0x0a8Stride;
 					} while (entryIndex < m_unk0x38);
 				}
 			}
@@ -126,7 +124,7 @@ void RaceSession::Field0x32c4::FUN_0045e520(RaceState::Racer* p_racer, LegoU32 p
 	}
 
 	if (!field->m_unk0x20[racerIndex][p_unk0x08]) {
-		target->m_unk0x3e8.FUN_004488e0(field->m_unk0x1c->m_unk0x0a8 + (p_unk0x08 * c_unk0x0a8Stride));
+		target->m_unk0x3e8.FUN_004488e0(field->m_unk0x1c->m_unk0x0a8 + p_unk0x08);
 	}
 
 	LegoU32 result = 0;

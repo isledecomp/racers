@@ -169,7 +169,7 @@ void RaceSession::FUN_00431bd0()
 	m_timeRaceManager = NULL;
 }
 
-// STUB: LEGORACERS 0x00431e00
+// FUNCTION: LEGORACERS 0x00431e00
 LegoS32 RaceSession::Initialize(
 	LegoRacers::Context* p_context,
 	const LegoChar* p_raceName,
@@ -204,6 +204,12 @@ LegoS32 RaceSession::Initialize(
 		case c_rabToken0x27:
 			strcpy(&m_unk0x69, parser->ReadStringWithMaxLength(0x0c));
 			break;
+		case c_rabToken0x42:
+			strcpy(&m_unk0x1a1, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3b:
+			strcpy(&m_unk0x76, parser->ReadStringWithMaxLength(0x0c));
+			break;
 		case c_rabToken0x28:
 			m_unk0x204.m_x = parser->ReadFloat();
 			m_unk0x204.m_y = parser->ReadFloat();
@@ -216,6 +222,12 @@ LegoS32 RaceSession::Initialize(
 			m_unk0x1f8.m_x = parser->ReadFloat();
 			m_unk0x1f8.m_y = parser->ReadFloat();
 			m_unk0x1f8.m_z = parser->ReadFloat();
+			break;
+		case c_rabToken0x49:
+			strncpy(&m_unk0x1ef, parser->ReadStringWithMaxLength(8), 8);
+			break;
+		case c_rabToken0x40:
+			strcpy(&m_unk0x83, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x2b:
 			strcpy(&m_unk0x9d, parser->ReadStringWithMaxLength(0x0c));
@@ -249,21 +261,8 @@ LegoS32 RaceSession::Initialize(
 		case c_rabToken0x34:
 			strcpy(&m_unk0xeb, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x37:
-			strcpy(&m_unk0x112, parser->ReadStringWithMaxLength(0x0c));
-			break;
-		case c_rabToken0x38:
-			strcpy(&m_unk0x11f, parser->ReadStringWithMaxLength(0x0c));
-			break;
-		case c_rabToken0x39:
-			strcpy(&m_unk0xf8, parser->ReadStringWithMaxLength(0x0c));
-			break;
-		case c_rabToken0x3a:
-			strcpy(&m_unk0x12c, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0x139, parser->ReadStringWithMaxLength(0x0c));
-			break;
-		case c_rabToken0x3b:
-			strcpy(&m_unk0x76, parser->ReadStringWithMaxLength(0x0c));
+		case c_rabToken0x41:
+			strcpy(&m_unk0x194, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x3c:
 			strcpy(&m_unk0x146, parser->ReadStringWithMaxLength(0x0c));
@@ -274,14 +273,21 @@ LegoS32 RaceSession::Initialize(
 		case c_rabToken0x3f:
 			strcpy(&m_unk0x160, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x40:
-			strcpy(&m_unk0x83, parser->ReadStringWithMaxLength(0x0c));
+		case c_rabToken0x37:
+			strcpy(&m_unk0x112, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x41:
-			strcpy(&m_unk0x194, parser->ReadStringWithMaxLength(0x0c));
+		case c_rabToken0x38:
+			strcpy(&m_unk0x11f, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x42:
-			strcpy(&m_unk0x1a1, parser->ReadStringWithMaxLength(0x0c));
+		case c_rabToken0x45:
+			strcpy(&m_unk0x90, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x3a:
+			strcpy(&m_unk0x12c, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0x139, parser->ReadStringWithMaxLength(0x0c));
+			break;
+		case c_rabToken0x39:
+			strcpy(&m_unk0xf8, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x43:
 			strcpy(&m_unk0x1ae, parser->ReadStringWithMaxLength(0x0c));
@@ -289,21 +295,15 @@ LegoS32 RaceSession::Initialize(
 		case c_rabToken0x44:
 			strcpy(&m_unk0x1bb, parser->ReadStringWithMaxLength(0x0c));
 			break;
-		case c_rabToken0x45:
-			strcpy(&m_unk0x90, parser->ReadStringWithMaxLength(0x0c));
+		case c_rabToken0x48:
+			strcpy(&m_unk0x1c8, parser->ReadStringWithMaxLength(0x0c));
+			strcpy(&m_unk0x1d5, parser->ReadStringWithMaxLength(0x0c));
 			break;
 		case c_rabToken0x46:
 			m_unk0x2abc = parser->ReadFloat();
 			m_unk0x2ac4 = parser->ReadFloat();
 			m_unk0x2ac0 = parser->ReadFloat();
 			m_unk0x2ac8 = parser->ReadFloat();
-			break;
-		case c_rabToken0x48:
-			strcpy(&m_unk0x1c8, parser->ReadStringWithMaxLength(0x0c));
-			strcpy(&m_unk0x1d5, parser->ReadStringWithMaxLength(0x0c));
-			break;
-		case c_rabToken0x49:
-			strncpy(&m_unk0x1ef, parser->ReadStringWithMaxLength(8), 8);
 			break;
 		case c_rabToken0x4a:
 			strcpy(&m_unk0x1e2, parser->ReadStringWithMaxLength(0x0c));
@@ -1042,7 +1042,7 @@ void RaceSession::FUN_00434000()
 	} while (--remaining);
 }
 
-// STUB: LEGORACERS 0x00434170
+// FUNCTION: LEGORACERS 0x00434170
 void RaceSession::FUN_00434170()
 {
 	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
@@ -1071,9 +1071,8 @@ void RaceSession::FUN_00434170()
 			currentCamera->GetTransform()->SetPosition(&m_unk0x1f8);
 			currentCamera->m_flags |= GolCamera::c_flagBit0;
 
-			currentCamera = m_unk0x2acc[i];
-			currentCamera->GetTransform()->VTable0x24(&m_unk0x204, &m_unk0x210);
-			currentCamera->m_flags |= GolCamera::c_flagBit0;
+			m_unk0x2acc[i]->GetTransform()->VTable0x24(&m_unk0x204, &m_unk0x210);
+			m_unk0x2acc[i]->m_flags |= GolCamera::c_flagBit0;
 
 			Rect viewport;
 			if (!m_unk0x3354) {
@@ -1083,19 +1082,19 @@ void RaceSession::FUN_00434170()
 				viewport.m_bottom = height;
 			}
 			else {
-				if (i != 0) {
-					if (i == 1) {
-						viewport.m_left = 0;
-						viewport.m_top = height >> 1;
-						viewport.m_right = width;
-						viewport.m_bottom = height;
-					}
-				}
-				else {
+				switch (i) {
+				case 0:
 					viewport.m_left = 0;
 					viewport.m_top = 0;
 					viewport.m_right = width;
 					viewport.m_bottom = height >> 1;
+					break;
+				case 1:
+					viewport.m_left = 0;
+					viewport.m_top = height >> 1;
+					viewport.m_right = width;
+					viewport.m_bottom = height;
+					break;
 				}
 			}
 

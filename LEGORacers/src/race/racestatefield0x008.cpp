@@ -1002,7 +1002,7 @@ void RaceState::Racer::Field0x008::FUN_0045b640(Racer* p_racer)
 	}
 }
 
-// FUNCTION: LEGORACERS 0x0045b690
+// FUNCTION: LEGORACERS 0x0045b690 FOLDED
 void RaceState::Racer::Field0x008::FUN_0045b690(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_unk0x188d; i++) {
@@ -1048,6 +1048,7 @@ GolAnimatedEntity* RaceState::Racer::Field0x008::FUN_0045b9e0()
 	return &m_unk0x0a4[index];
 }
 
+// FUNCTION: LEGORACERS 0x0045ba40 FOLDED
 void RaceState::Racer::Field0x008::FUN_0045ba40(GolAnimatedEntity* p_entity)
 {
 	LegoS32 index = p_entity - m_unk0x0a4;

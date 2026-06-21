@@ -23,6 +23,8 @@
 // SIZE 0x4bc8
 class MenuGameContext {
 public:
+	~MenuGameContext();
+
 	LegoRacers::Context* m_context;               // 0x00
 	StackOfLegoU16 m_menuStack;                   // 0x04
 	MenuInputHandler m_inputBindings;             // 0x10

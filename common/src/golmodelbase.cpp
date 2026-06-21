@@ -442,13 +442,14 @@ void GolModelBase::VTable0x40()
 	m_unk0x10->VTable0x38();
 }
 
-// STUB: LEGORACERS 0x00411090
+// FUNCTION: LEGORACERS 0x00411090
 void GolModelBase::FUN_00411090()
 {
+	IGdbModelIndexArray0x8* indexArray = NULL;
 	GdbVertexArray0xc* vertexArray = NULL;
 	VTable0x28(&vertexArray);
 
-	LegoU16 vertexCount = vertexArray->GetCount();
+	LegoU32 vertexCount = vertexArray->GetCount();
 	LegoU32 i;
 	for (i = 0; i < vertexCount; i++) {
 		GolVec3 vertex;
@@ -459,7 +460,6 @@ void GolModelBase::FUN_00411090()
 
 	VTable0x2c(1, TRUE);
 
-	IGdbModelIndexArray0x8* indexArray = NULL;
 	VTable0x30(&indexArray);
 
 	GdbModelIndexArray0xc* modelIndexArray = static_cast<GdbModelIndexArray0xc*>(indexArray);

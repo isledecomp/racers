@@ -266,3 +266,12 @@ void CmbModelPartData0x18::FUN_0040ea20()
 		m_frames[i].m_u = -m_frames[i].m_u;
 	}
 }
+
+// FUNCTION: LEGORACERS 0x0040ea80
+void CmbModelPartData0x18::FUN_0040ea80(LegoU32 p_index, GolVec4* p_dest) const
+{
+	p_dest->m_x = m_frames[p_index].m_x;
+	p_dest->m_y = m_frames[p_index].m_y;
+	p_dest->m_z = m_frames[p_index].m_z;
+	p_dest->m_u = m_frames[p_index].m_u;
+}

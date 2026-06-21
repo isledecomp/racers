@@ -6,6 +6,12 @@
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270, 0x270)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x34, 0x90)
 
+// GLOBAL: LEGORACERS 0x004b0150
+LegoFloat g_unk0x004b0150 = 80.0f;
+
+// GLOBAL: LEGORACERS 0x004b0154
+LegoFloat g_unk0x004b0154 = 200.0f;
+
 // GLOBAL: LEGORACERS 0x004b015c
 LegoFloat g_unk0x004b015c = 180.0f;
 
@@ -50,11 +56,6 @@ RaceSession::Field0x6dc::Field0x270::~Field0x270()
 {
 	FUN_004214b0();
 	m_unk0x204.Destroy();
-}
-
-// FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x6dc::Field0x270::VTable0x00(LegoEventQueue::CallbackData*)
-{
 }
 
 void RaceSession::Field0x6dc::Field0x270::VTable0x04(undefined4 p_flags)
@@ -385,6 +386,90 @@ void RaceSession::Field0x6dc::Field0x270::FUN_00421ae0(GolD3DRenderDevice* p_ren
 		p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_unk0x23c), 2);
 		m_unk0x0e4.FUN_00415a40(p_renderer);
 		p_renderer->ClearAlphaOverride();
+	}
+}
+
+// STUB: LEGORACERS 0x00421c00
+void RaceSession::Field0x6dc::Field0x270::VTable0x00(LegoEventQueue::CallbackData* p_data)
+{
+	LegoU32 mode = m_unk0x22c;
+	if (!mode) {
+		return;
+	}
+
+	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+	if (racer == m_unk0x21c) {
+		return;
+	}
+
+	LegoU8 racerFlags = static_cast<LegoU8>(racer->m_unk0xd04);
+	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+	if (racerFlags & c_racerFlags0xd04Bit0) {
+		return;
+	}
+
+	mode--;
+	if (mode) {
+		if (--mode) {
+			return;
+		}
+
+		if ((racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit7) &&
+			racer->m_unk0xd08 != 2) {
+			return;
+		}
+
+		GolVec3 direction = field0x3e8->m_unk0x168;
+		racer->FUN_004397a0();
+
+		GolVec3 impulse;
+		GolVec3* impulseA = &impulse;
+		GolVec3* impulseB = &impulse;
+		impulseA->m_y = 0.0f;
+		impulseA->m_z = 0.0f;
+		field0x3e8->m_unk0x008.m_x = 0.0f;
+		field0x3e8->m_unk0x008.m_y = impulseA->m_y;
+		field0x3e8->m_unk0x008.m_z = impulseA->m_z;
+
+		LegoFloat amount;
+		LegoS32 duration = static_cast<LegoS32>(m_unk0x230);
+		if (duration) {
+			LegoFloat remaining = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x238));
+			LegoFloat durationFloat = static_cast<LegoFloat>(duration);
+			amount = remaining / durationFloat;
+			amount += amount;
+
+			if (amount > 1.0f) {
+				amount = 1.0f;
+			}
+			else if (amount < 0.0f) {
+				amount = 0.0f;
+			}
+		}
+		else {
+			amount = 1.0f;
+		}
+
+		LegoFloat scale = amount * g_unk0x004b0150;
+		impulseA->m_x = direction.m_x * scale;
+		impulseA->m_y = direction.m_y * scale;
+		impulseA->m_z = direction.m_z * scale;
+
+		GolVec3 offset;
+		GolVec3* offsetPtr = &offset;
+		offsetPtr->m_x = 0.0f;
+		offsetPtr->m_y = 0.0f;
+		offsetPtr->m_z = amount * g_unk0x004b0154;
+		impulseA->m_x += offsetPtr->m_x;
+		impulseA->m_y += offsetPtr->m_y;
+		impulseA->m_z += offsetPtr->m_z;
+
+		field0x3e8->VTable0x1c(impulseA, impulseB);
+		return;
+	}
+
+	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1)) {
+		field0x3e8->VTable0x24(2.0f, 0.007f, 0);
 	}
 }
 

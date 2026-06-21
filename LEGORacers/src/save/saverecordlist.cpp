@@ -83,6 +83,24 @@ void SaveRecordList::Record::GetName(GolString* p_string) const
 	ActiveRecordBuffer::CopyBufferToString(p_string, m_data, 0x0e);
 }
 
+// FUNCTION: LEGORACERS 0x0042b3c0
+void SaveRecordList::Record::GetName(LegoChar* p_dest) const
+{
+	const LegoU8* source = m_data;
+	LegoU32 i = 0;
+	while (i < 8) {
+		undefined2 c = static_cast<undefined2>((source[1] << 8) + source[0]);
+		if (!c) {
+			p_dest[i] = '\0';
+			return;
+		}
+
+		p_dest[i] = static_cast<LegoChar>(c);
+		source += 2;
+		i++;
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0042b400
 void ActiveRecordBuffer::CopyBufferToString(GolString* p_string, const LegoU8* p_source, LegoU32 p_count)
 {

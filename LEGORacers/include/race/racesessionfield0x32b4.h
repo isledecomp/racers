@@ -4,9 +4,10 @@
 #include "decomp.h"
 #include "golmath.h"
 #include "golnametable.h"
-#include "golworldentity.h"
-#include "race/raceeventtable0x90.h"
+#include "golorientedentity.h"
 #include "types.h"
+
+class RaceEventTable0x90;
 
 class RaceSessionField0x32b4 {
 public:
@@ -123,9 +124,8 @@ public:
 	class Field0x000 {
 	public:
 		// SIZE 0x64
-		class Field0x0a8 : public GolWorldEntity {
+		class Field0x0a8 : public GolOrientedEntity {
 		public:
-			undefined m_unk0x28[0x58 - 0x28]; // 0x28
 			Field0x058* m_unk0x58;            // 0x58
 			Field0x058::Field0x18* m_unk0x5c; // 0x5c
 			LegoU32 m_unk0x60;                // 0x60

@@ -38,6 +38,7 @@ public:
 		void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
 		LegoBool32 FUN_00479510(CreateParams* p_createParams);
 		LegoBool32 FUN_00479590();
+		GolAnimatedEntity* GetPrimaryChassisEntity() const { return static_cast<GolAnimatedEntity*>(m_entities[1]); }
 
 		// SYNTHETIC: LEGORACERS 0x00479460
 		// AwardCinematicScreen::SceneEntityGroup::`scalar deleting destructor'
@@ -69,6 +70,7 @@ protected:
 	LegoBool32 FUN_00476890(SaveRecordList* p_records, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
 	LegoBool32 FUN_004768f0(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
 	LegoBool32 FUN_00476990(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 FUN_00476b00(undefined4);
 
 	SceneEntityGroup m_unk0x658;  // 0x658
 	GolAnimatedEntity m_unk0x6a8; // 0x6a8

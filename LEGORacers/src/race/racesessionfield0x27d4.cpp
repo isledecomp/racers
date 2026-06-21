@@ -343,7 +343,7 @@ void RaceSessionField0x27d4::Item::FUN_00492180(GolD3DRenderDevice* p_renderer)
 	}
 }
 
-// STUB: LEGORACERS 0x00492220
+// FUNCTION: LEGORACERS 0x00492220
 void RaceSessionField0x27d4::Item::FUN_00492220()
 {
 	LegoU32 i;
@@ -362,12 +362,11 @@ void RaceSessionField0x27d4::Item::FUN_00492220()
 	GdbVertexArray0xc* destVertices;
 	destModel->VTable0x28(&destVertices);
 
+	ColorRGBA color;
+	GolVec2 texCoord;
+	GolVec3 normal;
+	GolVec3 position;
 	for (i = 0; i < m_unk0x120[m_unk0x320].m_entry.m_unk0x90; i++) {
-		GolVec3 position;
-		GolVec2 texCoord;
-		GolVec3 normal;
-		ColorRGBA color;
-
 		sourceVertices->VTable0x14(i, &position);
 		sourceVertices->VTable0x18(i, &texCoord);
 		sourceVertices->VTable0x1c(i, &normal);
@@ -390,12 +389,15 @@ void RaceSessionField0x27d4::Item::FUN_00492220()
 
 	GdbModelIndexArray0xc* sourceIndexArray = static_cast<GdbModelIndexArray0xc*>(sourceIndexArrayBase);
 	GdbModelIndexArray0xc* destIndexArray = static_cast<GdbModelIndexArray0xc*>(destIndexArrayBase);
-	for (i = 0; i < m_unk0x120[m_unk0x320].m_entry.m_unk0x94; i++) {
-		const GdbModelIndexArray0xc::Indices* sourceIndex = sourceIndexArray->GetIndex(i);
-		GdbModelIndexArray0xc::Indices* destIndex = destIndexArray->GetMutableIndex(i);
-		destIndex->m_a = sourceIndex->m_a;
-		destIndex->m_b = sourceIndex->m_b;
-		destIndex->m_c = sourceIndex->m_c;
+	LegoU32 index = 0;
+	while (index < m_unk0x120[m_unk0x320].m_entry.m_unk0x94) {
+		LegoU32 offset = index * sizeof(GdbModelIndexArray0xc::Indices);
+		LegoU8* sourceIndexBytes = sourceIndexArray->GetIndexBytes() + offset;
+		LegoU8* destIndexBytes = destIndexArray->GetIndexBytes() + offset;
+		destIndexBytes[0] = sourceIndexBytes[0];
+		destIndexBytes[1] = sourceIndexBytes[1];
+		destIndexBytes[2] = sourceIndexBytes[2];
+		index++;
 	}
 
 	sourceModel->VTable0x34(0);

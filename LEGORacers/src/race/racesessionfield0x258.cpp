@@ -8,6 +8,25 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x258, 0x74)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x258::Field0x04, 0x70)
 
 extern const LegoChar* g_sideWinderForceFeedName;
+extern LegoFloat g_minSoundPan;
+
+// GLOBAL: LEGORACERS 0x004b0740
+extern const LegoFloat g_unk0x004b0740 = 2.5f;
+
+// GLOBAL: LEGORACERS 0x004b0744
+extern const LegoFloat g_unk0x004b0744 = 1.25f;
+
+// GLOBAL: LEGORACERS 0x004b0748
+extern const LegoFloat g_unk0x004b0748 = 8.25f;
+
+// GLOBAL: LEGORACERS 0x004b074c
+extern const LegoFloat g_unk0x004b074c = 5.0f;
+
+// GLOBAL: LEGORACERS 0x004b0750
+extern const LegoFloat g_unk0x004b0750 = 16.0f;
+
+// GLOBAL: LEGORACERS 0x004b0754
+extern const LegoFloat g_unk0x004b0754 = 1.0f;
 
 // FUNCTION: LEGORACERS 0x00430020
 RaceSession::Field0x258::Field0x258()
@@ -60,64 +79,55 @@ void RaceSession::Field0x258::FUN_00430100()
 // STUB: LEGORACERS 0x00430120
 void RaceSession::Field0x258::FUN_00430120(LegoU32 p_elapsedMs)
 {
+	LegoFloat elapsedSeconds = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.001f;
 	LegoU32 inputFlags = m_unk0x004.m_unk0x058;
-	LegoFloat limitPositive = 1.0f;
-	LegoFloat limitNegative = -1.0f;
-	LegoFloat elapsedSeconds = static_cast<LegoFloat>(p_elapsedMs) * 0.001f;
+	LegoU32 hasSteerInput = (inputFlags & c_inputFlagSteerMask) ? TRUE : FALSE;
+	LegoFloat limitNegative;
+	LegoFloat limitPositive;
 	LegoFloat turnRate;
 	LegoFloat delta;
 
-	if (!(m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7)) {
-		if (!(inputFlags & c_inputFlagSteerMask)) {
-			turnRate = 2.5f;
+	limitPositive = g_unk0x004b0754;
+	limitNegative = -g_unk0x004b0754;
+
+	if (m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) {
+		if (m_unk0x000->m_unk0xc70.m_unk0x030 == 1) {
+			turnRate = g_unk0x004b0750;
 		}
 		else {
-			turnRate = 1.25f;
+			turnRate = g_unk0x004b074c;
 		}
 	}
-	else if (m_unk0x000->m_unk0xc70.m_unk0x030 == 1) {
-		turnRate = 16.0f;
+	else if (hasSteerInput) {
+		turnRate = g_unk0x004b0744;
 	}
 	else {
-		turnRate = 5.0f;
+		turnRate = g_unk0x004b0740;
 	}
 
-	if (!(inputFlags & c_inputFlagSteerMask)) {
-		DirectInputDevice* source;
-		m_unk0x004.FUN_00430910(&source, 0);
-
-		LegoFloat analogValue = -source->GetAxisValue(1);
-		if (analogValue > 1.0f) {
-			analogValue = 1.0f;
-		}
-		else if (analogValue < -1.0f) {
-			analogValue = -1.0f;
-		}
-
-		if (analogValue > 0.0f) {
-			limitPositive = analogValue;
-			if (m_unk0x004.m_unk0x068 >= 0.0f) {
-				delta = ((1.0f - analogValue) * 0.5f + 0.5f) * turnRate;
+	if (hasSteerInput) {
+		if ((inputFlags & c_inputFlagSteerPositive) && !(inputFlags & c_inputFlagSteerNegative)) {
+			if (m_unk0x004.m_unk0x068 < 0.0f) {
+				delta = g_unk0x004b0748;
 			}
 			else {
-				delta = 8.25f;
+				delta = turnRate;
 			}
 		}
-		else if (analogValue < 0.0f) {
-			limitNegative = analogValue;
-			if (m_unk0x004.m_unk0x068 <= 0.0f) {
-				delta = ((analogValue + 1.0f) * 0.5f + 0.5f) * -turnRate;
+		else if (!(inputFlags & c_inputFlagSteerPositive) && (inputFlags & c_inputFlagSteerNegative)) {
+			if (m_unk0x004.m_unk0x068 > 0.0f) {
+				delta = -g_unk0x004b0748;
 			}
 			else {
-				delta = -8.25f;
+				delta = -turnRate;
 			}
 		}
 		else if (m_unk0x004.m_unk0x068 > 0.0f) {
-			delta = -8.25f;
+			delta = -g_unk0x004b0748;
 			limitNegative = 0.0f;
 		}
 		else if (m_unk0x004.m_unk0x068 < 0.0f) {
-			delta = 8.25f;
+			delta = g_unk0x004b0748;
 			limitPositive = 0.0f;
 		}
 		else {
@@ -125,33 +135,60 @@ void RaceSession::Field0x258::FUN_00430120(LegoU32 p_elapsedMs)
 			limitNegative = 0.0f;
 		}
 	}
-	else if ((inputFlags & c_inputFlagSteerPositive) && !(inputFlags & c_inputFlagSteerNegative)) {
-		if (m_unk0x004.m_unk0x068 >= 0.0f) {
-			delta = turnRate;
-		}
-		else {
-			delta = 8.25f;
-		}
-	}
-	else if (!(inputFlags & c_inputFlagSteerPositive) && (inputFlags & c_inputFlagSteerNegative)) {
-		if (m_unk0x004.m_unk0x068 <= 0.0f) {
-			delta = -turnRate;
-		}
-		else {
-			delta = -8.25f;
-		}
-	}
-	else if (m_unk0x004.m_unk0x068 > 0.0f) {
-		delta = -8.25f;
-		limitNegative = 0.0f;
-	}
-	else if (m_unk0x004.m_unk0x068 < 0.0f) {
-		delta = 8.25f;
-		limitPositive = 0.0f;
-	}
 	else {
-		delta = 0.0f;
-		limitNegative = 0.0f;
+		DirectInputDevice* source;
+		m_unk0x004.FUN_00430910(&source, 0);
+
+		LegoFloat analogValue = -source->GetAxisValue(1);
+		if (analogValue > 1.0f) {
+			analogValue = 1.0f;
+		}
+		else if (analogValue < g_minSoundPan) {
+			analogValue = g_minSoundPan;
+		}
+
+		if (analogValue > 0.0f) {
+			limitPositive = analogValue;
+			if (m_unk0x004.m_unk0x068 < 0.0f) {
+				delta = g_unk0x004b0748;
+			}
+			else {
+				delta = 1.0f - analogValue;
+				delta *= 0.5f;
+				delta += 0.5f;
+				delta *= turnRate;
+			}
+		}
+		else if (analogValue < 0.0f) {
+			limitNegative = analogValue;
+			if (m_unk0x004.m_unk0x068 > 0.0f) {
+				delta = -g_unk0x004b0748;
+			}
+			else {
+				delta = analogValue + 1.0f;
+				delta *= 0.5f;
+				delta += 0.5f;
+				delta *= -turnRate;
+			}
+		}
+		else {
+			delta = 0.0f;
+		}
+	}
+
+	if (delta == 0.0f) {
+		if (m_unk0x004.m_unk0x068 > 0.0f) {
+			delta = -g_unk0x004b0748;
+			limitNegative = 0.0f;
+		}
+		else if (m_unk0x004.m_unk0x068 < 0.0f) {
+			delta = g_unk0x004b0748;
+			limitPositive = 0.0f;
+		}
+		else {
+			limitNegative = 0.0f;
+			limitPositive = 0.0f;
+		}
 	}
 
 	m_unk0x004.m_unk0x068 += delta * elapsedSeconds;
@@ -164,7 +201,7 @@ void RaceSession::Field0x258::FUN_00430120(LegoU32 p_elapsedMs)
 	}
 
 	if (!(m_unk0x004.m_unk0x05c & c_stateControlMask)) {
-		m_unk0x000->m_unk0xc70.FUN_00420130(m_unk0x004.m_unk0x068);
+		m_unk0x000->m_unk0xc70.FUN_0041fe60(m_unk0x004.m_unk0x068);
 	}
 }
 

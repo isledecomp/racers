@@ -1,3 +1,4 @@
+#include "camera/golcamerabase.h"
 #include "race/racestate.h"
 
 extern const LegoFloat g_unk0x004b0cd4;
@@ -15,7 +16,7 @@ extern const LegoS32 g_raceStateField0x3e8ContactEntryIndices0x4b0d50[] = {2, 3,
 extern const LegoS32 g_raceStateField0x3e8ContactEntryIndices0x4b0d60[] = {1, 0, 3, 2};
 
 // FUNCTION: LEGORACERS 0x00448840
-void RaceState::Racer::Field0x3e8::FUN_00448840()
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448840()
 {
 	if (m_unk0x64c > 0.0f) {
 		LegoFloat value = m_unk0x64c / g_unk0x004b0cd4;
@@ -39,15 +40,13 @@ void RaceState::Racer::Field0x3e8::FUN_00448840()
 }
 
 // FUNCTION: LEGORACERS 0x004488e0
-LegoU32 RaceState::Racer::Field0x3e8::FUN_004488e0(LegoS32 p_unk0x04)
+LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004488e0(CollisionResource* p_unk0x04)
 {
 	LegoU32 result = m_unk0x154;
 	LegoU32 i = 0;
-	if (result) {
-		for (; i < result; i++) {
-			if (m_unk0x140[i] == p_unk0x04) {
-				return result;
-			}
+	for (; i < result; i++) {
+		if (m_unk0x140[i] == p_unk0x04) {
+			return result;
 		}
 	}
 
@@ -61,7 +60,7 @@ LegoU32 RaceState::Racer::Field0x3e8::FUN_004488e0(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00448930
-void RaceState::Racer::Field0x3e8::FUN_00448930(LegoS32 p_unk0x04)
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448930(CollisionResource* p_unk0x04)
 {
 	LegoU32 count = m_unk0x154;
 	LegoU32 index = 0;
@@ -70,7 +69,7 @@ void RaceState::Racer::Field0x3e8::FUN_00448930(LegoS32 p_unk0x04)
 			if (m_unk0x140[index] == p_unk0x04) {
 				LegoU32 nextIndex = index + 1;
 				if (nextIndex < count) {
-					LegoS32* entry = &m_unk0x140[nextIndex - 1];
+					CollisionResource** entry = &m_unk0x140[nextIndex - 1];
 					do {
 						nextIndex++;
 						*entry = entry[1];
@@ -86,7 +85,7 @@ void RaceState::Racer::Field0x3e8::FUN_00448930(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00448990
-LegoFloat RaceState::Racer::Field0x3e8::FUN_00448990()
+LegoFloat RaceState::Racer::Field0x3e8Base0x74c::FUN_00448990()
 {
 	LegoFloat result = 0.0f;
 	Field0x198* entry = m_unk0x198;
@@ -99,7 +98,7 @@ LegoFloat RaceState::Racer::Field0x3e8::FUN_00448990()
 }
 
 // FUNCTION: LEGORACERS 0x004489c0
-LegoFloat RaceState::Racer::Field0x3e8::FUN_004489c0()
+LegoFloat RaceState::Racer::Field0x3e8Base0x74c::FUN_004489c0()
 {
 	LegoFloat result = 0.0f;
 	Field0x198* entry = m_unk0x198;
@@ -112,7 +111,7 @@ LegoFloat RaceState::Racer::Field0x3e8::FUN_004489c0()
 }
 
 // FUNCTION: LEGORACERS 0x00448a50
-void RaceState::Racer::Field0x3e8::FUN_00448a50()
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448a50()
 {
 	CollisionCacheRecord* entry = m_unk0x3f4;
 	CollisionCacheRecord* end = &m_unk0x3f4[sizeOfArray(m_unk0x3f4)];
@@ -123,7 +122,7 @@ void RaceState::Racer::Field0x3e8::FUN_00448a50()
 }
 
 // FUNCTION: LEGORACERS 0x00448a70
-RaceState::Racer::Field0x3e8::CollisionCacheRecord* RaceState::Racer::Field0x3e8::FUN_00448a70(
+RaceState::Racer::Field0x3e8::CollisionCacheRecord* RaceState::Racer::Field0x3e8Base0x74c::FUN_00448a70(
 	EventContext* p_unk0x04,
 	EventRecord* p_unk0x08
 )
@@ -157,7 +156,7 @@ RaceState::Racer::Field0x3e8::CollisionCacheRecord* RaceState::Racer::Field0x3e8
 }
 
 // FUNCTION: LEGORACERS 0x00448ae0
-LegoBool32 RaceState::Racer::Field0x3e8::FUN_00448ae0(Field0x198* p_unk0x04)
+LegoBool32 RaceState::Racer::Field0x3e8Base0x74c::FUN_00448ae0(Field0x198* p_unk0x04)
 {
 	if (p_unk0x04->m_unk0x044 != NULL) {
 		if (FUN_00448b80(p_unk0x04, p_unk0x04->m_unk0x044)) {
@@ -186,7 +185,7 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_00448ae0(Field0x198* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00448b80
-LegoBool32 RaceState::Racer::Field0x3e8::FUN_00448b80(Field0x198* p_unk0x04, CollisionCacheRecord* p_unk0x08)
+LegoBool32 RaceState::Racer::Field0x3e8Base0x74c::FUN_00448b80(Field0x198* p_unk0x04, CollisionCacheRecord* p_unk0x08)
 {
 	GolVec3 scaled;
 	LegoFloat start = p_unk0x08->m_unk0x000.m_unk0x24.m_z * p_unk0x04->m_unk0x018.m_z;
@@ -231,7 +230,7 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_00448b80(Field0x198* p_unk0x04, Col
 }
 
 // FUNCTION: LEGORACERS 0x00448c70
-void RaceState::Racer::Field0x3e8::FUN_00448c70()
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448c70()
 {
 	GolOrientedEntity* entity = &m_unk0x0e4;
 	Field0x198* points = m_unk0x198;
@@ -265,4 +264,84 @@ void RaceState::Racer::Field0x3e8::FUN_00448c70()
 	points[2].m_unk0x00c.m_x = points[0].m_unk0x00c.m_x - lengthOffset.m_x;
 	points[2].m_unk0x00c.m_y = points[0].m_unk0x00c.m_y - lengthOffset.m_y;
 	points[2].m_unk0x00c.m_z = points[0].m_unk0x00c.m_z - lengthOffset.m_z;
+}
+
+// STUB: LEGORACERS 0x00448d90
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448d90(
+	CollisionResource* p_unk0x04,
+	LegoFloat p_unk0x08,
+	LegoFloat p_unk0x0c
+)
+{
+	const GolMatrix3& resourceOrientation = p_unk0x04->GetOrientation();
+	GolVec3 zHeight;
+	zHeight.m_x = resourceOrientation.m_m[0][2] * p_unk0x08;
+	zHeight.m_y = resourceOrientation.m_m[1][2] * p_unk0x08;
+	zHeight.m_z = resourceOrientation.m_m[2][2] * p_unk0x08;
+
+	GolVec3 zDistance;
+	zDistance.m_x = resourceOrientation.m_m[0][2] * p_unk0x0c;
+	zDistance.m_y = resourceOrientation.m_m[1][2] * p_unk0x0c;
+	zDistance.m_z = resourceOrientation.m_m[2][2] * p_unk0x0c;
+
+	Field0x198* entries = m_unk0x198;
+
+	GolVec3 center;
+	p_unk0x04->VTable0x30(entries[1].m_unk0x00c, &center);
+
+	entries[1].m_unk0x018.m_x = center.m_x + zHeight.m_x;
+	entries[1].m_unk0x018.m_y = center.m_y + zHeight.m_y;
+	entries[1].m_unk0x018.m_z = center.m_z + zHeight.m_z;
+	entries[1].m_unk0x024.m_x = center.m_x - zDistance.m_x;
+	entries[1].m_unk0x024.m_y = center.m_y - zDistance.m_y;
+	entries[1].m_unk0x024.m_z = center.m_z - zDistance.m_z;
+
+	GolVec3 row0;
+	row0.m_x = m_unk0x0e4.GetOrientation().m_m[0][0];
+	row0.m_y = m_unk0x0e4.GetOrientation().m_m[0][1];
+	row0.m_z = m_unk0x0e4.GetOrientation().m_m[0][2];
+
+	GolVec3 row1;
+	row1.m_x = m_unk0x0e4.GetOrientation().m_m[1][0];
+	row1.m_y = m_unk0x0e4.GetOrientation().m_m[1][1];
+	row1.m_z = m_unk0x0e4.GetOrientation().m_m[1][2];
+
+	GolVec3 localRow0;
+	p_unk0x04->VTable0x38(row0, &localRow0);
+
+	GolVec3 localRow1;
+	p_unk0x04->VTable0x38(row1, &localRow1);
+
+	localRow0.m_x *= m_unk0x368;
+	localRow0.m_y *= m_unk0x368;
+	localRow0.m_z *= m_unk0x368;
+	localRow1.m_x *= m_unk0x364;
+	localRow1.m_y *= m_unk0x364;
+	localRow1.m_z *= m_unk0x364;
+
+	GolVec3 corner;
+	corner.m_x = center.m_x - localRow1.m_x;
+	corner.m_y = center.m_y - localRow1.m_y;
+	corner.m_z = center.m_z - localRow1.m_z;
+
+	entries[0].m_unk0x018.m_x = corner.m_x + zHeight.m_x;
+	entries[0].m_unk0x018.m_y = corner.m_y + zHeight.m_y;
+	entries[0].m_unk0x018.m_z = corner.m_z + zHeight.m_z;
+	entries[0].m_unk0x024.m_x = corner.m_x - zDistance.m_x;
+	entries[0].m_unk0x024.m_y = corner.m_y - zDistance.m_y;
+	entries[0].m_unk0x024.m_z = corner.m_z - zDistance.m_z;
+
+	GolVec3 corner2;
+	corner2.m_x = center.m_x - localRow0.m_x;
+	corner2.m_y = center.m_y - localRow0.m_y;
+	corner2.m_z = center.m_z - localRow0.m_z;
+
+	entries[3].m_unk0x018.m_x = corner2.m_x + zHeight.m_x;
+	entries[3].m_unk0x018.m_y = corner2.m_y + zHeight.m_y;
+	entries[3].m_unk0x018.m_z = corner2.m_z + zHeight.m_z;
+	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[3].m_unk0x024);
+
+	GolCameraBase::FUN_00404580(&corner, &localRow0, &corner2);
+	GolCameraBase::FUN_00404550(&corner2, &zHeight, &entries[2].m_unk0x018);
+	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[2].m_unk0x024);
 }

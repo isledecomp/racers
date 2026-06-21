@@ -319,3 +319,104 @@ LegoBool32 AwardCinematicScreen::VTable0x78(undefined4 p_unk0x04)
 
 	return MenuSceneScreen::VTable0x78(p_unk0x04);
 }
+
+// STUB: LEGORACERS 0x00476b00
+LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
+{
+	SaveRecordList::Record* record = NULL;
+	GolName name;
+
+	do {
+		if (m_unk0x28c == c_menuWinCar) {
+			LegoRacers::Context* racersContext = m_context->m_context;
+			const LegoChar* driverName = racersContext->m_playerSetupSlots[1].m_driverName;
+			LegoChar firstChar = driverName[0];
+
+			if (firstChar) {
+				DriverCosmeticTable::Entry* driverEntry =
+					static_cast<DriverCosmeticTable::Entry*>(m_context->m_cosmeticTable.GetName(driverName));
+				ChampionDefinitionList::ChampionDefinition* championDefinition =
+					static_cast<ChampionDefinitionList::ChampionDefinition*>(
+						m_context->m_championDefinitions.GetName(driverEntry->m_unk0x1a)
+					);
+
+				SaveGame* quickBuildSave = &m_context->m_saveSystem.GetQuickBuildSave();
+				LegoBool32 found = FALSE;
+				for (LegoU32 i = 0; i < quickBuildSave->GetRecordCount() && !found; i++) {
+					record = quickBuildSave->GetRecord(i);
+
+					record->GetChassisName(name);
+					if (::strncmp(name, championDefinition->m_unk0x18, sizeof(GolName)) == 0) {
+						record->GetName(name);
+						if (::strncmp(name, "CHAMP", sizeof(name)) == 0) {
+							found = TRUE;
+						}
+					}
+				}
+
+				if (!found) {
+					break;
+				}
+			}
+			else {
+				record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
+			}
+		}
+		else {
+			record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
+		}
+
+		if (record == NULL) {
+			break;
+		}
+
+		LegoU8 carData[sizeof(SaveRecordData) - 0x2b];
+		record->CopyCarData(carData);
+
+		m_context->m_unk0x21f4.FUN_0049c7f0(carData);
+		if (!m_context->m_unk0x21f4.GetPlacedPieceCount()) {
+			break;
+		}
+
+		m_context->m_unk0x21f4.FUN_0049b740(FALSE);
+		m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+
+		SceneEntityGroup::CreateParams createParams;
+		createParams.m_unk0x0c = NULL;
+		createParams.m_chassisModels = &m_context->m_chassisModels;
+		createParams.m_unk0x04 = &m_context->m_unk0x21f4;
+		createParams.m_unk0x08 = m_context->m_unk0x21f4.GetUnk0x0c();
+
+		record->GetChassisName(name);
+		::strncpy(createParams.m_chassisName, name, sizeof(GolName));
+
+		if (!m_context->m_chassisModels.GetPrimaryModel(name)) {
+			GolHashTable::Entry* currentEntry;
+
+			if (g_hashTable) {
+				currentEntry = g_hashTable->GetCurrentEntry();
+				g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
+			}
+			else {
+				currentEntry = NULL;
+			}
+
+			GolAnimatedEntity* primary;
+			GolAnimatedEntity* secondary;
+			m_context->m_chassisModels.InstantiateModels(name, &primary, &secondary);
+
+			if (g_hashTable) {
+				g_hashTable->SetCurrentEntry(currentEntry);
+			}
+		}
+
+		m_unk0x658.FUN_00479510(&createParams);
+
+		GolAnimatedEntity* entity = m_unk0x658.GetPrimaryChassisEntity();
+		entity->SetFlags(entity->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
+
+		return TRUE;
+	} while (FALSE);
+
+	return FALSE;
+}

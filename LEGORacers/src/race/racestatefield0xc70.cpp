@@ -5,10 +5,20 @@
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
 extern LegoFloat g_carBuildPreviewMouseScale;
+extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_violetShoalTwo;
+
+// GLOBAL: LEGORACERS 0x004b005c
+extern const LegoFloat g_unk0x004b005c = 0.025f;
+
+// GLOBAL: LEGORACERS 0x004b0060
+extern const LegoFloat g_unk0x004b0060 = 0.00025f;
 
 // GLOBAL: LEGORACERS 0x004b0064
 extern const LegoFloat g_unk0x004b0064 = 54.0f;
+
+// GLOBAL: LEGORACERS 0x004b0068
+extern const LegoFloat g_unk0x004b0068 = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b006c
 extern const LegoFloat g_unk0x004b006c = 0.04f;
@@ -24,6 +34,12 @@ extern const LegoFloat g_unk0x004b007c = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004c4810
 LegoFloat g_unk0x004c4810;
+
+// FUNCTION: LEGORACERS 0x0041fb50
+RaceState::Racer::Field0xc70::Field0xc70()
+{
+	Reset();
+}
 
 // FUNCTION: LEGORACERS 0x0041fb60
 RaceState::Racer::Field0xc70::~Field0xc70()
@@ -66,10 +82,10 @@ void RaceState::Racer::Field0xc70::Reset()
 // FUNCTION: LEGORACERS 0x0041fbd0
 void RaceState::Racer::Field0xc70::FUN_0041fbd0(Field0x3e8* p_unk0x04)
 {
-	if (m_field0x000) {
+	if (m_unk0x000) {
 		Destroy();
 	}
-	m_field0x000 = p_unk0x04;
+	m_unk0x000 = p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x0041fc00
@@ -149,10 +165,10 @@ void RaceState::Racer::Field0xc70::FUN_0041fd60(LegoU32)
 // FUNCTION: LEGORACERS 0x0041fdb0
 void RaceState::Racer::Field0xc70::FUN_0041fdb0(LegoU32 p_elapsedMs)
 {
-	Field0x000* field0x000 = m_unk0x000;
+	Field0x3e8* field0x000 = m_unk0x000;
 	m_unk0x028 += p_elapsedMs;
 
-	if (field0x000->m_flags0x6c0 & Field0x000::c_flags0x6c0Bit1) {
+	if (field0x000->m_flags0x6c0 & Field0x3e8::c_flags0x6c0Bit1) {
 		LegoU32 flags = m_unk0x014;
 		m_unk0x028 = 0;
 		m_unk0x014 = flags & ~c_flags0x014Bit5;
@@ -174,6 +190,26 @@ void RaceState::Racer::Field0xc70::FUN_0041fdb0(LegoU32 p_elapsedMs)
 			m_unk0x028 = 0;
 			m_unk0x014 = flags | c_flags0x014Bit5;
 		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0041fe60
+void RaceState::Racer::Field0xc70::FUN_0041fe60(LegoFloat p_unk0x04)
+{
+	if (m_unk0x014 & c_flags0x014Bit4) {
+		p_unk0x04 = -p_unk0x04;
+	}
+
+	p_unk0x04 *= m_unk0x000->m_unk0x728;
+	LegoFloat value = (g_unk0x004b005c - g_unk0x004b0060) * p_unk0x04;
+	if (p_unk0x04 > 0.0f) {
+		m_unk0x00c = 1.0f / (g_unk0x004b0060 + value);
+	}
+	else if (p_unk0x04 < 0.0f) {
+		m_unk0x00c = 1.0f / (value - g_unk0x004b0060);
+	}
+	else {
+		m_unk0x00c = 0.0f;
 	}
 }
 
@@ -255,33 +291,27 @@ void RaceState::Racer::Field0xc70::FUN_0041fee0()
 	m_unk0x000->FUN_00446ef0(m_unk0x00c);
 }
 
-// STUB: LEGORACERS 0x00420130
+// FUNCTION: LEGORACERS 0x00420130
 void RaceState::Racer::Field0xc70::FUN_00420130(LegoFloat p_unk0x04)
 {
-	LegoFloat value = p_unk0x04;
 	if (m_unk0x014 & c_flags0x014Bit4) {
-		value += m_unk0x01c;
+		p_unk0x04 += m_unk0x01c;
 
-		if (value > 1.0f) {
-			value = 1.0f;
+		if (p_unk0x04 > 1.0f) {
+			p_unk0x04 = 1.0f;
 		}
-		else if (value < -1.0f) {
-			value = -1.0f;
+		else if (p_unk0x04 < g_minSoundPan) {
+			p_unk0x04 = g_minSoundPan;
 		}
 	}
 
-	if (value < 0.0f) {
-		if (m_unk0x000->m_unk0x618 > 0.0f) {
-			m_unk0x010 = g_unk0x004b0064 * value * 2.0f;
-			return;
-		}
-	}
-	else if (value > 0.0f && m_unk0x000->m_unk0x618 < 0.0f) {
-		m_unk0x010 = g_unk0x004b0064 * value * 2.0f;
+	if ((p_unk0x04 < 0.0f && m_unk0x000->m_unk0x618 > 0.0f) || (p_unk0x04 > 0.0f && m_unk0x000->m_unk0x618 < 0.0f)) {
+		LegoFloat value = g_unk0x004b0064 * p_unk0x04;
+		m_unk0x010 = value * g_unk0x004b0068;
 		return;
 	}
 
-	m_unk0x010 = g_unk0x004b0064 * value;
+	m_unk0x010 = g_unk0x004b0064 * p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x004201e0
@@ -315,8 +345,8 @@ void RaceState::Racer::Field0xc70::FUN_004201e0()
 	}
 }
 
-// STUB: LEGORACERS 0x00420260
-undefined4 RaceState::Racer::Field0xc70::FUN_00420260(LegoBool32 p_unk0x04)
+// FUNCTION: LEGORACERS 0x00420260
+void RaceState::Racer::Field0xc70::FUN_00420260(LegoBool32 p_unk0x04)
 {
 	LegoU32 flags = m_unk0x014;
 	m_unk0x014 = flags & ~c_flags0x014Bit3;
@@ -326,15 +356,13 @@ undefined4 RaceState::Racer::Field0xc70::FUN_00420260(LegoBool32 p_unk0x04)
 		m_unk0x02c = 0;
 		m_unk0x030 = p_unk0x04;
 
-		if (p_unk0x04) {
-			return m_unk0x000->FUN_00449070(0x3ecccccd);
+		if (!p_unk0x04) {
+			m_unk0x000->FUN_00449070(0x3e99999a);
+			return;
 		}
-		else {
-			return m_unk0x000->FUN_00449070(0x3e99999a);
-		}
-	}
 
-	return FALSE;
+		m_unk0x000->FUN_00449070(0x3ecccccd);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x004202c0
@@ -428,10 +456,10 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 		referenceDirection = m_unk0x000->m_unk0x168;
 	}
 	else {
-		referenceDirection = m_unk0x000->m_unk0x13c->m_unk0x28.m_rows[0];
+		referenceDirection = m_unk0x000->m_unk0x13c->GetOrientation().m_rows[0];
 	}
 
-	pathDirection = m_unk0x000->m_unk0x13c->m_unk0x28.m_rows[1];
+	pathDirection = m_unk0x000->m_unk0x13c->GetOrientation().m_rows[1];
 	LegoBool32 positiveDirection;
 	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x < 0.0f) {
 		pathDirection.m_x = -pathDirection.m_x;

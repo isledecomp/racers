@@ -1,10 +1,6 @@
 #include "audio/spatialsoundinstance.h"
 #include "race/racestate.h"
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000, 0x868)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000::Field0x13c, 0x4c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x000::Field0x198, 0x70)
-
 // GLOBAL: LEGORACERS 0x004b0d80
 LegoU32 g_unk0x004b0d80 = 0x3e4ccccd;
 
@@ -38,7 +34,7 @@ extern const LegoFloat g_unk0x004b0550 = 0.85000002f;
 extern LegoFloat g_cosineTable[1024];
 
 // FUNCTION: LEGORACERS 0x0042a730
-void RaceState::Racer::Field0xc70::Field0x000::FUN_0042a730(Field0x00c::Entry* p_entry)
+void RaceState::Racer::Field0x3e8::FUN_0042a730(Field0x00c::Entry* p_entry)
 {
 	m_unk0x744 = TRUE;
 	m_unk0x74c.FUN_004a5220(p_entry);
@@ -46,23 +42,23 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_0042a730(Field0x00c::Entry* p
 	GolVec3 position = p_entry->m_unk0x024;
 	GolQuat rotation = p_entry->m_unk0x030;
 
-	m_unk0x13c->VTable0x08(&position);
-	GolMath::FUN_00449340(&rotation, &m_unk0x13c->m_unk0x28.m_m[0][0]);
-	m_unk0x13c->VTable0x2c(&m_unk0x014, &m_unk0x020);
+	m_unk0x13c->VTable0x08(position);
+	GolMath::FUN_00449340(&rotation, &m_unk0x13c->GetOrientation().m_m[0][0]);
+	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);
 
 	for (LegoS32 i = 0; i < 4; i++) {
-		m_unk0x13c->VTable0x2c(&m_unk0x370[i], &m_unk0x3a0[i]);
+		m_unk0x13c->VTable0x2c(m_unk0x370[i], &m_unk0x3a0[i]);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042ae10
-LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_0042ae10()
+LegoFloat RaceState::Racer::Field0x3e8::FUN_0042ae10()
 {
 	return FUN_00445cb0();
 }
 
 // FUNCTION: LEGORACERS 0x0042ae20
-LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042ae20()
+LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042ae20()
 {
 	if (m_unk0x3ec) {
 		return FALSE;
@@ -72,9 +68,13 @@ LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042ae20()
 		return FALSE;
 	}
 
-	LegoFloat dot = m_unk0x13c->m_unk0x28.m_rows[0].m_x * m_unk0x5f8.m_x +
-					m_unk0x13c->m_unk0x28.m_rows[0].m_y * m_unk0x5f8.m_y +
-					m_unk0x13c->m_unk0x28.m_rows[0].m_z * m_unk0x5f8.m_z;
+	GolOrientedEntity* entity = m_unk0x13c;
+	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
+	LegoFloat y = entity->m_orientation.m_rows[0].m_y;
+	LegoFloat z = m_unk0x5f8.m_z * entity->m_orientation.m_rows[0].m_z;
+	z += y * m_unk0x5f8.m_y;
+	dot *= m_unk0x5f8.m_x;
+	dot += z;
 	if (dot <= g_unk0x004b0550) {
 		return FALSE;
 	}
@@ -87,11 +87,15 @@ LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042ae20()
 }
 
 // FUNCTION: LEGORACERS 0x0042aea0
-LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042aea0(LegoFloat p_unk0x04)
+LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042aea0(LegoFloat p_unk0x04)
 {
-	LegoFloat dot = m_unk0x13c->m_unk0x28.m_rows[0].m_x * m_unk0x5f8.m_x +
-					m_unk0x13c->m_unk0x28.m_rows[0].m_y * m_unk0x5f8.m_y +
-					m_unk0x13c->m_unk0x28.m_rows[0].m_z * m_unk0x5f8.m_z;
+	GolOrientedEntity* entity = m_unk0x13c;
+	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
+	LegoFloat y = entity->m_orientation.m_rows[0].m_y;
+	LegoFloat z = m_unk0x5f8.m_z * entity->m_orientation.m_rows[0].m_z;
+	z += y * m_unk0x5f8.m_y;
+	dot *= m_unk0x5f8.m_x;
+	dot += z;
 	if (dot <= 0.0f) {
 		return FALSE;
 	}
@@ -118,50 +122,8 @@ LegoBool32 RaceState::Racer::Field0xc70::Field0x000::FUN_0042aea0(LegoFloat p_un
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x0042af90 FOLDED
-SpatialSoundInstance* RaceState::Racer::Field0xc70::Field0x000::FUN_0042af90(LegoU32 p_unk0x04)
-{
-	if (m_unk0x740 != NULL) {
-		if (p_unk0x04 == m_unk0x73c) {
-			return m_unk0x740;
-		}
-
-		FUN_0042b060();
-	}
-
-	m_unk0x738 = 0;
-	m_unk0x73c = p_unk0x04;
-	m_unk0x740 = m_unk0x158->FUN_00443bd0(p_unk0x04);
-
-	if (m_unk0x740 != NULL) {
-		GolVec3 position;
-		m_unk0x740->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
-		m_unk0x740->Play(TRUE);
-		m_unk0x13c->VTable0x04(&position);
-		m_unk0x740->SetPosition(&position);
-		m_unk0x740->SetVelocity(m_unk0x008);
-	}
-
-	return m_unk0x740;
-}
-
-// FUNCTION: LEGORACERS 0x0042b060 FOLDED
-void RaceState::Racer::Field0xc70::Field0x000::FUN_0042b060()
-{
-	if (m_soundResource != NULL) {
-		if (m_soundResource->VTable0x0c()) {
-			m_soundResource->VTable0x08();
-		}
-
-		m_unk0x158->FUN_00443c10(m_soundResource);
-		m_unk0x73c = -1;
-		m_soundResource = NULL;
-		m_unk0x738 = 0;
-	}
-}
-
 // FUNCTION: LEGORACERS 0x0042b0c0
-void RaceState::Racer::Field0xc70::Field0x000::FUN_0042b0c0()
+void RaceState::Racer::Field0x3e8::FUN_0042b0c0()
 {
 	GolVec3 direction;
 	direction.m_x = 0.0f;
@@ -179,7 +141,7 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_0042b0c0()
 }
 
 // FUNCTION: LEGORACERS 0x00445cb0
-LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_00445cb0()
+LegoFloat RaceState::Racer::Field0x3e8::FUN_00445cb0()
 {
 	LegoFloat scale = FUN_004489f0();
 	scale *= m_unk0x160 * m_unk0x15c;
@@ -198,7 +160,7 @@ LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_00445cb0()
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
-void RaceState::Racer::Field0xc70::Field0x000::FUN_00446ef0(LegoFloat p_unk0x04)
+void RaceState::Racer::Field0x3e8::FUN_00446ef0(LegoFloat p_unk0x04)
 {
 	if (p_unk0x04 > 0.0f) {
 		if (p_unk0x04 < g_unk0x004b0cd0) {
@@ -228,11 +190,7 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00446ef0(LegoFloat p_unk0x04)
 }
 
 // STUB: LEGORACERS 0x00447f30
-void RaceState::Racer::Field0xc70::Field0x000::FUN_00447f30(
-	LegoFloat p_unk0x04,
-	LegoFloat p_unk0x08,
-	LegoFloat p_unk0x0c
-)
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
 	LegoU32 flags = m_flags0x6c0;
 	m_unk0x6c4 = p_unk0x04;
@@ -250,9 +208,9 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00447f30(
 	}
 
 	GolVec3 direction;
-	direction.m_x = m_unk0x10c.m_x;
-	direction.m_y = m_unk0x10c.m_y;
-	direction.m_z = m_unk0x10c.m_z;
+	direction.m_x = m_unk0x0e4.GetOrientation().m_rows[0].m_x;
+	direction.m_y = m_unk0x0e4.GetOrientation().m_rows[0].m_y;
+	direction.m_z = m_unk0x0e4.GetOrientation().m_rows[0].m_z;
 	if ((flags & c_flags0x6c0Bit3) || m_unk0x3ec) {
 		return;
 	}
@@ -267,42 +225,25 @@ void RaceState::Racer::Field0xc70::Field0x000::FUN_00447f30(
 	}
 
 	if (m_unk0x6ec) {
-		m_unk0x6e8 = m_unk0x158->FUN_00443bd0(0x3a);
+		m_sound6e8 = m_unk0x158->FUN_00443bd0(0x3a);
 	}
 
-	if (m_unk0x6e8 != NULL) {
-		m_unk0x6e8->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
-		m_unk0x6e8->SetVolume(0.80000001f);
-		m_unk0x6e8->Play(TRUE);
-	}
-}
-
-// FUNCTION: LEGORACERS 0x00448070 FOLDED
-void RaceState::Racer::Field0xc70::Field0x000::FUN_00448070()
-{
-	LegoU32 flags = m_flags0x6c0;
-	RaceResourceManager::Resource* resource = m_resource;
-
-	flags &= ~(c_flags0x6c0Bit0 | c_flags0x6c0Bit9);
-	m_unk0x6c8 = -1.0f;
-	m_unk0x6cc = 3.1415927f;
-	m_flags0x6c0 = flags;
-
-	if (resource != NULL) {
-		m_unk0x158->FUN_00443c10(resource);
-		m_resource = NULL;
+	if (m_sound6e8 != NULL) {
+		m_sound6e8->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
+		m_sound6e8->SetVolume(0.80000001f);
+		m_sound6e8->Play(TRUE);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004489f0
-LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_004489f0()
+LegoFloat RaceState::Racer::Field0x3e8::FUN_004489f0()
 {
 	LegoFloat total = 0.0f;
 	LegoS32 count = 0;
 
 	for (Field0x198* entry = m_unk0x198; entry < &m_unk0x198[4]; entry++) {
-		if (entry->m_flags0x48 & Field0x198::c_flags0x48Bit0) {
-			total += entry->m_unk0x5c;
+		if (entry->m_flags0x048 & Field0x198::c_flags0x048Active) {
+			total += entry->m_unk0x05c;
 			count++;
 		}
 	}
@@ -316,7 +257,7 @@ LegoFloat RaceState::Racer::Field0xc70::Field0x000::FUN_004489f0()
 }
 
 // FUNCTION: LEGORACERS 0x00449070
-undefined4 RaceState::Racer::Field0xc70::Field0x000::FUN_00449070(undefined4 p_unk0x04)
+undefined4 RaceState::Racer::Field0x3e8::FUN_00449070(undefined4 p_unk0x04)
 {
 	LegoU32 flags = m_flags0x6c0;
 	flags |= c_flags0x6c0Bit10;
@@ -327,7 +268,7 @@ undefined4 RaceState::Racer::Field0xc70::Field0x000::FUN_00449070(undefined4 p_u
 }
 
 // FUNCTION: LEGORACERS 0x00449090
-undefined4 RaceState::Racer::Field0xc70::Field0x000::FUN_00449090()
+undefined4 RaceState::Racer::Field0x3e8::FUN_00449090()
 {
 	LegoU32 flags = m_flags0x6c0;
 	flags &= ~c_flags0x6c0Bit10;

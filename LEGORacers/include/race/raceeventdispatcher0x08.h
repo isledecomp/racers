@@ -35,6 +35,10 @@ class RaceEventDispatcher0x08 {
 public:
 	class Context;
 
+	// VTABLE: LEGORACERS 0x004b40f8
+	// SIZE 0x1fc
+	class HzbTxtParser : public GolTxtParser {};
+
 	// VTABLE: LEGORACERS 0x004b40c4
 	// SIZE 0x10
 	class Item : public LegoEventQueue::Callback {
@@ -696,17 +700,15 @@ public:
 	private:
 		void Reset();
 
-		undefined m_unk0x10[0x030 - 0x10];   // 0x10
-		GolVec3 m_unk0x030;                  // 0x30
-		undefined m_unk0x03c[0x0f4 - 0x03c]; // 0x3c
-		GolAnimatedEntity m_unk0x0f4;        // 0x0f4
-		GolAnimatedEntity* m_unk0x1e8;       // 0x1e8
-		LegoEventQueue* m_unk0x1ec;          // 0x1ec
-		LegoEventQueue::Event* m_unk0x1f0;   // 0x1f0
-		LegoFloat m_unk0x1f4;                // 0x1f4
-		LegoFloat m_unk0x1f8;                // 0x1f8
-		LegoFloat m_unk0x1fc;                // 0x1fc
-		LegoU32 m_unk0x200;                  // 0x200
+		RaceState::Racer::Field0x3e8Base0xe4 m_unk0x10; // 0x10
+		GolAnimatedEntity m_unk0x0f4;                   // 0x0f4
+		GolAnimatedEntity* m_unk0x1e8;                  // 0x1e8
+		LegoEventQueue* m_unk0x1ec;                     // 0x1ec
+		LegoEventQueue::Event* m_unk0x1f0;              // 0x1f0
+		LegoFloat m_unk0x1f4;                           // 0x1f4
+		LegoFloat m_unk0x1f8;                           // 0x1f8
+		LegoFloat m_unk0x1fc;                           // 0x1fc
+		LegoU32 m_unk0x200;                             // 0x200
 	};
 
 	// VTABLE: LEGORACERS 0x004b4370

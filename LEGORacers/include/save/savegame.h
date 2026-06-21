@@ -87,6 +87,7 @@ public:
 		void CopyCarData(LegoU8* p_dest) const;
 		void GetChassisName(GolName p_dest) const;
 		void GetName(GolString* p_string) const;
+		void GetName(LegoChar* p_dest) const;
 		LegoBool32 IsCarSaved() const;
 		void MarkCarSaved();
 		void MarkCarModified();

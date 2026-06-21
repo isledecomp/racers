@@ -1,5 +1,7 @@
 #include "race/racesessionfield0x32b4.h"
 
+#include "race/raceeventtable0x90.h"
+
 #include <math.h>
 #include <string.h>
 

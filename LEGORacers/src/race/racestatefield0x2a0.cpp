@@ -5,10 +5,10 @@
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry::PathPoint, 0x0c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x13c, 0x4c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::CollisionCacheRecord, 0x3c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74c, 0x78)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74cInstance, 0x78)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x050, 0x78)
 
 // GLOBAL: LEGORACERS 0x004b4bc8
@@ -26,14 +26,26 @@ extern const LegoFloat g_unk0x004b4bd4 = 0.007874016f;
 // GLOBAL: LEGORACERS 0x004b4bd8
 extern const LegoFloat g_unk0x004b4bd8 = 0.125f;
 
-// FUNCTION: LEGORACERS 0x004a5170
+// FUNCTION: LEGORACERS 0x004a5170 FOLDED
 RaceState::Racer::Field0xc70::Field0x050::Field0x050()
 {
 	Reset();
 }
 
-// FUNCTION: LEGORACERS 0x004a5180
+// FUNCTION: LEGORACERS 0x004a5180 FOLDED
 RaceState::Racer::Field0xc70::Field0x050::~Field0x050()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004a5170 FOLDED
+RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::Field0x74cInstance()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004a5180 FOLDED
+RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::~Field0x74cInstance()
 {
 	Destroy();
 }
@@ -127,7 +139,7 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5200(Racer::Field0x00c::E
 }
 
 // FUNCTION: LEGORACERS 0x004a5220
-void RaceState::Racer::Field0xc70::Field0x050::FUN_004a5220(Racer::Field0x00c::Entry* p_entry)
+void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5220(Racer::Field0x00c::Entry* p_entry)
 {
 	GolVec3* position = &p_entry->m_unk0x024;
 	GolVec3* currentPosition = &m_unk0x3c;
@@ -332,7 +344,7 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 }
 
 // STUB: LEGORACERS 0x004a5750
-void RaceState::Racer::Field0xc70::Field0x050::FUN_004a5750(GolVec3* p_delta)
+void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 {
 	Racer::Field0x00c::Entry* entry = m_unk0x28;
 	LegoS32 startIndex = m_unk0x34;

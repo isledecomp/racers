@@ -39,6 +39,10 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18b4, 0x34)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x18b8, 0xe4)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x1880, 0x18)
 
+extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004c6ee4;
+extern const LegoFloat g_unk0x004b02e0;
+
 // GLOBAL: LEGORACERS 0x004b183c
 extern const LegoFloat g_unk0x004b183c = 200.0f;
 
@@ -1802,6 +1806,47 @@ void RaceSession::Field0x6dc::FUN_0045b4f0(const GolVec3* p_position, undefined4
 	item->FUN_00421520(p_position, p_unk0x08, p_racer);
 }
 
+// FUNCTION: LEGORACERS 0x0045b550
+void RaceSession::Field0x6dc::FUN_0045b550(
+	const GolVec3* p_unk0x04,
+	const GolVec3* p_position,
+	RaceState::Racer* p_racer
+)
+{
+	GolVec3 position;
+
+	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+	LegoU32 count = (static_cast<LegoU32>(g_unk0x004befec[g_unk0x004c6ee4]) % c_randomBurstMax) + 1;
+	if (count != 0) {
+		Field0x18bc* field0x18bc = &m_unk0x18bc;
+		LegoU32 remaining = count;
+
+		do {
+			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+			position.m_z = 0.0f;
+			LegoS32 offsetX = g_unk0x004befec[g_unk0x004c6ee4] % c_randomOffsetRange;
+			position.m_x = p_position->m_x + offsetX * 0.0040000002f - g_unk0x004b02e0;
+
+			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+			LegoS32 offsetY = g_unk0x004befec[g_unk0x004c6ee4] % c_randomOffsetRange;
+
+			position.m_y = p_position->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
+			field0x18bc->FUN_004517c0(p_unk0x04, &position, p_racer);
+		} while (--remaining != 0);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045b690 FOLDED
+void RaceSession::Field0x6dc::FUN_0045b690(RaceState::Racer* p_racer)
+{
+	for (LegoU32 i = 0; i < m_unk0x1884[9]; i++) {
+		if (m_unk0x18b4[i].m_unk0x004 > 1 && m_unk0x18b4[i].m_unk0x018 == p_racer) {
+			m_unk0x18b4[i].m_unk0x004 = 6;
+			m_unk0x18b4[i].m_unk0x018 = NULL;
+		}
+	}
+}
+
 // FUNCTION: LEGORACERS 0x0045b740
 void RaceSession::Field0x6dc::FUN_0045b740(RaceState::Racer* p_racer)
 {
@@ -1942,7 +1987,7 @@ GolAnimatedEntity* RaceSession::Field0x6dc::FUN_0045b9e0()
 	return &m_unk0x0a4[index];
 }
 
-// FUNCTION: LEGORACERS 0x0045ba40
+// FUNCTION: LEGORACERS 0x0045ba40 FOLDED
 LegoU32 RaceSession::Field0x6dc::FUN_0045ba40(GolAnimatedEntity* p_entity)
 {
 	LegoS32 index = p_entity - m_unk0x0a4;

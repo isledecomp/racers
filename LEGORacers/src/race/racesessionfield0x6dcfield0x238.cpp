@@ -231,7 +231,7 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 		currentPosition = targetPosition;
 	}
 
-	m_unk0x008->VTable0x08(&currentPosition);
+	m_unk0x008->VTable0x08(currentPosition);
 
 	GolVec3 origin;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);

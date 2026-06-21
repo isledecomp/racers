@@ -78,6 +78,11 @@ MenuManager::MenuManager()
 	Reset();
 }
 
+// FUNCTION: LEGORACERS 0x0042c7e0
+inline MenuGameContext::~MenuGameContext()
+{
+}
+
 // FUNCTION: LEGORACERS 0x0042c910
 MenuManager::~MenuManager()
 {

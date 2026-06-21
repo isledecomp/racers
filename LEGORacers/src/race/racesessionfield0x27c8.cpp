@@ -159,7 +159,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492bd0()
 	m_flags0x09c |= c_flags0x09cBit1;
 }
 
-// STUB: LEGORACERS 0x00492be0
+// FUNCTION: LEGORACERS 0x00492be0
 void RaceSession::Field0x27c8::Item::FUN_00492be0(LegoU32 p_elapsedMs)
 {
 	LegoU8 flags = m_flags0x09c;
@@ -173,7 +173,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492be0(LegoU32 p_elapsedMs)
 
 	switch (flags & c_flags0x09cBit4) {
 	case 0:
-		if (!(flags & c_flags0x09cBit1)) {
+		if (flags & c_flags0x09cBit1) {
 			flags |= c_flags0x09cBit4;
 			m_flags0x09c = flags;
 		}
@@ -592,7 +592,7 @@ void RaceSession::Field0x27c8::FUN_00493850(GolD3DRenderDevice* p_renderer, GolE
 	}
 }
 
-// STUB: LEGORACERS 0x00493950
+// FUNCTION: LEGORACERS 0x00493950
 RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undefined4 p_flags)
 {
 	if (p_flags & 2) {
@@ -603,9 +603,9 @@ RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undef
 		return this;
 	}
 
-	Destroy();
+	this->~Item();
 	if (p_flags & 1) {
-		delete this;
+		::operator delete(this);
 	}
 
 	return this;

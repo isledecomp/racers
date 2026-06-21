@@ -94,7 +94,7 @@ public:
 		p_dest->m_z = m_orientation.m_m[1][2];
 	}
 
-protected:
+public:
 	union {
 		struct {
 			GolMatrix3 m_orientation; // 0x28

@@ -87,6 +87,7 @@ public:
 protected:
 	void FUN_0047ff50(MenuGameContext* p_context, undefined4 p_unk0x08);
 	void FUN_004800c0(MenuGameContext* p_context);
+	void FUN_00480110(LegoS32 p_entryCapacity);
 	void FUN_004801e0();
 	void FUN_00480210(MenuGameContext* p_context, undefined4 p_unk0x08);
 	void FUN_00480310();

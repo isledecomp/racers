@@ -55,6 +55,12 @@ public:
 		m_velocity.m_y = p_velocity.m_y;
 		m_velocity.m_z = p_velocity.m_z;
 	}
+	void ClearVelocity()
+	{
+		m_velocity.m_x = 0.0f;
+		m_velocity.m_y = 0.0f;
+		m_velocity.m_z = 0.0f;
+	}
 
 	// SYNTHETIC: LEGORACERS 0x00417c50
 	// SpatialSoundInstance::`scalar deleting destructor'

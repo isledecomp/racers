@@ -241,6 +241,38 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 	chassisModels->Clear();
 }
 
+// FUNCTION: LEGORACERS 0x00480110
+void MenuGameScreen::FUN_00480110(LegoS32 p_entryCapacity)
+{
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
+	}
+
+	Win32GolApp* golApp = m_context->m_context->m_golApp;
+	GolExport* golExport = golApp->GetGolExport();
+	GolD3DRenderDevice* renderer = golApp->GetRenderer();
+
+	ChassisModelTable::Params chassisParams;
+	chassisParams.m_golExport = golExport;
+	chassisParams.m_renderer = renderer;
+	chassisParams.m_instantiateCount = p_entryCapacity;
+	chassisParams.m_filename = "chassis.cmf";
+	chassisParams.m_binary = m_context->m_context->m_unk0x18;
+	m_context->m_chassisModels.FUN_0041db10(&chassisParams);
+
+	ChampionDefinitionList::LoadParams championParams;
+	championParams.m_golExport = golExport;
+	championParams.m_renderer = renderer;
+	championParams.m_entryCapacity = p_entryCapacity;
+	championParams.m_fileName = "champs.ccf";
+	championParams.m_binary = m_context->m_context->m_unk0x18;
+	m_context->m_championDefinitions.FUN_0041d370(&championParams);
+
+	if (g_hashTable) {
+		g_hashTable->SetCurrentEntryFromString("MENUDATA");
+	}
+}
+
 // FUNCTION: LEGORACERS 0x004801e0
 void MenuGameScreen::FUN_004801e0()
 {

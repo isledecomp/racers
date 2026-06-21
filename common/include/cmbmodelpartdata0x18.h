@@ -24,6 +24,7 @@ public:
 	~CmbModelPartData0x18();
 	void Clear();
 	void FUN_0040ea20();
+	void FUN_0040ea80(LegoU32 p_index, GolVec4* p_dest) const;
 
 	void FUN_100241d0(GolFileParser& p_parser);
 	LegoBool32 InterpolatePosition(

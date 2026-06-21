@@ -136,7 +136,10 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 	// should be semantically correct, but does not match yet
 
 	LegoFloat dot;
-	GolVec3 v0, v1, v2, v3;
+	GolVec3 v0;
+	GolVec3 v1;
+	GolVec3 v2;
+	GolVec3 v3;
 
 	GolMath::NormalizeVector3(*p_param1, &v0);
 	GolMath::NormalizeVector3(*p_param1, &v1);
@@ -155,14 +158,12 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 	GolMath::NormalizeVector3(v2, &v2);
 
 	LegoFloat cross0 = v2.m_y * v0.m_z - v2.m_z * v0.m_y;
-	LegoFloat cross1 = v2.m_z * v0.m_x - v0.m_z * v2.m_x;
-	LegoFloat cross2 = v0.m_y * v2.m_x - v2.m_y * v0.m_x;
 
 	m_unk0x160.m_m[0][0] = v0.m_x;
 	m_unk0x160.m_m[0][1] = v0.m_y;
 	m_unk0x160.m_m[0][2] = v0.m_z;
-	m_unk0x160.m_m[1][1] = cross1;
-	m_unk0x160.m_m[1][2] = cross2;
+	m_unk0x160.m_m[1][1] = v2.m_z * v0.m_x - v0.m_z * v2.m_x;
+	m_unk0x160.m_m[1][2] = v0.m_y * v2.m_x - v2.m_y * v0.m_x;
 	m_unk0x160.m_m[2][0] = v2.m_x;
 	m_unk0x160.m_m[1][0] = cross0;
 	m_unk0x160.m_m[2][1] = v2.m_y;
@@ -274,12 +275,12 @@ void CutsceneParticle::FUN_004897e0(LegoU32 p_param1)
 
 				m_unk0x000->GetVectorAt(&local18, g_unk0x004befec[g_unk0x004c6ee4] % m_unk0x000->GetUnk0x04());
 
-				localc.m_x = local18.m_x * m_unk0x160.m_m[0][0] + local18.m_y * m_unk0x160.m_m[1][0] +
-							 local18.m_z * m_unk0x160.m_m[2][0];
-				localc.m_y = local18.m_x * m_unk0x160.m_m[0][1] + local18.m_y * m_unk0x160.m_m[1][1] +
-							 local18.m_z * m_unk0x160.m_m[2][1];
-				localc.m_z = local18.m_x * m_unk0x160.m_m[0][2] + local18.m_y * m_unk0x160.m_m[1][2] +
-							 local18.m_z * m_unk0x160.m_m[2][2];
+				localc.m_x = m_unk0x160.m_m[2][0] * local18.m_z + m_unk0x160.m_m[1][0] * local18.m_y +
+							 m_unk0x160.m_m[0][0] * local18.m_x;
+				localc.m_y = m_unk0x160.m_m[2][1] * local18.m_z + m_unk0x160.m_m[1][1] * local18.m_y +
+							 m_unk0x160.m_m[0][1] * local18.m_x;
+				localc.m_z = m_unk0x160.m_m[2][2] * local18.m_z + m_unk0x160.m_m[1][2] * local18.m_y +
+							 m_unk0x160.m_m[0][2] * local18.m_x;
 
 				localc.m_x += m_unk0x148.m_x;
 				localc.m_y += m_unk0x148.m_y;

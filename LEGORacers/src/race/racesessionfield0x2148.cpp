@@ -36,6 +36,7 @@ inline void operator delete(void*, void*)
 
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08, 0x08)
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Context, 0x60)
+DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::HzbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item, 0x10)
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::ItemI, 0x18)
 DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item6, 0x20)
@@ -61,6 +62,7 @@ DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item0x48, 0x60)
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_twoPi;
+extern const LegoFloat g_unk0x004b0b90;
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
 extern LegoFloat g_carBuildPreviewMouseScale;
@@ -297,7 +299,7 @@ RaceEventDispatcher0x08::~RaceEventDispatcher0x08()
 	Destroy();
 }
 
-// STUB: LEGORACERS 0x0048a4d0
+// FUNCTION: LEGORACERS 0x0048a4d0
 void RaceEventDispatcher0x08::FUN_0048a4d0(void* p_context, const LegoChar* p_name, LegoBool32 p_binary)
 {
 	GolFileParser* parser;
@@ -309,7 +311,7 @@ void RaceEventDispatcher0x08::FUN_0048a4d0(void* p_context, const LegoChar* p_na
 		parser->SetSuffix(".hzb");
 	}
 	else {
-		parser = new RaceState::SpbTxtParser;
+		parser = new HzbTxtParser;
 		if (parser == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
@@ -1106,11 +1108,11 @@ void RaceEventDispatcher0x08::Item0x28::VTable0x24()
 	m_unk0x10->SetFlags(m_unk0x10->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 }
 
-// STUB: LEGORACERS 0x0048bb00
+// FUNCTION: LEGORACERS 0x0048bb00
 RaceEventDispatcher0x08::Item0x3e::Item0x3e()
+	: m_unk0x1e8(NULL), m_unk0x1ec(NULL), m_unk0x1f0(NULL), m_unk0x1f4(0.0f), m_unk0x1f8(0.0f), m_unk0x1fc(0.0f),
+	  m_unk0x200(0)
 {
-	::memset(m_unk0x10, 0, sizeof(m_unk0x10));
-	STUB(0x48bb00);
 }
 
 // FUNCTION: LEGORACERS 0x0048bba0
@@ -1119,11 +1121,9 @@ RaceEventDispatcher0x08::Item0x3e::~Item0x3e()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x0048bbf0
+// FUNCTION: LEGORACERS 0x0048bbf0
 void RaceEventDispatcher0x08::Item0x3e::VTable0x10(Context* p_context, GolFileParser* p_parser)
 {
-	STUB(0x48bbf0);
-
 	if (m_unk0x0c) {
 		Reset();
 	}
@@ -1149,8 +1149,9 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x10(Context* p_context, GolFilePa
 	m_unk0x1fc = p_parser->ReadFloat();
 	p_parser->ReadRightCurly();
 
-	m_unk0x1e8->FUN_0040d650();
-	m_unk0x1e8->SetActiveValue(activeValue);
+	GolAnimatedEntity* entity = m_unk0x1e8;
+	entity->FUN_0040d650();
+	entity->SetActiveValue(activeValue);
 	m_unk0x0f4.FUN_100234c0(m_unk0x1e8->VTable0x58(0), m_unk0x1e8->GetModelPart(), g_item0x3eModelDistance);
 
 	LegoFloat radius = m_unk0x1f4 * 0.5f;
@@ -1165,14 +1166,13 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x10(Context* p_context, GolFilePa
 	}
 
 	m_unk0x0f4.FUN_10026fa0(radius);
+	m_unk0x10.FUN_00441210(&m_unk0x0f4, g_unk0x004b42ec, m_unk0x1f4, m_unk0x1f8, m_unk0x1fc);
 	m_unk0x0c = state;
 }
 
-// STUB: LEGORACERS 0x0048bda0
+// FUNCTION: LEGORACERS 0x0048bda0
 void RaceEventDispatcher0x08::Item0x3e::Reset()
 {
-	STUB(0x0048bda0);
-
 	VTable0x08(NULL);
 	m_unk0x200 = 0;
 	m_unk0x1f4 = 0.0f;
@@ -1182,6 +1182,7 @@ void RaceEventDispatcher0x08::Item0x3e::Reset()
 	m_unk0x1ec = NULL;
 	m_unk0x1f0 = NULL;
 	m_unk0x0f4.VTable0x54();
+	m_unk0x10.FUN_00440a50();
 	Item::Reset();
 }
 
@@ -1192,7 +1193,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x04(void*)
 	descriptor.m_unk0x00 = 3;
 	descriptor.m_unk0x04 = 1;
 	descriptor.m_unk0x0c = 0;
-	descriptor.m_data = m_unk0x10;
+	descriptor.m_data = &m_unk0x10;
 
 	m_unk0x1f0 = m_unk0x1ec->FUN_0042fb50(this, &descriptor);
 	m_unk0x0c = 2;
@@ -1245,7 +1246,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 		localPosition.m_x *= scale;
 		localPosition.m_y *= scale;
 		localPosition.m_z *= scale;
-		m_unk0x1e8->VTable0x2c(localPosition, &m_unk0x030);
+		m_unk0x1e8->VTable0x2c(localPosition, &m_unk0x10.m_unk0x020);
 
 		if (m_unk0x200) {
 			GolVec3 worldRight;
@@ -1255,7 +1256,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 			m_unk0x0f4.VTable0x40(worldRight, worldForward);
 		}
 
-		m_unk0x0f4.SetCenter(m_unk0x030);
+		m_unk0x0f4.SetCenter(m_unk0x10.m_unk0x020);
 	}
 }
 
@@ -1386,7 +1387,7 @@ void RaceEventDispatcher0x08::Item0x29::VTable0x14(undefined4 p_elapsedMs)
 	VTable0x08(NULL);
 }
 
-// STUB: LEGORACERS 0x0048c340
+// FUNCTION: LEGORACERS 0x0048c340
 void RaceEventDispatcher0x08::Item0x29::VTable0x24()
 {
 	MabMaterialAnimation0x14* animation = NULL;
@@ -1400,7 +1401,11 @@ void RaceEventDispatcher0x08::Item0x29::VTable0x24()
 	m_unk0x1c->SetModelDistance(0, 640000.0f);
 
 	LegoU32 i = 0;
-	while (i < m_unk0x14->GetUnk0x74()) {
+	while (TRUE) {
+		if (i >= m_unk0x14->GetUnk0x74()) {
+			break;
+		}
+
 		GolName name;
 		::strncpy(name, m_unk0x14->GetUnk0x78()[i], sizeof(name));
 		if (compare(name, "blowup", sizeof(name)) == 0) {
@@ -3624,7 +3629,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	projectileParams.m_unk0x1c = 180.0f;
 	projectileParams.m_unk0x20 = 3000;
 	projectileParams.m_unk0x24 = 0.0f;
-	projectileParams.m_unk0x00 = static_cast<RaceEventTable0x90::EntryBase*>(static_cast<void*>(&m_unk0x10));
+	projectileParams.m_unk0x00 = &m_unk0x10;
 
 	RaceSession::Field0x6dc::Field0xa8* projectile =
 		static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38));

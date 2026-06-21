@@ -2467,6 +2467,12 @@ RaceSession::Field0x2098::Resource0x34::Resource0x34()
 	m_flags0x1c = 0;
 }
 
+// FUNCTION: LEGORACERS 0x004630d0
+RaceSession::Field0x2098::Resource0x34::~Resource0x34()
+{
+	FUN_004631e0();
+}
+
 // FUNCTION: LEGORACERS 0x00463120
 void RaceSession::Field0x2098::Resource0x34::FUN_00463120(InitParams* p_params)
 {

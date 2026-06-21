@@ -171,7 +171,7 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441330(
 	}
 }
 
-// STUB: LEGORACERS 0x00441790
+// FUNCTION: LEGORACERS 0x00441790
 LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441790(
 	Field0x10* p_other,
 	LegoFloat* p_unk0x08,
@@ -219,14 +219,10 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441790(
 	m_unk0x004->VTable0x44(&scratch.m_orientation0);
 	p_other->m_unk0x004->VTable0x44(&scratch.m_absOrientation);
 
-	scratch.m_delta.m_x = p_other->m_unk0x020.m_x - m_unk0x020.m_x;
-	scratch.m_delta.m_y = p_other->m_unk0x020.m_y - m_unk0x020.m_y;
-	scratch.m_delta.m_z = p_other->m_unk0x020.m_z - m_unk0x020.m_z;
-
 	GolMath::FUN_00449b90(
-		scratch.m_delta.m_x,
-		scratch.m_delta.m_y,
-		scratch.m_delta.m_z,
+		p_other->m_unk0x020.m_x - m_unk0x020.m_x,
+		p_other->m_unk0x020.m_y - m_unk0x020.m_y,
+		p_other->m_unk0x020.m_z - m_unk0x020.m_z,
 		&scratch.m_orientation0.m_m[0][0],
 		&scratch.m_delta
 	);
@@ -500,27 +496,25 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441790(
 		return FALSE;
 	}
 
-	const GolMatrix3& orientation0Current = m_unk0x004->GetOrientation();
-	scratch.m_thisRow0X = orientation0Current.m_m[0][0];
-	scratch.m_thisRow0Y = orientation0Current.m_m[0][1];
-	scratch.m_thisRow0Z = orientation0Current.m_m[0][2];
-	scratch.m_thisRow1X = orientation0Current.m_m[1][0];
-	scratch.m_thisRow1Y = orientation0Current.m_m[1][1];
-	scratch.m_thisRow1Z = orientation0Current.m_m[1][2];
-	scratch.m_thisRow2X = orientation0Current.m_m[2][0];
-	scratch.m_thisRow2Y = orientation0Current.m_m[2][1];
-	scratch.m_thisRow2Z = orientation0Current.m_m[2][2];
+	scratch.m_thisRow0X = m_unk0x004->m_orientation.m_m[0][0];
+	scratch.m_thisRow0Y = m_unk0x004->m_orientation.m_m[0][1];
+	scratch.m_thisRow0Z = m_unk0x004->m_orientation.m_m[0][2];
+	scratch.m_thisRow1X = m_unk0x004->m_orientation.m_m[1][0];
+	scratch.m_thisRow1Y = m_unk0x004->m_orientation.m_m[1][1];
+	scratch.m_thisRow1Z = m_unk0x004->m_orientation.m_m[1][2];
+	scratch.m_thisRow2X = m_unk0x004->m_orientation.m_m[2][0];
+	scratch.m_thisRow2Y = m_unk0x004->m_orientation.m_m[2][1];
+	scratch.m_thisRow2Z = m_unk0x004->m_orientation.m_m[2][2];
 
-	const GolMatrix3& orientation1Current = p_other->m_unk0x004->GetOrientation();
-	scratch.m_otherRow0X = orientation1Current.m_m[0][0];
-	scratch.m_otherRow0Y = orientation1Current.m_m[0][1];
-	scratch.m_otherRow0Z = orientation1Current.m_m[0][2];
-	scratch.m_otherRow1X = orientation1Current.m_m[1][0];
-	scratch.m_otherRow1Y = orientation1Current.m_m[1][1];
-	scratch.m_otherRow1Z = orientation1Current.m_m[1][2];
-	scratch.m_otherRow2X = orientation1Current.m_m[2][0];
-	scratch.m_otherRow2Y = orientation1Current.m_m[2][1];
-	scratch.m_otherRow2Z = orientation1Current.m_m[2][2];
+	scratch.m_otherRow0X = p_other->m_unk0x004->m_orientation.m_m[0][0];
+	scratch.m_otherRow0Y = p_other->m_unk0x004->m_orientation.m_m[0][1];
+	scratch.m_otherRow0Z = p_other->m_unk0x004->m_orientation.m_m[0][2];
+	scratch.m_otherRow1X = p_other->m_unk0x004->m_orientation.m_m[1][0];
+	scratch.m_otherRow1Y = p_other->m_unk0x004->m_orientation.m_m[1][1];
+	scratch.m_otherRow1Z = p_other->m_unk0x004->m_orientation.m_m[1][2];
+	scratch.m_otherRow2X = p_other->m_unk0x004->m_orientation.m_m[2][0];
+	scratch.m_otherRow2Y = p_other->m_unk0x004->m_orientation.m_m[2][1];
+	scratch.m_otherRow2Z = p_other->m_unk0x004->m_orientation.m_m[2][2];
 
 	switch (bestAxis) {
 	case 0:

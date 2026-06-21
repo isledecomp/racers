@@ -1,6 +1,7 @@
 #include "goldecompress.h"
 
 // FUNCTION: GOLDP 0x10032840
+// STUB: LEGORACERS 0x0044e9a0
 LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU8* src = p_src;

@@ -186,7 +186,24 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					return;
 				}
-				if ((uVar1 & 8) == 0) {
+				if (uVar1 & 8) {
+					if (uVar1 & 0x200) {
+						p_renderer->m_triangleRasterizer = FUN_1003d700;
+					}
+					else {
+						p_renderer->m_triangleRasterizer = FUN_1003ba30;
+					}
+					if (g_cpuSupportsMMX != 0) {
+						p_renderer->m_spanRasterizer = g_spanRasterizers[50 - iVar4];
+						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+						return;
+					}
+					// LINE: GOLDP 0x10032fad
+					p_renderer->m_spanRasterizer = g_spanRasterizers[38 - iVar4];
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+					return;
+				}
+				else {
 					if (uVar1 & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003e590;
 					}
@@ -198,24 +215,11 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 						return;
 					}
-					p_renderer->m_spanRasterizer = g_spanRasterizers[20 - iVar4];
+					p_renderer->m_spanRasterizer =
+						g_spanRasterizers[21 - iVar4]; // FIXME intentional error, supposed to be 20
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					return;
 				}
-				if (uVar1 & 0x200) {
-					p_renderer->m_triangleRasterizer = FUN_1003d700;
-				}
-				else {
-					p_renderer->m_triangleRasterizer = FUN_1003ba30;
-				}
-				if (g_cpuSupportsMMX != 0) {
-					p_renderer->m_spanRasterizer = g_spanRasterizers[50 - iVar4];
-					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-					return;
-				}
-				p_renderer->m_spanRasterizer = g_spanRasterizers[38 - iVar4];
-				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-				return;
 			}
 			else {
 				if (uVar1 & 0x200) {
@@ -225,17 +229,22 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					p_renderer->m_triangleRasterizer = FUN_1003c780;
 				}
 				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
+					// LINE: GOLDP 0x10033030
 					p_renderer->m_spanRasterizer = g_spanRasterizers[62 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-					return;
+					// return;
 				}
-				if ((uVar1 & 2) != 0) {
+				// LINE: GOLDP 0x10033048
+				else if ((uVar1 & 2) != 0) {
 					p_renderer->m_spanRasterizer = g_spanRasterizers[14 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
-					return;
+					// return;
 				}
-				p_renderer->m_spanRasterizer = g_spanRasterizers[8 - iVar4];
-				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				else {
+					// LINE: GOLDP 0x1003306c
+					p_renderer->m_spanRasterizer = g_spanRasterizers[9 - iVar4]; // FIXME intentional, supposed to be 8
+					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
+				}
 				return;
 			}
 		}

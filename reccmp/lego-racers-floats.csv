@@ -87,19 +87,11 @@ address,type,size
 0x4b147c,float,4
 0x4b1480,float,4
 0x4b1488,float,4
-0x4b14a8,float,4
-0x4b14ac,float,4
 0x4b14c8,float,4
 0x4b14cc,float,4
 0x4b14f8,float,4
 0x4b1504,float,4
-0x4b1544,float,4
-0x4b1548,float,4
 0x4b1554,float,4
-0x4b1558,float,4
-0x4b155c,float,4
-0x4b1584,float,4
-0x4b1588,float,4
 0x4b15dc,float,4
 0x4b15e0,float,4
 0x4b15e4,float,4
@@ -141,4 +133,6 @@ address,type,size
 0x4b39cc,float,4
 0x4b42b4,float,4
 0x4b4700,float,4
+0x4b4768,float,4
+0x4b476c,float,4
 0x4be234,float,4

@@ -23,9 +23,9 @@ RacerModelSlot::~RacerModelSlot()
 // STUB: LEGORACERS 0x00487570
 void RacerModelSlot::Reset()
 {
-	undefined4 zero = 0;
 	::memset(&m_unk0x1c, 0, sizeof(m_unk0x1c));
 
+	undefined4 zero = 0;
 	undefined4* vector = m_unk0x88;
 	m_unk0x68 = NULL;
 	*vector++ = zero;

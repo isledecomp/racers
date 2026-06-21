@@ -144,8 +144,13 @@ class LegoEventQueue::Field0x2c : public LegoEventQueue {
 public:
 	Field0x2c();
 	LegoS32 VTable0x00(Event* p_event) override; // vtable+0x00
+
 	// SYNTHETIC: LEGORACERS 0x0042fca0
 	// LegoEventQueue::Field0x2c::`scalar deleting destructor'
+
+	// FUNCTION: LEGORACERS 0x0042fcc0
+	// LegoEventQueue::Field0x2c::~Field0x2c
+
 	void Destroy() override;                            // vtable+0x0c
 	void VTable0x10(LegoU32 p_elapsedMs) override;      // vtable+0x10
 	virtual GolWorldEntity* VTable0x14(Event* p_event); // vtable+0x14

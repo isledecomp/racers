@@ -700,8 +700,8 @@ void RaceState::Racer::Field0x3e8::VTable0x34()
 void RaceState::Racer::Field0x3e8::VTable0x38()
 {
 	Field0x3e8Base0x74c::VTable0x38();
-	LegoFloat unk0x778 = g_unk0x004b0488;
 	m_unk0x7c4.m_w = g_unk0x004b04d0;
+	LegoFloat unk0x778 = g_unk0x004b0488;
 	m_unk0x74c.m_unk0x2c = unk0x778;
 }
 
@@ -1304,13 +1304,17 @@ void RaceState::Racer::Field0x3e8::FUN_0042acb0(Field0x198* p_unk0x04)
 // FUNCTION: LEGORACERS 0x0042ad30
 void RaceState::Racer::Field0x3e8::VTable0x14(LegoFloat p_unk0x04)
 {
-	Field0x3e8Base0x74c::VTable0x14(m_unk0x72c * p_unk0x04);
+	LegoFloat amount = m_unk0x72c;
+	amount *= p_unk0x04;
+	Field0x3e8Base0x74c::VTable0x14(amount);
 }
 
 // FUNCTION: LEGORACERS 0x0042ad50
 void RaceState::Racer::Field0x3e8::VTable0x18(LegoFloat p_unk0x04)
 {
-	Field0x3e8Base0x74c::VTable0x18(m_unk0x730 * p_unk0x04);
+	LegoFloat amount = m_unk0x730;
+	amount *= p_unk0x04;
+	Field0x3e8Base0x74c::VTable0x18(amount);
 }
 
 // FUNCTION: LEGORACERS 0x0042ad70
@@ -4008,12 +4012,29 @@ void RaceState::Racer::Field0x3e8Base0x74c::VTable0x30()
 	m_unk0x67c = 0;
 	FUN_00448c70();
 
-	m_unk0x664.m_x = (m_unk0x198[0].m_unk0x00c.m_x + m_unk0x198[1].m_unk0x00c.m_x) * 0.5f;
-	m_unk0x664.m_y = (m_unk0x198[0].m_unk0x00c.m_y + m_unk0x198[1].m_unk0x00c.m_y) * 0.5f;
-	m_unk0x664.m_z = (m_unk0x198[0].m_unk0x00c.m_z + m_unk0x198[1].m_unk0x00c.m_z) * 0.5f;
-	m_unk0x670.m_x = (m_unk0x198[2].m_unk0x00c.m_x + m_unk0x198[3].m_unk0x00c.m_x) * 0.5f;
-	m_unk0x670.m_y = (m_unk0x198[2].m_unk0x00c.m_y + m_unk0x198[3].m_unk0x00c.m_y) * 0.5f;
-	m_unk0x670.m_z = (m_unk0x198[2].m_unk0x00c.m_z + m_unk0x198[3].m_unk0x00c.m_z) * 0.5f;
+	LegoFloat center = m_unk0x198[0].m_unk0x00c.m_x;
+	center += m_unk0x198[1].m_unk0x00c.m_x;
+	m_unk0x664.m_x = center * 0.5f;
+
+	center = m_unk0x198[0].m_unk0x00c.m_y;
+	center += m_unk0x198[1].m_unk0x00c.m_y;
+	m_unk0x664.m_y = center * 0.5f;
+
+	center = m_unk0x198[0].m_unk0x00c.m_z;
+	center += m_unk0x198[1].m_unk0x00c.m_z;
+	m_unk0x664.m_z = center * 0.5f;
+
+	center = m_unk0x198[2].m_unk0x00c.m_x;
+	center += m_unk0x198[3].m_unk0x00c.m_x;
+	m_unk0x670.m_x = center * 0.5f;
+
+	center = m_unk0x198[2].m_unk0x00c.m_y;
+	center += m_unk0x198[3].m_unk0x00c.m_y;
+	m_unk0x670.m_y = center * 0.5f;
+
+	center = m_unk0x198[2].m_unk0x00c.m_z;
+	center += m_unk0x198[3].m_unk0x00c.m_z;
+	m_unk0x670.m_z = center * 0.5f;
 }
 
 // FUNCTION: LEGORACERS 0x00448730

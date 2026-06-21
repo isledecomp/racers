@@ -280,7 +280,7 @@ public:
 	private:
 		friend class RaceSession;
 
-		LegoS32 FUN_00427960();
+		void FUN_00427960();
 
 		DirectInputDevice* m_unk0x04;        // 0x04
 		Field0x258::Field0x04* m_unk0x08[2]; // 0x08
@@ -1046,6 +1046,9 @@ public:
 				c_sound0x2e = 0x2e,
 				c_sound0x2f = 0x2f,
 				c_sound0x30 = 0x30,
+				c_randomTableMask = 0x3ff,
+				c_randomPhaseRange = 0x274,
+				c_randomBubbleOffsetRange = 7,
 			};
 
 			Field0x1894();
@@ -1076,8 +1079,7 @@ public:
 			};
 			CutsceneAnimation* m_unk0x05c;                                // 0x05c
 			CutsceneParticleRef* m_unk0x060;                              // 0x060
-			MarblePath0x114 m_unk0x064;                                   // 0x064
-			undefined m_unk0x178[0x180 - 0x178];                          // 0x178
+			RaceSessionField0x27d4::Item::Field0x004 m_unk0x064;          // 0x064
 			GolBillboard::Field0x2c m_unk0x180;                           // 0x180
 			RaceSessionField0x27d4::Item::Field0x004::Params* m_unk0x18c; // 0x18c
 		};
@@ -1093,9 +1095,13 @@ public:
 				c_state0x05 = 5,
 				c_state0x06 = 6,
 				c_timer0x01f4 = 0x01f4,
+				c_timer0x0bb8 = 0x0bb8,
 				c_timer0x1388 = 0x1388,
 				c_sound0x05 = 0x05,
 				c_sound0x11 = 0x11,
+				c_randomTableMask = 0x3ff,
+				c_randomOffsetRange = 13,
+				c_randomOffsetCenter = 6,
 			};
 
 			Field0x1898();
@@ -1253,11 +1259,21 @@ public:
 				c_state0x06 = 6,
 				c_racerFlags0xd04Bit0 = 1 << 0,
 				c_racerFlags0xaa8Bit7 = 1 << 7,
+				c_racerField0x018Flags0x384Bit1 = 1 << 1,
 				c_timer0x0032 = 0x0032,
+				c_timer0x0064 = 0x0064,
 				c_timer0x01f4 = 0x01f4,
+				c_timer0x00c8 = 0x00c8,
+				c_timer0x012c = 0x012c,
 				c_timer0x03e8 = 0x03e8,
 				c_timer0x1b58 = 0x1b58,
 				c_sound0x42 = 0x42,
+				c_sound0x43 = 0x43,
+				c_sound0x45 = 0x45,
+				c_colorOffset0xe1 = 0xe1,
+				c_colorOffset0xff = 0xff,
+				c_randomTableMask = 0x3ff,
+				c_randomOffsetRange = 0x32,
 			};
 
 			Field0x18a8();
@@ -1388,6 +1404,7 @@ public:
 				c_duration0x007d = 0x007d,
 				c_duration0x00fa = 0x00fa,
 				c_timer0x0032 = 0x0032,
+				c_timer0x015e = 0x015e,
 				c_timer0x0320 = 0x0320,
 				c_timer0x03e8 = 0x03e8,
 				c_timer0x05dc = 0x05dc,
@@ -1472,7 +1489,7 @@ public:
 			RaceState::Racer* m_unk0x0a8; // 0x0a8
 			Field0x6dc* m_unk0x0ac;       // 0x0ac
 			LegoFloat m_unk0x0b0;         // 0x0b0
-			GolVec3 m_unk0x0b4;           // 0x0b4
+			SoundVector m_unk0x0b4;       // 0x0b4
 			GolVec3 m_unk0x0c0;           // 0x0c0
 			GolVec3 m_unk0x0cc;           // 0x0cc
 			LegoBool32 m_unk0x0d8;        // 0x0d8
@@ -1480,6 +1497,7 @@ public:
 			LegoBool32 m_unk0x0e0;        // 0x0e0
 		};
 
+		// VTABLE: LEGORACERS 0x004b0164
 		// SIZE 0x270
 		class Field0x270 : public LegoEventQueue::Callback {
 		public:
@@ -1507,10 +1525,10 @@ public:
 				LegoU32 m_unk0x44;                                           // 0x44
 			};
 
-			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-			virtual void VTable0x04(undefined4);                            // vtable+0x04
-
 			Field0x270();
+			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
+			virtual Field0x270* VTable0x04(undefined4 p_flags);             // vtable+0x04
+
 			~Field0x270();
 			Field0x270* GetNext() { return m_next; }
 			LegoS32 GetUnk0x04() const { return m_unk0x04; }
@@ -1659,6 +1677,7 @@ public:
 		GolBillboard::Field0x2c* GetBillboardMaterialTable() { return &m_unk0x008; }
 		MabMaterialAnimationItem0x8* GetMaterialAnimationItems() const { return m_unk0x014.GetUnk0x04(); }
 		LegoU32 GetMaterialAnimationItemCount() const { return m_unk0x014.GetUnk0x08(); }
+		Field0x074* GetUnk0x074() { return m_unk0x074; }
 
 	private:
 		// SIZE 0x3c

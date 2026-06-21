@@ -27,18 +27,6 @@ extern const LegoFloat g_unk0x004b4bd4 = 0.007874016f;
 extern const LegoFloat g_unk0x004b4bd8 = 0.125f;
 
 // FUNCTION: LEGORACERS 0x004a5170 FOLDED
-RaceState::Racer::Field0xc70::Field0x050::Field0x050()
-{
-	Reset();
-}
-
-// FUNCTION: LEGORACERS 0x004a5180 FOLDED
-RaceState::Racer::Field0xc70::Field0x050::~Field0x050()
-{
-	Destroy();
-}
-
-// FUNCTION: LEGORACERS 0x004a5170 FOLDED
 RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::Field0x74cInstance()
 {
 	Reset();
@@ -48,39 +36,6 @@ RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::Field0x74cInstance()
 RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::~Field0x74cInstance()
 {
 	Destroy();
-}
-
-// FUNCTION: LEGORACERS 0x004a5190 FOLDED
-void RaceState::Racer::Field0xc70::Field0x050::Reset()
-{
-	m_unk0x00.m_x = 0.0f;
-	m_unk0x00.m_y = 0.0f;
-	m_unk0x00.m_z = 0.0f;
-	m_unk0x0c.m_x = 0.0f;
-	m_unk0x0c.m_y = 0.0f;
-	m_unk0x0c.m_z = 0.0f;
-	m_unk0x0c.m_w = 1.0f;
-	m_unk0x1c = 0;
-	m_unk0x28 = NULL;
-	m_unk0x2c = 1.0f;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0xffffffff;
-	m_unk0x38 = 0;
-	m_unk0x3c.m_x = 0.0f;
-	m_unk0x3c.m_y = 0.0f;
-	m_unk0x3c.m_z = 0.0f;
-	m_unk0x48.m_x = 0.0f;
-	m_unk0x48.m_y = 0.0f;
-	m_unk0x48.m_z = 0.0f;
-	m_unk0x54.m_x = 0.0f;
-	m_unk0x54.m_y = 0.0f;
-	m_unk0x54.m_z = 0.0f;
-	m_unk0x54.m_w = 1.0f;
-	m_unk0x64.m_x = 0.0f;
-	m_unk0x64.m_y = 0.0f;
-	m_unk0x64.m_z = 0.0f;
-	m_unk0x64.m_w = 1.0f;
-	m_unk0x74 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a5190 FOLDED
@@ -114,12 +69,6 @@ void RaceState::Racer::Field0x3e8::Field0x74c::Reset()
 	m_unk0x64.m_z = 0.0f;
 	m_unk0x64.m_w = 1.0f;
 	m_unk0x74 = 0;
-}
-
-// FUNCTION: LEGORACERS 0x004a51f0 FOLDED
-void RaceState::Racer::Field0xc70::Field0x050::Destroy()
-{
-	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a51f0 FOLDED

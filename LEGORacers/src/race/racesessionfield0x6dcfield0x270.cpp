@@ -58,14 +58,6 @@ RaceSession::Field0x6dc::Field0x270::~Field0x270()
 	m_unk0x204.Destroy();
 }
 
-void RaceSession::Field0x6dc::Field0x270::VTable0x04(undefined4 p_flags)
-{
-	this->~Field0x270();
-	if (p_flags & 1) {
-		::operator delete(this);
-	}
-}
-
 // FUNCTION: LEGORACERS 0x00421250
 void RaceSession::Field0x6dc::Field0x270::FUN_00421250(const Params* p_params)
 {
@@ -476,4 +468,24 @@ void RaceSession::Field0x6dc::Field0x270::VTable0x00(LegoEventQueue::CallbackDat
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void RaceSession::Field0x6dc::Field0x270::FUN_004513d0(GolD3DRenderDevice*)
 {
+}
+
+// FUNCTION: LEGORACERS 0x004587b0
+RaceSession::Field0x6dc::Field0x270* RaceSession::Field0x6dc::Field0x270::VTable0x04(undefined4 p_flags)
+{
+	Field0x270* result = this;
+	if (p_flags & 2) {
+		if (p_flags & 1) {
+			delete[] this;
+		}
+
+		return result;
+	}
+
+	this->~Field0x270();
+	if (p_flags & 1) {
+		::operator delete(result);
+	}
+
+	return result;
 }

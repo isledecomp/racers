@@ -4,6 +4,7 @@
 #include "decomp.h"
 #include "render/golrenderdevice.h"
 #include "render/rectangle.h"
+#include "surface/color.h"
 #include "types.h"
 
 class GolD3DRenderDevice;
@@ -49,6 +50,7 @@ public:
 		void Draw(GolD3DRenderDevice* p_renderer);
 		LegoBool IsActive() { return m_flags & c_flagActive; }
 		void SetColor(LegoU32 p_colorPacked) { m_colorPacked = p_colorPacked; }
+		void SetColor(ColorRGBA p_color) { m_color = p_color; }
 
 	private:
 		void Clear();
@@ -62,6 +64,7 @@ public:
 				LegoU8 m_blue;       // 0x0a
 				undefined m_unk0x0b; // 0x0b
 			};
+			ColorRGBA m_color;     // 0x08
 			LegoU32 m_colorPacked; // 0x08
 		};
 		LegoU32 m_remainingMs;  // 0x0c

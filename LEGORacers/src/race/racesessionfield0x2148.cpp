@@ -1214,8 +1214,6 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x08(void*)
 void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 {
 	if (m_unk0x0c != 1) {
-		STUB(0x48be70);
-
 		Item::VTable0x14(p_elapsedMs);
 
 		GolSceneNode* node = m_unk0x1e8->VTable0x58(0);
@@ -1845,7 +1843,7 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0048ce90
+// FUNCTION: LEGORACERS 0x0048ce90
 void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
@@ -1860,15 +1858,16 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData*
 	racer->FUN_004397a0();
 
 	GolVec3 impulse;
-	impulse.m_x = 0.0f;
 	impulse.m_y = 0.0f;
 	impulse.m_z = 0.0f;
 
 	field0x3e8->m_unk0x008.m_x = 0.0f;
-	field0x3e8->m_unk0x008.m_y = 0.0f;
-	field0x3e8->m_unk0x008.m_z = 0.0f;
+	field0x3e8->m_unk0x008.m_y = impulse.m_y;
+	field0x3e8->m_unk0x008.m_z = impulse.m_z;
 
-	impulse.m_z = g_item0x2bImpulseVectorZ;
+	impulse.m_y = impulse.m_x = 0.0f;
+	LegoFloat impulseZ = g_item0x2bImpulseVectorZ;
+	impulse.m_z = impulseZ;
 	field0x3e8->VTable0x1c(&impulse, &impulse);
 
 	racer->FUN_00439240(FALSE);

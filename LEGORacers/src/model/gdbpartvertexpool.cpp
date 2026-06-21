@@ -10,8 +10,6 @@ DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex, 0x0e)
 DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04, 0x04)
 DECOMP_SIZE_ASSERT(GdbPartVertexPool::Vertex::Tail0x04::Normal, 0x04)
 
-static const LegoFloat g_gdbPartScaleNumerator = 1.0f;
-
 // GLOBAL: LEGORACERS 0x004af4ac
 static const LegoFloat g_gdbPartTexCoordDivisor = 4096.0f;
 
@@ -19,10 +17,10 @@ static const LegoFloat g_gdbPartTexCoordDivisor = 4096.0f;
 static const LegoFloat g_gdbPartNormalDivisor = 127.0f;
 
 // GLOBAL: LEGORACERS 0x004c2854
-static LegoFloat g_gdbPartNormalScale = g_gdbPartScaleNumerator / g_gdbPartNormalDivisor;
+static LegoFloat g_gdbPartNormalScale = 1.0f / g_gdbPartNormalDivisor;
 
 // GLOBAL: LEGORACERS 0x004c2858
-static LegoFloat g_gdbPartTexCoordScale = g_gdbPartScaleNumerator / g_gdbPartTexCoordDivisor;
+static LegoFloat g_gdbPartTexCoordScale = 1.0f / g_gdbPartTexCoordDivisor;
 
 // FUNCTION: LEGORACERS 0x00407fe0
 GdbPartVertexPool::GdbPartVertexPool()

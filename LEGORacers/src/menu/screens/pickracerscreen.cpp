@@ -76,43 +76,46 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	return TRUE;
 }
 
-// STUB: LEGORACERS 0x00484f40
+// FUNCTION: LEGORACERS 0x00484f40
 void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 {
-	MenuWidget* source = p_source;
-
-	if (source == &m_unk0x46a8) {
-		m_unk0x360 =
-			static_cast<LegoU16>(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() + c_menuControl1);
+	if (p_source == &m_unk0x46a8) {
+		m_unk0x360 = static_cast<LegoU16>(
+			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCountAsU16() + c_menuControl1
+		);
 		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
 	}
-	else if (source == &m_unk0x40c8) {
+	else if (p_source == &m_unk0x40c8) {
 		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
 			m_context->m_context->m_racerCount = 0;
 		}
 
-		FUN_00486810(0);
-		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
-			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
-			m_unk0x22dc[0].FUN_004430b0()
+		FUN_00486890(0);
+		MenuGameContext* context = m_context;
+		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
+			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
+			record
 		);
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() + 1
 		);
 		m_unk0x360 = 0x41;
 	}
-	else if (source == &m_unk0x43b8) {
-		FUN_00486810(0);
-		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
-			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
-			m_unk0x22dc[0].FUN_004430b0()
+	else if (p_source == &m_unk0x43b8) {
+		FUN_00486890(0);
+		MenuGameContext* context = m_context;
+		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
+			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
+			record
 		);
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() + 1
 		);
 		m_unk0x360 = c_menuPickRacerP2;
 	}
-	else if (source == &m_unk0x4998) {
+	else if (p_source == &m_unk0x4998) {
 		m_unk0x360 = 0x3f;
 
 		if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() != 0) {
@@ -128,7 +131,7 @@ void PickRacerScreen::VTable0x38(MenuWidget* p_source)
 		m_unk0x364 = TRUE;
 	}
 
-	m_unk0x35c = source;
+	m_unk0x35c = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x00485090

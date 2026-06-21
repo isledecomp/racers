@@ -22,13 +22,11 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 // FUNCTION: GOLDP 0x10032c80
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
-	LegoU32 uVar1;
 	MipmapLevel* pMVar2;
 	LegoU16* puVar3;
 	int iVar4;
 
-	uVar1 = p_renderer->m_unk0x2c;
-	p_renderer->m_unk0x2c = uVar1 & 0x7fffffff;
+	p_renderer->m_unk0x2c = p_renderer->m_unk0x2c & 0x7fffffff;
 	if (p_renderer->m_pixelFormat) {
 		if (p_renderer->m_pixelFormat != '\x01') {
 			p_renderer->m_currentTriangleRasterizer = NoopTriangleRasterizer;
@@ -37,8 +35,8 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 			return;
 		}
 		pMVar2 = p_renderer->m_unk0x34;
-		if ((pMVar2 == (MipmapLevel*) 0x0) || ((uVar1 & 0x100) == 0)) {
-			if ((uVar1 & 1) != 0) {
+		if ((pMVar2 == (MipmapLevel*) 0x0) || ((p_renderer->m_unk0x2c & 0x100) == 0)) {
+			if ((p_renderer->m_unk0x2c & 1) != 0) {
 				p_renderer->m_triangleRasterizer = FUN_10040670;
 				p_renderer->m_spanRasterizer = FUN_100334d0;
 				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
@@ -51,14 +49,14 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		}
 		else if (iVar4 = (int) pMVar2->m_unk0x13, iVar4 != 0) {
 			if (pMVar2->m_paletteData) {
-				if ((uVar1 & 4) != 0) {
-					if (uVar1 & 0x200) {
+				if ((p_renderer->m_unk0x2c & 4) != 0) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003d700;
 					}
 					else {
 						p_renderer->m_triangleRasterizer = FUN_1003ba30;
 					}
-					if ((uVar1 & 2) != 0) {
+					if ((p_renderer->m_unk0x2c & 2) != 0) {
 						p_renderer->m_spanRasterizer = g_spanRasterizers[0x50 - iVar4];
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
@@ -67,8 +65,8 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
 				}
-				else if ((uVar1 & 8) != 0) {
-					if (uVar1 & 0x200) {
+				else if ((p_renderer->m_unk0x2c & 8) != 0) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003d700;
 					}
 					else {
@@ -84,13 +82,13 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					}
 				}
 				else {
-					if (uVar1 & 0x200) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003e590;
 					}
 					else {
 						p_renderer->m_triangleRasterizer = FUN_1003c780;
 					}
-					if ((uVar1 & 2) != 0) {
+					if ((p_renderer->m_unk0x2c & 2) != 0) {
 						p_renderer->m_spanRasterizer = g_spanRasterizers[0x1a - iVar4];
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
@@ -101,18 +99,18 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 				}
 			}
 			else {
-				if (uVar1 & 0x200) {
+				if (p_renderer->m_unk0x2c & 0x200) {
 					p_renderer->m_triangleRasterizer = FUN_1003e590;
 				}
 				else {
 					p_renderer->m_triangleRasterizer = FUN_1003c780;
 				}
 
-				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
+				if (((p_renderer->m_unk0x2c & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
 					p_renderer->m_spanRasterizer = g_spanRasterizers[0x38 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				}
-				else if ((uVar1 & 2) != 0) {
+				else if ((p_renderer->m_unk0x2c & 2) != 0) {
 					p_renderer->m_spanRasterizer = g_spanRasterizers[0xe - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				}
@@ -126,7 +124,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		else {
 			puVar3 = pMVar2->m_paletteData;
 			if (puVar3) {
-				if ((uVar1 & 0x200) != 0) {
+				if ((p_renderer->m_unk0x2c & 0x200) != 0) {
 					p_renderer->m_triangleRasterizer = FUN_1003e590;
 					p_renderer->m_spanRasterizer = FUN_10033890;
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
@@ -138,7 +136,7 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 				}
 			}
 			else {
-				if ((uVar1 & 0x200) != 0) {
+				if ((p_renderer->m_unk0x2c & 0x200) != 0) {
 					p_renderer->m_triangleRasterizer = FUN_1003ee90;
 					p_renderer->m_spanRasterizer = FUN_100336d0;
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
@@ -153,8 +151,8 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 	}
 	else {
 		pMVar2 = p_renderer->m_unk0x34;
-		if ((pMVar2 == (MipmapLevel*) 0x0) || ((uVar1 & 0x100) == 0)) {
-			if ((uVar1 & 1) != 0) {
+		if ((pMVar2 == (MipmapLevel*) 0x0) || ((p_renderer->m_unk0x2c & 0x100) == 0)) {
+			if ((p_renderer->m_unk0x2c & 1) != 0) {
 				p_renderer->m_triangleRasterizer = FUN_1003fce0;
 				p_renderer->m_spanRasterizer = FUN_100332d0;
 				p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
@@ -167,14 +165,14 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 		}
 		else if (iVar4 = (int) pMVar2->m_unk0x13, (iVar4) != 0) {
 			if (pMVar2->m_paletteData) {
-				if ((uVar1 & 4) != 0) {
-					if (uVar1 & 0x200) {
+				if ((p_renderer->m_unk0x2c & 4) != 0) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003d700;
 					}
 					else {
 						p_renderer->m_triangleRasterizer = FUN_1003ba30;
 					}
-					if ((uVar1 & 2) != 0) {
+					if ((p_renderer->m_unk0x2c & 2) != 0) {
 						p_renderer->m_spanRasterizer = g_spanRasterizers[84 - iVar4];
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
@@ -184,8 +182,8 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
 				}
-				else if (uVar1 & 8) {
-					if (uVar1 & 0x200) {
+				else if (p_renderer->m_unk0x2c & 8) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003d700;
 					}
 					else {
@@ -200,13 +198,13 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				}
 				else {
-					if (uVar1 & 0x200) {
+					if (p_renderer->m_unk0x2c & 0x200) {
 						p_renderer->m_triangleRasterizer = FUN_1003e590;
 					}
 					else {
 						p_renderer->m_triangleRasterizer = FUN_1003c780;
 					}
-					if ((uVar1 & 2) != 0) {
+					if ((p_renderer->m_unk0x2c & 2) != 0) {
 						p_renderer->m_spanRasterizer = g_spanRasterizers[26 - iVar4];
 						p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 					}
@@ -218,19 +216,19 @@ void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 				}
 			}
 			else {
-				if (uVar1 & 0x200) {
+				if (p_renderer->m_unk0x2c & 0x200) {
 					p_renderer->m_triangleRasterizer = FUN_1003e590;
 				}
 				else {
 					p_renderer->m_triangleRasterizer = FUN_1003c780;
 				}
-				if (((uVar1 & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
+				if (((p_renderer->m_unk0x2c & 4) != 0) && (pMVar2->m_bytesPerPixel == '\x04')) {
 					// LINE: GOLDP 0x10033030
 					p_renderer->m_spanRasterizer = g_spanRasterizers[62 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				}
 				// LINE: GOLDP 0x10033048
-				else if ((uVar1 & 2) != 0) {
+				else if ((p_renderer->m_unk0x2c & 2) != 0) {
 					p_renderer->m_spanRasterizer = g_spanRasterizers[14 - iVar4];
 					p_renderer->m_currentTriangleRasterizer = p_renderer->m_triangleRasterizer;
 				}

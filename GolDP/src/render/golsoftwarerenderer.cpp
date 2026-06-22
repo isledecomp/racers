@@ -56,12 +56,6 @@ static LegoU8 GetSoftwareTextureSizeCode(const MipmapLevel* p_level)
 	}
 }
 
-// FUNCTION: GOLDP 0x1003ba20
-static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
-{
-	// empty
-}
-
 // STUB: GOLDP 0x10041000
 static LegoU8 __fastcall BucketCommandsBySortByte3(
 	GolSoftwareRenderer::Command0x14** p_buckets,

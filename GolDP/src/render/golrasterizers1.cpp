@@ -1,6 +1,7 @@
 #include "render/golrasterizers1.h"
 
 #include "decomp.h"
+#include "golcpu.h"
 #include "render/golsoftwarerenderer.h"
 
 // GLOBAL: GOLDP 0x10057a08
@@ -18,17 +19,240 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 	FUN_10036b00, FUN_10038080, FUN_10039600, FUN_1003ab80,
 };
 
+/// Temporary, until we figure out how to get the block to fold correctly. See the comments below.
+inline void FoldedBlockTodo(GolSoftwareRenderer* p_renderer)
+{
+	if (p_renderer->GetUnk0x34()->m_paletteData) {
+		if (p_renderer->GetUnk0x2c() & 0x200) {
+			p_renderer->SetTriangleRasterizer(FUN_1003e590);
+			p_renderer->SetSpanRasterizer(FUN_10033890);
+			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+		}
+		else {
+			p_renderer->SetTriangleRasterizer(FUN_1003c780);
+			p_renderer->SetSpanRasterizer(FUN_10033890);
+			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+		}
+	}
+	else {
+		if (p_renderer->GetUnk0x2c() & 0x200) {
+			p_renderer->SetTriangleRasterizer(FUN_1003ee90);
+			p_renderer->SetSpanRasterizer(FUN_100336d0);
+			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+		}
+		else {
+			p_renderer->SetTriangleRasterizer(FUN_1003cf40);
+			p_renderer->SetSpanRasterizer(FUN_100336d0);
+			p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+		}
+	}
+}
+
 // STUB: GOLDP 0x10032c80
 void FUN_10032c80(GolSoftwareRenderer* p_renderer)
 {
-	STUB(0x10032c80);
-	// p_renderer->m_unk0x2c &= 0x7fffffff;
-	// p_renderer->m_currentTriangleRasterizer = NoopTriangleRasterizer;
-	// p_renderer->m_triangleRasterizer = NoopTriangleRasterizer;
+	LegoU32 unk0x13;
 
-	// if (p_renderer->m_pixelFormat != e_formatIndex8) {
-	// 	p_renderer->m_spanRasterizer = NoopSpanRasterizer;
-	// }
+	p_renderer->SetUnk0x2c(p_renderer->GetUnk0x2c() & ~0x80000000);
+	if (p_renderer->GetPixelFormat()) {
+		if (p_renderer->GetPixelFormat() != 1) {
+			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
+			p_renderer->SetTriangleRasterizer(NoopTriangleRasterizer);
+			// TODO: This double assignment is weird, seems to be optimized away most of the time. Maybe volatile?
+			p_renderer->SetCurrentTriangleRasterizer(NoopTriangleRasterizer);
+			return;
+		}
+		if ((p_renderer->GetUnk0x34() == NULL) || ((p_renderer->GetUnk0x2c() & 0x100) == 0)) {
+			if (p_renderer->GetUnk0x2c() & 1) {
+				p_renderer->SetTriangleRasterizer(FUN_10040670);
+				p_renderer->SetSpanRasterizer(FUN_100334d0);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+			else {
+				p_renderer->SetTriangleRasterizer(FUN_1003f790);
+				p_renderer->SetSpanRasterizer(FUN_100332a0);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+		}
+		else if (unk0x13 = p_renderer->GetUnk0x34()->m_unk0x13, unk0x13 != 0) {
+			if (p_renderer->GetUnk0x34()->m_paletteData) {
+				if (p_renderer->GetUnk0x2c() & 4) {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (p_renderer->GetUnk0x2c() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[80 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[68 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else if (p_renderer->GetUnk0x2c() & 8) {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (g_cpuSupportsMMX != 0) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[44 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[32 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003e590);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003c780);
+					}
+					if (p_renderer->GetUnk0x2c() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[24 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						STUB(0x01); // FIXME: to prevent mismatching code folding
+					}
+					else {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+						STUB(0x02); // FIXME: to prevent mismatching code folding
+					}
+				}
+			}
+			else {
+				if (p_renderer->GetUnk0x2c() & 0x200) {
+					p_renderer->SetTriangleRasterizer(FUN_1003e590);
+				}
+				else {
+					p_renderer->SetTriangleRasterizer(FUN_1003c780);
+				}
+
+				if ((p_renderer->GetUnk0x2c() & 4) && (p_renderer->GetUnk0x34()->m_bytesPerPixel == 4)) {
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[56 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+				}
+				else if (p_renderer->GetUnk0x2c() & 2) {
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					STUB(0x03); // FIXME: to prevent mismatching code folding
+				}
+				else {
+					// LINE: GOLDP 0x10032e37
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					STUB(0x04); // FIXME: to prevent mismatching code folding
+				}
+			}
+		}
+		else {
+			FoldedBlockTodo(p_renderer);
+		}
+	}
+	else {
+		if ((p_renderer->GetUnk0x34() == NULL) || ((p_renderer->GetUnk0x2c() & 0x100) == 0)) {
+			if (p_renderer->GetUnk0x2c() & 1) {
+				p_renderer->SetTriangleRasterizer(FUN_1003fce0);
+				p_renderer->SetSpanRasterizer(FUN_100332d0);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+			else {
+				p_renderer->SetTriangleRasterizer(FUN_1003f790);
+				p_renderer->SetSpanRasterizer(FUN_10033270);
+				p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+			}
+		}
+		else if (unk0x13 = p_renderer->GetUnk0x34()->m_unk0x13, unk0x13 != 0) {
+			if (p_renderer->GetUnk0x34()->m_paletteData) {
+				if (p_renderer->GetUnk0x2c() & 4) {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (p_renderer->GetUnk0x2c() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[84 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						// LINE: GOLDP 0x10032f55
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[74 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else if (p_renderer->GetUnk0x2c() & 8) {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003d700);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003ba30);
+					}
+					if (g_cpuSupportsMMX) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[50 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						// LINE: GOLDP 0x10032fad
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[38 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+				else {
+					if (p_renderer->GetUnk0x2c() & 0x200) {
+						p_renderer->SetTriangleRasterizer(FUN_1003e590);
+					}
+					else {
+						p_renderer->SetTriangleRasterizer(FUN_1003c780);
+					}
+					if (p_renderer->GetUnk0x2c() & 2) {
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[26 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+					else {
+						// LINE: GOLDP 0x10032ffb
+						p_renderer->SetSpanRasterizer(g_spanRasterizers[20 - unk0x13]);
+						p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+					}
+				}
+			}
+			else {
+				if (p_renderer->GetUnk0x2c() & 0x200) {
+					p_renderer->SetTriangleRasterizer(FUN_1003e590);
+				}
+				else {
+					p_renderer->SetTriangleRasterizer(FUN_1003c780);
+				}
+				if ((p_renderer->GetUnk0x2c() & 4) && (p_renderer->GetUnk0x34()->m_bytesPerPixel == 4)) {
+					// LINE: GOLDP 0x10033030
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[62 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+				}
+				// LINE: GOLDP 0x10033048
+				else if (p_renderer->GetUnk0x2c() & 2) {
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[14 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+				}
+				else {
+					// LINE: GOLDP 0x1003306c
+					p_renderer->SetSpanRasterizer(g_spanRasterizers[8 - unk0x13]);
+					p_renderer->SetCurrentTriangleRasterizer(p_renderer->GetTriangleRasterizer());
+				}
+			}
+		}
+		else {
+			// TODO: Matches better with this one disabled because the code gets folded as expected, but in the wrong
+			// place. A `goto` to the other invocation has the same effect.
+			FoldedBlockTodo(p_renderer);
+		}
+	}
 }
 
 // STUB: GOLDP 0x100330d0

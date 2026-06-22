@@ -89,6 +89,20 @@ public:
 	void FUN_10041830(LegoS32 p_count, LegoBool p_sort);
 	void FUN_10041a20(LegoBool p_sort);
 
+	LegoS8 GetPixelFormat() { return m_pixelFormat; }
+	TriangleRasterizerCallback GetCurrentTriangleRasterizer() { return m_currentTriangleRasterizer; }
+	void SetCurrentTriangleRasterizer(TriangleRasterizerCallback p_currentTriangleRasterizer)
+	{
+		m_currentTriangleRasterizer = p_currentTriangleRasterizer;
+	}
+	TriangleRasterizerCallback GetTriangleRasterizer() { return m_triangleRasterizer; }
+	void SetTriangleRasterizer(TriangleRasterizerCallback p_triangleRasterizer)
+	{
+		m_triangleRasterizer = p_triangleRasterizer;
+	}
+	void SetSpanRasterizer(SpanRasterizerCallback p_spanRasterizer) { m_spanRasterizer = p_spanRasterizer; }
+	undefined4 GetUnk0x2c() { return m_unk0x2c; }
+	void SetUnk0x2c(undefined4 p_unk0x2c) { m_unk0x2c = p_unk0x2c; }
 	MipmapLevel* GetUnk0x34() { return m_unk0x34; }
 	void SetUnk0x34(MipmapLevel* p_unk0x34) { m_unk0x34 = p_unk0x34; }
 
@@ -100,7 +114,7 @@ private:
 	LegoU32 m_width;                                        // 0x08
 	LegoU32 m_height;                                       // 0x0c
 	LegoU8 m_bitsPerPixel;                                  // 0x10
-	LegoU8 m_pixelFormat;                                   // 0x11
+	LegoS8 m_pixelFormat;                                   // 0x11
 	LegoU8 m_bytesPerPixel;                                 // 0x12
 	undefined m_unk0x13[0x20 - 0x13];                       // 0x13
 	TriangleRasterizerCallback m_currentTriangleRasterizer; // 0x20
@@ -118,5 +132,11 @@ private:
 	undefined4 m_unk0x50;                                   // 0x50
 	Command0x14* m_commandHead;                             // 0x54
 };
+
+// FUNCTION: GOLDP 0x1003ba20
+static void NoopTriangleRasterizer(GolSoftwareRenderer*, D3DTLVERTEX*, D3DTLVERTEX*, D3DTLVERTEX*)
+{
+	// empty
+}
 
 #endif // GOLSOFTWARERENDERER_H

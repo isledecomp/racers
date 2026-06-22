@@ -176,7 +176,7 @@ void TimeRaceManager::Shutdown()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00422710
+// FUNCTION: LEGORACERS 0x00422710
 void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 {
 	LegoU8 flags = m_flags0x3b4;
@@ -204,37 +204,27 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 	if (p_elapsedMs >= m_unk0x3ac) {
 		m_unk0x3ac += c_ghostSampleIntervalMs - p_elapsedMs;
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
+			RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 			GolVec3 position;
-			m_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+			racerField->m_unk0x044->VTable0x04(&position);
 
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionX =
-				static_cast<LegoS16>(position.m_x * 32.0f);
+				static_cast<LegoS16>(32.0f * position.m_x);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionY =
-				static_cast<LegoS16>(position.m_y * 32.0f);
+				static_cast<LegoS16>(32.0f * position.m_y);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionZ =
-				static_cast<LegoS16>(position.m_z * 32.0f);
+				static_cast<LegoS16>(32.0f * position.m_z);
 
 			GolQuat rotation;
-			GolMatrix34 orientation;
-			const GolMatrix3& sourceOrientation = m_racer->m_unk0x018.m_unk0x044->GetOrientation();
-			orientation.m_m[0][0] = sourceOrientation.m_m[0][0];
-			orientation.m_m[0][1] = sourceOrientation.m_m[0][1];
-			orientation.m_m[0][2] = sourceOrientation.m_m[0][2];
-			orientation.m_m[1][0] = sourceOrientation.m_m[1][0];
-			orientation.m_m[1][1] = sourceOrientation.m_m[1][1];
-			orientation.m_m[1][2] = sourceOrientation.m_m[1][2];
-			orientation.m_m[2][0] = sourceOrientation.m_m[2][0];
-			orientation.m_m[2][1] = sourceOrientation.m_m[2][1];
-			orientation.m_m[2][2] = sourceOrientation.m_m[2][2];
-			GolMath::FUN_1002f5a0(orientation, &rotation);
+			GolMath::FUN_1002f5a0(m_racer->m_unk0x018.m_unk0x044->GetOrientation(), &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
-				static_cast<LegoS8>(rotation.m_x * 127.0f);
+				static_cast<LegoS8>(127.0f * rotation.m_x);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
-				static_cast<LegoS8>(rotation.m_y * 127.0f);
+				static_cast<LegoS8>(127.0f * rotation.m_y);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationZ =
-				static_cast<LegoS8>(rotation.m_z * 127.0f);
+				static_cast<LegoS8>(127.0f * rotation.m_z);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationW =
-				static_cast<LegoS8>(rotation.m_w * 127.0f);
+				static_cast<LegoS8>(127.0f * rotation.m_w);
 
 			if (m_scratchRun->m_sampleCount == 0) {
 				m_scratchRun->m_initialPosition = position;

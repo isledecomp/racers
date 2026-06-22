@@ -130,11 +130,9 @@ void CutsceneParticle::FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* 
 	m_unk0x008.FUN_00412430(p_golExport, p_renderer, 0xc, 0x10);
 }
 
-// STUB: LEGORACERS 0x00489540
+// FUNCTION: LEGORACERS 0x00489540
 void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 {
-	// should be semantically correct, but does not match yet
-
 	GolVec3 v0;
 	GolVec3 v1;
 	GolVec3 v2;
@@ -158,15 +156,19 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 	GolVec3 cross;
 	cross.m_x = v2.m_y;
 	cross.m_x *= v0.m_z;
-	cross.m_x -= v2.m_z * v0.m_y;
+	LegoFloat term = v2.m_z;
+	term *= v0.m_y;
+	cross.m_x -= term;
 
 	cross.m_y = v2.m_z;
 	cross.m_y *= v0.m_x;
 	cross.m_y -= v2.m_x * v0.m_z;
 
+	term = v2.m_y;
+	term *= v0.m_x;
 	cross.m_z = v0.m_y;
 	cross.m_z *= v2.m_x;
-	cross.m_z -= v2.m_y * v0.m_x;
+	cross.m_z -= term;
 
 	m_unk0x160.m_m[0][0] = v0.m_x;
 	m_unk0x160.m_m[0][1] = v0.m_y;

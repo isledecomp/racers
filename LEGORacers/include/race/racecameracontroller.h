@@ -44,10 +44,10 @@ public:
 	void FUN_00428540(LegoFloat p_unk0x04);
 
 private:
-	undefined4 FUN_00427c00();
+	void FUN_00427c00();
 	void FUN_00427d30();
 	void FUN_00427e80();
-	undefined4 FUN_004280a0();
+	void FUN_004280a0();
 	static LegoFloat FUN_00428f40(LegoFloat p_unk0x04, LegoFloat p_unk0x08);
 
 public:
@@ -58,14 +58,11 @@ public:
 	LegoU8 m_unk0x004;                   // 0x004
 	LegoU8 m_unk0x005;                   // 0x005
 	undefined m_unk0x006[0x008 - 0x006]; // 0x006
-	GolMatrix3 m_unk0x008;               // 0x008
-	GolVec3 m_unk0x02c;                  // 0x02c
+	GolMatrix34 m_unk0x008;              // 0x008
 	GolQuat m_unk0x038;                  // 0x038
-	GolMatrix3 m_unk0x048;               // 0x048
-	GolVec3 m_unk0x06c;                  // 0x06c
+	GolMatrix34 m_unk0x048;              // 0x048
 	GolQuat m_unk0x078;                  // 0x078
-	GolMatrix3 m_unk0x088;               // 0x088
-	GolVec3 m_unk0x0ac;                  // 0x0ac
+	GolMatrix34 m_unk0x088;              // 0x088
 	GolQuat m_unk0x0b8;                  // 0x0b8
 	LegoFloat m_unk0x0c8;                // 0x0c8
 	LegoFloat m_unk0x0cc;                // 0x0cc

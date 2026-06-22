@@ -16,7 +16,6 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x074, 0x29c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x074::Field0x170, 0x60)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x54, 0x04)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68, 0x54)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68::Field0x08, 0x28)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68Field0x028, 0x68)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x68Field0x02c, 0x68)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::PwbTxtParser, 0x1fc)
@@ -98,7 +97,7 @@ void RaceSession::Field0x6dc::ResourceBase::VTable0x08(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x6dc::ResourceBase::VTable0x00(VTable0x00Param*)
+void RaceSession::Field0x6dc::ResourceBase::VTable0x00(LegoEventQueue::CallbackData*)
 {
 }
 

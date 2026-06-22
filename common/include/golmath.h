@@ -121,7 +121,13 @@ struct GolMatrix3 {
 
 // SIZE 0x30
 struct GolMatrix34 {
-	LegoFloat m_m[4][3];
+	union {
+		LegoFloat m_m[4][3]; // 0x00
+		struct {
+			GolMatrix3 m_orientation; // 0x00
+			GolVec3 m_position;       // 0x24
+		};
+	};
 };
 
 // SIZE 0x40
@@ -144,7 +150,7 @@ public:
 	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest);
 	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest);
 	static void FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest);
-	static void FUN_1002f5a0(const GolMatrix34& p_matrix, GolQuat* p_dest);
+	static void FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest);
 	static void FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest);
 	static void FUN_1002f890(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest);
 	static void FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle);

@@ -409,7 +409,6 @@ void RaceSession::Field0x258::FUN_004306d0(LegoBool32 p_enabled)
 // FUNCTION: LEGORACERS 0x00430710
 void RaceSession::Field0x258::FUN_00430710()
 {
-	LegoU32 duration = m_unk0x004.m_unk0x060;
 	LegoU32 flags = m_unk0x004.m_unk0x05c;
 	flags &= ~1;
 	m_unk0x004.m_unk0x05c = flags;

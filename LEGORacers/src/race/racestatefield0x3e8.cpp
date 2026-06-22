@@ -40,7 +40,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448840()
 }
 
 // FUNCTION: LEGORACERS 0x004488e0
-LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004488e0(CollisionResource* p_unk0x04)
+LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004488e0(RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x04)
 {
 	LegoU32 result = m_unk0x154;
 	LegoU32 i = 0;
@@ -60,7 +60,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004488e0(CollisionResource* p
 }
 
 // FUNCTION: LEGORACERS 0x00448930
-void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448930(CollisionResource* p_unk0x04)
+void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448930(RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x04)
 {
 	LegoU32 count = m_unk0x154;
 	LegoU32 index = 0;
@@ -69,7 +69,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448930(CollisionResource* p_un
 			if (m_unk0x140[index] == p_unk0x04) {
 				LegoU32 nextIndex = index + 1;
 				if (nextIndex < count) {
-					CollisionResource** entry = &m_unk0x140[nextIndex - 1];
+					RaceSessionField0x32b4::Field0x000::Field0x0a8** entry = &m_unk0x140[nextIndex - 1];
 					do {
 						nextIndex++;
 						*entry = entry[1];
@@ -268,7 +268,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448c70()
 
 // STUB: LEGORACERS 0x00448d90
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448d90(
-	CollisionResource* p_unk0x04,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x04,
 	LegoFloat p_unk0x08,
 	LegoFloat p_unk0x0c
 )

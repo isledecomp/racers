@@ -22,6 +22,10 @@ extern const LegoFloat g_unk0x004b0430 = 30.0f;
 // GLOBAL: LEGORACERS 0x004b0434
 extern const LegoFloat g_unk0x004b0434 = 300.0f;
 
+extern const LegoFloat g_item0x40RadiansToTableIndex;
+extern const LegoFloat g_unk0x004b0cd8;
+extern const LegoFloat g_unk0x004b0cdc;
+
 // GLOBAL: LEGORACERS 0x004b046c
 extern const LegoFloat g_unk0x004b046c = 0.050000001f;
 
@@ -201,7 +205,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, Le
 	m_unk0x6cc = p_unk0x0c;
 
 	LegoFloat angle = m_unk0x6cc;
-	m_unk0x6c8 = g_cosineTable[static_cast<LegoS32>(angle * 162.97466f) & 0x3ff];
+	m_unk0x6c8 = g_cosineTable[static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff];
 
 	if (m_unk0x6e8 != NULL) {
 		return;
@@ -229,7 +233,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, Le
 	}
 
 	if (m_sound6e8 != NULL) {
-		m_sound6e8->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
+		m_sound6e8->SetDistanceRangeWithMinSquared(g_unk0x004b0cd8 * g_unk0x004b0cd8, g_unk0x004b0cdc);
 		m_sound6e8->SetVolume(0.80000001f);
 		m_sound6e8->Play(TRUE);
 	}

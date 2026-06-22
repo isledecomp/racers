@@ -10,6 +10,7 @@
 class GolD3DRenderDevice;
 class GolExport;
 class GdbVertexArray0xc;
+class GolCollidableEntity;
 class GolModelBase;
 struct ColorRGBA;
 
@@ -76,70 +77,7 @@ public:
 				undefined4 m_unk0x01c;            // 0x01c
 			};
 
-			// SIZE 0x14
-			struct Entry {
-				undefined4 m_unk0x000; // 0x000
-				undefined4 m_unk0x004; // 0x004
-				undefined4 m_unk0x008; // 0x008
-				Entry* m_unk0x00c;     // 0x00c
-				Entry* m_unk0x010;     // 0x010
-			};
-
-			// SIZE 0x2c
-			struct Field0x90 {
-				enum {
-					c_invalidIndex = 0xffff,
-				};
-
-				// SIZE 0x20
-				struct Node {
-					// SIZE 0x1c
-					struct Branch {
-						GolVec3 m_unk0x000;   // 0x000
-						LegoFloat m_unk0x00c; // 0x00c
-						LegoU32 m_unk0x010;   // 0x010
-						LegoU32 m_unk0x014;   // 0x014
-						LegoU16 m_unk0x018;   // 0x018
-						LegoU16 m_unk0x01a;   // 0x01a
-					};
-
-					// SIZE 0x1c
-					union Payload {
-						Branch m_branch;
-						Entry m_entry;
-					};
-
-					Entry* GetEntry() { return &m_unk0x004.m_entry; }
-
-					LegoU16 m_unk0x000; // 0x000
-					LegoU16 m_unk0x002; // 0x002
-					Payload m_unk0x004; // 0x004
-				};
-
-				void FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
-
-				undefined4 m_unk0x000; // 0x000
-				LegoU32 m_unk0x004;    // 0x004
-				Node* m_unk0x008;      // 0x008
-				Node* m_unk0x00c;      // 0x00c
-				LegoU32 m_unk0x010;    // 0x010
-				undefined4 m_unk0x014; // 0x014
-				undefined4 m_unk0x018; // 0x018
-				undefined4 m_unk0x01c; // 0x01c
-				undefined4 m_unk0x020; // 0x020
-				Entry* m_unk0x024;     // 0x024
-				Entry* m_unk0x028;     // 0x028
-			};
-
-			// SIZE 0x94
-			struct Params {
-				undefined m_unk0x000[0x078 - 0x000]; // 0x000
-				GolModelBase* m_unk0x078;            // 0x078
-				undefined m_unk0x07c[0x090 - 0x07c]; // 0x07c
-				Field0x90* m_unk0x090;               // 0x090
-			};
-
-			void FUN_00414a30(Params* p_unk0x04);
+			void FUN_00414a30(GolCollidableEntity* p_unk0x04);
 			void FUN_00414a90(GolModelBase* p_unk0x04);
 			void FUN_00414b30(GolModelBase* p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c);
 			void FUN_00414c00(GolModelBase* p_unk0x04);
@@ -211,12 +149,12 @@ public:
 	private:
 		friend class RaceSessionField0x27d4;
 
-		void FUN_00491c70(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, Field0x004::Params* p_params);
+		void FUN_00491c70(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, GolCollidableEntity* p_params);
 
 		Field0x004 m_unk0x004;               // 0x004
 		ModelSlot m_unk0x120[3];             // 0x120
 		GolExport* m_unk0x2f4;               // 0x2f4
-		Field0x004::Params* m_unk0x2f8;      // 0x2f8
+		GolCollidableEntity* m_unk0x2f8;     // 0x2f8
 		LegoFloat m_unk0x2fc;                // 0x2fc
 		LegoFloat m_unk0x300;                // 0x300
 		LegoFloat m_unk0x304;                // 0x304
@@ -241,7 +179,7 @@ public:
 	void FUN_00492680(
 		GolD3DRenderDevice* p_renderer,
 		GolExport* p_golExport,
-		Item::Field0x004::Params* p_params,
+		GolCollidableEntity* p_params,
 		LegoU32 p_count
 	);
 	Item* FUN_004927c0(LegoU32 p_unk0x04);

@@ -41,7 +41,7 @@
 // atexit
 
 // LIBRARY: LEGORACERS 0x004a8676
-// _CIacos
+// __CIacos
 
 // LIBRARY: LEGORACERS 0x004a867c
 // _WinMainCRTStartup

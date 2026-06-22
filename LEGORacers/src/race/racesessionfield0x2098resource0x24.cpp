@@ -13,8 +13,8 @@ RaceSession::Field0x2098::Resource0x24::~Resource0x24()
 	FUN_00464660();
 }
 
-// STUB: LEGORACERS 0x00464610
-undefined4* RaceSession::Field0x2098::Resource0x24::FUN_00464610(InitParams* p_params)
+// FUNCTION: LEGORACERS 0x00464610
+void RaceSession::Field0x2098::Resource0x24::FUN_00464610(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_00464660();
@@ -22,7 +22,7 @@ undefined4* RaceSession::Field0x2098::Resource0x24::FUN_00464610(InitParams* p_p
 
 	InitParams* params = p_params;
 	m_unk0x14 = params->m_unk0x00;
-	undefined4* eventId = params->m_eventIds;
+	LegoS32* eventId = params->m_eventIds;
 	for (LegoS32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}
@@ -30,7 +30,6 @@ undefined4* RaceSession::Field0x2098::Resource0x24::FUN_00464610(InitParams* p_p
 	m_unk0x04 = params->m_eventTable;
 	m_unk0x20 = params->m_unk0x14;
 	m_state0x18 = c_state0x18Four;
-	return eventId;
 }
 
 // FUNCTION: LEGORACERS 0x00464660

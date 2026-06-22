@@ -398,7 +398,7 @@ GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04
 	m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
 
 	GolQuat* basis = &m_unk0x040;
-	Field0x050* field0x50 = m_unk0x050;
+	RaceState::Racer::Field0x3e8::Field0x74cInstance* field0x50 = m_unk0x050;
 	m_unk0x034 = field0x50->m_unk0x00;
 	GolQuat* result = &field0x50->m_unk0x0c;
 	basis->m_x = result->m_x;

@@ -2,17 +2,13 @@
 #include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
+#include "golboundingshape.h"
+#include "golcollidableentity.h"
 #include "golmodelbase.h"
 #include "race/racesession.h"
 
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004, 0x11c)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Entry, 0x14)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90, 0x2c)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node, 0x20)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node::Branch, 0x1c)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Field0x90::Node::Payload, 0x1c)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::FloatBits, 0x04)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::Params, 0x94)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedCoordinates, 0x08)
 DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex, 0x20)
 
@@ -59,83 +55,83 @@ LegoFloat g_unk0x004c3e24;
 RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex g_unk0x004c3e28[76];
 
 // FUNCTION: LEGORACERS 0x00403cc0
-void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
+void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoFloat planeOffset;
-	m_unk0x010++;
-	Node* node = m_unk0x00c;
+	m_unk0x10++;
+	StructField0x08* node = m_unk0x0c;
 
-	while (node->m_unk0x000 == 0) {
-		LegoFloat dot = node->m_unk0x004.m_branch.m_unk0x000.m_z;
+	while (node->m_type == StructField0x08::e_type0) {
+		LegoFloat dot = node->m_unk0x04.m_t0.m_unk0x08;
 		dot *= p_unk0x04->m_z;
-		dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * p_unk0x04->m_y;
+		dot += node->m_unk0x04.m_t0.m_unk0x04 * p_unk0x04->m_y;
 		LegoFloat dotX = p_unk0x04->m_x;
-		dotX *= node->m_unk0x004.m_branch.m_unk0x000.m_x;
+		dotX *= node->m_unk0x04.m_t0.m_unk0x00;
 		dot += dotX;
-		dot += node->m_unk0x004.m_branch.m_unk0x00c;
+		dot += node->m_unk0x04.m_t0.m_unk0x0c;
 
 		LegoU32 nodeIndex;
-		if (dot < 0.0f && node->m_unk0x004.m_branch.m_unk0x01a != c_invalidIndex) {
-			node->m_unk0x004.m_branch.m_unk0x014 = m_unk0x010;
-			nodeIndex = node->m_unk0x004.m_branch.m_unk0x01a;
+		if (dot < 0.0f && node->m_unk0x04.m_t0.m_unk0x1a != StructField0x08::c_invalidIndex) {
+			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
+			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
 		}
-		else if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
-			node->m_unk0x004.m_branch.m_unk0x014 = m_unk0x010;
-			nodeIndex = node->m_unk0x004.m_branch.m_unk0x01a;
+		else if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
+			node->m_unk0x04.m_t0.m_unk0x14 = m_unk0x10;
+			nodeIndex = node->m_unk0x04.m_t0.m_unk0x1a;
 		}
 		else {
-			node->m_unk0x004.m_branch.m_unk0x010 = m_unk0x010;
-			nodeIndex = node->m_unk0x004.m_branch.m_unk0x018;
+			node->m_unk0x04.m_t0.m_unk0x10 = m_unk0x10;
+			nodeIndex = node->m_unk0x04.m_t0.m_unk0x18;
 		}
 
-		node = &m_unk0x008[nodeIndex];
+		node = &m_unk0x08[nodeIndex];
 	}
 
-	node->m_unk0x004.m_entry.m_unk0x010 = NULL;
-	node->m_unk0x004.m_entry.m_unk0x00c = NULL;
-	if (node->m_unk0x002 == c_invalidIndex) {
-		Entry* entry = node->GetEntry();
-		m_unk0x028 = entry;
-		m_unk0x024 = entry;
+	node->m_unk0x04.m_node.m_previous = NULL;
+	node->m_unk0x04.m_node.m_next = NULL;
+	if (node->m_unk0x02 == StructField0x08::c_invalidIndex) {
+		StructField0x08::Node* entry = &node->m_unk0x04.m_node;
+		m_unk0x28 = entry;
+		m_unk0x24 = entry;
 		return;
 	}
 
 	LegoU32 count = p_unk0x08;
-	Node* firstNode = node;
-	Node* previousNode = node;
-	node = &m_unk0x008[node->m_unk0x002];
+	StructField0x08* firstNode = node;
+	StructField0x08* previousNode = node;
+	node = &m_unk0x08[node->m_unk0x02];
 	LegoU32 stamp;
 
 	for (;;) {
-		stamp = m_unk0x010;
+		stamp = m_unk0x10;
 
-		if (node->m_unk0x004.m_branch.m_unk0x010 != stamp) {
-			if (node->m_unk0x004.m_branch.m_unk0x014 != stamp) {
-				LegoFloat dot = node->m_unk0x004.m_branch.m_unk0x000.m_z;
+		if (node->m_unk0x04.m_t0.m_unk0x10 != stamp) {
+			if (node->m_unk0x04.m_t0.m_unk0x14 != stamp) {
+				LegoFloat dot = node->m_unk0x04.m_t0.m_unk0x08;
 				dot *= p_unk0x04->m_z;
-				dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * p_unk0x04->m_y;
-				dot += node->m_unk0x004.m_branch.m_unk0x000.m_x * p_unk0x04->m_x;
+				dot += node->m_unk0x04.m_t0.m_unk0x04 * p_unk0x04->m_y;
+				dot += node->m_unk0x04.m_t0.m_unk0x00 * p_unk0x04->m_x;
 
-				if (dot < -node->m_unk0x004.m_branch.m_unk0x00c) {
-					node->m_unk0x004.m_branch.m_unk0x014 = stamp;
-					if (node->m_unk0x004.m_branch.m_unk0x01a == c_invalidIndex) {
+				if (dot < -node->m_unk0x04.m_t0.m_unk0x0c) {
+					node->m_unk0x04.m_t0.m_unk0x14 = stamp;
+					if (node->m_unk0x04.m_t0.m_unk0x1a == StructField0x08::c_invalidIndex) {
 						continue;
 					}
 
-					node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x01a];
+					node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x1a];
 				}
 				else {
-					node->m_unk0x004.m_branch.m_unk0x010 = stamp;
-					if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
+					node->m_unk0x04.m_t0.m_unk0x10 = stamp;
+					if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
 						continue;
 					}
 
-					node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x018];
+					node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x18];
 				}
 			}
 			else {
-				node->m_unk0x004.m_branch.m_unk0x010 = stamp;
-				if (node->m_unk0x004.m_branch.m_unk0x018 == c_invalidIndex) {
+				node->m_unk0x04.m_t0.m_unk0x10 = stamp;
+				if (node->m_unk0x04.m_t0.m_unk0x18 == StructField0x08::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -143,12 +139,12 @@ void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* 
 					continue;
 				}
 
-				planeOffset = -node->m_unk0x004.m_branch.m_unk0x00c;
+				planeOffset = -node->m_unk0x04.m_t0.m_unk0x0c;
 				LegoFloat* vertexY = &p_unk0x04[i].m_y;
 				while (i < count) {
-					LegoFloat dot = vertexY[1] * node->m_unk0x004.m_branch.m_unk0x000.m_z;
-					dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * vertexY[0];
-					dot += vertexY[-1] * node->m_unk0x004.m_branch.m_unk0x000.m_x;
+					LegoFloat dot = vertexY[1] * node->m_unk0x04.m_t0.m_unk0x08;
+					dot += node->m_unk0x04.m_t0.m_unk0x04 * vertexY[0];
+					dot += vertexY[-1] * node->m_unk0x04.m_t0.m_unk0x00;
 					if (dot > planeOffset) {
 						break;
 					}
@@ -161,13 +157,13 @@ void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* 
 					continue;
 				}
 
-				node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x018];
+				node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x18];
 			}
 		}
 		else {
-			if (node->m_unk0x004.m_branch.m_unk0x014 != stamp) {
-				node->m_unk0x004.m_branch.m_unk0x014 = stamp;
-				if (node->m_unk0x004.m_branch.m_unk0x01a == c_invalidIndex) {
+			if (node->m_unk0x04.m_t0.m_unk0x14 != stamp) {
+				node->m_unk0x04.m_t0.m_unk0x14 = stamp;
+				if (node->m_unk0x04.m_t0.m_unk0x1a == StructField0x08::c_invalidIndex) {
 					continue;
 				}
 				LegoU32 i = 1;
@@ -175,12 +171,12 @@ void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* 
 					continue;
 				}
 
-				planeOffset = -node->m_unk0x004.m_branch.m_unk0x00c;
+				planeOffset = -node->m_unk0x04.m_t0.m_unk0x0c;
 				LegoFloat* vertexY = &p_unk0x04[i].m_y;
 				while (i < count) {
-					LegoFloat dot = vertexY[1] * node->m_unk0x004.m_branch.m_unk0x000.m_z;
-					dot += node->m_unk0x004.m_branch.m_unk0x000.m_y * vertexY[0];
-					dot += vertexY[-1] * node->m_unk0x004.m_branch.m_unk0x000.m_x;
+					LegoFloat dot = vertexY[1] * node->m_unk0x04.m_t0.m_unk0x08;
+					dot += node->m_unk0x04.m_t0.m_unk0x04 * vertexY[0];
+					dot += vertexY[-1] * node->m_unk0x04.m_t0.m_unk0x00;
 					if (dot < planeOffset) {
 						break;
 					}
@@ -193,48 +189,48 @@ void RaceSessionField0x27d4::Item::Field0x004::Field0x90::FUN_00403cc0(GolVec3* 
 					continue;
 				}
 
-				node = &m_unk0x008[node->m_unk0x004.m_branch.m_unk0x01a];
+				node = &m_unk0x08[node->m_unk0x04.m_t0.m_unk0x1a];
 			}
 			else {
-				if (node->m_unk0x002 == c_invalidIndex) {
+				if (node->m_unk0x02 == StructField0x08::c_invalidIndex) {
 					break;
 				}
 
-				node = &m_unk0x008[node->m_unk0x002];
+				node = &m_unk0x08[node->m_unk0x02];
 				continue;
 			}
 		}
 
-		if (node->m_unk0x000 != 0) {
-			previousNode->m_unk0x004.m_entry.m_unk0x00c = node->GetEntry();
-			node->m_unk0x004.m_entry.m_unk0x010 = previousNode->GetEntry();
-			node->m_unk0x004.m_entry.m_unk0x00c = NULL;
+		if (node->m_type != StructField0x08::e_type0) {
+			previousNode->m_unk0x04.m_node.m_next = &node->m_unk0x04.m_node;
+			node->m_unk0x04.m_node.m_previous = &previousNode->m_unk0x04.m_node;
+			node->m_unk0x04.m_node.m_next = NULL;
 			previousNode = node;
-			node = &m_unk0x008[node->m_unk0x002];
+			node = &m_unk0x08[node->m_unk0x02];
 		}
 	}
 
-	m_unk0x024 = firstNode->GetEntry();
-	m_unk0x028 = previousNode->GetEntry();
+	m_unk0x24 = &firstNode->m_unk0x04.m_node;
+	m_unk0x28 = &previousNode->m_unk0x04.m_node;
 }
 
 // FUNCTION: LEGORACERS 0x00414a30
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a30(Params* p_unk0x04)
+void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a30(GolCollidableEntity* p_unk0x04)
 {
 	FUN_00415a60();
 
-	Field0x90* field0x90 = p_unk0x04->m_unk0x090;
-	GolModelBase* unk0x78 = p_unk0x04->m_unk0x078;
-	field0x90->FUN_00403cc0(g_unk0x004c47a8, sizeOfArray(g_unk0x004c47a8));
-	FUN_00414a90(unk0x78);
+	GolBoundingShape* boundingShape = p_unk0x04->GetBoundingShape(0);
+	GolModelBase* model = p_unk0x04->GetModel(0);
+	boundingShape->FUN_00403cc0(g_unk0x004c47a8, sizeOfArray(g_unk0x004c47a8));
+	FUN_00414a90(model);
 
-	Entry* entry = field0x90->m_unk0x024;
+	GolBoundingShape::StructField0x08::Node* entry = boundingShape->GetUnk0x24();
 	while (entry != NULL) {
-		FUN_00414b30(unk0x78, entry->m_unk0x000, entry->m_unk0x004);
-		entry = entry->m_unk0x00c;
+		FUN_00414b30(model, entry->m_firstGroup, entry->m_groupCount);
+		entry = entry->m_next;
 	}
 
-	FUN_00414c00(unk0x78);
+	FUN_00414c00(model);
 }
 
 // FUNCTION: LEGORACERS 0x00414a90

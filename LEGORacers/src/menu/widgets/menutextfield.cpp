@@ -227,11 +227,9 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x00471560
+// FUNCTION: LEGORACERS 0x00471560
 MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 {
-	LegoU32 sound;
-
 	switch (p_event->m_keyCode) {
 	case InputDevice::c_sourceJoystickButton | 0x4:
 		if (m_length <= m_maxLength) {
@@ -245,11 +243,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = 0;
 			}
 
-			sound = m_soundIds.m_ids[1];
+			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[1]);
 			break;
 		}
 
-		sound = m_soundIds.m_ids[3];
+		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x5:
@@ -262,7 +260,7 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 				}
 			}
 
-			sound = m_soundIds.m_ids[2];
+			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[2]);
 			break;
 		}
 
@@ -274,11 +272,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 		if (m_length != m_maxLength) {
 			m_unk0x1f4 = (m_unk0x1f4 + 1) % m_charset.SelectionLength();
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
-			sound = m_soundIds.m_ids[0];
+			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[0]);
 			break;
 		}
 
-		sound = m_soundIds.m_ids[3];
+		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x9:
@@ -292,18 +290,17 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 			index--;
 			m_unk0x1f4 = index;
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
-			sound = m_soundIds.m_ids[0];
+			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[0]);
 			break;
 		}
 
-		sound = m_soundIds.m_ids[3];
+		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
 		break;
 
 	default:
 		return NULL;
 	}
 
-	m_soundGroupBinding->FUN_0046e970(sound);
 	m_text.FirstLine();
 	return this;
 }

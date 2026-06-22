@@ -109,8 +109,8 @@ void AmethystBreeze0x104::UpdateMaterialCaches()
 		LegoU32 red = diffuse.m_unk0x0 & 0xff;
 		LegoU32 grn = diffuse.m_unk0x1 & 0xff;
 		LegoU32 blu = diffuse.m_unk0x2 & 0xff;
-		ColorRGBA* lightColor = m_lightColors;
 		FColorRGB* lightProduct = m_lightColorProducts;
+		ColorRGBA* lightColor = m_lightColors;
 
 		for (LegoU32 i = 0; i < m_lightCount; i++) {
 			LegoS32 product = static_cast<LegoS32>((red * lightColor->m_red) >> 8);
@@ -121,8 +121,8 @@ void AmethystBreeze0x104::UpdateMaterialCaches()
 
 			product = static_cast<LegoS32>((blu * lightColor->m_blu) >> 8);
 			lightProduct->m_blu = static_cast<LegoFloat>(product);
-			lightColor++;
 			lightProduct++;
+			lightColor++;
 		}
 	}
 }
@@ -200,34 +200,34 @@ void AmethystBreeze0x104::FUN_0040ede0(
 			LegoS32 grn = grnBase - static_cast<LegoS32>(m_lightColorProducts[0].m_grn * dot);
 			LegoS32 blu = bluBase - static_cast<LegoS32>(m_lightColorProducts[0].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -267,34 +267,34 @@ void AmethystBreeze0x104::FUN_0040ef10(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[1].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[1].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -340,34 +340,34 @@ void AmethystBreeze0x104::FUN_0040f0a0(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[2].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[2].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -419,34 +419,34 @@ void AmethystBreeze0x104::FUN_0040f280(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[3].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[3].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -504,34 +504,34 @@ void AmethystBreeze0x104::FUN_0040f4c0(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[4].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[4].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -595,34 +595,34 @@ void AmethystBreeze0x104::FUN_0040f760(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[5].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[5].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);
@@ -692,34 +692,34 @@ void AmethystBreeze0x104::FUN_0040fa50(
 			grn -= static_cast<LegoS32>(m_lightColorProducts[6].m_grn * dot);
 			blu -= static_cast<LegoS32>(m_lightColorProducts[6].m_blu * dot);
 
-			if (red >= redBase) {
+			if (red < redBase) {
+				color.m_red = static_cast<LegoU8>(redBase);
+			}
+			else {
 				color.m_red = 0xff;
 				if (red <= 0xff) {
 					color.m_red = static_cast<LegoU8>(red);
 				}
 			}
-			else {
-				color.m_red = static_cast<LegoU8>(redBase);
-			}
 
-			if (grn >= grnBase) {
+			if (grn < grnBase) {
+				color.m_grn = static_cast<LegoU8>(grnBase);
+			}
+			else {
 				color.m_grn = 0xff;
 				if (grn <= 0xff) {
 					color.m_grn = static_cast<LegoU8>(grn);
 				}
 			}
-			else {
-				color.m_grn = static_cast<LegoU8>(grnBase);
-			}
 
-			if (blu >= bluBase) {
+			if (blu < bluBase) {
+				color.m_blu = static_cast<LegoU8>(bluBase);
+			}
+			else {
 				color.m_blu = 0xff;
 				if (blu <= 0xff) {
 					color.m_blu = static_cast<LegoU8>(blu);
 				}
-			}
-			else {
-				color.m_blu = static_cast<LegoU8>(bluBase);
 			}
 
 			m_vertexArray->VTable0x30(p_firstVertex, color);

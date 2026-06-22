@@ -980,6 +980,21 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	m_unk0x27c8.FUN_00493850(m_renderer, m_golExport, 6);
 
 	FUN_00435ba0(0.51f);
+
+	m_unk0x27d4.FUN_00492680(m_renderer, m_golExport, m_unk0x394, 4);
+	FUN_00433190(p_mirror);
+
+	FUN_00435ba0(0.54f);
+
+	m_raceState.FUN_0043bc10(&m_unk0x194, m_context->m_unk0x18, p_mirror);
+
+	FUN_00435ba0(0.56f);
+
+	LegoChar* commonDataDirectory = m_context->m_commonDataDirectory;
+	GolHashTable* hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(commonDataDirectory));
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00434000
@@ -1029,7 +1044,7 @@ void RaceSession::FUN_00434000()
 	m_unk0x248c.Clear();
 	m_unk0x2150.Clear();
 
-	Field0x2ad4* field0x2ad4 = m_unk0x2ad4;
+	RaceCameraController* field0x2ad4 = m_unk0x2ad4;
 	RaceState::Racer** racer = m_raceState.m_unk0x318;
 	LegoS32 remaining = sizeOfArray(m_unk0x2ad4);
 	do {
@@ -1098,7 +1113,7 @@ void RaceSession::FUN_00434170()
 
 			m_unk0x2acc[i]->VTable0x0c(&viewport);
 
-			Field0x2ad4* field0x2ad4 = &m_unk0x2ad4[i];
+			RaceCameraController* field0x2ad4 = &m_unk0x2ad4[i];
 			field0x2ad4->FUN_00428210(m_unk0x2acc[i], m_renderer);
 			field0x2ad4->m_unk0x000 = TRUE;
 
@@ -1395,7 +1410,7 @@ void RaceSession::FUN_004349a0()
 		GolVec3* forwardPtr = &forward;
 		currentCamera->m_transform->VTable0x1c(forwardPtr, rightPtr);
 
-		Field0x2ad4* field0x2ad4 = m_unk0x2ad4;
+		RaceCameraController* field0x2ad4 = m_unk0x2ad4;
 		LegoS32 remaining = sizeOfArray(m_unk0x2ad4);
 		do {
 			if (*camera) {
@@ -2415,7 +2430,7 @@ void RaceSession::FUN_004362e0()
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
 		do {
-			Field0x2ad4* field0x2ad4 = &m_unk0x2ad4[playerIndex];
+			RaceCameraController* field0x2ad4 = &m_unk0x2ad4[playerIndex];
 
 			m_unk0x258[playerIndex].FUN_00430100();
 			m_unk0x340[playerIndex].FUN_00422150();

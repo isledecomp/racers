@@ -285,17 +285,11 @@ void RaceSession::Field0x27c8::Item::FUN_00492c30(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00492ee0
-void RaceSession::Field0x27c8::Item::FUN_00492ee0(
-	LegoU32 p_elapsedMs,
-	GolVec3* p_positions,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14
-)
+void RaceSession::Field0x27c8::Item::FUN_00492ee0(LegoU32 p_elapsedMs, GolVec3* p_positions, GolVec3 p_center)
 {
-	m_unk0x0c4 = p_unk0x0c;
-	m_unk0x0c8 = p_unk0x10;
-	m_unk0x0cc = p_unk0x14;
+	m_unk0x0c4 = p_center.m_x;
+	m_unk0x0c8 = p_center.m_y;
+	m_unk0x0cc = p_center.m_z;
 	FUN_00492f10(p_elapsedMs, p_positions);
 }
 

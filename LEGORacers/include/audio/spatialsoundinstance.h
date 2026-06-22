@@ -55,6 +55,11 @@ public:
 		m_velocity.m_y = p_velocity.m_y;
 		m_velocity.m_z = p_velocity.m_z;
 	}
+	void SetPositionAndVelocity(const GolVec3& p_position, const GolVec3& p_velocity)
+	{
+		SetPosition(p_position);
+		SetVelocity(p_velocity);
+	}
 	void ClearVelocity()
 	{
 		m_velocity.m_x = 0.0f;

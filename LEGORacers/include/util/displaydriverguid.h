@@ -31,7 +31,10 @@ union DisplayDriverGuid {
 
 	// SIZE 0x10
 	struct Serialized {
-		SerializedWord m_words[c_wordCount]; // 0x00
+		union {
+			SerializedWord m_words[c_wordCount]; // 0x00
+			LegoU8 m_bytes[sizeof(GUID)];        // 0x00
+		};
 	};
 
 	GUID m_guid;

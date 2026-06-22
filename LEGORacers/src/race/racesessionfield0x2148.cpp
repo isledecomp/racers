@@ -3167,36 +3167,43 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x10(Context* p_context, GolFilePa
 
 	p_parser->ReadLeftCurly();
 
-	GolName* modelName = modelNames;
-	GolFileParser::ParserTokenType token;
-	while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly) {
-		switch (token) {
-		case GolFileParser::e_unknown0x3b:
-			m_unk0x08 = p_parser->ReadInteger();
-			break;
-		case GolFileParser::e_unknown0x41:
-			::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
-			break;
-		case GolFileParser::e_unknown0x42:
-			::strncpy(*modelName, p_parser->ReadStringWithMaxLength(sizeof(*modelName)), sizeof(*modelName));
-			modelName++;
-			break;
-		default:
-			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
-			break;
-		}
+	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
+	if (token != GolFileParser::e_rightCurly) {
+		GolName* modelName = modelNames;
+		do {
+			switch (token) {
+			case GolFileParser::e_unknown0x3b:
+				m_unk0x08 = p_parser->ReadInteger();
+				break;
+			case GolFileParser::e_unknown0x41:
+				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
+				break;
+			case GolFileParser::e_unknown0x42:
+				::strncpy(*modelName, p_parser->ReadStringWithMaxLength(sizeof(*modelName)), sizeof(*modelName));
+				modelName++;
+				break;
+			default:
+				p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
+				break;
+			}
+		} while ((token = p_parser->GetNextToken()) != GolFileParser::e_rightCurly);
 	}
 
 	m_unk0x04 = p_context->GetUnk0x0c();
 	GolNameTable* nameTable = p_context->GetUnk0x2c();
 	m_unk0x20 = nameTable->GetNameEntries() == NULL ? NULL : static_cast<Field0x20*>(nameTable->GetName(name));
 
-	for (i = 0; i < c_entityCount; i++) {
-		if (modelNames[i][0] != '\0') {
-			m_unk0x10[i] = p_context->GetUnk0x10()->FindUnk0xc0(modelNames[i]);
-			m_unk0x10[i]->SetFlags(m_unk0x10[i]->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
+	GolAnimatedEntity** entity = m_unk0x10;
+	GolName* modelName = modelNames;
+	LegoS32 count = c_entityCount;
+	do {
+		if ((*modelName)[0] != '\0') {
+			*entity = p_context->GetUnk0x10()->FindUnk0xc0(*modelName);
+			(*entity)->SetFlags((*entity)->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 		}
-	}
+		entity++;
+		modelName++;
+	} while (--count);
 
 	m_unk0x10[0]->CopyModelDistancesTo(&m_unk0x24);
 	m_unk0x0c = 1;
@@ -3271,7 +3278,7 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x14(undefined4 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0048f080
+// FUNCTION: LEGORACERS 0x0048f080
 void RaceEventDispatcher0x08::Item0x34::VTable0x1c(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x0c == 1) {
@@ -3281,10 +3288,14 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x1c(GolD3DRenderDevice* p_rendere
 	for (LegoS32 i = 0; i < c_entityCount; i++) {
 		GolAnimatedEntity** entity = &m_unk0x10[i];
 		if (*entity != NULL) {
-			(*entity)->CopyModelDistancesFrom(m_unk0x24);
+			LegoS32 j;
+			LegoFloat* modelDistances = &m_unk0x24.m_x;
+			for (j = 0; j < c_modelDistanceCount; j++) {
+				(*entity)->SetModelDistance(j, modelDistances[j]);
+			}
 
 			CmbModelPartData0x28* partData = (*entity)->GetModelPart(0)->GetPartData();
-			LegoS32 frameCount = partData[(*entity)->GetCurrentPartIndex()].GetFrameCount();
+			LegoU16 frameCount = partData[(*entity)->GetCurrentPartIndex()].GetFrameCount();
 			LegoS32 alpha = static_cast<LegoS32>(
 				(static_cast<LegoFloat>(frameCount) - (*entity)->GetUnk0xb4()) / static_cast<LegoFloat>(frameCount) *
 				255.0f
@@ -3293,12 +3304,15 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x1c(GolD3DRenderDevice* p_rendere
 			p_renderer->SetAlphaOverride(alpha, TRUE);
 			p_renderer->VTable0x94(*entity);
 			p_renderer->ClearAlphaOverride();
-			(*entity)->ClearModelDistances();
+
+			for (j = 0; j < c_modelDistanceCount; j++) {
+				(*entity)->SetModelDistance(j, 0.0f);
+			}
 		}
 	}
 }
 
-// STUB: LEGORACERS 0x0048f160
+// FUNCTION: LEGORACERS 0x0048f160
 void RaceEventDispatcher0x08::Item0x34::VTable0x24()
 {
 	if (m_unk0x20 != NULL) {
@@ -3314,7 +3328,11 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x24()
 			(*entity)->FUN_0040dae0(0, 0);
 			(*entity)->VTable0x5c(0);
 			(*entity)->SetFlags((*entity)->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
-			(*entity)->CopyModelDistancesFrom(m_unk0x24);
+
+			LegoFloat* modelDistances = &m_unk0x24.m_x;
+			for (LegoS32 i = 0; i < c_modelDistanceCount; i++) {
+				(*entity)->SetModelDistance(i, modelDistances[i]);
+			}
 		}
 		entity++;
 	} while (--count);
@@ -3486,10 +3504,9 @@ void RaceEventDispatcher0x08::Item0x3d::VTable0x14(undefined4 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x0048f6e0
+// FUNCTION: LEGORACERS 0x0048f6e0
 RaceEventDispatcher0x08::Item0x33::Item0x33()
 {
-	new (m_unk0x38) RaceSession::Field0x6dc::Field0xa8;
 	ClearFields();
 }
 
@@ -3497,7 +3514,6 @@ RaceEventDispatcher0x08::Item0x33::Item0x33()
 RaceEventDispatcher0x08::Item0x33::~Item0x33()
 {
 	Reset();
-	static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38))->~Field0xa8();
 }
 
 // FUNCTION: LEGORACERS 0x0048f7c0
@@ -3618,7 +3634,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	m_unk0x0c = 2;
 	m_unk0x10.SetCenter(m_unk0xe0);
 
-	RaceSession::Field0x6dc::Field0xa8::Params projectileParams;
+	RaceSessionField0x6dcField0xa8::Params projectileParams;
 	projectileParams.m_unk0x04 = m_unk0x10c;
 	projectileParams.m_unk0x08 = -32.176f;
 	projectileParams.m_unk0x0c = NULL;
@@ -3630,9 +3646,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	projectileParams.m_unk0x24 = 0.0f;
 	projectileParams.m_unk0x00 = &m_unk0x10;
 
-	RaceSession::Field0x6dc::Field0xa8* projectile =
-		static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38));
-	projectile->VTable0x04(&projectileParams, &m_unk0xec);
+	m_unk0x38.VTable0x04(&projectileParams, &m_unk0xec);
 
 	RaceSession::Field0x27c8::Item::Params trailParams;
 	trailParams.m_unk0x00 = 0x12c;
@@ -3656,9 +3670,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 // FUNCTION: LEGORACERS 0x0048fba0
 void RaceEventDispatcher0x08::Item0x33::VTable0x08(void*)
 {
-	RaceSession::Field0x6dc::Field0xa8* projectile =
-		static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38));
-	projectile->VTable0x14();
+	m_unk0x38.VTable0x14();
 
 	if (m_unk0x120 != NULL) {
 		RaceSession::Field0x27c8* manager = static_cast<RaceSession::Field0x27c8*>(m_unk0x11c);
@@ -3670,7 +3682,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x08(void*)
 	m_unk0x0c = 1;
 }
 
-// STUB: LEGORACERS 0x0048fbe0
+// FUNCTION: LEGORACERS 0x0048fbe0
 void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 {
 	if (m_unk0x0c == 1) {
@@ -3679,9 +3691,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 
 	Item::VTable0x14(p_elapsedMs);
 
-	RaceSession::Field0x6dc::Field0xa8* projectile =
-		static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38));
-
+	RaceSessionField0x6dcField0xa8* projectile = &m_unk0x38;
 	if (projectile->GetUnk0x004() != 0) {
 		if (projectile->VTable0x18(p_elapsedMs) == 3) {
 			GolVec3 position = projectile->GetUnk0x028();
@@ -3707,7 +3717,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	}
 
 	GolVec3 center;
-	m_unk0x10.FUN_100286d0(&center);
+	projectile->GetUnk0x008()->FUN_100286d0(&center);
 
 	GolVec3 velocity;
 	projectile->VTable0x1c(&velocity);
@@ -3738,16 +3748,13 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	positions[3].m_z = positions[1].m_z + 3.0f;
 
 	RaceSession::Field0x27c8::Item* item = static_cast<RaceSession::Field0x27c8::Item*>(m_unk0x120);
-	item->FUN_00492ee0(p_elapsedMs, positions, center.m_x, center.m_y, center.m_z);
+	item->FUN_00492ee0(p_elapsedMs, positions, center);
 }
 
 // FUNCTION: LEGORACERS 0x0048fde0
 void RaceEventDispatcher0x08::Item0x33::VTable0x1c(GolD3DRenderDevice* p_renderer)
 {
-	RaceSession::Field0x6dc::Field0xa8* projectile =
-		static_cast<RaceSession::Field0x6dc::Field0xa8*>(static_cast<void*>(m_unk0x38));
-
-	if (m_unk0x0c != 1 && projectile->GetUnk0x004() == 1) {
+	if (m_unk0x0c != 1 && m_unk0x38.GetUnk0x004() == 1) {
 		GolVec3 position;
 		m_unk0x10.FUN_100286d0(&position);
 		m_unk0x114->VTable0x08(position);

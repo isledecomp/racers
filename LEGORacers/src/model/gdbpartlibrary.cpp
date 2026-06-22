@@ -154,7 +154,7 @@ void GdbPartLibrary::Clear()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00407950
+// FUNCTION: LEGORACERS 0x00407950
 void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBase* p_model, const LegoChar* p_name)
 {
 	GdbPartDefinition* part = static_cast<GdbPartDefinition*>(GetName(p_name));
@@ -187,14 +187,11 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 		materialTable->m_entries[materialIndex] = NULL;
 	}
 
-	LegoU32* groups = g_copyModel->GetMutableGroups();
-	for (LegoU32 clearIndex = 0; clearIndex < g_copyModel->GetGroupCount(); clearIndex++) {
-		groups[clearIndex] = 0;
-	}
-
 	for (LegoU32 groupIndex = 0; groupIndex < part->m_groupCount; groupIndex++) {
 		GdbPartFaceGroup& group = part->m_groups[groupIndex];
-		CopyPartGroupStart(p_renderer, groupIndex, group.m_materialName);
+		GolName materialName;
+		::memcpy(materialName, group.m_materialName, sizeof(materialName));
+		CopyPartGroupStart(p_renderer, groupIndex, materialName);
 
 		LegoU16* index = group.m_indices;
 		LegoU16* indexEnd = index + (group.m_triangleCount * 3);
@@ -206,13 +203,15 @@ void GdbPartLibrary::CopyPartToModel(GolD3DRenderDevice* p_renderer, GolModelBas
 		FlushCopyBatch();
 	}
 
-	groups[g_copyGroupWrite++] = 0xc0000000;
-	g_copyModel->SetDirty(TRUE);
+	LegoU32 groupWrite = g_copyGroupWrite++;
+	GolModelBase* model = g_copyModel;
+	model->GetMutableGroups()[groupWrite] = 0xc0000000;
+	model->SetDirty(TRUE);
 	g_copyModel->VTable0x34(g_gdbPartModelDirty);
 	g_copyModel->VTable0x2c(g_gdbPartModelDirty, TRUE);
 }
 
-// STUB: LEGORACERS 0x00407b40
+// FUNCTION: LEGORACERS 0x00407b40
 void GdbPartLibrary::CopyPartGroupStart(
 	GolD3DRenderDevice* p_renderer,
 	LegoU32 p_groupIndex,
@@ -223,10 +222,9 @@ void GdbPartLibrary::CopyPartGroupStart(
 	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
 
 	LegoU32 groupWrite = g_copyGroupWrite++;
-	LegoU32* groups = g_copyModel->GetMutableGroups();
-	groups[groupWrite] = 0x80000000;
-	groups[groupWrite] |= p_groupIndex & 0x00ffffff;
-	g_copyModel->SetDirty(TRUE);
+	GolModelBase* model = g_copyModel;
+	model->GetMutableGroups()[groupWrite] = (p_groupIndex & 0x00ffffff) | 0x80000000;
+	model->SetDirty(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x00407ba0

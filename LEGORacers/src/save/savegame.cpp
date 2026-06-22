@@ -189,7 +189,9 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 	LegoU32 j;
 
 	p_state->m_racerCount = source[0];
-	::memcpy(&p_state->m_displayDriverGuid, &source[1], sizeof(p_state->m_displayDriverGuid));
+	for (i = 0; i < sizeof(p_state->m_displayDriverGuid.m_bytes); i++) {
+		p_state->m_displayDriverGuid.m_bytes[i] = source[i + 1];
+	}
 	p_state->m_unk0x1d = source[0x11];
 	p_state->m_unk0x1e = source[0x12];
 	p_state->m_musicVolume = source[0x13];
@@ -198,7 +200,15 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 	p_state->m_languageIndex = source[0x16];
 	p_state->m_unk0x23 = source[0x17];
 
-	::memcpy(&p_state->m_inputBindings, &data[c_inputBindingHeaderOffset], c_inputBindingHeaderSize);
+	source = &data[c_inputBindingHeaderOffset];
+	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
+		InputBindingPlayerState* player = &p_state->m_inputBindings.m_players[i];
+		player->m_selectedRecordId = source[0];
+		player->m_selectedRecordSource = source[1];
+		player->m_selectedSaveIndex = source[2];
+		player->m_selectedEntryIndex = source[3];
+		source += sizeof(InputBindingPlayerState);
+	}
 
 	source = &data[c_inputBindingEntryOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
@@ -216,15 +226,18 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 
 	p_state->m_partUnlockFlags = data[c_scoreRecordsOffset + (13 * c_scoreRecordSize)];
 	p_state->m_unlockedCircuits = data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 1];
-	p_state->m_unlockedRaces =
-		static_cast<LegoU16>(ReadLittleEndianU32(&data[c_scoreRecordsOffset + (13 * c_scoreRecordSize)]) >> 16);
+	p_state->m_unlockedRaces = ReadLittleEndianU16(&data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 2]);
 
 	source = &data[c_scoreRecordsOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
 		p_state->m_bestLapTimes[i] = ReadLittleEndianU32(source);
-		::memcpy(p_state->m_bestLapHolderNames[i], &source[4], sizeof(p_state->m_bestLapHolderNames[i]));
+		for (j = 0; j < sizeof(p_state->m_bestLapHolderNames[i]); j++) {
+			p_state->m_bestLapHolderNames[i][j] = source[4 + j];
+		}
 		p_state->m_bestRaceTimes[i] = ReadLittleEndianU32(&source[0x20]);
-		::memcpy(p_state->m_bestRaceHolderNames[i], &source[0x24], sizeof(p_state->m_bestRaceHolderNames[i]));
+		for (j = 0; j < sizeof(p_state->m_bestRaceHolderNames[i]); j++) {
+			p_state->m_bestRaceHolderNames[i][j] = source[0x24 + j];
+		}
 
 		source += c_scoreRecordSize;
 	}
@@ -233,24 +246,33 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 // STUB: LEGORACERS 0x00442c20
 void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 {
-	LegoU8* data = m_fileImage;
-	LegoU8* dest = &data[c_persistentHeaderOffset];
+	LegoU8* dest;
 	LegoU32 i;
 	LegoU32 j;
 
-	dest[0] = p_state->m_racerCount;
-	::memcpy(&dest[1], &p_state->m_displayDriverGuid, sizeof(p_state->m_displayDriverGuid));
-	dest[0x11] = p_state->m_unk0x1d;
-	dest[0x12] = p_state->m_unk0x1e;
-	dest[0x13] = p_state->m_musicVolume;
-	dest[0x14] = p_state->m_soundVolume;
-	dest[0x15] = p_state->m_unk0x21;
-	dest[0x16] = p_state->m_languageIndex;
-	dest[0x17] = p_state->m_unk0x23;
+	m_fileImage[c_persistentHeaderOffset] = p_state->m_racerCount;
+	for (i = 0; i < sizeof(p_state->m_displayDriverGuid.m_bytes); i++) {
+		m_fileImage[c_persistentHeaderOffset + 1 + i] = p_state->m_displayDriverGuid.m_bytes[i];
+	}
+	m_fileImage[c_persistentHeaderOffset + 0x11] = p_state->m_unk0x1d;
+	m_fileImage[c_persistentHeaderOffset + 0x12] = p_state->m_unk0x1e;
+	m_fileImage[c_persistentHeaderOffset + 0x13] = p_state->m_musicVolume;
+	m_fileImage[c_persistentHeaderOffset + 0x14] = p_state->m_soundVolume;
+	m_fileImage[c_persistentHeaderOffset + 0x15] = p_state->m_unk0x21;
+	m_fileImage[c_persistentHeaderOffset + 0x16] = p_state->m_languageIndex;
+	m_fileImage[c_persistentHeaderOffset + 0x17] = p_state->m_unk0x23;
 
-	::memcpy(&data[c_inputBindingHeaderOffset], &p_state->m_inputBindings, c_inputBindingHeaderSize);
+	dest = &m_fileImage[c_inputBindingHeaderOffset + 1];
+	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
+		InputBindingPlayerState* player = &p_state->m_inputBindings.m_players[i];
+		dest[-1] = player->m_selectedRecordId;
+		dest[0] = player->m_selectedRecordSource;
+		dest[1] = player->m_selectedSaveIndex;
+		dest[2] = player->m_selectedEntryIndex;
+		dest += sizeof(InputBindingPlayerState);
+	}
 
-	dest = &data[c_inputBindingEntryOffset];
+	dest = &m_fileImage[c_inputBindingEntryOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
 		InputBindingEntry* entry = &p_state->m_inputBindings.m_entries[i];
 		dest[0] = entry->m_deviceType;
@@ -264,17 +286,22 @@ void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 		dest += c_inputBindingEntrySize;
 	}
 
-	data[c_scoreRecordsOffset + (13 * c_scoreRecordSize)] = p_state->m_partUnlockFlags;
-	data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 1] = p_state->m_unlockedCircuits;
-	data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
-	data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 3] = static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
+	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize)] = p_state->m_partUnlockFlags;
+	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 1] = p_state->m_unlockedCircuits;
+	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
+	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 3] =
+		static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
 
-	dest = &data[c_scoreRecordsOffset];
+	dest = &m_fileImage[c_scoreRecordsOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
 		WriteLittleEndianU32(dest, p_state->m_bestLapTimes[i]);
-		::memcpy(&dest[4], p_state->m_bestLapHolderNames[i], sizeof(p_state->m_bestLapHolderNames[i]));
+		for (j = 0; j < sizeof(p_state->m_bestLapHolderNames[i]); j++) {
+			dest[4 + j] = p_state->m_bestLapHolderNames[i][j];
+		}
 		WriteLittleEndianU32(&dest[0x20], p_state->m_bestRaceTimes[i]);
-		::memcpy(&dest[0x24], p_state->m_bestRaceHolderNames[i], sizeof(p_state->m_bestRaceHolderNames[i]));
+		for (j = 0; j < sizeof(p_state->m_bestRaceHolderNames[i]); j++) {
+			dest[0x24 + j] = p_state->m_bestRaceHolderNames[i][j];
+		}
 
 		dest += c_scoreRecordSize;
 	}

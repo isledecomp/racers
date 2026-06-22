@@ -187,7 +187,7 @@ void GolMath::FUN_00449340(const GolQuat* p_quat, LegoFloat* p_dest)
 
 // FUNCTION: GOLDP 0x1002f5a0
 // FUNCTION: LEGORACERS 0x00449460
-void GolMath::FUN_1002f5a0(const GolMatrix34& p_matrix, GolQuat* p_dest)
+void GolMath::FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest)
 {
 	LegoFloat v = p_matrix.m_m[0][0] + p_matrix.m_m[1][1] + p_matrix.m_m[2][2];
 	if (v > 0.0f) {

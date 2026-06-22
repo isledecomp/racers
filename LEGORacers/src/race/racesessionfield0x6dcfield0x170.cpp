@@ -22,6 +22,8 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x98, 0x98)
 // GLOBAL: LEGORACERS 0x004b47a4
 extern const LegoFloat g_unk0x004b47a4 = 0.02f;
 
+extern LegoFloat g_minSoundPan;
+
 // FUNCTION: LEGORACERS 0x00493ae0
 RaceSession::Field0x6dc::Field0x170::Field0x170()
 {
@@ -593,7 +595,7 @@ void RaceSession::Field0x6dc::Field0x98::VTable0x1c(GolRenderDevice& p_renderer)
 
 			LegoFloat dot =
 				localRight.m_z * cameraRight.m_z + localRight.m_y * cameraRight.m_y + localRight.m_x * cameraRight.m_x;
-			if (dot < 1.0f && dot > -1.0f) {
+			if (dot < 1.0f && dot > g_minSoundPan) {
 				transform->VTable0x28(&cameraRight, &localRight);
 			}
 		}

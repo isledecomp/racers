@@ -36,7 +36,7 @@ RaceSession::Field0x6dc::Field0x238::Field0x238()
 }
 
 // FUNCTION: LEGORACERS 0x004442c0
-RaceSession::Field0x6dc::Field0xa8* RaceSession::Field0x6dc::Field0x238::VTable0x10(undefined4 p_flags)
+RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0x238::VTable0x10(undefined4 p_flags)
 {
 	Field0x238* result = this;
 	this->~Field0x238();
@@ -94,7 +94,7 @@ void RaceSession::Field0x6dc::Field0x238::VTable0x20(const SetupParams* p_params
 // FUNCTION: LEGORACERS 0x00444470
 void RaceSession::Field0x6dc::Field0x238::VTable0x14()
 {
-	Field0xa8::VTable0x14();
+	RaceSessionField0x6dcField0xa8::VTable0x14();
 	m_unk0x0a8.FUN_00493e60();
 }
 
@@ -109,7 +109,7 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 		return FUN_00444820(p_elapsedMs);
 	}
 
-	LegoS32 result = Field0xa8::VTable0x18(p_elapsedMs);
+	LegoS32 result = RaceSessionField0x6dcField0xa8::VTable0x18(p_elapsedMs);
 	if (m_unk0x004 == 1) {
 		LegoFloat elapsed = static_cast<LegoFloat>(m_unk0x050) / static_cast<LegoFloat>(m_unk0x054);
 		m_unk0x220 = (1.0f - elapsed) * m_unk0x21c;

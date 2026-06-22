@@ -161,24 +161,19 @@ LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 	return length;
 }
 
-// STUB: LEGORACERS 0x0049ebf0
+// FUNCTION: LEGORACERS 0x0049ebf0
 LegoS32 LegoPieceLibrary::PieceRecord::CompareName(LegoChar* p_name)
 {
-	LegoChar value = m_name[0];
 	LegoChar* cursor = m_name;
 
-	if (value) {
-		do {
-			LegoS32 result = tolower(*p_name);
-			result -= tolower(value);
-			if (result) {
-				return result;
-			}
+	while (*cursor) {
+		LegoS32 result = tolower(*p_name) - tolower(*cursor);
+		if (result) {
+			return result;
+		}
 
-			value = cursor[1];
-			p_name++;
-			cursor++;
-		} while (value);
+		p_name++;
+		cursor++;
 	}
 
 	return tolower(*p_name);
@@ -510,7 +505,7 @@ static LegoS32 ComparePieceRecords(const void* p_lhs, const void* p_rhs)
 	return result;
 }
 
-// STUB: LEGORACERS 0x0049f460
+// FUNCTION: LEGORACERS 0x0049f460
 LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_pieceType, LegoS32 p_variant)
 {
 	PieceRecord* pieces = m_pieces;
@@ -519,24 +514,22 @@ LegoPieceLibrary::PieceRecord* LegoPieceLibrary::FindPieceRecord(LegoS32 p_piece
 		if (count != 0) {
 			LegoS32 right = count;
 			LegoS32 left = 0;
-			LegoS32 middle = count >> 1;
-			LegoS32 currentType = pieces[middle].m_pieceType;
-			if (p_pieceType == currentType) {
-				return pieces[middle].GetVariant(p_variant);
-			}
-
-			while (middle != left) {
-				if (p_pieceType >= currentType) {
-					left = middle;
-				}
-				else {
-					right = middle;
-				}
-
-				middle = (right + left) >> 1;
-				currentType = pieces[middle].m_pieceType;
+			for (;;) {
+				LegoS32 middle = (right + left) >> 1;
+				LegoS32 currentType = pieces[middle].m_pieceType;
 				if (p_pieceType == currentType) {
 					return pieces[middle].GetVariant(p_variant);
+				}
+
+				if (middle == left) {
+					break;
+				}
+
+				if (p_pieceType < currentType) {
+					right = middle;
+				}
+				else {
+					left = middle;
 				}
 			}
 		}

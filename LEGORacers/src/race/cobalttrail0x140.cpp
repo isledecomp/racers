@@ -47,221 +47,273 @@ extern const LegoChar* g_unk0x004be8ac = "ignum";
 static const LegoChar* g_unk0x004b0270[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 static const LegoS16 g_unk0x004b0290[8] = {0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20};
 
-// STUB: LEGORACERS 0x00423fc0
+// FUNCTION: LEGORACERS 0x00423fc0
 void CobaltTrail0x140::FUN_00423fc0(
 	const GolRenderDevice::TexturedVertex* p_unk0x04,
 	const GolRenderDevice::TexturedVertex* p_unk0x08,
 	const GolRenderDevice::TexturedVertex* p_unk0x0c
 )
 {
-	GolRenderDevice::TexturedVertex input[3];
-	GolRenderDevice::TexturedVertex output[4];
-	input[0] = *p_unk0x04;
-	input[1] = *p_unk0x08;
-	input[2] = *p_unk0x0c;
+	const GolRenderDevice::TexturedVertex* temporaryVertex;
 
-	LegoS32 outputCount = 0;
-	GolRenderDevice::TexturedVertex previous = input[2];
-	LegoBool32 previousInside = previous.m_y >= m_unk0x12c;
-
-	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
-		const GolRenderDevice::TexturedVertex& current = input[i];
-		LegoBool32 currentInside = current.m_y >= m_unk0x12c;
-
-		if (currentInside) {
-			if (!previousInside) {
-				LegoFloat amount = (m_unk0x12c - previous.m_y) / (current.m_y - previous.m_y);
-				output[outputCount] = previous;
-				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-				outputCount++;
+	if (p_unk0x08->m_y < m_unk0x12c) {
+		if (p_unk0x04->m_y < m_unk0x12c) {
+			if (p_unk0x0c->m_y < m_unk0x12c) {
+				return;
 			}
-			output[outputCount++] = current;
 		}
-		else if (previousInside) {
-			LegoFloat amount = (m_unk0x12c - previous.m_y) / (current.m_y - previous.m_y);
-			output[outputCount] = previous;
-			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-			outputCount++;
-		}
-
-		previous = current;
-		previousInside = currentInside;
-	}
-
-	if (outputCount >= 3) {
-		FUN_00424190(&output[0], &output[1], &output[2]);
-		if (outputCount == 4) {
-			FUN_00424190(&output[0], &output[2], &output[3]);
+		else {
+			temporaryVertex = p_unk0x04;
+			p_unk0x04 = p_unk0x08;
+			p_unk0x08 = p_unk0x0c;
+			p_unk0x0c = temporaryVertex;
 		}
 	}
+	else if (p_unk0x0c->m_y < m_unk0x12c) {
+		temporaryVertex = p_unk0x0c;
+		p_unk0x0c = p_unk0x08;
+		p_unk0x08 = p_unk0x04;
+		p_unk0x04 = temporaryVertex;
+	}
+
+	if (p_unk0x04->m_y < m_unk0x12c) {
+		GolRenderDevice::TexturedVertex intersection0;
+		GolRenderDevice::TexturedVertex intersection1;
+		intersection0.m_y = m_unk0x12c;
+		intersection1.m_y = m_unk0x12c;
+		intersection0.m_z = 0.0f;
+		intersection1.m_z = 0.0f;
+		intersection0.m_color = p_unk0x04->m_color;
+		intersection1.m_color = p_unk0x04->m_color;
+
+		LegoFloat amount = (p_unk0x0c->m_y - m_unk0x12c) / (p_unk0x0c->m_y - p_unk0x04->m_y);
+		intersection0.m_x = (p_unk0x04->m_x - p_unk0x0c->m_x) * amount + p_unk0x0c->m_x;
+		intersection0.m_u = (p_unk0x04->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+		intersection0.m_v = (p_unk0x04->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+		if (p_unk0x08->m_y < m_unk0x12c) {
+			amount = (p_unk0x0c->m_y - m_unk0x12c) / (p_unk0x0c->m_y - p_unk0x08->m_y);
+			intersection1.m_x = (p_unk0x08->m_x - p_unk0x0c->m_x) * amount + p_unk0x0c->m_x;
+			intersection1.m_u = (p_unk0x08->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+			intersection1.m_v = (p_unk0x08->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+			FUN_00424190(&intersection0, &intersection1, p_unk0x0c);
+		}
+		else {
+			amount = (p_unk0x08->m_y - m_unk0x12c) / (p_unk0x08->m_y - p_unk0x04->m_y);
+			intersection1.m_x = (p_unk0x04->m_x - p_unk0x08->m_x) * amount + p_unk0x08->m_x;
+			intersection1.m_u = (p_unk0x04->m_u - p_unk0x08->m_u) * amount + p_unk0x08->m_u;
+			intersection1.m_v = (p_unk0x04->m_v - p_unk0x08->m_v) * amount + p_unk0x08->m_v;
+
+			FUN_00424190(p_unk0x0c, &intersection1, p_unk0x08);
+			FUN_00424190(&intersection0, &intersection1, p_unk0x0c);
+		}
+
+		return;
+	}
+
+	FUN_00424190(p_unk0x04, p_unk0x08, p_unk0x0c);
 }
 
-// STUB: LEGORACERS 0x00424190
+// FUNCTION: LEGORACERS 0x00424190
 void CobaltTrail0x140::FUN_00424190(
 	const GolRenderDevice::TexturedVertex* p_unk0x04,
 	const GolRenderDevice::TexturedVertex* p_unk0x08,
 	const GolRenderDevice::TexturedVertex* p_unk0x0c
 )
 {
-	GolRenderDevice::TexturedVertex input[3];
-	GolRenderDevice::TexturedVertex output[4];
-	input[0] = *p_unk0x04;
-	input[1] = *p_unk0x08;
-	input[2] = *p_unk0x0c;
+	const GolRenderDevice::TexturedVertex* temporaryVertex;
 
-	LegoS32 outputCount = 0;
-	GolRenderDevice::TexturedVertex previous = input[2];
-	LegoBool32 previousInside = previous.m_x >= m_unk0x130;
-
-	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
-		const GolRenderDevice::TexturedVertex& current = input[i];
-		LegoBool32 currentInside = current.m_x >= m_unk0x130;
-
-		if (currentInside) {
-			if (!previousInside) {
-				LegoFloat amount = (m_unk0x130 - previous.m_x) / (current.m_x - previous.m_x);
-				output[outputCount] = previous;
-				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-				outputCount++;
+	if (p_unk0x08->m_x < m_unk0x130) {
+		if (p_unk0x04->m_x < m_unk0x130) {
+			if (p_unk0x0c->m_x < m_unk0x130) {
+				return;
 			}
-			output[outputCount++] = current;
 		}
-		else if (previousInside) {
-			LegoFloat amount = (m_unk0x130 - previous.m_x) / (current.m_x - previous.m_x);
-			output[outputCount] = previous;
-			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-			outputCount++;
-		}
-
-		previous = current;
-		previousInside = currentInside;
-	}
-
-	if (outputCount >= 3) {
-		FUN_00424340(&output[0], &output[1], &output[2]);
-		if (outputCount == 4) {
-			FUN_00424340(&output[0], &output[2], &output[3]);
+		else {
+			temporaryVertex = p_unk0x04;
+			p_unk0x04 = p_unk0x08;
+			p_unk0x08 = p_unk0x0c;
+			p_unk0x0c = temporaryVertex;
 		}
 	}
+	else if (p_unk0x0c->m_x < m_unk0x130) {
+		temporaryVertex = p_unk0x0c;
+		p_unk0x0c = p_unk0x08;
+		p_unk0x08 = p_unk0x04;
+		p_unk0x04 = temporaryVertex;
+	}
+
+	if (p_unk0x04->m_x < m_unk0x130) {
+		GolRenderDevice::TexturedVertex intersection0;
+		GolRenderDevice::TexturedVertex intersection1;
+		intersection0.m_x = m_unk0x130;
+		intersection1.m_x = m_unk0x130;
+		intersection0.m_z = 0.0f;
+		intersection1.m_z = 0.0f;
+		intersection0.m_color = p_unk0x04->m_color;
+		intersection1.m_color = p_unk0x04->m_color;
+
+		LegoFloat amount = (p_unk0x0c->m_x - m_unk0x130) / (p_unk0x0c->m_x - p_unk0x04->m_x);
+		intersection0.m_y = (p_unk0x04->m_y - p_unk0x0c->m_y) * amount + p_unk0x0c->m_y;
+		intersection0.m_u = (p_unk0x04->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+		intersection0.m_v = (p_unk0x04->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+		if (p_unk0x08->m_x < m_unk0x130) {
+			amount = (p_unk0x0c->m_x - m_unk0x130) / (p_unk0x0c->m_x - p_unk0x08->m_x);
+			intersection1.m_y = (p_unk0x08->m_y - p_unk0x0c->m_y) * amount + p_unk0x0c->m_y;
+			intersection1.m_u = (p_unk0x08->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+			intersection1.m_v = (p_unk0x08->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+			FUN_00424340(&intersection0, &intersection1, p_unk0x0c);
+		}
+		else {
+			amount = (p_unk0x08->m_x - m_unk0x130) / (p_unk0x08->m_x - p_unk0x04->m_x);
+			intersection1.m_y = (p_unk0x04->m_y - p_unk0x08->m_y) * amount + p_unk0x08->m_y;
+			intersection1.m_u = (p_unk0x04->m_u - p_unk0x08->m_u) * amount + p_unk0x08->m_u;
+			intersection1.m_v = (p_unk0x04->m_v - p_unk0x08->m_v) * amount + p_unk0x08->m_v;
+
+			FUN_00424340(p_unk0x0c, &intersection1, p_unk0x08);
+			FUN_00424340(&intersection0, &intersection1, p_unk0x0c);
+		}
+
+		return;
+	}
+
+	FUN_00424340(p_unk0x04, p_unk0x08, p_unk0x0c);
 }
 
-// STUB: LEGORACERS 0x00424340
+// FUNCTION: LEGORACERS 0x00424340
 void CobaltTrail0x140::FUN_00424340(
 	const GolRenderDevice::TexturedVertex* p_unk0x04,
 	const GolRenderDevice::TexturedVertex* p_unk0x08,
 	const GolRenderDevice::TexturedVertex* p_unk0x0c
 )
 {
-	GolRenderDevice::TexturedVertex input[3];
-	GolRenderDevice::TexturedVertex output[4];
-	input[0] = *p_unk0x04;
-	input[1] = *p_unk0x08;
-	input[2] = *p_unk0x0c;
+	const GolRenderDevice::TexturedVertex* temporaryVertex;
 
-	LegoS32 outputCount = 0;
-	GolRenderDevice::TexturedVertex previous = input[2];
-	LegoBool32 previousInside = previous.m_x <= m_unk0x138;
-
-	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
-		const GolRenderDevice::TexturedVertex& current = input[i];
-		LegoBool32 currentInside = current.m_x <= m_unk0x138;
-
-		if (currentInside) {
-			if (!previousInside) {
-				LegoFloat amount = (m_unk0x138 - previous.m_x) / (current.m_x - previous.m_x);
-				output[outputCount] = previous;
-				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-				outputCount++;
+	if (p_unk0x08->m_x > m_unk0x138) {
+		if (p_unk0x04->m_x > m_unk0x138) {
+			if (p_unk0x0c->m_x > m_unk0x138) {
+				return;
 			}
-			output[outputCount++] = current;
 		}
-		else if (previousInside) {
-			LegoFloat amount = (m_unk0x138 - previous.m_x) / (current.m_x - previous.m_x);
-			output[outputCount] = previous;
-			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-			outputCount++;
-		}
-
-		previous = current;
-		previousInside = currentInside;
-	}
-
-	if (outputCount >= 3) {
-		FUN_004244f0(&output[0], &output[1], &output[2]);
-		if (outputCount == 4) {
-			FUN_004244f0(&output[0], &output[2], &output[3]);
+		else {
+			temporaryVertex = p_unk0x04;
+			p_unk0x04 = p_unk0x08;
+			p_unk0x08 = p_unk0x0c;
+			p_unk0x0c = temporaryVertex;
 		}
 	}
+	else if (p_unk0x0c->m_x > m_unk0x138) {
+		temporaryVertex = p_unk0x0c;
+		p_unk0x0c = p_unk0x08;
+		p_unk0x08 = p_unk0x04;
+		p_unk0x04 = temporaryVertex;
+	}
+
+	if (p_unk0x04->m_x > m_unk0x138) {
+		GolRenderDevice::TexturedVertex intersection0;
+		GolRenderDevice::TexturedVertex intersection1;
+		intersection0.m_x = m_unk0x138;
+		intersection1.m_x = m_unk0x138;
+		intersection0.m_z = 0.0f;
+		intersection1.m_z = 0.0f;
+		intersection0.m_color = p_unk0x04->m_color;
+		intersection1.m_color = p_unk0x04->m_color;
+
+		LegoFloat amount = (p_unk0x0c->m_x - m_unk0x138) / (p_unk0x0c->m_x - p_unk0x04->m_x);
+		intersection0.m_y = (p_unk0x04->m_y - p_unk0x0c->m_y) * amount + p_unk0x0c->m_y;
+		intersection0.m_u = (p_unk0x04->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+		intersection0.m_v = (p_unk0x04->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+		if (p_unk0x08->m_x > m_unk0x138) {
+			amount = (p_unk0x0c->m_x - m_unk0x138) / (p_unk0x0c->m_x - p_unk0x08->m_x);
+			intersection1.m_y = (p_unk0x08->m_y - p_unk0x0c->m_y) * amount + p_unk0x0c->m_y;
+			intersection1.m_u = (p_unk0x08->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+			intersection1.m_v = (p_unk0x08->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+			FUN_004244f0(&intersection0, &intersection1, p_unk0x0c);
+		}
+		else {
+			amount = (p_unk0x08->m_x - m_unk0x138) / (p_unk0x08->m_x - p_unk0x04->m_x);
+			intersection1.m_y = (p_unk0x04->m_y - p_unk0x08->m_y) * amount + p_unk0x08->m_y;
+			intersection1.m_u = (p_unk0x04->m_u - p_unk0x08->m_u) * amount + p_unk0x08->m_u;
+			intersection1.m_v = (p_unk0x04->m_v - p_unk0x08->m_v) * amount + p_unk0x08->m_v;
+
+			FUN_004244f0(p_unk0x0c, &intersection1, p_unk0x08);
+			FUN_004244f0(&intersection0, &intersection1, p_unk0x0c);
+		}
+
+		return;
+	}
+
+	FUN_004244f0(p_unk0x04, p_unk0x08, p_unk0x0c);
 }
 
-// STUB: LEGORACERS 0x004244f0
+// FUNCTION: LEGORACERS 0x004244f0
 void CobaltTrail0x140::FUN_004244f0(
 	const GolRenderDevice::TexturedVertex* p_unk0x04,
 	const GolRenderDevice::TexturedVertex* p_unk0x08,
 	const GolRenderDevice::TexturedVertex* p_unk0x0c
 )
 {
-	GolRenderDevice::TexturedVertex input[3];
-	GolRenderDevice::TexturedVertex output[4];
-	input[0] = *p_unk0x04;
-	input[1] = *p_unk0x08;
-	input[2] = *p_unk0x0c;
+	const GolRenderDevice::TexturedVertex* temporaryVertex;
 
-	LegoS32 outputCount = 0;
-	GolRenderDevice::TexturedVertex previous = input[2];
-	LegoBool32 previousInside = previous.m_y <= m_unk0x134;
-
-	for (LegoS32 i = 0; i < sizeOfArray(input); i++) {
-		const GolRenderDevice::TexturedVertex& current = input[i];
-		LegoBool32 currentInside = current.m_y <= m_unk0x134;
-
-		if (currentInside) {
-			if (!previousInside) {
-				LegoFloat amount = (m_unk0x134 - previous.m_y) / (current.m_y - previous.m_y);
-				output[outputCount] = previous;
-				output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-				output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-				output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-				output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-				outputCount++;
+	if (p_unk0x08->m_y > m_unk0x134) {
+		if (p_unk0x04->m_y > m_unk0x134) {
+			if (p_unk0x0c->m_y > m_unk0x134) {
+				return;
 			}
-			output[outputCount++] = current;
 		}
-		else if (previousInside) {
-			LegoFloat amount = (m_unk0x134 - previous.m_y) / (current.m_y - previous.m_y);
-			output[outputCount] = previous;
-			output[outputCount].m_x += (current.m_x - previous.m_x) * amount;
-			output[outputCount].m_y += (current.m_y - previous.m_y) * amount;
-			output[outputCount].m_u += (current.m_u - previous.m_u) * amount;
-			output[outputCount].m_v += (current.m_v - previous.m_v) * amount;
-			outputCount++;
+		else {
+			temporaryVertex = p_unk0x04;
+			p_unk0x04 = p_unk0x08;
+			p_unk0x08 = p_unk0x0c;
+			p_unk0x0c = temporaryVertex;
 		}
-
-		previous = current;
-		previousInside = currentInside;
+	}
+	else if (p_unk0x0c->m_y > m_unk0x134) {
+		temporaryVertex = p_unk0x0c;
+		p_unk0x0c = p_unk0x08;
+		p_unk0x08 = p_unk0x04;
+		p_unk0x04 = temporaryVertex;
 	}
 
-	for (LegoS32 j = 1; j + 1 < outputCount; j++) {
-		m_unk0x000->DrawTriangle(&output[0], &output[j], &output[j + 1], m_unk0x118, 0);
+	if (p_unk0x04->m_y > m_unk0x134) {
+		GolRenderDevice::TexturedVertex intersection0;
+		GolRenderDevice::TexturedVertex intersection1;
+		intersection1.m_y = intersection0.m_y = m_unk0x134;
+		intersection0.m_z = 0.0f;
+		intersection1.m_z = 0.0f;
+		intersection0.m_color = p_unk0x04->m_color;
+		intersection1.m_color = p_unk0x04->m_color;
+
+		LegoFloat amount = (p_unk0x0c->m_y - m_unk0x134) / (p_unk0x0c->m_y - p_unk0x04->m_y);
+		intersection0.m_x = (p_unk0x04->m_x - p_unk0x0c->m_x) * amount + p_unk0x0c->m_x;
+		intersection0.m_u = (p_unk0x04->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+		intersection0.m_v = (p_unk0x04->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+
+		if (p_unk0x08->m_y > m_unk0x134) {
+			amount = (p_unk0x0c->m_y - m_unk0x134) / (p_unk0x0c->m_y - p_unk0x08->m_y);
+			intersection1.m_x = (p_unk0x08->m_x - p_unk0x0c->m_x) * amount + p_unk0x0c->m_x;
+			intersection1.m_u = (p_unk0x08->m_u - p_unk0x0c->m_u) * amount + p_unk0x0c->m_u;
+			intersection1.m_v = (p_unk0x08->m_v - p_unk0x0c->m_v) * amount + p_unk0x0c->m_v;
+		}
+		else {
+			amount = (p_unk0x08->m_y - m_unk0x134) / (p_unk0x08->m_y - p_unk0x04->m_y);
+			intersection1.m_x = (p_unk0x04->m_x - p_unk0x08->m_x) * amount + p_unk0x08->m_x;
+			intersection1.m_u = (p_unk0x04->m_u - p_unk0x08->m_u) * amount + p_unk0x08->m_u;
+			intersection1.m_v = (p_unk0x04->m_v - p_unk0x08->m_v) * amount + p_unk0x08->m_v;
+
+			m_unk0x000->DrawTriangle(p_unk0x0c, &intersection1, p_unk0x08, m_unk0x118, 0);
+		}
+
+		m_unk0x000->DrawTriangle(&intersection0, &intersection1, p_unk0x0c, m_unk0x118, 0);
+		return;
 	}
+
+	m_unk0x000->DrawTriangle(p_unk0x04, p_unk0x08, p_unk0x0c, m_unk0x118, 0);
 }
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
@@ -317,44 +369,37 @@ void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_direct
 	const LegoFloat tailEndLength = 8.0f;
 
 	GolRenderDevice::TexturedVertex vertices[6];
+
+	vertices[0].m_x = p_directionX * tipLength;
+	vertices[0].m_y = p_directionY * tipLength;
+	vertices[1].m_x = p_directionY * baseHalfWidth - p_directionX * baseLength;
+	vertices[1].m_y = -p_directionX * baseHalfWidth - p_directionY * baseLength;
+	vertices[2].m_x = -p_directionY * baseHalfWidth - p_directionX * baseLength;
+	vertices[2].m_y = p_directionX * baseHalfWidth - p_directionY * baseLength;
+
+	vertices[3].m_x = p_directionX * tailEndLength;
+	vertices[3].m_y = p_directionY * tailEndLength;
+	vertices[4].m_x = p_directionY * tailHalfWidth - p_directionX * tailLength;
+	vertices[4].m_y = -p_directionX * tailHalfWidth - p_directionY * tailLength;
+	vertices[5].m_x = -p_directionY * tailHalfWidth - p_directionX * tailLength;
+	vertices[5].m_y = p_directionX * tailHalfWidth - p_directionY * tailLength;
+
+	LegoFloat originX = static_cast<LegoFloat>(p_x);
+	LegoFloat originY = static_cast<LegoFloat>(p_y);
 	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
-		vertices[i].m_z = 0.0f;
-		vertices[i].m_u = 0.0f;
-		vertices[i].m_v = 0.0f;
 		vertices[i].m_color.m_red = 0;
 		vertices[i].m_color.m_grn = 0;
 		vertices[i].m_color.m_blu = 0;
 		vertices[i].m_color.m_alp = 0xff;
-	}
-
-	LegoFloat perpendicularX = p_directionY;
-	LegoFloat perpendicularY = -p_directionX;
-
-	LegoFloat localX[6];
-	LegoFloat localY[6];
-	localX[0] = p_directionX * tipLength;
-	localY[0] = p_directionY * tipLength;
-	localX[1] = perpendicularX * baseHalfWidth - p_directionX * baseLength;
-	localY[1] = perpendicularY * baseHalfWidth - p_directionY * baseLength;
-	localX[2] = -perpendicularX * baseHalfWidth - p_directionX * baseLength;
-	localY[2] = -perpendicularY * baseHalfWidth - p_directionY * baseLength;
-
-	localX[3] = p_directionX * tailEndLength;
-	localY[3] = p_directionY * tailEndLength;
-	localX[4] = perpendicularX * tailHalfWidth - p_directionX * tailLength;
-	localY[4] = perpendicularY * tailHalfWidth - p_directionY * tailLength;
-	localX[5] = -perpendicularX * tailHalfWidth - p_directionX * tailLength;
-	localY[5] = -perpendicularY * tailHalfWidth - p_directionY * tailLength;
-
-	for (LegoS32 j = 0; j < sizeOfArray(vertices); j++) {
-		vertices[j].m_x = localX[j] * m_unk0x104 + static_cast<LegoFloat>(p_x);
-		vertices[j].m_y = localY[j] * m_unk0x114 + static_cast<LegoFloat>(p_y);
+		vertices[i].m_z = 0.0f;
+		vertices[i].m_x = vertices[i].m_x * m_unk0x104 + originX;
+		vertices[i].m_y = vertices[i].m_y * m_unk0x114 + originY;
 	}
 
 	DuskwindBananaRelic0x24* material = m_unk0x118;
 	m_unk0x118 = NULL;
-	FUN_00423fc0(&vertices[0], &vertices[1], &vertices[2]);
-	FUN_00423fc0(&vertices[3], &vertices[4], &vertices[5]);
+	FUN_00423fc0(&vertices[1], &vertices[0], &vertices[2]);
+	FUN_00423fc0(&vertices[4], &vertices[3], &vertices[5]);
 	m_unk0x118 = material;
 }
 
@@ -363,8 +408,13 @@ void CobaltTrail0x140::FUN_004249b0()
 {
 	const LegoFloat maxTextureCoordinate = 0.9990000129f;
 
-	LegoS32 markerWidth = static_cast<LegoS32>(m_unk0x104 * g_unk0x004b02b4);
-	LegoS32 markerHeight = static_cast<LegoS32>(m_unk0x114 * g_unk0x004b02b4);
+	LegoFloat markerWidthScale = m_unk0x104;
+	markerWidthScale *= g_unk0x004b02b4;
+	LegoS32 markerWidth = static_cast<LegoS32>(markerWidthScale);
+
+	LegoFloat markerHeightScale = m_unk0x114;
+	markerHeightScale *= g_unk0x004b02b4;
+	LegoS32 markerHeight = static_cast<LegoS32>(markerHeightScale);
 
 	m_unk0x12c = static_cast<LegoFloat>(m_unk0x094.m_top);
 	m_unk0x130 = static_cast<LegoFloat>(m_unk0x094.m_left);
@@ -373,11 +423,11 @@ void CobaltTrail0x140::FUN_004249b0()
 
 	GolRenderDevice::TexturedVertex vertices[4];
 	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
-		vertices[i].m_z = 0.0f;
 		vertices[i].m_color.m_red = 0xff;
 		vertices[i].m_color.m_grn = 0xff;
 		vertices[i].m_color.m_blu = 0xff;
 		vertices[i].m_color.m_alp = 0xc8;
+		vertices[i].m_z = 0.0f;
 	}
 
 	LegoS32 verticalOffset = static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x100) * g_unk0x004b02b0 * m_unk0x114);
@@ -540,16 +590,21 @@ void CobaltTrail0x140::FUN_00424fb0()
 {
 	const LegoFloat maxTextureCoordinate = 0.9990000129f;
 
-	LegoS32 markerWidth = static_cast<LegoS32>(m_unk0x104 * g_unk0x004b02b4);
-	LegoS32 markerHeight = static_cast<LegoS32>(m_unk0x114 * g_unk0x004b02b4);
+	LegoFloat markerWidthScale = m_unk0x104;
+	markerWidthScale *= g_unk0x004b02b4;
+	LegoS32 markerWidth = static_cast<LegoS32>(markerWidthScale);
+
+	LegoFloat markerHeightScale = m_unk0x114;
+	markerHeightScale *= g_unk0x004b02b4;
+	LegoS32 markerHeight = static_cast<LegoS32>(markerHeightScale);
 
 	GolRenderDevice::TexturedVertex vertices[8];
 	for (LegoS32 i = 0; i < sizeOfArray(vertices); i++) {
-		vertices[i].m_z = 0.0f;
 		vertices[i].m_color.m_red = 0xff;
 		vertices[i].m_color.m_grn = 0xff;
 		vertices[i].m_color.m_blu = 0xff;
 		vertices[i].m_color.m_alp = 0xc8;
+		vertices[i].m_z = 0.0f;
 	}
 
 	LegoFloat directionLengthScale = m_unk0x0f4 * 0.12f * m_unk0x114;
@@ -1175,42 +1230,11 @@ void CobaltTrail0x140::FUN_004263a0()
 	LegoU32 elapsedMs = m_unk0x034;
 	m_unk0x034 = 0;
 
-	RaceState::Racer* racer = m_unk0x02c;
-	if (racer == NULL || !m_unk0x038) {
+	if (m_unk0x02c == NULL || !m_unk0x038) {
 		return;
 	}
 
-	if (m_unk0x070 < 0) {
-		m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x28);
-
-		LegoS32 textWidth;
-		LegoS32 textHeight;
-		m_unk0x024->MeasureString(&m_unk0x014, &textWidth, &textHeight);
-
-		LegoFloat scaleX = m_unk0x10c * m_unk0x0f8;
-		LegoFloat scaleY = m_unk0x114 * m_unk0x0f8;
-		textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * scaleX);
-		textHeight = static_cast<LegoS32>(static_cast<double>(textHeight) * scaleY);
-
-		if (m_unk0x13c) {
-			m_unk0x000->VTable0x64(
-				&m_unk0x014,
-				m_unk0x024,
-				m_unk0x0a4 - (textWidth >> 1),
-				m_unk0x0c4 - (static_cast<LegoU32>(textHeight) >> 2),
-				scaleX,
-				scaleY,
-				NULL,
-				0
-			);
-		}
-
-		m_unk0x070 -= elapsedMs;
-		if (m_unk0x070 < -60000) {
-			m_unk0x070 = -60000;
-		}
-	}
-	else if (m_unk0x070 > 0) {
+	if (m_unk0x070 > 0) {
 		LegoS32 previousState = m_unk0x070;
 		m_unk0x070 += elapsedMs;
 		LegoS32 countdownState = m_unk0x070 / 1000;
@@ -1288,8 +1312,38 @@ void CobaltTrail0x140::FUN_004263a0()
 			}
 		}
 	}
+	else if (m_unk0x070 < 0) {
+		m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x28);
 
-	if (racer->m_unk0xd04 & 0x10) {
+		LegoS32 textWidth;
+		LegoS32 textHeight;
+		m_unk0x024->MeasureString(&m_unk0x014, &textWidth, &textHeight);
+
+		LegoFloat scaleX = m_unk0x10c * m_unk0x0f8;
+		LegoFloat scaleY = m_unk0x114 * m_unk0x0f8;
+		textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * scaleX);
+		textHeight = static_cast<LegoS32>(static_cast<double>(textHeight) * scaleY);
+
+		if (m_unk0x13c) {
+			m_unk0x000->VTable0x64(
+				&m_unk0x014,
+				m_unk0x024,
+				m_unk0x0a4 - (textWidth >> 1),
+				m_unk0x0c4 - (static_cast<LegoU32>(textHeight) >> 2),
+				scaleX,
+				scaleY,
+				NULL,
+				0
+			);
+		}
+
+		m_unk0x070 -= elapsedMs;
+		if (m_unk0x070 < -60000) {
+			m_unk0x070 = -60000;
+		}
+	}
+
+	if (m_unk0x02c->m_unk0xd04 & 0x10) {
 		return;
 	}
 
@@ -1300,7 +1354,7 @@ void CobaltTrail0x140::FUN_004263a0()
 	else {
 		positionIndex = m_unk0x08c;
 		if (positionIndex < 0) {
-			positionIndex = racer->m_unk0xcd8 - 1;
+			positionIndex = m_unk0x02c->m_unk0xcd8 - 1;
 		}
 		if (positionIndex > 8) {
 			positionIndex = 8;
@@ -1311,11 +1365,11 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	LegoS32 lapIndex = racer->m_lapsCompleted;
-	LegoS32 lapCount = racer->m_unk0xce0;
+	LegoS32 lapIndex = m_unk0x02c->m_lapsCompleted;
+	LegoS32 lapCount = m_unk0x02c->m_unk0xce0;
 	LegoU32 totalTime = 0;
 	LegoBool drawLapTime = TRUE;
-	LegoU32* lapTimes = &racer->m_unk0xce8;
+	LegoU32* lapTimes = &m_unk0x02c->m_unk0xce8;
 
 	if (lapIndex >= lapCount) {
 		LegoS32 hiddenTime = -m_unk0x070;
@@ -1352,12 +1406,12 @@ void CobaltTrail0x140::FUN_004263a0()
 	}
 
 	FUN_004246d0(m_unk0x058.m_text, totalTime);
-	if (racer->m_unk0xd84) {
-		FUN_004246d0(m_unk0x04f.m_text, racer->m_unk0xd88);
+	if (m_unk0x02c->m_unk0xd84) {
+		FUN_004246d0(m_unk0x04f.m_text, m_unk0x02c->m_unk0xd88);
 	}
 
 	if (lapIndex != m_unk0x07c) {
-		if (m_unk0x07c != -1 && m_unk0x07c < racer->m_unk0xce0) {
+		if (m_unk0x07c != -1 && m_unk0x07c < m_unk0x02c->m_unk0xce0) {
 			LegoU32 completedLapTime = lapTimes[m_unk0x07c];
 			if (completedLapTime <= m_unk0x088 || !m_unk0x088) {
 				m_unk0x088 = completedLapTime;
@@ -1368,8 +1422,8 @@ void CobaltTrail0x140::FUN_004263a0()
 		m_unk0x07c = lapIndex;
 		LegoS32 displayLap = lapIndex + 1;
 		if (m_unk0x080 <= 0) {
-			if (displayLap > racer->m_unk0xce0) {
-				displayLap = racer->m_unk0xce0;
+			if (displayLap > m_unk0x02c->m_unk0xce0) {
+				displayLap = m_unk0x02c->m_unk0xce0;
 			}
 			::sprintf(m_unk0x061, "%d", displayLap);
 		}
@@ -1516,7 +1570,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			);
 		}
 
-		if (racer->m_unk0xd84) {
+		if (m_unk0x02c->m_unk0xd84) {
 			LegoS32 medalX = FUN_00425bf0(m_unk0x04f.m_text, m_unk0x0b4, m_unk0x0dc);
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x21);
 			m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);
@@ -1534,7 +1588,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			}
 		}
 
-		if (racer->m_unk0xd04 & 0x4000) {
+		if (m_unk0x02c->m_unk0xd04 & 0x4000) {
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x24);
 			if (m_unk0x13c) {
 				m_unk0x000
@@ -1543,8 +1597,8 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	LegoS32 itemLevel = racer->m_unk0xd58;
-	LegoS32 itemType = racer->m_unk0xccc - 1;
+	LegoS32 itemLevel = m_unk0x02c->m_unk0xd58;
+	LegoS32 itemType = m_unk0x02c->m_unk0xccc - 1;
 	UtopianPan0xa4* itemResource = NULL;
 	LegoU32 itemColor = 0xffffffff;
 	switch (itemType) {
@@ -1616,7 +1670,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	m_unk0x078 = racer->m_unk0x3e8.m_unk0x618 * 0.2f + m_unk0x078 * 0.80000001f;
+	m_unk0x078 = m_unk0x02c->m_unk0x3e8.m_unk0x618 * 0.2f + m_unk0x078 * 0.80000001f;
 
 	switch (m_unk0x03c) {
 	case 1:

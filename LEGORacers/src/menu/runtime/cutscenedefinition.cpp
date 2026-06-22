@@ -757,7 +757,7 @@ void CutsceneDefinition::Frame::Reset()
 	m_unk0xa8.m_right = 0;
 }
 
-// STUB: LEGORACERS 0x00405950
+// FUNCTION: LEGORACERS 0x00405950
 void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
 	if (m_unk0x00) {
@@ -826,39 +826,33 @@ void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFi
 	}
 
 	LegoU32 eventIndex = 0;
-	LegoU32 i;
-	for (i = 0; i < m_unk0x04; i++) {
-		Event* event = &m_unk0x08[i];
-		m_unk0x30[eventIndex] = event;
-		m_unk0x38[eventIndex] = event;
-		eventIndex++;
+	for (; eventIndex < m_unk0x04; eventIndex++) {
+		m_unk0x30[eventIndex] = &m_unk0x08[eventIndex];
+		m_unk0x38[eventIndex] = &m_unk0x08[eventIndex];
 	}
 
+	LegoU32 i;
 	for (i = 0; i < m_unk0x0c; i++) {
-		Event* event = &m_unk0x10[i];
-		m_unk0x30[eventIndex] = event;
-		m_unk0x38[eventIndex] = event;
+		m_unk0x30[eventIndex] = &m_unk0x10[i];
+		m_unk0x38[eventIndex] = &m_unk0x10[i];
 		eventIndex++;
 	}
 
 	for (i = 0; i < m_unk0x14; i++) {
-		Event* event = &m_unk0x18[i];
-		m_unk0x30[eventIndex] = event;
-		m_unk0x38[eventIndex] = event;
+		m_unk0x30[eventIndex] = &m_unk0x18[i];
+		m_unk0x38[eventIndex] = &m_unk0x18[i];
 		eventIndex++;
 	}
 
 	for (i = 0; i < m_unk0x1c; i++) {
-		Event* event = &m_unk0x20[i];
-		m_unk0x30[eventIndex] = event;
-		m_unk0x38[eventIndex] = event;
+		m_unk0x30[eventIndex] = &m_unk0x20[i];
+		m_unk0x38[eventIndex] = &m_unk0x20[i];
 		eventIndex++;
 	}
 
 	for (i = 0; i < m_unk0x24; i++) {
-		Event* event = &m_unk0x28[i];
-		m_unk0x30[eventIndex] = event;
-		m_unk0x38[eventIndex] = event;
+		m_unk0x30[eventIndex] = &m_unk0x28[i];
+		m_unk0x38[eventIndex] = &m_unk0x28[i];
 		eventIndex++;
 	}
 

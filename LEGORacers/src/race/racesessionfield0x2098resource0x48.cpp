@@ -32,7 +32,7 @@ void RaceSession::Field0x2098::Resource0x48::FUN_00465570(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}

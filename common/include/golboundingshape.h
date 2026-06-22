@@ -2,6 +2,7 @@
 #define GOLBOUNDINGSHAPE_H
 
 #include "decomp.h"
+#include "golmath.h"
 #include "goltxtparser.h"
 #include "types.h"
 
@@ -99,7 +100,9 @@ public:
 		StructField0x08::Node** p_first,
 		StructField0x08::Node** p_last
 	);
+	void FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08);
 	void FUN_00403f20();
+	StructField0x08::Node* GetUnk0x24() const { return m_unk0x24; }
 
 	// SYNTHETIC: GOLDP 0x100179a0
 	// GolBoundingShape::`vector deleting destructor'

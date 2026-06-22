@@ -139,10 +139,13 @@ public:
 		GolNameTable m_unk0x0d8;             // 0x0d8
 	};
 
-	typedef RaceEventTable0x90 Field0x004;
-
 	RaceSessionField0x32b4();
-	Field0x000* FUN_0041f440(Field0x000* p_unk0x04, LegoChar* p_unk0x08, Field0x004* p_unk0x0c, undefined4 p_unk0x10);
+	Field0x000* FUN_0041f440(
+		Field0x000* p_unk0x04,
+		LegoChar* p_unk0x08,
+		RaceEventTable0x90* p_unk0x0c,
+		undefined4 p_unk0x10
+	);
 	LegoBool32 FUN_0041f4d0(
 		GolVec3* p_unk0x04,
 		GolVec3* p_unk0x08,
@@ -154,7 +157,7 @@ public:
 
 private:
 	Field0x000* m_unk0x00;             // 0x00
-	Field0x004* m_unk0x04;             // 0x04
+	RaceEventTable0x90* m_unk0x04;     // 0x04
 	undefined4 m_unk0x08;              // 0x08
 	Field0x000::Field0x0a8* m_unk0x0c; // 0x0c
 };

@@ -90,7 +90,7 @@ GolWorldEntity* RaceState::Field0x0f0::VTable0x14(LegoEventQueue::Event* p_event
 	return p_event->m_descriptor.m_worldEntity;
 }
 
-// STUB: LEGORACERS 0x0043d270
+// FUNCTION: LEGORACERS 0x0043d270
 void RaceState::Field0x0f0::FUN_0043d270()
 {
 	LegoEventQueue::Event* other;
@@ -111,29 +111,30 @@ void RaceState::Field0x0f0::FUN_0043d270()
 				model = LegoEventQueue::Field0x30::VTable0x14(event);
 				other = m_unk0x048;
 
-				if (other) {
-					do {
-						if (!other->m_active) {
-							other = other->m_next;
-							continue;
-						}
-
+				while (other) {
+					if (other->m_active) {
+						otherModel = other->m_descriptor.m_worldEntity;
 						if (model->GetRadius() < 0.0f) {
 							model->VTable0x00();
 						}
 
-						otherModel = other->m_descriptor.m_worldEntity;
 						modelMinX = model->GetMinX();
 						if (otherModel->GetRadius() < 0.0f) {
 							otherModel->VTable0x00();
 						}
 
-						if (otherModel->GetMaxX() < modelMinX) {
-							other = other->m_next;
-							continue;
+						if (otherModel->GetMaxX() >= modelMinX) {
+							break;
 						}
+					}
 
+					other = other->m_next;
+				}
+
+				while (other) {
+					if (other->m_active) {
 						flags = other->m_descriptor.m_unk0x04;
+						otherModel = other->m_descriptor.m_worldEntity;
 
 						if (flags & 8) {
 							if (target->m_unk0xd08 == 2) {
@@ -168,9 +169,9 @@ void RaceState::Field0x0f0::FUN_0043d270()
 							m_callbackData.m_field0x0e0 = target;
 							other->FUN_004408e0(this, &m_callbackData);
 						}
+					}
 
-						other = other->m_next;
-					} while (other);
+					other = other->m_next;
 				}
 			}
 		}

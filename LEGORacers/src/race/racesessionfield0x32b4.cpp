@@ -29,7 +29,7 @@ RaceSessionField0x32b4::RaceSessionField0x32b4()
 RaceSessionField0x32b4::Field0x000* RaceSessionField0x32b4::FUN_0041f440(
 	Field0x000* p_unk0x04,
 	LegoChar* p_unk0x08,
-	Field0x004* p_unk0x0c,
+	RaceEventTable0x90* p_unk0x0c,
 	undefined4 p_unk0x10
 )
 {
@@ -73,8 +73,6 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 {
 	LegoU32 count;
 	Field0x10* hitRecord;
-	RaceSessionField0x32b4* session = this;
-	RaceSessionField0x32b4* savedSession = this;
 	GolVec3 direction;
 	GolVec3 center;
 	GolVec3 planeLocal;
@@ -91,7 +89,7 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 	GolMath::NormalizeVector3(direction, &direction);
 
 	Field0x0c* record = p_unk0x0c;
-	Field0x000* root = session->m_unk0x00;
+	Field0x000* root = m_unk0x00;
 	count = 0;
 	if (!(0 < root->m_unk0x064)) {
 		goto fallback;
@@ -123,7 +121,7 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 			}
 		}
 
-		root = savedSession->m_unk0x00;
+		root = m_unk0x00;
 		count++;
 		if (count >= root->m_unk0x064) {
 			goto fallback;
@@ -131,7 +129,7 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
 	}
 
 fallback:
-	entity = savedSession->m_unk0x0c;
+	entity = m_unk0x0c;
 	query = entity->m_unk0x58;
 	query->m_unk0x24 = entity->m_unk0x5c ? entity->m_unk0x5c : &query->m_unk0x18;
 	if (!query->FUN_00403fa0(p_unk0x04, p_unk0x08, record, p_unk0x10, &hitRecord, 0)) {

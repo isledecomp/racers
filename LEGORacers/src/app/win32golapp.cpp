@@ -826,14 +826,17 @@ InputManager* Win32GolApp::GetInputManager()
 	return &m_inputManager;
 }
 
-// STUB: LEGORACERS 0x00417990 FOLDED
+// TODO: Keeps this original two-function fold group from folding into unrelated empty methods.
+#pragma code_seg(".text$win32_activation")
+
+// FUNCTION: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppDeactivated()
 {
-	MATCHING(0x00417990);
 }
 
-// STUB: LEGORACERS 0x00417990 FOLDED
+// FUNCTION: LEGORACERS 0x00417990 FOLDED
 void Win32GolApp::OnAppActivated()
 {
-	MATCHING(0x00417990);
 }
+
+#pragma code_seg()

@@ -17,7 +17,7 @@ RaceSession::Field0x23c::Field0x23c()
 	m_unk0x08[1] = sink;
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
-	m_unk0x18 = 1;
+	m_unk0x18 = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00427950
@@ -33,7 +33,7 @@ void RaceSession::Field0x23c::FUN_00427960()
 	memset(m_unk0x08, 0, sizeof(m_unk0x08));
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
-	m_unk0x18 = 1;
+	m_unk0x18 = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00427980
@@ -41,7 +41,7 @@ void RaceSession::Field0x23c::FUN_00427980(DirectInputDevice* p_source, InputDev
 {
 	m_unk0x04 = p_source;
 	m_unk0x14 = p_fallback;
-	m_unk0x18 = 1;
+	m_unk0x18 = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004279a0

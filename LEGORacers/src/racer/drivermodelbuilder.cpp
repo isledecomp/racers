@@ -291,7 +291,7 @@ GolModelBase* DriverModelBuilder::FUN_0049d6e0(undefined4 p_vertexType)
 	return model;
 }
 
-// STUB: LEGORACERS 0x0049d790
+// FUNCTION: LEGORACERS 0x0049d790
 void DriverModelBuilder::CopyModelVertices(
 	GolModelBase* p_sourceModel,
 	GolModelBase* p_destModel,
@@ -302,12 +302,13 @@ void DriverModelBuilder::CopyModelVertices(
 	GdbVertexArray0xc* destVertices;
 	ColorRGBA color;
 	GolVec2 texCoord;
-	GolVec3 normal;
 	GolVec3 position;
+	GolVec3 normal;
 	p_sourceModel->VTable0x28(&sourceVertices);
 	p_destModel->VTable0x28(&destVertices);
 
-	for (LegoU32 i = 0; i < sourceVertices->GetCount(); i++) {
+	LegoS32 vertexCount = sourceVertices->GetCount();
+	for (LegoS32 i = 0; i < vertexCount; i++) {
 		LegoU32 destIndex = i + p_vertexOffset;
 
 		sourceVertices->VTable0x14(i, &position);

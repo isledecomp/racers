@@ -364,20 +364,21 @@ void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex
 	}
 }
 
-// STUB: LEGORACERS 0x0042ee70
+// FUNCTION: LEGORACERS 0x0042ee70
 void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU32 p_event)
 {
 	LegoU32 i;
 	LegoU32 j;
+	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 
-	if (m_state.m_inputBindings.m_entries[p_entryIndex].m_events[p_eventIndex] == p_event) {
+	if (entry->m_events[p_eventIndex] == p_event) {
 		return;
 	}
 
 	if ((p_event & InputDevice::c_sourceMask) != InputDevice::c_sourceKeyboard) {
 		for (i = 0; i < c_inputBindingEventCount; i++) {
-			if (m_state.m_inputBindings.m_entries[p_entryIndex].m_events[i] == p_event) {
-				m_state.m_inputBindings.m_entries[p_entryIndex].m_events[i] = 0;
+			if (entry->m_events[i] == p_event) {
+				entry->m_events[i] = 0;
 			}
 		}
 	}

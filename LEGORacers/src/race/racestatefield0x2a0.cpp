@@ -9,7 +9,6 @@ DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::CollisionCacheRecord, 0x3c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74c, 0x78)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74cInstance, 0x78)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0xc70::Field0x050, 0x78)
 
 // GLOBAL: LEGORACERS 0x004b4bc8
 extern const LegoFloat g_unk0x004b4bc8 = 0.001f;

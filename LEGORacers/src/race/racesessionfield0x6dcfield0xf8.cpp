@@ -61,7 +61,7 @@ RaceSession::Field0x6dc::Field0xf8::Field0xf8()
 }
 
 // FUNCTION: LEGORACERS 0x00423610
-RaceSession::Field0x6dc::Field0xa8* RaceSession::Field0x6dc::Field0xf8::VTable0x10(undefined4 p_flags)
+RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0xf8::VTable0x10(undefined4 p_flags)
 {
 	Field0xf8* result = this;
 	FUN_00423630();
@@ -75,7 +75,7 @@ RaceSession::Field0x6dc::Field0xa8* RaceSession::Field0x6dc::Field0xf8::VTable0x
 // FUNCTION: LEGORACERS 0x00423630
 void RaceSession::Field0x6dc::Field0xf8::FUN_00423630()
 {
-	Field0xa8::~Field0xa8();
+	RaceSessionField0x6dcField0xa8::~RaceSessionField0x6dcField0xa8();
 }
 
 // STUB: LEGORACERS 0x00423640
@@ -89,14 +89,16 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
 {
 	m_unk0x0f0 += p_elapsedMs;
 
+	RaceState::Racer* noTarget = NULL;
 	RaceState::Racer* target = m_unk0x0a0;
-	if (target == NULL || m_unk0x0f0 > c_targetRefreshMs || (target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) ||
+	if (target == noTarget || m_unk0x0f0 > c_targetRefreshMs ||
+		(target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) ||
 		(target->m_unk0xd04 & c_racerFlags0xd04InvalidTargetMask)) {
 		m_unk0x0f0 = 0;
 		target = p_unk0x08->FUN_0043c6e0(&m_unk0x0a8, &m_unk0x0d0, p_unk0x0c, p_unk0x10, p_unk0x14);
 		m_unk0x0a0 = target;
 
-		while (target != NULL) {
+		while (target != noTarget) {
 			if (target != m_unk0x09c && !(target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) &&
 				!(target->m_unk0xd04 & c_racerFlags0xd04InvalidTargetMask)) {
 				break;
@@ -108,7 +110,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
 	}
 
 	if (!m_unk0x0e8 && m_unk0x0ec != NULL) {
-		RaceState::Racer::Field0xcc4* pathField = m_unk0x0ec;
+		RaceSessionField0x27f4::Entry* pathField = m_unk0x0ec;
 		GolVec3 point = pathField->m_unk0x10;
 		for (;;) {
 			GolVec3 delta = point - m_unk0x0a8;
@@ -117,7 +119,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
 				break;
 			}
 
-			pathField = m_unk0x09c->m_unk0x010->FUN_0041e940(pathField->m_unk0x20[0]);
+			pathField = m_unk0x09c->m_unk0x010->FUN_0041e940(pathField->m_unk0x20.m_items[0]);
 			m_unk0x0ec = pathField;
 			if (pathField != NULL) {
 				point = pathField->m_unk0x10;
@@ -166,7 +168,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423980()
 
 	RaceState::Racer* racer = m_unk0x09c;
 	if (racer != NULL) {
-		RaceState::Racer::Field0xcc4* pathField = racer->m_unk0xcc4;
+		RaceSessionField0x27f4::Entry* pathField = racer->m_unk0xcc4;
 		m_unk0x0ec = pathField;
 		if (pathField != NULL) {
 			forward.m_x = pathField->m_unk0x00.m_x;

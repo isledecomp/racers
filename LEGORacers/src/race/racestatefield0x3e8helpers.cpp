@@ -264,8 +264,8 @@ void RaceState::Racer::Field0x3e8::FUN_00429210(
 	RaceEventTable0x90* p_unk0x08,
 	undefined4 p_unk0x0c,
 	GolAnimatedEntity* p_unk0x10,
-	RaceState::Racer::Field0x3e8::CollisionResource* p_unk0x14,
-	RaceState::Racer::Field0x3e8::CollisionResource* p_unk0x18,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x14,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x18,
 	Field0x004* p_unk0x1c,
 	LegoFloat p_unk0x20,
 	LegoFloat p_unk0x24,
@@ -283,7 +283,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429210(
 	m_unk0x6fc = p_unk0x18;
 	FUN_00444d90(p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_unk0x2c);
 	p_unk0x10->VTable0x04(&m_unk0x700);
-	GolMath::FUN_1002f5a0(p_unk0x10->GetTransform(), &m_unk0x70c);
+	GolMath::FUN_1002f5a0(p_unk0x10->GetOrientation(), &m_unk0x70c);
 	m_unk0x738 = 0;
 }
 
@@ -372,7 +372,7 @@ void RaceState::Racer::Field0x3e8::VTable0x04(LegoS32 p_elapsedMs)
 			if (!(racerFlags & Racer::c_flags0xd04Bit10) || !(racerFlags & Racer::c_flags0xd04Bit1)) {
 				GolOrientedEntity* entity0 = &m_unk0x0e4;
 				entity0->VTable0x04(&m_unk0x700);
-				GolMath::FUN_1002f5a0(m_unk0x0e4.GetTransform(), &m_unk0x70c);
+				GolMath::FUN_1002f5a0(m_unk0x0e4.GetOrientation(), &m_unk0x70c);
 			}
 		}
 
@@ -436,7 +436,7 @@ void RaceState::Racer::Field0x3e8::VTable0x04(LegoS32 p_elapsedMs)
 	}
 }
 
-// STUB: LEGORACERS 0x00429680
+// FUNCTION: LEGORACERS 0x00429680
 void RaceState::Racer::Field0x3e8::FUN_00429680(GolVec3* p_unk0x04)
 {
 	if (m_unk0x744) {
@@ -450,12 +450,13 @@ void RaceState::Racer::Field0x3e8::FUN_00429680(GolVec3* p_unk0x04)
 		dot += side.m_x * direction.m_x;
 		m_unk0x7c4.m_z = dot;
 
-		if (dot >= 0.0f) {
-			if (dot > m_unk0x74c.m_unk0x24) {
-				m_unk0x7c4.m_z = m_unk0x74c.m_unk0x24;
+		if (dot > 0.0f) {
+			if (m_unk0x74c.m_unk0x24 < dot) {
+				dot = m_unk0x74c.m_unk0x24;
+				m_unk0x7c4.m_z = dot;
 			}
 		}
-		else if (-dot > m_unk0x74c.m_unk0x20) {
+		else if (m_unk0x74c.m_unk0x20 < -dot) {
 			m_unk0x7c4.m_z = -m_unk0x74c.m_unk0x20;
 		}
 
@@ -1070,7 +1071,7 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042a7f0()
 LegoU32 RaceState::Racer::Field0x3e8::VTable0x0c(
 	GolVec3* p_unk0x04,
 	EventRecord* p_unk0x08,
-	RaceState::Racer::Field0x3e8::CollisionResource* p_unk0x0c,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x0c,
 	EventContext* p_unk0x10
 )
 {
@@ -1359,8 +1360,7 @@ SpatialSoundInstance* RaceState::Racer::Field0x3e8::FUN_0042af90(LegoS32 p_unk0x
 		m_unk0x740->SetDistanceRangeWithMinSquared(g_unk0x004b0430 * g_unk0x004b0430, g_unk0x004b0434);
 		m_unk0x740->Play(TRUE);
 		m_unk0x13c->VTable0x04(&position);
-		m_unk0x740->SetPosition(&position);
-		m_unk0x740->SetVelocity(m_unk0x008);
+		m_unk0x740->SetPositionAndVelocity(position, m_unk0x008);
 	}
 
 	return m_unk0x740;
@@ -1922,8 +1922,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00444b40()
 // FUNCTION: LEGORACERS 0x00444d90
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00444d90(
 	GolAnimatedEntity* p_unk0x04,
-	RaceState::Racer::Field0x3e8::CollisionResource* p_unk0x08,
-	RaceState::Racer::Field0x3e8::CollisionResource* p_unk0x0c,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x08,
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x0c,
 	Field0x004* p_unk0x10,
 	LegoFloat p_unk0x14,
 	LegoFloat p_unk0x18,
@@ -2563,9 +2563,6 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445d10()
 // STUB: LEGORACERS 0x00445dc0
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 {
-	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
-	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
-
 	LegoU32 flags = m_flags0x6c0;
 	if (flags & c_flags0x6c0Bit8) {
 		if (m_unk0x008.m_x == 0.0f && m_unk0x008.m_y == 0.0f && m_unk0x008.m_z == 0.0f && m_unk0x098.m_x == 0.0f &&
@@ -2620,13 +2617,13 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		CollisionResource* resource = m_unk0x140[resourceIndex];
+		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
 		FUN_00448d90(resource, sweepHeight, sweepDistance);
 
 		entry = entries;
 		while (entry < entriesEnd) {
 			if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
-				CollisionQuery* query = resource->m_unk0x58;
+				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
 				if (!resource->m_unk0x5c) {
 					query->m_unk0x24 = &query->m_unk0x18;
 				}
@@ -2635,7 +2632,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 				}
 
 				GolVec3 hitPoint;
-				CollisionHitRecord* hitRecord;
+				RaceSessionField0x32b4::Field0x10* hitRecord;
 				if (query->FUN_00403fa0(
 						&entry->m_unk0x018,
 						&entry->m_unk0x024,
@@ -2667,7 +2664,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 		}
 	}
 
-	CollisionResource* baseResource = m_unk0x140[0];
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* baseResource = m_unk0x140[0];
 	entry = entries;
 	while (entry < entriesEnd) {
 		if (entry->m_flags0x048 & Field0x198::c_flags0x048Hit) {
@@ -2683,7 +2680,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 		entry->m_unk0x024.m_z = entry->m_unk0x00c.m_z - sweepDistance;
 
 		if (!FUN_00448ae0(entry)) {
-			CollisionQuery* query = baseResource->m_unk0x58;
+			RaceSessionField0x32b4::Field0x058* query = baseResource->m_unk0x58;
 			if (!baseResource->m_unk0x5c) {
 				query->m_unk0x24 = &query->m_unk0x18;
 			}
@@ -2691,7 +2688,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 				query->m_unk0x24 = baseResource->m_unk0x5c;
 			}
 
-			CollisionHitRecord* hitRecord;
+			RaceSessionField0x32b4::Field0x10* hitRecord;
 			if (query->FUN_00403fa0(
 					&entry->m_unk0x018,
 					&entry->m_unk0x024,
@@ -2863,9 +2860,6 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004464a0(LegoS32 p_elapsedMs)
 // STUB: LEGORACERS 0x004465c0
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 {
-	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
-	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
-
 	LegoU32 flags = m_flags0x6c0;
 	if (flags & c_flags0x6c0Bit8) {
 		if (m_unk0x008.m_x == 0.0f && m_unk0x008.m_y == 0.0f && m_unk0x008.m_z == 0.0f && m_unk0x098.m_x == 0.0f &&
@@ -2950,7 +2944,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		CollisionResource* resource = m_unk0x140[resourceIndex];
+		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
 
 		LegoS32 entryIndex = 0;
 		for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
@@ -2963,7 +2957,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 			resource->VTable0x30(entry->m_unk0x018, &start);
 			resource->VTable0x30(entry->m_unk0x024, &end);
 
-			CollisionQuery* query = resource->m_unk0x58;
+			RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
 			if (!resource->m_unk0x5c) {
 				query->m_unk0x24 = &query->m_unk0x18;
 			}
@@ -2972,7 +2966,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 			}
 
 			GolVec3 hitPoint;
-			CollisionHitRecord* hitRecord;
+			RaceSessionField0x32b4::Field0x10* hitRecord;
 			if (!query->FUN_00403fa0(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
 				continue;
 			}
@@ -3005,12 +2999,12 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 		}
 	}
 
-	CollisionResource* baseResource = m_unk0x140[0];
+	RaceSessionField0x32b4::Field0x000::Field0x0a8* baseResource = m_unk0x140[0];
 	LegoS32 entryIndex = 0;
 	for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
 		if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
 			if (!FUN_00448ae0(entry)) {
-				CollisionQuery* query = baseResource->m_unk0x58;
+				RaceSessionField0x32b4::Field0x058* query = baseResource->m_unk0x58;
 				if (!baseResource->m_unk0x5c) {
 					query->m_unk0x24 = &query->m_unk0x18;
 				}
@@ -3018,7 +3012,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 					query->m_unk0x24 = baseResource->m_unk0x5c;
 				}
 
-				CollisionHitRecord* hitRecord;
+				RaceSessionField0x32b4::Field0x10* hitRecord;
 				if (!query->FUN_00403fa0(
 						&entry->m_unk0x018,
 						&entry->m_unk0x024,
@@ -3533,10 +3527,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447880()
 // STUB: LEGORACERS 0x004478b0
 LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs, LegoBool32 p_unk0x08)
 {
-	typedef RaceSessionField0x32b4::Field0x058 CollisionQuery;
-	typedef RaceSessionField0x32b4::Field0x10 CollisionHitRecord;
-
-	CollisionHitRecord* hitRecord = NULL;
+	RaceSessionField0x32b4::Field0x10* hitRecord = NULL;
 	m_unk0x3ec = 0;
 	LegoFloat bestDistance = -FLT_MAX;
 	LegoFloat hitAmount;
@@ -3549,7 +3540,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 	}
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		CollisionResource* resource = m_unk0x140[resourceIndex];
+		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
 			if (!m_unk0x3d0[pointIndex]) {
@@ -3559,7 +3550,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 				);
 				resource->VTable0x30(m_unk0x3a0[pointIndex], &g_raceStateField0x3e8Snapshot0x040[pointIndex]);
 
-				CollisionQuery* query = resource->m_unk0x58;
+				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
 				if (!resource->m_unk0x5c) {
 					query->m_unk0x24 = &query->m_unk0x18;
 				}
@@ -3614,11 +3605,11 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 	}
 
 	if (p_unk0x08) {
-		CollisionResource* resource = m_unk0x140[0];
+		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[0];
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
 			if (!m_unk0x3d0[pointIndex]) {
-				CollisionQuery* query = resource->m_unk0x58;
+				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
 				if (!resource->m_unk0x5c) {
 					query->m_unk0x24 = &query->m_unk0x18;
 				}

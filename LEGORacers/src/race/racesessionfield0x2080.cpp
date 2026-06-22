@@ -34,7 +34,7 @@ RaceSession::Field0x2080::Entry::~Entry()
 // FUNCTION: LEGORACERS 0x00463b60
 void RaceSession::Field0x2080::Entry::FUN_00463b60(const EntryParams* p_params)
 {
-	BaseEntry::FUN_00464e80(p_params);
+	FUN_00464e80(p_params);
 	m_unk0x44 = p_params->m_unk0x1c;
 	m_unk0x48 = p_params->m_unk0x20;
 	m_unk0x4c = p_params->m_unk0x24;
@@ -57,8 +57,7 @@ void RaceSession::Field0x2080::Entry::FUN_00463b60(const EntryParams* p_params)
 // FUNCTION: LEGORACERS 0x00463bd0
 void RaceSession::Field0x2080::Entry::VTable0x08()
 {
-	BaseEntry* base = this;
-	base->BaseEntry::VTable0x08();
+	CallBaseVTable0x08();
 	m_unk0x3c = 0;
 	m_unk0x40 = 0;
 	m_unk0x30 = 0;
@@ -71,8 +70,7 @@ void RaceSession::Field0x2080::Entry::VTable0x08()
 // FUNCTION: LEGORACERS 0x00463c00
 void RaceSession::Field0x2080::Entry::VTable0x0c(LegoU32 p_elapsedMs)
 {
-	BaseEntry* base = this;
-	base->BaseEntry::VTable0x0c(p_elapsedMs);
+	CallBaseVTable0x0c(p_elapsedMs);
 	if (m_unk0x34 != -1 && m_unk0x40) {
 		LegoU32 bit = 1;
 		LegoS32 offset = 0;
@@ -109,8 +107,7 @@ void RaceSession::Field0x2080::Entry::VTable0x00(LegoEventQueue::CallbackData* p
 		}
 	}
 
-	BaseEntry* base = this;
-	base->BaseEntry::VTable0x00(p_data);
+	CallBaseVTable0x00(p_data);
 	if (racer) {
 		LegoU32 bit = 1 << racer->m_unk0xe04;
 		LegoU32 previousFlags = m_unk0x40;
@@ -124,8 +121,7 @@ void RaceSession::Field0x2080::Entry::VTable0x00(LegoEventQueue::CallbackData* p
 // FUNCTION: LEGORACERS 0x00463d10
 void RaceSession::Field0x2080::Entry::VTable0x10()
 {
-	BaseEntry* base = this;
-	base->BaseEntry::VTable0x10();
+	CallBaseVTable0x10();
 	m_unk0x3c = 0;
 	m_unk0x40 = 0;
 }

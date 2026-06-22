@@ -4,7 +4,6 @@
 #include "render/gold3drenderdevice.h"
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270, 0x270)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x270::Field0x34, 0x90)
 
 // GLOBAL: LEGORACERS 0x004b0150
 LegoFloat g_unk0x004b0150 = 80.0f;

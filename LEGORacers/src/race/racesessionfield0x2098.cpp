@@ -79,7 +79,7 @@ void RaceSession::Field0x2098::SkyStateResource0x34::FUN_0045e200(InitParams* p_
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
@@ -169,7 +169,7 @@ void RaceSession::Field0x2098::Resource0x2c::FUN_0045e650(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
@@ -252,7 +252,7 @@ void RaceSession::Field0x2098::Resource0x30::FUN_0045e7f0(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
@@ -378,7 +378,7 @@ void RaceSession::Field0x2098::Resource0x64::FUN_0045ea00(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}
@@ -2386,7 +2386,7 @@ void RaceSession::Field0x2098::Resource0x38::FUN_00462f40(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}
@@ -2481,7 +2481,7 @@ void RaceSession::Field0x2098::Resource0x34::FUN_00463120(InitParams* p_params)
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}
@@ -2572,7 +2572,7 @@ void RaceSession::Field0x2098::AnimatedPartResource0x34::FUN_00463330(InitParams
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}
@@ -2622,7 +2622,7 @@ void RaceSession::Field0x2098::AnimatedPartResource0x34::VTable0x14(LegoU32 p_el
 
 	GolAnimatedEntity* entity = m_unk0x20;
 	LegoU32 state = m_state0x18;
-	LegoU32 currentPart = entity->GetCurrentPartIndex();
+	LegoS32 currentPart = entity->GetCurrentPartIndex();
 
 	if (state == 2) {
 		if (currentPart == m_unk0x2c) {
@@ -2734,6 +2734,7 @@ void RaceSession::Field0x2098::AnimatedPartResource0x34::VTable0x0c()
 			LegoS32 queuedPart = m_unk0x30;
 			if (queuedPart != -1) {
 				if (currentPart != queuedPart) {
+					queuedPart = m_unk0x30;
 					if (queuedPart != -1) {
 						entity->SetQueuedPartIndex(static_cast<LegoU16>(queuedPart));
 						LegoU32 flags = entity->GetFlags();
@@ -2789,7 +2790,7 @@ void RaceSession::Field0x2098::ModelDistanceResource0x34::FUN_00463700(InitParam
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	LegoU32 i;
 	for (i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
@@ -2892,7 +2893,7 @@ void RaceSession::Field0x2098::NodeTransformResource0x2c::FUN_00463900(InitParam
 	}
 
 	m_unk0x14 = p_params->m_unk0x00;
-	undefined4* eventId = p_params->m_eventIds;
+	LegoS32* eventId = p_params->m_eventIds;
 	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
 		m_eventIds[i] = *eventId++;
 	}

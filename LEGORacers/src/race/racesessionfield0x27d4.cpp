@@ -3,6 +3,7 @@
 #include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
+#include "golcollidableentity.h"
 #include "golerror.h"
 #include "golmodelbase.h"
 #include "material/materialtable0x0c.h"
@@ -104,7 +105,7 @@ void RaceSessionField0x27d4::Item::Reset()
 void RaceSessionField0x27d4::Item::FUN_00491c70(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,
-	Field0x004::Params* p_params
+	GolCollidableEntity* p_params
 )
 {
 	m_unk0x2f8 = p_params;
@@ -498,7 +499,7 @@ void RaceSessionField0x27d4::Destroy()
 void RaceSessionField0x27d4::FUN_00492680(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,
-	Item::Field0x004::Params* p_params,
+	GolCollidableEntity* p_params,
 	LegoU32 p_count
 )
 {

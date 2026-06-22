@@ -183,18 +183,20 @@ void GolTgaFile::VTable0x00()
 	}
 }
 
-// STUB: GOLDP 0x1002aa80
-// STUB: LEGORACERS 0x00413d50
+// FUNCTION: GOLDP 0x1002aa80
+// FUNCTION: LEGORACERS 0x00413d50
 void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
 	LegoU8* rowBuffer2;
 	LegoU8* rowBuffer1;
-	LegoS32 widthScale = 1;
-	LegoS32 heightScale = 1;
+	LegoS32 widthScale;
+	LegoS32 heightScale;
 	LegoU32 pitch;
 	LegoU32 fileOffset;
 	LegoS32 amount;
 	GolSurfaceFormat format;
+
+	heightScale = widthScale = 1;
 
 	if (m_height > p_texture->GetHeight() || m_width > p_texture->GetWidth()) {
 		GOL_FATALERROR_MESSAGE("Invalid image size for given storage");
@@ -220,16 +222,18 @@ void GolTgaFile::VTable0x20(SilverDune0x30* p_texture, LegoU32 p_flags, ColorRGB
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	rowBuffer2 = rowBuffer1;
 	if (m_imageType >= 9) {
 		rowBuffer2 = new LegoU8[m_rowByteStride + 2];
 		if (rowBuffer2 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
+	else {
+		rowBuffer2 = rowBuffer1;
+	}
 
 	if (p_flags == 0) {
-		pixels += (p_texture->GetHeight() - 1) * pitch;
+		pixels += (p_texture->GetHeight() - 1) * rowPitch;
 		rowPitch = -rowPitch;
 	}
 
@@ -280,17 +284,15 @@ void GolTgaFile::FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst)
 
 	while (pixelCount < m_width) {
 		LegoU32 packet = *p_src++;
-		LegoU32 packetCount = (packet & 0x7f) + 1;
-		LegoU32 newPixelCount = pixelCount + packetCount;
-		if (newPixelCount > m_width) {
+		if (pixelCount + (packet & 0x7f) + 1 > m_width) {
 			return;
 		}
 
 		if (packet & 0x80) {
 			LegoU32 startOffset = dstOffset;
 			packet &= 0x7f;
-			pixelCount += packetCount;
-			dstByteCount += packetCount * bytesPerPixel;
+			pixelCount += packet + 1;
+			dstByteCount += (packet + 1) * bytesPerPixel;
 
 			for (LegoU32 i = bytesPerPixel; i > 0; i--) {
 				p_dst[dstOffset++] = *p_src++;
@@ -303,8 +305,8 @@ void GolTgaFile::FUN_1002ad40(LegoU8* p_src, LegoU8* p_dst)
 			}
 		}
 		else {
-			pixelCount += packetCount;
-			dstByteCount += packetCount * bytesPerPixel;
+			pixelCount += packet + 1;
+			dstByteCount += (packet + 1) * bytesPerPixel;
 
 			do {
 				for (LegoU32 i = bytesPerPixel; i > 0; i--) {
@@ -326,9 +328,6 @@ void GolTgaFile::VTable0x18(LegoU8* p_buffer)
 // STUB: LEGORACERS 0x00414120
 void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGBA* p_colorKey)
 {
-	LegoU32 tileColumnCount = p_image->GetTileColumnCount();
-	LegoU32 tileRowCount = p_image->GetTileRowCount();
-	LegoU32 tileCount = tileColumnCount * tileRowCount;
 	GolSurfaceFormat format;
 	LegoU32 column;
 	LegoU32 row;
@@ -341,26 +340,26 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 	format = p_image->VTable0x1c(0, 0)->GetTextureFormat();
 	FUN_100204d0(format, p_colorKey);
 	if (format.m_paletteMask != 0 && m_paletteSize != 0) {
-		for (column = 0; column < tileColumnCount; column++) {
-			for (row = 0; row < tileRowCount; row++) {
+		for (column = 0; column < p_image->GetTileColumnCount(); column++) {
+			for (row = 0; row < p_image->GetTileRowCount(); row++) {
 				FUN_100200f0(p_image->VTable0x1c(column, row)->GetPalette(), p_colorKey);
 			}
 		}
 	}
 
-	LegoU8** tilePixels = new LegoU8*[tileCount];
+	LegoU8** tilePixels = new LegoU8*[p_image->GetTileColumnCount() * p_image->GetTileRowCount()];
 	if (tilePixels == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	LegoU32* tilePitches = new LegoU32[tileCount];
+	LegoU32* tilePitches = new LegoU32[p_image->GetTileColumnCount() * p_image->GetTileRowCount()];
 	if (tilePitches == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (column = 0; column < tileColumnCount; column++) {
-		for (row = 0; row < tileRowCount; row++) {
-			LegoU32 index = row + column * tileRowCount;
+	for (column = 0; column < p_image->GetTileColumnCount(); column++) {
+		for (row = 0; row < p_image->GetTileRowCount(); row++) {
+			LegoU32 index = row + column * p_image->GetTileRowCount();
 			p_image->VTable0x1c(column, row)
 				->LockPixels(
 					&tilePixels[index],
@@ -376,11 +375,11 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 	LegoS32 rowStep = 1;
 	if (!p_flags) {
 		rowStep = -1;
-		tileRow = tileRowCount - 1;
+		tileRow = p_image->GetTileRowCount() - 1;
 
 		LegoS32 totalTileHeight = 0;
 		LegoS32 lastTileHeight = 0;
-		for (row = 0; row < tileRowCount; row++) {
+		for (row = 0; row < p_image->GetTileRowCount(); row++) {
 			lastTileHeight = p_image->GetTileHeight(row);
 			totalTileHeight += lastTileHeight;
 		}
@@ -411,8 +410,8 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 		LegoS32 amount;
 		LegoS32 result = m_file.BufferedRead(fileOffset, fileRow, m_rowByteStride, &amount);
 		if (result != GolStream::e_ioSuccess) {
-			for (column = 0; column < tileColumnCount; column++) {
-				for (row = 0; row < tileRowCount; row++) {
+			for (column = 0; column < p_image->GetTileColumnCount(); column++) {
+				for (row = 0; row < p_image->GetTileRowCount(); row++) {
 					p_image->VTable0x1c(column, row)->UnlockPixels();
 				}
 			}
@@ -426,7 +425,7 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 		FUN_100207e0(sourceRow, convertedRow, format);
 
 		LegoU32 sourceOffset = 0;
-		for (column = 0; column < tileColumnCount; column++) {
+		for (column = 0; column < p_image->GetTileColumnCount(); column++) {
 			if (rowInTile == 0x7fffffff) {
 				rowInTile = p_image->GetTileHeight(tileRow) - 1;
 			}
@@ -437,7 +436,7 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 				rowBytes = totalRowBytes - sourceOffset;
 			}
 
-			LegoU32 index = tileRow + column * tileRowCount;
+			LegoU32 index = tileRow + column * p_image->GetTileRowCount();
 			::memcpy(tilePixels[index] + rowInTile * tilePitches[index], convertedRow + sourceOffset, rowBytes);
 			sourceOffset += rowBytes;
 		}
@@ -462,8 +461,8 @@ void GolTgaFile::VTable0x1c(WhiteBaffoon0x50* p_image, LegoU32 p_flags, ColorRGB
 	delete[] tilePixels;
 	delete[] tilePitches;
 
-	for (column = 0; column < tileColumnCount; column++) {
-		for (row = 0; row < tileRowCount; row++) {
+	for (column = 0; column < p_image->GetTileColumnCount(); column++) {
+		for (row = 0; row < p_image->GetTileRowCount(); row++) {
 			p_image->VTable0x1c(column, row)->UnlockPixels();
 		}
 	}

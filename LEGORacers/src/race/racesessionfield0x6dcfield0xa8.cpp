@@ -404,7 +404,7 @@ LegoS32 RaceSessionField0x6dcField0xa8::VTable0x18(LegoU32 p_elapsedMs)
 	vectors[0].m_z = (vectors[1].m_z + m_unk0x010.m_z) + m_unk0x040 * 0.5f * elapsed * elapsed;
 	m_unk0x008->VTable0x04(&vectors[1]);
 
-	RaceSessionField0x32b4::Field0x0c record;
+	GolBoundingVolume::Field0x0c record;
 	if (m_unk0x00c->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_unk0x028)) {
 		m_unk0x05c.m_x = record.m_unk0x24.m_x;
 		m_unk0x05c.m_y = record.m_unk0x24.m_y;

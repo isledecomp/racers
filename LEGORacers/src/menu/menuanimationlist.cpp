@@ -1,6 +1,6 @@
 #include "menu/menuanimationlist.h"
 
-#include "camera/golcamerabase.h"
+#include "golcamerabase.h"
 #include "golerror.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"

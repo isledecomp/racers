@@ -1,8 +1,8 @@
 #include "menu/widgets/menusceneview.h"
 
 #include "camera/golcamera.h"
-#include "camera/golcamerabase.h"
 #include "core/gol.h"
+#include "golcamerabase.h"
 #include "golerror.h"
 #include "golworldentity.h"
 #include "render/gold3drenderdevice.h"

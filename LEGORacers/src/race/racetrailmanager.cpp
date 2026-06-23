@@ -1,9 +1,10 @@
+#include "race/racetrailmanager.h"
+
 #include "core/gol.h"
 #include "decomp.h"
 #include "gdbmodelindexarray0xc.h"
 #include "golerror.h"
 #include "mesh/golmodel.h"
-#include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 
 #include <float.h>
@@ -11,31 +12,31 @@
 extern LegoFloat g_unk0x4b05d8;
 
 // GLOBAL: LEGORACERS 0x004b4790
-const LegoFloat g_raceSessionField0x27c8MaxFloat = FLT_MAX;
+const LegoFloat g_raceTrailManagerMaxFloat = FLT_MAX;
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27c8, 0x0c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27c8::Item, 0x2a4)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27c8::Item::Field0x0dc, 0x4c)
+DECOMP_SIZE_ASSERT(RaceTrailManager, 0x0c)
+DECOMP_SIZE_ASSERT(RaceTrailManager::Trail, 0x2a4)
+DECOMP_SIZE_ASSERT(RaceTrailManager::Trail::Field0x0dc, 0x4c)
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceSession::Field0x27c8::Item::FUN_004513d0(GolD3DRenderDevice*)
+void RaceTrailManager::Trail::FUN_004513d0(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x00492930
-RaceSession::Field0x27c8::Item::Item()
+RaceTrailManager::Trail::Trail()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00492950
-RaceSession::Field0x27c8::Item::~Item()
+RaceTrailManager::Trail::~Trail()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00492960
-void RaceSession::Field0x27c8::Item::Destroy()
+void RaceTrailManager::Trail::Destroy()
 {
 	if (m_unk0x008) {
 		m_unk0x004->VTable0x48(m_unk0x008);
@@ -47,7 +48,7 @@ void RaceSession::Field0x27c8::Item::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00492990
-void RaceSession::Field0x27c8::Item::Reset()
+void RaceTrailManager::Trail::Reset()
 {
 	LegoU32 zero = 0;
 
@@ -88,22 +89,22 @@ void RaceSession::Field0x27c8::Item::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00492a50
-void RaceSession::Field0x27c8::Item::FUN_00492a50(GolD3DRenderDevice* p_renderer, GolExport* p_golExport)
+void RaceTrailManager::Trail::FUN_00492a50(GolD3DRenderDevice* p_renderer, GolExport* p_golExport)
 {
 	m_unk0x004 = p_golExport;
 	m_unk0x008 = p_golExport->VTable0x14();
 	m_unk0x008->VTable0x18(p_renderer, 1, 0x6a, 0x35, 4, 1);
-	m_unk0x00c.VTable0x50(m_unk0x008, g_raceSessionField0x27c8MaxFloat);
+	m_unk0x00c.VTable0x50(m_unk0x008, g_raceTrailManagerMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x00492a90
-void RaceSession::Field0x27c8::Item::FUN_00492a90(GolD3DRenderDevice*, DuskwindBananaRelic0x24* p_material)
+void RaceTrailManager::Trail::FUN_00492a90(GolD3DRenderDevice*, DuskwindBananaRelic0x24* p_material)
 {
 	m_unk0x008->GetMaterialTable()->SetPosition(0, p_material);
 }
 
 // FUNCTION: LEGORACERS 0x00492ab0
-void RaceSession::Field0x27c8::Item::FUN_00492ab0(const ColorRGBA* p_color)
+void RaceTrailManager::Trail::FUN_00492ab0(const ColorRGBA* p_color)
 {
 	m_unk0x0d8.m_red = p_color->m_red;
 	m_unk0x0d8.m_grn = p_color->m_grn;
@@ -112,7 +113,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492ab0(const ColorRGBA* p_color)
 }
 
 // FUNCTION: LEGORACERS 0x00492ae0
-void RaceSession::Field0x27c8::Item::FUN_00492ae0(Params* p_params)
+void RaceTrailManager::Trail::FUN_00492ae0(Params* p_params)
 {
 	m_flags0x09c = c_flags0x09cBit0 | c_flags0x09cBit3;
 
@@ -154,13 +155,13 @@ void RaceSession::Field0x27c8::Item::FUN_00492ae0(Params* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00492bd0
-void RaceSession::Field0x27c8::Item::FUN_00492bd0()
+void RaceTrailManager::Trail::FUN_00492bd0()
 {
 	m_flags0x09c |= c_flags0x09cBit1;
 }
 
 // FUNCTION: LEGORACERS 0x00492be0
-void RaceSession::Field0x27c8::Item::FUN_00492be0(LegoU32 p_elapsedMs)
+void RaceTrailManager::Trail::FUN_00492be0(LegoU32 p_elapsedMs)
 {
 	LegoU8 flags = m_flags0x09c;
 	if (!(flags & c_flags0x09cBit0)) {
@@ -189,7 +190,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492be0(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00492c30
-void RaceSession::Field0x27c8::Item::FUN_00492c30(LegoU32 p_elapsedMs)
+void RaceTrailManager::Trail::FUN_00492c30(LegoU32 p_elapsedMs)
 {
 	LegoU32 queuedDuration = 0;
 	LegoU32 index = m_unk0x0ac;
@@ -285,7 +286,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492c30(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00492ee0
-void RaceSession::Field0x27c8::Item::FUN_00492ee0(LegoU32 p_elapsedMs, GolVec3* p_positions, GolVec3 p_center)
+void RaceTrailManager::Trail::FUN_00492ee0(LegoU32 p_elapsedMs, GolVec3* p_positions, GolVec3 p_center)
 {
 	m_unk0x0c4 = p_center.m_x;
 	m_unk0x0c8 = p_center.m_y;
@@ -294,7 +295,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492ee0(LegoU32 p_elapsedMs, GolVec3* 
 }
 
 // FUNCTION: LEGORACERS 0x00492f10
-void RaceSession::Field0x27c8::Item::FUN_00492f10(LegoU32 p_elapsedMs, GolVec3* p_positions)
+void RaceTrailManager::Trail::FUN_00492f10(LegoU32 p_elapsedMs, GolVec3* p_positions)
 {
 	if (m_flags0x09c & c_flags0x09cBit3) {
 		for (LegoU32 i = 0; i < m_unk0x0bc; i++) {
@@ -360,7 +361,7 @@ void RaceSession::Field0x27c8::Item::FUN_00492f10(LegoU32 p_elapsedMs, GolVec3* 
 }
 
 // STUB: LEGORACERS 0x004931a0
-void RaceSession::Field0x27c8::Item::FUN_004931a0()
+void RaceTrailManager::Trail::FUN_004931a0()
 {
 	LegoU32 frameCount;
 	if (m_unk0x0a8 > m_unk0x0ac) {
@@ -525,7 +526,7 @@ void RaceSession::Field0x27c8::Item::FUN_004931a0()
 }
 
 // FUNCTION: LEGORACERS 0x00493790
-void RaceSession::Field0x27c8::Item::FUN_00493790(GolD3DRenderDevice* p_renderer)
+void RaceTrailManager::Trail::FUN_00493790(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags0x09c & c_flags0x09cBit5) {
 		p_renderer->VTable0x94(&m_unk0x00c);
@@ -533,61 +534,61 @@ void RaceSession::Field0x27c8::Item::FUN_00493790(GolD3DRenderDevice* p_renderer
 }
 
 // FUNCTION: LEGORACERS 0x004937b0
-RaceSession::Field0x27c8::Field0x27c8()
+RaceTrailManager::RaceTrailManager()
 {
-	m_items = NULL;
-	m_count = 0;
+	m_trails = NULL;
+	m_trailCount = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004937f0
-RaceSession::Field0x27c8::~Field0x27c8()
+RaceTrailManager::~RaceTrailManager()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00493800
-void RaceSession::Field0x27c8::Destroy()
+void RaceTrailManager::Destroy()
 {
-	if (m_items) {
-		for (LegoU32 i = 0; i < m_count; i++) {
-			m_items[i].Destroy();
+	if (m_trails) {
+		for (LegoU32 i = 0; i < m_trailCount; i++) {
+			m_trails[i].Destroy();
 		}
 
-		Item* items = m_items;
-		if (items) {
-			items->VTable0x00(3);
+		Trail* trails = m_trails;
+		if (trails) {
+			trails->VTable0x00(3);
 		}
 
-		m_items = NULL;
+		m_trails = NULL;
 	}
 
-	m_count = 0;
+	m_trailCount = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00493850
-void RaceSession::Field0x27c8::FUN_00493850(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoU32 p_count)
+void RaceTrailManager::FUN_00493850(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, LegoU32 p_trailCount)
 {
-	if (m_items) {
+	if (m_trails) {
 		Destroy();
 	}
 
-	m_items = new Item[p_count];
-	if (m_items == NULL) {
+	m_trails = new Trail[p_trailCount];
+	if (m_trails == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_count = p_count;
+	m_trailCount = p_trailCount;
 	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName("streak");
 
 	LegoU32 i;
-	for (i = 0; i < m_count; i++) {
-		m_items[i].FUN_00492a50(p_renderer, p_golExport);
-		m_items[i].FUN_00492a90(p_renderer, material);
+	for (i = 0; i < m_trailCount; i++) {
+		m_trails[i].FUN_00492a50(p_renderer, p_golExport);
+		m_trails[i].FUN_00492a90(p_renderer, material);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00493950
-RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undefined4 p_flags)
+RaceTrailManager::Trail* RaceTrailManager::Trail::VTable0x00(undefined4 p_flags)
 {
 	if (p_flags & 2) {
 		if (p_flags & 1) {
@@ -597,7 +598,7 @@ RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undef
 		return this;
 	}
 
-	this->~Item();
+	this->~Trail();
 	if (p_flags & 1) {
 		::operator delete(this);
 	}
@@ -606,13 +607,13 @@ RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::Item::VTable0x00(undef
 }
 
 // FUNCTION: LEGORACERS 0x004939b0
-RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::FUN_004939b0(Item::Params* p_params)
+RaceTrailManager::Trail* RaceTrailManager::FUN_004939b0(Trail::Params* p_params)
 {
-	LegoU32 count = m_count;
+	LegoU32 count = m_trailCount;
 	LegoU32 i;
 
 	for (i = 0; i < count; i++) {
-		if (!(m_items[i].m_flags0x09c & Item::c_flags0x09cBit0)) {
+		if (!(m_trails[i].m_flags0x09c & Trail::c_flags0x09cBit0)) {
 			break;
 		}
 	}
@@ -621,64 +622,64 @@ RaceSession::Field0x27c8::Item* RaceSession::Field0x27c8::FUN_004939b0(Item::Par
 		return NULL;
 	}
 
-	m_items[i].FUN_00492ae0(p_params);
-	return &m_items[i];
+	m_trails[i].FUN_00492ae0(p_params);
+	return &m_trails[i];
 }
 
 // FUNCTION: LEGORACERS 0x00493a10
-void RaceSession::Field0x27c8::FUN_00493a10(Item* p_item)
+void RaceTrailManager::FUN_00493a10(Trail* p_trail)
 {
-	p_item->FUN_00492bd0();
+	p_trail->FUN_00492bd0();
 }
 
 // FUNCTION: LEGORACERS 0x00493a20
-LegoU32 RaceSession::Field0x27c8::FUN_00493a20(LegoU32 p_elapsedMs)
+LegoU32 RaceTrailManager::FUN_00493a20(LegoU32 p_elapsedMs)
 {
 	LegoU32 i;
-	LegoU32 result = m_count;
+	LegoU32 result = m_trailCount;
 
 	for (i = 0; i < result; i++) {
-		LegoU8 flags = m_items[i].GetFlags0x09c();
-		if (flags & Item::c_flags0x09cBit0) {
-			m_items[i].FUN_00492be0(p_elapsedMs);
+		LegoU8 flags = m_trails[i].GetFlags0x09c();
+		if (flags & Trail::c_flags0x09cBit0) {
+			m_trails[i].FUN_00492be0(p_elapsedMs);
 		}
 
-		result = m_count;
+		result = m_trailCount;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00493a60
-LegoU32 RaceSession::Field0x27c8::FUN_00493a60(GolD3DRenderDevice* p_renderer)
+LegoU32 RaceTrailManager::FUN_00493a60(GolD3DRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	LegoU32 result = m_count;
+	LegoU32 result = m_trailCount;
 
 	for (i = 0; i < result; i++) {
-		LegoU8 flags = m_items[i].GetFlags0x09c();
-		if (flags & Item::c_flags0x09cBit0) {
-			m_items[i].FUN_004513d0(p_renderer);
+		LegoU8 flags = m_trails[i].GetFlags0x09c();
+		if (flags & Trail::c_flags0x09cBit0) {
+			m_trails[i].FUN_004513d0(p_renderer);
 		}
 
-		result = m_count;
+		result = m_trailCount;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00493aa0
-LegoU32 RaceSession::Field0x27c8::FUN_00493aa0(GolD3DRenderDevice* p_renderer)
+LegoU32 RaceTrailManager::FUN_00493aa0(GolD3DRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	LegoU32 result = m_count;
+	LegoU32 result = m_trailCount;
 
 	for (i = 0; i < result; i++) {
-		if (m_items[i].IsActive()) {
-			m_items[i].FUN_00493790(p_renderer);
+		if (m_trails[i].IsActive()) {
+			m_trails[i].FUN_00493790(p_renderer);
 		}
 
-		result = m_count;
+		result = m_trailCount;
 	}
 
 	return result;

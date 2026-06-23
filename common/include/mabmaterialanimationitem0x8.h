@@ -14,6 +14,7 @@ public:
 
 	void FUN_10026110(GolRenderDevice* p_renderer, const LegoChar* p_name, LegoU32 p_id);
 	DuskwindBananaRelic0x24* GetMaterial() const { return m_unk0x00; }
+	void SetMaterial(DuskwindBananaRelic0x24* p_material) { m_unk0x00 = p_material; }
 	LegoU32 GetFrame() const { return m_unk0x04; }
 
 private:

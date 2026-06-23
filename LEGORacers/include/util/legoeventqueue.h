@@ -36,14 +36,23 @@ public:
 				LegoU32 m_unk0xd08;                // 0xd08
 			};
 
-			GolOrientedEntity* m_unk0x004;       // 0x004
-			undefined m_unk0x008[0x020 - 0x008]; // 0x008
-			GolVec3 m_unk0x020;                  // 0x020
-			undefined m_unk0x02c[0x0d0 - 0x02c]; // 0x02c
-			LegoFloat m_unk0x0d0;                // 0x0d0
-			LegoFloat m_unk0x0d4;                // 0x0d4
-			LegoFloat m_unk0x0d8;                // 0x0d8
-			LegoFloat m_unk0x0dc;                // 0x0dc
+			GolOrientedEntity* m_unk0x004; // 0x004
+			GolVec3 m_unk0x008;            // 0x008
+			GolVec3 m_unk0x014;            // 0x014
+			GolVec3 m_unk0x020;            // 0x020
+			GolMatrix3 m_unk0x02c;         // 0x02c
+			GolMatrix3 m_unk0x050;         // 0x050
+			GolMatrix3 m_unk0x074;         // 0x074
+			GolVec3 m_unk0x098;            // 0x098
+			GolVec3 m_unk0x0a4;            // 0x0a4
+			GolVec3 m_unk0x0b0;            // 0x0b0
+			GolVec3 m_unk0x0bc;            // 0x0bc
+			LegoFloat m_unk0x0c8;          // 0x0c8
+			LegoFloat m_unk0x0cc;          // 0x0cc
+			LegoFloat m_unk0x0d0;          // 0x0d0
+			LegoFloat m_unk0x0d4;          // 0x0d4
+			LegoFloat m_unk0x0d8;          // 0x0d8
+			LegoFloat m_unk0x0dc;          // 0x0dc
 			union {
 				Field0x0e0* m_unk0x0e0; // 0x0e0
 				void* m_owner;          // 0x0e0

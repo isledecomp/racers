@@ -1,7 +1,9 @@
 #include "decomp.h"
 #include "golbinparser.h"
+#include "golboundedentity.h"
 #include "golerror.h"
 #include "race/racesession.h"
+#include "world/golworlddatabase.h"
 
 #include <string.h>
 
@@ -73,10 +75,10 @@ void RaceSession::Field0x2080::Entry::VTable0x0c(LegoU32 p_elapsedMs)
 	CallBaseVTable0x0c(p_elapsedMs);
 	if (m_unk0x34 != -1 && m_unk0x40) {
 		LegoU32 bit = 1;
-		LegoS32 offset = 0;
-		for (; offset < (LegoS32) (sizeof(RaceState::Racer) * 6); offset += sizeof(RaceState::Racer)) {
+		LegoU32 racerIndex;
+		for (racerIndex = 0; racerIndex < 6; racerIndex++) {
 			if ((bit & m_unk0x40) && !(bit & m_unk0x3c)) {
-				m_unk0x30->FUN_004629d0(m_unk0x34, m_unk0x44->GetRacerByOffset(offset));
+				m_unk0x30->FUN_004629d0(m_unk0x34, m_unk0x44->GetRacer(racerIndex));
 			}
 
 			bit <<= 1;
@@ -140,10 +142,10 @@ RaceSession::Field0x2080::~Field0x2080()
 
 // STUB: LEGORACERS 0x00463dc0
 void RaceSession::Field0x2080::FUN_00463dc0(
-	Field0x6dc::Field0x074* p_field0x074,
+	RacePowerupManager::Field0x074* p_field0x074,
 	RaceEventTable0x90* p_eventTable,
-	Field0x6dc* p_field0x6dc,
-	RaceSessionField0x32b4::Field0x000* p_field0x32b4Field0x000,
+	RacePowerupManager* p_field0x6dc,
+	GolWorldDatabase* p_worldDatabase,
 	Field0x32c4* p_field0x32c4,
 	const LegoChar* p_name,
 	LegoBool32 p_binary,
@@ -202,19 +204,11 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 					LegoChar name[8];
 					strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-					RaceSessionField0x32b4::Field0x000::Field0x0a8* entry;
-					if (p_field0x32b4Field0x000->m_unk0x0d8.GetNameEntries() == NULL) {
-						entry = NULL;
-					}
-					else {
-						entry = static_cast<RaceSessionField0x32b4::Field0x000::Field0x0a8*>(
-							p_field0x32b4Field0x000->m_unk0x0d8.GetName(name)
-						);
-					}
+					GolBoundedEntity* entry = p_worldDatabase->FindUnk0xd8(name);
 
-					LegoU32 index = p_field0x32b4Field0x000->m_unk0x064;
+					LegoU32 index = p_worldDatabase->GetUnk0x64();
 					if (index > 0) {
-						RaceSessionField0x32b4::Field0x000::Field0x0a8* item = p_field0x32b4Field0x000->m_unk0x0a8;
+						GolBoundedEntity* item = p_worldDatabase->GetUnk0xa8();
 						for (LegoU32 j = 0; j < index; j++) {
 							if (item == entry) {
 								index = j;

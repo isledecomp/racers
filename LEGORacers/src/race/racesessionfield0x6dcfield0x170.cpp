@@ -16,8 +16,8 @@
 #include <math.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x170, 0x170)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x98, 0x98)
+DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x170, 0x170)
+DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x98, 0x98)
 
 // GLOBAL: LEGORACERS 0x004b47a4
 extern const LegoFloat g_unk0x004b47a4 = 0.02f;
@@ -25,19 +25,19 @@ extern const LegoFloat g_unk0x004b47a4 = 0.02f;
 extern LegoFloat g_minSoundPan;
 
 // FUNCTION: LEGORACERS 0x00493ae0
-RaceSession::Field0x6dc::Field0x170::Field0x170()
+RacePowerupManager::Field0x170::Field0x170()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00493b30
-RaceSession::Field0x6dc::Field0x170::~Field0x170()
+RacePowerupManager::Field0x170::~Field0x170()
 {
 	FUN_00493e60();
 }
 
 // FUNCTION: LEGORACERS 0x00493b80
-void RaceSession::Field0x6dc::Field0x170::Reset()
+void RacePowerupManager::Field0x170::Reset()
 {
 	m_unk0x000 = NULL;
 	m_unk0x004 = NULL;
@@ -81,7 +81,7 @@ void RaceSession::Field0x6dc::Field0x170::Reset()
 }
 
 // STUB: LEGORACERS 0x00493c90
-void RaceSession::Field0x6dc::Field0x170::FUN_00493c90(const SetupParams* p_params)
+void RacePowerupManager::Field0x170::FUN_00493c90(const SetupParams* p_params)
 {
 	if (m_unk0x004 != NULL) {
 		FUN_00493e60();
@@ -137,7 +137,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00493c90(const SetupParams* p_para
 }
 
 // FUNCTION: LEGORACERS 0x00493e60
-void RaceSession::Field0x6dc::Field0x170::FUN_00493e60()
+void RacePowerupManager::Field0x170::FUN_00493e60()
 {
 	m_unk0x018.VTable0x54();
 
@@ -154,16 +154,20 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00493e60()
 	Reset();
 }
 
-// STUB: LEGORACERS 0x00493ea0
-void RaceSession::Field0x6dc::Field0x170::FUN_00493ea0(const GolVec3* p_position, const GolVec3* p_direction)
+// FUNCTION: LEGORACERS 0x00493ea0
+void RacePowerupManager::Field0x170::FUN_00493ea0(const GolVec3* p_position, const GolVec3* p_direction)
 {
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
 	m_unk0x004->VTable0x28(&m_unk0x008);
 
 	IGdbModelIndexArray0x8* indexArray;
 	m_unk0x004->VTable0x30(&indexArray);
 	m_unk0x00c = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
 
-	m_unk0x140 &= ~c_flags0x140Bit0;
 	m_unk0x0b0 = 0;
 	m_unk0x0b4 = -static_cast<LegoS32>(m_unk0x0e8);
 	m_unk0x0b8 = 0;
@@ -171,32 +175,27 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00493ea0(const GolVec3* p_position
 	m_unk0x0c0 = 0;
 	m_unk0x0c8 = 0;
 	m_unk0x0c4 = 0;
+	m_unk0x140 &= ~c_flags0x140Bit0;
 	m_unk0x0cc = 1;
-	m_unk0x0d0 = 0;
-	m_unk0x0d4 = 1;
 
 	m_unk0x004->GetMutableGroups()[0] = c_group0x80000000;
-	m_unk0x004->SetDirty(TRUE);
-
 	m_unk0x148 = *p_position;
+	m_unk0x004->SetDirty(TRUE);
 	m_unk0x154 = *p_position;
+	m_unk0x0d0 = 0;
 
 	GolVec3 localPosition;
 	localPosition.Clear();
 	FUN_00494290(&localPosition, &m_unk0x160, 0, 0);
+	m_unk0x0d4 = 1;
 
 	m_unk0x018.VTable0x08(*p_position);
 
 	GolVec3 direction;
 	GolMath::NormalizeVector3(*p_direction, &direction);
 
-	GolVec3 up;
-	up.m_x = 0.0f;
-	up.m_y = 0.0f;
-	up.m_z = 1.0f;
-
 	LegoFloat dot = GOLVECTOR3_DOT(direction, up);
-	if (dot >= 1.0f || dot <= -1.0f) {
+	if (dot >= 1.0f || dot <= g_minSoundPan) {
 		up.m_x = 1.0f;
 		up.m_y = 0.0f;
 		up.m_z = 0.0f;
@@ -206,7 +205,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00493ea0(const GolVec3* p_position
 }
 
 // FUNCTION: LEGORACERS 0x00494030
-void RaceSession::Field0x6dc::Field0x170::FUN_00494030(const GolVec3* p_position)
+void RacePowerupManager::Field0x170::FUN_00494030(const GolVec3* p_position)
 {
 	GolTransformBase* transform = m_unk0x010->VTable0x18(m_unk0x0d0);
 
@@ -235,7 +234,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494030(const GolVec3* p_position
 }
 
 // FUNCTION: LEGORACERS 0x00494140
-void RaceSession::Field0x6dc::Field0x170::FUN_00494140(const GolVec3* p_position)
+void RacePowerupManager::Field0x170::FUN_00494140(const GolVec3* p_position)
 {
 	GolVec3 delta;
 	delta.m_x = p_position->m_x - m_unk0x154.m_x;
@@ -268,7 +267,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494140(const GolVec3* p_position
 }
 
 // FUNCTION: LEGORACERS 0x00494230
-void RaceSession::Field0x6dc::Field0x170::FUN_00494230()
+void RacePowerupManager::Field0x170::FUN_00494230()
 {
 	if (m_unk0x0c8 != 0) {
 		FUN_004946b0();
@@ -284,15 +283,18 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494230()
 	m_unk0x004->VTable0x2c(FALSE, FALSE);
 }
 
-// STUB: LEGORACERS 0x00494290
-void RaceSession::Field0x6dc::Field0x170::FUN_00494290(
+// FUNCTION: LEGORACERS 0x00494290
+void RacePowerupManager::Field0x170::FUN_00494290(
 	const GolVec3* p_position,
 	const ColorRGBA* p_color,
 	LegoU32 p_textureColumn,
 	LegoU32 p_offsetIndex
 )
 {
-	if (m_unk0x0b4 + static_cast<LegoS32>(m_unk0x0e8 * 2) >= 0x40) {
+	GolVec2 texture;
+	texture.m_y = static_cast<LegoFloat>(static_cast<LegoS32>(p_textureColumn));
+
+	if (static_cast<LegoU32>(m_unk0x0b4) + m_unk0x0e8 * 2 >= 0x40) {
 		FUN_004944e0();
 	}
 	else {
@@ -300,72 +302,95 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494290(
 		m_unk0x0b4 += m_unk0x0e8;
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x0e8; i++) {
-		GolVec3 vertex;
-		vertex.m_x = p_position->m_x + m_unk0x0ec[i].m_x;
-		vertex.m_y = p_position->m_y + m_unk0x0ec[i].m_y;
-		vertex.m_z = p_position->m_z + m_unk0x0ec[i].m_z;
+	LegoU32 i;
+	if (m_unk0x140 & c_flags0x140Bit1) {
+		for (i = 0; i < m_unk0x0e8; i++) {
+			GolVec3 vertex;
+			vertex.m_x = m_unk0x0ec[i].m_x + p_position->m_x;
+			vertex.m_x += m_unk0x144[p_offsetIndex].m_x;
+			vertex.m_y = p_position->m_y + m_unk0x0ec[i].m_y + m_unk0x144[p_offsetIndex].m_y;
+			vertex.m_z = p_position->m_z + m_unk0x0ec[i].m_z + m_unk0x144[p_offsetIndex].m_z;
 
-		if (m_unk0x140 & c_flags0x140Bit1) {
-			vertex += m_unk0x144[p_offsetIndex];
+			m_unk0x008->VTable0x24(m_unk0x0bc, vertex);
+			m_unk0x008->VTable0x30(m_unk0x0bc, *p_color);
+
+			texture.m_x = m_unk0x128[i];
+			m_unk0x008->VTable0x28(m_unk0x0bc++, texture);
 		}
+	}
+	else {
+		for (i = 0; i < m_unk0x0e8; i++) {
+			GolVec3 vertex;
+			vertex.m_x = p_position->m_x + m_unk0x0ec[i].m_x;
+			vertex.m_y = p_position->m_y + m_unk0x0ec[i].m_y;
+			vertex.m_z = p_position->m_z + m_unk0x0ec[i].m_z;
 
-		m_unk0x008->VTable0x24(m_unk0x0bc, vertex);
-		m_unk0x008->VTable0x30(m_unk0x0bc, *p_color);
+			m_unk0x008->VTable0x24(m_unk0x0bc, vertex);
+			m_unk0x008->VTable0x30(m_unk0x0bc, *p_color);
 
-		GolVec2 texture;
-		texture.m_x = static_cast<LegoFloat>(static_cast<LegoS32>(p_textureColumn));
-		texture.m_y = m_unk0x128[i];
-		m_unk0x008->VTable0x28(m_unk0x0bc, texture);
-
-		m_unk0x0bc++;
+			texture.m_x = m_unk0x128[i];
+			m_unk0x008->VTable0x28(m_unk0x0bc++, texture);
+		}
 	}
 }
 
-// STUB: LEGORACERS 0x00494480
-void RaceSession::Field0x6dc::Field0x170::FUN_00494480()
+// FUNCTION: LEGORACERS 0x00494480
+void RacePowerupManager::Field0x170::FUN_00494480()
 {
 	GdbModelIndexArray0xc::Indices* indices = &m_unk0x00c[m_unk0x0c8];
 	m_unk0x0c8 += m_unk0x0e4 * 2;
 
 	for (LegoU32 i = 0; i < m_unk0x0e4; i++) {
-		indices->m_a = static_cast<LegoU8>(m_unk0x0b8 + i);
-		indices->m_b = static_cast<LegoU8>(m_unk0x0b4 + i + 1);
-		indices->m_c = static_cast<LegoU8>(m_unk0x0b4 + i);
-		indices->m_x = 0;
+		LegoU32 lower = m_unk0x0b4 + i;
+		LegoU32 upper = m_unk0x0b8 + i;
+
+		indices->m_c = static_cast<LegoU8>(lower);
+		indices->m_b = static_cast<LegoU8>(lower + 1);
+		indices->m_a = static_cast<LegoU8>(upper);
 		indices++;
 
-		indices->m_a = static_cast<LegoU8>(m_unk0x0b8 + i);
-		indices->m_b = static_cast<LegoU8>(m_unk0x0b8 + i + 1);
-		indices->m_c = static_cast<LegoU8>(m_unk0x0b4 + i + 1);
-		indices->m_x = 0;
+		indices->m_c = static_cast<LegoU8>(lower + 1);
+		indices->m_b = static_cast<LegoU8>(upper + 1);
+		indices->m_a = static_cast<LegoU8>(upper);
 		indices++;
 	}
 }
 
 // STUB: LEGORACERS 0x004944e0
-void RaceSession::Field0x6dc::Field0x170::FUN_004944e0()
+void RacePowerupManager::Field0x170::FUN_004944e0()
 {
 	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
 	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
-	LegoU32* groups = m_unk0x004->GetMutableGroups();
+	GolModelBase* model = m_unk0x004;
 
 	if (vertexCount != 0 || triangleCount != 0) {
 		if (!(m_unk0x140 & c_flags0x140Bit2)) {
-			groups[m_unk0x0cc++] = c_group0xa0000000 | (m_unk0x0d0 & 0x00ffffff);
-			m_unk0x004->SetDirty(TRUE);
+			LegoU32 groupIndex = m_unk0x0cc++;
+			model->GetMutableGroups()[groupIndex] = c_group0xa0000000;
+			model->GetMutableGroups()[groupIndex] |= m_unk0x0d0 & 0x00ffffff;
+			model->SetDirty(TRUE);
 			m_unk0x140 |= c_flags0x140Bit2;
 		}
 
-		groups[m_unk0x0cc++] =
-			((m_unk0x0b0 & 0x3f) << 22) | (((vertexCount - 1) << 16) & 0x003f0000) | (m_unk0x0c0 & 0xffff);
-		m_unk0x004->SetDirty(TRUE);
-		groups[m_unk0x0cc++] = c_group0x20000000 | ((triangleCount & 0x7f) << 16) | (m_unk0x0c4 & 0xffff);
-		m_unk0x004->SetDirty(TRUE);
+		LegoU32 groupIndex = m_unk0x0cc++;
+		model->GetMutableGroups()[groupIndex] = 0;
+		model->GetMutableGroups()[groupIndex] |= (m_unk0x0b0 & 0x3f) << 22;
+		model->GetMutableGroups()[groupIndex] |= ((vertexCount - 1) << 16) & 0x003f0000;
+		model->GetMutableGroups()[groupIndex] |= m_unk0x0c0 & 0xffff;
+		model->SetDirty(TRUE);
+
+		groupIndex = m_unk0x0cc++;
+		model->GetMutableGroups()[groupIndex] = c_group0x20000000;
+		model->GetMutableGroups()[groupIndex] |= (triangleCount & 0x7f) << 16;
+		model->GetMutableGroups()[groupIndex] |= m_unk0x0c4 & 0xffff;
+		model->SetDirty(TRUE);
 	}
 
-	groups[m_unk0x0cc++] = (((m_unk0x0e8 - 1) << 16) & 0x003f0000) | ((m_unk0x0bc - m_unk0x0e8) & 0xffff);
-	m_unk0x004->SetDirty(TRUE);
+	LegoU32 groupIndex = m_unk0x0cc++;
+	model->GetMutableGroups()[groupIndex] = 0;
+	model->GetMutableGroups()[groupIndex] |= ((m_unk0x0e8 - 1) << 16) & 0x003f0000;
+	model->GetMutableGroups()[groupIndex] |= (m_unk0x0bc - m_unk0x0e8) & 0xffff;
+	model->SetDirty(TRUE);
 
 	m_unk0x0b4 = m_unk0x0e8;
 	m_unk0x0b0 = m_unk0x0e8;
@@ -375,7 +400,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_004944e0()
 }
 
 // STUB: LEGORACERS 0x004946b0
-void RaceSession::Field0x6dc::Field0x170::FUN_004946b0()
+void RacePowerupManager::Field0x170::FUN_004946b0()
 {
 	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
 	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
@@ -384,17 +409,25 @@ void RaceSession::Field0x6dc::Field0x170::FUN_004946b0()
 		return;
 	}
 
-	LegoU32* groups = m_unk0x004->GetMutableGroups();
 	if (!(m_unk0x140 & c_flags0x140Bit2)) {
-		groups[m_unk0x0cc++] = c_group0xa0000000 | (m_unk0x0d0 & 0x00ffffff);
+		LegoU32 groupIndex = m_unk0x0cc++;
+		m_unk0x004->GetMutableGroups()[groupIndex] = c_group0xa0000000;
+		m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0d0 & 0x00ffffff;
 		m_unk0x004->SetDirty(TRUE);
 		m_unk0x140 |= c_flags0x140Bit2;
 	}
 
-	groups[m_unk0x0cc++] =
-		((m_unk0x0b0 & 0x3f) << 22) | (((vertexCount - 1) << 16) & 0x003f0000) | (m_unk0x0c0 & 0xffff);
+	LegoU32 groupIndex = m_unk0x0cc++;
+	m_unk0x004->GetMutableGroups()[groupIndex] = 0;
+	m_unk0x004->GetMutableGroups()[groupIndex] |= (m_unk0x0b0 & 0x3f) << 22;
+	m_unk0x004->GetMutableGroups()[groupIndex] |= ((vertexCount - 1) << 16) & 0x003f0000;
+	m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0c0 & 0xffff;
 	m_unk0x004->SetDirty(TRUE);
-	groups[m_unk0x0cc++] = c_group0x20000000 | ((triangleCount & 0x7f) << 16) | (m_unk0x0c4 & 0xffff);
+
+	groupIndex = m_unk0x0cc++;
+	m_unk0x004->GetMutableGroups()[groupIndex] = c_group0x20000000;
+	m_unk0x004->GetMutableGroups()[groupIndex] |= (triangleCount & 0x7f) << 16;
+	m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0c4 & 0xffff;
 	m_unk0x004->SetDirty(TRUE);
 
 	m_unk0x0b0 += vertexCount;
@@ -403,7 +436,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_004946b0()
 }
 
 // FUNCTION: LEGORACERS 0x00494820
-void RaceSession::Field0x6dc::Field0x170::FUN_00494820(
+void RacePowerupManager::Field0x170::FUN_00494820(
 	const ColorRGBA* p_unk0x04,
 	const ColorRGBA* p_unk0x08,
 	const ColorRGBA* p_unk0x0c
@@ -415,15 +448,15 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494820(
 }
 
 // FUNCTION: LEGORACERS 0x00494850
-void RaceSession::Field0x6dc::Field0x170::FUN_00494850(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::Field0x170::FUN_00494850(GolD3DRenderDevice* p_renderer)
 {
 	if (m_unk0x140 & 1) {
 		m_unk0x018.VTable0x1c(*p_renderer);
 	}
 }
 
-// STUB: LEGORACERS 0x00494870
-void RaceSession::Field0x6dc::Field0x170::FUN_00494870(const GolVec3* p_position, LegoFloat p_amount)
+// FUNCTION: LEGORACERS 0x00494870
+void RacePowerupManager::Field0x170::FUN_00494870(const GolVec3* p_position, LegoFloat p_amount)
 {
 	if (m_unk0x0e0 <= 1) {
 		FUN_00494140(p_position);
@@ -436,26 +469,44 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494870(const GolVec3* p_position
 	delta.m_z = p_position->m_z - m_unk0x154.m_z;
 
 	LegoFloat distanceSquared = GOLVECTOR3_DOT(delta, delta);
-	if (distanceSquared <= 0.0f) {
+	if (distanceSquared < g_unk0x004b47a4) {
 		return;
 	}
 
 	LegoFloat distance = static_cast<LegoFloat>(::sqrt(distanceSquared));
-	LegoFloat stepDistance = distance * m_unk0x0d8;
-	const ColorRGBA* endColor = p_amount > 0.0f ? &m_unk0x164 : &m_unk0x168;
-	LegoU32 offsetIndex = 0;
+	GolVec3 startPosition;
+	startPosition.m_x = 0.0f;
+	startPosition.m_y = 0.0f;
+	startPosition.m_z = 0.0f;
 
+	GolVec3 endPosition;
+	endPosition.m_x = distance;
+	endPosition.m_y = 0.0f;
+	endPosition.m_z = 0.0f;
+
+	GolVec3 middlePosition;
+	middlePosition.m_x = distance * 0.5f;
+	middlePosition.m_y = 0.0f;
+	middlePosition.m_z = 0.0f;
+
+	ColorRGBA endColor = p_amount > 0.0f ? m_unk0x164 : m_unk0x168;
+	LegoFloat amount = 0.0f;
+
+	LegoU32 offsetIndex = 0;
 	for (LegoU32 i = 0; i < m_unk0x0e0 - 1; i++) {
-		LegoFloat amount = p_amount + m_unk0x0d8 * static_cast<LegoFloat>(static_cast<LegoS32>(i + 1));
+		amount += m_unk0x0d8;
+
+		GolVec3 firstPosition;
+		ColorRGBA firstColor;
+		FUN_00494ad0(&startPosition, &middlePosition, &m_unk0x160, &endColor, amount, &firstPosition, &firstColor);
+
+		GolVec3 secondPosition;
+		ColorRGBA secondColor;
+		FUN_00494ad0(&middlePosition, &endPosition, &endColor, &m_unk0x160, amount, &secondPosition, &secondColor);
 
 		GolVec3 localPosition;
-		localPosition.m_x = stepDistance * static_cast<LegoFloat>(static_cast<LegoS32>(i + 1));
-		localPosition.m_y = 0.0f;
-		localPosition.m_z = 0.0f;
-
 		ColorRGBA color;
-		GolVec3 worldPosition;
-		FUN_00494ad0(&m_unk0x154, p_position, &m_unk0x160, endColor, &color, &worldPosition, amount);
+		FUN_00494ad0(&firstPosition, &secondPosition, &firstColor, &secondColor, amount, &localPosition, &color);
 
 		FUN_00494290(&localPosition, &color, m_unk0x0d4, offsetIndex);
 		FUN_00494480();
@@ -471,11 +522,7 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494870(const GolVec3* p_position
 		offsetIndex++;
 	}
 
-	GolVec3 localPosition;
-	localPosition.m_x = distance;
-	localPosition.m_y = 0.0f;
-	localPosition.m_z = 0.0f;
-	FUN_00494290(&localPosition, endColor, m_unk0x0d4, offsetIndex);
+	FUN_00494290(&endPosition, &m_unk0x160, m_unk0x0d4, offsetIndex);
 	FUN_00494480();
 
 	if (m_unk0x014->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
@@ -489,20 +536,29 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494870(const GolVec3* p_position
 	FUN_00494030(p_position);
 }
 
-// STUB: LEGORACERS 0x00494ad0
-void RaceSession::Field0x6dc::Field0x170::FUN_00494ad0(
+// FUNCTION: LEGORACERS 0x00494ad0
+void RacePowerupManager::Field0x170::FUN_00494ad0(
 	const GolVec3* p_fromPosition,
 	const GolVec3* p_toPosition,
 	const ColorRGBA* p_fromColor,
 	const ColorRGBA* p_toColor,
-	ColorRGBA* p_colorResult,
+	LegoFloat p_amount,
 	GolVec3* p_positionResult,
-	LegoFloat p_amount
+	ColorRGBA* p_colorResult
 )
 {
-	p_positionResult->m_x = p_fromPosition->m_x + (p_toPosition->m_x - p_fromPosition->m_x) * p_amount;
-	p_positionResult->m_y = p_fromPosition->m_y + (p_toPosition->m_y - p_fromPosition->m_y) * p_amount;
-	p_positionResult->m_z = p_fromPosition->m_z + (p_toPosition->m_z - p_fromPosition->m_z) * p_amount;
+	p_positionResult->m_x = p_toPosition->m_x - p_fromPosition->m_x;
+	p_positionResult->m_y = p_toPosition->m_y - p_fromPosition->m_y;
+	GolVec3 scaledPosition;
+	p_positionResult->m_z = p_toPosition->m_z - p_fromPosition->m_z;
+
+	scaledPosition.m_x = p_positionResult->m_x * p_amount;
+	scaledPosition.m_y = p_positionResult->m_y * p_amount;
+	p_positionResult->m_z *= p_amount;
+
+	p_positionResult->m_x = scaledPosition.m_x + p_fromPosition->m_x;
+	p_positionResult->m_y = scaledPosition.m_y + p_fromPosition->m_y;
+	p_positionResult->m_z += p_fromPosition->m_z;
 
 	p_colorResult->m_red = static_cast<LegoU8>(
 		p_fromColor->m_red + static_cast<LegoS32>((p_toColor->m_red - p_fromColor->m_red) * p_amount)
@@ -519,21 +575,21 @@ void RaceSession::Field0x6dc::Field0x170::FUN_00494ad0(
 }
 
 // FUNCTION: LEGORACERS 0x00494be0
-void RaceSession::Field0x6dc::Field0x170::FUN_00494be0(const GolVec3* p_offsets)
+void RacePowerupManager::Field0x170::FUN_00494be0(const GolVec3* p_offsets)
 {
 	m_unk0x144 = p_offsets;
 	m_unk0x140 |= c_flags0x140Bit1;
 }
 
 // FUNCTION: LEGORACERS 0x00494c00
-RaceSession::Field0x6dc::Field0x98::Field0x98()
+RacePowerupManager::Field0x98::Field0x98()
 {
 	m_unk0x90 = 0;
 	m_unk0x94 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c20
-RaceSession::Field0x6dc::Field0x98* RaceSession::Field0x6dc::Field0x98::FUN_00494c20(undefined4 p_flags)
+RacePowerupManager::Field0x98* RacePowerupManager::Field0x98::FUN_00494c20(undefined4 p_flags)
 {
 	Field0x98* result = this;
 	this->~Field0x98();
@@ -545,13 +601,13 @@ RaceSession::Field0x6dc::Field0x98* RaceSession::Field0x6dc::Field0x98::FUN_0049
 }
 
 // FUNCTION: LEGORACERS 0x00494c40
-RaceSession::Field0x6dc::Field0x98::~Field0x98()
+RacePowerupManager::Field0x98::~Field0x98()
 {
 	VTable0x54();
 }
 
 // FUNCTION: LEGORACERS 0x00494c50
-void RaceSession::Field0x6dc::Field0x98::FUN_00494c50(
+void RacePowerupManager::Field0x98::FUN_00494c50(
 	GolModelBase* p_model,
 	GolSceneNode* p_sceneNode,
 	undefined4 p_unk0x0c,
@@ -564,19 +620,19 @@ void RaceSession::Field0x6dc::Field0x98::FUN_00494c50(
 }
 
 // FUNCTION: LEGORACERS 0x00494c80
-void RaceSession::Field0x6dc::Field0x98::VTable0x54()
+void RacePowerupManager::Field0x98::VTable0x54()
 {
 	m_unk0x90 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c90
-GolSceneNode* RaceSession::Field0x6dc::Field0x98::VTable0x58(undefined4)
+GolSceneNode* RacePowerupManager::Field0x98::VTable0x58(undefined4)
 {
 	return m_unk0x90;
 }
 
 // STUB: LEGORACERS 0x00494ca0
-void RaceSession::Field0x6dc::Field0x98::VTable0x1c(GolRenderDevice& p_renderer)
+void RacePowerupManager::Field0x98::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_unk0x94 != 0) {
 		GolVec3 cameraRight;

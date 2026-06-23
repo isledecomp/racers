@@ -120,6 +120,48 @@ void CircuitStandings::FUN_00440330(LegoU32 p_elapsedMs)
 	}
 }
 
+// FUNCTION: LEGORACERS 0x004246d0 FOLDED
+LegoU32 CircuitStandings::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
+{
+	LegoU32 millisecondsPerHour = 3600000;
+	LegoS32 divisor = 10;
+	LegoU32 time = p_time % millisecondsPerHour;
+	LegoS32 digitOffset;
+
+	p_buffer[8] = '\0';
+	if (time >= 600000) {
+		digitOffset = 7;
+		p_buffer[5] = ':';
+		p_buffer[2] = ':';
+	}
+	else {
+		digitOffset = 6;
+		p_buffer[4] = ':';
+		p_buffer[1] = ':';
+		p_buffer[7] = '\0';
+	}
+
+	LegoU32 centiseconds = time / 10;
+	p_buffer[digitOffset] = static_cast<LegoChar>(centiseconds % 10 + '0');
+	centiseconds /= 10;
+	p_buffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % 10 + '0');
+
+	LegoU32 seconds = centiseconds / divisor;
+	LegoS32 secondsWithinMinute = static_cast<LegoS32>(seconds % 60);
+	LegoU32 minutes = seconds / 60;
+	p_buffer[digitOffset - 3] = static_cast<LegoChar>(secondsWithinMinute % divisor + '0');
+	p_buffer[digitOffset - 4] = static_cast<LegoChar>((secondsWithinMinute / divisor) % divisor + '0');
+
+	p_buffer[digitOffset - 6] = static_cast<LegoChar>(minutes % divisor + '0');
+	LegoU32 extraMinutes = minutes / divisor;
+	if (extraMinutes) {
+		p_buffer[digitOffset - 7] = static_cast<LegoChar>(extraMinutes % divisor + '0');
+		extraMinutes /= divisor;
+	}
+
+	return extraMinutes;
+}
+
 // STUB: LEGORACERS 0x00440350
 void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 {
@@ -244,39 +286,7 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 							sign = 1;
 						}
 
-						LegoU32 time = static_cast<LegoU32>(delta) % c_millisecondsPerHour;
-						LegoS32 digitOffset;
-						timeBuffer[8] = '\0';
-						if (time >= c_longTimeThresholdMs) {
-							digitOffset = 7;
-							timeBuffer[5] = ':';
-							timeBuffer[2] = ':';
-						}
-						else {
-							digitOffset = 6;
-							timeBuffer[4] = ':';
-							timeBuffer[1] = ':';
-							timeBuffer[7] = '\0';
-						}
-
-						LegoU32 centiseconds = time / c_timeDivisor;
-						timeBuffer[digitOffset] = static_cast<LegoChar>(centiseconds % c_timeDivisor + '0');
-						centiseconds /= c_timeDivisor;
-						timeBuffer[digitOffset - 1] = static_cast<LegoChar>(centiseconds % c_timeDivisor + '0');
-
-						LegoU32 seconds = centiseconds / c_timeDivisor;
-						LegoS32 secondsWithinMinute = static_cast<LegoS32>(seconds % 60);
-						LegoU32 minutes = seconds / 60;
-						timeBuffer[digitOffset - 3] = static_cast<LegoChar>(secondsWithinMinute % c_timeDivisor + '0');
-						timeBuffer[digitOffset - 4] =
-							static_cast<LegoChar>((secondsWithinMinute / c_timeDivisor) % c_timeDivisor + '0');
-
-						timeBuffer[digitOffset - 6] = static_cast<LegoChar>(minutes % c_timeDivisor + '0');
-						LegoU32 extraMinutes = minutes / c_timeDivisor;
-						if (extraMinutes) {
-							timeBuffer[digitOffset - 7] = static_cast<LegoChar>(extraMinutes % c_timeDivisor + '0');
-						}
-
+						FUN_004246d0(timeBuffer, delta);
 						renderer->VTable0x68(timeBuffer, m_unk0x00, c_deltaTimeX, y, 1.0f, 1.0f, NULL, 0);
 						renderer->VTable0x68(
 							sign == 1 ? g_circuitStandingsPlusSign : g_circuitStandingsMinusSign,

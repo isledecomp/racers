@@ -38,6 +38,7 @@
 #include <string.h>
 
 extern LegoU16 g_unk0x004befec[1024];
+extern LegoU32 g_unk0x004bef70;
 extern LegoU32 g_unk0x004c6ee4;
 
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
@@ -46,6 +47,9 @@ DECOMP_SIZE_ASSERT(RaceSession::RabTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004b07ec
 LegoFloat g_unk0x004b07ec = 1.2f;
+
+// GLOBAL: LEGORACERS 0x004b07f0
+extern const LegoFloat g_mirroredRaceStateRouteScale = 0.05f;
 
 // GLOBAL: LEGORACERS 0x004b08bc
 extern const LegoFloat g_unk0x004b08bc = 25.0f;
@@ -848,7 +852,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 	LegoU32 loaded = FALSE;
 	LegoU32 i;
 	LegoU32 type;
-	Field0x3104* current = m_unk0x3104;
+	RaceRouteRecord* current = m_routeRecords;
 
 	for (i = 0; i < static_cast<LegoU32>(m_context->m_racerCount); i++) {
 		if (m_context->m_playerSetupSlots[i].m_unk0x10 == 2 || m_unk0x3350) {
@@ -920,8 +924,8 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 		current++;
 	}
 
-	for (i = 0; i < sizeOfArray(m_unk0x3104); i++) {
-		if (m_unk0x3104[i].m_unk0x04) {
+	for (i = 0; i < sizeOfArray(m_routeRecords); i++) {
+		if (m_routeRecords[i].m_unk0x004) {
 			loaded = TRUE;
 		}
 	}
@@ -931,17 +935,17 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 		::strcat(fileName, m_context->m_unk0x18 ? ".rrb" : ".rrf");
 
 		if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-			m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+			m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
 		}
 		else {
 			fileName[3] = 'm';
 			if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-				m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+				m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
 			}
 			else {
 				fileName[3] = 's';
 				if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-					m_unk0x3104[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+					m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
 				}
 			}
 		}
@@ -951,8 +955,8 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 // FUNCTION: LEGORACERS 0x00433460
 void RaceSession::FUN_00433460()
 {
-	Field0x3104* current = m_unk0x3104;
-	LegoS32 remaining = sizeOfArray(m_unk0x3104);
+	RaceRouteRecord* current = m_routeRecords;
+	LegoS32 remaining = sizeOfArray(m_routeRecords);
 	do {
 		current->FUN_004a50a0();
 		current++;
@@ -977,7 +981,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	m_unk0x27fc.Allocate(2);
 	m_unk0x27fc.Activate(500, TRUE, NULL, NULL);
 
-	m_unk0x27c8.FUN_00493850(m_renderer, m_golExport, 6);
+	m_trailManager.FUN_00493850(m_renderer, m_golExport, 6);
 
 	FUN_00435ba0(0.51f);
 
@@ -990,11 +994,153 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.56f);
 
-	LegoChar* commonDataDirectory = m_context->m_commonDataDirectory;
 	GolHashTable* hashTable = g_hashTable;
 	if (hashTable) {
-		hashTable->SetCurrentEntry(hashTable->AddString(commonDataDirectory));
+		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_commonDataDirectory));
 	}
+
+	RaceState::Field0x3b190Params0x08 racerContext;
+	racerContext.m_renderer = m_renderer;
+	racerContext.m_golExport = m_golExport;
+	racerContext.m_unk0x08 = m_unk0x394;
+	racerContext.m_unk0x0c = m_unk0x3b0;
+	racerContext.m_unk0x10 = m_unk0x3b8;
+	racerContext.m_resourceMgr = &m_unk0x3300;
+	racerContext.m_unk0x18 = &m_unk0x6dc;
+	racerContext.m_unk0x1c = &m_unk0x2150;
+	racerContext.m_unk0x20 = &m_unk0x248c;
+	racerContext.m_unk0x24 = &m_unk0x27d4;
+	racerContext.m_unk0x28 = &m_unk0x2098;
+	racerContext.m_unk0x2c = &m_unk0x27e0;
+	racerContext.m_unk0x30 = TRUE;
+	racerContext.m_racerField0x010 = &m_unk0x27f4;
+	racerContext.m_flags0x3c = m_context->m_unk0x20;
+
+	RaceState::Field0x3b190Params0x04 racerParams;
+	racerParams.m_racerCount = m_context->m_racerCount;
+	racerParams.m_routeRecords = m_routeRecords;
+	racerParams.m_timeRaceManager = m_timeRaceManager;
+	racerParams.m_unk0x3c = m_unk0x3354;
+	racerParams.m_lapCount = m_unk0x3348;
+
+	LegoU32 racerIndex;
+	RaceRouteRecord* routeRecord = m_routeRecords;
+	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
+		LegoRacers::Context::PlayerSetupSlot* slot = &m_context->m_playerSetupSlots[racerIndex];
+		racerParams.m_unk0x04[racerIndex] = slot;
+
+		if ((slot->m_unk0x10 == 2 || m_unk0x3350) && routeRecord->m_unk0x004) {
+			racerParams.m_unk0x20[racerIndex] = routeRecord;
+		}
+		else {
+			racerParams.m_unk0x20[racerIndex] = NULL;
+		}
+
+		routeRecord++;
+	}
+
+	if (m_context->m_racerCount < sizeOfArray(racerParams.m_unk0x04)) {
+		::memset(
+			&racerParams.m_unk0x04[m_context->m_racerCount],
+			0,
+			(sizeOfArray(racerParams.m_unk0x04) - m_context->m_racerCount) * sizeof(racerParams.m_unk0x04[0])
+		);
+	}
+
+	m_raceState.FUN_0043b190(&racerParams, &racerContext, m_context->m_unk0x18);
+
+	if (p_mirror) {
+		m_raceState.SetUnk0x284Unk0x0c(g_mirroredRaceStateRouteScale);
+	}
+
+	FUN_00435ba0(0.6f);
+
+	hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_gameDataDirectory));
+	}
+
+	for (racerIndex = 0; racerIndex < m_context->m_playerCount; racerIndex++) {
+		if (m_context->m_playerSetupSlots[racerIndex].m_unk0x10 == 0) {
+			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
+			RaceCameraController* cameraController = &m_unk0x2ad4[racerIndex];
+			m_raceState.m_unk0x318[racerIndex] = racer;
+
+			cameraController->FUN_00428230(racer);
+			racer->FUN_00437540(cameraController, FALSE);
+			racer->FUN_0043a300(m_context->m_unk0x398, m_unk0x3354);
+			cameraController->FUN_00428540(1.0f);
+			cameraController->FUN_004283d0(0);
+			cameraController->FUN_00428390(&m_unk0x1f8);
+			cameraController->FUN_004282a0(&m_unk0x204, &m_unk0x210);
+		}
+
+		g_unk0x004bef70 = m_unk0x3348;
+	}
+
+	if (m_unk0x3350) {
+		m_raceState.m_unk0x318[0]->FUN_0043a0e0();
+		m_raceState.m_unk0x318[0]->m_unk0xd04 |= c_racerFlags0xd04Bit23;
+	}
+
+	if (!m_unk0x3354) {
+		m_raceState.SetUnk0x080(m_raceState.m_unk0x318[0]);
+	}
+	else {
+		m_raceState.SetUnk0x080(NULL);
+	}
+
+	m_raceState.FUN_0043be60(m_renderer, m_golExport);
+
+	FUN_00435ba0(0.7f);
+
+	m_unk0x2f90.FUN_0041c550(m_renderer, m_golExport, &m_unk0x1a1, &m_unk0x69, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.75f);
+
+	if (m_unk0x1e2) {
+		m_unk0x2804.FUN_0045c3d0(&m_unk0x1e2, m_context->m_unk0x18, p_mirror);
+	}
+
+	Field0x2098::Params params;
+	params.m_unk0x00 = m_unk0x390;
+	params.m_unk0x04 = m_unk0x398;
+	params.m_unk0x08 = m_unk0x3a0;
+	params.m_unk0x0c = m_unk0x3a4;
+	params.m_unk0x10 = &m_unk0x3300;
+	params.m_unk0x14 = &m_unk0x2148;
+	params.m_unk0x18 = &m_unk0x2150;
+	params.m_unk0x1c = &m_unk0x248c;
+	params.m_unk0x20 = &m_unk0x2f90;
+	params.m_unk0x24 = &m_unk0x2804;
+	params.m_name = &m_unk0x105;
+	params.m_binary = m_context->m_unk0x18;
+	params.m_mirror = p_mirror;
+	m_unk0x2098.FUN_0045efa0(&params);
+
+	FUN_00435ba0(0.77f);
+
+	RaceEventDispatcher0x08::Context dispatcherContext;
+	dispatcherContext.m_unk0x00 = &m_raceState.m_unk0x0f0;
+	dispatcherContext.m_unk0x04 = m_context;
+	dispatcherContext.m_unk0x08 = &m_unk0x3300;
+	dispatcherContext.m_unk0x0c = m_unk0x2098.GetEventTable();
+	dispatcherContext.m_unk0x10 = m_unk0x390;
+	dispatcherContext.m_unk0x14 = m_unk0x398;
+	dispatcherContext.m_unk0x18 = m_unk0x3a0;
+	dispatcherContext.m_unk0x1c = &m_unk0x248c;
+	dispatcherContext.m_unk0x20 = m_unk0x394;
+	dispatcherContext.m_unk0x24 = m_golExport;
+	dispatcherContext.m_unk0x28 = m_renderer;
+	dispatcherContext.m_unk0x2c = &m_unk0x27e0;
+	dispatcherContext.m_unk0x30 = &m_raceState;
+	dispatcherContext.m_unk0x34 = &m_unk0x32b4;
+	dispatcherContext.m_unk0x38 = &m_unk0x6dc;
+	dispatcherContext.m_unk0x3c = &m_trailManager;
+	dispatcherContext.m_unk0x40 = p_mirror;
+	m_unk0x2148.FUN_0048a4d0(&dispatcherContext, &m_unk0x1bb, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.8f);
 }
 
 // FUNCTION: LEGORACERS 0x00434000
@@ -1039,7 +1185,7 @@ void RaceSession::FUN_00434000()
 	m_raceState.Destroy();
 	m_unk0x27f4.Reset();
 	m_unk0x27d4.Destroy();
-	m_unk0x27c8.Destroy();
+	m_trailManager.Destroy();
 	m_unk0x27fc.Reset();
 	m_unk0x248c.Clear();
 	m_unk0x2150.Clear();
@@ -1766,7 +1912,7 @@ void RaceSession::VTable0x30()
 		m_unk0x2080.VTable0x08(elapsedMs);
 		m_unk0x2150.FUN_00489fa0(elapsedMs);
 		m_unk0x248c.FUN_00489fa0(elapsedMs);
-		m_unk0x27c8.FUN_00493a20(elapsedMs);
+		m_trailManager.FUN_00493a20(elapsedMs);
 		m_unk0x2098.FUN_00461cc0(elapsedMs);
 		m_unk0x2148.FUN_0048add0(elapsedMs);
 		m_unk0x213c.FUN_00464dd0(elapsedMs);
@@ -2028,7 +2174,7 @@ void RaceSession::VTable0x38(RaceState::Racer* p_racer)
 	m_unk0x6dc.FUN_0045a7b0(FALSE);
 	m_unk0x2150.FUN_00489ff0(m_renderer);
 	m_unk0x248c.FUN_00489ff0(m_renderer);
-	m_unk0x27c8.FUN_00493a60(m_renderer);
+	m_trailManager.FUN_00493a60(m_renderer);
 
 	m_unk0x390->VTable0x24(m_renderer);
 	m_unk0x390->VTable0x20(m_renderer);
@@ -2047,7 +2193,7 @@ void RaceSession::VTable0x3c()
 	m_unk0x6dc.FUN_0045a8a0();
 	m_unk0x2150.FUN_0048a040(m_renderer);
 	m_unk0x248c.FUN_0048a040(m_renderer);
-	m_unk0x27c8.FUN_00493aa0(m_renderer);
+	m_trailManager.FUN_00493aa0(m_renderer);
 	m_unk0x27d4.FUN_004928f0(m_renderer);
 
 	if (m_timeRaceManager) {

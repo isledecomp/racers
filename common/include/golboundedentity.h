@@ -17,6 +17,8 @@ public:
 	void FUN_00403f80();
 	GolBoundingVolume* GetUnk0x58() const { return m_unk0x58; }
 	GolModelMaterialTable* GetUnk0x5c() const { return m_unk0x5c; }
+	LegoU32 GetUnk0x60() const { return m_unk0x60; }
+	void SetUnk0x60(LegoU32 p_unk0x60) { m_unk0x60 = p_unk0x60; }
 	GolModelMaterialTable* GetMaterialTable() const
 	{
 		if (m_unk0x5c != NULL) {
@@ -31,7 +33,7 @@ protected:
 
 	GolBoundingVolume* m_unk0x58;
 	GolModelMaterialTable* m_unk0x5c;
-	undefined4 m_unk0x60;
+	LegoU32 m_unk0x60;
 };
 
 #endif // GOLBOUNDEDENTITY_H

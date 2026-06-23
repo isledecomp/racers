@@ -2,7 +2,9 @@
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0x238, 0x238)
+DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x238, 0x238)
+
+extern const LegoFloat g_unk0x004b02e0;
 
 // GLOBAL: LEGORACERS 0x004b0c8c
 extern const LegoFloat g_unk0x004b0c8c = 300.0f;
@@ -26,7 +28,7 @@ extern const LegoFloat g_unk0x004b0ca0 = 250.0f;
 extern const LegoFloat g_unk0x004b0ca4 = 10.0f;
 
 // FUNCTION: LEGORACERS 0x00444250
-RaceSession::Field0x6dc::Field0x238::Field0x238()
+RacePowerupManager::Field0x238::Field0x238()
 {
 	m_unk0x218 = 0;
 	m_unk0x21c = 0;
@@ -36,7 +38,7 @@ RaceSession::Field0x6dc::Field0x238::Field0x238()
 }
 
 // FUNCTION: LEGORACERS 0x004442c0
-RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0x238::VTable0x10(undefined4 p_flags)
+RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0x238::VTable0x10(undefined4 p_flags)
 {
 	Field0x238* result = this;
 	this->~Field0x238();
@@ -48,13 +50,13 @@ RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0x238::VTable0x10(
 }
 
 // FUNCTION: LEGORACERS 0x004442e0
-RaceSession::Field0x6dc::Field0x238::~Field0x238()
+RacePowerupManager::Field0x238::~Field0x238()
 {
 	VTable0x14();
 }
 
 // FUNCTION: LEGORACERS 0x00444340
-void RaceSession::Field0x6dc::Field0x238::VTable0x20(const SetupParams* p_params)
+void RacePowerupManager::Field0x238::VTable0x20(const SetupParams* p_params)
 {
 	m_unk0x218 = p_params->m_unk0x04;
 	m_unk0x21c = p_params->m_unk0x0c;
@@ -92,14 +94,14 @@ void RaceSession::Field0x6dc::Field0x238::VTable0x20(const SetupParams* p_params
 }
 
 // FUNCTION: LEGORACERS 0x00444470
-void RaceSession::Field0x6dc::Field0x238::VTable0x14()
+void RacePowerupManager::Field0x238::VTable0x14()
 {
 	RaceSessionField0x6dcField0xa8::VTable0x14();
 	m_unk0x0a8.FUN_00493e60();
 }
 
 // STUB: LEGORACERS 0x00444490
-LegoS32 RaceSession::Field0x6dc::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x234 & c_flags0x234Bit1) {
 		return FUN_00444690(p_elapsedMs);
@@ -125,28 +127,32 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00444540
-void RaceSession::Field0x6dc::Field0x238::FUN_00444540(
-	const GolVec3* p_position,
-	LegoU32 p_elapsedMs,
-	LegoFloat p_amount
-)
+void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, LegoU32 p_elapsedMs, LegoFloat p_amount)
 {
+	LegoFloat elapsedStep = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_unk0x004b02e0 * 0.001f;
+
 	GolVec3 origin;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);
 	origin.m_z += m_unk0x218;
 
+	GolVec3 delta;
+	delta.m_x = p_position->m_x - origin.m_x;
+	delta.m_y = p_position->m_y - origin.m_y;
+	delta.m_z = p_position->m_z - origin.m_z;
+
 	GolVec3 step;
-	step.m_x = (p_position->m_x - origin.m_x) * 0.2f;
-	step.m_y = (p_position->m_y - origin.m_y) * 0.2f;
-	step.m_z = p_position->m_z - origin.m_z;
+	step.m_x = delta.m_x * g_unk0x004b02e0;
+	step.m_y = delta.m_y * g_unk0x004b02e0;
+	step.m_z = delta.m_z;
 	m_unk0x0a8.FUN_00493ea0(&origin, &step);
 
-	LegoFloat zStep = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * 0.2f * 0.001f;
+	LegoFloat elapsed = 0.0f;
 	GolVec3 position = origin;
 	for (LegoU32 i = 0; i < 4; i++) {
+		elapsed += elapsedStep;
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
-		position.m_z += zStep;
+		position.m_z = (m_unk0x040 * 0.5f * elapsed * elapsed) + (m_unk0x03c * elapsed) + m_unk0x010.m_z;
 		m_unk0x0a8.FUN_00494870(&position, p_amount);
 		p_amount = -p_amount;
 	}
@@ -156,13 +162,13 @@ void RaceSession::Field0x6dc::Field0x238::FUN_00444540(
 }
 
 // FUNCTION: LEGORACERS 0x00444670
-void RaceSession::Field0x6dc::Field0x238::VTable0x24(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::Field0x238::VTable0x24(GolD3DRenderDevice* p_renderer)
 {
 	m_unk0x0a8.FUN_00494850(p_renderer);
 }
 
 // STUB: LEGORACERS 0x00444690
-LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&position);
@@ -185,10 +191,15 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 	}
 
 	LegoFloat amount = m_unk0x224 * g_unk0x004b0ca4;
+	GolVec3 delta;
+	delta.m_x = m_unk0x228.m_x - position.m_x;
+	delta.m_y = m_unk0x228.m_y - position.m_y;
+	delta.m_z = m_unk0x228.m_z - position.m_z;
+
 	GolVec3 step;
-	step.m_x = (m_unk0x228.m_x - position.m_x) * 0.2f;
-	step.m_y = (m_unk0x228.m_y - position.m_y) * 0.2f;
-	step.m_z = (m_unk0x228.m_z - position.m_z) * 0.2f;
+	step.m_x = delta.m_x * g_unk0x004b02e0;
+	step.m_y = delta.m_y * g_unk0x004b02e0;
+	step.m_z = delta.m_z * g_unk0x004b02e0;
 	m_unk0x0a8.FUN_00493ea0(&position, &step);
 
 	for (LegoU32 i = 0; i < 4; i++) {
@@ -206,7 +217,7 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00444820
-LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
 	m_unk0x0a4->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
@@ -244,7 +255,7 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 
 	m_unk0x224 += g_unk0x004b0c9c * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 	if (m_unk0x224 >= 1.0f) {
-		RaceSessionField0x32b4::Field0x0c record;
+		GolBoundingVolume::Field0x0c record;
 		m_unk0x224 = 1.0f;
 		if (m_unk0x00c->FUN_0041f730(&origin, &currentPosition, &record, &m_unk0x028)) {
 			m_unk0x05c = record.m_unk0x24;
@@ -282,7 +293,7 @@ LegoS32 RaceSession::Field0x6dc::Field0x238::FUN_00444820(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00444ac0
-void RaceSession::Field0x6dc::Field0x238::FUN_00444ac0(GolVec3* p_unk0x04)
+void RacePowerupManager::Field0x238::FUN_00444ac0(GolVec3* p_unk0x04)
 {
 	m_unk0x228.m_x = p_unk0x04->m_x;
 	m_unk0x228.m_y = p_unk0x04->m_y;

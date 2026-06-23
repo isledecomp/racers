@@ -651,7 +651,7 @@ void RaceEventDispatcher0x08::ItemI::VTable0x04(void* p_racer)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_racer);
 	if (racer && m_unk0x0c != 2 && !(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
-		RaceState::Racer::Field0x008::ActionTarget target;
+		RacePowerupManager::ActionTarget target;
 		target.m_unk0x0c.m_x = g_itemIActionDirectionX;
 		target.m_unk0x0c.m_y = g_itemIActionDirectionY;
 		target.m_unk0x0c.m_z = g_itemIActionDirectionZ;
@@ -664,7 +664,7 @@ void RaceEventDispatcher0x08::ItemI::VTable0x04(void* p_racer)
 			target.m_unk0x00.m_y = -g_itemIActionPositionY;
 		}
 
-		target.m_positionSource = NULL;
+		target.m_source = NULL;
 		m_unk0x10->SetUnk0x1998(&target);
 		m_unk0x10->FUN_0045b260(racer, 3);
 		m_unk0x10->SetUnk0x1998(NULL);
@@ -816,12 +816,12 @@ void RaceEventDispatcher0x08::Item0x3f::VTable0x10(Context* p_context, GolFilePa
 // FUNCTION: LEGORACERS 0x0048b3c0
 void RaceEventDispatcher0x08::Item0x3f::VTable0x04(void*)
 {
-	RaceState::Racer::Field0x008::ActionTarget target;
+	RacePowerupManager::ActionTarget target;
 	target.m_unk0x0c = g_item0x3fActionDirection;
 
 	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
 	LegoS32 positionIndex = g_unk0x004befec[g_unk0x004c6ee4] % c_positionCount;
-	target.m_positionSource = NULL;
+	target.m_source = NULL;
 	target.m_unk0x00 = g_item0x3fActionPositions[positionIndex];
 	if (m_unk0x14) {
 		target.m_unk0x00.m_y = -target.m_unk0x00.m_y;
@@ -873,12 +873,12 @@ void RaceEventDispatcher0x08::Item0x40::ClearFields()
 	m_unk0x10.m_x = 0.0f;
 	m_unk0x10.m_y = 0.0f;
 	m_unk0x10.m_z = 0.0f;
-	m_unk0x1c.m_x = 0.0f;
-	m_unk0x1c.m_y = 0.0f;
-	m_unk0x1c.m_z = 0.0f;
-	m_unk0x28.m_x = 0.0f;
-	m_unk0x28.m_y = 0.0f;
-	m_unk0x28.m_z = 0.0f;
+	m_unk0x10.m_velocity.m_x = 0.0f;
+	m_unk0x10.m_velocity.m_y = 0.0f;
+	m_unk0x10.m_velocity.m_z = 0.0f;
+	m_unk0x10.m_right.m_x = 0.0f;
+	m_unk0x10.m_right.m_y = 0.0f;
+	m_unk0x10.m_right.m_z = 0.0f;
 	m_unk0x54 = 0;
 }
 
@@ -952,7 +952,7 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x04(void*)
 void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 {
 	if (m_unk0x0c != 1) {
-		RaceState::Racer::Field0x008::ActionTarget target;
+		RacePowerupManager::ActionTarget target;
 		Item::VTable0x14(p_elapsedMs);
 
 		LegoU32 elapsedMs = static_cast<LegoU32>(p_elapsedMs);
@@ -971,12 +971,12 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 		}
 
 		LegoS32 index = static_cast<LegoS32>(lateralAngle * g_item0x40RadiansToTableIndex) & 0x3ff;
-		m_unk0x28.m_x = g_cosineTable[index];
+		m_unk0x10.m_right.m_x = g_cosineTable[index];
 
 		index = (0xffffff00 - static_cast<LegoS32>(lateralAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
-		m_unk0x28.m_y = g_cosineTable[index];
+		m_unk0x10.m_right.m_y = g_cosineTable[index];
 		if (m_unk0x54) {
-			m_unk0x28.m_y = -m_unk0x28.m_y;
+			m_unk0x10.m_right.m_y = -m_unk0x10.m_right.m_y;
 		}
 
 		LegoU32 quarterPeriod = m_unk0x50 >> 2;
@@ -985,9 +985,9 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 		verticalAngle *= g_twoPi;
 		verticalAngle *= g_item0x40RadiansToTableIndex;
 		index = static_cast<LegoS32>(verticalAngle) & 0x3ff;
-		m_unk0x28.m_z = g_cosineTable[index] * m_unk0x40 + m_unk0x44;
+		m_unk0x10.m_right.m_z = g_cosineTable[index] * m_unk0x40 + m_unk0x44;
 
-		GolMath::NormalizeVector3(m_unk0x28, &m_unk0x28);
+		GolMath::NormalizeVector3(m_unk0x10.m_right, &m_unk0x10.m_right);
 
 		if (m_unk0x38) {
 			m_unk0x38->VTable0x04(&m_unk0x10);
@@ -996,7 +996,7 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 
 		m_unk0x4c += elapsedMs;
 		if (m_unk0x4c >= c_actionCooldownMs) {
-			target.m_positionSource = &m_unk0x10;
+			target.m_source = &m_unk0x10;
 			m_unk0x34->SetUnk0x1998(&target);
 			m_unk0x34->FUN_0045a950(NULL, 2);
 			m_unk0x34->SetUnk0x1998(NULL);
@@ -1576,7 +1576,7 @@ void RaceEventDispatcher0x08::Item0x43::VTable0x14(undefined4 p_elapsedMs)
 	positionZ += 1.0f;
 	m_unk0x18.m_z = positionZ;
 
-	RaceState::Racer::Field0x008::ActionTarget target;
+	RacePowerupManager::ActionTarget target;
 	target.m_materialName = m_unk0x10;
 	m_unk0x34->SetUnk0x1998(&target);
 	m_unk0x34->FUN_0045a950(NULL, 0);
@@ -3543,7 +3543,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x10(Context* p_context, GolFilePa
 	m_unk0x04 = p_context->GetUnk0x0c();
 	m_unk0x10c = p_context->GetUnk0x34();
 	m_unk0x118 = p_context->GetUnk0x24();
-	m_unk0x110 = p_context->GetUnk0x38Raw();
+	m_unk0x110 = p_context->GetUnk0x38();
 	m_unk0x11c = p_context->GetUnk0x3c();
 
 	m_unk0x114 = static_cast<GolBillboard*>(m_unk0x118->VTable0x30());
@@ -3648,7 +3648,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 
 	m_unk0x38.VTable0x04(&projectileParams, &m_unk0xec);
 
-	RaceSession::Field0x27c8::Item::Params trailParams;
+	RaceTrailManager::Trail::Params trailParams;
 	trailParams.m_unk0x00 = 0x12c;
 	trailParams.m_unk0x04 = 4;
 	trailParams.m_unk0x0c = 1;
@@ -3657,10 +3657,10 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	trailParams.m_unk0x18 = 0.0f;
 	trailParams.m_unk0x08 = 4;
 
-	RaceSession::Field0x27c8::Item::Params* trailParamsPtr = &trailParams;
-	m_unk0x120 = static_cast<RaceSession::Field0x27c8*>(m_unk0x11c)->FUN_004939b0(trailParamsPtr);
+	RaceTrailManager::Trail::Params* trailParamsPtr = &trailParams;
+	m_unk0x120 = static_cast<RaceTrailManager*>(m_unk0x11c)->FUN_004939b0(trailParamsPtr);
 	if (m_unk0x120 != NULL) {
-		RaceSession::Field0x27c8::Item* item = static_cast<RaceSession::Field0x27c8::Item*>(m_unk0x120);
+		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
 		item->FUN_00492ab0(&g_item0x33TrailColor);
 	}
 
@@ -3673,8 +3673,8 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x08(void*)
 	m_unk0x38.VTable0x14();
 
 	if (m_unk0x120 != NULL) {
-		RaceSession::Field0x27c8* manager = static_cast<RaceSession::Field0x27c8*>(m_unk0x11c);
-		RaceSession::Field0x27c8::Item* item = static_cast<RaceSession::Field0x27c8::Item*>(m_unk0x120);
+		RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
+		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
 		manager->FUN_00493a10(item);
 		m_unk0x120 = NULL;
 	}
@@ -3695,13 +3695,13 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	if (projectile->GetUnk0x004() != 0) {
 		if (projectile->VTable0x18(p_elapsedMs) == 3) {
 			GolVec3 position = projectile->GetUnk0x028();
-			static_cast<RaceSession::Field0x6dc*>(m_unk0x110)->FUN_0045b470(&position, 0, 0);
+			m_unk0x110->FUN_0045b470(&position, 0, 0);
 			projectile->VTable0x14();
 			m_unk0x04->FUN_00462580(7, 7, &position);
 
 			if (m_unk0x120 != NULL) {
-				RaceSession::Field0x27c8* manager = static_cast<RaceSession::Field0x27c8*>(m_unk0x11c);
-				RaceSession::Field0x27c8::Item* item = static_cast<RaceSession::Field0x27c8::Item*>(m_unk0x120);
+				RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
+				RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
 				manager->FUN_00493a10(item);
 				m_unk0x120 = NULL;
 			}
@@ -3747,7 +3747,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	positions[3].m_y = positions[2].m_y;
 	positions[3].m_z = positions[1].m_z + 3.0f;
 
-	RaceSession::Field0x27c8::Item* item = static_cast<RaceSession::Field0x27c8::Item*>(m_unk0x120);
+	RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
 	item->FUN_00492ee0(p_elapsedMs, positions, center);
 }
 

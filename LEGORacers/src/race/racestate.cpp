@@ -14,7 +14,9 @@
 #include "race/raceeventtable0x90.h"
 #include "race/raceforcefeedback.h"
 #include "race/racesession.h"
+#include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
+#include "surface/purpledune0x7c.h"
 #include "util/racerbillboardrenderstate0x33c.h"
 
 #include <float.h>
@@ -29,6 +31,8 @@ extern LegoFloat g_minSoundPan;
 
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(RaceState::Racer, 0xe34)
+DECOMP_SIZE_ASSERT(RaceEventRecord, 0x20)
+DECOMP_SIZE_ASSERT(RaceEventRecord::Target, 0x5c)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x36df0Params, 0x88)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x371c0, 0x30)
@@ -81,6 +85,9 @@ extern const LegoFloat g_unk0x004b0960 = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b0964
 extern const LegoFloat g_unk0x004b0964 = 600.0f;
+
+// GLOBAL: LEGORACERS 0x004b0970
+extern const LegoFloat g_unk0x004b0970 = 0.75f;
 
 // GLOBAL: LEGORACERS 0x004b0988
 extern const LegoFloat g_unk0x004b0988 = 0.015f;
@@ -356,12 +363,12 @@ void RaceState::Racer::Reset()
 	m_unk0xe08.m_x = 0;
 	m_unk0xe08.m_y = 0;
 	m_unk0xe08.m_z = 0;
-	m_unk0xe14.m_x = 0;
-	m_unk0xe14.m_y = 0;
-	m_unk0xe14.m_z = 0;
-	m_unk0xe20.m_x = 0;
-	m_unk0xe20.m_y = 0;
-	m_unk0xe20.m_z = 0;
+	m_unk0xe08.m_velocity.m_x = 0;
+	m_unk0xe08.m_velocity.m_y = 0;
+	m_unk0xe08.m_velocity.m_z = 0;
+	m_unk0xe08.m_right.m_x = 0;
+	m_unk0xe08.m_right.m_y = 0;
+	m_unk0xe08.m_right.m_z = 0;
 	m_unk0xcc4 = 0;
 	m_unk0xcc8 = 1;
 	m_unk0x010 = 0;
@@ -549,8 +556,8 @@ void RaceState::Racer::FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle
 {
 	RaceEventTable0x90* eventTable;
 	undefined4 unk0x2c;
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* unk0x0c;
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* unk0x10;
+	GolBoundedEntity* unk0x0c;
+	GolBoundedEntity* unk0x10;
 	if (p_unk0x04) {
 		eventTable = p_unk0x04->m_unk0x028;
 		unk0x2c = p_unk0x04->m_unk0x02c;
@@ -869,11 +876,12 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 
 	m_unk0xd04 &= ~c_flags0xd04Bit28;
 	m_unk0x018.m_unk0x044->VTable0x04(&m_unk0xe08);
-	m_unk0x018.m_unk0x044->GetOrientationRow0(&m_unk0xe20);
-	m_unk0xe14 = m_unk0x3e8.m_unk0x008;
+	m_unk0x018.m_unk0x044->GetOrientationRow0(&m_unk0xe08.m_right);
+	GolVec3& velocity = m_unk0xe08.m_velocity;
+	velocity = m_unk0x3e8.m_unk0x008;
 
 	if (!m_unk0xd34 && m_unk0xd08 == 2) {
-		if (m_unk0x00c->FUN_0043ca60(&m_unk0xe08, &m_unk0xe20, 0.0f, 169.0f, 0.30000001f)) {
+		if (m_unk0x00c->FUN_0043ca60(&m_unk0xe08, &m_unk0xe08.m_right, 0.0f, 169.0f, 0.30000001f)) {
 			FUN_00439c90();
 			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
 			m_unk0xd34 = g_unk0x004befec[g_unk0x004c6ee4] * 8 + 2000;
@@ -1253,10 +1261,6 @@ void RaceState::Racer::FUN_00438500()
 // STUB: LEGORACERS 0x00438560
 void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	if (!p_data) {
-		return;
-	}
-
 	if (p_data->m_unk0x00 == 1) {
 		LegoU32 flags = m_unk0xd04;
 		m_unk0xd04 = flags & ~c_flags0xd04Bit8;
@@ -1277,7 +1281,7 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		return;
 	}
 
-	if (p_data->m_unk0x00 != 3 || !p_data->m_target0 || !p_data->m_data) {
+	if (p_data->m_unk0x00 != 3) {
 		return;
 	}
 
@@ -1286,9 +1290,9 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	LegoEventQueue::Descriptor::Field0x10* firstTarget = p_data->m_target0;
 	LegoEventQueue::Descriptor::Field0x10* secondTarget = collision->m_unk0x20;
 	Racer* firstRacer = static_cast<Racer*>(firstTarget->m_owner);
-	Racer* secondRacer = secondTarget ? static_cast<Racer*>(secondTarget->m_owner) : NULL;
+	Racer* secondRacer = static_cast<Racer*>(secondTarget->m_owner);
 
-	if (!firstRacer || (firstRacer->m_unk0xd04 & c_flags0xd04Bit4)) {
+	if (firstRacer->m_unk0xd04 & c_flags0xd04Bit4) {
 		return;
 	}
 
@@ -1310,31 +1314,99 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	impulse.m_y *= collision->m_unk0x1c;
 	impulse.m_z *= collision->m_unk0x1c;
 
-	LegoFloat impulseScale = collision->m_unk0x1c;
-	if (secondRacer) {
-		GolVec3 relativeVelocity;
-		relativeVelocity.m_x = firstRacer->m_unk0x3e8.m_unk0x008.m_x - secondRacer->m_unk0x3e8.m_unk0x008.m_x;
-		relativeVelocity.m_y = firstRacer->m_unk0x3e8.m_unk0x008.m_y - secondRacer->m_unk0x3e8.m_unk0x008.m_y;
-		relativeVelocity.m_z = firstRacer->m_unk0x3e8.m_unk0x008.m_z - secondRacer->m_unk0x3e8.m_unk0x008.m_z;
-
-		LegoFloat closingSpeed = -GOLVECTOR3_DOT(relativeVelocity, collisionNormal);
-		if (closingSpeed > 0.0f) {
-			impulseScale += closingSpeed;
-		}
-	}
-
 	firstRacer->m_unk0x3e8.FUN_00429680(&impulse);
 	if (firstRacer->m_unk0x014) {
 		firstRacer->m_unk0x014->FUN_00422100();
+	}
+
+	GolVec3 relativeVelocity;
+	relativeVelocity.m_x = firstTarget->m_unk0x008.m_x - secondTarget->m_unk0x008.m_x;
+	relativeVelocity.m_y = firstTarget->m_unk0x008.m_y - secondTarget->m_unk0x008.m_y;
+	relativeVelocity.m_z = firstTarget->m_unk0x008.m_z - secondTarget->m_unk0x008.m_z;
+
+	LegoFloat impulseNumerator = -GOLVECTOR3_DOT(relativeVelocity, collisionNormal) * (g_unk0x004b0970 + 1.0f);
+
+	LegoFloat collisionNormalLengthSquared = GOLVECTOR3_DOT(collisionNormal, collisionNormal);
+	LegoFloat inverseMassTerm = (firstTarget->m_unk0x0cc + secondTarget->m_unk0x0cc) * collisionNormalLengthSquared;
+
+	GolVec3 firstContactOffset;
+	firstContactOffset.m_x = firstTarget->m_unk0x020.m_x - collision->m_unk0x04.m_x;
+	firstContactOffset.m_y = firstTarget->m_unk0x020.m_y - collision->m_unk0x04.m_y;
+	firstContactOffset.m_z = firstTarget->m_unk0x020.m_z - collision->m_unk0x04.m_z;
+	GolMath::NormalizeVector3(firstContactOffset, &firstContactOffset);
+
+	GolVec3 secondContactOffset;
+	secondContactOffset.m_x = secondTarget->m_unk0x020.m_x - collision->m_unk0x04.m_x;
+	secondContactOffset.m_y = secondTarget->m_unk0x020.m_y - collision->m_unk0x04.m_y;
+	secondContactOffset.m_z = secondTarget->m_unk0x020.m_z - collision->m_unk0x04.m_z;
+	GolMath::NormalizeVector3(secondContactOffset, &secondContactOffset);
+
+	GolVec3 firstAngularAxis;
+	firstAngularAxis.m_x = firstContactOffset.m_y * collisionNormal.m_z - collisionNormal.m_y * firstContactOffset.m_z;
+	firstAngularAxis.m_y = firstContactOffset.m_z * collisionNormal.m_x - collisionNormal.m_z * firstContactOffset.m_x;
+	firstAngularAxis.m_z = firstContactOffset.m_x * collisionNormal.m_y - firstContactOffset.m_y * collisionNormal.m_x;
+
+	const GolMatrix3& inertia = firstTarget->m_unk0x074;
+	GolVec3 firstAngular;
+	firstAngular.m_x = inertia.m_m[2][0] * firstAngularAxis.m_z + inertia.m_m[1][0] * firstAngularAxis.m_y +
+					   inertia.m_m[0][0] * firstAngularAxis.m_x;
+	firstAngular.m_y = inertia.m_m[2][1] * firstAngularAxis.m_z + inertia.m_m[1][1] * firstAngularAxis.m_y +
+					   inertia.m_m[0][1] * firstAngularAxis.m_x;
+	firstAngular.m_z = inertia.m_m[2][2] * firstAngularAxis.m_z + inertia.m_m[1][2] * firstAngularAxis.m_y +
+					   inertia.m_m[0][2] * firstAngularAxis.m_x;
+
+	GolVec3 firstAngularContribution;
+	firstAngularContribution.m_x =
+		firstAngular.m_y * firstContactOffset.m_z - firstAngular.m_z * firstContactOffset.m_y;
+	firstAngularContribution.m_y =
+		firstAngular.m_z * firstContactOffset.m_x - firstAngular.m_x * firstContactOffset.m_z;
+	firstAngularContribution.m_z =
+		firstAngular.m_x * firstContactOffset.m_y - firstAngular.m_y * firstContactOffset.m_x;
+
+	GolVec3 secondAngularAxis;
+	secondAngularAxis.m_x =
+		secondContactOffset.m_y * collisionNormal.m_z - collisionNormal.m_y * secondContactOffset.m_z;
+	secondAngularAxis.m_y =
+		secondContactOffset.m_z * collisionNormal.m_x - collisionNormal.m_z * secondContactOffset.m_x;
+	secondAngularAxis.m_z =
+		secondContactOffset.m_x * collisionNormal.m_y - secondContactOffset.m_y * collisionNormal.m_x;
+
+	GolVec3 secondAngular;
+	secondAngular.m_x = inertia.m_m[2][0] * secondAngularAxis.m_z + inertia.m_m[1][0] * secondAngularAxis.m_y +
+						inertia.m_m[0][0] * secondAngularAxis.m_x;
+	secondAngular.m_y = inertia.m_m[2][1] * secondAngularAxis.m_z + inertia.m_m[1][1] * secondAngularAxis.m_y +
+						inertia.m_m[0][1] * secondAngularAxis.m_x;
+	secondAngular.m_z = inertia.m_m[2][2] * secondAngularAxis.m_z + inertia.m_m[1][2] * secondAngularAxis.m_y +
+						inertia.m_m[0][2] * secondAngularAxis.m_x;
+
+	GolVec3 secondAngularContribution;
+	secondAngularContribution.m_x =
+		secondAngular.m_y * secondContactOffset.m_z - secondAngular.m_z * secondContactOffset.m_y;
+	secondAngularContribution.m_y =
+		secondAngular.m_z * secondContactOffset.m_x - secondAngular.m_x * secondContactOffset.m_z;
+	secondAngularContribution.m_z =
+		secondAngular.m_x * secondContactOffset.m_y - secondAngular.m_y * secondContactOffset.m_x;
+
+	GolVec3 angularContribution;
+	angularContribution.m_x = firstAngularContribution.m_x + secondAngularContribution.m_x;
+	angularContribution.m_y = firstAngularContribution.m_y + secondAngularContribution.m_y;
+	angularContribution.m_z = firstAngularContribution.m_z + secondAngularContribution.m_z;
+
+	LegoFloat impulseDenominator = GOLVECTOR3_DOT(collisionNormal, angularContribution) + inverseMassTerm;
+	LegoFloat impulseScale = impulseNumerator / impulseDenominator;
+
+	firstRacer->m_unk0x3e8.VTable0x20(&collisionNormal, impulseScale);
+	if (firstRacer->m_unk0x014) {
+		firstRacer->m_unk0x014->FUN_004220e0();
 	}
 
 	if (!secondRacer) {
 		return;
 	}
 
-	secondRacer->m_unk0x3e8.VTable0x20(&impulse, -impulseScale);
+	secondRacer->m_unk0x3e8.VTable0x20(&collisionNormal, -impulseScale);
 	if (secondRacer->m_unk0x014) {
-		secondRacer->m_unk0x014->FUN_00422100();
+		secondRacer->m_unk0x014->FUN_004220e0();
 	}
 
 	if (firstRacer->m_unk0xd08 == 2 && secondRacer->m_unk0xd08 == 2) {
@@ -1357,15 +1429,18 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
 		LegoU32 soundId = (g_unk0x004befec[g_unk0x004c6ee4] & 1) ? 0x37 : 0x18;
-		if (firstRacer->m_unk0x004) {
-			firstRacer->m_unk0x004->FUN_00443b80(soundId, &soundPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
-		}
+		m_unk0x004->FUN_00443b80(soundId, &soundPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
 
 		firstRacer->m_unk0xd4c = 250;
 		secondRacer->m_unk0xd4c = 250;
 
-		if (m_unk0x018.m_unk0x27c) {
-			m_unk0x018.m_unk0x27c->FUN_00489d70("carsprk", &collision->m_unk0x04, NULL, NULL);
+		m_unk0x018.m_unk0x27c->FUN_00489d70("carsprk", &collision->m_unk0x04, NULL, NULL);
+
+		if (firstRacer->m_unk0xd04 & c_flags0xd04Bit0) {
+			secondRacer->FUN_00439240(FALSE);
+		}
+		else {
+			firstRacer->FUN_00439240(FALSE);
 		}
 	}
 
@@ -1384,10 +1459,10 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 			}
 		}
 		else if (firstRacer->m_unk0xd6c == 2) {
-			secondRacer->m_unk0x3e8.VTable0x24(1.0f, 0.0090000005f, 0);
+			secondRacer->m_unk0x3e8.VTable0x24(1.0f, 0.0089999996f, 0);
 		}
 		else if (firstRacer->m_unk0xd6c == 3) {
-			secondRacer->m_unk0x3e8.VTable0x24(2.0f, 0.0090000005f, 0);
+			secondRacer->m_unk0x3e8.VTable0x24(2.0f, 0.0089999996f, 0);
 		}
 	}
 
@@ -1406,21 +1481,23 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 			}
 		}
 		else if (secondRacer->m_unk0xd6c == 2) {
-			firstRacer->m_unk0x3e8.VTable0x24(1.0f, 0.0090000005f, 0);
+			firstRacer->m_unk0x3e8.VTable0x24(1.0f, 0.0089999996f, 0);
 		}
 		else if (secondRacer->m_unk0xd6c == 3) {
-			firstRacer->m_unk0x3e8.VTable0x24(2.0f, 0.0090000005f, 0);
+			firstRacer->m_unk0x3e8.VTable0x24(2.0f, 0.0089999996f, 0);
 		}
 	}
 
 	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		firstRacer->m_unk0xd80 && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
+		secondRacer->FUN_00439900(&firstRacer->m_unk0x018.m_unk0x284, firstRacer->m_unk0xd7c);
 		firstRacer->FUN_00439b00();
 	}
 	else if (
 		(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		secondRacer->m_unk0xd80 && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit0)
 	) {
+		firstRacer->FUN_00439900(&secondRacer->m_unk0x018.m_unk0x284, secondRacer->m_unk0xd7c);
 		secondRacer->FUN_00439b00();
 	}
 
@@ -2036,9 +2113,9 @@ LegoU32 RaceState::Racer::FUN_00439ba0()
 			if (static_cast<LegoS32>(lapTransitionCount) > 0) {
 				result = m_lapsCompleted;
 				if (lapTransitionCount > result) {
-					Field0x00c* field0x00c = m_unk0x00c;
+					RaceState* raceState = m_unk0x00c;
 					m_lapsCompleted = result + 1;
-					result = field0x00c->FUN_0043cda0(this);
+					result = raceState->FUN_0043cda0(this);
 					m_unk0xd88 = result;
 
 					if (result) {
@@ -2205,7 +2282,7 @@ void RaceState::Racer::FUN_00439ea0(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x00439fc0
-void RaceState::Racer::FUN_00439fc0(RaceSessionField0x27f4::Entry* p_unk0x04, Field0x3e8::EventContext* p_unk0x08)
+void RaceState::Racer::FUN_00439fc0(RaceSessionField0x27f4::Entry* p_unk0x04, GolBoundingVolume::Field0x0c* p_unk0x08)
 {
 	LegoBool32 isForward;
 	if (p_unk0x08->m_unk0x24.m_z * p_unk0x04->m_unk0x00.m_z + p_unk0x08->m_unk0x24.m_y * p_unk0x04->m_unk0x00.m_y +
@@ -2611,9 +2688,9 @@ void RaceState::Reset()
 	}
 
 	m_unk0x0f0.m_unk0x07c = NULL;
-	m_unk0x0f0.m_unk0x080[0] = 0;
-	m_unk0x0f0.m_unk0x080[1] = 0;
-	m_unk0x0f0.m_unk0x080[2] = 0;
+	m_unk0x0f0.m_unk0x080[0] = NULL;
+	m_unk0x0f0.m_unk0x080[1] = NULL;
+	m_unk0x0f0.m_unk0x080[2] = NULL;
 
 	for (i = 0; i < sizeOfArray(m_unk0x0f0.m_unk0x08c); i++) {
 		m_unk0x0f0.m_unk0x08c[i] = 0;
@@ -2621,7 +2698,7 @@ void RaceState::Reset()
 	}
 
 	m_unk0x0f0.m_unk0x09c = 0;
-	m_unk0x0f0.m_unk0x0a0 = 0;
+	m_unk0x0f0.m_routeRecords = NULL;
 	m_unk0x284.m_unk0x10 = 0;
 	m_unk0x284.m_unk0x14 = 0;
 	m_unk0x284.m_lapCount = 0;
@@ -2633,12 +2710,12 @@ void RaceState::Destroy()
 	m_unk0x284.Destroy();
 
 	if (m_unk0x284.m_unk0x14) {
-		m_unk0x0f0.m_unk0x080[1]->DestroyMaterialList(m_unk0x284.m_unk0x14);
+		m_unk0x0f0.m_golExport->DestroyMaterialList(m_unk0x284.m_unk0x14);
 		m_unk0x284.m_unk0x14 = NULL;
 	}
 
 	if (m_unk0x284.m_unk0x10) {
-		m_unk0x0f0.m_unk0x080[1]->DestroyTextureList(m_unk0x284.m_unk0x10);
+		m_unk0x0f0.m_golExport->DestroyTextureList(m_unk0x284.m_unk0x10);
 		m_unk0x284.m_unk0x10 = NULL;
 	}
 
@@ -2701,12 +2778,11 @@ void RaceState::FUN_0043b190(Field0x3b190Params0x04* p_unk0x04, Field0x3b190Para
 	m_unk0x0f0.m_field0x010 = p_unk0x08->m_racerField0x010;
 	m_unk0x0f0.m_unk0x05c = p_unk0x08->m_resourceMgr;
 	m_unk0x0f0.m_unk0x060 = p_unk0x08->m_unk0x18;
-	m_unk0x0f0.m_unk0x080[1] = p_unk0x08->m_golExport;
-	m_unk0x0f0.m_unk0x080[2] = p_unk0x04->m_unk0x38;
-	m_unk0x0f0.m_unk0x0a0 = p_unk0x04->m_unk0x1c;
+	m_unk0x0f0.m_golExport = p_unk0x08->m_golExport;
+	m_unk0x0f0.m_timeRaceManager = p_unk0x04->m_timeRaceManager;
+	m_unk0x0f0.m_routeRecords = p_unk0x04->m_routeRecords;
 	m_unk0x284.m_lapCount = p_unk0x04->m_lapCount;
-	LegoEventQueue* queue = &m_unk0x0f0;
-	queue->VTable0x08(100);
+	static_cast<LegoEventQueue*>(&m_unk0x0f0)->VTable0x08(100);
 
 	m_unk0x0f0.m_unk0x04c = this;
 	m_unk0x0f0.m_racerCount = p_unk0x04->m_racerCount;
@@ -2715,8 +2791,8 @@ void RaceState::FUN_0043b190(Field0x3b190Params0x04* p_unk0x04, Field0x3b190Para
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x284.m_unk0x10 = m_unk0x0f0.m_unk0x080[1]->CreateTextureList();
-	m_unk0x284.m_unk0x14 = m_unk0x0f0.m_unk0x080[1]->CreateMaterialList();
+	m_unk0x284.m_unk0x10 = m_unk0x0f0.m_golExport->CreateTextureList();
+	m_unk0x284.m_unk0x14 = m_unk0x0f0.m_golExport->CreateMaterialList();
 	m_unk0x284.m_unk0x10->VTable0x1c(p_unk0x08->m_renderer, m_unk0x0f0.m_racerCount);
 	m_unk0x284.m_unk0x14->VTable0x1c(p_unk0x08->m_renderer, m_unk0x0f0.m_racerCount);
 
@@ -2807,7 +2883,7 @@ void RaceState::FUN_0043b480(
 		initParams.m_unk0x0c = m_unk0x000.LoadEntry(p_unk0x04->m_driverName);
 		championDefinition =
 			static_cast<ChampionDefinitionList::ChampionDefinition*>(m_unk0x080.GetName(driverEntry->m_unk0x1a));
-		initParams.m_unk0x00 = m_unk0x080.FUN_0041d7a0(championDefinition);
+		initParams.m_unk0x00 = m_unk0x080.FUN_0041d780(driverEntry->m_unk0x1a);
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_unk0x0b4.GetName(championDefinition->m_unk0x18));
 		m_unk0x0b4.InstantiateModels(chassisItem, &initParams.m_unk0x08, &initParams.m_unk0x04);
 
@@ -2926,8 +3002,8 @@ void RaceState::FUN_0043b480(
 	}
 
 	m_unk0x0f0.m_unk0x17c[p_unk0x0c] = p_unk0x0c;
-	if (m_unk0x0f0.m_unk0x088) {
-		if (m_unk0x0f0.m_unk0x088->m_flags0x3b4 & c_field0x088Flags0x3b4Bit3) {
+	if (m_unk0x0f0.m_timeRaceManager) {
+		if (m_unk0x0f0.m_timeRaceManager->HasRecordRunLapTimes()) {
 			m_unk0x0f0.m_unk0x17c[p_unk0x0c] = 2;
 		}
 		else {
@@ -2942,8 +3018,26 @@ void RaceState::FUN_0043b480(
 	initParams.m_unk0x08->VTable0x08(m_unk0x0f0.m_unk0x0a4[placementIndex]);
 	initParams.m_unk0x08->VTable0x40(m_unk0x0f0.m_unk0x0ec[placementIndex], m_unk0x0f0.m_unk0x134[placementIndex]);
 
+	m_unk0x0f0.m_racers[p_unk0x0c].FUN_00436df0(p_unk0x08, &initParams, &racerParams, this, p_unk0x0c);
+
+	PurpleDune0x7c* shadowTexture = m_unk0x284.m_unk0x10->GetItem(p_unk0x0c);
+	DuskwindBananaRelic0x24* shadowMaterial = m_unk0x284.m_unk0x14->GetItem(p_unk0x0c);
+	shadowTexture->SetNameFromBuffer(chassisItem->m_unk0x50);
+	shadowTexture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2 | GoldDune0x38::c_unk0x36Bit3);
+	shadowMaterial->SetName(chassisItem->m_unk0x50);
+
+	DuskWindBananaRelicParams shadowMaterialParams;
+	::memset(&shadowMaterialParams, 0, sizeof(shadowMaterialParams));
+	shadowMaterialParams.m_unk0x00 =
+		DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit3 |
+		DuskwindBananaRelic0x24::c_flag0x08Bit5 | DuskwindBananaRelic0x24::c_flag0x08Bit7 |
+		DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit10 |
+		DuskwindBananaRelic0x24::c_flag0x08Bit13 | DuskwindBananaRelic0x24::c_flag0x08Bit15 |
+		DuskwindBananaRelic0x24::c_flag0x08Bit20 | DuskwindBananaRelic0x24::c_flag0x08Bit22;
+	shadowMaterialParams.m_unk0x04 = shadowTexture;
+	shadowMaterial->FUN_100257e0(p_unk0x08->m_renderer, shadowMaterialParams);
+
 	Racer* racer = &m_unk0x0f0.m_racers[p_unk0x0c];
-	racer->FUN_00436df0(p_unk0x08, &initParams, &racerParams, this, p_unk0x0c);
 	racer->m_unk0xc70.m_unk0x050 = &m_unk0x2a0;
 
 	LegoEventQueue::Descriptor descriptor;
@@ -3794,6 +3888,8 @@ void RaceState::Racer::Field0x018::FUN_0043df90()
 // STUB: LEGORACERS 0x0043e070
 void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 {
+	FUN_0043e740(p_elapsedMs);
+	FUN_0043ec10(p_elapsedMs);
 	m_unk0x004.VTable0x00();
 
 	if (m_unk0x3c4) {
@@ -3805,180 +3901,182 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit4) {
-		m_unk0x000 &= ~c_flags0x000Bit4;
-		return;
-	}
-
-	if (m_unk0x1dc->m_flags0x6c0 & Field0x1dc::c_flags0x6c0Bit1) {
-		if (!(m_unk0x000 & c_flags0x000Bit8)) {
-			FUN_0043fd90();
-		}
-	}
-	else if (m_unk0x000 & c_flags0x000Bit8) {
-		FUN_0043fdb0();
-	}
-
-	for (LegoU32 slotIndex = 0; slotIndex < sizeOfArray(m_unk0x1f4); slotIndex++) {
-		if (m_unk0x1f4[slotIndex] & c_slotFlagsBit2) {
-			LegoU32 elapsed = m_unk0x208[slotIndex] + p_elapsedMs;
-			m_unk0x208[slotIndex] = elapsed;
-
-			if (elapsed > 1000) {
-				m_unk0x1f4[slotIndex] &= ~c_slotFlagsBit2;
-				m_unk0x208[slotIndex] = 0;
+	if (!(m_racer->m_unk0xd04 & c_racerFlags0xd04Bit4)) {
+		if (m_unk0x1dc->m_flags0x6c0 & Field0x1dc::c_flags0x6c0Bit1) {
+			if (!(m_unk0x000 & c_flags0x000Bit8)) {
+				FUN_0043fd90();
 			}
 		}
-	}
-
-	if ((m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) && (m_unk0x000 & c_flags0x000Bit3)) {
-		FUN_0043dcd0();
-	}
-
-	if (!(m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11)) {
-		m_unk0x37c = 1000;
-	}
-
-	GolVec3 velocity = m_unk0x1dc->m_unk0x008 * 0.5f;
-
-	for (LegoU32 particleIndex = 0; particleIndex < sizeOfArray(m_unk0x230); particleIndex++) {
-		CutsceneParticleRef* ref = m_unk0x230[particleIndex];
-		if (ref) {
-			GolVec3 position = m_unk0x1dc->m_unk0x1a4[particleIndex].m_unk0x000;
-			CutsceneParticle* particle = ref->m_unk0x00;
-
-			if (particle) {
-				m_unk0x044->VTable0x44(particle->GetUnk0x160());
-			}
-
-			if (ref->m_unk0x00) {
-				ref->m_unk0x00->FUN_00489660(&position);
-			}
-
-			if (ref->m_unk0x00) {
-				ref->m_unk0x00->FUN_00489690(&velocity);
-			}
-		}
-	}
-
-	if (m_racer->m_unk0x3e8.m_unk0x6dc > 400) {
-		m_unk0x000 |= c_flags0x000Bit9;
-	}
-
-	if (m_unk0x000 & c_flags0x000Bit9) {
-		LegoU32 state = m_racer->m_unk0x3e8.m_unk0x36c;
-		if (m_unk0x3cc < state) {
-			m_unk0x000 &= ~c_flags0x000Bit9;
-
-			SoundVector position;
-			m_unk0x044->VTable0x04(&position);
-
-			switch (state - m_unk0x3cc) {
-			case 1:
-				m_racer->m_unk0x004->FUN_00443b80(0x3f, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
-				break;
-			case 2:
-			case 3:
-				m_racer->m_unk0x004->FUN_00443b80(0x40, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
-				break;
-			case 4:
-				m_racer->m_unk0x004->FUN_00443b80(4, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
-				break;
-			}
-
-			m_unk0x27c->FUN_00489d70("carland", &position, NULL, NULL);
+		else if (m_unk0x000 & c_flags0x000Bit8) {
+			FUN_0043fdb0();
 		}
 
-		m_unk0x3cc = state;
-	}
+		for (LegoU32 slotIndex = 0; slotIndex < sizeOfArray(m_unk0x1f4); slotIndex++) {
+			if (m_unk0x1f4[slotIndex] & c_slotFlagsBit2) {
+				LegoU32 elapsed = m_unk0x208[slotIndex] + p_elapsedMs;
+				m_unk0x208[slotIndex] = elapsed;
 
-	if (m_unk0x270) {
-		CutsceneParticle* particle = m_unk0x270->m_unk0x00;
-		if (particle && particle->GetSpawnedCount() >= 10) {
-			m_unk0x27c->FUN_00489f30(m_unk0x270);
-			m_unk0x270 = NULL;
-		}
-		else {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			GolVec3 position = (g_unk0x004befec[g_unk0x004c6ee4] & 2) ? m_unk0x1dc->m_unk0x1a4[3].m_unk0x000
-																	  : m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
-
-			particle = m_unk0x270->m_unk0x00;
-			if (particle) {
-				m_unk0x044->VTable0x44(particle->GetUnk0x160());
-			}
-
-			if (m_unk0x270->m_unk0x00) {
-				m_unk0x270->m_unk0x00->FUN_00489660(&position);
-			}
-
-			if (m_unk0x270->m_unk0x00) {
-				m_unk0x270->m_unk0x00->FUN_00489690(&velocity);
-			}
-		}
-	}
-
-	if (m_unk0x278) {
-		CutsceneParticle* particle = m_unk0x278->m_unk0x00;
-		if (particle && particle->GetSpawnedCount() >= 4) {
-			m_unk0x27c->FUN_00489f30(m_unk0x278);
-			m_unk0x278 = NULL;
-		}
-		else {
-			GolVec3 position = m_unk0x1dc->m_unk0x1a4[3].m_unk0x000;
-			GolVec3 other = m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
-			position.m_x = (position.m_x + other.m_x) * 0.5f;
-			position.m_y = (position.m_y + other.m_y) * 0.5f;
-			position.m_z = (position.m_z + other.m_z) * 0.5f + g_violetShoalTwo;
-
-			particle = m_unk0x278->m_unk0x00;
-			if (particle) {
-				m_unk0x044->VTable0x44(particle->GetUnk0x160());
-			}
-
-			if (m_unk0x278->m_unk0x00) {
-				m_unk0x278->m_unk0x00->FUN_00489660(&position);
-			}
-
-			if (m_unk0x278->m_unk0x00) {
-				m_unk0x278->m_unk0x00->FUN_00489690(&velocity);
-			}
-		}
-	}
-
-	if (m_unk0x274) {
-		GolVec3 position;
-		position.m_x = 0.0f;
-		position.m_y = 0.0f;
-		position.m_z = 0.0f;
-
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		LegoBool32 chooseSecond = (g_unk0x004befec[g_unk0x004c6ee4] >> 1) & 1;
-		LegoBool32 found = FALSE;
-
-		for (LegoU32 tireIndex = 0; tireIndex < sizeOfArray(m_unk0x1f4); tireIndex++) {
-			if (m_unk0x1f4[tireIndex] & c_slotFlagsBit1) {
-				if (!chooseSecond || !found) {
-					position = m_unk0x1dc->m_unk0x1a4[tireIndex].m_unk0x000;
-					found = TRUE;
+				if (elapsed > 1000) {
+					m_unk0x1f4[slotIndex] &= ~c_slotFlagsBit2;
+					m_unk0x208[slotIndex] = 0;
 				}
-				else {
+			}
+		}
+
+		if ((m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) && (m_unk0x000 & c_flags0x000Bit3)) {
+			FUN_0043dcd0();
+		}
+
+		FUN_0043f1e0(p_elapsedMs);
+
+		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
+			FUN_0043f530(p_elapsedMs);
+		}
+		else {
+			m_unk0x37c = 1000;
+		}
+
+		GolVec3 velocity = m_unk0x1dc->m_unk0x008 * 0.5f;
+
+		for (LegoU32 particleIndex = 0; particleIndex < sizeOfArray(m_unk0x230); particleIndex++) {
+			CutsceneParticleRef* ref = m_unk0x230[particleIndex];
+			if (ref) {
+				GolVec3 position = m_unk0x1dc->m_unk0x1a4[particleIndex].m_unk0x000;
+				CutsceneParticle* particle = ref->m_unk0x00;
+
+				if (particle) {
+					m_unk0x044->VTable0x44(particle->GetUnk0x160());
+				}
+
+				if (ref->m_unk0x00) {
+					ref->m_unk0x00->FUN_00489660(&position);
+				}
+
+				if (ref->m_unk0x00) {
+					ref->m_unk0x00->FUN_00489690(&velocity);
+				}
+			}
+		}
+
+		if (m_racer->m_unk0x3e8.m_unk0x6dc > 400) {
+			m_unk0x000 |= c_flags0x000Bit9;
+		}
+
+		if (m_unk0x000 & c_flags0x000Bit9) {
+			LegoU32 state = m_racer->m_unk0x3e8.m_unk0x36c;
+			if (m_unk0x3cc < state) {
+				m_unk0x000 &= ~c_flags0x000Bit9;
+
+				SoundVector position;
+				m_unk0x044->VTable0x04(&position);
+
+				switch (state - m_unk0x3cc) {
+				case 1:
+					m_racer->m_unk0x004->FUN_00443b80(0x3f, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+					break;
+				case 2:
+				case 3:
+					m_racer->m_unk0x004->FUN_00443b80(0x40, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+					break;
+				case 4:
+					m_racer->m_unk0x004->FUN_00443b80(4, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
 					break;
 				}
+
+				m_unk0x27c->FUN_00489d70("carland", &position, NULL, NULL);
+			}
+
+			m_unk0x3cc = state;
+		}
+
+		if (m_unk0x270) {
+			CutsceneParticle* particle = m_unk0x270->m_unk0x00;
+			if (particle && particle->GetSpawnedCount() >= 10) {
+				m_unk0x27c->FUN_00489f30(m_unk0x270);
+				m_unk0x270 = NULL;
+			}
+			else {
+				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				GolVec3 position = (g_unk0x004befec[g_unk0x004c6ee4] & 2) ? m_unk0x1dc->m_unk0x1a4[3].m_unk0x000
+																		  : m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
+
+				particle = m_unk0x270->m_unk0x00;
+				if (particle) {
+					m_unk0x044->VTable0x44(particle->GetUnk0x160());
+				}
+
+				if (m_unk0x270->m_unk0x00) {
+					m_unk0x270->m_unk0x00->FUN_00489660(&position);
+				}
+
+				if (m_unk0x270->m_unk0x00) {
+					m_unk0x270->m_unk0x00->FUN_00489690(&velocity);
+				}
 			}
 		}
 
-		CutsceneParticle* particle = m_unk0x274->m_unk0x00;
-		if (particle) {
-			m_unk0x044->VTable0x44(particle->GetUnk0x160());
+		if (m_unk0x278) {
+			CutsceneParticle* particle = m_unk0x278->m_unk0x00;
+			if (particle && particle->GetSpawnedCount() >= 4) {
+				m_unk0x27c->FUN_00489f30(m_unk0x278);
+				m_unk0x278 = NULL;
+			}
+			else {
+				GolVec3 position = m_unk0x1dc->m_unk0x1a4[3].m_unk0x000;
+				GolVec3 other = m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
+				position.m_x = (position.m_x + other.m_x) * 0.5f;
+				position.m_y = (position.m_y + other.m_y) * 0.5f;
+				position.m_z = (position.m_z + other.m_z) * 0.5f + g_violetShoalTwo;
+
+				particle = m_unk0x278->m_unk0x00;
+				if (particle) {
+					m_unk0x044->VTable0x44(particle->GetUnk0x160());
+				}
+
+				if (m_unk0x278->m_unk0x00) {
+					m_unk0x278->m_unk0x00->FUN_00489660(&position);
+				}
+
+				if (m_unk0x278->m_unk0x00) {
+					m_unk0x278->m_unk0x00->FUN_00489690(&velocity);
+				}
+			}
 		}
 
-		if (m_unk0x274->m_unk0x00) {
-			m_unk0x274->m_unk0x00->FUN_00489660(&position);
-		}
+		if (m_unk0x274) {
+			GolVec3 position;
+			position.m_x = 0.0f;
+			position.m_y = 0.0f;
+			position.m_z = 0.0f;
 
-		if (m_unk0x274->m_unk0x00) {
-			m_unk0x274->m_unk0x00->FUN_00489690(&velocity);
+			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+			LegoBool32 chooseSecond = (g_unk0x004befec[g_unk0x004c6ee4] >> 1) & 1;
+			LegoBool32 found = FALSE;
+
+			for (LegoU32 tireIndex = 0; tireIndex < sizeOfArray(m_unk0x1f4); tireIndex++) {
+				if (m_unk0x1f4[tireIndex] & c_slotFlagsBit1) {
+					if (!chooseSecond || !found) {
+						position = m_unk0x1dc->m_unk0x1a4[tireIndex].m_unk0x000;
+						found = TRUE;
+					}
+					else {
+						break;
+					}
+				}
+			}
+
+			CutsceneParticle* particle = m_unk0x274->m_unk0x00;
+			if (particle) {
+				m_unk0x044->VTable0x44(particle->GetUnk0x160());
+			}
+
+			if (m_unk0x274->m_unk0x00) {
+				m_unk0x274->m_unk0x00->FUN_00489660(&position);
+			}
+
+			if (m_unk0x274->m_unk0x00) {
+				m_unk0x274->m_unk0x00->FUN_00489690(&velocity);
+			}
 		}
 	}
 
@@ -4234,8 +4332,8 @@ void RaceState::Racer::Field0x018::FUN_0043ec10(LegoU32 p_elapsedMs)
 		m_unk0x044->VTable0x04(&position);
 
 		Racer* racer = m_racer;
-		Field0x00c* racerField = racer->m_unk0x00c;
-		Racer* nearbyRacer = racerField->FUN_0043cbb0(&position, 2.0f, g_unk0x004b0b24);
+		RaceState* raceState = racer->m_unk0x00c;
+		Racer* nearbyRacer = raceState->FUN_0043cbb0(&position, 2.0f, g_unk0x004b0b24);
 		m_unk0x380 = nearbyRacer;
 
 		if (nearbyRacer != NULL) {
@@ -4499,7 +4597,8 @@ void RaceState::Racer::Field0x018::FUN_0043f530(LegoU32 p_elapsedMs)
 	GolMath::NormalizeVector3(right, &right);
 
 	if (m_unk0x37c > 0) {
-		GolMatrix3 currentOrientation = entity->GetOrientation();
+		GolMatrix3 currentOrientation;
+		entity->VTable0x44(&currentOrientation);
 		GolVec3 unit;
 		GolMath::NormalizeVector3(right, &unit);
 

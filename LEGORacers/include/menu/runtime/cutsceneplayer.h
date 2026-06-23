@@ -57,6 +57,7 @@ public:
 	void FUN_0049fe30(undefined4 p_param1, GolVec3* p_param2);
 	void FUN_0049fec0(undefined4 p_param1, GolVec3* p_param2, GolVec3* p_param3);
 	void ParseCommonToken(GolFileParser* p_parser, CutscenePlayer* p_owner, GolFileParser::ParserTokenType p_token);
+	void SetDisabled(LegoBool32 p_disabled) { m_unk0x10 = p_disabled; }
 
 	// SYNTHETIC: LEGORACERS 0x0049fd90
 	// CutsceneEvent::`scalar deleting destructor'
@@ -619,6 +620,7 @@ public:
 	// CutscenePlayer::`scalar deleting destructor'
 
 	void Clear();
+	GolNameTable* GetTextVisuals() { return &m_unk0x10c; }
 
 private:
 	GolExport* m_unk0x04;                   // 0x004

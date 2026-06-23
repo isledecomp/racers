@@ -992,7 +992,7 @@ LegoS32 CobaltTrail0x140::FUN_00425d80(
 	GolNameTable* p_nameTable,
 	GolString* p_string,
 	ResourceTable* p_resourceTable,
-	RaceState::Racer::Field0x00c* p_unk0x14,
+	RaceState* p_unk0x14,
 	TimeRaceManager* p_unk0x18,
 	GolStringTable* p_stringTable,
 	RaceState::Racer::Field0x004* p_unk0x20,

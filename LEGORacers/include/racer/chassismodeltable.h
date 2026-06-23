@@ -46,6 +46,8 @@ public:
 	LegoU32 InstantiateModels(const LegoChar* p_name, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
 	void InstantiateAllModels();
 	GolAnimatedEntity* GetPrimaryModel(const LegoChar* p_name);
+	void FUN_0041dae0();
+	LegoBool32 HasItems() const { return m_items != NULL; }
 
 	// SIZE 0x104
 	struct Item {
@@ -78,7 +80,6 @@ private:
 	friend class RaceState;
 
 	void Reset();
-	void FUN_0041dae0();
 	void ParseVariantNames(GolFileParser* p_parser, LegoU32 p_index, LegoU32 p_variant);
 	LegoU32 InstantiateModels(Item* p_item, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
 

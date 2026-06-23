@@ -3,12 +3,18 @@
 #include "audio/musicgroup.h"
 #include "audio/musicinstance.h"
 #include "core/gol.h"
+#include "duskwindbananarelic0x24.h"
 #include "golhashtable.h"
+#include "golmodelbase.h"
 #include "golstring.h"
+#include "mabmaterialanimation0x14.h"
+#include "mabmaterialanimationitem0x18.h"
+#include "mabmaterialanimationitem0x8.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
 #include "model/carbuildmodel.h"
+#include "world/golworlddatabase.h"
 
 #include <stdio.h>
 #include <string.h>
@@ -143,6 +149,12 @@ void AwardCinematicScreen::VTable0x4c()
 		}
 	}
 
+	if (m_unk0x28c == c_menuWinCar) {
+		if (!m_context->m_chassisModels.HasItems() || !m_context->m_championDefinitions.HasDefinitions()) {
+			FUN_00480110(1);
+		}
+	}
+
 	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_unk0x28c);
 	locals.m_string.CopyToString(locals.m_name);
 	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
@@ -153,6 +165,220 @@ void AwardCinematicScreen::VTable0x4c()
 
 	CreateRegion(&m_unk0x368, m_unk0x28c);
 	m_unk0x368.m_unk0x2cc = FALSE;
+
+	if (m_unk0x28c == c_menuWinCar) {
+		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
+		if (record) {
+			m_context->m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
+			record->GetCosmetics(&m_context->m_context->m_playerSetupSlots[0].m_cosmetics);
+			m_context->m_context->m_playerSetupSlots[0].m_driverName[0] = '\0';
+		}
+	}
+
+	GolAnimatedEntity* sourceDriverEntity = NULL;
+	GolModelEntity* carBodyEntity = NULL;
+	GolAnimatedEntity* swapEntity = NULL;
+	GolAnimatedEntity* pLegEntity = NULL;
+	for (LegoU32 i = 0; i < m_unk0x368.m_unk0x58.GetWorldDatabaseCount(); i++) {
+		GolWorldDatabase* worldDatabase = m_unk0x368.m_unk0x58.GetWorldDatabase(i);
+		if (!sourceDriverEntity) {
+			sourceDriverEntity = worldDatabase->FindUnk0xc0("guy1");
+		}
+
+		if (!carBodyEntity) {
+			carBodyEntity = worldDatabase->FindUnk0xb4("carbody");
+			if (!carBodyEntity) {
+				carBodyEntity = worldDatabase->FindUnk0xc0("carbody");
+			}
+		}
+
+		if (!swapEntity) {
+			swapEntity = worldDatabase->FindUnk0xc0("swap");
+		}
+
+		if (!pLegEntity) {
+			pLegEntity = worldDatabase->FindUnk0xc0("pleg");
+		}
+	}
+
+	if (m_unk0x28c != c_menuWinVvCar) {
+		LegoRacers::Context* racersContext = m_context->m_context;
+		LegoU32 slotIndex = 0;
+		LegoRacers::Context::PlayerSetupSlot* slot = racersContext->m_playerSetupSlots;
+
+		if (slot->m_unk0x10) {
+			while (slotIndex < racersContext->m_playerCount) {
+				slot++;
+				slotIndex++;
+				if (!slot->m_unk0x10) {
+					break;
+				}
+			}
+		}
+
+		if (m_unk0x28c == c_menuWinCar) {
+			slotIndex = 1;
+			slot = &racersContext->m_playerSetupSlots[slotIndex];
+		}
+
+		DriverCosmetics cosmetics;
+		if (slot->m_driverName[0]) {
+			m_context->m_cosmeticTable.CopyCosmetics(slot->m_driverName, &cosmetics);
+		}
+		else {
+			cosmetics = slot->m_cosmetics;
+		}
+
+		m_context->m_modelBuilder.SetExpressionMask(0xffff);
+		m_unk0x79c = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
+		m_unk0x6a8.FUN_0040d550(
+			m_unk0x79c,
+			sourceDriverEntity->VTable0x58(0),
+			sourceDriverEntity->GetModelPart(0),
+			sourceDriverEntity->GetModelDistance(0)
+		);
+
+		LegoBool32 carCreated = FALSE;
+		if (carBodyEntity) {
+			if (!m_context->m_unk0x21f4.IsInitialized()) {
+				GolHashTable::Entry* currentEntry;
+				if (g_hashTable) {
+					currentEntry = g_hashTable->GetCurrentEntry();
+				}
+				else {
+					currentEntry = NULL;
+				}
+
+				FUN_0047ff50(m_context, TRUE);
+
+				if (g_hashTable) {
+					g_hashTable->SetCurrentEntry(currentEntry);
+				}
+			}
+
+			carCreated = FUN_00476b00(slotIndex);
+			FUN_004803a0();
+			m_context->m_chassisModels.FUN_0041dae0();
+			m_context->m_championDefinitions.ClearDefinitions();
+		}
+
+		if (carBodyEntity && (swapEntity || pLegEntity)) {
+			MaterialTable0x0c* carBodyMaterials = carBodyEntity->GetPrimaryMaterialTable();
+			if (!carBodyMaterials) {
+				carBodyMaterials = carBodyEntity->GetModel(0)->GetMaterialTable();
+			}
+
+			if (swapEntity) {
+				MaterialTable0x0c* swapMaterials = swapEntity->GetPrimaryMaterialTable();
+				if (!swapMaterials) {
+					swapMaterials = swapEntity->GetModel(0)->GetMaterialTable();
+				}
+				swapMaterials->SetPosition(0, carBodyMaterials->GetPosition(1));
+			}
+
+			if (pLegEntity) {
+				MaterialTable0x0c* pLegMaterials = pLegEntity->GetPrimaryMaterialTable();
+				if (!pLegMaterials) {
+					pLegMaterials = pLegEntity->GetModel(0)->GetMaterialTable();
+				}
+				pLegMaterials->SetPosition(0, carBodyMaterials->GetPosition(1));
+			}
+		}
+
+		CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
+		if (frame) {
+			for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
+				CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);
+				GolWorldEntity* entity = model->GetEntity();
+				if (entity == sourceDriverEntity) {
+					model->SetEntity(&m_unk0x6a8);
+
+					for (LegoU32 j = 0; j < model->GetAnimationCount(); j++) {
+						CutsceneDefinition::Frame::ModelEvent::Animation* animation = model->GetAnimation(j);
+						MabMaterialAnimationItem0x8* animationItems = animation->m_unk0x00->GetUnk0x04();
+						MabMaterialAnimationItem0x18* animationItem = animation->m_unk0x04;
+						LegoS32 firstFrame = animationItem->GetFirstFrame();
+						LegoS32 endFrame = firstFrame + animationItem->GetFrameCount();
+
+						for (LegoS32 frameIndex = firstFrame; frameIndex < endFrame; frameIndex++) {
+							DuskwindBananaRelic0x24* material = animationItems[frameIndex].GetMaterial();
+							const LegoChar* materialName = material->GetName();
+							LegoS32 expressionIndex = 0;
+
+							if (::strncmp(materialName, "face", sizeof(GolName)) != 0) {
+								if (::strncmp(materialName, "angry", sizeof(GolName)) == 0) {
+									expressionIndex = 1;
+								}
+								else if (::strncmp(materialName, "blink", sizeof(GolName)) == 0) {
+									expressionIndex = 2;
+								}
+								else if (::strncmp(materialName, "happy", sizeof(GolName)) == 0) {
+									expressionIndex = 3;
+								}
+								else if (::strncmp(materialName, "sad", sizeof(GolName)) == 0) {
+									expressionIndex = 4;
+								}
+								else if (::strncmp(materialName, "suprz", sizeof(GolName)) == 0) {
+									expressionIndex = 5;
+								}
+							}
+
+							GolName expressionName;
+							m_context->m_partCatalog
+								.BuildFaceExpressionName(cosmetics.m_faceIndex, expressionIndex, expressionName);
+							animationItems[frameIndex].SetMaterial(m_renderer->FindMaterialByName(expressionName));
+						}
+					}
+				}
+				else if (entity == carBodyEntity) {
+					if (carCreated) {
+						model->SetEntity(&m_unk0x658);
+					}
+				}
+				else if (entity == swapEntity || entity == pLegEntity) {
+					if (cosmetics.m_legIndex != 10) {
+						model->SetEntity(NULL);
+					}
+				}
+			}
+		}
+	}
+
+	if (m_unk0x28c == c_menuWinCar) {
+		GolNameTable* textVisuals = m_unk0x368.m_unk0x84.GetTextVisuals();
+		const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
+
+		CutsceneTextVisual* textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textCR"));
+		if (::strncmp(driverName, "CR", 2) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textKK"));
+		if (::strncmp(driverName, "KK", 2) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textBB"));
+		if (::strncmp(driverName, "BB", 2) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textJT"));
+		if (::strncmp(driverName, "JT", 2) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textGM"));
+		if (::strncmp(driverName, "GM", 2) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textBVB"));
+		if (::strncmp(driverName, "BVB", 3) != 0) {
+			textVisual->SetDisabled(TRUE);
+		}
+	}
+
 	FUN_004767b0();
 }
 

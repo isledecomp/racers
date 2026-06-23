@@ -1,9 +1,9 @@
 #include "world/golworlddatabase.h"
 
-#include "camera/golcamerabase.h"
 #include "cmbmodelpart0x34.h"
 #include "golanimatedentity.h"
 #include "golboundedentity.h"
+#include "golcamerabase.h"
 #include "golcollidableentity.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"

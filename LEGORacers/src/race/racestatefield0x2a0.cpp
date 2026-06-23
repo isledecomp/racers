@@ -1,4 +1,4 @@
-#include "camera/golcamerabase.h"
+#include "golcamerabase.h"
 #include "golfileparser.h"
 #include "race/racestate.h"
 
@@ -503,31 +503,31 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 // FUNCTION: LEGORACERS 0x004a5e10
 void RaceState::Racer::Field0x00c::Entry::PathPoint::FUN_004a5e10(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
-	m_unk0x00 = static_cast<LegoS16>(p_parser->ReadInteger());
-	m_unk0x02 = static_cast<LegoS16>(p_parser->ReadInteger());
-	m_unk0x04 = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x05 = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x06 = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x07 = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x08 = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_positionX = static_cast<LegoS16>(p_parser->ReadInteger());
+	m_positionY = static_cast<LegoS16>(p_parser->ReadInteger());
+	m_positionZ = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_rotationX = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_rotationY = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_rotationZ = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_rotationW = static_cast<LegoS8>(p_parser->ReadInteger());
 	m_unk0x09 = static_cast<LegoS8>(p_parser->ReadInteger());
 	m_unk0x0a = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x0b = static_cast<LegoU8>(p_parser->ReadInteger());
+	m_packedTypeAndLength = static_cast<LegoU8>(p_parser->ReadInteger());
 
 	if (p_mirror) {
 		LegoS8 temp = m_unk0x09;
 		m_unk0x09 = m_unk0x0a;
 		m_unk0x0a = temp;
-		m_unk0x02 = -m_unk0x02;
-		m_unk0x06 = -m_unk0x06;
-		m_unk0x08 = -m_unk0x08;
+		m_positionY = -m_positionY;
+		m_rotationY = -m_rotationY;
+		m_rotationW = -m_rotationW;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004a5ec0
 LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetType() const
 {
-	LegoU32 type = m_unk0x0b >> 6;
+	LegoU32 type = m_packedTypeAndLength >> 6;
 	if (type >= 3) {
 		type = 4;
 	}
@@ -538,15 +538,15 @@ LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetType() const
 // FUNCTION: LEGORACERS 0x004a5ee0
 LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetLength() const
 {
-	return (m_unk0x0b & 0x3f) << 5;
+	return (m_packedTypeAndLength & 0x3f) << 5;
 }
 
 // FUNCTION: LEGORACERS 0x004a5ef0
 GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_position) const
 {
-	p_position->m_x = static_cast<LegoFloat>(m_unk0x00) * g_unk0x004b4bcc;
-	p_position->m_y = static_cast<LegoFloat>(m_unk0x02) * g_unk0x004b4bcc;
-	p_position->m_z = static_cast<LegoFloat>(m_unk0x04) * g_unk0x004b4bd0;
+	p_position->m_x = static_cast<LegoFloat>(m_positionX) * g_unk0x004b4bcc;
+	p_position->m_y = static_cast<LegoFloat>(m_positionY) * g_unk0x004b4bcc;
+	p_position->m_z = static_cast<LegoFloat>(m_positionZ) * g_unk0x004b4bd0;
 
 	return p_position;
 }
@@ -554,10 +554,10 @@ GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_
 // FUNCTION: LEGORACERS 0x004a5f40
 GolQuat* RaceState::Racer::Field0x00c::Entry::PathPoint::GetRotation(GolQuat* p_rotation) const
 {
-	p_rotation->m_x = static_cast<LegoFloat>(m_unk0x05) * g_unk0x004b4bd4;
-	p_rotation->m_y = static_cast<LegoFloat>(m_unk0x06) * g_unk0x004b4bd4;
-	p_rotation->m_z = static_cast<LegoFloat>(m_unk0x07) * g_unk0x004b4bd4;
-	p_rotation->m_w = static_cast<LegoFloat>(m_unk0x08) * g_unk0x004b4bd4;
+	p_rotation->m_x = static_cast<LegoFloat>(m_rotationX) * g_unk0x004b4bd4;
+	p_rotation->m_y = static_cast<LegoFloat>(m_rotationY) * g_unk0x004b4bd4;
+	p_rotation->m_z = static_cast<LegoFloat>(m_rotationZ) * g_unk0x004b4bd4;
+	p_rotation->m_w = static_cast<LegoFloat>(m_rotationW) * g_unk0x004b4bd4;
 
 	return p_rotation;
 }

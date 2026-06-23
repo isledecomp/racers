@@ -1,10 +1,10 @@
 #ifndef GOLCAMERA_H
 #define GOLCAMERA_H
 
-#include "camera/golcamerabase.h"
 #include "camera/jadeorbit0x220.h"
 #include "compat.h"
 #include "decomp.h"
+#include "golcamerabase.h"
 #include "types.h"
 
 #include <d3d.h>

@@ -55,7 +55,7 @@ LegoS32 RaceState::Racer::Field0xd5c::FUN_00453840(GolVec3* p_unk0x04)
 {
 	GolVec3 start;
 	GolVec3 end;
-	RaceSessionField0x32b4::Field0x0c record;
+	GolBoundingVolume::Field0x0c record;
 
 	start.m_x = p_unk0x04->m_x;
 	start.m_y = p_unk0x04->m_y;

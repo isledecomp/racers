@@ -137,23 +137,25 @@ LegoS32 LegoPieceLibrary::PieceRecord::GetMaxCellValue() const
 LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 {
 	LegoS32 length = 0;
-	LegoChar value = *p_name;
+	LegoChar* cursor = p_name;
+	LegoChar value = *cursor;
 
 	while (value) {
 		if (length >= 8) {
 			break;
 		}
 
-		p_name++;
+		cursor++;
 		m_name[length] = value;
 		length++;
-		value = *p_name;
+		value = *cursor;
 	}
 
 	if (length < 8) {
-		::memset(&m_name[length], 0, 8 - length);
-		m_name[8] = 0;
-		return 0;
+		LegoS32 remaining = 8 - length;
+		LegoChar* dest = &m_name[length];
+		length = 0;
+		::memset(dest, 0, remaining);
 	}
 
 	m_name[8] = 0;
@@ -316,19 +318,15 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 		case GolFileParser::e_unknown0x27: {
 			m_pieceCount = ReadBracketedCountAndLeftCurly(parser);
 			m_pieces = new PieceRecord[m_pieceCount];
-			if (m_pieces == NULL) {
-				GOL_FATALERROR(c_golErrorOutOfMemory);
-			}
 
 			LegoS32 i;
 			for (i = 0; i < m_pieceCount; i++) {
-				PieceRecord& piece = m_pieces[i];
-				piece.m_library = this;
-				piece.SetName(parser->ReadString());
-				piece.m_pieceType = static_cast<LegoU16>(parser->ReadInteger());
-				piece.m_shapeData = &m_shapeData[parser->ReadInteger()];
-				piece.m_indexCommandCount = static_cast<LegoU16>(parser->ReadInteger());
-				piece.m_indexOffset = parser->ReadInteger();
+				m_pieces[i].m_library = this;
+				m_pieces[i].SetName(parser->ReadString());
+				m_pieces[i].m_pieceType = static_cast<LegoU16>(parser->ReadInteger());
+				m_pieces[i].m_shapeData = &m_shapeData[parser->ReadInteger()];
+				m_pieces[i].m_indexCommandCount = static_cast<LegoU16>(parser->ReadInteger());
+				m_pieces[i].m_indexOffset = parser->ReadInteger();
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -354,9 +352,13 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 			}
 			LegoS32 i;
 			for (i = 0; i < m_colorCount; i++) {
-				m_colors[i].m_red = static_cast<LegoS16>(parser->ReadInteger());
-				m_colors[i].m_green = static_cast<LegoS16>(parser->ReadInteger());
-				m_colors[i].m_blue = static_cast<LegoS16>(parser->ReadInteger());
+				LegoS32 red = parser->ReadInteger();
+				LegoS32 green = parser->ReadInteger();
+				LegoS32 blue = parser->ReadInteger();
+				Color* color = &m_colors[i];
+				color->m_red = static_cast<LegoS16>(red);
+				color->m_green = static_cast<LegoS16>(green);
+				color->m_blue = static_cast<LegoS16>(blue);
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -369,9 +371,13 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 			}
 			LegoS32 i;
 			for (i = 0; i < m_colorTripleCount; i++) {
-				m_colorTriples[i * 3] = static_cast<LegoU8>(parser->ReadInteger());
-				m_colorTriples[i * 3 + 1] = static_cast<LegoU8>(parser->ReadInteger());
-				m_colorTriples[i * 3 + 2] = static_cast<LegoU8>(parser->ReadInteger());
+				LegoS32 red = parser->ReadInteger();
+				LegoS32 green = parser->ReadInteger();
+				LegoS32 blue = parser->ReadInteger();
+				LegoU8* triple = &m_colorTriples[i * 3];
+				triple[0] = static_cast<LegoU8>(red);
+				triple[1] = static_cast<LegoU8>(green);
+				triple[2] = static_cast<LegoU8>(blue);
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -384,8 +390,11 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 			}
 			LegoS32 i;
 			for (i = 0; i < m_textureCoordinateCount; i++) {
-				m_textureCoordinates[i].m_u = static_cast<LegoS16>(parser->ReadInteger());
-				m_textureCoordinates[i].m_v = static_cast<LegoS16>(parser->ReadInteger());
+				LegoS32 u = parser->ReadInteger();
+				LegoS32 v = parser->ReadInteger();
+				TextureCoordinate* textureCoordinate = &m_textureCoordinates[i];
+				textureCoordinate->m_u = static_cast<LegoS16>(u);
+				textureCoordinate->m_v = static_cast<LegoS16>(v);
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -398,8 +407,11 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 			}
 			LegoS32 i;
 			for (i = 0; i < m_shapeDataPairCount; i++) {
-				m_shapeData[i].m_first = static_cast<LegoU8>(parser->ReadInteger());
-				m_shapeData[i].m_second = static_cast<LegoU8>(parser->ReadInteger());
+				LegoS32 first = parser->ReadInteger();
+				LegoS32 second = parser->ReadInteger();
+				ShapeCell* shapeData = &m_shapeData[i];
+				shapeData->m_first = static_cast<LegoU8>(first);
+				shapeData->m_second = static_cast<LegoU8>(second);
 			}
 			SkipCurrentBlock(*parser);
 			break;
@@ -412,7 +424,7 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 	parser->Dispose();
 	delete parser;
 
-	if (m_pieces != NULL && m_pieceCount > 0) {
+	if (m_pieces != NULL && m_pieceCount != 0) {
 		::qsort(m_pieces, m_pieceCount, sizeof(PieceRecord), ComparePieceRecords);
 
 		LegoS32 groupStart = 0;
@@ -439,8 +451,8 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 		}
 	}
 
-	LegoS32 highPieceOffset = 0;
 	LegoS32 lowPieceOffset = 0;
+	LegoS32 highPieceOffset = 0;
 	LegoS32 highPieceBaseOffset = 0;
 
 	PieceRecord* highBasePiece = FindPieceRecord(g_highPieceTypeBase, 1);
@@ -454,21 +466,23 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 	for (i = 0; i < m_pieceCount; i++) {
 		PieceRecord& piece = m_pieces[i];
 		LegoS32 offset = piece.m_indexCommandCount;
-		for (y = 0; y < piece.GetHeight(); y++) {
-			for (x = 0; x < piece.GetWidth(); x++) {
+		LegoS32 width = piece.GetWidth();
+		LegoS32 height = piece.GetHeight();
+		for (y = 0; y < height; y++) {
+			for (x = 0; x < width; x++) {
 				if (static_cast<LegoS8>(piece.GetCell(x, y, 0)->m_first) < 0) {
 					offset += highPieceBaseOffset;
 				}
 			}
 		}
 
-		if (piece.m_pieceType >= g_highPieceTypeBase) {
-			if (highPieceOffset < offset) {
-				highPieceOffset = offset;
+		if (piece.m_pieceType < g_highPieceTypeBase) {
+			if (lowPieceOffset < offset) {
+				lowPieceOffset = offset;
 			}
 		}
-		else if (lowPieceOffset < offset) {
-			lowPieceOffset = offset;
+		else if (highPieceOffset < offset) {
+			highPieceOffset = offset;
 		}
 	}
 

@@ -1,10 +1,129 @@
-#include "camera/golcamerabase.h"
+#include "golcamerabase.h"
 
 #include "camera/goltransform.h"
+#include "golanimatedentity.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
 
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(GolCameraBase, 0x120)
+
+// FUNCTION: LEGORACERS 0x004044f0
+LegoFloat GolCameraBase::FUN_004044f0(GolVec3* p_left, GolVec3* p_right)
+{
+	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
+}
+
+// FUNCTION: LEGORACERS 0x00404510
+GolVec3* GolCameraBase::FUN_00404510(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+{
+	LegoFloat x = p_left->m_y;
+	x *= p_right->m_z;
+	x -= p_left->m_z * p_right->m_y;
+	p_dest->m_x = x;
+
+	LegoFloat y = p_left->m_z;
+	y *= p_right->m_x;
+	LegoFloat ySub = p_right->m_z;
+	ySub *= p_left->m_x;
+	y -= ySub;
+	p_dest->m_y = y;
+
+	LegoFloat z = p_right->m_y;
+	z *= p_left->m_x;
+	LegoFloat zSub = p_left->m_y;
+	zSub *= p_right->m_x;
+	z -= zSub;
+	p_dest->m_z = z;
+
+	return p_left;
+}
+
+// FUNCTION: LEGORACERS 0x00404550
+GolVec3* GolCameraBase::FUN_00404550(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+{
+	p_dest->m_x = p_left->m_x + p_right->m_x;
+	p_dest->m_y = p_left->m_y + p_right->m_y;
+	p_dest->m_z = p_left->m_z + p_right->m_z;
+
+	return p_left;
+}
+
+// FUNCTION: LEGORACERS 0x00404580
+GolVec3* GolCameraBase::FUN_00404580(GolVec3* p_left, GolVec3* p_right, GolVec3* p_dest)
+{
+	p_dest->m_x = p_left->m_x - p_right->m_x;
+	p_dest->m_y = p_left->m_y - p_right->m_y;
+	p_dest->m_z = p_left->m_z - p_right->m_z;
+
+	return p_left;
+}
+
+// FUNCTION: LEGORACERS 0x004045b0
+GolVec3* GolCameraBase::FUN_004045b0(GolVec3* p_src, LegoFloat p_scale, GolVec3* p_dest)
+{
+	p_dest->m_x = p_scale * p_src->m_x;
+
+	LegoFloat y = p_src->m_y;
+	y *= p_scale;
+	p_dest->m_y = y;
+
+	LegoFloat z = p_src->m_z;
+	z *= p_scale;
+	p_dest->m_z = z;
+
+	return p_src;
+}
+
+// TODO: Unique section prevents ICF; the original keeps both dot helpers as distinct functions.
+#pragma code_seg(".text$golcamerabase_00404680")
+// FUNCTION: LEGORACERS 0x00404680
+LegoFloat GolCameraBase::FUN_00404680(GolVec3* p_left, GolVec3* p_right)
+{
+	return p_left->m_z * p_right->m_z + p_left->m_y * p_right->m_y + p_left->m_x * p_right->m_x;
+}
+#pragma code_seg()
+
+// FUNCTION: LEGORACERS 0x004046a0
+void GolCameraBase::LookAt(GolVec3* p_position, GolVec3* p_target, GolVec3* p_up)
+{
+	GolVec3 up;
+	GolVec3 forward;
+	forward.m_x = p_target->m_x - p_position->m_x;
+	forward.m_y = p_target->m_y - p_position->m_y;
+	forward.m_z = p_target->m_z - p_position->m_z;
+
+	up.m_x = -p_up->m_x;
+	up.m_y = -p_up->m_y;
+	up.m_z = -p_up->m_z;
+
+	m_transform->VTable0x24(&forward, &up);
+	m_transform->SetPosition(p_position);
+}
+
+// FUNCTION: LEGORACERS 0x00404710
+void GolCameraBase::FUN_00404710(LegoFloat p_fov, LegoFloat p_nearClip, LegoFloat p_farClip, LegoFloat p_aspectRatio)
+{
+	m_fov = p_fov;
+	m_nearClip = p_nearClip;
+	m_farClip = p_farClip;
+	SetAspectRatio(p_aspectRatio);
+}
+
+// FUNCTION: LEGORACERS 0x00404740
+void GolCameraBase::SetAspectRatio(LegoFloat p_aspect)
+{
+	if (p_aspect > 0.0f) {
+		m_aspectRatio = p_aspect;
+		m_flags |= 8;
+	}
+	else {
+		m_flags &= ~8;
+	}
+
+	m_flags |= 3;
+}
 
 // FUNCTION: GOLDP 0x1001bf30
 GolCameraBase::GolCameraBase()
@@ -327,10 +446,61 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 }
 
 // FUNCTION: GOLDP 0x1001cb30
+// FUNCTION: LEGORACERS 0x00404780
 void GolCameraBase::SetTrackedEntity(GolAnimatedEntity* p_trackedEntity, LegoU32 p_trackedNodeIndex)
 {
 	m_trackedEntity = p_trackedEntity;
 	m_trackedNodeIndex = p_trackedNodeIndex;
+}
+
+// FUNCTION: LEGORACERS 0x004047a0
+void GolCameraBase::ClearTrackedEntity()
+{
+	m_trackedEntity = NULL;
+	m_trackedNodeIndex = 0;
+}
+
+// FUNCTION: LEGORACERS 0x004047b0
+void GolCameraBase::UpdateFromTrackedEntity()
+{
+	if (m_trackedEntity == NULL) {
+		return;
+	}
+
+	m_trackedEntity->VTable0x5c(0);
+	GolSceneNode* frameSet = m_trackedEntity->VTable0x58(0);
+	GolTransformBase* orbit = frameSet->VTable0x18(m_trackedNodeIndex);
+
+	GolVec3 position;
+	GolVec3 right;
+	GolVec3 forward;
+	GolVec3 transformedPosition;
+	GolVec3 transformedRight;
+	GolVec3 transformedForward;
+	orbit->GetPosition(&position);
+	orbit->VTable0x20(&right, &forward);
+
+	for (GolTransformBase* parent = orbit->m_unk0x04; parent != NULL; parent = parent->m_unk0x04) {
+		parent->VTable0x04(&position, &transformedPosition);
+		parent->VTable0x0c(&right, &transformedRight);
+		parent->VTable0x0c(&forward, &transformedForward);
+
+		position = transformedPosition;
+		right = transformedRight;
+		forward = transformedForward;
+	}
+
+	m_trackedEntity->VTable0x2c(position, &transformedPosition);
+	m_trackedEntity->VTable0x34(right, &transformedRight);
+	m_trackedEntity->VTable0x34(forward, &transformedForward);
+
+	m_transform->SetPosition(&transformedPosition);
+	transformedForward.m_x = -transformedForward.m_x;
+	m_flags |= 1;
+	transformedForward.m_y = -transformedForward.m_y;
+	transformedForward.m_z = -transformedForward.m_z;
+	m_transform->VTable0x24(&transformedRight, &transformedForward);
+	m_flags |= 1;
 }
 
 // FUNCTION: GOLDP 0x1002c010 FOLDED

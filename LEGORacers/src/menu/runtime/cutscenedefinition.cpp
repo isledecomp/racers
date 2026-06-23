@@ -1,10 +1,10 @@
 #include "menu/runtime/cutscenedefinition.h"
 
 #include "camera/golcamera.h"
-#include "camera/golcamerabase.h"
 #include "core/gol.h"
 #include "golanimatedentity.h"
 #include "golbinparser.h"
+#include "golcamerabase.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
 #include "golfileparser.h"

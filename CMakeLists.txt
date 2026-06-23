@@ -90,6 +90,7 @@ set(COMMON_SOURCES
   common/src/golcollidableentity.cpp
   common/src/golboundingshape.cpp
   common/src/golboundedentity.cpp
+  common/src/golcamerabase.cpp
   common/src/golboundingvolume.cpp
   common/src/goldecompress.cpp
   common/src/golcpu.cpp
@@ -140,7 +141,6 @@ set(COMMON_SOURCES
 #This might represent another original static library or project grouping; keep the list
 #narrow until more source units show the same codegen fingerprint.
 set(GOLDP_INLINE_EXPANSION_SOURCES
-  GolDP/src/camera/golcamerabase.cpp
   GolDP/src/material/duskwindbananarelic0x30.cpp
   GolDP/src/render/goldrawstate.cpp
   GolDP/src/render/golrasterizers1.cpp
@@ -196,7 +196,6 @@ add_library(goldp SHARED
   GolDP/src/scene/golbillboardex.cpp
   GolDP/src/surface/slatepeak0x58.cpp
   GolDP/src/surface/azureridge0x38.cpp
-  GolDP/src/camera/golcamerabase.cpp
   GolDP/src/camera/golcamera.cpp
   GolDP/src/camera/goltransform.cpp
   GolDP/src/device/ddrawutil.cpp
@@ -308,7 +307,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x213c.cpp
   LEGORacers/src/race/racesessionfield0x2148.cpp
   LEGORacers/src/race/racesessionfield0x23c.cpp
-  LEGORacers/src/race/racesessionfield0x27c8.cpp
+  LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racesessionfield0x27d4.cpp
   LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
   LEGORacers/src/race/racestatefield0xc70.cpp
@@ -321,16 +320,15 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x2804.cpp
   LEGORacers/src/race/racesessionfield0x2f90.cpp
   LEGORacers/src/race/racesessionfield0x30c4.cpp
-  LEGORacers/src/race/racesessionfield0x3104.cpp
+  LEGORacers/src/race/racerouterecord.cpp
   LEGORacers/src/race/racesessionfield0x32b4.cpp
   LEGORacers/src/race/racesessionfield0x32b4field0x004.cpp
-  LEGORacers/src/race/racesessionfield0x32b4field0x058.cpp
   LEGORacers/src/race/racesessionfield0x32c4.cpp
   LEGORacers/src/race/racesessionfield0x258.cpp
   LEGORacers/src/race/racesessionfield0x3300.cpp
   LEGORacers/src/race/racesessionfield0x340.cpp
   LEGORacers/src/race/racesessionfield0x6dc.cpp
-  LEGORacers/src/race/racestatefield0x008.cpp
+  LEGORacers/src/race/racepowerupmanagerglobals.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x170.cpp
   LEGORacers/src/race/racesessionfield0x6dcfield0x238.cpp
   LEGORacers/src/util/racerbillboardrenderstate0x33c.cpp
@@ -390,7 +388,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/racerunlockstate.cpp
   LEGORacers/src/menu/screens/racermodelscreenbase.cpp
   LEGORacers/src/menu/screens/racerpickscreenbase.cpp
-  LEGORacers/src/gol/golcamerabase.cpp
   LEGORacers/src/menu/runtime/cutscenedefinition.cpp
   LEGORacers/src/menu/screens/picklanguagescreen.cpp
   LEGORacers/src/menu/screens/optionsscreenbase.cpp

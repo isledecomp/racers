@@ -5,7 +5,7 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x6dc::Field0xf8, 0xf8)
+DECOMP_SIZE_ASSERT(RacePowerupManager::Field0xf8, 0xf8)
 
 extern const LegoFloat g_unk0x004afde0;
 
@@ -40,7 +40,7 @@ const LegoFloat g_raceSessionField0xf8PathDistanceLimitSquared = 90000.0f;
 extern const LegoFloat g_raceSessionField0xf8CollisionProbeDepth = 50.0f;
 
 // FUNCTION: LEGORACERS 0x00423590
-RaceSession::Field0x6dc::Field0xf8::Field0xf8()
+RacePowerupManager::Field0xf8::Field0xf8()
 {
 	m_unk0x0c4.m_x = 0.0f;
 	m_unk0x0c4.m_y = 0.0f;
@@ -61,7 +61,7 @@ RaceSession::Field0x6dc::Field0xf8::Field0xf8()
 }
 
 // FUNCTION: LEGORACERS 0x00423610
-RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0xf8::VTable0x10(undefined4 p_flags)
+RaceSessionField0x6dcField0xa8* RacePowerupManager::Field0xf8::VTable0x10(undefined4 p_flags)
 {
 	Field0xf8* result = this;
 	FUN_00423630();
@@ -73,15 +73,15 @@ RaceSessionField0x6dcField0xa8* RaceSession::Field0x6dc::Field0xf8::VTable0x10(u
 }
 
 // FUNCTION: LEGORACERS 0x00423630
-void RaceSession::Field0x6dc::Field0xf8::FUN_00423630()
+void RacePowerupManager::Field0xf8::FUN_00423630()
 {
 	RaceSessionField0x6dcField0xa8::~RaceSessionField0x6dcField0xa8();
 }
 
 // STUB: LEGORACERS 0x00423640
-void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
+void RacePowerupManager::Field0xf8::FUN_00423640(
 	LegoU32 p_elapsedMs,
-	RaceState::Racer::Field0x00c* p_unk0x08,
+	RaceState* p_unk0x08,
 	LegoFloat p_unk0x0c,
 	LegoFloat p_unk0x10,
 	LegoFloat p_unk0x14
@@ -142,7 +142,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
 			start.m_z += g_raceSessionField0xf8CollisionStartOffset;
 			end.m_z -= g_raceSessionField0xf8CollisionProbeDepth;
 
-			RaceSessionField0x32b4::Field0x0c record;
+			GolBoundingVolume::Field0x0c record;
 			if (m_unk0x00c->FUN_0041f730(&start, &end, &record, &hit)) {
 				m_unk0x0e8 = 1;
 				m_unk0x0dc.m_x = hit.m_x;
@@ -154,7 +154,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423640(
 }
 
 // FUNCTION: LEGORACERS 0x00423980
-void RaceSession::Field0x6dc::Field0xf8::FUN_00423980()
+void RacePowerupManager::Field0xf8::FUN_00423980()
 {
 	m_unk0x008->VTable0x04(&m_unk0x0a8);
 	m_unk0x0b4 = 0.0f;
@@ -190,7 +190,7 @@ void RaceSession::Field0x6dc::Field0xf8::FUN_00423980()
 }
 
 // STUB: LEGORACERS 0x00423a20
-LegoS32 RaceSession::Field0x6dc::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
+LegoS32 RacePowerupManager::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 {
 	LegoU32 state = m_unk0x004;
 	if (state != 1) {
@@ -210,7 +210,7 @@ LegoS32 RaceSession::Field0x6dc::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 	GolVec3 previousPosition;
 	GolVec3 start;
 	GolVec3 end;
-	RaceSessionField0x32b4::Field0x0c record;
+	GolBoundingVolume::Field0x0c record;
 
 	RaceState::Racer* target = m_unk0x0a0;
 	if (target != NULL) {
@@ -320,7 +320,7 @@ LegoS32 RaceSession::Field0x6dc::Field0xf8::VTable0x18(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00423ea0
-void RaceSession::Field0x6dc::Field0xf8::VTable0x1c(GolVec3* p_unk0x04)
+void RacePowerupManager::Field0xf8::VTable0x1c(GolVec3* p_unk0x04)
 {
 	p_unk0x04->m_x = m_unk0x0c4.m_x;
 	p_unk0x04->m_y = m_unk0x0c4.m_y;
@@ -328,11 +328,7 @@ void RaceSession::Field0x6dc::Field0xf8::VTable0x1c(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00423ed0
-void RaceSession::Field0x6dc::Field0xf8::FUN_00423ed0(
-	LegoFloat p_elapsedSeconds,
-	GolVec3* p_unk0x08,
-	GolVec3* p_unk0x0c
-)
+void RacePowerupManager::Field0xf8::FUN_00423ed0(LegoFloat p_elapsedSeconds, GolVec3* p_unk0x08, GolVec3* p_unk0x0c)
 {
 	m_unk0x0b4 += g_raceSessionField0xf8OscillationGrowth * p_elapsedSeconds;
 	if (m_unk0x0b8 <= m_unk0x0b4) {

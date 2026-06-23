@@ -94,7 +94,7 @@ private:
 		GolNameTable* p_nameTable,
 		GolString* p_string,
 		ResourceTable* p_resourceTable,
-		RaceState::Racer::Field0x00c* p_unk0x14,
+		RaceState* p_unk0x14,
 		TimeRaceManager* p_unk0x18,
 		GolStringTable* p_stringTable,
 		RaceState::Racer::Field0x004* p_unk0x20,
@@ -114,7 +114,7 @@ private:
 	GolString m_unk0x014;                     // 0x014
 	GolFontBase* m_unk0x020;                  // 0x020
 	GolFontBase* m_unk0x024;                  // 0x024
-	RaceState::Racer::Field0x00c* m_unk0x028; // 0x028
+	RaceState* m_unk0x028;                    // 0x028
 	RaceState::Racer* m_unk0x02c;             // 0x02c
 	TimeRaceManager* m_unk0x030;              // 0x030
 	LegoU32 m_unk0x034;                       // 0x034

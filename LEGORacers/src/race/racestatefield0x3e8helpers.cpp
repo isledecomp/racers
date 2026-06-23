@@ -264,8 +264,8 @@ void RaceState::Racer::Field0x3e8::FUN_00429210(
 	RaceEventTable0x90* p_unk0x08,
 	undefined4 p_unk0x0c,
 	GolAnimatedEntity* p_unk0x10,
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x14,
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x18,
+	GolBoundedEntity* p_unk0x14,
+	GolBoundedEntity* p_unk0x18,
 	Field0x004* p_unk0x1c,
 	LegoFloat p_unk0x20,
 	LegoFloat p_unk0x24,
@@ -1070,9 +1070,9 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042a7f0()
 // FUNCTION: LEGORACERS 0x0042a830
 LegoU32 RaceState::Racer::Field0x3e8::VTable0x0c(
 	GolVec3* p_unk0x04,
-	EventRecord* p_unk0x08,
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x0c,
-	EventContext* p_unk0x10
+	RaceEventRecord* p_unk0x08,
+	GolBoundedEntity* p_unk0x0c,
+	GolBoundingVolume::Field0x0c* p_unk0x10
 )
 {
 	if (p_unk0x0c == m_unk0x6fc) {
@@ -1087,16 +1087,16 @@ LegoU32 RaceState::Racer::Field0x3e8::VTable0x0c(
 		}
 	}
 
-	EventTarget* target = p_unk0x08->m_target;
+	RaceEventRecord::Target* target = p_unk0x08->m_target;
 	if (!target) {
 		return TRUE;
 	}
 
-	if (target->m_flags0x08 & EventTarget::c_flags0x08Bit18) {
+	if (target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Bit18) {
 		m_unk0x6f0->m_lapsCompleted = m_unk0x6f0->m_unk0xce0;
 	}
 
-	if (target->m_flags0x08 & EventTarget::c_flags0x08Bit3) {
+	if (target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Bit3) {
 		m_unk0x6f4->FUN_00462580(target->m_unk0x14, target->m_unk0x14, p_unk0x04);
 		m_unk0x6f4->FUN_00462ae0(target->m_unk0x14, target->m_unk0x14, m_unk0x6f0);
 	}
@@ -1116,8 +1116,8 @@ void RaceState::Racer::Field0x3e8::VTable0x10()
 	}
 
 	do {
-		EventRecord* record = entry->m_unk0x03c;
-		EventTarget* target0;
+		RaceEventRecord* record = entry->m_unk0x03c;
+		RaceEventRecord::Target* target0;
 		if (record == NULL) {
 			target0 = NULL;
 		}
@@ -1126,7 +1126,7 @@ void RaceState::Racer::Field0x3e8::VTable0x10()
 		}
 
 		record = entry->m_unk0x040;
-		EventTarget* target1;
+		RaceEventRecord::Target* target1;
 		if (record == NULL) {
 			target1 = NULL;
 		}
@@ -1145,8 +1145,8 @@ void RaceState::Racer::Field0x3e8::VTable0x10()
 			}
 		}
 
-		EventRecord* record0 = entry->m_unk0x03c;
-		EventRecord* record1 = entry->m_unk0x040;
+		RaceEventRecord* record0 = entry->m_unk0x03c;
+		RaceEventRecord* record1 = entry->m_unk0x040;
 		if (record0 != record1) {
 			LegoBool32 notify0 = target0 != NULL;
 			LegoBool32 notify1 = target1 != NULL;
@@ -1156,7 +1156,7 @@ void RaceState::Racer::Field0x3e8::VTable0x10()
 					continue;
 				}
 
-				EventRecord* otherRecord1 = other->m_unk0x040;
+				RaceEventRecord* otherRecord1 = other->m_unk0x040;
 				if (record0 == otherRecord1 || (record0 == other->m_unk0x03c && other < entry)) {
 					notify0 = FALSE;
 				}
@@ -1180,43 +1180,43 @@ void RaceState::Racer::Field0x3e8::VTable0x10()
 }
 
 // FUNCTION: LEGORACERS 0x0042aa30
-void RaceState::Racer::Field0x3e8::FUN_0042aa30(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+void RaceState::Racer::Field0x3e8::FUN_0042aa30(Field0x198* p_unk0x04, RaceEventRecord::Target* p_unk0x08)
 {
-	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x0c) {
+	if (p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x0c) {
 		m_unk0x6f4->FUN_00461ef0(p_unk0x08->m_unk0x0c, &p_unk0x04->m_unk0x00c);
 		m_unk0x6f4->FUN_004628c0(p_unk0x08->m_unk0x0c, m_unk0x6f0);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042aa70
-void RaceState::Racer::Field0x3e8::FUN_0042aa70(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+void RaceState::Racer::Field0x3e8::FUN_0042aa70(Field0x198* p_unk0x04, RaceEventRecord::Target* p_unk0x08)
 {
-	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x34) {
+	if (p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x34) {
 		if (p_unk0x08->m_unk0x34 == m_unk0x73c) {
 			FUN_0042b060();
 		}
 	}
 
-	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x10) {
+	if (p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x10) {
 		m_unk0x6f4->FUN_00462140(p_unk0x08->m_unk0x10, &p_unk0x04->m_unk0x00c);
 		m_unk0x6f4->FUN_004629d0(p_unk0x08->m_unk0x10, m_unk0x6f0);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042aad0
-void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarget* p_unk0x08)
+void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, RaceEventRecord::Target* p_unk0x08)
 {
 	if (!(p_unk0x04->m_flags0x048 & 1)) {
 		FUN_0042acb0(p_unk0x04);
 		return;
 	}
 
-	if (p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x34) {
+	if (p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x34) {
 		FUN_0042af90(p_unk0x08->m_unk0x34);
 	}
 
 	LegoU32 disabledMask = c_flags0x6c0Bit20;
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x58) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x58) && !(m_flags0x6c0 & disabledMask)) {
 		LegoFloat value = p_unk0x08->m_unk0x58;
 		p_unk0x04->m_unk0x050 = value;
 		if (m_unk0x6f0->m_unk0x014) {
@@ -1230,7 +1230,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		}
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x48) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x48) && !(m_flags0x6c0 & disabledMask)) {
 		LegoFloat value = p_unk0x08->m_unk0x48;
 		p_unk0x04->m_unk0x054 = value;
 	}
@@ -1238,7 +1238,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		p_unk0x04->m_unk0x054 = g_unk0x004b0460;
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x4c) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x4c) && !(m_flags0x6c0 & disabledMask)) {
 		LegoFloat value = p_unk0x08->m_unk0x4c;
 		p_unk0x04->m_unk0x058 = value;
 	}
@@ -1246,7 +1246,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		p_unk0x04->m_unk0x058 = g_unk0x004b0464;
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x50) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x50) && !(m_flags0x6c0 & disabledMask)) {
 		LegoFloat value = p_unk0x08->m_unk0x50;
 		p_unk0x04->m_unk0x05c = value;
 	}
@@ -1254,7 +1254,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		p_unk0x04->m_unk0x05c = g_unk0x004b0458;
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x54) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x54) && !(m_flags0x6c0 & disabledMask)) {
 		LegoFloat value = p_unk0x08->m_unk0x54;
 		p_unk0x04->m_unk0x060 = value;
 	}
@@ -1262,7 +1262,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		p_unk0x04->m_unk0x060 = g_unk0x004b045c;
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x28) && !(m_flags0x6c0 & disabledMask)) {
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x28) && !(m_flags0x6c0 & disabledMask)) {
 		p_unk0x04->m_unk0x064 = p_unk0x08->m_unk0x28;
 	}
 	else {
@@ -1271,7 +1271,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, EventTarg
 		p_unk0x04->m_unk0x064.m_z = 0.0f;
 	}
 
-	if ((p_unk0x08->m_flags0x08 & EventTarget::c_flags0x08Unk0x40) &&
+	if ((p_unk0x08->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x40) &&
 		!(m_flags0x6c0 & (c_flags0x6c0Bit3 | c_flags0x6c0Bit7)) && m_unk0x618 > g_unk0x004b0468 &&
 		m_unk0x6f0->m_unk0xd08 != 2) {
 		GolName name;
@@ -1922,8 +1922,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00444b40()
 // FUNCTION: LEGORACERS 0x00444d90
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00444d90(
 	GolAnimatedEntity* p_unk0x04,
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x08,
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* p_unk0x0c,
+	GolBoundedEntity* p_unk0x08,
+	GolBoundedEntity* p_unk0x0c,
 	Field0x004* p_unk0x10,
 	LegoFloat p_unk0x14,
 	LegoFloat p_unk0x18,
@@ -2613,26 +2613,21 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 
 	LegoFloat bestDistance = -FLT_MAX;
 	Field0x198* selectedEntry = NULL;
-	EventContext* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
-	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
+	GolBoundingVolume::Field0x0c* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
+	GolBoundingVolume::Field0x0c* collisionContext = eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
+		GolBoundedEntity* resource = m_unk0x140[resourceIndex];
 		FUN_00448d90(resource, sweepHeight, sweepDistance);
 
 		entry = entries;
 		while (entry < entriesEnd) {
 			if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
-				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
-				if (!resource->m_unk0x5c) {
-					query->m_unk0x24 = &query->m_unk0x18;
-				}
-				else {
-					query->m_unk0x24 = resource->m_unk0x5c;
-				}
+				GolBoundingVolume* query = resource->GetUnk0x58();
+				query->SetUnk0x24(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
-				RaceSessionField0x32b4::Field0x10* hitRecord;
+				RaceEventRecord* hitRecord;
 				if (query->FUN_00403fa0(
 						&entry->m_unk0x018,
 						&entry->m_unk0x024,
@@ -2641,7 +2636,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 						&hitRecord,
 						NULL
 					)) {
-					entry->m_unk0x03c = (EventRecord*) hitRecord;
+					entry->m_unk0x03c = hitRecord;
 					entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
 					resource->VTable0x2c(hitPoint, &entry->m_unk0x030);
 
@@ -2664,7 +2659,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 		}
 	}
 
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* baseResource = m_unk0x140[0];
+	GolBoundedEntity* baseResource = m_unk0x140[0];
 	entry = entries;
 	while (entry < entriesEnd) {
 		if (entry->m_flags0x048 & Field0x198::c_flags0x048Hit) {
@@ -2680,15 +2675,10 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 		entry->m_unk0x024.m_z = entry->m_unk0x00c.m_z - sweepDistance;
 
 		if (!FUN_00448ae0(entry)) {
-			RaceSessionField0x32b4::Field0x058* query = baseResource->m_unk0x58;
-			if (!baseResource->m_unk0x5c) {
-				query->m_unk0x24 = &query->m_unk0x18;
-			}
-			else {
-				query->m_unk0x24 = baseResource->m_unk0x5c;
-			}
+			GolBoundingVolume* query = baseResource->GetUnk0x58();
+			query->SetUnk0x24(baseResource->GetMaterialTable());
 
-			RaceSessionField0x32b4::Field0x10* hitRecord;
+			RaceEventRecord* hitRecord;
 			if (query->FUN_00403fa0(
 					&entry->m_unk0x018,
 					&entry->m_unk0x024,
@@ -2697,7 +2687,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 					&hitRecord,
 					NULL
 				)) {
-				entry->m_unk0x03c = (EventRecord*) hitRecord;
+				entry->m_unk0x03c = hitRecord;
 				entry->m_unk0x044 = FUN_00448a70(eventContext, entry->m_unk0x03c);
 			}
 			else {
@@ -2940,11 +2930,11 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 	LegoFloat bestDistance = -FLT_MAX;
 	Field0x198* selectedEntry = NULL;
 	LegoS32 selectedIndex = 0;
-	EventContext* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
-	RaceSessionField0x32b4::Field0x0c* collisionContext = (RaceSessionField0x32b4::Field0x0c*) eventContext;
+	GolBoundingVolume::Field0x0c* eventContext = g_raceStateField0x3e8SnapshotEntries.GetEventContext();
+	GolBoundingVolume::Field0x0c* collisionContext = eventContext;
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
+		GolBoundedEntity* resource = m_unk0x140[resourceIndex];
 
 		LegoS32 entryIndex = 0;
 		for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
@@ -2957,16 +2947,11 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 			resource->VTable0x30(entry->m_unk0x018, &start);
 			resource->VTable0x30(entry->m_unk0x024, &end);
 
-			RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
-			if (!resource->m_unk0x5c) {
-				query->m_unk0x24 = &query->m_unk0x18;
-			}
-			else {
-				query->m_unk0x24 = resource->m_unk0x5c;
-			}
+			GolBoundingVolume* query = resource->GetUnk0x58();
+			query->SetUnk0x24(resource->GetMaterialTable());
 
 			GolVec3 hitPoint;
-			RaceSessionField0x32b4::Field0x10* hitRecord;
+			RaceEventRecord* hitRecord;
 			if (!query->FUN_00403fa0(&start, &end, collisionContext, &hitPoint, &hitRecord, NULL)) {
 				continue;
 			}
@@ -2978,12 +2963,12 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 			resource->VTable0x34(collisionNormal, &entry->m_unk0x000);
 
 			if (entryIndex == 0) {
-				m_unk0x198[0].m_unk0x03c = (EventRecord*) hitRecord;
-				m_unk0x198[1].m_unk0x03c = (EventRecord*) hitRecord;
+				m_unk0x198[0].m_unk0x03c = hitRecord;
+				m_unk0x198[1].m_unk0x03c = hitRecord;
 			}
 			else {
-				m_unk0x198[2].m_unk0x03c = (EventRecord*) hitRecord;
-				m_unk0x198[3].m_unk0x03c = (EventRecord*) hitRecord;
+				m_unk0x198[2].m_unk0x03c = hitRecord;
+				m_unk0x198[3].m_unk0x03c = hitRecord;
 			}
 
 			LegoFloat deltaX = end.m_x - hitPoint.m_x;
@@ -2999,20 +2984,15 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 		}
 	}
 
-	RaceSessionField0x32b4::Field0x000::Field0x0a8* baseResource = m_unk0x140[0];
+	GolBoundedEntity* baseResource = m_unk0x140[0];
 	LegoS32 entryIndex = 0;
 	for (entry = entries; entry < entriesEnd; entry++, entryIndex++) {
 		if (!(entry->m_flags0x048 & Field0x198::c_flags0x048Hit)) {
 			if (!FUN_00448ae0(entry)) {
-				RaceSessionField0x32b4::Field0x058* query = baseResource->m_unk0x58;
-				if (!baseResource->m_unk0x5c) {
-					query->m_unk0x24 = &query->m_unk0x18;
-				}
-				else {
-					query->m_unk0x24 = baseResource->m_unk0x5c;
-				}
+				GolBoundingVolume* query = baseResource->GetUnk0x58();
+				query->SetUnk0x24(baseResource->GetMaterialTable());
 
-				RaceSessionField0x32b4::Field0x10* hitRecord;
+				RaceEventRecord* hitRecord;
 				if (!query->FUN_00403fa0(
 						&entry->m_unk0x018,
 						&entry->m_unk0x024,
@@ -3024,15 +3004,15 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 					continue;
 				}
 
-				entry->m_unk0x044 = FUN_00448a70(eventContext, (EventRecord*) hitRecord);
+				entry->m_unk0x044 = FUN_00448a70(eventContext, hitRecord);
 
 				if (entryIndex == 0) {
-					m_unk0x198[0].m_unk0x03c = (EventRecord*) hitRecord;
-					m_unk0x198[1].m_unk0x03c = (EventRecord*) hitRecord;
+					m_unk0x198[0].m_unk0x03c = hitRecord;
+					m_unk0x198[1].m_unk0x03c = hitRecord;
 				}
 				else {
-					m_unk0x198[2].m_unk0x03c = (EventRecord*) hitRecord;
-					m_unk0x198[3].m_unk0x03c = (EventRecord*) hitRecord;
+					m_unk0x198[2].m_unk0x03c = hitRecord;
+					m_unk0x198[3].m_unk0x03c = hitRecord;
 				}
 			}
 
@@ -3434,7 +3414,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004474c0()
 	while (entry < self->m_unk0x198 + sizeOfArray(self->m_unk0x198)) {
 		snapshotEntry->m_unk0x000 = entry->m_unk0x00c;
 
-		EventRecord* record = entry->m_unk0x03c;
+		RaceEventRecord* record = entry->m_unk0x03c;
 		entry->m_unk0x040 = record;
 		snapshotEntry->m_unk0x030 = record;
 
@@ -3527,7 +3507,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447880()
 // STUB: LEGORACERS 0x004478b0
 LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs, LegoBool32 p_unk0x08)
 {
-	RaceSessionField0x32b4::Field0x10* hitRecord = NULL;
+	RaceEventRecord* hitRecord = NULL;
 	m_unk0x3ec = 0;
 	LegoFloat bestDistance = -FLT_MAX;
 	LegoFloat hitAmount;
@@ -3540,7 +3520,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 	}
 
 	for (LegoU32 resourceIndex = 1; resourceIndex < m_unk0x154; resourceIndex++) {
-		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[resourceIndex];
+		GolBoundedEntity* resource = m_unk0x140[resourceIndex];
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
 			if (!m_unk0x3d0[pointIndex]) {
@@ -3550,19 +3530,14 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 				);
 				resource->VTable0x30(m_unk0x3a0[pointIndex], &g_raceStateField0x3e8Snapshot0x040[pointIndex]);
 
-				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
-				if (!resource->m_unk0x5c) {
-					query->m_unk0x24 = &query->m_unk0x18;
-				}
-				else {
-					query->m_unk0x24 = resource->m_unk0x5c;
-				}
+				GolBoundingVolume* query = resource->GetUnk0x58();
+				query->SetUnk0x24(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
 				if (query->FUN_00403fa0(
 						&g_raceStateField0x3e8Snapshot0x070[pointIndex],
 						&g_raceStateField0x3e8Snapshot0x040[pointIndex],
-						(RaceSessionField0x32b4::Field0x0c*) g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
+						g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
 						&hitPoint,
 						&hitRecord,
 						&hitAmount
@@ -3579,7 +3554,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 					if (dot > 0.0f) {
 						if (hitRecord && !VTable0x0c(
 											 &worldNormal,
-											 (EventRecord*) hitRecord,
+											 hitRecord,
 											 resource,
 											 g_raceStateField0x3e8SnapshotEntries.GetEventContext()
 										 )) {
@@ -3605,23 +3580,18 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 	}
 
 	if (p_unk0x08) {
-		RaceSessionField0x32b4::Field0x000::Field0x0a8* resource = m_unk0x140[0];
+		GolBoundedEntity* resource = m_unk0x140[0];
 
 		for (LegoS32 pointIndex = 0; pointIndex < sizeOfArray(m_unk0x3a0); pointIndex++) {
 			if (!m_unk0x3d0[pointIndex]) {
-				RaceSessionField0x32b4::Field0x058* query = resource->m_unk0x58;
-				if (!resource->m_unk0x5c) {
-					query->m_unk0x24 = &query->m_unk0x18;
-				}
-				else {
-					query->m_unk0x24 = resource->m_unk0x5c;
-				}
+				GolBoundingVolume* query = resource->GetUnk0x58();
+				query->SetUnk0x24(resource->GetMaterialTable());
 
 				GolVec3 hitPoint;
 				if (query->FUN_00403fa0(
 						&g_raceStateField0x3e8Snapshot0x000[pointIndex],
 						&m_unk0x3a0[pointIndex],
-						(RaceSessionField0x32b4::Field0x0c*) g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
+						g_raceStateField0x3e8SnapshotEntries.GetEventContext(),
 						&hitPoint,
 						&hitRecord,
 						&hitAmount
@@ -3637,7 +3607,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 						GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24;
 						if (hitRecord && !VTable0x0c(
 											 &collisionNormal,
-											 (EventRecord*) hitRecord,
+											 hitRecord,
 											 resource,
 											 g_raceStateField0x3e8SnapshotEntries.GetEventContext()
 										 )) {

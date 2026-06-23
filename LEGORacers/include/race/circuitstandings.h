@@ -29,6 +29,7 @@ private:
 
 	void FUN_004402b0();
 	void FUN_004402c0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+	LegoU32 FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time);
 
 	enum {
 		c_racerCount = 6,

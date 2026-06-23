@@ -48,7 +48,9 @@ public:
 	~ChampionDefinitionList() override; // vtable+0x00
 
 	void Clear() override; // vtable+0x08
+	void ClearDefinitions();
 	void FUN_0041d370(const LoadParams* p_params);
+	LegoBool32 HasDefinitions() const { return m_definitions != NULL; }
 
 	// SYNTHETIC: LEGORACERS 0x0041d1f0
 	// ChampionDefinitionList::`scalar deleting destructor'
@@ -57,7 +59,6 @@ private:
 	friend class RaceState;
 
 	void Reset();
-	void ClearDefinitions();
 	GolModelEntity* FUN_0041d780(const LegoChar* p_name);
 	GolModelEntity* FUN_0041d7a0(ChampionDefinition* p_definition);
 

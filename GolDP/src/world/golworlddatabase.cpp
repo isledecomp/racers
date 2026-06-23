@@ -1,6 +1,5 @@
 #include "world/golworlddatabase.h"
 
-#include "camera/golcamerabase.h"
 #include "camera/goltransform.h"
 #include "cmbmodelpart0x34.h"
 #include "golanimatedentity.h"
@@ -8,6 +7,7 @@
 #include "golboundedentity.h"
 #include "golboundingshape.h"
 #include "golboundingvolume.h"
+#include "golcamerabase.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
 #include "golmath.h"

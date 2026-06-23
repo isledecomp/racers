@@ -136,6 +136,8 @@ public:
 			void FUN_00404e80();
 			GolWorldEntity* GetEntity() const { return m_unk0x24; }
 			void SetEntity(GolWorldEntity* p_entity) { m_unk0x24 = p_entity; }
+			LegoU32 GetAnimationCount() const { return m_unk0x5c; }
+			Animation* GetAnimation(LegoU32 p_index) const { return &m_unk0x60[p_index]; }
 
 			// SYNTHETIC: LEGORACERS 0x00405df0
 			// CutsceneDefinition::Frame::ModelEvent::`vector deleting destructor'

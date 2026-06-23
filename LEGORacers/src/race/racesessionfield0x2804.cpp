@@ -2,11 +2,13 @@
 #include "golerror.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2804::Entry, 0x14)
+#include <float.h>
+
+DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x050::Entry, 0x14)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2804, 0x08)
 
 // FUNCTION: LEGORACERS 0x0045c340
-RaceSession::Field0x2804::Entry::Entry()
+RacePowerupManager::Field0x050::Entry::Entry()
 {
 	m_unk0x00.m_x = 0.0f;
 	m_unk0x00.m_y = 0.0f;
@@ -16,7 +18,7 @@ RaceSession::Field0x2804::Entry::Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c360
-RaceSession::Field0x2804::Entry::~Entry()
+RacePowerupManager::Field0x050::Entry::~Entry()
 {
 	m_unk0x0c = -1;
 	m_unk0x00.m_x = 0.0f;
@@ -26,7 +28,7 @@ RaceSession::Field0x2804::Entry::~Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c380
-void RaceSession::Field0x2804::Entry::FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08)
+void RacePowerupManager::Field0x050::Entry::FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08)
 {
 	m_unk0x00.m_x = p_unk0x04->m_x;
 	m_unk0x00.m_y = p_unk0x04->m_y;
@@ -79,7 +81,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 		return;
 	}
 
-	m_entries = new Entry[m_count];
+	m_entries = new RacePowerupManager::Field0x050::Entry[m_count];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -135,4 +137,54 @@ void RaceSession::Field0x2804::Reset()
 	}
 
 	m_count = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0045c6a0
+RacePowerupManager::Field0x050::Entry* RacePowerupManager::Field0x050::FUN_0045c6a0(
+	GolVec3* p_unk0x04,
+	GolVec3* p_unk0x08,
+	LegoFloat p_unk0x0c,
+	LegoFloat p_unk0x10,
+	LegoFloat p_unk0x14
+)
+{
+	LegoFloat nearestDistanceSquared = FLT_MAX;
+	LegoS32 resultIndex = -1;
+
+	for (LegoS32 i = 0; i < m_count; i++) {
+		Entry& entry = m_entries[i];
+
+		if (entry.m_flags0x10 & Entry::c_flags0x10Bit1) {
+			GolVec3 position = entry.m_unk0x00;
+			LegoFloat deltaX = position.m_x - p_unk0x04->m_x;
+			GolVec2 deltaYZ;
+			deltaYZ.m_x = position.m_y - p_unk0x04->m_y;
+			deltaYZ.m_y = position.m_z - p_unk0x04->m_z;
+			LegoFloat distanceSquared = deltaYZ.m_y * deltaYZ.m_y + deltaYZ.m_x * deltaYZ.m_x + deltaX * deltaX;
+
+			if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
+				GolVec3 delta;
+				delta.m_x = deltaX;
+				delta.m_y = deltaYZ.m_x;
+				delta.m_z = deltaYZ.m_y;
+				GolMath::NormalizeVector3(delta, &delta);
+
+				LegoFloat dotProduct = p_unk0x08->m_z;
+				dotProduct *= delta.m_z;
+				LegoFloat dotProductY = p_unk0x08->m_y;
+				dotProduct += dotProductY * delta.m_y;
+				dotProduct += delta.m_x * p_unk0x08->m_x;
+				if (dotProduct >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
+					resultIndex = i;
+					nearestDistanceSquared = distanceSquared;
+				}
+			}
+		}
+	}
+
+	if (resultIndex < 0) {
+		return NULL;
+	}
+
+	return &m_entries[resultIndex];
 }

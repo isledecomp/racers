@@ -162,7 +162,7 @@ extern const LegoFloat g_ghostSpeedScale;
 extern const LegoFloat g_twoPi;
 
 // GLOBAL: LEGORACERS 0x004c4868
-RaceState::Racer::Field0x3e8::Field0x74c g_raceStateField0x3e8PathState0x004c4868;
+RaceState::Racer::Field0x3e8::Field0x74cInstance g_raceStateField0x3e8PathState0x004c4868;
 
 // GLOBAL: LEGORACERS 0x004c48e0
 GolMatrix3 g_raceStateField0x3e8PathOrientation0x004c48e0;

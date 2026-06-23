@@ -115,7 +115,7 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
 	const CmbModelPartData0x28& activePart = modelPart->GetPartData()[m_unk0xbc];
 	LegoU32 activeTrackIndex = activePart.GetTrackIndex();
-	LegoU16 activeFrameCount;
+	LegoS32 activeFrameCount;
 	LegoFloat activeTime;
 	if (m_flags & c_flagLoopCurrentPart) {
 		activeFrameCount = activePart.GetLoopFrameCount();
@@ -128,7 +128,7 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 
 	LegoBool32 hasQueuedPart = FALSE;
 	LegoU32 queuedTrackIndex = 0;
-	LegoU16 queuedFrameCount = 0;
+	LegoS32 queuedFrameCount = 0;
 	LegoFloat queuedTime = 0.0f;
 	if (m_flags & c_flagPartTransition) {
 		if (m_unk0xd8 < modelPart->GetPartCount()) {
@@ -150,9 +150,23 @@ void GolAnimatedEntity::VTable0x5c(LegoU32 p_index)
 		GolTransformBase* orbit = node->VTable0x18(i);
 
 		GolVec3 activePosition;
+		activePosition.m_x = 0.0f;
+		activePosition.m_y = 0.0f;
+		activePosition.m_z = 0.0f;
 		GolQuat activeRotation;
+		activeRotation.m_x = 0.0f;
+		activeRotation.m_y = 0.0f;
+		activeRotation.m_z = 0.0f;
+		activeRotation.m_w = 1.0f;
 		GolVec3 queuedPosition;
+		queuedPosition.m_x = 0.0f;
+		queuedPosition.m_y = 0.0f;
+		queuedPosition.m_z = 0.0f;
 		GolQuat queuedRotation;
+		queuedRotation.m_x = 0.0f;
+		queuedRotation.m_y = 0.0f;
+		queuedRotation.m_z = 0.0f;
+		queuedRotation.m_w = 1.0f;
 		LegoBool32 hasActivePosition = animationData.InterpolatePosition(
 			&activePosition,
 			modelPart->GetTrack(activeTrackIndex + i),
@@ -627,7 +641,7 @@ void GolAnimatedEntity::FUN_0040e3c0(
 	LegoU32 trackIndex = part.GetTrackIndex();
 	trackIndex += p_trackOffset;
 	const CmbModelPartTrack0x14& track = modelPart->GetTrack(trackIndex);
-	LegoU16 frameCount = part.GetFrameCount();
+	LegoS32 frameCount = part.GetFrameCount();
 
 	animationData.InterpolatePosition(p_dest, track, time, frameCount);
 }
@@ -650,7 +664,7 @@ void GolAnimatedEntity::FUN_0040e420(
 	LegoU32 trackIndex = part.GetTrackIndex();
 	trackIndex += p_trackOffset;
 	const CmbModelPartTrack0x14& track = modelPart->GetTrack(trackIndex);
-	LegoU16 frameCount = part.GetFrameCount();
+	LegoS32 frameCount = part.GetFrameCount();
 
 	animationData.InterpolateRotation(p_dest, track, time, frameCount);
 }

@@ -364,7 +364,7 @@ RacePowerupManager::Field0x18a0::~Field0x18a0()
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void RacePowerupManager::Field0x18a0::FUN_004519d0(Field0x0** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
+void RacePowerupManager::Field0x18a0::FUN_004519d0(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
 {
 	if (m_unk0x004 != 0) {
 		FUN_00451a10();
@@ -372,7 +372,7 @@ void RacePowerupManager::Field0x18a0::FUN_004519d0(Field0x0** p_unk0x04, RaceSes
 
 	m_unk0x01c = p_unk0x04;
 	m_unk0x020 = p_unk0x08;
-	m_unk0x0d8 = (*p_unk0x04)->CreateBillboard();
+	m_unk0x0d8 = static_cast<GolBillboard*>((*p_unk0x04)->VTable0x30());
 	m_unk0x004 = 1;
 }
 
@@ -623,7 +623,7 @@ void RacePowerupManager::Field0x18a0::VTable0x14()
 	projectileParams.m_unk0x00 = m_unk0x0d8;
 	projectileParams.m_unk0x04 = m_unk0x020;
 	projectileParams.m_unk0x08 = g_unk0x004b1394;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_unk0x074->GetEventQueue();
+	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
 	projectileParams.m_unk0x10.m_x = 0.0f;
 	projectileParams.m_unk0x10.m_y = 0.0f;
 	projectileParams.m_unk0x10.m_z = 0.0f;
@@ -765,7 +765,7 @@ void RacePowerupManager::Field0x189c::FUN_004524f0()
 	m_unk0x30 = 0;
 	m_unk0x34 = 0;
 	m_unk0x38 = 0;
-	m_unk0x018 = 0;
+	m_raceState0x018 = NULL;
 	m_unk0x020 = 0;
 	m_unk0x64 = 0;
 }
@@ -779,12 +779,12 @@ void RacePowerupManager::Field0x189c::FUN_00452510()
 
 // FUNCTION: LEGORACERS 0x00452530
 void RacePowerupManager::Field0x189c::FUN_00452530(
-	Field0x074* p_unk0x04,
+	RaceState* p_raceState,
 	RaceSessionField0x32b4* p_unk0x08,
 	RacePowerupManager* p_unk0x0c
 )
 {
-	m_unk0x018 = p_unk0x04;
+	m_raceState0x018 = p_raceState;
 	m_unk0x020 = p_unk0x08;
 	m_unk0x2c = p_unk0x0c;
 	m_unk0x004 = 1;
@@ -1069,7 +1069,7 @@ void RacePowerupManager::Field0x189c::VTable0x14()
 	descriptor.m_unk0x08 = 0;
 	descriptor.m_unk0x0c = 0;
 	descriptor.m_worldEntity = &m_unk0x3c;
-	m_unk0x01c = m_unk0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
+	m_unk0x01c = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00452da0
@@ -1110,14 +1110,14 @@ void RacePowerupManager::Field0x1898::FUN_00452eb0()
 
 // FUNCTION: LEGORACERS 0x00452ee0
 void RacePowerupManager::Field0x1898::FUN_00452ee0(
-	Field0x074* p_unk0x04,
+	RaceState* p_raceState,
 	RaceSessionField0x32b4* p_unk0x08,
 	RacePowerupManager* p_unk0x0c,
 	undefined4 p_unk0x10,
 	GolModelEntity* p_model
 )
 {
-	m_unk0x018 = p_unk0x04;
+	m_raceState0x018 = p_raceState;
 	m_unk0x020 = p_unk0x08;
 	m_unk0x164 = p_unk0x0c;
 	m_unk0x168 = p_unk0x10;
@@ -1257,7 +1257,7 @@ void RacePowerupManager::Field0x1898::VTable0x14()
 		projectileParams.m_unk0x00 = &m_unk0x02c;
 		projectileParams.m_unk0x04 = m_unk0x020;
 		projectileParams.m_unk0x08 = -32.1759987f;
-		projectileParams.m_unk0x0c = m_unk0x164->GetUnk0x074()->GetEventQueue();
+		projectileParams.m_unk0x0c = m_unk0x164->GetRaceState()->GetEventQueue();
 		projectileParams.m_unk0x10.m_x = 0.0f;
 		projectileParams.m_unk0x10.m_y = 0.0f;
 		projectileParams.m_unk0x10.m_z = 0.0f;
@@ -1633,7 +1633,7 @@ void RacePowerupManager::Field0x18a4::FUN_00453cd0(
 	m_unk0x030.VTable0x20(&params);
 
 	m_unk0x004 = 1;
-	m_unk0x270 = params.m_unk0x00->CreateBillboard();
+	m_unk0x270 = static_cast<GolBillboard*>(params.m_unk0x00->VTable0x30());
 }
 
 // FUNCTION: LEGORACERS 0x00453d90
@@ -1918,7 +1918,7 @@ void RacePowerupManager::Field0x18a4::VTable0x14()
 	projectileParams.m_unk0x00 = m_unk0x268;
 	projectileParams.m_unk0x04 = m_unk0x020;
 	projectileParams.m_unk0x08 = g_unk0x004b14f0;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_unk0x074->GetEventQueue();
+	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
 	projectileParams.m_unk0x10.m_x = 0.0f;
 	projectileParams.m_unk0x10.m_y = 0.0f;
 	projectileParams.m_unk0x10.m_z = 0.0f;
@@ -2052,7 +2052,7 @@ RacePowerupManager::Field0x18a8::~Field0x18a8()
 }
 
 // FUNCTION: LEGORACERS 0x004548f0
-void RacePowerupManager::Field0x18a8::FUN_004548f0(Field0x0* p_export, RacePowerupManager* p_unk0x08)
+void RacePowerupManager::Field0x18a8::FUN_004548f0(GolExport* p_export, RacePowerupManager* p_unk0x08)
 {
 	if (m_unk0x004 != 0) {
 		FUN_00454ab0();
@@ -2091,7 +2091,7 @@ void RacePowerupManager::Field0x18a8::FUN_004548f0(Field0x0* p_export, RacePower
 	m_unk0x030.FUN_00493c90(&params);
 	m_unk0x030.FUN_00494820(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
 
-	m_unk0x248 = p_export->CreateBillboard();
+	m_unk0x248 = static_cast<GolBillboard*>(p_export->VTable0x30());
 	DuskwindBananaRelic0x24* material = renderer->FindMaterialByName("ltflash");
 	m_unk0x248->VTable0x4c(material, g_unk0x004b15a0, g_unk0x004b15a4, g_unk0x004b1550);
 
@@ -2629,16 +2629,16 @@ void RacePowerupManager::Field0x1890::FUN_004557e0()
 // FUNCTION: LEGORACERS 0x00455810
 void RacePowerupManager::Field0x1890::FUN_00455810(
 	RacePowerupManager* p_unk0x04,
-	Field0x074* p_unk0x08,
+	RaceState* p_raceState,
 	RaceSessionField0x32b4* p_unk0x0c,
 	undefined4,
-	Field0x0*,
+	GolExport*,
 	GolD3DRenderDevice*,
 	undefined4
 )
 {
 	m_unk0x38 = p_unk0x04;
-	m_unk0x018 = p_unk0x08;
+	m_raceState0x018 = p_raceState;
 	m_unk0x020 = p_unk0x0c;
 	m_unk0x004 = 1;
 }
@@ -3030,13 +3030,13 @@ void RacePowerupManager::Field0x1890::FUN_004560b0()
 	descriptor.m_unk0x08 = 0;
 	descriptor.m_unk0x0c = 0;
 	descriptor.m_data = &m_unk0x48;
-	m_unk0x01c = m_unk0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
+	m_unk0x01c = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x004562d0
 RacePowerupManager::ResourceBase0x2c::ResourceBase0x2c()
 {
-	m_unk0x018 = 0;
+	m_raceState0x018 = NULL;
 	m_unk0x01c = 0;
 	m_unk0x020 = 0;
 	m_unk0x024 = 0;
@@ -3113,7 +3113,7 @@ RacePowerupManager::Field0x18ac::~Field0x18ac()
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void RacePowerupManager::Field0x18ac::FUN_00456510(Field0x0** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
+void RacePowerupManager::Field0x18ac::FUN_00456510(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
 {
 	if (m_unk0x004 != 0) {
 		FUN_00456540();
@@ -3197,7 +3197,7 @@ void RacePowerupManager::Field0x18ac::FUN_00456680()
 	projectileParams.m_unk0x00 = &m_unk0x128;
 	projectileParams.m_unk0x04 = m_unk0x020;
 	projectileParams.m_unk0x08 = g_unk0x004b1670;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_unk0x074->GetEventQueue();
+	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
 	projectileParams.m_unk0x10.m_x = 0.0f;
 	projectileParams.m_unk0x10.m_y = 0.0f;
 	projectileParams.m_unk0x10.m_z = 0.0f;
@@ -3538,16 +3538,16 @@ void RacePowerupManager::Field0x1894::FUN_00457170()
 // FUNCTION: LEGORACERS 0x004571b0
 void RacePowerupManager::Field0x1894::FUN_004571b0(
 	RacePowerupManager* p_unk0x04,
-	Field0x074* p_unk0x08,
+	RaceState* p_raceState,
 	GolCollidableEntity* p_unk0x0c,
 	RaceSessionField0x32b4* p_unk0x10,
 	CutsceneAnimation* p_unk0x14,
 	GolRenderDevice* p_renderer,
-	Field0x0* p_export
+	GolExport* p_export
 )
 {
 	m_unk0x02c = p_unk0x04;
-	m_unk0x018 = p_unk0x08;
+	m_raceState0x018 = p_raceState;
 	m_unk0x020 = p_unk0x10;
 	m_unk0x18c = p_unk0x0c;
 	m_unk0x05c = p_unk0x14;
@@ -3667,7 +3667,7 @@ void RacePowerupManager::Field0x1894::VTable0x14()
 	descriptor.m_unk0x08 = 0;
 	descriptor.m_unk0x0c = 0;
 	descriptor.m_data = &m_unk0x030;
-	LegoEventQueue::Event* event = m_unk0x018->GetEventQueue()->FUN_0042fb50(callback, &descriptor);
+	LegoEventQueue::Event* event = m_raceState0x018->GetEventQueue()->FUN_0042fb50(callback, &descriptor);
 
 	CutsceneAnimation* animation = m_unk0x05c;
 	m_unk0x01c = event;

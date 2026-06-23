@@ -105,10 +105,7 @@ address,type,size
 0x4b1684,float,4
 0x4b1688,float,4
 0x4b1e3c,float,4
-0x4b2a34,float,4
 0x4b2b00,float,4
-0x4b2cf4,float,4
-0x4b2e6c,float,4
 0x4b2e70,float,4
 0x4b2e74,float,4
 0x4b2e78,float,4
@@ -126,7 +123,6 @@ address,type,size
 0x4b2ef4,float,4
 0x4b2ef8,float,4
 0x4b2efc,float,4
-0x4b3510,float,4
 0x4b3514,float,4
 0x4b3770,float,4
 0x4b39c8,float,4

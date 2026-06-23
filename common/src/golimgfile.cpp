@@ -738,9 +738,8 @@ void GolImgFile::FUN_100212f0(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 {
 	LegoU16* endDst = p_dst + m_width;
-	LegoU16* dstOff1;
 	if (m_hasColorKey) {
-		for (dstOff1 = p_dst + 1; dstOff1 < endDst; p_dst += 2, dstOff1 += 2) {
+		for (; p_dst + 1 < endDst; p_dst += 2) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 r = c->m_red >> m_redSrcShift;
 			LegoU32 g = c->m_grn >> m_grnSrcShift;
@@ -777,7 +776,7 @@ void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 		}
 	}
 	else {
-		for (dstOff1 = p_dst + 1; dstOff1 < endDst; p_dst += 2, dstOff1 += 2) {
+		for (; p_dst + 1 < endDst; p_dst += 2) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			p_dst[0] = ((c->m_red >> m_redSrcShift) << m_redDstShift) | ((c->m_grn >> m_grnSrcShift) << m_grnDstShift) |
 					   ((c->m_blu >> m_bluSrcShift) << m_bluDstShift);
@@ -799,8 +798,11 @@ void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 {
 	LegoU32 i;
+	LegoU32 pixelIndex = 0;
+
 	if (m_hasColorKey) {
-		for (i = 1; i < m_width; i += 2) {
+		i = 1;
+		while (i < m_width) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 r = c->m_red >> m_redSrcShift;
 			LegoU32 g = c->m_grn >> m_grnSrcShift;
@@ -830,8 +832,11 @@ void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 			*p_dst++ = pixel;
 			*p_dst++ = pixel >> 8;
 			*p_dst++ = pixel >> 16;
+
+			i += 2;
+			pixelIndex += 2;
 		}
-		if (i <= m_width) {
+		if (pixelIndex < m_width) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 r = c->m_red >> m_redSrcShift;
 			LegoU32 g = c->m_grn >> m_grnSrcShift;
@@ -849,7 +854,8 @@ void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 		}
 	}
 	else {
-		for (i = 1; i < m_width; i += 2) {
+		i = 1;
+		while (i < m_width) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 pixel = ((c->m_red >> m_redSrcShift) << m_redDstShift) |
 							((c->m_grn >> m_grnSrcShift) << m_grnDstShift) |
@@ -865,8 +871,11 @@ void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 			*p_dst++ = pixel;
 			*p_dst++ = pixel >> 8;
 			*p_dst++ = pixel >> 16;
+
+			i += 2;
+			pixelIndex += 2;
 		}
-		if (i <= m_width) {
+		if (pixelIndex < m_width) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 pixel = ((c->m_red >> m_redSrcShift) << m_redDstShift) |
 							((c->m_grn >> m_grnSrcShift) << m_grnDstShift) |
@@ -883,9 +892,8 @@ void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 void GolImgFile::FUN_10021e10(const LegoU8* p_src, LegoU32* p_dst)
 {
 	LegoU32* endDst = p_dst + m_width;
-	LegoU32* dstOff1;
 	if (m_hasColorKey) {
-		for (dstOff1 = p_dst + 1; dstOff1 < endDst; p_dst += 2, dstOff1 += 2) {
+		for (; p_dst + 1 < endDst; p_dst += 2) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			LegoU32 r = c->m_red >> m_redSrcShift;
 			LegoU32 g = c->m_grn >> m_grnSrcShift;
@@ -923,7 +931,7 @@ void GolImgFile::FUN_10021e10(const LegoU8* p_src, LegoU32* p_dst)
 		}
 	}
 	else {
-		for (dstOff1 = p_dst + 1; dstOff1 < endDst; p_dst += 2, dstOff1 += 2) {
+		for (; p_dst + 1 < endDst; p_dst += 2) {
 			const ColorRGBA* c = &m_palette[*p_src >> 4];
 			p_dst[0] = ((c->m_red >> m_redSrcShift) << m_redDstShift) | ((c->m_grn >> m_grnSrcShift) << m_grnDstShift) |
 					   ((c->m_blu >> m_bluSrcShift) << m_bluDstShift);

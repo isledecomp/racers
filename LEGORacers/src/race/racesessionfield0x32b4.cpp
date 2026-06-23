@@ -1,6 +1,7 @@
 #include "race/racesessionfield0x32b4.h"
 
 #include "golboundedentity.h"
+#include "golnametable.h"
 #include "race/raceeventtable0x90.h"
 #include "world/golworlddatabase.h"
 
@@ -14,7 +15,7 @@ RaceSessionField0x32b4::RaceSessionField0x32b4()
 {
 	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
-	m_unk0x08 = 0;
+	m_unk0x08 = NULL;
 	m_unk0x0c = NULL;
 }
 
@@ -23,7 +24,7 @@ GolWorldDatabase* RaceSessionField0x32b4::FUN_0041f440(
 	GolWorldDatabase* p_unk0x04,
 	LegoChar* p_unk0x08,
 	RaceEventTable0x90* p_unk0x0c,
-	undefined4 p_unk0x10
+	GolNameTable* p_unk0x10
 )
 {
 	m_unk0x00 = p_unk0x04;

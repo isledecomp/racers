@@ -1,12 +1,12 @@
-#include "audio/nullstreamingsoundinstance.h"
 #include "audio/soundgroup.h"
 #include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
 #include "audio/streamingsoundinstance.h"
 #include "race/racestate.h"
 
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x004, 0x14)
 
-extern NullStreamingSoundInstance g_nullStreamingSoundInstance;
+extern SpatialSoundInstance g_nullStreamingSoundInstance;
 
 // FUNCTION: LEGORACERS 0x00443b50
 void RaceState::Racer::Field0x004::FUN_00443b50(LegoU32 p_unk0x04)

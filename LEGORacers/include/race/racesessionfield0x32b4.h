@@ -9,6 +9,7 @@
 
 class RaceEventTable0x90;
 class GolBoundedEntity;
+class GolNameTable;
 class GolWorldDatabase;
 
 class RaceSessionField0x32b4 {
@@ -18,7 +19,7 @@ public:
 		GolWorldDatabase* p_unk0x04,
 		LegoChar* p_unk0x08,
 		RaceEventTable0x90* p_unk0x0c,
-		undefined4 p_unk0x10
+		GolNameTable* p_unk0x10
 	);
 	LegoBool32 FUN_0041f4d0(
 		GolVec3* p_unk0x04,
@@ -37,7 +38,7 @@ public:
 private:
 	GolWorldDatabase* m_unk0x00;   // 0x00
 	RaceEventTable0x90* m_unk0x04; // 0x04
-	undefined4 m_unk0x08;          // 0x08
+	GolNameTable* m_unk0x08;       // 0x08
 	GolBoundedEntity* m_unk0x0c;   // 0x0c
 };
 

@@ -91,7 +91,7 @@ void RacePowerupManager::Field0x270::FUN_00421250(const Params* p_params)
 	m_unk0x244 = -endRate;
 
 	if (p_params->m_unk0x0c != NULL || p_params->m_unk0x20 != NULL) {
-		m_unk0x0c4 = m_unk0x030->CreateBillboard();
+		m_unk0x0c4 = static_cast<GolBillboard*>(m_unk0x030->VTable0x30());
 	}
 
 	if (p_params->m_unk0x20 != NULL) {

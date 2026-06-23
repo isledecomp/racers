@@ -31,7 +31,7 @@ public:
 		GolVec3* p_dest,
 		const CmbModelPartTrack0x14& p_track,
 		LegoFloat p_time,
-		LegoU16 p_frameCount
+		LegoS32 p_frameCount
 	) const;
 	LegoBool32 InterpolateRotation(
 		GolQuat* p_dest,

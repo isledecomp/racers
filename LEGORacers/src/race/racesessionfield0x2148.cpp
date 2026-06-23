@@ -1232,19 +1232,22 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 		transform->VTable0x04(&origin, &localPosition);
 
 		if (m_unk0x200) {
-			for (transform = transform->m_unk0x04; transform != NULL; transform = transform->m_unk0x04) {
+			do {
 				GolVec3 transformedRight = right;
 				GolVec3 transformedForward = forward;
 				transform->VTable0x0c(&transformedRight, &right);
 				transform->VTable0x0c(&transformedForward, &forward);
-			}
+				transform = transform->m_unk0x04;
+			} while (transform != NULL);
 		}
 
 		LegoFloat scale = m_unk0x1e8->GetModel(0)->GetScale() * m_unk0x1e8->GetUnk0x58();
 		localPosition.m_x *= scale;
 		localPosition.m_y *= scale;
 		localPosition.m_z *= scale;
-		m_unk0x1e8->VTable0x2c(localPosition, &m_unk0x10.m_unk0x020);
+		GolVec3 worldPosition;
+		m_unk0x1e8->VTable0x2c(localPosition, &worldPosition);
+		m_unk0x10.m_unk0x020 = worldPosition;
 
 		if (m_unk0x200) {
 			GolVec3 worldRight;
@@ -1254,7 +1257,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 			m_unk0x0f4.VTable0x40(worldRight, worldForward);
 		}
 
-		m_unk0x0f4.SetCenter(m_unk0x10.m_unk0x020);
+		m_unk0x0f4.SetCenter(worldPosition);
 	}
 }
 

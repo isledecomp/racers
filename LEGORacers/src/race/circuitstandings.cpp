@@ -288,16 +288,31 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 
 						FUN_004246d0(timeBuffer, delta);
 						renderer->VTable0x68(timeBuffer, m_unk0x00, c_deltaTimeX, y, 1.0f, 1.0f, NULL, 0);
-						renderer->VTable0x68(
-							sign == 1 ? g_circuitStandingsPlusSign : g_circuitStandingsMinusSign,
-							m_unk0x00,
-							c_deltaSignX,
-							y,
-							1.0f,
-							1.0f,
-							NULL,
-							0
-						);
+
+						if (sign == 1) {
+							renderer->VTable0x68(
+								g_circuitStandingsPlusSign,
+								m_unk0x00,
+								c_deltaSignX,
+								y,
+								1.0f,
+								1.0f,
+								NULL,
+								0
+							);
+						}
+						else if (sign == -1) {
+							renderer->VTable0x68(
+								g_circuitStandingsMinusSign,
+								m_unk0x00,
+								c_deltaSignX,
+								y,
+								1.0f,
+								1.0f,
+								NULL,
+								0
+							);
+						}
 					}
 					else {
 						string.CopyFromBufSelection(m_unk0x0c->GetStringBuffer(c_trailingStringId), 0);

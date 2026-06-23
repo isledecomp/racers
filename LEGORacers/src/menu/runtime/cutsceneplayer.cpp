@@ -212,8 +212,23 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	for (particleIndex = 0; particleIndex < m_numParticles; particleIndex++) {
 		CutsceneParticle* currentParticle = &m_particles[particleIndex];
 		if (!currentParticle->IsActive()) {
-			particle = currentParticle;
-			break;
+			currentParticle->ActivateRuntime(runtime);
+			if (p_param3 != NULL && p_param4 != NULL) {
+				currentParticle->FUN_00489540(p_param3, p_param4);
+			}
+			if (p_param2 != NULL) {
+				currentParticle->FUN_00489660(p_param2);
+			}
+
+			if (runtime->IsOneShot()) {
+				CutsceneParticleRef* ref = &m_unk0x014[refIndex];
+				ref->m_unk0x04 |= CutsceneParticleRef::c_flagBit0;
+				ref->m_unk0x00 = currentParticle;
+				currentParticle->SetRef(ref);
+				return ref;
+			}
+
+			return NULL;
 		}
 
 		Runtime* activeRuntime = currentParticle->GetRuntime();
@@ -229,18 +244,16 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 		}
 	}
 
-	if (particleIndex >= m_numParticles) {
-		if (runtime->GetPriority() <= lowestPriority) {
-			return NULL;
-		}
-
-		CutsceneParticleRef* oldRef = particle->GetRef();
-		if (oldRef != NULL) {
-			oldRef->m_unk0x00 = NULL;
-		}
-
-		particle->FUN_004897a0();
+	if (runtime->GetPriority() <= lowestPriority) {
+		return NULL;
 	}
+
+	CutsceneParticleRef* oldRef = particle->GetRef();
+	if (oldRef != NULL) {
+		oldRef->m_unk0x00 = NULL;
+	}
+
+	particle->FUN_004897a0();
 
 	particle->ActivateRuntime(runtime);
 	if (p_param3 != NULL && p_param4 != NULL) {
@@ -412,7 +425,7 @@ void CutsceneAnimation::Runtime::Parse(
 			m_unk0x18 = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);
 			break;
 		case GolFileParser::e_unknown0x35:
-			m_unk0x19 = static_cast<LegoS8>(p_parser->ReadInteger());
+			m_unk0x19 = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
 		case GolFileParser::e_unknown0x2c:
 			m_unk0x1c = p_parser->ReadFloat();

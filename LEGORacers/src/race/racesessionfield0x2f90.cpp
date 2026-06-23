@@ -142,8 +142,14 @@ void RaceSession::Field0x2f90::FUN_0041c550(
 			keyframe->m_unk0x04.m_grn = 0xff;
 			keyframe->m_unk0x04.m_blu = 0xff;
 			keyframe->m_unk0x04.m_alp = 0xff;
-			keyframe->m_unk0x08 = keyframe->m_unk0x04;
-			keyframe->m_unk0x0c = keyframe->m_unk0x04;
+			keyframe->m_unk0x08.m_red = 0xff;
+			keyframe->m_unk0x08.m_grn = 0xff;
+			keyframe->m_unk0x08.m_blu = 0xff;
+			keyframe->m_unk0x08.m_alp = 0xff;
+			keyframe->m_unk0x0c.m_red = 0xff;
+			keyframe->m_unk0x0c.m_grn = 0xff;
+			keyframe->m_unk0x0c.m_blu = 0xff;
+			keyframe->m_unk0x0c.m_alp = 0xff;
 
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			parser->ReadLeftCurly();
@@ -253,15 +259,9 @@ void RaceSession::Field0x2f90::FUN_0041c550(
 		up.m_z = 1.0f;
 		m_unk0x0c.VTable0x40(direction, up);
 
-		m_unk0xa0->GetMaterialTable()->SetPosition(0, p_renderer->FindMaterialByName("skymat"));
-	}
-
-	if (m_count > 0) {
-		ColorRGBA color0;
-		ColorRGBA color1;
-		ColorRGBA color2;
-		FUN_0041ce60(&m_entries[m_unk0xb8], &color0, &color1, &color2);
-		FUN_0041cfc0(&color0, &color1, &color2);
+		GolName materialName;
+		::strncpy(materialName, "skymat", sizeof(materialName));
+		m_unk0xa0->GetMaterialTable()->SetPosition(0, p_renderer->FindMaterialByName(materialName));
 	}
 
 	m_unk0x9c = m_unk0xa4->VTable0x08();
@@ -645,10 +645,23 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 	p_params->m_model->VTable0x30(&indexArrayBase);
 	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
 
+	LegoU32* groups = p_params->m_model->GetMutableGroups();
+	LegoU32 groupIndex = 0;
+	if (groups != NULL) {
+		groups[groupIndex++] = 0x80000000;
+	}
+
 	LegoU32 triangleIndex = 0;
+	LegoU32 scratchStart = 0;
 	LegoU32 firstRing = p_params->m_unk0x20 ? 1 : 0;
 
 	if (p_params->m_unk0x20) {
+		LegoU32 vertexCountForGroup = p_params->m_segmentCount + 1;
+		if (groups != NULL) {
+			groups[groupIndex++] = ((vertexCountForGroup - 1) & 0x3f) << 16;
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | triangleIndex;
+		}
+
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			LegoU8 topIndex = 0;
 			LegoU8 ringIndex = static_cast<LegoU8>(firstRing + segment);
@@ -667,105 +680,168 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 			}
 			triangleIndex++;
 		}
+
+		scratchStart += vertexCountForGroup;
+	}
+
+	if (p_params->m_unk0x24) {
+		LegoU32 vertexCountForGroup = p_params->m_segmentCount + 1;
+		if (scratchStart + vertexCountForGroup > 64) {
+			scratchStart = 0;
+		}
+
+		LegoU32 bottomIndex = firstRing + static_cast<LegoU32>(ringCount) * p_params->m_segmentCount;
+		LegoU32 lastRingStart = firstRing + static_cast<LegoU32>(ringCount - 1) * p_params->m_segmentCount;
+		if (groups != NULL) {
+			groups[groupIndex++] =
+				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lastRingStart & 0xffff);
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | (triangleIndex & 0xffff);
+		}
+
+		LegoU32 indexOffset = scratchStart - lastRingStart;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU32 ringIndex = lastRingStart + segment;
+			LegoU32 bottom = bottomIndex;
+			LegoU32 nextRingIndex = lastRingStart + ((segment + 1) % p_params->m_segmentCount);
+			if (!reverseWinding) {
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(ringIndex + indexOffset),
+					static_cast<LegoU8>(bottom + indexOffset),
+					static_cast<LegoU8>(nextRingIndex + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(ringIndex),
+						static_cast<LegoU8>(bottom),
+						static_cast<LegoU8>(nextRingIndex)
+					);
+				}
+			}
+			else {
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(ringIndex + indexOffset),
+					static_cast<LegoU8>(nextRingIndex + indexOffset),
+					static_cast<LegoU8>(bottom + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(ringIndex),
+						static_cast<LegoU8>(nextRingIndex),
+						static_cast<LegoU8>(bottom)
+					);
+				}
+			}
+			triangleIndex++;
+		}
+
+		scratchStart += vertexCountForGroup;
 	}
 
 	for (ring = 0; ring < ringCount - 1; ring++) {
+		LegoU32 vertexCountForGroup = p_params->m_segmentCount * 2;
+		if (scratchStart + vertexCountForGroup > 64) {
+			scratchStart = 0;
+		}
+
 		LegoU32 lowerBase = firstRing + static_cast<LegoU32>(ring) * p_params->m_segmentCount;
 		LegoU32 upperBase = lowerBase + p_params->m_segmentCount;
+		if (groups != NULL) {
+			groups[groupIndex++] =
+				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lowerBase & 0xffff);
+			groups[groupIndex++] =
+				0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16) | (triangleIndex & 0xffff);
+		}
+
+		LegoU32 indexOffset = scratchStart - lowerBase;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			LegoU32 nextSegment = segment + 1;
 			if (nextSegment == p_params->m_segmentCount) {
 				nextSegment = 0;
 			}
 
-			LegoU8 lowerLeft = static_cast<LegoU8>(lowerBase + segment);
-			LegoU8 upperLeft = static_cast<LegoU8>(upperBase + segment);
-			LegoU8 upperRight = static_cast<LegoU8>(upperBase + nextSegment);
-			LegoU8 lowerRight = static_cast<LegoU8>(lowerBase + nextSegment);
+			LegoU32 lowerLeft = lowerBase + segment;
+			LegoU32 upperLeft = upperBase + segment;
+			LegoU32 upperRight = upperBase + nextSegment;
+			LegoU32 lowerRight = lowerBase + nextSegment;
 
 			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperLeft),
+						static_cast<LegoU8>(upperRight)
+					);
 				}
 				triangleIndex++;
 
-				indices->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset),
+					static_cast<LegoU8>(lowerRight + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperRight),
+						static_cast<LegoU8>(lowerRight)
+					);
 				}
 			}
 			else {
-				indices->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset),
+					static_cast<LegoU8>(upperLeft + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperRight),
+						static_cast<LegoU8>(upperLeft)
+					);
 				}
 				triangleIndex++;
 
-				indices->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(lowerRight + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(lowerRight),
+						static_cast<LegoU8>(upperRight)
+					);
 				}
 			}
 			triangleIndex++;
 		}
+
+		scratchStart += vertexCountForGroup;
 	}
 
-	if (p_params->m_unk0x24) {
-		LegoU32 bottomIndex = firstRing + static_cast<LegoU32>(ringCount) * p_params->m_segmentCount;
-		LegoU32 lastRingStart = firstRing + static_cast<LegoU32>(ringCount - 1) * p_params->m_segmentCount;
-		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
-			LegoU8 ringIndex = static_cast<LegoU8>(lastRingStart + segment);
-			LegoU8 bottom = static_cast<LegoU8>(bottomIndex);
-			LegoU8 nextRingIndex = static_cast<LegoU8>(lastRingStart + ((segment + 1) % p_params->m_segmentCount));
-			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, ringIndex, bottom, nextRingIndex);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, ringIndex, bottom, nextRingIndex);
-				}
-			}
-			else {
-				indices->SetIndices(triangleIndex, ringIndex, nextRingIndex, bottom);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, ringIndex, nextRingIndex, bottom);
-				}
-			}
-			triangleIndex++;
-		}
-	}
-
-	LegoU32* groups = p_params->m_model->GetMutableGroups();
 	if (groups != NULL) {
-		LegoU32 groupIndex = 0;
-		LegoU32 triangleStart = 0;
-		groups[groupIndex++] = 0x80000000;
-
-		if (p_params->m_unk0x20) {
-			groups[groupIndex++] = (p_params->m_segmentCount & 0x3f) << 16;
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | triangleStart;
-			triangleStart += p_params->m_segmentCount;
-		}
-
-		for (ring = 0; ring < ringCount - 1; ring++) {
-			LegoU32 vertexStart = firstRing + static_cast<LegoU32>(ring) * p_params->m_segmentCount;
-			groups[groupIndex++] = (((p_params->m_segmentCount * 2 - 1) & 0x3f) << 16) | (vertexStart & 0xffff);
-			groups[groupIndex++] =
-				0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16) | (triangleStart & 0xffff);
-			triangleStart += p_params->m_segmentCount * 2;
-		}
-
-		if (p_params->m_unk0x24) {
-			LegoU32 lastRingStart = firstRing + static_cast<LegoU32>(ringCount - 1) * p_params->m_segmentCount;
-			groups[groupIndex++] = ((p_params->m_segmentCount & 0x3f) << 16) | (lastRingStart & 0xffff);
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | (triangleStart & 0xffff);
-		}
-
-		while (groupIndex < groupCount) {
-			groups[groupIndex++] = 0xc0000000;
-		}
+		groups[groupIndex] = 0xc0000000;
 	}
 
-	p_params->m_model->SetDirty(TRUE);
 	p_params->m_model->VTable0x34(1);
 }
 
@@ -954,33 +1030,22 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 	GdbModelIndexArray0xc* indices = static_cast<GdbModelIndexArray0xc*>(indexArrayBase);
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
+	LegoU32 groupIndex = 0;
 	if (groups != NULL) {
-		LegoU32 groupIndex = 0;
 		groups[groupIndex++] = 0x80000000;
-
-		if (p_params->m_unk0x20 && groupIndex + 1 < groupCount) {
-			groups[groupIndex++] = ((p_params->m_segmentCount * 2) << 16) & 0x003f0000;
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16);
-		}
-
-		for (ring = 0; ring < ringCount - 1 && groupIndex + 1 < groupCount; ring++) {
-			groups[groupIndex++] = (((p_params->m_segmentCount * 2 + 1) & 0x3f) << 16);
-			groups[groupIndex++] = 0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16);
-		}
-
-		if (p_params->m_unk0x24 && groupIndex + 1 < groupCount) {
-			groups[groupIndex++] = ((p_params->m_segmentCount * 2) << 16) & 0x003f0000;
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16);
-		}
-
-		while (groupIndex < groupCount) {
-			groups[groupIndex++] = 0xc0000000;
-		}
 	}
 
 	LegoU32 triangleIndex = 0;
+	LegoU32 scratchStart = 0;
 	LegoU32 ringStart = p_params->m_unk0x20 ? p_params->m_segmentCount : 0;
+
 	if (p_params->m_unk0x20) {
+		LegoU32 vertexCountForGroup = p_params->m_segmentCount * 2 + 1;
+		if (groups != NULL) {
+			groups[groupIndex++] = (((vertexCountForGroup - 1) & 0x3f) << 16);
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | triangleIndex;
+		}
+
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			LegoU8 index0 = static_cast<LegoU8>(segment);
 			LegoU8 index1 = static_cast<LegoU8>(ringStart + segment);
@@ -999,66 +1064,160 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 			}
 			triangleIndex++;
 		}
-	}
-
-	for (ring = 0; ring < ringCount - 1; ring++) {
-		LegoU32 lowerBase = ringStart + static_cast<LegoU32>(ring) * (p_params->m_segmentCount + 1);
-		LegoU32 upperBase = lowerBase + p_params->m_segmentCount + 1;
-		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
-			LegoU8 lowerLeft = static_cast<LegoU8>(lowerBase + segment);
-			LegoU8 upperLeft = static_cast<LegoU8>(upperBase + segment);
-			LegoU8 upperRight = static_cast<LegoU8>(upperBase + segment + 1);
-			LegoU8 lowerRight = static_cast<LegoU8>(lowerBase + segment + 1);
-
-			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperLeft, upperRight);
-				}
-				triangleIndex++;
-
-				indices->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, lowerRight);
-				}
-			}
-			else {
-				indices->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, upperRight, upperLeft);
-				}
-				triangleIndex++;
-
-				indices->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
-				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, lowerLeft, lowerRight, upperRight);
-				}
-			}
-			triangleIndex++;
-		}
+		scratchStart = vertexCountForGroup;
 	}
 
 	if (p_params->m_unk0x24) {
+		LegoU32 vertexCountForGroup = p_params->m_segmentCount * 2 + 1;
+		if (scratchStart + vertexCountForGroup > 64) {
+			scratchStart = 0;
+		}
+
+		LegoU32 vertexStart = ringStart + static_cast<LegoU32>(ringCount - 1) * (p_params->m_segmentCount + 1);
+		if (groups != NULL) {
+			groups[groupIndex++] =
+				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (vertexStart & 0xffff);
+			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | (triangleIndex & 0xffff);
+		}
+
 		LegoU32 bottomStart = ringStart + static_cast<LegoU32>(ringCount) * (p_params->m_segmentCount + 1);
-		LegoU32 lastRingStart = ringStart + static_cast<LegoU32>(ringCount - 1) * (p_params->m_segmentCount + 1);
+		LegoU32 indexOffset = scratchStart - vertexStart;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
-			LegoU8 index0 = static_cast<LegoU8>(lastRingStart + segment);
-			LegoU8 index1 = static_cast<LegoU8>(bottomStart + segment);
-			LegoU8 index2 = static_cast<LegoU8>(lastRingStart + segment + 1);
+			LegoU32 index0 = vertexStart + segment;
+			LegoU32 index1 = bottomStart + segment;
+			LegoU32 index2 = vertexStart + segment + 1;
 			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, index0, index1, index2);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(index0 + indexOffset),
+					static_cast<LegoU8>(index1 + indexOffset),
+					static_cast<LegoU8>(index2 + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index1, index2);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(index0),
+						static_cast<LegoU8>(index1),
+						static_cast<LegoU8>(index2)
+					);
 				}
 			}
 			else {
-				indices->SetIndices(triangleIndex, index0, index2, index1);
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(index0 + indexOffset),
+					static_cast<LegoU8>(index2 + indexOffset),
+					static_cast<LegoU8>(index1 + indexOffset)
+				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index2, index1);
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(index0),
+						static_cast<LegoU8>(index2),
+						static_cast<LegoU8>(index1)
+					);
 				}
 			}
 			triangleIndex++;
 		}
+
+		scratchStart += vertexCountForGroup;
+	}
+
+	for (ring = 0; ring < ringCount - 1; ring++) {
+		LegoU32 vertexCountForGroup = (p_params->m_segmentCount + 1) * 2;
+		if (scratchStart + vertexCountForGroup > 64) {
+			scratchStart = 0;
+		}
+
+		LegoU32 lowerBase = ringStart + static_cast<LegoU32>(ring) * (p_params->m_segmentCount + 1);
+		LegoU32 upperBase = lowerBase + p_params->m_segmentCount + 1;
+		if (groups != NULL) {
+			groups[groupIndex++] =
+				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lowerBase & 0xffff);
+			groups[groupIndex++] =
+				0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16) | (triangleIndex & 0xffff);
+		}
+
+		LegoU32 indexOffset = scratchStart - lowerBase;
+		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
+			LegoU32 lowerLeft = lowerBase + segment;
+			LegoU32 upperLeft = upperBase + segment;
+			LegoU32 upperRight = upperBase + segment + 1;
+			LegoU32 lowerRight = lowerBase + segment + 1;
+
+			if (!reverseWinding) {
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperLeft),
+						static_cast<LegoU8>(upperRight)
+					);
+				}
+				triangleIndex++;
+
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset),
+					static_cast<LegoU8>(lowerRight + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperRight),
+						static_cast<LegoU8>(lowerRight)
+					);
+				}
+			}
+			else {
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset),
+					static_cast<LegoU8>(upperLeft + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(upperRight),
+						static_cast<LegoU8>(upperLeft)
+					);
+				}
+				triangleIndex++;
+
+				indices->SetIndices(
+					triangleIndex,
+					static_cast<LegoU8>(lowerLeft + indexOffset),
+					static_cast<LegoU8>(lowerRight + indexOffset),
+					static_cast<LegoU8>(upperRight + indexOffset)
+				);
+				if (p_params->m_unk0x34 != NULL) {
+					p_params->m_unk0x34->SetIndices(
+						triangleIndex,
+						static_cast<LegoU8>(lowerLeft),
+						static_cast<LegoU8>(lowerRight),
+						static_cast<LegoU8>(upperRight)
+					);
+				}
+			}
+			triangleIndex++;
+		}
+
+		scratchStart += vertexCountForGroup;
+	}
+
+	if (groups != NULL) {
+		groups[groupIndex] = 0xc0000000;
 	}
 
 	p_params->m_model->VTable0x34(1);

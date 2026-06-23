@@ -20,7 +20,7 @@ RaceSession::Field0x2080::Entry::Entry()
 {
 	m_unk0x3c = 0;
 	m_unk0x40 = 0;
-	m_unk0x44 = 0;
+	m_raceState = NULL;
 	m_unk0x48 = 0;
 	m_unk0x4c = 0;
 	m_unk0x50 = 0;
@@ -37,7 +37,7 @@ RaceSession::Field0x2080::Entry::~Entry()
 void RaceSession::Field0x2080::Entry::FUN_00463b60(const EntryParams* p_params)
 {
 	FUN_00464e80(p_params);
-	m_unk0x44 = p_params->m_unk0x1c;
+	m_raceState = p_params->m_raceState;
 	m_unk0x48 = p_params->m_unk0x20;
 	m_unk0x4c = p_params->m_unk0x24;
 	m_unk0x50 = p_params->m_unk0x38;
@@ -63,7 +63,7 @@ void RaceSession::Field0x2080::Entry::VTable0x08()
 	m_unk0x3c = 0;
 	m_unk0x40 = 0;
 	m_unk0x30 = 0;
-	m_unk0x44 = 0;
+	m_raceState = NULL;
 	m_unk0x48 = 0;
 	m_unk0x50 = 0;
 	m_unk0x54 = 0;
@@ -78,7 +78,7 @@ void RaceSession::Field0x2080::Entry::VTable0x0c(LegoU32 p_elapsedMs)
 		LegoU32 racerIndex;
 		for (racerIndex = 0; racerIndex < 6; racerIndex++) {
 			if ((bit & m_unk0x40) && !(bit & m_unk0x3c)) {
-				m_unk0x30->FUN_004629d0(m_unk0x34, m_unk0x44->GetRacer(racerIndex));
+				m_unk0x30->FUN_004629d0(m_unk0x34, m_raceState->GetRacer(racerIndex));
 			}
 
 			bit <<= 1;
@@ -142,7 +142,7 @@ RaceSession::Field0x2080::~Field0x2080()
 
 // STUB: LEGORACERS 0x00463dc0
 void RaceSession::Field0x2080::FUN_00463dc0(
-	RacePowerupManager::Field0x074* p_field0x074,
+	RaceState* p_raceState,
 	RaceEventTable0x90* p_eventTable,
 	RacePowerupManager* p_field0x6dc,
 	GolWorldDatabase* p_worldDatabase,
@@ -159,7 +159,7 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 		field->Destroy();
 	}
 
-	field->m_eventQueue = p_field0x074->GetEventQueue();
+	field->m_eventQueue = p_raceState->GetEventQueue();
 	field->m_unk0x08 = p_eventTable;
 
 	GolFileParser* parser = field->FUN_00465210(p_name, p_binary);
@@ -181,7 +181,7 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 			params.m_unk0x08.m_z = 0.0f;
 			params.m_unk0x14 = 0.0f;
 			params.m_unk0x18 = FALSE;
-			params.m_unk0x1c = p_field0x074;
+			params.m_raceState = p_raceState;
 			params.m_unk0x20 = p_field0x6dc;
 			params.m_unk0x24 = p_field0x32c4;
 			params.m_unk0x28 = zero;

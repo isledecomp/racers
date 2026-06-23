@@ -586,21 +586,25 @@ void GolFontBase::FUN_00408d50(
 		}
 
 		lineBreak = FALSE;
-		LegoU32 lineStart = i;
+		LegoU32 breakIndex = i;
 		LegoU32 lastIndex = i - 1;
 		LegoU32 wordWidth = 0;
 		LegoU32 lineWidth = 0;
 
 		while (i < length) {
-			LegoU16 textChar = *p_string->FromCursor(i);
-			if (textChar == '\n' || textChar == '\r') {
+			if (*p_string->FromCursor(i) == '\n') {
 				break;
 			}
 
+			if (*p_string->FromCursor(i) == '\r') {
+				break;
+			}
+
+			LegoU16 textChar = *p_string->FromCursor(i);
 			LegoU32 charWidth;
 			if (textChar == ' ') {
 				if (wordWidth != 0 && *p_string->FromCursor(lastIndex) != ' ') {
-					lineStart = i;
+					breakIndex = i;
 					wordWidth = 0;
 				}
 
@@ -623,9 +627,9 @@ void GolFontBase::FUN_00408d50(
 
 		if (lineWidth > wrapWidth) {
 			if (wordWidth == lineWidth) {
-				lineStart++;
+				breakIndex++;
 
-				while (lineWidth > wrapWidth && i > lineStart) {
+				while (lineWidth > wrapWidth && i > breakIndex) {
 					i--;
 					LegoU16 textChar = *p_string->FromCursor(i);
 					LegoU32 charWidth;
@@ -642,7 +646,7 @@ void GolFontBase::FUN_00408d50(
 				}
 			}
 			else {
-				i = lineStart;
+				i = breakIndex;
 				lineWidth -= wordWidth;
 			}
 		}

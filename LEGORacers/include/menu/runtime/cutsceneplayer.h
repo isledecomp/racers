@@ -466,7 +466,7 @@ public:
 		LegoU8 GetUnk0x18() { return m_unk0x18; }
 		LegoS32 GetUnk0x30() { return m_unk0x30; }
 		LegoS32 GetUnk0x34() { return m_unk0x34; }
-		LegoS8 GetPriority() const { return m_unk0x19; }
+		LegoU8 GetPriority() const { return m_unk0x19; }
 		LegoBool32 IsOneShot() const { return m_unk0x34 == -1; }
 		LegoFloat GetUnk0x1c() const { return m_unk0x1c; }
 		LegoFloat GetUnk0x20() const { return m_unk0x20; }
@@ -485,7 +485,7 @@ public:
 		LegoFloat m_unk0x10;                           // 0x10
 		LegoS32 m_unk0x14;                             // 0x14
 		LegoU8 m_unk0x18;                              // 0x18
-		LegoS8 m_unk0x19;                              // 0x19
+		LegoU8 m_unk0x19;                              // 0x19
 		LegoFloat m_unk0x1c;                           // 0x1c
 		LegoFloat m_unk0x20;                           // 0x20
 		LegoFloat m_unk0x24;                           // 0x24

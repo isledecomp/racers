@@ -33,7 +33,7 @@ extern const LegoFloat g_unk0x004b0074 = 1.0f;
 extern const LegoFloat g_unk0x004b007c = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004c4810
-LegoFloat g_unk0x004c4810;
+LegoFloat g_unk0x004c4810 = g_unk0x004b0064 * 8.0f;
 
 // FUNCTION: LEGORACERS 0x0041fb50
 RaceState::Racer::Field0xc70::Field0xc70()
@@ -495,28 +495,25 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 		m_unk0x010 = -54.0f;
 	}
 
+	LegoBool32 updatePath = FALSE;
 	if (distance < 30.0f) {
-		if (distance <= 80.0f) {
-			m_unk0x024 += 250;
-			m_unk0x050->FUN_004a5220(m_unk0x004);
-			m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
-			m_unk0x034 = m_unk0x050->m_unk0x00;
-			m_unk0x040 = m_unk0x050->m_unk0x0c;
-		}
+		updatePath = TRUE;
 	}
 	else {
 		GolMath::FUN_00449340(&m_unk0x040, &basis.m_m[0][0]);
 		if (referenceDirection.m_z * basis.m_m[0][2] + referenceDirection.m_y * basis.m_m[0][1] +
 				referenceDirection.m_x * basis.m_m[0][0] <
 			0.5f) {
-			if (distance <= 80.0f) {
-				m_unk0x024 += 250;
-				m_unk0x050->FUN_004a5220(m_unk0x004);
-				m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
-				m_unk0x034 = m_unk0x050->m_unk0x00;
-				m_unk0x040 = m_unk0x050->m_unk0x0c;
-			}
+			updatePath = TRUE;
 		}
+	}
+
+	if (updatePath && distance <= 80.0f) {
+		m_unk0x024 += 250;
+		m_unk0x050->FUN_004a5220(m_unk0x004);
+		m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
+		m_unk0x034 = m_unk0x050->m_unk0x00;
+		m_unk0x040 = m_unk0x050->m_unk0x0c;
 	}
 
 	FUN_0041fee0();

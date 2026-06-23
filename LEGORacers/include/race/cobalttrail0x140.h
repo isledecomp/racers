@@ -9,6 +9,7 @@
 #include "types.h"
 
 class DuskwindBananaRelic0x24;
+class AwakeKite0x20;
 class GolD3DRenderDevice;
 class GolFontBase;
 class GolNameTable;
@@ -20,19 +21,6 @@ class UtopianPan0xa4;
 // SIZE 0x140
 class CobaltTrail0x140 {
 public:
-	class ResourceTable {
-	public:
-		virtual void VTable0x00() = 0;                           // vtable+0x00
-		virtual void VTable0x04() = 0;                           // vtable+0x04
-		virtual void VTable0x08() = 0;                           // vtable+0x08
-		virtual void VTable0x0c() = 0;                           // vtable+0x0c
-		virtual void VTable0x10() = 0;                           // vtable+0x10
-		virtual void VTable0x14() = 0;                           // vtable+0x14
-		virtual void VTable0x18() = 0;                           // vtable+0x18
-		virtual void VTable0x1c() = 0;                           // vtable+0x1c
-		virtual UtopianPan0xa4* VTable0x20(LegoS32 p_index) = 0; // vtable+0x20
-	};
-
 	// SIZE 0x09
 	struct TimeText {
 		LegoChar m_text[9]; // 0x00
@@ -93,13 +81,13 @@ private:
 		GolD3DRenderDevice* p_renderer,
 		GolNameTable* p_nameTable,
 		GolString* p_string,
-		ResourceTable* p_resourceTable,
+		AwakeKite0x20* p_resourceTable,
 		RaceState* p_unk0x14,
 		TimeRaceManager* p_unk0x18,
 		GolStringTable* p_stringTable,
 		RaceState::Racer::Field0x004* p_unk0x20,
 		LegoBool p_unk0x24,
-		LegoBool p_unk0x28
+		undefined4 p_unk0x28
 	);
 	LegoS32 FUN_00425e90(LegoS32 p_unk0x04);
 	void Reset();
@@ -108,7 +96,7 @@ private:
 
 	GolD3DRenderDevice* m_unk0x000;           // 0x000
 	RaceState::Racer::Field0x004* m_unk0x004; // 0x004
-	ResourceTable* m_unk0x008;                // 0x008
+	AwakeKite0x20* m_unk0x008;                // 0x008
 	GolStringTable* m_unk0x00c;               // 0x00c
 	GolString* m_unk0x010;                    // 0x010
 	GolString m_unk0x014;                     // 0x014
@@ -119,8 +107,8 @@ private:
 	TimeRaceManager* m_unk0x030;              // 0x030
 	LegoU32 m_unk0x034;                       // 0x034
 	LegoU8 m_unk0x038;                        // 0x038
-	undefined m_unk0x039;                     // 0x039
-	undefined m_unk0x03a;                     // 0x03a
+	LegoBool m_unk0x039;                      // 0x039
+	LegoBool m_unk0x03a;                      // 0x03a
 	LegoBool m_unk0x03b;                      // 0x03b
 	LegoU8 m_unk0x03c;                        // 0x03c
 	TimeText m_unk0x03d;                      // 0x03d
@@ -176,7 +164,7 @@ private:
 	LegoFloat m_unk0x130;                     // 0x130
 	LegoFloat m_unk0x134;                     // 0x134
 	LegoFloat m_unk0x138;                     // 0x138
-	undefined4 m_unk0x13c;                    // 0x13c
+	LegoBool32 m_unk0x13c;                    // 0x13c
 };
 
 #endif // COBALTTRAIL0X140_H

@@ -18,6 +18,12 @@ DECOMP_SIZE_ASSERT(MenuGameScreen::ButtonBindingTable::ButtonBinding, 0xe0)
 DECOMP_SIZE_ASSERT(CarPartCarousel, 0x154)
 DECOMP_SIZE_ASSERT(CarPartCarousel::CreateParams, 0x84)
 
+// GLOBAL: LEGORACERS 0x004b2a34
+static const LegoFloat g_unk0x004b2a34 = 6.2831855f;
+
+// GLOBAL: LEGORACERS 0x004c7660
+LegoFloat g_unk0x004c7660 = g_unk0x004b2a34 * 0.125f;
+
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void MenuGameScreen::VTable0x80()
 {

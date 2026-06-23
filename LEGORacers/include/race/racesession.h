@@ -430,26 +430,26 @@ public:
 				c_flags0x38Bit0x4000 = 1 << 14
 			};
 
-			LegoU32 m_unk0x3c;                         // 0x3c
-			LegoU32 m_unk0x40;                         // 0x40
-			RacePowerupManager::Field0x074* m_unk0x44; // 0x44
-			RacePowerupManager* m_unk0x48;             // 0x48
-			Field0x32c4* m_unk0x4c;                    // 0x4c
-			LegoU32 m_unk0x50;                         // 0x50
-			LegoU32 m_unk0x54;                         // 0x54
+			LegoU32 m_unk0x3c;             // 0x3c
+			LegoU32 m_unk0x40;             // 0x40
+			RaceState* m_raceState;        // 0x44
+			RacePowerupManager* m_unk0x48; // 0x48
+			Field0x32c4* m_unk0x4c;        // 0x4c
+			LegoU32 m_unk0x50;             // 0x50
+			LegoU32 m_unk0x54;             // 0x54
 		};
 
 		// SIZE 0x3c
 		class EntryParams : public Field0x2128::EntryParams {
 		public:
-			RacePowerupManager::Field0x074* m_unk0x1c; // 0x1c
-			RacePowerupManager* m_unk0x20;             // 0x20
-			Field0x32c4* m_unk0x24;                    // 0x24
-			LegoU32 m_unk0x28;                         // 0x28
-			LegoBool32 m_unk0x2c;                      // 0x2c
-			LegoBool32 m_unk0x30;                      // 0x30
-			LegoBool32 m_unk0x34;                      // 0x34
-			LegoU32 m_unk0x38;                         // 0x38
+			RaceState* m_raceState;        // 0x1c
+			RacePowerupManager* m_unk0x20; // 0x20
+			Field0x32c4* m_unk0x24;        // 0x24
+			LegoU32 m_unk0x28;             // 0x28
+			LegoBool32 m_unk0x2c;          // 0x2c
+			LegoBool32 m_unk0x30;          // 0x30
+			LegoBool32 m_unk0x34;          // 0x34
+			LegoU32 m_unk0x38;             // 0x38
 		};
 
 		Field0x2080();
@@ -465,7 +465,7 @@ public:
 		friend class RaceSession;
 
 		void FUN_00463dc0(
-			RacePowerupManager::Field0x074* p_field0x074,
+			RaceState* p_raceState,
 			RaceEventTable0x90* p_eventTable,
 			RacePowerupManager* p_field0x6dc,
 			GolWorldDatabase* p_worldDatabase,
@@ -1418,25 +1418,11 @@ public:
 	};
 
 	// SIZE 0x08
-	class Field0x2804 {
+	class Field0x2804 : public RacePowerupManager::Field0x050 {
 	public:
 		// VTABLE: LEGORACERS 0x004b1958
 		// SIZE 0x1fc
 		class TgbTxtParser : public GolTxtParser {};
-
-		// SIZE 0x14
-		class Entry {
-		public:
-			Entry();
-			~Entry();
-			void FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08);
-
-		private:
-			GolVec3 m_unk0x00;                // 0x00
-			LegoS32 m_unk0x0c;                // 0x0c
-			LegoU8 m_flags0x10;               // 0x10
-			undefined m_unk0x11[0x14 - 0x11]; // 0x11
-		};
 
 		Field0x2804();
 		~Field0x2804();
@@ -1446,9 +1432,6 @@ public:
 
 		void Reset();
 		void FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
-
-		Entry* m_entries; // 0x00
-		LegoU32 m_count;  // 0x04
 	};
 
 	// SIZE 0x2c

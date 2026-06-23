@@ -12,8 +12,6 @@
 #include <golerror.h>
 
 DECOMP_SIZE_ASSERT(RacePowerupManager, 0x19a4)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x074, 0x29c)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x074::Field0x170, 0x60)
 DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x54, 0x04)
 DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x68, 0x54)
 DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x68Field0x028, 0x68)
@@ -68,7 +66,7 @@ extern const LegoFloat g_unk0x004b1874 = 0.0040000002f;
 extern const LegoFloat g_unk0x004b1878 = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004c7644
-LegoFloat g_unk0x004c7644;
+LegoFloat g_unk0x004c7644 = g_unk0x004b1870 * g_unk0x004b1870;
 
 // FUNCTION: LEGORACERS 0x00451350
 RacePowerupManager::ResourceBase::ResourceBase()
@@ -390,7 +388,7 @@ void RacePowerupManager::Field0x18bc::FUN_004517c0(
 			}
 
 			if (p_racer) {
-				material = m_unk0x74->m_unk0x074->GetUnk0x298()->GetItem(p_racer->m_unk0xe04);
+				material = m_unk0x74->m_raceState->GetMaterialLibrary()->GetItem(p_racer->m_unk0xe04);
 			}
 
 			m_entries[entryIndex]
@@ -463,7 +461,7 @@ void RacePowerupManager::FUN_00457a90()
 	m_unk0x034 = 0;
 	m_unk0x02c = NULL;
 	m_unk0x038 = 0;
-	m_unk0x074 = 0;
+	m_raceState = NULL;
 	m_unk0x068 = 0;
 	m_unk0x06c = 0;
 	m_unk0x03c = 0;
@@ -547,12 +545,12 @@ void RacePowerupManager::FUN_00457c20(const Params* p_params)
 
 	m_unk0x000 = p_params->m_unk0x00;
 	m_renderer = p_params->m_renderer;
-	m_unk0x074 = p_params->m_unk0x08;
+	m_raceState = p_params->m_raceState;
 	m_unk0x06c = p_params->m_unk0x0c;
 	m_unk0x070 = p_params->m_unk0x10;
 	m_unk0x068 = p_params->m_unk0x14;
 	m_unk0x03c = p_params->m_unk0x18;
-	m_unk0x040 = p_params->m_unk0x1c;
+	m_cutsceneAnimation0x040 = p_params->m_unk0x1c;
 	m_trailManager = p_params->m_trailManager;
 	m_unk0x060 = p_params->m_unk0x2c;
 	m_unk0x048 = p_params->m_unk0x24;
@@ -945,7 +943,7 @@ void RacePowerupManager::FUN_004590f0()
 		do {
 			m_unk0x1890[i].SetNext(&m_unk0x1890[i + 1]);
 			m_unk0x1890[i]
-				.FUN_00455810(this, m_unk0x074, m_unk0x068, m_unk0x040, m_unk0x000, m_renderer, m_unk0x1884[5] + i);
+				.FUN_00455810(this, m_raceState, m_unk0x068, m_unk0x040, m_unk0x000, m_renderer, m_unk0x1884[5] + i);
 			m_unk0x1890[i].SetUnk0x010(m_unk0x03c);
 			i++;
 		} while (i < m_unk0x1884[0] - 1);
@@ -954,7 +952,7 @@ void RacePowerupManager::FUN_004590f0()
 	m_unk0x1890[m_unk0x1884[0] - 1].SetNext(NULL);
 	m_unk0x1890[m_unk0x1884[0] - 1].FUN_00455810(
 		this,
-		m_unk0x074,
+		m_raceState,
 		m_unk0x068,
 		m_unk0x040,
 		m_unk0x000,
@@ -970,7 +968,7 @@ void RacePowerupManager::FUN_004590f0()
 			m_unk0x1894[i].SetNext(&m_unk0x1894[i + 1]);
 			m_unk0x1894[i].FUN_004571b0(
 				this,
-				m_unk0x074,
+				m_raceState,
 				m_unk0x06c,
 				m_unk0x068,
 				m_cutsceneAnimation0x040,
@@ -984,7 +982,7 @@ void RacePowerupManager::FUN_004590f0()
 
 	m_unk0x1894[m_unk0x1884[1] - 1].SetNext(NULL);
 	m_unk0x1894[m_unk0x1884[1] - 1]
-		.FUN_004571b0(this, m_unk0x074, m_unk0x06c, m_unk0x068, m_cutsceneAnimation0x040, m_renderer, m_unk0x000);
+		.FUN_004571b0(this, m_raceState, m_unk0x06c, m_unk0x068, m_cutsceneAnimation0x040, m_renderer, m_unk0x000);
 	m_unk0x1894[m_unk0x1884[1] - 1].SetUnk0x010(m_unk0x03c);
 	m_unk0x07c = m_unk0x1894;
 
@@ -992,7 +990,7 @@ void RacePowerupManager::FUN_004590f0()
 	if (m_unk0x1884[2] - 1 > 0) {
 		do {
 			m_unk0x1898[i].SetNext(&m_unk0x1898[i + 1]);
-			m_unk0x1898[i].FUN_00452ee0(m_unk0x074, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
+			m_unk0x1898[i].FUN_00452ee0(m_raceState, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
 			m_unk0x1898[i].SetUnk0x010(m_unk0x03c);
 			i++;
 		} while (i < m_unk0x1884[2] - 1);
@@ -1000,7 +998,7 @@ void RacePowerupManager::FUN_004590f0()
 
 	m_unk0x1898[m_unk0x1884[2] - 1].SetNext(NULL);
 	m_unk0x1898[m_unk0x1884[2] - 1]
-		.FUN_00452ee0(m_unk0x074, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
+		.FUN_00452ee0(m_raceState, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
 	m_unk0x1898[m_unk0x1884[2] - 1].SetUnk0x010(m_unk0x03c);
 	m_unk0x080 = m_unk0x1898;
 
@@ -1008,14 +1006,14 @@ void RacePowerupManager::FUN_004590f0()
 	if (m_unk0x1884[3] - 1 > 0) {
 		do {
 			m_unk0x189c[i].SetNext(&m_unk0x189c[i + 1]);
-			m_unk0x189c[i].FUN_00452530(m_unk0x074, m_unk0x068, this);
+			m_unk0x189c[i].FUN_00452530(m_raceState, m_unk0x068, this);
 			m_unk0x189c[i].SetUnk0x010(m_unk0x03c);
 			i++;
 		} while (i < m_unk0x1884[3] - 1);
 	}
 
 	m_unk0x189c[m_unk0x1884[3] - 1].SetNext(NULL);
-	m_unk0x189c[m_unk0x1884[3] - 1].FUN_00452530(m_unk0x074, m_unk0x068, this);
+	m_unk0x189c[m_unk0x1884[3] - 1].FUN_00452530(m_raceState, m_unk0x068, this);
 	m_unk0x189c[m_unk0x1884[3] - 1].SetUnk0x010(m_unk0x03c);
 	m_unk0x084 = m_unk0x189c;
 
@@ -1143,7 +1141,7 @@ void RacePowerupManager::FUN_00459b80()
 	params.m_unk0x0c = NULL;
 	params.m_unk0x10 = m_renderer->FindMaterialByName("exflash");
 	params.m_unk0x14 = m_renderer->FindMaterialByName("exscar");
-	params.m_unk0x18 = m_unk0x074->GetEventQueue();
+	params.m_unk0x18 = m_raceState->GetEventQueue();
 	params.m_unk0x1c = this;
 	params.m_unk0x20 = NULL;
 	params.m_unk0x28 = 0;
@@ -1437,7 +1435,7 @@ void RacePowerupManager::FUN_00459e20()
 // FUNCTION: LEGORACERS 0x0045a340
 void RacePowerupManager::FUN_0045a340()
 {
-	LegoEventQueue* eventQueue = m_unk0x074->GetEventQueue();
+	LegoEventQueue* eventQueue = m_raceState->GetEventQueue();
 	LegoEventQueue::Descriptor descriptor;
 
 	descriptor.m_unk0x00 = 4;
@@ -2414,8 +2412,8 @@ void RacePowerupManager::FUN_0045b740(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x0045b7a0
 void RacePowerupManager::FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p_unk0x08, LegoS32 p_unk0x0c)
 {
-	Field0x074::Field0x170* field = m_unk0x074->GetUnk0x170();
-	if (field == NULL) {
+	RaceState::Racer* racer = m_raceState->GetCurrentRacer();
+	if (racer == NULL) {
 		if (p_resource->VTable0x0c()) {
 			p_resource->VTable0x08();
 		}
@@ -2428,7 +2426,7 @@ void RacePowerupManager::FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p
 	GolVec3 position;
 	GolVec3 direction;
 
-	field->GetUnk0x5c()->VTable0x04(&referencePosition);
+	racer->m_unk0x018.GetUnk0x044()->VTable0x04(&referencePosition);
 
 	for (Field0x1880* node = m_unk0x1880; node != NULL; node = node->GetNext()) {
 		if (node->VTable0x18() == 1 && node->GetState() == p_unk0x08 && node->GetUnk0x04() == p_unk0x0c) {
@@ -2614,54 +2612,4 @@ void RacePowerupManager::FUN_0045bb30()
 	}
 
 	FUN_0045a490(0);
-}
-
-// FUNCTION: LEGORACERS 0x0045c6a0
-RacePowerupManager::Field0x050::Entry* RacePowerupManager::Field0x050::FUN_0045c6a0(
-	GolVec3* p_unk0x04,
-	GolVec3* p_unk0x08,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14
-)
-{
-	LegoFloat nearestDistanceSquared = FLT_MAX;
-	LegoS32 resultIndex = -1;
-
-	for (LegoS32 i = 0; i < m_count; i++) {
-		Entry& entry = m_entries[i];
-
-		if (entry.m_flags0x10 & Entry::c_flags0x10Bit1) {
-			GolVec3 position = entry.m_unk0x00;
-			LegoFloat deltaX = position.m_x - p_unk0x04->m_x;
-			GolVec2 deltaYZ;
-			deltaYZ.m_x = position.m_y - p_unk0x04->m_y;
-			deltaYZ.m_y = position.m_z - p_unk0x04->m_z;
-			LegoFloat distanceSquared = deltaYZ.m_y * deltaYZ.m_y + deltaYZ.m_x * deltaYZ.m_x + deltaX * deltaX;
-
-			if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
-				GolVec3 delta;
-				delta.m_x = deltaX;
-				delta.m_y = deltaYZ.m_x;
-				delta.m_z = deltaYZ.m_y;
-				GolMath::NormalizeVector3(delta, &delta);
-
-				LegoFloat dotProduct = p_unk0x08->m_z;
-				dotProduct *= delta.m_z;
-				LegoFloat dotProductY = p_unk0x08->m_y;
-				dotProduct += dotProductY * delta.m_y;
-				dotProduct += delta.m_x * p_unk0x08->m_x;
-				if (dotProduct >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
-					resultIndex = i;
-					nearestDistanceSquared = distanceSquared;
-				}
-			}
-		}
-	}
-
-	if (resultIndex < 0) {
-		return NULL;
-	}
-
-	return &m_entries[resultIndex];
 }

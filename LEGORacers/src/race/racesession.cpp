@@ -17,6 +17,7 @@
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golhashtable.h"
+#include "golmateriallibrary.h"
 #include "golmodelmaterialtable.h"
 #include "golstream.h"
 #include "input/directinputdevice.h"
@@ -934,20 +935,19 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 		::strcpy(fileName, "r1_f_0");
 		::strcat(fileName, m_context->m_unk0x18 ? ".rrb" : ".rrf");
 
-		if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-			m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
-		}
-		else {
+		LegoBool32 foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
+		if (!foundFallback) {
 			fileName[3] = 'm';
-			if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-				m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
-			}
-			else {
+			foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
+
+			if (!foundFallback) {
 				fileName[3] = 's';
-				if (GolStream::FindFile(fileName) == GolStream::e_ioSuccess) {
-					m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
-				}
+				foundFallback = GolStream::FindFile(fileName) == GolStream::e_ioSuccess;
 			}
+		}
+
+		if (foundFallback) {
+			m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
 		}
 	}
 }
@@ -970,6 +970,13 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_unk0x27f4.FUN_0041e770(&m_unk0x1c8, m_context->m_unk0x18, p_mirror);
 		FUN_00435e70();
 	}
+
+	RacePowerupManager::Params powerupParams;
+	Field0x30c4::Params field0x30c4Params;
+	Field0x2098::Params params;
+	RaceEventDispatcher0x08::Context dispatcherContext;
+	RaceState::Field0x3b190Params0x08 racerContext;
+	RaceState::Field0x3b190Params0x04 racerParams;
 
 	FUN_00435ba0(0.45f);
 
@@ -999,7 +1006,6 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_commonDataDirectory));
 	}
 
-	RaceState::Field0x3b190Params0x08 racerContext;
 	racerContext.m_renderer = m_renderer;
 	racerContext.m_golExport = m_golExport;
 	racerContext.m_unk0x08 = m_unk0x394;
@@ -1016,7 +1022,6 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	racerContext.m_racerField0x010 = &m_unk0x27f4;
 	racerContext.m_flags0x3c = m_context->m_unk0x20;
 
-	RaceState::Field0x3b190Params0x04 racerParams;
 	racerParams.m_racerCount = m_context->m_racerCount;
 	racerParams.m_routeRecords = m_routeRecords;
 	racerParams.m_timeRaceManager = m_timeRaceManager;
@@ -1060,7 +1065,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_gameDataDirectory));
 	}
 
-	for (racerIndex = 0; racerIndex < m_context->m_playerCount; racerIndex++) {
+	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
 		if (m_context->m_playerSetupSlots[racerIndex].m_unk0x10 == 0) {
 			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			RaceCameraController* cameraController = &m_unk0x2ad4[racerIndex];
@@ -1079,8 +1084,9 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	}
 
 	if (m_unk0x3350) {
-		m_raceState.m_unk0x318[0]->FUN_0043a0e0();
-		m_raceState.m_unk0x318[0]->m_unk0xd04 |= c_racerFlags0xd04Bit23;
+		RaceState::Racer* racer = m_raceState.GetRacers();
+		racer->FUN_0043a0e0();
+		racer->m_unk0xd04 |= c_racerFlags0xd04Bit23;
 	}
 
 	if (!m_unk0x3354) {
@@ -1102,7 +1108,6 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_unk0x2804.FUN_0045c3d0(&m_unk0x1e2, m_context->m_unk0x18, p_mirror);
 	}
 
-	Field0x2098::Params params;
 	params.m_unk0x00 = m_unk0x390;
 	params.m_unk0x04 = m_unk0x398;
 	params.m_unk0x08 = m_unk0x3a0;
@@ -1120,7 +1125,6 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.77f);
 
-	RaceEventDispatcher0x08::Context dispatcherContext;
 	dispatcherContext.m_unk0x00 = &m_raceState.m_unk0x0f0;
 	dispatcherContext.m_unk0x04 = m_context;
 	dispatcherContext.m_unk0x08 = &m_unk0x3300;
@@ -1141,6 +1145,148 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	m_unk0x2148.FUN_0048a4d0(&dispatcherContext, &m_unk0x1bb, m_context->m_unk0x18);
 
 	FUN_00435ba0(0.8f);
+
+	m_unk0x32c4.FUN_0045e3f0(m_unk0x3a0, &m_raceState);
+	m_unk0x32b4.FUN_0041f440(m_unk0x3a0, &m_unk0xaa, m_unk0x2098.GetEventTable(), &m_unk0x27e0);
+	m_unk0x2080.FUN_00463dc0(
+		&m_raceState,
+		m_unk0x2098.GetEventTable(),
+		&m_unk0x6dc,
+		m_unk0x3a0,
+		&m_unk0x32c4,
+		&m_unk0xf8,
+		m_context->m_unk0x18,
+		p_mirror
+	);
+
+	FUN_00435ba0(0.84f);
+
+	m_unk0x2128.FUN_00464ff0(
+		m_raceState.GetEventQueue(),
+		m_unk0x2098.GetEventTable(),
+		&m_unk0x112,
+		m_context->m_unk0x18,
+		p_mirror
+	);
+
+	FUN_00435ba0(0.86f);
+
+	m_unk0x213c
+		.FUN_00464aa0(m_raceState.GetEventQueue(), m_unk0x2098.GetEventTable(), &m_unk0x11f, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.88f);
+
+	DuskwindBananaRelic0x24* material = NULL;
+	if (m_unk0x3a4 != NULL && m_unk0x3a4->GetUnk0x14() >= 2) {
+		GolMaterialLibrary* materialLibrary = m_unk0x3a4->VTable0x30(1);
+		if (materialLibrary != NULL) {
+			material = materialLibrary->GetItem(0);
+		}
+	}
+
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x283c); i++) {
+		m_unk0x283c[i].FUN_00425d80(
+			m_renderer,
+			m_unk0x2d74,
+			&m_unk0x2d80,
+			m_unk0x2f8c,
+			&m_raceState,
+			m_timeRaceManager,
+			&m_unk0x30f0,
+			&m_unk0x3300,
+			m_timeRaceManager != NULL,
+			m_unk0x335c
+		);
+		m_unk0x283c[i].FUN_00426280(material, m_unk0x2abc, m_unk0x2ac4, m_unk0x2ac0, m_unk0x2ac8, p_mirror);
+	}
+
+	if (m_unk0x3354) {
+		m_unk0x283c[0].FUN_004262c0(m_raceState.m_unk0x318[0]);
+		m_unk0x283c[0].FUN_004262d0(0xffffffff);
+		m_unk0x283c[0].FUN_00425e90(2);
+
+		m_unk0x283c[1].FUN_004262c0(m_raceState.m_unk0x318[1]);
+		m_unk0x283c[1].FUN_004262d0(0xffffffff);
+		m_unk0x283c[1].FUN_00425e90(3);
+	}
+	else {
+		m_unk0x283c[0].FUN_004262c0(
+			m_context->m_playerCount == 1 ? m_raceState.m_unk0x318[0] : m_raceState.GetRacers()
+		);
+		m_unk0x283c[0].FUN_004262d0(0xffffffff);
+		m_unk0x283c[0].FUN_00425e90(1);
+	}
+
+	FUN_00435ba0(0.9f);
+
+	hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_commonDataDirectory));
+	}
+
+	if (!m_unk0x3350) {
+		m_unk0x3058.FUN_004272c0(m_unk0x2d7c, m_renderer, &m_unk0x30f0, m_context->m_inputBindings[0].m_events[2]);
+	}
+
+	field0x30c4Params.m_context = m_context;
+	field0x30c4Params.m_raceState = &m_raceState;
+	field0x30c4Params.m_unk0x08 = &m_unk0x6dc;
+	field0x30c4Params.m_unk0x0c = &m_unk0x2148;
+	field0x30c4Params.m_unk0x10 = &m_unk0x2150;
+	field0x30c4Params.m_unk0x14 = &m_unk0x248c;
+	field0x30c4Params.m_timeRaceManager = m_timeRaceManager;
+	field0x30c4Params.m_unk0x1c = &m_unk0x2080;
+	field0x30c4Params.m_unk0x20 = &m_unk0x2128;
+	field0x30c4Params.m_unk0x24 = &m_unk0x32c4;
+	field0x30c4Params.m_unk0x28 = &m_unk0x2098;
+	m_unk0x30c4.FUN_0043a690(&field0x30c4Params);
+
+	m_unk0x2150.FUN_00489af0(10, m_golExport, m_renderer, m_unk0x39c->VTable0x4c(0), &m_unk0x12c, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.93f);
+
+	powerupParams.m_unk0x00 = m_golExport;
+	powerupParams.m_renderer = m_renderer;
+	powerupParams.m_raceState = &m_raceState;
+	powerupParams.m_unk0x0c = m_unk0x394;
+	powerupParams.m_unk0x10 = m_unk0x3b4;
+	powerupParams.m_unk0x14 = &m_unk0x32b4;
+	powerupParams.m_unk0x18 = &m_unk0x3300;
+	powerupParams.m_unk0x1c = &m_unk0x2150;
+	powerupParams.m_trailManager = &m_trailManager;
+	powerupParams.m_unk0x24 = &m_unk0x2080;
+	powerupParams.m_unk0x28 = &m_unk0x27fc;
+	powerupParams.m_unk0x2c = m_unk0x3a8;
+	powerupParams.m_unk0x30 = &m_unk0x2804;
+	powerupParams.m_unk0x34 = m_unk0x3354 ? m_context->m_unk0x0c - g_unk0x004b08bc : m_context->m_unk0x0c;
+	powerupParams.m_unk0x38 = m_context->m_unk0x20;
+	m_unk0x6dc.FUN_00457c20(&powerupParams);
+
+	m_unk0x6dc.FUN_00457c90(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
+
+	FUN_00435ba0(0.97f);
+
+	hashTable = g_hashTable;
+	if (hashTable) {
+		hashTable->SetCurrentEntry(hashTable->AddString(m_context->m_gameDataDirectory));
+	}
+
+	if (m_timeRaceManager) {
+		LegoU32 nameLength = ::strlen(&m_unk0xc4);
+		(&m_unk0xc4)[nameLength - 4] = '2';
+		(&m_unk0xc4)[nameLength - 3] = '.';
+		(&m_unk0xc4)[nameLength - 2] = 'P';
+		(&m_unk0xc4)[nameLength - 1] = 'W';
+		(&m_unk0xc4)[nameLength] = 'F';
+		(&m_unk0xc4)[nameLength + 1] = 0;
+	}
+
+	m_unk0x6dc.FUN_00458810(&m_unk0xc4, m_context->m_unk0x18, p_mirror);
+	m_unk0x6dc.FUN_00457cf0(!m_unk0x3354);
+	m_unk0x6dc.FUN_00458940();
+	m_unk0x6dc.FUN_0045b950();
+
+	FUN_00434930();
 }
 
 // FUNCTION: LEGORACERS 0x00434000

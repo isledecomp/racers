@@ -610,14 +610,16 @@ void MenuManager::FUN_0042d730()
 		context->m_raceSlots[0].m_mirror = 1;
 	}
 
-	CircuitDefinitionList::CircuitDefinition* circuitDefinition =
-		static_cast<CircuitDefinitionList::CircuitDefinition*>(m_unk0x04.m_circuitList.GetName(context->m_circuitName));
-	if (circuitDefinition != NULL && context->m_racerCount > circuitDefinition->GetDriverCount()) {
-		context->m_racerCount = circuitDefinition->GetDriverCount();
-	}
-
 	LegoRacers::Context::PlayerSetupSlot* slots = context->m_playerSetupSlots;
-	if (circuitDefinition != NULL) {
+	if (context->m_racerCount > selectedCount) {
+		CircuitDefinitionList::CircuitDefinition* circuitDefinition =
+			static_cast<CircuitDefinitionList::CircuitDefinition*>(
+				m_unk0x04.m_circuitList.GetName(context->m_circuitName)
+			);
+		if (context->m_racerCount > circuitDefinition->GetDriverCount()) {
+			context->m_racerCount = circuitDefinition->GetDriverCount();
+		}
+
 		for (LegoU32 slotIndex = 0; slotIndex < context->m_racerCount; slotIndex++) {
 			::memcpy(
 				slots[slotIndex].m_driverName,

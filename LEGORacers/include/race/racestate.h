@@ -73,8 +73,10 @@ public:
 	public:
 		Racer();
 		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-		virtual void VTable0x04(undefined4 p_flags);                    // vtable+0x04
-		~Racer();
+		virtual ~Racer();                                               // vtable+0x04
+
+		// SYNTHETIC: LEGORACERS 0x0043b420
+		// RaceState::Racer::`vector deleting destructor'
 
 		class Field0x00c;
 		class Field0x3e8;
@@ -1355,8 +1357,12 @@ public:
 	void FUN_0043d120();
 	void RecordBestTimes(LegoRacers::Context* p_context);
 	Field0x0f0* GetUnk0x0f0() { return &m_unk0x0f0; }
+	LegoEventQueue* GetEventQueue() { return &m_unk0x0f0; }
 	Racer* GetRacers() { return m_unk0x0f0.m_racers; }
+	Racer* GetRacer(LegoU32 p_index) { return &m_unk0x0f0.m_racers[p_index]; }
 	LegoU32 GetRacerCount() const { return m_unk0x0f0.m_racerCount; }
+	Racer* GetCurrentRacer() { return m_unk0x0f0.m_racer080; }
+	GolMaterialLibrary* GetMaterialLibrary() const { return m_unk0x284.m_unk0x14; }
 	Racer* GetUnk0x318() { return m_unk0x318[0]; }
 	Racer::Field0x00c::Entry* FUN_0043d070(Racer* p_racer);
 	Racer* FUN_0043c6e0(

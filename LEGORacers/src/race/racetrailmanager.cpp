@@ -503,9 +503,9 @@ void RaceTrailManager::Trail::FUN_004931a0()
 										(GolModel::c_vertexCountMask << GolModel::c_groupDataUpperWordShift));
 		}
 
-		LegoU32 groupTriangleCount = triangleIndex;
+		LegoU32 groupTriangleCount = batchTriangleCount;
 		if (groupIndex >= groupCount - 1) {
-			groupTriangleCount = batchTriangleCount;
+			groupTriangleCount = triangleIndex;
 		}
 
 		if (groupWordIndex < 4) {

@@ -11,6 +11,12 @@ class GoldDune0x38;
 class PurpleDune0x7c;
 class RaceState;
 
+// SYNTHETIC: LEGORACERS 0x0040a830
+// $CRT_CPP_Initializer(8)
+
+// SYNTHETIC: LEGORACERS 0x0040a870
+// $CRT_CPP_Initializer(10)
+
 // SIZE 0x2c
 struct MagentaRibbonSourceItem0x2c {
 	LegoU32 m_width;                  // 0x00

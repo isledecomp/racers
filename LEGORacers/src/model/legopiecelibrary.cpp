@@ -366,7 +366,7 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 		case GolFileParser::e_unknown0x2a: {
 			m_colorTripleCount = ReadBracketedCountAndLeftCurly(parser);
 			m_colorTriples = new LegoU8[m_colorTripleCount * 3];
-			if (m_colors == NULL) {
+			if (m_colorTriples == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			LegoS32 i;

@@ -22,6 +22,9 @@ DECOMP_SIZE_ASSERT(CarModelScreenBase::CarPartPlacement::CreateParams, 0x30)
 // GLOBAL: LEGORACERS 0x004b2e68
 LegoFloat g_unk0x4b2e68 = FLT_MAX;
 
+// GLOBAL: LEGORACERS 0x004b2e6c
+static const LegoFloat g_unk0x004b2e6c = 6.2831855f;
+
 // GLOBAL: LEGORACERS 0x004b2e80
 const LegoFloat g_carPartCameraPositions[] = {
 	0.0f, -14.0f, 9.0f,  0.0f, -10.0f, 14.0f, 0.0f, -0.3f, 17.0f, 0.0f,
@@ -35,7 +38,7 @@ extern const LegoFloat g_carPartHoverHeight = 1.2f;
 LegoFloat g_unk0x4b2ed8 = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004c7668
-LegoFloat g_fieldAt0x2308AngleStep = 0.0f;
+LegoFloat g_fieldAt0x2308AngleStep = g_unk0x004b2e6c * 0.125f;
 
 // GLOBAL: LEGORACERS 0x004b02f4
 extern const LegoFloat g_negativeRadiansToTableIndex = -162.97466f;

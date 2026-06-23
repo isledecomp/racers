@@ -166,7 +166,7 @@ void AwardCinematicScreen::VTable0x4c()
 	CreateRegion(&m_unk0x368, m_unk0x28c);
 	m_unk0x368.m_unk0x2cc = FALSE;
 
-	if (m_unk0x28c == c_menuWinCar) {
+	if (m_unk0x28c == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 		if (record) {
 			m_context->m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
@@ -302,28 +302,28 @@ void AwardCinematicScreen::VTable0x4c()
 
 						for (LegoS32 frameIndex = firstFrame; frameIndex < endFrame; frameIndex++) {
 							DuskwindBananaRelic0x24* material = animationItems[frameIndex].GetMaterial();
-							const LegoChar* materialName = material->GetName();
+							GolName expressionName;
+							::memcpy(expressionName, material->GetName(), sizeof(GolName));
 							LegoS32 expressionIndex = 0;
 
-							if (::strncmp(materialName, "face", sizeof(GolName)) != 0) {
-								if (::strncmp(materialName, "angry", sizeof(GolName)) == 0) {
+							if (::strncmp(expressionName, "face", sizeof(GolName)) != 0) {
+								if (::strncmp(expressionName, "angry", sizeof(GolName)) == 0) {
 									expressionIndex = 1;
 								}
-								else if (::strncmp(materialName, "blink", sizeof(GolName)) == 0) {
+								else if (::strncmp(expressionName, "blink", sizeof(GolName)) == 0) {
 									expressionIndex = 2;
 								}
-								else if (::strncmp(materialName, "happy", sizeof(GolName)) == 0) {
+								else if (::strncmp(expressionName, "happy", sizeof(GolName)) == 0) {
 									expressionIndex = 3;
 								}
-								else if (::strncmp(materialName, "sad", sizeof(GolName)) == 0) {
+								else if (::strncmp(expressionName, "sad", sizeof(GolName)) == 0) {
 									expressionIndex = 4;
 								}
-								else if (::strncmp(materialName, "suprz", sizeof(GolName)) == 0) {
+								else if (::strncmp(expressionName, "suprz", sizeof(GolName)) == 0) {
 									expressionIndex = 5;
 								}
 							}
 
-							GolName expressionName;
 							m_context->m_partCatalog
 								.BuildFaceExpressionName(cosmetics.m_faceIndex, expressionIndex, expressionName);
 							animationItems[frameIndex].SetMaterial(m_renderer->FindMaterialByName(expressionName));
@@ -347,34 +347,55 @@ void AwardCinematicScreen::VTable0x4c()
 	if (m_unk0x28c == c_menuWinCar) {
 		GolNameTable* textVisuals = m_unk0x368.m_unk0x84.GetTextVisuals();
 		const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
+		GolName textName;
 
-		CutsceneTextVisual* textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textCR"));
-		if (::strncmp(driverName, "CR", 2) != 0) {
+		textName[0] = 't';
+		textName[1] = 'e';
+		textName[2] = 'x';
+		textName[3] = 't';
+		textName[4] = 'C';
+		textName[5] = 'R';
+		textName[6] = '\0';
+
+		CutsceneTextVisual* textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5]) {
 			textVisual->SetDisabled(TRUE);
 		}
 
-		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textKK"));
-		if (::strncmp(driverName, "KK", 2) != 0) {
+		textName[4] = 'K';
+		textName[5] = 'K';
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5]) {
 			textVisual->SetDisabled(TRUE);
 		}
 
-		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textBB"));
-		if (::strncmp(driverName, "BB", 2) != 0) {
+		textName[4] = 'B';
+		textName[5] = 'B';
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5]) {
 			textVisual->SetDisabled(TRUE);
 		}
 
-		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textJT"));
-		if (::strncmp(driverName, "JT", 2) != 0) {
+		textName[4] = 'J';
+		textName[5] = 'T';
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5]) {
 			textVisual->SetDisabled(TRUE);
 		}
 
-		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textGM"));
-		if (::strncmp(driverName, "GM", 2) != 0) {
+		textName[4] = 'G';
+		textName[5] = 'M';
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5]) {
 			textVisual->SetDisabled(TRUE);
 		}
 
-		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName("textBVB"));
-		if (::strncmp(driverName, "BVB", 3) != 0) {
+		textName[4] = 'B';
+		textName[5] = 'V';
+		textName[6] = 'B';
+		textName[7] = '\0';
+		textVisual = static_cast<CutsceneTextVisual*>(textVisuals->GetName(textName));
+		if (driverName[0] != textName[4] || driverName[1] != textName[5] || driverName[2] != textName[6]) {
 			textVisual->SetDisabled(TRUE);
 		}
 	}

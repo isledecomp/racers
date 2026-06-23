@@ -122,9 +122,10 @@ void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_ma
 					continue;
 				}
 
-				do {
+				record = modelState->FUN_00442fe0();
+				while (record->m_recordSource == 3 && firstRecord != record) {
 					record = modelState->FUN_00442fe0();
-				} while (record->m_recordSource == 3 && firstRecord != record);
+				}
 
 				break;
 			}

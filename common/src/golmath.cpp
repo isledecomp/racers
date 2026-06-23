@@ -425,25 +425,25 @@ LegoBool32 GolMath::FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_tria
 	LegoFloat edgeCB1 = c1 - b1;
 	LegoFloat edgeCBDotC = edgeCB1 * c0 + edgeCB0 * c1;
 
-	if (edgeCB1 * edgeAB0 + edgeCB0 * edgeAB1 <= edgeAC1 * point1 + edgeAC0 * point0) {
-		if (edgeAC1 * point1 + edgeAC0 * point0 < edgeACDotC) {
+	if (edgeCB0 * edgeAB1 > edgeCB1 * edgeAB0) {
+		if (edgeAC0 * point1 + edgeAC1 * point0 > edgeACDotC) {
+			return FALSE;
+		}
+		if (edgeAB0 * point1 + edgeAB1 * point0 > edgeABDotB) {
+			return FALSE;
+		}
+		if (edgeCB0 * point1 + edgeCB1 * point0 > edgeCBDotC) {
+			return FALSE;
+		}
+	}
+	else {
+		if (edgeAC0 * point1 + edgeAC1 * point0 < edgeACDotC) {
 			return FALSE;
 		}
 		if (edgeAB0 * point1 + edgeAB1 * point0 < edgeABDotB) {
 			return FALSE;
 		}
 		if (edgeCB0 * point1 + edgeCB1 * point0 < edgeCBDotC) {
-			return FALSE;
-		}
-	}
-	else {
-		if (edgeAC1 * point1 + edgeAC0 * point0 >= edgeACDotC) {
-			return FALSE;
-		}
-		if (edgeAB0 * point1 + edgeAB1 * point0 >= edgeABDotB) {
-			return FALSE;
-		}
-		if (edgeCB0 * point1 + edgeCB1 * point0 >= edgeCBDotC) {
 			return FALSE;
 		}
 	}

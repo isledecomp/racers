@@ -10,6 +10,12 @@
 
 DECOMP_SIZE_ASSERT(CarModelScreenBase, 0x2b20)
 
+// GLOBAL: LEGORACERS 0x004b2cf4
+static const LegoFloat g_unk0x004b2cf4 = 6.2831855f;
+
+// GLOBAL: LEGORACERS 0x004c7664
+LegoFloat g_unk0x004c7664 = g_unk0x004b2cf4 * 0.125f;
+
 // FUNCTION: LEGORACERS 0x00476d50
 CarModelScreenBase::CarModelScreenBase()
 {
@@ -175,7 +181,7 @@ void CarModelScreenBase::FUN_004773a0()
 	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_carBuildSaveBuffer);
 }
 
-// STUB: LEGORACERS 0x004773e0
+// FUNCTION: LEGORACERS 0x004773e0
 LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10)
 {
 	LegoU32 fallbackSound = p_sound ? 8 : 0;
@@ -185,8 +191,8 @@ LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, 
 	}
 
 	LegoS32 deltaX = p_deltaX;
-	CarPartPlacement* placement = &m_unk0x2308;
 	if (deltaX && p_deltaY && !p_unk0x10) {
+		CarPartPlacement* placement = &m_unk0x2308;
 		if (placement->FUN_004785b0(deltaX) && placement->FUN_00478670(p_deltaY)) {
 			m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
 			return TRUE;
@@ -197,14 +203,16 @@ LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, 
 		return FALSE;
 	}
 
+	CarPartPlacement* placement = &m_unk0x2308;
 	LegoBool32 result = placement->FUN_004785b0(deltaX);
 	result |= placement->FUN_00478670(p_deltaY);
 	if (result) {
 		m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
-		return result;
+	}
+	else {
+		m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
 	}
 
-	m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
 	return result;
 }
 

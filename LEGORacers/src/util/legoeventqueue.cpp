@@ -170,7 +170,7 @@ void LegoEventQueue::Field0x2c::VTable0x10(LegoU32 p_elapsedMs)
 	FUN_0042ffc0();
 }
 
-// STUB: LEGORACERS 0x0042fd10
+// FUNCTION: LEGORACERS 0x0042fd10
 void LegoEventQueue::Field0x2c::FUN_0042fd10()
 {
 	Event* event = m_unk0x28;
@@ -212,7 +212,7 @@ void LegoEventQueue::Field0x2c::FUN_0042fd10()
 								m_callbackData.m_unk0x00 = 2;
 								m_callbackData.m_worldEntity0 = otherModel;
 								m_callbackData.m_worldEntity1 = model;
-								other->FUN_004408e0(this, &m_callbackData);
+								event->FUN_004408e0(this, &m_callbackData);
 							}
 						}
 					}

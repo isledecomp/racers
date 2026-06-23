@@ -29,15 +29,13 @@ void LegoEventQueue::VTable0x08(LegoU32 p_count)
 	}
 
 	m_freeList = m_events;
-	p_count--;
-
-	if (p_count > 0) {
-		for (LegoU32 i = 0; i < p_count; i++) {
+	if (p_count > 1) {
+		for (LegoU32 i = 0; i < p_count - 1; i++) {
 			m_events[i].m_next = &m_events[i + 1];
 		}
 	}
 
-	m_events[p_count].m_next = NULL;
+	m_events[p_count - 1].m_next = NULL;
 	m_activeList = NULL;
 }
 

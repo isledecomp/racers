@@ -926,17 +926,17 @@ void RaceState::Racer::Field0x3e8::FUN_0042a100()
 	m_unk0x67c = 0.78539819f * dot;
 }
 
-// STUB: LEGORACERS 0x0042a220
+// FUNCTION: LEGORACERS 0x0042a220
 void RaceState::Racer::Field0x3e8::FUN_0042a220()
 {
 	FUN_004474c0();
 
 	m_unk0x868.m_x = m_unk0x7c4.m_x;
-	m_unk0x868.m_z = m_unk0x7c4.m_z;
 	m_unk0x868.m_w = m_unk0x7c4.m_w;
+	m_unk0x868.m_z = m_unk0x7c4.m_z;
 	m_unk0x7f0 = m_unk0x74c;
-	m_unk0x868.m_y = m_unk0x7c4.m_y;
 	m_unk0x878 = m_unk0x7d4;
+	m_unk0x868.m_y = m_unk0x7c4.m_y;
 	m_unk0x87c = m_unk0x7d8;
 }
 

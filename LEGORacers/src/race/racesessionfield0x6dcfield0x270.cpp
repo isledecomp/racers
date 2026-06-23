@@ -417,13 +417,10 @@ void RacePowerupManager::Field0x270::VTable0x00(LegoEventQueue::CallbackData* p_
 		racer->FUN_004397a0();
 
 		GolVec3 impulse;
-		GolVec3* impulseA = &impulse;
-		GolVec3* impulseB = &impulse;
-		impulseA->m_y = 0.0f;
-		impulseA->m_z = 0.0f;
-		field0x3e8->m_unk0x008.m_x = 0.0f;
-		field0x3e8->m_unk0x008.m_y = impulseA->m_y;
-		field0x3e8->m_unk0x008.m_z = impulseA->m_z;
+		impulse.m_x = 0.0f;
+		impulse.m_y = 0.0f;
+		impulse.m_z = 0.0f;
+		field0x3e8->m_unk0x008 = impulse;
 
 		LegoFloat amount;
 		LegoS32 duration = static_cast<LegoS32>(m_unk0x230);
@@ -445,20 +442,12 @@ void RacePowerupManager::Field0x270::VTable0x00(LegoEventQueue::CallbackData* p_
 		}
 
 		LegoFloat scale = amount * g_unk0x004b0150;
-		impulseA->m_x = direction.m_x * scale;
-		impulseA->m_y = direction.m_y * scale;
-		impulseA->m_z = direction.m_z * scale;
+		impulse.m_x = direction.m_x * scale;
+		impulse.m_y = direction.m_y * scale;
+		impulse.m_z = direction.m_z * scale;
+		impulse.m_z += amount * g_unk0x004b0154;
 
-		GolVec3 offset;
-		GolVec3* offsetPtr = &offset;
-		offsetPtr->m_x = 0.0f;
-		offsetPtr->m_y = 0.0f;
-		offsetPtr->m_z = amount * g_unk0x004b0154;
-		impulseA->m_x += offsetPtr->m_x;
-		impulseA->m_y += offsetPtr->m_y;
-		impulseA->m_z += offsetPtr->m_z;
-
-		field0x3e8->VTable0x1c(impulseA, impulseB);
+		field0x3e8->VTable0x1c(&impulse, &impulse);
 		return;
 	}
 

@@ -2571,7 +2571,7 @@ void RaceState::Field0x284::FUN_0043a450(Racer* p_racers, LegoU32 p_racerCount)
 	m_updateDelayMs = 15000;
 }
 
-// STUB: LEGORACERS 0x0043a480
+// FUNCTION: LEGORACERS 0x0043a480
 LegoU32 RaceState::Field0x284::FUN_0043a480(LegoU32 p_elapsedMs)
 {
 	LegoU32 delayMs = m_updateDelayMs;
@@ -2627,23 +2627,22 @@ LegoU32 RaceState::Field0x284::FUN_0043a480(LegoU32 p_elapsedMs)
 				LegoU32 flags0xaa8Mask = c_racerFlags0xaa8Bit18;
 				do {
 					if (racerIndex) {
-						Racer* racer = &m_racers[racerIndex];
-						if (!(racer->m_unk0xd04 & c_racerFlags0xd04RubberBandMask)) {
-							if (racer->FUN_0043a0a0() > bestProgress) {
+						if (!(m_racers[racerIndex].m_unk0xd04 & c_racerFlags0xd04RubberBandMask)) {
+							if (m_racers[racerIndex].FUN_0043a0a0() > bestProgress) {
 								LegoFloat adjustment = 1.0f - g_unk0x004b09dc;
 								adjustment += m_unk0x0c;
-								LegoU32 flags0xaa8 = m_racers[racerIndex].m_unk0x3e8.m_flags0x6c0;
 								Racer::Field0x3e8* field0x3e8 = &m_racers[racerIndex].m_unk0x3e8;
+								LegoU32 flags0xaa8 = field0x3e8->m_flags0x6c0;
 								field0x3e8->m_unk0x7e8 = adjustment;
 								if (!(flags0xaa8Mask & flags0xaa8)) {
 									field0x3e8->m_unk0x7ec = adjustment;
 								}
 							}
-							else if (racer->FUN_0043a0a0() < bestProgress) {
+							else if (m_racers[racerIndex].FUN_0043a0a0() < bestProgress) {
 								LegoFloat adjustment = g_unk0x004b09dc + m_unk0x0c;
 								adjustment += 1.0f;
-								LegoU32 flags0xaa8 = m_racers[racerIndex].m_unk0x3e8.m_flags0x6c0;
 								Racer::Field0x3e8* field0x3e8 = &m_racers[racerIndex].m_unk0x3e8;
+								LegoU32 flags0xaa8 = field0x3e8->m_flags0x6c0;
 								field0x3e8->m_unk0x7e8 = adjustment;
 								if (!(flags0xaa8Mask & flags0xaa8)) {
 									field0x3e8->m_unk0x7ec = adjustment;

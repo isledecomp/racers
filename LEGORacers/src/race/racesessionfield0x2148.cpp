@@ -3152,7 +3152,7 @@ void RaceEventDispatcher0x08::Item0x34::ClearFields()
 	m_unk0x24.Clear();
 }
 
-// STUB: LEGORACERS 0x0048ee00
+// FUNCTION: LEGORACERS 0x0048ee00
 void RaceEventDispatcher0x08::Item0x34::VTable0x10(Context* p_context, GolFileParser* p_parser)
 {
 	if (m_unk0x0c) {
@@ -3208,7 +3208,9 @@ void RaceEventDispatcher0x08::Item0x34::VTable0x10(Context* p_context, GolFilePa
 		modelName++;
 	} while (--count);
 
-	m_unk0x10[0]->CopyModelDistancesTo(&m_unk0x24);
+	for (i = 0; i < 3; i++) {
+		(&m_unk0x24.m_x)[i] = m_unk0x10[0]->GetModelDistance(i);
+	}
 	m_unk0x0c = 1;
 }
 

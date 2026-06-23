@@ -415,28 +415,17 @@ LegoBool32 GolMath::FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_tria
 		point1 = p_point->m_z;
 	}
 
-	LegoFloat edgeAC0 = c0 - a0;
-	LegoFloat edgeAC1 = a1 - c1;
-	LegoFloat edgeACDotC = edgeAC1 * c0 + edgeAC0 * c1;
-	LegoFloat edgeAB0 = a0 - b0;
-	LegoFloat edgeAB1 = b1 - a1;
-	LegoFloat edgeABDotB = edgeAB1 * b0 + edgeAB0 * b1;
-	LegoFloat edgeCB0 = b0 - c0;
-	LegoFloat edgeCB1 = c1 - b1;
-	LegoFloat edgeCBDotC = edgeCB1 * c0 + edgeCB0 * c1;
+	LegoFloat edgeAC0 = a0 - c0;
+	LegoFloat edgeAC1 = c1 - a1;
+	LegoFloat edgeACDotC = edgeAC0 * c1 + edgeAC1 * c0;
+	LegoFloat edgeAB0 = b0 - a0;
+	LegoFloat edgeAB1 = a1 - b1;
+	LegoFloat edgeABDotB = edgeAB0 * a1 + edgeAB1 * a0;
+	LegoFloat edgeCB0 = c0 - b0;
+	LegoFloat edgeCB1 = b1 - c1;
+	LegoFloat edgeCBDotC = edgeCB0 * b1 + edgeCB1 * b0;
 
 	if (edgeCB0 * edgeAB1 > edgeCB1 * edgeAB0) {
-		if (edgeAC0 * point1 + edgeAC1 * point0 > edgeACDotC) {
-			return FALSE;
-		}
-		if (edgeAB0 * point1 + edgeAB1 * point0 > edgeABDotB) {
-			return FALSE;
-		}
-		if (edgeCB0 * point1 + edgeCB1 * point0 > edgeCBDotC) {
-			return FALSE;
-		}
-	}
-	else {
 		if (edgeAC0 * point1 + edgeAC1 * point0 < edgeACDotC) {
 			return FALSE;
 		}
@@ -444,6 +433,17 @@ LegoBool32 GolMath::FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_tria
 			return FALSE;
 		}
 		if (edgeCB0 * point1 + edgeCB1 * point0 < edgeCBDotC) {
+			return FALSE;
+		}
+	}
+	else {
+		if (edgeAC0 * point1 + edgeAC1 * point0 > edgeACDotC) {
+			return FALSE;
+		}
+		if (edgeAB0 * point1 + edgeAB1 * point0 > edgeABDotB) {
+			return FALSE;
+		}
+		if (edgeCB0 * point1 + edgeCB1 * point0 > edgeCBDotC) {
 			return FALSE;
 		}
 	}

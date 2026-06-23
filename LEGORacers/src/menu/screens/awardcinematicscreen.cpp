@@ -139,6 +139,13 @@ void AwardCinematicScreen::VTable0x4c()
 		LegoChar m_path[20];
 	} locals;
 
+	GolAnimatedEntity* sourceDriverEntity = NULL;
+	GolModelEntity* carBodyEntity = NULL;
+	GolAnimatedEntity* swapEntity = NULL;
+	GolAnimatedEntity* pLegEntity = NULL;
+	LegoBool32 carCreated = FALSE;
+	DriverCosmetics cosmetics;
+
 	if (m_unk0x28c != c_menuWinVvCar) {
 		if (!m_context->m_modelBuilder.HasMenuResources()) {
 			FUN_00480210(m_context, FALSE);
@@ -165,6 +172,7 @@ void AwardCinematicScreen::VTable0x4c()
 
 	CreateRegion(&m_unk0x368, m_unk0x28c);
 	m_unk0x368.m_unk0x2cc = FALSE;
+	CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
 
 	if (m_unk0x28c == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
@@ -175,10 +183,6 @@ void AwardCinematicScreen::VTable0x4c()
 		}
 	}
 
-	GolAnimatedEntity* sourceDriverEntity = NULL;
-	GolModelEntity* carBodyEntity = NULL;
-	GolAnimatedEntity* swapEntity = NULL;
-	GolAnimatedEntity* pLegEntity = NULL;
 	for (LegoU32 i = 0; i < m_unk0x368.m_unk0x58.GetWorldDatabaseCount(); i++) {
 		GolWorldDatabase* worldDatabase = m_unk0x368.m_unk0x58.GetWorldDatabase(i);
 		if (!sourceDriverEntity) {
@@ -204,29 +208,27 @@ void AwardCinematicScreen::VTable0x4c()
 	if (m_unk0x28c != c_menuWinVvCar) {
 		LegoRacers::Context* racersContext = m_context->m_context;
 		LegoU32 slotIndex = 0;
-		LegoRacers::Context::PlayerSetupSlot* slot = racersContext->m_playerSetupSlots;
+		undefined4 slotState = racersContext->m_playerSetupSlots[slotIndex].m_unk0x10;
 
-		if (slot->m_unk0x10) {
-			while (slotIndex < racersContext->m_playerCount) {
-				slot++;
+		if (slotState) {
+			while (slotState && slotIndex < racersContext->m_playerCount) {
 				slotIndex++;
-				if (!slot->m_unk0x10) {
-					break;
-				}
+				slotState = racersContext->m_playerSetupSlots[slotIndex].m_unk0x10;
 			}
 		}
 
 		if (m_unk0x28c == c_menuWinCar) {
 			slotIndex = 1;
-			slot = &racersContext->m_playerSetupSlots[slotIndex];
 		}
 
-		DriverCosmetics cosmetics;
-		if (slot->m_driverName[0]) {
-			m_context->m_cosmeticTable.CopyCosmetics(slot->m_driverName, &cosmetics);
+		if (racersContext->m_playerSetupSlots[slotIndex].m_driverName[0]) {
+			m_context->m_cosmeticTable.CopyCosmetics(
+				racersContext->m_playerSetupSlots[slotIndex].m_driverName,
+				&cosmetics
+			);
 		}
 		else {
-			cosmetics = slot->m_cosmetics;
+			cosmetics = racersContext->m_playerSetupSlots[slotIndex].m_cosmetics;
 		}
 
 		m_context->m_modelBuilder.SetExpressionMask(0xffff);
@@ -238,7 +240,6 @@ void AwardCinematicScreen::VTable0x4c()
 			sourceDriverEntity->GetModelDistance(0)
 		);
 
-		LegoBool32 carCreated = FALSE;
 		if (carBodyEntity) {
 			if (!m_context->m_unk0x21f4.IsInitialized()) {
 				GolHashTable::Entry* currentEntry;
@@ -285,7 +286,6 @@ void AwardCinematicScreen::VTable0x4c()
 			}
 		}
 
-		CutsceneDefinition::Frame* frame = m_unk0x368.m_unk0x2b0;
 		if (frame) {
 			for (LegoU32 i = 0; i < frame->GetModelCount(); i++) {
 				CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);

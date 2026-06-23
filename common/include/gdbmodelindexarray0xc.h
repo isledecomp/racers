@@ -38,6 +38,12 @@ public:
 		m_unk0x08[p_index].m_c = p_c;
 		m_unk0x08[p_index].m_x = 0;
 	}
+	void SetTriangleIndices(LegoU32 p_index, LegoU8 p_a, LegoU8 p_b, LegoU8 p_c)
+	{
+		m_unk0x08[p_index].m_a = p_a;
+		m_unk0x08[p_index].m_b = p_b;
+		m_unk0x08[p_index].m_c = p_c;
+	}
 
 protected:
 	Indices* m_unk0x08;

@@ -152,43 +152,40 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 	LegoBool32 p_mirror
 )
 {
-	Field0x2080* field = this;
-	LegoU32 zero = 0;
-
-	if (field->m_eventQueue) {
-		field->Destroy();
+	if (m_eventQueue) {
+		Destroy();
 	}
 
-	field->m_eventQueue = p_raceState->GetEventQueue();
-	field->m_unk0x08 = p_eventTable;
+	m_eventQueue = p_raceState->GetEventQueue();
+	m_unk0x08 = p_eventTable;
 
-	GolFileParser* parser = field->FUN_00465210(p_name, p_binary);
+	GolFileParser* parser = FUN_00465210(p_name, p_binary);
 	if (parser) {
-		field->m_unk0x14 = new Entry[field->m_count];
-		if (field->m_unk0x14 == NULL) {
+		m_unk0x14 = new Entry[m_count];
+		if (m_unk0x14 == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		for (LegoU32 i = zero; i < field->m_count; i++) {
+		for (LegoU32 i = 0; i < m_count; i++) {
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			parser->ReadLeftCurly();
 
 			EntryParams params;
-			params.m_unk0x00 = field->m_unk0x08;
-			params.m_unk0x04 = zero;
+			params.m_unk0x00 = m_unk0x08;
 			params.m_unk0x08.m_x = 0.0f;
 			params.m_unk0x08.m_y = 0.0f;
 			params.m_unk0x08.m_z = 0.0f;
 			params.m_unk0x14 = 0.0f;
+			params.m_unk0x04 = 0;
 			params.m_unk0x18 = FALSE;
 			params.m_raceState = p_raceState;
 			params.m_unk0x20 = p_field0x6dc;
 			params.m_unk0x24 = p_field0x32c4;
-			params.m_unk0x28 = zero;
+			params.m_unk0x28 = 0;
 			params.m_unk0x2c = FALSE;
 			params.m_unk0x30 = FALSE;
 			params.m_unk0x34 = FALSE;
-			params.m_unk0x38 = zero;
+			params.m_unk0x38 = 0;
 
 			GolFileParser::ParserTokenType token = parser->GetNextToken();
 			while (token != GolFileParser::e_rightCurly) {
@@ -196,11 +193,7 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 				case GolFileParser::e_unknown0x2c:
 					params.m_unk0x2c = TRUE;
 					break;
-				case GolFileParser::e_unknown0x2d:
-					params.m_unk0x28 = parser->ReadInteger();
-					params.m_unk0x34 = TRUE;
-					break;
-				case GolFileParser::e_unknown0x2e: {
+				case GolFileParser::e_unknown0x2d: {
 					LegoChar name[8];
 					strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
@@ -222,8 +215,12 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 					params.m_unk0x30 = TRUE;
 					break;
 				}
+				case GolFileParser::e_unknown0x2e:
+					params.m_unk0x28 = parser->ReadInteger();
+					params.m_unk0x34 = TRUE;
+					break;
 				default:
-					field->FUN_00465350(parser, &params);
+					FUN_00465350(parser, &params);
 					break;
 				}
 
@@ -234,11 +231,11 @@ void RaceSession::Field0x2080::FUN_00463dc0(
 				params.m_unk0x08.m_y = -params.m_unk0x08.m_y;
 			}
 
-			field->m_unk0x14[i].FUN_00463b60(&params);
-			field->FUN_004653f0(&field->m_unk0x14[i], params.m_unk0x2c);
+			m_unk0x14[i].FUN_00463b60(&params);
+			FUN_004653f0(&m_unk0x14[i], params.m_unk0x2c);
 		}
 
-		field->FUN_00465330(parser);
+		FUN_00465330(parser);
 	}
 }
 

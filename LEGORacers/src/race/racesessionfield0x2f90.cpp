@@ -657,25 +657,23 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 
 	if (p_params->m_unk0x20) {
 		LegoU32 vertexCountForGroup = p_params->m_segmentCount + 1;
-		if (groups != NULL) {
-			groups[groupIndex++] = ((vertexCountForGroup - 1) & 0x3f) << 16;
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | triangleIndex;
-		}
+		groups[groupIndex++] = ((vertexCountForGroup - 1) & 0x3f) << 16;
+		groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | triangleIndex;
 
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
 			LegoU8 topIndex = 0;
 			LegoU8 ringIndex = static_cast<LegoU8>(firstRing + segment);
 			LegoU8 nextRingIndex = static_cast<LegoU8>(firstRing + ((segment + 1) % p_params->m_segmentCount));
 			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, topIndex, ringIndex, nextRingIndex);
+				indices->SetTriangleIndices(triangleIndex, topIndex, ringIndex, nextRingIndex);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, topIndex, ringIndex, nextRingIndex);
+					p_params->m_unk0x34->SetTriangleIndices(triangleIndex, topIndex, ringIndex, nextRingIndex);
 				}
 			}
 			else {
-				indices->SetIndices(triangleIndex, topIndex, nextRingIndex, ringIndex);
+				indices->SetTriangleIndices(triangleIndex, topIndex, nextRingIndex, ringIndex);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, topIndex, nextRingIndex, ringIndex);
+					p_params->m_unk0x34->SetTriangleIndices(triangleIndex, topIndex, nextRingIndex, ringIndex);
 				}
 			}
 			triangleIndex++;
@@ -692,11 +690,9 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 
 		LegoU32 bottomIndex = firstRing + static_cast<LegoU32>(ringCount) * p_params->m_segmentCount;
 		LegoU32 lastRingStart = firstRing + static_cast<LegoU32>(ringCount - 1) * p_params->m_segmentCount;
-		if (groups != NULL) {
-			groups[groupIndex++] =
-				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lastRingStart & 0xffff);
-			groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | (triangleIndex & 0xffff);
-		}
+		groups[groupIndex++] =
+			((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lastRingStart & 0xffff);
+		groups[groupIndex++] = 0x20000000 | ((p_params->m_segmentCount & 0x7f) << 16) | (triangleIndex & 0xffff);
 
 		LegoU32 indexOffset = scratchStart - lastRingStart;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
@@ -704,14 +700,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 			LegoU32 bottom = bottomIndex;
 			LegoU32 nextRingIndex = lastRingStart + ((segment + 1) % p_params->m_segmentCount);
 			if (!reverseWinding) {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(ringIndex + indexOffset),
 					static_cast<LegoU8>(bottom + indexOffset),
 					static_cast<LegoU8>(nextRingIndex + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(ringIndex),
 						static_cast<LegoU8>(bottom),
@@ -720,14 +716,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 				}
 			}
 			else {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(ringIndex + indexOffset),
 					static_cast<LegoU8>(nextRingIndex + indexOffset),
 					static_cast<LegoU8>(bottom + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(ringIndex),
 						static_cast<LegoU8>(nextRingIndex),
@@ -749,12 +745,9 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 
 		LegoU32 lowerBase = firstRing + static_cast<LegoU32>(ring) * p_params->m_segmentCount;
 		LegoU32 upperBase = lowerBase + p_params->m_segmentCount;
-		if (groups != NULL) {
-			groups[groupIndex++] =
-				((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lowerBase & 0xffff);
-			groups[groupIndex++] =
-				0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16) | (triangleIndex & 0xffff);
-		}
+		groups[groupIndex++] =
+			((scratchStart & 0x3f) << 22) | (((vertexCountForGroup - 1) & 0x3f) << 16) | (lowerBase & 0xffff);
+		groups[groupIndex++] = 0x20000000 | (((p_params->m_segmentCount * 2) & 0x7f) << 16) | (triangleIndex & 0xffff);
 
 		LegoU32 indexOffset = scratchStart - lowerBase;
 		for (segment = 0; segment < p_params->m_segmentCount; segment++) {
@@ -769,14 +762,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 			LegoU32 lowerRight = lowerBase + nextSegment;
 
 			if (!reverseWinding) {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperLeft),
@@ -785,14 +778,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 				}
 				triangleIndex++;
 
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset),
 					static_cast<LegoU8>(lowerRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperRight),
@@ -801,14 +794,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 				}
 			}
 			else {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset),
 					static_cast<LegoU8>(upperLeft + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperRight),
@@ -817,14 +810,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 				}
 				triangleIndex++;
 
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(lowerRight + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(lowerRight),
@@ -838,9 +831,7 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 		scratchStart += vertexCountForGroup;
 	}
 
-	if (groups != NULL) {
-		groups[groupIndex] = 0xc0000000;
-	}
+	groups[groupIndex] = 0xc0000000;
 
 	p_params->m_model->VTable0x34(1);
 }
@@ -956,24 +947,27 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 
 				textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi;
 				textureCoordinate.m_y = ringAngle * g_raceSessionSkyModelInversePi;
+				vertices->VTable0x28(vertexIndex, textureCoordinate);
+
+				vertexIndex++;
+				segmentAngle += angleStep;
+				continue;
+			}
+
+			LegoU32 sourceIndex = vertexIndex - p_params->m_segmentCount;
+			vertices->VTable0x14(sourceIndex, &position);
+			vertices->VTable0x20(sourceIndex, &color);
+			vertices->VTable0x1c(sourceIndex, &normal);
+			vertices->VTable0x18(sourceIndex, &textureCoordinate);
+			textureCoordinate.m_x = 1.0f;
+
+			vertices->VTable0x24(vertexIndex, position);
+			if (p_params->m_vertexType == 1) {
+				vertices->VTable0x30(vertexIndex, color);
 			}
 			else {
-				LegoU32 sourceIndex = vertexIndex - p_params->m_segmentCount;
-				vertices->VTable0x14(sourceIndex, &position);
-				vertices->VTable0x20(sourceIndex, &color);
-				vertices->VTable0x1c(sourceIndex, &normal);
-				vertices->VTable0x18(sourceIndex, &textureCoordinate);
-				textureCoordinate.m_x = 1.0f;
-
-				vertices->VTable0x24(vertexIndex, position);
-				if (p_params->m_vertexType == 1) {
-					vertices->VTable0x30(vertexIndex, color);
-				}
-				else {
-					vertices->VTable0x2c(vertexIndex, normal);
-				}
+				vertices->VTable0x2c(vertexIndex, normal);
 			}
-
 			vertices->VTable0x28(vertexIndex, textureCoordinate);
 
 			vertexIndex++;
@@ -1031,9 +1025,7 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 
 	LegoU32* groups = p_params->m_model->GetMutableGroups();
 	LegoU32 groupIndex = 0;
-	if (groups != NULL) {
-		groups[groupIndex++] = 0x80000000;
-	}
+	groups[groupIndex++] = 0x80000000;
 
 	LegoU32 triangleIndex = 0;
 	LegoU32 scratchStart = 0;
@@ -1051,15 +1043,15 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 			LegoU8 index1 = static_cast<LegoU8>(ringStart + segment);
 			LegoU8 index2 = static_cast<LegoU8>(ringStart + segment + 1);
 			if (!reverseWinding) {
-				indices->SetIndices(triangleIndex, index0, index1, index2);
+				indices->SetTriangleIndices(triangleIndex, index0, index1, index2);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index1, index2);
+					p_params->m_unk0x34->SetTriangleIndices(triangleIndex, index0, index1, index2);
 				}
 			}
 			else {
-				indices->SetIndices(triangleIndex, index0, index2, index1);
+				indices->SetTriangleIndices(triangleIndex, index0, index2, index1);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(triangleIndex, index0, index2, index1);
+					p_params->m_unk0x34->SetTriangleIndices(triangleIndex, index0, index2, index1);
 				}
 			}
 			triangleIndex++;
@@ -1087,14 +1079,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 			LegoU32 index1 = bottomStart + segment;
 			LegoU32 index2 = vertexStart + segment + 1;
 			if (!reverseWinding) {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(index0 + indexOffset),
 					static_cast<LegoU8>(index1 + indexOffset),
 					static_cast<LegoU8>(index2 + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(index0),
 						static_cast<LegoU8>(index1),
@@ -1103,14 +1095,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 				}
 			}
 			else {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(index0 + indexOffset),
 					static_cast<LegoU8>(index2 + indexOffset),
 					static_cast<LegoU8>(index1 + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(index0),
 						static_cast<LegoU8>(index2),
@@ -1147,14 +1139,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 			LegoU32 lowerRight = lowerBase + segment + 1;
 
 			if (!reverseWinding) {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperLeft),
@@ -1163,14 +1155,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 				}
 				triangleIndex++;
 
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset),
 					static_cast<LegoU8>(lowerRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperRight),
@@ -1179,14 +1171,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 				}
 			}
 			else {
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset),
 					static_cast<LegoU8>(upperLeft + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(upperRight),
@@ -1195,14 +1187,14 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
 				}
 				triangleIndex++;
 
-				indices->SetIndices(
+				indices->SetTriangleIndices(
 					triangleIndex,
 					static_cast<LegoU8>(lowerLeft + indexOffset),
 					static_cast<LegoU8>(lowerRight + indexOffset),
 					static_cast<LegoU8>(upperRight + indexOffset)
 				);
 				if (p_params->m_unk0x34 != NULL) {
-					p_params->m_unk0x34->SetIndices(
+					p_params->m_unk0x34->SetTriangleIndices(
 						triangleIndex,
 						static_cast<LegoU8>(lowerLeft),
 						static_cast<LegoU8>(lowerRight),

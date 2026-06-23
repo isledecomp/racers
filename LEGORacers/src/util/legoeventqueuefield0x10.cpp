@@ -20,23 +20,23 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441330(
 	}
 
 	LegoS32 contactCount = 0;
-	LegoU32 cornerIndex = 0;
 	LegoU32 shapeIndex = 0;
 	p_unk0x10->m_x = 0.0f;
 	p_unk0x10->m_y = 0.0f;
 	p_unk0x10->m_z = 0.0f;
 
 	while (TRUE) {
-		Field0x10* shape;
+		LegoU32 cornerIndex = 0;
+		const GolVec3* position;
 		LegoFloat distance;
 		GolVec3 axis0;
 		GolVec3 axis1;
 		GolVec3 axis2;
 		if (!shapeIndex) {
-			shape = this;
+			position = &m_unk0x020;
 			distance = distance0;
 
-			const GolMatrix3& orientation = m_unk0x004->GetOrientation();
+			const GolMatrix3& orientation = m_unk0x004->m_orientation;
 			LegoFloat halfX = m_unk0x0d0 * 0.5f;
 			axis0.m_x = orientation.m_m[0][0] * halfX;
 			axis0.m_y = orientation.m_m[0][1] * halfX;
@@ -70,10 +70,10 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441330(
 			}
 		}
 		else {
-			shape = p_other;
+			position = &p_other->m_unk0x020;
 			distance = distance1;
 
-			const GolMatrix3& orientation = p_other->m_unk0x004->GetOrientation();
+			const GolMatrix3& orientation = p_other->m_unk0x004->m_orientation;
 			LegoFloat halfX = p_other->m_unk0x0d0 * 0.5f;
 			axis0.m_x = orientation.m_m[0][0] * halfX;
 			axis0.m_y = orientation.m_m[0][1] * halfX;
@@ -142,17 +142,18 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441330(
 				corner.m_z -= axis2.m_z;
 			}
 
-			LegoFloat projected =
-				p_unk0x0c->m_y * corner.m_y + corner.m_z * p_unk0x0c->m_z + corner.m_x * p_unk0x0c->m_x;
+			LegoFloat projected = p_unk0x0c->m_y * corner.m_y;
+			projected += corner.m_z * p_unk0x0c->m_z;
+			projected += corner.m_x * p_unk0x0c->m_x;
 			if (shapeIndex == 1) {
 				projected = -projected;
 			}
 
 			if (projected >= distance) {
 				contactCount++;
-				p_unk0x10->m_x = shape->m_unk0x020.m_x + p_unk0x10->m_x + corner.m_x;
-				p_unk0x10->m_y = shape->m_unk0x020.m_y + p_unk0x10->m_y + corner.m_y;
-				p_unk0x10->m_z = corner.m_z + shape->m_unk0x020.m_z + p_unk0x10->m_z;
+				p_unk0x10->m_x = position->m_x + p_unk0x10->m_x + corner.m_x;
+				p_unk0x10->m_y = position->m_y + p_unk0x10->m_y + corner.m_y;
+				p_unk0x10->m_z = corner.m_z + position->m_z + p_unk0x10->m_z;
 			}
 			cornerIndex++;
 		} while (cornerIndex < 8);
@@ -166,8 +167,6 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::FUN_00441330(
 
 			return TRUE;
 		}
-
-		cornerIndex = 0;
 	}
 }
 

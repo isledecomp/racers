@@ -1234,7 +1234,7 @@ void CobaltTrail0x140::FUN_00426390(LegoU32 p_elapsedMs)
 // STUB: LEGORACERS 0x004263a0
 void CobaltTrail0x140::FUN_004263a0()
 {
-	LegoBool drawLapTime = TRUE;
+	LegoBool32 drawLapTime = TRUE;
 	LegoU32 elapsedMs = m_unk0x034;
 	m_unk0x034 = 0;
 
@@ -1262,12 +1262,12 @@ void CobaltTrail0x140::FUN_004263a0()
 			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * scaleX);
 			textHeight = static_cast<LegoS32>(static_cast<double>(textHeight) * scaleY);
 
-			m_unk0x024->SetColor(0xff00ffff);
+			m_unk0x024->SetColor(0xff, 0xff, 0, 0xff);
 			if (m_unk0x13c) {
 				m_unk0x000->VTable0x64(
 					m_unk0x010,
 					m_unk0x024,
-					m_unk0x0a4 - (textWidth >> 1),
+					m_unk0x0a4 - (static_cast<LegoU32>(textWidth) >> 1),
 					m_unk0x0c4 - (static_cast<LegoU32>(textHeight) >> 2),
 					scaleX,
 					scaleY,
@@ -1275,7 +1275,7 @@ void CobaltTrail0x140::FUN_004263a0()
 					0
 				);
 			}
-			m_unk0x024->SetColor(0xffffffff);
+			m_unk0x024->SetColor(0xff, 0xff, 0xff, 0xff);
 
 			if ((previousState == 1 || previousState / 1000 != countdownState) && m_unk0x004) {
 				m_unk0x004->FUN_00443b50(0);
@@ -1298,12 +1298,12 @@ void CobaltTrail0x140::FUN_004263a0()
 			textWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * scaleX);
 			textHeight = static_cast<LegoS32>(static_cast<double>(textHeight) * scaleY);
 
-			m_unk0x024->SetColor(0xff00ffff);
+			m_unk0x024->SetColor(0xff, 0xff, 0, 0xff);
 			if (m_unk0x13c) {
 				m_unk0x000->VTable0x64(
 					&m_unk0x014,
 					m_unk0x024,
-					m_unk0x0a4 - (textWidth >> 1),
+					m_unk0x0a4 - (static_cast<LegoU32>(textWidth) >> 1),
 					m_unk0x0c4 - (static_cast<LegoU32>(textHeight) >> 2),
 					scaleX,
 					scaleY,
@@ -1311,7 +1311,7 @@ void CobaltTrail0x140::FUN_004263a0()
 					0
 				);
 			}
-			m_unk0x024->SetColor(0xffffffff);
+			m_unk0x024->SetColor(0xff, 0xff, 0xff, 0xff);
 
 			if (m_unk0x004 && countdownState == 3 && previousState / 1000 != 3) {
 				m_unk0x004->FUN_00443b50(0x0f);
@@ -1337,7 +1337,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x000->VTable0x64(
 				&m_unk0x014,
 				m_unk0x024,
-				m_unk0x0a4 - (textWidth >> 1),
+				m_unk0x0a4 - (static_cast<LegoU32>(textWidth) >> 1),
 				m_unk0x0c4 - (static_cast<LegoU32>(textHeight) >> 2),
 				scaleX,
 				scaleY,
@@ -1450,34 +1450,32 @@ void CobaltTrail0x140::FUN_004263a0()
 		LegoS32 textHeight;
 		m_unk0x020->MeasureString(m_unk0x010, &textWidth, &textHeight);
 
-		LegoFloat labelScaleX = m_unk0x10c * m_unk0x0ec;
-		LegoFloat labelScaleY = m_unk0x114 * m_unk0x0ec;
-		LegoS32 labelOffset = static_cast<LegoS32>(
-			(static_cast<double>(textWidth) * m_unk0x0ec - static_cast<double>(m_unk0x0ec) * -14.0) * m_unk0x10c
-		);
+		LegoS32 scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_unk0x0ec);
+		LegoS32 labelPadding = static_cast<LegoS32>(static_cast<double>(m_unk0x0ec) * -14.0);
+		LegoS32 labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_unk0x10c);
 		m_unk0x000->VTable0x64(
 			m_unk0x010,
 			m_unk0x020,
 			m_unk0x0ac - labelOffset,
 			m_unk0x0cc,
-			labelScaleX,
-			labelScaleY,
+			m_unk0x10c * m_unk0x0ec,
+			m_unk0x114 * m_unk0x0ec,
 			NULL,
 			0
 		);
 
 		m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x27);
 		m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);
-		labelOffset = static_cast<LegoS32>(
-			(static_cast<double>(textWidth) * m_unk0x0ec - static_cast<double>(m_unk0x0ec) * -6.0) * m_unk0x10c
-		);
+		scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_unk0x0ec);
+		labelPadding = static_cast<LegoS32>(static_cast<double>(m_unk0x0ec) * -6.0);
+		labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_unk0x10c);
 		m_unk0x000->VTable0x64(
 			&m_unk0x014,
 			m_unk0x020,
 			m_unk0x0ac - labelOffset,
 			m_unk0x0cc,
-			labelScaleX,
-			labelScaleY,
+			m_unk0x10c * m_unk0x0ec,
+			m_unk0x114 * m_unk0x0ec,
 			NULL,
 			0
 		);
@@ -1489,16 +1487,16 @@ void CobaltTrail0x140::FUN_004263a0()
 		if (m_unk0x088) {
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x25);
 			m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);
-			labelOffset = static_cast<LegoS32>(
-				(static_cast<double>(textWidth) * m_unk0x0ec - static_cast<double>(m_unk0x0ec) * -14.0) * m_unk0x10c
-			);
+			scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_unk0x0ec);
+			labelPadding = static_cast<LegoS32>(static_cast<double>(m_unk0x0ec) * -14.0);
+			labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_unk0x10c);
 			m_unk0x000->VTable0x64(
 				&m_unk0x014,
 				m_unk0x020,
 				m_unk0x0b0 - labelOffset,
 				m_unk0x0d0,
-				labelScaleX,
-				labelScaleY,
+				m_unk0x10c * m_unk0x0ec,
+				m_unk0x114 * m_unk0x0ec,
 				NULL,
 				0
 			);
@@ -1531,8 +1529,8 @@ void CobaltTrail0x140::FUN_004263a0()
 				m_unk0x020,
 				m_unk0x0a8 + static_cast<LegoS32>(m_unk0x10c * 5.0f),
 				m_unk0x0c8,
-				labelScaleX,
-				labelScaleY,
+				m_unk0x10c * m_unk0x0ec,
+				m_unk0x114 * m_unk0x0ec,
 				NULL,
 				0
 			);
@@ -1546,22 +1544,18 @@ void CobaltTrail0x140::FUN_004263a0()
 			if (m_unk0x074) {
 				m_unk0x074 += elapsedMs;
 				LegoFloat positionScale;
-				if (m_unk0x074 <= 350) {
-					if (m_unk0x074 <= 175) {
-						positionScale = static_cast<LegoFloat>(static_cast<double>(m_unk0x074) * 0.0057142857 + 1.0);
-					}
-					else {
-						LegoU32 timer = m_unk0x074 - 175;
-						positionScale = static_cast<LegoFloat>(
-							2.0 - static_cast<double>(static_cast<LegoS32>(timer)) * 0.0057142857
-						);
-					}
-				}
-				else {
+				if (m_unk0x074 > 350) {
 					if (m_unk0x074 > 1050) {
 						m_unk0x074 = 0;
 					}
 					positionScale = 1.0f;
+				}
+				else if (m_unk0x074 <= 175) {
+					positionScale = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x074)) * 0.0057142857f + 1.0f;
+				}
+				else {
+					LegoU32 timer = m_unk0x074 - 175;
+					positionScale = 2.0f - static_cast<LegoFloat>(static_cast<LegoS32>(timer)) * 0.0057142857f;
 				}
 				positionScale *= m_unk0x0ec;
 
@@ -1591,7 +1585,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 
 		if (m_unk0x02c->m_unk0xd84) {
-			LegoS32 medalX = FUN_00425bf0(m_unk0x04f.m_text, m_unk0x0b4, m_unk0x0dc);
+			LegoS32 medalX = FUN_00425bf0(m_unk0x04f.m_text, m_unk0x0b4, m_unk0x0d4);
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x21);
 			m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);
 			if (m_unk0x13c) {
@@ -1599,7 +1593,7 @@ void CobaltTrail0x140::FUN_004263a0()
 					&m_unk0x014,
 					m_unk0x020,
 					medalX - static_cast<LegoS32>(static_cast<double>(textWidth + 4) * m_unk0x10c),
-					m_unk0x0dc,
+					m_unk0x0d4,
 					m_unk0x10c,
 					m_unk0x114,
 					NULL,
@@ -1619,24 +1613,40 @@ void CobaltTrail0x140::FUN_004263a0()
 
 	LegoS32 itemLevel = m_unk0x02c->m_unk0xd58;
 	LegoS32 itemType = m_unk0x02c->m_unk0xccc - 1;
-	UtopianPan0xa4* itemResource = NULL;
-	LegoU32 itemColor = 0xffffffff;
+	UtopianPan0xa4* itemResource;
+	FourBytes itemColor;
+	itemColor.m_uBytes[3] = 0xff;
+
 	switch (itemType) {
 	case 0:
-		itemColor = 0xff0000ff;
+		itemColor.m_uBytes[0] = 0xff;
+		itemColor.m_uBytes[1] = 0;
+		itemColor.m_uBytes[2] = 0;
 		itemResource = m_unk0x008->GetItem(itemLevel + 2);
 		break;
 	case 1:
-		itemColor = 0xffff5050;
+		itemColor.m_uBytes[0] = 0x50;
+		itemColor.m_uBytes[1] = 0x50;
+		itemColor.m_uBytes[2] = 0xff;
 		itemResource = m_unk0x008->GetItem(itemLevel + 16);
 		break;
 	case 2:
-		itemColor = 0xff00ff00;
+		itemColor.m_uBytes[0] = 0;
+		itemColor.m_uBytes[1] = 0xff;
+		itemColor.m_uBytes[2] = 0;
 		itemResource = m_unk0x008->GetItem(itemLevel + 20);
 		break;
 	case 3:
-		itemColor = 0xff00ffff;
+		itemColor.m_uBytes[0] = 0xff;
+		itemColor.m_uBytes[1] = 0xff;
+		itemColor.m_uBytes[2] = 0;
 		itemResource = m_unk0x008->GetItem(itemLevel + 6);
+		break;
+	default:
+		itemColor.m_uBytes[0] = 0xff;
+		itemColor.m_uBytes[1] = 0xff;
+		itemColor.m_uBytes[2] = 0xff;
+		itemResource = NULL;
 		break;
 	}
 
@@ -1651,7 +1661,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		m_unk0x000->VTable0x70(background, 0, m_unk0x0c0, m_unk0x0e0, width, height);
 
 		UtopianPan0xa4* colorResource = m_unk0x008->GetItem(12);
-		colorResource->m_unk0x4a.m_u32 = itemColor;
+		colorResource->m_unk0x4a = itemColor;
 		m_unk0x000->VTable0x70(colorResource, 0, m_unk0x0c0, m_unk0x0e0, width, height);
 
 		if (itemResource) {
@@ -1664,8 +1674,8 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x000->VTable0x70(
 				itemResource,
 				0,
-				m_unk0x0c0 + ((31 * width) >> 6) - (itemWidth >> 1),
-				m_unk0x0e0 + ((38 * height) >> 6) - (itemHeight >> 1),
+				m_unk0x0c0 + (static_cast<LegoU32>(31 * width) >> 6) - (static_cast<LegoU32>(itemWidth) >> 1),
+				m_unk0x0e0 + (static_cast<LegoU32>(38 * height) >> 6) - (static_cast<LegoU32>(itemHeight) >> 1),
 				itemWidth,
 				itemHeight
 			);
@@ -1679,8 +1689,14 @@ void CobaltTrail0x140::FUN_004263a0()
 			LegoS32 levelHeight = static_cast<LegoS32>(
 				static_cast<double>(static_cast<LegoS32>(levelResource->GetHeight())) * m_unk0x0f0 * m_unk0x114
 			);
-			m_unk0x000
-				->VTable0x70(levelResource, 0, m_unk0x0c0 + ((24 * width) >> 6), m_unk0x0e0, levelWidth, levelHeight);
+			m_unk0x000->VTable0x70(
+				levelResource,
+				0,
+				m_unk0x0c0 + (static_cast<LegoU32>(24 * width) >> 6),
+				m_unk0x0e0,
+				levelWidth,
+				levelHeight
+			);
 		}
 	}
 

@@ -133,22 +133,21 @@ LegoS32 LegoPieceLibrary::PieceRecord::GetMaxCellValue() const
 	return 0;
 }
 
-// STUB: LEGORACERS 0x0049eb90
+// FUNCTION: LEGORACERS 0x0049eb90
 LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 {
 	LegoS32 length = 0;
-	LegoChar* cursor = p_name;
-	LegoChar value = *cursor;
+	LegoChar value = *p_name;
 
 	while (value) {
 		if (length >= 8) {
 			break;
 		}
 
-		cursor++;
 		m_name[length] = value;
+		p_name++;
 		length++;
-		value = *cursor;
+		value = *p_name;
 	}
 
 	if (length < 8) {
@@ -159,7 +158,6 @@ LegoS32 LegoPieceLibrary::PieceRecord::SetName(LegoChar* p_name)
 	}
 
 	m_name[8] = 0;
-
 	return length;
 }
 
@@ -289,7 +287,7 @@ void LegoPieceLibrary::GetTextureCoordinate(LegoS32 p_index, LegoFloat* p_u, Leg
 	*p_v = static_cast<LegoFloat>(textureCoordinate->m_v) * g_pieceLibraryTextureCoordinateScale;
 }
 
-// STUB: LEGORACERS 0x0049ee30
+// FUNCTION: LEGORACERS 0x0049ee30
 LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_binary)
 {
 	GolFileParser* parser;
@@ -366,7 +364,7 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 		case GolFileParser::e_unknown0x2a: {
 			m_colorTripleCount = ReadBracketedCountAndLeftCurly(parser);
 			m_colorTriples = new LegoU8[m_colorTripleCount * 3];
-			if (m_colorTriples == NULL) {
+			if (m_colors == NULL) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 			LegoS32 i;
@@ -427,27 +425,38 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 	if (m_pieces != NULL && m_pieceCount != 0) {
 		::qsort(m_pieces, m_pieceCount, sizeof(PieceRecord), ComparePieceRecords);
 
-		LegoS32 groupStart = 0;
-		LegoU16 groupType = m_pieces[0].m_pieceType;
 		LegoS32 i;
 		LegoS32 j;
+		LegoS32 previousPieceType = -1;
+		LegoS32 variantCount = 0;
 		for (i = 0; i < m_pieceCount; i++) {
-			if (m_pieces[i].m_pieceType != groupType) {
-				LegoS32 groupCount = i - groupStart;
-				for (j = groupStart; j < i; j++) {
-					m_pieces[j].m_variantCount = static_cast<LegoU8>(groupCount);
+			PieceRecord* piece = &m_pieces[i];
+			if (piece->m_pieceType == previousPieceType) {
+				piece->m_variantIndex = static_cast<LegoU8>(variantCount);
+				variantCount++;
+			}
+			else {
+				piece->m_variantIndex = 0;
+				previousPieceType = piece->m_pieceType;
+
+				if (variantCount > 0) {
+					PieceRecord* previousPiece = piece;
+					for (j = variantCount; j > 0; j--) {
+						previousPiece--;
+						previousPiece->m_variantCount = static_cast<LegoU8>(variantCount);
+					}
 				}
 
-				groupStart = i;
-				groupType = m_pieces[i].m_pieceType;
+				variantCount = 1;
 			}
-
-			m_pieces[i].m_variantIndex = static_cast<LegoU8>(i - groupStart);
 		}
 
-		LegoS32 groupCount = m_pieceCount - groupStart;
-		for (i = groupStart; i < m_pieceCount; i++) {
-			m_pieces[i].m_variantCount = static_cast<LegoU8>(groupCount);
+		if (variantCount > 0) {
+			PieceRecord* previousPiece = &m_pieces[m_pieceCount];
+			for (j = variantCount; j > 0; j--) {
+				previousPiece--;
+				previousPiece->m_variantCount = static_cast<LegoU8>(variantCount);
+			}
 		}
 	}
 
@@ -486,14 +495,15 @@ LegoS32 LegoPieceLibrary::FUN_0049ee30(const LegoChar* p_filename, undefined4 p_
 		}
 	}
 
+	LegoS32 result = lowPieceOffset;
 	if (m_maxHighPieceOffset < highPieceOffset) {
 		m_maxHighPieceOffset = highPieceOffset;
 	}
-	if (m_maxLowPieceOffset < lowPieceOffset) {
-		m_maxLowPieceOffset = lowPieceOffset;
+	if (m_maxLowPieceOffset < result) {
+		m_maxLowPieceOffset = result;
 	}
 
-	return lowPieceOffset;
+	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0049f410

@@ -595,40 +595,37 @@ void RaceSession::FUN_004328f0()
 	}
 }
 
-// STUB: LEGORACERS 0x00432a50
+// FUNCTION: LEGORACERS 0x00432a50
 LegoU32 RaceSession::FUN_00432a50(LegoU32 p_index, LegoChar* p_buffer)
 {
-	RaceSession* session = this;
-	LegoU32 index = p_index;
-	LegoRacers::Context* context = session->m_context;
-	LegoRacers::Context::PlayerSetupSlot* slot = &context->m_playerSetupSlots[index];
+	undefined4 slotState = m_context->m_playerSetupSlots[p_index].m_unk0x10;
 
-	if (slot->m_unk0x10) {
-		while (index < context->m_racerCount) {
-			slot++;
-			index++;
-			if (!slot->m_unk0x10) {
-				break;
-			}
-		}
+	if (slotState && p_index < m_context->m_racerCount) {
+		do {
+			p_index++;
+			slotState = m_context->m_playerSetupSlots[p_index].m_unk0x10;
+		} while (slotState);
 	}
 
-	if (session->m_unk0x3350) {
-		index = 0;
+	if (m_unk0x3350) {
+		p_index = 0;
 	}
 
 	strcpy(p_buffer, "voice");
 
-	LegoU8 tens = 0;
-	if (context->m_playerSetupSlots[index].m_previewFaceIndex >= 10) {
-		tens = context->m_playerSetupSlots[index].m_previewFaceIndex / 10;
+	LegoU8 tens = m_context->m_playerSetupSlots[p_index].m_previewFaceIndex;
+	if (tens < 10) {
+		tens = 0;
+	}
+	else {
+		tens /= 10;
 	}
 
 	p_buffer[5] = tens + '0';
+	p_buffer[6] = m_context->m_playerSetupSlots[p_index].m_previewFaceIndex - (tens * 10) + '0';
 	p_buffer[7] = '\0';
-	p_buffer[6] = context->m_playerSetupSlots[index].m_previewFaceIndex - (tens * 10) + '0';
 
-	return index;
+	return p_index;
 }
 
 // FUNCTION: LEGORACERS 0x00432b30
@@ -2134,14 +2131,14 @@ void RaceSession::FUN_004354d0()
 
 	LegoU32 viewportIndex = 1;
 	if (m_unk0x3354) {
-		m_renderer->VTable0xec(TRUE);
+		m_renderer->VTable0xec(viewportIndex);
 	}
 	else {
 		m_renderer->VTable0xec(FALSE);
 	}
 
 	if (m_raceState.m_unk0x318[0]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
-		m_unk0x6dc.FUN_0045a7b0(TRUE);
+		m_unk0x6dc.FUN_0045a7b0(viewportIndex);
 	}
 	else {
 		GolVec3 cameraPosition;
@@ -2167,39 +2164,39 @@ void RaceSession::FUN_004354d0()
 		}
 	}
 
-	if (m_context->m_playerCount > 1) {
-		do {
-			m_renderer->VTable0x20(m_unk0x2acc[viewportIndex]);
-			m_renderer->VTable0x5c();
-			m_renderer->VTable0xec(++viewportIndex);
+	while (viewportIndex < m_context->m_playerCount) {
+		m_renderer->VTable0x20(m_unk0x2acc[viewportIndex]);
+		m_renderer->VTable0x5c();
+		m_renderer->VTable0xec(viewportIndex + 1);
 
-			if (m_raceState.m_unk0x318[viewportIndex - 1]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
-				m_unk0x6dc.FUN_0045a7b0(FALSE);
-			}
-			else {
-				GolVec3 cameraPosition;
-				m_unk0x2acc[viewportIndex - 1]->GetTransform()->GetPosition(&cameraPosition);
-				m_unk0x2f90.FUN_0041d040(&cameraPosition);
+		if (m_raceState.m_unk0x318[viewportIndex]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
+			m_unk0x6dc.FUN_0045a7b0(FALSE);
+		}
+		else {
+			GolVec3 cameraPosition;
+			m_unk0x2acc[viewportIndex]->GetTransform()->GetPosition(&cameraPosition);
+			m_unk0x2f90.FUN_0041d040(&cameraPosition);
 
-				switch (m_state) {
-				case 1:
-					FUN_004357b0(m_raceState.m_unk0x318[viewportIndex - 1]);
-					break;
-				case 2:
-					FUN_004357b0(m_raceState.m_unk0x318[viewportIndex - 1]);
-					break;
-				case 3:
-					FUN_004357b0(m_raceState.m_unk0x318[viewportIndex - 1]);
-					break;
-				case 4:
-					FUN_004357b0(m_raceState.m_unk0x318[viewportIndex - 1]);
-					break;
-				case 5:
-					FUN_004357b0(m_raceState.m_unk0x318[viewportIndex - 1]);
-					break;
-				}
+			switch (m_state) {
+			case 1:
+				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				break;
+			case 2:
+				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				break;
+			case 3:
+				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				break;
+			case 4:
+				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				break;
+			case 5:
+				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				break;
 			}
-		} while (viewportIndex < m_context->m_playerCount);
+		}
+
+		viewportIndex++;
 	}
 
 	if (m_unk0x3354) {

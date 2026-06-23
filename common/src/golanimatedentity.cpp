@@ -434,91 +434,101 @@ void GolAnimatedEntity::FUN_0040db80(
 void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 {
 	m_flags &= ~c_flagLoopWrapped;
-	if (!(m_flags & c_flagPartAnimation)) {
-		GolModelEntity::VTable0x10(p_elapsed);
-		return;
-	}
+	if (m_flags & c_flagPartAnimation) {
+		FUN_0040d650();
+		LegoU32 flags = m_flags;
+		if (flags & c_flagPartTransition) {
+			m_radius = -1.0f;
+			LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
+			m_unk0xec += m_unk0xf0 * elapsed;
+			if (m_unk0xec >= 1.0f) {
+				LegoFloat consumed = (m_unk0xec - 1.0f) / m_unk0xf0;
 
-	FUN_0040d650();
-	LegoU32 flags = m_flags;
-	if (flags & c_flagPartTransition) {
-		m_radius = -1.0f;
-		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsed);
-		m_unk0xec += m_unk0xf0 * elapsed;
-		if (m_unk0xec >= 1.0f) {
-			LegoS32 consumed = static_cast<LegoS32>((m_unk0xec - 1.0f) / m_unk0xf0);
-			p_elapsed -= consumed;
+				m_unk0xb8 = m_unk0xd4;
+				m_unk0xb4 = m_unk0xd0;
+				m_unk0xbc = m_unk0xd8;
+				m_unk0xc0 = m_unk0xdc;
+				m_velocity = m_unk0xdc;
 
-			m_unk0xb8 = m_unk0xd4;
-			m_unk0xb4 = m_unk0xd0;
-			m_unk0xbc = m_unk0xd8;
-			m_unk0xc0 = m_unk0xdc;
-			m_velocity = m_unk0xdc;
-
-			flags &= ~(c_flagPartTransition | c_flagLoopCurrentPart | c_flagRestartQueuedPart);
-			if (flags & c_flagLoopQueuedPart) {
-				flags |= c_flagLoopCurrentPart;
+				flags &= ~(c_flagPartTransition | c_flagLoopCurrentPart | c_flagRestartQueuedPart);
+				m_flags = flags;
+				p_elapsed -= static_cast<LegoS32>(consumed);
+				if (flags & c_flagLoopQueuedPart) {
+					flags |= c_flagLoopCurrentPart;
+				}
+				m_flags = flags;
 			}
-			m_flags = flags;
+			else {
+				if (m_unk0xcc) {
+					const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+					LegoFloat activeRate = m_unk0xb8;
+					m_unk0xb4 += activeRate * elapsed;
+					LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+					if (m_unk0xb4 > endFrame) {
+						if (flags & c_flagLoopCurrentPart) {
+							m_unk0xb4 = activePart.WrapTime(m_unk0xb4);
+						}
+						else {
+							m_unk0xb4 = endFrame;
+						}
+					}
+				}
+
+				if (m_unk0xe8) {
+					const CmbModelPartData0x28& queuedPart = m_modelParts[0]->GetPartData()[m_unk0xd8];
+					LegoFloat queuedRate = m_unk0xd4;
+					m_unk0xd0 += queuedRate * elapsed;
+					LegoFloat endFrame = static_cast<LegoFloat>(queuedPart.GetFrameCount() - 1);
+					if (m_unk0xd0 > endFrame) {
+						if (m_flags & c_flagLoopQueuedPart) {
+							m_unk0xd0 = queuedPart.WrapTime(m_unk0xd0);
+						}
+						else {
+							m_unk0xd0 = endFrame;
+						}
+					}
+				}
+
+				GolVec3* velocity = &m_velocity;
+				velocity->m_x = m_unk0xdc.m_x - m_unk0xc0.m_x;
+				velocity->m_y = m_unk0xdc.m_y - m_unk0xc0.m_y;
+				velocity->m_z = m_unk0xdc.m_z - m_unk0xc0.m_z;
+				GolVec3 blendedVelocity;
+				blendedVelocity.m_x = velocity->m_x * m_unk0xec;
+				blendedVelocity.m_y = velocity->m_y * m_unk0xec;
+				blendedVelocity.m_z = velocity->m_z * m_unk0xec;
+				velocity->m_x = m_unk0xc0.m_x + blendedVelocity.m_x;
+				velocity->m_y = m_unk0xc0.m_y + blendedVelocity.m_y;
+				velocity->m_z = m_unk0xc0.m_z + blendedVelocity.m_z;
+			}
 		}
-		else {
-			if (m_unk0xcc) {
-				const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
-				m_unk0xb4 += m_unk0xb8 * elapsed;
-				LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
-				if (m_unk0xb4 > endFrame) {
-					if (flags & c_flagLoopCurrentPart) {
-						m_unk0xb4 = activePart.WrapTime(m_unk0xb4);
+
+		if (!(m_flags & c_flagPartTransition)) {
+			const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
+			m_unk0xb4 += m_unk0xb8 * static_cast<LegoFloat>(p_elapsed);
+			LegoFloat currentTime = m_unk0xb4;
+			LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
+			if (m_unk0xb4 >= endFrame) {
+				if (m_flags & c_flagLoopCurrentPart) {
+					LegoFloat wrappedTime = activePart.WrapTime(currentTime);
+					if (wrappedTime < m_unk0xb4) {
+						m_flags |= c_flagLoopWrapped;
+					}
+
+					m_unk0xb4 = wrappedTime;
+					GolModelEntity::VTable0x10(p_elapsed);
+					return;
+				}
+				else {
+					if (m_flags & c_flagRestartQueuedPart) {
+						FUN_0040dad0(m_unk0xd8);
 					}
 					else {
 						m_unk0xb4 = endFrame;
 					}
+					m_flags |= c_flagPartAnimationDone;
 				}
 			}
-
-			if (m_unk0xe8) {
-				const CmbModelPartData0x28& queuedPart = m_modelParts[0]->GetPartData()[m_unk0xd8];
-				m_unk0xd0 += m_unk0xd4 * elapsed;
-				LegoFloat endFrame = static_cast<LegoFloat>(queuedPart.GetFrameCount() - 1);
-				if (m_unk0xd0 > endFrame) {
-					if (m_flags & c_flagLoopQueuedPart) {
-						m_unk0xd0 = queuedPart.WrapTime(m_unk0xd0);
-					}
-					else {
-						m_unk0xd0 = endFrame;
-					}
-				}
-			}
-
-			m_velocity = m_unk0xdc - m_unk0xc0;
-			m_velocity = m_unk0xc0 + (m_velocity * m_unk0xec);
-		}
-	}
-
-	if (m_flags & c_flagPartTransition) {
-		GolModelEntity::VTable0x10(p_elapsed);
-		return;
-	}
-
-	const CmbModelPartData0x28& activePart = m_modelParts[0]->GetPartData()[m_unk0xbc];
-	m_unk0xb4 += m_unk0xb8 * static_cast<LegoFloat>(p_elapsed);
-	LegoFloat endFrame = static_cast<LegoFloat>(activePart.GetFrameCount() - 1);
-	if (m_unk0xb4 >= endFrame) {
-		if (m_flags & c_flagLoopCurrentPart) {
-			LegoFloat oldTime = m_unk0xb4;
-			m_unk0xb4 = activePart.WrapTime(m_unk0xb4);
-			if (m_unk0xb4 < oldTime) {
-				m_flags |= c_flagLoopWrapped;
-			}
-		}
-		else {
-			if (m_flags & c_flagRestartQueuedPart) {
-				FUN_0040dad0(m_unk0xd8);
-			}
-			else {
-				m_unk0xb4 = endFrame;
-			}
-			m_flags |= c_flagPartAnimationDone;
 		}
 	}
 

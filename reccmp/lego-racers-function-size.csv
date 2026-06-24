@@ -957,8 +957,7 @@ address,type,size
 004283d0,function,27
 004283f0,function,257
 00428500,function,59
-00428540,function,2540
-00428f2c,function,20
+00428540,function,2556
 00428f40,function,141
 00428fd0,function,10
 00428fe0,function,10
@@ -2174,8 +2173,7 @@ address,type,size
 00459e20,function,1309
 0045a340,function,165
 0045a3f0,function,158
-0045a490,function,760
-0045a789,function,31
+0045a490,function,792
 0045a7b0,function,229
 0045a8a0,function,173
 0045a950,function,92

@@ -143,6 +143,12 @@ extern const LegoFloat g_unk0x004b09b8 = 30.0f;
 // GLOBAL: LEGORACERS 0x004b09bc
 extern const LegoFloat g_unk0x004b09bc = 0.001953125f;
 
+// GLOBAL: LEGORACERS 0x004b09c4
+extern const LegoFloat g_unk0x004b09c4 = 9.9999997e-05f;
+
+// GLOBAL: LEGORACERS 0x004b09c8
+extern const LegoFloat g_unk0x004b09c8 = -9.9999997e-05f;
+
 // GLOBAL: LEGORACERS 0x004b09d0
 extern const LegoFloat g_unk0x004b09d0 = 1.5f;
 
@@ -758,29 +764,29 @@ void RaceState::Racer::FUN_00437540(RaceCameraController* p_cameraController, Le
 	m_unk0xda4->SetVolume(m_unk0xd30);
 }
 
-// STUB: LEGORACERS 0x00437740
+// FUNCTION: LEGORACERS 0x00437740
 void RaceState::Racer::FUN_00437740(LegoU32 p_elapsedMs)
 {
 	LegoFloat value = m_unk0x3e8.m_unk0x618;
 	Field0x018* field;
 
-	if (value > -0.000099999997f && value < 0.000099999997f) {
+	if (value > g_unk0x004b09c8 && value < g_unk0x004b09c4) {
 		value = 0.0f;
-		field = &m_unk0x018;
-		field->FUN_004401b0();
 	}
-	else if (value >= 0.0f) {
-		field = &m_unk0x018;
-		field->FUN_004401b0();
-	}
-	else {
+	else if (value < 0.0f) {
 		field = &m_unk0x018;
 		field->FUN_004401e0();
 		value = -value;
+		goto setSpeed;
 	}
 
+	field = &m_unk0x018;
+	field->FUN_004401b0();
+
+setSpeed:
+	GolAnimatedEntity* entity = field->m_unk0x044;
 	LegoFloat speed = value * g_ghostAnimationRateScale;
-	field->m_unk0x044->SetUnk0xb8(speed);
+	entity->SetUnk0xb8(speed);
 
 	if (field->m_unk0x040) {
 		field->m_unk0x040->SetUnk0xb8(speed);
@@ -2164,11 +2170,9 @@ void RaceState::Racer::FUN_00439c40()
 }
 
 // FUNCTION: LEGORACERS 0x00439c70
-RaceState::Racer::Field0x00c::StandingsDeltaEntry* RaceState::Racer::FUN_00439c70(
-	Field0x00c::StandingsDeltaEntry* p_entries
-)
+void RaceState::Racer::FUN_00439c70(Field0x00c::StandingsDeltaEntry* p_entries)
 {
-	return m_unk0x00c->FUN_0043cf30(this, p_entries);
+	m_unk0x00c->FUN_0043cf30(this, p_entries);
 }
 
 // FUNCTION: LEGORACERS 0x00439c90

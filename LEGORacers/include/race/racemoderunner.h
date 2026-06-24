@@ -16,13 +16,13 @@ public:
 
 	static void Run(LegoRacers::Context* p_context);
 
-	LegoS32 Initialize(LegoRacers::Context* p_context);
+	void Initialize(LegoRacers::Context* p_context);
 	void Run();
 	void Shutdown();
 
 private:
 	void ReleaseContextAssets();
-	LegoS32 InitializeRaceScene();
+	void InitializeRaceScene();
 
 	LegoRacers::Context* m_context;    // 0x00
 	CircuitRaceRunner m_circuitRunner; // 0x04

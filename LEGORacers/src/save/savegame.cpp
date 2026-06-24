@@ -183,52 +183,52 @@ LegoU32 SaveGame::CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size)
 // STUB: LEGORACERS 0x00442a00
 void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 {
-	const LegoU8* data = m_fileImage;
-	const LegoU8* source = &data[c_persistentHeaderOffset];
+	const LegoU8* source;
 	LegoU32 i;
 	LegoU32 j;
 
-	p_state->m_racerCount = source[0];
+	p_state->m_racerCount = m_fileImage[c_persistentHeaderOffset];
+	source = &m_fileImage[c_persistentHeaderOffset + 1];
 	for (i = 0; i < sizeof(p_state->m_displayDriverGuid.m_bytes); i++) {
-		p_state->m_displayDriverGuid.m_bytes[i] = source[i + 1];
+		p_state->m_displayDriverGuid.m_bytes[i] = source[i];
 	}
-	p_state->m_unk0x1d = source[0x11];
-	p_state->m_unk0x1e = source[0x12];
-	p_state->m_musicVolume = source[0x13];
-	p_state->m_soundVolume = source[0x14];
-	p_state->m_unk0x21 = source[0x15];
-	p_state->m_languageIndex = source[0x16];
-	p_state->m_unk0x23 = source[0x17];
+	p_state->m_unk0x1d = m_fileImage[c_persistentHeaderOffset + 0x11];
+	p_state->m_unk0x1e = m_fileImage[c_persistentHeaderOffset + 0x12];
+	p_state->m_musicVolume = m_fileImage[c_persistentHeaderOffset + 0x13];
+	p_state->m_soundVolume = m_fileImage[c_persistentHeaderOffset + 0x14];
+	p_state->m_unk0x21 = m_fileImage[c_persistentHeaderOffset + 0x15];
+	p_state->m_languageIndex = m_fileImage[c_persistentHeaderOffset + 0x16];
+	p_state->m_unk0x23 = m_fileImage[c_persistentHeaderOffset + 0x17];
 
-	source = &data[c_inputBindingHeaderOffset];
+	source = &m_fileImage[c_inputBindingHeaderOffset + 1];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
 		InputBindingPlayerState* player = &p_state->m_inputBindings.m_players[i];
-		player->m_selectedRecordId = source[0];
-		player->m_selectedRecordSource = source[1];
-		player->m_selectedSaveIndex = source[2];
-		player->m_selectedEntryIndex = source[3];
+		player->m_selectedRecordId = source[-1];
+		player->m_selectedRecordSource = source[0];
+		player->m_selectedSaveIndex = source[1];
+		player->m_selectedEntryIndex = source[2];
 		source += sizeof(InputBindingPlayerState);
 	}
 
-	source = &data[c_inputBindingEntryOffset];
+	source = &m_fileImage[c_inputBindingEntryOffset + 2];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
 		InputBindingEntry* entry = &p_state->m_inputBindings.m_entries[i];
-		entry->m_deviceType = source[0];
-		entry->m_deviceSubType = source[1];
-		entry->m_deviceId = source[2];
+		entry->m_deviceType = source[-2];
+		entry->m_deviceSubType = source[-1];
+		entry->m_deviceId = source[0];
 
 		for (j = 0; j < sizeOfArray(entry->m_events); j++) {
-			entry->m_events[j] = ReadLittleEndianU32(&source[3 + (j * sizeof(LegoU32))]);
+			entry->m_events[j] = ReadLittleEndianU32(&source[1 + (j * sizeof(LegoU32))]);
 		}
 
 		source += c_inputBindingEntrySize;
 	}
 
-	p_state->m_partUnlockFlags = data[c_scoreRecordsOffset + (13 * c_scoreRecordSize)];
-	p_state->m_unlockedCircuits = data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 1];
-	p_state->m_unlockedRaces = ReadLittleEndianU16(&data[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 2]);
+	p_state->m_partUnlockFlags = m_fileImage[c_unlockStateOffset];
+	p_state->m_unlockedCircuits = m_fileImage[c_unlockStateOffset + 1];
+	p_state->m_unlockedRaces = ReadLittleEndianU16(&m_fileImage[c_unlockStateOffset + 2]);
 
-	source = &data[c_scoreRecordsOffset];
+	source = &m_fileImage[c_scoreRecordsOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
 		p_state->m_bestLapTimes[i] = ReadLittleEndianU32(source);
 		for (j = 0; j < sizeof(p_state->m_bestLapHolderNames[i]); j++) {
@@ -286,11 +286,10 @@ void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 		dest += c_inputBindingEntrySize;
 	}
 
-	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize)] = p_state->m_partUnlockFlags;
-	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 1] = p_state->m_unlockedCircuits;
-	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
-	m_fileImage[c_scoreRecordsOffset + (13 * c_scoreRecordSize) + 3] =
-		static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
+	m_fileImage[c_unlockStateOffset] = p_state->m_partUnlockFlags;
+	m_fileImage[c_unlockStateOffset + 1] = p_state->m_unlockedCircuits;
+	m_fileImage[c_unlockStateOffset + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
+	m_fileImage[c_unlockStateOffset + 3] = static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
 
 	dest = &m_fileImage[c_scoreRecordsOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {

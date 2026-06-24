@@ -47,7 +47,7 @@ RaceModeRunner::~RaceModeRunner()
 }
 
 // FUNCTION: LEGORACERS 0x0042c280
-LegoS32 RaceModeRunner::Initialize(LegoRacers::Context* p_context)
+void RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
 	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagAbortRace;
@@ -75,10 +75,11 @@ LegoS32 RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 	p_context->m_golApp->ClearFileSourceDirectoryCaches();
 
 	if (!p_context->m_raceMode) {
-		return m_circuitRunner.Initialize(m_context, &m_session);
+		m_circuitRunner.Initialize(m_context, &m_session);
+		return;
 	}
 
-	return InitializeRaceScene();
+	InitializeRaceScene();
 }
 
 // FUNCTION: LEGORACERS 0x0042c330
@@ -151,7 +152,7 @@ void RaceModeRunner::ReleaseContextAssets()
 }
 
 // FUNCTION: LEGORACERS 0x0042c4e0
-LegoS32 RaceModeRunner::InitializeRaceScene()
+void RaceModeRunner::InitializeRaceScene()
 {
 	sprintf(m_context->m_commonDataDirectory, "GAMEDATA\\COMMON");
 	strcpy(m_context->m_gameDataDirectory, "GAMEDATA\\");
@@ -165,9 +166,9 @@ LegoS32 RaceModeRunner::InitializeRaceScene()
 	}
 
 	if (m_timeRaceManager.GetScratchLapTimes()) {
-		return m_session
-			.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_mirror, &m_timeRaceManager);
+		m_session.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_mirror, &m_timeRaceManager);
+		return;
 	}
 
-	return m_session.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_mirror, NULL);
+	m_session.Initialize(m_context, g_raceNameBuffer, m_context->m_raceSlots[0].m_mirror, NULL);
 }

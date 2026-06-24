@@ -259,11 +259,10 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 
 	InputBindingPlayerState* sourcePlayer = state.m_inputBindings.m_players;
 	InputBindingPlayerState* destPlayer = m_state.m_inputBindings.m_players;
-	LegoU8* selectedEntryIndex = &destPlayer->m_selectedEntryIndex;
 	for (i = 0; i < c_joystickBindingCount; i++) {
 		*destPlayer = *sourcePlayer;
 
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[*selectedEntryIndex];
+		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[destPlayer->m_selectedEntryIndex];
 
 		if (entry->m_deviceType == c_joystickDeviceType &&
 			m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) == NULL) {
@@ -272,7 +271,6 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 
 		sourcePlayer++;
 		destPlayer++;
-		selectedEntryIndex += sizeof(InputBindingPlayerState);
 	}
 
 	m_state.m_partUnlockFlags = state.m_partUnlockFlags;

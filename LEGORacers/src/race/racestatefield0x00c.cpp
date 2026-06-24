@@ -7,7 +7,7 @@
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry, 0x48)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::StandingsDeltaEntry, 0x0c)
 
-// STUB: LEGORACERS 0x0043c6e0
+// FUNCTION: LEGORACERS 0x0043c6e0
 RaceState::Racer* RaceState::FUN_0043c6e0(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
@@ -20,14 +20,17 @@ RaceState::Racer* RaceState::FUN_0043c6e0(
 	for (i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount);) {
 		GolVec3* origin = p_unk0x04;
 		Racer* racer = &m_unk0x0f0.m_racers[i];
+		Racer::Field0x018* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		racerField->m_unk0x044->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - origin->m_x;
 		LegoFloat deltaY = position.m_y - origin->m_y;
 		LegoFloat deltaZ = position.m_z - origin->m_z;
-		LegoFloat distanceSquared = deltaZ * deltaZ + deltaY * deltaY + deltaX * deltaX;
+		LegoFloat distanceSquared = deltaX * deltaX;
+		distanceSquared += deltaY * deltaY;
+		distanceSquared += deltaZ * deltaZ;
 		if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
 			GolVec3 delta;
 			delta.m_x = deltaX;
@@ -35,7 +38,13 @@ RaceState::Racer* RaceState::FUN_0043c6e0(
 			delta.m_z = deltaZ;
 			GolMath::NormalizeVector3(delta, &delta);
 
-			if (GOLVECTOR3_DOT(*p_unk0x08, delta) >= p_unk0x14) {
+			LegoFloat dot = p_unk0x08->m_z;
+			dot *= delta.m_z;
+			LegoFloat yDot = p_unk0x08->m_y;
+			yDot *= delta.m_y;
+			dot += yDot;
+			dot += delta.m_x * p_unk0x08->m_x;
+			if (dot >= p_unk0x14) {
 				return &m_unk0x0f0.m_racers[i];
 			}
 		}
@@ -133,7 +142,7 @@ RaceState::Racer* RaceState::FUN_0043c910(
 	return &m_unk0x0f0.m_racers[resultIndex];
 }
 
-// STUB: LEGORACERS 0x0043ca60
+// FUNCTION: LEGORACERS 0x0043ca60
 RaceState::Racer* RaceState::FUN_0043ca60(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
@@ -143,7 +152,7 @@ RaceState::Racer* RaceState::FUN_0043ca60(
 )
 {
 	LegoFloat nearestDistanceSquared = FLT_MAX;
-	Racer* result = NULL;
+	LegoS32 resultIndex = -1;
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
 		Racer* racer = &m_unk0x0f0.m_racers[i];
@@ -152,20 +161,28 @@ RaceState::Racer* RaceState::FUN_0043ca60(
 		GolVec3 position;
 		racerField->m_unk0x044->VTable0x04(&position);
 
-		GolVec3 delta = position - *p_unk0x04;
-		LegoFloat distanceSquared = delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x;
+		LegoFloat distanceSquared = (position.m_x - p_unk0x04->m_x) * (position.m_x - p_unk0x04->m_x) +
+									(position.m_y - p_unk0x04->m_y) * (position.m_y - p_unk0x04->m_y) +
+									(position.m_z - p_unk0x04->m_z) * (position.m_z - p_unk0x04->m_z);
 		if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
-			GolVec3 normalized;
-			GolMath::NormalizeVector3(delta, &normalized);
+			GolVec3 delta;
+			delta.m_x = position.m_x - p_unk0x04->m_x;
+			delta.m_y = position.m_y - p_unk0x04->m_y;
+			delta.m_z = position.m_z - p_unk0x04->m_z;
+			GolMath::NormalizeVector3(delta, &delta);
 
-			if (GOLVECTOR3_DOT(normalized, *p_unk0x08) >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
-				result = racer;
+			if (GOLVECTOR3_DOT(*p_unk0x08, delta) >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
+				resultIndex = i;
 				nearestDistanceSquared = distanceSquared;
 			}
 		}
 	}
 
-	return result;
+	if (resultIndex < 0) {
+		return NULL;
+	}
+
+	return &m_unk0x0f0.m_racers[resultIndex];
 }
 
 // FUNCTION: LEGORACERS 0x0043cbb0
@@ -280,74 +297,13 @@ LegoU32 RaceState::FUN_0043cda0(Racer* p_racer)
 }
 
 // STUB: LEGORACERS 0x0043cf30
-RaceState::Racer::Field0x00c::StandingsDeltaEntry* RaceState::FUN_0043cf30(
-	Racer* p_racer,
-	Racer::Field0x00c::StandingsDeltaEntry* p_entries
-)
+void RaceState::FUN_0043cf30(Racer* p_racer, Racer::Field0x00c::StandingsDeltaEntry* p_entries)
 {
-	Racer* racer = p_racer;
 	LegoU32 lapCount = m_unk0x284.m_lapCount;
-	Racer::Field0x00c::StandingsDeltaEntry* result = p_entries;
 	LegoS32 racerTime = 0;
 
-	if (racer->m_lapsCompleted >= lapCount) {
-		if (m_unk0x284.m_lapCount) {
-			LegoU32 remaining = m_unk0x284.m_lapCount;
-			LegoU32* lapTime = racer->m_lapTimes;
-
-			do {
-				racerTime += *lapTime++;
-			} while (--remaining);
-		}
-
-		if (m_unk0x0f0.m_racerCount) {
-			LegoU32 racerIndex = 0;
-			Racer* otherRacer = m_unk0x0f0.m_racers;
-			Racer::Field0x00c::StandingsDeltaEntry* entry = p_entries;
-
-			do {
-				entry->m_racer = otherRacer;
-				entry->m_isValid = TRUE;
-
-				if (otherRacer == racer) {
-					entry->m_delta = 0;
-				}
-				else if (otherRacer->m_lapsCompleted >= m_unk0x284.m_lapCount) {
-					LegoS32 otherTime = 0;
-					LegoU32 remaining = m_unk0x284.m_lapCount;
-
-					if (remaining) {
-						LegoU32* lapTime = otherRacer->m_lapTimes;
-
-						do {
-							otherTime += *lapTime++;
-						} while (--remaining);
-					}
-
-					entry->m_delta = otherTime - racerTime;
-				}
-				else {
-					entry->m_delta = otherRacer->m_lapTimes[5] + 2147483641;
-				}
-
-				racerIndex++;
-				otherRacer++;
-				entry++;
-			} while (racerIndex < m_unk0x0f0.m_racerCount);
-		}
-
-		if (m_unk0x0f0.m_racerCount < 6) {
-			Racer::Field0x00c::StandingsDeltaEntry* entry = &p_entries[m_unk0x0f0.m_racerCount];
-			LegoU32 remaining = 6 - m_unk0x0f0.m_racerCount;
-
-			do {
-				entry->m_isValid = FALSE;
-				entry++;
-			} while (--remaining);
-		}
-	}
-	else {
-		if (m_unk0x0f0.m_racerCount) {
+	if (lapCount > p_racer->m_lapsCompleted) {
+		if (m_unk0x0f0.m_racerCount > 0) {
 			LegoU32 racerIndex = 0;
 			Racer::Field0x00c::StandingsDeltaEntry* entry = p_entries;
 
@@ -359,9 +315,64 @@ RaceState::Racer::Field0x00c::StandingsDeltaEntry* RaceState::FUN_0043cf30(
 				entry++;
 			} while (racerIndex < m_unk0x0f0.m_racerCount);
 		}
+
+		return;
 	}
 
-	return result;
+	if (lapCount > 0) {
+		LegoU32 remaining = lapCount;
+		LegoU32* lapTime = p_racer->m_lapTimes;
+
+		do {
+			racerTime += *lapTime++;
+		} while (--remaining);
+	}
+
+	if (m_unk0x0f0.m_racerCount > 0) {
+		LegoU32 racerIndex = 0;
+		Racer::Field0x00c::StandingsDeltaEntry* entry = p_entries;
+
+		do {
+			entry->m_racer = &m_unk0x0f0.m_racers[racerIndex];
+			entry->m_isValid = TRUE;
+
+			Racer* racers = m_unk0x0f0.m_racers;
+			Racer* otherRacer = &racers[racerIndex];
+			if (otherRacer == p_racer) {
+				entry->m_delta = 0;
+			}
+			else if (otherRacer->m_lapsCompleted >= m_unk0x284.m_lapCount) {
+				LegoS32 otherTime = 0;
+				LegoU32 remaining = m_unk0x284.m_lapCount;
+
+				if (remaining) {
+					LegoU32* lapTime = otherRacer->m_lapTimes;
+
+					do {
+						otherTime += *lapTime++;
+					} while (--remaining);
+				}
+
+				entry->m_delta = otherTime - racerTime;
+			}
+			else {
+				entry->m_delta = otherRacer->m_lapTimes[5] + 2147483641;
+			}
+
+			racerIndex++;
+			entry++;
+		} while (racerIndex < m_unk0x0f0.m_racerCount);
+	}
+
+	if (m_unk0x0f0.m_racerCount < 6) {
+		Racer::Field0x00c::StandingsDeltaEntry* entry = &p_entries[m_unk0x0f0.m_racerCount];
+		LegoU32 remaining = 6 - m_unk0x0f0.m_racerCount;
+
+		do {
+			entry->m_isValid = FALSE;
+			entry++;
+		} while (--remaining);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x0043d070

@@ -89,7 +89,7 @@ public:
 
 	RaceSession();
 	void VTable0x00() override; // vtable+0x00
-	LegoS32 Initialize(
+	void Initialize(
 		LegoRacers::Context* p_context,
 		const LegoChar* p_raceName,
 		undefined4 p_mirror,
@@ -1573,7 +1573,11 @@ private:
 	void FUN_00435180();
 	void FUN_004351f0();
 	void FUN_004354d0();
-	void FUN_004357b0(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState1(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState2(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState3(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState4(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState5(RaceState::Racer* p_racer);
 	void FUN_004357e0();
 	void FUN_00435800();
 	void FUN_00435830();

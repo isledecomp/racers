@@ -409,7 +409,7 @@ void RaceSessionField0x27d4::Item::FUN_00492220()
 	}
 }
 
-// STUB: LEGORACERS 0x00492470
+// FUNCTION: LEGORACERS 0x00492470
 void RaceSessionField0x27d4::Item::FUN_00492470()
 {
 	LegoU32 currentIndex = m_unk0x320;
@@ -417,7 +417,8 @@ void RaceSessionField0x27d4::Item::FUN_00492470()
 		return;
 	}
 
-	LegoFloat distanceThreshold = m_unk0x324 * g_raceSessionField0x27d4DistanceThresholdScale;
+	LegoFloat distanceThreshold = m_unk0x324;
+	distanceThreshold *= g_raceSessionField0x27d4DistanceThresholdScale;
 	GolModelBase* sourceModel = m_unk0x004.GetUnk0x004();
 	LegoU32 updatedCount = 0;
 
@@ -455,12 +456,12 @@ void RaceSessionField0x27d4::Item::FUN_00492470()
 
 	if (updatedCount) {
 		sourceModel->VTable0x2c(1, FALSE);
-		previousModel->VTable0x2c(0, FALSE);
 	}
 	else {
 		sourceModel->VTable0x2c(0, FALSE);
-		previousModel->VTable0x2c(0, FALSE);
 	}
+
+	previousModel->VTable0x2c(0, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x004925e0

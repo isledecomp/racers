@@ -1352,18 +1352,16 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	if (m_unk0x02c->m_unk0xd04 & 0x10) {
+	RaceState::Racer* racer = m_unk0x02c;
+	if (racer->m_unk0xd04 & 0x10) {
 		return;
 	}
 
 	LegoS32 positionIndex;
-	if (m_unk0x074) {
-		positionIndex = m_unk0x090;
-	}
-	else {
+	if (!m_unk0x074) {
 		positionIndex = m_unk0x08c;
 		if (positionIndex < 0) {
-			positionIndex = m_unk0x02c->m_unk0xcd8 - 1;
+			positionIndex = racer->m_lapTimes[5] - 1;
 		}
 		if (positionIndex > 8) {
 			positionIndex = 8;
@@ -1373,34 +1371,22 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x074 = 1;
 		}
 	}
-
-	LegoS32 lapIndex = m_unk0x02c->m_lapsCompleted;
-	LegoS32 lapCount = m_unk0x02c->m_unk0xce0;
-	LegoU32 totalTime = 0;
-	LegoU32* lapTimes = &m_unk0x02c->m_unk0xce8;
-
-	if (lapIndex >= lapCount) {
-		LegoS32 hiddenTime = -m_unk0x070;
-		if (hiddenTime < 3000 && ((hiddenTime / 250) & 1)) {
-			drawLapTime = FALSE;
-		}
-		else {
-			m_unk0x084 = lapTimes[lapCount];
-			FUN_004246d0(m_unk0x03d.m_text, m_unk0x084);
-		}
-
-		for (LegoS32 i = 0; i < lapIndex; i++) {
-			totalTime += lapTimes[i + 1];
-		}
-	}
 	else {
-		m_unk0x084 = lapTimes[lapIndex + 1];
+		positionIndex = m_unk0x090;
+	}
+
+	LegoS32 lapIndex = racer->m_lapsCompleted;
+	LegoS32 lapCount = racer->m_unk0xce0;
+	LegoU32 totalTime = 0;
+
+	if (lapIndex < lapCount) {
+		m_unk0x084 = racer->m_lapTimes[lapIndex];
 		if (lapIndex && m_unk0x084 < 3000) {
 			if ((m_unk0x084 / 250) & 1) {
 				drawLapTime = FALSE;
 			}
 			else {
-				m_unk0x084 = lapTimes[lapIndex];
+				m_unk0x084 = racer->m_lapTimes[lapIndex - 1];
 				FUN_004246d0(m_unk0x03d.m_text, m_unk0x084);
 			}
 		}
@@ -1409,18 +1395,32 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 
 		for (LegoS32 i = 0; i <= lapIndex; i++) {
-			totalTime += lapTimes[i + 1];
+			totalTime += racer->m_lapTimes[i];
+		}
+	}
+	else {
+		LegoS32 hiddenTime = -m_unk0x070;
+		if (hiddenTime < 3000 && ((hiddenTime / 250) & 1)) {
+			drawLapTime = FALSE;
+		}
+		else {
+			m_unk0x084 = racer->m_lapTimes[lapCount - 1];
+			FUN_004246d0(m_unk0x03d.m_text, m_unk0x084);
+		}
+
+		for (LegoS32 i = 0; i < lapIndex; i++) {
+			totalTime += racer->m_lapTimes[i];
 		}
 	}
 
 	FUN_004246d0(m_unk0x058.m_text, totalTime);
-	if (m_unk0x02c->m_unk0xd84) {
-		FUN_004246d0(m_unk0x04f.m_text, m_unk0x02c->m_unk0xd88);
+	if (racer->m_unk0xd84) {
+		FUN_004246d0(m_unk0x04f.m_text, racer->m_unk0xd88);
 	}
 
 	if (lapIndex != m_unk0x07c) {
-		if (m_unk0x07c != -1 && m_unk0x07c < m_unk0x02c->m_unk0xce0) {
-			LegoU32 completedLapTime = lapTimes[m_unk0x07c];
+		if (m_unk0x07c != -1 && m_unk0x07c < racer->m_unk0xce0) {
+			LegoU32 completedLapTime = racer->m_lapTimes[m_unk0x07c];
 			if (completedLapTime <= m_unk0x088 || !m_unk0x088) {
 				m_unk0x088 = completedLapTime;
 				FUN_004246d0(m_unk0x046.m_text, completedLapTime);
@@ -1430,8 +1430,8 @@ void CobaltTrail0x140::FUN_004263a0()
 		m_unk0x07c = lapIndex;
 		LegoS32 displayLap = lapIndex + 1;
 		if (m_unk0x080 <= 0) {
-			if (displayLap > m_unk0x02c->m_unk0xce0) {
-				displayLap = m_unk0x02c->m_unk0xce0;
+			if (displayLap > racer->m_unk0xce0) {
+				displayLap = racer->m_unk0xce0;
 			}
 			::sprintf(m_unk0x061, "%d", displayLap);
 		}
@@ -1519,10 +1519,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			);
 			FUN_00425bf0(m_unk0x058.m_text, m_unk0x0bc, m_unk0x0dc);
 		}
-		else if (positionIndex == 8) {
-			m_unk0x074 = 0;
-		}
-		else {
+		else if (positionIndex != 8) {
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, g_unk0x004b0290[positionIndex]);
 			m_unk0x000->VTable0x64(
 				&m_unk0x014,
@@ -1582,6 +1579,9 @@ void CobaltTrail0x140::FUN_004263a0()
 					0
 				);
 			}
+		}
+		else {
+			m_unk0x074 = 0;
 		}
 
 		if (m_unk0x02c->m_unk0xd84) {

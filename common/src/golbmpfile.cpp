@@ -263,7 +263,7 @@ void GolBmpFile::VTable0x00()
 					GOL_FATALERROR(c_golErrorOutOfMemory);
 				}
 
-				// BUG: buffer might be too small (3 vs 4)
+				// Original reads four bytes per palette entry after sizing this buffer with three-byte entries.
 				result = m_file.BufferedRead(dataOffset, paletteBuffer, 4 * m_paletteSize, &amountRead);
 				if (result != GolStream::e_ioSuccess) {
 					GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
@@ -684,7 +684,7 @@ void GolBmpFile::VTable0x18(LegoU8* p_buffer)
 				GOL_FATALERROR_MESSAGE(GolStream::ErrorCodeToString(result));
 			}
 
-			// FIXME/BUG: using correct source buffer?
+			// The original copies from rowBuffer2; for reachable uncompressed BMPs it aliases rowBuffer1.
 			::memcpy(p_buffer, rowBuffer2, m_rowByteStride);
 			p_buffer += m_rowByteStride;
 		}

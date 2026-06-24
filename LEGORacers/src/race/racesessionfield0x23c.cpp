@@ -73,8 +73,11 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
 	undefined4 p_time
 )
 {
+	LegoU32 i;
+	LegoBool32 matched = FALSE;
+
 	if (m_unk0x18) {
-		LegoU32 i = 0;
+		i = 0;
 		if (i < m_unk0x10) {
 			do {
 				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
@@ -83,7 +86,12 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
 						continue;
 					}
 
-					return m_unk0x08[i]->OnKeyDown(p_source, p_input, p_time);
+					matched = TRUE;
+					break;
+				}
+
+				if (matched) {
+					break;
 				}
 
 				i++;
@@ -91,8 +99,12 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
 		}
 	}
 
-	if (m_unk0x14) {
+	if (!matched && m_unk0x14) {
 		return m_unk0x14->OnKeyDown(p_source, p_input, p_time);
+	}
+
+	if (matched) {
+		return m_unk0x08[i]->OnKeyDown(p_source, p_input, p_time);
 	}
 
 	InputDevice::Callback::Result result;
@@ -100,15 +112,18 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
 	return result.m_value;
 }
 
-// STUB: LEGORACERS 0x00427aa0
+// FUNCTION: LEGORACERS 0x00427aa0
 InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyUp(
 	InputDevice* p_source,
 	undefined4 p_input,
 	undefined4 p_time
 )
 {
+	LegoU32 i;
+	LegoBool32 matched = FALSE;
+
 	if (m_unk0x18) {
-		LegoU32 i = 0;
+		i = 0;
 		if (i < m_unk0x10) {
 			do {
 				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
@@ -117,7 +132,12 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyUp(
 						continue;
 					}
 
-					return m_unk0x08[i]->OnKeyUp(p_source, p_input, p_time);
+					matched = TRUE;
+					break;
+				}
+
+				if (matched) {
+					break;
 				}
 
 				i++;
@@ -125,8 +145,12 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyUp(
 		}
 	}
 
-	if (m_unk0x14) {
+	if (!matched && m_unk0x14) {
 		return m_unk0x14->OnKeyUp(p_source, p_input, p_time);
+	}
+
+	if (matched) {
+		return m_unk0x08[i]->OnKeyUp(p_source, p_input, p_time);
 	}
 
 	InputDevice::Callback::Result result;

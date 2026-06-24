@@ -72,7 +72,7 @@ LegoU32 RacerUnlockState::FUN_00442e80(LegoU32 p_mask) const
 	return count;
 }
 
-// STUB: LEGORACERS 0x00442ef0
+// FUNCTION: LEGORACERS 0x00442ef0
 SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 {
 	m_unk0x24 = p_mask;
@@ -90,27 +90,25 @@ SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 		m_unk0x04[m_unk0x20++] = &m_unk0x00->GetQuickBuildSave();
 	}
 
-	MemoryCardSaveGame* saves = m_unk0x00->GetMemoryCardSaves();
 	for (LegoU32 i = 0; i < m_unk0x00->GetMemoryCardSaveCount(); i++) {
 		if (p_mask & (0x10 << i)) {
-			m_unk0x04[m_unk0x20++] = &saves[i];
+			m_unk0x04[m_unk0x20++] = &m_unk0x00->GetMemoryCardSaves()[i];
 		}
 	}
 
-	if (m_unk0x20 == 0) {
-		return NULL;
+	if (m_unk0x20 != 0) {
+		while (m_unk0x04[m_unk0x18]->GetRecordCount() == 0) {
+			m_unk0x18++;
+			if (m_unk0x18 >= m_unk0x20) {
+				m_unk0x18 = 0;
+				return NULL;
+			}
+		}
+
+		return m_unk0x04[m_unk0x18]->GetRecord(0);
 	}
 
-	while (m_unk0x18 < m_unk0x20 && m_unk0x04[m_unk0x18]->GetRecordCount() == 0) {
-		m_unk0x18++;
-	}
-
-	if (m_unk0x18 >= m_unk0x20) {
-		m_unk0x18 = 0;
-		return NULL;
-	}
-
-	return m_unk0x04[m_unk0x18]->GetRecord(0);
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00442fe0
@@ -192,20 +190,20 @@ SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
 	return records->GetRecord(m_unk0x1c);
 }
 
-// STUB: LEGORACERS 0x004430e0
+// FUNCTION: LEGORACERS 0x004430e0
 SaveRecordList::Record* RacerUnlockState::FUN_004430e0(SaveRecordList::Record* p_record)
 {
 	if (m_unk0x20 != 0) {
-		SaveRecordList::Record* targetRecord = p_record;
 		SaveRecordList::Record* firstRecord = FUN_004430b0();
-		for (;;) {
-			SaveRecordList::Record* record = FUN_00442fe0();
-			if (record == targetRecord) {
-				return record;
-			}
-			if (record == firstRecord) {
-				break;
-			}
+		SaveRecordList::Record* targetRecord = p_record;
+		SaveRecordList::Record* record;
+
+		do {
+			record = FUN_00442fe0();
+		} while (firstRecord != record && record != targetRecord);
+
+		if (record == targetRecord) {
+			return record;
 		}
 	}
 

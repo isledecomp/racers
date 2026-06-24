@@ -175,7 +175,7 @@ void RaceSession::FUN_00431bd0()
 }
 
 // FUNCTION: LEGORACERS 0x00431e00
-LegoS32 RaceSession::Initialize(
+void RaceSession::Initialize(
 	LegoRacers::Context* p_context,
 	const LegoChar* p_raceName,
 	undefined4 p_mirror,
@@ -363,7 +363,6 @@ LegoS32 RaceSession::Initialize(
 	FUN_004343e0();
 	FUN_00434340();
 	m_renderer->VTable0x40();
-	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00432520
@@ -2109,7 +2108,7 @@ void RaceSession::VTable0x30()
 	}
 }
 
-// STUB: LEGORACERS 0x004354d0
+// FUNCTION: LEGORACERS 0x004354d0
 void RaceSession::FUN_004354d0()
 {
 	if (m_unk0x6dc.GetUnk0x19a0()) {
@@ -2142,24 +2141,28 @@ void RaceSession::FUN_004354d0()
 	}
 	else {
 		GolVec3 cameraPosition;
-		m_unk0x2acc[0]->GetTransform()->GetPosition(&cameraPosition);
-		m_unk0x2f90.FUN_0041d040(&cameraPosition);
+		GolCamera* camera = m_unk0x2acc[0];
+		GolVec3* position = &cameraPosition;
+		camera->m_transform->GetPosition(position);
+
+		position = &cameraPosition;
+		m_unk0x2f90.FUN_0041d040(position);
 
 		switch (m_state) {
 		case 1:
-			FUN_004357b0(m_raceState.m_unk0x318[0]);
+			DrawRacerViewportForState1(m_raceState.m_unk0x318[0]);
 			break;
 		case 2:
-			FUN_004357b0(m_raceState.m_unk0x318[0]);
+			DrawRacerViewportForState2(m_raceState.m_unk0x318[0]);
 			break;
 		case 3:
-			FUN_004357b0(m_raceState.m_unk0x318[0]);
+			DrawRacerViewportForState3(m_raceState.m_unk0x318[0]);
 			break;
 		case 4:
-			FUN_004357b0(m_raceState.m_unk0x318[0]);
+			DrawRacerViewportForState4(m_raceState.m_unk0x318[0]);
 			break;
 		case 5:
-			FUN_004357b0(m_raceState.m_unk0x318[0]);
+			DrawRacerViewportForState5(m_raceState.m_unk0x318[0]);
 			break;
 		}
 	}
@@ -2174,24 +2177,28 @@ void RaceSession::FUN_004354d0()
 		}
 		else {
 			GolVec3 cameraPosition;
-			m_unk0x2acc[viewportIndex]->GetTransform()->GetPosition(&cameraPosition);
-			m_unk0x2f90.FUN_0041d040(&cameraPosition);
+			GolCamera* camera = m_unk0x2acc[viewportIndex];
+			GolVec3* position = &cameraPosition;
+			camera->m_transform->GetPosition(position);
+
+			position = &cameraPosition;
+			m_unk0x2f90.FUN_0041d040(position);
 
 			switch (m_state) {
 			case 1:
-				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				DrawRacerViewportForState1(m_raceState.m_unk0x318[viewportIndex]);
 				break;
 			case 2:
-				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				DrawRacerViewportForState2(m_raceState.m_unk0x318[viewportIndex]);
 				break;
 			case 3:
-				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				DrawRacerViewportForState3(m_raceState.m_unk0x318[viewportIndex]);
 				break;
 			case 4:
-				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				DrawRacerViewportForState4(m_raceState.m_unk0x318[viewportIndex]);
 				break;
 			case 5:
-				FUN_004357b0(m_raceState.m_unk0x318[viewportIndex]);
+				DrawRacerViewportForState5(m_raceState.m_unk0x318[viewportIndex]);
 				break;
 			}
 		}
@@ -2227,8 +2234,41 @@ void RaceSession::FUN_004354d0()
 	FUN_00435bf0();
 }
 
-// FUNCTION: LEGORACERS 0x004357b0
-void RaceSession::FUN_004357b0(RaceState::Racer* p_racer)
+// Separate helpers keep MSVC from merging the identical switch arms in FUN_004354d0; ICF folds the bodies.
+// FUNCTION: LEGORACERS 0x004357b0 FOLDED
+void RaceSession::DrawRacerViewportForState1(RaceState::Racer* p_racer)
+{
+	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	VTable0x38(p_racer);
+	VTable0x3c();
+}
+
+// FUNCTION: LEGORACERS 0x004357b0 FOLDED
+void RaceSession::DrawRacerViewportForState2(RaceState::Racer* p_racer)
+{
+	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	VTable0x38(p_racer);
+	VTable0x3c();
+}
+
+// FUNCTION: LEGORACERS 0x004357b0 FOLDED
+void RaceSession::DrawRacerViewportForState3(RaceState::Racer* p_racer)
+{
+	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	VTable0x38(p_racer);
+	VTable0x3c();
+}
+
+// FUNCTION: LEGORACERS 0x004357b0 FOLDED
+void RaceSession::DrawRacerViewportForState4(RaceState::Racer* p_racer)
+{
+	m_unk0x2f90.FUN_0041d0f0(m_renderer);
+	VTable0x38(p_racer);
+	VTable0x3c();
+}
+
+// FUNCTION: LEGORACERS 0x004357b0 FOLDED
+void RaceSession::DrawRacerViewportForState5(RaceState::Racer* p_racer)
 {
 	m_unk0x2f90.FUN_0041d0f0(m_renderer);
 	VTable0x38(p_racer);

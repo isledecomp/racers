@@ -294,12 +294,10 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 // STUB: LEGORACERS 0x004a5750
 void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 {
-	Racer::Field0x00c::Entry* entry = m_unk0x28;
-	LegoS32 startIndex = m_unk0x34;
 	LegoS32 endIndex = m_unk0x38;
-	Racer::Field0x00c::Entry::PathPoint* startPoint = &entry->m_unk0x004[startIndex];
-	Racer::Field0x00c::Entry::PathPoint* endPoint = &entry->m_unk0x004[endIndex];
+	Racer::Field0x00c::Entry::PathPoint* endPoint = &m_unk0x28->m_unk0x004[endIndex];
 	LegoS32 segmentStartTime = m_unk0x74;
+	LegoS32 startIndex = m_unk0x34;
 	LegoS32 segmentEndTime = segmentStartTime + endPoint->GetLength();
 	GolVec3 startPosition = m_unk0x3c;
 	GolVec3 endPosition = m_unk0x48;
@@ -308,23 +306,23 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 		startPosition = endPosition;
 		segmentStartTime = segmentEndTime;
 		startIndex = endIndex;
-		startPoint = endPoint;
 		endIndex++;
 
-		if (endIndex >= entry->m_unk0x000) {
+		if (endIndex >= m_unk0x28->m_unk0x000) {
 			return;
 		}
 
-		endPoint = &entry->m_unk0x004[endIndex];
-		segmentEndTime += endPoint->GetLength();
+		endPoint = &m_unk0x28->m_unk0x004[endIndex];
 
 		GolVec3 offset;
 		endPoint->GetPosition(&offset);
+		segmentEndTime += endPoint->GetLength();
 		endPosition.m_x += offset.m_x;
 		endPosition.m_y += offset.m_y;
 		endPosition.m_z += offset.m_z;
 	}
 
+	Racer::Field0x00c::Entry::PathPoint* startPoint = &m_unk0x28->m_unk0x004[startIndex];
 	GolVec3 segment;
 	GolVec3 unitSegment;
 	LegoFloat segmentLength;
@@ -346,7 +344,79 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 		LegoFloat projectedDelta =
 			unitSegment.m_y * p_delta->m_y + p_delta->m_z * unitSegment.m_z + unitSegment.m_x * p_delta->m_x;
 
-		if (projectedDelta >= 0.0f) {
+		if (projectedDelta < 0.0f) {
+			LegoFloat backwardDelta = -projectedDelta;
+			LegoFloat remainingDistance = static_cast<LegoFloat>(sqrt(
+				GOL_SQUARED(m_unk0x00.m_z - startPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - startPosition.m_y) +
+				GOL_SQUARED(m_unk0x00.m_x - startPosition.m_x)
+			));
+
+			if (backwardDelta <= remainingDistance) {
+				segmentAmount = remainingDistance - backwardDelta;
+				break;
+			}
+
+			for (;;) {
+				GolVec3 consumed;
+				LegoFloat negativeDistance = -remainingDistance;
+				consumed.m_x = negativeDistance * unitSegment.m_x;
+				consumed.m_y = unitSegment.m_y * negativeDistance;
+				consumed.m_z = unitSegment.m_z * negativeDistance;
+				GolCameraBase::FUN_00404580(p_delta, &consumed, p_delta);
+
+				endPosition = startPosition;
+				endIndex = startIndex;
+				endPoint = startPoint;
+				segmentEndTime = segmentStartTime;
+				startIndex--;
+
+				if (startIndex < 0) {
+					return;
+				}
+
+				segmentStartTime -= endPoint->GetLength();
+				GolVec3 offset;
+				endPoint->GetPosition(&offset);
+				startPosition.m_x -= offset.m_x;
+				startPosition.m_y -= offset.m_y;
+				startPosition.m_z -= offset.m_z;
+				startPoint = &m_unk0x28->m_unk0x004[startIndex];
+
+				if (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) >= g_unk0x004b4bc8) {
+					segment.m_x = endPosition.m_x - startPosition.m_x;
+					segment.m_y = endPosition.m_y - startPosition.m_y;
+					segment.m_z = endPosition.m_z - startPosition.m_z;
+					segmentLength = static_cast<LegoFloat>(
+						sqrt(segment.m_z * segment.m_z + segment.m_y * segment.m_y + segment.m_x * segment.m_x)
+					);
+
+					inverseLength = 1.0f / segmentLength;
+					unitSegment.m_x = segment.m_x * inverseLength;
+					unitSegment.m_y = segment.m_y * inverseLength;
+					unitSegment.m_z = segment.m_z * inverseLength;
+					projectedDelta = unitSegment.m_y * p_delta->m_y + p_delta->m_z * unitSegment.m_z +
+									 unitSegment.m_x * p_delta->m_x;
+
+					if (projectedDelta > 0.0f) {
+						backwardDelta = 0.0f;
+						segmentAmount = segmentLength;
+						break;
+					}
+
+					backwardDelta = -projectedDelta;
+					if (backwardDelta > segmentLength) {
+						remainingDistance = segmentLength;
+						continue;
+					}
+
+					segmentAmount = segmentLength - backwardDelta;
+					break;
+				}
+			}
+			break;
+		}
+
+		{
 			LegoFloat remainingDistance = static_cast<LegoFloat>(sqrt(
 				GOL_SQUARED(m_unk0x00.m_z - endPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - endPosition.m_y) +
 				GOL_SQUARED(m_unk0x00.m_x - endPosition.m_x)
@@ -370,11 +440,11 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 				startPoint = endPoint;
 				endIndex++;
 
-				if (endIndex >= entry->m_unk0x000) {
+				if (endIndex >= m_unk0x28->m_unk0x000) {
 					return;
 				}
 
-				endPoint = &entry->m_unk0x004[endIndex];
+				endPoint = &m_unk0x28->m_unk0x004[endIndex];
 				segmentEndTime += endPoint->GetLength();
 
 				GolVec3 offset;
@@ -416,76 +486,6 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 			}
 			break;
 		}
-
-		LegoFloat backwardDelta = -projectedDelta;
-		LegoFloat remainingDistance = static_cast<LegoFloat>(sqrt(
-			GOL_SQUARED(m_unk0x00.m_z - startPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - startPosition.m_y) +
-			GOL_SQUARED(m_unk0x00.m_x - startPosition.m_x)
-		));
-
-		if (backwardDelta <= remainingDistance) {
-			segmentAmount = remainingDistance - backwardDelta;
-			break;
-		}
-
-		for (;;) {
-			GolVec3 consumed;
-			LegoFloat negativeDistance = -remainingDistance;
-			consumed.m_x = negativeDistance * unitSegment.m_x;
-			consumed.m_y = unitSegment.m_y * negativeDistance;
-			consumed.m_z = unitSegment.m_z * negativeDistance;
-			GolCameraBase::FUN_00404580(p_delta, &consumed, p_delta);
-
-			endPosition = startPosition;
-			endIndex = startIndex;
-			endPoint = startPoint;
-			segmentEndTime = segmentStartTime;
-			startIndex--;
-
-			if (startIndex < 0) {
-				return;
-			}
-
-			segmentStartTime -= endPoint->GetLength();
-			GolVec3 offset;
-			endPoint->GetPosition(&offset);
-			startPosition.m_x -= offset.m_x;
-			startPosition.m_y -= offset.m_y;
-			startPosition.m_z -= offset.m_z;
-			startPoint = &entry->m_unk0x004[startIndex];
-
-			if (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) >= g_unk0x004b4bc8) {
-				segment.m_x = endPosition.m_x - startPosition.m_x;
-				segment.m_y = endPosition.m_y - startPosition.m_y;
-				segment.m_z = endPosition.m_z - startPosition.m_z;
-				segmentLength = static_cast<LegoFloat>(
-					sqrt(segment.m_z * segment.m_z + segment.m_y * segment.m_y + segment.m_x * segment.m_x)
-				);
-
-				LegoFloat inverseLength = 1.0f / segmentLength;
-				unitSegment.m_x = segment.m_x * inverseLength;
-				unitSegment.m_y = segment.m_y * inverseLength;
-				unitSegment.m_z = segment.m_z * inverseLength;
-				projectedDelta =
-					unitSegment.m_y * p_delta->m_y + p_delta->m_z * unitSegment.m_z + unitSegment.m_x * p_delta->m_x;
-
-				if (projectedDelta > 0.0f) {
-					backwardDelta = 0.0f;
-					segmentAmount = segmentLength;
-					break;
-				}
-
-				backwardDelta = -projectedDelta;
-				if (backwardDelta > segmentLength) {
-					remainingDistance = segmentLength;
-					continue;
-				}
-
-				segmentAmount = segmentLength - backwardDelta;
-				break;
-			}
-		}
-		break;
 	}
 
 	m_unk0x74 = segmentStartTime;

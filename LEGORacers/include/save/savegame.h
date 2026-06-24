@@ -174,6 +174,7 @@ public:
 		c_saveFileBlockDataSize = 0x7f,
 		c_saveFileBlockSize = 0x80,
 		c_saveFileInvalidStatus = 17,
+		c_unlockStateOffset = 0x05,
 		c_scoreRecordsOffset = 0x09,
 		c_scoreRecordSize = 0x40,
 		c_persistentHeaderOffset = 0x349,

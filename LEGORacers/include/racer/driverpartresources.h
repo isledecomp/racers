@@ -57,6 +57,7 @@ private:
 	LegoS32 Reset();
 	void LoadPartResource(LegoBool32 p_binary);
 	void LoadMaterialAndTextureLists(LegoBool32 p_binary);
+	LegoU32 ReplaceModelGroupMaterialIndex(GolAnimatedEntity* p_resourceModel, LegoU32 p_oldIndex, LegoU32 p_newIndex);
 	void NormalizeHeadGroupOrder();
 	void ComputeMaxVertexCounts();
 	void ComputeMaxIndexCounts();

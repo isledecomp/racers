@@ -154,7 +154,7 @@ void DriverPartResources::LoadMaterialAndTextureLists(LegoBool32 p_binary)
 }
 
 // FUNCTION: LEGORACERS 0x004981a0
-static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
+LegoU32 DriverPartResources::ReplaceModelGroupMaterialIndex(
 	GolAnimatedEntity* p_resourceModel,
 	LegoU32 p_oldIndex,
 	LegoU32 p_newIndex
@@ -180,47 +180,50 @@ static LegoU32 __stdcall ReplaceModelGroupMaterialIndex(
 	return oldGroupTag;
 }
 
-// STUB: LEGORACERS 0x004981f0
+// FUNCTION: LEGORACERS 0x004981f0
 void DriverPartResources::NormalizeHeadGroupOrder()
 {
 	LegoS32 remainingModels = m_partResource->GetUnk0x54();
-	if (remainingModels > 0) {
-		GolAnimatedEntity* resourceModel = m_partResource->GetUnk0xa0();
-		do {
-			MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
-			if (materialTable == NULL) {
-				materialTable = resourceModel->GetModel(0)->GetMaterialTable();
-			}
-
-			LegoS32 materialIndex = 1;
-			LegoS32 materialCount = materialTable->m_count;
-			if (materialCount > 1) {
-				do {
-					DuskwindBananaRelic0x24* material =
-						static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(materialIndex));
-					if (material != NULL) {
-						DuskWindName0x8 materialName;
-						materialName = material->GetNameRecord();
-
-						if (::strncmp(materialName.m_unk0x0, "face", sizeof(GolName)) == 0) {
-							DuskwindBananaRelic0x24* firstMaterial =
-								static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
-							materialTable->SetPosition(0, material);
-							materialTable->SetPosition(materialIndex, firstMaterial);
-							ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
-							ReplaceModelGroupMaterialIndex(resourceModel, 0, materialIndex);
-							ReplaceModelGroupMaterialIndex(resourceModel, 0xffff, 0);
-						}
-					}
-
-					materialIndex++;
-				} while (materialIndex < materialCount);
-			}
-
-			resourceModel++;
-			remainingModels--;
-		} while (remainingModels != 0);
+	if (remainingModels <= 0) {
+		return;
 	}
+
+	LegoS32 modelIndex = 0;
+	do {
+		GolAnimatedEntity* resourceModel = &m_partResource->GetUnk0xa0()[modelIndex];
+		MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
+		if (materialTable == NULL) {
+			materialTable = resourceModel->GetModel(0)->GetMaterialTable();
+		}
+
+		LegoS32 materialIndex = 1;
+		LegoS32 materialCount = materialTable->m_count;
+		if (materialCount > 1) {
+			do {
+				DuskwindBananaRelic0x24* material =
+					static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(materialIndex));
+				DuskWindName0x8 materialName;
+				materialName = material->GetNameRecord();
+
+				if (material != NULL) {
+					if (::strncmp(materialName.m_unk0x0, "face", sizeof(GolName)) == 0) {
+						DuskwindBananaRelic0x24* firstMaterial =
+							static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
+						materialTable->SetPosition(0, material);
+						materialTable->SetPosition(materialIndex, firstMaterial);
+						ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
+						ReplaceModelGroupMaterialIndex(resourceModel, 0, materialIndex);
+						ReplaceModelGroupMaterialIndex(resourceModel, 0xffff, 0);
+					}
+				}
+
+				materialIndex++;
+			} while (materialIndex < materialCount);
+		}
+
+		modelIndex++;
+		remainingModels--;
+	} while (remainingModels != 0);
 }
 
 // FUNCTION: LEGORACERS 0x00498300

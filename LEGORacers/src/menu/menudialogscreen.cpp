@@ -125,7 +125,7 @@ void MenuDialog::DialogScreen::FUN_00468430()
 	}
 }
 
-// STUB: LEGORACERS 0x004684e0
+// FUNCTION: LEGORACERS 0x004684e0
 void MenuDialog::DialogScreen::FUN_004684e0()
 {
 	Rect rect;
@@ -135,12 +135,15 @@ void MenuDialog::DialogScreen::FUN_004684e0()
 	LegoS32 bottom = m_unk0x748->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
 
-	rect.m_top = m_unk0x744->GetRect()->m_bottom + 0x14;
+	LegoS32 rectTop = m_unk0x744->GetRect()->m_bottom + 0x14;
+	rect.m_top = rectTop;
 	LegoS32 rectBottom = m_unk0x748->GetRect()->m_bottom;
-	rectBottom += rect.m_top;
+	rectBottom += rectTop;
+	LegoS32 rectRight = m_unk0x748->GetRect()->m_right;
+	rectRight += 0x19;
 	rect.m_left = 0x19;
 	rect.m_bottom = rectBottom;
-	rect.m_right = m_unk0x748->GetRect()->m_right + 0x19;
+	rect.m_right = rectRight;
 
 	m_unk0x748->VTable0x10(&rect);
 	m_unk0x748->SetParent(&m_unk0x2cc);

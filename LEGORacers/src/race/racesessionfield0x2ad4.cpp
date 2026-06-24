@@ -68,33 +68,40 @@ void RaceCameraController::FUN_00427c00()
 	GolVec3 position;
 	m_unk0x0d4->m_unk0x018.m_unk0x044->VTable0x04(&position);
 
-	SoundNode* soundNode = m_unk0x14c;
-	soundNode->m_velocity.m_x = velocity.m_x;
-	soundNode->m_velocity.m_y = velocity.m_y;
-	soundNode->m_velocity.m_z = velocity.m_z;
-	soundNode->m_unk0x44 = TRUE;
+	{
+		SoundNode* soundNode = m_unk0x14c;
+		soundNode->m_velocity.m_x = velocity.m_x;
+		soundNode->m_velocity.m_y = velocity.m_y;
+		soundNode->m_velocity.m_z = velocity.m_z;
+		soundNode->m_unk0x44 = TRUE;
+	}
 
-	SoundVector* rightVector = &soundNode->m_right;
-	SoundVector* forwardVector = &soundNode->m_forward;
-	rightVector->m_x = right.m_x;
-	rightVector->m_y = right.m_y;
-	rightVector->m_z = right.m_z;
-	forwardVector->m_x = forward.m_x;
-	forwardVector->m_y = forward.m_y;
-	forwardVector->m_z = forward.m_z;
+	{
+		SoundNode* soundNode = m_unk0x14c;
+		SoundVector* rightVector = &soundNode->m_right;
+		SoundVector* forwardVector = &soundNode->m_forward;
+		rightVector->m_x = right.m_x;
+		rightVector->m_y = right.m_y;
+		rightVector->m_z = right.m_z;
+		forwardVector->m_x = forward.m_x;
+		forwardVector->m_y = forward.m_y;
+		forwardVector->m_z = forward.m_z;
 
-	SoundVector* orientation = &soundNode->m_orientation;
-	orientation->m_x = forwardVector->m_y * rightVector->m_z - forwardVector->m_z * rightVector->m_y;
-	orientation->m_y = forwardVector->m_z * rightVector->m_x - forwardVector->m_x * rightVector->m_z;
-	orientation->m_z = rightVector->m_y * forwardVector->m_x - forwardVector->m_y * rightVector->m_x;
-	GolMath::NormalizeVector3(*orientation, orientation);
-	soundNode->m_unk0x44 = TRUE;
+		SoundVector* orientation = &soundNode->m_orientation;
+		orientation->m_x = forwardVector->m_y * rightVector->m_z - forwardVector->m_z * rightVector->m_y;
+		orientation->m_y = forwardVector->m_z * rightVector->m_x - forwardVector->m_x * rightVector->m_z;
+		orientation->m_z = rightVector->m_y * forwardVector->m_x - forwardVector->m_y * rightVector->m_x;
+		GolMath::NormalizeVector3(*orientation, orientation);
+		soundNode->m_unk0x44 = TRUE;
+	}
 
-	SoundNode* positionedNode = m_unk0x14c;
-	positionedNode->m_position.m_x = position.m_x;
-	positionedNode->m_position.m_y = position.m_y;
-	positionedNode->m_position.m_z = position.m_z;
-	positionedNode->m_unk0x44 = TRUE;
+	{
+		SoundNode* soundNode = m_unk0x14c;
+		soundNode->m_position.m_x = position.m_x;
+		soundNode->m_position.m_y = position.m_y;
+		soundNode->m_position.m_z = position.m_z;
+		soundNode->m_unk0x44 = TRUE;
+	}
 }
 
 // STUB: LEGORACERS 0x00427d30

@@ -1067,7 +1067,7 @@ public:
 		void FUN_00439b70();
 		LegoU32 FUN_00439ba0();
 		void FUN_00439c40();
-		Field0x00c::StandingsDeltaEntry* FUN_00439c70(Field0x00c::StandingsDeltaEntry* p_entries);
+		void FUN_00439c70(Field0x00c::StandingsDeltaEntry* p_entries);
 		void FUN_00439e60(GolVec3* p_unk0x04);
 		void FUN_00439e90();
 		void FUN_0043a3e0();
@@ -1396,10 +1396,7 @@ public:
 	);
 	Racer* FUN_0043cbb0(GolVec3* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
 	LegoU32 FUN_0043cda0(Racer* p_racer);
-	Racer::Field0x00c::StandingsDeltaEntry* FUN_0043cf30(
-		Racer* p_racer,
-		Racer::Field0x00c::StandingsDeltaEntry* p_entries
-	);
+	void FUN_0043cf30(Racer* p_racer, Racer::Field0x00c::StandingsDeltaEntry* p_entries);
 	const GolVec3& GetUnk0x0a4(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x0a4[p_index]; }
 	const GolVec3& GetUnk0x0ec(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x0ec[p_index]; }
 	const GolVec3& GetUnk0x134(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x134[p_index]; }

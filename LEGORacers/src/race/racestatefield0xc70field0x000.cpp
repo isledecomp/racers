@@ -10,6 +10,9 @@ extern const LegoFloat g_unk0x004b0d84 = 0.30000001f;
 // GLOBAL: LEGORACERS 0x004b0d88
 extern const LegoFloat g_unk0x004b0d88 = 100.0f;
 
+// GLOBAL: LEGORACERS 0x004b0d38
+extern const LegoFloat g_unk0x004b0d38 = 0.89999998f;
+
 // GLOBAL: LEGORACERS 0x004b0cd0
 extern const LegoFloat g_unk0x004b0cd0 = 40.0f;
 
@@ -36,6 +39,11 @@ extern const LegoFloat g_unk0x004b0470 = 0.155f;
 extern const LegoFloat g_unk0x004b0550 = 0.85000002f;
 
 extern LegoFloat g_cosineTable[1024];
+
+inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
+{
+	return g_cosineTable[p_index];
+}
 
 // FUNCTION: LEGORACERS 0x0042a730
 void RaceState::Racer::Field0x3e8::FUN_0042a730(Field0x00c::Entry* p_entry)
@@ -193,19 +201,18 @@ void RaceState::Racer::Field0x3e8::FUN_00446ef0(LegoFloat p_unk0x04)
 	}
 }
 
-// STUB: LEGORACERS 0x00447f30
+// FUNCTION: LEGORACERS 0x00447f30
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
 	LegoU32 flags = m_flags0x6c0;
+	LegoFloat angle = p_unk0x0c;
 	m_unk0x6c4 = p_unk0x04;
 
 	flags |= c_flags0x6c0Bit0;
 	m_unk0x6d0 = p_unk0x08;
 	m_flags0x6c0 = flags;
 	m_unk0x6cc = p_unk0x0c;
-
-	LegoFloat angle = m_unk0x6cc;
-	m_unk0x6c8 = g_cosineTable[static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff];
+	m_unk0x6c8 = GetCosineTableValue(static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff);
 
 	if (m_unk0x6e8 != NULL) {
 		return;
@@ -220,10 +227,13 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, Le
 	}
 
 	if (!(flags & c_flags0x6c0Bit10)) {
-		LegoFloat dot = m_unk0x5f8.m_z * direction.m_z;
-		dot += m_unk0x5f8.m_y * direction.m_y;
+		LegoFloat dot = m_unk0x5f8.m_z;
+		dot *= direction.m_z;
+		LegoFloat yDot = m_unk0x5f8.m_y;
+		yDot *= direction.m_y;
+		dot += yDot;
 		dot += m_unk0x5f8.m_x * direction.m_x;
-		if (dot >= 0.89999998f) {
+		if (dot >= g_unk0x004b0d38) {
 			return;
 		}
 	}

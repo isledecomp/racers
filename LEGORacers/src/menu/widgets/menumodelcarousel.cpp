@@ -104,34 +104,55 @@ LegoBool32 MenuModelCarousel::VTable0x08()
 void MenuModelCarousel::FUN_0046cc10(CreateParams* p_createParams)
 {
 	m_unk0xb4 = p_createParams->m_unk0x48[7];
-	m_unk0x80 = m_golExport->VTable0x20();
-	m_unk0x80->m_fov = p_createParams->m_unk0x48[6];
-	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
-	m_unk0x80->m_nearClip = m_unk0xb4;
-	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
-	m_unk0x80->m_farClip = p_createParams->m_unk0x48[8];
-	m_unk0x80->m_flags |= GolCamera::c_flagBit1;
+	GolCamera* camera = m_golExport->VTable0x20();
+	m_unk0x80 = camera;
+
+	LegoFloat fov = p_createParams->m_unk0x48[6];
+	LegoU32 flags = camera->m_flags | GolCamera::c_flagBit1;
+	camera->m_fov = fov;
+	camera->m_flags = flags;
+
+	camera = m_unk0x80;
+	LegoFloat nearClip = m_unk0xb4;
+	LegoU32 nearFlags = camera->m_flags | GolCamera::c_flagBit1;
+	camera->m_nearClip = nearClip;
+	camera->m_flags = nearFlags;
+
+	camera = m_unk0x80;
+	LegoFloat farClip = p_createParams->m_unk0x48[8];
+	LegoU32 farFlags = camera->m_flags | GolCamera::c_flagBit1;
+	camera->m_farClip = farClip;
+	camera->m_flags = farFlags;
 
 	GolVec3 position;
 	GolVec3 target;
 	GolVec3 up;
 	position.m_x = m_unk0xb4;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
 	position.m_y = 0.0f;
 	position.m_z = 0.0f;
 	target.m_x = 0.0f;
 	target.m_y = 0.0f;
 	target.m_z = 0.0f;
-	up.m_x = 0.0f;
-	up.m_y = 0.0f;
-	up.m_z = 1.0f;
 
 	m_unk0x80->LookAt(&position, &target, &up);
 	FUN_0046cd30();
 
-	Rect* viewport = &m_unk0x80->m_viewport;
-	LegoFloat aspect = static_cast<LegoFloat>(viewport->m_right - viewport->m_left) /
-					   static_cast<LegoFloat>(viewport->m_bottom - viewport->m_top);
-	m_unk0x80->SetAspectRatio(aspect * p_createParams->m_unk0x70);
+	const Rect* viewport = m_unk0x80->GetViewport();
+	LegoS32 left = viewport->m_left;
+	LegoS32 top = viewport->m_top;
+	LegoS32 right = viewport->m_right;
+	LegoS32 bottom = viewport->m_bottom;
+	LegoS32 width = right - left;
+	LegoS32 height = bottom - top;
+
+	LegoFloat aspect = static_cast<LegoFloat>(width);
+	LegoFloat divisor = static_cast<LegoFloat>(height);
+	aspect /= divisor;
+	aspect *= p_createParams->m_unk0x70;
+	m_unk0x80->SetAspectRatio(aspect);
 }
 
 // FUNCTION: LEGORACERS 0x0046cd30
@@ -201,35 +222,52 @@ void MenuModelCarousel::FUN_0046ce10(CreateParams* p_createParams)
 	FUN_0046cf20();
 }
 
-// STUB: LEGORACERS 0x0046cf20
+// FUNCTION: LEGORACERS 0x0046cf20
 void MenuModelCarousel::FUN_0046cf20()
 {
-	LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
-	LegoS32 height = m_unk0x34.m_bottom - m_unk0x34.m_top;
+	LegoS32 left = m_unk0x34.m_left;
+	LegoS32 width = m_unk0x34.m_right - left;
+	LegoS32 top = m_unk0x34.m_top;
+	LegoS32 height = m_unk0x34.m_bottom - top;
 	LegoS32 halfWidth = -(width >> 1);
-	m_unk0x44 = (m_unk0x80->m_nearHalfWidth + m_unk0x80->m_nearHalfWidth) / static_cast<LegoFloat>(width);
-	m_unk0x48 = (m_unk0x80->m_nearHalfHeight + m_unk0x80->m_nearHalfHeight) / static_cast<LegoFloat>(height);
-
 	Item* item = m_unk0x7c;
-	Rect* rect = &item->m_rect;
-	for (LegoS32 i = 0; i < m_unk0x60; i++) {
-		item->m_unk0x00 = static_cast<LegoFloat>(rect->m_left + halfWidth) * m_unk0x44;
-		item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_unk0x44;
-		item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_unk0x48;
-		item->m_unk0x0c = 0.0f;
-		item->m_unk0x24 = 0.0f;
-		item->m_unk0x20 = (item->m_unk0x08 + item->m_unk0x00) * 0.5f;
+	LegoS32 zero = 0;
+	LegoS32 i = zero;
 
-		LegoFloat range = item->m_unk0x08 - item->m_unk0x00;
-		if (range > item->m_unk0x04) {
-			item->m_unk0x28 = item->m_unk0x04;
-		}
-		else {
-			item->m_unk0x28 = range;
-		}
+	LegoFloat widthFloat = static_cast<LegoFloat>(width);
+	m_unk0x44 = (m_unk0x80->m_nearHalfWidth + m_unk0x80->m_nearHalfWidth) / widthFloat;
+	LegoFloat heightNumerator = m_unk0x80->m_nearHalfHeight;
+	heightNumerator += heightNumerator;
+	LegoFloat heightFloat = static_cast<LegoFloat>(height);
+	m_unk0x48 = heightNumerator / heightFloat;
 
-		item++;
-		rect = &item->m_rect;
+	if (m_unk0x60 > zero) {
+		do {
+			Rect* rect = &item->m_rect;
+
+			LegoS32 rectLeft = rect->m_left;
+			rectLeft += halfWidth;
+			item->m_unk0x00 = static_cast<LegoFloat>(rectLeft) * m_unk0x44;
+			item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_unk0x44;
+			item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_unk0x48;
+			item->m_unk0x0c = 0.0f;
+			item->m_unk0x24 = 0.0f;
+
+			LegoFloat center = item->m_unk0x08;
+			center += item->m_unk0x00;
+			item->m_unk0x20 = center * 0.5f;
+
+			LegoFloat range = item->m_unk0x08 - item->m_unk0x00;
+			if (range > item->m_unk0x04) {
+				item->m_unk0x28 = item->m_unk0x04;
+			}
+			else {
+				item->m_unk0x28 = range;
+			}
+
+			i++;
+			item++;
+		} while (i < m_unk0x60);
 	}
 }
 

@@ -549,18 +549,25 @@ undefined4 RaceSession::Field0x258::Field0x04::FUN_00430910(DirectInputDevice** 
 	return m_unk0x008[p_index];
 }
 
-// STUB: LEGORACERS 0x00430930
+// FUNCTION: LEGORACERS 0x00430930
 void RaceSession::Field0x258::Field0x04::FUN_00430930()
 {
-	for (LegoS32 i = 0; i < c_inputSlotCount; i++) {
-		DirectInputDevice* source = m_unk0x02c[i];
-		if (source && (m_unk0x008[i] & InputDevice::c_sourceCharacter) != InputDevice::c_sourceKeyboard) {
+	undefined4* input = m_unk0x008;
+	DirectInputDevice** current = m_unk0x02c;
+	LegoS32 remaining = c_inputSlotCount;
+
+	do {
+		DirectInputDevice* source = *current;
+		if (source && (*input & InputDevice::c_sourceCharacter) != InputDevice::c_sourceKeyboard) {
 			source->SetCallback(this);
-			if (!source->IsAcquired()) {
-				source->Acquire();
+			if (!(*current)->IsAcquired()) {
+				(*current)->Acquire();
 			}
 		}
-	}
+
+		input++;
+		current++;
+	} while (--remaining);
 }
 
 // FUNCTION: LEGORACERS 0x00430980

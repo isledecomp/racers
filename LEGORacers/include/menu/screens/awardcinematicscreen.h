@@ -8,11 +8,12 @@
 #include "golworldentitygroup0x38.h"
 #include "menu/screens/menuscenescreen.h"
 #include "race/data/circuitdefinitionlist.h"
-#include "save/savegame.h"
+#include "save/saverecordlist.h"
 
 class ChassisModelTable;
-class GolWorldEntity;
 class CarBuildModel;
+class GameState;
+class GolWorldEntity;
 
 // VTABLE: LEGORACERS 0x004b2c5c
 // SIZE 0x7b0

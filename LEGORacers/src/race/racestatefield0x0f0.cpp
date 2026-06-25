@@ -105,7 +105,7 @@ void RaceState::Field0x0f0::FUN_0043d270()
 	event = m_unk0x2c;
 	for (; event; event = event->m_next) {
 		if (event->m_active) {
-			target = event->m_descriptor.m_target->m_unk0x0e0;
+			target = event->m_descriptor.m_target->m_ownerData;
 
 			if (target) {
 				model = LegoEventQueue::Field0x30::VTable0x14(event);

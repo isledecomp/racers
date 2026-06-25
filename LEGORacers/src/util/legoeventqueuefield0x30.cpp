@@ -86,7 +86,7 @@ void LegoEventQueue::Field0x30::FUN_0043aa90()
 // FUNCTION: LEGORACERS 0x0043aaf0
 GolWorldEntity* LegoEventQueue::Field0x30::VTable0x14(Event* p_event)
 {
-	return &p_event->m_descriptor.m_target->m_unk0x0e0->m_unk0x1c;
+	return &p_event->m_descriptor.m_target->m_ownerData->m_unk0x1c;
 }
 
 // FUNCTION: LEGORACERS 0x0043ab10
@@ -97,7 +97,12 @@ void LegoEventQueue::Field0x30::FUN_0043ab10(Event* p_event, LegoEventQueue*, Ca
 	CollisionCallbackData collisionData;
 
 	m_unk0x30.m_unk0x00 = 3;
-	if (target0->FUN_00441330(target1, &collisionData.m_unk0x1c, &collisionData.m_unk0x10, &collisionData.m_unk0x04)) {
+	if (target0->CalculateBoxContact(
+			target1,
+			&collisionData.m_unk0x1c,
+			&collisionData.m_unk0x10,
+			&collisionData.m_unk0x04
+		)) {
 		if (collisionData.m_unk0x1c != 0.0f) {
 			m_unk0x30.m_target0 = target0;
 			collisionData.m_unk0x20 = target1;

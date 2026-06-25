@@ -9,7 +9,8 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "racer/drivercosmetics.h"
-#include "save/savegame.h"
+#include "save/memorycardsavegame.h"
+#include "save/saverecordlist.h"
 #include "surface/color.h"
 
 #include <string.h>

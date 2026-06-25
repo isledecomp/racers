@@ -104,7 +104,8 @@ void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_ma
 
 		if (m_unk0x2704[i]) {
 			SaveRecordList::Record* firstRecord = modelState->FUN_004430b0();
-			InputBindingPlayerState* player = &saveSystem->GetGameState().GetState().m_inputBindings.m_players[i];
+			InputBindingState::PlayerState* player =
+				&saveSystem->GetGameState().GetState().m_inputBindings.m_players[i];
 			LegoU32 selectedRecordId = player->m_selectedRecordId;
 			LegoU32 selectedRecordSource = player->m_selectedRecordSource;
 			LegoU32 selectedSaveIndex = player->m_selectedSaveIndex;

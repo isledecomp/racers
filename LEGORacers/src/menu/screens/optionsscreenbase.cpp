@@ -6,7 +6,6 @@
 #include "menu/menudialog.h"
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
-#include "save/savegame.h"
 
 DECOMP_SIZE_ASSERT(OptionsScreenBase, 0x51ac)
 

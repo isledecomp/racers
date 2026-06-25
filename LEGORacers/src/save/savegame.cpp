@@ -1,15 +1,12 @@
 #include "save/savegame.h"
 
 #include "golbyteorder.h"
+#include "golfile.h"
+#include "save/persistentgamestate.h"
 
 #include <string.h>
 
 DECOMP_SIZE_ASSERT(SaveGame, 0x4a8)
-DECOMP_SIZE_ASSERT(MemoryCardFile, 0x34)
-DECOMP_SIZE_ASSERT(MemoryCardSaveGame, 0x4e0)
-
-// GLOBAL: LEGORACERS 0x004befd4
-const LegoChar* g_memoryCardSaveFileName = "LEGORac1";
 
 // GLOBAL: LEGORACERS 0x004c6b38
 LegoU8 g_saveFileBlock[SaveGame::c_saveFileBlockSize];
@@ -181,38 +178,43 @@ LegoU32 SaveGame::CalculateBlockChecksum(const LegoU8* p_source, LegoU32 p_size)
 }
 
 // STUB: LEGORACERS 0x00442a00
-void SaveGame::FUN_00442a00(PersistentGameState* p_state)
+void SaveGame::ReadPersistentGameState(PersistentGameState* p_state)
 {
+	LegoU8* dest;
 	const LegoU8* source;
 	LegoU32 i;
 	LegoU32 j;
 
-	p_state->m_racerCount = m_fileImage[c_persistentHeaderOffset];
+	dest = &p_state->m_racerCount;
+	dest[0] = m_fileImage[c_persistentHeaderOffset];
 	source = &m_fileImage[c_persistentHeaderOffset + 1];
 	for (i = 0; i < sizeof(p_state->m_displayDriverGuid.m_bytes); i++) {
-		p_state->m_displayDriverGuid.m_bytes[i] = source[i];
+		dest[i + 1] = source[i];
 	}
-	p_state->m_unk0x1d = m_fileImage[c_persistentHeaderOffset + 0x11];
-	p_state->m_unk0x1e = m_fileImage[c_persistentHeaderOffset + 0x12];
-	p_state->m_musicVolume = m_fileImage[c_persistentHeaderOffset + 0x13];
-	p_state->m_soundVolume = m_fileImage[c_persistentHeaderOffset + 0x14];
-	p_state->m_unk0x21 = m_fileImage[c_persistentHeaderOffset + 0x15];
-	p_state->m_languageIndex = m_fileImage[c_persistentHeaderOffset + 0x16];
-	p_state->m_unk0x23 = m_fileImage[c_persistentHeaderOffset + 0x17];
+
+	dest[0x11] = m_fileImage[c_persistentHeaderOffset + 0x11];
+	dest[0x12] = m_fileImage[c_persistentHeaderOffset + 0x12];
+	dest[0x13] = m_fileImage[c_persistentHeaderOffset + 0x13];
+	dest[0x14] = m_fileImage[c_persistentHeaderOffset + 0x14];
+	dest[0x15] = m_fileImage[c_persistentHeaderOffset + 0x15];
+	dest[0x16] = m_fileImage[c_persistentHeaderOffset + 0x16];
+	dest[0x17] = m_fileImage[c_persistentHeaderOffset + 0x17];
 
 	source = &m_fileImage[c_inputBindingHeaderOffset + 1];
+	dest = &p_state->m_inputBindings.m_players[0].m_selectedRecordSource;
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
-		InputBindingPlayerState* player = &p_state->m_inputBindings.m_players[i];
-		player->m_selectedRecordId = source[-1];
-		player->m_selectedRecordSource = source[0];
-		player->m_selectedSaveIndex = source[1];
-		player->m_selectedEntryIndex = source[2];
-		source += sizeof(InputBindingPlayerState);
+		dest[-1] = source[-1];
+		dest[0] = source[0];
+		dest[1] = source[1];
+		dest[2] = source[2];
+
+		source += sizeof(InputBindingState::PlayerState);
+		dest += sizeof(InputBindingState::PlayerState);
 	}
 
 	source = &m_fileImage[c_inputBindingEntryOffset + 2];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
-		InputBindingEntry* entry = &p_state->m_inputBindings.m_entries[i];
+		InputBindingState::Entry* entry = &p_state->m_inputBindings.m_entries[i];
 		entry->m_deviceType = source[-2];
 		entry->m_deviceSubType = source[-1];
 		entry->m_deviceId = source[0];
@@ -228,15 +230,34 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 	p_state->m_unlockedCircuits = m_fileImage[c_unlockStateOffset + 1];
 	p_state->m_unlockedRaces = ReadLittleEndianU16(&m_fileImage[c_unlockStateOffset + 2]);
 
-	source = &m_fileImage[c_scoreRecordsOffset];
-	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
-		p_state->m_bestLapTimes[i] = ReadLittleEndianU32(source);
-		for (j = 0; j < sizeof(p_state->m_bestLapHolderNames[i]); j++) {
-			p_state->m_bestLapHolderNames[i][j] = source[4 + j];
+	source = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
+	for (i = 0; i < c_scoreRecordCount; i++) {
+		LegoU32 time = source[c_scoreRecordLapTimeOffset + 3 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordLapTimeOffset + 2 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordLapTimeOffset + 1 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordLapTimeOffset - c_scoreRecordCursorOffset];
+		p_state->m_bestLapTimes[i] = time;
+
+		for (j = 0; j < c_scoreHolderNameSize; j++) {
+			p_state->m_bestLapHolderNames[i][j] =
+				source[c_scoreRecordLapHolderNameOffset - c_scoreRecordCursorOffset + j];
 		}
-		p_state->m_bestRaceTimes[i] = ReadLittleEndianU32(&source[0x20]);
-		for (j = 0; j < sizeof(p_state->m_bestRaceHolderNames[i]); j++) {
-			p_state->m_bestRaceHolderNames[i][j] = source[0x24 + j];
+
+		time = source[c_scoreRecordRaceTimeOffset + 3 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordRaceTimeOffset + 2 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordRaceTimeOffset + 1 - c_scoreRecordCursorOffset];
+		time <<= 8;
+		time += source[c_scoreRecordRaceTimeOffset - c_scoreRecordCursorOffset];
+		p_state->m_bestRaceTimes[i] = time;
+
+		for (j = 0; j < c_scoreHolderNameSize; j++) {
+			p_state->m_bestRaceHolderNames[i][j] =
+				source[c_scoreRecordRaceHolderNameOffset - c_scoreRecordCursorOffset + j];
 		}
 
 		source += c_scoreRecordSize;
@@ -244,7 +265,7 @@ void SaveGame::FUN_00442a00(PersistentGameState* p_state)
 }
 
 // STUB: LEGORACERS 0x00442c20
-void SaveGame::FUN_00442c20(PersistentGameState* p_state)
+void SaveGame::WritePersistentGameState(PersistentGameState* p_state)
 {
 	LegoU8* dest;
 	LegoU32 i;
@@ -264,17 +285,17 @@ void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 
 	dest = &m_fileImage[c_inputBindingHeaderOffset + 1];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_players); i++) {
-		InputBindingPlayerState* player = &p_state->m_inputBindings.m_players[i];
+		InputBindingState::PlayerState* player = &p_state->m_inputBindings.m_players[i];
 		dest[-1] = player->m_selectedRecordId;
 		dest[0] = player->m_selectedRecordSource;
 		dest[1] = player->m_selectedSaveIndex;
 		dest[2] = player->m_selectedEntryIndex;
-		dest += sizeof(InputBindingPlayerState);
+		dest += sizeof(InputBindingState::PlayerState);
 	}
 
 	dest = &m_fileImage[c_inputBindingEntryOffset];
 	for (i = 0; i < sizeOfArray(p_state->m_inputBindings.m_entries); i++) {
-		InputBindingEntry* entry = &p_state->m_inputBindings.m_entries[i];
+		InputBindingState::Entry* entry = &p_state->m_inputBindings.m_entries[i];
 		dest[0] = entry->m_deviceType;
 		dest[1] = entry->m_deviceSubType;
 		dest[2] = entry->m_deviceId;
@@ -291,103 +312,35 @@ void SaveGame::FUN_00442c20(PersistentGameState* p_state)
 	m_fileImage[c_unlockStateOffset + 2] = static_cast<LegoU8>(p_state->m_unlockedRaces);
 	m_fileImage[c_unlockStateOffset + 3] = static_cast<LegoU8>(p_state->m_unlockedRaces >> 8);
 
-	dest = &m_fileImage[c_scoreRecordsOffset];
-	for (i = 0; i < sizeOfArray(p_state->m_bestLapTimes); i++) {
-		WriteLittleEndianU32(dest, p_state->m_bestLapTimes[i]);
-		for (j = 0; j < sizeof(p_state->m_bestLapHolderNames[i]); j++) {
-			dest[4 + j] = p_state->m_bestLapHolderNames[i][j];
+	dest = &m_fileImage[c_scoreRecordsOffset + c_scoreRecordCursorOffset];
+	for (i = 0; i < c_scoreRecordCount; i++) {
+		dest[c_scoreRecordLapTimeOffset - c_scoreRecordCursorOffset] = static_cast<LegoU8>(p_state->m_bestLapTimes[i]);
+		dest[c_scoreRecordLapTimeOffset + 1 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 8);
+		dest[c_scoreRecordLapTimeOffset + 2 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 16);
+		dest[c_scoreRecordLapTimeOffset + 3 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestLapTimes[i] >> 24);
+
+		for (j = 0; j < c_scoreHolderNameSize; j++) {
+			dest[c_scoreRecordLapHolderNameOffset - c_scoreRecordCursorOffset + j] =
+				p_state->m_bestLapHolderNames[i][j];
 		}
-		WriteLittleEndianU32(&dest[0x20], p_state->m_bestRaceTimes[i]);
-		for (j = 0; j < sizeof(p_state->m_bestRaceHolderNames[i]); j++) {
-			dest[0x24 + j] = p_state->m_bestRaceHolderNames[i][j];
+
+		dest[c_scoreRecordRaceTimeOffset - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestRaceTimes[i]);
+		dest[c_scoreRecordRaceTimeOffset + 1 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 8);
+		dest[c_scoreRecordRaceTimeOffset + 2 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 16);
+		dest[c_scoreRecordRaceTimeOffset + 3 - c_scoreRecordCursorOffset] =
+			static_cast<LegoU8>(p_state->m_bestRaceTimes[i] >> 24);
+
+		for (j = 0; j < c_scoreHolderNameSize; j++) {
+			dest[c_scoreRecordRaceHolderNameOffset - c_scoreRecordCursorOffset + j] =
+				p_state->m_bestRaceHolderNames[i][j];
 		}
 
 		dest += c_scoreRecordSize;
 	}
-}
-
-// FUNCTION: LEGORACERS 0x004437e0
-MemoryCardSaveGame::MemoryCardSaveGame()
-{
-	m_slot = NULL;
-}
-
-// FUNCTION: LEGORACERS 0x00443840
-MemoryCardSaveGame::~MemoryCardSaveGame()
-{
-	Destroy();
-}
-
-// FUNCTION: LEGORACERS 0x004438a0
-void MemoryCardSaveGame::Initialize(SaveSlot* p_slot, undefined4 p_count, undefined4 p_unk0x0c, undefined4 p_unk0x10)
-{
-	if (m_records) {
-		Destroy();
-	}
-
-	SaveGame::Initialize(p_count, p_unk0x0c, p_unk0x10);
-	m_slot = p_slot;
-}
-
-// FUNCTION: LEGORACERS 0x004438e0
-void MemoryCardSaveGame::Destroy()
-{
-	if (m_file.GetFlags() & GolStream::c_flagOpen) {
-		MemoryCardFileBase* file = &m_file;
-		file->Dispose();
-	}
-
-	SaveRecordList::Destroy();
-}
-
-// FUNCTION: LEGORACERS 0x00443910
-LegoS32 MemoryCardSaveGame::OpenExistingFile()
-{
-	return m_file.VTable0x3c(m_slot, g_memoryCardSaveFileName, GolStream::c_unk0x40, c_fileBufferSize, 0);
-}
-
-// FUNCTION: LEGORACERS 0x00443940
-LegoS32 MemoryCardSaveGame::CreateSaveFile()
-{
-	LegoS32 result =
-		m_file
-			.VTable0x3c(m_slot, g_memoryCardSaveFileName, GolStream::c_modeCreate, c_fileBufferSize, c_fileBufferSize);
-	if (!result) {
-		result = SaveToFile();
-	}
-
-	return result;
-}
-
-// FUNCTION: LEGORACERS 0x00443980
-LegoS32 MemoryCardSaveGame::LoadFromFile()
-{
-	if (!m_file.IsOpen()) {
-		LegoS32 result = OpenExistingFile();
-		if (result) {
-			return result;
-		}
-	}
-
-	return SaveGame::LoadFromFile(m_file);
-}
-
-// FUNCTION: LEGORACERS 0x004439b0
-LegoS32 MemoryCardSaveGame::SaveToFile()
-{
-	LegoS32 result = 0;
-
-	if (!m_file.IsOpen()) {
-		result = OpenExistingFile();
-	}
-
-	if (!result) {
-		MemoryCardFile* file = &m_file;
-		result = WriteFileImage(*file);
-		if (!result) {
-			result = file->FlushWriteBuffer();
-		}
-	}
-
-	return result;
 }

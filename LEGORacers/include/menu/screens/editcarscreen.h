@@ -15,11 +15,11 @@
 #include "menu/widgets/menuselector.h"
 #include "menu/widgets/menutextbutton.h"
 #include "menu/widgets/menutextlabel.h"
-#include "save/savegame.h"
 
 class CmbModelPart0x34;
 class GolModelBase;
 class GolSceneNode;
+class ActiveRecordBuffer;
 
 // VTABLE: LEGORACERS 0x004b3294
 // SIZE 0x36c4

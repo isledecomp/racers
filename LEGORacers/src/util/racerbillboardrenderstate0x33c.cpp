@@ -313,6 +313,7 @@ void RacerBillboardRenderState0x33c::FUN_00409b10(Field0x038** p_triangle)
 				return;
 			}
 
+			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
 				edge1Index = g_unk0x004af55c[edge1Index];
@@ -323,6 +324,7 @@ void RacerBillboardRenderState0x33c::FUN_00409b10(Field0x038** p_triangle)
 				}
 				x1 = static_cast<LegoS32>(65536.0f * base1->m_unk0x00);
 				xStep1 = static_cast<LegoS32>(((edge1->m_unk0x00 - base1->m_unk0x00) / deltaY1) * 65536.0f);
+				yEndValue = edge1->m_unk0x04;
 			}
 			else {
 				base0 = edge0;
@@ -334,17 +336,10 @@ void RacerBillboardRenderState0x33c::FUN_00409b10(Field0x038** p_triangle)
 				}
 				x0 = static_cast<LegoS32>(65536.0f * base0->m_unk0x00);
 				xStep0 = static_cast<LegoS32>(((edge0->m_unk0x00 - base0->m_unk0x00) / deltaY0) * 65536.0f);
+				yEndValue = edge0->m_unk0x04;
 			}
 
-			if (edge0->m_unk0x04 <= edge1->m_unk0x04) {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = FALSE;
-			}
-			else {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = TRUE;
-			}
-
+			yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * yEndValue)) & 0xffff0000;
 			if (y >= yEnd) {
 				return;
 			}
@@ -465,6 +460,7 @@ void RacerBillboardRenderState0x33c::FUN_00409f90(Field0x038** p_triangle)
 				return;
 			}
 
+			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
 				edge1Index = g_unk0x004af55c[edge1Index];
@@ -475,6 +471,7 @@ void RacerBillboardRenderState0x33c::FUN_00409f90(Field0x038** p_triangle)
 				}
 				x1 = static_cast<LegoS32>(65536.0f * base1->m_unk0x00);
 				xStep1 = static_cast<LegoS32>(((edge1->m_unk0x00 - base1->m_unk0x00) / deltaY1) * 65536.0f);
+				yEndValue = edge1->m_unk0x04;
 			}
 			else {
 				base0 = edge0;
@@ -486,17 +483,10 @@ void RacerBillboardRenderState0x33c::FUN_00409f90(Field0x038** p_triangle)
 				}
 				x0 = static_cast<LegoS32>(65536.0f * base0->m_unk0x00);
 				xStep0 = static_cast<LegoS32>(((edge0->m_unk0x00 - base0->m_unk0x00) / deltaY0) * 65536.0f);
+				yEndValue = edge0->m_unk0x04;
 			}
 
-			if (edge0->m_unk0x04 <= edge1->m_unk0x04) {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = FALSE;
-			}
-			else {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = TRUE;
-			}
-
+			yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * yEndValue)) & 0xffff0000;
 			if (y >= yEnd) {
 				return;
 			}
@@ -600,6 +590,7 @@ void RacerBillboardRenderState0x33c::FUN_0040a3e0(Field0x038** p_triangle)
 				return;
 			}
 
+			LegoFloat yEndValue;
 			if (edge1EndsFirst) {
 				base1 = edge1;
 				edge1Index = g_unk0x004af55c[edge1Index];
@@ -610,6 +601,7 @@ void RacerBillboardRenderState0x33c::FUN_0040a3e0(Field0x038** p_triangle)
 				}
 				x1 = static_cast<LegoS32>(65536.0f * base1->m_unk0x00);
 				xStep1 = static_cast<LegoS32>(((edge1->m_unk0x00 - base1->m_unk0x00) / deltaY1) * 65536.0f);
+				yEndValue = edge1->m_unk0x04;
 			}
 			else {
 				base0 = edge0;
@@ -621,17 +613,10 @@ void RacerBillboardRenderState0x33c::FUN_0040a3e0(Field0x038** p_triangle)
 				}
 				x0 = static_cast<LegoS32>(65536.0f * base0->m_unk0x00);
 				xStep0 = static_cast<LegoS32>(((edge0->m_unk0x00 - base0->m_unk0x00) / deltaY0) * 65536.0f);
+				yEndValue = edge0->m_unk0x04;
 			}
 
-			if (edge0->m_unk0x04 <= edge1->m_unk0x04) {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge0->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = FALSE;
-			}
-			else {
-				yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * edge1->m_unk0x04)) & 0xffff0000;
-				edge1EndsFirst = TRUE;
-			}
-
+			yEnd = (0xffff - static_cast<LegoS32>(-65536.0f * yEndValue)) & 0xffff0000;
 			if (y >= yEnd) {
 				return;
 			}

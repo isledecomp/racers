@@ -190,9 +190,9 @@ void MainMenuScreen::VTable0x84()
 // STUB: LEGORACERS 0x004812f0
 LegoBool32 MainMenuScreen::VTable0x18(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	LegoBool32 result = TRUE;
-	if (!m_unk0x364) {
-		result = FALSE;
+	LegoBool32 result = m_unk0x364;
+	if (result) {
+		result = TRUE;
 	}
 
 	return result;

@@ -4,6 +4,64 @@
 // STUB: LEGORACERS 0x0044e9a0
 LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 {
+#ifdef BUILDING_LEGORACERS
+	LegoU8* src = p_src;
+	LegoU8* dst = p_dst;
+	LegoS32 value = 0;
+
+	value = *src++;
+	*dst++ = static_cast<LegoU8>(value);
+
+	for (;;) {
+		LegoS32 flags = *src;
+		flags <<= 24;
+		src++;
+		flags++;
+		for (;;) {
+			if (flags >= 0) {
+				flags += flags;
+				value = *src++;
+				*dst++ = static_cast<LegoU8>(value);
+				if (!(flags & 0xff)) {
+					break;
+				}
+			}
+			else {
+				value = *src++;
+				LegoS32 offset = value;
+				value &= 0x0f;
+				offset &= 0xf0;
+				offset <<= 4;
+				offset |= *src;
+
+				if (value == 0) {
+					value = -src[1] - 18;
+					src++;
+				}
+				else {
+					value -= 18;
+				}
+
+				src++;
+				offset = -offset;
+				if (offset == 0) {
+					return dst - p_dst;
+				}
+
+				do {
+					value++;
+					*dst = dst[offset];
+					dst++;
+				} while (value != 0);
+
+				flags += flags;
+				if (!(flags & 0xff)) {
+					break;
+				}
+			}
+		}
+	}
+#else
 	LegoU8* src = p_src;
 	LegoU8* dst = p_dst;
 
@@ -49,4 +107,5 @@ LegoU32 GolDecompress(LegoU8* p_src, LegoU8* p_dst)
 			}
 		}
 	}
+#endif
 }

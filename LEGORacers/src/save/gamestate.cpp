@@ -1,3 +1,5 @@
+#include "save/gamestate.h"
+
 #include "golhashtable.h"
 #include "golstream.h"
 #include "golstring.h"
@@ -5,6 +7,7 @@
 #include "input/inputmanager.h"
 #include "input/joystickdevice.h"
 #include "input/keyboarddevice.h"
+#include "save/activerecordbuffer.h"
 #include "save/savegame.h"
 
 #include <string.h>
@@ -13,8 +16,8 @@
 DECOMP_SIZE_ASSERT(GameState, 0x438)
 DECOMP_SIZE_ASSERT(DisplayDriverGuid::SerializedWord, 0x04)
 DECOMP_SIZE_ASSERT(DisplayDriverGuid::Serialized, 0x10)
-DECOMP_SIZE_ASSERT(InputBindingEntry, 0x28)
-DECOMP_SIZE_ASSERT(InputBindingPlayerState, 0x04)
+DECOMP_SIZE_ASSERT(InputBindingState::Entry, 0x28)
+DECOMP_SIZE_ASSERT(InputBindingState::PlayerState, 0x04)
 DECOMP_SIZE_ASSERT(InputBindingState, 0xd0)
 DECOMP_SIZE_ASSERT(PersistentGameState, 0x42c)
 
@@ -121,7 +124,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 	LegoS32 j;
 
 	for (i = 0; i < 2; i++) {
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i];
 		JoystickInputDevice* joystick = p_inputManager->FindJoystickByDeviceId(i);
 
 		if (joystick == NULL) {
@@ -158,7 +161,7 @@ void GameState::InitializeInputBindings(InputManager* p_inputManager)
 			m_state.m_inputBindings.m_entries[4].m_deviceSubType = keyboard->GetDeviceSubType();
 		}
 
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i + 2];
+		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i + 2];
 		entry->m_deviceType = 3;
 		entry->m_deviceId = 0;
 
@@ -177,7 +180,7 @@ void GameState::SelectFallbackInputBinding(LegoU32 p_playerIndex)
 
 	for (i = 0; i < c_joystickBindingCount; i++) {
 		if (otherEntryIndex != i) {
-			InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[i];
+			InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[i];
 			if (m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) != NULL) {
 				SelectInputBinding(p_playerIndex, i);
 				return;
@@ -195,7 +198,7 @@ LegoU32 GameState::FindAvailableInputBindingEntry(LegoU32 p_playerIndex)
 	LegoU32 otherEntryIndex = m_state.m_inputBindings.GetSelectedEntryIndex(otherPlayerIndex);
 
 	if (p_playerIndex && otherEntryIndex < c_joystickBindingCount) {
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
+		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[otherEntryIndex];
 		LegoU32 deviceId = entry->m_deviceId;
 		JoystickInputDevice* joystick = m_inputManager->FindJoystickByDeviceId(deviceId);
 
@@ -229,7 +232,7 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 
 	m_activeSaveIndex = p_activeSaveIndex;
 	m_dirty = 0;
-	p_saveGame->FUN_00442a00(&state);
+	p_saveGame->ReadPersistentGameState(&state);
 
 	m_state.m_racerCount = state.m_racerCount;
 	m_state.m_displayDriverGuid = state.m_displayDriverGuid;
@@ -253,16 +256,16 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 			);
 		}
 
-		sourceBindingEntry += sizeof(InputBindingEntry);
-		destBindingEntry += sizeof(InputBindingEntry);
+		sourceBindingEntry += sizeof(InputBindingState::Entry);
+		destBindingEntry += sizeof(InputBindingState::Entry);
 	}
 
-	InputBindingPlayerState* sourcePlayer = state.m_inputBindings.m_players;
-	InputBindingPlayerState* destPlayer = m_state.m_inputBindings.m_players;
+	InputBindingState::PlayerState* sourcePlayer = state.m_inputBindings.m_players;
+	InputBindingState::PlayerState* destPlayer = m_state.m_inputBindings.m_players;
 	for (i = 0; i < c_joystickBindingCount; i++) {
 		*destPlayer = *sourcePlayer;
 
-		InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[destPlayer->m_selectedEntryIndex];
+		InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[destPlayer->m_selectedEntryIndex];
 
 		if (entry->m_deviceType == c_joystickDeviceType &&
 			m_inputManager->FindJoystickByDeviceId(entry->m_deviceId) == NULL) {
@@ -296,7 +299,7 @@ void GameState::LoadFromSaveGame(SaveGame* p_saveGame, LegoU32 p_activeSaveIndex
 // FUNCTION: LEGORACERS 0x0042ed10
 LegoBool32 GameState::IsInputEventBound(LegoU32 p_entryIndex, LegoU32 p_event)
 {
-	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 	LegoS32 i;
 	LegoS32 j;
 
@@ -349,7 +352,7 @@ LegoU32 GameState::GetInputEvent(LegoU32 p_playerIndex, LegoU32 p_entryIndex, Le
 }
 
 // FUNCTION: LEGORACERS 0x0042ee10
-void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex, InputBindingEntry* p_entry)
+void GameState::GetInputBindingEntry(LegoU32 p_playerIndex, LegoU32 p_entryIndex, InputBindingState::Entry* p_entry)
 {
 	LegoS32 i;
 
@@ -367,7 +370,7 @@ void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU3
 {
 	LegoU32 i;
 	LegoU32 j;
-	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 
 	if (entry->m_events[p_eventIndex] == p_event) {
 		return;
@@ -382,7 +385,7 @@ void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU3
 	}
 	else {
 		for (i = 0; i < c_inputBindingEntryCount; i++) {
-			InputBindingEntry* otherEntry = &m_state.m_inputBindings.m_entries[i];
+			InputBindingState::Entry* otherEntry = &m_state.m_inputBindings.m_entries[i];
 
 			for (j = 0; j < c_inputBindingEventCount; j++) {
 				if (otherEntry->m_events[j] == p_event) {
@@ -399,7 +402,7 @@ void GameState::SetInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex, LegoU3
 // FUNCTION: LEGORACERS 0x0042ef00
 LegoU32 GameState::GetDefaultInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventIndex)
 {
-	InputBindingEntry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
+	InputBindingState::Entry* entry = &m_state.m_inputBindings.m_entries[p_entryIndex];
 	LegoU32 result = 0;
 
 	if (entry->m_deviceType == c_joystickDeviceType) {
@@ -424,7 +427,7 @@ LegoU32 GameState::GetDefaultInputEvent(LegoU32 p_entryIndex, LegoU32 p_eventInd
 // FUNCTION: LEGORACERS 0x0042ef80
 void GameState::WriteToSaveGame(SaveGame* p_saveGame)
 {
-	p_saveGame->FUN_00442c20(&m_state);
+	p_saveGame->WritePersistentGameState(&m_state);
 }
 
 // FUNCTION: LEGORACERS 0x0042ef90

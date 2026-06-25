@@ -1,5 +1,6 @@
 #include "menu/screens/racerunlockstate.h"
 
+#include "save/memorycardsavegame.h"
 #include "save/savesystem.h"
 
 #include <string.h>

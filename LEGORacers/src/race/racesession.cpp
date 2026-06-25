@@ -1497,7 +1497,7 @@ void RaceSession::FUN_004343e0()
 				inputSink = &field0x258->m_unk0x004;
 			}
 
-			InputBindingEntry* binding = &session->m_context->m_inputBindings[playerIndex];
+			InputBindingState::Entry* binding = &session->m_context->m_inputBindings[playerIndex];
 			if (binding->m_deviceType == DIDEVTYPE_JOYSTICK && binding->m_deviceId < 16) {
 				JoystickInputDevice* joystick = session->m_unk0x21c->FindJoystickByDeviceId(binding->m_deviceId);
 				if (joystick && joystick->GetDeviceSubType() == binding->m_deviceSubType) {

@@ -1,7 +1,9 @@
 #include "golerror.h"
 #include "golstring.h"
 #include "racer/drivercosmetics.h"
-#include "save/savegame.h"
+#include "save/activerecordbuffer.h"
+
+#include <string.h>
 
 DECOMP_SIZE_ASSERT(SaveRecordList, 0x24)
 DECOMP_SIZE_ASSERT(SaveRecordList::Record, 0x244)
@@ -398,7 +400,7 @@ void SaveRecordList::RemoveRecord(Record* p_record)
 {
 	Record* previous = NULL;
 	Record* record = m_usedRecords;
-	Record* head = record;
+	Record* head = m_usedRecords;
 	LegoU32 recordId = 0;
 	m_dirty = 1;
 

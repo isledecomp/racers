@@ -23,6 +23,7 @@
 #include "menu/screens/menugamescreen.h"
 #include "render/golcommondrawstate.h"
 #include "render/goldrawstate.h"
+#include "save/memorycardsavegame.h"
 #include "surface/purpledune0x7c.h"
 #include "util/amethystbreeze0x104.h"
 

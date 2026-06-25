@@ -2,6 +2,9 @@
 #define SAVESYSTEM_H
 
 #include "decomp.h"
+#include "save/activerecordbuffer.h"
+#include "save/gamestate.h"
+#include "save/memorycardsavegame.h"
 #include "save/savedirectory.h"
 #include "save/savegame.h"
 #include "types.h"

@@ -6,15 +6,13 @@
 
 DECOMP_SIZE_ASSERT(RaceSession::Field0x23c, 0x1c)
 
-// STUB: LEGORACERS 0x00427900
+// FUNCTION: LEGORACERS 0x00427900
 RaceSession::Field0x23c::Field0x23c()
 {
-	DirectInputDevice* source = NULL;
-	Field0x258::Field0x04* sink = NULL;
-
-	m_unk0x04 = source;
-	m_unk0x08[0] = sink;
-	m_unk0x08[1] = sink;
+	m_unk0x04 = NULL;
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x08); i++) {
+		m_unk0x08[i] = NULL;
+	}
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
 	m_unk0x18 = TRUE;
@@ -26,11 +24,13 @@ RaceSession::Field0x23c::~Field0x23c()
 	FUN_00427960();
 }
 
-// STUB: LEGORACERS 0x00427960
+// FUNCTION: LEGORACERS 0x00427960
 void RaceSession::Field0x23c::FUN_00427960()
 {
 	m_unk0x04 = NULL;
-	memset(m_unk0x08, 0, sizeof(m_unk0x08));
+	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x08); i++) {
+		m_unk0x08[i] = NULL;
+	}
 	m_unk0x10 = 0;
 	m_unk0x14 = NULL;
 	m_unk0x18 = TRUE;

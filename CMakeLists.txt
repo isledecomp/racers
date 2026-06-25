@@ -424,8 +424,10 @@ add_executable(legoracers WIN32
   LEGORacers/src/save/savegame.cpp
   LEGORacers/src/save/savegamefile.cpp
   LEGORacers/src/save/memorycardfilebase.cpp
+  LEGORacers/src/save/memorycardfile.cpp
   LEGORacers/src/save/gamestate.cpp
   LEGORacers/src/save/savesystem.cpp
+  LEGORacers/src/save/memorycardsavegame.cpp
   LEGORacers/src/model/carpartset.cpp
   LEGORacers/src/model/legopiecelibrary.cpp
   LEGORacers/src/menu/runtime/cutsceneparticle.cpp

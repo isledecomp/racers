@@ -23,7 +23,12 @@ public:
 			virtual void VTable0x00() = 0;            // vtable+0x00
 			virtual void VTable0x04() = 0;            // vtable+0x04
 			virtual GolWorldEntity* VTable0x08() = 0; // vtable+0x08
-			LegoBool32 FUN_00441330(Field0x10* p_other, LegoFloat* p_unk0x08, GolVec3* p_unk0x0c, GolVec3* p_unk0x10);
+			LegoBool32 CalculateBoxContact(
+				Field0x10* p_other,
+				LegoFloat* p_penetration,
+				GolVec3* p_normal,
+				GolVec3* p_contactPoint
+			);
 
 			class Field0x0e0 {
 			public:
@@ -36,35 +41,35 @@ public:
 				LegoU32 m_unk0xd08;                // 0xd08
 			};
 
-			GolOrientedEntity* m_unk0x004; // 0x004
-			GolVec3 m_unk0x008;            // 0x008
-			GolVec3 m_unk0x014;            // 0x014
-			GolVec3 m_unk0x020;            // 0x020
-			GolMatrix3 m_unk0x02c;         // 0x02c
-			GolMatrix3 m_unk0x050;         // 0x050
-			GolMatrix3 m_unk0x074;         // 0x074
-			GolVec3 m_unk0x098;            // 0x098
-			GolVec3 m_unk0x0a4;            // 0x0a4
-			GolVec3 m_unk0x0b0;            // 0x0b0
-			GolVec3 m_unk0x0bc;            // 0x0bc
-			LegoFloat m_unk0x0c8;          // 0x0c8
-			LegoFloat m_unk0x0cc;          // 0x0cc
-			LegoFloat m_unk0x0d0;          // 0x0d0
-			LegoFloat m_unk0x0d4;          // 0x0d4
-			LegoFloat m_unk0x0d8;          // 0x0d8
-			LegoFloat m_unk0x0dc;          // 0x0dc
+			GolOrientedEntity* m_entity; // 0x004
+			GolVec3 m_velocity;          // 0x008
+			GolVec3 m_localCenter;       // 0x014
+			GolVec3 m_position;          // 0x020
+			GolMatrix3 m_unk0x02c;       // 0x02c
+			GolMatrix3 m_unk0x050;       // 0x050
+			GolMatrix3 m_unk0x074;       // 0x074
+			GolVec3 m_unk0x098;          // 0x098
+			GolVec3 m_unk0x0a4;          // 0x0a4
+			GolVec3 m_unk0x0b0;          // 0x0b0
+			GolVec3 m_unk0x0bc;          // 0x0bc
+			LegoFloat m_mass;            // 0x0c8
+			LegoFloat m_inverseMass;     // 0x0cc
+			LegoFloat m_boxSizeX;        // 0x0d0
+			LegoFloat m_boxSizeY;        // 0x0d4
+			LegoFloat m_boxSizeZ;        // 0x0d8
+			LegoFloat m_boxScale;        // 0x0dc
 			union {
-				Field0x0e0* m_unk0x0e0; // 0x0e0
-				void* m_owner;          // 0x0e0
+				Field0x0e0* m_ownerData; // 0x0e0
+				void* m_owner;           // 0x0e0
 			};
 
 		private:
-			LegoBool32 FUN_00441790(
+			LegoBool32 TestBoxOverlap(
 				Field0x10* p_other,
-				LegoFloat* p_unk0x08,
-				GolVec3* p_unk0x0c,
-				LegoFloat* p_unk0x10,
-				LegoFloat* p_unk0x14
+				LegoFloat* p_penetration,
+				GolVec3* p_normal,
+				LegoFloat* p_distance0,
+				LegoFloat* p_distance1
 			);
 		};
 

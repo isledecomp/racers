@@ -4,7 +4,8 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "save/savegame.h"
+#include "save/memorycardsavegame.h"
+#include "save/saverecordlist.h"
 
 DECOMP_SIZE_ASSERT(NewRacerScreen, 0x770)
 

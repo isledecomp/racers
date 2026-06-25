@@ -50,7 +50,7 @@ private:
 	undefined4 m_unk0x7c;      // 0x7c
 	undefined4 m_unk0x80;      // 0x80
 	undefined4 m_unk0x84;      // 0x84
-	undefined4 m_unk0x88[3];   // 0x88
+	GolVec3 m_unk0x88;         // 0x88
 	LegoU32 m_unk0x94;         // 0x94
 	LegoU32 m_unk0x98;         // 0x98
 	LegoBool32 m_unk0x9c;      // 0x9c

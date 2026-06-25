@@ -441,10 +441,11 @@ void RaceSession::Field0x258::FUN_00430760()
 	}
 }
 
-// STUB: LEGORACERS 0x00430790
+// FUNCTION: LEGORACERS 0x00430790
 void RaceSession::Field0x258::FUN_00430790()
 {
-	if (m_unk0x004.m_unk0x05c & 1) {
+	LegoU32 flags = m_unk0x004.m_unk0x05c;
+	if (flags & 1) {
 		if (m_unk0x004.m_unk0x064 > 2000) {
 			m_unk0x004.m_unk0x060 = 100;
 			m_unk0x004.m_unk0x064 = 0;
@@ -452,17 +453,15 @@ void RaceSession::Field0x258::FUN_00430790()
 	}
 	else {
 		LegoU32 duration = m_unk0x004.m_unk0x060;
-		LegoU32 flags = m_unk0x004.m_unk0x05c;
 		if (!(0 < duration) || (flags & 3)) {
 			return;
 		}
 
-		RaceState::Racer* racer = m_unk0x000;
 		if (duration >= 60) {
-			racer->m_unk0x008->FUN_0045b1e0(racer, TRUE);
+			m_unk0x000->m_unk0x008->FUN_0045b1e0(m_unk0x000, TRUE);
 		}
 		else {
-			racer->m_unk0x008->FUN_0045b1e0(racer, FALSE);
+			m_unk0x000->m_unk0x008->FUN_0045b1e0(m_unk0x000, FALSE);
 		}
 
 		m_unk0x000->m_unk0x018.FUN_0043df90();

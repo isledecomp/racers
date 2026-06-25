@@ -3,7 +3,7 @@
 
 #include "compat.h"
 #include "decomp.h"
-#include "save/savegame.h"
+#include "save/saverecordlist.h"
 #include "types.h"
 
 class SaveSystem;

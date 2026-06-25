@@ -1335,25 +1335,26 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	firstRacer->m_unk0x3e8.FUN_00429680(&impulse);
 
 	GolVec3 relativeVelocity;
-	relativeVelocity.m_x = firstTarget->m_unk0x008.m_x - secondTarget->m_unk0x008.m_x;
-	relativeVelocity.m_y = firstTarget->m_unk0x008.m_y - secondTarget->m_unk0x008.m_y;
-	relativeVelocity.m_z = firstTarget->m_unk0x008.m_z - secondTarget->m_unk0x008.m_z;
+	relativeVelocity.m_x = firstTarget->m_velocity.m_x - secondTarget->m_velocity.m_x;
+	relativeVelocity.m_y = firstTarget->m_velocity.m_y - secondTarget->m_velocity.m_y;
+	relativeVelocity.m_z = firstTarget->m_velocity.m_z - secondTarget->m_velocity.m_z;
 
 	LegoFloat impulseNumerator = -GOLVECTOR3_DOT(relativeVelocity, collisionNormal) * (g_unk0x004b0970 + 1.0f);
 
 	LegoFloat collisionNormalLengthSquared = GOLVECTOR3_DOT(collisionNormal, collisionNormal);
-	LegoFloat inverseMassTerm = (firstTarget->m_unk0x0cc + secondTarget->m_unk0x0cc) * collisionNormalLengthSquared;
+	LegoFloat inverseMassTerm =
+		(firstTarget->m_inverseMass + secondTarget->m_inverseMass) * collisionNormalLengthSquared;
 
 	GolVec3 firstContactOffset;
-	firstContactOffset.m_x = firstTarget->m_unk0x020.m_x - collision->m_unk0x04.m_x;
-	firstContactOffset.m_y = firstTarget->m_unk0x020.m_y - collision->m_unk0x04.m_y;
-	firstContactOffset.m_z = firstTarget->m_unk0x020.m_z - collision->m_unk0x04.m_z;
+	firstContactOffset.m_x = firstTarget->m_position.m_x - collision->m_unk0x04.m_x;
+	firstContactOffset.m_y = firstTarget->m_position.m_y - collision->m_unk0x04.m_y;
+	firstContactOffset.m_z = firstTarget->m_position.m_z - collision->m_unk0x04.m_z;
 	GolMath::NormalizeVector3(firstContactOffset, &firstContactOffset);
 
 	GolVec3 secondContactOffset;
-	secondContactOffset.m_x = secondTarget->m_unk0x020.m_x - collision->m_unk0x04.m_x;
-	secondContactOffset.m_y = secondTarget->m_unk0x020.m_y - collision->m_unk0x04.m_y;
-	secondContactOffset.m_z = secondTarget->m_unk0x020.m_z - collision->m_unk0x04.m_z;
+	secondContactOffset.m_x = secondTarget->m_position.m_x - collision->m_unk0x04.m_x;
+	secondContactOffset.m_y = secondTarget->m_position.m_y - collision->m_unk0x04.m_y;
+	secondContactOffset.m_z = secondTarget->m_position.m_z - collision->m_unk0x04.m_z;
 	GolMath::NormalizeVector3(secondContactOffset, &secondContactOffset);
 
 	GolVec3 firstAngularAxis;

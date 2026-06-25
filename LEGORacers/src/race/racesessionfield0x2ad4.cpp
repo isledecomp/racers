@@ -128,13 +128,8 @@ void RaceCameraController::FUN_00427d30()
 		forward.m_y = -m_unk0x048.m_orientation.m_rows[1].m_y;
 		right.m_z = m_unk0x048.m_orientation.m_rows[2].m_z;
 		forward.m_z = m_unk0x048.m_orientation.m_rows[1].m_z;
-
-		camera->GetTransform()->VTable0x24(&right, &forward);
-		camera->m_flags |= GolCamera::c_flagBit0;
-		return;
 	}
-
-	if (m_unk0x002 == 2 && m_unk0x004) {
+	else if (m_unk0x002 == 2 && m_unk0x004) {
 		camera->GetTransform()->SetPosition(&m_unk0x048.m_position);
 		camera->m_flags |= GolCamera::c_flagBit0;
 

@@ -336,11 +336,10 @@ MenuWidget* OptionsRow::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 		cursor->m_bounds = m_unk0x6d0;
 
 		Rect rect = *m_unk0x5ec.GetRect();
-		LegoS32 right = rect.m_right;
-		LegoS32 width = right - rect.m_left;
+		LegoS32 width = rect.m_right;
+		width -= rect.m_left;
 		rect.m_left += p_x;
-		right += p_x;
-		rect.m_right = right;
+		rect.m_right += p_x;
 
 		if (rect.m_left < m_unk0x1ac.GetRect()->m_right) {
 			rect.m_left = m_unk0x1ac.GetRect()->m_right;

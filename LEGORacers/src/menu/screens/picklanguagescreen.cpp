@@ -3,7 +3,6 @@
 #include "menu/menugamecontext.h"
 #include "menu/menuscreencreateparams.h"
 #include "menu/menuscreenid.h"
-#include "save/savegame.h"
 
 DECOMP_SIZE_ASSERT(PickLanguageScreen, 0x15ec)
 

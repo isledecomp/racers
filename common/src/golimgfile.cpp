@@ -398,7 +398,7 @@ void GolImgFile::FUN_100207e0(const void* p_src, void* p_dst, const GolSurfaceFo
 		}
 	}
 	else {
-		if (m_paletteSize > 0) {
+		if (m_format.m_unk0x10 > 0) {
 			GOL_FATALERROR_MESSAGE("Intensity formats not supported");
 			return;
 		}

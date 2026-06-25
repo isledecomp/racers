@@ -16,15 +16,12 @@ LegoS32 g_adpcmStepTable[89] = {7,     8,     9,     10,    11,    12,    13,   
 // FUNCTION: LEGORACERS 0x00418100
 void DecodeMonoPcmToMono(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_count, LegoS32* p_state)
 {
-	LegoU8* source = p_source;
-	LegoS16* destination = p_destination;
-	LegoS32* state = p_state;
-	LegoS32 index = state[1];
-	LegoS32 sample = state[0];
+	LegoS32 index = p_state[1];
+	LegoS32 sample = p_state[0];
 	LegoS32 step = g_adpcmStepTable[index];
 
 	do {
-		LegoU32 nibble = *source;
+		LegoU32 nibble = *p_source;
 		LegoS32 delta = 7;
 		nibble >>= 4;
 		delta &= nibble;
@@ -42,7 +39,7 @@ void DecodeMonoPcmToMono(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_cou
 		nibble &= 8;
 		if (!nibble) {
 			sample += delta;
-			nibble = *source;
+			nibble = *p_source;
 			delta = 7;
 			if (sample > 32767) {
 				sample = 32767;
@@ -50,16 +47,16 @@ void DecodeMonoPcmToMono(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_cou
 		}
 		else {
 			sample -= delta;
-			nibble = *source;
+			nibble = *p_source;
 			delta = 7;
 			if (sample < -32768) {
 				sample = -32768;
 			}
 		}
 
-		*destination = sample;
-		source++;
-		destination++;
+		*p_destination = sample;
+		p_source++;
+		p_destination++;
 		delta &= nibble;
 		step = g_adpcmStepTable[index];
 		delta *= step;
@@ -88,26 +85,27 @@ void DecodeMonoPcmToMono(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_cou
 		}
 
 		step = g_adpcmStepTable[index];
-		*destination = sample;
-		p_count--;
-		destination++;
-	} while (p_count);
+		*p_destination = sample;
+		p_destination++;
+	} while (--p_count);
 
-	state[1] = index;
-	state[0] = sample;
+	p_state[1] = index;
+	p_state[0] = sample;
 }
 
 // FUNCTION: LEGORACERS 0x00418200
 void DecodeMonoPcmToStereo(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_count, LegoS32* p_state)
 {
-	LegoS32 sample = p_state[0];
 	LegoS32 index = p_state[1];
+	LegoS32 sample = p_state[0];
 	LegoS32 step = g_adpcmStepTable[index];
 
 	do {
-		LegoU32 value = *p_source;
-		LegoU32 nibble = value >> 4;
-		LegoS32 delta = (nibble & 7) * step;
+		LegoU32 nibble = *p_source;
+		LegoS32 delta = 7;
+		nibble >>= 4;
+		delta &= nibble;
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -118,16 +116,21 @@ void DecodeMonoPcmToStereo(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_c
 		}
 
 		delta >>= 2;
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
+		nibble &= 8;
+		if (!nibble) {
+			sample += delta;
+			nibble = *p_source;
+			delta = 7;
+			if (sample > 32767) {
+				sample = 32767;
 			}
 		}
 		else {
-			sample += delta;
-			if (sample > 32767) {
-				sample = 32767;
+			sample -= delta;
+			nibble = *p_source;
+			delta = 7;
+			if (sample < -32768) {
+				sample = -32768;
 			}
 		}
 
@@ -135,8 +138,9 @@ void DecodeMonoPcmToStereo(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_c
 		p_source++;
 		p_destination[1] = sample;
 		p_destination += 2;
-		nibble = value;
-		delta = (nibble & 7) * g_adpcmStepTable[index];
+		delta &= nibble;
+		step = g_adpcmStepTable[index];
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -147,25 +151,25 @@ void DecodeMonoPcmToStereo(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_c
 		}
 
 		delta >>= 2;
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
-			}
-		}
-		else {
+		nibble &= 8;
+		if (!nibble) {
 			sample += delta;
 			if (sample > 32767) {
 				sample = 32767;
 			}
 		}
+		else {
+			sample -= delta;
+			if (sample < -32768) {
+				sample = -32768;
+			}
+		}
 
 		step = g_adpcmStepTable[index];
 		*p_destination = sample;
-		p_count--;
 		p_destination[1] = sample;
 		p_destination += 2;
-	} while (p_count);
+	} while (--p_count);
 
 	p_state[1] = index;
 	p_state[0] = sample;
@@ -179,9 +183,11 @@ static void DecodeStereoChannel(LegoU8* p_source, LegoS16* p_destination, LegoS3
 	LegoS32 step = g_adpcmStepTable[index];
 
 	do {
-		LegoU32 value = *p_source;
-		LegoU32 nibble = value >> 4;
-		LegoS32 delta = (nibble & 7) * step;
+		LegoU32 nibble = *p_source;
+		LegoS32 delta = 7;
+		nibble >>= 4;
+		delta &= nibble;
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -192,25 +198,28 @@ static void DecodeStereoChannel(LegoU8* p_source, LegoS16* p_destination, LegoS3
 		}
 
 		delta >>= 2;
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
-			}
-		}
-		else {
+		nibble &= 8;
+		if (!nibble) {
 			sample += delta;
 			if (sample > 32767) {
 				sample = 32767;
 			}
 		}
+		else {
+			sample -= delta;
+			if (sample < -32768) {
+				sample = -32768;
+			}
+		}
 
+		step = g_adpcmStepTable[index];
 		*p_destination = sample;
+		nibble = *p_source;
+		delta = 7;
 		p_source += 2;
 		p_destination += 2;
-		step = g_adpcmStepTable[index];
-		nibble = value;
-		delta = (step * (nibble & 7)) >> 2;
+		delta &= nibble;
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -220,24 +229,25 @@ static void DecodeStereoChannel(LegoU8* p_source, LegoS16* p_destination, LegoS3
 			index = 88;
 		}
 
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
-			}
-		}
-		else {
+		delta >>= 2;
+		nibble &= 8;
+		if (!nibble) {
 			sample += delta;
 			if (sample > 32767) {
 				sample = 32767;
 			}
 		}
+		else {
+			sample -= delta;
+			if (sample < -32768) {
+				sample = -32768;
+			}
+		}
 
 		step = g_adpcmStepTable[index];
 		*p_destination = sample;
-		p_count--;
 		p_destination += 2;
-	} while (p_count);
+	} while (--p_count);
 
 	p_state[1] = index;
 	p_state[0] = sample;
@@ -252,16 +262,18 @@ void DecodeStereoPcmToStereo(
 	LegoS32* p_rightState
 )
 {
-	while (p_count > 0x200) {
-		p_count -= 0x200;
+	p_count -= 0x200;
+	while (p_count > 0) {
 		DecodeStereoChannel(p_source, p_destination, 0x100, p_leftState);
 		p_source++;
 		p_destination++;
 		DecodeStereoChannel(p_source, p_destination, 0x100, p_rightState);
 		p_source += 0x1ff;
 		p_destination += 0x3ff;
+		p_count -= 0x200;
 	}
 
+	p_count += 0x200;
 	p_count >>= 1;
 	DecodeStereoChannel(p_source, p_destination, p_count, p_leftState);
 	p_source++;
@@ -272,15 +284,17 @@ void DecodeStereoPcmToStereo(
 // FUNCTION: LEGORACERS 0x004184c0
 void DecodeMonoPcmToStereoInterpolated(LegoChar* p_source, LegoS16* p_destination, LegoS32 p_count, LegoS32* p_state)
 {
-	LegoS32 sample = p_state[0];
 	LegoS32 index = p_state[1];
+	LegoS32 sample = p_state[0];
 	LegoS32 step = g_adpcmStepTable[index];
 
 	do {
 		LegoS32 previous = sample;
-		LegoU32 value = (LegoU8) *p_source;
-		LegoU32 nibble = value >> 4;
-		LegoS32 delta = (nibble & 7) * step;
+		LegoU32 nibble = (LegoU8) *p_source;
+		LegoS32 delta = 7;
+		nibble >>= 4;
+		delta &= nibble;
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -291,26 +305,29 @@ void DecodeMonoPcmToStereoInterpolated(LegoChar* p_source, LegoS16* p_destinatio
 		}
 
 		delta >>= 2;
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
-			}
-		}
-		else {
+		nibble &= 8;
+		if (!nibble) {
 			sample += delta;
 			if (sample > 32767) {
 				sample = 32767;
 			}
 		}
+		else {
+			sample -= delta;
+			if (sample < -32768) {
+				sample = -32768;
+			}
+		}
 
-		*p_destination = (sample + previous) >> 1;
-		p_destination[1] = sample;
-		previous = sample;
-		p_source++;
 		step = g_adpcmStepTable[index];
-		nibble = value;
-		delta = (step * (nibble & 7)) >> 2;
+		p_destination[1] = sample;
+		*p_destination = (sample + previous) >> 1;
+		previous = sample;
+		nibble = (LegoU8) *p_source;
+		delta = 7;
+		p_source++;
+		delta &= nibble;
+		delta *= step;
 		index += g_adpcmIndexAdjust[nibble & 0x0f];
 
 		if (index < 0) {
@@ -320,16 +337,18 @@ void DecodeMonoPcmToStereoInterpolated(LegoChar* p_source, LegoS16* p_destinatio
 			index = 88;
 		}
 
-		if (nibble & 8) {
-			sample -= delta;
-			if (sample < -32768) {
-				sample = -32768;
-			}
-		}
-		else {
+		delta >>= 2;
+		nibble &= 8;
+		if (!nibble) {
 			sample += delta;
 			if (sample > 32767) {
 				sample = 32767;
+			}
+		}
+		else {
+			sample -= delta;
+			if (sample < -32768) {
+				sample = -32768;
 			}
 		}
 
@@ -338,8 +357,7 @@ void DecodeMonoPcmToStereoInterpolated(LegoChar* p_source, LegoS16* p_destinatio
 		p_destination[3] = sample;
 		p_destination[2] = interpolated;
 		p_destination += 4;
-		p_count--;
-	} while (p_count);
+	} while (--p_count);
 
 	p_state[1] = index;
 	p_state[0] = sample;

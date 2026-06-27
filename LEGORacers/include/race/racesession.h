@@ -1376,8 +1376,8 @@ public:
 		void FUN_0041c550(
 			GolD3DRenderDevice* p_renderer,
 			GolExport* p_golExport,
-			const LegoChar* p_unk0x0c,
-			const LegoChar* p_unk0x10,
+			const LegoChar* p_skyName,
+			const LegoChar* p_worldName,
 			LegoBool32 p_binary
 		);
 		void FUN_0041ccb0(LegoU32 p_elapsedMs);

@@ -67,13 +67,18 @@ struct GolList {
 
 	void Swap(GolList& p_list)
 	{
-		p_list.m_first->m_next = (GolListLink*) &m_first;
-		p_list.m_sentinel.m_next->m_prev = (GolListLink*) &m_sentinel;
-		m_first->m_next = (GolListLink*) &p_list.m_first;
-		m_sentinel.m_next->m_prev = (GolListLink*) &p_list.m_sentinel;
-
+		GolListLink* otherFirst = p_list.m_first;
 		GolListLink* first = m_first;
 		GolListLink* firstLink = m_sentinel.m_next;
+		GolListLink* otherFirstLink = p_list.m_sentinel.m_next;
+
+		otherFirst->m_next = (GolListLink*) &m_first;
+		otherFirstLink->m_prev = (GolListLink*) &m_sentinel;
+		first->m_next = (GolListLink*) &p_list.m_first;
+		firstLink->m_prev = (GolListLink*) &p_list.m_sentinel;
+
+		first = m_first;
+		firstLink = m_sentinel.m_next;
 		m_first = p_list.m_first;
 		m_sentinel.m_next = p_list.m_sentinel.m_next;
 		p_list.m_first = first;

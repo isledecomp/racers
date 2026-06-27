@@ -132,7 +132,7 @@ static LegoU8 __fastcall BucketCommandsBySortByte0(
 	return static_cast<LegoU8>(bucketIndex);
 }
 
-// STUB: GOLDP 0x100410c0
+// FUNCTION: GOLDP 0x100410c0
 static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
 {
 	GolSoftwareRenderer::Command0x14* buckets0[256];

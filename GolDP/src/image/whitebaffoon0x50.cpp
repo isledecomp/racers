@@ -372,7 +372,7 @@ void WhiteBaffoon0x50::FUN_1001f790()
 	m_unk0x3c |= 0x281;
 }
 
-// STUB: GOLDP 0x1001fde0
+// FUNCTION: GOLDP 0x1001fde0
 void WhiteBaffoon0x50::FUN_1001fde0()
 {
 	for (LegoU32 row = 0; row < m_unk0x2c; row++) {
@@ -390,7 +390,12 @@ void WhiteBaffoon0x50::FUN_1001fde0()
 				flags |= GoldDune0x38::c_unk0x36Bit7;
 			}
 
-			texture->SetSourceTextureDefinition(0, flags, m_colorKey);
+			texture->m_unk0x36 = flags;
+			texture->m_unk0x34 = 0;
+			texture->m_colorKey = m_colorKey;
+			flags |= GoldDune0x38::c_unk0x36Bit11;
+			texture->m_colorKey.m_alp = 0;
+			texture->m_unk0x36 = flags;
 			VTable0x0c(row, column, &m_unk0x0c);
 		}
 	}

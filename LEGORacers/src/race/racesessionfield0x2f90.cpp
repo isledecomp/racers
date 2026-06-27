@@ -71,8 +71,8 @@ void RaceSession::Field0x2f90::Reset()
 void RaceSession::Field0x2f90::FUN_0041c550(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,
-	const LegoChar* p_worldName,
 	const LegoChar* p_skyName,
+	const LegoChar* p_worldName,
 	LegoBool32 p_binary
 )
 {

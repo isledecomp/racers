@@ -31,7 +31,9 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 	if (m_flags & c_flagBit1) {
 		row2 = &m_unk0x30;
-		LegoFloat dot = row2->m_z * row0.m_z + row0.m_y * row2->m_y + row0.m_x * row2->m_x;
+		LegoFloat dot = row2->m_z * row0.m_z;
+		dot += row0.m_y * row2->m_y;
+		dot += row0.m_x * row2->m_x;
 		row0.m_x -= dot * row2->m_x;
 		row0.m_y -= row2->m_y * dot;
 		row0.m_z -= row2->m_z * dot;

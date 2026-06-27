@@ -840,11 +840,12 @@ void FUN_1003b7c0()
 	STUB(0x1003b7c0);
 }
 
-#ifdef _WIN64
+#ifdef COMPAT_MODE
 
 void FUN_1003b930()
 {
 	STUB(0x1003b930);
+	// no implementation for modern compilers yet
 }
 
 void FUN_1003ba30(
@@ -855,6 +856,7 @@ void FUN_1003ba30(
 )
 {
 	STUB(0x1003ba30);
+	// no implementation for modern compilers yet
 }
 
 #else

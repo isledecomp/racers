@@ -840,6 +840,25 @@ void FUN_1003b7c0()
 	STUB(0x1003b7c0);
 }
 
+#ifdef _WIN64
+
+void FUN_1003b930()
+{
+	STUB(0x1003b930);
+}
+
+void FUN_1003ba30(
+	GolSoftwareRenderer* p_renderer,
+	D3DTLVERTEX* p_vertex0,
+	D3DTLVERTEX* p_vertex1,
+	D3DTLVERTEX* p_vertex2
+)
+{
+	STUB(0x1003ba30);
+}
+
+#else
+
 // FUNCTION: GOLDP 0x1003b930
 __declspec(naked) void FUN_1003b930()
 {
@@ -1797,6 +1816,8 @@ __declspec(naked) void FUN_1003ba30(
 		ret
 	}
 }
+
+#endif
 
 // STUB: GOLDP 0x1003c780
 void FUN_1003c780(

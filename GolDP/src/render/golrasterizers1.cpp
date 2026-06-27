@@ -20,7 +20,7 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 };
 
 // GLOBAL: GOLDP 0x1005799c
-const LegoFloat g_65536 = 65536.0f;
+const LegoFloat g_floatConst65536 = 65536.0f;
 
 /// Temporary, until we figure out how to get the block to fold correctly. See the comments below.
 inline void FoldedBlockTodo(GolSoftwareRenderer* p_renderer)
@@ -1005,7 +1005,7 @@ __declspec(naked) void FUN_1003ba30(
 		mov ebp, ebx
 	jmp03:
 		fld dword ptr [edx + 4]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		cmp esi, edi
 		mov ebx, dword ptr [ecx]
 		jne jmp04
@@ -1021,7 +1021,7 @@ __declspec(naked) void FUN_1003ba30(
 		mov dword ptr [esp + 0x198], edx
 		fistp dword ptr [esp + 0x144]
 		fld dword ptr [eax + 4]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		mov esi, dword ptr [esp + 0x144]
 		mov edi, 0xffff
 		dec esi
@@ -1032,9 +1032,9 @@ __declspec(naked) void FUN_1003ba30(
 		cmp esi, edi
 		jl ret00
 		fld dword ptr [eax]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [ecx + 4]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fxch st(1)
 		fistp dword ptr [esp + 4]
 		mov ebx, dword ptr [esp + 4]
@@ -1063,11 +1063,11 @@ __declspec(naked) void FUN_1003ba30(
 		fld1
 		fdiv dword ptr [esp + 0x128]
 		fst dword ptr [esp + 0x128]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [edx]
 		fsub dword ptr [eax]
 		fld dword ptr [esp + 0x124]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [ecx]
 		fsub dword ptr [eax]
 		fxch st(2)
@@ -1098,14 +1098,14 @@ __declspec(naked) void FUN_1003ba30(
 		mov dword ptr [esp + 0x14c], ebx
 		mov dword ptr [esp + 0x148], edx
 		fld dword ptr [esp + 0x124]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [edx]
 		fsub dword ptr [eax]
 		fmulp st(1), st(0)
 		fistp dword ptr [esp + 0xc]
 	jmp08:
 		fild dword ptr [ebp + 8]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [eax + 0x18]
 		fmul st(0), st(1)
 		fld dword ptr [ecx + 0x18]
@@ -1117,7 +1117,7 @@ __declspec(naked) void FUN_1003ba30(
 		fstp dword ptr [esp + 0x6c]
 		fstp dword ptr [esp + 0xc4]
 		fild dword ptr [ebp + 0xc]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [eax + 0x1c]
 		fmul st(0), st(1)
 		fld dword ptr [ecx + 0x1c]
@@ -1551,11 +1551,11 @@ __declspec(naked) void FUN_1003ba30(
 		mov ecx, dword ptr [esp + 0x194]
 		mov edx, dword ptr [esp + 0x198]
 		fld dword ptr [esp + 0x134]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [edx]
 		fsub dword ptr [ecx]
 		fld dword ptr [ecx]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fxch st(2)
 		fmulp st(1), st(0)
 		fxch st(1)
@@ -1702,14 +1702,14 @@ __declspec(naked) void FUN_1003ba30(
 		mov esi, dword ptr [esp]
 		mov ebx, dword ptr [esp + 0x150]
 		fld dword ptr [ecx]
-		fmul dword ptr g_65536
+		fmul dword ptr g_floatConst65536
 		fld dword ptr [edx + 4]
 		fsub dword ptr [ecx + 4]
 		fld dword ptr [edx]
 		fsub dword ptr [ecx]
 		fxch st(2)
 		fistp dword ptr [esp + 8]
-		fdivr dword ptr g_65536
+		fdivr dword ptr g_floatConst65536
 		mov edx, esi
 		mov ecx, dword ptr [esp + 0x140]
 		sub edx, ecx

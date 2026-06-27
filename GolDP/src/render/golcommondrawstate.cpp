@@ -181,13 +181,13 @@ LegoBool32 GolCommonDrawState::SupportsAdditiveBlend() const
 	return TRUE;
 }
 
-// STUB: GOLDP 0x100016f0 FOLDED
+// FUNCTION: GOLDP 0x100016f0 FOLDED
 undefined4 GolCommonDrawState::VTable0x94()
 {
 	return 0;
 }
 
-// STUB: GOLDP 0x100016f0 FOLDED
+// FUNCTION: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolCommonDrawState::SupportsZBufferlessHsr() const
 {
 	return 0;
@@ -211,7 +211,7 @@ LegoBool32 GolCommonDrawState::SupportsTextureVideoMemory() const
 	return TRUE;
 }
 
-// STUB: GOLDP 0x100016f0 FOLDED
+// FUNCTION: GOLDP 0x100016f0 FOLDED
 LegoBool32 GolCommonDrawState::SupportsRenderingInWindow() const
 {
 	return FALSE;

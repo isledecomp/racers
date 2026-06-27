@@ -63,6 +63,9 @@ extern const LegoFloat g_unk0x004b0484 = 300.0f;
 // GLOBAL: LEGORACERS 0x004b0488
 extern const LegoFloat g_unk0x004b0488 = 0.1f;
 
+// GLOBAL: LEGORACERS 0x004b048c
+extern const LegoFloat g_unk0x004b048c = -0.1f;
+
 // GLOBAL: LEGORACERS 0x004b0490
 extern const LegoFloat g_unk0x004b0490 = 0.3f;
 
@@ -90,14 +93,38 @@ extern const LegoFloat g_unk0x004b04ac = 3.0f;
 // GLOBAL: LEGORACERS 0x004b04b0
 extern const LegoFloat g_unk0x004b04b0 = 15.0f;
 
+// GLOBAL: LEGORACERS 0x004b04b8
+extern const LegoFloat g_unk0x004b04b8 = 0.0020000001f;
+
+// GLOBAL: LEGORACERS 0x004b04bc
+extern const LegoFloat g_unk0x004b04bc = 0.00048828125f;
+
+// GLOBAL: LEGORACERS 0x004b04c0
+extern const LegoFloat g_unk0x004b04c0 = 0.0099999998f;
+
+// GLOBAL: LEGORACERS 0x004b04c4
+extern const LegoFloat g_unk0x004b04c4 = 0.000732421875f;
+
+// GLOBAL: LEGORACERS 0x004b04c8
+extern const LegoFloat g_unk0x004b04c8 = 0.0020000001f;
+
+// GLOBAL: LEGORACERS 0x004b04cc
+extern const LegoFloat g_unk0x004b04cc = 0.001953125f;
+
 // GLOBAL: LEGORACERS 0x004b04d0
 extern const LegoFloat g_unk0x004b04d0 = 50.0f;
+
+// GLOBAL: LEGORACERS 0x004b04d4
+extern const LegoFloat g_unk0x004b04d4 = -100.0f;
 
 // GLOBAL: LEGORACERS 0x004b04d8
 extern const LegoFloat g_unk0x004b04d8 = 340.0f;
 
 // GLOBAL: LEGORACERS 0x004b04dc
 extern const LegoFloat g_unk0x004b04dc = -250.0f;
+
+// GLOBAL: LEGORACERS 0x004b04e0
+extern const LegoFloat g_unk0x004b04e0 = 2000.0f;
 
 // GLOBAL: LEGORACERS 0x004b054c
 extern const LegoFloat g_unk0x004b054c = 0.003f;
@@ -784,19 +811,19 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 	}
 
 	if (m_flags0x6c0 & c_flags0x6c0Bit16) {
-		if (m_unk0x74c.m_unk0x30 < 2000.0f) {
-			m_unk0x7ec = ((2000.0f - m_unk0x74c.m_unk0x30) / 2000.0f) * (g_unk0x004b04a0 - 1.7f) + 1.7f;
+		if (m_unk0x74c.m_unk0x30 < g_unk0x004b04e0) {
+			LegoFloat speedScale = m_unk0x74c.m_unk0x30;
+			speedScale -= g_unk0x004b04e0;
+			speedScale /= g_unk0x004b04e0;
+			speedScale = -speedScale;
+			m_unk0x7ec = speedScale * (g_unk0x004b04a0 - g_unk0x004b0494) + g_unk0x004b0494;
 		}
 	}
 
 	FUN_0042a220();
 
 	LegoU32 elapsedMs = p_elapsedMs;
-	for (;;) {
-		if (elapsedMs == 0) {
-			break;
-		}
-
+	while (elapsedMs != 0) {
 		GolVec3 previousPosition;
 		m_unk0x13c->VTable0x04(&previousPosition);
 
@@ -808,13 +835,13 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			if (currentSpeed < m_unk0x7ec) {
 				LegoFloat rate;
 				if (suspendedMask) {
-					rate = 0.002f;
+					rate = g_unk0x004b04c8;
 				}
 				else if (flags & c_flags0x6c0Bit16) {
-					rate = 0.01f;
+					rate = g_unk0x004b04c0;
 				}
 				else {
-					rate = 0.00048828125f;
+					rate = g_unk0x004b04bc;
 				}
 
 				currentSpeed += rate * elapsed;
@@ -826,10 +853,10 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			else if (currentSpeed > m_unk0x7ec) {
 				LegoFloat rate;
 				if (suspendedMask) {
-					rate = 0.000732421875f;
+					rate = g_unk0x004b04c4;
 				}
 				else {
-					rate = 0.002f;
+					rate = g_unk0x004b04b8;
 				}
 
 				currentSpeed -= rate * elapsed;
@@ -843,14 +870,14 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 		m_unk0x74c.FUN_004a5320(elapsed);
 
 		if (m_unk0x7c4.m_z > 0.0f) {
-			m_unk0x7c4.m_z -= 0.001953125f * elapsed;
+			m_unk0x7c4.m_z -= g_unk0x004b04cc * elapsed;
 			if (m_unk0x7c4.m_z < 0.0f) {
 				m_unk0x7c4.m_z = 0.0f;
 			}
 		}
 		else if (m_unk0x7c4.m_z < 0.0f) {
-			m_unk0x7c4.m_z += 0.001953125f * elapsed;
-			if (m_unk0x7c4.m_z >= 0.0f) {
+			m_unk0x7c4.m_z += g_unk0x004b04cc * elapsed;
+			if (m_unk0x7c4.m_z > 0.0f) {
 				m_unk0x7c4.m_z = 0.0f;
 			}
 		}
@@ -861,7 +888,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 
 		if (m_unk0x7c4.m_w != 0.0f || m_unk0x7c4.m_y != 0.0f) {
 			LegoFloat time = elapsed * 0.001f;
-			m_unk0x7c4.m_w += -100.0f * time;
+			m_unk0x7c4.m_w += g_unk0x004b04d4 * time;
 			m_unk0x7c4.m_y += time * m_unk0x7c4.m_w;
 			if (m_unk0x7c4.m_y <= 0.0f) {
 				m_unk0x7c4.m_y = 0.0f;
@@ -877,16 +904,17 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 		m_unk0x13c->VTable0x04(&currentPosition);
 
 		LegoFloat invElapsed = 1.0f / elapsed;
-		m_unk0x008.m_x = (currentPosition.m_x - previousPosition.m_x) * invElapsed;
-		m_unk0x008.m_y = (currentPosition.m_y - previousPosition.m_y) * invElapsed;
-		m_unk0x008.m_z = (currentPosition.m_z - previousPosition.m_z) * invElapsed;
+		m_unk0x008.m_x = currentPosition.m_x - previousPosition.m_x;
+		m_unk0x008.m_y = currentPosition.m_y - previousPosition.m_y;
+		m_unk0x008.m_z = currentPosition.m_z - previousPosition.m_z;
+		m_unk0x008 *= invElapsed;
 
 		FUN_00447330();
-		m_unk0x0e4.CopyOrientationFrom(*m_unk0x13c);
-		m_unk0x0e4.CopyPositionFrom(*m_unk0x13c);
+		m_unk0x0e4.CopyTransformFrom(*m_unk0x13c);
 
 		if (m_unk0x3ec != 0) {
-			m_unk0x74c.m_unk0x2c = -0.1f;
+			LegoFloat speed = g_unk0x004b048c;
+			m_unk0x74c.m_unk0x2c = speed;
 			FUN_00447880();
 			FUN_0042a220();
 			elapsedMs = m_unk0x3f0;
@@ -1023,23 +1051,32 @@ void RaceState::Racer::Field0x3e8::FUN_0042a290(LegoU32 p_elapsedMs)
 	m_unk0x13c->VTable0x40(rotatedRight, forward);
 }
 
-// STUB: LEGORACERS 0x0042a570
+// FUNCTION: LEGORACERS 0x0042a570
 void RaceState::Racer::Field0x3e8::FUN_0042a570()
 {
 	GolVec3 position = m_unk0x74c.m_unk0x00;
-	GolVec3 side = m_unk0x13c->GetOrientation().m_rows[1];
+	GolOrientedEntity* entity = m_unk0x13c;
+	const GolMatrix3& orientation = entity->GetOrientation();
+	GolVec3 side;
+	side.m_x = orientation.m_m[1][0];
+	side.m_y = orientation.m_m[1][1];
+	side.m_z = orientation.m_m[1][2];
 	LegoFloat sideOffset = m_unk0x7c4.m_z;
 
 	position.m_z = position.m_z - m_unk0x7c4.m_x + m_unk0x7e4 + m_unk0x7c4.m_y + m_unk0x658;
-	position += side * sideOffset;
-	m_unk0x13c->VTable0x08(position);
+	GolVec3 scaledSide;
+	scaledSide.m_x = side.m_x * sideOffset;
+	scaledSide.m_y = side.m_y * sideOffset;
+	scaledSide.m_z = side.m_z * sideOffset;
+	position.m_x += scaledSide.m_x;
+	position.m_y += scaledSide.m_y;
+	position.m_z += scaledSide.m_z;
+	entity->VTable0x08(position);
 
 	m_unk0x36c = m_unk0x74c.m_unk0x1c;
-	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);
-	const GolVec3& right = m_unk0x13c->GetOrientation().m_rows[0];
-	m_unk0x168.m_x = right.m_x;
-	m_unk0x168.m_y = right.m_y;
-	m_unk0x168.m_z = right.m_z;
+	entity = m_unk0x13c;
+	entity->VTable0x2c(m_unk0x014, &m_unk0x020);
+	m_unk0x13c->GetOrientationRow0(&m_unk0x168);
 	FUN_00440a60();
 }
 
@@ -2261,7 +2298,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445500()
 
 	LegoFloat baseForce = -m_unk0x160;
 	baseForce *= m_unk0x15c;
-	LegoU32 flags0x6c0 = m_flags0x6c0;
+	LegoU8 flags0x6c0 = static_cast<LegoU8>(m_flags0x6c0);
 	m_unk0x650 = 0.0f;
 	m_unk0x164 = baseForce;
 
@@ -2425,7 +2462,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445500()
 					}
 				}
 				else {
-					if (m_unk0x618 < 0.03f && m_unk0x618 >= 0.00050000002f) {
+					if (m_unk0x618 < 0.03f && m_unk0x618 > 0.00050000002f) {
 						scale = 0.03f / m_unk0x64c;
 					}
 					else {
@@ -2820,7 +2857,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004464a0(LegoS32 p_elapsedMs)
 {
 	if (m_unk0x658 < m_unk0x65c) {
 		LegoFloat delta = m_unk0x660;
-		delta *= static_cast<LegoFloat>(p_elapsedMs);
+		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+		delta *= elapsed;
 		delta *= 0.001f;
 		m_unk0x658 += delta;
 		if (m_unk0x658 > m_unk0x65c) {
@@ -2829,7 +2867,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004464a0(LegoS32 p_elapsedMs)
 	}
 	else if (m_unk0x658 > m_unk0x65c) {
 		LegoFloat delta = m_unk0x660;
-		delta *= static_cast<LegoFloat>(p_elapsedMs);
+		LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
+		delta *= elapsed;
 		delta *= 0.001f;
 		m_unk0x658 -= delta;
 		if (m_unk0x658 < m_unk0x65c) {
@@ -3227,7 +3266,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00446fd0(LegoU32 p_elapsedMs)
 					LegoS32 tableIndex = static_cast<LegoS32>((dot + 1.0f) * -511.5f);
 					LegoFloat angle = *(g_arcCosineTable - tableIndex);
 					LegoFloat step = m_unk0x650;
-					step *= static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+					LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
+					step *= elapsed;
 					if (step > 0.0f) {
 						angle += step;
 					}

@@ -68,6 +68,23 @@ public:
 		m_orientation.m_m[2][1] = p_other.m_orientation.m_m[2][1];
 		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
 	}
+	void CopyTransformFrom(const GolOrientedEntity& p_other)
+	{
+		m_orientation.m_m[0][0] = p_other.m_orientation.m_m[0][0];
+		const GolVec3& position = p_other.m_position;
+		m_orientation.m_m[0][1] = p_other.m_orientation.m_m[0][1];
+		m_orientation.m_m[0][2] = p_other.m_orientation.m_m[0][2];
+		m_orientation.m_m[1][0] = p_other.m_orientation.m_m[1][0];
+		m_orientation.m_m[1][1] = p_other.m_orientation.m_m[1][1];
+		m_orientation.m_m[1][2] = p_other.m_orientation.m_m[1][2];
+		m_orientation.m_m[2][0] = p_other.m_orientation.m_m[2][0];
+		m_orientation.m_m[2][1] = p_other.m_orientation.m_m[2][1];
+		m_orientation.m_m[2][2] = p_other.m_orientation.m_m[2][2];
+		m_position.m_x = position.m_x;
+		m_position.m_y = position.m_y;
+		m_position.m_z = position.m_z;
+		m_radius = -1.0f;
+	}
 	void FUN_0043ebd0(const GolOrientedEntity& p_other);
 	void CopyOrientationTo(GolMatrix3* p_orientation) const
 	{

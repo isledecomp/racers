@@ -1139,12 +1139,12 @@ void RacePowerupManager::FUN_00459b80()
 	params.m_unk0x04 = m_unk0x06c;
 	params.m_unk0x08 = m_unk0x05c->FindUnk0xb4("Explsn");
 	params.m_unk0x0c = NULL;
+	params.m_unk0x20 = NULL;
 	params.m_unk0x10 = m_renderer->FindMaterialByName("exflash");
 	params.m_unk0x14 = m_renderer->FindMaterialByName("exscar");
 	params.m_unk0x18 = m_raceState->GetEventQueue();
 	params.m_unk0x1c = this;
-	params.m_unk0x20 = NULL;
-	params.m_unk0x28 = 0;
+	params.m_unk0x28 = NULL;
 	params.m_unk0x2c = 1000;
 	params.m_unk0x30 = 5000;
 	params.m_unk0x34 = 1.0f;
@@ -1157,19 +1157,19 @@ void RacePowerupManager::FUN_00459b80()
 	if (m_unk0x194c - 1 > 0) {
 		do {
 			m_unk0x1950[index].SetNext(&m_unk0x1950[index + 1]);
-			params.m_unk0x28 = 0;
+			params.m_unk0x24 = 0;
 			m_unk0x1950[index].FUN_00421250(&params);
 			index++;
 		} while (index < m_unk0x194c - 1);
 	}
 
 	m_unk0x1950[m_unk0x194c - 1].SetNext(NULL);
-	params.m_unk0x28 = 0;
+	params.m_unk0x24 = 0;
 	m_unk0x1950[m_unk0x194c - 1].FUN_00421250(&params);
 	m_unk0x1944 = m_unk0x1950;
 	m_unk0x193c = NULL;
 
-	params.m_unk0x28 = 0;
+	params.m_unk0x28 = NULL;
 	params.m_unk0x40 = 10.0f;
 	params.m_unk0x44 = 2;
 	params.m_unk0x08 = m_unk0x05c->FindUnk0xb4("spikexp");
@@ -1181,14 +1181,14 @@ void RacePowerupManager::FUN_00459b80()
 	if (m_unk0x194d - 1 > 0) {
 		do {
 			m_unk0x1954[index].SetNext(&m_unk0x1954[index + 1]);
-			params.m_unk0x28 = 0;
+			params.m_unk0x24 = 0;
 			m_unk0x1954[index].FUN_00421250(&params);
 			index++;
 		} while (index < m_unk0x194d - 1);
 	}
 
 	m_unk0x1954[m_unk0x194d - 1].SetNext(NULL);
-	params.m_unk0x28 = 0;
+	params.m_unk0x24 = 0;
 	m_unk0x1954[m_unk0x194d - 1].FUN_00421250(&params);
 	m_unk0x1940 = NULL;
 	m_unk0x1948 = m_unk0x1954;
@@ -1969,7 +1969,7 @@ void RacePowerupManager::FUN_0045adf0(RaceState::Racer* p_racer, LegoU32 p_unk0x
 }
 
 // FUNCTION: LEGORACERS 0x0045aeb0
-LegoU32 RacePowerupManager::FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
 {
 	GolAnimatedEntity* model0;
 	GolAnimatedEntity* model1;
@@ -2008,9 +2008,7 @@ LegoU32 RacePowerupManager::FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_un
 	}
 
 	action->FUN_00452550(p_racer, model0, model1, model2, m_unk0x1998);
-	const LegoU32 curseSubtype = 3;
-	action->m_state = curseSubtype;
-	return curseSubtype;
+	action->m_state = p_unk0x08;
 }
 
 // FUNCTION: LEGORACERS 0x0045af80

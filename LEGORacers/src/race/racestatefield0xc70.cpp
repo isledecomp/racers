@@ -8,6 +8,9 @@ extern LegoFloat g_carBuildPreviewMouseScale;
 extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_violetShoalTwo;
 
+// GLOBAL: LEGORACERS 0x004b0058
+extern const LegoFloat g_unk0x004b0058 = 4096.0f;
+
 // GLOBAL: LEGORACERS 0x004b005c
 extern const LegoFloat g_unk0x004b005c = 0.025f;
 
@@ -29,8 +32,23 @@ extern const LegoFloat g_unk0x004b0070 = 0.2f;
 // GLOBAL: LEGORACERS 0x004b0074
 extern const LegoFloat g_unk0x004b0074 = 1.0f;
 
+// GLOBAL: LEGORACERS 0x004b0078
+extern const LegoFloat g_unk0x004b0078 = 0.00050000002f;
+
 // GLOBAL: LEGORACERS 0x004b007c
 extern const LegoFloat g_unk0x004b007c = 0.050000001f;
+
+// GLOBAL: LEGORACERS 0x004b0088
+extern const LegoFloat g_unk0x004b0088 = 3.0f;
+
+// GLOBAL: LEGORACERS 0x004b008c
+extern const LegoFloat g_unk0x004b008c = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b0090
+extern const LegoFloat g_unk0x004b0090 = 80.0f;
+
+// GLOBAL: LEGORACERS 0x004b0094
+extern const LegoFloat g_unk0x004b0094 = 18.0f;
 
 // GLOBAL: LEGORACERS 0x004c4810
 LegoFloat g_unk0x004c4810 = g_unk0x004b0064 * 8.0f;
@@ -427,9 +445,9 @@ void RaceState::Racer::Field0xc70::FUN_00420380()
 void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 {
 	GolVec3 delta;
-	GolVec3 referenceDirection;
 	GolVec3 pathDirection;
-	GolVec3 normalizedDelta;
+	GolVec3 referenceDirection;
+	GolVec3 activePathDirection;
 	GolVec3 targetPosition;
 	GolMatrix34 basis;
 
@@ -441,7 +459,7 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 	LegoFloat distance =
 		static_cast<LegoFloat>(sqrt(delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 
-	if (distance < 3.0f) {
+	if (distance < g_unk0x004b0088) {
 		m_unk0x000->FUN_0042a730(m_unk0x004);
 		m_unk0x000->FUN_0042b0c0();
 		m_unk0x000->m_unk0x74c.FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
@@ -452,63 +470,68 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 	m_unk0x008 = m_unk0x00c;
 	FUN_0041fdb0(p_elapsedMs);
 
-	if (m_unk0x000->m_unk0x36c < 3) {
+	if (m_unk0x000->m_unk0x36c >= 3) {
+		m_unk0x000->m_unk0x13c->GetOrientationRow0(&referenceDirection);
+	}
+	else {
 		referenceDirection = m_unk0x000->m_unk0x168;
 	}
-	else {
-		referenceDirection = m_unk0x000->m_unk0x13c->GetOrientation().m_rows[0];
-	}
 
-	pathDirection = m_unk0x000->m_unk0x13c->GetOrientation().m_rows[1];
+	m_unk0x000->m_unk0x13c->GetUnk0x34(&pathDirection);
 	LegoBool32 positiveDirection;
-	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x < 0.0f) {
-		pathDirection.m_x = -pathDirection.m_x;
-		pathDirection.m_y = -pathDirection.m_y;
-		pathDirection.m_z = -pathDirection.m_z;
-		positiveDirection = FALSE;
+	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x >= 0.0f) {
+		activePathDirection = pathDirection;
+		positiveDirection = TRUE;
 	}
 	else {
-		positiveDirection = TRUE;
+		activePathDirection.m_x = -pathDirection.m_x;
+		activePathDirection.m_y = -pathDirection.m_y;
+		activePathDirection.m_z = -pathDirection.m_z;
+		positiveDirection = FALSE;
 	}
 
 	LegoFloat inverseDistance = 1.0f / distance;
-	normalizedDelta.m_x = inverseDistance * delta.m_x;
-	normalizedDelta.m_y = inverseDistance * delta.m_y;
-	normalizedDelta.m_z = inverseDistance * delta.m_z;
+	delta.m_x = inverseDistance * delta.m_x;
+	delta.m_y = inverseDistance * delta.m_y;
+	delta.m_z = inverseDistance * delta.m_z;
 
-	LegoFloat closingSpeed = pathDirection.m_z * normalizedDelta.m_z + pathDirection.m_y * normalizedDelta.m_y +
-							 pathDirection.m_x * normalizedDelta.m_x;
-	if (closingSpeed >= 0.00050000002f) {
-		m_unk0x00c = distance / (closingSpeed + closingSpeed);
+	LegoFloat closingSpeed =
+		delta.m_z * activePathDirection.m_z + delta.m_y * activePathDirection.m_y + delta.m_x * activePathDirection.m_x;
+	if (closingSpeed < g_unk0x004b0078) {
+		m_unk0x00c = g_unk0x004b0058;
 	}
 	else {
-		m_unk0x00c = 4096.0f;
+		m_unk0x00c = distance / (closingSpeed + closingSpeed);
 	}
 
 	if (!positiveDirection) {
 		m_unk0x00c = -m_unk0x00c;
 	}
 
-	m_unk0x010 = 18.0f;
-	if (m_unk0x014 & c_flags0x014Bit5) {
+	LegoU8 flags0x014 = static_cast<LegoU8>(m_unk0x014);
+	if (flags0x014 & c_flags0x014Bit5) {
+		m_unk0x010 = g_unk0x004b0094;
 		m_unk0x00c = -m_unk0x00c;
-		m_unk0x010 = -54.0f;
+		m_unk0x010 = -g_unk0x004b0064;
+	}
+	else {
+		m_unk0x010 = g_unk0x004b0094;
 	}
 
 	LegoBool32 updatePath = FALSE;
-	if (distance < 30.0f) {
+	if (distance < g_unk0x004b008c) {
 		updatePath = TRUE;
 	}
 	else {
 		GolMath::FUN_00449340(&m_unk0x040, &basis.m_m[0][0]);
-		if (referenceDirection.m_z * basis.m_m[0][2] + referenceDirection.m_y * basis.m_m[0][1] +
-				referenceDirection.m_x * basis.m_m[0][0] <
+		if (basis.m_m[0][0] * referenceDirection.m_x + basis.m_m[0][1] * referenceDirection.m_y +
+				basis.m_m[0][2] * referenceDirection.m_z <
 			0.5f) {
 			updatePath = TRUE;
 		}
 	}
 
-	if (updatePath && distance <= 80.0f) {
+	if (updatePath && distance <= g_unk0x004b0090) {
 		m_unk0x024 += 250;
 		m_unk0x050->FUN_004a5220(m_unk0x004);
 		m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));

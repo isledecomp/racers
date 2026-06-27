@@ -6,6 +6,7 @@
 class GolRenderDevice;
 class GolImgFile;
 class GolTextureList;
+class WhiteBaffoon0x50;
 
 // VTABLE: GOLDP 0x1005766c
 // VTABLE: LEGORACERS 0x004af928
@@ -76,6 +77,7 @@ public:
 
 protected:
 	friend class GolTextureList;
+	friend class WhiteBaffoon0x50;
 
 	ColorRGBA m_colorKey; // 0x30
 	undefined2 m_unk0x34; // 0x34

@@ -301,7 +301,7 @@ LegoU32 GolDirectDrawPalette::GetPaletteSize()
 	return m_entryCount;
 }
 
-// STUB: GOLDP 0x100077f0
+// FUNCTION: GOLDP 0x100077f0
 void GolDirectDrawPalette::Set332PaletteEntries()
 {
 	LegoChar buffer[c_errorBufferSize];
@@ -310,17 +310,18 @@ void GolDirectDrawPalette::Set332PaletteEntries()
 		LegoU32 red = 0;
 		LegoU8* redEntries = &g_paletteEntries[0].peGreen;
 		do {
-			LegoU32 green = 0;
 			LegoU8 redValue = red;
 			redValue <<= 3;
 			redValue |= red;
 			redValue <<= 2;
 			redValue |= red >> 1;
+			LegoU32 green = 0;
 
 			LegoU8* greenEntries = redEntries;
 			redEntries += c_332RedStride;
 			do {
 				LegoU8 greenValue = green;
+				LegoU32 blue = 0;
 				greenValue <<= 3;
 				greenValue |= green;
 				greenValue <<= 2;
@@ -328,7 +329,6 @@ void GolDirectDrawPalette::Set332PaletteEntries()
 
 				LegoU8* entry = greenEntries;
 				greenEntries += c_332GreenStride;
-				LegoU32 blue = 0;
 				do {
 					entry[-1] = redValue;
 					LegoU8 blueValue = blue;

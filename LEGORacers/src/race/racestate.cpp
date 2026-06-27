@@ -218,6 +218,9 @@ extern const LegoFloat g_unk0x004b0b44 = -0.2f;
 // GLOBAL: LEGORACERS 0x004b0b4c
 extern const LegoFloat g_unk0x004b0b4c = 191.0f;
 
+// GLOBAL: LEGORACERS 0x004b0b50
+extern const LegoFloat g_racerBillboardScale = 1.15f;
+
 extern const LegoFloat g_twoPi;
 extern const LegoFloat g_unk0x004b4bc8;
 
@@ -1438,24 +1441,25 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 			secondRacer->m_unk0xd48 = 750;
 		}
 	}
-	else if (
-		firstRacer->m_unk0x3e8.m_unk0x604 > secondRacer->m_unk0x3e8.m_unk0x604 && !firstRacer->m_unk0xd4c &&
-		!secondRacer->m_unk0xd4c
-	) {
-		SoundVector soundPosition;
-		soundPosition.m_x = firstRacer->m_unk0x3e8.m_unk0x008.m_x;
-		soundPosition.m_y = firstRacer->m_unk0x3e8.m_unk0x008.m_y;
-		soundPosition.m_z = firstRacer->m_unk0x3e8.m_unk0x008.m_z;
-		GolMath::NormalizeVector3(soundPosition, &soundPosition);
+	else if (firstRacer->m_unk0x3e8.m_unk0x604 > secondRacer->m_unk0x3e8.m_unk0x604) {
+		SoundVector* contactPosition = reinterpret_cast<SoundVector*>(&collision->m_unk0x04);
 
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		LegoU32 soundId = (g_unk0x004befec[g_unk0x004c6ee4] & 1) ? 0x37 : 0x18;
-		m_unk0x004->FUN_00443b80(soundId, &soundPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+		if (!firstRacer->m_unk0xd4c && !secondRacer->m_unk0xd4c) {
+			SoundVector soundDirection;
+			soundDirection.m_x = firstRacer->m_unk0x3e8.m_unk0x008.m_x;
+			soundDirection.m_y = firstRacer->m_unk0x3e8.m_unk0x008.m_y;
+			soundDirection.m_z = firstRacer->m_unk0x3e8.m_unk0x008.m_z;
+			GolMath::NormalizeVector3(soundDirection, &soundDirection);
 
-		firstRacer->m_unk0xd4c = 250;
-		secondRacer->m_unk0xd4c = 250;
+			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+			LegoU32 soundId = (g_unk0x004befec[g_unk0x004c6ee4] & 1) ? 0x37 : 0x18;
+			m_unk0x004->FUN_00443b80(soundId, contactPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
 
-		m_unk0x018.m_unk0x27c->FUN_00489d70("carsprk", &soundPosition, NULL, NULL);
+			firstRacer->m_unk0xd4c = 250;
+			secondRacer->m_unk0xd4c = 250;
+		}
+
+		m_unk0x018.m_unk0x27c->FUN_00489d70("carsprk", &collision->m_unk0x04, NULL, NULL);
 
 		if (firstRacer->m_unk0xd04 & c_flags0xd04Bit0) {
 			secondRacer->FUN_00439240(FALSE);
@@ -1463,6 +1467,9 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		else {
 			firstRacer->FUN_00439240(FALSE);
 		}
+	}
+	else {
+		firstRacer->FUN_00439240(FALSE);
 	}
 
 	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit0) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
@@ -1807,30 +1814,29 @@ RaceState::Racer::Field0xd5c* RaceState::Racer::FUN_00439490()
 	Field0xd5c* result;
 	LegoU32 index;
 
-	if (m_unk0xd58) {
-		index = 0;
-		Field0xd5c** current = m_unk0xd5c;
-		while (index < sizeOfArray(m_unk0xd5c) && !*current) {
-			index++;
-			current++;
-		}
-
-		if (index >= sizeOfArray(m_unk0xd5c)) {
-			return NULL;
-		}
-	}
-	else {
+	if (!m_unk0xd58) {
 		return NULL;
 	}
 
-	result = m_unk0xd5c[index];
-	m_unk0xd5c[index] = NULL;
+	index = 0;
+	Field0xd5c** current = m_unk0xd5c;
+	while (index < sizeOfArray(m_unk0xd5c)) {
+		if (*current) {
+			result = m_unk0xd5c[index];
+			m_unk0xd5c[index] = NULL;
 
-	GolVec3 position;
-	m_unk0x018.m_unk0x044->VTable0x04(&position);
-	m_unk0xd58--;
-	result->FUN_00453790(position);
-	return result;
+			GolVec3 position;
+			m_unk0x018.m_unk0x044->VTable0x04(&position);
+			m_unk0xd58--;
+			result->FUN_00453790(position);
+			return result;
+		}
+
+		index++;
+		current++;
+	}
+
+	return NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00439520
@@ -4870,9 +4876,9 @@ void RaceState::Racer::Field0x018::FUN_0043ff20(GolD3DRenderDevice* p_renderer)
 	g_racerBillboardRenderState0x33c.FUN_004098a0(&color);
 
 	LegoFloat unk0x0c = m_unk0x198;
-	unk0x0c *= 1.15f;
+	unk0x0c *= g_racerBillboardScale;
 	LegoFloat unk0x08 = m_unk0x19c;
-	unk0x08 *= 1.15f;
+	unk0x08 *= g_racerBillboardScale;
 	g_racerBillboardRenderState0x33c.FUN_004098f0(origin, unk0x08, unk0x0c, g_unk0x004bef68 | g_unk0x004bef6c);
 	g_racerBillboardRenderState0x33c.FUN_00409970(m_unk0x044, 0);
 	g_racerBillboardRenderState0x33c.FUN_00409970(m_unk0x03c, 0);

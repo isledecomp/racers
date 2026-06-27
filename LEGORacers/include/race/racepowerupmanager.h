@@ -1369,7 +1369,7 @@ private:
 	void FUN_0045ace0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	LegoU32 FUN_0045ad30(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	void FUN_0045adf0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-	LegoU32 FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
+	void FUN_0045aeb0(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	void FUN_0045af80(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	Field0x1880* FUN_0045b2e0(
 		LegoU32 p_unk0x04,

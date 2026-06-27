@@ -914,7 +914,7 @@ void GolFontBase::DrawString(
 }
 
 // FUNCTION: GOLDP 0x1001eb70
- void GolFontBase::DrawString(
+void GolFontBase::DrawString(
 	GolString* p_string,
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,

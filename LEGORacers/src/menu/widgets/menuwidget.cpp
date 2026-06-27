@@ -312,7 +312,8 @@ void MenuWidget::DrawString(
 			&m_color,
 			p_unk0x18
 		);
-	} else {
+	}
+	else {
 		LegoS32 y = p_source->m_top;
 		LegoS32 x = p_source->m_left;
 		m_renderer->VTable0x6c(

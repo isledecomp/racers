@@ -41,10 +41,10 @@ extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
 extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004b02fc
-const LegoFloat g_unk0x004b02fc = 0.0020000001f;
+const LegoFloat g_unk0x004b02fc = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b0400
-const LegoFloat g_unk0x004b0400 = 0.0020000001f;
+const LegoFloat g_unk0x004b0400 = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b1370
 const LegoFloat g_unk0x004b1370 = 5.0f;
@@ -104,7 +104,7 @@ const LegoFloat g_unk0x004b143c = 200.0f;
 
 const LegoFloat g_unk0x004b1440 = 600.0f;
 
-const LegoFloat g_unk0x004b1444 = 0.0120000001f;
+const LegoFloat g_unk0x004b1444 = 0.012f;
 
 const LegoFloat g_unk0x004b146c = 5.17852306f;
 
@@ -123,7 +123,7 @@ const LegoFloat g_unk0x004b1484 = 3.0f;
 const LegoFloat g_unk0x004b14a8 = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b14ac
-const LegoFloat g_unk0x004b14ac = 0.80000001f;
+const LegoFloat g_unk0x004b14ac = 0.8f;
 
 // GLOBAL: LEGORACERS 0x004b170c
 const LegoFloat g_unk0x004b170c = 30.0f;
@@ -153,7 +153,7 @@ const LegoFloat g_unk0x004b150c = 5.0f;
 const LegoFloat g_unk0x004b1510 = 144.0f;
 
 // GLOBAL: LEGORACERS 0x004b1514
-const LegoFloat g_unk0x004b1514 = 0.60000002f;
+const LegoFloat g_unk0x004b1514 = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1544
 const LegoFloat g_unk0x004b1544 = 3.0f;
@@ -168,7 +168,7 @@ const LegoFloat g_unk0x004b154c = 300.0f;
 const LegoFloat g_unk0x004b1550 = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b1558
-const LegoFloat g_unk0x004b1558 = 0.85000002f;
+const LegoFloat g_unk0x004b1558 = 0.85f;
 
 // GLOBAL: LEGORACERS 0x004b155c
 const LegoFloat g_unk0x004b155c = 9.0f;
@@ -1204,7 +1204,7 @@ void RacePowerupManager::Field0x1898::VTable0x08(LegoU32 p_elapsedMs)
 		}
 	}
 
-	m_unk0x178 += static_cast<LegoFloat>(p_elapsedMs) * 0.0120000001f;
+	m_unk0x178 += static_cast<LegoFloat>(p_elapsedMs) * 0.012f;
 
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_unk0x178 * g_negativeRadiansToTableIndex)) & 0x3ff;
 	GolVec3 up;
@@ -2829,7 +2829,7 @@ void RacePowerupManager::Field0x1890::VTable0x08(LegoU32 p_elapsedMs)
 		m_unk0x3c->FUN_00410b00(direction, up);
 
 		if (m_unk0x78 != NULL) {
-			if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.0020000001f) {
+			if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
 				m_flags0x80 |= c_flags0x80Bit0;
 
 				if (!(m_unk0x78->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
@@ -2851,7 +2851,7 @@ void RacePowerupManager::Field0x1890::VTable0x08(LegoU32 p_elapsedMs)
 
 				m_unk0x78->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
 
-				if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.0020000001f) {
+				if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
 					direction.m_y = racerPosition.m_y - modelPosition.m_y;
 					direction.m_z = racerPosition.m_z - modelPosition.m_z;

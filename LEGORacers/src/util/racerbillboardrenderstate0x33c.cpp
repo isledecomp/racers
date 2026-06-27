@@ -11,25 +11,25 @@ DECOMP_SIZE_ASSERT(RacerBillboardRenderState0x33c::Field0x038, 0x0c)
 DECOMP_SIZE_ASSERT(RacerBillboardRenderState0x33c, 0x33c)
 
 // GLOBAL: LEGORACERS 0x004af55c
-extern LegoU32 g_unk0x004af55c[3] = {1, 2, 0};
+LegoU32 g_unk0x004af55c[3] = {1, 2, 0};
 
 // GLOBAL: LEGORACERS 0x004af568
-extern LegoU32 g_unk0x004af568[3] = {2, 0, 1};
+LegoU32 g_unk0x004af568[3] = {2, 0, 1};
 
 // GLOBAL: LEGORACERS 0x004be22c
-extern LegoU32 g_unk0x004be22c = 1;
+LegoU32 g_unk0x004be22c = 1;
 
 // GLOBAL: LEGORACERS 0x004be230
-extern LegoU32 g_unk0x004be230 = 2;
+LegoU32 g_unk0x004be230 = 2;
 
 // GLOBAL: LEGORACERS 0x004be234
-extern const GolMatrix3 g_unk0x004be234 = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
+const GolMatrix3 g_unk0x004be234 = {1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 1.0f};
 
 // GLOBAL: LEGORACERS 0x004bef68
-extern LegoU32 g_unk0x004bef68 = 1;
+LegoU32 g_unk0x004bef68 = 1;
 
 // GLOBAL: LEGORACERS 0x004bef6c
-extern LegoU32 g_unk0x004bef6c = 2;
+LegoU32 g_unk0x004bef6c = 2;
 
 // GLOBAL: LEGORACERS 0x004c67f8
 RacerBillboardRenderState0x33c g_racerBillboardRenderState0x33c;

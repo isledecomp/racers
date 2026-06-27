@@ -150,7 +150,7 @@ void SlateBridge0x68::FUN_00427440()
 			static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x54) * 0.002f * g_twoPi * g_negativeRadiansToTableIndex);
 		index &= c_cosineTableMask;
 		selectedAlpha =
-			c_selectedPulseAlphaCenter - static_cast<LegoS32>(g_cosineTable[index] * c_selectedPulseAlphaAmplitude);
+			c_selectedPulseAlphaCenter - static_cast<LegoS32>(g_cosineTable[index] * (int)c_selectedPulseAlphaAmplitude);
 	}
 
 	m_font->SetColor(c_promptColor);

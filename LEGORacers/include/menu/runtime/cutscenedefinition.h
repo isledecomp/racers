@@ -132,7 +132,7 @@ public:
 
 			LegoU32 Reset();
 			LegoU32 FUN_00404a10(CutsceneDefinition* p_parent, GolFileParser* p_parser);
-			LegoU32 FUN_00404c90();
+			void FUN_00404c90();
 			void FUN_00404e80();
 			GolWorldEntity* GetEntity() const { return m_unk0x24; }
 			void SetEntity(GolWorldEntity* p_entity) { m_unk0x24 = p_entity; }

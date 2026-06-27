@@ -51,8 +51,8 @@ public:
 	LegoBool32 IsSeparatorColumn(LegoU32* p_rowSignature, LegoU8* p_pixels, LegoU32 p_pitch, LegoBool32 p_highNibble);
 	LegoU32 PackGlyphTextures(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat);
 	void CopyGlyphsToTextures();
-	LegoS32 DrawString(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
-	LegoS32 DrawStringFitted(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	void DrawString(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
+	void DrawStringFitted(GolString*, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoS32 DrawGlyphRun(LegoU32, GolRenderDevice*, LegoS32, LegoS32, LegoFloat, LegoFloat, Rect*, undefined4);
 	LegoBool32 ComputeClipRect(GolRenderDevice*, Rect*, Rect*);
 	void ClipRects(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
@@ -68,7 +68,7 @@ public:
 		LegoS32* p_width,
 		LegoS32* p_height
 	);
-	undefined2 FUN_00408fe0(
+	void FUN_00408fe0(
 		GolString* p_string,
 		GolRenderDevice* p_renderer,
 		LegoS32 p_x,

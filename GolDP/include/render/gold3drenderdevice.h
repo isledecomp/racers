@@ -78,7 +78,7 @@ public:
 	void VTable0x58(SlatePeak0x58*, undefined4) override;                    // vtable+0x58
 	void VTable0x5c() override;                                              // vtable+0x5c
 	void VTable0x60() override;                                              // vtable+0x60
-	LegoS32 VTable0x64(
+	void VTable0x64(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -98,7 +98,7 @@ public:
 		Rect*,
 		undefined4
 	) override; // vtable+0x68
-	LegoS32 VTable0x6c(
+	void VTable0x6c(
 		GolString*,
 		GolFontBase*,
 		LegoS32,

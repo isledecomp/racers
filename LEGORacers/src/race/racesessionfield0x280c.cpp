@@ -17,7 +17,7 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x280c, 0x30)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x280c::LsbTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004bed40
-extern const LegoChar* g_loadScreenName = "loadscrn";
+const LegoChar* g_loadScreenName = "loadscrn";
 
 // FUNCTION: LEGORACERS 0x0042f3b0
 RaceSession::Field0x280c::Field0x280c()

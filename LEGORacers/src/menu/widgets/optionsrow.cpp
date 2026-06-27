@@ -9,7 +9,7 @@ DECOMP_SIZE_ASSERT(OptionsRow, 0x6ec)
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
 undefined4 OptionsRowBase::VTable0x3c(undefined4)
 {
-	return NULL;
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046de60

@@ -44,10 +44,10 @@ extern const LegoFloat g_unk0x004b02d8 = 0.0020833334f;
 extern const LegoFloat g_unk0x004b02e0;
 
 // GLOBAL: LEGORACERS 0x004be8a8
-extern const LegoChar* g_unk0x004be8a8 = "font_ths";
+const LegoChar* g_unk0x004be8a8 = "font_ths";
 
 // GLOBAL: LEGORACERS 0x004be8ac
-extern const LegoChar* g_unk0x004be8ac = "ignum";
+const LegoChar* g_unk0x004be8ac = "ignum";
 
 static const LegoChar* g_unk0x004b0270[8] = {"1", "2", "3", "4", "5", "6", "7", "8"};
 static const LegoS16 g_unk0x004b0290[8] = {0x19, 0x1a, 0x1b, 0x1c, 0x1d, 0x1e, 0x1f, 0x20};

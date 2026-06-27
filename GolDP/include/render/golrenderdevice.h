@@ -115,7 +115,7 @@ public:
 	virtual void VTable0x58(SlatePeak0x58* p_param1, undefined4 p_param2);  // vtable+0x58
 	virtual void VTable0x5c() = 0;                                          // vtable+0x5c
 	virtual void VTable0x60();                                              // vtable+0x60
-	virtual LegoS32 VTable0x64(
+	virtual void VTable0x64(
 		GolString*,
 		GolFontBase*,
 		LegoS32,
@@ -135,7 +135,7 @@ public:
 		Rect*,
 		undefined4
 	) = 0; // vtable+0x68
-	virtual LegoS32 VTable0x6c(
+	virtual void VTable0x6c(
 		GolString*,
 		GolFontBase*,
 		LegoS32,

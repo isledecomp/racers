@@ -19,6 +19,9 @@ GolSoftwareRenderer::SpanRasterizerCallback g_spanRasterizers[84] = {
 	FUN_10036b00, FUN_10038080, FUN_10039600, FUN_1003ab80,
 };
 
+// GLOBAL: GOLDP 0x1005799c
+const LegoFloat g_floatConst65536 = 65536.0f;
+
 /// Temporary, until we figure out how to get the block to fold correctly. See the comments below.
 inline void FoldedBlockTodo(GolSoftwareRenderer* p_renderer)
 {
@@ -837,13 +840,14 @@ void FUN_1003b7c0()
 	STUB(0x1003b7c0);
 }
 
-// STUB: GOLDP 0x1003b930
+#ifdef COMPAT_MODE
+
 void FUN_1003b930()
 {
 	STUB(0x1003b930);
+	// no implementation for modern compilers yet
 }
 
-// STUB: GOLDP 0x1003ba30
 void FUN_1003ba30(
 	GolSoftwareRenderer* p_renderer,
 	D3DTLVERTEX* p_vertex0,
@@ -852,7 +856,970 @@ void FUN_1003ba30(
 )
 {
 	STUB(0x1003ba30);
+	// no implementation for modern compilers yet
 }
+
+#else
+
+// FUNCTION: GOLDP 0x1003b930
+__declspec(naked) void FUN_1003b930()
+{
+	/*
+	This function does not really fit any known calling convention; see also the invocation sites in `FUN_1003ba30`.
+	It gets passed arguments in ebx, ecx, and edx, the stack cleanup is (technically) done by the caller.
+	Both this and the calling function share a sizable fraction of the present stack (at least 320 bytes),
+	but the stack looks more like shared memory than a proper function call.
+	We are still investigating more niche calling conventions like `watcall`, but it may be possible
+	that this was actually hand-written assembly with a custom calling convention.
+	*/
+
+	__asm {
+		lea edi, [ebx + edx*2]
+		mov ebp, dword ptr [esp + 0x70]
+		mov esi, dword ptr [esp + 0x13c]
+		mov ebx, edi
+		mov edx, dword ptr [esp + 0x74]
+		and ebx, 2
+		mov eax, ebp
+		mov ebx, 0x70000
+		je jmp00
+		shr eax, 0xf
+		and ebx, edx
+		shr ebx, 0xc
+		and eax, 0xe
+		or ebx, eax
+		mov eax, dword ptr [esp + 0xc8]
+		add ebp, eax
+		mov eax, dword ptr [esp + 0xcc]
+		mov bx, word ptr [esi + ebx]
+		add edx, eax
+		mov word ptr [edi], bx
+		add edi, 2
+		dec ecx
+		mov eax, ebp
+		mov ebx, 0x70000
+		js ret00
+	jmp00:
+		dec ecx
+		js jmp01
+	jmp02:
+		shr eax, 0xf
+		and ebx, edx
+		shr ebx, 0xc
+		and eax, 0xe
+		add esi, eax
+		mov eax, dword ptr [esp + 0xc8]
+		add esi, ebx
+		mov ebx, dword ptr [esp + 0xcc]
+		add ebp, eax
+		add edx, ebx
+		mov eax, ebp
+		mov ebx, 0x70000
+		shr eax, 0xf
+		and ebx, edx
+		shr ebx, 0xc
+		and eax, 0xe
+		or ebx, eax
+		mov eax, dword ptr [esp + 0x13c]
+		add ebx, eax
+		mov eax, dword ptr [esp + 0xc8]
+		add ebp, eax
+		mov eax, dword ptr [esp + 0xcc]
+		mov bx, word ptr [ebx]
+		add edx, eax
+		shl ebx, 0x10
+		sub ecx, 2
+		mov bx, word ptr [esi]
+		mov eax, ebp
+		mov dword ptr [edi], ebx
+		lea edi, [edi + 4]
+		mov esi, dword ptr [esp + 0x13c]
+		mov ebx, 0x70000
+		jns jmp02
+		inc ecx
+		jne ret00
+	jmp01:
+		shr eax, 0xf
+		and ebx, edx
+		shr ebx, 0xc
+		and eax, 0xe
+		or ebx, eax
+		mov bx, word ptr [esi + ebx]
+		mov word ptr [edi], bx
+	ret00:
+		ret
+	}
+}
+
+// FUNCTION: GOLDP 0x1003ba30
+__declspec(naked) void FUN_1003ba30(
+	GolSoftwareRenderer* p_renderer,
+	D3DTLVERTEX* p_vertex0,
+	D3DTLVERTEX* p_vertex1,
+	D3DTLVERTEX* p_vertex2
+)
+{
+	// We are fairly certain that this was not compiled with MSVC. It is not clear if this code was written
+	// using inline assembly or using a different C compiler. See also FUN_1003b930.
+	__asm {
+		mov eax, dword ptr [esp + 8]
+		mov ecx, dword ptr [esp + 0xc]
+		mov edx, dword ptr [esp + 0x10]
+		push esi
+		push edi
+		push ebx
+		push ebp
+		mov esi, dword ptr [eax + 4]
+		mov edi, dword ptr [ecx + 4]
+		sub esp, 0x178
+		cmp esi, edi
+		mov ebp, dword ptr [edx + 4]
+		jle jmp00
+		mov ebx, eax
+		mov eax, ecx
+		mov ecx, ebx
+		mov ebx, esi
+		mov esi, edi
+		mov edi, ebx
+	jmp00:
+		cmp esi, ebp
+		jle jmp01
+		mov ebx, eax
+		mov eax, edx
+		mov edx, ebx
+		mov ebx, esi
+		mov esi, ebp
+		mov ebp, ebx
+	jmp01:
+		cmp edi, ebp
+		jg jmp02
+		mov ebx, dword ptr [ecx]
+		jne jmp03
+		cmp ebx, dword ptr [edx]
+		je ret00
+		jg jmp03
+	jmp02:
+		mov ebx, ecx
+		mov ecx, edx
+		mov edx, ebx
+		mov ebx, edi
+		mov edi, ebp
+		mov ebp, ebx
+	jmp03:
+		fld dword ptr [edx + 4]
+		fmul dword ptr g_floatConst65536
+		cmp esi, edi
+		mov ebx, dword ptr [ecx]
+		jne jmp04
+		cmp ebx, dword ptr [eax]
+		jg jmp04
+		mov ebx, eax
+		je ret02
+		mov eax, ecx
+		mov ecx, ebx
+	jmp04:
+		mov dword ptr [esp + 0x190], eax
+		mov dword ptr [esp + 0x194], ecx
+		mov dword ptr [esp + 0x198], edx
+		fistp dword ptr [esp + 0x144]
+		fld dword ptr [eax + 4]
+		fmul dword ptr g_floatConst65536
+		mov esi, dword ptr [esp + 0x144]
+		mov edi, 0xffff
+		dec esi
+		fistp dword ptr [esp]
+		add edi, dword ptr [esp]
+		and esi, 0xffff0000
+		and edi, 0xffff0000
+		cmp esi, edi
+		jl ret00
+		fld dword ptr [eax]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [ecx + 4]
+		fmul dword ptr g_floatConst65536
+		fxch st(1)
+		fistp dword ptr [esp + 4]
+		mov ebx, dword ptr [esp + 4]
+		mov dword ptr [esp + 8], ebx
+		fistp dword ptr [esp + 0x140]
+		fld dword ptr [edx + 4]
+		fsub dword ptr [eax + 4]
+		fld dword ptr [ecx + 4]
+		fsub dword ptr [eax + 4]
+		fxch
+		fld1
+		fdivrp st(1), st(0)
+		mov ebp, dword ptr [esp + 0x18c]
+		mov dword ptr [esp + 0x110], ebp
+		mov ebp, dword ptr [ebp + 0x34]
+		or ebp, ebp
+		je ret01
+		fst dword ptr [esp + 0x124]
+		fmul st(0), st(1)
+		fxch
+		fstp dword ptr [esp + 0x128]
+		mov ebx, dword ptr [esp + 0x128]
+		fstp dword ptr [esp + 0x12c]
+		or ebx, ebx
+		je jmp05
+		fld1
+		fdiv dword ptr [esp + 0x128]
+		fst dword ptr [esp + 0x128]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [edx]
+		fsub dword ptr [eax]
+		fld dword ptr [esp + 0x124]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [ecx]
+		fsub dword ptr [eax]
+		fxch st(2)
+		fmulp st(1), st(0)
+		fxch st(2)
+		fmulp st(1), st(0)
+		fxch st(1)
+		fistp dword ptr [esp + 0xc]
+		fst dword ptr [esp + 0x134]
+		mov esi, dword ptr [esp + 0xc]
+		mov ebx, dword ptr [esp + 0x134]
+		fistp dword ptr [esp + 0x10]
+		mov edi, dword ptr [esp + 0x10]
+		xor ebx, edi
+		jns jmp06
+		dec edi
+	jmp06:
+		xor ebx, ebx
+		cmp esi, edi
+		jle jmp07
+		inc ebx
+		mov dword ptr [esp + 0xc], edi
+		mov dword ptr [esp + 0x10], esi
+	jmp07:
+		mov dword ptr [esp + 0x14c], ebx
+		jmp jmp08
+	jmp05:
+		mov dword ptr [esp + 0x14c], ebx
+		mov dword ptr [esp + 0x148], edx
+		fld dword ptr [esp + 0x124]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [edx]
+		fsub dword ptr [eax]
+		fmulp st(1), st(0)
+		fistp dword ptr [esp + 0xc]
+	jmp08:
+		fild dword ptr [ebp + 8]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [eax + 0x18]
+		fmul st(0), st(1)
+		fld dword ptr [ecx + 0x18]
+		fmul st(0), st(2)
+		fxch st(2)
+		fmul dword ptr [edx + 0x18]
+		fxch st(2)
+		fstp dword ptr [esp + 0x98]
+		fstp dword ptr [esp + 0x6c]
+		fstp dword ptr [esp + 0xc4]
+		fild dword ptr [ebp + 0xc]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [eax + 0x1c]
+		fmul st(0), st(1)
+		fld dword ptr [ecx + 0x1c]
+		fmul st(0), st(2)
+		fxch st(2)
+		fmul dword ptr [edx + 0x1c]
+		fxch st(2)
+		fstp dword ptr [esp + 0x9c]
+		fstp dword ptr [esp + 0x70]
+		fstp dword ptr [esp + 0xc8]
+		mov esi, dword ptr [eax + 0x10]
+		mov ebx, 0xff
+		and ebx, esi
+		mov edi, 0xff00
+		shl ebx, 0x10
+		and edi, esi
+		shl edi, 8
+		mov ebp, 0xff000000
+		and ebp, esi
+		and esi, 0xff0000
+		shr ebp, 8
+		mov dword ptr [esp + 0x74], ebx
+		mov dword ptr [esp + 0x80], ebp
+		mov dword ptr [esp + 0x78], edi
+		mov dword ptr [esp + 0x7c], esi
+		mov esi, dword ptr [ecx + 0x10]
+		mov ebx, 0xff
+		and ebx, esi
+		mov edi, 0xff00
+		shl ebx, 0x10
+		and edi, esi
+		shl edi, 8
+		mov ebp, 0xff000000
+		and ebp, esi
+		and esi, 0xff0000
+		shr ebp, 8
+		mov dword ptr [esp + 0xa0], ebx
+		mov dword ptr [esp + 0xac], ebp
+		mov dword ptr [esp + 0xa4], edi
+		mov dword ptr [esp + 0xa8], esi
+		mov esi, dword ptr [edx + 0x10]
+		mov ebx, 0xff
+		and ebx, esi
+		mov edi, 0xff00
+		shl ebx, 0x10
+		and edi, esi
+		shl edi, 8
+		mov ebp, 0xff000000
+		and ebp, esi
+		and esi, 0xff0000
+		shr ebp, 8
+		mov dword ptr [esp + 0xcc], ebx
+		mov dword ptr [esp + 0xd8], ebp
+		mov dword ptr [esp + 0xd0], edi
+		mov dword ptr [esp + 0xd4], esi
+		fld dword ptr [edx]
+		fsub dword ptr [eax]
+		fld dword ptr [eax]
+		fsub dword ptr [ecx]
+		fxch st(1)
+		fmul dword ptr [esp + 0x12c]
+		mov ebx, dword ptr [esp + 0x14c]
+		faddp st(1), st(0)
+		fld1
+		fdivrp st(1), st(0)
+		or ebx, ebx
+		fstp dword ptr [esp + 0x130]
+		je jmp09
+		fld dword ptr [edx + 4]
+		fsub dword ptr [ecx + 4]
+		fld1
+		fdivrp st(1), st(0)
+		fstp dword ptr [esp + 0x134]
+		fld dword ptr [esp + 0xc4]
+		fsub dword ptr [esp + 0x98]
+		fld dword ptr [esp + 0xc8]
+		fsub dword ptr [esp + 0x9c]
+		fxch st(1)
+		fmul dword ptr [esp + 0x134]
+		fld dword ptr [esp + 0x98]
+		fsub dword ptr [esp + 0x6c]
+		fxch st(2)
+		fmul dword ptr [esp + 0x134]
+		fld dword ptr [esp + 0x9c]
+		fsub dword ptr [esp + 0x70]
+		fxch st(3)
+		fmul dword ptr [esp + 0x128]
+		fld dword ptr [esp + 0x128]
+		fmulp st(4), st(0)
+		fistp dword ptr [esp + 0x14]
+		fistp dword ptr [esp + 0x44]
+		fistp dword ptr [esp + 0x40]
+		fistp dword ptr [esp + 0x18]
+		mov ebx, dword ptr [esp + 0xcc]
+		mov ecx, dword ptr [esp + 0xa0]
+		mov edx, dword ptr [esp + 0x74]
+		sub ebx, ecx
+		sub ecx, edx
+		mov dword ptr [esp + 0x138], ebx
+		fild dword ptr [esp + 0x138]
+		mov dword ptr [esp + 0x13c], ecx
+		mov ebx, dword ptr [esp + 0xd0]
+		mov ecx, dword ptr [esp + 0xa4]
+		mov edx, dword ptr [esp + 0x78]
+		fmul dword ptr [esp + 0x134]
+		fild dword ptr [esp + 0x13c]
+		sub ebx, ecx
+		sub ecx, edx
+		mov dword ptr [esp + 0x138], ebx
+		mov dword ptr [esp + 0x13c], ecx
+		fmul dword ptr [esp + 0x128]
+		fild dword ptr [esp + 0x138]
+		mov ebx, dword ptr [esp + 0xd4]
+		mov ecx, dword ptr [esp + 0xa8]
+		mov edx, dword ptr [esp + 0x7c]
+		fmul dword ptr [esp + 0x134]
+		fild dword ptr [esp + 0x13c]
+		sub ebx, ecx
+		sub ecx, edx
+		mov dword ptr [esp + 0x138], ebx
+		mov dword ptr [esp + 0x13c], ecx
+		fmul dword ptr [esp + 0x128]
+		fild dword ptr [esp + 0x138]
+		fmul dword ptr [esp + 0x134]
+		fild dword ptr [esp + 0x13c]
+		fmul dword ptr [esp + 0x128]
+		fxch st(5)
+		fistp dword ptr [esp + 0x48]
+		fistp dword ptr [esp + 0x50]
+		fistp dword ptr [esp + 0x20]
+		fistp dword ptr [esp + 0x4c]
+		fistp dword ptr [esp + 0x1c]
+		fistp dword ptr [esp + 0x24]
+		mov ebx, dword ptr [esp + 0xd8]
+		mov ecx, dword ptr [esp + 0xac]
+		mov edx, dword ptr [esp + 0x80]
+		sub ebx, ecx
+		sub ecx, edx
+		mov dword ptr [esp + 0x138], ebx
+		fild dword ptr [esp + 0x138]
+		mov dword ptr [esp + 0x13c], ecx
+		fmul dword ptr [esp + 0x134]
+		fild dword ptr [esp + 0x13c]
+		fmul dword ptr [esp + 0x128]
+		fxch st(1)
+		fistp dword ptr [esp + 0x54]
+		fistp dword ptr [esp + 0x28]
+		jmp jmp10
+	jmp09:
+		fld dword ptr [esp + 0xc4]
+		fsub dword ptr [esp + 0x6c]
+		fld dword ptr [esp + 0xc8]
+		fsub dword ptr [esp + 0x70]
+		fxch st(1)
+		fmul dword ptr [esp + 0x124]
+		fld dword ptr [esp + 0x124]
+		fmulp st(2), st(0)
+		fistp dword ptr [esp + 0x14]
+		fistp dword ptr [esp + 0x18]
+		mov ebx, dword ptr [esp + 0xcc]
+		mov ecx, dword ptr [esp + 0x74]
+		sub ebx, ecx
+		mov edx, dword ptr [esp + 0xd0]
+		mov dword ptr [esp + 0x138], ebx
+		mov esi, dword ptr [esp + 0x78]
+		fild dword ptr [esp + 0x138]
+		sub edx, esi
+		mov ebx, dword ptr [esp + 0xd4]
+		mov dword ptr [esp + 0x138], edx
+		mov ecx, dword ptr [esp + 0x7c]
+		fmul dword ptr [esp + 0x124]
+		fild dword ptr [esp + 0x138]
+		sub ebx, ecx
+		mov dword ptr [esp + 0x138], ebx
+		fmul dword ptr [esp + 0x124]
+		fild dword ptr [esp + 0x138]
+		fmul dword ptr [esp + 0x124]
+		fxch st(2)
+		fistp dword ptr [esp + 0x1c]
+		mov ebx, dword ptr [esp + 0xd8]
+		mov ecx, dword ptr [esp + 0x80]
+		fistp dword ptr [esp + 0x20]
+		sub ebx, ecx
+		fistp dword ptr [esp + 0x24]
+		mov dword ptr [esp + 0x138], ebx
+		fild dword ptr [esp + 0x138]
+		fmul dword ptr [esp + 0x124]
+		fistp dword ptr [esp + 0x28]
+	jmp10:
+		fld dword ptr [esp + 0xc4]
+		fsub dword ptr [esp + 0x6c]
+		fld dword ptr [esp + 0x6c]
+		fist dword ptr [esp + 0x6c]
+		fld dword ptr [esp + 0x98]
+		fist dword ptr [esp + 0x98]
+		fsubp st(1), st(0)
+		fld dword ptr [esp + 0xc8]
+		fsub dword ptr [esp + 0x70]
+		fld dword ptr [esp + 0x70]
+		fist dword ptr [esp + 0x70]
+		fld dword ptr [esp + 0x9c]
+		fist dword ptr [esp + 0x9c]
+		fsubp st(1), st(0)
+		fxch st(3)
+		fmul dword ptr [esp + 0x12c]
+		fld dword ptr [esp + 0x12c]
+		fmulp st(2), st(0)
+		faddp st(2), st(0)
+		faddp st(2), st(0)
+		fmul dword ptr [esp + 0x130]
+		fld dword ptr [esp + 0x130]
+		fmulp st(2), st(0)
+		fistp dword ptr [esp + 0xc4]
+		fistp dword ptr [esp + 0xc8]
+		mov ecx, dword ptr [esp + 0xc4]
+		shl ecx, 0x10
+		mov eax, dword ptr [esp + 0xc4]
+		sar eax, 0x10
+		mov dword ptr [esp + 0xfc], ecx
+		mov dword ptr [esp + 0xf8], eax
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ecx, dword ptr [esp + 0xc8]
+		mov ebp, dword ptr [ebp + 0x34]
+		shl ecx, 0x10
+		mov eax, dword ptr [esp + 0xc8]
+		sar eax, 0x10
+		mov ebx, dword ptr [ebp + 4]
+		mov edx, dword ptr [ebp]
+		mov dword ptr [esp + 0x104], ecx
+		mov dword ptr [esp + 0x138], edx
+		mov ecx, dword ptr [ebp + 0x14]
+		mov dword ptr [esp + 0x100], eax
+		mov dword ptr [esp + 0x11c], ebx
+		mov dword ptr [esp + 0x118], edx
+		mov dword ptr [esp + 0x120], ecx
+		fild dword ptr [esp + 0x74]
+		fild dword ptr [esp + 0xcc]
+		fild dword ptr [esp + 0xa0]
+		fild dword ptr [esp + 0xd0]
+		fild dword ptr [esp + 0x78]
+		fild dword ptr [esp + 0xa4]
+		fxch st(5)
+		fsub st(4), st(0)
+		fsubrp st(3), st(0)
+		fsub st(1), st(0)
+		fsubrp st(4), st(0)
+		fxch st(2)
+		fmul dword ptr [esp + 0x12c]
+		fild dword ptr [esp + 0xd4]
+		fild dword ptr [esp + 0xa8]
+		fild dword ptr [esp + 0x7c]
+		fld dword ptr [esp + 0x12c]
+		fmulp st(6), st(0)
+		fsubr st(1), st(0)
+		fsubp st(2), st(0)
+		fxch st(5)
+		faddp st(4), st(0)
+		fmul dword ptr [esp + 0x12c]
+		fxch st(1)
+		faddp st(2), st(0)
+		fxch st(2)
+		fmul dword ptr [esp + 0x130]
+		fxch st(3)
+		faddp st(2), st(0)
+		fmul dword ptr [esp + 0x130]
+		fxch st(1)
+		fmul dword ptr [esp + 0x130]
+		fxch st(2)
+		fistp dword ptr [esp + 0xd0]
+		fistp dword ptr [esp + 0xcc]
+		fistp dword ptr [esp + 0xd4]
+		fild dword ptr [esp + 0x80]
+		fild dword ptr [esp + 0xd8]
+		fsub st(0), st(1)
+		fmul dword ptr [esp + 0x12c]
+		faddp st(1), st(0)
+		fild dword ptr [esp + 0xac]
+		fsubp st(1), st(0)
+		fmul dword ptr [esp + 0x130]
+		fistp dword ptr [esp + 0xd8]
+		mov ebx, dword ptr [esp]
+		mov ecx, 0x10000
+		mov edx, ebx
+		and ebx, 0xffff
+		mov ebp, 0x3000
+		je jmp11
+		mov esi, dword ptr [esp + 0xc]
+		mov edi, dword ptr [esp + 4]
+		add edx, ecx
+		sub ecx, ebx
+		shl ecx, 0xf
+		sub edx, ebx
+		mov dword ptr [esp], edx
+		lea eax, [esi*2]
+		mov esi, dword ptr [esp + 0x10]
+		imul ecx
+		add edi, edx
+		lea eax, [esi*2]
+		mov dword ptr [esp + 4], edi
+		mov edi, dword ptr [esp + 8]
+		imul ecx
+		add edi, edx
+		mov dword ptr [esp + 8], edi
+		mov eax, dword ptr [esp + 0x14]
+		mov edi, dword ptr [esp + 0x6c]
+		add eax, eax
+		imul ecx
+		add edi, edx
+		mov dword ptr [esp + 0x6c], edi
+		mov eax, dword ptr [esp + 0x18]
+		mov edi, dword ptr [esp + 0x70]
+		add eax, eax
+		imul ecx
+		add edi, edx
+		mov dword ptr [esp + 0x70], edi
+		mov eax, dword ptr [esp + 0x1c]
+		mov edi, dword ptr [esp + 0x74]
+		add eax, eax
+		mov esi, dword ptr [esp + 0x20]
+		imul ecx
+		add edi, edx
+		lea eax, [esi*2]
+		mov dword ptr [esp + 0x74], edi
+		mov esi, dword ptr [esp + 0x24]
+		mov edi, dword ptr [esp + 0x78]
+		imul ecx
+		add edi, edx
+		lea eax, [esi*2]
+		mov dword ptr [esp + 0x78], edi
+		mov esi, dword ptr [esp + 0x28]
+		mov edi, dword ptr [esp + 0x7c]
+		imul ecx
+		add edi, edx
+		lea eax, [esi*2]
+		mov dword ptr [esp + 0x7c], edi
+		mov edi, dword ptr [esp + 0x80]
+		imul ecx
+		add edi, edx
+		mov dword ptr [esp + 0x80], edi
+		jmp jmp12
+	jmp11:
+		mov ebx, dword ptr [esp + 0x74]
+		mov ecx, dword ptr [esp + 0x7c]
+		mov esi, dword ptr [esp + 0x78]
+		mov edi, dword ptr [esp + 0x80]
+		add ebx, ebp
+		add ecx, ebp
+		mov dword ptr [esp + 0x74], ebx
+		mov dword ptr [esp + 0x7c], ecx
+		add esi, ebp
+		add edi, ebp
+		mov dword ptr [esp + 0x78], esi
+		mov dword ptr [esp + 0x80], edi
+	jmp12:
+		mov eax, dword ptr [esp]
+		mov ebp, dword ptr [esp + 0x18c]
+		sar eax, 0x10
+		mov esi, dword ptr [esp]
+		mov ebx, dword ptr [ebp]
+		mov ecx, dword ptr [ebp + 4]
+		imul ecx
+		mov edi, dword ptr [ebp + 0x30]
+		add ebx, eax
+		mov dword ptr [esp + 0x154], edi
+	jmp15:
+		mov edx, dword ptr [esp + 4]
+		mov eax, dword ptr [esp + 0x140]
+		add edx, 0xffff
+		cmp esi, eax
+		mov ecx, dword ptr [esp + 8]
+		jge jmp13
+		sar edx, 0x10
+		dec ecx
+		sar ecx, 0x10
+		mov ebp, dword ptr [ebp + 0x28]
+		sub ecx, edx
+		mov dword ptr [esp + 0x150], ebx
+		jl jmp14
+		; See the explanation in FUN_1003b930
+		call ebp
+	jmp14:
+		mov esi, dword ptr [esp + 0x6c]
+		mov edi, dword ptr [esp + 0x70]
+		mov eax, dword ptr [esp + 0x14]
+		mov ebx, dword ptr [esp + 0x18]
+		add esi, eax
+		add edi, ebx
+		mov dword ptr [esp + 0x6c], esi
+		mov dword ptr [esp + 0x70], edi
+		mov esi, dword ptr [esp + 0x74]
+		mov edi, dword ptr [esp + 0x78]
+		mov ebp, dword ptr [esp + 0x7c]
+		mov eax, dword ptr [esp + 0x1c]
+		mov ebx, dword ptr [esp + 0x20]
+		mov ecx, dword ptr [esp + 0x24]
+		add esi, eax
+		add edi, ebx
+		add ebp, ecx
+		mov dword ptr [esp + 0x74], esi
+		mov edx, dword ptr [esp + 0x80]
+		mov ebx, dword ptr [esp + 0x28]
+		mov dword ptr [esp + 0x78], edi
+		add edx, ebx
+		mov dword ptr [esp + 0x7c], ebp
+		mov dword ptr [esp + 0x80], edx
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ebx, dword ptr [esp + 0x150]
+		mov esi, dword ptr [esp + 4]
+		mov edi, dword ptr [esp + 8]
+		mov ecx, dword ptr [esp + 0xc]
+		mov edx, dword ptr [esp + 0x10]
+		mov eax, dword ptr [ebp + 4]
+		add esi, ecx
+		add edi, edx
+		mov dword ptr [esp + 4], esi
+		mov dword ptr [esp + 8], edi
+		mov esi, dword ptr [esp]
+		add ebx, eax
+		add esi, 0x10000
+		mov dword ptr [esp + 0x150], ebx
+		mov dword ptr [esp], esi
+		jmp jmp15
+	jmp13:
+		mov dword ptr [esp + 0x150], ebx
+		mov ecx, dword ptr [esp + 0x144]
+		mov ebx, dword ptr [esp + 0x14c]
+		cmp esi, ecx
+		jge ret00
+		or ebx, ebx
+		je jmp16
+		mov ecx, dword ptr [esp + 0x194]
+		mov edx, dword ptr [esp + 0x198]
+		fld dword ptr [esp + 0x134]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [edx]
+		fsub dword ptr [ecx]
+		fld dword ptr [ecx]
+		fmul dword ptr g_floatConst65536
+		fxch st(2)
+		fmulp st(1), st(0)
+		fxch st(1)
+		fistp dword ptr [esp + 4]
+		mov ecx, dword ptr [esp]
+		mov edx, dword ptr [esp + 0x140]
+		sub ecx, edx
+		fistp dword ptr [esp + 0xc]
+		mov ebp, 0x3000
+		je jmp17
+		mov eax, dword ptr [esp + 0xc]
+		mov ebx, dword ptr [esp + 4]
+		shl ecx, 0xf
+		add eax, eax
+		imul ecx
+		add ebx, edx
+		mov dword ptr [esp + 4], ebx
+		mov eax, dword ptr [esp + 0x40]
+		mov ebx, dword ptr [esp + 0x98]
+		add eax, eax
+		imul ecx
+		add edx, ebx
+		mov dword ptr [esp + 0x6c], edx
+		mov eax, dword ptr [esp + 0x44]
+		mov ebx, dword ptr [esp + 0x9c]
+		add eax, eax
+		imul ecx
+		add edx, ebx
+		mov dword ptr [esp + 0x70], edx
+		mov esi, dword ptr [esp + 0x48]
+		mov ebx, dword ptr [esp + 0xa0]
+		mov edi, dword ptr [esp + 0x4c]
+		add ebx, ebp
+		lea eax, [esi*2]
+		imul ecx
+		add edx, ebx
+		mov ebx, dword ptr [esp + 0xa4]
+		lea eax, [edi*2]
+		mov dword ptr [esp + 0x74], edx
+		add ebx, ebp
+		mov edi, dword ptr [esp + 0x50]
+		imul ecx
+		add edx, ebx
+		mov ebx, dword ptr [esp + 0xa8]
+		lea eax, [edi*2]
+		mov dword ptr [esp + 0x78], edx
+		add ebx, ebp
+		mov edi, dword ptr [esp + 0x54]
+		imul ecx
+		add edx, ebx
+		mov ebx, dword ptr [esp + 0xac]
+		lea eax, [edi*2]
+		mov dword ptr [esp + 0x7c], edx
+		add ebx, ebp
+		imul ecx
+		add edx, ebx
+		mov dword ptr [esp + 0x80], edx
+		jmp jmp18
+	jmp17:
+		mov ebx, dword ptr [esp + 0x98]
+		mov ecx, dword ptr [esp + 0x9c]
+		mov dword ptr [esp + 0x6c], ebx
+		mov dword ptr [esp + 0x70], ecx
+		mov eax, dword ptr [esp + 0xa0]
+		mov ebx, dword ptr [esp + 0xa4]
+		mov ecx, dword ptr [esp + 0xa8]
+		add eax, ebp
+		add ebx, ebp
+		add ecx, ebp
+		mov dword ptr [esp + 0x74], eax
+		mov edx, dword ptr [esp + 0xac]
+		mov dword ptr [esp + 0x78], ebx
+		add edx, ebp
+		mov dword ptr [esp + 0x7c], ecx
+		mov dword ptr [esp + 0x80], edx
+	jmp18:
+		mov ebp, dword ptr [esp + 0x18c]
+		mov esi, dword ptr [esp]
+		mov ebx, dword ptr [esp + 0x150]
+	jmp21:
+		mov edx, dword ptr [esp + 4]
+		mov eax, dword ptr [esp + 0x144]
+		add edx, 0xffff
+		cmp esi, eax
+		mov ecx, dword ptr [esp + 8]
+		jge jmp20 ; this jump to a `jmp` instruction is quite untypical for hand-written assembly I think
+		sar edx, 0x10
+		dec ecx
+		sar ecx, 0x10
+		mov ebp, dword ptr [ebp + 0x28]
+		sub ecx, edx
+		mov dword ptr [esp + 0x150], ebx
+		jl jmp19
+		call ebp
+	jmp19:
+		mov esi, dword ptr [esp + 0x6c]
+		mov edi, dword ptr [esp + 0x70]
+		mov eax, dword ptr [esp + 0x40]
+		mov ebx, dword ptr [esp + 0x44]
+		add esi, eax
+		add edi, ebx
+		mov dword ptr [esp + 0x6c], esi
+		mov dword ptr [esp + 0x70], edi
+		mov esi, dword ptr [esp + 0x74]
+		mov edi, dword ptr [esp + 0x78]
+		mov ebp, dword ptr [esp + 0x7c]
+		mov eax, dword ptr [esp + 0x48]
+		mov ebx, dword ptr [esp + 0x4c]
+		mov ecx, dword ptr [esp + 0x50]
+		add esi, eax
+		add edi, ebx
+		add ebp, ecx
+		mov dword ptr [esp + 0x74], esi
+		mov edx, dword ptr [esp + 0x80]
+		mov ebx, dword ptr [esp + 0x54]
+		mov dword ptr [esp + 0x78], edi
+		add edx, ebx
+		mov dword ptr [esp + 0x7c], ebp
+		mov dword ptr [esp + 0x80], edx
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ebx, dword ptr [esp + 0x150]
+		mov esi, dword ptr [esp + 4]
+		mov edi, dword ptr [esp + 8]
+		mov ecx, dword ptr [esp + 0xc]
+		mov edx, dword ptr [esp + 0x10]
+		mov eax, dword ptr [ebp + 4]
+		add esi, ecx
+		add edi, edx
+		mov dword ptr [esp + 4], esi
+		mov dword ptr [esp + 8], edi
+		mov esi, dword ptr [esp]
+		add ebx, eax
+		add esi, 0x10000
+		mov dword ptr [esp + 0x150], ebx
+		mov dword ptr [esp], esi
+		jmp jmp21
+	jmp20:
+		jmp ret00
+	jmp16:
+		mov ecx, dword ptr [esp + 0x194]
+		mov edx, dword ptr [esp + 0x198]
+		mov ebp, dword ptr [esp + 0x18c]
+		mov esi, dword ptr [esp]
+		mov ebx, dword ptr [esp + 0x150]
+		fld dword ptr [ecx]
+		fmul dword ptr g_floatConst65536
+		fld dword ptr [edx + 4]
+		fsub dword ptr [ecx + 4]
+		fld dword ptr [edx]
+		fsub dword ptr [ecx]
+		fxch st(2)
+		fistp dword ptr [esp + 8]
+		fdivr dword ptr g_floatConst65536
+		mov edx, esi
+		mov ecx, dword ptr [esp + 0x140]
+		sub edx, ecx
+		shl edx, 0xf
+		fmulp st(1), st(0)
+		mov ecx, dword ptr [esp + 8]
+		fistp dword ptr [esp + 0x10]
+		mov eax, dword ptr [esp + 0x10]
+		je jmp22
+		add eax, eax
+		imul edx
+		add ecx, edx
+		mov dword ptr [esp + 8], ecx
+	jmp22:
+		mov edx, dword ptr [esp + 4]
+		mov eax, dword ptr [esp + 0x144]
+		add edx, 0xffff
+		cmp esi, eax
+		mov ecx, dword ptr [esp + 8]
+		jge ret00
+		sar edx, 0x10
+		dec ecx
+		sar ecx, 0x10
+		mov ebp, dword ptr [ebp + 0x28]
+		sub ecx, edx
+		mov dword ptr [esp + 0x150], ebx
+		jl jmp23
+		call ebp
+	jmp23:
+		mov esi, dword ptr [esp + 0x6c]
+		mov edi, dword ptr [esp + 0x70]
+		mov eax, dword ptr [esp + 0x14]
+		mov ebx, dword ptr [esp + 0x18]
+		add esi, eax
+		add edi, ebx
+		mov dword ptr [esp + 0x6c], esi
+		mov dword ptr [esp + 0x70], edi
+		mov esi, dword ptr [esp + 0x74]
+		mov edi, dword ptr [esp + 0x78]
+		mov ebp, dword ptr [esp + 0x7c]
+		mov eax, dword ptr [esp + 0x1c]
+		mov ebx, dword ptr [esp + 0x20]
+		mov ecx, dword ptr [esp + 0x24]
+		add esi, eax
+		add edi, ebx
+		add ebp, ecx
+		mov dword ptr [esp + 0x74], esi
+		mov edx, dword ptr [esp + 0x80]
+		mov ebx, dword ptr [esp + 0x28]
+		mov dword ptr [esp + 0x78], edi
+		add edx, ebx
+		mov dword ptr [esp + 0x7c], ebp
+		mov dword ptr [esp + 0x80], edx
+		mov esi, dword ptr [esp + 0x84]
+		mov edi, dword ptr [esp + 0x88]
+		mov ebp, dword ptr [esp + 0x8c]
+		mov eax, dword ptr [esp + 0x2c]
+		mov ebx, dword ptr [esp + 0x30]
+		mov ecx, dword ptr [esp + 0x34]
+		add esi, eax
+		add edi, ebx
+		add ebp, ecx
+		mov dword ptr [esp + 0x84], esi
+		mov edx, dword ptr [esp + 0x90]
+		mov ebx, dword ptr [esp + 0x38]
+		mov dword ptr [esp + 0x88], edi
+		add edx, ebx
+		mov dword ptr [esp + 0x8c], ebp
+		mov dword ptr [esp + 0x90], edx
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ebp, dword ptr [esp + 0x18c]
+		mov ebx, dword ptr [esp + 0x150]
+		mov esi, dword ptr [esp + 4]
+		mov edi, dword ptr [esp + 8]
+		mov ecx, dword ptr [esp + 0xc]
+		mov edx, dword ptr [esp + 0x10]
+		mov eax, dword ptr [ebp + 4]
+		add esi, ecx
+		add edi, edx
+		mov dword ptr [esp + 4], esi
+		mov dword ptr [esp + 8], edi
+		mov esi, dword ptr [esp]
+		add ebx, eax
+		add esi, 0x10000
+		mov dword ptr [esp + 0x150], ebx
+		mov dword ptr [esp], esi
+		jmp jmp22
+	ret00:
+		add esp, 0x178
+		pop ebp
+		pop ebx
+		pop edi
+		pop esi
+		ret
+	ret01:
+		fstp dword ptr [esp + 4]
+	ret02:
+		fstp dword ptr [esp]
+		add esp, 0x178
+		pop ebp
+		pop ebx
+		pop edi
+		pop esi
+		ret
+	}
+}
+
+#endif
 
 // STUB: GOLDP 0x1003c780
 void FUN_1003c780(

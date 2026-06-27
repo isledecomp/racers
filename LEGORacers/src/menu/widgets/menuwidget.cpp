@@ -312,20 +312,20 @@ void MenuWidget::DrawString(
 			&m_color,
 			p_unk0x18
 		);
+	} else {
+		LegoS32 y = p_source->m_top;
+		LegoS32 x = p_source->m_left;
+		m_renderer->VTable0x6c(
+			p_string,
+			p_font,
+			x,
+			y,
+			static_cast<LegoFloat>(p_source->m_right - x),
+			static_cast<LegoFloat>(p_source->m_bottom - y),
+			p_dest,
+			0
+		);
 	}
-
-	LegoS32 y = p_source->m_top;
-	LegoS32 x = p_source->m_left;
-	m_renderer->VTable0x6c(
-		p_string,
-		p_font,
-		x,
-		y,
-		static_cast<LegoFloat>(p_source->m_right - x),
-		static_cast<LegoFloat>(p_source->m_bottom - y),
-		p_dest,
-		0
-	);
 }
 
 // FUNCTION: LEGORACERS 0x00472e40

@@ -150,6 +150,9 @@ extern const LegoFloat g_raceStateField0x3e8BounceThreshold = 0.05f;
 // GLOBAL: LEGORACERS 0x004b0d30
 extern const LegoFloat g_raceStateField0x3e8BounceScale = 1.3f;
 
+// GLOBAL: LEGORACERS 0x004b0d34
+extern const LegoFloat g_raceStateField0x3e8FourContactBounceScale = 1.15f;
+
 extern LegoU32 g_unk0x004b0d80;
 extern const LegoFloat g_unk0x004b0cd0;
 extern const LegoFloat g_unk0x004b0d84;
@@ -856,7 +859,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			FUN_004464a0(elapsedMs);
 		}
 
-		if (m_unk0x7c4.m_w == 0.0f || m_unk0x7c4.m_y == 0.0f) {
+		if (m_unk0x7c4.m_w != 0.0f || m_unk0x7c4.m_y != 0.0f) {
 			LegoFloat time = elapsed * 0.001f;
 			m_unk0x7c4.m_w += -100.0f * time;
 			m_unk0x7c4.m_y += time * m_unk0x7c4.m_w;
@@ -1742,14 +1745,15 @@ void RaceState::Racer::Field0x3e8Base0xd0::VTable0x04(LegoS32 p_elapsedMs)
 			m_unk0x0a4.m_x = 0.0f;
 			m_unk0x0a4.m_y = 0.0f;
 			m_unk0x0a4.m_z = 0.0f;
-			m_unk0x0b0.m_x = 0.0f;
-			m_unk0x0b0.m_y = 0.0f;
-			m_unk0x0b0.m_z = 0.0f;
-			m_unk0x0bc.m_x = 0.0f;
-			m_unk0x0bc.m_y = 0.0f;
-			m_unk0x0bc.m_z = 0.0f;
 		}
 	}
+
+	m_unk0x0b0.m_x = 0.0f;
+	m_unk0x0b0.m_y = 0.0f;
+	m_unk0x0b0.m_z = 0.0f;
+	m_unk0x0bc.m_x = 0.0f;
+	m_unk0x0bc.m_y = 0.0f;
+	m_unk0x0bc.m_z = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00441190
@@ -2717,11 +2721,11 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_unk0x008.m_z -= 0.15f;
+		m_unk0x008.m_z -= g_raceStateField0x3e8AirborneDropStep;
 		return;
 	}
 
-	LegoFloat contactLimit = static_cast<LegoFloat>(sqrt(bestDistance)) - 4.0f;
+	LegoFloat contactLimit = static_cast<LegoFloat>(sqrt(bestDistance)) - g_raceStateField0x3e8ContactLimitPadding;
 	if (contactLimit < 0.0f) {
 		contactLimit = 0.0f;
 	}
@@ -2775,8 +2779,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoU32 p_elapsedMs)
 			LegoFloat dot =
 				m_unk0x008.m_z * m_unk0x174.m_z + m_unk0x008.m_y * m_unk0x174.m_y + m_unk0x008.m_x * m_unk0x174.m_x;
 			if (dot < 0.0f) {
-				if (dot < -0.03f) {
-					LegoFloat scaled = dot * 0.004f;
+				if (dot < -g_raceStateField0x3e8BounceThreshold) {
+					LegoFloat scaled = dot * g_raceStateField0x3e8FourContactBounceScale;
 					m_unk0x36c = 0;
 					m_unk0x008.m_z -= scaled;
 
@@ -3172,8 +3176,8 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00446fa0()
 // FUNCTION: LEGORACERS 0x00446fd0
 void RaceState::Racer::Field0x3e8Base0x74c::FUN_00446fd0(LegoU32 p_elapsedMs)
 {
-	LegoFloat cosine;
 	LegoFloat sine;
+	LegoFloat cosine;
 	GolVec3 direction;
 	GolVec3 axis;
 
@@ -3197,11 +3201,12 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00446fd0(LegoU32 p_elapsedMs)
 				axis.m_x *= m_unk0x174.m_x;
 				axis.m_y = m_unk0x174.m_y;
 				axis.m_y *= dot;
-				dot *= m_unk0x174.m_z;
+				LegoFloat projectedZ = dot;
+				projectedZ *= m_unk0x174.m_z;
 
 				direction.m_x -= axis.m_x;
 				direction.m_y -= axis.m_y;
-				direction.m_z -= dot;
+				direction.m_z -= projectedZ;
 				GolMath::NormalizeVector3(direction, &direction);
 			}
 			else {
@@ -3251,7 +3256,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00446fd0(LegoU32 p_elapsedMs)
 						return;
 					}
 
-					GolMath::FUN_00449170(step, &sine, &cosine);
+					GolMath::FUN_00449170(step, &cosine, &sine);
 					value = current->m_x;
 					value *= sine;
 					LegoFloat crossValue = m_unk0x168.m_y;
@@ -3596,11 +3601,11 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 						&hitRecord,
 						&hitAmount
 					)) {
-					LegoFloat dot = (hitPoint.m_x - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_x) *
+					LegoFloat dot = (hitPoint.m_x - m_unk0x3a0[pointIndex].m_x) *
 									g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_x;
-					dot += (hitPoint.m_y - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_y) *
+					dot += (hitPoint.m_y - m_unk0x3a0[pointIndex].m_y) *
 						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_y;
-					dot += (hitPoint.m_z - g_raceStateField0x3e8Snapshot0x000[pointIndex].m_z) *
+					dot += (hitPoint.m_z - m_unk0x3a0[pointIndex].m_z) *
 						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_z;
 
 					if (dot >= 0.0f) {
@@ -3614,9 +3619,9 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 							continue;
 						}
 
-						LegoFloat deltaX = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_x - hitPoint.m_x;
-						LegoFloat deltaY = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_y - hitPoint.m_y;
-						LegoFloat deltaZ = g_raceStateField0x3e8Snapshot0x000[pointIndex].m_z - hitPoint.m_z;
+						LegoFloat deltaX = m_unk0x3a0[pointIndex].m_x - hitPoint.m_x;
+						LegoFloat deltaY = m_unk0x3a0[pointIndex].m_y - hitPoint.m_y;
+						LegoFloat deltaZ = m_unk0x3a0[pointIndex].m_z - hitPoint.m_z;
 						LegoFloat distance = deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ;
 
 						if (distance > bestDistance) {

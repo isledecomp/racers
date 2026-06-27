@@ -1469,10 +1469,10 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		if (firstRacer->m_unk0xd6c == 1) {
 			GolVec3 secondForward;
 			secondRacer->m_unk0x018.m_unk0x044->GetOrientationRow0(&secondForward);
-			LegoFloat dot = GOLVECTOR3_DOT(secondForward, collisionNormal);
+			LegoFloat dot = GOLVECTOR3_DOT(secondForward, secondContactOffset);
 
 			if (dot > -g_unk0x004b0980 && dot < g_unk0x004b0980) {
-				GolVec3 shove = collisionNormal;
+				GolVec3 shove = secondContactOffset;
 				shove.m_x *= g_unk0x004b09d4;
 				shove.m_y *= g_unk0x004b09d4;
 				shove.m_z *= g_unk0x004b09d4;
@@ -1491,10 +1491,10 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		if (secondRacer->m_unk0xd6c == 1) {
 			GolVec3 firstForward;
 			firstRacer->m_unk0x018.m_unk0x044->GetOrientationRow0(&firstForward);
-			LegoFloat dot = GOLVECTOR3_DOT(firstForward, collisionNormal);
+			LegoFloat dot = GOLVECTOR3_DOT(firstForward, firstContactOffset);
 
 			if (dot > -g_unk0x004b0980 && dot < g_unk0x004b0980) {
-				GolVec3 shove = collisionNormal;
+				GolVec3 shove = firstContactOffset;
 				shove.m_x *= g_unk0x004b09d4;
 				shove.m_y *= g_unk0x004b09d4;
 				shove.m_z *= g_unk0x004b09d4;

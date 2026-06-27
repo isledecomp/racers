@@ -1150,11 +1150,55 @@ void GolD3DRenderDevice::VTable0x8c(GolModelEntity* p_model, Field0xc8524* p_ren
 	}
 }
 
-// STUB: GOLDP 0x10008f70
-void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat, LegoFloat)
+// FUNCTION: GOLDP 0x10008f70
+void GolD3DRenderDevice::VTable0xa8(GolWorldEntity* p_model, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
-	STUB(0x10008f70);
-	VTable0x94(p_model);
+	GolWorldEntity::ResultStruct result;
+	GolModelEntity* modelEntity = static_cast<GolModelEntity*>(p_model);
+	p_model->VTable0x14(m_unk0x4c, &result);
+	if (!result.m_visibility) {
+		return;
+	}
+
+	GolMatrix4* modelMatrix = &m_unk0xc8410;
+	m_unk0xc83a0 = p_unk0x08;
+	m_unk0xc83f4 = 1;
+	m_unk0xc83a4 = p_unk0x0c;
+	modelEntity->FUN_10027e70(modelMatrix, result.m_lodIndex);
+
+	const GolVec3& position = modelEntity->GetPosition();
+	modelMatrix->m_m[3][0] = position.m_x;
+	modelMatrix->m_m[3][1] = position.m_y;
+	modelMatrix->m_m[3][2] = position.m_z;
+
+	if (result.m_visibility == 1) {
+		m_unk0xc83e4 = TRUE;
+		m_unk0xc8518 = m_unk0xc8498;
+		FUN_10012f50();
+		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8490, m_unk0xc8498);
+	}
+	else {
+		m_unk0xc83e4 = FALSE;
+		m_unk0xc8518 = &m_unk0xc84d8;
+		FUN_10012f50();
+		GolMath::FUN_1002f3a0(*modelMatrix, *m_unk0xc8494, &m_unk0xc84d8);
+	}
+
+	GolModel* model = static_cast<GolModel*>(modelEntity->GetModel(result.m_lodIndex));
+	GdbVertexArray0xc* vertexArray = model->GetVertexArray();
+	LegoU16 vertexType = vertexArray->GetVertexType();
+	m_unk0xc8568 = vertexType == GolModel::e_vertexType2 || vertexType == GolModel::e_vertexType3;
+	if (m_unk0xc8568) {
+		FUN_1000add0(p_model, model);
+	}
+
+	MaterialTable0x0c* materialTable = modelEntity->GetMaterialTable(result.m_lodIndex);
+	FUN_10008880(p_model, result.m_lodIndex);
+	FUN_10012f50();
+	model->FUN_10006c50(this, materialTable);
+
+	m_unk0xc83f4 = 0;
+	FUN_10012f50();
 }
 
 // FUNCTION: GOLDP 0x100090b0
@@ -3588,15 +3632,14 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	CommandVertex* sourceEnd = source + p_vertexCount;
 
 	for (; source < sourceEnd; cache++, vertex++, cacheIndex++) {
-		const GolMatrix4& matrix = *m_unk0xc8490;
-		cache->m_x = source->m_x * m_unk0xc8518->m_m[0][0] + source->m_y * m_unk0xc8518->m_m[1][0] +
-					 source->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cache->m_y = source->m_x * m_unk0xc8518->m_m[0][1] + source->m_y * m_unk0xc8518->m_m[1][1] +
-					 source->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cache->m_z = source->m_x * m_unk0xc8518->m_m[0][2] + source->m_y * m_unk0xc8518->m_m[1][2] +
-					 source->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cache->m_w = source->m_x * m_unk0xc8518->m_m[0][3] + source->m_y * m_unk0xc8518->m_m[1][3] +
-					 source->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cache->m_x = source->m_x * m_unk0xc8490->m_m[0][0] + source->m_y * m_unk0xc8490->m_m[1][0] +
+					 source->m_z * m_unk0xc8490->m_m[2][0] + m_unk0xc8490->m_m[3][0];
+		cache->m_y = source->m_x * m_unk0xc8490->m_m[0][1] + source->m_y * m_unk0xc8490->m_m[1][1] +
+					 source->m_z * m_unk0xc8490->m_m[2][1] + m_unk0xc8490->m_m[3][1];
+		cache->m_z = source->m_x * m_unk0xc8490->m_m[0][2] + source->m_y * m_unk0xc8490->m_m[1][2] +
+					 source->m_z * m_unk0xc8490->m_m[2][2] + m_unk0xc8490->m_m[3][2];
+		cache->m_w = source->m_x * m_unk0xc8490->m_m[0][3] + source->m_y * m_unk0xc8490->m_m[1][3] +
+					 source->m_z * m_unk0xc8490->m_m[2][3] + m_unk0xc8490->m_m[3][3];
 		cache->m_unk0x10 = cacheIndex;
 		cache->m_clipFlags = BuildModelClipFlags(*cache);
 
@@ -3670,15 +3713,14 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	LegoU32 alpha = (m_alpha & 0xff) << 24;
 
 	for (; source < sourceEnd; source++, cache++, vertex++, cacheIndex++) {
-		const GolMatrix4& matrix = *m_unk0xc8490;
-		cache->m_x = source->m_x * m_unk0xc8518->m_m[0][0] + source->m_y * m_unk0xc8518->m_m[1][0] +
-					 source->m_z * m_unk0xc8518->m_m[2][0] + m_unk0xc8518->m_m[3][0];
-		cache->m_y = source->m_x * m_unk0xc8518->m_m[0][1] + source->m_y * m_unk0xc8518->m_m[1][1] +
-					 source->m_z * m_unk0xc8518->m_m[2][1] + m_unk0xc8518->m_m[3][1];
-		cache->m_z = source->m_x * m_unk0xc8518->m_m[0][2] + source->m_y * m_unk0xc8518->m_m[1][2] +
-					 source->m_z * m_unk0xc8518->m_m[2][2] + m_unk0xc8518->m_m[3][2];
-		cache->m_w = source->m_x * m_unk0xc8518->m_m[0][3] + source->m_y * m_unk0xc8518->m_m[1][3] +
-					 source->m_z * m_unk0xc8518->m_m[2][3] + m_unk0xc8518->m_m[3][3];
+		cache->m_x = source->m_x * m_unk0xc8490->m_m[0][0] + source->m_y * m_unk0xc8490->m_m[1][0] +
+					 source->m_z * m_unk0xc8490->m_m[2][0] + m_unk0xc8490->m_m[3][0];
+		cache->m_y = source->m_x * m_unk0xc8490->m_m[0][1] + source->m_y * m_unk0xc8490->m_m[1][1] +
+					 source->m_z * m_unk0xc8490->m_m[2][1] + m_unk0xc8490->m_m[3][1];
+		cache->m_z = source->m_x * m_unk0xc8490->m_m[0][2] + source->m_y * m_unk0xc8490->m_m[1][2] +
+					 source->m_z * m_unk0xc8490->m_m[2][2] + m_unk0xc8490->m_m[3][2];
+		cache->m_w = source->m_x * m_unk0xc8490->m_m[0][3] + source->m_y * m_unk0xc8490->m_m[1][3] +
+					 source->m_z * m_unk0xc8490->m_m[2][3] + m_unk0xc8490->m_m[3][3];
 		cache->m_unk0x10 = cacheIndex;
 		cache->m_clipFlags = BuildModelClipFlags(*cache);
 
@@ -4015,12 +4057,230 @@ void GolD3DRenderDevice::FUN_1000ece0(LegoU32 p_firstTriangle, LegoU32 p_triangl
 // STUB: GOLDP 0x1000edf0
 void GolD3DRenderDevice::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4 p_lastVertex)
 {
-	STUB(0x1000edf0);
-	if ((m_unk0xc83c8 | m_unk0xc83cc) & DuskwindBananaRelic0x24::c_flag0x08Bit14) {
-		FUN_1000ece0(p_firstTriangle, p_triangleCount, p_lastVertex);
+	enum {
+		c_clippedIndexOffset = (0xc50a0 - 0xc4c20) / sizeof(LegoU16),
+		c_clippedIndexCapacity = (0xc53a0 - 0xc50a0) / sizeof(LegoU16),
+	};
+
+	LegoU32 firstTriangle = p_firstTriangle;
+	LegoU32 triangleCount = p_triangleCount;
+	LegoU32 lastVertex = p_lastVertex;
+	LegoFloat nearClip = m_unk0x0c->m_nearClip;
+	LegoFloat farClip = m_unk0x0c->m_farClip;
+	LegoU8* triangle = m_unk0xc4c18 + (firstTriangle * 4);
+	LegoU8* triangleEnd = m_unk0xc4c18 + ((firstTriangle + triangleCount) * 4);
+	LegoU16* directIndices = m_unk0xc4c20;
+	LegoU16* clippedIndices = m_unk0xc4c20 + c_clippedIndexOffset;
+	LegoU32 directIndexCount = 0;
+	LegoU32 clippedIndexCount = 0;
+	LegoU32 clippedVertexCount = 0;
+	LegoBool32 flipped = ((m_unk0xc83c8 | m_unk0xc83cc) & DuskwindBananaRelic0x24::c_flag0x08Bit14) != 0;
+	static const LegoU32 g_clipPlanes[] = {0x10, 0x20, 0x01, 0x02, 0x04, 0x08};
+
+	for (; triangle < triangleEnd; triangle += 4) {
+		LegoU32 triangleIndex0 = triangle[0];
+		LegoU32 triangleIndex1 = triangle[1];
+		LegoU32 triangleIndex2 = triangle[2];
+		VertexCacheEntry* cache0 = &m_unk0xc38ec[triangleIndex0];
+		VertexCacheEntry* cache1 = &m_unk0xc38ec[triangleIndex1];
+		VertexCacheEntry* cache2 = &m_unk0xc38ec[triangleIndex2];
+
+		if (cache0->m_clipFlags & cache1->m_clipFlags & cache2->m_clipFlags) {
+			continue;
+		}
+
+		LegoU32 unionFlags = cache0->m_clipFlags | cache1->m_clipFlags | cache2->m_clipFlags;
+		if (unionFlags == 0) {
+			D3DTLVERTEX* vertex0 = &m_unk0x348[triangleIndex0];
+			D3DTLVERTEX* vertex1 = &m_unk0x348[triangleIndex1];
+			D3DTLVERTEX* vertex2 = &m_unk0x348[triangleIndex2];
+			LegoFloat area = ComputeScreenArea(*vertex0, *vertex1, *vertex2);
+
+			if ((!flipped && area <= 0.0f) || (flipped && area >= 0.0f)) {
+				continue;
+			}
+
+			if (flipped) {
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex0);
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex1);
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex2);
+			}
+			else {
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex2);
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex1);
+				directIndices[directIndexCount++] = static_cast<LegoU16>(triangleIndex0);
+			}
+			continue;
+		}
+
+		VertexCacheEntry* cacheA[16];
+		VertexCacheEntry* cacheB[16];
+		D3DTLVERTEX* vertexA[16];
+		D3DTLVERTEX* vertexB[16];
+		VertexCacheEntry** inputCache = cacheA;
+		VertexCacheEntry** outputCache = cacheB;
+		D3DTLVERTEX** inputVertex = vertexA;
+		D3DTLVERTEX** outputVertex = vertexB;
+		VertexCacheEntry* nextClipCache = m_unk0xc38ec + 0x40;
+		D3DTLVERTEX* nextClipVertex = m_unk0x348 + 0x40;
+		LegoU32 vertexCount = 3;
+
+		if (flipped) {
+			inputCache[0] = cache2;
+			inputCache[1] = cache1;
+			inputCache[2] = cache0;
+			inputVertex[0] = &m_unk0x348[triangleIndex2];
+			inputVertex[1] = &m_unk0x348[triangleIndex1];
+			inputVertex[2] = &m_unk0x348[triangleIndex0];
+		}
+		else {
+			inputCache[0] = cache0;
+			inputCache[1] = cache1;
+			inputCache[2] = cache2;
+			inputVertex[0] = &m_unk0x348[triangleIndex0];
+			inputVertex[1] = &m_unk0x348[triangleIndex1];
+			inputVertex[2] = &m_unk0x348[triangleIndex2];
+		}
+
+		for (LegoU32 planeIndex = 0; planeIndex < sizeOfArray(g_clipPlanes); planeIndex++) {
+			LegoU32 plane = g_clipPlanes[planeIndex];
+			if (!(unionFlags & plane)) {
+				continue;
+			}
+
+			LegoU32 outputCount = 0;
+			LegoU32 previousIndex = vertexCount - 1;
+			LegoBool32 previousInside = (inputCache[previousIndex]->m_clipFlags & plane) == 0;
+			LegoFloat previousDistance = GetClipDistance(*inputCache[previousIndex], plane);
+			unionFlags = 0;
+
+			for (LegoU32 i = 0; i < vertexCount; i++) {
+				LegoBool32 currentInside = (inputCache[i]->m_clipFlags & plane) == 0;
+				LegoFloat currentDistance = GetClipDistance(*inputCache[i], plane);
+
+				if (previousInside != currentInside) {
+					LegoFloat delta = previousDistance - currentDistance;
+					LegoFloat amount = 0.0f;
+					if (delta != 0.0f) {
+						amount = previousDistance / delta;
+					}
+
+					if (outputCount >= sizeOfArray(cacheB)) {
+						vertexCount = 0;
+						break;
+					}
+
+					VertexCacheEntry* clipCache = nextClipCache++;
+					D3DTLVERTEX* clipVertex = nextClipVertex++;
+					InterpolateClipVertex(
+						*inputCache[previousIndex],
+						*inputCache[i],
+						*inputVertex[previousIndex],
+						*inputVertex[i],
+						amount,
+						*clipCache,
+						*clipVertex
+					);
+					ProjectClipVertexForPlane(*clipCache, m_unk0xc8400, *clipVertex, plane, nearClip, farClip);
+					outputCache[outputCount] = clipCache;
+					outputVertex[outputCount] = clipVertex;
+					unionFlags |= clipCache->m_clipFlags;
+					outputCount++;
+				}
+
+				if (currentInside) {
+					if (outputCount >= sizeOfArray(cacheB)) {
+						vertexCount = 0;
+						break;
+					}
+
+					outputCache[outputCount] = inputCache[i];
+					outputVertex[outputCount] = inputVertex[i];
+					unionFlags |= outputCache[outputCount]->m_clipFlags;
+					outputCount++;
+				}
+
+				previousIndex = i;
+				previousInside = currentInside;
+				previousDistance = currentDistance;
+			}
+
+			if (vertexCount == 0 || outputCount < 3) {
+				vertexCount = 0;
+				break;
+			}
+
+			vertexCount = outputCount;
+			VertexCacheEntry** tempCache = inputCache;
+			inputCache = outputCache;
+			outputCache = tempCache;
+			D3DTLVERTEX** tempVertex = inputVertex;
+			inputVertex = outputVertex;
+			outputVertex = tempVertex;
+		}
+
+		if (vertexCount < 3) {
+			continue;
+		}
+
+		LegoFloat area = ComputeScreenArea(*inputVertex[0], *inputVertex[1], *inputVertex[2]);
+		if (area <= 0.0f) {
+			continue;
+		}
+
+		LegoU32 polygonIndexCount = (vertexCount - 2) * 3;
+		if (clippedVertexCount + 0x0e >= sizeOfArray(m_unk0xc53a0) ||
+			clippedIndexCount + polygonIndexCount >= c_clippedIndexCapacity) {
+			if (clippedIndexCount != 0) {
+				m_d3dDevice->DrawIndexedPrimitive(
+					D3DPT_TRIANGLELIST,
+					D3DFVF_TLVERTEX,
+					m_unk0xc53a0,
+					clippedVertexCount,
+					clippedIndices,
+					clippedIndexCount,
+					D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+				);
+			}
+
+			clippedVertexCount = 0;
+			clippedIndexCount = 0;
+		}
+
+		LegoU32 firstClippedVertex = clippedVertexCount;
+		for (LegoU32 i = 0; i < vertexCount; i++) {
+			m_unk0xc53a0[clippedVertexCount++] = *inputVertex[i];
+		}
+
+		for (LegoU32 j = 1; j + 1 < vertexCount; j++) {
+			clippedIndices[clippedIndexCount++] = static_cast<LegoU16>(firstClippedVertex);
+			clippedIndices[clippedIndexCount++] = static_cast<LegoU16>(firstClippedVertex + j);
+			clippedIndices[clippedIndexCount++] = static_cast<LegoU16>(firstClippedVertex + j + 1);
+		}
 	}
-	else {
-		FUN_1000ebd0(p_firstTriangle, p_triangleCount, p_lastVertex);
+
+	if (directIndexCount != 0) {
+		m_d3dDevice->DrawIndexedPrimitive(
+			D3DPT_TRIANGLELIST,
+			D3DFVF_TLVERTEX,
+			m_unk0x348,
+			lastVertex + 1,
+			directIndices,
+			directIndexCount,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
+	}
+
+	if (clippedIndexCount != 0) {
+		m_d3dDevice->DrawIndexedPrimitive(
+			D3DPT_TRIANGLELIST,
+			D3DFVF_TLVERTEX,
+			m_unk0xc53a0,
+			clippedVertexCount,
+			clippedIndices,
+			clippedIndexCount,
+			D3DDP_DONOTLIGHT | D3DDP_DONOTUPDATEEXTENTS | D3DDP_DONOTCLIP
+		);
 	}
 }
 

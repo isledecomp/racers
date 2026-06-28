@@ -86,7 +86,7 @@ DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_n
 
 // STUB: LEGORACERS 0x004133a0
 LegoU32 GolBillboard::FUN_10029e90(
-	Field0x2c* p_container,
+	MaterialTable0x0c* p_container,
 	LegoS32 p_index,
 	LegoFloat p_width,
 	LegoFloat p_height,

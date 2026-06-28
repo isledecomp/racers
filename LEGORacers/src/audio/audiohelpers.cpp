@@ -257,7 +257,7 @@ static void DecodeStereoChannel(LegoU8* p_source, LegoS16* p_destination, LegoS3
 void DecodeStereoPcmToStereo(
 	LegoU8* p_source,
 	LegoS16* p_destination,
-	LegoU32 p_count,
+	LegoS32 p_count,
 	LegoS32* p_leftState,
 	LegoS32* p_rightState
 )

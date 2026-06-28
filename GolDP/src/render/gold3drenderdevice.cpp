@@ -62,7 +62,11 @@ inline static LegoU32 BuildModelClipFlags(const GolD3DRenderDevice::VertexCacheE
 	return lowFlags | (highFlags & ~(lowFlags << 1));
 }
 
-inline static LegoFloat GetClipDistance(const GolD3DRenderDevice::VertexCacheEntry& p_vertex, LegoU32 p_plane)
+inline static LegoFloat GetClipDistance(
+	const GolD3DRenderDevice::VertexCacheEntry& p_vertex,
+	LegoU32 p_plane,
+	LegoFloat p_farClip
+)
 {
 	if (p_plane == 0x01) {
 		return p_vertex.m_x;
@@ -80,7 +84,7 @@ inline static LegoFloat GetClipDistance(const GolD3DRenderDevice::VertexCacheEnt
 		return p_vertex.m_z;
 	}
 
-	return p_vertex.m_w - p_vertex.m_z;
+	return p_vertex.m_z - p_farClip;
 }
 
 inline static LegoU32 InterpolateColor(LegoU32 p_from, LegoU32 p_to, LegoFloat p_amount)
@@ -3675,7 +3679,6 @@ void GolD3DRenderDevice::FUN_1000d760(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = (sourceColor[3] << 24) | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->specular = m_unk0xc83fc;
 		vertex->tu = source->m_u + m_unk0xc83a0;
 		vertex->tv = source->m_v + m_unk0xc83a4;
 	}
@@ -3756,7 +3759,6 @@ void GolD3DRenderDevice::FUN_1000dbb0(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->sz = cache->m_z * vertex->rhw;
 		const LegoU8* sourceColor = reinterpret_cast<const LegoU8*>(&source->m_color);
 		vertex->color = alpha | (sourceColor[0] << 16) | (sourceColor[1] << 8) | sourceColor[2];
-		vertex->specular = m_unk0xc83fc;
 		vertex->tu = source->m_u + m_unk0xc83a0;
 		vertex->tv = source->m_v + m_unk0xc83a4;
 	}
@@ -4219,12 +4221,12 @@ void GolD3DRenderDevice::FUN_1000edf0(undefined4 p_firstTriangle, undefined4 p_t
 			LegoU32 outputCount = 0;
 			LegoU32 previousIndex = vertexCount - 1;
 			LegoBool32 previousInside = (inputCache[previousIndex]->m_clipFlags & plane) == 0;
-			LegoFloat previousDistance = GetClipDistance(*inputCache[previousIndex], plane);
+			LegoFloat previousDistance = GetClipDistance(*inputCache[previousIndex], plane, farClip);
 			unionFlags = 0;
 
 			for (LegoU32 i = 0; i < vertexCount; i++) {
 				LegoBool32 currentInside = (inputCache[i]->m_clipFlags & plane) == 0;
-				LegoFloat currentDistance = GetClipDistance(*inputCache[i], plane);
+				LegoFloat currentDistance = GetClipDistance(*inputCache[i], plane, farClip);
 
 				if (previousInside != currentInside) {
 					LegoFloat delta = previousDistance - currentDistance;
@@ -4561,13 +4563,13 @@ void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_t
 			LegoU32 outputCount = 0;
 			LegoU32 previousIndex = inputIndices[vertexCount - 1];
 			LegoBool32 previousInside = (m_unk0xc38ec[previousIndex].m_clipFlags & plane) == 0;
-			LegoFloat previousDistance = GetClipDistance(m_unk0xc38ec[previousIndex], plane);
+			LegoFloat previousDistance = GetClipDistance(m_unk0xc38ec[previousIndex], plane, farClip);
 			unionFlags = 0;
 
 			for (LegoU32 i = 0; i < vertexCount; i++) {
 				LegoU32 currentIndex = inputIndices[i];
 				LegoBool32 currentInside = (m_unk0xc38ec[currentIndex].m_clipFlags & plane) == 0;
-				LegoFloat currentDistance = GetClipDistance(m_unk0xc38ec[currentIndex], plane);
+				LegoFloat currentDistance = GetClipDistance(m_unk0xc38ec[currentIndex], plane, farClip);
 
 				if (previousInside != currentInside) {
 					LegoFloat delta = previousDistance - currentDistance;

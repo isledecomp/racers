@@ -10,7 +10,7 @@ void DecodeMonoPcmToStereo(LegoU8* p_source, LegoS16* p_destination, LegoS32 p_c
 void DecodeStereoPcmToStereo(
 	LegoU8* p_source,
 	LegoS16* p_destination,
-	LegoU32 p_count,
+	LegoS32 p_count,
 	LegoS32* p_leftState,
 	LegoS32* p_rightState
 );

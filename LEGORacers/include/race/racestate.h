@@ -571,17 +571,18 @@ public:
 			// SIZE 0xf4
 			class Snapshot {
 			public:
-				GolVec3 m_unk0x000[4];               // 0x00
-				GolVec3 m_unk0x030;                  // 0x30
-				undefined m_unk0x03c[0x040 - 0x03c]; // 0x3c
-				GolVec3 m_unk0x040[4];               // 0x40
-				GolVec3 m_unk0x070[4];               // 0x70
-				GolVec3 m_unk0x0a0;                  // 0xa0
-				LegoFloat m_unk0x0ac;                // 0xac
-				LegoFloat m_unk0x0b0;                // 0xb0
-				undefined m_unk0x0b4[0x0c4 - 0x0b4]; // 0xb4
-				GolMatrix3 m_unk0x0c4;               // 0xc4
-				GolVec3 m_unk0x0e8;                  // 0xe8
+				GolVec3 m_unk0x000[4]; // 0x00
+				GolVec3 m_unk0x030;    // 0x30
+				undefined4 m_unk0x03c; // 0x3c
+				GolVec3 m_unk0x040[4]; // 0x40
+				GolVec3 m_unk0x070[4]; // 0x70
+				GolVec3 m_unk0x0a0;    // 0xa0
+				LegoFloat m_unk0x0ac;  // 0xac
+				LegoFloat m_unk0x0b0;  // 0xb0
+				undefined4 m_unk0x0b4; // 0xb4
+				GolVec3 m_unk0x0b8;    // 0xb8
+				GolMatrix3 m_unk0x0c4; // 0xc4
+				GolVec3 m_unk0x0e8;    // 0xe8
 			};
 
 			void VTable0x04(LegoS32 p_elapsedMs) override; // vtable+0x04
@@ -710,7 +711,7 @@ public:
 			void FUN_004452b0(LegoS32 p_elapsedMs);
 			void FUN_00445500();
 			void FUN_00445d10();
-			void FUN_00445dc0(LegoU32 p_elapsedMs);
+			void FUN_00445dc0(LegoS32 p_elapsedMs);
 			LegoFloat FUN_00445cb0();
 			void FUN_004464a0(LegoS32 p_elapsedMs);
 			void FUN_004465c0(LegoU32 p_elapsedMs);

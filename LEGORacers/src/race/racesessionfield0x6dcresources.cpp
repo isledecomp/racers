@@ -2908,7 +2908,8 @@ void RacePowerupManager::Field0x1890::VTable0x10(GolD3DRenderDevice* p_renderer)
 	}
 
 	if (m_unk0x004 == 4) {
-		LegoS32 alpha = static_cast<LegoS32>(static_cast<LegoS32>(m_unk0x008) * 0.001f * g_unk0x004b1620);
+		LegoFloat alphaScale = static_cast<LegoS32>(m_unk0x008) * 0.001f;
+		LegoS32 alpha = static_cast<LegoS32>(alphaScale * g_unk0x004b1620);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
@@ -4561,12 +4562,14 @@ void RacePowerupManager::Field0x18b4::FUN_0045c8f0(RaceState::Racer* p_racer, Le
 	m_unk0x28->FUN_00411700(effect1->FUN_004116e0());
 	m_unk0x28->FUN_00411730(effect1->FUN_004116f0());
 
+	FUN_0045cf90();
 	m_unk0x20->SetFlags(m_unk0x20->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_unk0x20->FUN_0040dad0(0);
 	m_unk0x24->SetFlags(m_unk0x24->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_unk0x24->FUN_0040dad0(0);
 	m_unk0x28->SetFlags(m_unk0x28->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_unk0x28->FUN_0040dad0(0);
+	FUN_0045cd70();
 	m_unk0x004 = 2;
 }
 

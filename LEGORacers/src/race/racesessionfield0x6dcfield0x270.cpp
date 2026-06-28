@@ -15,6 +15,7 @@ LegoFloat g_unk0x004b0154 = 200.0f;
 LegoFloat g_unk0x004b015c = 180.0f;
 
 extern const LegoFloat g_violetShoalTwo;
+extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
 
 // FUNCTION: LEGORACERS 0x004210b0
@@ -45,7 +46,7 @@ RacePowerupManager::Field0x270::Field0x270()
 	m_next = NULL;
 	m_unk0x268 = 0;
 	m_unk0x22c = 0;
-	m_unk0x248 = g_violetShoalTwo;
+	m_unk0x248 = g_unk0x004b0544;
 	m_unk0x24c = 0.0f;
 	m_unk0x250 = 0.0f;
 	m_unk0x254 = 0.0f;

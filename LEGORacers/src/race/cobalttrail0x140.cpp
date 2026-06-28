@@ -403,6 +403,9 @@ void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_direct
 
 	DuskwindBananaRelic0x24* material = m_unk0x118;
 	m_unk0x118 = NULL;
+	vertices[3].m_color.m_grn = 0xff;
+	vertices[4].m_color.m_grn = 0xff;
+	vertices[5].m_color.m_grn = 0xff;
 	FUN_00423fc0(&vertices[1], &vertices[0], &vertices[2]);
 	FUN_00423fc0(&vertices[4], &vertices[3], &vertices[5]);
 	m_unk0x118 = material;
@@ -1032,7 +1035,7 @@ LegoS32 CobaltTrail0x140::FUN_00425d80(
 	m_unk0x03a = 0;
 	m_unk0x03c = 1;
 	m_unk0x118 = 0;
-	FUN_004262d0(static_cast<LegoU32>(-1));
+	FUN_004262d0(-1);
 	m_unk0x008 = p_resourceTable;
 	m_unk0x010 = p_string;
 	m_unk0x028 = p_unk0x14;
@@ -1193,7 +1196,7 @@ RaceState::Racer* CobaltTrail0x140::FUN_004262c0(RaceState::Racer* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004262d0
-void CobaltTrail0x140::FUN_004262d0(LegoU32 p_time)
+void CobaltTrail0x140::FUN_004262d0(LegoS32 p_time)
 {
 	m_unk0x07c = -1;
 	m_unk0x08c = -1;
@@ -1450,13 +1453,15 @@ void CobaltTrail0x140::FUN_004263a0()
 		LegoS32 textHeight;
 		m_unk0x020->MeasureString(m_unk0x010, &textWidth, &textHeight);
 
-		LegoS32 scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_unk0x0ec);
-		LegoS32 labelPadding = static_cast<LegoS32>(static_cast<double>(m_unk0x0ec) * -14.0);
-		LegoS32 labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_unk0x10c);
+		LegoS32 scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_unk0x0ec);
+		LegoS32 labelPadding = static_cast<LegoS32>(m_unk0x0ec * -14.0f);
+		LegoS32 labelOffset =
+			static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_unk0x10c);
+		LegoS32 lapLabelX = m_unk0x0ac - labelOffset;
 		m_unk0x000->VTable0x64(
 			m_unk0x010,
 			m_unk0x020,
-			m_unk0x0ac - labelOffset,
+			lapLabelX,
 			m_unk0x0cc,
 			m_unk0x10c * m_unk0x0ec,
 			m_unk0x114 * m_unk0x0ec,
@@ -1466,13 +1471,14 @@ void CobaltTrail0x140::FUN_004263a0()
 
 		m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x27);
 		m_unk0x020->MeasureString(&m_unk0x014, &textWidth, &textHeight);
-		scaledLabelWidth = static_cast<LegoS32>(static_cast<double>(textWidth) * m_unk0x0ec);
-		labelPadding = static_cast<LegoS32>(static_cast<double>(m_unk0x0ec) * -6.0);
-		labelOffset = static_cast<LegoS32>(static_cast<double>(scaledLabelWidth - labelPadding) * m_unk0x10c);
+		scaledLabelWidth = static_cast<LegoS32>(static_cast<LegoFloat>(textWidth) * m_unk0x0ec);
+		labelPadding = static_cast<LegoS32>(m_unk0x0ec * -6.0f);
+		labelOffset = static_cast<LegoS32>(static_cast<LegoFloat>(scaledLabelWidth - labelPadding) * m_unk0x10c);
+		lapLabelX -= labelOffset;
 		m_unk0x000->VTable0x64(
 			&m_unk0x014,
 			m_unk0x020,
-			m_unk0x0ac - labelOffset,
+			lapLabelX,
 			m_unk0x0cc,
 			m_unk0x10c * m_unk0x0ec,
 			m_unk0x114 * m_unk0x0ec,

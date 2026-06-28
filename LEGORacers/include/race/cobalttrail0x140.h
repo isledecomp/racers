@@ -41,7 +41,7 @@ public:
 		LegoBool p_unk0x18
 	);
 	RaceState::Racer* FUN_004262c0(RaceState::Racer* p_unk0x04);
-	void FUN_004262d0(LegoU32 p_time);
+	void FUN_004262d0(LegoS32 p_time);
 	void FUN_00426360();
 	void FUN_00426370();
 	void FUN_00426390(LegoU32 p_elapsedMs);
@@ -120,7 +120,7 @@ private:
 	LegoU32 m_unk0x074;                       // 0x074
 	LegoFloat m_unk0x078;                     // 0x078
 	LegoS32 m_unk0x07c;                       // 0x07c
-	LegoU32 m_unk0x080;                       // 0x080
+	LegoS32 m_unk0x080;                       // 0x080
 	LegoU32 m_unk0x084;                       // 0x084
 	LegoU32 m_unk0x088;                       // 0x088
 	LegoS32 m_unk0x08c;                       // 0x08c

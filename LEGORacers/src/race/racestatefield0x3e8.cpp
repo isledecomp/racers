@@ -275,14 +275,14 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448d90(
 {
 	const GolMatrix3& resourceOrientation = p_unk0x04->GetOrientation();
 	GolVec3 zHeight;
-	zHeight.m_x = resourceOrientation.m_m[0][2] * p_unk0x08;
-	zHeight.m_y = resourceOrientation.m_m[1][2] * p_unk0x08;
-	zHeight.m_z = resourceOrientation.m_m[2][2] * p_unk0x08;
+	zHeight.m_x = resourceOrientation.m_m[0][2] * p_unk0x0c;
+	zHeight.m_y = resourceOrientation.m_m[1][2] * p_unk0x0c;
+	zHeight.m_z = resourceOrientation.m_m[2][2] * p_unk0x0c;
 
 	GolVec3 zDistance;
-	zDistance.m_x = resourceOrientation.m_m[0][2] * p_unk0x0c;
-	zDistance.m_y = resourceOrientation.m_m[1][2] * p_unk0x0c;
-	zDistance.m_z = resourceOrientation.m_m[2][2] * p_unk0x0c;
+	zDistance.m_x = resourceOrientation.m_m[0][2] * p_unk0x08;
+	zDistance.m_y = resourceOrientation.m_m[1][2] * p_unk0x08;
+	zDistance.m_z = resourceOrientation.m_m[2][2] * p_unk0x08;
 
 	Field0x198* entries = m_unk0x198;
 

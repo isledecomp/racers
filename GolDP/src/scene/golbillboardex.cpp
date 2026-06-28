@@ -15,6 +15,24 @@ LegoU32 GolBillboard::g_billboardColors[4] = {0xffffffff, 0xffffffff, 0xffffffff
 // GLOBAL: GOLDP 0x1005ca5c
 LegoU8 GolBillboard::g_billboardTriangleIndices[8] = {1, 2, 0, 0, 3, 2, 1, 0};
 
+// GLOBAL: GOLDP 0x1005675c
+extern const LegoFloat g_unk0x1005675c = 1.0f;
+
+#pragma data_seg(".CRT$XCU")
+// GLOBAL: GOLDP 0x1005c010
+GolBillboardInitializerFunction g_unk0x1005c010 = &GolBillboard::FUN_10014e20;
+#pragma data_seg()
+
+// STUB: GOLDP 0x10014e20
+void GolBillboard::FUN_10014e20()
+{
+	g_billboardTexCoords[2].m_y = 0.0f;
+	g_billboardTexCoords[1].m_y = g_unk0x1005675c;
+	g_billboardTexCoords[2].m_x = g_unk0x1005675c;
+	g_billboardTexCoords[3].m_x = g_unk0x1005675c;
+	g_billboardTexCoords[3].m_y = g_unk0x1005675c;
+}
+
 // STUB: GOLDP 0x10014e50
 LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix)
 {

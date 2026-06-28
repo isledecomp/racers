@@ -609,7 +609,7 @@ void GolBmpFile::VTable0x18(LegoU8* p_buffer)
 			rowByteCount = (m_width * 4 + 4) / 8;
 		}
 		else {
-			rowByteCount = m_format.m_bitsPerPixel / 8;
+			rowByteCount = (m_width * m_format.m_bitsPerPixel) / 8;
 		}
 
 		for (y = 0; y < m_height; y++) {
@@ -686,6 +686,7 @@ void GolBmpFile::VTable0x18(LegoU8* p_buffer)
 
 			// The original copies from rowBuffer2; for reachable uncompressed BMPs it aliases rowBuffer1.
 			::memcpy(p_buffer, rowBuffer2, m_rowByteStride);
+			fileOffset += amount;
 			p_buffer += m_rowByteStride;
 		}
 

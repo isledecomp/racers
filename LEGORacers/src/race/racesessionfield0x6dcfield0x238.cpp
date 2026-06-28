@@ -113,12 +113,13 @@ LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 
 	LegoS32 result = RaceSessionField0x6dcField0xa8::VTable0x18(p_elapsedMs);
 	if (m_unk0x004 == 1) {
-		LegoFloat elapsed = static_cast<LegoFloat>(m_unk0x050) / static_cast<LegoFloat>(m_unk0x054);
+		LegoFloat elapsedMs = static_cast<LegoFloat>(m_unk0x050);
+		LegoFloat elapsed = elapsedMs / static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x054));
 		m_unk0x220 = (1.0f - elapsed) * m_unk0x21c;
 
 		GolVec3 position;
 		m_unk0x008->VTable0x04(&position);
-		FUN_00444540(&position, p_elapsedMs, m_unk0x220);
+		FUN_00444540(&position, elapsedMs, m_unk0x220);
 
 		result = 1;
 	}
@@ -127,9 +128,11 @@ LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00444540
-void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, LegoU32 p_elapsedMs, LegoFloat p_amount)
+void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
 {
-	LegoFloat elapsedStep = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_unk0x004b02e0 * 0.001f;
+	LegoFloat elapsedStep = p_elapsedMs;
+	elapsedStep *= g_unk0x004b02e0;
+	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);

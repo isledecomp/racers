@@ -1689,7 +1689,7 @@ void GolD3DRenderDevice::VTable0x68(
 }
 
 // FUNCTION: GOLDP 0x10009b70
-LegoS32 GolD3DRenderDevice::VTable0x64(
+void GolD3DRenderDevice::VTable0x64(
 	GolString* p_unk0x04,
 	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
@@ -1700,11 +1700,11 @@ LegoS32 GolD3DRenderDevice::VTable0x64(
 	undefined4 p_unk0x20
 )
 {
-	return p_font->DrawString(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	p_font->DrawString(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009ba0
-LegoS32 GolD3DRenderDevice::VTable0x6c(
+void GolD3DRenderDevice::VTable0x6c(
 	GolString* p_unk0x04,
 	GolFontBase* p_font,
 	LegoS32 p_unk0x0c,
@@ -1715,7 +1715,7 @@ LegoS32 GolD3DRenderDevice::VTable0x6c(
 	undefined4 p_unk0x20
 )
 {
-	return p_font->DrawStringFitted(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
+	p_font->DrawStringFitted(p_unk0x04, this, p_unk0x0c, p_unk0x10, p_unk0x14, p_unk0x18, p_unk0x1c, p_unk0x20);
 }
 
 // FUNCTION: GOLDP 0x10009bd0

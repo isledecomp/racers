@@ -92,7 +92,7 @@ LegoBool32 MenuWidget::VTable0x08()
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
 undefined4 MenuWidget::VTable0x3c(undefined4)
 {
-	return NULL;
+	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x0044e7f0 FOLDED
@@ -286,7 +286,7 @@ void MenuWidget::DrawImage(Rect* p_destRect, Rect* p_sourceRect, UtopianPan0xa4*
 }
 
 // FUNCTION: LEGORACERS 0x00472da0
-undefined2 MenuWidget::DrawString(
+void MenuWidget::DrawString(
 	Rect* p_source,
 	Rect* p_dest,
 	GolFontBase* p_font,
@@ -299,7 +299,7 @@ undefined2 MenuWidget::DrawString(
 	p_font->SetColor(color);
 
 	if (p_wrapWidth) {
-		return p_font->FUN_00408fe0(
+		p_font->FUN_00408fe0(
 			p_string,
 			m_renderer,
 			p_source->m_left,
@@ -313,19 +313,20 @@ undefined2 MenuWidget::DrawString(
 			p_unk0x18
 		);
 	}
-
-	LegoS32 y = p_source->m_top;
-	LegoS32 x = p_source->m_left;
-	return m_renderer->VTable0x6c(
-		p_string,
-		p_font,
-		x,
-		y,
-		static_cast<LegoFloat>(p_source->m_right - x),
-		static_cast<LegoFloat>(p_source->m_bottom - y),
-		p_dest,
-		0
-	);
+	else {
+		LegoS32 y = p_source->m_top;
+		LegoS32 x = p_source->m_left;
+		m_renderer->VTable0x6c(
+			p_string,
+			p_font,
+			x,
+			y,
+			static_cast<LegoFloat>(p_source->m_right - x),
+			static_cast<LegoFloat>(p_source->m_bottom - y),
+			p_dest,
+			0
+		);
+	}
 }
 
 // FUNCTION: LEGORACERS 0x00472e40

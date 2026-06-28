@@ -233,6 +233,7 @@ reccmp_add_target(goldp ID GOLDP)
 
 if (MSVC)
   target_sources(goldp PRIVATE GolDP/GolDP.def)
+  target_link_options(goldp PRIVATE "-MAP:$<TARGET_FILE_DIR:goldp>/$<TARGET_FILE_BASE_NAME:goldp>.map")
 endif()
 
 target_include_directories(goldp PRIVATE
@@ -464,6 +465,9 @@ add_executable(legoracers WIN32
   $<TARGET_OBJECTS:common_legoracers>
   LEGORacers/src/gol/goltexturelist.cpp
 )
+if(MSVC)
+  target_link_options(legoracers PRIVATE "-MAP:$<TARGET_FILE_DIR:legoracers>/$<TARGET_FILE_BASE_NAME:legoracers>.map")
+endif()
 target_compile_definitions(legoracers PRIVATE BUILDING_LEGORACERS)
 target_compile_definitions(legoracers PRIVATE DIRECTINPUT_VERSION=0x500)
 reccmp_add_target(legoracers ID LEGORACERS)

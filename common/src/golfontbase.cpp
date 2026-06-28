@@ -679,7 +679,7 @@ void GolFontBase::FUN_00408d50(
 }
 
 // FUNCTION: LEGORACERS 0x00408fe0
-undefined2 GolFontBase::FUN_00408fe0(
+void GolFontBase::FUN_00408fe0(
 	GolString* p_string,
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
@@ -821,10 +821,6 @@ undefined2 GolFontBase::FUN_00408fe0(
 			}
 		}
 	}
-
-	if (FALSE) {
-		return 0;
-	}
 }
 
 // FUNCTION: LEGORACERS 0x004092b0
@@ -918,7 +914,7 @@ void GolFontBase::DrawString(
 }
 
 // FUNCTION: GOLDP 0x1001eb70
-LegoS32 GolFontBase::DrawString(
+void GolFontBase::DrawString(
 	GolString* p_string,
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
@@ -977,18 +973,12 @@ LegoS32 GolFontBase::DrawString(
 
 			p_x = font->DrawGlyphRun(count, p_renderer, p_x, p_y, p_scaleX, p_scaleY, p_rect, p_unk0x20);
 			offset += count;
-
-			if (length > 0) {
-				continue;
-			}
-
-			return p_x;
 		}
 	}
 }
 
 // FUNCTION: GOLDP 0x1001eca0
-LegoS32 GolFontBase::DrawStringFitted(
+void GolFontBase::DrawStringFitted(
 	GolString* p_string,
 	GolRenderDevice* p_renderer,
 	LegoS32 p_x,
@@ -1003,7 +993,7 @@ LegoS32 GolFontBase::DrawStringFitted(
 		LegoS32 width;
 		MeasureString(p_string, &width, NULL);
 
-		return DrawString(
+		DrawString(
 			p_string,
 			p_renderer,
 			p_x,

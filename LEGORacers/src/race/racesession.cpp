@@ -56,10 +56,10 @@ extern const LegoFloat g_mirroredRaceStateRouteScale = 0.05f;
 extern const LegoFloat g_unk0x004b08bc = 25.0f;
 
 // GLOBAL: LEGORACERS 0x004bee30
-extern const LegoChar* g_sideWinderForceFeedName = "Microsoft SideWinder Force Feed";
+const LegoChar* g_sideWinderForceFeedName = "Microsoft SideWinder Force Feed";
 
 // GLOBAL: LEGORACERS 0x004bee64
-extern const LegoFloat g_unk0x004bee64[4] = {0.5f, 0.01f, 0.49f, 0.49f};
+const LegoFloat g_unk0x004bee64[4] = {0.5f, 0.01f, 0.49f, 0.49f};
 
 // GLOBAL: LEGORACERS 0x004bee74
 const LegoU16 g_unk0x004bee74[16] =

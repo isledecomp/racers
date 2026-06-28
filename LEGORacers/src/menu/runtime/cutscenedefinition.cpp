@@ -161,7 +161,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 }
 
 // FUNCTION: LEGORACERS 0x00404c90
-LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
+void CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 {
 	if (!m_unk0x24) {
 		LegoChar message[64];
@@ -199,7 +199,7 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
 				m_unk0x28->FUN_00406f20(m_unk0x2c.m_indexedRef.m_resourceIndex, m_unk0x2c.m_indexedRef.m_modelIndex);
 			break;
 		default:
-			return m_modelRefType - 1;
+			return;
 		}
 	}
 

@@ -41,192 +41,192 @@ extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
 extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004b02fc
-extern const LegoFloat g_unk0x004b02fc = 0.0020000001f;
+const LegoFloat g_unk0x004b02fc = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b0400
-extern const LegoFloat g_unk0x004b0400 = 0.0020000001f;
+const LegoFloat g_unk0x004b0400 = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b1370
-extern const LegoFloat g_unk0x004b1370 = 5.0f;
+const LegoFloat g_unk0x004b1370 = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b1384
-extern const LegoFloat g_unk0x004b1384 = 30.0f;
+const LegoFloat g_unk0x004b1384 = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b1388
-extern const LegoFloat g_unk0x004b1388 = 300.0f;
+const LegoFloat g_unk0x004b1388 = 300.0f;
 
-extern const LegoFloat g_unk0x004b138c = 200.0f;
+const LegoFloat g_unk0x004b138c = 200.0f;
 
-extern const LegoFloat g_unk0x004b1390 = 600.0f;
+const LegoFloat g_unk0x004b1390 = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1394
-extern const LegoFloat g_unk0x004b1394 = -32.1759987f;
+const LegoFloat g_unk0x004b1394 = -32.1759987f;
 
 // GLOBAL: LEGORACERS 0x004b1398
-extern const LegoFloat g_unk0x004b1398 = 180.0f;
+const LegoFloat g_unk0x004b1398 = 180.0f;
 
 // GLOBAL: LEGORACERS 0x004b139c
-extern const LegoFloat g_unk0x004b139c = 500.0f;
+const LegoFloat g_unk0x004b139c = 500.0f;
 
 // GLOBAL: LEGORACERS 0x004b13a4
-extern const LegoFloat g_unk0x004b13a4 = 3.0f;
+const LegoFloat g_unk0x004b13a4 = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b13b0
-extern const LegoFloat g_unk0x004b13b0 = 4.0f;
+const LegoFloat g_unk0x004b13b0 = 4.0f;
 
 // GLOBAL: LEGORACERS 0x004b13b4
-extern const LegoFloat g_unk0x004b13b4 = 5.0f;
+const LegoFloat g_unk0x004b13b4 = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b13e4
-extern const LegoFloat g_unk0x004b13e4 = 0.70709997f;
+const LegoFloat g_unk0x004b13e4 = 0.70709997f;
 
 // GLOBAL: LEGORACERS 0x004b13e8
-extern const LegoFloat g_unk0x004b13e8 = 3.0f;
+const LegoFloat g_unk0x004b13e8 = 3.0f;
 
-extern const LegoFloat g_unk0x004b13f0 = 30.0f;
+const LegoFloat g_unk0x004b13f0 = 30.0f;
 
-extern const LegoFloat g_unk0x004b13f4 = 300.0f;
+const LegoFloat g_unk0x004b13f4 = 300.0f;
 
-extern const LegoFloat g_unk0x004b13f8 = 10.0f;
+const LegoFloat g_unk0x004b13f8 = 10.0f;
 
-extern const LegoFloat g_unk0x004b1420 = 13.0f;
+const LegoFloat g_unk0x004b1420 = 13.0f;
 
-extern const LegoFloat g_unk0x004b1424 = 5.0f;
+const LegoFloat g_unk0x004b1424 = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b1428
-extern const LegoFloat g_unk0x004b1428 = 3.0f;
+const LegoFloat g_unk0x004b1428 = 3.0f;
 
-extern const LegoFloat g_unk0x004b1434 = 30.0f;
+const LegoFloat g_unk0x004b1434 = 30.0f;
 
-extern const LegoFloat g_unk0x004b1438 = 300.0f;
+const LegoFloat g_unk0x004b1438 = 300.0f;
 
-extern const LegoFloat g_unk0x004b143c = 200.0f;
+const LegoFloat g_unk0x004b143c = 200.0f;
 
-extern const LegoFloat g_unk0x004b1440 = 600.0f;
+const LegoFloat g_unk0x004b1440 = 600.0f;
 
-extern const LegoFloat g_unk0x004b1444 = 0.0120000001f;
+const LegoFloat g_unk0x004b1444 = 0.012f;
 
-extern const LegoFloat g_unk0x004b146c = 5.17852306f;
+const LegoFloat g_unk0x004b146c = 5.17852306f;
 
-extern const LegoFloat g_unk0x004b1470 = 0.155761003f;
+const LegoFloat g_unk0x004b1470 = 0.155761003f;
 
-extern const LegoFloat g_unk0x004b1474 = -0.727681994f;
+const LegoFloat g_unk0x004b1474 = -0.727681994f;
 
-extern const LegoFloat g_unk0x004b1478 = 0.727681994f;
+const LegoFloat g_unk0x004b1478 = 0.727681994f;
 
-extern const LegoFloat g_unk0x004b147c = -90.0f;
+const LegoFloat g_unk0x004b147c = -90.0f;
 
 // GLOBAL: LEGORACERS 0x004b1484
-extern const LegoFloat g_unk0x004b1484 = 3.0f;
+const LegoFloat g_unk0x004b1484 = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b14a8
-extern const LegoFloat g_unk0x004b14a8 = 100.0f;
+const LegoFloat g_unk0x004b14a8 = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b14ac
-extern const LegoFloat g_unk0x004b14ac = 0.80000001f;
+const LegoFloat g_unk0x004b14ac = 0.8f;
 
 // GLOBAL: LEGORACERS 0x004b170c
-extern const LegoFloat g_unk0x004b170c = 30.0f;
+const LegoFloat g_unk0x004b170c = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b14e0
-extern const LegoFloat g_unk0x004b14e0 = 30.0f;
+const LegoFloat g_unk0x004b14e0 = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b14e4
-extern const LegoFloat g_unk0x004b14e4 = 300.0f;
+const LegoFloat g_unk0x004b14e4 = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b14e8
-extern const LegoFloat g_unk0x004b14e8 = 4.0f;
+const LegoFloat g_unk0x004b14e8 = 4.0f;
 
 // GLOBAL: LEGORACERS 0x004b14ec
-extern const LegoFloat g_unk0x004b14ec = 180.0f;
+const LegoFloat g_unk0x004b14ec = 180.0f;
 
 // GLOBAL: LEGORACERS 0x004b14f0
-extern const LegoFloat g_unk0x004b14f0 = -90.1760025f;
+const LegoFloat g_unk0x004b14f0 = -90.1760025f;
 
 // GLOBAL: LEGORACERS 0x004b14f4
-extern const LegoFloat g_unk0x004b14f4 = 320.0f;
+const LegoFloat g_unk0x004b14f4 = 320.0f;
 
 // GLOBAL: LEGORACERS 0x004b150c
-extern const LegoFloat g_unk0x004b150c = 5.0f;
+const LegoFloat g_unk0x004b150c = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b1510
-extern const LegoFloat g_unk0x004b1510 = 144.0f;
+const LegoFloat g_unk0x004b1510 = 144.0f;
 
 // GLOBAL: LEGORACERS 0x004b1514
-extern const LegoFloat g_unk0x004b1514 = 0.60000002f;
+const LegoFloat g_unk0x004b1514 = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1544
-extern const LegoFloat g_unk0x004b1544 = 3.0f;
+const LegoFloat g_unk0x004b1544 = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b1548
-extern const LegoFloat g_unk0x004b1548 = 30.0f;
+const LegoFloat g_unk0x004b1548 = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b154c
-extern const LegoFloat g_unk0x004b154c = 300.0f;
+const LegoFloat g_unk0x004b154c = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b1550
-extern const LegoFloat g_unk0x004b1550 = FLT_MAX;
+const LegoFloat g_unk0x004b1550 = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b1558
-extern const LegoFloat g_unk0x004b1558 = 0.85000002f;
+const LegoFloat g_unk0x004b1558 = 0.85f;
 
 // GLOBAL: LEGORACERS 0x004b155c
-extern const LegoFloat g_unk0x004b155c = 9.0f;
+const LegoFloat g_unk0x004b155c = 9.0f;
 
 // GLOBAL: LEGORACERS 0x004b1568
-extern const ColorRGBA g_unk0x004b1568 = {0x19, 0x41, 0xf5, 0xff};
+const ColorRGBA g_unk0x004b1568 = {0x19, 0x41, 0xf5, 0xff};
 
 // GLOBAL: LEGORACERS 0x004b156c
-extern const ColorRGBA g_unk0x004b156c = {0x19, 0x41, 0xff, 0xff};
+const ColorRGBA g_unk0x004b156c = {0x19, 0x41, 0xff, 0xff};
 
 // GLOBAL: LEGORACERS 0x004b1570
-extern const ColorRGBA g_unk0x004b1570 = {0x19, 0x41, 0xeb, 0xff};
+const ColorRGBA g_unk0x004b1570 = {0x19, 0x41, 0xeb, 0xff};
 
 // GLOBAL: LEGORACERS 0x004b1574
-extern const ColorRGBA g_unk0x004b1574 = {0xff, 0xff, 0xff, 0xff};
+const ColorRGBA g_unk0x004b1574 = {0xff, 0xff, 0xff, 0xff};
 
 // GLOBAL: LEGORACERS 0x004b1578
-extern const LegoFloat g_unk0x004b1578 = 50.0f;
+const LegoFloat g_unk0x004b1578 = 50.0f;
 
 // GLOBAL: LEGORACERS 0x004b157c
-extern const LegoFloat g_unk0x004b157c = 9.0f;
+const LegoFloat g_unk0x004b157c = 9.0f;
 
 // GLOBAL: LEGORACERS 0x004b1580
-extern const LegoFloat g_unk0x004b1580 = 0.5f;
+const LegoFloat g_unk0x004b1580 = 0.5f;
 
 // GLOBAL: LEGORACERS 0x004b1584
-extern const LegoFloat g_unk0x004b1584 = 0.100000001f;
+const LegoFloat g_unk0x004b1584 = 0.1f;
 
 // GLOBAL: LEGORACERS 0x004b1588
-extern const LegoFloat g_unk0x004b1588 = 80.0f;
+const LegoFloat g_unk0x004b1588 = 80.0f;
 
 // GLOBAL: LEGORACERS 0x004b158c
-extern const LegoFloat g_unk0x004b158c = 200.0f;
+const LegoFloat g_unk0x004b158c = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b15a0
-extern const LegoFloat g_unk0x004b15a0 = 8.0f;
+const LegoFloat g_unk0x004b15a0 = 8.0f;
 
 // GLOBAL: LEGORACERS 0x004b15a4
-extern const LegoFloat g_unk0x004b15a4 = 8.0f;
+const LegoFloat g_unk0x004b15a4 = 8.0f;
 
 // GLOBAL: LEGORACERS 0x004b15d4
-extern const LegoFloat g_unk0x004b15d4 = 0.00097751711f;
+const LegoFloat g_unk0x004b15d4 = 0.00097751711f;
 
-extern const LegoFloat g_unk0x004b15dc = 30.0f;
+const LegoFloat g_unk0x004b15dc = 30.0f;
 
-extern const LegoFloat g_unk0x004b15e0 = 300.0f;
+const LegoFloat g_unk0x004b15e0 = 300.0f;
 
-extern const LegoFloat g_unk0x004b15e4 = 10.0f;
+const LegoFloat g_unk0x004b15e4 = 10.0f;
 
-extern const LegoFloat g_unk0x004b15e8 = 100.0f;
+const LegoFloat g_unk0x004b15e8 = 100.0f;
 
-extern const LegoFloat g_unk0x004b15ec = 81.0f;
+const LegoFloat g_unk0x004b15ec = 81.0f;
 
-extern const LegoFloat g_unk0x004b15f0 = 30.0f;
+const LegoFloat g_unk0x004b15f0 = 30.0f;
 
-extern const LegoFloat g_unk0x004b15f4 = 1.0f;
+const LegoFloat g_unk0x004b15f4 = 1.0f;
 
-extern const LegoFloat g_unk0x004b15f8 = 1.0f;
+const LegoFloat g_unk0x004b15f8 = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004c75f4
 LegoFloat g_unk0x004c75f4 = 1.0f / g_unk0x004b14a8;
@@ -244,104 +244,104 @@ LegoFloat g_unk0x004c7604 = g_unk0x004c7600 * g_unk0x004c7600;
 GolVec3 g_unk0x004c7608[5];
 
 // GLOBAL: LEGORACERS 0x004b1620
-extern const LegoFloat g_unk0x004b1620 = 127.0f;
+const LegoFloat g_unk0x004b1620 = 127.0f;
 
 // GLOBAL: LEGORACERS 0x004b1628
-extern const LegoFloat g_unk0x004b1628 = 1.0f;
+const LegoFloat g_unk0x004b1628 = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b162c
-extern const LegoFloat g_unk0x004b162c = 50.0f;
+const LegoFloat g_unk0x004b162c = 50.0f;
 
 // GLOBAL: LEGORACERS 0x004b1664
-extern const LegoFloat g_unk0x004b1664 = 200.0f;
+const LegoFloat g_unk0x004b1664 = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b1668
-extern const LegoFloat g_unk0x004b1668 = 600.0f;
+const LegoFloat g_unk0x004b1668 = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b166c
-extern const LegoFloat g_unk0x004b166c = 170.0f;
+const LegoFloat g_unk0x004b166c = 170.0f;
 
 // GLOBAL: LEGORACERS 0x004b1670
-extern const LegoFloat g_unk0x004b1670 = -32.1759987f;
+const LegoFloat g_unk0x004b1670 = -32.1759987f;
 
 // GLOBAL: LEGORACERS 0x004b1674
-extern const LegoFloat g_unk0x004b1674 = 500.0f;
+const LegoFloat g_unk0x004b1674 = 500.0f;
 
 // GLOBAL: LEGORACERS 0x004b1678
-extern const LegoFloat g_unk0x004b1678 = 4.0f;
+const LegoFloat g_unk0x004b1678 = 4.0f;
 
-extern const LegoFloat g_unk0x004b1684 = 100.0f;
+const LegoFloat g_unk0x004b1684 = 100.0f;
 
-extern const LegoFloat g_unk0x004b1688 = 160000.0f;
+const LegoFloat g_unk0x004b1688 = 160000.0f;
 
 // GLOBAL: LEGORACERS 0x004b168c
-extern const LegoFloat g_unk0x004b168c = 0.70709997f;
+const LegoFloat g_unk0x004b168c = 0.70709997f;
 
 // GLOBAL: LEGORACERS 0x004b16c0
-extern const LegoFloat g_unk0x004b16c0 = 30.0f;
+const LegoFloat g_unk0x004b16c0 = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b16c4
-extern const LegoFloat g_unk0x004b16c4 = 300.0f;
+const LegoFloat g_unk0x004b16c4 = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b16c8
-extern const LegoFloat g_unk0x004b16c8 = 200.0f;
+const LegoFloat g_unk0x004b16c8 = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b16cc
-extern const LegoFloat g_unk0x004b16cc = 600.0f;
+const LegoFloat g_unk0x004b16cc = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1704
-extern const LegoFloat g_unk0x004b1704 = 0.0099999998f;
+const LegoFloat g_unk0x004b1704 = 0.01f;
 
 // GLOBAL: LEGORACERS 0x004b19d4
-extern const LegoFloat g_unk0x004b19d4 = 30.0f;
+const LegoFloat g_unk0x004b19d4 = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b19d8
-extern const LegoFloat g_unk0x004b19d8 = 300.0f;
+const LegoFloat g_unk0x004b19d8 = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b19e4
-extern const LegoFloat g_unk0x004b19e4 = 0.69999999f;
+const LegoFloat g_unk0x004b19e4 = 0.7f;
 
 // GLOBAL: LEGORACERS 0x004b1a50
-extern const LegoFloat g_unk0x004b1a50 = -2.0f;
+const LegoFloat g_unk0x004b1a50 = -2.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a54
-extern const LegoFloat g_unk0x004b1a54 = 0.0028571428f;
+const LegoFloat g_unk0x004b1a54 = 0.0028571428f;
 
 // GLOBAL: LEGORACERS 0x004b1a58
-extern const LegoFloat g_unk0x004b1a58 = 0.60000002f;
+const LegoFloat g_unk0x004b1a58 = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1a60
-extern const LegoFloat g_unk0x004b1a60 = 200.0f;
+const LegoFloat g_unk0x004b1a60 = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a64
-extern const LegoFloat g_unk0x004b1a64 = 600.0f;
+const LegoFloat g_unk0x004b1a64 = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a68
-extern const LegoFloat g_unk0x004b1a68 = 45.0f;
+const LegoFloat g_unk0x004b1a68 = 45.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a70
-extern const LegoFloat g_unk0x004b1a70 = 0.60000002f;
+const LegoFloat g_unk0x004b1a70 = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1a74
-extern const LegoFloat g_unk0x004b1a74 = 700.0f;
+const LegoFloat g_unk0x004b1a74 = 700.0f;
 
 // GLOBAL: LEGORACERS 0x004b1aa8
-extern const LegoFloat g_unk0x004b1aa8 = 0.00066666666f;
+const LegoFloat g_unk0x004b1aa8 = 0.00066666666f;
 
 // GLOBAL: LEGORACERS 0x004c1c4c
-extern ColorRGBA g_unk0x004c1c4c = {0x32, 0x32, 0x32, 0xc8};
+ColorRGBA g_unk0x004c1c4c = {0x32, 0x32, 0x32, 0xc8};
 
 // GLOBAL: LEGORACERS 0x004c1c50
-extern ColorRGBA g_unk0x004c1c50 = {0x64, 0x3c, 0x0e, 0xff};
+ColorRGBA g_unk0x004c1c50 = {0x64, 0x3c, 0x0e, 0xff};
 
 // GLOBAL: LEGORACERS 0x004c1c54
-extern ColorRGBA g_unk0x004c1c54 = {0x8f, 0x5a, 0x1c, 0xff};
+ColorRGBA g_unk0x004c1c54 = {0x8f, 0x5a, 0x1c, 0xff};
 
 // GLOBAL: LEGORACERS 0x004c1c58
-extern ColorRGBA g_unk0x004c1c58 = {0x14, 0x14, 0x00, 0xff};
+ColorRGBA g_unk0x004c1c58 = {0x14, 0x14, 0x00, 0xff};
 
 // GLOBAL: LEGORACERS 0x004c1c64
-extern ColorRGBA g_unk0x004c1c64 = {0xff, 0xff, 0xff, 0xc8};
+ColorRGBA g_unk0x004c1c64 = {0xff, 0xff, 0xff, 0xc8};
 
 extern LegoU16 g_unk0x004befec[1024];
 extern LegoU32 g_unk0x004c6ee4;
@@ -1204,7 +1204,7 @@ void RacePowerupManager::Field0x1898::VTable0x08(LegoU32 p_elapsedMs)
 		}
 	}
 
-	m_unk0x178 += static_cast<LegoFloat>(p_elapsedMs) * 0.0120000001f;
+	m_unk0x178 += static_cast<LegoFloat>(p_elapsedMs) * 0.012f;
 
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_unk0x178 * g_negativeRadiansToTableIndex)) & 0x3ff;
 	GolVec3 up;
@@ -2829,7 +2829,7 @@ void RacePowerupManager::Field0x1890::VTable0x08(LegoU32 p_elapsedMs)
 		m_unk0x3c->FUN_00410b00(direction, up);
 
 		if (m_unk0x78 != NULL) {
-			if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.0020000001f) {
+			if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
 				m_flags0x80 |= c_flags0x80Bit0;
 
 				if (!(m_unk0x78->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
@@ -2851,7 +2851,7 @@ void RacePowerupManager::Field0x1890::VTable0x08(LegoU32 p_elapsedMs)
 
 				m_unk0x78->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
 
-				if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.0020000001f) {
+				if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
 					direction.m_y = racerPosition.m_y - modelPosition.m_y;
 					direction.m_z = racerPosition.m_z - modelPosition.m_z;

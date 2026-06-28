@@ -240,7 +240,7 @@ RaceState::RacerProgressEntry RaceState::g_racerProgressEntries[RaceState::c_rac
 const LegoChar* g_unk0x004bef3c[3] = {"drivers", "champs", "chassis"};
 
 // GLOBAL: LEGORACERS 0x004bef70
-extern LegoU32 g_unk0x004bef70 = 3;
+LegoU32 g_unk0x004bef70 = 3;
 
 // GLOBAL: LEGORACERS 0x004c6b34
 LegoFloat g_unk0x004c6b34 = g_twoPi * g_unk0x004b4bc8;

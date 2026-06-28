@@ -206,13 +206,13 @@ void DirectSoundManager::Update(undefined4)
 	if (!m_paused) {
 		while (TRUE) {
 			SoundBuffer* queuedSound = NULL;
-			link = m_queuedSounds.FirstLink();
-			if (m_queuedSounds.IsValidLink(link)) {
+			link = m_queuedSounds.LastLink();
+			if (m_queuedSounds.IsValidLastLink(link)) {
 				queuedSound = &m_queuedSounds.GetItem(*link);
 			}
 
-			link = m_queuedSpatialSounds.FirstLink();
-			if (m_queuedSpatialSounds.IsValidLink(link)) {
+			link = m_queuedSpatialSounds.LastLink();
+			if (m_queuedSpatialSounds.IsValidLastLink(link)) {
 				SoundBuffer& queuedSpatialSound = m_queuedSpatialSounds.GetItem(*link);
 
 				if (!queuedSound || queuedSpatialSound.m_priority > queuedSound->m_priority) {

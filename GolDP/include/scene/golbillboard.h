@@ -11,6 +11,9 @@ class GolD3DRenderDevice;
 class GolRenderDevice;
 class DuskwindBananaRelic0x24;
 
+typedef void(__cdecl* GolBillboardInitializerFunction)();
+extern GolBillboardInitializerFunction g_unk0x1005c010;
+
 // VTABLE: GOLDP 0x10057500
 // SIZE 0x4c
 class GolBillboard : public GolWorldEntity {
@@ -36,6 +39,7 @@ public:
 	};
 
 	GolBillboard();
+	static void FUN_10014e20();
 
 	// FUNCTION: GOLDP 0x100156c0
 	void VTable0x08(const GolVec3& p_v) override { GolWorldEntity::VTable0x08(p_v); } // vtable+0x08
@@ -55,7 +59,7 @@ public:
 	void FUN_10014ff0(GolD3DRenderDevice* p_renderer);
 	void FUN_10026fa0(LegoFloat p_arg1);
 	VTable0x4cReturn FUN_10029e90(
-		Field0x2c* p_container,
+		MaterialTable0x0c* p_container,
 		LegoS32 p_index,
 		LegoFloat p_width,
 		LegoFloat p_height,
@@ -63,10 +67,12 @@ public:
 	);
 	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
 	DuskwindBananaRelic0x24* FUN_1002a020();
-	Field0x2c* GetPositionContainer() const { return m_positionContainer; }
+	MaterialTable0x0c* GetPositionContainer() const { return m_positionContainer; }
 	LegoU16 GetFlags() const { return m_flags; }
 	void SetWidth(LegoFloat p_width) { m_width = p_width; }
 	void SetHeight(LegoFloat p_height) { m_height = p_height; }
+	void EnableFlagBit1() { m_flags |= c_flagBit1; }
+	void SetUnk0x30(const GolVec3& p_unk0x30) { m_unk0x30 = p_unk0x30; }
 
 private:
 	static GolVec3 g_billboardPositions[4];
@@ -74,14 +80,14 @@ private:
 	static LegoU32 g_billboardColors[4];
 	static LegoU8 g_billboardTriangleIndices[8];
 
-	DuskwindBananaRelic0x24* m_position; // 0x28
-	Field0x2c* m_positionContainer;      // 0x2c
-	GolVec3 m_unk0x30;                   // 0x30
-	LegoFloat m_width;                   // 0x3c
-	LegoFloat m_height;                  // 0x40
-	LegoFloat m_maxDistanceSquared;      // 0x44
-	LegoU16 m_flags;                     // 0x48
-	LegoU16 m_positionIndex;             // 0x4a
+	DuskwindBananaRelic0x24* m_position;    // 0x28
+	MaterialTable0x0c* m_positionContainer; // 0x2c
+	GolVec3 m_unk0x30;                      // 0x30
+	LegoFloat m_width;                      // 0x3c
+	LegoFloat m_height;                     // 0x40
+	LegoFloat m_maxDistanceSquared;         // 0x44
+	LegoU16 m_flags;                        // 0x48
+	LegoU16 m_positionIndex;                // 0x4a
 };
 
 #endif // GOLBILLBOARD_H

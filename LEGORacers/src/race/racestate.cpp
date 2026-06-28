@@ -225,7 +225,7 @@ extern const LegoFloat g_twoPi;
 extern const LegoFloat g_unk0x004b4bc8;
 
 // GLOBAL: LEGORACERS 0x004c67a4
-LegoFloat g_unk0x004c67a4 = (1.0f - g_unk0x004b0984) * g_unk0x004b0424 * g_unk0x004b09ac;
+LegoFloat g_unk0x004c67a4 = ((1.0f - g_unk0x004b0984) * g_unk0x004b0424) * g_unk0x004b09ac;
 
 // GLOBAL: LEGORACERS 0x004c67a8
 LegoFloat g_unk0x004c67a8 = g_unk0x004b0a20 * g_unk0x004b0a20;
@@ -1292,12 +1292,12 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 		if (m_unk0xd70 == 1) {
 			m_unk0x3e8.VTable0x44();
-			m_unk0xd70 = 0;
 		}
 		else if (m_unk0xd70 == 2) {
 			m_unk0x3e8.VTable0x4c();
-			m_unk0xd70 = 0;
 		}
+
+		m_unk0xd70 = 0;
 
 		return;
 	}

@@ -1198,18 +1198,18 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	if (m_unk0x3354) {
 		m_unk0x283c[0].FUN_004262c0(m_raceState.m_unk0x318[0]);
-		m_unk0x283c[0].FUN_004262d0(0xffffffff);
+		m_unk0x283c[0].FUN_004262d0(-1);
 		m_unk0x283c[0].FUN_00425e90(2);
 
 		m_unk0x283c[1].FUN_004262c0(m_raceState.m_unk0x318[1]);
-		m_unk0x283c[1].FUN_004262d0(0xffffffff);
+		m_unk0x283c[1].FUN_004262d0(-1);
 		m_unk0x283c[1].FUN_00425e90(3);
 	}
 	else {
 		m_unk0x283c[0].FUN_004262c0(
 			m_context->m_playerCount == 1 ? m_raceState.m_unk0x318[0] : m_raceState.GetRacers()
 		);
-		m_unk0x283c[0].FUN_004262d0(0xffffffff);
+		m_unk0x283c[0].FUN_004262d0(-1);
 		m_unk0x283c[0].FUN_00425e90(1);
 	}
 
@@ -2797,10 +2797,10 @@ void RaceSession::FUN_004362e0()
 		} while (playerIndex < m_context->m_playerCount);
 	}
 
-	m_unk0x283c[0].FUN_004262d0(0xffffffff);
+	m_unk0x283c[0].FUN_004262d0(-1);
 
 	if (m_unk0x3354) {
-		m_unk0x283c[1].FUN_004262d0(0xffffffff);
+		m_unk0x283c[1].FUN_004262d0(-1);
 	}
 
 	FUN_00434340();

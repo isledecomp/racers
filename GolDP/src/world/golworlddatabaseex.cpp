@@ -185,8 +185,6 @@ void GolWorldDatabaseEx::VTable0x08()
 // STUB: GOLDP 0x10017ac0
 undefined4* GolWorldDatabaseEx::VTable0x0c()
 {
-	STUB(0x10017ac0);
-
 	LegoU32 i;
 	GolD3DRenderDevice* textureRenderer = static_cast<GolD3DRenderDevice*>(m_unk0x04);
 
@@ -236,6 +234,51 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 		LegoChar fileName[sizeof(GolName) + 5];
 		BuildResourceFileName(fileName, m_unk0x78[i], ".maf");
 		VTable0x4c(i)->VTable0x04(m_unk0x04, fileName, m_binary);
+	}
+
+	for (i = 0; i < m_unk0x6c; i++) {
+		WdbBillboardSprite0x38* sprite = &m_unk0x70[i];
+		GolBillboardEx* billboard = &m_unk0x100[i];
+		LegoFloat maxDistanceSquared = sprite->m_unk0x28 * sprite->m_unk0x28;
+
+		if (sprite->m_flags & WdbBillboardSprite0x38::c_flagBit2) {
+			LegoU32 materialTableIndex = sprite->m_unk0x34;
+			if (materialTableIndex >= m_unk0x2c) {
+				GOL_FATALERROR_MESSAGE("Illegal mat assign reference");
+			}
+
+			billboard->FUN_10029e90(
+				&m_unk0x104[materialTableIndex],
+				sprite->m_unk0x36,
+				sprite->m_unk0x20,
+				sprite->m_unk0x24,
+				maxDistanceSquared
+			);
+		}
+		else {
+			if (sprite->m_unk0x00[0] == '\0') {
+				GOL_FATALERROR_MESSAGE("Sprite is missing material name");
+			}
+
+			DuskwindBananaRelic0x24* material = m_unk0x04->FindMaterialByName(sprite->m_unk0x00);
+			if (material == NULL) {
+				LegoChar message[64];
+				::memset(message, 0, sizeof(message));
+				::strncpy(message, sprite->m_unk0x00, sizeof(GolName));
+				::strcat(message, " sprite material not found");
+				GOL_FATALERROR_MESSAGE(message);
+			}
+
+			billboard->VTable0x4c(material, sprite->m_unk0x20, sprite->m_unk0x24, maxDistanceSquared);
+		}
+
+		billboard->VTable0x08(sprite->m_unk0x08);
+		if (sprite->m_flags & WdbBillboardSprite0x38::c_flagBit1) {
+			billboard->EnableFlagBit1();
+			billboard->SetUnk0x30(sprite->m_unk0x14);
+		}
+
+		FUN_1002e250(billboard, sprite);
 	}
 
 	return NULL;

@@ -1230,7 +1230,7 @@ void RaceSession::Field0x2098::FUN_0045feb0(GolFileParser* p_parser, LegoBool32 
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x33:
+			case GolFileParser::e_unknown0x3d:
 				::strncpy(
 					params.m_unk0x24,
 					p_parser->ReadStringWithMaxLength(sizeof(params.m_unk0x24)),
@@ -1241,9 +1241,6 @@ void RaceSession::Field0x2098::FUN_0045feb0(GolFileParser* p_parser, LegoBool32 
 				params.m_unk0x50 = eventIndex;
 				break;
 			case GolFileParser::e_unknown0x3b:
-				params.m_unk0x58 = eventIndex;
-				break;
-			case GolFileParser::e_unknown0x3d:
 				params.m_unk0x2c.m_x = p_parser->ReadFloat();
 				params.m_unk0x2c.m_y = p_parser->ReadFloat();
 				params.m_unk0x2c.m_z = p_parser->ReadFloat();
@@ -1264,9 +1261,12 @@ void RaceSession::Field0x2098::FUN_0045feb0(GolFileParser* p_parser, LegoBool32 
 				}
 				break;
 			case GolFileParser::e_unknown0x3f:
+				params.m_unk0x58 = eventIndex;
+				break;
+			case GolFileParser::e_unknown0x41:
 				token0x3f = eventIndex;
 				break;
-			case GolFileParser::e_unknown0x41: {
+			case GolFileParser::e_unknown0x33: {
 				const LegoChar* name = p_parser->ReadStringWithMaxLength(sizeof(GolName));
 				LegoChar destination[sizeof(GolName)];
 				::strncpy(destination, name, sizeof(destination));

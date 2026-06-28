@@ -435,7 +435,8 @@ void RaceSessionField0x6dcField0xa8::VTable0x1c(GolVec3* p_unk0x04)
 {
 	p_unk0x04->m_x = m_unk0x034;
 	p_unk0x04->m_y = m_unk0x038;
-	p_unk0x04->m_z = static_cast<LegoS32>(m_unk0x050) * 0.001f * m_unk0x040 + m_unk0x03c;
+	LegoFloat z = static_cast<LegoS32>(m_unk0x050) * 0.001f;
+	p_unk0x04->m_z = z * m_unk0x040 + m_unk0x03c;
 }
 
 // FUNCTION: LEGORACERS 0x004316d0

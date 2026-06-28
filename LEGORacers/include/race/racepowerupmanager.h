@@ -330,7 +330,7 @@ public:
 			c_flags0x234Bit1 = 1 << 1,
 		};
 
-		void FUN_00444540(const GolVec3* p_position, LegoU32 p_elapsedMs, LegoFloat p_amount);
+		void FUN_00444540(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount);
 		LegoS32 FUN_00444690(LegoU32 p_elapsedMs);
 		LegoS32 FUN_00444820(LegoU32 p_elapsedMs);
 

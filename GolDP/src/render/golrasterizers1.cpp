@@ -271,6 +271,13 @@ void FUN_100330d0(GolSoftwareRenderer* p_renderer, MipmapLevel* p_mipmap)
 
 	p_renderer->SetUnk0x34(p_mipmap);
 
+	if (!p_mipmap) {
+#pragma inline_depth(0)
+		FUN_10032c80(p_renderer);
+#pragma inline_depth
+		return;
+	}
+
 	if (p_mipmap) {
 		// LINE: GOLDP 0x100330f7
 		if (p_mipmap->m_width == p_mipmap->m_height) {

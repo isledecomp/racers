@@ -41,7 +41,6 @@ address,type,size
 0x4b0af0,float,4
 0x4b0af4,float,4
 0x4b0ce0,float,4
-0x4b0d08,float,4
 0x4b0d0c,float,4
 0x4b0d10,float,4
 0x4b0d14,float,4

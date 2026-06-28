@@ -1832,8 +1832,8 @@ void RaceSession::FUN_00434c80()
 {
 	LegoU32 racerIndex = 0;
 	if (m_context->m_racerCount > 0) {
-		RaceState::Racer* racer = m_raceState.GetRacers();
 		do {
+			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			if (racer->m_lapsCompleted >= m_unk0x3348 && !(racer->m_unk0xd04 & 0x1000)) {
 				racer->m_unk0xd04 |= 0x1000;
 
@@ -1844,7 +1844,7 @@ void RaceSession::FUN_00434c80()
 				m_unk0x3330++;
 				racer->FUN_0043a210(m_unk0x3330);
 
-				if (racer->m_unk0xd08 != 2 || !m_unk0x3350 || racerIndex == 0) {
+				if (racer->m_unk0xd08 != 2 || (m_unk0x3350 && racerIndex == 0)) {
 					LegoU32 playerIndex = 0;
 					RaceState::Racer** playerRacer = m_raceState.m_unk0x318;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
@@ -1903,7 +1903,6 @@ void RaceSession::FUN_00434c80()
 			}
 
 			racerIndex++;
-			racer++;
 		} while (racerIndex < m_context->m_racerCount);
 	}
 }

@@ -1710,12 +1710,12 @@ void RaceSession::Field0x2098::FUN_00460d10(GolFileParser* p_parser)
 		GolName name;
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
-			case GolFileParser::e_unknown0x33:
+			case GolFileParser::e_unknown0x4a:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
 				params.m_unk0x14 = field->m_unk0x08->FindUnk0xd8(name);
 				break;
-			case GolFileParser::e_unknown0x4a:
+			case GolFileParser::e_unknown0x33:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
 				params.m_unk0x18 = field->m_unk0x00->FindUnk0xc0(name);

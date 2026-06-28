@@ -100,7 +100,7 @@ void RacePowerupManager::Field0x238::VTable0x14()
 	m_unk0x0a8.FUN_00493e60();
 }
 
-// STUB: LEGORACERS 0x00444490
+// FUNCTION: LEGORACERS 0x00444490
 LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x234 & c_flags0x234Bit1) {
@@ -111,8 +111,9 @@ LegoS32 RacePowerupManager::Field0x238::VTable0x18(LegoU32 p_elapsedMs)
 		return FUN_00444820(p_elapsedMs);
 	}
 
-	LegoS32 result = RaceSessionField0x6dcField0xa8::VTable0x18(p_elapsedMs);
-	if (m_unk0x004 == 1) {
+	RaceSessionField0x6dcField0xa8::VTable0x18(p_elapsedMs);
+	LegoS32 result = m_unk0x004;
+	if (result == 1) {
 		LegoFloat elapsedMs = static_cast<LegoFloat>(m_unk0x050);
 		LegoFloat elapsed = elapsedMs / static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x054));
 		m_unk0x220 = (1.0f - elapsed) * m_unk0x21c;
@@ -138,15 +139,13 @@ void RacePowerupManager::Field0x238::FUN_00444540(const GolVec3* p_position, Leg
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);
 	origin.m_z += m_unk0x218;
 
-	GolVec3 delta;
-	delta.m_x = p_position->m_x - origin.m_x;
-	delta.m_y = p_position->m_y - origin.m_y;
-	delta.m_z = p_position->m_z - origin.m_z;
+	LegoFloat deltaX = p_position->m_x - origin.m_x;
+	LegoFloat deltaY = p_position->m_y - origin.m_y;
 
 	GolVec3 step;
-	step.m_x = delta.m_x * g_unk0x004b02e0;
-	step.m_y = delta.m_y * g_unk0x004b02e0;
-	step.m_z = delta.m_z;
+	step.m_x = deltaX * g_unk0x004b02e0;
+	step.m_y = deltaY * g_unk0x004b02e0;
+	step.m_z = p_position->m_z - origin.m_z;
 	m_unk0x0a8.FUN_00493ea0(&origin, &step);
 
 	LegoFloat elapsed = 0.0f;
@@ -177,8 +176,9 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&position);
 	position.m_z += m_unk0x218;
 
+	GolVec3* target = &m_unk0x228;
 	if (GolMath::FUN_00449a90(
-			&m_unk0x228,
+			target,
 			&position,
 			g_unk0x004b0c98,
 			g_unk0x004b0ca0,
@@ -195,9 +195,9 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 
 	LegoFloat amount = m_unk0x224 * g_unk0x004b0ca4;
 	GolVec3 delta;
-	delta.m_x = m_unk0x228.m_x - position.m_x;
-	delta.m_y = m_unk0x228.m_y - position.m_y;
-	delta.m_z = m_unk0x228.m_z - position.m_z;
+	delta.m_x = target->m_x - position.m_x;
+	delta.m_y = target->m_y - position.m_y;
+	delta.m_z = target->m_z - position.m_z;
 
 	GolVec3 step;
 	step.m_x = delta.m_x * g_unk0x004b02e0;
@@ -213,7 +213,7 @@ LegoS32 RacePowerupManager::Field0x238::FUN_00444690(LegoU32 p_elapsedMs)
 		amount = -amount;
 	}
 
-	m_unk0x0a8.FUN_00494870(&m_unk0x228, amount);
+	m_unk0x0a8.FUN_00494870(target, amount);
 	m_unk0x0a8.FUN_00494230();
 
 	return 1;

@@ -25,6 +25,17 @@ undefined2 g_unk0x004c4814[42];
 extern const LegoFloat g_unk0x004afde0 = 10.0f;
 
 extern const LegoFloat g_ghostAnimationRateScale;
+extern const LegoFloat g_ghostSpeedScale;
+extern const LegoFloat g_raceSessionField0xf8CollisionStartOffset;
+
+// GLOBAL: LEGORACERS 0x004b02a0
+extern const LegoFloat g_cobaltTrailBaseLength = 6.5f;
+
+// GLOBAL: LEGORACERS 0x004b02a4
+extern const LegoFloat g_cobaltTrailBaseHalfWidth = 5.5f;
+
+// GLOBAL: LEGORACERS 0x004b02a8
+extern const LegoFloat g_cobaltTrailTipLength = 9.5f;
 
 // GLOBAL: LEGORACERS 0x004b02ac
 extern const LegoFloat g_unk0x004b02ac = 128.0f;
@@ -363,31 +374,50 @@ LegoU32 CobaltTrail0x140::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
 	return extraMinutes;
 }
 
-// STUB: LEGORACERS 0x004247d0
+// FUNCTION: LEGORACERS 0x004247d0
 void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, LegoFloat p_directionY)
 {
-	const LegoFloat tipLength = 9.5f;
-	const LegoFloat baseLength = 6.5f;
-	const LegoFloat baseHalfWidth = 5.5f;
-	const LegoFloat tailLength = 5.0f;
-	const LegoFloat tailHalfWidth = 4.0f;
 	const LegoFloat tailEndLength = 8.0f;
 
+	LegoU8 colorAlpha = 0xff;
 	GolRenderDevice::TexturedVertex vertices[6];
 
-	vertices[0].m_x = p_directionX * tipLength;
-	vertices[0].m_y = p_directionY * tipLength;
-	vertices[1].m_x = p_directionY * baseHalfWidth - p_directionX * baseLength;
-	vertices[1].m_y = -p_directionX * baseHalfWidth - p_directionY * baseLength;
-	vertices[2].m_x = -p_directionY * baseHalfWidth - p_directionX * baseLength;
-	vertices[2].m_y = p_directionX * baseHalfWidth - p_directionY * baseLength;
+	LegoFloat tipX = p_directionX;
+	tipX *= g_cobaltTrailTipLength;
+	vertices[0].m_x = tipX;
+	LegoFloat tipY = p_directionY;
+	tipY *= g_cobaltTrailTipLength;
+	vertices[0].m_y = tipY;
+
+	LegoFloat baseSide = p_directionY;
+	baseSide *= g_cobaltTrailBaseHalfWidth;
+	LegoFloat baseForward = p_directionX;
+	baseForward *= g_cobaltTrailBaseLength;
+	vertices[1].m_x = baseSide - baseForward;
+
+	LegoFloat baseForwardY = p_directionY;
+	baseForwardY *= g_cobaltTrailBaseLength;
+	LegoFloat baseSideX = p_directionX;
+	baseSideX *= g_cobaltTrailBaseHalfWidth;
+	vertices[1].m_y = -baseForwardY - baseSideX;
+	vertices[2].m_x = -baseForward - baseSide;
+	vertices[2].m_y = baseSideX - baseForwardY;
 
 	vertices[3].m_x = p_directionX * tailEndLength;
 	vertices[3].m_y = p_directionY * tailEndLength;
-	vertices[4].m_x = p_directionY * tailHalfWidth - p_directionX * tailLength;
-	vertices[4].m_y = -p_directionX * tailHalfWidth - p_directionY * tailLength;
-	vertices[5].m_x = -p_directionY * tailHalfWidth - p_directionX * tailLength;
-	vertices[5].m_y = p_directionX * tailHalfWidth - p_directionY * tailLength;
+	LegoFloat tailSide = p_directionY;
+	tailSide *= g_ghostSpeedScale;
+	LegoFloat tailForward = p_directionX;
+	tailForward *= g_raceSessionField0xf8CollisionStartOffset;
+	vertices[4].m_x = tailSide - tailForward;
+
+	LegoFloat tailForwardY = p_directionY;
+	tailForwardY *= g_raceSessionField0xf8CollisionStartOffset;
+	LegoFloat tailSideX = p_directionX;
+	tailSideX *= g_ghostSpeedScale;
+	vertices[4].m_y = -tailForwardY - tailSideX;
+	vertices[5].m_x = -tailForward - tailSide;
+	vertices[5].m_y = tailSideX - tailForwardY;
 
 	LegoFloat originX = static_cast<LegoFloat>(p_x);
 	LegoFloat originY = static_cast<LegoFloat>(p_y);
@@ -395,17 +425,19 @@ void CobaltTrail0x140::FUN_004247d0(LegoS32 p_x, LegoS32 p_y, LegoFloat p_direct
 		vertices[i].m_color.m_red = 0;
 		vertices[i].m_color.m_grn = 0;
 		vertices[i].m_color.m_blu = 0;
-		vertices[i].m_color.m_alp = 0xff;
+		vertices[i].m_color.m_alp = colorAlpha;
 		vertices[i].m_z = 0.0f;
-		vertices[i].m_x = vertices[i].m_x * m_unk0x104 + originX;
-		vertices[i].m_y = vertices[i].m_y * m_unk0x114 + originY;
+		LegoFloat scaledX = vertices[i].m_x;
+		scaledX *= m_unk0x104;
+		vertices[i].m_x = scaledX + originX;
+		vertices[i].m_y = m_unk0x114 * vertices[i].m_y + originY;
 	}
 
 	DuskwindBananaRelic0x24* material = m_unk0x118;
 	m_unk0x118 = NULL;
-	vertices[3].m_color.m_grn = 0xff;
-	vertices[4].m_color.m_grn = 0xff;
-	vertices[5].m_color.m_grn = 0xff;
+	vertices[3].m_color.m_grn = colorAlpha;
+	vertices[4].m_color.m_grn = colorAlpha;
+	vertices[5].m_color.m_grn = colorAlpha;
 	FUN_00423fc0(&vertices[1], &vertices[0], &vertices[2]);
 	FUN_00423fc0(&vertices[4], &vertices[3], &vertices[5]);
 	m_unk0x118 = material;

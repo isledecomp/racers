@@ -4404,16 +4404,17 @@ void RaceState::Racer::Field0x018::FUN_0043f1e0(LegoU32 p_elapsedMs)
 					flags |= c_slotFlagsBit1;
 					m_unk0x1f4[i] = flags;
 				}
-				else if (!(m_unk0x1dc->m_unk0x1a4[i].m_flags0x03c & Field0x1dc::Field0x1a4::c_flags0x03cBit0)) {
+				else if (m_unk0x1dc->m_unk0x1a4[i].m_flags0x03c & Field0x1dc::Field0x1a4::c_flags0x03cBit0) {
+					flags &= ~c_slotFlagsBit1;
+					m_unk0x1f4[i] = flags;
+				}
+				else {
 					LegoU32 elapsed = m_unk0x1f8[i] + p_elapsedMs;
 					m_unk0x1f8[i] = elapsed;
 					if (elapsed > 150) {
 						m_unk0x1f4[i] &= ~c_slotFlagsBit1;
 						m_unk0x1f8[i] = 0;
 					}
-				}
-				else {
-					m_unk0x1f8[i] = 0;
 				}
 
 				if (m_unk0x1e4[i]) {
@@ -4442,10 +4443,7 @@ void RaceState::Racer::Field0x018::FUN_0043f1e0(LegoU32 p_elapsedMs)
 	else {
 		GolVec3 slipDirection = m_unk0x1dc->m_unk0x5f8;
 		const GolVec3& side = m_unk0x044->GetOrientation().m_rows[1];
-		LegoFloat dot = slipDirection.m_y;
-		dot *= side.m_y;
-		dot += side.m_z * slipDirection.m_z;
-		dot += side.m_x * slipDirection.m_x;
+		LegoFloat dot = side.m_x * slipDirection.m_x + side.m_y * slipDirection.m_y + side.m_z * slipDirection.m_z;
 		if (dot > 0.0f) {
 			m_unk0x1f4[0] &= ~c_slotFlagsBit0;
 			m_unk0x1f4[2] &= ~c_slotFlagsBit0;

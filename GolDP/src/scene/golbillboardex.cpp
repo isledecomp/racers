@@ -23,7 +23,7 @@ extern const LegoFloat g_unk0x1005675c = 1.0f;
 GolBillboardInitializerFunction g_unk0x1005c010 = &GolBillboard::FUN_10014e20;
 #pragma data_seg()
 
-// STUB: GOLDP 0x10014e20
+// FUNCTION: GOLDP 0x10014e20
 void GolBillboard::FUN_10014e20()
 {
 	g_billboardTexCoords[2].m_y = 0.0f;
@@ -33,7 +33,7 @@ void GolBillboard::FUN_10014e20()
 	g_billboardTexCoords[3].m_y = g_unk0x1005675c;
 }
 
-// STUB: GOLDP 0x10014e50
+// FUNCTION: GOLDP 0x10014e50
 LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_arg2, GolMatrix4* p_matrix)
 {
 	GolVec3 row0;
@@ -49,12 +49,17 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 	if (m_flags & c_flagBit1) {
 		row2 = &m_unk0x30;
-		LegoFloat dot = row2->m_z * row0.m_z;
+		LegoFloat dot = row2->m_z;
+		dot *= row0.m_z;
 		dot += row0.m_y * row2->m_y;
 		dot += row0.m_x * row2->m_x;
 		row0.m_x -= dot * row2->m_x;
-		row0.m_y -= row2->m_y * dot;
-		row0.m_z -= row2->m_z * dot;
+		LegoFloat projection = row2->m_y;
+		projection *= dot;
+		row0.m_y -= projection;
+		projection = row2->m_z;
+		projection *= dot;
+		row0.m_z -= projection;
 	}
 	else {
 		row2 = p_arg2;
@@ -62,9 +67,19 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 	GolMath::NormalizeVector3(row0, &row0);
 
-	row1.m_x = row0.m_z * row2->m_y - row2->m_z * row0.m_y;
-	row1.m_y = row2->m_z * row0.m_x - row0.m_z * row2->m_x;
-	row1.m_z = row0.m_y * row2->m_x - row2->m_y * row0.m_x;
+	row1.m_x = row0.m_z;
+	row1.m_x *= row2->m_y;
+	LegoFloat term = row2->m_z;
+	term *= row0.m_y;
+	row1.m_x -= term;
+	row1.m_y = row2->m_z;
+	row1.m_y *= row0.m_x;
+	row1.m_y -= row0.m_z * row2->m_x;
+	row1.m_z = row0.m_y;
+	row1.m_z *= row2->m_x;
+	term = row2->m_y;
+	term *= row0.m_x;
+	row1.m_z -= term;
 
 	p_matrix->m_m[0][0] = row0.m_x;
 	p_matrix->m_m[0][1] = row0.m_y;
@@ -84,8 +99,12 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 	LegoFloat halfWidth = m_width * 0.5f;
 	LegoFloat halfHeight = m_height * 0.5f;
 	p_matrix->m_m[3][0] = position.m_x - halfWidth * row1.m_x - halfHeight * row2->m_x;
-	p_matrix->m_m[3][1] = position.m_y - halfWidth * row1.m_y - halfHeight * row2->m_y;
-	p_matrix->m_m[3][2] = position.m_z - halfWidth * row1.m_z - halfHeight * row2->m_z;
+	LegoFloat offset = row2->m_y;
+	offset *= halfHeight;
+	p_matrix->m_m[3][1] = position.m_y - halfWidth * row1.m_y - offset;
+	offset = row2->m_z;
+	offset *= halfHeight;
+	p_matrix->m_m[3][2] = position.m_z - halfWidth * row1.m_z - offset;
 	p_matrix->m_m[3][3] = 1.0f;
 
 	return TRUE;

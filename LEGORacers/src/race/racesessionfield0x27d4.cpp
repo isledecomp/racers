@@ -519,31 +519,22 @@ void RaceSessionField0x27d4::FUN_00492680(
 	}
 }
 
-// STUB: LEGORACERS 0x004927c0
+// FUNCTION: LEGORACERS 0x004927c0
 RaceSessionField0x27d4::Item* RaceSessionField0x27d4::FUN_004927c0(LegoU32 p_unk0x04)
 {
 	LegoU32 i = 0;
 	LegoU32 count = m_count;
-	if (count) {
-		LegoU8* flags = &m_items[0].m_flags0x328;
-		do {
-			if (!(*flags & Item::c_flags0x328Bit0)) {
-				break;
-			}
-
-			i++;
-			flags += sizeof(Item);
-		} while (i < count);
+	while (i < count && m_items[i].IsActive()) {
+		i++;
 	}
 
 	if (i == count) {
 		return NULL;
 	}
 
-	Item* items = m_items;
-	items[i].FUN_00491d90(p_unk0x04);
+	m_items[i].FUN_00491d90(p_unk0x04);
 
-	return &items[i];
+	return &m_items[i];
 }
 
 // FUNCTION: LEGORACERS 0x00492820

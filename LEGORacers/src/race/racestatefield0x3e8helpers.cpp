@@ -781,7 +781,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429cf0(LegoFloat p_unk0x04, LegoU32 p_u
 	}
 }
 
-// STUB: LEGORACERS 0x00429d40
+// FUNCTION: LEGORACERS 0x00429d40
 void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 {
 	if (p_elapsedMs == 0) {
@@ -808,13 +808,12 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 
 	FUN_0042a220();
 
-	LegoU32 elapsedMs = p_elapsedMs;
 	for (;;) {
-		if (elapsedMs != 0) {
+		if (p_elapsedMs != 0) {
 			GolVec3 previousPosition;
 			m_unk0x13c->VTable0x04(&previousPosition);
 
-			LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs));
+			LegoFloat elapsed = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
 			LegoU32 flags = m_flags0x6c0;
 			LegoU32 suspendedMask = flags & c_flags0x6c0Bit18;
 			if (suspendedMask || !(flags & (c_flags0x6c0Bit1 | c_flags0x6c0Bit16 | c_flags0x6c0Bit19)) ||
@@ -871,7 +870,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			}
 
 			if ((m_flags0x6c0 & c_flags0x6c0Bit3) || m_unk0x658 != 0.0f) {
-				FUN_004464a0(elapsedMs);
+				FUN_004464a0(p_elapsedMs);
 			}
 
 			if (m_unk0x7c4.m_w != 0.0f || m_unk0x7c4.m_y != 0.0f) {
@@ -885,7 +884,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 				}
 			}
 
-			FUN_0042a290(elapsedMs);
+			FUN_0042a290(p_elapsedMs);
 			FUN_0042a570();
 
 			GolVec3 currentPosition;
@@ -906,10 +905,10 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			m_unk0x74c.m_unk0x2c = speed;
 			FUN_00447880();
 			FUN_0042a220();
-			elapsedMs = m_unk0x3f0;
+			p_elapsedMs = m_unk0x3f0;
 		}
 		else {
-			elapsedMs = FUN_004478b0(elapsedMs, FALSE);
+			p_elapsedMs = FUN_004478b0(p_elapsedMs, FALSE);
 		}
 
 		if (m_unk0x3ec == 0) {

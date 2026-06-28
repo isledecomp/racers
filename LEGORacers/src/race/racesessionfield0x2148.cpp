@@ -2692,14 +2692,14 @@ RaceEventDispatcher0x08::Item0x2e::~Item0x2e()
 // FUNCTION: LEGORACERS 0x0048e370
 LegoS32 RaceEventDispatcher0x08::Item0x2e::ClearFields()
 {
-	m_unk0x3c = NULL;
-	m_unk0x40 = NULL;
-	m_unk0x44 = NULL;
-	m_unk0x38 = NULL;
-	m_unk0x48 = NULL;
 	m_unk0x4c[0] = 0.0f;
 	m_unk0x4c[1] = 0.0f;
 	m_unk0x4c[2] = 0.0f;
+	m_unk0x40 = NULL;
+	m_unk0x44 = NULL;
+	m_unk0x48 = NULL;
+	m_unk0x38 = NULL;
+	m_unk0x3c = NULL;
 	m_unk0x58 = 1;
 
 	return 0;

@@ -1646,7 +1646,7 @@ void GolD3DRenderDevice::VTable0x70(
 	p_image->FUN_100054d0(this, p_unk0x08, &destRect, 0);
 }
 
-// STUB: GOLDP 0x10009a70
+// FUNCTION: GOLDP 0x10009a70
 void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 {
 	LegoBool32 visibility[2];
@@ -1654,8 +1654,8 @@ void GolD3DRenderDevice::VTable0xb4(GolBillboard& p_param)
 	if (visibility[0]) {
 		GolVec3 forward;
 		GolVec3 right;
-		GolTransformBase* orbit = m_unk0x0c->m_transform;
-		orbit->VTable0x1c(&right, &forward);
+		GolCamera* camera = m_unk0x0c;
+		camera->m_transform->VTable0x1c(&right, &forward);
 
 		forward.m_x = -forward.m_x;
 		forward.m_y = -forward.m_y;
@@ -4039,13 +4039,11 @@ void GolD3DRenderDevice::FUN_1000e930(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	cache[p_vertexCount].m_unk0x10 = savedCacheIndex;
 }
 
-// STUB: GOLDP 0x1000eb90
+// FUNCTION: GOLDP 0x1000eb90
 void GolD3DRenderDevice::FUN_1000eb90(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
-	DuskwindBananaRelic0x24* material = m_unk0xc8530.m_material;
-	undefined4 firstTriangle = p_firstTriangle;
-	m_unk0xc854c.m_firstTriangle = firstTriangle;
-	m_unk0xc854c.m_material = material;
+	m_unk0xc854c.m_material = m_unk0xc8530.m_material;
+	m_unk0xc854c.m_firstTriangle = p_firstTriangle;
 	m_unk0xc854c.m_triangleCount = p_triangleCount;
 	m_unk0xc8524->VTable0x0c(&m_unk0xc854c);
 }

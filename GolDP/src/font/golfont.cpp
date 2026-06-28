@@ -121,8 +121,6 @@ void GolFont::RefreshSurfaces(GolD3DRenderDevice* p_renderer)
 // STUB: GOLDP 0x100047b0
 void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_textureFormat)
 {
-	STUB(0x100047b0);
-
 	m_textures = new PurpleDune0x7c[m_surfaceCount];
 	if (m_textures == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -226,8 +224,6 @@ void GolFont::SelectSurface(LegoU32 p_index)
 // STUB: GOLDP 0x10004c20
 void GolFont::VTable0x14(Rect* p_sourceRect, Rect* p_destRect)
 {
-	STUB(0x10004c20);
-
 	LegoS32 sourceBottom = p_sourceRect->m_bottom - 1;
 	D3DTLVERTEX vertices[4];
 

@@ -441,7 +441,7 @@ void RaceState::Racer::Field0xc70::FUN_00420380()
 	m_unk0x000->VTable0x14(0.0f);
 }
 
-// STUB: LEGORACERS 0x004203b0
+// FUNCTION: LEGORACERS 0x004203b0
 void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 {
 	GolVec3 delta;

@@ -1631,10 +1631,10 @@ void RaceSession::Field0x2098::FUN_00460ad0(GolFileParser* p_parser)
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x49:
-				params.m_unk0x14 = p_parser->ReadInteger();
+				params.m_unk0x18 = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x4c:
-				params.m_unk0x18 = p_parser->ReadInteger();
+				params.m_unk0x14 = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x27: {
 				LegoS32 eventIndex = p_parser->GetNextToken() - GolFileParser::e_unknown0x34;
@@ -2721,12 +2721,14 @@ void RaceSession::Field0x2098::AnimatedPartResource0x34::VTable0x04(GolVec3*)
 	}
 }
 
-// STUB: LEGORACERS 0x004635c0
+// FUNCTION: LEGORACERS 0x004635c0
 void RaceSession::Field0x2098::AnimatedPartResource0x34::VTable0x0c()
 {
 	LegoU32 state = m_state0x18;
-	LegoU32 nextState = c_state0x18One;
-	if (state != nextState) {
+	LegoU32 nextState = state;
+	LegoU32 resetState = c_state0x18One;
+	if (state != resetState) {
+		nextState = resetState;
 		GolAnimatedEntity* entity = m_unk0x20;
 		LegoS32 targetPart = m_unk0x28;
 		LegoS32 currentPart = entity->GetCurrentPartIndex();

@@ -429,7 +429,7 @@ void GolAnimatedEntity::FUN_0040db80(
 	m_unk0xdc = m_modelParts[0]->GetPartData()[queuedPartIndex].GetUnk0x04();
 }
 
-// STUB: GOLDP 0x10023b10
+// FUNCTION: GOLDP 0x10023b10
 // STUB: LEGORACERS 0x0040dd60
 void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 {
@@ -455,8 +455,8 @@ void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 				p_elapsed -= static_cast<LegoS32>(consumed);
 				if (flags & c_flagLoopQueuedPart) {
 					flags |= c_flagLoopCurrentPart;
+					m_flags = flags;
 				}
-				m_flags = flags;
 			}
 			else {
 				if (m_unk0xcc) {
@@ -521,7 +521,11 @@ void GolAnimatedEntity::VTable0x10(LegoS32 p_elapsed)
 				}
 				else {
 					if (m_flags & c_flagRestartQueuedPart) {
+#ifdef BUILDING_GOL
+						FUN_10023a70(m_unk0xd8);
+#else
 						FUN_0040dad0(m_unk0xd8);
+#endif
 					}
 					else {
 						m_unk0xb4 = endFrame;

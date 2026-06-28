@@ -882,7 +882,7 @@ void GolImgFile::FUN_10021660(const LegoU8* p_src, LegoU16* p_dst)
 	}
 }
 
-// STUB: GOLDP 0x100219e0
+// FUNCTION: GOLDP 0x100219e0
 // FUNCTION: LEGORACERS 0x0040c400
 void GolImgFile::FUN_100219e0(const LegoU8* p_src, LegoU8* p_dst)
 {

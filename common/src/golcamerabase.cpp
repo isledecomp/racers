@@ -154,8 +154,6 @@ GolCameraBase::~GolCameraBase()
 // STUB: GOLDP 0x1001bfc0
 void GolCameraBase::FUN_1001bfc0(GolViewFrustum* p_view)
 {
-	STUB(0x1001bfc0);
-
 	m_transform->GetPosition(&p_view->m_position);
 
 	LegoFloat tangent = static_cast<LegoFloat>(tan(m_fov * 0.0087266462f));
@@ -260,8 +258,6 @@ void GolCameraBase::FUN_1001bfc0(GolViewFrustum* p_view)
 // STUB: GOLDP 0x1001c450
 void GolCameraBase::FUN_1001c450(GolViewFrustum* p_view)
 {
-	STUB(0x1001c450);
-
 	m_transform->GetPosition(&p_view->m_position);
 
 	LegoFloat farScale = m_farClip / m_nearClip;
@@ -386,55 +382,59 @@ LegoBool32 GolCameraBase::VTable0x24(GolVec3* p_center, LegoFloat p_radius, GolV
 	m_transform->GetUp(&up);
 
 	const GolViewFrustum::Plane* plane = &m_viewFrustum.m_planes[1];
-	LegoFloat dot = up.m_z * plane->m_normal.m_z;
-	dot += up.m_y * plane->m_normal.m_y;
+	LegoFloat dot = plane->m_normal.m_z;
+	dot *= up.m_z;
+	dot += plane->m_normal.m_y * up.m_y;
 	dot += up.m_x * plane->m_normal.m_x;
 	dot = -dot;
 	LegoFloat scale = p_radius / dot;
-	scaledAxis.m_x = up.m_x * scale;
-	scaledAxis.m_y = up.m_y * scale;
+	scaledAxis.m_x = scale * up.m_x;
+	scaledAxis.m_y = scale * up.m_y;
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
-	tangentPoint.m_z = up.m_z * scale + p_center->m_z;
+	tangentPoint.m_z = scale * up.m_z + p_center->m_z;
 	VTable0x20(&tangentPoint, &projectedPlane1);
 
 	plane = &m_viewFrustum.m_planes[0];
-	dot = up.m_z * plane->m_normal.m_z;
-	dot += up.m_y * plane->m_normal.m_y;
+	dot = plane->m_normal.m_z;
+	dot *= up.m_z;
+	dot += plane->m_normal.m_y * up.m_y;
 	dot += up.m_x * plane->m_normal.m_x;
 	scale = -(p_radius / dot);
-	scaledAxis.m_x = up.m_x * scale;
-	scaledAxis.m_y = up.m_y * scale;
+	scaledAxis.m_x = scale * up.m_x;
+	scaledAxis.m_y = scale * up.m_y;
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
-	tangentPoint.m_z = up.m_z * scale + p_center->m_z;
+	tangentPoint.m_z = scale * up.m_z + p_center->m_z;
 	VTable0x20(&tangentPoint, &projectedPlane0);
 
 	m_transform->GetForward(&forward);
 
 	plane = &m_viewFrustum.m_planes[3];
-	dot = forward.m_z * plane->m_normal.m_z;
-	dot += forward.m_y * plane->m_normal.m_y;
+	dot = plane->m_normal.m_z;
+	dot *= forward.m_z;
+	dot += plane->m_normal.m_y * forward.m_y;
 	dot += forward.m_x * plane->m_normal.m_x;
 	scale = -(p_radius / dot);
-	scaledAxis.m_x = forward.m_x * scale;
-	scaledAxis.m_y = forward.m_y * scale;
+	scaledAxis.m_x = scale * forward.m_x;
+	scaledAxis.m_y = scale * forward.m_y;
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
-	tangentPoint.m_z = forward.m_z * scale + p_center->m_z;
+	tangentPoint.m_z = scale * forward.m_z + p_center->m_z;
 	VTable0x20(&tangentPoint, &projectedPlane3);
 
 	plane = &m_viewFrustum.m_planes[2];
-	dot = forward.m_z * plane->m_normal.m_z;
-	dot += forward.m_y * plane->m_normal.m_y;
+	dot = plane->m_normal.m_z;
+	dot *= forward.m_z;
+	dot += plane->m_normal.m_y * forward.m_y;
 	dot += forward.m_x * plane->m_normal.m_x;
 	dot = -dot;
 	scale = p_radius / dot;
-	scaledAxis.m_x = forward.m_x * scale;
-	scaledAxis.m_y = forward.m_y * scale;
+	scaledAxis.m_x = scale * forward.m_x;
+	scaledAxis.m_y = scale * forward.m_y;
 	tangentPoint.m_x = scaledAxis.m_x + p_center->m_x;
 	tangentPoint.m_y = scaledAxis.m_y + p_center->m_y;
-	tangentPoint.m_z = forward.m_z * scale + p_center->m_z;
+	tangentPoint.m_z = scale * forward.m_z + p_center->m_z;
 	VTable0x20(&tangentPoint, &projectedPlane2);
 
 	p_bounds->m_z = projectedPlane1.m_x;

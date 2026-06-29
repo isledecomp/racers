@@ -211,9 +211,9 @@ undefined4 MenuWidget::HitTest(LegoS32 p_x, LegoS32 p_y)
 }
 
 // STUB: LEGORACERS 0x00472c80
-Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
+void MenuWidget::FUN_00472c80(const Rect* p_source, Rect* p_dest) const
 {
-	Rect* source = p_source;
+	const Rect* source = p_source;
 	LegoU32 sourceTop = source->m_top;
 	LegoU32 sourceHeight = source->m_bottom;
 	LegoS32 sourceLeft = source->m_left;
@@ -248,12 +248,10 @@ Rect* MenuWidget::FUN_00472c80(Rect* p_source, Rect* p_dest)
 		dest->m_top = source->m_top;
 		dest->m_bottom = source->m_bottom;
 	}
-
-	return dest;
 }
 
 // FUNCTION: LEGORACERS 0x00472d00
-Rect* MenuWidget::MeasureText(
+void MenuWidget::MeasureText(
 	GolFontBase* p_font,
 	GolString* p_string,
 	Rect* p_source,
@@ -275,7 +273,7 @@ Rect* MenuWidget::MeasureText(
 	p_dest->m_top = 0;
 	p_dest->m_right = width;
 	p_dest->m_bottom = height;
-	return FUN_00472c80(p_source, p_dest);
+	FUN_00472c80(p_source, p_dest);
 }
 
 // FUNCTION: LEGORACERS 0x00472d70

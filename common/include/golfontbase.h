@@ -57,7 +57,7 @@ public:
 	LegoBool32 ComputeClipRect(GolRenderDevice*, Rect*, Rect*);
 	void ClipRects(Rect*, Rect*, Rect*, LegoFloat, LegoFloat);
 	static LegoS32 __cdecl CompareGlyphChars(const void* p_left, const void* p_right);
-	void MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height);
+	void MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height) const;
 	void MeasureString(const LegoChar* p_string, LegoS32* p_width, LegoS32* p_height);
 	void FUN_00408d50(
 		GolString* p_string,
@@ -81,7 +81,7 @@ public:
 		ColorRGBA* p_color,
 		LegoS32 p_unk0x2c
 	);
-	LegoU32 FindGlyphIndex(LegoU16 p_char);
+	LegoU32 FindGlyphIndex(LegoU16 p_char) const;
 
 	LegoBool32 HasLoadedData() const { return m_glyphs != NULL; }
 	void SetColor(LegoU8 p_red, LegoU8 p_green, LegoU8 p_blue, LegoU8 p_alpha)

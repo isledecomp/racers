@@ -26,9 +26,9 @@ GolBillboardInitializerFunction g_unk0x1005c010 = &GolBillboard::FUN_10014e20;
 // FUNCTION: GOLDP 0x10014e20
 void GolBillboard::FUN_10014e20()
 {
-	g_billboardTexCoords[2].m_y = 0.0f;
 	g_billboardTexCoords[1].m_y = g_unk0x1005675c;
 	g_billboardTexCoords[2].m_x = g_unk0x1005675c;
+	g_billboardTexCoords[2].m_y = 0.0f;
 	g_billboardTexCoords[3].m_x = g_unk0x1005675c;
 	g_billboardTexCoords[3].m_y = g_unk0x1005675c;
 }
@@ -96,8 +96,8 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 	p_matrix->m_m[2][2] = row2->m_z;
 	p_matrix->m_m[2][3] = 0.0f;
 
-	LegoFloat halfWidth = m_width * 0.5f;
-	LegoFloat halfHeight = m_height * 0.5f;
+	LegoFloat halfWidth = m_width / 2.0f;
+	LegoFloat halfHeight = m_height / 2.0f;
 	p_matrix->m_m[3][0] = position.m_x - halfWidth * row1.m_x - halfHeight * row2->m_x;
 	LegoFloat offset = row2->m_y;
 	offset *= halfHeight;

@@ -1,0 +1,39 @@
+name: Post reccmp output as PR comment
+
+# Runs after the Build workflow finishes. Triggered via workflow_run so it
+# executes in the base-repo context with a writable token, which lets it comment
+# on pull requests opened from forks (those builds only get a read-only token).
+on:
+  workflow_run:
+    workflows: [Build]
+    types: [completed]
+
+jobs:
+  comment:
+    name: Comment reccmp report
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.event == 'pull_request' && github.event.workflow_run.conclusion == 'success'  }}
+    permissions:
+      actions: read
+      issues: write
+      pull-requests: write
+    steps:
+      - name: Download PR comment payload
+        id: download
+        continue-on-error: true
+        uses: actions/download-artifact@v8
+        with:
+          name: reccmp-pr-comment
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+
+      - name: Post comment
+        if: ${{ steps.download.outcome == 'success' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "$(cat pr-number.txt)" \
+            --repo "${{ github.repository }}" \
+            --create-if-none \
+            --edit-last \
+            --body-file reccmp-pr-message.txt

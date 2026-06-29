@@ -539,11 +539,17 @@ if (MSVC_FOR_DECOMP)
 #Embed debug information(/ Z7) for Debug and RelWithDebInfo configuration type
   set_property(TARGET goldp legoracers common_goldp common_legoracers PROPERTY MSVC_DEBUG_INFORMATION_FORMAT "$<$<CONFIG:Debug,RelWithDebInfo>:Embedded>")
 
-  set(CMAKE_CXX_FLAGS "/W3 /GX /D \"WIN32\" /D \"_WINDOWS\"")
-  set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Od /D \"_DEBUG\"")
-  set(CMAKE_CXX_FLAGS_RELEASE "/O2 /D \"NDEBUG\"")
-  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /D \"NDEBUG\"")
-  set(CMAKE_CXX_FLAGS_MINSIZEREL "/Os /D \"NDEBUG\"")
+  set(CMAKE_CXX_FLAGS "/W3 /GX /DWIN32 /D_WINDOWS")
+  set(CMAKE_CXX_FLAGS_DEBUG "/Gm /Od /D_DEBUG")
+  set(CMAKE_CXX_FLAGS_RELEASE "/O2 /DNDEBUG")
+  set(CMAKE_CXX_FLAGS_RELWITHDEBINFO "/O2 /DNDEBUG")
+  set(CMAKE_CXX_FLAGS_MINSIZEREL "/Os /DNDEBUG")
+
+  set(CMAKE_C_FLAGS "${CMAKE_CXX_FLAGS}")
+  set(CMAKE_C_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG}")
+  set(CMAKE_C_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE}")
+  set(CMAKE_C_FLAGS_RELWITHDEBINFO "${CMAKE_CXX_FLAGS_RELWITHDEBINFO}")
+  set(CMAKE_C_FLAGS_MINSIZEREL "${CMAKE_CXX_FLAGS_MINSIZEREL}")
 
   set(CMAKE_EXE_LINKER_FLAGS "/machine:I386")
   set(CMAKE_EXE_LINKER_FLAGS_DEBUG "/incremental:yes /debug")
@@ -632,8 +638,13 @@ foreach(target ${RECCMP_TARGETS})
   add_custom_command(OUTPUT "${progress_local}" COMMAND ${download_command})
   add_custom_target(show-progress-${reccmp_id}
     COMMENT "Compare progress of ${reccmp_id} with current git master"
-    COMMAND reccmp-reccmp --target ${reccmp_id} --nolib --diff "${progress_local}"
+    COMMAND reccmp-reccmp --target ${reccmp_id} --diff "${progress_local}"
     DEPENDS "${progress_local}"
   )
   add_dependencies(show-progress show-progress-${reccmp_id})
 endforeach()
+
+if(MSVC_FOR_DECOMP)
+  add_subdirectory(3rdparty/libcmt)
+  target_link_libraries(goldp PRIVATE patched-libcmt)
+endif()

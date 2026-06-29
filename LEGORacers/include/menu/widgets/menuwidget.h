@@ -73,8 +73,8 @@ public:
 	Rect* GetGlobalRect();
 	Rect* GetRect() { return &m_unk0x34; }
 	LegoBool32 ClipRect(Rect*, Rect*);
-	Rect* FUN_00472c80(Rect*, Rect*);
-	Rect* MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
+	void FUN_00472c80(const Rect*, Rect*) const;
+	void MeasureText(GolFontBase*, GolString*, Rect*, Rect*, LegoS32);
 	void DrawImage(Rect*, Rect*, UtopianPan0xa4*);
 	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);
 	Rect* TranslateRectByOffset(Rect*);

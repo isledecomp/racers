@@ -458,9 +458,9 @@ void GolFontBase::CopyGlyphsToTextures()
 
 // FUNCTION: GOLDP 0x1001e970
 // FUNCTION: LEGORACERS 0x00408be0
-void GolFontBase::MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height)
+void GolFontBase::MeasureString(GolString* p_string, LegoS32* p_width, LegoS32* p_height) const
 {
-	GolFontBase* font = this;
+	const GolFontBase* font = this;
 
 	if (p_string == NULL) {
 		if (p_width != NULL) {
@@ -822,7 +822,7 @@ void GolFontBase::FUN_00408fe0(
 }
 
 // FUNCTION: LEGORACERS 0x004092b0
-LegoU32 GolFontBase::FindGlyphIndex(LegoU16 p_char)
+LegoU32 GolFontBase::FindGlyphIndex(LegoU16 p_char) const
 {
 	LegoS32 low = 0;
 	LegoS32 high = m_glyphCount - 1;

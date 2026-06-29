@@ -162,6 +162,7 @@ void AmethystBreeze0x104::VTable0x08(DrawCommand* p_command)
 	);
 }
 
+// FUNCTION: GOLDP 0x1002c020 FOLDED
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void AmethystBreeze0x104::VTable0x0c(MaterialCommand*)
 {

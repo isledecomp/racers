@@ -43,23 +43,26 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v6
+    - name: 'Checkout racers sources'
+      uses: actions/checkout@v6
 
-    - uses: actions/checkout@v6
+    - name: 'Checkout MSVC6 RTM toolchain'
+      uses: actions/checkout@v6
       with:
         repository: isledecomp/MSVC600-8168
         path: msvc600
 
-    - name: Setup cmake
-      uses: jwlawson/actions-setup-cmake@v2
+    - name: 'Checkout MSVC6 SP3 toolchain'
+      uses: actions/checkout@v6
       with:
-        cmake-version: '3.25.x'
+        repository: isledecomp/MSVC600-8447
+        path: msvc600sp3
 
     - name: Build
       shell: cmd
       run: |
         call .\msvc600\VC98\Bin\VCVARS32.BAT x86
-        cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo -G "NMake Makefiles"
+        cmake -B build -DCMAKE_BUILD_TYPE=RelWithDebInfo "-DMSVC_CRT_SRC_PATH=${{ github.workspace }}/msvc600sp3/VC98/crt/src" -G "NMake Makefiles"
         cmake --build build
 
     - name: Upload Artifact

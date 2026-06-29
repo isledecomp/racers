@@ -165,6 +165,7 @@ jobs:
           echo "## $1"
           echo '```'
           if [ -f "$2" ]; then
+            sed -i -E 's/\x1B\[[0-9;]*[[:alpha:]]//g' "$2"
             python -c "print(open('$2').read().strip())";
           else
             echo '(no diff available)';

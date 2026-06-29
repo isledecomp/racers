@@ -49,9 +49,10 @@ void WhiteBaffoon0x50::Reset()
 	m_unk0x08 = 0;
 }
 
-// STUB: GOLDP 0x1001f330
+// FUNCTION: GOLDP 0x1001f330
 void WhiteBaffoon0x50::VTable0x10()
 {
+	GolSurfaceFormat imageFormat;
 	WhiteBaffoon0x50::WhiteBaffoonImageName imageName;
 	imageName.m_name[0] = m_name[0];
 	imageName.m_name[1] = m_name[1];
@@ -64,13 +65,12 @@ void WhiteBaffoon0x50::VTable0x10()
 
 	imageFile->VTable0x08(imageName.m_chars);
 
-	GolSurfaceFormat imageFormat = imageFile->GetTextureFormat();
+	imageFormat = imageFile->GetTextureFormat();
 	m_renderer->SelectTextureFormat(imageFormat, &m_unk0x0c, m_flags & c_flagBit5);
 	m_width = imageFile->GetWidth();
 	m_height = imageFile->GetHeight();
 	FUN_1001f430();
 
-	ColorRGBA* colorKey = NULL;
 	if (m_flags & c_flagBit5) {
 		if (m_renderer->GetFlags() & GolRenderDevice::c_flagBit9) {
 			imageFile->SetUnk0x0a0(g_unk0x10057668);
@@ -79,10 +79,12 @@ void WhiteBaffoon0x50::VTable0x10()
 			imageFile->SetUnk0x0a0(m_colorKey);
 		}
 
-		colorKey = &m_colorKey;
+		imageFile->VTable0x1c(this, m_flags & c_flagBit2, &m_colorKey);
+	}
+	else {
+		imageFile->VTable0x1c(this, m_flags & c_flagBit2, NULL);
 	}
 
-	imageFile->VTable0x1c(this, m_flags & c_flagBit2, colorKey);
 	imageFile->Destroy();
 }
 

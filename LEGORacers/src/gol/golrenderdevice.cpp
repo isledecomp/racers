@@ -84,7 +84,7 @@ DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_n
 	return NULL;
 }
 
-// STUB: LEGORACERS 0x004133a0
+// FUNCTION: LEGORACERS 0x004133a0
 LegoU32 GolBillboard::FUN_10029e90(
 	MaterialTable0x0c* p_container,
 	LegoS32 p_index,
@@ -96,7 +96,7 @@ LegoU32 GolBillboard::FUN_10029e90(
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
 	LegoU32 result = VTable0x4c(
-		static_cast<DuskwindBananaRelic0x24*>(p_container->GetPosition(p_index)),
+		static_cast<DuskwindBananaRelic0x24*>(p_container->m_entries[p_index]),
 		p_width,
 		p_height,
 		p_maxDistanceSquared

@@ -4477,8 +4477,6 @@ void GolD3DRenderDevice::FUN_10010500(LegoU32 p_firstTriangle, LegoU32 p_triangl
 // STUB: GOLDP 0x100106d0
 void GolD3DRenderDevice::FUN_100106d0(undefined4 p_firstTriangle, undefined4 p_triangleCount, undefined4)
 {
-	STUB(0x100106d0);
-
 	LegoU32 firstTriangle = p_firstTriangle;
 	LegoU32 triangleCount = p_triangleCount;
 	LegoU32 commandIndex = m_unk0xc86f4;
@@ -5181,7 +5179,7 @@ void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVert
 	vertexMap[0] = static_cast<LegoU16>(m_unk0xc3848);
 	m_unk0xc3848 += p_vertexCount;
 
-	for (; source < sourceEnd; source++, vertex++, vertexMap++) {
+	for (; source < sourceEnd;) {
 		vertex->sx = m_unk0xc8518->m_m[0][0] * source->m_x;
 		vertex->sy = m_unk0xc8518->m_m[0][1] * source->m_x;
 		vertex->sz = m_unk0xc8518->m_m[0][2] * source->m_x;
@@ -5205,7 +5203,10 @@ void GolD3DRenderDevice::FUN_10013110(LegoU32 p_outputFirst, LegoU32 p_firstVert
 		vertex->color = 0;
 		vertex->sx *= vertex->rhw;
 		vertex->sy *= vertex->rhw;
-		vertex->sz *= vertex->rhw;
+		source++;
+		vertex++;
+		vertexMap++;
+		vertex[-1].sz = vertex[-1].rhw * vertex[-1].sz;
 	}
 
 	vertexMap[p_vertexCount] = savedMapEntry;

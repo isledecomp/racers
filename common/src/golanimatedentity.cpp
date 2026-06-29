@@ -567,14 +567,17 @@ void GolAnimatedEntity::VTable0x4c(LegoU32 p_index)
 			center2.m_y = bounds2.m_y;
 			center2.m_z = bounds2.m_z;
 
-			center = (center + center2) * 0.5f;
+			center.m_x = (center.m_x + center2.m_x) * 0.5f;
+			center.m_y = (center.m_y + center2.m_y) * 0.5f;
+			center.m_z = (center.m_z + center2.m_z) * 0.5f;
 			if (radius < bounds2.m_u) {
 				radius = bounds2.m_u;
 			}
 
-			GolVec3 delta = center - center2;
-			radius +=
-				static_cast<LegoFloat>(sqrt(delta.m_x * delta.m_x + delta.m_y * delta.m_y + delta.m_z * delta.m_z));
+			LegoFloat deltaX = center.m_x - center2.m_x;
+			LegoFloat deltaY = center.m_y - center2.m_y;
+			LegoFloat deltaZ = center.m_z - center2.m_z;
+			radius += static_cast<LegoFloat>(sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ));
 		}
 
 		scale = model->GetScale() * m_unk0x58;
@@ -646,8 +649,8 @@ void GolAnimatedEntity::FUN_0040e3c0(
 	GolVec3* p_dest
 )
 {
-	LegoFloat timeScale = m_unk0xb8;
 	CmbModelPart0x34* modelPart = m_modelParts[p_modelIndex];
+	LegoFloat timeScale = m_unk0xb8;
 	CmbModelPartData0x28* partData = modelPart->GetPartData();
 	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
 	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;
@@ -669,8 +672,8 @@ void GolAnimatedEntity::FUN_0040e420(
 	GolQuat* p_dest
 )
 {
-	LegoFloat timeScale = m_unk0xb8;
 	CmbModelPart0x34* modelPart = m_modelParts[p_modelIndex];
+	LegoFloat timeScale = m_unk0xb8;
 	CmbModelPartData0x28* partData = modelPart->GetPartData();
 	CmbModelPartData0x18& animationData = modelPart->GetAnimationData();
 	LegoFloat time = static_cast<LegoFloat>(p_frame) * timeScale;

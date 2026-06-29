@@ -179,7 +179,9 @@ void GolTransform::VTable0x28(GolVec3* p_up, GolVec3* p_right)
 // FUNCTION: GOLDP 0x10002c10
 void GolTransform::VTable0x04(const GolVec3* p_src, GolVec3* p_dest)
 {
-	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	LegoFloat product = m_unk0x10.m_m[0][0];
+	product *= p_src->m_x;
+	p_dest->m_x = product;
 	p_dest->m_y = m_unk0x10.m_m[0][1] * p_src->m_x;
 	p_dest->m_z = m_unk0x10.m_m[0][2] * p_src->m_x;
 
@@ -199,7 +201,9 @@ void GolTransform::VTable0x04(const GolVec3* p_src, GolVec3* p_dest)
 // FUNCTION: GOLDP 0x10002c90
 void GolTransform::VTable0x0c(const GolVec3* p_src, GolVec3* p_dest)
 {
-	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	LegoFloat product = m_unk0x10.m_m[0][0];
+	product *= p_src->m_x;
+	p_dest->m_x = product;
 	p_dest->m_y = m_unk0x10.m_m[0][1] * p_src->m_x;
 	p_dest->m_z = m_unk0x10.m_m[0][2] * p_src->m_x;
 
@@ -265,7 +269,9 @@ void GolTransform::VTable0x08(const GolVec3* p_src, GolVec3* p_dest)
 // FUNCTION: GOLDP 0x10002dc0
 void GolTransform::VTable0x10(const GolVec3* p_src, GolVec3* p_dest)
 {
-	p_dest->m_x = m_unk0x10.m_m[0][0] * p_src->m_x;
+	LegoFloat product = m_unk0x10.m_m[0][0];
+	product *= p_src->m_x;
+	p_dest->m_x = product;
 	p_dest->m_y = m_unk0x10.m_m[1][0] * p_src->m_x;
 	p_dest->m_z = m_unk0x10.m_m[2][0] * p_src->m_x;
 

@@ -35,8 +35,9 @@ void CreateGolImport(GolImport* p_import)
 // FUNCTION: GOLDP 0x10032b80
 void SetGolImport(GolImport* p_import)
 {
-	g_fileSourceCount = p_import->m_fileSourceCount;
+	LegoU32 fileSourceCount = p_import->m_fileSourceCount;
 	g_fileSources = p_import->m_fileSources;
+	g_fileSourceCount = fileSourceCount;
 	GolStream::FUN_100320d0();
 	for (LegoU32 i = 0; i < p_import->m_searchPathCount; i++) {
 		GolStream::FUN_10032110(p_import->m_searchPaths[i]);

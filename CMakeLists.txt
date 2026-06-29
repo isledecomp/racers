@@ -134,6 +134,7 @@ set(COMMON_SOURCES
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
   common/src/duskwindbananarelic0x24.cpp
+  common/src/amethystbreeze0x104.cpp
   common/src/golmateriallibrary.cpp
 )
 
@@ -351,7 +352,6 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/slatebridge0x68.cpp
   LEGORacers/src/race/circuitracerunner.cpp
   LEGORacers/src/race/circuitstandings.cpp
-  LEGORacers/src/util/amethystbreeze0x104.cpp
   LEGORacers/src/app/golapp.cpp
   LEGORacers/src/gol/golrenderdevice.cpp
   LEGORacers/src/model/golworlddatabase.cpp

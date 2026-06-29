@@ -1,5 +1,6 @@
 #include "menu/menumanager.h"
 
+#include "amethystbreeze0x104.h"
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
@@ -25,7 +26,6 @@
 #include "render/goldrawstate.h"
 #include "save/memorycardsavegame.h"
 #include "surface/purpledune0x7c.h"
-#include "util/amethystbreeze0x104.h"
 
 #include <float.h>
 #include <golerror.h>

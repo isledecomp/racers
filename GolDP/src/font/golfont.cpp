@@ -315,7 +315,7 @@ void GolFont::CopyGlyphsToTextures(
 	LegoU32 destPitch;
 	texture->LockPixels(&destPixels, &destPitch, SilverDune0x30::c_lockRequestWrite);
 
-	for (LegoU32 i = 0; i < font->m_glyphCount; i++) {
+	for (LegoU32 i = 0; i < static_cast<LegoU32>(font->m_glyphCount); i++) {
 		if (font->m_glyphs[i].m_surfaceIndex != currentSurface) {
 			texture->UnlockPixels();
 			currentSurface = font->m_glyphs[i].m_surfaceIndex;

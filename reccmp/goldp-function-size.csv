@@ -360,8 +360,7 @@ address,type,size
 10014a40,function,21
 10014a60,function,202
 10014b30,function,240
-10014c20,function,273
-10014d31,function,53
+10014c20,function,326
 10014d70,function,132
 10014e00,function,31
 10014e20,function,42
@@ -700,9 +699,7 @@ address,type,size
 100261b0,function,32
 100261d0,function,30
 100261f0,function,115
-10026270,function,1701
-10026915,function,65
-10026956,function,14
+10026270,function,1780
 10026970,function,137
 10026a00,function,68
 10026a50,function,46

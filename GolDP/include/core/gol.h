@@ -45,6 +45,7 @@ class GolExport {
 	// GolExport::`scalar deleting destructor'
 
 protected:
+	// FUNCTION: GOLDP 0x10007160
 	virtual ~GolExport() {} // vtable+0x00
 
 public:

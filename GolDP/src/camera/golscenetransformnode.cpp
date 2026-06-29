@@ -113,24 +113,27 @@ void GolSceneTransformNode::VTable0x24(const GolMatrix34* p_m)
 // STUB: GOLDP 0x10014c20
 void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 {
+	LegoU32 i = 0;
+
 	if (m_unk0x14 == NULL) {
-		for (LegoU32 i = 0; i < m_capacity; i++) {
-			GolTransform* obj = &m_unk0x18[i];
+		GolTransform* obj = m_unk0x18;
+		GolTransform* end = &m_unk0x18[m_capacity];
+
+		for (; obj < end; obj++) {
 			GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
-			if (parent != NULL) {
-				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+			if (parent == NULL) {
+				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
 			}
 			else {
-				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
 			}
 		}
 		return;
 	}
 
-	for (LegoU32 i = 0; i < m_capacity; i++) {
+	for (; i < m_capacity; i++) {
 		GolTransform* obj = &m_unk0x18[i];
 		GolTransform* parent = static_cast<GolTransform*>(obj->m_unk0x04);
-		const GolMatrix4& parentMatrix = parent != NULL ? parent->m_unk0x90 : p_m;
 
 		if (m_unk0x14->VTable0x00(i)) {
 			GolQuat rotation;
@@ -141,10 +144,20 @@ void GolSceneTransformNode::VTable0x20(const GolMatrix4& p_m)
 			position.m_y = obj->m_unk0x10.m_m[3][1];
 			position.m_z = obj->m_unk0x10.m_m[3][2];
 
-			m_unk0x14->VTable0x04(i, rotation, position, parentMatrix, &obj->m_unk0x90);
+			if (parent != NULL) {
+				m_unk0x14->VTable0x04(i, rotation, position, parent->m_unk0x90, &obj->m_unk0x90);
+			}
+			else {
+				m_unk0x14->VTable0x04(i, rotation, position, p_m, &obj->m_unk0x90);
+			}
 		}
 		else {
-			GolMath::FUN_1002f450(obj->m_unk0x10, parentMatrix, &obj->m_unk0x90);
+			if (parent != NULL) {
+				GolMath::FUN_1002f450(obj->m_unk0x10, parent->m_unk0x90, &obj->m_unk0x90);
+			}
+			else {
+				GolMath::FUN_1002f450(obj->m_unk0x10, p_m, &obj->m_unk0x90);
+			}
 		}
 	}
 }

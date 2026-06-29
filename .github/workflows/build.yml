@@ -117,8 +117,8 @@ jobs:
     - name: Summarize Accuracy
       shell: bash
       run: |
-        reccmp-reccmp -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png --target LEGORACERS --total 3986 --nolib --json LEGORACERSPROGRESS.json --html LEGORACERSPROGRESS.HTML
-        reccmp-reccmp -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png --target GOLDP --total 1071 --nolib --json GOLDPPROGRESS.json --html GOLDPPROGRESS.HTML
+        reccmp-reccmp -S LEGORACERSPROGRESS.SVG --svg-icon assets/legoracers.png --target LEGORACERS --total 3986 --json LEGORACERSPROGRESS.json --html LEGORACERSPROGRESS.HTML
+        reccmp-reccmp -S GOLDPPROGRESS.SVG --svg-icon assets/goldp.png --target GOLDP --total 1071 --json GOLDPPROGRESS.json --html GOLDPPROGRESS.HTML
 
     - name: Compare Accuracy With Current Master
       shell: bash
@@ -128,8 +128,8 @@ jobs:
         curl -fLSs -o LEGORACERSPROGRESS-old.json $RELEASE_URL/LEGORACERSPROGRESS.json || echo "" >LEGORACERSPROGRESS-old.json
         curl -fLSs -o GOLDPPROGRESS-old.json $RELEASE_URL/GOLDPPROGRESS.json || echo "" >GOLDPPROGRESS-old.json
 
-        (reccmp-reccmp --target LEGORACERS --nolib --diff LEGORACERSPROGRESS-old.json || echo "Current master not found")>"LEGORACERS-diff.txt"
-        (reccmp-reccmp --target GOLDP --nolib --diff GOLDPPROGRESS-old.json || echo "Current master not found")>"GOLDP-diff.txt"
+        (reccmp-reccmp --target LEGORACERS --diff LEGORACERSPROGRESS-old.json || echo "Current master not found")>"LEGORACERS-diff.txt"
+        (reccmp-reccmp --target GOLDP --diff GOLDPPROGRESS-old.json || echo "Current master not found")>"GOLDP-diff.txt"
 
         cat LEGORACERS-diff.txt
         cat GOLDP-diff.txt

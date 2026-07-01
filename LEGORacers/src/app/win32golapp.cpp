@@ -391,7 +391,7 @@ LegoBool32 Win32GolApp::IsCursorInClientArea(HWND p_hWnd)
 // FUNCTION: LEGORACERS 0x00416db0
 void Win32GolApp::UpdateMousePosition()
 {
-	m_eventHandler->VTable0x28();
+	m_eventHandler->OnCursorInside();
 
 	if (m_windowMode == c_windowModeWindowed) {
 		RECT rect;
@@ -410,7 +410,7 @@ void Win32GolApp::UpdateMousePosition()
 
 		if (cursorPos.x < topLeft.x || cursorPos.x >= bottomRight.x || cursorPos.y < topLeft.y ||
 			cursorPos.y >= bottomRight.y) {
-			m_eventHandler->VTable0x2c();
+			m_eventHandler->OnCursorOutside();
 		}
 		else {
 			LegoFloat width = (LegoFloat) m_golDrawState->m_width;
@@ -421,7 +421,7 @@ void Win32GolApp::UpdateMousePosition()
 			cursorPos.y -= topLeft.y;
 			cursorPos.x = static_cast<LONG>(static_cast<LegoFloat>(cursorPos.x) / xScale);
 			cursorPos.y = static_cast<LONG>(static_cast<LegoFloat>(cursorPos.y) / yScale);
-			m_eventHandler->VTable0x24(cursorPos.x, cursorPos.y);
+			m_eventHandler->OnCursorMoved(cursorPos.x, cursorPos.y);
 		}
 	}
 }
@@ -481,7 +481,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 	m_windowStateChanging = TRUE;
 
 	if (m_eventHandler) {
-		m_eventHandler->VTable0x0c();
+		m_eventHandler->OnWindowModeChanging();
 	}
 
 	m_golDrawState->VTable0x50();
@@ -551,7 +551,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 		}
 
 		if (m_eventHandler) {
-			m_eventHandler->VTable0x10();
+			m_eventHandler->OnWindowModeChanged();
 		}
 	}
 	else if (p_mode == c_windowModeFullscreen) {
@@ -579,7 +579,7 @@ void Win32GolApp::ChangeWindowState(LegoU32 p_mode)
 		m_golDrawState->VTable0x54(m_width, m_height, m_bpp, fullscreenFlags);
 
 		if (m_eventHandler) {
-			m_eventHandler->VTable0x10();
+			m_eventHandler->OnWindowModeChanged();
 		}
 	}
 	else if (p_mode == c_windowModeMinimized) {
@@ -613,7 +613,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 				OutputDebugString("--App was enabled\n");
 				self->OnAppDeactivated();
 				if (self->m_eventHandler) {
-					self->m_eventHandler->VTable0x04();
+					self->m_eventHandler->OnAppDeactivated();
 				}
 			}
 		}
@@ -662,7 +662,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 				}
 
 				if (self->m_eventHandler) {
-					self->m_eventHandler->VTable0x08();
+					self->m_eventHandler->OnAppActivated();
 				}
 
 				if (self->m_windowMode == Win32GolApp::c_windowModeMinimized ||
@@ -724,7 +724,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 					OutputDebugString("--App was enabled\n");
 					self->OnAppDeactivated();
 					if (self->m_eventHandler) {
-						self->m_eventHandler->VTable0x04();
+						self->m_eventHandler->OnAppDeactivated();
 					}
 					self->ChangeWindowState(Win32GolApp::c_windowModeMinimized);
 					self->m_disabled = TRUE;
@@ -744,7 +744,7 @@ LRESULT CALLBACK Win32GolApp::AppWndProc(HWND p_hWnd, UINT p_msg, WPARAM p_wPara
 		break;
 	case WM_CHAR:
 		if (self->m_eventHandler) {
-			self->m_eventHandler->VTable0x1c(p_wParam);
+			self->m_eventHandler->OnChar(p_wParam);
 			self->m_eventHandler->VTable0x20(p_wParam);
 		}
 

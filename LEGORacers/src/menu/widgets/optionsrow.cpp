@@ -90,11 +90,11 @@ void OptionsRowBase::VTable0x78()
 			m_eventHandler->VTable0x44(this);
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
 		return;
 	}
 
-	m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x02);
 }
 
 // FUNCTION: LEGORACERS 0x0046e130
@@ -106,11 +106,11 @@ void OptionsRowBase::VTable0x7c()
 			m_eventHandler->VTable0x44(this);
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
 		return;
 	}
 
-	m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x02);
+	m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x02);
 }
 
 // FUNCTION: LEGORACERS 0x0046e190
@@ -156,7 +156,7 @@ MenuWidget* OptionsRowBase::VTable0x30(InputEventQueue::Event* p_event, undefine
 
 				if (m_unk0x5ec.HitTest(x, y)) {
 					m_activeKeyCode = p_event->m_keyCode;
-					m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x00);
+					m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
 					SetFocus();
 					VTable0x54(0);
 					return this;
@@ -196,7 +196,7 @@ MenuWidget* OptionsRowBase::VTable0x34(InputEventQueue::Event* p_event, undefine
 	}
 
 	if ((result & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
-		m_soundGroupBinding->FUN_0046e970(m_unk0x6e0.m_unk0x00);
+		m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
 		VTable0x8c();
 		ClearFocus();
 	}

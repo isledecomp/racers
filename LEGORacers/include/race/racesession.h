@@ -88,7 +88,7 @@ public:
 	};
 
 	RaceSession();
-	void VTable0x00() override; // vtable+0x00
+	void OnCloseRequested() override; // vtable+0x00
 	void Initialize(
 		LegoRacers::Context* p_context,
 		const LegoChar* p_raceName,

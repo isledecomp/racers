@@ -73,7 +73,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 	}
 
 	p_context->m_modelBuilder.SetUnk0x78(p_context->m_modelBuilder.GetUnk0x78() & ~9);
-	p_context->m_context->m_unk0x1e &= ~2;
+	p_context->m_context->m_flags &= ~LegoRacers::Context::c_flagReturnToGarage;
 	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(0);
 
 	undefined4 params[3];
@@ -236,7 +236,7 @@ void GarageScreen::FUN_0047eb20()
 	context->m_raceSlots[0].m_enabled = TRUE;
 	context->m_raceSlots[0].m_mirror = raceName->GetMirror();
 	context->m_racerCount = 1;
-	context->m_unk0x1e |= LegoRacers::Context::c_flagReturnToGarage;
+	context->m_flags |= LegoRacers::Context::c_flagReturnToGarage;
 
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(1);
 	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();

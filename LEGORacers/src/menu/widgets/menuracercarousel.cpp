@@ -314,7 +314,7 @@ LegoS32 MenuRacerCarousel::VTable0x54()
 	}
 
 	if (m_unk0x6c >= m_unk0x68 - 1 && m_unk0x68 < m_unk0x60 - 1) {
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
 	}
 	else {
 		MenuModelCarousel::VTable0x54();
@@ -325,7 +325,7 @@ LegoS32 MenuRacerCarousel::VTable0x54()
 			VTable0x60(m_unk0x60 - 1);
 		}
 
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[0]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[0]);
 	}
 
 	if (!m_unk0xcc) {
@@ -351,7 +351,7 @@ LegoS32 MenuRacerCarousel::VTable0x58()
 	}
 
 	if (!m_unk0x6c && m_unk0x68 < m_unk0x60 - 1) {
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
 	}
 	else {
 		MenuModelCarousel::VTable0x58();
@@ -362,7 +362,7 @@ LegoS32 MenuRacerCarousel::VTable0x58()
 			VTable0x60(0);
 		}
 
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[1]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[1]);
 	}
 
 	if (!m_unk0xcc) {

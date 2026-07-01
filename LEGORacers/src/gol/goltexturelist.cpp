@@ -9,10 +9,10 @@
 #include <string.h>
 
 // GLOBAL: LEGORACERS 0x004c2930
-GolTgaFile g_unk0x004c2930;
+GolTgaFile g_textureTgaFile;
 
 // GLOBAL: LEGORACERS 0x004c2f10
-GolBmpFile g_unk0x004c2f10;
+GolBmpFile g_textureBmpFile;
 
 // FUNCTION: LEGORACERS 0x004146a0
 void GolTextureList::LoadTextures()
@@ -76,9 +76,9 @@ void GolTextureList::LoadTextures()
 		textureName[sizeof(GolName)] = '\0';
 
 		LegoU8 textureFlags = static_cast<LegoU8>(texture->m_unk0x36);
-		GolImgFile* imageFile = &g_unk0x004c2f10;
+		GolImgFile* imageFile = &g_textureBmpFile;
 		if (!(textureFlags & GoldDune0x38::c_unk0x36Bit3)) {
-			imageFile = &g_unk0x004c2930;
+			imageFile = &g_textureTgaFile;
 		}
 
 		imageFile->VTable0x08(textureName);

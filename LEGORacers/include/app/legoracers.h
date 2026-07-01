@@ -64,7 +64,7 @@ public:
 		enum {
 			c_flagRecordBeaten = 1 << 0,
 			c_flagReturnToGarage = 1 << 1,
-			c_flagBit2 = 1 << 2,
+			c_flagSaveStateValid = 1 << 2,
 			c_flagAbortRace = 1 << 3,
 			c_flagBestTimesPending = 1 << 4,
 			c_flagRestartCircuit = 1 << 5,
@@ -85,12 +85,12 @@ public:
 		LegoBool32 m_running;                                               // 0x00
 		Win32GolApp* m_golApp;                                              // 0x04
 		SoundManager* m_soundManager;                                       // 0x08
-		LegoFloat m_unk0x0c;                                                // 0x0c
-		LegoFloat m_unk0x10;                                                // 0x10
-		LegoFloat m_unk0x14;                                                // 0x14
+		LegoFloat m_cameraFov;                                              // 0x0c
+		LegoFloat m_cameraNearClip;                                         // 0x10
+		LegoFloat m_cameraFarClip;                                          // 0x14
 		undefined4 m_unk0x18;                                               // 0x18
 		LegoU16 m_nextMenuId;                                               // 0x1c
-		LegoU8 m_unk0x1e;                                                   // 0x1e
+		LegoU8 m_flags;                                                     // 0x1e
 		undefined m_unk0x1f;                                                // 0x1f
 		LegoU32 m_unk0x20;                                                  // 0x20
 		undefined4 m_raceMode;                                              // 0x24
@@ -118,9 +118,9 @@ public:
 		undefined m_unk0x12ad[0x12b0 - 0x12ad];                             // 0x12ad
 
 		SoundManager* GetSoundManager() { return m_soundManager; }
-		LegoFloat GetUnk0x0c() const { return m_unk0x0c; }
-		LegoFloat GetUnk0x10() const { return m_unk0x10; }
-		LegoFloat GetUnk0x14() const { return m_unk0x14; }
+		LegoFloat GetCameraFov() const { return m_cameraFov; }
+		LegoFloat GetCameraNearClip() const { return m_cameraNearClip; }
+		LegoFloat GetCameraFarClip() const { return m_cameraFarClip; }
 	};
 #pragma pack(pop)
 
@@ -142,9 +142,9 @@ public:
 	void Destroy();
 	void Run();
 	void ReleaseContextAssets();
-	void FUN_0042bdc0();
-	void FUN_0042bde0();
-	void FUN_0042be00();
+	void RunMenus();
+	void RunRace();
+	void InitializeDisplayAndSound();
 	void Shutdown();
 	LegoS32 ParseArguments(LegoS32 p_argc, LegoChar** p_argv);
 	void ShowUsage();

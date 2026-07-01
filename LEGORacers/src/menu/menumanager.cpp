@@ -209,11 +209,11 @@ void MenuManager::FUN_0042cde0()
 	GolVec3 right;
 	GolCamera* lens = m_golExport->VTable0x20();
 
-	lens->m_fov = m_unk0x04.m_context->GetUnk0x0c();
+	lens->m_fov = m_unk0x04.m_context->GetCameraFov();
 	lens->m_flags |= GolCamera::c_flagBit1;
-	lens->m_nearClip = m_unk0x04.m_context->GetUnk0x10();
+	lens->m_nearClip = m_unk0x04.m_context->GetCameraNearClip();
 	lens->m_flags |= GolCamera::c_flagBit1;
-	lens->m_farClip = m_unk0x04.m_context->GetUnk0x14();
+	lens->m_farClip = m_unk0x04.m_context->GetCameraFarClip();
 	lens->m_flags |= GolCamera::c_flagBit1;
 
 	position.m_x = 0.0f;
@@ -345,14 +345,14 @@ void MenuManager::FUN_0042d0e0()
 
 	m_unk0x04.m_saveSystem.Initialize(m_unk0x04.m_context->m_golApp->GetInputManager(), FALSE);
 
-	if (m_unk0x04.m_context->m_unk0x1e & LegoRacers::Context::c_flagBit2) {
+	if (m_unk0x04.m_context->m_flags & LegoRacers::Context::c_flagSaveStateValid) {
 		SaveGame* saveGame = &m_unk0x04.m_saveSystem.GetSessionSave();
 		::memcpy(
 			m_unk0x04.m_saveSystem.GetSessionSave().GetFileImage(),
 			&m_unk0x04.m_context->m_saveState,
 			sizeof(m_unk0x04.m_context->m_saveState)
 		);
-		m_unk0x04.m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit2;
+		m_unk0x04.m_context->m_flags &= ~LegoRacers::Context::c_flagSaveStateValid;
 		m_unk0x04.m_saveSystem.GetGameState().LoadFromSaveGame(
 			saveGame,
 			m_unk0x04.m_saveSystem.GetGameState().GetActiveSaveIndex()
@@ -578,7 +578,7 @@ void MenuManager::FUN_0042d730()
 		m_unk0x04.m_saveSystem.GetSessionSave().GetFileImage(),
 		sizeof(context->m_saveState)
 	);
-	context->m_unk0x1e |= LegoRacers::Context::c_flagBit2;
+	context->m_flags |= LegoRacers::Context::c_flagSaveStateValid;
 
 	if (!selectedRecords.GetSelectedRecordCount()) {
 		context->m_racerCount = 6;
@@ -1052,13 +1052,13 @@ LegoBool32 MenuManager::FUN_0042e450()
 // STUB: LEGORACERS 0x0042e490
 LegoS32 MenuManager::FUN_0042e490()
 {
-	LegoU8 flags = m_unk0x04.m_context->m_unk0x1e;
+	LegoU8 flags = m_unk0x04.m_context->m_flags;
 
 	if (!(flags & LegoRacers::Context::c_flagBestTimesPending)) {
 		return FALSE;
 	}
 
-	m_unk0x04.m_context->m_unk0x1e = flags & ~LegoRacers::Context::c_flagBestTimesPending;
+	m_unk0x04.m_context->m_flags = flags & ~LegoRacers::Context::c_flagBestTimesPending;
 	LegoRacers::Context* context = m_unk0x04.m_context;
 
 	GolString string;
@@ -1108,13 +1108,13 @@ LegoS32 MenuManager::FUN_0042e490()
 // FUNCTION: LEGORACERS 0x0042e680
 LegoBool32 MenuManager::FUN_0042e680()
 {
-	LegoU8 flags = m_unk0x04.m_context->m_unk0x1e;
+	LegoU8 flags = m_unk0x04.m_context->m_flags;
 
 	if (!(flags & LegoRacers::Context::c_flagRecordBeaten)) {
 		return FALSE;
 	}
 
-	m_unk0x04.m_context->m_unk0x1e = flags & ~LegoRacers::Context::c_flagRecordBeaten;
+	m_unk0x04.m_context->m_flags = flags & ~LegoRacers::Context::c_flagRecordBeaten;
 
 	GameState* state = &m_unk0x04.m_saveSystem.GetGameState();
 	LegoU32 index = m_unk0x04.m_raceNames.GetEntryIndexByName(m_unk0x04.m_context->m_raceSlots[0].m_raceName);
@@ -1135,7 +1135,7 @@ LegoBool32 MenuManager::FUN_0042e680()
 }
 
 // FUNCTION: LEGORACERS 0x0042e700
-void MenuManager::VTable0x00()
+void MenuManager::OnCloseRequested()
 {
 	m_running = FALSE;
 	m_unk0x04.m_context->m_running = FALSE;
@@ -1176,27 +1176,27 @@ void MenuManager::FUN_0042e720()
 }
 
 // FUNCTION: LEGORACERS 0x0042e810
-void MenuManager::VTable0x1c(undefined4 p_unk0x04)
+void MenuManager::OnChar(undefined4 p_char)
 {
 	if (m_unk0x4dc8) {
-		m_unk0x4dc8->VTable0x90(p_unk0x04);
+		m_unk0x4dc8->VTable0x90(p_char);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042e830
-void MenuManager::VTable0x28()
+void MenuManager::OnCursorInside()
 {
 	m_inputDispatcher.SetCursorInside(1);
 }
 
 // FUNCTION: LEGORACERS 0x0042e840
-void MenuManager::VTable0x2c()
+void MenuManager::OnCursorOutside()
 {
 	m_inputDispatcher.SetCursorInside(0);
 }
 
 // FUNCTION: LEGORACERS 0x0042e850
-void MenuManager::VTable0x24(undefined4 p_arg1, undefined4 p_arg2)
+void MenuManager::OnCursorMoved(undefined4 p_x, undefined4 p_y)
 {
-	m_inputDispatcher.SetCursorPosition(p_arg1, p_arg2);
+	m_inputDispatcher.SetCursorPosition(p_x, p_y);
 }

@@ -194,12 +194,12 @@ LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, 
 	if (deltaX && p_deltaY && !p_unk0x10) {
 		CarPartPlacement* placement = &m_unk0x2308;
 		if (placement->FUN_004785b0(deltaX) && placement->FUN_00478670(p_deltaY)) {
-			m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
+			m_soundGroupBinding->PlaySoundByIndex(p_sound & 0xffff);
 			return TRUE;
 		}
 
 		placement->FUN_004785b0(-deltaX);
-		m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
+		m_soundGroupBinding->PlaySoundByIndex(fallbackSound & 0xffff);
 		return FALSE;
 	}
 
@@ -207,10 +207,10 @@ LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, 
 	LegoBool32 result = placement->FUN_004785b0(deltaX);
 	result |= placement->FUN_00478670(p_deltaY);
 	if (result) {
-		m_soundGroupBinding->FUN_0046e970(p_sound & 0xffff);
+		m_soundGroupBinding->PlaySoundByIndex(p_sound & 0xffff);
 	}
 	else {
-		m_soundGroupBinding->FUN_0046e970(fallbackSound & 0xffff);
+		m_soundGroupBinding->PlaySoundByIndex(fallbackSound & 0xffff);
 	}
 
 	return result;

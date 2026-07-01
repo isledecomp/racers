@@ -192,7 +192,7 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = 0;
 				m_text.FirstLine();
 				m_eventHandler->VTable0x44(this);
-				m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[2]);
+				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[2]);
 				return this;
 			}
 		}
@@ -206,7 +206,7 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 			}
 
 			if (i >= charsetLength) {
-				m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 				return NULL;
 			}
 
@@ -215,12 +215,12 @@ MenuWidget* MenuTextField::FUN_004713f0(InputEventQueue::Event* p_event)
 				m_length++;
 				m_text.FirstLine();
 				m_eventHandler->VTable0x44(this);
-				m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[0]);
+				m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 				return this;
 			}
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 		return this;
 	}
 
@@ -243,11 +243,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 				*m_text.FromCursor(m_length) = 0;
 			}
 
-			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[1]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[1]);
 			break;
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x5:
@@ -260,11 +260,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 				}
 			}
 
-			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[2]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[2]);
 			break;
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 		return NULL;
 
 	case InputDevice::c_sourceJoystickButton | 0x7:
@@ -272,11 +272,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 		if (m_length != m_maxLength) {
 			m_unk0x1f4 = (m_unk0x1f4 + 1) % m_charset.SelectionLength();
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
-			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[0]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 			break;
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 		break;
 
 	case InputDevice::c_sourceJoystickButton | 0x9:
@@ -290,11 +290,11 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 			index--;
 			m_unk0x1f4 = index;
 			*m_text.FromCursor(m_length) = *m_charset.FromCursor(m_unk0x1f4);
-			m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[0]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[0]);
 			break;
 		}
 
-		m_soundGroupBinding->FUN_0046e970(m_soundIds.m_ids[3]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds.m_ids[3]);
 		break;
 
 	default:

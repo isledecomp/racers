@@ -50,7 +50,7 @@ RaceModeRunner::~RaceModeRunner()
 void RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
-	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagAbortRace;
+	m_context->m_flags &= ~LegoRacers::Context::c_flagAbortRace;
 
 	if (p_context->m_raceMode == LegoRacers::Context::c_raceModeTimeRace) {
 		if (g_hashTable) {
@@ -64,7 +64,7 @@ void RaceModeRunner::Initialize(LegoRacers::Context* p_context)
 		);
 	}
 
-	if (p_context->m_unk0x1e & LegoRacers::Context::c_flagReturnToGarage) {
+	if (p_context->m_flags & LegoRacers::Context::c_flagReturnToGarage) {
 		p_context->m_nextMenuId = c_menuGarage;
 	}
 	else {
@@ -87,13 +87,13 @@ void RaceModeRunner::Run()
 {
 	if (!m_context->m_raceMode) {
 		m_circuitRunner.Run();
-		m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
+		m_context->m_flags &= ~LegoRacers::Context::c_flagBit7;
 		return;
 	}
 
 	m_session.Run();
 	m_timeRaceManager.Shutdown();
-	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagBit7;
+	m_context->m_flags &= ~LegoRacers::Context::c_flagBit7;
 }
 
 // FUNCTION: LEGORACERS 0x0042c380

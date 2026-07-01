@@ -233,7 +233,7 @@ LegoS32 CarPartCarousel::VTable0x54()
 
 	if (!m_unk0x70) {
 		if (m_unk0x6c >= m_unk0x68 - 1 && m_unk0x68 < m_unk0x60 - 1) {
-			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
+			m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
 			return m_unk0x6c;
 		}
 
@@ -244,7 +244,7 @@ LegoS32 CarPartCarousel::VTable0x54()
 			VTable0x60(m_unk0x60 - 1);
 		}
 
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[0]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[0]);
 	}
 
 	return m_unk0x6c;
@@ -259,7 +259,7 @@ LegoS32 CarPartCarousel::VTable0x58()
 
 	if (!m_unk0x70) {
 		if (!m_unk0x6c && m_unk0x68 < m_unk0x60 - 1) {
-			m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[2]);
+			m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
 			return m_unk0x6c;
 		}
 
@@ -270,7 +270,7 @@ LegoS32 CarPartCarousel::VTable0x58()
 			VTable0x60(0);
 		}
 
-		m_unk0x5c->FUN_0046e970(m_unk0x58->m_unk0x00[1]);
+		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[1]);
 	}
 
 	return m_unk0x6c;

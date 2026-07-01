@@ -29,13 +29,13 @@ LegoS32 g_horizontalResolution = 640;
 LegoS32 g_verticalResolution = 480;
 
 // GLOBAL: LEGORACERS 0x004b055c
-LegoFloat g_unk0x4b055c = 65.0f;
+LegoFloat g_defaultCameraFov = 65.0f;
 
 // GLOBAL: LEGORACERS 0x004b0560
-LegoFloat g_unk0x4b0560 = 5.0f;
+LegoFloat g_defaultCameraNearClip = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b0564
-LegoFloat g_unk0x4b0564 = 800.0f;
+LegoFloat g_defaultCameraFarClip = 800.0f;
 
 // FUNCTION: LEGORACERS 0x0042b9d0
 LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
@@ -51,9 +51,9 @@ LegoRacers::LegoRacers() : m_soundManager(&m_nullSoundManager)
 	m_context.m_running = TRUE;
 	m_context.m_golApp = &m_golApp;
 	m_context.m_soundManager = m_soundManager;
-	m_context.m_unk0x0c = g_unk0x4b055c;
-	m_context.m_unk0x10 = g_unk0x4b0560;
-	m_context.m_unk0x14 = g_unk0x4b0564;
+	m_context.m_cameraFov = g_defaultCameraFov;
+	m_context.m_cameraNearClip = g_defaultCameraNearClip;
+	m_context.m_cameraFarClip = g_defaultCameraFarClip;
 	m_context.m_raceMode = Context::c_raceModeSingle;
 	m_context.m_playerCount = 1;
 	m_context.m_nextMenuId = c_menuLegal;
@@ -104,7 +104,7 @@ void LegoRacers::Run()
 		return;
 	}
 
-	GolAppEventHandler::VTable0x00();
+	GolAppEventHandler::OnCloseRequested();
 
 	if (m_cutscenes) {
 		VideoPlayer::Begin(&m_golApp, 640, 480);
@@ -114,14 +114,14 @@ void LegoRacers::Run()
 		VideoPlayer::End(&m_golApp);
 	}
 
-	FUN_0042be00();
+	InitializeDisplayAndSound();
 
 	while (m_context.m_running) {
-		FUN_0042bdc0();
+		RunMenus();
 		if (!m_context.m_running) {
 			break;
 		}
-		FUN_0042bde0();
+		RunRace();
 	}
 
 	ReleaseContextAssets();
@@ -167,21 +167,21 @@ void LegoRacers::ReleaseContextAssets()
 }
 
 // FUNCTION: LEGORACERS 0x0042bdc0
-void LegoRacers::FUN_0042bdc0()
+void LegoRacers::RunMenus()
 {
 	MenuManager::Run(&m_context);
 	m_golApp.ClearFileSourceDirectoryCaches();
 }
 
 // FUNCTION: LEGORACERS 0x0042bde0
-void LegoRacers::FUN_0042bde0()
+void LegoRacers::RunRace()
 {
 	RaceModeRunner::Run(&m_context);
 	m_golApp.ClearFileSourceDirectoryCaches();
 }
 
 // FUNCTION: LEGORACERS 0x0042be00
-void LegoRacers::FUN_0042be00()
+void LegoRacers::InitializeDisplayAndSound()
 {
 	LegoS32 initDisplayResult =
 		m_golApp.InitializeDisplay(g_horizontalResolution, g_verticalResolution, m_bpp, m_videoFlags);

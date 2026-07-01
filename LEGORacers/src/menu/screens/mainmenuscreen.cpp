@@ -254,7 +254,7 @@ LegoBool32 MainMenuScreen::VTable0x78(undefined4 p_elapsed)
 		}
 		else {
 			if (!m_unk0x243c) {
-				m_soundGroupBinding->FUN_0046e970(0x1d);
+				m_soundGroupBinding->PlaySoundByIndex(0x1d);
 				m_unk0x243c = TRUE;
 			}
 		}

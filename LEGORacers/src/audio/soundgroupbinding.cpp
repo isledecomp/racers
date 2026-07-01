@@ -21,20 +21,20 @@ void SoundGroupBinding::Reset()
 {
 	m_soundManager = NULL;
 	m_soundGroup = NULL;
-	m_unk0x08 = 0;
+	m_firstSoundIndex = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0046e920
 LegoBool32 SoundGroupBinding::SetSoundGroup(
 	SoundManager* p_soundManager,
 	SoundGroup* p_soundGroup,
-	undefined4 p_unk0x0c
+	undefined4 p_firstSoundIndex
 )
 {
 	ResetSoundGroup();
 	m_soundManager = p_soundManager;
 	m_soundGroup = p_soundGroup;
-	m_unk0x08 = p_unk0x0c;
+	m_firstSoundIndex = p_firstSoundIndex;
 	return TRUE;
 }
 
@@ -49,15 +49,15 @@ LegoBool32 SoundGroupBinding::ResetSoundGroup()
 }
 
 // FUNCTION: LEGORACERS 0x0046e970
-void SoundGroupBinding::FUN_0046e970(LegoU32 p_index)
+void SoundGroupBinding::PlaySoundByIndex(LegoU32 p_index)
 {
 	if (m_soundGroup && p_index) {
-		m_soundGroup->PlaySoundByIndex(m_unk0x08 + p_index - 1);
+		m_soundGroup->PlaySoundByIndex(m_firstSoundIndex + p_index - 1);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046e9a0
-void SoundGroupBinding::FUN_0046e9a0(
+void SoundGroupBinding::PlaySpatialSound(
 	LegoU32 p_index,
 	SoundVector* p_position,
 	LegoFloat p_minDistance,
@@ -68,7 +68,7 @@ void SoundGroupBinding::FUN_0046e9a0(
 {
 	if (m_soundGroup && p_index) {
 		m_soundGroup->PlaySpatialSound(
-			m_unk0x08 + p_index - 1,
+			m_firstSoundIndex + p_index - 1,
 			p_position,
 			p_minDistance,
 			p_maxDistance,

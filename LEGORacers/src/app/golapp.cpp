@@ -46,7 +46,7 @@ void GolApp::PresentFrame()
 void GolApp::NotifyCloseRequested()
 {
 	if (m_eventHandler) {
-		m_eventHandler->VTable0x00();
+		m_eventHandler->OnCloseRequested();
 	}
 }
 

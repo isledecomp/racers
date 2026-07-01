@@ -354,7 +354,7 @@ void MenuIcon::VTable0x4c(undefined4 p_flags)
 		FUN_00471fb0(p_flags);
 
 		if (!(p_flags & 4)) {
-			m_soundGroupBinding->FUN_0046e970(m_soundIds[0]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds[0]);
 		}
 	}
 }
@@ -376,7 +376,7 @@ void MenuIcon::VTable0x50(undefined4 p_flags)
 			icon->FUN_00472010(p_flags);
 
 			if (!(p_flags & 4)) {
-				icon->m_soundGroupBinding->FUN_0046e970(icon->m_soundIds[1]);
+				icon->m_soundGroupBinding->PlaySoundByIndex(icon->m_soundIds[1]);
 			}
 
 			return;
@@ -385,7 +385,7 @@ void MenuIcon::VTable0x50(undefined4 p_flags)
 		FUN_00472010(p_flags);
 
 		if (!(p_flags & 4)) {
-			m_soundGroupBinding->FUN_0046e970(m_soundIds[1]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds[1]);
 		}
 	}
 }
@@ -412,7 +412,7 @@ void MenuIcon::VTable0x54(undefined4 p_flags)
 	}
 
 	if (!(flags & 4)) {
-		m_soundGroupBinding->FUN_0046e970(m_soundIds[2]);
+		m_soundGroupBinding->PlaySoundByIndex(m_soundIds[2]);
 	}
 }
 
@@ -441,7 +441,7 @@ void MenuIcon::VTable0x58(undefined4 p_flags)
 		}
 
 		if (!(flags & 4)) {
-			m_soundGroupBinding->FUN_0046e970(m_soundIds[3]);
+			m_soundGroupBinding->PlaySoundByIndex(m_soundIds[3]);
 		}
 	}
 }

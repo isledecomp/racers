@@ -14,10 +14,10 @@ public:
 	SoundGroupBinding();
 	~SoundGroupBinding();
 
-	LegoBool32 SetSoundGroup(SoundManager* p_soundManager, SoundGroup* p_soundGroup, undefined4 p_unk0x0c);
+	LegoBool32 SetSoundGroup(SoundManager* p_soundManager, SoundGroup* p_soundGroup, undefined4 p_firstSoundIndex);
 	LegoBool32 ResetSoundGroup();
-	void FUN_0046e970(LegoU32 p_index);
-	void FUN_0046e9a0(
+	void PlaySoundByIndex(LegoU32 p_index);
+	void PlaySpatialSound(
 		LegoU32 p_index,
 		SoundVector* p_position,
 		LegoFloat p_minDistance,
@@ -32,7 +32,7 @@ private:
 
 	SoundManager* m_soundManager; // 0x00
 	SoundGroup* m_soundGroup;     // 0x04
-	undefined4 m_unk0x08;         // 0x08
+	undefined4 m_firstSoundIndex; // 0x08
 };
 
 #endif // SOUNDGROUPBINDING_H

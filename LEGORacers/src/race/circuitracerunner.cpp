@@ -66,34 +66,34 @@ void CircuitRaceRunner::Run()
 
 	for (i = 0;; i++) {
 		if (i >= sizeOfArray(m_context->m_raceSlots)) {
-			if (!(m_context->m_unk0x1e & LegoRacers::Context::c_flagRestartCircuit)) {
+			if (!(m_context->m_flags & LegoRacers::Context::c_flagRestartCircuit)) {
 				break;
 			}
 		}
 
-		undefined flags = m_context->m_unk0x1e;
+		undefined flags = m_context->m_flags;
 
 		if (flags & LegoRacers::Context::c_flagRestartCircuit) {
 			flags &= ~LegoRacers::Context::c_flagRestartCircuit;
 			i = 0;
-			m_context->m_unk0x1e = flags;
+			m_context->m_flags = flags;
 			m_context->m_currentRaceIndex = 0;
 			m_standings.ClearPoints();
-			m_context->m_unk0x1e |= LegoRacers::Context::c_flagFirstRace;
+			m_context->m_flags |= LegoRacers::Context::c_flagFirstRace;
 		}
 		else {
 			if (i == 0) {
 				LegoRacers::Context*& context = m_context;
-				context->m_unk0x1e |= LegoRacers::Context::c_flagFirstRace;
+				context->m_flags |= LegoRacers::Context::c_flagFirstRace;
 			}
 			else {
 				flags &= ~LegoRacers::Context::c_flagFirstRace;
-				m_context->m_unk0x1e = flags;
+				m_context->m_flags = flags;
 			}
 		}
 
 		if (m_context->m_raceSlots[i].m_enabled && m_context->m_running) {
-			if (m_context->m_unk0x1e & LegoRacers::Context::c_flagAbortRace) {
+			if (m_context->m_flags & LegoRacers::Context::c_flagAbortRace) {
 				return;
 			}
 
@@ -128,7 +128,7 @@ void CircuitRaceRunner::Run()
 		m_context->m_currentRaceIndex++;
 	}
 
-	if (!(m_context->m_unk0x1e & LegoRacers::Context::c_flagAbortRace) && m_context->m_running) {
+	if (!(m_context->m_flags & LegoRacers::Context::c_flagAbortRace) && m_context->m_running) {
 		LegoU32 rankIndex = 0;
 		LegoRacers::Context::PlayerSetupSlot* slot = m_context->m_playerSetupSlots;
 		undefined4 slotValue = slot->m_unk0x10;

@@ -402,7 +402,7 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		position.m_x = 0.0f;
 		position.m_y = 0.0f;
 		position.m_z = 0.0f;
-		m_soundGroupBinding->FUN_0046e9a0(spatialSound & 0xffff, &position, 100.0f, 200.0f, volume, 1.0f);
+		m_soundGroupBinding->PlaySpatialSound(spatialSound & 0xffff, &position, 100.0f, 200.0f, volume, 1.0f);
 		m_unk0x2ae4 = nextMode;
 		return result;
 	}
@@ -447,7 +447,7 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		break;
 	}
 
-	m_soundGroupBinding->FUN_0046e970(sound & 0xffff);
+	m_soundGroupBinding->PlaySoundByIndex(sound & 0xffff);
 	m_unk0x2ae4 = nextMode;
 	return result;
 }
@@ -495,7 +495,7 @@ LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event* p_event, undefin
 
 		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			m_unk0x2308.FUN_00478560();
-			m_soundGroupBinding->FUN_0046e970(0x16);
+			m_soundGroupBinding->PlaySoundByIndex(0x16);
 			return TRUE;
 		}
 		break;
@@ -586,10 +586,10 @@ void CarBuildScreen::VTable0x20(MenuWidget* p_source)
 	if (p_source == GetUnk0xd8()) {
 		switch (m_unk0x2ae4) {
 		case 2:
-			m_soundGroupBinding->FUN_0046e970(5);
+			m_soundGroupBinding->PlaySoundByIndex(5);
 			break;
 		case 3:
-			m_soundGroupBinding->FUN_0046e970(17);
+			m_soundGroupBinding->PlaySoundByIndex(17);
 			break;
 		default:
 			return;
@@ -611,10 +611,10 @@ void CarBuildScreen::VTable0x24(MenuWidget* p_source)
 		case 2:
 			m_unk0x2308.FUN_00478120();
 			m_unk0x2308.FUN_004783d0();
-			m_soundGroupBinding->FUN_0046e970(5);
+			m_soundGroupBinding->PlaySoundByIndex(5);
 			break;
 		case 3:
-			m_soundGroupBinding->FUN_0046e970(17);
+			m_soundGroupBinding->PlaySoundByIndex(17);
 			break;
 		default:
 			return;
@@ -673,7 +673,7 @@ void CarBuildScreen::VTable0x38(MenuWidget* p_source)
 		}
 		else if (p_source == &m_unk0x318c) {
 			m_unk0x2308.FUN_00478560();
-			m_soundGroupBinding->FUN_0046e970(0x16);
+			m_soundGroupBinding->PlaySoundByIndex(0x16);
 			return;
 		}
 		else if (p_source == &m_unk0x33a8) {
@@ -741,7 +741,7 @@ void CarBuildScreen::VTable0x44(MenuWidget* p_source)
 			break;
 		}
 
-		m_soundGroupBinding->FUN_0046e970(sound & 0xffff);
+		m_soundGroupBinding->PlaySoundByIndex(sound & 0xffff);
 	}
 	else {
 		CarModelScreenBase::VTable0x44(p_source);

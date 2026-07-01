@@ -3,27 +3,27 @@
 DECOMP_SIZE_ASSERT(GolAppEventHandler, 0x4)
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x00()
+void GolAppEventHandler::OnCloseRequested()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x04()
+void GolAppEventHandler::OnAppDeactivated()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x08()
+void GolAppEventHandler::OnAppActivated()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x0c()
+void GolAppEventHandler::OnWindowModeChanging()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x10()
+void GolAppEventHandler::OnWindowModeChanged()
 {
 }
 
@@ -38,7 +38,7 @@ void GolAppEventHandler::VTable0x18()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void GolAppEventHandler::VTable0x1c(undefined4)
+void GolAppEventHandler::OnChar(undefined4)
 {
 }
 
@@ -48,16 +48,16 @@ void GolAppEventHandler::VTable0x20(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void GolAppEventHandler::VTable0x24(undefined4, undefined4)
+void GolAppEventHandler::OnCursorMoved(undefined4, undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x28()
+void GolAppEventHandler::OnCursorInside()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void GolAppEventHandler::VTable0x2c()
+void GolAppEventHandler::OnCursorOutside()
 {
 }

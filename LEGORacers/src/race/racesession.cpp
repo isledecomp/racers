@@ -366,7 +366,7 @@ void RaceSession::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00432520
-void RaceSession::VTable0x00()
+void RaceSession::OnCloseRequested()
 {
 	m_running = 0;
 	m_context->m_running = FALSE;
@@ -468,10 +468,10 @@ void RaceSession::Run()
 	}
 
 	if (m_context->m_running && m_timeRaceManager) {
-		m_context->m_unk0x1e |= LegoRacers::Context::c_flagBestTimesPending;
+		m_context->m_flags |= LegoRacers::Context::c_flagBestTimesPending;
 
 		if (m_timeRaceManager->HasBeatenRecord()) {
-			m_context->m_unk0x1e |= LegoRacers::Context::c_flagRecordBeaten;
+			m_context->m_flags |= LegoRacers::Context::c_flagRecordBeaten;
 		}
 	}
 }
@@ -496,7 +496,7 @@ void RaceSession::Shutdown()
 void RaceSession::FUN_004327f0(LegoRacers::Context* p_context)
 {
 	m_context = p_context;
-	m_context->m_unk0x1e &= ~LegoRacers::Context::c_flagRecordBeaten;
+	m_context->m_flags &= ~LegoRacers::Context::c_flagRecordBeaten;
 
 	m_golApp = m_context->m_golApp;
 	m_soundManager = m_context->m_soundManager;
@@ -530,7 +530,7 @@ void RaceSession::FUN_004327f0(LegoRacers::Context* p_context)
 		m_unk0x3350 = 0;
 	}
 
-	if (m_context->m_unk0x1e & LegoRacers::Context::c_flagReturnToGarage) {
+	if (m_context->m_flags & LegoRacers::Context::c_flagReturnToGarage) {
 		m_unk0x335c = one;
 	}
 }
@@ -1254,7 +1254,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	powerupParams.m_unk0x28 = &m_unk0x27fc;
 	powerupParams.m_unk0x2c = m_unk0x3a8;
 	powerupParams.m_unk0x30 = &m_unk0x2804;
-	powerupParams.m_unk0x34 = m_unk0x3354 ? m_context->m_unk0x0c - g_unk0x004b08bc : m_context->m_unk0x0c;
+	powerupParams.m_unk0x34 = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
 	powerupParams.m_unk0x38 = m_context->m_unk0x20;
 	m_unk0x6dc.FUN_00457c20(&powerupParams);
 
@@ -1358,14 +1358,19 @@ void RaceSession::FUN_00434170()
 
 			if (m_unk0x3354) {
 				camera->FUN_00404710(
-					m_context->m_unk0x0c - g_unk0x004b08bc,
-					m_context->m_unk0x10,
-					m_context->m_unk0x14,
+					m_context->m_cameraFov - g_unk0x004b08bc,
+					m_context->m_cameraNearClip,
+					m_context->m_cameraFarClip,
 					2.6666667f
 				);
 			}
 			else {
-				camera->FUN_00404710(m_context->m_unk0x0c, m_context->m_unk0x10, m_context->m_unk0x14, 1.3333334f);
+				camera->FUN_00404710(
+					m_context->m_cameraFov,
+					m_context->m_cameraNearClip,
+					m_context->m_cameraFarClip,
+					1.3333334f
+				);
 			}
 
 			GolCamera* currentCamera = m_unk0x2acc[i];
@@ -2115,7 +2120,7 @@ void RaceSession::FUN_004354d0()
 		return;
 	}
 
-	GolAppEventHandler::VTable0x00();
+	GolAppEventHandler::OnCloseRequested();
 	m_renderer->VTable0x20(m_unk0x2acc[0]);
 	VTable0x34();
 
@@ -2296,7 +2301,7 @@ void RaceSession::FUN_00435830()
 {
 	VTable0x40();
 	FUN_00435ab0();
-	GolAppEventHandler::VTable0x00();
+	GolAppEventHandler::OnCloseRequested();
 	m_unk0x27fc.Draw(m_renderer);
 	FUN_00435920();
 }
@@ -2438,7 +2443,7 @@ void RaceSession::VTable0x44(LegoU32 p_keyCode)
 {
 	if (m_unk0x3350 && (p_keyCode & c_keySourceAbortMask)) {
 		m_running = 0;
-		m_context->m_unk0x1e |= LegoRacers::Context::c_flagBit7;
+		m_context->m_flags |= LegoRacers::Context::c_flagBit7;
 		return;
 	}
 
@@ -2680,7 +2685,7 @@ void RaceSession::FUN_00436160()
 	case 3:
 		if (!selectionIndex) {
 			if (m_unk0x3360 == 1) {
-				if (!m_standings || (m_context->m_unk0x1e & LegoRacers::Context::c_flagFirstRace)) {
+				if (!m_standings || (m_context->m_flags & LegoRacers::Context::c_flagFirstRace)) {
 					if (m_standings) {
 						m_standings->ClearPoints();
 					}
@@ -2688,12 +2693,12 @@ void RaceSession::FUN_00436160()
 				}
 				else {
 					m_running = 0;
-					m_context->m_unk0x1e |= LegoRacers::Context::c_flagRestartCircuit;
+					m_context->m_flags |= LegoRacers::Context::c_flagRestartCircuit;
 				}
 			}
 			else if (m_unk0x3360 == 2) {
 				m_running = 0;
-				m_context->m_unk0x1e |= LegoRacers::Context::c_flagAbortRace;
+				m_context->m_flags |= LegoRacers::Context::c_flagAbortRace;
 			}
 		}
 
@@ -2772,17 +2777,17 @@ void RaceSession::FUN_004362e0()
 			if (m_unk0x3354) {
 				GolCamera* currentCamera = m_unk0x2acc[playerIndex];
 				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
-				currentCamera->m_fov = m_context->m_unk0x0c - g_unk0x004b08bc;
+				currentCamera->m_fov = m_context->m_cameraFov - g_unk0x004b08bc;
 				currentCamera->m_flags = cameraFlags;
-				fov = m_context->m_unk0x0c - g_unk0x004b08bc;
+				fov = m_context->m_cameraFov - g_unk0x004b08bc;
 			}
 			else {
 				GolCamera* currentCamera = m_unk0x2acc[playerIndex];
 				LegoU32 cameraFlags = currentCamera->m_flags | GolCamera::c_flagBit1;
-				LegoFloat cameraFov = m_context->m_unk0x0c;
+				LegoFloat cameraFov = m_context->m_cameraFov;
 				currentCamera->m_fov = cameraFov;
 				currentCamera->m_flags = cameraFlags;
-				fov = m_context->m_unk0x0c;
+				fov = m_context->m_cameraFov;
 			}
 
 			field0x2ad4->m_unk0x134 = fov;

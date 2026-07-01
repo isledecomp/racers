@@ -26,13 +26,13 @@ public:
 		virtual ResultValue OnKeyDown(
 			InputDevice* p_device,
 			undefined4 p_keyCode,
-			undefined4 p_arg3
+			undefined4 p_time
 		) = 0;                                                                                           // vtable+0x00
-		virtual ResultValue OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_arg3) = 0; // vtable+0x04
+		virtual ResultValue OnKeyUp(InputDevice* p_device, undefined4 p_keyCode, undefined4 p_time) = 0; // vtable+0x04
 		virtual ResultValue OnKeyRepeat(
 			InputDevice* p_device,
 			undefined4 p_keyCode,
-			undefined4 p_arg3
+			undefined4 p_time
 		) = 0; // vtable+0x08
 	};
 

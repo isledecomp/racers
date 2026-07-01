@@ -871,7 +871,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00478730()
 	LegoS32 result = m_unk0x24->m_unk0x21f4.FUN_0049a1e0(pieceRecord, x, y, rotation);
 	if (result < 0) {
 		if (result != -7) {
-			m_unk0x20->FUN_0046e970(18);
+			m_unk0x20->PlaySoundByIndex(18);
 		}
 		else {
 			m_unk0x1c->VTable0xc4();
@@ -898,7 +898,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 	LegoS32 count = carModel->GetPlacedPieceCount();
 
 	if (count == 1) {
-		m_unk0x20->FUN_0046e970(18);
+		m_unk0x20->PlaySoundByIndex(18);
 		*p_unk0x0c = 0;
 		*p_unk0x08 = 0;
 		*p_unk0x04 = 0;
@@ -919,7 +919,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_004787e0(
 	carModel->FUN_0049c230(&m_unk0x28, &m_unk0x1a4);
 	*p_unk0x08 = pieceRecord->m_pieceType;
 	m_unk0x24->m_saveSystem.GetActiveRecord().MarkCarModified();
-	m_unk0x20->FUN_0046e970(13);
+	m_unk0x20->PlaySoundByIndex(13);
 	return TRUE;
 }
 
@@ -1278,7 +1278,7 @@ void CarModelScreenBase::CarPartPlacement::FUN_004790f0(LegoS32 p_elapsed)
 			m_unk0x24->m_unk0x21f4.FUN_0049b920(1, 127);
 		}
 		else {
-			m_unk0x20->FUN_0046e970(10);
+			m_unk0x20->PlaySoundByIndex(10);
 		}
 	}
 	else {

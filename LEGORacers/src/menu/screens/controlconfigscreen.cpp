@@ -214,13 +214,13 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 		if (source == InputDevice::c_sourceJoystickButton || source == InputDevice::c_sourceKeyboard) {
 			for (LegoU32 i = 0; i < sizeOfArray(g_controlConfigBlockedEvents); i++) {
 				if (keyCode == g_controlConfigBlockedEvents[i]) {
-					m_soundGroupBinding->FUN_0046e970(8);
+					m_soundGroupBinding->PlaySoundByIndex(8);
 					return TRUE;
 				}
 			}
 
 			if (source == InputDevice::c_sourceJoystickButton && p_item->m_device != device) {
-				m_soundGroupBinding->FUN_0046e970(8);
+				m_soundGroupBinding->PlaySoundByIndex(8);
 				return TRUE;
 			}
 

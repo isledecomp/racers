@@ -51,12 +51,12 @@ private:
 
 public:
 	MenuManager();
-	void VTable0x00() override;                       // vtable+0x00
-	void VTable0x1c(undefined4) override;             // vtable+0x1c
-	void VTable0x24(undefined4, undefined4) override; // vtable+0x24
-	void VTable0x28() override;                       // vtable+0x28
-	void VTable0x2c() override;                       // vtable+0x2c
-	virtual ~MenuManager();                           // vtable+0x30
+	void OnCloseRequested() override;                            // vtable+0x00
+	void OnChar(undefined4 p_char) override;                     // vtable+0x1c
+	void OnCursorMoved(undefined4 p_x, undefined4 p_y) override; // vtable+0x24
+	void OnCursorInside() override;                              // vtable+0x28
+	void OnCursorOutside() override;                             // vtable+0x2c
+	virtual ~MenuManager();                                      // vtable+0x30
 
 	// SYNTHETIC: LEGORACERS 0x0042c7c0
 	// MenuManager::`scalar deleting destructor'

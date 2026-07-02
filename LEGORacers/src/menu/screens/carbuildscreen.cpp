@@ -880,8 +880,8 @@ LegoBool32 CarBuildScreen::FUN_00477540()
 			partCarousel->SelectPartByType(carSetPartId);
 			partCarousel->SelectChoice(pieceType, colorRecordIndex);
 
-			m_unk0x410.FUN_0046d920(&m_unk0x19e0[m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex()]);
-			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
+			m_unk0x410.SelectChild(&m_unk0x19e0[m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex()]);
+			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 			m_unk0x2ae4 = 5;
 			return TRUE;
 		}

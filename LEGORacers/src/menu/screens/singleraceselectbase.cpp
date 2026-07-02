@@ -97,10 +97,10 @@ void SingleRaceSelectBase::VTable0x4c()
 
 	for (LegoS32 i = 0; i < optionCount; i++) {
 		CreateImage(&m_unk0x15dc[i], static_cast<undefined2>(i + 0x61), 0x9d);
-		m_unk0xb54.FUN_0046d9c0(&m_unk0x15dc[i]);
+		m_unk0xb54.AddItem(&m_unk0x15dc[i]);
 	}
 
-	m_unk0xb54.VTable0x50(0);
+	m_unk0xb54.SetSelection(0);
 }
 
 // FUNCTION: LEGORACERS 0x00488ac0

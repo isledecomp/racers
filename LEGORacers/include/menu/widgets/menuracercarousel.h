@@ -25,18 +25,18 @@ public:
 
 	MenuRacerCarousel();
 
-	void Reset() override;                // vtable+0x00
-	~MenuRacerCarousel() override;        // vtable+0x04
-	LegoBool32 Destroy() override;        // vtable+0x08
-	void VTable0x50(undefined4) override; // vtable+0x50
-	LegoS32 VTable0x54() override;        // vtable+0x54
-	LegoS32 VTable0x58() override;        // vtable+0x58
-	void VTable0x60(LegoS32) override;    // vtable+0x60
+	void Reset() override;                  // vtable+0x00
+	~MenuRacerCarousel() override;          // vtable+0x04
+	LegoBool32 Destroy() override;          // vtable+0x08
+	void SetSelection(undefined4) override; // vtable+0x50
+	LegoS32 ScrollNext() override;          // vtable+0x54
+	LegoS32 ScrollPrevious() override;      // vtable+0x58
+	void VTable0x60(LegoS32) override;      // vtable+0x60
 
 	LegoBool32 FUN_00483a60(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	void FUN_00484170(LegoS32 p_index);
-	LegoS32 GetSelectedValue() const { return m_unk0xd0[m_unk0x6c]; }
-	LegoS32 GetItemCount() const { return m_unk0x68; }
+	LegoS32 GetSelectedValue() const { return m_unk0xd0[m_selectedIndex]; }
+	LegoS32 GetItemCount() const { return m_itemCount; }
 
 	// SYNTHETIC: LEGORACERS 0x004839c0
 	// MenuRacerCarousel::`scalar deleting destructor'

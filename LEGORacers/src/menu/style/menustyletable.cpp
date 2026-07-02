@@ -433,15 +433,15 @@ void MenuStyleTable::ParseCarouselStyle(CarouselStyle* p_entry)
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x2b:
 			for (i = 0; i < 3; i++) {
-				p_entry->m_unk0x00[i] = m_parser->ReadInteger();
+				p_entry->m_soundIds[i] = m_parser->ReadInteger();
 			}
 			break;
 		case GolFileParser::e_unknown0x2d:
-			p_entry->m_unk0x0c = m_parser->ReadInteger();
+			p_entry->m_scrollDurationMs = m_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2f:
-			p_entry->m_unk0x10 = m_parser->ReadInteger();
-			p_entry->m_unk0x14 = m_parser->ReadInteger();
+			p_entry->m_pageMode = m_parser->ReadInteger();
+			p_entry->m_wrap = m_parser->ReadInteger();
 			break;
 		default:
 			m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);

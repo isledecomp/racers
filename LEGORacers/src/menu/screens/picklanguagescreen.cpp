@@ -29,7 +29,7 @@ void PickLanguageScreen::VTable0x4c()
 
 	for (LegoS32 i = 0; i < 9; i++) {
 		CreateTextLabel(&m_unk0xec4[i], 0x96, 0x37, i + 0x9d);
-		m_unk0xe30.FUN_0046d9c0(&m_unk0xec4[i]);
+		m_unk0xe30.AddItem(&m_unk0xec4[i]);
 	}
 
 	FUN_0047fdc0(&m_unk0x12fc, 0x3f, 0x43, 0x10);
@@ -43,7 +43,7 @@ LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreen
 		return FALSE;
 	}
 
-	m_unk0xe30.VTable0x50(languageIndex);
+	m_unk0xe30.SetSelection(languageIndex);
 	m_unk0x43c.Select(5);
 
 	return TRUE;
@@ -54,7 +54,7 @@ void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x43c) {
 		GameState& state = m_context->m_saveSystem.GetGameState();
-		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetUnk0x6c());
+		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetSelectedIndex());
 		state.SetDirty(TRUE);
 	}
 }

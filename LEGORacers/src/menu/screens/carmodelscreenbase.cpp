@@ -159,11 +159,11 @@ void CarModelScreenBase::FUN_00477290()
 
 	for (i = 0; i < c_partCategoryCount; i++) {
 		if (m_partCategoryAvailable[i]) {
-			m_unk0x410.FUN_0046d9c0(&m_unk0x19e0[i]);
+			m_unk0x410.AddItem(&m_unk0x19e0[i]);
 		}
 	}
 
-	m_unk0x410.VTable0x50(0);
+	m_unk0x410.SetSelection(0);
 }
 
 // FUNCTION: LEGORACERS 0x00477380
@@ -239,18 +239,18 @@ void CarModelScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 	}
 
 	if (p_source == &m_unk0xfec) {
-		m_unk0x2308.FUN_00477e40(m_partCarousel.GetChoiceIndex(m_partCarousel.GetUnk0x6c()));
+		m_unk0x2308.FUN_00477e40(m_partCarousel.GetChoiceIndex(m_partCarousel.GetSelectedIndex()));
 		return;
 	}
 
 	if (p_source == &m_unk0x4a4) {
-		MenuWidget* child = m_unk0x410.GetUnk0x78();
+		MenuWidget* child = m_unk0x410.GetSelectedChild();
 		LegoU32 i;
 		for (i = 0; i < c_partCategoryCount; i++) {
 			if (child == &m_unk0x19e0[i]) {
 				CarPartCarousel* partCarousel = &m_partCarousel;
 				partCarousel->SelectPartByType(m_context->m_unk0x21a4.GetEntries()[i].GetPieceType());
-				m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
+				m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 				return;
 			}
 		}
@@ -265,8 +265,8 @@ void CarModelScreenBase::OnCarouselSettled(MenuWidget* p_source)
 		case 4: {
 			CarPartCarousel* partCarousel = &m_partCarousel;
 			partCarousel->RefreshChoiceIndices();
-			partCarousel->VTable0x50(partCarousel->FUN_0046c9a0(m_partCarousel.GetUnk0x6c()));
-			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetUnk0x6c()));
+			partCarousel->SetSelection(partCarousel->WrapIndex(m_partCarousel.GetSelectedIndex()));
+			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 		}
 		case 5:
 			m_unk0x2ae4 = 1;

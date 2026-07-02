@@ -646,7 +646,7 @@ LegoBool32 MenuScreen::CreateCarousel(MenuCarousel* p_unk0x04, undefined2 p_unk0
 	MenuCarousel::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	return p_unk0x04->FUN_0046c970(&createParams, styleEntry);
+	return p_unk0x04->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c2b0

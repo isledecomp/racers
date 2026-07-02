@@ -84,7 +84,7 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 {
 	m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeCircuit;
 
-	m_unk0x221c = m_unk0xb54.GetUnk0x6c();
+	m_unk0x221c = m_unk0xb54.GetSelectedIndex();
 	m_unk0x1a54.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x4c), 0);
 	m_unk0x1bbc.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
 

@@ -152,7 +152,7 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 			LegoRacers::Context* context = m_context->m_context;
 			::memcpy(context->m_circuitName, circuitDefinition->GetName(), sizeof(GolName));
 
-			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x1fc0.GetUnk0x6c());
+			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x1fc0.GetSelectedIndex());
 			if (raceNameEntry) {
 				::memcpy(context->m_raceSlots[0].m_raceName, raceNameEntry->GetName(), sizeof(GolName));
 				::memcpy(context->m_raceSlots[0].m_folderName, raceNameEntry->GetFolderName(), sizeof(GolName));
@@ -188,7 +188,7 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 	LegoBool32 isComplete = FALSE;
 
 	if (p_source == &m_unk0xbe8) {
-		LegoU32 circuitIndex = m_unk0xb54.GetUnk0x6c();
+		LegoU32 circuitIndex = m_unk0xb54.GetSelectedIndex();
 		m_unk0x1904 = m_context->m_circuitList.GetEntry(circuitIndex);
 
 		if (m_unk0x1904) {
@@ -199,16 +199,16 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 			}
 		}
 
-		m_unk0x1fc0.FUN_0046da60();
+		m_unk0x1fc0.RemoveAllItems();
 		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
 			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
 			if (raceNameEntry) {
 				raceNameEntry->CopyDisplayString(&string);
 				m_unk0x2a48[i].VTable0x40(&string, TRUE);
-				m_unk0x1fc0.FUN_0046d9c0(&m_unk0x2a48[i]);
+				m_unk0x1fc0.AddItem(&m_unk0x2a48[i]);
 			}
 		}
-		m_unk0x1fc0.VTable0x50(0);
+		m_unk0x1fc0.SetSelection(0);
 
 		if (isComplete) {
 			m_unk0x19dc.Enable(5);
@@ -251,7 +251,7 @@ void RaceModeSetupScreen::FUN_00488010()
 	GolName raceName;
 	driverName[0] = '\0';
 
-	LegoU32 selectedEntryIndex = m_unk0x1fc0.GetUnk0x6c();
+	LegoU32 selectedEntryIndex = m_unk0x1fc0.GetSelectedIndex();
 	RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(selectedEntryIndex);
 	if (!raceNameEntry) {
 		return;

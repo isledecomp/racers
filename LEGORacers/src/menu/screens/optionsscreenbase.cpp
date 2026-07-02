@@ -67,18 +67,18 @@ void OptionsScreenBase::FUN_00482ef0()
 	LegoS32 i;
 	for (i = 0; i < 6; i++) {
 		CreateTextLabel(&m_unk0x30d8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x60));
-		m_unk0x2fb0.FUN_0046d9c0(&m_unk0x30d8[i]);
+		m_unk0x2fb0.AddItem(&m_unk0x30d8[i]);
 	}
 
-	m_unk0x2fb0.VTable0x50(m_unk0x370->GetRacerCount());
+	m_unk0x2fb0.SetSelection(m_unk0x370->GetRacerCount());
 	OnWidgetValueChanged(&m_unk0x1bc8);
 
 	for (i = 0; i < 5; i++) {
 		CreateTextLabel(&m_unk0x33a8[i], 0x96, 0x37, static_cast<undefined2>(i + 0x61));
-		m_unk0x3044.FUN_0046d9c0(&m_unk0x33a8[i]);
+		m_unk0x3044.AddItem(&m_unk0x33a8[i]);
 	}
 
-	m_unk0x3044.VTable0x50(m_unk0x370->GetLapCount() - 1);
+	m_unk0x3044.SetSelection(m_unk0x370->GetLapCount() - 1);
 	OnWidgetValueChanged(&m_unk0x25bc);
 	FUN_00483730();
 }
@@ -102,8 +102,8 @@ void OptionsScreenBase::FUN_00483030()
 
 	CreateTextLabel(&m_unk0x4f50, 0x107, 0x37, 0xa7);
 	CreateTextLabel(&m_unk0x4fc8, 0x107, 0x37, 0xa8);
-	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4f50);
-	m_unk0x40e4.FUN_0046d9c0(&m_unk0x4fc8);
+	m_unk0x40e4.AddItem(&m_unk0x4f50);
+	m_unk0x40e4.AddItem(&m_unk0x4fc8);
 	OnWidgetValueChanged(&m_unk0x36f0);
 	FUN_00483800();
 }
@@ -224,15 +224,15 @@ void OptionsScreenBase::OnWidgetValueChanged(MenuWidget* p_widget)
 		}
 	}
 	else if (p_widget == &m_unk0x1bc8) {
-		m_context->m_context->m_racerCount = m_unk0x2fb0.GetUnk0x6c();
+		m_context->m_context->m_racerCount = m_unk0x2fb0.GetSelectedIndex();
 		m_unk0x370->SetRacerCount(m_context->m_context->m_racerCount);
 	}
 	else if (p_widget == &m_unk0x25bc) {
-		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_unk0x3044.GetUnk0x6c() + 1);
+		m_context->m_context->m_lapCount = static_cast<LegoU8>(m_unk0x3044.GetSelectedIndex() + 1);
 		m_unk0x370->SetLapCount(m_context->m_context->m_lapCount);
 	}
 	else if (p_widget == &m_unk0x36f0) {
-		m_unk0x370->SetStereo(m_unk0x40e4.GetUnk0x6c() == 0);
+		m_unk0x370->SetStereo(m_unk0x40e4.GetSelectedIndex() == 0);
 
 		SoundManager* soundManager = m_context->m_context->m_soundManager;
 		if (soundManager) {

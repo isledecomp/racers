@@ -107,7 +107,7 @@ void ControlConfigScreen::FUN_0047a930()
 				break;
 			}
 
-			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[i]);
+			m_unk0x780.AddItem(&m_unk0x1208[i]);
 			m_unk0x368[i] = device;
 			m_unk0x37c[i] = i;
 		}
@@ -117,7 +117,7 @@ void ControlConfigScreen::FUN_0047a930()
 		InputDevice* keyboard = m_inputManager->GetKeyboard();
 		for (LegoU32 i = 2; i < 5; i++) {
 			CreateImage(&m_unk0x1208[m_unk0x39c], 0x115, 0x115);
-			m_unk0x780.FUN_0046d9c0(&m_unk0x1208[m_unk0x39c]);
+			m_unk0x780.AddItem(&m_unk0x1208[m_unk0x39c]);
 			m_unk0x368[m_unk0x39c] = keyboard;
 			m_unk0x37c[m_unk0x39c] = i;
 			m_unk0x39c++;
@@ -147,7 +147,7 @@ LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 		}
 	}
 
-	m_unk0x780.VTable0x50(m_unk0x3a0);
+	m_unk0x780.SetSelection(m_unk0x3a0);
 	m_unk0x144c[0].Select(4);
 	VTable0x78(0);
 
@@ -166,7 +166,7 @@ void ControlConfigScreen::VTable0x84()
 void ControlConfigScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
 {
 	if (p_unk0x04 == &m_unk0x814) {
-		m_unk0x3a0 = m_unk0x780.GetUnk0x6c();
+		m_unk0x3a0 = m_unk0x780.GetSelectedIndex();
 	}
 }
 

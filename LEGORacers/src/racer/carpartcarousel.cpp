@@ -69,7 +69,7 @@ LegoBool32 CarPartCarousel::Destroy()
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
-		for (LegoS32 i = 0; i < m_unk0x60; i++) {
+		for (LegoS32 i = 0; i < m_slotCount; i++) {
 			m_golExport->VTable0x48(m_unk0x7c[i].m_model);
 			m_unk0x7c[i].m_model = NULL;
 		}
@@ -84,12 +84,12 @@ LegoBool32 CarPartCarousel::Destroy()
 LegoS32 CarPartCarousel::FUN_004853a0()
 {
 	LegoS32 maxHighPieceOffset = m_pieceLibrary->GetMaxHighPieceOffset();
-	LegoS32 result = m_unk0x60;
+	LegoS32 result = m_slotCount;
 
 	for (LegoS32 i = 0; i < result; i++) {
 		GolModelBase* model = GetItemModel(i);
 		model->VTable0x18(m_renderer, 2, 3 * maxHighPieceOffset, maxHighPieceOffset, 100, 5);
-		result = m_unk0x60;
+		result = m_slotCount;
 	}
 
 	return result;
@@ -101,8 +101,8 @@ void CarPartCarousel::RefreshChoiceIndices()
 	m_currentEntry->FUN_004513d0(m_buildModel);
 	m_currentEntry->FillChoiceIndices(m_choiceIndices, 0, 30);
 
-	for (m_unk0x68 = 0; m_unk0x68 < 30; m_unk0x68++) {
-		if (m_choiceIndices[m_unk0x68] < 0) {
+	for (m_itemCount = 0; m_itemCount < 30; m_itemCount++) {
+		if (m_choiceIndices[m_itemCount] < 0) {
 			break;
 		}
 	}
@@ -116,12 +116,12 @@ void CarPartCarousel::SelectPartByType(LegoS32 p_pieceType)
 		return;
 	}
 
-	m_unk0x70 = 0;
-	m_unk0x74 = 0;
+	m_scrolling = 0;
+	m_scrollDurationMs = 0;
 	m_currentEntry = m_partSet->FindEntry(p_pieceType);
 	m_currentPieceType = p_pieceType;
 	RefreshChoiceIndices();
-	VTable0x50(0);
+	SetSelection(0);
 }
 
 // FUNCTION: LEGORACERS 0x004854a0
@@ -129,7 +129,7 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
 	GolModelBase* model = GetItemModel(p_index);
-	LegoS32 choiceIndex = m_choiceIndices[FUN_0046c9a0(m_unk0xb8 + p_index)];
+	LegoS32 choiceIndex = m_choiceIndices[WrapIndex(m_unk0xb8 + p_index)];
 	LegoS32 pieceType;
 	LegoS32 colorRecordIndex;
 
@@ -145,7 +145,7 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00485550
-void CarPartCarousel::VTable0x5c(undefined4, GolModelEntity* p_entity)
+void CarPartCarousel::LayoutItem(undefined4, GolModelEntity* p_entity)
 {
 	LegoFloat vectorX = g_cosineTable[c_vectorXCosineIndex];
 	LegoFloat vectorZ = g_cosineTable[c_vectorZCosineIndex];
@@ -157,29 +157,29 @@ void CarPartCarousel::VTable0x5c(undefined4, GolModelEntity* p_entity)
 }
 
 // FUNCTION: LEGORACERS 0x004855c0
-void CarPartCarousel::VTable0x50(undefined4 p_index)
+void CarPartCarousel::SetSelection(undefined4 p_index)
 {
-	if (m_unk0x68) {
-		m_unk0x6c = p_index;
-		m_unk0xb8 = FUN_0046c9a0(p_index - m_unk0x64);
+	if (m_itemCount) {
+		m_selectedIndex = p_index;
+		m_unk0xb8 = WrapIndex(p_index - m_focusedSlot);
 
-		if (!m_unk0x70) {
-			if (m_unk0x68 >= m_unk0x60 - 1) {
-				for (LegoS32 i = 0; i < m_unk0x60; i++) {
+		if (!m_scrolling) {
+			if (m_itemCount >= m_slotCount - 1) {
+				for (LegoS32 i = 0; i < m_slotCount; i++) {
 					VTable0x60(i);
 				}
 			}
 			else {
-				for (LegoS32 i = 0; i < m_unk0x60; i++) {
+				for (LegoS32 i = 0; i < m_slotCount; i++) {
 					GetItemEntity(i)->VTable0x54();
 				}
 
-				VTable0x60(m_unk0x64);
+				VTable0x60(m_focusedSlot);
 
-				LegoS32 index = m_unk0x64;
+				LegoS32 index = m_focusedSlot;
 				LegoS32 previousVisibleIndex = index - 1;
-				if (m_unk0x6c <= index) {
-					index = m_unk0x6c;
+				if (m_selectedIndex <= index) {
+					index = m_selectedIndex;
 				}
 				index--;
 
@@ -190,14 +190,14 @@ void CarPartCarousel::VTable0x50(undefined4 p_index)
 					} while (--count);
 				}
 
-				LegoS32 baseIndex = static_cast<LegoS32>(m_unk0x64);
+				LegoS32 baseIndex = static_cast<LegoS32>(m_focusedSlot);
 				LegoS32 nextVisibleIndex = baseIndex + 1;
 				LegoS32 count;
-				if (m_unk0x6c >= baseIndex) {
-					count = m_unk0x68 - m_unk0x6c;
+				if (m_selectedIndex >= baseIndex) {
+					count = m_itemCount - m_selectedIndex;
 				}
 				else {
-					count = m_unk0x60 - baseIndex - 1;
+					count = m_slotCount - baseIndex - 1;
 				}
 
 				while (count--) {
@@ -205,7 +205,7 @@ void CarPartCarousel::VTable0x50(undefined4 p_index)
 				}
 			}
 
-			VTable0x40();
+			SnapToSelection();
 		}
 	}
 }
@@ -221,59 +221,60 @@ void CarPartCarousel::SelectChoice(LegoS32 p_pieceType, LegoS32 p_colorRecordInd
 		firstChoiceIndex = m_currentEntry->NormalizeChoiceIndex(firstChoiceIndex + 1);
 	}
 
-	VTable0x50(result);
+	SetSelection(result);
 }
 
 // FUNCTION: LEGORACERS 0x00485720
-LegoS32 CarPartCarousel::VTable0x54()
+LegoS32 CarPartCarousel::ScrollNext()
 {
-	if (!m_unk0x68) {
+	if (!m_itemCount) {
 		return 0;
 	}
 
-	if (!m_unk0x70) {
-		if (m_unk0x6c >= m_unk0x68 - 1 && m_unk0x68 < m_unk0x60 - 1) {
-			m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
-			return m_unk0x6c;
+	if (!m_scrolling) {
+		if (m_selectedIndex >= m_itemCount - 1 && m_itemCount < m_slotCount - 1) {
+			m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[2]);
+			return m_selectedIndex;
 		}
 
-		MenuModelCarousel::VTable0x54();
-		VTable0x50(FUN_0046c9a0(m_unk0x6c + 1));
+		MenuModelCarousel::ScrollNext();
+		SetSelection(WrapIndex(m_selectedIndex + 1));
 
-		if (m_unk0x68 >= m_unk0x60 - 1 || m_unk0x68 - m_unk0x6c > m_unk0x60 - static_cast<LegoS32>(m_unk0x64) - 1) {
-			VTable0x60(m_unk0x60 - 1);
+		if (m_itemCount >= m_slotCount - 1 ||
+			m_itemCount - m_selectedIndex > m_slotCount - static_cast<LegoS32>(m_focusedSlot) - 1) {
+			VTable0x60(m_slotCount - 1);
 		}
 
-		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[0]);
+		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[0]);
 	}
 
-	return m_unk0x6c;
+	return m_selectedIndex;
 }
 
 // FUNCTION: LEGORACERS 0x004857b0
-LegoS32 CarPartCarousel::VTable0x58()
+LegoS32 CarPartCarousel::ScrollPrevious()
 {
-	if (!m_unk0x68) {
+	if (!m_itemCount) {
 		return 0;
 	}
 
-	if (!m_unk0x70) {
-		if (!m_unk0x6c && m_unk0x68 < m_unk0x60 - 1) {
-			m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[2]);
-			return m_unk0x6c;
+	if (!m_scrolling) {
+		if (!m_selectedIndex && m_itemCount < m_slotCount - 1) {
+			m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[2]);
+			return m_selectedIndex;
 		}
 
-		MenuModelCarousel::VTable0x58();
-		VTable0x50(FUN_0046c9a0(m_unk0x6c - 1));
+		MenuModelCarousel::ScrollPrevious();
+		SetSelection(WrapIndex(m_selectedIndex - 1));
 
-		if (m_unk0x68 >= m_unk0x60 - 1 || m_unk0x6c > static_cast<LegoS32>(m_unk0x64) - 1) {
+		if (m_itemCount >= m_slotCount - 1 || m_selectedIndex > static_cast<LegoS32>(m_focusedSlot) - 1) {
 			VTable0x60(0);
 		}
 
-		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[1]);
+		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);
 	}
 
-	return m_unk0x6c;
+	return m_selectedIndex;
 }
 
 // FUNCTION: LEGORACERS 0x00485840

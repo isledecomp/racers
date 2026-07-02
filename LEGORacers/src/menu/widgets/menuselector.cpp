@@ -413,10 +413,10 @@ void MenuSelector::VTable0x78()
 		return;
 	}
 
-	LegoU32 previousIndex = m_unk0x9e8->GetUnk0x6c();
-	m_unk0x9e8->VTable0x58();
+	LegoU32 previousIndex = m_unk0x9e8->GetSelectedIndex();
+	m_unk0x9e8->ScrollPrevious();
 
-	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
+	if (m_unk0x9e8->GetSelectedIndex() != previousIndex && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
@@ -430,10 +430,10 @@ void MenuSelector::VTable0x7c()
 		return;
 	}
 
-	LegoU32 previousIndex = m_unk0x9e8->GetUnk0x6c();
-	m_unk0x9e8->VTable0x54();
+	LegoU32 previousIndex = m_unk0x9e8->GetSelectedIndex();
+	m_unk0x9e8->ScrollNext();
 
-	if (m_unk0x9e8->GetUnk0x6c() != previousIndex && m_eventHandler) {
+	if (m_unk0x9e8->GetSelectedIndex() != previousIndex && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
@@ -450,8 +450,8 @@ undefined4 MenuSelector::OnEvent(undefined4)
 		m_unk0x9f0 = 0;
 	}
 
-	m_unk0x9e8->VTable0x48(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
-	m_unk0x9e8->VTable0x4c(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_unk0x9e8->SetItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_unk0x9e8->SetFocusedItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
 
 	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
 		VTable0x78();
@@ -462,7 +462,7 @@ undefined4 MenuSelector::OnEvent(undefined4)
 	else {
 		MenuCarousel* carousel = m_unk0x9e8;
 		MenuStyleTable::SelectorStyle* styleEntry = GetStyleEntry();
-		carousel->VTable0x4c(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
+		carousel->SetFocusedItemColors(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
 	}
 
 	return 0;

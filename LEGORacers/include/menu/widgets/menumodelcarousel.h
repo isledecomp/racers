@@ -54,13 +54,13 @@ public:
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
-	void VTable0x40() override;                                                      // vtable+0x40
-	void VTable0x44(undefined4) override;                                            // vtable+0x44
-	void VTable0x48(VisualStateColor*, VisualStateColor*) override;                  // vtable+0x48
-	void VTable0x4c(VisualStateColor*, VisualStateColor*) override;                  // vtable+0x4c
-	LegoS32 VTable0x54() override;                                                   // vtable+0x54
-	LegoS32 VTable0x58() override;                                                   // vtable+0x58
-	virtual void VTable0x5c(undefined4, GolModelEntity*);                            // vtable+0x5c
+	void SnapToSelection() override;                                                 // vtable+0x40
+	void StartScroll(undefined4) override;                                           // vtable+0x44
+	void SetItemColors(VisualStateColor*, VisualStateColor*) override;               // vtable+0x48
+	void SetFocusedItemColors(VisualStateColor*, VisualStateColor*) override;        // vtable+0x4c
+	LegoS32 ScrollNext() override;                                                   // vtable+0x54
+	LegoS32 ScrollPrevious() override;                                               // vtable+0x58
+	virtual void LayoutItem(undefined4, GolModelEntity*);                            // vtable+0x5c
 	virtual void VTable0x60(LegoS32);                                                // vtable+0x60
 
 	// SYNTHETIC: LEGORACERS 0x0046ca60

@@ -40,10 +40,10 @@ public:
 	// SIZE 0x18
 	class CarouselStyle {
 	public:
-		undefined4 m_unk0x00[3]; // 0x00
-		LegoS32 m_unk0x0c;       // 0x0c
-		LegoS32 m_unk0x10;       // 0x10
-		LegoS32 m_unk0x14;       // 0x14
+		undefined4 m_soundIds[3];   // 0x00
+		LegoS32 m_scrollDurationMs; // 0x0c
+		LegoS32 m_pageMode;         // 0x10
+		LegoS32 m_wrap;             // 0x14
 	};
 
 	// SIZE 0x2c

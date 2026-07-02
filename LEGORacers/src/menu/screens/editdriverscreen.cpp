@@ -413,7 +413,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		for (i = 0; i < 4; i++) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			LegoU16 random = g_randomTable[g_randomTableIndex];
-			m_unk0x420[i].VTable0x50(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
+			m_unk0x420[i].SetSelection(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
 		}
 
 		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(m_unk0x420[0].GetSelectedValue());

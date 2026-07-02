@@ -19,7 +19,7 @@ extern const LegoFloat g_violetShoalTwo = 2.0f;
 const LegoFloat g_violetShoalMaxFloat = FLT_MAX;
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void MenuModelCarousel::VTable0x5c(undefined4, GolModelEntity*)
+void MenuModelCarousel::LayoutItem(undefined4, GolModelEntity*)
 {
 }
 
@@ -51,7 +51,7 @@ void MenuModelCarousel::Reset()
 // FUNCTION: LEGORACERS 0x0046cb10
 LegoBool32 MenuModelCarousel::FUN_0046cb10(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
 {
-	if (!MenuCarousel::FUN_0046c970(p_createParams, p_styleEntry)) {
+	if (!MenuCarousel::Create(p_createParams, p_styleEntry)) {
 		return FALSE;
 	}
 
@@ -68,8 +68,8 @@ LegoBool32 MenuModelCarousel::FUN_0046cb10(CreateParams* p_createParams, MenuSty
 	state.m_color.m_grn = 0xff;
 	state.m_color.m_blu = 0xff;
 	state.m_color.m_alp = 0xff;
-	VTable0x48(&state, &state);
-	VTable0x4c(&state, &state);
+	SetItemColors(&state, &state);
+	SetFocusedItemColors(&state, &state);
 
 	return TRUE;
 }
@@ -81,7 +81,7 @@ LegoBool32 MenuModelCarousel::Destroy()
 
 	if (result & m_flags) {
 		if (m_unk0x7c) {
-			for (LegoS32 i = 0; i < m_unk0x60; i++) {
+			for (LegoS32 i = 0; i < m_slotCount; i++) {
 				if (m_unk0x7c[i].m_model) {
 					m_golExport->VTable0x48(m_unk0x7c[i].m_model);
 				}
@@ -200,16 +200,16 @@ void MenuModelCarousel::FUN_0046cdf0()
 // FUNCTION: LEGORACERS 0x0046ce10
 void MenuModelCarousel::FUN_0046ce10(CreateParams* p_createParams)
 {
-	m_unk0x60 = p_createParams->m_unk0x38;
-	m_unk0x64 = p_createParams->m_unk0x44;
+	m_slotCount = p_createParams->m_unk0x38;
+	m_focusedSlot = p_createParams->m_unk0x44;
 
-	m_unk0x7c = new Item[m_unk0x60];
+	m_unk0x7c = new Item[m_slotCount];
 	if (!m_unk0x7c) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	Item* item = m_unk0x7c;
-	for (LegoS32 i = 0; i < m_unk0x60; i++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++) {
 		item->m_model = m_golExport->VTable0x14();
 		if (!item->m_model) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -241,7 +241,7 @@ void MenuModelCarousel::FUN_0046cf20()
 	LegoFloat heightFloat = static_cast<LegoFloat>(height);
 	m_scaleY = heightNumerator / heightFloat;
 
-	if (m_unk0x60 > zero) {
+	if (m_slotCount > zero) {
 		do {
 			Rect* rect = &item->m_rect;
 
@@ -267,7 +267,7 @@ void MenuModelCarousel::FUN_0046cf20()
 
 			i++;
 			item++;
-		} while (i < m_unk0x60);
+		} while (i < m_slotCount);
 	}
 }
 
@@ -346,28 +346,28 @@ void MenuModelCarousel::VTable0x60(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0046d1d0
-void MenuModelCarousel::VTable0x48(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
+void MenuModelCarousel::SetItemColors(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
 {
 	Item* item = m_unk0x7c;
-	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		item->m_unk0xc8.m_unk0x00 = p_unk0x04->m_unk0x00;
 		item->m_unk0xcc.m_unk0x00 = p_unk0x08->m_unk0x00;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046d210
-void MenuModelCarousel::VTable0x4c(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
+void MenuModelCarousel::SetFocusedItemColors(VisualStateColor* p_unk0x04, VisualStateColor* p_unk0x08)
 {
-	Item* item = &m_unk0x7c[m_unk0x64];
+	Item* item = &m_unk0x7c[m_focusedSlot];
 	item->m_unk0xc8.m_unk0x00 = p_unk0x04->m_unk0x00;
 	item->m_unk0xcc.m_unk0x00 = p_unk0x08->m_unk0x00;
 }
 
 // FUNCTION: LEGORACERS 0x0046d240
-void MenuModelCarousel::VTable0x40()
+void MenuModelCarousel::SnapToSelection()
 {
 	Item* item = m_unk0x7c;
-	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		if (item->m_entity.HasModel()) {
 			GolVec3 position;
 			FUN_0046d040(item, &position);
@@ -378,13 +378,13 @@ void MenuModelCarousel::VTable0x40()
 }
 
 // FUNCTION: LEGORACERS 0x0046d2a0
-void MenuModelCarousel::VTable0x44(undefined4)
+void MenuModelCarousel::StartScroll(undefined4)
 {
-	m_unk0x74 = m_unk0x58->m_unk0x0c;
-	m_unk0x70 = 1;
+	m_scrollDurationMs = m_style->m_scrollDurationMs;
+	m_scrolling = 1;
 
 	Item* item = m_unk0x7c;
-	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		if (item->m_entity.HasModel()) {
 			GolVec3 currentPosition;
 			item->m_entity.VTable0x04(&currentPosition);
@@ -392,7 +392,7 @@ void MenuModelCarousel::VTable0x44(undefined4)
 			GolVec3 targetPosition;
 			FUN_0046d040(item, &targetPosition);
 
-			LegoFloat duration = static_cast<LegoFloat>(m_unk0x74);
+			LegoFloat duration = static_cast<LegoFloat>(m_scrollDurationMs);
 			GolVec3 velocity;
 			velocity.m_x = (targetPosition.m_x - currentPosition.m_x) / duration;
 			velocity.m_y = (targetPosition.m_y - currentPosition.m_y) / duration;
@@ -403,12 +403,12 @@ void MenuModelCarousel::VTable0x44(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x0046d350
-LegoS32 MenuModelCarousel::VTable0x54()
+LegoS32 MenuModelCarousel::ScrollNext()
 {
 	GolModelBase* model = m_unk0x7c[0].m_model;
 	Item* item = m_unk0x7c;
 
-	for (LegoS32 i = 0; i < m_unk0x60 - 1; i++, item++) {
+	for (LegoS32 i = 0; i < m_slotCount - 1; i++, item++) {
 		GolModelEntity* entity = &item->m_entity;
 
 		item->m_model = item[1].m_model;
@@ -427,17 +427,17 @@ LegoS32 MenuModelCarousel::VTable0x54()
 
 	item->m_entity.VTable0x54();
 	item->m_model = model;
-	VTable0x44(0);
-	return m_unk0x6c;
+	StartScroll(0);
+	return m_selectedIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0046d470
-LegoS32 MenuModelCarousel::VTable0x58()
+LegoS32 MenuModelCarousel::ScrollPrevious()
 {
-	Item* item = &m_unk0x7c[m_unk0x60 - 1];
+	Item* item = &m_unk0x7c[m_slotCount - 1];
 	GolModelBase* model = item->m_model;
 
-	for (LegoS32 i = m_unk0x60 - 1; i > 0; i--, item--) {
+	for (LegoS32 i = m_slotCount - 1; i > 0; i--, item--) {
 		GolModelEntity* entity = &item->m_entity;
 		GolModelBase* shiftedModel = item[-1].m_model;
 
@@ -457,8 +457,8 @@ LegoS32 MenuModelCarousel::VTable0x58()
 
 	item->m_entity.VTable0x54();
 	item->m_model = model;
-	VTable0x44(0);
-	return m_unk0x6c;
+	StartScroll(0);
+	return m_selectedIndex;
 }
 
 // FUNCTION: LEGORACERS 0x0046d5a0
@@ -479,10 +479,10 @@ MenuWidget* MenuModelCarousel::OnKeyDown(InputEventQueue::Event* p_event, undefi
 		return NULL;
 	}
 
-	for (LegoS32 i = 0; i < m_unk0x60; i++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++) {
 		if (FUN_00473a20(&m_unk0x7c[i].m_rect, p_x, p_y)) {
-			LegoS32 index = FUN_0046c9a0(i + m_unk0x6c - m_unk0x64);
-			VTable0x50(index);
+			LegoS32 index = WrapIndex(i + m_selectedIndex - m_focusedSlot);
+			SetSelection(index);
 
 			if (m_notifyHandler) {
 				m_notifyHandler->HandleKeyDown(this, p_event, p_x, p_y);
@@ -512,7 +512,7 @@ MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 	m_renderer->VTable0x30(&m_unk0x8c);
 
 	LegoU8 hasModelFlag = 1;
-	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 		if (item->m_entity.HasModel() & hasModelFlag) {
 			m_renderer->GetCurrentMaterialColor()->SetColor(item->m_unk0xc8.m_color);
 			m_renderer->GetCurrentLight(0)->SetColor(item->m_unk0xcc.m_color);
@@ -533,32 +533,32 @@ undefined4 MenuModelCarousel::OnEvent(undefined4 p_elapsed)
 {
 	undefined4 elapsed;
 
-	if (m_unk0x70) {
-		if (!m_unk0x74) {
+	if (m_scrolling) {
+		if (!m_scrollDurationMs) {
 			Item* item = m_unk0x7c;
-			for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
+			for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
 				if (item->m_entity.HasModel()) {
 					item->m_entity.ClearVelocity();
 				}
 			}
 
-			m_unk0x70 = 0;
-			VTable0x40();
+			m_scrolling = 0;
+			SnapToSelection();
 		}
 
 		elapsed = p_elapsed;
-		if (p_elapsed > static_cast<undefined4>(m_unk0x74)) {
-			elapsed = m_unk0x74;
+		if (p_elapsed > static_cast<undefined4>(m_scrollDurationMs)) {
+			elapsed = m_scrollDurationMs;
 		}
-		m_unk0x74 -= elapsed;
+		m_scrollDurationMs -= elapsed;
 	}
 	else {
 		elapsed = p_elapsed;
 	}
 
 	Item* item = m_unk0x7c;
-	for (LegoS32 i = 0; i < m_unk0x60; i++, item++) {
-		VTable0x5c(elapsed, &item->m_entity);
+	for (LegoS32 i = 0; i < m_slotCount; i++, item++) {
+		LayoutItem(elapsed, &item->m_entity);
 		item->m_entity.VTable0x10(elapsed);
 	}
 

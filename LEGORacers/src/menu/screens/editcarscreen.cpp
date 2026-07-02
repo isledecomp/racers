@@ -211,7 +211,7 @@ void EditCarScreen::FUN_0047c320()
 
 	for (i = 0; i < 12; i++) {
 		if (m_unk0x3688[i]) {
-			m_unk0x2384.FUN_0046d9c0(&m_unk0x2e0c[i]);
+			m_unk0x2384.AddItem(&m_unk0x2e0c[i]);
 		}
 	}
 }
@@ -259,13 +259,13 @@ void EditCarScreen::FUN_0047c450()
 
 		LegoS32 index = m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex();
 		if (m_unk0x3688[index]) {
-			m_unk0x2384.FUN_0046d920(&m_unk0x2e0c[index]);
+			m_unk0x2384.SelectChild(&m_unk0x2e0c[index]);
 		}
 
 		FUN_0047c720();
 	}
 	else {
-		m_unk0x2384.VTable0x50(0);
+		m_unk0x2384.SetSelection(0);
 		OnWidgetValueChanged(&m_unk0x2418);
 	}
 }
@@ -470,7 +470,7 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 	model->GetPieceList().FUN_0049fd60();
 	model->SetPlacedPieceCount(0);
 
-	MenuWidget* selectedChild = m_unk0x2384.GetUnk0x78();
+	MenuWidget* selectedChild = m_unk0x2384.GetSelectedChild();
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
 		if (selectedChild == &m_unk0x2e0c[i]) {
 			m_context->m_unk0x21a4.SetSelectedEntry(&m_context->m_unk0x21a4.GetEntries()[i]);

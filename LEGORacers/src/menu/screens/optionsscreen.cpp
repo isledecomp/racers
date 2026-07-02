@@ -64,7 +64,7 @@ void OptionsScreen::VTable0x98()
 		string.CopyFromBufSelection(driverNameBuffer, ::strlen(drawState->GetDriverName(i)) + 1);
 		string.ToUpperCase();
 		m_unk0x6214[i].VTable0x40(&string, 0);
-		m_unk0x578c.FUN_0046d9c0(&m_unk0x6214[i]);
+		m_unk0x578c.AddItem(&m_unk0x6214[i]);
 
 		drawState->GetDriverGuid(i, &driverGuid.m_guid);
 		if (::memcmp(&driverGuid, &selectedDriverGuid, sizeof(GUID)) == 0) {
@@ -72,7 +72,7 @@ void OptionsScreen::VTable0x98()
 		}
 	}
 
-	m_unk0x578c.VTable0x50(selectedDriverIndex);
+	m_unk0x578c.SetSelection(selectedDriverIndex);
 	OnWidgetValueChanged(&m_unk0x5820);
 
 	for (i = 0; i < 2; i++) {
@@ -166,7 +166,7 @@ void OptionsScreen::VTable0xa4()
 void OptionsScreen::FUN_00475b10()
 {
 	GolDrawState* drawState = m_context->m_context->m_golApp->GetDrawState();
-	LegoU32 driverIndex = m_unk0x578c.GetUnk0x6c();
+	LegoU32 driverIndex = m_unk0x578c.GetSelectedIndex();
 	LegoU32 flags;
 	const LegoChar* driverName = drawState->GetDriverDescription(driverIndex);
 	DisplayDriverGuid driverGuid;

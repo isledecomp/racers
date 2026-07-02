@@ -90,16 +90,16 @@ void RacerPickScreenBase::FUN_004890c0(LegoS32 p_index)
 {
 	MenuCarouselNavigator* carousel = &m_unk0x270c[p_index];
 
-	carousel->FUN_0046da60();
+	carousel->RemoveAllItems();
 
 	if (m_unk0x2704[p_index] && m_initialized) {
 		FUN_00489050(p_index);
 
 		for (LegoS32 i = 0; i < 3; i++) {
-			carousel->FUN_0046d9c0(&m_unk0x2834[p_index * 3 + i]);
+			carousel->AddItem(&m_unk0x2834[p_index * 3 + i]);
 		}
 
-		carousel->VTable0x50(1);
+		carousel->SetSelection(1);
 	}
 }
 

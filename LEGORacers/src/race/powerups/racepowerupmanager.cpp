@@ -1257,7 +1257,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[10]; i++) {
-			m_warpActions[i].FUN_0045d540();
+			m_warpActions[i].Destroy();
 		}
 
 		if (m_warpActions != NULL) {
@@ -1270,7 +1270,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[9]; i++) {
-			m_turboActions[i].FUN_0045c8b0();
+			m_turboActions[i].Destroy();
 		}
 
 		if (m_turboActions != NULL) {
@@ -1283,7 +1283,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[8]; i++) {
-			m_shieldActions[i].FUN_0045bd10();
+			m_shieldActions[i].Destroy();
 		}
 
 		if (m_shieldActions != NULL) {
@@ -2362,29 +2362,29 @@ void RacePowerupManager::FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p
 }
 
 // FUNCTION: LEGORACERS 0x0045b640
-void RacePowerupManager::FUN_0045b640(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelShield(RaceState::Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[8]; i++) {
 		ShieldAction* action = &m_shieldActions[i];
-		if (action->GetState() > 1 && action->m_unk0x20 == p_racer) {
+		if (action->GetState() > 1 && action->m_racer == p_racer) {
 			action->SetState(6);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045b690 FOLDED
-void RacePowerupManager::FUN_0045b690(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelTurbo(RaceState::Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[9]; i++) {
-		if (m_turboActions[i].m_state > 1 && m_turboActions[i].m_unk0x018 == p_racer) {
+		if (m_turboActions[i].m_state > 1 && m_turboActions[i].m_racer == p_racer) {
 			m_turboActions[i].m_state = 6;
-			m_turboActions[i].m_unk0x018 = NULL;
+			m_turboActions[i].m_racer = NULL;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045b6f0
-void RacePowerupManager::FUN_0045b6f0(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelMagnetHold(RaceState::Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[0]; i++) {
 		MagnetAction* action = &m_magnetActions[i];
@@ -2395,11 +2395,11 @@ void RacePowerupManager::FUN_0045b6f0(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b740
-void RacePowerupManager::FUN_0045b740(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelWarp(RaceState::Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[10]; i++) {
 		WarpAction* item = &m_warpActions[i];
-		if (item->m_unk0x0a8 == p_racer) {
+		if (item->m_racer == p_racer) {
 			if (item->m_state == 2) {
 				item->m_state = 6;
 			}

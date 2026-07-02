@@ -696,7 +696,7 @@ public:
 			void FUN_00448c70();
 			void FUN_00448d90(GolBoundedEntity* p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c);
 			void FUN_004490b0(GolVec3* p_unk0x04);
-			void FUN_00429cf0(LegoFloat p_unk0x04, LegoU32 p_unk0x08);
+			void ApplySpeedModifier(LegoFloat p_unk0x04, LegoU32 p_unk0x08);
 			void FUN_00429d40(LegoU32 p_elapsedMs);
 			void FUN_0042a100();
 			void FUN_0042a220();
@@ -914,7 +914,7 @@ public:
 			void FUN_00429990(GolVec3* p_unk0x04);
 			void FUN_00429a90();
 			void FUN_00429af0();
-			void FUN_00429cf0(LegoFloat p_unk0x04, LegoU32 p_unk0x08);
+			void ApplySpeedModifier(LegoFloat p_unk0x04, LegoU32 p_unk0x08);
 			void FUN_00429d40(LegoU32 p_elapsedMs);
 			void FUN_0042a100();
 			void FUN_0042a220();
@@ -1039,12 +1039,12 @@ public:
 		void FUN_00438500();
 		LegoU32 ReturnAllWhiteBricks();
 		void FUN_00439570();
-		void FUN_004395a0();
+		void EndTurbo();
 		void FUN_004395d0();
 		void FUN_00439660();
-		void FUN_004396c0(LegoU32 p_unk0x04);
-		void FUN_00439730();
-		void FUN_00439790();
+		void StartTurbo(LegoU32 p_unk0x04);
+		void ClearActiveAction();
+		void EndShield();
 		void StartSpinOut();
 		void EndSpinOut();
 		void FUN_004397c0(LegoBool32 p_unk0x04);
@@ -1061,10 +1061,10 @@ public:
 		void FUN_0043a360();
 		void FUN_0043a390();
 		void FUN_00437540(RaceCameraController* p_controller, LegoBool32 p_unk0x08);
-		LegoU32 FUN_00439770(LegoU32 p_unk0x04);
+		LegoU32 StartShield(LegoU32 p_unk0x04);
 		void FUN_00439870();
 		void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
-		void FUN_00439b00();
+		void RemoveCurse();
 		void FUN_00439b70();
 		LegoU32 FUN_00439ba0();
 		void FUN_00439c40();
@@ -1242,17 +1242,17 @@ public:
 			SpatialSoundInstance* m_soundDac;        // 0xdac
 			RaceResourceManager::Resource* m_resDac; // 0xdac
 		};
-		undefined4 m_unk0xdb0;               // 0xdb0
-		RaceCameraController* m_unk0xdb4;    // 0xdb4
-		LegoU32 m_unk0xdb8;                  // 0xdb8
-		LegoU16 m_unk0xdbc;                  // 0xdbc
-		undefined m_unk0xdbe[0xdec - 0xdbe]; // 0xdbe
-		GolString m_displayName;             // 0xdec
-		GolVec3 m_unk0xdf8;                  // 0xdf8
-		LegoU32 m_unk0xe04;                  // 0xe04
-		RaceActionSource0x24 m_actionSource; // 0xe08
-		Field0x00c::Entry* m_unk0xe2c;       // 0xe2c
-		CobaltTrail0x140* m_unk0xe30;        // 0xe30
+		undefined4 m_unk0xdb0;                    // 0xdb0
+		RaceCameraController* m_cameraController; // 0xdb4
+		LegoU32 m_unk0xdb8;                       // 0xdb8
+		LegoU16 m_unk0xdbc;                       // 0xdbc
+		undefined m_unk0xdbe[0xdec - 0xdbe];      // 0xdbe
+		GolString m_displayName;                  // 0xdec
+		GolVec3 m_unk0xdf8;                       // 0xdf8
+		LegoU32 m_unk0xe04;                       // 0xe04
+		RaceActionSource0x24 m_actionSource;      // 0xe08
+		Field0x00c::Entry* m_unk0xe2c;            // 0xe2c
+		CobaltTrail0x140* m_unk0xe30;             // 0xe30
 	};
 
 	// SIZE 0x0c

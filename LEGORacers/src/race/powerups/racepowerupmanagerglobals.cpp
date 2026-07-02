@@ -4,7 +4,7 @@
 #include <float.h>
 
 // GLOBAL: LEGORACERS 0x004b03f4
-extern const LegoFloat g_unk0x004b03f4 = 6.0f;
+extern const LegoFloat g_warpPortalHeightOffset = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b1378
 extern const LegoFloat g_unlimitedDrawDistance = FLT_MAX;
@@ -58,10 +58,10 @@ extern const LegoFloat g_unk0x004b1868 = 0.93000001f;
 extern const LegoFloat g_unk0x004b186c = 0.60000002f;
 
 // GLOBAL: LEGORACERS 0x004b1930
-extern const LegoFloat g_unk0x004b1930 = 30.0f;
+extern const LegoFloat g_shieldExpireSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b1934
-extern const LegoFloat g_unk0x004b1934 = 300.0f;
+extern const LegoFloat g_shieldExpireSoundMaxDistance = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a6c
-extern const LegoFloat g_unk0x004b1a6c = 30.0f;
+extern const LegoFloat g_warpFovBoost = 30.0f;

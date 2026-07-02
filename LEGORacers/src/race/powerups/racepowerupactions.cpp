@@ -17,18 +17,18 @@
 #include <math.h>
 
 extern const LegoFloat g_unk0x004b02e0;
-extern const LegoFloat g_unk0x004b03f4;
-extern const LegoFloat g_unk0x004b0958;
-extern const LegoFloat g_unk0x004b095c;
+extern const LegoFloat g_warpPortalHeightOffset;
+extern const LegoFloat g_shieldSoundMinDistance;
+extern const LegoFloat g_shieldSoundMaxDistance;
 extern const LegoFloat g_unlimitedDrawDistance;
 extern const LegoFloat g_unk0x004b14dc;
 extern const LegoFloat g_unk0x004b1508;
-extern const LegoFloat g_unk0x004b0b4c;
+extern const LegoFloat g_fadeAlphaScale;
 extern const LegoFloat g_unk0x004b165c;
 extern const LegoFloat g_unk0x004b1660;
-extern const LegoFloat g_unk0x004b1930;
-extern const LegoFloat g_unk0x004b1934;
-extern const LegoFloat g_unk0x004b1a6c;
+extern const LegoFloat g_shieldExpireSoundMinDistance;
+extern const LegoFloat g_shieldExpireSoundMaxDistance;
+extern const LegoFloat g_warpFovBoost;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_ghostSpeedScale;
@@ -293,22 +293,22 @@ const LegoFloat g_oilSlipSoundMaxDistance = 600.0f;
 const LegoFloat g_oilBubbleAngleScale = 0.01f;
 
 // GLOBAL: LEGORACERS 0x004b19d4
-const LegoFloat g_unk0x004b19d4 = 30.0f;
+const LegoFloat g_turboSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b19d8
-const LegoFloat g_unk0x004b19d8 = 300.0f;
+const LegoFloat g_turboSoundMaxDistance = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b19e4
-const LegoFloat g_unk0x004b19e4 = 0.7f;
+const LegoFloat g_turboSmokeVelocityScale = 0.7f;
 
 // GLOBAL: LEGORACERS 0x004b1a50
-const LegoFloat g_unk0x004b1a50 = -2.0f;
+const LegoFloat g_turboPackOffset = -2.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a54
-const LegoFloat g_unk0x004b1a54 = 0.0028571428f;
+const LegoFloat g_turboFadeAlphaScale = 0.0028571428f;
 
 // GLOBAL: LEGORACERS 0x004b1a58
-const LegoFloat g_unk0x004b1a58 = 0.6f;
+const LegoFloat g_turboEndVolumeBase = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1a60
 const LegoFloat g_unk0x004b1a60 = 200.0f;
@@ -320,13 +320,13 @@ const LegoFloat g_unk0x004b1a64 = 600.0f;
 const LegoFloat g_unk0x004b1a68 = 45.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a70
-const LegoFloat g_unk0x004b1a70 = 0.6f;
+const LegoFloat g_warpPathSpeed = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1a74
 const LegoFloat g_unk0x004b1a74 = 700.0f;
 
 // GLOBAL: LEGORACERS 0x004b1aa8
-const LegoFloat g_unk0x004b1aa8 = 0.00066666666f;
+const LegoFloat g_warpLerpScale = 0.00066666666f;
 
 // GLOBAL: LEGORACERS 0x004c1c4c
 ColorRGBA g_unk0x004c1c4c = {0x32, 0x32, 0x32, 0xc8};
@@ -2914,8 +2914,8 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerField0xc70Flags0x014Bit0) {
-				m_manager->FUN_0045b690(m_heldRacer);
-				m_heldRacer->FUN_00439730();
+				m_manager->CancelTurbo(m_heldRacer);
+				m_heldRacer->ClearActiveAction();
 			}
 		}
 		else {
@@ -3076,7 +3076,7 @@ void RacePowerupManager::MagnetAction::Deploy()
 
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(10.0f);
-	m_ownerRacer->m_unk0x3e8.FUN_00429cf0(0.0015f, 150);
+	m_ownerRacer->m_unk0x3e8.ApplySpeedModifier(0.0015f, 150);
 	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
 
 	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
@@ -3710,7 +3710,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(3.0f);
-	m_ownerRacer->m_unk0x3e8.FUN_00429cf0(0.0015f, 150);
+	m_ownerRacer->m_unk0x3e8.ApplySpeedModifier(0.0015f, 150);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundDrop, &position, g_oilSoundMinDistance, g_oilSoundMaxDistance, 1.0f, 1.0f);
 
@@ -4203,31 +4203,31 @@ RaceState::Racer* RacePowerupManager::ShieldAction::FUN_0045bc40()
 RacePowerupManager::ShieldAction::ShieldAction()
 {
 	m_unk0x18 = 0;
-	m_unk0x1c = 0;
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
+	m_innerShieldEntity = 0;
+	m_racer = 0;
+	m_manager = 0;
+	m_sound = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045bc80
 RacePowerupManager::ShieldAction::~ShieldAction()
 {
-	FUN_0045bd10();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045bcd0 FOLDED
 void RacePowerupManager::ShieldAction::Initialize(RacePowerupManager* p_unk0x04)
 {
 	if (m_state != 0) {
-		FUN_0045bd10();
+		Destroy();
 	}
 
 	m_state = 1;
-	m_unk0x24 = p_unk0x04;
+	m_manager = p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x0045bd10 FOLDED
-void RacePowerupManager::ShieldAction::FUN_0045bd10()
+void RacePowerupManager::ShieldAction::Destroy()
 {
 	Deactivate();
 	m_state = 0;
@@ -4241,58 +4241,58 @@ void RacePowerupManager::ShieldAction::Activate(
 	GolAnimatedEntity* p_unk0x10
 )
 {
-	LegoU32 soundId = c_sound0x4c;
+	LegoU32 soundId = c_soundLevel0;
 
-	m_entity0x18 = m_unk0x24->AllocateEffectEntity();
-	if (m_entity0x18 == NULL) {
-		m_state = c_state0x06;
+	m_shieldEntity = m_manager->AllocateEffectEntity();
+	if (m_shieldEntity == NULL) {
+		m_state = c_stateDone;
 		return;
 	}
 
-	m_unk0x1c = m_unk0x24->AllocateEffectEntity();
-	if (m_unk0x1c == NULL) {
-		m_state = c_state0x06;
+	m_innerShieldEntity = m_manager->AllocateEffectEntity();
+	if (m_innerShieldEntity == NULL) {
+		m_state = c_stateDone;
 		return;
 	}
 
-	m_unk0x20 = p_racer;
-	if (m_unk0x20->m_unk0xd04 & c_racerFlags0xd04Bit0) {
-		m_unk0x24->FUN_0045b640(m_unk0x20);
+	m_racer = p_racer;
+	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit0) {
+		m_manager->CancelShield(m_racer);
 	}
 
 	switch (p_unk0x08) {
 	case 0:
-		m_stateTimerMs = c_duration0x0fa0;
-		soundId = c_sound0x4c;
+		m_stateTimerMs = c_durationLevel0Ms;
+		soundId = c_soundLevel0;
 		break;
 	case 1:
-		m_stateTimerMs = c_duration0x1770;
-		soundId = c_sound0x35;
+		m_stateTimerMs = c_durationLevel1Ms;
+		soundId = c_soundLevel1;
 		break;
 	case 2:
-		m_stateTimerMs = c_duration0x1f40;
-		soundId = c_sound0x4d;
+		m_stateTimerMs = c_durationLevel2Ms;
+		soundId = c_soundLevel2;
 		break;
 	case 3:
-		m_stateTimerMs = c_duration0x2710;
-		soundId = c_sound0x4e;
+		m_stateTimerMs = c_durationLevel3Ms;
+		soundId = c_soundLevel3;
 		break;
 	}
 
-	m_unk0x28 = m_soundSource->AcquireSoundById(soundId);
-	if (m_unk0x28 != NULL) {
-		m_unk0x28->Play(TRUE);
-		m_unk0x28->SetDistanceRange(g_unk0x004b0958, g_unk0x004b095c);
+	m_sound = m_soundSource->AcquireSoundById(soundId);
+	if (m_sound != NULL) {
+		m_sound->Play(TRUE);
+		m_sound->SetDistanceRange(g_shieldSoundMinDistance, g_shieldSoundMaxDistance);
 	}
 
-	m_state = c_state0x03;
-	m_unk0x20->FUN_00439770(p_unk0x08);
-	if (m_unk0x20->m_unk0xd04 & c_racerFlags0xd04Bit11) {
-		m_unk0x20->FUN_00439b00();
+	m_state = c_stateActive;
+	m_racer->StartShield(p_unk0x08);
+	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
+		m_racer->RemoveCurse();
 	}
 	m_level = p_unk0x08;
 
-	m_entity0x18->FUN_0040d550(
+	m_shieldEntity->FUN_0040d550(
 		p_unk0x0c->GetModel(0),
 		p_unk0x0c->VTable0x58(0),
 		p_unk0x0c->GetModelPart(0),
@@ -4303,7 +4303,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	for (i = 1; i < 3; i++) {
 		GolModelBase* model = p_unk0x0c->GetModel(i);
 		if (model != NULL) {
-			m_entity0x18->FUN_10023940(
+			m_shieldEntity->FUN_10023940(
 				model,
 				p_unk0x0c->VTable0x58(i),
 				p_unk0x0c->GetModelPart(i),
@@ -4312,16 +4312,16 @@ void RacePowerupManager::ShieldAction::Activate(
 		}
 	}
 
-	m_entity0x18->FUN_0040dad0(0);
-	m_entity0x18->SetFlags(m_entity0x18->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_entity0x18->SetUnk0xb8(p_unk0x0c->GetUnk0xb8());
-	m_entity0x18->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_entity0x18->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_entity0x18->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_entity0x18->FUN_00411730(p_unk0x0c->FUN_004116f0());
-	m_entity0x18->CopyPositionFrom(*m_unk0x20->m_unk0x018.m_unk0x044);
+	m_shieldEntity->FUN_0040dad0(0);
+	m_shieldEntity->SetFlags(m_shieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_shieldEntity->SetUnk0xb8(p_unk0x0c->GetUnk0xb8());
+	m_shieldEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
+	m_shieldEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
+	m_shieldEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
+	m_shieldEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_shieldEntity->CopyPositionFrom(*m_racer->m_unk0x018.m_unk0x044);
 
-	m_unk0x1c->FUN_0040d550(
+	m_innerShieldEntity->FUN_0040d550(
 		p_unk0x10->GetModel(0),
 		p_unk0x10->VTable0x58(0),
 		p_unk0x10->GetModelPart(0),
@@ -4331,7 +4331,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	for (i = 1; i < 3; i++) {
 		GolModelBase* model = p_unk0x10->GetModel(i);
 		if (model != NULL) {
-			m_unk0x1c->FUN_10023940(
+			m_innerShieldEntity->FUN_10023940(
 				model,
 				p_unk0x10->VTable0x58(i),
 				p_unk0x10->GetModelPart(i),
@@ -4340,35 +4340,35 @@ void RacePowerupManager::ShieldAction::Activate(
 		}
 	}
 
-	m_unk0x1c->FUN_0040dad0(0);
-	m_unk0x1c->SetFlags(m_unk0x1c->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x1c->SetUnk0xb8(p_unk0x10->GetUnk0xb8());
-	m_unk0x1c->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_unk0x1c->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_unk0x1c->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_unk0x1c->FUN_00411730(p_unk0x10->FUN_004116f0());
-	m_unk0x1c->CopyPositionFrom(*m_entity0x18);
+	m_innerShieldEntity->FUN_0040dad0(0);
+	m_innerShieldEntity->SetFlags(m_innerShieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_innerShieldEntity->SetUnk0xb8(p_unk0x10->GetUnk0xb8());
+	m_innerShieldEntity->FUN_00411680(p_unk0x10->FUN_00411640());
+	m_innerShieldEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
+	m_innerShieldEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
+	m_innerShieldEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_innerShieldEntity->CopyPositionFrom(*m_shieldEntity);
 }
 
 // FUNCTION: LEGORACERS 0x0045c060 FOLDED
 void RacePowerupManager::ShieldAction::Deactivate()
 {
-	if (m_unk0x1c) {
-		m_unk0x1c->VTable0x54();
-		m_unk0x24->ReleaseEffectEntity(m_unk0x1c);
-		m_unk0x1c = NULL;
+	if (m_innerShieldEntity) {
+		m_innerShieldEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_innerShieldEntity);
+		m_innerShieldEntity = NULL;
 	}
 
-	if (m_entity0x18) {
-		m_entity0x18->VTable0x54();
-		m_unk0x24->ReleaseEffectEntity(m_entity0x18);
-		m_entity0x18 = NULL;
+	if (m_shieldEntity) {
+		m_shieldEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_shieldEntity);
+		m_shieldEntity = NULL;
 	}
 
-	m_unk0x20 = NULL;
-	if (m_unk0x28) {
-		m_soundSource->ReleaseSound(m_soundResource0x28);
-		m_unk0x28 = NULL;
+	m_racer = NULL;
+	if (m_sound) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
 	}
 
 	m_state = 1;
@@ -4384,17 +4384,17 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 	PowerupActionBase::Update(p_elapsedMs);
 
 	GolVec3 position;
-	RaceState::Racer::Field0x018* racerEntities = &m_unk0x20->m_unk0x018;
+	RaceState::Racer::Field0x018* racerEntities = &m_racer->m_unk0x018;
 	racerEntities->m_unk0x044->VTable0x04(&position);
 
-	GolVec3 velocity = m_unk0x20->m_unk0x3e8.m_unk0x008;
-	if (m_unk0x28) {
-		m_unk0x28->SetPosition(position);
-		m_unk0x28->SetVelocity(velocity);
+	GolVec3 velocity = m_racer->m_unk0x3e8.m_unk0x008;
+	if (m_sound) {
+		m_sound->SetPosition(position);
+		m_sound->SetVelocity(velocity);
 	}
 
-	m_entity0x18->VTable0x10(p_elapsedMs);
-	m_unk0x1c->VTable0x10(p_elapsedMs);
+	m_shieldEntity->VTable0x10(p_elapsedMs);
+	m_innerShieldEntity->VTable0x10(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0045c160 FOLDED
@@ -4405,32 +4405,32 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 	}
 
 	GolVec3 position;
-	m_unk0x20->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	m_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
 	LegoFloat positionZ = position.m_z;
 	positionZ += g_violetShoalTwo;
 	position.m_z = positionZ;
-	m_entity0x18->VTable0x08(position);
+	m_shieldEntity->VTable0x08(position);
 
 	GolVec3 direction;
 	GolVec3 up;
-	m_unk0x20->m_unk0x018.m_unk0x044->VTable0x48(&direction, &up);
+	m_racer->m_unk0x018.m_unk0x044->VTable0x48(&direction, &up);
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_entity0x18->VTable0x40(direction, up);
+	m_shieldEntity->VTable0x40(direction, up);
 
-	m_entity0x18->CopyOrientationAndPositionTo(m_unk0x1c);
+	m_shieldEntity->CopyOrientationAndPositionTo(m_innerShieldEntity);
 
 	if (m_state == 4) {
 		LegoFloat alphaValue = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 		alphaValue *= 0.001f;
-		alphaValue *= g_unk0x004b0b4c;
+		alphaValue *= g_fadeAlphaScale;
 		LegoS32 alpha = static_cast<LegoS32>(alphaValue);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_unk0x1c->VTable0x1c(*p_renderer);
-	m_entity0x18->VTable0x1c(*p_renderer);
+	m_innerShieldEntity->VTable0x1c(*p_renderer);
+	m_shieldEntity->VTable0x1c(*p_renderer);
 
 	if (m_state == 4) {
 		p_renderer->ClearAlphaOverride();
@@ -4449,13 +4449,20 @@ void RacePowerupManager::ShieldAction::AdvanceState()
 		m_state = 6;
 
 		SoundVector position;
-		RaceState::Racer::Field0x018* racerEntities = &m_unk0x20->m_unk0x018;
+		RaceState::Racer::Field0x018* racerEntities = &m_racer->m_unk0x018;
 		racerEntities->m_unk0x044->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
 		positionZ += g_homingProjectileCollisionStartOffset;
 		position.m_z = positionZ;
-		m_soundSource->PlaySpatialSoundById(0x3b, &position, g_unk0x004b1930, g_unk0x004b1934, 1.0f, 1.0f);
-		m_unk0x20->FUN_00439790();
+		m_soundSource->PlaySpatialSoundById(
+			0x3b,
+			&position,
+			g_shieldExpireSoundMinDistance,
+			g_shieldExpireSoundMaxDistance,
+			1.0f,
+			1.0f
+		);
+		m_racer->EndShield();
 		break;
 	}
 	}
@@ -4470,45 +4477,45 @@ LegoS32 RacePowerupManager::ShieldAction::GetBrickColor()
 // FUNCTION: LEGORACERS 0x0045c7e0
 RacePowerupManager::TurboAction::TurboAction()
 {
-	FUN_0045c8d0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045c830
 RacePowerupManager::TurboAction::~TurboAction()
 {
-	FUN_0045c8b0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045c880
 void RacePowerupManager::TurboAction::Initialize(RacePowerupManager* p_unk0x04, CutsceneAnimation* p_unk0x08)
 {
 	if (m_state != 0) {
-		FUN_0045c8b0();
+		Destroy();
 	}
 
-	m_unk0x1c = p_unk0x04;
-	m_unk0x2c = p_unk0x08;
+	m_manager = p_unk0x04;
+	m_particleAnimation = p_unk0x08;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0045c8b0
-void RacePowerupManager::TurboAction::FUN_0045c8b0()
+void RacePowerupManager::TurboAction::Destroy()
 {
 	Deactivate();
-	FUN_0045c8d0();
+	Reset();
 	m_state = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c8d0
-void RacePowerupManager::TurboAction::FUN_0045c8d0()
+void RacePowerupManager::TurboAction::Reset()
 {
-	m_unk0x20 = 0;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
-	m_unk0x018 = 0;
-	m_unk0x1c = 0;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
+	m_turboEntity = 0;
+	m_flameEntity = 0;
+	m_flame2Entity = 0;
+	m_racer = 0;
+	m_manager = 0;
+	m_particleAnimation = 0;
+	m_smokeParticle = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c8f0
@@ -4518,30 +4525,30 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	GolAnimatedEntity* effect0 = NULL;
 	GolAnimatedEntity* effect1 = NULL;
 
-	m_unk0x20 = m_unk0x1c->AllocateEffectEntity();
-	if (m_unk0x20 == NULL) {
+	m_turboEntity = m_manager->AllocateEffectEntity();
+	if (m_turboEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x24 = m_unk0x1c->AllocateEffectEntity();
-	if (m_unk0x24 == NULL) {
+	m_flameEntity = m_manager->AllocateEffectEntity();
+	if (m_flameEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x28 = m_unk0x1c->AllocateEffectEntity();
-	if (m_unk0x28 == NULL) {
+	m_flame2Entity = m_manager->AllocateEffectEntity();
+	if (m_flame2Entity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x018 = p_racer;
-	if (m_unk0x018->m_unk0xc70.m_unk0x014 & RaceState::Racer::Field0xc70::c_flags0x014Bit0) {
-		m_unk0x1c->FUN_0045b690(m_unk0x018);
-		m_unk0x018->FUN_00439730();
-		if (m_unk0x018->m_unk0xd04 & c_racerFlags0xd04Bit3) {
-			m_unk0x018->FUN_004395a0();
+	m_racer = p_racer;
+	if (m_racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::Field0xc70::c_flags0x014Bit0) {
+		m_manager->CancelTurbo(m_racer);
+		m_racer->ClearActiveAction();
+		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) {
+			m_racer->EndTurbo();
 		}
 	}
 
@@ -4549,51 +4556,52 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	m_level = p_unk0x08;
 	switch (p_unk0x08) {
 	case 2:
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("TurboL2");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL2");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb2f1");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb2f1");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb2f2");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb2f2");
 		}
 		break;
 	case 1:
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("TurboL1");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL1");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb1f1");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb1f1");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb1f2");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb1f2");
 		}
 		break;
 	case 0:
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			model = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("TurboL0");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			model = m_manager->m_unk0x05c->GetUnk0xc0Name("TurboL0");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect0 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb0f1");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect0 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb0f1");
 		}
-		if (m_unk0x1c->m_unk0x05c->GetUnk0xc0NameEntries()) {
-			effect1 = m_unk0x1c->m_unk0x05c->GetUnk0xc0Name("turb0f2");
+		if (m_manager->m_unk0x05c->GetUnk0xc0NameEntries()) {
+			effect1 = m_manager->m_unk0x05c->GetUnk0xc0Name("turb0f2");
 		}
 		break;
 	}
 
-	m_unk0x20
+	m_turboEntity
 		->FUN_0040d550(model->GetModel(0), model->VTable0x58(0), model->GetModelPart(0), model->GetModelDistance(0));
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = model->GetModel(i);
 		if (lodModel != NULL) {
-			m_unk0x20->FUN_10023940(lodModel, model->VTable0x58(i), model->GetModelPart(i), model->GetModelDistance(i));
+			m_turboEntity
+				->FUN_10023940(lodModel, model->VTable0x58(i), model->GetModelPart(i), model->GetModelDistance(i));
 		}
 	}
 
-	m_unk0x24->FUN_0040d550(
+	m_flameEntity->FUN_0040d550(
 		effect0->GetModel(0),
 		effect0->VTable0x58(0),
 		effect0->GetModelPart(0),
@@ -4602,7 +4610,7 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = effect0->GetModel(i);
 		if (lodModel != NULL) {
-			m_unk0x24->FUN_10023940(
+			m_flameEntity->FUN_10023940(
 				lodModel,
 				effect0->VTable0x58(i),
 				effect0->GetModelPart(i),
@@ -4610,12 +4618,12 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 			);
 		}
 	}
-	m_unk0x24->FUN_00411680(effect0->FUN_00411640());
-	m_unk0x24->FUN_004116b0(effect0->FUN_00411660());
-	m_unk0x24->FUN_00411700(effect0->FUN_004116e0());
-	m_unk0x24->FUN_00411730(effect0->FUN_004116f0());
+	m_flameEntity->FUN_00411680(effect0->FUN_00411640());
+	m_flameEntity->FUN_004116b0(effect0->FUN_00411660());
+	m_flameEntity->FUN_00411700(effect0->FUN_004116e0());
+	m_flameEntity->FUN_00411730(effect0->FUN_004116f0());
 
-	m_unk0x28->FUN_0040d550(
+	m_flame2Entity->FUN_0040d550(
 		effect1->GetModel(0),
 		effect1->VTable0x58(0),
 		effect1->GetModelPart(0),
@@ -4624,7 +4632,7 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = effect1->GetModel(i);
 		if (lodModel != NULL) {
-			m_unk0x28->FUN_10023940(
+			m_flame2Entity->FUN_10023940(
 				lodModel,
 				effect1->VTable0x58(i),
 				effect1->GetModelPart(i),
@@ -4632,66 +4640,74 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 			);
 		}
 	}
-	m_unk0x28->FUN_00411680(effect1->FUN_00411640());
-	m_unk0x28->FUN_004116b0(effect1->FUN_00411660());
-	m_unk0x28->FUN_00411700(effect1->FUN_004116e0());
-	m_unk0x28->FUN_00411730(effect1->FUN_004116f0());
+	m_flame2Entity->FUN_00411680(effect1->FUN_00411640());
+	m_flame2Entity->FUN_004116b0(effect1->FUN_00411660());
+	m_flame2Entity->FUN_00411700(effect1->FUN_004116e0());
+	m_flame2Entity->FUN_00411730(effect1->FUN_004116f0());
 
-	FUN_0045cf90();
-	m_unk0x20->SetFlags(m_unk0x20->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x20->FUN_0040dad0(0);
-	m_unk0x24->SetFlags(m_unk0x24->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x24->FUN_0040dad0(0);
-	m_unk0x28->SetFlags(m_unk0x28->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x28->FUN_0040dad0(0);
-	FUN_0045cd70();
+	AnchorToRacer();
+	m_turboEntity->SetFlags(m_turboEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_turboEntity->FUN_0040dad0(0);
+	m_flameEntity->SetFlags(m_flameEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_flameEntity->FUN_0040dad0(0);
+	m_flame2Entity->SetFlags(m_flame2Entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_flame2Entity->FUN_0040dad0(0);
+	StartBoost();
 	m_state = 2;
 }
 
 // FUNCTION: LEGORACERS 0x0045cd70
-void RacePowerupManager::TurboAction::FUN_0045cd70()
+void RacePowerupManager::TurboAction::StartBoost()
 {
 	if (!m_level) {
-		m_unk0x018->m_unk0x3e8.FUN_00429cf0(-0.0025f, c_duration0x007d);
+		m_racer->m_unk0x3e8.ApplySpeedModifier(-0.0025f, c_speedModDurationL0Ms);
 	}
 	else {
-		m_unk0x018->m_unk0x3e8.FUN_00429cf0(-0.0025f, c_duration0x00fa);
+		m_racer->m_unk0x3e8.ApplySpeedModifier(-0.0025f, c_speedModDurationMs);
 	}
 
-	m_unk0x018->FUN_004396c0(m_level);
+	m_racer->StartTurbo(m_level);
 
 	SoundVector position;
-	RaceState::Racer::Field0x018* racerField = &m_unk0x018->m_unk0x018;
+	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 	GolAnimatedEntity** racerEntity = &racerField->m_unk0x044;
 	(*racerEntity)->VTable0x04(&position);
 
-	m_soundSource->PlaySpatialSoundById(m_level + c_sound0x24, &position, g_unk0x004b19d4, g_unk0x004b19d8, 1.0f, 1.0f);
-	m_soundSource->PlaySpatialSoundById(c_sound0x41, &position, g_unk0x004b19d4, g_unk0x004b19d8, 1.0f, 1.0f);
+	m_soundSource->PlaySpatialSoundById(
+		m_level + c_soundBoostBase,
+		&position,
+		g_turboSoundMinDistance,
+		g_turboSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
+	m_soundSource
+		->PlaySpatialSoundById(c_soundWhoosh, &position, g_turboSoundMinDistance, g_turboSoundMaxDistance, 1.0f, 1.0f);
 
 	if (m_level == 2) {
-		m_unk0x018->FUN_00439570();
+		m_racer->FUN_00439570();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045ce20
 void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
-	m_unk0x20->VTable0x10(p_elapsedMs);
-	m_unk0x24->VTable0x10(p_elapsedMs);
-	m_unk0x28->VTable0x10(p_elapsedMs);
+	m_turboEntity->VTable0x10(p_elapsedMs);
+	m_flameEntity->VTable0x10(p_elapsedMs);
+	m_flame2Entity->VTable0x10(p_elapsedMs);
 
-	if (m_level == 2 && m_state == c_state0x03 && m_unk0x30 == NULL && m_stateTimerMs < c_timer0x0320 &&
-		!(m_unk0x1c->m_unk0x058 & c_ownerFlags0x058Bit1)) {
-		m_unk0x30 = m_unk0x2c->FUN_00489d70("trbsmke", NULL, NULL, NULL);
+	if (m_level == 2 && m_state == c_stateBoosting && m_smokeParticle == NULL && m_stateTimerMs < c_smokeWindowMs &&
+		!(m_manager->m_unk0x058 & c_ownerFlags0x058Bit1)) {
+		m_smokeParticle = m_particleAnimation->FUN_00489d70("trbsmke", NULL, NULL, NULL);
 	}
 
-	if (m_unk0x30 != NULL) {
-		GolAnimatedEntity* racerEntity = m_unk0x018->m_unk0x018.m_unk0x044;
+	if (m_smokeParticle != NULL) {
+		GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_unk0x044;
 		GolVec3 velocity;
 		GolVec3 offset;
 		GolVec3 position;
@@ -4701,34 +4717,34 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 		offset.m_z = 3.0f;
 		racerEntity->VTable0x2c(offset, &position);
 
-		if (m_unk0x30->m_unk0x00 != NULL) {
-			racerEntity->VTable0x44(m_unk0x30->m_unk0x00->GetUnk0x160());
+		if (m_smokeParticle->m_unk0x00 != NULL) {
+			racerEntity->VTable0x44(m_smokeParticle->m_unk0x00->GetUnk0x160());
 		}
 
-		if (m_unk0x30->m_unk0x00 != NULL) {
-			m_unk0x30->m_unk0x00->FUN_00489660(&position);
+		if (m_smokeParticle->m_unk0x00 != NULL) {
+			m_smokeParticle->m_unk0x00->FUN_00489660(&position);
 		}
 
-		RaceState::Racer::Field0x3e8* racerPhysics = &m_unk0x018->m_unk0x3e8;
+		RaceState::Racer::Field0x3e8* racerPhysics = &m_racer->m_unk0x3e8;
 		velocity = racerPhysics->m_unk0x008;
-		CutsceneParticleRef* particleRef = m_unk0x30;
-		velocity *= g_unk0x004b19e4;
+		CutsceneParticleRef* particleRef = m_smokeParticle;
+		velocity *= g_turboSmokeVelocityScale;
 
 		if (particleRef->m_unk0x00 != NULL) {
 			particleRef->m_unk0x00->FUN_00489690(&velocity);
 		}
 	}
 
-	if ((m_unk0x018->m_unk0xd04 & c_racerFlags0xd04Bit3) && m_state == c_state0x03 && m_stateTimerMs < c_timer0x1194 &&
-		!m_unk0x018->m_unk0x3e8.FUN_0042a7f0()) {
+	if ((m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) && m_state == c_stateBoosting &&
+		m_stateTimerMs < c_earlyEndWindowMs && !m_racer->m_unk0x3e8.FUN_0042a7f0()) {
 		AdvanceState();
 	}
 }
 
 // STUB: LEGORACERS 0x0045cf90
-void RacePowerupManager::TurboAction::FUN_0045cf90()
+void RacePowerupManager::TurboAction::AnchorToRacer()
 {
-	GolAnimatedEntity* racerEntity = m_unk0x018->m_unk0x018.m_unk0x044;
+	GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_unk0x044;
 
 	GolVec3 position;
 	racerEntity->VTable0x04(&position);
@@ -4738,58 +4754,58 @@ void RacePowerupManager::TurboAction::FUN_0045cf90()
 	GolVec3 right = orientation.m_rows[0];
 	GolVec3 direction = orientation.m_rows[1];
 	GolVec3 up = orientation.m_rows[2];
-	position.m_x += right.m_x * g_unk0x004b1a50;
-	position.m_y += right.m_y * g_unk0x004b1a50;
-	position.m_z += right.m_z * g_unk0x004b1a50;
+	position.m_x += right.m_x * g_turboPackOffset;
+	position.m_y += right.m_y * g_turboPackOffset;
+	position.m_z += right.m_z * g_turboPackOffset;
 	position.m_x += up.m_x * g_emplacementGravityScale;
 	position.m_y += up.m_y * g_emplacementGravityScale;
 	position.m_z += up.m_z * g_emplacementGravityScale;
 
-	m_unk0x20->VTable0x08(position);
-	m_unk0x20->VTable0x40(direction, up);
-	m_unk0x20->CopyOrientationAndPositionTo(m_unk0x24);
-	m_unk0x20->CopyOrientationAndPositionTo(m_unk0x28);
+	m_turboEntity->VTable0x08(position);
+	m_turboEntity->VTable0x40(direction, up);
+	m_turboEntity->CopyOrientationAndPositionTo(m_flameEntity);
+	m_turboEntity->CopyOrientationAndPositionTo(m_flame2Entity);
 }
 
 // FUNCTION: LEGORACERS 0x0045d120
 void RacePowerupManager::TurboAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != c_state0x06) {
-		FUN_0045cf90();
-		p_renderer->VTable0x94(m_unk0x20);
+	if (m_state != c_stateDone) {
+		AnchorToRacer();
+		p_renderer->VTable0x94(m_turboEntity);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045d150
 void RacePowerupManager::TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
-	if (m_state == c_state0x02) {
-		if (m_stateTimerMs > c_timer0x0032) {
+	if (m_state == c_stateIgnite) {
+		if (m_stateTimerMs > c_igniteFlashMs) {
 			p_renderer->SetAlphaOverride(0, TRUE);
 		}
 		else {
 			p_renderer->SetAlphaOverride(0xff, TRUE);
 		}
 	}
-	else if (m_state == c_state0x04) {
-		LegoS32 elapsed = m_stateTimerMs - c_timer0x015e;
+	else if (m_state == c_stateFade) {
+		LegoS32 elapsed = m_stateTimerMs - c_fadeBaseMs;
 		if (elapsed < 0) {
 			elapsed = 0;
 		}
 
-		LegoFloat amount = static_cast<LegoFloat>(elapsed) * g_unk0x004b1a54;
-		LegoS32 alpha = static_cast<LegoS32>(amount * g_unk0x004b0b4c);
+		LegoFloat amount = static_cast<LegoFloat>(elapsed) * g_turboFadeAlphaScale;
+		LegoS32 alpha = static_cast<LegoS32>(amount * g_fadeAlphaScale);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_unk0x28->VTable0x1c(*p_renderer);
-	m_unk0x24->VTable0x1c(*p_renderer);
+	m_flame2Entity->VTable0x1c(*p_renderer);
+	m_flameEntity->VTable0x1c(*p_renderer);
 
-	if (m_state == c_state0x02 || m_state == c_state0x04) {
+	if (m_state == c_stateIgnite || m_state == c_stateFade) {
 		p_renderer->ClearAlphaOverride();
 	}
 }
@@ -4798,57 +4814,71 @@ void RacePowerupManager::TurboAction::DrawTransparent(GolD3DRenderDevice* p_rend
 void RacePowerupManager::TurboAction::AdvanceState()
 {
 	switch (m_state) {
-	case c_state0x04: {
+	case c_stateFade: {
 		SoundVector position;
-		RaceState::Racer::Field0x018* racerField = &m_unk0x018->m_unk0x018;
+		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 		GolAnimatedEntity* racerEntity = racerField->GetUnk0x044();
 		racerEntity->VTable0x04(&position);
 
 		LegoS32 state = m_level;
 		if (state == 2) {
-			m_soundSource->PlaySpatialSoundById(c_sound0x4b, &position, g_unk0x004b19d4, g_unk0x004b19d8, 1.0f, 1.0f);
+			m_soundSource->PlaySpatialSoundById(
+				c_soundEndL2,
+				&position,
+				g_turboSoundMinDistance,
+				g_turboSoundMaxDistance,
+				1.0f,
+				1.0f
+			);
 		}
 		else {
-			LegoFloat volume = static_cast<LegoFloat>(state) * g_unk0x004b02e0 + g_unk0x004b1a58;
-			m_soundSource->PlaySpatialSoundById(c_sound0x28, &position, g_unk0x004b19d4, g_unk0x004b19d8, volume, 1.0f);
+			LegoFloat volume = static_cast<LegoFloat>(state) * g_unk0x004b02e0 + g_turboEndVolumeBase;
+			m_soundSource->PlaySpatialSoundById(
+				c_soundEnd,
+				&position,
+				g_turboSoundMinDistance,
+				g_turboSoundMaxDistance,
+				volume,
+				1.0f
+			);
 		}
 
-		m_state = c_state0x06;
+		m_state = c_stateDone;
 		return;
 	}
-	case c_state0x03:
-		if (m_level == 2 && (m_unk0x1c->m_unk0x058 & c_ownerFlags0x058Bit1)) {
-			m_stateTimerMs = c_timer0x1388;
-			m_state = c_state0x03;
+	case c_stateBoosting:
+		if (m_level == 2 && (m_manager->m_unk0x058 & c_ownerFlags0x058Bit1)) {
+			m_stateTimerMs = c_boostDurationL2Ms;
+			m_state = c_stateBoosting;
 			return;
 		}
 
-		m_unk0x20->FUN_0040dad0(2);
-		m_unk0x24->FUN_0040dad0(2);
-		m_unk0x28->FUN_0040dad0(2);
+		m_turboEntity->FUN_0040dad0(2);
+		m_flameEntity->FUN_0040dad0(2);
+		m_flame2Entity->FUN_0040dad0(2);
 
 		m_stateTimerMs = 700;
-		m_state = c_state0x04;
+		m_state = c_stateFade;
 		return;
-	case c_state0x02:
-		m_unk0x20->FUN_0040dad0(1);
-		m_unk0x24->FUN_0040dad0(1);
-		m_unk0x28->FUN_0040dad0(1);
+	case c_stateIgnite:
+		m_turboEntity->FUN_0040dad0(1);
+		m_flameEntity->FUN_0040dad0(1);
+		m_flame2Entity->FUN_0040dad0(1);
 
 		switch (m_level) {
 		case 0:
-			m_stateTimerMs = c_timer0x03e8;
+			m_stateTimerMs = c_boostDurationL0Ms;
 			break;
 		case 1:
-			m_stateTimerMs = c_timer0x05dc;
+			m_stateTimerMs = c_boostDurationL1Ms;
 			break;
 		case 2:
-			m_stateTimerMs = c_timer0x1388;
+			m_stateTimerMs = c_boostDurationL2Ms;
 			break;
 		}
 
-		m_unk0x018->PlayReaction(TRUE);
-		m_state = c_state0x03;
+		m_racer->PlayReaction(TRUE);
+		m_state = c_stateBoosting;
 		return;
 	}
 }
@@ -4856,84 +4886,84 @@ void RacePowerupManager::TurboAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x0045d360
 void RacePowerupManager::TurboAction::Deactivate()
 {
-	m_state = c_state0x01;
+	m_state = c_stateReady;
 
-	if (m_unk0x30 != NULL) {
-		m_unk0x2c->FUN_00489f00(m_unk0x30);
-		m_unk0x30 = NULL;
+	if (m_smokeParticle != NULL) {
+		m_particleAnimation->FUN_00489f00(m_smokeParticle);
+		m_smokeParticle = NULL;
 	}
 
-	if (m_unk0x018 != NULL) {
-		m_unk0x018->FUN_00439730();
-		if (m_unk0x018->m_unk0xd04 & c_racerFlags0xd04Bit3) {
-			m_unk0x018->FUN_004395a0();
+	if (m_racer != NULL) {
+		m_racer->ClearActiveAction();
+		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) {
+			m_racer->EndTurbo();
 		}
-		m_unk0x018 = NULL;
+		m_racer = NULL;
 	}
 
-	if (m_unk0x28 != NULL) {
-		m_unk0x28->VTable0x54();
-		m_unk0x1c->ReleaseEffectEntity(m_unk0x28);
-		m_unk0x28 = NULL;
+	if (m_flame2Entity != NULL) {
+		m_flame2Entity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_flame2Entity);
+		m_flame2Entity = NULL;
 	}
 
-	if (m_unk0x24 != NULL) {
-		m_unk0x24->VTable0x54();
-		m_unk0x1c->ReleaseEffectEntity(m_unk0x24);
-		m_unk0x24 = NULL;
+	if (m_flameEntity != NULL) {
+		m_flameEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_flameEntity);
+		m_flameEntity = NULL;
 	}
 
-	if (m_unk0x20 != NULL) {
-		m_unk0x20->VTable0x54();
-		m_unk0x1c->ReleaseEffectEntity(m_unk0x20);
-		m_unk0x20 = NULL;
+	if (m_turboEntity != NULL) {
+		m_turboEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_turboEntity);
+		m_turboEntity = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045d400
 RacePowerupManager::WarpAction::WarpAction()
 {
-	FUN_0045d4b0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045d460
 RacePowerupManager::WarpAction::~WarpAction()
 {
-	FUN_0045d540();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045d4b0
-void RacePowerupManager::WarpAction::FUN_0045d4b0()
+void RacePowerupManager::WarpAction::Reset()
 {
 	m_state = 0;
-	m_unk0x0e0 = 0;
-	m_unk0x0a8 = 0;
-	m_unk0x0ac = 0;
-	m_unk0x0b0 = 0;
-	m_unk0x0b4.Clear();
-	m_unk0x0c0.Clear();
-	m_unk0x0cc.Clear();
-	m_unk0x0d8 = 0;
-	m_unk0x0dc = 0;
+	m_isDemoRacer = 0;
+	m_racer = 0;
+	m_manager = 0;
+	m_cameraFov = 0;
+	m_startPosition.Clear();
+	m_targetPosition.Clear();
+	m_targetDirection.Clear();
+	m_hasTarget = 0;
+	m_followingPath = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045d510
 void RacePowerupManager::WarpAction::Initialize(const SetupParams* p_params)
 {
 	if (m_state != 0) {
-		FUN_0045d540();
+		Destroy();
 	}
 
-	m_unk0x0ac = p_params->m_manager;
-	m_unk0x0b0 = p_params->m_cameraFov;
+	m_manager = p_params->m_manager;
+	m_cameraFov = p_params->m_cameraFov;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x0045d540
-void RacePowerupManager::WarpAction::FUN_0045d540()
+void RacePowerupManager::WarpAction::Destroy()
 {
 	Deactivate();
-	FUN_0045d4b0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045d560
@@ -4950,46 +4980,46 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 			return flags;
 		}
 
-		m_unk0x0ac->FUN_0045b6f0(p_racer);
-		m_unk0x0a8 = p_racer;
-		m_unk0x0e0 = p_racer->m_unk0xd08 == 2;
+		m_manager->CancelMagnetHold(p_racer);
+		m_racer = p_racer;
+		m_isDemoRacer = p_racer->m_unk0xd08 == 2;
 		p_racer->m_unk0xd04 |= c_racerFlags0xd04Bit21;
 
-		m_unk0x018.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
+		m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
 		for (LegoU32 i = 1; i < 3; i++) {
 			GolModelBase* model = p_model->GetModel(i);
 			if (model != NULL) {
-				m_unk0x018.FUN_10027c50(model, p_model->GetModelDistance(i));
+				m_modelEntity.FUN_10027c50(model, p_model->GetModelDistance(i));
 			}
 		}
 
-		m_unk0x018.FUN_00411680(p_model->FUN_00411640());
-		m_unk0x018.FUN_004116b0(p_model->FUN_00411660());
-		m_unk0x018.FUN_00411700(p_model->FUN_004116e0());
-		m_unk0x018.FUN_00411730(p_model->FUN_004116f0());
+		m_modelEntity.FUN_00411680(p_model->FUN_00411640());
+		m_modelEntity.FUN_004116b0(p_model->FUN_00411660());
+		m_modelEntity.FUN_00411700(p_model->FUN_004116e0());
+		m_modelEntity.FUN_00411730(p_model->FUN_004116f0());
 
 		GolAnimatedEntity* racerEntity = p_racer->m_unk0x018.m_unk0x044;
 		GolVec3 position;
 		racerEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
-		position.m_z = positionZ + g_unk0x004b03f4;
-		m_unk0x018.VTable0x08(position);
-		position.m_z -= g_unk0x004b03f4;
-		m_unk0x018.CopyOrientationFrom(*racerEntity);
+		position.m_z = positionZ + g_warpPortalHeightOffset;
+		m_modelEntity.VTable0x08(position);
+		position.m_z -= g_warpPortalHeightOffset;
+		m_modelEntity.CopyOrientationFrom(*racerEntity);
 
-		if (m_unk0x0a8->m_unk0xdb4 != NULL) {
-			m_unk0x0a8->m_unk0xdb4->m_unk0x134 = m_unk0x0b0 + g_unk0x004b1a6c;
+		if (m_racer->m_cameraController != NULL) {
+			m_racer->m_cameraController->m_unk0x134 = m_cameraFov + g_warpFovBoost;
 		}
 
 		if (p_unk0x0c != NULL) {
 			m_stateTimerMs = 0;
-			m_unk0x0c0 = p_unk0x0c->m_unk0x00;
-			m_unk0x0cc = p_unk0x0c->m_unk0x0c;
-			m_unk0x0d8 = TRUE;
+			m_targetPosition = p_unk0x0c->m_unk0x00;
+			m_targetDirection = p_unk0x0c->m_unk0x0c;
+			m_hasTarget = TRUE;
 		}
 		else {
 			m_stateTimerMs = 500;
-			m_unk0x0d8 = FALSE;
+			m_hasTarget = FALSE;
 		}
 
 		m_state = 2;
@@ -5007,11 +5037,11 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	MenuAnimationList* animationList = m_unk0x0ac->m_unk0x04c;
-	if (m_stateTimerMs < c_menuAnimationDurationMs && m_state == c_stateStarting && !m_unk0x0e0 &&
+	MenuAnimationList* animationList = m_manager->m_unk0x04c;
+	if (m_stateTimerMs < c_menuAnimationDurationMs && m_state == c_stateStarting && !m_isDemoRacer &&
 		!animationList->HasActive()) {
 		MenuAnimationList::Entry* entry =
-			animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, m_unk0x0a8->m_unk0xdb4->m_camera);
+			animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, m_racer->m_cameraController->m_camera);
 		if (entry != NULL) {
 			ColorRGBA color;
 			color.m_red = 0;
@@ -5024,42 +5054,42 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 	if (m_state == c_stateActive) {
 		GolVec3 position;
 		do {
-			if (m_unk0x0d8) {
-				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b1aa8;
-				position.m_x = m_unk0x0c0.m_x - ((m_unk0x0c0.m_x - m_unk0x0b4.m_x) * amount);
-				position.m_y = m_unk0x0c0.m_y - ((m_unk0x0c0.m_y - m_unk0x0b4.m_y) * amount);
-				position.m_z = m_unk0x0c0.m_x - ((m_unk0x0c0.m_z - m_unk0x0b4.m_z) * amount);
+			if (m_hasTarget) {
+				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_warpLerpScale;
+				position.m_x = m_targetPosition.m_x - ((m_targetPosition.m_x - m_startPosition.m_x) * amount);
+				position.m_y = m_targetPosition.m_y - ((m_targetPosition.m_y - m_startPosition.m_y) * amount);
+				position.m_z = m_targetPosition.m_x - ((m_targetPosition.m_z - m_startPosition.m_z) * amount);
 			}
 			else {
-				if (!m_unk0x0dc || m_unk0x0a8->m_unk0x010 == NULL) {
+				if (!m_followingPath || m_racer->m_unk0x010 == NULL) {
 					break;
 				}
 
-				LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_unk0x004b1a70;
-				RaceSessionField0x27f4::Entry* pathEntry = m_unk0x0a8->m_unk0xcc4;
+				LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_warpPathSpeed;
+				RaceSessionField0x27f4::Entry* pathEntry = m_racer->m_unk0xcc4;
 				if (pathEntry != NULL) {
 					LegoU8 pathIndex = pathEntry->m_unk0x20.m_items[0];
-					pathEntry = m_unk0x0a8->m_unk0x010->FUN_0041e940(pathIndex);
+					pathEntry = m_racer->m_unk0x010->FUN_0041e940(pathIndex);
 				}
 
-				RaceState::Racer::Field0x018* racerField0x018 = &m_unk0x0a8->m_unk0x018;
+				RaceState::Racer::Field0x018* racerField0x018 = &m_racer->m_unk0x018;
 				racerField0x018->m_unk0x044->VTable0x04(&position);
-				m_unk0x0a8->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
+				m_racer->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
 			}
 
-			m_unk0x0a8->m_unk0x018.m_unk0x044->VTable0x08(position);
-			m_unk0x0a8->m_unk0x3e8.m_unk0x0e4.VTable0x08(position);
+			m_racer->m_unk0x018.m_unk0x044->VTable0x08(position);
+			m_racer->m_unk0x3e8.m_unk0x0e4.VTable0x08(position);
 		} while (0);
 	}
 
-	m_unk0x018.VTable0x10(p_elapsedMs);
+	m_modelEntity.VTable0x10(p_elapsedMs);
 	PowerupActionBase::Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x0045d940
 void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	MenuAnimationList* animationList = m_unk0x0ac->m_unk0x04c;
+	MenuAnimationList* animationList = m_manager->m_unk0x04c;
 	if (m_state == c_stateDone) {
 		return;
 	}
@@ -5068,7 +5098,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	RaceCameraController* cameraController = m_unk0x0a8->m_unk0xdb4;
+	RaceCameraController* cameraController = m_racer->m_cameraController;
 	if (cameraController == NULL) {
 		return;
 	}
@@ -5078,7 +5108,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	RaceState::Racer::Field0x018* racerField = &m_unk0x0a8->m_unk0x018;
+	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 	GolAnimatedEntity* entity = racerField->m_unk0x044;
 
 	GolVec3 savedPosition;
@@ -5101,49 +5131,49 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	entity->VTable0x08(position);
 	entity->VTable0x40(direction, up);
 
-	m_unk0x0a8->m_unk0xdb4->m_unk0x000 = TRUE;
-	m_unk0x0a8->m_unk0xdb4->FUN_00428540(0.0f);
+	m_racer->m_cameraController->m_unk0x000 = TRUE;
+	m_racer->m_cameraController->FUN_00428540(0.0f);
 
 	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
 	phase *= g_item0x40Pi;
-	phase *= g_unk0x004b1aa8;
+	phase *= g_warpLerpScale;
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat tableValue = g_cosineTable[tableIndex];
-	LegoFloat fov = tableValue * g_unk0x004b1a68 + m_unk0x0b0;
+	LegoFloat fov = tableValue * g_unk0x004b1a68 + m_cameraFov;
 	camera->m_flags |= GolCamera::c_flagBit1;
 	camera->m_fov = fov;
 
 	p_renderer->VTable0x5c();
 	racerField->FUN_0043db60();
 
-	GolAnimatedEntity* dbricks = m_unk0x0ac->m_unk0x064->FindUnk0xc0("dbricks");
+	GolAnimatedEntity* dbricks = m_manager->m_unk0x064->FindUnk0xc0("dbricks");
 	dbricks->FUN_0040d650();
 	dbricks->SetActiveValue(0.0f);
 	dbricks->FUN_00411680(0.0f);
 	dbricks->FUN_004116b0(0.0f);
 
-	GolAnimatedEntity* dtube = m_unk0x0ac->m_unk0x064->FindUnk0xc0("dtube");
+	GolAnimatedEntity* dtube = m_manager->m_unk0x064->FindUnk0xc0("dtube");
 	dtube->FUN_0040d650();
 	dtube->SetActiveValue(0.0f);
 	dtube->FUN_00411680(0.0f);
 	dtube->FUN_004116b0(0.0f);
 
-	m_unk0x0ac->m_unk0x064->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
-	m_unk0x0ac->m_unk0x064->FUN_00416040();
+	m_manager->m_unk0x064->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
+	m_manager->m_unk0x064->FUN_00416040();
 
 	racerField->FUN_0043e620();
-	if (m_unk0x0a8->m_unk0xdb8 != c_stateActive) {
+	if (m_racer->m_unk0xdb8 != c_stateActive) {
 		racerField->FUN_0043fbc0(p_renderer);
 	}
 
 	entity->VTable0x08(savedPosition);
 	entity->VTable0x3c(savedOrientation);
-	m_unk0x0a8->FUN_0043a3e0();
+	m_racer->FUN_0043a3e0();
 	animationList->Draw(p_renderer);
 	racerField->FUN_0043dbb0();
 
-	LegoFloat restoredFov = m_unk0x0b0;
+	LegoFloat restoredFov = m_cameraFov;
 	camera->m_fov = restoredFov;
 	camera->m_flags |= GolCamera::c_flagBit1;
 }
@@ -5162,17 +5192,17 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat scale = g_cosineTable[tableIndex];
-	m_unk0x018.SetUnk0x58AndInvalidateRadius(scale);
+	m_modelEntity.SetUnk0x58AndInvalidateRadius(scale);
 
 	if (m_stateTimerMs < 250) {
-		m_unk0x0a8->m_unk0x018.FUN_00440160(scale);
+		m_racer->m_unk0x018.FUN_00440160(scale);
 	}
 
-	RaceState::Racer::Field0x018* racerField = &m_unk0x0a8->m_unk0x018;
+	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 	GolAnimatedEntity* entity = racerField->m_unk0x044;
 	entity->VTable0x04(&position);
-	m_unk0x018.VTable0x08(position);
-	m_unk0x018.VTable0x1c(*p_renderer);
+	m_modelEntity.VTable0x08(position);
+	m_modelEntity.VTable0x1c(*p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x0045dc90
@@ -5180,35 +5210,36 @@ void RacePowerupManager::WarpAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateStarting: {
-		m_unk0x0a8->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
-		m_unk0x0a8->FUN_004395d0();
-		m_unk0x0a8->m_unk0x018.FUN_00440160(1.0f);
-		m_unk0x0a8->m_unk0x3e8.VTable0x44();
-		m_unk0x0a8->m_unk0x3e8.VTable0x4c();
+		m_racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
+		m_racer->FUN_004395d0();
+		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer->m_unk0x3e8.VTable0x44();
+		m_racer->m_unk0x3e8.VTable0x4c();
 
-		RaceCameraController* cameraController = m_unk0x0a8->m_unk0xdb4;
+		RaceCameraController* cameraController = m_racer->m_cameraController;
 		if (cameraController != NULL) {
 			GolCamera* camera = cameraController->m_camera;
-			LegoFloat fov = m_unk0x0b0;
+			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
-			fov = m_unk0x0b0;
-			m_unk0x0a8->m_unk0xdb4->m_unk0x134 = fov;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
 		}
 
-		RaceState::Racer::Field0x018* racerField = &m_unk0x0a8->m_unk0x018;
+		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 		GolAnimatedEntity** entitySlot = &racerField->m_unk0x044;
 		GolAnimatedEntity* entity = *entitySlot;
-		entity->VTable0x04(&m_unk0x0b4);
+		entity->VTable0x04(&m_startPosition);
 
-		if (!m_unk0x0e0) {
+		if (!m_isDemoRacer) {
 			m_soundSource->PlaySoundById(c_soundStart);
 		}
 
-		m_soundSource->PlaySpatialSoundById(c_soundSpatial, &m_unk0x0b4, g_unk0x004b1a60, g_unk0x004b1a64, 1.0f, 1.0f);
+		m_soundSource
+			->PlaySpatialSoundById(c_soundSpatial, &m_startPosition, g_unk0x004b1a60, g_unk0x004b1a64, 1.0f, 1.0f);
 
-		if (!m_unk0x0e0) {
-			m_unk0x0dc = TRUE;
+		if (!m_isDemoRacer) {
+			m_followingPath = TRUE;
 		}
 
 		m_stateTimerMs = c_transitionDurationMs;
@@ -5216,29 +5247,29 @@ void RacePowerupManager::WarpAction::AdvanceState()
 		break;
 	}
 	case c_stateActive: {
-		RaceCameraController* cameraController = m_unk0x0a8->m_unk0xdb4;
+		RaceCameraController* cameraController = m_racer->m_cameraController;
 		if (cameraController != NULL) {
 			GolCamera* camera = cameraController->m_camera;
-			LegoFloat fov = m_unk0x0b0;
+			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
-			fov = m_unk0x0b0;
-			m_unk0x0a8->m_unk0xdb4->m_unk0x134 = fov;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
 		}
 
-		GolAnimatedEntity* entity = m_unk0x0a8->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_unk0x044;
 		FUN_0045e080(entity);
-		m_unk0x0a8->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
+		m_racer->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
 
 		GolVec3 direction;
-		if (m_unk0x0d8) {
-			direction = m_unk0x0cc;
+		if (m_hasTarget) {
+			direction = m_targetDirection;
 		}
 		else {
-			RaceSessionField0x27f4::Entry* racerPathEntry = m_unk0x0a8->m_unk0xcc4;
+			RaceSessionField0x27f4::Entry* racerPathEntry = m_racer->m_unk0xcc4;
 			if (racerPathEntry != NULL) {
 				LegoU8 pathIndex = racerPathEntry->m_unk0x20.m_items[0];
-				RaceSessionField0x27f4* path = m_unk0x0a8->m_unk0x010;
+				RaceSessionField0x27f4* path = m_racer->m_unk0x010;
 				RaceSessionField0x27f4::Entry* pathEntry = path->FUN_0041e940(pathIndex);
 				direction.m_x = pathEntry->m_unk0x00.m_x;
 				direction.m_y = pathEntry->m_unk0x00.m_y;
@@ -5259,25 +5290,25 @@ void RacePowerupManager::WarpAction::AdvanceState()
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
 
-		if (!m_unk0x0e0) {
+		if (!m_isDemoRacer) {
 			entity->VTable0x40(direction, up);
-			m_unk0x0a8->m_unk0x3e8.m_unk0x0e4.CopyOrientationFrom(*entity);
+			m_racer->m_unk0x3e8.m_unk0x0e4.CopyOrientationFrom(*entity);
 
-			RaceState::Racer::Field0x3e8* racerField0x3e8 = &m_unk0x0a8->m_unk0x3e8;
+			RaceState::Racer::Field0x3e8* racerField0x3e8 = &m_racer->m_unk0x3e8;
 			up.Clear();
 			racerField0x3e8->m_unk0x008.m_x = 0.0f;
 			racerField0x3e8->m_unk0x008.m_y = up.m_y;
 			racerField0x3e8->m_unk0x008.m_z = up.m_z;
-			m_unk0x0a8->m_unk0x3e8.VTable0x20(&direction, g_unk0x004b1a74);
-			m_unk0x0a8->m_unk0x3e8.FUN_00446fa0();
-			m_unk0x0a8->FUN_0043a3e0();
+			m_racer->m_unk0x3e8.VTable0x20(&direction, g_unk0x004b1a74);
+			m_racer->m_unk0x3e8.FUN_00446fa0();
+			m_racer->FUN_0043a3e0();
 
-			if (!m_unk0x0e0) {
+			if (!m_isDemoRacer) {
 				m_soundSource->PlaySoundById(c_soundFinish);
 			}
 		}
 
-		m_unk0x0a8->FUN_00439660();
+		m_racer->FUN_00439660();
 		m_state = c_stateDone;
 		break;
 	}
@@ -5288,31 +5319,31 @@ void RacePowerupManager::WarpAction::AdvanceState()
 void RacePowerupManager::WarpAction::Deactivate()
 {
 	m_state = c_stateInitialized;
-	m_unk0x018.VTable0x54();
-	if (m_unk0x0a8 != NULL) {
-		RaceCameraController* cameraController = m_unk0x0a8->m_unk0xdb4;
+	m_modelEntity.VTable0x54();
+	if (m_racer != NULL) {
+		RaceCameraController* cameraController = m_racer->m_cameraController;
 		if (cameraController != NULL) {
 			GolCamera* camera = cameraController->m_camera;
-			LegoFloat fov = m_unk0x0b0;
+			LegoFloat fov = m_cameraFov;
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
-			fov = m_unk0x0b0;
-			m_unk0x0a8->m_unk0xdb4->m_unk0x134 = fov;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
 		}
 
-		m_unk0x0a8->m_unk0x018.FUN_00440160(1.0f);
-		m_unk0x0a8 = NULL;
+		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer = NULL;
 	}
 
-	m_unk0x0dc = FALSE;
+	m_followingPath = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0045e080
 void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
 {
 	GolVec3 position;
-	if (m_unk0x0d8) {
-		position = m_unk0x0c0;
+	if (m_hasTarget) {
+		position = m_targetPosition;
 	}
 	else {
 		p_entity->VTable0x04(&position);
@@ -5325,7 +5356,7 @@ void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
 	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::Field0x0c record;
-	m_unk0x0ac->m_unk0x068->FUN_0041f4d0(&start, &end, &record, &position, NULL);
+	m_manager->m_unk0x068->FUN_0041f4d0(&start, &end, &record, &position, NULL);
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
 	p_entity->VTable0x08(position);

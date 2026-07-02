@@ -1868,7 +1868,7 @@ void RaceSession::FUN_00434c80()
 						m_unk0x258[playerIndex].FUN_00430760();
 					}
 
-					m_unk0x6dc.FUN_0045b740(racer);
+					m_unk0x6dc.CancelWarp(racer);
 
 					if (!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000) &&
 						!m_unk0x335c) {
@@ -1982,7 +1982,7 @@ void RaceSession::FUN_00434eb0()
 						m_unk0x258[playerIndex].FUN_00430760();
 					}
 
-					m_unk0x6dc.FUN_0045b740(racer);
+					m_unk0x6dc.CancelWarp(racer);
 
 					if (!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000)) {
 						m_unk0x2ad4[playerIndex].FUN_004283f0(4, m_unk0x3354);
@@ -1990,9 +1990,10 @@ void RaceSession::FUN_00434eb0()
 				}
 			}
 
-			if ((racer->m_unk0xd04 & 0x1000) && racer->m_unk0xdb4 && !(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) &&
-				!(racer->m_unk0xd04 & 0x200000) && racer->m_unk0xdb8 != 4 && !m_unk0x335c) {
-				racer->m_unk0xdb4->FUN_004283f0(4, m_unk0x3354);
+			if ((racer->m_unk0xd04 & 0x1000) && racer->m_cameraController &&
+				!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000) &&
+				racer->m_unk0xdb8 != 4 && !m_unk0x335c) {
+				racer->m_cameraController->FUN_004283f0(4, m_unk0x3354);
 			}
 
 			racerIndex++;

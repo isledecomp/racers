@@ -78,10 +78,10 @@ extern const LegoFloat g_unk0x004b0950 = 0.1f;
 extern const LegoFloat g_unk0x004b0954 = 0.17f;
 
 // GLOBAL: LEGORACERS 0x004b0958
-extern const LegoFloat g_unk0x004b0958 = 30.0f;
+extern const LegoFloat g_shieldSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b095c
-extern const LegoFloat g_unk0x004b095c = 300.0f;
+extern const LegoFloat g_shieldSoundMaxDistance = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b0960
 extern const LegoFloat g_unk0x004b0960 = 200.0f;
@@ -216,7 +216,7 @@ extern const LegoFloat g_unk0x004b0b40 = -0.60000002f;
 extern const LegoFloat g_unk0x004b0b44 = -0.2f;
 
 // GLOBAL: LEGORACERS 0x004b0b4c
-extern const LegoFloat g_unk0x004b0b4c = 191.0f;
+extern const LegoFloat g_fadeAlphaScale = 191.0f;
 
 // GLOBAL: LEGORACERS 0x004b0b50
 extern const LegoFloat g_racerBillboardScale = 1.15f;
@@ -397,7 +397,7 @@ void RaceState::Racer::Reset()
 	m_unk0xd5c[0] = field0xd5c;
 	m_unk0xd5c[1] = field0xd5c;
 	m_unk0xd5c[2] = field0xd5c;
-	m_unk0xdb4 = NULL;
+	m_cameraController = NULL;
 	m_unk0xdb8 = 0;
 	m_unk0x014 = 0;
 	m_unk0xdbc = 0;
@@ -723,26 +723,38 @@ void RaceState::Racer::FUN_004374c0()
 void RaceState::Racer::FUN_00437540(RaceCameraController* p_cameraController, LegoBool32 p_state)
 {
 	m_unk0xd08 = p_state;
-	m_unk0xdb4 = p_cameraController;
+	m_cameraController = p_cameraController;
 
 	m_soundD8c = m_unk0x004->AcquireSoundById(0x2a);
 	if (m_soundD8c) {
-		m_soundD8c->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+		m_soundD8c->SetDistanceRangeWithMinSquared(
+			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+			g_shieldSoundMaxDistance
+		);
 	}
 
 	m_soundD90 = m_unk0x004->AcquireSoundById(0x2b);
 	if (m_soundD90) {
-		m_soundD90->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+		m_soundD90->SetDistanceRangeWithMinSquared(
+			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+			g_shieldSoundMaxDistance
+		);
 	}
 
 	m_soundD94 = m_unk0x004->AcquireSoundById(0x2c);
 	if (m_soundD94) {
-		m_soundD94->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+		m_soundD94->SetDistanceRangeWithMinSquared(
+			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+			g_shieldSoundMaxDistance
+		);
 	}
 
 	m_soundD98 = m_unk0x004->AcquireSoundById(0x2d);
 	if (m_soundD98) {
-		m_soundD98->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+		m_soundD98->SetDistanceRangeWithMinSquared(
+			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+			g_shieldSoundMaxDistance
+		);
 	}
 
 	m_unk0xd28 = 0.0f;
@@ -752,17 +764,26 @@ void RaceState::Racer::FUN_00437540(RaceCameraController* p_cameraController, Le
 	m_unk0xd9c = m_unk0x004->AcquireSoundById(0x20);
 	m_unk0xd9c->VTable0x14(0xff);
 	m_unk0xd9c->Play(TRUE);
-	m_unk0xd9c->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+	m_unk0xd9c->SetDistanceRangeWithMinSquared(
+		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+		g_shieldSoundMaxDistance
+	);
 	m_unk0xd9c->SetVolume(m_unk0xd28);
 
 	m_unk0xd24 = 0;
 	m_unk0xda0 = m_unk0x004->AcquireSoundById(0x0a);
-	m_unk0xda0->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+	m_unk0xda0->SetDistanceRangeWithMinSquared(
+		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+		g_shieldSoundMaxDistance
+	);
 	m_unk0xda0->VTable0x14(0xff);
 	m_unk0xda0->SetVolume(m_unk0xd2c);
 
 	m_unk0xda4 = m_unk0x004->AcquireSoundById(0x3d);
-	m_unk0xda4->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+	m_unk0xda4->SetDistanceRangeWithMinSquared(
+		g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+		g_shieldSoundMaxDistance
+	);
 	m_unk0xda4->VTable0x14(0xff);
 	m_unk0xda4->SetVolume(m_unk0xd30);
 }
@@ -867,7 +888,7 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 	countdown = m_unk0xd7c;
 	if (p_elapsedMs > countdown) {
 		if (m_unk0xd04 & c_flags0xd04Bit11) {
-			FUN_00439b00();
+			RemoveCurse();
 		}
 	}
 	else {
@@ -933,10 +954,24 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoS32 randomValue = g_randomTable[g_randomTableIndex];
 			if (randomValue % 2) {
-				m_unk0x004->PlaySpatialSoundById(0x19, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+				m_unk0x004->PlaySpatialSoundById(
+					0x19,
+					&position,
+					g_shieldSoundMinDistance,
+					g_shieldSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 			}
 			else {
-				m_unk0x004->PlaySpatialSoundById(0x38, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+				m_unk0x004->PlaySpatialSoundById(
+					0x38,
+					&position,
+					g_shieldSoundMinDistance,
+					g_shieldSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 			}
 
 			m_unk0xd4c = 250;
@@ -1238,13 +1273,13 @@ void RaceState::Racer::FUN_00437d40(LegoU32 p_elapsedMs)
 	}
 
 	if (m_unk0x3e8.m_unk0x618 > g_unk0x004b09a0 && m_unk0x3e8.m_unk0x628 < 0.0f) {
-		m_unk0x004->PlaySpatialSoundById(2, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+		m_unk0x004->PlaySpatialSoundById(2, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
 		m_unk0xda8 = m_unk0x004->AcquireSoundById(3);
 
 		if (m_unk0xda8) {
 			m_unk0xda8->Play(TRUE);
-			LegoFloat maxDistance = g_unk0x004b095c;
-			LegoFloat minDistance = g_unk0x004b0958;
+			LegoFloat maxDistance = g_shieldSoundMaxDistance;
+			LegoFloat minDistance = g_shieldSoundMinDistance;
 			m_unk0xda8->SetDistanceRangeWithMinSquared(minDistance * minDistance, maxDistance);
 			m_unk0xda8->SetPosition(position);
 			m_unk0xda8->SetVelocity(velocity);
@@ -1453,7 +1488,14 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoU32 soundId = (g_randomTable[g_randomTableIndex] & 1) ? 0x37 : 0x18;
-			m_unk0x004->PlaySpatialSoundById(soundId, contactPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+			m_unk0x004->PlaySpatialSoundById(
+				soundId,
+				contactPosition,
+				g_shieldSoundMinDistance,
+				g_shieldSoundMaxDistance,
+				1.0f,
+				1.0f
+			);
 
 			firstRacer->m_unk0xd4c = 250;
 			secondRacer->m_unk0xd4c = 250;
@@ -1519,14 +1561,14 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		firstRacer->m_unk0xd80 && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
 		secondRacer->AttachCurse(&firstRacer->m_unk0x018.m_unk0x284, firstRacer->m_unk0xd7c);
-		firstRacer->FUN_00439b00();
+		firstRacer->RemoveCurse();
 	}
 	else if (
 		(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		secondRacer->m_unk0xd80 && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit0)
 	) {
 		firstRacer->AttachCurse(&secondRacer->m_unk0x018.m_unk0x284, secondRacer->m_unk0xd7c);
-		secondRacer->FUN_00439b00();
+		secondRacer->RemoveCurse();
 	}
 
 	firstRacer->m_unk0xd04 |= c_flags0xd04Bit28;
@@ -1768,7 +1810,7 @@ void RaceState::Racer::FUN_004393d0()
 	SoundVector position;
 	m_unk0x018.m_unk0x044->VTable0x04(&position);
 
-	m_unk0x004->PlaySpatialSoundById(0x3e, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+	m_unk0x004->PlaySpatialSoundById(0x3e, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
 	m_unk0xd04 |= c_flags0xd04Bit10;
 }
 
@@ -1874,7 +1916,7 @@ void RaceState::Racer::FUN_00439570()
 }
 
 // FUNCTION: LEGORACERS 0x004395a0
-void RaceState::Racer::FUN_004395a0()
+void RaceState::Racer::EndTurbo()
 {
 	LegoU32 flags = m_unk0xd04;
 	if (flags & c_flags0xd04Bit3) {
@@ -1887,7 +1929,7 @@ void RaceState::Racer::FUN_004395a0()
 void RaceState::Racer::FUN_004395d0()
 {
 	m_unk0xd04 |= c_flags0xd04Bit4;
-	FUN_00439b00();
+	RemoveCurse();
 	m_unk0x018.FUN_0043dcd0();
 	m_unk0x018.FUN_0043dbb0();
 	m_unk0x018.m_unk0x000 &= ~(Field0x018::c_flags0x000Bit2 | Field0x018::c_flags0x000Bit4);
@@ -1927,7 +1969,7 @@ void RaceState::Racer::FUN_00439660()
 }
 
 // FUNCTION: LEGORACERS 0x004396c0
-void RaceState::Racer::FUN_004396c0(LegoU32 p_unk0x04)
+void RaceState::Racer::StartTurbo(LegoU32 p_unk0x04)
 {
 	m_unk0xd04 |= c_flags0xd04Bit6;
 
@@ -1946,7 +1988,7 @@ void RaceState::Racer::FUN_004396c0(LegoU32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00439730
-void RaceState::Racer::FUN_00439730()
+void RaceState::Racer::ClearActiveAction()
 {
 	m_unk0xd04 &= ~c_flags0xd04Bit6;
 	m_unk0x018.FUN_0043fd70();
@@ -1955,7 +1997,7 @@ void RaceState::Racer::FUN_00439730()
 }
 
 // FUNCTION: LEGORACERS 0x00439770
-LegoU32 RaceState::Racer::FUN_00439770(LegoU32 p_unk0x04)
+LegoU32 RaceState::Racer::StartShield(LegoU32 p_unk0x04)
 {
 	m_unk0xd04 |= c_flags0xd04Bit0;
 	m_shieldLevel = p_unk0x04;
@@ -1963,7 +2005,7 @@ LegoU32 RaceState::Racer::FUN_00439770(LegoU32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00439790
-void RaceState::Racer::FUN_00439790()
+void RaceState::Racer::EndShield()
 {
 	m_unk0xd04 &= ~c_flags0xd04Bit0;
 }
@@ -1998,7 +2040,14 @@ void RaceState::Racer::FUN_004397c0(LegoBool32 p_unk0x04)
 				}
 
 				m_unk0x018.m_unk0x044->VTable0x04(&position);
-				m_unk0x004->PlaySpatialSoundById(0x39, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+				m_unk0x004->PlaySpatialSoundById(
+					0x39,
+					&position,
+					g_shieldSoundMinDistance,
+					g_shieldSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 			}
 		}
 	}
@@ -2019,7 +2068,14 @@ void RaceState::Racer::FUN_00439870()
 		if (!(testFlag & flags0xaa8)) {
 			if (m_unk0xc70.m_unk0x014 & Field0xc70::c_flags0x014Bit3) {
 				m_unk0x018.m_unk0x044->VTable0x04(&position);
-				m_unk0x004->PlaySpatialSoundById(0x41, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+				m_unk0x004->PlaySpatialSoundById(
+					0x41,
+					&position,
+					g_shieldSoundMinDistance,
+					g_shieldSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 			}
 
 			if (!(m_unk0xc70.m_unk0x014 & Field0xc70::c_flags0x014Bit0)) {
@@ -2077,7 +2133,10 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durat
 	m_soundDac = m_unk0x004->AcquireSoundById(8);
 	if (m_soundDac) {
 		m_soundDac->Play(TRUE);
-		m_soundDac->SetDistanceRangeWithMinSquared(g_unk0x004b0958 * g_unk0x004b0958, g_unk0x004b095c);
+		m_soundDac->SetDistanceRangeWithMinSquared(
+			g_shieldSoundMinDistance * g_shieldSoundMinDistance,
+			g_shieldSoundMaxDistance
+		);
 
 		GolVec3 position;
 		p_unk0x04->VTable0x04(&position);
@@ -2098,7 +2157,7 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durat
 }
 
 // FUNCTION: LEGORACERS 0x00439b00
-void RaceState::Racer::FUN_00439b00()
+void RaceState::Racer::RemoveCurse()
 {
 	if (m_unk0xdac) {
 		m_resourceManager004->ReleaseSound(m_unk0xdac);
@@ -2188,7 +2247,8 @@ void RaceState::Racer::FUN_00439c90()
 	SoundVector position;
 	m_unk0x018.m_unk0x044->VTable0x04(&position);
 
-	m_unk0x004->PlaySpatialSoundById(m_unk0xd23, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+	m_unk0x004
+		->PlaySpatialSoundById(m_unk0xd23, &position, g_shieldSoundMinDistance, g_shieldSoundMaxDistance, 1.0f, 1.0f);
 	m_unk0x3e8.m_unk0x6f4->FUN_00462580(999, 999, &position);
 }
 
@@ -2408,7 +2468,7 @@ void RaceState::Racer::StartMagnetHold()
 		}
 	}
 
-	FUN_004395a0();
+	EndTurbo();
 }
 
 // FUNCTION: LEGORACERS 0x0043a1a0
@@ -2434,7 +2494,7 @@ void RaceState::Racer::EndMagnetHold()
 		}
 	}
 
-	FUN_004395a0();
+	EndTurbo();
 }
 
 // FUNCTION: LEGORACERS 0x0043a210
@@ -2482,9 +2542,9 @@ void RaceState::Racer::AbsorbShieldHit()
 // FUNCTION: LEGORACERS 0x0043a300
 void RaceState::Racer::FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08)
 {
-	if (m_unk0xdb4) {
-		m_unk0xdb4->FUN_004283f0(p_unk0x04, p_unk0x08);
-		m_unk0xdb4->m_unk0x000 = TRUE;
+	if (m_cameraController) {
+		m_cameraController->FUN_004283f0(p_unk0x04, p_unk0x08);
+		m_cameraController->m_unk0x000 = TRUE;
 		m_unk0xdb8 = p_unk0x04;
 
 		if (p_unk0x08) {
@@ -2499,9 +2559,9 @@ void RaceState::Racer::FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08)
 // FUNCTION: LEGORACERS 0x0043a360
 void RaceState::Racer::FUN_0043a360()
 {
-	if (m_unk0xdb4) {
-		m_unk0xdb4->FUN_004283f0(m_unk0xdb8, m_unk0xd04 & 0x00400000);
-		m_unk0xdb4->m_unk0x000 = TRUE;
+	if (m_cameraController) {
+		m_cameraController->FUN_004283f0(m_unk0xdb8, m_unk0xd04 & 0x00400000);
+		m_cameraController->m_unk0x000 = TRUE;
 	}
 }
 
@@ -2510,7 +2570,7 @@ void RaceState::Racer::FUN_0043a390()
 {
 	LegoU32 flags = m_unk0xd04;
 	if (!(flags & c_flags0xd04Bit12) && (flags & c_flags0xd04Bit10)) {
-		RaceCameraController* controller = m_unk0xdb4;
+		RaceCameraController* controller = m_cameraController;
 		if (controller) {
 			LegoU32 index = m_unk0xdb8;
 			LegoBool32 enabled = flags & c_flags0xd04Bit22;
@@ -2518,7 +2578,7 @@ void RaceState::Racer::FUN_0043a390()
 			index &= 3;
 			m_unk0xdb8 = index;
 			controller->FUN_004283f0(index, enabled);
-			m_unk0xdb4->m_unk0x000 = TRUE;
+			m_cameraController->m_unk0x000 = TRUE;
 		}
 	}
 }
@@ -2526,21 +2586,21 @@ void RaceState::Racer::FUN_0043a390()
 // FUNCTION: LEGORACERS 0x0043a3e0
 void RaceState::Racer::FUN_0043a3e0()
 {
-	if (m_unk0xdb4) {
-		m_unk0xdb4->m_unk0x000 = TRUE;
+	if (m_cameraController) {
+		m_cameraController->m_unk0x000 = TRUE;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0043a3f0
 void RaceState::Racer::FUN_0043a3f0()
 {
-	m_unk0xdb4->m_unk0x004 = TRUE;
+	m_cameraController->m_unk0x004 = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0043a400
 void RaceState::Racer::FUN_0043a400()
 {
-	m_unk0xdb4->m_unk0x004 = FALSE;
+	m_cameraController->m_unk0x004 = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0043a410
@@ -3967,17 +4027,35 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 
 				switch (state - m_unk0x3cc) {
 				case 1:
-					m_racer->m_unk0x004
-						->PlaySpatialSoundById(0x3f, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+					m_racer->m_unk0x004->PlaySpatialSoundById(
+						0x3f,
+						&position,
+						g_shieldSoundMinDistance,
+						g_shieldSoundMaxDistance,
+						1.0f,
+						1.0f
+					);
 					break;
 				case 2:
 				case 3:
-					m_racer->m_unk0x004
-						->PlaySpatialSoundById(0x40, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+					m_racer->m_unk0x004->PlaySpatialSoundById(
+						0x40,
+						&position,
+						g_shieldSoundMinDistance,
+						g_shieldSoundMaxDistance,
+						1.0f,
+						1.0f
+					);
 					break;
 				case 4:
-					m_racer->m_unk0x004
-						->PlaySpatialSoundById(4, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
+					m_racer->m_unk0x004->PlaySpatialSoundById(
+						4,
+						&position,
+						g_shieldSoundMinDistance,
+						g_shieldSoundMaxDistance,
+						1.0f,
+						1.0f
+					);
 					break;
 				}
 
@@ -4751,7 +4829,7 @@ void RaceState::Racer::Field0x018::FUN_0043fc20(GolD3DRenderDevice* p_renderer)
 		else if (distanceSquared < g_unk0x004b0b3c) {
 			alpha = c_fadeAlphaMax -
 					static_cast<LegoS32>(
-						((distanceSquared - g_unk0x004b0b38) / (g_unk0x004b0b3c - g_unk0x004b0b38)) * g_unk0x004b0b4c
+						((distanceSquared - g_unk0x004b0b38) / (g_unk0x004b0b3c - g_unk0x004b0b38)) * g_fadeAlphaScale
 					);
 		}
 		else {

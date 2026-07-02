@@ -689,7 +689,7 @@ void RaceState::Racer::Field0x3e8::VTable0x30()
 	}
 
 	if (!(m_flags0x6c0 & c_flags0x6c0Bit3)) {
-		FUN_00429cf0(-0.003f, 250);
+		ApplySpeedModifier(-0.003f, 250);
 		m_unk0x658 = 0;
 		m_flags0x6c0 |= c_flags0x6c0Bit3;
 		m_unk0x680 = 0;
@@ -767,7 +767,7 @@ void RaceState::Racer::Field0x3e8::VTable0x2c()
 }
 
 // FUNCTION: LEGORACERS 0x00429cf0
-void RaceState::Racer::Field0x3e8::FUN_00429cf0(LegoFloat p_unk0x04, LegoU32 p_unk0x08)
+void RaceState::Racer::Field0x3e8::ApplySpeedModifier(LegoFloat p_unk0x04, LegoU32 p_unk0x08)
 {
 	if (!m_unk0x744) {
 		FUN_00445bb0(p_unk0x04, p_unk0x08);

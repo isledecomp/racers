@@ -86,12 +86,12 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 
 		racer->CollectColorBrick(0);
 		racer->ReturnAllWhiteBricks();
-		racer->FUN_00439790();
-		racer->FUN_004395a0();
+		racer->EndShield();
+		racer->EndTurbo();
 		racer->FUN_00439660();
-		racer->FUN_00439730();
+		racer->ClearActiveAction();
 		racer->EndSpinOut();
-		racer->FUN_00439b00();
+		racer->RemoveCurse();
 		racer->EndMagnetHold();
 		racer->FUN_00439870();
 		racer->FUN_0043a210(racerIndex + 1);

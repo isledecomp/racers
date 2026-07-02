@@ -672,7 +672,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 	m_unk0x02c->m_unk0x018.m_unk0x044->VTable0x04(&currentPosition);
 
 	GolVec3 cameraDirection;
-	m_unk0x02c->m_unk0xdb4->FUN_00428500(&cameraDirection);
+	m_unk0x02c->m_cameraController->FUN_00428500(&cameraDirection);
 
 	LegoFloat directionScale =
 		directionLengthScale / static_cast<LegoFloat>(sqrt(

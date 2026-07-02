@@ -14,21 +14,21 @@ public:
 	NewRacerScreen();
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
-	void CreateWidgets() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                             // vtable+0x4c
 	~NewRacerScreen() override;                                                // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	void Navigate() override;                                                // vtable+0x84
+	void Navigate() override;                                                  // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00482070
 	// NewRacerScreen::`scalar deleting destructor'
 
 protected:
-	MenuImage m_unk0x368;      // 0x368
-	MenuImage m_unk0x3c4;      // 0x3c4
-	MenuImage m_unk0x420;      // 0x420
-	MenuTextButton m_unk0x47c; // 0x47c
-	LegoU32 m_unk0x76c;        // 0x76c
+	MenuImage m_photoImage;       // 0x368
+	MenuImage m_statusPanelImage; // 0x3c4
+	MenuImage m_statusIconImage;  // 0x420
+	MenuTextButton m_okButton;    // 0x47c
+	LegoU32 m_saveSlot;           // 0x76c
 };
 
 #endif // NEWRACERSCREEN_H

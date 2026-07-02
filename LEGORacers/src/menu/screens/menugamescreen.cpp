@@ -30,7 +30,7 @@ void MenuGameScreen::SetupLighting()
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void MenuGameScreen::VTable0x90(undefined4)
+void MenuGameScreen::OnChar(undefined4)
 {
 }
 

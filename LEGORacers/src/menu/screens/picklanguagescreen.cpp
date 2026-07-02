@@ -21,18 +21,18 @@ PickLanguageScreen::~PickLanguageScreen()
 // FUNCTION: LEGORACERS 0x00484510
 void PickLanguageScreen::CreateWidgets()
 {
-	CreateImage(&m_unk0x368, 0x49, 0x49);
-	CreateTextLabel(&m_unk0x3c4, 0x3a, 0x3a, 0x9c);
-	m_unk0x3c4.WrapText(0x14);
-	CreateCarousel(&m_unk0xe30, 0x3d, 0x3b);
-	CreateSelector(&m_unk0x43c, &m_unk0xe30, 0x137, 0x4c);
+	CreateImage(&m_photoImage, 0x49, 0x49);
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x9c);
+	m_infoLabel.WrapText(0x14);
+	CreateCarousel(&m_languageCarousel, 0x3d, 0x3b);
+	CreateSelector(&m_languageSelector, &m_languageCarousel, 0x137, 0x4c);
 
 	for (LegoS32 i = 0; i < 9; i++) {
-		CreateTextLabel(&m_unk0xec4[i], 0x96, 0x37, i + 0x9d);
-		m_unk0xe30.AddItem(&m_unk0xec4[i]);
+		CreateTextLabel(&m_languageLabels[i], 0x96, 0x37, i + 0x9d);
+		m_languageCarousel.AddItem(&m_languageLabels[i]);
 	}
 
-	CreateTextButton(&m_unk0x12fc, 0x3f, 0x43, 0x10);
+	CreateTextButton(&m_backButton, 0x3f, 0x43, 0x10);
 }
 
 // FUNCTION: LEGORACERS 0x004845c0
@@ -43,8 +43,8 @@ LegoBool32 PickLanguageScreen::Initialize(MenuGameContext* p_context, MenuScreen
 		return FALSE;
 	}
 
-	m_unk0xe30.SetSelection(languageIndex);
-	m_unk0x43c.Select(5);
+	m_languageCarousel.SetSelection(languageIndex);
+	m_languageSelector.Select(5);
 
 	return TRUE;
 }
@@ -52,9 +52,9 @@ LegoBool32 PickLanguageScreen::Initialize(MenuGameContext* p_context, MenuScreen
 // FUNCTION: LEGORACERS 0x00484620
 void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x43c) {
+	if (p_source == &m_languageSelector) {
 		GameState& state = m_context->m_saveSystem.GetGameState();
-		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetSelectedIndex());
+		state.SetLanguageIndex((LegoU8) m_languageCarousel.GetSelectedIndex());
 		state.SetDirty(TRUE);
 	}
 }
@@ -62,7 +62,7 @@ void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x00484650
 void PickLanguageScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x12fc) {
+	if (p_source == &m_backButton) {
 		m_navPending = TRUE;
 	}
 

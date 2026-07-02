@@ -74,8 +74,8 @@ public:
 	void SetExpressionMask(undefined4 p_expressionMask) { m_expressionMask = p_expressionMask; }
 	undefined4 GetMenuFlowFlags() const { return m_menuFlowFlags; }
 	void SetMenuFlowFlags(undefined4 p_menuFlowFlags) { m_menuFlowFlags = p_menuFlowFlags; }
-	LegoS32 GetUnk0x84() const { return m_unk0x84; }
-	void SetUnk0x84(LegoS32 p_unk0x84) { m_unk0x84 = p_unk0x84; }
+	LegoS32 GetSaveSlot() const { return m_saveSlot; }
+	void SetSaveSlot(LegoS32 p_saveSlot) { m_saveSlot = p_saveSlot; }
 
 private:
 	friend class MenuManager;
@@ -115,7 +115,7 @@ private:
 	undefined4 m_menuFlowFlags;                        // 0x78
 	MusicGroup* m_musicGroup;                          // 0x7c
 	MusicInstance* m_musicInstance;                    // 0x80
-	LegoS32 m_unk0x84;                                 // 0x84
+	LegoS32 m_saveSlot;                                // 0x84
 };
 
 #endif // DRIVERMODELBUILDER_H

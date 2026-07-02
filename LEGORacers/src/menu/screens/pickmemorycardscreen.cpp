@@ -22,7 +22,7 @@ PickMemoryCardScreen::~PickMemoryCardScreen()
 // FUNCTION: LEGORACERS 0x00484960
 void PickMemoryCardScreen::CreateWidgets()
 {
-	CreateImage(&m_unk0x368, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 }
 
 // FUNCTION: LEGORACERS 0x00484980
@@ -51,42 +51,42 @@ LegoBool32 PickMemoryCardScreen::Destroy()
 // FUNCTION: LEGORACERS 0x004849e0
 void PickMemoryCardScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x4f4) {
-		m_context->m_modelBuilder.SetUnk0x84(0);
+	if (p_source == &m_slot0Button) {
+		m_context->m_modelBuilder.SetSaveSlot(0);
 		m_nextMenuId = 15;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0x7e4) {
-		m_context->m_modelBuilder.SetUnk0x84(1);
+	else if (p_source == &m_slot1Button) {
+		m_context->m_modelBuilder.SetSaveSlot(1);
 		m_nextMenuId = 15;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0xad4) {
-		m_context->m_modelBuilder.SetUnk0x84(2);
+	else if (p_source == &m_slot2Button) {
+		m_context->m_modelBuilder.SetSaveSlot(2);
 		m_nextMenuId = 15;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0xdc4) {
-		m_context->m_modelBuilder.SetUnk0x84(3);
+	else if (p_source == &m_slot3Button) {
+		m_context->m_modelBuilder.SetSaveSlot(3);
 		m_nextMenuId = 15;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0x10b4) {
-		m_context->m_modelBuilder.SetUnk0x84(2);
+	else if (p_source == &m_noCardButton) {
+		m_context->m_modelBuilder.SetSaveSlot(2);
 		m_nextMenuId = 15;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0x13a4) {
-		CreateTextButton(&m_unk0x1c74, 0x99, 0x46, 0x73);
-		CreateTextButton(&m_unk0x1f64, 0x99, 0x45, 0x74);
-		ShowConfirmDialog(&m_unk0x1c74, &m_unk0x1f64, 0x77);
+	else if (p_source == &m_backButton) {
+		CreateTextButton(&m_confirmYesButton, 0x99, 0x46, 0x73);
+		CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x74);
+		ShowConfirmDialog(&m_confirmYesButton, &m_confirmNoButton, 0x77);
 	}
-	else if (p_source == &m_unk0x1c74) {
+	else if (p_source == &m_confirmYesButton) {
 		m_dialog->DismissTop();
 		m_nextMenuId = 3;
 		m_navPending = TRUE;
 	}
-	else if (p_source == &m_unk0x1f64) {
+	else if (p_source == &m_confirmNoButton) {
 		m_dialog->DismissTop();
 	}
 
@@ -106,7 +106,7 @@ void PickMemoryCardScreen::Navigate()
 
 		m_context->m_menuStack.Push(144);
 
-		if ((LegoU32) m_context->m_modelBuilder.GetUnk0x84() < 2) {
+		if ((LegoU32) m_context->m_modelBuilder.GetSaveSlot() < 2) {
 			m_context->m_menuStack.Push(47);
 		}
 		break;
@@ -120,7 +120,7 @@ void PickMemoryCardScreen::Navigate()
 // FUNCTION: LEGORACERS 0x00484be0
 LegoBool32 PickMemoryCardScreen::Update(undefined4 p_arg)
 {
-	m_context->m_modelBuilder.SetUnk0x84(0);
+	m_context->m_modelBuilder.SetSaveSlot(0);
 	m_nextMenuId = 15;
 	m_navPending = TRUE;
 	return MenuGameScreen::Update(p_arg);

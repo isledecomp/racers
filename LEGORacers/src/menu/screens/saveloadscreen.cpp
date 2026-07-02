@@ -34,7 +34,7 @@ LegoBool32 SaveLoadScreen::Initialize(MenuGameContext* p_context, MenuScreenCrea
 
 	m_requestMenuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 0x32;
-	m_saveIndex = p_context->m_modelBuilder.GetUnk0x84();
+	m_saveIndex = p_context->m_modelBuilder.GetSaveSlot();
 	ExecuteOperation(&p_context->m_saveSystem);
 
 	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {

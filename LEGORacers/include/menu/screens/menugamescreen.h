@@ -76,7 +76,7 @@ public:
 	virtual LegoBool32 CanNavigate();                                                                // vtable+0x88
 	virtual LegoBool32 Initialize(MenuGameContext*,
 								  MenuScreenCreateParams*); // vtable+0x8c
-	virtual void VTable0x90(undefined4);                    // vtable+0x90
+	virtual void OnChar(undefined4);                        // vtable+0x90
 	virtual void VTable0x94(undefined4);                    // vtable+0x94
 
 	void StartMenuMusic(MenuGameContext* p_context, undefined4 p_unk0x08, undefined4 p_unk0x0c);

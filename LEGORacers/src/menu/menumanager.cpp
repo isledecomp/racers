@@ -1183,7 +1183,7 @@ void MenuManager::TakeScreenshot()
 void MenuManager::OnChar(undefined4 p_char)
 {
 	if (m_activeScreen) {
-		m_activeScreen->VTable0x90(p_char);
+		m_activeScreen->OnChar(p_char);
 	}
 }
 

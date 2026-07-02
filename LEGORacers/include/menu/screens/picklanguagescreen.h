@@ -18,21 +18,21 @@ public:
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
-	void CreateWidgets() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                             // vtable+0x4c
 	~PickLanguageScreen() override;                                            // vtable+0x68
-	void Navigate() override;                                                // vtable+0x84
+	void Navigate() override;                                                  // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00484430
 	// PickLanguageScreen::`scalar deleting destructor'
 
 protected:
-	MenuImage m_unk0x368;             // 0x0368
-	MenuTextLabel m_unk0x3c4;         // 0x03c4
-	MenuSelector m_unk0x43c;          // 0x043c
-	MenuCarouselNavigator m_unk0xe30; // 0x0e30
-	MenuTextLabel m_unk0xec4[9];      // 0x0ec4
-	MenuTextButton m_unk0x12fc;       // 0x12fc
+	MenuImage m_photoImage;                   // 0x0368
+	MenuTextLabel m_infoLabel;                // 0x03c4
+	MenuSelector m_languageSelector;          // 0x043c
+	MenuCarouselNavigator m_languageCarousel; // 0x0e30
+	MenuTextLabel m_languageLabels[9];        // 0x0ec4
+	MenuTextButton m_backButton;              // 0x12fc
 };
 
 #endif // PICKLANGUAGESCREEN_H

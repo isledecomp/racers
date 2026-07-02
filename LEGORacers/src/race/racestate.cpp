@@ -1518,14 +1518,14 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 
 	if ((firstRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		firstRacer->m_unk0xd80 && !(secondRacer->m_unk0xd04 & c_flags0xd04Bit0)) {
-		secondRacer->FUN_00439900(&firstRacer->m_unk0x018.m_unk0x284, firstRacer->m_unk0xd7c);
+		secondRacer->AttachCurse(&firstRacer->m_unk0x018.m_unk0x284, firstRacer->m_unk0xd7c);
 		firstRacer->FUN_00439b00();
 	}
 	else if (
 		(secondRacer->m_unk0xd04 & c_flags0xd04Bit11) && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit11) &&
 		secondRacer->m_unk0xd80 && !(firstRacer->m_unk0xd04 & c_flags0xd04Bit0)
 	) {
-		firstRacer->FUN_00439900(&secondRacer->m_unk0x018.m_unk0x284, secondRacer->m_unk0xd7c);
+		firstRacer->AttachCurse(&secondRacer->m_unk0x018.m_unk0x284, secondRacer->m_unk0xd7c);
 		secondRacer->FUN_00439b00();
 	}
 
@@ -2034,7 +2034,7 @@ void RaceState::Racer::FUN_00439870()
 }
 
 // FUNCTION: LEGORACERS 0x00439900
-void RaceState::Racer::FUN_00439900(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs)
+void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs)
 {
 	LegoU32 flags0xd04 = m_unk0xd04;
 	m_unk0xd7c = p_durationMs;

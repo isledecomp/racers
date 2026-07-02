@@ -83,26 +83,26 @@ const LegoFloat g_scarNormalThreshold = 0.70709997f;
 // GLOBAL: LEGORACERS 0x004b13e8
 const LegoFloat g_emplacementGravityScale = 3.0f;
 
-const LegoFloat g_unk0x004b13f0 = 30.0f;
+const LegoFloat g_curseSoundMinDistance = 30.0f;
 
-const LegoFloat g_unk0x004b13f4 = 300.0f;
+const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
 
-const LegoFloat g_unk0x004b13f8 = 10.0f;
+const LegoFloat g_curseTriggerRadius = 10.0f;
 
 const LegoFloat g_unk0x004b1420 = 13.0f;
 
-const LegoFloat g_unk0x004b1424 = 5.0f;
+const LegoFloat g_dynamiteLaunchHeight = 5.0f;
 
 // GLOBAL: LEGORACERS 0x004b1428
 const LegoFloat g_unk0x004b1428 = 3.0f;
 
-const LegoFloat g_unk0x004b1434 = 30.0f;
+const LegoFloat g_dynamiteFuseSoundMinDistance = 30.0f;
 
-const LegoFloat g_unk0x004b1438 = 300.0f;
+const LegoFloat g_dynamiteFuseSoundMaxDistance = 300.0f;
 
-const LegoFloat g_unk0x004b143c = 200.0f;
+const LegoFloat g_dynamiteSoundMinDistance = 200.0f;
 
-const LegoFloat g_unk0x004b1440 = 600.0f;
+const LegoFloat g_dynamiteSoundMaxDistance = 600.0f;
 
 const LegoFloat g_unk0x004b1444 = 0.012f;
 
@@ -110,11 +110,11 @@ const LegoFloat g_unk0x004b146c = 5.17852306f;
 
 const LegoFloat g_unk0x004b1470 = 0.155761003f;
 
-const LegoFloat g_unk0x004b1474 = -0.727681994f;
+const LegoFloat g_dynamiteSparkOffsetScale = -0.727681994f;
 
 const LegoFloat g_unk0x004b1478 = 0.727681994f;
 
-const LegoFloat g_unk0x004b147c = -90.0f;
+const LegoFloat g_dynamiteThrowDistance = -90.0f;
 
 // GLOBAL: LEGORACERS 0x004b1484
 const LegoFloat g_unk0x004b1484 = 3.0f;
@@ -771,32 +771,32 @@ LegoS32 RacePowerupManager::WeaponActionBase::GetBrickColor()
 // FUNCTION: LEGORACERS 0x00452440
 RacePowerupManager::CurseAction::CurseAction()
 {
-	FUN_004524f0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004524a0
 RacePowerupManager::CurseAction::~CurseAction()
 {
-	FUN_00452510();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004524f0
-void RacePowerupManager::CurseAction::FUN_004524f0()
+void RacePowerupManager::CurseAction::Reset()
 {
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0;
-	m_unk0x38 = 0;
+	m_manager = 0;
+	m_curseEntity = 0;
+	m_auraEntity = 0;
+	m_innerAuraEntity = 0;
 	m_raceState0x018 = NULL;
 	m_collisionWorld = 0;
-	m_unk0x64 = 0;
+	m_sound = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00452510
-void RacePowerupManager::CurseAction::FUN_00452510()
+void RacePowerupManager::CurseAction::Destroy()
 {
 	Deactivate();
-	FUN_004524f0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00452530
@@ -808,7 +808,7 @@ void RacePowerupManager::CurseAction::Initialize(
 {
 	m_raceState0x018 = p_raceState;
 	m_collisionWorld = p_unk0x08;
-	m_unk0x2c = p_unk0x0c;
+	m_manager = p_unk0x0c;
 	m_state = 1;
 }
 
@@ -821,27 +821,27 @@ void RacePowerupManager::CurseAction::Activate(
 	ActionTarget* p_unk0x14
 )
 {
-	m_unk0x30 = m_unk0x2c->AllocateEffectEntity();
-	if (m_unk0x30 == NULL) {
+	m_curseEntity = m_manager->AllocateEffectEntity();
+	if (m_curseEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x34 = m_unk0x2c->AllocateEffectEntity();
-	if (m_unk0x34 == NULL) {
+	m_auraEntity = m_manager->AllocateEffectEntity();
+	if (m_auraEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x38 = m_unk0x2c->AllocateEffectEntity();
-	if (m_unk0x38 == NULL) {
+	m_innerAuraEntity = m_manager->AllocateEffectEntity();
+	if (m_innerAuraEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
 	m_ownerRacer = p_racer;
 
-	m_unk0x30->FUN_0040d550(
+	m_curseEntity->FUN_0040d550(
 		p_unk0x08->GetModel(0),
 		p_unk0x08->VTable0x58(0),
 		p_unk0x08->GetModelPart(0),
@@ -854,13 +854,13 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x08->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x08->GetModelPart(i);
-			m_unk0x30->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
+			m_curseEntity->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_unk0x30->SetFlags(m_unk0x30->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x30->FUN_0040dad0(0);
+	m_curseEntity->SetFlags(m_curseEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_curseEntity->FUN_0040dad0(0);
 
-	m_unk0x34->FUN_0040d550(
+	m_auraEntity->FUN_0040d550(
 		p_unk0x0c->GetModel(0),
 		p_unk0x0c->VTable0x58(0),
 		p_unk0x0c->GetModelPart(0),
@@ -871,17 +871,17 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x0c->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x0c->GetModelPart(i);
-			m_unk0x34->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
+			m_auraEntity->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_unk0x34->SetFlags(m_unk0x34->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x34->FUN_0040dad0(0);
-	m_unk0x34->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_unk0x34->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_unk0x34->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_unk0x34->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_auraEntity->FUN_0040dad0(0);
+	m_auraEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
+	m_auraEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
+	m_auraEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
+	m_auraEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
 
-	m_unk0x38->FUN_0040d550(
+	m_innerAuraEntity->FUN_0040d550(
 		p_unk0x10->GetModel(0),
 		p_unk0x10->VTable0x58(0),
 		p_unk0x10->GetModelPart(0),
@@ -892,28 +892,28 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x10->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x10->GetModelPart(i);
-			m_unk0x38->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
+			m_innerAuraEntity->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_unk0x38->SetFlags(m_unk0x38->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x38->FUN_0040dad0(0);
-	m_unk0x38->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_unk0x38->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_unk0x38->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_unk0x38->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_innerAuraEntity->FUN_0040dad0(0);
+	m_innerAuraEntity->FUN_00411680(p_unk0x10->FUN_00411640());
+	m_innerAuraEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
+	m_innerAuraEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
+	m_innerAuraEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
 
 	if (m_ownerRacer == NULL) {
 		GolVec3 position = p_unk0x14->m_unk0x00;
 		GolVec3 direction = p_unk0x14->m_unk0x0c;
 
-		GolWorldEntity* target = &m_unk0x3c;
+		GolWorldEntity* target = &m_worldEntity;
 		target->VTable0x08(position);
-		m_unk0x3c.FUN_10026fa0(10.0f);
-		m_unk0x34->VTable0x08(position);
-		m_unk0x38->VTable0x08(position);
+		m_worldEntity.FUN_10026fa0(10.0f);
+		m_auraEntity->VTable0x08(position);
+		m_innerAuraEntity->VTable0x08(position);
 
 		position.m_z += 13.0f;
-		m_unk0x30->VTable0x08(position);
+		m_curseEntity->VTable0x08(position);
 
 		direction.m_x = -direction.m_x;
 		direction.m_y = -direction.m_y;
@@ -928,10 +928,10 @@ void RacePowerupManager::CurseAction::Activate(
 		forward.m_x = -direction.m_y;
 		forward.m_y = direction.m_x;
 		forward.m_z = 0.0f;
-		m_unk0x30->VTable0x40(forward, up);
+		m_curseEntity->VTable0x40(forward, up);
 
-		m_unk0x34->CopyOrientationFrom(*m_unk0x30);
-		m_unk0x38->CopyOrientationFrom(*m_unk0x30);
+		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
+		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);
 	}
 
 	m_state = 2;
@@ -941,27 +941,27 @@ void RacePowerupManager::CurseAction::Activate(
 // FUNCTION: LEGORACERS 0x00452970
 void RacePowerupManager::CurseAction::Deactivate()
 {
-	if (m_unk0x38 != NULL) {
-		m_unk0x38->VTable0x54();
-		m_unk0x2c->ReleaseEffectEntity(m_unk0x38);
-		m_unk0x38 = NULL;
+	if (m_innerAuraEntity != NULL) {
+		m_innerAuraEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_innerAuraEntity);
+		m_innerAuraEntity = NULL;
 	}
 
-	if (m_unk0x34 != NULL) {
-		m_unk0x34->VTable0x54();
-		m_unk0x2c->ReleaseEffectEntity(m_unk0x34);
-		m_unk0x34 = NULL;
+	if (m_auraEntity != NULL) {
+		m_auraEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_auraEntity);
+		m_auraEntity = NULL;
 	}
 
-	if (m_unk0x30 != NULL) {
-		m_unk0x30->VTable0x54();
-		m_unk0x2c->ReleaseEffectEntity(m_unk0x30);
-		m_unk0x30 = NULL;
+	if (m_curseEntity != NULL) {
+		m_curseEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_curseEntity);
+		m_curseEntity = NULL;
 	}
 
-	if (m_unk0x64 != NULL) {
-		m_soundSource->ReleaseSound(m_soundResource64);
-		m_unk0x64 = NULL;
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
 	}
 
 	if (m_collisionEvent != NULL) {
@@ -976,59 +976,59 @@ void RacePowerupManager::CurseAction::Deactivate()
 // FUNCTION: LEGORACERS 0x00452a00
 void RacePowerupManager::CurseAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
-	m_unk0x30->VTable0x10(p_elapsedMs);
-	m_unk0x34->VTable0x10(p_elapsedMs);
-	m_unk0x38->VTable0x10(p_elapsedMs);
+	m_curseEntity->VTable0x10(p_elapsedMs);
+	m_auraEntity->VTable0x10(p_elapsedMs);
+	m_innerAuraEntity->VTable0x10(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00452a40
 void RacePowerupManager::CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
-	if (m_state == c_state0x04) {
-		m_unk0x30->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
+	if (m_state == c_stateFade) {
+		m_curseEntity->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
-	p_renderer->VTable0x94(m_unk0x30);
+	p_renderer->VTable0x94(m_curseEntity);
 }
 
 // FUNCTION: LEGORACERS 0x00452a80
 void RacePowerupManager::CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
-	if (m_state == c_state0x04) {
+	if (m_state == c_stateFade) {
 		LegoFloat scale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
-		m_unk0x34->SetUnk0x58AndInvalidateRadius(scale);
-		m_unk0x38->SetUnk0x58ThenInvalidateRadius(m_unk0x34->GetUnk0x58());
+		m_auraEntity->SetUnk0x58AndInvalidateRadius(scale);
+		m_innerAuraEntity->SetUnk0x58ThenInvalidateRadius(m_auraEntity->GetUnk0x58());
 	}
 
-	m_unk0x34->VTable0x1c(*p_renderer);
-	m_unk0x38->VTable0x1c(*p_renderer);
+	m_auraEntity->VTable0x1c(*p_renderer);
+	m_innerAuraEntity->VTable0x1c(*p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00452ae0
 void RacePowerupManager::CurseAction::AdvanceState()
 {
 	switch (m_state) {
-	case c_state0x02:
+	case c_stateArmed:
 		break;
-	case c_state0x03:
-		m_state = c_state0x04;
-		m_stateTimerMs = c_timer0x03e8;
+	case c_stateActive:
+		m_state = c_stateFade;
+		m_stateTimerMs = c_fadeDurationMs;
 		return;
-	case c_state0x04:
-		m_state = c_state0x06;
+	case c_stateFade:
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		return;
 	default:
@@ -1050,84 +1050,87 @@ void RacePowerupManager::CurseAction::AdvanceState()
 			direction.m_z = 0.0f;
 		}
 
-		m_unk0x3c.VTable0x08(position);
-		m_unk0x3c.FUN_10026fa0(g_unk0x004b13f8);
-		m_unk0x34->VTable0x08(position);
-		m_unk0x38->VTable0x08(position);
+		m_worldEntity.VTable0x08(position);
+		m_worldEntity.FUN_10026fa0(g_curseTriggerRadius);
+		m_auraEntity->VTable0x08(position);
+		m_innerAuraEntity->VTable0x08(position);
 
 		GolVec3 up = record.m_unk0x24;
 		position.m_x += up.m_x * 13.0f;
 		position.m_y += up.m_y * 13.0f;
 		position.m_z += up.m_z * 13.0f;
-		m_unk0x30->VTable0x08(position);
+		m_curseEntity->VTable0x08(position);
 
 		GolVec3 cross;
 		cross.m_x = up.m_y * direction.m_z - up.m_z * direction.m_y;
 		cross.m_y = up.m_z * direction.m_x - direction.m_z * up.m_x;
 		cross.m_z = direction.m_y * up.m_x - up.m_y * direction.m_x;
-		m_unk0x30->VTable0x40(cross, up);
+		m_curseEntity->VTable0x40(cross, up);
 
-		m_unk0x34->CopyOrientationFrom(*m_unk0x30);
-		m_unk0x38->CopyOrientationFrom(*m_unk0x30);
+		m_auraEntity->CopyOrientationFrom(*m_curseEntity);
+		m_innerAuraEntity->CopyOrientationFrom(*m_curseEntity);
 	}
 	else {
-		m_unk0x3c.VTable0x04(&position);
+		m_worldEntity.VTable0x04(&position);
 		position.m_z += 13.0f;
 	}
 
-	m_unk0x64 = m_soundSource->AcquireSoundById(c_sound0x09);
-	if (m_unk0x64 != NULL) {
-		m_unk0x64->Play(TRUE);
-		m_unk0x64->SetDistanceRangeWithMinSquared(g_unk0x004b13f0 * g_unk0x004b13f0, g_unk0x004b13f4);
-		m_unk0x64->SetPosition(position);
+	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
+	if (m_sound != NULL) {
+		m_sound->Play(TRUE);
+		m_sound->SetDistanceRangeWithMinSquared(
+			g_curseSoundMinDistance * g_curseSoundMinDistance,
+			g_curseSoundMaxDistanceSquared
+		);
+		m_sound->SetPosition(position);
 	}
 
-	m_state = c_state0x03;
-	m_stateTimerMs = c_timer0x3a98;
+	m_state = c_stateActive;
+	m_stateTimerMs = c_activeDurationMs;
 
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_unk0x00 = 4;
 	descriptor.m_unk0x04 = 1;
 	descriptor.m_unk0x08 = 0;
 	descriptor.m_unk0x0c = 0;
-	descriptor.m_worldEntity = &m_unk0x3c;
+	descriptor.m_worldEntity = &m_worldEntity;
 	m_collisionEvent = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00452da0
 void RacePowerupManager::CurseAction::OnHitRacer(RaceState::Racer* p_racer)
 {
-	if (m_state != c_state0x05 && !(p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit11)) {
-		p_racer->FUN_00439900(m_unk0x30, c_timer0x2710);
+	if (m_state != c_stateExpiring && !(p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit11)) {
+		p_racer->AttachCurse(m_curseEntity, c_curseDurationMs);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00452dd0
 RacePowerupManager::DynamiteAction::DynamiteAction()
 {
-	m_unk0x164 = 0;
-	m_unk0x168 = 0;
-	m_unk0x16c = 0;
-	m_unk0x170 = 0;
-	m_unk0x174 = 0;
-	m_unk0x178 = 0;
+	m_manager = 0;
+	m_cutsceneAnimation = 0;
+	m_sparkParticle = 0;
+	m_sound = 0;
+	m_targetRacer = 0;
+	m_tumbleAngle = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00452e50
 RacePowerupManager::DynamiteAction::~DynamiteAction()
 {
-	FUN_00452eb0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00452eb0
-void RacePowerupManager::DynamiteAction::FUN_00452eb0()
+void RacePowerupManager::DynamiteAction::Destroy()
 {
 	Deactivate();
-	m_unk0x02c.VTable0x54();
-	m_unk0x164 = 0;
-	m_unk0x168 = 0;
-	m_unk0x16c = 0;
-	m_unk0x170 = 0;
+	m_modelEntity.VTable0x54();
+	m_manager = 0;
+	m_cutsceneAnimation = 0;
+	m_sparkParticle = 0;
+	m_sound = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00452ee0
@@ -1135,21 +1138,21 @@ void RacePowerupManager::DynamiteAction::Initialize(
 	RaceState* p_raceState,
 	RaceSessionField0x32b4* p_unk0x08,
 	RacePowerupManager* p_unk0x0c,
-	undefined4 p_unk0x10,
+	CutsceneAnimation* p_cutsceneAnimation,
 	GolModelEntity* p_model
 )
 {
 	m_raceState0x018 = p_raceState;
 	m_collisionWorld = p_unk0x08;
-	m_unk0x164 = p_unk0x0c;
-	m_unk0x168 = p_unk0x10;
+	m_manager = p_unk0x0c;
+	m_cutsceneAnimation = p_cutsceneAnimation;
 
-	m_unk0x02c.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
+	m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
 
 	for (LegoU32 i = 1; i < 3; i++) {
 		GolModelBase* model = p_model->GetModel(i);
 		if (model != NULL) {
-			m_unk0x02c.FUN_10027c50(model, p_model->GetModelDistance(i));
+			m_modelEntity.FUN_10027c50(model, p_model->GetModelDistance(i));
 		}
 	}
 
@@ -1161,41 +1164,41 @@ LegoU32 RacePowerupManager::DynamiteAction::Activate(RaceState::Racer* p_racer, 
 {
 	m_ownerRacer = p_racer;
 	LegoU32 result = 0;
-	m_unk0x174 = p_unk0x08;
+	m_targetRacer = p_unk0x08;
 	m_state = 2;
 	m_stateTimerMs = result;
-	m_unk0x178 = 0.0f;
+	m_tumbleAngle = 0.0f;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00452f90
 void RacePowerupManager::DynamiteAction::Deactivate()
 {
-	if (m_unk0x170 != NULL) {
-		m_soundSource->ReleaseSound(m_soundResource170);
-		m_unk0x170 = NULL;
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
 	}
 
 	m_projectile.Deactivate();
 
-	if (m_unk0x16c != NULL) {
-		m_cutsceneAnimation->FUN_00489f30(m_unk0x16c);
-		m_unk0x16c = NULL;
+	if (m_sparkParticle != NULL) {
+		m_cutsceneAnimation->FUN_00489f30(m_sparkParticle);
+		m_sparkParticle = NULL;
 	}
 
-	m_unk0x174 = NULL;
+	m_targetRacer = NULL;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00452ff0
 void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
 	SoundVector position;
-	m_unk0x02c.VTable0x04(&position);
+	m_modelEntity.VTable0x04(&position);
 
 	if (m_projectile.GetState() != 0) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
@@ -1207,53 +1210,60 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 				position.m_z = projectilePosition->m_z;
 			}
 
-			m_unk0x164->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
-			m_state = c_state0x04;
-			m_stateTimerMs = c_timer0x01f4;
-			m_soundSource->PlaySpatialSoundById(c_sound0x05, &position, g_unk0x004b143c, g_unk0x004b1440, 1.0f, 1.0f);
+			m_manager->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
+			m_state = c_stateSecondBlast;
+			m_stateTimerMs = c_blastIntervalMs;
+			m_soundSource->PlaySpatialSoundById(
+				c_soundExplode,
+				&position,
+				g_dynamiteSoundMinDistance,
+				g_dynamiteSoundMaxDistance,
+				1.0f,
+				1.0f
+			);
 
-			if (m_unk0x170 != NULL) {
-				m_soundSource->ReleaseSound(m_soundResource170);
-				m_unk0x170 = NULL;
+			if (m_sound != NULL) {
+				m_soundSource->ReleaseSound(m_soundResource);
+				m_sound = NULL;
 			}
 
 			m_projectile.Deactivate();
 
-			if (m_unk0x16c != NULL) {
-				m_cutsceneAnimation->FUN_00489f30(m_unk0x16c);
-				m_unk0x16c = NULL;
+			if (m_sparkParticle != NULL) {
+				m_cutsceneAnimation->FUN_00489f30(m_sparkParticle);
+				m_sparkParticle = NULL;
 			}
 		}
 	}
 
-	m_unk0x178 += static_cast<LegoFloat>(p_elapsedMs) * 0.012f;
+	m_tumbleAngle += static_cast<LegoFloat>(p_elapsedMs) * 0.012f;
 
-	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_unk0x178 * g_negativeRadiansToTableIndex)) & 0x3ff;
+	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(m_tumbleAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
 	GolVec3 up;
 	up.m_x = g_cosineTable[tableIndex];
 	up.m_y = 0.0f;
 
-	tableIndex = static_cast<LegoS32>(m_unk0x178 * g_item0x40RadiansToTableIndex) & 0x3ff;
+	tableIndex = static_cast<LegoS32>(m_tumbleAngle * g_item0x40RadiansToTableIndex) & 0x3ff;
 	up.m_z = g_cosineTable[tableIndex];
 
 	GolVec3 direction;
 	direction.m_x = -up.m_z;
 	direction.m_y = 0.0f;
 	direction.m_z = up.m_x;
-	m_unk0x02c.VTable0x40(direction, up);
+	m_modelEntity.VTable0x40(direction, up);
 
-	if (m_unk0x16c != NULL) {
-		position.m_x += up.m_x * g_unk0x004b1474;
+	if (m_sparkParticle != NULL) {
+		position.m_x += up.m_x * g_dynamiteSparkOffsetScale;
 		position.m_y += up.m_y * 0.155761003f;
 		position.m_z += up.m_z * 5.17852306f;
 
-		if (m_unk0x16c->m_unk0x00 != NULL) {
-			m_unk0x16c->m_unk0x00->FUN_00489660(&position);
+		if (m_sparkParticle->m_unk0x00 != NULL) {
+			m_sparkParticle->m_unk0x00->FUN_00489660(&position);
 		}
 	}
 
-	if (m_unk0x170 != NULL) {
-		m_unk0x170->SetPosition(&position);
+	if (m_sound != NULL) {
+		m_sound->SetPosition(&position);
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
@@ -1262,8 +1272,8 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00453210
 void RacePowerupManager::DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state != c_state0x06 && m_state != c_state0x04 && m_state != c_state0x05) {
-		p_renderer->VTable0x94(&m_unk0x02c);
+	if (m_state != c_stateDone && m_state != c_stateSecondBlast && m_state != c_stateThirdBlast) {
+		p_renderer->VTable0x94(&m_modelEntity);
 	}
 }
 
@@ -1271,21 +1281,21 @@ void RacePowerupManager::DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 void RacePowerupManager::DynamiteAction::AdvanceState()
 {
 	GolVec3 position;
-	m_unk0x02c.VTable0x04(&position);
+	m_modelEntity.VTable0x04(&position);
 
 	switch (m_state) {
-	case c_state0x02: {
+	case c_stateArmed: {
 		PowerupProjectile::Params projectileParams;
-		projectileParams.m_worldEntity = &m_unk0x02c;
+		projectileParams.m_worldEntity = &m_modelEntity;
 		projectileParams.m_collisionWorld = m_collisionWorld;
 		projectileParams.m_gravity = -32.1759987f;
-		projectileParams.m_eventQueue = m_unk0x164->GetRaceState()->GetEventQueue();
+		projectileParams.m_eventQueue = m_manager->GetRaceState()->GetEventQueue();
 		projectileParams.m_targetOffset.m_x = 0.0f;
 		projectileParams.m_targetOffset.m_y = 0.0f;
 		projectileParams.m_targetOffset.m_z = 0.0f;
 		projectileParams.m_speed = 40.0f;
-		projectileParams.m_lifetimeMs = c_timer0x0bb8;
-		projectileParams.m_launchHeight = g_unk0x004b1424;
+		projectileParams.m_lifetimeMs = c_flightLifetimeMs;
+		projectileParams.m_launchHeight = g_dynamiteLaunchHeight;
 
 		RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
 		GolVec3 racerPosition;
@@ -1294,8 +1304,8 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		GolVec3 forward;
 		m_ownerRacer->m_unk0x018.m_unk0x044->GetOrientationRow0(&forward);
 
-		if (m_unk0x174 != NULL) {
-			m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_unk0x174, TRUE, TRUE);
+		if (m_targetRacer != NULL) {
+			m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, TRUE);
 		}
 		else {
 			GolVec3 targetVelocity;
@@ -1304,40 +1314,40 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 			targetVelocity.m_z = 0.0f;
 
 			GolVec3 target;
-			target.m_x = racerPosition.m_x + forward.m_x * g_unk0x004b147c;
-			target.m_y = racerPosition.m_y + forward.m_y * g_unk0x004b147c;
-			target.m_z = racerPosition.m_z + forward.m_z * g_unk0x004b147c + 5.0f;
+			target.m_x = racerPosition.m_x + forward.m_x * g_dynamiteThrowDistance;
+			target.m_y = racerPosition.m_y + forward.m_y * g_dynamiteThrowDistance;
+			target.m_z = racerPosition.m_z + forward.m_z * g_dynamiteThrowDistance + 5.0f;
 
 			m_projectile.LaunchAtPoint(&projectileParams, m_ownerRacer, &target, &targetVelocity, TRUE);
 		}
 
-		m_state = c_state0x03;
-		m_stateTimerMs = c_timer0x1388;
-		m_unk0x16c = m_cutsceneAnimation->FUN_00489d70("dynsprk", NULL, NULL, NULL);
-		if (m_unk0x16c != NULL) {
+		m_state = c_stateThrown;
+		m_stateTimerMs = c_fuseDurationMs;
+		m_sparkParticle = m_cutsceneAnimation->FUN_00489d70("dynsprk", NULL, NULL, NULL);
+		if (m_sparkParticle != NULL) {
 			position.m_x -= 0.727681994f;
 			position.m_y += 0.155761003f;
 			position.m_z += 5.17852306f;
 
-			if (m_unk0x16c->m_unk0x00 != NULL) {
-				m_unk0x16c->m_unk0x00->FUN_00489660(&position);
+			if (m_sparkParticle->m_unk0x00 != NULL) {
+				m_sparkParticle->m_unk0x00->FUN_00489660(&position);
 			}
 		}
 
-		m_unk0x170 = m_soundSource->AcquireSoundById(c_sound0x11);
-		if (m_unk0x170 != NULL) {
-			m_unk0x170->SetDistanceRange(g_unk0x004b1434, g_unk0x004b1438);
-			m_unk0x170->SetPosition(position);
-			m_unk0x170->Play(TRUE);
+		m_sound = m_soundSource->AcquireSoundById(c_soundFuse);
+		if (m_sound != NULL) {
+			m_sound->SetDistanceRange(g_dynamiteFuseSoundMinDistance, g_dynamiteFuseSoundMaxDistance);
+			m_sound->SetPosition(position);
+			m_sound->Play(TRUE);
 		}
 		break;
 	}
-	case c_state0x03:
-		m_unk0x164->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
-		m_state = c_state0x06;
+	case c_stateThrown:
+		m_manager->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		break;
-	case c_state0x04:
+	case c_stateSecondBlast:
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_x +=
 			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
@@ -1345,11 +1355,11 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_y +=
 			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
-		m_unk0x164->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
-		m_state = c_state0x05;
-		m_stateTimerMs = c_timer0x01f4;
+		m_manager->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
+		m_state = c_stateThirdBlast;
+		m_stateTimerMs = c_blastIntervalMs;
 		break;
-	case c_state0x05:
+	case c_stateThirdBlast:
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_x +=
 			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
@@ -1357,8 +1367,8 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		position.m_y +=
 			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange - c_randomOffsetCenter;
-		m_unk0x164->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
-		m_state = c_state0x06;
+		m_manager->SpawnSpikeExplosion(&position, TRUE, m_ownerRacer);
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		break;
 	}

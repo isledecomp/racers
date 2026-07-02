@@ -1063,7 +1063,7 @@ public:
 		void FUN_00437540(RaceCameraController* p_controller, LegoBool32 p_unk0x08);
 		LegoU32 FUN_00439770(LegoU32 p_unk0x04);
 		void FUN_00439870();
-		void FUN_00439900(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
+		void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
 		void FUN_00439b00();
 		void FUN_00439b70();
 		LegoU32 FUN_00439ba0();

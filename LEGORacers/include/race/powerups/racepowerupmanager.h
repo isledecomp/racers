@@ -695,16 +695,16 @@ public:
 	class DynamiteAction : public HazardActionBase {
 	public:
 		enum {
-			c_state0x02 = 2,
-			c_state0x03 = 3,
-			c_state0x04 = 4,
-			c_state0x05 = 5,
-			c_state0x06 = 6,
-			c_timer0x01f4 = 0x01f4,
-			c_timer0x0bb8 = 0x0bb8,
-			c_timer0x1388 = 0x1388,
-			c_sound0x05 = 0x05,
-			c_sound0x11 = 0x11,
+			c_stateArmed = 2,
+			c_stateThrown = 3,
+			c_stateSecondBlast = 4,
+			c_stateThirdBlast = 5,
+			c_stateDone = 6,
+			c_blastIntervalMs = 0x01f4,
+			c_flightLifetimeMs = 0x0bb8,
+			c_fuseDurationMs = 0x1388,
+			c_soundExplode = 0x05,
+			c_soundFuse = 0x11,
 			c_randomTableMask = 0x3ff,
 			c_randomOffsetRange = 13,
 			c_randomOffsetCenter = 6,
@@ -721,27 +721,24 @@ public:
 			RaceState* p_raceState,
 			RaceSessionField0x32b4* p_unk0x08,
 			RacePowerupManager* p_unk0x0c,
-			undefined4 p_unk0x10,
+			CutsceneAnimation* p_cutsceneAnimation,
 			GolModelEntity* p_model
 		);
-		void FUN_00452eb0();
+		void Destroy();
 		LegoU32 Activate(RaceState::Racer* p_racer, RaceState::Racer* p_unk0x08);
 
 	private:
-		GolModelEntity m_unk0x02c;      // 0x02c
-		PowerupProjectile m_projectile; // 0x0bc
-		RacePowerupManager* m_unk0x164; // 0x164
+		GolModelEntity m_modelEntity;           // 0x02c
+		PowerupProjectile m_projectile;         // 0x0bc
+		RacePowerupManager* m_manager;          // 0x164
+		CutsceneAnimation* m_cutsceneAnimation; // 0x168
+		CutsceneParticleRef* m_sparkParticle;   // 0x16c
 		union {
-			undefined4 m_unk0x168;                  // 0x168
-			CutsceneAnimation* m_cutsceneAnimation; // 0x168
+			SpatialSoundInstance* m_sound;                  // 0x170
+			RaceResourceManager::Resource* m_soundResource; // 0x170
 		};
-		CutsceneParticleRef* m_unk0x16c; // 0x16c
-		union {
-			SpatialSoundInstance* m_unk0x170;                  // 0x170
-			RaceResourceManager::Resource* m_soundResource170; // 0x170
-		};
-		RaceState::Racer* m_unk0x174; // 0x174
-		LegoFloat m_unk0x178;         // 0x178
+		RaceState::Racer* m_targetRacer; // 0x174
+		LegoFloat m_tumbleAngle;         // 0x178
 	};
 
 	// VTABLE: LEGORACERS 0x004b13fc
@@ -749,15 +746,15 @@ public:
 	class CurseAction : public HazardActionBase {
 	public:
 		enum {
-			c_state0x02 = 2,
-			c_state0x03 = 3,
-			c_state0x04 = 4,
-			c_state0x05 = 5,
-			c_state0x06 = 6,
-			c_timer0x03e8 = 0x03e8,
-			c_timer0x2710 = 0x2710,
-			c_timer0x3a98 = 0x3a98,
-			c_sound0x09 = 0x09,
+			c_stateArmed = 2,
+			c_stateActive = 3,
+			c_stateFade = 4,
+			c_stateExpiring = 5,
+			c_stateDone = 6,
+			c_fadeDurationMs = 0x03e8,
+			c_curseDurationMs = 0x2710,
+			c_activeDurationMs = 0x3a98,
+			c_soundLoop = 0x09,
 			c_racerFlags0xd04Bit11 = 1 << 11,
 		};
 
@@ -770,26 +767,26 @@ public:
 		void AdvanceState() override;                                  // vtable+0x14
 		void Deactivate() override;                                    // vtable+0x1c
 		void OnHitRacer(RaceState::Racer* p_racer) override;           // vtable+0x20
-		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_unk0x08, RacePowerupManager* p_unk0x0c);
-		void FUN_004524f0();
-		void FUN_00452510();
+		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_curseModel, RacePowerupManager* p_unk0x0c);
+		void Reset();
+		void Destroy();
 		void Activate(
 			RaceState::Racer* p_racer,
-			GolAnimatedEntity* p_unk0x08,
-			GolAnimatedEntity* p_unk0x0c,
-			GolAnimatedEntity* p_unk0x10,
+			GolAnimatedEntity* p_curseModel,
+			GolAnimatedEntity* p_auraModel,
+			GolAnimatedEntity* p_innerAuraModel,
 			ActionTarget* p_unk0x14
 		);
 
 	private:
-		RacePowerupManager* m_unk0x2c; // 0x2c
-		GolAnimatedEntity* m_unk0x30;  // 0x30
-		GolAnimatedEntity* m_unk0x34;  // 0x34
-		GolAnimatedEntity* m_unk0x38;  // 0x38
-		GolWorldEntity m_unk0x3c;      // 0x3c
+		RacePowerupManager* m_manager;        // 0x2c
+		GolAnimatedEntity* m_curseEntity;     // 0x30
+		GolAnimatedEntity* m_auraEntity;      // 0x34
+		GolAnimatedEntity* m_innerAuraEntity; // 0x38
+		GolWorldEntity m_worldEntity;         // 0x3c
 		union {
-			SpatialSoundInstance* m_unk0x64;                  // 0x64
-			RaceResourceManager::Resource* m_soundResource64; // 0x64
+			SpatialSoundInstance* m_sound;                  // 0x64
+			RaceResourceManager::Resource* m_soundResource; // 0x64
 		};
 	};
 

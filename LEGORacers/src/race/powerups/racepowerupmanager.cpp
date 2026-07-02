@@ -998,7 +998,7 @@ void RacePowerupManager::FUN_004590f0()
 		do {
 			m_dynamiteActions[i].SetNext(&m_dynamiteActions[i + 1]);
 			m_dynamiteActions[i]
-				.Initialize(m_raceState, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
+				.Initialize(m_raceState, m_unk0x068, this, m_cutsceneAnimation0x040, m_unk0x05c->FindUnk0xb4("barrel"));
 			m_dynamiteActions[i].SetSoundSource(m_soundSource);
 			i++;
 		} while (i < m_actionPoolCounts[2] - 1);
@@ -1006,7 +1006,7 @@ void RacePowerupManager::FUN_004590f0()
 
 	m_dynamiteActions[m_actionPoolCounts[2] - 1].SetNext(NULL);
 	m_dynamiteActions[m_actionPoolCounts[2] - 1]
-		.Initialize(m_raceState, m_unk0x068, this, m_unk0x040, m_unk0x05c->FindUnk0xb4("barrel"));
+		.Initialize(m_raceState, m_unk0x068, this, m_cutsceneAnimation0x040, m_unk0x05c->FindUnk0xb4("barrel"));
 	m_dynamiteActions[m_actionPoolCounts[2] - 1].SetSoundSource(m_soundSource);
 	m_freeDynamiteActions = m_dynamiteActions;
 
@@ -1348,7 +1348,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[3]; i++) {
-			m_curseActions[i].FUN_00452510();
+			m_curseActions[i].Destroy();
 		}
 
 		if (m_curseActions != NULL) {
@@ -1361,7 +1361,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[2]; i++) {
-			m_dynamiteActions[i].FUN_00452eb0();
+			m_dynamiteActions[i].Destroy();
 		}
 
 		if (m_dynamiteActions != NULL) {

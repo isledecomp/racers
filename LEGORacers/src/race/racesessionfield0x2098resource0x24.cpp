@@ -45,13 +45,13 @@ void RaceSession::Field0x2098::Resource0x24::VTable0x00(RaceState::Racer* p_race
 {
 	switch (m_unk0x20) {
 	case 0:
-		p_racer->FUN_00439b70();
+		p_racer->EnterOpenTrack();
 		break;
 	case 1:
-		p_racer->FUN_00439ba0();
+		p_racer->CrossFinishLine();
 		break;
 	case 2:
-		p_racer->FUN_00439c40();
+		p_racer->EnterPostLineZone();
 		break;
 	default:
 		break;

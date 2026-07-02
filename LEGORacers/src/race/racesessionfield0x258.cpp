@@ -362,7 +362,7 @@ void RaceSession::Field0x258::FUN_00430620(LegoBool32 p_enabled)
 void RaceSession::Field0x258::FUN_00430650(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
-		m_unk0x000->FUN_0043a390();
+		m_unk0x000->CycleCameraView();
 		m_unk0x004.m_unk0x058 |= 0x20;
 	}
 	else {

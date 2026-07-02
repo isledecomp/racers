@@ -313,13 +313,13 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	m_manager->m_turbo3Database->FUN_00416040();
 
 	racerField->SnapVisuals();
-	if (m_racer->m_unk0xdb8 != c_stateActive) {
+	if (m_racer->m_cameraViewIndex != c_stateActive) {
 		racerField->Draw(p_renderer);
 	}
 
 	entity->VTable0x08(savedPosition);
 	entity->VTable0x3c(savedOrientation);
-	m_racer->FUN_0043a3e0();
+	m_racer->InvalidateCamera();
 	animationList->Draw(p_renderer);
 	racerField->HideModels();
 
@@ -457,7 +457,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			racerPhysics->m_unk0x008.m_z = up.m_z;
 			m_racer->m_unk0x3e8.VTable0x20(&direction, g_warpLaunchSpeed);
 			m_racer->m_unk0x3e8.FUN_00446fa0();
-			m_racer->FUN_0043a3e0();
+			m_racer->InvalidateCamera();
 
 			if (!m_isDemoRacer) {
 				m_soundSource->PlaySoundById(c_soundFinish);

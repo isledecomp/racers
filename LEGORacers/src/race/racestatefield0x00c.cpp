@@ -264,7 +264,7 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 	}
 
 	LegoS32 result = 0;
-	LegoU32 lapCount = m_unk0x284.m_lapCount;
+	LegoU32 lapCount = m_setup.m_lapCount;
 	if (lapsCompleted > lapCount) {
 		lapsCompleted = lapCount;
 	}
@@ -304,7 +304,7 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 // STUB: LEGORACERS 0x0043cf30
 void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::StandingsDeltaEntry* p_entries)
 {
-	LegoU32 lapCount = m_unk0x284.m_lapCount;
+	LegoU32 lapCount = m_setup.m_lapCount;
 	LegoS32 racerTime = 0;
 
 	if (lapCount > p_racer->m_lapsCompleted) {
@@ -346,9 +346,9 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::Standings
 			if (otherRacer == p_racer) {
 				entry->m_delta = 0;
 			}
-			else if (otherRacer->m_lapsCompleted >= m_unk0x284.m_lapCount) {
+			else if (otherRacer->m_lapsCompleted >= m_setup.m_lapCount) {
 				LegoS32 otherTime = 0;
-				LegoU32 remaining = m_unk0x284.m_lapCount;
+				LegoU32 remaining = m_setup.m_lapCount;
 
 				if (remaining) {
 					LegoU32* lapTime = otherRacer->m_lapTimes;

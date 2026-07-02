@@ -94,7 +94,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->RemoveCurse();
 		racer->EndMagnetHold();
 		racer->EndDrift();
-		racer->FUN_0043a210(racerIndex + 1);
+		racer->SetStandingsPosition(racerIndex + 1);
 
 		if (racer->m_unk0xd04 & RaceState::Racer::c_flags0xd04Bit21) {
 			racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
@@ -130,7 +130,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->m_unk0x018.m_carEntity->VTable0x08(position);
 		racer->m_unk0x018.m_carEntity->VTable0x40(direction, up);
 		field->SnapVisuals();
-		racer->FUN_0043a3e0();
+		racer->InvalidateCamera();
 
 		if (!m_context->m_playerSetupSlots[racerIndex].m_unk0x10) {
 			racer->m_controlMode = 0;

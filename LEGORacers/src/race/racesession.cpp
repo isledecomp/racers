@@ -464,7 +464,7 @@ void RaceSession::Run()
 
 	RaceState::Racer* field = m_raceState.GetUnk0x318();
 	if (field) {
-		m_context->m_unk0x398 = field->m_unk0xdb8;
+		m_context->m_unk0x398 = field->m_cameraViewIndex;
 	}
 
 	if (m_context->m_running && m_timeRaceManager) {
@@ -1069,7 +1069,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 			cameraController->FUN_00428230(racer);
 			racer->InitializeSounds(cameraController, FALSE);
-			racer->FUN_0043a300(m_context->m_unk0x398, m_unk0x3354);
+			racer->SetCameraView(m_context->m_unk0x398, m_unk0x3354);
 			cameraController->FUN_00428540(1.0f);
 			cameraController->FUN_004283d0(0);
 			cameraController->FUN_00428390(&m_unk0x1f8);
@@ -1740,7 +1740,7 @@ void RaceSession::FUN_004349a0()
 				RaceForceFeedback* field0x340 = m_unk0x340;
 				RaceState::Racer** racer = m_raceState.m_unk0x318;
 				do {
-					(*racer)->FUN_0043a360();
+					(*racer)->ReapplyCameraView();
 					if (!m_unk0x335c) {
 						cobaltTrail->FUN_00426360();
 					}
@@ -1852,7 +1852,7 @@ void RaceSession::FUN_00434c80()
 				}
 
 				m_unk0x3330++;
-				racer->FUN_0043a210(m_unk0x3330);
+				racer->SetStandingsPosition(m_unk0x3330);
 
 				if (racer->m_controlMode != 2 || (m_unk0x3350 && racerIndex == 0)) {
 					LegoU32 playerIndex = 0;
@@ -1948,7 +1948,7 @@ void RaceSession::FUN_00434eb0()
 					}
 
 					m_unk0x3330++;
-					racer->FUN_0043a210(m_unk0x3330);
+					racer->SetStandingsPosition(m_unk0x3330);
 				}
 
 				m_context->m_playerSetupSlots[i].m_unk0x5a[0] = (LegoU8) racer->m_lapTimes[5];
@@ -1973,7 +1973,7 @@ void RaceSession::FUN_00434eb0()
 				}
 
 				m_unk0x3330++;
-				racer->FUN_0043a210(m_unk0x3330);
+				racer->SetStandingsPosition(m_unk0x3330);
 
 				if (racer->m_controlMode != 2) {
 					LegoU32 playerIndex = 0;
@@ -1997,7 +1997,7 @@ void RaceSession::FUN_00434eb0()
 
 			if ((racer->m_unk0xd04 & 0x1000) && racer->m_cameraController &&
 				!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000) &&
-				racer->m_unk0xdb8 != 4 && !m_unk0x335c) {
+				racer->m_cameraViewIndex != 4 && !m_unk0x335c) {
 				racer->m_cameraController->FUN_004283f0(4, m_unk0x3354);
 			}
 
@@ -2757,7 +2757,7 @@ void RaceSession::FUN_004362e0()
 {
 	RaceState::Racer* racer = m_raceState.GetUnk0x318();
 	if (racer) {
-		m_context->m_unk0x398 = racer->m_unk0xdb8;
+		m_context->m_unk0x398 = racer->m_cameraViewIndex;
 	}
 
 	m_unk0x30c4.FUN_0043a6e0();
@@ -2773,7 +2773,7 @@ void RaceSession::FUN_004362e0()
 
 			m_unk0x258[playerIndex].FUN_00430100();
 			m_unk0x340[playerIndex].FUN_00422150();
-			m_raceState.m_unk0x318[playerIndex]->FUN_0043a300(m_context->m_unk0x398, m_unk0x3354);
+			m_raceState.m_unk0x318[playerIndex]->SetCameraView(m_context->m_unk0x398, m_unk0x3354);
 			field0x2ad4->FUN_00428540(1.0f);
 			field0x2ad4->FUN_004283d0(0);
 			field0x2ad4->FUN_00428390(&m_unk0x1f8);

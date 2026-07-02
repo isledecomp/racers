@@ -1055,23 +1055,23 @@ public:
 		void SwitchToAiControl();
 		void StartMagnetHold();
 		void EndMagnetHold();
-		void FUN_0043a210(LegoU32 p_unk0x04);
+		void SetStandingsPosition(LegoU32 p_position);
 		void AbsorbShieldHit();
-		void FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08);
-		void FUN_0043a360();
-		void FUN_0043a390();
+		void SetCameraView(LegoU32 p_viewIndex, LegoBool32 p_flag);
+		void ReapplyCameraView();
+		void CycleCameraView();
 		void InitializeSounds(RaceCameraController* p_cameraController, LegoBool32 p_controlMode);
 		LegoU32 StartShield(LegoU32 p_unk0x04);
 		void EndDrift();
 		void AttachCurse(GolAnimatedEntity* p_unk0x04, LegoU32 p_durationMs);
 		void RemoveCurse();
-		void FUN_00439b70();
-		LegoU32 FUN_00439ba0();
-		void FUN_00439c40();
+		void EnterOpenTrack();
+		LegoU32 CrossFinishLine();
+		void EnterPostLineZone();
 		void ComputeStandingsDeltas(Records::StandingsDeltaEntry* p_entries);
 		void SetLookTarget(GolVec3* p_position);
 		void ClearLookTarget();
-		void FUN_0043a3e0();
+		void InvalidateCamera();
 		void FUN_0043a3f0();
 		void FUN_0043a400();
 
@@ -1129,8 +1129,8 @@ public:
 
 		void ApplyShove(GolVec3* p_impulse);
 		void AiConsiderPowerup();
-		void FUN_00439c90();
-		void FUN_00439cf0(LegoU32 p_elapsedMs);
+		void PlayTaunt();
+		void UpdateFacing(LegoU32 p_elapsedMs);
 		void UpdateLookTarget(LegoU32 p_elapsedMs);
 		void OnCheckpointCrossed(CheckpointGraph::Entry* p_entry, GolBoundingVolume::Field0x0c* p_record);
 
@@ -1159,9 +1159,9 @@ public:
 		LegoU32 m_lapTimes[0x18 / 4];         // 0xcec
 		LegoU32 m_unk0xd04;                   // 0xd04
 		LegoU32 m_controlMode;                // 0xd08
-		LegoU32 m_unk0xd0c;                   // 0xd0c
-		LegoU32 m_unk0xd10;                   // 0xd10
-		LegoU32 m_unk0xd14;                   // 0xd14
+		LegoU32 m_currentZone;                // 0xd0c
+		LegoU32 m_previousZone;               // 0xd10
+		LegoU32 m_zoneBeforePrevious;         // 0xd14
 		LegoS32 m_checkpointCount;            // 0xd18
 		LegoU8 m_aiRedUseChance;              // 0xd1c
 		LegoU8 m_aiYellowUseChance;           // 0xd1d
@@ -1170,7 +1170,7 @@ public:
 		LegoU8 m_unk0xd20;                    // 0xd20
 		LegoU8 m_unk0xd21;                    // 0xd21
 		LegoU8 m_unk0xd22;                    // 0xd22
-		LegoU8 m_unk0xd23;                    // 0xd23
+		LegoU8 m_tauntSoundId;                // 0xd23
 		LegoU32 m_activeEngineSound;          // 0xd24
 		LegoFloat m_engineIdleVolume;         // 0xd28
 		LegoFloat m_engineDriveVolume;        // 0xd2c
@@ -1189,7 +1189,7 @@ public:
 		LegoU32 m_turboLevel;                 // 0xd68
 		LegoU32 m_shieldLevel;                // 0xd6c
 		undefined4 m_shoveReleaseAction;      // 0xd70
-		undefined4 m_unk0xd74;                // 0xd74
+		undefined4 m_shieldHitCooldownMs;     // 0xd74
 		LegoU32 m_facingForwardMs;            // 0xd78
 		undefined4 m_curseTimerMs;            // 0xd7c
 		LegoU32 m_curseTickMs;                // 0xd80
@@ -1238,7 +1238,7 @@ public:
 		};
 		undefined4 m_unk0xdb0;                    // 0xdb0
 		RaceCameraController* m_cameraController; // 0xdb4
-		LegoU32 m_unk0xdb8;                       // 0xdb8
+		LegoU32 m_cameraViewIndex;                // 0xdb8
 		LegoU16 m_unk0xdbc;                       // 0xdbc
 		undefined m_unk0xdbe[0xdec - 0xdbe];      // 0xdbe
 		GolString m_displayName;                  // 0xdec
@@ -1319,10 +1319,10 @@ public:
 	};
 
 	// SIZE 0x1c
-	class Field0x284 {
+	class RaceSetup {
 	public:
-		Field0x284();
-		~Field0x284();
+		RaceSetup();
+		~RaceSetup();
 
 	private:
 		friend class RaceState;
@@ -1334,8 +1334,8 @@ public:
 
 		void Reset();
 		void Destroy();
-		void FUN_0043a450(Racer* p_racers, LegoU32 p_racerCount);
-		LegoU32 FUN_0043a480(LegoU32 p_elapsedMs);
+		void Initialize(Racer* p_racers, LegoU32 p_racerCount);
+		LegoU32 Update(LegoU32 p_elapsedMs);
 
 		Racer* m_racers;                  // 0x00
 		LegoU32 m_racerCount;             // 0x04
@@ -1357,7 +1357,7 @@ public:
 	Racer* GetRacer(LegoU32 p_index) { return &m_unk0x0f0.m_racers[p_index]; }
 	LegoU32 GetRacerCount() const { return m_unk0x0f0.m_racerCount; }
 	Racer* GetCurrentRacer() { return m_unk0x0f0.m_racer080; }
-	GolMaterialLibrary* GetMaterialLibrary() const { return m_unk0x284.m_unk0x14; }
+	GolMaterialLibrary* GetMaterialLibrary() const { return m_setup.m_unk0x14; }
 	Racer* GetUnk0x318() { return m_unk0x318[0]; }
 	Racer::Records::Entry* FindNearestRouteRecord(Racer* p_racer);
 	Racer* FindRacerInCone(
@@ -1465,7 +1465,7 @@ private:
 	void FUN_0043ccb0();
 	void FUN_0043cd30(GolRenderDevice* p_renderer, Racer* p_racer);
 	void SetUnk0x080(Racer* p_racer) { m_unk0x0f0.m_racer080 = p_racer; }
-	void SetUnk0x284Unk0x0c(LegoFloat p_unk0x0c) { m_unk0x284.m_unk0x0c = p_unk0x0c; }
+	void SetUnk0x284Unk0x0c(LegoFloat p_unk0x0c) { m_setup.m_unk0x0c = p_unk0x0c; }
 	void Reset();
 	void Destroy();
 
@@ -1473,7 +1473,7 @@ private:
 	ChampionDefinitionList m_unk0x080;              // 0x080
 	ChassisModelTable m_unk0x0b4;                   // 0x0b4
 	Field0x0f0 m_unk0x0f0;                          // 0x0f0
-	Field0x284 m_unk0x284;                          // 0x284
+	RaceSetup m_setup;                              // 0x284
 	Racer::Physics::RouteCursorInstance m_unk0x2a0; // 0x2a0
 	Racer* m_unk0x318[2];                           // 0x318
 };

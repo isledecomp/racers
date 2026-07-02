@@ -16,7 +16,7 @@ public:
 	void SetColor(VisualStateColor*) override;   // vtable+0x14
 	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 
-	LegoBool32 FUN_004735a0(CreateParams* p_createParams);
+	LegoBool32 Create(CreateParams* p_createParams);
 	void SetAlphaOverride(LegoU32 p_alphaOverride) { m_alphaOverride = p_alphaOverride; }
 
 	// SYNTHETIC: LEGORACERS 0x004734f0

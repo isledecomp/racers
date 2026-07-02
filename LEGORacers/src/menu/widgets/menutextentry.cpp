@@ -19,7 +19,7 @@ MenuTextEntry::~MenuTextEntry()
 }
 
 // FUNCTION: LEGORACERS 0x00471930
-void MenuTextEntry::FUN_00471930(CreateParams*)
+void MenuTextEntry::Create(CreateParams*)
 {
 	GolString localStr;
 	undefined2 buf[2];
@@ -40,12 +40,12 @@ void MenuTextEntry::FUN_00471930(CreateParams*)
 		}
 	}
 
-	m_unk0x23c.FUN_00468000(maxWidth);
-	m_unk0x23c.FUN_00468040(4);
+	m_caret.SetWidth(maxWidth);
+	m_caret.SetHeight(4);
 }
 
 // FUNCTION: LEGORACERS 0x00471a30
-void MenuTextEntry::FUN_00471a30()
+void MenuTextEntry::UpdateCaret()
 {
 	if (m_unk0x1f8 == 4) {
 		m_text.SetCursorEnd(m_text.SelectionLength() - 1);
@@ -56,7 +56,7 @@ void MenuTextEntry::FUN_00471a30()
 	m_font->MeasureString(&m_text, &width, &height);
 
 	m_text.FirstLine();
-	m_unk0x23c.FUN_00467fc0(m_rect.m_left + width, m_rect.m_bottom - 6);
+	m_caret.SetPosition(m_rect.m_left + width, m_rect.m_bottom - 6);
 }
 
 // FUNCTION: LEGORACERS 0x00471aa0
@@ -74,7 +74,7 @@ LegoBool32 MenuTextEntry::FUN_00471aa0(CreateParams* p_createParams)
 	createParams.m_unk0x40 = 1000;
 	createParams.m_unk0x22.m_unk0x00 = -1;
 
-	return m_unk0x23c.FUN_00467f70(&createParams);
+	return m_caret.Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x00471b20
@@ -84,7 +84,7 @@ LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIco
 
 	if (MenuTextField::VTable0x70(p_createParams, p_createState)) {
 		if (FUN_00471aa0(p_createParams)) {
-			FUN_00471930(p_createParams);
+			Create(p_createParams);
 		}
 		else {
 			Destroy();
@@ -98,22 +98,22 @@ LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIco
 MenuWidget* MenuTextEntry::DrawSelf(Rect* p_param1, Rect* p_param2)
 {
 	MenuWidget* result = MenuTextField::DrawSelf(p_param1, p_param2);
-	FUN_00471a30();
+	UpdateCaret();
 
 	if (m_stateFlags & 2) {
-		if (m_unk0x23c.GetParent() != MenuWidget::m_parent) {
-			m_unk0x23c.SetParent(MenuWidget::m_parent);
+		if (m_caret.GetParent() != MenuWidget::m_parent) {
+			m_caret.SetParent(MenuWidget::m_parent);
 		}
 
 		if (m_length == m_maxLength) {
-			m_unk0x23c.ClearFlags(2);
+			m_caret.ClearFlags(2);
 		}
 		else {
-			m_unk0x23c.SetFlags(2);
+			m_caret.SetFlags(2);
 		}
 	}
 	else {
-		m_unk0x23c.RemoveFromParent();
+		m_caret.RemoveFromParent();
 	}
 
 	return result;
@@ -123,7 +123,7 @@ MenuWidget* MenuTextEntry::DrawSelf(Rect* p_param1, Rect* p_param2)
 MenuWidget* MenuTextEntry::OnKeyDown(InputEventQueue::Event* p_param1, undefined4 p_param2, undefined4 p_param3)
 {
 	MenuWidget* result = MenuTextField::OnKeyDown(p_param1, p_param2, p_param3);
-	FUN_00471a30();
+	UpdateCaret();
 
 	return result;
 }

@@ -25,10 +25,10 @@ public:
 	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 	undefined4 OnEvent(undefined4) override;     // vtable+0x3c
 
-	LegoBool32 FUN_00467f70(CreateParams* p_createParams);
-	void FUN_00467fc0(LegoS32 p_x, LegoS32 p_y);
-	void FUN_00468000(LegoS32 p_width);
-	void FUN_00468040(LegoS32 p_height);
+	LegoBool32 Create(CreateParams* p_createParams);
+	void SetPosition(LegoS32 p_x, LegoS32 p_y);
+	void SetWidth(LegoS32 p_width);
+	void SetHeight(LegoS32 p_height);
 
 	// SYNTHETIC: LEGORACERS 0x00467ec0
 	// MenuColorBox::`scalar deleting destructor'
@@ -39,8 +39,8 @@ protected:
 	undefined4 m_unk0xac; // 0xac
 	undefined4 m_unk0xb0; // 0xb0
 	undefined4 m_unk0xb4; // 0xb4
-	undefined4 m_unk0xb8; // 0xb8
-	undefined4 m_unk0xbc; // 0xbc
+	undefined4 m_width;   // 0xb8
+	undefined4 m_height;  // 0xbc
 };
 
 #endif // MENUCOLORBOX_H

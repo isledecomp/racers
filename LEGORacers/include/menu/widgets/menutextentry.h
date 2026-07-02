@@ -18,22 +18,22 @@ public:
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*) override;     // vtable+0x70
 
-	undefined2* GetUnk0x300() { return m_unk0x300; }
-	DriverCosmetics* GetUnk0x328() { return &m_unk0x328; }
+	undefined2* GetBuffer() { return m_buffer; }
+	DriverCosmetics* GetCosmetics() { return &m_cosmetics; }
 
 	// SYNTHETIC: LEGORACERS 0x004718b0
 	// MenuTextEntry::`scalar deleting destructor'
 
 protected:
-	void FUN_00471930(CreateParams* p_createParams);
-	void FUN_00471a30();
+	void Create(CreateParams* p_createParams);
+	void UpdateCaret();
 	LegoBool32 FUN_00471aa0(CreateParams* p_createParams);
 
-	MenuColorBox m_unk0x23c;             // 0x23c
+	MenuColorBox m_caret;                // 0x23c
 	undefined m_unk0x2fc[0x300 - 0x2fc]; // 0x2fc
-	undefined2 m_unk0x300[15];           // 0x300
+	undefined2 m_buffer[15];             // 0x300
 	undefined m_unk0x31e[0x328 - 0x31e]; // 0x31e
-	DriverCosmetics m_unk0x328;          // 0x328
+	DriverCosmetics m_cosmetics;         // 0x328
 	undefined m_unk0x32d[0x330 - 0x32d]; // 0x32d
 };
 

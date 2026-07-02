@@ -27,7 +27,7 @@ LegoBool32 MenuFramedSceneView::FUN_00466180(CreateParams* p_createParams)
 	createParams.m_rect = p_createParams->m_rect;
 	createParams.m_parent = p_createParams->m_parent;
 
-	return m_unk0xdc.FUN_0046ecd0(&createParams);
+	return m_unk0xdc.Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x004661f0
@@ -39,10 +39,10 @@ LegoBool32 MenuFramedSceneView::FUN_004661f0(CreateParams* p_createParams, undef
 		p_createParams->m_rect.m_left = 0;
 		p_createParams->m_rect.m_top = 0;
 		p_createParams->m_rect.m_right =
-			m_unk0xdc.GetUnk0x58()->GetRect()->m_right - m_unk0xdc.GetUnk0x58()->GetRect()->m_left;
+			m_unk0xdc.GetFill()->GetRect()->m_right - m_unk0xdc.GetFill()->GetRect()->m_left;
 		p_createParams->m_rect.m_bottom =
-			m_unk0xdc.GetUnk0x58()->GetRect()->m_bottom - m_unk0xdc.GetUnk0x58()->GetRect()->m_top;
-		p_createParams->m_parent = m_unk0xdc.GetUnk0x58();
+			m_unk0xdc.GetFill()->GetRect()->m_bottom - m_unk0xdc.GetFill()->GetRect()->m_top;
+		p_createParams->m_parent = m_unk0xdc.GetFill();
 
 		return MenuSceneView::Create(p_createParams, p_unk0x08);
 	}

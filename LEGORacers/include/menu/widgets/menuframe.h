@@ -17,9 +17,9 @@ public:
 	// SIZE 0x60
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		UtopianPan0xa4* m_images[8]; // 0x38
-		VisualStateColor m_unk0x58;  // 0x58
-		LegoBool32 m_unk0x5c;        // 0x5c
+		UtopianPan0xa4* m_images[8];  // 0x38
+		VisualStateColor m_fillColor; // 0x58
+		LegoBool32 m_hasFillColor;    // 0x5c
 	};
 
 	MenuFrame();
@@ -29,9 +29,9 @@ public:
 	// SYNTHETIC: LEGORACERS 0x0046ec30
 	// MenuFrame::`scalar deleting destructor'
 
-	LegoBool32 FUN_0046ecd0(CreateParams* p_createParams);
-	void FUN_0046f050(VisualStateColor* p_visualState);
-	MenuTriangle* GetUnk0x58() { return &m_unk0x58; }
+	LegoBool32 Create(CreateParams* p_createParams);
+	void SetBorderColors(VisualStateColor* p_visualState);
+	MenuTriangle* GetFill() { return &m_fill; }
 
 	// SIZE 0x38
 	class CreateParamsPrefix : public MenuWidget::CreateParams {
@@ -39,12 +39,12 @@ public:
 	};
 
 private:
-	LegoBool32 FUN_0046ed30(CreateParams* p_createParams);
-	LegoBool32 FUN_0046edf0(CreateParams* p_createParams);
+	LegoBool32 CreateFill(CreateParams* p_createParams);
+	LegoBool32 CreateBorder(CreateParams* p_createParams);
 
 protected:
-	MenuTriangle m_unk0x58;      // 0x058
-	MenuImage m_unk0xfc[8];      // 0x0fc
+	MenuTriangle m_fill;         // 0x058
+	MenuImage m_borderImages[8]; // 0x0fc
 	UtopianPan0xa4* m_images[8]; // 0x3dc
 };
 

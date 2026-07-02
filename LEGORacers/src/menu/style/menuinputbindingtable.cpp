@@ -399,7 +399,7 @@ void MenuInputBindingTable::ParseTextLabelBinding(TextLabelBinding* p_entry)
 // FUNCTION: LEGORACERS 0x00469ee0
 void MenuInputBindingTable::ParseFrameBinding(FrameBinding* p_entry)
 {
-	p_entry->m_unk0x5c = TRUE;
+	p_entry->m_hasFillColor = TRUE;
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -411,7 +411,7 @@ void MenuInputBindingTable::ParseFrameBinding(FrameBinding* p_entry)
 			ParseWidgetBase(p_entry);
 			break;
 		case GolFileParser::e_unknown0x33:
-			p_entry->m_unk0x5c = m_parser->ReadInteger();
+			p_entry->m_hasFillColor = m_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 8; i++) {
@@ -421,7 +421,7 @@ void MenuInputBindingTable::ParseFrameBinding(FrameBinding* p_entry)
 		}
 		case GolFileParser::e_unknown0x2a:
 			ReadVisualState(p_entry->m_unk0x22.m_bytes);
-			ReadVisualState(p_entry->m_unk0x58.m_bytes);
+			ReadVisualState(p_entry->m_fillColor.m_bytes);
 			p_entry->m_flags |= 2;
 			break;
 		default:

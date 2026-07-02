@@ -183,5 +183,5 @@ void SingleRaceSelectBase::FUN_00488b40(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x00488cb0
 void SingleRaceSelectBase::FUN_00488cb0(LegoS32 p_index)
 {
-	m_unk0x758.FUN_0046f050(&g_singleRaceVisualStates[g_singleRaceVisualStateMap[p_index]]);
+	m_unk0x758.SetBorderColors(&g_singleRaceVisualStates[g_singleRaceVisualStateMap[p_index]]);
 }

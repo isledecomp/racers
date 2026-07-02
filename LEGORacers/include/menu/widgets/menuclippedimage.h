@@ -19,10 +19,10 @@ public:
 	// MenuClippedImage::`scalar deleting destructor'
 
 protected:
-	void FUN_0046f2c0(Rect* p_rect);
+	void ClipToRect(Rect* p_rect);
 
-	Rect m_unk0x5c; // 0x5c
-	Rect m_unk0x6c; // 0x6c
+	Rect m_sourceRect;  // 0x5c
+	Rect m_clippedRect; // 0x6c
 };
 
 #endif // MENUCLIPPEDIMAGE_H

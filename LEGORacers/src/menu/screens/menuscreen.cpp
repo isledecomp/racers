@@ -426,7 +426,7 @@ void MenuScreen::ApplySelectorDefaults(
 	} while (--count);
 
 	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_frameStyle->m_hasColors) {
-		p_createParams->m_unk0x8c->m_unk0x58 = p_styleEntry->m_frameStyle->m_color1;
+		p_createParams->m_unk0x8c->m_fillColor = p_styleEntry->m_frameStyle->m_color1;
 	}
 }
 
@@ -500,7 +500,7 @@ LegoBool32 MenuScreen::CreateTriangle(MenuTriangle* p_unk0x04, undefined2 p_unk0
 	MenuInputBindingTable::RegionBinding createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	return p_unk0x04->FUN_004735a0(&createParams);
+	return p_unk0x04->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bef0
@@ -587,10 +587,10 @@ LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_unk0x04, undefined2 p_unk0x08, u
 
 	if (!(sourceParams->m_flags & 2) && styleEntry->m_hasColors) {
 		createParams.m_unk0x22 = styleEntry->m_color0;
-		createParams.m_unk0x58 = styleEntry->m_color1;
+		createParams.m_fillColor = styleEntry->m_color1;
 	}
 
-	return p_unk0x04->FUN_0046ecd0(&createParams);
+	return p_unk0x04->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046c110

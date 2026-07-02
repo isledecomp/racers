@@ -21,13 +21,13 @@ MenuFrame::~MenuFrame()
 }
 
 // FUNCTION: LEGORACERS 0x0046ecd0
-LegoBool32 MenuFrame::FUN_0046ecd0(CreateParams* p_createParams)
+LegoBool32 MenuFrame::Create(CreateParams* p_createParams)
 {
 	Destroy();
 
-	if (CreateWidget(p_createParams) && FUN_0046edf0(p_createParams) && FUN_0046ed30(p_createParams)) {
-		if (!p_createParams->m_unk0x5c) {
-			m_unk0x58.ClearFlags(0x10);
+	if (CreateWidget(p_createParams) && CreateBorder(p_createParams) && CreateFill(p_createParams)) {
+		if (!p_createParams->m_hasFillColor) {
+			m_fill.ClearFlags(0x10);
 		}
 
 		SetRect(&p_createParams->m_rect);
@@ -39,7 +39,7 @@ LegoBool32 MenuFrame::FUN_0046ecd0(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0046ed30
-LegoBool32 MenuFrame::FUN_0046ed30(CreateParams* p_createParams)
+LegoBool32 MenuFrame::CreateFill(CreateParams* p_createParams)
 {
 	MenuImage::CreateParams createParams;
 	::memset(&createParams, 0, sizeof(createParams));
@@ -55,7 +55,7 @@ LegoBool32 MenuFrame::FUN_0046ed30(CreateParams* p_createParams)
 		m_images[i] = image;
 		createParams.m_unk0x22 = p_createParams->m_unk0x22;
 
-		if (!m_unk0xfc[i].Create(&createParams)) {
+		if (!m_borderImages[i].Create(&createParams)) {
 			return FALSE;
 		}
 	}
@@ -64,16 +64,16 @@ LegoBool32 MenuFrame::FUN_0046ed30(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0046edf0
-LegoBool32 MenuFrame::FUN_0046edf0(CreateParams* p_createParams)
+LegoBool32 MenuFrame::CreateBorder(CreateParams* p_createParams)
 {
 	CreateParamsPrefix createParams;
 	::memcpy(&createParams, p_createParams, sizeof(createParams));
 	createParams.m_unk0x20 = 0x29a;
 	createParams.m_parent = this;
 	createParams.m_flags |= 1;
-	createParams.m_unk0x22 = p_createParams->m_unk0x58;
+	createParams.m_unk0x22 = p_createParams->m_fillColor;
 
-	return m_unk0x58.FUN_004735a0(&createParams);
+	return m_fill.Create(&createParams);
 }
 
 // STUB: LEGORACERS 0x0046ee40
@@ -104,9 +104,9 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect3.m_right = width;
 		rect3.m_bottom = m_images[0]->GetHeight();
 
-		m_unk0xfc[0].SetRect(&rect);
-		m_unk0xfc[1].SetRect(&rect2);
-		m_unk0xfc[2].SetRect(&rect3);
+		m_borderImages[0].SetRect(&rect);
+		m_borderImages[1].SetRect(&rect2);
+		m_borderImages[2].SetRect(&rect3);
 
 		rect2.m_left = width - m_images[3]->GetWidth();
 		rect2.m_top = m_images[0]->GetHeight();
@@ -118,8 +118,8 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect.m_right = width;
 		rect.m_bottom = height;
 
-		m_unk0xfc[3].SetRect(&rect2);
-		m_unk0xfc[4].SetRect(&rect);
+		m_borderImages[3].SetRect(&rect2);
+		m_borderImages[4].SetRect(&rect);
 
 		rect2.m_left = m_images[6]->GetWidth();
 		rect2.m_top = height - m_images[5]->GetHeight();
@@ -131,28 +131,28 @@ void MenuFrame::SetRect(Rect* p_rect)
 		rect3.m_right = m_images[6]->GetWidth();
 		rect3.m_bottom = height;
 
-		m_unk0xfc[5].SetRect(&rect2);
-		m_unk0xfc[6].SetRect(&rect3);
+		m_borderImages[5].SetRect(&rect2);
+		m_borderImages[6].SetRect(&rect3);
 
 		rect2.m_left = 0;
-		rect2.m_top = m_unk0xfc[0].GetRect()->m_bottom;
+		rect2.m_top = m_borderImages[0].GetRect()->m_bottom;
 		rect2.m_right = m_images[7]->GetWidth();
 		rect2.m_bottom = height - m_images[6]->GetHeight();
 
-		rect.m_left = m_unk0xfc[0].GetRect()->m_right;
-		rect.m_top = m_unk0xfc[0].GetRect()->m_bottom;
-		rect.m_right = m_unk0xfc[2].GetRect()->m_left;
-		rect.m_bottom = m_unk0xfc[6].GetRect()->m_top;
+		rect.m_left = m_borderImages[0].GetRect()->m_right;
+		rect.m_top = m_borderImages[0].GetRect()->m_bottom;
+		rect.m_right = m_borderImages[2].GetRect()->m_left;
+		rect.m_bottom = m_borderImages[6].GetRect()->m_top;
 
-		m_unk0xfc[7].SetRect(&rect2);
-		m_unk0x58.SetRect(&rect);
+		m_borderImages[7].SetRect(&rect2);
+		m_fill.SetRect(&rect);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046f050
-void MenuFrame::FUN_0046f050(VisualStateColor* p_visualState)
+void MenuFrame::SetBorderColors(VisualStateColor* p_visualState)
 {
 	for (LegoS32 i = 0; i < 8; i++) {
-		m_unk0xfc[i].SetColor(p_visualState);
+		m_borderImages[i].SetColor(p_visualState);
 	}
 }

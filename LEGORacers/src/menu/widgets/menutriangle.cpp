@@ -34,7 +34,7 @@ void MenuTriangle::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004735a0
-LegoBool32 MenuTriangle::FUN_004735a0(CreateParams* p_createParams)
+LegoBool32 MenuTriangle::Create(CreateParams* p_createParams)
 {
 	Destroy();
 	return CreateWidget(p_createParams);

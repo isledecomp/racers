@@ -768,7 +768,7 @@ void CarBuildScreen::FUN_00474940()
 	if (FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
 		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 1) {
-				m_unk0x374 = NULL;
+				m_hoverIcon = NULL;
 				m_unk0x37e0.Deselect(6);
 				m_unk0x35c4.Select(6);
 				m_unk0x2308.FUN_00479310();
@@ -778,7 +778,7 @@ void CarBuildScreen::FUN_00474940()
 
 		if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 2) {
-				m_unk0x374 = NULL;
+				m_hoverIcon = NULL;
 				m_unk0x35c4.Deselect(6);
 				m_unk0x37e0.Select(6);
 				m_unk0x2308.FUN_00479300();
@@ -790,10 +790,10 @@ void CarBuildScreen::FUN_00474940()
 	if ((m_unk0x35c4.GetStateFlags() & MenuIcon::c_flagBit1) || (m_unk0x37e0.GetStateFlags() & MenuIcon::c_flagBit1)) {
 		m_unk0x35c4.Deselect(7);
 		m_unk0x37e0.Deselect(7);
-		m_unk0x374 = NULL;
+		m_hoverIcon = NULL;
 		CarModelScreenBase::VTable0x78(0);
-		m_unk0x374 = m_unk0xd8.FindSelectedLeaf();
-		m_unk0x358 = m_unk0x374;
+		m_hoverIcon = m_unk0xd8.FindSelectedLeaf();
+		m_unk0x358 = m_hoverIcon;
 	}
 
 	m_unk0x2308.FUN_00479320();
@@ -822,18 +822,18 @@ LegoBool32 CarBuildScreen::VTable0x78(undefined4 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x00474b70
-GolString* CarBuildScreen::VTable0x98(undefined4 p_index)
+GolString* CarBuildScreen::GetHelpString(undefined4 p_index)
 {
 	if (!p_index) {
 		return NULL;
 	}
 
-	m_unk0x3c20.CopyStringByIndex(&m_unk0x3a8, g_carBuildTextIds[p_index]);
-	return &m_unk0x3a8;
+	m_unk0x3c20.CopyStringByIndex(&m_tooltipText, g_carBuildTextIds[p_index]);
+	return &m_tooltipText;
 }
 
 // FUNCTION: LEGORACERS 0x00474ba0
-GolFont* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
+GolFont* CarBuildScreen::GetHelpFont(undefined4 p_unk0x04)
 {
 	if (!p_unk0x04) {
 		return NULL;
@@ -845,7 +845,7 @@ GolFont* CarBuildScreen::VTable0x9c(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00474be0
-void CarBuildScreen::VTable0xa0(LegoS32*, LegoS32*, LegoS32* p_unk0x0c, LegoS32*)
+void CarBuildScreen::GetTooltipLayout(LegoS32*, LegoS32*, LegoS32* p_unk0x0c, LegoS32*)
 {
 	*p_unk0x0c = 0;
 }

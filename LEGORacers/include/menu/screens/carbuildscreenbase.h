@@ -31,35 +31,35 @@ public:
 	void Reset() override;                                                                           // vtable+0x54
 	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
 	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                    // vtable+0x7c
-	virtual GolString* VTable0x98(undefined4) = 0;                                                   // vtable+0x98
-	virtual GolFont* VTable0x9c(undefined4) = 0;                                                     // vtable+0x9c
-	virtual void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                             // vtable+0xa0
+	virtual GolString* GetHelpString(undefined4) = 0;                                                // vtable+0x98
+	virtual GolFont* GetHelpFont(undefined4) = 0;                                                    // vtable+0x9c
+	virtual void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                       // vtable+0xa0
 
 	// SYNTHETIC: LEGORACERS 0x00476ed0
 	// CarBuildScreenBase::`scalar deleting destructor'
 
 protected:
-	void FUN_00474e40();
-	void FUN_00474e70(MenuIcon* p_icon);
-	void FUN_00474ef0();
-	void FUN_00474f20();
+	void ResetTooltip();
+	void ShowTooltip(MenuIcon* p_icon);
+	void HideTooltip();
+	void SuppressTooltip();
 
-	LegoS32 m_unk0x368;    // 0x368
-	LegoS32 m_unk0x36c;    // 0x36c
-	LegoS32 m_unk0x370;    // 0x370
-	MenuIcon* m_unk0x374;  // 0x374
-	MenuIcon* m_unk0x378;  // 0x378
-	LegoU8 m_unk0x37c;     // 0x37c
-	LegoU8 m_unk0x37d;     // 0x37d
-	LegoU16 m_unk0x37e;    // 0x37e
-	Rect m_unk0x380;       // 0x380
-	LegoS32 m_unk0x390;    // 0x390
-	LegoS32 m_unk0x394;    // 0x394
-	LegoS32 m_unk0x398;    // 0x398
-	LegoS32 m_unk0x39c;    // 0x39c
-	GolString* m_unk0x3a0; // 0x3a0
-	GolFont* m_unk0x3a4;   // 0x3a4
-	GolString m_unk0x3a8;  // 0x3a8
+	LegoS32 m_hoverMs;            // 0x368
+	LegoS32 m_tooltipMs;          // 0x36c
+	LegoS32 m_quickShowMs;        // 0x370
+	MenuIcon* m_hoverIcon;        // 0x374
+	MenuIcon* m_tooltipIcon;      // 0x378
+	LegoU8 m_wasVisible;          // 0x37c
+	LegoU8 m_layoutDirty;         // 0x37d
+	LegoU16 m_tooltipStringId;    // 0x37e
+	Rect m_tooltipRect;           // 0x380
+	LegoS32 m_tooltipX;           // 0x390
+	LegoS32 m_tooltipY;           // 0x394
+	LegoS32 m_tooltipWrapWidth;   // 0x398
+	LegoS32 m_tooltipLineSpacing; // 0x39c
+	GolString* m_tooltipString;   // 0x3a0
+	GolFont* m_tooltipFont;       // 0x3a4
+	GolString m_tooltipText;      // 0x3a8
 };
 
 #endif // CARBUILDSCREENBASE_H

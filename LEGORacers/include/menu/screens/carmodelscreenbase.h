@@ -166,19 +166,19 @@ public:
 	void VTable0x80() override;                      // vtable+0x80
 	void VTable0x84() override;                      // vtable+0x84
 	LegoBool32 VTable0x8c(MenuGameContext*,
-						  MenuScreenCreateParams*) override;              // vtable+0x8c
-	GolString* VTable0x98(undefined4) override = 0;                       // vtable+0x98
-	GolFont* VTable0x9c(undefined4) override = 0;                         // vtable+0x9c
-	void VTable0xa0(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override = 0; // vtable+0xa0
-	virtual void VTable0xa4() = 0;                                        // vtable+0xa4
-	virtual void VTable0xa8() = 0;                                        // vtable+0xa8
-	virtual void VTable0xac() = 0;                                        // vtable+0xac
-	virtual void VTable0xb0() = 0;                                        // vtable+0xb0
-	virtual void VTable0xb4() = 0;                                        // vtable+0xb4
-	virtual void VTable0xb8() = 0;                                        // vtable+0xb8
-	virtual void VTable0xbc() = 0;                                        // vtable+0xbc
-	virtual void VTable0xc0() = 0;                                        // vtable+0xc0
-	virtual void VTable0xc4();                                            // vtable+0xc4
+						  MenuScreenCreateParams*) override;                    // vtable+0x8c
+	GolString* GetHelpString(undefined4) override = 0;                          // vtable+0x98
+	GolFont* GetHelpFont(undefined4) override = 0;                              // vtable+0x9c
+	void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override = 0; // vtable+0xa0
+	virtual void VTable0xa4() = 0;                                              // vtable+0xa4
+	virtual void VTable0xa8() = 0;                                              // vtable+0xa8
+	virtual void VTable0xac() = 0;                                              // vtable+0xac
+	virtual void VTable0xb0() = 0;                                              // vtable+0xb0
+	virtual void VTable0xb4() = 0;                                              // vtable+0xb4
+	virtual void VTable0xb8() = 0;                                              // vtable+0xb8
+	virtual void VTable0xbc() = 0;                                              // vtable+0xbc
+	virtual void VTable0xc0() = 0;                                              // vtable+0xc0
+	virtual void VTable0xc4();                                                  // vtable+0xc4
 
 	// SYNTHETIC: LEGORACERS 0x00476e60
 	// CarModelScreenBase::`scalar deleting destructor'

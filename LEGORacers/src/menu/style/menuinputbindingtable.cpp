@@ -285,7 +285,7 @@ void MenuInputBindingTable::ParseIconField(MenuIcon::CreateParams* p_entry)
 		p_entry->m_unk0x3c = m_parser->ReadInteger();
 		return;
 	case GolFileParser::e_unknown0x2c:
-		p_entry->m_unk0x40 = m_parser->ReadInteger();
+		p_entry->m_helpStringId = m_parser->ReadInteger();
 		return;
 	case GolFileParser::e_unknown0x2a: {
 		for (LegoS32 i = 0; i < 6; i++) {

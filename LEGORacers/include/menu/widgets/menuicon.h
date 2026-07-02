@@ -41,7 +41,7 @@ public:
 		LegoBool m_unk0x38;               // 0x38
 		undefined m_unk0x39[0x3c - 0x39]; // 0x39
 		undefined4 m_unk0x3c;             // 0x3c
-		undefined2 m_unk0x40;             // 0x40
+		undefined2 m_helpStringId;        // 0x40
 		undefined m_unk0x42[0x44 - 0x42]; // 0x42
 		MenuIcon* m_parent;               // 0x44
 		undefined2 m_unk0x48;             // 0x48
@@ -104,7 +104,7 @@ public:
 	void DetachFromParent();
 	MenuIcon* GetFirstChild() { return m_firstChild; }
 	LegoU8 GetStateFlags() const { return m_stateFlags; }
-	undefined2 GetUnk0x168() const { return m_unk0x168; }
+	undefined2 GetHelpStringId() const { return m_helpStringId; }
 	MenuIcon* FindSelectedLeaf();
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
@@ -139,7 +139,7 @@ protected:
 	LegoFloat m_rectLeftF;                  // 0x150
 	LegoFloat m_rectRightF;                 // 0x154
 	undefined4 m_unk0x158[4];               // 0x158
-	undefined2 m_unk0x168;                  // 0x168
+	undefined2 m_helpStringId;              // 0x168
 	SoundGroupBinding* m_soundGroupBinding; // 0x16c
 	MenuScreenInterface* m_eventHandler;    // 0x170
 	VisualStateColor m_stateColors[6];      // 0x174

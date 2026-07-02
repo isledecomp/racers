@@ -60,7 +60,7 @@ void MenuIcon::Reset()
 	m_transitionRemainingMs = 0;
 	m_unk0x1a4 = 0;
 	m_activeKeyCode = 0;
-	m_unk0x168 = 0;
+	m_helpStringId = 0;
 
 	::memset(m_unk0x158, 0, sizeof(m_unk0x158));
 	::memset(m_stateColors, 0xff, sizeof(m_stateColors));
@@ -88,7 +88,7 @@ void MenuIcon::InitializeFromParams(CreateParams* p_createParams, const CreateSt
 
 	m_eventHandler = p_createParams->m_unk0x80;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
-	m_unk0x168 = p_createParams->m_unk0x40;
+	m_helpStringId = p_createParams->m_helpStringId;
 	m_transitionDurationMs = p_createState->m_unk0x84;
 	SetIconEventHandler(p_createParams->m_unk0x80);
 }

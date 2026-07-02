@@ -66,24 +66,24 @@ public:
 		class Event {
 		public:
 			Event();
-			virtual ~Event();                                                    // vtable+0x00
-			virtual void VTable0x04(undefined4 p_elapsedMs);                     // vtable+0x04
-			virtual void VTable0x08(GolD3DRenderDevice* p_renderer);             // vtable+0x08
-			virtual void VTable0x0c(GolD3DRenderDevice* p_renderer);             // vtable+0x0c
-			virtual void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event); // vtable+0x10
-			virtual void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event); // vtable+0x14
+			virtual ~Event();                                               // vtable+0x00
+			virtual void Update(undefined4 p_elapsedMs);                    // vtable+0x04
+			virtual void Draw(GolD3DRenderDevice* p_renderer);              // vtable+0x08
+			virtual void DrawTransparent(GolD3DRenderDevice* p_renderer);   // vtable+0x0c
+			virtual void Begin(Frame* p_frame, CutsceneEventSink* p_event); // vtable+0x10
+			virtual void End(Frame* p_frame, CutsceneEventSink* p_event);   // vtable+0x14
 
 			void Reset();
 
 			// SYNTHETIC: LEGORACERS 0x00405540
 			// CutsceneDefinition::Frame::Event::`scalar deleting destructor'
 
-			GolName m_name;    // 0x04
-			LegoU32 m_unk0x0c; // 0x0c
-			LegoU32 m_unk0x10; // 0x10
-			LegoU32 m_unk0x14; // 0x14
-			Event* m_unk0x18;  // 0x18
-			Event* m_unk0x1c;  // 0x1c
+			GolName m_name;       // 0x04
+			LegoU32 m_startFrame; // 0x0c
+			LegoU32 m_endFrame;   // 0x10
+			LegoU32 m_active;     // 0x14
+			Event* m_prev;        // 0x18
+			Event* m_next;        // 0x1c
 		};
 
 		// VTABLE: LEGORACERS 0x004af308
@@ -113,47 +113,47 @@ public:
 
 			// SIZE 0x1c
 			struct Animation {
-				MabMaterialAnimation0x14* m_unk0x00;     // 0x00
-				MabMaterialAnimationItem0x18* m_unk0x04; // 0x04
-				LegoU32 m_unk0x08;                       // 0x08
-				LegoU32 m_unk0x0c;                       // 0x0c
-				LegoU32 m_unk0x10;                       // 0x10
-				LegoU32 m_unk0x14;                       // 0x14
-				LegoU32 m_unk0x18;                       // 0x18
+				MabMaterialAnimation0x14* m_materialAnimation; // 0x00
+				MabMaterialAnimationItem0x18* m_item;          // 0x04
+				LegoU32 m_resourceIndex;                       // 0x08
+				LegoU32 m_animationIndex;                      // 0x0c
+				LegoU32 m_itemIndex;                           // 0x10
+				LegoU32 m_startParam0x14;                      // 0x14
+				LegoU32 m_materialTableIndex;                  // 0x18
 			};
 
 			ModelEvent();
-			~ModelEvent() override;                                               // vtable+0x00
-			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
-			void VTable0x08(GolD3DRenderDevice* p_renderer) override;             // vtable+0x08
-			void VTable0x0c(GolD3DRenderDevice* p_renderer) override;             // vtable+0x0c
-			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
+			~ModelEvent() override;                                          // vtable+0x00
+			void Update(undefined4 p_elapsedMs) override;                    // vtable+0x04
+			void Draw(GolD3DRenderDevice* p_renderer) override;              // vtable+0x08
+			void DrawTransparent(GolD3DRenderDevice* p_renderer) override;   // vtable+0x0c
+			void Begin(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
 			LegoU32 Reset();
-			LegoU32 FUN_00404a10(CutsceneDefinition* p_parent, GolFileParser* p_parser);
-			void FUN_00404c90();
-			void FUN_00404e80();
-			GolWorldEntity* GetEntity() const { return m_unk0x24; }
-			void SetEntity(GolWorldEntity* p_entity) { m_unk0x24 = p_entity; }
-			LegoU32 GetAnimationCount() const { return m_unk0x5c; }
-			Animation* GetAnimation(LegoU32 p_index) const { return &m_unk0x60[p_index]; }
+			LegoU32 Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
+			void ResolveEntity();
+			void Destroy();
+			GolWorldEntity* GetEntity() const { return m_entity; }
+			void SetEntity(GolWorldEntity* p_entity) { m_entity = p_entity; }
+			LegoU32 GetAnimationCount() const { return m_animationCount; }
+			Animation* GetAnimation(LegoU32 p_index) const { return &m_animations[p_index]; }
 
 			// SYNTHETIC: LEGORACERS 0x00405df0
 			// CutsceneDefinition::Frame::ModelEvent::`vector deleting destructor'
 
 		private:
-			ModelRefType m_modelRefType;   // 0x20
-			GolWorldEntity* m_unk0x24;     // 0x24
-			CutsceneDefinition* m_unk0x28; // 0x28
-			ModelRef m_unk0x2c;            // 0x2c
-			GolVec3 m_unk0x34;             // 0x34
-			GolVec3 m_unk0x40;             // 0x40
-			GolVec3 m_unk0x4c;             // 0x4c
-			LegoS32 m_unk0x58;             // 0x58
-			LegoU32 m_unk0x5c;             // 0x5c
-			Animation* m_unk0x60;          // 0x60
-			LegoU32 m_unk0x64;             // 0x64
+			ModelRefType m_modelRefType;      // 0x20
+			GolWorldEntity* m_entity;         // 0x24
+			CutsceneDefinition* m_definition; // 0x28
+			ModelRef m_modelRef;              // 0x2c
+			GolVec3 m_location;               // 0x34
+			GolVec3 m_direction;              // 0x40
+			GolVec3 m_up;                     // 0x4c
+			LegoS32 m_animationIndex;         // 0x58
+			LegoU32 m_animationCount;         // 0x5c
+			Animation* m_animations;          // 0x60
+			LegoU32 m_transparent;            // 0x64
 		};
 
 		// VTABLE: LEGORACERS 0x004af320
@@ -161,11 +161,11 @@ public:
 		class CameraEvent : public Event {
 		public:
 			CameraEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
-			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
+			void Update(undefined4 p_elapsedMs) override;                    // vtable+0x04
+			void Begin(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
-			LegoU32 FUN_004050a0(CutsceneDefinition* p_parent, GolFileParser* p_parser);
+			LegoU32 Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
 
 			// SYNTHETIC: LEGORACERS 0x00406290 FOLDED
 			// CutsceneDefinition::Frame::CameraEvent::~CameraEvent
@@ -174,10 +174,10 @@ public:
 			// CutsceneDefinition::Frame::CameraEvent::`vector deleting destructor'
 
 		private:
-			GolCamera* m_unk0x20;          // 0x20
-			GolName m_unk0x24;             // 0x24
-			CutsceneDefinition* m_unk0x2c; // 0x2c
-			LegoS32 m_unk0x30;             // 0x30
+			GolCamera* m_camera;              // 0x20
+			GolName m_cameraName;             // 0x24
+			CutsceneDefinition* m_definition; // 0x2c
+			LegoS32 m_animationIndex;         // 0x30
 		};
 
 		// VTABLE: LEGORACERS 0x004af358
@@ -185,11 +185,11 @@ public:
 		class AmbientLightEvent : public Event {
 		public:
 			AmbientLightEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
-			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
+			void Update(undefined4 p_elapsedMs) override;                    // vtable+0x04
+			void Begin(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
-			void FUN_00405630(GolFileParser* p_parser);
+			void Parse(GolFileParser* p_parser);
 
 			// SYNTHETIC: LEGORACERS 0x00406290 FOLDED
 			// CutsceneDefinition::Frame::AmbientLightEvent::~AmbientLightEvent
@@ -198,13 +198,13 @@ public:
 			// CutsceneDefinition::Frame::AmbientLightEvent::`vector deleting destructor'
 
 		private:
-			GolRenderDevice::MaterialColor m_unk0x20; // 0x20
-			LegoU32 m_unk0x24;                        // 0x24
-			LegoU32 m_unk0x28;                        // 0x28
-			LegoU32 m_unk0x2c;                        // 0x2c
-			LegoU8 m_unk0x30;                         // 0x30
-			undefined m_unk0x31[0x34 - 0x31];         // 0x31
-			Frame* m_unk0x34;                         // 0x34
+			GolRenderDevice::MaterialColor m_material; // 0x20
+			LegoU32 m_blinkOnMs;                       // 0x24
+			LegoU32 m_blinkOffMs;                      // 0x28
+			LegoU32 m_blinkTimerMs;                    // 0x2c
+			LegoU8 m_blinkFlags;                       // 0x30
+			undefined m_unk0x31[0x34 - 0x31];          // 0x31
+			Frame* m_frame;                            // 0x34
 		};
 
 		// VTABLE: LEGORACERS 0x004af370
@@ -212,11 +212,11 @@ public:
 		class DirectionalLightEvent : public Event {
 		public:
 			DirectionalLightEvent();
-			void VTable0x04(undefined4 p_elapsedMs) override;                     // vtable+0x04
-			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
+			void Update(undefined4 p_elapsedMs) override;                    // vtable+0x04
+			void Begin(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
-			LegoU32 FUN_00405280(GolFileParser* p_parser);
+			LegoU32 Parse(GolFileParser* p_parser);
 
 			// SYNTHETIC: LEGORACERS 0x00406290 FOLDED
 			// CutsceneDefinition::Frame::DirectionalLightEvent::~DirectionalLightEvent
@@ -225,13 +225,13 @@ public:
 			// CutsceneDefinition::Frame::DirectionalLightEvent::`vector deleting destructor'
 
 		private:
-			GolRenderDevice::Light m_unk0x20; // 0x20
-			LegoU32 m_unk0x30;                // 0x30
-			LegoU32 m_unk0x34;                // 0x34
-			LegoU32 m_unk0x38;                // 0x38
-			LegoU8 m_unk0x3c;                 // 0x3c
+			GolRenderDevice::Light m_light;   // 0x20
+			LegoU32 m_blinkOnMs;              // 0x30
+			LegoU32 m_blinkOffMs;             // 0x34
+			LegoU32 m_blinkTimerMs;           // 0x38
+			LegoU8 m_blinkFlags;              // 0x3c
 			undefined m_unk0x3d[0x40 - 0x3d]; // 0x3d
-			Frame* m_unk0x40;                 // 0x40
+			Frame* m_frame;                   // 0x40
 		};
 
 		// VTABLE: LEGORACERS 0x004af410
@@ -239,92 +239,92 @@ public:
 		class TransformEvent : public Event {
 		public:
 			TransformEvent();
-			~TransformEvent() override;                                           // vtable+0x00
-			void VTable0x10(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
-			void VTable0x14(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x14
+			~TransformEvent() override;                                      // vtable+0x00
+			void Begin(Frame* p_frame, CutsceneEventSink* p_event) override; // vtable+0x10
+			void End(Frame* p_frame, CutsceneEventSink* p_event) override;   // vtable+0x14
 
 			void Reset();
-			LegoU32 FUN_00407090(GolFileParser* p_parser);
-			void FUN_004071a0();
+			LegoU32 Parse(GolFileParser* p_parser);
+			void Clear();
 
 			// SYNTHETIC: LEGORACERS 0x00405f20
 			// CutsceneDefinition::Frame::TransformEvent::`vector deleting destructor'
 
 		private:
-			GolVec3 m_unk0x20; // 0x20
-			GolVec3 m_unk0x2c; // 0x2c
-			GolVec3 m_unk0x38; // 0x38
+			GolVec3 m_position;  // 0x20
+			GolVec3 m_direction; // 0x2c
+			GolVec3 m_up;        // 0x38
 		};
 
 		Frame();
 		~Frame();
 
 		void Reset();
-		void FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser);
-		void FUN_00405bd0(GolFileParser* p_parser);
-		void FUN_00405d10(GolFileParser* p_parser);
-		void FUN_00405e50(GolFileParser* p_parser);
-		void FUN_00405f80(GolFileParser* p_parser);
-		void FUN_00406110(GolFileParser* p_parser);
+		void Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser);
+		void ParseCameraEvents(GolFileParser* p_parser);
+		void ParseModelEvents(GolFileParser* p_parser);
+		void ParseTransformEvents(GolFileParser* p_parser);
+		void ParseAmbientLightEvents(GolFileParser* p_parser);
+		void ParseDirectionalLightEvents(GolFileParser* p_parser);
 		void Destroy();
-		void FUN_00406310();
-		void FUN_00406330();
-		void FUN_00406380();
-		void FUN_00406390(LegoS32 p_elapsedMs);
-		void FUN_00406490(Rect* p_rect);
-		void FUN_004064c0(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex);
-		void FUN_004065a0(undefined4 p_unk0x04);
-		LegoU32 FUN_004065d0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
-		void FUN_00406680(Event* p_event);
-		void FUN_004066b0(Event* p_event);
-		LegoU32 FUN_004066d0(GolCamera* p_lens);
-		void FUN_00406710(GolCamera* p_lens);
-		void FUN_00406760(const GolRenderDevice::MaterialColor* p_material);
-		void FUN_00406770(const GolRenderDevice::MaterialColor* p_material);
-		LegoU32 FUN_00406790(const GolRenderDevice::Light* p_light);
-		void FUN_004067f0(const GolRenderDevice::Light* p_light);
-		void FUN_00406860();
-		GolCamera* FUN_00406890();
+		void Play();
+		void Rewind();
+		void Stop();
+		void Update(LegoS32 p_elapsedMs);
+		void SetViewportRect(Rect* p_rect);
+		void Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex);
+		void UpdateActiveEvents(undefined4 p_unk0x04);
+		LegoU32 ProcessEvents(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+		void AddActiveEvent(Event* p_event);
+		void RemoveActiveEvent(Event* p_event);
+		LegoU32 PushCamera(GolCamera* p_lens);
+		void RemoveCamera(GolCamera* p_lens);
+		void SetAmbientMaterial(const GolRenderDevice::MaterialColor* p_material);
+		void ClearAmbientMaterial(const GolRenderDevice::MaterialColor* p_material);
+		LegoU32 AddLight(const GolRenderDevice::Light* p_light);
+		void RemoveLight(const GolRenderDevice::Light* p_light);
+		void ResolveEntities();
+		GolCamera* GetActiveCamera();
 
-		LegoU32 GetUnk0x44() const { return m_unk0x44; }
-		LegoU32 GetUnk0x48() const { return m_unk0x48; }
-		LegoU32 GetUnk0x58() const { return m_unk0x58; }
-		LegoU32 GetModelCount() const { return m_unk0x0c; }
-		ModelEvent* GetModel(LegoU32 p_index) const { return &m_unk0x10[p_index]; }
-		ModelEvent* GetModels() const { return m_unk0x10; }
-		void SetFlags(LegoU32 p_flags) { m_unk0x44 |= p_flags; }
+		LegoU32 GetFlags() const { return m_flags; }
+		LegoU32 GetCurrentFrame() const { return m_currentFrame; }
+		LegoU32 GetPlaybackRate() const { return m_playbackRate; }
+		LegoU32 GetModelCount() const { return m_modelEventCount; }
+		ModelEvent* GetModel(LegoU32 p_index) const { return &m_modelEvents[p_index]; }
+		ModelEvent* GetModels() const { return m_modelEvents; }
+		void SetFlags(LegoU32 p_flags) { m_flags |= p_flags; }
 
 	private:
-		CutsceneDefinition* m_unk0x00;                   // 0x00
-		LegoU32 m_unk0x04;                               // 0x04
-		CameraEvent* m_unk0x08;                          // 0x08
-		LegoU32 m_unk0x0c;                               // 0x0c
-		ModelEvent* m_unk0x10;                           // 0x10
-		LegoU32 m_unk0x14;                               // 0x14
-		TransformEvent* m_unk0x18;                       // 0x18
-		LegoU32 m_unk0x1c;                               // 0x1c
-		AmbientLightEvent* m_unk0x20;                    // 0x20
-		LegoU32 m_unk0x24;                               // 0x24
-		DirectionalLightEvent* m_unk0x28;                // 0x28
-		LegoU32 m_unk0x2c;                               // 0x2c
-		Event** m_unk0x30;                               // 0x30
-		LegoU32 m_unk0x34;                               // 0x34
-		Event** m_unk0x38;                               // 0x38
-		LegoU32 m_unk0x3c;                               // 0x3c
-		Event* m_unk0x40;                                // 0x40
-		LegoU32 m_unk0x44;                               // 0x44
-		LegoU32 m_unk0x48;                               // 0x48
-		LegoU32 m_unk0x4c;                               // 0x4c
-		LegoU32 m_unk0x50;                               // 0x50
-		LegoU32 m_unk0x54;                               // 0x54
-		LegoU32 m_unk0x58;                               // 0x58
-		LegoU32 m_unk0x5c;                               // 0x5c
-		GolCamera* m_unk0x60[8];                         // 0x60
-		const GolRenderDevice::MaterialColor* m_unk0x80; // 0x80
-		LegoU32 m_unk0x84;                               // 0x84
-		const GolRenderDevice::Light* m_unk0x88[7];      // 0x88
-		LegoFloat m_unk0xa4;                             // 0xa4
-		Rect m_unk0xa8;                                  // 0xa8
+		CutsceneDefinition* m_definition;                        // 0x00
+		LegoU32 m_cameraEventCount;                              // 0x04
+		CameraEvent* m_cameraEvents;                             // 0x08
+		LegoU32 m_modelEventCount;                               // 0x0c
+		ModelEvent* m_modelEvents;                               // 0x10
+		LegoU32 m_transformEventCount;                           // 0x14
+		TransformEvent* m_transformEvents;                       // 0x18
+		LegoU32 m_ambientEventCount;                             // 0x1c
+		AmbientLightEvent* m_ambientEvents;                      // 0x20
+		LegoU32 m_directionalEventCount;                         // 0x24
+		DirectionalLightEvent* m_directionalEvents;              // 0x28
+		LegoU32 m_eventCount;                                    // 0x2c
+		Event** m_eventsByStart;                                 // 0x30
+		LegoU32 m_startCursor;                                   // 0x34
+		Event** m_eventsByEnd;                                   // 0x38
+		LegoU32 m_endCursor;                                     // 0x3c
+		Event* m_activeEvents;                                   // 0x40
+		LegoU32 m_flags;                                         // 0x44
+		LegoU32 m_currentFrame;                                  // 0x48
+		LegoU32 m_frameCount;                                    // 0x4c
+		LegoU32 m_elapsedScaled;                                 // 0x50
+		LegoU32 m_frameRate;                                     // 0x54
+		LegoU32 m_playbackRate;                                  // 0x58
+		LegoU32 m_cameraCount;                                   // 0x5c
+		GolCamera* m_cameraStack[8];                             // 0x60
+		const GolRenderDevice::MaterialColor* m_ambientMaterial; // 0x80
+		LegoU32 m_lightCount;                                    // 0x84
+		const GolRenderDevice::Light* m_lights[7];               // 0x88
+		LegoFloat m_tickAccumulator;                             // 0xa4
+		Rect m_viewportRect;                                     // 0xa8
 	};
 
 	CutsceneDefinition();
@@ -332,28 +332,27 @@ public:
 	void Clear() override;          // vtable+0x08
 
 	void Reset();
-	void FUN_00406980(
-		GolExport* p_golExport,
-		GolD3DRenderDevice* p_renderer,
-		const LegoChar* p_fileName,
-		LegoBool32 p_binary
+	void Load(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, const LegoChar* p_fileName, LegoBool32 p_binary);
+	void ParseWorldNames(GolFileParser* p_parser);
+	void LoadWorlds(LegoBool32 p_binary);
+	void ParseFrames(GolFileParser* p_parser);
+	GolCamera* FindCamera(const LegoChar* p_name);
+	GolWorldEntity* FindModelEntity(const LegoChar* p_name);
+	GolWorldEntity* FindJointedEntity(const LegoChar* p_name);
+	GolWorldEntity* FindBspEntity(const LegoChar* p_name);
+	GolWorldEntity* GetIndexedEntity(LegoU32 p_index, LegoU32 p_modelIndex);
+	MabMaterialAnimation0x14* GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex);
+	MabMaterialAnimationItem0x18* GetMaterialAnimationItem(
+		LegoU32 p_index,
+		LegoU32 p_animationIndex,
+		LegoU32 p_itemIndex
 	);
-	void FUN_00406b90(GolFileParser* p_parser);
-	void FUN_00406c50(LegoBool32 p_binary);
-	void FUN_00406cb0(GolFileParser* p_parser);
-	GolCamera* FUN_00406de0(const LegoChar* p_name);
-	GolWorldEntity* FUN_00406e30(const LegoChar* p_name);
-	GolWorldEntity* FUN_00406e80(const LegoChar* p_name);
-	GolWorldEntity* FUN_00406ed0(const LegoChar* p_name);
-	GolWorldEntity* FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex);
-	MabMaterialAnimation0x14* FUN_00406f40(LegoU32 p_index, LegoU32 p_animationIndex);
-	MabMaterialAnimationItem0x18* FUN_00406f60(LegoU32 p_index, LegoU32 p_animationIndex, LegoU32 p_itemIndex);
-	LegoU32 FUN_00406f90(LegoFloat p_scale);
+	LegoU32 SetWorldScale(LegoFloat p_scale);
 
-	void SetUnk0x0c(CutsceneEventSink* p_unk0x0c) { m_unk0x0c = p_unk0x0c; }
-	CutsceneEventSink* GetUnk0x0c() const { return m_unk0x0c; }
-	LegoU32 GetWorldDatabaseCount() const { return m_unk0x18; }
-	GolWorldDatabase* GetWorldDatabase(LegoU32 p_index) const { return m_unk0x1c[p_index]; }
+	void SetEventSink(CutsceneEventSink* p_unk0x0c) { m_eventSink = p_unk0x0c; }
+	CutsceneEventSink* GetEventSink() const { return m_eventSink; }
+	LegoU32 GetWorldDatabaseCount() const { return m_worldDatabaseCount; }
+	GolWorldDatabase* GetWorldDatabase(LegoU32 p_index) const { return m_worldDatabases[p_index]; }
 	LegoU32 GetFrameCount() const { return m_frameCount; }
 	Frame* GetFrames() const { return m_frames; }
 
@@ -361,14 +360,14 @@ public:
 	// CutsceneDefinition::`scalar deleting destructor'
 
 private:
-	CutsceneEventSink* m_unk0x0c;   // 0x0c
-	GolExport* m_golExport;         // 0x10
-	GolD3DRenderDevice* m_renderer; // 0x14
-	LegoU32 m_unk0x18;              // 0x18
-	GolWorldDatabase** m_unk0x1c;   // 0x1c
-	LegoChar* m_unk0x20;            // 0x20
-	LegoU32 m_frameCount;           // 0x24
-	Frame* m_frames;                // 0x28
+	CutsceneEventSink* m_eventSink;      // 0x0c
+	GolExport* m_golExport;              // 0x10
+	GolD3DRenderDevice* m_renderer;      // 0x14
+	LegoU32 m_worldDatabaseCount;        // 0x18
+	GolWorldDatabase** m_worldDatabases; // 0x1c
+	LegoChar* m_worldNames;              // 0x20
+	LegoU32 m_frameCount;                // 0x24
+	Frame* m_frames;                     // 0x28
 };
 
 #endif // CUTSCENEDEFINITION_H

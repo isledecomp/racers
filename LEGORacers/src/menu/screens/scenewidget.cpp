@@ -85,7 +85,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466b90()
 void MenuSceneScreen::SceneWidget::FUN_00466bf0(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
 {
 	FUN_00466b90();
-	m_unk0x58.FUN_00406980(m_golExport, m_renderer, p_createParams->m_unk0x38, p_unk0x08);
+	m_unk0x58.Load(m_golExport, m_renderer, p_createParams->m_unk0x38, p_unk0x08);
 
 	if (!m_unk0x58.GetFrameCount()) {
 		GOL_FATALERROR_MESSAGE("Invalid cinema file, at least 1 cinema is required");
@@ -99,11 +99,11 @@ void MenuSceneScreen::SceneWidget::FUN_00466bf0(MenuScreen::SceneRefBinding* p_c
 		p_createParams->m_unk0x38,
 		p_unk0x08
 	);
-	m_unk0x58.SetUnk0x0c(&m_unk0x84);
+	m_unk0x58.SetEventSink(&m_unk0x84);
 
 	LegoFloat scale = (LegoFloat) ((double) (m_unk0x2b4.m_right - m_unk0x2b4.m_left) /
 								   (double) (m_unk0x2b4.m_bottom - m_unk0x2b4.m_top) * p_createParams->m_unk0x50);
-	m_unk0x58.FUN_00406f90(scale);
+	m_unk0x58.SetWorldScale(scale);
 
 	m_unk0x2c4 = p_createParams->m_unk0x48;
 	m_unk0x2ac = p_createParams->m_unk0x4c;
@@ -113,19 +113,19 @@ void MenuSceneScreen::SceneWidget::FUN_00466bf0(MenuScreen::SceneRefBinding* p_c
 	}
 
 	m_unk0x2b0 = &m_unk0x58.GetFrames()[m_unk0x2ac];
-	m_unk0x2b0->FUN_00406310();
-	m_unk0x2b0->FUN_00406490(&m_unk0x2b4);
+	m_unk0x2b0->Play();
+	m_unk0x2b0->SetViewportRect(&m_unk0x2b4);
 }
 
 // FUNCTION: LEGORACERS 0x00466d00
 void MenuSceneScreen::SceneWidget::FUN_00466d00(CutsceneDefinition::Frame* p_frame)
 {
-	m_unk0x2b0->FUN_00406330();
-	m_unk0x2b0->FUN_00406380();
+	m_unk0x2b0->Rewind();
+	m_unk0x2b0->Stop();
 	m_unk0x2b0 = p_frame;
-	m_unk0x2b0->FUN_00406330();
-	m_unk0x2b0->FUN_00406310();
-	m_unk0x2b0->FUN_00406490(&m_unk0x2b4);
+	m_unk0x2b0->Rewind();
+	m_unk0x2b0->Play();
+	m_unk0x2b0->SetViewportRect(&m_unk0x2b4);
 	m_unk0x84.StopAll();
 }
 
@@ -146,11 +146,11 @@ undefined4 MenuSceneScreen::SceneWidget::OnEvent(undefined4 p_elapsedMs)
 		return FALSE;
 	}
 
-	if (m_unk0x2b0->GetUnk0x44() & 4) {
+	if (m_unk0x2b0->GetFlags() & 4) {
 		if (m_unk0x2c4 && ++m_unk0x2ac < m_unk0x58.GetFrameCount()) {
 			m_unk0x2b0 = &m_unk0x58.GetFrames()[m_unk0x2ac];
-			m_unk0x2b0->FUN_00406330();
-			m_unk0x2b0->FUN_00406310();
+			m_unk0x2b0->Rewind();
+			m_unk0x2b0->Play();
 			m_unk0x84.StopAll();
 		}
 		else {
@@ -158,7 +158,7 @@ undefined4 MenuSceneScreen::SceneWidget::OnEvent(undefined4 p_elapsedMs)
 		}
 	}
 
-	m_unk0x2b0->FUN_00406390(p_elapsedMs);
+	m_unk0x2b0->Update(p_elapsedMs);
 	m_unk0x84.Update(p_elapsedMs);
 
 	return FALSE;
@@ -172,7 +172,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::DrawSelf(Rect*, Rect*)
 	}
 
 	m_renderer->VTable0xe4();
-	m_unk0x2b0->FUN_004064c0(m_renderer, 0);
+	m_unk0x2b0->Draw(m_renderer, 0);
 	m_unk0x84.Draw(m_renderer);
 	m_unk0x84.DrawTransparent(m_renderer);
 	m_unk0x84.DrawOverlay(m_renderer);
@@ -187,7 +187,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::OnKeyDown(InputEventQueue::Event* p_it
 {
 	MenuWidget* result = this;
 
-	if (!m_unk0x2b0 || m_unk0x2b0->GetUnk0x48() >= m_unk0x2b0->GetUnk0x58()) {
+	if (!m_unk0x2b0 || m_unk0x2b0->GetCurrentFrame() >= m_unk0x2b0->GetPlaybackRate()) {
 		if (m_unk0x2cc) {
 			if (!p_item->m_isRepeat) {
 				LegoU32 keySource = p_item->m_keyCode & InputDevice::c_sourceMask;
@@ -208,7 +208,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::OnKeyUp(InputEventQueue::Event*, undef
 {
 	MenuWidget* result = this;
 
-	if ((!m_unk0x2b0 || m_unk0x2b0->GetUnk0x48() >= m_unk0x2b0->GetUnk0x58()) && m_unk0x2cc) {
+	if ((!m_unk0x2b0 || m_unk0x2b0->GetCurrentFrame() >= m_unk0x2b0->GetPlaybackRate()) && m_unk0x2cc) {
 		m_unk0x2c8 = TRUE;
 		return result;
 	}

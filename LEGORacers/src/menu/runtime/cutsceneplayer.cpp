@@ -2150,19 +2150,19 @@ void CutscenePlayer::StopAll()
 // FUNCTION: LEGORACERS 0x004a3230
 GolWorldEntity* CutscenePlayer::FindModelEntity(const LegoChar* p_name)
 {
-	return m_definition->FUN_00406e30(p_name);
+	return m_definition->FindModelEntity(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3240
 GolWorldEntity* CutscenePlayer::FindJointedEntity(const LegoChar* p_name)
 {
-	return m_definition->FUN_00406e80(p_name);
+	return m_definition->FindJointedEntity(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3250
 GolWorldEntity* CutscenePlayer::FindBspEntity(const LegoChar* p_name)
 {
-	return m_definition->FUN_00406ed0(p_name);
+	return m_definition->FindBspEntity(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x004a3260

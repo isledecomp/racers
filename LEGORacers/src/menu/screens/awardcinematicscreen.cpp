@@ -296,8 +296,8 @@ void AwardCinematicScreen::CreateWidgets()
 
 					for (LegoU32 j = 0; j < model->GetAnimationCount(); j++) {
 						CutsceneDefinition::Frame::ModelEvent::Animation* animation = model->GetAnimation(j);
-						MabMaterialAnimationItem0x8* animationItems = animation->m_unk0x00->GetUnk0x04();
-						MabMaterialAnimationItem0x18* animationItem = animation->m_unk0x04;
+						MabMaterialAnimationItem0x8* animationItems = animation->m_materialAnimation->GetUnk0x04();
+						MabMaterialAnimationItem0x18* animationItem = animation->m_item;
 						LegoS32 firstFrame = animationItem->GetFirstFrame();
 						LegoS32 endFrame = firstFrame + animationItem->GetFrameCount();
 

@@ -206,7 +206,7 @@ LegoBool32 CircuitRaceScreen::Update(undefined4 p_elapsed)
 			m_transition = NULL;
 		}
 
-		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->FUN_00406890();
+		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->GetActiveCamera();
 		m_transition = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
 	}
 
@@ -217,8 +217,8 @@ LegoBool32 CircuitRaceScreen::Update(undefined4 p_elapsed)
 			m_transition = NULL;
 		}
 
-		m_sceneWidget.m_unk0x2b0->FUN_00406390(0);
-		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->FUN_00406890();
+		m_sceneWidget.m_unk0x2b0->Update(0);
+		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->GetActiveCamera();
 		m_transition = m_context->m_menuAnimations.Activate(250, TRUE, NULL, rectSource);
 		m_previewChanged = FALSE;
 	}

@@ -42,7 +42,7 @@ CutsceneDefinition::Frame::ModelEvent::ModelEvent()
 // FUNCTION: LEGORACERS 0x00404970
 CutsceneDefinition::Frame::ModelEvent::~ModelEvent()
 {
-	FUN_00404e80();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004049c0
@@ -50,34 +50,34 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::Reset()
 {
 	LegoU32 result = 0;
 
-	m_unk0x2c.m_name[0] = '\0';
+	m_modelRef.m_name[0] = '\0';
 	m_modelRefType = c_modelRefNone;
-	m_unk0x2c.m_indexedRef.m_resourceIndex = 0;
-	m_unk0x2c.m_indexedRef.m_modelIndex = 0;
-	m_unk0x28 = NULL;
-	m_unk0x24 = NULL;
-	m_unk0x34.m_x = 0.0f;
-	m_unk0x34.m_y = 0.0f;
-	m_unk0x34.m_z = 0.0f;
-	m_unk0x40.m_x = 1.0f;
-	m_unk0x40.m_y = 0.0f;
-	m_unk0x40.m_z = 0.0f;
-	m_unk0x4c.m_x = 0.0f;
-	m_unk0x4c.m_y = 0.0f;
-	m_unk0x4c.m_z = 1.0f;
-	m_unk0x58 = -1;
-	m_unk0x5c = 0;
-	m_unk0x60 = NULL;
-	m_unk0x64 = 0;
+	m_modelRef.m_indexedRef.m_resourceIndex = 0;
+	m_modelRef.m_indexedRef.m_modelIndex = 0;
+	m_definition = NULL;
+	m_entity = NULL;
+	m_location.m_x = 0.0f;
+	m_location.m_y = 0.0f;
+	m_location.m_z = 0.0f;
+	m_direction.m_x = 1.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+	m_up.m_x = 0.0f;
+	m_up.m_y = 0.0f;
+	m_up.m_z = 1.0f;
+	m_animationIndex = -1;
+	m_animationCount = 0;
+	m_animations = NULL;
+	m_transparent = 0;
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00404a10
-LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* p_parent, GolFileParser* p_parser)
+LegoU32 CutsceneDefinition::Frame::ModelEvent::Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
-	m_unk0x28 = p_parent;
+	m_definition = p_parent;
 
 	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenModelBlock));
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
@@ -87,66 +87,66 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStaticModelName:
-			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
+			::strncpy(m_modelRef.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_modelRef.m_name));
 			m_modelRefType = c_modelRefStaticModel;
 			break;
 		case CutsceneDefinition::c_tokenJointedModelName:
-			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
+			::strncpy(m_modelRef.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_modelRef.m_name));
 			m_modelRefType = c_modelRefJointedModel;
 			break;
 		case CutsceneDefinition::c_tokenBspModelName:
-			::strncpy(m_unk0x2c.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x2c.m_name));
+			::strncpy(m_modelRef.m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_modelRef.m_name));
 			m_modelRefType = c_modelRefBspModel;
 			break;
 		case CutsceneDefinition::c_tokenIndexedModelRef:
-			m_unk0x2c.m_indexedRef.m_resourceIndex = p_parser->ReadInteger();
-			m_unk0x2c.m_indexedRef.m_modelIndex = p_parser->ReadInteger();
+			m_modelRef.m_indexedRef.m_resourceIndex = p_parser->ReadInteger();
+			m_modelRef.m_indexedRef.m_modelIndex = p_parser->ReadInteger();
 			m_modelRefType = c_modelRefIndexedModel;
 			break;
 		case CutsceneDefinition::c_tokenStartFrame:
-			m_unk0x0c = p_parser->ReadInteger();
+			m_startFrame = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenAnimationSequence:
-			m_unk0x58 = p_parser->ReadInteger();
+			m_animationIndex = p_parser->ReadInteger();
 			break;
 
 		case CutsceneDefinition::c_tokenMaterialAnimationRefs: {
-			m_unk0x5c = p_parser->ReadBracketedCountAndLeftCurly();
-			if (!m_unk0x5c) {
+			m_animationCount = p_parser->ReadBracketedCountAndLeftCurly();
+			if (!m_animationCount) {
 				p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 			}
 
-			m_unk0x60 = new Animation[m_unk0x5c];
-			if (!m_unk0x60) {
+			m_animations = new Animation[m_animationCount];
+			if (!m_animations) {
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			for (LegoU32 i = 0; i < m_unk0x5c; i++) {
-				m_unk0x60[i].m_unk0x08 = p_parser->ReadInteger();
-				m_unk0x60[i].m_unk0x0c = p_parser->ReadInteger();
-				m_unk0x60[i].m_unk0x10 = p_parser->ReadInteger();
-				m_unk0x60[i].m_unk0x14 = p_parser->ReadInteger();
-				m_unk0x60[i].m_unk0x18 = p_parser->ReadInteger();
+			for (LegoU32 i = 0; i < m_animationCount; i++) {
+				m_animations[i].m_resourceIndex = p_parser->ReadInteger();
+				m_animations[i].m_animationIndex = p_parser->ReadInteger();
+				m_animations[i].m_itemIndex = p_parser->ReadInteger();
+				m_animations[i].m_startParam0x14 = p_parser->ReadInteger();
+				m_animations[i].m_materialTableIndex = p_parser->ReadInteger();
 			}
 
 			p_parser->ReadRightCurly();
 			break;
 		}
 		case CutsceneDefinition::c_tokenLocation:
-			m_unk0x34.m_x = p_parser->ReadFloat();
-			m_unk0x34.m_y = p_parser->ReadFloat();
-			m_unk0x34.m_z = p_parser->ReadFloat();
+			m_location.m_x = p_parser->ReadFloat();
+			m_location.m_y = p_parser->ReadFloat();
+			m_location.m_z = p_parser->ReadFloat();
 			break;
 		case CutsceneDefinition::c_tokenOrientation:
-			m_unk0x40.m_x = p_parser->ReadFloat();
-			m_unk0x40.m_y = p_parser->ReadFloat();
-			m_unk0x40.m_z = p_parser->ReadFloat();
-			m_unk0x4c.m_x = p_parser->ReadFloat();
-			m_unk0x4c.m_y = p_parser->ReadFloat();
-			m_unk0x4c.m_z = p_parser->ReadFloat();
+			m_direction.m_x = p_parser->ReadFloat();
+			m_direction.m_y = p_parser->ReadFloat();
+			m_direction.m_z = p_parser->ReadFloat();
+			m_up.m_x = p_parser->ReadFloat();
+			m_up.m_y = p_parser->ReadFloat();
+			m_up.m_z = p_parser->ReadFloat();
 			break;
 		default:
 			break;
@@ -155,140 +155,147 @@ LegoU32 CutsceneDefinition::Frame::ModelEvent::FUN_00404a10(CutsceneDefinition* 
 		token = p_parser->GetNextToken();
 	}
 
-	// duration += m_unk0x0c;
-	m_unk0x10 = m_unk0x0c + duration;
+	// duration += m_startFrame;
+	m_endFrame = m_startFrame + duration;
 	return duration;
 }
 
 // FUNCTION: LEGORACERS 0x00404c90
-void CutsceneDefinition::Frame::ModelEvent::FUN_00404c90()
+void CutsceneDefinition::Frame::ModelEvent::ResolveEntity()
 {
-	if (!m_unk0x24) {
+	if (!m_entity) {
 		LegoChar message[64];
 
 		switch (m_modelRefType) {
 		case c_modelRefStaticModel:
-			m_unk0x24 = m_unk0x28->FUN_00406e30(m_unk0x2c.m_name);
-			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
+			m_entity = m_definition->FindModelEntity(m_modelRef.m_name);
+			if (!m_entity) {
+				::strncpy(message, m_modelRef.m_name, sizeof(m_modelRef.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case c_modelRefJointedModel:
-			m_unk0x24 = m_unk0x28->FUN_00406e80(m_unk0x2c.m_name);
-			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
+			m_entity = m_definition->FindJointedEntity(m_modelRef.m_name);
+			if (!m_entity) {
+				::strncpy(message, m_modelRef.m_name, sizeof(m_modelRef.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find jointed model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case c_modelRefBspModel:
-			m_unk0x24 = m_unk0x28->FUN_00406ed0(m_unk0x2c.m_name);
-			if (!m_unk0x24) {
-				::strncpy(message, m_unk0x2c.m_name, sizeof(m_unk0x2c.m_name));
+			m_entity = m_definition->FindBspEntity(m_modelRef.m_name);
+			if (!m_entity) {
+				::strncpy(message, m_modelRef.m_name, sizeof(m_modelRef.m_name));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find bsp model");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 			break;
 		case c_modelRefIndexedModel:
-			m_unk0x24 =
-				m_unk0x28->FUN_00406f20(m_unk0x2c.m_indexedRef.m_resourceIndex, m_unk0x2c.m_indexedRef.m_modelIndex);
+			m_entity = m_definition->GetIndexedEntity(
+				m_modelRef.m_indexedRef.m_resourceIndex,
+				m_modelRef.m_indexedRef.m_modelIndex
+			);
 			break;
 		default:
 			return;
 		}
 	}
 
-	if (m_unk0x5c && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
-					  m_modelRefType == c_modelRefBspModel)) {
-		Animation* animation = m_unk0x60;
-		Animation* end = animation + m_unk0x5c;
+	if (m_animationCount && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
+							 m_modelRefType == c_modelRefBspModel)) {
+		Animation* animation = m_animations;
+		Animation* end = animation + m_animationCount;
 
 		for (; animation < end; animation++) {
-			animation->m_unk0x00 = m_unk0x28->FUN_00406f40(animation->m_unk0x08, animation->m_unk0x0c);
-			animation->m_unk0x04 =
-				m_unk0x28->FUN_00406f60(animation->m_unk0x08, animation->m_unk0x0c, animation->m_unk0x10);
+			animation->m_materialAnimation =
+				m_definition->GetMaterialAnimation(animation->m_resourceIndex, animation->m_animationIndex);
+			animation->m_item = m_definition->GetMaterialAnimationItem(
+				animation->m_resourceIndex,
+				animation->m_animationIndex,
+				animation->m_itemIndex
+			);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00404e80
-void CutsceneDefinition::Frame::ModelEvent::FUN_00404e80()
+void CutsceneDefinition::Frame::ModelEvent::Destroy()
 {
-	if (m_unk0x60) {
-		delete[] m_unk0x60;
+	if (m_animations) {
+		delete[] m_animations;
 	}
 
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00404ea0
-void CutsceneDefinition::Frame::ModelEvent::VTable0x04(undefined4 p_elapsedMs)
+void CutsceneDefinition::Frame::ModelEvent::Update(undefined4 p_elapsedMs)
 {
-	if (m_unk0x14) {
-		m_unk0x24->VTable0x10(p_elapsedMs);
+	if (m_active) {
+		m_entity->VTable0x10(p_elapsedMs);
 
-		for (LegoU32 i = 0; i < m_unk0x5c; i++) {
-			m_unk0x60[i].m_unk0x04->FUN_004104c0(
+		for (LegoU32 i = 0; i < m_animationCount; i++) {
+			m_animations[i].m_item->FUN_004104c0(
 				p_elapsedMs,
-				m_unk0x60[i].m_unk0x00->GetUnk0x04(),
-				m_unk0x60[i].m_unk0x00->GetUnk0x08()
+				m_animations[i].m_materialAnimation->GetUnk0x04(),
+				m_animations[i].m_materialAnimation->GetUnk0x08()
 			);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00404f00
-void CutsceneDefinition::Frame::ModelEvent::VTable0x08(GolD3DRenderDevice* p_renderer)
+void CutsceneDefinition::Frame::ModelEvent::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x14 && !m_unk0x64) {
-		m_unk0x24->VTable0x1c(*p_renderer);
+	if (m_active && !m_transparent) {
+		m_entity->VTable0x1c(*p_renderer);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00404f20
-void CutsceneDefinition::Frame::ModelEvent::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void CutsceneDefinition::Frame::ModelEvent::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x14 && m_unk0x64) {
-		m_unk0x24->VTable0x1c(*p_renderer);
+	if (m_active && m_transparent) {
+		m_entity->VTable0x1c(*p_renderer);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00404f40
-void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::ModelEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	if (m_unk0x24) {
-		m_unk0x64 = m_unk0x24->VTable0x20();
-		m_unk0x24->VTable0x08(m_unk0x34);
-		m_unk0x24->VTable0x40(m_unk0x40, m_unk0x4c);
+	if (m_entity) {
+		m_transparent = m_entity->VTable0x20();
+		m_entity->VTable0x08(m_location);
+		m_entity->VTable0x40(m_direction, m_up);
 
-		if (m_unk0x5c && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
-						  m_modelRefType == c_modelRefBspModel)) {
-			Animation* animation = m_unk0x60;
-			Animation* end = animation + m_unk0x5c;
+		if (m_animationCount && (m_modelRefType == c_modelRefJointedModel || m_modelRefType == c_modelRefStaticModel ||
+								 m_modelRefType == c_modelRefBspModel)) {
+			Animation* animation = m_animations;
+			Animation* end = animation + m_animationCount;
 
 			for (; animation < end; animation++) {
 				MaterialTable0x0c* materialTarget =
-					static_cast<GolModelEntity*>(m_unk0x24)->GetMaterialTable(animation->m_unk0x18);
+					static_cast<GolModelEntity*>(m_entity)->GetMaterialTable(animation->m_materialTableIndex);
 				if (materialTarget == NULL) {
-					materialTarget =
-						static_cast<GolModelEntity*>(m_unk0x24)->GetModel(animation->m_unk0x18)->GetMaterialTable();
+					materialTarget = static_cast<GolModelEntity*>(m_entity)
+										 ->GetModel(animation->m_materialTableIndex)
+										 ->GetMaterialTable();
 				}
 
-				animation->m_unk0x04->FUN_10025da0(materialTarget, animation->m_unk0x14, TRUE);
+				animation->m_item->FUN_10025da0(materialTarget, animation->m_startParam0x14, TRUE);
 			}
 		}
 
-		if (m_modelRefType == c_modelRefJointedModel && m_unk0x58 >= 0) {
-			static_cast<GolAnimatedEntity*>(m_unk0x24)->FUN_0040dad0(m_unk0x58);
-			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(TRUE);
+		if (m_modelRefType == c_modelRefJointedModel && m_animationIndex >= 0) {
+			static_cast<GolAnimatedEntity*>(m_entity)->FUN_0040dad0(m_animationIndex);
+			static_cast<GolAnimatedEntity*>(m_entity)->SetPartAnimationEnabled(TRUE);
 		}
 
-		Event::VTable0x10(p_frame, p_event);
+		Event::Begin(p_frame, p_event);
 		if (p_event) {
 			p_event->OnModelStarted(p_frame, m_name, this);
 		}
@@ -296,14 +303,14 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x10(Frame* p_frame, CutsceneE
 }
 
 // FUNCTION: LEGORACERS 0x00405020
-void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::ModelEvent::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	if (m_unk0x24) {
-		if (m_modelRefType == c_modelRefJointedModel && m_unk0x58 >= 0) {
-			static_cast<GolAnimatedEntity*>(m_unk0x24)->SetPartAnimationEnabled(FALSE);
+	if (m_entity) {
+		if (m_modelRefType == c_modelRefJointedModel && m_animationIndex >= 0) {
+			static_cast<GolAnimatedEntity*>(m_entity)->SetPartAnimationEnabled(FALSE);
 		}
 
-		Event::VTable0x14(p_frame, p_event);
+		Event::End(p_frame, p_event);
 		if (p_event) {
 			p_event->OnModelEnded(p_frame, m_name, this);
 		}
@@ -313,17 +320,17 @@ void CutsceneDefinition::Frame::ModelEvent::VTable0x14(Frame* p_frame, CutsceneE
 // FUNCTION: LEGORACERS 0x00405070
 CutsceneDefinition::Frame::CameraEvent::CameraEvent()
 {
-	m_unk0x20 = NULL;
-	m_unk0x24[0] = '\0';
-	m_unk0x2c = NULL;
-	m_unk0x30 = -1;
+	m_camera = NULL;
+	m_cameraName[0] = '\0';
+	m_definition = NULL;
+	m_animationIndex = -1;
 }
 
 // FUNCTION: LEGORACERS 0x004050a0
-LegoU32 CutsceneDefinition::Frame::CameraEvent::FUN_004050a0(CutsceneDefinition* p_parent, GolFileParser* p_parser)
+LegoU32 CutsceneDefinition::Frame::CameraEvent::Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
-	m_unk0x2c = p_parent;
+	m_definition = p_parent;
 
 	p_parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenCameraBlock));
 	::strncpy(m_name, p_parser->ReadStringWithMaxLength(8), sizeof(m_name));
@@ -333,16 +340,16 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::FUN_004050a0(CutsceneDefinition*
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenCameraName:
-			::strncpy(m_unk0x24, p_parser->ReadStringWithMaxLength(8), sizeof(m_unk0x24));
+			::strncpy(m_cameraName, p_parser->ReadStringWithMaxLength(8), sizeof(m_cameraName));
 			break;
 		case CutsceneDefinition::c_tokenStartFrame:
-			m_unk0x0c = p_parser->ReadInteger();
+			m_startFrame = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenAnimationSequence:
-			m_unk0x30 = p_parser->ReadInteger();
+			m_animationIndex = p_parser->ReadInteger();
 			break;
 		default:
 			break;
@@ -351,31 +358,31 @@ LegoU32 CutsceneDefinition::Frame::CameraEvent::FUN_004050a0(CutsceneDefinition*
 		token = p_parser->GetNextToken();
 	}
 
-	m_unk0x10 = duration + m_unk0x0c;
-	return m_unk0x10;
+	m_endFrame = duration + m_startFrame;
+	return m_endFrame;
 }
 
 // FUNCTION: LEGORACERS 0x00405160
-void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::CameraEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	if (m_unk0x2c) {
-		if (!m_unk0x20) {
-			m_unk0x20 = m_unk0x2c->FUN_00406de0(m_unk0x24);
-			if (!m_unk0x20) {
+	if (m_definition) {
+		if (!m_camera) {
+			m_camera = m_definition->FindCamera(m_cameraName);
+			if (!m_camera) {
 				LegoChar message[64];
-				::strncpy(message, m_unk0x24, sizeof(m_unk0x24));
+				::strncpy(message, m_cameraName, sizeof(m_cameraName));
 				message[8] = '\0';
 				::strcat(message, ": Unable to find named camera");
 				GOL_FATALERROR_MESSAGE(message);
 			}
 		}
 
-		p_frame->FUN_004066d0(m_unk0x20);
-		if (m_unk0x30 >= 0 && m_unk0x20->m_trackedEntity) {
-			m_unk0x20->m_trackedEntity->FUN_0040dad0(m_unk0x30);
+		p_frame->PushCamera(m_camera);
+		if (m_animationIndex >= 0 && m_camera->m_trackedEntity) {
+			m_camera->m_trackedEntity->FUN_0040dad0(m_animationIndex);
 		}
 
-		Event::VTable0x10(p_frame, p_event);
+		Event::Begin(p_frame, p_event);
 		if (p_event) {
 			p_event->OnCameraStarted(p_frame, m_name, this);
 		}
@@ -383,11 +390,11 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x10(Frame* p_frame, Cutscene
 }
 
 // FUNCTION: LEGORACERS 0x00405230
-void CutsceneDefinition::Frame::CameraEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::CameraEvent::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	if (m_unk0x20) {
-		p_frame->FUN_00406710(m_unk0x20);
-		Event::VTable0x14(p_frame, p_event);
+	if (m_camera) {
+		p_frame->RemoveCamera(m_camera);
+		Event::End(p_frame, p_event);
 		if (p_event) {
 			p_event->OnCameraEnded(p_frame, m_name, this);
 		}
@@ -395,20 +402,20 @@ void CutsceneDefinition::Frame::CameraEvent::VTable0x14(Frame* p_frame, Cutscene
 }
 
 // FUNCTION: LEGORACERS 0x00405270
-void CutsceneDefinition::Frame::CameraEvent::VTable0x04(undefined4)
+void CutsceneDefinition::Frame::CameraEvent::Update(undefined4)
 {
-	m_unk0x20->UpdateFromTrackedEntity();
+	m_camera->UpdateFromTrackedEntity();
 }
 
 // FUNCTION: LEGORACERS 0x00405280
-LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFileParser* p_parser)
+LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::Parse(GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
-	m_unk0x40 = NULL;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0;
-	m_unk0x38 = 0;
-	m_unk0x3c = 0;
+	m_frame = NULL;
+	m_blinkOnMs = 0;
+	m_blinkOffMs = 0;
+	m_blinkTimerMs = 0;
+	m_blinkFlags = 0;
 
 	p_parser->AssertNextTokenIs(
 		static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenDirectionalLightBlock)
@@ -420,7 +427,7 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
-			m_unk0x0c = p_parser->ReadInteger();
+			m_startFrame = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
@@ -431,7 +438,7 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_alp = 0xff;
-			m_unk0x20.SetColor(color);
+			m_light.SetColor(color);
 			break;
 		}
 		case CutsceneDefinition::c_tokenLightDirection: {
@@ -439,13 +446,13 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 			direction.m_x = p_parser->ReadFloat();
 			direction.m_y = p_parser->ReadFloat();
 			direction.m_z = p_parser->ReadFloat();
-			m_unk0x20.SetDirection(direction);
+			m_light.SetDirection(direction);
 			break;
 		}
 		case CutsceneDefinition::c_tokenBlinkTiming:
-			m_unk0x30 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
-			m_unk0x34 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
-			m_unk0x3c |= 1;
+			m_blinkOnMs = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_blinkOffMs = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_blinkFlags |= 1;
 			break;
 		default:
 			break;
@@ -454,63 +461,63 @@ LegoU32 CutsceneDefinition::Frame::DirectionalLightEvent::FUN_00405280(GolFilePa
 		token = p_parser->GetNextToken();
 	}
 
-	LegoU32 end = m_unk0x0c;
+	LegoU32 end = m_startFrame;
 	end += duration;
-	m_unk0x10 = end;
-	return m_unk0x10;
+	m_endFrame = end;
+	return m_endFrame;
 }
 
 // FUNCTION: LEGORACERS 0x00405410
-void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::DirectionalLightEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_unk0x3c |= 2;
-	m_unk0x38 = m_unk0x30;
-	p_frame->FUN_00406790(&m_unk0x20);
+	m_blinkFlags |= 2;
+	m_blinkTimerMs = m_blinkOnMs;
+	p_frame->AddLight(&m_light);
 
-	Event::VTable0x10(p_frame, p_event);
+	Event::Begin(p_frame, p_event);
 	if (p_event) {
 		p_event->OnDirectionalLightStarted(p_frame, m_name, this);
 	}
 
-	m_unk0x40 = p_frame;
+	m_frame = p_frame;
 }
 
 // FUNCTION: LEGORACERS 0x00405460
-void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::DirectionalLightEvent::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	p_frame->FUN_004067f0(&m_unk0x20);
-	Event::VTable0x14(p_frame, p_event);
+	p_frame->RemoveLight(&m_light);
+	Event::End(p_frame, p_event);
 	if (p_event) {
 		p_event->OnDirectionalLightEnded(p_frame, m_name, this);
 	}
 
-	m_unk0x40 = NULL;
+	m_frame = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x004054a0
-void CutsceneDefinition::Frame::DirectionalLightEvent::VTable0x04(undefined4 p_elapsedMs)
+void CutsceneDefinition::Frame::DirectionalLightEvent::Update(undefined4 p_elapsedMs)
 {
 	LegoU32 elapsedMs = p_elapsedMs;
 
-	if (m_unk0x3c & 1) {
-		if (elapsedMs > m_unk0x38) {
-			if (m_unk0x3c & 2) {
-				m_unk0x3c &= ~2;
-				m_unk0x38 = m_unk0x34;
-				m_unk0x40->FUN_004067f0(&m_unk0x20);
+	if (m_blinkFlags & 1) {
+		if (elapsedMs > m_blinkTimerMs) {
+			if (m_blinkFlags & 2) {
+				m_blinkFlags &= ~2;
+				m_blinkTimerMs = m_blinkOffMs;
+				m_frame->RemoveLight(&m_light);
 			}
 			else {
-				m_unk0x38 = m_unk0x30;
-				m_unk0x3c |= 2;
-				m_unk0x40->FUN_00406790(&m_unk0x20);
+				m_blinkTimerMs = m_blinkOnMs;
+				m_blinkFlags |= 2;
+				m_frame->AddLight(&m_light);
 			}
 		}
 		else {
-			m_unk0x38 -= elapsedMs;
+			m_blinkTimerMs -= elapsedMs;
 		}
 	}
 
-	Event::VTable0x04(elapsedMs);
+	Event::Update(elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00405520
@@ -529,41 +536,41 @@ CutsceneDefinition::Frame::Event::~Event()
 void CutsceneDefinition::Frame::Event::Reset()
 {
 	m_name[0] = '\0';
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
-	m_unk0x18 = NULL;
-	m_unk0x1c = NULL;
-	m_unk0x14 = 0;
+	m_startFrame = 0;
+	m_endFrame = 0;
+	m_prev = NULL;
+	m_next = NULL;
+	m_active = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void CutsceneDefinition::Frame::Event::VTable0x04(undefined4)
+void CutsceneDefinition::Frame::Event::Update(undefined4)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void CutsceneDefinition::Frame::Event::VTable0x08(GolD3DRenderDevice*)
+void CutsceneDefinition::Frame::Event::Draw(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void CutsceneDefinition::Frame::Event::VTable0x0c(GolD3DRenderDevice*)
+void CutsceneDefinition::Frame::Event::DrawTransparent(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x00405590
-void CutsceneDefinition::Frame::Event::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::Event::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_unk0x14 = 1;
+	m_active = 1;
 	if (p_event) {
 		p_event->OnEventStarted(p_frame, m_name, this);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004055c0
-void CutsceneDefinition::Frame::Event::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::Event::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_unk0x14 = 0;
+	m_active = 0;
 	if (p_event) {
 		p_event->OnEventEnded(p_frame, m_name, this);
 	}
@@ -575,11 +582,11 @@ static LegoS32 __cdecl CompareEventStart(const void* p_left, const void* p_right
 	CutsceneDefinition::Frame::Event* left = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_left);
 	CutsceneDefinition::Frame::Event* right = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_right);
 
-	if (left->m_unk0x0c > right->m_unk0x0c) {
+	if (left->m_startFrame > right->m_startFrame) {
 		return 1;
 	}
 
-	if (left->m_unk0x0c < right->m_unk0x0c) {
+	if (left->m_startFrame < right->m_startFrame) {
 		return -1;
 	}
 
@@ -592,11 +599,11 @@ static LegoS32 __cdecl CompareEventEnd(const void* p_left, const void* p_right)
 	CutsceneDefinition::Frame::Event* left = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_left);
 	CutsceneDefinition::Frame::Event* right = *static_cast<CutsceneDefinition::Frame::Event* const*>(p_right);
 
-	if (left->m_unk0x10 > right->m_unk0x10) {
+	if (left->m_endFrame > right->m_endFrame) {
 		return 1;
 	}
 
-	if (left->m_unk0x10 < right->m_unk0x10) {
+	if (left->m_endFrame < right->m_endFrame) {
 		return -1;
 	}
 
@@ -604,14 +611,14 @@ static LegoS32 __cdecl CompareEventEnd(const void* p_left, const void* p_right)
 }
 
 // FUNCTION: LEGORACERS 0x00405630
-void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::AmbientLightEvent::Parse(GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
-	m_unk0x34 = NULL;
-	m_unk0x24 = 0;
-	m_unk0x28 = 0;
-	m_unk0x2c = 0;
-	m_unk0x30 = 0;
+	m_frame = NULL;
+	m_blinkOnMs = 0;
+	m_blinkOffMs = 0;
+	m_blinkTimerMs = 0;
+	m_blinkFlags = 0;
 
 	p_parser->AssertNextTokenIs(
 		static_cast<GolFileParser::ParserTokenType>(CutsceneDefinition::c_tokenAmbientLightBlock)
@@ -623,7 +630,7 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
-			m_unk0x0c = p_parser->ReadInteger();
+			m_startFrame = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
@@ -634,13 +641,13 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 			color.m_grn = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_blu = static_cast<LegoU8>(p_parser->ReadInteger());
 			color.m_alp = 0xff;
-			m_unk0x20.SetColor(color);
+			m_material.SetColor(color);
 			break;
 		}
 		case CutsceneDefinition::c_tokenBlinkTiming:
-			m_unk0x24 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
-			m_unk0x28 = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
-			m_unk0x30 |= 1;
+			m_blinkOnMs = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_blinkOffMs = static_cast<LegoU32>(static_cast<LegoFloat>(p_parser->ReadInteger()) * 33.333328f);
+			m_blinkFlags |= 1;
 			break;
 		default:
 			break;
@@ -649,62 +656,62 @@ void CutsceneDefinition::Frame::AmbientLightEvent::FUN_00405630(GolFileParser* p
 		token = p_parser->GetNextToken();
 	}
 
-	LegoU32 end = m_unk0x0c;
+	LegoU32 end = m_startFrame;
 	end += duration;
-	m_unk0x10 = end;
+	m_endFrame = end;
 }
 
 // FUNCTION: LEGORACERS 0x00405780
-void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::AmbientLightEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	m_unk0x30 |= 2;
-	m_unk0x2c = m_unk0x24;
-	p_frame->FUN_00406760(&m_unk0x20);
+	m_blinkFlags |= 2;
+	m_blinkTimerMs = m_blinkOnMs;
+	p_frame->SetAmbientMaterial(&m_material);
 
-	Event::VTable0x10(p_frame, p_event);
+	Event::Begin(p_frame, p_event);
 	if (p_event) {
 		p_event->OnAmbientLightStarted(p_frame, m_name, this);
 	}
 
-	m_unk0x34 = p_frame;
+	m_frame = p_frame;
 }
 
 // FUNCTION: LEGORACERS 0x004057d0
-void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::AmbientLightEvent::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	p_frame->FUN_00406770(&m_unk0x20);
-	Event::VTable0x14(p_frame, p_event);
+	p_frame->ClearAmbientMaterial(&m_material);
+	Event::End(p_frame, p_event);
 	if (p_event) {
 		p_event->OnAmbientLightEnded(p_frame, m_name, this);
 	}
 
-	m_unk0x34 = NULL;
+	m_frame = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00405810
-void CutsceneDefinition::Frame::AmbientLightEvent::VTable0x04(undefined4 p_elapsedMs)
+void CutsceneDefinition::Frame::AmbientLightEvent::Update(undefined4 p_elapsedMs)
 {
 	LegoU32 elapsedMs = p_elapsedMs;
 
-	if (m_unk0x30 & 1) {
-		if (elapsedMs > m_unk0x2c) {
-			if (m_unk0x30 & 2) {
-				m_unk0x30 &= ~2;
-				m_unk0x2c = m_unk0x28;
-				m_unk0x34->FUN_00406770(&m_unk0x20);
+	if (m_blinkFlags & 1) {
+		if (elapsedMs > m_blinkTimerMs) {
+			if (m_blinkFlags & 2) {
+				m_blinkFlags &= ~2;
+				m_blinkTimerMs = m_blinkOffMs;
+				m_frame->ClearAmbientMaterial(&m_material);
 			}
 			else {
-				m_unk0x2c = m_unk0x24;
-				m_unk0x30 |= 2;
-				m_unk0x34->FUN_00406760(&m_unk0x20);
+				m_blinkTimerMs = m_blinkOnMs;
+				m_blinkFlags |= 2;
+				m_frame->SetAmbientMaterial(&m_material);
 			}
 		}
 		else {
-			m_unk0x2c -= elapsedMs;
+			m_blinkTimerMs -= elapsedMs;
 		}
 	}
 
-	Event::VTable0x04(elapsedMs);
+	Event::Update(elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00405890
@@ -722,75 +729,75 @@ CutsceneDefinition::Frame::~Frame()
 // FUNCTION: LEGORACERS 0x004058b0
 void CutsceneDefinition::Frame::Reset()
 {
-	m_unk0x00 = NULL;
-	m_unk0x54 = 30;
-	m_unk0x58 = 30;
-	m_unk0x04 = 0;
-	m_unk0x08 = NULL;
-	m_unk0x0c = 0;
-	m_unk0x10 = NULL;
-	m_unk0x14 = 0;
-	m_unk0x18 = NULL;
-	m_unk0x1c = 0;
-	m_unk0x20 = NULL;
-	m_unk0x24 = 0;
-	m_unk0x28 = NULL;
-	m_unk0x2c = 0;
-	m_unk0x30 = NULL;
-	m_unk0x34 = 0;
-	m_unk0x38 = NULL;
-	m_unk0x3c = 0;
-	m_unk0x40 = NULL;
-	m_unk0x44 = 0;
-	m_unk0x4c = 0;
-	m_unk0x48 = 0;
-	m_unk0x50 = 0;
-	m_unk0xa4 = 0.0f;
-	m_unk0x5c = 0;
-	::memset(m_unk0x60, 0, sizeof(m_unk0x60));
-	m_unk0x80 = NULL;
-	m_unk0x84 = 0;
-	::memset(m_unk0x88, 0, sizeof(m_unk0x88));
-	m_unk0xa8.m_bottom = 0;
-	m_unk0xa8.m_top = 0;
-	m_unk0xa8.m_left = 0;
-	m_unk0xa8.m_right = 0;
+	m_definition = NULL;
+	m_frameRate = 30;
+	m_playbackRate = 30;
+	m_cameraEventCount = 0;
+	m_cameraEvents = NULL;
+	m_modelEventCount = 0;
+	m_modelEvents = NULL;
+	m_transformEventCount = 0;
+	m_transformEvents = NULL;
+	m_ambientEventCount = 0;
+	m_ambientEvents = NULL;
+	m_directionalEventCount = 0;
+	m_directionalEvents = NULL;
+	m_eventCount = 0;
+	m_eventsByStart = NULL;
+	m_startCursor = 0;
+	m_eventsByEnd = NULL;
+	m_endCursor = 0;
+	m_activeEvents = NULL;
+	m_flags = 0;
+	m_frameCount = 0;
+	m_currentFrame = 0;
+	m_elapsedScaled = 0;
+	m_tickAccumulator = 0.0f;
+	m_cameraCount = 0;
+	::memset(m_cameraStack, 0, sizeof(m_cameraStack));
+	m_ambientMaterial = NULL;
+	m_lightCount = 0;
+	::memset(m_lights, 0, sizeof(m_lights));
+	m_viewportRect.m_bottom = 0;
+	m_viewportRect.m_top = 0;
+	m_viewportRect.m_left = 0;
+	m_viewportRect.m_right = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00405950
-void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFileParser* p_parser)
+void CutsceneDefinition::Frame::Parse(CutsceneDefinition* p_parent, GolFileParser* p_parser)
 {
-	if (m_unk0x00) {
+	if (m_definition) {
 		Destroy();
 	}
 
-	m_unk0x00 = p_parent;
+	m_definition = p_parent;
 	p_parser->ReadLeftCurly();
 
 	GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenCameraBlock:
-			FUN_00405bd0(p_parser);
+			ParseCameraEvents(p_parser);
 			break;
 		case CutsceneDefinition::c_tokenModelBlock:
-			FUN_00405d10(p_parser);
+			ParseModelEvents(p_parser);
 			break;
 		case CutsceneDefinition::c_tokenTransformBlock:
-			FUN_00405e50(p_parser);
+			ParseTransformEvents(p_parser);
 			break;
 		case CutsceneDefinition::c_tokenAmbientLightBlock:
-			FUN_00405f80(p_parser);
+			ParseAmbientLightEvents(p_parser);
 			break;
 		case CutsceneDefinition::c_tokenDirectionalLightBlock:
-			FUN_00406110(p_parser);
+			ParseDirectionalLightEvents(p_parser);
 			break;
 		case CutsceneDefinition::c_tokenSpeed:
-			m_unk0x54 = p_parser->ReadInteger();
-			m_unk0x58 = m_unk0x54;
+			m_frameRate = p_parser->ReadInteger();
+			m_playbackRate = m_frameRate;
 			break;
 		case CutsceneDefinition::c_tokenDuration:
-			m_unk0x4c = p_parser->ReadInteger();
+			m_frameCount = p_parser->ReadInteger();
 			break;
 		default:
 			p_parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -800,145 +807,145 @@ void CutsceneDefinition::Frame::FUN_00405950(CutsceneDefinition* p_parent, GolFi
 		token = p_parser->GetNextToken();
 	}
 
-	if (!m_unk0x4c && m_unk0x04) {
-		for (LegoU32 i = 0; i < m_unk0x04; i++) {
-			CameraEvent* camera = &m_unk0x08[i];
-			if (camera->m_unk0x10 > m_unk0x4c) {
-				m_unk0x4c = camera->m_unk0x10;
+	if (!m_frameCount && m_cameraEventCount) {
+		for (LegoU32 i = 0; i < m_cameraEventCount; i++) {
+			CameraEvent* camera = &m_cameraEvents[i];
+			if (camera->m_endFrame > m_frameCount) {
+				m_frameCount = camera->m_endFrame;
 			}
 		}
 	}
 
-	LegoU32 eventCount = m_unk0x24;
-	eventCount += m_unk0x14;
-	eventCount += m_unk0x0c;
-	eventCount += m_unk0x1c;
-	eventCount += m_unk0x04;
-	m_unk0x2c = eventCount;
-	m_unk0x30 = new Event*[m_unk0x2c];
-	if (!m_unk0x30) {
+	LegoU32 eventCount = m_directionalEventCount;
+	eventCount += m_transformEventCount;
+	eventCount += m_modelEventCount;
+	eventCount += m_ambientEventCount;
+	eventCount += m_cameraEventCount;
+	m_eventCount = eventCount;
+	m_eventsByStart = new Event*[m_eventCount];
+	if (!m_eventsByStart) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x38 = new Event*[m_unk0x2c];
-	if (!m_unk0x38) {
+	m_eventsByEnd = new Event*[m_eventCount];
+	if (!m_eventsByEnd) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	LegoU32 eventIndex = 0;
-	for (; eventIndex < m_unk0x04; eventIndex++) {
-		m_unk0x30[eventIndex] = &m_unk0x08[eventIndex];
-		m_unk0x38[eventIndex] = &m_unk0x08[eventIndex];
+	for (; eventIndex < m_cameraEventCount; eventIndex++) {
+		m_eventsByStart[eventIndex] = &m_cameraEvents[eventIndex];
+		m_eventsByEnd[eventIndex] = &m_cameraEvents[eventIndex];
 	}
 
 	LegoU32 i;
-	for (i = 0; i < m_unk0x0c; i++) {
-		m_unk0x30[eventIndex] = &m_unk0x10[i];
-		m_unk0x38[eventIndex] = &m_unk0x10[i];
+	for (i = 0; i < m_modelEventCount; i++) {
+		m_eventsByStart[eventIndex] = &m_modelEvents[i];
+		m_eventsByEnd[eventIndex] = &m_modelEvents[i];
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_unk0x14; i++) {
-		m_unk0x30[eventIndex] = &m_unk0x18[i];
-		m_unk0x38[eventIndex] = &m_unk0x18[i];
+	for (i = 0; i < m_transformEventCount; i++) {
+		m_eventsByStart[eventIndex] = &m_transformEvents[i];
+		m_eventsByEnd[eventIndex] = &m_transformEvents[i];
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_unk0x1c; i++) {
-		m_unk0x30[eventIndex] = &m_unk0x20[i];
-		m_unk0x38[eventIndex] = &m_unk0x20[i];
+	for (i = 0; i < m_ambientEventCount; i++) {
+		m_eventsByStart[eventIndex] = &m_ambientEvents[i];
+		m_eventsByEnd[eventIndex] = &m_ambientEvents[i];
 		eventIndex++;
 	}
 
-	for (i = 0; i < m_unk0x24; i++) {
-		m_unk0x30[eventIndex] = &m_unk0x28[i];
-		m_unk0x38[eventIndex] = &m_unk0x28[i];
+	for (i = 0; i < m_directionalEventCount; i++) {
+		m_eventsByStart[eventIndex] = &m_directionalEvents[i];
+		m_eventsByEnd[eventIndex] = &m_directionalEvents[i];
 		eventIndex++;
 	}
 
-	::qsort(m_unk0x30, m_unk0x2c, sizeof(Event*), CompareEventStart);
-	::qsort(m_unk0x38, m_unk0x2c, sizeof(Event*), CompareEventEnd);
+	::qsort(m_eventsByStart, m_eventCount, sizeof(Event*), CompareEventStart);
+	::qsort(m_eventsByEnd, m_eventCount, sizeof(Event*), CompareEventEnd);
 }
 
 // FUNCTION: LEGORACERS 0x00405bd0
-void CutsceneDefinition::Frame::FUN_00405bd0(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ParseCameraEvents(GolFileParser* p_parser)
 {
-	m_unk0x04 = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x04) {
+	m_cameraEventCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_cameraEventCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x08 = new CameraEvent[m_unk0x04];
+	m_cameraEvents = new CameraEvent[m_cameraEventCount];
 
-	if (!m_unk0x08) {
+	if (!m_cameraEvents) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x04; i++) {
-		m_unk0x08[i].FUN_004050a0(m_unk0x00, p_parser);
+	for (LegoU32 i = 0; i < m_cameraEventCount; i++) {
+		m_cameraEvents[i].Parse(m_definition, p_parser);
 	}
 
 	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00405d10
-void CutsceneDefinition::Frame::FUN_00405d10(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ParseModelEvents(GolFileParser* p_parser)
 {
-	m_unk0x0c = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x0c) {
+	m_modelEventCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_modelEventCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x10 = new ModelEvent[m_unk0x0c];
+	m_modelEvents = new ModelEvent[m_modelEventCount];
 
-	if (!m_unk0x10) {
+	if (!m_modelEvents) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x0c; i++) {
-		m_unk0x10[i].FUN_00404a10(m_unk0x00, p_parser);
+	for (LegoU32 i = 0; i < m_modelEventCount; i++) {
+		m_modelEvents[i].Parse(m_definition, p_parser);
 	}
 
 	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00405e50
-void CutsceneDefinition::Frame::FUN_00405e50(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ParseTransformEvents(GolFileParser* p_parser)
 {
-	m_unk0x14 = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x14) {
+	m_transformEventCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_transformEventCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x18 = new TransformEvent[m_unk0x14];
+	m_transformEvents = new TransformEvent[m_transformEventCount];
 
-	if (!m_unk0x18) {
+	if (!m_transformEvents) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x14; i++) {
-		m_unk0x18[i].FUN_00407090(p_parser);
+	for (LegoU32 i = 0; i < m_transformEventCount; i++) {
+		m_transformEvents[i].Parse(p_parser);
 	}
 
 	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00405f80
-void CutsceneDefinition::Frame::FUN_00405f80(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ParseAmbientLightEvents(GolFileParser* p_parser)
 {
-	m_unk0x1c = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x1c) {
+	m_ambientEventCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_ambientEventCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x20 = new AmbientLightEvent[m_unk0x1c];
+	m_ambientEvents = new AmbientLightEvent[m_ambientEventCount];
 
-	if (!m_unk0x20) {
+	if (!m_ambientEvents) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x1c; i++) {
-		m_unk0x20[i].FUN_00405630(p_parser);
+	for (LegoU32 i = 0; i < m_ambientEventCount; i++) {
+		m_ambientEvents[i].Parse(p_parser);
 	}
 
 	p_parser->ReadRightCurly();
@@ -950,21 +957,21 @@ CutsceneDefinition::Frame::AmbientLightEvent::AmbientLightEvent()
 }
 
 // FUNCTION: LEGORACERS 0x00406110
-void CutsceneDefinition::Frame::FUN_00406110(GolFileParser* p_parser)
+void CutsceneDefinition::Frame::ParseDirectionalLightEvents(GolFileParser* p_parser)
 {
-	m_unk0x24 = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x24) {
+	m_directionalEventCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_directionalEventCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x28 = new DirectionalLightEvent[m_unk0x24];
+	m_directionalEvents = new DirectionalLightEvent[m_directionalEventCount];
 
-	if (!m_unk0x28) {
+	if (!m_directionalEvents) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x24; i++) {
-		m_unk0x28[i].FUN_00405280(p_parser);
+	for (LegoU32 i = 0; i < m_directionalEventCount; i++) {
+		m_directionalEvents[i].Parse(p_parser);
 	}
 
 	p_parser->ReadRightCurly();
@@ -978,192 +985,192 @@ CutsceneDefinition::Frame::DirectionalLightEvent::DirectionalLightEvent()
 // FUNCTION: LEGORACERS 0x004062a0
 void CutsceneDefinition::Frame::Destroy()
 {
-	if (m_unk0x30) {
-		delete[] m_unk0x30;
+	if (m_eventsByStart) {
+		delete[] m_eventsByStart;
 	}
 
-	if (m_unk0x38) {
-		delete[] m_unk0x38;
+	if (m_eventsByEnd) {
+		delete[] m_eventsByEnd;
 	}
 
-	if (m_unk0x08) {
-		delete[] m_unk0x08;
+	if (m_cameraEvents) {
+		delete[] m_cameraEvents;
 	}
 
-	if (m_unk0x10) {
-		delete[] m_unk0x10;
+	if (m_modelEvents) {
+		delete[] m_modelEvents;
 	}
 
-	if (m_unk0x18) {
-		delete[] m_unk0x18;
+	if (m_transformEvents) {
+		delete[] m_transformEvents;
 	}
 
-	if (m_unk0x20) {
-		delete[] m_unk0x20;
+	if (m_ambientEvents) {
+		delete[] m_ambientEvents;
 	}
 
-	if (m_unk0x28) {
-		delete[] m_unk0x28;
+	if (m_directionalEvents) {
+		delete[] m_directionalEvents;
 	}
 
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00406310
-void CutsceneDefinition::Frame::FUN_00406310()
+void CutsceneDefinition::Frame::Play()
 {
-	if (m_unk0x44 & c_flagComplete) {
-		FUN_00406330();
+	if (m_flags & c_flagComplete) {
+		Rewind();
 	}
 
-	m_unk0x44 &= ~c_flagComplete;
-	m_unk0x44 |= c_flagPlaying;
+	m_flags &= ~c_flagComplete;
+	m_flags |= c_flagPlaying;
 }
 
 // FUNCTION: LEGORACERS 0x00406330
-void CutsceneDefinition::Frame::FUN_00406330()
+void CutsceneDefinition::Frame::Rewind()
 {
-	m_unk0x48 = 0;
-	m_unk0x50 = 0;
-	m_unk0x34 = 0;
-	m_unk0x3c = 0;
-	m_unk0xa4 = 0.0f;
+	m_currentFrame = 0;
+	m_elapsedScaled = 0;
+	m_startCursor = 0;
+	m_endCursor = 0;
+	m_tickAccumulator = 0.0f;
 
-	while (m_unk0x40) {
-		m_unk0x40->VTable0x14(this, m_unk0x00->GetUnk0x0c());
-		FUN_004066b0(m_unk0x40);
+	while (m_activeEvents) {
+		m_activeEvents->End(this, m_definition->GetEventSink());
+		RemoveActiveEvent(m_activeEvents);
 	}
 
-	m_unk0x44 &= ~(c_flagComplete | c_flagLooped);
+	m_flags &= ~(c_flagComplete | c_flagLooped);
 }
 
 // FUNCTION: LEGORACERS 0x00406380
-void CutsceneDefinition::Frame::FUN_00406380()
+void CutsceneDefinition::Frame::Stop()
 {
-	m_unk0x44 &= ~(c_flagPlaying | c_flagComplete | c_flagLooped);
+	m_flags &= ~(c_flagPlaying | c_flagComplete | c_flagLooped);
 }
 
 // FUNCTION: LEGORACERS 0x00406390
-void CutsceneDefinition::Frame::FUN_00406390(LegoS32 p_elapsedMs)
+void CutsceneDefinition::Frame::Update(LegoS32 p_elapsedMs)
 {
-	if (m_unk0x44 & c_flagPlaying) {
-		LegoU32 elapsed = m_unk0x50 + p_elapsedMs * m_unk0x58;
+	if (m_flags & c_flagPlaying) {
+		LegoU32 elapsed = m_elapsedScaled + p_elapsedMs * m_playbackRate;
 		LegoU32 frame = elapsed / 1000;
 
-		if (frame >= m_unk0x4c) {
-			FUN_004065d0(m_unk0x48, frame);
-			if (m_unk0x44 & c_flagLoop) {
-				FUN_00406330();
+		if (frame >= m_frameCount) {
+			ProcessEvents(m_currentFrame, frame);
+			if (m_flags & c_flagLoop) {
+				Rewind();
 				frame = 0;
-				m_unk0x44 |= c_flagLooped;
+				m_flags |= c_flagLooped;
 				elapsed = 0;
-				m_unk0xa4 = 0.0f;
+				m_tickAccumulator = 0.0f;
 			}
 			else {
-				m_unk0x44 &= ~(c_flagPlaying | c_flagLooped);
-				m_unk0x44 |= c_flagComplete;
+				m_flags &= ~(c_flagPlaying | c_flagLooped);
+				m_flags |= c_flagComplete;
 				return;
 			}
 		}
 		else {
-			m_unk0x44 &= ~(c_flagComplete | c_flagLooped);
+			m_flags &= ~(c_flagComplete | c_flagLooped);
 		}
 
-		FUN_004065d0(m_unk0x48, frame);
+		ProcessEvents(m_currentFrame, frame);
 
-		if (m_unk0x58 == m_unk0x54) {
-			m_unk0xa4 = static_cast<LegoFloat>(static_cast<double>(p_elapsedMs) + m_unk0xa4);
+		if (m_playbackRate == m_frameRate) {
+			m_tickAccumulator = static_cast<LegoFloat>(static_cast<double>(p_elapsedMs) + m_tickAccumulator);
 		}
 		else {
-			double frameElapsed = static_cast<double>(static_cast<LegoS32>(elapsed - m_unk0x50));
-			double frameDivisor = static_cast<double>(static_cast<LegoS32>(m_unk0x54));
+			double frameElapsed = static_cast<double>(static_cast<LegoS32>(elapsed - m_elapsedScaled));
+			double frameDivisor = static_cast<double>(static_cast<LegoS32>(m_frameRate));
 			frameElapsed = frameElapsed / frameDivisor;
-			m_unk0xa4 = static_cast<LegoFloat>(frameElapsed + m_unk0xa4);
+			m_tickAccumulator = static_cast<LegoFloat>(frameElapsed + m_tickAccumulator);
 		}
 
-		if (m_unk0xa4 >= 1.0f) {
-			LegoS32 ticks = static_cast<LegoS32>(m_unk0xa4);
-			FUN_004065a0(ticks);
-			m_unk0xa4 = m_unk0xa4 - static_cast<LegoFloat>(ticks);
+		if (m_tickAccumulator >= 1.0f) {
+			LegoS32 ticks = static_cast<LegoS32>(m_tickAccumulator);
+			UpdateActiveEvents(ticks);
+			m_tickAccumulator = m_tickAccumulator - static_cast<LegoFloat>(ticks);
 		}
 
-		m_unk0x50 = elapsed;
-		m_unk0x48 = frame;
+		m_elapsedScaled = elapsed;
+		m_currentFrame = frame;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406490
-void CutsceneDefinition::Frame::FUN_00406490(Rect* p_rect)
+void CutsceneDefinition::Frame::SetViewportRect(Rect* p_rect)
 {
-	m_unk0xa8 = *p_rect;
-	m_unk0x44 |= c_flagHasRect;
+	m_viewportRect = *p_rect;
+	m_flags |= c_flagHasRect;
 }
 
 // FUNCTION: LEGORACERS 0x004064c0
-void CutsceneDefinition::Frame::FUN_004064c0(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex)
+void CutsceneDefinition::Frame::Draw(GolD3DRenderDevice* p_renderer, LegoU32 p_lensIndex)
 {
-	if (m_unk0x5c) {
+	if (m_cameraCount) {
 		LegoU32 lensIndex = p_lensIndex;
-		if (p_lensIndex >= m_unk0x5c) {
-			lensIndex = m_unk0x5c - 1;
+		if (p_lensIndex >= m_cameraCount) {
+			lensIndex = m_cameraCount - 1;
 		}
 
-		if (m_unk0x44 & c_flagHasRect) {
-			m_unk0x60[lensIndex]->VTable0x0c(&m_unk0xa8);
+		if (m_flags & c_flagHasRect) {
+			m_cameraStack[lensIndex]->VTable0x0c(&m_viewportRect);
 		}
 
-		p_renderer->VTable0x20(m_unk0x60[lensIndex]);
+		p_renderer->VTable0x20(m_cameraStack[lensIndex]);
 		p_renderer->VTable0x5c();
 		p_renderer->VTable0xec(4);
 	}
 
 	p_renderer->VTable0x28();
-	if (m_unk0x80 || m_unk0x84) {
-		if (m_unk0x80) {
-			p_renderer->VTable0x2c(m_unk0x80);
+	if (m_ambientMaterial || m_lightCount) {
+		if (m_ambientMaterial) {
+			p_renderer->VTable0x2c(m_ambientMaterial);
 		}
 
-		for (LegoU32 i = 0; i < m_unk0x84; i++) {
-			p_renderer->VTable0x30(m_unk0x88[i]);
+		for (LegoU32 i = 0; i < m_lightCount; i++) {
+			p_renderer->VTable0x30(m_lights[i]);
 		}
 	}
 
-	for (Event* event3 = m_unk0x40; event3; event3 = event3->m_unk0x1c) {
-		event3->VTable0x08(p_renderer);
+	for (Event* event3 = m_activeEvents; event3; event3 = event3->m_next) {
+		event3->Draw(p_renderer);
 	}
 
-	for (Event* event4 = m_unk0x40; event4; event4 = event4->m_unk0x1c) {
-		event4->VTable0x0c(p_renderer);
+	for (Event* event4 = m_activeEvents; event4; event4 = event4->m_next) {
+		event4->DrawTransparent(p_renderer);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004065a0
-void CutsceneDefinition::Frame::FUN_004065a0(undefined4 p_unk0x04)
+void CutsceneDefinition::Frame::UpdateActiveEvents(undefined4 p_unk0x04)
 {
-	for (Event* event = m_unk0x40; event; event = event->m_unk0x1c) {
-		event->VTable0x04(p_unk0x04);
+	for (Event* event = m_activeEvents; event; event = event->m_next) {
+		event->Update(p_unk0x04);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004065d0
-LegoU32 CutsceneDefinition::Frame::FUN_004065d0(LegoU32 p_startFrame, LegoU32 p_endFrame)
+LegoU32 CutsceneDefinition::Frame::ProcessEvents(LegoU32 p_startFrame, LegoU32 p_endFrame)
 {
 	LegoU32 result;
 	LegoU32 total;
 
 	for (;;) {
 		while (TRUE) {
-			result = m_unk0x34;
-			total = m_unk0x2c;
+			result = m_startCursor;
+			total = m_eventCount;
 
 			if (result >= total) {
 				break;
 			}
 
-			Event* event = m_unk0x30[result];
-			result = event->m_unk0x0c;
+			Event* event = m_eventsByStart[result];
+			result = event->m_startFrame;
 
-			if (result > m_unk0x38[m_unk0x3c]->m_unk0x10) {
+			if (result > m_eventsByEnd[m_endCursor]->m_endFrame) {
 				break;
 			}
 
@@ -1171,172 +1178,172 @@ LegoU32 CutsceneDefinition::Frame::FUN_004065d0(LegoU32 p_startFrame, LegoU32 p_
 				return result;
 			}
 
-			if (!event->m_unk0x14) {
-				event->VTable0x10(this, m_unk0x00->GetUnk0x0c());
-				FUN_00406680(m_unk0x30[m_unk0x34]);
+			if (!event->m_active) {
+				event->Begin(this, m_definition->GetEventSink());
+				AddActiveEvent(m_eventsByStart[m_startCursor]);
 			}
 
-			m_unk0x34++;
+			m_startCursor++;
 		}
 
-		result = m_unk0x3c;
+		result = m_endCursor;
 		if (result >= total) {
 			break;
 		}
 
-		Event* event = m_unk0x38[result];
-		result = event->m_unk0x10;
+		Event* event = m_eventsByEnd[result];
+		result = event->m_endFrame;
 
 		if (p_startFrame > result || p_endFrame < result) {
 			break;
 		}
 
-		if (event->m_unk0x14) {
-			event->VTable0x14(this, m_unk0x00->GetUnk0x0c());
-			FUN_004066b0(m_unk0x38[m_unk0x3c]);
+		if (event->m_active) {
+			event->End(this, m_definition->GetEventSink());
+			RemoveActiveEvent(m_eventsByEnd[m_endCursor]);
 		}
 
-		m_unk0x3c++;
+		m_endCursor++;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00406680
-void CutsceneDefinition::Frame::FUN_00406680(Event* p_event)
+void CutsceneDefinition::Frame::AddActiveEvent(Event* p_event)
 {
-	p_event->m_unk0x18 = NULL;
+	p_event->m_prev = NULL;
 
-	if (m_unk0x40) {
-		m_unk0x40->m_unk0x18 = p_event;
-		p_event->m_unk0x1c = m_unk0x40;
+	if (m_activeEvents) {
+		m_activeEvents->m_prev = p_event;
+		p_event->m_next = m_activeEvents;
 	}
 	else {
-		p_event->m_unk0x1c = NULL;
+		p_event->m_next = NULL;
 	}
 
-	m_unk0x40 = p_event;
+	m_activeEvents = p_event;
 }
 
 // FUNCTION: LEGORACERS 0x004066b0
-void CutsceneDefinition::Frame::FUN_004066b0(Event* p_event)
+void CutsceneDefinition::Frame::RemoveActiveEvent(Event* p_event)
 {
-	Event* previous = p_event->m_unk0x18;
-	Event* next = p_event->m_unk0x1c;
+	Event* previous = p_event->m_prev;
+	Event* next = p_event->m_next;
 
 	if (previous) {
-		previous->m_unk0x1c = next;
+		previous->m_next = next;
 	}
 	else {
-		m_unk0x40 = next;
+		m_activeEvents = next;
 	}
 
 	if (next) {
-		next->m_unk0x18 = previous;
+		next->m_prev = previous;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004066d0
-LegoU32 CutsceneDefinition::Frame::FUN_004066d0(GolCamera* p_lens)
+LegoU32 CutsceneDefinition::Frame::PushCamera(GolCamera* p_lens)
 {
-	LegoU32 count = m_unk0x5c;
+	LegoU32 count = m_cameraCount;
 	for (LegoU32 i = 0; i < count; i++) {
-		if (m_unk0x60[i] == p_lens) {
+		if (m_cameraStack[i] == p_lens) {
 			return i;
 		}
 	}
 
-	m_unk0x5c = count + 1;
-	m_unk0x60[count] = p_lens;
+	m_cameraCount = count + 1;
+	m_cameraStack[count] = p_lens;
 
 	return count;
 }
 
 // FUNCTION: LEGORACERS 0x00406710
-void CutsceneDefinition::Frame::FUN_00406710(GolCamera* p_lens)
+void CutsceneDefinition::Frame::RemoveCamera(GolCamera* p_lens)
 {
-	if (m_unk0x5c) {
+	if (m_cameraCount) {
 		LegoU32 i = 0;
-		while (i < m_unk0x5c && m_unk0x60[i] != p_lens) {
+		while (i < m_cameraCount && m_cameraStack[i] != p_lens) {
 			i++;
 		}
 
-		while (i < m_unk0x5c - 1) {
-			m_unk0x60[i] = m_unk0x60[i + 1];
+		while (i < m_cameraCount - 1) {
+			m_cameraStack[i] = m_cameraStack[i + 1];
 			i++;
 		}
 
-		m_unk0x5c--;
-		m_unk0x60[m_unk0x5c] = NULL;
+		m_cameraCount--;
+		m_cameraStack[m_cameraCount] = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406760
-void CutsceneDefinition::Frame::FUN_00406760(const GolRenderDevice::MaterialColor* p_material)
+void CutsceneDefinition::Frame::SetAmbientMaterial(const GolRenderDevice::MaterialColor* p_material)
 {
-	m_unk0x80 = p_material;
+	m_ambientMaterial = p_material;
 }
 
 // FUNCTION: LEGORACERS 0x00406770
-void CutsceneDefinition::Frame::FUN_00406770(const GolRenderDevice::MaterialColor* p_material)
+void CutsceneDefinition::Frame::ClearAmbientMaterial(const GolRenderDevice::MaterialColor* p_material)
 {
-	if (m_unk0x80 == p_material) {
-		m_unk0x80 = NULL;
+	if (m_ambientMaterial == p_material) {
+		m_ambientMaterial = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406790
-LegoU32 CutsceneDefinition::Frame::FUN_00406790(const GolRenderDevice::Light* p_light)
+LegoU32 CutsceneDefinition::Frame::AddLight(const GolRenderDevice::Light* p_light)
 {
-	LegoU32 count = m_unk0x84;
+	LegoU32 count = m_lightCount;
 	for (LegoU32 i = 0; i < count; i++) {
-		if (m_unk0x88[i] == p_light) {
+		if (m_lights[i] == p_light) {
 			return i;
 		}
 	}
 
-	if (count >= sizeOfArray(m_unk0x88)) {
-		FUN_004067f0(m_unk0x88[0]);
+	if (count >= sizeOfArray(m_lights)) {
+		RemoveLight(m_lights[0]);
 	}
 
-	m_unk0x88[m_unk0x84] = p_light;
-	m_unk0x84++;
+	m_lights[m_lightCount] = p_light;
+	m_lightCount++;
 
-	return m_unk0x84;
+	return m_lightCount;
 }
 
 // FUNCTION: LEGORACERS 0x004067f0
-void CutsceneDefinition::Frame::FUN_004067f0(const GolRenderDevice::Light* p_light)
+void CutsceneDefinition::Frame::RemoveLight(const GolRenderDevice::Light* p_light)
 {
-	if (m_unk0x84) {
+	if (m_lightCount) {
 		LegoU32 i = 0;
-		while (i < m_unk0x84 && m_unk0x88[i] != p_light) {
+		while (i < m_lightCount && m_lights[i] != p_light) {
 			i++;
 		}
 
-		while (i < m_unk0x84 - 1) {
-			m_unk0x88[i] = m_unk0x88[i + 1];
+		while (i < m_lightCount - 1) {
+			m_lights[i] = m_lights[i + 1];
 			i++;
 		}
 
-		m_unk0x84--;
-		m_unk0x88[m_unk0x84] = NULL;
+		m_lightCount--;
+		m_lights[m_lightCount] = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406860
-void CutsceneDefinition::Frame::FUN_00406860()
+void CutsceneDefinition::Frame::ResolveEntities()
 {
-	for (LegoU32 i = 0; i < m_unk0x0c; i++) {
-		m_unk0x10[i].FUN_00404c90();
+	for (LegoU32 i = 0; i < m_modelEventCount; i++) {
+		m_modelEvents[i].ResolveEntity();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406890
-GolCamera* CutsceneDefinition::Frame::FUN_00406890()
+GolCamera* CutsceneDefinition::Frame::GetActiveCamera()
 {
-	if (m_unk0x5c) {
-		return m_unk0x60[m_unk0x5c - 1];
+	if (m_cameraCount) {
+		return m_cameraStack[m_cameraCount - 1];
 	}
 
 	return NULL;
@@ -1357,18 +1364,18 @@ CutsceneDefinition::~CutsceneDefinition()
 // FUNCTION: LEGORACERS 0x00406960
 void CutsceneDefinition::Reset()
 {
-	m_unk0x0c = NULL;
+	m_eventSink = NULL;
 	m_golExport = NULL;
 	m_renderer = NULL;
-	m_unk0x18 = 0;
-	m_unk0x1c = NULL;
-	m_unk0x20 = NULL;
+	m_worldDatabaseCount = 0;
+	m_worldDatabases = NULL;
+	m_worldNames = NULL;
 	m_frameCount = 0;
 	m_frames = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00406980
-void CutsceneDefinition::FUN_00406980(
+void CutsceneDefinition::Load(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
 	const LegoChar* p_fileName,
@@ -1406,10 +1413,10 @@ void CutsceneDefinition::FUN_00406980(
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
 		case GolFileParser::e_unknown0x27:
-			FUN_00406cb0(parser);
+			ParseFrames(parser);
 			break;
 		case GolFileParser::e_unknown0x28:
-			FUN_00406b90(parser);
+			ParseWorldNames(parser);
 			break;
 		default:
 			parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -1422,32 +1429,32 @@ void CutsceneDefinition::FUN_00406980(
 	parser->Dispose();
 	delete parser;
 
-	FUN_00406c50(p_binary);
+	LoadWorlds(p_binary);
 
 	for (LegoU32 i = 0; i < m_frameCount; i++) {
-		m_frames[i].FUN_00406860();
+		m_frames[i].ResolveEntities();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406af0
 void CutsceneDefinition::Clear()
 {
-	if (m_unk0x1c) {
+	if (m_worldDatabases) {
 		if (m_golExport) {
 			LegoU32 i;
-			for (i = 0; i < m_unk0x18; i++) {
-				if (m_unk0x1c[i]) {
-					m_unk0x1c[i]->VTable0x18();
-					m_golExport->VTable0x3c(m_unk0x1c[i]);
+			for (i = 0; i < m_worldDatabaseCount; i++) {
+				if (m_worldDatabases[i]) {
+					m_worldDatabases[i]->VTable0x18();
+					m_golExport->VTable0x3c(m_worldDatabases[i]);
 				}
 			}
 		}
 
-		delete[] m_unk0x1c;
+		delete[] m_worldDatabases;
 	}
 
-	if (m_unk0x20) {
-		delete[] m_unk0x20;
+	if (m_worldNames) {
+		delete[] m_worldNames;
 	}
 
 	if (m_frames) {
@@ -1459,45 +1466,45 @@ void CutsceneDefinition::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x00406b90
-void CutsceneDefinition::FUN_00406b90(GolFileParser* p_parser)
+void CutsceneDefinition::ParseWorldNames(GolFileParser* p_parser)
 {
-	if (m_unk0x1c) {
+	if (m_worldDatabases) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
 
-	m_unk0x18 = p_parser->ReadBracketedCountAndLeftCurly();
-	if (!m_unk0x18) {
+	m_worldDatabaseCount = p_parser->ReadBracketedCountAndLeftCurly();
+	if (!m_worldDatabaseCount) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_int);
 	}
 
-	m_unk0x1c = new GolWorldDatabase*[m_unk0x18];
-	m_unk0x20 = new LegoChar[m_unk0x18 * 9];
+	m_worldDatabases = new GolWorldDatabase*[m_worldDatabaseCount];
+	m_worldNames = new LegoChar[m_worldDatabaseCount * 9];
 
-	if (!m_unk0x1c || !m_unk0x20) {
+	if (!m_worldDatabases || !m_worldNames) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		::strncpy(&m_unk0x20[i * 9], p_parser->ReadStringWithMaxLength(8), 8);
-		m_unk0x20[i * 9 + 8] = '\0';
+	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+		::strncpy(&m_worldNames[i * 9], p_parser->ReadStringWithMaxLength(8), 8);
+		m_worldNames[i * 9 + 8] = '\0';
 	}
 
 	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00406c50
-void CutsceneDefinition::FUN_00406c50(LegoBool32 p_binary)
+void CutsceneDefinition::LoadWorlds(LegoBool32 p_binary)
 {
-	if (m_unk0x20) {
-		for (LegoU32 i = 0; i < m_unk0x18; i++) {
-			m_unk0x1c[i] = m_golExport->VTable0x08();
-			m_unk0x1c[i]->VTable0x14(m_renderer, &m_unk0x20[i * 9], p_binary, 1.0f);
+	if (m_worldNames) {
+		for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+			m_worldDatabases[i] = m_golExport->VTable0x08();
+			m_worldDatabases[i]->VTable0x14(m_renderer, &m_worldNames[i * 9], p_binary, 1.0f);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00406cb0
-void CutsceneDefinition::FUN_00406cb0(GolFileParser* p_parser)
+void CutsceneDefinition::ParseFrames(GolFileParser* p_parser)
 {
 	if (m_frames) {
 		p_parser->HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
@@ -1521,17 +1528,17 @@ void CutsceneDefinition::FUN_00406cb0(GolFileParser* p_parser)
 		GolName name;
 		::strncpy(name, p_parser->ReadStringWithMaxLength(8), sizeof(name));
 		AddName(name, &m_frames[i]);
-		m_frames[i].FUN_00405950(this, p_parser);
+		m_frames[i].Parse(this, p_parser);
 	}
 
 	p_parser->ReadRightCurly();
 }
 
 // FUNCTION: LEGORACERS 0x00406de0
-GolCamera* CutsceneDefinition::FUN_00406de0(const LegoChar* p_name)
+GolCamera* CutsceneDefinition::FindCamera(const LegoChar* p_name)
 {
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolCamera* result = m_unk0x1c[i]->FindUnk0xe4(p_name);
+	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+		GolCamera* result = m_worldDatabases[i]->FindUnk0xe4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1541,10 +1548,10 @@ GolCamera* CutsceneDefinition::FUN_00406de0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e30
-GolWorldEntity* CutsceneDefinition::FUN_00406e30(const LegoChar* p_name)
+GolWorldEntity* CutsceneDefinition::FindModelEntity(const LegoChar* p_name)
 {
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xb4(p_name);
+	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xb4(p_name);
 		if (result) {
 			return result;
 		}
@@ -1554,10 +1561,10 @@ GolWorldEntity* CutsceneDefinition::FUN_00406e30(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406e80
-GolWorldEntity* CutsceneDefinition::FUN_00406e80(const LegoChar* p_name)
+GolWorldEntity* CutsceneDefinition::FindJointedEntity(const LegoChar* p_name)
 {
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xc0(p_name);
+	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xc0(p_name);
 		if (result) {
 			return result;
 		}
@@ -1567,10 +1574,10 @@ GolWorldEntity* CutsceneDefinition::FUN_00406e80(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406ed0
-GolWorldEntity* CutsceneDefinition::FUN_00406ed0(const LegoChar* p_name)
+GolWorldEntity* CutsceneDefinition::FindBspEntity(const LegoChar* p_name)
 {
-	for (LegoU32 i = 0; i < m_unk0x18; i++) {
-		GolWorldEntity* result = m_unk0x1c[i]->FindUnk0xcc(p_name);
+	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
+		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xcc(p_name);
 		if (result) {
 			return result;
 		}
@@ -1580,37 +1587,37 @@ GolWorldEntity* CutsceneDefinition::FUN_00406ed0(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00406f20
-GolWorldEntity* CutsceneDefinition::FUN_00406f20(LegoU32 p_index, LegoU32 p_modelIndex)
+GolWorldEntity* CutsceneDefinition::GetIndexedEntity(LegoU32 p_index, LegoU32 p_modelIndex)
 {
-	return m_unk0x1c[p_index]->VTable0x48(p_modelIndex);
+	return m_worldDatabases[p_index]->VTable0x48(p_modelIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00406f40
-MabMaterialAnimation0x14* CutsceneDefinition::FUN_00406f40(LegoU32 p_index, LegoU32 p_animationIndex)
+MabMaterialAnimation0x14* CutsceneDefinition::GetMaterialAnimation(LegoU32 p_index, LegoU32 p_animationIndex)
 {
-	return m_unk0x1c[p_index]->VTable0x4c(p_animationIndex);
+	return m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
 }
 
 // FUNCTION: LEGORACERS 0x00406f60
-MabMaterialAnimationItem0x18* CutsceneDefinition::FUN_00406f60(
+MabMaterialAnimationItem0x18* CutsceneDefinition::GetMaterialAnimationItem(
 	LegoU32 p_index,
 	LegoU32 p_animationIndex,
 	LegoU32 p_itemIndex
 )
 {
-	MabMaterialAnimation0x14* materialAnimation = m_unk0x1c[p_index]->VTable0x4c(p_animationIndex);
+	MabMaterialAnimation0x14* materialAnimation = m_worldDatabases[p_index]->VTable0x4c(p_animationIndex);
 	return &materialAnimation->GetUnk0x0c()[p_itemIndex];
 }
 
 // FUNCTION: LEGORACERS 0x00406f90
-LegoU32 CutsceneDefinition::FUN_00406f90(LegoFloat p_scale)
+LegoU32 CutsceneDefinition::SetWorldScale(LegoFloat p_scale)
 {
 	LegoU32 i = 0;
-	LegoU32 result = m_unk0x18;
+	LegoU32 result = m_worldDatabaseCount;
 	if (result > 0) {
 		do {
-			m_unk0x1c[i]->FUN_00416290(p_scale);
-			result = m_unk0x18;
+			m_worldDatabases[i]->FUN_00416290(p_scale);
+			result = m_worldDatabaseCount;
 			i++;
 		} while (i < result);
 	}
@@ -1627,25 +1634,25 @@ CutsceneDefinition::Frame::TransformEvent::TransformEvent()
 // FUNCTION: LEGORACERS 0x00407010
 CutsceneDefinition::Frame::TransformEvent::~TransformEvent()
 {
-	FUN_004071a0();
+	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00407060
 void CutsceneDefinition::Frame::TransformEvent::Reset()
 {
-	m_unk0x20.m_x = 0.0f;
-	m_unk0x20.m_y = 0.0f;
-	m_unk0x20.m_z = 0.0f;
-	m_unk0x2c.m_x = 1.0f;
-	m_unk0x2c.m_y = 0.0f;
-	m_unk0x2c.m_z = 0.0f;
-	m_unk0x38.m_x = 0.0f;
-	m_unk0x38.m_y = 0.0f;
-	m_unk0x38.m_z = 1.0f;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_direction.m_x = 1.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+	m_up.m_x = 0.0f;
+	m_up.m_y = 0.0f;
+	m_up.m_z = 1.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00407090
-LegoU32 CutsceneDefinition::Frame::TransformEvent::FUN_00407090(GolFileParser* p_parser)
+LegoU32 CutsceneDefinition::Frame::TransformEvent::Parse(GolFileParser* p_parser)
 {
 	LegoU32 duration = 0;
 
@@ -1657,23 +1664,23 @@ LegoU32 CutsceneDefinition::Frame::TransformEvent::FUN_00407090(GolFileParser* p
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case CutsceneDefinition::c_tokenStartFrame:
-			m_unk0x0c = p_parser->ReadInteger();
+			m_startFrame = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenDuration:
 			duration = p_parser->ReadInteger();
 			break;
 		case CutsceneDefinition::c_tokenLocation:
-			m_unk0x20.m_x = p_parser->ReadFloat();
-			m_unk0x20.m_y = p_parser->ReadFloat();
-			m_unk0x20.m_z = p_parser->ReadFloat();
+			m_position.m_x = p_parser->ReadFloat();
+			m_position.m_y = p_parser->ReadFloat();
+			m_position.m_z = p_parser->ReadFloat();
 			break;
 		case CutsceneDefinition::c_tokenOrientation:
-			m_unk0x2c.m_x = p_parser->ReadFloat();
-			m_unk0x2c.m_y = p_parser->ReadFloat();
-			m_unk0x2c.m_z = p_parser->ReadFloat();
-			m_unk0x38.m_x = p_parser->ReadFloat();
-			m_unk0x38.m_y = p_parser->ReadFloat();
-			m_unk0x38.m_z = p_parser->ReadFloat();
+			m_direction.m_x = p_parser->ReadFloat();
+			m_direction.m_y = p_parser->ReadFloat();
+			m_direction.m_z = p_parser->ReadFloat();
+			m_up.m_x = p_parser->ReadFloat();
+			m_up.m_y = p_parser->ReadFloat();
+			m_up.m_z = p_parser->ReadFloat();
 			break;
 		default:
 			break;
@@ -1682,29 +1689,29 @@ LegoU32 CutsceneDefinition::Frame::TransformEvent::FUN_00407090(GolFileParser* p
 		token = p_parser->GetNextToken();
 	}
 
-	m_unk0x10 = duration + m_unk0x0c;
-	return m_unk0x10;
+	m_endFrame = duration + m_startFrame;
+	return m_endFrame;
 }
 
 // FUNCTION: LEGORACERS 0x004071a0
-void CutsceneDefinition::Frame::TransformEvent::FUN_004071a0()
+void CutsceneDefinition::Frame::TransformEvent::Clear()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004071b0
-void CutsceneDefinition::Frame::TransformEvent::VTable0x10(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::TransformEvent::Begin(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	Event::VTable0x10(p_frame, p_event);
+	Event::Begin(p_frame, p_event);
 	if (p_event) {
 		p_event->OnTransformStarted(p_frame, m_name, this);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004071e0
-void CutsceneDefinition::Frame::TransformEvent::VTable0x14(Frame* p_frame, CutsceneEventSink* p_event)
+void CutsceneDefinition::Frame::TransformEvent::End(Frame* p_frame, CutsceneEventSink* p_event)
 {
-	Event::VTable0x14(p_frame, p_event);
+	Event::End(p_frame, p_event);
 	if (p_event) {
 		p_event->OnTransformEnded(p_frame, m_name, this);
 	}

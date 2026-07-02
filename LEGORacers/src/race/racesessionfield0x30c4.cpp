@@ -51,10 +51,10 @@ void RaceSession::Field0x30c4::FUN_0043a690(const Params* p_source)
 void RaceSession::Field0x30c4::FUN_0043a6e0()
 {
 	m_raceState->RecordBestTimes(m_context);
-	m_unk0x28->FUN_00462c60();
+	m_unk0x28->ForceAllEvents();
 
 	for (LegoU32 racerIndex = 0; racerIndex < m_raceState->GetRacerCount(); racerIndex++) {
-		m_unk0x28->FUN_00462da0(&m_raceState->GetRacers()[racerIndex]);
+		m_unk0x28->EndAllForRacer(&m_raceState->GetRacers()[racerIndex]);
 	}
 
 	m_unk0x20->VTable0x0c();

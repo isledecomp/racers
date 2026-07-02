@@ -65,7 +65,7 @@ LegoS32 RaceState::Racer::DroppableBrick::SnapToGround(GolVec3* p_position)
 	end.m_y = p_position->m_y;
 	end.m_z = p_position->m_z - g_brickProbeRange;
 
-	LegoS32 result = m_manager->m_collisionWorld->FUN_0041f4d0(&start, &end, &record, p_position, NULL);
+	LegoS32 result = m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, p_position, NULL);
 	p_position->m_z = p_position->m_z + g_brickGroundOffset;
 	return result;
 }

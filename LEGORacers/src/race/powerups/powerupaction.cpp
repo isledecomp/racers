@@ -113,7 +113,7 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 		p_record = &record;
 	}
 
-	if (m_collisionWorld->FUN_0041f4d0(&start, &end, p_record, p_position, NULL)) {
+	if (m_collisionWorld->IntersectSegment(&start, &end, p_record, p_position, NULL)) {
 		verticalOffset.Clear();
 		verticalOffset.m_z = g_dropGroundOffset;
 		*p_position += verticalOffset;

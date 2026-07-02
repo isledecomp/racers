@@ -969,7 +969,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	RacePowerupManager::Params powerupParams;
 	Field0x30c4::Params field0x30c4Params;
-	Field0x2098::Params params;
+	RaceEventTable::Params params;
 	HazardManager::Context dispatcherContext;
 	RaceState::RacerContext racerContext;
 	RaceState::CreateRacersParams racerParams;
@@ -1012,7 +1012,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	racerContext.m_particleAnimation = &m_unk0x2150;
 	racerContext.m_sharedParticleAnimation = &m_unk0x248c;
 	racerContext.m_decalManager = &m_unk0x27d4;
-	racerContext.m_eventTable = m_unk0x2098.GetEventTable();
+	racerContext.m_eventTable = &m_eventTable;
 	racerContext.m_unk0x2c = &m_unk0x27e0;
 	racerContext.m_shadowsEnabled = TRUE;
 	racerContext.m_checkpointGraph = &m_unk0x27f4;
@@ -1104,27 +1104,27 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_unk0x2804.Load(&m_unk0x1e2, m_context->m_useBinaryFiles, p_mirror);
 	}
 
-	params.m_unk0x00 = m_unk0x390;
-	params.m_unk0x04 = m_unk0x398;
+	params.m_trackDatabase = m_unk0x390;
+	params.m_sharedDatabase = m_unk0x398;
 	params.m_unk0x08 = m_unk0x3a0;
 	params.m_unk0x0c = m_unk0x3a4;
-	params.m_unk0x10 = &m_unk0x3300;
-	params.m_unk0x14 = &m_unk0x2148;
-	params.m_unk0x18 = &m_unk0x2150;
-	params.m_unk0x1c = &m_unk0x248c;
-	params.m_unk0x20 = &m_unk0x2f90;
-	params.m_unk0x24 = &m_unk0x2804;
+	params.m_soundSource = &m_unk0x3300;
+	params.m_hazardManager = &m_unk0x2148;
+	params.m_particleAnimation = &m_unk0x2150;
+	params.m_sharedParticleAnimation = &m_unk0x248c;
+	params.m_skyState = &m_unk0x2f90;
+	params.m_targetPoints = &m_unk0x2804;
 	params.m_name = &m_unk0x105;
 	params.m_binary = m_context->m_useBinaryFiles;
 	params.m_mirror = p_mirror;
-	m_unk0x2098.FUN_0045efa0(&params);
+	m_eventTable.Load(&params);
 
 	FUN_00435ba0(0.77f);
 
 	dispatcherContext.m_eventQueue = &m_raceState.m_roster;
 	dispatcherContext.m_unk0x04 = m_context;
 	dispatcherContext.m_soundSource = &m_unk0x3300;
-	dispatcherContext.m_eventTable = m_unk0x2098.GetEventTable();
+	dispatcherContext.m_eventTable = &m_eventTable;
 	dispatcherContext.m_trackDatabase = m_unk0x390;
 	dispatcherContext.m_sharedDatabase = m_unk0x398;
 	dispatcherContext.m_unk0x18 = m_unk0x3a0;
@@ -1143,10 +1143,10 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	FUN_00435ba0(0.8f);
 
 	m_unk0x32c4.FUN_0045e3f0(m_unk0x3a0, &m_raceState);
-	m_unk0x32b4.FUN_0041f440(m_unk0x3a0, &m_unk0xaa, m_unk0x2098.GetEventTable(), &m_unk0x27e0);
+	m_unk0x32b4.Initialize(m_unk0x3a0, &m_unk0xaa, &m_eventTable, &m_unk0x27e0);
 	m_unk0x2080.FUN_00463dc0(
 		&m_raceState,
-		m_unk0x2098.GetEventTable(),
+		&m_eventTable,
 		&m_unk0x6dc,
 		m_unk0x3a0,
 		&m_unk0x32c4,
@@ -1157,22 +1157,12 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.84f);
 
-	m_unk0x2128.FUN_00464ff0(
-		m_raceState.GetEventQueue(),
-		m_unk0x2098.GetEventTable(),
-		&m_unk0x112,
-		m_context->m_useBinaryFiles,
-		p_mirror
-	);
+	m_unk0x2128
+		.FUN_00464ff0(m_raceState.GetEventQueue(), &m_eventTable, &m_unk0x112, m_context->m_useBinaryFiles, p_mirror);
 
 	FUN_00435ba0(0.86f);
 
-	m_unk0x213c.FUN_00464aa0(
-		m_raceState.GetEventQueue(),
-		m_unk0x2098.GetEventTable(),
-		&m_unk0x11f,
-		m_context->m_useBinaryFiles
-	);
+	m_unk0x213c.FUN_00464aa0(m_raceState.GetEventQueue(), &m_eventTable, &m_unk0x11f, m_context->m_useBinaryFiles);
 
 	FUN_00435ba0(0.88f);
 
@@ -1238,7 +1228,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	field0x30c4Params.m_unk0x1c = &m_unk0x2080;
 	field0x30c4Params.m_unk0x20 = &m_unk0x2128;
 	field0x30c4Params.m_unk0x24 = &m_unk0x32c4;
-	field0x30c4Params.m_unk0x28 = &m_unk0x2098;
+	field0x30c4Params.m_unk0x28 = &m_eventTable;
 	m_unk0x30c4.FUN_0043a690(&field0x30c4Params);
 
 	m_unk0x2150
@@ -1326,7 +1316,7 @@ void RaceSession::FUN_00434000()
 	m_unk0x2080.Destroy();
 	m_unk0x32c4.Destroy();
 	m_unk0x2148.Destroy();
-	m_unk0x2098.Destroy();
+	m_eventTable.Destroy();
 	m_unk0x2804.Reset();
 	m_unk0x2f90.Clear();
 	m_raceState.Destroy();
@@ -2065,7 +2055,7 @@ void RaceSession::VTable0x30()
 		m_unk0x2150.FUN_00489fa0(elapsedMs);
 		m_unk0x248c.FUN_00489fa0(elapsedMs);
 		m_trailManager.FUN_00493a20(elapsedMs);
-		m_unk0x2098.FUN_00461cc0(elapsedMs);
+		m_eventTable.Update(elapsedMs);
 		m_unk0x2148.Update(elapsedMs);
 		m_unk0x213c.FUN_00464dd0(elapsedMs);
 		m_unk0x27fc.Update(elapsedMs);

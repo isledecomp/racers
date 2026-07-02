@@ -56,7 +56,7 @@ void RacePowerupManager::CurseAction::Destroy()
 // FUNCTION: LEGORACERS 0x00452530
 void RacePowerupManager::CurseAction::Initialize(
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_collisionWorld,
+	TriggerWorld* p_collisionWorld,
 	RacePowerupManager* p_manager
 )
 {

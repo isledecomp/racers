@@ -143,7 +143,7 @@ RaceSession::Field0x2080::~Field0x2080()
 // STUB: LEGORACERS 0x00463dc0
 void RaceSession::Field0x2080::FUN_00463dc0(
 	RaceState* p_raceState,
-	RaceEventTable0x90* p_eventTable,
+	RaceEventTable* p_eventTable,
 	RacePowerupManager* p_field0x6dc,
 	GolWorldDatabase* p_worldDatabase,
 	Field0x32c4* p_field0x32c4,
@@ -380,7 +380,7 @@ RaceSession::Field0x2128::~Field0x2128()
 // FUNCTION: LEGORACERS 0x00464ff0
 void RaceSession::Field0x2128::FUN_00464ff0(
 	LegoEventQueue* p_eventQueue,
-	RaceEventTable0x90* p_unk0x08,
+	RaceEventTable* p_unk0x08,
 	const LegoChar* p_name,
 	LegoBool32 p_binary,
 	LegoBool32 p_mirror

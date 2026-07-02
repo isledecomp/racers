@@ -66,7 +66,7 @@ void RacePowerupManager::MagnetAction::Reset()
 void RacePowerupManager::MagnetAction::Initialize(
 	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_collisionWorld,
+	TriggerWorld* p_collisionWorld,
 	CutsceneAnimation*,
 	GolExport*,
 	GolD3DRenderDevice*,

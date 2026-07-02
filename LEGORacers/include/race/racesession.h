@@ -27,15 +27,16 @@
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
 #include "race/racecameracontroller.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
 #include "race/racer/racerouterecord.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
-#include "race/racesessionfield0x32b4.h"
+#include "race/racesky.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
 #include "race/slatebridge0x68.h"
+#include "race/triggerworld.h"
 #include "scene/golbillboard.h"
 #include "surface/color.h"
 #include "types.h"
@@ -136,8 +137,6 @@ private:
 public:
 	class Field0x258;
 	class Field0x23c;
-	class Field0x2098;
-	class Field0x2f90;
 	class Field0x2804;
 	class Field0x32c4;
 
@@ -352,7 +351,7 @@ public:
 
 			GolWorldEntity m_unk0x04;         // 0x04
 			LegoEventQueue::Event* m_unk0x2c; // 0x2c
-			RaceEventTable0x90* m_unk0x30;    // 0x30
+			RaceEventTable* m_unk0x30;        // 0x30
 			LegoS32 m_unk0x34;                // 0x34
 			LegoU32 m_flags0x38;              // 0x38
 		};
@@ -360,11 +359,11 @@ public:
 		// SIZE 0x1c
 		class EntryParams {
 		public:
-			RaceEventTable0x90* m_unk0x00; // 0x00
-			LegoS32 m_unk0x04;             // 0x04
-			GolVec3 m_unk0x08;             // 0x08
-			LegoFloat m_unk0x14;           // 0x14
-			LegoBool32 m_unk0x18;          // 0x18
+			RaceEventTable* m_unk0x00; // 0x00
+			LegoS32 m_unk0x04;         // 0x04
+			GolVec3 m_unk0x08;         // 0x08
+			LegoFloat m_unk0x14;       // 0x14
+			LegoBool32 m_unk0x18;      // 0x18
 		};
 
 		Field0x2128();
@@ -384,7 +383,7 @@ public:
 
 		void FUN_00464ff0(
 			LegoEventQueue* p_eventQueue,
-			RaceEventTable0x90* p_unk0x08,
+			RaceEventTable* p_unk0x08,
 			const LegoChar* p_name,
 			LegoBool32 p_binary,
 			LegoBool32 p_mirror
@@ -395,10 +394,10 @@ public:
 		void FUN_00465350(GolFileParser* p_parser, EntryParams* p_params);
 		LegoEventQueue::Event* FUN_004653f0(Entry* p_entry, LegoBool32 p_unk0x0c);
 
-		LegoEventQueue* m_eventQueue;  // 0x04
-		RaceEventTable0x90* m_unk0x08; // 0x08
-		LegoU32 m_count;               // 0x0c
-		Entry* m_entries;              // 0x10
+		LegoEventQueue* m_eventQueue; // 0x04
+		RaceEventTable* m_unk0x08;    // 0x08
+		LegoU32 m_count;              // 0x0c
+		Entry* m_entries;             // 0x10
 	};
 
 	// VTABLE: LEGORACERS 0x004b1c74
@@ -466,7 +465,7 @@ public:
 
 		void FUN_00463dc0(
 			RaceState* p_raceState,
-			RaceEventTable0x90* p_eventTable,
+			RaceEventTable* p_eventTable,
 			RacePowerupManager* p_field0x6dc,
 			GolWorldDatabase* p_worldDatabase,
 			Field0x32c4* p_field0x32c4,
@@ -479,650 +478,6 @@ public:
 	};
 
 	// SIZE 0x90
-	class Field0x2098 {
-	public:
-		// VTABLE: LEGORACERS 0x004b1b4c
-		// SIZE 0x1fc
-		class EvbTxtParser : public GolTxtParser {
-			// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-			// RaceSession::Field0x2098::EvbTxtParser::`scalar deleting destructor'
-
-			// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-			// RaceSession::Field0x2098::EvbTxtParser::~EvbTxtParser
-		};
-
-		// SIZE 0x34
-		struct Params {
-			GolWorldDatabase* m_unk0x00;              // 0x00
-			GolWorldDatabase* m_unk0x04;              // 0x04
-			GolWorldDatabase* m_unk0x08;              // 0x08
-			GolWorldDatabase* m_unk0x0c;              // 0x0c
-			RaceState::Racer::SoundSource* m_unk0x10; // 0x10
-			HazardManager* m_unk0x14;                 // 0x14
-			CutsceneAnimation* m_unk0x18;             // 0x18
-			CutsceneAnimation* m_unk0x1c;             // 0x1c
-			Field0x2f90* m_unk0x20;                   // 0x20
-			Field0x2804* m_unk0x24;                   // 0x24
-			const LegoChar* m_name;                   // 0x28
-			LegoBool32 m_binary;                      // 0x2c
-			LegoBool32 m_mirror;                      // 0x30
-		};
-
-		// VTABLE: LEGORACERS 0x004b1b28
-		// SIZE 0x20
-		class Resource {
-		public:
-			enum {
-				c_state0x18One = 1,
-				c_state0x18Three = 3,
-				c_state0x18Four = 4,
-				c_state0x18Five = 5,
-				c_flags0x1cBit1 = 1 << 1,
-				c_flags0x1cBit2 = 1 << 2,
-				c_flags0x1cBit3 = 1 << 3,
-				c_flags0x1cBit5 = 1 << 5
-			};
-
-			Resource();
-			virtual void VTable0x00(RaceState::Racer* p_racer); // vtable+0x00
-			virtual void VTable0x04(GolVec3* p_unk0x04);        // vtable+0x04
-			virtual void VTable0x08(RaceState::Racer* p_racer); // vtable+0x08
-			virtual void VTable0x0c();                          // vtable+0x0c
-			virtual ~Resource();                                // vtable+0x10
-			virtual void VTable0x14(LegoU32 p_elapsedMs);       // vtable+0x14
-
-			void ForceEventEnd(RaceState::Racer* p_racer);
-			void Reset();
-			void FUN_0045edd0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
-			void SetState0x18(LegoU32 p_state) { m_state0x18 = p_state; }
-
-			// SYNTHETIC: LEGORACERS 0x0045ed70
-			// RaceSession::Field0x2098::Resource::`scalar deleting destructor'
-
-		protected:
-			RaceEventTable0x90* m_unk0x04;    // 0x04
-			LegoS32 m_eventIds[3];            // 0x08
-			undefined4 m_unk0x14;             // 0x14
-			LegoU32 m_state0x18;              // 0x18
-			LegoU8 m_flags0x1c;               // 0x1c
-			undefined m_unk0x1d[0x20 - 0x1d]; // 0x1d
-		};
-
-		// VTABLE: LEGORACERS 0x004b1ca4
-		// SIZE 0x24
-		class Resource0x24 : public Resource {
-		public:
-			// SIZE 0x18
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				undefined4 m_unk0x14;             // 0x14
-			};
-
-			Resource0x24();
-			~Resource0x24() override;
-			void VTable0x00(RaceState::Racer* p_racer) override;
-			void VTable0x08(RaceState::Racer* p_racer) override;
-
-			void FUN_00464610(InitParams* p_params);
-			void FUN_00464660();
-
-			// SYNTHETIC: LEGORACERS 0x00461b40
-			// RaceSession::Field0x2098::Resource0x24::`vector deleting destructor'
-
-		private:
-			undefined4 m_unk0x20; // 0x20
-		};
-
-		// VTABLE: LEGORACERS 0x004b1ad4
-		// SIZE 0x2c
-		class Resource0x2c : public Resource {
-		public:
-			// SIZE 0x20
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				GolVec3 m_unk0x14;                // 0x14
-			};
-
-			Resource0x2c();
-			~Resource0x2c() override;
-			void VTable0x00(RaceState::Racer* p_racer) override;
-			void VTable0x08(RaceState::Racer* p_racer) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004513d0(undefined4 p_unk0x04);
-			void FUN_0045e650(InitParams* p_params);
-			void FUN_0045e6b0();
-
-			// SYNTHETIC: LEGORACERS 0x00461610
-			// RaceSession::Field0x2098::Resource0x2c::`vector deleting destructor'
-
-		private:
-			GolVec3 m_unk0x20; // 0x20
-		};
-
-		// VTABLE: LEGORACERS 0x004b1af0
-		// SIZE 0x30
-		class Resource0x30 : public Resource {
-		public:
-			// SIZE 0x20
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				LegoS32 m_unk0x14;                // 0x14
-				LegoU32 m_unk0x18;                // 0x18
-				LegoBool32 m_unk0x1c;             // 0x1c
-			};
-
-			Resource0x30();
-			~Resource0x30() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004513d0(undefined4 p_unk0x04);
-			void FUN_0045e7d0();
-			void FUN_0045e7f0(InitParams* p_params);
-			void FUN_0045e860();
-
-			// SYNTHETIC: LEGORACERS 0x00460cb0
-			// RaceSession::Field0x2098::Resource0x30::`vector deleting destructor'
-
-		private:
-			LegoS32 m_unk0x20;                // 0x20
-			LegoU32 m_unk0x24;                // 0x24
-			LegoU32 m_unk0x28;                // 0x28
-			LegoU8 m_flags0x2c;               // 0x2c
-			undefined m_unk0x2d[0x30 - 0x2d]; // 0x2d
-		};
-
-		// VTABLE: LEGORACERS 0x004b1be4
-		// SIZE 0x34
-		class Resource0x34 : public Resource {
-		public:
-			// SIZE 0x38
-			struct InitParams {
-				undefined4 m_unk0x00;                // 0x00
-				LegoS32 m_eventIds[3];               // 0x04
-				RaceEventTable0x90* m_eventTable;    // 0x10
-				MabMaterialAnimation0x14* m_unk0x14; // 0x14
-				MaterialTable0x0c* m_unk0x18;        // 0x18
-				LegoU16 m_unk0x1c;                   // 0x1c
-				undefined m_unk0x1e[0x20 - 0x1e];    // 0x1e
-				LegoU32 m_unk0x20;                   // 0x20
-				LegoU32 m_unk0x24;                   // 0x24
-				LegoBool32 m_unk0x28;                // 0x28
-				LegoBool32 m_unk0x2c;                // 0x2c
-				LegoBool32 m_unk0x30;                // 0x30
-				LegoBool32 m_unk0x34;                // 0x34
-			};
-
-			Resource0x34();
-			~Resource0x34() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_00463120(InitParams* p_params);
-			void FUN_004631e0();
-
-			// SYNTHETIC: LEGORACERS 0x0045fe50
-			// RaceSession::Field0x2098::Resource0x34::`vector deleting destructor'
-
-		private:
-			enum {
-				c_flags0x1cBit0 = 1 << 0
-			};
-
-			MabMaterialAnimation0x14* m_unk0x20;     // 0x20
-			MabMaterialAnimationItem0x18* m_unk0x24; // 0x24
-			MabMaterialAnimationItem0x18* m_unk0x28; // 0x28
-			MaterialTable0x0c* m_unk0x2c;            // 0x2c
-			LegoU16 m_unk0x30;                       // 0x30
-			undefined m_unk0x32[0x34 - 0x32];        // 0x32
-		};
-
-		// VTABLE: LEGORACERS 0x004b1c00
-		// SIZE 0x34
-		class AnimatedPartResource0x34 : public Resource {
-		public:
-			// SIZE 0x3c
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				GolAnimatedEntity* m_unk0x14;     // 0x14
-				LegoS32 m_unk0x18;                // 0x18
-				LegoS32 m_unk0x1c;                // 0x1c
-				LegoS32 m_unk0x20;                // 0x20
-				LegoS32 m_unk0x24;                // 0x24
-				LegoBool32 m_unk0x28;             // 0x28
-				LegoBool32 m_unk0x2c;             // 0x2c
-				LegoBool32 m_unk0x30;             // 0x30
-				LegoBool32 m_unk0x34;             // 0x34
-				LegoBool32 m_unk0x38;             // 0x38
-			};
-
-			AnimatedPartResource0x34();
-			~AnimatedPartResource0x34() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_00463330(InitParams* p_params);
-			void FUN_004633e0();
-
-			// SYNTHETIC: LEGORACERS 0x0045f9d0
-			// RaceSession::Field0x2098::AnimatedPartResource0x34::`vector deleting destructor'
-
-		private:
-			enum {
-				c_flags0x1cBit0 = 1 << 0,
-				c_flags0x1cBit4 = 1 << 4,
-				c_entityFlag0x200000 = 1 << 21,
-				c_entityFlags0x4e0000 = 0x4e0000,
-				c_entityFlags0x0e0000 = 0x0e0000,
-				c_entityFlags0x120000 = 0x120000
-			};
-
-			GolAnimatedEntity* m_unk0x20; // 0x20
-			LegoS32 m_unk0x24;            // 0x24
-			LegoS32 m_unk0x28;            // 0x28
-			LegoS32 m_unk0x2c;            // 0x2c
-			LegoS32 m_unk0x30;            // 0x30
-		};
-
-		// VTABLE: LEGORACERS 0x004b1c20
-		// SIZE 0x34
-		class ModelDistanceResource0x34 : public Resource {
-		public:
-			// SIZE 0x24
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				GolModelEntity* m_unk0x14;        // 0x14
-				LegoBool32 m_unk0x18;             // 0x18
-				LegoBool32 m_unk0x1c;             // 0x1c
-				LegoBool32 m_unk0x20;             // 0x20
-			};
-
-			ModelDistanceResource0x34();
-			~ModelDistanceResource0x34() override;
-			void VTable0x04(GolVec3*) override;
-			void VTable0x0c() override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004636e0();
-			void FUN_00463700(InitParams* p_params);
-			void FUN_004637a0();
-
-			// SYNTHETIC: LEGORACERS 0x004613d0
-			// RaceSession::Field0x2098::ModelDistanceResource0x34::`vector deleting destructor'
-
-		private:
-			GolModelEntity* m_unk0x20;     // 0x20
-			LegoFloat m_modelDistances[3]; // 0x24
-			LegoBool32 m_unk0x30;          // 0x30
-		};
-
-		// VTABLE: LEGORACERS 0x004b1c3c
-		// SIZE 0x2c
-		class NodeTransformResource0x2c : public Resource {
-		public:
-			// SIZE 0x24
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				GolBoundedEntity* m_unk0x14;      // 0x14
-				GolModelEntity* m_unk0x18;        // 0x18
-				LegoU32 m_unk0x1c;                // 0x1c
-				LegoBool32 m_unk0x20;             // 0x20
-			};
-
-			NodeTransformResource0x2c();
-			~NodeTransformResource0x2c() override;
-			void VTable0x04(GolVec3*) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004638f0();
-			void FUN_00463900(InitParams* p_params);
-			void FUN_00463970();
-
-			// SYNTHETIC: LEGORACERS 0x00461010
-			// RaceSession::Field0x2098::NodeTransformResource0x2c::`vector deleting destructor'
-
-		private:
-			GolBoundedEntity* m_unk0x20; // 0x20
-			GolModelEntity* m_unk0x24;   // 0x24
-			LegoU32 m_unk0x28;           // 0x28
-		};
-
-		// VTABLE: LEGORACERS 0x004b1aac
-		// SIZE 0x34
-		class SkyStateResource0x34 : public Resource {
-		public:
-			// SIZE 0x2c
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				Field0x2f90* m_unk0x14;           // 0x14
-				GolName m_unk0x18;                // 0x18
-				LegoU32 m_unk0x20;                // 0x20
-				LegoBool32 m_unk0x24;             // 0x24
-				LegoU8 m_flags0x28;               // 0x28
-				undefined m_unk0x29[0x2c - 0x29]; // 0x29
-			};
-
-			SkyStateResource0x34();
-			~SkyStateResource0x34() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_0045e1f0();
-			void FUN_0045e200(InitParams* p_params);
-			void FUN_0045e280();
-
-			// SYNTHETIC: LEGORACERS 0x004606c0
-			// RaceSession::Field0x2098::SkyStateResource0x34::`vector deleting destructor'
-
-		private:
-			enum {
-				c_flags0x30Bit0 = 1 << 0,
-				c_flags0x30Bit1 = 1 << 1,
-				c_flags0x30Bit2 = 1 << 2,
-				c_flags0x30Bit3 = 1 << 3
-			};
-
-			Field0x2f90* m_unk0x20; // 0x20
-			GolName m_unk0x24;      // 0x24
-			LegoU32 m_unk0x2c;      // 0x2c
-			LegoU8 m_flags0x30;     // 0x30
-			undefined m_unk0x31[0x34 - 0x31];
-		};
-
-		// VTABLE: LEGORACERS 0x004b1bc8
-		// SIZE 0x38
-		class Resource0x38 : public Resource {
-		public:
-			// SIZE 0x30
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				GolVec3 m_unk0x14;                // 0x14
-				LegoU32 m_unk0x20;                // 0x20
-				LegoS32 m_unk0x24;                // 0x24
-				LegoBool32 m_unk0x28;             // 0x28
-				LegoBool32 m_unk0x2c;             // 0x2c
-			};
-
-			Resource0x38();
-			~Resource0x38() override;
-			void VTable0x00(RaceState::Racer* p_racer) override;
-			void VTable0x08(RaceState::Racer* p_racer) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_00462f10();
-			void FUN_00462f40(InitParams* p_params);
-			void FUN_00462fc0();
-
-			// SYNTHETIC: LEGORACERS 0x00461930
-			// RaceSession::Field0x2098::Resource0x38::`vector deleting destructor'
-
-		private:
-			enum {
-				c_flags0x34Bit0 = 1 << 0
-			};
-
-			GolVec3 m_unk0x20;                // 0x20
-			LegoU32 m_unk0x2c;                // 0x2c
-			LegoS32 m_unk0x30;                // 0x30
-			LegoU8 m_flags0x34;               // 0x34
-			undefined m_unk0x35[0x38 - 0x35]; // 0x35
-		};
-
-		// VTABLE: LEGORACERS 0x004b1de0
-		// SIZE 0x48
-		class Resource0x48 : public Resource {
-		public:
-			// SIZE 0x3c
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				LegoU32 m_flags0x14;              // 0x14
-				ColorTransform0x20 m_unk0x18;     // 0x18
-				GolWorldEntity* m_unk0x38;        // 0x38
-			};
-
-			Resource0x48();
-			~Resource0x48() override;
-			void VTable0x00(RaceState::Racer* p_racer) override;
-			void VTable0x08(RaceState::Racer* p_racer) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_00465560();
-			void FUN_00465570(InitParams* p_params);
-			void FUN_004655e0();
-
-			// SYNTHETIC: LEGORACERS 0x00460a70
-			// RaceSession::Field0x2098::Resource0x48::`vector deleting destructor'
-
-		private:
-			enum {
-				c_flags0x20Bit1 = 1 << 1,
-			};
-
-			LegoU32 m_flags0x20;          // 0x20
-			ColorTransform0x20 m_unk0x24; // 0x24
-			GolWorldEntity* m_unk0x44;    // 0x44
-		};
-
-		// VTABLE: LEGORACERS 0x004b1c84
-		// SIZE 0x5c
-		class Resource0x5c : public Resource {
-		public:
-			enum {
-				c_flags0x1cBit0 = 1 << 0,
-				c_flags0x1cBit3 = 1 << 3,
-				c_randomTableMask = 0x3ff,
-				c_randomDelayBaseMs = 500,
-				c_randomDelayRangeMs = 1000,
-				c_probabilityMax = 0xff
-			};
-
-			// SIZE 0x4c
-			struct InitParams {
-				undefined4 m_unk0x00;                     // 0x00
-				undefined4 m_unk0x04;                     // 0x04
-				RaceState::Racer::SoundSource* m_unk0x08; // 0x08
-				GolVec3 m_unk0x0c;                        // 0x0c
-				LegoU32 m_unk0x18;                        // 0x18
-				LegoU32 m_unk0x1c;                        // 0x1c
-				LegoFloat m_unk0x20;                      // 0x20
-				LegoFloat m_unk0x24;                      // 0x24
-				LegoFloat m_unk0x28;                      // 0x28
-				LegoFloat m_unk0x2c;                      // 0x2c
-				LegoFloat m_unk0x30;                      // 0x30
-				LegoBool32 m_unk0x34;                     // 0x34
-				LegoBool32 m_unk0x38;                     // 0x38
-				LegoBool32 m_unk0x3c;                     // 0x3c
-				LegoBool32 m_unk0x40;                     // 0x40
-				GolModelEntity* m_unk0x44;                // 0x44
-				LegoU32 m_unk0x48;                        // 0x48
-			};
-
-			Resource0x5c();
-			~Resource0x5c() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004641b0(InitParams* p_params);
-			void FUN_00464290();
-			void FUN_004644b0();
-
-			// SYNTHETIC: LEGORACERS 0x0045f600
-			// RaceSession::Field0x2098::Resource0x5c::`vector deleting destructor'
-
-		private:
-			union {
-				SpatialSoundInstance* m_unk0x20;          // 0x20
-				RaceResourceManager::Resource* m_res0x20; // 0x20
-			};
-			RaceState::Racer::SoundSource* m_unk0x24; // 0x24
-			GolModelEntity* m_unk0x28;                // 0x28
-			LegoU32 m_unk0x2c;                        // 0x2c
-			SoundVector m_unk0x30;                    // 0x30
-			LegoU32 m_unk0x3c;                        // 0x3c
-			LegoU32 m_unk0x40;                        // 0x40
-			LegoFloat m_unk0x44;                      // 0x44
-			LegoFloat m_unk0x48;                      // 0x48
-			LegoFloat m_unk0x4c;                      // 0x4c
-			LegoFloat m_unk0x50;                      // 0x50
-			LegoU8 m_unk0x54;                         // 0x54
-			undefined m_unk0x55[0x58 - 0x55];         // 0x55
-			LegoU32 m_unk0x58;                        // 0x58
-		};
-
-		// VTABLE: LEGORACERS 0x004b1b0c
-		// SIZE 0x64
-		class Resource0x64 : public Resource {
-		public:
-			// SIZE 0x5c
-			struct InitParams {
-				undefined4 m_unk0x00;             // 0x00
-				LegoS32 m_eventIds[3];            // 0x04
-				RaceEventTable0x90* m_eventTable; // 0x10
-				CutsceneAnimation* m_unk0x14;     // 0x14
-				CutsceneAnimation* m_unk0x18;     // 0x18
-				GolModelEntity* m_unk0x1c;        // 0x1c
-				LegoU32 m_unk0x20;                // 0x20
-				GolName m_unk0x24;                // 0x24
-				GolVec3 m_unk0x2c;                // 0x2c
-				GolVec3 m_unk0x38;                // 0x38
-				GolVec3 m_unk0x44;                // 0x44
-				undefined4 m_unk0x50;             // 0x50
-				undefined4 m_unk0x54;             // 0x54
-				undefined4 m_unk0x58;             // 0x58
-			};
-
-			Resource0x64();
-			~Resource0x64() override;
-			void VTable0x04(GolVec3* p_unk0x04) override;
-			void VTable0x0c() override;
-			void VTable0x14(LegoU32 p_elapsedMs) override;
-			virtual LegoU32 VTable0x18(); // vtable+0x18
-
-			void FUN_004513d0(undefined4 p_unk0x04);
-			void FUN_0045e9c0();
-			void FUN_0045ea00(InitParams* p_params);
-			void FUN_0045ead0();
-
-			// SYNTHETIC: LEGORACERS 0x004602c0
-			// RaceSession::Field0x2098::Resource0x64::`vector deleting destructor'
-
-		private:
-			CutsceneAnimation* m_unk0x20;   // 0x20
-			CutsceneAnimation* m_unk0x24;   // 0x24
-			GolName m_unk0x28;              // 0x28
-			CutsceneParticleRef* m_unk0x30; // 0x30
-			GolModelEntity* m_unk0x34;      // 0x34
-			LegoU32 m_unk0x38;              // 0x38
-			GolVec3 m_unk0x3c;              // 0x3c
-			GolVec3 m_unk0x48;              // 0x48
-			GolVec3 m_unk0x54;              // 0x54
-			LegoU32 m_unk0x60;              // 0x60
-		};
-
-		// SIZE 0x08
-		struct Field0x6c {
-			LegoS32 m_unk0x00; // 0x00
-			LegoS32 m_unk0x04; // 0x04
-		};
-
-		Field0x2098();
-		~Field0x2098();
-		RaceEventTable0x90* GetEventTable() { return &m_eventTable; }
-		void FUN_00461cc0(LegoU32 p_elapsedMs);
-		void FUN_00462c60();
-		void FUN_00462da0(RaceState::Racer* p_racer);
-
-	private:
-		friend class RaceSession;
-
-		void Destroy();
-		void FUN_0045efa0(Params* p_params);
-		void FUN_0045f220(GolFileParser* p_parser, LegoBool32 p_mirror);
-		void FUN_0045f660(GolFileParser* p_parser);
-		void FUN_0045fa30(GolFileParser* p_parser);
-		void FUN_0045feb0(GolFileParser* p_parser, LegoBool32 p_mirror);
-		void FUN_00460320(GolFileParser* p_parser);
-		void FUN_00460430(GolFileParser* p_parser);
-		void FUN_00460720(GolFileParser* p_parser);
-		void FUN_00460ad0(GolFileParser* p_parser);
-		void FUN_00460d10(GolFileParser* p_parser);
-		void FUN_00461070(GolFileParser* p_parser);
-		void FUN_00461430(GolFileParser* p_parser, LegoBool32 p_mirror);
-		void FUN_00461670(GolFileParser* p_parser, LegoBool32 p_mirror);
-		void FUN_00461990(GolFileParser* p_parser);
-
-		union {
-			RaceEventTable0x90 m_eventTable; // 0x00
-			struct {
-				GolWorldDatabase* m_unk0x00;              // 0x00
-				GolWorldDatabase* m_unk0x04;              // 0x04
-				GolWorldDatabase* m_unk0x08;              // 0x08
-				GolWorldDatabase* m_unk0x0c;              // 0x0c
-				RaceState::Racer::SoundSource* m_unk0x10; // 0x10
-				HazardManager* m_unk0x14;                 // 0x14
-				CutsceneAnimation* m_unk0x18;             // 0x18
-				CutsceneAnimation* m_unk0x1c;             // 0x1c
-				Field0x2f90* m_unk0x20;                   // 0x20
-				Field0x2804* m_unk0x24;                   // 0x24
-				LegoU32 m_unk0x28;                        // 0x28
-				LegoU32 m_unk0x2c;                        // 0x2c
-				LegoU32 m_unk0x30;                        // 0x30
-				LegoU32 m_unk0x34;                        // 0x34
-				LegoU32 m_unk0x38;                        // 0x38
-				LegoU32 m_unk0x3c;                        // 0x3c
-				LegoU32 m_unk0x40;                        // 0x40
-				LegoU32 m_unk0x44;                        // 0x44
-				LegoU32 m_unk0x48;                        // 0x48
-				LegoU32 m_unk0x4c;                        // 0x4c
-				LegoU32 m_unk0x50;                        // 0x50
-				LegoU32 m_unk0x54;                        // 0x54
-				LegoU32 m_unk0x58;                        // 0x58
-				Resource0x5c* m_unk0x5c;                  // 0x5c
-				AnimatedPartResource0x34* m_unk0x60;      // 0x60
-				Resource0x34* m_unk0x64;                  // 0x64
-				Resource0x64* m_unk0x68;                  // 0x68
-				Field0x6c* m_unk0x6c;                     // 0x6c
-				SkyStateResource0x34* m_unk0x70;          // 0x70
-				Resource0x30* m_unk0x74;                  // 0x74
-				NodeTransformResource0x2c* m_unk0x78;     // 0x78
-				Resource0x48* m_unk0x7c;                  // 0x7c
-				Resource0x24* m_unk0x80;                  // 0x80
-				ModelDistanceResource0x34* m_unk0x84;     // 0x84
-				Resource0x2c* m_unk0x88;                  // 0x88
-				Resource0x38* m_unk0x8c;                  // 0x8c
-			};
-		};
-	};
 
 	// SIZE 0x0c
 	class Field0x213c {
@@ -1156,7 +511,7 @@ public:
 
 			void FUN_00464750(
 				LegoEventQueue* p_eventQueue,
-				RaceEventTable0x90* p_eventTable,
+				RaceEventTable* p_eventTable,
 				LegoU32 p_unk0x0c,
 				LegoU32 p_unk0x10,
 				LegoU32 p_unk0x14,
@@ -1172,7 +527,7 @@ public:
 
 		private:
 			LegoEventQueue::Event* m_unk0x04; // 0x04
-			RaceEventTable0x90* m_unk0x08;    // 0x08
+			RaceEventTable* m_unk0x08;        // 0x08
 			LegoEventQueue* m_unk0x0c;        // 0x0c
 			LegoU32 m_unk0x10;                // 0x10
 			LegoU32 m_unk0x14;                // 0x14
@@ -1191,14 +546,14 @@ public:
 		void Destroy();
 		void FUN_00464aa0(
 			LegoEventQueue* p_eventQueue,
-			RaceEventTable0x90* p_eventTable,
+			RaceEventTable* p_eventTable,
 			const LegoChar* p_name,
 			LegoBool32 p_binary
 		);
 
-		RaceEventTable0x90* m_unk0x00; // 0x00
-		LegoU32 m_unk0x04;             // 0x04
-		Resource* m_unk0x08;           // 0x08
+		RaceEventTable* m_unk0x00; // 0x00
+		LegoU32 m_unk0x04;         // 0x04
+		Resource* m_unk0x08;       // 0x08
 	};
 
 	// SIZE 0x14
@@ -1321,102 +676,6 @@ public:
 		LegoS32 m_unk0x2c;              // 0x2c
 	};
 
-	// SIZE 0xc8
-	// VTABLE: LEGORACERS 0x004afd58
-	class Field0x2f90 : public GolNameTable {
-	public:
-		// VTABLE: LEGORACERS 0x004afd64
-		// SIZE 0x1fc
-		class SkbTxtParser : public GolTxtParser {};
-
-		// SIZE 0x10
-		struct Entry {
-			// SIZE 0x10
-			struct Keyframe {
-				LegoU32 m_unk0x00;   // 0x00
-				ColorRGBA m_unk0x04; // 0x04
-				ColorRGBA m_unk0x08; // 0x08
-				ColorRGBA m_unk0x0c; // 0x0c
-			};
-
-			LegoU32 m_unk0x00;   // 0x00
-			LegoU32 m_unk0x04;   // 0x04
-			Keyframe* m_unk0x08; // 0x08
-			LegoU32 m_unk0x0c;   // 0x0c
-		};
-
-		// SIZE 0x01
-		class ModelBuilder {
-		public:
-			// SIZE 0x38
-			struct Params {
-				GolD3DRenderDevice* m_renderer;              // 0x00
-				GolModelBase* m_model;                       // 0x04
-				GolVec3 m_origin;                            // 0x08
-				LegoFloat m_radius;                          // 0x14
-				LegoU32 m_segmentCount;                      // 0x18
-				LegoU32 m_hemisphere;                        // 0x1c
-				LegoU32 m_hasTopCap;                         // 0x20
-				LegoU32 m_hasBottomCap;                      // 0x24
-				LegoU32 m_reverseWinding;                    // 0x28
-				LegoU32 m_useTextureSeam;                    // 0x2c
-				LegoU16 m_vertexType;                        // 0x30
-				undefined2 m_unk0x32;                        // 0x32
-				GdbModelIndexArray0xc* m_absoluteIndexArray; // 0x34
-			};
-
-			void FUN_004907d0(Params* p_params);
-			void FUN_004907f0(Params* p_params);
-			void FUN_004910e0(Params* p_params);
-		};
-
-		Field0x2f90();
-		~Field0x2f90() override;
-		void Clear() override;
-		void FUN_0041c550(
-			GolD3DRenderDevice* p_renderer,
-			GolExport* p_golExport,
-			const LegoChar* p_skyName,
-			const LegoChar* p_worldName,
-			LegoBool32 p_binary
-		);
-		void FUN_0041ccb0(LegoU32 p_elapsedMs);
-		void FUN_0041d040(GolVec3* p_position);
-		void FUN_0041d0f0(GolD3DRenderDevice* p_renderer);
-		void FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs);
-
-		// SYNTHETIC: LEGORACERS 0x0041c490
-		// RaceSession::Field0x2f90::`scalar deleting destructor'
-
-	private:
-		friend class Field0x2098::SkyStateResource0x34;
-
-		enum {
-			c_flag0xc4Bit0 = 1 << 0,
-			c_flag0xc4Bit1 = 1 << 1,
-		};
-
-		void Reset();
-		void FUN_0041ce60(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10);
-		void FUN_0041cf20(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount);
-		void FUN_0041cfc0(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c);
-
-		GolModelEntity m_unk0x0c;         // 0x0c
-		GolWorldDatabase* m_unk0x9c;      // 0x9c
-		GolModelBase* m_unk0xa0;          // 0xa0
-		GolExport* m_unk0xa4;             // 0xa4
-		Entry* m_entries;                 // 0xa8
-		LegoFloat m_unk0xac;              // 0xac
-		LegoU32 m_count;                  // 0xb0
-		LegoU32 m_unk0xb4;                // 0xb4
-		LegoU32 m_unk0xb8;                // 0xb8
-		LegoU32 m_unk0xbc;                // 0xbc
-		LegoU32 m_unk0xc0;                // 0xc0
-		LegoU8 m_unk0xc4;                 // 0xc4
-		ModelBuilder m_unk0xc5;           // 0xc5
-		undefined m_unk0xc6[0xc8 - 0xc6]; // 0xc6
-	};
-
 	// SIZE 0x08
 	class Field0x2804 : public RacePowerupManager::TargetPointList {
 	public:
@@ -1458,7 +717,7 @@ public:
 			Field0x2080* m_unk0x1c;             // 0x1c
 			Field0x2128* m_unk0x20;             // 0x20
 			Field0x32c4* m_unk0x24;             // 0x24
-			Field0x2098* m_unk0x28;             // 0x28
+			RaceEventTable* m_unk0x28;          // 0x28
 		};
 
 		Field0x30c4();
@@ -1482,7 +741,7 @@ public:
 		Field0x2080* m_unk0x1c;             // 0x1c
 		Field0x2128* m_unk0x20;             // 0x20
 		Field0x32c4* m_unk0x24;             // 0x24
-		Field0x2098* m_unk0x28;             // 0x28
+		RaceEventTable* m_unk0x28;          // 0x28
 	};
 
 	// VTABLE: LEGORACERS 0x004b1acc
@@ -1696,7 +955,7 @@ private:
 	RaceState m_raceState;                  // 0x3bc
 	RacePowerupManager m_unk0x6dc;          // 0x6dc
 	Field0x2080 m_unk0x2080;                // 0x2080
-	Field0x2098 m_unk0x2098;                // 0x2098
+	RaceEventTable m_eventTable;            // 0x2098
 	Field0x2128 m_unk0x2128;                // 0x2128
 	Field0x213c m_unk0x213c;                // 0x213c
 	HazardManager m_unk0x2148;              // 0x2148
@@ -1722,13 +981,13 @@ private:
 	GolString m_unk0x2d80;                  // 0x2d80
 	undefined2 m_unk0x2d8c[0x100];          // 0x2d8c
 	AwakeKite0x20* m_unk0x2f8c;             // 0x2f8c
-	Field0x2f90 m_unk0x2f90;                // 0x2f90
+	RaceSkyState m_unk0x2f90;               // 0x2f90
 	SlateBridge0x68 m_unk0x3058;            // 0x3058
 	undefined4 m_unk0x30c0;                 // 0x30c0
 	Field0x30c4 m_unk0x30c4;                // 0x30c4
 	GolStringTable m_unk0x30f0;             // 0x30f0
 	RaceRouteRecord m_routeRecords[6];      // 0x3104
-	RaceSessionField0x32b4 m_unk0x32b4;     // 0x32b4
+	TriggerWorld m_unk0x32b4;               // 0x32b4
 	Field0x32c4 m_unk0x32c4;                // 0x32c4
 	Field0x3300 m_unk0x3300;                // 0x3300
 	MusicGroup* m_unk0x3314;                // 0x3314

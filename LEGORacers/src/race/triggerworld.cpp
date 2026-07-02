@@ -1,17 +1,17 @@
-#include "race/racesessionfield0x32b4.h"
+#include "race/triggerworld.h"
 
 #include "golboundedentity.h"
 #include "golnametable.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "world/golworlddatabase.h"
 
 #include <math.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSessionField0x32b4, 0x10)
+DECOMP_SIZE_ASSERT(TriggerWorld, 0x10)
 
 // FUNCTION: LEGORACERS 0x0041f430
-RaceSessionField0x32b4::RaceSessionField0x32b4()
+TriggerWorld::TriggerWorld()
 {
 	m_unk0x00 = NULL;
 	m_unk0x04 = 0;
@@ -20,10 +20,10 @@ RaceSessionField0x32b4::RaceSessionField0x32b4()
 }
 
 // FUNCTION: LEGORACERS 0x0041f440
-GolWorldDatabase* RaceSessionField0x32b4::FUN_0041f440(
+GolWorldDatabase* TriggerWorld::Initialize(
 	GolWorldDatabase* p_unk0x04,
 	LegoChar* p_unk0x08,
-	RaceEventTable0x90* p_unk0x0c,
+	RaceEventTable* p_unk0x0c,
 	GolNameTable* p_unk0x10
 )
 {
@@ -50,7 +50,7 @@ GolWorldDatabase* RaceSessionField0x32b4::FUN_0041f440(
 }
 
 // STUB: LEGORACERS 0x0041f4d0
-LegoBool32 RaceSessionField0x32b4::FUN_0041f4d0(
+LegoBool32 TriggerWorld::IntersectSegment(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	GolBoundingVolume::Field0x0c* p_unk0x0c,
@@ -152,7 +152,7 @@ fail:
 }
 
 // FUNCTION: LEGORACERS 0x0041f730
-LegoBool32 RaceSessionField0x32b4::FUN_0041f730(
+LegoBool32 TriggerWorld::FUN_0041f730(
 	GolVec3* p_unk0x04,
 	GolVec3* p_unk0x08,
 	GolBoundingVolume::Field0x0c* p_unk0x0c,
@@ -160,7 +160,7 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f730(
 )
 {
 	RaceEventRecord::Target* hit;
-	LegoBool32 result = FUN_0041f4d0(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10, &hit);
+	LegoBool32 result = IntersectSegment(p_unk0x04, p_unk0x08, p_unk0x0c, p_unk0x10, &hit);
 
 	if (!result) {
 		return result;

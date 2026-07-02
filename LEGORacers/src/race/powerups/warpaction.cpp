@@ -512,7 +512,7 @@ void RacePowerupManager::WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::Field0x0c record;
-	m_manager->m_collisionWorld->FUN_0041f4d0(&start, &end, &record, &position, NULL);
+	m_manager->m_collisionWorld->IntersectSegment(&start, &end, &record, &position, NULL);
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
 	p_entity->VTable0x08(position);

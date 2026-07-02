@@ -76,10 +76,7 @@ RacePowerupManager::CannonballAction::~CannonballAction()
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void RacePowerupManager::CannonballAction::Initialize(
-	GolExport** p_golExportPtr,
-	RaceSessionField0x32b4* p_collisionWorld
-)
+void RacePowerupManager::CannonballAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Destroy();

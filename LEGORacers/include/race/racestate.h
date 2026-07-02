@@ -23,7 +23,7 @@
 #include "race/raceeventrecord.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
-#include "race/racesessionfield0x32b4.h"
+#include "race/triggerworld.h"
 #include "racer/chassismodeltable.h"
 #include "racer/drivercosmetictable.h"
 #include "scene/golbillboard.h"
@@ -46,8 +46,8 @@ class DuskwindBananaRelic0x24;
 class CutsceneAnimation;
 class CobaltTrail0x140;
 class RaceCameraController;
-class RaceEventTable0x90;
-class RaceSessionField0x32b4;
+class RaceEventTable;
+class TriggerWorld;
 class RaceForceFeedback;
 class RacePowerupManager;
 class RaceRouteRecord;
@@ -106,7 +106,7 @@ public:
 			GolVec3 m_centerOfMass;           // 0x4c
 			LegoFloat m_mass;                 // 0x58
 			LegoFloat m_weight;               // 0x5c
-			RaceEventTable0x90* m_eventTable; // 0x60
+			RaceEventTable* m_eventTable;     // 0x60
 			void* m_unk0x64;                  // 0x64
 			GolBoundedEntity* m_trackWorld;   // 0x68
 			LegoU8 m_driverStats[6];          // 0x6c
@@ -681,7 +681,7 @@ public:
 			};
 			LegoU32 m_soundsEnabled;               // 0x6ec
 			Racer* m_ownerRacer;                   // 0x6f0
-			RaceEventTable0x90* m_eventTable;      // 0x6f4
+			RaceEventTable* m_eventTable;          // 0x6f4
 			void* m_unk0x6f8;                      // 0x6f8
 			GolBoundedEntity* m_triggerCollidable; // 0x6fc
 			GolVec3 m_resetPosition;               // 0x700
@@ -753,7 +753,7 @@ public:
 			void Reset();
 			void Initialize(
 				Racer* p_racer,
-				RaceEventTable0x90* p_eventTable,
+				RaceEventTable* p_eventTable,
 				void* p_unk0x0c,
 				GolAnimatedEntity* p_carEntity,
 				GolBoundedEntity* p_trackWorld,
@@ -1200,14 +1200,14 @@ public:
 		void Initialize(Racer* p_racers, LegoU32 p_racerCount);
 		LegoU32 Update(LegoU32 p_elapsedMs);
 
-		Racer* m_racers;                  // 0x00
-		LegoU32 m_racerCount;             // 0x04
-		LegoU32 m_updateDelayMs;          // 0x08
-		LegoFloat m_rubberBandBoost;      // 0x0c
-		GolTextureList* m_textureList;        // 0x10
-		GolMaterialLibrary* m_materialLibrary;    // 0x14
-		LegoU8 m_lapCount;                // 0x18
-		undefined m_unk0x19[0x1c - 0x19]; // 0x19
+		Racer* m_racers;                       // 0x00
+		LegoU32 m_racerCount;                  // 0x04
+		LegoU32 m_updateDelayMs;               // 0x08
+		LegoFloat m_rubberBandBoost;           // 0x0c
+		GolTextureList* m_textureList;         // 0x10
+		GolMaterialLibrary* m_materialLibrary; // 0x14
+		LegoU8 m_lapCount;                     // 0x18
+		undefined m_unk0x19[0x1c - 0x19];      // 0x19
 	};
 
 	RaceState();
@@ -1299,7 +1299,7 @@ private:
 		CutsceneAnimation* m_particleAnimation;       // 0x1c
 		CutsceneAnimation* m_sharedParticleAnimation; // 0x20
 		RaceSessionField0x27d4* m_decalManager;       // 0x24
-		RaceEventTable0x90* m_eventTable;             // 0x28
+		RaceEventTable* m_eventTable;                 // 0x28
 		void* m_unk0x2c;                              // 0x2c
 		LegoBool32 m_shadowsEnabled;                  // 0x30
 		RaceRouteRecord* m_routeRecord;               // 0x34

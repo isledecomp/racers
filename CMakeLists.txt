@@ -303,9 +303,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
   LEGORacers/src/race/racesessionfield0x2080.cpp
-  LEGORacers/src/race/racesessionfield0x2098.cpp
-  LEGORacers/src/race/racesessionfield0x2098resource0x24.cpp
-  LEGORacers/src/race/racesessionfield0x2098resource0x48.cpp
+  LEGORacers/src/race/raceeventtable.cpp
+  LEGORacers/src/race/lapzoneresource.cpp
+  LEGORacers/src/race/colortransformresource.cpp
   LEGORacers/src/race/racesessionfield0x213c.cpp
   LEGORacers/src/race/hazardmanager.cpp
   LEGORacers/src/race/racesessionfield0x23c.cpp
@@ -323,8 +323,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x2f90.cpp
   LEGORacers/src/race/racesessionfield0x30c4.cpp
   LEGORacers/src/race/racer/racerouterecord.cpp
-  LEGORacers/src/race/racesessionfield0x32b4.cpp
-  LEGORacers/src/race/racesessionfield0x32b4field0x004.cpp
+  LEGORacers/src/race/triggerworld.cpp
+  LEGORacers/src/race/raceeventtabledispatch.cpp
   LEGORacers/src/race/racesessionfield0x32c4.cpp
   LEGORacers/src/race/racesessionfield0x258.cpp
   LEGORacers/src/race/racesessionfield0x3300.cpp

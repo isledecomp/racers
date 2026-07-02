@@ -71,7 +71,7 @@ void RacePowerupManager::DynamiteAction::Destroy()
 // FUNCTION: LEGORACERS 0x00452ee0
 void RacePowerupManager::DynamiteAction::Initialize(
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_collisionWorld,
+	TriggerWorld* p_collisionWorld,
 	RacePowerupManager* p_manager,
 	CutsceneAnimation* p_cutsceneAnimation,
 	GolModelEntity* p_model

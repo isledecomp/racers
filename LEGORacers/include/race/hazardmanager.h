@@ -28,10 +28,10 @@ struct CutsceneParticleRef;
 class CutsceneAnimation;
 class MabMaterialAnimationItem0x8;
 class MabMaterialAnimationItem0x18;
-class RaceEventTable0x90;
+class RaceEventTable;
 class RacePowerupManager;
 class RaceSession;
-class RaceSessionField0x32b4;
+class TriggerWorld;
 class SpatialSoundInstance;
 
 // SIZE 0x08
@@ -66,7 +66,7 @@ public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
 		virtual void OnActivate(void*) = 0;                             // vtable+0x04
 		virtual void OnDeactivate(void*) = 0;                           // vtable+0x08
-		virtual ~Hazard();                                                // vtable+0x0c
+		virtual ~Hazard();                                              // vtable+0x0c
 		virtual void Load(Context*, GolFileParser*) = 0;                // vtable+0x10
 		virtual void Update(undefined4 p_elapsedMs);                    // vtable+0x14
 		virtual void UpdatePerRacer(GolCamera*, RaceState::Racer*);     // vtable+0x18
@@ -86,9 +86,9 @@ public:
 	protected:
 		friend class HazardManager;
 
-		RaceEventTable0x90* m_eventTable; // 0x04
-		LegoS32 m_triggerId;              // 0x08
-		LegoS32 m_state;                  // 0x0c
+		RaceEventTable* m_eventTable; // 0x04
+		LegoS32 m_triggerId;          // 0x08
+		LegoS32 m_state;              // 0x0c
 	};
 
 	// VTABLE: LEGORACERS 0x004b4194
@@ -97,11 +97,11 @@ public:
 	public:
 		WarpPadHazard();
 		~WarpPadHazard() override;
-		void OnActivate(void* p_racer) override;                      // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                    // vtable+0x08
+		void OnActivate(void* p_racer) override;                // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;            // vtable+0x08
 		void Load(Context* p_context, GolFileParser*) override; // vtable+0x10
-		void Update(undefined4 p_unk0x04) override;               // vtable+0x14
-		LegoBool32 CanRetrigger() override;                             // vtable+0x20
+		void Update(undefined4 p_unk0x04) override;             // vtable+0x14
+		LegoBool32 CanRetrigger() override;                     // vtable+0x20
 
 		LegoS32 Reset();
 
@@ -123,10 +123,10 @@ public:
 	public:
 		OscillatorHazard();
 		~OscillatorHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 Reset();
 
@@ -146,10 +146,10 @@ public:
 	public:
 		CurseDropHazard();
 		~CurseDropHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_unk0x04) override;                        // vtable+0x14
+		void Update(undefined4 p_unk0x04) override;                      // vtable+0x14
 
 		LegoS32 Reset();
 
@@ -172,10 +172,10 @@ public:
 	public:
 		SweepCannonHazard();
 		~SweepCannonHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		void ClearFields();
 		LegoS32 Reset();
@@ -206,11 +206,11 @@ public:
 	public:
 		FallingPillarHazard();
 		~FallingPillarHazard() override;
-		void OnActivate(void*) override;                              // vtable+0x04
-		void OnDeactivate(void*) override;                              // vtable+0x08
+		void OnActivate(void*) override;                        // vtable+0x04
+		void OnDeactivate(void*) override;                      // vtable+0x08
 		void Load(Context* p_context, GolFileParser*) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;             // vtable+0x14
-		void ResetState() override;                                   // vtable+0x24
+		void Update(undefined4 p_elapsedMs) override;           // vtable+0x14
+		void ResetState() override;                             // vtable+0x24
 
 		LegoS32 Reset();
 
@@ -219,11 +219,11 @@ public:
 
 	private:
 		enum {
-					};
+		};
 
 		GolAnimatedEntity* m_unk0x10; // 0x10
 		CutsceneAnimation* m_unk0x14; // 0x14
-		ColliderRecord* m_unk0x18;         // 0x18
+		ColliderRecord* m_unk0x18;    // 0x18
 		LegoU32 m_unk0x1c;            // 0x1c
 	};
 
@@ -233,11 +233,11 @@ public:
 	public:
 		SphinxHazard();
 		~SphinxHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
-		void ResetState() override;                                            // vtable+0x24
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+		void ResetState() override;                                      // vtable+0x24
 
 		LegoS32 Reset();
 
@@ -246,14 +246,14 @@ public:
 
 	private:
 		enum {
-						c_modelDistanceCount = 3,
+			c_modelDistanceCount = 3,
 		};
 
 		CutsceneAnimation* m_unk0x10;            // 0x10
 		GolWorldDatabase* m_unk0x14;             // 0x14
 		MabMaterialAnimationItem0x18* m_unk0x18; // 0x18
 		GolAnimatedEntity* m_unk0x1c;            // 0x1c
-		ColliderRecord* m_unk0x20;                    // 0x20
+		ColliderRecord* m_unk0x20;               // 0x20
 	};
 
 	// VTABLE: LEGORACERS 0x004b4434
@@ -262,10 +262,10 @@ public:
 	public:
 		HammerHazard();
 		~HammerHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 Reset();
 
@@ -283,11 +283,11 @@ public:
 	public:
 		GhostHazard();
 		~GhostHazard() override;
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 		void Draw(GolD3DRenderDevice* p_renderer) override;              // vtable+0x1c
 
 		LegoS32 Reset();
@@ -337,11 +337,11 @@ public:
 	public:
 		LavaGeyserHazard();
 		~LavaGeyserHazard() override;
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 ClearFields();
 		LegoS32 Reset();
@@ -379,11 +379,11 @@ public:
 	public:
 		CodePuzzleHazard();
 		~CodePuzzleHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
-		void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;          // vtable+0x28
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
+		void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;  // vtable+0x28
 
 		LegoS32 ClearFields();
 		LegoS32 Reset();
@@ -432,11 +432,11 @@ public:
 	public:
 		RocketHazard();
 		~RocketHazard() override;
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 ClearFields();
 		LegoS32 Reset();
@@ -448,7 +448,7 @@ public:
 
 	private:
 		enum {
-						c_field0x0e0Flags0xd04Bit0 = 1 << 0,
+			c_field0x0e0Flags0xd04Bit0 = 1 << 0,
 			c_modelDistanceCount = 3,
 			c_eventId = 0x23,
 		};
@@ -458,7 +458,7 @@ public:
 		LegoEventQueue::Event* m_unk0x3c; // 0x3c
 		GolModelEntity* m_unk0x40;        // 0x40
 		GolModelEntity* m_unk0x44;        // 0x44
-		ColliderRecord* m_unk0x48;             // 0x48
+		ColliderRecord* m_unk0x48;        // 0x48
 		LegoFloat m_unk0x4c[3];           // 0x4c
 		LegoU32 m_unk0x58;                // 0x58
 	};
@@ -469,12 +469,12 @@ public:
 	public:
 		SnowfallHazard();
 		~SnowfallHazard() override;
-		void OnActivate(void* p_unk0x04) override;                                   // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                                   // vtable+0x08
-		void Load(Context* p_context, GolFileParser* p_parser) override;       // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                            // vtable+0x14
+		void OnActivate(void* p_unk0x04) override;                                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                                     // vtable+0x08
+		void Load(Context* p_context, GolFileParser* p_parser) override;                 // vtable+0x10
+		void Update(undefined4 p_elapsedMs) override;                                    // vtable+0x14
 		void UpdatePerRacer(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08) override; // vtable+0x18
-		void ResetState() override;                                                  // vtable+0x24
+		void ResetState() override;                                                      // vtable+0x24
 
 		LegoS32 ClearFields();
 		LegoS32 Reset();
@@ -500,10 +500,10 @@ public:
 	public:
 		SmokeVentHazard();
 		~SmokeVentHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 Reset();
 
@@ -527,13 +527,13 @@ public:
 	public:
 		MovingObstacleHazard();
 		~MovingObstacleHazard() override;
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;              // vtable+0x00
-		void OnActivate(void* p_unk0x04) override;                                   // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                                   // vtable+0x08
-		void Load(Context* p_context, GolFileParser* p_parser) override;       // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                            // vtable+0x14
+		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;                  // vtable+0x00
+		void OnActivate(void* p_unk0x04) override;                                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                                     // vtable+0x08
+		void Load(Context* p_context, GolFileParser* p_parser) override;                 // vtable+0x10
+		void Update(undefined4 p_elapsedMs) override;                                    // vtable+0x14
 		void UpdatePerRacer(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08) override; // vtable+0x18
-		void Draw(GolD3DRenderDevice* p_renderer) override;                    // vtable+0x1c
+		void Draw(GolD3DRenderDevice* p_renderer) override;                              // vtable+0x1c
 
 		LegoS32 Reset();
 
@@ -571,12 +571,12 @@ public:
 	public:
 		LauncherHazard();
 		~LauncherHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 		void Draw(GolD3DRenderDevice* p_renderer) override;              // vtable+0x1c
-		void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;          // vtable+0x28
+		void OnEventStart(LegoS32 p_unk0x04, void* p_unk0x08) override;  // vtable+0x28
 
 		void ClearFields();
 		void Reset();
@@ -585,19 +585,19 @@ public:
 		// HazardManager::LauncherHazard::`scalar deleting destructor'
 
 	protected:
-		GolWorldEntity m_unk0x10;           // 0x10
-		PowerupProjectile m_unk0x38;        // 0x38
-		GolVec3 m_unk0xe0;                  // 0xe0
-		GolVec3 m_unk0xec;                  // 0xec
-		GolVec3 m_unk0xf8;                  // 0xf8
-		LegoFloat m_unk0x104;               // 0x104
-		LegoS32 m_unk0x108;                 // 0x108
-		RaceSessionField0x32b4* m_unk0x10c; // 0x10c
-		RacePowerupManager* m_unk0x110;     // 0x110
-		GolBillboard* m_unk0x114;           // 0x114
-		GolExport* m_unk0x118;              // 0x118
-		void* m_unk0x11c;                   // 0x11c
-		void* m_unk0x120;                   // 0x120
+		GolWorldEntity m_unk0x10;       // 0x10
+		PowerupProjectile m_unk0x38;    // 0x38
+		GolVec3 m_unk0xe0;              // 0xe0
+		GolVec3 m_unk0xec;              // 0xec
+		GolVec3 m_unk0xf8;              // 0xf8
+		LegoFloat m_unk0x104;           // 0x104
+		LegoS32 m_unk0x108;             // 0x108
+		TriggerWorld* m_unk0x10c;       // 0x10c
+		RacePowerupManager* m_unk0x110; // 0x110
+		GolBillboard* m_unk0x114;       // 0x114
+		GolExport* m_unk0x118;          // 0x118
+		void* m_unk0x11c;               // 0x11c
+		void* m_unk0x120;               // 0x120
 	};
 
 	// VTABLE: LEGORACERS 0x004b4654
@@ -606,12 +606,12 @@ public:
 	public:
 		TriggeredAnimationHazard();
 		~TriggeredAnimationHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 		void Draw(GolD3DRenderDevice* p_renderer) override;              // vtable+0x1c
-		void ResetState() override;                                            // vtable+0x24
+		void ResetState() override;                                      // vtable+0x24
 
 		void ClearFields();
 		LegoS32 Reset();
@@ -623,10 +623,10 @@ public:
 		enum {
 			c_entityCount = 4,
 			c_modelDistanceCount = 3,
-					};
+		};
 
 		GolAnimatedEntity* m_unk0x10[c_entityCount]; // 0x10
-		ColliderRecord* m_unk0x20;                        // 0x20
+		ColliderRecord* m_unk0x20;                   // 0x20
 		GolVec3 m_unk0x24;                           // 0x24
 	};
 
@@ -636,10 +636,10 @@ public:
 	public:
 		MultiLauncherHazard();
 		~MultiLauncherHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		void Reset();
 
@@ -666,10 +666,10 @@ public:
 	public:
 		RollingRockHazard();
 		~RollingRockHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		// SYNTHETIC: LEGORACERS 0x0048bb80
 		// HazardManager::RollingRockHazard::`scalar deleting destructor'
@@ -694,10 +694,10 @@ public:
 	public:
 		CannonballRainHazard();
 		~CannonballRainHazard() override;
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 Reset();
 
@@ -727,11 +727,11 @@ public:
 	public:
 		GrabberHazard();
 		~GrabberHazard() override;
-		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;        // vtable+0x00
-		void OnActivate(void* p_unk0x04) override;                             // vtable+0x04
-		void OnDeactivate(void* p_unk0x04) override;                             // vtable+0x08
+		void VTable0x00(LegoEventQueue::CallbackData* p_data) override;  // vtable+0x00
+		void OnActivate(void* p_unk0x04) override;                       // vtable+0x04
+		void OnDeactivate(void* p_unk0x04) override;                     // vtable+0x08
 		void Load(Context* p_context, GolFileParser* p_parser) override; // vtable+0x10
-		void Update(undefined4 p_elapsedMs) override;                      // vtable+0x14
+		void Update(undefined4 p_elapsedMs) override;                    // vtable+0x14
 
 		LegoS32 ClearFields();
 		LegoS32 Reset();
@@ -770,11 +770,11 @@ public:
 	public:
 		class PositionProvider {
 		public:
-			virtual void VTable0x00() = 0;           // vtable+0x00
-			virtual void GetPosition(void*) = 0;     // vtable+0x04
+			virtual void VTable0x00() = 0;       // vtable+0x00
+			virtual void GetPosition(void*) = 0; // vtable+0x04
 		};
 
-		RaceEventTable0x90* GetEventTable() const { return m_eventTable; }
+		RaceEventTable* GetEventTable() const { return m_eventTable; }
 		LegoEventQueue* GetEventQueue() const { return m_eventQueue; }
 		RaceState::Racer::SoundSource* GetSoundSource() const { return m_soundSource; }
 		GolWorldDatabase* GetTrackDatabase() const { return m_trackDatabase; }
@@ -785,7 +785,7 @@ public:
 		GolD3DRenderDevice* GetRenderer() const { return m_renderer; }
 		GolNameTable* GetColliderTable() const { return m_colliderTable; }
 		RaceState* GetRaceState() const { return m_raceState; }
-		RaceSessionField0x32b4* GetSkyState() const { return m_skyState; }
+		TriggerWorld* GetSkyState() const { return m_skyState; }
 		RacePowerupManager* GetPowerupManager() const { return m_powerupManager; }
 		void* GetUnk0x3c() const { return m_unk0x3c; }
 		LegoU32 GetMirror() const { return m_mirror; }
@@ -795,25 +795,25 @@ public:
 		friend class HazardManager;
 		friend class RaceSession;
 
-		LegoEventQueue* m_eventQueue;                  // 0x00
-		void* m_unk0x04;                               // 0x04
-		RaceState::Racer::SoundSource* m_soundSource;  // 0x08
-		RaceEventTable0x90* m_eventTable;              // 0x0c
-		GolWorldDatabase* m_trackDatabase;             // 0x10
-		GolWorldDatabase* m_sharedDatabase;            // 0x14
-		GolWorldDatabase* m_unk0x18;                   // 0x18
-		CutsceneAnimation* m_particleAnimation;        // 0x1c
-		GolCollidableEntity* m_trackCollidable;        // 0x20
-		GolExport* m_golExport;                        // 0x24
-		GolD3DRenderDevice* m_renderer;                // 0x28
-		GolNameTable* m_colliderTable;                 // 0x2c
-		RaceState* m_raceState;                        // 0x30
-		RaceSessionField0x32b4* m_skyState;            // 0x34
-		RacePowerupManager* m_powerupManager;          // 0x38
-		void* m_unk0x3c;                               // 0x3c
-		LegoU32 m_mirror;                              // 0x40
-		undefined m_unk0x44[0x5c - 0x44];              // 0x44
-		PositionProvider* m_positionProvider;          // 0x5c
+		LegoEventQueue* m_eventQueue;                 // 0x00
+		void* m_unk0x04;                              // 0x04
+		RaceState::Racer::SoundSource* m_soundSource; // 0x08
+		RaceEventTable* m_eventTable;                 // 0x0c
+		GolWorldDatabase* m_trackDatabase;            // 0x10
+		GolWorldDatabase* m_sharedDatabase;           // 0x14
+		GolWorldDatabase* m_unk0x18;                  // 0x18
+		CutsceneAnimation* m_particleAnimation;       // 0x1c
+		GolCollidableEntity* m_trackCollidable;       // 0x20
+		GolExport* m_golExport;                       // 0x24
+		GolD3DRenderDevice* m_renderer;               // 0x28
+		GolNameTable* m_colliderTable;                // 0x2c
+		RaceState* m_raceState;                       // 0x30
+		TriggerWorld* m_skyState;                     // 0x34
+		RacePowerupManager* m_powerupManager;         // 0x38
+		void* m_unk0x3c;                              // 0x3c
+		LegoU32 m_mirror;                             // 0x40
+		undefined m_unk0x44[0x5c - 0x44];             // 0x44
+		PositionProvider* m_positionProvider;         // 0x5c
 	};
 
 	HazardManager();
@@ -837,7 +837,7 @@ private:
 	void Destroy();
 	void LoadHazards(void* p_unk0x04, const LegoChar* p_name, LegoBool32 p_binary);
 
-	LegoU32 m_count;  // 0x00
+	LegoU32 m_count;    // 0x00
 	Hazard** m_entries; // 0x04
 };
 

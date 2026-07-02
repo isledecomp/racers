@@ -20,9 +20,9 @@
 #include "race/raceactionsource.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
-#include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
+#include "race/triggerworld.h"
 #include "scene/golbillboard.h"
 #include "surface/color.h"
 #include "types.h"
@@ -40,7 +40,7 @@ class GolModelBase;
 class GolRenderDevice;
 class GolSceneNode;
 class GolWorldDatabase;
-class RaceSessionField0x32b4;
+class TriggerWorld;
 class SpatialSoundInstance;
 struct CutsceneParticleRef;
 
@@ -102,6 +102,7 @@ public:
 			undefined m_unk0x11[0x14 - 0x11]; // 0x11
 		};
 
+		LegoU32 DisableTargetPoints(undefined4 p_index);
 		Entry* FindTargetInCone(
 			GolVec3* p_position,
 			GolVec3* p_direction,
@@ -415,11 +416,11 @@ public:
 			GolBoundingVolume::Field0x0c* p_record
 		);
 
-		RaceState* m_raceState0x018;              // 0x018
-		LegoEventQueue::Event* m_collisionEvent;  // 0x01c
-		RaceSessionField0x32b4* m_collisionWorld; // 0x020
-		undefined4 m_unk0x024;                    // 0x024
-		RaceState::Racer* m_ownerRacer;           // 0x028
+		RaceState* m_raceState0x018;             // 0x018
+		LegoEventQueue::Event* m_collisionEvent; // 0x01c
+		TriggerWorld* m_collisionWorld;          // 0x020
+		undefined4 m_unk0x024;                   // 0x024
+		RaceState::Racer* m_ownerRacer;          // 0x028
 	};
 
 	// SIZE 0x30
@@ -440,10 +441,10 @@ public:
 			GolExport** m_golExportPtr;       // 0x01c
 			RacePowerupManager* m_owner0x01c; // 0x01c
 		};
-		RaceSessionField0x32b4* m_collisionWorld; // 0x020
-		RaceState::Racer* m_ownerRacer;           // 0x024
-		RaceState::Racer* m_targetRacer;          // 0x028
-		TargetPointList::Entry* m_targetPoint;    // 0x02c
+		TriggerWorld* m_collisionWorld;        // 0x020
+		RaceState::Racer* m_ownerRacer;        // 0x024
+		RaceState::Racer* m_targetRacer;       // 0x028
+		TargetPointList::Entry* m_targetPoint; // 0x02c
 	};
 
 	// VTABLE: LEGORACERS 0x004b14b0
@@ -575,7 +576,7 @@ public:
 		void Initialize(
 			RacePowerupManager* p_manager,
 			RaceState* p_raceState,
-			RaceSessionField0x32b4* p_collisionWorld,
+			TriggerWorld* p_collisionWorld,
 			CutsceneAnimation*,
 			GolExport*,
 			GolD3DRenderDevice*,
@@ -643,7 +644,7 @@ public:
 			RacePowerupManager* p_manager,
 			RaceState* p_raceState,
 			GolCollidableEntity* p_collidable,
-			RaceSessionField0x32b4* p_collisionWorld,
+			TriggerWorld* p_collisionWorld,
 			CutsceneAnimation* p_particleAnimation,
 			GolRenderDevice* p_renderer,
 			GolExport* p_export
@@ -694,7 +695,7 @@ public:
 		void Deactivate() override;                          // vtable+0x1c
 		void Initialize(
 			RaceState* p_raceState,
-			RaceSessionField0x32b4* p_collisionWorld,
+			TriggerWorld* p_collisionWorld,
 			RacePowerupManager* p_manager,
 			CutsceneAnimation* p_cutsceneAnimation,
 			GolModelEntity* p_model
@@ -742,7 +743,7 @@ public:
 		void AdvanceState() override;                                  // vtable+0x14
 		void Deactivate() override;                                    // vtable+0x1c
 		void OnHitRacer(RaceState::Racer* p_racer) override;           // vtable+0x20
-		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_curseModel, RacePowerupManager* p_manager);
+		void Initialize(RaceState* p_raceState, TriggerWorld* p_curseModel, RacePowerupManager* p_manager);
 		void Reset();
 		void Destroy();
 		void Activate(
@@ -784,7 +785,7 @@ public:
 		void AdvanceState() override;                        // vtable+0x14
 		void Deactivate() override;                          // vtable+0x1c
 		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
-		void Initialize(GolExport** p_golExportPtr, RaceSessionField0x32b4* p_collisionWorld);
+		void Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld);
 		void Destroy();
 		LegoU32 Activate(ActionSetup* p_setup);
 
@@ -845,7 +846,7 @@ public:
 		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
 		void Initialize(
 			RacePowerupManager* p_manager,
-			RaceSessionField0x32b4* p_collisionWorld,
+			TriggerWorld* p_collisionWorld,
 			undefined4 p_billboardMaterialIndex
 		);
 		void Shutdown();
@@ -965,7 +966,7 @@ public:
 		void AdvanceState() override;                        // vtable+0x14
 		void Deactivate() override;                          // vtable+0x1c
 		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
-		void Initialize(GolExport** p_golExportPtr, RaceSessionField0x32b4* p_collisionWorld);
+		void Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld);
 		void Shutdown();
 		void Activate(
 			GolAnimatedEntity* p_missileTemplate,
@@ -1341,7 +1342,7 @@ private:
 		RaceState* m_raceState;                       // 0x08
 		GolCollidableEntity* m_collidable;            // 0x0c
 		GolBoundedEntity* m_boundedEntity;            // 0x10
-		RaceSessionField0x32b4* m_collisionWorld;     // 0x14
+		TriggerWorld* m_collisionWorld;               // 0x14
 		RaceState::Racer::SoundSource* m_soundSource; // 0x18
 		CutsceneAnimation* m_cutsceneAnimation;       // 0x1c
 		RaceTrailManager* m_trailManager;             // 0x20
@@ -1443,7 +1444,7 @@ private:
 	GolWorldDatabase* m_worldDatabase;                // 0x05c
 	GolWorldDatabase* m_trackDatabase;                // 0x060
 	GolWorldDatabase* m_turbo3Database;               // 0x064
-	RaceSessionField0x32b4* m_collisionWorld;         // 0x068
+	TriggerWorld* m_collisionWorld;                   // 0x068
 	GolCollidableEntity* m_collidable;                // 0x06c
 	GolBoundedEntity* m_boundedEntity;                // 0x070
 	RaceState* m_raceState;                           // 0x074

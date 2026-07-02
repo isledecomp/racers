@@ -11,7 +11,7 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/cobalttrail0x140.h"
 #include "race/racecameracontroller.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
 #include "race/racesession.h"
 #include "race/timeracemanager.h"

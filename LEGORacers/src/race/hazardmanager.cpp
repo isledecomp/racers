@@ -1,3 +1,5 @@
+#include "race/hazardmanager.h"
+
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
@@ -16,8 +18,7 @@
 #include "mabmaterialanimationitem0x18.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "menu/runtime/cutsceneplayer.h"
-#include "race/hazardmanager.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
@@ -1038,7 +1039,9 @@ void HazardManager::FallingPillarHazard::Load(Context* p_context, GolFileParser*
 	m_unk0x10 = p_context->GetTrackDatabase()->FindUnk0xc0("piltop");
 
 	GolNameTable* nameTable = p_context->GetColliderTable();
-	m_unk0x18 = nameTable->GetNameEntries() == NULL ? NULL : static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("pilcol"));
+	m_unk0x18 = nameTable->GetNameEntries() == NULL
+					? NULL
+					: static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("pilcol"));
 
 	m_unk0x10->SetFlags(m_unk0x10->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 	m_state = 1;
@@ -1290,7 +1293,9 @@ void HazardManager::SphinxHazard::Load(Context* p_context, GolFileParser*)
 	m_unk0x14 = p_context->GetSharedDatabase();
 
 	GolNameTable* nameTable = p_context->GetColliderTable();
-	m_unk0x20 = nameTable->GetNameEntries() == NULL ? NULL : static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("sphinx"));
+	m_unk0x20 = nameTable->GetNameEntries() == NULL
+					? NULL
+					: static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("sphinx"));
 	m_unk0x1c = m_unk0x14->FindUnk0xc0("blowup");
 	m_state = 1;
 }
@@ -2716,7 +2721,9 @@ void HazardManager::RocketHazard::Load(Context* p_context, GolFileParser*)
 	m_unk0x38 = p_context->GetEventQueue();
 
 	GolNameTable* nameTable = p_context->GetColliderTable();
-	m_unk0x48 = nameTable->GetNameEntries() == NULL ? NULL : static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("mmrocc"));
+	m_unk0x48 = nameTable->GetNameEntries() == NULL
+					? NULL
+					: static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("mmrocc"));
 
 	GolWorldDatabase* worldDatabase = p_context->GetTrackDatabase();
 	GolModelEntity* modelEntity;
@@ -3193,7 +3200,9 @@ void HazardManager::TriggeredAnimationHazard::Load(Context* p_context, GolFilePa
 
 	m_eventTable = p_context->GetEventTable();
 	GolNameTable* nameTable = p_context->GetColliderTable();
-	m_unk0x20 = nameTable->GetNameEntries() == NULL ? NULL : static_cast<HazardManager::ColliderRecord*>(nameTable->GetName(name));
+	m_unk0x20 = nameTable->GetNameEntries() == NULL
+					? NULL
+					: static_cast<HazardManager::ColliderRecord*>(nameTable->GetName(name));
 
 	GolAnimatedEntity** entity = m_unk0x10;
 	GolName* modelName = modelNames;

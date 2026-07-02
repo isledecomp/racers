@@ -8,7 +8,7 @@
 #include "util/legoeventqueue.h"
 
 class GolWorldEntity;
-class RaceSessionField0x32b4;
+class TriggerWorld;
 
 // VTABLE: LEGORACERS 0x004b0778
 // SIZE 0xa8
@@ -25,14 +25,14 @@ public:
 	// SIZE 0x28
 	class Params {
 	public:
-		GolWorldEntity* m_worldEntity;            // 0x00
-		RaceSessionField0x32b4* m_collisionWorld; // 0x04
-		LegoFloat m_gravity;                      // 0x08
-		LegoEventQueue* m_eventQueue;             // 0x0c
-		GolVec3 m_targetOffset;                   // 0x10
-		LegoFloat m_speed;                        // 0x1c
-		LegoU32 m_lifetimeMs;                     // 0x20
-		LegoFloat m_launchHeight;                 // 0x24
+		GolWorldEntity* m_worldEntity;  // 0x00
+		TriggerWorld* m_collisionWorld; // 0x04
+		LegoFloat m_gravity;            // 0x08
+		LegoEventQueue* m_eventQueue;   // 0x0c
+		GolVec3 m_targetOffset;         // 0x10
+		LegoFloat m_speed;              // 0x1c
+		LegoU32 m_lifetimeMs;           // 0x20
+		LegoFloat m_launchHeight;       // 0x24
 	};
 
 	PowerupProjectile();
@@ -72,27 +72,27 @@ public:
 	RaceState::Racer* GetHitRacer() const { return m_hitRacer; }
 
 protected:
-	undefined4 m_state;                       // 0x004
-	GolWorldEntity* m_worldEntity;            // 0x008
-	RaceSessionField0x32b4* m_collisionWorld; // 0x00c
-	GolVec3 m_startPosition;                  // 0x010
-	GolVec3 m_targetPosition;                 // 0x01c
-	GolVec3 m_hitPosition;                    // 0x028
-	LegoFloat m_velocityX;                    // 0x034
-	LegoFloat m_velocityY;                    // 0x038
-	LegoFloat m_velocityZ;                    // 0x03c
-	LegoFloat m_gravity;                      // 0x040
-	LegoEventQueue::Event* m_collisionEvent;  // 0x044
-	LegoFloat m_launchHeight;                 // 0x048
-	LegoFloat m_speed;                        // 0x04c
-	LegoS32 m_ageMs;                          // 0x050
-	undefined4 m_flightTimeMs;                // 0x054
-	LegoU32 m_lifetimeMs;                     // 0x058
-	GolVec3 m_hitNormal;                      // 0x05c
-	undefined m_unk0x068[0x09c - 0x068];      // 0x068
-	RaceState::Racer* m_ownerRacer;           // 0x09c
-	RaceState::Racer* m_targetRacer;          // 0x0a0
-	RaceState::Racer* m_hitRacer;             // 0x0a4
+	undefined4 m_state;                      // 0x004
+	GolWorldEntity* m_worldEntity;           // 0x008
+	TriggerWorld* m_collisionWorld;          // 0x00c
+	GolVec3 m_startPosition;                 // 0x010
+	GolVec3 m_targetPosition;                // 0x01c
+	GolVec3 m_hitPosition;                   // 0x028
+	LegoFloat m_velocityX;                   // 0x034
+	LegoFloat m_velocityY;                   // 0x038
+	LegoFloat m_velocityZ;                   // 0x03c
+	LegoFloat m_gravity;                     // 0x040
+	LegoEventQueue::Event* m_collisionEvent; // 0x044
+	LegoFloat m_launchHeight;                // 0x048
+	LegoFloat m_speed;                       // 0x04c
+	LegoS32 m_ageMs;                         // 0x050
+	undefined4 m_flightTimeMs;               // 0x054
+	LegoU32 m_lifetimeMs;                    // 0x058
+	GolVec3 m_hitNormal;                     // 0x05c
+	undefined m_unk0x068[0x09c - 0x068];     // 0x068
+	RaceState::Racer* m_ownerRacer;          // 0x09c
+	RaceState::Racer* m_targetRacer;         // 0x0a0
+	RaceState::Racer* m_hitRacer;            // 0x0a4
 };
 
 #endif // POWERUPPROJECTILE_H

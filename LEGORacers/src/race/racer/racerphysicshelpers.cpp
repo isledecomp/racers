@@ -1,11 +1,11 @@
 #include "audio/spatialsoundinstance.h"
 #include "golconstants.h"
 #include "golmath.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
 #include "race/racer/racerouterecord.h"
-#include "race/racesessionfield0x32b4.h"
 #include "race/racestate.h"
+#include "race/triggerworld.h"
 
 #include <float.h>
 #include <math.h>
@@ -265,7 +265,7 @@ void RaceState::Racer::Physics::Reset()
 // FUNCTION: LEGORACERS 0x00429210
 void RaceState::Racer::Physics::Initialize(
 	Racer* p_racer,
-	RaceEventTable0x90* p_eventTable,
+	RaceEventTable* p_eventTable,
 	void* p_unk0x0c,
 	GolAnimatedEntity* p_carEntity,
 	GolBoundedEntity* p_trackWorld,

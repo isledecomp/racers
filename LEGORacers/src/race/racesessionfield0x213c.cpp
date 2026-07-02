@@ -38,7 +38,7 @@ RaceSession::Field0x213c::Resource::~Resource()
 // FUNCTION: LEGORACERS 0x00464750
 void RaceSession::Field0x213c::Resource::FUN_00464750(
 	LegoEventQueue* p_eventQueue,
-	RaceEventTable0x90* p_eventTable,
+	RaceEventTable* p_eventTable,
 	LegoU32 p_unk0x0c,
 	LegoU32 p_unk0x10,
 	LegoU32 p_unk0x14,
@@ -207,7 +207,7 @@ RaceSession::Field0x213c::~Field0x213c()
 // FUNCTION: LEGORACERS 0x00464aa0
 void RaceSession::Field0x213c::FUN_00464aa0(
 	LegoEventQueue* p_eventQueue,
-	RaceEventTable0x90* p_eventTable,
+	RaceEventTable* p_eventTable,
 	const LegoChar* p_name,
 	LegoBool32 p_binary
 )

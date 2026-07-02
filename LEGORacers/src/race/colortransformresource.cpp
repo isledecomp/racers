@@ -1,43 +1,43 @@
 #include "decomp.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2098::Resource0x48::InitParams, 0x3c)
+DECOMP_SIZE_ASSERT(RaceEventTable::ColorTransformResource::InitParams, 0x3c)
 
 // FUNCTION: LEGORACERS 0x004654c0
-RaceSession::Field0x2098::Resource0x48::Resource0x48()
+RaceEventTable::ColorTransformResource::ColorTransformResource()
 {
 	FUN_00465560();
 }
 
 // FUNCTION: LEGORACERS 0x00465510
-RaceSession::Field0x2098::Resource0x48::~Resource0x48()
+RaceEventTable::ColorTransformResource::~ColorTransformResource()
 {
 	FUN_004655e0();
 }
 
 // FUNCTION: LEGORACERS 0x00465560
-void RaceSession::Field0x2098::Resource0x48::FUN_00465560()
+void RaceEventTable::ColorTransformResource::FUN_00465560()
 {
-	m_unk0x04 = NULL;
+	m_eventTable = NULL;
 	m_flags0x20 = 0;
 	m_state0x18 = 0;
-	m_unk0x14 = 0;
+	m_eventId = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00465570
-void RaceSession::Field0x2098::Resource0x48::FUN_00465570(InitParams* p_params)
+void RaceEventTable::ColorTransformResource::FUN_00465570(InitParams* p_params)
 {
 	if (m_state0x18) {
 		FUN_004655e0();
 	}
 
-	m_unk0x14 = p_params->m_unk0x00;
-	LegoS32* eventId = p_params->m_eventIds;
-	for (LegoU32 i = 0; i < sizeOfArray(m_eventIds); i++) {
-		m_eventIds[i] = *eventId++;
+	m_eventId = p_params->m_unk0x00;
+	LegoS32* eventId = p_params->m_stateEventIds;
+	for (LegoU32 i = 0; i < sizeOfArray(m_stateEventIds); i++) {
+		m_stateEventIds[i] = *eventId++;
 	}
 
-	m_unk0x04 = p_params->m_eventTable;
+	m_eventTable = p_params->m_eventTable;
 	LegoU32 flags = p_params->m_flags0x14;
 	m_flags0x20 = flags;
 	m_unk0x24 = p_params->m_unk0x18;
@@ -53,15 +53,15 @@ void RaceSession::Field0x2098::Resource0x48::FUN_00465570(InitParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004655e0
-void RaceSession::Field0x2098::Resource0x48::FUN_004655e0()
+void RaceEventTable::ColorTransformResource::FUN_004655e0()
 {
-	VTable0x08(NULL);
+	OnEndForRacer(NULL);
 	FUN_00465560();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00465600
-void RaceSession::Field0x2098::Resource0x48::VTable0x00(RaceState::Racer* p_racer)
+void RaceEventTable::ColorTransformResource::OnStartForRacer(RaceState::Racer* p_racer)
 {
 	LegoU8 flags = static_cast<LegoU8>(m_flags0x20);
 	GolWorldEntity* entity = m_unk0x44;
@@ -73,7 +73,7 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x00(RaceState::Racer* p_race
 			p_racer->m_visuals.ClearColorTransform();
 		}
 
-		FUN_0045edd0(c_state0x18One, c_state0x18One);
+		NotifyStateChange(c_state0x18One, c_state0x18One);
 		return;
 	}
 
@@ -84,11 +84,11 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x00(RaceState::Racer* p_race
 		p_racer->m_visuals.SetColorTransform(&m_unk0x24);
 	}
 
-	FUN_0045edd0(c_state0x18One, c_state0x18One);
+	NotifyStateChange(c_state0x18One, c_state0x18One);
 }
 
 // FUNCTION: LEGORACERS 0x00465690
-void RaceSession::Field0x2098::Resource0x48::VTable0x08(RaceState::Racer* p_racer)
+void RaceEventTable::ColorTransformResource::OnEndForRacer(RaceState::Racer* p_racer)
 {
 	if (!(static_cast<LegoU8>(m_flags0x20) & c_flags0x20Bit1)) {
 		GolWorldEntity* entity = m_unk0x44;
@@ -100,12 +100,12 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x08(RaceState::Racer* p_race
 		}
 	}
 
-	FUN_0045edd0(m_state0x18, c_state0x18Three);
+	NotifyStateChange(m_state0x18, c_state0x18Three);
 	m_state0x18 = c_state0x18Four;
 }
 
 // FUNCTION: LEGORACERS 0x004656d0
-LegoU32 RaceSession::Field0x2098::Resource0x48::VTable0x18()
+LegoU32 RaceEventTable::ColorTransformResource::GetKind()
 {
 	return 7;
 }

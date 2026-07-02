@@ -11,7 +11,7 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/cobalttrail0x140.h"
 #include "race/racecameracontroller.h"
-#include "race/raceeventtable0x90.h"
+#include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
@@ -568,7 +568,7 @@ void RaceState::Racer::Initialize(
 // FUNCTION: LEGORACERS 0x004371c0
 void RaceState::Racer::InitializePhysics(RacerContext* p_context, SetupParams* p_params)
 {
-	RaceEventTable0x90* eventTable;
+	RaceEventTable* eventTable;
 	void* unk0x2c;
 	GolBoundedEntity* unk0x0c;
 	GolBoundedEntity* unk0x10;

@@ -7,21 +7,21 @@
 #include "race/raceeventrecord.h"
 #include "types.h"
 
-class RaceEventTable0x90;
+class RaceEventTable;
 class GolBoundedEntity;
 class GolNameTable;
 class GolWorldDatabase;
 
-class RaceSessionField0x32b4 {
+class TriggerWorld {
 public:
-	RaceSessionField0x32b4();
-	GolWorldDatabase* FUN_0041f440(
+	TriggerWorld();
+	GolWorldDatabase* Initialize(
 		GolWorldDatabase* p_unk0x04,
 		LegoChar* p_unk0x08,
-		RaceEventTable0x90* p_unk0x0c,
+		RaceEventTable* p_unk0x0c,
 		GolNameTable* p_unk0x10
 	);
-	LegoBool32 FUN_0041f4d0(
+	LegoBool32 IntersectSegment(
 		GolVec3* p_unk0x04,
 		GolVec3* p_unk0x08,
 		GolBoundingVolume::Field0x0c* p_unk0x0c,
@@ -37,7 +37,7 @@ public:
 
 private:
 	GolWorldDatabase* m_unk0x00;   // 0x00
-	RaceEventTable0x90* m_unk0x04; // 0x04
+	RaceEventTable* m_unk0x04; // 0x04
 	GolNameTable* m_unk0x08;       // 0x08
 	GolBoundedEntity* m_unk0x0c;   // 0x0c
 };

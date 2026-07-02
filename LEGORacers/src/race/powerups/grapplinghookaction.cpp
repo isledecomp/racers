@@ -78,7 +78,7 @@ RacePowerupManager::GrapplingHookAction::~GrapplingHookAction()
 // FUNCTION: LEGORACERS 0x00453cd0
 void RacePowerupManager::GrapplingHookAction::Initialize(
 	RacePowerupManager* p_manager,
-	RaceSessionField0x32b4* p_collisionWorld,
+	TriggerWorld* p_collisionWorld,
 	undefined4 p_billboardMaterialIndex
 )
 {

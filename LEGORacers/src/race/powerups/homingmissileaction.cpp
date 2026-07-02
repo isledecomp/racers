@@ -68,10 +68,7 @@ RacePowerupManager::HomingMissileAction::~HomingMissileAction()
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void RacePowerupManager::HomingMissileAction::Initialize(
-	GolExport** p_golExportPtr,
-	RaceSessionField0x32b4* p_collisionWorld
-)
+void RacePowerupManager::HomingMissileAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Shutdown();

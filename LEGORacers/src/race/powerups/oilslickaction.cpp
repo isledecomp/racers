@@ -71,7 +71,7 @@ void RacePowerupManager::OilSlickAction::Initialize(
 	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
 	GolCollidableEntity* p_collidable,
-	RaceSessionField0x32b4* p_collisionWorld,
+	TriggerWorld* p_collisionWorld,
 	CutsceneAnimation* p_particleAnimation,
 	GolRenderDevice* p_renderer,
 	GolExport* p_export

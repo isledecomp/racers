@@ -14,12 +14,12 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90, 0xc8)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::SkbTxtParser, 0x1fc)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::Entry, 0x10)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::Entry::Keyframe, 0x10)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::ModelBuilder, 0x01)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2f90::ModelBuilder::Params, 0x38)
+DECOMP_SIZE_ASSERT(RaceSkyState, 0xc8)
+DECOMP_SIZE_ASSERT(RaceSkyState::SkbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RaceSkyState::Entry, 0x10)
+DECOMP_SIZE_ASSERT(RaceSkyState::Entry::Keyframe, 0x10)
+DECOMP_SIZE_ASSERT(RaceSkyState::ModelBuilder, 0x01)
+DECOMP_SIZE_ASSERT(RaceSkyState::ModelBuilder::Params, 0x38)
 
 // GLOBAL: LEGORACERS 0x004afd54
 extern const LegoFloat g_raceSessionSkyModelMaxFloat = FLT_MAX;
@@ -40,19 +40,19 @@ const LegoFloat g_raceSessionSkyModelInversePi = 0.31830987f;
 const LegoFloat g_raceSessionSkyModelInverseTwoPi = 0.15915494f;
 
 // FUNCTION: LEGORACERS 0x0041c430
-RaceSession::Field0x2f90::Field0x2f90()
+RaceSkyState::RaceSkyState()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0041c4b0
-RaceSession::Field0x2f90::~Field0x2f90()
+RaceSkyState::~RaceSkyState()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x0041c500
-void RaceSession::Field0x2f90::Reset()
+void RaceSkyState::Reset()
 {
 	m_entries = NULL;
 	m_count = 0;
@@ -68,7 +68,7 @@ void RaceSession::Field0x2f90::Reset()
 }
 
 // STUB: LEGORACERS 0x0041c550
-void RaceSession::Field0x2f90::FUN_0041c550(
+void RaceSkyState::FUN_0041c550(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,
 	const LegoChar* p_skyName,
@@ -269,7 +269,7 @@ void RaceSession::Field0x2f90::FUN_0041c550(
 }
 
 // FUNCTION: LEGORACERS 0x0041cbe0
-void RaceSession::Field0x2f90::Clear()
+void RaceSkyState::Clear()
 {
 	if (m_unk0x9c) {
 		m_unk0xa4->VTable0x3c(m_unk0x9c);
@@ -306,7 +306,7 @@ void RaceSession::Field0x2f90::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0041ccb0
-void RaceSession::Field0x2f90::FUN_0041ccb0(LegoU32 p_elapsedMs)
+void RaceSkyState::FUN_0041ccb0(LegoU32 p_elapsedMs)
 {
 	m_unk0x9c->FUN_00416090(p_elapsedMs);
 
@@ -353,12 +353,7 @@ void RaceSession::Field0x2f90::FUN_0041ccb0(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0041ce60
-void RaceSession::Field0x2f90::FUN_0041ce60(
-	Entry* p_entry,
-	ColorRGBA* p_unk0x08,
-	ColorRGBA* p_unk0x0c,
-	ColorRGBA* p_unk0x10
-)
+void RaceSkyState::FUN_0041ce60(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10)
 {
 	LegoU32 keyframeCount = p_entry->m_unk0x0c;
 
@@ -397,12 +392,7 @@ void RaceSession::Field0x2f90::FUN_0041ce60(
 }
 
 // FUNCTION: LEGORACERS 0x0041cf20
-void RaceSession::Field0x2f90::FUN_0041cf20(
-	const ColorRGBA* p_from,
-	const ColorRGBA* p_to,
-	ColorRGBA* p_result,
-	LegoFloat p_amount
-)
+void RaceSkyState::FUN_0041cf20(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount)
 {
 	LegoFloat inverseAmount = 1.0f - p_amount;
 
@@ -412,11 +402,7 @@ void RaceSession::Field0x2f90::FUN_0041cf20(
 }
 
 // FUNCTION: LEGORACERS 0x0041cfc0
-void RaceSession::Field0x2f90::FUN_0041cfc0(
-	const ColorRGBA* p_unk0x04,
-	const ColorRGBA* p_unk0x08,
-	const ColorRGBA* p_unk0x0c
-)
+void RaceSkyState::FUN_0041cfc0(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c)
 {
 	GdbVertexArray0xc* vertices;
 	const ColorRGBA* color = NULL;
@@ -446,7 +432,7 @@ void RaceSession::Field0x2f90::FUN_0041cfc0(
 }
 
 // FUNCTION: LEGORACERS 0x0041d040
-void RaceSession::Field0x2f90::FUN_0041d040(GolVec3* p_position)
+void RaceSkyState::FUN_0041d040(GolVec3* p_position)
 {
 	p_position->m_z -= g_unk0x004afde0 - m_unk0xac;
 	m_unk0x0c.VTable0x08(*p_position);
@@ -464,7 +450,7 @@ void RaceSession::Field0x2f90::FUN_0041d040(GolVec3* p_position)
 }
 
 // FUNCTION: LEGORACERS 0x0041d0f0
-void RaceSession::Field0x2f90::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
+void RaceSkyState::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
 {
 	LegoU8 flags = m_unk0xc4;
 	flags = ~flags;
@@ -483,7 +469,7 @@ void RaceSession::Field0x2f90::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0041d150
-void RaceSession::Field0x2f90::FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs)
+void RaceSkyState::FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs)
 {
 	Entry* entry = static_cast<Entry*>(GolNameTable::GetName(p_name));
 	if (entry) {
@@ -498,7 +484,7 @@ void RaceSession::Field0x2f90::FUN_0041d150(const LegoChar* p_name, LegoU32 p_du
 }
 
 // FUNCTION: LEGORACERS 0x004907d0
-void RaceSession::Field0x2f90::ModelBuilder::FUN_004907d0(Params* p_params)
+void RaceSkyState::ModelBuilder::FUN_004907d0(Params* p_params)
 {
 	if (p_params->m_useTextureSeam) {
 		FUN_004910e0(p_params);
@@ -509,7 +495,7 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907d0(Params* p_params)
 }
 
 // STUB: LEGORACERS 0x004907f0
-void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
+void RaceSkyState::ModelBuilder::FUN_004907f0(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoS32 ringCount;
@@ -839,7 +825,7 @@ void RaceSession::Field0x2f90::ModelBuilder::FUN_004907f0(Params* p_params)
 }
 
 // STUB: LEGORACERS 0x004910e0
-void RaceSession::Field0x2f90::ModelBuilder::FUN_004910e0(Params* p_params)
+void RaceSkyState::ModelBuilder::FUN_004910e0(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoS32 ringCount;

@@ -1411,7 +1411,7 @@ void CobaltTrail0x140::FUN_004263a0()
 	}
 
 	LegoS32 lapIndex = racer->m_lapsCompleted;
-	LegoS32 lapCount = racer->m_unk0xce0;
+	LegoS32 lapCount = racer->m_lapCount;
 	LegoU32 totalTime = 0;
 
 	if (lapIndex < lapCount) {
@@ -1454,7 +1454,7 @@ void CobaltTrail0x140::FUN_004263a0()
 	}
 
 	if (lapIndex != m_unk0x07c) {
-		if (m_unk0x07c != -1 && m_unk0x07c < racer->m_unk0xce0) {
+		if (m_unk0x07c != -1 && m_unk0x07c < racer->m_lapCount) {
 			LegoU32 completedLapTime = racer->m_lapTimes[m_unk0x07c];
 			if (completedLapTime <= m_unk0x088 || !m_unk0x088) {
 				m_unk0x088 = completedLapTime;
@@ -1465,8 +1465,8 @@ void CobaltTrail0x140::FUN_004263a0()
 		m_unk0x07c = lapIndex;
 		LegoS32 displayLap = lapIndex + 1;
 		if (m_unk0x080 <= 0) {
-			if (displayLap > racer->m_unk0xce0) {
-				displayLap = racer->m_unk0xce0;
+			if (displayLap > racer->m_lapCount) {
+				displayLap = racer->m_lapCount;
 			}
 			::sprintf(m_unk0x061, "%d", displayLap);
 		}

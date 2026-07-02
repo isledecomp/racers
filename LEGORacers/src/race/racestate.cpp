@@ -400,10 +400,10 @@ void RaceState::Racer::Reset()
 	m_cameraController = NULL;
 	m_cameraViewIndex = 0;
 	m_unk0x014 = 0;
-	m_unk0xdbc = 0;
+	m_displayNameBuffer = 0;
 	m_aiChargeColor = 0;
 	m_aiChargeTarget = 0;
-	m_unk0xce0 = 0;
+	m_lapCount = 0;
 	m_speedRampTimerMs = 0;
 }
 
@@ -427,20 +427,20 @@ void RaceState::Racer::Initialize(
 	m_checkpointGraph = p_context->m_racerField0x010;
 	m_raceState = p_raceState;
 	m_lapTimes[5] = p_racerIndex + 1;
-	m_enginePitchScale = p_params->m_unk0x78;
-	m_aiChargeColor = p_params->m_unk0x7c;
-	m_aiChargeTarget = p_params->m_unk0x80;
-	m_unk0xce0 = p_params->m_unk0x72;
+	m_enginePitchScale = p_params->m_enginePitchScale;
+	m_aiChargeColor = p_params->m_aiChargeColor;
+	m_aiChargeTarget = p_params->m_aiChargeTarget;
+	m_lapCount = p_params->m_lapCount;
 
 	if (p_params->m_stringChars) {
 		m_displayName.CopyFromBufSelection(p_params->m_stringChars, 0);
 	}
 	else {
-		GolString::CopyStringToBuf16(p_params->m_displayName, &m_unk0xdbc);
-		m_displayName.CopyFromBufSelection(&m_unk0xdbc, 0);
+		GolString::CopyStringToBuf16(p_params->m_displayName, &m_displayNameBuffer);
+		m_displayName.CopyFromBufSelection(&m_displayNameBuffer, 0);
 	}
 
-	LegoU32 soundBase = p_params->m_unk0x74;
+	LegoU32 soundBase = p_params->m_voiceBank;
 	m_voiceBank = soundBase;
 	if (soundBase == 1000) {
 		m_tauntSoundId = 26;
@@ -461,7 +461,7 @@ void RaceState::Racer::Initialize(
 		m_tauntSoundId = 31;
 	}
 
-	LegoU32 colorValue = p_params->m_unk0x6c[0];
+	LegoU32 colorValue = p_params->m_driverStats[0];
 	LegoFloat colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -471,7 +471,7 @@ void RaceState::Racer::Initialize(
 	}
 	m_aiRedUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
-	colorValue = p_params->m_unk0x6c[1];
+	colorValue = p_params->m_driverStats[1];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -481,7 +481,7 @@ void RaceState::Racer::Initialize(
 	}
 	m_aiYellowUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
-	colorValue = p_params->m_unk0x6c[2];
+	colorValue = p_params->m_driverStats[2];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -491,7 +491,7 @@ void RaceState::Racer::Initialize(
 	}
 	m_aiGreenUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
-	colorValue = p_params->m_unk0x6c[3];
+	colorValue = p_params->m_driverStats[3];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -501,7 +501,7 @@ void RaceState::Racer::Initialize(
 	}
 	m_aiBlueUseChance = static_cast<LegoU8>(colorScale * 255.0f);
 
-	colorValue = p_params->m_unk0x6c[4];
+	colorValue = p_params->m_driverStats[4];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -511,7 +511,7 @@ void RaceState::Racer::Initialize(
 	}
 	m_unk0xd20 = static_cast<LegoU8>(colorScale * 255.0f);
 
-	colorValue = p_params->m_unk0x6c[5];
+	colorValue = p_params->m_driverStats[5];
 	colorScale = static_cast<LegoFloat>(colorValue);
 	colorScale *= g_unk0x004c67a4;
 	colorScale *= g_carBuildPreviewMouseScale;
@@ -552,7 +552,7 @@ void RaceState::Racer::Initialize(
 	LegoU32 state = 2;
 	m_controlMode = state;
 	if (p_context->m_flags0x3c & 1) {
-		m_unk0xd04 |= c_flags0xd04Bit26;
+		m_unk0xd04 |= c_flagCheatNslwj;
 	}
 	if (p_context->m_flags0x3c & 0x40) {
 		m_unk0xd04 |= c_flagCheatRedOnly;
@@ -561,16 +561,16 @@ void RaceState::Racer::Initialize(
 		m_unk0xd04 |= c_flagCheatMaxPowerups;
 	}
 	if (p_context->m_flags0x3c & state) {
-		m_unk0xd04 |= c_flagCheatFastForward;
+		m_unk0xd04 |= c_flagCheatFlySkyHigh;
 	}
 
 	m_unk0x018.Initialize(p_field0x018Params, p_context);
-	FUN_004371c0(&p_context->m_field0x371c0, &p_params->m_vehicle);
+	InitializePhysics(&p_context->m_field0x371c0, &p_params->m_vehicle);
 	ResetRaceProgress();
 }
 
 // FUNCTION: LEGORACERS 0x004371c0
-void RaceState::Racer::FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle* p_unk0x08)
+void RaceState::Racer::InitializePhysics(Field0x371c0* p_unk0x04, Field0x371c0Vehicle* p_unk0x08)
 {
 	RaceEventTable0x90* eventTable;
 	undefined4 unk0x2c;
@@ -655,7 +655,7 @@ void RaceState::Racer::FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle
 	m_unk0x3e8.m_unk0x6ec = 0;
 	m_unk0x3e8.m_racer = this;
 
-	if (m_unk0xd04 & c_flags0xd04Bit26) {
+	if (m_unk0xd04 & c_flagCheatNslwj) {
 		field0x3e8->m_flags0x6c0 |= Physics::c_flags0x6c0Bit20;
 	}
 
@@ -827,7 +827,7 @@ void RaceState::Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	}
 
 	LegoU32 lap = m_lapsCompleted;
-	if (lap < m_unk0xce0) {
+	if (lap < m_lapCount) {
 		m_lapTimes[lap] += p_elapsedMs;
 	}
 
@@ -979,7 +979,7 @@ void RaceState::Racer::UpdateTimers(LegoU32 p_elapsedMs)
 	}
 
 	LegoU32 flags = m_unk0xd04;
-	if ((flags & c_flagCheatFastForward) && !(flags & c_flagHalted)) {
+	if ((flags & c_flagCheatFlySkyHigh) && !(flags & c_flagHalted)) {
 		m_unk0x008->UseGreenPowerup(this, 2);
 	}
 }
@@ -1708,7 +1708,7 @@ void RaceState::Racer::AiUsePowerup()
 
 		switch (state) {
 		case 3:
-			if (!((flags & c_flagCheatFastForward) && index != 3)) {
+			if (!((flags & c_flagCheatFlySkyHigh) && index != 3)) {
 				m_unk0x008->UseGreenPowerup(this, index);
 			}
 			break;
@@ -2213,7 +2213,7 @@ LegoU32 RaceState::Racer::CrossFinishLine()
 					m_timeBehind = result;
 
 					if (result) {
-						result = m_unk0xce0;
+						result = m_lapCount;
 						if (m_lapsCompleted < result) {
 							m_timeBehindDisplayMs = 2000;
 						}
@@ -2967,27 +2967,27 @@ void RaceState::CreateRacer(
 		racerParams.m_vehicle.m_unk0x084 = chassisItem->m_unk0x100;
 		racerParams.m_vehicle.m_unk0x085 = chassisItem->m_unk0x101;
 		racerParams.m_vehicle.m_unk0x086 = chassisItem->m_unk0x102;
-		racerParams.m_unk0x6c[0] = driverEntry->m_unk0x24;
-		racerParams.m_unk0x6c[1] = driverEntry->m_unk0x25;
-		racerParams.m_unk0x6c[2] = driverEntry->m_unk0x26;
-		racerParams.m_unk0x6c[3] = driverEntry->m_unk0x27;
-		racerParams.m_unk0x6c[4] = driverEntry->m_unk0x28;
-		racerParams.m_unk0x6c[5] = driverEntry->m_unk0x29;
-		racerParams.m_unk0x74 = driverEntry->m_unk0x2a * 12 + 1100;
+		racerParams.m_driverStats[0] = driverEntry->m_unk0x24;
+		racerParams.m_driverStats[1] = driverEntry->m_unk0x25;
+		racerParams.m_driverStats[2] = driverEntry->m_unk0x26;
+		racerParams.m_driverStats[3] = driverEntry->m_unk0x27;
+		racerParams.m_driverStats[4] = driverEntry->m_unk0x28;
+		racerParams.m_driverStats[5] = driverEntry->m_unk0x29;
+		racerParams.m_voiceBank = driverEntry->m_unk0x2a * 12 + 1100;
 
 		switch (driverEntry->m_unk0x22) {
 		case 1:
 		case 2:
 		case 3:
 		case 4:
-			racerParams.m_unk0x7c = driverEntry->m_unk0x22;
+			racerParams.m_aiChargeColor = driverEntry->m_unk0x22;
 			break;
 		default:
-			racerParams.m_unk0x7c = 0;
+			racerParams.m_aiChargeColor = 0;
 			break;
 		}
 
-		racerParams.m_unk0x80 = driverEntry->m_unk0x23;
+		racerParams.m_aiChargeTarget = driverEntry->m_unk0x23;
 		racerParams.m_stringChars = m_unk0x000.GetStringBuffer(p_slot->m_driverName);
 	}
 	else {
@@ -3029,11 +3029,11 @@ void RaceState::CreateRacer(
 		racerParams.m_vehicle.m_unk0x085 = chassisItem->m_unk0x101;
 		racerParams.m_vehicle.m_unk0x086 = chassisItem->m_unk0x102;
 
-		for (LegoU32 i = 0; i < sizeOfArray(racerParams.m_unk0x6c); i++) {
-			racerParams.m_unk0x6c[i] = 100;
+		for (LegoU32 i = 0; i < sizeOfArray(racerParams.m_driverStats); i++) {
+			racerParams.m_driverStats[i] = 100;
 		}
 
-		racerParams.m_unk0x74 = p_racerIndex * 100 + 1000;
+		racerParams.m_voiceBank = p_racerIndex * 100 + 1000;
 		::strcpy(racerParams.m_displayName, p_slot->m_playerName);
 		m_unk0x0f0.m_unk0x09c = customIndex + 1;
 	}
@@ -3056,11 +3056,11 @@ void RaceState::CreateRacer(
 	racerParams.m_vehicle.m_unk0x040 = chassisItem->m_unk0x88[3].m_x;
 	racerParams.m_vehicle.m_unk0x044 = chassisItem->m_unk0x88[3].m_y;
 
-	racerParams.m_unk0x72 = m_setup.m_lapCount;
+	racerParams.m_lapCount = m_setup.m_lapCount;
 	racerParams.m_vehicle.m_unk0x060 = p_context->m_unk0x28;
 	racerParams.m_vehicle.m_unk0x064 = p_context->m_unk0x2c;
 	racerParams.m_vehicle.m_unk0x068 = p_context->m_unk0x0c;
-	racerParams.m_unk0x78 = chassisItem->m_unk0xec;
+	racerParams.m_enginePitchScale = chassisItem->m_unk0xec;
 
 	if (championDefinition) {
 		racerParams.m_vehicle.m_unk0x04c.m_x = championDefinition->m_unk0x24;

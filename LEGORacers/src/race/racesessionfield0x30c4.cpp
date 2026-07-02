@@ -80,7 +80,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 	for (LegoU32 racerIndex = 0; racerIndex < m_raceState->GetRacerCount(); racerIndex++) {
 		RaceState::Racer* racer = &m_raceState->GetRacers()[racerIndex];
 
-		for (LegoU32 lapIndex = 0; lapIndex < racer->m_unk0xce0; lapIndex++) {
+		for (LegoU32 lapIndex = 0; lapIndex < racer->m_lapCount; lapIndex++) {
 			racer->m_lapTimes[lapIndex] = 0;
 		}
 
@@ -137,7 +137,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 			racer->m_routeRecord = NULL;
 		}
 
-		racer->FUN_004371c0(NULL, NULL);
+		racer->InitializePhysics(NULL, NULL);
 		racer->m_unk0xc70.m_unk0x050 = m_raceState->GetUnk0x2a0();
 		racer->ResetRaceProgress();
 		racer->StopEngineSounds();

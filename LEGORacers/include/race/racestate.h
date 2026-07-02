@@ -134,13 +134,13 @@ public:
 					LegoChar m_displayName[0x18];     // 0x00
 					undefined2* m_stringChars;        // 0x18
 					undefined m_unk0x1c[0x6c - 0x1c]; // 0x1c
-					LegoU8 m_unk0x6c[6];              // 0x6c
-					LegoU8 m_unk0x72;                 // 0x72
+					LegoU8 m_driverStats[6];          // 0x6c
+					LegoU8 m_lapCount;                // 0x72
 					undefined m_unk0x73[0x74 - 0x73]; // 0x73
-					LegoU32 m_unk0x74;                // 0x74
-					LegoFloat m_unk0x78;              // 0x78
-					LegoU32 m_unk0x7c;                // 0x7c
-					LegoU32 m_unk0x80;                // 0x80
+					LegoU32 m_voiceBank;              // 0x74
+					LegoFloat m_enginePitchScale;     // 0x78
+					LegoU32 m_aiChargeColor;          // 0x7c
+					LegoU32 m_aiChargeTarget;         // 0x80
 					undefined m_unk0x84[0x88 - 0x84]; // 0x84
 				};
 			};
@@ -1037,7 +1037,7 @@ public:
 		LegoU32 GetUnk0xd04() const { return m_unk0xd04; }
 		void OnRaceStart();
 		void StartEngine();
-		void FUN_004371c0(Field0x371c0* p_unk0x04, Field0x371c0Vehicle* p_unk0x08);
+		void InitializePhysics(Field0x371c0* p_eventContext, Field0x371c0Vehicle* p_vehicle);
 		void ResetRaceProgress();
 		void UpdateCarAnimation(LegoU32 p_elapsedMs);
 		void UpdateTimers(LegoU32 p_elapsedMs);
@@ -1118,8 +1118,8 @@ public:
 			c_flags0xd04Bit22 = 0x00400000,
 			c_flagCheatRedOnly = 0x01000000,
 			c_flagCheatMaxPowerups = 0x02000000,
-			c_flags0xd04Bit26 = 0x04000000,
-			c_flagCheatFastForward = 0x08000000,
+			c_flagCheatNslwj = 0x04000000,
+			c_flagCheatFlySkyHigh = 0x08000000,
 			c_flagSpeedRamping = 0x10000000,
 			c_flags0xd04Bit29 = 0x20000000,
 			c_flags0xaa8Bit1 = 1 << 1,
@@ -1160,7 +1160,7 @@ public:
 		LegoU32 m_aiChargeTarget;             // 0xcd4
 		LegoU32 m_aiPowerupCheckMs;           // 0xcd8
 		LegoU32 m_aiPowerupCheckIntervalMs;   // 0xcdc
-		LegoU8 m_unk0xce0;                    // 0xce0
+		LegoU8 m_lapCount;                    // 0xce0
 		undefined m_unk0xce1[0xce4 - 0xce1];  // 0xce1
 		LegoU32 m_lapsCompleted;              // 0xce4
 		LegoU32 m_lapTransitionCount;         // 0xce8
@@ -1247,7 +1247,7 @@ public:
 		undefined4 m_unk0xdb0;                    // 0xdb0
 		RaceCameraController* m_cameraController; // 0xdb4
 		LegoU32 m_cameraViewIndex;                // 0xdb8
-		LegoU16 m_unk0xdbc;                       // 0xdbc
+		LegoU16 m_displayNameBuffer;              // 0xdbc
 		undefined m_unk0xdbe[0xdec - 0xdbe];      // 0xdbe
 		GolString m_displayName;                  // 0xdec
 		GolVec3 m_lookTargetPosition;             // 0xdf8

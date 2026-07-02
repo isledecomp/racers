@@ -1121,7 +1121,7 @@ LegoU32 RaceState::Racer::Physics::VTable0x0c(
 	}
 
 	if (target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Bit18) {
-		m_unk0x6f0->m_lapsCompleted = m_unk0x6f0->m_unk0xce0;
+		m_unk0x6f0->m_lapsCompleted = m_unk0x6f0->m_lapCount;
 	}
 
 	if (target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Bit3) {

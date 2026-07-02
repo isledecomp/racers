@@ -37,19 +37,19 @@ public:
 		// MenuSceneScreen::SceneWidget::`scalar deleting destructor'
 
 		undefined4 Create(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
-		void FUN_00466b10();
-		void FUN_00466b90();
-		void FUN_00466bf0(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
-		void FUN_00466d00(CutsceneDefinition::Frame* p_frame);
+		void ResetState();
+		void ComputeViewportRect();
+		void LoadCutscene(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
+		void SetFrame(CutsceneDefinition::Frame* p_frame);
 
-		CutsceneDefinition m_unk0x58;          // 0x058
-		CutscenePlayer m_unk0x84;              // 0x084
-		LegoU32 m_unk0x2ac;                    // 0x2ac
-		CutsceneDefinition::Frame* m_unk0x2b0; // 0x2b0
-		Rect m_unk0x2b4;                       // 0x2b4
-		undefined4 m_unk0x2c4;                 // 0x2c4
-		LegoBool32 m_unk0x2c8;                 // 0x2c8
-		LegoBool32 m_unk0x2cc;                 // 0x2cc
+		CutsceneDefinition m_definition;    // 0x058
+		CutscenePlayer m_player;            // 0x084
+		LegoU32 m_frameIndex;               // 0x2ac
+		CutsceneDefinition::Frame* m_frame; // 0x2b0
+		Rect m_viewportRect;                // 0x2b4
+		undefined4 m_autoAdvance;           // 0x2c4
+		LegoBool32 m_finished;              // 0x2c8
+		LegoBool32 m_skippable;             // 0x2cc
 	};
 
 	MenuSceneScreen();

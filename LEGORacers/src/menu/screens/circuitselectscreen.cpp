@@ -105,7 +105,7 @@ void CircuitSelectScreen::CreateWidgets()
 	}
 
 	CreateRegion(&m_sceneWidget, m_resourceMenuId);
-	m_sceneWidget.m_unk0x2cc = FALSE;
+	m_sceneWidget.m_skippable = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00479d10
@@ -125,6 +125,6 @@ void CircuitSelectScreen::Navigate()
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
 LegoBool32 CircuitSelectScreen::Update(undefined4 p_unk0x04)
 {
-	m_sceneWidget.m_unk0x2cc = TRUE;
+	m_sceneWidget.m_skippable = TRUE;
 	return MenuSceneScreen::Update(p_unk0x04);
 }

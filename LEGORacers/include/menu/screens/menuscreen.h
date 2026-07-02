@@ -42,10 +42,10 @@ public:
 	// SIZE 0x54
 	class SceneRefBinding : public MenuWidget::CreateParams {
 	public:
-		LegoChar m_unk0x38[0x48 - 0x38]; // 0x38
-		undefined4 m_unk0x48;            // 0x48
-		LegoU32 m_unk0x4c;               // 0x4c
-		LegoFloat m_unk0x50;             // 0x50
+		LegoChar m_cutsceneName[0x48 - 0x38]; // 0x38
+		undefined4 m_autoAdvance;             // 0x48
+		LegoU32 m_startFrameIndex;            // 0x4c
+		LegoFloat m_aspectScale;              // 0x50
 	};
 
 	MenuScreen();

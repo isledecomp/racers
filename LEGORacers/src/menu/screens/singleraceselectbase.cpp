@@ -75,7 +75,7 @@ void SingleRaceSelectBase::CreateWidgets()
 	}
 
 	CreateRegion(&m_sceneWidget, 6);
-	m_sceneWidget.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
+	m_sceneWidget.m_frame->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -121,7 +121,7 @@ LegoBool32 SingleRaceSelectBase::Initialize(MenuGameContext* p_context, MenuScre
 	}
 
 	LoadCosmeticTable();
-	m_sceneWidget.m_unk0x2cc = FALSE;
+	m_sceneWidget.m_skippable = FALSE;
 	return TRUE;
 }
 
@@ -130,14 +130,14 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 {
 	GolAnimatedEntity* modelEntity = NULL;
 	LegoU32 i = 0;
-	CutsceneDefinition::Frame* frame = m_sceneWidget.m_unk0x2b0;
+	CutsceneDefinition::Frame* frame = m_sceneWidget.m_frame;
 
 	while (!modelEntity) {
-		if (i >= m_sceneWidget.m_unk0x58.GetWorldDatabaseCount()) {
+		if (i >= m_sceneWidget.m_definition.GetWorldDatabaseCount()) {
 			break;
 		}
 
-		GolWorldDatabase* worldDatabase = m_sceneWidget.m_unk0x58.GetWorldDatabase(i);
+		GolWorldDatabase* worldDatabase = m_sceneWidget.m_definition.GetWorldDatabase(i);
 		if (!modelEntity && worldDatabase->GetUnk0xc0NameEntries()) {
 			modelEntity = worldDatabase->GetUnk0xc0Name("guy1");
 		}

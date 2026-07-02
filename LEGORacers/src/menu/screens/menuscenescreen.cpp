@@ -49,7 +49,7 @@ LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 		font->SetColor(0xff, 0xff, 0xff, 0xff);
 	}
 
-	CutscenePlayer* resourceHelper = &m_sceneWidget.m_unk0x84;
+	CutscenePlayer* resourceHelper = &m_sceneWidget.m_player;
 	if (resourceHelper->GetTextVisualCount() && p_context->m_context->m_languageIndex) {
 		LegoChar languageFile[12];
 		languageFile[0] = '\0';
@@ -127,7 +127,7 @@ LegoBool32 MenuSceneScreen::Update(undefined4 p_unk0x04)
 		m_firstUpdate = FALSE;
 	}
 
-	if (m_sceneWidget.m_unk0x2c8) {
+	if (m_sceneWidget.m_finished) {
 		m_navPending = TRUE;
 	}
 

@@ -268,7 +268,7 @@ void RaceModeSetupScreen::UpdateRacePreview()
 		::strcpy(driverName, g_veronicaVoltageName);
 	}
 
-	GolNameTable* frameNames = &m_sceneWidget.m_unk0x58;
+	GolNameTable* frameNames = &m_sceneWidget.m_definition;
 	CutsceneDefinition::Frame* frame;
 	if (!frameNames->GetNameEntries()) {
 		frame = NULL;
@@ -280,9 +280,9 @@ void RaceModeSetupScreen::UpdateRacePreview()
 	LegoChar* raceNameSource = raceNameEntry->GetName();
 	::memcpy(raceName, raceNameSource, sizeof(GolName));
 	m_selectedRaceIndex = m_context->m_raceNames.GetEntryIndexByName(raceName);
-	if (frame && frame != m_sceneWidget.m_unk0x2b0) {
-		m_sceneWidget.FUN_00466d00(frame);
-		m_sceneWidget.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
+	if (frame && frame != m_sceneWidget.m_frame) {
+		m_sceneWidget.SetFrame(frame);
+		m_sceneWidget.m_frame->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 		m_showLapTime = TRUE;
 		UpdateBestTimePanel();
 	}

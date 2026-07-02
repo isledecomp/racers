@@ -56,7 +56,7 @@ LegoBool32 SplashCinematicScreen::Initialize(MenuGameContext* p_context, MenuScr
 		StartMenuMusic(p_context, nextMenu, pushExtra);
 	}
 
-	m_sceneWidget.m_unk0x2cc = 0;
+	m_sceneWidget.m_skippable = 0;
 	return TRUE;
 }
 
@@ -144,7 +144,7 @@ void SplashCinematicScreen::Navigate()
 LegoBool32 SplashCinematicScreen::Update(undefined4 p_unk0x04)
 {
 	if (m_menuId != c_menuLegoIntro) {
-		m_sceneWidget.m_unk0x2cc = 1;
+		m_sceneWidget.m_skippable = 1;
 	}
 
 	return MenuSceneScreen::Update(p_unk0x04);

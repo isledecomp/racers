@@ -156,7 +156,7 @@ void CircuitRaceScreen::UpdateRacePreview()
 		::memcpy(frameName, raceNameEntry->GetThemeName(), sizeof(GolName));
 		::memcpy(driverName, raceNameEntry->GetMascotName(), sizeof(GolName));
 
-		GolNameTable* frameNames = &m_sceneWidget.m_unk0x58;
+		GolNameTable* frameNames = &m_sceneWidget.m_definition;
 		CutsceneDefinition::Frame* frame;
 		if (!frameNames->GetNameEntries()) {
 			frame = NULL;
@@ -165,9 +165,9 @@ void CircuitRaceScreen::UpdateRacePreview()
 			frame = static_cast<CutsceneDefinition::Frame*>(frameNames->GetName(frameName));
 		}
 
-		if (frame && frame != m_sceneWidget.m_unk0x2b0) {
-			m_sceneWidget.FUN_00466d00(frame);
-			m_sceneWidget.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
+		if (frame && frame != m_sceneWidget.m_frame) {
+			m_sceneWidget.SetFrame(frame);
+			m_sceneWidget.m_frame->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
 			m_previewTimerMs = 2000;
 			ApplyThemeColor(m_previewRaceIndex + m_circuitIndex * 4);
 			raceNameEntry->CopyDisplayString(&string);
@@ -206,7 +206,7 @@ LegoBool32 CircuitRaceScreen::Update(undefined4 p_elapsed)
 			m_transition = NULL;
 		}
 
-		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->GetActiveCamera();
+		GolCamera* rectSource = m_sceneWidget.m_frame->GetActiveCamera();
 		m_transition = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
 	}
 
@@ -217,8 +217,8 @@ LegoBool32 CircuitRaceScreen::Update(undefined4 p_elapsed)
 			m_transition = NULL;
 		}
 
-		m_sceneWidget.m_unk0x2b0->Update(0);
-		GolCamera* rectSource = m_sceneWidget.m_unk0x2b0->GetActiveCamera();
+		m_sceneWidget.m_frame->Update(0);
+		GolCamera* rectSource = m_sceneWidget.m_frame->GetActiveCamera();
 		m_transition = m_context->m_menuAnimations.Activate(250, TRUE, NULL, rectSource);
 		m_previewChanged = FALSE;
 	}

@@ -757,7 +757,7 @@ undefined4 MenuScreen::CreateRegion(MenuWidget* p_source, undefined2 p_event)
 
 	SceneRefBinding createParams = *params;
 	ApplyWidgetDefaults(&createParams);
-	createParams.m_unk0x50 = GetAspectScale();
+	createParams.m_aspectScale = GetAspectScale();
 
 	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->Create(&createParams, m_useBinaryFiles);
 }

@@ -172,8 +172,8 @@ void AwardCinematicScreen::CreateWidgets()
 	}
 
 	CreateRegion(&m_sceneWidget, m_resourceMenuId);
-	m_sceneWidget.m_unk0x2cc = FALSE;
-	CutsceneDefinition::Frame* frame = m_sceneWidget.m_unk0x2b0;
+	m_sceneWidget.m_skippable = FALSE;
+	CutsceneDefinition::Frame* frame = m_sceneWidget.m_frame;
 
 	if (m_resourceMenuId == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
@@ -184,8 +184,8 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 	}
 
-	for (LegoU32 i = 0; i < m_sceneWidget.m_unk0x58.GetWorldDatabaseCount(); i++) {
-		GolWorldDatabase* worldDatabase = m_sceneWidget.m_unk0x58.GetWorldDatabase(i);
+	for (LegoU32 i = 0; i < m_sceneWidget.m_definition.GetWorldDatabaseCount(); i++) {
+		GolWorldDatabase* worldDatabase = m_sceneWidget.m_definition.GetWorldDatabase(i);
 		if (!sourceDriverEntity) {
 			sourceDriverEntity = worldDatabase->FindUnk0xc0("guy1");
 		}
@@ -346,7 +346,7 @@ void AwardCinematicScreen::CreateWidgets()
 	}
 
 	if (m_resourceMenuId == c_menuWinCar) {
-		GolNameTable* textVisuals = m_sceneWidget.m_unk0x84.GetTextVisuals();
+		GolNameTable* textVisuals = m_sceneWidget.m_player.GetTextVisuals();
 		const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
 		GolName textName;
 
@@ -566,7 +566,7 @@ void AwardCinematicScreen::Navigate()
 LegoBool32 AwardCinematicScreen::Update(undefined4 p_unk0x04)
 {
 	if (m_resourceMenuId == c_menuCircuit7) {
-		m_sceneWidget.m_unk0x2cc = TRUE;
+		m_sceneWidget.m_skippable = TRUE;
 	}
 
 	return MenuSceneScreen::Update(p_unk0x04);

@@ -43,7 +43,7 @@ LegoBool32 MainIntroScreen::Initialize(MenuGameContext* p_context, MenuScreenCre
 	}
 
 	p_context->m_modelBuilder.GetMusicInstance()->Play(TRUE);
-	m_sceneWidget.m_unk0x2cc = FALSE;
+	m_sceneWidget.m_skippable = FALSE;
 	return TRUE;
 }
 
@@ -71,7 +71,7 @@ void MainIntroScreen::Navigate()
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
 LegoBool32 MainIntroScreen::Update(undefined4 p_unk0x04)
 {
-	m_sceneWidget.m_unk0x2cc = TRUE;
+	m_sceneWidget.m_skippable = TRUE;
 	return MenuSceneScreen::Update(p_unk0x04);
 }
 

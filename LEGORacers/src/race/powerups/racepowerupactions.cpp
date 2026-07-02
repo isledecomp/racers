@@ -1624,14 +1624,14 @@ void RacePowerupManager::GrapplingHookAction::Initialize(
 
 	TetherProjectile::SetupParams params;
 	params.m_golExport = p_unk0x04->m_golExport;
-	params.m_unk0x08 = g_unk0x004b1514;
-	params.m_unk0x0c = g_unk0x004b14e8;
-	params.m_unk0x10 = g_unk0x004c1c50;
-	params.m_unk0x04 = 3.0f;
-	params.m_unk0x14 = g_unk0x004c1c54;
-	params.m_unk0x18 = g_unk0x004c1c58;
+	params.m_ropeThickness = g_unk0x004b1514;
+	params.m_waveAmplitude = g_unk0x004b14e8;
+	params.m_baseColor = g_unk0x004c1c50;
+	params.m_attachHeight = 3.0f;
+	params.m_secondaryColor = g_unk0x004c1c54;
+	params.m_tertiaryColor = g_unk0x004c1c58;
 	params.m_material = p_unk0x04->m_renderer->FindMaterialByName("tether");
-	m_projectile.VTable0x20(&params);
+	m_projectile.Initialize(&params);
 
 	m_state = 1;
 	m_unk0x270 = static_cast<GolBillboard*>(params.m_golExport->VTable0x30());
@@ -1868,14 +1868,14 @@ void RacePowerupManager::GrapplingHookAction::VTable0x0c(GolD3DRenderDevice* p_r
 	switch (m_state) {
 	case 3:
 		p_renderer->VTable0x94(m_unk0x268);
-		m_projectile.VTable0x24(p_renderer);
+		m_projectile.Draw(p_renderer);
 		break;
 	case 4:
 		p_renderer->VTable0x94(m_unk0x268);
-		m_projectile.VTable0x24(p_renderer);
+		m_projectile.Draw(p_renderer);
 		break;
 	case 5:
-		m_projectile.VTable0x24(p_renderer);
+		m_projectile.Draw(p_renderer);
 		if (m_unk0x274.IsAssigned()) {
 			p_renderer->VTable0xb4(*m_unk0x270);
 		}
@@ -1951,7 +1951,7 @@ void RacePowerupManager::GrapplingHookAction::VTable0x14()
 		m_projectile.PowerupProjectile::LaunchAtRacer(&projectileParams, m_unk0x024, m_unk0x028, TRUE, FALSE);
 	}
 
-	m_projectile.ResetUnk0x224AndFlags0x234();
+	m_projectile.ResetRope();
 
 	m_unk0x26c = m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489d70("cannsmk", NULL, NULL, NULL);
 	if (m_unk0x26c != NULL) {
@@ -2022,7 +2022,7 @@ void RacePowerupManager::GrapplingHookAction::FUN_00454690(SoundVector* p_positi
 	m_unk0x274
 		.FUN_004104c0(0, m_owner0x01c->GetMaterialAnimationItems(), m_owner0x01c->GetMaterialAnimationItemCount());
 	m_unk0x270->VTable0x08(*p_position);
-	m_projectile.FUN_00444ac0(p_position);
+	m_projectile.Release(p_position);
 	m_projectile.CancelCollisionEvent();
 }
 

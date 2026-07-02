@@ -312,11 +312,11 @@ void RaceState::Racer::CarVisuals::StartSkidEffects()
 				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				GolAnimatedEntity* entity = m_carEntity;
 				if (m_tireSmokeParticle->m_particle) {
-					entity->VTable0x44(m_tireSmokeParticle->m_particle->GetUnk0x160());
+					entity->VTable0x44(m_tireSmokeParticle->m_particle->GetBasis());
 				}
 
 				if (m_tireSmokeParticle->m_particle) {
-					m_tireSmokeParticle->m_particle->FUN_00489660(&position);
+					m_tireSmokeParticle->m_particle->SetPosition(&position);
 				}
 			}
 		}
@@ -385,11 +385,11 @@ void RaceState::Racer::CarVisuals::SetWheelParticle(LegoU32 p_wheelIndex, const 
 	GolWorldEntity* entity = m_carEntity;
 
 	if (particle) {
-		entity->VTable0x44(particle->GetUnk0x160());
+		entity->VTable0x44(particle->GetBasis());
 	}
 
 	if (m_wheelParticles[p_wheelIndex]->m_particle) {
-		m_wheelParticles[p_wheelIndex]->m_particle->FUN_00489660(&position);
+		m_wheelParticles[p_wheelIndex]->m_particle->SetPosition(&position);
 	}
 }
 
@@ -433,11 +433,11 @@ void RaceState::Racer::CarVisuals::StartDust()
 	GolWorldEntity* entity = m_carEntity;
 
 	if (particle) {
-		entity->VTable0x44(particle->GetUnk0x160());
+		entity->VTable0x44(particle->GetBasis());
 	}
 
 	if (m_dustParticle->m_particle) {
-		m_dustParticle->m_particle->FUN_00489660(&position);
+		m_dustParticle->m_particle->SetPosition(&position);
 	}
 }
 
@@ -465,11 +465,11 @@ void RaceState::Racer::CarVisuals::StartCarSmoke()
 
 	CutsceneParticle* particle = ref->m_particle;
 	if (particle) {
-		entity->VTable0x44(particle->GetUnk0x160());
+		entity->VTable0x44(particle->GetBasis());
 	}
 
 	if (m_carSmokeParticle->m_particle) {
-		m_carSmokeParticle->m_particle->FUN_00489660(&position);
+		m_carSmokeParticle->m_particle->SetPosition(&position);
 	}
 }
 
@@ -533,15 +533,15 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 				CutsceneParticle* particle = ref->m_particle;
 
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetUnk0x160());
+					m_carEntity->VTable0x44(particle->GetBasis());
 				}
 
 				if (ref->m_particle) {
-					ref->m_particle->FUN_00489660(&position);
+					ref->m_particle->SetPosition(&position);
 				}
 
 				if (ref->m_particle) {
-					ref->m_particle->FUN_00489690(&velocity);
+					ref->m_particle->SetVelocity(&velocity);
 				}
 			}
 		}
@@ -612,15 +612,15 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 
 				particle = m_dustParticle->m_particle;
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetUnk0x160());
+					m_carEntity->VTable0x44(particle->GetBasis());
 				}
 
 				if (m_dustParticle->m_particle) {
-					m_dustParticle->m_particle->FUN_00489660(&position);
+					m_dustParticle->m_particle->SetPosition(&position);
 				}
 
 				if (m_dustParticle->m_particle) {
-					m_dustParticle->m_particle->FUN_00489690(&velocity);
+					m_dustParticle->m_particle->SetVelocity(&velocity);
 				}
 			}
 		}
@@ -640,15 +640,15 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 
 				particle = m_carSmokeParticle->m_particle;
 				if (particle) {
-					m_carEntity->VTable0x44(particle->GetUnk0x160());
+					m_carEntity->VTable0x44(particle->GetBasis());
 				}
 
 				if (m_carSmokeParticle->m_particle) {
-					m_carSmokeParticle->m_particle->FUN_00489660(&position);
+					m_carSmokeParticle->m_particle->SetPosition(&position);
 				}
 
 				if (m_carSmokeParticle->m_particle) {
-					m_carSmokeParticle->m_particle->FUN_00489690(&velocity);
+					m_carSmokeParticle->m_particle->SetVelocity(&velocity);
 				}
 			}
 		}
@@ -677,15 +677,15 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 
 			CutsceneParticle* particle = m_tireSmokeParticle->m_particle;
 			if (particle) {
-				m_carEntity->VTable0x44(particle->GetUnk0x160());
+				m_carEntity->VTable0x44(particle->GetBasis());
 			}
 
 			if (m_tireSmokeParticle->m_particle) {
-				m_tireSmokeParticle->m_particle->FUN_00489660(&position);
+				m_tireSmokeParticle->m_particle->SetPosition(&position);
 			}
 
 			if (m_tireSmokeParticle->m_particle) {
-				m_tireSmokeParticle->m_particle->FUN_00489690(&velocity);
+				m_tireSmokeParticle->m_particle->SetVelocity(&velocity);
 			}
 		}
 	}

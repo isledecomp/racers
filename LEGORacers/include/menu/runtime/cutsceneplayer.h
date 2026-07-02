@@ -464,41 +464,41 @@ public:
 		void GetVectorAt(GolVec3* p_vec, int p_index);
 		void GetOrigin(GolVec3* p_vec) const;
 
-		LegoU32 GetUnk0x04() { return m_unk0x04; }
-		LegoS32 GetUnk0x14() { return m_unk0x14; }
-		LegoU8 GetUnk0x18() { return m_unk0x18; }
-		LegoS32 GetUnk0x30() { return m_unk0x30; }
-		LegoS32 GetUnk0x34() { return m_unk0x34; }
-		LegoU8 GetPriority() const { return m_unk0x19; }
-		LegoBool32 IsOneShot() const { return m_unk0x34 == -1; }
+		LegoU32 GetPointCount() { return m_pointCount; }
+		LegoS32 GetEmitIntervalMs() { return m_emitIntervalMs; }
+		LegoU8 GetEmitChance() { return m_emitChance; }
+		LegoS32 GetParticleLifeMs() { return m_particleLifeMs; }
+		LegoS32 GetDurationMs() { return m_durationMs; }
+		LegoU8 GetPriority() const { return m_priority; }
+		LegoBool32 IsPersistent() const { return m_durationMs == -1; }
 		LegoFloat GetUnk0x1c() const { return m_unk0x1c; }
 		LegoFloat GetUnk0x20() const { return m_unk0x20; }
 		LegoFloat GetUnk0x24() const { return m_unk0x24; }
 		LegoFloat GetUnk0x28() const { return m_unk0x28; }
-		LegoFloat GetUnk0x2c() const { return m_unk0x2c; }
-		MabMaterialAnimationItem0x18* GetMaterialAnimationItem() const { return m_unk0x38; }
+		LegoFloat GetRadius() const { return m_radius; }
+		MabMaterialAnimationItem0x18* GetMaterialAnimationItem() const { return m_materialAnimationItem; }
 		MabMaterialAnimation0x14* GetMaterialAnimation() const { return m_materialAnimation; }
-		DuskwindBananaRelic0x24* GetMaterial() const { return m_unk0x40; }
+		DuskwindBananaRelic0x24* GetMaterial() const { return m_material; }
 
 	private:
-		GolVec3* m_unk0x00;                            // 0x00
-		LegoU32 m_unk0x04;                             // 0x04
-		LegoFloat m_unk0x08;                           // 0x08
-		LegoFloat m_unk0x0c;                           // 0x0c
-		LegoFloat m_unk0x10;                           // 0x10
-		LegoS32 m_unk0x14;                             // 0x14
-		LegoU8 m_unk0x18;                              // 0x18
-		LegoU8 m_unk0x19;                              // 0x19
-		LegoFloat m_unk0x1c;                           // 0x1c
-		LegoFloat m_unk0x20;                           // 0x20
-		LegoFloat m_unk0x24;                           // 0x24
-		LegoFloat m_unk0x28;                           // 0x28
-		LegoFloat m_unk0x2c;                           // 0x2c
-		LegoS32 m_unk0x30;                             // 0x30
-		LegoS32 m_unk0x34;                             // 0x34
-		MabMaterialAnimationItem0x18* m_unk0x38;       // 0x38
-		MabMaterialAnimation0x14* m_materialAnimation; // 0x3c
-		DuskwindBananaRelic0x24* m_unk0x40;            // 0x40
+		GolVec3* m_points;                                     // 0x00
+		LegoU32 m_pointCount;                                  // 0x04
+		LegoFloat m_originX;                                   // 0x08
+		LegoFloat m_originY;                                   // 0x0c
+		LegoFloat m_originZ;                                   // 0x10
+		LegoS32 m_emitIntervalMs;                              // 0x14
+		LegoU8 m_emitChance;                                   // 0x18
+		LegoU8 m_priority;                                     // 0x19
+		LegoFloat m_unk0x1c;                                   // 0x1c
+		LegoFloat m_unk0x20;                                   // 0x20
+		LegoFloat m_unk0x24;                                   // 0x24
+		LegoFloat m_unk0x28;                                   // 0x28
+		LegoFloat m_radius;                                    // 0x2c
+		LegoS32 m_particleLifeMs;                              // 0x30
+		LegoS32 m_durationMs;                                  // 0x34
+		MabMaterialAnimationItem0x18* m_materialAnimationItem; // 0x38
+		MabMaterialAnimation0x14* m_materialAnimation;         // 0x3c
+		DuskwindBananaRelic0x24* m_material;                   // 0x40
 	};
 
 	CutsceneAnimation();

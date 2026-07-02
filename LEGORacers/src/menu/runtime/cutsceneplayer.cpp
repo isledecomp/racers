@@ -176,7 +176,7 @@ void CutsceneAnimation::Load(
 	delete parser;
 
 	for (i = 0; i < m_numParticles; i++) {
-		m_particles[i].FUN_00489520(p_golExport, p_renderer);
+		m_particles[i].Initialize(p_golExport, p_renderer);
 	}
 }
 
@@ -212,15 +212,15 @@ CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 	for (particleIndex = 0; particleIndex < m_numParticles; particleIndex++) {
 		CutsceneParticle* currentParticle = &m_particles[particleIndex];
 		if (!currentParticle->IsActive()) {
-			currentParticle->ActivateRuntime(runtime);
+			currentParticle->ActivateEmitter(runtime);
 			if (p_param3 != NULL && p_param4 != NULL) {
-				currentParticle->FUN_00489540(p_param3, p_param4);
+				currentParticle->SetOrientation(p_param3, p_param4);
 			}
 			if (p_param2 != NULL) {
-				currentParticle->FUN_00489660(p_param2);
+				currentParticle->SetPosition(p_param2);
 			}
 
-			if (runtime->IsOneShot()) {
+			if (runtime->IsPersistent()) {
 				CutsceneParticleRef* ref = &m_refs[refIndex];
 				ref->m_flags |= CutsceneParticleRef::c_flagInUse;
 				ref->m_particle = currentParticle;
@@ -231,7 +231,7 @@ CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 			return NULL;
 		}
 
-		Emitter* activeRuntime = currentParticle->GetRuntime();
+		Emitter* activeRuntime = currentParticle->GetEmitter();
 		if (activeRuntime != NULL) {
 			if (activeRuntime->GetPriority() <= lowestPriority) {
 				lowestPriority = activeRuntime->GetPriority();
@@ -253,17 +253,17 @@ CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 		oldRef->m_particle = NULL;
 	}
 
-	particle->FUN_004897a0();
+	particle->Deactivate();
 
-	particle->ActivateRuntime(runtime);
+	particle->ActivateEmitter(runtime);
 	if (p_param3 != NULL && p_param4 != NULL) {
-		particle->FUN_00489540(p_param3, p_param4);
+		particle->SetOrientation(p_param3, p_param4);
 	}
 	if (p_param2 != NULL) {
-		particle->FUN_00489660(p_param2);
+		particle->SetPosition(p_param2);
 	}
 
-	if (runtime->IsOneShot()) {
+	if (runtime->IsPersistent()) {
 		CutsceneParticleRef* ref = &m_refs[refIndex];
 		ref->m_flags |= CutsceneParticleRef::c_flagInUse;
 		ref->m_particle = particle;
@@ -278,7 +278,7 @@ CutsceneParticleRef* CutsceneAnimation::SpawnParticle(
 void CutsceneAnimation::ReleaseRef(CutsceneParticleRef* p_param)
 {
 	if (p_param->m_particle) {
-		p_param->m_particle->FUN_004897a0();
+		p_param->m_particle->Deactivate();
 	}
 
 	p_param->m_particle = NULL;
@@ -289,7 +289,7 @@ void CutsceneAnimation::ReleaseRef(CutsceneParticleRef* p_param)
 void CutsceneAnimation::FinishRef(CutsceneParticleRef* p_param)
 {
 	if (p_param->m_particle) {
-		p_param->m_particle->FUN_004897c0();
+		p_param->m_particle->Finish();
 	}
 
 	p_param->m_particle = NULL;
@@ -303,7 +303,7 @@ LegoU32 CutsceneAnimation::StopAllParticles()
 
 	for (LegoU32 i = 0; i < result; i++) {
 		if (m_particles[i].IsActive()) {
-			m_particles[i].FUN_004897a0();
+			m_particles[i].Deactivate();
 		}
 
 		result = m_numParticles;
@@ -317,7 +317,7 @@ void CutsceneAnimation::Update(LegoU32 p_elapsedMs)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
 		if (m_particles[i].IsActive()) {
-			m_particles[i].FUN_004897e0(p_elapsedMs);
+			m_particles[i].Update(p_elapsedMs);
 		}
 	}
 }
@@ -327,7 +327,7 @@ void CutsceneAnimation::Draw(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
 		if (m_particles[i].IsActive()) {
-			m_particles[i].FUN_004513d0(p_renderer);
+			m_particles[i].Draw(p_renderer);
 		}
 	}
 }
@@ -337,7 +337,7 @@ void CutsceneAnimation::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	for (LegoU32 i = 0; i < m_numParticles; i++) {
 		if (m_particles[i].IsActive()) {
-			m_particles[i].FUN_00489960(p_renderer);
+			m_particles[i].DrawTransparent(p_renderer);
 		}
 	}
 }
@@ -357,9 +357,9 @@ CutsceneAnimation::Emitter::~Emitter()
 // FUNCTION: LEGORACERS 0x0048a0b0
 void CutsceneAnimation::Emitter::Clear()
 {
-	if (m_unk0x00) {
-		delete[] m_unk0x00;
-		m_unk0x00 = NULL;
+	if (m_points) {
+		delete[] m_points;
+		m_points = NULL;
 	}
 
 	Reset();
@@ -368,24 +368,24 @@ void CutsceneAnimation::Emitter::Clear()
 // FUNCTION: LEGORACERS 0x0048a0e0
 void CutsceneAnimation::Emitter::Reset()
 {
-	m_unk0x00 = NULL;
-	m_unk0x04 = 0;
-	m_unk0x38 = 0;
+	m_points = NULL;
+	m_pointCount = 0;
+	m_materialAnimationItem = 0;
 	m_materialAnimation = NULL;
-	m_unk0x40 = NULL;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
+	m_material = NULL;
+	m_emitIntervalMs = 0;
+	m_emitChance = 0;
 	m_unk0x1c = 1.0f;
 	m_unk0x20 = 1.0f;
 	m_unk0x24 = 0.0f;
 	m_unk0x28 = 0.0f;
-	m_unk0x08 = 0.0f;
-	m_unk0x0c = 0.0f;
-	m_unk0x10 = 0.0f;
-	m_unk0x2c = 0.0f;
-	m_unk0x30 = 0;
-	m_unk0x19 = 0;
-	m_unk0x34 = -1;
+	m_originX = 0.0f;
+	m_originY = 0.0f;
+	m_originZ = 0.0f;
+	m_radius = 0.0f;
+	m_particleLifeMs = 0;
+	m_priority = 0;
+	m_durationMs = -1;
 }
 
 // FUNCTION: LEGORACERS 0x0048a130
@@ -396,14 +396,14 @@ void CutsceneAnimation::Emitter::Parse(
 	CutsceneAnimation* p_param4
 )
 {
-	if (m_unk0x00) {
+	if (m_points) {
 		Clear();
 	}
 
 	LegoU32 i;
 
-	m_unk0x38 = 0;
-	m_unk0x40 = 0;
+	m_materialAnimationItem = 0;
+	m_material = 0;
 	m_materialAnimation = p_materialAnimation;
 
 	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
@@ -419,13 +419,13 @@ void CutsceneAnimation::Emitter::Parse(
 	while (token != GolFileParser::e_rightCurly) {
 		switch (token) {
 		case GolFileParser::e_unknown0x28:
-			m_unk0x14 = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
+			m_emitIntervalMs = static_cast<LegoS32>(g_floatConst1000 / p_parser->ReadFloat());
 			break;
 		case GolFileParser::e_unknown0x29:
-			m_unk0x18 = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);
+			m_emitChance = static_cast<LegoS32>(p_parser->ReadFloat() * g_floatConst256);
 			break;
 		case GolFileParser::e_unknown0x35:
-			m_unk0x19 = static_cast<LegoU8>(p_parser->ReadInteger());
+			m_priority = static_cast<LegoU8>(p_parser->ReadInteger());
 			break;
 		case GolFileParser::e_unknown0x2c:
 			m_unk0x1c = p_parser->ReadFloat();
@@ -440,45 +440,45 @@ void CutsceneAnimation::Emitter::Parse(
 			m_unk0x28 = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x33:
-			m_unk0x2c = p_parser->ReadFloat();
+			m_radius = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x2f:
-			m_unk0x30 = p_parser->ReadInteger();
+			m_particleLifeMs = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x30:
-			m_unk0x34 = p_parser->ReadInteger();
+			m_durationMs = p_parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x2a:
-			m_unk0x08 = p_parser->ReadFloat();
-			m_unk0x0c = p_parser->ReadFloat();
-			m_unk0x10 = p_parser->ReadFloat();
+			m_originX = p_parser->ReadFloat();
+			m_originY = p_parser->ReadFloat();
+			m_originZ = p_parser->ReadFloat();
 			break;
 		case GolFileParser::e_unknown0x2e:
 			i = p_parser->ReadInteger();
-			m_unk0x38 = &p_materialAnimation->GetUnk0x0c()[i];
+			m_materialAnimationItem = &p_materialAnimation->GetUnk0x0c()[i];
 			break;
 		case GolFileParser::e_unknown0x34: {
 			LegoChar materialName[8];
 			strncpy(materialName, p_parser->ReadStringWithMaxLength(8), 8);
-			m_unk0x40 = p_renderer->FindMaterialByName(materialName);
+			m_material = p_renderer->FindMaterialByName(materialName);
 			break;
 		}
 		case GolFileParser::e_unknown0x2b:
 			p_parser->ReadLeftBracket();
-			m_unk0x04 = p_parser->ReadInteger();
+			m_pointCount = p_parser->ReadInteger();
 			p_parser->ReadRightBracket();
 
-			m_unk0x00 = new GolVec3[m_unk0x04];
+			m_points = new GolVec3[m_pointCount];
 
-			if (!m_unk0x00) {
+			if (!m_points) {
 				GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 			}
 			p_parser->ReadLeftCurly();
 
-			for (i = 0; i < m_unk0x04; i++) {
-				m_unk0x00[i].m_x = p_parser->ReadFloat();
-				m_unk0x00[i].m_y = p_parser->ReadFloat();
-				m_unk0x00[i].m_z = p_parser->ReadFloat();
+			for (i = 0; i < m_pointCount; i++) {
+				m_points[i].m_x = p_parser->ReadFloat();
+				m_points[i].m_y = p_parser->ReadFloat();
+				m_points[i].m_z = p_parser->ReadFloat();
 			}
 
 			p_parser->ReadRightCurly();
@@ -493,17 +493,17 @@ void CutsceneAnimation::Emitter::Parse(
 // FUNCTION: LEGORACERS 0x0048a3b0
 void CutsceneAnimation::Emitter::GetVectorAt(GolVec3* p_vec, int p_index)
 {
-	p_vec->m_x = m_unk0x00[p_index].m_x;
-	p_vec->m_y = m_unk0x00[p_index].m_y;
-	p_vec->m_z = m_unk0x00[p_index].m_z;
+	p_vec->m_x = m_points[p_index].m_x;
+	p_vec->m_y = m_points[p_index].m_y;
+	p_vec->m_z = m_points[p_index].m_z;
 }
 
 // FUNCTION: LEGORACERS 0x0048a3e0
 void CutsceneAnimation::Emitter::GetOrigin(GolVec3* p_vec) const
 {
-	p_vec->m_x = m_unk0x08;
-	p_vec->m_y = m_unk0x0c;
-	p_vec->m_z = m_unk0x10;
+	p_vec->m_x = m_originX;
+	p_vec->m_y = m_originY;
+	p_vec->m_z = m_originZ;
 }
 
 // FUNCTION: LEGORACERS 0x0049fd70
@@ -2458,10 +2458,10 @@ void CutsceneAnimationEvent::Update(LegoU32)
 		CutsceneEvent::GetJointPosition(m_jointIndex, &v0);
 		GetJointAxes(m_jointIndex, &v1, &v2);
 		if (m_particleRef->m_particle) {
-			m_particleRef->m_particle->FUN_00489660(&v0);
+			m_particleRef->m_particle->SetPosition(&v0);
 		}
 		if (m_particleRef->m_particle) {
-			m_particleRef->m_particle->FUN_00489540(&v1, &v2);
+			m_particleRef->m_particle->SetOrientation(&v1, &v2);
 		}
 	}
 }

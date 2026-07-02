@@ -305,11 +305,11 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 		racerEntity->VTable0x2c(offset, &position);
 
 		if (m_smokeParticle->m_particle != NULL) {
-			racerEntity->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
+			racerEntity->VTable0x44(m_smokeParticle->m_particle->GetBasis());
 		}
 
 		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->FUN_00489660(&position);
+			m_smokeParticle->m_particle->SetPosition(&position);
 		}
 
 		RaceState::Racer::Physics* racerPhysics = &m_racer->m_physics;
@@ -318,7 +318,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 		velocity *= g_turboSmokeVelocityScale;
 
 		if (particleRef->m_particle != NULL) {
-			particleRef->m_particle->FUN_00489690(&velocity);
+			particleRef->m_particle->SetVelocity(&velocity);
 		}
 	}
 

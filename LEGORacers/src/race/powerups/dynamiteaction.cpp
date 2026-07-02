@@ -193,7 +193,7 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 		position.m_z += up.m_z * 5.17852306f;
 
 		if (m_sparkParticle->m_particle != NULL) {
-			m_sparkParticle->m_particle->FUN_00489660(&position);
+			m_sparkParticle->m_particle->SetPosition(&position);
 		}
 	}
 
@@ -265,7 +265,7 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 			position.m_z += 5.17852306f;
 
 			if (m_sparkParticle->m_particle != NULL) {
-				m_sparkParticle->m_particle->FUN_00489660(&position);
+				m_sparkParticle->m_particle->SetPosition(&position);
 			}
 		}
 

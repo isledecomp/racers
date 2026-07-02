@@ -16,35 +16,35 @@ public:
 	CutsceneParticle();
 	~CutsceneParticle();
 
-	LegoBool32 IsActive() const { return m_unk0x008.IsActive(); }
-	CutsceneAnimation::Emitter* GetRuntime() const { return m_unk0x000; }
+	LegoBool32 IsActive() const { return m_particleSystem.IsActive(); }
+	CutsceneAnimation::Emitter* GetEmitter() const { return m_emitter; }
 	CutsceneParticleRef* GetRef() const { return m_ref; }
-	GolMatrix3* GetUnk0x160() { return &m_unk0x160; }
-	LegoU32 GetSpawnedCount() const { return m_unk0x008.GetSpawnedCount(); }
+	GolMatrix3* GetBasis() { return &m_basis; }
+	LegoU32 GetSpawnedCount() const { return m_particleSystem.GetSpawnedCount(); }
 	void SetRef(CutsceneParticleRef* p_ref) { m_ref = p_ref; }
 
 	void Destroy();
 	void Reset();
-	void FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
-	void FUN_00489540(GolVec3* p_param1, GolVec3* p_param2);
-	void FUN_00489660(GolVec3* p_vec);
-	void FUN_00489690(GolVec3* p_vec);
-	void ActivateRuntime(CutsceneAnimation::Emitter* p_runtime);
-	void FUN_004897a0();
-	void FUN_004897c0();
-	void FUN_004897e0(LegoU32 p_elapsedMs);
-	void FUN_00489960(GolD3DRenderDevice* p_renderer);
-	void FUN_004513d0(GolD3DRenderDevice* p_renderer);
+	void Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer);
+	void SetOrientation(GolVec3* p_param1, GolVec3* p_param2);
+	void SetPosition(GolVec3* p_vec);
+	void SetVelocity(GolVec3* p_vec);
+	void ActivateEmitter(CutsceneAnimation::Emitter* p_runtime);
+	void Deactivate();
+	void Finish();
+	void Update(LegoU32 p_elapsedMs);
+	void DrawTransparent(GolD3DRenderDevice* p_renderer);
+	void Draw(GolD3DRenderDevice* p_renderer);
 
 private:
-	CutsceneAnimation::Emitter* m_unk0x000; // 0x000
-	CutsceneParticleRef* m_ref;             // 0x004
-	ParticleSystem m_unk0x008;              // 0x008
-	GolVec3 m_unk0x148;                     // 0x148
-	GolVec3 m_unk0x154;                     // 0x154
-	GolMatrix3 m_unk0x160;                  // 0x160
-	undefined4 m_unk0x184;                  // 0x184
-	undefined4 m_unk0x188;                  // 0x188
+	CutsceneAnimation::Emitter* m_emitter; // 0x000
+	CutsceneParticleRef* m_ref;            // 0x004
+	ParticleSystem m_particleSystem;       // 0x008
+	GolVec3 m_velocity;                    // 0x148
+	GolVec3 m_position;                    // 0x154
+	GolMatrix3 m_basis;                    // 0x160
+	undefined4 m_emitTimerMs;              // 0x184
+	undefined4 m_ageMs;                    // 0x188
 };
 
 #endif // CUTSCENEPARTICLE_H

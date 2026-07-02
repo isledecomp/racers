@@ -321,13 +321,13 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 
 		velocity = m_ownerRacer->m_physics.m_velocity;
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
+			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetBasis());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_smokeParticleRef->m_particle->FUN_00489660(&position);
+			m_smokeParticleRef->m_particle->SetPosition(&position);
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_smokeParticleRef->m_particle->FUN_00489690(&velocity);
+			m_smokeParticleRef->m_particle->SetVelocity(&velocity);
 		}
 	}
 }
@@ -429,10 +429,10 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 		position.m_z += 4.0f;
 
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
+			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetBasis());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_smokeParticleRef->m_particle->FUN_00489660(&position);
+			m_smokeParticleRef->m_particle->SetPosition(&position);
 		}
 	}
 

@@ -78,7 +78,7 @@ LegoU16 g_randomTable[1024] = {
 LegoU32 g_randomTableIndex = 0;
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void CutsceneParticle::FUN_004513d0(GolD3DRenderDevice*)
+void CutsceneParticle::Draw(GolD3DRenderDevice*)
 {
 }
 
@@ -103,35 +103,35 @@ void CutsceneParticle::Destroy()
 // FUNCTION: LEGORACERS 0x004894a0
 void CutsceneParticle::Reset()
 {
-	m_unk0x000 = 0;
+	m_emitter = 0;
 	m_ref = 0;
-	m_unk0x184 = 0;
-	m_unk0x188 = 0;
-	m_unk0x160.m_m[0][0] = 1.0f;
-	m_unk0x160.m_m[0][1] = 0.0f;
-	m_unk0x160.m_m[0][2] = 0.0f;
-	m_unk0x160.m_m[1][0] = 0.0f;
-	m_unk0x160.m_m[1][1] = 1.0f;
-	m_unk0x160.m_m[1][2] = 0.0f;
-	m_unk0x160.m_m[2][0] = 0.0f;
-	m_unk0x160.m_m[2][1] = 0.0f;
-	m_unk0x160.m_m[2][2] = 1.0f;
-	m_unk0x154.m_x = 0.0f;
-	m_unk0x154.m_y = 0.0f;
-	m_unk0x154.m_z = 0.0f;
-	m_unk0x148.m_z = 0.0f;
-	m_unk0x148.m_y = 0.0f;
-	m_unk0x148.m_x = 0.0f;
+	m_emitTimerMs = 0;
+	m_ageMs = 0;
+	m_basis.m_m[0][0] = 1.0f;
+	m_basis.m_m[0][1] = 0.0f;
+	m_basis.m_m[0][2] = 0.0f;
+	m_basis.m_m[1][0] = 0.0f;
+	m_basis.m_m[1][1] = 1.0f;
+	m_basis.m_m[1][2] = 0.0f;
+	m_basis.m_m[2][0] = 0.0f;
+	m_basis.m_m[2][1] = 0.0f;
+	m_basis.m_m[2][2] = 1.0f;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_velocity.m_z = 0.0f;
+	m_velocity.m_y = 0.0f;
+	m_velocity.m_x = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00489520
-void CutsceneParticle::FUN_00489520(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
+void CutsceneParticle::Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
-	m_unk0x008.FUN_00412430(p_golExport, p_renderer, 0xc, 0x10);
+	m_particleSystem.FUN_00412430(p_golExport, p_renderer, 0xc, 0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00489540
-void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
+void CutsceneParticle::SetOrientation(GolVec3* p_param1, GolVec3* p_param2)
 {
 	GolVec3 v0;
 	GolVec3 v1;
@@ -170,171 +170,171 @@ void CutsceneParticle::FUN_00489540(GolVec3* p_param1, GolVec3* p_param2)
 	cross.m_z *= v2.m_x;
 	cross.m_z -= term;
 
-	m_unk0x160.m_m[0][0] = v0.m_x;
-	m_unk0x160.m_m[0][1] = v0.m_y;
-	m_unk0x160.m_m[0][2] = v0.m_z;
-	m_unk0x160.m_m[1][0] = cross.m_x;
-	m_unk0x160.m_m[1][1] = cross.m_y;
-	m_unk0x160.m_m[1][2] = cross.m_z;
-	m_unk0x160.m_m[2][0] = v2.m_x;
-	m_unk0x160.m_m[2][1] = v2.m_y;
-	m_unk0x160.m_m[2][2] = v2.m_z;
+	m_basis.m_m[0][0] = v0.m_x;
+	m_basis.m_m[0][1] = v0.m_y;
+	m_basis.m_m[0][2] = v0.m_z;
+	m_basis.m_m[1][0] = cross.m_x;
+	m_basis.m_m[1][1] = cross.m_y;
+	m_basis.m_m[1][2] = cross.m_z;
+	m_basis.m_m[2][0] = v2.m_x;
+	m_basis.m_m[2][1] = v2.m_y;
+	m_basis.m_m[2][2] = v2.m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00489660
-void CutsceneParticle::FUN_00489660(GolVec3* p_vec)
+void CutsceneParticle::SetPosition(GolVec3* p_vec)
 {
-	m_unk0x154.m_x = p_vec->m_x;
-	m_unk0x154.m_y = p_vec->m_y;
-	m_unk0x154.m_z = p_vec->m_z;
+	m_position.m_x = p_vec->m_x;
+	m_position.m_y = p_vec->m_y;
+	m_position.m_z = p_vec->m_z;
 }
 
 // FUNCTION: LEGORACERS 0x00489690
-void CutsceneParticle::FUN_00489690(GolVec3* p_vec)
+void CutsceneParticle::SetVelocity(GolVec3* p_vec)
 {
 	LegoFloat x = p_vec->m_x;
 	x *= g_floatConst1000;
-	m_unk0x148.m_x = x;
+	m_velocity.m_x = x;
 
 	LegoFloat y = p_vec->m_y;
 	y *= g_floatConst1000;
-	m_unk0x148.m_y = y;
+	m_velocity.m_y = y;
 
 	LegoFloat z = p_vec->m_z;
 	z *= g_floatConst1000;
-	m_unk0x148.m_z = z;
+	m_velocity.m_z = z;
 }
 
 // FUNCTION: LEGORACERS 0x004896d0
-void CutsceneParticle::ActivateRuntime(CutsceneAnimation::Emitter* p_runtime)
+void CutsceneParticle::ActivateEmitter(CutsceneAnimation::Emitter* p_runtime)
 {
-	m_unk0x000 = p_runtime;
+	m_emitter = p_runtime;
 
 	GolVec3 origin;
-	m_unk0x000->GetOrigin(&origin);
-	if (m_unk0x000->GetMaterialAnimationItem() != NULL) {
-		m_unk0x008.ConfigureMaterialAnimation(
-			m_unk0x000->GetMaterialAnimationItem(),
-			m_unk0x000->GetMaterialAnimation()->GetUnk0x04(),
-			m_unk0x000->GetMaterialAnimation()->GetUnk0x08(),
-			m_unk0x000->GetUnk0x1c(),
-			m_unk0x000->GetUnk0x20(),
-			m_unk0x000->GetUnk0x24(),
-			m_unk0x000->GetUnk0x28(),
-			m_unk0x000->GetUnk0x2c(),
+	m_emitter->GetOrigin(&origin);
+	if (m_emitter->GetMaterialAnimationItem() != NULL) {
+		m_particleSystem.ConfigureMaterialAnimation(
+			m_emitter->GetMaterialAnimationItem(),
+			m_emitter->GetMaterialAnimation()->GetUnk0x04(),
+			m_emitter->GetMaterialAnimation()->GetUnk0x08(),
+			m_emitter->GetUnk0x1c(),
+			m_emitter->GetUnk0x20(),
+			m_emitter->GetUnk0x24(),
+			m_emitter->GetUnk0x28(),
+			m_emitter->GetRadius(),
 			&origin
 		);
 	}
 	else {
-		m_unk0x008.ConfigureMaterial(
-			m_unk0x000->GetMaterial(),
-			m_unk0x000->GetUnk0x1c(),
-			m_unk0x000->GetUnk0x20(),
-			m_unk0x000->GetUnk0x24(),
-			m_unk0x000->GetUnk0x28(),
-			m_unk0x000->GetUnk0x2c(),
+		m_particleSystem.ConfigureMaterial(
+			m_emitter->GetMaterial(),
+			m_emitter->GetUnk0x1c(),
+			m_emitter->GetUnk0x20(),
+			m_emitter->GetUnk0x24(),
+			m_emitter->GetUnk0x28(),
+			m_emitter->GetRadius(),
 			&origin
 		);
 	}
 
-	m_unk0x148.m_x = 0.0f;
-	m_unk0x148.m_y = 0.0f;
-	m_unk0x148.m_z = 0.0f;
-	m_unk0x188 = 0;
-	m_unk0x184 = m_unk0x000->GetUnk0x14();
+	m_velocity.m_x = 0.0f;
+	m_velocity.m_y = 0.0f;
+	m_velocity.m_z = 0.0f;
+	m_ageMs = 0;
+	m_emitTimerMs = m_emitter->GetEmitIntervalMs();
 }
 
 // FUNCTION: LEGORACERS 0x004897a0
-void CutsceneParticle::FUN_004897a0()
+void CutsceneParticle::Deactivate()
 {
-	m_unk0x000 = 0;
-	m_unk0x008.Deactivate();
+	m_emitter = 0;
+	m_particleSystem.Deactivate();
 	m_ref = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004897c0
-void CutsceneParticle::FUN_004897c0()
+void CutsceneParticle::Finish()
 {
-	m_unk0x000 = 0;
-	m_unk0x008.RequestDeactivate();
+	m_emitter = 0;
+	m_particleSystem.RequestDeactivate();
 	m_ref = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004897e0
-void CutsceneParticle::FUN_004897e0(LegoU32 p_elapsedMs)
+void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 {
 	// Matches up to allocation permutations and commutative multiplication
 
 	GolVec3 local18;
 	GolVec3 localc;
-	LegoU32 elapsedSinceSpawn = m_unk0x184;
+	LegoU32 elapsedSinceSpawn = m_emitTimerMs;
 	elapsedSinceSpawn += p_elapsedMs;
 
-	m_unk0x184 = elapsedSinceSpawn;
-	m_unk0x188 += p_elapsedMs;
+	m_emitTimerMs = elapsedSinceSpawn;
+	m_ageMs += p_elapsedMs;
 
-	if (m_unk0x000) {
+	if (m_emitter) {
 		// LINE: LEGORACERS 0x00489816
-		if (0 <= m_unk0x000->GetUnk0x34() && m_unk0x188 >= static_cast<LegoU32>(m_unk0x000->GetUnk0x34())) {
-			FUN_004897c0();
+		if (0 <= m_emitter->GetDurationMs() && m_ageMs >= static_cast<LegoU32>(m_emitter->GetDurationMs())) {
+			Finish();
 			return;
 		}
 
-		if (elapsedSinceSpawn >= static_cast<LegoU32>(m_unk0x000->GetUnk0x14())) {
+		if (elapsedSinceSpawn >= static_cast<LegoU32>(m_emitter->GetEmitIntervalMs())) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
 			LegoU8 randomValue = static_cast<LegoU8>(g_randomTable[g_randomTableIndex]);
-			if (randomValue >= m_unk0x000->GetUnk0x18()) {
+			if (randomValue >= m_emitter->GetEmitChance()) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
-				m_unk0x000->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_unk0x000->GetUnk0x04());
+				m_emitter->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_emitter->GetPointCount());
 
-				LegoFloat term = m_unk0x160.m_m[2][0];
+				LegoFloat term = m_basis.m_m[2][0];
 				term *= local18.m_z;
 				localc.m_x = term;
-				term = m_unk0x160.m_m[1][0];
+				term = m_basis.m_m[1][0];
 				term *= local18.m_y;
 				localc.m_x += term;
-				term = m_unk0x160.m_m[0][0];
+				term = m_basis.m_m[0][0];
 				term *= local18.m_x;
 				localc.m_x += term;
 
-				term = m_unk0x160.m_m[2][1];
+				term = m_basis.m_m[2][1];
 				term *= local18.m_z;
 				localc.m_y = term;
-				term = m_unk0x160.m_m[1][1];
+				term = m_basis.m_m[1][1];
 				term *= local18.m_y;
 				localc.m_y += term;
-				term = m_unk0x160.m_m[0][1];
+				term = m_basis.m_m[0][1];
 				term *= local18.m_x;
 				localc.m_y += term;
 
-				term = m_unk0x160.m_m[2][2];
+				term = m_basis.m_m[2][2];
 				term *= local18.m_z;
 				localc.m_z = term;
-				term = m_unk0x160.m_m[1][2];
+				term = m_basis.m_m[1][2];
 				term *= local18.m_y;
 				localc.m_z += term;
-				term = m_unk0x160.m_m[0][2];
+				term = m_basis.m_m[0][2];
 				term *= local18.m_x;
 				localc.m_z += term;
 
-				localc.m_x += m_unk0x148.m_x;
-				localc.m_y += m_unk0x148.m_y;
-				localc.m_z += m_unk0x148.m_z;
+				localc.m_x += m_velocity.m_x;
+				localc.m_y += m_velocity.m_y;
+				localc.m_z += m_velocity.m_z;
 
-				m_unk0x008.SpawnParticle(&m_unk0x154, &localc, m_unk0x000->GetUnk0x30());
+				m_particleSystem.SpawnParticle(&m_position, &localc, m_emitter->GetParticleLifeMs());
 			}
 
-			m_unk0x184 = 0;
+			m_emitTimerMs = 0;
 		}
 	}
 
-	m_unk0x008.Update(p_elapsedMs);
+	m_particleSystem.Update(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00489960
-void CutsceneParticle::FUN_00489960(GolD3DRenderDevice* p_renderer)
+void CutsceneParticle::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	m_unk0x008.FUN_00412a50(p_renderer);
+	m_particleSystem.FUN_00412a50(p_renderer);
 }

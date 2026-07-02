@@ -144,7 +144,7 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 		position.m_y += static_cast<LegoFloat>(::cos(angle)) * offset;
 
 		if (particleRef->m_particle != NULL) {
-			particleRef->m_particle->FUN_00489660(&position);
+			particleRef->m_particle->SetPosition(&position);
 		}
 	}
 }
@@ -205,7 +205,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	m_collisionEvent = event;
 	m_bubbleParticle = animation->SpawnParticle("oilbub", NULL, NULL, NULL);
 	if (m_bubbleParticle != NULL && m_bubbleParticle->m_particle != NULL) {
-		m_bubbleParticle->m_particle->FUN_00489660(&position);
+		m_bubbleParticle->m_particle->SetPosition(&position);
 	}
 
 	position.m_z += g_homingProjectileCollisionStartOffset;

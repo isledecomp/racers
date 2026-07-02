@@ -1777,7 +1777,7 @@ void HazardManager::GhostHazard::Update(undefined4 p_elapsedMs)
 		if (m_trailParticle != NULL) {
 			worldPosition.m_z -= 5.0f;
 			if (m_trailParticle->m_particle != NULL) {
-				m_trailParticle->m_particle->FUN_00489660(&worldPosition);
+				m_trailParticle->m_particle->SetPosition(&worldPosition);
 			}
 			worldPosition.m_z += 5.0f;
 		}
@@ -2976,12 +2976,12 @@ void HazardManager::SmokeVentHazard::Update(undefined4 p_elapsedMs)
 		GolAnimatedEntity* entity = m_entity;
 		CutsceneParticle* particle = particleRef->m_particle;
 		if (particle) {
-			entity->VTable0x44(particle->GetUnk0x160());
+			entity->VTable0x44(particle->GetBasis());
 		}
 
 		particleRef = m_smokeParticle;
 		if (particleRef->m_particle) {
-			particleRef->m_particle->FUN_00489660(&position);
+			particleRef->m_particle->SetPosition(&position);
 		}
 	}
 }
@@ -3116,12 +3116,12 @@ void HazardManager::SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, RaceStat
 		position.m_y = (up.m_y - direction.m_x) * offset + position.m_y;
 
 		if (ref->m_particle) {
-			ref->m_particle->FUN_00489540(&direction, &up);
+			ref->m_particle->SetOrientation(&direction, &up);
 		}
 
 		ref = m_snowParticle;
 		if (ref->m_particle) {
-			ref->m_particle->FUN_00489660(&position);
+			ref->m_particle->SetPosition(&position);
 		}
 	}
 }

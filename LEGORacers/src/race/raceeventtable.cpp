@@ -512,7 +512,7 @@ void RaceEventTable::ParticleResource::Update(LegoU32 p_elapsedMs)
 
 		m_trackedEntity->VTable0x2c(position, &transformedPosition);
 		if (m_particle->m_particle) {
-			m_particle->m_particle->FUN_00489660(&transformedPosition);
+			m_particle->m_particle->SetPosition(&transformedPosition);
 		}
 	}
 }

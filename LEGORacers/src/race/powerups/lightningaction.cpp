@@ -678,11 +678,11 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 	direction.m_z = -m_source->m_forward.m_z;
 
 	if (m_hitParticle->m_particle != NULL) {
-		m_hitParticle->m_particle->FUN_00489660(&m_boltPoints[3]);
+		m_hitParticle->m_particle->SetPosition(&m_boltPoints[3]);
 	}
 
 	if (m_hitParticle->m_particle != NULL) {
-		m_hitParticle->m_particle->FUN_00489540(&direction, &up);
+		m_hitParticle->m_particle->SetOrientation(&direction, &up);
 	}
 }
 

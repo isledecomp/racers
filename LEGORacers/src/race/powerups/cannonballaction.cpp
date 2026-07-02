@@ -234,14 +234,14 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 
 				particleVelocity = m_ownerRacer->m_physics.m_velocity;
 				if (m_smokeParticle->m_particle != NULL) {
-					m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
+					m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticle->m_particle->GetBasis());
 				}
 
 				if (m_smokeParticle->m_particle != NULL) {
-					m_smokeParticle->m_particle->FUN_00489660(&particlePosition);
+					m_smokeParticle->m_particle->SetPosition(&particlePosition);
 				}
 				if (m_smokeParticle->m_particle != NULL) {
-					m_smokeParticle->m_particle->FUN_00489690(&particleVelocity);
+					m_smokeParticle->m_particle->SetVelocity(&particleVelocity);
 				}
 			}
 		}
@@ -395,10 +395,10 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 
 		position.m_z += g_cannonballSmokeHeightOffset;
 		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->FUN_00489540(&right, &forward);
+			m_smokeParticle->m_particle->SetOrientation(&right, &forward);
 		}
 		if (m_smokeParticle->m_particle != NULL) {
-			m_smokeParticle->m_particle->FUN_00489660(&position);
+			m_smokeParticle->m_particle->SetPosition(&position);
 		}
 	}
 

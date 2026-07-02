@@ -29,7 +29,7 @@ public:
 	void Unfocus(undefined4) override;                                               // vtable+0x58
 
 	LegoBool32 FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry);
-	LegoU32 GetUnk0x224() const { return m_unk0x224; }
+	LegoU32 GetHotspotIndex() const { return m_hotspotIndex; }
 
 	// SYNTHETIC: LEGORACERS 0x00466560
 	// MenuHotspotButton::`scalar deleting destructor'
@@ -49,7 +49,7 @@ protected:
 
 	MenuStyleTable::HotspotStyle* m_unk0x21c; // 0x21c
 	UtopianPan0xa4* m_unk0x220;               // 0x220
-	undefined4 m_unk0x224;                    // 0x224
+	undefined4 m_hotspotIndex;                // 0x224
 };
 
 #endif // MENUHOTSPOTBUTTON_H

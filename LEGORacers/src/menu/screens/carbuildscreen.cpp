@@ -57,21 +57,21 @@ void CarBuildScreen::Reset()
 void CarBuildScreen::VTable0x4c()
 {
 	CarModelScreenBase::VTable0x4c();
-	CreateHotspotButton(&m_unk0x2b20, 0xb5, 0xb5);
-	CreateButton(&m_unk0x318c, 0xb2, 0xb0);
-	CreateButton(&m_unk0x2f70, 0xb1, 0xb0);
-	CreateButton(&m_unk0x33a8, 0xb3, 0xb0);
-	CreateHotspotButton(&m_unk0x2d48, 0xb4, 0xb4);
+	CreateHotspotButton(&m_movePad, 0xb5, 0xb5);
+	CreateButton(&m_rotateButton, 0xb2, 0xb0);
+	CreateButton(&m_placeButton, 0xb1, 0xb0);
+	CreateButton(&m_undoButton, 0xb3, 0xb0);
+	CreateHotspotButton(&m_viewPad, 0xb4, 0xb4);
 
-	MenuButton* glyph0 = &m_unk0x35c4;
+	MenuButton* glyph0 = &m_pieceViewRegion;
 	CreateButton(glyph0, 0xb8, 0xb0);
 
-	MenuButton* glyph1 = &m_unk0x37e0;
+	MenuButton* glyph1 = &m_carViewRegion;
 	CreateButton(glyph1, 0xb7, 0xb0);
 
 	glyph0->ClearFlags(MenuIcon::c_flagBit1);
 	glyph1->ClearFlags(MenuIcon::c_flagBit1);
-	CreateButton(&m_unk0x39fc, 0x3f, 0xb0);
+	CreateButton(&m_doneButton, 0x3f, 0xb0);
 }
 
 // FUNCTION: LEGORACERS 0x004739a0
@@ -113,10 +113,10 @@ LegoBool32 CarBuildScreen::FUN_00473a50(InputEventQueue::Event* p_event, undefin
 		return FALSE;
 	}
 
-	if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
+	if (FUN_00473a20(m_pieceViewRegion.GetRect(), x, y)) {
 		if (m_unk0x3c18) {
 			if (m_unk0x2ae0 == 1) {
-				if (m_unk0x2308.CommitPiece()) {
+				if (m_partPlacement.CommitPiece()) {
 					m_unk0x2ae4 = 6;
 					m_unk0x2adc = 4;
 				}
@@ -130,19 +130,19 @@ LegoBool32 CarBuildScreen::FUN_00473a50(InputEventQueue::Event* p_event, undefin
 		m_unk0x3c18 = c_carBuildClickDelay;
 		m_unk0xd8.SetFocus();
 
-		if (m_unk0x2308.GetFocusedPane() != 1) {
-			m_unk0x2308.FocusPiece();
+		if (m_partPlacement.GetFocusedPane() != 1) {
+			m_partPlacement.FocusPiece();
 		}
 
 		return TRUE;
 	}
 
-	if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
+	if (FUN_00473a20(m_carViewRegion.GetRect(), x, y)) {
 		m_unk0x2ae4 = 2;
 		m_unk0xd8.SetFocus();
 
-		if (m_unk0x2308.GetFocusedPane() != 2) {
-			m_unk0x2308.FocusCar();
+		if (m_partPlacement.GetFocusedPane() != 2) {
+			m_partPlacement.FocusCar();
 		}
 
 		return TRUE;
@@ -195,8 +195,8 @@ void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 
 	LegoS32 index = regionId - 1;
 	FUN_004773e0(
-		g_carBuildDragHorizontalOffsets[m_unk0x2308.GetViewSlot() * 8 + index],
-		g_carBuildDragVerticalOffsets[m_unk0x2308.GetViewSlot() * 8 + index],
+		g_carBuildDragHorizontalOffsets[m_partPlacement.GetViewSlot() * 8 + index],
+		g_carBuildDragVerticalOffsets[m_partPlacement.GetViewSlot() * 8 + index],
 		index & 1,
 		0
 	);
@@ -206,12 +206,12 @@ void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 // FUNCTION: LEGORACERS 0x00473c40
 void CarBuildScreen::VTable0xa4()
 {
-	if (m_unk0x2b20.GetStateFlags() & 4) {
-		m_unk0x2b20.Unfocus(0);
+	if (m_movePad.GetStateFlags() & 4) {
+		m_movePad.Unfocus(0);
 	}
 
-	if (m_unk0x2d48.GetStateFlags() & 4) {
-		m_unk0x2d48.Unfocus(0);
+	if (m_viewPad.GetStateFlags() & 4) {
+		m_viewPad.Unfocus(0);
 	}
 
 	m_cursor->SetCursorEnabled(TRUE);
@@ -222,28 +222,28 @@ void CarBuildScreen::VTable0xb4()
 {
 	m_unk0x4a4.Disable(0);
 	m_unk0xfec.Disable(0);
-	m_unk0x2d48.Disable(0);
-	m_unk0x2f70.Disable(0);
-	m_unk0x318c.Disable(0);
-	m_unk0x33a8.Disable(0);
-	m_unk0x39fc.Disable(0);
-	m_unk0x2b20.Select(5);
+	m_viewPad.Disable(0);
+	m_placeButton.Disable(0);
+	m_rotateButton.Disable(0);
+	m_undoButton.Disable(0);
+	m_doneButton.Disable(0);
+	m_movePad.Select(5);
 }
 
 // FUNCTION: LEGORACERS 0x00473d20
 void CarBuildScreen::VTable0xb8()
 {
-	if (m_unk0x2b20.GetStateFlags() & 4) {
-		m_unk0x2b20.Unfocus(5);
+	if (m_movePad.GetStateFlags() & 4) {
+		m_movePad.Unfocus(5);
 	}
 
 	m_unk0x4a4.Enable(0);
 	m_unk0xfec.Enable(0);
-	m_unk0x2d48.Enable(0);
-	m_unk0x2f70.Enable(0);
-	m_unk0x318c.Enable(0);
-	m_unk0x33a8.Enable(0);
-	m_unk0x39fc.Enable(0);
+	m_viewPad.Enable(0);
+	m_placeButton.Enable(0);
+	m_rotateButton.Enable(0);
+	m_undoButton.Enable(0);
+	m_doneButton.Enable(0);
 	m_cursor->SetCursorEnabled(TRUE);
 }
 
@@ -252,27 +252,27 @@ void CarBuildScreen::VTable0xac()
 {
 	m_unk0x4a4.Disable(0);
 	m_unk0xfec.Disable(0);
-	m_unk0x2b20.Disable(0);
-	m_unk0x2f70.Disable(0);
-	m_unk0x318c.Disable(0);
-	m_unk0x33a8.Disable(0);
-	m_unk0x2d48.Select(5);
+	m_movePad.Disable(0);
+	m_placeButton.Disable(0);
+	m_rotateButton.Disable(0);
+	m_undoButton.Disable(0);
+	m_viewPad.Select(5);
 	m_cursor->SetCursorEnabled(FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x00473e50
 void CarBuildScreen::VTable0xb0()
 {
-	if (m_unk0x2d48.GetStateFlags() & 4) {
-		m_unk0x2d48.Unfocus(5);
+	if (m_viewPad.GetStateFlags() & 4) {
+		m_viewPad.Unfocus(5);
 	}
 
 	m_unk0x4a4.Enable(0);
 	m_unk0xfec.Enable(0);
-	m_unk0x2b20.Enable(0);
-	m_unk0x2f70.Enable(0);
-	m_unk0x318c.Enable(0);
-	m_unk0x33a8.Enable(0);
+	m_movePad.Enable(0);
+	m_placeButton.Enable(0);
+	m_rotateButton.Enable(0);
+	m_undoButton.Enable(0);
 	m_cursor->SetCursorEnabled(TRUE);
 }
 
@@ -300,7 +300,7 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		return FALSE;
 	}
 
-	LegoS32 categoryIndex = m_unk0x2308.GetViewSlot();
+	LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
 	undefined4 nextMode = 1;
 	LegoBool32 result = TRUE;
 	LegoBool32 moved;
@@ -372,20 +372,20 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		);
 		break;
 	case c_carBuildKeyboardNumpad5:
-		m_unk0x2308.RotatePiece();
+		m_partPlacement.RotatePiece();
 		sound = 0x16;
 		break;
 	case c_carBuildKeyboardA:
-		moved = m_unk0x2308.RotateViewStep(-1, TRUE);
+		moved = m_partPlacement.RotateViewStep(-1, TRUE);
 		goto playMovementSound;
 	case c_carBuildKeyboardD:
-		moved = m_unk0x2308.RotateViewStep(1, TRUE);
+		moved = m_partPlacement.RotateViewStep(1, TRUE);
 		goto playMovementSound;
 	case c_carBuildKeyboardS:
-		moved = m_unk0x2308.PitchViewStep(1, TRUE);
+		moved = m_partPlacement.PitchViewStep(1, TRUE);
 		goto playMovementSound;
 	case c_carBuildKeyboardX:
-		moved = m_unk0x2308.PitchViewStep(-1, TRUE);
+		moved = m_partPlacement.PitchViewStep(-1, TRUE);
 
 	playMovementSound: {
 		LegoU32 spatialSound;
@@ -407,7 +407,7 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		return result;
 	}
 	case c_carBuildKeyboardPlus:
-		if (m_unk0x2308.CommitPiece()) {
+		if (m_partPlacement.CommitPiece()) {
 			nextMode = 6;
 			m_unk0x2adc = 4;
 		}
@@ -493,8 +493,8 @@ LegoBool32 CarBuildScreen::FUN_004743f0(InputEventQueue::Event* p_event, undefin
 		LegoS32 x = cursor->m_cursorX + cursor->m_originX;
 		LegoS32 y = cursor->m_cursorY + cursor->m_originY;
 
-		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
-			m_unk0x2308.RotatePiece();
+		if (FUN_00473a20(m_pieceViewRegion.GetRect(), x, y)) {
+			m_partPlacement.RotatePiece();
 			m_soundGroupBinding->PlaySoundByIndex(0x16);
 			return TRUE;
 		}
@@ -598,7 +598,7 @@ void CarBuildScreen::OnWidgetFocused(MenuWidget* p_source)
 		m_cursor->SetCursorEnabled(FALSE);
 	}
 
-	if (p_source == &m_unk0x2b20) {
+	if (p_source == &m_movePad) {
 		m_cursor->SetCursorEnabled(FALSE);
 	}
 }
@@ -609,8 +609,8 @@ void CarBuildScreen::OnWidgetUnfocused(MenuWidget* p_source)
 	if (p_source == GetUnk0xd8()) {
 		switch (m_unk0x2ae0) {
 		case 2:
-			m_unk0x2308.SnapViewRotation();
-			m_unk0x2308.SnapViewPitch();
+			m_partPlacement.SnapViewRotation();
+			m_partPlacement.SnapViewPitch();
 			m_soundGroupBinding->PlaySoundByIndex(5);
 			break;
 		case 3:
@@ -623,7 +623,7 @@ void CarBuildScreen::OnWidgetUnfocused(MenuWidget* p_source)
 		m_cursor->SetCursorEnabled(TRUE);
 	}
 
-	if (p_source == &m_unk0x2b20) {
+	if (p_source == &m_movePad) {
 		m_cursor->SetCursorEnabled(TRUE);
 	}
 }
@@ -649,10 +649,10 @@ undefined4 CarBuildScreen::OnWidgetKeyDown(MenuWidget* p_source, void*, undefine
 void CarBuildScreen::OnIconFocused(MenuIcon* p_icon)
 {
 	m_unk0x35c = NULL;
-	if (p_icon == &m_unk0x2b20) {
+	if (p_icon == &m_movePad) {
 		m_unk0x2ae4 = 3;
 	}
-	else if (p_icon == &m_unk0x2d48) {
+	else if (p_icon == &m_viewPad) {
 		m_unk0x2ae4 = 2;
 	}
 }
@@ -664,25 +664,25 @@ void CarBuildScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_unk0x35c = p_source;
 		m_unk0x2ae4 = 1;
 
-		if (p_source == &m_unk0x2f70) {
-			if (m_unk0x2308.CommitPiece()) {
+		if (p_source == &m_placeButton) {
+			if (m_partPlacement.CommitPiece()) {
 				m_unk0x2ae4 = 6;
 				m_unk0x2adc = 4;
 			}
 			return;
 		}
-		else if (p_source == &m_unk0x318c) {
-			m_unk0x2308.RotatePiece();
+		else if (p_source == &m_rotateButton) {
+			m_partPlacement.RotatePiece();
 			m_soundGroupBinding->PlaySoundByIndex(0x16);
 			return;
 		}
-		else if (p_source == &m_unk0x33a8) {
+		else if (p_source == &m_undoButton) {
 			if (FUN_00477540()) {
 				m_unk0x2ae4 = 5;
 			}
 			return;
 		}
-		else if (p_source == &m_unk0x39fc) {
+		else if (p_source == &m_doneButton) {
 			m_unk0x360 = 0x11;
 			m_unk0x364 = 1;
 			return;
@@ -697,9 +697,9 @@ void CarBuildScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
 	LegoU32 sound = 0;
 
-	if (p_source == &m_unk0x2b20) {
-		LegoU32 index = m_unk0x2b20.GetUnk0x224();
-		LegoS32 categoryIndex = m_unk0x2308.GetViewSlot();
+	if (p_source == &m_movePad) {
+		LegoU32 index = m_movePad.GetHotspotIndex();
+		LegoS32 categoryIndex = m_partPlacement.GetViewSlot();
 		LegoU32 regionId = index;
 		index--;
 
@@ -714,30 +714,30 @@ void CarBuildScreen::OnWidgetValueChanged(MenuWidget* p_source)
 
 		m_unk0x3c1c = c_carBuildDragDelay;
 	}
-	else if (p_source == &m_unk0x2d48) {
-		switch (m_unk0x2d48.GetUnk0x224()) {
+	else if (p_source == &m_viewPad) {
+		switch (m_viewPad.GetHotspotIndex()) {
 		case 1:
-			if (m_unk0x2308.PitchViewStep(1, TRUE)) {
+			if (m_partPlacement.PitchViewStep(1, TRUE)) {
 				sound = 6;
 			}
 			break;
 		case 3:
-			if (m_unk0x2308.RotateViewStep(1, TRUE)) {
+			if (m_partPlacement.RotateViewStep(1, TRUE)) {
 				sound = 6;
 			}
 			break;
 		case 5:
-			if (m_unk0x2308.PitchViewStep(-1, TRUE)) {
+			if (m_partPlacement.PitchViewStep(-1, TRUE)) {
 				sound = 6;
 			}
 			break;
 		case 7:
-			if (m_unk0x2308.RotateViewStep(-1, TRUE)) {
+			if (m_partPlacement.RotateViewStep(-1, TRUE)) {
 				sound = 6;
 			}
 			break;
 		case 9:
-			m_unk0x2308.BeginViewReset(TRUE);
+			m_partPlacement.BeginViewReset(TRUE);
 			break;
 		}
 
@@ -757,46 +757,47 @@ void CarBuildScreen::FUN_00474940()
 	}
 
 	Rect rect;
-	m_unk0x1e30.GetEntityScreenRect(m_unk0x2308.GetCarGroup(), &rect);
-	m_unk0x37e0.SetRect(&rect);
-	m_unk0x1e30.GetEntityScreenRect(m_unk0x2308.GetPieceEntity(), &rect);
-	m_unk0x35c4.SetRect(&rect);
+	m_unk0x1e30.GetEntityScreenRect(m_partPlacement.GetCarGroup(), &rect);
+	m_carViewRegion.SetRect(&rect);
+	m_unk0x1e30.GetEntityScreenRect(m_partPlacement.GetPieceEntity(), &rect);
+	m_pieceViewRegion.SetRect(&rect);
 
 	LegoS32 x = cursor->m_cursorX + cursor->m_originX;
 	LegoS32 y = cursor->m_cursorY + cursor->m_originY;
 
 	if (FUN_00473a20(m_unk0x1e30.GetGlobalRect(), x, y)) {
-		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
-			if (m_unk0x2308.GetFocusedPane() != 1) {
+		if (FUN_00473a20(m_pieceViewRegion.GetRect(), x, y)) {
+			if (m_partPlacement.GetFocusedPane() != 1) {
 				m_hoverIcon = NULL;
-				m_unk0x37e0.Deselect(6);
-				m_unk0x35c4.Select(6);
-				m_unk0x2308.FocusPiece();
+				m_carViewRegion.Deselect(6);
+				m_pieceViewRegion.Select(6);
+				m_partPlacement.FocusPiece();
 			}
 			return;
 		}
 
-		if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
-			if (m_unk0x2308.GetFocusedPane() != 2) {
+		if (FUN_00473a20(m_carViewRegion.GetRect(), x, y)) {
+			if (m_partPlacement.GetFocusedPane() != 2) {
 				m_hoverIcon = NULL;
-				m_unk0x35c4.Deselect(6);
-				m_unk0x37e0.Select(6);
-				m_unk0x2308.FocusCar();
+				m_pieceViewRegion.Deselect(6);
+				m_carViewRegion.Select(6);
+				m_partPlacement.FocusCar();
 			}
 			return;
 		}
 	}
 
-	if ((m_unk0x35c4.GetStateFlags() & MenuIcon::c_flagBit1) || (m_unk0x37e0.GetStateFlags() & MenuIcon::c_flagBit1)) {
-		m_unk0x35c4.Deselect(7);
-		m_unk0x37e0.Deselect(7);
+	if ((m_pieceViewRegion.GetStateFlags() & MenuIcon::c_flagBit1) ||
+		(m_carViewRegion.GetStateFlags() & MenuIcon::c_flagBit1)) {
+		m_pieceViewRegion.Deselect(7);
+		m_carViewRegion.Deselect(7);
 		m_hoverIcon = NULL;
 		CarModelScreenBase::VTable0x78(0);
 		m_hoverIcon = m_unk0xd8.FindSelectedLeaf();
 		m_unk0x358 = m_hoverIcon;
 	}
 
-	m_unk0x2308.ClearFocusPane();
+	m_partPlacement.ClearFocusPane();
 }
 
 // FUNCTION: LEGORACERS 0x00474b10
@@ -858,11 +859,11 @@ void CarBuildScreen::FUN_004774e0(LegoS32 p_deltaX, LegoS32 p_deltaY)
 	}
 
 	if (p_deltaX) {
-		m_unk0x2308.RotateViewAnalog(-(static_cast<LegoFloat>(p_deltaX) * g_carBuildPreviewMouseScale));
+		m_partPlacement.RotateViewAnalog(-(static_cast<LegoFloat>(p_deltaX) * g_carBuildPreviewMouseScale));
 	}
 
 	if (p_deltaY) {
-		m_unk0x2308.PitchViewAnalog(static_cast<LegoFloat>(p_deltaY) * g_carBuildPreviewMouseScale);
+		m_partPlacement.PitchViewAnalog(static_cast<LegoFloat>(p_deltaY) * g_carBuildPreviewMouseScale);
 	}
 }
 
@@ -873,7 +874,7 @@ LegoBool32 CarBuildScreen::FUN_00477540()
 		LegoS32 carSetPartId;
 		LegoS32 pieceType;
 		LegoS32 colorRecordIndex;
-		m_unk0x2308.UndoLastPiece(&carSetPartId, &pieceType, &colorRecordIndex);
+		m_partPlacement.UndoLastPiece(&carSetPartId, &pieceType, &colorRecordIndex);
 
 		if (carSetPartId) {
 			CarPartCarousel* partCarousel = &m_partCarousel;
@@ -881,7 +882,7 @@ LegoBool32 CarBuildScreen::FUN_00477540()
 			partCarousel->SelectChoice(pieceType, colorRecordIndex);
 
 			m_unk0x410.SelectChild(&m_unk0x19e0[m_context->m_unk0x21a4.GetSelectedEntry()->GetIndex()]);
-			m_unk0x2308.SelectPieceChoice(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
+			m_partPlacement.SelectPieceChoice(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 			m_unk0x2ae4 = 5;
 			return TRUE;
 		}

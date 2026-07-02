@@ -21,7 +21,7 @@ MenuHotspotButton::~MenuHotspotButton()
 void MenuHotspotButton::Reset()
 {
 	m_unk0x220 = NULL;
-	m_unk0x224 = 0;
+	m_hotspotIndex = 0;
 	MenuButton::Reset();
 }
 
@@ -68,7 +68,7 @@ void MenuHotspotButton::FUN_00466690(LegoU32 p_code)
 	if (source == c_sourceRegion) {
 		for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
 			if (!id || id == m_unk0x21c->m_hotspotIds[i]) {
-				m_unk0x224 = id;
+				m_hotspotIndex = id;
 
 				if (m_eventHandler) {
 					m_eventHandler->OnWidgetValueChanged(this);
@@ -84,9 +84,9 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 	MenuButton::DrawSelf(p_arg1, p_arg2);
 	m_unk0x1c0.DrawSelf(p_arg1, p_arg2);
 
-	if (m_unk0x224) {
+	if (m_hotspotIndex) {
 		LegoS32 index = 0;
-		while (m_unk0x21c->m_hotspotIds[index] != m_unk0x224) {
+		while (m_unk0x21c->m_hotspotIds[index] != m_hotspotIndex) {
 			index++;
 		}
 
@@ -190,7 +190,7 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 			return this;
 		}
 
-		if (m_unk0x224) {
+		if (m_hotspotIndex) {
 			FUN_00466690(c_sourceRegion);
 			return this;
 		}
@@ -202,7 +202,7 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 // FUNCTION: LEGORACERS 0x004669e0
 void MenuHotspotButton::Unfocus(undefined4 p_flags)
 {
-	if (m_unk0x224) {
+	if (m_hotspotIndex) {
 		FUN_00466690(c_sourceRegion);
 	}
 

@@ -198,7 +198,7 @@ protected:
 	MenuSelector m_unk0xfec;                // 0xfec
 	MenuImage m_unk0x19e0[12];              // 0x19e0
 	MenuFramedSceneView m_unk0x1e30;        // 0x1e30
-	CarPartPlacement m_unk0x2308;           // 0x2308
+	CarPartPlacement m_partPlacement;       // 0x2308
 	MenuTextButton m_unk0x25d8;             // 0x25d8
 	undefined4 m_unk0x28c8;                 // 0x28c8
 	undefined4 m_unk0x28cc;                 // 0x28cc

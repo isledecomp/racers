@@ -97,17 +97,17 @@ protected:
 	void FUN_004774e0(LegoS32 p_deltaX, LegoS32 p_deltaY);
 	LegoBool32 FUN_00477540();
 
-	MenuHotspotButton m_unk0x2b20; // 0x2b20
-	MenuHotspotButton m_unk0x2d48; // 0x2d48
-	MenuButton m_unk0x2f70;        // 0x2f70
-	MenuButton m_unk0x318c;        // 0x318c
-	MenuButton m_unk0x33a8;        // 0x33a8
-	MenuButton m_unk0x35c4;        // 0x35c4
-	MenuButton m_unk0x37e0;        // 0x37e0
-	MenuButton m_unk0x39fc;        // 0x39fc
-	LegoU32 m_unk0x3c18;           // 0x3c18
-	LegoU32 m_unk0x3c1c;           // 0x3c1c
-	GolStringTable m_unk0x3c20;    // 0x3c20
+	MenuHotspotButton m_movePad;  // 0x2b20
+	MenuHotspotButton m_viewPad;  // 0x2d48
+	MenuButton m_placeButton;     // 0x2f70
+	MenuButton m_rotateButton;    // 0x318c
+	MenuButton m_undoButton;      // 0x33a8
+	MenuButton m_pieceViewRegion; // 0x35c4
+	MenuButton m_carViewRegion;   // 0x37e0
+	MenuButton m_doneButton;      // 0x39fc
+	LegoU32 m_unk0x3c18;          // 0x3c18
+	LegoU32 m_unk0x3c1c;          // 0x3c1c
+	GolStringTable m_unk0x3c20;   // 0x3c20
 };
 
 #endif // CARBUILDSCREEN_H

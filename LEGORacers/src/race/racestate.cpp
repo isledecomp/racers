@@ -222,7 +222,7 @@ extern const LegoFloat g_fadeAlphaScale = 191.0f;
 extern const LegoFloat g_racerBillboardScale = 1.15f;
 
 extern const LegoFloat g_twoPi;
-extern const LegoFloat g_unk0x004b4bc8;
+extern const LegoFloat g_pathMinSegmentLengthSquared;
 
 // GLOBAL: LEGORACERS 0x004c67a4
 LegoFloat g_unk0x004c67a4 = ((1.0f - g_unk0x004b0984) * g_unk0x004b0424) * g_unk0x004b09ac;
@@ -243,7 +243,7 @@ const LegoChar* g_unk0x004bef3c[3] = {"drivers", "champs", "chassis"};
 LegoU32 g_unk0x004bef70 = 3;
 
 // GLOBAL: LEGORACERS 0x004c6b34
-LegoFloat g_unk0x004c6b34 = g_twoPi * g_unk0x004b4bc8;
+LegoFloat g_unk0x004c6b34 = g_twoPi * g_pathMinSegmentLengthSquared;
 
 // FUNCTION: LEGORACERS 0x00436990
 RaceState::Racer::Racer()

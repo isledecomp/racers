@@ -7,125 +7,125 @@
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry::PathPoint, 0x0c)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
 DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::CollisionCacheRecord, 0x3c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74c, 0x78)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x74cInstance, 0x78)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::RouteCursor, 0x78)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::RouteCursorInstance, 0x78)
 
 // GLOBAL: LEGORACERS 0x004b4bc8
-extern const LegoFloat g_unk0x004b4bc8 = 0.001f;
+extern const LegoFloat g_pathMinSegmentLengthSquared = 0.001f;
 
 // GLOBAL: LEGORACERS 0x004b4bcc
-extern const LegoFloat g_unk0x004b4bcc = 0.00390625f;
+extern const LegoFloat g_pathPositionXYScale = 0.00390625f;
 
 // GLOBAL: LEGORACERS 0x004b4bd0
-extern const LegoFloat g_unk0x004b4bd0 = 0.0625f;
+extern const LegoFloat g_pathPositionZScale = 0.0625f;
 
 // GLOBAL: LEGORACERS 0x004b4bd4
-extern const LegoFloat g_unk0x004b4bd4 = 0.007874016f;
+extern const LegoFloat g_pathRotationScale = 0.007874016f;
 
 // GLOBAL: LEGORACERS 0x004b4bd8
-extern const LegoFloat g_unk0x004b4bd8 = 0.125f;
+extern const LegoFloat g_pathWidthScale = 0.125f;
 
 // FUNCTION: LEGORACERS 0x004a5170 FOLDED
-RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::Field0x74cInstance()
+RaceState::Racer::Field0x3e8Base0x74c::RouteCursorInstance::RouteCursorInstance()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5180 FOLDED
-RaceState::Racer::Field0x3e8Base0x74c::Field0x74cInstance::~Field0x74cInstance()
+RaceState::Racer::Field0x3e8Base0x74c::RouteCursorInstance::~RouteCursorInstance()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004a5190 FOLDED
-void RaceState::Racer::Field0x3e8::Field0x74c::Reset()
+void RaceState::Racer::Field0x3e8::RouteCursor::Reset()
 {
-	m_unk0x00.m_x = 0.0f;
-	m_unk0x00.m_y = 0.0f;
-	m_unk0x00.m_z = 0.0f;
-	m_unk0x0c.m_x = 0.0f;
-	m_unk0x0c.m_y = 0.0f;
-	m_unk0x0c.m_z = 0.0f;
-	m_unk0x0c.m_w = 1.0f;
-	m_unk0x1c = 0;
-	m_unk0x28 = NULL;
-	m_unk0x2c = 1.0f;
-	m_unk0x30 = 0;
-	m_unk0x34 = 0xffffffff;
-	m_unk0x38 = 0;
-	m_unk0x3c.m_x = 0.0f;
-	m_unk0x3c.m_y = 0.0f;
-	m_unk0x3c.m_z = 0.0f;
-	m_unk0x48.m_x = 0.0f;
-	m_unk0x48.m_y = 0.0f;
-	m_unk0x48.m_z = 0.0f;
-	m_unk0x54.m_x = 0.0f;
-	m_unk0x54.m_y = 0.0f;
-	m_unk0x54.m_z = 0.0f;
-	m_unk0x54.m_w = 1.0f;
-	m_unk0x64.m_x = 0.0f;
-	m_unk0x64.m_y = 0.0f;
-	m_unk0x64.m_z = 0.0f;
-	m_unk0x64.m_w = 1.0f;
-	m_unk0x74 = 0;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_rotation.m_x = 0.0f;
+	m_rotation.m_y = 0.0f;
+	m_rotation.m_z = 0.0f;
+	m_rotation.m_w = 1.0f;
+	m_pointType = 0;
+	m_record = NULL;
+	m_playbackSpeed = 1.0f;
+	m_currentTime = 0;
+	m_startIndex = 0xffffffff;
+	m_endIndex = 0;
+	m_startPosition.m_x = 0.0f;
+	m_startPosition.m_y = 0.0f;
+	m_startPosition.m_z = 0.0f;
+	m_endPosition.m_x = 0.0f;
+	m_endPosition.m_y = 0.0f;
+	m_endPosition.m_z = 0.0f;
+	m_startRotation.m_x = 0.0f;
+	m_startRotation.m_y = 0.0f;
+	m_startRotation.m_z = 0.0f;
+	m_startRotation.m_w = 1.0f;
+	m_endRotation.m_x = 0.0f;
+	m_endRotation.m_y = 0.0f;
+	m_endRotation.m_z = 0.0f;
+	m_endRotation.m_w = 1.0f;
+	m_segmentStartTime = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a51f0 FOLDED
-void RaceState::Racer::Field0x3e8::Field0x74c::Destroy()
+void RaceState::Racer::Field0x3e8::RouteCursor::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5200
-void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5200(Racer::Field0x00c::Entry* p_entry)
+void RaceState::Racer::Field0x3e8::RouteCursor::Attach(Racer::Field0x00c::Entry* p_entry)
 {
-	m_unk0x34 = -1;
-	m_unk0x28 = p_entry;
-	m_unk0x30 = 0.0f;
-	m_unk0x38 = 0;
-	m_unk0x74 = 0;
+	m_startIndex = -1;
+	m_record = p_entry;
+	m_currentTime = 0.0f;
+	m_endIndex = 0;
+	m_segmentStartTime = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a5220
-void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5220(Racer::Field0x00c::Entry* p_entry)
+void RaceState::Racer::Field0x3e8::RouteCursor::AttachAtLoop(Racer::Field0x00c::Entry* p_entry)
 {
-	GolVec3* position = &p_entry->m_unk0x024;
-	GolVec3* currentPosition = &m_unk0x3c;
-	m_unk0x28 = p_entry;
+	GolVec3* position = &p_entry->m_loopPosition;
+	GolVec3* currentPosition = &m_startPosition;
+	m_record = p_entry;
 	*currentPosition = *position;
-	m_unk0x00 = *position;
+	m_position = *position;
 
-	GolQuat* rotation = &p_entry->m_unk0x030;
-	GolQuat* currentRotation = &m_unk0x54;
+	GolQuat* rotation = &p_entry->m_loopRotation;
+	GolQuat* currentRotation = &m_startRotation;
 	*currentRotation = *rotation;
-	m_unk0x0c = *rotation;
+	m_rotation = *rotation;
 
-	LegoS32 duration = p_entry->m_unk0x040;
-	m_unk0x74 = duration;
-	m_unk0x30 = static_cast<LegoFloat>(duration);
+	LegoS32 duration = p_entry->m_loopTime;
+	m_segmentStartTime = duration;
+	m_currentTime = static_cast<LegoFloat>(duration);
 
-	LegoS32 pointIndex = p_entry->m_unk0x044;
-	m_unk0x34 = pointIndex;
-	m_unk0x38 = m_unk0x34 + 1;
+	LegoS32 pointIndex = p_entry->m_loopPointIndex;
+	m_startIndex = pointIndex;
+	m_endIndex = m_startIndex + 1;
 
-	Racer::Field0x00c::Entry::PathPoint* point = &p_entry->m_pathPoints[m_unk0x34];
-	m_unk0x1c = point->GetType();
-	m_unk0x20 = point->GetUnk0x09();
-	m_unk0x24 = point->GetUnk0x0a();
+	Racer::Field0x00c::Entry::PathPoint* point = &p_entry->m_pathPoints[m_startIndex];
+	m_pointType = point->GetType();
+	m_widthLeft = point->GetWidthLeft();
+	m_widthRight = point->GetWidthRight();
 
 	GolVec3 offset;
-	point = &m_unk0x28->m_pathPoints[m_unk0x38];
+	point = &m_record->m_pathPoints[m_endIndex];
 	point->GetPosition(&offset);
 
-	m_unk0x48.m_x = offset.m_x + currentPosition->m_x;
-	m_unk0x48.m_y = offset.m_y + currentPosition->m_y;
-	m_unk0x48.m_z = offset.m_z + currentPosition->m_z;
+	m_endPosition.m_x = offset.m_x + currentPosition->m_x;
+	m_endPosition.m_y = offset.m_y + currentPosition->m_y;
+	m_endPosition.m_z = offset.m_z + currentPosition->m_z;
 }
 
 // STUB: LEGORACERS 0x004a5320
-void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
+void RaceState::Racer::Field0x3e8::RouteCursor::Advance(LegoFloat p_elapsedMs)
 {
-	Racer::Field0x00c::Entry* entry = m_unk0x28;
+	Racer::Field0x00c::Entry* entry = m_record;
 	if (entry) {
 		Racer::Field0x00c::Entry* wrapEntry;
 		Racer::Field0x00c::Entry::PathPoint* point;
@@ -146,75 +146,75 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 		LegoFloat startValue0x09;
 		LegoFloat startValue0x0a;
 
-		currentTimeFloat = m_unk0x2c;
-		currentTimeFloat *= p_unk0x04;
-		currentTimeFloat += m_unk0x30;
-		m_unk0x30 = currentTimeFloat;
+		currentTimeFloat = m_playbackSpeed;
+		currentTimeFloat *= p_elapsedMs;
+		currentTimeFloat += m_currentTime;
+		m_currentTime = currentTimeFloat;
 		LegoS32 currentTime = static_cast<LegoS32>(currentTimeFloat);
 		targetTime = currentTime;
 
-		if (m_unk0x34 < 0) {
+		if (m_startIndex < 0) {
 			startValue0x0a = 0.0f;
 			startValue0x09 = 0.0f;
 
-			currentPosition = &m_unk0x3c;
-			*currentPosition = entry->m_unk0x008;
-			m_unk0x54 = entry->m_unk0x014;
-			m_unk0x74 = 0;
+			currentPosition = &m_startPosition;
+			*currentPosition = entry->m_startPosition;
+			m_startRotation = entry->m_startRotation;
+			m_segmentStartTime = 0;
 
-			point = &entry->m_pathPoints[m_unk0x38];
+			point = &entry->m_pathPoints[m_endIndex];
 			point->GetPosition(&offset);
-			m_unk0x48.m_x = offset.m_x + currentPosition->m_x;
-			m_unk0x48.m_y = offset.m_y + currentPosition->m_y;
-			m_unk0x48.m_z = offset.m_z + currentPosition->m_z;
-			point->GetRotation(&m_unk0x64);
-			m_unk0x1c = 4;
+			m_endPosition.m_x = offset.m_x + currentPosition->m_x;
+			m_endPosition.m_y = offset.m_y + currentPosition->m_y;
+			m_endPosition.m_z = offset.m_z + currentPosition->m_z;
+			point->GetRotation(&m_endRotation);
+			m_pointType = 4;
 		}
 		else {
-			point = &entry->m_pathPoints[m_unk0x34];
-			startValue0x0a = point->GetUnk0x0a();
-			startValue0x09 = point->GetUnk0x09();
-			point = &m_unk0x28->m_pathPoints[m_unk0x38];
+			point = &entry->m_pathPoints[m_startIndex];
+			startValue0x0a = point->GetWidthRight();
+			startValue0x09 = point->GetWidthLeft();
+			point = &m_record->m_pathPoints[m_endIndex];
 		}
 
-		endValue0x0a = point->GetUnk0x0a();
-		endValue0x09 = point->GetUnk0x09();
-		segmentStartTime = m_unk0x74;
+		endValue0x0a = point->GetWidthRight();
+		endValue0x09 = point->GetWidthLeft();
+		segmentStartTime = m_segmentStartTime;
 		segmentEndTime = segmentStartTime + point->GetLength();
 
 		if (currentTime < segmentStartTime) {
-			pointIndex = m_unk0x34;
+			pointIndex = m_startIndex;
 			if (pointIndex) {
-				currentPosition = &m_unk0x3c;
+				currentPosition = &m_startPosition;
 				while (TRUE) {
 					segmentEndTime = segmentStartTime;
-					m_unk0x38 = pointIndex;
-					m_unk0x48 = m_unk0x3c;
-					m_unk0x64 = m_unk0x54;
+					m_endIndex = pointIndex;
+					m_endPosition = m_startPosition;
+					m_endRotation = m_startRotation;
 					endValue0x0a = startValue0x0a;
 					endValue0x09 = startValue0x09;
 
-					point = &m_unk0x28->m_pathPoints[pointIndex];
+					point = &m_record->m_pathPoints[pointIndex];
 					point->GetPosition(&offset);
 					currentPosition->m_x -= offset.m_x;
 					currentPosition->m_y -= offset.m_y;
 					currentPosition->m_z -= offset.m_z;
 
-					segmentStartTime = m_unk0x74 - point->GetLength();
-					m_unk0x34 = pointIndex - 1;
-					m_unk0x74 = segmentStartTime;
+					segmentStartTime = m_segmentStartTime - point->GetLength();
+					m_startIndex = pointIndex - 1;
+					m_segmentStartTime = segmentStartTime;
 
-					point = &m_unk0x28->m_pathPoints[m_unk0x34];
-					m_unk0x1c = point->GetType();
-					startValue0x0a = point->GetUnk0x0a();
-					startValue0x09 = point->GetUnk0x09();
-					point->GetRotation(&m_unk0x54);
+					point = &m_record->m_pathPoints[m_startIndex];
+					m_pointType = point->GetType();
+					startValue0x0a = point->GetWidthRight();
+					startValue0x09 = point->GetWidthLeft();
+					point->GetRotation(&m_startRotation);
 
 					if (targetTime >= segmentStartTime) {
 						break;
 					}
 
-					pointIndex = m_unk0x34;
+					pointIndex = m_startIndex;
 					if (!pointIndex) {
 						goto ClampStart;
 					}
@@ -223,7 +223,7 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 			else {
 			ClampStart:
 				targetTime = 0;
-				m_unk0x30 = 0.0f;
+				m_currentTime = 0.0f;
 			}
 		}
 		else {
@@ -231,39 +231,39 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 				goto Interpolate;
 			}
 
-			endPosition = &m_unk0x48;
+			endPosition = &m_endPosition;
 			do {
-				m_unk0x74 = segmentEndTime;
-				pointIndex = m_unk0x38;
-				m_unk0x34 = pointIndex;
-				m_unk0x3c = *endPosition;
-				m_unk0x54 = m_unk0x64;
+				m_segmentStartTime = segmentEndTime;
+				pointIndex = m_endIndex;
+				m_startIndex = pointIndex;
+				m_startPosition = *endPosition;
+				m_startRotation = m_endRotation;
 
 				startValue0x0a = endValue0x0a;
 				startValue0x09 = endValue0x09;
 				pointIndex++;
-				m_unk0x38 = pointIndex;
+				m_endIndex = pointIndex;
 
-				wrapEntry = m_unk0x28;
+				wrapEntry = m_record;
 				if (pointIndex >= wrapEntry->m_pathPointCount) {
-					m_unk0x3c = wrapEntry->m_unk0x024;
-					m_unk0x48 = wrapEntry->m_unk0x024;
-					m_unk0x54 = wrapEntry->m_unk0x030;
-					m_unk0x64 = wrapEntry->m_unk0x030;
-					m_unk0x74 = wrapEntry->m_unk0x040;
-					m_unk0x34 = wrapEntry->m_unk0x044;
-					targetTime += m_unk0x74 - segmentEndTime;
-					m_unk0x38 = m_unk0x34 + 1;
-					m_unk0x30 = static_cast<LegoFloat>(targetTime);
+					m_startPosition = wrapEntry->m_loopPosition;
+					m_endPosition = wrapEntry->m_loopPosition;
+					m_startRotation = wrapEntry->m_loopRotation;
+					m_endRotation = wrapEntry->m_loopRotation;
+					m_segmentStartTime = wrapEntry->m_loopTime;
+					m_startIndex = wrapEntry->m_loopPointIndex;
+					targetTime += m_segmentStartTime - segmentEndTime;
+					m_endIndex = m_startIndex + 1;
+					m_currentTime = static_cast<LegoFloat>(targetTime);
 				}
 
-				point = &wrapEntry->m_pathPoints[m_unk0x38];
-				m_unk0x1c = point->GetType();
-				endValue0x0a = point->GetUnk0x0a();
-				endValue0x09 = point->GetUnk0x09();
+				point = &wrapEntry->m_pathPoints[m_endIndex];
+				m_pointType = point->GetType();
+				endValue0x0a = point->GetWidthRight();
+				endValue0x09 = point->GetWidthLeft();
 
 				point->GetPosition(&offset);
-				point->GetRotation(&m_unk0x64);
+				point->GetRotation(&m_endRotation);
 				endPosition->m_x += offset.m_x;
 				endPosition->m_y += offset.m_y;
 				endPosition->m_z += offset.m_z;
@@ -272,47 +272,48 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5320(LegoFloat p_unk0x04)
 		}
 
 	Interpolate:
-		amount = static_cast<LegoFloat>(targetTime - m_unk0x74) / static_cast<LegoFloat>(segmentEndTime - m_unk0x74);
-		m_unk0x20 = (endValue0x09 - startValue0x09) * amount + startValue0x09;
-		m_unk0x24 = (endValue0x0a - startValue0x0a) * amount + startValue0x0a;
+		amount = static_cast<LegoFloat>(targetTime - m_segmentStartTime) /
+				 static_cast<LegoFloat>(segmentEndTime - m_segmentStartTime);
+		m_widthLeft = (endValue0x09 - startValue0x09) * amount + startValue0x09;
+		m_widthRight = (endValue0x0a - startValue0x0a) * amount + startValue0x0a;
 
-		offset.m_x = m_unk0x48.m_x - m_unk0x3c.m_x;
-		offset.m_y = m_unk0x48.m_y - m_unk0x3c.m_y;
-		offset.m_z = m_unk0x48.m_z - m_unk0x3c.m_z;
+		offset.m_x = m_endPosition.m_x - m_startPosition.m_x;
+		offset.m_y = m_endPosition.m_y - m_startPosition.m_y;
+		offset.m_z = m_endPosition.m_z - m_startPosition.m_z;
 		scaledX = offset.m_x * amount;
 		scaledY = offset.m_y * amount;
 		scaledZ = offset.m_z * amount;
 
-		m_unk0x00.m_x = scaledX + m_unk0x3c.m_x;
-		m_unk0x00.m_y = scaledY + m_unk0x3c.m_y;
-		m_unk0x00.m_z = scaledZ + m_unk0x3c.m_z;
+		m_position.m_x = scaledX + m_startPosition.m_x;
+		m_position.m_y = scaledY + m_startPosition.m_y;
+		m_position.m_z = scaledZ + m_startPosition.m_z;
 
-		GolMath::FUN_1002f890(m_unk0x54, m_unk0x64, amount, &m_unk0x0c);
+		GolMath::FUN_1002f890(m_startRotation, m_endRotation, amount, &m_rotation);
 	}
 }
 
 // STUB: LEGORACERS 0x004a5750
-void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
+void RaceState::Racer::Field0x3e8::RouteCursor::SeekByDelta(GolVec3* p_delta)
 {
-	LegoS32 endIndex = m_unk0x38;
-	Racer::Field0x00c::Entry::PathPoint* endPoint = &m_unk0x28->m_pathPoints[endIndex];
-	LegoS32 segmentStartTime = m_unk0x74;
-	LegoS32 startIndex = m_unk0x34;
+	LegoS32 endIndex = m_endIndex;
+	Racer::Field0x00c::Entry::PathPoint* endPoint = &m_record->m_pathPoints[endIndex];
+	LegoS32 segmentStartTime = m_segmentStartTime;
+	LegoS32 startIndex = m_startIndex;
 	LegoS32 segmentEndTime = segmentStartTime + endPoint->GetLength();
-	GolVec3 startPosition = m_unk0x3c;
-	GolVec3 endPosition = m_unk0x48;
+	GolVec3 startPosition = m_startPosition;
+	GolVec3 endPosition = m_endPosition;
 
-	while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_unk0x004b4bc8) {
+	while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_pathMinSegmentLengthSquared) {
 		startPosition = endPosition;
 		segmentStartTime = segmentEndTime;
 		startIndex = endIndex;
 		endIndex++;
 
-		if (endIndex >= m_unk0x28->m_pathPointCount) {
+		if (endIndex >= m_record->m_pathPointCount) {
 			return;
 		}
 
-		endPoint = &m_unk0x28->m_pathPoints[endIndex];
+		endPoint = &m_record->m_pathPoints[endIndex];
 
 		GolVec3 offset;
 		endPoint->GetPosition(&offset);
@@ -322,7 +323,7 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 		endPosition.m_z += offset.m_z;
 	}
 
-	Racer::Field0x00c::Entry::PathPoint* startPoint = &m_unk0x28->m_pathPoints[startIndex];
+	Racer::Field0x00c::Entry::PathPoint* startPoint = &m_record->m_pathPoints[startIndex];
 	GolVec3 segment;
 	GolVec3 unitSegment;
 	LegoFloat segmentLength;
@@ -347,8 +348,8 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 		if (projectedDelta < 0.0f) {
 			LegoFloat backwardDelta = -projectedDelta;
 			LegoFloat remainingDistance = static_cast<LegoFloat>(sqrt(
-				GOL_SQUARED(m_unk0x00.m_z - startPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - startPosition.m_y) +
-				GOL_SQUARED(m_unk0x00.m_x - startPosition.m_x)
+				GOL_SQUARED(m_position.m_z - startPosition.m_z) + GOL_SQUARED(m_position.m_y - startPosition.m_y) +
+				GOL_SQUARED(m_position.m_x - startPosition.m_x)
 			));
 
 			if (backwardDelta <= remainingDistance) {
@@ -381,8 +382,8 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 					startPosition.m_x -= offset.m_x;
 					startPosition.m_y -= offset.m_y;
 					startPosition.m_z -= offset.m_z;
-					startPoint = &m_unk0x28->m_pathPoints[startIndex];
-				} while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_unk0x004b4bc8);
+					startPoint = &m_record->m_pathPoints[startIndex];
+				} while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_pathMinSegmentLengthSquared);
 
 				segment.m_x = endPosition.m_x - startPosition.m_x;
 				segment.m_y = endPosition.m_y - startPosition.m_y;
@@ -418,8 +419,8 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 
 		{
 			LegoFloat remainingDistance = static_cast<LegoFloat>(sqrt(
-				GOL_SQUARED(m_unk0x00.m_z - endPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - endPosition.m_y) +
-				GOL_SQUARED(m_unk0x00.m_x - endPosition.m_x)
+				GOL_SQUARED(m_position.m_z - endPosition.m_z) + GOL_SQUARED(m_position.m_y - endPosition.m_y) +
+				GOL_SQUARED(m_position.m_x - endPosition.m_x)
 			));
 
 			if (projectedDelta <= remainingDistance) {
@@ -441,11 +442,11 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 					startPoint = endPoint;
 					endIndex++;
 
-					if (endIndex >= m_unk0x28->m_pathPointCount) {
+					if (endIndex >= m_record->m_pathPointCount) {
 						return;
 					}
 
-					endPoint = &m_unk0x28->m_pathPoints[endIndex];
+					endPoint = &m_record->m_pathPoints[endIndex];
 					segmentEndTime += endPoint->GetLength();
 
 					GolVec3 offset;
@@ -453,7 +454,7 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 					endPosition.m_x += offset.m_x;
 					endPosition.m_y += offset.m_y;
 					endPosition.m_z += offset.m_z;
-				} while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_unk0x004b4bc8);
+				} while (GOLVECTOR3_DISTANCE_SQUARED(startPosition, endPosition) < g_pathMinSegmentLengthSquared);
 
 				segment.m_x = endPosition.m_x - startPosition.m_x;
 				segment.m_y = endPosition.m_y - startPosition.m_y;
@@ -478,8 +479,8 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 				}
 
 				remainingDistance = static_cast<LegoFloat>(sqrt(
-					GOL_SQUARED(m_unk0x00.m_z - endPosition.m_z) + GOL_SQUARED(m_unk0x00.m_y - endPosition.m_y) +
-					GOL_SQUARED(m_unk0x00.m_x - endPosition.m_x)
+					GOL_SQUARED(m_position.m_z - endPosition.m_z) + GOL_SQUARED(m_position.m_y - endPosition.m_y) +
+					GOL_SQUARED(m_position.m_x - endPosition.m_x)
 				));
 				segmentAmount = projectedDelta + segmentLength - remainingDistance;
 				break;
@@ -488,20 +489,20 @@ void RaceState::Racer::Field0x3e8::Field0x74c::FUN_004a5750(GolVec3* p_delta)
 		}
 	}
 
-	m_unk0x74 = segmentStartTime;
-	m_unk0x3c = startPosition;
-	m_unk0x48 = endPosition;
-	m_unk0x30 = static_cast<LegoFloat>(segmentEndTime - segmentStartTime) * (segmentAmount / segmentLength) +
-				static_cast<LegoFloat>(segmentStartTime);
-	m_unk0x34 = startIndex;
-	m_unk0x38 = endIndex;
-	startPoint->GetRotation(&m_unk0x54);
-	endPoint->GetRotation(&m_unk0x64);
-	FUN_004a5320(0.0f);
+	m_segmentStartTime = segmentStartTime;
+	m_startPosition = startPosition;
+	m_endPosition = endPosition;
+	m_currentTime = static_cast<LegoFloat>(segmentEndTime - segmentStartTime) * (segmentAmount / segmentLength) +
+					static_cast<LegoFloat>(segmentStartTime);
+	m_startIndex = startIndex;
+	m_endIndex = endIndex;
+	startPoint->GetRotation(&m_startRotation);
+	endPoint->GetRotation(&m_endRotation);
+	Advance(0.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004a5e10
-void RaceState::Racer::Field0x00c::Entry::PathPoint::FUN_004a5e10(GolFileParser* p_parser, LegoBool32 p_mirror)
+void RaceState::Racer::Field0x00c::Entry::PathPoint::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	m_positionX = static_cast<LegoS16>(p_parser->ReadInteger());
 	m_positionY = static_cast<LegoS16>(p_parser->ReadInteger());
@@ -510,14 +511,14 @@ void RaceState::Racer::Field0x00c::Entry::PathPoint::FUN_004a5e10(GolFileParser*
 	m_rotationY = static_cast<LegoS8>(p_parser->ReadInteger());
 	m_rotationZ = static_cast<LegoS8>(p_parser->ReadInteger());
 	m_rotationW = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x09 = static_cast<LegoS8>(p_parser->ReadInteger());
-	m_unk0x0a = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_widthLeft = static_cast<LegoS8>(p_parser->ReadInteger());
+	m_widthRight = static_cast<LegoS8>(p_parser->ReadInteger());
 	m_packedTypeAndLength = static_cast<LegoU8>(p_parser->ReadInteger());
 
 	if (p_mirror) {
-		LegoS8 temp = m_unk0x09;
-		m_unk0x09 = m_unk0x0a;
-		m_unk0x0a = temp;
+		LegoS8 temp = m_widthLeft;
+		m_widthLeft = m_widthRight;
+		m_widthRight = temp;
 		m_positionY = -m_positionY;
 		m_rotationY = -m_rotationY;
 		m_rotationW = -m_rotationW;
@@ -544,9 +545,9 @@ LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetLength() const
 // FUNCTION: LEGORACERS 0x004a5ef0
 GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_position) const
 {
-	p_position->m_x = static_cast<LegoFloat>(m_positionX) * g_unk0x004b4bcc;
-	p_position->m_y = static_cast<LegoFloat>(m_positionY) * g_unk0x004b4bcc;
-	p_position->m_z = static_cast<LegoFloat>(m_positionZ) * g_unk0x004b4bd0;
+	p_position->m_x = static_cast<LegoFloat>(m_positionX) * g_pathPositionXYScale;
+	p_position->m_y = static_cast<LegoFloat>(m_positionY) * g_pathPositionXYScale;
+	p_position->m_z = static_cast<LegoFloat>(m_positionZ) * g_pathPositionZScale;
 
 	return p_position;
 }
@@ -554,22 +555,22 @@ GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_
 // FUNCTION: LEGORACERS 0x004a5f40
 GolQuat* RaceState::Racer::Field0x00c::Entry::PathPoint::GetRotation(GolQuat* p_rotation) const
 {
-	p_rotation->m_x = static_cast<LegoFloat>(m_rotationX) * g_unk0x004b4bd4;
-	p_rotation->m_y = static_cast<LegoFloat>(m_rotationY) * g_unk0x004b4bd4;
-	p_rotation->m_z = static_cast<LegoFloat>(m_rotationZ) * g_unk0x004b4bd4;
-	p_rotation->m_w = static_cast<LegoFloat>(m_rotationW) * g_unk0x004b4bd4;
+	p_rotation->m_x = static_cast<LegoFloat>(m_rotationX) * g_pathRotationScale;
+	p_rotation->m_y = static_cast<LegoFloat>(m_rotationY) * g_pathRotationScale;
+	p_rotation->m_z = static_cast<LegoFloat>(m_rotationZ) * g_pathRotationScale;
+	p_rotation->m_w = static_cast<LegoFloat>(m_rotationW) * g_pathRotationScale;
 
 	return p_rotation;
 }
 
 // FUNCTION: LEGORACERS 0x004a5fa0
-LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetUnk0x09() const
+LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetWidthLeft() const
 {
-	return static_cast<LegoFloat>(m_unk0x09) * g_unk0x004b4bd8;
+	return static_cast<LegoFloat>(m_widthLeft) * g_pathWidthScale;
 }
 
 // FUNCTION: LEGORACERS 0x004a5fc0
-LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetUnk0x0a() const
+LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetWidthRight() const
 {
-	return static_cast<LegoFloat>(m_unk0x0a) * g_unk0x004b4bd8;
+	return static_cast<LegoFloat>(m_widthRight) * g_pathWidthScale;
 }

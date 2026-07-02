@@ -914,7 +914,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 				}
 				fileName[5] = static_cast<LegoChar>(index + '0');
 
-				current->FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+				current->Load(fileName, m_context->m_unk0x18, p_mirror);
 			}
 		}
 
@@ -943,7 +943,7 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 		}
 
 		if (foundFallback) {
-			m_routeRecords[0].FUN_004a4e30(fileName, m_context->m_unk0x18, p_mirror);
+			m_routeRecords[0].Load(fileName, m_context->m_unk0x18, p_mirror);
 		}
 	}
 }
@@ -954,7 +954,7 @@ void RaceSession::FUN_00433460()
 	RaceRouteRecord* current = m_routeRecords;
 	LegoS32 remaining = sizeOfArray(m_routeRecords);
 	do {
-		current->FUN_004a50a0();
+		current->Destroy();
 		current++;
 	} while (--remaining);
 }

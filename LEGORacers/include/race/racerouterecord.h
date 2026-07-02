@@ -14,18 +14,30 @@ class RaceRouteRecord : public RaceState::Racer::Field0x00c::Entry {
 public:
 	// VTABLE: LEGORACERS 0x004b4b50
 	// SIZE 0x1fc
-	class RrbTxtParser : public GolTxtParser {};
+	class RrbTxtParser : public GolTxtParser {
+	public:
+		// .rrb token meanings
+		enum {
+			e_pathPoints = 0x27,
+			e_startRotation = 0x28,
+			e_startPosition = 0x29,
+			e_loopPosition = 0x2a,
+			e_loopRotation = 0x2b,
+			e_loopTime = 0x2c,
+			e_loopPointIndex = 0x2d,
+		};
+	};
 
 	RaceRouteRecord();
 	~RaceRouteRecord();
-	void FUN_004a50a0();
+	void Destroy();
 
 private:
 	friend class RaceSession;
 
-	void FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_binary, LegoBool32 p_mirror);
-	void FUN_004a50c0();
-	void FUN_004a5100(GolFileParser* p_parser, LegoBool32 p_mirror);
+	void Load(const LegoChar* p_fileName, LegoBool32 p_binary, LegoBool32 p_mirror);
+	void Reset();
+	void ParsePathPoints(GolFileParser* p_parser, LegoBool32 p_mirror);
 };
 
 #endif // RACEROUTERECORD_H

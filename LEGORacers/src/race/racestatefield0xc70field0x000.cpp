@@ -49,10 +49,10 @@ inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
 void RaceState::Racer::Field0x3e8::FUN_0042a730(Field0x00c::Entry* p_entry)
 {
 	m_unk0x744 = TRUE;
-	m_unk0x74c.FUN_004a5220(p_entry);
+	m_unk0x74c.AttachAtLoop(p_entry);
 
-	GolVec3 position = p_entry->m_unk0x024;
-	GolQuat rotation = p_entry->m_unk0x030;
+	GolVec3 position = p_entry->m_loopPosition;
+	GolQuat rotation = p_entry->m_loopRotation;
 
 	m_unk0x13c->VTable0x08(position);
 	GolMath::FUN_00449340(&rotation, &m_unk0x13c->GetOrientation().m_m[0][0]);
@@ -139,10 +139,10 @@ void RaceState::Racer::Field0x3e8::FUN_0042b0c0()
 {
 	GolVec3 direction;
 	direction.m_x = 0.0f;
-	m_unk0x74c.m_unk0x2c = 1.0f;
+	m_unk0x74c.m_playbackSpeed = 1.0f;
 	direction.m_y = 0.0f;
 	direction.m_z = 0.0f;
-	m_unk0x74c.FUN_004a5750(&direction);
+	m_unk0x74c.SeekByDelta(&direction);
 
 	m_unk0x7e8 = 1.0f;
 	m_unk0x7c4.m_x = 0.0f;

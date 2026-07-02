@@ -410,15 +410,15 @@ GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04
 
 	Field0x00c::Entry* value = m_unk0x004;
 	m_unk0x00c = 0;
-	m_unk0x050->FUN_004a5220(value);
+	m_unk0x050->AttachAtLoop(value);
 
-	m_unk0x050->m_unk0x2c = 1.0f;
-	m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
+	m_unk0x050->m_playbackSpeed = 1.0f;
+	m_unk0x050->Advance(static_cast<LegoFloat>(m_unk0x024));
 
 	GolQuat* basis = &m_unk0x040;
-	RaceState::Racer::Field0x3e8::Field0x74cInstance* field0x50 = m_unk0x050;
-	m_unk0x034 = field0x50->m_unk0x00;
-	GolQuat* result = &field0x50->m_unk0x0c;
+	RaceState::Racer::Field0x3e8::RouteCursorInstance* field0x50 = m_unk0x050;
+	m_unk0x034 = field0x50->m_position;
+	GolQuat* result = &field0x50->m_rotation;
 	basis->m_x = result->m_x;
 	basis->m_y = result->m_y;
 	basis->m_z = result->m_z;
@@ -462,7 +462,7 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 	if (distance < g_unk0x004b0088) {
 		m_unk0x000->FUN_0042a730(m_unk0x004);
 		m_unk0x000->FUN_0042b0c0();
-		m_unk0x000->m_unk0x74c.FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
+		m_unk0x000->m_unk0x74c.Advance(static_cast<LegoFloat>(m_unk0x024));
 		FUN_00420380();
 		return;
 	}
@@ -533,10 +533,10 @@ void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
 
 	if (updatePath && distance <= g_unk0x004b0090) {
 		m_unk0x024 += 250;
-		m_unk0x050->FUN_004a5220(m_unk0x004);
-		m_unk0x050->FUN_004a5320(static_cast<LegoFloat>(m_unk0x024));
-		m_unk0x034 = m_unk0x050->m_unk0x00;
-		m_unk0x040 = m_unk0x050->m_unk0x0c;
+		m_unk0x050->AttachAtLoop(m_unk0x004);
+		m_unk0x050->Advance(static_cast<LegoFloat>(m_unk0x024));
+		m_unk0x034 = m_unk0x050->m_position;
+		m_unk0x040 = m_unk0x050->m_rotation;
 	}
 
 	FUN_0041fee0();

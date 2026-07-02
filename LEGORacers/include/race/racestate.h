@@ -179,9 +179,9 @@ public:
 					LegoU32 GetLength() const;
 					GolVec3* GetPosition(GolVec3* p_position) const;
 					GolQuat* GetRotation(GolQuat* p_rotation) const;
-					LegoFloat GetUnk0x09() const;
-					LegoFloat GetUnk0x0a() const;
-					void FUN_004a5e10(GolFileParser* p_parser, LegoBool32 p_mirror);
+					LegoFloat GetWidthLeft() const;
+					LegoFloat GetWidthRight() const;
+					void Load(GolFileParser* p_parser, LegoBool32 p_mirror);
 
 					LegoS16 m_positionX;          // 0x00
 					LegoS16 m_positionY;          // 0x02
@@ -190,19 +190,19 @@ public:
 					LegoS8 m_rotationY;           // 0x06
 					LegoS8 m_rotationZ;           // 0x07
 					LegoS8 m_rotationW;           // 0x08
-					LegoS8 m_unk0x09;             // 0x09
-					LegoS8 m_unk0x0a;             // 0x0a
+					LegoS8 m_widthLeft;           // 0x09
+					LegoS8 m_widthRight;          // 0x0a
 					LegoU8 m_packedTypeAndLength; // 0x0b
 				};
 
 				LegoS32 m_pathPointCount; // 0x00
 				PathPoint* m_pathPoints;  // 0x04
-				GolVec3 m_unk0x008;       // 0x08
-				GolQuat m_unk0x014;       // 0x14
-				GolVec3 m_unk0x024;       // 0x24
-				GolQuat m_unk0x030;       // 0x30
-				LegoS32 m_unk0x040;       // 0x40
-				LegoS32 m_unk0x044;       // 0x44
+				GolVec3 m_startPosition;  // 0x08
+				GolQuat m_startRotation;  // 0x14
+				GolVec3 m_loopPosition;   // 0x24
+				GolQuat m_loopRotation;   // 0x30
+				LegoS32 m_loopTime;       // 0x40
+				LegoS32 m_loopPointIndex; // 0x44
 			};
 		};
 
@@ -463,37 +463,37 @@ public:
 			Field0x3e8Base0x74c();
 
 			// SIZE 0x78
-			class Field0x74c {
+			class RouteCursor {
 			public:
-				void FUN_004a5220(Field0x00c::Entry* p_unk0x04);
-				void FUN_004a5200(Field0x00c::Entry* p_unk0x04);
-				void FUN_004a5320(LegoFloat p_unk0x04);
-				void FUN_004a5750(GolVec3* p_unk0x04);
+				void AttachAtLoop(Field0x00c::Entry* p_record);
+				void Attach(Field0x00c::Entry* p_record);
+				void Advance(LegoFloat p_elapsedMs);
+				void SeekByDelta(GolVec3* p_delta);
 				void Destroy();
 				void Reset();
 
-				GolVec3 m_unk0x00;            // 0x00
-				GolQuat m_unk0x0c;            // 0x0c
-				LegoU32 m_unk0x1c;            // 0x1c
-				LegoFloat m_unk0x20;          // 0x20
-				LegoFloat m_unk0x24;          // 0x24
-				Field0x00c::Entry* m_unk0x28; // 0x28
-				LegoFloat m_unk0x2c;          // 0x2c
-				LegoFloat m_unk0x30;          // 0x30
-				LegoS32 m_unk0x34;            // 0x34
-				LegoS32 m_unk0x38;            // 0x38
-				GolVec3 m_unk0x3c;            // 0x3c
-				GolVec3 m_unk0x48;            // 0x48
-				GolQuat m_unk0x54;            // 0x54
-				GolQuat m_unk0x64;            // 0x64
-				LegoS32 m_unk0x74;            // 0x74
+				GolVec3 m_position;          // 0x00
+				GolQuat m_rotation;          // 0x0c
+				LegoU32 m_pointType;         // 0x1c
+				LegoFloat m_widthLeft;       // 0x20
+				LegoFloat m_widthRight;      // 0x24
+				Field0x00c::Entry* m_record; // 0x28
+				LegoFloat m_playbackSpeed;   // 0x2c
+				LegoFloat m_currentTime;     // 0x30
+				LegoS32 m_startIndex;        // 0x34
+				LegoS32 m_endIndex;          // 0x38
+				GolVec3 m_startPosition;     // 0x3c
+				GolVec3 m_endPosition;       // 0x48
+				GolQuat m_startRotation;     // 0x54
+				GolQuat m_endRotation;       // 0x64
+				LegoS32 m_segmentStartTime;  // 0x74
 			};
 
 			// SIZE 0x78
-			class Field0x74cInstance : public Field0x74c {
+			class RouteCursorInstance : public RouteCursor {
 			public:
-				Field0x74cInstance();
-				~Field0x74cInstance();
+				RouteCursorInstance();
+				~RouteCursorInstance();
 			};
 
 			class CollisionCacheRecord;
@@ -942,7 +942,7 @@ public:
 			undefined4 FUN_00449070(undefined4 p_unk0x04);
 			undefined4 FUN_00449090();
 
-			Field0x74cInstance m_unk0x74c;       // 0x74c
+			RouteCursorInstance m_unk0x74c;      // 0x74c
 			GolQuat m_unk0x7c4;                  // 0x7c4
 			LegoFloat m_unk0x7d4;                // 0x7d4
 			LegoFloat m_unk0x7d8;                // 0x7d8
@@ -951,7 +951,7 @@ public:
 			LegoFloat m_unk0x7e4;                // 0x7e4
 			LegoFloat m_unk0x7e8;                // 0x7e8
 			LegoFloat m_unk0x7ec;                // 0x7ec
-			Field0x74cInstance m_unk0x7f0;       // 0x7f0
+			RouteCursorInstance m_unk0x7f0;      // 0x7f0
 			GolQuat m_unk0x868;                  // 0x868
 			LegoFloat m_unk0x878;                // 0x878
 			LegoFloat m_unk0x87c;                // 0x87c
@@ -1001,22 +1001,22 @@ public:
 			void Reset();
 			~Field0xc70();
 
-			Field0x3e8* m_unk0x000;                     // 0x00
-			Field0x00c::Entry* m_unk0x004;              // 0x04
-			LegoFloat m_unk0x008;                       // 0x08
-			LegoFloat m_unk0x00c;                       // 0x0c
-			LegoFloat m_unk0x010;                       // 0x10
-			LegoU32 m_unk0x014;                         // 0x14
-			LegoFloat m_unk0x018;                       // 0x18
-			LegoFloat m_unk0x01c;                       // 0x1c
-			LegoU32 m_unk0x020;                         // 0x20
-			LegoS32 m_unk0x024;                         // 0x24
-			LegoU32 m_unk0x028;                         // 0x28
-			LegoU32 m_unk0x02c;                         // 0x2c
-			LegoU32 m_unk0x030;                         // 0x30
-			GolVec3 m_unk0x034;                         // 0x34
-			GolQuat m_unk0x040;                         // 0x40
-			Field0x3e8::Field0x74cInstance* m_unk0x050; // 0x50
+			Field0x3e8* m_unk0x000;                      // 0x00
+			Field0x00c::Entry* m_unk0x004;               // 0x04
+			LegoFloat m_unk0x008;                        // 0x08
+			LegoFloat m_unk0x00c;                        // 0x0c
+			LegoFloat m_unk0x010;                        // 0x10
+			LegoU32 m_unk0x014;                          // 0x14
+			LegoFloat m_unk0x018;                        // 0x18
+			LegoFloat m_unk0x01c;                        // 0x1c
+			LegoU32 m_unk0x020;                          // 0x20
+			LegoS32 m_unk0x024;                          // 0x24
+			LegoU32 m_unk0x028;                          // 0x28
+			LegoU32 m_unk0x02c;                          // 0x2c
+			LegoU32 m_unk0x030;                          // 0x30
+			GolVec3 m_unk0x034;                          // 0x34
+			GolQuat m_unk0x040;                          // 0x40
+			Field0x3e8::RouteCursorInstance* m_unk0x050; // 0x50
 		};
 
 		enum {
@@ -1402,7 +1402,7 @@ public:
 	const GolVec3& GetUnk0x0ec(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x0ec[p_index]; }
 	const GolVec3& GetUnk0x134(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x134[p_index]; }
 	LegoU32 GetUnk0x17c(LegoU32 p_index) const { return m_unk0x0f0.m_unk0x17c[p_index]; }
-	Racer::Field0x3e8::Field0x74cInstance* GetUnk0x2a0() { return &m_unk0x2a0; }
+	Racer::Field0x3e8::RouteCursorInstance* GetUnk0x2a0() { return &m_unk0x2a0; }
 
 private:
 	friend class RaceSession;
@@ -1475,13 +1475,13 @@ private:
 	void Reset();
 	void Destroy();
 
-	DriverCosmeticTable m_unk0x000;                   // 0x000
-	ChampionDefinitionList m_unk0x080;                // 0x080
-	ChassisModelTable m_unk0x0b4;                     // 0x0b4
-	Field0x0f0 m_unk0x0f0;                            // 0x0f0
-	Field0x284 m_unk0x284;                            // 0x284
-	Racer::Field0x3e8::Field0x74cInstance m_unk0x2a0; // 0x2a0
-	Racer* m_unk0x318[2];                             // 0x318
+	DriverCosmeticTable m_unk0x000;                    // 0x000
+	ChampionDefinitionList m_unk0x080;                 // 0x080
+	ChassisModelTable m_unk0x0b4;                      // 0x0b4
+	Field0x0f0 m_unk0x0f0;                             // 0x0f0
+	Field0x284 m_unk0x284;                             // 0x284
+	Racer::Field0x3e8::RouteCursorInstance m_unk0x2a0; // 0x2a0
+	Racer* m_unk0x318[2];                              // 0x318
 };
 
 #endif // RACESTATE_H

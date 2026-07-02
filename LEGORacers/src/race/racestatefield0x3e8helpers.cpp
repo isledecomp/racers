@@ -198,7 +198,7 @@ extern const LegoFloat g_ghostSpeedScale;
 extern const LegoFloat g_twoPi;
 
 // GLOBAL: LEGORACERS 0x004c4868
-RaceState::Racer::Field0x3e8::Field0x74cInstance g_raceStateField0x3e8PathState0x004c4868;
+RaceState::Racer::Field0x3e8::RouteCursorInstance g_raceStateField0x3e8PathState0x004c4868;
 
 // GLOBAL: LEGORACERS 0x004c48e0
 GolMatrix3 g_raceStateField0x3e8PathOrientation0x004c48e0;
@@ -321,7 +321,7 @@ void RaceState::Racer::Field0x3e8::FUN_004292e0()
 
 		if (m_unk0x744) {
 			LegoFloat value = g_unk0x004b0494;
-			m_unk0x74c.m_unk0x2c = value;
+			m_unk0x74c.m_playbackSpeed = value;
 		}
 
 		m_unk0x734 = g_unk0x004b0450;
@@ -356,7 +356,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429380()
 
 	if (m_unk0x744) {
 		LegoFloat value = g_unk0x004b049c;
-		m_unk0x74c.m_unk0x2c = value;
+		m_unk0x74c.m_playbackSpeed = value;
 	}
 }
 
@@ -457,7 +457,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429680(GolVec3* p_unk0x04)
 {
 	if (m_unk0x744) {
 		GolVec3 direction = *p_unk0x04;
-		m_unk0x74c.FUN_004a5750(&direction);
+		m_unk0x74c.SeekByDelta(&direction);
 		FUN_0042a290(0);
 
 		const GolVec3& side = m_unk0x13c->GetOrientation().m_rows[1];
@@ -467,13 +467,13 @@ void RaceState::Racer::Field0x3e8::FUN_00429680(GolVec3* p_unk0x04)
 		m_unk0x7c4.m_z = dot;
 
 		if (dot > 0.0f) {
-			if (m_unk0x74c.m_unk0x24 < dot) {
-				dot = m_unk0x74c.m_unk0x24;
+			if (m_unk0x74c.m_widthRight < dot) {
+				dot = m_unk0x74c.m_widthRight;
 				m_unk0x7c4.m_z = dot;
 			}
 		}
-		else if (m_unk0x74c.m_unk0x20 < -dot) {
-			m_unk0x7c4.m_z = -m_unk0x74c.m_unk0x20;
+		else if (m_unk0x74c.m_widthLeft < -dot) {
+			m_unk0x7c4.m_z = -m_unk0x74c.m_widthLeft;
 		}
 
 		FUN_0042a570();
@@ -512,7 +512,7 @@ void RaceState::Racer::Field0x3e8::VTable0x20(GolVec3* p_unk0x04, LegoFloat p_un
 			value += 0.1f;
 		}
 		else {
-			value = m_unk0x74c.m_unk0x2c;
+			value = m_unk0x74c.m_playbackSpeed;
 			value += scaled;
 		}
 		amount += value;
@@ -520,7 +520,7 @@ void RaceState::Racer::Field0x3e8::VTable0x20(GolVec3* p_unk0x04, LegoFloat p_un
 		if (amount > g_unk0x004b04a0) {
 			amount = g_unk0x004b04a0;
 		}
-		m_unk0x74c.m_unk0x2c = amount;
+		m_unk0x74c.m_playbackSpeed = amount;
 	}
 	else {
 		LegoFloat amount = (dot + 1.0f) * g_carBuildModelTextureCoordinateScale;
@@ -529,14 +529,14 @@ void RaceState::Racer::Field0x3e8::VTable0x20(GolVec3* p_unk0x04, LegoFloat p_un
 			value = g_unk0x004b0490 - 0.1f;
 		}
 		else {
-			value = m_unk0x74c.m_unk0x2c - scaled;
+			value = m_unk0x74c.m_playbackSpeed - scaled;
 		}
 		value -= amount;
 
 		if (value < g_unk0x004b04a4) {
 			value = g_unk0x004b04a4;
 		}
-		m_unk0x74c.m_unk0x2c = value;
+		m_unk0x74c.m_playbackSpeed = value;
 	}
 }
 
@@ -617,7 +617,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429990(GolVec3* p_unk0x04)
 			m_unk0x7ec = value;
 		}
 		else {
-			m_unk0x7ec = dot / g_unk0x004b0484 + m_unk0x74c.m_unk0x2c;
+			m_unk0x7ec = dot / g_unk0x004b0484 + m_unk0x74c.m_playbackSpeed;
 		}
 
 		if (m_unk0x7ec > g_unk0x004b04a0) {
@@ -629,7 +629,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429990(GolVec3* p_unk0x04)
 			m_unk0x7ec = g_unk0x004b0490 - 0.1f;
 		}
 		else {
-			m_unk0x7ec = dot / g_unk0x004b0484 + m_unk0x74c.m_unk0x2c;
+			m_unk0x7ec = dot / g_unk0x004b0484 + m_unk0x74c.m_playbackSpeed;
 		}
 
 		if (m_unk0x7ec < g_unk0x004b04a4) {
@@ -656,7 +656,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429a90()
 	LegoU32& flags = m_flags0x6c0;
 	flags |= c_flags0x6c0Bit3 | c_flags0x6c0Bit16 | c_flags0x6c0Bit17;
 	LegoFloat value = g_unk0x004b0498;
-	m_unk0x74c.m_unk0x2c = value;
+	m_unk0x74c.m_playbackSpeed = value;
 
 	if (!(flags & c_flags0x6c0Bit3)) {
 		m_unk0x658 = 0.0f;
@@ -672,7 +672,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429a90()
 void RaceState::Racer::Field0x3e8::FUN_00429af0()
 {
 	if (m_unk0x744) {
-		m_unk0x74c.m_unk0x2c = m_unk0x7e8;
+		m_unk0x74c.m_playbackSpeed = m_unk0x7e8;
 		m_unk0x65c = 0;
 		m_unk0x67c = 0;
 		m_unk0x660 = g_unk0x004b04b0;
@@ -719,7 +719,7 @@ void RaceState::Racer::Field0x3e8::VTable0x38()
 	Field0x3e8Base0x74c::VTable0x38();
 	m_unk0x7c4.m_w = g_unk0x004b04d0;
 	LegoFloat unk0x778 = g_unk0x004b0488;
-	m_unk0x74c.m_unk0x2c = unk0x778;
+	m_unk0x74c.m_playbackSpeed = unk0x778;
 }
 
 // FUNCTION: LEGORACERS 0x00429c30
@@ -750,7 +750,7 @@ void RaceState::Racer::Field0x3e8::VTable0x24(LegoFloat p_unk0x04, LegoFloat p_u
 
 		if (m_unk0x36c) {
 			LegoFloat value = g_unk0x004b0490;
-			m_unk0x74c.m_unk0x2c = value;
+			m_unk0x74c.m_playbackSpeed = value;
 		}
 	}
 }
@@ -797,8 +797,8 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 	}
 
 	if (m_flags0x6c0 & c_flags0x6c0Bit16) {
-		if (m_unk0x74c.m_unk0x30 < g_unk0x004b04e0) {
-			LegoFloat speedScale = m_unk0x74c.m_unk0x30;
+		if (m_unk0x74c.m_currentTime < g_unk0x004b04e0) {
+			LegoFloat speedScale = m_unk0x74c.m_currentTime;
 			speedScale -= g_unk0x004b04e0;
 			speedScale /= g_unk0x004b04e0;
 			speedScale = -speedScale;
@@ -818,7 +818,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 			LegoU32 suspendedMask = flags & c_flags0x6c0Bit18;
 			if (suspendedMask || !(flags & (c_flags0x6c0Bit1 | c_flags0x6c0Bit16 | c_flags0x6c0Bit19)) ||
 				m_unk0x36c == 0) {
-				LegoFloat currentSpeed = m_unk0x74c.m_unk0x2c;
+				LegoFloat currentSpeed = m_unk0x74c.m_playbackSpeed;
 				if (currentSpeed < m_unk0x7ec) {
 					LegoFloat rate;
 					if (suspendedMask) {
@@ -835,7 +835,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 					if (currentSpeed > m_unk0x7ec) {
 						currentSpeed = m_unk0x7ec;
 					}
-					m_unk0x74c.m_unk0x2c = currentSpeed;
+					m_unk0x74c.m_playbackSpeed = currentSpeed;
 				}
 				else if (currentSpeed > m_unk0x7ec) {
 					LegoFloat rate;
@@ -850,11 +850,11 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 					if (currentSpeed < m_unk0x7ec) {
 						currentSpeed = m_unk0x7ec;
 					}
-					m_unk0x74c.m_unk0x2c = currentSpeed;
+					m_unk0x74c.m_playbackSpeed = currentSpeed;
 				}
 			}
 
-			m_unk0x74c.FUN_004a5320(elapsed);
+			m_unk0x74c.Advance(elapsed);
 
 			if (m_unk0x7c4.m_z > 0.0f) {
 				m_unk0x7c4.m_z -= g_unk0x004b04cc * elapsed;
@@ -902,7 +902,7 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 
 		if (m_unk0x3ec != 0) {
 			LegoFloat speed = g_unk0x004b048c;
-			m_unk0x74c.m_unk0x2c = speed;
+			m_unk0x74c.m_playbackSpeed = speed;
 			FUN_00447880();
 			FUN_0042a220();
 			p_elapsedMs = m_unk0x3f0;
@@ -920,14 +920,14 @@ void RaceState::Racer::Field0x3e8::FUN_00429d40(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0042a100
 void RaceState::Racer::Field0x3e8::FUN_0042a100()
 {
-	GolQuat rotation = m_unk0x74c.m_unk0x0c;
+	GolQuat rotation = m_unk0x74c.m_rotation;
 	GolMath::FUN_00449340(&rotation, &g_raceStateField0x3e8PathOrientation0x004c48e0.m_m[0][0]);
 
 	GolVec3 currentDirection = g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[1];
 	g_raceStateField0x3e8PathState0x004c4868 = m_unk0x74c;
-	g_raceStateField0x3e8PathState0x004c4868.FUN_004a5320(500.0f);
+	g_raceStateField0x3e8PathState0x004c4868.Advance(500.0f);
 
-	rotation = g_raceStateField0x3e8PathState0x004c4868.m_unk0x0c;
+	rotation = g_raceStateField0x3e8PathState0x004c4868.m_rotation;
 	GolMath::FUN_00449340(&rotation, &g_raceStateField0x3e8PathOrientation0x004c48e0.m_m[0][0]);
 
 	LegoFloat dot = g_raceStateField0x3e8PathOrientation0x004c48e0.m_rows[0].m_z * currentDirection.m_z;
@@ -962,7 +962,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042a220()
 // STUB: LEGORACERS 0x0042a290
 void RaceState::Racer::Field0x3e8::FUN_0042a290(LegoU32 p_elapsedMs)
 {
-	GolQuat rotation = m_unk0x74c.m_unk0x0c;
+	GolQuat rotation = m_unk0x74c.m_rotation;
 	GolMath::FUN_00449340(&rotation, &m_unk0x13c->GetOrientation().m_m[0][0]);
 
 	if ((m_flags0x6c0 & c_flags0x6c0Bit3) || m_unk0x680 != 0.0f) {
@@ -1042,7 +1042,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042a290(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0042a570
 void RaceState::Racer::Field0x3e8::FUN_0042a570()
 {
-	GolVec3 position = m_unk0x74c.m_unk0x00;
+	GolVec3 position = m_unk0x74c.m_position;
 	GolOrientedEntity* entity = m_unk0x13c;
 	const GolMatrix3& orientation = entity->GetOrientation();
 	GolVec3 side;
@@ -1061,7 +1061,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042a570()
 	position.m_z += scaledSide.m_z;
 	entity->VTable0x08(position);
 
-	m_unk0x36c = m_unk0x74c.m_unk0x1c;
+	m_unk0x36c = m_unk0x74c.m_pointType;
 	entity = m_unk0x13c;
 	entity->VTable0x2c(m_unk0x014, &m_unk0x020);
 	m_unk0x13c->GetOrientationRow0(&m_unk0x168);
@@ -1072,10 +1072,10 @@ void RaceState::Racer::Field0x3e8::FUN_0042a570()
 void RaceState::Racer::Field0x3e8::FUN_0042a670(Field0x00c::Entry* p_entry)
 {
 	m_unk0x744 = TRUE;
-	m_unk0x74c.FUN_004a5200(p_entry);
+	m_unk0x74c.Attach(p_entry);
 
-	GolVec3 position = p_entry->m_unk0x008;
-	GolQuat rotation = p_entry->m_unk0x014;
+	GolVec3 position = p_entry->m_startPosition;
+	GolQuat rotation = p_entry->m_startRotation;
 	m_unk0x13c->VTable0x08(position);
 	m_unk0x13c->SetOrientationFromQuaternion(rotation);
 	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);

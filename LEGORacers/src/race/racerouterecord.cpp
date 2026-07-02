@@ -11,20 +11,20 @@ DECOMP_SIZE_ASSERT(RaceRouteRecord::RrbTxtParser, 0x1fc)
 // FUNCTION: LEGORACERS 0x004a4e10
 RaceRouteRecord::RaceRouteRecord()
 {
-	FUN_004a50c0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a4e20
 RaceRouteRecord::~RaceRouteRecord()
 {
-	FUN_004a50a0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004a4e30
-void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_binary, LegoBool32 p_mirror)
+void RaceRouteRecord::Load(const LegoChar* p_fileName, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	if (m_pathPoints) {
-		FUN_004a50a0();
+		Destroy();
 	}
 
 	GolFileParser* parser;
@@ -47,50 +47,50 @@ void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_bina
 	GolFileParser::ParserTokenType token = parser->GetNextToken();
 	while (token != GolFileParser::e_syntaxerror) {
 		switch (token) {
-		case GolFileParser::e_unknown0x27:
-			FUN_004a5100(parser, p_mirror);
+		case RrbTxtParser::e_pathPoints:
+			ParsePathPoints(parser, p_mirror);
 			break;
-		case GolFileParser::e_unknown0x28:
-			m_unk0x014.m_x = parser->ReadFloat();
-			m_unk0x014.m_y = parser->ReadFloat();
-			m_unk0x014.m_z = parser->ReadFloat();
-			m_unk0x014.m_w = parser->ReadFloat();
+		case RrbTxtParser::e_startRotation:
+			m_startRotation.m_x = parser->ReadFloat();
+			m_startRotation.m_y = parser->ReadFloat();
+			m_startRotation.m_z = parser->ReadFloat();
+			m_startRotation.m_w = parser->ReadFloat();
 			if (p_mirror) {
-				m_unk0x014.m_y = -m_unk0x014.m_y;
-				m_unk0x014.m_w = -m_unk0x014.m_w;
+				m_startRotation.m_y = -m_startRotation.m_y;
+				m_startRotation.m_w = -m_startRotation.m_w;
 			}
 			break;
-		case GolFileParser::e_unknown0x29:
-			m_unk0x008.m_x = parser->ReadFloat();
-			m_unk0x008.m_y = parser->ReadFloat();
-			m_unk0x008.m_z = parser->ReadFloat();
+		case RrbTxtParser::e_startPosition:
+			m_startPosition.m_x = parser->ReadFloat();
+			m_startPosition.m_y = parser->ReadFloat();
+			m_startPosition.m_z = parser->ReadFloat();
 			if (p_mirror) {
-				m_unk0x008.m_y = -m_unk0x008.m_y;
+				m_startPosition.m_y = -m_startPosition.m_y;
 			}
 			break;
-		case GolFileParser::e_unknown0x2a:
-			m_unk0x024.m_x = parser->ReadFloat();
-			m_unk0x024.m_y = parser->ReadFloat();
-			m_unk0x024.m_z = parser->ReadFloat();
+		case RrbTxtParser::e_loopPosition:
+			m_loopPosition.m_x = parser->ReadFloat();
+			m_loopPosition.m_y = parser->ReadFloat();
+			m_loopPosition.m_z = parser->ReadFloat();
 			if (p_mirror) {
-				m_unk0x024.m_y = -m_unk0x024.m_y;
+				m_loopPosition.m_y = -m_loopPosition.m_y;
 			}
 			break;
-		case GolFileParser::e_unknown0x2b:
-			m_unk0x030.m_x = parser->ReadFloat();
-			m_unk0x030.m_y = parser->ReadFloat();
-			m_unk0x030.m_z = parser->ReadFloat();
-			m_unk0x030.m_w = parser->ReadFloat();
+		case RrbTxtParser::e_loopRotation:
+			m_loopRotation.m_x = parser->ReadFloat();
+			m_loopRotation.m_y = parser->ReadFloat();
+			m_loopRotation.m_z = parser->ReadFloat();
+			m_loopRotation.m_w = parser->ReadFloat();
 			if (p_mirror) {
-				m_unk0x030.m_y = -m_unk0x030.m_y;
-				m_unk0x030.m_w = -m_unk0x030.m_w;
+				m_loopRotation.m_y = -m_loopRotation.m_y;
+				m_loopRotation.m_w = -m_loopRotation.m_w;
 			}
 			break;
-		case GolFileParser::e_unknown0x2c:
-			m_unk0x040 = parser->ReadInteger();
+		case RrbTxtParser::e_loopTime:
+			m_loopTime = parser->ReadInteger();
 			break;
-		case GolFileParser::e_unknown0x2d:
-			m_unk0x044 = parser->ReadInteger();
+		case RrbTxtParser::e_loopPointIndex:
+			m_loopPointIndex = parser->ReadInteger();
 			break;
 		default:
 			break;
@@ -99,7 +99,7 @@ void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_bina
 		token = parser->GetNextToken();
 	}
 
-	if (static_cast<LegoU32>(m_unk0x044) >= static_cast<LegoU32>(m_pathPointCount)) {
+	if (static_cast<LegoU32>(m_loopPointIndex) >= static_cast<LegoU32>(m_pathPointCount)) {
 		parser->HandleUnexpectedToken(GolFileParser::e_invalidValue);
 	}
 
@@ -108,40 +108,40 @@ void RaceRouteRecord::FUN_004a4e30(const LegoChar* p_fileName, LegoBool32 p_bina
 }
 
 // FUNCTION: LEGORACERS 0x004a50a0
-void RaceRouteRecord::FUN_004a50a0()
+void RaceRouteRecord::Destroy()
 {
 	if (m_pathPoints) {
 		delete[] m_pathPoints;
 	}
 
-	FUN_004a50c0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a50c0
-void RaceRouteRecord::FUN_004a50c0()
+void RaceRouteRecord::Reset()
 {
 	m_pathPointCount = 0;
 	m_pathPoints = NULL;
-	m_unk0x008.m_x = 0;
-	m_unk0x008.m_y = 0;
-	m_unk0x008.m_z = 0;
-	m_unk0x014.m_x = 0;
-	m_unk0x014.m_y = 0;
-	m_unk0x014.m_z = 0;
-	m_unk0x014.m_w = 1.0f;
-	m_unk0x024.m_x = 0;
-	m_unk0x024.m_y = 0;
-	m_unk0x024.m_z = 0;
-	m_unk0x030.m_x = 0;
-	m_unk0x030.m_y = 0;
-	m_unk0x030.m_z = 0;
-	m_unk0x030.m_w = 1.0f;
-	m_unk0x040 = 0;
-	m_unk0x044 = 0;
+	m_startPosition.m_x = 0;
+	m_startPosition.m_y = 0;
+	m_startPosition.m_z = 0;
+	m_startRotation.m_x = 0;
+	m_startRotation.m_y = 0;
+	m_startRotation.m_z = 0;
+	m_startRotation.m_w = 1.0f;
+	m_loopPosition.m_x = 0;
+	m_loopPosition.m_y = 0;
+	m_loopPosition.m_z = 0;
+	m_loopRotation.m_x = 0;
+	m_loopRotation.m_y = 0;
+	m_loopRotation.m_z = 0;
+	m_loopRotation.m_w = 1.0f;
+	m_loopTime = 0;
+	m_loopPointIndex = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004a5100
-void RaceRouteRecord::FUN_004a5100(GolFileParser* p_parser, LegoBool32 p_mirror)
+void RaceRouteRecord::ParsePathPoints(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	m_pathPointCount = p_parser->ReadBracketedCountAndLeftCurly();
 	m_pathPoints = new RaceState::Racer::Field0x00c::Entry::PathPoint[m_pathPointCount];
@@ -150,7 +150,7 @@ void RaceRouteRecord::FUN_004a5100(GolFileParser* p_parser, LegoBool32 p_mirror)
 	}
 
 	for (LegoU32 i = 0; i < static_cast<LegoU32>(m_pathPointCount); i++) {
-		m_pathPoints[i].FUN_004a5e10(p_parser, p_mirror);
+		m_pathPoints[i].Load(p_parser, p_mirror);
 	}
 
 	p_parser->ReadRightCurly();

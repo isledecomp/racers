@@ -392,7 +392,7 @@ RaceState::Racer::Field0x00c::Entry* RaceState::FindNearestRouteRecord(Racer* p_
 	Racer::Field0x00c::Entry* entry = m_unk0x0f0.m_routeRecords;
 	for (LegoS32 i = 6; i; i--) {
 		if (entry->m_pathPoints) {
-			GolVec3 position = entry->m_unk0x024;
+			GolVec3 position = entry->m_loopPosition;
 			LegoFloat deltaX = position.m_x - racerPosition.m_x;
 			LegoFloat deltaY = position.m_y - racerPosition.m_y;
 			LegoFloat deltaZ = position.m_z - racerPosition.m_z;

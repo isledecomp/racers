@@ -114,7 +114,7 @@ MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 MenuWidget* MenuHotspotButton::FUN_00466800(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
 {
 	for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
-		if (FUN_00473a20(&m_unk0x21c->m_hotspotRects[i], p_x, p_y)) {
+		if (PointInRect(&m_unk0x21c->m_hotspotRects[i], p_x, p_y)) {
 			FUN_00466690(m_unk0x21c->m_hotspotIds[i] | c_sourceRegion);
 			return this;
 		}

@@ -480,7 +480,7 @@ MenuWidget* MenuModelCarousel::OnKeyDown(InputEventQueue::Event* p_event, undefi
 	}
 
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
-		if (FUN_00473a20(&m_items[i].m_rect, p_x, p_y)) {
+		if (PointInRect(&m_items[i].m_rect, p_x, p_y)) {
 			LegoS32 index = WrapIndex(i + m_selectedIndex - m_focusedSlot);
 			SetSelection(index);
 

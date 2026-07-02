@@ -71,31 +71,31 @@ protected:
 		c_carBuildMouseButton1 = InputDevice::c_sourceMouse | 1
 	};
 
-	LegoBool32 FUN_00473a50(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
-	LegoBool32 FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y);
-	void FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY);
-	LegoBool32 FUN_00473ee0(
+	LegoBool32 HandleSceneClick(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	LegoBool32 PointInRect(Rect* p_rect, LegoS32 p_x, LegoS32 p_y);
+	void HandleCursorDrag(LegoS32 p_deltaX, LegoS32 p_deltaY);
+	LegoBool32 HandleBuildKey(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
 		undefined4 p_unk0x0c,
 		undefined4 p_unk0x10
 	);
-	LegoBool32 FUN_00474330(
+	LegoBool32 HandleViewModeKey(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
 		undefined4 p_unk0x0c,
 		undefined4 p_unk0x10
 	);
-	LegoBool32 FUN_004743f0(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
-	LegoBool32 FUN_00474470(
+	LegoBool32 HandleMouseButton(InputEventQueue::Event* p_event, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	LegoBool32 RouteWidgetKeyUp(
 		MenuWidget* p_source,
 		InputEventQueue::Event* p_event,
 		undefined4 p_unk0x0c,
 		undefined4 p_unk0x10
 	);
-	void FUN_00474940();
-	void FUN_004774e0(LegoS32 p_deltaX, LegoS32 p_deltaY);
-	LegoBool32 FUN_00477540();
+	void UpdateHoverRegions();
+	void HandleViewDrag(LegoS32 p_deltaX, LegoS32 p_deltaY);
+	LegoBool32 UndoPiece();
 
 	MenuHotspotButton m_movePad;  // 0x2b20
 	MenuHotspotButton m_viewPad;  // 0x2d48

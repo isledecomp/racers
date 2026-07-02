@@ -182,7 +182,12 @@ void CarModelScreenBase::FUN_004773a0()
 }
 
 // FUNCTION: LEGORACERS 0x004773e0
-LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10)
+LegoBool32 CarModelScreenBase::MovePieceByDrag(
+	LegoS32 p_deltaX,
+	LegoS32 p_deltaY,
+	LegoU16 p_sound,
+	LegoBool32 p_unk0x10
+)
 {
 	LegoU32 fallbackSound = p_sound ? 8 : 0;
 

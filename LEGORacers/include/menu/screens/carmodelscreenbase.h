@@ -188,7 +188,7 @@ protected:
 	void FUN_00477130();
 	void FUN_00477290();
 	void FUN_004773a0();
-	LegoBool32 FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
+	LegoBool32 MovePieceByDrag(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
 	void ApplyModeChange();
 
 	MenuImage m_unk0x3b4;                     // 0x3b4

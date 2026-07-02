@@ -78,7 +78,7 @@ public:
 	void DrawImage(Rect*, Rect*, UtopianPan0xa4*);
 	void DrawString(Rect*, Rect*, GolFontBase*, GolString*, LegoS32, LegoS32);
 	Rect* TranslateRectByOffset(Rect*);
-	LegoBool32 FUN_00473a20(Rect*, LegoS32, LegoS32);
+	LegoBool32 PointInRect(Rect*, LegoS32, LegoS32);
 	void ScreenToLocal(undefined4&, undefined4&);
 	void ComputeScale(Rect*, Rect*);
 	void ScaleRect(Rect*, Rect*);

@@ -30,7 +30,7 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 		LegoS32 y = item->m_rect.m_bottom + item->m_rect.m_top;
 		Rect rect = *m_hoverIcon->GetGlobalRect();
 
-		if (!m_hoverIcon->FUN_00473a20(&rect, x, y)) {
+		if (!m_hoverIcon->PointInRect(&rect, x, y)) {
 			HideTooltip();
 		}
 	}
@@ -46,7 +46,7 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 				LegoS32 y = item->m_rect.m_bottom + item->m_rect.m_top;
 				Rect rect = *m_unk0x358->GetGlobalRect();
 
-				if (m_unk0x358->FUN_00473a20(&rect, x, y)) {
+				if (m_unk0x358->PointInRect(&rect, x, y)) {
 					m_hoverIcon = m_unk0x358;
 				}
 				else {
@@ -63,7 +63,7 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 			LegoS32 y = item->m_rect.m_bottom + item->m_rect.m_top;
 			Rect rect = *m_hoverIcon->GetGlobalRect();
 
-			if (!m_hoverIcon->FUN_00473a20(&rect, x, y)) {
+			if (!m_hoverIcon->PointInRect(&rect, x, y)) {
 				m_hoverIcon = NULL;
 				m_hoverMs = 0;
 			}

@@ -665,7 +665,7 @@ MenuWidget* MenuWidget::OnKeyUp(InputEventQueue::Event*, undefined4, undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x00473a20 FOLDED
-LegoBool32 MenuWidget::FUN_00473a20(Rect* p_rect, LegoS32 p_x, LegoS32 p_y)
+LegoBool32 MenuWidget::PointInRect(Rect* p_rect, LegoS32 p_x, LegoS32 p_y)
 {
 	return p_x >= p_rect->m_left && p_x <= p_rect->m_right && p_y >= p_rect->m_top && p_y <= p_rect->m_bottom;
 }

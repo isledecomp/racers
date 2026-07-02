@@ -1374,7 +1374,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[1]; i++) {
-			m_oilSlickActions[i].FUN_00457170();
+			m_oilSlickActions[i].Destroy();
 		}
 
 		if (m_oilSlickActions != NULL) {
@@ -2469,11 +2469,11 @@ void RacePowerupManager::FUN_0045b900()
 	LegoU32 i;
 
 	for (i = 0; i < m_colorBrickCount; i++) {
-		m_colorBricks[i].SetFlags0x50Bit0();
+		m_colorBricks[i].SetAudible();
 	}
 
 	for (i = 0; i < m_whiteBrickCount; i++) {
-		m_whiteBricks[i].SetFlags0x50Bit0();
+		m_whiteBricks[i].SetAudible();
 	}
 }
 
@@ -2483,11 +2483,11 @@ void RacePowerupManager::FUN_0045b950()
 	LegoU32 i;
 
 	for (i = 0; i < m_colorBrickCount; i++) {
-		m_colorBricks[i].ClearFlags0x50Bit0();
+		m_colorBricks[i].ClearAudible();
 	}
 
 	for (i = 0; i < m_whiteBrickCount; i++) {
-		m_whiteBricks[i].ClearFlags0x50Bit0();
+		m_whiteBricks[i].ClearAudible();
 	}
 }
 

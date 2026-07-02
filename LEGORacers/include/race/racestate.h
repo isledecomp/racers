@@ -1024,8 +1024,8 @@ public:
 		};
 
 		void FUN_00439100();
-		LegoU32 FUN_00439210(LegoU32 p_unk0x04);
-		LegoU32 GetUnk0xccc() const { return m_unk0xccc; }
+		LegoU32 CollectColorBrick(LegoU32 p_unk0x04);
+		LegoU32 GetHeldPowerupColor() const { return m_heldPowerupColor; }
 		LegoU32 GetUnk0xd04() const { return m_unk0xd04; }
 		void FUN_00439340();
 		void FUN_004393d0();
@@ -1153,7 +1153,7 @@ public:
 		Field0xc70 m_unk0xc70;                     // 0xc70
 		RaceSessionField0x27f4::Entry* m_unk0xcc4; // 0xcc4
 		undefined4 m_unk0xcc8;                     // 0xcc8
-		LegoU32 m_unk0xccc;                        // 0xccc
+		LegoU32 m_heldPowerupColor;                // 0xccc
 		LegoU32 m_unk0xcd0;                        // 0xcd0
 		LegoU32 m_unk0xcd4;                        // 0xcd4
 		LegoU32 m_unk0xcd8;                        // 0xcd8

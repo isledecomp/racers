@@ -493,11 +493,11 @@ public:
 			GolModelEntity* p_model0,
 			GolModelEntity* p_model1
 		);
-		void FUN_00453a10();
+		void Destroy();
 		LegoS32 Reset();
 
-		void SetFlags0x50Bit0() { m_flags0x50 |= c_flags0x50Bit0; }
-		void ClearFlags0x50Bit0() { m_flags0x50 &= ~c_flags0x50Bit0; }
+		void SetAudible() { m_flags0x50 |= c_flagAudible; }
+		void ClearAudible() { m_flags0x50 &= ~c_flagAudible; }
 		void ClearVelocityX() { m_worldEntity.ClearVelocityX(); }
 		GolWorldEntity* GetWorldEntity() { return &m_worldEntity; }
 
@@ -509,16 +509,16 @@ public:
 			c_stateTransition = 3,
 			c_stateInactive = 4,
 
-			c_flags0x50Bit0 = 1 << 0,
-			c_flags0x50Bit1 = 1 << 1,
-			c_flags0x50Bit2 = 1 << 2,
+			c_flagAudible = 1 << 0,
+			c_flagTouched = 1 << 1,
+			c_flagWasTouched = 1 << 2,
 			c_flagDropped = 1 << 0,
 			c_flagReturnHome = 1 << 1,
 			c_racerFlags0xd04Bit4 = 1 << 4,
 		};
 
 		void Update(LegoU32 p_elapsedMs);
-		void FUN_00453ad0(LegoBool32 p_unk0x04);
+		void SetTouchable(LegoBool32 p_unk0x04);
 
 		RacePowerupManager* m_manager;               // 0x04
 		GolWorldEntity m_worldEntity;                // 0x08
@@ -537,6 +537,12 @@ public:
 	// SIZE 0x68
 	class ColorBrick : public PickupBrick {
 	public:
+		enum {
+			c_soundRespawn = 0x0e,
+			c_soundCollect = 0x31,
+			c_soundSwap = 0x48,
+		};
+
 		ColorBrick();
 		~ColorBrick() override;
 		void OnTouched(RaceState::Racer* p_racer) override;
@@ -548,7 +554,7 @@ public:
 		// RacePowerupManager::ColorBrick::`vector deleting destructor'
 
 		void SetColor(LegoU32 p_unk0x04);
-		void FUN_00457700();
+		void Destroy();
 		void Update(LegoU32 p_elapsedMs);
 		void SetMaterials(DuskwindBananaRelic0x24* p_unk0x04, DuskwindBananaRelic0x24* p_unk0x08);
 		void SetRespawnMs(LegoU32 p_respawnMs) { m_respawnMs = p_respawnMs; }
@@ -556,9 +562,9 @@ public:
 	private:
 		DuskwindBananaRelic0x24* m_brickMaterial; // 0x54
 		DuskwindBananaRelic0x24* m_trailMaterial; // 0x58
-		LegoU32 m_unk0x5c;                        // 0x5c
-		LegoU32 m_unk0x60;                        // 0x60
-		LegoU32 m_unk0x64;                        // 0x64
+		LegoU32 m_assignedColor;                  // 0x5c
+		LegoU32 m_currentColor;                   // 0x60
+		LegoU32 m_nextColor;                      // 0x64
 	};
 
 	class WhiteBrick;
@@ -635,16 +641,16 @@ public:
 	class OilSlickAction : public HazardActionBase {
 	public:
 		enum {
-			c_state0x02 = 2,
-			c_state0x03 = 3,
-			c_state0x05 = 5,
-			c_state0x06 = 6,
+			c_stateArmed = 2,
+			c_stateActive = 3,
+			c_stateExpiring = 5,
+			c_stateDone = 6,
 			c_racerFlags0xd04Bit3 = 1 << 3,
 			c_racerField0x018Flags0x384Bit1 = 1 << 1,
-			c_timer0x2710 = 0x2710,
-			c_sound0x2e = 0x2e,
-			c_sound0x2f = 0x2f,
-			c_sound0x30 = 0x30,
+			c_activeDurationMs = 0x2710,
+			c_soundDrop = 0x2e,
+			c_soundSlip = 0x2f,
+			c_soundLoop = 0x30,
 			c_randomTableMask = 0x3ff,
 			c_randomPhaseRange = 0x274,
 			c_randomBubbleOffsetRange = 7,
@@ -667,21 +673,21 @@ public:
 			GolRenderDevice* p_renderer,
 			GolExport* p_export
 		);
-		void FUN_00457170();
+		void Destroy();
 		void Activate(RaceState::Racer* p_racer);
 
 	private:
 		RacePowerupManager* m_manager; // 0x02c
 		GolWorldEntity m_worldEntity;  // 0x030
 		union {
-			SpatialSoundInstance* m_unk0x058;          // 0x058
-			RaceResourceManager::Resource* m_sound058; // 0x058
+			SpatialSoundInstance* m_sound;                  // 0x058
+			RaceResourceManager::Resource* m_soundResource; // 0x058
 		};
-		CutsceneAnimation* m_unk0x05c;                       // 0x05c
-		CutsceneParticleRef* m_unk0x060;                     // 0x060
-		RaceSessionField0x27d4::Item::Field0x004 m_unk0x064; // 0x064
-		GolBillboard::Field0x2c m_unk0x180;                  // 0x180
-		GolCollidableEntity* m_unk0x18c;                     // 0x18c
+		CutsceneAnimation* m_particleAnimation;                // 0x05c
+		CutsceneParticleRef* m_bubbleParticle;                 // 0x060
+		RaceSessionField0x27d4::Item::Field0x004 m_slickDecal; // 0x064
+		GolBillboard::Field0x2c m_materialTable;               // 0x180
+		GolCollidableEntity* m_collidable;                     // 0x18c
 	};
 
 	// VTABLE: LEGORACERS 0x004b1448

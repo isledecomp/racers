@@ -331,7 +331,7 @@ void RaceState::Racer::Reset()
 	m_lapTimes[2] = lapTime;
 	m_lapTimes[3] = lapTime;
 	m_lapTimes[4] = lapTime;
-	m_unk0xccc = 0;
+	m_heldPowerupColor = 0;
 	m_unk0xd04 = 0;
 	m_unk0xd08 = 2;
 	m_unk0xcdc = 150;
@@ -816,7 +816,7 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 		m_unk0xcd8 = 0;
 		m_unk0xcdc = 150;
 
-		if (m_unk0xd08 == 2 && m_unk0xccc) {
+		if (m_unk0xd08 == 2 && m_heldPowerupColor) {
 			FUN_00438f20();
 		}
 	}
@@ -1572,11 +1572,11 @@ void RaceState::Racer::FUN_00438f20()
 	}
 	else {
 		LegoU32 state = m_unk0xcd0;
-		if (state && state == m_unk0xccc && m_unk0xd58 < m_unk0xcd4) {
+		if (state && state == m_heldPowerupColor && m_unk0xd58 < m_unk0xcd4) {
 			m_unk0xcdc = 1000;
 		}
 		else {
-			switch (m_unk0xccc) {
+			switch (m_heldPowerupColor) {
 			case 3:
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1e) {
@@ -1641,7 +1641,7 @@ void RaceState::Racer::FUN_00438f20()
 // FUNCTION: LEGORACERS 0x00439100
 void RaceState::Racer::FUN_00439100()
 {
-	LegoU32 state = m_unk0xccc;
+	LegoU32 state = m_heldPowerupColor;
 	if (!state) {
 		FUN_00439c90();
 		return;
@@ -1680,15 +1680,15 @@ void RaceState::Racer::FUN_00439100()
 		}
 	}
 
-	m_unk0xccc = 0;
+	m_heldPowerupColor = 0;
 	ReturnAllWhiteBricks();
 }
 
 // FUNCTION: LEGORACERS 0x00439210
-LegoU32 RaceState::Racer::FUN_00439210(LegoU32 p_unk0x04)
+LegoU32 RaceState::Racer::CollectColorBrick(LegoU32 p_unk0x04)
 {
 	m_unk0xcd8 = 0;
-	m_unk0xccc = p_unk0x04;
+	m_heldPowerupColor = p_unk0x04;
 	m_unk0xcdc = 300;
 	return p_unk0x04;
 }

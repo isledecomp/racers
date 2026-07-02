@@ -126,7 +126,7 @@ const LegoFloat g_unk0x004b14a8 = 100.0f;
 const LegoFloat g_unk0x004b14ac = 0.8f;
 
 // GLOBAL: LEGORACERS 0x004b170c
-const LegoFloat g_unk0x004b170c = 30.0f;
+const LegoFloat g_brickSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b14e0
 const LegoFloat g_unk0x004b14e0 = 30.0f;
@@ -278,19 +278,19 @@ const LegoFloat g_unk0x004b1688 = 160000.0f;
 const LegoFloat g_unk0x004b168c = 0.70709997f;
 
 // GLOBAL: LEGORACERS 0x004b16c0
-const LegoFloat g_unk0x004b16c0 = 30.0f;
+const LegoFloat g_oilSoundMinDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b16c4
-const LegoFloat g_unk0x004b16c4 = 300.0f;
+const LegoFloat g_oilSoundMaxDistance = 300.0f;
 
 // GLOBAL: LEGORACERS 0x004b16c8
-const LegoFloat g_unk0x004b16c8 = 200.0f;
+const LegoFloat g_oilSlipSoundMinDistance = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b16cc
-const LegoFloat g_unk0x004b16cc = 600.0f;
+const LegoFloat g_oilSlipSoundMaxDistance = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1704
-const LegoFloat g_unk0x004b1704 = 0.01f;
+const LegoFloat g_oilBubbleAngleScale = 0.01f;
 
 // GLOBAL: LEGORACERS 0x004b19d4
 const LegoFloat g_unk0x004b19d4 = 30.0f;
@@ -1382,7 +1382,7 @@ void RacePowerupManager::WhiteBrick::Reset()
 {
 	m_droppedTimeMs = 0;
 	m_flags0x64 = 0;
-	FUN_00453a10();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00453620
@@ -1403,7 +1403,7 @@ void RacePowerupManager::WhiteBrick::Respawn()
 	m_droppedTimeMs = 0;
 	m_flags0x64 = 0;
 	m_stateTimerMs = 0;
-	FUN_00453ad0(FALSE);
+	SetTouchable(FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x00453690
@@ -1436,13 +1436,13 @@ void RacePowerupManager::WhiteBrick::Update(LegoU32 p_elapsedMs)
 			}
 
 			m_stateTimerMs = 0;
-			FUN_00453ad0(FALSE);
+			SetTouchable(FALSE);
 		}
 	}
 	else if (m_stateTimerMs > 500) {
 		m_state = c_stateIdle;
 		m_stateTimerMs = 0;
-		FUN_00453ad0(TRUE);
+		SetTouchable(TRUE);
 	}
 }
 
@@ -1467,7 +1467,7 @@ RacePowerupManager::PickupBrick::PickupBrick()
 // FUNCTION: LEGORACERS 0x00453960
 RacePowerupManager::PickupBrick::~PickupBrick()
 {
-	FUN_00453a10();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00453970
@@ -1497,7 +1497,7 @@ void RacePowerupManager::PickupBrick::Initialize(
 )
 {
 	if (m_manager != NULL) {
-		FUN_00453a10();
+		Destroy();
 	}
 
 	m_manager = p_owner;
@@ -1517,7 +1517,7 @@ void RacePowerupManager::PickupBrick::Respawn()
 }
 
 // FUNCTION: LEGORACERS 0x00453a10
-void RacePowerupManager::PickupBrick::FUN_00453a10()
+void RacePowerupManager::PickupBrick::Destroy()
 {
 	Reset();
 }
@@ -1549,16 +1549,16 @@ void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
 	}
 
 	LegoU8 flags = m_flags0x50;
-	if (flags & c_flags0x50Bit1) {
-		m_flags0x50 = (flags & ~(c_flags0x50Bit1 | c_flags0x50Bit2)) | c_flags0x50Bit2;
+	if (flags & c_flagTouched) {
+		m_flags0x50 = (flags & ~(c_flagTouched | c_flagWasTouched)) | c_flagWasTouched;
 	}
 	else {
-		m_flags0x50 = flags & ~c_flags0x50Bit2;
+		m_flags0x50 = flags & ~c_flagWasTouched;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00453ad0
-void RacePowerupManager::PickupBrick::FUN_00453ad0(LegoBool32 p_unk0x04)
+void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_unk0x04)
 {
 	if (p_unk0x04) {
 		m_scale = g_unk0x004b14ac;
@@ -1571,12 +1571,12 @@ void RacePowerupManager::PickupBrick::FUN_00453ad0(LegoBool32 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00453af0
 void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	m_flags0x50 |= c_flags0x50Bit1;
+	m_flags0x50 |= c_flagTouched;
 
 	if (m_state == c_stateIdle) {
 		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
 		if (!(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
-			if (!(m_flags0x50 & c_flags0x50Bit2) || racer->GetUnk0xccc() == 0) {
+			if (!(m_flags0x50 & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
 				OnTouched(racer);
 			}
 		}
@@ -3566,29 +3566,29 @@ void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_rac
 RacePowerupManager::OilSlickAction::OilSlickAction()
 {
 	m_manager = 0;
-	m_unk0x058 = 0;
-	m_unk0x05c = 0;
-	m_unk0x060 = 0;
-	m_unk0x18c = 0;
+	m_sound = 0;
+	m_particleAnimation = 0;
+	m_bubbleParticle = 0;
+	m_collidable = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00457100
 RacePowerupManager::OilSlickAction::~OilSlickAction()
 {
-	FUN_00457170();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00457170
-void RacePowerupManager::OilSlickAction::FUN_00457170()
+void RacePowerupManager::OilSlickAction::Destroy()
 {
 	Deactivate();
-	m_unk0x064.FUN_004149f0();
-	m_unk0x180.Clear();
+	m_slickDecal.FUN_004149f0();
+	m_materialTable.Clear();
 	m_manager = 0;
-	m_unk0x058 = 0;
-	m_unk0x05c = 0;
-	m_unk0x060 = 0;
-	m_unk0x18c = 0;
+	m_sound = 0;
+	m_particleAnimation = 0;
+	m_bubbleParticle = 0;
+	m_collidable = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004571b0
@@ -3605,14 +3605,14 @@ void RacePowerupManager::OilSlickAction::Initialize(
 	m_manager = p_unk0x04;
 	m_raceState0x018 = p_raceState;
 	m_collisionWorld = p_unk0x10;
-	m_unk0x18c = p_unk0x0c;
-	m_unk0x05c = p_unk0x14;
+	m_collidable = p_unk0x0c;
+	m_particleAnimation = p_unk0x14;
 	m_state = 1;
 
-	m_unk0x180.Initialize(p_renderer, 1);
-	m_unk0x180.AssignEntryByName(0, "oilslck");
-	m_unk0x064.FUN_00414950(p_export, p_renderer, 0x10);
-	m_unk0x064.GetUnk0x010().EnableFlagBit1();
+	m_materialTable.Initialize(p_renderer, 1);
+	m_materialTable.AssignEntryByName(0, "oilslck");
+	m_slickDecal.FUN_00414950(p_export, p_renderer, 0x10);
+	m_slickDecal.GetUnk0x010().EnableFlagBit1();
 }
 
 // FUNCTION: LEGORACERS 0x00457230
@@ -3626,14 +3626,14 @@ void RacePowerupManager::OilSlickAction::Activate(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x00457250
 void RacePowerupManager::OilSlickAction::Deactivate()
 {
-	if (m_unk0x060 != NULL) {
-		m_unk0x05c->FUN_00489f30(m_unk0x060);
-		m_unk0x060 = NULL;
+	if (m_bubbleParticle != NULL) {
+		m_particleAnimation->FUN_00489f30(m_bubbleParticle);
+		m_bubbleParticle = NULL;
 	}
 
-	if (m_unk0x058 != NULL) {
-		m_soundSource->ReleaseSound(m_sound058);
-		m_unk0x058 = NULL;
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
 	}
 
 	if (m_collisionEvent != NULL) {
@@ -3648,23 +3648,23 @@ void RacePowerupManager::OilSlickAction::Deactivate()
 // FUNCTION: LEGORACERS 0x004572a0
 void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 {
-	if (m_state == c_state0x06) {
+	if (m_state == c_stateDone) {
 		return;
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
 
-	if (m_unk0x060 != NULL) {
+	if (m_bubbleParticle != NULL) {
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		LegoS32 phase = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomPhaseRange;
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		LegoS32 distance = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomBubbleOffsetRange;
 
-		LegoFloat angle = static_cast<LegoFloat>(phase) * g_unk0x004b1704;
+		LegoFloat angle = static_cast<LegoFloat>(phase) * g_oilBubbleAngleScale;
 		LegoFloat offset = static_cast<LegoFloat>(distance);
 		GolVec3 position;
 		m_worldEntity.VTable0x04(&position);
-		CutsceneParticleRef* particleRef = m_unk0x060;
+		CutsceneParticleRef* particleRef = m_bubbleParticle;
 		position.m_x += static_cast<LegoFloat>(::sin(angle)) * offset;
 		position.m_y += static_cast<LegoFloat>(::cos(angle)) * offset;
 
@@ -3677,8 +3677,8 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00457380
 void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == c_state0x03) {
-		m_unk0x064.FUN_00415a40(p_renderer);
+	if (m_state == c_stateActive) {
+		m_slickDecal.FUN_00415a40(p_renderer);
 	}
 }
 
@@ -3686,10 +3686,10 @@ void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 void RacePowerupManager::OilSlickAction::AdvanceState()
 {
 	switch (m_state) {
-	case c_state0x02:
+	case c_stateArmed:
 		break;
-	case c_state0x03:
-		m_state = c_state0x06;
+	case c_stateActive:
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		return;
 	default:
@@ -3701,20 +3701,21 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(3.0f);
 	m_ownerRacer->m_unk0x3e8.FUN_00429cf0(0.0015f, 150);
-	m_soundSource->PlaySpatialSoundById(c_sound0x2e, &position, g_unk0x004b16c0, g_unk0x004b16c4, 1.0f, 1.0f);
+	m_soundSource
+		->PlaySpatialSoundById(c_soundDrop, &position, g_oilSoundMinDistance, g_oilSoundMaxDistance, 1.0f, 1.0f);
 
-	m_unk0x058 = m_soundSource->AcquireSoundById(c_sound0x30);
-	if (m_unk0x058 != NULL) {
-		m_unk0x058->Play(TRUE);
+	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
+	if (m_sound != NULL) {
+		m_sound->Play(TRUE);
 
-		LegoFloat maxDistance = g_unk0x004b16c4;
-		LegoFloat minDistance = g_unk0x004b16c0;
-		m_unk0x058->SetDistanceRangeWithMinSquared(minDistance * g_unk0x004b16c0, maxDistance);
-		m_unk0x058->SetPosition(position);
+		LegoFloat maxDistance = g_oilSoundMaxDistance;
+		LegoFloat minDistance = g_oilSoundMinDistance;
+		m_sound->SetDistanceRangeWithMinSquared(minDistance * g_oilSoundMinDistance, maxDistance);
+		m_sound->SetPosition(position);
 	}
 
-	m_state = c_state0x03;
-	m_stateTimerMs = c_timer0x2710;
+	m_state = c_stateActive;
+	m_stateTimerMs = c_activeDurationMs;
 
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
@@ -3725,20 +3726,20 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	descriptor.m_data = &m_worldEntity;
 	LegoEventQueue::Event* event = m_raceState0x018->GetEventQueue()->FUN_0042fb50(callback, &descriptor);
 
-	CutsceneAnimation* animation = m_unk0x05c;
+	CutsceneAnimation* animation = m_particleAnimation;
 	m_collisionEvent = event;
-	m_unk0x060 = animation->FUN_00489d70("oilbub", NULL, NULL, NULL);
-	if (m_unk0x060 != NULL && m_unk0x060->m_unk0x00 != NULL) {
-		m_unk0x060->m_unk0x00->FUN_00489660(&position);
+	m_bubbleParticle = animation->FUN_00489d70("oilbub", NULL, NULL, NULL);
+	if (m_bubbleParticle != NULL && m_bubbleParticle->m_unk0x00 != NULL) {
+		m_bubbleParticle->m_unk0x00->FUN_00489660(&position);
 	}
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
-	m_unk0x064.m_unk0x104 = 15.0f;
-	m_unk0x064.m_unk0x108 = 15.0f;
-	m_unk0x064.m_unk0x10c = 15.0f;
-	m_unk0x064.m_unk0x0e8 = position;
+	m_slickDecal.m_unk0x104 = 15.0f;
+	m_slickDecal.m_unk0x108 = 15.0f;
+	m_slickDecal.m_unk0x10c = 15.0f;
+	m_slickDecal.m_unk0x0e8 = position;
 	position.m_z -= g_homingProjectileCollisionStartOffset;
-	m_unk0x064.GetUnk0x010().SetPrimaryMaterialTable(&m_unk0x180);
+	m_slickDecal.GetUnk0x010().SetPrimaryMaterialTable(&m_materialTable);
 
 	GolVec3 normal;
 	GolVec3 tangent;
@@ -3750,25 +3751,32 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	normal.m_y = 0.0f;
 	normal.m_z = -1.0f;
 
-	m_unk0x064.FUN_00414c90(&normal, &tangent);
-	m_unk0x064.FUN_00414a30(m_unk0x18c);
+	m_slickDecal.FUN_00414c90(&normal, &tangent);
+	m_slickDecal.FUN_00414a30(m_collidable);
 }
 
 // FUNCTION: LEGORACERS 0x004575b0
 void RacePowerupManager::OilSlickAction::OnHitRacer(RaceState::Racer* p_racer)
 {
-	if (m_state == c_state0x05 || (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit3)) {
+	if (m_state == c_stateExpiring || (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit3)) {
 		return;
 	}
 
 	p_racer->m_unk0x3e8.VTable0x24(1.0f, 0.007f, 1.0f);
 	p_racer->m_unk0x018.m_unk0x384 |= c_racerField0x018Flags0x384Bit1;
-	m_state = c_state0x06;
+	m_state = c_stateDone;
 	m_stateTimerMs = 0;
 
 	SoundVector position;
 	p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
-	m_soundSource->PlaySpatialSoundById(c_sound0x2f, &position, g_unk0x004b16c8, g_unk0x004b16cc, 1.0f, 1.0f);
+	m_soundSource->PlaySpatialSoundById(
+		c_soundSlip,
+		&position,
+		g_oilSlipSoundMinDistance,
+		g_oilSlipSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
 }
 
 // FUNCTION: LEGORACERS 0x00457640
@@ -3776,38 +3784,38 @@ RacePowerupManager::ColorBrick::ColorBrick()
 {
 	m_brickMaterial = NULL;
 	m_trailMaterial = NULL;
-	m_unk0x5c = 3;
-	m_unk0x60 = 3;
-	m_unk0x64 = 3;
+	m_assignedColor = 3;
+	m_currentColor = 3;
+	m_nextColor = 3;
 }
 
 // FUNCTION: LEGORACERS 0x00457670
 RacePowerupManager::ColorBrick::~ColorBrick()
 {
-	FUN_00457700();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004576c0
 void RacePowerupManager::ColorBrick::SetColor(LegoU32 p_unk0x04)
 {
-	m_unk0x5c = p_unk0x04;
-	m_unk0x60 = p_unk0x04;
+	m_assignedColor = p_unk0x04;
+	m_currentColor = p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x004576d0
 void RacePowerupManager::ColorBrick::Respawn()
 {
 	PickupBrick::Respawn();
-	m_unk0x64 = m_unk0x5c;
-	m_unk0x60 = m_unk0x5c;
-	m_brickMaterial = m_manager->GetBrickMaterial(&m_unk0x60);
-	m_trailMaterial = m_manager->GetTrailMaterial(&m_unk0x60);
+	m_nextColor = m_assignedColor;
+	m_currentColor = m_assignedColor;
+	m_brickMaterial = m_manager->GetBrickMaterial(&m_currentColor);
+	m_trailMaterial = m_manager->GetTrailMaterial(&m_currentColor);
 }
 
 // FUNCTION: LEGORACERS 0x00457700
-void RacePowerupManager::ColorBrick::FUN_00457700()
+void RacePowerupManager::ColorBrick::Destroy()
 {
-	FUN_00453a10();
+	PickupBrick::Destroy();
 }
 
 // STUB: LEGORACERS 0x00457710
@@ -3824,13 +3832,13 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 	case c_stateTransition:
 		if (m_stateTimerMs > 250) {
 			m_state = m_nextState;
-			m_unk0x60 = m_unk0x64;
+			m_currentColor = m_nextColor;
 			m_stateTimerMs = 0;
-			m_brickMaterial = m_manager->GetBrickMaterial(&m_unk0x60);
-			m_trailMaterial = m_manager->GetTrailMaterial(&m_unk0x60);
-			FUN_00453ad0(FALSE);
+			m_brickMaterial = m_manager->GetBrickMaterial(&m_currentColor);
+			m_trailMaterial = m_manager->GetTrailMaterial(&m_currentColor);
+			SetTouchable(FALSE);
 
-			if (m_state == c_stateActive && (m_flags0x50 & c_flags0x50Bit0)) {
+			if (m_state == c_stateActive && (m_flags0x50 & c_flagAudible)) {
 				playSound = TRUE;
 			}
 		}
@@ -3839,7 +3847,7 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 		if (m_stateTimerMs > 500) {
 			m_state = c_stateIdle;
 			m_stateTimerMs = 0;
-			FUN_00453ad0(TRUE);
+			SetTouchable(TRUE);
 		}
 		break;
 	case c_stateWait: {
@@ -3848,7 +3856,7 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 			LegoU8 flags = m_flags0x50;
 			m_stateTimerMs = 0;
 			m_state = c_stateActive;
-			if (flags & c_flags0x50Bit0) {
+			if (flags & c_flagAudible) {
 				playSound = TRUE;
 			}
 		}
@@ -3859,7 +3867,7 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 	if (playSound) {
 		SoundVector position;
 		m_worldEntity.VTable0x04(&position);
-		m_soundSource->PlaySpatialSoundById(0x0e, &position, g_unk0x004b170c, 150.0f, 1.0f, 1.0f);
+		m_soundSource->PlaySpatialSoundById(c_soundRespawn, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 	}
 }
 
@@ -3867,24 +3875,26 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 void RacePowerupManager::ColorBrick::OnTouched(RaceState::Racer* p_racer)
 {
 	if (m_state == c_stateIdle) {
-		LegoU32 racerState = p_racer->GetUnk0xccc();
-		p_racer->FUN_00439210(m_unk0x60);
+		LegoU32 racerState = p_racer->GetHeldPowerupColor();
+		p_racer->CollectColorBrick(m_currentColor);
 
 		SoundVector position;
 		m_worldEntity.VTable0x04(&position);
 
 		if (!racerState) {
-			m_unk0x64 = m_unk0x5c;
+			m_nextColor = m_assignedColor;
 			m_nextState = c_stateWait;
-			if (m_flags0x50 & c_flags0x50Bit0) {
-				m_soundSource->PlaySpatialSoundById(0x31, &position, g_unk0x004b170c, 150.0f, 1.0f, 1.0f);
+			if (m_flags0x50 & c_flagAudible) {
+				m_soundSource
+					->PlaySpatialSoundById(c_soundCollect, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 			}
 		}
 		else {
-			m_unk0x64 = racerState;
+			m_nextColor = racerState;
 			m_nextState = c_stateActive;
-			if (m_flags0x50 & c_flags0x50Bit0) {
-				m_soundSource->PlaySpatialSoundById(0x48, &position, g_unk0x004b170c, 150.0f, 1.0f, 1.0f);
+			if (m_flags0x50 & c_flagAudible) {
+				m_soundSource
+					->PlaySpatialSoundById(c_soundSwap, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
 			}
 		}
 

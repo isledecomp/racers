@@ -1123,13 +1123,13 @@ public:
 	// services wired through the event queue callback interface.
 	// VTABLE: LEGORACERS 0x004b0aa8
 	// SIZE 0x194
-	class RaceRoster : public LegoEventQueue::Field0x30 {
+	class RaceRoster : public LegoEventQueue::CollisionQueue {
 	public:
 		RaceRoster();
-		LegoS32 VTable0x00(LegoEventQueue::Event* p_event) override;         // vtable+0x00
-		void Destroy() override;                                             // vtable+0x0c
-		void VTable0x10(LegoU32 p_elapsedMs) override;                       // vtable+0x10
-		GolWorldEntity* VTable0x14(LegoEventQueue::Event* p_event) override; // vtable+0x14
+		LegoS32 AddEvent(LegoEventQueue::Event* p_event) override;               // vtable+0x00
+		void Destroy() override;                                                 // vtable+0x0c
+		void Update(LegoU32 p_elapsedMs) override;                               // vtable+0x10
+		GolWorldEntity* GetEventEntity(LegoEventQueue::Event* p_event) override; // vtable+0x14
 
 	private:
 		friend class RaceState;

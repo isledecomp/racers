@@ -12,27 +12,27 @@ void RaceState::RaceRoster::Destroy()
 {
 	m_bodyEvents = NULL;
 	m_raceState = NULL;
-	LegoEventQueue::Field0x30::Destroy();
+	LegoEventQueue::CollisionQueue::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043d180
-void RaceState::RaceRoster::VTable0x10(LegoU32 p_elapsedMs)
+void RaceState::RaceRoster::Update(LegoU32 p_elapsedMs)
 {
 	PruneBodyEvents();
-	LegoEventQueue::Field0x30::VTable0x10(p_elapsedMs);
+	LegoEventQueue::CollisionQueue::Update(p_elapsedMs);
 	SortBodyEvents();
 	TestRacerCollisions();
 	PruneBodyEvents();
 }
 
 // FUNCTION: LEGORACERS 0x0043d1b0
-LegoS32 RaceState::RaceRoster::VTable0x00(LegoEventQueue::Event* p_event)
+LegoS32 RaceState::RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
 {
-	if (LegoEventQueue::Field0x30::VTable0x00(p_event)) {
+	if (LegoEventQueue::CollisionQueue::AddEvent(p_event)) {
 		return 1;
 	}
 
-	if (p_event->m_descriptor.m_unk0x00 == 4) {
+	if (p_event->m_descriptor.m_type == 4) {
 		if (m_bodyEvents) {
 			m_bodyEvents->m_descriptor.m_previous = p_event;
 		}
@@ -64,7 +64,7 @@ void RaceState::RaceRoster::PruneBodyEvents()
 						next->m_descriptor.m_previous = NULL;
 					}
 
-					FUN_0042fc70(event);
+					FreeEvent(event);
 				}
 				else {
 					previous->m_next = next;
@@ -72,7 +72,7 @@ void RaceState::RaceRoster::PruneBodyEvents()
 						next->m_descriptor.m_previous = previous;
 					}
 
-					FUN_0042fc70(event);
+					FreeEvent(event);
 				}
 			}
 			else {
@@ -85,7 +85,7 @@ void RaceState::RaceRoster::PruneBodyEvents()
 }
 
 // FUNCTION: LEGORACERS 0x0043d260 FOLDED
-GolWorldEntity* RaceState::RaceRoster::VTable0x14(LegoEventQueue::Event* p_event)
+GolWorldEntity* RaceState::RaceRoster::GetEventEntity(LegoEventQueue::Event* p_event)
 {
 	return p_event->m_descriptor.m_worldEntity;
 }
@@ -94,7 +94,7 @@ GolWorldEntity* RaceState::RaceRoster::VTable0x14(LegoEventQueue::Event* p_event
 void RaceState::RaceRoster::TestRacerCollisions()
 {
 	LegoEventQueue::Event* other;
-	LegoEventQueue::Descriptor::Field0x10::Field0x0e0* target;
+	LegoEventQueue::Descriptor::RigidBody::RacerView* target;
 	GolWorldEntity* model;
 	GolWorldEntity* otherModel;
 	LegoFloat modelMinX;
@@ -102,13 +102,13 @@ void RaceState::RaceRoster::TestRacerCollisions()
 	LegoU32 flags;
 	LegoEventQueue::Event* event;
 
-	event = m_unk0x2c;
+	event = m_bodyList;
 	for (; event; event = event->m_next) {
 		if (event->m_active) {
 			target = event->m_descriptor.m_target->m_ownerData;
 
 			if (target) {
-				model = LegoEventQueue::Field0x30::VTable0x14(event);
+				model = LegoEventQueue::CollisionQueue::GetEventEntity(event);
 				other = m_bodyEvents;
 
 				while (other) {
@@ -133,18 +133,18 @@ void RaceState::RaceRoster::TestRacerCollisions()
 
 				while (other) {
 					if (other->m_active) {
-						flags = other->m_descriptor.m_unk0x04;
+						flags = other->m_descriptor.m_flags;
 						otherModel = other->m_descriptor.m_worldEntity;
 
 						if (flags & 8) {
-							if (target->m_unk0xd08 == 2) {
+							if (target->m_controlMode == 2) {
 								other = other->m_next;
 								continue;
 							}
 						}
 
 						if (flags & 0x10) {
-							if (target->m_unk0xd08 != 2) {
+							if (target->m_controlMode != 2) {
 								other = other->m_next;
 								continue;
 							}
@@ -164,10 +164,10 @@ void RaceState::RaceRoster::TestRacerCollisions()
 						}
 
 						if (model->VTable0x18(otherModel)) {
-							m_callbackData.m_unk0x00 = 4;
+							m_callbackData.m_type = 4;
 							m_callbackData.m_worldEntity0 = otherModel;
 							m_callbackData.m_field0x0e0 = target;
-							other->FUN_004408e0(this, &m_callbackData);
+							other->Fire(this, &m_callbackData);
 						}
 					}
 

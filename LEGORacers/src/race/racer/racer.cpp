@@ -1315,7 +1315,7 @@ void RaceState::Racer::StopEngineSounds()
 // STUB: LEGORACERS 0x00438560
 void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	if (p_data->m_unk0x00 == 1) {
+	if (p_data->m_type == 1) {
 		LegoU32 flags = m_flags;
 		m_flags = flags & ~c_flagShoveActive;
 
@@ -1335,14 +1335,14 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		return;
 	}
 
-	if (p_data->m_unk0x00 != 3) {
+	if (p_data->m_type != 3) {
 		return;
 	}
 
-	LegoEventQueue::Field0x30::CollisionCallbackData* collision =
-		static_cast<LegoEventQueue::Field0x30::CollisionCallbackData*>(p_data->m_data);
-	LegoEventQueue::Descriptor::Field0x10* firstTarget = p_data->m_target0;
-	LegoEventQueue::Descriptor::Field0x10* secondTarget = collision->m_secondTarget;
+	LegoEventQueue::CollisionQueue::CollisionCallbackData* collision =
+		static_cast<LegoEventQueue::CollisionQueue::CollisionCallbackData*>(p_data->m_data);
+	LegoEventQueue::Descriptor::RigidBody* firstTarget = p_data->m_target0;
+	LegoEventQueue::Descriptor::RigidBody* secondTarget = collision->m_secondTarget;
 	Racer* firstRacer = static_cast<Racer*>(firstTarget->m_owner);
 	Racer* secondRacer = static_cast<Racer*>(secondTarget->m_owner);
 
@@ -1581,12 +1581,12 @@ void RaceState::Racer::ApplyShove(GolVec3* p_unk0x04)
 		return;
 	}
 
-	descriptor.m_unk0x04 = 0;
-	descriptor.m_unk0x0c = 0;
-	descriptor.m_unk0x00 = 1;
-	descriptor.m_unk0x08 = 1;
+	descriptor.m_flags = 0;
+	descriptor.m_hitThreshold = 0;
+	descriptor.m_type = 1;
+	descriptor.m_maxFireCount = 1;
 	descriptor.m_unk0x10 = 750;
-	if (m_raceState->GetRoster()->FUN_0042fb50(this, &descriptor) == NULL) {
+	if (m_raceState->GetRoster()->AllocateEvent(this, &descriptor) == NULL) {
 		return;
 	}
 

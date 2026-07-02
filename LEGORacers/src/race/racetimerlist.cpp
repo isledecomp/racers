@@ -182,12 +182,12 @@ LegoEventQueue::Event* RaceSession::RaceTimerList::Resource::Schedule(LegoU32 p_
 {
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x08 = descriptor.m_unk0x00 = 1;
-	descriptor.m_unk0x04 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_maxFireCount = descriptor.m_type = 1;
+	descriptor.m_flags = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_unk0x10 = p_delayMs;
 
-	return m_event = m_eventQueue->FUN_0042fb50(callback, &descriptor);
+	return m_event = m_eventQueue->AllocateEvent(callback, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00464a80

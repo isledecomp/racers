@@ -1,44 +1,44 @@
 #include "util/legoeventqueue.h"
 
-DECOMP_SIZE_ASSERT(LegoEventQueue::Field0x30, 0x48)
+DECOMP_SIZE_ASSERT(LegoEventQueue::CollisionQueue, 0x48)
 
 // FUNCTION: LEGORACERS 0x0043a9e0
-LegoEventQueue::Field0x30::Field0x30()
+LegoEventQueue::CollisionQueue::CollisionQueue()
 {
-	m_unk0x2c = NULL;
+	m_bodyList = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0043aa00
-void LegoEventQueue::Field0x30::Destroy()
+void LegoEventQueue::CollisionQueue::Destroy()
 {
-	m_unk0x2c = NULL;
-	Field0x2c::Destroy();
+	m_bodyList = NULL;
+	ProximityQueue::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043aa10
-void LegoEventQueue::Field0x30::VTable0x10(LegoU32 p_elapsedMs)
+void LegoEventQueue::CollisionQueue::Update(LegoU32 p_elapsedMs)
 {
-	Field0x2c::VTable0x10(p_elapsedMs);
-	FUN_0043aca0();
-	FUN_0043ab90();
-	FUN_0043aa90();
+	ProximityQueue::Update(p_elapsedMs);
+	SortBodyList();
+	TestBodyPairs();
+	PruneBodyList();
 }
 
 // FUNCTION: LEGORACERS 0x0043aa40
-LegoS32 LegoEventQueue::Field0x30::VTable0x00(Event* p_event)
+LegoS32 LegoEventQueue::CollisionQueue::AddEvent(Event* p_event)
 {
-	if (Field0x2c::VTable0x00(p_event)) {
+	if (ProximityQueue::AddEvent(p_event)) {
 		return 1;
 	}
 
-	if (p_event->m_descriptor.m_unk0x00 == 3) {
-		if (m_unk0x2c) {
-			m_unk0x2c->m_descriptor.m_previous = p_event;
+	if (p_event->m_descriptor.m_type == 3) {
+		if (m_bodyList) {
+			m_bodyList->m_descriptor.m_previous = p_event;
 		}
 
 		p_event->m_descriptor.m_previous = NULL;
-		p_event->m_next = m_unk0x2c;
-		m_unk0x2c = p_event;
+		p_event->m_next = m_bodyList;
+		m_bodyList = p_event;
 
 		return 1;
 	}
@@ -47,23 +47,23 @@ LegoS32 LegoEventQueue::Field0x30::VTable0x00(Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0043aa90
-void LegoEventQueue::Field0x30::FUN_0043aa90()
+void LegoEventQueue::CollisionQueue::PruneBodyList()
 {
 	Event* previous = NULL;
-	Event* event = m_unk0x2c;
+	Event* event = m_bodyList;
 
 	if (event) {
 		do {
 			Event* next = event->m_next;
 
 			if (!event->m_active) {
-				if (m_unk0x2c == event) {
-					m_unk0x2c = next;
+				if (m_bodyList == event) {
+					m_bodyList = next;
 					if (next) {
 						next->m_descriptor.m_previous = NULL;
 					}
 
-					FUN_0042fc70(event);
+					FreeEvent(event);
 				}
 				else {
 					previous->m_next = next;
@@ -71,7 +71,7 @@ void LegoEventQueue::Field0x30::FUN_0043aa90()
 						next->m_descriptor.m_previous = previous;
 					}
 
-					FUN_0042fc70(event);
+					FreeEvent(event);
 				}
 			}
 			else {
@@ -84,19 +84,19 @@ void LegoEventQueue::Field0x30::FUN_0043aa90()
 }
 
 // FUNCTION: LEGORACERS 0x0043aaf0
-GolWorldEntity* LegoEventQueue::Field0x30::VTable0x14(Event* p_event)
+GolWorldEntity* LegoEventQueue::CollisionQueue::GetEventEntity(Event* p_event)
 {
-	return &p_event->m_descriptor.m_target->m_ownerData->m_unk0x1c;
+	return &p_event->m_descriptor.m_target->m_ownerData->m_entityGroup;
 }
 
 // FUNCTION: LEGORACERS 0x0043ab10
-void LegoEventQueue::Field0x30::FUN_0043ab10(Event* p_event, LegoEventQueue*, CallbackData* p_data)
+void LegoEventQueue::CollisionQueue::DispatchContact(Event* p_event, LegoEventQueue*, CallbackData* p_data)
 {
-	Descriptor::Field0x10* target0 = p_data->m_target0;
-	Descriptor::Field0x10* target1 = p_data->m_target1;
+	Descriptor::RigidBody* target0 = p_data->m_target0;
+	Descriptor::RigidBody* target1 = p_data->m_target1;
 	CollisionCallbackData collisionData;
 
-	m_unk0x30.m_unk0x00 = 3;
+	m_collisionData.m_type = 3;
 	if (target0->CalculateBoxContact(
 			target1,
 			&collisionData.m_penetrationDepth,
@@ -104,19 +104,19 @@ void LegoEventQueue::Field0x30::FUN_0043ab10(Event* p_event, LegoEventQueue*, Ca
 			&collisionData.m_contactPoint
 		)) {
 		if (collisionData.m_penetrationDepth != 0.0f) {
-			m_unk0x30.m_target0 = target0;
+			m_collisionData.m_target0 = target0;
 			collisionData.m_secondTarget = target1;
 			collisionData.m_unk0x00 = 0;
-			m_unk0x30.m_data = &collisionData;
-			p_event->FUN_004408e0(this, &m_unk0x30);
+			m_collisionData.m_data = &collisionData;
+			p_event->Fire(this, &m_collisionData);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0043ab90
-void LegoEventQueue::Field0x30::FUN_0043ab90()
+void LegoEventQueue::CollisionQueue::TestBodyPairs()
 {
-	Event* event = m_unk0x2c;
+	Event* event = m_bodyList;
 	Event* other;
 	GolWorldEntity* model;
 	GolWorldEntity* otherModel;
@@ -146,16 +146,16 @@ void LegoEventQueue::Field0x30::FUN_0043ab90()
 
 					if (otherModel->GetMinX() <= maxX) {
 						if (other->m_active && model->VTable0x18(otherModel)) {
-							m_callbackData.m_unk0x00 = 2;
+							m_callbackData.m_type = 2;
 							m_callbackData.m_target0 = event->m_descriptor.m_target;
 							m_callbackData.m_target1 = other->m_descriptor.m_target;
-							FUN_0043ab10(event, this, &m_callbackData);
+							DispatchContact(event, this, &m_callbackData);
 
-							if (!(event->m_descriptor.m_unk0x04 & 4)) {
-								m_callbackData.m_unk0x00 = 2;
+							if (!(event->m_descriptor.m_flags & 4)) {
+								m_callbackData.m_type = 2;
 								m_callbackData.m_target0 = other->m_descriptor.m_target;
 								m_callbackData.m_target1 = event->m_descriptor.m_target;
-								FUN_0043ab10(other, this, &m_callbackData);
+								DispatchContact(other, this, &m_callbackData);
 							}
 						}
 					}
@@ -172,9 +172,9 @@ void LegoEventQueue::Field0x30::FUN_0043ab90()
 }
 
 // FUNCTION: LEGORACERS 0x0043aca0
-void LegoEventQueue::Field0x30::FUN_0043aca0()
+void LegoEventQueue::CollisionQueue::SortBodyList()
 {
-	Event* previous = m_unk0x2c;
+	Event* previous = m_bodyList;
 	LegoFloat eventMinX;
 
 	if (previous == NULL) {
@@ -235,9 +235,9 @@ void LegoEventQueue::Field0x30::FUN_0043aca0()
 
 			if (insertAfter == NULL) {
 				event->m_descriptor.m_previous = NULL;
-				event->m_next = m_unk0x2c;
-				m_unk0x2c->m_descriptor.m_previous = event;
-				m_unk0x2c = event;
+				event->m_next = m_bodyList;
+				m_bodyList->m_descriptor.m_previous = event;
+				m_bodyList = event;
 			}
 		}
 		else {
@@ -255,7 +255,7 @@ void LegoEventQueue::Field0x30::FUN_0043aca0()
 }
 
 // FUNCTION: LEGORACERS 0x0043d260 FOLDED
-GolWorldEntity* LegoEventQueue::Field0x2c::VTable0x14(Event* p_event)
+GolWorldEntity* LegoEventQueue::ProximityQueue::GetEventEntity(Event* p_event)
 {
 	return p_event->m_descriptor.m_worldEntity;
 }

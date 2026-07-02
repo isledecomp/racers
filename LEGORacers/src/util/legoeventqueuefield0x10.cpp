@@ -3,11 +3,11 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor::Field0x10, 0xe4)
+DECOMP_SIZE_ASSERT(LegoEventQueue::Descriptor::RigidBody, 0xe4)
 
 // STUB: LEGORACERS 0x00441330
-LegoBool32 LegoEventQueue::Descriptor::Field0x10::CalculateBoxContact(
-	Field0x10* p_other,
+LegoBool32 LegoEventQueue::Descriptor::RigidBody::CalculateBoxContact(
+	RigidBody* p_other,
 	LegoFloat* p_penetration,
 	GolVec3* p_normal,
 	GolVec3* p_contactPoint
@@ -169,8 +169,8 @@ LegoBool32 LegoEventQueue::Descriptor::Field0x10::CalculateBoxContact(
 }
 
 // FUNCTION: LEGORACERS 0x00441790
-LegoBool32 LegoEventQueue::Descriptor::Field0x10::TestBoxOverlap(
-	Field0x10* p_other,
+LegoBool32 LegoEventQueue::Descriptor::RigidBody::TestBoxOverlap(
+	RigidBody* p_other,
 	LegoFloat* p_penetration,
 	GolVec3* p_normal,
 	LegoFloat* p_distance0,

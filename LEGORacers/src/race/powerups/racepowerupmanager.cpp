@@ -1467,23 +1467,23 @@ void RacePowerupManager::CreateBrickEvents()
 	LegoEventQueue* eventQueue = m_raceState->GetEventQueue();
 	LegoEventQueue::Descriptor descriptor;
 
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 
 	LegoU32 i;
 	for (i = 0; i < m_colorBrickCount; i++) {
 		ColorBrick* entry = &m_colorBricks[i];
 		descriptor.m_data = entry->GetWorldEntity();
-		m_brickEvents[i] = eventQueue->FUN_0042fb50(entry, &descriptor);
+		m_brickEvents[i] = eventQueue->AllocateEvent(entry, &descriptor);
 	}
 
 	WhiteBrick* entries0x02c = m_whiteBricks;
 	for (i = 0; i < m_whiteBrickCount; i++) {
 		WhiteBrick* entry = &entries0x02c[i];
 		descriptor.m_data = entry->GetWorldEntity();
-		m_brickEvents[m_colorBrickCount + i] = eventQueue->FUN_0042fb50(entry, &descriptor);
+		m_brickEvents[m_colorBrickCount + i] = eventQueue->AllocateEvent(entry, &descriptor);
 	}
 }
 

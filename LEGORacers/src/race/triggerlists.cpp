@@ -93,12 +93,12 @@ void RaceSession::RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 void RaceSession::RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = NULL;
-	if (p_data->m_unk0x00 == 2) {
+	if (p_data->m_type == 2) {
 		if (!m_powerupManager->IsProjectileEntity(static_cast<GolWorldEntity*>(p_data->m_data))) {
 			return;
 		}
 	}
-	else if (p_data->m_unk0x00 == 4) {
+	else if (p_data->m_type == 4) {
 		racer = static_cast<RaceState::Racer*>(p_data->m_data);
 		if ((m_flags0x38 & c_lapGated) && racer->m_lapsCompleted != m_lapNumber) {
 			return;
@@ -510,20 +510,20 @@ void RaceSession::TriggerList::ParseTrigger(GolFileParser* p_parser, EntryParams
 LegoEventQueue::Event* RaceSession::TriggerList::RegisterTrigger(Entry* p_entry, LegoBool32 p_projectiles)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x04 = 1;
+	descriptor.m_flags = 1;
 	if (p_entry->m_flags0x38 & Entry::c_mirror) {
-		descriptor.m_unk0x04 = 9;
+		descriptor.m_flags = 9;
 	}
 
 	LegoEventQueue* eventQueue = m_eventQueue;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	p_projectiles = p_projectiles ? 2 : 4;
-	descriptor.m_unk0x00 = p_projectiles;
+	descriptor.m_type = p_projectiles;
 	descriptor.m_worldEntity = &p_entry->m_body;
 
 	LegoEventQueue::Descriptor* descriptorPtr = &descriptor;
-	LegoEventQueue::Event* result = eventQueue->FUN_0042fb50(p_entry, descriptorPtr);
+	LegoEventQueue::Event* result = eventQueue->AllocateEvent(p_entry, descriptorPtr);
 	p_entry->m_event = result;
 	return result;
 }

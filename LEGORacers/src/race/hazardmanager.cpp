@@ -1193,12 +1193,12 @@ void HazardManager::RollingRockHazard::Reset()
 void HazardManager::RollingRockHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 3;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 3;
+	descriptor.m_flags = 1;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_body;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_state = 2;
 }
 
@@ -1702,13 +1702,13 @@ LegoS32 HazardManager::GhostHazard::Reset()
 void HazardManager::GhostHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_worldEntity = &m_trigger;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_unk0x5c = 0;
 	m_soundJitterMs = 0x1f4;
 	m_loopSound = m_soundSource->AcquireSoundById(0xbc4);
@@ -2306,13 +2306,13 @@ void HazardManager::LavaGeyserHazard::OnActivate(void*)
 	LegoEventQueue::Descriptor descriptor;
 	m_smokeMs = 0;
 	m_eventMs = 0;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
 	descriptor.m_worldEntity = &m_trigger;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_state = 2;
 }
 
@@ -2515,13 +2515,13 @@ LegoS32 HazardManager::GrabberHazard::Reset()
 void HazardManager::GrabberHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_worldEntity = &m_trigger;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_grabState = 0;
 	m_unk0x5c = 0;
 	m_state = 2;
@@ -2774,13 +2774,13 @@ LegoS32 HazardManager::RocketHazard::Reset()
 void HazardManager::RocketHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
 	descriptor.m_worldEntity = &m_trigger;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_state = 2;
 }
 
@@ -3841,13 +3841,13 @@ LegoS32 HazardManager::MovingObstacleHazard::Reset()
 void HazardManager::MovingObstacleHazard::OnActivate(void*)
 {
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_worldEntity = &m_trigger;
 
-	m_collisionEvent = m_eventQueue->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_eventQueue->AllocateEvent(this, &descriptor);
 	m_loopSound = m_soundSource->AcquireSoundById(c_soundId);
 	if (m_loopSound != NULL) {
 		GolVec3 position;

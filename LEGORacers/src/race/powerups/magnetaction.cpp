@@ -476,12 +476,12 @@ void RacePowerupManager::MagnetAction::Deploy()
 	m_stateTimerMs = c_armedDurationMs;
 
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 4;
-	descriptor.m_unk0x04 = 1;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 4;
+	descriptor.m_flags = 1;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &m_worldEntity;
-	m_collisionEvent = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
+	m_collisionEvent = m_raceState0x018->GetEventQueue()->AllocateEvent(this, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00458390

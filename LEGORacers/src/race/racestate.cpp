@@ -317,7 +317,7 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	m_roster.m_timeRaceManager = p_params->m_timeRaceManager;
 	m_roster.m_routeRecords = p_params->m_routeRecords;
 	m_setup.m_lapCount = p_params->m_lapCount;
-	static_cast<LegoEventQueue*>(&m_roster)->VTable0x08(100);
+	static_cast<LegoEventQueue*>(&m_roster)->Initialize(100);
 
 	m_roster.m_raceState = this;
 	m_roster.m_racerCount = p_params->m_racerCount;
@@ -554,13 +554,13 @@ void RaceState::CreateRacer(
 	racer->m_driveController.m_previewCursor = &m_sharedRouteCursor;
 
 	LegoEventQueue::Descriptor descriptor;
-	descriptor.m_unk0x00 = 3;
-	descriptor.m_unk0x04 = 5;
-	descriptor.m_unk0x08 = 0;
-	descriptor.m_unk0x0c = 0;
+	descriptor.m_type = 3;
+	descriptor.m_flags = 5;
+	descriptor.m_maxFireCount = 0;
+	descriptor.m_hitThreshold = 0;
 	descriptor.m_data = &racer->m_physics;
 	descriptor.m_unk0x14 = 0;
-	m_roster.m_racerEvents[p_racerIndex] = m_roster.FUN_0042fb50(racer, &descriptor);
+	m_roster.m_racerEvents[p_racerIndex] = m_roster.AllocateEvent(racer, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x0043bc10
@@ -742,7 +742,7 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 	}
 
 	RaceRoster* queue = &m_roster;
-	queue->VTable0x10(p_elapsedMs);
+	queue->Update(p_elapsedMs);
 
 	for (racer = m_roster.m_racers; racer < end; racer++) {
 		racer->UpdateCarAnimation(p_elapsedMs);

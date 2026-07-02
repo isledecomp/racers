@@ -221,7 +221,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
-			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&position);
+			m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 
 			up.m_x = 0.0f;
 			up.m_y = 0.0f;
@@ -245,13 +245,13 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
-			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 			racerField->m_carEntity->VTable0x04(&position);
 
 			RaceState::Racer* targetRacer = m_projectile.GetHitRacer();
-			targetRacer->m_unk0x018.m_carEntity->VTable0x04(&targetPosition);
+			targetRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
 
-			if (targetRacer->m_unk0xd04 & c_racerFlags0xd04Bit0) {
+			if (targetRacer->m_flags & c_racerFlags0xd04Bit0) {
 				ReleaseHook(&targetPosition);
 				return;
 			}
@@ -268,7 +268,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 				break;
 			}
 
-			m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&forward);
+			m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&forward);
 
 			LegoFloat dot = direction.m_z;
 			dot *= forward.m_z;
@@ -283,12 +283,12 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			direction.m_x *= g_hookPullForce;
 			direction.m_y *= g_hookPullForce;
 			direction.m_z *= g_hookPullForce;
-			m_ownerRacer->m_unk0x3e8.VTable0x48(&direction);
+			m_ownerRacer->m_physics.StartExternalForce1(&direction);
 
 			direction.m_x = -direction.m_x;
 			direction.m_y = -direction.m_y;
 			direction.m_z = -direction.m_z;
-			targetRacer->m_unk0x3e8.VTable0x40(&direction);
+			targetRacer->m_physics.StartExternalForce0(&direction);
 		}
 		break;
 	case c_stateRetracting:
@@ -316,12 +316,12 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&position);
+		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 		position.m_z += 4.0f;
 
-		velocity = m_ownerRacer->m_unk0x3e8.m_unk0x008;
+		velocity = m_ownerRacer->m_physics.m_velocity;
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
+			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->FUN_00489660(&position);
@@ -376,7 +376,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 	GolVec3 scaledDirection;
 	GolVec3 targetVelocity;
 	PowerupProjectile::Params projectileParams;
-	RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 	LegoU32 durationMs = 3000;
 
 	m_state = c_stateFlying;
@@ -384,7 +384,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 
 	racerField->m_carEntity->VTable0x04(&position);
 
-	m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
+	m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
 	projectileParams.m_worldEntity = m_hookEntity;
 	projectileParams.m_collisionWorld = m_collisionWorld;
@@ -425,11 +425,11 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 
 	m_smokeParticleRef = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticleRef != NULL) {
-		m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&position);
+		m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 		position.m_z += 4.0f;
 
 		if (m_smokeParticleRef->m_particle != NULL) {
-			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
+			m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticleRef->m_particle->GetUnk0x160());
 		}
 		if (m_smokeParticleRef->m_particle != NULL) {
 			m_smokeParticleRef->m_particle->FUN_00489660(&position);
@@ -445,7 +445,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 void RacePowerupManager::GrapplingHookAction::OnHitRacer(RaceState::Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
-		if (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
 
@@ -462,7 +462,7 @@ void RacePowerupManager::GrapplingHookAction::OnHitRacer(RaceState::Racer* p_rac
 			p_racer->DropWhiteBrick();
 
 			SoundVector position;
-			p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+			p_racer->m_visuals.m_carEntity->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHitRacer,
 				&position,
@@ -483,8 +483,8 @@ void RacePowerupManager::GrapplingHookAction::ReleaseHook(SoundVector* p_positio
 {
 	RaceState::Racer* racer = m_projectile.GetHitRacer();
 	if (racer != NULL) {
-		racer->m_unk0x3e8.VTable0x44();
-		m_ownerRacer->m_unk0x3e8.VTable0x4c();
+		racer->m_physics.EndExternalForce0();
+		m_ownerRacer->m_physics.EndExternalForce1();
 		m_soundSource->PlaySpatialSoundById(
 			c_soundRelease,
 			p_position,

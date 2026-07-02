@@ -1,23 +1,24 @@
 #include "audio/spatialsoundinstance.h"
+#include "race/racer/racerouterecord.h"
 #include "race/racestate.h"
 
 // GLOBAL: LEGORACERS 0x004b0d80
-LegoU32 g_unk0x004b0d80 = 0x3e4ccccd;
+LegoU32 g_defaultPowerslideFactorBits = 0x3e4ccccd;
 
 // GLOBAL: LEGORACERS 0x004b0d84
-extern const LegoFloat g_unk0x004b0d84 = 0.30000001f;
+extern const LegoFloat g_wallMaxRiseSpeed = 0.30000001f;
 
 // GLOBAL: LEGORACERS 0x004b0d88
-extern const LegoFloat g_unk0x004b0d88 = 100.0f;
+extern const LegoFloat g_fallbackTurnRadius = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004b0d38
-extern const LegoFloat g_unk0x004b0d38 = 0.89999998f;
+extern const LegoFloat g_skidSoundAlignmentMax = 0.89999998f;
 
 // GLOBAL: LEGORACERS 0x004b0cd0
-extern const LegoFloat g_unk0x004b0cd0 = 40.0f;
+extern const LegoFloat g_minTurnRadius = 40.0f;
 
 // GLOBAL: LEGORACERS 0x004b0cd4
-extern const LegoFloat g_unk0x004b0cd4 = 4096.0f;
+extern const LegoFloat g_maxTurnRadius = 4096.0f;
 
 // GLOBAL: LEGORACERS 0x004b0430
 extern const LegoFloat g_unk0x004b0430 = 30.0f;
@@ -26,17 +27,17 @@ extern const LegoFloat g_unk0x004b0430 = 30.0f;
 extern const LegoFloat g_unk0x004b0434 = 300.0f;
 
 extern const LegoFloat g_item0x40RadiansToTableIndex;
-extern const LegoFloat g_unk0x004b0cd8;
-extern const LegoFloat g_unk0x004b0cdc;
+extern const LegoFloat g_physicsSoundMinDistance;
+extern const LegoFloat g_physicsSoundMaxDistance;
 
 // GLOBAL: LEGORACERS 0x004b046c
-extern const LegoFloat g_unk0x004b046c = 0.050000001f;
+extern const LegoFloat g_powerslideMinSpeed = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004b0470
-extern const LegoFloat g_unk0x004b0470 = 0.155f;
+extern const LegoFloat g_steeringMaxSpeed = 0.155f;
 
 // GLOBAL: LEGORACERS 0x004b0550
-extern const LegoFloat g_unk0x004b0550 = 0.85000002f;
+extern const LegoFloat g_powerslideAlignmentMin = 0.85000002f;
 
 extern LegoFloat g_cosineTable[1024];
 
@@ -46,52 +47,52 @@ inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0042a730
-void RaceState::Racer::Physics::FUN_0042a730(Records::Entry* p_entry)
+void RaceState::Racer::Physics::AttachRouteAtLoop(RaceRouteRecord* p_entry)
 {
-	m_unk0x744 = TRUE;
-	m_unk0x74c.AttachAtLoop(p_entry);
+	m_routeMode = TRUE;
+	m_routeCursor.AttachAtLoop(p_entry);
 
 	GolVec3 position = p_entry->m_loopPosition;
 	GolQuat rotation = p_entry->m_loopRotation;
 
-	m_unk0x13c->VTable0x08(position);
-	GolMath::FUN_00449340(&rotation, &m_unk0x13c->GetOrientation().m_m[0][0]);
-	m_unk0x13c->VTable0x2c(m_unk0x014, &m_unk0x020);
+	m_carEntity->VTable0x08(position);
+	GolMath::FUN_00449340(&rotation, &m_carEntity->GetOrientation().m_m[0][0]);
+	m_carEntity->VTable0x2c(m_centerOfMassLocal, &m_centerOfMassWorld);
 
 	for (LegoS32 i = 0; i < 4; i++) {
-		m_unk0x13c->VTable0x2c(m_unk0x370[i], &m_unk0x3a0[i]);
+		m_carEntity->VTable0x2c(m_bodyPointsLocal[i], &m_bodyPointsWorld[i]);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042ae10
-LegoFloat RaceState::Racer::Physics::FUN_0042ae10()
+LegoFloat RaceState::Racer::Physics::GetMinTurnRadius()
 {
-	return FUN_00445cb0();
+	return ComputeMinTurnRadius();
 }
 
 // FUNCTION: LEGORACERS 0x0042ae20
-LegoBool32 RaceState::Racer::Physics::FUN_0042ae20()
+LegoBool32 RaceState::Racer::Physics::CanPowerslide()
 {
-	if (m_unk0x3ec) {
+	if (m_wallContact) {
 		return FALSE;
 	}
 
-	if (!(m_flags0x6c0 & c_flags0x6c0Bit3) && m_unk0x36c < 3) {
+	if (!(m_flags & c_flagSliding) && m_contactCount < 3) {
 		return FALSE;
 	}
 
-	GolOrientedEntity* entity = m_unk0x13c;
+	GolOrientedEntity* entity = m_carEntity;
 	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
 	LegoFloat y = entity->m_orientation.m_rows[0].m_y;
-	LegoFloat z = m_unk0x5f8.m_z * entity->m_orientation.m_rows[0].m_z;
-	z += y * m_unk0x5f8.m_y;
-	dot *= m_unk0x5f8.m_x;
+	LegoFloat z = m_velocityDirection.m_z * entity->m_orientation.m_rows[0].m_z;
+	z += y * m_velocityDirection.m_y;
+	dot *= m_velocityDirection.m_x;
 	dot += z;
-	if (dot <= g_unk0x004b0550) {
+	if (dot <= g_powerslideAlignmentMin) {
 		return FALSE;
 	}
 
-	if (m_unk0x618 < g_unk0x004b046c) {
+	if (m_forwardSpeed < g_powerslideMinSpeed) {
 		return FALSE;
 	}
 
@@ -99,35 +100,35 @@ LegoBool32 RaceState::Racer::Physics::FUN_0042ae20()
 }
 
 // FUNCTION: LEGORACERS 0x0042aea0
-LegoBool32 RaceState::Racer::Physics::FUN_0042aea0(LegoFloat p_unk0x04)
+LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_unk0x04)
 {
-	GolOrientedEntity* entity = m_unk0x13c;
+	GolOrientedEntity* entity = m_carEntity;
 	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
 	LegoFloat y = entity->m_orientation.m_rows[0].m_y;
-	LegoFloat z = m_unk0x5f8.m_z * entity->m_orientation.m_rows[0].m_z;
-	z += y * m_unk0x5f8.m_y;
-	dot *= m_unk0x5f8.m_x;
+	LegoFloat z = m_velocityDirection.m_z * entity->m_orientation.m_rows[0].m_z;
+	z += y * m_velocityDirection.m_y;
+	dot *= m_velocityDirection.m_x;
 	dot += z;
 	if (dot <= 0.0f) {
 		return FALSE;
 	}
 
-	if ((p_unk0x04 < 0.0f && m_unk0x64c > 0.0f) || (p_unk0x04 > 0.0f && m_unk0x64c < 0.0f)) {
+	if ((p_unk0x04 < 0.0f && m_turnRadius > 0.0f) || (p_unk0x04 > 0.0f && m_turnRadius < 0.0f)) {
 		return FALSE;
 	}
 
-	if (!(m_flags0x6c0 & c_flags0x6c0Bit0)) {
+	if (!(m_flags & c_flagSteering)) {
 		LegoFloat dotValue = dot;
 		if (dotValue < 0.89999998f) {
 			return FALSE;
 		}
 	}
 
-	if (m_unk0x3ec) {
+	if (m_wallContact) {
 		return FALSE;
 	}
 
-	if (m_unk0x604 > g_unk0x004b0470) {
+	if (m_speed > g_steeringMaxSpeed) {
 		return FALSE;
 	}
 
@@ -135,160 +136,163 @@ LegoBool32 RaceState::Racer::Physics::FUN_0042aea0(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0042b0c0
-void RaceState::Racer::Physics::FUN_0042b0c0()
+void RaceState::Racer::Physics::ResetRouteMotion()
 {
 	GolVec3 direction;
 	direction.m_x = 0.0f;
-	m_unk0x74c.m_playbackSpeed = 1.0f;
+	m_routeCursor.m_playbackSpeed = 1.0f;
 	direction.m_y = 0.0f;
 	direction.m_z = 0.0f;
-	m_unk0x74c.SeekByDelta(&direction);
+	m_routeCursor.SeekByDelta(&direction);
 
-	m_unk0x7e8 = 1.0f;
-	m_unk0x7c4.m_x = 0.0f;
-	m_unk0x7c4.m_y = 0.0f;
-	m_unk0x7c4.m_z = 0.0f;
-	m_unk0x7c4.m_w = 0.0f;
-	m_unk0x7ec = 1.0f;
+	m_routeBaseSpeed = 1.0f;
+	m_routeMotion.m_sink = 0.0f;
+	m_routeMotion.m_jumpHeight = 0.0f;
+	m_routeMotion.m_sideOffset = 0.0f;
+	m_routeMotion.m_jumpVelocity = 0.0f;
+	m_routeTargetSpeed = 1.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00445cb0
-LegoFloat RaceState::Racer::Physics::FUN_00445cb0()
+LegoFloat RaceState::Racer::Physics::ComputeMinTurnRadius()
 {
-	LegoFloat scale = FUN_004489f0();
-	scale *= m_unk0x160 * m_unk0x15c;
+	LegoFloat scale = GetAverageLateralGrip();
+	scale *= m_gravity * m_massScale;
 
 	if (scale == 0.0f) {
-		if (m_unk0x36c == 0) {
-			return g_unk0x004b0d88;
+		if (m_contactCount == 0) {
+			return g_fallbackTurnRadius;
 		}
 
-		return g_unk0x004b0cd4;
+		return g_maxTurnRadius;
 	}
 
-	LegoFloat value = m_unk0x618;
+	LegoFloat value = m_forwardSpeed;
 	LegoFloat valueSquared = value * value;
-	return valueSquared * m_unk0x0c8 / scale;
+	return valueSquared * m_mass / scale;
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
-void RaceState::Racer::Physics::FUN_00446ef0(LegoFloat p_unk0x04)
+void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_unk0x04)
 {
 	if (p_unk0x04 > 0.0f) {
-		if (p_unk0x04 < g_unk0x004b0cd0) {
-			m_unk0x64c = g_unk0x004b0cd0;
+		if (p_unk0x04 < g_minTurnRadius) {
+			m_turnRadius = g_minTurnRadius;
 		}
-		else if (p_unk0x04 <= g_unk0x004b0cd4) {
-			m_unk0x64c = p_unk0x04;
+		else if (p_unk0x04 <= g_maxTurnRadius) {
+			m_turnRadius = p_unk0x04;
 		}
 		else {
-			m_unk0x64c = 0.0f;
+			m_turnRadius = 0.0f;
 		}
 	}
 	else if (p_unk0x04 < 0.0f) {
-		if (p_unk0x04 > -g_unk0x004b0cd0) {
-			m_unk0x64c = -g_unk0x004b0cd0;
+		if (p_unk0x04 > -g_minTurnRadius) {
+			m_turnRadius = -g_minTurnRadius;
 		}
-		else if (p_unk0x04 >= -g_unk0x004b0cd4) {
-			m_unk0x64c = p_unk0x04;
+		else if (p_unk0x04 >= -g_maxTurnRadius) {
+			m_turnRadius = p_unk0x04;
 		}
 		else {
-			m_unk0x64c = 0.0f;
+			m_turnRadius = 0.0f;
 		}
 	}
 	else {
-		m_unk0x64c = 0.0f;
+		m_turnRadius = 0.0f;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00447f30
-void RaceState::Racer::PhysicsBase0x74c::FUN_00447f30(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void RaceState::Racer::CarBody::StartSteering(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
-	LegoU32 flags = m_flags0x6c0;
+	LegoU32 flags = m_flags;
 	LegoFloat angle = p_unk0x0c;
-	m_unk0x6c4 = p_unk0x04;
+	m_steeringGain = p_unk0x04;
 
-	flags |= c_flags0x6c0Bit0;
-	m_unk0x6d0 = p_unk0x08;
-	m_flags0x6c0 = flags;
-	m_unk0x6cc = p_unk0x0c;
-	m_unk0x6c8 = GetCosineTableValue(static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff);
+	flags |= c_flagSteering;
+	m_slipRatio = p_unk0x08;
+	m_flags = flags;
+	m_facingLagMax = p_unk0x0c;
+	m_steeringAlignmentMin = GetCosineTableValue(static_cast<LegoS32>(angle * g_item0x40RadiansToTableIndex) & 0x3ff);
 
-	if (m_unk0x6e8 != NULL) {
+	if (m_skidSoundResource != NULL) {
 		return;
 	}
 
 	GolVec3 direction;
-	direction.m_x = m_unk0x0e4.GetOrientation().m_rows[0].m_x;
-	direction.m_y = m_unk0x0e4.GetOrientation().m_rows[0].m_y;
-	direction.m_z = m_unk0x0e4.GetOrientation().m_rows[0].m_z;
-	if ((flags & c_flags0x6c0Bit3) || m_unk0x3ec) {
+	direction.m_x = m_physicsEntity.GetOrientation().m_rows[0].m_x;
+	direction.m_y = m_physicsEntity.GetOrientation().m_rows[0].m_y;
+	direction.m_z = m_physicsEntity.GetOrientation().m_rows[0].m_z;
+	if ((flags & c_flagSliding) || m_wallContact) {
 		return;
 	}
 
-	if (!(flags & c_flags0x6c0Bit10)) {
-		LegoFloat dot = m_unk0x5f8.m_z;
+	if (!(flags & c_flagPowerslide)) {
+		LegoFloat dot = m_velocityDirection.m_z;
 		dot *= direction.m_z;
-		LegoFloat yDot = m_unk0x5f8.m_y;
+		LegoFloat yDot = m_velocityDirection.m_y;
 		yDot *= direction.m_y;
 		dot += yDot;
-		dot += m_unk0x5f8.m_x * direction.m_x;
-		if (dot >= g_unk0x004b0d38) {
+		dot += m_velocityDirection.m_x * direction.m_x;
+		if (dot >= g_skidSoundAlignmentMax) {
 			return;
 		}
 	}
 
-	if (m_unk0x6ec) {
-		m_sound6e8 = m_unk0x158->AcquireSoundById(0x3a);
+	if (m_soundsEnabled) {
+		m_skidSound = m_soundSource->AcquireSoundById(0x3a);
 	}
 
-	if (m_sound6e8 != NULL) {
-		m_sound6e8->SetDistanceRangeWithMinSquared(g_unk0x004b0cd8 * g_unk0x004b0cd8, g_unk0x004b0cdc);
-		m_sound6e8->SetVolume(0.80000001f);
-		m_sound6e8->Play(TRUE);
+	if (m_skidSound != NULL) {
+		m_skidSound->SetDistanceRangeWithMinSquared(
+			g_physicsSoundMinDistance * g_physicsSoundMinDistance,
+			g_physicsSoundMaxDistance
+		);
+		m_skidSound->SetVolume(0.80000001f);
+		m_skidSound->Play(TRUE);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004489f0
-LegoFloat RaceState::Racer::Physics::FUN_004489f0()
+LegoFloat RaceState::Racer::Physics::GetAverageLateralGrip()
 {
 	LegoFloat total = 0.0f;
 	LegoS32 count = 0;
 
-	for (Field0x198* entry = m_unk0x198; entry < &m_unk0x198[4]; entry++) {
-		if (entry->m_flags0x048 & Field0x198::c_flags0x048Active) {
-			total += entry->m_unk0x05c;
+	for (WheelProbe* entry = m_wheelProbes; entry < &m_wheelProbes[4]; entry++) {
+		if (entry->m_flags & WheelProbe::c_flagContact) {
+			total += entry->m_lateralGrip;
 			count++;
 		}
 	}
 
 	if (count) {
 		LegoFloat countFloat = static_cast<LegoFloat>(count);
-		return total / countFloat * m_unk0x5f4;
+		return total / countFloat * m_gripScale;
 	}
 
 	return 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00449070
-undefined4 RaceState::Racer::Physics::FUN_00449070(undefined4 p_unk0x04)
+undefined4 RaceState::Racer::Physics::StartPowerslide(undefined4 p_unk0x04)
 {
-	LegoU32 flags = m_flags0x6c0;
-	flags |= c_flags0x6c0Bit10;
-	m_flags0x6c0 = flags;
+	LegoU32 flags = m_flags;
+	flags |= c_flagPowerslide;
+	m_flags = flags;
 
-	m_unk0x6d8 = p_unk0x04;
+	m_powerslideFactorBits = p_unk0x04;
 	return p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x00449090
-undefined4 RaceState::Racer::Physics::FUN_00449090()
+undefined4 RaceState::Racer::Physics::EndPowerslide()
 {
-	LegoU32 flags = m_flags0x6c0;
-	flags &= ~c_flags0x6c0Bit10;
-	m_flags0x6c0 = flags;
+	LegoU32 flags = m_flags;
+	flags &= ~c_flagPowerslide;
+	m_flags = flags;
 
-	LegoU32 value = g_unk0x004b0d80;
-	m_unk0x6d8 = value;
+	LegoU32 value = g_defaultPowerslideFactorBits;
+	m_powerslideFactorBits = value;
 	return value;
 }

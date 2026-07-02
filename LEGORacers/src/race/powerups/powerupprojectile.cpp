@@ -87,7 +87,7 @@ void PowerupProjectile::LaunchAtRacer(
 	m_targetRacer = targetRacer;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_unk0x018.m_carEntity->VTable0x04(&m_startPosition);
+		p_racer->m_visuals.m_carEntity->VTable0x04(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
 		m_worldEntity->VTable0x08(m_startPosition);
 	}
@@ -97,11 +97,11 @@ void PowerupProjectile::LaunchAtRacer(
 
 	GolVec3* startPosition = &m_startPosition;
 	GolVec3* target = &m_targetPosition;
-	targetRacer->m_unk0x018.m_carEntity->VTable0x04(target);
+	targetRacer->m_visuals.m_carEntity->VTable0x04(target);
 	target->m_z += 5.0f;
 
 	GolVec3 scaledVelocity;
-	GolVec3 targetVelocity = targetRacer->m_unk0x3e8.m_unk0x008;
+	GolVec3 targetVelocity = targetRacer->m_physics.m_velocity;
 	GolVec3 racerDirection;
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
@@ -119,14 +119,14 @@ void PowerupProjectile::LaunchAtRacer(
 
 	LegoFloat directionX = inverseDistance * delta.m_x;
 	RaceState::Racer* racer = p_racer;
-	racerDirection = racer->m_unk0x3e8.m_unk0x5f8;
+	racerDirection = racer->m_physics.m_velocityDirection;
 	LegoFloat directionY = inverseDistance * deltaY;
 	LegoFloat dot = racerDirection.m_z * 0.0f + racerDirection.m_y * directionY + racerDirection.m_x * directionX;
 	if (dot < 0.0f) {
 		dot = -dot;
 	}
 
-	speed += dot * racer->m_unk0x3e8.m_unk0x604 * g_floatConst1000;
+	speed += dot * racer->m_physics.m_speed * g_floatConst1000;
 	if (speed <= 0.001f) {
 		speed = 0.001f;
 	}
@@ -144,7 +144,7 @@ void PowerupProjectile::LaunchAtRacer(
 		predictedTarget.m_y = target->m_y + scaledVelocity.m_y;
 		predictedTarget.m_z = target->m_z + scaledVelocity.m_z;
 
-		GolVec3 racerVector = p_racer->m_unk0x3e8.m_unk0x168;
+		GolVec3 racerVector = p_racer->m_physics.m_facingDirection;
 		GolVec3 predictedDelta;
 		predictedDelta.m_x = predictedTarget.m_x - startPosition->m_x;
 		predictedDelta.m_y = predictedTarget.m_y - startPosition->m_y;
@@ -186,7 +186,7 @@ void PowerupProjectile::LaunchAtPoint(
 	m_targetRacer = NULL;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_unk0x018.m_carEntity->VTable0x04(&m_startPosition);
+		p_racer->m_visuals.m_carEntity->VTable0x04(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
 		m_worldEntity->VTable0x08(m_startPosition);
 	}
@@ -212,14 +212,14 @@ void PowerupProjectile::LaunchAtPoint(
 
 	LegoFloat directionX = inverseDistance * delta.m_x;
 	RaceState::Racer* racer = p_racer;
-	GolVec3 racerDirection = racer->m_unk0x3e8.m_unk0x5f8;
+	GolVec3 racerDirection = racer->m_physics.m_velocityDirection;
 	GolVec3* racerDirectionPtr = &racerDirection;
 	LegoFloat directionY = inverseDistance * deltaY;
 	LegoFloat dot = racerDirectionPtr->m_z * 0.0f;
 	dot += racerDirectionPtr->m_y * directionY;
 	dot += racerDirectionPtr->m_x * directionX;
 	if (dot > 0.0f) {
-		LegoFloat speedDelta = dot * racer->m_unk0x3e8.m_unk0x604;
+		LegoFloat speedDelta = dot * racer->m_physics.m_speed;
 		speedDelta *= g_floatConst1000;
 		speed += speedDelta;
 	}
@@ -294,9 +294,9 @@ void PowerupProjectile::Deflect(RaceState::Racer* p_racer)
 	m_state = c_stateFlying;
 	m_targetRacer = m_ownerRacer;
 	if (m_targetRacer) {
-		m_targetRacer->m_unk0x018.m_carEntity->VTable0x04(&m_targetPosition);
+		m_targetRacer->m_visuals.m_carEntity->VTable0x04(&m_targetPosition);
 		m_targetPosition.m_z += 5.0f;
-		velocity = m_targetRacer->m_unk0x3e8.m_unk0x008;
+		velocity = m_targetRacer->m_physics.m_velocity;
 	}
 	else {
 		m_targetPosition = m_startPosition;
@@ -427,7 +427,7 @@ void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		m_state = c_stateHitRacer;
 		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
 		m_hitRacer = racer;
-		racer->m_unk0x018.m_carEntity->VTable0x04(&m_hitPosition);
+		racer->m_visuals.m_carEntity->VTable0x04(&m_hitPosition);
 	}
 }
 

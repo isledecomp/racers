@@ -107,7 +107,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	}
 
 	m_racer = p_racer;
-	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit0) {
+	if (m_racer->m_flags & c_racerFlags0xd04Bit0) {
 		m_manager->CancelShield(m_racer);
 	}
 
@@ -138,7 +138,7 @@ void RacePowerupManager::ShieldAction::Activate(
 
 	m_state = c_stateActive;
 	m_racer->StartShield(p_level);
-	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
+	if (m_racer->m_flags & c_flagCursed) {
 		m_racer->RemoveCurse();
 	}
 	m_level = p_level;
@@ -170,7 +170,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	m_shieldEntity->FUN_004116b0(p_shieldTemplate->FUN_00411660());
 	m_shieldEntity->FUN_00411700(p_shieldTemplate->FUN_004116e0());
 	m_shieldEntity->FUN_00411730(p_shieldTemplate->FUN_004116f0());
-	m_shieldEntity->CopyPositionFrom(*m_racer->m_unk0x018.m_carEntity);
+	m_shieldEntity->CopyPositionFrom(*m_racer->m_visuals.m_carEntity);
 
 	m_innerShieldEntity->FUN_0040d550(
 		p_innerShieldTemplate->GetModel(0),
@@ -235,10 +235,10 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 	PowerupActionBase::Update(p_elapsedMs);
 
 	GolVec3 position;
-	RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_visuals;
 	racerEntities->m_carEntity->VTable0x04(&position);
 
-	GolVec3 velocity = m_racer->m_unk0x3e8.m_unk0x008;
+	GolVec3 velocity = m_racer->m_physics.m_velocity;
 	if (m_sound) {
 		m_sound->SetPosition(position);
 		m_sound->SetVelocity(velocity);
@@ -256,7 +256,7 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 	}
 
 	GolVec3 position;
-	m_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+	m_racer->m_visuals.m_carEntity->VTable0x04(&position);
 	LegoFloat positionZ = position.m_z;
 	positionZ += g_violetShoalTwo;
 	position.m_z = positionZ;
@@ -264,7 +264,7 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 
 	GolVec3 direction;
 	GolVec3 up;
-	m_racer->m_unk0x018.m_carEntity->VTable0x48(&direction, &up);
+	m_racer->m_visuals.m_carEntity->VTable0x48(&direction, &up);
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
@@ -300,7 +300,7 @@ void RacePowerupManager::ShieldAction::AdvanceState()
 		m_state = 6;
 
 		SoundVector position;
-		RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_visuals;
 		racerEntities->m_carEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
 		positionZ += g_homingProjectileCollisionStartOffset;

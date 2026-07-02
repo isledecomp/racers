@@ -144,7 +144,7 @@ void RaceRouteRecord::Reset()
 void RaceRouteRecord::ParsePathPoints(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	m_pathPointCount = p_parser->ReadBracketedCountAndLeftCurly();
-	m_pathPoints = new RaceState::Racer::Records::Entry::PathPoint[m_pathPointCount];
+	m_pathPoints = new RaceRouteRecord::PathPoint[m_pathPointCount];
 	if (!m_pathPoints) {
 		GolFatalError(c_golErrorOutOfMemory, NULL, 0);
 	}

@@ -87,7 +87,9 @@ void RaceSession::Field0x32c4::FUN_0045e470(LegoU32 p_elapsedMs)
 						if (value > 0) {
 							if (elapsedStep >= value) {
 								*timer = 0;
-								m_unk0x04[racerIndex]->m_unk0x3e8.FUN_00448930(m_unk0x1c->GetUnk0xa8() + entryIndex);
+								m_unk0x04[racerIndex]->m_physics.RemoveCollisionWorld(
+									m_unk0x1c->GetUnk0xa8() + entryIndex
+								);
 								elapsedStep = savedElapsedStep;
 							}
 							else {
@@ -125,7 +127,7 @@ void RaceSession::Field0x32c4::FUN_0045e520(RaceState::Racer* p_racer, LegoU32 p
 	}
 
 	if (!field->m_unk0x20[racerIndex][p_unk0x08]) {
-		target->m_unk0x3e8.FUN_004488e0(field->m_unk0x1c->GetUnk0xa8() + p_unk0x08);
+		target->m_physics.AddCollisionWorld(field->m_unk0x1c->GetUnk0xa8() + p_unk0x08);
 	}
 
 	LegoU32 result = 0;

@@ -204,7 +204,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 	if (p_elapsedMs >= m_unk0x3ac) {
 		m_unk0x3ac += c_ghostSampleIntervalMs - p_elapsedMs;
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
-			RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
 			GolVec3 position;
 			racerField->m_carEntity->VTable0x04(&position);
 
@@ -216,7 +216,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 				static_cast<LegoS16>(32.0f * position.m_z);
 
 			GolQuat rotation;
-			GolMath::FUN_1002f5a0(m_racer->m_unk0x018.m_carEntity->GetOrientation(), &rotation);
+			GolMath::FUN_1002f5a0(m_racer->m_visuals.m_carEntity->GetOrientation(), &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
 				static_cast<LegoS8>(127.0f * rotation.m_x);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
@@ -434,7 +434,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 	}
 
 	if (m_flags0x3b4 & c_flag0x3b4Bit0) {
-		GolModelEntity* sourceModel = p_racer->m_unk0x018.m_bodyModelEntity;
+		GolModelEntity* sourceModel = p_racer->m_visuals.m_bodyModelEntity;
 		m_unk0x300.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
@@ -443,7 +443,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		GolAnimatedEntity* sourceAnimated = p_racer->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* sourceAnimated = p_racer->m_visuals.m_carEntity;
 		m_unk0x1c.FUN_0040d550(
 			sourceAnimated->GetModel(0),
 			sourceAnimated->VTable0x58(0),
@@ -461,7 +461,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		sourceAnimated = p_racer->m_unk0x018.m_driverEntity;
+		sourceAnimated = p_racer->m_visuals.m_driverEntity;
 		m_unk0x114.FUN_0040d550(
 			sourceAnimated->GetModel(0),
 			sourceAnimated->VTable0x58(0),
@@ -479,7 +479,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		sourceAnimated = p_racer->m_unk0x018.m_unk0x040;
+		sourceAnimated = p_racer->m_visuals.m_unk0x040;
 		if (sourceAnimated) {
 			m_unk0x20c.FUN_0040d550(
 				sourceAnimated->GetModel(0),
@@ -499,7 +499,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		m_unk0x394 = p_racer->m_unk0x018.m_driverMountOffset;
+		m_unk0x394 = p_racer->m_visuals.m_driverMountOffset;
 		m_unk0x114.FUN_0040dad0(13);
 	}
 }

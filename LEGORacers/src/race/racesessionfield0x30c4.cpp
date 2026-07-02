@@ -75,7 +75,7 @@ void RaceSession::Field0x30c4::FUN_0043a6e0()
 // FUNCTION: LEGORACERS 0x0043a780
 void RaceSession::Field0x30c4::FUN_0043a780()
 {
-	m_raceState->FUN_0043d120();
+	m_raceState->StopProximitySound();
 
 	for (LegoU32 racerIndex = 0; racerIndex < m_raceState->GetRacerCount(); racerIndex++) {
 		RaceState::Racer* racer = &m_raceState->GetRacers()[racerIndex];
@@ -96,11 +96,11 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->EndDrift();
 		racer->SetStandingsPosition(racerIndex + 1);
 
-		if (racer->m_unk0xd04 & RaceState::Racer::c_flags0xd04Bit21) {
-			racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
+		if (racer->m_flags & RaceState::Racer::c_flagBit21) {
+			racer->m_flags &= ~RaceState::Racer::c_flagBit21;
 		}
 
-		RaceState::Racer::CarVisuals* field = &racer->m_unk0x018;
+		RaceState::Racer::CarVisuals* field = &racer->m_visuals;
 		field->StopSlideSkid();
 		field->ShowModels();
 		field->StopSkidEffects();
@@ -122,13 +122,13 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 			field->ClearWheelParticle(particleIndex);
 		}
 
-		LegoU32 startIndex = m_raceState->GetUnk0x17c(racerIndex);
-		GolVec3 position = m_raceState->GetUnk0x0a4(startIndex);
+		LegoU32 startIndex = m_raceState->GetPlacementSlot(racerIndex);
+		GolVec3 position = m_raceState->GetStartPosition(startIndex);
 		GolVec3 up;
-		GolVec3 direction = m_raceState->GetUnk0x0ec(startIndex);
-		up = m_raceState->GetUnk0x134(startIndex);
-		racer->m_unk0x018.m_carEntity->VTable0x08(position);
-		racer->m_unk0x018.m_carEntity->VTable0x40(direction, up);
+		GolVec3 direction = m_raceState->GetStartDirection(startIndex);
+		up = m_raceState->GetStartUp(startIndex);
+		racer->m_visuals.m_carEntity->VTable0x08(position);
+		racer->m_visuals.m_carEntity->VTable0x40(direction, up);
 		field->SnapVisuals();
 		racer->InvalidateCamera();
 
@@ -138,7 +138,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		}
 
 		racer->InitializePhysics(NULL, NULL);
-		racer->m_unk0xc70.m_unk0x050 = m_raceState->GetUnk0x2a0();
+		racer->m_driveController.m_previewCursor = m_raceState->GetSharedRouteCursor();
 		racer->ResetRaceProgress();
 		racer->StopEngineSounds();
 	}

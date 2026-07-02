@@ -92,8 +92,7 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 	RaceState::Racer* noTarget = NULL;
 	RaceState::Racer* target = m_targetRacer;
 	if (target == noTarget || m_retargetTimerMs > c_targetRefreshMs ||
-		(target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) ||
-		(target->m_unk0xd04 & c_racerFlags0xd04InvalidTargetMask)) {
+		(target->m_physics.m_flags & c_racerFlags0xaa8Bit7) || (target->m_flags & c_racerFlags0xd04InvalidTargetMask)) {
 		m_retargetTimerMs = 0;
 		target =
 			p_raceState
@@ -101,8 +100,8 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 		m_targetRacer = target;
 
 		while (target != noTarget) {
-			if (target != m_ownerRacer && !(target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) &&
-				!(target->m_unk0xd04 & c_racerFlags0xd04InvalidTargetMask)) {
+			if (target != m_ownerRacer && !(target->m_physics.m_flags & c_racerFlags0xaa8Bit7) &&
+				!(target->m_flags & c_racerFlags0xd04InvalidTargetMask)) {
 				break;
 			}
 
@@ -223,7 +222,7 @@ LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 	RaceState::Racer* target = m_targetRacer;
 	if (target != NULL) {
-		target->m_unk0x018.m_carEntity->VTable0x04(&m_targetPosition);
+		target->m_visuals.m_carEntity->VTable0x04(&m_targetPosition);
 		m_targetPosition.m_z += g_homingProjectileTargetHeightOffset;
 		m_direction.m_x = m_targetPosition.m_x - m_position.m_x;
 		m_direction.m_y = m_targetPosition.m_y - m_position.m_y;

@@ -140,7 +140,7 @@ void RacePowerupManager::TetherProjectile::RebuildBeam(
 	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
-	m_ownerRacer->m_unk0x018.m_carEntity->VTable0x04(&origin);
+	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&origin);
 	origin.m_z += m_attachHeight;
 
 	LegoFloat deltaX = p_position->m_x - origin.m_x;
@@ -177,7 +177,7 @@ void RacePowerupManager::TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 LegoS32 RacePowerupManager::TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
-	m_ownerRacer->m_unk0x018.m_carEntity->VTable0x04(&position);
+	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&position);
 	position.m_z += m_attachHeight;
 
 	GolVec3* target = &m_endPosition;
@@ -227,7 +227,7 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs
 LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
-	m_hitRacer->m_unk0x018.m_carEntity->VTable0x04(&targetPosition);
+	m_hitRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
 	targetPosition.m_z += g_tetherTargetHeightOffset;
 
 	GolVec3 currentPosition;
@@ -252,7 +252,7 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs
 	m_worldEntity->VTable0x08(currentPosition);
 
 	GolVec3 origin;
-	m_ownerRacer->m_unk0x018.m_carEntity->VTable0x04(&origin);
+	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&origin);
 	origin.m_z += m_attachHeight;
 
 	GolVec3 delta;

@@ -60,13 +60,13 @@ void RaceCameraController::FUN_00427c00()
 		return;
 	}
 
-	GolVec3 velocity = m_unk0x0d4->m_unk0x3e8.m_unk0x008;
+	GolVec3 velocity = m_unk0x0d4->m_physics.m_velocity;
 	GolVec3 right;
 	GolVec3 forward;
-	m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x48(&right, &forward);
+	m_unk0x0d4->m_visuals.m_carEntity->VTable0x48(&right, &forward);
 
 	GolVec3 position;
-	m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&position);
+	m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&position);
 
 	{
 		SoundNode* soundNode = m_unk0x14c;
@@ -114,7 +114,7 @@ void RaceCameraController::FUN_00427d30()
 
 	GolVec3 right;
 	GolVec3 forward;
-	if (m_unk0x002 == 1 && m_unk0x004) {
+	if (m_unk0x002 == 1 && m_lookBack) {
 		GolVec3 position;
 		position.m_x = m_unk0x0e4.m_x + m_unk0x0e4.m_x - m_unk0x048.m_position.m_x;
 		position.m_y = m_unk0x0e4.m_y + m_unk0x0e4.m_y - m_unk0x048.m_position.m_y;
@@ -133,7 +133,7 @@ void RaceCameraController::FUN_00427d30()
 		camera->m_flags |= GolCamera::c_flagBit0;
 		return;
 	}
-	if (m_unk0x002 == 2 && m_unk0x004) {
+	if (m_unk0x002 == 2 && m_lookBack) {
 		camera->GetTransform()->SetPosition(&m_unk0x048.m_position);
 		camera->m_flags |= GolCamera::c_flagBit0;
 
@@ -169,7 +169,7 @@ void RaceCameraController::FUN_00427e80()
 		m_unk0x140 -= m_unk0x0d0;
 	}
 
-	if (m_unk0x0d4->m_unk0xd04 & 0x10) {
+	if (m_unk0x0d4->m_flags & 0x10) {
 		m_unk0x13c = 0.0f;
 		m_unk0x140 = 0;
 	}
@@ -177,7 +177,7 @@ void RaceCameraController::FUN_00427e80()
 		m_unk0x140 = 500;
 		m_unk0x138 = m_camera->m_fov;
 
-		if (m_unk0x0d4->m_unk0xd04 & 0x800) {
+		if (m_unk0x0d4->m_flags & 0x800) {
 			if ((m_unk0x13c > 0.0f || m_unk0x138 <= 40.0f) && m_unk0x138 < 80.0f) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 				m_unk0x13c =
@@ -274,7 +274,7 @@ void RaceCameraController::Reset()
 	m_unk0x108 = 0.016666668f;
 	m_unk0x140 = 0;
 	m_unk0x14c = NULL;
-	m_unk0x004 = FALSE;
+	m_lookBack = FALSE;
 	m_unk0x005 = FALSE;
 }
 
@@ -297,11 +297,11 @@ void RaceCameraController::FUN_00428230(RaceState::Racer* p_unk0x04)
 {
 	if (m_unk0x0d4 != p_unk0x04) {
 		m_unk0x0d4 = p_unk0x04;
-		m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&m_unk0x0e4);
-		LegoU32 flags = m_unk0x0d4->m_unk0xc70.m_unk0x014;
+		m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&m_unk0x0e4);
+		LegoU32 flags = m_unk0x0d4->m_driveController.m_flags;
 		m_unk0x120 = 1.0f;
 		m_unk0x11c = flags & 1;
-		GolAnimatedEntity* entity = m_unk0x0d4->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* entity = m_unk0x0d4->m_visuals.m_carEntity;
 		m_unk0x0d8.m_x = entity->GetOrientation().m_rows[0].m_x;
 		m_unk0x0d8.m_y = entity->GetOrientation().m_rows[0].m_y;
 		m_unk0x0d8.m_z = entity->GetOrientation().m_rows[0].m_z;
@@ -395,7 +395,7 @@ void RaceCameraController::FUN_004283f0(LegoS32 p_unk0x04, LegoBool32 p_unk0x08)
 		m_unk0x130 -= m_unk0x118;
 	}
 
-	m_unk0x004 = FALSE;
+	m_lookBack = FALSE;
 }
 
 // STUB: LEGORACERS 0x00428500
@@ -455,7 +455,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 
 	switch (m_unk0x002) {
 	case 0: {
-		m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&m_unk0x0e4);
+		m_unk0x0d4->m_visuals.m_carEntity->VTable0x04(&m_unk0x0e4);
 
 		if (m_unk0x0c8 == 0.0f) {
 			GolMath::FUN_1002f5a0(m_unk0x088.m_orientation, &m_unk0x0b8);
@@ -487,7 +487,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 	case 1:
 	case 3: {
 		RaceState::Racer* racer = m_unk0x0d4;
-		GolAnimatedEntity* entity = racer->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		GolVec3 targetPosition;
 		entity->VTable0x04(&targetPosition);
 
@@ -524,16 +524,16 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 			m_unk0x0d8 = desiredDirection;
 		}
 		else {
-			if (racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) {
+			if (racer->m_physics.m_flags & RaceState::Racer::Physics::c_flagSpinning) {
 				desiredDirection = m_unk0x0d8;
 			}
 			else {
 				LegoFloat turnAmount;
-				if (racer->m_unk0x3e8.m_unk0x64c == 0.0f) {
+				if (racer->m_physics.m_turnRadius == 0.0f) {
 					turnAmount = 0.0f;
 				}
 				else {
-					turnAmount = racer->m_unk0x3e8.m_unk0x618 * 80.0f / racer->m_unk0x3e8.m_unk0x64c;
+					turnAmount = racer->m_physics.m_forwardSpeed * 80.0f / racer->m_physics.m_turnRadius;
 					if (turnAmount < -0.30000001f) {
 						turnAmount = -0.30000001f;
 					}
@@ -577,10 +577,10 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 		m_unk0x0e4 = targetPosition;
 
 		if (m_unk0x11c) {
-			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::DriveController::c_flags0x014Bit0;
+			m_unk0x11c = racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo;
 		}
 		else {
-			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::DriveController::c_flags0x014Bit0;
+			m_unk0x11c = racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo;
 			if (m_unk0x11c) {
 				switch (racer->m_turboLevel) {
 				case 0:
@@ -698,7 +698,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 	}
 	case 2: {
 		RaceState::Racer* racer = m_unk0x0d4;
-		GolAnimatedEntity* entity = racer->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		entity->VTable0x04(&m_unk0x0e4);
 
 		GolVec3 right = entity->GetOrientation().m_rows[0];

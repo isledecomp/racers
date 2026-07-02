@@ -175,7 +175,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(3.0f);
-	m_ownerRacer->m_unk0x3e8.ApplySpeedModifier(0.0015f, 150);
+	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundDrop, &position, g_oilSoundMinDistance, g_oilSoundMaxDistance, 1.0f, 1.0f);
 
@@ -233,17 +233,17 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x004575b0
 void RacePowerupManager::OilSlickAction::OnHitRacer(RaceState::Racer* p_racer)
 {
-	if (m_state == c_stateExpiring || (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit3)) {
+	if (m_state == c_stateExpiring || (p_racer->GetFlags() & c_flagHalted)) {
 		return;
 	}
 
-	p_racer->m_unk0x3e8.VTable0x24(1.0f, 0.007f, 1.0f);
-	p_racer->m_unk0x018.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
+	p_racer->m_physics.StartSpin(1.0f, 0.007f, 1.0f);
+	p_racer->m_visuals.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
 	m_state = c_stateDone;
 	m_stateTimerMs = 0;
 
 	SoundVector position;
-	p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+	p_racer->m_visuals.m_carEntity->VTable0x04(&position);
 	m_soundSource->PlaySpatialSoundById(
 		c_soundSlip,
 		&position,

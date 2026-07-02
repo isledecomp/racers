@@ -113,11 +113,11 @@ void RacePowerupManager::HomingMissileAction::Activate(
 	);
 
 	SoundVector position;
-	RaceState::Racer::CarVisuals* racerEntities = &m_ownerRacer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerEntities = &m_ownerRacer->m_visuals;
 	racerEntities->m_carEntity->VTable0x04(&position);
 	projectile->VTable0x08(position);
 
-	m_ownerRacer->m_unk0x3e8.m_unk0x13c->CopyOrientationTo(&projectile->GetOrientation());
+	m_ownerRacer->m_physics.m_carEntity->CopyOrientationTo(&projectile->GetOrientation());
 	projectile->SetFlags(projectile->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	projectile->FUN_0040dad0(p_missileIndex);
 	projectile->SetFlags(projectile->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
@@ -137,12 +137,12 @@ void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 {
 	GolVec3 position;
 	{
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
 	}
 
 	GolVec3 direction;
-	m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
+	m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
 	RaceState* raceState = m_owner0x01c->m_raceState;
 	LegoU32 i = 0;
@@ -246,10 +246,10 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		}
 		else {
 			GolVec3 position;
-			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 			racerField->m_carEntity->VTable0x04(&position);
 			m_missileEntity.VTable0x08(position);
-			m_missileEntity.CopyOrientationFrom(*m_ownerRacer->m_unk0x3e8.m_unk0x13c);
+			m_missileEntity.CopyOrientationFrom(*m_ownerRacer->m_physics.m_carEntity);
 			return;
 		}
 	}
@@ -273,7 +273,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			LegoBool32 skipBurst = FALSE;
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
 				RaceState::Racer* target = m_projectile.GetHitRacer();
-				if ((target->m_unk0xd04 & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
+				if ((target->m_flags & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
 
@@ -299,7 +299,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 
 				m_owner0x01c->FUN_0045b4d0(&position, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
-					!(m_projectile.GetHitRacer()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+					!(m_projectile.GetHitRacer()->m_flags & c_racerFlags0xd04Bit0)) {
 					m_projectile.GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
@@ -469,7 +469,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
-		if (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
 			if (p_racer->m_shieldLevel >= 2) {
@@ -478,7 +478,7 @@ void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_rac
 			}
 		}
 		else {
-			p_racer->m_unk0x3e8.VTable0x24(2.0f, 0.007f, 0);
+			p_racer->m_physics.StartSpin(2.0f, 0.007f, 0);
 
 			if (m_ownerRacer != NULL) {
 				m_ownerRacer->PlayReaction(TRUE);
@@ -486,10 +486,10 @@ void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_rac
 
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
-			p_racer->m_unk0x018.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
+			p_racer->m_visuals.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
 
 			SoundVector position;
-			p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+			p_racer->m_visuals.m_carEntity->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundExplode,
 				&position,

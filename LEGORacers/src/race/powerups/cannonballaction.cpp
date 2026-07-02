@@ -187,7 +187,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
 				RaceState::Racer* target = m_projectile.GetHitRacer();
-				if ((target->m_unk0xd04 & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
+				if ((target->m_flags & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
 
@@ -214,7 +214,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 
 				m_owner0x01c->SpawnExplosion(&position, upwardHit, m_ownerRacer);
 				if (projectileState == PowerupProjectile::c_stateHitRacer &&
-					!(m_projectile.GetHitRacer()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+					!(m_projectile.GetHitRacer()->m_flags & c_racerFlags0xd04Bit0)) {
 					m_projectile.GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
@@ -232,12 +232,12 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 		CutsceneParticle* particle = m_smokeParticle->m_particle;
 		if (particle != NULL && particle->GetSpawnedCount() < 3) {
 			if (m_ownerRacer != NULL) {
-				m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&particlePosition);
+				m_ownerRacer->m_physics.m_carEntity->VTable0x04(&particlePosition);
 				particlePosition.m_z += g_cannonballSmokeHeightOffset;
 
-				particleVelocity = m_ownerRacer->m_unk0x3e8.m_unk0x008;
+				particleVelocity = m_ownerRacer->m_physics.m_velocity;
 				if (m_smokeParticle->m_particle != NULL) {
-					m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
+					m_ownerRacer->m_physics.m_carEntity->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
 				}
 
 				if (m_smokeParticle->m_particle != NULL) {
@@ -331,9 +331,9 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	m_stateTimerMs = durationMs;
 
 	if (m_emplacement == NULL) {
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
-		m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
+		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	}
 	else {
 		GolVec3& positionBase = position;
@@ -382,8 +382,8 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	m_smokeParticle = m_owner0x01c->m_cutsceneAnimation->FUN_00489d70("cannsmk", NULL, NULL, NULL);
 	if (m_smokeParticle != NULL) {
 		if (m_emplacement == NULL) {
-			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x48(&right, &forward);
-			m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&position);
+			m_ownerRacer->m_physics.m_carEntity->VTable0x48(&right, &forward);
+			m_ownerRacer->m_physics.m_carEntity->VTable0x04(&position);
 		}
 		else {
 			GolVec3& positionBase = position;
@@ -427,7 +427,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		positionBase = m_emplacement->m_position;
 	}
 	else {
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
 	}
 
@@ -445,7 +445,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 void RacePowerupManager::CannonballAction::OnHitRacer(RaceState::Racer* p_racer)
 {
 	if (m_state == 3) {
-		if (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
 			if (p_racer->m_shieldLevel >= 2) {
@@ -461,8 +461,8 @@ void RacePowerupManager::CannonballAction::OnHitRacer(RaceState::Racer* p_racer)
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
 			SoundVector position;
-			p_racer->m_unk0x018.SetReactionFlags(c_racerCarVisualsFlags0x384Bit1);
-			p_racer->m_unk0x018.GetCarEntity()->VTable0x04(&position);
+			p_racer->m_visuals.SetReactionFlags(c_racerCarVisualsFlags0x384Bit1);
+			p_racer->m_visuals.GetCarEntity()->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHit,
 				&position,

@@ -8,7 +8,7 @@
 #include "golworldentity.h"
 #include "material/materialtable0x0c.h"
 #include "race/powerups/powerupprojectile.h"
-#include "race/raceactionsource0x24.h"
+#include "race/raceactionsource.h"
 #include "race/racesessionfield0x27d4.h"
 #include "race/racestate.h"
 #include "types.h"
@@ -95,7 +95,7 @@ public:
 
 	private:
 		enum {
-			c_racerFlags0xd04Bit4 = 1 << 4,
+			c_flagGhost = 1 << 4,
 		};
 
 		RacePowerupManager* m_unk0x10; // 0x10
@@ -173,16 +173,16 @@ public:
 			c_actionCooldownMs = 0x206c,
 		};
 
-		RaceActionSource0x24 m_unk0x10; // 0x10
-		RacePowerupManager* m_unk0x34;  // 0x34
-		GolAnimatedEntity* m_unk0x38;   // 0x38
-		LegoFloat m_unk0x3c;            // 0x3c
-		LegoFloat m_unk0x40;            // 0x40
-		LegoFloat m_unk0x44;            // 0x44
-		LegoU32 m_unk0x48;              // 0x48
-		LegoU32 m_unk0x4c;              // 0x4c
-		LegoU32 m_unk0x50;              // 0x50
-		LegoU32 m_unk0x54;              // 0x54
+		RaceActionSource m_unk0x10;    // 0x10
+		RacePowerupManager* m_unk0x34; // 0x34
+		GolAnimatedEntity* m_unk0x38;  // 0x38
+		LegoFloat m_unk0x3c;           // 0x3c
+		LegoFloat m_unk0x40;           // 0x40
+		LegoFloat m_unk0x44;           // 0x44
+		LegoU32 m_unk0x48;             // 0x48
+		LegoU32 m_unk0x4c;             // 0x4c
+		LegoU32 m_unk0x50;             // 0x50
+		LegoU32 m_unk0x54;             // 0x54
 	};
 
 	// VTABLE: LEGORACERS 0x004b42b8
@@ -702,15 +702,15 @@ public:
 	private:
 		void Reset();
 
-		RaceState::Racer::PhysicsBase0xe4 m_unk0x10; // 0x10
-		GolAnimatedEntity m_unk0x0f4;                // 0x0f4
-		GolAnimatedEntity* m_unk0x1e8;               // 0x1e8
-		LegoEventQueue* m_unk0x1ec;                  // 0x1ec
-		LegoEventQueue::Event* m_unk0x1f0;           // 0x1f0
-		LegoFloat m_unk0x1f4;                        // 0x1f4
-		LegoFloat m_unk0x1f8;                        // 0x1f8
-		LegoFloat m_unk0x1fc;                        // 0x1fc
-		LegoU32 m_unk0x200;                          // 0x200
+		RaceState::Racer::BoxBody m_unk0x10; // 0x10
+		GolAnimatedEntity m_unk0x0f4;        // 0x0f4
+		GolAnimatedEntity* m_unk0x1e8;       // 0x1e8
+		LegoEventQueue* m_unk0x1ec;          // 0x1ec
+		LegoEventQueue::Event* m_unk0x1f0;   // 0x1f0
+		LegoFloat m_unk0x1f4;                // 0x1f4
+		LegoFloat m_unk0x1f8;                // 0x1f8
+		LegoFloat m_unk0x1fc;                // 0x1fc
+		LegoU32 m_unk0x200;                  // 0x200
 	};
 
 	// VTABLE: LEGORACERS 0x004b4370
@@ -768,7 +768,6 @@ public:
 		enum {
 			c_racerFlags0xd04Bit0 = 1 << 0,
 			c_racerFlags0xd04Bit29 = 0x20000000,
-			c_racerFlags0xaa8Bit18 = 0x00040000,
 			c_stateOne = 1,
 			c_stateTwo = 2,
 			c_timerMs = 1000,

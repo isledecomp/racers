@@ -17,7 +17,7 @@
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/checkpointgraph.h"
 #include "race/powerups/powerupprojectile.h"
-#include "race/raceactionsource0x24.h"
+#include "race/raceactionsource.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesessionfield0x27d4.h"
 #include "race/racesessionfield0x32b4.h"
@@ -79,7 +79,7 @@ public:
 		GolVec3 m_direction; // 0x0c
 		union {
 			const LegoChar* m_materialName; // 0x18
-			RaceActionSource0x24* m_source; // 0x18
+			RaceActionSource* m_source;     // 0x18
 		};
 	};
 
@@ -489,7 +489,7 @@ public:
 			c_flagWasTouched = 1 << 2,
 			c_flagDropped = 1 << 0,
 			c_flagReturnHome = 1 << 1,
-			c_racerFlags0xd04Bit4 = 1 << 4,
+			c_flagGhost = 1 << 4,
 		};
 
 		void Update(LegoU32 p_elapsedMs);
@@ -558,7 +558,7 @@ public:
 			c_soundRelease = 0x4a,
 			c_flagVictimStopped = 1 << 0,
 			c_flagVictimLifted = 1 << 1,
-			c_racerFlags0xd04Bit3 = 1 << 3,
+			c_flagHalted = 1 << 3,
 			c_racerDriveControllerFlags0x014Bit0 = 1 << 0,
 		};
 
@@ -620,7 +620,7 @@ public:
 			c_stateActive = 3,
 			c_stateExpiring = 5,
 			c_stateDone = 6,
-			c_racerFlags0xd04Bit3 = 1 << 3,
+			c_flagHalted = 1 << 3,
 			c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
 			c_activeDurationMs = 0x2710,
 			c_soundDrop = 0x2e,
@@ -730,7 +730,7 @@ public:
 			c_curseDurationMs = 0x2710,
 			c_activeDurationMs = 0x3a98,
 			c_soundLoop = 0x09,
-			c_racerFlags0xd04Bit11 = 1 << 11,
+			c_flagCursed = 1 << 11,
 		};
 
 		CurseAction();
@@ -934,7 +934,7 @@ public:
 			SpatialSoundInstance* m_sound;                  // 0x238
 			RaceResourceManager::Resource* m_soundResource; // 0x238
 		};
-		RaceActionSource0x24* m_source;     // 0x23c
+		RaceActionSource* m_source;         // 0x23c
 		LegoU32 m_shockTimerMs;             // 0x240
 		CutsceneParticleRef* m_hitParticle; // 0x244
 		GolBillboard* m_flashBillboard;     // 0x248
@@ -1001,7 +1001,7 @@ public:
 			c_soundLevel2 = 0x4d,
 			c_soundLevel3 = 0x4e,
 			c_racerFlags0xd04Bit0 = 1 << 0,
-			c_racerFlags0xd04Bit11 = 1 << 11,
+			c_flagCursed = 1 << 11,
 		};
 
 		ShieldAction();
@@ -1057,7 +1057,7 @@ public:
 			c_soundEnd = 0x28,
 			c_soundWhoosh = 0x41,
 			c_soundEndL2 = 0x4b,
-			c_racerFlags0xd04Bit3 = 1 << 3,
+			c_flagHalted = 1 << 3,
 		};
 
 		TurboAction();
@@ -1127,7 +1127,7 @@ public:
 			c_soundStart = 0x27,
 			c_soundFinish = 0x29,
 			c_soundSpatial = 0x41,
-			c_racerFlags0xd04Bit4 = 1 << 4,
+			c_flagGhost = 1 << 4,
 			c_racerFlags0xd04Bit21 = 0x00200000,
 		};
 

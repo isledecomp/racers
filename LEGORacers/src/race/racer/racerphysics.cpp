@@ -1,83 +1,83 @@
 #include "golcamerabase.h"
 #include "race/racestate.h"
 
-extern const LegoFloat g_unk0x004b0cd4;
+extern const LegoFloat g_maxTurnRadius;
 
 // GLOBAL: LEGORACERS 0x004b0d3c
-extern const LegoFloat g_unk0x004b0d3c = 0.78539819f;
+extern const LegoFloat g_slideBankMaxAngle = 0.78539819f;
 
 // GLOBAL: LEGORACERS 0x004b0d40
-extern const LegoS32 g_raceStatePhysicsMirrorEntryIndices[] = {3, 2, 1, 0};
+extern const LegoS32 g_wheelDiagonalIndices[] = {3, 2, 1, 0};
 
 // GLOBAL: LEGORACERS 0x004b0d50
-extern const LegoS32 g_raceStatePhysicsContactEntryIndices0x4b0d50[] = {2, 3, 0, 1};
+extern const LegoS32 g_wheelLengthwiseIndices[] = {2, 3, 0, 1};
 
 // GLOBAL: LEGORACERS 0x004b0d60
-extern const LegoS32 g_raceStatePhysicsContactEntryIndices0x4b0d60[] = {1, 0, 3, 2};
+extern const LegoS32 g_wheelSidewaysIndices[] = {1, 0, 3, 2};
 
 // FUNCTION: LEGORACERS 0x00448840
-void RaceState::Racer::PhysicsBase0x74c::FUN_00448840()
+void RaceState::Racer::CarBody::ComputeSlideBankTarget()
 {
-	if (m_unk0x64c > 0.0f) {
-		LegoFloat value = m_unk0x64c / g_unk0x004b0cd4;
+	if (m_turnRadius > 0.0f) {
+		LegoFloat value = m_turnRadius / g_maxTurnRadius;
 		if (value > 1.0f) {
 			value = 1.0f;
 		}
 
-		m_unk0x67c = -(1.0f - value) * g_unk0x004b0d3c;
+		m_slideBankTarget = -(1.0f - value) * g_slideBankMaxAngle;
 	}
-	else if (m_unk0x64c < 0.0f) {
-		LegoFloat value = -m_unk0x64c / g_unk0x004b0cd4;
+	else if (m_turnRadius < 0.0f) {
+		LegoFloat value = -m_turnRadius / g_maxTurnRadius;
 		if (value > 1.0f) {
 			value = 1.0f;
 		}
 
-		m_unk0x67c = (1.0f - value) * g_unk0x004b0d3c;
+		m_slideBankTarget = (1.0f - value) * g_slideBankMaxAngle;
 	}
 	else {
-		m_unk0x67c = 0.0f;
+		m_slideBankTarget = 0.0f;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004488e0
-LegoU32 RaceState::Racer::PhysicsBase0x74c::FUN_004488e0(GolBoundedEntity* p_unk0x04)
+LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_unk0x04)
 {
-	LegoU32 result = m_unk0x154;
+	LegoU32 result = m_collisionWorldCount;
 	LegoU32 i = 0;
 	for (; i < result; i++) {
-		if (m_unk0x140[i] == p_unk0x04) {
+		if (m_collisionWorlds[i] == p_unk0x04) {
 			return result;
 		}
 	}
 
-	if (result < sizeOfArray(m_unk0x140)) {
-		m_unk0x140[result] = p_unk0x04;
-		result = m_unk0x154 + 1;
-		m_unk0x154 = result;
+	if (result < sizeOfArray(m_collisionWorlds)) {
+		m_collisionWorlds[result] = p_unk0x04;
+		result = m_collisionWorldCount + 1;
+		m_collisionWorldCount = result;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00448930
-void RaceState::Racer::PhysicsBase0x74c::FUN_00448930(GolBoundedEntity* p_unk0x04)
+void RaceState::Racer::CarBody::RemoveCollisionWorld(GolBoundedEntity* p_unk0x04)
 {
-	LegoU32 count = m_unk0x154;
+	LegoU32 count = m_collisionWorldCount;
 	LegoU32 index = 0;
 	if (count > 0) {
 		for (; index < count; index++) {
-			if (m_unk0x140[index] == p_unk0x04) {
+			if (m_collisionWorlds[index] == p_unk0x04) {
 				LegoU32 nextIndex = index + 1;
 				if (nextIndex < count) {
-					GolBoundedEntity** entry = &m_unk0x140[nextIndex - 1];
+					GolBoundedEntity** entry = &m_collisionWorlds[nextIndex - 1];
 					do {
 						nextIndex++;
 						*entry = entry[1];
 						entry++;
-					} while (nextIndex < m_unk0x154);
+					} while (nextIndex < m_collisionWorldCount);
 				}
 
-				m_unk0x154--;
+				m_collisionWorldCount--;
 				return;
 			}
 		}
@@ -85,12 +85,12 @@ void RaceState::Racer::PhysicsBase0x74c::FUN_00448930(GolBoundedEntity* p_unk0x0
 }
 
 // FUNCTION: LEGORACERS 0x00448990
-LegoFloat RaceState::Racer::PhysicsBase0x74c::FUN_00448990()
+LegoFloat RaceState::Racer::CarBody::GetAverageSupportThreshold()
 {
 	LegoFloat result = 0.0f;
-	Field0x198* entry = m_unk0x198;
-	while (entry < &m_unk0x198[sizeOfArray(m_unk0x198)]) {
-		result += entry->m_unk0x054;
+	WheelProbe* entry = m_wheelProbes;
+	while (entry < &m_wheelProbes[sizeOfArray(m_wheelProbes)]) {
+		result += entry->m_supportThreshold;
 		entry++;
 	}
 
@@ -98,12 +98,12 @@ LegoFloat RaceState::Racer::PhysicsBase0x74c::FUN_00448990()
 }
 
 // FUNCTION: LEGORACERS 0x004489c0
-LegoFloat RaceState::Racer::PhysicsBase0x74c::FUN_004489c0()
+LegoFloat RaceState::Racer::CarBody::GetAverageFriction()
 {
 	LegoFloat result = 0.0f;
-	Field0x198* entry = m_unk0x198;
-	while (entry < &m_unk0x198[sizeOfArray(m_unk0x198)]) {
-		result += entry->m_unk0x058;
+	WheelProbe* entry = m_wheelProbes;
+	while (entry < &m_wheelProbes[sizeOfArray(m_wheelProbes)]) {
+		result += entry->m_friction;
 		entry++;
 	}
 
@@ -111,69 +111,69 @@ LegoFloat RaceState::Racer::PhysicsBase0x74c::FUN_004489c0()
 }
 
 // FUNCTION: LEGORACERS 0x00448a50
-void RaceState::Racer::PhysicsBase0x74c::FUN_00448a50()
+void RaceState::Racer::CarBody::AgePlaneCache()
 {
-	CollisionCacheRecord* entry = m_unk0x3f4;
-	CollisionCacheRecord* end = &m_unk0x3f4[sizeOfArray(m_unk0x3f4)];
+	CollisionCacheRecord* entry = m_planeCache;
+	CollisionCacheRecord* end = &m_planeCache[sizeOfArray(m_planeCache)];
 	while (entry < end) {
-		entry->m_unk0x034++;
+		entry->m_age++;
 		entry++;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00448a70
-RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::PhysicsBase0x74c::FUN_00448a70(
+RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::CarBody::CachePlane(
 	GolBoundingVolume::Field0x0c* p_unk0x04,
 	RaceEventRecord* p_unk0x08
 )
 {
 	CollisionCacheRecord* result;
-	LegoU32 count = m_unk0x5d4;
-	if (count < sizeOfArray(m_unk0x3f4)) {
-		result = &m_unk0x3f4[count];
-		m_unk0x5d4 = count + 1;
+	LegoU32 count = m_planeCacheCount;
+	if (count < sizeOfArray(m_planeCache)) {
+		result = &m_planeCache[count];
+		m_planeCacheCount = count + 1;
 	}
 	else {
-		CollisionCacheRecord* entry = m_unk0x3f4;
-		CollisionCacheRecord* end = &m_unk0x3f4[sizeOfArray(m_unk0x3f4)];
+		CollisionCacheRecord* entry = m_planeCache;
+		CollisionCacheRecord* end = &m_planeCache[sizeOfArray(m_planeCache)];
 		LegoU32 age = 0;
 		result = entry;
 		while (entry < end) {
-			if (age < entry->m_unk0x034) {
+			if (age < entry->m_age) {
 				result = entry;
-				age = entry->m_unk0x034;
+				age = entry->m_age;
 			}
 
 			entry++;
 		}
 	}
 
-	result->m_unk0x000 = *p_unk0x04;
-	result->m_unk0x038 = p_unk0x08;
-	result->m_unk0x034 = 0;
+	result->m_plane = *p_unk0x04;
+	result->m_record = p_unk0x08;
+	result->m_age = 0;
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00448ae0
-LegoBool32 RaceState::Racer::PhysicsBase0x74c::FUN_00448ae0(Field0x198* p_unk0x04)
+LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_unk0x04)
 {
-	if (p_unk0x04->m_unk0x044 != NULL) {
-		if (FUN_00448b80(p_unk0x04, p_unk0x04->m_unk0x044)) {
-			p_unk0x04->m_unk0x044->m_unk0x034 = 0;
-			p_unk0x04->m_unk0x03c = p_unk0x04->m_unk0x044->m_unk0x038;
+	if (p_unk0x04->m_cachedPlane != NULL) {
+		if (TestCachedPlane(p_unk0x04, p_unk0x04->m_cachedPlane)) {
+			p_unk0x04->m_cachedPlane->m_age = 0;
+			p_unk0x04->m_hitRecord = p_unk0x04->m_cachedPlane->m_record;
 
 			return TRUE;
 		}
 	}
 
-	CollisionCacheRecord* entry = m_unk0x3f4;
-	CollisionCacheRecord* end = &m_unk0x3f4[m_unk0x5d4];
+	CollisionCacheRecord* entry = m_planeCache;
+	CollisionCacheRecord* end = &m_planeCache[m_planeCacheCount];
 	while (entry < end) {
-		if (p_unk0x04->m_unk0x044 != entry && FUN_00448b80(p_unk0x04, entry)) {
-			p_unk0x04->m_unk0x044 = entry;
-			p_unk0x04->m_unk0x03c = entry->m_unk0x038;
-			entry->m_unk0x034 = 0;
+		if (p_unk0x04->m_cachedPlane != entry && TestCachedPlane(p_unk0x04, entry)) {
+			p_unk0x04->m_cachedPlane = entry;
+			p_unk0x04->m_hitRecord = entry->m_record;
+			entry->m_age = 0;
 
 			return TRUE;
 		}
@@ -185,17 +185,17 @@ LegoBool32 RaceState::Racer::PhysicsBase0x74c::FUN_00448ae0(Field0x198* p_unk0x0
 }
 
 // FUNCTION: LEGORACERS 0x00448b80
-LegoBool32 RaceState::Racer::PhysicsBase0x74c::FUN_00448b80(Field0x198* p_unk0x04, CollisionCacheRecord* p_unk0x08)
+LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_unk0x04, CollisionCacheRecord* p_unk0x08)
 {
 	GolVec3 scaled;
-	LegoFloat start = p_unk0x08->m_unk0x000.m_normal.m_z * p_unk0x04->m_unk0x018.m_z;
-	start += p_unk0x08->m_unk0x000.m_normal.m_y * p_unk0x04->m_unk0x018.m_y;
-	start += p_unk0x04->m_unk0x018.m_x * p_unk0x08->m_unk0x000.m_normal.m_x;
-	start += p_unk0x08->m_unk0x000.m_unk0x30;
-	LegoFloat end = p_unk0x08->m_unk0x000.m_normal.m_z * p_unk0x04->m_unk0x024.m_z;
-	end += p_unk0x04->m_unk0x024.m_y * p_unk0x08->m_unk0x000.m_normal.m_y;
-	end += p_unk0x04->m_unk0x024.m_x * p_unk0x08->m_unk0x000.m_normal.m_x;
-	end += p_unk0x08->m_unk0x000.m_unk0x30;
+	LegoFloat start = p_unk0x08->m_plane.m_normal.m_z * p_unk0x04->m_rayStart.m_z;
+	start += p_unk0x08->m_plane.m_normal.m_y * p_unk0x04->m_rayStart.m_y;
+	start += p_unk0x04->m_rayStart.m_x * p_unk0x08->m_plane.m_normal.m_x;
+	start += p_unk0x08->m_plane.m_unk0x30;
+	LegoFloat end = p_unk0x08->m_plane.m_normal.m_z * p_unk0x04->m_rayEnd.m_z;
+	end += p_unk0x04->m_rayEnd.m_y * p_unk0x08->m_plane.m_normal.m_y;
+	end += p_unk0x04->m_rayEnd.m_x * p_unk0x08->m_plane.m_normal.m_x;
+	end += p_unk0x08->m_plane.m_unk0x30;
 
 	LegoBool32 startNonNegative = start >= 0.0f;
 	LegoBool32 endNonNegative = end >= 0.0f;
@@ -210,36 +210,36 @@ LegoBool32 RaceState::Racer::PhysicsBase0x74c::FUN_00448b80(Field0x198* p_unk0x0
 		start = -start;
 	}
 
-	GolVec3* point = &p_unk0x04->m_unk0x030;
-	point->m_x = p_unk0x04->m_unk0x024.m_x - p_unk0x04->m_unk0x018.m_x;
-	point->m_y = p_unk0x04->m_unk0x024.m_y - p_unk0x04->m_unk0x018.m_y;
-	point->m_z = p_unk0x04->m_unk0x024.m_z - p_unk0x04->m_unk0x018.m_z;
+	GolVec3* point = &p_unk0x04->m_hitPoint;
+	point->m_x = p_unk0x04->m_rayEnd.m_x - p_unk0x04->m_rayStart.m_x;
+	point->m_y = p_unk0x04->m_rayEnd.m_y - p_unk0x04->m_rayStart.m_y;
+	point->m_z = p_unk0x04->m_rayEnd.m_z - p_unk0x04->m_rayStart.m_z;
 
 	LegoFloat amount = start / (start + end);
 	scaled.m_x = amount * point->m_x;
 	scaled.m_y = point->m_y;
 	scaled.m_y *= amount;
 	scaled.m_z = amount;
-	scaled.m_z *= p_unk0x04->m_unk0x030.m_z;
+	scaled.m_z *= p_unk0x04->m_hitPoint.m_z;
 
-	point->m_x = scaled.m_x + p_unk0x04->m_unk0x018.m_x;
-	point->m_y = scaled.m_y + p_unk0x04->m_unk0x018.m_y;
-	point->m_z = scaled.m_z + p_unk0x04->m_unk0x018.m_z;
+	point->m_x = scaled.m_x + p_unk0x04->m_rayStart.m_x;
+	point->m_y = scaled.m_y + p_unk0x04->m_rayStart.m_y;
+	point->m_z = scaled.m_z + p_unk0x04->m_rayStart.m_z;
 
-	return GolMath::FUN_004497f0(point, p_unk0x08->m_unk0x000.GetFloatData());
+	return GolMath::FUN_004497f0(point, p_unk0x08->m_plane.GetFloatData());
 }
 
 // FUNCTION: LEGORACERS 0x00448c70
-void RaceState::Racer::PhysicsBase0x74c::FUN_00448c70()
+void RaceState::Racer::CarBody::ComputeWheelPositions()
 {
-	GolOrientedEntity* entity = &m_unk0x0e4;
-	Field0x198* points = m_unk0x198;
-	GolVec3* anchor = &points[1].m_unk0x00c;
-	entity->VTable0x2c(m_unk0x358, anchor);
+	GolOrientedEntity* entity = &m_physicsEntity;
+	WheelProbe* points = m_wheelProbes;
+	GolVec3* anchor = &points[1].m_wheelPosition;
+	entity->VTable0x2c(m_anchorWheelOffset, anchor);
 
 	GolVec3 lengthOffset;
 	entity->GetOrientationRow0(&lengthOffset);
-	LegoFloat lengthScale = m_unk0x368;
+	LegoFloat lengthScale = m_wheelbase;
 	LegoFloat lengthY = lengthOffset.m_y;
 	lengthOffset.m_x *= lengthScale;
 	lengthOffset.m_y = lengthY * lengthScale;
@@ -247,27 +247,27 @@ void RaceState::Racer::PhysicsBase0x74c::FUN_00448c70()
 
 	GolVec3 widthOffset;
 	entity->GetUnk0x34(&widthOffset);
-	LegoFloat widthScale = m_unk0x364;
+	LegoFloat widthScale = m_trackWidth;
 	LegoFloat widthY = widthOffset.m_y;
 	widthOffset.m_x *= widthScale;
 	widthOffset.m_y = widthY * widthScale;
 	widthOffset.m_z *= widthScale;
 
-	points[0].m_unk0x00c.m_x = anchor->m_x - widthOffset.m_x;
-	points[0].m_unk0x00c.m_y = anchor->m_y - widthOffset.m_y;
-	points[0].m_unk0x00c.m_z = anchor->m_z - widthOffset.m_z;
+	points[0].m_wheelPosition.m_x = anchor->m_x - widthOffset.m_x;
+	points[0].m_wheelPosition.m_y = anchor->m_y - widthOffset.m_y;
+	points[0].m_wheelPosition.m_z = anchor->m_z - widthOffset.m_z;
 
-	points[3].m_unk0x00c.m_x = anchor->m_x - lengthOffset.m_x;
-	points[3].m_unk0x00c.m_y = anchor->m_y - lengthOffset.m_y;
-	points[3].m_unk0x00c.m_z = anchor->m_z - lengthOffset.m_z;
+	points[3].m_wheelPosition.m_x = anchor->m_x - lengthOffset.m_x;
+	points[3].m_wheelPosition.m_y = anchor->m_y - lengthOffset.m_y;
+	points[3].m_wheelPosition.m_z = anchor->m_z - lengthOffset.m_z;
 
-	points[2].m_unk0x00c.m_x = points[0].m_unk0x00c.m_x - lengthOffset.m_x;
-	points[2].m_unk0x00c.m_y = points[0].m_unk0x00c.m_y - lengthOffset.m_y;
-	points[2].m_unk0x00c.m_z = points[0].m_unk0x00c.m_z - lengthOffset.m_z;
+	points[2].m_wheelPosition.m_x = points[0].m_wheelPosition.m_x - lengthOffset.m_x;
+	points[2].m_wheelPosition.m_y = points[0].m_wheelPosition.m_y - lengthOffset.m_y;
+	points[2].m_wheelPosition.m_z = points[0].m_wheelPosition.m_z - lengthOffset.m_z;
 }
 
 // STUB: LEGORACERS 0x00448d90
-void RaceState::Racer::PhysicsBase0x74c::FUN_00448d90(
+void RaceState::Racer::CarBody::ComputeWheelRaysLocal(
 	GolBoundedEntity* p_unk0x04,
 	LegoFloat p_unk0x08,
 	LegoFloat p_unk0x0c
@@ -284,27 +284,27 @@ void RaceState::Racer::PhysicsBase0x74c::FUN_00448d90(
 	zDistance.m_y = resourceOrientation.m_m[1][2] * p_unk0x08;
 	zDistance.m_z = resourceOrientation.m_m[2][2] * p_unk0x08;
 
-	Field0x198* entries = m_unk0x198;
+	WheelProbe* entries = m_wheelProbes;
 
 	GolVec3 center;
-	p_unk0x04->VTable0x30(entries[1].m_unk0x00c, &center);
+	p_unk0x04->VTable0x30(entries[1].m_wheelPosition, &center);
 
-	entries[1].m_unk0x018.m_x = center.m_x + zHeight.m_x;
-	entries[1].m_unk0x018.m_y = center.m_y + zHeight.m_y;
-	entries[1].m_unk0x018.m_z = center.m_z + zHeight.m_z;
-	entries[1].m_unk0x024.m_x = center.m_x - zDistance.m_x;
-	entries[1].m_unk0x024.m_y = center.m_y - zDistance.m_y;
-	entries[1].m_unk0x024.m_z = center.m_z - zDistance.m_z;
+	entries[1].m_rayStart.m_x = center.m_x + zHeight.m_x;
+	entries[1].m_rayStart.m_y = center.m_y + zHeight.m_y;
+	entries[1].m_rayStart.m_z = center.m_z + zHeight.m_z;
+	entries[1].m_rayEnd.m_x = center.m_x - zDistance.m_x;
+	entries[1].m_rayEnd.m_y = center.m_y - zDistance.m_y;
+	entries[1].m_rayEnd.m_z = center.m_z - zDistance.m_z;
 
 	GolVec3 row0;
-	row0.m_x = m_unk0x0e4.GetOrientation().m_m[0][0];
-	row0.m_y = m_unk0x0e4.GetOrientation().m_m[0][1];
-	row0.m_z = m_unk0x0e4.GetOrientation().m_m[0][2];
+	row0.m_x = m_physicsEntity.GetOrientation().m_m[0][0];
+	row0.m_y = m_physicsEntity.GetOrientation().m_m[0][1];
+	row0.m_z = m_physicsEntity.GetOrientation().m_m[0][2];
 
 	GolVec3 row1;
-	row1.m_x = m_unk0x0e4.GetOrientation().m_m[1][0];
-	row1.m_y = m_unk0x0e4.GetOrientation().m_m[1][1];
-	row1.m_z = m_unk0x0e4.GetOrientation().m_m[1][2];
+	row1.m_x = m_physicsEntity.GetOrientation().m_m[1][0];
+	row1.m_y = m_physicsEntity.GetOrientation().m_m[1][1];
+	row1.m_z = m_physicsEntity.GetOrientation().m_m[1][2];
 
 	GolVec3 localRow0;
 	p_unk0x04->VTable0x38(row0, &localRow0);
@@ -312,36 +312,36 @@ void RaceState::Racer::PhysicsBase0x74c::FUN_00448d90(
 	GolVec3 localRow1;
 	p_unk0x04->VTable0x38(row1, &localRow1);
 
-	localRow0.m_x *= m_unk0x368;
-	localRow0.m_y *= m_unk0x368;
-	localRow0.m_z *= m_unk0x368;
-	localRow1.m_x *= m_unk0x364;
-	localRow1.m_y *= m_unk0x364;
-	localRow1.m_z *= m_unk0x364;
+	localRow0.m_x *= m_wheelbase;
+	localRow0.m_y *= m_wheelbase;
+	localRow0.m_z *= m_wheelbase;
+	localRow1.m_x *= m_trackWidth;
+	localRow1.m_y *= m_trackWidth;
+	localRow1.m_z *= m_trackWidth;
 
 	GolVec3 corner;
 	corner.m_x = center.m_x - localRow1.m_x;
 	corner.m_y = center.m_y - localRow1.m_y;
 	corner.m_z = center.m_z - localRow1.m_z;
 
-	entries[0].m_unk0x018.m_x = corner.m_x + zHeight.m_x;
-	entries[0].m_unk0x018.m_y = corner.m_y + zHeight.m_y;
-	entries[0].m_unk0x018.m_z = corner.m_z + zHeight.m_z;
-	entries[0].m_unk0x024.m_x = corner.m_x - zDistance.m_x;
-	entries[0].m_unk0x024.m_y = corner.m_y - zDistance.m_y;
-	entries[0].m_unk0x024.m_z = corner.m_z - zDistance.m_z;
+	entries[0].m_rayStart.m_x = corner.m_x + zHeight.m_x;
+	entries[0].m_rayStart.m_y = corner.m_y + zHeight.m_y;
+	entries[0].m_rayStart.m_z = corner.m_z + zHeight.m_z;
+	entries[0].m_rayEnd.m_x = corner.m_x - zDistance.m_x;
+	entries[0].m_rayEnd.m_y = corner.m_y - zDistance.m_y;
+	entries[0].m_rayEnd.m_z = corner.m_z - zDistance.m_z;
 
 	GolVec3 corner2;
 	corner2.m_x = center.m_x - localRow0.m_x;
 	corner2.m_y = center.m_y - localRow0.m_y;
 	corner2.m_z = center.m_z - localRow0.m_z;
 
-	entries[3].m_unk0x018.m_x = corner2.m_x + zHeight.m_x;
-	entries[3].m_unk0x018.m_y = corner2.m_y + zHeight.m_y;
-	entries[3].m_unk0x018.m_z = corner2.m_z + zHeight.m_z;
-	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[3].m_unk0x024);
+	entries[3].m_rayStart.m_x = corner2.m_x + zHeight.m_x;
+	entries[3].m_rayStart.m_y = corner2.m_y + zHeight.m_y;
+	entries[3].m_rayStart.m_z = corner2.m_z + zHeight.m_z;
+	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[3].m_rayEnd);
 
 	GolCameraBase::FUN_00404580(&corner, &localRow0, &corner2);
-	GolCameraBase::FUN_00404550(&corner2, &zHeight, &entries[2].m_unk0x018);
-	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[2].m_unk0x024);
+	GolCameraBase::FUN_00404550(&corner2, &zHeight, &entries[2].m_rayStart);
+	GolCameraBase::FUN_00404580(&corner2, &zDistance, &entries[2].m_rayEnd);
 }

@@ -232,12 +232,12 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		projectileParams.m_lifetimeMs = c_flightLifetimeMs;
 		projectileParams.m_launchHeight = g_dynamiteLaunchHeight;
 
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		GolVec3 racerPosition;
 		racerField->m_carEntity->VTable0x04(&racerPosition);
 
 		GolVec3 forward;
-		m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&forward);
+		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&forward);
 
 		if (m_targetRacer != NULL) {
 			m_projectile.LaunchAtRacer(&projectileParams, m_ownerRacer, m_targetRacer, TRUE, TRUE);

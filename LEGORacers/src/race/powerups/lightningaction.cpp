@@ -222,7 +222,7 @@ void RacePowerupManager::LightningAction::RebuildBolt()
 	LegoS32 index = static_cast<LegoS32>(m_jitterCursor) - 1;
 	GolVec3* modelPosition = m_boltPoints;
 	BeamMesh* field = &m_beam;
-	RaceActionSource0x24* source = m_source;
+	RaceActionSource* source = m_source;
 
 	GolVec3 position;
 	LegoFloat amount;
@@ -374,7 +374,7 @@ void RacePowerupManager::LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 
 		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 		LegoS32 distance = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange;
-		SoundVector* right = &m_source->m_right;
+		SoundVector* right = &m_source->m_forward;
 		GolVec3 offset;
 		offset.m_x = static_cast<LegoFloat>(distance) * right->m_x;
 		offset.m_y = right->m_y * static_cast<LegoFloat>(distance);
@@ -455,7 +455,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 	GolVec3 position = *m_source;
 	position.m_z += g_lightningSourceHeightOffset;
 
-	GolVec3 direction = m_source->m_right;
+	GolVec3 direction = m_source->m_forward;
 	if (m_state == c_stateRampIn) {
 		m_boltLength =
 			(1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc) * g_lightningRange;
@@ -480,7 +480,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 	GolCameraBase::FUN_00404550(&position, &scaledDirection, &end);
 
 	if (m_targetRacer != NULL) {
-		m_targetRacer->m_unk0x018.m_carEntity->VTable0x04(&end);
+		m_targetRacer->m_visuals.m_carEntity->VTable0x04(&end);
 
 		direction.m_x = end.m_x - position.m_x;
 		direction.m_y = end.m_y - position.m_y;
@@ -491,7 +491,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 			(position.m_z - end.m_z) * (position.m_z - end.m_z) + (position.m_y - end.m_y) * (position.m_y - end.m_y) +
 			(position.m_x - end.m_x) * (position.m_x - end.m_x)
 		));
-		LegoFloat radius = m_targetRacer->m_unk0x018.m_entityGroup.FUN_10028710();
+		LegoFloat radius = m_targetRacer->m_visuals.m_entityGroup.FUN_10028710();
 		if (distance > radius) {
 			distance -= radius;
 		}
@@ -531,7 +531,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 	RaceState* raceState = m_owner0x01c->m_raceState;
 	racer = raceState->FindRacerInCone(
 		&position,
-		&m_source->m_right,
+		&m_source->m_forward,
 		g_lightningChainMinDistanceSquared,
 		g_lightningReachSquared,
 		g_lightningChainConeCosine
@@ -544,7 +544,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 			GolVec3* segment = m_boltPoints;
 			for (; i < sizeOfArray(m_boltPoints);) {
 				GolVec3 hit;
-				if (racer->m_unk0x018.IntersectSegment(start, segment, &hit)) {
+				if (racer->m_visuals.IntersectSegment(start, segment, &hit)) {
 					OnHitRacer(racer);
 					break;
 				}
@@ -558,7 +558,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 		racer = raceState->FindNextRacerInCone(
 			racer,
 			&position,
-			&m_source->m_right,
+			&m_source->m_forward,
 			g_lightningChainMinDistanceSquared,
 			g_lightningReachSquared,
 			g_lightningChainConeCosine
@@ -573,29 +573,29 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 	if (state == c_stateSustain) {
 		RaceState::Racer* racer = p_racer;
-		if (racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			racer->PlayReaction(TRUE);
 			racer->AbsorbShieldHit();
 			return;
 		}
 
-		if (!(racer->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7)) {
-			RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
-			GolVec3 direction = field0x3e8->m_unk0x168;
+		if (!(racer->m_physics.m_flags & c_racerFlags0xaa8Bit7)) {
+			RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+			GolVec3 direction = field0x3e8->m_facingDirection;
 			racer->StartSpinOut();
 
-			field0x3e8->m_unk0x008.m_x = 0.0f;
-			field0x3e8->m_unk0x008.m_y = 0.0f;
-			field0x3e8->m_unk0x008.m_z = 0.0f;
+			field0x3e8->m_velocity.m_x = 0.0f;
+			field0x3e8->m_velocity.m_y = 0.0f;
+			field0x3e8->m_velocity.m_z = 0.0f;
 
 			GolVec3 impulse;
 			impulse.m_x = direction.m_x * g_lightningImpulseScale;
 			impulse.m_y = direction.m_y * g_lightningImpulseScale;
 			impulse.m_z = direction.m_z * g_lightningImpulseScale + g_lightningLaunchImpulse;
 
-			field0x3e8->VTable0x1c(&impulse, &impulse);
+			field0x3e8->ApplyImpulse(&impulse, &impulse);
 
-			RaceState::Racer::CarVisuals* racerCarVisuals = &racer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerCarVisuals = &racer->m_visuals;
 			ColorTransform0x20 transform;
 			transform.m_redOffset = c_colorOffset0xe1;
 			transform.m_redShift = 0;
@@ -673,9 +673,9 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 	up.m_z = 1.0f;
 
 	GolVec3 direction;
-	direction.m_x = -m_source->m_right.m_x;
-	direction.m_y = -m_source->m_right.m_y;
-	direction.m_z = -m_source->m_right.m_z;
+	direction.m_x = -m_source->m_forward.m_x;
+	direction.m_y = -m_source->m_forward.m_y;
+	direction.m_z = -m_source->m_forward.m_z;
 
 	if (m_hitParticle->m_particle != NULL) {
 		m_hitParticle->m_particle->FUN_00489660(&m_boltPoints[3]);

@@ -234,10 +234,10 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 	else {
 		GolAnimatedEntity* racerEntity;
 		if (m_heldRacer != NULL) {
-			racerEntity = m_heldRacer->m_unk0x018.m_carEntity;
+			racerEntity = m_heldRacer->m_visuals.m_carEntity;
 		}
 		else {
-			racerEntity = m_pulledRacer->m_unk0x018.m_carEntity;
+			racerEntity = m_pulledRacer->m_visuals.m_carEntity;
 		}
 
 		GolVec3 racerPosition;
@@ -265,10 +265,10 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 		m_magnetEntity->FUN_00410b00(direction, up);
 
 		if (m_heldRacer != NULL) {
-			if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+			if (m_heldRacer->m_physics.m_speed <= 0.002f) {
 				m_flags0x80 |= c_flagVictimStopped;
 
-				if (!(m_heldRacer->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
+				if (!(m_heldRacer->m_flags & c_flagHalted)) {
 					if (m_stateTimerMs > c_fadeDurationMs) {
 						m_stateTimerMs = c_fadeDurationMs;
 					}
@@ -277,7 +277,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 				m_heldRacer->Halt();
 			}
 
-			if (m_heldRacer->m_unk0x3e8.m_unk0x744 == 0 && (m_flags0x80 & c_flagVictimStopped) &&
+			if (m_heldRacer->m_physics.m_routeMode == 0 && (m_flags0x80 & c_flagVictimStopped) &&
 				!(m_flags0x80 & c_flagVictimLifted)) {
 				modelPosition.m_z -= 30.0f;
 				direction.m_x = modelPosition.m_x - racerPosition.m_x;
@@ -285,9 +285,9 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 				direction.m_z = modelPosition.m_z - racerPosition.m_z;
 				GolMath::NormalizeVector3(direction, &direction);
 
-				m_heldRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+				m_heldRacer->m_physics.ApplyDirectionalImpulse(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
 
-				if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+				if (m_heldRacer->m_physics.m_speed <= 0.002f) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
 					direction.m_y = racerPosition.m_y - modelPosition.m_y;
 					direction.m_z = racerPosition.m_z - modelPosition.m_z;
@@ -300,7 +300,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 				}
 			}
 
-			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerDriveControllerFlags0x014Bit0) {
+			if (m_heldRacer->m_driveController.m_flags & c_racerDriveControllerFlags0x014Bit0) {
 				m_manager->CancelTurbo(m_heldRacer);
 				m_heldRacer->ClearActiveAction();
 			}
@@ -312,7 +312,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 			direction.m_z = modelPosition.m_z - racerPosition.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			m_pulledRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+			m_pulledRacer->m_physics.ApplyDirectionalImpulse(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
 			m_pulledRacer = NULL;
 		}
 	}
@@ -397,7 +397,7 @@ void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
 		GolVec3 racerPosition;
 		m_magnetEntity->VTable0x04(&modelPosition);
 		modelPosition.m_z -= g_magnetHoldHeightOffset;
-		p_racer->m_unk0x018.m_carEntity->VTable0x04(&racerPosition);
+		p_racer->m_visuals.m_carEntity->VTable0x04(&racerPosition);
 
 		GolVec3 delta;
 		delta.m_x = modelPosition.m_x - racerPosition.m_x;
@@ -463,7 +463,7 @@ void RacePowerupManager::MagnetAction::Deploy()
 
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(10.0f);
-	m_ownerRacer->m_unk0x3e8.ApplySpeedModifier(0.0015f, 150);
+	m_ownerRacer->m_physics.ApplyPitchImpulse(0.0015f, 150);
 	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
 
 	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);

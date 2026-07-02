@@ -9,49 +9,49 @@ extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_violetShoalTwo;
 
 // GLOBAL: LEGORACERS 0x004b0058
-extern const LegoFloat g_unk0x004b0058 = 4096.0f;
+extern const LegoFloat g_driveMaxTurnRadius = 4096.0f;
 
 // GLOBAL: LEGORACERS 0x004b005c
-extern const LegoFloat g_unk0x004b005c = 0.025f;
+extern const LegoFloat g_inverseMinTurnRadius = 0.025f;
 
 // GLOBAL: LEGORACERS 0x004b0060
-extern const LegoFloat g_unk0x004b0060 = 0.00025f;
+extern const LegoFloat g_inverseMaxTurnRadius = 0.00025f;
 
 // GLOBAL: LEGORACERS 0x004b0064
-extern const LegoFloat g_unk0x004b0064 = 54.0f;
+extern const LegoFloat g_fullThrottleThrust = 54.0f;
 
 // GLOBAL: LEGORACERS 0x004b0068
-extern const LegoFloat g_unk0x004b0068 = 2.0f;
+extern const LegoFloat g_brakeThrustScale = 2.0f;
 
 // GLOBAL: LEGORACERS 0x004b006c
-extern const LegoFloat g_unk0x004b006c = 0.04f;
+extern const LegoFloat g_lowSpeedThreshold = 0.04f;
 
 // GLOBAL: LEGORACERS 0x004b0070
-extern const LegoFloat g_unk0x004b0070 = 0.2f;
+extern const LegoFloat g_lowSpeedSteerScale = 0.2f;
 
 // GLOBAL: LEGORACERS 0x004b0074
 extern const LegoFloat g_unk0x004b0074 = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b0078
-extern const LegoFloat g_unk0x004b0078 = 0.00050000002f;
+extern const LegoFloat g_returnPathMinClosing = 0.00050000002f;
 
 // GLOBAL: LEGORACERS 0x004b007c
-extern const LegoFloat g_unk0x004b007c = 0.050000001f;
+extern const LegoFloat g_slideSteerAssistMin = 0.050000001f;
 
 // GLOBAL: LEGORACERS 0x004b0088
-extern const LegoFloat g_unk0x004b0088 = 3.0f;
+extern const LegoFloat g_returnPathArriveDistance = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b008c
-extern const LegoFloat g_unk0x004b008c = 30.0f;
+extern const LegoFloat g_returnPathNearDistance = 30.0f;
 
 // GLOBAL: LEGORACERS 0x004b0090
-extern const LegoFloat g_unk0x004b0090 = 80.0f;
+extern const LegoFloat g_returnPathMaxAdvanceDistance = 80.0f;
 
 // GLOBAL: LEGORACERS 0x004b0094
-extern const LegoFloat g_unk0x004b0094 = 18.0f;
+extern const LegoFloat g_returnPathThrust = 18.0f;
 
 // GLOBAL: LEGORACERS 0x004c4810
-LegoFloat g_unk0x004c4810 = g_unk0x004b0064 * 8.0f;
+LegoFloat g_turboThrust = g_fullThrottleThrust * 8.0f;
 
 // FUNCTION: LEGORACERS 0x0041fb50
 RaceState::Racer::DriveController::DriveController()
@@ -74,201 +74,201 @@ void RaceState::Racer::DriveController::Destroy()
 // FUNCTION: LEGORACERS 0x0041fb80
 void RaceState::Racer::DriveController::Reset()
 {
-	m_unk0x000 = NULL;
-	m_unk0x004 = NULL;
-	m_unk0x008 = 0.0f;
-	m_unk0x00c = 0.0f;
-	m_driveValue = 0.0f;
-	m_unk0x014 = 0;
-	m_unk0x02c = 0;
-	m_unk0x018 = 0.0f;
-	m_unk0x01c = 0.0f;
-	m_unk0x020 = 0;
-	m_unk0x024 = 0;
-	m_unk0x034.m_x = 0.0f;
-	m_unk0x034.m_y = 0.0f;
-	m_unk0x034.m_z = 0.0f;
-	m_unk0x040.m_x = 0.0f;
-	m_unk0x040.m_y = 0.0f;
-	m_unk0x040.m_z = 0.0f;
-	m_unk0x040.m_w = 0.0f;
-	m_unk0x028 = 0;
-	m_unk0x030 = 0;
-	m_unk0x050 = NULL;
+	m_physics = NULL;
+	m_returnRecord = NULL;
+	m_previousTurnRadius = 0.0f;
+	m_turnRadius = 0.0f;
+	m_thrust = 0.0f;
+	m_flags = 0;
+	m_slideMs = 0;
+	m_curseSteerOffset = 0.0f;
+	m_curseThrottleOffset = 0.0f;
+	m_curseJitterMs = 0;
+	m_returnPreviewMs = 0;
+	m_returnPosition.m_x = 0.0f;
+	m_returnPosition.m_y = 0.0f;
+	m_returnPosition.m_z = 0.0f;
+	m_returnRotation.m_x = 0.0f;
+	m_returnRotation.m_y = 0.0f;
+	m_returnRotation.m_z = 0.0f;
+	m_returnRotation.m_w = 0.0f;
+	m_stuckMs = 0;
+	m_slideLeft = 0;
+	m_previewCursor = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0041fbd0
-void RaceState::Racer::DriveController::FUN_0041fbd0(Physics* p_unk0x04)
+void RaceState::Racer::DriveController::Initialize(Physics* p_unk0x04)
 {
-	if (m_unk0x000) {
+	if (m_physics) {
 		Destroy();
 	}
-	m_unk0x000 = p_unk0x04;
+	m_physics = p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x0041fc00
-void RaceState::Racer::DriveController::FUN_0041fc00(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 flags = m_unk0x014;
-	m_unk0x008 = m_unk0x00c;
-	LegoU32 countdown = m_unk0x020;
-	flags &= ~c_flags0x014Bit1;
-	m_unk0x014 = flags;
+	LegoU32 flags = m_flags;
+	m_previousTurnRadius = m_turnRadius;
+	LegoU32 countdown = m_curseJitterMs;
+	flags &= ~c_flagBit1;
+	m_flags = flags;
 
 	LegoU32 elapsedMs = p_elapsedMs;
 	if (elapsedMs > countdown) {
-		if (flags & c_flags0x014Bit4) {
+		if (flags & c_flagCursed) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
-			m_unk0x020 = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 500;
+			m_curseJitterMs = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 500;
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			LegoS32 random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 400;
-			m_unk0x018 = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - g_violetShoalTwo;
+			m_curseSteerOffset = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - g_violetShoalTwo;
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 			random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 200;
-			m_unk0x01c = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - 1.0f;
+			m_curseThrottleOffset = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - 1.0f;
 		}
 	}
 	else {
-		m_unk0x020 = countdown - elapsedMs;
+		m_curseJitterMs = countdown - elapsedMs;
 	}
 
-	flags = m_unk0x014;
-	if (flags & c_flags0x014Bit2) {
-		if (m_unk0x000->m_unk0x618 < 0.03f) {
-			m_unk0x02c = 0;
-			FUN_004202c0();
+	flags = m_flags;
+	if (flags & c_flagSliding) {
+		if (m_physics->m_forwardSpeed < 0.03f) {
+			m_slideMs = 0;
+			ReleaseSlide();
 		}
 		else {
-			m_unk0x02c += elapsedMs;
+			m_slideMs += elapsedMs;
 		}
 	}
-	else if (flags & c_flags0x014Bit3) {
-		LegoU32 timerMs = m_unk0x02c;
+	else if (flags & c_flagSlideBoost) {
+		LegoU32 timerMs = m_slideMs;
 		timerMs += elapsedMs;
 		LegoU32 compareMs = timerMs;
-		m_unk0x02c = timerMs;
+		m_slideMs = timerMs;
 		if (compareMs >= 300) {
-			flags &= ~c_flags0x014Bit3;
-			m_unk0x02c = 0;
-			m_unk0x014 = flags;
+			flags &= ~c_flagSlideBoost;
+			m_slideMs = 0;
+			m_flags = flags;
 		}
 	}
 
-	flags = m_unk0x014;
-	if ((flags & c_flags0x014Bit0) && m_unk0x000->m_unk0x3ec) {
-		flags |= c_flags0x014Bit8;
-		m_unk0x014 = flags;
+	flags = m_flags;
+	if ((flags & c_flagTurbo) && m_physics->m_wallContact) {
+		flags |= c_flagTurboWeakened;
+		m_flags = flags;
 	}
 
-	FUN_0041fee0();
-	FUN_004201e0();
+	ApplySteering();
+	ApplyThrust();
 }
 
 // FUNCTION: LEGORACERS 0x0041fd60
-void RaceState::Racer::DriveController::FUN_0041fd60(LegoU32)
+void RaceState::Racer::DriveController::UpdateBrakeToStop(LegoU32)
 {
-	if (m_unk0x000->m_unk0x618 > 0.0f) {
-		m_driveValue = -(g_unk0x004b0064 + g_unk0x004b0064);
+	if (m_physics->m_forwardSpeed > 0.0f) {
+		m_thrust = -(g_fullThrottleThrust + g_fullThrottleThrust);
 	}
 	else {
-		m_driveValue = 0.0f;
+		m_thrust = 0.0f;
 	}
 
-	FUN_0041fee0();
-	FUN_004201e0();
+	ApplySteering();
+	ApplyThrust();
 }
 
 // FUNCTION: LEGORACERS 0x0041fdb0
-void RaceState::Racer::DriveController::FUN_0041fdb0(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 {
-	Physics* field0x000 = m_unk0x000;
-	m_unk0x028 += p_elapsedMs;
+	Physics* field0x000 = m_physics;
+	m_stuckMs += p_elapsedMs;
 
-	if (field0x000->m_flags0x6c0 & Physics::c_flags0x6c0Bit1) {
-		LegoU32 flags = m_unk0x014;
-		m_unk0x028 = 0;
-		m_unk0x014 = flags & ~c_flags0x014Bit5;
+	if (field0x000->m_flags & Physics::c_flagSpinning) {
+		LegoU32 flags = m_flags;
+		m_stuckMs = 0;
+		m_flags = flags & ~c_flagReversing;
 		return;
 	}
 
-	LegoU32 flags = m_unk0x014;
-	if (flags & c_flags0x014Bit5) {
-		if (m_unk0x028 >= 2000) {
-			m_unk0x028 = 0;
-			m_unk0x014 = flags & ~c_flags0x014Bit5;
+	LegoU32 flags = m_flags;
+	if (flags & c_flagReversing) {
+		if (m_stuckMs >= 2000) {
+			m_stuckMs = 0;
+			m_flags = flags & ~c_flagReversing;
 		}
 	}
 	else {
-		if (field0x000->m_unk0x618 > 0.009f || -0.009f > field0x000->m_unk0x618) {
-			m_unk0x028 = 0;
+		if (field0x000->m_forwardSpeed > 0.009f || -0.009f > field0x000->m_forwardSpeed) {
+			m_stuckMs = 0;
 		}
-		else if (m_unk0x028 >= 1000) {
-			m_unk0x028 = 0;
-			m_unk0x014 = flags | c_flags0x014Bit5;
+		else if (m_stuckMs >= 1000) {
+			m_stuckMs = 0;
+			m_flags = flags | c_flagReversing;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041fe60
-void RaceState::Racer::DriveController::FUN_0041fe60(LegoFloat p_unk0x04)
+void RaceState::Racer::DriveController::SetSteeringInput(LegoFloat p_unk0x04)
 {
-	if (m_unk0x014 & c_flags0x014Bit4) {
+	if (m_flags & c_flagCursed) {
 		p_unk0x04 = -p_unk0x04;
 	}
 
-	p_unk0x04 *= m_unk0x000->m_unk0x728;
-	LegoFloat value = (g_unk0x004b005c - g_unk0x004b0060) * p_unk0x04;
+	p_unk0x04 *= m_physics->m_handlingScale;
+	LegoFloat value = (g_inverseMinTurnRadius - g_inverseMaxTurnRadius) * p_unk0x04;
 	if (p_unk0x04 > 0.0f) {
-		m_unk0x00c = 1.0f / (g_unk0x004b0060 + value);
+		m_turnRadius = 1.0f / (g_inverseMaxTurnRadius + value);
 	}
 	else if (p_unk0x04 < 0.0f) {
-		m_unk0x00c = 1.0f / (value - g_unk0x004b0060);
+		m_turnRadius = 1.0f / (value - g_inverseMaxTurnRadius);
 	}
 	else {
-		m_unk0x00c = 0.0f;
+		m_turnRadius = 0.0f;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041fee0
-void RaceState::Racer::DriveController::FUN_0041fee0()
+void RaceState::Racer::DriveController::ApplySteering()
 {
-	if (m_unk0x00c == 0.0f && m_unk0x008 == 0.0f) {
-		m_unk0x000->FUN_00446ef0(0.0f);
-		m_unk0x008 = 0.0f;
-		m_unk0x000->FUN_00448070();
+	if (m_turnRadius == 0.0f && m_previousTurnRadius == 0.0f) {
+		m_physics->SetTurnRadius(0.0f);
+		m_previousTurnRadius = 0.0f;
+		m_physics->StopSteering();
 		return;
 	}
 
-	if (m_unk0x00c != 0.0f && m_unk0x000->m_unk0x604 < g_unk0x004b006c) {
-		LegoFloat value = m_unk0x00c;
-		value *= g_unk0x004b0070;
-		m_unk0x00c = value;
+	if (m_turnRadius != 0.0f && m_physics->m_speed < g_lowSpeedThreshold) {
+		LegoFloat value = m_turnRadius;
+		value *= g_lowSpeedSteerScale;
+		m_turnRadius = value;
 	}
 
-	LegoFloat magnitude = m_unk0x00c;
+	LegoFloat magnitude = m_turnRadius;
 	if (magnitude < 0.0f) {
 		magnitude = -magnitude;
 	}
 
-	LegoU32 flags = m_unk0x014;
-	if (flags & c_flags0x014Bit2) {
-		if (!m_unk0x000->FUN_0042aea0(m_unk0x00c) || magnitude <= 0.0f) {
-			m_unk0x000->FUN_00448070();
-			m_unk0x000->FUN_00446ef0(m_unk0x00c);
+	LegoU32 flags = m_flags;
+	if (flags & c_flagSliding) {
+		if (!m_physics->CanSteer(m_turnRadius) || magnitude <= 0.0f) {
+			m_physics->StopSteering();
+			m_physics->SetTurnRadius(m_turnRadius);
 			return;
 		}
 
-		LegoFloat limit = m_unk0x000->FUN_00445cb0();
+		LegoFloat limit = m_physics->ComputeMinTurnRadius();
 		LegoFloat value = 1.0f - (magnitude / limit);
-		if (value < g_unk0x004b007c) {
-			value = g_unk0x004b007c;
+		if (value < g_slideSteerAssistMin) {
+			value = g_slideSteerAssistMin;
 		}
 
 		LegoFloat scale;
 		LegoFloat amount;
-		if (m_unk0x030 == 1) {
+		if (m_slideLeft == 1) {
 			scale = value + value + 1.0f;
 			amount = 0.25f;
 		}
@@ -277,43 +277,43 @@ void RaceState::Racer::DriveController::FUN_0041fee0()
 			amount = 0.85f;
 		}
 
-		m_unk0x000->FUN_00447f30(scale, amount, 3.1415927f);
+		m_physics->StartSteering(scale, amount, 3.1415927f);
 
 		if (magnitude < limit) {
 			value = ((limit - magnitude) * 0.5f) * 0.5f + magnitude;
-			if (m_unk0x00c < 0.0f) {
+			if (m_turnRadius < 0.0f) {
 				value = -value;
 			}
-			m_unk0x00c = value;
+			m_turnRadius = value;
 		}
 	}
-	else if (!(flags & c_flags0x014Bit1)) {
-		LegoFloat limit = m_unk0x000->FUN_0042ae10();
+	else if (!(flags & c_flagBit1)) {
+		LegoFloat limit = m_physics->GetMinTurnRadius();
 
-		if (m_unk0x000->FUN_0042aea0(m_unk0x00c) && magnitude < limit && magnitude > 0.0f) {
-			m_unk0x000->FUN_00447f30(1.0f - (magnitude / limit) + 1.0f, 0.85f, 0.70709997f);
+		if (m_physics->CanSteer(m_turnRadius) && magnitude < limit && magnitude > 0.0f) {
+			m_physics->StartSteering(1.0f - (magnitude / limit) + 1.0f, 0.85f, 0.70709997f);
 		}
 		else {
-			m_unk0x000->FUN_00448070();
+			m_physics->StopSteering();
 		}
 
 		if (magnitude < limit) {
 			LegoFloat value = (limit + magnitude) * 0.5f;
-			if (m_unk0x00c < 0.0f) {
+			if (m_turnRadius < 0.0f) {
 				value = -value;
 			}
-			m_unk0x00c = value;
+			m_turnRadius = value;
 		}
 	}
 
-	m_unk0x000->FUN_00446ef0(m_unk0x00c);
+	m_physics->SetTurnRadius(m_turnRadius);
 }
 
 // FUNCTION: LEGORACERS 0x00420130
-void RaceState::Racer::DriveController::FUN_00420130(LegoFloat p_unk0x04)
+void RaceState::Racer::DriveController::SetThrottleInput(LegoFloat p_unk0x04)
 {
-	if (m_unk0x014 & c_flags0x014Bit4) {
-		p_unk0x04 += m_unk0x01c;
+	if (m_flags & c_flagCursed) {
+		p_unk0x04 += m_curseThrottleOffset;
 
 		if (p_unk0x04 > 1.0f) {
 			p_unk0x04 = 1.0f;
@@ -323,101 +323,102 @@ void RaceState::Racer::DriveController::FUN_00420130(LegoFloat p_unk0x04)
 		}
 	}
 
-	if ((p_unk0x04 < 0.0f && m_unk0x000->m_unk0x618 > 0.0f) || (p_unk0x04 > 0.0f && m_unk0x000->m_unk0x618 < 0.0f)) {
-		LegoFloat value = g_unk0x004b0064 * p_unk0x04;
-		m_driveValue = value * g_unk0x004b0068;
+	if ((p_unk0x04 < 0.0f && m_physics->m_forwardSpeed > 0.0f) ||
+		(p_unk0x04 > 0.0f && m_physics->m_forwardSpeed < 0.0f)) {
+		LegoFloat value = g_fullThrottleThrust * p_unk0x04;
+		m_thrust = value * g_brakeThrustScale;
 		return;
 	}
 
-	m_driveValue = g_unk0x004b0064 * p_unk0x04;
+	m_thrust = g_fullThrottleThrust * p_unk0x04;
 }
 
 // FUNCTION: LEGORACERS 0x004201e0
-void RaceState::Racer::DriveController::FUN_004201e0()
+void RaceState::Racer::DriveController::ApplyThrust()
 {
-	LegoU32 flags = m_unk0x014;
+	LegoU32 flags = m_flags;
 
-	if ((flags & c_flags0x014Bit3) && m_driveValue > 0.0f) {
-		LegoFloat value = m_driveValue;
+	if ((flags & c_flagSlideBoost) && m_thrust > 0.0f) {
+		LegoFloat value = m_thrust;
 		value *= 8.0f;
-		m_driveValue = value;
+		m_thrust = value;
 	}
 
-	if (flags & c_flags0x014Bit0) {
-		if (flags & c_flags0x014Bit8) {
-			m_unk0x000->VTable0x14(0.5f * g_unk0x004c4810);
+	if (flags & c_flagTurbo) {
+		if (flags & c_flagTurboWeakened) {
+			m_physics->SetThrust(0.5f * g_turboThrust);
 		}
 		else {
-			m_unk0x000->VTable0x14(g_unk0x004c4810);
+			m_physics->SetThrust(g_turboThrust);
 		}
 	}
 	else {
-		if (!(flags & c_flags0x014Bit1)) {
-			m_unk0x000->VTable0x14(m_driveValue);
+		if (!(flags & c_flagBit1)) {
+			m_physics->SetThrust(m_thrust);
 		}
 		else {
-			LegoFloat value = m_driveValue;
+			LegoFloat value = m_thrust;
 			value *= g_unk0x004b0074;
-			m_unk0x000->VTable0x14(value);
+			m_physics->SetThrust(value);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00420260
-void RaceState::Racer::DriveController::FUN_00420260(LegoBool32 p_unk0x04)
+void RaceState::Racer::DriveController::EngageSlide(LegoBool32 p_unk0x04)
 {
-	LegoU32 flags = m_unk0x014;
-	m_unk0x014 = flags & ~c_flags0x014Bit3;
+	LegoU32 flags = m_flags;
+	m_flags = flags & ~c_flagSlideBoost;
 
-	if (m_unk0x000->FUN_0042ae20()) {
-		m_unk0x014 |= c_flags0x014Bit2;
-		m_unk0x02c = 0;
-		m_unk0x030 = p_unk0x04;
+	if (m_physics->CanPowerslide()) {
+		m_flags |= c_flagSliding;
+		m_slideMs = 0;
+		m_slideLeft = p_unk0x04;
 
 		if (!p_unk0x04) {
-			m_unk0x000->FUN_00449070(0x3e99999a);
+			m_physics->StartPowerslide(0x3e99999a);
 			return;
 		}
 
-		m_unk0x000->FUN_00449070(0x3ecccccd);
+		m_physics->StartPowerslide(0x3ecccccd);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004202c0
-undefined4 RaceState::Racer::DriveController::FUN_004202c0()
+undefined4 RaceState::Racer::DriveController::ReleaseSlide()
 {
-	LegoU32 flags = m_unk0x014;
+	LegoU32 flags = m_flags;
 	flags &= ~4;
-	m_unk0x014 = flags;
-	m_unk0x000->FUN_00448070();
+	m_flags = flags;
+	m_physics->StopSteering();
 
-	flags = m_unk0x014;
+	flags = m_flags;
 	flags &= ~8;
-	m_unk0x02c = 0;
-	m_unk0x014 = flags;
-	return m_unk0x000->FUN_00449090();
+	m_slideMs = 0;
+	m_flags = flags;
+	return m_physics->EndPowerslide();
 }
 
 // FUNCTION: LEGORACERS 0x004202f0
-GolQuat* RaceState::Racer::DriveController::FUN_004202f0(Records::Entry* p_unk0x04)
+GolQuat* RaceState::Racer::DriveController::StartReturnToPath(RaceRouteRecord* p_unk0x04)
 {
-	LegoU32 flags = m_unk0x014;
-	m_unk0x024 = 1000;
+	LegoU32 flags = m_flags;
+	m_returnPreviewMs = 1000;
 	flags |= 0x40;
-	m_unk0x004 = p_unk0x04;
-	m_unk0x014 = flags;
-	FUN_004202c0();
+	m_returnRecord = p_unk0x04;
+	m_flags = flags;
+	ReleaseSlide();
 
-	Records::Entry* value = m_unk0x004;
-	m_unk0x00c = 0;
-	m_unk0x050->AttachAtLoop(value);
+	RaceRouteRecord* value = m_returnRecord;
+	m_turnRadius = 0;
+	m_previewCursor->AttachAtLoop(value);
 
-	m_unk0x050->m_playbackSpeed = 1.0f;
-	m_unk0x050->Advance(static_cast<LegoFloat>(m_unk0x024));
+	m_previewCursor->m_playbackSpeed = 1.0f;
+	m_previewCursor->Advance(static_cast<LegoFloat>(m_returnPreviewMs));
 
-	GolQuat* basis = &m_unk0x040;
-	RaceState::Racer::Physics::RouteCursorInstance* field0x50 = m_unk0x050;
-	m_unk0x034 = field0x50->m_position;
+	GolQuat* basis = &m_returnRotation;
+	RaceState::Racer::Physics::RouteCursorInstance* field0x50 = m_previewCursor;
+	m_returnPosition = field0x50->m_position;
 	GolQuat* result = &field0x50->m_rotation;
 	basis->m_x = result->m_x;
 	basis->m_y = result->m_y;
@@ -427,22 +428,22 @@ GolQuat* RaceState::Racer::DriveController::FUN_004202f0(Records::Entry* p_unk0x
 }
 
 // FUNCTION: LEGORACERS 0x00420380
-void RaceState::Racer::DriveController::FUN_00420380()
+void RaceState::Racer::DriveController::EndReturnToPath()
 {
-	LegoU32 flags = m_unk0x014;
-	flags &= ~c_flags0x014Bit6;
-	m_unk0x004 = NULL;
-	m_unk0x014 = flags;
+	LegoU32 flags = m_flags;
+	flags &= ~c_flagReturnToPath;
+	m_returnRecord = NULL;
+	m_flags = flags;
 
-	m_unk0x024 = 0;
-	m_unk0x00c = 0.0f;
-	m_driveValue = 0.0f;
-	m_unk0x000->FUN_00446ef0(0.0f);
-	m_unk0x000->VTable0x14(0.0f);
+	m_returnPreviewMs = 0;
+	m_turnRadius = 0.0f;
+	m_thrust = 0.0f;
+	m_physics->SetTurnRadius(0.0f);
+	m_physics->SetThrust(0.0f);
 }
 
 // FUNCTION: LEGORACERS 0x004203b0
-void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 {
 	GolVec3 delta;
 	GolVec3 pathDirection;
@@ -451,33 +452,33 @@ void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
 	GolVec3 targetPosition;
 	GolMatrix34 basis;
 
-	m_unk0x000->m_unk0x13c->VTable0x04(&targetPosition);
-	delta.m_x = m_unk0x034.m_x - targetPosition.m_x;
-	delta.m_y = m_unk0x034.m_y - targetPosition.m_y;
-	delta.m_z = m_unk0x034.m_z - targetPosition.m_z;
+	m_physics->m_carEntity->VTable0x04(&targetPosition);
+	delta.m_x = m_returnPosition.m_x - targetPosition.m_x;
+	delta.m_y = m_returnPosition.m_y - targetPosition.m_y;
+	delta.m_z = m_returnPosition.m_z - targetPosition.m_z;
 
 	LegoFloat distance =
 		static_cast<LegoFloat>(sqrt(delta.m_z * delta.m_z + delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 
-	if (distance < g_unk0x004b0088) {
-		m_unk0x000->FUN_0042a730(m_unk0x004);
-		m_unk0x000->FUN_0042b0c0();
-		m_unk0x000->m_unk0x74c.Advance(static_cast<LegoFloat>(m_unk0x024));
-		FUN_00420380();
+	if (distance < g_returnPathArriveDistance) {
+		m_physics->AttachRouteAtLoop(m_returnRecord);
+		m_physics->ResetRouteMotion();
+		m_physics->m_routeCursor.Advance(static_cast<LegoFloat>(m_returnPreviewMs));
+		EndReturnToPath();
 		return;
 	}
 
-	m_unk0x008 = m_unk0x00c;
-	FUN_0041fdb0(p_elapsedMs);
+	m_previousTurnRadius = m_turnRadius;
+	UpdateStuckDetection(p_elapsedMs);
 
-	if (m_unk0x000->m_unk0x36c >= 3) {
-		m_unk0x000->m_unk0x13c->GetOrientationRow0(&referenceDirection);
+	if (m_physics->m_contactCount >= 3) {
+		m_physics->m_carEntity->GetOrientationRow0(&referenceDirection);
 	}
 	else {
-		referenceDirection = m_unk0x000->m_unk0x168;
+		referenceDirection = m_physics->m_facingDirection;
 	}
 
-	m_unk0x000->m_unk0x13c->GetUnk0x34(&pathDirection);
+	m_physics->m_carEntity->GetUnk0x34(&pathDirection);
 	LegoBool32 positiveDirection;
 	if (pathDirection.m_z * delta.m_z + pathDirection.m_y * delta.m_y + pathDirection.m_x * delta.m_x >= 0.0f) {
 		activePathDirection = pathDirection;
@@ -497,33 +498,33 @@ void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
 
 	LegoFloat closingSpeed =
 		delta.m_z * activePathDirection.m_z + delta.m_y * activePathDirection.m_y + delta.m_x * activePathDirection.m_x;
-	if (closingSpeed < g_unk0x004b0078) {
-		m_unk0x00c = g_unk0x004b0058;
+	if (closingSpeed < g_returnPathMinClosing) {
+		m_turnRadius = g_driveMaxTurnRadius;
 	}
 	else {
-		m_unk0x00c = distance / (closingSpeed + closingSpeed);
+		m_turnRadius = distance / (closingSpeed + closingSpeed);
 	}
 
 	if (!positiveDirection) {
-		m_unk0x00c = -m_unk0x00c;
+		m_turnRadius = -m_turnRadius;
 	}
 
-	LegoU8 flags0x014 = static_cast<LegoU8>(m_unk0x014);
-	if (flags0x014 & c_flags0x014Bit5) {
-		m_driveValue = g_unk0x004b0094;
-		m_unk0x00c = -m_unk0x00c;
-		m_driveValue = -g_unk0x004b0064;
+	LegoU8 flags0x014 = static_cast<LegoU8>(m_flags);
+	if (flags0x014 & c_flagReversing) {
+		m_thrust = g_returnPathThrust;
+		m_turnRadius = -m_turnRadius;
+		m_thrust = -g_fullThrottleThrust;
 	}
 	else {
-		m_driveValue = g_unk0x004b0094;
+		m_thrust = g_returnPathThrust;
 	}
 
 	LegoBool32 updatePath = FALSE;
-	if (distance < g_unk0x004b008c) {
+	if (distance < g_returnPathNearDistance) {
 		updatePath = TRUE;
 	}
 	else {
-		GolMath::FUN_00449340(&m_unk0x040, &basis.m_m[0][0]);
+		GolMath::FUN_00449340(&m_returnRotation, &basis.m_m[0][0]);
 		if (basis.m_m[0][0] * referenceDirection.m_x + basis.m_m[0][1] * referenceDirection.m_y +
 				basis.m_m[0][2] * referenceDirection.m_z <
 			0.5f) {
@@ -531,14 +532,14 @@ void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (updatePath && distance <= g_unk0x004b0090) {
-		m_unk0x024 += 250;
-		m_unk0x050->AttachAtLoop(m_unk0x004);
-		m_unk0x050->Advance(static_cast<LegoFloat>(m_unk0x024));
-		m_unk0x034 = m_unk0x050->m_position;
-		m_unk0x040 = m_unk0x050->m_rotation;
+	if (updatePath && distance <= g_returnPathMaxAdvanceDistance) {
+		m_returnPreviewMs += 250;
+		m_previewCursor->AttachAtLoop(m_returnRecord);
+		m_previewCursor->Advance(static_cast<LegoFloat>(m_returnPreviewMs));
+		m_returnPosition = m_previewCursor->m_position;
+		m_returnRotation = m_previewCursor->m_rotation;
 	}
 
-	FUN_0041fee0();
-	FUN_004201e0();
+	ApplySteering();
+	ApplyThrust();
 }

@@ -123,8 +123,8 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 	ActionTarget* p_target
 )
 {
-	LegoU32 flags = p_racer->m_unk0xd04;
-	if (!(flags & c_racerFlags0xd04Bit4)) {
+	LegoU32 flags = p_racer->m_flags;
+	if (!(flags & c_flagGhost)) {
 		if (flags & c_racerFlags0xd04Bit21) {
 			m_state = 6;
 			return flags;
@@ -133,7 +133,7 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 		m_manager->CancelMagnetHold(p_racer);
 		m_racer = p_racer;
 		m_isDemoRacer = p_racer->m_controlMode == 2;
-		p_racer->m_unk0xd04 |= c_racerFlags0xd04Bit21;
+		p_racer->m_flags |= c_racerFlags0xd04Bit21;
 
 		m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
 		for (LegoU32 i = 1; i < 3; i++) {
@@ -148,7 +148,7 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 		m_modelEntity.FUN_00411700(p_model->FUN_004116e0());
 		m_modelEntity.FUN_00411730(p_model->FUN_004116f0());
 
-		GolAnimatedEntity* racerEntity = p_racer->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* racerEntity = p_racer->m_visuals.m_carEntity;
 		GolVec3 position;
 		racerEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
@@ -222,13 +222,13 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 					pathEntry = m_racer->m_checkpointGraph->GetCheckpoint(pathIndex);
 				}
 
-				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_unk0x018;
+				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_visuals;
 				racerCarVisuals->m_carEntity->VTable0x04(&position);
 				m_racer->m_checkpointGraph->FUN_0041eaf0(&position, distance, pathEntry);
 			}
 
-			m_racer->m_unk0x018.m_carEntity->VTable0x08(position);
-			m_racer->m_unk0x3e8.m_unk0x0e4.VTable0x08(position);
+			m_racer->m_visuals.m_carEntity->VTable0x08(position);
+			m_racer->m_physics.m_physicsEntity.VTable0x08(position);
 		} while (0);
 	}
 
@@ -258,7 +258,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 
 	GolVec3 savedPosition;
@@ -345,10 +345,10 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 	m_modelEntity.SetUnk0x58AndInvalidateRadius(scale);
 
 	if (m_stateTimerMs < 250) {
-		m_racer->m_unk0x018.SetScale(scale);
+		m_racer->m_visuals.SetScale(scale);
 	}
 
-	RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 	entity->VTable0x04(&position);
 	m_modelEntity.VTable0x08(position);
@@ -360,11 +360,11 @@ void RacePowerupManager::WarpAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateStarting: {
-		m_racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
+		m_racer->m_flags &= ~RaceState::Racer::c_flagBit21;
 		m_racer->EnterGhostMode();
-		m_racer->m_unk0x018.SetScale(1.0f);
-		m_racer->m_unk0x3e8.VTable0x44();
-		m_racer->m_unk0x3e8.VTable0x4c();
+		m_racer->m_visuals.SetScale(1.0f);
+		m_racer->m_physics.EndExternalForce0();
+		m_racer->m_physics.EndExternalForce1();
 
 		RaceCameraController* cameraController = m_racer->m_cameraController;
 		if (cameraController != NULL) {
@@ -376,7 +376,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
 		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
 		GolAnimatedEntity* entity = *entitySlot;
 		entity->VTable0x04(&m_startPosition);
@@ -413,9 +413,9 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_carEntity;
+		GolAnimatedEntity* entity = m_racer->m_visuals.m_carEntity;
 		TeleportEntity(entity);
-		m_racer->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
+		m_racer->m_physics.m_physicsEntity.CopyPositionFrom(*entity);
 
 		GolVec3 direction;
 		if (m_hasTarget) {
@@ -448,15 +448,15 @@ void RacePowerupManager::WarpAction::AdvanceState()
 
 		if (!m_isDemoRacer) {
 			entity->VTable0x40(direction, up);
-			m_racer->m_unk0x3e8.m_unk0x0e4.CopyOrientationFrom(*entity);
+			m_racer->m_physics.m_physicsEntity.CopyOrientationFrom(*entity);
 
-			RaceState::Racer::Physics* racerPhysics = &m_racer->m_unk0x3e8;
+			RaceState::Racer::Physics* racerPhysics = &m_racer->m_physics;
 			up.Clear();
-			racerPhysics->m_unk0x008.m_x = 0.0f;
-			racerPhysics->m_unk0x008.m_y = up.m_y;
-			racerPhysics->m_unk0x008.m_z = up.m_z;
-			m_racer->m_unk0x3e8.VTable0x20(&direction, g_warpLaunchSpeed);
-			m_racer->m_unk0x3e8.FUN_00446fa0();
+			racerPhysics->m_velocity.m_x = 0.0f;
+			racerPhysics->m_velocity.m_y = up.m_y;
+			racerPhysics->m_velocity.m_z = up.m_z;
+			m_racer->m_physics.ApplyDirectionalImpulse(&direction, g_warpLaunchSpeed);
+			m_racer->m_physics.SnapFacingDirection();
 			m_racer->InvalidateCamera();
 
 			if (!m_isDemoRacer) {
@@ -487,7 +487,7 @@ void RacePowerupManager::WarpAction::Deactivate()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		m_racer->m_unk0x018.SetScale(1.0f);
+		m_racer->m_visuals.SetScale(1.0f);
 		m_racer = NULL;
 	}
 

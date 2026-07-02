@@ -90,8 +90,8 @@ void RaceSession::Field0x258::FUN_00430120(LegoU32 p_elapsedMs)
 	limitPositive = g_unk0x004b0754;
 	limitNegative = -g_unk0x004b0754;
 
-	if (m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) {
-		if (m_unk0x000->m_unk0xc70.m_unk0x030 == 1) {
+	if (m_unk0x000->m_flags & c_racerFlags0xd04Bit7) {
+		if (m_unk0x000->m_driveController.m_slideLeft == 1) {
 			turnRate = g_unk0x004b0750;
 		}
 		else {
@@ -201,7 +201,7 @@ void RaceSession::Field0x258::FUN_00430120(LegoU32 p_elapsedMs)
 	}
 
 	if (!(m_unk0x004.m_unk0x05c & c_stateControlMask)) {
-		m_unk0x000->m_unk0xc70.FUN_0041fe60(m_unk0x004.m_unk0x068);
+		m_unk0x000->m_driveController.SetSteeringInput(m_unk0x004.m_unk0x068);
 	}
 }
 
@@ -254,7 +254,7 @@ void RaceSession::Field0x258::FUN_00430390()
 			if (m_unk0x004.m_unk0x068 == 0.0f) {
 				m_unk0x000->EndDrift();
 			}
-			else if (!(m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7)) {
+			else if (!(m_unk0x000->m_flags & c_racerFlags0xd04Bit7)) {
 				if (reverseValue < 0.0f) {
 					m_unk0x000->StartDrift(TRUE);
 				}
@@ -264,16 +264,16 @@ void RaceSession::Field0x258::FUN_00430390()
 			}
 		}
 	}
-	else if (m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) {
+	else if (m_unk0x000->m_flags & c_racerFlags0xd04Bit7) {
 		m_unk0x000->EndDrift();
 	}
 
-	if (!(m_unk0x000->m_unk0xd04 & c_racerFlags0xd04Bit7) && reverseValue < 0.0f && throttleValue > 0.0f) {
+	if (!(m_unk0x000->m_flags & c_racerFlags0xd04Bit7) && reverseValue < 0.0f && throttleValue > 0.0f) {
 		driveValue = 0.5f;
 	}
 
 	if (!(m_unk0x004.m_unk0x05c & c_stateControlMask)) {
-		m_unk0x000->m_unk0xc70.FUN_00420130(driveValue);
+		m_unk0x000->m_driveController.SetThrottleInput(driveValue);
 	}
 }
 
@@ -333,8 +333,8 @@ void RaceSession::Field0x258::FUN_004305e0(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
 		RaceState::Racer* racer = m_unk0x000;
-		if (racer->m_unk0x3e8.m_flags0x6c0 & 2) {
-			racer->m_unk0x3e8.VTable0x28();
+		if (racer->m_physics.m_flags & 2) {
+			racer->m_physics.FinishSpin();
 		}
 
 		m_unk0x004.m_unk0x058 |= 8;
@@ -397,11 +397,11 @@ void RaceSession::Field0x258::FUN_004306b0(LegoBool32 p_enabled)
 void RaceSession::Field0x258::FUN_004306d0(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
-		m_unk0x000->FUN_0043a3f0();
+		m_unk0x000->StartLookBack();
 		m_unk0x004.m_unk0x058 |= 0x100;
 	}
 	else {
-		m_unk0x000->FUN_0043a400();
+		m_unk0x000->EndLookBack();
 		m_unk0x004.m_unk0x058 &= ~0x100;
 	}
 }
@@ -417,10 +417,10 @@ void RaceSession::Field0x258::FUN_00430710()
 		LegoU32 duration = m_unk0x004.m_unk0x060;
 		RaceState::Racer* racer = m_unk0x000;
 		if (duration >= 60) {
-			racer->m_unk0x008->UseGreenPowerup(racer, TRUE);
+			racer->m_powerupManager->UseGreenPowerup(racer, TRUE);
 		}
 		else {
-			racer->m_unk0x008->UseGreenPowerup(racer, FALSE);
+			racer->m_powerupManager->UseGreenPowerup(racer, FALSE);
 		}
 		m_unk0x004.m_unk0x060 = 0;
 	}
@@ -436,7 +436,7 @@ void RaceSession::Field0x258::FUN_00430760()
 	m_unk0x000->SwitchToAiControl();
 
 	RaceState::Racer* racer = m_unk0x000;
-	if (racer->m_unk0xd04 & 0x80) {
+	if (racer->m_flags & 0x80) {
 		racer->EndDrift();
 	}
 }
@@ -458,13 +458,13 @@ void RaceSession::Field0x258::FUN_00430790()
 		}
 
 		if (duration >= 60) {
-			m_unk0x000->m_unk0x008->UseGreenPowerup(m_unk0x000, TRUE);
+			m_unk0x000->m_powerupManager->UseGreenPowerup(m_unk0x000, TRUE);
 		}
 		else {
-			m_unk0x000->m_unk0x008->UseGreenPowerup(m_unk0x000, FALSE);
+			m_unk0x000->m_powerupManager->UseGreenPowerup(m_unk0x000, FALSE);
 		}
 
-		m_unk0x000->m_unk0x018.StartCarSmoke();
+		m_unk0x000->m_visuals.StartCarSmoke();
 		m_unk0x004.m_unk0x060 = 0;
 	}
 }

@@ -354,7 +354,7 @@ void RacePowerupManager::CurseAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x00452da0
 void RacePowerupManager::CurseAction::OnHitRacer(RaceState::Racer* p_racer)
 {
-	if (m_state != c_stateExpiring && !(p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit11)) {
+	if (m_state != c_stateExpiring && !(p_racer->GetFlags() & c_flagCursed)) {
 		p_racer->AttachCurse(m_curseEntity, c_curseDurationMs);
 	}
 }

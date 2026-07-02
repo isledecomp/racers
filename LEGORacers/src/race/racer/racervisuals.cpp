@@ -77,7 +77,7 @@ void RaceState::Racer::CarVisuals::Reset()
 	m_shadowDirection.m_y = 0.0f;
 	m_shadowDirection.m_z = -1.0f;
 	m_trackCollidable = NULL;
-	m_unk0x1dc = NULL;
+	m_racerPhysics = NULL;
 	m_flags = 0;
 	m_driverMountOffset.m_x = 0.0f;
 	m_driverMountOffset.m_y = 0.0f;
@@ -119,7 +119,7 @@ void RaceState::Racer::CarVisuals::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0043d7a0
-void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::Field0x3b190Params0x08* p_context)
+void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::RacerContext* p_context)
 {
 	if (m_flags & c_alphaOverrideFlag) {
 		Destroy();
@@ -130,15 +130,15 @@ void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::F
 	m_carEntity = p_params->m_carEntity;
 	m_driverEntity = p_params->m_driverEntity;
 	m_driverMountOffset = p_params->m_driverMountOffset;
-	m_trackCollidable = p_context->m_unk0x08;
+	m_trackCollidable = p_context->m_trackCollidable;
 	Racer* racer = p_params->m_racer;
 	m_racer = racer;
-	m_racerPhysics = &racer->m_unk0x3e8;
-	m_particleAnimation = p_context->m_unk0x1c;
-	m_sharedParticleAnimation = p_context->m_unk0x20;
-	m_skidMarkManager = p_context->m_unk0x24;
+	m_racerPhysics = &racer->m_physics;
+	m_particleAnimation = p_context->m_particleAnimation;
+	m_sharedParticleAnimation = p_context->m_sharedParticleAnimation;
+	m_skidMarkManager = p_context->m_decalManager;
 	m_flags = c_alphaOverrideFlag | c_flagVisible;
-	if (p_context->m_unk0x30) {
+	if (p_context->m_shadowsEnabled) {
 		m_flags = c_alphaOverrideFlag | c_flagVisible | c_flagShadowEnabled;
 	}
 
@@ -171,13 +171,13 @@ void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::F
 	m_driverEntity->FUN_0040dad0(9);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 
-	if (p_context->m_flags0x3c & 0x200) {
+	if (p_context->m_cheatFlags & 0x200) {
 		m_flags |= c_flagVisible0;
 	}
-	if (p_context->m_flags0x3c & 0x400) {
+	if (p_context->m_cheatFlags & 0x400) {
 		m_flags |= c_flagVisible1;
 	}
-	if (p_context->m_flags0x3c & 0x800) {
+	if (p_context->m_cheatFlags & 0x800) {
 		m_flags |= c_flagVisible2;
 	}
 
@@ -295,9 +295,9 @@ void RaceState::Racer::CarVisuals::HideModels()
 // FUNCTION: LEGORACERS 0x0043dc00
 void RaceState::Racer::CarVisuals::StartSkidEffects()
 {
-	if (!(m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
+	if (!(m_racer->m_flags & c_flagHalted)) {
 		for (LegoU32 i = 0; i < sizeOfArray(m_wheelSkidFlags); i++) {
-			if ((m_unk0x1dc->m_flags0x6c0 & PhysicsView::c_flagAllWheelSlide) || i >= 2) {
+			if ((m_racerPhysics->m_flags & Physics::c_flagSpinning) || i >= 2) {
 				m_wheelSkidFlags[i] = TRUE;
 			}
 			else {
@@ -309,7 +309,7 @@ void RaceState::Racer::CarVisuals::StartSkidEffects()
 			m_tireSmokeParticle = m_particleAnimation->FUN_00489d70("tiresmk", NULL, NULL, NULL);
 
 			if (m_tireSmokeParticle) {
-				GolVec3 position = m_unk0x1dc->m_wheels[3].m_contactPosition;
+				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 				GolAnimatedEntity* entity = m_carEntity;
 				if (m_tireSmokeParticle->m_particle) {
 					entity->VTable0x44(m_tireSmokeParticle->m_particle->GetUnk0x160());
@@ -380,7 +380,7 @@ void RaceState::Racer::CarVisuals::SetWheelParticle(LegoU32 p_unk0x04, const Leg
 		return;
 	}
 
-	GolVec3 position = m_unk0x1dc->m_wheels[p_unk0x04].m_contactPosition;
+	GolVec3 position = m_racerPhysics->m_wheelProbes[p_unk0x04].m_wheelPosition;
 	CutsceneParticle* particle = ref->m_particle;
 	GolWorldEntity* entity = m_carEntity;
 
@@ -428,7 +428,7 @@ void RaceState::Racer::CarVisuals::StartDust()
 		return;
 	}
 
-	GolVec3 position = m_unk0x1dc->m_wheels[3].m_contactPosition;
+	GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
 	CutsceneParticle* particle = ref->m_particle;
 	GolWorldEntity* entity = m_carEntity;
 
@@ -455,8 +455,8 @@ void RaceState::Racer::CarVisuals::StartCarSmoke()
 		return;
 	}
 
-	GolVec3 position = m_unk0x1dc->m_wheels[3].m_contactPosition;
-	GolVec3 other = m_unk0x1dc->m_wheels[2].m_contactPosition;
+	GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
+	GolVec3 other = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
 	GolWorldEntity* entity = m_carEntity;
 
 	position.m_x = (position.m_x + other.m_x) * 0.5f;
@@ -489,8 +489,8 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (!(m_racer->m_unk0xd04 & c_racerFlags0xd04Bit4)) {
-		if (m_unk0x1dc->m_flags0x6c0 & PhysicsView::c_flagAllWheelSlide) {
+	if (!(m_racer->m_flags & c_flagGhost)) {
+		if (m_racerPhysics->m_flags & Physics::c_flagSpinning) {
 			if (!(m_flags & c_flagSliding)) {
 				StartSlideSkid();
 			}
@@ -511,25 +511,25 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 			}
 		}
 
-		if ((m_racer->m_unk0xd04 & c_racerFlags0xd04Bit3) && (m_flags & c_flagSkidding)) {
+		if ((m_racer->m_flags & c_flagHalted) && (m_flags & c_flagSkidding)) {
 			StopSkidEffects();
 		}
 
 		UpdateSkidMarks(p_elapsedMs);
 
-		if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
+		if (m_racer->m_flags & c_flagCursed) {
 			UpdateCurseEntity(p_elapsedMs);
 		}
 		else {
 			m_curseBlendMs = 1000;
 		}
 
-		GolVec3 velocity = m_unk0x1dc->m_velocity * 0.5f;
+		GolVec3 velocity = m_racerPhysics->m_velocity * 0.5f;
 
 		for (LegoU32 particleIndex = 0; particleIndex < sizeOfArray(m_wheelParticles); particleIndex++) {
 			CutsceneParticleRef* ref = m_wheelParticles[particleIndex];
 			if (ref) {
-				GolVec3 position = m_unk0x1dc->m_wheels[particleIndex].m_contactPosition;
+				GolVec3 position = m_racerPhysics->m_wheelProbes[particleIndex].m_wheelPosition;
 				CutsceneParticle* particle = ref->m_particle;
 
 				if (particle) {
@@ -546,12 +546,12 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 			}
 		}
 
-		if (m_racer->m_unk0x3e8.m_unk0x6dc > 400) {
+		if (m_racer->m_physics.m_airborneMs > 400) {
 			m_flags |= c_flagAirborne;
 		}
 
 		if (m_flags & c_flagAirborne) {
-			LegoU32 state = m_racer->m_unk0x3e8.m_unk0x36c;
+			LegoU32 state = m_racer->m_physics.m_contactCount;
 			if (m_lastGroundedWheelCount < state) {
 				m_flags &= ~c_flagAirborne;
 
@@ -606,8 +606,9 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 			}
 			else {
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				GolVec3 position = (g_randomTable[g_randomTableIndex] & 2) ? m_unk0x1dc->m_wheels[3].m_contactPosition
-																		   : m_unk0x1dc->m_wheels[2].m_contactPosition;
+				GolVec3 position = (g_randomTable[g_randomTableIndex] & 2)
+									   ? m_racerPhysics->m_wheelProbes[3].m_wheelPosition
+									   : m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
 
 				particle = m_dustParticle->m_particle;
 				if (particle) {
@@ -631,8 +632,8 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 				m_carSmokeParticle = NULL;
 			}
 			else {
-				GolVec3 position = m_unk0x1dc->m_wheels[3].m_contactPosition;
-				GolVec3 other = m_unk0x1dc->m_wheels[2].m_contactPosition;
+				GolVec3 position = m_racerPhysics->m_wheelProbes[3].m_wheelPosition;
+				GolVec3 other = m_racerPhysics->m_wheelProbes[2].m_wheelPosition;
 				position.m_x = (position.m_x + other.m_x) * 0.5f;
 				position.m_y = (position.m_y + other.m_y) * 0.5f;
 				position.m_z = (position.m_z + other.m_z) * 0.5f + g_violetShoalTwo;
@@ -665,7 +666,7 @@ void RaceState::Racer::CarVisuals::Update(LegoU32 p_elapsedMs)
 			for (LegoU32 tireIndex = 0; tireIndex < sizeOfArray(m_wheelSkidFlags); tireIndex++) {
 				if (m_wheelSkidFlags[tireIndex] & c_wheelSkidGrounded) {
 					if (!chooseSecond || !found) {
-						position = m_unk0x1dc->m_wheels[tireIndex].m_contactPosition;
+						position = m_racerPhysics->m_wheelProbes[tireIndex].m_wheelPosition;
 						found = TRUE;
 					}
 					else {
@@ -746,7 +747,7 @@ void RaceState::Racer::CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 	LegoFloat elapsed = static_cast<LegoFloat>(p_elapsedMs);
 	LegoFloat scale = g_unk0x004b0b28;
 	scale = -scale;
-	m_pitchLean += (scale * length) * elapsed / m_racerPhysics->m_unk0x0c8;
+	m_pitchLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
 	LegoFloat decay = elapsed;
 	decay *= g_unk0x004b0b30;
 	decay *= m_pitchLean;
@@ -773,7 +774,7 @@ void RaceState::Racer::CarVisuals::UpdateBodyLean(LegoS32 p_elapsedMs)
 
 	scale = g_unk0x004b0b2c;
 	scale = -scale;
-	m_rollLean += (scale * length) * elapsed / m_racerPhysics->m_unk0x0c8;
+	m_rollLean += (scale * length) * elapsed / m_racerPhysics->m_mass;
 	decay = elapsed;
 	decay *= g_unk0x004b0b34;
 	decay *= m_rollLean;
@@ -838,9 +839,9 @@ void GolOrientedEntity::FUN_0043ebd0(const GolOrientedEntity& p_other)
 // FUNCTION: LEGORACERS 0x0043ec10
 void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 {
-	DriveController* field0xc70 = &m_racer->m_unk0xc70;
-	LegoFloat activeValue = field0xc70->m_unk0x00c;
-	LegoFloat speed = m_unk0x1dc->m_forwardSpeed;
+	DriveController* field0xc70 = &m_racer->m_driveController;
+	LegoFloat activeValue = field0xc70->m_turnRadius;
+	LegoFloat speed = m_racerPhysics->m_forwardSpeed;
 	LegoU32 activePart = m_driverEntity->GetActiveState();
 	LegoU32 eventFlags = m_reactionFlags;
 
@@ -886,8 +887,8 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 		m_lastSpeed = 0.0f;
 
-		if (m_racer->m_unk0x014 != NULL) {
-			m_racer->m_unk0x014->FUN_004220c0();
+		if (m_racer->m_forceFeedback != NULL) {
+			m_racer->m_forceFeedback->FUN_004220c0();
 		}
 		return;
 	}
@@ -904,8 +905,8 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_driverEntity->FUN_0040dad0(c_animationPart10);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 
-		if (m_racer->m_unk0x014 != NULL) {
-			m_racer->m_unk0x014->FUN_004220c0();
+		if (m_racer->m_forceFeedback != NULL) {
+			m_racer->m_forceFeedback->FUN_004220c0();
 		}
 		return;
 	}
@@ -915,7 +916,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (field0xc70->m_driveValue < 0.0f && speed < 0.0f) {
+	if (field0xc70->m_thrust < 0.0f && speed < 0.0f) {
 		if (activePart == c_animationPart2 || activePart == c_animationPart3) {
 			return;
 		}
@@ -946,7 +947,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 		m_nearbyRacer = nearbyRacer;
 
 		if (nearbyRacer != NULL) {
-			GolAnimatedEntity* nearbyEntity = nearbyRacer->m_unk0x018.m_carEntity;
+			GolAnimatedEntity* nearbyEntity = nearbyRacer->m_visuals.m_carEntity;
 			GolVec3 row0 = m_carEntity->GetOrientation().m_rows[0];
 			GolVec3 row1 = m_carEntity->GetOrientation().m_rows[1];
 
@@ -1014,11 +1015,11 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 			LegoU8 flags = m_wheelSkidFlags[i];
 			if (flags & c_wheelSkidActive) {
 				if (!(flags & c_wheelSkidGrounded) &&
-					(m_unk0x1dc->m_wheels[i].m_flags0x03c & PhysicsView::WheelContact::c_flagOnGround)) {
+					(m_racerPhysics->m_wheelProbes[i].m_flags & Physics::WheelProbe::c_flagContact)) {
 					flags |= c_wheelSkidGrounded;
 					m_wheelSkidFlags[i] = flags;
 				}
-				else if (m_unk0x1dc->m_wheels[i].m_flags0x03c & PhysicsView::WheelContact::c_flagOnGround) {
+				else if (m_racerPhysics->m_wheelProbes[i].m_flags & Physics::WheelProbe::c_flagContact) {
 					flags &= ~c_wheelSkidGrounded;
 					m_wheelSkidFlags[i] = flags;
 				}
@@ -1042,20 +1043,20 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 		}
 	}
 
-	if (m_unk0x1dc->m_flags0x6c0 & PhysicsView::c_flagAllWheelSlide) {
+	if (m_racerPhysics->m_flags & Physics::c_flagSpinning) {
 		m_wheelSkidFlags[0] |= c_wheelSkidAllButActive;
 		m_wheelSkidFlags[1] |= c_wheelSkidAllButActive;
 		m_wheelSkidFlags[2] |= c_wheelSkidAllButActive;
 		m_wheelSkidFlags[3] |= c_wheelSkidAllButActive;
 	}
-	else if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit6) {
+	else if (m_racer->m_flags & c_flagTurbo) {
 		m_wheelSkidFlags[0] &= ~c_wheelSkidActive;
 		m_wheelSkidFlags[2] |= c_wheelSkidActive;
 		m_wheelSkidFlags[1] &= ~c_wheelSkidActive;
 		m_wheelSkidFlags[3] |= c_wheelSkidActive;
 	}
 	else {
-		GolVec3 slipDirection = m_unk0x1dc->m_slipDirection;
+		GolVec3 slipDirection = m_racerPhysics->m_velocityDirection;
 		LegoFloat dot = m_carEntity->GetOrientation().m_rows[1].m_x * slipDirection.m_x +
 						m_carEntity->GetOrientation().m_rows[1].m_y * slipDirection.m_y +
 						m_carEntity->GetOrientation().m_rows[1].m_z * slipDirection.m_z;
@@ -1164,7 +1165,7 @@ void RaceState::Racer::CarVisuals::UpdateCurseEntity(LegoU32 p_elapsedMs)
 	target.m_y += 6.0f * offsetY;
 	target.m_z += 9.0f;
 
-	LegoFloat speed = m_unk0x1dc->m_speed;
+	LegoFloat speed = m_racerPhysics->m_speed;
 	if (speed <= 0.1f) {
 		speed = 0.1f;
 	}
@@ -1376,7 +1377,7 @@ void RaceState::Racer::CarVisuals::DrawTransparent(GolD3DRenderDevice* p_rendere
 		}
 	}
 
-	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
+	if (m_racer->m_flags & c_flagCursed) {
 		p_renderer->VTable0x94(&m_curseEntity);
 	}
 }

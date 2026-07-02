@@ -4,8 +4,8 @@
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Records::Entry, 0x48)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Records::StandingsDeltaEntry, 0x0c)
+DECOMP_SIZE_ASSERT(RaceRouteRecord, 0x48)
+DECOMP_SIZE_ASSERT(RaceState::Racer::StandingsDeltaEntry, 0x0c)
 
 // FUNCTION: LEGORACERS 0x0043c6e0
 RaceState::Racer* RaceState::FindRacerInCone(
@@ -17,10 +17,10 @@ RaceState::Racer* RaceState::FindRacerInCone(
 )
 {
 	LegoS32 i;
-	for (i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount);) {
+	for (i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount);) {
 		GolVec3* origin = p_position;
-		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_unk0x018;
+		Racer* racer = &m_roster.m_racers[i];
+		Racer::CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -45,7 +45,7 @@ RaceState::Racer* RaceState::FindRacerInCone(
 			dot += yDot;
 			dot += delta.m_x * p_direction->m_x;
 			if (dot >= p_coneCosine) {
-				return &m_unk0x0f0.m_racers[i];
+				return &m_roster.m_racers[i];
 			}
 		}
 
@@ -66,14 +66,14 @@ RaceState::Racer* RaceState::FindNextRacerInCone(
 )
 {
 	LegoS32 i;
-	for (i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
-		Racer* racer = &m_unk0x0f0.m_racers[i];
+	for (i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
+		Racer* racer = &m_roster.m_racers[i];
 		if (racer <= p_racer) {
 			continue;
 		}
 
 		GolVec3 position;
-		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -92,11 +92,11 @@ RaceState::Racer* RaceState::FindNextRacerInCone(
 		}
 	}
 
-	if (i >= static_cast<LegoS32>(m_unk0x0f0.m_racerCount)) {
+	if (i >= static_cast<LegoS32>(m_roster.m_racerCount)) {
 		return NULL;
 	}
 
-	return &m_unk0x0f0.m_racers[i];
+	return &m_roster.m_racers[i];
 }
 
 // FUNCTION: LEGORACERS 0x0043c910
@@ -111,9 +111,9 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 	LegoFloat farthestDistanceSquared = 0.0f;
 	LegoS32 resultIndex = -1;
 
-	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
-		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_unk0x018;
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
+		Racer* racer = &m_roster.m_racers[i];
+		Racer::CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -139,7 +139,7 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 		return NULL;
 	}
 
-	return &m_unk0x0f0.m_racers[resultIndex];
+	return &m_roster.m_racers[resultIndex];
 }
 
 // FUNCTION: LEGORACERS 0x0043ca60
@@ -154,9 +154,9 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 	LegoFloat nearestDistanceSquared = FLT_MAX;
 	LegoS32 resultIndex = -1;
 
-	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
-		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_unk0x018;
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
+		Racer* racer = &m_roster.m_racers[i];
+		Racer::CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -182,7 +182,7 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 		return NULL;
 	}
 
-	return &m_unk0x0f0.m_racers[resultIndex];
+	return &m_roster.m_racers[resultIndex];
 }
 
 // FUNCTION: LEGORACERS 0x0043cbb0
@@ -195,11 +195,11 @@ RaceState::Racer* RaceState::FindNearestRacerInRange(
 	LegoFloat nearestDistanceSquared = FLT_MAX;
 	LegoS32 resultIndex = -1;
 
-	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
-		Racer* racer = &m_unk0x0f0.m_racers[i];
+	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
+		Racer* racer = &m_roster.m_racers[i];
 
 		GolVec3 position;
-		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -216,13 +216,13 @@ RaceState::Racer* RaceState::FindNearestRacerInRange(
 		return NULL;
 	}
 
-	return &m_unk0x0f0.m_racers[resultIndex];
+	return &m_roster.m_racers[resultIndex];
 }
 
 // STUB: LEGORACERS 0x0043cda0
 LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 {
-	TimeRaceManager* timeRaceManager = m_unk0x0f0.m_timeRaceManager;
+	TimeRaceManager* timeRaceManager = m_roster.m_timeRaceManager;
 	LegoU32 lapsCompleted = p_racer->m_lapsCompleted;
 
 	if (timeRaceManager) {
@@ -269,8 +269,8 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 		lapsCompleted = lapCount;
 	}
 
-	for (LegoU32 racerIndex = 0; racerIndex < m_unk0x0f0.m_racerCount; racerIndex++) {
-		Racer* otherRacer = &m_unk0x0f0.m_racers[racerIndex];
+	for (LegoU32 racerIndex = 0; racerIndex < m_roster.m_racerCount; racerIndex++) {
+		Racer* otherRacer = &m_roster.m_racers[racerIndex];
 		if (otherRacer == p_racer) {
 			continue;
 		}
@@ -302,15 +302,15 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 }
 
 // STUB: LEGORACERS 0x0043cf30
-void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::StandingsDeltaEntry* p_entries)
+void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::StandingsDeltaEntry* p_entries)
 {
 	LegoU32 lapCount = m_setup.m_lapCount;
 	LegoS32 racerTime = 0;
 
 	if (lapCount > p_racer->m_lapsCompleted) {
-		if (m_unk0x0f0.m_racerCount > 0) {
+		if (m_roster.m_racerCount > 0) {
 			LegoU32 racerIndex = 0;
-			Racer::Records::StandingsDeltaEntry* entry = p_entries;
+			Racer::StandingsDeltaEntry* entry = p_entries;
 
 			do {
 				entry->m_racer = NULL;
@@ -318,7 +318,7 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::Standings
 				entry->m_isValid = FALSE;
 				racerIndex++;
 				entry++;
-			} while (racerIndex < m_unk0x0f0.m_racerCount);
+			} while (racerIndex < m_roster.m_racerCount);
 		}
 
 		return;
@@ -333,15 +333,15 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::Standings
 		} while (--remaining);
 	}
 
-	if (m_unk0x0f0.m_racerCount > 0) {
+	if (m_roster.m_racerCount > 0) {
 		LegoU32 racerIndex = 0;
-		Racer::Records::StandingsDeltaEntry* entry = p_entries;
+		Racer::StandingsDeltaEntry* entry = p_entries;
 
 		do {
-			entry->m_racer = &m_unk0x0f0.m_racers[racerIndex];
+			entry->m_racer = &m_roster.m_racers[racerIndex];
 			entry->m_isValid = TRUE;
 
-			Racer* racers = m_unk0x0f0.m_racers;
+			Racer* racers = m_roster.m_racers;
 			Racer* otherRacer = &racers[racerIndex];
 			if (otherRacer == p_racer) {
 				entry->m_delta = 0;
@@ -366,12 +366,12 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::Standings
 
 			racerIndex++;
 			entry++;
-		} while (racerIndex < m_unk0x0f0.m_racerCount);
+		} while (racerIndex < m_roster.m_racerCount);
 	}
 
-	if (m_unk0x0f0.m_racerCount < 6) {
-		Racer::Records::StandingsDeltaEntry* entry = &p_entries[m_unk0x0f0.m_racerCount];
-		LegoU32 remaining = 6 - m_unk0x0f0.m_racerCount;
+	if (m_roster.m_racerCount < 6) {
+		Racer::StandingsDeltaEntry* entry = &p_entries[m_roster.m_racerCount];
+		LegoU32 remaining = 6 - m_roster.m_racerCount;
 
 		do {
 			entry->m_isValid = FALSE;
@@ -381,15 +381,15 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::Standings
 }
 
 // FUNCTION: LEGORACERS 0x0043d070
-RaceState::Racer::Records::Entry* RaceState::FindNearestRouteRecord(Racer* p_racer)
+RaceRouteRecord* RaceState::FindNearestRouteRecord(Racer* p_racer)
 {
 	LegoFloat nearestDistanceSquared = FLT_MAX;
-	Racer::Records::Entry* result = NULL;
+	RaceRouteRecord* result = NULL;
 
 	GolVec3 racerPosition;
-	p_racer->m_unk0x018.m_carEntity->VTable0x04(&racerPosition);
+	p_racer->m_visuals.m_carEntity->VTable0x04(&racerPosition);
 
-	Racer::Records::Entry* entry = m_unk0x0f0.m_routeRecords;
+	RaceRouteRecord* entry = m_roster.m_routeRecords;
 	for (LegoS32 i = 6; i; i--) {
 		if (entry->m_pathPoints) {
 			GolVec3 position = entry->m_loopPosition;

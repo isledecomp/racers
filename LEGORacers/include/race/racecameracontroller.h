@@ -55,7 +55,7 @@ public:
 	LegoU8 m_unk0x001;                   // 0x001
 	LegoU8 m_unk0x002;                   // 0x002
 	undefined m_unk0x003;                // 0x003
-	LegoU8 m_unk0x004;                   // 0x004
+	LegoU8 m_lookBack;                   // 0x004
 	LegoU8 m_unk0x005;                   // 0x005
 	undefined m_unk0x006[0x008 - 0x006]; // 0x006
 	GolMatrix34 m_unk0x008;              // 0x008

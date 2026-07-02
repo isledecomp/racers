@@ -2419,10 +2419,10 @@ void RaceSession::Field0x2098::Resource0x38::VTable0x00(RaceState::Racer* p_race
 		if (p_racer) {
 			switch (m_unk0x2c) {
 			case 0:
-				p_racer->m_unk0x3e8.VTable0x40(&m_unk0x20);
+				p_racer->m_physics.StartExternalForce0(&m_unk0x20);
 				break;
 			case 1:
-				p_racer->m_unk0x3e8.VTable0x48(&m_unk0x20);
+				p_racer->m_physics.StartExternalForce1(&m_unk0x20);
 				break;
 			}
 		}
@@ -2438,10 +2438,10 @@ void RaceSession::Field0x2098::Resource0x38::VTable0x08(RaceState::Racer* p_race
 	if (p_racer) {
 		switch (m_unk0x2c) {
 		case 0:
-			p_racer->m_unk0x3e8.VTable0x44();
+			p_racer->m_physics.EndExternalForce0();
 			break;
 		case 1:
-			p_racer->m_unk0x3e8.VTable0x4c();
+			p_racer->m_physics.EndExternalForce1();
 			break;
 		}
 	}

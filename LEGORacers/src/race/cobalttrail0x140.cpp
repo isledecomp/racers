@@ -534,7 +534,7 @@ void CobaltTrail0x140::FUN_004249b0()
 		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
 		if (racer != m_unk0x02c) {
 			GolVec3 position;
-			racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+			racer->m_visuals.m_carEntity->VTable0x04(&position);
 
 			Rect destRect;
 			destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
@@ -611,10 +611,10 @@ void CobaltTrail0x140::FUN_004249b0()
 	}
 
 	GolVec3 currentPosition;
-	m_unk0x02c->m_unk0x018.m_carEntity->VTable0x04(&currentPosition);
+	m_unk0x02c->m_visuals.m_carEntity->VTable0x04(&currentPosition);
 
 	GolVec3 direction;
-	m_unk0x02c->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
+	m_unk0x02c->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	LegoFloat directionScale =
 		1.0f / static_cast<LegoFloat>(sqrt(direction.m_y * direction.m_y + direction.m_x * direction.m_x));
 	LegoFloat directionX = direction.m_x * directionScale;
@@ -669,7 +669,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 	UtopianPan0xa4* markerResource = m_unk0x008->GetItem(10);
 
 	GolVec3 currentPosition;
-	m_unk0x02c->m_unk0x018.m_carEntity->VTable0x04(&currentPosition);
+	m_unk0x02c->m_visuals.m_carEntity->VTable0x04(&currentPosition);
 
 	GolVec3 cameraDirection;
 	m_unk0x02c->m_cameraController->FUN_00428500(&cameraDirection);
@@ -735,7 +735,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 	for (LegoS32 racerIndex = static_cast<LegoS32>(m_unk0x028->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
 		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
 		if (racer != m_unk0x02c) {
-			racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+			racer->m_visuals.m_carEntity->VTable0x04(&position);
 
 			LegoFloat deltaX = position.m_x - currentPosition.m_x;
 			LegoFloat deltaY = position.m_y - currentPosition.m_y;
@@ -1222,7 +1222,7 @@ void CobaltTrail0x140::FUN_00426280(
 RaceState::Racer* CobaltTrail0x140::FUN_004262c0(RaceState::Racer* p_unk0x04)
 {
 	m_unk0x02c = p_unk0x04;
-	p_unk0x04->m_unk0xe30 = this;
+	p_unk0x04->m_trail = this;
 
 	return p_unk0x04;
 }
@@ -1388,7 +1388,7 @@ void CobaltTrail0x140::FUN_004263a0()
 	}
 
 	RaceState::Racer* racer = m_unk0x02c;
-	if (racer->m_unk0xd04 & 0x10) {
+	if (racer->m_flags & 0x10) {
 		return;
 	}
 
@@ -1640,7 +1640,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			}
 		}
 
-		if (m_unk0x02c->m_unk0xd04 & 0x4000) {
+		if (m_unk0x02c->m_flags & 0x4000) {
 			m_unk0x00c->CopyStringByIndex(&m_unk0x014, 0x24);
 			if (m_unk0x13c) {
 				m_unk0x000
@@ -1738,7 +1738,7 @@ void CobaltTrail0x140::FUN_004263a0()
 		}
 	}
 
-	m_unk0x078 = m_unk0x02c->m_unk0x3e8.m_unk0x618 * g_unk0x004b02e0 + m_unk0x078 * 0.80000001f;
+	m_unk0x078 = m_unk0x02c->m_physics.m_forwardSpeed * g_unk0x004b02e0 + m_unk0x078 * 0.80000001f;
 
 	switch (m_unk0x03c) {
 	case 1:

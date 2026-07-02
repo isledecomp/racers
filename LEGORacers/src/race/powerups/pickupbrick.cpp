@@ -150,7 +150,7 @@ void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p
 
 	if (m_state == c_stateIdle) {
 		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-		if (!(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
+		if (!(racer->GetFlags() & c_flagGhost)) {
 			if (!(m_flags0x50 & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
 				OnTouched(racer);
 			}

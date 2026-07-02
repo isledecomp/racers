@@ -62,7 +62,7 @@ DECOMP_SIZE_ASSERT(RaceEventDispatcher0x08::Item0x48, 0x60)
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_twoPi;
-extern const LegoFloat g_unk0x004b0b90;
+extern const LegoFloat g_boxInertiaFactor;
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
@@ -650,7 +650,7 @@ LegoS32 RaceEventDispatcher0x08::ItemI::Reset()
 void RaceEventDispatcher0x08::ItemI::VTable0x04(void* p_racer)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_racer);
-	if (racer && m_unk0x0c != 2 && !(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
+	if (racer && m_unk0x0c != 2 && !(racer->GetFlags() & c_flagGhost)) {
 		RacePowerupManager::ActionTarget target;
 		target.m_direction.m_x = g_itemIActionDirectionX;
 		target.m_direction.m_y = g_itemIActionDirectionY;
@@ -876,9 +876,9 @@ void RaceEventDispatcher0x08::Item0x40::ClearFields()
 	m_unk0x10.m_velocity.m_x = 0.0f;
 	m_unk0x10.m_velocity.m_y = 0.0f;
 	m_unk0x10.m_velocity.m_z = 0.0f;
-	m_unk0x10.m_right.m_x = 0.0f;
-	m_unk0x10.m_right.m_y = 0.0f;
-	m_unk0x10.m_right.m_z = 0.0f;
+	m_unk0x10.m_forward.m_x = 0.0f;
+	m_unk0x10.m_forward.m_y = 0.0f;
+	m_unk0x10.m_forward.m_z = 0.0f;
 	m_unk0x54 = 0;
 }
 
@@ -971,12 +971,12 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 		}
 
 		LegoS32 index = static_cast<LegoS32>(lateralAngle * g_item0x40RadiansToTableIndex) & 0x3ff;
-		m_unk0x10.m_right.m_x = g_cosineTable[index];
+		m_unk0x10.m_forward.m_x = g_cosineTable[index];
 
 		index = (0xffffff00 - static_cast<LegoS32>(lateralAngle * g_negativeRadiansToTableIndex)) & 0x3ff;
-		m_unk0x10.m_right.m_y = g_cosineTable[index];
+		m_unk0x10.m_forward.m_y = g_cosineTable[index];
 		if (m_unk0x54) {
-			m_unk0x10.m_right.m_y = -m_unk0x10.m_right.m_y;
+			m_unk0x10.m_forward.m_y = -m_unk0x10.m_forward.m_y;
 		}
 
 		LegoU32 quarterPeriod = m_unk0x50 >> 2;
@@ -985,9 +985,9 @@ void RaceEventDispatcher0x08::Item0x40::VTable0x14(undefined4 p_elapsedMs)
 		verticalAngle *= g_twoPi;
 		verticalAngle *= g_item0x40RadiansToTableIndex;
 		index = static_cast<LegoS32>(verticalAngle) & 0x3ff;
-		m_unk0x10.m_right.m_z = g_cosineTable[index] * m_unk0x40 + m_unk0x44;
+		m_unk0x10.m_forward.m_z = g_cosineTable[index] * m_unk0x40 + m_unk0x44;
 
-		GolMath::NormalizeVector3(m_unk0x10.m_right, &m_unk0x10.m_right);
+		GolMath::NormalizeVector3(m_unk0x10.m_forward, &m_unk0x10.m_forward);
 
 		if (m_unk0x38) {
 			m_unk0x38->VTable0x04(&m_unk0x10);
@@ -1166,7 +1166,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x10(Context* p_context, GolFilePa
 	}
 
 	m_unk0x0f4.FUN_10026fa0(radius);
-	m_unk0x10.FUN_00441210(&m_unk0x0f4, g_unk0x004b42ec, m_unk0x1f4, m_unk0x1f8, m_unk0x1fc);
+	m_unk0x10.Initialize(&m_unk0x0f4, g_unk0x004b42ec, m_unk0x1f4, m_unk0x1f8, m_unk0x1fc);
 	m_unk0x0c = state;
 }
 
@@ -1182,7 +1182,7 @@ void RaceEventDispatcher0x08::Item0x3e::Reset()
 	m_unk0x1ec = NULL;
 	m_unk0x1f0 = NULL;
 	m_unk0x0f4.VTable0x54();
-	m_unk0x10.FUN_00440a50();
+	m_unk0x10.Destroy();
 	Item::Reset();
 }
 
@@ -1247,7 +1247,7 @@ void RaceEventDispatcher0x08::Item0x3e::VTable0x14(undefined4 p_elapsedMs)
 		localPosition.m_z *= scale;
 		GolVec3 worldPosition;
 		m_unk0x1e8->VTable0x2c(localPosition, &worldPosition);
-		m_unk0x10.m_unk0x020 = worldPosition;
+		m_unk0x10.m_centerOfMassWorld = worldPosition;
 
 		if (m_unk0x200) {
 			GolVec3 worldRight;
@@ -1850,33 +1850,33 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
 
-	if ((field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) || field0x3e8->m_unk0x618 == 0.0f ||
-		(racer->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+	if ((field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) || field0x3e8->m_forwardSpeed == 0.0f ||
+		(racer->m_flags & c_racerFlags0xd04Bit0)) {
 		return;
 	}
 
-	field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
+	field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 	racer->StartSpinOut();
 
 	GolVec3 impulse;
 	impulse.m_y = 0.0f;
 	impulse.m_z = 0.0f;
 
-	field0x3e8->m_unk0x008.m_x = 0.0f;
-	field0x3e8->m_unk0x008.m_y = impulse.m_y;
-	field0x3e8->m_unk0x008.m_z = impulse.m_z;
+	field0x3e8->m_velocity.m_x = 0.0f;
+	field0x3e8->m_velocity.m_y = impulse.m_y;
+	field0x3e8->m_velocity.m_z = impulse.m_z;
 
 	impulse.m_y = impulse.m_x = 0.0f;
 	LegoFloat impulseZ = g_item0x2bImpulseVectorZ;
 	impulse.m_z = impulseZ;
-	field0x3e8->VTable0x1c(&impulse, &impulse);
+	field0x3e8->ApplyImpulse(&impulse, &impulse);
 
 	racer->PlayReaction(FALSE);
 
 	SoundVector position;
-	racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+	racer->m_visuals.m_carEntity->VTable0x04(&position);
 	m_unk0x54->PlaySpatialSoundById(
 		c_soundId0xbc7,
 		&position,
@@ -2425,9 +2425,9 @@ void RaceEventDispatcher0x08::Item0x2c::VTable0x14(undefined4 p_elapsedMs)
 void RaceEventDispatcher0x08::Item0x2c::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
-	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) && field0x3e8->m_unk0x618 != 0.0f) {
-		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	if (!(field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
+		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 		racer->PlayReaction(FALSE);
 	}
 }
@@ -2590,8 +2590,8 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 	}
 
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
-	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
 		if (m_unk0x44 == NULL || m_unk0x44 == racer) {
 			if (m_unk0x44 == NULL) {
 				m_unk0x58 = c_stateOne;
@@ -2603,14 +2603,14 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 		}
 
 		m_unk0x44 = racer;
-		racer->m_unk0xd04 |= c_racerFlags0xd04Bit29;
+		racer->m_flags |= c_racerFlags0xd04Bit29;
 
 		RaceState::Racer* currentRacer = m_unk0x44;
-		if (currentRacer->m_unk0x3e8.m_unk0x744) {
-			LegoU32 flags = currentRacer->m_unk0x3e8.m_flags0x6c0;
-			currentRacer->m_unk0x3e8.m_unk0x7e8 = -0.4f;
-			if (!(flags & RaceState::Racer::Physics::c_flags0x6c0Bit18)) {
-				currentRacer->m_unk0x3e8.m_unk0x7ec = -0.4f;
+		if (currentRacer->m_physics.m_routeMode) {
+			LegoU32 flags = currentRacer->m_physics.m_flags;
+			currentRacer->m_physics.m_routeBaseSpeed = -0.4f;
+			if (!(flags & RaceState::Racer::Physics::c_flagRoutePushed)) {
+				currentRacer->m_physics.m_routeTargetSpeed = -0.4f;
 				m_unk0x54 = c_restoreTimerMs;
 				return;
 			}
@@ -2620,7 +2620,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 			FUN_0048e1c0(&position);
 
 			GolVec3 racerPosition;
-			RaceState::Racer::CarVisuals* racerField = &m_unk0x44->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_unk0x44->m_visuals;
 			racerField->m_carEntity->VTable0x04(&racerPosition);
 
 			GolVec3 force;
@@ -2632,7 +2632,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 			force.m_x = scale * force.m_x;
 			force.m_y = force.m_y * scale;
 			force.m_z = force.m_z * scale;
-			field0x3e8->VTable0x48(&force);
+			field0x3e8->StartExternalForce1(&force);
 		}
 
 		m_unk0x54 = c_restoreTimerMs;
@@ -2659,16 +2659,16 @@ void RaceEventDispatcher0x08::Item0x48::FUN_0048e1c0(GolVec3* p_position)
 void RaceEventDispatcher0x08::Item0x48::FUN_0048e230()
 {
 	if (m_unk0x44) {
-		m_unk0x44->m_unk0x3e8.VTable0x4c();
-		m_unk0x44->m_unk0xd04 &= ~c_racerFlags0xd04Bit29;
+		m_unk0x44->m_physics.EndExternalForce1();
+		m_unk0x44->m_flags &= ~c_racerFlags0xd04Bit29;
 
 		RaceState::Racer* racer = m_unk0x44;
-		if (racer->m_unk0x3e8.m_unk0x744) {
-			LegoU32 flags = racer->m_unk0x3e8.m_flags0x6c0;
+		if (racer->m_physics.m_routeMode) {
+			LegoU32 flags = racer->m_physics.m_flags;
 			LegoFloat value = 1.0f;
-			racer->m_unk0x3e8.m_unk0x7e8 = value;
-			if (!(flags & RaceState::Racer::Physics::c_flags0x6c0Bit18)) {
-				racer->m_unk0x3e8.m_unk0x7ec = value;
+			racer->m_physics.m_routeBaseSpeed = value;
+			if (!(flags & RaceState::Racer::Physics::c_flagRoutePushed)) {
+				racer->m_physics.m_routeTargetSpeed = value;
 			}
 		}
 
@@ -2854,7 +2854,7 @@ void RaceEventDispatcher0x08::Item0x2e::FUN_0048e600()
 // FUNCTION: LEGORACERS 0x0048e660
 void RaceEventDispatcher0x08::Item0x2e::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	if (p_data->m_field0x0e0->GetUnk0xd04() & c_field0x0e0Flags0xd04Bit0) {
+	if (p_data->m_field0x0e0->GetFlags() & c_field0x0e0Flags0xd04Bit0) {
 		m_unk0x58 = 0;
 	}
 }
@@ -3062,7 +3062,7 @@ void RaceEventDispatcher0x08::Item0x2f::VTable0x14(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048eb70
 void RaceEventDispatcher0x08::Item0x2f::VTable0x18(GolCamera* p_camera, RaceState::Racer* p_racer)
 {
-	if (p_racer->m_unk0x018.m_hasColorTransform) {
+	if (p_racer->m_visuals.m_hasColorTransform) {
 		m_unk0x1c = 0;
 		if (m_unk0x14) {
 			m_unk0x10->FUN_00489f30(m_unk0x14);
@@ -3965,12 +3965,12 @@ void RaceEventDispatcher0x08::Item0x32::VTable0x1c(GolD3DRenderDevice* p_rendere
 void RaceEventDispatcher0x08::Item0x32::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
-	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) && field0x3e8->m_unk0x618 != 0.0f) {
-		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	if (!(field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
+		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;
-		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
+		racer->m_visuals.m_carEntity->VTable0x04(&position);
 		m_unk0x04->FUN_00462580(c_eventId0x15, c_eventId0x15, &position);
 	}
 }

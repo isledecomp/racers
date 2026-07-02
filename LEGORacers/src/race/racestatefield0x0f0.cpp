@@ -1,22 +1,22 @@
 #include "race/racestate.h"
 
 // FUNCTION: LEGORACERS 0x0043d150
-RaceState::Field0x0f0::Field0x0f0()
+RaceState::RaceRoster::RaceRoster()
 {
 	m_unk0x048 = NULL;
-	m_unk0x04c = NULL;
+	m_raceState = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0043d170
-void RaceState::Field0x0f0::Destroy()
+void RaceState::RaceRoster::Destroy()
 {
 	m_unk0x048 = NULL;
-	m_unk0x04c = NULL;
+	m_raceState = NULL;
 	LegoEventQueue::Field0x30::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043d180
-void RaceState::Field0x0f0::VTable0x10(LegoU32 p_elapsedMs)
+void RaceState::RaceRoster::VTable0x10(LegoU32 p_elapsedMs)
 {
 	FUN_0043d200();
 	LegoEventQueue::Field0x30::VTable0x10(p_elapsedMs);
@@ -26,7 +26,7 @@ void RaceState::Field0x0f0::VTable0x10(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0043d1b0
-LegoS32 RaceState::Field0x0f0::VTable0x00(LegoEventQueue::Event* p_event)
+LegoS32 RaceState::RaceRoster::VTable0x00(LegoEventQueue::Event* p_event)
 {
 	if (LegoEventQueue::Field0x30::VTable0x00(p_event)) {
 		return 1;
@@ -48,7 +48,7 @@ LegoS32 RaceState::Field0x0f0::VTable0x00(LegoEventQueue::Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0043d200
-void RaceState::Field0x0f0::FUN_0043d200()
+void RaceState::RaceRoster::FUN_0043d200()
 {
 	LegoEventQueue::Event* previous = NULL;
 	LegoEventQueue::Event* event = m_unk0x048;
@@ -85,13 +85,13 @@ void RaceState::Field0x0f0::FUN_0043d200()
 }
 
 // FUNCTION: LEGORACERS 0x0043d260 FOLDED
-GolWorldEntity* RaceState::Field0x0f0::VTable0x14(LegoEventQueue::Event* p_event)
+GolWorldEntity* RaceState::RaceRoster::VTable0x14(LegoEventQueue::Event* p_event)
 {
 	return p_event->m_descriptor.m_worldEntity;
 }
 
 // FUNCTION: LEGORACERS 0x0043d270
-void RaceState::Field0x0f0::FUN_0043d270()
+void RaceState::RaceRoster::FUN_0043d270()
 {
 	LegoEventQueue::Event* other;
 	LegoEventQueue::Descriptor::Field0x10::Field0x0e0* target;
@@ -179,7 +179,7 @@ void RaceState::Field0x0f0::FUN_0043d270()
 }
 
 // FUNCTION: LEGORACERS 0x0043d3f0
-void RaceState::Field0x0f0::FUN_0043d3f0()
+void RaceState::RaceRoster::FUN_0043d3f0()
 {
 	LegoFloat eventMinX;
 	LegoEventQueue::Event* next;

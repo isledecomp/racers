@@ -701,7 +701,7 @@ void RaceSession::FUN_00432bc0()
 	m_unk0x30f0.UseOwnedBuffers();
 	m_unk0x30f0.Load("game.srf");
 
-	m_raceState.m_unk0x000.LoadStrings();
+	m_raceState.m_driverTable.LoadStrings();
 	m_unk0x2d80.CopyFromBufSelection(m_unk0x2d8c, 0x100);
 
 	m_unk0x2d74 = m_golExport->CreateFontTable();
@@ -971,8 +971,8 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	Field0x30c4::Params field0x30c4Params;
 	Field0x2098::Params params;
 	RaceEventDispatcher0x08::Context dispatcherContext;
-	RaceState::Field0x3b190Params0x08 racerContext;
-	RaceState::Field0x3b190Params0x04 racerParams;
+	RaceState::RacerContext racerContext;
+	RaceState::CreateRacersParams racerParams;
 
 	FUN_00435ba0(0.45f);
 
@@ -1004,19 +1004,19 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	racerContext.m_renderer = m_renderer;
 	racerContext.m_golExport = m_golExport;
-	racerContext.m_unk0x08 = m_unk0x394;
-	racerContext.m_unk0x0c = m_unk0x3b0;
-	racerContext.m_unk0x10 = m_unk0x3b8;
-	racerContext.m_resourceMgr = &m_unk0x3300;
-	racerContext.m_unk0x18 = &m_unk0x6dc;
-	racerContext.m_unk0x1c = &m_unk0x2150;
-	racerContext.m_unk0x20 = &m_unk0x248c;
-	racerContext.m_unk0x24 = &m_unk0x27d4;
-	racerContext.m_unk0x28 = &m_unk0x2098;
+	racerContext.m_trackCollidable = m_unk0x394;
+	racerContext.m_trackWorld = m_unk0x3b0;
+	racerContext.m_triggerWorld = m_unk0x3b8;
+	racerContext.m_soundSource = &m_unk0x3300;
+	racerContext.m_powerupManager = &m_unk0x6dc;
+	racerContext.m_particleAnimation = &m_unk0x2150;
+	racerContext.m_sharedParticleAnimation = &m_unk0x248c;
+	racerContext.m_decalManager = &m_unk0x27d4;
+	racerContext.m_eventTable = m_unk0x2098.GetEventTable();
 	racerContext.m_unk0x2c = &m_unk0x27e0;
-	racerContext.m_unk0x30 = TRUE;
-	racerContext.m_racerField0x010 = &m_unk0x27f4;
-	racerContext.m_flags0x3c = m_context->m_cheatFlags;
+	racerContext.m_shadowsEnabled = TRUE;
+	racerContext.m_checkpointGraph = &m_unk0x27f4;
+	racerContext.m_cheatFlags = m_context->m_cheatFlags;
 
 	racerParams.m_racerCount = m_context->m_racerCount;
 	racerParams.m_routeRecords = m_routeRecords;
@@ -1082,14 +1082,14 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	if (m_unk0x3350) {
 		RaceState::Racer* racer = m_raceState.GetRacers();
 		racer->SwitchToAiControl();
-		racer->m_unk0xd04 |= c_racerFlags0xd04Bit23;
+		racer->m_flags |= c_racerFlags0xd04Bit23;
 	}
 
 	if (!m_unk0x3354) {
-		m_raceState.SetUnk0x080(m_raceState.m_unk0x318[0]);
+		m_raceState.SetCurrentRacer(m_raceState.m_unk0x318[0]);
 	}
 	else {
-		m_raceState.SetUnk0x080(NULL);
+		m_raceState.SetCurrentRacer(NULL);
 	}
 
 	m_raceState.InitializeRacerVisuals(m_renderer, m_golExport);
@@ -1121,7 +1121,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.77f);
 
-	dispatcherContext.m_unk0x00 = &m_raceState.m_unk0x0f0;
+	dispatcherContext.m_unk0x00 = &m_raceState.m_roster;
 	dispatcherContext.m_unk0x04 = m_context;
 	dispatcherContext.m_unk0x08 = &m_unk0x3300;
 	dispatcherContext.m_unk0x0c = m_unk0x2098.GetEventTable();
@@ -1301,8 +1301,8 @@ void RaceSession::FUN_00434000()
 			RaceState::Racer** racer = m_raceState.m_unk0x318;
 			do {
 				if (*racer) {
-					(*racer)->m_unk0x018.EndFlash();
-					(*racer)->m_unk0x018.ClearColorTransform();
+					(*racer)->m_visuals.EndFlash();
+					(*racer)->m_visuals.ClearColorTransform();
 				}
 
 				i++;
@@ -1628,7 +1628,7 @@ void RaceSession::FUN_004343e0()
 				}
 
 				session->m_unk0x340[playerIndex].FUN_00421e00(inputSink->m_unk0x02c[4]);
-				(*racer)->m_unk0x014 = &session->m_unk0x340[playerIndex];
+				(*racer)->m_forceFeedback = &session->m_unk0x340[playerIndex];
 				field0x258->FUN_004307f0();
 			}
 
@@ -1844,8 +1844,8 @@ void RaceSession::FUN_00434c80()
 	if (m_context->m_racerCount > 0) {
 		do {
 			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
-			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_unk0xd04 & 0x1000)) {
-				racer->m_unk0xd04 |= 0x1000;
+			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
+				racer->m_flags |= 0x1000;
 
 				if (m_standings) {
 					m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
@@ -1875,7 +1875,7 @@ void RaceSession::FUN_00434c80()
 
 					m_unk0x6dc.CancelWarp(racer);
 
-					if (!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000) &&
+					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
 						!m_unk0x335c) {
 						m_unk0x2ad4[playerIndex].FUN_004283f0(4, m_unk0x3354);
 					}
@@ -1942,7 +1942,7 @@ void RaceSession::FUN_00434eb0()
 		if (m_context->m_racerCount > 0) {
 			RaceState::Racer* racer = m_raceState.GetRacers();
 			do {
-				if (!(racer->m_unk0xd04 & 0x1000)) {
+				if (!(racer->m_flags & 0x1000)) {
 					if (m_standings) {
 						m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
 					}
@@ -1965,8 +1965,8 @@ void RaceSession::FUN_00434eb0()
 	if (m_context->m_racerCount > 0) {
 		RaceState::Racer* racer = m_raceState.GetRacers();
 		do {
-			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_unk0xd04 & 0x1000)) {
-				racer->m_unk0xd04 |= 0x1000;
+			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
+				racer->m_flags |= 0x1000;
 
 				if (m_standings) {
 					m_standings->FUN_004402c0(racer->m_materialIndex, m_unk0x3330);
@@ -1989,14 +1989,14 @@ void RaceSession::FUN_00434eb0()
 
 					m_unk0x6dc.CancelWarp(racer);
 
-					if (!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000)) {
+					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000)) {
 						m_unk0x2ad4[playerIndex].FUN_004283f0(4, m_unk0x3354);
 					}
 				}
 			}
 
-			if ((racer->m_unk0xd04 & 0x1000) && racer->m_cameraController &&
-				!(racer->m_unk0xd04 & c_racerFlags0xd04Bit4) && !(racer->m_unk0xd04 & 0x200000) &&
+			if ((racer->m_flags & 0x1000) && racer->m_cameraController &&
+				!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
 				racer->m_cameraViewIndex != 4 && !m_unk0x335c) {
 				racer->m_cameraController->FUN_004283f0(4, m_unk0x3354);
 			}
@@ -2074,7 +2074,7 @@ void RaceSession::VTable0x30()
 		LegoU32 i;
 		if (!m_unk0x3350) {
 			for (i = 0; i < m_context->m_playerCount; i++) {
-				LegoFloat unk0xa00 = m_raceState.m_unk0x318[i]->m_unk0x3e8.m_unk0x618;
+				LegoFloat unk0xa00 = m_raceState.m_unk0x318[i]->m_physics.m_forwardSpeed;
 				m_unk0x340[i].FUN_00421e30(elapsedMs, unk0xa00);
 				m_unk0x258[i].FUN_00430530(elapsedMs);
 			}
@@ -2131,8 +2131,8 @@ void RaceSession::FUN_004354d0()
 	VTable0x34();
 
 	if (m_unk0x3354) {
-		m_raceState.m_unk0x318[0]->m_unk0x018.UpdateShadow(m_unk0x2acc[0]);
-		m_raceState.m_unk0x318[1]->m_unk0x018.UpdateShadow(m_unk0x2acc[1]);
+		m_raceState.m_unk0x318[0]->m_visuals.UpdateShadow(m_unk0x2acc[0]);
+		m_raceState.m_unk0x318[1]->m_visuals.UpdateShadow(m_unk0x2acc[1]);
 	}
 	else {
 		m_raceState.UpdateShadows(m_unk0x2acc[0]);
@@ -2146,7 +2146,7 @@ void RaceSession::FUN_004354d0()
 		m_renderer->VTable0xec(FALSE);
 	}
 
-	if (m_raceState.m_unk0x318[0]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
+	if (m_raceState.m_unk0x318[0]->m_flags & RaceState::Racer::c_flagGhost) {
 		m_unk0x6dc.Draw(viewportIndex);
 	}
 	else {
@@ -2182,7 +2182,7 @@ void RaceSession::FUN_004354d0()
 		m_renderer->VTable0x5c();
 		m_renderer->VTable0xec(viewportIndex + 1);
 
-		if (m_raceState.m_unk0x318[viewportIndex]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
+		if (m_raceState.m_unk0x318[viewportIndex]->m_flags & RaceState::Racer::c_flagGhost) {
 			m_unk0x6dc.Draw(FALSE);
 		}
 		else {

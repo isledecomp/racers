@@ -80,7 +80,7 @@ void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackDa
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_param->m_data);
 	if (racer != m_ownerRacer) {
-		if (racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			racer->AbsorbShieldHit();
 			if (m_level < 3) {
 				m_state = 6;
@@ -100,7 +100,7 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 )
 {
 	GolVec3 start;
-	p_racer->m_unk0x018.m_carEntity->VTable0x04(&start);
+	p_racer->m_visuals.m_carEntity->VTable0x04(&start);
 
 	GolVec3 verticalOffset;
 	verticalOffset.Clear();

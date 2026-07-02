@@ -56,7 +56,7 @@ LegoBool32 CarPartCarousel::Create(CreateParams* p_createParams, MenuStyleTable:
 	m_pieceLibrary = p_createParams->m_pieceLibrary;
 	m_buildModel = p_createParams->m_buildModel;
 	m_colorTable = p_createParams->m_colorTable;
-	if (Create(p_createParams, p_styleEntry)) {
+	if (MenuModelCarousel::Create(p_createParams, p_styleEntry)) {
 		FUN_004853a0();
 	}
 

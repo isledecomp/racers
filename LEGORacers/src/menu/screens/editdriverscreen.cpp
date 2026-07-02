@@ -134,7 +134,7 @@ void EditDriverScreen::VTable0x4c()
 	CreateSelector(&m_unk0x9e0[3], &m_unk0x420[3], 0xcb, 0xcc);
 	FUN_0047d230();
 	CreateTextLabel(&m_unk0x3688, 0x3a, 0x3a, 9);
-	m_unk0x3688.FUN_0046f6b0(0x14);
+	m_unk0x3688.WrapText(0x14);
 	FUN_0047fdc0(&m_unk0x3700, 0xd2, 0x42, 0x38);
 
 	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {

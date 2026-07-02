@@ -80,7 +80,7 @@ void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 	}
 
-	::memset(p_entry->m_unk0xc0, 0xff, sizeof(p_entry->m_unk0xc0));
+	::memset(p_entry->m_stateColors, 0xff, sizeof(p_entry->m_stateColors));
 
 	while (m_parser->GetNextToken() != GolFileParser::e_rightCurly) {
 		LegoS32 i;
@@ -91,19 +91,19 @@ void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 			break;
 		case GolFileParser::e_unknown0x29:
 			for (i = 0; i < 6; i++) {
-				p_entry->m_unk0x90[i] = m_renderer->FindFontByName(m_parser->ReadString());
+				p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
 		case GolFileParser::e_unknown0x28:
 			for (i = 0; i < 6; i++) {
-				p_entry->m_unk0xa8[i] = m_renderer->FindImageByName(m_parser->ReadString());
+				p_entry->m_stateImages[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		case GolFileParser::e_unknown0x2a:
 			ReadVisualState(p_entry->m_unk0xd8.m_bytes);
 
 			for (i = 0; i < 6; i++) {
-				ReadVisualState(p_entry->m_unk0xc0[i].m_bytes);
+				ReadVisualState(p_entry->m_stateColors[i].m_bytes);
 			}
 
 			for (i = 0; i < 6; i++) {

@@ -40,7 +40,7 @@ void CircuitRaceScreen::VTable0x4c()
 	SingleRaceSelectBase::VTable0x4c();
 
 	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, 0x0d);
-	m_unk0x1964.FUN_0046f6b0(0x14);
+	m_unk0x1964.WrapText(0x14);
 	CreateTextLabel(&m_unk0x19dc, 0x5b, 0x37, 0x4a);
 	CreateTextLabel(&m_unk0x1a54, 0x5c, 0x37, 0x4c);
 	CreateTextLabel(&m_unk0x1acc, 0x5d, 0x37, 0x4a);
@@ -85,8 +85,8 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 	m_context->m_context->m_raceMode = LegoRacers::Context::c_raceModeCircuit;
 
 	m_unk0x221c = m_unk0xb54.GetSelectedIndex();
-	m_unk0x1a54.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x4c), 0);
-	m_unk0x1bbc.VTable0x44(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
+	m_unk0x1a54.SetStringByIndex(static_cast<undefined2>(m_unk0x221c + 0x4c), 0);
+	m_unk0x1bbc.SetStringByIndex(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
 
 	if (m_unk0x221c < m_context->m_circuitList.GetEntryCount()) {
 		m_unk0x1904 = &m_context->m_circuitList.GetEntries()[m_unk0x221c];
@@ -171,7 +171,7 @@ void CircuitRaceScreen::FUN_0047a2b0()
 			m_unk0x2218 = 2000;
 			FUN_00488cb0(m_unk0x2220 + m_unk0x221c * 4);
 			raceNameEntry->CopyDisplayString(&string);
-			m_unk0x1acc.VTable0x40(&string, 0);
+			m_unk0x1acc.SetString(&string, 0);
 		}
 	}
 	else {

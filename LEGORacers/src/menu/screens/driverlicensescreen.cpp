@@ -103,7 +103,7 @@ void DriverLicenseScreen::VTable0x4c()
 	m_unk0x1b20.ClearFlags(2);
 
 	CreateTextLabel(&m_unk0x720, 0x3a, 0x3a, 0x0a);
-	m_unk0x720.FUN_0046f6b0(0x14);
+	m_unk0x720.WrapText(0x14);
 
 	CreateTextField(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
 	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
@@ -165,7 +165,7 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	entity->SetFlags(entity->GetFlags() | 0x10000);
 
 	if (context->m_inputBindings.HasInputManager() && !context->m_inputBindings.HasKeyboard()) {
-		m_unk0x1f1c.FUN_00471100(4);
+		m_unk0x1f1c.HandleEditAction(4);
 	}
 
 	static_cast<MenuIcon*>(&m_unk0x1f1c)->Select(4);
@@ -230,7 +230,7 @@ void DriverLicenseScreen::FUN_0047b6b0()
 		m_menuTextStrings->CopyStringByIndex(cheatString, 0x3a);
 	}
 
-	m_unk0x1f1c.FUN_004711f0(cheatString);
+	m_unk0x1f1c.SetText(cheatString);
 }
 
 // FUNCTION: LEGORACERS 0x0047b750

@@ -71,7 +71,7 @@ void ControlConfigScreen::VTable0x4c()
 
 	CreateImage(&m_unk0x3a8, 0x49, 0x49);
 	CreateTextLabel(&m_unk0x404, 0x3a, 0x3a, idBase);
-	m_unk0x404.FUN_0046f6b0(0x14);
+	m_unk0x404.WrapText(0x14);
 	CreateCarousel(&m_unk0x780, 0x3e, 0x3b);
 	CreateSelector(&m_unk0x814, &m_unk0x780, 0x111, 0x4d);
 
@@ -279,7 +279,7 @@ void ControlConfigScreen::FUN_0047adb0()
 			}
 		}
 
-		m_unk0x144c[i].FUN_00482810(&m_unk0x32f4[i]);
+		m_unk0x144c[i].SetText(&m_unk0x32f4[i]);
 	}
 }
 

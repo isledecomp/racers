@@ -376,7 +376,7 @@ void RacerModelScreenBase::FUN_00486440(LegoS32 p_index)
 	}
 
 	if (m_unk0x1cec[p_index].GetFlags() & 1) {
-		m_unk0x1cec[p_index].VTable0x44(static_cast<undefined2>(textId), 0);
+		m_unk0x1cec[p_index].SetStringByIndex(static_cast<undefined2>(textId), 0);
 	}
 }
 

@@ -118,7 +118,7 @@ protected:
 	undefined m_unk0x54; // 0x54
 
 protected:
-	LegoBool32 FUN_00472a60(CreateParams* p_createParams);
+	LegoBool32 CreateWidget(CreateParams* p_createParams);
 };
 
 #endif // MENUWIDGET_H

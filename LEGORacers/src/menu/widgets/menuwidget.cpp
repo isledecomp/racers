@@ -50,7 +50,7 @@ void MenuWidget::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00472a60
-LegoBool32 MenuWidget::FUN_00472a60(CreateParams* p_createParams)
+LegoBool32 MenuWidget::CreateWidget(CreateParams* p_createParams)
 {
 	Destroy();
 

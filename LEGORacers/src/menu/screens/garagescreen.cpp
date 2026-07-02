@@ -38,7 +38,7 @@ void GarageScreen::FUN_0047e550()
 	FUN_0047fdc0(&m_unk0x4c88, 0x94, 0x42, 0x2d);
 	FUN_0047fdc0(&m_unk0x5848, 0x3f, 0x43, 3);
 	CreateTextLabel(&m_unk0x4050, 0x3a, 0x3a, 3);
-	m_unk0x4050.FUN_0046f6b0(0x14);
+	m_unk0x4050.WrapText(0x14);
 }
 
 // FUNCTION: LEGORACERS 0x0047e600
@@ -99,9 +99,9 @@ void GarageScreen::FUN_0047e740()
 	m_unk0x4998.SetFlags(2);
 	m_unk0x4c88.SetFlags(2);
 	FUN_004891f0(0);
-	m_unk0x5848.FUN_00482790(2);
-	m_unk0x4050.VTable0x44(3, TRUE);
-	m_unk0x4050.FUN_0046f6b0(0x14);
+	m_unk0x5848.SetTextByIndex(2);
+	m_unk0x4050.SetStringByIndex(3, TRUE);
+	m_unk0x4050.WrapText(0x14);
 
 	if (m_unk0x2704[0]) {
 		m_unk0x43b8.Enable(5);
@@ -161,9 +161,9 @@ void GarageScreen::FUN_0047e950()
 	m_unk0x5268.SetFlags(2);
 	m_unk0x5558.SetFlags(2);
 	m_unk0x5268.Select(5);
-	m_unk0x5848.FUN_00482790(3);
-	m_unk0x4050.VTable0x44(4, TRUE);
-	m_unk0x4050.FUN_0046f6b0(0x14);
+	m_unk0x5848.SetTextByIndex(3);
+	m_unk0x4050.SetStringByIndex(4, TRUE);
+	m_unk0x4050.WrapText(0x14);
 }
 
 // FUNCTION: LEGORACERS 0x0047e9c0
@@ -393,10 +393,10 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 	RacerUnlockState* modelState = &m_unk0x22dc[0];
 	if (modelState->FUN_004430b0() != NULL) {
 		if (modelState->FUN_004430b0()->m_recordSource == 1) {
-			m_unk0x46a8.FUN_00482790(0x2b);
+			m_unk0x46a8.SetTextByIndex(0x2b);
 		}
 		else {
-			m_unk0x46a8.FUN_00482790(0x2a);
+			m_unk0x46a8.SetTextByIndex(0x2a);
 		}
 	}
 

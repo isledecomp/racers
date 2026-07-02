@@ -25,7 +25,7 @@ void MenuImage::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046f150
-LegoBool32 MenuImage::FUN_0046f150(CreateParams* p_createParams)
+LegoBool32 MenuImage::Create(CreateParams* p_createParams)
 {
 	Destroy();
 
@@ -39,7 +39,7 @@ LegoBool32 MenuImage::FUN_0046f150(CreateParams* p_createParams)
 		p_createParams->m_rect.m_bottom = m_unk0x58->GetHeight() + p_createParams->m_rect.m_top;
 	}
 
-	return FUN_00472a60(p_createParams);
+	return CreateWidget(p_createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046f1a0

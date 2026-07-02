@@ -99,7 +99,7 @@ LegoBool32 MenuIcon::Create(CreateParams* p_createParams, const CreateState* p_c
 	Destroy();
 	InitializeFromParams(p_createParams, p_createState);
 
-	if (FUN_00472a60(p_createParams)) {
+	if (CreateWidget(p_createParams)) {
 		if (p_createParams->m_unk0x74 && p_createParams->m_parent && (m_flags & 4)) {
 			AttachToParent(p_createParams->m_parent);
 		}

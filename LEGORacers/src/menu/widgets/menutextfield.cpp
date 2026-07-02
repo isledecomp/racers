@@ -45,9 +45,9 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 
 	m_soundIds.m_idPairs[0] = p_createParams->m_soundIds.m_idPairs[0];
 	m_soundIds.m_idPairs[1] = p_createParams->m_soundIds.m_idPairs[1];
-	m_font = p_createParams->m_unk0x8c;
-	m_stringTable = p_createParams->m_unk0x84;
-	m_maxLength = p_createParams->m_unk0x94;
+	m_font = p_createParams->m_font;
+	m_stringTable = p_createParams->m_stringTable;
+	m_maxLength = p_createParams->m_maxLength;
 
 	m_text.CopyFromBufSelection(m_buffer, m_maxLength + 1);
 	m_charset.CopyFromBufSelection(m_stringTable->GetStringBuffer(p_createParams->m_unk0x88), 0);
@@ -61,7 +61,7 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 }
 
 // FUNCTION: LEGORACERS 0x00471100
-void MenuTextField::FUN_00471100(undefined4 p_unk0x04)
+void MenuTextField::HandleEditAction(undefined4 p_unk0x04)
 {
 	m_unk0x1f8 = p_unk0x04;
 
@@ -87,7 +87,7 @@ void MenuTextField::FUN_00471100(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004711f0
-void MenuTextField::FUN_004711f0(GolString* p_string)
+void MenuTextField::SetText(GolString* p_string)
 {
 	m_text.GolStrcpy(p_string);
 	m_length = m_text.SelectionLength();

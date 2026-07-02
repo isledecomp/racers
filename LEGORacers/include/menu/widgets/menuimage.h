@@ -22,7 +22,7 @@ public:
 	void Reset() override;                       // vtable+0x00
 	~MenuImage() override;                       // vtable+0x04
 	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
-	LegoBool32 FUN_0046f150(CreateParams* p_createParams);
+	LegoBool32 Create(CreateParams* p_createParams);
 	void SetUnk0x58(UtopianPan0xa4* p_unk0x58) { m_unk0x58 = p_unk0x58; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f0d0

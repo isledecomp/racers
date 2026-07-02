@@ -60,7 +60,7 @@ LegoBool32 OptionsRowBase::Create(
 		p_createParams->m_unk0x90->m_parent = this;
 		p_createParams->m_unk0x8c->m_parent = this;
 
-		if (m_track.FUN_0046f150(p_createParams->m_unk0x90) && m_thumb.FUN_0046f150(p_createParams->m_unk0x8c)) {
+		if (m_track.Create(p_createParams->m_unk0x90) && m_thumb.Create(p_createParams->m_unk0x8c)) {
 			LayoutButtons();
 			LayoutTrack();
 			LayoutThumb();

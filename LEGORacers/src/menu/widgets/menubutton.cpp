@@ -41,7 +41,7 @@ LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_create
 	createParams.m_parent = this;
 	createParams.m_unk0x38 = image;
 
-	return p_unk0x04->FUN_0046f150(&createParams);
+	return p_unk0x04->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x004663d0

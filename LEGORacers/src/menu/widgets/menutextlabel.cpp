@@ -31,7 +31,7 @@ void MenuTextLabel::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0046f520
-LegoBool32 MenuTextLabel::FUN_0046f520(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08)
+LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08)
 {
 	Destroy();
 
@@ -44,8 +44,8 @@ LegoBool32 MenuTextLabel::FUN_0046f520(CreateParams* p_createParams, MenuStyleTa
 		m_unk0x74 = TRUE;
 	}
 
-	if (FUN_00472a60(p_createParams)) {
-		VTable0x44(p_createParams->m_unk0x40, 0);
+	if (CreateWidget(p_createParams)) {
+		SetStringByIndex(p_createParams->m_unk0x40, 0);
 		return TRUE;
 	}
 
@@ -53,16 +53,16 @@ LegoBool32 MenuTextLabel::FUN_0046f520(CreateParams* p_createParams, MenuStyleTa
 }
 
 // FUNCTION: LEGORACERS 0x0046f580
-void MenuTextLabel::VTable0x44(undefined2 p_unk0x04, undefined4 p_unk0x08)
+void MenuTextLabel::SetStringByIndex(undefined2 p_unk0x04, undefined4 p_unk0x08)
 {
 	GolString string;
 
 	m_unk0x5c->CopyStringByIndex(&string, p_unk0x04);
-	VTable0x40(&string, p_unk0x08);
+	SetString(&string, p_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x0046f600
-void MenuTextLabel::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
+void MenuTextLabel::SetString(GolString* p_string, LegoS32 p_unk0x08)
 {
 	m_unk0x64.CopyFromGolString(p_string);
 	m_unk0x64.ToUpperCase();
@@ -92,7 +92,7 @@ void MenuTextLabel::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x0046f6b0
-void MenuTextLabel::FUN_0046f6b0(LegoS32 p_rightMargin)
+void MenuTextLabel::WrapText(LegoS32 p_rightMargin)
 {
 	LegoS32 right;
 	LegoS32 left;

@@ -30,12 +30,12 @@ public:
 	// SIZE 0xa0
 	class CreateParams : public MenuIcon::CreateParams {
 	public:
-		GolStringTable* m_unk0x84;        // 0x84
+		GolStringTable* m_stringTable;    // 0x84
 		undefined2 m_unk0x88;             // 0x88
 		undefined m_unk0x8a[0x8c - 0x8a]; // 0x8a
-		GolFontBase* m_unk0x8c;           // 0x8c
+		GolFontBase* m_font;              // 0x8c
 		GolString* m_unk0x90;             // 0x90
-		undefined2 m_unk0x94;             // 0x94
+		undefined2 m_maxLength;           // 0x94
 		SoundIdSet m_soundIds;            // 0x96
 		undefined m_unk0x9e[0xa0 - 0x9e]; // 0x9e
 	};
@@ -51,8 +51,8 @@ public:
 	void Select(undefined4) override;                                                // vtable+0x4c
 	void Deselect(undefined4) override;                                              // vtable+0x50
 	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);      // vtable+0x70
-	void FUN_00471100(undefined4 p_unk0x04);
-	void FUN_004711f0(GolString* p_string);
+	void HandleEditAction(undefined4 p_unk0x04);
+	void SetText(GolString* p_string);
 	undefined2* GetBuffer() { return m_buffer; }
 
 	// SYNTHETIC: LEGORACERS 0x00470f20

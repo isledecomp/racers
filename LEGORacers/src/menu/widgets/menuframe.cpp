@@ -25,7 +25,7 @@ LegoBool32 MenuFrame::FUN_0046ecd0(CreateParams* p_createParams)
 {
 	Destroy();
 
-	if (FUN_00472a60(p_createParams) && FUN_0046edf0(p_createParams) && FUN_0046ed30(p_createParams)) {
+	if (CreateWidget(p_createParams) && FUN_0046edf0(p_createParams) && FUN_0046ed30(p_createParams)) {
 		if (!p_createParams->m_unk0x5c) {
 			m_unk0x58.ClearFlags(0x10);
 		}
@@ -55,7 +55,7 @@ LegoBool32 MenuFrame::FUN_0046ed30(CreateParams* p_createParams)
 		m_images[i] = image;
 		createParams.m_unk0x22 = p_createParams->m_unk0x22;
 
-		if (!m_unk0xfc[i].FUN_0046f150(&createParams)) {
+		if (!m_unk0xfc[i].Create(&createParams)) {
 			return FALSE;
 		}
 	}

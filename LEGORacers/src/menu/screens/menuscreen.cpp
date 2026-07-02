@@ -523,7 +523,7 @@ LegoBool32 MenuScreen::CreateImage(MenuImage* p_unk0x04, undefined2 p_unk0x08, u
 		createParams.m_unk0x38 = styleEntry->m_image;
 	}
 
-	return p_unk0x04->FUN_0046f150(&createParams);
+	return p_unk0x04->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bf80
@@ -560,7 +560,7 @@ LegoBool32 MenuScreen::CreateTextLabel(
 		createParams.m_unk0x22 = styleEntry->m_color;
 	}
 
-	return p_unk0x04->FUN_0046f520(&createParams, styleEntry);
+	return p_unk0x04->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c050
@@ -780,13 +780,13 @@ LegoBool32 MenuScreen::CreateTextField(
 	MenuTextField::CreateParams createParams = *sourceParams;
 	ApplyIconDefaults(&createParams);
 
-	if (!createParams.m_unk0x84) {
-		createParams.m_unk0x84 = m_menuTextStrings;
+	if (!createParams.m_stringTable) {
+		createParams.m_stringTable = m_menuTextStrings;
 	}
 
 	createParams.m_unk0x88 = p_unk0x10;
 	createParams.m_unk0x90 = p_unk0x14;
-	createParams.m_unk0x8c = sourceParams->m_unk0x8c;
+	createParams.m_font = sourceParams->m_font;
 
 	return p_unk0x04->VTable0x70(&createParams, styleEntry);
 }

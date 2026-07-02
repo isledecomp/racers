@@ -96,7 +96,7 @@ void RaceModeSetupScreen::VTable0x4c()
 	}
 
 	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, textId);
-	m_unk0x1964.FUN_0046f6b0(0x14);
+	m_unk0x1964.WrapText(0x14);
 	CreateCarousel(&m_unk0x1fc0, 0x3d, 0x3b);
 	CreateSelector(&m_unk0x2054, &m_unk0x1fc0, 0x69, 0x4c);
 	FUN_0047fdc0(&m_unk0x19dc, 0x40, 0x46, 0x72);
@@ -204,7 +204,7 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
 			if (raceNameEntry) {
 				raceNameEntry->CopyDisplayString(&string);
-				m_unk0x2a48[i].VTable0x40(&string, TRUE);
+				m_unk0x2a48[i].SetString(&string, TRUE);
 				m_unk0x1fc0.AddItem(&m_unk0x2a48[i]);
 			}
 		}
@@ -333,26 +333,26 @@ void RaceModeSetupScreen::FUN_004881a0()
 	}
 
 	if (m_unk0x2e10) {
-		m_unk0x2d18.VTable0x44(0x46, 0);
+		m_unk0x2d18.SetStringByIndex(0x46, 0);
 	}
 	else {
-		m_unk0x2d18.VTable0x44(0x47, 0);
+		m_unk0x2d18.SetStringByIndex(0x47, 0);
 	}
 
 	if (bestTime != 0xffffffff) {
 		LegoChar time[9];
 		FormatTime(time, bestTime);
 		GolString::CopyStringToBuf16(time, m_unk0x2e32);
-		m_unk0x2ca0.VTable0x40(&m_unk0x2e48, 0);
+		m_unk0x2ca0.SetString(&m_unk0x2e48, 0);
 	}
 	else if (m_unk0x2e10) {
-		m_unk0x2ca0.VTable0x44(0xbe, 0);
+		m_unk0x2ca0.SetStringByIndex(0xbe, 0);
 	}
 	else {
-		m_unk0x2ca0.VTable0x44(0xbf, 0);
+		m_unk0x2ca0.SetStringByIndex(0xbf, 0);
 	}
 
-	m_unk0x2c28.VTable0x40(&m_unk0x2e54, 0);
+	m_unk0x2c28.SetString(&m_unk0x2e54, 0);
 	m_unk0x2e08 = 2500;
 
 	if (static_cast<LegoU16>(unlockedMask & (1 << m_unk0x2e0c))) {

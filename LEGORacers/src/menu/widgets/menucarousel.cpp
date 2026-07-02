@@ -39,7 +39,7 @@ LegoBool32 MenuCarousel::Create(CreateParams* p_createParams, MenuStyleTable::Ca
 	m_style = p_styleEntry;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 
-	return FUN_00472a60(p_createParams);
+	return CreateWidget(p_createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046c9a0

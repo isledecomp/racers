@@ -74,14 +74,14 @@ public:
 	// SIZE 0x104
 	class TextButtonStyle : public IconStyle {
 	public:
-		GolFont* m_unk0x90[6];         // 0x90
-		UtopianPan0xa4* m_unk0xa8[6];  // 0xa8
-		VisualStateColor m_unk0xc0[6]; // 0xc0
-		VisualStateColor m_unk0xd8;    // 0xd8
-		Rect m_unk0xdc;                // 0xdc
-		Rect m_unk0xec;                // 0xec
-		undefined4 m_unk0xfc;          // 0xfc
-		undefined4 m_unk0x100;         // 0x100
+		GolFont* m_stateFonts[6];          // 0x90
+		UtopianPan0xa4* m_stateImages[6];  // 0xa8
+		VisualStateColor m_stateColors[6]; // 0xc0
+		VisualStateColor m_unk0xd8;        // 0xd8
+		Rect m_unk0xdc;                    // 0xdc
+		Rect m_unk0xec;                    // 0xec
+		undefined4 m_unk0xfc;              // 0xfc
+		undefined4 m_unk0x100;             // 0x100
 	};
 
 	// SIZE 0x100

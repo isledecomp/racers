@@ -38,7 +38,7 @@ void OptionsScreenBase::FUN_00482e00()
 {
 	CreateImage(&m_unk0x374, 0x49, 0x49);
 	CreateTextLabel(&m_unk0x3d0, 0x3a, 0x3a, 0x10);
-	m_unk0x3d0.FUN_0046f6b0(20);
+	m_unk0x3d0.WrapText(20);
 }
 
 // FUNCTION: LEGORACERS 0x00482e40
@@ -262,9 +262,9 @@ void OptionsScreenBase::VTable0x9c()
 	m_unk0x1008.SetFlags(2);
 
 	m_unk0x448.Select(4);
-	m_unk0x3d0.VTable0x44(0x10, TRUE);
-	m_unk0x3d0.FUN_0046f6b0(20);
-	m_unk0x18d8.FUN_00482790(2);
+	m_unk0x3d0.SetStringByIndex(0x10, TRUE);
+	m_unk0x3d0.WrapText(20);
+	m_unk0x18d8.SetTextByIndex(2);
 }
 
 // FUNCTION: LEGORACERS 0x00483640
@@ -281,9 +281,9 @@ void OptionsScreenBase::VTable0xa0()
 // FUNCTION: LEGORACERS 0x004836a0
 void OptionsScreenBase::FUN_004836a0()
 {
-	m_unk0x3d0.VTable0x44(0x11, TRUE);
-	m_unk0x3d0.FUN_0046f6b0(20);
-	m_unk0x18d8.FUN_00482790(0x10);
+	m_unk0x3d0.SetStringByIndex(0x11, TRUE);
+	m_unk0x3d0.WrapText(20);
+	m_unk0x18d8.SetTextByIndex(0x10);
 
 	m_unk0x1bc8.SetFlags(2);
 	m_unk0x25bc.SetFlags(2);
@@ -316,9 +316,9 @@ void OptionsScreenBase::FUN_00483770()
 
 	OnWidgetValueChanged(&m_unk0x36f0);
 	m_unk0x4178.Select(4);
-	m_unk0x3d0.VTable0x44(0x13, TRUE);
-	m_unk0x3d0.FUN_0046f6b0(20);
-	m_unk0x18d8.FUN_00482790(0x10);
+	m_unk0x3d0.SetStringByIndex(0x13, TRUE);
+	m_unk0x3d0.WrapText(20);
+	m_unk0x18d8.SetTextByIndex(0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00483800

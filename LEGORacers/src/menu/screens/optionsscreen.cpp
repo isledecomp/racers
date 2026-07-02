@@ -63,7 +63,7 @@ void OptionsScreen::VTable0x98()
 		GolString::CopyStringToBuf16(drawState->GetDriverName(i), driverNameBuffer);
 		string.CopyFromBufSelection(driverNameBuffer, ::strlen(drawState->GetDriverName(i)) + 1);
 		string.ToUpperCase();
-		m_unk0x6214[i].VTable0x40(&string, 0);
+		m_unk0x6214[i].SetString(&string, 0);
 		m_unk0x578c.AddItem(&m_unk0x6214[i]);
 
 		drawState->GetDriverGuid(i, &driverGuid.m_guid);
@@ -131,9 +131,9 @@ void OptionsScreen::FUN_00475a30()
 		m_unk0x6660[i].SetFlags(2);
 	}
 
-	m_unk0x3d0.VTable0x44(0x12, TRUE);
-	m_unk0x3d0.FUN_0046f6b0(20);
-	m_unk0x18d8.FUN_00482790(0x10);
+	m_unk0x3d0.SetStringByIndex(0x12, TRUE);
+	m_unk0x3d0.WrapText(20);
+	m_unk0x18d8.SetTextByIndex(0x10);
 	m_unk0x5820.Select(4);
 }
 

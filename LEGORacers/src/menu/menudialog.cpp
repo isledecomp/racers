@@ -163,7 +163,7 @@ MenuDialog::TextLine::~TextLine()
 }
 
 // FUNCTION: LEGORACERS 0x0046f8d0
-void MenuDialog::TextLine::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
+void MenuDialog::TextLine::SetString(GolString* p_string, LegoS32 p_unk0x08)
 {
 	GolString* originalString = p_string;
 	LegoS32 width;
@@ -176,7 +176,7 @@ void MenuDialog::TextLine::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 
 		if (width < m_rect.m_right - m_rect.m_left) {
 			m_unk0x74 = FALSE;
-			MenuTextLabel::VTable0x40(originalString, p_unk0x08);
+			MenuTextLabel::SetString(originalString, p_unk0x08);
 			return;
 		}
 	}

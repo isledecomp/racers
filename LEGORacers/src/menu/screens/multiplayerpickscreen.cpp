@@ -118,7 +118,7 @@ void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
 	GolString* string = &m_unk0x2b7c[p_index];
 
 	record->GetName(string);
-	m_unk0x2bd4[p_index].VTable0x40(string, 0);
+	m_unk0x2bd4[p_index].SetString(string, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00481b60

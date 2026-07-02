@@ -146,22 +146,22 @@ undefined4 MenuGameScreen::FUN_0047fdc0(
 	ApplyIconDefaults(&createParams);
 
 	for (LegoS32 i = 0; i < 6; i++) {
-		if (!createParams.m_unk0x9c[i]) {
-			createParams.m_unk0x9c[i] = styleEntry->m_unk0xa8[i];
+		if (!createParams.m_stateImages[i]) {
+			createParams.m_stateImages[i] = styleEntry->m_stateImages[i];
 		}
 
-		if (!createParams.m_unk0x84[i]) {
-			createParams.m_unk0x84[i] = styleEntry->m_unk0x90[i];
+		if (!createParams.m_stateFonts[i]) {
+			createParams.m_stateFonts[i] = styleEntry->m_stateFonts[i];
 		}
 	}
 
 	if (!createParams.m_unk0x78 && styleEntry->m_unk0x88) {
-		::memcpy(createParams.m_unk0xb4, styleEntry->m_unk0xc0, sizeof(createParams.m_unk0xb4));
+		::memcpy(createParams.m_stateColors, styleEntry->m_stateColors, sizeof(createParams.m_stateColors));
 	}
 
-	createParams.m_unk0xcc = m_menuTextStrings;
-	createParams.m_unk0xd4 = p_unk0x10;
-	return p_unk0x04->FUN_004826c0(&createParams, styleEntry);
+	createParams.m_stringTable = m_menuTextStrings;
+	createParams.m_stringId = p_unk0x10;
+	return p_unk0x04->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0047fec0

@@ -69,7 +69,7 @@ LegoBool32 MenuSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0
 		}
 	}
 
-	if (FUN_00472a60(p_createParams)) {
+	if (CreateWidget(p_createParams)) {
 		LoadWorlds(p_createParams, p_unk0x08);
 		SetupCamera(p_createParams);
 	}

@@ -49,7 +49,7 @@ undefined4 MenuSceneScreen::SceneWidget::FUN_00466b50(MenuScreen::SceneRefBindin
 		Destroy();
 	}
 
-	if (FUN_00472a60(p_createParams)) {
+	if (CreateWidget(p_createParams)) {
 		FUN_00466bf0(p_createParams, p_unk0x08);
 	}
 

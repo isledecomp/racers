@@ -103,13 +103,13 @@ public:
 		void CreateCarGroup();
 		void SetViewSlot(LegoS32 p_unk0x04);
 		void ApplyViewAngle(LegoFloat p_unk0x04);
-		void FUN_00478c70(LegoS32 p_elapsed);
-		void FUN_00478e90(LegoS32 p_elapsed);
-		void FUN_00478ec0(LegoS32 p_elapsed);
-		void FUN_00478ef0(LegoU32 p_elapsed);
-		void FUN_00478fd0(LegoU32 p_elapsed);
-		void FUN_004790f0(LegoS32 p_elapsed);
-		void FUN_00479250(LegoS32 p_elapsed);
+		void UpdatePieceBob(LegoS32 p_elapsed);
+		void StartPieceRaise(LegoS32 p_elapsed);
+		void StartPieceLower(LegoS32 p_elapsed);
+		void UpdateViewRotation(LegoU32 p_elapsed);
+		void UpdateViewPitch(LegoU32 p_elapsed);
+		void UpdateCommitFeedback(LegoS32 p_elapsed);
+		void UpdateResetAnimation(LegoS32 p_elapsed);
 		void GetViewPosition(GolVec3* p_dest, LegoS32 p_index);
 
 		CarModelScreenBase* m_screen;                      // 0x1c
@@ -126,17 +126,17 @@ public:
 		GolRenderDevice::MaterialColor m_unk0x23c;         // 0x23c
 		undefined4 m_previewDirty;                         // 0x240
 		undefined4 m_unk0x244;                             // 0x244
-		LegoU32 m_unk0x248;                                // 0x248
+		LegoU32 m_animFlags;                               // 0x248
 		LegoU32 m_feedbackMs;                              // 0x24c
 		GolVec3 m_piecePosition;                           // 0x250
 		undefined4 m_unk0x25c;                             // 0x25c
 		undefined4 m_unk0x260;                             // 0x260
-		LegoU32 m_unk0x264;                                // 0x264
-		LegoU32 m_unk0x268;                                // 0x268
+		LegoU32 m_pieceAnimMs;                             // 0x264
+		LegoU32 m_bobMs;                                   // 0x268
 		LegoFloat m_unk0x26c;                              // 0x26c
 		LegoFloat m_unk0x270;                              // 0x270
 		LegoFloat m_unk0x274;                              // 0x274
-		LegoU8 m_unk0x278;                                 // 0x278
+		LegoU8 m_pieceAnimPhase;                           // 0x278
 		undefined m_unk0x279[0x27c - 0x279];               // 0x279
 		GolVec3 m_cameraEye;                               // 0x27c
 		LegoFloat m_viewPitch;                             // 0x288

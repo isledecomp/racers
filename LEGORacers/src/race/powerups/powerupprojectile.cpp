@@ -34,40 +34,40 @@ PowerupProjectile::~PowerupProjectile()
 // FUNCTION: LEGORACERS 0x00430cf0
 void PowerupProjectile::Reset()
 {
-	m_unk0x048 = 5.0f;
-	m_state = 0;
+	m_launchHeight = 5.0f;
+	m_state = c_stateIdle;
 	m_worldEntity = 0;
-	m_unk0x00c = 0;
-	m_unk0x010.m_x = 0.0f;
-	m_unk0x010.m_y = 0.0f;
-	m_unk0x010.m_z = 0.0f;
-	m_unk0x01c.m_x = 0.0f;
-	m_unk0x01c.m_y = 0.0f;
-	m_unk0x01c.m_z = 0.0f;
-	m_unk0x04c = 0;
-	m_unk0x034 = 0;
-	m_unk0x038 = 0;
-	m_unk0x03c = 0;
-	m_unk0x040 = 0;
-	m_unk0x044 = NULL;
-	m_unk0x050 = 0;
-	m_unk0x054 = 0;
-	m_unk0x058 = 0;
-	m_unk0x0a4 = 0;
-	m_unk0x09c = 0;
+	m_collisionWorld = 0;
+	m_startPosition.m_x = 0.0f;
+	m_startPosition.m_y = 0.0f;
+	m_startPosition.m_z = 0.0f;
+	m_targetPosition.m_x = 0.0f;
+	m_targetPosition.m_y = 0.0f;
+	m_targetPosition.m_z = 0.0f;
+	m_speed = 0;
+	m_velocityX = 0;
+	m_velocityY = 0;
+	m_velocityZ = 0;
+	m_gravity = 0;
+	m_collisionEvent = NULL;
+	m_ageMs = 0;
+	m_flightTimeMs = 0;
+	m_lifetimeMs = 0;
+	m_hitRacer = 0;
+	m_ownerRacer = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00430d40
-void PowerupProjectile::FUN_00430d40(Params* p_params)
+void PowerupProjectile::Initialize(Params* p_params)
 {
-	m_worldEntity = p_params->m_unk0x00;
-	m_unk0x00c = p_params->m_unk0x04;
-	m_unk0x040 = p_params->m_unk0x08;
-	m_unk0x058 = p_params->m_unk0x20;
-	m_unk0x048 = p_params->m_unk0x24;
-	m_unk0x050 = 0;
-	m_state = 1;
-	m_unk0x0a4 = NULL;
+	m_worldEntity = p_params->m_worldEntity;
+	m_collisionWorld = p_params->m_collisionWorld;
+	m_gravity = p_params->m_gravity;
+	m_lifetimeMs = p_params->m_lifetimeMs;
+	m_launchHeight = p_params->m_launchHeight;
+	m_ageMs = 0;
+	m_state = c_stateFlying;
+	m_hitRacer = NULL;
 }
 
 // STUB: LEGORACERS 0x00430d80
@@ -75,28 +75,28 @@ void PowerupProjectile::LaunchAtRacer(
 	Params* p_params,
 	RaceState::Racer* p_racer,
 	RaceState::Racer* p_targetRacer,
-	LegoBool32 p_unk0x10,
-	LegoBool32 p_unk0x14
+	LegoBool32 p_fromRacerPosition,
+	LegoBool32 p_predictiveLead
 )
 {
 	Params* params = p_params;
 	RaceState::Racer* targetRacer = p_targetRacer;
-	FUN_00430d40(params);
+	Initialize(params);
 
-	LegoFloat speed = params->m_unk0x1c;
-	m_unk0x0a0 = targetRacer;
-	m_unk0x09c = p_racer;
-	if (p_unk0x10) {
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x010);
-		m_unk0x010.m_z += m_unk0x048;
-		m_worldEntity->VTable0x08(m_unk0x010);
+	LegoFloat speed = params->m_speed;
+	m_targetRacer = targetRacer;
+	m_ownerRacer = p_racer;
+	if (p_fromRacerPosition) {
+		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_startPosition);
+		m_startPosition.m_z += m_launchHeight;
+		m_worldEntity->VTable0x08(m_startPosition);
 	}
 	else {
-		m_worldEntity->VTable0x04(&m_unk0x010);
+		m_worldEntity->VTable0x04(&m_startPosition);
 	}
 
-	GolVec3* startPosition = &m_unk0x010;
-	GolVec3* target = &m_unk0x01c;
+	GolVec3* startPosition = &m_startPosition;
+	GolVec3* target = &m_targetPosition;
 	targetRacer->m_unk0x018.m_unk0x044->VTable0x04(target);
 	target->m_z += 5.0f;
 
@@ -105,7 +105,7 @@ void PowerupProjectile::LaunchAtRacer(
 	GolVec3 racerDirection;
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
-	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
+	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
 	LegoFloat deltaY = delta.m_y;
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
@@ -133,12 +133,12 @@ void PowerupProjectile::LaunchAtRacer(
 
 	speed = distance / speed;
 	LegoFloat durationMs = speed * g_floatConst1000;
-	m_unk0x054 = static_cast<LegoS32>(durationMs);
+	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 	scaledVelocity.m_x = targetVelocity.m_x * durationMs;
 	scaledVelocity.m_y = targetVelocity.m_y * durationMs;
 	scaledVelocity.m_z = targetVelocity.m_z * durationMs;
 
-	if (p_unk0x14) {
+	if (p_predictiveLead) {
 		GolVec3 predictedTarget;
 		predictedTarget.m_x = target->m_x + scaledVelocity.m_x;
 		predictedTarget.m_y = target->m_y + scaledVelocity.m_y;
@@ -162,43 +162,43 @@ void PowerupProjectile::LaunchAtRacer(
 		target->m_z += scaledVelocity.m_z;
 	}
 
-	target->m_x += params->m_unk0x10.m_x;
-	target->m_y += params->m_unk0x10.m_y;
-	target->m_z += params->m_unk0x10.m_z;
-	FUN_00431450(speed);
-	FUN_004314d0(params->m_unk0x0c);
+	target->m_x += params->m_targetOffset.m_x;
+	target->m_y += params->m_targetOffset.m_y;
+	target->m_z += params->m_targetOffset.m_z;
+	ComputeTrajectory(speed);
+	RegisterCollisionEvent(params->m_eventQueue);
 }
 
 // FUNCTION: LEGORACERS 0x00431050
 void PowerupProjectile::LaunchAtPoint(
 	Params* p_params,
 	RaceState::Racer* p_racer,
-	GolVec3* p_unk0x0c,
-	GolVec3* p_unk0x10,
-	LegoBool32 p_unk0x14
+	GolVec3* p_targetPosition,
+	GolVec3* p_targetVelocity,
+	LegoBool32 p_fromRacerPosition
 )
 {
 	Params* params = p_params;
-	FUN_00430d40(params);
+	Initialize(params);
 
-	LegoFloat speed = params->m_unk0x1c;
-	m_unk0x01c = *p_unk0x0c;
-	m_unk0x0a0 = NULL;
-	m_unk0x09c = p_racer;
-	if (p_unk0x14) {
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x010);
-		m_unk0x010.m_z += m_unk0x048;
-		m_worldEntity->VTable0x08(m_unk0x010);
+	LegoFloat speed = params->m_speed;
+	m_targetPosition = *p_targetPosition;
+	m_targetRacer = NULL;
+	m_ownerRacer = p_racer;
+	if (p_fromRacerPosition) {
+		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_startPosition);
+		m_startPosition.m_z += m_launchHeight;
+		m_worldEntity->VTable0x08(m_startPosition);
 	}
 	else {
-		m_worldEntity->VTable0x04(&m_unk0x010);
+		m_worldEntity->VTable0x04(&m_startPosition);
 	}
 
-	GolVec3* startPosition = &m_unk0x010;
-	GolVec3* target = &m_unk0x01c;
+	GolVec3* startPosition = &m_startPosition;
+	GolVec3* target = &m_targetPosition;
 	GolVec3 delta;
 	delta.m_x = target->m_x - startPosition->m_x;
-	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
+	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
 	LegoFloat deltaY = delta.m_y;
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(deltaY * deltaY + delta.m_x * delta.m_x));
 	LegoFloat inverseDistance;
@@ -227,131 +227,131 @@ void PowerupProjectile::LaunchAtPoint(
 	LegoFloat durationSeconds = distance / speed;
 	LegoFloat scaledDuration = durationSeconds;
 	scaledDuration *= g_floatConst1000;
-	m_unk0x054 = static_cast<LegoS32>(scaledDuration);
+	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
 	GolVec3 scaledDelta;
-	scaledDelta.m_x = p_unk0x10->m_x * durationSeconds;
-	scaledDelta.m_y = p_unk0x10->m_y;
+	scaledDelta.m_x = p_targetVelocity->m_x * durationSeconds;
+	scaledDelta.m_y = p_targetVelocity->m_y;
 	scaledDelta.m_y *= durationSeconds;
-	scaledDelta.m_z = p_unk0x10->m_z;
+	scaledDelta.m_z = p_targetVelocity->m_z;
 	scaledDelta.m_z *= durationSeconds;
 	target->m_x += scaledDelta.m_x;
 	target->m_y += scaledDelta.m_y;
 	target->m_z += scaledDelta.m_z;
-	target->m_x += params->m_unk0x10.m_x;
-	target->m_y += params->m_unk0x10.m_y;
-	target->m_z += params->m_unk0x10.m_z;
-	FUN_00431450(durationSeconds);
-	FUN_004314d0(params->m_unk0x0c);
+	target->m_x += params->m_targetOffset.m_x;
+	target->m_y += params->m_targetOffset.m_y;
+	target->m_z += params->m_targetOffset.m_z;
+	ComputeTrajectory(durationSeconds);
+	RegisterCollisionEvent(params->m_eventQueue);
 }
 
 // FUNCTION: LEGORACERS 0x00431220
-void PowerupProjectile::VTable0x04(Params* p_params, GolVec3* p_unk0x08)
+void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 {
-	FUN_00430d40(p_params);
+	Initialize(p_params);
 
-	m_unk0x01c.m_x = p_params->m_unk0x10.m_x + p_unk0x08->m_x;
-	m_unk0x01c.m_y = p_params->m_unk0x10.m_y + p_unk0x08->m_y;
-	m_unk0x01c.m_z = p_params->m_unk0x10.m_z + p_unk0x08->m_z;
-	m_unk0x09c = NULL;
-	m_unk0x0a0 = NULL;
-	m_worldEntity->VTable0x04(&m_unk0x010);
+	m_targetPosition.m_x = p_params->m_targetOffset.m_x + p_position->m_x;
+	m_targetPosition.m_y = p_params->m_targetOffset.m_y + p_position->m_y;
+	m_targetPosition.m_z = p_params->m_targetOffset.m_z + p_position->m_z;
+	m_ownerRacer = NULL;
+	m_targetRacer = NULL;
+	m_worldEntity->VTable0x04(&m_startPosition);
 
 	GolVec3 delta;
-	delta.m_x = m_unk0x01c.m_x - m_unk0x010.m_x;
-	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
-	m_unk0x04c = p_params->m_unk0x1c;
-	delta.m_z = m_unk0x01c.m_z - m_unk0x010.m_z;
+	delta.m_x = m_targetPosition.m_x - m_startPosition.m_x;
+	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
+	m_speed = p_params->m_speed;
+	delta.m_z = m_targetPosition.m_z - m_startPosition.m_z;
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
-	LegoFloat durationSeconds = p_params->m_unk0x1c;
+	LegoFloat durationSeconds = p_params->m_speed;
 	durationSeconds = distance / durationSeconds;
 	LegoFloat scaledDuration = durationSeconds;
 	scaledDuration *= g_floatConst1000;
-	m_unk0x054 = static_cast<LegoS32>(scaledDuration);
+	m_flightTimeMs = static_cast<LegoS32>(scaledDuration);
 
 	LegoFloat inverseDuration = 1.0f;
 	inverseDuration /= durationSeconds;
-	m_unk0x034 = inverseDuration * delta.m_x;
-	m_unk0x038 = inverseDuration * delta.m_y;
+	m_velocityX = inverseDuration * delta.m_x;
+	m_velocityY = inverseDuration * delta.m_y;
 
 	LegoFloat zVelocity = delta.m_z;
 	zVelocity /= distance;
-	zVelocity *= p_params->m_unk0x1c;
-	m_unk0x03c = zVelocity;
-	LegoFloat acceleration = m_unk0x040;
-	m_unk0x03c = zVelocity - (acceleration * distance) / (p_params->m_unk0x1c + p_params->m_unk0x1c);
-	FUN_004314d0(p_params->m_unk0x0c);
+	zVelocity *= p_params->m_speed;
+	m_velocityZ = zVelocity;
+	LegoFloat acceleration = m_gravity;
+	m_velocityZ = zVelocity - (acceleration * distance) / (p_params->m_speed + p_params->m_speed);
+	RegisterCollisionEvent(p_params->m_eventQueue);
 }
 
 // STUB: LEGORACERS 0x00431310
-void PowerupProjectile::FUN_00431310(RaceState::Racer* p_racer)
+void PowerupProjectile::Deflect(RaceState::Racer* p_racer)
 {
 	GolVec3 velocity;
 	velocity.m_x = 0.0f;
 	velocity.m_y = 0.0f;
 	velocity.m_z = 0.0f;
 
-	m_unk0x050 = 0;
-	m_state = 1;
-	m_unk0x0a0 = m_unk0x09c;
-	if (m_unk0x0a0) {
-		m_unk0x0a0->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x01c);
-		m_unk0x01c.m_z += 5.0f;
-		velocity = m_unk0x0a0->m_unk0x3e8.m_unk0x008;
+	m_ageMs = 0;
+	m_state = c_stateFlying;
+	m_targetRacer = m_ownerRacer;
+	if (m_targetRacer) {
+		m_targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&m_targetPosition);
+		m_targetPosition.m_z += 5.0f;
+		velocity = m_targetRacer->m_unk0x3e8.m_unk0x008;
 	}
 	else {
-		m_unk0x01c = m_unk0x010;
+		m_targetPosition = m_startPosition;
 	}
 
-	m_unk0x09c = p_racer;
-	m_worldEntity->VTable0x04(&m_unk0x010);
-	m_unk0x0a4 = NULL;
+	m_ownerRacer = p_racer;
+	m_worldEntity->VTable0x04(&m_startPosition);
+	m_hitRacer = NULL;
 
 	GolVec3 delta;
-	delta.m_x = m_unk0x01c.m_x - m_unk0x010.m_x;
-	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
-	delta.m_z = m_unk0x01c.m_z - m_unk0x010.m_z;
+	delta.m_x = m_targetPosition.m_x - m_startPosition.m_x;
+	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
+	delta.m_z = m_targetPosition.m_z - m_startPosition.m_z;
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 	if (distance == 0.0f) {
 		distance = 1.0f;
 	}
 
-	LegoFloat durationSeconds = distance / m_unk0x04c;
+	LegoFloat durationSeconds = distance / m_speed;
 	LegoFloat durationMs = durationSeconds * g_floatConst1000;
-	m_unk0x054 = static_cast<LegoS32>(durationMs);
+	m_flightTimeMs = static_cast<LegoS32>(durationMs);
 
-	m_unk0x01c.m_x += velocity.m_x * durationSeconds;
-	m_unk0x01c.m_y += velocity.m_y * durationSeconds;
-	m_unk0x01c.m_z += velocity.m_z * durationSeconds;
-	FUN_00431450(durationSeconds);
+	m_targetPosition.m_x += velocity.m_x * durationSeconds;
+	m_targetPosition.m_y += velocity.m_y * durationSeconds;
+	m_targetPosition.m_z += velocity.m_z * durationSeconds;
+	ComputeTrajectory(durationSeconds);
 }
 
 // FUNCTION: LEGORACERS 0x00431450
-void PowerupProjectile::FUN_00431450(LegoFloat p_durationSeconds)
+void PowerupProjectile::ComputeTrajectory(LegoFloat p_durationSeconds)
 {
 	LegoFloat inverseDuration = 1.0f;
 	inverseDuration /= p_durationSeconds;
 
 	GolVec3 delta;
-	delta.m_x = m_unk0x01c.m_x - m_unk0x010.m_x;
-	delta.m_y = m_unk0x01c.m_y - m_unk0x010.m_y;
-	delta.m_z = m_unk0x01c.m_z - m_unk0x010.m_z;
+	delta.m_x = m_targetPosition.m_x - m_startPosition.m_x;
+	delta.m_y = m_targetPosition.m_y - m_startPosition.m_y;
+	delta.m_z = m_targetPosition.m_z - m_startPosition.m_z;
 
 	LegoFloat distance = static_cast<LegoFloat>(sqrt(delta.m_y * delta.m_y + delta.m_x * delta.m_x));
 	LegoFloat speed = distance * inverseDuration;
-	m_unk0x04c = speed;
-	m_unk0x034 = delta.m_x * inverseDuration;
-	m_unk0x038 = delta.m_y * inverseDuration;
+	m_speed = speed;
+	m_velocityX = delta.m_x * inverseDuration;
+	m_velocityY = delta.m_y * inverseDuration;
 
 	LegoFloat zVelocity = delta.m_z / distance * speed;
-	LegoFloat acceleration = m_unk0x040;
-	m_unk0x03c = zVelocity - (acceleration * distance) / (speed + speed);
+	LegoFloat acceleration = m_gravity;
+	m_velocityZ = zVelocity - (acceleration * distance) / (speed + speed);
 }
 
 // FUNCTION: LEGORACERS 0x004314d0
-void PowerupProjectile::FUN_004314d0(LegoEventQueue* p_eventQueue)
+void PowerupProjectile::RegisterCollisionEvent(LegoEventQueue* p_eventQueue)
 {
-	if (m_unk0x044 != NULL) {
-		m_unk0x044->m_active = 0;
+	if (m_collisionEvent != NULL) {
+		m_collisionEvent->m_active = 0;
 	}
 
 	if (p_eventQueue != NULL) {
@@ -362,19 +362,19 @@ void PowerupProjectile::FUN_004314d0(LegoEventQueue* p_eventQueue)
 		descriptor.m_unk0x00 = 4;
 		descriptor.m_unk0x04 = 1;
 		descriptor.m_data = m_worldEntity;
-		m_unk0x044 = p_eventQueue->FUN_0042fb50(callback, &descriptor);
+		m_collisionEvent = p_eventQueue->FUN_0042fb50(callback, &descriptor);
 	}
 	else {
-		m_unk0x044 = NULL;
+		m_collisionEvent = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00431530
 void PowerupProjectile::Deactivate()
 {
-	if (m_unk0x044 != NULL) {
-		m_unk0x044->m_active = 0;
-		m_unk0x044 = NULL;
+	if (m_collisionEvent != NULL) {
+		m_collisionEvent->m_active = 0;
+		m_collisionEvent = NULL;
 	}
 
 	Reset();
@@ -384,66 +384,67 @@ void PowerupProjectile::Deactivate()
 LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 state = m_state;
-	if (state != 1) {
+	if (state != c_stateFlying) {
 		return state;
 	}
 
-	m_unk0x050 += p_elapsedMs;
-	p_elapsedMs = m_unk0x050;
-	if (p_elapsedMs >= m_unk0x058) {
-		m_state = 4;
-		m_worldEntity->VTable0x04(&m_unk0x028);
-		return 4;
+	m_ageMs += p_elapsedMs;
+	p_elapsedMs = m_ageMs;
+	if (p_elapsedMs >= m_lifetimeMs) {
+		m_state = c_stateExpired;
+		m_worldEntity->VTable0x04(&m_hitPosition);
+		return c_stateExpired;
 	}
 
 	LegoFloat elapsed = static_cast<LegoS32>(p_elapsedMs) * 0.001f;
 	GolVec3 vectors[2];
-	vectors[0].m_x = (vectors[1].m_y = m_unk0x038 * elapsed, vectors[1].m_z = m_unk0x03c * elapsed, m_unk0x010.m_x) +
-					 elapsed * m_unk0x034;
-	vectors[0].m_y = vectors[1].m_y + m_unk0x010.m_y;
-	vectors[0].m_z = (vectors[1].m_z + m_unk0x010.m_z) + m_unk0x040 * 0.5f * elapsed * elapsed;
+	vectors[0].m_x =
+		(vectors[1].m_y = m_velocityY * elapsed, vectors[1].m_z = m_velocityZ * elapsed, m_startPosition.m_x) +
+		elapsed * m_velocityX;
+	vectors[0].m_y = vectors[1].m_y + m_startPosition.m_y;
+	vectors[0].m_z = (vectors[1].m_z + m_startPosition.m_z) + m_gravity * 0.5f * elapsed * elapsed;
 	m_worldEntity->VTable0x04(&vectors[1]);
 
 	GolBoundingVolume::Field0x0c record;
-	if (m_unk0x00c->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_unk0x028)) {
-		m_unk0x05c.m_x = record.m_unk0x24.m_x;
-		m_unk0x05c.m_y = record.m_unk0x24.m_y;
-		m_unk0x05c.m_z = record.m_unk0x24.m_z;
-		m_worldEntity->VTable0x08(m_unk0x028);
-		m_state = 3;
-		return 3;
+	if (m_collisionWorld->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
+		m_hitNormal.m_x = record.m_unk0x24.m_x;
+		m_hitNormal.m_y = record.m_unk0x24.m_y;
+		m_hitNormal.m_z = record.m_unk0x24.m_z;
+		m_worldEntity->VTable0x08(m_hitPosition);
+		m_state = c_stateHitWorld;
+		return c_stateHitWorld;
 	}
 
 	m_worldEntity->VTable0x08(vectors[0]);
-	return 1;
+	return c_stateFlying;
 }
 
 // FUNCTION: LEGORACERS 0x00431660
 void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* previousContext = m_unk0x09c;
-	if (p_data->m_data != previousContext && m_state == 1) {
-		m_state = 2;
+	RaceState::Racer* previousContext = m_ownerRacer;
+	if (p_data->m_data != previousContext && m_state == c_stateFlying) {
+		m_state = c_stateHitRacer;
 		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-		m_unk0x0a4 = racer;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x028);
+		m_hitRacer = racer;
+		racer->m_unk0x018.m_unk0x044->VTable0x04(&m_hitPosition);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004316a0
-void PowerupProjectile::VTable0x1c(GolVec3* p_unk0x04)
+void PowerupProjectile::GetVelocity(GolVec3* p_velocity)
 {
-	p_unk0x04->m_x = m_unk0x034;
-	p_unk0x04->m_y = m_unk0x038;
-	LegoFloat z = static_cast<LegoS32>(m_unk0x050) * 0.001f;
-	p_unk0x04->m_z = z * m_unk0x040 + m_unk0x03c;
+	p_velocity->m_x = m_velocityX;
+	p_velocity->m_y = m_velocityY;
+	LegoFloat z = static_cast<LegoS32>(m_ageMs) * 0.001f;
+	p_velocity->m_z = z * m_gravity + m_velocityZ;
 }
 
 // FUNCTION: LEGORACERS 0x004316d0
-void PowerupProjectile::FUN_004316d0()
+void PowerupProjectile::CancelCollisionEvent()
 {
-	if (m_unk0x044 != NULL) {
-		m_unk0x044->m_active = 0;
-		m_unk0x044 = NULL;
+	if (m_collisionEvent != NULL) {
+		m_collisionEvent->m_active = 0;
+		m_collisionEvent = NULL;
 	}
 }

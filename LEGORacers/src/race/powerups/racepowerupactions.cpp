@@ -36,7 +36,7 @@ extern const LegoFloat g_ghostSampleFractionScale;
 extern const LegoFloat g_item0x40RadiansToTableIndex;
 extern const LegoFloat g_item0x40Pi;
 extern const LegoFloat g_negativeRadiansToTableIndex;
-extern const LegoFloat g_raceSessionHomingProjectileCollisionProbeDepth;
+extern const LegoFloat g_homingProjectileCollisionProbeDepth;
 extern const LegoFloat g_homingProjectileCollisionStartOffset;
 extern const LegoFloat g_violetShoalTwo;
 
@@ -464,14 +464,14 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_state == 3) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
-		if (projectileState != 1) {
+		if (projectileState != PowerupProjectile::c_stateFlying) {
 			SoundVector position;
 			GolVec3& positionBase = position;
-			positionBase = m_projectile.GetUnk0x028();
+			positionBase = m_projectile.GetHitPosition();
 			LegoBool32 skipBurst = FALSE;
 
-			if (projectileState == 2) {
-				RaceState::Racer* target = m_projectile.GetUnk0x0a4();
+			if (projectileState == PowerupProjectile::c_stateHitRacer) {
+				RaceState::Racer* target = m_projectile.GetHitRacer();
 				if ((target->m_unk0xd04 & c_racerFlags0xd04Bit0) && target->m_unk0xd6c >= 2) {
 					skipBurst = TRUE;
 				}
@@ -484,20 +484,21 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			if (!skipBurst) {
-				GolVec3 hitNormal = m_projectile.GetUnk0x05c();
+				GolVec3 hitNormal = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit = FALSE;
-				if (projectileState == 3 && hitNormal.m_z > g_unk0x004b13e4) {
+				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > g_unk0x004b13e4) {
 					upwardHit = TRUE;
 				}
 
 				m_owner0x01c->SpawnExplosion(&position, upwardHit, m_unk0x024);
-				if (projectileState == 2 && !(m_projectile.GetUnk0x0a4()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
-					m_projectile.VTable0x1c(&direction);
+				if (projectileState == PowerupProjectile::c_stateHitRacer &&
+					!(m_projectile.GetHitRacer()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+					m_projectile.GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetUnk0x0a4());
+					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				VTable0x14();
@@ -536,7 +537,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 		m_projectile.GetWorldEntity()->FUN_100286d0(&position);
 
 		if (m_trailItem0x0e4 != NULL) {
-			m_projectile.VTable0x1c(&trailVelocity);
+			m_projectile.GetVelocity(&trailVelocity);
 
 			perpendicular.m_x = trailVelocity.m_y;
 			perpendicular.m_y = -trailVelocity.m_x;
@@ -581,7 +582,7 @@ void RacePowerupManager::CannonballAction::VTable0x14()
 	case 3:
 		m_state = 6;
 		m_stateTimerMs = 0;
-		m_projectile.FUN_004316d0();
+		m_projectile.CancelCollisionEvent();
 		if (m_trailItem0x0e4 != NULL) {
 			m_owner0x01c->m_trailManager->FUN_00493a10(m_trailItem0x0e4);
 			m_trailItem0x0e4 = NULL;
@@ -620,25 +621,25 @@ void RacePowerupManager::CannonballAction::VTable0x14()
 		direction.m_z = 0.0f;
 	}
 
-	projectileParams.m_unk0x00 = m_unk0x0d8;
-	projectileParams.m_unk0x04 = m_unk0x020;
-	projectileParams.m_unk0x08 = g_unk0x004b1394;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
-	projectileParams.m_unk0x10.m_x = 0.0f;
-	projectileParams.m_unk0x10.m_y = 0.0f;
-	projectileParams.m_unk0x10.m_z = 0.0f;
-	projectileParams.m_unk0x1c = g_unk0x004b1398;
-	projectileParams.m_unk0x20 = durationMs;
-	projectileParams.m_unk0x24 = g_unk0x004b13b4;
+	projectileParams.m_worldEntity = m_unk0x0d8;
+	projectileParams.m_collisionWorld = m_unk0x020;
+	projectileParams.m_gravity = g_unk0x004b1394;
+	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_targetOffset.m_x = 0.0f;
+	projectileParams.m_targetOffset.m_y = 0.0f;
+	projectileParams.m_targetOffset.m_z = 0.0f;
+	projectileParams.m_speed = g_unk0x004b1398;
+	projectileParams.m_lifetimeMs = durationMs;
+	projectileParams.m_launchHeight = g_unk0x004b13b4;
 
 	if (m_unk0x028 != NULL) {
 		m_projectile.LaunchAtRacer(&projectileParams, m_unk0x024, m_unk0x028, TRUE, FALSE);
 	}
 	else if (m_unk0x0e0 != NULL) {
-		projectileParams.m_unk0x20 = m_unk0x0e0->m_unk0x020;
+		projectileParams.m_lifetimeMs = m_unk0x0e0->m_unk0x020;
 		m_unk0x0d8->VTable0x08(m_unk0x0e0->m_unk0x014);
-		projectileParams.m_unk0x08 = g_unk0x004b1394 * g_unk0x004b13e8;
-		m_projectile.VTable0x04(&projectileParams, &m_unk0x0e0->m_unk0x008);
+		projectileParams.m_gravity = g_unk0x004b1394 * g_unk0x004b13e8;
+		m_projectile.LaunchAtPosition(&projectileParams, &m_unk0x0e0->m_unk0x008);
 	}
 	else {
 		if (m_unk0x02c != NULL) {
@@ -719,7 +720,7 @@ void RacePowerupManager::CannonballAction::VTable0x20(RaceState::Racer* p_racer)
 			p_racer->FUN_00439240(TRUE);
 			p_racer->FUN_0043a270();
 			if (p_racer->m_unk0xd6c >= 2) {
-				m_projectile.FUN_00431310(p_racer);
+				m_projectile.Deflect(p_racer);
 				m_unk0x024 = p_racer;
 			}
 		}
@@ -1177,9 +1178,9 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_projectile.GetState() != 0) {
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
-		if (projectileState != 1) {
-			if (projectileState == 3) {
-				const GolVec3* projectilePosition = &m_projectile.GetUnk0x028();
+		if (projectileState != PowerupProjectile::c_stateFlying) {
+			if (projectileState == PowerupProjectile::c_stateHitWorld) {
+				const GolVec3* projectilePosition = &m_projectile.GetHitPosition();
 				position.m_x = projectilePosition->m_x;
 				position.m_y = projectilePosition->m_y;
 				position.m_z = projectilePosition->m_z;
@@ -1254,16 +1255,16 @@ void RacePowerupManager::DynamiteAction::VTable0x14()
 	switch (m_state) {
 	case c_state0x02: {
 		PowerupProjectile::Params projectileParams;
-		projectileParams.m_unk0x00 = &m_unk0x02c;
-		projectileParams.m_unk0x04 = m_unk0x020;
-		projectileParams.m_unk0x08 = -32.1759987f;
-		projectileParams.m_unk0x0c = m_unk0x164->GetRaceState()->GetEventQueue();
-		projectileParams.m_unk0x10.m_x = 0.0f;
-		projectileParams.m_unk0x10.m_y = 0.0f;
-		projectileParams.m_unk0x10.m_z = 0.0f;
-		projectileParams.m_unk0x1c = 40.0f;
-		projectileParams.m_unk0x20 = c_timer0x0bb8;
-		projectileParams.m_unk0x24 = g_unk0x004b1424;
+		projectileParams.m_worldEntity = &m_unk0x02c;
+		projectileParams.m_collisionWorld = m_unk0x020;
+		projectileParams.m_gravity = -32.1759987f;
+		projectileParams.m_eventQueue = m_unk0x164->GetRaceState()->GetEventQueue();
+		projectileParams.m_targetOffset.m_x = 0.0f;
+		projectileParams.m_targetOffset.m_y = 0.0f;
+		projectileParams.m_targetOffset.m_z = 0.0f;
+		projectileParams.m_speed = 40.0f;
+		projectileParams.m_lifetimeMs = c_timer0x0bb8;
+		projectileParams.m_launchHeight = g_unk0x004b1424;
 
 		RaceState::Racer::Field0x018* racerField = &m_unk0x028->m_unk0x018;
 		GolVec3 racerPosition;
@@ -1687,7 +1688,7 @@ LegoU32 RacePowerupManager::GrapplingHookAction::Activate(
 // FUNCTION: LEGORACERS 0x00453e90
 void RacePowerupManager::GrapplingHookAction::Deactivate()
 {
-	m_projectile.FUN_004316d0();
+	m_projectile.CancelCollisionEvent();
 
 	if (m_unk0x26c != NULL) {
 		m_owner0x01c->m_cutsceneAnimation0x040->FUN_00489f00(m_unk0x26c);
@@ -1736,17 +1737,17 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	projectileState = m_projectile.Update(p_elapsedMs);
-	if (projectileState != 1) {
-		if (projectileState == 2) {
-			VTable0x20(m_projectile.GetUnk0x0a4());
+	if (projectileState != PowerupProjectile::c_stateFlying) {
+		if (projectileState == PowerupProjectile::c_stateHitRacer) {
+			VTable0x20(m_projectile.GetHitRacer());
 		}
 	}
 
 	switch (m_state) {
 	case 3: {
-		if (projectileState == 3) {
+		if (projectileState == PowerupProjectile::c_stateHitWorld) {
 			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
-			projectilePositionCopyBase = m_projectile.GetUnk0x028();
+			projectilePositionCopyBase = m_projectile.GetHitPosition();
 			FUN_00454690(&projectilePositionCopy);
 		}
 		else {
@@ -1756,7 +1757,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			up.m_y = 0.0f;
 			up.m_z = 1.0f;
 
-			const GolVec3* target = &m_projectile.GetUnk0x01c();
+			const GolVec3* target = &m_projectile.GetTargetPosition();
 			GolVec3& targetPositionBase = targetPosition;
 			targetPositionBase = *target;
 			forward.m_x = targetPosition.m_x - position.m_x;
@@ -1768,16 +1769,16 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		break;
 	}
 	case 4:
-		if (projectileState == 3) {
+		if (projectileState == PowerupProjectile::c_stateHitWorld) {
 			GolVec3& projectilePositionCopyBase = projectilePositionCopy;
-			projectilePositionCopyBase = m_projectile.GetUnk0x028();
+			projectilePositionCopyBase = m_projectile.GetHitPosition();
 			FUN_00454690(&projectilePositionCopy);
 		}
 		else {
 			RaceState::Racer::Field0x018* racerField = &m_unk0x024->m_unk0x018;
 			racerField->m_unk0x044->VTable0x04(&position);
 
-			RaceState::Racer* targetRacer = m_projectile.GetUnk0x0a4();
+			RaceState::Racer* targetRacer = m_projectile.GetHitRacer();
 			targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
 
 			if (targetRacer->m_unk0xd04 & c_racerFlags0xd04Bit0) {
@@ -1915,16 +1916,16 @@ void RacePowerupManager::GrapplingHookAction::VTable0x14()
 
 	m_unk0x024->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
 
-	projectileParams.m_unk0x00 = m_unk0x268;
-	projectileParams.m_unk0x04 = m_unk0x020;
-	projectileParams.m_unk0x08 = g_unk0x004b14f0;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
-	projectileParams.m_unk0x10.m_x = 0.0f;
-	projectileParams.m_unk0x10.m_y = 0.0f;
-	projectileParams.m_unk0x10.m_z = 0.0f;
-	projectileParams.m_unk0x1c = g_unk0x004b14f4;
-	projectileParams.m_unk0x20 = durationMs;
-	projectileParams.m_unk0x24 = g_unk0x004b150c;
+	projectileParams.m_worldEntity = m_unk0x268;
+	projectileParams.m_collisionWorld = m_unk0x020;
+	projectileParams.m_gravity = g_unk0x004b14f0;
+	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_targetOffset.m_x = 0.0f;
+	projectileParams.m_targetOffset.m_y = 0.0f;
+	projectileParams.m_targetOffset.m_z = 0.0f;
+	projectileParams.m_speed = g_unk0x004b14f4;
+	projectileParams.m_lifetimeMs = durationMs;
+	projectileParams.m_launchHeight = g_unk0x004b150c;
 
 	if (m_unk0x028 == NULL) {
 		if (m_unk0x02c != NULL) {
@@ -2002,7 +2003,7 @@ void RacePowerupManager::GrapplingHookAction::VTable0x20(RaceState::Racer* p_rac
 // FUNCTION: LEGORACERS 0x00454690
 void RacePowerupManager::GrapplingHookAction::FUN_00454690(SoundVector* p_position)
 {
-	RaceState::Racer* racer = m_projectile.GetUnk0x0a4();
+	RaceState::Racer* racer = m_projectile.GetHitRacer();
 	if (racer != NULL) {
 		racer->m_unk0x3e8.VTable0x44();
 		m_unk0x024->m_unk0x3e8.VTable0x4c();
@@ -2022,7 +2023,7 @@ void RacePowerupManager::GrapplingHookAction::FUN_00454690(SoundVector* p_positi
 		.FUN_004104c0(0, m_owner0x01c->GetMaterialAnimationItems(), m_owner0x01c->GetMaterialAnimationItemCount());
 	m_unk0x270->VTable0x08(*p_position);
 	m_projectile.FUN_00444ac0(p_position);
-	m_projectile.FUN_004316d0();
+	m_projectile.CancelCollisionEvent();
 }
 
 // FUNCTION: LEGORACERS 0x00454800
@@ -3190,16 +3191,16 @@ void RacePowerupManager::HomingMissileAction::FUN_00456680()
 	}
 
 	PowerupProjectile::Params projectileParams;
-	projectileParams.m_unk0x00 = &m_unk0x128;
-	projectileParams.m_unk0x04 = m_unk0x020;
-	projectileParams.m_unk0x08 = g_unk0x004b1670;
-	projectileParams.m_unk0x0c = m_owner0x01c->m_raceState->GetEventQueue();
-	projectileParams.m_unk0x10.m_x = 0.0f;
-	projectileParams.m_unk0x10.m_y = 0.0f;
-	projectileParams.m_unk0x10.m_z = 0.0f;
-	projectileParams.m_unk0x1c = g_unk0x004b166c;
-	projectileParams.m_unk0x20 = c_timer0x157c;
-	projectileParams.m_unk0x24 = g_unk0x004b1678;
+	projectileParams.m_worldEntity = &m_unk0x128;
+	projectileParams.m_collisionWorld = m_unk0x020;
+	projectileParams.m_gravity = g_unk0x004b1670;
+	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
+	projectileParams.m_targetOffset.m_x = 0.0f;
+	projectileParams.m_targetOffset.m_y = 0.0f;
+	projectileParams.m_targetOffset.m_z = 0.0f;
+	projectileParams.m_speed = g_unk0x004b166c;
+	projectileParams.m_lifetimeMs = c_timer0x157c;
+	projectileParams.m_launchHeight = g_unk0x004b1678;
 
 	if (m_unk0x028 == NULL) {
 		GolVec3 velocity;
@@ -3234,9 +3235,9 @@ void RacePowerupManager::HomingMissileAction::FUN_00456680()
 		projectile->LaunchAtRacer(&projectileParams, m_unk0x024, m_unk0x028, FALSE, FALSE);
 	}
 
-	m_projectile.m_unk0x0b8 = 4.0f;
-	m_projectile.m_unk0x0c0 = 10.0f;
-	m_projectile.FUN_00423980();
+	m_projectile.m_maxSpiralAmplitude = 4.0f;
+	m_projectile.m_spiralRate = 10.0f;
+	m_projectile.StartHoming();
 }
 
 // FUNCTION: LEGORACERS 0x004568a0
@@ -3277,17 +3278,17 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 	if (m_state == c_state0x03) {
 		m_unk0x128.VTable0x10(p_elapsedMs);
 		m_projectile
-			.FUN_00423640(p_elapsedMs, m_owner0x01c->m_raceState, g_unk0x004b1684, g_unk0x004b1688, g_unk0x004b168c);
+			.UpdateTargeting(p_elapsedMs, m_owner0x01c->m_raceState, g_unk0x004b1684, g_unk0x004b1688, g_unk0x004b168c);
 
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
-		if (projectileState != 1) {
+		if (projectileState != PowerupProjectile::c_stateFlying) {
 			SoundVector position;
 			GolVec3& positionBase = position;
-			positionBase = m_projectile.GetUnk0x028();
+			positionBase = m_projectile.GetHitPosition();
 
 			LegoBool32 skipBurst = FALSE;
-			if (projectileState == 2) {
-				RaceState::Racer* target = m_projectile.GetUnk0x0a4();
+			if (projectileState == PowerupProjectile::c_stateHitRacer) {
+				RaceState::Racer* target = m_projectile.GetHitRacer();
 				if ((target->m_unk0xd04 & c_racerFlags0xd04Bit0) && target->m_unk0xd6c >= 2) {
 					skipBurst = TRUE;
 				}
@@ -3299,20 +3300,21 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			}
 
 			if (!skipBurst) {
-				GolVec3 hitNormal = m_projectile.GetUnk0x05c();
+				GolVec3 hitNormal = m_projectile.GetHitNormal();
 				LegoBool32 upwardHit = FALSE;
-				if (projectileState == 3 && hitNormal.m_z > g_unk0x004b13e4) {
+				if (projectileState == PowerupProjectile::c_stateHitWorld && hitNormal.m_z > g_unk0x004b13e4) {
 					upwardHit = TRUE;
 				}
 
 				m_owner0x01c->FUN_0045b4d0(&position, upwardHit, m_unk0x024);
-				if (projectileState == 2 && !(m_projectile.GetUnk0x0a4()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
-					m_projectile.VTable0x1c(&direction);
+				if (projectileState == PowerupProjectile::c_stateHitRacer &&
+					!(m_projectile.GetHitRacer()->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
+					m_projectile.GetVelocity(&direction);
 					direction.m_x = -direction.m_x;
 					direction.m_y = -direction.m_y;
 					direction.m_z = 0.0f;
 					GolMath::NormalizeVector3(direction, &direction);
-					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetUnk0x0a4());
+					m_owner0x01c->FUN_0045b550(&position, &direction, m_projectile.GetHitRacer());
 				}
 
 				VTable0x14();
@@ -3322,7 +3324,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		}
 
 		m_unk0x128.VTable0x48(&direction, &up);
-		direction = m_projectile.m_unk0x0d0;
+		direction = m_projectile.m_direction;
 		m_unk0x128.VTable0x40(direction, up);
 
 		GolVec3 position;
@@ -3330,7 +3332,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 
 		if (m_unk0x21c != NULL) {
 			GolVec3 velocity;
-			m_projectile.VTable0x1c(&velocity);
+			m_projectile.GetVelocity(&velocity);
 
 			GolVec2 perpendicular;
 			perpendicular.m_x = velocity.m_y;
@@ -3459,7 +3461,7 @@ void RacePowerupManager::HomingMissileAction::VTable0x14()
 	case c_state0x03:
 		m_state = c_state0x06;
 		m_stateTimerMs = 0;
-		m_projectile.FUN_004316d0();
+		m_projectile.CancelCollisionEvent();
 		if (m_unk0x21c != NULL) {
 			m_owner0x01c->m_trailManager->FUN_00493a10(m_unk0x21c);
 			m_unk0x21c = NULL;
@@ -3480,7 +3482,7 @@ void RacePowerupManager::HomingMissileAction::VTable0x20(RaceState::Racer* p_rac
 			p_racer->FUN_00439240(TRUE);
 			p_racer->FUN_0043a270();
 			if (p_racer->m_unk0xd6c >= 2) {
-				m_projectile.FUN_00431310(p_racer);
+				m_projectile.Deflect(p_racer);
 				m_unk0x024 = p_racer;
 			}
 		}
@@ -4105,7 +4107,7 @@ void RacePowerupManager::WeaponActionBase::VTable0x24(GolVec3* p_unk0x04)
 // FUNCTION: LEGORACERS 0x0045bc30 FOLDED
 void RacePowerupManager::WeaponActionBase::VTable0x28(GolVec3* p_unk0x04)
 {
-	m_unk0x018->VTable0x1c(p_unk0x04);
+	m_unk0x018->GetVelocity(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x0045bc40
@@ -5242,7 +5244,7 @@ void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
 	GolVec3 end = position;
 	end.m_z += g_homingProjectileCollisionStartOffset;
 	start.m_z += g_homingProjectileCollisionStartOffset;
-	start.m_z -= g_raceSessionHomingProjectileCollisionProbeDepth;
+	start.m_z -= g_homingProjectileCollisionProbeDepth;
 
 	GolBoundingVolume::Field0x0c record;
 	m_unk0x0ac->m_unk0x068->FUN_0041f4d0(&start, &end, &record, &position, NULL);

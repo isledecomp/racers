@@ -14,23 +14,31 @@ class RaceSessionField0x32b4;
 // SIZE 0xa8
 class PowerupProjectile : public LegoEventQueue::Callback {
 public:
+	enum {
+		c_stateIdle = 0,
+		c_stateFlying = 1,
+		c_stateHitRacer = 2,
+		c_stateHitWorld = 3,
+		c_stateExpired = 4,
+	};
+
 	// SIZE 0x28
 	class Params {
 	public:
-		GolWorldEntity* m_unk0x00;         // 0x00
-		RaceSessionField0x32b4* m_unk0x04; // 0x04
-		LegoFloat m_unk0x08;               // 0x08
-		LegoEventQueue* m_unk0x0c;         // 0x0c
-		GolVec3 m_unk0x10;                 // 0x10
-		LegoFloat m_unk0x1c;               // 0x1c
-		LegoU32 m_unk0x20;                 // 0x20
-		LegoFloat m_unk0x24;               // 0x24
+		GolWorldEntity* m_worldEntity;            // 0x00
+		RaceSessionField0x32b4* m_collisionWorld; // 0x04
+		LegoFloat m_gravity;                      // 0x08
+		LegoEventQueue* m_eventQueue;             // 0x0c
+		GolVec3 m_targetOffset;                   // 0x10
+		LegoFloat m_speed;                        // 0x1c
+		LegoU32 m_lifetimeMs;                     // 0x20
+		LegoFloat m_launchHeight;                 // 0x24
 	};
 
 	PowerupProjectile();
 	~PowerupProjectile();
-	void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
-	virtual void VTable0x04(Params* p_params, GolVec3* p_unk0x08);  // vtable+0x04
+	void VTable0x00(LegoEventQueue::CallbackData* p_data) override;       // vtable+0x00
+	virtual void LaunchAtPosition(Params* p_params, GolVec3* p_position); // vtable+0x04
 	virtual void LaunchAtPoint(                                      // vtable+0x08
 		Params* p_params,
 		RaceState::Racer* p_racer,
@@ -48,43 +56,43 @@ public:
 	virtual PowerupProjectile* Destroy(undefined4 p_flags); // vtable+0x10
 	virtual void Deactivate();                              // vtable+0x14
 	virtual LegoS32 Update(LegoU32 p_elapsedMs);            // vtable+0x18
-	virtual void VTable0x1c(GolVec3*);                      // vtable+0x1c
+	virtual void GetVelocity(GolVec3* p_velocity);          // vtable+0x1c
 
 	void Reset();
-	void FUN_004316d0();
-	void FUN_00430d40(Params* p_params);
-	void FUN_00431310(RaceState::Racer* p_racer);
-	void FUN_00431450(LegoFloat p_durationSeconds);
-	void FUN_004314d0(LegoEventQueue* p_eventQueue);
+	void CancelCollisionEvent();
+	void Initialize(Params* p_params);
+	void Deflect(RaceState::Racer* p_racer);
+	void ComputeTrajectory(LegoFloat p_durationSeconds);
+	void RegisterCollisionEvent(LegoEventQueue* p_eventQueue);
 	LegoU32 GetState() const { return m_state; }
 	GolWorldEntity* GetWorldEntity() { return m_worldEntity; }
-	const GolVec3& GetUnk0x01c() const { return m_unk0x01c; }
-	const GolVec3& GetUnk0x028() const { return m_unk0x028; }
-	const GolVec3& GetUnk0x05c() const { return m_unk0x05c; }
-	RaceState::Racer* GetUnk0x0a4() const { return m_unk0x0a4; }
+	const GolVec3& GetTargetPosition() const { return m_targetPosition; }
+	const GolVec3& GetHitPosition() const { return m_hitPosition; }
+	const GolVec3& GetHitNormal() const { return m_hitNormal; }
+	RaceState::Racer* GetHitRacer() const { return m_hitRacer; }
 
 protected:
-	undefined4 m_state;                  // 0x004
-	GolWorldEntity* m_worldEntity;       // 0x008
-	RaceSessionField0x32b4* m_unk0x00c;  // 0x00c
-	GolVec3 m_unk0x010;                  // 0x010
-	GolVec3 m_unk0x01c;                  // 0x01c
-	GolVec3 m_unk0x028;                  // 0x028
-	LegoFloat m_unk0x034;                // 0x034
-	LegoFloat m_unk0x038;                // 0x038
-	LegoFloat m_unk0x03c;                // 0x03c
-	LegoFloat m_unk0x040;                // 0x040
-	LegoEventQueue::Event* m_unk0x044;   // 0x044
-	LegoFloat m_unk0x048;                // 0x048
-	LegoFloat m_unk0x04c;                // 0x04c
-	LegoS32 m_unk0x050;                  // 0x050
-	undefined4 m_unk0x054;               // 0x054
-	LegoU32 m_unk0x058;                  // 0x058
-	GolVec3 m_unk0x05c;                  // 0x05c
-	undefined m_unk0x068[0x09c - 0x068]; // 0x068
-	RaceState::Racer* m_unk0x09c;        // 0x09c
-	RaceState::Racer* m_unk0x0a0;        // 0x0a0
-	RaceState::Racer* m_unk0x0a4;        // 0x0a4
+	undefined4 m_state;                       // 0x004
+	GolWorldEntity* m_worldEntity;            // 0x008
+	RaceSessionField0x32b4* m_collisionWorld; // 0x00c
+	GolVec3 m_startPosition;                  // 0x010
+	GolVec3 m_targetPosition;                 // 0x01c
+	GolVec3 m_hitPosition;                    // 0x028
+	LegoFloat m_velocityX;                    // 0x034
+	LegoFloat m_velocityY;                    // 0x038
+	LegoFloat m_velocityZ;                    // 0x03c
+	LegoFloat m_gravity;                      // 0x040
+	LegoEventQueue::Event* m_collisionEvent;  // 0x044
+	LegoFloat m_launchHeight;                 // 0x048
+	LegoFloat m_speed;                        // 0x04c
+	LegoS32 m_ageMs;                          // 0x050
+	undefined4 m_flightTimeMs;                // 0x054
+	LegoU32 m_lifetimeMs;                     // 0x058
+	GolVec3 m_hitNormal;                      // 0x05c
+	undefined m_unk0x068[0x09c - 0x068];      // 0x068
+	RaceState::Racer* m_ownerRacer;           // 0x09c
+	RaceState::Racer* m_targetRacer;          // 0x0a0
+	RaceState::Racer* m_hitRacer;             // 0x0a4
 };
 
 #endif // POWERUPPROJECTILE_H

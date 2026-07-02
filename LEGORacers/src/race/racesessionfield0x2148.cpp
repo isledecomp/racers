@@ -3640,18 +3640,18 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x04(void*)
 	m_unk0x10.SetCenter(m_unk0xe0);
 
 	PowerupProjectile::Params projectileParams;
-	projectileParams.m_unk0x04 = m_unk0x10c;
-	projectileParams.m_unk0x08 = -32.176f;
-	projectileParams.m_unk0x0c = NULL;
-	projectileParams.m_unk0x10.m_x = 0.0f;
-	projectileParams.m_unk0x10.m_y = 0.0f;
-	projectileParams.m_unk0x10.m_z = 0.0f;
-	projectileParams.m_unk0x1c = 180.0f;
-	projectileParams.m_unk0x20 = 3000;
-	projectileParams.m_unk0x24 = 0.0f;
-	projectileParams.m_unk0x00 = &m_unk0x10;
+	projectileParams.m_collisionWorld = m_unk0x10c;
+	projectileParams.m_gravity = -32.176f;
+	projectileParams.m_eventQueue = NULL;
+	projectileParams.m_targetOffset.m_x = 0.0f;
+	projectileParams.m_targetOffset.m_y = 0.0f;
+	projectileParams.m_targetOffset.m_z = 0.0f;
+	projectileParams.m_speed = 180.0f;
+	projectileParams.m_lifetimeMs = 3000;
+	projectileParams.m_launchHeight = 0.0f;
+	projectileParams.m_worldEntity = &m_unk0x10;
 
-	m_unk0x38.VTable0x04(&projectileParams, &m_unk0xec);
+	m_unk0x38.LaunchAtPosition(&projectileParams, &m_unk0xec);
 
 	RaceTrailManager::Trail::Params trailParams;
 	trailParams.m_unk0x00 = 0x12c;
@@ -3699,7 +3699,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	PowerupProjectile* projectile = &m_unk0x38;
 	if (projectile->GetState() != 0) {
 		if (projectile->Update(p_elapsedMs) == 3) {
-			GolVec3 position = projectile->GetUnk0x028();
+			GolVec3 position = projectile->GetHitPosition();
 			m_unk0x110->SpawnExplosion(&position, 0, 0);
 			projectile->Deactivate();
 			m_unk0x04->FUN_00462580(7, 7, &position);
@@ -3725,7 +3725,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 	projectile->GetWorldEntity()->FUN_100286d0(&center);
 
 	GolVec3 velocity;
-	projectile->VTable0x1c(&velocity);
+	projectile->GetVelocity(&velocity);
 
 	GolVec2 perpendicular;
 	perpendicular.m_x = velocity.m_y;
@@ -3759,7 +3759,7 @@ void RaceEventDispatcher0x08::Item0x33::VTable0x14(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048fde0
 void RaceEventDispatcher0x08::Item0x33::VTable0x1c(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x0c != 1 && m_unk0x38.GetState() == 1) {
+	if (m_unk0x0c != 1 && m_unk0x38.GetState() == PowerupProjectile::c_stateFlying) {
 		GolVec3 position;
 		m_unk0x10.FUN_100286d0(&position);
 		m_unk0x114->VTable0x08(position);

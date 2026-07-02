@@ -61,7 +61,7 @@ void RacePowerupManager::TetherProjectile::VTable0x20(const SetupParams* p_param
 	m_unk0x218 = p_params->m_unk0x04;
 	m_unk0x21c = p_params->m_unk0x0c;
 	m_unk0x220 = 0;
-	m_unk0x0a4 = 0;
+	m_hitRacer = 0;
 
 	GolD3DRenderDevice* renderer = p_params->m_golExport->GetDrawState()->m_currentRenderer;
 
@@ -114,8 +114,8 @@ LegoS32 RacePowerupManager::TetherProjectile::Update(LegoU32 p_elapsedMs)
 	PowerupProjectile::Update(p_elapsedMs);
 	LegoS32 result = m_state;
 	if (result == 1) {
-		LegoFloat elapsedMs = static_cast<LegoFloat>(m_unk0x050);
-		LegoFloat elapsed = elapsedMs / static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0x054));
+		LegoFloat elapsedMs = static_cast<LegoFloat>(m_ageMs);
+		LegoFloat elapsed = elapsedMs / static_cast<LegoFloat>(static_cast<LegoS32>(m_flightTimeMs));
 		m_unk0x220 = (1.0f - elapsed) * m_unk0x21c;
 
 		GolVec3 position;
@@ -140,7 +140,7 @@ void RacePowerupManager::TetherProjectile::FUN_00444540(
 	elapsedStep *= 0.001f;
 
 	GolVec3 origin;
-	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);
+	m_ownerRacer->m_unk0x018.m_unk0x044->VTable0x04(&origin);
 	origin.m_z += m_unk0x218;
 
 	LegoFloat deltaX = p_position->m_x - origin.m_x;
@@ -158,7 +158,7 @@ void RacePowerupManager::TetherProjectile::FUN_00444540(
 		elapsed += elapsedStep;
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
-		position.m_z = (m_unk0x040 * 0.5f * elapsed * elapsed) + (m_unk0x03c * elapsed) + m_unk0x010.m_z;
+		position.m_z = (m_gravity * 0.5f * elapsed * elapsed) + (m_velocityZ * elapsed) + m_startPosition.m_z;
 		m_beam.FUN_00494870(&position, p_amount);
 		p_amount = -p_amount;
 	}
@@ -177,7 +177,7 @@ void RacePowerupManager::TetherProjectile::VTable0x24(GolD3DRenderDevice* p_rend
 LegoS32 RacePowerupManager::TetherProjectile::FUN_00444690(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
-	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	m_ownerRacer->m_unk0x018.m_unk0x044->VTable0x04(&position);
 	position.m_z += m_unk0x218;
 
 	GolVec3* target = &m_unk0x228;
@@ -189,7 +189,7 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444690(LegoU32 p_elapsedMs)
 			static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs))
 		)) {
 		m_unk0x234 = 0;
-		return 4;
+		return c_stateExpired;
 	}
 
 	m_unk0x224 -= g_unk0x004b0c9c * static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs));
@@ -220,14 +220,14 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444690(LegoU32 p_elapsedMs)
 	m_beam.FUN_00494870(target, amount);
 	m_beam.FUN_00494230();
 
-	return 1;
+	return c_stateFlying;
 }
 
 // STUB: LEGORACERS 0x00444820
 LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
-	m_unk0x0a4->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
+	m_hitRacer->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
 	targetPosition.m_z += g_unk0x004b0c90;
 
 	GolVec3 currentPosition;
@@ -252,7 +252,7 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 	m_worldEntity->VTable0x08(currentPosition);
 
 	GolVec3 origin;
-	m_unk0x09c->m_unk0x018.m_unk0x044->VTable0x04(&origin);
+	m_ownerRacer->m_unk0x018.m_unk0x044->VTable0x04(&origin);
 	origin.m_z += m_unk0x218;
 
 	GolVec3 delta;
@@ -264,9 +264,9 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 	if (m_unk0x224 >= 1.0f) {
 		GolBoundingVolume::Field0x0c record;
 		m_unk0x224 = 1.0f;
-		if (m_unk0x00c->FUN_0041f730(&origin, &currentPosition, &record, &m_unk0x028)) {
-			m_unk0x05c = record.m_unk0x24;
-			return 3;
+		if (m_collisionWorld->FUN_0041f730(&origin, &currentPosition, &record, &m_hitPosition)) {
+			m_hitNormal = record.m_unk0x24;
+			return c_stateHitWorld;
 		}
 	}
 
@@ -277,7 +277,7 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 	step.m_z = delta.m_z * 0.2f;
 	m_beam.FUN_00493ea0(&origin, &step);
 
-	LegoFloat elapsedStep = static_cast<LegoFloat>(m_unk0x054) * 0.2f * 0.001f;
+	LegoFloat elapsedStep = static_cast<LegoFloat>(m_flightTimeMs) * 0.2f * 0.001f;
 	LegoFloat elapsed = 0.0f;
 	GolVec3 position = origin;
 	for (LegoU32 i = 0; i < 4; i++) {
@@ -287,9 +287,9 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 		position.m_z += step.m_z;
 
 		GolVec3 blended = position;
-		blended.m_z =
-			(((m_unk0x040 * 0.5f * elapsed * elapsed) + (m_unk0x03c * elapsed) + m_unk0x010.m_z) * remainingAmount) +
-			(m_unk0x224 * position.m_z);
+		blended.m_z = (((m_gravity * 0.5f * elapsed * elapsed) + (m_velocityZ * elapsed) + m_startPosition.m_z) *
+					   remainingAmount) +
+					  (m_unk0x224 * position.m_z);
 		m_beam.FUN_00494870(&blended, 0.0f);
 	}
 
@@ -306,7 +306,7 @@ void RacePowerupManager::TetherProjectile::FUN_00444ac0(GolVec3* p_unk0x04)
 	m_unk0x228.m_y = p_unk0x04->m_y;
 	m_unk0x228.m_z = p_unk0x04->m_z;
 
-	if (m_unk0x0a4 == NULL) {
+	if (m_hitRacer == NULL) {
 		m_unk0x224 = m_unk0x220 / g_unk0x004b0ca4;
 	}
 

@@ -51,7 +51,7 @@ public:
 	// SIZE 0x1fc
 	class PwbTxtParser : public GolTxtParser {
 	public:
-		// .pwb token meanings (cross-referenced with data/liblr1 PWB.cs)
+		// .pwb token meanings
 		enum {
 			e_colorBricks = 0x27,
 			e_position = 0x28,
@@ -279,17 +279,17 @@ public:
 		HomingProjectile();
 		PowerupProjectile* Destroy(undefined4 p_flags) override;
 		LegoS32 Update(LegoU32 p_elapsedMs) override;
-		void VTable0x1c(GolVec3* p_unk0x04) override;
-		void FUN_00423630();
-		void FUN_00423640(
+		void GetVelocity(GolVec3* p_velocity) override;
+		void Destruct();
+		void UpdateTargeting(
 			LegoU32 p_elapsedMs,
 			RaceState* p_unk0x08,
 			LegoFloat p_unk0x0c,
 			LegoFloat p_unk0x10,
 			LegoFloat p_unk0x14
 		);
-		void FUN_00423980();
-		void FUN_00423ed0(LegoFloat p_elapsedSeconds, GolVec3* p_unk0x08, GolVec3* p_unk0x0c);
+		void StartHoming();
+		void ApplySpiral(LegoFloat p_elapsedSeconds, GolVec3* p_unk0x08, GolVec3* p_unk0x0c);
 
 	protected:
 		friend class HomingMissileAction;
@@ -300,18 +300,18 @@ public:
 			c_targetRefreshMs = 1000,
 		};
 
-		GolVec3 m_unk0x0a8;                        // 0x0a8
-		LegoFloat m_unk0x0b4;                      // 0x0b4
-		LegoFloat m_unk0x0b8;                      // 0x0b8
-		LegoFloat m_unk0x0bc;                      // 0x0bc
-		LegoFloat m_unk0x0c0;                      // 0x0c0
-		GolVec3 m_unk0x0c4;                        // 0x0c4
-		GolVec3 m_unk0x0d0;                        // 0x0d0
-		GolVec3 m_unk0x0dc;                        // 0x0dc
-		LegoU32 m_unk0x0e8;                        // 0x0e8
-		RaceSessionField0x27f4::Entry* m_unk0x0ec; // 0x0ec
-		LegoU32 m_unk0x0f0;                        // 0x0f0
-		undefined4 m_unk0x0f4;                     // 0x0f4
+		GolVec3 m_position;                         // 0x0a8
+		LegoFloat m_spiralAmplitude;                // 0x0b4
+		LegoFloat m_maxSpiralAmplitude;             // 0x0b8
+		LegoFloat m_spiralAngle;                    // 0x0bc
+		LegoFloat m_spiralRate;                     // 0x0c0
+		GolVec3 m_velocity;                         // 0x0c4
+		GolVec3 m_direction;                        // 0x0d0
+		GolVec3 m_waypointPosition;                 // 0x0dc
+		LegoU32 m_hasWaypoint;                      // 0x0e8
+		RaceSessionField0x27f4::Entry* m_pathEntry; // 0x0ec
+		LegoU32 m_retargetTimerMs;                  // 0x0f0
+		undefined4 m_unk0x0f4;                      // 0x0f4
 	};
 
 	// VTABLE: LEGORACERS 0x004b0ca8

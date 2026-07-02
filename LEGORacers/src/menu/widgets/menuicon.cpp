@@ -592,7 +592,7 @@ void MenuIcon::BeginRectTransition()
 
 		if (m_rectDeltaTop != 0.0f || m_rectDeltaBottom != 0.0f || m_rectDeltaLeft != 0.0f ||
 			m_rectDeltaRight != 0.0f) {
-			m_unk0x54 |= 1;
+			m_animFlags |= 1;
 		}
 	}
 }
@@ -600,12 +600,12 @@ void MenuIcon::BeginRectTransition()
 // FUNCTION: LEGORACERS 0x00472680
 undefined4 MenuIcon::OnEvent(undefined4 p_elapsedMs)
 {
-	if (!(m_unk0x54 & 1)) {
+	if (!(m_animFlags & 1)) {
 		return 0;
 	}
 
 	if (!m_transitionRemainingMs) {
-		m_unk0x54 &= ~1;
+		m_animFlags &= ~1;
 
 		m_rect = m_stateTargetRects[m_visualStateIndex];
 		m_rectDeltaTop = 0.0f;

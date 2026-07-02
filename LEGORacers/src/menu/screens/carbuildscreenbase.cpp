@@ -35,19 +35,19 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 		}
 	}
 	else {
-		if (m_unk0x358 != m_hoverIcon) {
+		if (m_selectedIcon != m_hoverIcon) {
 			m_hoverMs = 0;
 
-			if (m_unk0x358 == p_vantage) {
-				m_hoverIcon = m_unk0x358;
+			if (m_selectedIcon == p_vantage) {
+				m_hoverIcon = m_selectedIcon;
 			}
-			else if (m_unk0x358) {
+			else if (m_selectedIcon) {
 				LegoS32 x = item->m_rect.m_right + item->m_rect.m_left;
 				LegoS32 y = item->m_rect.m_bottom + item->m_rect.m_top;
-				Rect rect = *m_unk0x358->GetGlobalRect();
+				Rect rect = *m_selectedIcon->GetGlobalRect();
 
-				if (m_unk0x358->PointInRect(&rect, x, y)) {
-					m_hoverIcon = m_unk0x358;
+				if (m_selectedIcon->PointInRect(&rect, x, y)) {
+					m_hoverIcon = m_selectedIcon;
 				}
 				else {
 					m_hoverIcon = NULL;
@@ -58,7 +58,7 @@ undefined4 CarBuildScreenBase::OnWidgetKeyUp(MenuWidget* p_vantage, void* p_item
 			}
 		}
 
-		if (m_unk0x358 != p_vantage && m_hoverIcon) {
+		if (m_selectedIcon != p_vantage && m_hoverIcon) {
 			LegoS32 x = item->m_rect.m_right + item->m_rect.m_left;
 			LegoS32 y = item->m_rect.m_bottom + item->m_rect.m_top;
 			Rect rect = *m_hoverIcon->GetGlobalRect();

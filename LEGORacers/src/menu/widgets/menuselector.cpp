@@ -68,7 +68,7 @@ LegoBool32 MenuSelectorBase::CreateDefault(
 // FUNCTION: LEGORACERS 0x00467180
 void MenuSelectorBase::OnPreviousPressed(undefined4 p_param)
 {
-	if (m_unk0x54 & 1) {
+	if (m_animFlags & 1) {
 		return;
 	}
 
@@ -90,7 +90,7 @@ void MenuSelectorBase::OnPreviousPressed(undefined4 p_param)
 // FUNCTION: LEGORACERS 0x004671e0
 void MenuSelectorBase::OnNextPressed(undefined4 p_param)
 {
-	if (m_unk0x54 & 1) {
+	if (m_animFlags & 1) {
 		return;
 	}
 
@@ -248,7 +248,7 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_e
 {
 	switch (p_result) {
 	case InputDevice::c_sourceJoystickButton | 0xa:
-		if (m_nextButton.GetUnk0x54() & 1) {
+		if (m_nextButton.GetAnimFlags() & 1) {
 			return TRUE;
 		}
 
@@ -267,7 +267,7 @@ LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_e
 		return TRUE;
 
 	case InputDevice::c_sourceJoystickButton | 0xb:
-		if (m_prevButton.GetUnk0x54() & 1) {
+		if (m_prevButton.GetAnimFlags() & 1) {
 			return TRUE;
 		}
 
@@ -417,7 +417,7 @@ void MenuSelector::StepPrevious()
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
-	m_scrollPending = m_carousel->GetUnk0x54() & 1;
+	m_scrollPending = m_carousel->GetAnimFlags() & 1;
 }
 
 // FUNCTION: LEGORACERS 0x004679b0
@@ -434,7 +434,7 @@ void MenuSelector::StepNext()
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
-	m_scrollPending = m_carousel->GetUnk0x54() & 1;
+	m_scrollPending = m_carousel->GetAnimFlags() & 1;
 }
 
 // FUNCTION: LEGORACERS 0x00467a00
@@ -442,7 +442,7 @@ undefined4 MenuSelector::OnEvent(undefined4)
 {
 	LegoU32 index = m_stateFlags & c_flagBit1;
 
-	if (m_scrollPending && !(m_carousel->GetUnk0x54() & 1) && m_eventHandler) {
+	if (m_scrollPending && !(m_carousel->GetAnimFlags() & 1) && m_eventHandler) {
 		m_eventHandler->OnSelectorSettled(this);
 		m_scrollPending = 0;
 	}

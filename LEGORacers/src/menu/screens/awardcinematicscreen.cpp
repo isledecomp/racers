@@ -54,7 +54,7 @@ LegoBool32 AwardCinematicScreen::Initialize(MenuGameContext* p_context, MenuScre
 
 	undefined4 musicId = 1;
 
-	switch (m_unk0x28c) {
+	switch (m_resourceMenuId) {
 	case c_menuChampAward1:
 		musicId = 2;
 		break;
@@ -81,7 +81,7 @@ LegoBool32 AwardCinematicScreen::Initialize(MenuGameContext* p_context, MenuScre
 		break;
 	}
 
-	FUN_00480470(p_context, musicId, FALSE);
+	StartMenuMusic(p_context, musicId, FALSE);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -97,8 +97,8 @@ LegoBool32 AwardCinematicScreen::Destroy()
 		return TRUE;
 	}
 
-	FUN_004801e0();
-	FUN_004800c0(m_context);
+	DestroyChampionResources();
+	DestroyPieceResources(m_context);
 	m_unk0x658.FUN_00479590();
 	m_unk0x6a8.VTable0x54();
 
@@ -120,7 +120,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	}
 
 	LegoBool32 result = MenuSceneScreen::Destroy();
-	if (m_unk0x28c == c_menuWinRrCar) {
+	if (m_resourceMenuId == c_menuWinRrCar) {
 		MenuGameContext* context = m_context;
 		if (context->m_carBuildModel.IsInitialized()) {
 			m_context->m_carBuildModel.FUN_00499ee0();
@@ -146,23 +146,23 @@ void AwardCinematicScreen::CreateWidgets()
 	LegoBool32 carCreated = FALSE;
 	DriverCosmetics cosmetics;
 
-	if (m_unk0x28c != c_menuWinVvCar) {
+	if (m_resourceMenuId != c_menuWinVvCar) {
 		if (!m_context->m_modelBuilder.HasMenuResources()) {
-			FUN_00480210(m_context, FALSE);
+			LoadPartResources(m_context, FALSE);
 		}
 
 		if (!m_context->m_cosmeticTable.HasEntries()) {
-			FUN_00480310();
+			LoadCosmeticTable();
 		}
 	}
 
-	if (m_unk0x28c == c_menuWinCar) {
+	if (m_resourceMenuId == c_menuWinCar) {
 		if (!m_context->m_chassisModels.HasItems() || !m_context->m_championDefinitions.HasDefinitions()) {
-			FUN_00480110(1);
+			LoadChampionResources(1);
 		}
 	}
 
-	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_resourceMenuId);
 	locals.m_string.CopyToString(locals.m_name);
 	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
 
@@ -170,11 +170,11 @@ void AwardCinematicScreen::CreateWidgets()
 		g_hashTable->SetCurrentEntryFromString(locals.m_path);
 	}
 
-	CreateRegion(&m_sceneWidget, m_unk0x28c);
+	CreateRegion(&m_sceneWidget, m_resourceMenuId);
 	m_sceneWidget.m_unk0x2cc = FALSE;
 	CutsceneDefinition::Frame* frame = m_sceneWidget.m_unk0x2b0;
 
-	if (m_unk0x28c == c_menuCircuit7) {
+	if (m_resourceMenuId == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 		if (record) {
 			m_context->m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
@@ -205,7 +205,7 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 	}
 
-	if (m_unk0x28c != c_menuWinVvCar) {
+	if (m_resourceMenuId != c_menuWinVvCar) {
 		LegoRacers::Context* racersContext = m_context->m_context;
 		LegoU32 slotIndex = 0;
 		undefined4 slotState = racersContext->m_playerSetupSlots[slotIndex].m_unk0x10;
@@ -217,7 +217,7 @@ void AwardCinematicScreen::CreateWidgets()
 			}
 		}
 
-		if (m_unk0x28c == c_menuWinCar) {
+		if (m_resourceMenuId == c_menuWinCar) {
 			slotIndex = 1;
 		}
 
@@ -250,7 +250,7 @@ void AwardCinematicScreen::CreateWidgets()
 					currentEntry = NULL;
 				}
 
-				FUN_0047ff50(m_context, TRUE);
+				LoadPieceResources(m_context, TRUE);
 
 				if (g_hashTable) {
 					g_hashTable->SetCurrentEntry(currentEntry);
@@ -258,7 +258,7 @@ void AwardCinematicScreen::CreateWidgets()
 			}
 
 			carCreated = FUN_00476b00(slotIndex);
-			FUN_004803a0();
+			ClearCosmeticTable();
 			m_context->m_chassisModels.FUN_0041dae0();
 			m_context->m_championDefinitions.ClearDefinitions();
 		}
@@ -344,7 +344,7 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 	}
 
-	if (m_unk0x28c == c_menuWinCar) {
+	if (m_resourceMenuId == c_menuWinCar) {
 		GolNameTable* textVisuals = m_sceneWidget.m_unk0x84.GetTextVisuals();
 		const LegoChar* driverName = m_context->m_context->m_playerSetupSlots[1].m_driverName;
 		GolName textName;
@@ -407,7 +407,7 @@ void AwardCinematicScreen::CreateWidgets()
 LegoBool32 AwardCinematicScreen::FUN_004767b0()
 {
 	GameState* gameState = &m_context->m_saveSystem.GetGameState();
-	LegoU16 menuId = m_unk0x28c;
+	LegoU16 menuId = m_resourceMenuId;
 
 	if (menuId != c_menuChampAward1 && menuId != c_menuChampAward2 && menuId != c_menuChampAward3) {
 		return FALSE;
@@ -443,7 +443,7 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 		);
 	m_unk0x7a4 = FUN_00476890(records, circuitDefinition);
 
-	if (m_unk0x28c != c_menuChampAward1 && m_unk0x28c != c_menuChampAward2) {
+	if (m_resourceMenuId != c_menuChampAward1 && m_resourceMenuId != c_menuChampAward2) {
 		return FALSE;
 	}
 
@@ -464,7 +464,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476890(
 		return FALSE;
 	}
 
-	return record->SetTrophy(m_context->m_circuitList.GetEntryIndex(p_circuitDefinition), m_unk0x28c - 0x15);
+	return record->SetTrophy(m_context->m_circuitList.GetEntryIndex(p_circuitDefinition), m_resourceMenuId - 0x15);
 }
 
 // FUNCTION: LEGORACERS 0x004768f0
@@ -500,7 +500,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476990(
 	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
 {
-	if (m_unk0x28c != c_menuChampAward1) {
+	if (m_resourceMenuId != c_menuChampAward1) {
 		return FALSE;
 	}
 
@@ -544,7 +544,7 @@ void AwardCinematicScreen::Navigate()
 			}
 		}
 		else {
-			if (m_unk0x28c == c_menuWinRrCar) {
+			if (m_resourceMenuId == c_menuWinRrCar) {
 				m_context->m_menuStack.Push(c_menuCredits);
 			}
 			else {
@@ -564,7 +564,7 @@ void AwardCinematicScreen::Navigate()
 // FUNCTION: LEGORACERS 0x00476ad0
 LegoBool32 AwardCinematicScreen::Update(undefined4 p_unk0x04)
 {
-	if (m_unk0x28c == c_menuCircuit7) {
+	if (m_resourceMenuId == c_menuCircuit7) {
 		m_sceneWidget.m_unk0x2cc = TRUE;
 	}
 
@@ -579,7 +579,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 	GolName name;
 
 	do {
-		if (m_unk0x28c == c_menuWinCar) {
+		if (m_resourceMenuId == c_menuWinCar) {
 			LegoRacers::Context* racersContext = m_context->m_context;
 			const LegoChar* driverName = racersContext->m_playerSetupSlots[1].m_driverName;
 			LegoChar firstChar = driverName[0];

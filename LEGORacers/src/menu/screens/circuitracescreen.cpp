@@ -46,8 +46,8 @@ void CircuitRaceScreen::CreateWidgets()
 	CreateTextLabel(&m_raceNameLabel, 0x5d, 0x37, 0x4a);
 	CreateTextLabel(&m_trackCaptionLabel, 0x5f, 0x37, 0x4b);
 	CreateTextLabel(&m_circuitDescLabel, 0x60, 0x37, 0x60);
-	FUN_0047fdc0(&m_startButton, 0x40, 0x46, 0x72);
-	FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 2);
+	CreateTextButton(&m_startButton, 0x40, 0x46, 0x72);
+	CreateTextButton(&m_backButton, 0x3f, 0x43, 2);
 }
 
 // FUNCTION: LEGORACERS 0x0047a040
@@ -66,17 +66,17 @@ LegoBool32 CircuitRaceScreen::Initialize(MenuGameContext* p_context, MenuScreenC
 void CircuitRaceScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_startButton) {
-		m_unk0x360 = 0x1e;
+		m_nextMenuId = 0x1e;
 	}
 	else if (p_source == &m_backButton) {
-		m_unk0x360 = 2;
+		m_nextMenuId = 2;
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x0047a0e0
@@ -135,7 +135,7 @@ void CircuitRaceScreen::Navigate()
 		m_transition = NULL;
 	}
 
-	if (m_unk0x360 == 2) {
+	if (m_nextMenuId == 2) {
 		m_context->m_menuStack.Pop();
 		return;
 	}

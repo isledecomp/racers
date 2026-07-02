@@ -372,7 +372,7 @@ LegoFloat g_arcCosineTable[1024] = {
 	0.06254073232f, 0.0f,
 };
 
-extern const LegoFloat g_unk0x4b2160;
+extern const LegoFloat g_dialogAnimRate;
 
 // FUNCTION: LEGORACERS 0x004778f0
 CarModelScreenBase::CarPartPlacement::CarPartPlacement()
@@ -1220,7 +1220,7 @@ void CarModelScreenBase::CarPartPlacement::UpdateViewPitch(LegoU32 p_elapsed)
 	}
 
 	LegoFloat scaledTime = static_cast<LegoFloat>(m_viewResetDelayMs);
-	scaledTime *= g_unk0x4b2160;
+	scaledTime *= g_dialogAnimRate;
 	scaledTime *= g_halfPi;
 	scaledTime *= g_negativeRadiansToTableIndex;
 	LegoS32 index = (0xffffff00 - static_cast<LegoS32>(scaledTime)) & 0x3ff;

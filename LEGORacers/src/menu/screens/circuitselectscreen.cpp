@@ -35,7 +35,7 @@ LegoBool32 CircuitSelectScreen::Initialize(MenuGameContext* p_context, MenuScree
 	}
 
 	LegoS32 musicId = 1;
-	switch (m_unk0x28c - c_menuCircuit1) {
+	switch (m_resourceMenuId - c_menuCircuit1) {
 	case 0:
 		musicId = 5;
 		break;
@@ -56,7 +56,7 @@ LegoBool32 CircuitSelectScreen::Initialize(MenuGameContext* p_context, MenuScree
 		break;
 	}
 
-	FUN_00480470(p_context, musicId, FALSE);
+	StartMenuMusic(p_context, musicId, FALSE);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -96,7 +96,7 @@ void CircuitSelectScreen::CreateWidgets()
 		LegoChar m_path[20];
 	} locals;
 
-	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&locals.m_string, m_resourceMenuId);
 	locals.m_string.CopyToString(locals.m_name);
 	::sprintf(locals.m_path, "MENUDATA\\%s", locals.m_name);
 
@@ -104,7 +104,7 @@ void CircuitSelectScreen::CreateWidgets()
 		g_hashTable->SetCurrentEntryFromString(locals.m_path);
 	}
 
-	CreateRegion(&m_sceneWidget, m_unk0x28c);
+	CreateRegion(&m_sceneWidget, m_resourceMenuId);
 	m_sceneWidget.m_unk0x2cc = FALSE;
 }
 

@@ -218,7 +218,7 @@ LegoS32 MenuInputDispatcher::Shutdown()
 // FUNCTION: LEGORACERS 0x004690b0
 void MenuInputDispatcher::FocusNext()
 {
-	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetRootIcon();
 
 	if (!icon->SelectNext()) {
 		icon->SelectFirst();
@@ -228,7 +228,7 @@ void MenuInputDispatcher::FocusNext()
 // FUNCTION: LEGORACERS 0x004690d0
 void MenuInputDispatcher::FocusPrevious()
 {
-	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetRootIcon();
 
 	if (!icon->SelectPrevious()) {
 		icon->SelectLast();
@@ -238,7 +238,7 @@ void MenuInputDispatcher::FocusPrevious()
 // FUNCTION: LEGORACERS 0x004690f0
 LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_item)
 {
-	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetRootIcon();
 	MenuWidget* active = icon->FindFocusedLeaf();
 	undefined4 x = m_cursor.m_originX + m_cursor.m_cursorX;
 	undefined4 y = m_cursor.m_originY + m_cursor.m_cursorY;
@@ -274,7 +274,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 // FUNCTION: LEGORACERS 0x004691e0
 void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
 {
-	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetRootIcon();
 	MenuWidget* active = icon->FindFocusedLeaf();
 	UtopianPan0xa4* cursorImage = m_cursor.m_cursorImage;
 	LegoS32 right = m_screenWidth - (cursorImage->m_width >> 2);
@@ -347,7 +347,7 @@ LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 			case c_joystickButton1:
 				break;
 			default:
-				MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+				MenuIcon* icon = m_activeScreen->GetRootIcon();
 
 				if (item->m_isPressed) {
 					icon->DispatchKeyDown(item, x, y);
@@ -366,7 +366,7 @@ LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 // FUNCTION: LEGORACERS 0x004694b0
 LegoS32 MenuInputDispatcher::Update(undefined4 p_elapsedMs)
 {
-	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
+	MenuIcon* icon = m_activeScreen->GetRootIcon();
 
 	if (icon) {
 		icon->BroadcastEvent(p_elapsedMs);

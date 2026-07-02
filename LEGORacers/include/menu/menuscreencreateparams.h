@@ -25,11 +25,11 @@ public:
 	InputEventQueue* m_inputEvents;         // 0x14
 	SharedMenuStyleTable* m_menuStyles;     // 0x18
 	SoundGroupBinding* m_soundGroupBinding; // 0x1c
-	MenuDialog* m_unk0x20;                  // 0x20
+	MenuDialog* m_dialog;                   // 0x20
 	MenuInputDispatcher::Cursor* m_cursor;  // 0x24
 	LegoU16 m_menuId;                       // 0x28
 	undefined2 m_unk0x2a;                   // 0x2a
-	undefined4 m_unk0x2c;                   // 0x2c
+	undefined4 m_useBinaryFiles;            // 0x2c
 };
 
 #endif // MENUSCREENCREATEPARAMS_H

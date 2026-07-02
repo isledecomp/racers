@@ -78,9 +78,9 @@ LegoBool32 MenuTextButton::CreateLabel(CreateParams* p_createParams, MenuStyleTa
 	LegoS32 right = m_image.GetRect()->m_right;
 	createParams.m_rect.m_right += right;
 	createParams.m_flags |= 3;
-	createParams.m_unk0x38 = p_createParams->m_stringTable;
-	createParams.m_unk0x3c = m_stateFonts[0];
-	createParams.m_unk0x40 = p_createParams->m_stringId;
+	createParams.m_stringTable = p_createParams->m_stringTable;
+	createParams.m_font = m_stateFonts[0];
+	createParams.m_stringId = p_createParams->m_stringId;
 	createParams.m_unk0x22 = m_stateImageColors[0];
 	createParams.m_rect.m_left += right;
 	createParams.m_parent = this;
@@ -185,7 +185,7 @@ MenuWidget* MenuTextButton::DrawSelf(Rect*, Rect*)
 {
 	m_image.SetUnk0x58(m_stateImages[m_visualStateIndex]);
 	m_image.SetColor(&m_stateImageColors[m_visualStateIndex]);
-	m_label.SetUnk0x60(m_stateFonts[m_visualStateIndex]);
+	m_label.SetFont(m_stateFonts[m_visualStateIndex]);
 	m_label.SetColor(&m_stateColors[m_visualStateIndex]);
 
 	return NULL;

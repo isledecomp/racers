@@ -100,17 +100,17 @@ void EditCarScreen::CreateWidgets()
 	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x0b);
 	m_infoLabel.WrapText(0x14);
 
-	FUN_0047fdc0(&m_buildButton, 0x9a, 0x42, 0x25);
-	FUN_0047fdc0(&m_newCarButton, 0x9b, 0x42, 0x3c);
-	FUN_0047fdc0(&m_quickBuildButton, 0x9c, 0x42, 0x3d);
+	CreateTextButton(&m_buildButton, 0x9a, 0x42, 0x25);
+	CreateTextButton(&m_newCarButton, 0x9b, 0x42, 0x3c);
+	CreateTextButton(&m_quickBuildButton, 0x9c, 0x42, 0x3d);
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x1e);
-		FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 0x0a);
+		CreateTextButton(&m_doneButton, 0x40, 0x46, 0x1e);
+		CreateTextButton(&m_backButton, 0x3f, 0x43, 0x0a);
 	}
 	else {
-		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x72);
-		FUN_0047fdc0(&m_backButton, 0x3f, 0x45, 0x1f);
+		CreateTextButton(&m_doneButton, 0x40, 0x46, 0x72);
+		CreateTextButton(&m_backButton, 0x3f, 0x45, 0x1f);
 	}
 
 	CreateCategoryCarousel();
@@ -131,7 +131,7 @@ void EditCarScreen::SetupLighting()
 	lightColor.m_red = 0x78;
 	lightColor.m_alp = 0x78;
 
-	FUN_0047fec0(&materialColor, &lightColor);
+	SetLighting(&materialColor, &lightColor);
 }
 
 // FUNCTION: LEGORACERS 0x0047c210
@@ -140,11 +140,11 @@ LegoBool32 EditCarScreen::Initialize(MenuGameContext* p_context, MenuScreenCreat
 	LoadBuilderImages(p_context, p_createParams);
 
 	if (!p_context->m_carBuildModel.IsInitialized()) {
-		FUN_0047ff50(p_context, TRUE);
+		LoadPieceResources(p_context, TRUE);
 	}
 
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
-		FUN_00480210(p_context, FALSE);
+		LoadPartResources(p_context, FALSE);
 	}
 
 	p_context->m_partResources.SetResourceIndex(1);
@@ -387,16 +387,16 @@ LegoBool32 EditCarScreen::HasUnsavedChanges()
 void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_buildButton) {
-		m_unk0x360 = c_menuCarBuild;
+		m_nextMenuId = c_menuCarBuild;
 	}
 	else if (p_source == &m_quickBuildButton) {
 		if (m_activeRecord->IsCarSaved()) {
 			OnIconUnfocused(&m_quickBuildYesButton);
 		}
 		else {
-			FUN_0047fdc0(&m_quickBuildYesButton, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_quickBuildYesButton, &m_confirmNoButton, 0x7b);
+			CreateTextButton(&m_quickBuildYesButton, 0x99, 0x46, 0x20);
+			CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			ShowConfirmDialog(&m_quickBuildYesButton, &m_confirmNoButton, 0x7b);
 		}
 	}
 	else if (p_source == &m_newCarButton) {
@@ -404,9 +404,9 @@ void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 			OnIconUnfocused(&m_newCarYesButton);
 		}
 		else {
-			FUN_0047fdc0(&m_newCarYesButton, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_newCarYesButton, &m_confirmNoButton, 0x7b);
+			CreateTextButton(&m_newCarYesButton, 0x99, 0x46, 0x20);
+			CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			ShowConfirmDialog(&m_newCarYesButton, &m_confirmNoButton, 0x7b);
 		}
 		UpdateButtonStates();
 	}
@@ -418,47 +418,47 @@ void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 			SetPlayerOneRecord();
 		}
 		SaveCarData();
-		m_unk0x360 = c_menuGarage;
+		m_nextMenuId = c_menuGarage;
 	}
 	else if (p_source == &m_backButton) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			m_unk0x360 = c_menuDriverLicense;
+			m_nextMenuId = c_menuDriverLicense;
 		}
 		else if (HasUnsavedChanges()) {
-			FUN_0047fdc0(&m_discardYesButton, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_discardYesButton, &m_confirmNoButton, 0x7b);
+			CreateTextButton(&m_discardYesButton, 0x99, 0x46, 0x20);
+			CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			ShowConfirmDialog(&m_discardYesButton, &m_confirmNoButton, 0x7b);
 		}
 		else {
 			OnIconUnfocused(&m_discardYesButton);
 		}
 	}
 	else if (p_source == &m_discardYesButton) {
-		m_unk0x360 = c_menuGarage;
-		if (m_unk0x284->GetUnk0x9c() > 0) {
-			m_unk0x284->FUN_00468cf0();
+		m_nextMenuId = c_menuGarage;
+		if (m_dialog->GetOpenCount() > 0) {
+			m_dialog->DismissTop();
 		}
 	}
 	else if (p_source == &m_confirmNoButton) {
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 	else if (p_source == &m_quickBuildYesButton) {
 		LoadQuickBuildCar();
-		if (m_unk0x284->GetUnk0x9c() > 0) {
-			m_unk0x284->FUN_00468cf0();
+		if (m_dialog->GetOpenCount() > 0) {
+			m_dialog->DismissTop();
 		}
 	}
 	else if (p_source == &m_newCarYesButton) {
 		OnWidgetValueChanged(&m_categorySelector);
-		if (m_unk0x284->GetUnk0x9c() > 0) {
-			m_unk0x284->FUN_00468cf0();
+		if (m_dialog->GetOpenCount() > 0) {
+			m_dialog->DismissTop();
 		}
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x0047cbc0
@@ -501,7 +501,7 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047ccf0
 void EditCarScreen::Navigate()
 {
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case c_menuDriverLicense:
 		m_context->m_menuStack.Pop();
 		m_context->m_partResources.SetResourceIndex(0);
@@ -511,10 +511,10 @@ void EditCarScreen::Navigate()
 		}
 		m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
 		m_activeRecord->SetCarData(m_carBuildSaveBuffer);
-		m_context->m_menuStack.Push(m_unk0x360);
+		m_context->m_menuStack.Push(m_nextMenuId);
 		break;
 	case c_menuCarBuild:
-		m_context->m_menuStack.Push(m_unk0x360);
+		m_context->m_menuStack.Push(m_nextMenuId);
 		break;
 	case c_menuGarage:
 		m_context->m_menuStack.Pop();

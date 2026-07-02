@@ -150,7 +150,7 @@ LegoS32 MenuManager::Initialize(LegoRacers::Context* p_context)
 	LegoU16 top = m_gameContext.m_menuStack.Peek();
 	OpenScreen(top);
 
-	m_dialog.FUN_00468af0(&m_screenCreateParams, 2, &m_inputDispatcher);
+	m_dialog.Initialize(&m_screenCreateParams, 2, &m_inputDispatcher);
 	return 1;
 }
 
@@ -171,7 +171,7 @@ LegoS32 MenuManager::Shutdown()
 		}
 
 		m_inputDispatcher.Shutdown();
-		m_dialog.FUN_00468ab0();
+		m_dialog.Destroy();
 		UnloadMenuData();
 		ReleaseRendererObject();
 		ShutdownInputBindings();
@@ -446,8 +446,8 @@ void MenuManager::OpenScreen(LegoU16 p_menuId)
 	m_screenCreateParams.m_soundGroupBinding = &m_soundGroupBinding;
 	m_screenCreateParams.m_menuStyles = &m_menuStyles;
 	m_screenCreateParams.m_menuId = p_menuId;
-	m_screenCreateParams.m_unk0x2c = m_gameContext.m_context->m_useBinaryFiles;
-	m_screenCreateParams.m_unk0x20 = &m_dialog;
+	m_screenCreateParams.m_useBinaryFiles = m_gameContext.m_context->m_useBinaryFiles;
+	m_screenCreateParams.m_dialog = &m_dialog;
 	m_screenCreateParams.m_cursor = m_inputDispatcher.GetCursor();
 	m_screenCreateParams.m_menuNameStrings = &m_menuNameStrings;
 	m_screenCreateParams.m_menuTextStrings = &m_menuTextStrings;
@@ -497,8 +497,8 @@ void MenuManager::Run()
 			previousMenu = stack->Peek();
 			m_gameContext.m_context->m_running = m_inputDispatcher.Update(frameDeltaMs);
 
-			if (m_dialog.GetUnk0x9c() > 0) {
-				m_dialog.FUN_00468da0(frameDeltaMs);
+			if (m_dialog.GetOpenCount() > 0) {
+				m_dialog.Update(frameDeltaMs);
 			}
 			else {
 				if (m_activeScreen->Update(frameDeltaMs)) {
@@ -519,8 +519,8 @@ void MenuManager::Run()
 			m_renderer->VTable0xec(6);
 			m_renderer->VTable0xe8(TRUE);
 
-			if (m_dialog.GetUnk0x9c() > 0) {
-				m_dialog.FUN_00468e20();
+			if (m_dialog.GetOpenCount() > 0) {
+				m_dialog.DrawCursors();
 			}
 			else {
 				m_inputDispatcher.DrawCursor();

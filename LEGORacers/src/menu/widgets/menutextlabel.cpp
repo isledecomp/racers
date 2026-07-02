@@ -21,12 +21,12 @@ MenuTextLabel::~MenuTextLabel()
 // FUNCTION: LEGORACERS 0x0046f4f0
 void MenuTextLabel::Reset()
 {
-	m_unk0x64.Reset();
-	m_unk0x5c = 0;
-	m_unk0x60 = NULL;
-	m_unk0x58 = 0;
-	m_unk0x70 = 0;
-	m_unk0x74 = 0;
+	m_string.Reset();
+	m_stringTable = 0;
+	m_font = NULL;
+	m_style = 0;
+	m_wrapWidth = 0;
+	m_wrapped = 0;
 	MenuWidget::Reset();
 }
 
@@ -35,17 +35,17 @@ LegoBool32 MenuTextLabel::Create(CreateParams* p_createParams, MenuStyleTable::T
 {
 	Destroy();
 
-	m_unk0x60 = p_createParams->m_unk0x3c;
-	m_unk0x5c = p_createParams->m_unk0x38;
-	m_unk0x58 = p_unk0x08;
+	m_font = p_createParams->m_font;
+	m_stringTable = p_createParams->m_stringTable;
+	m_style = p_unk0x08;
 	LegoS32 unk0x44 = p_createParams->m_unk0x44;
-	m_unk0x70 = unk0x44;
+	m_wrapWidth = unk0x44;
 	if (unk0x44) {
-		m_unk0x74 = TRUE;
+		m_wrapped = TRUE;
 	}
 
 	if (CreateWidget(p_createParams)) {
-		SetStringByIndex(p_createParams->m_unk0x40, 0);
+		SetStringByIndex(p_createParams->m_stringId, 0);
 		return TRUE;
 	}
 
@@ -57,25 +57,25 @@ void MenuTextLabel::SetStringByIndex(undefined2 p_unk0x04, undefined4 p_unk0x08)
 {
 	GolString string;
 
-	m_unk0x5c->CopyStringByIndex(&string, p_unk0x04);
+	m_stringTable->CopyStringByIndex(&string, p_unk0x04);
 	SetString(&string, p_unk0x08);
 }
 
 // FUNCTION: LEGORACERS 0x0046f600
 void MenuTextLabel::SetString(GolString* p_string, LegoS32 p_unk0x08)
 {
-	m_unk0x64.CopyFromGolString(p_string);
-	m_unk0x64.ToUpperCase();
+	m_string.CopyFromGolString(p_string);
+	m_string.ToUpperCase();
 
 	if (!m_rect.m_right || !m_rect.m_bottom || p_unk0x08) {
 		LegoS32 height;
 
-		m_unk0x64.FirstLine();
+		m_string.FirstLine();
 		m_rect.m_bottom = m_rect.m_top;
 		m_rect.m_right = m_rect.m_left;
 
-		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
-			m_unk0x60->MeasureString(&m_unk0x64, &p_unk0x08, &height);
+		for (LegoS32 i = 0; i < m_string.CountLines(); i++) {
+			m_font->MeasureString(&m_string, &p_unk0x08, &height);
 
 			LegoU32 right = m_rect.m_left + p_unk0x08;
 			LegoU32 currentRight = m_rect.m_right;
@@ -84,10 +84,10 @@ void MenuTextLabel::SetString(GolString* p_string, LegoS32 p_unk0x08)
 			}
 
 			m_rect.m_bottom += height;
-			m_unk0x64.NextLine();
+			m_string.NextLine();
 		}
 
-		m_unk0x64.FirstLine();
+		m_string.FirstLine();
 	}
 }
 
@@ -114,14 +114,14 @@ void MenuTextLabel::WrapText(LegoS32 p_rightMargin)
 // STUB: LEGORACERS 0x0046f6f0
 MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
-	LegoS32 lineCount = m_unk0x64.CountLines();
+	LegoS32 lineCount = m_string.CountLines();
 	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
 	LegoFloat lineHeight = static_cast<LegoFloat>(m_rect.m_bottom - m_rect.m_top) / lineCountFloat;
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 	LegoFloat lineBottom = 0.0f;
 
-	m_unk0x64.FirstLine();
+	m_string.FirstLine();
 	if (lineCount > 0) {
 		LegoS32 lineTop = 0;
 		for (; lineCount > 0; lineCount--) {
@@ -135,13 +135,13 @@ MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 			source.m_right = m_rect.m_right - m_rect.m_left;
 
 			Rect dest;
-			MeasureText(m_unk0x60, &m_unk0x64, &source, &dest, 0);
+			MeasureText(m_font, &m_string, &source, &dest, 0);
 			dest.m_left += xOffset;
 			dest.m_top += yOffset;
 			dest.m_right += xOffset;
 			dest.m_bottom += yOffset;
-			DrawString(&dest, p_arg, m_unk0x60, &m_unk0x64, 0, 0);
-			m_unk0x64.NextLine();
+			DrawString(&dest, p_arg, m_font, &m_string, 0, 0);
+			m_string.NextLine();
 		}
 	}
 

@@ -96,7 +96,7 @@ void CarModelScreenBase::CreateWidgets()
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreatePlacementScene();
 	CreateCategoryCarousel();
-	FUN_0047fcf0(&m_partCarousel, 0xae, 0x3b);
+	CreatePartCarousel(&m_partCarousel, 0xae, 0x3b);
 	CreateSelector(&m_pieceSelector, &m_partCarousel, 0xac, 0xcc);
 
 	m_partCarousel.SelectPartByType(m_context->m_partSet.GetEntries()[m_partCategoryAvailable[0]].GetPieceType());
@@ -117,7 +117,7 @@ void CarModelScreenBase::SetupLighting()
 	lightColor.m_red = 0xff;
 	lightColor.m_alp = 0xff;
 
-	FUN_0047fec0(&materialColor, &lightColor);
+	SetLighting(&materialColor, &lightColor);
 }
 
 // FUNCTION: LEGORACERS 0x00477250
@@ -224,15 +224,15 @@ LegoBool32 CarModelScreenBase::MovePieceByDrag(
 // FUNCTION: LEGORACERS 0x00477600
 void CarModelScreenBase::ShowPlacementError()
 {
-	FUN_0047fdc0(&m_errorPopup, 0x99, 0x42, 0x72);
-	FUN_0046c730(&m_errorPopup, 0xba);
+	CreateTextButton(&m_errorPopup, 0x99, 0x42, 0x72);
+	ShowPopupDialog(&m_errorPopup, 0xba);
 }
 
 // FUNCTION: LEGORACERS 0x00477630
 void CarModelScreenBase::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_errorPopup) {
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 }
 
@@ -301,8 +301,8 @@ void CarModelScreenBase::ApplyModeChange()
 	switch (m_nextMode) {
 	case 1:
 		EnterBrowseMode();
-		if (m_unk0xd8.GetFlags() & 8) {
-			m_unk0xd8.ClearFocus();
+		if (m_rootIcon.GetFlags() & 8) {
+			m_rootIcon.ClearFocus();
 		}
 		break;
 	case 2:
@@ -321,7 +321,7 @@ void CarModelScreenBase::ApplyModeChange()
 		break;
 	}
 
-	m_unk0x35c = NULL;
+	m_clickedWidget = NULL;
 	m_mode = m_nextMode;
 }
 
@@ -329,7 +329,7 @@ void CarModelScreenBase::ApplyModeChange()
 LegoBool32 CarModelScreenBase::Update(undefined4 p_source)
 {
 	if (m_mode != m_nextMode) {
-		if (m_unk0x35c == NULL || !(m_unk0x35c->GetUnk0x54() & 1)) {
+		if (m_clickedWidget == NULL || !(m_clickedWidget->GetAnimFlags() & 1)) {
 			ApplyModeChange();
 		}
 	}

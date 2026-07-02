@@ -53,7 +53,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 		m_driverModel = NULL;
 	}
 
-	FUN_004803a0();
+	ClearCosmeticTable();
 	m_driverName[0] = '\0';
 	m_circuitEntry = NULL;
 
@@ -117,10 +117,10 @@ LegoBool32 SingleRaceSelectBase::Initialize(MenuGameContext* p_context, MenuScre
 	m_cursor->SetCursorEnabled(TRUE);
 
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
-		FUN_00480210(m_context, 0);
+		LoadPartResources(m_context, 0);
 	}
 
-	FUN_00480310();
+	LoadCosmeticTable();
 	m_sceneWidget.m_unk0x2cc = FALSE;
 	return TRUE;
 }

@@ -44,14 +44,14 @@ void OptionsScreenBase::FUN_00482e00()
 // FUNCTION: LEGORACERS 0x00482e40
 void OptionsScreenBase::FUN_00482e40()
 {
-	FUN_0047fdc0(&m_unk0x448, 0xed, 0x42, 0x11);
+	CreateTextButton(&m_unk0x448, 0xed, 0x42, 0x11);
 	VTable0x98();
-	FUN_0047fdc0(&m_unk0x738, 0xef, 0x42, 0x13);
-	FUN_0047fdc0(&m_unk0xa28, 0xf0, 0x42, 0x17);
-	FUN_0047fdc0(&m_unk0xd18, 0xf1, 0x42, 0x18);
-	FUN_0047fdc0(&m_unk0x12f8, 0xf2, 0x42, 0x9c);
-	FUN_0047fdc0(&m_unk0x1008, 0x27, 0x42, 0x58);
-	FUN_0047fdc0(&m_unk0x18d8, 0x3f, 0x43, 2);
+	CreateTextButton(&m_unk0x738, 0xef, 0x42, 0x13);
+	CreateTextButton(&m_unk0xa28, 0xf0, 0x42, 0x17);
+	CreateTextButton(&m_unk0xd18, 0xf1, 0x42, 0x18);
+	CreateTextButton(&m_unk0x12f8, 0xf2, 0x42, 0x9c);
+	CreateTextButton(&m_unk0x1008, 0x27, 0x42, 0x58);
+	CreateTextButton(&m_unk0x18d8, 0x3f, 0x43, 2);
 }
 
 // FUNCTION: LEGORACERS 0x00482ef0
@@ -127,8 +127,8 @@ LegoBool32 OptionsScreenBase::Initialize(MenuGameContext* p_context, MenuScreenC
 		return FALSE;
 	}
 
-	if (!FUN_00480440(p_context)) {
-		FUN_00480470(p_context, 0, TRUE);
+	if (!IsMenuMusicPlaying(p_context)) {
+		StartMenuMusic(p_context, 0, TRUE);
 	}
 
 	return TRUE;
@@ -137,7 +137,7 @@ LegoBool32 OptionsScreenBase::Initialize(MenuGameContext* p_context, MenuScreenC
 // FUNCTION: LEGORACERS 0x00483220
 void OptionsScreenBase::Navigate()
 {
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case 2:
 		m_context->m_menuStack.Pop();
 		m_context->m_menuStack.Push(0x30);
@@ -146,7 +146,7 @@ void OptionsScreenBase::Navigate()
 	case 0x0b:
 	case 0x27:
 	case 0x2c:
-		m_context->m_menuStack.Push(m_unk0x360);
+		m_context->m_menuStack.Push(m_nextMenuId);
 		// intentional fallthrough
 	default:
 		m_context->m_menuStack.Push(0x30);
@@ -161,24 +161,24 @@ void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 		m_unk0x369 = 1;
 	}
 	else if (p_widget == &m_unk0x738) {
-		FUN_0047fdc0(&m_unk0x15e8, 0x99, 0x46, 0x72);
-		FUN_0046c730(&m_unk0x15e8, 0xbd);
+		CreateTextButton(&m_unk0x15e8, 0x99, 0x46, 0x72);
+		ShowPopupDialog(&m_unk0x15e8, 0xbd);
 	}
 	else if (p_widget == &m_unk0xa28) {
-		m_unk0x360 = 0x0a;
+		m_nextMenuId = 0x0a;
 	}
 	else if (p_widget == &m_unk0xd18) {
-		m_unk0x360 = 0x0b;
+		m_nextMenuId = 0x0b;
 	}
 	else if (p_widget == &m_unk0x12f8) {
-		m_unk0x360 = 0x2c;
+		m_nextMenuId = 0x2c;
 	}
 	else if (p_widget == &m_unk0x1008) {
-		m_unk0x360 = 0x27;
+		m_nextMenuId = 0x27;
 	}
 	else if (p_widget == &m_unk0x18d8) {
 		if (m_unk0x368 == 0) {
-			m_unk0x360 = 2;
+			m_nextMenuId = 2;
 		}
 		else {
 			m_unk0x369 = 0;
@@ -186,14 +186,14 @@ void OptionsScreenBase::OnIconUnfocused(MenuWidget* p_widget)
 	}
 	else if (p_widget == &m_unk0x15e8) {
 		m_unk0x369 = 2;
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = p_widget;
+	m_clickedWidget = p_widget;
 }
 
 // FUNCTION: LEGORACERS 0x004833e0
@@ -366,7 +366,7 @@ void OptionsScreenBase::VTable0xa4()
 // FUNCTION: LEGORACERS 0x004838e0
 LegoBool32 OptionsScreenBase::Update(undefined4 p_elapsed)
 {
-	if (m_unk0x369 != m_unk0x368 && !(m_unk0x35c->GetUnk0x54() & 1)) {
+	if (m_unk0x369 != m_unk0x368 && !(m_clickedWidget->GetAnimFlags() & 1)) {
 		VTable0xa4();
 	}
 

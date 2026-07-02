@@ -42,7 +42,7 @@ void OptionsScreen::VTable0x98()
 	LegoS32 selectedDriverIndex = 0;
 	LegoS32 i;
 
-	FUN_0047fdc0(&m_unk0x51ac, 0xee, 0x42, 0x12);
+	CreateTextButton(&m_unk0x51ac, 0xee, 0x42, 0x12);
 	CreateCarousel(&m_unk0x578c, 0xf6, 0x3b);
 	CreateSelector(&m_unk0x5820, &m_unk0x578c, 0xf5, 0x4c);
 
@@ -92,20 +92,20 @@ LegoBool32 OptionsScreen::Initialize(MenuGameContext* p_context, MenuScreenCreat
 void OptionsScreen::OnIconUnfocused(MenuWidget* p_widget)
 {
 	if (p_widget == &m_unk0x51ac) {
-		FUN_0047fdc0(&m_unk0x549c, 0x99, 0x46, 0x72);
-		FUN_0046c730(&m_unk0x549c, 0xbd);
+		CreateTextButton(&m_unk0x549c, 0x99, 0x46, 0x72);
+		ShowPopupDialog(&m_unk0x549c, 0xbd);
 	}
 	else if (p_widget == &m_unk0x549c) {
 		m_unk0x369 = 3;
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 
 	OptionsScreenBase::OnIconUnfocused(p_widget);
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = p_widget;
+	m_clickedWidget = p_widget;
 }
 
 // FUNCTION: LEGORACERS 0x00475a10

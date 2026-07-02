@@ -5,7 +5,7 @@ DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen, 0x74c)
 DECOMP_SIZE_ASSERT(MenuDialog::DialogScreen::CreateParams, 0x18)
 
 // GLOBAL: LEGORACERS 0x004b2160
-extern const LegoFloat g_unk0x4b2160 = 0.0033333334f;
+extern const LegoFloat g_dialogAnimRate = 0.0033333334f;
 
 // FUNCTION: LEGORACERS 0x00468140
 MenuDialog::DialogScreen::DialogScreen()
@@ -22,282 +22,282 @@ MenuDialog::DialogScreen::~DialogScreen()
 // FUNCTION: LEGORACERS 0x00468220
 void MenuDialog::DialogScreen::Reset()
 {
-	m_unk0x290 = NULL;
-	m_unk0x294 = NULL;
-	m_unk0x298 = NULL;
-	m_unk0x744 = NULL;
-	m_unk0x748 = NULL;
-	m_unk0x740 = NULL;
-	m_unk0x2bc = 0;
-	m_unk0x2c0 = 0;
-	m_unk0x29c = 0;
-	m_unk0x2a0 = 0;
-	m_unk0x2ac = 0;
-	m_unk0x2b0 = 0;
-	m_unk0x2b4 = 0;
-	m_unk0x2a4 = 0.0f;
-	m_unk0x2a8 = 0.0f;
-	m_unk0x2c4 = 0;
-	m_unk0x2c8 = 0;
-	m_unk0x2b8 = 1;
-	m_unk0x2cc.Destroy();
-	m_unk0x6c8.Destroy();
+	m_owner = NULL;
+	m_menuStyles = NULL;
+	m_eventHandler = NULL;
+	m_yesIcon = NULL;
+	m_noIcon = NULL;
+	m_popupIcon = NULL;
+	m_state = 0;
+	m_result = 0;
+	m_centerX = 0;
+	m_centerY = 0;
+	m_notifyId = 0;
+	m_ageMs = 0;
+	m_animMs = 0;
+	m_halfWidth = 0.0f;
+	m_halfHeight = 0.0f;
+	m_closed = 0;
+	m_defaultYes = 0;
+	m_type = 1;
+	m_frame.Destroy();
+	m_messageLabel.Destroy();
 	MenuScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004682c0
 void MenuDialog::DialogScreen::CreateWidgets()
 {
-	CreateFrame(&m_unk0x2cc, 0x11f, 0x47);
-	CreateTextLabel(&m_unk0x6c8, 0x120, 0x37, m_unk0x2ac);
+	CreateFrame(&m_frame, 0x11f, 0x47);
+	CreateTextLabel(&m_messageLabel, 0x120, 0x37, m_notifyId);
 }
 
 // FUNCTION: LEGORACERS 0x00468300
-LegoBool32 MenuDialog::DialogScreen::FUN_00468300(CreateParams* p_createParams)
+LegoBool32 MenuDialog::DialogScreen::Initialize(CreateParams* p_createParams)
 {
 	Destroy();
 
-	m_unk0x290 = p_createParams->m_owner;
-	m_unk0x294 = p_createParams->m_createParams->m_menuStyles;
-	m_unk0x298 = p_createParams->m_eventHandler;
-	p_createParams->m_createParams->m_unk0x20 = NULL;
-	m_unk0x2b8 = p_createParams->m_unk0x0c;
-	m_unk0x2ac = p_createParams->m_unk0x10;
-	m_unk0x2c8 = p_createParams->m_unk0x14;
-	m_unk0x2c4 = 0;
+	m_owner = p_createParams->m_owner;
+	m_menuStyles = p_createParams->m_createParams->m_menuStyles;
+	m_eventHandler = p_createParams->m_eventHandler;
+	p_createParams->m_createParams->m_dialog = NULL;
+	m_type = p_createParams->m_type;
+	m_notifyId = p_createParams->m_notifyId;
+	m_defaultYes = p_createParams->m_defaultYes;
+	m_closed = 0;
 
 	if (!MenuScreen::Initialize(p_createParams->m_createParams)) {
 		return FALSE;
 	}
 
-	m_unk0x2c0 = 0;
-	m_unk0x2bc = 1;
+	m_result = 0;
+	m_state = 1;
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00468390
-void MenuDialog::DialogScreen::FUN_00468390()
+void MenuDialog::DialogScreen::AttachPopupIcon()
 {
 	Rect rect;
 
-	m_unk0x740->SetIconEventHandler(this);
+	m_popupIcon->SetIconEventHandler(this);
 
-	LegoS32 bottom = m_unk0x740->GetRect()->m_bottom + 0x14;
-	m_unk0x2a8 += bottom * 0.5f;
+	LegoS32 bottom = m_popupIcon->GetRect()->m_bottom + 0x14;
+	m_halfHeight += bottom * 0.5f;
 
-	rect.m_top = m_unk0x6c8.GetRect()->m_bottom + 0x14;
-	LegoS32 rectBottom = m_unk0x740->GetRect()->m_bottom;
+	rect.m_top = m_messageLabel.GetRect()->m_bottom + 0x14;
+	LegoS32 rectBottom = m_popupIcon->GetRect()->m_bottom;
 	rectBottom += rect.m_top;
 	rect.m_left = 0x19;
 	rect.m_bottom = rectBottom;
-	rect.m_right = m_unk0x740->GetRect()->m_right + 0x19;
+	rect.m_right = m_popupIcon->GetRect()->m_right + 0x19;
 
-	m_unk0x740->SetRect(&rect);
-	m_unk0x740->SetParent(&m_unk0x2cc);
-	m_unk0x740->AttachToParent(GetUnk0xd8());
-	m_unk0x740->Select(5);
+	m_popupIcon->SetRect(&rect);
+	m_popupIcon->SetParent(&m_frame);
+	m_popupIcon->AttachToParent(GetRootIcon());
+	m_popupIcon->Select(5);
 }
 
 // FUNCTION: LEGORACERS 0x00468430
-void MenuDialog::DialogScreen::FUN_00468430()
+void MenuDialog::DialogScreen::AttachYesIcon()
 {
 	Rect rect;
 
-	m_unk0x744->SetIconEventHandler(this);
+	m_yesIcon->SetIconEventHandler(this);
 
-	LegoS32 bottom = m_unk0x744->GetRect()->m_bottom + 0x14;
-	m_unk0x2a8 += bottom * 0.5f;
+	LegoS32 bottom = m_yesIcon->GetRect()->m_bottom + 0x14;
+	m_halfHeight += bottom * 0.5f;
 
-	rect.m_top = m_unk0x6c8.GetRect()->m_bottom + 0x14;
-	LegoS32 rectBottom = m_unk0x744->GetRect()->m_bottom;
+	rect.m_top = m_messageLabel.GetRect()->m_bottom + 0x14;
+	LegoS32 rectBottom = m_yesIcon->GetRect()->m_bottom;
 	rectBottom += rect.m_top;
 	rect.m_left = 0x19;
 	rect.m_bottom = rectBottom;
-	rect.m_right = m_unk0x744->GetRect()->m_right + 0x19;
+	rect.m_right = m_yesIcon->GetRect()->m_right + 0x19;
 
-	m_unk0x744->SetRect(&rect);
-	m_unk0x744->SetParent(&m_unk0x2cc);
-	m_unk0x744->AttachToParent(GetUnk0xd8());
+	m_yesIcon->SetRect(&rect);
+	m_yesIcon->SetParent(&m_frame);
+	m_yesIcon->AttachToParent(GetRootIcon());
 
-	if (m_unk0x2c8) {
-		m_unk0x744->Select(5);
+	if (m_defaultYes) {
+		m_yesIcon->Select(5);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004684e0
-void MenuDialog::DialogScreen::FUN_004684e0()
+void MenuDialog::DialogScreen::AttachNoIcon()
 {
 	Rect rect;
 
-	m_unk0x748->SetIconEventHandler(this);
+	m_noIcon->SetIconEventHandler(this);
 
-	LegoS32 bottom = m_unk0x748->GetRect()->m_bottom + 0x14;
-	m_unk0x2a8 += bottom * 0.5f;
+	LegoS32 bottom = m_noIcon->GetRect()->m_bottom + 0x14;
+	m_halfHeight += bottom * 0.5f;
 
-	LegoS32 rectTop = m_unk0x744->GetRect()->m_bottom + 0x14;
+	LegoS32 rectTop = m_yesIcon->GetRect()->m_bottom + 0x14;
 	rect.m_top = rectTop;
-	LegoS32 rectBottom = m_unk0x748->GetRect()->m_bottom;
+	LegoS32 rectBottom = m_noIcon->GetRect()->m_bottom;
 	rectBottom += rectTop;
-	LegoS32 rectRight = m_unk0x748->GetRect()->m_right;
+	LegoS32 rectRight = m_noIcon->GetRect()->m_right;
 	rectRight += 0x19;
 	rect.m_left = 0x19;
 	rect.m_bottom = rectBottom;
 	rect.m_right = rectRight;
 
-	m_unk0x748->SetRect(&rect);
-	m_unk0x748->SetParent(&m_unk0x2cc);
-	m_unk0x748->AttachToParent(GetUnk0xd8());
+	m_noIcon->SetRect(&rect);
+	m_noIcon->SetParent(&m_frame);
+	m_noIcon->AttachToParent(GetRootIcon());
 
-	if (!m_unk0x2c8) {
-		m_unk0x748->Select(5);
+	if (!m_defaultYes) {
+		m_noIcon->Select(5);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00468590
-void MenuDialog::DialogScreen::FUN_00468590()
+void MenuDialog::DialogScreen::Open()
 {
 	Rect rect;
 
-	m_unk0x2a4 = (m_unk0x6c8.GetRect()->m_right + 0x28) * 0.5f;
-	m_unk0x2a8 = (m_unk0x6c8.GetRect()->m_bottom + 0x28) * 0.5f;
+	m_halfWidth = (m_messageLabel.GetRect()->m_right + 0x28) * 0.5f;
+	m_halfHeight = (m_messageLabel.GetRect()->m_bottom + 0x28) * 0.5f;
 
-	rect.m_top = m_unk0x6c8.GetRect()->m_top + 0x14;
-	rect.m_bottom = m_unk0x6c8.GetRect()->m_bottom + 0x14;
-	rect.m_left = m_unk0x6c8.GetRect()->m_left + 0x14;
-	rect.m_right = m_unk0x6c8.GetRect()->m_right + 0x14;
-	m_unk0x6c8.SetRect(&rect);
+	rect.m_top = m_messageLabel.GetRect()->m_top + 0x14;
+	rect.m_bottom = m_messageLabel.GetRect()->m_bottom + 0x14;
+	rect.m_left = m_messageLabel.GetRect()->m_left + 0x14;
+	rect.m_right = m_messageLabel.GetRect()->m_right + 0x14;
+	m_messageLabel.SetRect(&rect);
 
-	m_unk0x29c = m_unk0xd8.GetRect()->m_right >> 1;
-	m_unk0x2a0 = m_unk0xd8.GetRect()->m_bottom >> 1;
+	m_centerX = m_rootIcon.GetRect()->m_right >> 1;
+	m_centerY = m_rootIcon.GetRect()->m_bottom >> 1;
 
-	switch (m_unk0x2b8) {
+	switch (m_type) {
 	case 2:
-		FUN_00468430();
-		FUN_004684e0();
+		AttachYesIcon();
+		AttachNoIcon();
 		break;
 	case 1:
-		FUN_00468390();
+		AttachPopupIcon();
 		break;
 	}
 
-	FUN_00468740();
+	DisableWidgets();
 }
 
 // FUNCTION: LEGORACERS 0x00468670
 void MenuDialog::DialogScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
 {
-	if (p_unk0x04 == m_unk0x740) {
-		m_unk0x2c0 = 2;
+	if (p_unk0x04 == m_popupIcon) {
+		m_result = 2;
 	}
-	else if (p_unk0x04 == m_unk0x744) {
-		m_unk0x2c0 = 3;
+	else if (p_unk0x04 == m_yesIcon) {
+		m_result = 3;
 	}
-	else if (p_unk0x04 == m_unk0x748) {
-		m_unk0x2c0 = 4;
+	else if (p_unk0x04 == m_noIcon) {
+		m_result = 4;
 	}
 
-	if (m_unk0x298) {
-		m_unk0x298->OnIconUnfocused(p_unk0x04);
+	if (m_eventHandler) {
+		m_eventHandler->OnIconUnfocused(p_unk0x04);
 	}
 	else {
-		FUN_004687a0();
+		BeginClose();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004686d0
 MenuStyleTable* MenuDialog::DialogScreen::GetMenuStyles()
 {
-	return m_unk0x294;
+	return m_menuStyles;
 }
 
 // FUNCTION: LEGORACERS 0x004686e0
 MenuInputBindingTable* MenuDialog::DialogScreen::GetMenuInputBindings()
 {
-	return (MenuInputBindingTable*) m_unk0x290;
+	return (MenuInputBindingTable*) m_owner;
 }
 
 // STUB: LEGORACERS 0x004686f0
-void MenuDialog::DialogScreen::FUN_004686f0()
+void MenuDialog::DialogScreen::EnableWidgets()
 {
-	m_unk0x6c8.SetFlags(2);
+	m_messageLabel.SetFlags(2);
 
-	MenuIcon* icon = m_unk0x740;
+	MenuIcon* icon = m_popupIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
 
-	icon = m_unk0x744;
+	icon = m_yesIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
 
-	icon = m_unk0x748;
+	icon = m_noIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->SetFlags(2);
 	}
 }
 
 // STUB: LEGORACERS 0x00468740
-void MenuDialog::DialogScreen::FUN_00468740()
+void MenuDialog::DialogScreen::DisableWidgets()
 {
-	m_unk0x6c8.ClearFlags(2);
+	m_messageLabel.ClearFlags(2);
 
-	MenuIcon* icon = m_unk0x740;
+	MenuIcon* icon = m_popupIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
 
-	icon = m_unk0x744;
+	icon = m_yesIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
 
-	icon = m_unk0x748;
+	icon = m_noIcon;
 	if (icon && (icon->GetFlags() & 1)) {
 		icon->ClearFlags(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00468790
-undefined4 MenuDialog::DialogScreen::GetUnk0x2c0() const
+undefined4 MenuDialog::DialogScreen::GetResult() const
 {
-	return m_unk0x2c0;
+	return m_result;
 }
 
 // FUNCTION: LEGORACERS 0x004687a0
-void MenuDialog::DialogScreen::FUN_004687a0()
+void MenuDialog::DialogScreen::BeginClose()
 {
-	FUN_00468740();
+	DisableWidgets();
 
-	if (m_unk0x740 && (m_unk0x740->GetFlags() & 1)) {
-		m_unk0x740->DetachFromParent();
-		m_unk0x740->RemoveFromParent();
+	if (m_popupIcon && (m_popupIcon->GetFlags() & 1)) {
+		m_popupIcon->DetachFromParent();
+		m_popupIcon->RemoveFromParent();
 	}
 
-	if (m_unk0x744 && (m_unk0x744->GetFlags() & 1)) {
-		m_unk0x744->DetachFromParent();
-		m_unk0x744->RemoveFromParent();
+	if (m_yesIcon && (m_yesIcon->GetFlags() & 1)) {
+		m_yesIcon->DetachFromParent();
+		m_yesIcon->RemoveFromParent();
 	}
 
-	if (m_unk0x748 && (m_unk0x748->GetFlags() & 1)) {
-		m_unk0x748->DetachFromParent();
-		m_unk0x748->RemoveFromParent();
+	if (m_noIcon && (m_noIcon->GetFlags() & 1)) {
+		m_noIcon->DetachFromParent();
+		m_noIcon->RemoveFromParent();
 	}
 
-	m_unk0x2bc = 3;
+	m_state = 3;
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
 LegoBool32 MenuDialog::DialogScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return m_unk0x2bc != 2;
+	return m_state != 2;
 }
 
 // FUNCTION: LEGORACERS 0x00468820 FOLDED
 LegoBool32 MenuDialog::DialogScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return m_unk0x2bc != 2;
+	return m_state != 2;
 }
 
 // FUNCTION: LEGORACERS 0x00468840
@@ -311,33 +311,33 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 {
 	LegoFloat scale = 1.0f;
 
-	m_unk0x2b0 += p_elapsedMs;
+	m_ageMs += p_elapsedMs;
 
-	if (!m_unk0x2b8 && m_unk0x2b0 > 5000) {
-		m_unk0x2c0 = 1;
-		FUN_004687a0();
+	if (!m_type && m_ageMs > 5000) {
+		m_result = 1;
+		BeginClose();
 	}
 
-	if (m_unk0x2bc == 1 || m_unk0x2bc == 3) {
-		m_unk0x2b4 += p_elapsedMs;
-		LegoS32 elapsedMs = m_unk0x2b4;
+	if (m_state == 1 || m_state == 3) {
+		m_animMs += p_elapsedMs;
+		LegoS32 elapsedMs = m_animMs;
 		LegoFloat elapsedScale = (LegoFloat) elapsedMs;
-		scale = elapsedScale * g_unk0x4b2160;
+		scale = elapsedScale * g_dialogAnimRate;
 
 		if ((LegoU32) elapsedMs > 300) {
-			if (m_unk0x2bc == 1) {
-				FUN_004686f0();
-				m_unk0x2b4 = 0;
-				m_unk0x2bc = 2;
+			if (m_state == 1) {
+				EnableWidgets();
+				m_animMs = 0;
+				m_state = 2;
 			}
 			else {
-				m_unk0x2b4 = 0;
-				m_unk0x2bc = 0;
-				m_unk0x2c4 = 1;
+				m_animMs = 0;
+				m_state = 0;
+				m_closed = 1;
 			}
 		}
 
-		if (m_unk0x2bc == 3) {
+		if (m_state == 3) {
 			scale = 1.0f - scale;
 		}
 
@@ -349,32 +349,32 @@ LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 		}
 	}
 
-	LegoFloat scaledX = m_unk0x2a4;
+	LegoFloat scaledX = m_halfWidth;
 	scaledX *= scale;
 	LegoS32 x = (LegoS32) scaledX;
 
-	LegoFloat scaledY = m_unk0x2a8;
+	LegoFloat scaledY = m_halfHeight;
 	scaledY *= scale;
 	LegoS32 y = (LegoS32) scaledY;
 
 	Rect rect;
-	LegoS32 right = m_unk0x29c;
+	LegoS32 right = m_centerX;
 	LegoS32 left = right;
 	right += x;
 	rect.m_right = right;
 	left -= x;
 	rect.m_left = left;
 
-	LegoS32 bottom = m_unk0x2a0;
+	LegoS32 bottom = m_centerY;
 	LegoS32 top = bottom;
 	bottom += y;
 	rect.m_bottom = bottom;
 	top -= y;
 	rect.m_top = top;
 
-	m_unk0x2cc.SetRect(&rect);
+	m_frame.SetRect(&rect);
 
-	return m_unk0x2c4 == 0;
+	return m_closed == 0;
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED

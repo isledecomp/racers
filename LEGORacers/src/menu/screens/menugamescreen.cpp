@@ -42,13 +42,13 @@ void MenuGameScreen::VTable0x94(undefined4)
 // FUNCTION: LEGORACERS 0x00474bf0 FOLDED
 MenuStyleTable* MenuGameScreen::GetMenuStyles()
 {
-	return &m_unk0x290;
+	return &m_sharedStyles;
 }
 
 // FUNCTION: LEGORACERS 0x00474c00
 MenuInputBindingTable* MenuGameScreen::GetMenuInputBindings()
 {
-	return &m_unk0x2e0;
+	return &m_buttonBindings;
 }
 
 // FUNCTION: LEGORACERS 0x0047fae0
@@ -66,12 +66,12 @@ MenuGameScreen::~MenuGameScreen()
 // FUNCTION: LEGORACERS 0x0047fbf0
 void MenuGameScreen::Reset()
 {
-	m_unk0x360 = 0xffff;
+	m_nextMenuId = 0xffff;
 	m_menuId = 0;
 	m_context = NULL;
-	m_unk0x35c = NULL;
-	m_unk0x358 = NULL;
-	m_unk0x364 = FALSE;
+	m_clickedWidget = NULL;
+	m_selectedIcon = NULL;
+	m_navPending = FALSE;
 	MenuScreen::Reset();
 }
 
@@ -104,7 +104,7 @@ LegoBool32 MenuGameScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0047fcf0
-undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_source, undefined2 p_event, undefined2 p_unk0x0c)
+undefined4 MenuGameScreen::CreatePartCarousel(CarPartCarousel* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
 	MenuInputBindingTable::IconBinding* inputBindingEntry = GetIconBinding(p_event);
 	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_unk0x0c));
@@ -128,7 +128,7 @@ undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_source, undefined2 p_
 }
 
 // FUNCTION: LEGORACERS 0x0047fdc0
-undefined4 MenuGameScreen::FUN_0047fdc0(
+undefined4 MenuGameScreen::CreateTextButton(
 	MenuTextButton* p_source,
 	undefined2 p_event,
 	undefined2 p_unk0x0c,
@@ -165,25 +165,25 @@ undefined4 MenuGameScreen::FUN_0047fdc0(
 }
 
 // FUNCTION: LEGORACERS 0x0047fec0
-void MenuGameScreen::FUN_0047fec0(const ColorRGBA* p_materialColor, const ColorRGBA* p_lightColor)
+void MenuGameScreen::SetLighting(const ColorRGBA* p_materialColor, const ColorRGBA* p_lightColor)
 {
 	GolVec3 lightDirection;
 	lightDirection.m_x = -1.0f;
 	lightDirection.m_y = -1.0f;
 	lightDirection.m_z = -1.0f;
 
-	m_unk0x350.SetColor(*p_materialColor);
-	m_unk0x340.SetColor(*p_lightColor);
-	m_unk0x340.SetDirection(lightDirection);
+	m_materialColor.SetColor(*p_materialColor);
+	m_light.SetColor(*p_lightColor);
+	m_light.SetDirection(lightDirection);
 
 	m_renderer->VTable0x28();
-	m_renderer->VTable0x2c(&m_unk0x350);
-	m_renderer->VTable0x30(&m_unk0x340);
+	m_renderer->VTable0x2c(&m_materialColor);
+	m_renderer->VTable0x30(&m_light);
 	m_renderer->VTable0x60();
 }
 
 // FUNCTION: LEGORACERS 0x0047ff50
-void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binary)
+void MenuGameScreen::LoadPieceResources(MenuGameContext* p_context, undefined4 p_binary)
 {
 	if (!p_context) {
 		p_context = m_context;
@@ -232,7 +232,7 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 }
 
 // FUNCTION: LEGORACERS 0x004800c0
-void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
+void MenuGameScreen::DestroyPieceResources(MenuGameContext* p_context)
 {
 	if (!p_context) {
 		p_context = m_context;
@@ -248,7 +248,7 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 }
 
 // FUNCTION: LEGORACERS 0x00480110
-void MenuGameScreen::FUN_00480110(LegoS32 p_entryCapacity)
+void MenuGameScreen::LoadChampionResources(LegoS32 p_entryCapacity)
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PIECEDB");
@@ -280,14 +280,14 @@ void MenuGameScreen::FUN_00480110(LegoS32 p_entryCapacity)
 }
 
 // FUNCTION: LEGORACERS 0x004801e0
-void MenuGameScreen::FUN_004801e0()
+void MenuGameScreen::DestroyChampionResources()
 {
 	m_context->m_championDefinitions.Clear();
 	m_context->m_chassisModels.Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00480210
-void MenuGameScreen::FUN_00480210(MenuGameContext* p_context, undefined4 p_event)
+void MenuGameScreen::LoadPartResources(MenuGameContext* p_context, undefined4 p_event)
 {
 	if (!p_context) {
 		p_context = m_context;
@@ -322,7 +322,7 @@ void MenuGameScreen::FUN_00480210(MenuGameContext* p_context, undefined4 p_event
 }
 
 // FUNCTION: LEGORACERS 0x00480310
-void MenuGameScreen::FUN_00480310()
+void MenuGameScreen::LoadCosmeticTable()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\PARTDB");
@@ -342,7 +342,7 @@ void MenuGameScreen::FUN_00480310()
 }
 
 // FUNCTION: LEGORACERS 0x004803a0
-void MenuGameScreen::FUN_004803a0()
+void MenuGameScreen::ClearCosmeticTable()
 {
 	DriverCosmeticTable* cosmeticTable = &m_context->m_cosmeticTable;
 	cosmeticTable->Clear();
@@ -360,7 +360,7 @@ LegoFloat MenuGameScreen::GetAspectScale()
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x004803d0
-void MenuGameScreen::FUN_004803d0()
+void MenuGameScreen::ReinitializeInputBindings()
 {
 	m_context->m_inputBindings.Shutdown();
 	m_inputManager->Initialize();
@@ -371,8 +371,8 @@ void MenuGameScreen::FUN_004803d0()
 // FUNCTION: LEGORACERS 0x00480420 FOLDED
 LegoBool32 MenuGameScreen::CanNavigate()
 {
-	if (m_unk0x35c) {
-		return !(m_unk0x35c->GetUnk0x54() & TRUE);
+	if (m_clickedWidget) {
+		return !(m_clickedWidget->GetAnimFlags() & TRUE);
 	}
 
 	return TRUE;
@@ -381,26 +381,26 @@ LegoBool32 MenuGameScreen::CanNavigate()
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
 LegoBool32 MenuGameScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return m_unk0x364;
+	return m_navPending;
 }
 
 // FUNCTION: LEGORACERS 0x004804f0 FOLDED
 LegoBool32 MenuGameScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	return m_unk0x364;
+	return m_navPending;
 }
 
 // FUNCTION: LEGORACERS 0x00480440
-LegoBool32 MenuGameScreen::FUN_00480440(MenuGameContext* p_context)
+LegoBool32 MenuGameScreen::IsMenuMusicPlaying(MenuGameContext* p_context)
 {
 	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicInstance();
 	return musicInstance && musicInstance->IsPlaying();
 }
 
 // FUNCTION: LEGORACERS 0x00480470
-void MenuGameScreen::FUN_00480470(MenuGameContext* p_context, undefined4 p_event, undefined4 p_unk0x0c)
+void MenuGameScreen::StartMenuMusic(MenuGameContext* p_context, undefined4 p_event, undefined4 p_unk0x0c)
 {
-	FUN_004804c0(p_context);
+	StopMenuMusic(p_context);
 
 	MusicInstance* musicInstance = p_context->m_modelBuilder.GetMusicGroup()->CreateMusicInstance(p_event);
 	p_context->m_modelBuilder.SetMusicInstance(musicInstance);
@@ -413,9 +413,9 @@ void MenuGameScreen::FUN_00480470(MenuGameContext* p_context, undefined4 p_event
 }
 
 // FUNCTION: LEGORACERS 0x004804c0
-void MenuGameScreen::FUN_004804c0(MenuGameContext* p_context)
+void MenuGameScreen::StopMenuMusic(MenuGameContext* p_context)
 {
-	if (FUN_00480440(p_context)) {
+	if (IsMenuMusicPlaying(p_context)) {
 		p_context->m_modelBuilder.GetMusicGroup()->DestroyMusicInstance(p_context->m_modelBuilder.GetMusicInstance());
 		p_context->m_modelBuilder.SetMusicInstance(NULL);
 	}
@@ -424,19 +424,19 @@ void MenuGameScreen::FUN_004804c0(MenuGameContext* p_context)
 // FUNCTION: LEGORACERS 0x00480500 FOLDED
 void MenuGameScreen::OnIconFocused(MenuIcon*)
 {
-	m_unk0x364 = FALSE;
+	m_navPending = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00480510 FOLDED
 void MenuGameScreen::OnIconSelected(MenuIcon* p_icon)
 {
-	m_unk0x358 = p_icon;
+	m_selectedIcon = p_icon;
 }
 
 // FUNCTION: LEGORACERS 0x00480520
 LegoBool32 MenuGameScreen::Update(undefined4)
 {
-	if (m_unk0x364 && CanNavigate()) {
+	if (m_navPending && CanNavigate()) {
 		Navigate();
 	}
 
@@ -446,5 +446,5 @@ LegoBool32 MenuGameScreen::Update(undefined4)
 // FUNCTION: LEGORACERS 0x00487d30
 void MenuGameScreen::OnIconDeselected(MenuIcon*)
 {
-	m_unk0x358 = NULL;
+	m_selectedIcon = NULL;
 }

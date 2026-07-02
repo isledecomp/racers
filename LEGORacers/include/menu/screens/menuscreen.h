@@ -69,22 +69,22 @@ public:
 	void OnIconDeselected(MenuIcon*) override;                                                       // vtable+0x40
 	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
 	void OnSelectorSettled(MenuWidget*) override;                                                    // vtable+0x48
-	virtual void CreateWidgets() = 0;                                                                   // vtable+0x4c
-	virtual undefined4 ShouldLoadResources();                                                                 // vtable+0x50
+	virtual void CreateWidgets() = 0;                                                                // vtable+0x4c
+	virtual undefined4 ShouldLoadResources();                                                        // vtable+0x50
 	virtual void Reset();                                                                            // vtable+0x54
-	virtual LegoBool32 LoadStylesAndBindings(MenuScreenCreateParams*);                                          // vtable+0x58
+	virtual LegoBool32 LoadStylesAndBindings(MenuScreenCreateParams*);                               // vtable+0x58
 	virtual MenuStyleTable* GetMenuStyles();                                                         // vtable+0x5c
-	virtual MenuStyleTable* GetActiveStyles();                                                            // vtable+0x60
+	virtual MenuStyleTable* GetActiveStyles();                                                       // vtable+0x60
 	virtual MenuInputBindingTable* GetMenuInputBindings();                                           // vtable+0x64
 	virtual ~MenuScreen();                                                                           // vtable+0x68
-	virtual LegoFloat GetAspectScale();                                                                  // vtable+0x6c
+	virtual LegoFloat GetAspectScale();                                                              // vtable+0x6c
 	virtual LegoBool32 Initialize(MenuScreenCreateParams*);                                          // vtable+0x70
 	virtual LegoBool32 Destroy();                                                                    // vtable+0x74
-	virtual LegoBool32 Update(undefined4);                                                       // vtable+0x78
-	virtual LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2);                                       // vtable+0x7c
+	virtual LegoBool32 Update(undefined4);                                                           // vtable+0x78
+	virtual LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2);                                             // vtable+0x7c
 
-	LegoBool32 FUN_0046b630();
-	LegoBool32 FUN_0046b6e0(MenuScreenCreateParams*);
+	LegoBool32 CreateRootIcon();
+	LegoBool32 LoadImagesAndFonts(MenuScreenCreateParams*);
 	void ApplyWidgetDefaults(MenuWidget::CreateParams*);
 	void ApplyIconDefaults(MenuIcon::CreateParams*);
 	void ApplySelectorDefaults(
@@ -115,10 +115,10 @@ public:
 	LegoBool32 CreateFramedSceneView(MenuFramedSceneView* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c);
 	undefined4 CreateRegion(MenuWidget*, undefined2);
 	LegoBool32 CreateTextField(MenuTextField*, undefined2, undefined2, undefined2, GolString*);
-	undefined4 FUN_0046c6f0(MenuIcon*, MenuIcon*, undefined2);
-	undefined4 FUN_0046c730(MenuIcon*, undefined2);
-	void FUN_0046c760();
-	MenuIcon* GetUnk0xd8() { return &m_unk0xd8; }
+	undefined4 ShowConfirmDialog(MenuIcon*, MenuIcon*, undefined2);
+	undefined4 ShowPopupDialog(MenuIcon*, undefined2);
+	void DetachAllWidgets();
+	MenuIcon* GetRootIcon() { return &m_rootIcon; }
 
 	MenuStyleTable::ImageStyle* GetImageStyle(undefined2 p_id)
 	{
@@ -155,23 +155,23 @@ public:
 
 protected:
 	LegoBool32 m_initialized;               // 0x004
-	MenuStyleTable m_unk0x08;               // 0x008
+	MenuStyleTable m_styleTable;            // 0x008
 	SharedMenuStyleTable* m_menuStyles;     // 0x054
-	MenuInputBindingTable m_unk0x58;        // 0x058
+	MenuInputBindingTable m_bindingTable;   // 0x058
 	GolExport* m_golExport;                 // 0x0b4
 	GolD3DRenderDevice* m_renderer;         // 0x0b8
-	AwakeKite0x20* m_unk0xbc;               // 0x0bc
+	AwakeKite0x20* m_imageList;             // 0x0bc
 	GolFontTable* m_fontTable;              // 0x0c0
 	MenuInputDispatcher::Cursor* m_cursor;  // 0x0c4
 	InputEventQueue* m_inputEvents;         // 0x0c8
 	InputManager* m_inputManager;           // 0x0cc
 	GolStringTable* m_menuNameStrings;      // 0x0d0
 	GolStringTable* m_menuTextStrings;      // 0x0d4
-	MenuIcon m_unk0xd8;                     // 0x0d8
+	MenuIcon m_rootIcon;                    // 0x0d8
 	SoundGroupBinding* m_soundGroupBinding; // 0x280
-	MenuDialog* m_unk0x284;                 // 0x284
-	undefined4 m_unk0x288;                  // 0x288
-	undefined2 m_unk0x28c;                  // 0x28c
+	MenuDialog* m_dialog;                   // 0x284
+	undefined4 m_useBinaryFiles;            // 0x288
+	undefined2 m_resourceMenuId;            // 0x28c
 };
 
 #endif // MENUSCREEN_H

@@ -28,7 +28,7 @@ MenuWidget::~MenuWidget()
 void MenuWidget::Reset()
 {
 	m_golExport = NULL;
-	m_unk0x54 &= 0xfe;
+	m_animFlags &= 0xfe;
 	m_renderer = NULL;
 	m_flags = (m_flags & 0xf2) | 2;
 	m_focusedChild = 0;

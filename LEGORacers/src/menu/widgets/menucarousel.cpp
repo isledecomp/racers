@@ -247,7 +247,7 @@ void MenuCarouselNavigator::StartScroll(undefined4 p_unk0x04)
 	LegoS32 count = m_style->m_scrollDurationMs;
 
 	m_scrollDurationMs = count;
-	m_unk0x54 |= 1;
+	m_animFlags |= 1;
 	m_scrolling = 1;
 	LegoFloat divisor = (LegoFloat) count;
 	m_scrollSpeed = (LegoFloat) (LegoS32) p_unk0x04 / divisor;
@@ -353,7 +353,7 @@ undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_unk0x04)
 
 		if (remaining == 0) {
 			m_scrolling = 0;
-			m_unk0x54 &= 0xfe;
+			m_animFlags &= 0xfe;
 			SnapToSelection();
 
 			if (m_notifyHandler) {

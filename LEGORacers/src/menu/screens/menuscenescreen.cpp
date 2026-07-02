@@ -128,7 +128,7 @@ LegoBool32 MenuSceneScreen::Update(undefined4 p_unk0x04)
 	}
 
 	if (m_sceneWidget.m_unk0x2c8) {
-		m_unk0x364 = TRUE;
+		m_navPending = TRUE;
 	}
 
 	return MenuGameScreen::Update(p_unk0x04);

@@ -128,7 +128,7 @@ LegoBool32 CarBuildScreen::HandleSceneClick(InputEventQueue::Event* p_event, und
 
 		m_nextMode = 3;
 		m_unk0x3c18 = c_carBuildClickDelay;
-		m_unk0xd8.SetFocus();
+		m_rootIcon.SetFocus();
 
 		if (m_partPlacement.GetFocusedPane() != 1) {
 			m_partPlacement.FocusPiece();
@@ -139,7 +139,7 @@ LegoBool32 CarBuildScreen::HandleSceneClick(InputEventQueue::Event* p_event, und
 
 	if (PointInRect(m_carViewRegion.GetRect(), x, y)) {
 		m_nextMode = 2;
-		m_unk0xd8.SetFocus();
+		m_rootIcon.SetFocus();
 
 		if (m_partPlacement.GetFocusedPane() != 2) {
 			m_partPlacement.FocusCar();
@@ -519,7 +519,7 @@ LegoBool32 CarBuildScreen::RouteWidgetKeyUp(
 	undefined4 p_unk0x10
 )
 {
-	if (p_source == GetUnk0xd8()) {
+	if (p_source == GetRootIcon()) {
 		return HandleMouseButton(p_event, p_unk0x0c, p_unk0x10);
 	}
 
@@ -540,9 +540,9 @@ LegoBool32 CarBuildScreen::HandleKeyDown(
 )
 {
 	if (m_mode != 6) {
-		if (!m_unk0x364) {
+		if (!m_navPending) {
 			CarBuildScreenBase::HandleKeyDown(p_source, p_event, p_unk0x0c, p_unk0x10);
-			if (p_source != GetUnk0xd8() || !HandleBuildKey(p_source, p_event, p_unk0x0c, p_unk0x10)) {
+			if (p_source != GetRootIcon() || !HandleBuildKey(p_source, p_event, p_unk0x0c, p_unk0x10)) {
 				switch (m_mode) {
 				case 1:
 					return RouteWidgetKeyUp(p_source, p_event, p_unk0x0c, p_unk0x10);
@@ -573,7 +573,7 @@ LegoBool32 CarBuildScreen::HandleKeyUp(
 	}
 
 	CarBuildScreenBase::HandleKeyUp(p_source, p_event, p_unk0x0c, p_unk0x10);
-	if (p_source == GetUnk0xd8() && HandleViewModeKey(p_source, p_event, p_unk0x0c, p_unk0x10)) {
+	if (p_source == GetRootIcon() && HandleViewModeKey(p_source, p_event, p_unk0x0c, p_unk0x10)) {
 		return TRUE;
 	}
 
@@ -587,7 +587,7 @@ LegoBool32 CarBuildScreen::HandleKeyUp(
 // FUNCTION: LEGORACERS 0x004745e0
 void CarBuildScreen::OnWidgetFocused(MenuWidget* p_source)
 {
-	if (p_source == GetUnk0xd8()) {
+	if (p_source == GetRootIcon()) {
 		switch (m_nextMode) {
 		case 2:
 			m_soundGroupBinding->PlaySoundByIndex(5);
@@ -610,7 +610,7 @@ void CarBuildScreen::OnWidgetFocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x00474640
 void CarBuildScreen::OnWidgetUnfocused(MenuWidget* p_source)
 {
-	if (p_source == GetUnk0xd8()) {
+	if (p_source == GetRootIcon()) {
 		switch (m_mode) {
 		case 2:
 			m_partPlacement.SnapViewRotation();
@@ -635,7 +635,7 @@ void CarBuildScreen::OnWidgetUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x004746c0
 undefined4 CarBuildScreen::OnWidgetKeyDown(MenuWidget* p_source, void*, undefined4 p_unk0x0c, undefined4 p_unk0x10)
 {
-	if (p_source == GetUnk0xd8()) {
+	if (p_source == GetRootIcon()) {
 		switch (m_mode) {
 		case 2:
 			HandleViewDrag(p_unk0x0c, p_unk0x10);
@@ -652,7 +652,7 @@ undefined4 CarBuildScreen::OnWidgetKeyDown(MenuWidget* p_source, void*, undefine
 // FUNCTION: LEGORACERS 0x00474710
 void CarBuildScreen::OnIconFocused(MenuIcon* p_icon)
 {
-	m_unk0x35c = NULL;
+	m_clickedWidget = NULL;
 	if (p_icon == &m_movePad) {
 		m_nextMode = 3;
 	}
@@ -665,7 +665,7 @@ void CarBuildScreen::OnIconFocused(MenuIcon* p_icon)
 void CarBuildScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (m_mode != 6) {
-		m_unk0x35c = p_source;
+		m_clickedWidget = p_source;
 		m_nextMode = 1;
 
 		if (p_source == &m_placeButton) {
@@ -687,8 +687,8 @@ void CarBuildScreen::OnIconUnfocused(MenuWidget* p_source)
 			return;
 		}
 		else if (p_source == &m_doneButton) {
-			m_unk0x360 = 0x11;
-			m_unk0x364 = 1;
+			m_nextMenuId = 0x11;
+			m_navPending = 1;
 			return;
 		}
 	}
@@ -797,8 +797,8 @@ void CarBuildScreen::UpdateHoverRegions()
 		m_carViewRegion.Deselect(7);
 		m_hoverIcon = NULL;
 		CarModelScreenBase::Update(0);
-		m_hoverIcon = m_unk0xd8.FindSelectedLeaf();
-		m_unk0x358 = m_hoverIcon;
+		m_hoverIcon = m_rootIcon.FindSelectedLeaf();
+		m_selectedIcon = m_hoverIcon;
 	}
 
 	m_partPlacement.ClearFocusPane();

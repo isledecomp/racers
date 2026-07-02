@@ -53,55 +53,55 @@ void PickMemoryCardScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x4f4) {
 		m_context->m_modelBuilder.SetUnk0x84(0);
-		m_unk0x360 = 15;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 15;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0x7e4) {
 		m_context->m_modelBuilder.SetUnk0x84(1);
-		m_unk0x360 = 15;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 15;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0xad4) {
 		m_context->m_modelBuilder.SetUnk0x84(2);
-		m_unk0x360 = 15;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 15;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0xdc4) {
 		m_context->m_modelBuilder.SetUnk0x84(3);
-		m_unk0x360 = 15;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 15;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0x10b4) {
 		m_context->m_modelBuilder.SetUnk0x84(2);
-		m_unk0x360 = 15;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 15;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0x13a4) {
-		FUN_0047fdc0(&m_unk0x1c74, 0x99, 0x46, 0x73);
-		FUN_0047fdc0(&m_unk0x1f64, 0x99, 0x45, 0x74);
-		FUN_0046c6f0(&m_unk0x1c74, &m_unk0x1f64, 0x77);
+		CreateTextButton(&m_unk0x1c74, 0x99, 0x46, 0x73);
+		CreateTextButton(&m_unk0x1f64, 0x99, 0x45, 0x74);
+		ShowConfirmDialog(&m_unk0x1c74, &m_unk0x1f64, 0x77);
 	}
 	else if (p_source == &m_unk0x1c74) {
-		m_unk0x284->FUN_00468cf0();
-		m_unk0x360 = 3;
-		m_unk0x364 = TRUE;
+		m_dialog->DismissTop();
+		m_nextMenuId = 3;
+		m_navPending = TRUE;
 	}
 	else if (p_source == &m_unk0x1f64) {
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x00484b50
 void PickMemoryCardScreen::Navigate()
 {
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case 15:
 		m_context->m_menuStack.Pop();
 
 		if (!(m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowLoadRacer)) {
-			m_context->m_menuStack.Push(m_unk0x360);
+			m_context->m_menuStack.Push(m_nextMenuId);
 		}
 
 		m_context->m_menuStack.Push(144);
@@ -121,7 +121,7 @@ void PickMemoryCardScreen::Navigate()
 LegoBool32 PickMemoryCardScreen::Update(undefined4 p_arg)
 {
 	m_context->m_modelBuilder.SetUnk0x84(0);
-	m_unk0x360 = 15;
-	m_unk0x364 = TRUE;
+	m_nextMenuId = 15;
+	m_navPending = TRUE;
 	return MenuGameScreen::Update(p_arg);
 }

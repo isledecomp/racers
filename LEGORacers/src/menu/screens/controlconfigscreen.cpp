@@ -76,17 +76,17 @@ void ControlConfigScreen::CreateWidgets()
 	CreateSelector(&m_unk0x814, &m_unk0x780, 0x111, 0x4d);
 
 	for (LegoU32 i = 0; i < 9; i++) {
-		FUN_0047fdc0(&m_unk0x144c[i], i + 0x108, 0x42, 0x69);
+		CreateTextButton(&m_unk0x144c[i], i + 0x108, 0x42, 0x69);
 		CreateTextLabel(&m_unk0x2ebc[i], i + 0x116, 0x37, i + 0x69);
 	}
 
-	FUN_0047fdc0(&m_unk0x47c, 0x3f, 0x46, 0x1e);
+	CreateTextButton(&m_unk0x47c, 0x3f, 0x46, 0x1e);
 }
 
 // FUNCTION: LEGORACERS 0x0047a930
 void ControlConfigScreen::FUN_0047a930()
 {
-	FUN_004803d0();
+	ReinitializeInputBindings();
 	m_unk0x39c = m_inputManager->GetJoystickCount();
 	if (m_unk0x39c > 2) {
 		m_unk0x39c = 2;
@@ -189,11 +189,11 @@ void ControlConfigScreen::OnIconFocused(MenuIcon* p_source)
 void ControlConfigScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x47c) {
-		m_unk0x360 = 8;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = 8;
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x0047ac90
@@ -206,7 +206,7 @@ LegoBool32 ControlConfigScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Even
 	InputDevice* device = m_unk0x368[selectedDeviceIndex];
 	LegoS32 entryIndex = m_unk0x37c[selectedDeviceIndex];
 
-	if (!m_unk0x364) {
+	if (!m_navPending) {
 		if (!m_unk0x390) {
 			return FALSE;
 		}
@@ -237,7 +237,7 @@ LegoBool32 ControlConfigScreen::HandleKeyDown(MenuWidget*, InputEventQueue::Even
 // FUNCTION: LEGORACERS 0x0047ad90
 LegoBool32 ControlConfigScreen::HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4)
 {
-	if (m_unk0x364) {
+	if (m_navPending) {
 		return TRUE;
 	}
 

@@ -232,7 +232,7 @@ void RacerModelScreenBase::SetupLighting()
 	lightColor.m_grn = 0xff;
 	lightColor.m_red = 0xff;
 
-	FUN_0047fec0(&materialColor, &lightColor);
+	SetLighting(&materialColor, &lightColor);
 }
 
 // FUNCTION: LEGORACERS 0x00486060
@@ -247,11 +247,11 @@ LegoBool32 RacerModelScreenBase::Initialize(
 	m_slotCount = m_modelsPerSlot * m_modelSlotCount;
 
 	if (!p_context->m_carBuildModel.IsInitialized()) {
-		FUN_0047ff50(p_context, TRUE);
+		LoadPieceResources(p_context, TRUE);
 	}
 
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
-		FUN_00480210(p_context, FALSE);
+		LoadPartResources(p_context, FALSE);
 	}
 
 	OpenRecordCursors(p_context, p_params[2]);
@@ -543,7 +543,7 @@ LegoBool32 RacerModelScreenBase::Update(undefined4 p_elapsed)
 			if (m_driverEntities[modelIndex].GetFlags() & 1) {
 				GolAnimatedEntity* entity = &m_driverEntities[modelIndex];
 				if (entity->FUN_0040e360() && m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL &&
-					!m_unk0x364) {
+					!m_navPending) {
 					PlayRandomAnimation(i);
 				}
 			}
@@ -556,7 +556,7 @@ LegoBool32 RacerModelScreenBase::Update(undefined4 p_elapsed)
 			UpdateSourceLabel(i);
 			m_slotDirty[i] = FALSE;
 
-			if (!m_unk0x364) {
+			if (!m_navPending) {
 				PlayRandomAnimation(i);
 			}
 			break;

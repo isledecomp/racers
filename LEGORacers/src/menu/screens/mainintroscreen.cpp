@@ -54,7 +54,7 @@ void MainIntroScreen::CreateWidgets()
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\MAININTR");
 	}
 
-	CreateRegion(&m_sceneWidget, m_unk0x28c);
+	CreateRegion(&m_sceneWidget, m_resourceMenuId);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");

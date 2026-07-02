@@ -132,7 +132,7 @@ LegoBool32 SaveLoadScreen::Destroy()
 LegoBool32 SaveLoadScreen::Update(undefined4)
 {
 	if (m_unk0x374) {
-		FUN_0046c760();
+		DetachAllWidgets();
 		CreateWidgets();
 		m_unk0x374 = FALSE;
 	}
@@ -176,7 +176,7 @@ void SaveLoadScreen::CreateWidgets()
 		CreateTextLabel(&m_unk0x490, 0x142, 0x37, 0x89);
 		CreateTextLabel(&m_unk0x508, 0x143, 0x37, 0x87);
 		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
-		FUN_0047fdc0(&m_unk0x1a88, 0x40, 0x46, 0x72);
+		CreateTextButton(&m_unk0x1a88, 0x40, 0x46, 0x72);
 		m_unk0x1a88.Select(0);
 		return;
 	default:
@@ -191,7 +191,7 @@ void SaveLoadScreen::CreateWidgets()
 	case 0x16:
 	case 0x17:
 		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
-		FUN_0047fdc0(&m_unk0x1a88, 0x40, 0x46, 0x72);
+		CreateTextButton(&m_unk0x1a88, 0x40, 0x46, 0x72);
 		m_unk0x1a88.Select(0);
 		return;
 	}

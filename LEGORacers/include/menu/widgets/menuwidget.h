@@ -85,7 +85,7 @@ public:
 	void SetEventHandler(MenuScreenInterface* p_eventHandler) { m_notifyHandler = p_eventHandler; }
 	LegoU8 GetFlags() const { return m_flags; }
 	undefined2 GetId() const { return m_id; }
-	LegoBool GetUnk0x54() const { return m_unk0x54; }
+	LegoBool GetAnimFlags() const { return m_animFlags; }
 	void ClearFlags(LegoU8 p_flags) { m_flags &= ~p_flags; }
 	void SetFlags(LegoU8 p_flags) { m_flags |= p_flags; }
 	void ClearFocus();
@@ -109,13 +109,13 @@ protected:
 		LegoU32 m_colorPacked;          // 0x2c
 		VisualStateColor m_visualState; // 0x2c
 	};
-	undefined2 m_id;     // 0x30
-	Rect m_rect;         // 0x34
-	LegoFloat m_scaleX;  // 0x44
-	LegoFloat m_scaleY;  // 0x48
-	LegoS32 m_offsetX;   // 0x4c
-	LegoS32 m_offsetY;   // 0x50
-	undefined m_unk0x54; // 0x54
+	undefined2 m_id;       // 0x30
+	Rect m_rect;           // 0x34
+	LegoFloat m_scaleX;    // 0x44
+	LegoFloat m_scaleY;    // 0x48
+	LegoS32 m_offsetX;     // 0x4c
+	LegoS32 m_offsetY;     // 0x50
+	undefined m_animFlags; // 0x54
 
 protected:
 	LegoBool32 CreateWidget(CreateParams* p_createParams);

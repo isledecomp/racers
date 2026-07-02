@@ -32,7 +32,7 @@ void PickLanguageScreen::CreateWidgets()
 		m_unk0xe30.AddItem(&m_unk0xec4[i]);
 	}
 
-	FUN_0047fdc0(&m_unk0x12fc, 0x3f, 0x43, 0x10);
+	CreateTextButton(&m_unk0x12fc, 0x3f, 0x43, 0x10);
 }
 
 // FUNCTION: LEGORACERS 0x004845c0
@@ -63,10 +63,10 @@ void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_source)
 void PickLanguageScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x12fc) {
-		m_unk0x364 = TRUE;
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x00484680

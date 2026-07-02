@@ -106,15 +106,15 @@ void DriverLicenseScreen::CreateWidgets()
 	m_unk0x720.WrapText(0x14);
 
 	CreateTextField(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
-	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
+	CreateTextButton(&m_unk0x798, 0xdc, 0x42, 0x3b);
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x44, 0x0b);
-		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x43, 9);
+		CreateTextButton(&m_unk0xd78, 0x40, 0x44, 0x0b);
+		CreateTextButton(&m_unk0xa88, 0x3f, 0x43, 9);
 	}
 	else {
-		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x46, 0x72);
-		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x45, 0x1f);
+		CreateTextButton(&m_unk0xd78, 0x40, 0x46, 0x72);
+		CreateTextButton(&m_unk0xa88, 0x3f, 0x45, 0x1f);
 	}
 
 	ActiveRecordBuffer& record = m_context->m_saveSystem.GetActiveRecord();
@@ -140,7 +140,7 @@ LegoBool32 DriverLicenseScreen::Initialize(MenuGameContext* p_context, MenuScree
 {
 	MenuGameContext* context = p_context;
 	if (!context->m_modelBuilder.HasMenuResources()) {
-		FUN_00480210(context, FALSE);
+		LoadPartResources(context, FALSE);
 	}
 
 	if (!MenuGameScreen::Initialize(context, p_createParams)) {
@@ -156,7 +156,7 @@ LegoBool32 DriverLicenseScreen::Initialize(MenuGameContext* p_context, MenuScree
 	lightColor.m_red = 0xb4;
 	lightColor.m_grn = 0xb4;
 	lightColor.m_blu = 0xb4;
-	FUN_0047fec0(&materialColor, &lightColor);
+	SetLighting(&materialColor, &lightColor);
 
 	FUN_0047b6b0();
 	m_unk0x224c.GetBodyModelPart()->VTable0x14("cmaman", context->m_context->m_useBinaryFiles);
@@ -239,8 +239,8 @@ void DriverLicenseScreen::FUN_0047b750()
 	GolString* cheatString = &m_cheatString;
 
 	if (cheatString->SelectionLength() == 0) {
-		m_unk0x360 = 0xffff;
-		m_unk0x364 = FALSE;
+		m_nextMenuId = 0xffff;
+		m_navPending = FALSE;
 		return;
 	}
 
@@ -262,10 +262,10 @@ void DriverLicenseScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case 0x0f:
 	case 0x11:
-		m_context->m_menuStack.Push(m_unk0x360);
+		m_context->m_menuStack.Push(m_nextMenuId);
 		break;
 	}
 
@@ -287,33 +287,33 @@ void DriverLicenseScreen::OnIconUnfocused(MenuWidget* p_source)
 	}
 	else if (p_source == &m_unk0xd78) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			m_unk0x360 = 0x11;
+			m_nextMenuId = 0x11;
 		}
 		else {
-			m_unk0x360 = 3;
+			m_nextMenuId = 3;
 		}
 		updateRecord = TRUE;
 	}
 	else if (p_source == &m_unk0xa88) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			m_unk0x360 = 0x0f;
+			m_nextMenuId = 0x0f;
 			updateRecord = TRUE;
 		}
 		else if (FUN_0047b580()) {
-			FUN_0047fdc0(&m_unk0x1068, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1358, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_unk0x1068, &m_unk0x1358, 0x7b);
+			CreateTextButton(&m_unk0x1068, 0x99, 0x46, 0x20);
+			CreateTextButton(&m_unk0x1358, 0x99, 0x45, 0x1f);
+			ShowConfirmDialog(&m_unk0x1068, &m_unk0x1358, 0x7b);
 		}
 		else {
-			m_unk0x360 = 3;
+			m_nextMenuId = 3;
 		}
 	}
 	else if (p_source == &m_unk0x1068) {
-		m_unk0x360 = 3;
-		m_unk0x284->FUN_00468cf0();
+		m_nextMenuId = 3;
+		m_dialog->DismissTop();
 	}
 	else if (p_source == &m_unk0x1358) {
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 
 	if (updateRecord) {
@@ -321,10 +321,10 @@ void DriverLicenseScreen::OnIconUnfocused(MenuWidget* p_source)
 		ApplyCheatCode();
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
-	m_unk0x35c = p_source;
+	m_clickedWidget = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x0047b9c0

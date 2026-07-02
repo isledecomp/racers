@@ -35,10 +35,10 @@ DECOMP_SIZE_ASSERT(MenuScreen, 0x290)
 DECOMP_SIZE_ASSERT(MenuScreen::SceneRefBinding, 0x54)
 
 // GLOBAL: LEGORACERS 0x004b2240
-const undefined4 g_unk0x4b2240[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
+const undefined4 g_rootIconParams[14] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0};
 
 // GLOBAL: LEGORACERS 0x004b2278
-const MenuIcon::CreateState g_unk0x4b2278 = {{0}};
+const MenuIcon::CreateState g_rootIconState = {{0}};
 
 // FUNCTION: LEGORACERS 0x0044a1e0 FOLDED
 undefined4 MenuScreen::ShouldLoadResources()
@@ -143,17 +143,17 @@ void MenuScreen::Reset()
 	m_menuNameStrings = NULL;
 	m_golExport = NULL;
 	m_renderer = NULL;
-	m_unk0xbc = NULL;
+	m_imageList = NULL;
 	m_fontTable = NULL;
 	m_soundGroupBinding = NULL;
 	m_inputManager = NULL;
-	m_unk0x284 = NULL;
+	m_dialog = NULL;
 	m_cursor = NULL;
 	m_menuStyles = NULL;
-	m_unk0x28c = 0;
-	m_unk0x08.Clear();
-	m_unk0x58.Clear();
-	m_unk0xd8.Destroy();
+	m_resourceMenuId = 0;
+	m_styleTable.Clear();
+	m_bindingTable.Clear();
+	m_rootIcon.Destroy();
 	m_initialized = FALSE;
 }
 
@@ -164,16 +164,16 @@ LegoBool32 MenuScreen::Initialize(MenuScreenCreateParams* p_createParams)
 	m_renderer = p_createParams->m_renderer;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
 	m_inputManager = p_createParams->m_inputManager;
-	m_unk0x288 = p_createParams->m_unk0x2c;
-	m_unk0x284 = p_createParams->m_unk0x20;
+	m_useBinaryFiles = p_createParams->m_useBinaryFiles;
+	m_dialog = p_createParams->m_dialog;
 	m_cursor = p_createParams->m_cursor;
-	m_unk0x28c = p_createParams->m_menuId;
+	m_resourceMenuId = p_createParams->m_menuId;
 	m_menuStyles = p_createParams->m_menuStyles;
 	m_inputEvents = p_createParams->m_inputEvents;
 	m_menuTextStrings = p_createParams->m_menuTextStrings;
 	m_menuNameStrings = p_createParams->m_menuNameStrings;
 
-	if (FUN_0046b630() && FUN_0046b6e0(p_createParams) && LoadStylesAndBindings(p_createParams)) {
+	if (CreateRootIcon() && LoadImagesAndFonts(p_createParams) && LoadStylesAndBindings(p_createParams)) {
 		CreateWidgets();
 		m_inputManager->PollDevices(0);
 		m_inputEvents->ClearQueue();
@@ -187,9 +187,9 @@ LegoBool32 MenuScreen::Initialize(MenuScreenCreateParams* p_createParams)
 LegoBool32 MenuScreen::Destroy()
 {
 	if (m_initialized) {
-		if (m_unk0xbc) {
-			m_unk0xbc->Clear();
-			m_golExport->VTable0x68(m_unk0xbc);
+		if (m_imageList) {
+			m_imageList->Clear();
+			m_golExport->VTable0x68(m_imageList);
 		}
 
 		if (m_fontTable) {
@@ -204,13 +204,13 @@ LegoBool32 MenuScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0046b630
-LegoBool32 MenuScreen::FUN_0046b630()
+LegoBool32 MenuScreen::CreateRootIcon()
 {
 	GolCommonDrawState* drawState = m_renderer->GetDrawState();
 	MenuIcon::CreateParams createParams;
 
 	memset(&createParams, 0, sizeof(createParams));
-	memcpy(&createParams, g_unk0x4b2240, sizeof(g_unk0x4b2240));
+	memcpy(&createParams, g_rootIconParams, sizeof(g_rootIconParams));
 
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
@@ -220,8 +220,8 @@ LegoBool32 MenuScreen::FUN_0046b630()
 	createParams.m_rect.m_bottom = drawState->m_height;
 	createParams.m_eventHandler = this;
 
-	if (m_unk0xd8.Create(&createParams, &g_unk0x4b2278)) {
-		m_unk0xd8.Select(0);
+	if (m_rootIcon.Create(&createParams, &g_rootIconState)) {
+		m_rootIcon.Select(0);
 		return TRUE;
 	}
 
@@ -229,7 +229,7 @@ LegoBool32 MenuScreen::FUN_0046b630()
 }
 
 // FUNCTION: LEGORACERS 0x0046b6e0
-LegoBool32 MenuScreen::FUN_0046b6e0(MenuScreenCreateParams* p_createParams)
+LegoBool32 MenuScreen::LoadImagesAndFonts(MenuScreenCreateParams* p_createParams)
 {
 	GolString string;
 
@@ -237,33 +237,33 @@ LegoBool32 MenuScreen::FUN_0046b6e0(MenuScreenCreateParams* p_createParams)
 		return TRUE;
 	}
 
-	m_menuNameStrings->CopyStringByIndex(&string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&string, m_resourceMenuId);
 
 	LegoChar fileName[16];
 	string.CopyToString(fileName);
 
 	const LegoChar* idSuffix = ".idb";
-	if (!p_createParams->m_unk0x2c) {
+	if (!p_createParams->m_useBinaryFiles) {
 		idSuffix = ".idf";
 	}
 	strcat(fileName, idSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
-		m_unk0xbc = m_golExport->VTable0x34();
-		m_unk0xbc->LoadImageDefinitions(m_renderer, fileName, p_createParams->m_unk0x2c);
+		m_imageList = m_golExport->VTable0x34();
+		m_imageList->LoadImageDefinitions(m_renderer, fileName, p_createParams->m_useBinaryFiles);
 	}
 
 	string.CopyToString(fileName);
 
 	const LegoChar* fontSuffix = ".fdb";
-	if (!p_createParams->m_unk0x2c) {
+	if (!p_createParams->m_useBinaryFiles) {
 		fontSuffix = ".fdf";
 	}
 	strcat(fileName, fontSuffix);
 
 	if (!GolStream::FindFile(fileName)) {
 		m_fontTable = m_golExport->CreateFontTable();
-		m_fontTable->LoadFontDefinitions(m_renderer, fileName, p_createParams->m_unk0x2c);
+		m_fontTable->LoadFontDefinitions(m_renderer, fileName, p_createParams->m_useBinaryFiles);
 	}
 
 	return TRUE;
@@ -278,13 +278,13 @@ LegoBool32 MenuScreen::LoadStylesAndBindings(MenuScreenCreateParams* p_createPar
 		return TRUE;
 	}
 
-	m_menuNameStrings->CopyStringByIndex(&string, m_unk0x28c);
+	m_menuNameStrings->CopyStringByIndex(&string, m_resourceMenuId);
 
 	LegoChar fileName[16];
 	string.CopyToString(fileName);
 
 	const LegoChar* styleSuffix = ".msb";
-	if (!p_createParams->m_unk0x2c) {
+	if (!p_createParams->m_useBinaryFiles) {
 		styleSuffix = ".msd";
 	}
 	strcat(fileName, styleSuffix);
@@ -294,7 +294,7 @@ LegoBool32 MenuScreen::LoadStylesAndBindings(MenuScreenCreateParams* p_createPar
 		params.m_renderer = m_renderer;
 		params.m_unk0x04 = p_createParams->m_menuStyles;
 		params.m_fileName = fileName;
-		params.m_binary = p_createParams->m_unk0x2c;
+		params.m_binary = p_createParams->m_useBinaryFiles;
 
 		if (!GetMenuStyles()->Load(&params)) {
 			return FALSE;
@@ -304,7 +304,7 @@ LegoBool32 MenuScreen::LoadStylesAndBindings(MenuScreenCreateParams* p_createPar
 	string.CopyToString(fileName);
 
 	const LegoChar* inputSuffix = ".mib";
-	if (!p_createParams->m_unk0x2c) {
+	if (!p_createParams->m_useBinaryFiles) {
 		inputSuffix = ".mid";
 	}
 	strcat(fileName, inputSuffix);
@@ -313,7 +313,7 @@ LegoBool32 MenuScreen::LoadStylesAndBindings(MenuScreenCreateParams* p_createPar
 		MenuInputBindingTable::ResourceLoadParams params;
 		params.m_renderer = m_renderer;
 		params.m_fileName = fileName;
-		params.m_binary = p_createParams->m_unk0x2c;
+		params.m_binary = p_createParams->m_useBinaryFiles;
 
 		if (!GetMenuInputBindings()->Load(&params)) {
 			return FALSE;
@@ -362,7 +362,7 @@ void MenuScreen::ApplyWidgetDefaults(MenuWidget::CreateParams* p_createParams)
 			p_createParams->m_unk0x26 = 1;
 		}
 
-		p_createParams->m_parent = m_unk0xd8.FindChildById(p_createParams->m_unk0x26);
+		p_createParams->m_parent = m_rootIcon.FindChildById(p_createParams->m_unk0x26);
 	}
 }
 
@@ -382,7 +382,7 @@ void MenuScreen::ApplyIconDefaults(MenuIcon::CreateParams* p_createParams)
 			p_createParams->m_unk0x48 = 1;
 		}
 
-		p_createParams->m_parent = static_cast<MenuIcon*>(m_unk0xd8.FindChildById(p_createParams->m_unk0x48));
+		p_createParams->m_parent = static_cast<MenuIcon*>(m_rootIcon.FindChildById(p_createParams->m_unk0x48));
 	}
 
 	if (!p_createParams->m_unk0x80) {
@@ -542,18 +542,18 @@ LegoBool32 MenuScreen::CreateTextLabel(
 
 	MenuTextLabel::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
-	createParams.m_unk0x40 = p_unk0x10;
+	createParams.m_stringId = p_unk0x10;
 
-	if (!createParams.m_unk0x38) {
-		createParams.m_unk0x38 = m_menuTextStrings;
+	if (!createParams.m_stringTable) {
+		createParams.m_stringTable = m_menuTextStrings;
 	}
 
 	if (!createParams.m_unk0x44 && styleEntry->m_unk0x08) {
 		createParams.m_unk0x44 = styleEntry->m_unk0x08;
 	}
 
-	if (!createParams.m_unk0x3c) {
-		createParams.m_unk0x3c = styleEntry->m_font;
+	if (!createParams.m_font) {
+		createParams.m_font = styleEntry->m_font;
 	}
 
 	if (styleEntry->m_hasColor && !(createParams.m_flags & 2)) {
@@ -722,7 +722,7 @@ LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_source, undefined4 p_eve
 	createParams.m_unk0x7c = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = GetAspectScale();
-	return p_source->Create(&createParams, m_unk0x288);
+	return p_source->Create(&createParams, m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0046c510
@@ -744,7 +744,7 @@ LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_source, unde
 	createParams.m_unk0x7c = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = GetAspectScale();
-	return p_source->FUN_004661f0(&createParams, m_unk0x288);
+	return p_source->FUN_004661f0(&createParams, m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0046c5b0
@@ -759,7 +759,7 @@ undefined4 MenuScreen::CreateRegion(MenuWidget* p_source, undefined2 p_event)
 	ApplyWidgetDefaults(&createParams);
 	createParams.m_unk0x50 = GetAspectScale();
 
-	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->FUN_00466b50(&createParams, m_unk0x288);
+	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->FUN_00466b50(&createParams, m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0046c610
@@ -792,34 +792,34 @@ LegoBool32 MenuScreen::CreateTextField(
 }
 
 // FUNCTION: LEGORACERS 0x0046c6f0
-undefined4 MenuScreen::FUN_0046c6f0(MenuIcon* p_yesIcon, MenuIcon* p_noIcon, undefined2 p_unk0x0c)
+undefined4 MenuScreen::ShowConfirmDialog(MenuIcon* p_yesIcon, MenuIcon* p_noIcon, undefined2 p_unk0x0c)
 {
-	MenuDialog::DialogScreen* entry = m_unk0x284->FUN_00468c50(2, p_unk0x0c, this, 0);
-	entry->SetUnk0x744(p_yesIcon);
-	entry->SetUnk0x748(p_noIcon);
-	entry->FUN_00468590();
+	MenuDialog::DialogScreen* entry = m_dialog->OpenDialog(2, p_unk0x0c, this, 0);
+	entry->SetYesIcon(p_yesIcon);
+	entry->SetNoIcon(p_noIcon);
+	entry->Open();
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c730
-undefined4 MenuScreen::FUN_0046c730(MenuIcon* p_icon, undefined2 p_notifyId)
+undefined4 MenuScreen::ShowPopupDialog(MenuIcon* p_icon, undefined2 p_notifyId)
 {
-	MenuDialog::DialogScreen* entry = m_unk0x284->FUN_00468c50(1, p_notifyId, this, 0);
-	entry->SetUnk0x740(p_icon);
-	entry->FUN_00468590();
+	MenuDialog::DialogScreen* entry = m_dialog->OpenDialog(1, p_notifyId, this, 0);
+	entry->SetPopupIcon(p_icon);
+	entry->Open();
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c760
-void MenuScreen::FUN_0046c760()
+void MenuScreen::DetachAllWidgets()
 {
 	MenuIcon* icon;
 	MenuWidget* node;
 
-	while (m_unk0xd8.GetFirstChild()) {
-		icon = &m_unk0xd8;
+	while (m_rootIcon.GetFirstChild()) {
+		icon = &m_rootIcon;
 
 		while (icon->GetFirstChild()) {
 			icon = icon->GetFirstChild();
@@ -828,8 +828,8 @@ void MenuScreen::FUN_0046c760()
 		icon->DetachFromParent();
 	}
 
-	while (static_cast<MenuWidget*>(&m_unk0xd8)->GetFirstChild()) {
-		node = &m_unk0xd8;
+	while (static_cast<MenuWidget*>(&m_rootIcon)->GetFirstChild()) {
+		node = &m_rootIcon;
 
 		while (node->GetFirstChild()) {
 			node = node->GetFirstChild();
@@ -848,14 +848,14 @@ LegoBool32 MenuScreen::Update(undefined4)
 // FUNCTION: LEGORACERS 0x0046c7e0 FOLDED
 LegoBool32 MenuScreen::Draw(Rect* p_arg1, Rect* p_arg2)
 {
-	m_unk0xd8.Draw(p_arg1, p_arg2);
+	m_rootIcon.Draw(p_arg1, p_arg2);
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c810
 MenuStyleTable* MenuScreen::GetMenuStyles()
 {
-	return &m_unk0x08;
+	return &m_styleTable;
 }
 
 // FUNCTION: LEGORACERS 0x0046c820 FOLDED
@@ -872,7 +872,7 @@ MenuStyleTable* MenuScreen::GetActiveStyles()
 // FUNCTION: LEGORACERS 0x0046c840
 MenuInputBindingTable* MenuScreen::GetMenuInputBindings()
 {
-	return &m_unk0x58;
+	return &m_bindingTable;
 }
 
 // TODO: Temporary workaround until we figure out how the original code was written.

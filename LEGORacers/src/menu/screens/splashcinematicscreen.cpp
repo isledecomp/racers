@@ -53,7 +53,7 @@ LegoBool32 SplashCinematicScreen::Initialize(MenuGameContext* p_context, MenuScr
 	}
 
 	if (nextMenu) {
-		FUN_00480470(p_context, nextMenu, pushExtra);
+		StartMenuMusic(p_context, nextMenu, pushExtra);
 	}
 
 	m_sceneWidget.m_unk0x2cc = 0;

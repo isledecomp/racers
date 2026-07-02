@@ -135,23 +135,23 @@ void EditDriverScreen::CreateWidgets()
 	CreateDriverScene();
 	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 9);
 	m_infoLabel.WrapText(0x14);
-	FUN_0047fdc0(&m_randomButton, 0xd2, 0x42, 0x38);
+	CreateTextButton(&m_randomButton, 0xd2, 0x42, 0x38);
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-		FUN_0047fdc0(&m_doneButton, 0x40, 0x44, 0x0a);
+		CreateTextButton(&m_doneButton, 0x40, 0x44, 0x0a);
 	}
 	else {
-		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x72);
+		CreateTextButton(&m_doneButton, 0x40, 0x46, 0x72);
 	}
 
-	FUN_0047fdc0(&m_backButton, 0x3f, 0x45, 0x1f);
+	CreateTextButton(&m_backButton, 0x3f, 0x45, 0x1f);
 }
 
 // FUNCTION: LEGORACERS 0x0047d460
 LegoBool32 EditDriverScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
-		FUN_00480210(p_context, FALSE);
+		LoadPartResources(p_context, FALSE);
 	}
 
 	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
@@ -168,7 +168,7 @@ LegoBool32 EditDriverScreen::Initialize(MenuGameContext* p_context, MenuScreenCr
 	lightColor.m_grn = 0xff;
 	lightColor.m_red = 0xff;
 	materialColor.m_alp = 0xff;
-	FUN_0047fec0(&materialColor, &lightColor);
+	SetLighting(&materialColor, &lightColor);
 
 	m_modelSlot.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
 	p_context->m_carBuildModel.FUN_00499f00();
@@ -325,7 +325,7 @@ LegoBool32 EditDriverScreen::CanNavigate()
 // FUNCTION: LEGORACERS 0x0047d9d0
 void EditDriverScreen::Navigate()
 {
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case 0x10:
 		m_context->m_menuStack.Pop();
 		m_context->m_menuStack.Push(0x10);
@@ -348,7 +348,7 @@ void EditDriverScreen::Navigate()
 // FUNCTION: LEGORACERS 0x0047da50
 LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_source, InputEventQueue::Event*, undefined4, undefined4)
 {
-	if (m_unk0x364) {
+	if (m_navPending) {
 		return TRUE;
 	}
 
@@ -427,14 +427,14 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 	}
 	else if (p_source == &m_backButton) {
 		if (HasUnsavedChanges()) {
-			FUN_0047fdc0(&m_confirmYesButton, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_confirmYesButton, &m_confirmNoButton, 0x7b);
+			CreateTextButton(&m_confirmYesButton, 0x99, 0x46, 0x20);
+			CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			ShowConfirmDialog(&m_confirmYesButton, &m_confirmNoButton, 0x7b);
 		}
 		else if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			FUN_0047fdc0(&m_confirmYesButton, 0x99, 0x46, 0x73);
-			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x74);
-			FUN_0046c6f0(&m_confirmYesButton, &m_confirmNoButton, 0x77);
+			CreateTextButton(&m_confirmYesButton, 0x99, 0x46, 0x73);
+			CreateTextButton(&m_confirmNoButton, 0x99, 0x45, 0x74);
+			ShowConfirmDialog(&m_confirmYesButton, &m_confirmNoButton, 0x77);
 		}
 		else {
 			OnIconUnfocused(&m_confirmYesButton);
@@ -445,10 +445,10 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		PlayExitAnimation();
 
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-			m_unk0x360 = 0x10;
+			m_nextMenuId = 0x10;
 		}
 		else {
-			m_unk0x360 = 3;
+			m_nextMenuId = 3;
 		}
 	}
 	else if (p_source == &m_confirmYesButton) {
@@ -459,26 +459,26 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 		entity->SetFlags(entity->GetFlags() & ~0x10000);
 
-		if (m_unk0x284->GetUnk0x9c() > 0) {
-			m_unk0x284->FUN_00468cf0();
+		if (m_dialog->GetOpenCount() > 0) {
+			m_dialog->DismissTop();
 		}
 
-		m_unk0x360 = 3;
+		m_nextMenuId = 3;
 	}
 	else if (p_source == &m_confirmNoButton) {
-		m_unk0x284->FUN_00468cf0();
+		m_dialog->DismissTop();
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
-		m_unk0x35c = p_source;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
+		m_clickedWidget = p_source;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047de30
 LegoBool32 EditDriverScreen::Update(undefined4 p_source)
 {
-	if (!m_unk0x364 && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
+	if (!m_navPending && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
 		PlayNextAnimation();
 	}
 

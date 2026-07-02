@@ -101,7 +101,7 @@ LegoBool32 MultiplayerPickScreen::Initialize(MenuGameContext* p_context, MenuScr
 	m_bindingEntries = &p_context->m_context->m_inputBindings[0];
 	m_nameStrings[0].CopyFromBufSelection(m_nameBuffers[0], 0x10);
 	m_nameStrings[1].CopyFromBufSelection(m_nameBuffers[1], 0x10);
-	FUN_004803d0();
+	ReinitializeInputBindings();
 	SwapSlotModel(0);
 	SwapSlotModel(1);
 	UpdateNameLabel(0);
@@ -171,11 +171,11 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 {
 	LegoBool32 result = TRUE;
 
-	if (m_unk0x364) {
+	if (m_navPending) {
 		return result;
 	}
 
-	if (p_source != GetUnk0xd8()) {
+	if (p_source != GetRootIcon()) {
 		return FALSE;
 	}
 
@@ -193,7 +193,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 				else {
 					LegoS32 modelIndex = m_slotModelToggle[i] + (m_modelsPerSlot * i);
 					m_driverEntities[modelIndex].SetFlags(m_driverEntities[modelIndex].GetFlags() & ~0x10000);
-					m_unk0x360 = 0x3f;
+					m_nextMenuId = 0x3f;
 				}
 				break;
 			case 0x10000039:
@@ -205,7 +205,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 						m_recordCursors[i].GetSelectedRecord()
 					);
 					DimSlotLighting(i);
-					m_unk0x360 = 0x41;
+					m_nextMenuId = 0x41;
 					PlayRandomNamedAnimation(i);
 				}
 				break;
@@ -251,17 +251,17 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 		}
 	}
 
-	if (m_unk0x360 == 0x41) {
+	if (m_nextMenuId == 0x41) {
 		for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 			if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
-				m_unk0x360 = 0xffff;
+				m_nextMenuId = 0xffff;
 				break;
 			}
 		}
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
 
 	return result;
@@ -270,14 +270,14 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 // FUNCTION: LEGORACERS 0x00481f50
 void MultiplayerPickScreen::Navigate()
 {
-	switch (m_unk0x360) {
+	switch (m_nextMenuId) {
 	case 0x3f:
 		m_context->m_menuStack.Pop();
 		break;
 	case 0x41:
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(2);
 		m_context->m_context->m_racerCount = 2;
-		m_unk0x364 = TRUE;
+		m_navPending = TRUE;
 		m_context->m_menuStack.ResetSize();
 		break;
 	}

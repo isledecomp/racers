@@ -100,8 +100,8 @@ void RaceModeSetupScreen::CreateWidgets()
 	m_infoLabel.WrapText(0x14);
 	CreateCarousel(&m_raceCarousel, 0x3d, 0x3b);
 	CreateSelector(&m_raceSelector, &m_raceCarousel, 0x69, 0x4c);
-	FUN_0047fdc0(&m_startButton, 0x40, 0x46, 0x72);
-	FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 2);
+	CreateTextButton(&m_startButton, 0x40, 0x46, 0x72);
+	CreateTextButton(&m_backButton, 0x3f, 0x43, 2);
 
 	for (LegoS32 i = 0; i < sizeOfArray(m_raceLabels); i++) {
 		CreateTextLabel(&m_raceLabels[i], 0x96, 0x37, 0x70);
@@ -139,7 +139,7 @@ LegoBool32 RaceModeSetupScreen::Initialize(MenuGameContext* p_context, MenuScree
 // FUNCTION: LEGORACERS 0x00487d10
 void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_icon)
 {
-	m_unk0x358 = p_icon;
+	m_selectedIcon = p_icon;
 	UpdateRacePreview();
 }
 
@@ -163,10 +163,10 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 
 			// Both branches assign the same id in the original; the flag test is real but inert
 			if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
-				m_unk0x360 = 0x13;
+				m_nextMenuId = 0x13;
 			}
 			else {
-				m_unk0x360 = 0x13;
+				m_nextMenuId = 0x13;
 			}
 		}
 	}
@@ -174,14 +174,14 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowVersus
 		);
-		m_unk0x360 = 2;
+		m_nextMenuId = 2;
 	}
 
-	if (m_unk0x360 != 0xffff) {
-		m_unk0x364 = TRUE;
+	if (m_nextMenuId != 0xffff) {
+		m_navPending = TRUE;
 	}
 
-	m_unk0x35c = source;
+	m_clickedWidget = source;
 }
 
 // FUNCTION: LEGORACERS 0x00487e10
@@ -229,7 +229,7 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x00487f90
 void RaceModeSetupScreen::Navigate()
 {
-	if (m_unk0x360 == 2) {
+	if (m_nextMenuId == 2) {
 		m_context->m_context->m_racerCount = m_savedRacerCount;
 		m_context->m_menuStack.Pop();
 		return;
@@ -243,7 +243,7 @@ void RaceModeSetupScreen::Navigate()
 		m_context->m_context->m_racerCount = 0;
 	}
 
-	m_context->m_menuStack.Push(m_unk0x360);
+	m_context->m_menuStack.Push(m_nextMenuId);
 }
 
 // FUNCTION: LEGORACERS 0x00488010

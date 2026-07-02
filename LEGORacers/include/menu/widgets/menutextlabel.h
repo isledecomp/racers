@@ -17,11 +17,11 @@ public:
 	// SIZE 0x48
 	class CreateParams : public MenuWidget::CreateParams {
 	public:
-		GolStringTable* m_unk0x38; // 0x38
-		GolFont* m_unk0x3c;        // 0x3c
-		undefined2 m_unk0x40;      // 0x40
-		undefined m_unk0x42[2];    // 0x42
-		undefined4 m_unk0x44;      // 0x44
+		GolStringTable* m_stringTable; // 0x38
+		GolFont* m_font;               // 0x3c
+		undefined2 m_stringId;         // 0x40
+		undefined m_unk0x42[2];        // 0x42
+		undefined4 m_unk0x44;          // 0x44
 	};
 
 	MenuTextLabel();
@@ -32,18 +32,18 @@ public:
 	virtual void SetStringByIndex(undefined2, undefined4); // vtable+0x44
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08);
 	void WrapText(LegoS32 p_rightMargin);
-	void SetUnk0x60(GolFont* p_unk0x60) { m_unk0x60 = p_unk0x60; }
+	void SetFont(GolFont* p_font) { m_font = p_font; }
 
 	// SYNTHETIC: LEGORACERS 0x0046f470
 	// MenuTextLabel::`scalar deleting destructor'
 
 protected:
-	MenuStyleTable::TextStyle* m_unk0x58; // 0x58
-	GolStringTable* m_unk0x5c;            // 0x5c
-	GolFont* m_unk0x60;                   // 0x60
-	GolString m_unk0x64;                  // 0x64
-	LegoS32 m_unk0x70;                    // 0x70
-	LegoBool32 m_unk0x74;                 // 0x74
+	MenuStyleTable::TextStyle* m_style; // 0x58
+	GolStringTable* m_stringTable;      // 0x5c
+	GolFont* m_font;                    // 0x60
+	GolString m_string;                 // 0x64
+	LegoS32 m_wrapWidth;                // 0x70
+	LegoBool32 m_wrapped;               // 0x74
 };
 
 #endif // MENUTEXTLABEL_H

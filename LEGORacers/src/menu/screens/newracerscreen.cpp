@@ -45,8 +45,8 @@ void NewRacerScreen::CreateWidgets()
 		if (!records->GetAvailableRecordCount()) {
 			CreateImage(&m_unk0x3c4, 0x53, 0x53);
 			CreateImage(&m_unk0x420, 0x54, 0x54);
-			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
-			FUN_0046c730(&m_unk0x47c, 0xbb);
+			CreateTextButton(&m_unk0x47c, 0x99, 0x46, 0x72);
+			ShowPopupDialog(&m_unk0x47c, 0xbb);
 			m_cursor->SetCursorEnabled(TRUE);
 			return;
 		}
@@ -57,8 +57,8 @@ void NewRacerScreen::CreateWidgets()
 		if (!memoryCardSave->HasUnk0x4b4Flag0x01() || !memoryCardSave->GetAvailableRecordCount()) {
 			CreateImage(&m_unk0x3c4, 0x53, 0x53);
 			CreateImage(&m_unk0x420, 0x54, 0x54);
-			FUN_0047fdc0(&m_unk0x47c, 0x99, 0x46, 0x72);
-			FUN_0046c730(&m_unk0x47c, 0xbc);
+			CreateTextButton(&m_unk0x47c, 0x99, 0x46, 0x72);
+			ShowPopupDialog(&m_unk0x47c, 0xbc);
 			m_cursor->SetCursorEnabled(TRUE);
 			return;
 		}
@@ -67,7 +67,7 @@ void NewRacerScreen::CreateWidgets()
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowLoadRacer) {
 		SaveRecordList::Record* record =
 			records->AllocateRecordCopy(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord());
-		m_unk0x360 = c_menuGarage;
+		m_nextMenuId = c_menuGarage;
 
 		SaveRecordList::Record* oldRecord = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 		if (oldRecord->m_recordSource == TRUE && record->m_recordSource != TRUE) {
@@ -75,13 +75,13 @@ void NewRacerScreen::CreateWidgets()
 		}
 
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
-		m_unk0x364 = TRUE;
+		m_navPending = TRUE;
 	}
 	else {
 		SaveRecordList::Record* record = records->AllocateRecord();
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
-		m_unk0x360 = c_menuEditDriver;
-		m_unk0x364 = TRUE;
+		m_nextMenuId = c_menuEditDriver;
+		m_navPending = TRUE;
 	}
 }
 
@@ -90,7 +90,7 @@ void NewRacerScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 
-	if (m_unk0x360 == c_menuGarage) {
+	if (m_nextMenuId == c_menuGarage) {
 		m_context->m_menuStack.Pop();
 		m_context->m_menuStack.Push(c_menuGarage);
 	}
@@ -100,9 +100,9 @@ void NewRacerScreen::Navigate()
 void NewRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	if (p_source == &m_unk0x47c) {
-		m_unk0x284->FUN_00468cf0();
-		m_unk0x364 = TRUE;
-		m_unk0x360 = c_menuGarage;
+		m_dialog->DismissTop();
+		m_navPending = TRUE;
+		m_nextMenuId = c_menuGarage;
 	}
 }
 

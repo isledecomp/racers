@@ -28,7 +28,7 @@ void RaceEventTable::LapZoneResource::Initialize(InitParams* p_params)
 	}
 
 	m_eventTable = params->m_eventTable;
-	m_unk0x20 = params->m_unk0x14;
+	m_zone = params->m_unk0x14;
 	m_state0x18 = c_state0x18Four;
 }
 
@@ -43,7 +43,7 @@ void RaceEventTable::LapZoneResource::Destroy()
 // FUNCTION: LEGORACERS 0x00464680
 void RaceEventTable::LapZoneResource::OnStartForRacer(RaceState::Racer* p_racer)
 {
-	switch (m_unk0x20) {
+	switch (m_zone) {
 	case 0:
 		p_racer->EnterOpenTrack();
 		break;

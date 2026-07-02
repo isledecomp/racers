@@ -40,7 +40,7 @@ void RaceEventTable::ColorTransformResource::FUN_00465570(InitParams* p_params)
 	m_eventTable = p_params->m_eventTable;
 	LegoU32 flags = p_params->m_flags0x14;
 	m_flags0x20 = flags;
-	m_unk0x24 = p_params->m_unk0x18;
+	m_colorTransform = p_params->m_unk0x18;
 	m_unk0x44 = p_params->m_unk0x38;
 	if (flags & 1) {
 		m_flags0x1c |= c_flags0x1cBit2;
@@ -78,10 +78,10 @@ void RaceEventTable::ColorTransformResource::OnStartForRacer(RaceState::Racer* p
 	}
 
 	if (entity) {
-		entity->VTable0x24(&m_unk0x24);
+		entity->VTable0x24(&m_colorTransform);
 	}
 	else if (p_racer) {
-		p_racer->m_visuals.SetColorTransform(&m_unk0x24);
+		p_racer->m_visuals.SetColorTransform(&m_colorTransform);
 	}
 
 	NotifyStateChange(c_state0x18One, c_state0x18One);

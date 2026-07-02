@@ -129,7 +129,7 @@ public:
 		// RaceEventTable::LapZoneResource::`vector deleting destructor'
 
 	private:
-		undefined4 m_unk0x20; // 0x20
+		undefined4 m_zone; // 0x20
 	};
 
 	// VTABLE: LEGORACERS 0x004b1ad4
@@ -158,7 +158,7 @@ public:
 		// RaceEventTable::LookTargetResource::`vector deleting destructor'
 
 	private:
-		GolVec3 m_unk0x20; // 0x20
+		GolVec3 m_lookPosition; // 0x20
 	};
 
 	// VTABLE: LEGORACERS 0x004b1af0
@@ -191,9 +191,9 @@ public:
 		// RaceEventTable::TimerResource::`vector deleting destructor'
 
 	public:
-		LegoS32 m_unk0x20;                // 0x20
-		LegoU32 m_unk0x24;                // 0x24
-		LegoU32 m_unk0x28;                // 0x28
+		LegoS32 m_holdEventId;            // 0x20
+		LegoU32 m_durationMs;             // 0x24
+		LegoU32 m_remainingMs;            // 0x28
 		LegoU8 m_flags0x2c;               // 0x2c
 		undefined m_unk0x2d[0x30 - 0x2d]; // 0x2d
 	};
@@ -444,9 +444,9 @@ public:
 			c_flags0x34Bit0 = 1 << 0
 		};
 
-		GolVec3 m_unk0x20;                // 0x20
-		LegoU32 m_unk0x2c;                // 0x2c
-		LegoS32 m_unk0x30;                // 0x30
+		GolVec3 m_force;                  // 0x20
+		LegoU32 m_channel;                // 0x2c
+		LegoS32 m_armEventId;             // 0x30
 		LegoU8 m_flags0x34;               // 0x34
 		undefined m_unk0x35[0x38 - 0x35]; // 0x35
 	};
@@ -483,9 +483,9 @@ public:
 			c_flags0x20Bit1 = 1 << 1,
 		};
 
-		LegoU32 m_flags0x20;          // 0x20
-		ColorTransform0x20 m_unk0x24; // 0x24
-		GolWorldEntity* m_unk0x44;    // 0x44
+		LegoU32 m_flags0x20;                 // 0x20
+		ColorTransform0x20 m_colorTransform; // 0x24
+		GolWorldEntity* m_unk0x44;           // 0x44
 	};
 
 	// VTABLE: LEGORACERS 0x004b1c84
@@ -538,22 +538,22 @@ public:
 
 	private:
 		union {
-			SpatialSoundInstance* m_unk0x20;          // 0x20
+			SpatialSoundInstance* m_sound;            // 0x20
 			RaceResourceManager::Resource* m_res0x20; // 0x20
 		};
-		RaceState::Racer::SoundSource* m_unk0x24; // 0x24
-		GolModelEntity* m_unk0x28;                // 0x28
-		LegoU32 m_unk0x2c;                        // 0x2c
-		SoundVector m_unk0x30;                    // 0x30
-		LegoU32 m_unk0x3c;                        // 0x3c
-		LegoU32 m_unk0x40;                        // 0x40
-		LegoFloat m_unk0x44;                      // 0x44
-		LegoFloat m_unk0x48;                      // 0x48
-		LegoFloat m_unk0x4c;                      // 0x4c
-		LegoFloat m_unk0x50;                      // 0x50
-		LegoU8 m_unk0x54;                         // 0x54
-		undefined m_unk0x55[0x58 - 0x55];         // 0x55
-		LegoU32 m_unk0x58;                        // 0x58
+		RaceState::Racer::SoundSource* m_soundSource; // 0x24
+		GolModelEntity* m_unk0x28;                    // 0x28
+		LegoU32 m_unk0x2c;                            // 0x2c
+		SoundVector m_position;                       // 0x30
+		LegoU32 m_soundId;                            // 0x3c
+		LegoU32 m_unk0x40;                            // 0x40
+		LegoFloat m_volume;                           // 0x44
+		LegoFloat m_frequencyScale;                   // 0x48
+		LegoFloat m_minDistance;                      // 0x4c
+		LegoFloat m_maxDistance;                      // 0x50
+		LegoU8 m_probability;                         // 0x54
+		undefined m_unk0x55[0x58 - 0x55];             // 0x55
+		LegoU32 m_unk0x58;                            // 0x58
 	};
 
 	// VTABLE: LEGORACERS 0x004b1b0c
@@ -594,16 +594,16 @@ public:
 		// RaceEventTable::ParticleResource::`vector deleting destructor'
 
 	private:
-		CutsceneAnimation* m_unk0x20;   // 0x20
-		CutsceneAnimation* m_unk0x24;   // 0x24
-		GolName m_unk0x28;              // 0x28
-		CutsceneParticleRef* m_unk0x30; // 0x30
-		GolModelEntity* m_unk0x34;      // 0x34
-		LegoU32 m_unk0x38;              // 0x38
-		GolVec3 m_unk0x3c;              // 0x3c
-		GolVec3 m_unk0x48;              // 0x48
-		GolVec3 m_unk0x54;              // 0x54
-		LegoU32 m_partAnimations;       // 0x60
+		CutsceneAnimation* m_particleAnimation;       // 0x20
+		CutsceneAnimation* m_sharedParticleAnimation; // 0x24
+		GolName m_particleName;                       // 0x28
+		CutsceneParticleRef* m_particle;              // 0x30
+		GolModelEntity* m_trackedEntity;              // 0x34
+		LegoU32 m_nodeIndex;                          // 0x38
+		GolVec3 m_unk0x3c;                            // 0x3c
+		GolVec3 m_unk0x48;                            // 0x48
+		GolVec3 m_unk0x54;                            // 0x54
+		LegoU32 m_partAnimations;                     // 0x60
 	};
 
 	// SIZE 0x08

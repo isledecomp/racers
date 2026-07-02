@@ -108,7 +108,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 				m_timers[i].OnEventStart(p_unk0x08);
 			}
 
-			if (m_timers[i].m_unk0x20 == p_unk0x04) {
+			if (m_timers[i].m_holdEventId == p_unk0x04) {
 				m_timers[i].m_flags0x2c |= 1;
 			}
 		}
@@ -140,7 +140,7 @@ LegoU32 RaceEventTable::StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
-			if (m_externalForces[i].m_unk0x30 == p_unk0x04) {
+			if (m_externalForces[i].m_armEventId == p_unk0x04) {
 				m_externalForces[i].m_flags0x34 |= 1;
 			}
 		}
@@ -199,7 +199,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 				m_timers[i].OnEventEnd(p_unk0x08);
 			}
 
-			if (m_timers[i].m_unk0x20 == p_unk0x04) {
+			if (m_timers[i].m_holdEventId == p_unk0x04) {
 				m_timers[i].m_flags0x2c &= ~1;
 			}
 		}
@@ -223,7 +223,7 @@ void RaceEventTable::EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
-			if (m_externalForces[i].m_unk0x30 == p_unk0x04) {
+			if (m_externalForces[i].m_armEventId == p_unk0x04) {
 				m_externalForces[i].m_flags0x34 &= ~1;
 			}
 		}
@@ -403,7 +403,7 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 				m_timers[i].OnEventStart(p_unk0x0c);
 			}
 
-			if (m_timers[i].m_unk0x20 == p_unk0x04) {
+			if (m_timers[i].m_holdEventId == p_unk0x04) {
 				m_timers[i].m_flags0x2c |= 1;
 			}
 
@@ -411,7 +411,7 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 				m_timers[i].OnEventEnd(p_unk0x0c);
 			}
 
-			if (m_timers[i].m_unk0x20 == p_unk0x08) {
+			if (m_timers[i].m_holdEventId == p_unk0x08) {
 				m_timers[i].m_flags0x2c &= ~1;
 			}
 		}
@@ -451,11 +451,11 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 
 	if (m_externalForces) {
 		for (LegoU32 i = 0; i < m_externalForceCount; i++) {
-			if (m_externalForces[i].m_unk0x30 == p_unk0x04) {
+			if (m_externalForces[i].m_armEventId == p_unk0x04) {
 				m_externalForces[i].m_flags0x34 |= 1;
 			}
 
-			if (m_externalForces[i].m_unk0x30 == p_unk0x08) {
+			if (m_externalForces[i].m_armEventId == p_unk0x08) {
 				m_externalForces[i].m_flags0x34 &= ~1;
 			}
 		}

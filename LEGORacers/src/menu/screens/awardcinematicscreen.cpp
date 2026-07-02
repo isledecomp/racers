@@ -22,9 +22,10 @@
 DECOMP_SIZE_ASSERT(AwardCinematicScreen, 0x7b0)
 
 // FUNCTION: LEGORACERS 0x00475c30
-AwardCinematicScreen::AwardCinematicScreen() : m_unk0x79c(NULL), m_unk0x7a4(0), m_unk0x7a8(0), m_unk0x7ac(0)
+AwardCinematicScreen::AwardCinematicScreen()
+	: m_driverModel(NULL), m_trophyAwarded(0), m_partsUnlocked(0), m_circuitUnlocked(0)
 {
-	m_unk0x7a0 = -1;
+	m_unlockedPartIndex = -1;
 }
 
 // FUNCTION: LEGORACERS 0x00475cd0
@@ -40,9 +41,9 @@ LegoBool32 AwardCinematicScreen::Initialize(MenuGameContext* p_context, MenuScre
 		Destroy();
 	}
 
-	m_unk0x7ac = 0;
-	m_unk0x7a8 = 0;
-	m_unk0x7a4 = 0;
+	m_circuitUnlocked = 0;
+	m_partsUnlocked = 0;
+	m_trophyAwarded = 0;
 
 	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_carBuildModel.IsInitialized()) {
 		p_context->m_carBuildModel.FUN_00499f00();
@@ -99,15 +100,15 @@ LegoBool32 AwardCinematicScreen::Destroy()
 
 	DestroyChampionResources();
 	DestroyPieceResources(m_context);
-	m_unk0x658.FUN_00479590();
-	m_unk0x6a8.VTable0x54();
+	m_carGroup.Destroy();
+	m_driverEntity.VTable0x54();
 
-	if (m_unk0x79c) {
-		m_golExport->VTable0x48(m_unk0x79c);
-		m_unk0x79c = NULL;
+	if (m_driverModel) {
+		m_golExport->VTable0x48(m_driverModel);
+		m_driverModel = NULL;
 	}
 
-	m_unk0x7a0 = -1;
+	m_unlockedPartIndex = -1;
 
 	if (m_context) {
 		if (m_context->m_modelBuilder.GetMusicGroup() && m_context->m_modelBuilder.GetMusicInstance()) {
@@ -232,9 +233,9 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 
 		m_context->m_modelBuilder.SetExpressionMask(0xffff);
-		m_unk0x79c = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
-		m_unk0x6a8.FUN_0040d550(
-			m_unk0x79c,
+		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
+		m_driverEntity.FUN_0040d550(
+			m_driverModel,
 			sourceDriverEntity->VTable0x58(0),
 			sourceDriverEntity->GetModelPart(0),
 			sourceDriverEntity->GetModelDistance(0)
@@ -257,7 +258,7 @@ void AwardCinematicScreen::CreateWidgets()
 				}
 			}
 
-			carCreated = FUN_00476b00(slotIndex);
+			carCreated = CreateWinnerCar(slotIndex);
 			ClearCosmeticTable();
 			m_context->m_chassisModels.FUN_0041dae0();
 			m_context->m_championDefinitions.ClearDefinitions();
@@ -291,7 +292,7 @@ void AwardCinematicScreen::CreateWidgets()
 				CutsceneDefinition::Frame::ModelEvent* model = frame->GetModel(i);
 				GolWorldEntity* entity = model->GetEntity();
 				if (entity == sourceDriverEntity) {
-					model->SetEntity(&m_unk0x6a8);
+					model->SetEntity(&m_driverEntity);
 
 					for (LegoU32 j = 0; j < model->GetAnimationCount(); j++) {
 						CutsceneDefinition::Frame::ModelEvent::Animation* animation = model->GetAnimation(j);
@@ -332,7 +333,7 @@ void AwardCinematicScreen::CreateWidgets()
 				}
 				else if (entity == carBodyEntity) {
 					if (carCreated) {
-						model->SetEntity(&m_unk0x658);
+						model->SetEntity(&m_carGroup);
 					}
 				}
 				else if (entity == swapEntity || entity == pLegEntity) {
@@ -400,11 +401,11 @@ void AwardCinematicScreen::CreateWidgets()
 		}
 	}
 
-	FUN_004767b0();
+	GrantAwards();
 }
 
 // FUNCTION: LEGORACERS 0x004767b0
-LegoBool32 AwardCinematicScreen::FUN_004767b0()
+LegoBool32 AwardCinematicScreen::GrantAwards()
 {
 	GameState* gameState = &m_context->m_saveSystem.GetGameState();
 	LegoU16 menuId = m_resourceMenuId;
@@ -441,19 +442,19 @@ LegoBool32 AwardCinematicScreen::FUN_004767b0()
 		static_cast<CircuitDefinitionList::CircuitDefinition*>(
 			m_context->m_circuitList.GetName(context->m_circuitName)
 		);
-	m_unk0x7a4 = FUN_00476890(records, circuitDefinition);
+	m_trophyAwarded = GrantTrophy(records, circuitDefinition);
 
 	if (m_resourceMenuId != c_menuChampAward1 && m_resourceMenuId != c_menuChampAward2) {
 		return FALSE;
 	}
 
-	m_unk0x7a8 = FUN_00476990(gameState, circuitDefinition);
-	m_unk0x7ac = FUN_004768f0(gameState, circuitDefinition);
-	return m_unk0x7ac;
+	m_partsUnlocked = UnlockPartSet(gameState, circuitDefinition);
+	m_circuitUnlocked = UnlockNextCircuit(gameState, circuitDefinition);
+	return m_circuitUnlocked;
 }
 
 // FUNCTION: LEGORACERS 0x00476890
-LegoBool32 AwardCinematicScreen::FUN_00476890(
+LegoBool32 AwardCinematicScreen::GrantTrophy(
 	SaveRecordList* p_records,
 	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
@@ -468,7 +469,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476890(
 }
 
 // FUNCTION: LEGORACERS 0x004768f0
-LegoBool32 AwardCinematicScreen::FUN_004768f0(
+LegoBool32 AwardCinematicScreen::UnlockNextCircuit(
 	GameState* p_gameState,
 	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
@@ -495,7 +496,7 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 }
 
 // FUNCTION: LEGORACERS 0x00476990
-LegoBool32 AwardCinematicScreen::FUN_00476990(
+LegoBool32 AwardCinematicScreen::UnlockPartSet(
 	GameState* p_gameState,
 	CircuitDefinitionList::CircuitDefinition* p_circuitDefinition
 )
@@ -504,14 +505,14 @@ LegoBool32 AwardCinematicScreen::FUN_00476990(
 		return FALSE;
 	}
 
-	m_unk0x7a0 = p_circuitDefinition->GetStringIndex();
-	if (m_unk0x7a0 == -1) {
+	m_unlockedPartIndex = p_circuitDefinition->GetStringIndex();
+	if (m_unlockedPartIndex == -1) {
 		return FALSE;
 	}
 
-	LegoU8 mask = static_cast<LegoU8>(1 << m_unk0x7a0);
+	LegoU8 mask = static_cast<LegoU8>(1 << m_unlockedPartIndex);
 	if (p_gameState->GetPartUnlockFlags() & mask) {
-		m_unk0x7a0 = -1;
+		m_unlockedPartIndex = -1;
 		return FALSE;
 	}
 
@@ -535,8 +536,8 @@ void AwardCinematicScreen::Navigate()
 	}
 	else {
 		m_context->m_menuStack.ResetSize();
-		if (m_unk0x7a0 != -1) {
-			if (m_unk0x7a0 == 6) {
+		if (m_unlockedPartIndex != -1) {
+			if (m_unlockedPartIndex == 6) {
 				m_context->m_menuStack.Push(c_menuWinRrCar);
 			}
 			else {
@@ -553,7 +554,7 @@ void AwardCinematicScreen::Navigate()
 		}
 	}
 
-	if (m_unk0x7a4 || m_unk0x7a8 || m_unk0x7ac) {
+	if (m_trophyAwarded || m_partsUnlocked || m_circuitUnlocked) {
 		m_context->m_menuStack.Push(c_menuSaveAll);
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowSaveReminder
@@ -572,7 +573,7 @@ LegoBool32 AwardCinematicScreen::Update(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00476b00
-LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
+LegoBool32 AwardCinematicScreen::CreateWinnerCar(undefined4)
 {
 	SaveRecordList::Record* record = NULL;
 	LegoBool32 found = FALSE;
@@ -630,10 +631,10 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
 			SceneEntityGroup::CreateParams createParams;
-			createParams.m_unk0x0c = NULL;
+			createParams.m_driverEntity = NULL;
 			createParams.m_chassisModels = &m_context->m_chassisModels;
-			createParams.m_unk0x04 = &m_context->m_carBuildModel;
-			createParams.m_unk0x08 = m_context->m_carBuildModel.GetUnk0x0c();
+			createParams.m_buildModel = &m_context->m_carBuildModel;
+			createParams.m_carEntity = m_context->m_carBuildModel.GetUnk0x0c();
 
 			record->GetChassisName(name);
 			::strncpy(createParams.m_chassisName, name, sizeof(GolName));
@@ -658,9 +659,9 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 				}
 			}
 
-			m_unk0x658.FUN_00479510(&createParams);
+			m_carGroup.Create(&createParams);
 
-			GolAnimatedEntity* entity = m_unk0x658.GetPrimaryChassisEntity();
+			GolAnimatedEntity* entity = m_carGroup.GetPrimaryChassisEntity();
 			entity->SetFlags(entity->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 
 			return TRUE;

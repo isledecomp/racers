@@ -310,12 +310,12 @@ void EditCarScreen::CreateCarGroup()
 {
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
-	createParams.m_unk0x04 = &m_context->m_carBuildModel;
-	createParams.m_unk0x08 = m_context->m_carBuildModel.GetUnk0x0c();
-	createParams.m_unk0x0c = &m_driverEntity;
+	createParams.m_buildModel = &m_context->m_carBuildModel;
+	createParams.m_carEntity = m_context->m_carBuildModel.GetUnk0x0c();
+	createParams.m_driverEntity = &m_driverEntity;
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
-	m_carGroup.FUN_00479510(&createParams);
+	m_carGroup.Create(&createParams);
 	m_modelSlot.SetEntity(&m_carGroup);
 }
 

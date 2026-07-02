@@ -26,9 +26,9 @@ public:
 		// SIZE 0x18
 		struct CreateParams {
 			ChassisModelTable* m_chassisModels; // 0x00
-			CarBuildModel* m_unk0x04;           // 0x04
-			GolWorldEntity* m_unk0x08;          // 0x08
-			GolAnimatedEntity* m_unk0x0c;       // 0x0c
+			CarBuildModel* m_buildModel;        // 0x04
+			GolWorldEntity* m_carEntity;        // 0x08
+			GolAnimatedEntity* m_driverEntity;  // 0x0c
 			GolName m_chassisName;              // 0x10
 		};
 
@@ -37,49 +37,49 @@ public:
 
 		void VTable0x08(const GolVec3& p_center) override;                         // vtable+0x08
 		void VTable0x40(const GolVec3& p_direction, const GolVec3& p_up) override; // vtable+0x40
-		LegoBool32 FUN_00479510(CreateParams* p_createParams);
-		LegoBool32 FUN_00479590();
+		LegoBool32 Create(CreateParams* p_createParams);
+		LegoBool32 Destroy();
 		GolAnimatedEntity* GetPrimaryChassisEntity() const { return static_cast<GolAnimatedEntity*>(m_entities[1]); }
 
 		// SYNTHETIC: LEGORACERS 0x00479460
 		// AwardCinematicScreen::SceneEntityGroup::`scalar deleting destructor'
 
 	private:
-		void FUN_004794d0(GolAnimatedEntity* p_entity);
+		void AddAnimatedEntity(GolAnimatedEntity* p_entity);
 
 		ChassisModelTable* m_chassisModels; // 0x38
-		CarBuildModel* m_unk0x3c;           // 0x3c
-		GolWorldEntity* m_unk0x40;          // 0x40
-		GolAnimatedEntity* m_unk0x44;       // 0x44
+		CarBuildModel* m_buildModel;        // 0x3c
+		GolWorldEntity* m_carEntity;        // 0x40
+		GolAnimatedEntity* m_driverEntity;  // 0x44
 		GolName m_chassisName;              // 0x48
 	};
 
 	AwardCinematicScreen();
 
-	void CreateWidgets() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                             // vtable+0x4c
 	~AwardCinematicScreen() override;                                          // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	LegoBool32 Update(undefined4) override;                                // vtable+0x78
-	void Navigate() override;                                                // vtable+0x84
+	LegoBool32 Update(undefined4) override;                                    // vtable+0x78
+	void Navigate() override;                                                  // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00475cb0
 	// AwardCinematicScreen::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_004767b0();
-	LegoBool32 FUN_00476890(SaveRecordList* p_records, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
-	LegoBool32 FUN_004768f0(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
-	LegoBool32 FUN_00476990(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
-	LegoBool32 FUN_00476b00(undefined4);
+	LegoBool32 GrantAwards();
+	LegoBool32 GrantTrophy(SaveRecordList* p_records, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 UnlockNextCircuit(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 UnlockPartSet(GameState* p_gameState, CircuitDefinitionList::CircuitDefinition* p_circuitDefinition);
+	LegoBool32 CreateWinnerCar(undefined4);
 
-	SceneEntityGroup m_unk0x658;  // 0x658
-	GolAnimatedEntity m_unk0x6a8; // 0x6a8
-	GolModelBase* m_unk0x79c;     // 0x79c
-	LegoS32 m_unk0x7a0;           // 0x7a0
-	undefined4 m_unk0x7a4;        // 0x7a4
-	undefined4 m_unk0x7a8;        // 0x7a8
-	undefined4 m_unk0x7ac;        // 0x7ac
+	SceneEntityGroup m_carGroup;      // 0x658
+	GolAnimatedEntity m_driverEntity; // 0x6a8
+	GolModelBase* m_driverModel;      // 0x79c
+	LegoS32 m_unlockedPartIndex;      // 0x7a0
+	undefined4 m_trophyAwarded;       // 0x7a4
+	undefined4 m_partsUnlocked;       // 0x7a8
+	undefined4 m_circuitUnlocked;     // 0x7ac
 };
 
 #endif // AWARDCINEMATICSCREEN_H

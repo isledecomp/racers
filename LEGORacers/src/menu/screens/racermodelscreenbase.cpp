@@ -340,13 +340,13 @@ void RacerModelScreenBase::RefreshSlotModel(LegoS32 p_index)
 	m_context->m_carBuildModel.FUN_0049bc60(m_carModels[modelIndex], 1, 0x7f);
 
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
-	createParams.m_unk0x0c = NULL;
+	createParams.m_driverEntity = NULL;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
-	createParams.m_unk0x04 = &m_context->m_carBuildModel;
-	createParams.m_unk0x08 = &m_carModelEntities[modelIndex];
+	createParams.m_buildModel = &m_context->m_carBuildModel;
+	createParams.m_carEntity = &m_carModelEntities[modelIndex];
 	record->GetChassisName(createParams.m_chassisName);
 
-	m_carGroups[modelIndex].FUN_00479510(&createParams);
+	m_carGroups[modelIndex].Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x00486400

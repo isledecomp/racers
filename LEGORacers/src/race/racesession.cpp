@@ -1101,7 +1101,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	FUN_00435ba0(0.75f);
 
 	if (m_unk0x1e2) {
-		m_unk0x2804.FUN_0045c3d0(&m_unk0x1e2, m_context->m_unk0x18, p_mirror);
+		m_unk0x2804.Load(&m_unk0x1e2, m_context->m_unk0x18, p_mirror);
 	}
 
 	params.m_unk0x00 = m_unk0x390;
@@ -1244,18 +1244,18 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 	powerupParams.m_golExport = m_golExport;
 	powerupParams.m_renderer = m_renderer;
 	powerupParams.m_raceState = &m_raceState;
-	powerupParams.m_unk0x0c = m_unk0x394;
-	powerupParams.m_unk0x10 = m_unk0x3b4;
-	powerupParams.m_unk0x14 = &m_unk0x32b4;
-	powerupParams.m_unk0x18 = &m_unk0x3300;
-	powerupParams.m_unk0x1c = &m_unk0x2150;
+	powerupParams.m_collidable = m_unk0x394;
+	powerupParams.m_boundedEntity = m_unk0x3b4;
+	powerupParams.m_collisionWorld = &m_unk0x32b4;
+	powerupParams.m_soundSource = &m_unk0x3300;
+	powerupParams.m_cutsceneAnimation = &m_unk0x2150;
 	powerupParams.m_trailManager = &m_trailManager;
 	powerupParams.m_unk0x24 = &m_unk0x2080;
-	powerupParams.m_unk0x28 = &m_unk0x27fc;
-	powerupParams.m_unk0x2c = m_unk0x3a8;
-	powerupParams.m_unk0x30 = &m_unk0x2804;
+	powerupParams.m_animationList = &m_unk0x27fc;
+	powerupParams.m_trackDatabase = m_unk0x3a8;
+	powerupParams.m_targetPoints = &m_unk0x2804;
 	powerupParams.m_cameraFov = m_unk0x3354 ? m_context->m_cameraFov - g_unk0x004b08bc : m_context->m_cameraFov;
-	powerupParams.m_unk0x38 = m_context->m_unk0x20;
+	powerupParams.m_modeFlags = m_context->m_unk0x20;
 	m_unk0x6dc.Initialize(&powerupParams);
 
 	m_unk0x6dc.LoadDatabases(&m_unk0xd1, &m_unk0xde, m_context->m_unk0x18);
@@ -2791,7 +2791,7 @@ void RaceSession::FUN_004362e0()
 				fov = m_context->m_cameraFov;
 			}
 
-			field0x2ad4->m_unk0x134 = fov;
+			field0x2ad4->m_targetFov = fov;
 			field0x2ad4->m_unk0x140 = 0;
 			MenuAnimationList* animationList = &m_unk0x27fc;
 			field0x2ad4->m_unk0x000 = TRUE;

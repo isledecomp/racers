@@ -133,18 +133,18 @@ finish:
 hit:
 	entity->VTable0x2c(hitLocal, p_unk0x10);
 
-	planeLocal.m_y = record->m_unk0x24.m_y;
-	planeLocal.m_z = record->m_unk0x24.m_z;
-	planeLocal.m_x = record->m_unk0x24.m_x;
+	planeLocal.m_y = record->m_normal.m_y;
+	planeLocal.m_z = record->m_normal.m_z;
+	planeLocal.m_x = record->m_normal.m_x;
 
 	entity->VTable0x34(planeLocal, &planeWorld);
 
-	record->m_unk0x24.m_x = planeWorld.m_x;
-	record->m_unk0x24.m_y = planeWorld.m_y;
-	record->m_unk0x24.m_z = planeWorld.m_z;
+	record->m_normal.m_x = planeWorld.m_x;
+	record->m_normal.m_y = planeWorld.m_y;
+	record->m_normal.m_z = planeWorld.m_z;
 	record->m_unk0x30 =
-		-(record->m_unk0x24.m_z * p_unk0x10->m_z + record->m_unk0x24.m_y * p_unk0x10->m_y +
-		  p_unk0x10->m_x * record->m_unk0x24.m_x);
+		-(record->m_normal.m_z * p_unk0x10->m_z + record->m_normal.m_y * p_unk0x10->m_y +
+		  p_unk0x10->m_x * record->m_normal.m_x);
 	goto finish;
 
 fail:

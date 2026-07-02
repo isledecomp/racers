@@ -42,16 +42,16 @@ public:
 	virtual void LaunchAtPoint(                                      // vtable+0x08
 		Params* p_params,
 		RaceState::Racer* p_racer,
-		GolVec3* p_unk0x0c,
-		GolVec3* p_unk0x10,
-		LegoBool32 p_unk0x14
+		GolVec3* p_targetPosition,
+		GolVec3* p_targetVelocity,
+		LegoBool32 p_fromRacerPosition
 	);
 	virtual void LaunchAtRacer(                                            // vtable+0x0c
 		Params* p_params,
 		RaceState::Racer* p_racer,
 		RaceState::Racer* p_targetRacer,
-		LegoBool32 p_unk0x10,
-		LegoBool32 p_unk0x14
+		LegoBool32 p_fromRacerPosition,
+		LegoBool32 p_predictiveLead
 	);
 	virtual PowerupProjectile* Destroy(undefined4 p_flags); // vtable+0x10
 	virtual void Deactivate();                              // vtable+0x14

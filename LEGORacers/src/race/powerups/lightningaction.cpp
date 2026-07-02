@@ -16,7 +16,7 @@
 #include <float.h>
 #include <math.h>
 
-extern LegoFloat g_unk0x004c7600;
+extern LegoFloat g_lightningReach;
 
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 
@@ -59,10 +59,10 @@ const ColorRGBA g_lightningHitColor = {0xff, 0xff, 0xff, 0xff};
 extern const LegoFloat g_lightningRange = 50.0f;
 
 // GLOBAL: LEGORACERS 0x004b157c
-const LegoFloat g_unk0x004b157c = 9.0f;
+const LegoFloat g_lightningChainMinDistanceSquared = 9.0f;
 
 // GLOBAL: LEGORACERS 0x004b1580
-const LegoFloat g_unk0x004b1580 = 0.5f;
+const LegoFloat g_lightningChainConeCosine = 0.5f;
 
 // GLOBAL: LEGORACERS 0x004b1584
 const LegoFloat g_lightningFrequencyRampScale = 0.1f;
@@ -83,7 +83,7 @@ const LegoFloat g_lightningFlashHeight = 8.0f;
 const LegoFloat g_lightningRandomScale = 0.00097751711f;
 
 // GLOBAL: LEGORACERS 0x004c7604
-LegoFloat g_unk0x004c7604 = g_unk0x004c7600 * g_unk0x004c7600;
+LegoFloat g_lightningReachSquared = g_lightningReach * g_lightningReach;
 
 // GLOBAL: LEGORACERS 0x004c7608
 GolVec3 g_beamSegmentOffsets[5];
@@ -114,14 +114,14 @@ RacePowerupManager::LightningAction::~LightningAction()
 }
 
 // FUNCTION: LEGORACERS 0x004548f0
-void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_unk0x08)
+void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_manager)
 {
 	if (m_state != 0) {
 		Destroy();
 	}
 
-	m_owner0x01c = p_unk0x08;
-	m_collisionWorld = p_unk0x08->m_collisionWorld;
+	m_owner0x01c = p_manager;
+	m_collisionWorld = p_manager->m_collisionWorld;
 	m_jitterTimerMs = 0;
 	m_shockTimerMs = 0;
 	m_source = 0;
@@ -260,7 +260,7 @@ void RacePowerupManager::LightningAction::RebuildBolt()
 }
 
 // FUNCTION: LEGORACERS 0x00454cb0
-void RacePowerupManager::LightningAction::Activate(RaceState::Racer* p_racer, ActionTarget* p_unk0x08)
+void RacePowerupManager::LightningAction::Activate(RaceState::Racer* p_racer, ActionTarget* p_target)
 {
 	m_state = 2;
 	m_stateTimerMs = 500;
@@ -271,7 +271,7 @@ void RacePowerupManager::LightningAction::Activate(RaceState::Racer* p_racer, Ac
 		m_source = &p_racer->m_actionSource;
 	}
 	else {
-		m_source = p_unk0x08->m_source;
+		m_source = p_target->m_source;
 	}
 
 	m_crackleTimerMs = 0;
@@ -529,7 +529,13 @@ void RacePowerupManager::LightningAction::FindVictim()
 	position.m_z += g_lightningSourceHeightOffset;
 
 	RaceState* raceState = m_owner0x01c->m_raceState;
-	racer = raceState->FUN_0043c6e0(&position, &m_source->m_right, g_unk0x004b157c, g_unk0x004c7604, g_unk0x004b1580);
+	racer = raceState->FUN_0043c6e0(
+		&position,
+		&m_source->m_right,
+		g_lightningChainMinDistanceSquared,
+		g_lightningReachSquared,
+		g_lightningChainConeCosine
+	);
 
 	while (racer != NULL) {
 		if (racer != m_ownerRacer) {
@@ -549,9 +555,14 @@ void RacePowerupManager::LightningAction::FindVictim()
 			}
 		}
 
-		racer =
-			raceState
-				->FUN_0043c7f0(racer, &position, &m_source->m_right, g_unk0x004b157c, g_unk0x004c7604, g_unk0x004b1580);
+		racer = raceState->FUN_0043c7f0(
+			racer,
+			&position,
+			&m_source->m_right,
+			g_lightningChainMinDistanceSquared,
+			g_lightningReachSquared,
+			g_lightningChainConeCosine
+		);
 	}
 }
 
@@ -666,12 +677,12 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 	direction.m_y = -m_source->m_right.m_y;
 	direction.m_z = -m_source->m_right.m_z;
 
-	if (m_hitParticle->m_unk0x00 != NULL) {
-		m_hitParticle->m_unk0x00->FUN_00489660(&m_boltPoints[3]);
+	if (m_hitParticle->m_particle != NULL) {
+		m_hitParticle->m_particle->FUN_00489660(&m_boltPoints[3]);
 	}
 
-	if (m_hitParticle->m_unk0x00 != NULL) {
-		m_hitParticle->m_unk0x00->FUN_00489540(&direction, &up);
+	if (m_hitParticle->m_particle != NULL) {
+		m_hitParticle->m_particle->FUN_00489540(&direction, &up);
 	}
 }
 

@@ -46,16 +46,16 @@ const LegoFloat g_unk0x004b1428 = 3.0f;
 const LegoFloat g_unk0x004b1484 = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004b14a8
-extern const LegoFloat g_unk0x004b14a8 = 100.0f;
+extern const LegoFloat g_brickScalePercentBase = 100.0f;
 
 // GLOBAL: LEGORACERS 0x004c7600
-LegoFloat g_unk0x004c7600 = g_ghostSpeedScale * g_lightningRange;
+LegoFloat g_lightningReach = g_ghostSpeedScale * g_lightningRange;
 
 // GLOBAL: LEGORACERS 0x004b1628
-const LegoFloat g_unk0x004b1628 = 1.0f;
+const LegoFloat g_dropGroundOffset = 1.0f;
 
 // GLOBAL: LEGORACERS 0x004b162c
-const LegoFloat g_unk0x004b162c = 50.0f;
+const LegoFloat g_dropProbeDepth = 50.0f;
 
 // FUNCTION: LEGORACERS 0x00452430 FOLDED
 #pragma code_seg(".text$animatedpartresource_vt18")
@@ -104,7 +104,7 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 
 	GolVec3 verticalOffset;
 	verticalOffset.Clear();
-	verticalOffset.m_z = g_unk0x004b162c;
+	verticalOffset.m_z = g_dropProbeDepth;
 	GolVec3 end;
 	end = start - verticalOffset;
 
@@ -115,7 +115,7 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 
 	if (m_collisionWorld->FUN_0041f4d0(&start, &end, p_record, p_position, NULL)) {
 		verticalOffset.Clear();
-		verticalOffset.m_z = g_unk0x004b1628;
+		verticalOffset.m_z = g_dropGroundOffset;
 		*p_position += verticalOffset;
 	}
 	else {

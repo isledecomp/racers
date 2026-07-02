@@ -36,10 +36,10 @@ RacePowerupManager::ColorBrick::~ColorBrick()
 }
 
 // FUNCTION: LEGORACERS 0x004576c0
-void RacePowerupManager::ColorBrick::SetColor(LegoU32 p_unk0x04)
+void RacePowerupManager::ColorBrick::SetColor(LegoU32 p_brickColor)
 {
-	m_assignedColor = p_unk0x04;
-	m_currentColor = p_unk0x04;
+	m_assignedColor = p_brickColor;
+	m_currentColor = p_brickColor;
 }
 
 // FUNCTION: LEGORACERS 0x004576d0
@@ -145,12 +145,12 @@ void RacePowerupManager::ColorBrick::OnTouched(RaceState::Racer* p_racer)
 
 // FUNCTION: LEGORACERS 0x004578e0
 void RacePowerupManager::ColorBrick::SetMaterials(
-	DuskwindBananaRelic0x24* p_unk0x04,
-	DuskwindBananaRelic0x24* p_unk0x08
+	DuskwindBananaRelic0x24* p_brickMaterial,
+	DuskwindBananaRelic0x24* p_trailMaterial
 )
 {
-	m_brickMaterial = p_unk0x04;
-	m_trailMaterial = p_unk0x08;
+	m_brickMaterial = p_brickMaterial;
+	m_trailMaterial = p_trailMaterial;
 }
 
 // FUNCTION: LEGORACERS 0x00457900

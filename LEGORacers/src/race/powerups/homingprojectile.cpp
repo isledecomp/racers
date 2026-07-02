@@ -82,9 +82,9 @@ void RacePowerupManager::HomingProjectile::Destruct()
 void RacePowerupManager::HomingProjectile::UpdateTargeting(
 	LegoU32 p_elapsedMs,
 	RaceState* p_raceState,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14
+	LegoFloat p_minDistanceSquared,
+	LegoFloat p_maxDistanceSquared,
+	LegoFloat p_coneCosine
 )
 {
 	m_retargetTimerMs += p_elapsedMs;
@@ -95,7 +95,9 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 		(target->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7) ||
 		(target->m_unk0xd04 & c_racerFlags0xd04InvalidTargetMask)) {
 		m_retargetTimerMs = 0;
-		target = p_raceState->FUN_0043c6e0(&m_position, &m_direction, p_unk0x0c, p_unk0x10, p_unk0x14);
+		target =
+			p_raceState
+				->FUN_0043c6e0(&m_position, &m_direction, p_minDistanceSquared, p_maxDistanceSquared, p_coneCosine);
 		m_targetRacer = target;
 
 		while (target != noTarget) {
@@ -104,7 +106,14 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 				break;
 			}
 
-			target = p_raceState->FUN_0043c7f0(target, &m_position, &m_direction, p_unk0x0c, p_unk0x10, p_unk0x14);
+			target = p_raceState->FUN_0043c7f0(
+				target,
+				&m_position,
+				&m_direction,
+				p_minDistanceSquared,
+				p_maxDistanceSquared,
+				p_coneCosine
+			);
 			m_targetRacer = target;
 		}
 	}
@@ -308,9 +317,9 @@ LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 	m_worldEntity->VTable0x04(&previousPosition);
 
 	if (m_collisionWorld->FUN_0041f730(&previousPosition, &nextPosition, &record, &m_hitPosition)) {
-		m_hitNormal.m_x = record.m_unk0x24.m_x;
-		m_hitNormal.m_y = record.m_unk0x24.m_y;
-		m_hitNormal.m_z = record.m_unk0x24.m_z;
+		m_hitNormal.m_x = record.m_normal.m_x;
+		m_hitNormal.m_y = record.m_normal.m_y;
+		m_hitNormal.m_z = record.m_normal.m_z;
 		m_worldEntity->VTable0x08(m_hitPosition);
 		m_state = c_stateHitWorld;
 		return c_stateHitWorld;

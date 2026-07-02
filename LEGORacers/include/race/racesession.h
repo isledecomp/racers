@@ -1422,7 +1422,15 @@ public:
 	public:
 		// VTABLE: LEGORACERS 0x004b1958
 		// SIZE 0x1fc
-		class TgbTxtParser : public GolTxtParser {};
+		class TgbTxtParser : public GolTxtParser {
+		public:
+			// .tgb token meanings
+			enum {
+				e_target = 0x27,
+				e_position = 0x28,
+				e_index = 0x29,
+			};
+		};
 
 		Field0x2804();
 		~Field0x2804();
@@ -1431,7 +1439,7 @@ public:
 		friend class RaceSession;
 
 		void Reset();
-		void FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+		void Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
 	};
 
 	// SIZE 0x2c

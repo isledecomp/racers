@@ -23,11 +23,11 @@ public:
 		GolVec3 m_unk0x00;   // 0x00
 		GolVec3 m_unk0x0c;   // 0x0c
 		GolVec3 m_unk0x18;   // 0x18
-		GolVec3 m_unk0x24;   // 0x24
+		GolVec3 m_normal;    // 0x24
 		LegoFloat m_unk0x30; // 0x30
 	};
 
-	// .bvb binary block tags (cf. data/liblr1/LibLR1/BVB.cs).
+	// .bvb binary block tags
 	enum BvbBlockType {
 		c_bvbMaterials = 0x27,
 		c_bvbPolygons = 0x2d,

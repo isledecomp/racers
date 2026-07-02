@@ -12,7 +12,6 @@
 #include <golerror.h>
 
 DECOMP_SIZE_ASSERT(RacePowerupManager, 0x19a4)
-DECOMP_SIZE_ASSERT(RacePowerupManager::Field0x54, 0x04)
 DECOMP_SIZE_ASSERT(RacePowerupManager::PickupBrick, 0x54)
 DECOMP_SIZE_ASSERT(RacePowerupManager::ColorBrick, 0x68)
 DECOMP_SIZE_ASSERT(RacePowerupManager::WhiteBrick, 0x68)
@@ -40,18 +39,18 @@ DECOMP_SIZE_ASSERT(RacePowerupManager::PowerupAction, 0x18)
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_unk0x004b02e0;
-extern const LegoFloat g_unk0x004b1840;
-extern const LegoFloat g_unk0x004b1844;
-extern const LegoFloat g_unk0x004b1848;
-extern const LegoFloat g_unk0x004b184c;
-extern const LegoFloat g_unk0x004b1850;
-extern const LegoFloat g_unk0x004b1854;
-extern const LegoFloat g_unk0x004b1858;
-extern const LegoFloat g_unk0x004b185c;
-extern const LegoFloat g_unk0x004b1860;
-extern const LegoFloat g_unk0x004b1864;
-extern const LegoFloat g_unk0x004b1868;
-extern const LegoFloat g_unk0x004b186c;
+extern const LegoFloat g_aimMinDistanceSquared;
+extern const LegoFloat g_aimMaxDistanceSquared;
+extern const LegoFloat g_aimRacerConeCosine;
+extern const LegoFloat g_aimPointConeCosine;
+extern const LegoFloat g_dynamiteAimMinDistanceSquared;
+extern const LegoFloat g_dynamiteAimMaxDistanceSquared;
+extern const LegoFloat g_dynamiteAimConeCosine;
+extern const LegoFloat g_hookAimMinDistanceSquared;
+extern const LegoFloat g_hookAimFarMaxDistanceSquared;
+extern const LegoFloat g_hookAimMaxDistanceSquared;
+extern const LegoFloat g_hookAimFarConeCosine;
+extern const LegoFloat g_hookAimWideConeCosine;
 
 // GLOBAL: LEGORACERS 0x004b183c
 extern const LegoFloat g_flightSoundMinDistance = 200.0f;
@@ -320,18 +319,18 @@ LegoS32 RacePowerupManager::BrickDebris::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00451750
-void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_unk0x04, GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, GolD3DRenderDevice* p_renderer)
 {
 	if (m_manager) {
 		Destroy();
 	}
 
-	m_manager = p_unk0x04;
+	m_manager = p_manager;
 
 	const LegoChar* name = "brick1\0\0brick2\0\0brick3\0\0brick4\0";
 	const LegoChar* endName = name + (sizeof(GolName) * 4);
 	GolAnimatedEntity** entity = m_brickModels;
-	GolWorldDatabase* worldDatabase = p_unk0x04->m_worldDatabase;
+	GolWorldDatabase* worldDatabase = p_manager->m_worldDatabase;
 
 	while (name < endName) {
 		GolAnimatedEntity* model;
@@ -546,34 +545,38 @@ void RacePowerupManager::Initialize(const Params* p_params)
 	m_golExport = p_params->m_golExport;
 	m_renderer = p_params->m_renderer;
 	m_raceState = p_params->m_raceState;
-	m_collidable = p_params->m_unk0x0c;
-	m_boundedEntity = p_params->m_unk0x10;
-	m_collisionWorld = p_params->m_unk0x14;
-	m_soundSource = p_params->m_unk0x18;
-	m_cutsceneAnimation = p_params->m_unk0x1c;
+	m_collidable = p_params->m_collidable;
+	m_boundedEntity = p_params->m_boundedEntity;
+	m_collisionWorld = p_params->m_collisionWorld;
+	m_soundSource = p_params->m_soundSource;
+	m_cutsceneAnimation = p_params->m_cutsceneAnimation;
 	m_trailManager = p_params->m_trailManager;
-	m_trackDatabase = p_params->m_unk0x2c;
+	m_trackDatabase = p_params->m_trackDatabase;
 	m_unk0x048 = p_params->m_unk0x24;
-	m_animationList = p_params->m_unk0x28;
-	m_targetPoints = p_params->m_unk0x30;
+	m_animationList = p_params->m_animationList;
+	m_targetPoints = p_params->m_targetPoints;
 	m_cameraFov = p_params->m_cameraFov;
-	m_modeFlags = p_params->m_unk0x38;
+	m_modeFlags = p_params->m_modeFlags;
 }
 
 // FUNCTION: LEGORACERS 0x00457c90
-void RacePowerupManager::LoadDatabases(const LegoChar* p_unk0x04, const LegoChar* p_unk0x08, LegoBool32 p_binary)
+void RacePowerupManager::LoadDatabases(
+	const LegoChar* p_databaseName,
+	const LegoChar* p_animationName,
+	LegoBool32 p_binary
+)
 {
 	m_worldDatabase = m_golExport->VTable0x08();
-	m_worldDatabase->VTable0x14(m_renderer, p_unk0x04, p_binary, 1.0f);
-	m_materialAnimation.VTable0x04(m_renderer, p_unk0x08, p_binary);
+	m_worldDatabase->VTable0x14(m_renderer, p_databaseName, p_binary, 1.0f);
+	m_materialAnimation.VTable0x04(m_renderer, p_animationName, p_binary);
 	m_turbo3Database = m_golExport->VTable0x08();
 	m_turbo3Database->VTable0x14(m_renderer, "turbo3", p_binary, 1.0f);
 }
 
 // FUNCTION: LEGORACERS 0x00457cf0
-void RacePowerupManager::PreparePools(LegoBool32 p_unk0x04)
+void RacePowerupManager::PreparePools(LegoBool32 p_mirror)
 {
-	SetActionPoolCounts(p_unk0x04);
+	SetActionPoolCounts(p_mirror);
 	m_billboardMaterialTable.Initialize(m_renderer, m_actionPoolCounts[5] + m_actionPoolCounts[0]);
 	m_brickDebris.Initialize(this, m_renderer);
 }
@@ -1313,7 +1316,7 @@ void RacePowerupManager::Destroy()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[7]; i++) {
-			m_homingMissileActions[i].FUN_00456540();
+			m_homingMissileActions[i].Shutdown();
 		}
 
 		if (m_homingMissileActions != NULL) {
@@ -1339,7 +1342,7 @@ void RacePowerupManager::Destroy()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[5]; i++) {
-			m_grapplingHookActions[i].FUN_00453d90();
+			m_grapplingHookActions[i].Shutdown();
 		}
 
 		if (m_grapplingHookActions != NULL) {
@@ -1681,9 +1684,9 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045a7b0
-void RacePowerupManager::Draw(LegoBool32 p_unk0x04)
+void RacePowerupManager::Draw(LegoBool32 p_warpOnly)
 {
-	if (!p_unk0x04) {
+	if (!p_warpOnly) {
 		LegoU32 i;
 
 		for (i = 0; i < m_colorBrickCount; i++) {
@@ -1697,14 +1700,14 @@ void RacePowerupManager::Draw(LegoBool32 p_unk0x04)
 
 	PowerupAction* node0x1880 = m_activeActions;
 	while (node0x1880 != NULL) {
-		if (!p_unk0x04 || (node0x1880->GetBrickColor() == 3 && node0x1880->GetLevel() == 3)) {
+		if (!p_warpOnly || (node0x1880->GetBrickColor() == c_brickColorGreen && node0x1880->GetLevel() == 3)) {
 			node0x1880->Draw(m_renderer);
 		}
 
 		node0x1880 = node0x1880->GetNext();
 	}
 
-	if (!p_unk0x04) {
+	if (!p_warpOnly) {
 		Explosion* node0x193c = m_activeExplosions;
 		while (node0x193c != NULL) {
 			node0x193c->Draw(m_renderer);
@@ -1754,9 +1757,9 @@ void RacePowerupManager::DrawTransparent()
 }
 
 // FUNCTION: LEGORACERS 0x0045a950
-void RacePowerupManager::UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
 {
-	switch (p_unk0x08) {
+	switch (p_level) {
 	case 0:
 		FireCannonball(p_racer, 0);
 		return;
@@ -1775,9 +1778,9 @@ void RacePowerupManager::UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0
 }
 
 // FUNCTION: LEGORACERS 0x0045a9b0
-void RacePowerupManager::UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
 {
-	switch (p_unk0x08) {
+	switch (p_level) {
 	case 0:
 		DropOilSlick(p_racer, 0);
 		break;
@@ -1798,7 +1801,7 @@ void RacePowerupManager::UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_u
 }
 
 // FUNCTION: LEGORACERS 0x0045aa30
-LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	ActionSetup setup;
 	setup.m_racer = p_racer;
@@ -1813,14 +1816,23 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 		p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
 
 		if (p_racer->m_unk0xd08 != 2) {
-			setup.m_targetPoint =
-				m_targetPoints
-					->FindTargetInCone(&position, &direction, g_unk0x004b1840, g_unk0x004b1844, g_unk0x004b184c);
+			setup.m_targetPoint = m_targetPoints->FindTargetInCone(
+				&position,
+				&direction,
+				g_aimMinDistanceSquared,
+				g_aimMaxDistanceSquared,
+				g_aimPointConeCosine
+			);
 		}
 
 		if (!setup.m_targetPoint) {
-			setup.m_targetRacer =
-				m_raceState->FUN_0043ca60(&position, &direction, g_unk0x004b1840, g_unk0x004b1844, g_unk0x004b1848);
+			setup.m_targetRacer = m_raceState->FUN_0043ca60(
+				&position,
+				&direction,
+				g_aimMinDistanceSquared,
+				g_aimMaxDistanceSquared,
+				g_aimRacerConeCosine
+			);
 		}
 	}
 
@@ -1829,7 +1841,7 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 
 	CannonballAction* action = static_cast<CannonballAction*>(m_freeCannonballActions);
 	if (!action) {
-		action = static_cast<CannonballAction*>(ReclaimAction(c_brickColorRed, p_unk0x08, -1, -1, -1));
+		action = static_cast<CannonballAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeCannonballActions = action->m_next;
@@ -1838,12 +1850,12 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 	action->m_next = m_activeActions;
 	m_activeActions = action;
 	LegoU32 result = action->Activate(&setup);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045ab50
-LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	TargetPointList::Entry* entry = NULL;
 
@@ -1853,19 +1865,35 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	GolVec3 direction;
 	p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
 
-	RaceState::Racer* target =
-		m_raceState->FUN_0043c910(&position, &direction, g_unk0x004b185c, g_unk0x004b1860, g_unk0x004b1868);
+	RaceState::Racer* target = m_raceState->FUN_0043c910(
+		&position,
+		&direction,
+		g_hookAimMinDistanceSquared,
+		g_hookAimFarMaxDistanceSquared,
+		g_hookAimFarConeCosine
+	);
 	if (!target) {
-		target = m_raceState->FUN_0043ca60(&position, &direction, g_unk0x004b185c, g_unk0x004b1864, g_unk0x004b186c);
+		target = m_raceState->FUN_0043ca60(
+			&position,
+			&direction,
+			g_hookAimMinDistanceSquared,
+			g_hookAimMaxDistanceSquared,
+			g_hookAimWideConeCosine
+		);
 		if (!target && p_racer->m_unk0xd08 != 2) {
-			entry = m_targetPoints
-						->FindTargetInCone(&position, &direction, g_unk0x004b1840, g_unk0x004b1844, g_unk0x004b184c);
+			entry = m_targetPoints->FindTargetInCone(
+				&position,
+				&direction,
+				g_aimMinDistanceSquared,
+				g_aimMaxDistanceSquared,
+				g_aimPointConeCosine
+			);
 		}
 	}
 
 	GrapplingHookAction* action = static_cast<GrapplingHookAction*>(m_freeGrapplingHookActions);
 	if (!action) {
-		action = static_cast<GrapplingHookAction*>(ReclaimAction(c_brickColorRed, p_unk0x08, -1, -1, -1));
+		action = static_cast<GrapplingHookAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeGrapplingHookActions = action->m_next;
@@ -1880,16 +1908,16 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	LegoU32 result =
 		activeAction
 			->Activate(worldDatabase->GetUnk0x9c(), p_racer, target, setupEntry, GetMaterialAnimationItems0x18(), 0);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045ac80
-void RacePowerupManager::FireLightning(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::FireLightning(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	LightningAction* action = static_cast<LightningAction*>(m_freeLightningActions);
 	if (!action) {
-		action = static_cast<LightningAction*>(ReclaimAction(c_brickColorRed, p_unk0x08, -1, -1, -1));
+		action = static_cast<LightningAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeLightningActions = action->m_next;
@@ -1898,15 +1926,15 @@ void RacePowerupManager::FireLightning(RaceState::Racer* p_racer, LegoU32 p_unk0
 	action->m_next = m_activeActions;
 	m_activeActions = action;
 	action->Activate(p_racer, m_aimTarget);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 }
 
 // FUNCTION: LEGORACERS 0x0045ace0
-void RacePowerupManager::DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	OilSlickAction* action = static_cast<OilSlickAction*>(m_freeOilSlickActions);
 	if (!action) {
-		action = static_cast<OilSlickAction*>(ReclaimAction(c_brickColorYellow, p_unk0x08, -1, -1, -1));
+		action = static_cast<OilSlickAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeOilSlickActions = action->m_next;
@@ -1915,15 +1943,15 @@ void RacePowerupManager::DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_unk0x
 	action->m_next = m_activeActions;
 	m_activeActions = action;
 	action->Activate(p_racer);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 }
 
 // FUNCTION: LEGORACERS 0x0045ad30
-LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	DynamiteAction* action = static_cast<DynamiteAction*>(m_freeDynamiteActions);
 	if (!action) {
-		action = static_cast<DynamiteAction*>(ReclaimAction(c_brickColorYellow, p_unk0x08, -1, -1, -1));
+		action = static_cast<DynamiteAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeDynamiteActions = action->m_next;
@@ -1941,19 +1969,24 @@ LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_u
 	direction.m_y = -direction.m_y;
 	direction.m_z = -direction.m_z;
 
-	RaceState::Racer* target =
-		m_raceState->FUN_0043ca60(&position, &direction, g_unk0x004b1850, g_unk0x004b1854, g_unk0x004b1858);
+	RaceState::Racer* target = m_raceState->FUN_0043ca60(
+		&position,
+		&direction,
+		g_dynamiteAimMinDistanceSquared,
+		g_dynamiteAimMaxDistanceSquared,
+		g_dynamiteAimConeCosine
+	);
 	LegoU32 result = action->Activate(p_racer, target);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045adf0
-void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	MagnetAction* action = static_cast<MagnetAction*>(m_freeMagnetActions);
 	if (!action) {
-		action = static_cast<MagnetAction*>(ReclaimAction(c_brickColorYellow, p_unk0x08, -1, -1, -1));
+		action = static_cast<MagnetAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeMagnetActions = action->m_next;
@@ -1987,11 +2020,11 @@ void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_unk
 	}
 
 	action->Activate(p_racer, model0, model1, model2);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 }
 
 // FUNCTION: LEGORACERS 0x0045aeb0
-void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	GolAnimatedEntity* model0;
 	GolAnimatedEntity* model1;
@@ -1999,7 +2032,7 @@ void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
 
 	CurseAction* action = static_cast<CurseAction*>(m_freeCurseActions);
 	if (!action) {
-		action = static_cast<CurseAction*>(ReclaimAction(c_brickColorYellow, p_unk0x08, -1, -1, -1));
+		action = static_cast<CurseAction*>(ReclaimAction(c_brickColorYellow, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeCurseActions = action->m_next;
@@ -2030,16 +2063,16 @@ void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
 	}
 
 	action->Activate(p_racer, model0, model1, model2, m_aimTarget);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 }
 
 // FUNCTION: LEGORACERS 0x0045af80
-void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	for (LegoU32 i = 0; i < 3; i++) {
 		HomingMissileAction* action = static_cast<HomingMissileAction*>(m_freeHomingMissileActions);
 		if (!action) {
-			action = static_cast<HomingMissileAction*>(ReclaimAction(c_brickColorRed, p_unk0x08, -1, -1, -1));
+			action = static_cast<HomingMissileAction*>(ReclaimAction(c_brickColorRed, p_level, -1, -1, -1));
 		}
 		else {
 			m_freeHomingMissileActions = action->m_next;
@@ -2065,15 +2098,15 @@ void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p
 		}
 
 		action->Activate(model1, model0, p_racer, i);
-		action->m_level = p_unk0x08;
+		action->m_level = p_level;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045b030
-void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	if (25 - m_usedEffectEntityCount >= 2) {
-		LegoU32 subtype = p_unk0x08;
+		LegoU32 subtype = p_level;
 		ShieldAction* action = static_cast<ShieldAction*>(m_freeShieldActions);
 		if (action == NULL) {
 			action = static_cast<ShieldAction*>(ReclaimAction(c_brickColorBlue, 0, 1, 2, 3));
@@ -2160,9 +2193,9 @@ void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_unk
 }
 
 // FUNCTION: LEGORACERS 0x0045b1e0
-void RacePowerupManager::UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
 {
-	if (p_unk0x08 == 3) {
+	if (p_level == 3) {
 		ActivateWarp(p_racer, 3);
 	}
 	else if (25 - m_usedEffectEntityCount >= 3) {
@@ -2176,17 +2209,17 @@ void RacePowerupManager::UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_un
 
 		action->m_next = m_activeActions;
 		m_activeActions = action;
-		action->Activate(p_racer, p_unk0x08);
-		action->m_level = p_unk0x08;
+		action->Activate(p_racer, p_level);
+		action->m_level = p_level;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045b260
-LegoU32 RacePowerupManager::ActivateWarp(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+LegoU32 RacePowerupManager::ActivateWarp(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	WarpAction* action = static_cast<WarpAction*>(m_freeWarpActions);
 	if (!action) {
-		action = static_cast<WarpAction*>(ReclaimAction(c_brickColorGreen, p_unk0x08, -1, -1, -1));
+		action = static_cast<WarpAction*>(ReclaimAction(c_brickColorGreen, p_level, -1, -1, -1));
 	}
 	else {
 		m_freeWarpActions = action->m_next;
@@ -2204,17 +2237,17 @@ LegoU32 RacePowerupManager::ActivateWarp(RaceState::Racer* p_racer, LegoU32 p_un
 	}
 
 	LegoU32 result = action->Activate(p_racer, model, m_aimTarget);
-	action->m_level = p_unk0x08;
+	action->m_level = p_level;
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x0045b2e0
 RacePowerupManager::PowerupAction* RacePowerupManager::ReclaimAction(
-	LegoU32 p_unk0x04,
-	LegoU32 p_unk0x08,
-	LegoS32 p_unk0x0c,
-	LegoS32 p_unk0x10,
-	LegoS32 p_unk0x14
+	LegoU32 p_brickColor,
+	LegoU32 p_level1,
+	LegoS32 p_level2,
+	LegoS32 p_level3,
+	LegoS32 p_level4
 )
 {
 	PowerupAction* previous = NULL;
@@ -2224,10 +2257,10 @@ RacePowerupManager::PowerupAction* RacePowerupManager::ReclaimAction(
 	LegoU32 bestPriority = 0xffffffff;
 
 	for (PowerupAction* action = m_activeActions; action != NULL; action = action->GetNext()) {
-		if (action->GetBrickColor() == static_cast<LegoS32>(p_unk0x04)) {
+		if (action->GetBrickColor() == static_cast<LegoS32>(p_brickColor)) {
 			LegoU32 subtype = action->GetLevel();
-			if (subtype == p_unk0x08 || subtype == static_cast<LegoU32>(p_unk0x0c) ||
-				subtype == static_cast<LegoU32>(p_unk0x10) || subtype == static_cast<LegoU32>(p_unk0x14)) {
+			if (subtype == p_level1 || subtype == static_cast<LegoU32>(p_level2) ||
+				subtype == static_cast<LegoU32>(p_level3) || subtype == static_cast<LegoU32>(p_level4)) {
 				LegoS32 score = action->GetState();
 				if (score > bestScore) {
 					bestPriority = action->GetStateTimer();
@@ -2317,7 +2350,7 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 }
 
 // FUNCTION: LEGORACERS 0x0045b470
-void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer)
+void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_leavesScar, RaceState::Racer* p_racer)
 {
 	Explosion* item = m_freeExplosions;
 	if (item == NULL) {
@@ -2329,17 +2362,21 @@ void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_
 
 	item->SetNext(m_activeExplosions);
 	m_activeExplosions = item;
-	item->Spawn(p_position, p_unk0x08, p_racer);
+	item->Spawn(p_position, p_leavesScar, p_racer);
 }
 
 // FUNCTION: LEGORACERS 0x0045b4d0
-void RacePowerupManager::FUN_0045b4d0(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer)
+void RacePowerupManager::FUN_0045b4d0(const GolVec3* p_position, undefined4 p_leavesScar, RaceState::Racer* p_racer)
 {
-	SpawnExplosion(p_position, p_unk0x08, p_racer);
+	SpawnExplosion(p_position, p_leavesScar, p_racer);
 }
 
 // FUNCTION: LEGORACERS 0x0045b4f0
-void RacePowerupManager::SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer)
+void RacePowerupManager::SpawnSpikeExplosion(
+	const GolVec3* p_position,
+	undefined4 p_leavesScar,
+	RaceState::Racer* p_racer
+)
 {
 	Explosion* item = m_freeSpikeExplosions;
 	if (item == NULL) {
@@ -2351,13 +2388,13 @@ void RacePowerupManager::SpawnSpikeExplosion(const GolVec3* p_position, undefine
 
 	item->SetNext(m_activeSpikeExplosions);
 	m_activeSpikeExplosions = item;
-	item->Spawn(p_position, p_unk0x08, p_racer);
+	item->Spawn(p_position, p_leavesScar, p_racer);
 }
 
 // FUNCTION: LEGORACERS 0x0045b550
 void RacePowerupManager::SpawnBrickDebris(
-	const GolVec3* p_unk0x04,
 	const GolVec3* p_position,
+	const GolVec3* p_direction,
 	RaceState::Racer* p_racer
 )
 {
@@ -2373,13 +2410,13 @@ void RacePowerupManager::SpawnBrickDebris(
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			position.m_z = 0.0f;
 			LegoS32 offsetX = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
-			position.m_x = p_position->m_x + offsetX * 0.0040000002f - g_unk0x004b02e0;
+			position.m_x = p_direction->m_x + offsetX * 0.0040000002f - g_unk0x004b02e0;
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			LegoS32 offsetY = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
 
-			position.m_y = p_position->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
-			brickDebris->Spawn(p_unk0x04, &position, p_racer);
+			position.m_y = p_direction->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
+			brickDebris->Spawn(p_position, &position, p_racer);
 		} while (--remaining != 0);
 	}
 }
@@ -2434,7 +2471,7 @@ void RacePowerupManager::CancelWarp(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b7a0
-void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_unk0x08, LegoS32 p_unk0x0c)
+void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_level, LegoS32 p_state)
 {
 	RaceState::Racer* racer = m_raceState->GetCurrentRacer();
 	if (racer == NULL) {
@@ -2453,7 +2490,7 @@ void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource,
 	racer->m_unk0x018.GetUnk0x044()->VTable0x04(&referencePosition);
 
 	for (PowerupAction* node = m_activeActions; node != NULL; node = node->GetNext()) {
-		if (node->GetBrickColor() == 1 && node->GetLevel() == p_unk0x08 && node->GetState() == p_unk0x0c) {
+		if (node->GetBrickColor() == 1 && node->GetLevel() == p_level && node->GetState() == p_state) {
 			WeaponActionBase* resource = static_cast<WeaponActionBase*>(node);
 			resource->GetProjectilePosition(&position);
 
@@ -2570,16 +2607,16 @@ LegoU32 RacePowerupManager::ReleaseEffectEntity(GolAnimatedEntity* p_entity)
 }
 
 // FUNCTION: LEGORACERS 0x0045ba90
-DuskwindBananaRelic0x24* RacePowerupManager::GetBrickMaterial(LegoU32* p_unk0x04)
+DuskwindBananaRelic0x24* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickColor)
 {
-	switch (*p_unk0x04) {
-	case 1:
+	switch (*p_brickColor) {
+	case c_brickColorRed:
 		return m_brickMaterials[c_brickMaterialRed];
-	case 2:
+	case c_brickColorBlue:
 		return m_brickMaterials[c_brickMaterialBlue];
-	case 3:
+	case c_brickColorGreen:
 		return m_brickMaterials[c_brickMaterialGreen];
-	case 4:
+	case c_brickColorYellow:
 		return m_brickMaterials[c_brickMaterialYellow];
 	default:
 		return NULL;
@@ -2587,16 +2624,16 @@ DuskwindBananaRelic0x24* RacePowerupManager::GetBrickMaterial(LegoU32* p_unk0x04
 }
 
 // FUNCTION: LEGORACERS 0x0045bae0
-DuskwindBananaRelic0x24* RacePowerupManager::GetTrailMaterial(LegoU32* p_unk0x04)
+DuskwindBananaRelic0x24* RacePowerupManager::GetTrailMaterial(LegoU32* p_brickColor)
 {
-	switch (*p_unk0x04) {
-	case 1:
+	switch (*p_brickColor) {
+	case c_brickColorRed:
 		return m_brickMaterials[c_trailMaterialRed];
-	case 2:
+	case c_brickColorBlue:
 		return m_brickMaterials[c_trailMaterialBlue];
-	case 3:
+	case c_brickColorGreen:
 		return m_brickMaterials[c_trailMaterialGreen];
-	case 4:
+	case c_brickColorYellow:
 		return m_brickMaterials[c_trailMaterialYellow];
 	default:
 		return NULL;

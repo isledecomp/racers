@@ -33,19 +33,19 @@ extern const LegoFloat g_homingProjectileCollisionStartOffset;
 extern const LegoFloat g_unk0x004b02fc;
 
 // GLOBAL: LEGORACERS 0x004b1a60
-const LegoFloat g_unk0x004b1a60 = 200.0f;
+const LegoFloat g_warpSoundMinDistance = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a64
-const LegoFloat g_unk0x004b1a64 = 600.0f;
+const LegoFloat g_warpSoundMaxDistance = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a68
-const LegoFloat g_unk0x004b1a68 = 45.0f;
+const LegoFloat g_warpFovRange = 45.0f;
 
 // GLOBAL: LEGORACERS 0x004b1a70
 const LegoFloat g_warpPathSpeed = 0.6f;
 
 // GLOBAL: LEGORACERS 0x004b1a74
-const LegoFloat g_unk0x004b1a74 = 700.0f;
+const LegoFloat g_warpLaunchSpeed = 700.0f;
 
 // GLOBAL: LEGORACERS 0x004b1aa8
 const LegoFloat g_warpLerpScale = 0.00066666666f;
@@ -120,7 +120,7 @@ void RacePowerupManager::WarpAction::Destroy()
 LegoU32 RacePowerupManager::WarpAction::Activate(
 	RaceState::Racer* p_racer,
 	GolModelEntity* p_model,
-	ActionTarget* p_unk0x0c
+	ActionTarget* p_target
 )
 {
 	LegoU32 flags = p_racer->m_unk0xd04;
@@ -158,13 +158,13 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 		m_modelEntity.CopyOrientationFrom(*racerEntity);
 
 		if (m_racer->m_cameraController != NULL) {
-			m_racer->m_cameraController->m_unk0x134 = m_cameraFov + g_warpFovBoost;
+			m_racer->m_cameraController->m_targetFov = m_cameraFov + g_warpFovBoost;
 		}
 
-		if (p_unk0x0c != NULL) {
+		if (p_target != NULL) {
 			m_stateTimerMs = 0;
-			m_targetPosition = p_unk0x0c->m_unk0x00;
-			m_targetDirection = p_unk0x0c->m_unk0x0c;
+			m_targetPosition = p_target->m_position;
+			m_targetDirection = p_target->m_direction;
 			m_hasTarget = TRUE;
 		}
 		else {
@@ -290,7 +290,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	phase *= g_negativeRadiansToTableIndex;
 	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
 	LegoFloat tableValue = g_cosineTable[tableIndex];
-	LegoFloat fov = tableValue * g_unk0x004b1a68 + m_cameraFov;
+	LegoFloat fov = tableValue * g_warpFovRange + m_cameraFov;
 	camera->m_flags |= GolCamera::c_flagBit1;
 	camera->m_fov = fov;
 
@@ -373,7 +373,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
 			fov = m_cameraFov;
-			m_racer->m_cameraController->m_unk0x134 = fov;
+			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
 		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
@@ -385,8 +385,14 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_soundSource->PlaySoundById(c_soundStart);
 		}
 
-		m_soundSource
-			->PlaySpatialSoundById(c_soundSpatial, &m_startPosition, g_unk0x004b1a60, g_unk0x004b1a64, 1.0f, 1.0f);
+		m_soundSource->PlaySpatialSoundById(
+			c_soundSpatial,
+			&m_startPosition,
+			g_warpSoundMinDistance,
+			g_warpSoundMaxDistance,
+			1.0f,
+			1.0f
+		);
 
 		if (!m_isDemoRacer) {
 			m_followingPath = TRUE;
@@ -404,11 +410,11 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
 			fov = m_cameraFov;
-			m_racer->m_cameraController->m_unk0x134 = fov;
+			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
 		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_unk0x044;
-		FUN_0045e080(entity);
+		TeleportEntity(entity);
 		m_racer->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
 
 		GolVec3 direction;
@@ -449,7 +455,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			racerField0x3e8->m_unk0x008.m_x = 0.0f;
 			racerField0x3e8->m_unk0x008.m_y = up.m_y;
 			racerField0x3e8->m_unk0x008.m_z = up.m_z;
-			m_racer->m_unk0x3e8.VTable0x20(&direction, g_unk0x004b1a74);
+			m_racer->m_unk0x3e8.VTable0x20(&direction, g_warpLaunchSpeed);
 			m_racer->m_unk0x3e8.FUN_00446fa0();
 			m_racer->FUN_0043a3e0();
 
@@ -478,7 +484,7 @@ void RacePowerupManager::WarpAction::Deactivate()
 			camera->m_fov = fov;
 			camera->m_flags |= GolCamera::c_flagBit1;
 			fov = m_cameraFov;
-			m_racer->m_cameraController->m_unk0x134 = fov;
+			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
 		m_racer->m_unk0x018.FUN_00440160(1.0f);
@@ -489,7 +495,7 @@ void RacePowerupManager::WarpAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x0045e080
-void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
+void RacePowerupManager::WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 {
 	GolVec3 position;
 	if (m_hasTarget) {

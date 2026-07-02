@@ -71,15 +71,15 @@ void RacePowerupManager::DynamiteAction::Destroy()
 // FUNCTION: LEGORACERS 0x00452ee0
 void RacePowerupManager::DynamiteAction::Initialize(
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_unk0x08,
-	RacePowerupManager* p_unk0x0c,
+	RaceSessionField0x32b4* p_collisionWorld,
+	RacePowerupManager* p_manager,
 	CutsceneAnimation* p_cutsceneAnimation,
 	GolModelEntity* p_model
 )
 {
 	m_raceState0x018 = p_raceState;
-	m_collisionWorld = p_unk0x08;
-	m_manager = p_unk0x0c;
+	m_collisionWorld = p_collisionWorld;
+	m_manager = p_manager;
 	m_cutsceneAnimation = p_cutsceneAnimation;
 
 	m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
@@ -95,11 +95,11 @@ void RacePowerupManager::DynamiteAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00452f60
-LegoU32 RacePowerupManager::DynamiteAction::Activate(RaceState::Racer* p_racer, RaceState::Racer* p_unk0x08)
+LegoU32 RacePowerupManager::DynamiteAction::Activate(RaceState::Racer* p_racer, RaceState::Racer* p_targetRacer)
 {
 	m_ownerRacer = p_racer;
 	LegoU32 result = 0;
-	m_targetRacer = p_unk0x08;
+	m_targetRacer = p_targetRacer;
 	m_state = 2;
 	m_stateTimerMs = result;
 	m_tumbleAngle = 0.0f;
@@ -192,8 +192,8 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 		position.m_y += up.m_y * 0.155761003f;
 		position.m_z += up.m_z * 5.17852306f;
 
-		if (m_sparkParticle->m_unk0x00 != NULL) {
-			m_sparkParticle->m_unk0x00->FUN_00489660(&position);
+		if (m_sparkParticle->m_particle != NULL) {
+			m_sparkParticle->m_particle->FUN_00489660(&position);
 		}
 	}
 
@@ -264,8 +264,8 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 			position.m_y += 0.155761003f;
 			position.m_z += 5.17852306f;
 
-			if (m_sparkParticle->m_unk0x00 != NULL) {
-				m_sparkParticle->m_unk0x00->FUN_00489660(&position);
+			if (m_sparkParticle->m_particle != NULL) {
+				m_sparkParticle->m_particle->FUN_00489660(&position);
 			}
 		}
 

@@ -652,16 +652,16 @@ void RaceEventDispatcher0x08::ItemI::VTable0x04(void* p_racer)
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_racer);
 	if (racer && m_unk0x0c != 2 && !(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
 		RacePowerupManager::ActionTarget target;
-		target.m_unk0x0c.m_x = g_itemIActionDirectionX;
-		target.m_unk0x0c.m_y = g_itemIActionDirectionY;
-		target.m_unk0x0c.m_z = g_itemIActionDirectionZ;
-		target.m_unk0x00.m_x = g_itemIActionPositionX;
-		target.m_unk0x00.m_y = g_itemIActionPositionY;
-		target.m_unk0x00.m_z = g_itemIActionPositionZ;
+		target.m_direction.m_x = g_itemIActionDirectionX;
+		target.m_direction.m_y = g_itemIActionDirectionY;
+		target.m_direction.m_z = g_itemIActionDirectionZ;
+		target.m_position.m_x = g_itemIActionPositionX;
+		target.m_position.m_y = g_itemIActionPositionY;
+		target.m_position.m_z = g_itemIActionPositionZ;
 
 		if (m_unk0x14) {
-			target.m_unk0x0c.m_y = -g_itemIActionDirectionY;
-			target.m_unk0x00.m_y = -g_itemIActionPositionY;
+			target.m_direction.m_y = -g_itemIActionDirectionY;
+			target.m_position.m_y = -g_itemIActionPositionY;
 		}
 
 		target.m_source = NULL;
@@ -817,14 +817,14 @@ void RaceEventDispatcher0x08::Item0x3f::VTable0x10(Context* p_context, GolFilePa
 void RaceEventDispatcher0x08::Item0x3f::VTable0x04(void*)
 {
 	RacePowerupManager::ActionTarget target;
-	target.m_unk0x0c = g_item0x3fActionDirection;
+	target.m_direction = g_item0x3fActionDirection;
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	LegoS32 positionIndex = g_randomTable[g_randomTableIndex] % c_positionCount;
 	target.m_source = NULL;
-	target.m_unk0x00 = g_item0x3fActionPositions[positionIndex];
+	target.m_position = g_item0x3fActionPositions[positionIndex];
 	if (m_unk0x14) {
-		target.m_unk0x00.m_y = -target.m_unk0x00.m_y;
+		target.m_position.m_y = -target.m_position.m_y;
 	}
 
 	m_unk0x10->SetAimTarget(&target);
@@ -1767,8 +1767,8 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 
 		if (m_unk0x4c != NULL) {
 			worldPosition.m_z -= 5.0f;
-			if (m_unk0x4c->m_unk0x00 != NULL) {
-				m_unk0x4c->m_unk0x00->FUN_00489660(&worldPosition);
+			if (m_unk0x4c->m_particle != NULL) {
+				m_unk0x4c->m_particle->FUN_00489660(&worldPosition);
 			}
 			worldPosition.m_z += 5.0f;
 		}
@@ -2964,14 +2964,14 @@ void RaceEventDispatcher0x08::Item0x30::VTable0x14(undefined4 p_elapsedMs)
 
 		CutsceneParticleRef* particleRef = m_unk0x18;
 		GolAnimatedEntity* entity = m_unk0x10;
-		CutsceneParticle* particle = particleRef->m_unk0x00;
+		CutsceneParticle* particle = particleRef->m_particle;
 		if (particle) {
 			entity->VTable0x44(particle->GetUnk0x160());
 		}
 
 		particleRef = m_unk0x18;
-		if (particleRef->m_unk0x00) {
-			particleRef->m_unk0x00->FUN_00489660(&position);
+		if (particleRef->m_particle) {
+			particleRef->m_particle->FUN_00489660(&position);
 		}
 	}
 }
@@ -3105,13 +3105,13 @@ void RaceEventDispatcher0x08::Item0x2f::VTable0x18(GolCamera* p_camera, RaceStat
 		position.m_x = lateral * offset + position.m_x;
 		position.m_y = (up.m_y - direction.m_x) * offset + position.m_y;
 
-		if (ref->m_unk0x00) {
-			ref->m_unk0x00->FUN_00489540(&direction, &up);
+		if (ref->m_particle) {
+			ref->m_particle->FUN_00489540(&direction, &up);
 		}
 
 		ref = m_unk0x14;
-		if (ref->m_unk0x00) {
-			ref->m_unk0x00->FUN_00489660(&position);
+		if (ref->m_particle) {
+			ref->m_particle->FUN_00489660(&position);
 		}
 	}
 }

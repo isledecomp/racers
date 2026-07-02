@@ -73,14 +73,14 @@ RacePowerupManager::TurboAction::~TurboAction()
 }
 
 // FUNCTION: LEGORACERS 0x0045c880
-void RacePowerupManager::TurboAction::Initialize(RacePowerupManager* p_unk0x04, CutsceneAnimation* p_unk0x08)
+void RacePowerupManager::TurboAction::Initialize(RacePowerupManager* p_manager, CutsceneAnimation* p_particleAnimation)
 {
 	if (m_state != 0) {
 		Destroy();
 	}
 
-	m_manager = p_unk0x04;
-	m_particleAnimation = p_unk0x08;
+	m_manager = p_manager;
+	m_particleAnimation = p_particleAnimation;
 	m_state = 1;
 }
 
@@ -105,7 +105,7 @@ void RacePowerupManager::TurboAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045c8f0
-void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU32 p_unk0x08)
+void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU32 p_level)
 {
 	GolAnimatedEntity* model = NULL;
 	GolAnimatedEntity* effect0 = NULL;
@@ -139,8 +139,8 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	}
 
 	m_stateTimerMs = 400;
-	m_level = p_unk0x08;
-	switch (p_unk0x08) {
+	m_level = p_level;
+	switch (p_level) {
 	case 2:
 		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
 			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL2");
@@ -303,12 +303,12 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 		offset.m_z = 3.0f;
 		racerEntity->VTable0x2c(offset, &position);
 
-		if (m_smokeParticle->m_unk0x00 != NULL) {
-			racerEntity->VTable0x44(m_smokeParticle->m_unk0x00->GetUnk0x160());
+		if (m_smokeParticle->m_particle != NULL) {
+			racerEntity->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
 		}
 
-		if (m_smokeParticle->m_unk0x00 != NULL) {
-			m_smokeParticle->m_unk0x00->FUN_00489660(&position);
+		if (m_smokeParticle->m_particle != NULL) {
+			m_smokeParticle->m_particle->FUN_00489660(&position);
 		}
 
 		RaceState::Racer::Field0x3e8* racerPhysics = &m_racer->m_unk0x3e8;
@@ -316,8 +316,8 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 		CutsceneParticleRef* particleRef = m_smokeParticle;
 		velocity *= g_turboSmokeVelocityScale;
 
-		if (particleRef->m_unk0x00 != NULL) {
-			particleRef->m_unk0x00->FUN_00489690(&velocity);
+		if (particleRef->m_particle != NULL) {
+			particleRef->m_particle->FUN_00489690(&velocity);
 		}
 	}
 

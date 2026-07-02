@@ -56,7 +56,7 @@ extern const LegoFloat g_scarNormalThreshold = 0.70709997f;
 extern const LegoFloat g_emplacementGravityScale = 3.0f;
 
 // GLOBAL: LEGORACERS 0x004c1c4c
-ColorRGBA g_unk0x004c1c4c = {0x32, 0x32, 0x32, 0xc8};
+ColorRGBA g_cannonballTrailColor = {0x32, 0x32, 0x32, 0xc8};
 
 // FUNCTION: LEGORACERS 0x004518f0
 RacePowerupManager::CannonballAction::CannonballAction()
@@ -76,15 +76,18 @@ RacePowerupManager::CannonballAction::~CannonballAction()
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void RacePowerupManager::CannonballAction::Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
+void RacePowerupManager::CannonballAction::Initialize(
+	GolExport** p_golExportPtr,
+	RaceSessionField0x32b4* p_collisionWorld
+)
 {
 	if (m_state != 0) {
 		Destroy();
 	}
 
-	m_golExportPtr = p_unk0x04;
-	m_collisionWorld = p_unk0x08;
-	m_billboard = static_cast<GolBillboard*>((*p_unk0x04)->VTable0x30());
+	m_golExportPtr = p_golExportPtr;
+	m_collisionWorld = p_collisionWorld;
+	m_billboard = static_cast<GolBillboard*>((*p_golExportPtr)->VTable0x30());
 	m_state = 1;
 }
 
@@ -103,15 +106,15 @@ void RacePowerupManager::CannonballAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00451a50
-LegoU32 RacePowerupManager::CannonballAction::Activate(ActionSetup* p_unk0x04)
+LegoU32 RacePowerupManager::CannonballAction::Activate(ActionSetup* p_setup)
 {
 	m_state = 2;
-	m_ownerRacer = p_unk0x04->m_racer;
-	m_targetRacer = p_unk0x04->m_targetRacer;
-	m_targetPoint = p_unk0x04->m_targetPoint;
-	m_stateTimerMs = p_unk0x04->m_initialTimerMs;
+	m_ownerRacer = p_setup->m_racer;
+	m_targetRacer = p_setup->m_targetRacer;
+	m_targetPoint = p_setup->m_targetPoint;
+	m_stateTimerMs = p_setup->m_initialTimerMs;
 
-	ActionTarget* target = p_unk0x04->m_aimTarget;
+	ActionTarget* target = p_setup->m_aimTarget;
 	if (target) {
 		m_materialName = target->m_materialName;
 	}
@@ -226,22 +229,22 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (m_smokeParticle != NULL) {
-		CutsceneParticle* particle = m_smokeParticle->m_unk0x00;
+		CutsceneParticle* particle = m_smokeParticle->m_particle;
 		if (particle != NULL && particle->GetSpawnedCount() < 3) {
 			if (m_ownerRacer != NULL) {
 				m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x04(&particlePosition);
 				particlePosition.m_z += g_cannonballSmokeHeightOffset;
 
 				particleVelocity = m_ownerRacer->m_unk0x3e8.m_unk0x008;
-				if (m_smokeParticle->m_unk0x00 != NULL) {
-					m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x44(m_smokeParticle->m_unk0x00->GetUnk0x160());
+				if (m_smokeParticle->m_particle != NULL) {
+					m_ownerRacer->m_unk0x3e8.m_unk0x13c->VTable0x44(m_smokeParticle->m_particle->GetUnk0x160());
 				}
 
-				if (m_smokeParticle->m_unk0x00 != NULL) {
-					m_smokeParticle->m_unk0x00->FUN_00489660(&particlePosition);
+				if (m_smokeParticle->m_particle != NULL) {
+					m_smokeParticle->m_particle->FUN_00489660(&particlePosition);
 				}
-				if (m_smokeParticle->m_unk0x00 != NULL) {
-					m_smokeParticle->m_unk0x00->FUN_00489690(&particleVelocity);
+				if (m_smokeParticle->m_particle != NULL) {
+					m_smokeParticle->m_particle->FUN_00489690(&particleVelocity);
 				}
 			}
 		}
@@ -362,7 +365,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	}
 	else {
 		if (m_targetPoint != NULL) {
-			target = m_targetPoint->m_unk0x00;
+			target = m_targetPoint->m_position;
 		}
 		else {
 			target.m_x = position.m_x + direction.m_x * g_cannonballDefaultRange;
@@ -394,11 +397,11 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		}
 
 		position.m_z += g_cannonballSmokeHeightOffset;
-		if (m_smokeParticle->m_unk0x00 != NULL) {
-			m_smokeParticle->m_unk0x00->FUN_00489540(&right, &forward);
+		if (m_smokeParticle->m_particle != NULL) {
+			m_smokeParticle->m_particle->FUN_00489540(&right, &forward);
 		}
-		if (m_smokeParticle->m_unk0x00 != NULL) {
-			m_smokeParticle->m_unk0x00->FUN_00489660(&position);
+		if (m_smokeParticle->m_particle != NULL) {
+			m_smokeParticle->m_particle->FUN_00489660(&position);
 		}
 	}
 
@@ -411,7 +414,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	trailParams.m_unk0x18 = 0.0f;
 	m_trail = m_owner0x01c->m_trailManager->FUN_004939b0(&trailParams);
 	if (m_trail != NULL) {
-		m_trail->FUN_00492ab0(&g_unk0x004c1c4c);
+		m_trail->FUN_00492ab0(&g_cannonballTrailColor);
 
 		DuskwindBananaRelic0x24* material = m_owner0x01c->m_renderer->FindMaterialByName("canstrk");
 		if (material != NULL) {

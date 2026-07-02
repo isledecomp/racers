@@ -2674,7 +2674,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoS32 p_elapsedMs)
 					entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
 					resource->VTable0x2c(hitPoint, &entry->m_unk0x030);
 
-					GolVec3 collisionNormal = eventContext->m_unk0x24;
+					GolVec3 collisionNormal = eventContext->m_normal;
 					resource->VTable0x34(collisionNormal, &entry->m_unk0x000);
 
 					LegoFloat deltaX = entry->m_unk0x024.m_x - hitPoint.m_x;
@@ -2730,7 +2730,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00445dc0(LegoS32 p_elapsedMs)
 			}
 		}
 
-		entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_unk0x24;
+		entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_normal;
 
 		LegoFloat deltaX = entry->m_unk0x024.m_x - entry->m_unk0x030.m_x;
 		LegoFloat deltaY = entry->m_unk0x024.m_y - entry->m_unk0x030.m_y;
@@ -2995,7 +2995,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 			entry->m_flags0x048 |= Field0x198::c_flags0x048Hit;
 			resource->VTable0x2c(hitPoint, &entry->m_unk0x030);
 
-			GolVec3 collisionNormal = eventContext->m_unk0x24;
+			GolVec3 collisionNormal = eventContext->m_normal;
 			resource->VTable0x34(collisionNormal, &entry->m_unk0x000);
 
 			if (entryIndex == 0) {
@@ -3052,7 +3052,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_004465c0(LegoU32 p_elapsedMs)
 				}
 			}
 
-			entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_unk0x24;
+			entry->m_unk0x000 = entry->m_unk0x044->m_unk0x000.m_normal;
 
 			LegoFloat deltaX = entry->m_unk0x024.m_x - entry->m_unk0x030.m_x;
 			LegoFloat deltaY = entry->m_unk0x024.m_y - entry->m_unk0x030.m_y;
@@ -3581,7 +3581,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 						&hitAmount
 					)) {
 					GolVec3 worldNormal;
-					GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24;
+					GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_normal;
 					resource->VTable0x34(collisionNormal, &worldNormal);
 
 					LegoFloat dot =
@@ -3635,11 +3635,11 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 						&hitAmount
 					)) {
 					LegoFloat dot = (hitPoint.m_x - m_unk0x3a0[pointIndex].m_x) *
-									g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_x;
+									g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_normal.m_x;
 					dot += (hitPoint.m_y - m_unk0x3a0[pointIndex].m_y) *
-						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_y;
+						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_normal.m_y;
 					dot += (hitPoint.m_z - m_unk0x3a0[pointIndex].m_z) *
-						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24.m_z;
+						   g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_normal.m_z;
 
 					if (dot >= 0.0f) {
 						if (hitRecord && !VTable0x0c(
@@ -3651,7 +3651,7 @@ LegoU32 RaceState::Racer::Field0x3e8Base0x74c::FUN_004478b0(LegoU32 p_elapsedMs,
 							continue;
 						}
 
-						GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_unk0x24;
+						GolVec3 collisionNormal = g_raceStateField0x3e8SnapshotEntries.GetEventContext()->m_normal;
 						LegoFloat deltaX = m_unk0x3a0[pointIndex].m_x - hitPoint.m_x;
 						LegoFloat deltaY = m_unk0x3a0[pointIndex].m_y - hitPoint.m_y;
 						LegoFloat deltaZ = m_unk0x3a0[pointIndex].m_z - hitPoint.m_z;

@@ -265,7 +265,7 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs
 		GolBoundingVolume::Field0x0c record;
 		m_tension = 1.0f;
 		if (m_collisionWorld->FUN_0041f730(&origin, &currentPosition, &record, &m_hitPosition)) {
-			m_hitNormal = record.m_unk0x24;
+			m_hitNormal = record.m_normal;
 			return c_stateHitWorld;
 		}
 	}
@@ -300,11 +300,11 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs
 }
 
 // FUNCTION: LEGORACERS 0x00444ac0
-void RacePowerupManager::TetherProjectile::Release(GolVec3* p_unk0x04)
+void RacePowerupManager::TetherProjectile::Release(GolVec3* p_position)
 {
-	m_endPosition.m_x = p_unk0x04->m_x;
-	m_endPosition.m_y = p_unk0x04->m_y;
-	m_endPosition.m_z = p_unk0x04->m_z;
+	m_endPosition.m_x = p_position->m_x;
+	m_endPosition.m_y = p_position->m_y;
+	m_endPosition.m_z = p_position->m_z;
 
 	if (m_hitRacer == NULL) {
 		m_tension = m_currentWaveAmplitude / g_tetherWaveScale;

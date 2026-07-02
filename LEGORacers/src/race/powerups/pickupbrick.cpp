@@ -16,22 +16,22 @@
 #include <float.h>
 #include <math.h>
 
-extern const LegoFloat g_unk0x004b14a8;
+extern const LegoFloat g_brickScalePercentBase;
 extern const LegoFloat g_ghostSampleFractionScale;
 
-extern const LegoFloat g_unk0x004b14a8;
+extern const LegoFloat g_brickScalePercentBase;
 
 // GLOBAL: LEGORACERS 0x004b0400
-const LegoFloat g_unk0x004b0400 = 0.002f;
+const LegoFloat g_brickSettleRate = 0.002f;
 
 // GLOBAL: LEGORACERS 0x004b14ac
-const LegoFloat g_unk0x004b14ac = 0.8f;
+const LegoFloat g_brickScale = 0.8f;
 
 // GLOBAL: LEGORACERS 0x004c75f4
-LegoFloat g_unk0x004c75f4 = 1.0f / g_unk0x004b14a8;
+LegoFloat g_brickScalePercentInverse = 1.0f / g_brickScalePercentBase;
 
 // GLOBAL: LEGORACERS 0x004c75f8
-LegoFloat g_unk0x004c75f8 = g_ghostSampleFractionScale * g_unk0x004b14a8;
+LegoFloat g_brickShrinkPercentPerMs = g_ghostSampleFractionScale * g_brickScalePercentBase;
 
 // FUNCTION: LEGORACERS 0x00453910
 RacePowerupManager::PickupBrick::PickupBrick()
@@ -110,8 +110,8 @@ void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
 	LegoS32 stateOffset = m_state - c_stateActive;
 	if (stateOffset != 0) {
 		if (stateOffset == 1 && elapsedMs <= 250) {
-			LegoFloat transition = (LegoS32) (250 - elapsedMs) * g_unk0x004c75f8;
-			m_scale = transition * (g_unk0x004b14ac * g_unk0x004c75f4);
+			LegoFloat transition = (LegoS32) (250 - elapsedMs) * g_brickShrinkPercentPerMs;
+			m_scale = transition * (g_brickScale * g_brickScalePercentInverse);
 		}
 	}
 	else {
@@ -119,7 +119,7 @@ void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
 			m_scale = (LegoS32) elapsedMs * 0.0024999999f;
 		}
 		else if (elapsedMs < 500) {
-			m_scale = 1.0f - (LegoS32) (elapsedMs - 400) * g_unk0x004b0400;
+			m_scale = 1.0f - (LegoS32) (elapsedMs - 400) * g_brickSettleRate;
 		}
 	}
 
@@ -133,10 +133,10 @@ void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453ad0
-void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_unk0x04)
+void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_touchable)
 {
-	if (p_unk0x04) {
-		m_scale = g_unk0x004b14ac;
+	if (p_touchable) {
+		m_scale = g_brickScale;
 	}
 	else {
 		m_scale = 0.0f;

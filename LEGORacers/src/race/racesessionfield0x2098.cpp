@@ -511,8 +511,8 @@ void RaceSession::Field0x2098::Resource0x64::VTable0x14(LegoU32 p_elapsedMs)
 		position.m_z *= scale;
 
 		m_unk0x34->VTable0x2c(position, &transformedPosition);
-		if (m_unk0x30->m_unk0x00) {
-			m_unk0x30->m_unk0x00->FUN_00489660(&transformedPosition);
+		if (m_unk0x30->m_particle) {
+			m_unk0x30->m_particle->FUN_00489660(&transformedPosition);
 		}
 	}
 }

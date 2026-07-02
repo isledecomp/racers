@@ -407,9 +407,9 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 
 	GolBoundingVolume::Field0x0c record;
 	if (m_collisionWorld->FUN_0041f730(&vectors[1], &vectors[0], &record, &m_hitPosition)) {
-		m_hitNormal.m_x = record.m_unk0x24.m_x;
-		m_hitNormal.m_y = record.m_unk0x24.m_y;
-		m_hitNormal.m_z = record.m_unk0x24.m_z;
+		m_hitNormal.m_x = record.m_normal.m_x;
+		m_hitNormal.m_y = record.m_normal.m_y;
+		m_hitNormal.m_z = record.m_normal.m_z;
 		m_worldEntity->VTable0x08(m_hitPosition);
 		m_state = c_stateHitWorld;
 		return c_stateHitWorld;

@@ -64,27 +64,27 @@ void RacePowerupManager::MagnetAction::Reset()
 
 // FUNCTION: LEGORACERS 0x00455810
 void RacePowerupManager::MagnetAction::Initialize(
-	RacePowerupManager* p_unk0x04,
+	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_unk0x0c,
+	RaceSessionField0x32b4* p_collisionWorld,
 	CutsceneAnimation*,
 	GolExport*,
 	GolD3DRenderDevice*,
 	undefined4
 )
 {
-	m_manager = p_unk0x04;
+	m_manager = p_manager;
 	m_raceState0x018 = p_raceState;
-	m_collisionWorld = p_unk0x0c;
+	m_collisionWorld = p_collisionWorld;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00455830
 void RacePowerupManager::MagnetAction::Activate(
 	RaceState::Racer* p_racer,
-	GolAnimatedEntity* p_unk0x08,
-	GolAnimatedEntity* p_unk0x0c,
-	GolAnimatedEntity* p_unk0x10
+	GolAnimatedEntity* p_magnetTemplate,
+	GolAnimatedEntity* p_ringTemplate,
+	GolAnimatedEntity* p_insideTemplate
 )
 {
 	m_magnetEntity = m_manager->AllocateEffectEntity();
@@ -110,59 +110,59 @@ void RacePowerupManager::MagnetAction::Activate(
 	m_stateTimerMs = c_armedDurationMs;
 
 	m_magnetEntity->FUN_0040d550(
-		p_unk0x08->GetModel(0),
-		p_unk0x08->VTable0x58(0),
-		p_unk0x08->GetModelPart(0),
-		p_unk0x08->GetModelDistance(0)
+		p_magnetTemplate->GetModel(0),
+		p_magnetTemplate->VTable0x58(0),
+		p_magnetTemplate->GetModelPart(0),
+		p_magnetTemplate->GetModelDistance(0)
 	);
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x08->GetModel(i);
+		GolModelBase* model = p_magnetTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x08->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x08->GetModelPart(i);
-			m_magnetEntity->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_magnetTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_magnetTemplate->GetModelPart(i);
+			m_magnetEntity->FUN_10023940(model, p_magnetTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 
 	m_ringEntity->FUN_0040d550(
-		p_unk0x0c->GetModel(0),
-		p_unk0x0c->VTable0x58(0),
-		p_unk0x0c->GetModelPart(0),
-		p_unk0x0c->GetModelDistance(0)
+		p_ringTemplate->GetModel(0),
+		p_ringTemplate->VTable0x58(0),
+		p_ringTemplate->GetModelPart(0),
+		p_ringTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x0c->GetModel(i);
+		GolModelBase* model = p_ringTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x0c->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x0c->GetModelPart(i);
-			m_ringEntity->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_ringTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_ringTemplate->GetModelPart(i);
+			m_ringEntity->FUN_10023940(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_ringEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_ringEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_ringEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_ringEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_ringEntity->FUN_00411680(p_ringTemplate->FUN_00411640());
+	m_ringEntity->FUN_004116b0(p_ringTemplate->FUN_00411660());
+	m_ringEntity->FUN_00411700(p_ringTemplate->FUN_004116e0());
+	m_ringEntity->FUN_00411730(p_ringTemplate->FUN_004116f0());
 
 	m_insideEntity->FUN_0040d550(
-		p_unk0x10->GetModel(0),
-		p_unk0x10->VTable0x58(0),
-		p_unk0x10->GetModelPart(0),
-		p_unk0x10->GetModelDistance(0)
+		p_insideTemplate->GetModel(0),
+		p_insideTemplate->VTable0x58(0),
+		p_insideTemplate->GetModelPart(0),
+		p_insideTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x10->GetModel(i);
+		GolModelBase* model = p_insideTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x10->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x10->GetModelPart(i);
-			m_insideEntity->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_insideTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_insideTemplate->GetModelPart(i);
+			m_insideEntity->FUN_10023940(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_insideEntity->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_insideEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_insideEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_insideEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_insideEntity->FUN_00411680(p_insideTemplate->FUN_00411640());
+	m_insideEntity->FUN_004116b0(p_insideTemplate->FUN_00411660());
+	m_insideEntity->FUN_00411700(p_insideTemplate->FUN_004116e0());
+	m_insideEntity->FUN_00411730(p_insideTemplate->FUN_004116f0());
 }
 
 // FUNCTION: LEGORACERS 0x00455a90

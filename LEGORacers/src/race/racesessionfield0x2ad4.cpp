@@ -197,8 +197,8 @@ void RaceCameraController::FUN_00427e80()
 			}
 		}
 		else {
-			if (m_camera->m_fov != m_unk0x134) {
-				m_unk0x13c = (m_unk0x138 - m_unk0x134) * 0.5f;
+			if (m_camera->m_fov != m_targetFov) {
+				m_unk0x13c = (m_unk0x138 - m_targetFov) * 0.5f;
 			}
 			else {
 				m_unk0x13c = 0.0f;
@@ -221,9 +221,9 @@ void RaceCameraController::FUN_00427e80()
 		camera->m_fov = fov;
 		m_renderer->VTable0x5c();
 	}
-	else if (m_camera->m_fov != m_unk0x134) {
+	else if (m_camera->m_fov != m_targetFov) {
 		GolCamera* camera = m_camera;
-		LegoFloat fov = m_unk0x134;
+		LegoFloat fov = m_targetFov;
 		camera->m_flags |= GolCamera::c_flagBit1;
 		camera->m_fov = fov;
 		m_renderer->VTable0x5c();
@@ -289,7 +289,7 @@ void RaceCameraController::FUN_00428210(GolCamera* p_camera, GolD3DRenderDevice*
 {
 	m_camera = p_camera;
 	m_renderer = p_renderer;
-	m_unk0x134 = p_camera->GetFov();
+	m_targetFov = p_camera->GetFov();
 }
 
 // FUNCTION: LEGORACERS 0x00428230

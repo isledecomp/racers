@@ -2370,8 +2370,8 @@ void RaceState::Racer::FUN_00439ea0(LegoU32)
 void RaceState::Racer::FUN_00439fc0(RaceSessionField0x27f4::Entry* p_unk0x04, GolBoundingVolume::Field0x0c* p_unk0x08)
 {
 	LegoBool32 isForward;
-	if (p_unk0x08->m_unk0x24.m_z * p_unk0x04->m_unk0x00.m_z + p_unk0x08->m_unk0x24.m_y * p_unk0x04->m_unk0x00.m_y +
-			p_unk0x08->m_unk0x24.m_x * p_unk0x04->m_unk0x00.m_x <
+	if (p_unk0x08->m_normal.m_z * p_unk0x04->m_unk0x00.m_z + p_unk0x08->m_normal.m_y * p_unk0x04->m_unk0x00.m_y +
+			p_unk0x08->m_normal.m_x * p_unk0x04->m_unk0x00.m_x <
 		0.0f) {
 		isForward = FALSE;
 	}
@@ -3778,12 +3778,12 @@ void RaceState::Racer::Field0x018::FUN_0043dc00()
 			if (m_unk0x274) {
 				GolVec3 position = m_unk0x1dc->m_unk0x1a4[3].m_unk0x000;
 				GolAnimatedEntity* entity = m_unk0x044;
-				if (m_unk0x274->m_unk0x00) {
-					entity->VTable0x44(m_unk0x274->m_unk0x00->GetUnk0x160());
+				if (m_unk0x274->m_particle) {
+					entity->VTable0x44(m_unk0x274->m_particle->GetUnk0x160());
 				}
 
-				if (m_unk0x274->m_unk0x00) {
-					m_unk0x274->m_unk0x00->FUN_00489660(&position);
+				if (m_unk0x274->m_particle) {
+					m_unk0x274->m_particle->FUN_00489660(&position);
 				}
 			}
 		}
@@ -3848,15 +3848,15 @@ void RaceState::Racer::Field0x018::FUN_0043dd50(LegoU32 p_unk0x04, const LegoCha
 	}
 
 	GolVec3 position = m_unk0x1dc->m_unk0x1a4[p_unk0x04].m_unk0x000;
-	CutsceneParticle* particle = ref->m_unk0x00;
+	CutsceneParticle* particle = ref->m_particle;
 	GolWorldEntity* entity = m_unk0x044;
 
 	if (particle) {
 		entity->VTable0x44(particle->GetUnk0x160());
 	}
 
-	if (m_unk0x230[p_unk0x04]->m_unk0x00) {
-		m_unk0x230[p_unk0x04]->m_unk0x00->FUN_00489660(&position);
+	if (m_unk0x230[p_unk0x04]->m_particle) {
+		m_unk0x230[p_unk0x04]->m_particle->FUN_00489660(&position);
 	}
 }
 
@@ -3896,15 +3896,15 @@ void RaceState::Racer::Field0x018::FUN_0043def0()
 	}
 
 	GolVec3 position = m_unk0x1dc->m_unk0x1a4[3].m_unk0x000;
-	CutsceneParticle* particle = ref->m_unk0x00;
+	CutsceneParticle* particle = ref->m_particle;
 	GolWorldEntity* entity = m_unk0x044;
 
 	if (particle) {
 		entity->VTable0x44(particle->GetUnk0x160());
 	}
 
-	if (m_unk0x270->m_unk0x00) {
-		m_unk0x270->m_unk0x00->FUN_00489660(&position);
+	if (m_unk0x270->m_particle) {
+		m_unk0x270->m_particle->FUN_00489660(&position);
 	}
 }
 
@@ -3930,13 +3930,13 @@ void RaceState::Racer::Field0x018::FUN_0043df90()
 	position.m_y = (position.m_y + other.m_y) * 0.5f;
 	position.m_z = (position.m_z + other.m_z) * 0.5f + g_violetShoalTwo;
 
-	CutsceneParticle* particle = ref->m_unk0x00;
+	CutsceneParticle* particle = ref->m_particle;
 	if (particle) {
 		entity->VTable0x44(particle->GetUnk0x160());
 	}
 
-	if (m_unk0x278->m_unk0x00) {
-		m_unk0x278->m_unk0x00->FUN_00489660(&position);
+	if (m_unk0x278->m_particle) {
+		m_unk0x278->m_particle->FUN_00489660(&position);
 	}
 }
 
@@ -3997,18 +3997,18 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 			CutsceneParticleRef* ref = m_unk0x230[particleIndex];
 			if (ref) {
 				GolVec3 position = m_unk0x1dc->m_unk0x1a4[particleIndex].m_unk0x000;
-				CutsceneParticle* particle = ref->m_unk0x00;
+				CutsceneParticle* particle = ref->m_particle;
 
 				if (particle) {
 					m_unk0x044->VTable0x44(particle->GetUnk0x160());
 				}
 
-				if (ref->m_unk0x00) {
-					ref->m_unk0x00->FUN_00489660(&position);
+				if (ref->m_particle) {
+					ref->m_particle->FUN_00489660(&position);
 				}
 
-				if (ref->m_unk0x00) {
-					ref->m_unk0x00->FUN_00489690(&velocity);
+				if (ref->m_particle) {
+					ref->m_particle->FUN_00489690(&velocity);
 				}
 			}
 		}
@@ -4066,7 +4066,7 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 		}
 
 		if (m_unk0x270) {
-			CutsceneParticle* particle = m_unk0x270->m_unk0x00;
+			CutsceneParticle* particle = m_unk0x270->m_particle;
 			if (particle && particle->GetSpawnedCount() >= 10) {
 				m_unk0x27c->FUN_00489f30(m_unk0x270);
 				m_unk0x270 = NULL;
@@ -4076,23 +4076,23 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 				GolVec3 position = (g_randomTable[g_randomTableIndex] & 2) ? m_unk0x1dc->m_unk0x1a4[3].m_unk0x000
 																		   : m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
 
-				particle = m_unk0x270->m_unk0x00;
+				particle = m_unk0x270->m_particle;
 				if (particle) {
 					m_unk0x044->VTable0x44(particle->GetUnk0x160());
 				}
 
-				if (m_unk0x270->m_unk0x00) {
-					m_unk0x270->m_unk0x00->FUN_00489660(&position);
+				if (m_unk0x270->m_particle) {
+					m_unk0x270->m_particle->FUN_00489660(&position);
 				}
 
-				if (m_unk0x270->m_unk0x00) {
-					m_unk0x270->m_unk0x00->FUN_00489690(&velocity);
+				if (m_unk0x270->m_particle) {
+					m_unk0x270->m_particle->FUN_00489690(&velocity);
 				}
 			}
 		}
 
 		if (m_unk0x278) {
-			CutsceneParticle* particle = m_unk0x278->m_unk0x00;
+			CutsceneParticle* particle = m_unk0x278->m_particle;
 			if (particle && particle->GetSpawnedCount() >= 4) {
 				m_unk0x27c->FUN_00489f30(m_unk0x278);
 				m_unk0x278 = NULL;
@@ -4104,17 +4104,17 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 				position.m_y = (position.m_y + other.m_y) * 0.5f;
 				position.m_z = (position.m_z + other.m_z) * 0.5f + g_violetShoalTwo;
 
-				particle = m_unk0x278->m_unk0x00;
+				particle = m_unk0x278->m_particle;
 				if (particle) {
 					m_unk0x044->VTable0x44(particle->GetUnk0x160());
 				}
 
-				if (m_unk0x278->m_unk0x00) {
-					m_unk0x278->m_unk0x00->FUN_00489660(&position);
+				if (m_unk0x278->m_particle) {
+					m_unk0x278->m_particle->FUN_00489660(&position);
 				}
 
-				if (m_unk0x278->m_unk0x00) {
-					m_unk0x278->m_unk0x00->FUN_00489690(&velocity);
+				if (m_unk0x278->m_particle) {
+					m_unk0x278->m_particle->FUN_00489690(&velocity);
 				}
 			}
 		}
@@ -4141,17 +4141,17 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 				}
 			}
 
-			CutsceneParticle* particle = m_unk0x274->m_unk0x00;
+			CutsceneParticle* particle = m_unk0x274->m_particle;
 			if (particle) {
 				m_unk0x044->VTable0x44(particle->GetUnk0x160());
 			}
 
-			if (m_unk0x274->m_unk0x00) {
-				m_unk0x274->m_unk0x00->FUN_00489660(&position);
+			if (m_unk0x274->m_particle) {
+				m_unk0x274->m_particle->FUN_00489660(&position);
 			}
 
-			if (m_unk0x274->m_unk0x00) {
-				m_unk0x274->m_unk0x00->FUN_00489690(&velocity);
+			if (m_unk0x274->m_particle) {
+				m_unk0x274->m_particle->FUN_00489690(&velocity);
 			}
 		}
 	}

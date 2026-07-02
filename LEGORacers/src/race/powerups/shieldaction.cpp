@@ -67,14 +67,14 @@ RacePowerupManager::ShieldAction::~ShieldAction()
 }
 
 // FUNCTION: LEGORACERS 0x0045bcd0 FOLDED
-void RacePowerupManager::ShieldAction::Initialize(RacePowerupManager* p_unk0x04)
+void RacePowerupManager::ShieldAction::Initialize(RacePowerupManager* p_manager)
 {
 	if (m_state != 0) {
 		Destroy();
 	}
 
 	m_state = 1;
-	m_manager = p_unk0x04;
+	m_manager = p_manager;
 }
 
 // FUNCTION: LEGORACERS 0x0045bd10 FOLDED
@@ -87,9 +87,9 @@ void RacePowerupManager::ShieldAction::Destroy()
 // FUNCTION: LEGORACERS 0x0045bd30
 void RacePowerupManager::ShieldAction::Activate(
 	RaceState::Racer* p_racer,
-	LegoU32 p_unk0x08,
-	GolAnimatedEntity* p_unk0x0c,
-	GolAnimatedEntity* p_unk0x10
+	LegoU32 p_level,
+	GolAnimatedEntity* p_shieldTemplate,
+	GolAnimatedEntity* p_innerShieldTemplate
 )
 {
 	LegoU32 soundId = c_soundLevel0;
@@ -111,7 +111,7 @@ void RacePowerupManager::ShieldAction::Activate(
 		m_manager->CancelShield(m_racer);
 	}
 
-	switch (p_unk0x08) {
+	switch (p_level) {
 	case 0:
 		m_stateTimerMs = c_durationLevel0Ms;
 		soundId = c_soundLevel0;
@@ -137,67 +137,67 @@ void RacePowerupManager::ShieldAction::Activate(
 	}
 
 	m_state = c_stateActive;
-	m_racer->StartShield(p_unk0x08);
+	m_racer->StartShield(p_level);
 	if (m_racer->m_unk0xd04 & c_racerFlags0xd04Bit11) {
 		m_racer->RemoveCurse();
 	}
-	m_level = p_unk0x08;
+	m_level = p_level;
 
 	m_shieldEntity->FUN_0040d550(
-		p_unk0x0c->GetModel(0),
-		p_unk0x0c->VTable0x58(0),
-		p_unk0x0c->GetModelPart(0),
-		p_unk0x0c->GetModelDistance(0)
+		p_shieldTemplate->GetModel(0),
+		p_shieldTemplate->VTable0x58(0),
+		p_shieldTemplate->GetModelPart(0),
+		p_shieldTemplate->GetModelDistance(0)
 	);
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x0c->GetModel(i);
+		GolModelBase* model = p_shieldTemplate->GetModel(i);
 		if (model != NULL) {
 			m_shieldEntity->FUN_10023940(
 				model,
-				p_unk0x0c->VTable0x58(i),
-				p_unk0x0c->GetModelPart(i),
-				p_unk0x0c->GetModelDistance(i)
+				p_shieldTemplate->VTable0x58(i),
+				p_shieldTemplate->GetModelPart(i),
+				p_shieldTemplate->GetModelDistance(i)
 			);
 		}
 	}
 
 	m_shieldEntity->FUN_0040dad0(0);
 	m_shieldEntity->SetFlags(m_shieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_shieldEntity->SetUnk0xb8(p_unk0x0c->GetUnk0xb8());
-	m_shieldEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_shieldEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_shieldEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_shieldEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_shieldEntity->SetUnk0xb8(p_shieldTemplate->GetUnk0xb8());
+	m_shieldEntity->FUN_00411680(p_shieldTemplate->FUN_00411640());
+	m_shieldEntity->FUN_004116b0(p_shieldTemplate->FUN_00411660());
+	m_shieldEntity->FUN_00411700(p_shieldTemplate->FUN_004116e0());
+	m_shieldEntity->FUN_00411730(p_shieldTemplate->FUN_004116f0());
 	m_shieldEntity->CopyPositionFrom(*m_racer->m_unk0x018.m_unk0x044);
 
 	m_innerShieldEntity->FUN_0040d550(
-		p_unk0x10->GetModel(0),
-		p_unk0x10->VTable0x58(0),
-		p_unk0x10->GetModelPart(0),
-		p_unk0x10->GetModelDistance(0)
+		p_innerShieldTemplate->GetModel(0),
+		p_innerShieldTemplate->VTable0x58(0),
+		p_innerShieldTemplate->GetModelPart(0),
+		p_innerShieldTemplate->GetModelDistance(0)
 	);
 
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x10->GetModel(i);
+		GolModelBase* model = p_innerShieldTemplate->GetModel(i);
 		if (model != NULL) {
 			m_innerShieldEntity->FUN_10023940(
 				model,
-				p_unk0x10->VTable0x58(i),
-				p_unk0x10->GetModelPart(i),
-				p_unk0x10->GetModelDistance(i)
+				p_innerShieldTemplate->VTable0x58(i),
+				p_innerShieldTemplate->GetModelPart(i),
+				p_innerShieldTemplate->GetModelDistance(i)
 			);
 		}
 	}
 
 	m_innerShieldEntity->FUN_0040dad0(0);
 	m_innerShieldEntity->SetFlags(m_innerShieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_innerShieldEntity->SetUnk0xb8(p_unk0x10->GetUnk0xb8());
-	m_innerShieldEntity->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_innerShieldEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_innerShieldEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_innerShieldEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_innerShieldEntity->SetUnk0xb8(p_innerShieldTemplate->GetUnk0xb8());
+	m_innerShieldEntity->FUN_00411680(p_innerShieldTemplate->FUN_00411640());
+	m_innerShieldEntity->FUN_004116b0(p_innerShieldTemplate->FUN_00411660());
+	m_innerShieldEntity->FUN_00411700(p_innerShieldTemplate->FUN_004116e0());
+	m_innerShieldEntity->FUN_00411730(p_innerShieldTemplate->FUN_004116f0());
 	m_innerShieldEntity->CopyPositionFrom(*m_shieldEntity);
 }
 

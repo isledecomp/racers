@@ -421,9 +421,9 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 			PolygonId0x08* candidate = NULL;
 
 			node->FUN_00404660(&g_unk0x004c2718);
-			m_unk0x54->m_unk0x24.m_x = g_unk0x004c2718.m_x;
-			m_unk0x54->m_unk0x24.m_y = g_unk0x004c2718.m_y;
-			m_unk0x54->m_unk0x24.m_z = g_unk0x004c2718.m_z;
+			m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
+			m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
+			m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
 
 			while (triangle < end) {
 				m_unk0x54->m_unk0x00 = vertices[triangle->m_unk0x00];
@@ -437,9 +437,9 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 
 					if (GolCameraBase::FUN_004044f0(&g_unk0x004c2718, &g_unk0x004c2728) <= 0.0f) {
 						GolMath::NormalizeVector3(g_unk0x004c2718, &g_unk0x004c2718);
-						m_unk0x54->m_unk0x24.m_x = g_unk0x004c2718.m_x;
-						m_unk0x54->m_unk0x24.m_y = g_unk0x004c2718.m_y;
-						m_unk0x54->m_unk0x24.m_z = g_unk0x004c2718.m_z;
+						m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
+						m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
+						m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
 						m_unk0x54->m_unk0x30 =
 							-(m_unk0x54->m_unk0x00.m_z * g_unk0x004c2718.m_z +
 							  m_unk0x54->m_unk0x00.m_y * g_unk0x004c2718.m_y +
@@ -469,9 +469,9 @@ LegoBool32 GolBoundingVolume::FUN_00403fa0(
 				m_unk0x54->m_unk0x18 = vertices[candidate->m_unk0x04];
 
 				GolMath::NormalizeVector3(g_unk0x004c2718, &g_unk0x004c2718);
-				m_unk0x54->m_unk0x24.m_x = g_unk0x004c2718.m_x;
-				m_unk0x54->m_unk0x24.m_y = g_unk0x004c2718.m_y;
-				m_unk0x54->m_unk0x24.m_z = g_unk0x004c2718.m_z;
+				m_unk0x54->m_normal.m_x = g_unk0x004c2718.m_x;
+				m_unk0x54->m_normal.m_y = g_unk0x004c2718.m_y;
+				m_unk0x54->m_normal.m_z = g_unk0x004c2718.m_z;
 				m_unk0x54->m_unk0x30 =
 					-(m_unk0x54->m_unk0x00.m_z * g_unk0x004c2718.m_z + m_unk0x54->m_unk0x00.m_y * g_unk0x004c2718.m_y +
 					  m_unk0x54->m_unk0x00.m_x * g_unk0x004c2718.m_x);

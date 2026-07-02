@@ -87,7 +87,7 @@ public:
 	LegoFloat m_unk0x128;                // 0x128
 	LegoFloat m_unk0x12c;                // 0x12c
 	LegoFloat m_unk0x130;                // 0x130
-	LegoFloat m_unk0x134;                // 0x134
+	LegoFloat m_targetFov;               // 0x134
 	LegoFloat m_unk0x138;                // 0x138
 	LegoFloat m_unk0x13c;                // 0x13c
 	LegoU32 m_unk0x140;                  // 0x140

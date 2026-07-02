@@ -183,13 +183,13 @@ private:
 struct CutsceneParticleRef {
 public:
 	enum {
-		c_flagBit0 = 1 << 0
+		c_flagInUse = 1 << 0
 	};
 
 	// size unknown, confirmed to be at least 5
 
-	CutsceneParticle* m_unk0x00;
-	LegoU8 m_unk0x04;
+	CutsceneParticle* m_particle;
+	LegoU8 m_flags;
 };
 
 // VTABLE: LEGORACERS 0x004b4a94
@@ -228,7 +228,7 @@ private:
 class CutsceneStreamingSoundEvent : public CutsceneSoundEvent {
 public:
 	enum Flags {
-		c_flagBit0 = 1 << 0,
+		c_flagInUse = 1 << 0,
 		c_flagBit1 = 1 << 1,
 		c_flagBit2 = 1 << 2,
 		c_flagBit3 = 1 << 3,

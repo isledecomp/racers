@@ -68,20 +68,20 @@ void RacePowerupManager::OilSlickAction::Destroy()
 
 // FUNCTION: LEGORACERS 0x004571b0
 void RacePowerupManager::OilSlickAction::Initialize(
-	RacePowerupManager* p_unk0x04,
+	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
-	GolCollidableEntity* p_unk0x0c,
-	RaceSessionField0x32b4* p_unk0x10,
-	CutsceneAnimation* p_unk0x14,
+	GolCollidableEntity* p_collidable,
+	RaceSessionField0x32b4* p_collisionWorld,
+	CutsceneAnimation* p_particleAnimation,
 	GolRenderDevice* p_renderer,
 	GolExport* p_export
 )
 {
-	m_manager = p_unk0x04;
+	m_manager = p_manager;
 	m_raceState0x018 = p_raceState;
-	m_collisionWorld = p_unk0x10;
-	m_collidable = p_unk0x0c;
-	m_particleAnimation = p_unk0x14;
+	m_collisionWorld = p_collisionWorld;
+	m_collidable = p_collidable;
+	m_particleAnimation = p_particleAnimation;
 	m_state = 1;
 
 	m_materialTable.Initialize(p_renderer, 1);
@@ -143,8 +143,8 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 		position.m_x += static_cast<LegoFloat>(::sin(angle)) * offset;
 		position.m_y += static_cast<LegoFloat>(::cos(angle)) * offset;
 
-		if (particleRef->m_unk0x00 != NULL) {
-			particleRef->m_unk0x00->FUN_00489660(&position);
+		if (particleRef->m_particle != NULL) {
+			particleRef->m_particle->FUN_00489660(&position);
 		}
 	}
 }
@@ -204,8 +204,8 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	CutsceneAnimation* animation = m_particleAnimation;
 	m_collisionEvent = event;
 	m_bubbleParticle = animation->FUN_00489d70("oilbub", NULL, NULL, NULL);
-	if (m_bubbleParticle != NULL && m_bubbleParticle->m_unk0x00 != NULL) {
-		m_bubbleParticle->m_unk0x00->FUN_00489660(&position);
+	if (m_bubbleParticle != NULL && m_bubbleParticle->m_particle != NULL) {
+		m_bubbleParticle->m_particle->FUN_00489660(&position);
 	}
 
 	position.m_z += g_homingProjectileCollisionStartOffset;

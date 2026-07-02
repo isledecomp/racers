@@ -56,23 +56,23 @@ void RacePowerupManager::CurseAction::Destroy()
 // FUNCTION: LEGORACERS 0x00452530
 void RacePowerupManager::CurseAction::Initialize(
 	RaceState* p_raceState,
-	RaceSessionField0x32b4* p_unk0x08,
-	RacePowerupManager* p_unk0x0c
+	RaceSessionField0x32b4* p_collisionWorld,
+	RacePowerupManager* p_manager
 )
 {
 	m_raceState0x018 = p_raceState;
-	m_collisionWorld = p_unk0x08;
-	m_manager = p_unk0x0c;
+	m_collisionWorld = p_collisionWorld;
+	m_manager = p_manager;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00452550
 void RacePowerupManager::CurseAction::Activate(
 	RaceState::Racer* p_racer,
-	GolAnimatedEntity* p_unk0x08,
-	GolAnimatedEntity* p_unk0x0c,
-	GolAnimatedEntity* p_unk0x10,
-	ActionTarget* p_unk0x14
+	GolAnimatedEntity* p_curseTemplate,
+	GolAnimatedEntity* p_auraTemplate,
+	GolAnimatedEntity* p_innerAuraTemplate,
+	ActionTarget* p_target
 )
 {
 	m_curseEntity = m_manager->AllocateEffectEntity();
@@ -96,69 +96,69 @@ void RacePowerupManager::CurseAction::Activate(
 	m_ownerRacer = p_racer;
 
 	m_curseEntity->FUN_0040d550(
-		p_unk0x08->GetModel(0),
-		p_unk0x08->VTable0x58(0),
-		p_unk0x08->GetModelPart(0),
-		p_unk0x08->GetModelDistance(0)
+		p_curseTemplate->GetModel(0),
+		p_curseTemplate->VTable0x58(0),
+		p_curseTemplate->GetModelPart(0),
+		p_curseTemplate->GetModelDistance(0)
 	);
 
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x08->GetModel(i);
+		GolModelBase* model = p_curseTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x08->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x08->GetModelPart(i);
-			m_curseEntity->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_curseTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_curseTemplate->GetModelPart(i);
+			m_curseEntity->FUN_10023940(model, p_curseTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_curseEntity->SetFlags(m_curseEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_curseEntity->FUN_0040dad0(0);
 
 	m_auraEntity->FUN_0040d550(
-		p_unk0x0c->GetModel(0),
-		p_unk0x0c->VTable0x58(0),
-		p_unk0x0c->GetModelPart(0),
-		p_unk0x0c->GetModelDistance(0)
+		p_auraTemplate->GetModel(0),
+		p_auraTemplate->VTable0x58(0),
+		p_auraTemplate->GetModelPart(0),
+		p_auraTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x0c->GetModel(i);
+		GolModelBase* model = p_auraTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x0c->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x0c->GetModelPart(i);
-			m_auraEntity->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_auraTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_auraTemplate->GetModelPart(i);
+			m_auraEntity->FUN_10023940(model, p_auraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_auraEntity->FUN_0040dad0(0);
-	m_auraEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_auraEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_auraEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_auraEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_auraEntity->FUN_00411680(p_auraTemplate->FUN_00411640());
+	m_auraEntity->FUN_004116b0(p_auraTemplate->FUN_00411660());
+	m_auraEntity->FUN_00411700(p_auraTemplate->FUN_004116e0());
+	m_auraEntity->FUN_00411730(p_auraTemplate->FUN_004116f0());
 
 	m_innerAuraEntity->FUN_0040d550(
-		p_unk0x10->GetModel(0),
-		p_unk0x10->VTable0x58(0),
-		p_unk0x10->GetModelPart(0),
-		p_unk0x10->GetModelDistance(0)
+		p_innerAuraTemplate->GetModel(0),
+		p_innerAuraTemplate->VTable0x58(0),
+		p_innerAuraTemplate->GetModelPart(0),
+		p_innerAuraTemplate->GetModelDistance(0)
 	);
 	for (i = 1; i < 3; i++) {
-		GolModelBase* model = p_unk0x10->GetModel(i);
+		GolModelBase* model = p_innerAuraTemplate->GetModel(i);
 		if (model != NULL) {
-			LegoFloat modelDistance = p_unk0x10->GetModelDistance(i);
-			CmbModelPart0x34* modelPart = p_unk0x10->GetModelPart(i);
-			m_innerAuraEntity->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
+			LegoFloat modelDistance = p_innerAuraTemplate->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_innerAuraTemplate->GetModelPart(i);
+			m_innerAuraEntity->FUN_10023940(model, p_innerAuraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	m_innerAuraEntity->FUN_0040dad0(0);
-	m_innerAuraEntity->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_innerAuraEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_innerAuraEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_innerAuraEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_innerAuraEntity->FUN_00411680(p_innerAuraTemplate->FUN_00411640());
+	m_innerAuraEntity->FUN_004116b0(p_innerAuraTemplate->FUN_00411660());
+	m_innerAuraEntity->FUN_00411700(p_innerAuraTemplate->FUN_004116e0());
+	m_innerAuraEntity->FUN_00411730(p_innerAuraTemplate->FUN_004116f0());
 
 	if (m_ownerRacer == NULL) {
-		GolVec3 position = p_unk0x14->m_unk0x00;
-		GolVec3 direction = p_unk0x14->m_unk0x0c;
+		GolVec3 position = p_target->m_position;
+		GolVec3 direction = p_target->m_direction;
 
 		GolWorldEntity* target = &m_worldEntity;
 		target->VTable0x08(position);
@@ -309,7 +309,7 @@ void RacePowerupManager::CurseAction::AdvanceState()
 		m_auraEntity->VTable0x08(position);
 		m_innerAuraEntity->VTable0x08(position);
 
-		GolVec3 up = record.m_unk0x24;
+		GolVec3 up = record.m_normal;
 		position.m_x += up.m_x * 13.0f;
 		position.m_y += up.m_y * 13.0f;
 		position.m_z += up.m_z * 13.0f;

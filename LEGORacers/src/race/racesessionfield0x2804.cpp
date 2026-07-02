@@ -10,30 +10,30 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x2804, 0x08)
 // FUNCTION: LEGORACERS 0x0045c340
 RacePowerupManager::TargetPointList::Entry::Entry()
 {
-	m_unk0x00.m_x = 0.0f;
-	m_unk0x00.m_y = 0.0f;
-	m_unk0x00.m_z = 0.0f;
-	m_unk0x0c = -1;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
+	m_index = -1;
 	m_flags0x10 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c360
 RacePowerupManager::TargetPointList::Entry::~Entry()
 {
-	m_unk0x0c = -1;
-	m_unk0x00.m_x = 0.0f;
-	m_unk0x00.m_y = 0.0f;
-	m_unk0x00.m_z = 0.0f;
+	m_index = -1;
+	m_position.m_x = 0.0f;
+	m_position.m_y = 0.0f;
+	m_position.m_z = 0.0f;
 	m_flags0x10 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c380
-void RacePowerupManager::TargetPointList::Entry::FUN_0045c380(GolVec3* p_unk0x04, LegoS32 p_unk0x08)
+void RacePowerupManager::TargetPointList::Entry::Set(GolVec3* p_position, LegoS32 p_index)
 {
-	m_unk0x00.m_x = p_unk0x04->m_x;
-	m_unk0x00.m_y = p_unk0x04->m_y;
-	m_unk0x00.m_z = p_unk0x04->m_z;
-	m_unk0x0c = p_unk0x08;
+	m_position.m_x = p_position->m_x;
+	m_position.m_y = p_position->m_y;
+	m_position.m_z = p_position->m_z;
+	m_index = p_index;
 	m_flags0x10 |= 3;
 }
 
@@ -51,7 +51,7 @@ RaceSession::Field0x2804::~Field0x2804()
 }
 
 // FUNCTION: LEGORACERS 0x0045c3d0
-void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
+void RaceSession::Field0x2804::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	GolFileParser* parser;
 	if (p_binary) {
@@ -69,7 +69,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 	}
 
 	parser->OpenFileForRead(p_name);
-	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+	parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TgbTxtParser::e_target));
 	m_count = parser->ReadBracketedCountAndLeftCurly();
 
 	if (!m_count) {
@@ -87,7 +87,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 	}
 
 	for (LegoU32 i = 0; i < m_count; i++) {
-		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
+		parser->AssertNextTokenIs(static_cast<GolFileParser::ParserTokenType>(TgbTxtParser::e_target));
 		parser->ReadLeftCurly();
 
 		GolVec3 position;
@@ -99,7 +99,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {
 			switch (token) {
-			case GolFileParser::e_unknown0x28:
+			case TgbTxtParser::e_position:
 				position.m_x = parser->ReadFloat();
 				position.m_y = parser->ReadFloat();
 				position.m_z = parser->ReadFloat();
@@ -107,7 +107,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 					position.m_y = -position.m_y;
 				}
 				break;
-			case GolFileParser::e_unknown0x29:
+			case TgbTxtParser::e_index:
 				index = parser->ReadInteger();
 				break;
 			default:
@@ -118,7 +118,7 @@ void RaceSession::Field0x2804::FUN_0045c3d0(const LegoChar* p_name, LegoBool32 p
 			token = parser->GetNextToken();
 		}
 
-		m_entries[i].FUN_0045c380(&position, index);
+		m_entries[i].Set(&position, index);
 	}
 
 	parser->ReadRightCurly();
@@ -141,11 +141,11 @@ void RaceSession::Field0x2804::Reset()
 
 // FUNCTION: LEGORACERS 0x0045c6a0
 RacePowerupManager::TargetPointList::Entry* RacePowerupManager::TargetPointList::FindTargetInCone(
-	GolVec3* p_unk0x04,
-	GolVec3* p_unk0x08,
-	LegoFloat p_unk0x0c,
-	LegoFloat p_unk0x10,
-	LegoFloat p_unk0x14
+	GolVec3* p_position,
+	GolVec3* p_direction,
+	LegoFloat p_minDistanceSquared,
+	LegoFloat p_maxDistanceSquared,
+	LegoFloat p_coneCosine
 )
 {
 	LegoFloat nearestDistanceSquared = FLT_MAX;
@@ -154,27 +154,27 @@ RacePowerupManager::TargetPointList::Entry* RacePowerupManager::TargetPointList:
 	for (LegoS32 i = 0; i < m_count; i++) {
 		Entry& entry = m_entries[i];
 
-		if (entry.m_flags0x10 & Entry::c_flags0x10Bit1) {
-			GolVec3 position = entry.m_unk0x00;
-			LegoFloat deltaX = position.m_x - p_unk0x04->m_x;
+		if (entry.m_flags0x10 & Entry::c_flagEnabled) {
+			GolVec3 position = entry.m_position;
+			LegoFloat deltaX = position.m_x - p_position->m_x;
 			GolVec2 deltaYZ;
-			deltaYZ.m_x = position.m_y - p_unk0x04->m_y;
-			deltaYZ.m_y = position.m_z - p_unk0x04->m_z;
+			deltaYZ.m_x = position.m_y - p_position->m_y;
+			deltaYZ.m_y = position.m_z - p_position->m_z;
 			LegoFloat distanceSquared = deltaYZ.m_y * deltaYZ.m_y + deltaYZ.m_x * deltaYZ.m_x + deltaX * deltaX;
 
-			if (distanceSquared >= p_unk0x0c && distanceSquared <= p_unk0x10) {
+			if (distanceSquared >= p_minDistanceSquared && distanceSquared <= p_maxDistanceSquared) {
 				GolVec3 delta;
 				delta.m_x = deltaX;
 				delta.m_y = deltaYZ.m_x;
 				delta.m_z = deltaYZ.m_y;
 				GolMath::NormalizeVector3(delta, &delta);
 
-				LegoFloat dotProduct = p_unk0x08->m_z;
+				LegoFloat dotProduct = p_direction->m_z;
 				dotProduct *= delta.m_z;
-				LegoFloat dotProductY = p_unk0x08->m_y;
+				LegoFloat dotProductY = p_direction->m_y;
 				dotProduct += dotProductY * delta.m_y;
-				dotProduct += delta.m_x * p_unk0x08->m_x;
-				if (dotProduct >= p_unk0x14 && distanceSquared < nearestDistanceSquared) {
+				dotProduct += delta.m_x * p_direction->m_x;
+				if (dotProduct >= p_coneCosine && distanceSquared < nearestDistanceSquared) {
 					resultIndex = i;
 					nearestDistanceSquared = distanceSquared;
 				}

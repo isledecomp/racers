@@ -16,95 +16,100 @@
 #include <float.h>
 #include <math.h>
 
-const LegoFloat g_unk0x004b1688 = 160000.0f;
+// GLOBAL: LEGORACERS 0x004b165c
+extern const LegoFloat g_missileFireSoundMinDistance = 30.0f;
 
-const LegoFloat g_unk0x004b1684 = 100.0f;
+// GLOBAL: LEGORACERS 0x004b1660
+extern const LegoFloat g_missileFireSoundMaxDistance = 300.0f;
 
-extern const LegoFloat g_unk0x004b165c;
+const LegoFloat g_missileTargetMaxDistanceSquared = 160000.0f;
 
-extern const LegoFloat g_unk0x004b1660;
+const LegoFloat g_missileTargetMinDistanceSquared = 100.0f;
 
 extern const LegoFloat g_scarNormalThreshold;
 
 // GLOBAL: LEGORACERS 0x004b1664
-const LegoFloat g_unk0x004b1664 = 200.0f;
+const LegoFloat g_missileExplodeSoundMinDistance = 200.0f;
 
 // GLOBAL: LEGORACERS 0x004b1668
-const LegoFloat g_unk0x004b1668 = 600.0f;
+const LegoFloat g_missileExplodeSoundMaxDistance = 600.0f;
 
 // GLOBAL: LEGORACERS 0x004b166c
-const LegoFloat g_unk0x004b166c = 170.0f;
+const LegoFloat g_missileSpeed = 170.0f;
 
 // GLOBAL: LEGORACERS 0x004b1670
-const LegoFloat g_unk0x004b1670 = -32.1759987f;
+const LegoFloat g_missileGravity = -32.1759987f;
 
 // GLOBAL: LEGORACERS 0x004b1674
-const LegoFloat g_unk0x004b1674 = 500.0f;
+const LegoFloat g_missileAimAheadDistance = 500.0f;
 
 // GLOBAL: LEGORACERS 0x004b1678
-const LegoFloat g_unk0x004b1678 = 4.0f;
+const LegoFloat g_missileLaunchHeight = 4.0f;
 
 // GLOBAL: LEGORACERS 0x004b168c
-const LegoFloat g_unk0x004b168c = 0.70709997f;
+const LegoFloat g_missileTargetConeCosine = 0.70709997f;
 
 // GLOBAL: LEGORACERS 0x004c1c64
-ColorRGBA g_unk0x004c1c64 = {0xff, 0xff, 0xff, 0xc8};
+ColorRGBA g_missileTrailColor = {0xff, 0xff, 0xff, 0xc8};
 
 // FUNCTION: LEGORACERS 0x00456430
 RacePowerupManager::HomingMissileAction::HomingMissileAction()
 {
 	m_activeProjectile = 0;
 	m_activeProjectile = &m_projectile;
-	m_unk0x21c = 0;
+	m_trail = 0;
 	m_projectile.m_unk0x0f4 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004564b0
 RacePowerupManager::HomingMissileAction::~HomingMissileAction()
 {
-	FUN_00456540();
+	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void RacePowerupManager::HomingMissileAction::Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08)
+void RacePowerupManager::HomingMissileAction::Initialize(
+	GolExport** p_golExportPtr,
+	RaceSessionField0x32b4* p_collisionWorld
+)
 {
 	if (m_state != 0) {
-		FUN_00456540();
+		Shutdown();
 	}
 
-	m_golExportPtr = p_unk0x04;
-	m_collisionWorld = p_unk0x08;
+	m_golExportPtr = p_golExportPtr;
+	m_collisionWorld = p_collisionWorld;
 	m_state = 1;
 }
 
 // FUNCTION: LEGORACERS 0x00456540
-void RacePowerupManager::HomingMissileAction::FUN_00456540()
+void RacePowerupManager::HomingMissileAction::Shutdown()
 {
 	Deactivate();
 	m_state = 0;
-	m_unk0x21c = 0;
+	m_trail = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00456560
 void RacePowerupManager::HomingMissileAction::Activate(
-	GolAnimatedEntity* p_unk0x04,
+	GolAnimatedEntity* p_missileTemplate,
 	GolAnimatedEntity*,
 	RaceState::Racer* p_racer,
-	LegoU32 p_unk0x10
+	LegoU32 p_missileIndex
 )
 {
-	m_state = 2;
+	m_state = c_stateArmed;
 	m_stateTimerMs = 3000;
-	m_unk0x220 = p_unk0x10;
+	m_missileIndex = p_missileIndex;
 	m_ownerRacer = p_racer;
 	m_targetRacer = NULL;
 
-	GolAnimatedEntity* projectile = &m_unk0x128;
+	GolAnimatedEntity* projectile = &m_missileEntity;
 	projectile->FUN_0040d550(
-		p_unk0x04->GetModel(0),
-		p_unk0x04->VTable0x58(0),
-		p_unk0x04->GetModelPart(0),
-		p_unk0x04->GetModelDistance(0)
+		p_missileTemplate->GetModel(0),
+		p_missileTemplate->VTable0x58(0),
+		p_missileTemplate->GetModelPart(0),
+		p_missileTemplate->GetModelDistance(0)
 	);
 
 	SoundVector position;
@@ -114,14 +119,21 @@ void RacePowerupManager::HomingMissileAction::Activate(
 
 	m_ownerRacer->m_unk0x3e8.m_unk0x13c->CopyOrientationTo(&projectile->GetOrientation());
 	projectile->SetFlags(projectile->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	projectile->FUN_0040dad0(p_unk0x10);
+	projectile->FUN_0040dad0(p_missileIndex);
 	projectile->SetFlags(projectile->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
 
-	m_soundSource->PlaySpatialSoundById(c_sound0x33, &position, g_unk0x004b165c, g_unk0x004b1660, 1.0f, 1.0f);
+	m_soundSource->PlaySpatialSoundById(
+		c_soundFire,
+		&position,
+		g_missileFireSoundMinDistance,
+		g_missileFireSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
 }
 
 // FUNCTION: LEGORACERS 0x00456680
-void RacePowerupManager::HomingMissileAction::FUN_00456680()
+void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 {
 	GolVec3 position;
 	{
@@ -134,29 +146,40 @@ void RacePowerupManager::HomingMissileAction::FUN_00456680()
 
 	RaceState* raceState = m_owner0x01c->m_raceState;
 	LegoU32 i = 0;
-	m_targetRacer = raceState->FUN_0043c6e0(&position, &direction, g_unk0x004b1684, g_unk0x004b1688, g_unk0x004b168c);
+	m_targetRacer = raceState->FUN_0043c6e0(
+		&position,
+		&direction,
+		g_missileTargetMinDistanceSquared,
+		g_missileTargetMaxDistanceSquared,
+		g_missileTargetConeCosine
+	);
 
-	for (; i < m_unk0x220; i++) {
+	for (; i < m_missileIndex; i++) {
 		if (m_targetRacer == NULL) {
 			break;
 		}
 
-		m_targetRacer =
-			raceState
-				->FUN_0043c7f0(m_targetRacer, &position, &direction, g_unk0x004b1684, g_unk0x004b1688, g_unk0x004b168c);
+		m_targetRacer = raceState->FUN_0043c7f0(
+			m_targetRacer,
+			&position,
+			&direction,
+			g_missileTargetMinDistanceSquared,
+			g_missileTargetMaxDistanceSquared,
+			g_missileTargetConeCosine
+		);
 	}
 
 	PowerupProjectile::Params projectileParams;
-	projectileParams.m_worldEntity = &m_unk0x128;
+	projectileParams.m_worldEntity = &m_missileEntity;
 	projectileParams.m_collisionWorld = m_collisionWorld;
-	projectileParams.m_gravity = g_unk0x004b1670;
+	projectileParams.m_gravity = g_missileGravity;
 	projectileParams.m_eventQueue = m_owner0x01c->m_raceState->GetEventQueue();
 	projectileParams.m_targetOffset.m_x = 0.0f;
 	projectileParams.m_targetOffset.m_y = 0.0f;
 	projectileParams.m_targetOffset.m_z = 0.0f;
-	projectileParams.m_speed = g_unk0x004b166c;
-	projectileParams.m_lifetimeMs = c_timer0x157c;
-	projectileParams.m_launchHeight = g_unk0x004b1678;
+	projectileParams.m_speed = g_missileSpeed;
+	projectileParams.m_lifetimeMs = c_flightTimeMs;
+	projectileParams.m_launchHeight = g_missileLaunchHeight;
 
 	if (m_targetRacer == NULL) {
 		GolVec3 velocity;
@@ -165,20 +188,20 @@ void RacePowerupManager::HomingMissileAction::FUN_00456680()
 		velocity.m_z = 0.0f;
 
 		GolVec3 scaledDirection;
-		scaledDirection.m_x = direction.m_x * g_unk0x004b1674;
-		scaledDirection.m_y = direction.m_y * g_unk0x004b1674;
-		scaledDirection.m_z = direction.m_z * g_unk0x004b1674;
+		scaledDirection.m_x = direction.m_x * g_missileAimAheadDistance;
+		scaledDirection.m_y = direction.m_y * g_missileAimAheadDistance;
+		scaledDirection.m_z = direction.m_z * g_missileAimAheadDistance;
 
 		GolVec3 target;
 		target.m_x = position.m_x + scaledDirection.m_x;
 		target.m_y = position.m_y + scaledDirection.m_y;
-		target.m_z = position.m_z + scaledDirection.m_z + g_unk0x004b1678;
+		target.m_z = position.m_z + scaledDirection.m_z + g_missileLaunchHeight;
 
-		if (m_unk0x220 == 0) {
+		if (m_missileIndex == 0) {
 			target.m_x += direction.m_y * 150.0f;
 			target.m_y += (-direction.m_x) * 150.0f;
 		}
-		else if (m_unk0x220 == 2) {
+		else if (m_missileIndex == 2) {
 			target.m_x += (-direction.m_y) * 150.0f;
 			target.m_y += direction.m_x * 150.0f;
 		}
@@ -200,13 +223,13 @@ void RacePowerupManager::HomingMissileAction::FUN_00456680()
 void RacePowerupManager::HomingMissileAction::Deactivate()
 {
 	m_projectile.Deactivate();
-	m_unk0x128.VTable0x54();
+	m_missileEntity.VTable0x54();
 	m_state = 1;
 	m_stateTimerMs = 0;
 
-	if (m_owner0x01c != NULL && m_unk0x21c != NULL) {
-		m_owner0x01c->m_trailManager->FUN_00493a10(m_unk0x21c);
-		m_unk0x21c = NULL;
+	if (m_owner0x01c != NULL && m_trail != NULL) {
+		m_owner0x01c->m_trailManager->FUN_00493a10(m_trail);
+		m_trail = NULL;
 	}
 }
 
@@ -216,25 +239,30 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 	GolVec3 direction;
 	GolVec3 up;
 
-	if (m_state == c_state0x02) {
-		m_unk0x128.VTable0x10(p_elapsedMs);
-		if (m_unk0x128.FUN_0040e360()) {
+	if (m_state == c_stateArmed) {
+		m_missileEntity.VTable0x10(p_elapsedMs);
+		if (m_missileEntity.FUN_0040e360()) {
 			AdvanceState();
 		}
 		else {
 			GolVec3 position;
 			RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
 			racerField->m_unk0x044->VTable0x04(&position);
-			m_unk0x128.VTable0x08(position);
-			m_unk0x128.CopyOrientationFrom(*m_ownerRacer->m_unk0x3e8.m_unk0x13c);
+			m_missileEntity.VTable0x08(position);
+			m_missileEntity.CopyOrientationFrom(*m_ownerRacer->m_unk0x3e8.m_unk0x13c);
 			return;
 		}
 	}
 
-	if (m_state == c_state0x03) {
-		m_unk0x128.VTable0x10(p_elapsedMs);
-		m_projectile
-			.UpdateTargeting(p_elapsedMs, m_owner0x01c->m_raceState, g_unk0x004b1684, g_unk0x004b1688, g_unk0x004b168c);
+	if (m_state == c_stateFlying) {
+		m_missileEntity.VTable0x10(p_elapsedMs);
+		m_projectile.UpdateTargeting(
+			p_elapsedMs,
+			m_owner0x01c->m_raceState,
+			g_missileTargetMinDistanceSquared,
+			g_missileTargetMaxDistanceSquared,
+			g_missileTargetConeCosine
+		);
 
 		LegoS32 projectileState = m_projectile.Update(p_elapsedMs);
 		if (projectileState != PowerupProjectile::c_stateFlying) {
@@ -252,8 +280,14 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 				OnHitRacer(target);
 			}
 			else {
-				m_soundSource
-					->PlaySpatialSoundById(c_sound0x32, &position, g_unk0x004b1664, g_unk0x004b1668, 1.0f, 1.0f);
+				m_soundSource->PlaySpatialSoundById(
+					c_soundExplode,
+					&position,
+					g_missileExplodeSoundMinDistance,
+					g_missileExplodeSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 			}
 
 			if (!skipBurst) {
@@ -280,14 +314,14 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_unk0x128.VTable0x48(&direction, &up);
+		m_missileEntity.VTable0x48(&direction, &up);
 		direction = m_projectile.m_direction;
-		m_unk0x128.VTable0x40(direction, up);
+		m_missileEntity.VTable0x40(direction, up);
 
 		GolVec3 position;
-		m_unk0x128.VTable0x04(&position);
+		m_missileEntity.VTable0x04(&position);
 
-		if (m_unk0x21c != NULL) {
+		if (m_trail != NULL) {
 			GolVec3 velocity;
 			m_projectile.GetVelocity(&velocity);
 
@@ -313,7 +347,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 				positions[3].m_y = positions[2].m_y;
 				positions[3].m_z = positions[1].m_z + 1.0f;
 
-				m_unk0x21c->FUN_00492ee0(p_elapsedMs, positions, position);
+				m_trail->FUN_00492ee0(p_elapsedMs, positions, position);
 			}
 		}
 	}
@@ -322,11 +356,11 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00456ce0
 void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_state == c_state0x02) {
-		p_renderer->VTable0x94(&m_unk0x128);
+	if (m_state == c_stateArmed) {
+		p_renderer->VTable0x94(&m_missileEntity);
 	}
-	else if (m_state == c_state0x03) {
-		GolSceneNode* node = m_unk0x128.VTable0x58(0);
+	else if (m_state == c_stateFlying) {
+		GolSceneNode* node = m_missileEntity.VTable0x58(0);
 		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
 
 		GolVec3 position;
@@ -346,7 +380,7 @@ void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_rendere
 		up.m_z = 1.0f;
 		transform->VTable0x28(&direction, &up);
 
-		p_renderer->VTable0x94(&m_unk0x128);
+		p_renderer->VTable0x94(&m_missileEntity);
 	}
 }
 
@@ -354,12 +388,12 @@ void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_rendere
 void RacePowerupManager::HomingMissileAction::AdvanceState()
 {
 	switch (m_state) {
-	case c_state0x02: {
-		m_state = c_state0x03;
-		m_stateTimerMs = c_timer0x157c;
-		m_unk0x128.VTable0x5c(0);
+	case c_stateArmed: {
+		m_state = c_stateFlying;
+		m_stateTimerMs = c_flightTimeMs;
+		m_missileEntity.VTable0x5c(0);
 
-		GolAnimatedEntity* animatedEntity = &m_unk0x128;
+		GolAnimatedEntity* animatedEntity = &m_missileEntity;
 		GolSceneNode* node = animatedEntity->VTable0x58(0);
 		GolTransformBase* transform = node->VTable0x18(c_transformNodeIndex1);
 
@@ -392,7 +426,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 		flags &= ~GolAnimatedEntity::c_flagPartAnimation;
 		animatedEntity->SetFlags(flags);
 
-		FUN_00456680();
+		LaunchProjectile();
 
 		RaceTrailManager::Trail::Params params;
 		params.m_unk0x04 = 4;
@@ -405,27 +439,27 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 		params.m_unk0x18 = 0.0f;
 
 		RaceTrailManager* trailManager = owner->m_trailManager;
-		m_unk0x21c = trailManager->FUN_004939b0(&params);
-		if (m_unk0x21c != NULL) {
-			m_unk0x21c->FUN_00492ab0(&g_unk0x004c1c64);
+		m_trail = trailManager->FUN_004939b0(&params);
+		if (m_trail != NULL) {
+			m_trail->FUN_00492ab0(&g_missileTrailColor);
 			DuskwindBananaRelic0x24* material = m_owner0x01c->m_renderer->FindMaterialByName("mslstrk");
 			if (material != NULL) {
-				m_unk0x21c->FUN_00492a90(m_owner0x01c->m_renderer, material);
+				m_trail->FUN_00492a90(m_owner0x01c->m_renderer, material);
 			}
 		}
 		break;
 	}
-	case c_state0x03:
-		m_state = c_state0x06;
+	case c_stateFlying:
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		m_projectile.CancelCollisionEvent();
-		if (m_unk0x21c != NULL) {
-			m_owner0x01c->m_trailManager->FUN_00493a10(m_unk0x21c);
-			m_unk0x21c = NULL;
+		if (m_trail != NULL) {
+			m_owner0x01c->m_trailManager->FUN_00493a10(m_trail);
+			m_trail = NULL;
 		}
 		break;
 	case c_state0x04:
-		m_state = c_state0x06;
+		m_state = c_stateDone;
 		m_stateTimerMs = 0;
 		break;
 	}
@@ -434,7 +468,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 // FUNCTION: LEGORACERS 0x00456fa0
 void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_racer)
 {
-	if (m_state == c_state0x03) {
+	if (m_state == c_stateFlying) {
 		if (p_racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
 			p_racer->PlayReaction(TRUE);
 			p_racer->AbsorbShieldHit();
@@ -456,7 +490,14 @@ void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_rac
 
 			SoundVector position;
 			p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
-			m_soundSource->PlaySpatialSoundById(c_sound0x32, &position, g_unk0x004b1664, g_unk0x004b1668, 1.0f, 1.0f);
+			m_soundSource->PlaySpatialSoundById(
+				c_soundExplode,
+				&position,
+				g_missileExplodeSoundMinDistance,
+				g_missileExplodeSoundMaxDistance,
+				1.0f,
+				1.0f
+			);
 		}
 	}
 }

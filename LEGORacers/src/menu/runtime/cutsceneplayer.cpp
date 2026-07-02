@@ -67,15 +67,15 @@ const LegoFloat g_crimsonPebbleEvent0x30DefaultFrequencyScale = 1.0f;
 // FUNCTION: LEGORACERS 0x00489970
 CutsceneAnimation::Entry::Entry()
 {
-	m_unk0x00 = 0;
-	m_unk0x04 = 0;
+	m_particle = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00489980
 CutsceneAnimation::Entry::~Entry()
 {
-	m_unk0x00 = 0;
-	m_unk0x04 = 0;
+	m_particle = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00489990
@@ -197,7 +197,7 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 	Runtime* runtime = static_cast<Runtime*>(GetName(p_param1));
 
 	LegoU32 refIndex = 0;
-	while (refIndex < sizeOfArray(m_unk0x014) && (m_unk0x014[refIndex].m_unk0x04 & CutsceneParticleRef::c_flagBit0)) {
+	while (refIndex < sizeOfArray(m_unk0x014) && (m_unk0x014[refIndex].m_flags & CutsceneParticleRef::c_flagInUse)) {
 		refIndex++;
 	}
 
@@ -222,8 +222,8 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 
 			if (runtime->IsOneShot()) {
 				CutsceneParticleRef* ref = &m_unk0x014[refIndex];
-				ref->m_unk0x04 |= CutsceneParticleRef::c_flagBit0;
-				ref->m_unk0x00 = currentParticle;
+				ref->m_flags |= CutsceneParticleRef::c_flagInUse;
+				ref->m_particle = currentParticle;
 				currentParticle->SetRef(ref);
 				return ref;
 			}
@@ -250,7 +250,7 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 
 	CutsceneParticleRef* oldRef = particle->GetRef();
 	if (oldRef != NULL) {
-		oldRef->m_unk0x00 = NULL;
+		oldRef->m_particle = NULL;
 	}
 
 	particle->FUN_004897a0();
@@ -265,8 +265,8 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 
 	if (runtime->IsOneShot()) {
 		CutsceneParticleRef* ref = &m_unk0x014[refIndex];
-		ref->m_unk0x04 |= CutsceneParticleRef::c_flagBit0;
-		ref->m_unk0x00 = particle;
+		ref->m_flags |= CutsceneParticleRef::c_flagInUse;
+		ref->m_particle = particle;
 		particle->SetRef(ref);
 		return ref;
 	}
@@ -277,23 +277,23 @@ CutsceneParticleRef* CutsceneAnimation::FUN_00489d70(
 // FUNCTION: LEGORACERS 0x00489f00
 void CutsceneAnimation::FUN_00489f00(CutsceneParticleRef* p_param)
 {
-	if (p_param->m_unk0x00) {
-		p_param->m_unk0x00->FUN_004897a0();
+	if (p_param->m_particle) {
+		p_param->m_particle->FUN_004897a0();
 	}
 
-	p_param->m_unk0x00 = NULL;
-	p_param->m_unk0x04 &= ~CutsceneParticleRef::c_flagBit0;
+	p_param->m_particle = NULL;
+	p_param->m_flags &= ~CutsceneParticleRef::c_flagInUse;
 }
 
 // FUNCTION: LEGORACERS 0x00489f30
 void CutsceneAnimation::FUN_00489f30(CutsceneParticleRef* p_param)
 {
-	if (p_param->m_unk0x00) {
-		p_param->m_unk0x00->FUN_004897c0();
+	if (p_param->m_particle) {
+		p_param->m_particle->FUN_004897c0();
 	}
 
-	p_param->m_unk0x00 = NULL;
-	p_param->m_unk0x04 &= ~CutsceneParticleRef::c_flagBit0;
+	p_param->m_particle = NULL;
+	p_param->m_flags &= ~CutsceneParticleRef::c_flagInUse;
 }
 
 // FUNCTION: LEGORACERS 0x00489f60
@@ -2438,11 +2438,11 @@ void CutsceneAnimationEvent::FUN_004a3df0(LegoU32)
 	if (m_unk0x18 && (m_unk0x48 & 8) && m_unk0x0c) {
 		CutsceneEvent::FUN_0049fe30(m_unk0x4c, &v0);
 		FUN_0049fec0(m_unk0x4c, &v1, &v2);
-		if (m_unk0x18->m_unk0x00) {
-			m_unk0x18->m_unk0x00->FUN_00489660(&v0);
+		if (m_unk0x18->m_particle) {
+			m_unk0x18->m_particle->FUN_00489660(&v0);
 		}
-		if (m_unk0x18->m_unk0x00) {
-			m_unk0x18->m_unk0x00->FUN_00489540(&v1, &v2);
+		if (m_unk0x18->m_particle) {
+			m_unk0x18->m_particle->FUN_00489540(&v1, &v2);
 		}
 	}
 }
@@ -2653,7 +2653,7 @@ void CutsceneStreamingSoundEvent::VTable0x14()
 			FUN_0049fe30(m_unk0x4c, &position);
 			m_unk0x0c->GetVelocity(&velocity);
 		}
-		else if (m_unk0x48 & c_flagBit0) {
+		else if (m_unk0x48 & c_flagInUse) {
 			position = m_unk0x3c;
 		}
 		else if (m_unk0x04 != NULL) {
@@ -2684,7 +2684,7 @@ void CutsceneStreamingSoundEvent::FUN_004a43a0(const GolVec3* p_position)
 		m_unk0x30->SetDistanceRange(minDistance, maxDistance);
 
 		m_unk0x48 &= ~c_flagBit3;
-		if (m_unk0x48 & c_flagBit0) {
+		if (m_unk0x48 & c_flagInUse) {
 			m_unk0x30->SetPosition(&m_unk0x3c);
 			return;
 		}

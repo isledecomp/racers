@@ -135,7 +135,7 @@ private:
 	};
 
 public:
-	class Field0x258;
+	class PlayerControls;
 	class Field0x23c;
 	class Field0x2804;
 	class Field0x32c4;
@@ -161,7 +161,7 @@ public:
 	};
 
 	// SIZE 0x74
-	class Field0x258 {
+	class PlayerControls {
 	public:
 		enum {
 			c_inputSlotCount = 9,
@@ -196,23 +196,23 @@ public:
 			virtual ~Field0x04();
 
 			// SYNTHETIC: LEGORACERS 0x00430870
-			// RaceSession::Field0x258::Field0x04::`scalar deleting destructor'
+			// RaceSession::PlayerControls::Field0x04::`scalar deleting destructor'
 
 			void FUN_00430c20();
 
 		private:
 			friend class RaceSession;
-			friend class Field0x258;
+			friend class PlayerControls;
 			friend class Field0x23c;
 
 			void FUN_004308a0();
-			Field0x258* FUN_004308d0(Field0x258* p_parent, InputDevice::Callback* p_fallback);
+			PlayerControls* FUN_004308d0(PlayerControls* p_parent, InputDevice::Callback* p_fallback);
 			LegoU32 FUN_004308f0(DirectInputDevice* p_source, undefined4 p_input, LegoU32 p_index);
 			undefined4 FUN_00430910(DirectInputDevice** p_source, LegoU32 p_index);
 			void FUN_00430930();
 			void FUN_00430980();
 
-			Field0x258* m_unk0x004;                          // 0x004
+			PlayerControls* m_unk0x004;                      // 0x004
 			undefined4 m_unk0x008[c_inputSlotCount];         // 0x008
 			DirectInputDevice* m_unk0x02c[c_inputSlotCount]; // 0x02c
 			InputDevice::Callback* m_unk0x050;               // 0x050
@@ -225,31 +225,31 @@ public:
 			LegoBool32 m_unk0x06c;                           // 0x06c
 		};
 
-		Field0x258();
-		~Field0x258();
+		PlayerControls();
+		~PlayerControls();
 
 	private:
 		friend class RaceSession;
 		friend class Field0x04;
 
-		void FUN_004300a0();
-		void FUN_004300d0(RaceState::Racer* p_racer, InputDevice::Callback* p_fallback);
-		void FUN_00430100();
-		void FUN_00430120(LegoU32 p_elapsedMs);
-		void FUN_00430390();
-		void FUN_00430530(LegoU32 p_elapsedMs);
-		void FUN_00430570(LegoBool32 p_enabled);
-		void FUN_00430590(LegoBool32 p_enabled);
-		void FUN_004305b0(LegoBool32 p_enabled);
-		void FUN_004305e0(LegoBool32 p_enabled);
-		void FUN_00430620(LegoBool32 p_enabled);
-		void FUN_00430650(LegoBool32 p_enabled);
-		void FUN_00430680(LegoBool32 p_enabled);
+		void Destroy();
+		void Initialize(RaceState::Racer* p_racer, InputDevice::Callback* p_fallback);
+		void Reset();
+		void UpdateSteering(LegoU32 p_elapsedMs);
+		void UpdateThrottle();
+		void Update(LegoU32 p_elapsedMs);
+		void OnSteerLeft(LegoBool32 p_enabled);
+		void OnSteerRight(LegoBool32 p_enabled);
+		void OnThrottle(LegoBool32 p_enabled);
+		void OnBrake(LegoBool32 p_enabled);
+		void OnUsePowerup(LegoBool32 p_enabled);
+		void OnCycleCamera(LegoBool32 p_enabled);
+		void OnCycleTrail(LegoBool32 p_enabled);
 		void FUN_004306b0(LegoBool32 p_enabled);
-		void FUN_004306d0(LegoBool32 p_enabled);
-		void FUN_00430710();
+		void OnLookBack(LegoBool32 p_enabled);
+		void TryStartBoost();
 		void FUN_00430760();
-		void FUN_00430790();
+		void TrackThrottleHold();
 		LegoS32 FUN_004307f0();
 
 		RaceState::Racer* m_unk0x000; // 0x000
@@ -277,7 +277,7 @@ public:
 		// RaceSession::Field0x23c::`scalar deleting destructor'
 
 		void FUN_00427980(DirectInputDevice* p_source, InputDevice::Callback* p_fallback);
-		void FUN_004279a0(Field0x258::Field0x04* p_sink);
+		void FUN_004279a0(PlayerControls::Field0x04* p_sink);
 		void FUN_004279c0();
 		void FUN_004279f0();
 		void FUN_00427b40();
@@ -287,11 +287,11 @@ public:
 
 		void FUN_00427960();
 
-		DirectInputDevice* m_unk0x04;        // 0x04
-		Field0x258::Field0x04* m_unk0x08[2]; // 0x08
-		LegoU32 m_unk0x10;                   // 0x10
-		InputDevice::Callback* m_unk0x14;    // 0x14
-		LegoBool32 m_unk0x18;                // 0x18
+		DirectInputDevice* m_unk0x04;            // 0x04
+		PlayerControls::Field0x04* m_unk0x08[2]; // 0x08
+		LegoU32 m_unk0x10;                       // 0x10
+		InputDevice::Callback* m_unk0x14;        // 0x14
+		LegoBool32 m_unk0x18;                    // 0x18
 	};
 
 	// SIZE 0x14
@@ -939,7 +939,7 @@ private:
 	InputManager* m_inputManager;                // 0x21c
 	InputEventQueue m_inputEvents;               // 0x220
 	Field0x23c m_unk0x23c;                       // 0x23c
-	Field0x258 m_playerControls[2];              // 0x258
+	PlayerControls m_playerControls[2];          // 0x258
 	RaceForceFeedback m_forceFeedback[2];        // 0x340
 	GolWorldDatabase* m_trackDatabase;           // 0x390
 	GolCollidableEntity* m_trackCollidable;      // 0x394

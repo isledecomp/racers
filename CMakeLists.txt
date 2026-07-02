@@ -326,7 +326,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/triggerworld.cpp
   LEGORacers/src/race/raceeventtabledispatch.cpp
   LEGORacers/src/race/racesessionfield0x32c4.cpp
-  LEGORacers/src/race/racesessionfield0x258.cpp
+  LEGORacers/src/race/playercontrols.cpp
   LEGORacers/src/race/racesessionfield0x3300.cpp
   LEGORacers/src/race/raceforcefeedback.cpp
   LEGORacers/src/race/powerups/racepowerupmanager.cpp

@@ -1497,16 +1497,16 @@ void RaceSession::FUN_004343e0()
 	}
 
 	if (playerCount > 0) {
-		Field0x258* field0x258 = session->m_playerControls;
+		PlayerControls* field0x258 = session->m_playerControls;
 		RaceState::Racer** racer = session->m_raceState.m_playerRacers;
 		LegoU32 playerIndex = 0;
 
 		do {
 			LegoBool32 bindingAcquired = FALSE;
-			Field0x258::Field0x04* inputSink = NULL;
+			PlayerControls::Field0x04* inputSink = NULL;
 
 			if (!session->m_unk0x3350) {
-				field0x258->FUN_004300d0(*racer, inputEvents);
+				field0x258->Initialize(*racer, inputEvents);
 				inputSink = &field0x258->m_unk0x004;
 			}
 
@@ -1661,11 +1661,11 @@ void RaceSession::FUN_004348a0()
 		source->Unacquire();
 	}
 
-	Field0x258* field0x258 = m_playerControls;
+	PlayerControls* field0x258 = m_playerControls;
 	RaceForceFeedback* field0x340 = m_forceFeedback;
 	for (LegoS32 i = 0; i < sizeOfArray(m_playerControls); i++) {
 		field0x340->Destroy();
-		field0x258->FUN_004300a0();
+		field0x258->Destroy();
 		field0x340++;
 		field0x258++;
 	}
@@ -1780,10 +1780,10 @@ void RaceSession::FUN_00434b00()
 
 	LegoU32 i = 0;
 	if (m_context->m_playerCount > 0) {
-		Field0x258* field0x258 = m_playerControls;
+		PlayerControls* field0x258 = m_playerControls;
 		do {
 			if (field0x258->m_unk0x000) {
-				field0x258->FUN_00430710();
+				field0x258->TryStartBoost();
 			}
 
 			i++;
@@ -2079,7 +2079,7 @@ void RaceSession::VTable0x30()
 			for (i = 0; i < m_context->m_playerCount; i++) {
 				LegoFloat unk0xa00 = m_raceState.m_playerRacers[i]->m_physics.m_forwardSpeed;
 				m_forceFeedback[i].Update(elapsedMs, unk0xa00);
-				m_playerControls[i].FUN_00430530(elapsedMs);
+				m_playerControls[i].Update(elapsedMs);
 			}
 		}
 
@@ -2623,7 +2623,7 @@ void RaceSession::FUN_00436010()
 {
 	LegoU32 playerIndex = 0;
 	if (m_context->m_playerCount > 0) {
-		Field0x258* field0x258 = m_playerControls;
+		PlayerControls* field0x258 = m_playerControls;
 		RaceForceFeedback* field0x340 = m_forceFeedback;
 
 		do {
@@ -2774,7 +2774,7 @@ void RaceSession::FUN_004362e0()
 		do {
 			RaceCameraController* field0x2ad4 = &m_cameraControllers[playerIndex];
 
-			m_playerControls[playerIndex].FUN_00430100();
+			m_playerControls[playerIndex].Reset();
 			m_forceFeedback[playerIndex].StopEngineEffect();
 			m_raceState.m_playerRacers[playerIndex]->SetCameraView(m_context->m_unk0x398, m_unk0x3354);
 			field0x2ad4->Update(1.0f);

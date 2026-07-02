@@ -45,7 +45,7 @@ void RaceSession::Field0x23c::FUN_00427980(DirectInputDevice* p_source, InputDev
 }
 
 // FUNCTION: LEGORACERS 0x004279a0
-void RaceSession::Field0x23c::FUN_004279a0(Field0x258::Field0x04* p_sink)
+void RaceSession::Field0x23c::FUN_004279a0(PlayerControls::Field0x04* p_sink)
 {
 	m_unk0x08[m_unk0x10] = p_sink;
 	m_unk0x10++;
@@ -80,7 +80,7 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyDown(
 		i = 0;
 		if (i < m_unk0x10) {
 			do {
-				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
+				for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
 					DirectInputDevice* source;
 					if (m_unk0x08[i]->FUN_00430910(&source, j) != p_input || source != m_unk0x04) {
 						continue;
@@ -126,7 +126,7 @@ InputDevice::Callback::ResultValue RaceSession::Field0x23c::OnKeyUp(
 		i = 0;
 		if (i < m_unk0x10) {
 			do {
-				for (LegoU32 j = 0; j < Field0x258::c_inputSlotCount; j++) {
+				for (LegoU32 j = 0; j < PlayerControls::c_inputSlotCount; j++) {
 					DirectInputDevice* source;
 					if (m_unk0x08[i]->FUN_00430910(&source, j) != p_input || source != m_unk0x04) {
 						continue;
@@ -163,7 +163,7 @@ void RaceSession::Field0x23c::FUN_00427b40()
 {
 	LegoU32 i = 0;
 	if (m_unk0x10 > 0) {
-		Field0x258::Field0x04** current = m_unk0x08;
+		PlayerControls::Field0x04** current = m_unk0x08;
 
 		do {
 			(*current)->FUN_00430c20();

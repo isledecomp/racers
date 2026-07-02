@@ -22,14 +22,14 @@ SplashCinematicScreen::~SplashCinematicScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00488410
-LegoBool32 SplashCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 SplashCinematicScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	Destroy();
 
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 1;
 
-	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -79,7 +79,7 @@ LegoBool32 SplashCinematicScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00488550
-void SplashCinematicScreen::VTable0x4c()
+void SplashCinematicScreen::CreateWidgets()
 {
 	switch (m_menuId) {
 	case c_menuN64Intro:
@@ -113,7 +113,7 @@ void SplashCinematicScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00488630
-void SplashCinematicScreen::VTable0x84()
+void SplashCinematicScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 	m_cursor->SetCursorEnabled(TRUE);
@@ -141,11 +141,11 @@ void SplashCinematicScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00488720
-LegoBool32 SplashCinematicScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 SplashCinematicScreen::Update(undefined4 p_unk0x04)
 {
 	if (m_menuId != c_menuLegoIntro) {
 		m_sceneWidget.m_unk0x2cc = 1;
 	}
 
-	return MenuSceneScreen::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::Update(p_unk0x04);
 }

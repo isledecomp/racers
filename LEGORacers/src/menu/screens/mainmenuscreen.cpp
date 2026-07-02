@@ -69,7 +69,7 @@ void MainMenuScreen::CreateDriverScene()
 }
 
 // FUNCTION: LEGORACERS 0x00480f20
-void MainMenuScreen::VTable0x4c()
+void MainMenuScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreateImage(&m_logoImage, 0x52, 0x52);
@@ -88,7 +88,7 @@ void MainMenuScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00481000
-LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 MainMenuScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, 0);
@@ -102,7 +102,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		FUN_00480470(p_context, 0, TRUE);
 	}
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -183,7 +183,7 @@ void MainMenuScreen::OnIconUnfocused(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x004812c0
-void MainMenuScreen::VTable0x84()
+void MainMenuScreen::Navigate()
 {
 	if (m_unk0x360 && m_unk0x360 != 0xffff) {
 		m_context->m_menuStack.Push(m_unk0x360);
@@ -237,7 +237,7 @@ LegoBool32 MainMenuScreen::HandleKeyUp(MenuWidget* p_icon, InputEventQueue::Even
 }
 
 // FUNCTION: LEGORACERS 0x00481450
-LegoBool32 MainMenuScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 MainMenuScreen::Update(undefined4 p_elapsed)
 {
 	if (p_elapsed > m_idleAnimTimerMs) {
 		m_idleAnimTimerMs = 0;
@@ -288,7 +288,7 @@ LegoBool32 MainMenuScreen::VTable0x78(undefined4 p_elapsed)
 		m_unk0x364 = TRUE;
 	}
 
-	LegoBool32 result = MenuGameScreen::VTable0x78(p_elapsed);
+	LegoBool32 result = MenuGameScreen::Update(p_elapsed);
 	if (!m_unk0x360) {
 		return TRUE;
 	}

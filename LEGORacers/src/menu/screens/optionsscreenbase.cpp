@@ -109,7 +109,7 @@ void OptionsScreenBase::FUN_00483030()
 }
 
 // FUNCTION: LEGORACERS 0x004831a0
-void OptionsScreenBase::VTable0x4c()
+void OptionsScreenBase::CreateWidgets()
 {
 	FUN_00482e00();
 	FUN_00482e40();
@@ -119,11 +119,11 @@ void OptionsScreenBase::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x004831d0
-LegoBool32 OptionsScreenBase::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 OptionsScreenBase::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	m_unk0x370 = &p_context->m_saveSystem.GetGameState();
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -135,7 +135,7 @@ LegoBool32 OptionsScreenBase::VTable0x8c(MenuGameContext* p_context, MenuScreenC
 }
 
 // FUNCTION: LEGORACERS 0x00483220
-void OptionsScreenBase::VTable0x84()
+void OptionsScreenBase::Navigate()
 {
 	switch (m_unk0x360) {
 	case 2:
@@ -364,7 +364,7 @@ void OptionsScreenBase::VTable0xa4()
 }
 
 // FUNCTION: LEGORACERS 0x004838e0
-LegoBool32 OptionsScreenBase::VTable0x78(undefined4 p_elapsed)
+LegoBool32 OptionsScreenBase::Update(undefined4 p_elapsed)
 {
 	if (m_unk0x369 != m_unk0x368 && !(m_unk0x35c->GetUnk0x54() & 1)) {
 		VTable0xa4();
@@ -373,11 +373,11 @@ LegoBool32 OptionsScreenBase::VTable0x78(undefined4 p_elapsed)
 	if (m_unk0x368 == 0) {
 		if (m_inputManager->GetJoystickCount() <= 1 && !m_inputManager->IsKeyboardAvailable()) {
 			m_unk0xd18.Disable(5);
-			return MenuGameScreen::VTable0x78(p_elapsed);
+			return MenuGameScreen::Update(p_elapsed);
 		}
 
 		m_unk0xd18.Enable(5);
 	}
 
-	return MenuGameScreen::VTable0x78(p_elapsed);
+	return MenuGameScreen::Update(p_elapsed);
 }

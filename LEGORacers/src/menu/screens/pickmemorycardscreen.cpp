@@ -20,20 +20,20 @@ PickMemoryCardScreen::~PickMemoryCardScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00484960
-void PickMemoryCardScreen::VTable0x4c()
+void PickMemoryCardScreen::CreateWidgets()
 {
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 }
 
 // FUNCTION: LEGORACERS 0x00484980
-LegoBool32 PickMemoryCardScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 PickMemoryCardScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
 	m_cursor->SetCursorEnabled(FALSE);
-	MenuGameScreen::VTable0x80();
+	MenuGameScreen::SetupLighting();
 	return TRUE;
 }
 
@@ -94,7 +94,7 @@ void PickMemoryCardScreen::OnIconUnfocused(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00484b50
-void PickMemoryCardScreen::VTable0x84()
+void PickMemoryCardScreen::Navigate()
 {
 	switch (m_unk0x360) {
 	case 15:
@@ -118,10 +118,10 @@ void PickMemoryCardScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00484be0
-LegoBool32 PickMemoryCardScreen::VTable0x78(undefined4 p_arg)
+LegoBool32 PickMemoryCardScreen::Update(undefined4 p_arg)
 {
 	m_context->m_modelBuilder.SetUnk0x84(0);
 	m_unk0x360 = 15;
 	m_unk0x364 = TRUE;
-	return MenuGameScreen::VTable0x78(p_arg);
+	return MenuGameScreen::Update(p_arg);
 }

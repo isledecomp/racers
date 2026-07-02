@@ -127,7 +127,7 @@ void MenuDialog::FUN_00468d20()
 void MenuDialog::FUN_00468da0(LegoU32 p_elapsedMs)
 {
 	if (m_unk0x9c) {
-		if (!m_entries[m_unk0x9c - 1].VTable0x78(p_elapsedMs)) {
+		if (!m_entries[m_unk0x9c - 1].Update(p_elapsedMs)) {
 			m_unk0xa0 = m_entries[m_unk0x9c - 1].GetUnk0x2c0();
 			FUN_00468d20();
 		}

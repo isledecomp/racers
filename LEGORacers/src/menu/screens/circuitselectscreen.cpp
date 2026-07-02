@@ -24,13 +24,13 @@ CircuitSelectScreen::~CircuitSelectScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00479b10
-LegoBool32 CircuitSelectScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 CircuitSelectScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
 	}
 
-	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -88,7 +88,7 @@ LegoBool32 CircuitSelectScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00479c40
-void CircuitSelectScreen::VTable0x4c()
+void CircuitSelectScreen::CreateWidgets()
 {
 	struct ResourcePathLocals {
 		LegoChar m_name[12];
@@ -109,7 +109,7 @@ void CircuitSelectScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00479d10
-void CircuitSelectScreen::VTable0x84()
+void CircuitSelectScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 
@@ -123,8 +123,8 @@ void CircuitSelectScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
-LegoBool32 CircuitSelectScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 CircuitSelectScreen::Update(undefined4 p_unk0x04)
 {
 	m_sceneWidget.m_unk0x2cc = TRUE;
-	return MenuSceneScreen::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::Update(p_unk0x04);
 }

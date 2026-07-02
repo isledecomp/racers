@@ -34,10 +34,10 @@ void CircuitRaceScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00479f70
-void CircuitRaceScreen::VTable0x4c()
+void CircuitRaceScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
-	SingleRaceSelectBase::VTable0x4c();
+	SingleRaceSelectBase::CreateWidgets();
 
 	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x0d);
 	m_infoLabel.WrapText(0x14);
@@ -51,9 +51,9 @@ void CircuitRaceScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047a040
-LegoBool32 CircuitRaceScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 CircuitRaceScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!SingleRaceSelectBase::VTable0x8c(p_context, p_createParams)) {
+	if (!SingleRaceSelectBase::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -128,7 +128,7 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 }
 
 // FUNCTION: LEGORACERS 0x0047a250
-void CircuitRaceScreen::VTable0x84()
+void CircuitRaceScreen::Navigate()
 {
 	if (m_transition && m_transition->IsActive()) {
 		m_context->m_menuAnimations.Deactivate(m_transition);
@@ -186,7 +186,7 @@ void CircuitRaceScreen::UpdateRacePreview()
 }
 
 // FUNCTION: LEGORACERS 0x0047a3f0
-LegoBool32 CircuitRaceScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 CircuitRaceScreen::Update(undefined4 p_elapsed)
 {
 	if (m_transition && !m_transition->IsActive()) {
 		m_transition = NULL;
@@ -210,7 +210,7 @@ LegoBool32 CircuitRaceScreen::VTable0x78(undefined4 p_elapsed)
 		m_transition = m_context->m_menuAnimations.Activate(250, FALSE, NULL, rectSource);
 	}
 
-	LegoBool32 result = MenuSceneScreen::VTable0x78(p_elapsed);
+	LegoBool32 result = MenuSceneScreen::Update(p_elapsed);
 	if (m_previewChanged) {
 		if (m_transition && m_transition->IsActive()) {
 			m_context->m_menuAnimations.Deactivate(m_transition);

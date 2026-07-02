@@ -46,7 +46,7 @@ void MenuDialog::DialogScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004682c0
-void MenuDialog::DialogScreen::VTable0x4c()
+void MenuDialog::DialogScreen::CreateWidgets()
 {
 	CreateFrame(&m_unk0x2cc, 0x11f, 0x47);
 	CreateTextLabel(&m_unk0x6c8, 0x120, 0x37, m_unk0x2ac);
@@ -301,13 +301,13 @@ LegoBool32 MenuDialog::DialogScreen::HandleKeyUp(MenuWidget*, InputEventQueue::E
 }
 
 // FUNCTION: LEGORACERS 0x00468840
-LegoBool32 MenuDialog::DialogScreen::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
+LegoBool32 MenuDialog::DialogScreen::Draw(Rect* p_arg1, Rect* p_arg2)
 {
-	return MenuScreen::VTable0x7c(p_arg1, p_arg2);
+	return MenuScreen::Draw(p_arg1, p_arg2);
 }
 
 // FUNCTION: LEGORACERS 0x00468860
-LegoBool32 MenuDialog::DialogScreen::VTable0x78(undefined4 p_elapsedMs)
+LegoBool32 MenuDialog::DialogScreen::Update(undefined4 p_elapsedMs)
 {
 	LegoFloat scale = 1.0f;
 
@@ -378,7 +378,7 @@ LegoBool32 MenuDialog::DialogScreen::VTable0x78(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-undefined4 MenuDialog::DialogScreen::VTable0x50()
+undefined4 MenuDialog::DialogScreen::ShouldLoadResources()
 {
 	return 0;
 }

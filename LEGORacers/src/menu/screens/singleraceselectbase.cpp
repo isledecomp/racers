@@ -64,7 +64,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00488970
-void SingleRaceSelectBase::VTable0x4c()
+void SingleRaceSelectBase::CreateWidgets()
 {
 	LegoS32 optionCount = 3 + ((m_menuId != 0x1d) ? 4 : 0);
 
@@ -104,12 +104,12 @@ void SingleRaceSelectBase::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00488ac0
-LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 SingleRaceSelectBase::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	m_circuitEntry = NULL;
 
 	p_context->m_carBuildModel.FUN_00499f00();
-	LegoBool32 result = MenuSceneScreen::VTable0x8c(p_context, p_createParams);
+	LegoBool32 result = MenuSceneScreen::Initialize(p_context, p_createParams);
 	if (!result) {
 		return result;
 	}

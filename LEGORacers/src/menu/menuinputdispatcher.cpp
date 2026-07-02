@@ -403,7 +403,7 @@ void MenuInputDispatcher::DrawCursor()
 	rect2.m_right = rect1.m_right = m_drawState->m_width;
 	rect2.m_bottom = rect1.m_bottom = m_drawState->m_height;
 
-	if (m_activeScreen->VTable0x7c(&rect2, &rect1)) {
+	if (m_activeScreen->Draw(&rect2, &rect1)) {
 		m_cursor.Draw();
 	}
 }

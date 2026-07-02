@@ -51,16 +51,16 @@ void GarageScreen::CreateEditButtons()
 }
 
 // FUNCTION: LEGORACERS 0x0047e650
-void GarageScreen::VTable0x4c()
+void GarageScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
-	RacerPickScreenBase::VTable0x4c();
+	RacerPickScreenBase::CreateWidgets();
 	CreateMainButtons();
 	CreateEditButtons();
 }
 
 // FUNCTION: LEGORACERS 0x0047e680
-LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 GarageScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!FUN_00480440(p_context)) {
 		FUN_00480470(p_context, TRUE, TRUE);
@@ -88,7 +88,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 		return FALSE;
 	}
 
-	VTable0x80();
+	SetupLighting();
 	ShowMainButtons();
 	return TRUE;
 }
@@ -251,7 +251,7 @@ void GarageScreen::StartTestDrive()
 }
 
 // FUNCTION: LEGORACERS 0x0047ec00
-void GarageScreen::VTable0x84()
+void GarageScreen::Navigate()
 {
 	switch (m_unk0x360) {
 	case c_menuGarage:
@@ -391,7 +391,7 @@ void GarageScreen::ApplyPageChange()
 }
 
 // FUNCTION: LEGORACERS 0x0047f030
-LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 GarageScreen::Update(undefined4 p_elapsed)
 {
 	if (m_nextPage != m_page && !(m_unk0x35c->GetUnk0x54() & 1)) {
 		ApplyPageChange();
@@ -407,5 +407,5 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		}
 	}
 
-	return RacerModelScreenBase::VTable0x78(p_elapsed);
+	return RacerModelScreenBase::Update(p_elapsed);
 }

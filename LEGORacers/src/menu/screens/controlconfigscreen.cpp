@@ -65,7 +65,7 @@ void ControlConfigScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0047a860
-void ControlConfigScreen::VTable0x4c()
+void ControlConfigScreen::CreateWidgets()
 {
 	LegoU16 idBase = m_unk0x3a4 + 0x17;
 
@@ -126,14 +126,14 @@ void ControlConfigScreen::FUN_0047a930()
 }
 
 // FUNCTION: LEGORACERS 0x0047aaa0
-LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 ControlConfigScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (p_createParams->m_menuId == 0x0b) {
 		m_unk0x3a4 = 1;
 	}
 
 	p_createParams->m_menuId = 9;
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -149,13 +149,13 @@ LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 
 	m_unk0x780.SetSelection(m_unk0x3a0);
 	m_unk0x144c[0].Select(4);
-	VTable0x78(0);
+	Update(0);
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047ab60
-void ControlConfigScreen::VTable0x84()
+void ControlConfigScreen::Navigate()
 {
 	m_context->m_saveSystem.GetGameState().SelectInputBinding(m_unk0x3a4, m_unk0x37c[m_unk0x3a0]);
 	m_context->m_menuStack.Pop();
@@ -284,7 +284,7 @@ void ControlConfigScreen::FUN_0047adb0()
 }
 
 // FUNCTION: LEGORACERS 0x0047aeb0
-LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_source)
+LegoBool32 ControlConfigScreen::Update(undefined4 p_source)
 {
 	FUN_0047adb0();
 
@@ -297,5 +297,5 @@ LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_source)
 		m_unk0x144c[1].Disable(0);
 	}
 
-	return MenuGameScreen::VTable0x78(p_source);
+	return MenuGameScreen::Update(p_source);
 }

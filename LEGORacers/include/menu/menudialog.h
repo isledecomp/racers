@@ -50,13 +50,13 @@ public:
 		LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4,
 							   undefined4) override;                // vtable+0x1c
 		void OnIconUnfocused(MenuWidget*) override;                 // vtable+0x38
-		void VTable0x4c() override;                                 // vtable+0x4c
-		undefined4 VTable0x50() override;                           // vtable+0x50
+		void CreateWidgets() override;                                 // vtable+0x4c
+		undefined4 ShouldLoadResources() override;                           // vtable+0x50
 		void Reset() override;                                      // vtable+0x54
 		MenuStyleTable* GetMenuStyles() override;                   // vtable+0x5c
 		MenuInputBindingTable* GetMenuInputBindings() override;     // vtable+0x64
-		LegoBool32 VTable0x78(undefined4 p_elapsedMs) override;     // vtable+0x78
-		LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2) override; // vtable+0x7c
+		LegoBool32 Update(undefined4 p_elapsedMs) override;     // vtable+0x78
+		LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2) override; // vtable+0x7c
 
 		// SYNTHETIC: LEGORACERS 0x00468bf0
 		// MenuDialog::DialogScreen::`vector deleting destructor'

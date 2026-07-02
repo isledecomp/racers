@@ -19,7 +19,7 @@ public:
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void Reset() override;                                                     // vtable+0x54
 	~OptionsScreen() override;                                                 // vtable+0x68
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 	void VTable0x98() override;                                                // vtable+0x98
 	void VTable0x9c() override;                                                // vtable+0x9c
 	void VTable0xa0() override;                                                // vtable+0xa0

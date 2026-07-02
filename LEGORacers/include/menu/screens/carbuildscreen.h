@@ -22,11 +22,11 @@ public:
 	void OnIconFocused(MenuIcon*) override;                                                          // vtable+0x34
 	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
-	void VTable0x4c() override;                                                                      // vtable+0x4c
+	void CreateWidgets() override;                                                                      // vtable+0x4c
 	void Reset() override;                                                                           // vtable+0x54
 	~CarBuildScreen() override;                                                                      // vtable+0x68
-	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
+	LegoBool32 Update(undefined4) override;                                                      // vtable+0x78
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
 	GolString* GetHelpString(undefined4) override;                                                   // vtable+0x98
 	GolFont* GetHelpFont(undefined4) override;                                                       // vtable+0x9c
 	void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override;                          // vtable+0xa0

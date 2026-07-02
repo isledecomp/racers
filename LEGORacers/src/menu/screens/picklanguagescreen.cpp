@@ -19,7 +19,7 @@ PickLanguageScreen::~PickLanguageScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00484510
-void PickLanguageScreen::VTable0x4c()
+void PickLanguageScreen::CreateWidgets()
 {
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 	CreateTextLabel(&m_unk0x3c4, 0x3a, 0x3a, 0x9c);
@@ -36,10 +36,10 @@ void PickLanguageScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x004845c0
-LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 PickLanguageScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	LegoU32 languageIndex = p_context->m_saveSystem.GetLanguageIndex();
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -70,7 +70,7 @@ void PickLanguageScreen::OnIconUnfocused(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00484680
-void PickLanguageScreen::VTable0x84()
+void PickLanguageScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 	m_context->m_menuStack.Push(c_menuSaveAll);

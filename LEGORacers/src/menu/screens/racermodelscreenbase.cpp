@@ -196,7 +196,7 @@ void RacerModelScreenBase::CreateModelSlots()
 }
 
 // FUNCTION: LEGORACERS 0x00485f70
-void RacerModelScreenBase::VTable0x4c()
+void RacerModelScreenBase::CreateWidgets()
 {
 	if (g_hashTable != NULL) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\RS_SET");
@@ -220,7 +220,7 @@ void RacerModelScreenBase::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00486020
-void RacerModelScreenBase::VTable0x80()
+void RacerModelScreenBase::SetupLighting()
 {
 	ColorRGBA materialColor;
 	ColorRGBA lightColor;
@@ -256,7 +256,7 @@ LegoBool32 RacerModelScreenBase::Initialize(
 
 	OpenRecordCursors(p_context, p_params[2]);
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -517,7 +517,7 @@ void RacerModelScreenBase::PlayRandomNamedAnimation(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004869b0
-LegoBool32 RacerModelScreenBase::VTable0x88()
+LegoBool32 RacerModelScreenBase::CanNavigate()
 {
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (!(m_driverEntities[i].GetFlags() & 0x10000)) {
@@ -533,7 +533,7 @@ LegoBool32 RacerModelScreenBase::VTable0x88()
 }
 
 // FUNCTION: LEGORACERS 0x00486a00
-LegoBool32 RacerModelScreenBase::VTable0x78(undefined4 p_elapsed)
+LegoBool32 RacerModelScreenBase::Update(undefined4 p_elapsed)
 {
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		LegoS32 modelIndex = m_slotModelToggle[i] + (m_modelsPerSlot * i);
@@ -564,5 +564,5 @@ LegoBool32 RacerModelScreenBase::VTable0x78(undefined4 p_elapsed)
 	}
 
 	AlignCarSlots();
-	return MenuGameScreen::VTable0x78(p_elapsed);
+	return MenuGameScreen::Update(p_elapsed);
 }

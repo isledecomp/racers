@@ -19,13 +19,13 @@ public:
 	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
 	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
 	void OnIconUnfocused(MenuWidget*) override;                                                      // vtable+0x38
-	void VTable0x4c() override;                                                                      // vtable+0x4c
+	void CreateWidgets() override;                                                                      // vtable+0x4c
 	void Reset() override;                                                                           // vtable+0x54
 	~MainMenuScreen() override;                                                                      // vtable+0x68
 	LegoBool32 Destroy() override;                                                                   // vtable+0x74
-	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
-	void VTable0x84() override;                                                                      // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
+	LegoBool32 Update(undefined4) override;                                                      // vtable+0x78
+	void Navigate() override;                                                                      // vtable+0x84
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override;                       // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00480cb0
 	//  MainMenuScreen::`scalar deleting destructor'

@@ -89,7 +89,7 @@ LegoBool32 EditDriverScreen::CreateRacerCarousel(
 	createParams.m_viewportIndex = m_nextViewportIndex++;
 	createParams.m_headBuilder = &m_headBuilder;
 	createParams.m_partType = p_category;
-	createParams.m_aspectScale = VTable0x6c();
+	createParams.m_aspectScale = GetAspectScale();
 	return p_widget->Create(&createParams, styleEntry);
 }
 
@@ -121,7 +121,7 @@ void EditDriverScreen::CreateDriverScene()
 }
 
 // FUNCTION: LEGORACERS 0x0047d2f0
-void EditDriverScreen::VTable0x4c()
+void EditDriverScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreateRacerCarousel(&m_cosmeticCarousels[0], 0xcd, 0x3b, 0);
@@ -148,13 +148,13 @@ void EditDriverScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047d460
-LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 EditDriverScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (!p_context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(p_context, FALSE);
 	}
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -315,7 +315,7 @@ void EditDriverScreen::RemoveSelectedRecord()
 }
 
 // FUNCTION: LEGORACERS 0x0047d9a0
-LegoBool32 EditDriverScreen::VTable0x88()
+LegoBool32 EditDriverScreen::CanNavigate()
 {
 	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 
@@ -323,7 +323,7 @@ LegoBool32 EditDriverScreen::VTable0x88()
 }
 
 // FUNCTION: LEGORACERS 0x0047d9d0
-void EditDriverScreen::VTable0x84()
+void EditDriverScreen::Navigate()
 {
 	switch (m_unk0x360) {
 	case 0x10:
@@ -476,11 +476,11 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047de30
-LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_source)
+LegoBool32 EditDriverScreen::Update(undefined4 p_source)
 {
 	if (!m_unk0x364 && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
 		PlayNextAnimation();
 	}
 
-	return MenuGameScreen::VTable0x78(p_source);
+	return MenuGameScreen::Update(p_source);
 }

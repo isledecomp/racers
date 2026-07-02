@@ -164,7 +164,7 @@ void CarBuildScreenBase::SuppressTooltip()
 }
 
 // FUNCTION: LEGORACERS 0x00474f40
-LegoBool32 CarBuildScreenBase::VTable0x78(undefined4 p_elapsed)
+LegoBool32 CarBuildScreenBase::Update(undefined4 p_elapsed)
 {
 	if (m_quickShowMs) {
 		m_quickShowMs += p_elapsed;
@@ -182,7 +182,7 @@ LegoBool32 CarBuildScreenBase::VTable0x78(undefined4 p_elapsed)
 				m_hoverMs = 3000;
 				ShowTooltip(m_hoverIcon);
 				m_wasVisible = TRUE;
-				return MenuGameScreen::VTable0x78(p_elapsed);
+				return MenuGameScreen::Update(p_elapsed);
 			}
 		}
 		else if (m_tooltipMs > 0) {
@@ -190,7 +190,7 @@ LegoBool32 CarBuildScreenBase::VTable0x78(undefined4 p_elapsed)
 
 			if (m_tooltipMs > 20000) {
 				SuppressTooltip();
-				return MenuGameScreen::VTable0x78(p_elapsed);
+				return MenuGameScreen::Update(p_elapsed);
 			}
 		}
 	}
@@ -198,13 +198,13 @@ LegoBool32 CarBuildScreenBase::VTable0x78(undefined4 p_elapsed)
 		HideTooltip();
 	}
 
-	return MenuGameScreen::VTable0x78(p_elapsed);
+	return MenuGameScreen::Update(p_elapsed);
 }
 
 // STUB: LEGORACERS 0x00475010
-LegoBool32 CarBuildScreenBase::VTable0x7c(Rect* p_clipRect, Rect* p_sourceRect)
+LegoBool32 CarBuildScreenBase::Draw(Rect* p_clipRect, Rect* p_sourceRect)
 {
-	LegoBool32 result = MenuScreen::VTable0x7c(p_clipRect, p_sourceRect);
+	LegoBool32 result = MenuScreen::Draw(p_clipRect, p_sourceRect);
 
 	if (m_tooltipMs <= 0) {
 		return result;

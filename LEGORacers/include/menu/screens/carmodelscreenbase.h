@@ -159,13 +159,13 @@ public:
 	void OnCarouselSettled(MenuWidget*) override;    // vtable+0x10
 	void OnIconUnfocused(MenuWidget*) override;      // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override; // vtable+0x44
-	void VTable0x4c() override;                      // vtable+0x4c
+	void CreateWidgets() override;                      // vtable+0x4c
 	void Reset() override;                           // vtable+0x54
 	~CarModelScreenBase() override;                  // vtable+0x68
-	LegoBool32 VTable0x78(undefined4) override;      // vtable+0x78
-	void VTable0x80() override;                      // vtable+0x80
-	void VTable0x84() override;                      // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*,
+	LegoBool32 Update(undefined4) override;      // vtable+0x78
+	void SetupLighting() override;                      // vtable+0x80
+	void Navigate() override;                      // vtable+0x84
+	LegoBool32 Initialize(MenuGameContext*,
 						  MenuScreenCreateParams*) override;                    // vtable+0x8c
 	GolString* GetHelpString(undefined4) override = 0;                          // vtable+0x98
 	GolFont* GetHelpFont(undefined4) override = 0;                              // vtable+0x9c

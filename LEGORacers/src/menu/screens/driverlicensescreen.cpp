@@ -95,7 +95,7 @@ void DriverLicenseScreen::FUN_0047b220()
 }
 
 // FUNCTION: LEGORACERS 0x0047b300
-void DriverLicenseScreen::VTable0x4c()
+void DriverLicenseScreen::CreateWidgets()
 {
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 	CreateImage(&m_unk0x3e4, 0xd6, 0xd6);
@@ -136,14 +136,14 @@ void DriverLicenseScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047b470
-LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 DriverLicenseScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	MenuGameContext* context = p_context;
 	if (!context->m_modelBuilder.HasMenuResources()) {
 		FUN_00480210(context, FALSE);
 	}
 
-	if (!MenuGameScreen::VTable0x8c(context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -258,7 +258,7 @@ void DriverLicenseScreen::FUN_0047b750()
 }
 
 // FUNCTION: LEGORACERS 0x0047b7f0
-void DriverLicenseScreen::VTable0x84()
+void DriverLicenseScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 

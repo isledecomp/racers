@@ -24,9 +24,9 @@ void RacerPickScreenBase::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00488ed0
-void RacerPickScreenBase::VTable0x4c()
+void RacerPickScreenBase::CreateWidgets()
 {
-	RacerModelScreenBase::VTable0x4c();
+	RacerModelScreenBase::CreateWidgets();
 
 	LegoS32 i;
 

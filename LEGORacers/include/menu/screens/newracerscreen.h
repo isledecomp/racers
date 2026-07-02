@@ -14,11 +14,11 @@ public:
 	NewRacerScreen();
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
-	void VTable0x4c() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                                // vtable+0x4c
 	~NewRacerScreen() override;                                                // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	void VTable0x84() override;                                                // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
+	void Navigate() override;                                                // vtable+0x84
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00482070
 	// NewRacerScreen::`scalar deleting destructor'

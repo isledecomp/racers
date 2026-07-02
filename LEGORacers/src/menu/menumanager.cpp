@@ -463,7 +463,7 @@ void MenuManager::OpenScreen(LegoU16 p_menuId)
 
 	m_activeScreen = m_screenFactory.CreateScreen(p_menuId);
 	m_inputDispatcher.SetActiveScreen(m_activeScreen);
-	m_activeScreen->VTable0x8c(&m_gameContext, &m_screenCreateParams);
+	m_activeScreen->Initialize(&m_gameContext, &m_screenCreateParams);
 }
 
 // FUNCTION: LEGORACERS 0x0042d510
@@ -501,7 +501,7 @@ void MenuManager::Run()
 				m_dialog.FUN_00468da0(frameDeltaMs);
 			}
 			else {
-				if (m_activeScreen->VTable0x78(frameDeltaMs)) {
+				if (m_activeScreen->Update(frameDeltaMs)) {
 					m_gameContext.m_context->m_running = FALSE;
 				}
 				if (!m_gameContext.m_context->m_running || !m_gameContext.m_menuStack.GetSize()) {

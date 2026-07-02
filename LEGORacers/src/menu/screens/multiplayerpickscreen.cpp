@@ -34,10 +34,10 @@ void MultiplayerPickScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00481830
-void MultiplayerPickScreen::VTable0x4c()
+void MultiplayerPickScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
-	RacerModelScreenBase::VTable0x4c();
+	RacerModelScreenBase::CreateWidgets();
 	CreateTextLabel(&m_player1Label, 0xf0, 0x37, 0x56);
 	CreateTextLabel(&m_player2Label, 0xf1, 0x37, 0x57);
 	CreateTextLabel(&m_nameLabels[0], 0x8e, 0x37, 0x56);
@@ -85,7 +85,7 @@ void MultiplayerPickScreen::RefreshPlayerDevices()
 }
 
 // FUNCTION: LEGORACERS 0x00481a30
-LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 MultiplayerPickScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	undefined4 params[3];
 	params[0] = 2;
@@ -107,7 +107,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 	UpdateNameLabel(0);
 	UpdateNameLabel(1);
 	RefreshPlayerDevices();
-	VTable0x80();
+	SetupLighting();
 	return TRUE;
 }
 
@@ -268,7 +268,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 }
 
 // FUNCTION: LEGORACERS 0x00481f50
-void MultiplayerPickScreen::VTable0x84()
+void MultiplayerPickScreen::Navigate()
 {
 	switch (m_unk0x360) {
 	case 0x3f:
@@ -286,9 +286,9 @@ void MultiplayerPickScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00481fc0
-LegoBool32 MultiplayerPickScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 MultiplayerPickScreen::Update(undefined4 p_elapsed)
 {
-	LegoBool32 result = RacerModelScreenBase::VTable0x78(p_elapsed);
+	LegoBool32 result = RacerModelScreenBase::Update(p_elapsed);
 	RefreshPlayerDevices();
 	return result;
 }

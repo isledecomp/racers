@@ -27,7 +27,7 @@ MenuSceneScreen::~MenuSceneScreen()
 }
 
 // FUNCTION: LEGORACERS 0x004797a0
-LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 MenuSceneScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -37,7 +37,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	p_context->m_context->m_golApp->ClearFileSourceDirectoryCaches();
 	m_unk0x650 = m_renderer->GetUnk0x0c();
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -120,7 +120,7 @@ LegoBool32 MenuSceneScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00479a10
-LegoBool32 MenuSceneScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 MenuSceneScreen::Update(undefined4 p_unk0x04)
 {
 	if (m_unk0x654) {
 		p_unk0x04 = 0x11;
@@ -131,11 +131,11 @@ LegoBool32 MenuSceneScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x364 = TRUE;
 	}
 
-	return MenuGameScreen::VTable0x78(p_unk0x04);
+	return MenuGameScreen::Update(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x00479a50
-void MenuSceneScreen::VTable0x84()
+void MenuSceneScreen::Navigate()
 {
 	m_cursor->SetCursorEnabled(TRUE);
 	m_context->m_menuStack.Pop();

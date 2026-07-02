@@ -29,8 +29,8 @@ public:
 	LegoBool32 HandleKeyDown(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x18
 	LegoBool32 HandleKeyUp(MenuWidget*, InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x1c
 	void Reset() override;                                                                           // vtable+0x54
-	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
-	LegoBool32 VTable0x7c(Rect*, Rect*) override;                                                    // vtable+0x7c
+	LegoBool32 Update(undefined4) override;                                                      // vtable+0x78
+	LegoBool32 Draw(Rect*, Rect*) override;                                                    // vtable+0x7c
 	virtual GolString* GetHelpString(undefined4) = 0;                                                // vtable+0x98
 	virtual GolFont* GetHelpFont(undefined4) = 0;                                                    // vtable+0x9c
 	virtual void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) = 0;                       // vtable+0xa0

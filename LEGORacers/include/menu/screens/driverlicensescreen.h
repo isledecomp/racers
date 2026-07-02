@@ -26,12 +26,12 @@ public:
 	void OnIconSelected(MenuIcon*) override;                                   // vtable+0x3c
 	void OnIconDeselected(MenuIcon*) override;                                 // vtable+0x40
 	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
-	void VTable0x4c() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                                // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~DriverLicenseScreen() override;                                           // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	void VTable0x84() override;                                                // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
+	void Navigate() override;                                                // vtable+0x84
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 	void VTable0x90(undefined4) override;                                      // vtable+0x90
 	void VTable0x94(undefined4) override;                                      // vtable+0x94
 

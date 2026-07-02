@@ -29,13 +29,13 @@ public:
 
 	void OnIconUnfocused(MenuWidget*) override;                                // vtable+0x38
 	void OnWidgetValueChanged(MenuWidget*) override;                           // vtable+0x44
-	void VTable0x4c() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                                // vtable+0x4c
 	void Reset() override;                                                     // vtable+0x54
 	~EditCarScreen() override;                                                 // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	void VTable0x80() override;                                                // vtable+0x80
-	void VTable0x84() override;                                                // vtable+0x84
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
+	void SetupLighting() override;                                                // vtable+0x80
+	void Navigate() override;                                                // vtable+0x84
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x0047bde0
 	// EditCarScreen::`scalar deleting destructor'

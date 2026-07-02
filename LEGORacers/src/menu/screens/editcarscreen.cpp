@@ -93,7 +93,7 @@ void EditCarScreen::CreateCategoryCarousel()
 }
 
 // FUNCTION: LEGORACERS 0x0047c0e0
-void EditCarScreen::VTable0x4c()
+void EditCarScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreateCarScene();
@@ -117,7 +117,7 @@ void EditCarScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x0047c1d0
-void EditCarScreen::VTable0x80()
+void EditCarScreen::SetupLighting()
 {
 	ColorRGBA materialColor;
 	ColorRGBA lightColor;
@@ -135,7 +135,7 @@ void EditCarScreen::VTable0x80()
 }
 
 // FUNCTION: LEGORACERS 0x0047c210
-LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 EditCarScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	LoadBuilderImages(p_context, p_createParams);
 
@@ -149,7 +149,7 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 
 	p_context->m_partResources.SetResourceIndex(1);
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -499,7 +499,7 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047ccf0
-void EditCarScreen::VTable0x84()
+void EditCarScreen::Navigate()
 {
 	switch (m_unk0x360) {
 	case c_menuDriverLicense:

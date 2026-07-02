@@ -22,13 +22,13 @@ MainIntroScreen::~MainIntroScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00480a40
-LegoBool32 MainIntroScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 MainIntroScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
 	}
 
-	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -48,7 +48,7 @@ LegoBool32 MainIntroScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 }
 
 // FUNCTION: LEGORACERS 0x00480ad0
-void MainIntroScreen::VTable0x4c()
+void MainIntroScreen::CreateWidgets()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\MAININTR");
@@ -62,17 +62,17 @@ void MainIntroScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00480b20
-void MainIntroScreen::VTable0x84()
+void MainIntroScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 	m_context->m_menuStack.Push(c_menuLegal);
 }
 
 // FUNCTION: LEGORACERS 0x00480b50 FOLDED
-LegoBool32 MainIntroScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 MainIntroScreen::Update(undefined4 p_unk0x04)
 {
 	m_sceneWidget.m_unk0x2cc = TRUE;
-	return MenuSceneScreen::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::Update(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x004884f0 FOLDED

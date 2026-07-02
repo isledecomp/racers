@@ -26,7 +26,7 @@ SaveLoadScreen::~SaveLoadScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00486dd0
-LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 SaveLoadScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -37,7 +37,7 @@ LegoBool32 SaveLoadScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	m_unk0x370 = p_context->m_modelBuilder.GetUnk0x84();
 	FUN_00486e40(&p_context->m_saveSystem);
 
-	if (!MenuGameScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -129,23 +129,23 @@ LegoBool32 SaveLoadScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00487020
-LegoBool32 SaveLoadScreen::VTable0x78(undefined4)
+LegoBool32 SaveLoadScreen::Update(undefined4)
 {
 	if (m_unk0x374) {
 		FUN_0046c760();
-		VTable0x4c();
+		CreateWidgets();
 		m_unk0x374 = FALSE;
 	}
 
 	if (!m_unk0x368) {
-		VTable0x84();
+		Navigate();
 	}
 
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00487060
-void SaveLoadScreen::VTable0x4c()
+void SaveLoadScreen::CreateWidgets()
 {
 	if (!(m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowSaveReminder)) {
 		CreateImage(&m_unk0x37c, 0x49, 0x49);
@@ -198,7 +198,7 @@ void SaveLoadScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00487210
-void SaveLoadScreen::VTable0x84()
+void SaveLoadScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 }
@@ -249,7 +249,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 			return;
 		}
 
-		VTable0x84();
+		Navigate();
 		return;
 	}
 

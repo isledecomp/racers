@@ -34,7 +34,7 @@ AwardCinematicScreen::~AwardCinematicScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00475d30
-LegoBool32 AwardCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 AwardCinematicScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -48,7 +48,7 @@ LegoBool32 AwardCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScre
 		p_context->m_carBuildModel.FUN_00499f00();
 	}
 
-	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
+	if (!MenuSceneScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -131,7 +131,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 }
 
 // STUB: LEGORACERS 0x00475f40
-void AwardCinematicScreen::VTable0x4c()
+void AwardCinematicScreen::CreateWidgets()
 {
 	struct ResourcePathLocals {
 		LegoChar m_name[12];
@@ -520,7 +520,7 @@ LegoBool32 AwardCinematicScreen::FUN_00476990(
 }
 
 // FUNCTION: LEGORACERS 0x00476a00
-void AwardCinematicScreen::VTable0x84()
+void AwardCinematicScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 
@@ -562,13 +562,13 @@ void AwardCinematicScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00476ad0
-LegoBool32 AwardCinematicScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 AwardCinematicScreen::Update(undefined4 p_unk0x04)
 {
 	if (m_unk0x28c == c_menuCircuit7) {
 		m_sceneWidget.m_unk0x2cc = TRUE;
 	}
 
-	return MenuSceneScreen::VTable0x78(p_unk0x04);
+	return MenuSceneScreen::Update(p_unk0x04);
 }
 
 // FUNCTION: LEGORACERS 0x00476b00

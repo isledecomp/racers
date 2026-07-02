@@ -83,9 +83,9 @@ void OptionsScreen::VTable0x98()
 }
 
 // FUNCTION: LEGORACERS 0x00475970
-LegoBool32 OptionsScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 OptionsScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	return OptionsScreenBase::VTable0x8c(p_context, p_createParams) != FALSE;
+	return OptionsScreenBase::Initialize(p_context, p_createParams) != FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00475990

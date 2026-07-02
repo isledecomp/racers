@@ -17,10 +17,10 @@ class SingleRaceSelectBase : public MenuSceneScreen {
 public:
 	SingleRaceSelectBase();
 
-	void VTable0x4c() override;                                                // vtable+0x4c
+	void CreateWidgets() override;                                                // vtable+0x4c
 	~SingleRaceSelectBase() override;                                          // vtable+0x68
 	LegoBool32 Destroy() override;                                             // vtable+0x74
-	LegoBool32 VTable0x8c(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
+	LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*) override; // vtable+0x8c
 
 	// SYNTHETIC: LEGORACERS 0x00488820
 	// SingleRaceSelectBase::`scalar deleting destructor'

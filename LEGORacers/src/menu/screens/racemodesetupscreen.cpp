@@ -82,10 +82,10 @@ void RaceModeSetupScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00487b50
-void RaceModeSetupScreen::VTable0x4c()
+void RaceModeSetupScreen::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
-	SingleRaceSelectBase::VTable0x4c();
+	SingleRaceSelectBase::CreateWidgets();
 
 	undefined4 textId;
 	if (m_menuId != 6) {
@@ -119,13 +119,13 @@ void RaceModeSetupScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00487ca0
-LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 RaceModeSetupScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	m_menuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 6;
 	m_savedRacerCount = p_context->m_context->m_racerCount;
 
-	LegoBool32 result = SingleRaceSelectBase::VTable0x8c(p_context, p_createParams);
+	LegoBool32 result = SingleRaceSelectBase::Initialize(p_context, p_createParams);
 	if (!result) {
 		return FALSE;
 	}
@@ -227,7 +227,7 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x00487f90
-void RaceModeSetupScreen::VTable0x84()
+void RaceModeSetupScreen::Navigate()
 {
 	if (m_unk0x360 == 2) {
 		m_context->m_context->m_racerCount = m_savedRacerCount;
@@ -297,7 +297,7 @@ void RaceModeSetupScreen::UpdateRacePreview()
 }
 
 // FUNCTION: LEGORACERS 0x00488150
-LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 RaceModeSetupScreen::Update(undefined4 p_elapsed)
 {
 	if (p_elapsed > m_recordToggleMs) {
 		m_showLapTime = (m_showLapTime == 0);
@@ -307,7 +307,7 @@ LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4 p_elapsed)
 		m_recordToggleMs -= p_elapsed;
 	}
 
-	return MenuSceneScreen::VTable0x78(p_elapsed);
+	return MenuSceneScreen::Update(p_elapsed);
 }
 
 // FUNCTION: LEGORACERS 0x004881a0

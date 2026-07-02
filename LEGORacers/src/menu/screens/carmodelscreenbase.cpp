@@ -91,7 +91,7 @@ void CarModelScreenBase::CreateCategoryCarousel()
 }
 
 // FUNCTION: LEGORACERS 0x00477190
-void CarModelScreenBase::VTable0x4c()
+void CarModelScreenBase::CreateWidgets()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreatePlacementScene();
@@ -103,7 +103,7 @@ void CarModelScreenBase::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00477210
-void CarModelScreenBase::VTable0x80()
+void CarModelScreenBase::SetupLighting()
 {
 	ColorRGBA lightColor;
 	ColorRGBA materialColor;
@@ -121,9 +121,9 @@ void CarModelScreenBase::VTable0x80()
 }
 
 // FUNCTION: LEGORACERS 0x00477250
-LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_source, MenuScreenCreateParams* p_event)
+LegoBool32 CarModelScreenBase::Initialize(MenuGameContext* p_source, MenuScreenCreateParams* p_event)
 {
-	if (!MenuGameScreen::VTable0x8c(p_source, p_event)) {
+	if (!MenuGameScreen::Initialize(p_source, p_event)) {
 		return FALSE;
 	}
 
@@ -167,7 +167,7 @@ void CarModelScreenBase::PopulateCategoryCarousel()
 }
 
 // FUNCTION: LEGORACERS 0x00477380
-void CarModelScreenBase::VTable0x84()
+void CarModelScreenBase::Navigate()
 {
 	SaveCarData();
 	m_context->m_menuStack.Pop();
@@ -326,7 +326,7 @@ void CarModelScreenBase::ApplyModeChange()
 }
 
 // FUNCTION: LEGORACERS 0x00477880
-LegoBool32 CarModelScreenBase::VTable0x78(undefined4 p_source)
+LegoBool32 CarModelScreenBase::Update(undefined4 p_source)
 {
 	if (m_mode != m_nextMode) {
 		if (m_unk0x35c == NULL || !(m_unk0x35c->GetUnk0x54() & 1)) {
@@ -334,5 +334,5 @@ LegoBool32 CarModelScreenBase::VTable0x78(undefined4 p_source)
 		}
 	}
 
-	return CarBuildScreenBase::VTable0x78(p_source);
+	return CarBuildScreenBase::Update(p_source);
 }

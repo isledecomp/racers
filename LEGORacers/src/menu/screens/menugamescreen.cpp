@@ -25,7 +25,7 @@ static const LegoFloat g_unk0x004b2a34 = 6.2831855f;
 LegoFloat g_unk0x004c7660 = g_unk0x004b2a34 * 0.125f;
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
-void MenuGameScreen::VTable0x80()
+void MenuGameScreen::SetupLighting()
 {
 }
 
@@ -76,13 +76,13 @@ void MenuGameScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0047fc20
-LegoBool32 MenuGameScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 MenuGameScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	GolString string;
 
 	m_context = p_context;
 	LegoBool32 result = MenuScreen::Initialize(p_createParams);
-	VTable0x80();
+	SetupLighting();
 
 	return result;
 }
@@ -121,7 +121,7 @@ undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_source, undefined2 p_
 	createParams.m_pieceLibrary = &context->m_pieceLibrary;
 	createParams.m_buildModel = &context->m_carBuildModel;
 	createParams.m_colorTable = &context->m_colorTable;
-	createParams.m_aspectScale = VTable0x6c();
+	createParams.m_aspectScale = GetAspectScale();
 	createParams.m_viewportIndex = 5;
 
 	return p_source->Create(&createParams, styleEntry);
@@ -353,7 +353,7 @@ void MenuGameScreen::FUN_004803a0()
 
 // FUNCTION: LEGORACERS 0x004803c0
 #pragma code_seg(".text$imaginarytool_vt6c")
-LegoFloat MenuGameScreen::VTable0x6c()
+LegoFloat MenuGameScreen::GetAspectScale()
 {
 	return 1.0f;
 }
@@ -369,7 +369,7 @@ void MenuGameScreen::FUN_004803d0()
 }
 
 // FUNCTION: LEGORACERS 0x00480420 FOLDED
-LegoBool32 MenuGameScreen::VTable0x88()
+LegoBool32 MenuGameScreen::CanNavigate()
 {
 	if (m_unk0x35c) {
 		return !(m_unk0x35c->GetUnk0x54() & TRUE);
@@ -434,10 +434,10 @@ void MenuGameScreen::OnIconSelected(MenuIcon* p_icon)
 }
 
 // FUNCTION: LEGORACERS 0x00480520
-LegoBool32 MenuGameScreen::VTable0x78(undefined4)
+LegoBool32 MenuGameScreen::Update(undefined4)
 {
-	if (m_unk0x364 && VTable0x88()) {
-		VTable0x84();
+	if (m_unk0x364 && CanNavigate()) {
+		Navigate();
 	}
 
 	return FALSE;

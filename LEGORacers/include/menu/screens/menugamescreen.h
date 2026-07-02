@@ -68,13 +68,13 @@ public:
 	MenuStyleTable* GetMenuStyles() override;                                                        // vtable+0x5c
 	MenuInputBindingTable* GetMenuInputBindings() override;                                          // vtable+0x64
 	~MenuGameScreen() override;                                                                      // vtable+0x68
-	LegoFloat VTable0x6c() override;                                                                 // vtable+0x6c
+	LegoFloat GetAspectScale() override;                                                                 // vtable+0x6c
 	LegoBool32 Destroy() override;                                                                   // vtable+0x74
-	LegoBool32 VTable0x78(undefined4) override;                                                      // vtable+0x78
-	virtual void VTable0x80();                                                                       // vtable+0x80
-	virtual void VTable0x84() = 0;                                                                   // vtable+0x84
-	virtual LegoBool32 VTable0x88();                                                                 // vtable+0x88
-	virtual LegoBool32 VTable0x8c(MenuGameContext*,
+	LegoBool32 Update(undefined4) override;                                                      // vtable+0x78
+	virtual void SetupLighting();                                                                       // vtable+0x80
+	virtual void Navigate() = 0;                                                                   // vtable+0x84
+	virtual LegoBool32 CanNavigate();                                                                 // vtable+0x88
+	virtual LegoBool32 Initialize(MenuGameContext*,
 								  MenuScreenCreateParams*); // vtable+0x8c
 	virtual void VTable0x90(undefined4);                    // vtable+0x90
 	virtual void VTable0x94(undefined4);                    // vtable+0x94

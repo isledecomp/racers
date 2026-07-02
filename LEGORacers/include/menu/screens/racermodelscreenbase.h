@@ -22,13 +22,13 @@ class RacerModelScreenBase : public MenuGameScreen {
 public:
 	RacerModelScreenBase();
 
-	void VTable0x4c() override;                                                            // vtable+0x4c
+	void CreateWidgets() override;                                                            // vtable+0x4c
 	void Reset() override;                                                                 // vtable+0x54
 	~RacerModelScreenBase() override;                                                      // vtable+0x68
 	LegoBool32 Destroy() override;                                                         // vtable+0x74
-	LegoBool32 VTable0x78(undefined4) override;                                            // vtable+0x78
-	void VTable0x80() override;                                                            // vtable+0x80
-	LegoBool32 VTable0x88() override;                                                      // vtable+0x88
+	LegoBool32 Update(undefined4) override;                                            // vtable+0x78
+	void SetupLighting() override;                                                            // vtable+0x80
+	LegoBool32 CanNavigate() override;                                                      // vtable+0x88
 	virtual void CreateModelSlots();                                                       // vtable+0x98
 	virtual LegoS32 PickRandomAnimation();                                                 // vtable+0x9c
 	virtual LegoBool32 Initialize(MenuGameContext*, MenuScreenCreateParams*, undefined4*); // vtable+0xa0

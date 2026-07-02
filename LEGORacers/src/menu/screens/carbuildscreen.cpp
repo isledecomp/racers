@@ -54,9 +54,9 @@ void CarBuildScreen::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004738c0
-void CarBuildScreen::VTable0x4c()
+void CarBuildScreen::CreateWidgets()
 {
-	CarModelScreenBase::VTable0x4c();
+	CarModelScreenBase::CreateWidgets();
 	CreateHotspotButton(&m_movePad, 0xb5, 0xb5);
 	CreateButton(&m_rotateButton, 0xb2, 0xb0);
 	CreateButton(&m_placeButton, 0xb1, 0xb0);
@@ -75,9 +75,9 @@ void CarBuildScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x004739a0
-LegoBool32 CarBuildScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 CarBuildScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	if (!CarModelScreenBase::VTable0x8c(p_context, p_createParams)) {
+	if (!CarModelScreenBase::Initialize(p_context, p_createParams)) {
 		return FALSE;
 	}
 
@@ -796,7 +796,7 @@ void CarBuildScreen::UpdateHoverRegions()
 		m_pieceViewRegion.Deselect(7);
 		m_carViewRegion.Deselect(7);
 		m_hoverIcon = NULL;
-		CarModelScreenBase::VTable0x78(0);
+		CarModelScreenBase::Update(0);
 		m_hoverIcon = m_unk0xd8.FindSelectedLeaf();
 		m_unk0x358 = m_hoverIcon;
 	}
@@ -805,7 +805,7 @@ void CarBuildScreen::UpdateHoverRegions()
 }
 
 // FUNCTION: LEGORACERS 0x00474b10
-LegoBool32 CarBuildScreen::VTable0x78(undefined4 p_elapsed)
+LegoBool32 CarBuildScreen::Update(undefined4 p_elapsed)
 {
 	UpdateHoverRegions();
 
@@ -823,7 +823,7 @@ LegoBool32 CarBuildScreen::VTable0x78(undefined4 p_elapsed)
 		m_unk0x3c1c -= p_elapsed;
 	}
 
-	return CarModelScreenBase::VTable0x78(p_elapsed);
+	return CarModelScreenBase::Update(p_elapsed);
 }
 
 // FUNCTION: LEGORACERS 0x00474b70

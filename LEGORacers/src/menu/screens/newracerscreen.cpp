@@ -22,7 +22,7 @@ NewRacerScreen::~NewRacerScreen()
 }
 
 // FUNCTION: LEGORACERS 0x00482120
-LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+LegoBool32 NewRacerScreen::Initialize(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (m_initialized) {
 		Destroy();
@@ -30,11 +30,11 @@ LegoBool32 NewRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 
 	m_unk0x76c = p_context->m_modelBuilder.GetUnk0x84();
 	p_createParams->m_cursor->SetCursorEnabled(FALSE);
-	return MenuGameScreen::VTable0x8c(p_context, p_createParams) != FALSE;
+	return MenuGameScreen::Initialize(p_context, p_createParams) != FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00482160
-void NewRacerScreen::VTable0x4c()
+void NewRacerScreen::CreateWidgets()
 {
 	CreateImage(&m_unk0x368, 0x49, 0x49);
 
@@ -86,7 +86,7 @@ void NewRacerScreen::VTable0x4c()
 }
 
 // FUNCTION: LEGORACERS 0x00482310
-void NewRacerScreen::VTable0x84()
+void NewRacerScreen::Navigate()
 {
 	m_context->m_menuStack.Pop();
 

@@ -69,19 +69,19 @@ public:
 	void OnIconDeselected(MenuIcon*) override;                                                       // vtable+0x40
 	void OnWidgetValueChanged(MenuWidget*) override;                                                 // vtable+0x44
 	void OnSelectorSettled(MenuWidget*) override;                                                    // vtable+0x48
-	virtual void VTable0x4c() = 0;                                                                   // vtable+0x4c
-	virtual undefined4 VTable0x50();                                                                 // vtable+0x50
+	virtual void CreateWidgets() = 0;                                                                   // vtable+0x4c
+	virtual undefined4 ShouldLoadResources();                                                                 // vtable+0x50
 	virtual void Reset();                                                                            // vtable+0x54
-	virtual LegoBool32 VTable0x58(MenuScreenCreateParams*);                                          // vtable+0x58
+	virtual LegoBool32 LoadStylesAndBindings(MenuScreenCreateParams*);                                          // vtable+0x58
 	virtual MenuStyleTable* GetMenuStyles();                                                         // vtable+0x5c
-	virtual MenuStyleTable* VTable0x60();                                                            // vtable+0x60
+	virtual MenuStyleTable* GetActiveStyles();                                                            // vtable+0x60
 	virtual MenuInputBindingTable* GetMenuInputBindings();                                           // vtable+0x64
 	virtual ~MenuScreen();                                                                           // vtable+0x68
-	virtual LegoFloat VTable0x6c();                                                                  // vtable+0x6c
+	virtual LegoFloat GetAspectScale();                                                                  // vtable+0x6c
 	virtual LegoBool32 Initialize(MenuScreenCreateParams*);                                          // vtable+0x70
 	virtual LegoBool32 Destroy();                                                                    // vtable+0x74
-	virtual LegoBool32 VTable0x78(undefined4);                                                       // vtable+0x78
-	virtual LegoBool32 VTable0x7c(Rect* p_arg1, Rect* p_arg2);                                       // vtable+0x7c
+	virtual LegoBool32 Update(undefined4);                                                       // vtable+0x78
+	virtual LegoBool32 Draw(Rect* p_arg1, Rect* p_arg2);                                       // vtable+0x7c
 
 	LegoBool32 FUN_0046b630();
 	LegoBool32 FUN_0046b6e0(MenuScreenCreateParams*);

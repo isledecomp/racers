@@ -130,7 +130,7 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	}
 
 	VTable0x44(&m_unk0xbe8);
-	m_unk0x19dc.VTable0x4c(0);
+	m_unk0x19dc.Select(0);
 	m_unk0x2e08 = 2500;
 	return TRUE;
 }
@@ -211,11 +211,11 @@ void RaceModeSetupScreen::VTable0x44(MenuWidget* p_source)
 		m_unk0x1fc0.VTable0x50(0);
 
 		if (isComplete) {
-			m_unk0x19dc.VTable0x44(5);
+			m_unk0x19dc.Enable(5);
 			m_unk0x1860.ClearFlags(2);
 		}
 		else {
-			m_unk0x19dc.VTable0x48(5);
+			m_unk0x19dc.Disable(5);
 			m_unk0x1860.SetFlags(2);
 		}
 	}

@@ -26,7 +26,7 @@ public:
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
-	void VTable0x58(undefined4) override;                                            // vtable+0x58
+	void Unfocus(undefined4) override;                                               // vtable+0x58
 
 	LegoBool32 FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry);
 	LegoU32 GetUnk0x224() const { return m_unk0x224; }

@@ -83,7 +83,7 @@ void MainMenuScreen::VTable0x4c()
 	FUN_0047fdc0(&m_unk0x1638, 0x59, 0x42, 0x27);
 
 	if (!m_inputManager->GetJoystickCount()) {
-		m_unk0xa78.VTable0x48(5);
+		m_unk0xa78.Disable(5);
 	}
 }
 
@@ -116,7 +116,7 @@ LegoBool32 MainMenuScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() | 0x10000);
 	m_unk0x2438->SetFlags(m_unk0x2438->GetFlags() & ~0x40000);
 	p_context->m_saveSystem.GetActiveRecord().Reset();
-	m_unk0x1058.VTable0x4c(5);
+	m_unk0x1058.Select(5);
 	m_cursor->SetCursorEnabled(TRUE);
 	return TRUE;
 }

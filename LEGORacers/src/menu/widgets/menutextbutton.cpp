@@ -106,7 +106,7 @@ LegoBool32 MenuTextButton::FUN_004826c0(CreateParams* p_createParams, MenuStyleT
 	m_unk0x2dc = maxWidth;
 	::memcpy(m_unk0x1c0, p_createParams->m_unk0x84, sizeof(m_unk0x1c0) + sizeof(m_unk0x1d8) + sizeof(m_unk0x1f0));
 
-	if (FUN_00471e30(p_createParams, p_styleEntry) && FUN_004824d0(p_createParams) &&
+	if (Create(p_createParams, p_styleEntry) && FUN_004824d0(p_createParams) &&
 		FUN_00482540(p_createParams, p_styleEntry)) {
 		SetRect(&p_createParams->m_rect);
 		return TRUE;
@@ -169,9 +169,9 @@ void MenuTextButton::SetRect(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x004828f0
-void MenuTextButton::VTable0x40(MenuScreenInterface* p_eventHandler)
+void MenuTextButton::SetIconEventHandler(MenuScreenInterface* p_eventHandler)
 {
-	MenuIcon::VTable0x40(p_eventHandler);
+	MenuIcon::SetIconEventHandler(p_eventHandler);
 	m_unk0x208.SetEventHandler(p_eventHandler);
 	m_unk0x264.SetEventHandler(p_eventHandler);
 }

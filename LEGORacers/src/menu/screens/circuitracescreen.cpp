@@ -58,7 +58,7 @@ LegoBool32 CircuitRaceScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenC
 	}
 
 	VTable0x44(&m_unk0xbe8);
-	m_unk0x1f24.VTable0x4c(0);
+	m_unk0x1f24.Select(0);
 	return TRUE;
 }
 
@@ -112,12 +112,12 @@ void CircuitRaceScreen::VTable0x44(MenuWidget*)
 		}
 
 		if (m_context->m_saveSystem.GetGameState().GetUnlockedCircuits() & mask) {
-			m_unk0x1f24.VTable0x44(5);
+			m_unk0x1f24.Enable(5);
 			m_unk0x1860.ClearFlags(2);
 		}
 		else {
-			m_unk0x1f24.VTable0x48(5);
-			m_unk0x1c34.VTable0x4c(0);
+			m_unk0x1f24.Disable(5);
+			m_unk0x1c34.Select(0);
 			m_unk0x1860.SetFlags(2);
 		}
 

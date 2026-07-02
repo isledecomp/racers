@@ -89,7 +89,7 @@ LegoBool32 CarBuildScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCrea
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
 	}
 
-	m_unk0x4a4.VTable0x4c(4);
+	m_unk0x4a4.Select(4);
 	return m_initialized;
 }
 
@@ -207,11 +207,11 @@ void CarBuildScreen::FUN_00473b80(LegoS32 p_deltaX, LegoS32 p_deltaY)
 void CarBuildScreen::VTable0xa4()
 {
 	if (m_unk0x2b20.GetStateFlags() & 4) {
-		m_unk0x2b20.VTable0x58(0);
+		m_unk0x2b20.Unfocus(0);
 	}
 
 	if (m_unk0x2d48.GetStateFlags() & 4) {
-		m_unk0x2d48.VTable0x58(0);
+		m_unk0x2d48.Unfocus(0);
 	}
 
 	m_cursor->SetCursorEnabled(TRUE);
@@ -220,43 +220,43 @@ void CarBuildScreen::VTable0xa4()
 // FUNCTION: LEGORACERS 0x00473c90
 void CarBuildScreen::VTable0xb4()
 {
-	m_unk0x4a4.VTable0x48(0);
-	m_unk0xfec.VTable0x48(0);
-	m_unk0x2d48.VTable0x48(0);
-	m_unk0x2f70.VTable0x48(0);
-	m_unk0x318c.VTable0x48(0);
-	m_unk0x33a8.VTable0x48(0);
-	m_unk0x39fc.VTable0x48(0);
-	m_unk0x2b20.VTable0x4c(5);
+	m_unk0x4a4.Disable(0);
+	m_unk0xfec.Disable(0);
+	m_unk0x2d48.Disable(0);
+	m_unk0x2f70.Disable(0);
+	m_unk0x318c.Disable(0);
+	m_unk0x33a8.Disable(0);
+	m_unk0x39fc.Disable(0);
+	m_unk0x2b20.Select(5);
 }
 
 // FUNCTION: LEGORACERS 0x00473d20
 void CarBuildScreen::VTable0xb8()
 {
 	if (m_unk0x2b20.GetStateFlags() & 4) {
-		m_unk0x2b20.VTable0x58(5);
+		m_unk0x2b20.Unfocus(5);
 	}
 
-	m_unk0x4a4.VTable0x44(0);
-	m_unk0xfec.VTable0x44(0);
-	m_unk0x2d48.VTable0x44(0);
-	m_unk0x2f70.VTable0x44(0);
-	m_unk0x318c.VTable0x44(0);
-	m_unk0x33a8.VTable0x44(0);
-	m_unk0x39fc.VTable0x44(0);
+	m_unk0x4a4.Enable(0);
+	m_unk0xfec.Enable(0);
+	m_unk0x2d48.Enable(0);
+	m_unk0x2f70.Enable(0);
+	m_unk0x318c.Enable(0);
+	m_unk0x33a8.Enable(0);
+	m_unk0x39fc.Enable(0);
 	m_cursor->SetCursorEnabled(TRUE);
 }
 
 // FUNCTION: LEGORACERS 0x00473dc0
 void CarBuildScreen::VTable0xac()
 {
-	m_unk0x4a4.VTable0x48(0);
-	m_unk0xfec.VTable0x48(0);
-	m_unk0x2b20.VTable0x48(0);
-	m_unk0x2f70.VTable0x48(0);
-	m_unk0x318c.VTable0x48(0);
-	m_unk0x33a8.VTable0x48(0);
-	m_unk0x2d48.VTable0x4c(5);
+	m_unk0x4a4.Disable(0);
+	m_unk0xfec.Disable(0);
+	m_unk0x2b20.Disable(0);
+	m_unk0x2f70.Disable(0);
+	m_unk0x318c.Disable(0);
+	m_unk0x33a8.Disable(0);
+	m_unk0x2d48.Select(5);
 	m_cursor->SetCursorEnabled(FALSE);
 }
 
@@ -264,15 +264,15 @@ void CarBuildScreen::VTable0xac()
 void CarBuildScreen::VTable0xb0()
 {
 	if (m_unk0x2d48.GetStateFlags() & 4) {
-		m_unk0x2d48.VTable0x58(5);
+		m_unk0x2d48.Unfocus(5);
 	}
 
-	m_unk0x4a4.VTable0x44(0);
-	m_unk0xfec.VTable0x44(0);
-	m_unk0x2b20.VTable0x44(0);
-	m_unk0x2f70.VTable0x44(0);
-	m_unk0x318c.VTable0x44(0);
-	m_unk0x33a8.VTable0x44(0);
+	m_unk0x4a4.Enable(0);
+	m_unk0xfec.Enable(0);
+	m_unk0x2b20.Enable(0);
+	m_unk0x2f70.Enable(0);
+	m_unk0x318c.Enable(0);
+	m_unk0x33a8.Enable(0);
 	m_cursor->SetCursorEnabled(TRUE);
 }
 
@@ -419,25 +419,25 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		break;
 	case c_carBuildKeyboardInsert:
 		if (!(m_unk0x4a4.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0x4a4.GetUnk0x1ac().VTable0x54(1);
+			m_unk0x4a4.GetUnk0x1ac().Focus(1);
 			m_unk0x4a4.FUN_00467180(0);
 		}
 		break;
 	case c_carBuildKeyboardPageUp:
 		if (!(m_unk0x4a4.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0x4a4.GetUnk0x3c8().VTable0x54(1);
+			m_unk0x4a4.GetUnk0x3c8().Focus(1);
 			m_unk0x4a4.FUN_004671e0(0);
 		}
 		break;
 	case c_carBuildKeyboardDelete:
 		if (!(m_unk0xfec.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0xfec.GetUnk0x1ac().VTable0x54(1);
+			m_unk0xfec.GetUnk0x1ac().Focus(1);
 			m_unk0xfec.FUN_00467180(0);
 		}
 		break;
 	case c_carBuildKeyboardPageDown:
 		if (!(m_unk0xfec.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0xfec.GetUnk0x3c8().VTable0x54(1);
+			m_unk0xfec.GetUnk0x3c8().Focus(1);
 			m_unk0xfec.FUN_004671e0(0);
 		}
 		break;
@@ -463,16 +463,16 @@ LegoBool32 CarBuildScreen::FUN_00474330(MenuWidget*, InputEventQueue::Event* p_e
 	LegoBool32 result = TRUE;
 	switch (keyCode) {
 	case c_carBuildKeyboardInsert:
-		m_unk0x4a4.GetUnk0x1ac().VTable0x58(1);
+		m_unk0x4a4.GetUnk0x1ac().Unfocus(1);
 		break;
 	case c_carBuildKeyboardPageUp:
-		m_unk0x4a4.GetUnk0x3c8().VTable0x58(1);
+		m_unk0x4a4.GetUnk0x3c8().Unfocus(1);
 		break;
 	case c_carBuildKeyboardDelete:
-		m_unk0xfec.GetUnk0x1ac().VTable0x58(1);
+		m_unk0xfec.GetUnk0x1ac().Unfocus(1);
 		break;
 	case c_carBuildKeyboardPageDown:
-		m_unk0xfec.GetUnk0x3c8().VTable0x58(1);
+		m_unk0xfec.GetUnk0x3c8().Unfocus(1);
 		break;
 	default:
 		result = FALSE;
@@ -769,8 +769,8 @@ void CarBuildScreen::FUN_00474940()
 		if (FUN_00473a20(m_unk0x35c4.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 1) {
 				m_unk0x374 = NULL;
-				m_unk0x37e0.VTable0x50(6);
-				m_unk0x35c4.VTable0x4c(6);
+				m_unk0x37e0.Deselect(6);
+				m_unk0x35c4.Select(6);
 				m_unk0x2308.FUN_00479310();
 			}
 			return;
@@ -779,8 +779,8 @@ void CarBuildScreen::FUN_00474940()
 		if (FUN_00473a20(m_unk0x37e0.GetRect(), x, y)) {
 			if (m_unk0x2308.GetUnk0x294() != 2) {
 				m_unk0x374 = NULL;
-				m_unk0x35c4.VTable0x50(6);
-				m_unk0x37e0.VTable0x4c(6);
+				m_unk0x35c4.Deselect(6);
+				m_unk0x37e0.Select(6);
 				m_unk0x2308.FUN_00479300();
 			}
 			return;
@@ -788,11 +788,11 @@ void CarBuildScreen::FUN_00474940()
 	}
 
 	if ((m_unk0x35c4.GetStateFlags() & MenuIcon::c_flagBit1) || (m_unk0x37e0.GetStateFlags() & MenuIcon::c_flagBit1)) {
-		m_unk0x35c4.VTable0x50(7);
-		m_unk0x37e0.VTable0x50(7);
+		m_unk0x35c4.Deselect(7);
+		m_unk0x37e0.Deselect(7);
 		m_unk0x374 = NULL;
 		CarModelScreenBase::VTable0x78(0);
-		m_unk0x374 = m_unk0xd8.FUN_00471f90();
+		m_unk0x374 = m_unk0xd8.FindSelectedLeaf();
 		m_unk0x358 = m_unk0x374;
 	}
 

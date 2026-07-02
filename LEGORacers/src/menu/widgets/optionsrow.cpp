@@ -158,7 +158,7 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 					m_activeKeyCode = p_event->m_keyCode;
 					m_soundGroupBinding->PlaySoundByIndex(m_unk0x6e0.m_unk0x00);
 					SetFocus();
-					VTable0x54(0);
+					Focus(0);
 					return this;
 				}
 			}
@@ -201,7 +201,7 @@ MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 
 		ClearFocus();
 	}
 
-	VTable0x58(0);
+	Unfocus(0);
 	return this;
 }
 

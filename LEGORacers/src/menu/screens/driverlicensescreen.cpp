@@ -168,7 +168,7 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 		m_unk0x1f1c.FUN_00471100(4);
 	}
 
-	static_cast<MenuIcon*>(&m_unk0x1f1c)->VTable0x4c(4);
+	static_cast<MenuIcon*>(&m_unk0x1f1c)->Select(4);
 
 	return TRUE;
 }

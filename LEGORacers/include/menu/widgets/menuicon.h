@@ -86,35 +86,35 @@ public:
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
-	virtual void VTable0x40(MenuScreenInterface*);
-	virtual void VTable0x44(undefined4);
-	virtual void VTable0x48(undefined4);
-	virtual void VTable0x4c(undefined4);
-	virtual void VTable0x50(undefined4);
-	virtual void VTable0x54(undefined4);
-	virtual void VTable0x58(undefined4);
-	virtual LegoBool32 VTable0x5c();
-	virtual MenuIcon* VTable0x60();
-	virtual MenuIcon* VTable0x64();
-	virtual MenuIcon* VTable0x68();
-	virtual MenuIcon* VTable0x6c();
+	virtual void SetIconEventHandler(MenuScreenInterface*);
+	virtual void Enable(undefined4);
+	virtual void Disable(undefined4);
+	virtual void Select(undefined4);
+	virtual void Deselect(undefined4);
+	virtual void Focus(undefined4);
+	virtual void Unfocus(undefined4);
+	virtual LegoBool32 IsEnabled();
+	virtual MenuIcon* SelectNext();
+	virtual MenuIcon* SelectPrevious();
+	virtual MenuIcon* SelectFirst();
+	virtual MenuIcon* SelectLast();
 
-	LegoBool32 FUN_00471e30(CreateParams* p_createParams, const CreateState* p_createState);
+	LegoBool32 Create(CreateParams* p_createParams, const CreateState* p_createState);
 	void AttachToParent(MenuIcon* p_parent);
 	void DetachFromParent();
 	MenuIcon* GetFirstChild() { return m_firstChild; }
 	LegoU8 GetStateFlags() const { return m_stateFlags; }
 	undefined2 GetUnk0x168() const { return m_unk0x168; }
-	MenuIcon* FUN_00471f90();
+	MenuIcon* FindSelectedLeaf();
 
 	// SYNTHETIC: LEGORACERS 0x00471c80
 	// MenuIcon::`scalar deleting destructor'
 
 protected:
-	void FUN_00471d90(CreateParams* p_createParams, const CreateState* p_createState);
+	void InitializeFromParams(CreateParams* p_createParams, const CreateState* p_createState);
 	MenuIcon* FindRoot();
-	void FUN_00471fb0(undefined4 p_flags);
-	void FUN_00472010(undefined4 p_flags);
+	void SetSelected(undefined4 p_flags);
+	void ClearSelected(undefined4 p_flags);
 	void RefreshVisualState();
 	void BeginRectTransition();
 
@@ -145,7 +145,7 @@ protected:
 	VisualStateColor m_unk0x174[6];         // 0x174
 	LegoU16 m_soundIds[5];                  // 0x18c
 	undefined m_unk0x196[0x198 - 0x196];    // 0x196
-	MenuIcon* m_activeChild;                // 0x198
+	MenuIcon* m_selectedChild;              // 0x198
 	LegoU8 m_visualStateIndex;              // 0x19c
 	undefined m_unk0x19d[0x1a0 - 0x19d];    // 0x19d
 	LegoU32 m_activeKeyCode;                // 0x1a0

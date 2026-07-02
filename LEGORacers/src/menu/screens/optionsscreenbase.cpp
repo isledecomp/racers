@@ -261,7 +261,7 @@ void OptionsScreenBase::VTable0x9c()
 	m_unk0x12f8.SetFlags(2);
 	m_unk0x1008.SetFlags(2);
 
-	m_unk0x448.VTable0x4c(4);
+	m_unk0x448.Select(4);
 	m_unk0x3d0.VTable0x44(0x10, TRUE);
 	m_unk0x3d0.FUN_0046f6b0(20);
 	m_unk0x18d8.FUN_00482790(2);
@@ -292,7 +292,7 @@ void OptionsScreenBase::FUN_004836a0()
 
 	VTable0x44(&m_unk0x1bc8);
 	VTable0x44(&m_unk0x25bc);
-	m_unk0x1bc8.VTable0x4c(4);
+	m_unk0x1bc8.Select(4);
 }
 
 // FUNCTION: LEGORACERS 0x00483730
@@ -315,7 +315,7 @@ void OptionsScreenBase::FUN_00483770()
 	}
 
 	VTable0x44(&m_unk0x36f0);
-	m_unk0x4178.VTable0x4c(4);
+	m_unk0x4178.Select(4);
 	m_unk0x3d0.VTable0x44(0x13, TRUE);
 	m_unk0x3d0.FUN_0046f6b0(20);
 	m_unk0x18d8.FUN_00482790(0x10);
@@ -372,11 +372,11 @@ LegoBool32 OptionsScreenBase::VTable0x78(undefined4 p_elapsed)
 
 	if (m_unk0x368 == 0) {
 		if (m_inputManager->GetJoystickCount() <= 1 && !m_inputManager->IsKeyboardAvailable()) {
-			m_unk0xd18.VTable0x48(5);
+			m_unk0xd18.Disable(5);
 			return MenuGameScreen::VTable0x78(p_elapsed);
 		}
 
-		m_unk0xd18.VTable0x44(5);
+		m_unk0xd18.Enable(5);
 	}
 
 	return MenuGameScreen::VTable0x78(p_elapsed);

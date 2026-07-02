@@ -57,7 +57,7 @@ LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIco
 		m_length = m_text.SelectionLength();
 	}
 
-	return FUN_00471e30(p_createParams, p_createState);
+	return Create(p_createParams, p_createState);
 }
 
 // FUNCTION: LEGORACERS 0x00471100
@@ -94,17 +94,17 @@ void MenuTextField::FUN_004711f0(GolString* p_string)
 }
 
 // FUNCTION: LEGORACERS 0x00471220
-void MenuTextField::VTable0x4c(undefined4 p_flags)
+void MenuTextField::Select(undefined4 p_flags)
 {
 	SetFocus();
-	MenuIcon::VTable0x4c(p_flags);
+	MenuIcon::Select(p_flags);
 }
 
 // FUNCTION: LEGORACERS 0x00471240
-void MenuTextField::VTable0x50(undefined4 p_flags)
+void MenuTextField::Deselect(undefined4 p_flags)
 {
 	ClearFocus();
-	MenuIcon::VTable0x50(p_flags);
+	MenuIcon::Deselect(p_flags);
 }
 
 // FUNCTION: LEGORACERS 0x00471260
@@ -130,13 +130,13 @@ MenuWidget* MenuTextField::OnCursorEvent(void* p_item, undefined4 p_x, undefined
 		return this;
 	}
 
-	if (!VTable0x5c()) {
+	if (!IsEnabled()) {
 		return NULL;
 	}
 
-	VTable0x4c(0);
+	Select(0);
 
-	if (m_activeChild || m_firstChild) {
+	if (m_selectedChild || m_firstChild) {
 		return NULL;
 	}
 

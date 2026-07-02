@@ -157,7 +157,7 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 	FUN_0047c450();
 	FUN_0047c790();
 
-	m_unk0x914.VTable0x4c(5);
+	m_unk0x914.Select(5);
 	m_unk0x3650.FUN_00442e60(&p_context->m_saveSystem);
 	m_unk0x3650.FUN_00442ef0(4);
 
@@ -324,17 +324,17 @@ void EditCarScreen::FUN_0047c790()
 {
 	if (m_context->m_carBuildModel.GetPlacedPieceCount() > 1) {
 		if (!m_unk0x3678->IsCarSaved()) {
-			m_unk0x2418.VTable0x48(5);
+			m_unk0x2418.Disable(5);
 		}
 		else {
-			m_unk0x2418.VTable0x44(5);
+			m_unk0x2418.Enable(5);
 		}
 
-		m_unk0xef4.VTable0x44(5);
+		m_unk0xef4.Enable(5);
 	}
 	else {
-		m_unk0x2418.VTable0x44(5);
-		m_unk0xef4.VTable0x48(5);
+		m_unk0x2418.Enable(5);
+		m_unk0xef4.Disable(5);
 	}
 }
 

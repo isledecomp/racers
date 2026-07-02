@@ -31,11 +31,11 @@ public:
 	LegoBool32 DispatchCursorEvent(MenuInputDispatcher::Cursor*, undefined4, undefined4) override; // vtable+0x20
 	LegoBool32 DispatchKeyDown(InputEventQueue::Event*, undefined4, undefined4) override;          // vtable+0x24
 	LegoBool32 DispatchKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;            // vtable+0x28
-	void VTable0x44(undefined4) override;                                                          // vtable+0x44
-	void VTable0x48(undefined4) override;                                                          // vtable+0x48
-	void VTable0x4c(undefined4) override;                                                          // vtable+0x4c
-	void VTable0x50(undefined4) override;                                                          // vtable+0x50
-	void VTable0x58(undefined4) override;                                                          // vtable+0x58
+	void Enable(undefined4) override;                                                              // vtable+0x44
+	void Disable(undefined4) override;                                                             // vtable+0x48
+	void Select(undefined4) override;                                                              // vtable+0x4c
+	void Deselect(undefined4) override;                                                            // vtable+0x50
+	void Unfocus(undefined4) override;                                                             // vtable+0x58
 	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                             // vtable+0x70
 	virtual undefined4 VTable0x74(undefined4) = 0;                                                 // vtable+0x74
 	virtual void VTable0x78() = 0;                                                                 // vtable+0x78

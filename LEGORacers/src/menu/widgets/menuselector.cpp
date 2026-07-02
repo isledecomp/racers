@@ -44,12 +44,12 @@ LegoBool32 MenuSelectorBase::FUN_004670a0(
 	}
 
 	if (m_stateFlags & c_flagBit0) {
-		m_unk0x1ac.VTable0x44(5);
-		m_unk0x3c8.VTable0x44(5);
+		m_unk0x1ac.Enable(5);
+		m_unk0x3c8.Enable(5);
 	}
 	else {
-		m_unk0x1ac.VTable0x48(5);
-		m_unk0x3c8.VTable0x48(5);
+		m_unk0x1ac.Disable(5);
+		m_unk0x3c8.Disable(5);
 	}
 
 	return TRUE;
@@ -61,7 +61,7 @@ LegoBool32 MenuSelectorBase::FUN_00467150(
 	const MenuStyleTable::SelectorStyleBase* p_styleEntry
 )
 {
-	if (FUN_00471e30(p_createParams, p_styleEntry)) {
+	if (Create(p_createParams, p_styleEntry)) {
 		return FUN_004670a0(p_createParams, p_styleEntry);
 	}
 
@@ -81,12 +81,12 @@ void MenuSelectorBase::FUN_00467180(undefined4 p_param)
 		VTable0x78();
 
 		if (p_param) {
-			m_unk0x1ac.VTable0x58(2);
-			VTable0x58(0);
+			m_unk0x1ac.Unfocus(2);
+			Unfocus(0);
 		}
 	}
 	else {
-		m_unk0x3c8.VTable0x58(2);
+		m_unk0x3c8.Unfocus(2);
 	}
 }
 
@@ -103,75 +103,75 @@ void MenuSelectorBase::FUN_004671e0(undefined4 p_param)
 		VTable0x7c();
 
 		if (p_param) {
-			m_unk0x3c8.VTable0x58(2);
-			VTable0x58(0);
+			m_unk0x3c8.Unfocus(2);
+			Unfocus(0);
 		}
 	}
 	else {
-		m_unk0x1ac.VTable0x58(2);
+		m_unk0x1ac.Unfocus(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00467240
-void MenuSelectorBase::VTable0x44(undefined4 p_flags)
+void MenuSelectorBase::Enable(undefined4 p_flags)
 {
 	if (m_stateFlags & c_flagBit0) {
 		return;
 	}
 
 	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.VTable0x44(2);
-		m_unk0x3c8.VTable0x44(2);
+		m_unk0x1ac.Enable(2);
+		m_unk0x3c8.Enable(2);
 	}
 
-	MenuIcon::VTable0x44(p_flags);
+	MenuIcon::Enable(p_flags);
 }
 
 // FUNCTION: LEGORACERS 0x00467290
-void MenuSelectorBase::VTable0x48(undefined4 p_flags)
+void MenuSelectorBase::Disable(undefined4 p_flags)
 {
 	if (!(m_stateFlags & c_flagBit0)) {
 		return;
 	}
 
 	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.VTable0x48(5);
-		m_unk0x3c8.VTable0x48(5);
+		m_unk0x1ac.Disable(5);
+		m_unk0x3c8.Disable(5);
 	}
 
-	MenuIcon::VTable0x48(p_flags);
+	MenuIcon::Disable(p_flags);
 }
 
 // FUNCTION: LEGORACERS 0x004672e0
-void MenuSelectorBase::VTable0x4c(undefined4 p_flags)
+void MenuSelectorBase::Select(undefined4 p_flags)
 {
-	MenuIcon::VTable0x4c(p_flags);
+	MenuIcon::Select(p_flags);
 
 	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.VTable0x4c(2);
-		m_unk0x3c8.VTable0x4c(2);
+		m_unk0x1ac.Select(2);
+		m_unk0x3c8.Select(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00467320
-void MenuSelectorBase::VTable0x50(undefined4 p_flags)
+void MenuSelectorBase::Deselect(undefined4 p_flags)
 {
-	MenuIcon::VTable0x50(p_flags);
+	MenuIcon::Deselect(p_flags);
 
 	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.VTable0x50(2);
-		m_unk0x3c8.VTable0x50(2);
+		m_unk0x1ac.Deselect(2);
+		m_unk0x3c8.Deselect(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00467360
-void MenuSelectorBase::VTable0x58(undefined4 p_flags)
+void MenuSelectorBase::Unfocus(undefined4 p_flags)
 {
-	MenuIcon::VTable0x58(p_flags);
+	MenuIcon::Unfocus(p_flags);
 
 	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.VTable0x58(2);
-		m_unk0x3c8.VTable0x58(2);
+		m_unk0x1ac.Unfocus(2);
+		m_unk0x3c8.Unfocus(2);
 	}
 }
 
@@ -264,9 +264,9 @@ LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undef
 			return TRUE;
 		}
 
-		m_unk0x3c8.VTable0x54(2);
+		m_unk0x3c8.Focus(2);
 		FUN_004671e0(0);
-		VTable0x54(0);
+		Focus(0);
 		return TRUE;
 
 	case InputDevice::c_sourceJoystickButton | 0xb:
@@ -283,9 +283,9 @@ LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undef
 			return TRUE;
 		}
 
-		m_unk0x1ac.VTable0x54(2);
+		m_unk0x1ac.Focus(2);
 		FUN_00467180(0);
-		VTable0x54(0);
+		Focus(0);
 		return TRUE;
 	}
 
@@ -310,8 +310,8 @@ LegoBool32 MenuSelectorBase::FUN_00467670(InputEventQueue::Event*, undefined4 p_
 		return FALSE;
 	}
 
-	glyph->VTable0x58(1);
-	VTable0x58(1);
+	glyph->Unfocus(1);
+	Unfocus(1);
 	return TRUE;
 }
 
@@ -528,6 +528,6 @@ MenuWidget* MenuSelector::OnKeyUp(InputEventQueue::Event* p_param1, undefined4 p
 		FUN_00467670(p_param1, result);
 	}
 
-	VTable0x58(0);
+	Unfocus(0);
 	return this;
 }

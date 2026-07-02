@@ -37,7 +37,7 @@ public:
 	void SetRect(Rect*) override;                                                  // vtable+0x10
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                   // vtable+0x38
-	void VTable0x40(MenuScreenInterface*) override;                                // vtable+0x40
+	void SetIconEventHandler(MenuScreenInterface*) override;                       // vtable+0x40
 	void FUN_00482790(undefined4);
 	void FUN_00482810(GolString* p_string);
 	LegoBool32 FUN_004826c0(CreateParams* p_createParams, MenuStyleTable::TextButtonStyle* p_styleEntry);

@@ -151,7 +151,7 @@ MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefin
 		case InputDevice::c_sourceKeyboard | 0x39:
 		case InputDevice::c_sourceKeyboard | 0x9c:
 		case InputDevice::c_sourceJoystickButton | 0x4:
-			VTable0x54(0);
+			Focus(0);
 			return this;
 		}
 
@@ -163,7 +163,7 @@ MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefin
 		case InputDevice::c_sourceKeyboard | 0x39:
 		case InputDevice::c_sourceKeyboard | 0x9c:
 		case InputDevice::c_sourceJoystickButton | 0x4:
-			VTable0x58(0);
+			Unfocus(0);
 			break;
 		}
 	}
@@ -200,11 +200,11 @@ MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined
 }
 
 // FUNCTION: LEGORACERS 0x004669e0
-void MenuHotspotButton::VTable0x58(undefined4 p_flags)
+void MenuHotspotButton::Unfocus(undefined4 p_flags)
 {
 	if (m_unk0x224) {
 		FUN_00466690(c_sourceRegion);
 	}
 
-	MenuIcon::VTable0x58(p_flags);
+	MenuIcon::Unfocus(p_flags);
 }

@@ -134,7 +134,7 @@ void OptionsScreen::FUN_00475a30()
 	m_unk0x3d0.VTable0x44(0x12, TRUE);
 	m_unk0x3d0.FUN_0046f6b0(20);
 	m_unk0x18d8.FUN_00482790(0x10);
-	m_unk0x5820.VTable0x4c(4);
+	m_unk0x5820.Select(4);
 }
 
 // FUNCTION: LEGORACERS 0x00475aa0

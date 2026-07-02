@@ -81,7 +81,7 @@ void MenuDialog::DialogScreen::FUN_00468390()
 {
 	Rect rect;
 
-	m_unk0x740->VTable0x40(this);
+	m_unk0x740->SetIconEventHandler(this);
 
 	LegoS32 bottom = m_unk0x740->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
@@ -96,7 +96,7 @@ void MenuDialog::DialogScreen::FUN_00468390()
 	m_unk0x740->SetRect(&rect);
 	m_unk0x740->SetParent(&m_unk0x2cc);
 	m_unk0x740->AttachToParent(GetUnk0xd8());
-	m_unk0x740->VTable0x4c(5);
+	m_unk0x740->Select(5);
 }
 
 // FUNCTION: LEGORACERS 0x00468430
@@ -104,7 +104,7 @@ void MenuDialog::DialogScreen::FUN_00468430()
 {
 	Rect rect;
 
-	m_unk0x744->VTable0x40(this);
+	m_unk0x744->SetIconEventHandler(this);
 
 	LegoS32 bottom = m_unk0x744->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
@@ -121,7 +121,7 @@ void MenuDialog::DialogScreen::FUN_00468430()
 	m_unk0x744->AttachToParent(GetUnk0xd8());
 
 	if (m_unk0x2c8) {
-		m_unk0x744->VTable0x4c(5);
+		m_unk0x744->Select(5);
 	}
 }
 
@@ -130,7 +130,7 @@ void MenuDialog::DialogScreen::FUN_004684e0()
 {
 	Rect rect;
 
-	m_unk0x748->VTable0x40(this);
+	m_unk0x748->SetIconEventHandler(this);
 
 	LegoS32 bottom = m_unk0x748->GetRect()->m_bottom + 0x14;
 	m_unk0x2a8 += bottom * 0.5f;
@@ -150,7 +150,7 @@ void MenuDialog::DialogScreen::FUN_004684e0()
 	m_unk0x748->AttachToParent(GetUnk0xd8());
 
 	if (!m_unk0x2c8) {
-		m_unk0x748->VTable0x4c(5);
+		m_unk0x748->Select(5);
 	}
 }
 

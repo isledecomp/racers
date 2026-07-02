@@ -48,8 +48,8 @@ public:
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
-	void VTable0x4c(undefined4) override;                                            // vtable+0x4c
-	void VTable0x50(undefined4) override;                                            // vtable+0x50
+	void Select(undefined4) override;                                                // vtable+0x4c
+	void Deselect(undefined4) override;                                              // vtable+0x50
 	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);      // vtable+0x70
 	void FUN_00471100(undefined4 p_unk0x04);
 	void FUN_004711f0(GolString* p_string);

@@ -148,7 +148,7 @@ LegoBool32 ControlConfigScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	}
 
 	m_unk0x780.VTable0x50(m_unk0x3a0);
-	m_unk0x144c[0].VTable0x4c(4);
+	m_unk0x144c[0].Select(4);
 	VTable0x78(0);
 
 	return TRUE;
@@ -226,7 +226,7 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 
 			state.SetInputEvent(entryIndex, m_unk0x390->GetId() - m_unk0x144c[0].GetId(), keyCode);
 			device->SetEventMappings(m_unk0x394, m_unk0x398);
-			m_unk0x390->VTable0x58(0);
+			m_unk0x390->Unfocus(0);
 			m_unk0x390 = NULL;
 		}
 	}
@@ -289,12 +289,12 @@ LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_unk0x04)
 	FUN_0047adb0();
 
 	if (m_unk0x368[m_unk0x3a0]->GetDeviceType() == 3) {
-		m_unk0x144c[0].VTable0x44(0);
-		m_unk0x144c[1].VTable0x44(0);
+		m_unk0x144c[0].Enable(0);
+		m_unk0x144c[1].Enable(0);
 	}
 	else {
-		m_unk0x144c[0].VTable0x48(0);
-		m_unk0x144c[1].VTable0x48(0);
+		m_unk0x144c[0].Disable(0);
+		m_unk0x144c[1].Disable(0);
 	}
 
 	return MenuGameScreen::VTable0x78(p_unk0x04);

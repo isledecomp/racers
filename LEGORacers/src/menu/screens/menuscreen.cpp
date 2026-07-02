@@ -220,8 +220,8 @@ LegoBool32 MenuScreen::FUN_0046b630()
 	createParams.m_rect.m_bottom = drawState->m_height;
 	createParams.m_eventHandler = this;
 
-	if (m_unk0xd8.FUN_00471e30(&createParams, &g_unk0x4b2278)) {
-		m_unk0xd8.VTable0x4c(0);
+	if (m_unk0xd8.Create(&createParams, &g_unk0x4b2278)) {
+		m_unk0xd8.Select(0);
 		return TRUE;
 	}
 

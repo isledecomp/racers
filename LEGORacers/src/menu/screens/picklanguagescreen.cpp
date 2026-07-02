@@ -44,7 +44,7 @@ LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreen
 	}
 
 	m_unk0xe30.VTable0x50(languageIndex);
-	m_unk0x43c.VTable0x4c(5);
+	m_unk0x43c.Select(5);
 
 	return TRUE;
 }

@@ -152,7 +152,7 @@ void RacerPickScreenBase::FUN_004891f0(LegoS32 p_index)
 void RacerPickScreenBase::FUN_00489250(LegoS32 p_index)
 {
 	if (p_index > 0) {
-		m_unk0x2c0c[p_index].VTable0x44(5);
+		m_unk0x2c0c[p_index].Enable(5);
 		if (m_unk0x2704[p_index]) {
 			m_unk0x98c[p_index].SetUnk0x6c(TRUE);
 		}
@@ -163,7 +163,7 @@ void RacerPickScreenBase::FUN_00489250(LegoS32 p_index)
 	}
 	else {
 		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-			m_unk0x2c0c[i].VTable0x44(5);
+			m_unk0x2c0c[i].Enable(5);
 			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
 		}
 	}
@@ -173,7 +173,7 @@ void RacerPickScreenBase::FUN_00489250(LegoS32 p_index)
 void RacerPickScreenBase::FUN_00489320(LegoS32 p_index)
 {
 	if (p_index > 0) {
-		m_unk0x2c0c[p_index].VTable0x48(5);
+		m_unk0x2c0c[p_index].Disable(5);
 		if (m_unk0x2704[p_index]) {
 			m_unk0x98c[p_index].SetUnk0x6c(TRUE);
 		}
@@ -184,7 +184,7 @@ void RacerPickScreenBase::FUN_00489320(LegoS32 p_index)
 	}
 	else {
 		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
-			m_unk0x2c0c[i].VTable0x48(5);
+			m_unk0x2c0c[i].Disable(5);
 			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
 		}
 	}

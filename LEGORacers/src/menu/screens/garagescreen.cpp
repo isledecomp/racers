@@ -104,19 +104,19 @@ void GarageScreen::FUN_0047e740()
 	m_unk0x4050.FUN_0046f6b0(0x14);
 
 	if (m_unk0x2704[0]) {
-		m_unk0x43b8.VTable0x44(5);
-		m_unk0x4998.VTable0x44(5);
-		m_unk0x4c88.VTable0x44(5);
+		m_unk0x43b8.Enable(5);
+		m_unk0x4998.Enable(5);
+		m_unk0x4c88.Enable(5);
 
 		if (m_unk0x2704[0] == 0xd1) {
-			m_unk0x40c8.VTable0x48(5);
-			m_unk0x46a8.VTable0x48(5);
-			m_unk0x43b8.VTable0x4c(4);
+			m_unk0x40c8.Disable(5);
+			m_unk0x46a8.Disable(5);
+			m_unk0x43b8.Select(4);
 		}
 		else {
-			m_unk0x40c8.VTable0x44(5);
-			m_unk0x46a8.VTable0x44(5);
-			m_unk0x40c8.VTable0x4c(4);
+			m_unk0x40c8.Enable(5);
+			m_unk0x46a8.Enable(5);
+			m_unk0x40c8.Select(4);
 		}
 
 		if (static_cast<LegoS32>(m_unk0x2704[0]) > 1) {
@@ -131,12 +131,12 @@ void GarageScreen::FUN_0047e740()
 		}
 	}
 	else {
-		m_unk0x40c8.VTable0x44(5);
-		m_unk0x43b8.VTable0x48(5);
-		m_unk0x46a8.VTable0x48(5);
-		m_unk0x4998.VTable0x48(5);
-		m_unk0x4c88.VTable0x48(5);
-		m_unk0x40c8.VTable0x4c(5);
+		m_unk0x40c8.Enable(5);
+		m_unk0x43b8.Disable(5);
+		m_unk0x46a8.Disable(5);
+		m_unk0x4998.Disable(5);
+		m_unk0x4c88.Disable(5);
+		m_unk0x40c8.Select(5);
 		FUN_00489320(0);
 		FUN_004866e0(0);
 		FUN_004890c0(0);
@@ -160,7 +160,7 @@ void GarageScreen::FUN_0047e950()
 	m_unk0x4f78.SetFlags(2);
 	m_unk0x5268.SetFlags(2);
 	m_unk0x5558.SetFlags(2);
-	m_unk0x5268.VTable0x4c(5);
+	m_unk0x5268.Select(5);
 	m_unk0x5848.FUN_00482790(3);
 	m_unk0x4050.VTable0x44(4, TRUE);
 	m_unk0x4050.FUN_0046f6b0(0x14);
@@ -215,7 +215,7 @@ void GarageScreen::FUN_0047ea50()
 	FUN_0047e740();
 
 	if (m_unk0x2704[0]) {
-		m_unk0x4998.VTable0x4c(5);
+		m_unk0x4998.Select(5);
 	}
 }
 

@@ -59,7 +59,7 @@ LegoBool32 MenuButton::FUN_004663d0(CreateParams* p_createParams, const MenuIcon
 		p_createParams->m_rect.m_bottom = p_createParams->m_rect.m_top + m_unk0x1a8[0]->GetHeight();
 	}
 
-	if (FUN_00471e30(p_createParams, p_createState)) {
+	if (Create(p_createParams, p_createState)) {
 		return FUN_00466370(&m_unk0x1c0, p_createParams);
 	}
 

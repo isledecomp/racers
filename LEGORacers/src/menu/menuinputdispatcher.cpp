@@ -220,8 +220,8 @@ void MenuInputDispatcher::FocusNext()
 {
 	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
-	if (!icon->VTable0x60()) {
-		icon->VTable0x68();
+	if (!icon->SelectNext()) {
+		icon->SelectFirst();
 	}
 }
 
@@ -230,8 +230,8 @@ void MenuInputDispatcher::FocusPrevious()
 {
 	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
-	if (!icon->VTable0x64()) {
-		icon->VTable0x6c();
+	if (!icon->SelectPrevious()) {
+		icon->SelectLast();
 	}
 }
 

@@ -278,7 +278,7 @@ void EditDriverScreen::FUN_0047d840()
 	m_unk0x420[3].FUN_00484170(m_driverCosmetics.m_components[3]);
 
 	m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
-	m_unk0x9e0[0].VTable0x4c(4);
+	m_unk0x9e0[0].Select(4);
 	m_unk0x4764 = 0;
 }
 

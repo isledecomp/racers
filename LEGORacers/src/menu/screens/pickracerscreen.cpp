@@ -61,16 +61,16 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 
 		if (p_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 0) {
 			m_unk0x40c8.ClearFlags(2);
-			m_unk0x43b8.VTable0x4c(0);
+			m_unk0x43b8.Select(0);
 		}
 		else {
 			m_unk0x43b8.ClearFlags(2);
-			m_unk0x40c8.VTable0x4c(0);
+			m_unk0x40c8.Select(0);
 		}
 	}
 	else {
 		m_unk0x43b8.ClearFlags(2);
-		m_unk0x40c8.VTable0x4c(0);
+		m_unk0x40c8.Select(0);
 	}
 
 	return TRUE;

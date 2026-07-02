@@ -335,8 +335,8 @@ void GolWorldDatabaseEx::VTable0x18()
 void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x5c; i++) {
-		p_renderer->VTable0x90(&m_unk0xa4[i]);
+	for (i = 0; i < m_collidableEntityCount; i++) {
+		p_renderer->VTable0x90(&m_collidableEntities[i]);
 	}
 }
 
@@ -344,8 +344,8 @@ void GolWorldDatabaseEx::VTable0x1c(GolRenderDevice* p_renderer)
 void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x4c; i++) {
-		m_unk0x9c[i].VTable0x1c(*p_renderer);
+	for (i = 0; i < m_modelEntityCount; i++) {
+		m_modelEntities[i].VTable0x1c(*p_renderer);
 	}
 }
 
@@ -353,8 +353,8 @@ void GolWorldDatabaseEx::VTable0x20(GolRenderDevice* p_renderer)
 void GolWorldDatabaseEx::VTable0x24(GolRenderDevice* p_renderer)
 {
 	LegoU32 i;
-	for (i = 0; i < m_unk0x54; i++) {
-		m_unk0xa0[i].VTable0x1c(*p_renderer);
+	for (i = 0; i < m_animatedEntityCount; i++) {
+		m_animatedEntities[i].VTable0x1c(*p_renderer);
 	}
 }
 

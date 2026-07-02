@@ -187,22 +187,22 @@ void AwardCinematicScreen::CreateWidgets()
 	for (LegoU32 i = 0; i < m_sceneWidget.m_definition.GetWorldDatabaseCount(); i++) {
 		GolWorldDatabase* worldDatabase = m_sceneWidget.m_definition.GetWorldDatabase(i);
 		if (!sourceDriverEntity) {
-			sourceDriverEntity = worldDatabase->FindUnk0xc0("guy1");
+			sourceDriverEntity = worldDatabase->FindAnimatedEntity("guy1");
 		}
 
 		if (!carBodyEntity) {
-			carBodyEntity = worldDatabase->FindUnk0xb4("carbody");
+			carBodyEntity = worldDatabase->FindModelEntity("carbody");
 			if (!carBodyEntity) {
-				carBodyEntity = worldDatabase->FindUnk0xc0("carbody");
+				carBodyEntity = worldDatabase->FindAnimatedEntity("carbody");
 			}
 		}
 
 		if (!swapEntity) {
-			swapEntity = worldDatabase->FindUnk0xc0("swap");
+			swapEntity = worldDatabase->FindAnimatedEntity("swap");
 		}
 
 		if (!pLegEntity) {
-			pLegEntity = worldDatabase->FindUnk0xc0("pleg");
+			pLegEntity = worldDatabase->FindAnimatedEntity("pleg");
 		}
 	}
 

@@ -44,7 +44,7 @@ void RaceSession::RacerCollisionWorlds::Destroy()
 // FUNCTION: LEGORACERS 0x0045e3f0
 void RaceSession::RacerCollisionWorlds::Initialize(GolWorldDatabase* p_worldDatabase, RaceState* p_raceState)
 {
-	m_worldCount = p_worldDatabase->GetUnk0x64();
+	m_worldCount = p_worldDatabase->GetBoundedEntityCount();
 	if (m_worldCount) {
 		m_worldDatabase = p_worldDatabase;
 
@@ -88,7 +88,7 @@ void RaceSession::RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 							if (elapsedStep >= value) {
 								*timer = 0;
 								m_racers[racerIndex]->m_physics.RemoveCollisionWorld(
-									m_worldDatabase->GetUnk0xa8() + entryIndex
+									m_worldDatabase->GetBoundedEntities() + entryIndex
 								);
 								elapsedStep = savedElapsedStep;
 							}
@@ -127,7 +127,7 @@ void RaceSession::RacerCollisionWorlds::ActivateWorld(RaceState::Racer* p_racer,
 	}
 
 	if (!field->m_ttl[racerIndex][p_worldIndex]) {
-		target->m_physics.AddCollisionWorld(field->m_worldDatabase->GetUnk0xa8() + p_worldIndex);
+		target->m_physics.AddCollisionWorld(field->m_worldDatabase->GetBoundedEntities() + p_worldIndex);
 	}
 
 	LegoU32 result = 0;

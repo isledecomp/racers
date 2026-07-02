@@ -735,17 +735,17 @@ void HazardManager::OscillatorHazard::Load(Context* p_context, GolFileParser* p_
 	GolName name;
 	::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xb4(name);
+	m_entity = p_context->GetTrackDatabase()->FindModelEntity(name);
 	if (!m_entity) {
-		m_entity = p_context->GetTrackDatabase()->FindUnk0xc0(name);
+		m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
 	}
 
 	if (!m_entity) {
-		m_entity = p_context->GetSharedDatabase()->FindUnk0xb4(name);
+		m_entity = p_context->GetSharedDatabase()->FindModelEntity(name);
 	}
 
 	if (!m_entity) {
-		m_entity = p_context->GetSharedDatabase()->FindUnk0xc0(name);
+		m_entity = p_context->GetSharedDatabase()->FindAnimatedEntity(name);
 	}
 
 	m_amplitude0 = p_parser->ReadFloat();
@@ -929,7 +929,7 @@ void HazardManager::SweepCannonHazard::Load(Context* p_context, GolFileParser* p
 
 	m_powerupManager = p_context->GetPowerupManager();
 	if (name[0]) {
-		m_trackedEntity = p_context->GetTrackDatabase()->FindUnk0xc0(name);
+		m_trackedEntity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
 	}
 	m_state = 1;
 }
@@ -1036,7 +1036,7 @@ void HazardManager::FallingPillarHazard::Load(Context* p_context, GolFileParser*
 	m_triggerId = 0x0a;
 	m_eventTable = p_context->GetEventTable();
 	m_particleAnimation = p_context->GetParticleAnimation();
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0("piltop");
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("piltop");
 
 	GolNameTable* nameTable = p_context->GetColliderTable();
 	m_collider = nameTable->GetNameEntries() == NULL
@@ -1138,7 +1138,7 @@ void HazardManager::RollingRockHazard::Load(Context* p_context, GolFileParser* p
 
 	GolName name;
 	::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0(name);
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
 
 	LegoU32 state = 1;
 	if (!::strncmp(name, "rk", 2)) {
@@ -1296,7 +1296,7 @@ void HazardManager::SphinxHazard::Load(Context* p_context, GolFileParser*)
 	m_collider = nameTable->GetNameEntries() == NULL
 					 ? NULL
 					 : static_cast<HazardManager::ColliderRecord*>(nameTable->GetName("sphinx"));
-	m_entity = m_sharedDatabase->FindUnk0xc0("blowup");
+	m_entity = m_sharedDatabase->FindAnimatedEntity("blowup");
 	m_state = 1;
 }
 
@@ -1503,7 +1503,7 @@ void HazardManager::CannonballRainHazard::Load(Context* p_context, GolFileParser
 	}
 
 	m_powerupManager = p_context->GetPowerupManager();
-	m_emitterEntity = p_context->GetTrackDatabase()->FindUnk0xc0(entityName);
+	m_emitterEntity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
 	m_state = 1;
 }
 
@@ -1653,8 +1653,8 @@ void HazardManager::GhostHazard::Load(Context* p_context, GolFileParser*)
 	m_soundSource = context->GetSoundSource();
 	m_raceState = context->GetRaceState();
 
-	m_ghostEntity = context->GetTrackDatabase()->FindUnk0xc0("ghostly");
-	m_trailModel = context->GetTrackDatabase()->FindUnk0xb4("gtrail");
+	m_ghostEntity = context->GetTrackDatabase()->FindAnimatedEntity("ghostly");
+	m_trailModel = context->GetTrackDatabase()->FindModelEntity("gtrail");
 
 	{
 		GolModelEntity* modelEntity = m_trailModels;
@@ -1942,7 +1942,7 @@ void HazardManager::HammerHazard::Load(Context* p_context, GolFileParser*)
 	name[6] = '0';
 	name[7] = '2';
 
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0(name);
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(name);
 	m_state = 1;
 }
 
@@ -2287,7 +2287,7 @@ void HazardManager::LavaGeyserHazard::Load(Context* p_context, GolFileParser*)
 	m_particleAnimation = p_context->GetParticleAnimation();
 	m_soundSource = p_context->GetSoundSource();
 	m_unk0x58 = p_context->GetMirror();
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0("mmlavbl");
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("mmlavbl");
 	m_trigger.FUN_10026fa0(m_entity->GetModel(0)->GetRadius());
 	m_state = 1;
 }
@@ -2498,7 +2498,7 @@ void HazardManager::GrabberHazard::Load(Context* p_context, GolFileParser* p_par
 	}
 
 	m_eventQueue = p_context->GetEventQueue();
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0(entityName);
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity(entityName);
 	m_trigger.FUN_10026fa0(g_grabberTriggerRadius);
 	m_state = 1;
 }
@@ -2896,7 +2896,7 @@ void HazardManager::SmokeVentHazard::Load(Context* p_context, GolFileParser*)
 	m_eventTable = p_context->GetEventTable();
 	m_particleAnimation = p_context->GetParticleAnimation();
 	m_unk0x1c = p_context->GetMirror();
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0("dp_def");
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("dp_def");
 	m_state = 1;
 }
 
@@ -3213,7 +3213,7 @@ void HazardManager::TriggeredAnimationHazard::Load(Context* p_context, GolFilePa
 	LegoS32 count = c_entityCount;
 	do {
 		if ((*modelName)[0] != '\0') {
-			*entity = p_context->GetTrackDatabase()->FindUnk0xc0(*modelName);
+			*entity = p_context->GetTrackDatabase()->FindAnimatedEntity(*modelName);
 			(*entity)->SetFlags((*entity)->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 		}
 		entity++;
@@ -3811,7 +3811,7 @@ void HazardManager::MovingObstacleHazard::Load(Context* p_context, GolFileParser
 	m_eventQueue = p_context->GetEventQueue();
 	m_trackCollidable = p_context->GetTrackCollidable();
 	m_soundSource = p_context->GetSoundSource();
-	m_entity = p_context->GetTrackDatabase()->FindUnk0xc0("crane");
+	m_entity = p_context->GetTrackDatabase()->FindAnimatedEntity("crane");
 
 	GolVec3 position;
 	position.m_x = 0.0f;

@@ -32,14 +32,14 @@ GolWorldDatabase* TriggerWorld::Initialize(
 	LegoChar name[8];
 	::strncpy(name, p_unk0x08, sizeof(name));
 
-	m_unk0x0c = m_unk0x00->FindUnk0xd8(name);
+	m_unk0x0c = m_unk0x00->FindBoundedEntity(name);
 
 	m_unk0x04 = p_unk0x0c;
 	m_unk0x08 = p_unk0x10;
 
 	GolWorldDatabase* result = m_unk0x00;
-	for (LegoU32 count = 0; count < m_unk0x00->GetUnk0x64(); count++) {
-		GolBoundedEntity* item = &m_unk0x00->GetUnk0xa8()[count];
+	for (LegoU32 count = 0; count < m_unk0x00->GetBoundedEntityCount(); count++) {
+		GolBoundedEntity* item = &m_unk0x00->GetBoundedEntities()[count];
 		LegoU32 flags = item->GetUnk0x60();
 		flags |= 1;
 		item->SetUnk0x60(flags);
@@ -78,12 +78,12 @@ LegoBool32 TriggerWorld::IntersectSegment(
 	GolBoundingVolume::Field0x0c* record = p_unk0x0c;
 	GolWorldDatabase* root = m_unk0x00;
 	count = 0;
-	if (!(0 < root->GetUnk0x64())) {
+	if (!(0 < root->GetBoundedEntityCount())) {
 		goto fallback;
 	}
 
 	while (TRUE) {
-		entity = &root->GetUnk0xa8()[count];
+		entity = &root->GetBoundedEntities()[count];
 		if (entity->GetUnk0x60() & 1) {
 			entity->FUN_100286d0(&center);
 
@@ -110,7 +110,7 @@ LegoBool32 TriggerWorld::IntersectSegment(
 
 		root = m_unk0x00;
 		count++;
-		if (count >= root->GetUnk0x64()) {
+		if (count >= root->GetBoundedEntityCount()) {
 			goto fallback;
 		}
 	}

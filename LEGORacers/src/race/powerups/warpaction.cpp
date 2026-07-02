@@ -297,20 +297,20 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	p_renderer->VTable0x5c();
 	racerField->ShowModels();
 
-	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindUnk0xc0("dbricks");
+	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindAnimatedEntity("dbricks");
 	dbricks->ResetPartIndices();
 	dbricks->SetActiveValue(0.0f);
 	dbricks->FUN_00411680(0.0f);
 	dbricks->FUN_004116b0(0.0f);
 
-	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindUnk0xc0("dtube");
+	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindAnimatedEntity("dtube");
 	dtube->ResetPartIndices();
 	dtube->SetActiveValue(0.0f);
 	dtube->FUN_00411680(0.0f);
 	dtube->FUN_004116b0(0.0f);
 
-	m_manager->m_turbo3Database->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
-	m_manager->m_turbo3Database->FUN_00416040();
+	m_manager->m_turbo3Database->Update(c_transitionDurationMs - m_stateTimerMs);
+	m_manager->m_turbo3Database->DrawWorld();
 
 	racerField->SnapVisuals();
 	if (m_racer->m_cameraViewIndex != c_stateActive) {

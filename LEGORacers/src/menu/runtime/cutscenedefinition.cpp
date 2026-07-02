@@ -1538,7 +1538,7 @@ void CutsceneDefinition::ParseFrames(GolFileParser* p_parser)
 GolCamera* CutsceneDefinition::FindCamera(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
-		GolCamera* result = m_worldDatabases[i]->FindUnk0xe4(p_name);
+		GolCamera* result = m_worldDatabases[i]->FindCamera(p_name);
 		if (result) {
 			return result;
 		}
@@ -1551,7 +1551,7 @@ GolCamera* CutsceneDefinition::FindCamera(const LegoChar* p_name)
 GolWorldEntity* CutsceneDefinition::FindModelEntity(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
-		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xb4(p_name);
+		GolWorldEntity* result = m_worldDatabases[i]->FindModelEntity(p_name);
 		if (result) {
 			return result;
 		}
@@ -1564,7 +1564,7 @@ GolWorldEntity* CutsceneDefinition::FindModelEntity(const LegoChar* p_name)
 GolWorldEntity* CutsceneDefinition::FindJointedEntity(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
-		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xc0(p_name);
+		GolWorldEntity* result = m_worldDatabases[i]->FindAnimatedEntity(p_name);
 		if (result) {
 			return result;
 		}
@@ -1577,7 +1577,7 @@ GolWorldEntity* CutsceneDefinition::FindJointedEntity(const LegoChar* p_name)
 GolWorldEntity* CutsceneDefinition::FindBspEntity(const LegoChar* p_name)
 {
 	for (LegoU32 i = 0; i < m_worldDatabaseCount; i++) {
-		GolWorldEntity* result = m_worldDatabases[i]->FindUnk0xcc(p_name);
+		GolWorldEntity* result = m_worldDatabases[i]->FindCollidableEntity(p_name);
 		if (result) {
 			return result;
 		}
@@ -1616,7 +1616,7 @@ LegoU32 CutsceneDefinition::SetWorldScale(LegoFloat p_scale)
 	LegoU32 result = m_worldDatabaseCount;
 	if (result > 0) {
 		do {
-			m_worldDatabases[i]->FUN_00416290(p_scale);
+			m_worldDatabases[i]->SetWorldScale(p_scale);
 			result = m_worldDatabaseCount;
 			i++;
 		} while (i < result);

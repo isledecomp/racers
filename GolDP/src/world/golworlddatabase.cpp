@@ -72,13 +72,13 @@ void GolWorldDatabase::Reset()
 	m_unk0x40 = NULL;
 	m_unk0x44 = 0;
 	m_unk0x48 = NULL;
-	m_unk0x4c = 0;
+	m_modelEntityCount = 0;
 	m_unk0x50 = NULL;
-	m_unk0x54 = 0;
+	m_animatedEntityCount = 0;
 	m_unk0x58 = NULL;
-	m_unk0x5c = 0;
+	m_collidableEntityCount = 0;
 	m_unk0x60 = NULL;
-	m_unk0x64 = 0;
+	m_boundedEntityCount = 0;
 	m_unk0x68 = NULL;
 	m_unk0x6c = 0;
 	m_unk0x70 = NULL;
@@ -92,12 +92,12 @@ void GolWorldDatabase::Reset()
 	m_unk0x90 = NULL;
 	m_binary = FALSE;
 	m_unk0x98 = 0;
-	m_unk0x9c = 0;
-	m_unk0xa0 = 0;
-	m_unk0xa4 = NULL;
-	m_unk0xa8 = 0;
-	m_unk0xac = 0;
-	m_unk0xb0 = 0;
+	m_modelEntities = 0;
+	m_animatedEntities = 0;
+	m_collidableEntities = NULL;
+	m_boundedEntities = 0;
+	m_ambientMaterial = 0;
+	m_light = 0;
 }
 
 // FUNCTION: GOLDP 0x1002c1a0
@@ -236,7 +236,7 @@ void GolWorldDatabase::VTable0x00()
 	}
 
 	if (m_unk0x60 != NULL) {
-		for (LegoU32 i = 0; i < m_unk0x5c; i++) {
+		for (LegoU32 i = 0; i < m_collidableEntityCount; i++) {
 			if (m_unk0x60[i].m_unk0x78 != NULL) {
 				delete[] m_unk0x60[i].m_unk0x78;
 			}
@@ -247,7 +247,7 @@ void GolWorldDatabase::VTable0x00()
 	}
 
 	if (m_unk0x58 != NULL) {
-		for (LegoU32 i = 0; i < m_unk0x54; i++) {
+		for (LegoU32 i = 0; i < m_animatedEntityCount; i++) {
 			if (m_unk0x58[i].m_unk0x78 != NULL) {
 				delete[] m_unk0x58[i].m_unk0x78;
 			}
@@ -258,7 +258,7 @@ void GolWorldDatabase::VTable0x00()
 	}
 
 	if (m_unk0x50 != NULL) {
-		for (LegoU32 i = 0; i < m_unk0x4c; i++) {
+		for (LegoU32 i = 0; i < m_modelEntityCount; i++) {
 			if (m_unk0x50[i].m_unk0x78 != NULL) {
 				delete[] m_unk0x50[i].m_unk0x78;
 			}
@@ -319,38 +319,38 @@ void GolWorldDatabase::VTable0x18()
 		m_unk0x78 = NULL;
 	}
 
-	m_unk0xe4.Clear();
-	m_unk0xb4.Clear();
-	m_unk0xc0.Clear();
-	m_unk0xcc.Clear();
-	m_unk0xd8.Clear();
+	m_cameraNames.Clear();
+	m_modelEntityNames.Clear();
+	m_animatedEntityNames.Clear();
+	m_collidableEntityNames.Clear();
+	m_boundedEntityNames.Clear();
 
-	if (m_unk0xa8 != NULL) {
-		delete[] m_unk0xa8;
+	if (m_boundedEntities != NULL) {
+		delete[] m_boundedEntities;
 	}
 
-	if (m_unk0xa4 != NULL) {
-		delete[] m_unk0xa4;
+	if (m_collidableEntities != NULL) {
+		delete[] m_collidableEntities;
 	}
 
-	if (m_unk0xa0 != NULL) {
-		delete[] m_unk0xa0;
+	if (m_animatedEntities != NULL) {
+		delete[] m_animatedEntities;
 	}
 
-	if (m_unk0x9c != NULL) {
-		delete[] m_unk0x9c;
+	if (m_modelEntities != NULL) {
+		delete[] m_modelEntities;
 	}
 
 	if (m_unk0x98 != NULL) {
 		delete[] m_unk0x98;
 	}
 
-	if (m_unk0xac != NULL) {
-		delete[] m_unk0xac;
+	if (m_ambientMaterial != NULL) {
+		delete[] m_ambientMaterial;
 	}
 
-	if (m_unk0xb0 != NULL) {
-		delete[] m_unk0xb0;
+	if (m_light != NULL) {
+		delete[] m_light;
 	}
 
 	Reset();
@@ -541,17 +541,17 @@ void GolWorldDatabase::FUN_1002cc30(GolFileParser& p_parser)
 	if (m_unk0x50 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
-	m_unk0x4c = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x4c == 0) {
+	m_modelEntityCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_modelEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x50 = new WdbModel0x8c[m_unk0x4c];
+	m_unk0x50 = new WdbModel0x8c[m_modelEntityCount];
 	if (m_unk0x50 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_unk0x50, 0, sizeof(*m_unk0x50) * m_unk0x4c);
+	::memset(m_unk0x50, 0, sizeof(*m_unk0x50) * m_modelEntityCount);
 	WdbModel0x8c* item = m_unk0x50;
-	for (i = 0; i < m_unk0x4c; item++, i++) {
+	for (i = 0; i < m_modelEntityCount; item++, i++) {
 		LegoU32 cnt = 0;
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2e);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
@@ -656,17 +656,17 @@ void GolWorldDatabase::FUN_1002cfa0(GolFileParser& p_parser)
 	if (m_unk0x58 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
-	m_unk0x54 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x54 == 0) {
+	m_animatedEntityCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_animatedEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x58 = new WdbModel0x8c[m_unk0x54];
+	m_unk0x58 = new WdbModel0x8c[m_animatedEntityCount];
 	if (m_unk0x58 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_unk0x58, 0, sizeof(*m_unk0x58) * m_unk0x54);
+	::memset(m_unk0x58, 0, sizeof(*m_unk0x58) * m_animatedEntityCount);
 	WdbModel0x8c* item = m_unk0x58;
-	for (i = 0; i < m_unk0x54; item++, i++) {
+	for (i = 0; i < m_animatedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x2f);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
@@ -801,17 +801,17 @@ void GolWorldDatabase::FUN_1002d400(GolFileParser& p_parser)
 	if (m_unk0x60 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
-	m_unk0x5c = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x5c == 0) {
+	m_collidableEntityCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_collidableEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x60 = new WdbModel0x8c[m_unk0x5c];
+	m_unk0x60 = new WdbModel0x8c[m_collidableEntityCount];
 	if (m_unk0x60 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_unk0x60, 0, sizeof(*m_unk0x60) * m_unk0x5c);
+	::memset(m_unk0x60, 0, sizeof(*m_unk0x60) * m_collidableEntityCount);
 	WdbModel0x8c* item = m_unk0x60;
-	for (i = 0; i < m_unk0x5c; item++, i++) {
+	for (i = 0; i < m_collidableEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x30);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
@@ -902,17 +902,17 @@ void GolWorldDatabase::FUN_1002d720(GolFileParser& p_parser)
 	if (m_unk0x68 != NULL) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_unsuportedKeyword);
 	}
-	m_unk0x64 = p_parser.ReadBracketedCountAndLeftCurly();
-	if (m_unk0x64 == 0) {
+	m_boundedEntityCount = p_parser.ReadBracketedCountAndLeftCurly();
+	if (m_boundedEntityCount == 0) {
 		p_parser.HandleUnexpectedToken(GolFileParser::e_int);
 	}
-	m_unk0x68 = new WdbModel0x8c[m_unk0x64];
+	m_unk0x68 = new WdbModel0x8c[m_boundedEntityCount];
 	if (m_unk0x68 == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
-	::memset(m_unk0x68, 0, sizeof(*m_unk0x68) * m_unk0x64);
+	::memset(m_unk0x68, 0, sizeof(*m_unk0x68) * m_boundedEntityCount);
 	WdbModel0x8c* item = m_unk0x68;
-	for (i = 0; i < m_unk0x64; item++, i++) {
+	for (i = 0; i < m_boundedEntityCount; item++, i++) {
 		p_parser.AssertNextTokenIs(GolFileParser::e_unknown0x41);
 		if (p_parser.GetNextToken() != GolFileParser::e_string) {
 			p_parser.SetUnk0x30(1);
@@ -1124,7 +1124,7 @@ void GolWorldDatabase::FUN_1002dc80(GolFileParser& p_parser)
 			switch (token) {
 			case GolFileParser::e_unknown0x2f:
 				item->m_unk0x08 = p_parser.ReadInteger();
-				if (static_cast<LegoU32>(item->m_unk0x08) >= m_unk0x54 && m_unk0x54 != 0) {
+				if (static_cast<LegoU32>(item->m_unk0x08) >= m_animatedEntityCount && m_animatedEntityCount != 0) {
 					p_parser.HandleUnexpectedToken(GolFileParser::e_invalidValue);
 				}
 				item->m_unk0x0c = p_parser.ReadInteger();
@@ -1302,44 +1302,44 @@ void GolWorldDatabase::VTable0x04()
 		}
 	}
 
-	if (m_unk0x4c != 0) {
-		m_unk0x9c = new GolModelEntity[m_unk0x4c];
-		if (m_unk0x9c == NULL) {
+	if (m_modelEntityCount != 0) {
+		m_modelEntities = new GolModelEntity[m_modelEntityCount];
+		if (m_modelEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (m_unk0x54 != 0) {
-		m_unk0xa0 = new GolAnimatedEntity[m_unk0x54];
-		if (m_unk0xa0 == NULL) {
+	if (m_animatedEntityCount != 0) {
+		m_animatedEntities = new GolAnimatedEntity[m_animatedEntityCount];
+		if (m_animatedEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (m_unk0x5c != 0) {
-		m_unk0xa4 = new GolCollidableEntity[m_unk0x5c];
-		if (m_unk0xa4 == NULL) {
+	if (m_collidableEntityCount != 0) {
+		m_collidableEntities = new GolCollidableEntity[m_collidableEntityCount];
+		if (m_collidableEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
-	if (m_unk0x64 != 0) {
-		m_unk0xa8 = new GolBoundedEntity[m_unk0x64];
-		if (m_unk0xa8 == NULL) {
+	if (m_boundedEntityCount != 0) {
+		m_boundedEntities = new GolBoundedEntity[m_boundedEntityCount];
+		if (m_boundedEntities == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (m_unk0x84 != 0) {
-		m_unk0xac = new GolRenderDevice::MaterialColor[m_unk0x84];
-		if (m_unk0xac == NULL) {
+		m_ambientMaterial = new GolRenderDevice::MaterialColor[m_unk0x84];
+		if (m_ambientMaterial == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
 
 	if (m_unk0x8c != 0) {
-		m_unk0xb0 = new GolRenderDevice::Light[m_unk0x8c];
-		if (m_unk0xb0 == NULL) {
+		m_light = new GolRenderDevice::Light[m_unk0x8c];
+		if (m_light == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 	}
@@ -1353,9 +1353,9 @@ void GolWorldDatabase::FUN_1002e640()
 	LegoU32 lod;
 	LegoFloat maxDistances[3];
 
-	for (i = 0; i < m_unk0x4c; i++) {
+	for (i = 0; i < m_modelEntityCount; i++) {
 		WdbModel0x8c* model = &m_unk0x50[i];
-		GolModelEntity* runtime = &m_unk0x9c[i];
+		GolModelEntity* runtime = &m_modelEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
@@ -1424,16 +1424,16 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x00[0] != '\0') {
-			if (m_unk0xb4.GetNameEntries() == NULL) {
-				m_unk0xb4.Allocate(m_unk0x4c);
+			if (m_modelEntityNames.GetNameEntries() == NULL) {
+				m_modelEntityNames.Allocate(m_modelEntityCount);
 			}
-			m_unk0xb4.AddName(model->m_unk0x00, runtime);
+			m_modelEntityNames.AddName(model->m_unk0x00, runtime);
 		}
 	}
 
-	for (i = 0; i < m_unk0x54; i++) {
+	for (i = 0; i < m_animatedEntityCount; i++) {
 		WdbModel0x8c* model = &m_unk0x58[i];
-		GolAnimatedEntity* runtime = &m_unk0xa0[i];
+		GolAnimatedEntity* runtime = &m_animatedEntities[i];
 
 		if (model->m_unk0x08[0] >= 0 && static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
@@ -1541,16 +1541,16 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x00[0] != '\0') {
-			if (m_unk0xc0.GetNameEntries() == NULL) {
-				m_unk0xc0.Allocate(m_unk0x54);
+			if (m_animatedEntityNames.GetNameEntries() == NULL) {
+				m_animatedEntityNames.Allocate(m_animatedEntityCount);
 			}
-			m_unk0xc0.AddName(model->m_unk0x00, runtime);
+			m_animatedEntityNames.AddName(model->m_unk0x00, runtime);
 		}
 	}
 
-	for (i = 0; i < m_unk0x5c; i++) {
+	for (i = 0; i < m_collidableEntityCount; i++) {
 		WdbModel0x8c* model = &m_unk0x60[i];
-		GolCollidableEntity* runtime = &m_unk0xa4[i];
+		GolCollidableEntity* runtime = &m_collidableEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x08[0]) >= m_unk0x24) {
 			GOL_FATALERROR_MESSAGE("Illegal mesh reference");
@@ -1618,10 +1618,10 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x00[0] != '\0') {
-			if (m_unk0xcc.GetNameEntries() == NULL) {
-				m_unk0xcc.Allocate(m_unk0x5c);
+			if (m_collidableEntityNames.GetNameEntries() == NULL) {
+				m_collidableEntityNames.Allocate(m_collidableEntityCount);
 			}
-			m_unk0xcc.AddName(model->m_unk0x00, runtime);
+			m_collidableEntityNames.AddName(model->m_unk0x00, runtime);
 		}
 	}
 
@@ -1632,9 +1632,9 @@ void GolWorldDatabase::FUN_1002e640()
 		m_unk0x98[i].VTable0x04(m_unk0x04, name, m_binary);
 	}
 
-	for (i = 0; i < m_unk0x64; i++) {
+	for (i = 0; i < m_boundedEntityCount; i++) {
 		WdbModel0x8c* model = &m_unk0x68[i];
-		GolBoundedEntity* runtime = &m_unk0xa8[i];
+		GolBoundedEntity* runtime = &m_boundedEntities[i];
 
 		if (static_cast<LegoU32>(model->m_unk0x14[0]) >= m_unk0x44) {
 			GOL_FATALERROR_MESSAGE("Illegal bsp volume reference");
@@ -1655,10 +1655,10 @@ void GolWorldDatabase::FUN_1002e640()
 		runtime->VTable0x40(model->m_unk0x5c, model->m_unk0x68);
 
 		if (model->m_unk0x00[0] != '\0') {
-			if (m_unk0xd8.GetNameEntries() == NULL) {
-				m_unk0xd8.Allocate(m_unk0x64);
+			if (m_boundedEntityNames.GetNameEntries() == NULL) {
+				m_boundedEntityNames.Allocate(m_boundedEntityCount);
 			}
-			m_unk0xd8.AddName(model->m_unk0x00, runtime);
+			m_boundedEntityNames.AddName(model->m_unk0x00, runtime);
 		}
 	}
 
@@ -1667,12 +1667,12 @@ void GolWorldDatabase::FUN_1002e640()
 	}
 
 	for (i = 0; i < m_unk0x84; i++) {
-		m_unk0xac[i].SetColor(m_unk0x88[i].m_color);
+		m_ambientMaterial[i].SetColor(m_unk0x88[i].m_color);
 	}
 
 	for (i = 0; i < m_unk0x8c; i++) {
-		m_unk0xb0[i].SetColor(m_unk0x90[i].m_color);
-		m_unk0xb0[i].SetDirection(m_unk0x90[i].m_unk0x04);
+		m_light[i].SetColor(m_unk0x90[i].m_color);
+		m_light[i].SetDirection(m_unk0x90[i].m_unk0x04);
 	}
 }
 
@@ -1694,7 +1694,7 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 	p_lens->m_flags |= 1;
 
 	if (camera->m_unk0x08 >= 0) {
-		GolAnimatedEntity* model = &m_unk0xa0[camera->m_unk0x08];
+		GolAnimatedEntity* model = &m_animatedEntities[camera->m_unk0x08];
 		p_lens->SetTrackedEntity(model, camera->m_unk0x0c);
 
 		if (camera->m_unk0x14[0] != '\0') {
@@ -1711,11 +1711,11 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 	}
 
 	if (camera->m_unk0x00[0] != '\0') {
-		if (m_unk0xe4.GetNameEntries() == NULL) {
-			GolNameTable* nameTable = &m_unk0xe4;
+		if (m_cameraNames.GetNameEntries() == NULL) {
+			GolNameTable* nameTable = &m_cameraNames;
 			nameTable->Allocate(m_unk0x7c);
 		}
-		m_unk0xe4.AddName(camera->m_unk0x00, p_lens);
+		m_cameraNames.AddName(camera->m_unk0x00, p_lens);
 	}
 }
 

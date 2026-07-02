@@ -748,7 +748,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	m_effectsDatabase = m_golExport->VTable0x08();
 	m_effectsDatabase->VTable0x14(m_renderer, &m_effectsModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_effectsDatabase->FUN_00416140();
+		m_effectsDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.1f);
 
@@ -761,42 +761,42 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	m_trackDatabase = m_golExport->VTable0x08();
 	m_trackDatabase->VTable0x14(m_renderer, &m_trackModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_trackDatabase->FUN_00416140();
+		m_trackDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.24f);
 
-	m_trackCollidable = m_trackDatabase->GetUnk0xa4();
+	m_trackCollidable = m_trackDatabase->GetCollidableEntities();
 	if (m_cameraName) {
-		m_trackCamera = m_trackDatabase->FindUnk0xe4(&m_cameraName);
+		m_trackCamera = m_trackDatabase->FindCamera(&m_cameraName);
 	}
 	DrawLoadProgress(0.26f);
 
 	m_triggerDatabase = m_golExport->VTable0x08();
 	m_triggerDatabase->VTable0x14(m_renderer, &m_triggerModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_triggerDatabase->FUN_00416140();
+		m_triggerDatabase->ResetEntities();
 	}
 	BindSurfaceMaterials(p_mirror);
 	DrawLoadProgress(0.34f);
 
 	LegoChar name[sizeof(GolName)];
 	::strncpy(name, &m_collisionWorldName, sizeof(name));
-	m_collisionWorld = m_triggerDatabase->FindUnk0xd8(name);
+	m_collisionWorld = m_triggerDatabase->FindBoundedEntity(name);
 	DrawLoadProgress(0.36f);
 
 	::strncpy(name, &m_triggerWorldName, sizeof(name));
-	m_triggerWorldEntity = m_triggerDatabase->FindUnk0xd8(name);
+	m_triggerWorldEntity = m_triggerDatabase->FindBoundedEntity(name);
 
 	if (m_extraTriggerWorldName) {
 		::strncpy(name, &m_extraTriggerWorldName, sizeof(name));
-		m_extraTriggerWorldEntity = m_triggerDatabase->FindUnk0xd8(name);
+		m_extraTriggerWorldEntity = m_triggerDatabase->FindBoundedEntity(name);
 	}
 	DrawLoadProgress(0.38f);
 
 	m_sharedDatabase = m_golExport->VTable0x08();
 	m_sharedDatabase->VTable0x14(m_renderer, &m_sharedModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_sharedDatabase->FUN_00416140();
+		m_sharedDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.4f);
 
@@ -804,7 +804,7 @@ void RaceSession::LoadDatabases(LegoBool32 p_mirror)
 	m_materialAnimationDatabase
 		->VTable0x14(m_renderer, &m_materialAnimationModelName, m_context->m_useBinaryFiles, 1.0f);
 	if (p_mirror) {
-		m_materialAnimationDatabase->FUN_00416140();
+		m_materialAnimationDatabase->ResetEntities();
 	}
 	DrawLoadProgress(0.42f);
 }
@@ -2057,9 +2057,9 @@ void RaceSession::Update()
 			m_demoTextMs -= elapsedMs;
 		}
 
-		m_trackDatabase->FUN_00416090(elapsedMs);
-		m_materialAnimationDatabase->FUN_00416090(elapsedMs);
-		m_sharedDatabase->FUN_00416090(elapsedMs);
+		m_trackDatabase->Update(elapsedMs);
+		m_materialAnimationDatabase->Update(elapsedMs);
+		m_sharedDatabase->Update(elapsedMs);
 		m_powerupManager.Update(elapsedMs);
 		m_racerCollisionWorlds.Update(elapsedMs);
 		m_triggers.Update(elapsedMs);
@@ -2382,7 +2382,7 @@ void RaceSession::DrawScene(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x00435a00
 void RaceSession::DrawTransparent()
 {
-	m_sharedDatabase->FUN_00416040();
+	m_sharedDatabase->DrawWorld();
 	m_raceState.DrawRacersTransparent(m_renderer);
 	m_hazardManager.Draw(m_renderer);
 	m_powerupManager.DrawTransparent();
@@ -2509,8 +2509,9 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 
 	if (!raceSession->m_surfaceFileName) {
 		LegoU32 zero = 0;
-		for (LegoU32 i = zero; i < raceSession->m_triggerDatabase->GetUnk0x64(); i++) {
-			GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetUnk0xa8()[i].GetMaterialTable();
+		for (LegoU32 i = zero; i < raceSession->m_triggerDatabase->GetBoundedEntityCount(); i++) {
+			GolModelMaterialTable* materials =
+				raceSession->m_triggerDatabase->GetBoundedEntities()[i].GetMaterialTable();
 
 			for (LegoU32 j = zero; j < materials->m_count; j++) {
 				DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
@@ -2524,8 +2525,8 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 	SurfaceTable* surfaceTable = &raceSession->m_surfaceTable;
 	surfaceTable->Load(&raceSession->m_surfaceFileName, raceSession->m_context->m_useBinaryFiles, p_mirror);
 
-	for (LegoU32 i = 0; i < raceSession->m_triggerDatabase->GetUnk0x64(); i++) {
-		GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetUnk0xa8()[i].GetMaterialTable();
+	for (LegoU32 i = 0; i < raceSession->m_triggerDatabase->GetBoundedEntityCount(); i++) {
+		GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetBoundedEntities()[i].GetMaterialTable();
 
 		for (LegoU32 j = 0; j < materials->m_count; j++) {
 			DuskwindBananaRelic0x24* material = materials->GetMaterial(j);

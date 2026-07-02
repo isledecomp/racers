@@ -335,11 +335,11 @@ void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, 
 
 	while (name < endName) {
 		GolAnimatedEntity* model;
-		if (worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+		if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 			model = NULL;
 		}
 		else {
-			model = worldDatabase->GetUnk0xc0Name(name);
+			model = worldDatabase->GetAnimatedEntityByName(name);
 		}
 		*entity = model;
 
@@ -790,8 +790,8 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_brickModel = m_worldDatabase->FindUnk0xc0("gen");
-	m_brickBlendModel = m_worldDatabase->FindUnk0xc0("genblen");
+	m_brickModel = m_worldDatabase->FindAnimatedEntity("gen");
+	m_brickBlendModel = m_worldDatabase->FindAnimatedEntity("genblen");
 	m_brickMaterials[c_brickMaterialRed] = m_renderer->FindMaterialByName("pbrickP");
 	m_brickMaterials[c_trailMaterialRed] = m_renderer->FindMaterialByName("ptrailP");
 	m_brickMaterials[c_brickMaterialYellow] = m_renderer->FindMaterialByName("pbrickM");
@@ -898,8 +898,8 @@ void RacePowerupManager::ParseWhiteBricks(GolFileParser* p_parser, LegoBool32 p_
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_whiteBrickModel = m_worldDatabase->FindUnk0xc0("enh");
-	m_whiteBrickBlendModel = m_worldDatabase->FindUnk0xc0("enhblen");
+	m_whiteBrickModel = m_worldDatabase->FindAnimatedEntity("enh");
+	m_whiteBrickBlendModel = m_worldDatabase->FindAnimatedEntity("enhblen");
 
 	LegoU32 i;
 	for (i = 0; i < m_whiteBrickCount; i++) {
@@ -1018,7 +1018,7 @@ void RacePowerupManager::CreateActionPools()
 				m_collisionWorld,
 				this,
 				m_cutsceneAnimation,
-				m_worldDatabase->FindUnk0xb4("barrel")
+				m_worldDatabase->FindModelEntity("barrel")
 			);
 			m_dynamiteActions[i].SetSoundSource(m_soundSource);
 			i++;
@@ -1026,8 +1026,13 @@ void RacePowerupManager::CreateActionPools()
 	}
 
 	m_dynamiteActions[m_actionPoolCounts[2] - 1].SetNext(NULL);
-	m_dynamiteActions[m_actionPoolCounts[2] - 1]
-		.Initialize(m_raceState, m_collisionWorld, this, m_cutsceneAnimation, m_worldDatabase->FindUnk0xb4("barrel"));
+	m_dynamiteActions[m_actionPoolCounts[2] - 1].Initialize(
+		m_raceState,
+		m_collisionWorld,
+		this,
+		m_cutsceneAnimation,
+		m_worldDatabase->FindModelEntity("barrel")
+	);
 	m_dynamiteActions[m_actionPoolCounts[2] - 1].SetSoundSource(m_soundSource);
 	m_freeDynamiteActions = m_dynamiteActions;
 
@@ -1166,7 +1171,7 @@ void RacePowerupManager::CreateExplosionPools()
 	Explosion::Params params;
 	params.m_golExport = m_golExport;
 	params.m_collidable = m_collidable;
-	params.m_model = m_worldDatabase->FindUnk0xb4("Explsn");
+	params.m_model = m_worldDatabase->FindModelEntity("Explsn");
 	params.m_billboardMaterial = NULL;
 	params.m_billboardAnimation = NULL;
 	params.m_flashMaterial = m_renderer->FindMaterialByName("exflash");
@@ -1201,7 +1206,7 @@ void RacePowerupManager::CreateExplosionPools()
 	params.m_particleAnimation = NULL;
 	params.m_blastRadius = 10.0f;
 	params.m_blastMode = 2;
-	params.m_model = m_worldDatabase->FindUnk0xb4("spikexp");
+	params.m_model = m_worldDatabase->FindModelEntity("spikexp");
 	params.m_flashMaterial = NULL;
 	params.m_flashWidth = 5.0f;
 	params.m_flashHeight = 5.0f;
@@ -1667,7 +1672,7 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (m_trackDatabase != NULL) {
-		m_trackDatabase->FUN_00416090(p_elapsedMs);
+		m_trackDatabase->Update(p_elapsedMs);
 	}
 
 	if (m_cannonballFlightSound != NULL) {
@@ -1906,9 +1911,14 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	GolWorldDatabase* worldDatabase = m_worldDatabase;
 	m_activeActions = action;
 	GrapplingHookAction* activeAction = static_cast<GrapplingHookAction*>(m_activeActions);
-	LegoU32 result =
-		activeAction
-			->Activate(worldDatabase->GetUnk0x9c(), p_racer, target, setupEntry, GetMaterialAnimationItems0x18(), 0);
+	LegoU32 result = activeAction->Activate(
+		worldDatabase->GetModelEntities(),
+		p_racer,
+		target,
+		setupEntry,
+		GetMaterialAnimationItems0x18(),
+		0
+	);
 	action->m_level = p_level;
 	return result;
 }
@@ -1997,27 +2007,27 @@ void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_lev
 	m_activeActions = action;
 
 	GolAnimatedEntity* model0;
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model0 = NULL;
 	}
 	else {
-		model0 = m_worldDatabase->GetUnk0xc0Name("magnet");
+		model0 = m_worldDatabase->GetAnimatedEntityByName("magnet");
 	}
 
 	GolAnimatedEntity* model1;
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model1 = NULL;
 	}
 	else {
-		model1 = m_worldDatabase->GetUnk0xc0Name("magring");
+		model1 = m_worldDatabase->GetAnimatedEntityByName("magring");
 	}
 
 	GolAnimatedEntity* model2;
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model2 = NULL;
 	}
 	else {
-		model2 = m_worldDatabase->GetUnk0xc0Name("insd");
+		model2 = m_worldDatabase->GetAnimatedEntityByName("insd");
 	}
 
 	action->Activate(p_racer, model0, model1, model2);
@@ -2042,25 +2052,25 @@ void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_level)
 	action->m_next = m_activeActions;
 	m_activeActions = action;
 
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model0 = NULL;
 	}
 	else {
-		model0 = m_worldDatabase->GetUnk0xc0Name("curse");
+		model0 = m_worldDatabase->GetAnimatedEntityByName("curse");
 	}
 
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model1 = NULL;
 	}
 	else {
-		model1 = m_worldDatabase->GetUnk0xc0Name("cgreen");
+		model1 = m_worldDatabase->GetAnimatedEntityByName("cgreen");
 	}
 
-	if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+	if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 		model2 = NULL;
 	}
 	else {
-		model2 = m_worldDatabase->GetUnk0xc0Name("cgreen2");
+		model2 = m_worldDatabase->GetAnimatedEntityByName("cgreen2");
 	}
 
 	action->Activate(p_racer, model0, model1, model2, m_aimTarget);
@@ -2083,19 +2093,19 @@ void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p
 		m_activeActions = action;
 
 		GolAnimatedEntity* model0;
-		if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+		if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 			model0 = NULL;
 		}
 		else {
-			model0 = m_worldDatabase->GetUnk0xc0Name("dmissil");
+			model0 = m_worldDatabase->GetAnimatedEntityByName("dmissil");
 		}
 
 		GolAnimatedEntity* model1;
-		if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+		if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 			model1 = NULL;
 		}
 		else {
-			model1 = m_worldDatabase->GetUnk0xc0Name("dmissil");
+			model1 = m_worldDatabase->GetAnimatedEntityByName("dmissil");
 		}
 
 		action->Activate(model1, model0, p_racer, i);
@@ -2123,60 +2133,60 @@ void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_lev
 		GolAnimatedEntity* inputModel;
 		switch (subtype) {
 		case 0:
-			if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+			if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 				model = NULL;
 			}
 			else {
-				model = m_worldDatabase->GetUnk0xc0Name("shield0");
+				model = m_worldDatabase->GetAnimatedEntityByName("shield0");
 			}
 
-			if (m_worldDatabase->GetUnk0xc0NameEntries()) {
-				inputModel = m_worldDatabase->GetUnk0xc0Name("shldin0");
+			if (m_worldDatabase->GetAnimatedEntityEntries()) {
+				inputModel = m_worldDatabase->GetAnimatedEntityByName("shldin0");
 			}
 			else {
 				inputModel = NULL;
 			}
 			break;
 		case 1:
-			if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+			if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 				model = NULL;
 			}
 			else {
-				model = m_worldDatabase->GetUnk0xc0Name("shield1");
+				model = m_worldDatabase->GetAnimatedEntityByName("shield1");
 			}
 
-			if (m_worldDatabase->GetUnk0xc0NameEntries()) {
-				inputModel = m_worldDatabase->GetUnk0xc0Name("shldin1");
+			if (m_worldDatabase->GetAnimatedEntityEntries()) {
+				inputModel = m_worldDatabase->GetAnimatedEntityByName("shldin1");
 			}
 			else {
 				inputModel = NULL;
 			}
 			break;
 		case 2:
-			if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+			if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 				model = NULL;
 			}
 			else {
-				model = m_worldDatabase->GetUnk0xc0Name("shield2");
+				model = m_worldDatabase->GetAnimatedEntityByName("shield2");
 			}
 
-			if (m_worldDatabase->GetUnk0xc0NameEntries()) {
-				inputModel = m_worldDatabase->GetUnk0xc0Name("shldin2");
+			if (m_worldDatabase->GetAnimatedEntityEntries()) {
+				inputModel = m_worldDatabase->GetAnimatedEntityByName("shldin2");
 			}
 			else {
 				inputModel = NULL;
 			}
 			break;
 		case 3:
-			if (m_worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+			if (m_worldDatabase->GetAnimatedEntityEntries() == NULL) {
 				model = NULL;
 			}
 			else {
-				model = m_worldDatabase->GetUnk0xc0Name("shield3");
+				model = m_worldDatabase->GetAnimatedEntityByName("shield3");
 			}
 
-			if (m_worldDatabase->GetUnk0xc0NameEntries()) {
-				inputModel = m_worldDatabase->GetUnk0xc0Name("shldin3");
+			if (m_worldDatabase->GetAnimatedEntityEntries()) {
+				inputModel = m_worldDatabase->GetAnimatedEntityByName("shldin3");
 			}
 			else {
 				inputModel = NULL;

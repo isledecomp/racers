@@ -128,9 +128,9 @@ void TimeRaceManager::Initialize(
 	m_worldDatabase = m_golExport->VTable0x08();
 	m_worldDatabase->VTable0x14(p_renderer, "ghost", p_binary, 1.0f);
 
-	m_unk0x110 = m_worldDatabase->GetUnk0xa0();
-	m_unk0x208 = m_worldDatabase->GetUnk0xa0() + 1;
-	m_unk0x390 = m_worldDatabase->GetUnk0x9c();
+	m_unk0x110 = m_worldDatabase->GetAnimatedEntities();
+	m_unk0x208 = m_worldDatabase->GetAnimatedEntities() + 1;
+	m_unk0x390 = m_worldDatabase->GetModelEntities();
 	m_unk0x208->PlayPart(12);
 
 	m_unk0x3a0.m_x = -2.131681f;

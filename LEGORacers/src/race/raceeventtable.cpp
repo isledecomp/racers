@@ -856,9 +856,9 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			case GolFileParser::e_unknown0x33: {
 				GolName name;
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
-				params.m_entity = field->m_trackDatabase->FindUnk0xc0(name);
+				params.m_entity = field->m_trackDatabase->FindAnimatedEntity(name);
 				if (params.m_entity == NULL) {
-					params.m_entity = field->m_sharedDatabase->FindUnk0xc0(name);
+					params.m_entity = field->m_sharedDatabase->FindAnimatedEntity(name);
 				}
 				break;
 			}
@@ -946,8 +946,8 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 
 				if (params.m_unk0x38) {
 					GolWorldDatabase* worldDatabase = field->m_sharedDatabase;
-					if (worldDatabase->GetUnk0xc0NameEntries()) {
-						params.m_unk0x14 = worldDatabase->GetUnk0xc0Name(destination);
+					if (worldDatabase->GetAnimatedEntityEntries()) {
+						params.m_unk0x14 = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 					else {
 						params.m_unk0x14 = NULL;
@@ -955,8 +955,8 @@ void RaceEventTable::ParsePartAnimations(GolFileParser* p_parser)
 				}
 				else {
 					GolWorldDatabase* worldDatabase = field->m_trackDatabase;
-					if (worldDatabase->GetUnk0xc0NameEntries()) {
-						params.m_unk0x14 = worldDatabase->GetUnk0xc0Name(destination);
+					if (worldDatabase->GetAnimatedEntityEntries()) {
+						params.m_unk0x14 = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 					else {
 						params.m_unk0x14 = NULL;
@@ -1127,15 +1127,15 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 				LegoChar destination[sizeof(GolName)];
 				::strncpy(destination, name, sizeof(destination));
 
-				GolModelEntity* entity = field->m_trackDatabase->FindUnk0xb4(destination);
+				GolModelEntity* entity = field->m_trackDatabase->FindModelEntity(destination);
 				if (!entity) {
-					entity = field->m_trackDatabase->FindUnk0xc0(destination);
+					entity = field->m_trackDatabase->FindAnimatedEntity(destination);
 					if (!entity) {
-						entity = field->m_trackDatabase->FindUnk0xcc(destination);
+						entity = field->m_trackDatabase->FindCollidableEntity(destination);
 						if (!entity) {
-							entity = field->m_sharedDatabase->FindUnk0xb4(destination);
+							entity = field->m_sharedDatabase->FindModelEntity(destination);
 							if (!entity) {
-								entity = field->m_sharedDatabase->FindUnk0xc0(destination);
+								entity = field->m_sharedDatabase->FindAnimatedEntity(destination);
 								if (!entity) {
 									if (field->m_sharedDatabase->GetUnk0xccNameEntries() == NULL) {
 										entity = NULL;
@@ -1273,22 +1273,22 @@ void RaceEventTable::ParseParticles(GolFileParser* p_parser, LegoBool32 p_mirror
 
 				if (token0x3f) {
 					GolWorldDatabase* worldDatabase = field->m_sharedDatabase;
-					if (worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+					if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 						GolModelEntity* entity = NULL;
 						params.m_unk0x1c = entity;
 					}
 					else {
-						params.m_unk0x1c = worldDatabase->GetUnk0xc0Name(destination);
+						params.m_unk0x1c = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 				}
 				else {
 					GolWorldDatabase* worldDatabase = field->m_trackDatabase;
-					if (worldDatabase->GetUnk0xc0NameEntries() == NULL) {
+					if (worldDatabase->GetAnimatedEntityEntries() == NULL) {
 						GolModelEntity* entity = NULL;
 						params.m_unk0x1c = entity;
 					}
 					else {
-						params.m_unk0x1c = worldDatabase->GetUnk0xc0Name(destination);
+						params.m_unk0x1c = worldDatabase->GetAnimatedEntityByName(destination);
 					}
 				}
 				break;
@@ -1521,8 +1521,8 @@ void RaceEventTable::ParseColorTransforms(GolFileParser* p_parser)
 					break;
 				}
 
-				if (field->m_trackDatabase->GetUnk0xc0NameEntries()) {
-					params.m_unk0x38 = field->m_trackDatabase->GetUnk0xc0Name(name);
+				if (field->m_trackDatabase->GetAnimatedEntityEntries()) {
+					params.m_unk0x38 = field->m_trackDatabase->GetAnimatedEntityByName(name);
 				}
 				else {
 					params.m_unk0x38 = NULL;
@@ -1713,14 +1713,14 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 			case GolFileParser::e_unknown0x4a:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-				params.m_unk0x14 = field->m_triggerDatabase->FindUnk0xd8(name);
+				params.m_unk0x14 = field->m_triggerDatabase->FindBoundedEntity(name);
 				break;
 			case GolFileParser::e_unknown0x33:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-				params.m_unk0x18 = field->m_trackDatabase->FindUnk0xc0(name);
+				params.m_unk0x18 = field->m_trackDatabase->FindAnimatedEntity(name);
 				if (params.m_unk0x18 == NULL) {
-					params.m_unk0x18 = field->m_sharedDatabase->FindUnk0xc0(name);
+					params.m_unk0x18 = field->m_sharedDatabase->FindAnimatedEntity(name);
 				}
 				break;
 			case GolFileParser::e_unknown0x54:
@@ -1803,21 +1803,21 @@ void RaceEventTable::ParseModelDistances(GolFileParser* p_parser)
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
 				if (!useAlternateDatabase) {
-					params.m_unk0x14 = field->m_trackDatabase->FindUnk0xb4(name);
+					params.m_unk0x14 = field->m_trackDatabase->FindModelEntity(name);
 					if (params.m_unk0x14 == NULL) {
-						params.m_unk0x14 = field->m_trackDatabase->FindUnk0xc0(name);
+						params.m_unk0x14 = field->m_trackDatabase->FindAnimatedEntity(name);
 					}
 					if (params.m_unk0x14 == NULL) {
-						params.m_unk0x14 = field->m_trackDatabase->FindUnk0xcc(name);
+						params.m_unk0x14 = field->m_trackDatabase->FindCollidableEntity(name);
 					}
 				}
 				else {
-					params.m_unk0x14 = field->m_sharedDatabase->FindUnk0xb4(name);
+					params.m_unk0x14 = field->m_sharedDatabase->FindModelEntity(name);
 					if (params.m_unk0x14 == NULL) {
-						params.m_unk0x14 = field->m_sharedDatabase->FindUnk0xc0(name);
+						params.m_unk0x14 = field->m_sharedDatabase->FindAnimatedEntity(name);
 					}
 					if (params.m_unk0x14 == NULL) {
-						params.m_unk0x14 = field->m_sharedDatabase->FindUnk0xcc(name);
+						params.m_unk0x14 = field->m_sharedDatabase->FindCollidableEntity(name);
 					}
 				}
 				break;

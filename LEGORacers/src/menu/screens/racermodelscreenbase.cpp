@@ -430,11 +430,11 @@ void RacerModelScreenBase::AlignCarSlots()
 		if (target != NULL) {
 			GolWorldDatabase* database = m_sceneViews[i].GetBlendedWorld();
 			GolAnimatedEntity* source;
-			if (database->GetUnk0xc0NameEntries() == NULL) {
+			if (database->GetAnimatedEntityEntries() == NULL) {
 				source = NULL;
 			}
 			else {
-				source = database->GetUnk0xc0Name("crsdow");
+				source = database->GetAnimatedEntityByName("crsdow");
 			}
 
 			source->VTable0x5c(0);

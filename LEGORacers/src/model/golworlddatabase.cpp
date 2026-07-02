@@ -12,17 +12,17 @@
 #include "mabmaterialanimation0x14.h"
 
 // FUNCTION: LEGORACERS 0x00416040
-void GolWorldDatabase::FUN_00416040()
+void GolWorldDatabase::DrawWorld()
 {
-	if (m_unk0x5c) {
+	if (m_collidableEntityCount) {
 		VTable0x1c(m_unk0x04);
 	}
 
-	if (m_unk0x54) {
+	if (m_animatedEntityCount) {
 		VTable0x24(m_unk0x04);
 	}
 
-	if (m_unk0x4c) {
+	if (m_modelEntityCount) {
 		VTable0x20(m_unk0x04);
 	}
 
@@ -32,7 +32,7 @@ void GolWorldDatabase::FUN_00416040()
 }
 
 // FUNCTION: LEGORACERS 0x00416090
-void GolWorldDatabase::FUN_00416090(LegoS32 p_elapsedMs)
+void GolWorldDatabase::Update(LegoS32 p_elapsedMs)
 {
 	LegoU32 i;
 
@@ -40,12 +40,12 @@ void GolWorldDatabase::FUN_00416090(LegoS32 p_elapsedMs)
 		VTable0x4c(i)->FUN_00410300(p_elapsedMs);
 	}
 
-	for (i = 0; i < m_unk0x4c; i++) {
-		m_unk0x9c[i].VTable0x10(p_elapsedMs);
+	for (i = 0; i < m_modelEntityCount; i++) {
+		m_modelEntities[i].VTable0x10(p_elapsedMs);
 	}
 
-	for (i = 0; i < m_unk0x54; i++) {
-		m_unk0xa0[i].VTable0x10(p_elapsedMs);
+	for (i = 0; i < m_animatedEntityCount; i++) {
+		m_animatedEntities[i].VTable0x10(p_elapsedMs);
 	}
 
 	for (i = 0; i < m_unk0x7c; i++) {
@@ -54,24 +54,24 @@ void GolWorldDatabase::FUN_00416090(LegoS32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00416140
-void GolWorldDatabase::FUN_00416140()
+void GolWorldDatabase::ResetEntities()
 {
 	LegoU32 i;
 
-	for (i = 0; i < m_unk0x4c; i++) {
-		m_unk0x9c[i].FUN_00411040();
+	for (i = 0; i < m_modelEntityCount; i++) {
+		m_modelEntities[i].FUN_00411040();
 	}
 
-	for (i = 0; i < m_unk0x54; i++) {
-		m_unk0xa0[i].FUN_00411040();
+	for (i = 0; i < m_animatedEntityCount; i++) {
+		m_animatedEntities[i].FUN_00411040();
 	}
 
-	for (i = 0; i < m_unk0x5c; i++) {
-		m_unk0xa4[i].FUN_00403c60();
+	for (i = 0; i < m_collidableEntityCount; i++) {
+		m_collidableEntities[i].FUN_00403c60();
 	}
 
-	for (i = 0; i < m_unk0x64; i++) {
-		m_unk0xa8[i].FUN_00403f80();
+	for (i = 0; i < m_boundedEntityCount; i++) {
+		m_boundedEntities[i].FUN_00403f80();
 	}
 
 	for (i = 0; i < m_unk0x24; i++) {
@@ -96,7 +96,7 @@ void GolWorldDatabase::FUN_00416140()
 }
 
 // FUNCTION: LEGORACERS 0x00416290
-LegoU32 GolWorldDatabase::FUN_00416290(LegoFloat p_scale)
+LegoU32 GolWorldDatabase::SetWorldScale(LegoFloat p_scale)
 {
 	LegoU32 i = 0;
 	LegoU32 result = m_unk0x7c;

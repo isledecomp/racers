@@ -183,14 +183,14 @@ LegoU32 DriverPartResources::ReplaceModelGroupMaterialIndex(
 // FUNCTION: LEGORACERS 0x004981f0
 void DriverPartResources::NormalizeHeadGroupOrder()
 {
-	LegoS32 remainingModels = m_partResource->GetUnk0x54();
+	LegoS32 remainingModels = m_partResource->GetAnimatedEntityCount();
 	if (remainingModels <= 0) {
 		return;
 	}
 
 	LegoS32 modelIndex = 0;
 	do {
-		GolAnimatedEntity* resourceModel = &m_partResource->GetUnk0xa0()[modelIndex];
+		GolAnimatedEntity* resourceModel = &m_partResource->GetAnimatedEntities()[modelIndex];
 		MaterialTable0x0c* materialTable = resourceModel->GetMaterialTable(0);
 		if (materialTable == NULL) {
 			materialTable = resourceModel->GetModel(0)->GetMaterialTable();
@@ -230,7 +230,8 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 void DriverPartResources::ComputeMaxVertexCounts()
 {
 	GdbVertexArray0xc* vertexArray;
-	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
+	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
+		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);
 		model->VTable0x28(&vertexArray);
 		if (static_cast<LegoS32>(vertexArray->GetCount()) > m_maxBodyVertexCount) {
@@ -252,7 +253,8 @@ void DriverPartResources::ComputeMaxVertexCounts()
 // FUNCTION: LEGORACERS 0x004983a0
 void DriverPartResources::ComputeMaxIndexCounts()
 {
-	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
+	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
+		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);
 		LegoS32 count = model->GetIndexArray()->GetCount();
 		if (count > m_maxBodyIndexCount) {
@@ -272,7 +274,8 @@ void DriverPartResources::ComputeMaxIndexCounts()
 // FUNCTION: LEGORACERS 0x00498410
 void DriverPartResources::ComputeMaxGroupCounts()
 {
-	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
+	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
+		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);
 		LegoS32 count = model->GetGroupCount();
 		if (count > m_maxBodyGroupCount) {
@@ -292,7 +295,8 @@ void DriverPartResources::ComputeMaxGroupCounts()
 // FUNCTION: LEGORACERS 0x00498470
 void DriverPartResources::ComputeMaxMaterialCounts()
 {
-	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetUnk0x54()); bodyIndex++) {
+	for (LegoS32 bodyIndex = 0; bodyIndex < static_cast<LegoS32>(m_partResource->GetAnimatedEntityCount());
+		 bodyIndex++) {
 		GolModelBase* model = GetBodyModel(bodyIndex);
 		LegoS32 count = model->GetMaterialTable()->GetCount();
 		if (count > m_maxBodyMaterialCount) {
@@ -329,7 +333,7 @@ GolModelBase* DriverPartResources::GetBodyModel(LegoS32 p_index)
 		m_partCatalog->CopyBodyModelName(p_index, name);
 	}
 
-	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindAnimatedEntity(name);
 	return model->GetModel(0);
 }
 
@@ -344,7 +348,7 @@ GolSceneNode* DriverPartResources::GetBodySceneNode(LegoS32 p_index)
 		m_partCatalog->CopyBodyModelName(p_index, name);
 	}
 
-	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindAnimatedEntity(name);
 	return model->VTable0x58(0);
 }
 
@@ -359,7 +363,7 @@ CmbModelPart0x34* DriverPartResources::GetBodyModelPart(LegoS32 p_index)
 		m_partCatalog->CopyBodyModelName(p_index, name);
 	}
 
-	GolAnimatedEntity* model = m_partResource->FindUnk0xc0(name);
+	GolAnimatedEntity* model = m_partResource->FindAnimatedEntity(name);
 	return model->GetModelPart(0);
 }
 

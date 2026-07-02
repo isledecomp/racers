@@ -155,11 +155,11 @@ GolModelBase* DriverHeadBuilder::GetFaceModel(LegoS32 p_index)
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
-	if (db->m_unk0xb4.GetNameEntries() == NULL) {
+	if (db->m_modelEntityNames.GetNameEntries() == NULL) {
 		entity = NULL;
 	}
 	else {
-		entity = static_cast<GolModelEntity*>(db->m_unk0xb4.GetName(modelName));
+		entity = static_cast<GolModelEntity*>(db->m_modelEntityNames.GetName(modelName));
 	}
 
 	return entity->GetModel(0);
@@ -174,11 +174,11 @@ GolModelBase* DriverHeadBuilder::GetTorsoModel(LegoS32 p_index)
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
-	if (db->m_unk0xb4.GetNameEntries() == NULL) {
+	if (db->m_modelEntityNames.GetNameEntries() == NULL) {
 		entity = NULL;
 	}
 	else {
-		entity = static_cast<GolModelEntity*>(db->m_unk0xb4.GetName(modelName));
+		entity = static_cast<GolModelEntity*>(db->m_modelEntityNames.GetName(modelName));
 	}
 
 	return entity->GetModel(0);
@@ -193,11 +193,11 @@ GolModelBase* DriverHeadBuilder::GetLegModel(LegoS32 p_index)
 
 	GolWorldDatabase* db = m_worldDatabase;
 	GolModelEntity* entity;
-	if (db->m_unk0xb4.GetNameEntries() == NULL) {
+	if (db->m_modelEntityNames.GetNameEntries() == NULL) {
 		entity = NULL;
 	}
 	else {
-		entity = static_cast<GolModelEntity*>(db->m_unk0xb4.GetName(modelName));
+		entity = static_cast<GolModelEntity*>(db->m_modelEntityNames.GetName(modelName));
 	}
 
 	return entity->GetModel(0);

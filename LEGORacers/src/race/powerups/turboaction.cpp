@@ -143,36 +143,36 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	m_level = p_level;
 	switch (p_level) {
 	case 2:
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL2");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL2");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb2f1");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb2f1");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb2f2");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb2f2");
 		}
 		break;
 	case 1:
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL1");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL1");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb1f1");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb1f1");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb1f2");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb1f2");
 		}
 		break;
 	case 0:
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			model = m_manager->m_worldDatabase->GetUnk0xc0Name("TurboL0");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			model = m_manager->m_worldDatabase->GetAnimatedEntityByName("TurboL0");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect0 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb0f1");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect0 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb0f1");
 		}
-		if (m_manager->m_worldDatabase->GetUnk0xc0NameEntries()) {
-			effect1 = m_manager->m_worldDatabase->GetUnk0xc0Name("turb0f2");
+		if (m_manager->m_worldDatabase->GetAnimatedEntityEntries()) {
+			effect1 = m_manager->m_worldDatabase->GetAnimatedEntityByName("turb0f2");
 		}
 		break;
 	}

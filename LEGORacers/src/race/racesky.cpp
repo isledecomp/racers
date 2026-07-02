@@ -308,7 +308,7 @@ void RaceSkyState::Clear()
 // FUNCTION: LEGORACERS 0x0041ccb0
 void RaceSkyState::Update(LegoU32 p_elapsedMs)
 {
-	m_skyWorld->FUN_00416090(p_elapsedMs);
+	m_skyWorld->Update(p_elapsedMs);
 
 	for (LegoU32 count = 0; count < m_count; count++) {
 		m_entries[count].m_elapsedMs += p_elapsedMs;
@@ -440,12 +440,12 @@ void RaceSkyState::SetPosition(GolVec3* p_position)
 	p_position->m_z += g_raceSkyDomeDepth - m_heightOffset;
 
 	LegoU32 i;
-	for (i = 0; i < m_skyWorld->GetUnk0x4c(); i++) {
-		m_skyWorld->GetUnk0x9c()[i].VTable0x08(*p_position);
+	for (i = 0; i < m_skyWorld->GetModelEntityCount(); i++) {
+		m_skyWorld->GetModelEntities()[i].VTable0x08(*p_position);
 	}
 
-	for (i = 0; i < m_skyWorld->GetUnk0x54(); i++) {
-		GolWorldEntity* entity = &m_skyWorld->GetUnk0xa0()[i];
+	for (i = 0; i < m_skyWorld->GetAnimatedEntityCount(); i++) {
+		GolWorldEntity* entity = &m_skyWorld->GetAnimatedEntities()[i];
 		entity->VTable0x08(*p_position);
 	}
 }
@@ -462,7 +462,7 @@ void RaceSkyState::Draw(GolD3DRenderDevice* p_renderer)
 		flags = m_hideFlags;
 		flags = ~flags;
 		if (flags & c_hideSkyWorld) {
-			m_skyWorld->FUN_00416040();
+			m_skyWorld->DrawWorld();
 		}
 
 		p_renderer->VTable0xe4();

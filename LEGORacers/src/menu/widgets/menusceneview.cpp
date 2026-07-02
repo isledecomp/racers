@@ -353,11 +353,11 @@ void MenuSceneView::FUN_00465ea0()
 		m_renderer->VTable0x28();
 
 		if (m_world->GetUnk0x84()) {
-			m_renderer->VTable0x2c(m_world->GetUnk0xac());
+			m_renderer->VTable0x2c(m_world->GetAmbientMaterial());
 		}
 
 		for (LegoU32 i = 0; i < m_world->GetUnk0x8c(); i++) {
-			m_renderer->VTable0x30(&m_world->GetUnk0xb0()[i]);
+			m_renderer->VTable0x30(&m_world->GetLight()[i]);
 		}
 
 		m_renderer->VTable0x60();
@@ -375,7 +375,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	FUN_00465ea0();
 
 	if (m_drawWorld || !m_elements) {
-		m_world->FUN_00416040();
+		m_world->DrawWorld();
 	}
 
 	for (MenuSceneElement* link = m_elements; link; link = link->GetNext()) {
@@ -383,7 +383,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	}
 
 	if (m_drawWorld && m_blendedWorld) {
-		m_blendedWorld->FUN_00416040();
+		m_blendedWorld->DrawWorld();
 	}
 
 	m_renderer->VTable0x20(m_savedCamera);
@@ -422,10 +422,10 @@ undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 	}
 
 	if (m_drawWorld) {
-		m_world->FUN_00416090(p_elapsedMs);
+		m_world->Update(p_elapsedMs);
 
 		if (m_blendedWorld) {
-			m_blendedWorld->FUN_00416090(p_elapsedMs);
+			m_blendedWorld->Update(p_elapsedMs);
 		}
 	}
 

@@ -125,7 +125,7 @@ void MultiplayerPickScreen::UpdateNameLabel(LegoS32 p_index)
 void MultiplayerPickScreen::DimSlotLighting(LegoS32 p_index)
 {
 	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
-	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
+	GolRenderDevice::MaterialColor* materialColor = (*database)->GetAmbientMaterial();
 
 	ColorRGBA color = materialColor->GetColor();
 	color.m_red >>= 1;
@@ -133,7 +133,7 @@ void MultiplayerPickScreen::DimSlotLighting(LegoS32 p_index)
 	color.m_blu >>= 1;
 	materialColor->SetColor(color);
 
-	GolRenderDevice::Light* light = (*database)->GetUnk0xb0();
+	GolRenderDevice::Light* light = (*database)->GetLight();
 	color = light->GetColor();
 	color.m_red >>= 1;
 	color.m_grn >>= 1;
@@ -145,7 +145,7 @@ void MultiplayerPickScreen::DimSlotLighting(LegoS32 p_index)
 void MultiplayerPickScreen::RestoreSlotLighting(LegoS32 p_index)
 {
 	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
-	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
+	GolRenderDevice::MaterialColor* materialColor = (*database)->GetAmbientMaterial();
 
 	ColorRGBA color = materialColor->GetColor();
 	color.m_red *= 2;
@@ -153,7 +153,7 @@ void MultiplayerPickScreen::RestoreSlotLighting(LegoS32 p_index)
 	color.m_blu *= 2;
 	materialColor->SetColor(color);
 
-	GolRenderDevice::Light* light = (*database)->GetUnk0xb0();
+	GolRenderDevice::Light* light = (*database)->GetLight();
 	color = light->GetColor();
 	color.m_red *= 2;
 	color.m_grn *= 2;

@@ -138,8 +138,8 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 		}
 
 		GolWorldDatabase* worldDatabase = m_sceneWidget.m_definition.GetWorldDatabase(i);
-		if (!modelEntity && worldDatabase->GetUnk0xc0NameEntries()) {
-			modelEntity = worldDatabase->GetUnk0xc0Name("guy1");
+		if (!modelEntity && worldDatabase->GetAnimatedEntityEntries()) {
+			modelEntity = worldDatabase->GetAnimatedEntityByName("guy1");
 		}
 
 		i++;

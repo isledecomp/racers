@@ -197,11 +197,11 @@ void RaceSession::RacerTriggerList::Load(
 					LegoChar name[8];
 					strncpy(name, parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-					GolBoundedEntity* entry = p_worldDatabase->FindUnk0xd8(name);
+					GolBoundedEntity* entry = p_worldDatabase->FindBoundedEntity(name);
 
-					LegoU32 index = p_worldDatabase->GetUnk0x64();
+					LegoU32 index = p_worldDatabase->GetBoundedEntityCount();
 					if (index > 0) {
-						GolBoundedEntity* item = p_worldDatabase->GetUnk0xa8();
+						GolBoundedEntity* item = p_worldDatabase->GetBoundedEntities();
 						for (LegoU32 j = 0; j < index; j++) {
 							if (item == entry) {
 								index = j;

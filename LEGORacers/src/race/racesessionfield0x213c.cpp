@@ -7,8 +7,8 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x213c, 0x0c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x213c::Resource, 0x24)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x213c::TibTxtParser, 0x1fc)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00464700
 LegoU32 RaceSession::Field0x213c::FUN_00464700()
@@ -59,12 +59,12 @@ void RaceSession::Field0x213c::Resource::FUN_00464750(
 	LegoU32 duration = p_unk0x10;
 	if (flags & c_flags0x1cBit2) {
 		if (p_unk0x10 > c_randomTableMask) {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			duration = g_unk0x004befec[g_unk0x004c6ee4] * (p_unk0x10 / c_randomTableMask);
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			duration = g_randomTable[g_randomTableIndex] * (p_unk0x10 / c_randomTableMask);
 		}
 		else {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			duration = g_unk0x004befec[g_unk0x004c6ee4] % p_unk0x10;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			duration = g_randomTable[g_randomTableIndex] % p_unk0x10;
 		}
 	}
 
@@ -101,12 +101,12 @@ void RaceSession::Field0x213c::Resource::FUN_00464830(LegoU32 p_elapsedMs)
 
 			if (m_unk0x1c & c_flags0x1cBit1) {
 				if (duration > c_randomTableMask) {
-					g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-					duration = g_unk0x004befec[g_unk0x004c6ee4] * (duration / c_randomTableMask);
+					g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+					duration = g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask);
 				}
 				else {
-					g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-					duration = g_unk0x004befec[g_unk0x004c6ee4] % duration;
+					g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+					duration = g_randomTable[g_randomTableIndex] % duration;
 				}
 			}
 
@@ -137,14 +137,14 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 
 		if (m_unk0x1c & c_flags0x1cBit2) {
 			if (duration > c_randomTableMask) {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				FUN_00464a40(g_unk0x004befec[g_unk0x004c6ee4] * (duration / c_randomTableMask));
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				FUN_00464a40(g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask));
 				m_unk0x1c &= ~c_flags0x1cBit0;
 				return;
 			}
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			duration = g_unk0x004befec[g_unk0x004c6ee4] % duration;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			duration = g_randomTable[g_randomTableIndex] % duration;
 		}
 
 		FUN_00464a40(duration);
@@ -164,12 +164,12 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 
 	if (m_unk0x1c & c_flags0x1cBit1) {
 		if (duration > c_randomTableMask) {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			duration = g_unk0x004befec[g_unk0x004c6ee4] * (duration / c_randomTableMask);
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			duration = g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask);
 		}
 		else {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			duration = g_unk0x004befec[g_unk0x004c6ee4] % duration;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			duration = g_randomTable[g_randomTableIndex] % duration;
 		}
 	}
 

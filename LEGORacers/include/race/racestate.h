@@ -334,12 +334,12 @@ public:
 			void FUN_0043fd70();
 			void FUN_0043fd90();
 			void FUN_0043fdb0();
-			LegoBool32 FUN_0043fdc0(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
+			LegoBool32 IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
 			void FUN_0043ff20(GolD3DRenderDevice* p_renderer);
 			void FUN_00440030();
 			void FUN_004400a0(ColorTransform0x20* p_unk0x04);
 			void FUN_004400e0();
-			void FUN_00440100(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08);
+			void FlashColor(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08);
 			void FUN_00440130();
 			void FUN_00440160(LegoFloat p_unk0x04);
 			void FUN_004401a0();
@@ -1045,8 +1045,8 @@ public:
 		void FUN_004396c0(LegoU32 p_unk0x04);
 		void FUN_00439730();
 		void FUN_00439790();
-		void FUN_004397a0();
-		void FUN_004397b0();
+		void StartSpinOut();
+		void EndSpinOut();
 		void FUN_004397c0(LegoBool32 p_unk0x04);
 		void PlayReaction(LegoBool32 p_unk0x04);
 		DroppableBrick* DropWhiteBrick();
@@ -1250,7 +1250,7 @@ public:
 		GolString m_displayName;             // 0xdec
 		GolVec3 m_unk0xdf8;                  // 0xdf8
 		LegoU32 m_unk0xe04;                  // 0xe04
-		RaceActionSource0x24 m_unk0xe08;     // 0xe08
+		RaceActionSource0x24 m_actionSource; // 0xe08
 		Field0x00c::Entry* m_unk0xe2c;       // 0xe2c
 		CobaltTrail0x140* m_unk0xe30;        // 0xe30
 	};

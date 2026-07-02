@@ -29,8 +29,8 @@ DECOMP_SIZE_ASSERT(CarBuildModel::BuildPrimitiveBounds, 0x18)
 DECOMP_SIZE_ASSERT(CarBuildModel::VertexUse, 0x04)
 DECOMP_SIZE_ASSERT(CarBuildModel::OverlayCell, 0x01)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 static const LegoS32 g_highPieceTypeBase = 0x800;
 
@@ -1541,9 +1541,9 @@ LegoBool32 CarBuildModel::FUN_0049a160(
 	LegoS32 colorRecordIndex;
 
 	if (p_pieceRecord->m_pieceType < g_highPieceTypeBase) {
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 		allowEmpty = TRUE;
-		colorRecordIndex = static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % 10;
+		colorRecordIndex = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 10;
 	}
 	else {
 		colorRecordIndex = p_colorRecordIndex;

@@ -18,8 +18,8 @@
 
 DECOMP_SIZE_ASSERT(RacerModelScreenBase, 0x270c)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 // GLOBAL: LEGORACERS 0x004c21bc
 LegoU16 g_unk0x004c21bc[8] = {116, 117, 119, 120, 121, 122, 123, 0};
@@ -470,8 +470,8 @@ LegoS32 RacerModelScreenBase::VTable0x9c()
 	LegoChar modelName[8];
 
 	LegoS32 divisor = 7;
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-	LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+	LegoU16 random = g_randomTable[g_randomTableIndex];
 	LegoU16 textIdIndex = static_cast<LegoU16>(static_cast<LegoS32>(random) % divisor);
 	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c21bc[textIdIndex]);
 	string.CopyToBuf8(modelName);
@@ -500,8 +500,8 @@ void RacerModelScreenBase::FUN_00486890(LegoS32 p_index)
 	LegoChar modelName[8];
 
 	LegoS32 modelIndex = m_unk0x780[p_index] + (m_unk0x2700 * p_index);
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-	LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+	LegoU16 random = g_randomTable[g_randomTableIndex];
 	LegoS32 textIdIndex = static_cast<LegoS32>(random) % 3;
 	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c21cc[textIdIndex]);
 	string.CopyToBuf8(modelName);

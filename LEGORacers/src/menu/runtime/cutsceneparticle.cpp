@@ -7,7 +7,7 @@
 DECOMP_SIZE_ASSERT(CutsceneParticle, 0x18c)
 
 // GLOBAL: LEGORACERS 0x004befec
-LegoU16 g_unk0x004befec[1024] = {
+LegoU16 g_randomTable[1024] = {
 	0x256, 0x200, 0x331, 0x81,  0x197, 0x3A,  0x3D1, 0x2FD, 0x252, 0x1B6, 0x396, 0x141, 0xC,   0x333, 0x253, 0x1A5,
 	0x24B, 0x277, 0x1CB, 0x1B3, 0x3,   0x3EF, 0xC5,  0xE5,  0x351, 0x396, 0x5E,  0xAF,  0x16B, 0x117, 0x3A3, 0x1C0,
 	0x2D8, 0x336, 0x15F, 0x286, 0x3DC, 0x26C, 0x32,  0x2F0, 0x137, 0x2D1, 0xE3,  0x177, 0x10F, 0x140, 0x2F7, 0x15F,
@@ -75,7 +75,7 @@ LegoU16 g_unk0x004befec[1024] = {
 };
 
 // GLOBAL: LEGORACERS 0x004c6ee4
-LegoU32 g_unk0x004c6ee4 = 0;
+LegoU32 g_randomTableIndex = 0;
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
 void CutsceneParticle::FUN_004513d0(GolD3DRenderDevice*)
@@ -281,13 +281,13 @@ void CutsceneParticle::FUN_004897e0(LegoU32 p_elapsedMs)
 		}
 
 		if (elapsedSinceSpawn >= static_cast<LegoU32>(m_unk0x000->GetUnk0x14())) {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
-			LegoU8 randomValue = static_cast<LegoU8>(g_unk0x004befec[g_unk0x004c6ee4]);
+			LegoU8 randomValue = static_cast<LegoU8>(g_randomTable[g_randomTableIndex]);
 			if (randomValue >= m_unk0x000->GetUnk0x18()) {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
-				m_unk0x000->GetVectorAt(&local18, g_unk0x004befec[g_unk0x004c6ee4] % m_unk0x000->GetUnk0x04());
+				m_unk0x000->GetVectorAt(&local18, g_randomTable[g_randomTableIndex] % m_unk0x000->GetUnk0x04());
 
 				LegoFloat term = m_unk0x160.m_m[2][0];
 				term *= local18.m_z;

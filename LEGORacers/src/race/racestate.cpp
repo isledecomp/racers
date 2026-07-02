@@ -23,8 +23,8 @@
 #include <math.h>
 #include <string.h>
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
 extern const LegoFloat g_carBuildModelTextureCoordinateScale;
 extern LegoFloat g_minSoundPan;
@@ -261,47 +261,47 @@ RaceState::Racer::~Racer()
 void RaceState::Racer::Destroy()
 {
 	if (m_unk0xd98) {
-		m_unk0x004->FUN_00443c10(m_unk0xd98);
+		m_unk0x004->ReleaseSound(m_unk0xd98);
 		m_unk0xd98 = NULL;
 	}
 
 	if (m_unk0xd94) {
-		m_unk0x004->FUN_00443c10(m_unk0xd94);
+		m_unk0x004->ReleaseSound(m_unk0xd94);
 		m_unk0xd94 = NULL;
 	}
 
 	if (m_unk0xd90) {
-		m_unk0x004->FUN_00443c10(m_unk0xd90);
+		m_unk0x004->ReleaseSound(m_unk0xd90);
 		m_unk0xd90 = NULL;
 	}
 
 	if (m_unk0xd8c) {
-		m_unk0x004->FUN_00443c10(m_unk0xd8c);
+		m_unk0x004->ReleaseSound(m_unk0xd8c);
 		m_unk0xd8c = NULL;
 	}
 
 	if (m_unk0xd9c) {
-		m_unk0x004->FUN_00443c10(m_soundD9c);
+		m_unk0x004->ReleaseSound(m_soundD9c);
 		m_unk0xd9c = NULL;
 	}
 
 	if (m_unk0xda0) {
-		m_unk0x004->FUN_00443c10(m_soundDa0);
+		m_unk0x004->ReleaseSound(m_soundDa0);
 		m_unk0xda0 = NULL;
 	}
 
 	if (m_unk0xda4) {
-		m_unk0x004->FUN_00443c10(m_soundDa4);
+		m_unk0x004->ReleaseSound(m_soundDa4);
 		m_unk0xda4 = NULL;
 	}
 
 	if (m_unk0xda8) {
-		m_unk0x004->FUN_00443c10(m_soundDa8);
+		m_unk0x004->ReleaseSound(m_soundDa8);
 		m_unk0xda8 = NULL;
 	}
 
 	if (m_unk0xdac) {
-		m_unk0x004->FUN_00443c10(m_unk0xdac);
+		m_unk0x004->ReleaseSound(m_unk0xdac);
 		m_unk0xdac = NULL;
 	}
 
@@ -378,15 +378,15 @@ void RaceState::Racer::Reset()
 	DroppableBrick* field0xd5c = NULL;
 	m_unk0xdf8.m_z = 0;
 	m_unk0xd22 = 0;
-	m_unk0xe08.m_x = 0;
-	m_unk0xe08.m_y = 0;
-	m_unk0xe08.m_z = 0;
-	m_unk0xe08.m_velocity.m_x = 0;
-	m_unk0xe08.m_velocity.m_y = 0;
-	m_unk0xe08.m_velocity.m_z = 0;
-	m_unk0xe08.m_right.m_x = 0;
-	m_unk0xe08.m_right.m_y = 0;
-	m_unk0xe08.m_right.m_z = 0;
+	m_actionSource.m_x = 0;
+	m_actionSource.m_y = 0;
+	m_actionSource.m_z = 0;
+	m_actionSource.m_velocity.m_x = 0;
+	m_actionSource.m_velocity.m_y = 0;
+	m_actionSource.m_velocity.m_z = 0;
+	m_actionSource.m_right.m_x = 0;
+	m_actionSource.m_right.m_y = 0;
+	m_actionSource.m_right.m_z = 0;
 	m_unk0xcc4 = 0;
 	m_unk0xcc8 = 1;
 	m_unk0x010 = 0;
@@ -535,18 +535,18 @@ void RaceState::Racer::FUN_00436df0(
 		m_unk0xd22 = static_cast<LegoU8>(d22Scale);
 	}
 
-	LegoU32 randomIndex = g_unk0x004c6ee4;
+	LegoU32 randomIndex = g_randomTableIndex;
 	randomIndex++;
 	randomIndex &= c_randomTableMask;
-	g_unk0x004c6ee4 = randomIndex;
-	LegoU32 randomValue = g_unk0x004befec[randomIndex];
+	g_randomTableIndex = randomIndex;
+	LegoU32 randomValue = g_randomTable[randomIndex];
 	m_unk0xd34 = randomValue * 8 + 2000;
 
-	randomIndex = g_unk0x004c6ee4;
+	randomIndex = g_randomTableIndex;
 	randomIndex++;
 	randomIndex &= c_randomTableMask;
-	g_unk0x004c6ee4 = randomIndex;
-	randomValue = g_unk0x004befec[randomIndex];
+	g_randomTableIndex = randomIndex;
+	randomValue = g_randomTable[randomIndex];
 	m_unk0xd44 = randomValue * 4 + 5000;
 
 	LegoU32 state = 2;
@@ -822,7 +822,7 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 	}
 
 	if ((m_unk0x3e8.m_flags0x6c0 & c_flags0xaa8Bit7) && !m_unk0x3e8.m_unk0x744) {
-		FUN_004397b0();
+		EndSpinOut();
 	}
 
 	countdown = m_unk0xd34;
@@ -896,16 +896,16 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 	}
 
 	m_unk0xd04 &= ~c_flags0xd04Bit28;
-	m_unk0x018.m_unk0x044->VTable0x04(&m_unk0xe08);
-	m_unk0x018.m_unk0x044->GetOrientationRow0(&m_unk0xe08.m_right);
-	GolVec3& velocity = m_unk0xe08.m_velocity;
+	m_unk0x018.m_unk0x044->VTable0x04(&m_actionSource);
+	m_unk0x018.m_unk0x044->GetOrientationRow0(&m_actionSource.m_right);
+	GolVec3& velocity = m_actionSource.m_velocity;
 	velocity = m_unk0x3e8.m_unk0x008;
 
 	if (!m_unk0xd34 && m_unk0xd08 == 2) {
-		if (m_unk0x00c->FUN_0043ca60(&m_unk0xe08, &m_unk0xe08.m_right, 0.0f, 169.0f, 0.30000001f)) {
+		if (m_unk0x00c->FUN_0043ca60(&m_actionSource, &m_actionSource.m_right, 0.0f, 169.0f, 0.30000001f)) {
 			FUN_00439c90();
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			m_unk0xd34 = g_unk0x004befec[g_unk0x004c6ee4] * 8 + 2000;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			m_unk0xd34 = g_randomTable[g_randomTableIndex] * 8 + 2000;
 		}
 		else {
 			m_unk0xd34 = 2000;
@@ -930,8 +930,8 @@ void RaceState::Racer::FUN_004377f0(LegoU32 p_elapsedMs)
 			SoundVector position;
 			m_unk0x018.m_unk0x044->VTable0x04(&position);
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			LegoS32 randomValue = g_unk0x004befec[g_unk0x004c6ee4];
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			LegoS32 randomValue = g_randomTable[g_randomTableIndex];
 			if (randomValue % 2) {
 				m_unk0x004->PlaySpatialSoundById(0x19, &position, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
 			}
@@ -1232,7 +1232,7 @@ void RaceState::Racer::FUN_00437d40(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_unk0x004->FUN_00443c10(m_soundDa8);
+		m_unk0x004->ReleaseSound(m_soundDa8);
 		m_unk0xda8 = NULL;
 		return;
 	}
@@ -1451,8 +1451,8 @@ void RaceState::Racer::VTable0x00(LegoEventQueue::CallbackData* p_data)
 			soundDirection.m_z = firstRacer->m_unk0x3e8.m_unk0x008.m_z;
 			GolMath::NormalizeVector3(soundDirection, &soundDirection);
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			LegoU32 soundId = (g_unk0x004befec[g_unk0x004c6ee4] & 1) ? 0x37 : 0x18;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			LegoU32 soundId = (g_randomTable[g_randomTableIndex] & 1) ? 0x37 : 0x18;
 			m_unk0x004->PlaySpatialSoundById(soundId, contactPosition, g_unk0x004b0958, g_unk0x004b095c, 1.0f, 1.0f);
 
 			firstRacer->m_unk0xd4c = 250;
@@ -1578,8 +1578,8 @@ void RaceState::Racer::FUN_00438f20()
 		else {
 			switch (m_unk0xccc) {
 			case 3:
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1e) {
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1e) {
 					m_unk0xcdc = 1000;
 				}
 				else {
@@ -1604,8 +1604,8 @@ void RaceState::Racer::FUN_00438f20()
 						 ->FUN_0043ca60(&position, &direction, g_unk0x004b0974, g_unk0x004b0978, g_unk0x004b097c)) {
 					return;
 				}
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1c) {
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1c) {
 					m_unk0xcdc = 1000;
 				}
 				else {
@@ -1614,8 +1614,8 @@ void RaceState::Racer::FUN_00438f20()
 				return;
 			}
 			case 4:
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1d) {
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1d) {
 					m_unk0xcdc = 1000;
 				}
 				else {
@@ -1623,8 +1623,8 @@ void RaceState::Racer::FUN_00438f20()
 				}
 				return;
 			case 2:
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				if ((g_unk0x004befec[g_unk0x004c6ee4] & 0xff) >= m_unk0xd1f) {
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				if ((g_randomTable[g_randomTableIndex] & 0xff) >= m_unk0xd1f) {
 					m_unk0xcdc = 1000;
 				}
 				else {
@@ -1702,9 +1702,9 @@ void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
 
 		LegoU32 randomIndex;
 		if (p_unk0x04) {
-			randomIndex = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			LegoU32 randomValue = g_unk0x004befec[randomIndex];
-			g_unk0x004c6ee4 = randomIndex;
+			randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			LegoU32 randomValue = g_randomTable[randomIndex];
+			g_randomTableIndex = randomIndex;
 			m_unk0x004->PlaySpatialSoundById(
 				randomValue % c_feedbackVariantCount + m_unk0xd40 + c_feedbackHighOffset,
 				&position,
@@ -1715,9 +1715,9 @@ void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
 			);
 		}
 		else {
-			randomIndex = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			g_unk0x004c6ee4 = randomIndex;
-			LegoU32 randomValue = g_unk0x004befec[randomIndex];
+			randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			g_randomTableIndex = randomIndex;
+			LegoU32 randomValue = g_randomTable[randomIndex];
 			m_unk0x004->PlaySpatialSoundById(
 				m_unk0xd40 + randomValue % c_feedbackVariantCount,
 				&position,
@@ -1728,9 +1728,9 @@ void RaceState::Racer::PlayReaction(LegoBool32 p_unk0x04)
 			);
 		}
 
-		randomIndex = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		g_unk0x004c6ee4 = randomIndex;
-		LegoU16 randomValue = g_unk0x004befec[randomIndex];
+		randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+		g_randomTableIndex = randomIndex;
+		LegoU16 randomValue = g_randomTable[randomIndex];
 		m_unk0xd44 = randomValue * 4 + 5000;
 	}
 }
@@ -1754,8 +1754,8 @@ void RaceState::Racer::FUN_00439340()
 	m_unk0xd10 = 2;
 
 	if (value == 2) {
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-		value = g_unk0x004befec[g_unk0x004c6ee4];
+		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+		value = g_randomTable[g_randomTableIndex];
 		if ((value & 0xff) < m_unk0xd1e) {
 			m_unk0x008->UseGreenPowerup(this, 0);
 		}
@@ -1969,13 +1969,13 @@ void RaceState::Racer::FUN_00439790()
 }
 
 // FUNCTION: LEGORACERS 0x004397a0
-void RaceState::Racer::FUN_004397a0()
+void RaceState::Racer::StartSpinOut()
 {
 	m_unk0x3e8.VTable0x38();
 }
 
 // FUNCTION: LEGORACERS 0x004397b0
-void RaceState::Racer::FUN_004397b0()
+void RaceState::Racer::EndSpinOut()
 {
 	m_unk0x3e8.VTable0x3c();
 }
@@ -2093,7 +2093,7 @@ void RaceState::Racer::FUN_00439900(GolAnimatedEntity* p_unk0x04, LegoU32 p_dura
 	transform.m_grnOffset = 0;
 	transform.m_bluOffset = 0;
 	transform.m_alpOffset = 0;
-	m_unk0x018.FUN_00440100(&transform, p_durationMs);
+	m_unk0x018.FlashColor(&transform, p_durationMs);
 	m_unk0x3e8.FUN_00429380();
 }
 
@@ -2101,7 +2101,7 @@ void RaceState::Racer::FUN_00439900(GolAnimatedEntity* p_unk0x04, LegoU32 p_dura
 void RaceState::Racer::FUN_00439b00()
 {
 	if (m_unk0xdac) {
-		m_resourceManager004->FUN_00443c10(m_unk0xdac);
+		m_resourceManager004->ReleaseSound(m_unk0xdac);
 		m_unk0xdac = NULL;
 	}
 
@@ -2463,9 +2463,9 @@ void RaceState::Racer::AbsorbShieldHit()
 	SoundVector position;
 	m_unk0x018.m_unk0x044->VTable0x04(&position);
 
-	LegoU32 randomIndex = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	g_unk0x004c6ee4 = randomIndex;
-	LegoS32 randomValue = g_unk0x004befec[randomIndex];
+	LegoU32 randomIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	g_randomTableIndex = randomIndex;
+	LegoS32 randomValue = g_randomTable[randomIndex];
 	switch (randomValue % 3) {
 	case 1:
 		soundId = 0x46;
@@ -2766,7 +2766,7 @@ void RaceState::Destroy()
 	table->Clear();
 
 	if (m_unk0x0f0.m_unk0x07c) {
-		m_unk0x0f0.m_unk0x05c->FUN_00443c10(m_unk0x0f0.m_unk0x07c);
+		m_unk0x0f0.m_unk0x05c->ReleaseSound(m_unk0x0f0.m_unk0x07c);
 		m_unk0x0f0.m_unk0x07c = NULL;
 	}
 
@@ -3455,7 +3455,7 @@ void RaceState::FUN_0043d120()
 {
 	RaceResourceManager::Resource* resource = m_unk0x0f0.m_unk0x07c;
 	if (resource) {
-		m_unk0x0f0.m_unk0x05c->FUN_00443c10(resource);
+		m_unk0x0f0.m_unk0x05c->ReleaseSound(resource);
 		m_unk0x0f0.m_unk0x07c = NULL;
 	}
 }
@@ -3560,8 +3560,8 @@ void RaceState::Racer::Field0x018::FUN_0043d7a0(InitParams* p_params, RaceState:
 	m_unk0x224.Initialize(p_context->m_renderer, 1);
 	m_unk0x224.AssignEntryByName(0, "skid");
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	m_unk0x388 = g_unk0x004befec[g_unk0x004c6ee4] % 2000;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	m_unk0x388 = g_randomTable[g_randomTableIndex] % 2000;
 
 	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x1a8); i++) {
 		m_unk0x1a8[i] = p_params->m_unk0x38[i];
@@ -3994,9 +3994,9 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 				m_unk0x270 = NULL;
 			}
 			else {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-				GolVec3 position = (g_unk0x004befec[g_unk0x004c6ee4] & 2) ? m_unk0x1dc->m_unk0x1a4[3].m_unk0x000
-																		  : m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+				GolVec3 position = (g_randomTable[g_randomTableIndex] & 2) ? m_unk0x1dc->m_unk0x1a4[3].m_unk0x000
+																		   : m_unk0x1dc->m_unk0x1a4[2].m_unk0x000;
 
 				particle = m_unk0x270->m_unk0x00;
 				if (particle) {
@@ -4047,8 +4047,8 @@ void RaceState::Racer::Field0x018::FUN_0043e070(LegoU32 p_elapsedMs)
 			position.m_y = 0.0f;
 			position.m_z = 0.0f;
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			LegoBool32 chooseSecond = (g_unk0x004befec[g_unk0x004c6ee4] >> 1) & 1;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			LegoBool32 chooseSecond = (g_randomTable[g_randomTableIndex] >> 1) & 1;
 			LegoBool32 found = FALSE;
 
 			for (LegoU32 tireIndex = 0; tireIndex < sizeOfArray(m_unk0x1f4); tireIndex++) {
@@ -4249,8 +4249,8 @@ void RaceState::Racer::Field0x018::FUN_0043ec10(LegoU32 p_elapsedMs)
 				return;
 			}
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			if (g_unk0x004befec[g_unk0x004c6ee4] % 2 != 0) {
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			if (g_randomTable[g_randomTableIndex] % 2 != 0) {
 				m_unk0x048->FUN_0040dad0(c_animationPart14);
 				m_unk0x048->QueuePartTransition(c_animationPart15);
 			}
@@ -4360,9 +4360,9 @@ void RaceState::Racer::Field0x018::FUN_0043ec10(LegoU32 p_elapsedMs)
 			}
 
 			if (animationPart) {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 				m_unk0x388 =
-					(g_unk0x004befec[g_unk0x004c6ee4] % c_avoidanceCooldownRangeMs) + c_avoidanceCooldownBaseMs;
+					(g_randomTable[g_randomTableIndex] % c_avoidanceCooldownRangeMs) + c_avoidanceCooldownBaseMs;
 				m_unk0x048->FUN_0040dad0(animationPart);
 				m_unk0x048->QueuePartTransition(c_animationPart9);
 				return;
@@ -4809,7 +4809,7 @@ void RaceState::Racer::Field0x018::FUN_0043fdb0()
 }
 
 // FUNCTION: LEGORACERS 0x0043fdc0
-LegoBool32 RaceState::Racer::Field0x018::FUN_0043fdc0(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit)
+LegoBool32 RaceState::Racer::Field0x018::IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit)
 {
 	GolVec3 center;
 	LegoFloat radius;
@@ -4939,7 +4939,7 @@ void RaceState::Racer::Field0x018::FUN_004400e0()
 }
 
 // FUNCTION: LEGORACERS 0x00440100
-void RaceState::Racer::Field0x018::FUN_00440100(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08)
+void RaceState::Racer::Field0x018::FlashColor(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08)
 {
 	m_unk0x3c4 = 1;
 	m_unk0x3c8 = p_unk0x08;

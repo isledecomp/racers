@@ -413,7 +413,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 		}
 
 		GolVec3 direction = field0x3e8->m_unk0x168;
-		racer->FUN_004397a0();
+		racer->StartSpinOut();
 
 		GolVec3 impulse;
 		impulse.m_x = 0.0f;

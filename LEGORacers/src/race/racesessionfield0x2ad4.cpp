@@ -154,8 +154,8 @@ void RaceCameraController::FUN_00427d30()
 	camera->m_flags |= GolCamera::c_flagBit0;
 }
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_halfPi;
 extern const LegoFloat g_item0x40Pi;
 
@@ -179,18 +179,18 @@ void RaceCameraController::FUN_00427e80()
 
 		if (m_unk0x0d4->m_unk0xd04 & 0x800) {
 			if ((m_unk0x13c > 0.0f || m_unk0x138 <= 40.0f) && m_unk0x138 < 80.0f) {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 				m_unk0x13c =
 					-(static_cast<LegoFloat>(
-						  static_cast<LegoU16>(g_unk0x004befec[g_unk0x004c6ee4]) %
+						  static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
 						  static_cast<LegoS32>(80.0f - m_unk0x138)
 					  ) *
 					  0.5f);
 			}
 			else {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 				m_unk0x13c = static_cast<LegoFloat>(
-								 static_cast<LegoU16>(g_unk0x004befec[g_unk0x004c6ee4]) %
+								 static_cast<LegoU16>(g_randomTable[g_randomTableIndex]) %
 								 static_cast<LegoS32>(m_unk0x138 - 40.0f)
 							 ) *
 							 0.5f;

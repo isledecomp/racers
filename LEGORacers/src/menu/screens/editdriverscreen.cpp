@@ -19,8 +19,8 @@ DECOMP_SIZE_ASSERT(EditDriverScreen, 0x4774)
 DECOMP_SIZE_ASSERT(MenuRacerCarousel, 0x170)
 DECOMP_SIZE_ASSERT(DriverHeadBuilder, 0x50)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 // GLOBAL: LEGORACERS 0x004c20b8
 LegoU16 g_unk0x004c20b8[8] = {0x74, 0x75, 0x76, 0xd3, 0x81, 0x82, 0x78, 0x79};
@@ -224,8 +224,8 @@ LegoS32 EditDriverScreen::FUN_0047d5d0()
 		m_unk0x4768 = 0;
 	}
 	else {
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-		LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+		LegoU16 random = g_randomTable[g_randomTableIndex];
 		LegoU16 textIdIndex = static_cast<LegoU16>(static_cast<LegoS32>(random) % 8);
 		m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20b8[textIdIndex]);
 	}
@@ -255,8 +255,8 @@ void EditDriverScreen::FUN_0047d740()
 	GolString string;
 	GolName name;
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-	LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+	LegoU16 random = g_randomTable[g_randomTableIndex];
 	LegoS32 textIdIndex = static_cast<LegoS32>(random) % 2;
 	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20c8[textIdIndex]);
 	string.CopyToBuf8(name);
@@ -395,8 +395,8 @@ void EditDriverScreen::VTable0x44(MenuWidget* p_source)
 		index &= 0xff;
 		m_unk0x4600.FUN_0047e1e0(index);
 
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-		LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+		LegoU16 random = g_randomTable[g_randomTableIndex];
 		m_unk0x4768 = (static_cast<LegoS32>(random) % 2) ? 0xd4 : 0x85;
 		return;
 	}
@@ -411,8 +411,8 @@ void EditDriverScreen::VTable0x38(MenuWidget* p_source)
 	if (p_source == &m_unk0x3700) {
 		LegoS32 i;
 		for (i = 0; i < 4; i++) {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-			LegoU16 random = g_unk0x004befec[g_unk0x004c6ee4];
+			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+			LegoU16 random = g_randomTable[g_randomTableIndex];
 			m_unk0x420[i].VTable0x50(static_cast<LegoS32>(random) % m_unk0x420[i].GetItemCount());
 		}
 

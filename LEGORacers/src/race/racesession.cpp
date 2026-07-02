@@ -38,9 +38,9 @@
 #include <stdio.h>
 #include <string.h>
 
-extern LegoU16 g_unk0x004befec[1024];
+extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_unk0x004bef70;
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU32 g_randomTableIndex;
 
 DECOMP_SIZE_ASSERT(RaceSession, 0x3368)
 DECOMP_SIZE_ASSERT(RaceSession::InputEventSink, 0x04)
@@ -895,10 +895,10 @@ void RaceSession::FUN_00433190(LegoBool32 p_mirror)
 			}
 
 			if (frontCount || middleCount || sideCount) {
-				g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+				g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 
 				LegoU32 total = frontCount + middleCount + sideCount;
-				LegoU32 index = g_unk0x004befec[g_unk0x004c6ee4] % total;
+				LegoU32 index = g_randomTable[g_randomTableIndex] % total;
 				if (index < frontCount) {
 					fileName[3] = 'f';
 				}
@@ -1797,10 +1797,10 @@ void RaceSession::FUN_00434b00()
 		MusicGroup* musicGroup = m_unk0x3314;
 		if (musicGroup->GetMusicCount() > 4 && !m_standings) {
 			LegoU32 randomValue = 0;
-			LegoU32 randomState = g_unk0x004c6ee4;
-			g_unk0x004c6ee4 = (randomState + 1) & 0x3ff;
+			LegoU32 randomState = g_randomTableIndex;
+			g_randomTableIndex = (randomState + 1) & 0x3ff;
 			musicGroup = m_unk0x3314;
-			randomValue = g_unk0x004befec[g_unk0x004c6ee4];
+			randomValue = g_randomTable[g_randomTableIndex];
 			LegoU32 randomIndex = randomValue % (musicGroup->GetMusicCount() - 3);
 			switch (randomIndex) {
 			case 0:

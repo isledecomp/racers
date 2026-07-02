@@ -24,7 +24,7 @@ public:
 		virtual void VTable0x24(Resource*) = 0; // vtable+0x24
 	};
 
-	void FUN_00443c10(Resource* p_resource);
+	void ReleaseSound(Resource* p_resource);
 
 protected:
 	SoundManager* m_soundManager; // 0x00

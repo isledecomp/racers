@@ -53,8 +53,8 @@ MenuManager* g_menuManager = NULL;
 // GLOBAL: LEGORACERS 0x004c4928
 DisplayDriverGuid g_displayDriverGuid = {0};
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x0042b1e0
 void MenuManager::Run(LegoRacers::Context* p_context)
@@ -584,9 +584,9 @@ void MenuManager::FUN_0042d730()
 		context->m_racerCount = 6;
 		context->m_raceMode = LegoRacers::Context::c_raceModeSingle;
 
-		g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
+		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 		RaceNameEntry* raceName =
-			m_unk0x04.m_circuitList.GetEntries()[0].GetRaceNameEntry(g_unk0x004befec[g_unk0x004c6ee4] % 4);
+			m_unk0x04.m_circuitList.GetEntries()[0].GetRaceNameEntry(g_randomTable[g_randomTableIndex] % 4);
 
 		if (raceName) {
 			::memcpy(

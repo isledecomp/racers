@@ -90,7 +90,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->FUN_004395a0();
 		racer->FUN_00439660();
 		racer->FUN_00439730();
-		racer->FUN_004397b0();
+		racer->EndSpinOut();
 		racer->FUN_00439b00();
 		racer->FUN_0043a1a0();
 		racer->FUN_00439870();

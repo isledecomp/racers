@@ -40,8 +40,8 @@ DECOMP_SIZE_ASSERT(RaceSession::Field0x2098::Resource0x5c, 0x5c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2098::Resource0x64::InitParams, 0x5c)
 DECOMP_SIZE_ASSERT(RaceSession::Field0x2098::Resource0x64, 0x64)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x0045c330 FOLDED
 LegoU32 RaceSession::Field0x2098::Resource0x34::VTable0x18()
@@ -3013,8 +3013,8 @@ void RaceSession::Field0x2098::Resource0x5c::FUN_004641b0(InitParams* p_params)
 	m_unk0x2c = p_params->m_unk0x48;
 	m_unk0x54 = static_cast<LegoU8>(p_params->m_unk0x30 * 255.0f);
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	m_unk0x58 = static_cast<LegoU32>(g_unk0x004befec[g_unk0x004c6ee4]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
 	if (p_params->m_unk0x34) {
 		m_flags0x1c |= c_flags0x1cBit0;
@@ -3036,7 +3036,7 @@ void RaceSession::Field0x2098::Resource0x5c::FUN_004641b0(InitParams* p_params)
 void RaceSession::Field0x2098::Resource0x5c::FUN_00464290()
 {
 	if (m_unk0x20) {
-		m_unk0x24->FUN_00443c10(m_res0x20);
+		m_unk0x24->ReleaseSound(m_res0x20);
 		m_unk0x20 = NULL;
 	}
 
@@ -3091,7 +3091,7 @@ void RaceSession::Field0x2098::Resource0x5c::VTable0x04(GolVec3* p_unk0x04)
 void RaceSession::Field0x2098::Resource0x5c::VTable0x0c()
 {
 	if (m_unk0x20) {
-		m_unk0x24->FUN_00443c10(m_res0x20);
+		m_unk0x24->ReleaseSound(m_res0x20);
 		m_unk0x20 = NULL;
 	}
 
@@ -3121,11 +3121,11 @@ void RaceSession::Field0x2098::Resource0x5c::VTable0x14(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	m_unk0x58 = static_cast<LegoU32>(g_unk0x004befec[g_unk0x004c6ee4]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	if (static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % c_probabilityMax >= m_unk0x54) {
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	if (static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_probabilityMax >= m_unk0x54) {
 		return;
 	}
 

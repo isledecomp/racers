@@ -1402,7 +1402,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042b060()
 			m_soundResource->VTable0x08();
 		}
 
-		m_unk0x158->FUN_00443c10(m_soundResource);
+		m_unk0x158->ReleaseSound(m_soundResource);
 		m_unk0x73c = -1;
 		m_soundResource = NULL;
 		m_unk0x738 = 0;
@@ -2004,12 +2004,12 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00444e90()
 	FUN_00440a50();
 
 	if (m_unk0x6e4) {
-		m_unk0x158->FUN_00443c10(m_unk0x6e4);
+		m_unk0x158->ReleaseSound(m_unk0x6e4);
 		m_unk0x6e4 = NULL;
 	}
 
 	if (m_unk0x6e8) {
-		m_unk0x158->FUN_00443c10(m_unk0x6e8);
+		m_unk0x158->ReleaseSound(m_unk0x6e8);
 		m_unk0x6e8 = NULL;
 	}
 }
@@ -3782,7 +3782,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00448070()
 	m_flags0x6c0 = flags;
 
 	if (resource != NULL) {
-		m_unk0x158->FUN_00443c10(resource);
+		m_unk0x158->ReleaseSound(resource);
 		m_unk0x6e8 = NULL;
 	}
 }
@@ -3887,7 +3887,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::VTable0x2c()
 
 		if (m_unk0x6e4 != NULL) {
 			m_unk0x6e4->VTable0x08();
-			m_unk0x158->FUN_00443c10(m_unk0x6e4);
+			m_unk0x158->ReleaseSound(m_unk0x6e4);
 			m_unk0x6e4 = NULL;
 		}
 	}

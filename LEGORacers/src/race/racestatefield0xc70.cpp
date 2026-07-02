@@ -2,8 +2,8 @@
 
 #include <math.h>
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 extern LegoFloat g_carBuildPreviewMouseScale;
 extern LegoFloat g_minSoundPan;
 extern const LegoFloat g_violetShoalTwo;
@@ -118,15 +118,15 @@ void RaceState::Racer::Field0xc70::FUN_0041fc00(LegoU32 p_elapsedMs)
 	LegoU32 elapsedMs = p_elapsedMs;
 	if (elapsedMs > countdown) {
 		if (flags & c_flags0x014Bit4) {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-			m_unk0x020 = static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % 500;
+			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+			m_unk0x020 = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 500;
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-			LegoS32 random = static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % 400;
+			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+			LegoS32 random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 400;
 			m_unk0x018 = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - g_violetShoalTwo;
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & 0x3ff;
-			random = static_cast<LegoS32>(g_unk0x004befec[g_unk0x004c6ee4]) % 200;
+			g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+			random = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % 200;
 			m_unk0x01c = static_cast<LegoFloat>(random) * g_carBuildPreviewMouseScale - 1.0f;
 		}
 	}

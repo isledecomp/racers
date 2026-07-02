@@ -37,8 +37,8 @@ DECOMP_SIZE_ASSERT(RacePowerupManager::TurboAction, 0x34)
 DECOMP_SIZE_ASSERT(RacePowerupManager::WarpAction, 0xe4)
 DECOMP_SIZE_ASSERT(RacePowerupManager::PowerupAction, 0x18)
 
-extern LegoU16 g_unk0x004befec[1024];
-extern LegoU32 g_unk0x004c6ee4;
+extern LegoU16 g_randomTable[1024];
+extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_unk0x004b02e0;
 extern const LegoFloat g_unk0x004b1840;
 extern const LegoFloat g_unk0x004b1844;
@@ -100,7 +100,7 @@ void RacePowerupManager::PowerupActionBase::Update(LegoU32 p_elapsedMs)
 {
 	if (p_elapsedMs >= m_stateTimerMs) {
 		m_stateTimerMs = 0;
-		VTable0x14();
+		AdvanceState();
 	}
 	else {
 		m_stateTimerMs -= p_elapsedMs;
@@ -123,7 +123,7 @@ void RacePowerupManager::PowerupActionBase::VTable0x10(GolD3DRenderDevice*)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::VTable0x14()
+void RacePowerupManager::PowerupActionBase::AdvanceState()
 {
 }
 
@@ -133,11 +133,11 @@ LegoS32 RacePowerupManager::PowerupActionBase::GetBrickColor()
 	return 0;
 }
 
-void RacePowerupManager::HazardActionBase::VTable0x14()
+void RacePowerupManager::HazardActionBase::AdvanceState()
 {
 }
 
-void RacePowerupManager::WeaponActionBase::VTable0x14()
+void RacePowerupManager::WeaponActionBase::AdvanceState()
 {
 }
 
@@ -1061,7 +1061,7 @@ void RacePowerupManager::FUN_004590f0()
 			m_lightningActions[i].SetNext(&m_lightningActions[i + 1]);
 			m_lightningActions[i].Initialize(m_golExport, this);
 			m_lightningActions[i].SetSoundSource(m_soundSource);
-			m_lightningActions[i].FUN_00454a70();
+			m_lightningActions[i].AcquireSound();
 			i++;
 		} while (i < m_actionPoolCounts[6] - 1);
 	}
@@ -1069,7 +1069,7 @@ void RacePowerupManager::FUN_004590f0()
 	m_lightningActions[m_actionPoolCounts[6] - 1].SetNext(NULL);
 	m_lightningActions[m_actionPoolCounts[6] - 1].Initialize(m_golExport, this);
 	m_lightningActions[m_actionPoolCounts[6] - 1].SetSoundSource(m_soundSource);
-	m_lightningActions[m_actionPoolCounts[6] - 1].FUN_00454a70();
+	m_lightningActions[m_actionPoolCounts[6] - 1].AcquireSound();
 	m_freeLightningActions = m_lightningActions;
 
 	i = 0;
@@ -1206,22 +1206,22 @@ void RacePowerupManager::CreateExplosionPools()
 void RacePowerupManager::FUN_00459e20()
 {
 	if (m_unk0x1964 != NULL) {
-		m_soundSource->FUN_00443c10(m_unk0x1964);
+		m_soundSource->ReleaseSound(m_unk0x1964);
 		m_unk0x1964 = NULL;
 	}
 
 	if (m_unk0x1960 != NULL) {
-		m_soundSource->FUN_00443c10(m_unk0x1960);
+		m_soundSource->ReleaseSound(m_unk0x1960);
 		m_unk0x1960 = NULL;
 	}
 
 	if (m_unk0x195c != NULL) {
-		m_soundSource->FUN_00443c10(m_unk0x195c);
+		m_soundSource->ReleaseSound(m_unk0x195c);
 		m_unk0x195c = NULL;
 	}
 
 	if (m_unk0x1958 != NULL) {
-		m_soundSource->FUN_00443c10(m_unk0x1958);
+		m_soundSource->ReleaseSound(m_unk0x1958);
 		m_unk0x1958 = NULL;
 	}
 
@@ -1309,7 +1309,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[6]; i++) {
-			m_lightningActions[i].FUN_00454ab0();
+			m_lightningActions[i].Destroy();
 		}
 
 		if (m_lightningActions != NULL) {
@@ -2340,20 +2340,20 @@ void RacePowerupManager::FUN_0045b550(const GolVec3* p_unk0x04, const GolVec3* p
 {
 	GolVec3 position;
 
-	g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-	LegoU32 count = (static_cast<LegoU32>(g_unk0x004befec[g_unk0x004c6ee4]) % c_randomBurstMax) + 1;
+	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+	LegoU32 count = (static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomBurstMax) + 1;
 	if (count != 0) {
 		Field0x18bc* field0x18bc = &m_unk0x18bc;
 		LegoU32 remaining = count;
 
 		do {
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			position.m_z = 0.0f;
-			LegoS32 offsetX = g_unk0x004befec[g_unk0x004c6ee4] % c_randomOffsetRange;
+			LegoS32 offsetX = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
 			position.m_x = p_position->m_x + offsetX * 0.0040000002f - g_unk0x004b02e0;
 
-			g_unk0x004c6ee4 = (g_unk0x004c6ee4 + 1) & c_randomTableMask;
-			LegoS32 offsetY = g_unk0x004befec[g_unk0x004c6ee4] % c_randomOffsetRange;
+			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+			LegoS32 offsetY = g_randomTable[g_randomTableIndex] % c_randomOffsetRange;
 
 			position.m_y = p_position->m_y + offsetY * 0.0040000002f - g_unk0x004b02e0;
 			field0x18bc->FUN_004517c0(p_unk0x04, &position, p_racer);

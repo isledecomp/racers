@@ -806,10 +806,10 @@ void RaceState::Racer::UpdateCarAnimation(LegoU32 p_elapsedMs)
 setSpeed:
 	GolAnimatedEntity* entity = field->m_carEntity;
 	LegoFloat speed = value * g_ghostAnimationRateScale;
-	entity->SetUnk0xb8(speed);
+	entity->SetMsPerFrame(speed);
 
 	if (field->m_secondaryEntity) {
-		field->m_secondaryEntity->SetUnk0xb8(speed);
+		field->m_secondaryEntity->SetMsPerFrame(speed);
 	}
 
 	field->Update(p_elapsedMs);
@@ -2112,7 +2112,7 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_d
 	flags0x384 |= CarVisuals::c_flags0x384Bit1;
 	m_visuals.m_reactionFlags = flags0x384;
 
-	entity->FUN_0040d550(
+	entity->SetModel(
 		p_curseEntity->GetModel(0),
 		p_curseEntity->VTable0x58(0),
 		p_curseEntity->GetModelPart(0),
@@ -2121,7 +2121,7 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_d
 
 	for (LegoU32 i = 1; i < 3; i++) {
 		if (p_curseEntity->GetModel(i)) {
-			entity->FUN_10023940(
+			entity->AddModel(
 				p_curseEntity->GetModel(i),
 				p_curseEntity->VTable0x58(i),
 				p_curseEntity->GetModelPart(i),
@@ -2130,7 +2130,7 @@ void RaceState::Racer::AttachCurse(GolAnimatedEntity* p_curseEntity, LegoU32 p_d
 		}
 	}
 
-	entity->FUN_0040dad0(0);
+	entity->PlayPart(0);
 	entity->SetPartAnimationEnabled(TRUE);
 	entity->CopyOrientationFrom(*p_curseEntity);
 	entity->CopyPositionFrom(*p_curseEntity);

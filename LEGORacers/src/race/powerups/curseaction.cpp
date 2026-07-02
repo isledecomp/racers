@@ -95,7 +95,7 @@ void RacePowerupManager::CurseAction::Activate(
 
 	m_ownerRacer = p_racer;
 
-	m_curseEntity->FUN_0040d550(
+	m_curseEntity->SetModel(
 		p_curseTemplate->GetModel(0),
 		p_curseTemplate->VTable0x58(0),
 		p_curseTemplate->GetModelPart(0),
@@ -108,13 +108,13 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_curseTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_curseTemplate->GetModelPart(i);
-			m_curseEntity->FUN_10023940(model, p_curseTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_curseEntity->AddModel(model, p_curseTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_curseEntity->SetFlags(m_curseEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_curseEntity->FUN_0040dad0(0);
+	m_curseEntity->PlayPart(0);
 
-	m_auraEntity->FUN_0040d550(
+	m_auraEntity->SetModel(
 		p_auraTemplate->GetModel(0),
 		p_auraTemplate->VTable0x58(0),
 		p_auraTemplate->GetModelPart(0),
@@ -125,17 +125,17 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_auraTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_auraTemplate->GetModelPart(i);
-			m_auraEntity->FUN_10023940(model, p_auraTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_auraEntity->AddModel(model, p_auraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_auraEntity->SetFlags(m_auraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_auraEntity->FUN_0040dad0(0);
+	m_auraEntity->PlayPart(0);
 	m_auraEntity->FUN_00411680(p_auraTemplate->FUN_00411640());
 	m_auraEntity->FUN_004116b0(p_auraTemplate->FUN_00411660());
 	m_auraEntity->FUN_00411700(p_auraTemplate->FUN_004116e0());
 	m_auraEntity->FUN_00411730(p_auraTemplate->FUN_004116f0());
 
-	m_innerAuraEntity->FUN_0040d550(
+	m_innerAuraEntity->SetModel(
 		p_innerAuraTemplate->GetModel(0),
 		p_innerAuraTemplate->VTable0x58(0),
 		p_innerAuraTemplate->GetModelPart(0),
@@ -146,11 +146,11 @@ void RacePowerupManager::CurseAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_innerAuraTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_innerAuraTemplate->GetModelPart(i);
-			m_innerAuraEntity->FUN_10023940(model, p_innerAuraTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_innerAuraEntity->AddModel(model, p_innerAuraTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_innerAuraEntity->SetFlags(m_innerAuraEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_innerAuraEntity->FUN_0040dad0(0);
+	m_innerAuraEntity->PlayPart(0);
 	m_innerAuraEntity->FUN_00411680(p_innerAuraTemplate->FUN_00411640());
 	m_innerAuraEntity->FUN_004116b0(p_innerAuraTemplate->FUN_00411660());
 	m_innerAuraEntity->FUN_00411700(p_innerAuraTemplate->FUN_004116e0());

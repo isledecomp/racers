@@ -1073,7 +1073,7 @@ LegoS32 HazardManager::OscillatorHazard::Reset()
 void HazardManager::FallingPillarHazard::OnActivate(void*)
 {
 	m_entity->SetFlags(m_entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_entity->FUN_0040dad0(0);
+	m_entity->PlayPart(0);
 	m_entity->SetFlags(m_entity->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
 	m_fallen = 0;
 	m_state = 2;
@@ -1089,7 +1089,7 @@ void HazardManager::FallingPillarHazard::Update(undefined4 p_elapsedMs)
 	if (m_state != 1) {
 		Hazard::Update(p_elapsedMs);
 
-		if (m_fallen == 0 && m_entity->GetUnk0xb4() > 50.0f) {
+		if (m_fallen == 0 && m_entity->GetPartTimeMs() > 50.0f) {
 			m_collider->m_flags &= ~ColliderRecord::c_flagBit16;
 			m_collider->m_flags &= ~ColliderRecord::c_flagBit17;
 			m_eventTable->FireEventsAt(7, 7, NULL);
@@ -1106,7 +1106,7 @@ void HazardManager::FallingPillarHazard::ResetState()
 	m_collider->m_flags |= ColliderRecord::c_flagBit16;
 	m_collider->m_flags |= ColliderRecord::c_flagBit17;
 	m_entity->SetFlags(m_entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_entity->FUN_0040dae0(0, 0);
+	m_entity->PlayPartScaled(0, 0);
 	m_entity->VTable0x5c(0);
 	m_entity->SetFlags(m_entity->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 }
@@ -1153,9 +1153,9 @@ void HazardManager::RollingRockHazard::Load(Context* p_context, GolFileParser* p
 	p_parser->ReadRightCurly();
 
 	GolAnimatedEntity* entity = m_entity;
-	entity->FUN_0040d650();
+	entity->ResetPartIndices();
 	entity->SetActiveValue(activeValue);
-	m_bodyEntity.FUN_100234c0(m_entity->VTable0x58(0), m_entity->GetModelPart(), g_rollingRockModelDistance);
+	m_bodyEntity.SetNode(m_entity->VTable0x58(0), m_entity->GetModelPart(), g_rollingRockModelDistance);
 
 	LegoFloat radius = m_sizeX * 0.5f;
 	LegoFloat halfDimension = m_sizeY * 0.5f;
@@ -1674,7 +1674,7 @@ void HazardManager::GhostHazard::Load(Context* p_context, GolFileParser*)
 
 	LegoU32 frameCount = 0;
 	CmbModelPartData0x28* partData = m_ghostEntity->GetModelPart()->GetPartData();
-	LegoFloat inverseDuration = 1.0f / partData->GetUnk0x00();
+	LegoFloat inverseDuration = 1.0f / partData->GetMsPerFrame();
 	frameCount = partData->GetFrameCount();
 	LegoFloat frameCountFloat = static_cast<LegoFloat>(frameCount);
 	m_animationFrameCount = static_cast<LegoS32>(inverseDuration * frameCountFloat);
@@ -1753,7 +1753,7 @@ void HazardManager::GhostHazard::Update(undefined4 p_elapsedMs)
 
 	if (m_state != 1) {
 		LegoU32 frameOffset;
-		LegoU32 frame = static_cast<LegoS32>(m_ghostEntity->GetUnk0xb4() / m_ghostEntity->GetUnk0xb8());
+		LegoU32 frame = static_cast<LegoS32>(m_ghostEntity->GetPartTimeMs() / m_ghostEntity->GetMsPerFrame());
 		LegoFloat scale = m_ghostEntity->GetModel(0)->GetScale() * m_ghostEntity->GetUnk0x58();
 		GolSceneNode* node = m_ghostEntity->VTable0x58(0);
 		GolTransformBase* transform = node->VTable0x18(1);
@@ -1808,8 +1808,8 @@ void HazardManager::GhostHazard::Update(undefined4 p_elapsedMs)
 			}
 
 			GolQuat rotation;
-			m_ghostEntity->FUN_0040e420(0, 1, 0, trailFrame, &rotation);
-			m_ghostEntity->FUN_0040e3c0(0, 1, 0, trailFrame, &position);
+			m_ghostEntity->SamplePartRotation(0, 1, 0, trailFrame, &rotation);
+			m_ghostEntity->SamplePartPosition(0, 1, 0, trailFrame, &position);
 
 			GolMatrix3 orientation;
 			GolMath::FUN_00449340(&rotation, &orientation.m_m[0][0]);
@@ -1973,7 +1973,7 @@ void HazardManager::HammerHazard::Update(undefined4 p_elapsedMs)
 		return;
 	}
 
-	LegoFloat frame = m_entity->GetUnk0xb4();
+	LegoFloat frame = m_entity->GetPartTimeMs();
 	LegoU32 state = m_unk0x14;
 	LegoU32 active = state;
 	active &= 1;
@@ -2339,7 +2339,7 @@ void HazardManager::LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 		return;
 	}
 
-	LegoFloat frame = m_entity->GetUnk0xb4();
+	LegoFloat frame = m_entity->GetPartTimeMs();
 	LegoFloat scale = m_entity->GetModel(0)->GetScale() * m_entity->GetUnk0x58();
 	GolSceneNode* node = m_entity->VTable0x58(0);
 	GolTransformBase* transform = node->VTable0x18(0);
@@ -3261,7 +3261,7 @@ void HazardManager::TriggeredAnimationHazard::OnDeactivate(void*)
 		LegoU32 i;
 		for (i = 0; i < c_entityCount; i++) {
 			GolAnimatedEntity* entity = m_entities[i];
-			if (entity != NULL && !entity->FUN_0040e360()) {
+			if (entity != NULL && !entity->IsPartAnimationDone()) {
 				return;
 			}
 		}
@@ -3289,7 +3289,7 @@ void HazardManager::TriggeredAnimationHazard::Update(undefined4 p_elapsedMs)
 			m_collider->m_flags |= ColliderRecord::c_flagBit17;
 		}
 
-		if (m_entities[0]->FUN_0040e360()) {
+		if (m_entities[0]->IsPartAnimationDone()) {
 			OnDeactivate(NULL);
 		}
 	}
@@ -3314,7 +3314,7 @@ void HazardManager::TriggeredAnimationHazard::Draw(GolD3DRenderDevice* p_rendere
 			CmbModelPartData0x28* partData = (*entity)->GetModelPart(0)->GetPartData();
 			LegoU16 frameCount = partData[(*entity)->GetCurrentPartIndex()].GetFrameCount();
 			LegoS32 alpha = static_cast<LegoS32>(
-				(static_cast<LegoFloat>(frameCount) - (*entity)->GetUnk0xb4()) / static_cast<LegoFloat>(frameCount) *
+				(static_cast<LegoFloat>(frameCount) - (*entity)->GetPartTimeMs()) / static_cast<LegoFloat>(frameCount) *
 				255.0f
 			);
 
@@ -3342,7 +3342,7 @@ void HazardManager::TriggeredAnimationHazard::ResetState()
 	do {
 		if (*entity != NULL) {
 			(*entity)->SetFlags((*entity)->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-			(*entity)->FUN_0040dae0(0, 0);
+			(*entity)->PlayPartScaled(0, 0);
 			(*entity)->VTable0x5c(0);
 			(*entity)->SetFlags((*entity)->GetFlags() & ~GolAnimatedEntity::c_flagPartAnimation);
 
@@ -3910,7 +3910,7 @@ void HazardManager::MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	m_entity->VTable0x2c(offset, &position);
 	m_trigger.SetCenter(position);
 
-	LegoFloat frame = m_entity->GetUnk0xb4();
+	LegoFloat frame = m_entity->GetPartTimeMs();
 	if ((m_flags & c_flags0x178Bit1) != 0) {
 		if ((frame > 150.0f && frame < 180.0f) || (frame > 0.0f && frame < 30.0f)) {
 			m_eventTable->FireEventsAt(c_eventId0x14, c_eventId0x14, &position);

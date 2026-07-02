@@ -66,7 +66,7 @@ void MainMenuModelSlot::CreateDriverModel()
 	}
 
 	m_bodySceneNode->VTable0x10(m_modelBuilder->GetBodySceneNode(&m_cosmetics));
-	m_driverEntity.FUN_0040d550(m_driverModel, m_bodySceneNode, &m_bodyModelPart, g_fltMax0x004b33c4);
+	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, &m_bodyModelPart, g_fltMax0x004b33c4);
 }
 
 // FUNCTION: LEGORACERS 0x0047e0a0

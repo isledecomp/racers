@@ -405,7 +405,7 @@ LegoU32 ChassisModelTable::InstantiateModels(
 		name[sizeof(GolName)] = '\0';
 		m_models[m_instantiatedCount]->VTable0x1c(m_renderer, name, m_binary);
 
-		m_animatedEntities[m_instantiatedCount].FUN_0040d550(
+		m_animatedEntities[m_instantiatedCount].SetModel(
 			m_models[m_instantiatedCount],
 			m_sceneNodes[m_instantiatedCount],
 			&m_modelParts[m_instantiatedCount],

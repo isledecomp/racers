@@ -109,7 +109,7 @@ void RacePowerupManager::MagnetAction::Activate(
 	m_state = 2;
 	m_stateTimerMs = c_armedDurationMs;
 
-	m_magnetEntity->FUN_0040d550(
+	m_magnetEntity->SetModel(
 		p_magnetTemplate->GetModel(0),
 		p_magnetTemplate->VTable0x58(0),
 		p_magnetTemplate->GetModelPart(0),
@@ -122,11 +122,11 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_magnetTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_magnetTemplate->GetModelPart(i);
-			m_magnetEntity->FUN_10023940(model, p_magnetTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_magnetEntity->AddModel(model, p_magnetTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 
-	m_ringEntity->FUN_0040d550(
+	m_ringEntity->SetModel(
 		p_ringTemplate->GetModel(0),
 		p_ringTemplate->VTable0x58(0),
 		p_ringTemplate->GetModelPart(0),
@@ -137,7 +137,7 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_ringTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_ringTemplate->GetModelPart(i);
-			m_ringEntity->FUN_10023940(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_ringEntity->AddModel(model, p_ringTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_ringEntity->FUN_00411680(p_ringTemplate->FUN_00411640());
@@ -145,7 +145,7 @@ void RacePowerupManager::MagnetAction::Activate(
 	m_ringEntity->FUN_00411700(p_ringTemplate->FUN_004116e0());
 	m_ringEntity->FUN_00411730(p_ringTemplate->FUN_004116f0());
 
-	m_insideEntity->FUN_0040d550(
+	m_insideEntity->SetModel(
 		p_insideTemplate->GetModel(0),
 		p_insideTemplate->VTable0x58(0),
 		p_insideTemplate->GetModelPart(0),
@@ -156,7 +156,7 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_insideTemplate->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_insideTemplate->GetModelPart(i);
-			m_insideEntity->FUN_10023940(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
+			m_insideEntity->AddModel(model, p_insideTemplate->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 	m_insideEntity->FUN_00411680(p_insideTemplate->FUN_00411640());
@@ -440,11 +440,11 @@ void RacePowerupManager::MagnetAction::Deploy()
 	m_insideEntity->CopyPositionFrom(*m_magnetEntity);
 
 	m_magnetEntity->SetFlags(m_magnetEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_magnetEntity->FUN_0040dad0(0);
+	m_magnetEntity->PlayPart(0);
 	m_ringEntity->SetFlags(m_ringEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_ringEntity->FUN_0040dad0(0);
+	m_ringEntity->PlayPart(0);
 	m_insideEntity->SetFlags(m_insideEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_insideEntity->FUN_0040dad0(0);
+	m_insideEntity->PlayPart(0);
 
 	if (m_ownerRacer->m_checkpoint != NULL) {
 		m_direction = m_ownerRacer->m_checkpoint->m_planeNormal;

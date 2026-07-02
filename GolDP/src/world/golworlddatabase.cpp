@@ -1470,7 +1470,7 @@ void GolWorldDatabase::FUN_1002e640()
 		CmbModelPart0x34* partForPartName = part;
 
 		if (model->m_unk0x08[0] < 0) {
-			runtime->FUN_100234c0(node, part, maxDistances[0]);
+			runtime->SetNode(node, part, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
 				if (model->m_unk0x14[lod] < 0) {
 					break;
@@ -1479,11 +1479,11 @@ void GolWorldDatabase::FUN_1002e640()
 				node = VTable0x40(model->m_unk0x14[lod]);
 				part = VTable0x34(model->m_unk0x20[lod]);
 				partForPartName = part;
-				runtime->FUN_100239e0(node, part, maxDistances[lod]);
+				runtime->AddNode(node, part, maxDistances[lod]);
 			}
 		}
 		else {
-			runtime->FUN_0040d550(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
+			runtime->SetModel(VTable0x38(model->m_unk0x08[0]), node, part, maxDistances[0]);
 			for (lod = 1; lod < 3; lod++) {
 				if (model->m_unk0x08[lod] < 0) {
 					break;
@@ -1492,7 +1492,7 @@ void GolWorldDatabase::FUN_1002e640()
 				node = VTable0x40(model->m_unk0x14[lod]);
 				part = VTable0x34(model->m_unk0x20[lod]);
 				partForPartName = part;
-				runtime->FUN_10023940(VTable0x38(model->m_unk0x08[lod]), node, part, maxDistances[lod]);
+				runtime->AddModel(VTable0x38(model->m_unk0x08[lod]), node, part, maxDistances[lod]);
 			}
 		}
 
@@ -1511,7 +1511,7 @@ void GolWorldDatabase::FUN_1002e640()
 		}
 
 		if (model->m_unk0x44 >= 0) {
-			runtime->FUN_10023a70(model->m_unk0x44);
+			runtime->PlayPartDirect(model->m_unk0x44);
 			runtime->SetPartAnimationEnabled(TRUE);
 		}
 		else {
@@ -1702,7 +1702,7 @@ void GolWorldDatabase::FUN_1002f210(LegoU32 p_cameraIndex, GolCameraBase* p_lens
 		}
 
 		if (camera->m_unk0x10 >= 0) {
-			model->FUN_10023a70(camera->m_unk0x10);
+			model->PlayPartDirect(camera->m_unk0x10);
 			model->SetPartAnimationEnabled(TRUE);
 		}
 		else {

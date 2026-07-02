@@ -143,7 +143,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	}
 	m_level = p_level;
 
-	m_shieldEntity->FUN_0040d550(
+	m_shieldEntity->SetModel(
 		p_shieldTemplate->GetModel(0),
 		p_shieldTemplate->VTable0x58(0),
 		p_shieldTemplate->GetModelPart(0),
@@ -154,7 +154,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	for (i = 1; i < 3; i++) {
 		GolModelBase* model = p_shieldTemplate->GetModel(i);
 		if (model != NULL) {
-			m_shieldEntity->FUN_10023940(
+			m_shieldEntity->AddModel(
 				model,
 				p_shieldTemplate->VTable0x58(i),
 				p_shieldTemplate->GetModelPart(i),
@@ -163,16 +163,16 @@ void RacePowerupManager::ShieldAction::Activate(
 		}
 	}
 
-	m_shieldEntity->FUN_0040dad0(0);
+	m_shieldEntity->PlayPart(0);
 	m_shieldEntity->SetFlags(m_shieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_shieldEntity->SetUnk0xb8(p_shieldTemplate->GetUnk0xb8());
+	m_shieldEntity->SetMsPerFrame(p_shieldTemplate->GetMsPerFrame());
 	m_shieldEntity->FUN_00411680(p_shieldTemplate->FUN_00411640());
 	m_shieldEntity->FUN_004116b0(p_shieldTemplate->FUN_00411660());
 	m_shieldEntity->FUN_00411700(p_shieldTemplate->FUN_004116e0());
 	m_shieldEntity->FUN_00411730(p_shieldTemplate->FUN_004116f0());
 	m_shieldEntity->CopyPositionFrom(*m_racer->m_visuals.m_carEntity);
 
-	m_innerShieldEntity->FUN_0040d550(
+	m_innerShieldEntity->SetModel(
 		p_innerShieldTemplate->GetModel(0),
 		p_innerShieldTemplate->VTable0x58(0),
 		p_innerShieldTemplate->GetModelPart(0),
@@ -182,7 +182,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	for (i = 1; i < 3; i++) {
 		GolModelBase* model = p_innerShieldTemplate->GetModel(i);
 		if (model != NULL) {
-			m_innerShieldEntity->FUN_10023940(
+			m_innerShieldEntity->AddModel(
 				model,
 				p_innerShieldTemplate->VTable0x58(i),
 				p_innerShieldTemplate->GetModelPart(i),
@@ -191,9 +191,9 @@ void RacePowerupManager::ShieldAction::Activate(
 		}
 	}
 
-	m_innerShieldEntity->FUN_0040dad0(0);
+	m_innerShieldEntity->PlayPart(0);
 	m_innerShieldEntity->SetFlags(m_innerShieldEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_innerShieldEntity->SetUnk0xb8(p_innerShieldTemplate->GetUnk0xb8());
+	m_innerShieldEntity->SetMsPerFrame(p_innerShieldTemplate->GetMsPerFrame());
 	m_innerShieldEntity->FUN_00411680(p_innerShieldTemplate->FUN_00411640());
 	m_innerShieldEntity->FUN_004116b0(p_innerShieldTemplate->FUN_00411660());
 	m_innerShieldEntity->FUN_00411700(p_innerShieldTemplate->FUN_004116e0());

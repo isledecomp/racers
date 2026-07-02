@@ -450,12 +450,8 @@ void RaceState::CreateRacer(
 			p_slot->m_altTextures->LoadTextures();
 			p_slot->m_altMaterials->FUN_10026970();
 			initParams.m_driverEntity = m_roster.m_customCarEntities[customIndex];
-			initParams.m_driverEntity->FUN_0040d550(
-				p_slot->m_altModel,
-				m_driverTable.m_rootNode,
-				&m_driverTable.m_modelParts,
-				g_carModelScale
-			);
+			initParams.m_driverEntity
+				->SetModel(p_slot->m_altModel, m_driverTable.m_rootNode, &m_driverTable.m_modelParts, g_carModelScale);
 		}
 
 		chassisItem = static_cast<ChassisModelTable::Item*>(m_chassisTable.GetName(p_slot->m_chassisName));

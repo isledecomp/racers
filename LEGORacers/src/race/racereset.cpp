@@ -111,9 +111,9 @@ void RaceSession::RaceReset::ResetRacers()
 		field->ClearColorTransform();
 		field->SetScale(1.0f);
 
-		field->m_carEntity->SetUnk0xb8(0.0f);
+		field->m_carEntity->SetMsPerFrame(0.0f);
 		if (field->m_secondaryEntity) {
-			field->m_secondaryEntity->SetUnk0xb8(0.0f);
+			field->m_secondaryEntity->SetMsPerFrame(0.0f);
 		}
 
 		field->ResetDriverAnimation();

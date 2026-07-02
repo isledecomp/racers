@@ -234,7 +234,7 @@ void AwardCinematicScreen::CreateWidgets()
 
 		m_context->m_modelBuilder.SetExpressionMask(0xffff);
 		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
-		m_driverEntity.FUN_0040d550(
+		m_driverEntity.SetModel(
 			m_driverModel,
 			sourceDriverEntity->VTable0x58(0),
 			sourceDriverEntity->GetModelPart(0),

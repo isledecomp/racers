@@ -245,7 +245,7 @@ void EditDriverScreen::PlayNextAnimation()
 		partIndex = PickNextAnimation();
 	} while (partIndex == entity->GetActiveState());
 
-	entity->FUN_0040dad0(partIndex);
+	entity->PlayPart(partIndex);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
@@ -263,7 +263,7 @@ void EditDriverScreen::PlayExitAnimation()
 
 	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 	LegoS32 partIndex = m_modelSlot.GetBodyModelPart()->GetPartIndex(name);
-	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
+	entity->TransitionToPart(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
@@ -319,7 +319,7 @@ LegoBool32 EditDriverScreen::CanNavigate()
 {
 	GolAnimatedEntity* entity = m_modelSlot.GetDriverEntity();
 
-	return entity->FUN_0040e360() || !(entity->GetFlags() & 0x10000);
+	return entity->IsPartAnimationDone() || !(entity->GetFlags() & 0x10000);
 }
 
 // FUNCTION: LEGORACERS 0x0047d9d0
@@ -478,7 +478,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047de30
 LegoBool32 EditDriverScreen::Update(undefined4 p_source)
 {
-	if (!m_navPending && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
+	if (!m_navPending && m_modelSlot.GetDriverEntity()->IsPartAnimationDone()) {
 		PlayNextAnimation();
 	}
 

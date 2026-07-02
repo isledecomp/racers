@@ -22,7 +22,7 @@ AwardCinematicScreen::SceneEntityGroup::~SceneEntityGroup()
 void AwardCinematicScreen::SceneEntityGroup::AddAnimatedEntity(GolAnimatedEntity* p_entity)
 {
 	p_entity->SetFlags(p_entity->GetFlags() | 0x10000);
-	p_entity->FUN_0040dad0(0);
+	p_entity->PlayPart(0);
 	p_entity->FUN_10028710();
 	FUN_00411ec0(p_entity);
 }

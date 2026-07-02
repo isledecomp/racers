@@ -210,7 +210,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 )
 {
 	m_entity = p_entity;
-	m_entity->FUN_0040d550(
+	m_entity->SetModel(
 		p_sourceEntity->GetModel(0),
 		p_sourceEntity->VTable0x58(0),
 		p_sourceEntity->GetModelPart(0),
@@ -220,7 +220,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
 		if (p_sourceEntity->GetModel(i)) {
-			m_entity->FUN_10023940(
+			m_entity->AddModel(
 				p_sourceEntity->GetModel(i),
 				p_sourceEntity->VTable0x58(i),
 				p_sourceEntity->GetModelPart(i),
@@ -230,7 +230,7 @@ void RacePowerupManager::BrickDebris::Entry::Spawn(
 	}
 
 	p_partIndex %= p_sourceEntity->GetModelPart(0)->GetPartCount();
-	m_entity->FUN_0040dad0(p_partIndex);
+	m_entity->PlayPart(p_partIndex);
 
 	LegoU32 flags = m_entity->GetFlags();
 	flags |= GolAnimatedEntity::c_flagPartAnimation;
@@ -259,7 +259,7 @@ void RacePowerupManager::BrickDebris::Entry::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == 2) {
 		m_entity->VTable0x10(p_elapsedMs);
-		if (m_entity->FUN_0040e360()) {
+		if (m_entity->IsPartAnimationDone()) {
 			m_entity->VTable0x54();
 			m_state = 3;
 		}

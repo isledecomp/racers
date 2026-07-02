@@ -162,7 +162,7 @@ void SingleRaceSelectBase::SetPreviewDriver(const LegoChar* p_name)
 		DriverCosmetics cosmetics;
 		m_context->m_cosmeticTable.CopyCosmetics(name, &cosmetics);
 		m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
-		m_driverEntity.FUN_0040d550(
+		m_driverEntity.SetModel(
 			m_driverModel,
 			modelEntity->VTable0x58(0),
 			modelEntity->GetModelPart(),

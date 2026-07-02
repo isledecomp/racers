@@ -332,7 +332,7 @@ void RacerModelScreenBase::RefreshSlotModel(LegoS32 p_index)
 
 	m_bodySceneNodes[modelIndex]->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
 	m_driverEntities[modelIndex]
-		.FUN_0040d550(m_driverModels[modelIndex], m_bodySceneNodes[modelIndex], &m_modelParts, g_racerPickMaxFloat);
+		.SetModel(m_driverModels[modelIndex], m_bodySceneNodes[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
 	record->CopyCarData(m_carData);
 	m_context->m_carBuildModel.Deserialize(m_carData);
@@ -489,7 +489,7 @@ void RacerModelScreenBase::PlayRandomAnimation(LegoS32 p_index)
 		partIndex = PickRandomAnimation();
 	} while (partIndex == entity->GetActiveState());
 
-	entity->FUN_0040dad0(partIndex);
+	entity->PlayPart(partIndex);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
 
@@ -508,7 +508,7 @@ void RacerModelScreenBase::PlayRandomNamedAnimation(LegoS32 p_index)
 
 	LegoS32 partIndex = m_modelParts.GetPartIndex(modelName);
 	GolAnimatedEntity* entity = &m_driverEntities[modelIndex];
-	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
+	entity->TransitionToPart(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 
 	LegoU32 flags = entity->GetFlags();
 	flags &= ~0x40000;
@@ -524,7 +524,7 @@ LegoBool32 RacerModelScreenBase::CanNavigate()
 			break;
 		}
 
-		if (!m_driverEntities[i].FUN_0040e360()) {
+		if (!m_driverEntities[i].IsPartAnimationDone()) {
 			return FALSE;
 		}
 	}
@@ -542,8 +542,8 @@ LegoBool32 RacerModelScreenBase::Update(undefined4 p_elapsed)
 		default: {
 			if (m_driverEntities[modelIndex].GetFlags() & 1) {
 				GolAnimatedEntity* entity = &m_driverEntities[modelIndex];
-				if (entity->FUN_0040e360() && m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL &&
-					!m_navPending) {
+				if (entity->IsPartAnimationDone() &&
+					m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL && !m_navPending) {
 					PlayRandomAnimation(i);
 				}
 			}

@@ -160,15 +160,15 @@ void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::R
 		m_wheelOffsets[i] = p_params->m_wheelOffsets[i];
 	}
 
-	m_carEntity->FUN_0040dad0(0);
+	m_carEntity->PlayPart(0);
 	m_carEntity->SetFlags(m_carEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 
 	if (m_secondaryEntity) {
-		m_secondaryEntity->FUN_0040dad0(0);
+		m_secondaryEntity->PlayPart(0);
 		m_secondaryEntity->SetFlags(m_secondaryEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 	}
 
-	m_driverEntity->FUN_0040dad0(9);
+	m_driverEntity->PlayPart(9);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
 
 	if (p_context->m_cheatFlags & 0x200) {
@@ -863,11 +863,11 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			if (g_randomTable[g_randomTableIndex] % 2 != 0) {
-				m_driverEntity->FUN_0040dad0(c_animationPart14);
+				m_driverEntity->PlayPart(c_animationPart14);
 				m_driverEntity->QueuePartTransition(c_animationPart15);
 			}
 			else {
-				m_driverEntity->FUN_0040dad0(c_animationPart13);
+				m_driverEntity->PlayPart(c_animationPart13);
 			}
 			return;
 		}
@@ -876,14 +876,14 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_driverEntity->FUN_0040dad0(c_animationPart11);
+		m_driverEntity->PlayPart(c_animationPart11);
 		m_driverEntity->QueuePartTransition(c_animationPart12);
 		return;
 	}
 
 	if (m_lastSpeed > g_unk0x004b0544 && speed < g_carBuildPreviewMouseScale && activePart != c_animationPart0) {
 		m_racer->PlayReaction(FALSE);
-		m_driverEntity->FUN_0040dad0(c_animationPart0);
+		m_driverEntity->PlayPart(c_animationPart0);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 		m_lastSpeed = 0.0f;
 
@@ -896,13 +896,13 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 	m_lastSpeed = speed;
 
 	if (eventFlags & c_flags0x384Bit0) {
-		m_driverEntity->FUN_0040dad0(c_animationPart1);
+		m_driverEntity->PlayPart(c_animationPart1);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 		return;
 	}
 
 	if (eventFlags & c_flags0x384Bit1) {
-		m_driverEntity->FUN_0040dad0(c_animationPart10);
+		m_driverEntity->PlayPart(c_animationPart10);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 
 		if (m_racer->m_forceFeedback != NULL) {
@@ -921,13 +921,13 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 			return;
 		}
 
-		m_driverEntity->FUN_0040dad0(c_animationPart2);
+		m_driverEntity->PlayPart(c_animationPart2);
 		m_driverEntity->QueuePartTransition(c_animationPart3);
 		return;
 	}
 
 	if (activePart == c_animationPart3) {
-		m_driverEntity->FUN_0040dad0(c_animationPart4);
+		m_driverEntity->PlayPart(c_animationPart4);
 		m_driverEntity->QueuePartTransition(c_animationPart9);
 		return;
 	}
@@ -975,7 +975,7 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 				m_lookCooldownMs =
 					(g_randomTable[g_randomTableIndex] % c_avoidanceCooldownRangeMs) + c_avoidanceCooldownBaseMs;
-				m_driverEntity->FUN_0040dad0(animationPart);
+				m_driverEntity->PlayPart(animationPart);
 				m_driverEntity->QueuePartTransition(c_animationPart9);
 				return;
 			}
@@ -984,20 +984,20 @@ void RaceState::Racer::CarVisuals::UpdateDriver(LegoU32 p_elapsedMs)
 
 	if (activeValue < 0.0f) {
 		if (activePart != c_animationPart5) {
-			m_driverEntity->FUN_0040db80(c_animationPart5, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
+			m_driverEntity->TransitionToPart(c_animationPart5, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 		}
 		return;
 	}
 
 	if (activeValue > 0.0f) {
 		if (activePart != c_animationPart6) {
-			m_driverEntity->FUN_0040db80(c_animationPart6, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
+			m_driverEntity->TransitionToPart(c_animationPart6, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 		}
 		return;
 	}
 
 	if (activeValue == 0.0f && activePart != c_animationPart9) {
-		m_driverEntity->FUN_0040db80(c_animationPart9, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
+		m_driverEntity->TransitionToPart(c_animationPart9, c_animationTransitionMs, 0.0f, TRUE, TRUE, TRUE);
 	}
 }
 
@@ -1591,14 +1591,14 @@ void RaceState::Racer::CarVisuals::SetScale(LegoFloat p_scale)
 // FUNCTION: LEGORACERS 0x004401a0
 void RaceState::Racer::CarVisuals::ResetDriverAnimation()
 {
-	m_driverEntity->FUN_0040dad0(9);
+	m_driverEntity->PlayPart(9);
 }
 
 // FUNCTION: LEGORACERS 0x004401b0
 void RaceState::Racer::CarVisuals::PlayForwardAnimation()
 {
 	if (m_carEntity->GetActiveState()) {
-		m_carEntity->FUN_0040dad0(0);
+		m_carEntity->PlayPart(0);
 	}
 }
 
@@ -1608,6 +1608,6 @@ void RaceState::Racer::CarVisuals::PlayReverseAnimation()
 	CmbModelPart0x34* modelPart = m_carEntity->GetModelPart();
 
 	if (modelPart->GetPartCount() > 1 && m_carEntity->GetActiveState() != 1) {
-		m_carEntity->FUN_0040dad0(1);
+		m_carEntity->PlayPart(1);
 	}
 }

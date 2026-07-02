@@ -178,17 +178,16 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	}
 
 	m_turboEntity
-		->FUN_0040d550(model->GetModel(0), model->VTable0x58(0), model->GetModelPart(0), model->GetModelDistance(0));
+		->SetModel(model->GetModel(0), model->VTable0x58(0), model->GetModelPart(0), model->GetModelDistance(0));
 	LegoU32 i;
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = model->GetModel(i);
 		if (lodModel != NULL) {
-			m_turboEntity
-				->FUN_10023940(lodModel, model->VTable0x58(i), model->GetModelPart(i), model->GetModelDistance(i));
+			m_turboEntity->AddModel(lodModel, model->VTable0x58(i), model->GetModelPart(i), model->GetModelDistance(i));
 		}
 	}
 
-	m_flameEntity->FUN_0040d550(
+	m_flameEntity->SetModel(
 		effect0->GetModel(0),
 		effect0->VTable0x58(0),
 		effect0->GetModelPart(0),
@@ -197,12 +196,8 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = effect0->GetModel(i);
 		if (lodModel != NULL) {
-			m_flameEntity->FUN_10023940(
-				lodModel,
-				effect0->VTable0x58(i),
-				effect0->GetModelPart(i),
-				effect0->GetModelDistance(i)
-			);
+			m_flameEntity
+				->AddModel(lodModel, effect0->VTable0x58(i), effect0->GetModelPart(i), effect0->GetModelDistance(i));
 		}
 	}
 	m_flameEntity->FUN_00411680(effect0->FUN_00411640());
@@ -210,7 +205,7 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	m_flameEntity->FUN_00411700(effect0->FUN_004116e0());
 	m_flameEntity->FUN_00411730(effect0->FUN_004116f0());
 
-	m_flame2Entity->FUN_0040d550(
+	m_flame2Entity->SetModel(
 		effect1->GetModel(0),
 		effect1->VTable0x58(0),
 		effect1->GetModelPart(0),
@@ -219,12 +214,8 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	for (i = 1; i < 3; i++) {
 		GolModelBase* lodModel = effect1->GetModel(i);
 		if (lodModel != NULL) {
-			m_flame2Entity->FUN_10023940(
-				lodModel,
-				effect1->VTable0x58(i),
-				effect1->GetModelPart(i),
-				effect1->GetModelDistance(i)
-			);
+			m_flame2Entity
+				->AddModel(lodModel, effect1->VTable0x58(i), effect1->GetModelPart(i), effect1->GetModelDistance(i));
 		}
 	}
 	m_flame2Entity->FUN_00411680(effect1->FUN_00411640());
@@ -234,11 +225,11 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 
 	AnchorToRacer();
 	m_turboEntity->SetFlags(m_turboEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_turboEntity->FUN_0040dad0(0);
+	m_turboEntity->PlayPart(0);
 	m_flameEntity->SetFlags(m_flameEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_flameEntity->FUN_0040dad0(0);
+	m_flameEntity->PlayPart(0);
 	m_flame2Entity->SetFlags(m_flame2Entity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_flame2Entity->FUN_0040dad0(0);
+	m_flame2Entity->PlayPart(0);
 	StartBoost();
 	m_state = 2;
 }
@@ -440,17 +431,17 @@ void RacePowerupManager::TurboAction::AdvanceState()
 			return;
 		}
 
-		m_turboEntity->FUN_0040dad0(2);
-		m_flameEntity->FUN_0040dad0(2);
-		m_flame2Entity->FUN_0040dad0(2);
+		m_turboEntity->PlayPart(2);
+		m_flameEntity->PlayPart(2);
+		m_flame2Entity->PlayPart(2);
 
 		m_stateTimerMs = 700;
 		m_state = c_stateFade;
 		return;
 	case c_stateIgnite:
-		m_turboEntity->FUN_0040dad0(1);
-		m_flameEntity->FUN_0040dad0(1);
-		m_flame2Entity->FUN_0040dad0(1);
+		m_turboEntity->PlayPart(1);
+		m_flameEntity->PlayPart(1);
+		m_flame2Entity->PlayPart(1);
 
 		switch (m_level) {
 		case 0:

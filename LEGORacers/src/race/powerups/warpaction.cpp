@@ -298,13 +298,13 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	racerField->ShowModels();
 
 	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindUnk0xc0("dbricks");
-	dbricks->FUN_0040d650();
+	dbricks->ResetPartIndices();
 	dbricks->SetActiveValue(0.0f);
 	dbricks->FUN_00411680(0.0f);
 	dbricks->FUN_004116b0(0.0f);
 
 	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindUnk0xc0("dtube");
-	dtube->FUN_0040d650();
+	dtube->ResetPartIndices();
 	dtube->SetActiveValue(0.0f);
 	dtube->FUN_00411680(0.0f);
 	dtube->FUN_004116b0(0.0f);

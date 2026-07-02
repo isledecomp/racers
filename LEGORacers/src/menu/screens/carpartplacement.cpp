@@ -524,7 +524,7 @@ void CarModelScreenBase::CarPartPlacement::CreateDriverModel(undefined4)
 	}
 
 	m_bodyModelPart = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
-	m_driverEntity.FUN_0040d550(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_unk0x4b2e68);
+	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_unk0x4b2e68);
 }
 
 // FUNCTION: LEGORACERS 0x00477dc0

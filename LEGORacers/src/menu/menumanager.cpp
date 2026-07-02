@@ -920,12 +920,7 @@ void MenuManager::BuildPlayerDriverModel(
 		materialTable->SetPosition(materialIndex, material);
 	}
 
-	entity.FUN_0040d550(
-		p_slot->m_altModel,
-		modelBuilder->GetBodySceneNode(&cosmetics),
-		&modelParts,
-		g_menuManagerMaxFloat
-	);
+	entity.SetModel(p_slot->m_altModel, modelBuilder->GetBodySceneNode(&cosmetics), &modelParts, g_menuManagerMaxFloat);
 	renderer->VTable0x9c(&entity, p_rendererState, 0);
 	entity.VTable0x54();
 

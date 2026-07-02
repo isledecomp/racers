@@ -102,7 +102,7 @@ void RacePowerupManager::HomingMissileAction::Activate(
 	m_targetRacer = NULL;
 
 	GolAnimatedEntity* projectile = &m_missileEntity;
-	projectile->FUN_0040d550(
+	projectile->SetModel(
 		p_missileTemplate->GetModel(0),
 		p_missileTemplate->VTable0x58(0),
 		p_missileTemplate->GetModelPart(0),
@@ -116,7 +116,7 @@ void RacePowerupManager::HomingMissileAction::Activate(
 
 	m_ownerRacer->m_physics.m_carEntity->CopyOrientationTo(&projectile->GetOrientation());
 	projectile->SetFlags(projectile->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	projectile->FUN_0040dad0(p_missileIndex);
+	projectile->PlayPart(p_missileIndex);
 	projectile->SetFlags(projectile->GetFlags() & ~GolAnimatedEntity::c_flagLoopCurrentPart);
 
 	m_soundSource->PlaySpatialSoundById(
@@ -238,7 +238,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 
 	if (m_state == c_stateArmed) {
 		m_missileEntity.VTable0x10(p_elapsedMs);
-		if (m_missileEntity.FUN_0040e360()) {
+		if (m_missileEntity.IsPartAnimationDone()) {
 			AdvanceState();
 		}
 		else {

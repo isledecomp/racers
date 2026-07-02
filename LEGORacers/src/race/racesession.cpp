@@ -1441,13 +1441,13 @@ void RaceSession::DestroyCameras()
 void RaceSession::StartIntroCamera()
 {
 	if (m_trackCamera) {
-		m_trackCamera->m_trackedEntity->FUN_0040dad0(0);
+		m_trackCamera->m_trackedEntity->PlayPart(0);
 		m_trackCamera->m_trackedEntity->SetFlags(
 			m_trackCamera->m_trackedEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation
 		);
 
 		GolAnimatedEntity* entity = m_trackCamera->m_trackedEntity;
-		entity->FUN_0040d650();
+		entity->ResetPartIndices();
 		entity->SetActiveValue(0.0f);
 
 		LegoU32 i = 0;
@@ -1695,7 +1695,7 @@ void RaceSession::PlayIntroMusic()
 void RaceSession::UpdateIntroState()
 {
 	if (m_trackCamera && m_cameras[0] && m_cameras[0]->m_trackedEntity &&
-		m_cameras[0]->m_trackedEntity->FUN_0040e360()) {
+		m_cameras[0]->m_trackedEntity->IsPartAnimationDone()) {
 		GolVec3 position;
 		GolVec3 forward;
 		GolVec3 right;

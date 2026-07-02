@@ -339,7 +339,7 @@ GolAnimatedEntity* DriverCosmeticTable::LoadEntry(Entry* p_entry)
 	m_models[m_loadedEntryCount]->VTable0x1c(m_renderer, name, m_binary);
 
 	m_loadedEntries[m_loadedEntryCount]
-		.FUN_0040d550(m_models[m_loadedEntryCount], m_rootNode, &m_modelParts, g_unk0x004b00a0);
+		.SetModel(m_models[m_loadedEntryCount], m_rootNode, &m_modelParts, g_unk0x004b00a0);
 	m_loadedEntryCount++;
 
 	return &m_loadedEntries[m_loadedEntryCount - 1];

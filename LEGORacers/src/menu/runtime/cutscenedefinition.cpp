@@ -291,7 +291,7 @@ void CutsceneDefinition::Frame::ModelEvent::Begin(Frame* p_frame, CutsceneEventS
 		}
 
 		if (m_modelRefType == c_modelRefJointedModel && m_animationIndex >= 0) {
-			static_cast<GolAnimatedEntity*>(m_entity)->FUN_0040dad0(m_animationIndex);
+			static_cast<GolAnimatedEntity*>(m_entity)->PlayPart(m_animationIndex);
 			static_cast<GolAnimatedEntity*>(m_entity)->SetPartAnimationEnabled(TRUE);
 		}
 
@@ -379,7 +379,7 @@ void CutsceneDefinition::Frame::CameraEvent::Begin(Frame* p_frame, CutsceneEvent
 
 		p_frame->PushCamera(m_camera);
 		if (m_animationIndex >= 0 && m_camera->m_trackedEntity) {
-			m_camera->m_trackedEntity->FUN_0040dad0(m_animationIndex);
+			m_camera->m_trackedEntity->PlayPart(m_animationIndex);
 		}
 
 		Event::Begin(p_frame, p_event);

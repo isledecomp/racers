@@ -112,7 +112,7 @@ LegoBool32 MainMenuScreen::Initialize(MenuGameContext* p_context, MenuScreenCrea
 	p_context->m_cosmeticTable.CopyCosmetics(g_menuDriverCosmeticIds[index], &cosmetics);
 	m_modelSlot.SetCosmetics(&cosmetics);
 	m_modelSlot.GetBodyModelPart()->VTable0x14("legoman", p_context->m_context->m_useBinaryFiles);
-	m_driverEntity->FUN_0040dad0(0);
+	m_driverEntity->PlayPart(0);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() | 0x10000);
 	m_driverEntity->SetFlags(m_driverEntity->GetFlags() & ~0x40000);
 	p_context->m_saveSystem.GetActiveRecord().Reset();
@@ -275,12 +275,12 @@ LegoBool32 MainMenuScreen::Update(undefined4 p_elapsed)
 	}
 
 	if (!m_idleAnimTimerMs) {
-		m_driverEntity->FUN_0040db80(2, 200, 0.0f, 0, 0, 0);
+		m_driverEntity->TransitionToPart(2, 200, 0.0f, 0, 0, 0);
 		m_driverEntity->SetFlags(m_driverEntity->GetFlags() | 0x10000);
 		m_idleAnimTimerMs = 30000;
 	}
-	else if (m_driverEntity->FUN_0040e360()) {
-		m_driverEntity->FUN_0040db80(1, 200, 0.0f, 0, 0, 1);
+	else if (m_driverEntity->IsPartAnimationDone()) {
+		m_driverEntity->TransitionToPart(1, 200, 0.0f, 0, 0, 1);
 		m_driverEntity->SetFlags(m_driverEntity->GetFlags() | 0x10000);
 	}
 

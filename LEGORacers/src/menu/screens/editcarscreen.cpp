@@ -302,7 +302,7 @@ void EditCarScreen::CreateDriverModel()
 	}
 
 	m_bodyModelPart = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
-	m_driverEntity.FUN_0040d550(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_editCarMaxFloat);
+	m_driverEntity.SetModel(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_editCarMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x0047c720

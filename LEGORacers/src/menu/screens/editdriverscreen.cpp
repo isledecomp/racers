@@ -88,9 +88,9 @@ LegoBool32 EditDriverScreen::FUN_0047d170(
 	createParams.m_context = m_context;
 	createParams.m_unk0x6c = m_unk0x476c++;
 	createParams.m_headBuilder = &m_headBuilder;
-	createParams.m_unk0x7c = p_category;
+	createParams.m_partType = p_category;
 	createParams.m_aspectScale = VTable0x6c();
-	return p_widget->FUN_00483a60(&createParams, styleEntry);
+	return p_widget->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0047d230
@@ -272,10 +272,10 @@ void EditDriverScreen::FUN_0047d840()
 {
 	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&m_driverCosmetics);
 
-	m_unk0x420[0].FUN_00484170(m_driverCosmetics.m_components[0]);
-	m_unk0x420[1].FUN_00484170(m_driverCosmetics.m_components[1]);
-	m_unk0x420[2].FUN_00484170(m_driverCosmetics.m_components[2]);
-	m_unk0x420[3].FUN_00484170(m_driverCosmetics.m_components[3]);
+	m_unk0x420[0].SelectValue(m_driverCosmetics.m_components[0]);
+	m_unk0x420[1].SelectValue(m_driverCosmetics.m_components[1]);
+	m_unk0x420[2].SelectValue(m_driverCosmetics.m_components[2]);
+	m_unk0x420[3].SelectValue(m_driverCosmetics.m_components[3]);
 
 	m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
 	m_unk0x9e0[0].Select(4);

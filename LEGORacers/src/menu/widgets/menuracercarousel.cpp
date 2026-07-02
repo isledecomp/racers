@@ -33,19 +33,19 @@ MenuRacerCarousel::~MenuRacerCarousel()
 // FUNCTION: LEGORACERS 0x00483a30
 void MenuRacerCarousel::Reset()
 {
-	m_unk0xcc = 0;
+	m_partType = 0;
 	m_materialTables = NULL;
-	memset(&m_unk0xd0, 0, sizeof(m_unk0xd0));
+	memset(&m_itemValues, 0, sizeof(m_itemValues));
 	MenuModelCarousel::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00483a60
-LegoBool32 MenuRacerCarousel::FUN_00483a60(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
+LegoBool32 MenuRacerCarousel::Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
 {
-	m_unk0xc8 = p_createParams->m_context;
+	m_context = p_createParams->m_context;
 	m_headBuilder = p_createParams->m_headBuilder;
-	m_unk0xcc = p_createParams->m_unk0x7c;
-	FUN_00483ee0();
+	m_partType = p_createParams->m_partType;
+	CollectItems();
 
 	if (MenuModelCarousel::Create(p_createParams, p_styleEntry)) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
@@ -53,7 +53,7 @@ LegoBool32 MenuRacerCarousel::FUN_00483a60(CreateParams* p_createParams, MenuSty
 			m_items[i].m_model = NULL;
 		}
 
-		FUN_00483b60(m_slotCount);
+		CreateMaterialTables(m_slotCount);
 	}
 
 	return m_flags & 1;
@@ -80,7 +80,7 @@ LegoBool32 MenuRacerCarousel::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00483b60
-void MenuRacerCarousel::FUN_00483b60(LegoS32)
+void MenuRacerCarousel::CreateMaterialTables(LegoS32)
 {
 	m_materialTables = new GolBillboard::Field0x2c[m_itemCount];
 	if (m_materialTables == NULL) {
@@ -106,11 +106,11 @@ void MenuRacerCarousel::CopyModelMaterialTable(GolModelBase* p_model, GolBillboa
 }
 
 // FUNCTION: LEGORACERS 0x00483c60
-void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::CollectHats(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetHatCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_hatIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetHatUnlockFlag(i);
@@ -124,16 +124,16 @@ void MenuRacerCarousel::FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSyste
 			}
 		}
 
-		m_unk0xd0[m_itemCount++] = i;
+		m_itemValues[m_itemCount++] = i;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00483d00
-void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::CollectFaces(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetFaceCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_faceIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetFaceUnlockFlag(i);
@@ -147,16 +147,16 @@ void MenuRacerCarousel::FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSyste
 			}
 		}
 
-		m_unk0xd0[m_itemCount++] = i;
+		m_itemValues[m_itemCount++] = i;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00483da0
-void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::CollectTorsos(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetTorsoCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_torsoIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetTorsoUnlockFlag(i);
@@ -170,16 +170,16 @@ void MenuRacerCarousel::FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSyste
 			}
 		}
 
-		m_unk0xd0[m_itemCount++] = i;
+		m_itemValues[m_itemCount++] = i;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00483e40
-void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
+void MenuRacerCarousel::CollectLegs(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags)
 {
 	for (LegoS32 i = 0; i < p_partCatalog->GetLegCount(); i++) {
 		DriverCosmetics cosmetics;
-		m_unk0xc8->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
+		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->GetCosmetics(&cosmetics);
 
 		if (cosmetics.m_legIndex != i) {
 			LegoS32 unlockFlag = p_partCatalog->GetLegUnlockFlag(i);
@@ -193,29 +193,29 @@ void MenuRacerCarousel::FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSyste
 			}
 		}
 
-		m_unk0xd0[m_itemCount++] = i;
+		m_itemValues[m_itemCount++] = i;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00483ee0
-void MenuRacerCarousel::FUN_00483ee0()
+void MenuRacerCarousel::CollectItems()
 {
-	SaveSystem* saveSystem = &m_unk0xc8->m_saveSystem;
-	DriverPartCatalog* partCatalog = &m_unk0xc8->m_partCatalog;
+	SaveSystem* saveSystem = &m_context->m_saveSystem;
+	DriverPartCatalog* partCatalog = &m_context->m_partCatalog;
 	LegoU32 unlockFlags = saveSystem->GetGameState().GetPartUnlockFlags();
 
-	switch (m_unk0xcc) {
+	switch (m_partType) {
 	case 0:
-		FUN_00483c60(partCatalog, saveSystem, unlockFlags);
+		CollectHats(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 1:
-		FUN_00483d00(partCatalog, saveSystem, unlockFlags);
+		CollectFaces(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 2:
-		FUN_00483da0(partCatalog, saveSystem, unlockFlags);
+		CollectTorsos(partCatalog, saveSystem, unlockFlags);
 		break;
 	case 3:
-		FUN_00483e40(partCatalog, saveSystem, unlockFlags);
+		CollectLegs(partCatalog, saveSystem, unlockFlags);
 		break;
 	}
 }
@@ -224,12 +224,12 @@ void MenuRacerCarousel::FUN_00483ee0()
 void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
-	LegoS32 modelIndex = m_unk0xd0[WrapIndex(m_unk0xb8 + p_index)];
+	LegoS32 modelIndex = m_itemValues[WrapIndex(m_unk0xb8 + p_index)];
 	GolModelBase* model;
 	void* material;
 	LegoChar materialName[8];
 
-	switch (m_unk0xcc) {
+	switch (m_partType) {
 	case 0:
 		model = m_headBuilder->LoadHatModel(modelIndex);
 		material = model->GetMaterialTable()->GetPosition(0);
@@ -279,7 +279,7 @@ void MenuRacerCarousel::SetSelection(undefined4 p_index)
 		m_unk0xb8 = WrapIndex(p_index - m_focusedSlot);
 
 		if (!m_scrolling) {
-			if (!m_unk0xcc) {
+			if (!m_partType) {
 				::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 			}
 
@@ -293,10 +293,10 @@ void MenuRacerCarousel::SetSelection(undefined4 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00484170
-void MenuRacerCarousel::FUN_00484170(LegoS32 p_index)
+void MenuRacerCarousel::SelectValue(LegoS32 p_index)
 {
 	for (LegoS32 i = 0; i < m_itemCount; i++) {
-		if (m_unk0xd0[i] == p_index) {
+		if (m_itemValues[i] == p_index) {
 			SetSelection(i);
 		}
 	}
@@ -328,7 +328,7 @@ LegoS32 MenuRacerCarousel::ScrollNext()
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[0]);
 	}
 
-	if (!m_unk0xcc) {
+	if (!m_partType) {
 		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
@@ -365,7 +365,7 @@ LegoS32 MenuRacerCarousel::ScrollPrevious()
 		m_soundGroupBinding->PlaySoundByIndex(m_style->m_soundIds[1]);
 	}
 
-	if (!m_unk0xcc) {
+	if (!m_partType) {
 		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_slotCount; i++) {

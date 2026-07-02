@@ -20,7 +20,7 @@ public:
 	public:
 		MenuGameContext* m_context;       // 0x74
 		DriverHeadBuilder* m_headBuilder; // 0x78
-		LegoU32 m_unk0x7c;                // 0x7c
+		LegoU32 m_partType;               // 0x7c
 	};
 
 	MenuRacerCarousel();
@@ -33,9 +33,9 @@ public:
 	LegoS32 ScrollPrevious() override;      // vtable+0x58
 	void VTable0x60(LegoS32) override;      // vtable+0x60
 
-	LegoBool32 FUN_00483a60(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
-	void FUN_00484170(LegoS32 p_index);
-	LegoS32 GetSelectedValue() const { return m_unk0xd0[m_selectedIndex]; }
+	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
+	void SelectValue(LegoS32 p_index);
+	LegoS32 GetSelectedValue() const { return m_itemValues[m_selectedIndex]; }
 	LegoS32 GetItemCount() const { return m_itemCount; }
 
 	// SYNTHETIC: LEGORACERS 0x004839c0
@@ -43,18 +43,18 @@ public:
 
 protected:
 	void CopyModelMaterialTable(GolModelBase* p_model, GolBillboard::Field0x2c* p_materialTable);
-	void FUN_00483b60(LegoS32 p_unk0x04);
-	void FUN_00483c60(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
-	void FUN_00483d00(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
-	void FUN_00483da0(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
-	void FUN_00483e40(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
-	void FUN_00483ee0();
+	void CreateMaterialTables(LegoS32 p_unk0x04);
+	void CollectHats(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
+	void CollectFaces(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
+	void CollectTorsos(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
+	void CollectLegs(DriverPartCatalog* p_partCatalog, SaveSystem* p_saveSystem, LegoU32 p_unlockFlags);
+	void CollectItems();
 
 	GolBillboard::Field0x2c* m_materialTables; // 0xc0
 	DriverHeadBuilder* m_headBuilder;          // 0xc4
-	MenuGameContext* m_unk0xc8;                // 0xc8
-	LegoU32 m_unk0xcc;                         // 0xcc
-	LegoS32 m_unk0xd0[(0x170 - 0xd0) / 4];     // 0xd0
+	MenuGameContext* m_context;                // 0xc8
+	LegoU32 m_partType;                        // 0xcc
+	LegoS32 m_itemValues[(0x170 - 0xd0) / 4];  // 0xd0
 };
 
 #endif // MENURACERCAROUSEL_H

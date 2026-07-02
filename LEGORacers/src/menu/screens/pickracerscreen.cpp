@@ -22,7 +22,7 @@ void PickRacerScreen::VTable0x4c()
 {
 	undefined2 textId = 0x14;
 
-	CreateImage(&m_unk0x3ff4, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 	RacerPickScreenBase::VTable0x4c();
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
@@ -30,12 +30,12 @@ void PickRacerScreen::VTable0x4c()
 		textId += 0x15;
 	}
 
-	CreateTextLabel(&m_unk0x4050, 0x3a, 0x3a, textId);
-	m_unk0x4050.WrapText(0x14);
-	FUN_0047fdc0(&m_unk0x46a8, 9, 0x42, 0xb9);
-	FUN_0047fdc0(&m_unk0x40c8, 0x41, 0x46, 0x72);
-	FUN_0047fdc0(&m_unk0x43b8, 0x40, 0x46, 0x72);
-	FUN_0047fdc0(&m_unk0x4998, 0x3f, 0x45, 0x1f);
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, textId);
+	m_infoLabel.WrapText(0x14);
+	FUN_0047fdc0(&m_controlsButton, 9, 0x42, 0xb9);
+	FUN_0047fdc0(&m_startButton, 0x41, 0x46, 0x72);
+	FUN_0047fdc0(&m_nextPlayerButton, 0x40, 0x46, 0x72);
+	FUN_0047fdc0(&m_backButton, 0x3f, 0x45, 0x1f);
 }
 
 // FUNCTION: LEGORACERS 0x00484e40
@@ -57,20 +57,20 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 	VTable0x80();
 
 	if (p_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
-		m_nameSelectors[0].SetUnk0x9ec(TRUE);
+		m_nameSelectors[0].SetAcceptUnfocusedInput(TRUE);
 
 		if (p_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 0) {
-			m_unk0x40c8.ClearFlags(2);
-			m_unk0x43b8.Select(0);
+			m_startButton.ClearFlags(2);
+			m_nextPlayerButton.Select(0);
 		}
 		else {
-			m_unk0x43b8.ClearFlags(2);
-			m_unk0x40c8.Select(0);
+			m_nextPlayerButton.ClearFlags(2);
+			m_startButton.Select(0);
 		}
 	}
 	else {
-		m_unk0x43b8.ClearFlags(2);
-		m_unk0x40c8.Select(0);
+		m_nextPlayerButton.ClearFlags(2);
+		m_startButton.Select(0);
 	}
 
 	return TRUE;
@@ -79,13 +79,13 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 // FUNCTION: LEGORACERS 0x00484f40
 void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x46a8) {
+	if (p_source == &m_controlsButton) {
 		m_unk0x360 = static_cast<LegoU16>(
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCountAsU16() + c_menuControl1
 		);
 		m_driverEntities[0].SetFlags(m_driverEntities[0].GetFlags() & ~0x10000);
 	}
-	else if (p_source == &m_unk0x40c8) {
+	else if (p_source == &m_startButton) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 			m_context->m_context->m_racerCount = 0;
 		}
@@ -102,7 +102,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 		);
 		m_unk0x360 = 0x41;
 	}
-	else if (p_source == &m_unk0x43b8) {
+	else if (p_source == &m_nextPlayerButton) {
 		PlayRandomNamedAnimation(0);
 		MenuGameContext* context = m_context;
 		SaveRecordList::Record* record = m_recordCursors[0].GetSelectedRecord();
@@ -115,7 +115,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 		);
 		m_unk0x360 = c_menuPickRacerP2;
 	}
-	else if (p_source == &m_unk0x4998) {
+	else if (p_source == &m_backButton) {
 		m_unk0x360 = 0x3f;
 
 		if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() != 0) {

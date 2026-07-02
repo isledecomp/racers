@@ -26,10 +26,10 @@ MultiplayerPickScreen::~MultiplayerPickScreen()
 // FUNCTION: LEGORACERS 0x00481800
 void MultiplayerPickScreen::Reset()
 {
-	m_unk0x2b70[0] = NULL;
-	m_unk0x2b70[1] = NULL;
-	m_unk0x2b78 = NULL;
-	::memset(m_unk0x2b94, 0, sizeof(m_unk0x2b94));
+	m_playerDevices[0] = NULL;
+	m_playerDevices[1] = NULL;
+	m_bindingEntries = NULL;
+	::memset(m_nameBuffers, 0, sizeof(m_nameBuffers));
 	RacerModelScreenBase::Reset();
 }
 
@@ -38,22 +38,22 @@ void MultiplayerPickScreen::VTable0x4c()
 {
 	CreateImage(&m_photoImage, 0x49, 0x49);
 	RacerModelScreenBase::VTable0x4c();
-	CreateTextLabel(&m_unk0x2990, 0xf0, 0x37, 0x56);
-	CreateTextLabel(&m_unk0x2a08, 0xf1, 0x37, 0x57);
-	CreateTextLabel(&m_unk0x2bd4[0], 0x8e, 0x37, 0x56);
-	CreateTextLabel(&m_unk0x2bd4[1], 0x8f, 0x37, 0x56);
-	CreateImage(&m_unk0x2768[0], 0x86, 0x4b);
-	CreateImage(&m_unk0x2768[1], 0x87, 0x4b);
-	CreateImage(&m_unk0x2768[2], 0x88, 0x4a);
-	CreateImage(&m_unk0x2768[3], 0x89, 0x4a);
-	CreateImage(&m_unk0x2768[4], 0x8c, 0x50);
-	CreateImage(&m_unk0x2768[5], 0x8d, 0x51);
-	CreateTextLabel(&m_unk0x2a80, 0x8a, 0x37, 0x72);
-	CreateTextLabel(&m_unk0x2af8, 0x8b, 0x37, 0x1f);
+	CreateTextLabel(&m_player1Label, 0xf0, 0x37, 0x56);
+	CreateTextLabel(&m_player2Label, 0xf1, 0x37, 0x57);
+	CreateTextLabel(&m_nameLabels[0], 0x8e, 0x37, 0x56);
+	CreateTextLabel(&m_nameLabels[1], 0x8f, 0x37, 0x56);
+	CreateImage(&m_promptImages[0], 0x86, 0x4b);
+	CreateImage(&m_promptImages[1], 0x87, 0x4b);
+	CreateImage(&m_promptImages[2], 0x88, 0x4a);
+	CreateImage(&m_promptImages[3], 0x89, 0x4a);
+	CreateImage(&m_promptImages[4], 0x8c, 0x50);
+	CreateImage(&m_promptImages[5], 0x8d, 0x51);
+	CreateTextLabel(&m_selectHintLabel, 0x8a, 0x37, 0x72);
+	CreateTextLabel(&m_backHintLabel, 0x8b, 0x37, 0x1f);
 }
 
 // FUNCTION: LEGORACERS 0x00481960
-InputDevice* MultiplayerPickScreen::FUN_00481960(LegoU32 p_deviceType, LegoU32 p_deviceId)
+InputDevice* MultiplayerPickScreen::ResolveInputDevice(LegoU32 p_deviceType, LegoU32 p_deviceId)
 {
 	InputManager* inputManager = m_context->m_context->m_golApp->GetInputManager();
 
@@ -70,18 +70,18 @@ InputDevice* MultiplayerPickScreen::FUN_00481960(LegoU32 p_deviceType, LegoU32 p
 }
 
 // FUNCTION: LEGORACERS 0x004819b0
-void MultiplayerPickScreen::FUN_004819b0()
+void MultiplayerPickScreen::RefreshPlayerDevices()
 {
 	GameState* gameState = &m_context->m_saveSystem.GetGameState();
 	LegoU32 entryIndex = gameState->GetState().m_inputBindings.m_players[0].m_selectedEntryIndex;
 	LegoU32 deviceType = gameState->GetState().m_inputBindings.m_entries[entryIndex].m_deviceType;
 	LegoU32 deviceId = gameState->GetState().m_inputBindings.m_entries[entryIndex].m_deviceId;
-	m_unk0x2b70[0] = FUN_00481960(deviceType, deviceId);
+	m_playerDevices[0] = ResolveInputDevice(deviceType, deviceId);
 
 	entryIndex = gameState->GetState().m_inputBindings.m_players[1].m_selectedEntryIndex;
 	deviceType = gameState->GetState().m_inputBindings.m_entries[entryIndex].m_deviceType;
 	deviceId = gameState->GetState().m_inputBindings.m_entries[entryIndex].m_deviceId;
-	m_unk0x2b70[1] = FUN_00481960(deviceType, deviceId);
+	m_playerDevices[1] = ResolveInputDevice(deviceType, deviceId);
 }
 
 // FUNCTION: LEGORACERS 0x00481a30
@@ -98,31 +98,31 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 		return FALSE;
 	}
 
-	m_unk0x2b78 = &p_context->m_context->m_inputBindings[0];
-	m_unk0x2b7c[0].CopyFromBufSelection(m_unk0x2b94[0], 0x10);
-	m_unk0x2b7c[1].CopyFromBufSelection(m_unk0x2b94[1], 0x10);
+	m_bindingEntries = &p_context->m_context->m_inputBindings[0];
+	m_nameStrings[0].CopyFromBufSelection(m_nameBuffers[0], 0x10);
+	m_nameStrings[1].CopyFromBufSelection(m_nameBuffers[1], 0x10);
 	FUN_004803d0();
 	SwapSlotModel(0);
 	SwapSlotModel(1);
-	FUN_00481b10(0);
-	FUN_00481b10(1);
-	FUN_004819b0();
+	UpdateNameLabel(0);
+	UpdateNameLabel(1);
+	RefreshPlayerDevices();
 	VTable0x80();
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00481b10
-void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
+void MultiplayerPickScreen::UpdateNameLabel(LegoS32 p_index)
 {
 	SaveRecordList::Record* record = m_recordCursors[p_index].GetSelectedRecord();
-	GolString* string = &m_unk0x2b7c[p_index];
+	GolString* string = &m_nameStrings[p_index];
 
 	record->GetName(string);
-	m_unk0x2bd4[p_index].SetString(string, 0);
+	m_nameLabels[p_index].SetString(string, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00481b60
-void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
+void MultiplayerPickScreen::DimSlotLighting(LegoS32 p_index)
 {
 	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
@@ -142,7 +142,7 @@ void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00481bf0
-void MultiplayerPickScreen::FUN_00481bf0(LegoS32 p_index)
+void MultiplayerPickScreen::RestoreSlotLighting(LegoS32 p_index)
 {
 	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
@@ -180,7 +180,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 	}
 
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
-		if (p_event->m_device == m_unk0x2b70[i]) {
+		if (p_event->m_device == m_playerDevices[i]) {
 			SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i);
 
 			switch (p_event->m_keyCode) {
@@ -188,7 +188,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x30000005:
 				if (record != NULL) {
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, NULL);
-					FUN_00481bf0(i);
+					RestoreSlotLighting(i);
 				}
 				else {
 					LegoS32 modelIndex = m_slotModelToggle[i] + (m_modelsPerSlot * i);
@@ -204,7 +204,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 						i,
 						m_recordCursors[i].GetSelectedRecord()
 					);
-					FUN_00481b60(i);
+					DimSlotLighting(i);
 					m_unk0x360 = 0x41;
 					PlayRandomNamedAnimation(i);
 				}
@@ -216,7 +216,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 				if (record == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectPreviousRecord(i);
-					FUN_00481b10(i);
+					UpdateNameLabel(i);
 
 					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
 						if (j != i) {
@@ -232,7 +232,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 				if (record == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
 					SelectNextRecord(i);
-					FUN_00481b10(i);
+					UpdateNameLabel(i);
 
 					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
 						if (j != i) {
@@ -289,6 +289,6 @@ void MultiplayerPickScreen::VTable0x84()
 LegoBool32 MultiplayerPickScreen::VTable0x78(undefined4 p_elapsed)
 {
 	LegoBool32 result = RacerModelScreenBase::VTable0x78(p_elapsed);
-	FUN_004819b0();
+	RefreshPlayerDevices();
 	return result;
 }

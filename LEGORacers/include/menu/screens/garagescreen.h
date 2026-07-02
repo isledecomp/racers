@@ -25,16 +25,16 @@ public:
 	// GarageScreen::`scalar deleting destructor'
 
 protected:
-	void FUN_0047e550();
+	void CreateMainButtons();
+	void CreateEditButtons();
 	void ShowMainButtons();
-	void FUN_0047e740();
 	void HideMainButtons();
 	void ShowEditButtons();
 	void HideEditButtons();
 	void RefreshRecordAvailability(MenuGameContext* p_context);
 	void DeleteSelectedRecord();
 	void StartTestDrive();
-	void FUN_0047efe0();
+	void ApplyPageChange();
 
 	MenuImage m_photoImage;            // 0x3ff4
 	MenuTextLabel m_infoLabel;         // 0x4050

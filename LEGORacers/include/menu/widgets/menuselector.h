@@ -70,8 +70,8 @@ public:
 	// SIZE 0x98
 	class CreateParams : public MenuSelectorBase::CreateParamsWithCarousel {
 	public:
-		MenuCarousel* m_unk0x90; // 0x90
-		undefined4 m_unk0x94;    // 0x94
+		MenuCarousel* m_unk0x90;           // 0x90
+		undefined4 m_acceptUnfocusedInput; // 0x94
 	};
 
 	MenuSelector();
@@ -88,7 +88,7 @@ public:
 	void StepNext() override;                                                             // vtable+0x7c
 
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry);
-	void SetUnk0x9ec(undefined4 p_unk0x9ec) { m_unk0x9ec = p_unk0x9ec; }
+	void SetAcceptUnfocusedInput(undefined4 p_accept) { m_acceptUnfocusedInput = p_accept; }
 
 	// SYNTHETIC: LEGORACERS 0x00467730
 	// MenuSelector::`scalar deleting destructor'
@@ -96,10 +96,10 @@ public:
 protected:
 	MenuStyleTable::SelectorStyle* GetStyleEntry() { return static_cast<MenuStyleTable::SelectorStyle*>(m_styleEntry); }
 
-	MenuFrame m_unk0x5ec;       // 0x5ec
-	MenuCarousel* m_carousel;   // 0x9e8
-	undefined4 m_unk0x9ec;      // 0x9ec
-	undefined4 m_scrollPending; // 0x9f0
+	MenuFrame m_unk0x5ec;              // 0x5ec
+	MenuCarousel* m_carousel;          // 0x9e8
+	undefined4 m_acceptUnfocusedInput; // 0x9ec
+	undefined4 m_scrollPending;        // 0x9f0
 };
 
 #endif // MENUSELECTOR_H

@@ -330,7 +330,7 @@ void MenuSelector::Reset()
 	m_unk0x5ec.Destroy();
 	m_carousel = NULL;
 	m_scrollPending = 0;
-	m_unk0x9ec = 0;
+	m_acceptUnfocusedInput = 0;
 	MenuSelectorBase::Reset();
 }
 
@@ -350,7 +350,7 @@ LegoBool32 MenuSelector::Create(CreateParams* p_createParams, MenuStyleTable::Se
 		m_styleEntry = p_styleEntry;
 		m_carousel = p_createParams->m_unk0x90;
 		m_carousel->SetColor(&m_stateColors[m_visualStateIndex]);
-		m_unk0x9ec = p_createParams->m_unk0x94;
+		m_acceptUnfocusedInput = p_createParams->m_acceptUnfocusedInput;
 		m_carousel->SetParent(this);
 		return TRUE;
 	}
@@ -497,7 +497,7 @@ MenuWidget* MenuSelector::OnKeyDown(InputEventQueue::Event* p_param1, undefined4
 		undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 		stateFlags = m_stateFlags;
-		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_unk0x9ec) &&
+		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_acceptUnfocusedInput) &&
 			HandleNavigationKeyDown(p_param1, result)) {
 			m_activeKeyCode = p_param1->m_keyCode;
 			return this;
@@ -522,7 +522,8 @@ MenuWidget* MenuSelector::OnKeyUp(InputEventQueue::Event* p_param1, undefined4 p
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
-	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) && ((stateFlags & c_flagBit1) || m_unk0x9ec)) {
+	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) &&
+		((stateFlags & c_flagBit1) || m_acceptUnfocusedInput)) {
 		HandleNavigationKeyUp(p_param1, result);
 	}
 

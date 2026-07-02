@@ -24,13 +24,13 @@ public:
 	// PickRacerScreen::`scalar deleting destructor'
 
 protected:
-	MenuImage m_unk0x3ff4;      // 0x3ff4
-	MenuTextLabel m_unk0x4050;  // 0x4050
-	MenuTextButton m_unk0x40c8; // 0x40c8
-	MenuTextButton m_unk0x43b8; // 0x43b8
-	MenuTextButton m_unk0x46a8; // 0x46a8
-	MenuTextButton m_unk0x4998; // 0x4998
-	undefined4 m_unk0x4c88;     // 0x4c88
+	MenuImage m_photoImage;            // 0x3ff4
+	MenuTextLabel m_infoLabel;         // 0x4050
+	MenuTextButton m_startButton;      // 0x40c8
+	MenuTextButton m_nextPlayerButton; // 0x43b8
+	MenuTextButton m_controlsButton;   // 0x46a8
+	MenuTextButton m_backButton;       // 0x4998
+	undefined4 m_unk0x4c88;            // 0x4c88
 };
 
 #endif // PICKRACERSCREEN_H

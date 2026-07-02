@@ -338,7 +338,21 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/homingprojectile.cpp
   LEGORacers/src/race/raceresourcemanager.cpp
   LEGORacers/src/race/powerups/powerupexplosion.cpp
-  LEGORacers/src/race/powerups/racepowerupactions.cpp
+  LEGORacers/src/race/powerups/powerupaction.cpp
+  LEGORacers/src/race/powerups/magnetaction.cpp
+  LEGORacers/src/race/powerups/oilslickaction.cpp
+  LEGORacers/src/race/powerups/dynamiteaction.cpp
+  LEGORacers/src/race/powerups/curseaction.cpp
+  LEGORacers/src/race/powerups/cannonballaction.cpp
+  LEGORacers/src/race/powerups/grapplinghookaction.cpp
+  LEGORacers/src/race/powerups/lightningaction.cpp
+  LEGORacers/src/race/powerups/homingmissileaction.cpp
+  LEGORacers/src/race/powerups/shieldaction.cpp
+  LEGORacers/src/race/powerups/turboaction.cpp
+  LEGORacers/src/race/powerups/warpaction.cpp
+  LEGORacers/src/race/powerups/pickupbrick.cpp
+  LEGORacers/src/race/powerups/colorbrick.cpp
+  LEGORacers/src/race/powerups/whitebrick.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatefield0x00c.cpp
   LEGORacers/src/race/racestatefield0x004.cpp

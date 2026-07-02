@@ -1,0 +1,696 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+extern LegoFloat g_unk0x004c7600;
+
+extern const LegoFloat g_carBuildModelTextureCoordinateScale;
+
+extern const LegoFloat g_ghostSpeedScale;
+
+// GLOBAL: LEGORACERS 0x004b02fc
+extern const LegoFloat g_unk0x004b02fc = 0.002f;
+
+// GLOBAL: LEGORACERS 0x004b1544
+const LegoFloat g_lightningSourceHeightOffset = 3.0f;
+
+// GLOBAL: LEGORACERS 0x004b1548
+const LegoFloat g_lightningSoundMinDistance = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b154c
+const LegoFloat g_lightningSoundMaxDistanceSquared = 300.0f;
+
+// GLOBAL: LEGORACERS 0x004b1550
+const LegoFloat g_lightningFlashDrawDistance = FLT_MAX;
+
+// GLOBAL: LEGORACERS 0x004b1558
+const LegoFloat g_lightningBeamThickness = 0.85f;
+
+// GLOBAL: LEGORACERS 0x004b155c
+const LegoFloat g_lightningBoltAmplitude = 9.0f;
+
+// GLOBAL: LEGORACERS 0x004b1568
+const ColorRGBA g_lightningBaseColor = {0x19, 0x41, 0xf5, 0xff};
+
+// GLOBAL: LEGORACERS 0x004b156c
+const ColorRGBA g_lightningSecondaryColor = {0x19, 0x41, 0xff, 0xff};
+
+// GLOBAL: LEGORACERS 0x004b1570
+const ColorRGBA g_lightningTertiaryColor = {0x19, 0x41, 0xeb, 0xff};
+
+// GLOBAL: LEGORACERS 0x004b1574
+const ColorRGBA g_lightningHitColor = {0xff, 0xff, 0xff, 0xff};
+
+// GLOBAL: LEGORACERS 0x004b1578
+extern const LegoFloat g_lightningRange = 50.0f;
+
+// GLOBAL: LEGORACERS 0x004b157c
+const LegoFloat g_unk0x004b157c = 9.0f;
+
+// GLOBAL: LEGORACERS 0x004b1580
+const LegoFloat g_unk0x004b1580 = 0.5f;
+
+// GLOBAL: LEGORACERS 0x004b1584
+const LegoFloat g_lightningFrequencyRampScale = 0.1f;
+
+// GLOBAL: LEGORACERS 0x004b1588
+const LegoFloat g_lightningImpulseScale = 80.0f;
+
+// GLOBAL: LEGORACERS 0x004b158c
+const LegoFloat g_lightningLaunchImpulse = 200.0f;
+
+// GLOBAL: LEGORACERS 0x004b15a0
+const LegoFloat g_lightningFlashWidth = 8.0f;
+
+// GLOBAL: LEGORACERS 0x004b15a4
+const LegoFloat g_lightningFlashHeight = 8.0f;
+
+// GLOBAL: LEGORACERS 0x004b15d4
+const LegoFloat g_lightningRandomScale = 0.00097751711f;
+
+// GLOBAL: LEGORACERS 0x004c7604
+LegoFloat g_unk0x004c7604 = g_unk0x004c7600 * g_unk0x004c7600;
+
+// GLOBAL: LEGORACERS 0x004c7608
+GolVec3 g_beamSegmentOffsets[5];
+
+extern LegoU16 g_randomTable[1024];
+
+extern LegoU32 g_randomTableIndex;
+
+// FUNCTION: LEGORACERS 0x00454800
+RacePowerupManager::LightningAction::LightningAction()
+{
+	m_jitterCursor = 0;
+	m_unk0x228 = 3;
+	m_boltLength = g_lightningRange;
+	m_crackleTimerMs = 0;
+	m_sound = NULL;
+	m_hitParticle = 0;
+	m_unk0x234 = 0;
+	m_shockTimerMs = 0;
+	m_source = 0;
+	m_flashBillboard = NULL;
+}
+
+// FUNCTION: LEGORACERS 0x00454890
+RacePowerupManager::LightningAction::~LightningAction()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004548f0
+void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_unk0x08)
+{
+	if (m_state != 0) {
+		Destroy();
+	}
+
+	m_owner0x01c = p_unk0x08;
+	m_collisionWorld = p_unk0x08->m_collisionWorld;
+	m_jitterTimerMs = 0;
+	m_shockTimerMs = 0;
+	m_source = 0;
+
+	GolD3DRenderDevice* renderer = p_export->GetDrawState()->m_currentRenderer;
+
+	BeamMesh::SetupParams params;
+	params.m_material = renderer->FindMaterialByName("lightng");
+	params.m_ringVertices[1].m_y = g_lightningBeamThickness * 0.5f;
+	params.m_ringVertices[2].m_x = -g_lightningBeamThickness;
+	params.m_golExport = p_export;
+	params.m_renderer = renderer;
+	params.m_sectionCount = 4;
+	params.m_segmentCount = 5;
+	params.m_ringQuadCount = 2;
+	params.m_ringVertices[0].m_x = 0.0f;
+	params.m_ringVertices[0].m_y = g_lightningBeamThickness;
+	params.m_ringVertices[0].m_z = -0.25f;
+	params.m_ringVertices[1].m_x = 0.0f;
+	params.m_ringVertices[1].m_z = 0.0f;
+	params.m_ringVertices[2].m_y = -0.25f;
+	params.m_ringVertices[2].m_z = 0.0f;
+	params.m_ringTextureXs[0] = 0.0f;
+	params.m_ringTextureXs[1] = 0.5f;
+	params.m_ringTextureXs[2] = 1.0f;
+	params.m_textureColumnCount = 3;
+	params.m_modelDistance = 360000.0f;
+	params.m_faceCamera = 1;
+	m_beam.Initialize(&params);
+	m_beam.SetColors(&g_lightningBaseColor, &g_lightningSecondaryColor, &g_lightningTertiaryColor);
+
+	m_flashBillboard = static_cast<GolBillboard*>(p_export->VTable0x30());
+	DuskwindBananaRelic0x24* material = renderer->FindMaterialByName("ltflash");
+	m_flashBillboard->VTable0x4c(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
+
+	m_state = 1;
+	FillJitterTable();
+}
+
+// FUNCTION: LEGORACERS 0x00454a70
+void RacePowerupManager::LightningAction::AcquireSound()
+{
+	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
+	if (m_sound != NULL) {
+		m_sound->SetDistanceRangeWithMinSquared(
+			g_lightningSoundMinDistance * g_lightningSoundMinDistance,
+			g_lightningSoundMaxDistanceSquared
+		);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00454ab0
+void RacePowerupManager::LightningAction::Destroy()
+{
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
+	}
+
+	Deactivate();
+
+	if (m_flashBillboard != NULL) {
+		m_flashBillboard->VTable0x50();
+		m_owner0x01c->m_golExport->VTable0x64(m_flashBillboard);
+		m_flashBillboard = NULL;
+	}
+
+	m_beam.Destroy();
+	m_state = 0;
+	m_hitParticle = 0;
+	m_source = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00454b20
+void RacePowerupManager::LightningAction::AdvanceJitter()
+{
+	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
+	m_jitterTable[m_jitterCursor] =
+		((LegoS32) g_randomTable[g_randomTableIndex] * g_lightningRandomScale - 0.5f) * 5.0f;
+
+	m_jitterCursor++;
+	if (m_jitterCursor >= 20) {
+		m_jitterCursor = 0;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00454b90
+void RacePowerupManager::LightningAction::FillJitterTable()
+{
+	for (LegoU32 i = 0; i < 20; i++) {
+		AdvanceJitter();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00454bb0
+void RacePowerupManager::LightningAction::RebuildBolt()
+{
+	LegoS32 index = static_cast<LegoS32>(m_jitterCursor) - 1;
+	GolVec3* modelPosition = m_boltPoints;
+	BeamMesh* field = &m_beam;
+	RaceActionSource0x24* source = m_source;
+
+	GolVec3 position;
+	LegoFloat amount;
+	position = *source;
+	amount = g_lightningBoltAmplitude;
+	position.m_z += g_lightningSourceHeightOffset;
+
+	GolVec3 direction;
+	direction.m_x = modelPosition[0].m_x - position.m_x;
+	direction.m_y = modelPosition[0].m_y - position.m_y;
+	direction.m_z = modelPosition[0].m_z - position.m_z;
+	field->Begin(&position, &direction);
+
+	for (LegoS32 i = 0; i < 4; i++) {
+		GolVec3* offset = g_beamSegmentOffsets;
+		while (offset < &g_beamSegmentOffsets[5]) {
+			if (index < 0) {
+				index = 19;
+			}
+
+			offset->m_x = m_jitterTable[index--];
+			offset->m_y = offset->m_x;
+			offset->m_z = 0.0f;
+			offset++;
+		}
+
+		field->SetSegmentOffsets(g_beamSegmentOffsets);
+		field->AppendSpan(modelPosition, amount);
+
+		modelPosition++;
+		amount = -amount;
+	}
+
+	field->Finish();
+}
+
+// FUNCTION: LEGORACERS 0x00454cb0
+void RacePowerupManager::LightningAction::Activate(RaceState::Racer* p_racer, ActionTarget* p_unk0x08)
+{
+	m_state = 2;
+	m_stateTimerMs = 500;
+	m_ownerRacer = p_racer;
+	m_targetRacer = NULL;
+
+	if (p_racer != NULL) {
+		m_source = &p_racer->m_actionSource;
+	}
+	else {
+		m_source = p_unk0x08->m_source;
+	}
+
+	m_crackleTimerMs = 0;
+	if (m_sound != NULL) {
+		m_sound->Play(TRUE);
+	}
+	m_unk0x234 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00454d10
+void RacePowerupManager::LightningAction::Deactivate()
+{
+	if (m_targetRacer != NULL) {
+		m_targetRacer->EndSpinOut();
+	}
+
+	if (m_owner0x01c != NULL && m_hitParticle != NULL) {
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+		m_hitParticle = NULL;
+	}
+
+	m_beam.SetColors(&g_lightningBaseColor, &g_lightningSecondaryColor, &g_lightningTertiaryColor);
+	m_source = NULL;
+	m_ownerRacer = NULL;
+	m_targetRacer = NULL;
+	m_state = 1;
+}
+
+// FUNCTION: LEGORACERS 0x00454d70
+void RacePowerupManager::LightningAction::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == c_stateDone) {
+		return;
+	}
+
+	if (p_elapsedMs >= m_stateTimerMs) {
+		p_elapsedMs -= m_stateTimerMs;
+		m_stateTimerMs = 0;
+		AdvanceState();
+	}
+	else {
+		m_stateTimerMs -= p_elapsedMs;
+	}
+
+	m_jitterTimerMs += p_elapsedMs;
+	while (m_jitterTimerMs > c_jitterIntervalMs) {
+		AdvanceJitter();
+		m_jitterTimerMs -= c_jitterIntervalMs;
+	}
+
+	if (m_targetRacer != NULL) {
+		m_shockTimerMs += p_elapsedMs;
+		if (m_shockTimerMs > c_shockDurationMs) {
+			m_targetRacer->EndSpinOut();
+			m_targetRacer = NULL;
+			m_shockTimerMs = 0;
+			m_beam.SetColors(&g_lightningBaseColor, &g_lightningSecondaryColor, &g_lightningTertiaryColor);
+		}
+	}
+
+	UpdateBoltPath();
+	RebuildBolt();
+	UpdateHitParticle();
+	FindVictim();
+	UpdateSound(p_elapsedMs);
+}
+
+// FUNCTION: LEGORACERS 0x00454e50
+void RacePowerupManager::LightningAction::UpdateSound(LegoU32 p_elapsedMs)
+{
+	if (m_sound != NULL) {
+		m_sound->SetPosition(*m_source);
+		m_sound->SetVelocity(m_source->m_velocity);
+
+		switch (m_state) {
+		case c_stateRampIn:
+			m_sound->SetFrequencyScale(
+				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_lightningFrequencyRampScale *
+						   g_unk0x004b02fc
+			);
+			break;
+		case c_stateSustain:
+			m_sound->SetFrequencyScale(1.0f);
+			break;
+		case c_stateFade:
+			m_sound->SetFrequencyScale(
+				1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(c_fadeDurationMs - m_stateTimerMs)) *
+						   g_lightningFrequencyRampScale * g_unk0x004b02fc
+			);
+			break;
+		}
+	}
+
+	if (m_state != c_stateSustain) {
+		return;
+	}
+
+	if (m_crackleTimerMs < p_elapsedMs) {
+		SoundVector position = *m_source;
+
+		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+		LegoS32 distance = static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_randomOffsetRange;
+		SoundVector* right = &m_source->m_right;
+		GolVec3 offset;
+		offset.m_x = static_cast<LegoFloat>(distance) * right->m_x;
+		offset.m_y = right->m_y * static_cast<LegoFloat>(distance);
+		offset.m_z = static_cast<LegoFloat>(distance) * right->m_z;
+		position.m_x += offset.m_x;
+		position.m_y += offset.m_y;
+		position.m_z += offset.m_z;
+
+		m_soundSource->PlaySpatialSoundById(
+			c_soundCrackle,
+			&position,
+			g_lightningSoundMinDistance,
+			g_lightningSoundMaxDistanceSquared,
+			1.0f,
+			1.0f
+		);
+
+		g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
+		m_crackleTimerMs =
+			static_cast<LegoS32>(g_randomTable[g_randomTableIndex]) % c_crackleIntervalRangeMs + c_crackleMinIntervalMs;
+	}
+	else {
+		m_crackleTimerMs -= p_elapsedMs;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455020
+void RacePowerupManager::LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+{
+	if (m_targetRacer != NULL) {
+		m_flashBillboard->VTable0x08(m_boltPoints[3]);
+		p_renderer->VTable0xb4(*m_flashBillboard);
+	}
+
+	m_beam.Draw(p_renderer);
+}
+
+// FUNCTION: LEGORACERS 0x00455060
+void RacePowerupManager::LightningAction::AdvanceState()
+{
+	switch (m_state) {
+	case c_stateRampIn:
+		m_state = c_stateSustain;
+		m_stateTimerMs = c_sustainDurationMs;
+		break;
+	case c_stateSustain:
+		m_state = c_stateFade;
+		m_stateTimerMs = c_fadeDurationMs;
+		break;
+	default:
+		m_state = c_stateDone;
+		m_stateTimerMs = 0;
+
+		if (m_owner0x01c != NULL && m_hitParticle != NULL) {
+			m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+			m_hitParticle = NULL;
+		}
+
+		m_soundSource->PlaySpatialSoundById(
+			c_soundThunder,
+			m_source,
+			g_lightningSoundMinDistance,
+			g_lightningSoundMaxDistanceSquared,
+			1.0f,
+			1.0f
+		);
+
+		if (m_sound != NULL) {
+			m_sound->Stop();
+		}
+		break;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455100
+void RacePowerupManager::LightningAction::UpdateBoltPath()
+{
+	GolVec3 position = *m_source;
+	position.m_z += g_lightningSourceHeightOffset;
+
+	GolVec3 direction = m_source->m_right;
+	if (m_state == c_stateRampIn) {
+		m_boltLength =
+			(1.0f - static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc) * g_lightningRange;
+	}
+	else if (m_state == c_stateFade) {
+		LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_unk0x004b02fc;
+		m_boltLength = amount * g_lightningRange;
+	}
+	else {
+		m_boltLength = g_lightningRange;
+	}
+
+	GolVec3 end;
+	GolVec3 scaledDirection;
+	GolVec3 hit;
+	GolBoundingVolume::Field0x0c record;
+	LegoFloat scale = m_boltLength;
+	scale *= g_ghostSpeedScale;
+	scaledDirection.m_x = direction.m_x * scale;
+	scaledDirection.m_y = direction.m_y * scale;
+	scaledDirection.m_z = direction.m_z * scale;
+	GolCameraBase::FUN_00404550(&position, &scaledDirection, &end);
+
+	if (m_targetRacer != NULL) {
+		m_targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&end);
+
+		direction.m_x = end.m_x - position.m_x;
+		direction.m_y = end.m_y - position.m_y;
+		direction.m_z = end.m_z - position.m_z;
+		GolMath::NormalizeVector3(direction, &direction);
+
+		LegoFloat distance = static_cast<LegoFloat>(::sqrt(
+			(position.m_z - end.m_z) * (position.m_z - end.m_z) + (position.m_y - end.m_y) * (position.m_y - end.m_y) +
+			(position.m_x - end.m_x) * (position.m_x - end.m_x)
+		));
+		LegoFloat radius = m_targetRacer->m_unk0x018.m_unk0x004.FUN_10028710();
+		if (distance > radius) {
+			distance -= radius;
+		}
+
+		m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
+	}
+	else {
+		if (m_collisionWorld->FUN_0041f730(&position, &end, &record, &hit)) {
+			LegoFloat distance = static_cast<LegoFloat>(::sqrt(
+				(position.m_z - hit.m_z) * (position.m_z - hit.m_z) +
+				(position.m_y - hit.m_y) * (position.m_y - hit.m_y) +
+				(position.m_x - hit.m_x) * (position.m_x - hit.m_x)
+			));
+			m_boltLength = distance * g_carBuildModelTextureCoordinateScale;
+		}
+	}
+
+	direction *= m_boltLength;
+	for (LegoS32 i = 0; i < sizeOfArray(m_boltPoints); i++) {
+		position += direction;
+		m_boltPoints[i] = position;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455350
+void RacePowerupManager::LightningAction::FindVictim()
+{
+	RaceState::Racer* racer;
+
+	if (m_targetRacer != NULL) {
+		return;
+	}
+
+	SoundVector position = *m_source;
+	position.m_z += g_lightningSourceHeightOffset;
+
+	RaceState* raceState = m_owner0x01c->m_raceState;
+	racer = raceState->FUN_0043c6e0(&position, &m_source->m_right, g_unk0x004b157c, g_unk0x004c7604, g_unk0x004b1580);
+
+	while (racer != NULL) {
+		if (racer != m_ownerRacer) {
+			GolVec3* start = &position;
+			LegoS32 i = 0;
+			GolVec3* segment = m_boltPoints;
+			for (; i < sizeOfArray(m_boltPoints);) {
+				GolVec3 hit;
+				if (racer->m_unk0x018.IntersectSegment(start, segment, &hit)) {
+					OnHitRacer(racer);
+					break;
+				}
+
+				start = segment;
+				i++;
+				segment++;
+			}
+		}
+
+		racer =
+			raceState
+				->FUN_0043c7f0(racer, &position, &m_source->m_right, g_unk0x004b157c, g_unk0x004c7604, g_unk0x004b1580);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455440
+void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
+{
+	LegoU32 state = m_state;
+
+	if (state == c_stateSustain) {
+		RaceState::Racer* racer = p_racer;
+		if (racer->GetUnk0xd04() & c_racerFlags0xd04Bit0) {
+			racer->PlayReaction(TRUE);
+			racer->AbsorbShieldHit();
+			return;
+		}
+
+		if (!(racer->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7)) {
+			RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+			GolVec3 direction = field0x3e8->m_unk0x168;
+			racer->StartSpinOut();
+
+			field0x3e8->m_unk0x008.m_x = 0.0f;
+			field0x3e8->m_unk0x008.m_y = 0.0f;
+			field0x3e8->m_unk0x008.m_z = 0.0f;
+
+			GolVec3 impulse;
+			impulse.m_x = direction.m_x * g_lightningImpulseScale;
+			impulse.m_y = direction.m_y * g_lightningImpulseScale;
+			impulse.m_z = direction.m_z * g_lightningImpulseScale + g_lightningLaunchImpulse;
+
+			field0x3e8->VTable0x1c(&impulse, &impulse);
+
+			RaceState::Racer::Field0x018* racerField0x018 = &racer->m_unk0x018;
+			ColorTransform0x20 transform;
+			transform.m_redOffset = c_colorOffset0xe1;
+			transform.m_redShift = 0;
+			transform.m_grnOffset = c_colorOffset0xe1;
+			transform.m_grnShift = 0;
+			transform.m_bluOffset = c_colorOffset0xff;
+			transform.m_bluShift = 0;
+			transform.m_alpOffset = 0;
+			transform.m_alpShift = 0;
+			racerField0x018->FlashColor(&transform, c_flashDurationMs);
+
+			if (m_ownerRacer != NULL) {
+				m_ownerRacer->PlayReaction(TRUE);
+			}
+
+			racer->PlayReaction(FALSE);
+			racer->DropWhiteBrick();
+			racerField0x018->m_unk0x384 |= c_racerField0x018Flags0x384Bit1;
+
+			m_shockTimerMs = 0;
+			m_targetRacer = racer;
+			m_beam.SetColors(&g_lightningHitColor, &g_lightningHitColor, &g_lightningHitColor);
+
+			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation;
+			if (m_hitParticle != NULL) {
+				cutsceneAnimation->FUN_00489f30(m_hitParticle);
+			}
+
+			m_hitParticle = cutsceneAnimation->FUN_00489d70("lghthit", NULL, NULL, NULL);
+
+			SoundVector position;
+			racerField0x018->m_unk0x044->VTable0x04(&position);
+			m_soundSource->PlaySpatialSoundById(
+				c_soundZap,
+				&position,
+				g_lightningSoundMinDistance,
+				g_lightningSoundMaxDistanceSquared,
+				1.0f,
+				1.0f
+			);
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455620
+void RacePowerupManager::LightningAction::GetProjectilePosition(GolVec3* p_position)
+{
+	*p_position = m_boltPoints[3];
+}
+
+// FUNCTION: LEGORACERS 0x00455640
+void RacePowerupManager::LightningAction::GetProjectileVelocity(GolVec3* p_velocity)
+{
+	p_velocity->m_x = 0.0f;
+	p_velocity->m_y = 0.0f;
+	p_velocity->m_z = 0.0f;
+}
+
+// FUNCTION: LEGORACERS 0x00455660
+void RacePowerupManager::LightningAction::UpdateHitParticle()
+{
+	if (m_hitParticle == NULL) {
+		return;
+	}
+
+	if (m_targetRacer == NULL) {
+		m_owner0x01c->m_cutsceneAnimation->FUN_00489f30(m_hitParticle);
+		m_hitParticle = NULL;
+		return;
+	}
+
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
+	GolVec3 direction;
+	direction.m_x = -m_source->m_right.m_x;
+	direction.m_y = -m_source->m_right.m_y;
+	direction.m_z = -m_source->m_right.m_z;
+
+	if (m_hitParticle->m_unk0x00 != NULL) {
+		m_hitParticle->m_unk0x00->FUN_00489660(&m_boltPoints[3]);
+	}
+
+	if (m_hitParticle->m_unk0x00 != NULL) {
+		m_hitParticle->m_unk0x00->FUN_00489540(&direction, &up);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004585d0
+RacePowerupManager::PowerupAction* RacePowerupManager::LightningAction::Destroy(undefined4 p_flags)
+{
+	LightningAction* result = this;
+	if (p_flags & 2) {
+		if (p_flags & 1) {
+			delete[] this;
+		}
+
+		return result;
+	}
+
+	this->~LightningAction();
+	if (p_flags & 1) {
+		::operator delete(result);
+	}
+
+	return result;
+}

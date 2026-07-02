@@ -1,0 +1,111 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+// FUNCTION: LEGORACERS 0x004535a0
+RacePowerupManager::WhiteBrick::WhiteBrick()
+{
+	m_droppedTimeMs = 0;
+	m_flags0x64 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x004535c0
+RacePowerupManager::WhiteBrick::~WhiteBrick()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00453610
+void RacePowerupManager::WhiteBrick::Reset()
+{
+	m_droppedTimeMs = 0;
+	m_flags0x64 = 0;
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x00453620
+void RacePowerupManager::WhiteBrick::CaptureHomePosition()
+{
+	m_worldEntity.VTable0x04(&m_homePosition);
+	m_state = c_stateActive;
+	m_droppedTimeMs = 0;
+	m_flags0x64 = 0;
+}
+
+// FUNCTION: LEGORACERS 0x00453650
+void RacePowerupManager::WhiteBrick::Respawn()
+{
+	PickupBrick::Respawn();
+	m_worldEntity.VTable0x08(m_homePosition);
+	m_state = c_stateActive;
+	m_droppedTimeMs = 0;
+	m_flags0x64 = 0;
+	m_stateTimerMs = 0;
+	SetTouchable(FALSE);
+}
+
+// FUNCTION: LEGORACERS 0x00453690
+void RacePowerupManager::WhiteBrick::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == c_stateInactive) {
+		return;
+	}
+
+	PickupBrick::Update(p_elapsedMs);
+
+	if (m_flags0x64 & c_flagDropped) {
+		m_droppedTimeMs += p_elapsedMs;
+		if (m_droppedTimeMs > 10000) {
+			ReturnHome();
+		}
+	}
+
+	LegoU32 state = m_state;
+	if (state != c_stateActive) {
+		if (state == c_stateTransition && m_stateTimerMs > 250) {
+			LegoU8 flags = m_flags0x64;
+			if (flags & c_flagReturnHome) {
+				m_flags0x64 = flags & ~c_flagReturnHome;
+				m_worldEntity.VTable0x08(m_homePosition);
+				m_state = c_stateActive;
+			}
+			else {
+				m_state = c_stateWait;
+			}
+
+			m_stateTimerMs = 0;
+			SetTouchable(FALSE);
+		}
+	}
+	else if (m_stateTimerMs > 500) {
+		m_state = c_stateIdle;
+		m_stateTimerMs = 0;
+		SetTouchable(TRUE);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00453750
+void RacePowerupManager::WhiteBrick::OnTouched(RaceState::Racer* p_racer)
+{
+	if (m_state == c_stateIdle && p_racer->CollectWhiteBrick(this)) {
+		m_nextState = c_stateWait;
+		m_state = c_stateTransition;
+		m_stateTimerMs = 0;
+		m_flags0x64 &= ~c_flagDropped;
+		m_droppedTimeMs = 0;
+	}
+}

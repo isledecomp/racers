@@ -1,0 +1,185 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+extern const LegoFloat g_unk0x004b14a8;
+extern const LegoFloat g_ghostSampleFractionScale;
+
+extern const LegoFloat g_unk0x004b14a8;
+
+// GLOBAL: LEGORACERS 0x004b0400
+const LegoFloat g_unk0x004b0400 = 0.002f;
+
+// GLOBAL: LEGORACERS 0x004b14ac
+const LegoFloat g_unk0x004b14ac = 0.8f;
+
+// GLOBAL: LEGORACERS 0x004c75f4
+LegoFloat g_unk0x004c75f4 = 1.0f / g_unk0x004b14a8;
+
+// GLOBAL: LEGORACERS 0x004c75f8
+LegoFloat g_unk0x004c75f8 = g_ghostSampleFractionScale * g_unk0x004b14a8;
+
+// FUNCTION: LEGORACERS 0x00453910
+RacePowerupManager::PickupBrick::PickupBrick()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00453960
+RacePowerupManager::PickupBrick::~PickupBrick()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x00453970
+LegoS32 RacePowerupManager::PickupBrick::Reset()
+{
+	m_scale = 1.0f;
+	m_model = NULL;
+	m_blendModel = NULL;
+	m_manager = NULL;
+	m_soundSource = NULL;
+	m_state = c_stateInactive;
+	m_nextState = c_stateWait;
+	m_stateTimerMs = 0;
+	m_respawnMs = 3000;
+	m_flags0x50 = 0;
+
+	return 0;
+}
+
+// FUNCTION: LEGORACERS 0x004539b0
+void RacePowerupManager::PickupBrick::Initialize(
+	RacePowerupManager* p_owner,
+	RaceState::Racer::Field0x004* p_soundResource,
+	GolVec3* p_position,
+	GolModelEntity* p_model0,
+	GolModelEntity* p_model1
+)
+{
+	if (m_manager != NULL) {
+		Destroy();
+	}
+
+	m_manager = p_owner;
+	m_soundSource = p_soundResource;
+	m_blendModel = p_model1;
+	m_model = p_model0;
+	m_worldEntity.VTable0x08(*p_position);
+	m_state = c_stateWait;
+	m_stateTimerMs = 3000;
+}
+
+// FUNCTION: LEGORACERS 0x00453a00
+void RacePowerupManager::PickupBrick::Respawn()
+{
+	m_state = c_stateWait;
+	m_stateTimerMs = 3000;
+}
+
+// FUNCTION: LEGORACERS 0x00453a10
+void RacePowerupManager::PickupBrick::Destroy()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00453a20
+void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == c_stateInactive) {
+		return;
+	}
+
+	LegoU32 elapsedMs = p_elapsedMs + m_stateTimerMs;
+	m_stateTimerMs = elapsedMs;
+
+	LegoS32 stateOffset = m_state - c_stateActive;
+	if (stateOffset != 0) {
+		if (stateOffset == 1 && elapsedMs <= 250) {
+			LegoFloat transition = (LegoS32) (250 - elapsedMs) * g_unk0x004c75f8;
+			m_scale = transition * (g_unk0x004b14ac * g_unk0x004c75f4);
+		}
+	}
+	else {
+		if (elapsedMs < 400) {
+			m_scale = (LegoS32) elapsedMs * 0.0024999999f;
+		}
+		else if (elapsedMs < 500) {
+			m_scale = 1.0f - (LegoS32) (elapsedMs - 400) * g_unk0x004b0400;
+		}
+	}
+
+	LegoU8 flags = m_flags0x50;
+	if (flags & c_flagTouched) {
+		m_flags0x50 = (flags & ~(c_flagTouched | c_flagWasTouched)) | c_flagWasTouched;
+	}
+	else {
+		m_flags0x50 = flags & ~c_flagWasTouched;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00453ad0
+void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_unk0x04)
+{
+	if (p_unk0x04) {
+		m_scale = g_unk0x004b14ac;
+	}
+	else {
+		m_scale = 0.0f;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00453af0
+void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
+{
+	m_flags0x50 |= c_flagTouched;
+
+	if (m_state == c_stateIdle) {
+		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+		if (!(racer->GetUnk0xd04() & c_racerFlags0xd04Bit4)) {
+			if (!(m_flags0x50 & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
+				OnTouched(racer);
+			}
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00453b30
+void RacePowerupManager::PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
+{
+	if (m_state != c_stateInactive &&
+		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
+		GolVec3 position;
+		m_worldEntity.VTable0x04(&position);
+		m_model->VTable0x08(position);
+		m_model->SetUnk0x58ThenInvalidateRadius(m_scale);
+		m_model->VTable0x1c(*p_renderer);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00453b90
+void RacePowerupManager::PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
+{
+	if (m_state != c_stateInactive &&
+		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
+		GolVec3 position;
+		m_worldEntity.VTable0x04(&position);
+		m_blendModel->VTable0x08(position);
+		m_blendModel->SetUnk0x58ThenInvalidateRadius(m_scale);
+		m_blendModel->VTable0x1c(*p_renderer);
+	}
+}

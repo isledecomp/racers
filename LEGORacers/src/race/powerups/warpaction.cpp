@@ -1,0 +1,513 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+extern const LegoFloat g_warpPortalHeightOffset;
+
+extern const LegoFloat g_warpFovBoost;
+
+extern LegoFloat g_cosineTable[1024];
+
+extern const LegoFloat g_item0x40Pi;
+
+extern const LegoFloat g_negativeRadiansToTableIndex;
+
+extern const LegoFloat g_homingProjectileCollisionProbeDepth;
+
+extern const LegoFloat g_homingProjectileCollisionStartOffset;
+
+extern const LegoFloat g_unk0x004b02fc;
+
+// GLOBAL: LEGORACERS 0x004b1a60
+const LegoFloat g_unk0x004b1a60 = 200.0f;
+
+// GLOBAL: LEGORACERS 0x004b1a64
+const LegoFloat g_unk0x004b1a64 = 600.0f;
+
+// GLOBAL: LEGORACERS 0x004b1a68
+const LegoFloat g_unk0x004b1a68 = 45.0f;
+
+// GLOBAL: LEGORACERS 0x004b1a70
+const LegoFloat g_warpPathSpeed = 0.6f;
+
+// GLOBAL: LEGORACERS 0x004b1a74
+const LegoFloat g_unk0x004b1a74 = 700.0f;
+
+// GLOBAL: LEGORACERS 0x004b1aa8
+const LegoFloat g_warpLerpScale = 0.00066666666f;
+
+// FUNCTION: LEGORACERS 0x00458750
+RacePowerupManager::PowerupAction* RacePowerupManager::WarpAction::Destroy(undefined4 p_flags)
+{
+	WarpAction* result = this;
+	if (p_flags & 2) {
+		if (p_flags & 1) {
+			delete[] this;
+		}
+
+		return result;
+	}
+
+	this->~WarpAction();
+	if (p_flags & 1) {
+		::operator delete(result);
+	}
+
+	return result;
+}
+
+// FUNCTION: LEGORACERS 0x0045d400
+RacePowerupManager::WarpAction::WarpAction()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0045d460
+RacePowerupManager::WarpAction::~WarpAction()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x0045d4b0
+void RacePowerupManager::WarpAction::Reset()
+{
+	m_state = 0;
+	m_isDemoRacer = 0;
+	m_racer = 0;
+	m_manager = 0;
+	m_cameraFov = 0;
+	m_startPosition.Clear();
+	m_targetPosition.Clear();
+	m_targetDirection.Clear();
+	m_hasTarget = 0;
+	m_followingPath = 0;
+}
+
+// FUNCTION: LEGORACERS 0x0045d510
+void RacePowerupManager::WarpAction::Initialize(const SetupParams* p_params)
+{
+	if (m_state != 0) {
+		Destroy();
+	}
+
+	m_manager = p_params->m_manager;
+	m_cameraFov = p_params->m_cameraFov;
+	m_state = 1;
+}
+
+// FUNCTION: LEGORACERS 0x0045d540
+void RacePowerupManager::WarpAction::Destroy()
+{
+	Deactivate();
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x0045d560
+LegoU32 RacePowerupManager::WarpAction::Activate(
+	RaceState::Racer* p_racer,
+	GolModelEntity* p_model,
+	ActionTarget* p_unk0x0c
+)
+{
+	LegoU32 flags = p_racer->m_unk0xd04;
+	if (!(flags & c_racerFlags0xd04Bit4)) {
+		if (flags & c_racerFlags0xd04Bit21) {
+			m_state = 6;
+			return flags;
+		}
+
+		m_manager->CancelMagnetHold(p_racer);
+		m_racer = p_racer;
+		m_isDemoRacer = p_racer->m_unk0xd08 == 2;
+		p_racer->m_unk0xd04 |= c_racerFlags0xd04Bit21;
+
+		m_modelEntity.VTable0x50(p_model->GetModel(0), p_model->GetModelDistance(0));
+		for (LegoU32 i = 1; i < 3; i++) {
+			GolModelBase* model = p_model->GetModel(i);
+			if (model != NULL) {
+				m_modelEntity.FUN_10027c50(model, p_model->GetModelDistance(i));
+			}
+		}
+
+		m_modelEntity.FUN_00411680(p_model->FUN_00411640());
+		m_modelEntity.FUN_004116b0(p_model->FUN_00411660());
+		m_modelEntity.FUN_00411700(p_model->FUN_004116e0());
+		m_modelEntity.FUN_00411730(p_model->FUN_004116f0());
+
+		GolAnimatedEntity* racerEntity = p_racer->m_unk0x018.m_unk0x044;
+		GolVec3 position;
+		racerEntity->VTable0x04(&position);
+		LegoFloat positionZ = position.m_z;
+		position.m_z = positionZ + g_warpPortalHeightOffset;
+		m_modelEntity.VTable0x08(position);
+		position.m_z -= g_warpPortalHeightOffset;
+		m_modelEntity.CopyOrientationFrom(*racerEntity);
+
+		if (m_racer->m_cameraController != NULL) {
+			m_racer->m_cameraController->m_unk0x134 = m_cameraFov + g_warpFovBoost;
+		}
+
+		if (p_unk0x0c != NULL) {
+			m_stateTimerMs = 0;
+			m_targetPosition = p_unk0x0c->m_unk0x00;
+			m_targetDirection = p_unk0x0c->m_unk0x0c;
+			m_hasTarget = TRUE;
+		}
+		else {
+			m_stateTimerMs = 500;
+			m_hasTarget = FALSE;
+		}
+
+		m_state = 2;
+		return 0;
+	}
+
+	m_state = 6;
+	return flags;
+}
+
+// FUNCTION: LEGORACERS 0x0045d780
+void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == c_stateDone) {
+		return;
+	}
+
+	MenuAnimationList* animationList = m_manager->m_animationList;
+	if (m_stateTimerMs < c_menuAnimationDurationMs && m_state == c_stateStarting && !m_isDemoRacer &&
+		!animationList->HasActive()) {
+		MenuAnimationList::Entry* entry =
+			animationList->Activate(c_menuAnimationDurationMs, FALSE, NULL, m_racer->m_cameraController->m_camera);
+		if (entry != NULL) {
+			ColorRGBA color;
+			color.m_red = 0;
+			color.m_grn = 0;
+			color.m_blu = c_menuAnimationColorBlue;
+			entry->SetColor(color);
+		}
+	}
+
+	if (m_state == c_stateActive) {
+		GolVec3 position;
+		do {
+			if (m_hasTarget) {
+				LegoFloat amount = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs)) * g_warpLerpScale;
+				position.m_x = m_targetPosition.m_x - ((m_targetPosition.m_x - m_startPosition.m_x) * amount);
+				position.m_y = m_targetPosition.m_y - ((m_targetPosition.m_y - m_startPosition.m_y) * amount);
+				position.m_z = m_targetPosition.m_x - ((m_targetPosition.m_z - m_startPosition.m_z) * amount);
+			}
+			else {
+				if (!m_followingPath || m_racer->m_unk0x010 == NULL) {
+					break;
+				}
+
+				LegoFloat distance = static_cast<LegoFloat>(static_cast<LegoS32>(p_elapsedMs)) * g_warpPathSpeed;
+				RaceSessionField0x27f4::Entry* pathEntry = m_racer->m_unk0xcc4;
+				if (pathEntry != NULL) {
+					LegoU8 pathIndex = pathEntry->m_unk0x20.m_items[0];
+					pathEntry = m_racer->m_unk0x010->FUN_0041e940(pathIndex);
+				}
+
+				RaceState::Racer::Field0x018* racerField0x018 = &m_racer->m_unk0x018;
+				racerField0x018->m_unk0x044->VTable0x04(&position);
+				m_racer->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
+			}
+
+			m_racer->m_unk0x018.m_unk0x044->VTable0x08(position);
+			m_racer->m_unk0x3e8.m_unk0x0e4.VTable0x08(position);
+		} while (0);
+	}
+
+	m_modelEntity.VTable0x10(p_elapsedMs);
+	PowerupActionBase::Update(p_elapsedMs);
+}
+
+// FUNCTION: LEGORACERS 0x0045d940
+void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
+{
+	MenuAnimationList* animationList = m_manager->m_animationList;
+	if (m_state == c_stateDone) {
+		return;
+	}
+
+	if (m_state != c_stateActive) {
+		return;
+	}
+
+	RaceCameraController* cameraController = m_racer->m_cameraController;
+	if (cameraController == NULL) {
+		return;
+	}
+
+	GolCamera* camera = p_renderer->GetUnk0x0c();
+	if (cameraController->m_camera != camera) {
+		return;
+	}
+
+	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+	GolAnimatedEntity* entity = racerField->m_unk0x044;
+
+	GolVec3 savedPosition;
+	GolMatrix3 savedOrientation;
+	entity->VTable0x04(&savedPosition);
+	entity->VTable0x44(&savedOrientation);
+
+	GolVec3 direction;
+	direction.m_x = 0.0f;
+	direction.m_y = -1.0f;
+	direction.m_z = 0.0f;
+
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+
+	GolVec3 position;
+	position.Clear();
+	entity->VTable0x08(position);
+	entity->VTable0x40(direction, up);
+
+	m_racer->m_cameraController->m_unk0x000 = TRUE;
+	m_racer->m_cameraController->FUN_00428540(0.0f);
+
+	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
+	phase *= g_item0x40Pi;
+	phase *= g_warpLerpScale;
+	phase *= g_negativeRadiansToTableIndex;
+	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
+	LegoFloat tableValue = g_cosineTable[tableIndex];
+	LegoFloat fov = tableValue * g_unk0x004b1a68 + m_cameraFov;
+	camera->m_flags |= GolCamera::c_flagBit1;
+	camera->m_fov = fov;
+
+	p_renderer->VTable0x5c();
+	racerField->FUN_0043db60();
+
+	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindUnk0xc0("dbricks");
+	dbricks->FUN_0040d650();
+	dbricks->SetActiveValue(0.0f);
+	dbricks->FUN_00411680(0.0f);
+	dbricks->FUN_004116b0(0.0f);
+
+	GolAnimatedEntity* dtube = m_manager->m_turbo3Database->FindUnk0xc0("dtube");
+	dtube->FUN_0040d650();
+	dtube->SetActiveValue(0.0f);
+	dtube->FUN_00411680(0.0f);
+	dtube->FUN_004116b0(0.0f);
+
+	m_manager->m_turbo3Database->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
+	m_manager->m_turbo3Database->FUN_00416040();
+
+	racerField->FUN_0043e620();
+	if (m_racer->m_unk0xdb8 != c_stateActive) {
+		racerField->FUN_0043fbc0(p_renderer);
+	}
+
+	entity->VTable0x08(savedPosition);
+	entity->VTable0x3c(savedOrientation);
+	m_racer->FUN_0043a3e0();
+	animationList->Draw(p_renderer);
+	racerField->FUN_0043dbb0();
+
+	LegoFloat restoredFov = m_cameraFov;
+	camera->m_fov = restoredFov;
+	camera->m_flags |= GolCamera::c_flagBit1;
+}
+
+// FUNCTION: LEGORACERS 0x0045dbe0
+void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+{
+	if (m_state != c_stateStarting) {
+		return;
+	}
+
+	GolVec3 position;
+	LegoFloat phase = static_cast<LegoFloat>(static_cast<LegoS32>(m_stateTimerMs));
+	phase *= g_unk0x004b02fc;
+	phase *= g_item0x40Pi;
+	phase *= g_negativeRadiansToTableIndex;
+	LegoS32 tableIndex = (0xffffff00 - static_cast<LegoS32>(phase)) & 0x3ff;
+	LegoFloat scale = g_cosineTable[tableIndex];
+	m_modelEntity.SetUnk0x58AndInvalidateRadius(scale);
+
+	if (m_stateTimerMs < 250) {
+		m_racer->m_unk0x018.FUN_00440160(scale);
+	}
+
+	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+	GolAnimatedEntity* entity = racerField->m_unk0x044;
+	entity->VTable0x04(&position);
+	m_modelEntity.VTable0x08(position);
+	m_modelEntity.VTable0x1c(*p_renderer);
+}
+
+// FUNCTION: LEGORACERS 0x0045dc90
+void RacePowerupManager::WarpAction::AdvanceState()
+{
+	switch (m_state) {
+	case c_stateStarting: {
+		m_racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
+		m_racer->FUN_004395d0();
+		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer->m_unk0x3e8.VTable0x44();
+		m_racer->m_unk0x3e8.VTable0x4c();
+
+		RaceCameraController* cameraController = m_racer->m_cameraController;
+		if (cameraController != NULL) {
+			GolCamera* camera = cameraController->m_camera;
+			LegoFloat fov = m_cameraFov;
+			camera->m_fov = fov;
+			camera->m_flags |= GolCamera::c_flagBit1;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
+		}
+
+		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+		GolAnimatedEntity** entitySlot = &racerField->m_unk0x044;
+		GolAnimatedEntity* entity = *entitySlot;
+		entity->VTable0x04(&m_startPosition);
+
+		if (!m_isDemoRacer) {
+			m_soundSource->PlaySoundById(c_soundStart);
+		}
+
+		m_soundSource
+			->PlaySpatialSoundById(c_soundSpatial, &m_startPosition, g_unk0x004b1a60, g_unk0x004b1a64, 1.0f, 1.0f);
+
+		if (!m_isDemoRacer) {
+			m_followingPath = TRUE;
+		}
+
+		m_stateTimerMs = c_transitionDurationMs;
+		m_state = c_stateActive;
+		break;
+	}
+	case c_stateActive: {
+		RaceCameraController* cameraController = m_racer->m_cameraController;
+		if (cameraController != NULL) {
+			GolCamera* camera = cameraController->m_camera;
+			LegoFloat fov = m_cameraFov;
+			camera->m_fov = fov;
+			camera->m_flags |= GolCamera::c_flagBit1;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
+		}
+
+		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_unk0x044;
+		FUN_0045e080(entity);
+		m_racer->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
+
+		GolVec3 direction;
+		if (m_hasTarget) {
+			direction = m_targetDirection;
+		}
+		else {
+			RaceSessionField0x27f4::Entry* racerPathEntry = m_racer->m_unk0xcc4;
+			if (racerPathEntry != NULL) {
+				LegoU8 pathIndex = racerPathEntry->m_unk0x20.m_items[0];
+				RaceSessionField0x27f4* path = m_racer->m_unk0x010;
+				RaceSessionField0x27f4::Entry* pathEntry = path->FUN_0041e940(pathIndex);
+				direction.m_x = pathEntry->m_unk0x00.m_x;
+				direction.m_y = pathEntry->m_unk0x00.m_y;
+				LegoFloat z = pathEntry->m_unk0x00.m_z;
+				direction.m_x = -direction.m_x;
+				direction.m_y = -direction.m_y;
+				direction.m_z = -z;
+			}
+			else {
+				direction.m_x = 1.0f;
+				direction.m_y = 0.0f;
+				direction.m_z = 0.0f;
+			}
+		}
+
+		GolVec3 up;
+		up.m_x = 0.0f;
+		up.m_y = 0.0f;
+		up.m_z = 1.0f;
+
+		if (!m_isDemoRacer) {
+			entity->VTable0x40(direction, up);
+			m_racer->m_unk0x3e8.m_unk0x0e4.CopyOrientationFrom(*entity);
+
+			RaceState::Racer::Field0x3e8* racerField0x3e8 = &m_racer->m_unk0x3e8;
+			up.Clear();
+			racerField0x3e8->m_unk0x008.m_x = 0.0f;
+			racerField0x3e8->m_unk0x008.m_y = up.m_y;
+			racerField0x3e8->m_unk0x008.m_z = up.m_z;
+			m_racer->m_unk0x3e8.VTable0x20(&direction, g_unk0x004b1a74);
+			m_racer->m_unk0x3e8.FUN_00446fa0();
+			m_racer->FUN_0043a3e0();
+
+			if (!m_isDemoRacer) {
+				m_soundSource->PlaySoundById(c_soundFinish);
+			}
+		}
+
+		m_racer->FUN_00439660();
+		m_state = c_stateDone;
+		break;
+	}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x0045e000
+void RacePowerupManager::WarpAction::Deactivate()
+{
+	m_state = c_stateInitialized;
+	m_modelEntity.VTable0x54();
+	if (m_racer != NULL) {
+		RaceCameraController* cameraController = m_racer->m_cameraController;
+		if (cameraController != NULL) {
+			GolCamera* camera = cameraController->m_camera;
+			LegoFloat fov = m_cameraFov;
+			camera->m_fov = fov;
+			camera->m_flags |= GolCamera::c_flagBit1;
+			fov = m_cameraFov;
+			m_racer->m_cameraController->m_unk0x134 = fov;
+		}
+
+		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer = NULL;
+	}
+
+	m_followingPath = FALSE;
+}
+
+// FUNCTION: LEGORACERS 0x0045e080
+void RacePowerupManager::WarpAction::FUN_0045e080(GolWorldEntity* p_entity)
+{
+	GolVec3 position;
+	if (m_hasTarget) {
+		position = m_targetPosition;
+	}
+	else {
+		p_entity->VTable0x04(&position);
+	}
+
+	GolVec3 start = position;
+	GolVec3 end = position;
+	end.m_z += g_homingProjectileCollisionStartOffset;
+	start.m_z += g_homingProjectileCollisionStartOffset;
+	start.m_z -= g_homingProjectileCollisionProbeDepth;
+
+	GolBoundingVolume::Field0x0c record;
+	m_manager->m_collisionWorld->FUN_0041f4d0(&start, &end, &record, &position, NULL);
+
+	position.m_z += g_homingProjectileCollisionStartOffset;
+	p_entity->VTable0x08(position);
+}

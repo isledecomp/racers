@@ -1,0 +1,505 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+const LegoFloat g_magnetHoldHeightOffset = 30.0f;
+
+const LegoFloat g_magnetGrabDistanceSquared = 81.0f;
+
+const LegoFloat g_magnetSoundMaxDistance = 300.0f;
+
+const LegoFloat g_magnetSoundMinDistance = 30.0f;
+
+// GLOBAL: LEGORACERS 0x004b1620
+const LegoFloat g_magnetFadeAlpha = 127.0f;
+
+// FUNCTION: LEGORACERS 0x00455710
+RacePowerupManager::MagnetAction::MagnetAction()
+{
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x00455770
+RacePowerupManager::MagnetAction::~MagnetAction()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004557c0
+void RacePowerupManager::MagnetAction::Destroy()
+{
+	Deactivate();
+	Reset();
+}
+
+// FUNCTION: LEGORACERS 0x004557e0
+void RacePowerupManager::MagnetAction::Reset()
+{
+	m_magnetEntity = 0;
+	m_ringEntity = 0;
+	m_insideEntity = 0;
+	m_manager = 0;
+	m_sound = 0;
+	m_heldRacer = 0;
+	m_pulledRacer = 0;
+	m_flags0x80 = 0;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+}
+
+// FUNCTION: LEGORACERS 0x00455810
+void RacePowerupManager::MagnetAction::Initialize(
+	RacePowerupManager* p_unk0x04,
+	RaceState* p_raceState,
+	RaceSessionField0x32b4* p_unk0x0c,
+	CutsceneAnimation*,
+	GolExport*,
+	GolD3DRenderDevice*,
+	undefined4
+)
+{
+	m_manager = p_unk0x04;
+	m_raceState0x018 = p_raceState;
+	m_collisionWorld = p_unk0x0c;
+	m_state = 1;
+}
+
+// FUNCTION: LEGORACERS 0x00455830
+void RacePowerupManager::MagnetAction::Activate(
+	RaceState::Racer* p_racer,
+	GolAnimatedEntity* p_unk0x08,
+	GolAnimatedEntity* p_unk0x0c,
+	GolAnimatedEntity* p_unk0x10
+)
+{
+	m_magnetEntity = m_manager->AllocateEffectEntity();
+	if (m_magnetEntity == NULL) {
+		m_state = 6;
+		return;
+	}
+
+	m_ringEntity = m_manager->AllocateEffectEntity();
+	if (m_ringEntity == NULL) {
+		m_state = 6;
+		return;
+	}
+
+	m_insideEntity = m_manager->AllocateEffectEntity();
+	if (m_insideEntity == NULL) {
+		m_state = 6;
+		return;
+	}
+
+	m_ownerRacer = p_racer;
+	m_state = 2;
+	m_stateTimerMs = c_armedDurationMs;
+
+	m_magnetEntity->FUN_0040d550(
+		p_unk0x08->GetModel(0),
+		p_unk0x08->VTable0x58(0),
+		p_unk0x08->GetModelPart(0),
+		p_unk0x08->GetModelDistance(0)
+	);
+
+	LegoU32 i;
+	for (i = 1; i < 3; i++) {
+		GolModelBase* model = p_unk0x08->GetModel(i);
+		if (model != NULL) {
+			LegoFloat modelDistance = p_unk0x08->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_unk0x08->GetModelPart(i);
+			m_magnetEntity->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
+		}
+	}
+
+	m_ringEntity->FUN_0040d550(
+		p_unk0x0c->GetModel(0),
+		p_unk0x0c->VTable0x58(0),
+		p_unk0x0c->GetModelPart(0),
+		p_unk0x0c->GetModelDistance(0)
+	);
+	for (i = 1; i < 3; i++) {
+		GolModelBase* model = p_unk0x0c->GetModel(i);
+		if (model != NULL) {
+			LegoFloat modelDistance = p_unk0x0c->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_unk0x0c->GetModelPart(i);
+			m_ringEntity->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
+		}
+	}
+	m_ringEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
+	m_ringEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
+	m_ringEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
+	m_ringEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
+
+	m_insideEntity->FUN_0040d550(
+		p_unk0x10->GetModel(0),
+		p_unk0x10->VTable0x58(0),
+		p_unk0x10->GetModelPart(0),
+		p_unk0x10->GetModelDistance(0)
+	);
+	for (i = 1; i < 3; i++) {
+		GolModelBase* model = p_unk0x10->GetModel(i);
+		if (model != NULL) {
+			LegoFloat modelDistance = p_unk0x10->GetModelDistance(i);
+			CmbModelPart0x34* modelPart = p_unk0x10->GetModelPart(i);
+			m_insideEntity->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
+		}
+	}
+	m_insideEntity->FUN_00411680(p_unk0x10->FUN_00411640());
+	m_insideEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
+	m_insideEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
+	m_insideEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
+}
+
+// FUNCTION: LEGORACERS 0x00455a90
+void RacePowerupManager::MagnetAction::Deactivate()
+{
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
+	}
+
+	if (m_insideEntity != NULL) {
+		m_insideEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_insideEntity);
+		m_insideEntity = NULL;
+	}
+
+	if (m_ringEntity != NULL) {
+		m_ringEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_ringEntity);
+		m_ringEntity = NULL;
+	}
+
+	if (m_magnetEntity != NULL) {
+		m_magnetEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_magnetEntity);
+		m_magnetEntity = NULL;
+	}
+
+	if (m_collisionEvent != NULL) {
+		m_collisionEvent->m_active = 0;
+		m_collisionEvent = NULL;
+	}
+
+	m_ownerRacer = NULL;
+
+	if (m_heldRacer != NULL) {
+		m_heldRacer->EndMagnetHold();
+		m_heldRacer = NULL;
+	}
+
+	m_pulledRacer = NULL;
+	m_flags0x80 = 0;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
+	m_state = 1;
+}
+
+// FUNCTION: LEGORACERS 0x00455b40
+void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == 6) {
+		return;
+	}
+
+	if (m_state == 2 && m_stateTimerMs == c_armedDurationMs) {
+		Deploy();
+	}
+
+	PowerupActionBase::Update(p_elapsedMs);
+
+	if (m_heldRacer == NULL && m_pulledRacer == NULL) {
+		GolVec3 up;
+		up.m_x = 0.0f;
+		up.m_y = 0.0f;
+		up.m_z = 1.0f;
+		m_magnetEntity->VTable0x40(m_direction, up);
+	}
+	else {
+		GolAnimatedEntity* racerEntity;
+		if (m_heldRacer != NULL) {
+			racerEntity = m_heldRacer->m_unk0x018.m_unk0x044;
+		}
+		else {
+			racerEntity = m_pulledRacer->m_unk0x018.m_unk0x044;
+		}
+
+		GolVec3 racerPosition;
+		racerEntity->VTable0x04(&racerPosition);
+
+		GolVec3 modelPosition;
+		m_magnetEntity->VTable0x04(&modelPosition);
+
+		GolVec3 direction;
+		direction.m_x = modelPosition.m_x - racerPosition.m_x;
+		direction.m_y = modelPosition.m_y - racerPosition.m_y;
+		direction.m_z = modelPosition.m_z - racerPosition.m_z;
+		GolMath::NormalizeVector3(direction, &direction);
+
+		LegoFloat zero = 0.0f;
+		GolVec3 side;
+		side.m_x = zero - direction.m_y;
+		side.m_y = direction.m_x - zero;
+		side.m_z = zero;
+
+		GolVec3 up;
+		up.m_x = side.m_y * direction.m_z - side.m_z * direction.m_y;
+		up.m_y = side.m_z * direction.m_x - side.m_x * direction.m_z;
+		up.m_z = side.m_x * direction.m_y - side.m_y * direction.m_x;
+		m_magnetEntity->FUN_00410b00(direction, up);
+
+		if (m_heldRacer != NULL) {
+			if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+				m_flags0x80 |= c_flagVictimStopped;
+
+				if (!(m_heldRacer->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
+					if (m_stateTimerMs > c_fadeDurationMs) {
+						m_stateTimerMs = c_fadeDurationMs;
+					}
+				}
+
+				m_heldRacer->FUN_00439570();
+			}
+
+			if (m_heldRacer->m_unk0x3e8.m_unk0x744 == 0 && (m_flags0x80 & c_flagVictimStopped) &&
+				!(m_flags0x80 & c_flagVictimLifted)) {
+				modelPosition.m_z -= 30.0f;
+				direction.m_x = modelPosition.m_x - racerPosition.m_x;
+				direction.m_y = modelPosition.m_y - racerPosition.m_y;
+				direction.m_z = modelPosition.m_z - racerPosition.m_z;
+				GolMath::NormalizeVector3(direction, &direction);
+
+				m_heldRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+
+				if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+					direction.m_x = racerPosition.m_x - modelPosition.m_x;
+					direction.m_y = racerPosition.m_y - modelPosition.m_y;
+					direction.m_z = racerPosition.m_z - modelPosition.m_z;
+					LegoFloat distanceSquared =
+						direction.m_x * direction.m_x + direction.m_y * direction.m_y + direction.m_z * direction.m_z;
+
+					if (distanceSquared <= 100.0f) {
+						m_flags0x80 |= c_flagVictimLifted;
+					}
+				}
+			}
+
+			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerField0xc70Flags0x014Bit0) {
+				m_manager->CancelTurbo(m_heldRacer);
+				m_heldRacer->ClearActiveAction();
+			}
+		}
+		else {
+			modelPosition.m_z -= 30.0f;
+			direction.m_x = modelPosition.m_x - racerPosition.m_x;
+			direction.m_y = modelPosition.m_y - racerPosition.m_y;
+			direction.m_z = modelPosition.m_z - racerPosition.m_z;
+			GolMath::NormalizeVector3(direction, &direction);
+
+			m_pulledRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+			m_pulledRacer = NULL;
+		}
+	}
+
+	if (m_state == 4) {
+		m_magnetEntity->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
+	}
+
+	m_ringEntity->CopyOrientationFrom(*m_magnetEntity);
+	m_insideEntity->CopyOrientationFrom(*m_magnetEntity);
+	m_magnetEntity->VTable0x10(p_elapsedMs);
+	m_ringEntity->VTable0x10(p_elapsedMs);
+	m_insideEntity->VTable0x10(p_elapsedMs);
+}
+
+// FUNCTION: LEGORACERS 0x00455ed0
+void RacePowerupManager::MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
+{
+	if (m_state != 6) {
+		p_renderer->VTable0x94(m_magnetEntity);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455ef0
+void RacePowerupManager::MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+{
+	if (m_state == 6) {
+		return;
+	}
+
+	if (m_state == 4) {
+		LegoFloat alphaScale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
+		LegoS32 alpha = static_cast<LegoS32>(alphaScale * g_magnetFadeAlpha);
+		p_renderer->SetAlphaOverride(alpha, TRUE);
+	}
+
+	m_insideEntity->VTable0x1c(*p_renderer);
+	m_ringEntity->VTable0x1c(*p_renderer);
+
+	if (m_state == 4) {
+		p_renderer->ClearAlphaOverride();
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00455f50
+void RacePowerupManager::MagnetAction::AdvanceState()
+{
+	if (m_state == 4) {
+		m_state = 6;
+		return;
+	}
+
+	m_state = 4;
+	m_stateTimerMs = c_fadeDurationMs;
+
+	SoundVector position;
+	m_magnetEntity->VTable0x04(&position);
+	m_soundSource->PlaySpatialSoundById(
+		c_soundRelease,
+		&position,
+		g_magnetSoundMinDistance,
+		g_magnetSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
+}
+
+// FUNCTION: LEGORACERS 0x00455fb0
+void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
+{
+	if (m_state == 4) {
+		return;
+	}
+
+	if (m_state == 2) {
+		m_state = 3;
+		m_stateTimerMs = c_holdDurationMs;
+	}
+
+	if (m_state == 3) {
+		SoundVector modelPosition;
+		GolVec3 racerPosition;
+		m_magnetEntity->VTable0x04(&modelPosition);
+		modelPosition.m_z -= g_magnetHoldHeightOffset;
+		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&racerPosition);
+
+		GolVec3 delta;
+		delta.m_x = modelPosition.m_x - racerPosition.m_x;
+		delta.m_y = modelPosition.m_y - racerPosition.m_y;
+		delta.m_z = modelPosition.m_z - racerPosition.m_z;
+		LegoFloat distanceSquared = delta.m_x * delta.m_x + delta.m_y * delta.m_y + delta.m_z * delta.m_z;
+
+		if (distanceSquared <= g_magnetGrabDistanceSquared) {
+			if (m_heldRacer == NULL) {
+				m_heldRacer = p_racer;
+				p_racer->StartMagnetHold();
+				m_pulledRacer = NULL;
+				m_soundSource->PlaySpatialSoundById(
+					c_soundGrab,
+					&modelPosition,
+					g_magnetSoundMinDistance,
+					g_magnetSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
+				p_racer->PlayReaction(FALSE);
+			}
+		}
+		else if (m_pulledRacer == NULL) {
+			m_pulledRacer = p_racer;
+		}
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004560b0
+void RacePowerupManager::MagnetAction::Deploy()
+{
+	SoundVector position;
+	ComputeDropPosition(m_ownerRacer, &position, NULL);
+
+	position.m_z += 30.0f;
+	m_magnetEntity->VTable0x08(position);
+	position.m_z -= 30.0f;
+	m_ringEntity->CopyPositionFrom(*m_magnetEntity);
+	m_insideEntity->CopyPositionFrom(*m_magnetEntity);
+
+	m_magnetEntity->SetFlags(m_magnetEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_magnetEntity->FUN_0040dad0(0);
+	m_ringEntity->SetFlags(m_ringEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_ringEntity->FUN_0040dad0(0);
+	m_insideEntity->SetFlags(m_insideEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_insideEntity->FUN_0040dad0(0);
+
+	if (m_ownerRacer->m_unk0xcc4 != NULL) {
+		m_direction = m_ownerRacer->m_unk0xcc4->m_unk0x00;
+	}
+	else {
+		m_direction.m_x = 1.0f;
+		m_direction.m_y = 0.0f;
+		m_direction.m_z = 0.0f;
+	}
+
+	GolVec3 up;
+	up.m_x = 0.0f;
+	up.m_y = 0.0f;
+	up.m_z = 1.0f;
+	m_magnetEntity->VTable0x40(m_direction, up);
+
+	m_worldEntity.VTable0x08(position);
+	m_worldEntity.FUN_10026fa0(10.0f);
+	m_ownerRacer->m_unk0x3e8.ApplySpeedModifier(0.0015f, 150);
+	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
+
+	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
+	m_sound->Play(TRUE);
+	m_sound->SetDistanceRange(30.0f, 300.0f);
+	m_sound->SetPosition(position);
+	m_sound->ClearVelocity();
+
+	m_state = 2;
+	m_stateTimerMs = c_armedDurationMs;
+
+	LegoEventQueue::Descriptor descriptor;
+	descriptor.m_unk0x00 = 4;
+	descriptor.m_unk0x04 = 1;
+	descriptor.m_unk0x08 = 0;
+	descriptor.m_unk0x0c = 0;
+	descriptor.m_data = &m_worldEntity;
+	m_collisionEvent = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
+}
+
+// FUNCTION: LEGORACERS 0x00458390
+RacePowerupManager::PowerupAction* RacePowerupManager::MagnetAction::Destroy(undefined4 p_flags)
+{
+	MagnetAction* result = this;
+	if (p_flags & 2) {
+		if (p_flags & 1) {
+			delete[] this;
+		}
+
+		return result;
+	}
+
+	this->~MagnetAction();
+	if (p_flags & 1) {
+		::operator delete(result);
+	}
+
+	return result;
+}

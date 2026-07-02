@@ -1,0 +1,176 @@
+#include "audio/soundnode.h"
+#include "audio/spatialsoundinstance.h"
+#include "camera/golcamera.h"
+#include "cmbmodelpart0x34.h"
+#include "decomp.h"
+#include "golmodelbase.h"
+#include "golscenenode.h"
+#include "goltransformbase.h"
+#include "material/materialtable0x0c.h"
+#include "menu/runtime/cutsceneparticle.h"
+#include "race/racesession.h"
+#include "render/golcommondrawstate.h"
+#include "render/gold3drenderdevice.h"
+#include "world/golworlddatabase.h"
+
+#include <float.h>
+#include <math.h>
+
+// GLOBAL: LEGORACERS 0x004b170c
+const LegoFloat g_brickSoundMinDistance = 30.0f;
+
+// FUNCTION: LEGORACERS 0x00457640
+RacePowerupManager::ColorBrick::ColorBrick()
+{
+	m_brickMaterial = NULL;
+	m_trailMaterial = NULL;
+	m_assignedColor = 3;
+	m_currentColor = 3;
+	m_nextColor = 3;
+}
+
+// FUNCTION: LEGORACERS 0x00457670
+RacePowerupManager::ColorBrick::~ColorBrick()
+{
+	Destroy();
+}
+
+// FUNCTION: LEGORACERS 0x004576c0
+void RacePowerupManager::ColorBrick::SetColor(LegoU32 p_unk0x04)
+{
+	m_assignedColor = p_unk0x04;
+	m_currentColor = p_unk0x04;
+}
+
+// FUNCTION: LEGORACERS 0x004576d0
+void RacePowerupManager::ColorBrick::Respawn()
+{
+	PickupBrick::Respawn();
+	m_nextColor = m_assignedColor;
+	m_currentColor = m_assignedColor;
+	m_brickMaterial = m_manager->GetBrickMaterial(&m_currentColor);
+	m_trailMaterial = m_manager->GetTrailMaterial(&m_currentColor);
+}
+
+// FUNCTION: LEGORACERS 0x00457700
+void RacePowerupManager::ColorBrick::Destroy()
+{
+	PickupBrick::Destroy();
+}
+
+// STUB: LEGORACERS 0x00457710
+void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
+{
+	if (m_state == c_stateInactive) {
+		return;
+	}
+
+	PickupBrick::Update(p_elapsedMs);
+
+	LegoBool playSound = FALSE;
+	switch (m_state) {
+	case c_stateTransition:
+		if (m_stateTimerMs > 250) {
+			m_state = m_nextState;
+			m_currentColor = m_nextColor;
+			m_stateTimerMs = 0;
+			m_brickMaterial = m_manager->GetBrickMaterial(&m_currentColor);
+			m_trailMaterial = m_manager->GetTrailMaterial(&m_currentColor);
+			SetTouchable(FALSE);
+
+			if (m_state == c_stateActive && (m_flags0x50 & c_flagAudible)) {
+				playSound = TRUE;
+			}
+		}
+		break;
+	case c_stateActive:
+		if (m_stateTimerMs > 500) {
+			m_state = c_stateIdle;
+			m_stateTimerMs = 0;
+			SetTouchable(TRUE);
+		}
+		break;
+	case c_stateWait: {
+		LegoU32 elapsedMs = m_stateTimerMs;
+		if (m_respawnMs <= elapsedMs) {
+			LegoU8 flags = m_flags0x50;
+			m_stateTimerMs = 0;
+			m_state = c_stateActive;
+			if (flags & c_flagAudible) {
+				playSound = TRUE;
+			}
+		}
+		break;
+	}
+	}
+
+	if (playSound) {
+		SoundVector position;
+		m_worldEntity.VTable0x04(&position);
+		m_soundSource->PlaySpatialSoundById(c_soundRespawn, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
+	}
+}
+
+// FUNCTION: LEGORACERS 0x00457820
+void RacePowerupManager::ColorBrick::OnTouched(RaceState::Racer* p_racer)
+{
+	if (m_state == c_stateIdle) {
+		LegoU32 racerState = p_racer->GetHeldPowerupColor();
+		p_racer->CollectColorBrick(m_currentColor);
+
+		SoundVector position;
+		m_worldEntity.VTable0x04(&position);
+
+		if (!racerState) {
+			m_nextColor = m_assignedColor;
+			m_nextState = c_stateWait;
+			if (m_flags0x50 & c_flagAudible) {
+				m_soundSource
+					->PlaySpatialSoundById(c_soundCollect, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
+			}
+		}
+		else {
+			m_nextColor = racerState;
+			m_nextState = c_stateActive;
+			if (m_flags0x50 & c_flagAudible) {
+				m_soundSource
+					->PlaySpatialSoundById(c_soundSwap, &position, g_brickSoundMinDistance, 150.0f, 1.0f, 1.0f);
+			}
+		}
+
+		m_state = c_stateTransition;
+		m_stateTimerMs = 0;
+	}
+}
+
+// FUNCTION: LEGORACERS 0x004578e0
+void RacePowerupManager::ColorBrick::SetMaterials(
+	DuskwindBananaRelic0x24* p_unk0x04,
+	DuskwindBananaRelic0x24* p_unk0x08
+)
+{
+	m_brickMaterial = p_unk0x04;
+	m_trailMaterial = p_unk0x08;
+}
+
+// FUNCTION: LEGORACERS 0x00457900
+void RacePowerupManager::ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
+{
+	MaterialTable0x0c* materialTable = m_model->GetPrimaryMaterialTable();
+	if (materialTable == NULL) {
+		materialTable = m_model->GetModel(0)->GetMaterialTable();
+	}
+	materialTable->SetPosition(0, m_brickMaterial);
+	PickupBrick::Draw(p_renderer);
+}
+
+// FUNCTION: LEGORACERS 0x00457930
+void RacePowerupManager::ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
+{
+	MaterialTable0x0c* materialTable = m_blendModel->GetPrimaryMaterialTable();
+	if (materialTable == NULL) {
+		materialTable = m_blendModel->GetModel(0)->GetMaterialTable();
+	}
+	materialTable->SetPosition(0, m_trailMaterial);
+	PickupBrick::DrawTransparent(p_renderer);
+}

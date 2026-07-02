@@ -5,7 +5,7 @@
 #include "golmath.h"
 #include "golmodelentity.h"
 #include "types.h"
-#include "util/marblepath0x114.h"
+#include "util/decalgeometry.h"
 
 class GolD3DRenderDevice;
 class GolExport;
@@ -31,7 +31,7 @@ public:
 	class Trail {
 	public:
 		// SIZE 0x11c
-		class Decal : public MarblePath0x114 {
+		class Decal : public DecalGeometry {
 		public:
 			enum {
 				c_commandMask = 0xe0000000,

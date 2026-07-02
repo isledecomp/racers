@@ -17,7 +17,7 @@
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/purpledune0x7c.h"
-#include "util/racerbillboardrenderstate0x33c.h"
+#include "util/carshadowrenderstate.h"
 
 #include <float.h>
 #include <math.h>
@@ -28,7 +28,7 @@ extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_fadeAlphaScale;
 extern const LegoFloat g_sweepCannonRadiansToTableIndex;
 extern const LegoFloat g_negativeRadiansToTableIndex;
-extern const LegoFloat g_racerBillboardScale;
+extern const LegoFloat g_carShadowScale;
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 extern const LegoFloat g_shieldSoundMaxDistance;
@@ -47,8 +47,8 @@ extern const LegoFloat g_shadowFadeNearSquared;
 extern const LegoFloat g_shadowFadeFarSquared;
 extern const LegoFloat g_unk0x004b0b40;
 extern const LegoFloat g_unk0x004b0b44;
-extern LegoU32 g_impostorFlags0;
-extern LegoU32 g_impostorFlags1;
+extern LegoU32 g_silhouetteClearFlag;
+extern LegoU32 g_silhouetteFlattenFlag;
 extern LegoU32 g_raceLapCount;
 extern LegoFloat g_cursePhaseScale;
 extern const LegoFloat g_violetShoalTwo;
@@ -192,9 +192,9 @@ void RaceState::Racer::CarVisuals::InitializeVisuals(GolD3DRenderDevice* p_rende
 	}
 
 	SnapVisuals();
-	RenderImpostor(p_renderer);
-	m_shadowDecal.FUN_00414950(p_golExport, p_renderer, 0x10);
-	m_shadowDecal.GetUnk0x010().EnableFlagBit1();
+	RenderShadowSilhouette(p_renderer);
+	m_shadowDecal.Initialize(p_golExport, p_renderer, 0x10);
+	m_shadowDecal.GetEntity().EnableFlagBit1();
 }
 
 // FUNCTION: LEGORACERS 0x0043d9f0
@@ -219,7 +219,7 @@ void RaceState::Racer::CarVisuals::UseNormalSkidMaterial()
 void RaceState::Racer::CarVisuals::Destroy()
 {
 	m_curseEntity.VTable0x54();
-	m_shadowDecal.FUN_004149f0();
+	m_shadowDecal.Destroy();
 	m_skidMaterialTable.Clear();
 	m_shadowMaterialTable.Clear();
 
@@ -254,7 +254,7 @@ void RaceState::Racer::CarVisuals::Destroy()
 	}
 
 	m_particleAnimation = NULL;
-	m_shadowDecal.FUN_004149f0();
+	m_shadowDecal.Destroy();
 	m_skidMaterialTable.Clear();
 	m_shadowMaterialTable.Clear();
 	Reset();
@@ -1290,28 +1290,28 @@ void RaceState::Racer::CarVisuals::UpdateShadow(GolCamera* p_camera)
 
 		LegoFloat scale = m_carEntity->GetUnk0x58();
 		if (scale != 1.0f) {
-			m_shadowDecal.m_unk0x104 = m_shadowWidth * scale;
-			m_shadowDecal.m_unk0x108 = scale * m_shadowLength;
+			m_shadowDecal.m_width = m_shadowWidth * scale;
+			m_shadowDecal.m_length = scale * m_shadowLength;
 		}
 		else {
-			m_shadowDecal.m_unk0x104 = m_shadowWidth * 1.0f;
-			m_shadowDecal.m_unk0x108 = m_shadowLength * 1.0f;
+			m_shadowDecal.m_width = m_shadowWidth * 1.0f;
+			m_shadowDecal.m_length = m_shadowLength * 1.0f;
 		}
 
-		m_shadowDecal.m_unk0x10c = g_unk0x004b0af0;
+		m_shadowDecal.m_depth = g_unk0x004b0af0;
 		center.m_z += g_shadowProbeHeight;
 
 		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
-		field->m_unk0x0e8.m_x = center.m_x;
-		field->m_unk0x0e8.m_y = center.m_y;
-		field->m_unk0x0e8.m_z = center.m_z;
+		field->m_center.m_x = center.m_x;
+		field->m_center.m_y = center.m_y;
+		field->m_center.m_z = center.m_z;
 
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
 		MaterialTable0x0c* materialTable = &m_shadowMaterialTable;
 		GolVec3* upVector = &up;
 		GolVec3* vector = &m_shadowDirection;
-		m_shadowDecal.GetUnk0x010().SetPrimaryMaterialTable(materialTable);
+		m_shadowDecal.GetEntity().SetPrimaryMaterialTable(materialTable);
 		up.m_z = -up.m_z;
 		field->SetOrientation(vector, upVector);
 		field->Project(m_trackCollidable);
@@ -1347,9 +1347,9 @@ void RaceState::Racer::CarVisuals::DrawTransparent(GolD3DRenderDevice* p_rendere
 		p_renderer->GetUnk0x0c()->GetTransform()->GetPosition(&cameraPosition);
 
 		GolVec3 position;
-		LegoFloat deltaX = field->m_unk0x0e8.m_x;
-		position.m_y = field->m_unk0x0e8.m_y;
-		position.m_z = field->m_unk0x0e8.m_z;
+		LegoFloat deltaX = field->m_center.m_x;
+		position.m_y = field->m_center.m_y;
+		position.m_z = field->m_center.m_z;
 
 		deltaX = cameraPosition.m_x - deltaX;
 		LegoFloat deltaY = cameraPosition.m_y - position.m_y;
@@ -1374,7 +1374,7 @@ void RaceState::Racer::CarVisuals::DrawTransparent(GolD3DRenderDevice* p_rendere
 
 		if (alpha) {
 			p_renderer->SetAlphaOverride(alpha, c_alphaOverrideFlag);
-			field->FUN_00415a40(p_renderer);
+			field->Draw(p_renderer);
 			p_renderer->ClearAlphaOverride();
 		}
 	}
@@ -1471,10 +1471,10 @@ LegoBool32 RaceState::Racer::CarVisuals::IntersectSegment(const GolVec3* p_start
 }
 
 // FUNCTION: LEGORACERS 0x0043ff20
-void RaceState::Racer::CarVisuals::RenderImpostor(GolD3DRenderDevice* p_renderer)
+void RaceState::Racer::CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 {
 	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(m_shadowTextureName);
-	g_racerBillboardRenderState0x33c.FUN_004097c0(p_renderer, material->GetUnk0x04());
+	g_carShadowRenderState.Initialize(p_renderer, material->GetUnk0x04());
 
 	GolVec3 position;
 	m_carEntity->VTable0x04(&position);
@@ -1483,27 +1483,27 @@ void RaceState::Racer::CarVisuals::RenderImpostor(GolD3DRenderDevice* p_renderer
 	origin[1] = position.m_y;
 
 	ColorRGBA color = {0, 0, 0, 0};
-	g_racerBillboardRenderState0x33c.FUN_00409850(&color);
+	g_carShadowRenderState.SetFillColor(&color);
 
 	color.m_red = 8;
 	color.m_grn = 8;
 	color.m_blu = 8;
 	color.m_alp = 0xff;
-	g_racerBillboardRenderState0x33c.FUN_004098a0(&color);
+	g_carShadowRenderState.SetSilhouetteColor(&color);
 
 	LegoFloat unk0x0c = m_shadowWidth;
-	unk0x0c *= g_racerBillboardScale;
+	unk0x0c *= g_carShadowScale;
 	LegoFloat unk0x08 = m_shadowLength;
-	unk0x08 *= g_racerBillboardScale;
-	g_racerBillboardRenderState0x33c.FUN_004098f0(origin, unk0x08, unk0x0c, g_impostorFlags0 | g_impostorFlags1);
-	g_racerBillboardRenderState0x33c.FUN_00409970(m_carEntity, 0);
-	g_racerBillboardRenderState0x33c.FUN_00409970(m_bodyModelEntity, 0);
+	unk0x08 *= g_carShadowScale;
+	g_carShadowRenderState.BeginCapture(origin, unk0x08, unk0x0c, g_silhouetteClearFlag | g_silhouetteFlattenFlag);
+	g_carShadowRenderState.RenderEntity(m_carEntity, 0);
+	g_carShadowRenderState.RenderEntity(m_bodyModelEntity, 0);
 
 	if (m_secondaryEntity) {
-		g_racerBillboardRenderState0x33c.FUN_00409970(m_secondaryEntity, 0);
+		g_carShadowRenderState.RenderEntity(m_secondaryEntity, 0);
 	}
 
-	g_racerBillboardRenderState0x33c.FUN_004099d0();
+	g_carShadowRenderState.EndCapture();
 }
 
 // FUNCTION: LEGORACERS 0x00440030

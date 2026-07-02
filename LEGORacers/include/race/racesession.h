@@ -40,8 +40,8 @@
 #include "scene/golbillboard.h"
 #include "surface/color.h"
 #include "types.h"
+#include "util/decalgeometry.h"
 #include "util/legoeventqueue.h"
-#include "util/marblepath0x114.h"
 
 class GolD3DRenderDevice;
 class GolRenderDevice;

@@ -57,7 +57,7 @@ RacePowerupManager::OilSlickAction::~OilSlickAction()
 void RacePowerupManager::OilSlickAction::Destroy()
 {
 	Deactivate();
-	m_slickDecal.FUN_004149f0();
+	m_slickDecal.Destroy();
 	m_materialTable.Clear();
 	m_manager = 0;
 	m_sound = 0;
@@ -86,8 +86,8 @@ void RacePowerupManager::OilSlickAction::Initialize(
 
 	m_materialTable.Initialize(p_renderer, 1);
 	m_materialTable.AssignEntryByName(0, "oilslck");
-	m_slickDecal.FUN_00414950(p_export, p_renderer, 0x10);
-	m_slickDecal.GetUnk0x010().EnableFlagBit1();
+	m_slickDecal.Initialize(p_export, p_renderer, 0x10);
+	m_slickDecal.GetEntity().EnableFlagBit1();
 }
 
 // FUNCTION: LEGORACERS 0x00457230
@@ -153,7 +153,7 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateActive) {
-		m_slickDecal.FUN_00415a40(p_renderer);
+		m_slickDecal.Draw(p_renderer);
 	}
 }
 
@@ -209,12 +209,12 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	}
 
 	position.m_z += g_homingProjectileCollisionStartOffset;
-	m_slickDecal.m_unk0x104 = 15.0f;
-	m_slickDecal.m_unk0x108 = 15.0f;
-	m_slickDecal.m_unk0x10c = 15.0f;
-	m_slickDecal.m_unk0x0e8 = position;
+	m_slickDecal.m_width = 15.0f;
+	m_slickDecal.m_length = 15.0f;
+	m_slickDecal.m_depth = 15.0f;
+	m_slickDecal.m_center = position;
 	position.m_z -= g_homingProjectileCollisionStartOffset;
-	m_slickDecal.GetUnk0x010().SetPrimaryMaterialTable(&m_materialTable);
+	m_slickDecal.GetEntity().SetPrimaryMaterialTable(&m_materialTable);
 
 	GolVec3 normal;
 	GolVec3 tangent;

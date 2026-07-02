@@ -1758,7 +1758,7 @@ void RaceSession::UpdateIntroState()
 			}
 
 			if (m_standings) {
-				m_standings->FUN_004402b0();
+				m_standings->ClearRoundPoints();
 			}
 
 			UpdateCountdownState();
@@ -1850,7 +1850,7 @@ void RaceSession::UpdateRacingState()
 				racer->m_flags |= 0x1000;
 
 				if (m_standings) {
-					m_standings->FUN_004402c0(racer->m_materialIndex, m_finishedCount);
+					m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
 				}
 
 				m_finishedCount++;
@@ -1904,9 +1904,9 @@ void RaceSession::UpdateRacingState()
 					}
 
 					if (m_standings) {
-						m_standings->m_unk0x00 = m_loadingFont;
-						m_standings->m_unk0x08 = &m_raceState;
-						m_standings->m_unk0x0c = &m_stringTable;
+						m_standings->m_font = m_loadingFont;
+						m_standings->m_raceState = &m_raceState;
+						m_standings->m_stringTable = &m_stringTable;
 					}
 
 					UpdateFinishedState();
@@ -1946,7 +1946,7 @@ void RaceSession::UpdateFinishedState()
 			do {
 				if (!(racer->m_flags & 0x1000)) {
 					if (m_standings) {
-						m_standings->FUN_004402c0(racer->m_materialIndex, m_finishedCount);
+						m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
 					}
 
 					m_finishedCount++;
@@ -1971,7 +1971,7 @@ void RaceSession::UpdateFinishedState()
 				racer->m_flags |= 0x1000;
 
 				if (m_standings) {
-					m_standings->FUN_004402c0(racer->m_materialIndex, m_finishedCount);
+					m_standings->AwardPoints(racer->m_materialIndex, m_finishedCount);
 				}
 
 				m_finishedCount++;
@@ -2009,7 +2009,7 @@ void RaceSession::UpdateFinishedState()
 	}
 
 	if (m_standings && m_elapsedMs > 5000) {
-		m_standings->FUN_00440330(m_golApp->GetFrameDeltaMs());
+		m_standings->Update(m_golApp->GetFrameDeltaMs());
 	}
 }
 
@@ -2023,7 +2023,7 @@ void RaceSession::UpdateResultsState()
 	}
 
 	if (m_elapsedMs < 5000 && m_standings) {
-		m_standings->FUN_00440330(m_golApp->GetFrameDeltaMs());
+		m_standings->Update(m_golApp->GetFrameDeltaMs());
 		return;
 	}
 
@@ -2323,7 +2323,7 @@ void RaceSession::DrawOverlaysForState4()
 			m_huds[i].m_bannerMs = 0;
 		}
 
-		m_standings->FUN_00440350(FALSE);
+		m_standings->Draw(FALSE);
 	}
 
 	DrawDemoText();
@@ -2335,7 +2335,7 @@ void RaceSession::DrawOverlaysForState4()
 void RaceSession::DrawOverlaysForState5()
 {
 	if (m_standings && m_running) {
-		m_standings->FUN_00440350(TRUE);
+		m_standings->Draw(TRUE);
 	}
 
 	DrawDemoText();

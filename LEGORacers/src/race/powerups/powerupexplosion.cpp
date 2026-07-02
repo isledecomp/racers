@@ -118,8 +118,8 @@ void RacePowerupManager::Explosion::Initialize(const Params* p_params)
 
 	GolD3DRenderDevice* renderer = m_golExport->GetDrawState()->m_currentRenderer;
 	m_materialTable.Initialize(renderer, 1);
-	m_scarDecal.FUN_00414950(m_golExport, renderer, 10);
-	m_scarDecal.GetUnk0x010().SetPrimaryMaterialTable(&m_materialTable);
+	m_scarDecal.Initialize(m_golExport, renderer, 10);
+	m_scarDecal.GetEntity().SetPrimaryMaterialTable(&m_materialTable);
 	m_state = c_stateIdle;
 }
 
@@ -127,7 +127,7 @@ void RacePowerupManager::Explosion::Initialize(const Params* p_params)
 void RacePowerupManager::Explosion::Destroy()
 {
 	Deactivate();
-	m_scarDecal.FUN_004149f0();
+	m_scarDecal.Destroy();
 	m_materialTable.Clear();
 	m_modelEntity.VTable0x54();
 
@@ -178,7 +178,7 @@ void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 
 	position.m_x = p_position->m_x;
 	position.m_y = p_position->m_y;
 	position.m_z = p_position->m_z + g_homingProjectileCollisionStartOffset;
-	m_scarDecal.m_unk0x0e8 = position;
+	m_scarDecal.m_center = position;
 
 	GolVec3 forward;
 	forward.m_x = 0.0f;
@@ -279,9 +279,9 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 				LegoFloat width2 = m_flashWidth;
 				m_remainingMs = finishDuration;
 				m_alpha = g_explosionScarAlpha;
-				m_scarDecal.m_unk0x104 = width;
-				m_scarDecal.m_unk0x108 = width2;
-				m_scarDecal.m_unk0x10c = 15.0f;
+				m_scarDecal.m_width = width;
+				m_scarDecal.m_length = width2;
+				m_scarDecal.m_depth = 15.0f;
 				m_scarDecal.Project(m_collidable);
 			}
 			else {
@@ -304,9 +304,9 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 		LegoFloat width = (m_flashWidth - 0.1f) * m_growth + 0.1f;
 		if (m_scarMaterial != NULL && m_leavesScar != zero) {
 			m_materialTable.SetPosition(0, m_scarMaterial);
-			m_scarDecal.m_unk0x104 = width;
-			m_scarDecal.m_unk0x108 = width;
-			m_scarDecal.m_unk0x10c = 15.0f;
+			m_scarDecal.m_width = width;
+			m_scarDecal.m_length = width;
+			m_scarDecal.m_depth = 15.0f;
 			m_scarDecal.Project(m_collidable);
 		}
 
@@ -357,7 +357,7 @@ void RacePowerupManager::Explosion::DrawTransparent(GolD3DRenderDevice* p_render
 	if (m_state == c_stateExploding) {
 		if (m_scarMaterial != 0 && m_leavesScar != 0) {
 			p_renderer->SetAlphaOverride(static_cast<LegoS32>(g_explosionScarAlpha), 2);
-			m_scarDecal.FUN_00415a40(p_renderer);
+			m_scarDecal.Draw(p_renderer);
 		}
 
 		p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_alpha), 1);
@@ -377,7 +377,7 @@ void RacePowerupManager::Explosion::DrawTransparent(GolD3DRenderDevice* p_render
 
 	if (m_state == c_stateScarFading && m_scarMaterial != 0 && m_leavesScar != 0) {
 		p_renderer->SetAlphaOverride(static_cast<LegoS32>(m_alpha), 2);
-		m_scarDecal.FUN_00415a40(p_renderer);
+		m_scarDecal.Draw(p_renderer);
 		p_renderer->ClearAlphaOverride();
 	}
 }

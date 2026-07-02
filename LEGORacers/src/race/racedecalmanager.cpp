@@ -65,7 +65,7 @@ void RaceDecalManager::Trail::Destroy()
 		}
 	}
 
-	m_decal.FUN_004149f0();
+	m_decal.Destroy();
 
 	for (i = 0; i < sizeOfArray(m_slots); i++) {
 		m_slots[i].m_entry.m_entity.VTable0x54();
@@ -111,15 +111,22 @@ void RaceDecalManager::Trail::Initialize(
 	m_collidable = p_params;
 	m_golExport = p_golExport;
 
-	m_decal.FUN_00414950(p_golExport, p_renderer, 12);
-	m_decal.GetUnk0x010().EnableFlagBit1();
-	m_decal.m_unk0x10c = g_raceDecalDefaultDepth;
+	m_decal.Initialize(p_golExport, p_renderer, 12);
+	m_decal.GetEntity().EnableFlagBit1();
+	m_decal.m_depth = g_raceDecalDefaultDepth;
 
 	ModelSlot* slot = m_slots;
 	LegoU32 count = sizeOfArray(m_slots);
 	do {
 		slot->m_model = m_golExport->VTable0x14();
-		slot->m_model->VTable0x18(p_renderer, 1, m_decal.m_unk0x0a0, m_decal.m_unk0x0a4, m_decal.m_unk0x0a4 * 2 + 2, 1);
+		slot->m_model->VTable0x18(
+			p_renderer,
+			1,
+			m_decal.m_vertexCapacity,
+			m_decal.m_triangleCapacity,
+			m_decal.m_triangleCapacity * 2 + 2,
+			1
+		);
 		slot->m_entry.m_entity.VTable0x50(slot->m_model, g_raceDecalMaxFloat);
 		slot->m_entry.EnableFlagBit1();
 		slot++;
@@ -130,7 +137,7 @@ void RaceDecalManager::Trail::Initialize(
 // FUNCTION: LEGORACERS 0x00491d20
 void RaceDecalManager::Trail::SetMaterialTable(MaterialTable0x0c* p_materialTable)
 {
-	m_decal.GetUnk0x010().SetPrimaryMaterialTable(p_materialTable);
+	m_decal.GetEntity().SetPrimaryMaterialTable(p_materialTable);
 
 	for (LegoU32 i = 0; i < sizeOfArray(m_slots); i++) {
 		m_slots[i].m_entry.m_entity.SetPrimaryMaterialTable(p_materialTable);
@@ -148,7 +155,7 @@ void RaceDecalManager::Trail::SetMaterialTable(MaterialTable0x0c* p_materialTabl
 // FUNCTION: LEGORACERS 0x00491d80
 LegoU8 RaceDecalManager::Trail::SetColor(const ColorRGBA* p_color)
 {
-	return m_decal.FUN_00415bf0(p_color);
+	return m_decal.SetColor(p_color);
 }
 
 // FUNCTION: LEGORACERS 0x00491d90
@@ -231,7 +238,7 @@ void RaceDecalManager::Trail::Update(LegoU32 p_elapsedMs)
 			BakeSegment();
 
 			GolVec3 position;
-			m_decal.GetUnk0x010().VTable0x04(&position);
+			m_decal.GetEntity().VTable0x04(&position);
 			m_slots[m_slotIndex].m_entry.m_entity.VTable0x08(position);
 
 			LegoU32 index = m_slotIndex;
@@ -303,11 +310,11 @@ void RaceDecalManager::Trail::AddSample(LegoU32 p_elapsedMs, GolVec3 p_position)
 	centerZ -= p_position.m_z;
 
 	Decal* field = &m_decal;
-	field->m_unk0x104 = m_width;
-	field->m_unk0x108 = distance;
-	field->m_unk0x0e8.m_x = centerX;
-	field->m_unk0x0e8.m_y = centerY;
-	field->m_unk0x0e8.m_z = centerZ;
+	field->m_width = m_width;
+	field->m_length = distance;
+	field->m_center.m_x = centerX;
+	field->m_center.m_y = centerY;
+	field->m_center.m_z = centerZ;
 	field->SetOrientation(&up, &direction);
 	m_flags |= c_samplePending;
 }
@@ -322,7 +329,7 @@ void RaceDecalManager::Trail::DrawTransparent(GolD3DRenderDevice* p_renderer)
 		}
 
 		if (m_flags & c_liveSegment) {
-			m_decal.FUN_00415a40(p_renderer);
+			m_decal.Draw(p_renderer);
 		}
 
 		LegoU32 count;
@@ -349,11 +356,11 @@ void RaceDecalManager::Trail::BakeSegment()
 	LegoU32 i;
 
 	LegoU32 currentIndex = m_slotIndex;
-	GolModelBase* sourceModel = m_decal.GetUnk0x004();
-	m_slots[currentIndex].m_entry.m_vertexCount = m_decal.GetUnk0x0b0();
+	GolModelBase* sourceModel = m_decal.GetModel();
+	m_slots[currentIndex].m_entry.m_vertexCount = m_decal.GetVertexCount();
 
 	currentIndex = m_slotIndex;
-	m_slots[currentIndex].m_entry.m_triangleCount = m_decal.GetUnk0x0b4();
+	m_slots[currentIndex].m_entry.m_triangleCount = m_decal.GetTriangleCount();
 
 	GdbVertexArray0xc* sourceVertices;
 	sourceModel->VTable0x28(&sourceVertices);
@@ -418,7 +425,7 @@ void RaceDecalManager::Trail::WeldVertices()
 
 	LegoFloat distanceThreshold = m_width;
 	distanceThreshold *= g_raceDecalWeldThresholdScale;
-	GolModelBase* sourceModel = m_decal.GetUnk0x004();
+	GolModelBase* sourceModel = m_decal.GetModel();
 	LegoU32 updatedCount = 0;
 
 	if (currentIndex > 0) {
@@ -438,7 +445,7 @@ void RaceDecalManager::Trail::WeldVertices()
 		GolVec3 previousPosition;
 		previousVertices->VTable0x14(previousIndex, &previousPosition);
 
-		for (LegoU32 sourceIndex = 0; sourceIndex < m_decal.GetUnk0x0b0(); sourceIndex++) {
+		for (LegoU32 sourceIndex = 0; sourceIndex < m_decal.GetVertexCount(); sourceIndex++) {
 			GolVec3 sourcePosition;
 			sourceVertices->VTable0x14(sourceIndex, &sourcePosition);
 

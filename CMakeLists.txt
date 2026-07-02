@@ -298,7 +298,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/util/legoeventqueuefield0x10.cpp
   LEGORacers/src/util/legoeventqueuefield0x30.cpp
   LEGORacers/src/util/legoeventqueueevent.cpp
-  LEGORacers/src/util/marblepath0x114.cpp
+  LEGORacers/src/util/decalgeometry.cpp
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
@@ -333,7 +333,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/racepowerupmanagerglobals.cpp
   LEGORacers/src/race/powerups/beammesh.cpp
   LEGORacers/src/race/powerups/tetherprojectile.cpp
-  LEGORacers/src/util/racerbillboardrenderstate0x33c.cpp
+  LEGORacers/src/util/carshadowrenderstate.cpp
   LEGORacers/src/race/powerups/powerupprojectile.cpp
   LEGORacers/src/race/powerups/homingprojectile.cpp
   LEGORacers/src/race/raceresourcemanager.cpp
@@ -354,6 +354,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/colorbrick.cpp
   LEGORacers/src/race/powerups/whitebrick.cpp
   LEGORacers/src/race/racer/racervisuals.cpp
+  LEGORacers/src/race/racer/racer.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatequeries.cpp
   LEGORacers/src/race/racer/racersoundsource.cpp

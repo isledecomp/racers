@@ -107,7 +107,7 @@ public:
 			LegoFloat m_mass;                 // 0x58
 			LegoFloat m_weight;               // 0x5c
 			RaceEventTable* m_eventTable;     // 0x60
-			void* m_unk0x64;                  // 0x64
+			void* m_surfaceTable;             // 0x64
 			GolBoundedEntity* m_trackWorld;   // 0x68
 			LegoU8 m_driverStats[6];          // 0x6c
 			LegoU8 m_lapCount;                // 0x72
@@ -243,7 +243,7 @@ public:
 			void StartSlideSkid();
 			void StopSlideSkid();
 			LegoBool32 IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
-			void RenderImpostor(GolD3DRenderDevice* p_renderer);
+			void RenderShadowSilhouette(GolD3DRenderDevice* p_renderer);
 			void RebuildEntityGroup();
 			void SetColorTransform(ColorTransform0x20* p_unk0x04);
 			void ClearColorTransform();
@@ -1157,8 +1157,8 @@ public:
 			RaceResourceManager* m_unk0x05c;   // 0x05c
 			Racer::SoundSource* m_soundSource; // 0x05c
 		};
-		RacePowerupManager* m_powerupManager; // 0x060
-		LegoEventQueue::Event* m_unk0x064[6]; // 0x064
+		RacePowerupManager* m_powerupManager;    // 0x060
+		LegoEventQueue::Event* m_racerEvents[6]; // 0x064
 		union {
 			RaceResourceManager::Resource* m_proximitySoundResource; // 0x07c
 			SpatialSoundInstance* m_proximitySound;                  // 0x07c

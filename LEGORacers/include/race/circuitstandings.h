@@ -20,15 +20,15 @@ public:
 	void Shutdown();
 	LegoU32 GetPoints(LegoU32 p_index);
 	LegoS32 GetRank(LegoU32 p_index);
-	void FUN_00440330(LegoU32 p_elapsedMs);
-	void FUN_00440350(LegoBool32 p_unk0x04);
+	void Update(LegoU32 p_elapsedMs);
+	void Draw(LegoBool32 p_showCircuitPoints);
 	void ClearPoints();
 
 private:
 	friend class RaceSession;
 
-	void FUN_004402b0();
-	void FUN_004402c0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+	void ClearRoundPoints();
+	void AwardPoints(LegoU32 p_racerIndex, LegoU32 p_position);
 	LegoU32 FormatTime(LegoChar* p_buffer, LegoU32 p_time);
 
 	enum {
@@ -53,10 +53,10 @@ private:
 		c_racerFlags0xd04Bit12 = 1 << 12,
 	};
 
-	GolFontBase* m_unk0x00;              // 0x00
+	GolFontBase* m_font;                 // 0x00
 	LegoRacers::Context* m_context;      // 0x04
-	RaceState* m_unk0x08;                // 0x08
-	GolStringTable* m_unk0x0c;           // 0x0c
+	RaceState* m_raceState;              // 0x08
+	GolStringTable* m_stringTable;       // 0x0c
 	LegoU32 m_points[c_racerCount];      // 0x10
 	LegoU32 m_roundPoints[c_racerCount]; // 0x28
 	LegoU32 m_displayTimerMs;            // 0x40

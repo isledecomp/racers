@@ -3823,7 +3823,7 @@ void HazardManager::MovingObstacleHazard::Load(Context* p_context, GolFileParser
 
 	m_shadowMaterialTable.Initialize(p_context->GetRenderer(), 1);
 	m_shadowMaterialTable.AssignEntryByName(0, "crneshd");
-	m_shadowDecal.FUN_00414950(p_context->GetGolExport(), p_context->GetRenderer(), 0x20);
+	m_shadowDecal.Initialize(p_context->GetGolExport(), p_context->GetRenderer(), 0x20);
 	m_state = 1;
 }
 
@@ -3831,7 +3831,7 @@ void HazardManager::MovingObstacleHazard::Load(Context* p_context, GolFileParser
 LegoS32 HazardManager::MovingObstacleHazard::Reset()
 {
 	OnDeactivate(NULL);
-	m_shadowDecal.FUN_004149f0();
+	m_shadowDecal.Destroy();
 	m_shadowMaterialTable.Clear();
 	m_entity = NULL;
 	return Hazard::Reset();
@@ -3945,13 +3945,13 @@ void HazardManager::MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Ra
 		return;
 	}
 
-	m_shadowDecal.m_unk0x104 = 13.0f;
-	m_shadowDecal.m_unk0x108 = 13.0f;
-	m_shadowDecal.m_unk0x10c = 15.0f;
-	m_shadowDecal.m_unk0x0e8.m_x = position.m_x;
-	m_shadowDecal.m_unk0x0e8.m_y = position.m_y;
-	m_shadowDecal.m_unk0x0e8.m_z = position.m_z;
-	m_shadowDecal.GetUnk0x010().SetPrimaryMaterialTable(&m_shadowMaterialTable);
+	m_shadowDecal.m_width = 13.0f;
+	m_shadowDecal.m_length = 13.0f;
+	m_shadowDecal.m_depth = 15.0f;
+	m_shadowDecal.m_center.m_x = position.m_x;
+	m_shadowDecal.m_center.m_y = position.m_y;
+	m_shadowDecal.m_center.m_z = position.m_z;
+	m_shadowDecal.GetEntity().SetPrimaryMaterialTable(&m_shadowMaterialTable);
 
 	GolVec3 up;
 	GolVec3 forward;
@@ -3970,7 +3970,7 @@ void HazardManager::MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Ra
 void HazardManager::MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != 1 && (m_flags & c_flags0x178Bit0) != 0) {
-		m_shadowDecal.FUN_00415a40(p_renderer);
+		m_shadowDecal.Draw(p_renderer);
 	}
 }
 

@@ -89,7 +89,7 @@ LegoBool32 EditDriverScreen::FUN_0047d170(
 	createParams.m_unk0x6c = m_unk0x476c++;
 	createParams.m_headBuilder = &m_headBuilder;
 	createParams.m_unk0x7c = p_category;
-	createParams.m_unk0x70 = VTable0x6c();
+	createParams.m_aspectScale = VTable0x6c();
 	return p_widget->FUN_00483a60(&createParams, styleEntry);
 }
 

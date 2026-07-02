@@ -56,7 +56,7 @@ LegoBool32 CarPartCarousel::Create(CreateParams* p_createParams, MenuStyleTable:
 	m_pieceLibrary = p_createParams->m_pieceLibrary;
 	m_buildModel = p_createParams->m_buildModel;
 	m_colorTable = p_createParams->m_colorTable;
-	if (FUN_0046cb10(p_createParams, p_styleEntry)) {
+	if (Create(p_createParams, p_styleEntry)) {
 		FUN_004853a0();
 	}
 
@@ -70,8 +70,8 @@ LegoBool32 CarPartCarousel::Destroy()
 
 	if (result & m_flags) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_golExport->VTable0x48(m_unk0x7c[i].m_model);
-			m_unk0x7c[i].m_model = NULL;
+			m_golExport->VTable0x48(m_items[i].m_model);
+			m_items[i].m_model = NULL;
 		}
 
 		result = MenuModelCarousel::Destroy();

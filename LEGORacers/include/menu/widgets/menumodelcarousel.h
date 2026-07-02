@@ -17,32 +17,32 @@ public:
 	// SIZE 0x74
 	class CreateParams : public MenuCarousel::CreateParams {
 	public:
-		LegoS32 m_unk0x38;      // 0x38
-		Rect* m_unk0x3c;        // 0x3c
-		LegoFloat m_unk0x40;    // 0x40
-		LegoS32 m_unk0x44;      // 0x44
-		LegoFloat m_unk0x48[9]; // 0x48
-		LegoU32 m_unk0x6c;      // 0x6c
-		LegoFloat m_unk0x70;    // 0x70
+		LegoS32 m_slotCount;           // 0x38
+		Rect* m_unk0x3c;               // 0x3c
+		LegoFloat m_unk0x40;           // 0x40
+		LegoS32 m_focusedSlot;         // 0x44
+		LegoFloat m_cameraSettings[9]; // 0x48
+		LegoU32 m_unk0x6c;             // 0x6c
+		LegoFloat m_aspectScale;       // 0x70
 	};
 
 	// SIZE 0xd0
 	class Item {
 	public:
-		LegoFloat m_unk0x00;        // 0x00
-		LegoFloat m_unk0x04;        // 0x04
-		LegoFloat m_unk0x08;        // 0x08
-		LegoFloat m_unk0x0c;        // 0x0c
-		Rect m_rect;                // 0x10
-		LegoFloat m_unk0x20;        // 0x20
-		LegoFloat m_unk0x24;        // 0x24
-		LegoFloat m_unk0x28;        // 0x28
-		GolModelBase* m_model;      // 0x2c
-		LegoFloat m_modelRadius;    // 0x30
-		GolModelEntity m_entity;    // 0x34
-		undefined4 m_unk0xc4;       // 0xc4
-		VisualStateColor m_unk0xc8; // 0xc8
-		VisualStateColor m_unk0xcc; // 0xcc
+		LegoFloat m_unk0x00;               // 0x00
+		LegoFloat m_unk0x04;               // 0x04
+		LegoFloat m_unk0x08;               // 0x08
+		LegoFloat m_unk0x0c;               // 0x0c
+		Rect m_rect;                       // 0x10
+		LegoFloat m_unk0x20;               // 0x20
+		LegoFloat m_unk0x24;               // 0x24
+		LegoFloat m_unk0x28;               // 0x28
+		GolModelBase* m_model;             // 0x2c
+		LegoFloat m_modelRadius;           // 0x30
+		GolModelEntity m_entity;           // 0x34
+		undefined4 m_unk0xc4;              // 0xc4
+		VisualStateColor m_primaryColor;   // 0xc8
+		VisualStateColor m_secondaryColor; // 0xcc
 	};
 
 	MenuModelCarousel();
@@ -67,31 +67,31 @@ public:
 	// MenuModelCarousel::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_0046cb10(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
-	void FUN_0046cc10(CreateParams* p_createParams);
-	void FUN_0046d010(Item* p_item);
-	void FUN_0046cd30();
-	void FUN_0046cdc0();
-	void FUN_0046cdf0();
-	void FUN_0046ce10(CreateParams* p_createParams);
-	void FUN_0046cf20();
-	void FUN_0046d040(Item* p_item, GolVec3* p_position);
+	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
+	void SetupCamera(CreateParams* p_createParams);
+	void InitializeItem(Item* p_item);
+	void UpdateViewport();
+	void PushCamera();
+	void PopCamera();
+	void CreateItems(CreateParams* p_createParams);
+	void DestroyItems();
+	void GetItemPosition(Item* p_item, GolVec3* p_position);
 	GolModelEntity* GetItemEntity(LegoS32 p_index);
 	GolModelBase* GetItemModel(LegoS32 p_index);
 
-	undefined4 m_unk0x78;                     // 0x78
-	Item* m_unk0x7c;                          // 0x7c
-	GolCamera* m_unk0x80;                     // 0x80
-	GolCamera* m_unk0x84;                     // 0x84
-	GolRenderDevice::MaterialColor m_unk0x88; // 0x88
-	GolRenderDevice::Light m_unk0x8c;         // 0x8c
-	undefined4 m_unk0x9c;                     // 0x9c
-	undefined4 m_unk0xa0;                     // 0xa0
-	LegoFloat m_unk0xa4;                      // 0xa4
-	undefined m_unk0xa8[0xb4 - 0xa8];         // 0xa8
-	LegoFloat m_unk0xb4;                      // 0xb4
-	undefined4 m_unk0xb8;                     // 0xb8
-	LegoFloat m_unk0xbc;                      // 0xbc
+	undefined4 m_unk0x78;                           // 0x78
+	Item* m_items;                                  // 0x7c
+	GolCamera* m_camera;                            // 0x80
+	GolCamera* m_savedCamera;                       // 0x84
+	GolRenderDevice::MaterialColor m_materialColor; // 0x88
+	GolRenderDevice::Light m_light;                 // 0x8c
+	undefined4 m_unk0x9c;                           // 0x9c
+	undefined4 m_unk0xa0;                           // 0xa0
+	LegoFloat m_unk0xa4;                            // 0xa4
+	undefined m_unk0xa8[0xb4 - 0xa8];               // 0xa8
+	LegoFloat m_cameraDistance;                     // 0xb4
+	undefined4 m_unk0xb8;                           // 0xb8
+	LegoFloat m_unk0xbc;                            // 0xbc
 };
 
 #endif // MENUMODELCAROUSEL_H

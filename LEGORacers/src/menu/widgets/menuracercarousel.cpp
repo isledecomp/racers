@@ -47,10 +47,10 @@ LegoBool32 MenuRacerCarousel::FUN_00483a60(CreateParams* p_createParams, MenuSty
 	m_unk0xcc = p_createParams->m_unk0x7c;
 	FUN_00483ee0();
 
-	if (MenuModelCarousel::FUN_0046cb10(p_createParams, p_styleEntry)) {
+	if (MenuModelCarousel::Create(p_createParams, p_styleEntry)) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_golExport->VTable0x48(m_unk0x7c[i].m_model);
-			m_unk0x7c[i].m_model = NULL;
+			m_golExport->VTable0x48(m_items[i].m_model);
+			m_items[i].m_model = NULL;
 		}
 
 		FUN_00483b60(m_slotCount);
@@ -66,7 +66,7 @@ LegoBool32 MenuRacerCarousel::Destroy()
 
 	if (result & m_flags) {
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_unk0x7c[i].m_model = NULL;
+			m_items[i].m_model = NULL;
 		}
 
 		if (m_materialTables) {
@@ -332,7 +332,7 @@ LegoS32 MenuRacerCarousel::ScrollNext()
 		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_headBuilder->MarkHatModelUsed(m_unk0x7c[i].m_model);
+			m_headBuilder->MarkHatModelUsed(m_items[i].m_model);
 		}
 	}
 
@@ -369,7 +369,7 @@ LegoS32 MenuRacerCarousel::ScrollPrevious()
 		::memset(m_headBuilder->GetHatModelUsedFlags(), 0, 7 * sizeof(LegoBool32));
 
 		for (LegoS32 i = 0; i < m_slotCount; i++) {
-			m_headBuilder->MarkHatModelUsed(m_unk0x7c[i].m_model);
+			m_headBuilder->MarkHatModelUsed(m_items[i].m_model);
 		}
 	}
 

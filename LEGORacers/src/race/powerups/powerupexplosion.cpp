@@ -189,7 +189,7 @@ void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 
 	up.m_x = 1.0f;
 	up.m_y = 0.0f;
 	up.m_z = 0.0f;
-	m_scarDecal.FUN_00414c90(&forward, &up);
+	m_scarDecal.SetOrientation(&forward, &up);
 
 	if (m_collisionEvent != NULL) {
 		m_collisionEvent->m_active = 0;
@@ -282,7 +282,7 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 				m_scarDecal.m_unk0x104 = width;
 				m_scarDecal.m_unk0x108 = width2;
 				m_scarDecal.m_unk0x10c = 15.0f;
-				m_scarDecal.FUN_00414a30(m_collidable);
+				m_scarDecal.Project(m_collidable);
 			}
 			else {
 				Deactivate();
@@ -307,7 +307,7 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 			m_scarDecal.m_unk0x104 = width;
 			m_scarDecal.m_unk0x108 = width;
 			m_scarDecal.m_unk0x10c = 15.0f;
-			m_scarDecal.FUN_00414a30(m_collidable);
+			m_scarDecal.Project(m_collidable);
 		}
 
 		if (m_billboard != NULL) {

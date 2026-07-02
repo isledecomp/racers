@@ -22,22 +22,22 @@ DECOMP_SIZE_ASSERT(RaceSkyState::ModelBuilder, 0x01)
 DECOMP_SIZE_ASSERT(RaceSkyState::ModelBuilder::Params, 0x38)
 
 // GLOBAL: LEGORACERS 0x004afd54
-extern const LegoFloat g_raceSessionSkyModelMaxFloat = FLT_MAX;
+extern const LegoFloat g_raceSkyMaxFloat = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004afddc
-extern const LegoFloat g_unk0x004afddc = 40.0f;
+extern const LegoFloat g_raceSkyDomeDepth = 40.0f;
 
 extern const LegoFloat g_unk0x004afde0;
 extern const LegoFloat g_twoPi;
 
 // GLOBAL: LEGORACERS 0x004b4764
-const LegoFloat g_raceSessionSkyModelNegativeHalfPi = -1.5707964f;
+const LegoFloat g_raceSkyNegativeHalfPi = -1.5707964f;
 
 // GLOBAL: LEGORACERS 0x004b4768
-const LegoFloat g_raceSessionSkyModelInversePi = 0.31830987f;
+const LegoFloat g_raceSkyInversePi = 0.31830987f;
 
 // GLOBAL: LEGORACERS 0x004b476c
-const LegoFloat g_raceSessionSkyModelInverseTwoPi = 0.15915494f;
+const LegoFloat g_raceSkyInverseTwoPi = 0.15915494f;
 
 // FUNCTION: LEGORACERS 0x0041c430
 RaceSkyState::RaceSkyState()
@@ -56,19 +56,19 @@ void RaceSkyState::Reset()
 {
 	m_entries = NULL;
 	m_count = 0;
-	m_unk0xb8 = 0;
-	m_unk0xb4 = 0;
-	m_unk0xbc = 0;
-	m_unk0xc0 = 0;
-	m_unk0xa0 = NULL;
-	m_unk0xa4 = NULL;
-	m_unk0xc4 = 0;
-	m_unk0x9c = NULL;
-	m_unk0xac = 0.0f;
+	m_stateIndex = 0;
+	m_previousStateIndex = 0;
+	m_transitionMs = 0;
+	m_transitionElapsedMs = 0;
+	m_domeModel = NULL;
+	m_golExport = NULL;
+	m_hideFlags = 0;
+	m_skyWorld = NULL;
+	m_heightOffset = 0.0f;
 }
 
 // STUB: LEGORACERS 0x0041c550
-void RaceSkyState::FUN_0041c550(
+void RaceSkyState::Load(
 	GolD3DRenderDevice* p_renderer,
 	GolExport* p_golExport,
 	const LegoChar* p_skyName,
@@ -76,11 +76,11 @@ void RaceSkyState::FUN_0041c550(
 	LegoBool32 p_binary
 )
 {
-	if (m_unk0xa4 != NULL) {
+	if (m_golExport != NULL) {
 		Clear();
 	}
 
-	m_unk0xa4 = p_golExport;
+	m_golExport = p_golExport;
 
 	GolFileParser* parser;
 	if (p_binary) {
@@ -114,18 +114,18 @@ void RaceSkyState::FUN_0041c550(
 	LegoU32 entryIndex;
 	for (entryIndex = 0; entryIndex < m_count; entryIndex++) {
 		Entry* entry = &m_entries[entryIndex];
-		entry->m_unk0x00 = 0;
-		entry->m_unk0x04 = 0;
-		entry->m_unk0x08 = NULL;
-		entry->m_unk0x0c = 0;
+		entry->m_elapsedMs = 0;
+		entry->m_keyframeIndex = 0;
+		entry->m_keyframes = NULL;
+		entry->m_keyframeCount = 0;
 
 		parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 		parser->ReadLeftBracket();
-		entry->m_unk0x0c = parser->ReadInteger();
+		entry->m_keyframeCount = parser->ReadInteger();
 		parser->ReadRightBracket();
 
-		entry->m_unk0x08 = new Entry::Keyframe[entry->m_unk0x0c];
-		if (entry->m_unk0x08 == NULL) {
+		entry->m_keyframes = new Entry::Keyframe[entry->m_keyframeCount];
+		if (entry->m_keyframes == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
@@ -135,21 +135,21 @@ void RaceSkyState::FUN_0041c550(
 
 		parser->ReadLeftCurly();
 		LegoU32 keyframeIndex;
-		for (keyframeIndex = 0; keyframeIndex < entry->m_unk0x0c; keyframeIndex++) {
-			Entry::Keyframe* keyframe = &entry->m_unk0x08[keyframeIndex];
-			keyframe->m_unk0x00 = 1000;
-			keyframe->m_unk0x04.m_red = 0xff;
-			keyframe->m_unk0x04.m_grn = 0xff;
-			keyframe->m_unk0x04.m_blu = 0xff;
-			keyframe->m_unk0x04.m_alp = 0xff;
-			keyframe->m_unk0x08.m_red = 0xff;
-			keyframe->m_unk0x08.m_grn = 0xff;
-			keyframe->m_unk0x08.m_blu = 0xff;
-			keyframe->m_unk0x08.m_alp = 0xff;
-			keyframe->m_unk0x0c.m_red = 0xff;
-			keyframe->m_unk0x0c.m_grn = 0xff;
-			keyframe->m_unk0x0c.m_blu = 0xff;
-			keyframe->m_unk0x0c.m_alp = 0xff;
+		for (keyframeIndex = 0; keyframeIndex < entry->m_keyframeCount; keyframeIndex++) {
+			Entry::Keyframe* keyframe = &entry->m_keyframes[keyframeIndex];
+			keyframe->m_durationMs = 1000;
+			keyframe->m_topColor.m_red = 0xff;
+			keyframe->m_topColor.m_grn = 0xff;
+			keyframe->m_topColor.m_blu = 0xff;
+			keyframe->m_topColor.m_alp = 0xff;
+			keyframe->m_middleColor.m_red = 0xff;
+			keyframe->m_middleColor.m_grn = 0xff;
+			keyframe->m_middleColor.m_blu = 0xff;
+			keyframe->m_middleColor.m_alp = 0xff;
+			keyframe->m_bottomColor.m_red = 0xff;
+			keyframe->m_bottomColor.m_grn = 0xff;
+			keyframe->m_bottomColor.m_blu = 0xff;
+			keyframe->m_bottomColor.m_alp = 0xff;
 
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			parser->ReadLeftCurly();
@@ -158,25 +158,25 @@ void RaceSkyState::FUN_0041c550(
 			while (token != GolFileParser::e_rightCurly) {
 				switch (token) {
 				case GolFileParser::e_unknown0x28:
-					keyframe->m_unk0x00 = parser->ReadInteger();
+					keyframe->m_durationMs = parser->ReadInteger();
 					break;
 				case GolFileParser::e_unknown0x29:
-					keyframe->m_unk0x04.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x04.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x04.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x04.m_alp = 0xff;
+					keyframe->m_topColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_topColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_topColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_topColor.m_alp = 0xff;
 					break;
 				case GolFileParser::e_unknown0x2a:
-					keyframe->m_unk0x08.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x08.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x08.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x08.m_alp = 0xff;
+					keyframe->m_middleColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_middleColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_middleColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_middleColor.m_alp = 0xff;
 					break;
 				case GolFileParser::e_unknown0x2b:
-					keyframe->m_unk0x0c.m_red = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x0c.m_grn = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x0c.m_blu = static_cast<LegoU8>(parser->ReadInteger());
-					keyframe->m_unk0x0c.m_alp = 0xff;
+					keyframe->m_bottomColor.m_red = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_bottomColor.m_grn = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_bottomColor.m_blu = static_cast<LegoU8>(parser->ReadInteger());
+					keyframe->m_bottomColor.m_alp = 0xff;
 					break;
 				default:
 					parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -199,31 +199,31 @@ void RaceSkyState::FUN_0041c550(
 
 		Entry* entry = static_cast<Entry*>(GolNameTable::GetName(name));
 		if (entry == NULL) {
-			m_unk0xb8 = 0;
+			m_stateIndex = 0;
 		}
 		else {
-			m_unk0xb8 = static_cast<LegoU32>(entry - m_entries);
+			m_stateIndex = static_cast<LegoU32>(entry - m_entries);
 		}
 
 		token = parser->GetNextToken();
 	}
 
 	if (token == GolFileParser::e_unknown0x2e) {
-		m_unk0xac = parser->ReadFloat();
+		m_heightOffset = parser->ReadFloat();
 	}
 
 	parser->Dispose();
 	delete parser;
 
-	m_unk0xb4 = 0;
-	m_unk0xbc = 0;
-	m_unk0xc0 = 0;
+	m_previousStateIndex = 0;
+	m_transitionMs = 0;
+	m_transitionElapsedMs = 0;
 
-	m_unk0xa0 = m_unk0xa4->VTable0x14();
+	m_domeModel = m_golExport->VTable0x14();
 
 	{
 		ModelBuilder::Params params;
-		params.m_model = m_unk0xa0;
+		params.m_model = m_domeModel;
 		params.m_renderer = p_renderer;
 		params.m_segmentCount = 11;
 		params.m_hemisphere = 1;
@@ -237,16 +237,16 @@ void RaceSkyState::FUN_0041c550(
 		params.m_useTextureSeam = 0;
 		params.m_vertexType = 1;
 		params.m_absoluteIndexArray = NULL;
-		m_unk0xc5.FUN_004907d0(&params);
+		m_modelBuilder.Build(&params);
 
-		m_unk0x0c.VTable0x50(m_unk0xa0, g_raceSessionSkyModelMaxFloat);
-		m_unk0x0c.EnableFlagBit1();
+		m_domeEntity.VTable0x50(m_domeModel, g_raceSkyMaxFloat);
+		m_domeEntity.EnableFlagBit1();
 
 		GolVec3 center;
 		center.m_x = 0.0f;
 		center.m_y = 0.0f;
 		center.m_z = 0.0f;
-		m_unk0x0c.VTable0x08(center);
+		m_domeEntity.VTable0x08(center);
 
 		GolVec3 direction;
 		direction.m_x = 1.0f;
@@ -257,32 +257,32 @@ void RaceSkyState::FUN_0041c550(
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
-		m_unk0x0c.VTable0x40(direction, up);
+		m_domeEntity.VTable0x40(direction, up);
 
 		GolName materialName;
 		::strncpy(materialName, "skymat", sizeof(materialName));
-		m_unk0xa0->GetMaterialTable()->SetPosition(0, p_renderer->FindMaterialByName(materialName));
+		m_domeModel->GetMaterialTable()->SetPosition(0, p_renderer->FindMaterialByName(materialName));
 	}
 
-	m_unk0x9c = m_unk0xa4->VTable0x08();
-	m_unk0x9c->VTable0x14(p_renderer, p_worldName, p_binary, 1.0f);
+	m_skyWorld = m_golExport->VTable0x08();
+	m_skyWorld->VTable0x14(p_renderer, p_worldName, p_binary, 1.0f);
 }
 
 // FUNCTION: LEGORACERS 0x0041cbe0
 void RaceSkyState::Clear()
 {
-	if (m_unk0x9c) {
-		m_unk0xa4->VTable0x3c(m_unk0x9c);
-		m_unk0x9c = NULL;
+	if (m_skyWorld) {
+		m_golExport->VTable0x3c(m_skyWorld);
+		m_skyWorld = NULL;
 	}
 
-	if (m_unk0xa0) {
-		m_unk0xa4->VTable0x48(m_unk0xa0);
-		m_unk0xa0 = NULL;
+	if (m_domeModel) {
+		m_golExport->VTable0x48(m_domeModel);
+		m_domeModel = NULL;
 	}
 
-	m_unk0xa4 = NULL;
-	m_unk0x0c.VTable0x54();
+	m_golExport = NULL;
+	m_domeEntity.VTable0x54();
 
 	if (m_nameEntries != NULL) {
 		GolNameTable::Clear();
@@ -292,9 +292,9 @@ void RaceSkyState::Clear()
 		LegoU32 i;
 
 		for (i = 0; i < m_count; i++) {
-			if (m_entries[i].m_unk0x08) {
-				delete[] m_entries[i].m_unk0x08;
-				m_entries[i].m_unk0x08 = NULL;
+			if (m_entries[i].m_keyframes) {
+				delete[] m_entries[i].m_keyframes;
+				m_entries[i].m_keyframes = NULL;
 			}
 		}
 
@@ -306,85 +306,86 @@ void RaceSkyState::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0041ccb0
-void RaceSkyState::FUN_0041ccb0(LegoU32 p_elapsedMs)
+void RaceSkyState::Update(LegoU32 p_elapsedMs)
 {
-	m_unk0x9c->FUN_00416090(p_elapsedMs);
+	m_skyWorld->FUN_00416090(p_elapsedMs);
 
 	for (LegoU32 count = 0; count < m_count; count++) {
-		m_entries[count].m_unk0x00 += p_elapsedMs;
-		if (m_entries[count].m_unk0x00 > m_entries[count].m_unk0x08[m_entries[count].m_unk0x04].m_unk0x00) {
-			m_entries[count].m_unk0x04++;
-			if (m_entries[count].m_unk0x04 == m_entries[count].m_unk0x0c) {
-				m_entries[count].m_unk0x04 = 0;
+		m_entries[count].m_elapsedMs += p_elapsedMs;
+		if (m_entries[count].m_elapsedMs >
+			m_entries[count].m_keyframes[m_entries[count].m_keyframeIndex].m_durationMs) {
+			m_entries[count].m_keyframeIndex++;
+			if (m_entries[count].m_keyframeIndex == m_entries[count].m_keyframeCount) {
+				m_entries[count].m_keyframeIndex = 0;
 			}
 
-			m_entries[count].m_unk0x00 = 0;
+			m_entries[count].m_elapsedMs = 0;
 		}
 	}
 
-	if (m_unk0xbc > 0) {
-		m_unk0xc0 += p_elapsedMs;
-		if (m_unk0xc0 > m_unk0xbc) {
-			m_unk0xbc = 0;
-			m_unk0xc0 = 0;
+	if (m_transitionMs > 0) {
+		m_transitionElapsedMs += p_elapsedMs;
+		if (m_transitionElapsedMs > m_transitionMs) {
+			m_transitionMs = 0;
+			m_transitionElapsedMs = 0;
 		}
 	}
 
 	ColorRGBA color0;
 	ColorRGBA color1;
 	ColorRGBA color2;
-	FUN_0041ce60(&m_entries[m_unk0xb8], &color0, &color1, &color2);
+	EvaluateColors(&m_entries[m_stateIndex], &color0, &color1, &color2);
 
-	if (m_unk0xbc > 0) {
+	if (m_transitionMs > 0) {
 		ColorRGBA transitionColor0;
 		ColorRGBA transitionColor1;
 		ColorRGBA transitionColor2;
-		FUN_0041ce60(&m_entries[m_unk0xb4], &transitionColor0, &transitionColor1, &transitionColor2);
+		EvaluateColors(&m_entries[m_previousStateIndex], &transitionColor0, &transitionColor1, &transitionColor2);
 
-		LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0xc0));
-		LegoFloat transitionMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_unk0xbc));
+		LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_transitionElapsedMs));
+		LegoFloat transitionMs = static_cast<LegoFloat>(static_cast<LegoS32>(m_transitionMs));
 		LegoFloat amount = elapsedMs / transitionMs;
-		FUN_0041cf20(&transitionColor0, &color0, &color0, amount);
-		FUN_0041cf20(&transitionColor1, &color1, &color1, amount);
-		FUN_0041cf20(&transitionColor2, &color2, &color2, amount);
+		LerpColor(&transitionColor0, &color0, &color0, amount);
+		LerpColor(&transitionColor1, &color1, &color1, amount);
+		LerpColor(&transitionColor2, &color2, &color2, amount);
 	}
 
-	FUN_0041cfc0(&color0, &color1, &color2);
+	ApplyColors(&color0, &color1, &color2);
 }
 
 // FUNCTION: LEGORACERS 0x0041ce60
-void RaceSkyState::FUN_0041ce60(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10)
+void RaceSkyState::EvaluateColors(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10)
 {
-	LegoU32 keyframeCount = p_entry->m_unk0x0c;
+	LegoU32 keyframeCount = p_entry->m_keyframeCount;
 
 	if (keyframeCount == 1) {
-		*p_unk0x08 = p_entry->m_unk0x08[0].m_unk0x04;
-		*p_unk0x0c = p_entry->m_unk0x08[0].m_unk0x08;
-		*p_unk0x10 = p_entry->m_unk0x08[0].m_unk0x0c;
+		*p_unk0x08 = p_entry->m_keyframes[0].m_topColor;
+		*p_unk0x0c = p_entry->m_keyframes[0].m_middleColor;
+		*p_unk0x10 = p_entry->m_keyframes[0].m_bottomColor;
 	}
 	else {
-		LegoU32 keyframeIndex = p_entry->m_unk0x04;
+		LegoU32 keyframeIndex = p_entry->m_keyframeIndex;
 		LegoU32 nextIndex = (keyframeIndex + 1) % keyframeCount;
-		LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(p_entry->m_unk0x00));
+		LegoFloat elapsedMs = static_cast<LegoFloat>(static_cast<LegoS32>(p_entry->m_elapsedMs));
 		LegoFloat keyframeMs =
-			static_cast<LegoFloat>(static_cast<LegoS32>(p_entry->m_unk0x08[p_entry->m_unk0x04].m_unk0x00));
+			static_cast<LegoFloat>(static_cast<LegoS32>(p_entry->m_keyframes[p_entry->m_keyframeIndex].m_durationMs));
 		LegoFloat amount = elapsedMs / keyframeMs;
 
-		FUN_0041cf20(
-			&p_entry->m_unk0x08[p_entry->m_unk0x04].m_unk0x04,
-			&p_entry->m_unk0x08[nextIndex].m_unk0x04,
+		LerpColor(
+			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_topColor,
+			&p_entry->m_keyframes[nextIndex].m_topColor,
 			p_unk0x08,
 			amount
 		);
-		FUN_0041cf20(
-			&p_entry->m_unk0x08[p_entry->m_unk0x04].m_unk0x08,
-			&p_entry->m_unk0x08[nextIndex].m_unk0x08,
+		LerpColor(
+			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_middleColor,
+			&p_entry->m_keyframes[nextIndex].m_middleColor,
 			p_unk0x0c,
 			amount
 		);
-		FUN_0041cf20(
-			&p_entry->m_unk0x08[p_entry->m_unk0x04].m_unk0x0c,
-			&p_entry->m_unk0x08[nextIndex].m_unk0x0c,
+		LerpColor(
+			&p_entry->m_keyframes[p_entry->m_keyframeIndex].m_bottomColor,
+			&p_entry->m_keyframes[nextIndex].m_bottomColor,
 			p_unk0x10,
 			amount
 		);
@@ -392,7 +393,7 @@ void RaceSkyState::FUN_0041ce60(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA*
 }
 
 // FUNCTION: LEGORACERS 0x0041cf20
-void RaceSkyState::FUN_0041cf20(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount)
+void RaceSkyState::LerpColor(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount)
 {
 	LegoFloat inverseAmount = 1.0f - p_amount;
 
@@ -402,12 +403,12 @@ void RaceSkyState::FUN_0041cf20(const ColorRGBA* p_from, const ColorRGBA* p_to, 
 }
 
 // FUNCTION: LEGORACERS 0x0041cfc0
-void RaceSkyState::FUN_0041cfc0(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c)
+void RaceSkyState::ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c)
 {
 	GdbVertexArray0xc* vertices;
 	const ColorRGBA* color = NULL;
 
-	m_unk0xa0->VTable0x28(&vertices);
+	m_domeModel->VTable0x28(&vertices);
 
 	LegoU32 i;
 	for (i = 0; i < 3; i++) {
@@ -428,40 +429,40 @@ void RaceSkyState::FUN_0041cfc0(const ColorRGBA* p_unk0x04, const ColorRGBA* p_u
 		}
 	}
 
-	m_unk0xa0->VTable0x2c(1, FALSE);
+	m_domeModel->VTable0x2c(1, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x0041d040
-void RaceSkyState::FUN_0041d040(GolVec3* p_position)
+void RaceSkyState::SetPosition(GolVec3* p_position)
 {
-	p_position->m_z -= g_unk0x004afde0 - m_unk0xac;
-	m_unk0x0c.VTable0x08(*p_position);
-	p_position->m_z += g_unk0x004afddc - m_unk0xac;
+	p_position->m_z -= g_unk0x004afde0 - m_heightOffset;
+	m_domeEntity.VTable0x08(*p_position);
+	p_position->m_z += g_raceSkyDomeDepth - m_heightOffset;
 
 	LegoU32 i;
-	for (i = 0; i < m_unk0x9c->GetUnk0x4c(); i++) {
-		m_unk0x9c->GetUnk0x9c()[i].VTable0x08(*p_position);
+	for (i = 0; i < m_skyWorld->GetUnk0x4c(); i++) {
+		m_skyWorld->GetUnk0x9c()[i].VTable0x08(*p_position);
 	}
 
-	for (i = 0; i < m_unk0x9c->GetUnk0x54(); i++) {
-		GolWorldEntity* entity = &m_unk0x9c->GetUnk0xa0()[i];
+	for (i = 0; i < m_skyWorld->GetUnk0x54(); i++) {
+		GolWorldEntity* entity = &m_skyWorld->GetUnk0xa0()[i];
 		entity->VTable0x08(*p_position);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0041d0f0
-void RaceSkyState::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
+void RaceSkyState::Draw(GolD3DRenderDevice* p_renderer)
 {
-	LegoU8 flags = m_unk0xc4;
+	LegoU8 flags = m_hideFlags;
 	flags = ~flags;
-	if (flags & c_flag0xc4Bit0) {
+	if (flags & c_hideDome) {
 		p_renderer->VTable0xe8(TRUE);
-		p_renderer->VTable0x94(&m_unk0x0c);
+		p_renderer->VTable0x94(&m_domeEntity);
 
-		flags = m_unk0xc4;
+		flags = m_hideFlags;
 		flags = ~flags;
-		if (flags & c_flag0xc4Bit1) {
-			m_unk0x9c->FUN_00416040();
+		if (flags & c_hideSkyWorld) {
+			m_skyWorld->FUN_00416040();
 		}
 
 		p_renderer->VTable0xe4();
@@ -469,38 +470,38 @@ void RaceSkyState::FUN_0041d0f0(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0041d150
-void RaceSkyState::FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs)
+void RaceSkyState::StartTransition(const LegoChar* p_name, LegoU32 p_durationMs)
 {
 	Entry* entry = static_cast<Entry*>(GolNameTable::GetName(p_name));
 	if (entry) {
-		m_unk0xb4 = m_unk0xb8;
+		m_previousStateIndex = m_stateIndex;
 		LegoU32 index = static_cast<LegoU32>(entry - m_entries);
-		m_unk0xb8 = index;
-		if (index != m_unk0xb4) {
-			m_unk0xc0 = 0;
-			m_unk0xbc = p_durationMs;
+		m_stateIndex = index;
+		if (index != m_previousStateIndex) {
+			m_transitionElapsedMs = 0;
+			m_transitionMs = p_durationMs;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004907d0
-void RaceSkyState::ModelBuilder::FUN_004907d0(Params* p_params)
+void RaceSkyState::ModelBuilder::Build(Params* p_params)
 {
 	if (p_params->m_useTextureSeam) {
-		FUN_004910e0(p_params);
+		BuildSeamedSphere(p_params);
 	}
 	else {
-		FUN_004907f0(p_params);
+		BuildSphere(p_params);
 	}
 }
 
 // STUB: LEGORACERS 0x004907f0
-void RaceSkyState::ModelBuilder::FUN_004907f0(Params* p_params)
+void RaceSkyState::ModelBuilder::BuildSphere(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoS32 ringCount;
 	if (p_params->m_hemisphere) {
-		ringCount = 1 - static_cast<LegoS32>(g_raceSessionSkyModelNegativeHalfPi / angleStep);
+		ringCount = 1 - static_cast<LegoS32>(g_raceSkyNegativeHalfPi / angleStep);
 	}
 	else {
 		ringCount = (p_params->m_segmentCount >> 1) - 1;
@@ -561,7 +562,7 @@ void RaceSkyState::ModelBuilder::FUN_004907f0(Params* p_params)
 	LegoFloat ringAngle = angleStep;
 	for (ring = 0; ring < ringCount; ring++) {
 		if (p_params->m_hemisphere && ring == ringCount - 1) {
-			ringAngle = -g_raceSessionSkyModelNegativeHalfPi;
+			ringAngle = -g_raceSkyNegativeHalfPi;
 		}
 
 		LegoFloat z = static_cast<LegoFloat>(::cos(ringAngle)) * p_params->m_radius + p_params->m_origin.m_z;
@@ -825,12 +826,12 @@ void RaceSkyState::ModelBuilder::FUN_004907f0(Params* p_params)
 }
 
 // STUB: LEGORACERS 0x004910e0
-void RaceSkyState::ModelBuilder::FUN_004910e0(Params* p_params)
+void RaceSkyState::ModelBuilder::BuildSeamedSphere(Params* p_params)
 {
 	LegoFloat angleStep = g_twoPi / static_cast<LegoFloat>(static_cast<LegoS32>(p_params->m_segmentCount));
 	LegoS32 ringCount;
 	if (p_params->m_hemisphere) {
-		ringCount = 1 - static_cast<LegoS32>(g_raceSessionSkyModelNegativeHalfPi / angleStep);
+		ringCount = 1 - static_cast<LegoS32>(g_raceSkyNegativeHalfPi / angleStep);
 	}
 	else {
 		ringCount = (p_params->m_segmentCount >> 1) - 1;
@@ -889,7 +890,7 @@ void RaceSkyState::ModelBuilder::FUN_004910e0(Params* p_params)
 			}
 
 			GolVec2 textureCoordinate;
-			textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi + textureHalfStep;
+			textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi + textureHalfStep;
 			textureCoordinate.m_y = 0.0f;
 			vertices->VTable0x28(vertexIndex, textureCoordinate);
 
@@ -933,8 +934,8 @@ void RaceSkyState::ModelBuilder::FUN_004910e0(Params* p_params)
 					vertices->VTable0x2c(vertexIndex, normal);
 				}
 
-				textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi;
-				textureCoordinate.m_y = ringAngle * g_raceSessionSkyModelInversePi;
+				textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi;
+				textureCoordinate.m_y = ringAngle * g_raceSkyInversePi;
 				vertices->VTable0x28(vertexIndex, textureCoordinate);
 
 				vertexIndex++;
@@ -992,7 +993,7 @@ void RaceSkyState::ModelBuilder::FUN_004910e0(Params* p_params)
 			}
 
 			GolVec2 textureCoordinate;
-			textureCoordinate.m_x = segmentAngle * g_raceSessionSkyModelInverseTwoPi + textureHalfStep;
+			textureCoordinate.m_x = segmentAngle * g_raceSkyInverseTwoPi + textureHalfStep;
 			textureCoordinate.m_y = 1.0f;
 			vertices->VTable0x28(vertexIndex, textureCoordinate);
 

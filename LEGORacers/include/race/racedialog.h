@@ -1,5 +1,5 @@
-#ifndef SLATEBRIDGE0X68_H
-#define SLATEBRIDGE0X68_H
+#ifndef RACEDIALOG_H
+#define RACEDIALOG_H
 
 #include "decomp.h"
 #include "golstring.h"
@@ -11,24 +11,24 @@ class GolStringTable;
 class RaceSession;
 
 // SIZE 0x68
-class SlateBridge0x68 {
+class RaceDialog {
 public:
-	SlateBridge0x68();
-	~SlateBridge0x68();
+	RaceDialog();
+	~RaceDialog();
 
-	void FUN_00427310(
+	void Open(
 		LegoU32 p_optionCount,
 		const LegoU16* p_optionStringIds,
 		LegoU16 p_promptStringId,
 		LegoU16 p_extraStringId,
 		LegoU32 p_selectionIndex
 	);
-	void FUN_00427420(LegoU32 p_elapsedMs);
-	void FUN_00427440();
-	void FUN_00427810(LegoU32 p_keyCode);
-	void FUN_004278c0(LegoU32 p_keyCode);
-	undefined4 GetUnk0x48() const { return m_unk0x48; }
-	LegoU32 GetUnk0x50() const { return m_unk0x50; }
+	void Update(LegoU32 p_elapsedMs);
+	void Draw();
+	void OnKeyDown(LegoU32 p_keyCode);
+	void OnKeyUp(LegoU32 p_keyCode);
+	undefined4 GetState() const { return m_state; }
+	LegoU32 GetSelectionIndex() const { return m_selectionIndex; }
 
 private:
 	friend class RaceSession;
@@ -62,13 +62,13 @@ private:
 
 	void Destroy();
 	void Reset();
-	void FUN_004272c0(
+	void Initialize(
 		GolFontBase* p_font,
 		GolD3DRenderDevice* p_renderer,
 		GolStringTable* p_stringTable,
 		LegoU32 p_keyCode
 	);
-	void FUN_004276c0();
+	void DrawBackdrop();
 
 	GolFontBase* m_font;            // 0x00
 	GolD3DRenderDevice* m_renderer; // 0x04
@@ -76,14 +76,14 @@ private:
 	GolString m_options[3];         // 0x0c
 	GolString m_prompt;             // 0x30
 	GolString m_extra;              // 0x3c
-	undefined4 m_unk0x48;           // 0x48
-	LegoU32 m_unk0x4c;              // 0x4c
-	LegoU32 m_unk0x50;              // 0x50
-	LegoU32 m_unk0x54;              // 0x54
-	undefined4 m_unk0x58;           // 0x58
-	LegoS32 m_unk0x5c;              // 0x5c
-	LegoS32 m_unk0x60;              // 0x60
-	LegoU32 m_unk0x64;              // 0x64
+	undefined4 m_state;             // 0x48
+	LegoU32 m_optionCount;          // 0x4c
+	LegoU32 m_selectionIndex;       // 0x50
+	LegoU32 m_blinkMs;              // 0x54
+	undefined4 m_selecting;         // 0x58
+	LegoS32 m_optionsTop;           // 0x5c
+	LegoS32 m_lineHeight;           // 0x60
+	LegoU32 m_acceptKey;            // 0x64
 };
 
-#endif // SLATEBRIDGE0X68_H
+#endif // RACEDIALOG_H

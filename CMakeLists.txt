@@ -310,8 +310,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/hazardmanager.cpp
   LEGORacers/src/race/raceinputrouter.cpp
   LEGORacers/src/race/racetrailmanager.cpp
-  LEGORacers/src/race/racesessionfield0x27d4.cpp
-  LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
+  LEGORacers/src/race/racedecalmanager.cpp
+  LEGORacers/src/race/racedecal.cpp
   LEGORacers/src/race/racer/drivecontroller.cpp
   LEGORacers/src/race/racecameracontroller.cpp
   LEGORacers/src/race/racer/racerphysicshelpers.cpp
@@ -319,8 +319,8 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/checkpointgraph.cpp
   LEGORacers/src/race/checkpointgraphwalk.cpp
   LEGORacers/src/race/loadingscreen.cpp
-  LEGORacers/src/race/racesessionfield0x2804.cpp
-  LEGORacers/src/race/racesessionfield0x2f90.cpp
+  LEGORacers/src/race/targetpointlist.cpp
+  LEGORacers/src/race/racesky.cpp
   LEGORacers/src/race/racereset.cpp
   LEGORacers/src/race/racer/racerouterecord.cpp
   LEGORacers/src/race/triggerworld.cpp
@@ -364,7 +364,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/droppablebrick.cpp
   LEGORacers/src/race/racer/drivecontrollerfield0x000.cpp
   LEGORacers/src/race/cobalttrail0x140.cpp
-  LEGORacers/src/race/slatebridge0x68.cpp
+  LEGORacers/src/race/racedialog.cpp
   LEGORacers/src/race/circuitracerunner.cpp
   LEGORacers/src/race/circuitstandings.cpp
   LEGORacers/src/app/golapp.cpp

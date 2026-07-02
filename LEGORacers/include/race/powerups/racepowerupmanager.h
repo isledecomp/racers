@@ -18,8 +18,8 @@
 #include "race/checkpointgraph.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/raceactionsource.h"
+#include "race/racedecalmanager.h"
 #include "race/raceresourcemanager.h"
-#include "race/racesessionfield0x27d4.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
 #include "race/triggerworld.h"
@@ -30,7 +30,7 @@
 
 class CutsceneAnimation;
 class DuskwindBananaRelic0x24;
-class Field0x2804;
+class TargetPointList;
 class GolCollidableEntity;
 class GolD3DRenderDevice;
 class GolExport;
@@ -659,11 +659,11 @@ public:
 			SpatialSoundInstance* m_sound;                  // 0x058
 			RaceResourceManager::Resource* m_soundResource; // 0x058
 		};
-		CutsceneAnimation* m_particleAnimation;           // 0x05c
-		CutsceneParticleRef* m_bubbleParticle;            // 0x060
-		RaceSessionField0x27d4::Item::Decal m_slickDecal; // 0x064
-		GolBillboard::Field0x2c m_materialTable;          // 0x180
-		GolCollidableEntity* m_collidable;                // 0x18c
+		CutsceneAnimation* m_particleAnimation;      // 0x05c
+		CutsceneParticleRef* m_bubbleParticle;       // 0x060
+		RaceDecalManager::Trail::Decal m_slickDecal; // 0x064
+		GolBillboard::Field0x2c m_materialTable;     // 0x180
+		GolCollidableEntity* m_collidable;           // 0x18c
 	};
 
 	// VTABLE: LEGORACERS 0x004b1448
@@ -1211,7 +1211,7 @@ public:
 		GolBillboard* m_billboard;                         // 0x0c4
 		MabMaterialAnimationItem0x18 m_billboardAnimation; // 0x0c8
 		LegoU32 m_billboardMaterialIndex;                  // 0x0e0
-		RaceSessionField0x27d4::Item::Decal m_scarDecal;   // 0x0e4
+		RaceDecalManager::Trail::Decal m_scarDecal;        // 0x0e4
 		GolCollidableEntity* m_collidable;                 // 0x200
 		MaterialTable0x0c m_materialTable;                 // 0x204
 		DuskwindBananaRelic0x24* m_flashMaterial;          // 0x210
@@ -1346,7 +1346,7 @@ private:
 		RaceState::Racer::SoundSource* m_soundSource; // 0x18
 		CutsceneAnimation* m_cutsceneAnimation;       // 0x1c
 		RaceTrailManager* m_trailManager;             // 0x20
-		void* m_unk0x24;                              // 0x24
+		void* m_racerTriggers;                        // 0x24
 		MenuAnimationList* m_animationList;           // 0x28
 		GolWorldDatabase* m_trackDatabase;            // 0x2c
 		TargetPointList* m_targetPoints;              // 0x30

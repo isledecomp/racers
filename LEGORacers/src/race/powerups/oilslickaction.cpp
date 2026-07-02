@@ -226,8 +226,8 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	normal.m_y = 0.0f;
 	normal.m_z = -1.0f;
 
-	m_slickDecal.FUN_00414c90(&normal, &tangent);
-	m_slickDecal.FUN_00414a30(m_collidable);
+	m_slickDecal.SetOrientation(&normal, &tangent);
+	m_slickDecal.Project(m_collidable);
 }
 
 // FUNCTION: LEGORACERS 0x004575b0

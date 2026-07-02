@@ -9,7 +9,7 @@
 #include "material/materialtable0x0c.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/raceactionsource.h"
-#include "race/racesessionfield0x27d4.h"
+#include "race/racedecalmanager.h"
 #include "race/racestate.h"
 #include "types.h"
 #include "util/legoeventqueue.h"
@@ -549,13 +549,13 @@ public:
 			c_eventId0x15 = 0x15,
 		};
 
-		GolWorldEntity m_trigger;                          // 0x10
-		GolAnimatedEntity* m_entity;                       // 0x38
-		LegoEventQueue::Event* m_collisionEvent;           // 0x3c
-		LegoEventQueue* m_eventQueue;                      // 0x40
-		RaceSessionField0x27d4::Item::Decal m_shadowDecal; // 0x44
-		MaterialTable0x0c m_shadowMaterialTable;           // 0x160
-		GolCollidableEntity* m_trackCollidable;            // 0x16c
+		GolWorldEntity m_trigger;                     // 0x10
+		GolAnimatedEntity* m_entity;                  // 0x38
+		LegoEventQueue::Event* m_collisionEvent;      // 0x3c
+		LegoEventQueue* m_eventQueue;                 // 0x40
+		RaceDecalManager::Trail::Decal m_shadowDecal; // 0x44
+		MaterialTable0x0c m_shadowMaterialTable;      // 0x160
+		GolCollidableEntity* m_trackCollidable;       // 0x16c
 		union {
 			RaceResourceManager::Resource* m_loopSoundResource; // 0x170
 			SpatialSoundInstance* m_loopSound;                  // 0x170
@@ -785,9 +785,9 @@ public:
 		GolD3DRenderDevice* GetRenderer() const { return m_renderer; }
 		GolNameTable* GetColliderTable() const { return m_colliderTable; }
 		RaceState* GetRaceState() const { return m_raceState; }
-		TriggerWorld* GetSkyState() const { return m_skyState; }
+		TriggerWorld* GetTriggerWorld() const { return m_triggerWorld; }
 		RacePowerupManager* GetPowerupManager() const { return m_powerupManager; }
-		void* GetUnk0x3c() const { return m_unk0x3c; }
+		void* GetTrailManager() const { return m_trailManager; }
 		LegoU32 GetMirror() const { return m_mirror; }
 		PositionProvider* GetPositionProvider() const { return m_positionProvider; }
 
@@ -796,21 +796,21 @@ public:
 		friend class RaceSession;
 
 		LegoEventQueue* m_eventQueue;                 // 0x00
-		void* m_unk0x04;                              // 0x04
+		void* m_context;                              // 0x04
 		RaceState::Racer::SoundSource* m_soundSource; // 0x08
 		RaceEventTable* m_eventTable;                 // 0x0c
 		GolWorldDatabase* m_trackDatabase;            // 0x10
 		GolWorldDatabase* m_sharedDatabase;           // 0x14
-		GolWorldDatabase* m_unk0x18;                  // 0x18
+		GolWorldDatabase* m_triggerDatabase;          // 0x18
 		CutsceneAnimation* m_particleAnimation;       // 0x1c
 		GolCollidableEntity* m_trackCollidable;       // 0x20
 		GolExport* m_golExport;                       // 0x24
 		GolD3DRenderDevice* m_renderer;               // 0x28
 		GolNameTable* m_colliderTable;                // 0x2c
 		RaceState* m_raceState;                       // 0x30
-		TriggerWorld* m_skyState;                     // 0x34
+		TriggerWorld* m_triggerWorld;                 // 0x34
 		RacePowerupManager* m_powerupManager;         // 0x38
-		void* m_unk0x3c;                              // 0x3c
+		void* m_trailManager;                         // 0x3c
 		LegoU32 m_mirror;                             // 0x40
 		undefined m_unk0x44[0x5c - 0x44];             // 0x44
 		PositionProvider* m_positionProvider;         // 0x5c

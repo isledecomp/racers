@@ -34,16 +34,16 @@ public:
 	struct Entry {
 		// SIZE 0x10
 		struct Keyframe {
-			LegoU32 m_unk0x00;   // 0x00
-			ColorRGBA m_unk0x04; // 0x04
-			ColorRGBA m_unk0x08; // 0x08
-			ColorRGBA m_unk0x0c; // 0x0c
+			LegoU32 m_durationMs;    // 0x00
+			ColorRGBA m_topColor;    // 0x04
+			ColorRGBA m_middleColor; // 0x08
+			ColorRGBA m_bottomColor; // 0x0c
 		};
 
-		LegoU32 m_unk0x00;   // 0x00
-		LegoU32 m_unk0x04;   // 0x04
-		Keyframe* m_unk0x08; // 0x08
-		LegoU32 m_unk0x0c;   // 0x0c
+		LegoU32 m_elapsedMs;     // 0x00
+		LegoU32 m_keyframeIndex; // 0x04
+		Keyframe* m_keyframes;   // 0x08
+		LegoU32 m_keyframeCount; // 0x0c
 	};
 
 	// SIZE 0x01
@@ -66,25 +66,25 @@ public:
 			GdbModelIndexArray0xc* m_absoluteIndexArray; // 0x34
 		};
 
-		void FUN_004907d0(Params* p_params);
-		void FUN_004907f0(Params* p_params);
-		void FUN_004910e0(Params* p_params);
+		void Build(Params* p_params);
+		void BuildSphere(Params* p_params);
+		void BuildSeamedSphere(Params* p_params);
 	};
 
 	RaceSkyState();
 	~RaceSkyState() override;
 	void Clear() override;
-	void FUN_0041c550(
+	void Load(
 		GolD3DRenderDevice* p_renderer,
 		GolExport* p_golExport,
 		const LegoChar* p_skyName,
 		const LegoChar* p_worldName,
 		LegoBool32 p_binary
 	);
-	void FUN_0041ccb0(LegoU32 p_elapsedMs);
-	void FUN_0041d040(GolVec3* p_position);
-	void FUN_0041d0f0(GolD3DRenderDevice* p_renderer);
-	void FUN_0041d150(const LegoChar* p_name, LegoU32 p_durationMs);
+	void Update(LegoU32 p_elapsedMs);
+	void SetPosition(GolVec3* p_position);
+	void Draw(GolD3DRenderDevice* p_renderer);
+	void StartTransition(const LegoChar* p_name, LegoU32 p_durationMs);
 
 	// SYNTHETIC: LEGORACERS 0x0041c490
 	// RaceSkyState::`scalar deleting destructor'
@@ -93,28 +93,28 @@ public:
 	friend class RaceEventTable;
 
 	enum {
-		c_flag0xc4Bit0 = 1 << 0,
-		c_flag0xc4Bit1 = 1 << 1,
+		c_hideDome = 1 << 0,
+		c_hideSkyWorld = 1 << 1,
 	};
 
 	void Reset();
-	void FUN_0041ce60(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10);
-	void FUN_0041cf20(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount);
-	void FUN_0041cfc0(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c);
+	void EvaluateColors(Entry* p_entry, ColorRGBA* p_unk0x08, ColorRGBA* p_unk0x0c, ColorRGBA* p_unk0x10);
+	void LerpColor(const ColorRGBA* p_from, const ColorRGBA* p_to, ColorRGBA* p_result, LegoFloat p_amount);
+	void ApplyColors(const ColorRGBA* p_unk0x04, const ColorRGBA* p_unk0x08, const ColorRGBA* p_unk0x0c);
 
-	GolModelEntity m_unk0x0c;         // 0x0c
-	GolWorldDatabase* m_unk0x9c;      // 0x9c
-	GolModelBase* m_unk0xa0;          // 0xa0
-	GolExport* m_unk0xa4;             // 0xa4
+	GolModelEntity m_domeEntity;      // 0x0c
+	GolWorldDatabase* m_skyWorld;     // 0x9c
+	GolModelBase* m_domeModel;        // 0xa0
+	GolExport* m_golExport;           // 0xa4
 	Entry* m_entries;                 // 0xa8
-	LegoFloat m_unk0xac;              // 0xac
+	LegoFloat m_heightOffset;         // 0xac
 	LegoU32 m_count;                  // 0xb0
-	LegoU32 m_unk0xb4;                // 0xb4
-	LegoU32 m_unk0xb8;                // 0xb8
-	LegoU32 m_unk0xbc;                // 0xbc
-	LegoU32 m_unk0xc0;                // 0xc0
-	LegoU8 m_unk0xc4;                 // 0xc4
-	ModelBuilder m_unk0xc5;           // 0xc5
+	LegoU32 m_previousStateIndex;     // 0xb4
+	LegoU32 m_stateIndex;             // 0xb8
+	LegoU32 m_transitionMs;           // 0xbc
+	LegoU32 m_transitionElapsedMs;    // 0xc0
+	LegoU8 m_hideFlags;               // 0xc4
+	ModelBuilder m_modelBuilder;      // 0xc5
 	undefined m_unk0xc6[0xc8 - 0xc6]; // 0xc6
 };
 

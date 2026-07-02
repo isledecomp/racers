@@ -1,30 +1,30 @@
-#include "race/slatebridge0x68.h"
+#include "race/racedialog.h"
 
 #include "golfontbase.h"
 #include "golstringtable.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
 
-DECOMP_SIZE_ASSERT(SlateBridge0x68, 0x68)
+DECOMP_SIZE_ASSERT(RaceDialog, 0x68)
 
 extern LegoFloat g_cosineTable[1024];
 extern const LegoFloat g_negativeRadiansToTableIndex;
 extern const LegoFloat g_twoPi;
 
 // FUNCTION: LEGORACERS 0x00427160
-SlateBridge0x68::SlateBridge0x68()
+RaceDialog::RaceDialog()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004271d0
-SlateBridge0x68::~SlateBridge0x68()
+RaceDialog::~RaceDialog()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00427240
-void SlateBridge0x68::Destroy()
+void RaceDialog::Destroy()
 {
 	for (LegoS32 i = 0; i < sizeOfArray(m_options); i++) {
 		m_options[i].Reset();
@@ -36,22 +36,22 @@ void SlateBridge0x68::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00427290
-void SlateBridge0x68::Reset()
+void RaceDialog::Reset()
 {
-	m_unk0x58 = 1;
+	m_selecting = 1;
 	m_font = NULL;
 	m_renderer = NULL;
 	m_stringTable = NULL;
-	m_unk0x48 = 0;
-	m_unk0x50 = 0;
-	m_unk0x54 = 0;
-	m_unk0x5c = 0;
-	m_unk0x60 = 0;
-	m_unk0x64 = 0;
+	m_state = 0;
+	m_selectionIndex = 0;
+	m_blinkMs = 0;
+	m_optionsTop = 0;
+	m_lineHeight = 0;
+	m_acceptKey = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004272c0
-void SlateBridge0x68::FUN_004272c0(
+void RaceDialog::Initialize(
 	GolFontBase* p_font,
 	GolD3DRenderDevice* p_renderer,
 	GolStringTable* p_stringTable,
@@ -65,15 +65,15 @@ void SlateBridge0x68::FUN_004272c0(
 	m_renderer = p_renderer;
 	m_font = p_font;
 	m_stringTable = p_stringTable;
-	m_unk0x64 = p_keyCode;
+	m_acceptKey = p_keyCode;
 
 	if (p_keyCode == c_keyboardPrevious || p_keyCode == c_keyboardNext) {
-		m_unk0x64 = c_keyboardEnter;
+		m_acceptKey = c_keyboardEnter;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00427310
-void SlateBridge0x68::FUN_00427310(
+void RaceDialog::Open(
 	LegoU32 p_optionCount,
 	const LegoU16* p_optionStringIds,
 	LegoU16 p_promptStringId,
@@ -99,11 +99,11 @@ void SlateBridge0x68::FUN_00427310(
 		m_extra.Reset();
 	}
 
-	m_unk0x4c = p_optionCount;
-	m_unk0x48 = 1;
-	m_unk0x50 = p_selectionIndex;
-	m_unk0x58 = 1;
-	m_unk0x60 = 0;
+	m_optionCount = p_optionCount;
+	m_state = 1;
+	m_selectionIndex = p_selectionIndex;
+	m_selecting = 1;
+	m_lineHeight = 0;
 
 	i = 0;
 	if (p_optionCount > i) {
@@ -111,43 +111,43 @@ void SlateBridge0x68::FUN_00427310(
 		do {
 			m_font->MeasureString(option, &textWidth, &textHeight);
 
-			if (static_cast<LegoU32>(textHeight) > static_cast<LegoU32>(m_unk0x60)) {
-				m_unk0x60 = textHeight;
+			if (static_cast<LegoU32>(textHeight) > static_cast<LegoU32>(m_lineHeight)) {
+				m_lineHeight = textHeight;
 			}
 
 			i++;
 			option++;
-		} while (i < m_unk0x4c);
+		} while (i < m_optionCount);
 	}
 
-	m_unk0x60 += 2;
-	m_unk0x5c = renderTargetInfo->GetHeight() / 2 - (m_unk0x4c * m_unk0x60) / 2;
+	m_lineHeight += 2;
+	m_optionsTop = renderTargetInfo->GetHeight() / 2 - (m_optionCount * m_lineHeight) / 2;
 }
 
 // FUNCTION: LEGORACERS 0x00427420
-void SlateBridge0x68::FUN_00427420(LegoU32 p_elapsedMs)
+void RaceDialog::Update(LegoU32 p_elapsedMs)
 {
-	m_unk0x54 += p_elapsedMs;
-	if (m_unk0x54 >= 500) {
-		m_unk0x54 = 0;
+	m_blinkMs += p_elapsedMs;
+	if (m_blinkMs >= 500) {
+		m_blinkMs = 0;
 	}
 }
 
 // STUB: LEGORACERS 0x00427440
-void SlateBridge0x68::FUN_00427440()
+void RaceDialog::Draw()
 {
-	if (m_unk0x48 != 1) {
+	if (m_state != 1) {
 		return;
 	}
 
 	const SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
-	FUN_004276c0();
+	DrawBackdrop();
 
 	LegoS32 selectedAlpha = c_selectedAlpha;
-	if (m_unk0x58) {
+	if (m_selecting) {
 		LegoS32 index =
 			0xffffff00 -
-			static_cast<LegoS32>(static_cast<LegoFloat>(m_unk0x54) * 0.002f * g_twoPi * g_negativeRadiansToTableIndex);
+			static_cast<LegoS32>(static_cast<LegoFloat>(m_blinkMs) * 0.002f * g_twoPi * g_negativeRadiansToTableIndex);
 		index &= c_cosineTableMask;
 		selectedAlpha = c_selectedPulseAlphaCenter -
 						static_cast<LegoS32>(g_cosineTable[index] * (int) c_selectedPulseAlphaAmplitude);
@@ -155,9 +155,9 @@ void SlateBridge0x68::FUN_00427440()
 
 	m_font->SetColor(c_promptColor);
 
-	LegoS32 y = m_unk0x5c - m_unk0x60;
+	LegoS32 y = m_optionsTop - m_lineHeight;
 	if (m_extra.HasChars()) {
-		y -= m_unk0x60 >> 1;
+		y -= m_lineHeight >> 1;
 	}
 
 	LegoS32 textWidth;
@@ -174,7 +174,7 @@ void SlateBridge0x68::FUN_00427440()
 		0
 	);
 
-	y += m_unk0x60;
+	y += m_lineHeight;
 	if (m_extra.HasChars()) {
 		m_font->MeasureString(&m_extra, &textWidth, &textHeight);
 		m_renderer->VTable0x64(
@@ -187,19 +187,19 @@ void SlateBridge0x68::FUN_00427440()
 			NULL,
 			0
 		);
-		y += m_unk0x60;
+		y += m_lineHeight;
 	}
 
-	for (LegoU32 i = 0; i < m_unk0x4c; i++) {
+	for (LegoU32 i = 0; i < m_optionCount; i++) {
 		GolString* option = &m_options[i];
 		m_font->MeasureString(option, &textWidth, &textHeight);
 
 		LegoS32 x = (renderTargetInfo->GetWidth() >> 1) - (static_cast<LegoU32>(textWidth) >> 1);
-		if (m_unk0x58 && m_unk0x50 == i) {
+		if (m_selecting && m_selectionIndex == i) {
 			m_font->SetColor(c_selectedColor);
 			m_renderer->SetAlphaOverride(selectedAlpha, c_selectedAlphaFlag);
 
-			if (m_unk0x54 < c_selectedBlinkThresholdMs) {
+			if (m_blinkMs < c_selectedBlinkThresholdMs) {
 				m_renderer->VTable0x64(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
 			}
 
@@ -210,14 +210,14 @@ void SlateBridge0x68::FUN_00427440()
 			m_renderer->VTable0x64(option, m_font, x, y, 1.0f, 1.0f, NULL, 0);
 		}
 
-		y += m_unk0x60;
+		y += m_lineHeight;
 	}
 
 	m_font->SetColor(c_promptColor);
 }
 
 // FUNCTION: LEGORACERS 0x004276c0
-void SlateBridge0x68::FUN_004276c0()
+void RaceDialog::DrawBackdrop()
 {
 	m_renderer->SetAlphaOverride(c_backdropAlpha, c_backdropAlphaFlag);
 
@@ -280,16 +280,16 @@ void SlateBridge0x68::FUN_004276c0()
 }
 
 // FUNCTION: LEGORACERS 0x00427810
-void SlateBridge0x68::FUN_00427810(LegoU32 p_keyCode)
+void RaceDialog::OnKeyDown(LegoU32 p_keyCode)
 {
 	LegoU32 keyCode;
 	LegoU32 selectionIndex;
 
-	if (m_unk0x48 != 1) {
+	if (m_state != 1) {
 		return;
 	}
 
-	if (!m_unk0x58) {
+	if (!m_selecting) {
 		return;
 	}
 
@@ -301,44 +301,44 @@ void SlateBridge0x68::FUN_00427810(LegoU32 p_keyCode)
 	case c_joystickButton13:
 	case c_joystickButton14:
 	case c_joystickButton15:
-		m_unk0x58 = 0;
+		m_selecting = 0;
 		break;
 	case c_keyboardPrevious:
 	case c_joystickButton4:
 	case c_joystickButton11:
 	case c_joystickAxisNegative:
-		selectionIndex = m_unk0x50;
+		selectionIndex = m_selectionIndex;
 		if (!selectionIndex) {
-			selectionIndex = m_unk0x4c;
+			selectionIndex = m_optionCount;
 		}
 		selectionIndex--;
-		m_unk0x50 = selectionIndex;
+		m_selectionIndex = selectionIndex;
 		break;
 	case c_keyboardNext:
 	case c_joystickButton6:
 	case c_joystickButton10:
 	case c_joystickAxisPositive:
-		selectionIndex = m_unk0x50;
+		selectionIndex = m_selectionIndex;
 		selectionIndex++;
-		if (selectionIndex == m_unk0x4c) {
+		if (selectionIndex == m_optionCount) {
 			selectionIndex = 0;
 		}
-		m_unk0x50 = selectionIndex;
+		m_selectionIndex = selectionIndex;
 		break;
 	}
 
-	if (keyCode == m_unk0x64) {
-		m_unk0x58 = 0;
+	if (keyCode == m_acceptKey) {
+		m_selecting = 0;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004278c0
-void SlateBridge0x68::FUN_004278c0(LegoU32 p_keyCode)
+void RaceDialog::OnKeyUp(LegoU32 p_keyCode)
 {
 	if (p_keyCode == c_keyboardEnter || p_keyCode == c_keyboardSpace || p_keyCode == c_joystickButton13 ||
-		p_keyCode == c_joystickButton15 || p_keyCode == c_joystickButton14 || p_keyCode == m_unk0x64) {
-		if (!m_unk0x58) {
-			m_unk0x48 = 2;
+		p_keyCode == c_joystickButton15 || p_keyCode == c_joystickButton14 || p_keyCode == m_acceptKey) {
+		if (!m_selecting) {
+			m_state = 2;
 		}
 	}
 }

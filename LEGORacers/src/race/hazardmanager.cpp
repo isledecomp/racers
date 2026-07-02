@@ -3558,10 +3558,10 @@ void HazardManager::LauncherHazard::Load(Context* p_context, GolFileParser* p_pa
 
 	m_triggerId = -1;
 	m_eventTable = p_context->GetEventTable();
-	m_triggerWorld = p_context->GetSkyState();
+	m_triggerWorld = p_context->GetTriggerWorld();
 	m_golExport = p_context->GetGolExport();
 	m_powerupManager = p_context->GetPowerupManager();
-	m_unk0x11c = p_context->GetUnk0x3c();
+	m_unk0x11c = p_context->GetTrailManager();
 
 	m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
 	DuskwindBananaRelic0x24* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
@@ -3960,8 +3960,8 @@ void HazardManager::MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Ra
 	forward.m_x = 0.0f;
 	forward.m_y = 0.0f;
 	forward.m_z = -1.0f;
-	m_shadowDecal.FUN_00414c90(&forward, &up);
-	m_shadowDecal.FUN_00414a30(m_trackCollidable);
+	m_shadowDecal.SetOrientation(&forward, &up);
+	m_shadowDecal.Project(m_trackCollidable);
 
 	m_flags |= c_flags0x178Bit0;
 }

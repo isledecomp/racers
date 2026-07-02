@@ -49,8 +49,8 @@ public:
 	struct Params {
 		GolWorldDatabase* m_trackDatabase;                   // 0x00
 		GolWorldDatabase* m_sharedDatabase;                  // 0x04
-		GolWorldDatabase* m_unk0x08;                         // 0x08
-		GolWorldDatabase* m_unk0x0c;                         // 0x0c
+		GolWorldDatabase* m_triggerDatabase;                 // 0x08
+		GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
 		RaceState::Racer::SoundSource* m_soundSource;        // 0x10
 		HazardManager* m_hazardManager;                      // 0x14
 		CutsceneAnimation* m_particleAnimation;              // 0x18
@@ -503,23 +503,23 @@ public:
 
 		// SIZE 0x4c
 		struct InitParams {
-			undefined4 m_unk0x00;                     // 0x00
-			undefined4 m_unk0x04;                     // 0x04
-			RaceState::Racer::SoundSource* m_unk0x08; // 0x08
-			GolVec3 m_unk0x0c;                        // 0x0c
-			LegoU32 m_unk0x18;                        // 0x18
-			LegoU32 m_unk0x1c;                        // 0x1c
-			LegoFloat m_unk0x20;                      // 0x20
-			LegoFloat m_unk0x24;                      // 0x24
-			LegoFloat m_unk0x28;                      // 0x28
-			LegoFloat m_unk0x2c;                      // 0x2c
-			LegoFloat m_unk0x30;                      // 0x30
-			LegoBool32 m_unk0x34;                     // 0x34
-			LegoBool32 m_unk0x38;                     // 0x38
-			LegoBool32 m_unk0x3c;                     // 0x3c
-			LegoBool32 m_unk0x40;                     // 0x40
-			GolModelEntity* m_unk0x44;                // 0x44
-			LegoU32 m_unk0x48;                        // 0x48
+			undefined4 m_eventId;                         // 0x00
+			undefined4 m_unk0x04;                         // 0x04
+			RaceState::Racer::SoundSource* m_soundSource; // 0x08
+			GolVec3 m_position;                           // 0x0c
+			LegoU32 m_soundId;                            // 0x18
+			LegoU32 m_unk0x1c;                            // 0x1c
+			LegoFloat m_volume;                           // 0x20
+			LegoFloat m_frequencyScale;                   // 0x24
+			LegoFloat m_minDistance;                      // 0x28
+			LegoFloat m_maxDistance;                      // 0x2c
+			LegoFloat m_probability;                      // 0x30
+			LegoBool32 m_unk0x34;                         // 0x34
+			LegoBool32 m_unk0x38;                         // 0x38
+			LegoBool32 m_unk0x3c;                         // 0x3c
+			LegoBool32 m_positional;                      // 0x40
+			GolModelEntity* m_entity;                     // 0x44
+			LegoU32 m_unk0x48;                            // 0x48
 		};
 
 		SoundResource();
@@ -640,8 +640,8 @@ private:
 
 	GolWorldDatabase* m_trackDatabase;                   // 0x00
 	GolWorldDatabase* m_sharedDatabase;                  // 0x04
-	GolWorldDatabase* m_unk0x08;                         // 0x08
-	GolWorldDatabase* m_unk0x0c;                         // 0x0c
+	GolWorldDatabase* m_triggerDatabase;                 // 0x08
+	GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
 	RaceState::Racer::SoundSource* m_soundSource;        // 0x10
 	HazardManager* m_hazardManager;                      // 0x14
 	CutsceneAnimation* m_particleAnimation;              // 0x18

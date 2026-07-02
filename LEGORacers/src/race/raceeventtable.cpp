@@ -110,23 +110,23 @@ void RaceEventTable::SkyStateResource::Destroy()
 void RaceEventTable::SkyStateResource::OnStartAt(GolVec3*)
 {
 	if (m_unk0x24[0]) {
-		m_skyState->FUN_0041d150(m_unk0x24, m_unk0x2c);
+		m_skyState->StartTransition(m_unk0x24, m_unk0x2c);
 	}
 
 	if (m_flags0x30 & c_flags0x30Bit0) {
-		m_skyState->m_unk0xc4 &= ~RaceSkyState::c_flag0xc4Bit0;
+		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideDome;
 	}
 
 	if (m_flags0x30 & c_flags0x30Bit1) {
-		m_skyState->m_unk0xc4 |= RaceSkyState::c_flag0xc4Bit0;
+		m_skyState->m_hideFlags |= RaceSkyState::c_hideDome;
 	}
 
 	if (m_flags0x30 & c_flags0x30Bit2) {
-		m_skyState->m_unk0xc4 &= ~RaceSkyState::c_flag0xc4Bit1;
+		m_skyState->m_hideFlags &= ~RaceSkyState::c_hideSkyWorld;
 	}
 
 	if (m_flags0x30 & c_flags0x30Bit3) {
-		m_skyState->m_unk0xc4 |= RaceSkyState::c_flag0xc4Bit1;
+		m_skyState->m_hideFlags |= RaceSkyState::c_hideSkyWorld;
 	}
 
 	NotifyStateChange(m_state0x18, 1);
@@ -656,8 +656,8 @@ RaceEventTable::RaceEventTable()
 	m_externalForces = NULL;
 	m_trackDatabase = 0;
 	m_sharedDatabase = 0;
-	m_unk0x08 = 0;
-	m_unk0x0c = 0;
+	m_triggerDatabase = 0;
+	m_materialAnimationDatabase = 0;
 	m_soundSource = 0;
 	m_hazardManager = 0;
 	m_skyState = 0;
@@ -679,8 +679,8 @@ void RaceEventTable::Load(Params* p_params)
 
 	m_trackDatabase = p_params->m_trackDatabase;
 	m_sharedDatabase = p_params->m_sharedDatabase;
-	m_unk0x08 = p_params->m_unk0x08;
-	m_unk0x0c = p_params->m_unk0x0c;
+	m_triggerDatabase = p_params->m_triggerDatabase;
+	m_materialAnimationDatabase = p_params->m_materialAnimationDatabase;
 	m_soundSource = p_params->m_soundSource;
 	m_hazardManager = p_params->m_hazardManager;
 	m_particleAnimation = p_params->m_particleAnimation;
@@ -785,7 +785,7 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 		}
 
 		SoundResource::InitParams params;
-		params.m_unk0x00 = p_parser->ReadInteger();
+		params.m_eventId = p_parser->ReadInteger();
 
 		GolFileParser::ParserTokenType token = p_parser->GetNextToken();
 		params.m_unk0x3c = FALSE;
@@ -799,47 +799,47 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 			p_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
 		}
 
-		params.m_unk0x2c = 300.0f;
-		params.m_unk0x28 = 30.0f;
-		params.m_unk0x18 = 0;
+		params.m_maxDistance = 300.0f;
+		params.m_minDistance = 30.0f;
+		params.m_soundId = 0;
 		params.m_unk0x34 = FALSE;
 		params.m_unk0x38 = FALSE;
-		params.m_unk0x40 = FALSE;
+		params.m_positional = FALSE;
 		params.m_unk0x1c = 0;
-		params.m_unk0x20 = 1.0f;
-		params.m_unk0x24 = 1.0f;
-		params.m_unk0x08 = field->m_soundSource;
-		params.m_unk0x30 = 1.0f;
-		params.m_unk0x44 = NULL;
+		params.m_volume = 1.0f;
+		params.m_frequencyScale = 1.0f;
+		params.m_soundSource = field->m_soundSource;
+		params.m_probability = 1.0f;
+		params.m_entity = NULL;
 		params.m_unk0x48 = 0;
 
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x3b:
-				params.m_unk0x0c.m_x = p_parser->ReadFloat();
-				params.m_unk0x0c.m_y = p_parser->ReadFloat();
-				params.m_unk0x0c.m_z = p_parser->ReadFloat();
+				params.m_position.m_x = p_parser->ReadFloat();
+				params.m_position.m_y = p_parser->ReadFloat();
+				params.m_position.m_z = p_parser->ReadFloat();
 				if (p_mirror) {
-					params.m_unk0x0c.m_y = -params.m_unk0x0c.m_y;
+					params.m_position.m_y = -params.m_position.m_y;
 				}
 				break;
 			case GolFileParser::e_unknown0x2c:
-				params.m_unk0x18 = p_parser->ReadInteger();
+				params.m_soundId = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2e:
 				params.m_unk0x1c = p_parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2f:
-				params.m_unk0x20 = p_parser->ReadFloat();
+				params.m_volume = p_parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x30:
-				params.m_unk0x24 = p_parser->ReadFloat();
+				params.m_frequencyScale = p_parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x31:
-				params.m_unk0x28 = p_parser->ReadFloat();
+				params.m_minDistance = p_parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x32:
-				params.m_unk0x2c = p_parser->ReadFloat();
+				params.m_maxDistance = p_parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x2d:
 				params.m_unk0x34 = TRUE;
@@ -848,17 +848,17 @@ void RaceEventTable::ParseSounds(GolFileParser* p_parser, LegoBool32 p_mirror)
 				params.m_unk0x38 = TRUE;
 				break;
 			case GolFileParser::e_unknown0x3f:
-				params.m_unk0x40 = TRUE;
+				params.m_positional = TRUE;
 				break;
 			case GolFileParser::e_unknown0x40:
-				params.m_unk0x30 = p_parser->ReadFloat();
+				params.m_probability = p_parser->ReadFloat();
 				break;
 			case GolFileParser::e_unknown0x33: {
 				GolName name;
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
-				params.m_unk0x44 = field->m_trackDatabase->FindUnk0xc0(name);
-				if (params.m_unk0x44 == NULL) {
-					params.m_unk0x44 = field->m_sharedDatabase->FindUnk0xc0(name);
+				params.m_entity = field->m_trackDatabase->FindUnk0xc0(name);
+				if (params.m_entity == NULL) {
+					params.m_entity = field->m_sharedDatabase->FindUnk0xc0(name);
 				}
 				break;
 			}
@@ -1082,7 +1082,7 @@ void RaceEventTable::ParseMaterialAnimations(GolFileParser* p_parser)
 		for (token = p_parser->GetNextToken(); token != GolFileParser::e_rightCurly; token = p_parser->GetNextToken()) {
 			switch (token) {
 			case GolFileParser::e_unknown0x38:
-				params.m_unk0x14 = field->m_unk0x0c->VTable0x4c(p_parser->ReadInteger());
+				params.m_unk0x14 = field->m_materialAnimationDatabase->VTable0x4c(p_parser->ReadInteger());
 				break;
 			case GolFileParser::e_unknown0x34:
 				params.m_unk0x20 = p_parser->ReadInteger();
@@ -1713,7 +1713,7 @@ void RaceEventTable::ParseNodeTransforms(GolFileParser* p_parser)
 			case GolFileParser::e_unknown0x4a:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
 
-				params.m_unk0x14 = field->m_unk0x08->FindUnk0xd8(name);
+				params.m_unk0x14 = field->m_triggerDatabase->FindUnk0xd8(name);
 				break;
 			case GolFileParser::e_unknown0x33:
 				::strncpy(name, p_parser->ReadStringWithMaxLength(sizeof(name)), sizeof(name));
@@ -2170,8 +2170,8 @@ void RaceEventTable::Destroy()
 
 	m_trackDatabase = 0;
 	m_sharedDatabase = 0;
-	m_unk0x08 = 0;
-	m_unk0x0c = 0;
+	m_triggerDatabase = 0;
+	m_materialAnimationDatabase = 0;
 	m_soundSource = 0;
 	m_hazardManager = 0;
 	m_skyState = 0;
@@ -2998,20 +2998,20 @@ void RaceEventTable::SoundResource::Initialize(InitParams* p_params)
 		Destroy();
 	}
 
-	m_eventId = p_params->m_unk0x00;
-	m_soundSource = p_params->m_unk0x08;
-	m_soundId = p_params->m_unk0x18;
+	m_eventId = p_params->m_eventId;
+	m_soundSource = p_params->m_soundSource;
+	m_soundId = p_params->m_soundId;
 	m_unk0x40 = p_params->m_unk0x1c;
-	m_volume = p_params->m_unk0x20;
-	m_frequencyScale = p_params->m_unk0x24;
-	m_minDistance = p_params->m_unk0x28;
-	m_maxDistance = p_params->m_unk0x2c;
-	m_position.m_x = p_params->m_unk0x0c.m_x;
-	m_position.m_y = p_params->m_unk0x0c.m_y;
-	m_position.m_z = p_params->m_unk0x0c.m_z;
-	m_unk0x28 = p_params->m_unk0x44;
+	m_volume = p_params->m_volume;
+	m_frequencyScale = p_params->m_frequencyScale;
+	m_minDistance = p_params->m_minDistance;
+	m_maxDistance = p_params->m_maxDistance;
+	m_position.m_x = p_params->m_position.m_x;
+	m_position.m_y = p_params->m_position.m_y;
+	m_position.m_z = p_params->m_position.m_z;
+	m_unk0x28 = p_params->m_entity;
 	m_unk0x2c = p_params->m_unk0x48;
-	m_probability = static_cast<LegoU8>(p_params->m_unk0x30 * 255.0f);
+	m_probability = static_cast<LegoU8>(p_params->m_probability * 255.0f);
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 	m_unk0x58 = static_cast<LegoU32>(g_randomTable[g_randomTableIndex]) % c_randomDelayRangeMs + c_randomDelayBaseMs;
@@ -3025,7 +3025,7 @@ void RaceEventTable::SoundResource::Initialize(InitParams* p_params)
 	if (p_params->m_unk0x3c) {
 		m_flags0x1c |= c_flags0x1cBit2;
 	}
-	if (p_params->m_unk0x40) {
+	if (p_params->m_positional) {
 		m_flags0x1c |= c_flags0x1cBit3;
 	}
 

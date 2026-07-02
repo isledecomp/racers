@@ -330,7 +330,7 @@ void RaceState::Racer::CarVisuals::StopSkidEffects()
 {
 	for (LegoU32 i = 0; i < sizeOfArray(m_skidMarks); i++) {
 		if (m_skidMarks[i]) {
-			m_skidMarkManager->FUN_00492820(m_skidMarks[i], 1000);
+			m_skidMarkManager->ReleaseTrail(m_skidMarks[i], 1000);
 			m_skidMarks[i] = NULL;
 		}
 
@@ -1038,7 +1038,7 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 
 			if (m_skidMarks[i]) {
 				m_carEntity->VTable0x2c(m_wheelOffsets[i], &position);
-				m_skidMarks[i]->FUN_00491fa0(p_elapsedMs, position);
+				m_skidMarks[i]->AddSample(p_elapsedMs, position);
 			}
 		}
 	}
@@ -1075,22 +1075,22 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 	}
 
 	{
-		RaceSessionField0x27d4::Item** itemSlot = m_skidMarks;
+		RaceDecalManager::Trail** itemSlot = m_skidMarks;
 		LegoU32 i = 0;
 		LegoU8 colorByte = 0xff;
 		do {
 			LegoU32 flags0x000Bit8 = m_flags & c_flagSliding;
 			if (flags0x000Bit8) {
-				RaceSessionField0x27d4::Item* item = *itemSlot;
-				if (item && item->GetUnk0x314() == 1000) {
-					m_skidMarkManager->FUN_00492820(item, 0);
+				RaceDecalManager::Trail* item = *itemSlot;
+				if (item && item->GetDurationMs() == 1000) {
+					m_skidMarkManager->ReleaseTrail(item, 0);
 					*itemSlot = NULL;
 				}
 			}
 			else {
-				RaceSessionField0x27d4::Item* item = *itemSlot;
-				if (item && item->GetUnk0x314() == 250) {
-					m_skidMarkManager->FUN_00492820(item, 0);
+				RaceDecalManager::Trail* item = *itemSlot;
+				if (item && item->GetDurationMs() == 250) {
+					m_skidMarkManager->ReleaseTrail(item, 0);
 					*itemSlot = NULL;
 				}
 			}
@@ -1098,10 +1098,10 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 			if (m_wheelSkidFlags[i] & c_wheelSkidActive) {
 				if (!*itemSlot) {
 					if (m_flags & c_flagSliding) {
-						*itemSlot = m_skidMarkManager->FUN_004927c0(250);
+						*itemSlot = m_skidMarkManager->AcquireTrail(250);
 					}
 					else {
-						*itemSlot = m_skidMarkManager->FUN_004927c0(1000);
+						*itemSlot = m_skidMarkManager->AcquireTrail(1000);
 					}
 
 					if (*itemSlot) {
@@ -1110,20 +1110,20 @@ void RaceState::Racer::CarVisuals::UpdateSkidMarks(LegoU32 p_elapsedMs)
 						color.m_grn = colorByte;
 						color.m_blu = colorByte;
 						color.m_alp = colorByte;
-						(*itemSlot)->FUN_00491d80(&color);
-						(*itemSlot)->FUN_00491d20(&m_skidMaterialTable);
+						(*itemSlot)->SetColor(&color);
+						(*itemSlot)->SetMaterialTable(&m_skidMaterialTable);
 
 						if (i == 0 || i == 1) {
-							(*itemSlot)->SetUnk0x324(m_frontSkidWidth);
+							(*itemSlot)->SetWidth(m_frontSkidWidth);
 						}
 						else {
-							(*itemSlot)->SetUnk0x324(m_rearSkidWidth);
+							(*itemSlot)->SetWidth(m_rearSkidWidth);
 						}
 					}
 				}
 			}
 			else if (*itemSlot) {
-				m_skidMarkManager->FUN_00492820(*itemSlot, 0);
+				m_skidMarkManager->ReleaseTrail(*itemSlot, 0);
 				*itemSlot = NULL;
 			}
 			i++;
@@ -1301,7 +1301,7 @@ void RaceState::Racer::CarVisuals::UpdateShadow(GolCamera* p_camera)
 		m_shadowDecal.m_unk0x10c = g_unk0x004b0af0;
 		center.m_z += g_shadowProbeHeight;
 
-		RaceSessionField0x27d4::Item::Decal* field = &m_shadowDecal;
+		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
 		field->m_unk0x0e8.m_x = center.m_x;
 		field->m_unk0x0e8.m_y = center.m_y;
 		field->m_unk0x0e8.m_z = center.m_z;
@@ -1313,8 +1313,8 @@ void RaceState::Racer::CarVisuals::UpdateShadow(GolCamera* p_camera)
 		GolVec3* vector = &m_shadowDirection;
 		m_shadowDecal.GetUnk0x010().SetPrimaryMaterialTable(materialTable);
 		up.m_z = -up.m_z;
-		field->FUN_00414c90(vector, upVector);
-		field->FUN_00414a30(m_trackCollidable);
+		field->SetOrientation(vector, upVector);
+		field->Project(m_trackCollidable);
 	}
 }
 
@@ -1342,7 +1342,7 @@ void RaceState::Racer::CarVisuals::Draw(GolD3DRenderDevice* p_renderer)
 void RaceState::Racer::CarVisuals::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & c_flagShadowVisible) {
-		RaceSessionField0x27d4::Item::Decal* field = &m_shadowDecal;
+		RaceDecalManager::Trail::Decal* field = &m_shadowDecal;
 		GolVec3 cameraPosition;
 		p_renderer->GetUnk0x0c()->GetTransform()->GetPosition(&cameraPosition);
 

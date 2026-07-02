@@ -553,7 +553,7 @@ void RacePowerupManager::Initialize(const Params* p_params)
 	m_cutsceneAnimation = p_params->m_cutsceneAnimation;
 	m_trailManager = p_params->m_trailManager;
 	m_trackDatabase = p_params->m_trackDatabase;
-	m_unk0x048 = p_params->m_unk0x24;
+	m_unk0x048 = p_params->m_racerTriggers;
 	m_animationList = p_params->m_animationList;
 	m_targetPoints = p_params->m_targetPoints;
 	m_cameraFov = p_params->m_cameraFov;

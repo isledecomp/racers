@@ -5,7 +5,7 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(RacePowerupManager::TargetPointList::Entry, 0x14)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x2804, 0x08)
+DECOMP_SIZE_ASSERT(RaceSession::TargetPointList, 0x08)
 
 // FUNCTION: LEGORACERS 0x0045c340
 RacePowerupManager::TargetPointList::Entry::Entry()
@@ -38,20 +38,20 @@ void RacePowerupManager::TargetPointList::Entry::Set(GolVec3* p_position, LegoS3
 }
 
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED
-RaceSession::Field0x2804::Field0x2804()
+RaceSession::TargetPointList::TargetPointList()
 {
 	m_entries = NULL;
 	m_count = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c3c0
-RaceSession::Field0x2804::~Field0x2804()
+RaceSession::TargetPointList::~TargetPointList()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045c3d0
-void RaceSession::Field0x2804::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
+void RaceSession::TargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	GolFileParser* parser;
 	if (p_binary) {
@@ -129,7 +129,7 @@ void RaceSession::Field0x2804::Load(const LegoChar* p_name, LegoBool32 p_binary,
 }
 
 // FUNCTION: LEGORACERS 0x0045c620
-void RaceSession::Field0x2804::Reset()
+void RaceSession::TargetPointList::Reset()
 {
 	if (m_entries) {
 		delete[] m_entries;

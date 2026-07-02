@@ -574,7 +574,7 @@ void RaceState::Racer::InitializePhysics(RacerContext* p_context, SetupParams* p
 	GolBoundedEntity* unk0x10;
 	if (p_context) {
 		eventTable = p_context->m_eventTable;
-		unk0x2c = p_context->m_unk0x2c;
+		unk0x2c = p_context->m_surfaceTable;
 		unk0x0c = p_context->m_trackWorld;
 		unk0x10 = p_context->m_triggerWorld;
 	}
@@ -2924,7 +2924,7 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 
 	for (LegoU32 i = 0; i < m_roster.m_racerCount; i++) {
 		p_context->m_routeRecord = p_params->m_racerRoutes[i];
-		CreateRacer(p_params->m_slots[i], p_context, i, p_params->m_unk0x3c);
+		CreateRacer(p_params->m_slots[i], p_context, i, p_params->m_splitScreen);
 	}
 
 	m_chassisTable.FUN_0041dae0();
@@ -3060,7 +3060,7 @@ void RaceState::CreateRacer(
 
 	racerParams.m_lapCount = m_setup.m_lapCount;
 	racerParams.m_eventTable = p_context->m_eventTable;
-	racerParams.m_unk0x64 = p_context->m_unk0x2c;
+	racerParams.m_unk0x64 = p_context->m_surfaceTable;
 	racerParams.m_trackWorld = p_context->m_trackWorld;
 	racerParams.m_enginePitchScale = chassisItem->m_enginePitchScale;
 

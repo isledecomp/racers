@@ -78,7 +78,7 @@ void RaceSession::Field0x2080::Entry::VTable0x0c(LegoU32 p_elapsedMs)
 		LegoU32 racerIndex;
 		for (racerIndex = 0; racerIndex < 6; racerIndex++) {
 			if ((bit & m_unk0x40) && !(bit & m_unk0x3c)) {
-				m_unk0x30->FUN_004629d0(m_unk0x34, m_raceState->GetRacer(racerIndex));
+				m_unk0x30->EndEventsForRacer(m_unk0x34, m_raceState->GetRacer(racerIndex));
 			}
 
 			bit <<= 1;
@@ -115,7 +115,7 @@ void RaceSession::Field0x2080::Entry::VTable0x00(LegoEventQueue::CallbackData* p
 		LegoU32 previousFlags = m_unk0x40;
 		m_unk0x3c |= bit;
 		if (!(previousFlags & bit) && m_unk0x34 != -1) {
-			m_unk0x30->FUN_004628c0(m_unk0x34, racer);
+			m_unk0x30->StartEventsForRacer(m_unk0x34, racer);
 		}
 	}
 }
@@ -330,7 +330,7 @@ void RaceSession::Field0x2128::Entry::VTable0x0c(LegoU32)
 		entity->VTable0x04(&position);
 
 		if (m_unk0x34 != -1) {
-			m_unk0x30->FUN_00462140(m_unk0x34, &position);
+			m_unk0x30->EndEventsAt(m_unk0x34, &position);
 		}
 	}
 
@@ -349,7 +349,7 @@ void RaceSession::Field0x2128::Entry::VTable0x00(LegoEventQueue::CallbackData*)
 		entity->VTable0x04(&position);
 
 		if (m_unk0x34 != -1) {
-			m_unk0x30->FUN_00461ef0(m_unk0x34, &position);
+			m_unk0x30->StartEventsAt(m_unk0x34, &position);
 		}
 	}
 

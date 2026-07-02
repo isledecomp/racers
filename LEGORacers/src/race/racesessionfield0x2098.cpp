@@ -605,19 +605,19 @@ void RaceSession::Field0x2098::Resource::FUN_0045edd0(LegoU32 p_unk0x04, LegoU32
 
 	if (current != -1) {
 		if (next != -1) {
-			m_unk0x04->FUN_00462580(next, current, NULL);
+			m_unk0x04->FireEventsAt(next, current, NULL);
 		}
 		else {
-			m_unk0x04->FUN_00462140(current, NULL);
+			m_unk0x04->EndEventsAt(current, NULL);
 		}
 	}
 	else if (next != -1) {
-		m_unk0x04->FUN_00461ef0(next, NULL);
+		m_unk0x04->StartEventsAt(next, NULL);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0045eee0 FOLDED
-void RaceSession::Field0x2098::Resource::FUN_0045eee0(RaceState::Racer* p_racer)
+void RaceSession::Field0x2098::Resource::ForceEventEnd(RaceState::Racer* p_racer)
 {
 	LegoU8 flags = m_flags0x1c;
 	if (flags & c_flags0x1cBit2) {
@@ -2323,21 +2323,21 @@ void RaceSession::Field0x2098::FUN_00462da0(RaceState::Racer* p_racer)
 	if (m_unk0x7c) {
 		for (i = 0; i < m_unk0x44; i++) {
 			Resource* resource = &m_unk0x7c[i];
-			resource->FUN_0045eee0(p_racer);
+			resource->ForceEventEnd(p_racer);
 		}
 	}
 
 	if (m_unk0x80) {
 		for (i = 0; i < m_unk0x48; i++) {
 			Resource* resource = &m_unk0x80[i];
-			resource->FUN_0045eee0(p_racer);
+			resource->ForceEventEnd(p_racer);
 		}
 	}
 
 	if (m_unk0x88) {
 		for (i = 0; i < m_unk0x54; i++) {
 			Resource* resource = &m_unk0x88[i];
-			resource->FUN_0045eee0(p_racer);
+			resource->ForceEventEnd(p_racer);
 		}
 	}
 
@@ -2346,7 +2346,7 @@ void RaceSession::Field0x2098::FUN_00462da0(RaceState::Racer* p_racer)
 
 		for (i = 0; i < count; i++) {
 			Resource* resource = &m_unk0x8c[i];
-			resource->FUN_0045eee0(p_racer);
+			resource->ForceEventEnd(p_racer);
 			count = m_unk0x58;
 		}
 	}

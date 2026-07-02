@@ -126,7 +126,7 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 
 	if (m_unk0x1c & c_flags0x1cBit0) {
 		if (m_unk0x20 != -1) {
-			m_unk0x08->FUN_00462140(m_unk0x20, NULL);
+			m_unk0x08->EndEventsAt(m_unk0x20, NULL);
 		}
 
 		LegoU32 duration = m_unk0x14;
@@ -153,7 +153,7 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 	}
 
 	if (m_unk0x20 != -1) {
-		m_unk0x08->FUN_00461ef0(m_unk0x20, NULL);
+		m_unk0x08->StartEventsAt(m_unk0x20, NULL);
 	}
 
 	LegoU32 duration = m_unk0x10;

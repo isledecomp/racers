@@ -1113,8 +1113,8 @@ LegoU32 RaceState::Racer::Physics::OnCollisionRecord(
 	}
 
 	if (target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Bit3) {
-		m_eventTable->FUN_00462580(target->m_unk0x14, target->m_unk0x14, p_point);
-		m_eventTable->FUN_00462ae0(target->m_unk0x14, target->m_unk0x14, m_ownerRacer);
+		m_eventTable->FireEventsAt(target->m_unk0x14, target->m_unk0x14, p_point);
+		m_eventTable->FireEventsForRacer(target->m_unk0x14, target->m_unk0x14, m_ownerRacer);
 	}
 
 	return (~target->m_flags0x08 >> 16) & 1;
@@ -1199,8 +1199,8 @@ void RaceState::Racer::Physics::UpdateWheelSurfaces()
 void RaceState::Racer::Physics::NotifySurfaceEnter(WheelProbe* p_probe, RaceEventRecord::Target* p_target)
 {
 	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x0c) {
-		m_eventTable->FUN_00461ef0(p_target->m_unk0x0c, &p_probe->m_wheelPosition);
-		m_eventTable->FUN_004628c0(p_target->m_unk0x0c, m_ownerRacer);
+		m_eventTable->StartEventsAt(p_target->m_unk0x0c, &p_probe->m_wheelPosition);
+		m_eventTable->StartEventsForRacer(p_target->m_unk0x0c, m_ownerRacer);
 	}
 }
 
@@ -1214,8 +1214,8 @@ void RaceState::Racer::Physics::NotifySurfaceLeave(WheelProbe* p_probe, RaceEven
 	}
 
 	if (p_target->m_flags0x08 & RaceEventRecord::Target::c_flags0x08Unk0x10) {
-		m_eventTable->FUN_00462140(p_target->m_unk0x10, &p_probe->m_wheelPosition);
-		m_eventTable->FUN_004629d0(p_target->m_unk0x10, m_ownerRacer);
+		m_eventTable->EndEventsAt(p_target->m_unk0x10, &p_probe->m_wheelPosition);
+		m_eventTable->EndEventsForRacer(p_target->m_unk0x10, m_ownerRacer);
 	}
 }
 

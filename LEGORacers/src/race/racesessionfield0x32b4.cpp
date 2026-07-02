@@ -168,8 +168,8 @@ LegoBool32 RaceSessionField0x32b4::FUN_0041f730(
 
 	if (hit) {
 		if (hit->m_flags0x08 & 0x10) {
-			m_unk0x04->FUN_00461ef0(hit->m_unk0x18, p_unk0x10);
-			m_unk0x04->FUN_00462140(hit->m_unk0x18, p_unk0x10);
+			m_unk0x04->StartEventsAt(hit->m_unk0x18, p_unk0x10);
+			m_unk0x04->EndEventsAt(hit->m_unk0x18, p_unk0x10);
 		}
 
 		if (hit->m_flags0x08 & 0x20000) {

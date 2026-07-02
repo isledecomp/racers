@@ -531,7 +531,7 @@ public:
 			virtual ~Resource();                                // vtable+0x10
 			virtual void VTable0x14(LegoU32 p_elapsedMs);       // vtable+0x14
 
-			void FUN_0045eee0(RaceState::Racer* p_racer);
+			void ForceEventEnd(RaceState::Racer* p_racer);
 			void Reset();
 			void FUN_0045edd0(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 			void SetState0x18(LegoU32 p_state) { m_state0x18 = p_state; }

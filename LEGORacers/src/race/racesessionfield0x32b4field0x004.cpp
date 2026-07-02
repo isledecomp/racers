@@ -24,7 +24,7 @@ LegoU32 RaceEventTable0x90::Field0x24::FUN_0045c660(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045ee50
-void RaceEventTable0x90::EntryBase::FUN_0045ee50(GolVec3* p_unk0x04)
+void RaceEventTable0x90::EntryBase::OnEventStart(GolVec3* p_unk0x04)
 {
 	if (!(m_flags0x1c & 4) && (m_unk0x18 == 1 || m_unk0x18 == 4)) {
 		VTable0x04(p_unk0x04);
@@ -32,7 +32,7 @@ void RaceEventTable0x90::EntryBase::FUN_0045ee50(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045ee70
-void RaceEventTable0x90::EntryBase::FUN_0045ee70(GolVec3* p_unk0x04)
+void RaceEventTable0x90::EntryBase::OnEventEnd(GolVec3* p_unk0x04)
 {
 	if (m_flags0x1c & 4) {
 		if (m_unk0x18 == 1 || m_unk0x18 == 4) {
@@ -52,7 +52,7 @@ void RaceEventTable0x90::EntryBase::FUN_0045ee70(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045eec0
-void RaceEventTable0x90::EntryBase::FUN_0045eec0(void* p_unk0x04)
+void RaceEventTable0x90::EntryBase::ForceEventStart(void* p_unk0x04)
 {
 	if (!(m_flags0x1c & 4) && (m_unk0x18 == 1 || m_unk0x18 == 4)) {
 		VTable0x00(p_unk0x04);
@@ -60,7 +60,7 @@ void RaceEventTable0x90::EntryBase::FUN_0045eec0(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045eee0 FOLDED
-void RaceEventTable0x90::EntryBase::FUN_0045eee0(void* p_unk0x04)
+void RaceEventTable0x90::EntryBase::ForceEventEnd(void* p_unk0x04)
 {
 	LegoU8 flags = m_flags0x1c;
 	if (flags & 4) {
@@ -82,12 +82,12 @@ void RaceEventTable0x90::EntryBase::FUN_0045eee0(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00461ef0
-LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x08)
+LegoU32 RaceEventTable0x90::StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 {
 	if (m_unk0x5c) {
 		for (LegoU32 i = 0; i < m_count0x5c; i++) {
 			if (m_unk0x5c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x5c[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x5c[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -95,7 +95,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x60) {
 		for (LegoU32 i = 0; i < m_count0x60; i++) {
 			if (m_unk0x60[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x60[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x60[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -103,7 +103,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x64) {
 		for (LegoU32 i = 0; i < m_count0x64; i++) {
 			if (m_unk0x64[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x64[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x64[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -111,7 +111,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x68) {
 		for (LegoU32 i = 0; i < m_count0x68; i++) {
 			if (m_unk0x68[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x68[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x68[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -119,7 +119,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x70) {
 		for (LegoU32 i = 0; i < m_count0x70; i++) {
 			if (m_unk0x70[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x70[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x70[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -127,7 +127,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x74) {
 		for (LegoU32 i = 0; i < m_count0x74; i++) {
 			if (m_unk0x74[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x74[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x74[i].OnEventStart(p_unk0x08);
 			}
 
 			if (m_unk0x74[i].m_unk0x20 == p_unk0x04) {
@@ -139,7 +139,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x78) {
 		for (LegoU32 i = 0; i < m_count0x78; i++) {
 			if (m_unk0x78[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x78[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x78[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -147,7 +147,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x84) {
 		for (LegoU32 i = 0; i < m_count0x84; i++) {
 			if (m_unk0x84[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x84[i].FUN_0045ee50(p_unk0x08);
+				m_unk0x84[i].OnEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -155,7 +155,7 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 	if (m_unk0x6c) {
 		for (LegoU32 i = 0; i < m_count0x6c; i++) {
 			if (m_unk0x6c[i].m_unk0x00 == p_unk0x04) {
-				FUN_00462350(m_unk0x6c[i].m_unk0x04);
+				ForceEvents(m_unk0x6c[i].m_unk0x04);
 			}
 		}
 	}
@@ -173,12 +173,12 @@ LegoU32 RaceEventTable0x90::FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x0
 }
 
 // FUNCTION: LEGORACERS 0x00462140
-void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
+void RaceEventTable0x90::EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 {
 	if (m_unk0x5c) {
 		for (LegoU32 i = 0; i < m_count0x5c; i++) {
 			if (m_unk0x5c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x5c[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x5c[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -186,7 +186,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x60) {
 		for (LegoU32 i = 0; i < m_count0x60; i++) {
 			if (m_unk0x60[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x60[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x60[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -194,7 +194,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x64) {
 		for (LegoU32 i = 0; i < m_count0x64; i++) {
 			if (m_unk0x64[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x64[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x64[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -202,7 +202,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x68) {
 		for (LegoU32 i = 0; i < m_count0x68; i++) {
 			if (m_unk0x68[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x68[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x68[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -210,7 +210,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x70) {
 		for (LegoU32 i = 0; i < m_count0x70; i++) {
 			if (m_unk0x70[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x70[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x70[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -218,7 +218,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x74) {
 		for (LegoU32 i = 0; i < m_count0x74; i++) {
 			if (m_unk0x74[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x74[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x74[i].OnEventEnd(p_unk0x08);
 			}
 
 			if (m_unk0x74[i].m_unk0x20 == p_unk0x04) {
@@ -230,7 +230,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x78) {
 		for (LegoU32 i = 0; i < m_count0x78; i++) {
 			if (m_unk0x78[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x78[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x78[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -238,7 +238,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 	if (m_unk0x84) {
 		for (LegoU32 i = 0; i < m_count0x84; i++) {
 			if (m_unk0x84[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x84[i].FUN_0045ee70(p_unk0x08);
+				m_unk0x84[i].OnEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -255,7 +255,7 @@ void RaceEventTable0x90::FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x00462350
-void RaceEventTable0x90::FUN_00462350(undefined4 p_unk0x04)
+void RaceEventTable0x90::ForceEvents(undefined4 p_unk0x04)
 {
 	if (m_unk0x5c) {
 		for (LegoU32 i = 0; i < m_count0x5c; i++) {
@@ -357,16 +357,16 @@ void RaceEventTable0x90::FUN_00462350(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00462580
-void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c)
+void RaceEventTable0x90::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c)
 {
 	if (m_unk0x5c) {
 		for (LegoU32 i = 0; i < m_count0x5c; i++) {
 			if (m_unk0x5c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x5c[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x5c[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x5c[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x5c[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x5c[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -374,11 +374,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x60) {
 		for (LegoU32 i = 0; i < m_count0x60; i++) {
 			if (m_unk0x60[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x60[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x60[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x60[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x60[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x60[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -386,11 +386,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x64) {
 		for (LegoU32 i = 0; i < m_count0x64; i++) {
 			if (m_unk0x64[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x64[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x64[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x64[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x64[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x64[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -398,11 +398,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x68) {
 		for (LegoU32 i = 0; i < m_count0x68; i++) {
 			if (m_unk0x68[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x68[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x68[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x68[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x68[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x68[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -410,11 +410,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x70) {
 		for (LegoU32 i = 0; i < m_count0x70; i++) {
 			if (m_unk0x70[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x70[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x70[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x70[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x70[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x70[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -422,7 +422,7 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x74) {
 		for (LegoU32 i = 0; i < m_count0x74; i++) {
 			if (m_unk0x74[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x74[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x74[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x74[i].m_unk0x20 == p_unk0x04) {
@@ -430,7 +430,7 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 			}
 
 			if (m_unk0x74[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x74[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x74[i].OnEventEnd(p_unk0x0c);
 			}
 
 			if (m_unk0x74[i].m_unk0x20 == p_unk0x08) {
@@ -442,11 +442,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x78) {
 		for (LegoU32 i = 0; i < m_count0x78; i++) {
 			if (m_unk0x78[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x78[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x78[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x78[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x78[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x78[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -454,11 +454,11 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x84) {
 		for (LegoU32 i = 0; i < m_count0x84; i++) {
 			if (m_unk0x84[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x84[i].FUN_0045ee50(p_unk0x0c);
+				m_unk0x84[i].OnEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x84[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x84[i].FUN_0045ee70(p_unk0x0c);
+				m_unk0x84[i].OnEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -466,7 +466,7 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x6c) {
 		for (LegoU32 i = 0; i < m_count0x6c; i++) {
 			if (m_unk0x6c[i].m_unk0x00 == p_unk0x04) {
-				FUN_00462350(m_unk0x6c[i].m_unk0x04);
+				ForceEvents(m_unk0x6c[i].m_unk0x04);
 			}
 		}
 	}
@@ -487,12 +487,12 @@ void RaceEventTable0x90::FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08
 }
 
 // FUNCTION: LEGORACERS 0x004628c0
-void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
+void RaceEventTable0x90::StartEventsForRacer(undefined4 p_unk0x04, void* p_unk0x08)
 {
 	if (m_unk0x7c) {
 		for (LegoU32 i = 0; i < m_count0x7c; i++) {
 			if (m_unk0x7c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x7c[i].FUN_0045eec0(p_unk0x08);
+				m_unk0x7c[i].ForceEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -500,7 +500,7 @@ void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x80) {
 		for (LegoU32 i = 0; i < m_count0x80; i++) {
 			if (m_unk0x80[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x80[i].FUN_0045eec0(p_unk0x08);
+				m_unk0x80[i].ForceEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -508,7 +508,7 @@ void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x88) {
 		for (LegoU32 i = 0; i < m_count0x88; i++) {
 			if (m_unk0x88[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x88[i].FUN_0045eec0(p_unk0x08);
+				m_unk0x88[i].ForceEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -516,7 +516,7 @@ void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x8c) {
 		for (LegoU32 i = 0; i < m_count0x8c; i++) {
 			if (m_unk0x8c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x8c[i].FUN_0045eec0(p_unk0x08);
+				m_unk0x8c[i].ForceEventStart(p_unk0x08);
 			}
 		}
 	}
@@ -527,12 +527,12 @@ void RaceEventTable0x90::FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x004629d0
-void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
+void RaceEventTable0x90::EndEventsForRacer(undefined4 p_unk0x04, void* p_unk0x08)
 {
 	if (m_unk0x7c) {
 		for (LegoU32 i = 0; i < m_count0x7c; i++) {
 			if (m_unk0x7c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x7c[i].FUN_0045eee0(p_unk0x08);
+				m_unk0x7c[i].ForceEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -540,7 +540,7 @@ void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x80) {
 		for (LegoU32 i = 0; i < m_count0x80; i++) {
 			if (m_unk0x80[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x80[i].FUN_0045eee0(p_unk0x08);
+				m_unk0x80[i].ForceEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -548,7 +548,7 @@ void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x88) {
 		for (LegoU32 i = 0; i < m_count0x88; i++) {
 			if (m_unk0x88[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x88[i].FUN_0045eee0(p_unk0x08);
+				m_unk0x88[i].ForceEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -556,7 +556,7 @@ void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
 	if (m_unk0x8c) {
 		for (LegoU32 i = 0; i < m_count0x8c; i++) {
 			if (m_unk0x8c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x8c[i].FUN_0045eee0(p_unk0x08);
+				m_unk0x8c[i].ForceEventEnd(p_unk0x08);
 			}
 		}
 	}
@@ -567,16 +567,16 @@ void RaceEventTable0x90::FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x00462ae0
-void RaceEventTable0x90::FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08, void* p_unk0x0c)
+void RaceEventTable0x90::FireEventsForRacer(undefined4 p_unk0x04, undefined4 p_unk0x08, void* p_unk0x0c)
 {
 	if (m_unk0x7c) {
 		for (LegoU32 i = 0; i < m_count0x7c; i++) {
 			if (m_unk0x7c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x7c[i].FUN_0045eec0(p_unk0x0c);
+				m_unk0x7c[i].ForceEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x7c[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x7c[i].FUN_0045eee0(p_unk0x0c);
+				m_unk0x7c[i].ForceEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -584,11 +584,11 @@ void RaceEventTable0x90::FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x80) {
 		for (LegoU32 i = 0; i < m_count0x80; i++) {
 			if (m_unk0x80[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x80[i].FUN_0045eec0(p_unk0x0c);
+				m_unk0x80[i].ForceEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x80[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x80[i].FUN_0045eee0(p_unk0x0c);
+				m_unk0x80[i].ForceEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -596,11 +596,11 @@ void RaceEventTable0x90::FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x88) {
 		for (LegoU32 i = 0; i < m_count0x88; i++) {
 			if (m_unk0x88[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x88[i].FUN_0045eec0(p_unk0x0c);
+				m_unk0x88[i].ForceEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x88[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x88[i].FUN_0045eee0(p_unk0x0c);
+				m_unk0x88[i].ForceEventEnd(p_unk0x0c);
 			}
 		}
 	}
@@ -608,11 +608,11 @@ void RaceEventTable0x90::FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08
 	if (m_unk0x8c) {
 		for (LegoU32 i = 0; i < m_count0x8c; i++) {
 			if (m_unk0x8c[i].m_unk0x14 == p_unk0x04) {
-				m_unk0x8c[i].FUN_0045eec0(p_unk0x0c);
+				m_unk0x8c[i].ForceEventStart(p_unk0x0c);
 			}
 
 			if (m_unk0x8c[i].m_unk0x14 == p_unk0x08) {
-				m_unk0x8c[i].FUN_0045eee0(p_unk0x0c);
+				m_unk0x8c[i].ForceEventEnd(p_unk0x0c);
 			}
 		}
 	}

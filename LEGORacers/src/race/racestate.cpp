@@ -2260,7 +2260,7 @@ void RaceState::Racer::PlayTaunt()
 		1.0f,
 		1.0f
 	);
-	m_physics.m_eventTable->FUN_00462580(999, 999, &position);
+	m_physics.m_eventTable->FireEventsAt(999, 999, &position);
 }
 
 // FUNCTION: LEGORACERS 0x00439cf0

@@ -1089,7 +1089,7 @@ void HazardManager::FallingPillarHazard::Update(undefined4 p_elapsedMs)
 		if (m_unk0x1c == 0 && m_unk0x10->GetUnk0xb4() > 50.0f) {
 			m_unk0x18->m_flags &= ~ColliderRecord::c_flagBit16;
 			m_unk0x18->m_flags &= ~ColliderRecord::c_flagBit17;
-			m_eventTable->FUN_00462580(7, 7, NULL);
+			m_eventTable->FireEventsAt(7, 7, NULL);
 			m_unk0x1c = 1;
 		}
 	}
@@ -1344,7 +1344,7 @@ void HazardManager::SphinxHazard::OnActivate(void*)
 
 		GolVec3 position;
 		m_unk0x1c->VTable0x04(&position);
-		m_eventTable->FUN_00461ef0(0x10, &position);
+		m_eventTable->StartEventsAt(0x10, &position);
 	}
 
 	m_unk0x20->m_flags |= ColliderRecord::c_flagBit16;
@@ -1381,7 +1381,7 @@ void HazardManager::SphinxHazard::Update(undefined4 p_elapsedMs)
 
 		GolVec3 position;
 		m_unk0x1c->VTable0x04(&position);
-		m_eventTable->FUN_00462140(0x10, &position);
+		m_eventTable->EndEventsAt(0x10, &position);
 		OnDeactivate(NULL);
 		return;
 	}
@@ -1971,7 +1971,7 @@ void HazardManager::HammerHazard::Update(undefined4 p_elapsedMs)
 	if (active) {
 		if ((frame > g_item0x2aTriggerStart0 && frame < g_item0x2aTriggerEnd0) ||
 			(frame > g_item0x2aTriggerStart1 && frame < g_item0x2aTriggerEnd1)) {
-			m_eventTable->FUN_00462580(0x2b, 0x2b, NULL);
+			m_eventTable->FireEventsAt(0x2b, 0x2b, NULL);
 			m_unk0x14 &= ~1;
 		}
 	}
@@ -2104,49 +2104,49 @@ void HazardManager::CodePuzzleHazard::OnEventStart(LegoS32 p_unk0x04, void* p_un
 		}
 	}
 	else if (p_unk0x04 == m_unk0x32 && m_unk0x36 == 3) {
-		m_eventTable->FUN_00462580(c_successFirstEvent, c_successFirstEvent, NULL);
+		m_eventTable->FireEventsAt(c_successFirstEvent, c_successFirstEvent, NULL);
 		m_unk0x36 = 0;
 		m_unk0x1c->FUN_10025da0(m_unk0x1c->GetUnk0x00(), m_unk0x1c->GetUnk0x04(), TRUE);
 		m_unk0x20->FUN_10025da0(m_unk0x20->GetUnk0x00(), m_unk0x20->GetUnk0x04(), TRUE);
 		m_unk0x24->FUN_10025da0(m_unk0x24->GetUnk0x00(), m_unk0x24->GetUnk0x04(), TRUE);
 		m_unk0x38 = c_delayMs;
 		ResetCodeModels();
-		m_eventTable->FUN_00461ef0(c_successSecondEvent, NULL);
+		m_eventTable->StartEventsAt(c_successSecondEvent, NULL);
 	}
 
 	switch (p_unk0x04) {
 	case 200:
 	case 202:
 	case 204:
-		m_eventTable->FUN_00462580(c_goodInputEvent, c_goodInputEvent, static_cast<GolVec3*>(p_unk0x08));
+		m_eventTable->FireEventsAt(c_goodInputEvent, c_goodInputEvent, static_cast<GolVec3*>(p_unk0x08));
 		return;
 	case 201:
 	case 203:
 	case 205:
-		m_eventTable->FUN_00462580(c_badInputEvent, c_badInputEvent, static_cast<GolVec3*>(p_unk0x08));
+		m_eventTable->FireEventsAt(c_badInputEvent, c_badInputEvent, static_cast<GolVec3*>(p_unk0x08));
 		return;
 	case 207:
 		if (m_unk0x30 == c_firstCodeEvent) {
-			m_eventTable->FUN_00462580(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
-			m_eventTable->FUN_00462580(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		break;
 	case 208:
 		if (m_unk0x31 == c_secondCodeEvent) {
-			m_eventTable->FUN_00462580(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
-			m_eventTable->FUN_00462580(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		break;
 	case 209:
 		if (m_unk0x32 == c_thirdCodeEvent) {
-			m_eventTable->FUN_00462580(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_correctCodeEvent, c_correctCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		else {
-			m_eventTable->FUN_00462580(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
+			m_eventTable->FireEventsAt(c_wrongCodeEvent, c_wrongCodeEvent, static_cast<GolVec3*>(p_unk0x08));
 		}
 		break;
 	default:
@@ -2162,7 +2162,7 @@ void HazardManager::CodePuzzleHazard::Update(undefined4 p_elapsedMs)
 		LegoU32 elapsedMs = p_elapsedMs;
 		if (elapsedMs >= timer) {
 			m_unk0x38 = 0;
-			m_eventTable->FUN_00462140(c_successSecondEvent, NULL);
+			m_eventTable->EndEventsAt(c_successSecondEvent, NULL);
 
 			if (m_unk0x30 == c_firstCodeEvent) {
 				m_unk0x1c->FUN_00410480();
@@ -2384,7 +2384,7 @@ void HazardManager::LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 					effectPosition.m_y = -effectPosition.m_y;
 				}
 
-				m_eventTable->FUN_00462580(c_eventId, c_eventId, &effectPosition);
+				m_eventTable->FireEventsAt(c_eventId, c_eventId, &effectPosition);
 				m_unk0x54 = c_eventCooldownMs;
 				if (m_unk0x48) {
 					m_unk0x4c->ReleaseSound(m_soundResource);
@@ -2400,7 +2400,7 @@ void HazardManager::LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 					effectPosition.m_y = -effectPosition.m_y;
 				}
 
-				m_eventTable->FUN_00462580(c_eventId, c_eventId, &effectPosition);
+				m_eventTable->FireEventsAt(c_eventId, c_eventId, &effectPosition);
 				m_unk0x54 = c_eventCooldownMs;
 				m_unk0x48 = m_unk0x4c->AcquireSoundById(c_soundId);
 				if (m_unk0x48) {
@@ -2819,7 +2819,7 @@ void HazardManager::RocketHazard::ShowOnModel()
 	}
 
 	if (m_eventTable) {
-		m_eventTable->FUN_00461ef0(c_eventId, NULL);
+		m_eventTable->StartEventsAt(c_eventId, NULL);
 	}
 
 	if (m_unk0x48) {
@@ -2842,7 +2842,7 @@ void HazardManager::RocketHazard::ShowOffModel()
 	}
 
 	if (m_eventTable) {
-		m_eventTable->FUN_00462140(c_eventId, NULL);
+		m_eventTable->EndEventsAt(c_eventId, NULL);
 	}
 
 	if (m_unk0x48) {
@@ -3237,7 +3237,7 @@ void HazardManager::TriggeredAnimationHazard::OnActivate(void*)
 		entity++;
 	} while (--count);
 
-	m_eventTable->FUN_00462580(9, 9, NULL);
+	m_eventTable->FireEventsAt(9, 9, NULL);
 	m_state = 2;
 }
 
@@ -3482,7 +3482,7 @@ void HazardManager::MultiLauncherHazard::OnActivate(void*)
 
 	if (m_eventTable != NULL) {
 		LegoS32 eventId = m_unk0x128[sourceIndex];
-		m_eventTable->FUN_00462580(eventId, eventId, &m_unk0xe0);
+		m_eventTable->FireEventsAt(eventId, eventId, &m_unk0xe0);
 	}
 
 	LauncherHazard::OnActivate(NULL);
@@ -3493,7 +3493,7 @@ void HazardManager::MultiLauncherHazard::OnDeactivate(void*)
 {
 	if (m_eventTable != NULL) {
 		LegoS32 eventId = m_unk0x130[m_unk0x13c];
-		m_eventTable->FUN_00462580(eventId, eventId, &m_unk0xec);
+		m_eventTable->FireEventsAt(eventId, eventId, &m_unk0xec);
 	}
 
 	LauncherHazard::OnDeactivate(NULL);
@@ -3668,7 +3668,7 @@ void HazardManager::LauncherHazard::OnActivate(void*)
 		item->FUN_00492ab0(&g_launcherTrailColor);
 	}
 
-	m_eventTable->FUN_00462580(6, 6, &m_unk0xe0);
+	m_eventTable->FireEventsAt(6, 6, &m_unk0xe0);
 }
 
 // FUNCTION: LEGORACERS 0x0048fba0
@@ -3701,7 +3701,7 @@ void HazardManager::LauncherHazard::Update(undefined4 p_elapsedMs)
 			GolVec3 position = projectile->GetHitPosition();
 			m_unk0x110->SpawnExplosion(&position, 0, 0);
 			projectile->Deactivate();
-			m_eventTable->FUN_00462580(7, 7, &position);
+			m_eventTable->FireEventsAt(7, 7, &position);
 
 			if (m_unk0x120 != NULL) {
 				RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
@@ -3900,7 +3900,7 @@ void HazardManager::MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 	LegoFloat frame = m_unk0x38->GetUnk0xb4();
 	if ((m_unk0x178 & c_flags0x178Bit1) != 0) {
 		if ((frame > 150.0f && frame < 180.0f) || (frame > 0.0f && frame < 30.0f)) {
-			m_eventTable->FUN_00462580(c_eventId0x14, c_eventId0x14, &position);
+			m_eventTable->FireEventsAt(c_eventId0x14, c_eventId0x14, &position);
 			m_unk0x178 &= ~c_flags0x178Bit1;
 		}
 	}
@@ -3971,7 +3971,7 @@ void HazardManager::MovingObstacleHazard::VTable0x00(LegoEventQueue::CallbackDat
 
 		GolVec3 position;
 		racer->m_visuals.m_carEntity->VTable0x04(&position);
-		m_eventTable->FUN_00462580(c_eventId0x15, c_eventId0x15, &position);
+		m_eventTable->FireEventsAt(c_eventId0x15, c_eventId0x15, &position);
 	}
 }
 

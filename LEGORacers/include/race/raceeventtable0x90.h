@@ -9,12 +9,12 @@
 // SIZE 0x90
 class RaceEventTable0x90 {
 public:
-	LegoU32 FUN_00461ef0(undefined4 p_unk0x04, GolVec3* p_unk0x08);
-	void FUN_00462140(undefined4 p_unk0x04, GolVec3* p_unk0x08);
-	void FUN_00462580(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c);
-	void FUN_004628c0(undefined4 p_unk0x04, void* p_unk0x08);
-	void FUN_004629d0(undefined4 p_unk0x04, void* p_unk0x08);
-	void FUN_00462ae0(undefined4 p_unk0x04, undefined4 p_unk0x08, void* p_unk0x0c);
+	LegoU32 StartEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08);
+	void EndEventsAt(undefined4 p_unk0x04, GolVec3* p_unk0x08);
+	void FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, GolVec3* p_unk0x0c);
+	void StartEventsForRacer(undefined4 p_unk0x04, void* p_unk0x08);
+	void EndEventsForRacer(undefined4 p_unk0x04, void* p_unk0x08);
+	void FireEventsForRacer(undefined4 p_unk0x04, undefined4 p_unk0x08, void* p_unk0x0c);
 
 	// SIZE 0x20
 	class EntryBase {
@@ -24,10 +24,10 @@ public:
 		virtual void VTable0x08(void*) = 0;    // vtable+0x08
 		virtual void VTable0x0c() = 0;         // vtable+0x0c
 
-		void FUN_0045ee50(GolVec3* p_unk0x04);
-		void FUN_0045ee70(GolVec3* p_unk0x04);
-		void FUN_0045eec0(void* p_unk0x04);
-		void FUN_0045eee0(void* p_unk0x04);
+		void OnEventStart(GolVec3* p_unk0x04);
+		void OnEventEnd(GolVec3* p_unk0x04);
+		void ForceEventStart(void* p_unk0x04);
+		void ForceEventEnd(void* p_unk0x04);
 
 		undefined m_unk0x04[0x14 - 0x04]; // 0x04
 		undefined4 m_unk0x14;             // 0x14
@@ -116,7 +116,7 @@ private:
 		LegoU32 m_count;           // 0x04
 	};
 
-	void FUN_00462350(undefined4 p_unk0x04);
+	void ForceEvents(undefined4 p_unk0x04);
 
 	undefined m_unk0x00[0x14 - 0x00]; // 0x00
 	HazardManager* m_unk0x14;         // 0x14

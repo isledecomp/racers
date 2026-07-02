@@ -18,9 +18,9 @@ public:
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
 	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
-	undefined4 VTable0x74(undefined4) override;                                      // vtable+0x74
-	void VTable0x78() override;                                                      // vtable+0x78
-	void VTable0x7c() override;                                                      // vtable+0x7c
+	undefined4 TranslateNavigationEvent(undefined4) override;                        // vtable+0x74
+	void StepPrevious() override;                                                    // vtable+0x78
+	void StepNext() override;                                                        // vtable+0x7c
 	virtual void VTable0x80() = 0;                                                   // vtable+0x80
 	virtual void VTable0x84() = 0;                                                   // vtable+0x84
 	virtual void VTable0x88() = 0;                                                   // vtable+0x88
@@ -57,14 +57,14 @@ protected:
 class OptionsRow : public OptionsRowBase {
 public:
 	OptionsRow();
-	~OptionsRow() override;                                             // vtable+0x04
-	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;  // vtable+0x2c
-	undefined4 VTable0x70(undefined4, undefined4, undefined4) override; // vtable+0x70
-	void VTable0x80() override;                                         // vtable+0x80
-	void VTable0x84() override;                                         // vtable+0x84
-	void VTable0x88() override;                                         // vtable+0x88
-	void VTable0x8c() override;                                         // vtable+0x8c
-	void VTable0x90(LegoS32) override;                                  // vtable+0x90
+	~OptionsRow() override;                                                        // vtable+0x04
+	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;             // vtable+0x2c
+	undefined4 MapCursorToNavigation(undefined4, undefined4, undefined4) override; // vtable+0x70
+	void VTable0x80() override;                                                    // vtable+0x80
+	void VTable0x84() override;                                                    // vtable+0x84
+	void VTable0x88() override;                                                    // vtable+0x88
+	void VTable0x8c() override;                                                    // vtable+0x8c
+	void VTable0x90(LegoS32) override;                                             // vtable+0x90
 
 	// SYNTHETIC: LEGORACERS 0x0046e440
 	// OptionsRow::`scalar deleting destructor'

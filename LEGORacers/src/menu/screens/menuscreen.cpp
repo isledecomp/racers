@@ -683,7 +683,7 @@ LegoBool32 MenuScreen::CreateSelector(
 
 	ApplySelectorDefaults(bannerParams, styleEntry);
 
-	LegoBool32 result = p_widget->FUN_00467800(bannerParams, styleEntry);
+	LegoBool32 result = p_widget->Create(bannerParams, styleEntry);
 
 	delete bannerParams;
 	delete glyph1Params;

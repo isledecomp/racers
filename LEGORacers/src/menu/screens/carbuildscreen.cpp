@@ -419,26 +419,26 @@ LegoBool32 CarBuildScreen::FUN_00473ee0(MenuWidget*, InputEventQueue::Event* p_e
 		break;
 	case c_carBuildKeyboardInsert:
 		if (!(m_unk0x4a4.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0x4a4.GetUnk0x1ac().Focus(1);
-			m_unk0x4a4.FUN_00467180(0);
+			m_unk0x4a4.GetPrevButton().Focus(1);
+			m_unk0x4a4.OnPreviousPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardPageUp:
 		if (!(m_unk0x4a4.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0x4a4.GetUnk0x3c8().Focus(1);
-			m_unk0x4a4.FUN_004671e0(0);
+			m_unk0x4a4.GetNextButton().Focus(1);
+			m_unk0x4a4.OnNextPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardDelete:
 		if (!(m_unk0xfec.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0xfec.GetUnk0x1ac().Focus(1);
-			m_unk0xfec.FUN_00467180(0);
+			m_unk0xfec.GetPrevButton().Focus(1);
+			m_unk0xfec.OnPreviousPressed(0);
 		}
 		break;
 	case c_carBuildKeyboardPageDown:
 		if (!(m_unk0xfec.GetStateFlags() & MenuIcon::c_flagBit2)) {
-			m_unk0xfec.GetUnk0x3c8().Focus(1);
-			m_unk0xfec.FUN_004671e0(0);
+			m_unk0xfec.GetNextButton().Focus(1);
+			m_unk0xfec.OnNextPressed(0);
 		}
 		break;
 	default:
@@ -463,16 +463,16 @@ LegoBool32 CarBuildScreen::FUN_00474330(MenuWidget*, InputEventQueue::Event* p_e
 	LegoBool32 result = TRUE;
 	switch (keyCode) {
 	case c_carBuildKeyboardInsert:
-		m_unk0x4a4.GetUnk0x1ac().Unfocus(1);
+		m_unk0x4a4.GetPrevButton().Unfocus(1);
 		break;
 	case c_carBuildKeyboardPageUp:
-		m_unk0x4a4.GetUnk0x3c8().Unfocus(1);
+		m_unk0x4a4.GetNextButton().Unfocus(1);
 		break;
 	case c_carBuildKeyboardDelete:
-		m_unk0xfec.GetUnk0x1ac().Unfocus(1);
+		m_unk0xfec.GetPrevButton().Unfocus(1);
 		break;
 	case c_carBuildKeyboardPageDown:
-		m_unk0xfec.GetUnk0x3c8().Unfocus(1);
+		m_unk0xfec.GetNextButton().Unfocus(1);
 		break;
 	default:
 		result = FALSE;

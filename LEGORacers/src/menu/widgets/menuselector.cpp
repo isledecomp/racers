@@ -19,57 +19,54 @@ MenuSelectorBase::~MenuSelectorBase()
 // FUNCTION: LEGORACERS 0x00467060
 void MenuSelectorBase::Reset()
 {
-	m_unk0x1ac.Destroy();
-	m_unk0x3c8.Destroy();
+	m_prevButton.Destroy();
+	m_nextButton.Destroy();
 	m_unk0x1a8 = 0;
 	m_unk0x5e4 = 0;
 	MenuIcon::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004670a0
-LegoBool32 MenuSelectorBase::FUN_004670a0(
-	CreateParams* p_createParams,
-	const MenuStyleTable::SelectorStyleBase* p_styleEntry
-)
+LegoBool32 MenuSelectorBase::Create(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry)
 {
 	static_cast<MenuWidget::CreateParams*>(p_createParams->m_unk0x84)->m_parent = this;
 	static_cast<MenuWidget::CreateParams*>(p_createParams->m_unk0x88)->m_parent = this;
 
-	if (!m_unk0x1ac.FUN_004663d0(p_createParams->m_unk0x84, p_styleEntry->m_unk0x90)) {
+	if (!m_prevButton.FUN_004663d0(p_createParams->m_unk0x84, p_styleEntry->m_unk0x90)) {
 		return FALSE;
 	}
 
-	if (!m_unk0x3c8.FUN_004663d0(p_createParams->m_unk0x88, p_styleEntry->m_unk0x94)) {
+	if (!m_nextButton.FUN_004663d0(p_createParams->m_unk0x88, p_styleEntry->m_unk0x94)) {
 		return FALSE;
 	}
 
 	if (m_stateFlags & c_flagBit0) {
-		m_unk0x1ac.Enable(5);
-		m_unk0x3c8.Enable(5);
+		m_prevButton.Enable(5);
+		m_nextButton.Enable(5);
 	}
 	else {
-		m_unk0x1ac.Disable(5);
-		m_unk0x3c8.Disable(5);
+		m_prevButton.Disable(5);
+		m_nextButton.Disable(5);
 	}
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467150
-LegoBool32 MenuSelectorBase::FUN_00467150(
+LegoBool32 MenuSelectorBase::CreateDefault(
 	CreateParams* p_createParams,
 	const MenuStyleTable::SelectorStyleBase* p_styleEntry
 )
 {
 	if (Create(p_createParams, p_styleEntry)) {
-		return FUN_004670a0(p_createParams, p_styleEntry);
+		return Create(p_createParams, p_styleEntry);
 	}
 
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00467180
-void MenuSelectorBase::FUN_00467180(undefined4 p_param)
+void MenuSelectorBase::OnPreviousPressed(undefined4 p_param)
 {
 	if (m_unk0x54 & 1) {
 		return;
@@ -77,21 +74,21 @@ void MenuSelectorBase::FUN_00467180(undefined4 p_param)
 
 	m_unk0x5e4 = -1;
 
-	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
-		VTable0x78();
+	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+		StepPrevious();
 
 		if (p_param) {
-			m_unk0x1ac.Unfocus(2);
+			m_prevButton.Unfocus(2);
 			Unfocus(0);
 		}
 	}
 	else {
-		m_unk0x3c8.Unfocus(2);
+		m_nextButton.Unfocus(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004671e0
-void MenuSelectorBase::FUN_004671e0(undefined4 p_param)
+void MenuSelectorBase::OnNextPressed(undefined4 p_param)
 {
 	if (m_unk0x54 & 1) {
 		return;
@@ -99,16 +96,16 @@ void MenuSelectorBase::FUN_004671e0(undefined4 p_param)
 
 	m_unk0x5e4 = 1;
 
-	if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
-		VTable0x7c();
+	if (m_nextButton.GetStateFlags() & c_flagBit2) {
+		StepNext();
 
 		if (p_param) {
-			m_unk0x3c8.Unfocus(2);
+			m_nextButton.Unfocus(2);
 			Unfocus(0);
 		}
 	}
 	else {
-		m_unk0x1ac.Unfocus(2);
+		m_prevButton.Unfocus(2);
 	}
 }
 
@@ -119,9 +116,9 @@ void MenuSelectorBase::Enable(undefined4 p_flags)
 		return;
 	}
 
-	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.Enable(2);
-		m_unk0x3c8.Enable(2);
+	if (m_prevButton.GetFlags() & 1) {
+		m_prevButton.Enable(2);
+		m_nextButton.Enable(2);
 	}
 
 	MenuIcon::Enable(p_flags);
@@ -134,9 +131,9 @@ void MenuSelectorBase::Disable(undefined4 p_flags)
 		return;
 	}
 
-	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.Disable(5);
-		m_unk0x3c8.Disable(5);
+	if (m_prevButton.GetFlags() & 1) {
+		m_prevButton.Disable(5);
+		m_nextButton.Disable(5);
 	}
 
 	MenuIcon::Disable(p_flags);
@@ -147,9 +144,9 @@ void MenuSelectorBase::Select(undefined4 p_flags)
 {
 	MenuIcon::Select(p_flags);
 
-	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.Select(2);
-		m_unk0x3c8.Select(2);
+	if (m_prevButton.GetFlags() & 1) {
+		m_prevButton.Select(2);
+		m_nextButton.Select(2);
 	}
 }
 
@@ -158,9 +155,9 @@ void MenuSelectorBase::Deselect(undefined4 p_flags)
 {
 	MenuIcon::Deselect(p_flags);
 
-	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.Deselect(2);
-		m_unk0x3c8.Deselect(2);
+	if (m_prevButton.GetFlags() & 1) {
+		m_prevButton.Deselect(2);
+		m_nextButton.Deselect(2);
 	}
 }
 
@@ -169,27 +166,27 @@ void MenuSelectorBase::Unfocus(undefined4 p_flags)
 {
 	MenuIcon::Unfocus(p_flags);
 
-	if (m_unk0x1ac.GetFlags() & 1) {
-		m_unk0x1ac.Unfocus(2);
-		m_unk0x3c8.Unfocus(2);
+	if (m_prevButton.GetFlags() & 1) {
+		m_prevButton.Unfocus(2);
+		m_nextButton.Unfocus(2);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004673a0
-undefined4 MenuSelectorBase::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4 p_y)
+undefined4 MenuSelectorBase::MapCursorToNavigation(undefined4 p_event, undefined4 p_x, undefined4 p_y)
 {
 	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 		undefined4 x = p_x;
 		undefined4 y = p_y;
-		m_unk0x1ac.ScreenToLocal(x, y);
-		if (m_unk0x1ac.HitTest(x, y)) {
+		m_prevButton.ScreenToLocal(x, y);
+		if (m_prevButton.HitTest(x, y)) {
 			return InputDevice::c_sourceJoystickButton | 0xb;
 		}
 
 		x = p_x;
 		y = p_y;
-		m_unk0x3c8.ScreenToLocal(x, y);
-		if (m_unk0x3c8.HitTest(x, y)) {
+		m_nextButton.ScreenToLocal(x, y);
+		if (m_nextButton.HitTest(x, y)) {
 			return InputDevice::c_sourceJoystickButton | 0xa;
 		}
 	}
@@ -247,16 +244,16 @@ LegoBool32 MenuSelectorBase::DispatchKeyUp(InputEventQueue::Event* p_param1, und
 }
 
 // FUNCTION: LEGORACERS 0x00467560
-LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result)
+LegoBool32 MenuSelectorBase::HandleNavigationKeyDown(InputEventQueue::Event* p_event, undefined4 p_result)
 {
 	switch (p_result) {
 	case InputDevice::c_sourceJoystickButton | 0xa:
-		if (m_unk0x3c8.GetUnk0x54() & 1) {
+		if (m_nextButton.GetUnk0x54() & 1) {
 			return TRUE;
 		}
 
-		if (p_event->m_isRepeat && (m_unk0x3c8.GetStateFlags() & c_flagBit2)) {
-			FUN_004671e0(0);
+		if (p_event->m_isRepeat && (m_nextButton.GetStateFlags() & c_flagBit2)) {
+			OnNextPressed(0);
 			return TRUE;
 		}
 
@@ -264,18 +261,18 @@ LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undef
 			return TRUE;
 		}
 
-		m_unk0x3c8.Focus(2);
-		FUN_004671e0(0);
+		m_nextButton.Focus(2);
+		OnNextPressed(0);
 		Focus(0);
 		return TRUE;
 
 	case InputDevice::c_sourceJoystickButton | 0xb:
-		if (m_unk0x1ac.GetUnk0x54() & 1) {
+		if (m_prevButton.GetUnk0x54() & 1) {
 			return TRUE;
 		}
 
-		if (p_event->m_isRepeat && (m_unk0x1ac.GetStateFlags() & c_flagBit2)) {
-			FUN_00467180(0);
+		if (p_event->m_isRepeat && (m_prevButton.GetStateFlags() & c_flagBit2)) {
+			OnPreviousPressed(0);
 			return TRUE;
 		}
 
@@ -283,8 +280,8 @@ LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undef
 			return TRUE;
 		}
 
-		m_unk0x1ac.Focus(2);
-		FUN_00467180(0);
+		m_prevButton.Focus(2);
+		OnPreviousPressed(0);
 		Focus(0);
 		return TRUE;
 	}
@@ -293,18 +290,18 @@ LegoBool32 MenuSelectorBase::FUN_00467560(InputEventQueue::Event* p_event, undef
 }
 
 // FUNCTION: LEGORACERS 0x00467670
-LegoBool32 MenuSelectorBase::FUN_00467670(InputEventQueue::Event*, undefined4 p_result)
+LegoBool32 MenuSelectorBase::HandleNavigationKeyUp(InputEventQueue::Event*, undefined4 p_result)
 {
 	if (p_result == (InputDevice::c_sourceJoystickButton | 0x1)) {
 		return FALSE;
 	}
 
 	MenuButton* glyph;
-	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
-		glyph = &m_unk0x1ac;
+	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+		glyph = &m_prevButton;
 	}
-	else if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
-		glyph = &m_unk0x3c8;
+	else if (m_nextButton.GetStateFlags() & c_flagBit2) {
+		glyph = &m_nextButton;
 	}
 	else {
 		return FALSE;
@@ -331,30 +328,30 @@ MenuSelector::~MenuSelector()
 void MenuSelector::Reset()
 {
 	m_unk0x5ec.Destroy();
-	m_unk0x9e8 = NULL;
-	m_unk0x9f0 = 0;
+	m_carousel = NULL;
+	m_scrollPending = 0;
 	m_unk0x9ec = 0;
 	MenuSelectorBase::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004677e0
-LegoBool32 MenuSelectorBase::FUN_004677e0(CreateParamsWithCarousel* p_createParams)
+LegoBool32 MenuSelectorBase::CreateWithFrame(CreateParamsWithCarousel* p_createParams)
 {
 	p_createParams->m_unk0x8c->m_parent = this;
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00467800
-LegoBool32 MenuSelector::FUN_00467800(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry)
+LegoBool32 MenuSelector::Create(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry)
 {
 	Destroy();
 
-	if (FUN_00467150(p_createParams, p_styleEntry) && FUN_004677e0(p_createParams)) {
+	if (CreateDefault(p_createParams, p_styleEntry) && CreateWithFrame(p_createParams)) {
 		m_styleEntry = p_styleEntry;
-		m_unk0x9e8 = p_createParams->m_unk0x90;
-		m_unk0x9e8->SetColor(&m_unk0x174[m_visualStateIndex]);
+		m_carousel = p_createParams->m_unk0x90;
+		m_carousel->SetColor(&m_unk0x174[m_visualStateIndex]);
 		m_unk0x9ec = p_createParams->m_unk0x94;
-		m_unk0x9e8->SetParent(this);
+		m_carousel->SetParent(this);
 		return TRUE;
 	}
 
@@ -367,8 +364,8 @@ LegoBool32 MenuSelector::Destroy()
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
-		if (m_unk0x9e8) {
-			m_unk0x9e8->Destroy();
+		if (m_carousel) {
+			m_carousel->Destroy();
 		}
 
 		result = MenuIcon::Destroy();
@@ -380,8 +377,8 @@ LegoBool32 MenuSelector::Destroy()
 // FUNCTION: LEGORACERS 0x004678b0
 void MenuSelector::SetColor(VisualStateColor* p_visualState)
 {
-	if (m_unk0x9e8) {
-		m_unk0x9e8->SetColor(p_visualState);
+	if (m_carousel) {
+		m_carousel->SetColor(p_visualState);
 	}
 
 	MenuWidget::SetColor(p_visualState);
@@ -403,41 +400,41 @@ LegoBool32 MenuSelector::DispatchKeyDown(InputEventQueue::Event* p_param1, undef
 		return TRUE;
 	}
 
-	return m_unk0x9e8->DispatchKeyDown(p_param1, x, y);
+	return m_carousel->DispatchKeyDown(p_param1, x, y);
 }
 
 // FUNCTION: LEGORACERS 0x00467960
-void MenuSelector::VTable0x78()
+void MenuSelector::StepPrevious()
 {
-	if (m_unk0x9f0) {
+	if (m_scrollPending) {
 		return;
 	}
 
-	LegoU32 previousIndex = m_unk0x9e8->GetSelectedIndex();
-	m_unk0x9e8->ScrollPrevious();
+	LegoU32 previousIndex = m_carousel->GetSelectedIndex();
+	m_carousel->ScrollPrevious();
 
-	if (m_unk0x9e8->GetSelectedIndex() != previousIndex && m_eventHandler) {
+	if (m_carousel->GetSelectedIndex() != previousIndex && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
-	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
+	m_scrollPending = m_carousel->GetUnk0x54() & 1;
 }
 
 // FUNCTION: LEGORACERS 0x004679b0
-void MenuSelector::VTable0x7c()
+void MenuSelector::StepNext()
 {
-	if (m_unk0x9f0) {
+	if (m_scrollPending) {
 		return;
 	}
 
-	LegoU32 previousIndex = m_unk0x9e8->GetSelectedIndex();
-	m_unk0x9e8->ScrollNext();
+	LegoU32 previousIndex = m_carousel->GetSelectedIndex();
+	m_carousel->ScrollNext();
 
-	if (m_unk0x9e8->GetSelectedIndex() != previousIndex && m_eventHandler) {
+	if (m_carousel->GetSelectedIndex() != previousIndex && m_eventHandler) {
 		m_eventHandler->OnWidgetValueChanged(this);
 	}
 
-	m_unk0x9f0 = m_unk0x9e8->GetUnk0x54() & 1;
+	m_scrollPending = m_carousel->GetUnk0x54() & 1;
 }
 
 // FUNCTION: LEGORACERS 0x00467a00
@@ -445,22 +442,22 @@ undefined4 MenuSelector::OnEvent(undefined4)
 {
 	LegoU32 index = m_stateFlags & c_flagBit1;
 
-	if (m_unk0x9f0 && !(m_unk0x9e8->GetUnk0x54() & 1) && m_eventHandler) {
+	if (m_scrollPending && !(m_carousel->GetUnk0x54() & 1) && m_eventHandler) {
 		m_eventHandler->OnSelectorSettled(this);
-		m_unk0x9f0 = 0;
+		m_scrollPending = 0;
 	}
 
-	m_unk0x9e8->SetItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
-	m_unk0x9e8->SetFocusedItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_carousel->SetItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
+	m_carousel->SetFocusedItemColors(&GetStyleEntry()->m_unk0x9c[index], &GetStyleEntry()->m_unk0x9c[index + 1]);
 
-	if (m_unk0x1ac.GetStateFlags() & c_flagBit2) {
-		VTable0x78();
+	if (m_prevButton.GetStateFlags() & c_flagBit2) {
+		StepPrevious();
 	}
-	else if (m_unk0x3c8.GetStateFlags() & c_flagBit2) {
-		VTable0x7c();
+	else if (m_nextButton.GetStateFlags() & c_flagBit2) {
+		StepNext();
 	}
 	else {
-		MenuCarousel* carousel = m_unk0x9e8;
+		MenuCarousel* carousel = m_carousel;
 		MenuStyleTable::SelectorStyle* styleEntry = GetStyleEntry();
 		carousel->SetFocusedItemColors(&styleEntry->m_unk0xac[index], &styleEntry->m_unk0xac[index + 1]);
 	}
@@ -469,7 +466,7 @@ undefined4 MenuSelector::OnEvent(undefined4)
 }
 
 // FUNCTION: LEGORACERS 0x00467ae0
-undefined4 MenuSelector::VTable0x74(undefined4 p_event)
+undefined4 MenuSelector::TranslateNavigationEvent(undefined4 p_event)
 {
 	switch (p_event) {
 	case InputDevice::c_sourceJoystickButton | 0x7:
@@ -496,11 +493,12 @@ MenuWidget* MenuSelector::OnKeyDown(InputEventQueue::Event* p_param1, undefined4
 	if ((stateFlags & c_flagBit0) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
 		((stateFlags & c_flagBit2) || !p_param1->m_isRepeat)) {
 
-		undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
-		undefined4 result = VTable0x74(mappedEvent);
+		undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
+		undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 		stateFlags = m_stateFlags;
-		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_unk0x9ec) && FUN_00467560(p_param1, result)) {
+		if ((stateFlags & c_flagBit0) && ((stateFlags & c_flagBit1) || m_unk0x9ec) &&
+			HandleNavigationKeyDown(p_param1, result)) {
 			m_activeKeyCode = p_param1->m_keyCode;
 			return this;
 		}
@@ -518,14 +516,14 @@ MenuWidget* MenuSelector::OnKeyUp(InputEventQueue::Event* p_param1, undefined4 p
 		return NULL;
 	}
 
-	undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
-	undefined4 result = VTable0x74(mappedEvent);
+	undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
+	undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
 	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) && ((stateFlags & c_flagBit1) || m_unk0x9ec)) {
-		FUN_00467670(p_param1, result);
+		HandleNavigationKeyUp(p_param1, result);
 	}
 
 	Unfocus(0);

@@ -56,7 +56,7 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 
 	m_unk0x6e0 = *soundIds;
 
-	if (FUN_00467150(p_createParams, p_styleEntry)) {
+	if (CreateDefault(p_createParams, p_styleEntry)) {
 		p_createParams->m_unk0x90->m_parent = this;
 		p_createParams->m_unk0x8c->m_parent = this;
 
@@ -82,7 +82,7 @@ void OptionsRowBase::SetColor(VisualStateColor* p_visualState)
 }
 
 // FUNCTION: LEGORACERS 0x0046e0d0
-void OptionsRowBase::VTable0x78()
+void OptionsRowBase::StepPrevious()
 {
 	if (m_unk0x6c0) {
 		VTable0x90(m_unk0x6c0 - 1);
@@ -98,7 +98,7 @@ void OptionsRowBase::VTable0x78()
 }
 
 // FUNCTION: LEGORACERS 0x0046e130
-void OptionsRowBase::VTable0x7c()
+void OptionsRowBase::StepNext()
 {
 	if (m_unk0x6c0 != m_unk0x6bc - 1) {
 		VTable0x90(m_unk0x6c0 + 1);
@@ -114,7 +114,7 @@ void OptionsRowBase::VTable0x7c()
 }
 
 // FUNCTION: LEGORACERS 0x0046e190
-undefined4 OptionsRowBase::VTable0x74(undefined4 p_event)
+undefined4 OptionsRowBase::TranslateNavigationEvent(undefined4 p_event)
 {
 	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 		return p_event;
@@ -144,8 +144,8 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 
 	if ((stateFlags & c_flagBit0) && (!m_activeKeyCode || m_activeKeyCode == keyCode) &&
 		((stateFlags & c_flagBit2) || !p_event->m_isRepeat)) {
-		undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
-		undefined4 result = VTable0x74(mappedEvent);
+		undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
+		undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 		stateFlags = m_stateFlags;
 		if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit1)) {
@@ -163,7 +163,7 @@ MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined
 				}
 			}
 
-			if (FUN_00467560(p_event, result)) {
+			if (HandleNavigationKeyDown(p_event, result)) {
 				m_activeKeyCode = p_event->m_keyCode;
 				return this;
 			}
@@ -184,14 +184,14 @@ MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 
 		return NULL;
 	}
 
-	undefined4 mappedEvent = VTable0x70(keyCode, p_x, p_y);
-	undefined4 result = VTable0x74(mappedEvent);
+	undefined4 mappedEvent = MapCursorToNavigation(keyCode, p_x, p_y);
+	undefined4 result = TranslateNavigationEvent(mappedEvent);
 
 	LegoU8 stateFlags = m_stateFlags;
 	m_activeKeyCode = 0;
 
 	if ((stateFlags & c_flagBit0) && (stateFlags & c_flagBit2) && (stateFlags & c_flagBit1) &&
-		FUN_00467670(p_event, result)) {
+		HandleNavigationKeyUp(p_event, result)) {
 		return this;
 	}
 
@@ -220,8 +220,9 @@ OptionsRow::~OptionsRow()
 // FUNCTION: LEGORACERS 0x0046e4b0
 void OptionsRow::FUN_0046e4b0()
 {
-	m_unk0x6c4 = m_unk0x1ac.GetRect()->m_right + ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
-	m_unk0x6c8 = m_unk0x3c8.GetRect()->m_left - ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
+	m_unk0x6c4 =
+		m_prevButton.GetRect()->m_right + ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
+	m_unk0x6c8 = m_nextButton.GetRect()->m_left - ((m_unk0x5ec.GetRect()->m_right - m_unk0x5ec.GetRect()->m_left) >> 1);
 	m_unk0x6cc = static_cast<LegoFloat>(m_unk0x6c8 - m_unk0x6c4);
 
 	if (m_unk0x6bc > 2) {
@@ -236,20 +237,20 @@ void OptionsRow::VTable0x80()
 	rect.m_top = 0;
 	rect.m_left = 0;
 	rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
-	rect.m_right = m_unk0x1ac.GetRect()->m_right - m_unk0x1ac.GetRect()->m_left;
-	m_unk0x1ac.SetRect(&rect);
+	rect.m_right = m_prevButton.GetRect()->m_right - m_prevButton.GetRect()->m_left;
+	m_prevButton.SetRect(&rect);
 
 	rect.m_right = m_rect.m_right - m_rect.m_left;
-	rect.m_left = rect.m_right + (m_unk0x3c8.GetRect()->m_left - m_unk0x3c8.GetRect()->m_right);
-	m_unk0x3c8.SetRect(&rect);
+	rect.m_left = rect.m_right + (m_nextButton.GetRect()->m_left - m_nextButton.GetRect()->m_right);
+	m_nextButton.SetRect(&rect);
 }
 
 // FUNCTION: LEGORACERS 0x0046e5b0
 void OptionsRow::VTable0x84()
 {
 	Rect rect;
-	rect.m_left = m_unk0x1ac.GetRect()->m_right + 1;
-	rect.m_right = m_unk0x3c8.GetRect()->m_left - 1;
+	rect.m_left = m_prevButton.GetRect()->m_right + 1;
+	rect.m_right = m_nextButton.GetRect()->m_left - 1;
 
 	LegoS32 height = m_unk0x648.GetRect()->m_bottom - m_unk0x648.GetRect()->m_top;
 	rect.m_top = ((m_rect.m_bottom - m_rect.m_top) >> 1) - (height >> 1);
@@ -263,7 +264,7 @@ void OptionsRow::VTable0x84()
 void OptionsRow::VTable0x88()
 {
 	Rect rect;
-	rect.m_left = m_unk0x1ac.GetRect()->m_right;
+	rect.m_left = m_prevButton.GetRect()->m_right;
 	rect.m_right = m_unk0x5ec.GetRect()->m_right + rect.m_left;
 
 	LegoS32 height = m_unk0x5ec.GetRect()->m_bottom - m_unk0x5ec.GetRect()->m_top;
@@ -279,7 +280,7 @@ void OptionsRow::VTable0x88()
 void OptionsRow::VTable0x8c()
 {
 	LegoS32 index = static_cast<LegoS32>(
-		(static_cast<LegoFloat>(m_unk0x5ec.GetRect()->m_left - m_unk0x1ac.GetRect()->m_right) / m_unk0x6cc) + 0.5f
+		(static_cast<LegoFloat>(m_unk0x5ec.GetRect()->m_left - m_prevButton.GetRect()->m_right) / m_unk0x6cc) + 0.5f
 	);
 
 	VTable0x90(index);
@@ -305,7 +306,7 @@ void OptionsRow::VTable0x90(LegoS32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0046e780
-undefined4 OptionsRow::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4 p_y)
+undefined4 OptionsRow::MapCursorToNavigation(undefined4 p_event, undefined4 p_x, undefined4 p_y)
 {
 	if ((p_event & InputDevice::c_sourceMask) == InputDevice::c_sourceMouse) {
 		undefined4 x = p_x;
@@ -316,7 +317,7 @@ undefined4 OptionsRow::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4
 			return p_event;
 		}
 
-		return MenuSelectorBase::VTable0x70(p_event, p_x, p_y);
+		return MenuSelectorBase::MapCursorToNavigation(p_event, p_x, p_y);
 	}
 
 	return p_event;
@@ -331,7 +332,7 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 		return NULL;
 	}
 
-	if (!(m_unk0x1ac.GetStateFlags() & c_flagBit2) && !(m_unk0x3c8.GetStateFlags() & c_flagBit2)) {
+	if (!(m_prevButton.GetStateFlags() & c_flagBit2) && !(m_nextButton.GetStateFlags() & c_flagBit2)) {
 		MenuInputDispatcher::Cursor* cursor = static_cast<MenuInputDispatcher::Cursor*>(p_item);
 		cursor->m_bounds = m_unk0x6d0;
 
@@ -341,12 +342,12 @@ MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p
 		rect.m_left += p_x;
 		rect.m_right += p_x;
 
-		if (rect.m_left < m_unk0x1ac.GetRect()->m_right) {
-			rect.m_left = m_unk0x1ac.GetRect()->m_right;
+		if (rect.m_left < m_prevButton.GetRect()->m_right) {
+			rect.m_left = m_prevButton.GetRect()->m_right;
 			rect.m_right = rect.m_left + width;
 		}
-		else if (rect.m_right > m_unk0x3c8.GetRect()->m_left) {
-			rect.m_right = m_unk0x3c8.GetRect()->m_left;
+		else if (rect.m_right > m_nextButton.GetRect()->m_left) {
+			rect.m_right = m_nextButton.GetRect()->m_left;
 			rect.m_left = rect.m_right - width;
 		}
 

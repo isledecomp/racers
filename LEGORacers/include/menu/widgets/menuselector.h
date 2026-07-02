@@ -36,29 +36,29 @@ public:
 	void Select(undefined4) override;                                                              // vtable+0x4c
 	void Deselect(undefined4) override;                                                            // vtable+0x50
 	void Unfocus(undefined4) override;                                                             // vtable+0x58
-	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                             // vtable+0x70
-	virtual undefined4 VTable0x74(undefined4) = 0;                                                 // vtable+0x74
-	virtual void VTable0x78() = 0;                                                                 // vtable+0x78
-	virtual void VTable0x7c() = 0;                                                                 // vtable+0x7c
-	MenuButton& GetUnk0x1ac() { return m_unk0x1ac; }
-	MenuButton& GetUnk0x3c8() { return m_unk0x3c8; }
+	virtual undefined4 MapCursorToNavigation(undefined4, undefined4, undefined4);                  // vtable+0x70
+	virtual undefined4 TranslateNavigationEvent(undefined4) = 0;                                   // vtable+0x74
+	virtual void StepPrevious() = 0;                                                               // vtable+0x78
+	virtual void StepNext() = 0;                                                                   // vtable+0x7c
+	MenuButton& GetPrevButton() { return m_prevButton; }
+	MenuButton& GetNextButton() { return m_nextButton; }
 	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
-	void FUN_00467180(undefined4 p_param);
-	void FUN_004671e0(undefined4 p_param);
+	void OnPreviousPressed(undefined4 p_param);
+	void OnNextPressed(undefined4 p_param);
 
 	// SYNTHETIC: LEGORACERS 0x00466fd0
 	// MenuSelectorBase::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_004670a0(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry);
-	LegoBool32 FUN_00467150(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry);
-	LegoBool32 FUN_004677e0(CreateParamsWithCarousel* p_createParams);
-	LegoBool32 FUN_00467560(InputEventQueue::Event* p_event, undefined4 p_result);
-	LegoBool32 FUN_00467670(InputEventQueue::Event* p_event, undefined4 p_result);
+	LegoBool32 Create(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry);
+	LegoBool32 CreateDefault(CreateParams* p_createParams, const MenuStyleTable::SelectorStyleBase* p_styleEntry);
+	LegoBool32 CreateWithFrame(CreateParamsWithCarousel* p_createParams);
+	LegoBool32 HandleNavigationKeyDown(InputEventQueue::Event* p_event, undefined4 p_result);
+	LegoBool32 HandleNavigationKeyUp(InputEventQueue::Event* p_event, undefined4 p_result);
 
 	undefined4 m_unk0x1a8;                           // 0x1a8
-	MenuButton m_unk0x1ac;                           // 0x1ac
-	MenuButton m_unk0x3c8;                           // 0x3c8
+	MenuButton m_prevButton;                         // 0x1ac
+	MenuButton m_nextButton;                         // 0x3c8
 	undefined4 m_unk0x5e4;                           // 0x5e4
 	MenuStyleTable::SelectorStyleBase* m_styleEntry; // 0x5e8
 };
@@ -83,11 +83,11 @@ public:
 	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x30
 	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;        // vtable+0x34
 	undefined4 OnEvent(undefined4) override;                                              // vtable+0x3c
-	undefined4 VTable0x74(undefined4) override;                                           // vtable+0x74
-	void VTable0x78() override;                                                           // vtable+0x78
-	void VTable0x7c() override;                                                           // vtable+0x7c
+	undefined4 TranslateNavigationEvent(undefined4) override;                             // vtable+0x74
+	void StepPrevious() override;                                                         // vtable+0x78
+	void StepNext() override;                                                             // vtable+0x7c
 
-	LegoBool32 FUN_00467800(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry);
+	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry);
 	void SetUnk0x9ec(undefined4 p_unk0x9ec) { m_unk0x9ec = p_unk0x9ec; }
 
 	// SYNTHETIC: LEGORACERS 0x00467730
@@ -96,10 +96,10 @@ public:
 protected:
 	MenuStyleTable::SelectorStyle* GetStyleEntry() { return static_cast<MenuStyleTable::SelectorStyle*>(m_styleEntry); }
 
-	MenuFrame m_unk0x5ec;     // 0x5ec
-	MenuCarousel* m_unk0x9e8; // 0x9e8
-	undefined4 m_unk0x9ec;    // 0x9ec
-	undefined4 m_unk0x9f0;    // 0x9f0
+	MenuFrame m_unk0x5ec;       // 0x5ec
+	MenuCarousel* m_carousel;   // 0x9e8
+	undefined4 m_unk0x9ec;      // 0x9ec
+	undefined4 m_scrollPending; // 0x9f0
 };
 
 #endif // MENUSELECTOR_H

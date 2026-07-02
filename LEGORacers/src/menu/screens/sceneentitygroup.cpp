@@ -36,7 +36,7 @@ LegoBool32 AwardCinematicScreen::SceneEntityGroup::Create(CreateParams* p_create
 	FUN_00411e30(4);
 
 	if (m_carEntity == NULL) {
-		m_carEntity = p_createParams->m_buildModel->GetUnk0x0c();
+		m_carEntity = p_createParams->m_buildModel->GetModelEntity();
 	}
 	FUN_00411ec0(m_carEntity);
 

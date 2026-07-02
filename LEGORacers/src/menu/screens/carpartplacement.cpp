@@ -534,7 +534,7 @@ void CarModelScreenBase::CarPartPlacement::CreateCarGroup()
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_buildModel = &m_context->m_carBuildModel;
-	createParams.m_carEntity = m_context->m_carBuildModel.GetUnk0x0c();
+	createParams.m_carEntity = m_context->m_carBuildModel.GetModelEntity();
 	createParams.m_driverEntity = &m_driverEntity;
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
@@ -559,8 +559,8 @@ void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_unk0x04)
 	LegoS32 rotation;
 	m_placement.GetPlacement(&x, &y, &rotation);
 
-	m_context->m_carBuildModel.FUN_0049b740(TRUE);
-	m_context->m_carBuildModel.FUN_0049c230(&m_placement, &m_pieceEntity);
+	m_context->m_carBuildModel.UpdateOffset(TRUE);
+	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
 	m_pieceEntity.VTable0x08(m_piecePosition);
 	m_previewDirty = 1;
 }
@@ -808,8 +808,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::BeginViewReset(LegoBool32 p_rot
 void CarModelScreenBase::CarPartPlacement::RotatePiece()
 {
 	m_placement.Rotate();
-	m_context->m_carBuildModel.FUN_0049b740(TRUE);
-	m_context->m_carBuildModel.FUN_0049c230(&m_placement, &m_pieceEntity);
+	m_context->m_carBuildModel.UpdateOffset(TRUE);
+	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
 	m_pieceEntity.VTable0x08(m_piecePosition);
 }
 
@@ -830,8 +830,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::MovePieceX(LegoS32 p_delta)
 		return FALSE;
 	}
 
-	m_context->m_carBuildModel.FUN_0049b740(TRUE);
-	m_context->m_carBuildModel.FUN_0049c230(&m_placement, &m_pieceEntity);
+	m_context->m_carBuildModel.UpdateOffset(TRUE);
+	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
 	m_pieceEntity.VTable0x08(m_piecePosition);
 	return TRUE;
 }
@@ -853,8 +853,8 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::MovePieceY(LegoS32 p_delta)
 		return FALSE;
 	}
 
-	m_context->m_carBuildModel.FUN_0049b740(TRUE);
-	m_context->m_carBuildModel.FUN_0049c230(&m_placement, &m_pieceEntity);
+	m_context->m_carBuildModel.UpdateOffset(TRUE);
+	m_context->m_carBuildModel.RefreshOverlay(&m_placement, &m_pieceEntity);
 	m_pieceEntity.VTable0x08(m_piecePosition);
 	return TRUE;
 }
@@ -868,7 +868,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::CommitPiece()
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_placement.GetPieceRecord();
 	m_placement.GetPlacement(&x, &y, &rotation);
 
-	LegoS32 result = m_context->m_carBuildModel.FUN_0049a1e0(pieceRecord, x, y, rotation);
+	LegoS32 result = m_context->m_carBuildModel.TestPlacement(pieceRecord, x, y, rotation);
 	if (result < 0) {
 		if (result != -7) {
 			m_soundGroupBinding->PlaySoundByIndex(18);
@@ -910,13 +910,13 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::UndoLastPiece(
 	LegoS32 y;
 	LegoS32 anchor;
 	LegoS32 rotation;
-	carModel->FUN_0049bce0(count - 1, &pieceRecord, &x, &y, &anchor, &rotation, p_unk0x0c, p_unk0x04);
-	carModel->FUN_0049bdc0();
-	carModel->FUN_0049b740(TRUE);
-	carModel->FUN_0049b920(1, 127);
+	carModel->GetPieceInfo(count - 1, &pieceRecord, &x, &y, &anchor, &rotation, p_unk0x0c, p_unk0x04);
+	carModel->RemoveLastPiece();
+	carModel->UpdateOffset(TRUE);
+	carModel->RebuildModel(1, 127);
 	m_placement.SetPiece(pieceRecord, *p_unk0x0c, 0);
 	m_placement.SetPlacement(x, y, rotation, 0);
-	carModel->FUN_0049c230(&m_placement, &m_pieceEntity);
+	carModel->RefreshOverlay(&m_placement, &m_pieceEntity);
 	*p_unk0x08 = pieceRecord->m_pieceType;
 	m_context->m_saveSystem.GetActiveRecord().MarkCarModified();
 	m_soundGroupBinding->PlaySoundByIndex(13);
@@ -951,7 +951,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::Draw()
 
 	if (m_previewDirty) {
 		if (m_unk0x244) {
-			m_context->m_carBuildModel.FUN_0049bdd0(m_renderer, 0.1f);
+			m_context->m_carBuildModel.DrawOverlay(m_renderer, 0.1f);
 		}
 
 		GolModelEntity* entity = &m_pieceEntity;
@@ -1084,7 +1084,7 @@ void CarModelScreenBase::CarPartPlacement::UpdatePieceBob(LegoS32 p_elapsed)
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_placement.GetPieceRecord();
 	m_placement.GetPlacement(&x, &y, &rotation);
 
-	LegoS32 result = m_context->m_carBuildModel.FUN_0049a1e0(pieceRecord, x, y, rotation);
+	LegoS32 result = m_context->m_carBuildModel.TestPlacement(pieceRecord, x, y, rotation);
 	if (result >= 0) {
 		if (!m_pieceAnimPhase) {
 			StartPieceLower(0);
@@ -1114,7 +1114,7 @@ void CarModelScreenBase::CarPartPlacement::UpdatePieceBob(LegoS32 p_elapsed)
 		}
 	}
 
-	m_unk0x270 = (m_context->m_carBuildModel.GetUnk0x2028() * g_carBuildModelHeightScale) + (g_unk0x4b2ed8 - 8.4f);
+	m_unk0x270 = (m_context->m_carBuildModel.GetOverlayHeight() * g_carBuildModelHeightScale) + (g_unk0x4b2ed8 - 8.4f);
 
 	feedbackFlags = m_pieceAnimPhase;
 	if (feedbackFlags & c_placementFeedbackMask) {
@@ -1261,7 +1261,7 @@ void CarModelScreenBase::CarPartPlacement::UpdateCommitFeedback(LegoS32 p_elapse
 		m_carGroup.FUN_10026fa0(-1.0f);
 		m_carGroup.VTable0x00();
 
-		m_context->m_carBuildModel.FUN_0049a160(
+		m_context->m_carBuildModel.PlacePiece(
 			pieceRecord,
 			x,
 			y,
@@ -1269,15 +1269,15 @@ void CarModelScreenBase::CarPartPlacement::UpdateCommitFeedback(LegoS32 p_elapse
 			m_placement.GetColorRecordIndex(),
 			m_context->m_partSet.GetSelectedEntry()->GetPieceType()
 		);
-		m_context->m_carBuildModel.FUN_0049b740(TRUE);
-		m_context->m_carBuildModel.FUN_0049b920(1, 127);
+		m_context->m_carBuildModel.UpdateOffset(TRUE);
+		m_context->m_carBuildModel.RebuildModel(1, 127);
 		m_screen->OnCarouselSettled(m_sceneView);
 
-		if (m_context->m_carBuildModel.GetUnk0xdc()) {
+		if (m_context->m_carBuildModel.GetBuildStatus()) {
 			m_screen->ShowPlacementError();
-			m_context->m_carBuildModel.FUN_0049bdc0();
-			m_context->m_carBuildModel.FUN_0049b740(TRUE);
-			m_context->m_carBuildModel.FUN_0049b920(1, 127);
+			m_context->m_carBuildModel.RemoveLastPiece();
+			m_context->m_carBuildModel.UpdateOffset(TRUE);
+			m_context->m_carBuildModel.RebuildModel(1, 127);
 		}
 		else {
 			m_soundGroupBinding->PlaySoundByIndex(10);

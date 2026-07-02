@@ -139,8 +139,8 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 	entity->VTable0x50(model, maxDistance);
 
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_pieceLibrary->FindPieceRecord(pieceType, 1);
-	m_buildModel->FUN_0049b8b0(pieceRecord, 0);
-	m_buildModel->FUN_0049b170(entity, pieceRecord, 0, 0, 0, 0, colorRecordIndex, 239);
+	m_buildModel->CenterOnPiece(pieceRecord, 0);
+	m_buildModel->BuildPieceModel(entity, pieceRecord, 0, 0, 0, 0, colorRecordIndex, 239);
 	MenuModelCarousel::VTable0x60(p_index);
 }
 

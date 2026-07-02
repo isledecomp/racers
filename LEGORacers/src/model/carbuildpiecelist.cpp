@@ -58,7 +58,7 @@ LegoBool32 CarBuildModel::PieceList::RemoveEntry(LegoS32 p_index)
 			m_entries[i] = m_entries[i + 1];
 		}
 
-		if (FUN_0049f930()) {
+		if (RebuildGrid()) {
 			return TRUE;
 		}
 
@@ -67,7 +67,7 @@ LegoBool32 CarBuildModel::PieceList::RemoveEntry(LegoS32 p_index)
 		}
 
 		m_entries[p_index] = saved;
-		FUN_0049f930();
+		RebuildGrid();
 	}
 
 	return FALSE;
@@ -116,7 +116,7 @@ LegoBool32 CarBuildModel::PieceList::Initialize(LegoS32 p_capacity)
 }
 
 // FUNCTION: LEGORACERS 0x0049f930
-LegoBool32 CarBuildModel::PieceList::FUN_0049f930()
+LegoBool32 CarBuildModel::PieceList::RebuildGrid()
 {
 	LegoBool32 result = TRUE;
 	m_pieceGrid->ResetEntries();
@@ -129,8 +129,8 @@ LegoBool32 CarBuildModel::PieceList::FUN_0049f930()
 		LegoS32 rotation;
 		m_entries[i].GetPlacement(&x, &y, &entryHeight, &rotation);
 
-		LegoS32 height = m_pieceGrid->FUN_0049e2d0(pieceRecord, x, y, rotation, FALSE);
-		if (height == -1 && (height = m_pieceGrid->FUN_0049e2d0(pieceRecord, x, y, rotation, TRUE)) == -1) {
+		LegoS32 height = m_pieceGrid->FindPlacementHeight(pieceRecord, x, y, rotation, FALSE);
+		if (height == -1 && (height = m_pieceGrid->FindPlacementHeight(pieceRecord, x, y, rotation, TRUE)) == -1) {
 			result = FALSE;
 		}
 		else {
@@ -141,8 +141,8 @@ LegoBool32 CarBuildModel::PieceList::FUN_0049f930()
 				result = FALSE;
 			}
 
-			if (!m_pieceGrid->FUN_0049e450(pieceRecord, x, y, rotation, height)) {
-				m_pieceGrid->FUN_0049df40(pieceRecord, x, y, rotation, height, i);
+			if (!m_pieceGrid->HasCollision(pieceRecord, x, y, rotation, height)) {
+				m_pieceGrid->StampPiece(pieceRecord, x, y, rotation, height, i);
 			}
 			else {
 				result = FALSE;
@@ -199,7 +199,7 @@ LegoBool32 CarBuildModel::PieceList::Deserialize(
 	}
 	else {
 		m_entryCount = 0;
-		FUN_0049f930();
+		RebuildGrid();
 
 		for (; count > 0; count--) {
 			LegoS32 pieceType = ReadU16();
@@ -215,7 +215,7 @@ LegoBool32 CarBuildModel::PieceList::Deserialize(
 
 			LegoPieceLibrary::PieceRecord* pieceRecord = p_pieceLibrary->FindPieceRecord(pieceType, 1);
 			if (pieceRecord != NULL) {
-				LegoS32 height = m_pieceGrid->FUN_0049e2d0(pieceRecord, x, y, rotation, FALSE);
+				LegoS32 height = m_pieceGrid->FindPlacementHeight(pieceRecord, x, y, rotation, FALSE);
 				if (height >= 0 && height + pieceRecord->GetMaxCellValue() > p_maxHeight) {
 					continue;
 				}
@@ -259,8 +259,8 @@ void CarBuildModel::PieceList::Serialize(LegoU8* p_dest)
 }
 
 // FUNCTION: LEGORACERS 0x0049fd60
-void CarBuildModel::PieceList::FUN_0049fd60()
+void CarBuildModel::PieceList::RemoveAllEntries()
 {
 	m_entryCount = 0;
-	FUN_0049f930();
+	RebuildGrid();
 }

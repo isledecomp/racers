@@ -58,7 +58,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 	m_circuitEntry = NULL;
 
 	LegoBool32 result = MenuSceneScreen::Destroy();
-	context->m_carBuildModel.FUN_00499ee0();
+	context->m_carBuildModel.AcquireBuffers();
 
 	return result;
 }
@@ -108,7 +108,7 @@ LegoBool32 SingleRaceSelectBase::Initialize(MenuGameContext* p_context, MenuScre
 {
 	m_circuitEntry = NULL;
 
-	p_context->m_carBuildModel.FUN_00499f00();
+	p_context->m_carBuildModel.ReleaseBuffers();
 	LegoBool32 result = MenuSceneScreen::Initialize(p_context, p_createParams);
 	if (!result) {
 		return result;

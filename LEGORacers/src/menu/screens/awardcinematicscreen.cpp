@@ -46,7 +46,7 @@ LegoBool32 AwardCinematicScreen::Initialize(MenuGameContext* p_context, MenuScre
 	m_trophyAwarded = 0;
 
 	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_carBuildModel.IsInitialized()) {
-		p_context->m_carBuildModel.FUN_00499f00();
+		p_context->m_carBuildModel.ReleaseBuffers();
 	}
 
 	if (!MenuSceneScreen::Initialize(p_context, p_createParams)) {
@@ -124,7 +124,7 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	if (m_resourceMenuId == c_menuWinRrCar) {
 		MenuGameContext* context = m_context;
 		if (context->m_carBuildModel.IsInitialized()) {
-			m_context->m_carBuildModel.FUN_00499ee0();
+			m_context->m_carBuildModel.AcquireBuffers();
 		}
 	}
 
@@ -625,16 +625,16 @@ LegoBool32 AwardCinematicScreen::CreateWinnerCar(undefined4)
 		LegoU8 carData[sizeof(SaveRecordData) - 0x2b];
 		record->CopyCarData(carData);
 
-		m_context->m_carBuildModel.FUN_0049c7f0(carData);
+		m_context->m_carBuildModel.Deserialize(carData);
 		if (m_context->m_carBuildModel.GetPlacedPieceCount()) {
-			m_context->m_carBuildModel.FUN_0049b740(FALSE);
-			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
+			m_context->m_carBuildModel.UpdateOffset(FALSE);
+			m_context->m_carBuildModel.RebuildModel(1, 0x7f);
 
 			SceneEntityGroup::CreateParams createParams;
 			createParams.m_driverEntity = NULL;
 			createParams.m_chassisModels = &m_context->m_chassisModels;
 			createParams.m_buildModel = &m_context->m_carBuildModel;
-			createParams.m_carEntity = m_context->m_carBuildModel.GetUnk0x0c();
+			createParams.m_carEntity = m_context->m_carBuildModel.GetModelEntity();
 
 			record->GetChassisName(name);
 			::strncpy(createParams.m_chassisName, name, sizeof(GolName));

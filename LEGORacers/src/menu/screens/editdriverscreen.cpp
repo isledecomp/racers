@@ -171,7 +171,7 @@ LegoBool32 EditDriverScreen::Initialize(MenuGameContext* p_context, MenuScreenCr
 	SetLighting(&materialColor, &lightColor);
 
 	m_modelSlot.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
-	p_context->m_carBuildModel.FUN_00499f00();
+	p_context->m_carBuildModel.ReleaseBuffers();
 	LoadHeadBuilder(p_context, p_createParams);
 	LoadCosmetics();
 	PlayNextAnimation();
@@ -189,7 +189,7 @@ LegoBool32 EditDriverScreen::Destroy()
 	}
 
 	m_headBuilder.ReleaseResources();
-	context->m_carBuildModel.FUN_00499ee0();
+	context->m_carBuildModel.AcquireBuffers();
 
 	return MenuGameScreen::Destroy();
 }

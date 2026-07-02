@@ -71,7 +71,7 @@ void RacerModelScreenBase::CreateCarModels()
 {
 	CreateDriverModels();
 
-	m_carModels[0] = m_context->m_carBuildModel.GetUnk0x84();
+	m_carModels[0] = m_context->m_carBuildModel.GetModel();
 
 	for (LegoS32 i = 0; i < m_slotCount; i++) {
 		if (m_carModels[i] == NULL) {
@@ -80,7 +80,7 @@ void RacerModelScreenBase::CreateCarModels()
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			m_context->m_carBuildModel.FUN_00499eb0(m_carModels[i]);
+			m_context->m_carBuildModel.InitializeModel(m_carModels[i]);
 		}
 
 		m_carModelEntities[i].VTable0x50(m_carModels[i], g_racerPickMaxFloat);
@@ -335,9 +335,9 @@ void RacerModelScreenBase::RefreshSlotModel(LegoS32 p_index)
 		.FUN_0040d550(m_driverModels[modelIndex], m_bodySceneNodes[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
 	record->CopyCarData(m_carData);
-	m_context->m_carBuildModel.FUN_0049c7f0(m_carData);
-	m_context->m_carBuildModel.FUN_0049b740(0);
-	m_context->m_carBuildModel.FUN_0049bc60(m_carModels[modelIndex], 1, 0x7f);
+	m_context->m_carBuildModel.Deserialize(m_carData);
+	m_context->m_carBuildModel.UpdateOffset(0);
+	m_context->m_carBuildModel.BuildIntoModel(m_carModels[modelIndex], 1, 0x7f);
 
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_driverEntity = NULL;

@@ -760,18 +760,18 @@ void MenuManager::BuildPlayerCarModel(
 	GolD3DRenderDevice* renderer = golExport->GetDrawState()->m_currentRenderer;
 	CarBuildModel& carBuildModel = m_gameContext.m_carBuildModel;
 
-	if (!carBuildModel.FUN_0049c7f0(p_record->GetCarData())) {
+	if (!carBuildModel.Deserialize(p_record->GetCarData())) {
 		GOL_FATALERROR_MESSAGE("Unable to load mesh builder with car data");
 	}
 
-	carBuildModel.FUN_0049b740(0);
-	carBuildModel.FUN_0049b920(0, 0xff);
+	carBuildModel.UpdateOffset(0);
+	carBuildModel.RebuildModel(0, 0xff);
 
 	undefined4 textureCount;
 	undefined4 materialCount;
 
-	materialCount = carBuildModel.GetUnk0x1ee8();
-	textureCount = carBuildModel.GetUnk0x1eec();
+	materialCount = carBuildModel.GetFinalMaterialCount();
+	textureCount = carBuildModel.GetFinalTextureCount();
 
 	GolMaterialLibrary* materials = p_slot->m_materials;
 	if (materials) {
@@ -796,14 +796,15 @@ void MenuManager::BuildPlayerCarModel(
 	p_slot->m_model->VTable0x18(
 		renderer,
 		3,
-		carBuildModel.GetUnk0x1ef8(),
-		carBuildModel.GetUnk0x1ef4(),
-		carBuildModel.GetUnk0x1ef0(),
+		carBuildModel.GetFinalVertexCount(),
+		carBuildModel.GetFinalTriangleCount(),
+		carBuildModel.GetFinalGroupCount(),
 		materialCount
 	);
 
-	carBuildModel.FUN_0049c840(p_slot->m_model, p_slot->m_materials, p_slot->m_textures);
-	p_slot->m_unk0x14 = carBuildModel.FUN_0049c6a0(&p_slot->m_unk0x18, &p_slot->m_unk0x1c, &p_slot->m_unk0x20);
+	carBuildModel.ExportModel(p_slot->m_model, p_slot->m_materials, p_slot->m_textures);
+	p_slot->m_unk0x14 =
+		carBuildModel.ComputeHighPieceCentroid(&p_slot->m_unk0x18, &p_slot->m_unk0x1c, &p_slot->m_unk0x20);
 
 	entity.VTable0x50(p_slot->m_model, g_menuManagerMaxFloat);
 	renderer->VTable0x9c(&entity, p_rendererState, 0);

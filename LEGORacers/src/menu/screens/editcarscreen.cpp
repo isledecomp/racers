@@ -205,7 +205,7 @@ void EditCarScreen::PopulateCategoryCarousel()
 	}
 
 	for (i = 0; i < m_context->m_carBuildModel.GetPlacedPieceCount(); i++) {
-		LegoS32 index = m_context->m_partSet.FindEntryIndex(m_context->m_carBuildModel.FUN_0049bd50(i));
+		LegoS32 index = m_context->m_partSet.FindEntryIndex(m_context->m_carBuildModel.GetPiecePartType(i));
 		m_partCategoryAvailable[index] = TRUE;
 	}
 
@@ -240,14 +240,14 @@ void EditCarScreen::LoadCarData()
 {
 	m_activeRecord = &m_context->m_saveSystem.GetActiveRecord();
 	m_activeRecord->CopyCarData(m_carBuildSaveBuffer);
-	m_context->m_carBuildModel.FUN_0049c7f0(m_carBuildSaveBuffer);
+	m_context->m_carBuildModel.Deserialize(m_carBuildSaveBuffer);
 	PopulateCategoryCarousel();
 
 	if (m_context->m_carBuildModel.GetPlacedPieceCount()) {
 		LegoChar name[9];
 
-		m_context->m_carBuildModel.FUN_0049b740(0);
-		m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
+		m_context->m_carBuildModel.UpdateOffset(0);
+		m_context->m_carBuildModel.RebuildModel(1, 0x7f);
 		m_context->m_saveSystem.GetActiveRecord().GetChassisName(m_chassisName);
 
 		::strncpy(name, m_chassisName, 8);
@@ -274,7 +274,7 @@ void EditCarScreen::LoadCarData()
 void EditCarScreen::SaveCarData()
 {
 	::memset(m_carBuildSaveBuffer, 0, sizeof(m_carBuildSaveBuffer));
-	m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
+	m_context->m_carBuildModel.Serialize(m_carBuildSaveBuffer);
 	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_carBuildSaveBuffer);
 	m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(&m_context->m_saveSystem.GetActiveRecord());
 
@@ -311,7 +311,7 @@ void EditCarScreen::CreateCarGroup()
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_buildModel = &m_context->m_carBuildModel;
-	createParams.m_carEntity = m_context->m_carBuildModel.GetUnk0x0c();
+	createParams.m_carEntity = m_context->m_carBuildModel.GetModelEntity();
 	createParams.m_driverEntity = &m_driverEntity;
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
@@ -353,11 +353,11 @@ void EditCarScreen::LoadQuickBuildCar()
 			record->CopyCarData(m_carBuildSaveBuffer);
 
 			CarBuildModel* model = &m_context->m_carBuildModel;
-			model->GetPieceList().FUN_0049fd60();
+			model->GetPieceList().RemoveAllEntries();
 			model->SetPlacedPieceCount(0);
-			m_context->m_carBuildModel.FUN_0049c7f0(m_carBuildSaveBuffer);
-			m_context->m_carBuildModel.FUN_0049b740(0);
-			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
+			m_context->m_carBuildModel.Deserialize(m_carBuildSaveBuffer);
+			m_context->m_carBuildModel.UpdateOffset(0);
+			m_context->m_carBuildModel.RebuildModel(1, 0x7f);
 
 			m_activeRecord->MarkCarSaved();
 			UpdateButtonStates();
@@ -375,7 +375,7 @@ LegoBool32 EditCarScreen::HasUnsavedChanges()
 	}
 
 	::memset(buffer, 0, sizeof(m_carBuildSaveBuffer));
-	m_context->m_carBuildModel.FUN_0049c820(buffer);
+	m_context->m_carBuildModel.Serialize(buffer);
 	m_activeRecord->CopyCarData(m_carBuildSaveBuffer);
 
 	LegoBool32 result = ::memcmp(buffer, m_carBuildSaveBuffer, sizeof(m_carBuildSaveBuffer));
@@ -469,7 +469,7 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 	}
 
 	CarBuildModel* model = &m_context->m_carBuildModel;
-	model->GetPieceList().FUN_0049fd60();
+	model->GetPieceList().RemoveAllEntries();
 	model->SetPlacedPieceCount(0);
 
 	MenuWidget* selectedChild = m_categoryCarousel.GetSelectedChild();
@@ -489,9 +489,9 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 
 	m_context->m_saveSystem.GetActiveRecord().SetChassisName(m_chassisName);
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
-	m_context->m_carBuildModel.FUN_0049a160(pieceRecord, 0, 0, 0, 3, 0);
-	m_context->m_carBuildModel.FUN_0049b740(0);
-	m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
+	m_context->m_carBuildModel.PlacePiece(pieceRecord, 0, 0, 0, 3, 0);
+	m_context->m_carBuildModel.UpdateOffset(0);
+	m_context->m_carBuildModel.RebuildModel(1, 0x7f);
 
 	m_activeRecord->MarkCarSaved();
 	CreateCarGroup();
@@ -509,7 +509,7 @@ void EditCarScreen::Navigate()
 			m_golExport->VTable0x68(g_editCarImageList);
 			g_editCarImageList = NULL;
 		}
-		m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
+		m_context->m_carBuildModel.Serialize(m_carBuildSaveBuffer);
 		m_activeRecord->SetCarData(m_carBuildSaveBuffer);
 		m_context->m_menuStack.Push(m_nextMenuId);
 		break;

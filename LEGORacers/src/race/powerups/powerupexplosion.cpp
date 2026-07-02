@@ -3,7 +3,7 @@
 #include "render/golcommondrawstate.h"
 #include "render/gold3drenderdevice.h"
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::Explosion, 0x270)
+DECOMP_SIZE_ASSERT(PowerupExplosion, 0x270)
 
 // GLOBAL: LEGORACERS 0x004b0150
 LegoFloat g_explosionImpulseScale = 80.0f;
@@ -19,7 +19,7 @@ extern const LegoFloat g_unk0x004b0544;
 extern const LegoFloat g_homingProjectileCollisionStartOffset;
 
 // FUNCTION: LEGORACERS 0x004210b0
-RacePowerupManager::Explosion::Explosion()
+PowerupExplosion::PowerupExplosion()
 {
 	m_materialTable.FUN_004a00b0();
 	m_state = c_stateUninitialized;
@@ -53,14 +53,14 @@ RacePowerupManager::Explosion::Explosion()
 }
 
 // FUNCTION: LEGORACERS 0x004211e0
-RacePowerupManager::Explosion::~Explosion()
+PowerupExplosion::~PowerupExplosion()
 {
 	Destroy();
 	m_materialTable.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00421250
-void RacePowerupManager::Explosion::Initialize(const Params* p_params)
+void PowerupExplosion::Initialize(const Params* p_params)
 {
 	if (m_state != c_stateUninitialized) {
 		Destroy();
@@ -124,7 +124,7 @@ void RacePowerupManager::Explosion::Initialize(const Params* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x004214b0
-void RacePowerupManager::Explosion::Destroy()
+void PowerupExplosion::Destroy()
 {
 	Deactivate();
 	m_scarDecal.Destroy();
@@ -142,7 +142,7 @@ void RacePowerupManager::Explosion::Destroy()
 }
 
 // STUB: LEGORACERS 0x00421520
-void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
+void PowerupExplosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	LegoFloat negativeLimit = -2048.0f;
 	if (p_position->m_x > 2048.0f || p_position->m_x < negativeLimit || p_position->m_y > 2048.0f ||
@@ -225,7 +225,7 @@ void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 
 }
 
 // FUNCTION: LEGORACERS 0x004217b0
-void RacePowerupManager::Explosion::Deactivate()
+void PowerupExplosion::Deactivate()
 {
 	if (m_collisionEvent != NULL) {
 		m_collisionEvent->m_active = 0;
@@ -236,7 +236,7 @@ void RacePowerupManager::Explosion::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x004217d0
-void RacePowerupManager::Explosion::Update(LegoU32 p_elapsedMs)
+void PowerupExplosion::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateExploding) {
 		UpdateFlash(p_elapsedMs);
@@ -261,7 +261,7 @@ void RacePowerupManager::Explosion::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00421850
-void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
+void PowerupExplosion::UpdateFlash(LegoU32 p_elapsedMs)
 {
 	LegoS32 zero = 0;
 	if (m_state != zero && m_state != c_stateIdle) {
@@ -348,7 +348,7 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00421ae0
-void RacePowerupManager::Explosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void PowerupExplosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateUninitialized || m_state == c_stateIdle) {
 		return;
@@ -383,7 +383,7 @@ void RacePowerupManager::Explosion::DrawTransparent(GolD3DRenderDevice* p_render
 }
 
 // STUB: LEGORACERS 0x00421c00
-void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void PowerupExplosion::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	LegoU32 mode = m_blastMode;
 	if (!mode) {
@@ -455,14 +455,14 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::Explosion::Draw(GolD3DRenderDevice*)
+void PowerupExplosion::Draw(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004587b0
-RacePowerupManager::Explosion* RacePowerupManager::Explosion::Destroy(undefined4 p_flags)
+PowerupExplosion* PowerupExplosion::Destroy(undefined4 p_flags)
 {
-	Explosion* result = this;
+	PowerupExplosion* result = this;
 	if (p_flags & 2) {
 		if (p_flags & 1) {
 			delete[] this;
@@ -471,7 +471,7 @@ RacePowerupManager::Explosion* RacePowerupManager::Explosion::Destroy(undefined4
 		return result;
 	}
 
-	this->~Explosion();
+	this->~PowerupExplosion();
 	if (p_flags & 1) {
 		::operator delete(result);
 	}

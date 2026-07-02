@@ -3,7 +3,7 @@
 DECOMP_SIZE_ASSERT(RaceEventTable, 0x90)
 
 // STUB: LEGORACERS 0x0045c660
-LegoU32 RacePowerupManager::TargetPointList::DisableTargetPoints(undefined4 p_unk0x04)
+LegoU32 TargetPointList::DisableTargetPoints(undefined4 p_unk0x04)
 {
 	LegoU32 i = 0;
 	if (static_cast<LegoU32>(m_count) > 0) {

@@ -653,7 +653,7 @@ void HazardManager::WarpPadHazard::OnActivate(void* p_racer)
 {
 	Racer* racer = static_cast<Racer*>(p_racer);
 	if (racer && m_state != 2 && !(racer->GetFlags() & c_flagGhost)) {
-		RacePowerupManager::ActionTarget target;
+		ActionTarget target;
 		target.m_direction.m_x = g_warpPadActionDirectionX;
 		target.m_direction.m_y = g_warpPadActionDirectionY;
 		target.m_direction.m_z = g_warpPadActionDirectionZ;
@@ -818,7 +818,7 @@ void HazardManager::CurseDropHazard::Load(Context* p_context, GolFileParser*)
 // FUNCTION: LEGORACERS 0x0048b3c0
 void HazardManager::CurseDropHazard::OnActivate(void*)
 {
-	RacePowerupManager::ActionTarget target;
+	ActionTarget target;
 	target.m_direction = g_curseDropActionDirection;
 
 	g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
@@ -954,7 +954,7 @@ void HazardManager::SweepCannonHazard::OnActivate(void*)
 void HazardManager::SweepCannonHazard::Update(undefined4 p_elapsedMs)
 {
 	if (m_state != 1) {
-		RacePowerupManager::ActionTarget target;
+		ActionTarget target;
 		Hazard::Update(p_elapsedMs);
 
 		LegoU32 elapsedMs = static_cast<LegoU32>(p_elapsedMs);
@@ -1589,7 +1589,7 @@ void HazardManager::CannonballRainHazard::Update(undefined4 p_elapsedMs)
 	positionZ += 1.0f;
 	m_dropPosition.m_z = positionZ;
 
-	RacePowerupManager::ActionTarget target;
+	ActionTarget target;
 	target.m_materialName = m_materialName;
 	m_powerupManager->SetAimTarget(&target);
 	m_powerupManager->UseRedPowerup(NULL, 0);

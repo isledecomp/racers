@@ -51,7 +51,7 @@ const LegoFloat g_warpLaunchSpeed = 700.0f;
 const LegoFloat g_warpLerpScale = 0.00066666666f;
 
 // FUNCTION: LEGORACERS 0x00458750
-RacePowerupManager::PowerupAction* RacePowerupManager::WarpAction::Destroy(undefined4 p_flags)
+PowerupAction* WarpAction::Destroy(undefined4 p_flags)
 {
 	WarpAction* result = this;
 	if (p_flags & 2) {
@@ -71,19 +71,19 @@ RacePowerupManager::PowerupAction* RacePowerupManager::WarpAction::Destroy(undef
 }
 
 // FUNCTION: LEGORACERS 0x0045d400
-RacePowerupManager::WarpAction::WarpAction()
+WarpAction::WarpAction()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045d460
-RacePowerupManager::WarpAction::~WarpAction()
+WarpAction::~WarpAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045d4b0
-void RacePowerupManager::WarpAction::Reset()
+void WarpAction::Reset()
 {
 	m_state = 0;
 	m_isDemoRacer = 0;
@@ -98,7 +98,7 @@ void RacePowerupManager::WarpAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045d510
-void RacePowerupManager::WarpAction::Initialize(const SetupParams* p_params)
+void WarpAction::Initialize(const SetupParams* p_params)
 {
 	if (m_state != 0) {
 		Destroy();
@@ -110,14 +110,14 @@ void RacePowerupManager::WarpAction::Initialize(const SetupParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x0045d540
-void RacePowerupManager::WarpAction::Destroy()
+void WarpAction::Destroy()
 {
 	Deactivate();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045d560
-LegoU32 RacePowerupManager::WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget* p_target)
+LegoU32 WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget* p_target)
 {
 	LegoU32 flags = p_racer->m_flags;
 	if (!(flags & c_flagGhost)) {
@@ -177,7 +177,7 @@ LegoU32 RacePowerupManager::WarpAction::Activate(Racer* p_racer, GolModelEntity*
 }
 
 // FUNCTION: LEGORACERS 0x0045d780
-void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
+void WarpAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -233,7 +233,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045d940
-void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
+void WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	MenuAnimationList* animationList = m_manager->m_animationList;
 	if (m_state == c_stateDone) {
@@ -325,7 +325,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0045dbe0
-void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateStarting) {
 		return;
@@ -352,7 +352,7 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 }
 
 // FUNCTION: LEGORACERS 0x0045dc90
-void RacePowerupManager::WarpAction::AdvanceState()
+void WarpAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateStarting: {
@@ -468,7 +468,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x0045e000
-void RacePowerupManager::WarpAction::Deactivate()
+void WarpAction::Deactivate()
 {
 	m_state = c_stateInitialized;
 	m_modelEntity.VTable0x54();
@@ -491,7 +491,7 @@ void RacePowerupManager::WarpAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x0045e080
-void RacePowerupManager::WarpAction::TeleportEntity(GolWorldEntity* p_entity)
+void WarpAction::TeleportEntity(GolWorldEntity* p_entity)
 {
 	GolVec3 position;
 	if (m_hasTarget) {

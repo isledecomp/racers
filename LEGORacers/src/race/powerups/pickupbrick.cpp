@@ -34,19 +34,19 @@ LegoFloat g_brickScalePercentInverse = 1.0f / g_brickScalePercentBase;
 LegoFloat g_brickShrinkPercentPerMs = g_ghostSampleFractionScale * g_brickScalePercentBase;
 
 // FUNCTION: LEGORACERS 0x00453910
-RacePowerupManager::PickupBrick::PickupBrick()
+PickupBrick::PickupBrick()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00453960
-RacePowerupManager::PickupBrick::~PickupBrick()
+PickupBrick::~PickupBrick()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00453970
-LegoS32 RacePowerupManager::PickupBrick::Reset()
+LegoS32 PickupBrick::Reset()
 {
 	m_scale = 1.0f;
 	m_model = NULL;
@@ -63,7 +63,7 @@ LegoS32 RacePowerupManager::PickupBrick::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004539b0
-void RacePowerupManager::PickupBrick::Initialize(
+void PickupBrick::Initialize(
 	RacePowerupManager* p_owner,
 	RacerSoundSource* p_soundResource,
 	GolVec3* p_position,
@@ -85,20 +85,20 @@ void RacePowerupManager::PickupBrick::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00453a00
-void RacePowerupManager::PickupBrick::Respawn()
+void PickupBrick::Respawn()
 {
 	m_state = c_stateWait;
 	m_stateTimerMs = 3000;
 }
 
 // FUNCTION: LEGORACERS 0x00453a10
-void RacePowerupManager::PickupBrick::Destroy()
+void PickupBrick::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00453a20
-void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
+void PickupBrick::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateInactive) {
 		return;
@@ -133,7 +133,7 @@ void RacePowerupManager::PickupBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453ad0
-void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_touchable)
+void PickupBrick::SetTouchable(LegoBool32 p_touchable)
 {
 	if (p_touchable) {
 		m_scale = g_brickScale;
@@ -144,7 +144,7 @@ void RacePowerupManager::PickupBrick::SetTouchable(LegoBool32 p_touchable)
 }
 
 // FUNCTION: LEGORACERS 0x00453af0
-void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	m_flags0x50 |= c_flagTouched;
 
@@ -159,7 +159,7 @@ void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p
 }
 
 // FUNCTION: LEGORACERS 0x00453b30
-void RacePowerupManager::PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
+void PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
@@ -172,7 +172,7 @@ void RacePowerupManager::PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00453b90
-void RacePowerupManager::PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {

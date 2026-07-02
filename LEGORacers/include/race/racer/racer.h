@@ -15,6 +15,7 @@ class RaceCameraController;
 class RaceForceFeedback;
 class RaceHud;
 class RacePowerupManager;
+class DroppableBrick;
 class RacerContext;
 class RacerSoundSource;
 class SpatialSoundInstance;
@@ -72,8 +73,6 @@ public:
 		LegoS32 m_delta;   // 0x04
 		LegoU32 m_isValid; // 0x08
 	};
-
-	class DroppableBrick;
 
 	// SIZE 0x30
 	class SpatialSoundResource : public RaceResourceManager::Resource {

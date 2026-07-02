@@ -47,19 +47,19 @@ public:
 
 	// SIZE 0x34
 	struct Params {
-		GolWorldDatabase* m_trackDatabase;                   // 0x00
-		GolWorldDatabase* m_sharedDatabase;                  // 0x04
-		GolWorldDatabase* m_triggerDatabase;                 // 0x08
-		GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
-		RacerSoundSource* m_soundSource;                     // 0x10
-		HazardManager* m_hazardManager;                      // 0x14
-		CutsceneAnimation* m_particleAnimation;              // 0x18
-		CutsceneAnimation* m_sharedParticleAnimation;        // 0x1c
-		RaceSkyState* m_skyState;                            // 0x20
-		RacePowerupManager::TargetPointList* m_targetPoints; // 0x24
-		const LegoChar* m_name;                              // 0x28
-		LegoBool32 m_binary;                                 // 0x2c
-		LegoBool32 m_mirror;                                 // 0x30
+		GolWorldDatabase* m_trackDatabase;             // 0x00
+		GolWorldDatabase* m_sharedDatabase;            // 0x04
+		GolWorldDatabase* m_triggerDatabase;           // 0x08
+		GolWorldDatabase* m_materialAnimationDatabase; // 0x0c
+		RacerSoundSource* m_soundSource;               // 0x10
+		HazardManager* m_hazardManager;                // 0x14
+		CutsceneAnimation* m_particleAnimation;        // 0x18
+		CutsceneAnimation* m_sharedParticleAnimation;  // 0x1c
+		RaceSkyState* m_skyState;                      // 0x20
+		TargetPointList* m_targetPoints;               // 0x24
+		const LegoChar* m_name;                        // 0x28
+		LegoBool32 m_binary;                           // 0x2c
+		LegoBool32 m_mirror;                           // 0x30
 	};
 
 	// VTABLE: LEGORACERS 0x004b1b28
@@ -638,42 +638,42 @@ private:
 	void ParseExternalForces(GolFileParser* p_parser, LegoBool32 p_mirror);
 	void ParseLapZones(GolFileParser* p_parser);
 
-	GolWorldDatabase* m_trackDatabase;                   // 0x00
-	GolWorldDatabase* m_sharedDatabase;                  // 0x04
-	GolWorldDatabase* m_triggerDatabase;                 // 0x08
-	GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
-	RacerSoundSource* m_soundSource;                     // 0x10
-	HazardManager* m_hazardManager;                      // 0x14
-	CutsceneAnimation* m_particleAnimation;              // 0x18
-	CutsceneAnimation* m_sharedParticleAnimation;        // 0x1c
-	RaceSkyState* m_skyState;                            // 0x20
-	RacePowerupManager::TargetPointList* m_targetPoints; // 0x24
-	LegoU32 m_soundCount;                                // 0x28
-	LegoU32 m_partAnimationCount;                        // 0x2c
-	LegoU32 m_materialAnimationCount;                    // 0x30
-	LegoU32 m_particleCount;                             // 0x34
-	LegoU32 m_eventLinkCount;                            // 0x38
-	LegoU32 m_skyStateCount;                             // 0x3c
-	LegoU32 m_timerCount;                                // 0x40
-	LegoU32 m_colorTransformCount;                       // 0x44
-	LegoU32 m_lapZoneCount;                              // 0x48
-	LegoU32 m_nodeTransformCount;                        // 0x4c
-	LegoU32 m_modelDistanceCount;                        // 0x50
-	LegoU32 m_lookTargetCount;                           // 0x54
-	LegoU32 m_externalForceCount;                        // 0x58
-	SoundResource* m_sounds;                             // 0x5c
-	PartAnimationResource* m_partAnimations;             // 0x60
-	MaterialAnimationResource* m_materialAnimations;     // 0x64
-	ParticleResource* m_particles;                       // 0x68
-	EventLink* m_eventLinks;                             // 0x6c
-	SkyStateResource* m_skyStates;                       // 0x70
-	TimerResource* m_timers;                             // 0x74
-	NodeTransformResource* m_nodeTransforms;             // 0x78
-	ColorTransformResource* m_colorTransforms;           // 0x7c
-	LapZoneResource* m_lapZones;                         // 0x80
-	ModelDistanceResource* m_modelDistances;             // 0x84
-	LookTargetResource* m_lookTargets;                   // 0x88
-	ExternalForceResource* m_externalForces;             // 0x8c
+	GolWorldDatabase* m_trackDatabase;               // 0x00
+	GolWorldDatabase* m_sharedDatabase;              // 0x04
+	GolWorldDatabase* m_triggerDatabase;             // 0x08
+	GolWorldDatabase* m_materialAnimationDatabase;   // 0x0c
+	RacerSoundSource* m_soundSource;                 // 0x10
+	HazardManager* m_hazardManager;                  // 0x14
+	CutsceneAnimation* m_particleAnimation;          // 0x18
+	CutsceneAnimation* m_sharedParticleAnimation;    // 0x1c
+	RaceSkyState* m_skyState;                        // 0x20
+	TargetPointList* m_targetPoints;                 // 0x24
+	LegoU32 m_soundCount;                            // 0x28
+	LegoU32 m_partAnimationCount;                    // 0x2c
+	LegoU32 m_materialAnimationCount;                // 0x30
+	LegoU32 m_particleCount;                         // 0x34
+	LegoU32 m_eventLinkCount;                        // 0x38
+	LegoU32 m_skyStateCount;                         // 0x3c
+	LegoU32 m_timerCount;                            // 0x40
+	LegoU32 m_colorTransformCount;                   // 0x44
+	LegoU32 m_lapZoneCount;                          // 0x48
+	LegoU32 m_nodeTransformCount;                    // 0x4c
+	LegoU32 m_modelDistanceCount;                    // 0x50
+	LegoU32 m_lookTargetCount;                       // 0x54
+	LegoU32 m_externalForceCount;                    // 0x58
+	SoundResource* m_sounds;                         // 0x5c
+	PartAnimationResource* m_partAnimations;         // 0x60
+	MaterialAnimationResource* m_materialAnimations; // 0x64
+	ParticleResource* m_particles;                   // 0x68
+	EventLink* m_eventLinks;                         // 0x6c
+	SkyStateResource* m_skyStates;                   // 0x70
+	TimerResource* m_timers;                         // 0x74
+	NodeTransformResource* m_nodeTransforms;         // 0x78
+	ColorTransformResource* m_colorTransforms;       // 0x7c
+	LapZoneResource* m_lapZones;                     // 0x80
+	ModelDistanceResource* m_modelDistances;         // 0x84
+	LookTargetResource* m_lookTargets;               // 0x88
+	ExternalForceResource* m_externalForces;         // 0x8c
 };
 
 #endif // RACEEVENTTABLE_H

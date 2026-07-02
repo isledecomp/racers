@@ -4,11 +4,11 @@
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::TargetPointList::Entry, 0x14)
-DECOMP_SIZE_ASSERT(RaceSession::TargetPointList, 0x08)
+DECOMP_SIZE_ASSERT(TargetPointList::Entry, 0x14)
+DECOMP_SIZE_ASSERT(TgbTargetPointList, 0x08)
 
 // FUNCTION: LEGORACERS 0x0045c340
-RacePowerupManager::TargetPointList::Entry::Entry()
+TargetPointList::Entry::Entry()
 {
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
@@ -18,7 +18,7 @@ RacePowerupManager::TargetPointList::Entry::Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c360
-RacePowerupManager::TargetPointList::Entry::~Entry()
+TargetPointList::Entry::~Entry()
 {
 	m_index = -1;
 	m_position.m_x = 0.0f;
@@ -28,7 +28,7 @@ RacePowerupManager::TargetPointList::Entry::~Entry()
 }
 
 // FUNCTION: LEGORACERS 0x0045c380
-void RacePowerupManager::TargetPointList::Entry::Set(GolVec3* p_position, LegoS32 p_index)
+void TargetPointList::Entry::Set(GolVec3* p_position, LegoS32 p_index)
 {
 	m_position.m_x = p_position->m_x;
 	m_position.m_y = p_position->m_y;
@@ -38,20 +38,20 @@ void RacePowerupManager::TargetPointList::Entry::Set(GolVec3* p_position, LegoS3
 }
 
 // FUNCTION: LEGORACERS 0x0045c3b0 FOLDED
-RaceSession::TargetPointList::TargetPointList()
+TgbTargetPointList::TgbTargetPointList()
 {
 	m_entries = NULL;
 	m_count = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045c3c0
-RaceSession::TargetPointList::~TargetPointList()
+TgbTargetPointList::~TgbTargetPointList()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045c3d0
-void RaceSession::TargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
+void TgbTargetPointList::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	GolFileParser* parser;
 	if (p_binary) {
@@ -81,7 +81,7 @@ void RaceSession::TargetPointList::Load(const LegoChar* p_name, LegoBool32 p_bin
 		return;
 	}
 
-	m_entries = new RacePowerupManager::TargetPointList::Entry[m_count];
+	m_entries = new TargetPointList::Entry[m_count];
 	if (m_entries == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -129,7 +129,7 @@ void RaceSession::TargetPointList::Load(const LegoChar* p_name, LegoBool32 p_bin
 }
 
 // FUNCTION: LEGORACERS 0x0045c620
-void RaceSession::TargetPointList::Reset()
+void TgbTargetPointList::Reset()
 {
 	if (m_entries) {
 		delete[] m_entries;
@@ -140,7 +140,7 @@ void RaceSession::TargetPointList::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045c6a0
-RacePowerupManager::TargetPointList::Entry* RacePowerupManager::TargetPointList::FindTargetInCone(
+TargetPointList::Entry* TargetPointList::FindTargetInCone(
 	GolVec3* p_position,
 	GolVec3* p_direction,
 	LegoFloat p_minDistanceSquared,

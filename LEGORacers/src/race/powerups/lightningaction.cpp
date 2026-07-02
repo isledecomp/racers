@@ -93,7 +93,7 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00454800
-RacePowerupManager::LightningAction::LightningAction()
+LightningAction::LightningAction()
 {
 	m_jitterCursor = 0;
 	m_unk0x228 = 3;
@@ -108,13 +108,13 @@ RacePowerupManager::LightningAction::LightningAction()
 }
 
 // FUNCTION: LEGORACERS 0x00454890
-RacePowerupManager::LightningAction::~LightningAction()
+LightningAction::~LightningAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004548f0
-void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_manager)
+void LightningAction::Initialize(GolExport* p_export, RacePowerupManager* p_manager)
 {
 	if (m_state != 0) {
 		Destroy();
@@ -162,7 +162,7 @@ void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePo
 }
 
 // FUNCTION: LEGORACERS 0x00454a70
-void RacePowerupManager::LightningAction::AcquireSound()
+void LightningAction::AcquireSound()
 {
 	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
 	if (m_sound != NULL) {
@@ -174,7 +174,7 @@ void RacePowerupManager::LightningAction::AcquireSound()
 }
 
 // FUNCTION: LEGORACERS 0x00454ab0
-void RacePowerupManager::LightningAction::Destroy()
+void LightningAction::Destroy()
 {
 	if (m_sound != NULL) {
 		m_soundSource->ReleaseSound(m_soundResource);
@@ -196,7 +196,7 @@ void RacePowerupManager::LightningAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00454b20
-void RacePowerupManager::LightningAction::AdvanceJitter()
+void LightningAction::AdvanceJitter()
 {
 	g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 	m_jitterTable[m_jitterCursor] =
@@ -209,7 +209,7 @@ void RacePowerupManager::LightningAction::AdvanceJitter()
 }
 
 // FUNCTION: LEGORACERS 0x00454b90
-void RacePowerupManager::LightningAction::FillJitterTable()
+void LightningAction::FillJitterTable()
 {
 	for (LegoU32 i = 0; i < 20; i++) {
 		AdvanceJitter();
@@ -217,7 +217,7 @@ void RacePowerupManager::LightningAction::FillJitterTable()
 }
 
 // FUNCTION: LEGORACERS 0x00454bb0
-void RacePowerupManager::LightningAction::RebuildBolt()
+void LightningAction::RebuildBolt()
 {
 	LegoS32 index = static_cast<LegoS32>(m_jitterCursor) - 1;
 	GolVec3* modelPosition = m_boltPoints;
@@ -260,7 +260,7 @@ void RacePowerupManager::LightningAction::RebuildBolt()
 }
 
 // FUNCTION: LEGORACERS 0x00454cb0
-void RacePowerupManager::LightningAction::Activate(Racer* p_racer, ActionTarget* p_target)
+void LightningAction::Activate(Racer* p_racer, ActionTarget* p_target)
 {
 	m_state = 2;
 	m_stateTimerMs = 500;
@@ -282,7 +282,7 @@ void RacePowerupManager::LightningAction::Activate(Racer* p_racer, ActionTarget*
 }
 
 // FUNCTION: LEGORACERS 0x00454d10
-void RacePowerupManager::LightningAction::Deactivate()
+void LightningAction::Deactivate()
 {
 	if (m_targetRacer != NULL) {
 		m_targetRacer->EndSpinOut();
@@ -301,7 +301,7 @@ void RacePowerupManager::LightningAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x00454d70
-void RacePowerupManager::LightningAction::Update(LegoU32 p_elapsedMs)
+void LightningAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -340,7 +340,7 @@ void RacePowerupManager::LightningAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00454e50
-void RacePowerupManager::LightningAction::UpdateSound(LegoU32 p_elapsedMs)
+void LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 {
 	if (m_sound != NULL) {
 		m_sound->SetPosition(*m_source);
@@ -402,7 +402,7 @@ void RacePowerupManager::LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00455020
-void RacePowerupManager::LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_targetRacer != NULL) {
 		m_flashBillboard->VTable0x08(m_boltPoints[3]);
@@ -413,7 +413,7 @@ void RacePowerupManager::LightningAction::DrawTransparent(GolD3DRenderDevice* p_
 }
 
 // FUNCTION: LEGORACERS 0x00455060
-void RacePowerupManager::LightningAction::AdvanceState()
+void LightningAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateRampIn:
@@ -450,7 +450,7 @@ void RacePowerupManager::LightningAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00455100
-void RacePowerupManager::LightningAction::UpdateBoltPath()
+void LightningAction::UpdateBoltPath()
 {
 	GolVec3 position = *m_source;
 	position.m_z += g_lightningSourceHeightOffset;
@@ -517,7 +517,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 }
 
 // FUNCTION: LEGORACERS 0x00455350
-void RacePowerupManager::LightningAction::FindVictim()
+void LightningAction::FindVictim()
 {
 	Racer* racer;
 
@@ -567,7 +567,7 @@ void RacePowerupManager::LightningAction::FindVictim()
 }
 
 // FUNCTION: LEGORACERS 0x00455440
-void RacePowerupManager::LightningAction::OnHitRacer(Racer* p_racer)
+void LightningAction::OnHitRacer(Racer* p_racer)
 {
 	LegoU32 state = m_state;
 
@@ -641,13 +641,13 @@ void RacePowerupManager::LightningAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00455620
-void RacePowerupManager::LightningAction::GetProjectilePosition(GolVec3* p_position)
+void LightningAction::GetProjectilePosition(GolVec3* p_position)
 {
 	*p_position = m_boltPoints[3];
 }
 
 // FUNCTION: LEGORACERS 0x00455640
-void RacePowerupManager::LightningAction::GetProjectileVelocity(GolVec3* p_velocity)
+void LightningAction::GetProjectileVelocity(GolVec3* p_velocity)
 {
 	p_velocity->m_x = 0.0f;
 	p_velocity->m_y = 0.0f;
@@ -655,7 +655,7 @@ void RacePowerupManager::LightningAction::GetProjectileVelocity(GolVec3* p_veloc
 }
 
 // FUNCTION: LEGORACERS 0x00455660
-void RacePowerupManager::LightningAction::UpdateHitParticle()
+void LightningAction::UpdateHitParticle()
 {
 	if (m_hitParticle == NULL) {
 		return;
@@ -687,7 +687,7 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 }
 
 // FUNCTION: LEGORACERS 0x004585d0
-RacePowerupManager::PowerupAction* RacePowerupManager::LightningAction::Destroy(undefined4 p_flags)
+PowerupAction* LightningAction::Destroy(undefined4 p_flags)
 {
 	LightningAction* result = this;
 	if (p_flags & 2) {

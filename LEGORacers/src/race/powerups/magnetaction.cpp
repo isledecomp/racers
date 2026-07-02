@@ -28,26 +28,26 @@ const LegoFloat g_magnetSoundMinDistance = 30.0f;
 const LegoFloat g_magnetFadeAlpha = 127.0f;
 
 // FUNCTION: LEGORACERS 0x00455710
-RacePowerupManager::MagnetAction::MagnetAction()
+MagnetAction::MagnetAction()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00455770
-RacePowerupManager::MagnetAction::~MagnetAction()
+MagnetAction::~MagnetAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004557c0
-void RacePowerupManager::MagnetAction::Destroy()
+void MagnetAction::Destroy()
 {
 	Deactivate();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004557e0
-void RacePowerupManager::MagnetAction::Reset()
+void MagnetAction::Reset()
 {
 	m_magnetEntity = 0;
 	m_ringEntity = 0;
@@ -63,7 +63,7 @@ void RacePowerupManager::MagnetAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00455810
-void RacePowerupManager::MagnetAction::Initialize(
+void MagnetAction::Initialize(
 	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
 	TriggerWorld* p_collisionWorld,
@@ -80,7 +80,7 @@ void RacePowerupManager::MagnetAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00455830
-void RacePowerupManager::MagnetAction::Activate(
+void MagnetAction::Activate(
 	Racer* p_racer,
 	GolAnimatedEntity* p_magnetTemplate,
 	GolAnimatedEntity* p_ringTemplate,
@@ -166,7 +166,7 @@ void RacePowerupManager::MagnetAction::Activate(
 }
 
 // FUNCTION: LEGORACERS 0x00455a90
-void RacePowerupManager::MagnetAction::Deactivate()
+void MagnetAction::Deactivate()
 {
 	if (m_sound != NULL) {
 		m_soundSource->ReleaseSound(m_soundResource);
@@ -212,7 +212,7 @@ void RacePowerupManager::MagnetAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x00455b40
-void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
+void MagnetAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == 6) {
 		return;
@@ -329,7 +329,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00455ed0
-void RacePowerupManager::MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
+void MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != 6) {
 		p_renderer->VTable0x94(m_magnetEntity);
@@ -337,7 +337,7 @@ void RacePowerupManager::MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00455ef0
-void RacePowerupManager::MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 6) {
 		return;
@@ -358,7 +358,7 @@ void RacePowerupManager::MagnetAction::DrawTransparent(GolD3DRenderDevice* p_ren
 }
 
 // FUNCTION: LEGORACERS 0x00455f50
-void RacePowerupManager::MagnetAction::AdvanceState()
+void MagnetAction::AdvanceState()
 {
 	if (m_state == 4) {
 		m_state = 6;
@@ -381,7 +381,7 @@ void RacePowerupManager::MagnetAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00455fb0
-void RacePowerupManager::MagnetAction::OnHitRacer(Racer* p_racer)
+void MagnetAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == 4) {
 		return;
@@ -428,7 +428,7 @@ void RacePowerupManager::MagnetAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004560b0
-void RacePowerupManager::MagnetAction::Deploy()
+void MagnetAction::Deploy()
 {
 	SoundVector position;
 	ComputeDropPosition(m_ownerRacer, &position, NULL);
@@ -485,7 +485,7 @@ void RacePowerupManager::MagnetAction::Deploy()
 }
 
 // FUNCTION: LEGORACERS 0x00458390
-RacePowerupManager::PowerupAction* RacePowerupManager::MagnetAction::Destroy(undefined4 p_flags)
+PowerupAction* MagnetAction::Destroy(undefined4 p_flags)
 {
 	MagnetAction* result = this;
 	if (p_flags & 2) {

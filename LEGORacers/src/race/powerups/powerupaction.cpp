@@ -59,14 +59,14 @@ const LegoFloat g_dropProbeDepth = 50.0f;
 
 // FUNCTION: LEGORACERS 0x00452430 FOLDED
 #pragma code_seg(".text$animatedpartresource_vt18")
-LegoS32 RacePowerupManager::WeaponActionBase::GetBrickColor()
+LegoS32 WeaponActionBase::GetBrickColor()
 {
-	return c_brickColorRed;
+	return RacePowerupManager::c_brickColorRed;
 }
 #pragma code_seg()
 
 // FUNCTION: LEGORACERS 0x004562d0
-RacePowerupManager::HazardActionBase::HazardActionBase()
+HazardActionBase::HazardActionBase()
 {
 	m_raceState0x018 = NULL;
 	m_collisionEvent = 0;
@@ -76,7 +76,7 @@ RacePowerupManager::HazardActionBase::HazardActionBase()
 }
 
 // FUNCTION: LEGORACERS 0x00456320
-void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackData* p_param)
+void HazardActionBase::VTable0x00(LegoEventQueue::CallbackData* p_param)
 {
 	Racer* racer = static_cast<Racer*>(p_param->m_data);
 	if (racer != m_ownerRacer) {
@@ -93,11 +93,7 @@ void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackDa
 }
 
 // STUB: LEGORACERS 0x00456360
-void RacePowerupManager::HazardActionBase::ComputeDropPosition(
-	Racer* p_racer,
-	GolVec3* p_position,
-	GolBoundingVolume::Field0x0c* p_record
-)
+void HazardActionBase::ComputeDropPosition(Racer* p_racer, GolVec3* p_position, GolBoundingVolume::Field0x0c* p_record)
 {
 	GolVec3 start;
 	p_racer->m_visuals.m_carEntity->VTable0x04(&start);
@@ -124,13 +120,13 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 }
 
 // FUNCTION: LEGORACERS 0x0044f570 FOLDED
-LegoS32 RacePowerupManager::HazardActionBase::GetBrickColor()
+LegoS32 HazardActionBase::GetBrickColor()
 {
-	return c_brickColorYellow;
+	return RacePowerupManager::c_brickColorYellow;
 }
 
 // FUNCTION: LEGORACERS 0x0045bbe0
-RacePowerupManager::WeaponActionBase::WeaponActionBase()
+WeaponActionBase::WeaponActionBase()
 {
 	m_activeProjectile = 0;
 	m_golExportPtr = NULL;
@@ -141,19 +137,19 @@ RacePowerupManager::WeaponActionBase::WeaponActionBase()
 }
 
 // FUNCTION: LEGORACERS 0x0045bc10 FOLDED
-void RacePowerupManager::WeaponActionBase::GetProjectilePosition(GolVec3* p_position)
+void WeaponActionBase::GetProjectilePosition(GolVec3* p_position)
 {
 	m_activeProjectile->GetWorldEntity()->FUN_100286d0(p_position);
 }
 
 // FUNCTION: LEGORACERS 0x0045bc30 FOLDED
-void RacePowerupManager::WeaponActionBase::GetProjectileVelocity(GolVec3* p_velocity)
+void WeaponActionBase::GetProjectileVelocity(GolVec3* p_velocity)
 {
 	m_activeProjectile->GetVelocity(p_velocity);
 }
 
 // FUNCTION: LEGORACERS 0x0045bc40
-GolWorldEntity* RacePowerupManager::WeaponActionBase::GetProjectileWorldEntity()
+GolWorldEntity* WeaponActionBase::GetProjectileWorldEntity()
 {
 	if (m_activeProjectile) {
 		return m_activeProjectile->GetWorldEntity();

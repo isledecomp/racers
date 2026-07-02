@@ -13,29 +13,29 @@
 #include <golerror.h>
 
 DECOMP_SIZE_ASSERT(RacePowerupManager, 0x19a4)
-DECOMP_SIZE_ASSERT(RacePowerupManager::PickupBrick, 0x54)
-DECOMP_SIZE_ASSERT(RacePowerupManager::ColorBrick, 0x68)
-DECOMP_SIZE_ASSERT(RacePowerupManager::WhiteBrick, 0x68)
+DECOMP_SIZE_ASSERT(PickupBrick, 0x54)
+DECOMP_SIZE_ASSERT(ColorBrick, 0x68)
+DECOMP_SIZE_ASSERT(WhiteBrick, 0x68)
 DECOMP_SIZE_ASSERT(RacePowerupManager::PwbTxtParser, 0x1fc)
 DECOMP_SIZE_ASSERT(RacePowerupManager::SpatialSoundResource, 0x30)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris, 0x80)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BrickDebris::Entry, 0x14)
-DECOMP_SIZE_ASSERT(RacePowerupManager::TargetPointList::Entry, 0x14)
-DECOMP_SIZE_ASSERT(RacePowerupManager::MagnetAction, 0x84)
-DECOMP_SIZE_ASSERT(RacePowerupManager::OilSlickAction, 0x190)
-DECOMP_SIZE_ASSERT(RacePowerupManager::DynamiteAction, 0x17c)
-DECOMP_SIZE_ASSERT(RacePowerupManager::CurseAction, 0x68)
-DECOMP_SIZE_ASSERT(RacePowerupManager::PowerupActionBase, 0x18)
-DECOMP_SIZE_ASSERT(RacePowerupManager::HazardActionBase, 0x2c)
-DECOMP_SIZE_ASSERT(RacePowerupManager::WeaponActionBase, 0x30)
-DECOMP_SIZE_ASSERT(RacePowerupManager::CannonballAction, 0xe8)
-DECOMP_SIZE_ASSERT(RacePowerupManager::GrapplingHookAction, 0x290)
-DECOMP_SIZE_ASSERT(RacePowerupManager::LightningAction, 0x24c)
-DECOMP_SIZE_ASSERT(RacePowerupManager::HomingMissileAction, 0x224)
-DECOMP_SIZE_ASSERT(RacePowerupManager::ShieldAction, 0x2c)
-DECOMP_SIZE_ASSERT(RacePowerupManager::TurboAction, 0x34)
-DECOMP_SIZE_ASSERT(RacePowerupManager::WarpAction, 0xe4)
-DECOMP_SIZE_ASSERT(RacePowerupManager::PowerupAction, 0x18)
+DECOMP_SIZE_ASSERT(TargetPointList::Entry, 0x14)
+DECOMP_SIZE_ASSERT(MagnetAction, 0x84)
+DECOMP_SIZE_ASSERT(OilSlickAction, 0x190)
+DECOMP_SIZE_ASSERT(DynamiteAction, 0x17c)
+DECOMP_SIZE_ASSERT(CurseAction, 0x68)
+DECOMP_SIZE_ASSERT(PowerupActionBase, 0x18)
+DECOMP_SIZE_ASSERT(HazardActionBase, 0x2c)
+DECOMP_SIZE_ASSERT(WeaponActionBase, 0x30)
+DECOMP_SIZE_ASSERT(CannonballAction, 0xe8)
+DECOMP_SIZE_ASSERT(GrapplingHookAction, 0x290)
+DECOMP_SIZE_ASSERT(LightningAction, 0x24c)
+DECOMP_SIZE_ASSERT(HomingMissileAction, 0x224)
+DECOMP_SIZE_ASSERT(ShieldAction, 0x2c)
+DECOMP_SIZE_ASSERT(TurboAction, 0x34)
+DECOMP_SIZE_ASSERT(WarpAction, 0xe4)
+DECOMP_SIZE_ASSERT(PowerupAction, 0x18)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
@@ -69,7 +69,7 @@ extern const LegoFloat g_brickSpinWrap = 6.2831855f;
 LegoFloat g_projectileSoundRangeSquared = g_flightSoundMaxDistanceSquared * g_flightSoundMaxDistanceSquared;
 
 // FUNCTION: LEGORACERS 0x00451350
-RacePowerupManager::PowerupActionBase::PowerupActionBase()
+PowerupActionBase::PowerupActionBase()
 {
 	m_state = 0;
 	m_stateTimerMs = 0;
@@ -79,7 +79,7 @@ RacePowerupManager::PowerupActionBase::PowerupActionBase()
 }
 
 // FUNCTION: LEGORACERS 0x00451370
-RacePowerupManager::PowerupAction* RacePowerupManager::PowerupActionBase::Destroy(undefined4 p_flags)
+PowerupAction* PowerupActionBase::Destroy(undefined4 p_flags)
 {
 	PowerupActionBase* result = this;
 	this->~PowerupActionBase();
@@ -91,12 +91,12 @@ RacePowerupManager::PowerupAction* RacePowerupManager::PowerupActionBase::Destro
 }
 
 // FUNCTION: LEGORACERS 0x00451390
-RacePowerupManager::PowerupActionBase::~PowerupActionBase()
+PowerupActionBase::~PowerupActionBase()
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513a0 FOLDED
-void RacePowerupManager::PowerupActionBase::Update(LegoU32 p_elapsedMs)
+void PowerupActionBase::Update(LegoU32 p_elapsedMs)
 {
 	if (p_elapsedMs >= m_stateTimerMs) {
 		m_stateTimerMs = 0;
@@ -108,62 +108,62 @@ void RacePowerupManager::PowerupActionBase::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::VTable0x00(LegoEventQueue::CallbackData*)
+void PowerupActionBase::VTable0x00(LegoEventQueue::CallbackData*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::Draw(GolD3DRenderDevice*)
+void PowerupActionBase::Draw(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::DrawTransparent(GolD3DRenderDevice*)
+void PowerupActionBase::DrawTransparent(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::AdvanceState()
+void PowerupActionBase::AdvanceState()
 {
 }
 
 // FUNCTION: LEGORACERS 0x0044e7e0 FOLDED
-LegoS32 RacePowerupManager::PowerupActionBase::GetBrickColor()
+LegoS32 PowerupActionBase::GetBrickColor()
 {
 	return 0;
 }
 
-void RacePowerupManager::HazardActionBase::AdvanceState()
+void HazardActionBase::AdvanceState()
 {
 }
 
-void RacePowerupManager::WeaponActionBase::AdvanceState()
+void WeaponActionBase::AdvanceState()
 {
-}
-
-// FUNCTION: LEGORACERS 0x0044f580 FOLDED
-LegoS32 RacePowerupManager::TurboAction::GetBrickColor()
-{
-	return c_brickColorGreen;
 }
 
 // FUNCTION: LEGORACERS 0x0044f580 FOLDED
-LegoS32 RacePowerupManager::WarpAction::GetBrickColor()
+LegoS32 TurboAction::GetBrickColor()
 {
-	return c_brickColorGreen;
+	return RacePowerupManager::c_brickColorGreen;
+}
+
+// FUNCTION: LEGORACERS 0x0044f580 FOLDED
+LegoS32 WarpAction::GetBrickColor()
+{
+	return RacePowerupManager::c_brickColorGreen;
 }
 
 // FUNCTION: LEGORACERS 0x004513e0 FOLDED
-void RacePowerupManager::PowerupActionBase::Deactivate()
+void PowerupActionBase::Deactivate()
 {
 	m_state = 1;
 }
 
-void RacePowerupManager::HazardActionBase::OnHitRacer(Racer*)
+void HazardActionBase::OnHitRacer(Racer*)
 {
 }
 
-void RacePowerupManager::WeaponActionBase::OnHitRacer(Racer*)
+void WeaponActionBase::OnHitRacer(Racer*)
 {
 }
 
@@ -666,12 +666,12 @@ void RacePowerupManager::SetActionPoolCounts(LegoBool32 p_mirror)
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_explosionPool = new Explosion[m_explosionPoolCount];
+	m_explosionPool = new PowerupExplosion[m_explosionPoolCount];
 	if (!m_explosionPool) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_spikeExplosionPool = new Explosion[m_spikeExplosionPoolCount];
+	m_spikeExplosionPool = new PowerupExplosion[m_spikeExplosionPoolCount];
 	if (!m_spikeExplosionPool) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
@@ -1164,7 +1164,7 @@ void RacePowerupManager::CreateActionPools()
 // FUNCTION: LEGORACERS 0x00459b80
 void RacePowerupManager::CreateExplosionPools()
 {
-	Explosion::Params params;
+	PowerupExplosion::Params params;
 	params.m_golExport = m_golExport;
 	params.m_collidable = m_collidable;
 	params.m_model = m_worldDatabase->FindModelEntity("Explsn");
@@ -1532,7 +1532,7 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 		node0x1880->Update(p_elapsedMs);
 	}
 
-	Explosion* node0x270;
+	PowerupExplosion* node0x270;
 	for (node0x270 = m_activeExplosions; node0x270 != NULL; node0x270 = node0x270->GetNext()) {
 		node0x270->Update(p_elapsedMs);
 	}
@@ -1624,10 +1624,10 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 	}
 
 	node0x270 = m_activeExplosions;
-	Explosion* previous0x270 = NULL;
+	PowerupExplosion* previous0x270 = NULL;
 	while (node0x270 != NULL) {
-		Explosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == Explosion::c_stateIdle) {
+		PowerupExplosion* next0x270 = node0x270->GetNext();
+		if (node0x270->GetState() == PowerupExplosion::c_stateIdle) {
 			if (previous0x270 == NULL) {
 				m_activeExplosions = next0x270;
 			}
@@ -1648,8 +1648,8 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 	node0x270 = m_activeSpikeExplosions;
 	previous0x270 = NULL;
 	while (node0x270 != NULL) {
-		Explosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == Explosion::c_stateIdle) {
+		PowerupExplosion* next0x270 = node0x270->GetNext();
+		if (node0x270->GetState() == PowerupExplosion::c_stateIdle) {
 			if (previous0x270 == NULL) {
 				m_activeSpikeExplosions = next0x270;
 			}
@@ -1710,13 +1710,13 @@ void RacePowerupManager::Draw(LegoBool32 p_warpOnly)
 	}
 
 	if (!p_warpOnly) {
-		Explosion* node0x193c = m_activeExplosions;
+		PowerupExplosion* node0x193c = m_activeExplosions;
 		while (node0x193c != NULL) {
 			node0x193c->Draw(m_renderer);
 			node0x193c = node0x193c->GetNext();
 		}
 
-		Explosion* node0x1940 = m_activeSpikeExplosions;
+		PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
 		while (node0x1940 != NULL) {
 			node0x1940->Draw(m_renderer);
 			node0x1940 = node0x1940->GetNext();
@@ -1745,13 +1745,13 @@ void RacePowerupManager::DrawTransparent()
 		node0x1880 = node0x1880->GetNext();
 	}
 
-	Explosion* node0x193c = m_activeExplosions;
+	PowerupExplosion* node0x193c = m_activeExplosions;
 	while (node0x193c != NULL) {
 		node0x193c->DrawTransparent(m_renderer);
 		node0x193c = node0x193c->GetNext();
 	}
 
-	Explosion* node0x1940 = m_activeSpikeExplosions;
+	PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
 	while (node0x1940 != NULL) {
 		node0x1940->DrawTransparent(m_renderer);
 		node0x1940 = node0x1940->GetNext();
@@ -2249,7 +2249,7 @@ LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 }
 
 // FUNCTION: LEGORACERS 0x0045b2e0
-RacePowerupManager::PowerupAction* RacePowerupManager::ReclaimAction(
+PowerupAction* RacePowerupManager::ReclaimAction(
 	LegoU32 p_brickColor,
 	LegoU32 p_level1,
 	LegoS32 p_level2,
@@ -2304,18 +2304,18 @@ RacePowerupManager::PowerupAction* RacePowerupManager::ReclaimAction(
 }
 
 // STUB: LEGORACERS 0x0045b3a0
-RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Explosion** p_head)
+PowerupExplosion* __stdcall RacePowerupManager::ReclaimExplosion(PowerupExplosion** p_head)
 {
-	Explosion* selected = NULL;
-	Explosion* selectedPrevious = NULL;
+	PowerupExplosion* selected = NULL;
+	PowerupExplosion* selectedPrevious = NULL;
 	LegoU32 selectedRemaining = 0xffffffff;
-	LegoS32 targetState = Explosion::c_stateScarFading;
+	LegoS32 targetState = PowerupExplosion::c_stateScarFading;
 	LegoU32 pass = 0;
-	Explosion* current = *p_head;
-	Explosion* head = current;
+	PowerupExplosion* current = *p_head;
+	PowerupExplosion* head = current;
 
 	for (;;) {
-		Explosion* previous = NULL;
+		PowerupExplosion* previous = NULL;
 
 		while (current != NULL) {
 			if (current->GetState() == targetState && current->GetRemainingMs() < selectedRemaining) {
@@ -2330,13 +2330,13 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 
 		if (selected == NULL) {
 			current = head;
-			targetState = Explosion::c_stateExploding;
+			targetState = PowerupExplosion::c_stateExploding;
 			pass++;
 			if (pass < 3) {
 				continue;
 			}
 
-			Explosion* result = current;
+			PowerupExplosion* result = current;
 			*p_head = result->GetNext();
 			result->SetNext(NULL);
 			return result;
@@ -2359,7 +2359,7 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 // FUNCTION: LEGORACERS 0x0045b470
 void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
-	Explosion* item = m_freeExplosions;
+	PowerupExplosion* item = m_freeExplosions;
 	if (item == NULL) {
 		item = ReclaimExplosion(&m_activeExplosions);
 	}
@@ -2381,7 +2381,7 @@ void RacePowerupManager::FUN_0045b4d0(const GolVec3* p_position, undefined4 p_le
 // FUNCTION: LEGORACERS 0x0045b4f0
 void RacePowerupManager::SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
-	Explosion* item = m_freeSpikeExplosions;
+	PowerupExplosion* item = m_freeSpikeExplosions;
 	if (item == NULL) {
 		item = ReclaimExplosion(&m_activeSpikeExplosions);
 	}
@@ -2652,13 +2652,13 @@ void RacePowerupManager::ResetEffects()
 		m_whiteBricks[i].Respawn();
 	}
 
-	Explosion* node0x193c = m_activeExplosions;
+	PowerupExplosion* node0x193c = m_activeExplosions;
 	while (node0x193c != NULL) {
 		node0x193c->Deactivate();
 		node0x193c = node0x193c->GetNext();
 	}
 
-	Explosion* node0x1940 = m_activeSpikeExplosions;
+	PowerupExplosion* node0x1940 = m_activeSpikeExplosions;
 	while (node0x1940 != NULL) {
 		node0x1940->Deactivate();
 		node0x1940 = node0x1940->GetNext();

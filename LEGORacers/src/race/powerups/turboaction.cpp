@@ -42,7 +42,7 @@ const LegoFloat g_turboFadeAlphaScale = 0.0028571428f;
 const LegoFloat g_turboEndVolumeBase = 0.6f;
 
 // FUNCTION: LEGORACERS 0x004586f0
-RacePowerupManager::PowerupAction* RacePowerupManager::TurboAction::Destroy(undefined4 p_flags)
+PowerupAction* TurboAction::Destroy(undefined4 p_flags)
 {
 	TurboAction* result = this;
 	if (p_flags & 2) {
@@ -62,19 +62,19 @@ RacePowerupManager::PowerupAction* RacePowerupManager::TurboAction::Destroy(unde
 }
 
 // FUNCTION: LEGORACERS 0x0045c7e0
-RacePowerupManager::TurboAction::TurboAction()
+TurboAction::TurboAction()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0045c830
-RacePowerupManager::TurboAction::~TurboAction()
+TurboAction::~TurboAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045c880
-void RacePowerupManager::TurboAction::Initialize(RacePowerupManager* p_manager, CutsceneAnimation* p_particleAnimation)
+void TurboAction::Initialize(RacePowerupManager* p_manager, CutsceneAnimation* p_particleAnimation)
 {
 	if (m_state != 0) {
 		Destroy();
@@ -86,7 +86,7 @@ void RacePowerupManager::TurboAction::Initialize(RacePowerupManager* p_manager, 
 }
 
 // FUNCTION: LEGORACERS 0x0045c8b0
-void RacePowerupManager::TurboAction::Destroy()
+void TurboAction::Destroy()
 {
 	Deactivate();
 	Reset();
@@ -94,7 +94,7 @@ void RacePowerupManager::TurboAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045c8d0
-void RacePowerupManager::TurboAction::Reset()
+void TurboAction::Reset()
 {
 	m_turboEntity = 0;
 	m_flameEntity = 0;
@@ -106,7 +106,7 @@ void RacePowerupManager::TurboAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045c8f0
-void RacePowerupManager::TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
+void TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 {
 	GolAnimatedEntity* model = NULL;
 	GolAnimatedEntity* effect0 = NULL;
@@ -235,7 +235,7 @@ void RacePowerupManager::TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 }
 
 // FUNCTION: LEGORACERS 0x0045cd70
-void RacePowerupManager::TurboAction::StartBoost()
+void TurboAction::StartBoost()
 {
 	if (!m_level) {
 		m_racer->m_physics.ApplyPitchImpulse(-0.0025f, c_speedModDurationL0Ms);
@@ -268,7 +268,7 @@ void RacePowerupManager::TurboAction::StartBoost()
 }
 
 // FUNCTION: LEGORACERS 0x0045ce20
-void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
+void TurboAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -320,7 +320,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x0045cf90
-void RacePowerupManager::TurboAction::AnchorToRacer()
+void TurboAction::AnchorToRacer()
 {
 	GolAnimatedEntity* racerEntity = m_racer->m_visuals.m_carEntity;
 
@@ -346,7 +346,7 @@ void RacePowerupManager::TurboAction::AnchorToRacer()
 }
 
 // FUNCTION: LEGORACERS 0x0045d120
-void RacePowerupManager::TurboAction::Draw(GolD3DRenderDevice* p_renderer)
+void TurboAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateDone) {
 		AnchorToRacer();
@@ -355,7 +355,7 @@ void RacePowerupManager::TurboAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0045d150
-void RacePowerupManager::TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -389,7 +389,7 @@ void RacePowerupManager::TurboAction::DrawTransparent(GolD3DRenderDevice* p_rend
 }
 
 // FUNCTION: LEGORACERS 0x0045d200
-void RacePowerupManager::TurboAction::AdvanceState()
+void TurboAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateFade: {
@@ -462,7 +462,7 @@ void RacePowerupManager::TurboAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x0045d360
-void RacePowerupManager::TurboAction::Deactivate()
+void TurboAction::Deactivate()
 {
 	m_state = c_stateReady;
 

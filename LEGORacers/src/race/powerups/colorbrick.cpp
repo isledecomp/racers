@@ -20,7 +20,7 @@
 const LegoFloat g_brickSoundMinDistance = 30.0f;
 
 // FUNCTION: LEGORACERS 0x00457640
-RacePowerupManager::ColorBrick::ColorBrick()
+ColorBrick::ColorBrick()
 {
 	m_brickMaterial = NULL;
 	m_trailMaterial = NULL;
@@ -30,20 +30,20 @@ RacePowerupManager::ColorBrick::ColorBrick()
 }
 
 // FUNCTION: LEGORACERS 0x00457670
-RacePowerupManager::ColorBrick::~ColorBrick()
+ColorBrick::~ColorBrick()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004576c0
-void RacePowerupManager::ColorBrick::SetColor(LegoU32 p_brickColor)
+void ColorBrick::SetColor(LegoU32 p_brickColor)
 {
 	m_assignedColor = p_brickColor;
 	m_currentColor = p_brickColor;
 }
 
 // FUNCTION: LEGORACERS 0x004576d0
-void RacePowerupManager::ColorBrick::Respawn()
+void ColorBrick::Respawn()
 {
 	PickupBrick::Respawn();
 	m_nextColor = m_assignedColor;
@@ -53,13 +53,13 @@ void RacePowerupManager::ColorBrick::Respawn()
 }
 
 // FUNCTION: LEGORACERS 0x00457700
-void RacePowerupManager::ColorBrick::Destroy()
+void ColorBrick::Destroy()
 {
 	PickupBrick::Destroy();
 }
 
 // STUB: LEGORACERS 0x00457710
-void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
+void ColorBrick::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateInactive) {
 		return;
@@ -112,7 +112,7 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00457820
-void RacePowerupManager::ColorBrick::OnTouched(Racer* p_racer)
+void ColorBrick::OnTouched(Racer* p_racer)
 {
 	if (m_state == c_stateIdle) {
 		LegoU32 racerState = p_racer->GetHeldPowerupColor();
@@ -144,14 +144,14 @@ void RacePowerupManager::ColorBrick::OnTouched(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004578e0
-void RacePowerupManager::ColorBrick::SetMaterials(GolMaterial* p_brickMaterial, GolMaterial* p_trailMaterial)
+void ColorBrick::SetMaterials(GolMaterial* p_brickMaterial, GolMaterial* p_trailMaterial)
 {
 	m_brickMaterial = p_brickMaterial;
 	m_trailMaterial = p_trailMaterial;
 }
 
 // FUNCTION: LEGORACERS 0x00457900
-void RacePowerupManager::ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
+void ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 {
 	MaterialTable0x0c* materialTable = m_model->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {
@@ -162,7 +162,7 @@ void RacePowerupManager::ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00457930
-void RacePowerupManager::ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	MaterialTable0x0c* materialTable = m_blendModel->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {

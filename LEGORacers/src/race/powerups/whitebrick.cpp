@@ -17,20 +17,20 @@
 #include <math.h>
 
 // FUNCTION: LEGORACERS 0x004535a0
-RacePowerupManager::WhiteBrick::WhiteBrick()
+WhiteBrick::WhiteBrick()
 {
 	m_droppedTimeMs = 0;
 	m_flags0x64 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x004535c0
-RacePowerupManager::WhiteBrick::~WhiteBrick()
+WhiteBrick::~WhiteBrick()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00453610
-void RacePowerupManager::WhiteBrick::Reset()
+void WhiteBrick::Reset()
 {
 	m_droppedTimeMs = 0;
 	m_flags0x64 = 0;
@@ -38,7 +38,7 @@ void RacePowerupManager::WhiteBrick::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00453620
-void RacePowerupManager::WhiteBrick::CaptureHomePosition()
+void WhiteBrick::CaptureHomePosition()
 {
 	m_worldEntity.VTable0x04(&m_homePosition);
 	m_state = c_stateActive;
@@ -47,7 +47,7 @@ void RacePowerupManager::WhiteBrick::CaptureHomePosition()
 }
 
 // FUNCTION: LEGORACERS 0x00453650
-void RacePowerupManager::WhiteBrick::Respawn()
+void WhiteBrick::Respawn()
 {
 	PickupBrick::Respawn();
 	m_worldEntity.VTable0x08(m_homePosition);
@@ -59,7 +59,7 @@ void RacePowerupManager::WhiteBrick::Respawn()
 }
 
 // FUNCTION: LEGORACERS 0x00453690
-void RacePowerupManager::WhiteBrick::Update(LegoU32 p_elapsedMs)
+void WhiteBrick::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateInactive) {
 		return;
@@ -99,7 +99,7 @@ void RacePowerupManager::WhiteBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453750
-void RacePowerupManager::WhiteBrick::OnTouched(Racer* p_racer)
+void WhiteBrick::OnTouched(Racer* p_racer)
 {
 	if (m_state == c_stateIdle && p_racer->CollectWhiteBrick(this)) {
 		m_nextState = c_stateWait;

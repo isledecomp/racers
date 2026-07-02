@@ -59,7 +59,7 @@ ColorRGBA g_hookRopeSecondaryColor = {0x8f, 0x5a, 0x1c, 0xff};
 ColorRGBA g_hookRopeTertiaryColor = {0x14, 0x14, 0x00, 0xff};
 
 // FUNCTION: LEGORACERS 0x00453bf0
-RacePowerupManager::GrapplingHookAction::GrapplingHookAction()
+GrapplingHookAction::GrapplingHookAction()
 {
 	m_activeProjectile = 0;
 	m_activeProjectile = &m_projectile;
@@ -70,13 +70,13 @@ RacePowerupManager::GrapplingHookAction::GrapplingHookAction()
 }
 
 // FUNCTION: LEGORACERS 0x00453c70
-RacePowerupManager::GrapplingHookAction::~GrapplingHookAction()
+GrapplingHookAction::~GrapplingHookAction()
 {
 	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00453cd0
-void RacePowerupManager::GrapplingHookAction::Initialize(
+void GrapplingHookAction::Initialize(
 	RacePowerupManager* p_manager,
 	TriggerWorld* p_collisionWorld,
 	undefined4 p_billboardMaterialIndex
@@ -108,7 +108,7 @@ void RacePowerupManager::GrapplingHookAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00453d90
-void RacePowerupManager::GrapplingHookAction::Shutdown()
+void GrapplingHookAction::Shutdown()
 {
 	Deactivate();
 
@@ -123,7 +123,7 @@ void RacePowerupManager::GrapplingHookAction::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00453de0
-LegoU32 RacePowerupManager::GrapplingHookAction::Activate(
+LegoU32 GrapplingHookAction::Activate(
 	GolModelEntity* p_hookEntity,
 	Racer* p_racer,
 	Racer* p_targetRacer,
@@ -156,7 +156,7 @@ LegoU32 RacePowerupManager::GrapplingHookAction::Activate(
 }
 
 // FUNCTION: LEGORACERS 0x00453e90
-void RacePowerupManager::GrapplingHookAction::Deactivate()
+void GrapplingHookAction::Deactivate()
 {
 	m_projectile.CancelCollisionEvent();
 
@@ -178,7 +178,7 @@ void RacePowerupManager::GrapplingHookAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x00453ef0
-void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
+void GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec3 direction;
 	SoundVector targetPosition;
@@ -333,7 +333,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004542d0
-void RacePowerupManager::GrapplingHookAction::Draw(GolD3DRenderDevice* p_renderer)
+void GrapplingHookAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	switch (m_state) {
 	case c_stateFlying:
@@ -354,7 +354,7 @@ void RacePowerupManager::GrapplingHookAction::Draw(GolD3DRenderDevice* p_rendere
 }
 
 // STUB: LEGORACERS 0x00454360
-void RacePowerupManager::GrapplingHookAction::AdvanceState()
+void GrapplingHookAction::AdvanceState()
 {
 	SoundVector targetPosition;
 
@@ -442,7 +442,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x004545d0
-void RacePowerupManager::GrapplingHookAction::OnHitRacer(Racer* p_racer)
+void GrapplingHookAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
@@ -479,7 +479,7 @@ void RacePowerupManager::GrapplingHookAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00454690
-void RacePowerupManager::GrapplingHookAction::ReleaseHook(SoundVector* p_position)
+void GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 {
 	Racer* racer = m_projectile.GetHitRacer();
 	if (racer != NULL) {
@@ -520,7 +520,7 @@ void RacePowerupManager::GrapplingHookAction::ReleaseHook(SoundVector* p_positio
 }
 
 // FUNCTION: LEGORACERS 0x00458570
-RacePowerupManager::PowerupAction* RacePowerupManager::GrapplingHookAction::Destroy(undefined4 p_flags)
+PowerupAction* GrapplingHookAction::Destroy(undefined4 p_flags)
 {
 	GrapplingHookAction* result = this;
 	if (p_flags & 2) {

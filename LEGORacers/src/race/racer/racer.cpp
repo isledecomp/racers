@@ -1855,7 +1855,7 @@ LegoBool32 Racer::CollectWhiteBrick(DroppableBrick* p_brick)
 }
 
 // FUNCTION: LEGORACERS 0x00439490
-Racer::DroppableBrick* Racer::DropWhiteBrick()
+DroppableBrick* Racer::DropWhiteBrick()
 {
 	DroppableBrick* result;
 	LegoU32 index;

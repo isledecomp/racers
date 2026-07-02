@@ -37,6 +37,7 @@
 #include "race/racesky.h"
 #include "race/racestate.h"
 #include "race/racetrailmanager.h"
+#include "race/tgbtargetpointlist.h"
 #include "race/triggerworld.h"
 #include "scene/golbillboard.h"
 #include "surface/color.h"
@@ -678,31 +679,6 @@ public:
 		LegoS32 m_textX;                  // 0x2c
 	};
 
-	// SIZE 0x08
-	class TargetPointList : public RacePowerupManager::TargetPointList {
-	public:
-		// VTABLE: LEGORACERS 0x004b1958
-		// SIZE 0x1fc
-		class TgbTxtParser : public GolTxtParser {
-		public:
-			// .tgb token meanings
-			enum {
-				e_target = 0x27,
-				e_position = 0x28,
-				e_index = 0x29,
-			};
-		};
-
-		TargetPointList();
-		~TargetPointList();
-
-	private:
-		friend class RaceSession;
-
-		void Reset();
-		void Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
-	};
-
 	// SIZE 0x2c
 	class RaceReset {
 	public:
@@ -969,7 +945,7 @@ private:
 	SurfaceTable m_surfaceTable;                   // 0x27e0
 	CheckpointGraph m_checkpointGraph;             // 0x27f4
 	MenuAnimationList m_animationList;             // 0x27fc
-	TargetPointList m_targetPoints;                // 0x2804
+	TgbTargetPointList m_targetPoints;             // 0x2804
 	LoadingScreen m_loadingScreen;                 // 0x280c
 	RaceHud m_huds[2];                             // 0x283c
 	LegoFloat m_mapMinX;                           // 0x2abc

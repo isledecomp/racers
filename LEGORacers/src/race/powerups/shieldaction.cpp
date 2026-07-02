@@ -31,7 +31,7 @@ extern const LegoFloat g_homingProjectileCollisionStartOffset;
 extern const LegoFloat g_violetShoalTwo;
 
 // FUNCTION: LEGORACERS 0x00458690 FOLDED
-RacePowerupManager::PowerupAction* RacePowerupManager::ShieldAction::Destroy(undefined4 p_flags)
+PowerupAction* ShieldAction::Destroy(undefined4 p_flags)
 {
 	ShieldAction* result = this;
 	if (p_flags & 2) {
@@ -51,7 +51,7 @@ RacePowerupManager::PowerupAction* RacePowerupManager::ShieldAction::Destroy(und
 }
 
 // FUNCTION: LEGORACERS 0x0045bc50
-RacePowerupManager::ShieldAction::ShieldAction()
+ShieldAction::ShieldAction()
 {
 	m_shieldEntity = 0;
 	m_innerShieldEntity = 0;
@@ -61,13 +61,13 @@ RacePowerupManager::ShieldAction::ShieldAction()
 }
 
 // FUNCTION: LEGORACERS 0x0045bc80
-RacePowerupManager::ShieldAction::~ShieldAction()
+ShieldAction::~ShieldAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0045bcd0 FOLDED
-void RacePowerupManager::ShieldAction::Initialize(RacePowerupManager* p_manager)
+void ShieldAction::Initialize(RacePowerupManager* p_manager)
 {
 	if (m_state != 0) {
 		Destroy();
@@ -78,14 +78,14 @@ void RacePowerupManager::ShieldAction::Initialize(RacePowerupManager* p_manager)
 }
 
 // FUNCTION: LEGORACERS 0x0045bd10 FOLDED
-void RacePowerupManager::ShieldAction::Destroy()
+void ShieldAction::Destroy()
 {
 	Deactivate();
 	m_state = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0045bd30
-void RacePowerupManager::ShieldAction::Activate(
+void ShieldAction::Activate(
 	Racer* p_racer,
 	LegoU32 p_level,
 	GolAnimatedEntity* p_shieldTemplate,
@@ -202,7 +202,7 @@ void RacePowerupManager::ShieldAction::Activate(
 }
 
 // FUNCTION: LEGORACERS 0x0045c060 FOLDED
-void RacePowerupManager::ShieldAction::Deactivate()
+void ShieldAction::Deactivate()
 {
 	if (m_innerShieldEntity) {
 		m_innerShieldEntity->VTable0x54();
@@ -226,7 +226,7 @@ void RacePowerupManager::ShieldAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x0045c0c0 FOLDED
-void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
+void ShieldAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == 6) {
 		return;
@@ -249,7 +249,7 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045c160 FOLDED
-void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 6) {
 		return;
@@ -289,7 +289,7 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 }
 
 // FUNCTION: LEGORACERS 0x0045c2a0 FOLDED
-void RacePowerupManager::ShieldAction::AdvanceState()
+void ShieldAction::AdvanceState()
 {
 	switch (m_state) {
 	case 3:
@@ -320,7 +320,7 @@ void RacePowerupManager::ShieldAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x0045c330 FOLDED
-LegoS32 RacePowerupManager::ShieldAction::GetBrickColor()
+LegoS32 ShieldAction::GetBrickColor()
 {
-	return c_brickColorBlue;
+	return RacePowerupManager::c_brickColorBlue;
 }

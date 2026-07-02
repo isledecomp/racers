@@ -16,8 +16,8 @@
 #include <math.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::BeamMesh, 0x170)
-DECOMP_SIZE_ASSERT(RacePowerupManager::BeamEntity, 0x98)
+DECOMP_SIZE_ASSERT(BeamMesh, 0x170)
+DECOMP_SIZE_ASSERT(BeamEntity, 0x98)
 
 // GLOBAL: LEGORACERS 0x004b47a4
 extern const LegoFloat g_beamMinStepDistanceSquared = 0.02f;
@@ -25,19 +25,19 @@ extern const LegoFloat g_beamMinStepDistanceSquared = 0.02f;
 extern LegoFloat g_minSoundPan;
 
 // FUNCTION: LEGORACERS 0x00493ae0
-RacePowerupManager::BeamMesh::BeamMesh()
+BeamMesh::BeamMesh()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00493b30
-RacePowerupManager::BeamMesh::~BeamMesh()
+BeamMesh::~BeamMesh()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00493b80
-void RacePowerupManager::BeamMesh::Reset()
+void BeamMesh::Reset()
 {
 	m_golExport = NULL;
 	m_model = NULL;
@@ -81,7 +81,7 @@ void RacePowerupManager::BeamMesh::Reset()
 }
 
 // STUB: LEGORACERS 0x00493c90
-void RacePowerupManager::BeamMesh::Initialize(const SetupParams* p_params)
+void BeamMesh::Initialize(const SetupParams* p_params)
 {
 	if (m_model != NULL) {
 		Destroy();
@@ -137,7 +137,7 @@ void RacePowerupManager::BeamMesh::Initialize(const SetupParams* p_params)
 }
 
 // FUNCTION: LEGORACERS 0x00493e60
-void RacePowerupManager::BeamMesh::Destroy()
+void BeamMesh::Destroy()
 {
 	m_entity.VTable0x54();
 
@@ -155,7 +155,7 @@ void RacePowerupManager::BeamMesh::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00493ea0
-void RacePowerupManager::BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
+void BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 {
 	GolVec3 up;
 	up.m_x = 0.0f;
@@ -205,7 +205,7 @@ void RacePowerupManager::BeamMesh::Begin(const GolVec3* p_position, const GolVec
 }
 
 // FUNCTION: LEGORACERS 0x00494030
-void RacePowerupManager::BeamMesh::AdvanceSection(const GolVec3* p_position)
+void BeamMesh::AdvanceSection(const GolVec3* p_position)
 {
 	GolTransformBase* transform = m_sceneNode->VTable0x18(m_sectionIndex);
 
@@ -234,7 +234,7 @@ void RacePowerupManager::BeamMesh::AdvanceSection(const GolVec3* p_position)
 }
 
 // FUNCTION: LEGORACERS 0x00494140
-void RacePowerupManager::BeamMesh::AppendPoint(const GolVec3* p_position)
+void BeamMesh::AppendPoint(const GolVec3* p_position)
 {
 	GolVec3 delta;
 	delta.m_x = p_position->m_x - m_lastPosition.m_x;
@@ -267,7 +267,7 @@ void RacePowerupManager::BeamMesh::AppendPoint(const GolVec3* p_position)
 }
 
 // FUNCTION: LEGORACERS 0x00494230
-void RacePowerupManager::BeamMesh::Finish()
+void BeamMesh::Finish()
 {
 	if (m_indexCursor != 0) {
 		FlushRuns();
@@ -284,7 +284,7 @@ void RacePowerupManager::BeamMesh::Finish()
 }
 
 // FUNCTION: LEGORACERS 0x00494290
-void RacePowerupManager::BeamMesh::EmitRing(
+void BeamMesh::EmitRing(
 	const GolVec3* p_position,
 	const ColorRGBA* p_color,
 	LegoU32 p_textureColumn,
@@ -335,7 +335,7 @@ void RacePowerupManager::BeamMesh::EmitRing(
 }
 
 // FUNCTION: LEGORACERS 0x00494480
-void RacePowerupManager::BeamMesh::EmitQuads()
+void BeamMesh::EmitQuads()
 {
 	GdbModelIndexArray0xc::Indices* indices = &m_indices[m_indexCursor];
 	m_indexCursor += m_ringQuadCount * 2;
@@ -357,7 +357,7 @@ void RacePowerupManager::BeamMesh::EmitQuads()
 }
 
 // STUB: LEGORACERS 0x004944e0
-void RacePowerupManager::BeamMesh::FlushWindow()
+void BeamMesh::FlushWindow()
 {
 	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;
 	LegoU32 triangleCount = m_indexCursor - m_runStartIndex;
@@ -400,7 +400,7 @@ void RacePowerupManager::BeamMesh::FlushWindow()
 }
 
 // STUB: LEGORACERS 0x004946b0
-void RacePowerupManager::BeamMesh::FlushRuns()
+void BeamMesh::FlushRuns()
 {
 	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;
 	LegoU32 triangleCount = m_indexCursor - m_runStartIndex;
@@ -436,7 +436,7 @@ void RacePowerupManager::BeamMesh::FlushRuns()
 }
 
 // FUNCTION: LEGORACERS 0x00494820
-void RacePowerupManager::BeamMesh::SetColors(
+void BeamMesh::SetColors(
 	const ColorRGBA* p_baseColor,
 	const ColorRGBA* p_secondaryColor,
 	const ColorRGBA* p_tertiaryColor
@@ -448,7 +448,7 @@ void RacePowerupManager::BeamMesh::SetColors(
 }
 
 // FUNCTION: LEGORACERS 0x00494850
-void RacePowerupManager::BeamMesh::Draw(GolD3DRenderDevice* p_renderer)
+void BeamMesh::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_flags & 1) {
 		m_entity.VTable0x1c(*p_renderer);
@@ -456,7 +456,7 @@ void RacePowerupManager::BeamMesh::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00494870
-void RacePowerupManager::BeamMesh::AppendSpan(const GolVec3* p_position, LegoFloat p_amount)
+void BeamMesh::AppendSpan(const GolVec3* p_position, LegoFloat p_amount)
 {
 	if (m_segmentCount <= 1) {
 		AppendPoint(p_position);
@@ -537,7 +537,7 @@ void RacePowerupManager::BeamMesh::AppendSpan(const GolVec3* p_position, LegoFlo
 }
 
 // FUNCTION: LEGORACERS 0x00494ad0
-void RacePowerupManager::BeamMesh::Interpolate(
+void BeamMesh::Interpolate(
 	const GolVec3* p_fromPosition,
 	const GolVec3* p_toPosition,
 	const ColorRGBA* p_fromColor,
@@ -575,21 +575,21 @@ void RacePowerupManager::BeamMesh::Interpolate(
 }
 
 // FUNCTION: LEGORACERS 0x00494be0
-void RacePowerupManager::BeamMesh::SetSegmentOffsets(const GolVec3* p_offsets)
+void BeamMesh::SetSegmentOffsets(const GolVec3* p_offsets)
 {
 	m_segmentOffsets = p_offsets;
 	m_flags |= c_flagUseSegmentOffsets;
 }
 
 // FUNCTION: LEGORACERS 0x00494c00
-RacePowerupManager::BeamEntity::BeamEntity()
+BeamEntity::BeamEntity()
 {
 	m_sceneNode = 0;
 	m_faceCamera = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c20
-RacePowerupManager::BeamEntity* RacePowerupManager::BeamEntity::Destroy(undefined4 p_flags)
+BeamEntity* BeamEntity::Destroy(undefined4 p_flags)
 {
 	BeamEntity* result = this;
 	this->~BeamEntity();
@@ -601,13 +601,13 @@ RacePowerupManager::BeamEntity* RacePowerupManager::BeamEntity::Destroy(undefine
 }
 
 // FUNCTION: LEGORACERS 0x00494c40
-RacePowerupManager::BeamEntity::~BeamEntity()
+BeamEntity::~BeamEntity()
 {
 	VTable0x54();
 }
 
 // FUNCTION: LEGORACERS 0x00494c50
-void RacePowerupManager::BeamEntity::Initialize(
+void BeamEntity::Initialize(
 	GolModelBase* p_model,
 	GolSceneNode* p_sceneNode,
 	undefined4 p_faceCamera,
@@ -620,19 +620,19 @@ void RacePowerupManager::BeamEntity::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00494c80
-void RacePowerupManager::BeamEntity::VTable0x54()
+void BeamEntity::VTable0x54()
 {
 	m_sceneNode = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c90
-GolSceneNode* RacePowerupManager::BeamEntity::VTable0x58(undefined4)
+GolSceneNode* BeamEntity::VTable0x58(undefined4)
 {
 	return m_sceneNode;
 }
 
 // STUB: LEGORACERS 0x00494ca0
-void RacePowerupManager::BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
+void BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
 	if (m_faceCamera != 0) {
 		GolVec3 cameraRight;

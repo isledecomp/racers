@@ -5,7 +5,7 @@
 #include <float.h>
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::HomingProjectile, 0xf8)
+DECOMP_SIZE_ASSERT(HomingProjectile, 0xf8)
 
 extern const LegoFloat g_unk0x004afde0;
 
@@ -40,7 +40,7 @@ const LegoFloat g_homingProjectilePathDistanceLimitSquared = 90000.0f;
 extern const LegoFloat g_homingProjectileCollisionProbeDepth = 50.0f;
 
 // FUNCTION: LEGORACERS 0x00423590
-RacePowerupManager::HomingProjectile::HomingProjectile()
+HomingProjectile::HomingProjectile()
 {
 	m_velocity.m_x = 0.0f;
 	m_velocity.m_y = 0.0f;
@@ -61,7 +61,7 @@ RacePowerupManager::HomingProjectile::HomingProjectile()
 }
 
 // FUNCTION: LEGORACERS 0x00423610
-PowerupProjectile* RacePowerupManager::HomingProjectile::Destroy(undefined4 p_flags)
+PowerupProjectile* HomingProjectile::Destroy(undefined4 p_flags)
 {
 	HomingProjectile* result = this;
 	Destruct();
@@ -73,13 +73,13 @@ PowerupProjectile* RacePowerupManager::HomingProjectile::Destroy(undefined4 p_fl
 }
 
 // FUNCTION: LEGORACERS 0x00423630
-void RacePowerupManager::HomingProjectile::Destruct()
+void HomingProjectile::Destruct()
 {
 	PowerupProjectile::~PowerupProjectile();
 }
 
 // STUB: LEGORACERS 0x00423640
-void RacePowerupManager::HomingProjectile::UpdateTargeting(
+void HomingProjectile::UpdateTargeting(
 	LegoU32 p_elapsedMs,
 	RaceState* p_raceState,
 	LegoFloat p_minDistanceSquared,
@@ -162,7 +162,7 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 }
 
 // FUNCTION: LEGORACERS 0x00423980
-void RacePowerupManager::HomingProjectile::StartHoming()
+void HomingProjectile::StartHoming()
 {
 	m_worldEntity->VTable0x04(&m_position);
 	m_spiralAmplitude = 0.0f;
@@ -198,7 +198,7 @@ void RacePowerupManager::HomingProjectile::StartHoming()
 }
 
 // STUB: LEGORACERS 0x00423a20
-LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
+LegoS32 HomingProjectile::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 state = m_state;
 	if (state != c_stateFlying) {
@@ -329,7 +329,7 @@ LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00423ea0
-void RacePowerupManager::HomingProjectile::GetVelocity(GolVec3* p_velocity)
+void HomingProjectile::GetVelocity(GolVec3* p_velocity)
 {
 	p_velocity->m_x = m_velocity.m_x;
 	p_velocity->m_y = m_velocity.m_y;
@@ -337,11 +337,7 @@ void RacePowerupManager::HomingProjectile::GetVelocity(GolVec3* p_velocity)
 }
 
 // FUNCTION: LEGORACERS 0x00423ed0
-void RacePowerupManager::HomingProjectile::ApplySpiral(
-	LegoFloat p_elapsedSeconds,
-	GolVec3* p_direction,
-	GolVec3* p_position
-)
+void HomingProjectile::ApplySpiral(LegoFloat p_elapsedSeconds, GolVec3* p_direction, GolVec3* p_position)
 {
 	m_spiralAmplitude += g_homingProjectileOscillationGrowth * p_elapsedSeconds;
 	if (m_maxSpiralAmplitude <= m_spiralAmplitude) {

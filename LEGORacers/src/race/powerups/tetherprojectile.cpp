@@ -2,7 +2,7 @@
 #include "race/racesession.h"
 #include "render/golcommondrawstate.h"
 
-DECOMP_SIZE_ASSERT(RacePowerupManager::TetherProjectile, 0x238)
+DECOMP_SIZE_ASSERT(TetherProjectile, 0x238)
 
 extern const LegoFloat g_unk0x004b02e0;
 
@@ -28,7 +28,7 @@ extern const LegoFloat g_tetherRetractSpeed = 250.0f;
 extern const LegoFloat g_tetherWaveScale = 10.0f;
 
 // FUNCTION: LEGORACERS 0x00444250
-RacePowerupManager::TetherProjectile::TetherProjectile()
+TetherProjectile::TetherProjectile()
 {
 	m_attachHeight = 0;
 	m_waveAmplitude = 0;
@@ -38,7 +38,7 @@ RacePowerupManager::TetherProjectile::TetherProjectile()
 }
 
 // FUNCTION: LEGORACERS 0x004442c0
-PowerupProjectile* RacePowerupManager::TetherProjectile::Destroy(undefined4 p_flags)
+PowerupProjectile* TetherProjectile::Destroy(undefined4 p_flags)
 {
 	TetherProjectile* result = this;
 	this->~TetherProjectile();
@@ -50,13 +50,13 @@ PowerupProjectile* RacePowerupManager::TetherProjectile::Destroy(undefined4 p_fl
 }
 
 // FUNCTION: LEGORACERS 0x004442e0
-RacePowerupManager::TetherProjectile::~TetherProjectile()
+TetherProjectile::~TetherProjectile()
 {
 	Deactivate();
 }
 
 // FUNCTION: LEGORACERS 0x00444340
-void RacePowerupManager::TetherProjectile::Initialize(const SetupParams* p_params)
+void TetherProjectile::Initialize(const SetupParams* p_params)
 {
 	m_attachHeight = p_params->m_attachHeight;
 	m_waveAmplitude = p_params->m_waveAmplitude;
@@ -94,14 +94,14 @@ void RacePowerupManager::TetherProjectile::Initialize(const SetupParams* p_param
 }
 
 // FUNCTION: LEGORACERS 0x00444470
-void RacePowerupManager::TetherProjectile::Deactivate()
+void TetherProjectile::Deactivate()
 {
 	PowerupProjectile::Deactivate();
 	m_beam.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00444490
-LegoS32 RacePowerupManager::TetherProjectile::Update(LegoU32 p_elapsedMs)
+LegoS32 TetherProjectile::Update(LegoU32 p_elapsedMs)
 {
 	if (m_flags & c_flagReleased) {
 		return UpdateReleased(p_elapsedMs);
@@ -129,11 +129,7 @@ LegoS32 RacePowerupManager::TetherProjectile::Update(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x00444540
-void RacePowerupManager::TetherProjectile::RebuildBeam(
-	const GolVec3* p_position,
-	LegoFloat p_elapsedMs,
-	LegoFloat p_amount
-)
+void TetherProjectile::RebuildBeam(const GolVec3* p_position, LegoFloat p_elapsedMs, LegoFloat p_amount)
 {
 	LegoFloat elapsedStep = p_elapsedMs;
 	elapsedStep *= g_unk0x004b02e0;
@@ -168,13 +164,13 @@ void RacePowerupManager::TetherProjectile::RebuildBeam(
 }
 
 // FUNCTION: LEGORACERS 0x00444670
-void RacePowerupManager::TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
+void TetherProjectile::Draw(GolD3DRenderDevice* p_renderer)
 {
 	m_beam.Draw(p_renderer);
 }
 
 // STUB: LEGORACERS 0x00444690
-LegoS32 RacePowerupManager::TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
+LegoS32 TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs)
 {
 	GolVec3 position;
 	m_ownerRacer->m_visuals.m_carEntity->VTable0x04(&position);
@@ -224,7 +220,7 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateReleased(LegoU32 p_elapsedMs
 }
 
 // STUB: LEGORACERS 0x00444820
-LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
+LegoS32 TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs)
 {
 	GolVec3 targetPosition;
 	m_hitRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
@@ -300,7 +296,7 @@ LegoS32 RacePowerupManager::TetherProjectile::UpdateAttached(LegoU32 p_elapsedMs
 }
 
 // FUNCTION: LEGORACERS 0x00444ac0
-void RacePowerupManager::TetherProjectile::Release(GolVec3* p_position)
+void TetherProjectile::Release(GolVec3* p_position)
 {
 	m_endPosition.m_x = p_position->m_x;
 	m_endPosition.m_y = p_position->m_y;

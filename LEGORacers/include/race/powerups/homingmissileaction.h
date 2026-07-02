@@ -1,0 +1,58 @@
+#ifndef HOMINGMISSILEACTION_H
+#define HOMINGMISSILEACTION_H
+
+#include "golmodelentity.h"
+#include "race/powerups/homingprojectile.h"
+#include "race/powerups/weaponactionbase.h"
+#include "race/racetrailmanager.h"
+
+class CutsceneAnimation;
+class MabMaterialAnimationItem0x18;
+class SpatialSoundInstance;
+
+struct CutsceneParticleRef;
+struct SoundVector;
+
+// VTABLE: LEGORACERS 0x004b1690
+// SIZE 0x224
+class HomingMissileAction : public WeaponActionBase {
+public:
+	enum {
+		c_stateArmed = 2,
+		c_stateFlying = 3,
+		c_state0x04 = 4,
+		c_stateDone = 6,
+		c_racerFlags0xd04Bit0 = 1 << 0,
+		c_racerCarVisualsFlags0x384Bit1 = 1 << 1,
+		c_transformNodeIndex1 = 1,
+		c_flightTimeMs = 0x157c,
+		c_soundExplode = 0x32,
+		c_soundFire = 0x33,
+	};
+
+	HomingMissileAction();
+	~HomingMissileAction();
+	PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+	void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+	void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+	void AdvanceState() override;                        // vtable+0x14
+	void Deactivate() override;                          // vtable+0x1c
+	void OnHitRacer(Racer* p_racer) override;            // vtable+0x20
+	void Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld);
+	void Shutdown();
+	void Activate(
+		GolAnimatedEntity* p_missileTemplate,
+		GolAnimatedEntity* p_unk0x08,
+		Racer* p_racer,
+		LegoU32 p_missileIndex
+	);
+	void LaunchProjectile();
+
+private:
+	HomingProjectile m_projectile;     // 0x030
+	GolAnimatedEntity m_missileEntity; // 0x128
+	RaceTrailManager::Trail* m_trail;  // 0x21c
+	LegoU32 m_missileIndex;            // 0x220
+};
+
+#endif // HOMINGMISSILEACTION_H

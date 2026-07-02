@@ -38,7 +38,7 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00457080
-RacePowerupManager::OilSlickAction::OilSlickAction()
+OilSlickAction::OilSlickAction()
 {
 	m_manager = 0;
 	m_sound = 0;
@@ -48,13 +48,13 @@ RacePowerupManager::OilSlickAction::OilSlickAction()
 }
 
 // FUNCTION: LEGORACERS 0x00457100
-RacePowerupManager::OilSlickAction::~OilSlickAction()
+OilSlickAction::~OilSlickAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00457170
-void RacePowerupManager::OilSlickAction::Destroy()
+void OilSlickAction::Destroy()
 {
 	Deactivate();
 	m_slickDecal.Destroy();
@@ -67,7 +67,7 @@ void RacePowerupManager::OilSlickAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004571b0
-void RacePowerupManager::OilSlickAction::Initialize(
+void OilSlickAction::Initialize(
 	RacePowerupManager* p_manager,
 	RaceState* p_raceState,
 	GolCollidableEntity* p_collidable,
@@ -91,7 +91,7 @@ void RacePowerupManager::OilSlickAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00457230
-void RacePowerupManager::OilSlickAction::Activate(Racer* p_racer)
+void OilSlickAction::Activate(Racer* p_racer)
 {
 	m_state = 2;
 	m_ownerRacer = p_racer;
@@ -99,7 +99,7 @@ void RacePowerupManager::OilSlickAction::Activate(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00457250
-void RacePowerupManager::OilSlickAction::Deactivate()
+void OilSlickAction::Deactivate()
 {
 	if (m_bubbleParticle != NULL) {
 		m_particleAnimation->FinishRef(m_bubbleParticle);
@@ -121,7 +121,7 @@ void RacePowerupManager::OilSlickAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x004572a0
-void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
+void OilSlickAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -150,7 +150,7 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00457380
-void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
+void OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateActive) {
 		m_slickDecal.Draw(p_renderer);
@@ -158,7 +158,7 @@ void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x004573a0
-void RacePowerupManager::OilSlickAction::AdvanceState()
+void OilSlickAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateArmed:
@@ -231,7 +231,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x004575b0
-void RacePowerupManager::OilSlickAction::OnHitRacer(Racer* p_racer)
+void OilSlickAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateExpiring || (p_racer->GetFlags() & c_flagHalted)) {
 		return;
@@ -255,7 +255,7 @@ void RacePowerupManager::OilSlickAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004583f0
-RacePowerupManager::PowerupAction* RacePowerupManager::OilSlickAction::Destroy(undefined4 p_flags)
+PowerupAction* OilSlickAction::Destroy(undefined4 p_flags)
 {
 	OilSlickAction* result = this;
 	if (p_flags & 2) {

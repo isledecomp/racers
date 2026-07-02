@@ -59,7 +59,7 @@ extern const LegoFloat g_emplacementGravityScale = 3.0f;
 ColorRGBA g_cannonballTrailColor = {0x32, 0x32, 0x32, 0xc8};
 
 // FUNCTION: LEGORACERS 0x004518f0
-RacePowerupManager::CannonballAction::CannonballAction()
+CannonballAction::CannonballAction()
 {
 	m_activeProjectile = 0;
 	m_activeProjectile = &m_projectile;
@@ -70,13 +70,13 @@ RacePowerupManager::CannonballAction::CannonballAction()
 }
 
 // FUNCTION: LEGORACERS 0x00451970
-RacePowerupManager::CannonballAction::~CannonballAction()
+CannonballAction::~CannonballAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004519d0
-void RacePowerupManager::CannonballAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
+void CannonballAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Destroy();
@@ -89,7 +89,7 @@ void RacePowerupManager::CannonballAction::Initialize(GolExport** p_golExportPtr
 }
 
 // FUNCTION: LEGORACERS 0x00451a10
-void RacePowerupManager::CannonballAction::Destroy()
+void CannonballAction::Destroy()
 {
 	Deactivate();
 
@@ -103,7 +103,7 @@ void RacePowerupManager::CannonballAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00451a50
-LegoU32 RacePowerupManager::CannonballAction::Activate(ActionSetup* p_setup)
+LegoU32 CannonballAction::Activate(ActionSetup* p_setup)
 {
 	m_state = 2;
 	m_ownerRacer = p_setup->m_racer;
@@ -130,7 +130,7 @@ LegoU32 RacePowerupManager::CannonballAction::Activate(ActionSetup* p_setup)
 }
 
 // FUNCTION: LEGORACERS 0x00451ad0
-void RacePowerupManager::CannonballAction::Deactivate()
+void CannonballAction::Deactivate()
 {
 	m_projectile.Deactivate();
 
@@ -156,7 +156,7 @@ void RacePowerupManager::CannonballAction::Deactivate()
 }
 
 // STUB: LEGORACERS 0x00451b50
-void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
+void CannonballAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec2 perpendicular;
 	GolVec3 direction;
@@ -285,7 +285,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00451f30
-void RacePowerupManager::CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
+void CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 3) {
 		p_renderer->VTable0xb4(*m_billboard);
@@ -293,7 +293,7 @@ void RacePowerupManager::CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // STUB: LEGORACERS 0x00451f50
-void RacePowerupManager::CannonballAction::AdvanceState()
+void CannonballAction::AdvanceState()
 {
 	switch (m_state) {
 	case 2:
@@ -439,7 +439,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00452370
-void RacePowerupManager::CannonballAction::OnHitRacer(Racer* p_racer)
+void CannonballAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == 3) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
@@ -473,7 +473,7 @@ void RacePowerupManager::CannonballAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00458510
-RacePowerupManager::PowerupAction* RacePowerupManager::CannonballAction::Destroy(undefined4 p_flags)
+PowerupAction* CannonballAction::Destroy(undefined4 p_flags)
 {
 	CannonballAction* result = this;
 	if (p_flags & 2) {

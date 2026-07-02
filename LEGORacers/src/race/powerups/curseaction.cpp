@@ -23,19 +23,19 @@ const LegoFloat g_curseSoundMaxDistanceSquared = 300.0f;
 const LegoFloat g_curseSoundMinDistance = 30.0f;
 
 // FUNCTION: LEGORACERS 0x00452440
-RacePowerupManager::CurseAction::CurseAction()
+CurseAction::CurseAction()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004524a0
-RacePowerupManager::CurseAction::~CurseAction()
+CurseAction::~CurseAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004524f0
-void RacePowerupManager::CurseAction::Reset()
+void CurseAction::Reset()
 {
 	m_manager = 0;
 	m_curseEntity = 0;
@@ -47,18 +47,14 @@ void RacePowerupManager::CurseAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00452510
-void RacePowerupManager::CurseAction::Destroy()
+void CurseAction::Destroy()
 {
 	Deactivate();
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00452530
-void RacePowerupManager::CurseAction::Initialize(
-	RaceState* p_raceState,
-	TriggerWorld* p_collisionWorld,
-	RacePowerupManager* p_manager
-)
+void CurseAction::Initialize(RaceState* p_raceState, TriggerWorld* p_collisionWorld, RacePowerupManager* p_manager)
 {
 	m_raceState0x018 = p_raceState;
 	m_collisionWorld = p_collisionWorld;
@@ -67,7 +63,7 @@ void RacePowerupManager::CurseAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00452550
-void RacePowerupManager::CurseAction::Activate(
+void CurseAction::Activate(
 	Racer* p_racer,
 	GolAnimatedEntity* p_curseTemplate,
 	GolAnimatedEntity* p_auraTemplate,
@@ -193,7 +189,7 @@ void RacePowerupManager::CurseAction::Activate(
 }
 
 // FUNCTION: LEGORACERS 0x00452970
-void RacePowerupManager::CurseAction::Deactivate()
+void CurseAction::Deactivate()
 {
 	if (m_innerAuraEntity != NULL) {
 		m_innerAuraEntity->VTable0x54();
@@ -228,7 +224,7 @@ void RacePowerupManager::CurseAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x00452a00
-void RacePowerupManager::CurseAction::Update(LegoU32 p_elapsedMs)
+void CurseAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -241,7 +237,7 @@ void RacePowerupManager::CurseAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00452a40
-void RacePowerupManager::CurseAction::Draw(GolD3DRenderDevice* p_renderer)
+void CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -255,7 +251,7 @@ void RacePowerupManager::CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00452a80
-void RacePowerupManager::CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
+void CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -272,7 +268,7 @@ void RacePowerupManager::CurseAction::DrawTransparent(GolD3DRenderDevice* p_rend
 }
 
 // FUNCTION: LEGORACERS 0x00452ae0
-void RacePowerupManager::CurseAction::AdvanceState()
+void CurseAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateArmed:
@@ -352,7 +348,7 @@ void RacePowerupManager::CurseAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00452da0
-void RacePowerupManager::CurseAction::OnHitRacer(Racer* p_racer)
+void CurseAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state != c_stateExpiring && !(p_racer->GetFlags() & c_flagCursed)) {
 		p_racer->AttachCurse(m_curseEntity, c_curseDurationMs);
@@ -360,7 +356,7 @@ void RacePowerupManager::CurseAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004584b0
-RacePowerupManager::PowerupAction* RacePowerupManager::CurseAction::Destroy(undefined4 p_flags)
+PowerupAction* CurseAction::Destroy(undefined4 p_flags)
 {
 	CurseAction* result = this;
 	if (p_flags & 2) {

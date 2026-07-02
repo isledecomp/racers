@@ -53,7 +53,7 @@ const LegoFloat g_missileTargetConeCosine = 0.70709997f;
 ColorRGBA g_missileTrailColor = {0xff, 0xff, 0xff, 0xc8};
 
 // FUNCTION: LEGORACERS 0x00456430
-RacePowerupManager::HomingMissileAction::HomingMissileAction()
+HomingMissileAction::HomingMissileAction()
 {
 	m_activeProjectile = 0;
 	m_activeProjectile = &m_projectile;
@@ -62,13 +62,13 @@ RacePowerupManager::HomingMissileAction::HomingMissileAction()
 }
 
 // FUNCTION: LEGORACERS 0x004564b0
-RacePowerupManager::HomingMissileAction::~HomingMissileAction()
+HomingMissileAction::~HomingMissileAction()
 {
 	Shutdown();
 }
 
 // FUNCTION: LEGORACERS 0x00456510
-void RacePowerupManager::HomingMissileAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
+void HomingMissileAction::Initialize(GolExport** p_golExportPtr, TriggerWorld* p_collisionWorld)
 {
 	if (m_state != 0) {
 		Shutdown();
@@ -80,7 +80,7 @@ void RacePowerupManager::HomingMissileAction::Initialize(GolExport** p_golExport
 }
 
 // FUNCTION: LEGORACERS 0x00456540
-void RacePowerupManager::HomingMissileAction::Shutdown()
+void HomingMissileAction::Shutdown()
 {
 	Deactivate();
 	m_state = 0;
@@ -88,7 +88,7 @@ void RacePowerupManager::HomingMissileAction::Shutdown()
 }
 
 // FUNCTION: LEGORACERS 0x00456560
-void RacePowerupManager::HomingMissileAction::Activate(
+void HomingMissileAction::Activate(
 	GolAnimatedEntity* p_missileTemplate,
 	GolAnimatedEntity*,
 	Racer* p_racer,
@@ -130,7 +130,7 @@ void RacePowerupManager::HomingMissileAction::Activate(
 }
 
 // FUNCTION: LEGORACERS 0x00456680
-void RacePowerupManager::HomingMissileAction::LaunchProjectile()
+void HomingMissileAction::LaunchProjectile()
 {
 	GolVec3 position;
 	{
@@ -217,7 +217,7 @@ void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 }
 
 // FUNCTION: LEGORACERS 0x004568a0
-void RacePowerupManager::HomingMissileAction::Deactivate()
+void HomingMissileAction::Deactivate()
 {
 	m_projectile.Deactivate();
 	m_missileEntity.VTable0x54();
@@ -231,7 +231,7 @@ void RacePowerupManager::HomingMissileAction::Deactivate()
 }
 
 // STUB: LEGORACERS 0x004568f0
-void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
+void HomingMissileAction::Update(LegoU32 p_elapsedMs)
 {
 	GolVec3 direction;
 	GolVec3 up;
@@ -351,7 +351,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00456ce0
-void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
+void HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateArmed) {
 		p_renderer->VTable0x94(&m_missileEntity);
@@ -382,7 +382,7 @@ void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_rendere
 }
 
 // FUNCTION: LEGORACERS 0x00456db0
-void RacePowerupManager::HomingMissileAction::AdvanceState()
+void HomingMissileAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateArmed: {
@@ -463,7 +463,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00456fa0
-void RacePowerupManager::HomingMissileAction::OnHitRacer(Racer* p_racer)
+void HomingMissileAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
@@ -500,7 +500,7 @@ void RacePowerupManager::HomingMissileAction::OnHitRacer(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x00458630
-RacePowerupManager::PowerupAction* RacePowerupManager::HomingMissileAction::Destroy(undefined4 p_flags)
+PowerupAction* HomingMissileAction::Destroy(undefined4 p_flags)
 {
 	HomingMissileAction* result = this;
 	if (p_flags & 2) {

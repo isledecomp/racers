@@ -41,7 +41,7 @@ extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00452dd0
-RacePowerupManager::DynamiteAction::DynamiteAction()
+DynamiteAction::DynamiteAction()
 {
 	m_manager = 0;
 	m_cutsceneAnimation = 0;
@@ -52,13 +52,13 @@ RacePowerupManager::DynamiteAction::DynamiteAction()
 }
 
 // FUNCTION: LEGORACERS 0x00452e50
-RacePowerupManager::DynamiteAction::~DynamiteAction()
+DynamiteAction::~DynamiteAction()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00452eb0
-void RacePowerupManager::DynamiteAction::Destroy()
+void DynamiteAction::Destroy()
 {
 	Deactivate();
 	m_modelEntity.VTable0x54();
@@ -69,7 +69,7 @@ void RacePowerupManager::DynamiteAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00452ee0
-void RacePowerupManager::DynamiteAction::Initialize(
+void DynamiteAction::Initialize(
 	RaceState* p_raceState,
 	TriggerWorld* p_collisionWorld,
 	RacePowerupManager* p_manager,
@@ -95,7 +95,7 @@ void RacePowerupManager::DynamiteAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00452f60
-LegoU32 RacePowerupManager::DynamiteAction::Activate(Racer* p_racer, Racer* p_targetRacer)
+LegoU32 DynamiteAction::Activate(Racer* p_racer, Racer* p_targetRacer)
 {
 	m_ownerRacer = p_racer;
 	LegoU32 result = 0;
@@ -107,7 +107,7 @@ LegoU32 RacePowerupManager::DynamiteAction::Activate(Racer* p_racer, Racer* p_ta
 }
 
 // FUNCTION: LEGORACERS 0x00452f90
-void RacePowerupManager::DynamiteAction::Deactivate()
+void DynamiteAction::Deactivate()
 {
 	if (m_sound != NULL) {
 		m_soundSource->ReleaseSound(m_soundResource);
@@ -126,7 +126,7 @@ void RacePowerupManager::DynamiteAction::Deactivate()
 }
 
 // FUNCTION: LEGORACERS 0x00452ff0
-void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
+void DynamiteAction::Update(LegoU32 p_elapsedMs)
 {
 	if (m_state == c_stateDone) {
 		return;
@@ -205,7 +205,7 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453210
-void RacePowerupManager::DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
+void DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateDone && m_state != c_stateSecondBlast && m_state != c_stateThirdBlast) {
 		p_renderer->VTable0x94(&m_modelEntity);
@@ -213,7 +213,7 @@ void RacePowerupManager::DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00453240
-void RacePowerupManager::DynamiteAction::AdvanceState()
+void DynamiteAction::AdvanceState()
 {
 	GolVec3 position;
 	m_modelEntity.VTable0x04(&position);
@@ -310,7 +310,7 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00458450
-RacePowerupManager::PowerupAction* RacePowerupManager::DynamiteAction::Destroy(undefined4 p_flags)
+PowerupAction* DynamiteAction::Destroy(undefined4 p_flags)
 {
 	DynamiteAction* result = this;
 	if (p_flags & 2) {

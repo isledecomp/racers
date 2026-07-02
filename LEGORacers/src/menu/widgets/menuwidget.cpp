@@ -38,7 +38,7 @@ void MenuWidget::Reset()
 	m_firstChild = 0;
 	m_parent = 0;
 	m_id = 0;
-	m_eventHandler = 0;
+	m_notifyHandler = 0;
 	m_scaleY = 1.0;
 	m_scaleX = 1.0;
 	m_offsetY = 0;
@@ -57,7 +57,7 @@ LegoBool32 MenuWidget::FUN_00472a60(CreateParams* p_createParams)
 	m_golExport = p_createParams->m_golExport;
 	m_renderer = p_createParams->m_renderer;
 	m_id = p_createParams->m_unk0x20;
-	m_eventHandler = p_createParams->m_eventHandler;
+	m_notifyHandler = p_createParams->m_eventHandler;
 	SetRect(&p_createParams->m_rect);
 	SetColor(&p_createParams->m_unk0x22);
 
@@ -67,8 +67,8 @@ LegoBool32 MenuWidget::FUN_00472a60(CreateParams* p_createParams)
 
 	m_flags |= 0x11;
 
-	if (m_eventHandler) {
-		m_eventHandler->VTable0x00(this);
+	if (m_notifyHandler) {
+		m_notifyHandler->VTable0x00(this);
 	}
 
 	return TRUE;
@@ -79,8 +79,8 @@ LegoBool32 MenuWidget::Destroy()
 {
 	if (m_flags & 1) {
 		RemoveFromParent();
-		if (m_eventHandler) {
-			m_eventHandler->VTable0x04(this);
+		if (m_notifyHandler) {
+			m_notifyHandler->VTable0x04(this);
 		}
 
 		Reset();
@@ -170,8 +170,8 @@ void MenuWidget::SetFocus()
 
 	node->m_flags |= 8;
 
-	if (node->m_eventHandler) {
-		node->m_eventHandler->VTable0x20(node);
+	if (node->m_notifyHandler) {
+		node->m_notifyHandler->VTable0x20(node);
 	}
 
 	while (node) {
@@ -192,8 +192,8 @@ void MenuWidget::ClearFocus()
 	if (flags & 8) {
 		node->m_flags = flags & 0xf7;
 
-		if (node->m_eventHandler) {
-			node->m_eventHandler->VTable0x24(node);
+		if (node->m_notifyHandler) {
+			node->m_notifyHandler->VTable0x24(node);
 		}
 
 		while (node) {
@@ -412,14 +412,14 @@ MenuWidget* MenuWidget::FindChildById(undefined2 p_unk0x04)
 // FUNCTION: LEGORACERS 0x00472f40
 void MenuWidget::SetRect(Rect* p_rect)
 {
-	if (m_eventHandler) {
+	if (m_notifyHandler) {
 		if ((((m_rect.m_right - p_rect->m_right) - m_rect.m_left) + p_rect->m_left != 0) ||
 			(((m_rect.m_bottom - m_rect.m_top) - p_rect->m_bottom) + p_rect->m_top != 0)) {
-			m_eventHandler->VTable0x0c(this);
+			m_notifyHandler->VTable0x0c(this);
 		}
 
 		if ((m_rect.m_left - p_rect->m_left) || (m_rect.m_top - p_rect->m_top)) {
-			m_eventHandler->VTable0x08(this);
+			m_notifyHandler->VTable0x08(this);
 		}
 	}
 

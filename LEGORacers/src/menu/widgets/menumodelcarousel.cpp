@@ -484,8 +484,8 @@ MenuWidget* MenuModelCarousel::OnKeyDown(InputEventQueue::Event* p_event, undefi
 			LegoS32 index = FUN_0046c9a0(i + m_unk0x6c - m_unk0x64);
 			VTable0x50(index);
 
-			if (m_eventHandler) {
-				m_eventHandler->VTable0x18(this, p_event, p_x, p_y);
+			if (m_notifyHandler) {
+				m_notifyHandler->VTable0x18(this, p_event, p_x, p_y);
 			}
 
 			return this;

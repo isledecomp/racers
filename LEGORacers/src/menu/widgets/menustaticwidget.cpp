@@ -20,15 +20,15 @@ MenuStaticWidget::~MenuStaticWidget()
 MenuWidget* MenuStaticWidget::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y)
 {
 	if (m_flags & 8) {
-		if (m_eventHandler) {
-			m_eventHandler->VTable0x28(this, p_item, p_x, p_y);
+		if (m_notifyHandler) {
+			m_notifyHandler->VTable0x28(this, p_item, p_x, p_y);
 		}
 
 		return this;
 	}
 
-	if (m_eventHandler) {
-		m_eventHandler->VTable0x14(this, p_item, p_x, p_y);
+	if (m_notifyHandler) {
+		m_notifyHandler->VTable0x14(this, p_item, p_x, p_y);
 	}
 
 	return NULL;
@@ -41,7 +41,7 @@ MenuWidget* MenuStaticWidget::OnKeyDown(InputEventQueue::Event* p_item, undefine
 		return NULL;
 	}
 
-	if (m_eventHandler && m_eventHandler->VTable0x18(this, p_item, p_x, p_y)) {
+	if (m_notifyHandler && m_notifyHandler->VTable0x18(this, p_item, p_x, p_y)) {
 		return this;
 	}
 
@@ -55,7 +55,7 @@ MenuWidget* MenuStaticWidget::OnKeyUp(InputEventQueue::Event* p_item, undefined4
 		return NULL;
 	}
 
-	if (m_eventHandler && m_eventHandler->VTable0x1c(this, p_item, p_x, p_y)) {
+	if (m_notifyHandler && m_notifyHandler->VTable0x1c(this, p_item, p_x, p_y)) {
 		return this;
 	}
 

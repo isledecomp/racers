@@ -82,7 +82,7 @@ public:
 	void ScreenToLocal(undefined4&, undefined4&);
 	void ComputeScale(Rect*, Rect*);
 	void ScaleRect(Rect*, Rect*);
-	void SetEventHandler(MenuScreenInterface* p_eventHandler) { m_eventHandler = p_eventHandler; }
+	void SetEventHandler(MenuScreenInterface* p_eventHandler) { m_notifyHandler = p_eventHandler; }
 	LegoU8 GetFlags() const { return m_flags; }
 	undefined2 GetId() const { return m_id; }
 	LegoBool GetUnk0x54() const { return m_unk0x54; }
@@ -94,16 +94,16 @@ public:
 	// MenuWidget::`scalar deleting destructor'
 
 protected:
-	MenuWidget* m_parent;                // 0x04
-	MenuWidget* m_firstChild;            // 0x08
-	MenuWidget* m_lastChild;             // 0x0c
-	MenuWidget* m_prevSibling;           // 0x10
-	MenuWidget* m_nextSibling;           // 0x14
-	MenuWidget* m_focusedChild;          // 0x18
-	LegoU8 m_flags;                      // 0x1c
-	GolExport* m_golExport;              // 0x20
-	GolD3DRenderDevice* m_renderer;      // 0x24
-	MenuScreenInterface* m_eventHandler; // 0x28
+	MenuWidget* m_parent;                 // 0x04
+	MenuWidget* m_firstChild;             // 0x08
+	MenuWidget* m_lastChild;              // 0x0c
+	MenuWidget* m_prevSibling;            // 0x10
+	MenuWidget* m_nextSibling;            // 0x14
+	MenuWidget* m_focusedChild;           // 0x18
+	LegoU8 m_flags;                       // 0x1c
+	GolExport* m_golExport;               // 0x20
+	GolD3DRenderDevice* m_renderer;       // 0x24
+	MenuScreenInterface* m_notifyHandler; // 0x28
 	union {
 		ColorRGBA m_color;              // 0x2c
 		LegoU32 m_colorPacked;          // 0x2c

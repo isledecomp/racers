@@ -645,8 +645,8 @@ MenuWidget* MenuIcon::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y
 	}
 
 	if (flag & m_flags) {
-		if (m_eventHandler) {
-			m_eventHandler->VTable0x28(this, p_item, p_x, p_y);
+		if (m_notifyHandler) {
+			m_notifyHandler->VTable0x28(this, p_item, p_x, p_y);
 		}
 
 		return this;
@@ -662,8 +662,8 @@ MenuWidget* MenuIcon::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y
 		return NULL;
 	}
 
-	if (m_eventHandler) {
-		m_eventHandler->VTable0x14(this, p_item, p_x, p_y);
+	if (m_notifyHandler) {
+		m_notifyHandler->VTable0x14(this, p_item, p_x, p_y);
 	}
 
 	return this;

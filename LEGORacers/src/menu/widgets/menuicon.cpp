@@ -51,7 +51,7 @@ void MenuIcon::Reset()
 	m_selectedChild = NULL;
 	m_stateFlags = 0;
 	m_visualStateIndex = c_stateDisabled;
-	m_unk0x12d = FALSE;
+	m_attached = FALSE;
 	m_lastChild = NULL;
 	m_firstChild = NULL;
 	m_nextSibling = NULL;
@@ -63,9 +63,9 @@ void MenuIcon::Reset()
 	m_unk0x168 = 0;
 
 	::memset(m_unk0x158, 0, sizeof(m_unk0x158));
-	::memset(m_unk0x174, 0xff, sizeof(m_unk0x174));
+	::memset(m_stateColors, 0xff, sizeof(m_stateColors));
 	::memset(m_soundIds, 0, sizeof(m_soundIds));
-	::memset(m_unk0x6c, 0, sizeof(m_unk0x6c));
+	::memset(m_stateRects, 0, sizeof(m_stateRects));
 
 	MenuWidget::Reset();
 }
@@ -78,13 +78,13 @@ void MenuIcon::InitializeFromParams(CreateParams* p_createParams, const CreateSt
 		defaultRects = p_createState->m_unk0x00;
 	}
 
-	::memcpy(m_unk0x174, defaultRects, sizeof(m_unk0x174));
+	::memcpy(m_stateColors, defaultRects, sizeof(m_stateColors));
 	::memcpy(
 		m_soundIds,
 		p_createParams->m_unk0x7c ? p_createParams->m_soundIds : p_createState->m_unk0x18,
 		sizeof(m_soundIds)
 	);
-	::memcpy(m_unk0x6c, p_createState->m_unk0x24, sizeof(m_unk0x6c));
+	::memcpy(m_stateRects, p_createState->m_unk0x24, sizeof(m_stateRects));
 
 	m_eventHandler = p_createParams->m_unk0x80;
 	m_soundGroupBinding = p_createParams->m_soundGroupBinding;
@@ -146,7 +146,7 @@ void MenuIcon::AttachToParent(MenuIcon* p_parent)
 		m_parent->m_lastChild = this;
 	}
 
-	m_unk0x12d = TRUE;
+	m_attached = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00471f00
@@ -168,7 +168,7 @@ void MenuIcon::DetachFromParent()
 		m_nextSibling = NULL;
 		m_prevSibling = NULL;
 		m_parent = NULL;
-		m_unk0x12d = FALSE;
+		m_attached = FALSE;
 		return;
 	}
 
@@ -179,7 +179,7 @@ void MenuIcon::DetachFromParent()
 	m_nextSibling = NULL;
 	m_prevSibling = NULL;
 	m_parent = NULL;
-	m_unk0x12d = FALSE;
+	m_attached = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x00471f70
@@ -298,7 +298,7 @@ void MenuIcon::RefreshVisualState()
 		BeginRectTransition();
 	}
 
-	SetColor(&m_unk0x174[m_visualStateIndex]);
+	SetColor(&m_stateColors[m_visualStateIndex]);
 }
 
 // FUNCTION: LEGORACERS 0x004720f0
@@ -580,13 +580,14 @@ void MenuIcon::BeginRectTransition()
 	LegoFloat countFloat = (LegoFloat) count;
 
 	if (count) {
-		m_rectDeltaTop = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_top - m_rect.m_top) / countFloat;
+		m_rectDeltaTop = (LegoFloat) (m_stateTargetRects[m_visualStateIndex].m_top - m_rect.m_top) / countFloat;
 		m_rectTopF = (LegoFloat) m_rect.m_top;
-		m_rectDeltaBottom = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_bottom - m_rect.m_bottom) / countFloat;
+		m_rectDeltaBottom =
+			(LegoFloat) (m_stateTargetRects[m_visualStateIndex].m_bottom - m_rect.m_bottom) / countFloat;
 		m_rectBottomF = (LegoFloat) m_rect.m_bottom;
-		m_rectDeltaLeft = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_left - m_rect.m_left) / countFloat;
+		m_rectDeltaLeft = (LegoFloat) (m_stateTargetRects[m_visualStateIndex].m_left - m_rect.m_left) / countFloat;
 		m_rectLeftF = (LegoFloat) m_rect.m_left;
-		m_rectDeltaRight = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_right - m_rect.m_right) / countFloat;
+		m_rectDeltaRight = (LegoFloat) (m_stateTargetRects[m_visualStateIndex].m_right - m_rect.m_right) / countFloat;
 		m_rectRightF = (LegoFloat) m_rect.m_right;
 
 		if (m_rectDeltaTop != 0.0f || m_rectDeltaBottom != 0.0f || m_rectDeltaLeft != 0.0f ||
@@ -606,7 +607,7 @@ undefined4 MenuIcon::OnEvent(undefined4 p_elapsedMs)
 	if (!m_transitionRemainingMs) {
 		m_unk0x54 &= ~1;
 
-		m_rect = m_unk0xcc[m_visualStateIndex];
+		m_rect = m_stateTargetRects[m_visualStateIndex];
 		m_rectDeltaTop = 0.0f;
 		return 0;
 	}
@@ -749,11 +750,11 @@ void MenuIcon::SetRect(Rect* p_rect)
 {
 	MenuWidget::SetRect(p_rect);
 
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x6c); i++) {
-		m_unk0xcc[i].m_top = m_unk0x6c[i].m_top + p_rect->m_top;
-		m_unk0xcc[i].m_bottom = m_unk0x6c[i].m_bottom + p_rect->m_bottom;
-		m_unk0xcc[i].m_left = m_unk0x6c[i].m_left + p_rect->m_left;
-		m_unk0xcc[i].m_right = m_unk0x6c[i].m_right + p_rect->m_right;
+	for (LegoS32 i = 0; i < sizeOfArray(m_stateRects); i++) {
+		m_stateTargetRects[i].m_top = m_stateRects[i].m_top + p_rect->m_top;
+		m_stateTargetRects[i].m_bottom = m_stateRects[i].m_bottom + p_rect->m_bottom;
+		m_stateTargetRects[i].m_left = m_stateRects[i].m_left + p_rect->m_left;
+		m_stateTargetRects[i].m_right = m_stateRects[i].m_right + p_rect->m_right;
 	}
 }
 

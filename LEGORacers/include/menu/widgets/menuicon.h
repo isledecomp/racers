@@ -123,10 +123,10 @@ protected:
 	MenuIcon* m_nextSibling;                // 0x060
 	MenuIcon* m_firstChild;                 // 0x064
 	MenuIcon* m_lastChild;                  // 0x068
-	Rect m_unk0x6c[6];                      // 0x06c
-	Rect m_unk0xcc[6];                      // 0x0cc
+	Rect m_stateRects[6];                   // 0x06c
+	Rect m_stateTargetRects[6];             // 0x0cc
 	LegoU8 m_stateFlags;                    // 0x12c
-	LegoBool m_unk0x12d;                    // 0x12d
+	LegoBool m_attached;                    // 0x12d
 	undefined m_unk0x12e[0x130 - 0x12e];    // 0x12e
 	LegoS32 m_transitionDurationMs;         // 0x130
 	LegoS32 m_transitionRemainingMs;        // 0x134
@@ -142,7 +142,7 @@ protected:
 	undefined2 m_unk0x168;                  // 0x168
 	SoundGroupBinding* m_soundGroupBinding; // 0x16c
 	MenuScreenInterface* m_eventHandler;    // 0x170
-	VisualStateColor m_unk0x174[6];         // 0x174
+	VisualStateColor m_stateColors[6];      // 0x174
 	LegoU16 m_soundIds[5];                  // 0x18c
 	undefined m_unk0x196[0x198 - 0x196];    // 0x196
 	MenuIcon* m_selectedChild;              // 0x198

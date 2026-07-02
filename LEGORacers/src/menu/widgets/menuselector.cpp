@@ -349,7 +349,7 @@ LegoBool32 MenuSelector::Create(CreateParams* p_createParams, MenuStyleTable::Se
 	if (CreateDefault(p_createParams, p_styleEntry) && CreateWithFrame(p_createParams)) {
 		m_styleEntry = p_styleEntry;
 		m_carousel = p_createParams->m_unk0x90;
-		m_carousel->SetColor(&m_unk0x174[m_visualStateIndex]);
+		m_carousel->SetColor(&m_stateColors[m_visualStateIndex]);
 		m_unk0x9ec = p_createParams->m_unk0x94;
 		m_carousel->SetParent(this);
 		return TRUE;

@@ -47,7 +47,7 @@ LegoBool32 MenuTextButton::CreateImage(CreateParams* p_createParams)
 	createParams.m_unk0x38 = m_stateImages[0];
 	createParams.m_rect.m_bottom = 0;
 	createParams.m_parent = this;
-	createParams.m_unk0x22 = m_stateColors[0];
+	createParams.m_unk0x22 = m_stateImageColors[0];
 
 	return m_image.Create(&createParams);
 }
@@ -81,7 +81,7 @@ LegoBool32 MenuTextButton::CreateLabel(CreateParams* p_createParams, MenuStyleTa
 	createParams.m_unk0x38 = p_createParams->m_stringTable;
 	createParams.m_unk0x3c = m_stateFonts[0];
 	createParams.m_unk0x40 = p_createParams->m_stringId;
-	createParams.m_unk0x22 = m_unk0x174[0];
+	createParams.m_unk0x22 = m_stateImageColors[0];
 	createParams.m_rect.m_left += right;
 	createParams.m_parent = this;
 	m_textStyle.m_unk0x10 = 0;
@@ -184,9 +184,9 @@ void MenuTextButton::SetIconEventHandler(MenuScreenInterface* p_eventHandler)
 MenuWidget* MenuTextButton::DrawSelf(Rect*, Rect*)
 {
 	m_image.SetUnk0x58(m_stateImages[m_visualStateIndex]);
-	m_image.SetColor(&m_stateColors[m_visualStateIndex]);
+	m_image.SetColor(&m_stateImageColors[m_visualStateIndex]);
 	m_label.SetUnk0x60(m_stateFonts[m_visualStateIndex]);
-	m_label.SetColor(&m_unk0x174[m_visualStateIndex]);
+	m_label.SetColor(&m_stateColors[m_visualStateIndex]);
 
 	return NULL;
 }

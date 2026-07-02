@@ -53,7 +53,7 @@ private:
 	MenuStyleTable::TextStyle m_textStyle;         // 0x1ac
 	GolFont* m_stateFonts[6];                      // 0x1c0
 	UtopianPan0xa4* m_stateImages[6];              // 0x1d8
-	VisualStateColor m_stateColors[6];             // 0x1f0
+	VisualStateColor m_stateImageColors[6];        // 0x1f0
 	MenuImage m_image;                             // 0x208
 	MenuTextLabel m_label;                         // 0x264
 	LegoS32 m_maxTextWidth;                        // 0x2dc

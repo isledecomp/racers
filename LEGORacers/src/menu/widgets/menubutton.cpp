@@ -37,7 +37,7 @@ LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_create
 	UtopianPan0xa4* image = p_createParams->m_images[0];
 	::memcpy(&createParams, p_createParams, sizeof(MenuWidget::CreateParams));
 	createParams.m_unk0x20 = m_id;
-	createParams.m_unk0x22 = m_unk0x174[0];
+	createParams.m_unk0x22 = m_stateColors[0];
 	createParams.m_parent = this;
 	createParams.m_unk0x38 = image;
 
@@ -89,7 +89,7 @@ MenuWidget* MenuButton::DrawSelf(Rect*, Rect*)
 
 	m_unk0x1c0.SetRect(&rect);
 	m_unk0x1c0.SetUnk0x58(m_unk0x1a8[m_visualStateIndex]);
-	m_unk0x1c0.SetColor(&m_unk0x174[m_visualStateIndex]);
+	m_unk0x1c0.SetColor(&m_stateColors[m_visualStateIndex]);
 
 	return NULL;
 }

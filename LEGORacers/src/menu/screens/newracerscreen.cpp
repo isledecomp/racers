@@ -64,7 +64,7 @@ void NewRacerScreen::VTable0x4c()
 		}
 	}
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 8) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowLoadRacer) {
 		SaveRecordList::Record* record =
 			records->AllocateRecordCopy(m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord());
 		m_unk0x360 = c_menuGarage;

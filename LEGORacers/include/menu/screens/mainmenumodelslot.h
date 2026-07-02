@@ -21,8 +21,8 @@ class MainMenuModelSlot : public MenuSceneElement {
 public:
 	// SIZE 0x1c
 	struct CreateParams : public MenuSceneElement::CreateParams {
-		DriverModelBuilder* m_unk0x0c; // 0x0c
-		GolVec3 m_position;            // 0x10
+		DriverModelBuilder* m_modelBuilder; // 0x0c
+		GolVec3 m_position;                 // 0x10
 	};
 
 	MainMenuModelSlot();
@@ -32,27 +32,27 @@ public:
 	LegoBool32 Draw() override;             // vtable+0x0c
 	LegoBool32 Update(undefined4) override; // vtable+0x10
 
-	GolAnimatedEntity* GetUnk0x1c() { return &m_unk0x1c; }
-	CmbModelPart0x34* GetUnk0x118() { return &m_unk0x118; }
-	LegoBool32 FUN_0047e0a0(CreateParams* p_createParams);
-	void FUN_0047e130(LegoU32 p_unk0x04);
-	void FUN_0047e160(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
-	void FUN_0047e1b0(LegoU32 p_unk0x04);
-	void FUN_0047e1e0(LegoU32 p_unk0x04);
-	void FUN_0047e210(DriverCosmetics* p_cosmetics);
+	GolAnimatedEntity* GetDriverEntity() { return &m_driverEntity; }
+	CmbModelPart0x34* GetBodyModelPart() { return &m_bodyModelPart; }
+	LegoBool32 Create(CreateParams* p_createParams);
+	void SetHat(LegoU32 p_unk0x04);
+	void SetFace(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
+	void SetTorso(LegoU32 p_unk0x04);
+	void SetLegs(LegoU32 p_unk0x04);
+	void SetCosmetics(DriverCosmetics* p_cosmetics);
 
 	// SYNTHETIC: LEGORACERS 0x0047dee0
 	// MainMenuModelSlot::`scalar deleting destructor'
 
 private:
-	void FUN_0047df90();
+	void CreateDriverModel();
 
-	GolAnimatedEntity m_unk0x1c;         // 0x01c
-	GolModelBase* m_unk0x110;            // 0x110
-	GolSceneNode* m_unk0x114;            // 0x114
-	CmbModelPart0x34 m_unk0x118;         // 0x118
+	GolAnimatedEntity m_driverEntity;    // 0x01c
+	GolModelBase* m_driverModel;         // 0x110
+	GolSceneNode* m_bodySceneNode;       // 0x114
+	CmbModelPart0x34 m_bodyModelPart;    // 0x118
 	undefined4 m_unk0x14c;               // 0x14c
-	DriverModelBuilder* m_unk0x150;      // 0x150
+	DriverModelBuilder* m_modelBuilder;  // 0x150
 	DriverCosmetics m_cosmetics;         // 0x154
 	undefined m_unk0x159[0x15c - 0x159]; // 0x159
 };

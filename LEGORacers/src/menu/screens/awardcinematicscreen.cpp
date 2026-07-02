@@ -484,7 +484,9 @@ LegoBool32 AwardCinematicScreen::FUN_004768f0(
 
 		if (!(p_gameState->GetUnlockedCircuits() & mask)) {
 			p_gameState->UnlockCircuits(mask);
-			m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 4);
+			m_context->m_modelBuilder.SetMenuFlowFlags(
+				m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowUnlockNotice
+			);
 			return TRUE;
 		}
 	}
@@ -553,7 +555,9 @@ void AwardCinematicScreen::VTable0x84()
 
 	if (m_unk0x7a4 || m_unk0x7a8 || m_unk0x7ac) {
 		m_context->m_menuStack.Push(c_menuSaveAll);
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 0x10);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowSaveReminder
+		);
 	}
 }
 

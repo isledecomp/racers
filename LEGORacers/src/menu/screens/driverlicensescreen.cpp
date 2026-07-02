@@ -74,12 +74,12 @@ void DriverLicenseScreen::FUN_0047b220()
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
 	createParams.m_sceneView = &m_unk0x1648;
-	createParams.m_unk0x0c = &m_context->m_modelBuilder;
+	createParams.m_modelBuilder = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3593369f;
 	createParams.m_position.m_y = -3.1500180f;
 	createParams.m_position.m_z = 0.0f;
 
-	m_unk0x224c.FUN_0047e0a0(&createParams);
+	m_unk0x224c.Create(&createParams);
 	m_unk0x1648.AddElement(&m_unk0x224c);
 
 	GolVec3 direction;
@@ -91,7 +91,7 @@ void DriverLicenseScreen::FUN_0047b220()
 	up.m_x = 0.0f;
 	up.m_y = -0.0348990f;
 	up.m_z = 0.9993910f;
-	m_unk0x224c.GetUnk0x1c()->VTable0x40(direction, up);
+	m_unk0x224c.GetDriverEntity()->VTable0x40(direction, up);
 }
 
 // FUNCTION: LEGORACERS 0x0047b300
@@ -108,7 +108,7 @@ void DriverLicenseScreen::VTable0x4c()
 	CreateTextField(&m_unk0x1f1c, 0xdb, 0xd7, 1, &m_cheatString);
 	FUN_0047fdc0(&m_unk0x798, 0xdc, 0x42, 0x3b);
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		FUN_0047fdc0(&m_unk0xd78, 0x40, 0x44, 0x0b);
 		FUN_0047fdc0(&m_unk0xa88, 0x3f, 0x43, 9);
 	}
@@ -159,8 +159,8 @@ LegoBool32 DriverLicenseScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	FUN_0047fec0(&materialColor, &lightColor);
 
 	FUN_0047b6b0();
-	m_unk0x224c.GetUnk0x118()->VTable0x14("cmaman", context->m_context->m_useBinaryFiles);
-	entity = m_unk0x224c.GetUnk0x1c();
+	m_unk0x224c.GetBodyModelPart()->VTable0x14("cmaman", context->m_context->m_useBinaryFiles);
+	entity = m_unk0x224c.GetDriverEntity();
 	entity->FUN_0040dad0(0);
 	entity->SetFlags(entity->GetFlags() | 0x10000);
 
@@ -191,7 +191,7 @@ LegoBool32 DriverLicenseScreen::FUN_0047b580()
 	DriverCosmetics cosmetics;
 	undefined2 buffer[24];
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		return TRUE;
 	}
 
@@ -221,10 +221,10 @@ void DriverLicenseScreen::FUN_0047b6b0()
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	MainMenuModelSlot* preview = &m_unk0x224c;
-	preview->FUN_0047e210(cosmetics);
+	preview->SetCosmetics(cosmetics);
 	LegoU32 colorValue = GetUnk0x2244().m_faceIndex;
 	LegoU32 colorIndex = GetUnk0x2244().m_expressionIndex;
-	preview->FUN_0047e160(colorValue, colorIndex);
+	preview->SetFace(colorValue, colorIndex);
 
 	if (cheatString->SelectionLength() == 0) {
 		m_menuTextStrings->CopyStringByIndex(cheatString, 0x3a);
@@ -249,7 +249,7 @@ void DriverLicenseScreen::FUN_0047b750()
 	record.SetName(cheatString);
 	record.SetCosmetics(&GetUnk0x2244());
 
-	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
+	if ((m_context->m_modelBuilder.GetMenuFlowFlags() == 0) & TRUE) {
 		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
 			&m_context->m_saveSystem.GetActiveRecord()
 		);
@@ -283,10 +283,10 @@ void DriverLicenseScreen::OnIconUnfocused(MenuWidget* p_source)
 		LegoS32 colorIndex = GetUnk0x2244().m_expressionIndex;
 		colorIndex++;
 		GetUnk0x2244().m_expressionIndex = static_cast<LegoU8>(colorIndex % 6);
-		m_unk0x224c.FUN_0047e160(GetUnk0x2244().m_faceIndex, GetUnk0x2244().m_expressionIndex);
+		m_unk0x224c.SetFace(GetUnk0x2244().m_faceIndex, GetUnk0x2244().m_expressionIndex);
 	}
 	else if (p_source == &m_unk0xd78) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = 0x11;
 		}
 		else {
@@ -295,7 +295,7 @@ void DriverLicenseScreen::OnIconUnfocused(MenuWidget* p_source)
 		updateRecord = TRUE;
 	}
 	else if (p_source == &m_unk0xa88) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = 0x0f;
 			updateRecord = TRUE;
 		}

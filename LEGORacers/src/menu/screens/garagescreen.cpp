@@ -72,7 +72,10 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 		p_context->m_menuStack.Push(c_menuGarage);
 	}
 
-	p_context->m_modelBuilder.SetUnk0x78(p_context->m_modelBuilder.GetUnk0x78() & ~9);
+	p_context->m_modelBuilder.SetMenuFlowFlags(
+		p_context->m_modelBuilder.GetMenuFlowFlags() &
+		~(DriverModelBuilder::c_menuFlowNewRacer | DriverModelBuilder::c_menuFlowLoadRacer)
+	);
 	p_context->m_context->m_flags &= ~LegoRacers::Context::c_flagReturnToGarage;
 	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(0);
 
@@ -239,9 +242,9 @@ void GarageScreen::StartTestDrive()
 	context->m_flags |= LegoRacers::Context::c_flagReturnToGarage;
 
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecordCount(1);
-	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();
+	undefined4 flags = m_context->m_modelBuilder.GetMenuFlowFlags();
 	flags &= 0xfffffffd;
-	m_context->m_modelBuilder.SetUnk0x78(flags);
+	m_context->m_modelBuilder.SetMenuFlowFlags(flags);
 	SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
 	m_unk0x360 = 0x41;
@@ -264,7 +267,9 @@ void GarageScreen::VTable0x84()
 	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
 		m_context->m_saveSystem.GetActiveRecord().FUN_0042b2f0(4, 0, 0, NULL);
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 1);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowNewRacer
+		);
 		CommitRecordSelections();
 		return;
 	case c_menuEditDriver:
@@ -288,7 +293,9 @@ void GarageScreen::VTable0x84()
 		m_context->m_menuStack.Push(c_menuPickMem);
 		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 8);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowLoadRacer
+		);
 		CommitRecordSelections();
 		return;
 	}

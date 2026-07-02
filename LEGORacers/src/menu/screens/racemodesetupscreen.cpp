@@ -92,7 +92,8 @@ void RaceModeSetupScreen::VTable0x4c()
 		textId = 0x0f;
 	}
 	else {
-		textId = 0x0e + ((m_context->m_modelBuilder.GetUnk0x78() & 2) ? 0x0b : 0);
+		textId =
+			0x0e + ((m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) ? 0x0b : 0);
 	}
 
 	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, textId);
@@ -161,7 +162,7 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 			}
 
 			// Both branches assign the same id in the original; the flag test is real but inert
-			if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
+			if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 				m_unk0x360 = 0x13;
 			}
 			else {
@@ -170,7 +171,9 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 		}
 	}
 	else if (source == &m_backButton) {
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowVersus
+		);
 		m_unk0x360 = 2;
 	}
 

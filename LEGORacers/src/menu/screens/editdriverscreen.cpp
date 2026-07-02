@@ -111,12 +111,12 @@ void EditDriverScreen::FUN_0047d230()
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
 	createParams.m_sceneView = &m_unk0x31b0;
-	createParams.m_unk0x0c = &m_context->m_modelBuilder;
+	createParams.m_modelBuilder = &m_context->m_modelBuilder;
 	createParams.m_position.m_x = -5.3590002f;
 	createParams.m_position.m_y = -3.1500001f;
 	createParams.m_position.m_z = 0.026000001f;
 
-	m_unk0x4600.FUN_0047e0a0(&createParams);
+	m_unk0x4600.Create(&createParams);
 	m_unk0x31b0.AddElement(&m_unk0x4600);
 }
 
@@ -137,7 +137,7 @@ void EditDriverScreen::VTable0x4c()
 	m_unk0x3688.WrapText(0x14);
 	FUN_0047fdc0(&m_unk0x3700, 0xd2, 0x42, 0x38);
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		FUN_0047fdc0(&m_unk0x3ce0, 0x40, 0x44, 0x0a);
 	}
 	else {
@@ -170,7 +170,7 @@ LegoBool32 EditDriverScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCr
 	materialColor.m_alp = 0xff;
 	FUN_0047fec0(&materialColor, &lightColor);
 
-	m_unk0x4600.GetUnk0x118()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
+	m_unk0x4600.GetBodyModelPart()->VTable0x14("cbanim", p_context->m_context->m_useBinaryFiles);
 	p_context->m_carBuildModel.FUN_00499f00();
 	FUN_0047d100(p_context, p_createParams);
 	FUN_0047d840();
@@ -197,7 +197,7 @@ LegoBool32 EditDriverScreen::Destroy()
 // FUNCTION: LEGORACERS 0x0047d560
 LegoBool32 EditDriverScreen::FUN_0047d560()
 {
-	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		return FALSE;
 	}
 
@@ -232,13 +232,13 @@ LegoS32 EditDriverScreen::FUN_0047d5d0()
 
 	GolName name;
 	string.CopyToBuf8(name);
-	return m_unk0x4600.GetUnk0x118()->GetPartIndex(name);
+	return m_unk0x4600.GetBodyModelPart()->GetPartIndex(name);
 }
 
 // FUNCTION: LEGORACERS 0x0047d6f0
 void EditDriverScreen::FUN_0047d6f0()
 {
-	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
+	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
 	LegoS32 partIndex;
 
 	do {
@@ -261,8 +261,8 @@ void EditDriverScreen::FUN_0047d740()
 	m_menuNameStrings->CopyStringByIndex(&string, g_unk0x004c20c8[textIdIndex]);
 	string.CopyToBuf8(name);
 
-	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
-	LegoS32 partIndex = m_unk0x4600.GetUnk0x118()->GetPartIndex(name);
+	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
+	LegoS32 partIndex = m_unk0x4600.GetBodyModelPart()->GetPartIndex(name);
 	entity->FUN_0040db80(partIndex, 0xc8, 0.0f, FALSE, FALSE, FALSE);
 	entity->SetFlags((entity->GetFlags() & ~0x40000) | 0x10000);
 }
@@ -277,7 +277,7 @@ void EditDriverScreen::FUN_0047d840()
 	m_unk0x420[2].SelectValue(m_driverCosmetics.m_components[2]);
 	m_unk0x420[3].SelectValue(m_driverCosmetics.m_components[3]);
 
-	m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
+	m_unk0x4600.SetCosmetics(&m_driverCosmetics);
 	m_unk0x9e0[0].Select(4);
 	m_unk0x4764 = 0;
 }
@@ -287,7 +287,7 @@ void EditDriverScreen::FUN_0047d8e0()
 {
 	m_context->m_saveSystem.GetActiveRecord().SetCosmetics(&m_driverCosmetics);
 
-	if ((m_context->m_modelBuilder.GetUnk0x78() == 0) & TRUE) {
+	if ((m_context->m_modelBuilder.GetMenuFlowFlags() == 0) & TRUE) {
 		m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(
 			&m_context->m_saveSystem.GetActiveRecord()
 		);
@@ -317,7 +317,7 @@ void EditDriverScreen::FUN_0047d940()
 // FUNCTION: LEGORACERS 0x0047d9a0
 LegoBool32 EditDriverScreen::VTable0x88()
 {
-	GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
+	GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
 
 	return entity->FUN_0040e360() || !(entity->GetFlags() & 0x10000);
 }
@@ -338,7 +338,9 @@ void EditDriverScreen::VTable0x84()
 			m_context->m_menuStack.Push(0x30);
 		}
 
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~1);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowNewRacer
+		);
 		break;
 	}
 }
@@ -369,7 +371,7 @@ void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 		LegoU32 index = m_unk0x420[0].GetSelectedValue();
 		m_driverCosmetics.m_components[0] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.FUN_0047e130(index);
+		m_unk0x4600.SetHat(index);
 		m_unk0x4768 = 0x83;
 		return;
 	}
@@ -377,7 +379,7 @@ void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 		LegoU32 index = m_unk0x420[1].GetSelectedValue();
 		m_driverCosmetics.m_components[1] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.FUN_0047e160(index, 0);
+		m_unk0x4600.SetFace(index, 0);
 		m_unk0x4768 = 0x83;
 		return;
 	}
@@ -385,7 +387,7 @@ void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 		LegoU32 index = m_unk0x420[2].GetSelectedValue();
 		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.FUN_0047e1b0(index);
+		m_unk0x4600.SetTorso(index);
 		m_unk0x4768 = 0x84;
 		return;
 	}
@@ -393,7 +395,7 @@ void EditDriverScreen::OnWidgetValueChanged(MenuWidget* p_source)
 		LegoU32 index = m_unk0x420[3].GetSelectedValue();
 		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(index);
 		index &= 0xff;
-		m_unk0x4600.FUN_0047e1e0(index);
+		m_unk0x4600.SetLegs(index);
 
 		g_randomTableIndex = (g_randomTableIndex + 1) & 0x3ff;
 		LegoU16 random = g_randomTable[g_randomTableIndex];
@@ -421,7 +423,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_driverCosmetics.m_components[2] = static_cast<LegoU8>(m_unk0x420[2].GetSelectedValue());
 		m_driverCosmetics.m_components[3] = static_cast<LegoU8>(m_unk0x420[3].GetSelectedValue());
 
-		m_unk0x4600.FUN_0047e210(&m_driverCosmetics);
+		m_unk0x4600.SetCosmetics(&m_driverCosmetics);
 	}
 	else if (p_source == &m_unk0x39f0) {
 		if (FUN_0047d560()) {
@@ -429,7 +431,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x1f);
 			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x7b);
 		}
-		else if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		else if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			FUN_0047fdc0(&m_unk0x3fd0, 0x99, 0x46, 0x73);
 			FUN_0047fdc0(&m_unk0x42c0, 0x99, 0x45, 0x74);
 			FUN_0046c6f0(&m_unk0x3fd0, &m_unk0x42c0, 0x77);
@@ -442,7 +444,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		FUN_0047d8e0();
 		FUN_0047d740();
 
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = 0x10;
 		}
 		else {
@@ -450,11 +452,11 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 		}
 	}
 	else if (p_source == &m_unk0x3fd0) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			FUN_0047d940();
 		}
 
-		GolAnimatedEntity* entity = m_unk0x4600.GetUnk0x1c();
+		GolAnimatedEntity* entity = m_unk0x4600.GetDriverEntity();
 		entity->SetFlags(entity->GetFlags() & ~0x10000);
 
 		if (m_unk0x284->GetUnk0x9c() > 0) {
@@ -476,7 +478,7 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047de30
 LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_unk0x04)
 {
-	if (!m_unk0x364 && m_unk0x4600.GetUnk0x1c()->FUN_0040e360()) {
+	if (!m_unk0x364 && m_unk0x4600.GetDriverEntity()->FUN_0040e360()) {
 		FUN_0047d6f0();
 	}
 

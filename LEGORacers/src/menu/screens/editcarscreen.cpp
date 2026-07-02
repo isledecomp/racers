@@ -104,7 +104,7 @@ void EditCarScreen::VTable0x4c()
 	FUN_0047fdc0(&m_unk0xef4, 0x9b, 0x42, 0x3c);
 	FUN_0047fdc0(&m_unk0xc04, 0x9c, 0x42, 0x3d);
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 		FUN_0047fdc0(&m_unk0x11e4, 0x40, 0x46, 0x1e);
 		FUN_0047fdc0(&m_unk0x14d4, 0x3f, 0x43, 0x0a);
 	}
@@ -411,15 +411,17 @@ void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 		FUN_0047c790();
 	}
 	else if (p_source == &m_unk0x11e4) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
-			m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~1);
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
+			m_context->m_modelBuilder.SetMenuFlowFlags(
+				m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowNewRacer
+			);
 			FUN_0047cde0();
 		}
 		FUN_0047c5a0();
 		m_unk0x360 = c_menuGarage;
 	}
 	else if (p_source == &m_unk0x14d4) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 1) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = c_menuDriverLicense;
 		}
 		else if (FUN_0047c900()) {

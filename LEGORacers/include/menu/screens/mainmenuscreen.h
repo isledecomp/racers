@@ -31,30 +31,30 @@ public:
 	//  MainMenuScreen::`scalar deleting destructor'
 
 protected:
-	void FUN_00480e40();
+	void CreateDriverScene();
 
-	MenuImage m_unk0x368;                   // 0x0368
-	MenuImage m_unk0x3c4;                   // 0x03c4
+	MenuImage m_photoImage;                 // 0x0368
+	MenuImage m_logoImage;                  // 0x03c4
 	MenuTextLabel m_unk0x420;               // 0x0420
-	MenuTextButton m_unk0x498;              // 0x0498
-	MenuTextButton m_unk0x788;              // 0x0788
-	MenuTextButton m_unk0xa78;              // 0x0a78
-	MenuTextButton m_unk0xd68;              // 0x0d68
-	MenuTextButton m_unk0x1058;             // 0x1058
-	MenuTextButton m_unk0x1348;             // 0x1348
-	MenuTextButton m_unk0x1638;             // 0x1638
-	MenuTextButton m_unk0x1928;             // 0x1928
-	MenuTextButton m_unk0x1c18;             // 0x1c18
-	MenuTextButton m_unk0x1f08;             // 0x1f08
-	MenuSceneView m_unk0x21f8;              // 0x21f8
+	MenuTextButton m_singleRaceButton;      // 0x0498
+	MenuTextButton m_circuitRaceButton;     // 0x0788
+	MenuTextButton m_versusRaceButton;      // 0x0a78
+	MenuTextButton m_timeRaceButton;        // 0x0d68
+	MenuTextButton m_garageButton;          // 0x1058
+	MenuTextButton m_optionsButton;         // 0x1348
+	MenuTextButton m_exitButton;            // 0x1638
+	MenuTextButton m_confirmYesButton;      // 0x1928
+	MenuTextButton m_confirmNoButton;       // 0x1c18
+	MenuTextButton m_noticePopup;           // 0x1f08
+	MenuSceneView m_sceneView;              // 0x21f8
 	undefined m_unk0x22d4[0x22dc - 0x22d4]; // 0x22d4
-	MainMenuModelSlot m_unk0x22dc;          // 0x22dc
-	GolAnimatedEntity* m_unk0x2438;         // 0x2438
-	undefined4 m_unk0x243c;                 // 0x243c
+	MainMenuModelSlot m_modelSlot;          // 0x22dc
+	GolAnimatedEntity* m_driverEntity;      // 0x2438
+	undefined4 m_animSoundPlayed;           // 0x243c
 	undefined4 m_unk0x2440;                 // 0x2440
-	LegoU32 m_unk0x2444;                    // 0x2444
-	LegoU32 m_unk0x2448;                    // 0x2448
-	LegoU8 m_unk0x244c;                     // 0x244c
+	LegoU32 m_idleTimeoutMs;                // 0x2444
+	LegoU32 m_idleAnimTimerMs;              // 0x2448
+	LegoU8 m_cheatKeyMask;                  // 0x244c
 	undefined m_unk0x244d[0x2450 - 0x244d]; // 0x244d
 };
 

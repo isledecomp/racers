@@ -25,7 +25,7 @@ void PickRacerScreen::VTable0x4c()
 	CreateImage(&m_unk0x3ff4, 0x49, 0x49);
 	RacerPickScreenBase::VTable0x4c();
 
-	if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
+	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 		textId = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCountAsU16();
 		textId += 0x15;
 	}
@@ -56,7 +56,7 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 
 	VTable0x80();
 
-	if (p_context->m_modelBuilder.GetUnk0x78() & 2) {
+	if (p_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 		m_unk0x2c0c[0].SetUnk0x9ec(TRUE);
 
 		if (p_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 0) {
@@ -86,7 +86,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_driverEntities[0].SetFlags(m_driverEntities[0].GetFlags() & ~0x10000);
 	}
 	else if (p_source == &m_unk0x40c8) {
-		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 			m_context->m_context->m_racerCount = 0;
 		}
 
@@ -169,7 +169,7 @@ void PickRacerScreen::VTable0x84()
 			m_context->m_menuStack.ResetSize();
 		}
 
-		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
+		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
 			m_context->m_context->m_racerCount = 0;
 		}
 		else {
@@ -177,7 +177,9 @@ void PickRacerScreen::VTable0x84()
 		}
 
 		m_unk0x364 = TRUE;
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowVersus
+		);
 		break;
 	}
 

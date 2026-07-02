@@ -100,7 +100,7 @@ void PickMemoryCardScreen::VTable0x84()
 	case 15:
 		m_context->m_menuStack.Pop();
 
-		if (!(m_context->m_modelBuilder.GetUnk0x78() & 8)) {
+		if (!(m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowLoadRacer)) {
 			m_context->m_menuStack.Push(m_unk0x360);
 		}
 

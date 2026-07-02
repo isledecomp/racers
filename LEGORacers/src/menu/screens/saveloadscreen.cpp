@@ -147,11 +147,13 @@ LegoBool32 SaveLoadScreen::VTable0x78(undefined4)
 // FUNCTION: LEGORACERS 0x00487060
 void SaveLoadScreen::VTable0x4c()
 {
-	if (!(m_context->m_modelBuilder.GetUnk0x78() & 0x10)) {
+	if (!(m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowSaveReminder)) {
 		CreateImage(&m_unk0x37c, 0x49, 0x49);
 	}
 	else {
-		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~0x10);
+		m_context->m_modelBuilder.SetMenuFlowFlags(
+			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowSaveReminder
+		);
 	}
 
 	if (!m_unk0x368) {

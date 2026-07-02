@@ -131,7 +131,7 @@ void CircuitRaceRunner::Run()
 	if (!(m_context->m_flags & LegoRacers::Context::c_flagAbortRace) && m_context->m_running) {
 		LegoU32 rankIndex = 0;
 		LegoRacers::Context::PlayerSetupSlot* slot = m_context->m_playerSetupSlots;
-		undefined4 slotValue = slot->m_unk0x10;
+		undefined4 slotValue = slot->m_slotState;
 
 		if (slotValue) {
 			LegoU32 slotCount = m_context->m_racerCount;
@@ -139,7 +139,7 @@ void CircuitRaceRunner::Run()
 			while (slotValue && rankIndex < slotCount) {
 				slot++;
 				rankIndex++;
-				slotValue = slot->m_unk0x10;
+				slotValue = slot->m_slotState;
 			}
 		}
 

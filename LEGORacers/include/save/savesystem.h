@@ -40,8 +40,8 @@ public:
 
 	void Reset();
 	void Initialize(InputManager* p_inputManager, LegoBool32 p_createIfMissing);
-	undefined4 FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissing);
-	undefined4 FUN_004434a0(undefined4);
+	undefined4 LoadSlot(LegoU32 p_index, undefined4 p_createIfMissing);
+	undefined4 SaveSlot(undefined4);
 	void LoadMemoryCardSaves(undefined4 p_createIfMissing);
 	void LoadFirstOpenSave();
 	void LoadSaveFile(const LegoChar*, SaveGame*);

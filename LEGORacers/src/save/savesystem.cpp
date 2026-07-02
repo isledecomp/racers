@@ -64,7 +64,7 @@ void SaveSystem::Initialize(InputManager* p_inputManager, LegoBool32 p_createIfM
 }
 
 // FUNCTION: LEGORACERS 0x00443420
-undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissing)
+undefined4 SaveSystem::LoadSlot(LegoU32 p_index, undefined4 p_createIfMissing)
 {
 	MemoryCardSaveGame* save = &m_memoryCardSaves[p_index];
 	undefined4 status = save->OpenExistingFile();
@@ -94,7 +94,7 @@ undefined4 SaveSystem::FUN_00443420(LegoU32 p_index, undefined4 p_createIfMissin
 }
 
 // FUNCTION: LEGORACERS 0x004434a0
-undefined4 SaveSystem::FUN_004434a0(undefined4 p_index)
+undefined4 SaveSystem::SaveSlot(undefined4 p_index)
 {
 	if (m_gameState.IsDirty() && m_gameState.GetActiveSaveIndex() == p_index) {
 		m_gameState.WriteToSaveGame(&m_memoryCardSaves[p_index]);

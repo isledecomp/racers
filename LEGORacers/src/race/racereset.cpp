@@ -132,7 +132,7 @@ void RaceSession::RaceReset::ResetRacers()
 		field->SnapVisuals();
 		racer->InvalidateCamera();
 
-		if (!m_context->m_playerSetupSlots[racerIndex].m_unk0x10) {
+		if (!m_context->m_playerSetupSlots[racerIndex].m_slotState) {
 			racer->m_controlMode = 0;
 			racer->m_routeRecord = NULL;
 		}

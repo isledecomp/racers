@@ -36,11 +36,11 @@ public:
 		struct PlayerSetupSlot {
 			GolName m_driverName;               // 0x00
 			GolName m_chassisName;              // 0x08
-			undefined4 m_unk0x10;               // 0x10
-			LegoFloat m_unk0x14;                // 0x14
-			LegoFloat m_unk0x18;                // 0x18
-			LegoFloat m_unk0x1c;                // 0x1c
-			LegoFloat m_unk0x20;                // 0x20
+			undefined4 m_slotState;             // 0x10
+			LegoFloat m_highPieceCount;         // 0x14
+			LegoFloat m_centroidX;              // 0x18
+			LegoFloat m_centroidY;              // 0x1c
+			LegoFloat m_centroidZ;              // 0x20
 			GolModelBase* m_model;              // 0x24
 			GolMaterialLibrary* m_materials;    // 0x28
 			GolTextureList* m_textures;         // 0x2c

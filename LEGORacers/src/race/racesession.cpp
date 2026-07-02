@@ -523,7 +523,7 @@ void RaceSession::AttachContext(LegoRacers::Context* p_context)
 
 	if (!m_context->m_playerCount) {
 		m_context->m_playerCount = one;
-		m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
+		m_context->m_playerSetupSlots[0].m_slotState = 0;
 		m_demoMode = one;
 	}
 	else {
@@ -597,12 +597,12 @@ void RaceSession::InitializeSound()
 // FUNCTION: LEGORACERS 0x00432a50
 LegoU32 RaceSession::GetPlayerVoiceName(LegoU32 p_index, LegoChar* p_buffer)
 {
-	undefined4 slotState = m_context->m_playerSetupSlots[p_index].m_unk0x10;
+	undefined4 slotState = m_context->m_playerSetupSlots[p_index].m_slotState;
 
 	if (slotState && p_index < m_context->m_racerCount) {
 		do {
 			p_index++;
-			slotState = m_context->m_playerSetupSlots[p_index].m_unk0x10;
+			slotState = m_context->m_playerSetupSlots[p_index].m_slotState;
 		} while (slotState);
 	}
 
@@ -853,7 +853,7 @@ void RaceSession::LoadRouteRecords(LegoBool32 p_mirror)
 	RaceRouteRecord* current = m_routeRecords;
 
 	for (i = 0; i < static_cast<LegoU32>(m_context->m_racerCount); i++) {
-		if (m_context->m_playerSetupSlots[i].m_unk0x10 == 2 || m_demoMode) {
+		if (m_context->m_playerSetupSlots[i].m_slotState == 2 || m_demoMode) {
 			fileName[0] = 'r';
 			fileName[1] = static_cast<LegoChar>(i + '0');
 			fileName[2] = '_';
@@ -1038,7 +1038,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 		LegoRacers::Context::PlayerSetupSlot* slot = &m_context->m_playerSetupSlots[racerIndex];
 		racerParams.m_slots[racerIndex] = slot;
 
-		if ((slot->m_unk0x10 == 2 || m_demoMode) && routeRecord->m_pathPoints) {
+		if ((slot->m_slotState == 2 || m_demoMode) && routeRecord->m_pathPoints) {
 			racerParams.m_racerRoutes[racerIndex] = routeRecord;
 		}
 		else {
@@ -1070,7 +1070,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	}
 
 	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
-		if (m_context->m_playerSetupSlots[racerIndex].m_unk0x10 == 0) {
+		if (m_context->m_playerSetupSlots[racerIndex].m_slotState == 0) {
 			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			RaceCameraController* cameraController = &m_cameraControllers[racerIndex];
 			m_raceState.m_playerRacers[racerIndex] = racer;

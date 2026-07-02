@@ -178,7 +178,7 @@ void AwardCinematicScreen::CreateWidgets()
 	if (m_resourceMenuId == c_menuCircuit7) {
 		SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord();
 		if (record) {
-			m_context->m_context->m_playerSetupSlots[0].m_unk0x10 = 0;
+			m_context->m_context->m_playerSetupSlots[0].m_slotState = 0;
 			record->GetCosmetics(&m_context->m_context->m_playerSetupSlots[0].m_cosmetics);
 			m_context->m_context->m_playerSetupSlots[0].m_driverName[0] = '\0';
 		}
@@ -209,12 +209,12 @@ void AwardCinematicScreen::CreateWidgets()
 	if (m_resourceMenuId != c_menuWinVvCar) {
 		LegoRacers::Context* racersContext = m_context->m_context;
 		LegoU32 slotIndex = 0;
-		undefined4 slotState = racersContext->m_playerSetupSlots[slotIndex].m_unk0x10;
+		undefined4 slotState = racersContext->m_playerSetupSlots[slotIndex].m_slotState;
 
 		if (slotState) {
 			while (slotState && slotIndex < racersContext->m_playerCount) {
 				slotIndex++;
-				slotState = racersContext->m_playerSetupSlots[slotIndex].m_unk0x10;
+				slotState = racersContext->m_playerSetupSlots[slotIndex].m_slotState;
 			}
 		}
 

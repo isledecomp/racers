@@ -57,7 +57,7 @@ void SaveLoadScreen::ExecuteOperation(SaveSystem* p_source)
 		statusEightCount = 0;
 		m_saveIndex = p_source->GetMemoryCardSaveCount() - 1;
 		while (m_saveIndex >= 0) {
-			LegoS32 status = p_source->FUN_00443420(m_saveIndex, TRUE);
+			LegoS32 status = p_source->LoadSlot(m_saveIndex, TRUE);
 			m_status = status;
 			if (!status) {
 				emptyCount++;
@@ -80,15 +80,15 @@ void SaveLoadScreen::ExecuteOperation(SaveSystem* p_source)
 		break;
 	}
 	case c_menuLoadCard:
-		m_status = p_source->FUN_00443420(m_saveIndex, FALSE);
+		m_status = p_source->LoadSlot(m_saveIndex, FALSE);
 		break;
 	case c_menuLcCreate: {
 		LegoU32 status = p_source->GetMemoryCardSaves()[m_saveIndex].GetRecordCount();
 		if (status > 0) {
-			m_status = p_source->FUN_004434a0(m_saveIndex);
+			m_status = p_source->SaveSlot(m_saveIndex);
 		}
 		else {
-			m_status = p_source->FUN_00443420(m_saveIndex, TRUE);
+			m_status = p_source->LoadSlot(m_saveIndex, TRUE);
 		}
 		m_skipFirstStatus = FALSE;
 		break;
@@ -97,7 +97,7 @@ void SaveLoadScreen::ExecuteOperation(SaveSystem* p_source)
 		m_saveIndex = p_source->GetMemoryCardSaveCount() - 1;
 		m_status = 0;
 		while (m_saveIndex >= 0) {
-			LegoS32 status = p_source->FUN_004434a0(m_saveIndex);
+			LegoS32 status = p_source->SaveSlot(m_saveIndex);
 			if (status && status != 0x12 && status != 8) {
 				m_status = status;
 			}
@@ -109,7 +109,7 @@ void SaveLoadScreen::ExecuteOperation(SaveSystem* p_source)
 		break;
 	}
 	case c_menuSaveCard:
-		m_status = p_source->FUN_004434a0(m_saveIndex);
+		m_status = p_source->SaveSlot(m_saveIndex);
 		break;
 	}
 
@@ -229,7 +229,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 		LegoS32 status = entry->CreateDirectories();
 		m_status = status;
 		if (!status) {
-			m_status = m_context->m_saveSystem.FUN_00443420(m_saveIndex, TRUE);
+			m_status = m_context->m_saveSystem.LoadSlot(m_saveIndex, TRUE);
 		}
 
 		m_widgetsDirty = TRUE;
@@ -269,7 +269,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 	if (p_source == &m_slot0Button) {
 		m_saveIndex = 0;
 		m_context->m_saveSystem.GetDirectory().GetEntry(0)->EnsureDirectoryExists();
-		m_status = m_context->m_saveSystem.FUN_00443420(0, TRUE);
+		m_status = m_context->m_saveSystem.LoadSlot(0, TRUE);
 		m_widgetsDirty = TRUE;
 		return;
 	}
@@ -277,7 +277,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 	if (p_source == &m_slot1Button) {
 		m_saveIndex = 1;
 		m_context->m_saveSystem.GetDirectory().GetEntry(1)->EnsureDirectoryExists();
-		m_status = m_context->m_saveSystem.FUN_00443420(1, TRUE);
+		m_status = m_context->m_saveSystem.LoadSlot(1, TRUE);
 		m_widgetsDirty = TRUE;
 		return;
 	}
@@ -285,7 +285,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 	if (p_source == &m_slot2Button) {
 		m_saveIndex = 2;
 		m_context->m_saveSystem.GetDirectory().GetEntry(2)->EnsureDirectoryExists();
-		m_status = m_context->m_saveSystem.FUN_00443420(2, TRUE);
+		m_status = m_context->m_saveSystem.LoadSlot(2, TRUE);
 		m_widgetsDirty = TRUE;
 		return;
 	}
@@ -293,7 +293,7 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 	if (p_source == &m_slot3Button) {
 		m_saveIndex = 3;
 		m_context->m_saveSystem.GetDirectory().GetEntry(3)->EnsureDirectoryExists();
-		m_status = m_context->m_saveSystem.FUN_00443420(3, TRUE);
+		m_status = m_context->m_saveSystem.LoadSlot(3, TRUE);
 		m_widgetsDirty = TRUE;
 		return;
 	}

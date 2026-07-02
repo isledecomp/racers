@@ -209,7 +209,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 			}
 
 			if (m_displayTimerMs >= c_hiddenInactiveThresholdMs ||
-				m_context->m_playerSetupSlots[selectedIndex].m_unk0x10) {
+				m_context->m_playerSetupSlots[selectedIndex].m_slotState) {
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->VTable0x68(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 
@@ -252,7 +252,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 			}
 
 			if (m_displayTimerMs >= c_hiddenInactiveThresholdMs ||
-				m_context->m_playerSetupSlots[selectedIndex].m_unk0x10) {
+				m_context->m_playerSetupSlots[selectedIndex].m_slotState) {
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->VTable0x68(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 

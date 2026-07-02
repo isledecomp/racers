@@ -506,12 +506,12 @@ void RaceState::CreateRacer(
 	}
 	else {
 		racerParams.m_centerOfMass.m_x =
-			p_slot->m_unk0x18 * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_x;
+			p_slot->m_centroidX * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_x;
 		racerParams.m_centerOfMass.m_y =
-			p_slot->m_unk0x1c * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_y;
+			p_slot->m_centroidY * g_carBuildModelTextureCoordinateScale + chassisItem->m_centerOfMass.m_y;
 		racerParams.m_centerOfMass.m_z = chassisItem->m_centerOfMass.m_z;
-		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_unk0x14;
-		racerParams.m_weight = p_slot->m_unk0x14;
+		racerParams.m_mass = chassisItem->m_baseMass + p_slot->m_highPieceCount;
+		racerParams.m_weight = p_slot->m_highPieceCount;
 	}
 
 	m_roster.m_placementSlots[p_racerIndex] = p_racerIndex;
@@ -653,7 +653,7 @@ void RaceState::RecordBestTimes(LegoRacers::Context* p_context)
 
 		racerIndex = 0;
 		do {
-			if (!p_context->m_playerSetupSlots[racerIndex].m_unk0x10) {
+			if (!p_context->m_playerSetupSlots[racerIndex].m_slotState) {
 				Racer* racer = &m_roster.m_racers[racerIndex];
 				LegoU32 lapCount = m_setup.m_lapCount;
 				if (lapCount <= racer->m_lapsCompleted) {

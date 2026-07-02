@@ -631,7 +631,7 @@ void MenuManager::PrepareRaceContext()
 				sizeof(defaultSlot->m_driverName)
 			);
 			defaultSlot->m_chassisName[0] = '\0';
-			defaultSlot->m_unk0x10 = 2;
+			defaultSlot->m_slotState = 2;
 			defaultSlot->m_cosmetics.m_hatIndex = 0;
 			defaultSlot->m_cosmetics.m_faceIndex = 0;
 			defaultSlot->m_cosmetics.m_torsoIndex = 0;
@@ -716,7 +716,7 @@ void MenuManager::PrepareRaceContext()
 		recordState->m_recordId = record->m_recordId;
 
 		record->GetCosmetics(&slot->m_cosmetics);
-		slot->m_unk0x10 = 0;
+		slot->m_slotState = 0;
 
 		slot++;
 		recordState++;
@@ -803,8 +803,8 @@ void MenuManager::BuildPlayerCarModel(
 	);
 
 	carBuildModel.ExportModel(p_slot->m_model, p_slot->m_materials, p_slot->m_textures);
-	p_slot->m_unk0x14 =
-		carBuildModel.ComputeHighPieceCentroid(&p_slot->m_unk0x18, &p_slot->m_unk0x1c, &p_slot->m_unk0x20);
+	p_slot->m_highPieceCount =
+		carBuildModel.ComputeHighPieceCentroid(&p_slot->m_centroidX, &p_slot->m_centroidY, &p_slot->m_centroidZ);
 
 	entity.VTable0x50(p_slot->m_model, g_menuManagerMaxFloat);
 	renderer->VTable0x9c(&entity, p_rendererState, 0);

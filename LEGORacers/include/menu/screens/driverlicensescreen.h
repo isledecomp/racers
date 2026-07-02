@@ -45,7 +45,7 @@ protected:
 	LegoBool32 FUN_0047b580();
 	void FUN_0047b6b0();
 	void FUN_0047b750();
-	undefined2* GetCheatBuffer() { return m_unk0x1f1c.GetBuffer(); }
+	undefined2* GetCheatBuffer() { return m_unk0x1f1c.GetEntryBuffer(); }
 	DriverCosmetics& GetUnk0x2244() { return *m_unk0x1f1c.GetCosmetics(); }
 
 	enum {

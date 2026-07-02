@@ -28,11 +28,11 @@ public:
 		class MidTxtParser : public GolTxtParser {};
 
 		ButtonBindingTable();
-		~ButtonBindingTable() override;       // vtable+0x00
-		void Clear() override;                // vtable+0x08
-		void VTable0x0c() override;           // vtable+0x0c
-		void VTable0x10(undefined4) override; // vtable+0x10
-		void VTable0x14(undefined4) override; // vtable+0x14
+		~ButtonBindingTable() override;                  // vtable+0x00
+		void Clear() override;                           // vtable+0x08
+		void Reset() override;                           // vtable+0x0c
+		void CreateParser(undefined4 p_binary) override; // vtable+0x10
+		void ParseSection(undefined4 p_token) override;  // vtable+0x14
 
 		// SIZE 0xe0
 		class ButtonBinding : public MenuInputBindingTable::IconBinding {

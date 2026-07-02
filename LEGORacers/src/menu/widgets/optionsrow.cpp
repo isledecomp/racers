@@ -51,7 +51,7 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 
 	MenuIcon::SoundIdPair* soundIds = &p_createParams->m_unk0xac;
 	if (!p_createParams->m_unk0x7c) {
-		soundIds = &p_styleEntry->m_unk0xb8;
+		soundIds = &p_styleEntry->m_soundIds;
 	}
 
 	m_unk0x6e0 = *soundIds;

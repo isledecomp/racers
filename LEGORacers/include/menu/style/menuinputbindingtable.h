@@ -162,11 +162,11 @@ public:
 	};
 
 	MenuInputBindingTable();
-	~MenuInputBindingTable() override;    // vtable+0x00
-	void Clear() override;                // vtable+0x08
-	void VTable0x0c() override;           // vtable+0x0c
-	void VTable0x10(undefined4) override; // vtable+0x10
-	void VTable0x14(undefined4) override; // vtable+0x14
+	~MenuInputBindingTable() override;               // vtable+0x00
+	void Clear() override;                           // vtable+0x08
+	void Reset() override;                           // vtable+0x0c
+	void CreateParser(undefined4 p_binary) override; // vtable+0x10
+	void ParseSection(undefined4 p_token) override;  // vtable+0x14
 	LegoBool32 Load(ResourceLoadParams* p_params);
 	ImageBinding* GetImageBinding(const LegoChar* p_name)
 	{
@@ -181,22 +181,22 @@ public:
 	// MenuInputBindingTable::`scalar deleting destructor'
 
 private:
-	void FUN_00469900(ResourceLoadParams* p_params);
+	void ParseFile(ResourceLoadParams* p_params);
 	void ParseWidgetBase(MenuWidget::CreateParams* p_entry);
-	void FUN_00469c90(SelectorBinding* p_entry);
+	void ParseSelectorField(SelectorBinding* p_entry);
 	void ReadNineFloats(LegoFloat* p_floats);
-	void FUN_00469d90(ImageBinding* p_entry);
-	void FUN_00469e20(TextLabelBinding* p_entry);
-	void FUN_00469ee0(FrameBinding* p_entry);
-	void FUN_00469fd0(ButtonBinding* p_entry);
-	void FUN_0046a050(MultiStateBinding* p_entry);
-	void FUN_0046a110(HotspotBinding* p_entry);
-	void FUN_0046a190(SelectorBinding* p_entry);
-	void FUN_0046a1f0(ModelCarouselBinding* p_entry);
-	void FUN_0046a310(CompositeBinding* p_entry);
-	void FUN_0046a490(SceneBinding* p_entry);
-	void FUN_0046a590(SceneRefBinding* p_entry);
-	void FUN_0046a640(TextFieldBinding* p_entry);
+	void ParseImageBinding(ImageBinding* p_entry);
+	void ParseTextLabelBinding(TextLabelBinding* p_entry);
+	void ParseFrameBinding(FrameBinding* p_entry);
+	void ParseButtonBinding(ButtonBinding* p_entry);
+	void ParseMultiStateBinding(MultiStateBinding* p_entry);
+	void ParseHotspotBinding(HotspotBinding* p_entry);
+	void ParseSelectorBinding(SelectorBinding* p_entry);
+	void ParseModelCarouselBinding(ModelCarouselBinding* p_entry);
+	void ParseCompositeBinding(CompositeBinding* p_entry);
+	void ParseSceneBinding(SceneBinding* p_entry);
+	void ParseSceneRefBinding(SceneRefBinding* p_entry);
+	void ParseTextFieldBinding(TextFieldBinding* p_entry);
 	void ParseRegionBindings();
 	void ParseImageBindings();
 	void ParseTextLabelBindings();
@@ -212,8 +212,8 @@ private:
 	void ParseSceneRefBindings();
 
 protected:
-	void FUN_00469b20(MenuIcon::CreateParams* p_entry);
-	void FUN_00469b50(MenuIcon::CreateParams* p_entry);
+	void InitIconDefaults(MenuIcon::CreateParams* p_entry);
+	void ParseIconField(MenuIcon::CreateParams* p_entry);
 
 	RegionBinding* m_unk0x20;        // 0x20
 	ImageBinding* m_unk0x24;         // 0x24

@@ -410,23 +410,23 @@ void MenuScreen::ApplySelectorDefaults(
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_unk0x84->m_images[i]) {
-			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_unk0x90[i];
+			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
 		}
 
 		if (!p_createParams->m_unk0x88->m_images[i]) {
-			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_unk0x90[i];
+			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
 		}
 	}
 
 	LegoS32 count = 8;
 	do {
 		if (!p_createParams->m_unk0x8c->m_images[6]) {
-			p_createParams->m_unk0x8c->m_images[6] = p_styleEntry->m_unk0x98->m_unk0x00[6];
+			p_createParams->m_unk0x8c->m_images[6] = p_styleEntry->m_frameStyle->m_images[6];
 		}
 	} while (--count);
 
-	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_unk0x98->m_unk0x28) {
-		p_createParams->m_unk0x8c->m_unk0x58 = p_styleEntry->m_unk0x98->m_unk0x24;
+	if (!(p_createParams->m_unk0x8c->m_flags & 2) && p_styleEntry->m_frameStyle->m_hasColors) {
+		p_createParams->m_unk0x8c->m_unk0x58 = p_styleEntry->m_frameStyle->m_color1;
 	}
 }
 
@@ -449,20 +449,20 @@ void MenuScreen::ApplyCompositeDefaults(
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!p_createParams->m_unk0x84->m_images[i]) {
-			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_unk0x90[i];
+			p_createParams->m_unk0x84->m_images[i] = p_styleEntry->GetUnk0x90()->m_stateImages[i];
 		}
 
 		if (!p_createParams->m_unk0x88->m_images[i]) {
-			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_unk0x90[i];
+			p_createParams->m_unk0x88->m_images[i] = p_styleEntry->GetUnk0x94()->m_stateImages[i];
 		}
 	}
 
 	if (!p_createParams->m_unk0x90->m_unk0x38) {
-		p_createParams->m_unk0x90->m_unk0x38 = p_styleEntry->m_unk0x9c->m_unk0x00;
+		p_createParams->m_unk0x90->m_unk0x38 = p_styleEntry->m_unk0x9c->m_image;
 	}
 
 	if (!p_createParams->m_unk0x8c->m_unk0x38) {
-		p_createParams->m_unk0x8c->m_unk0x38 = p_styleEntry->m_unk0x98->m_unk0x00;
+		p_createParams->m_unk0x8c->m_unk0x38 = p_styleEntry->m_unk0x98->m_image;
 	}
 }
 
@@ -474,7 +474,7 @@ void* MenuScreen::GetStyleEntry(undefined2 p_unk0x04)
 
 	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
 	string.CopyToBuf8(name);
-	return VTable0x60()->FUN_00470e60(name);
+	return VTable0x60()->FindStyle(name);
 }
 
 // FUNCTION: LEGORACERS 0x0046be10
@@ -516,11 +516,11 @@ LegoBool32 MenuScreen::CreateImage(MenuImage* p_unk0x04, undefined2 p_unk0x08, u
 	ApplyWidgetDefaults(&createParams);
 
 	if (!createParams.m_unk0x38) {
-		createParams.m_unk0x38 = styleEntry->m_unk0x00;
+		createParams.m_unk0x38 = styleEntry->m_image;
 	}
 
-	if (!(createParams.m_flags & 2) && styleEntry->m_unk0x08) {
-		createParams.m_unk0x38 = styleEntry->m_unk0x00;
+	if (!(createParams.m_flags & 2) && styleEntry->m_hasColor) {
+		createParams.m_unk0x38 = styleEntry->m_image;
 	}
 
 	return p_unk0x04->FUN_0046f150(&createParams);
@@ -553,11 +553,11 @@ LegoBool32 MenuScreen::CreateTextLabel(
 	}
 
 	if (!createParams.m_unk0x3c) {
-		createParams.m_unk0x3c = styleEntry->m_unk0x00;
+		createParams.m_unk0x3c = styleEntry->m_font;
 	}
 
-	if (styleEntry->m_unk0x0c && !(createParams.m_flags & 2)) {
-		createParams.m_unk0x22 = styleEntry->m_unk0x04;
+	if (styleEntry->m_hasColor && !(createParams.m_flags & 2)) {
+		createParams.m_unk0x22 = styleEntry->m_color;
 	}
 
 	return p_unk0x04->FUN_0046f520(&createParams, styleEntry);
@@ -578,16 +578,16 @@ LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_unk0x04, undefined2 p_unk0x08, u
 
 	for (LegoS32 i = 0; i < 8; i++) {
 		if (!createParams.m_images[i]) {
-			createParams.m_images[i] = styleEntry->m_unk0x00[i];
+			createParams.m_images[i] = styleEntry->m_images[i];
 		}
 		if (!createParams.m_images[i]) {
-			createParams.m_images[i] = styleEntry->m_unk0x00[i];
+			createParams.m_images[i] = styleEntry->m_images[i];
 		}
 	}
 
-	if (!(sourceParams->m_flags & 2) && styleEntry->m_unk0x28) {
-		createParams.m_unk0x22 = styleEntry->m_unk0x20;
-		createParams.m_unk0x58 = styleEntry->m_unk0x24;
+	if (!(sourceParams->m_flags & 2) && styleEntry->m_hasColors) {
+		createParams.m_unk0x22 = styleEntry->m_color0;
+		createParams.m_unk0x58 = styleEntry->m_color1;
 	}
 
 	return p_unk0x04->FUN_0046ecd0(&createParams);
@@ -607,7 +607,7 @@ LegoBool32 MenuScreen::CreateButton(MenuButton* p_unk0x04, undefined2 p_unk0x08,
 
 	for (LegoS32 i = 0; i < 6; i++) {
 		if (!createParams.m_images[i]) {
-			createParams.m_images[i] = styleEntry->m_unk0x90[i];
+			createParams.m_images[i] = styleEntry->m_stateImages[i];
 		}
 	}
 
@@ -628,7 +628,7 @@ LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_unk0x04, undefin
 	ApplyIconDefaults(&createParams);
 
 	if (!createParams.m_unk0x9c) {
-		createParams.m_unk0x9c = styleEntry->m_unk0xa8;
+		createParams.m_unk0x9c = styleEntry->m_image;
 	}
 
 	return p_unk0x04->FUN_004665f0(&createParams, styleEntry);

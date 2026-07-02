@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(SharedMenuStyleTable::MidTxtParser, 0x1fc)
 // FUNCTION: LEGORACERS 0x00480550
 SharedMenuStyleTable::SharedMenuStyleTable()
 {
-	VTable0x0c();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004805c0
@@ -23,18 +23,18 @@ SharedMenuStyleTable::~SharedMenuStyleTable()
 }
 
 // FUNCTION: LEGORACERS 0x00480610
-void SharedMenuStyleTable::VTable0x0c()
+void SharedMenuStyleTable::Reset()
 {
-	m_unk0x4c = NULL;
-	MenuStyleTable::VTable0x0c();
+	m_textButtonStyles = NULL;
+	MenuStyleTable::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00480620
 void SharedMenuStyleTable::Clear()
 {
 	if (m_nameEntries) {
-		if (m_unk0x4c) {
-			delete[] m_unk0x4c;
+		if (m_textButtonStyles) {
+			delete[] m_textButtonStyles;
 		}
 
 		MenuStyleTable::Clear();
@@ -42,7 +42,7 @@ void SharedMenuStyleTable::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x00480650
-void SharedMenuStyleTable::VTable0x10(undefined4 p_param)
+void SharedMenuStyleTable::CreateParser(undefined4 p_param)
 {
 	if (p_param) {
 		m_parser = new GolBinParser();
@@ -61,20 +61,20 @@ void SharedMenuStyleTable::VTable0x10(undefined4 p_param)
 }
 
 // FUNCTION: LEGORACERS 0x00480740
-void SharedMenuStyleTable::VTable0x14(undefined4 p_arg1)
+void SharedMenuStyleTable::ParseSection(undefined4 p_arg1)
 {
 	switch (p_arg1) {
 	default:
-		MenuStyleTable::VTable0x14(p_arg1);
+		MenuStyleTable::ParseSection(p_arg1);
 		return;
 	case GolFileParser::e_unknown0x3e:
-		FUN_004808f0();
+		LoadTextButtonStyles();
 		return;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00480760
-void SharedMenuStyleTable::FUN_00480760(TextButtonStyle* p_entry)
+void SharedMenuStyleTable::ParseTextButtonStyle(TextButtonStyle* p_entry)
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -87,16 +87,16 @@ void SharedMenuStyleTable::FUN_00480760(TextButtonStyle* p_entry)
 
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x3a:
-			FUN_00470020(p_entry);
+			ParseIconStyle(p_entry);
 			break;
 		case GolFileParser::e_unknown0x29:
 			for (i = 0; i < 6; i++) {
-				p_entry->m_unk0x90[i] = m_unk0x14->FindFontByName(m_parser->ReadString());
+				p_entry->m_unk0x90[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
 		case GolFileParser::e_unknown0x28:
 			for (i = 0; i < 6; i++) {
-				p_entry->m_unk0xa8[i] = m_unk0x14->FindImageByName(m_parser->ReadString());
+				p_entry->m_unk0xa8[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		case GolFileParser::e_unknown0x2a:
@@ -128,15 +128,15 @@ void SharedMenuStyleTable::FUN_00480760(TextButtonStyle* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x004808f0
-void SharedMenuStyleTable::FUN_004808f0()
+void SharedMenuStyleTable::LoadTextButtonStyles()
 {
-	LegoS32 entryCount = FUN_0046b170();
-	m_unk0x4c = new TextButtonStyle[entryCount];
-	if (!m_unk0x4c) {
+	LegoS32 entryCount = ReadSectionCount();
+	m_textButtonStyles = new TextButtonStyle[entryCount];
+	if (!m_textButtonStyles) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(m_unk0x4c, 0, sizeof(TextButtonStyle) * entryCount);
+	::memset(m_textButtonStyles, 0, sizeof(TextButtonStyle) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x3e) {
@@ -145,7 +145,7 @@ void SharedMenuStyleTable::FUN_004808f0()
 
 		GolName name;
 		::strncpy(name, m_parser->ReadString(), sizeof(name));
-		AddName(name, &m_unk0x4c[i]);
-		FUN_00480760(&m_unk0x4c[i]);
+		AddName(name, &m_textButtonStyles[i]);
+		ParseTextButtonStyle(&m_textButtonStyles[i]);
 	}
 }

@@ -14,20 +14,20 @@ public:
 	class MidTxtParser : public GolTxtParser {};
 
 	SharedMenuStyleTable();
-	~SharedMenuStyleTable() override;     // vtable+0x00
-	void Clear() override;                // vtable+0x08
-	void VTable0x0c() override;           // vtable+0x0c
-	void VTable0x10(undefined4) override; // vtable+0x10
-	void VTable0x14(undefined4) override; // vtable+0x14
+	~SharedMenuStyleTable() override;                // vtable+0x00
+	void Clear() override;                           // vtable+0x08
+	void Reset() override;                           // vtable+0x0c
+	void CreateParser(undefined4 p_binary) override; // vtable+0x10
+	void ParseSection(undefined4 p_token) override;  // vtable+0x14
 
 	// SYNTHETIC: LEGORACERS 0x004805a0
 	// SharedMenuStyleTable::`scalar deleting destructor'
 
 private:
-	void FUN_00480760(TextButtonStyle* p_entry);
-	void FUN_004808f0();
+	void ParseTextButtonStyle(TextButtonStyle* p_entry);
+	void LoadTextButtonStyles();
 
-	TextButtonStyle* m_unk0x4c; // 0x4c
+	TextButtonStyle* m_textButtonStyles; // 0x4c
 };
 
 #endif // SHAREDMENUSTYLETABLE_H

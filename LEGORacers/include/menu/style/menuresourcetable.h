@@ -14,29 +14,29 @@ class GolD3DRenderDevice;
 class MenuResourceTable : public GolNameTable {
 public:
 	MenuResourceTable();
-	~MenuResourceTable() override;           // vtable+0x00
-	void Clear() override;                   // vtable+0x08
-	virtual void VTable0x0c();               // vtable+0x0c
-	virtual void VTable0x10(undefined4) = 0; // vtable+0x10
-	virtual void VTable0x14(undefined4) = 0; // vtable+0x14
+	~MenuResourceTable() override;                      // vtable+0x00
+	void Clear() override;                              // vtable+0x08
+	virtual void Reset();                               // vtable+0x0c
+	virtual void CreateParser(undefined4 p_binary) = 0; // vtable+0x10
+	virtual void ParseSection(undefined4 p_token) = 0;  // vtable+0x14
 	void* ResolveEntryByName(const LegoChar* p_name);
 
 	// SYNTHETIC: LEGORACERS 0x0046b070
 	// MenuResourceTable::`scalar deleting destructor'
 
 protected:
-	LegoBool32 FUN_0046b100();
-	LegoS32 FUN_0046b130();
-	LegoS32 FUN_0046b170();
+	LegoBool32 BeginLoad();
+	LegoS32 ReadHeader();
+	LegoS32 ReadSectionCount();
 	void ReadRect(LegoS32* p_ints);
 	void ReadVisualState(LegoS8* p_ints);
-	void FUN_0046b250();
+	void ParseSections();
 
-	LegoBool m_unk0x0c;            // 0x0c
-	GolFileParser* m_parser;       // 0x10
-	GolD3DRenderDevice* m_unk0x14; // 0x14
-	undefined4 m_unk0x18;          // 0x18
-	undefined4 m_unk0x1c;          // 0x1c
+	LegoBool m_loaded;              // 0x0c
+	GolFileParser* m_parser;        // 0x10
+	GolD3DRenderDevice* m_renderer; // 0x14
+	undefined4 m_entryCount;        // 0x18
+	undefined4 m_entryCapacity;     // 0x1c
 };
 
 #endif // MENURESOURCETABLE_H

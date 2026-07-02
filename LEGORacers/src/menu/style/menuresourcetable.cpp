@@ -18,7 +18,7 @@ void* MenuResourceTable::ResolveEntryByName(const LegoChar* p_name)
 // FUNCTION: LEGORACERS 0x0046b020
 MenuResourceTable::MenuResourceTable()
 {
-	VTable0x0c();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0046b090
@@ -28,19 +28,19 @@ MenuResourceTable::~MenuResourceTable()
 }
 
 // FUNCTION: LEGORACERS 0x0046b0e0
-void MenuResourceTable::VTable0x0c()
+void MenuResourceTable::Reset()
 {
 	m_parser = NULL;
-	m_unk0x14 = NULL;
-	m_unk0x1c = 0;
-	m_unk0x18 = 0;
-	m_unk0x0c = FALSE;
+	m_renderer = NULL;
+	m_entryCapacity = 0;
+	m_entryCount = 0;
+	m_loaded = FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046b100
-LegoBool32 MenuResourceTable::FUN_0046b100()
+LegoBool32 MenuResourceTable::BeginLoad()
 {
-	m_unk0x0c = TRUE;
+	m_loaded = TRUE;
 	return TRUE;
 }
 
@@ -49,31 +49,31 @@ void MenuResourceTable::Clear()
 {
 	if (m_nameEntries) {
 		GolNameTable::Clear();
-		VTable0x0c();
+		Reset();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046b130
-LegoS32 MenuResourceTable::FUN_0046b130()
+LegoS32 MenuResourceTable::ReadHeader()
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_unknown0x27) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_expectedKeyword);
 	}
 
-	m_unk0x1c = m_parser->ReadInteger();
-	GolNameTable::Allocate(m_unk0x1c);
-	return m_unk0x1c;
+	m_entryCapacity = m_parser->ReadInteger();
+	GolNameTable::Allocate(m_entryCapacity);
+	return m_entryCapacity;
 }
 
 // FUNCTION: LEGORACERS 0x0046b170
-LegoS32 MenuResourceTable::FUN_0046b170()
+LegoS32 MenuResourceTable::ReadSectionCount()
 {
 	if (m_parser->GetNextToken() != GolFileParser::e_leftBracket) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftBracket);
 	}
 
 	LegoS32 count = m_parser->ReadInteger();
-	m_unk0x18 += count;
+	m_entryCount += count;
 	if (m_parser->GetNextToken() != GolFileParser::e_rightBracket) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_rightBracket);
 	}
@@ -104,12 +104,12 @@ void MenuResourceTable::ReadVisualState(LegoS8* p_ints)
 }
 
 // FUNCTION: LEGORACERS 0x0046b250
-void MenuResourceTable::FUN_0046b250()
+void MenuResourceTable::ParseSections()
 {
 	GolFileParser::ParserTokenType token;
 
 	while ((token = m_parser->GetNextToken()) != 0) {
-		VTable0x14(token);
+		ParseSection(token);
 		token = m_parser->GetNextToken();
 		if (token != GolFileParser::e_rightCurly) {
 			m_parser->HandleUnexpectedToken(GolFileParser::e_rightCurly);

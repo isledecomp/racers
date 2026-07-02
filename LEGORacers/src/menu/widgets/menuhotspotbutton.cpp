@@ -66,8 +66,8 @@ void MenuHotspotButton::FUN_00466690(LegoU32 p_code)
 	LegoU32 id = p_code & InputDevice::c_keyCodeMask;
 
 	if (source == c_sourceRegion) {
-		for (LegoS32 i = 0; i < m_unk0x21c->m_unk0xac; i++) {
-			if (!id || id == m_unk0x21c->m_unk0xb0[i]) {
+		for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
+			if (!id || id == m_unk0x21c->m_hotspotIds[i]) {
 				m_unk0x224 = id;
 
 				if (m_eventHandler) {
@@ -86,11 +86,11 @@ MenuWidget* MenuHotspotButton::VTable0x38(Rect* p_arg1, Rect* p_arg2)
 
 	if (m_unk0x224) {
 		LegoS32 index = 0;
-		while (m_unk0x21c->m_unk0xb0[index] != m_unk0x224) {
+		while (m_unk0x21c->m_hotspotIds[index] != m_unk0x224) {
 			index++;
 		}
 
-		Rect rect = m_unk0x21c->m_unk0xd0[index];
+		Rect rect = m_unk0x21c->m_hotspotRects[index];
 
 		Rect sourceRect;
 		FUN_00466640(&rect, p_arg1, &sourceRect);
@@ -113,9 +113,9 @@ MenuWidget* MenuHotspotButton::VTable0x38(Rect* p_arg1, Rect* p_arg2)
 // FUNCTION: LEGORACERS 0x00466800
 MenuWidget* MenuHotspotButton::FUN_00466800(InputEventQueue::Event*, undefined4 p_x, undefined4 p_y)
 {
-	for (LegoS32 i = 0; i < m_unk0x21c->m_unk0xac; i++) {
-		if (FUN_00473a20(&m_unk0x21c->m_unk0xd0[i], p_x, p_y)) {
-			FUN_00466690(m_unk0x21c->m_unk0xb0[i] | c_sourceRegion);
+	for (LegoS32 i = 0; i < m_unk0x21c->m_hotspotCount; i++) {
+		if (FUN_00473a20(&m_unk0x21c->m_hotspotRects[i], p_x, p_y)) {
+			FUN_00466690(m_unk0x21c->m_hotspotIds[i] | c_sourceRegion);
 			return this;
 		}
 	}

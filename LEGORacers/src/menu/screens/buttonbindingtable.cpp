@@ -13,7 +13,7 @@ DECOMP_SIZE_ASSERT(MenuGameScreen::ButtonBindingTable::MidTxtParser, 0x1fc)
 // FUNCTION: LEGORACERS 0x0047f0a0
 MenuGameScreen::ButtonBindingTable::ButtonBindingTable()
 {
-	VTable0x0c();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047f110
@@ -23,7 +23,7 @@ MenuGameScreen::ButtonBindingTable::~ButtonBindingTable()
 }
 
 // FUNCTION: LEGORACERS 0x0047f160
-void MenuGameScreen::ButtonBindingTable::VTable0x0c()
+void MenuGameScreen::ButtonBindingTable::Reset()
 {
 	m_unk0x5c = NULL;
 	MenuInputBindingTable::Clear();
@@ -42,7 +42,7 @@ void MenuGameScreen::ButtonBindingTable::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0047f1a0
-void MenuGameScreen::ButtonBindingTable::VTable0x10(undefined4 p_param)
+void MenuGameScreen::ButtonBindingTable::CreateParser(undefined4 p_param)
 {
 	if (p_param) {
 		m_parser = new GolBinParser();
@@ -61,10 +61,10 @@ void MenuGameScreen::ButtonBindingTable::VTable0x10(undefined4 p_param)
 }
 
 // FUNCTION: LEGORACERS 0x0047f290
-void MenuGameScreen::ButtonBindingTable::VTable0x14(undefined4 p_arg1)
+void MenuGameScreen::ButtonBindingTable::ParseSection(undefined4 p_arg1)
 {
 	if (p_arg1 != 0x46) {
-		MenuInputBindingTable::VTable0x14(p_arg1);
+		MenuInputBindingTable::ParseSection(p_arg1);
 		return;
 	}
 
@@ -74,7 +74,7 @@ void MenuGameScreen::ButtonBindingTable::VTable0x14(undefined4 p_arg1)
 // FUNCTION: LEGORACERS 0x0047f2b0
 void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 {
-	FUN_00469b20(p_entry);
+	InitIconDefaults(p_entry);
 	::memset(p_entry->m_unk0xb4, 0xff, sizeof(p_entry->m_unk0xb4));
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
@@ -85,13 +85,13 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x29: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x84[i] = m_unk0x14->FindFontByName(m_parser->ReadString());
+				p_entry->m_unk0x84[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
 		}
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x9c[i] = m_unk0x14->FindImageByName(m_parser->ReadString());
+				p_entry->m_unk0x9c[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		}
@@ -115,7 +115,7 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 			p_entry->m_unk0xdc = TRUE;
 			break;
 		default:
-			FUN_00469b50(p_entry);
+			ParseIconField(p_entry);
 			break;
 		}
 	}
@@ -124,7 +124,7 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 // FUNCTION: LEGORACERS 0x0047f410
 void MenuGameScreen::ButtonBindingTable::FUN_0047f410()
 {
-	LegoS32 entryCount = FUN_0046b170();
+	LegoS32 entryCount = ReadSectionCount();
 	m_unk0x5c = new ButtonBinding[entryCount];
 	::memset(m_unk0x5c, 0, sizeof(ButtonBinding) * entryCount);
 

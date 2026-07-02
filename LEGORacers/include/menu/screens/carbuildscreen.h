@@ -30,14 +30,14 @@ public:
 	GolString* GetHelpString(undefined4) override;                                                   // vtable+0x98
 	GolFont* GetHelpFont(undefined4) override;                                                       // vtable+0x9c
 	void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override;                          // vtable+0xa0
-	void VTable0xa4() override;                                                                      // vtable+0xa4
-	void VTable0xa8() override;                                                                      // vtable+0xa8
-	void VTable0xac() override;                                                                      // vtable+0xac
-	void VTable0xb0() override;                                                                      // vtable+0xb0
-	void VTable0xb4() override;                                                                      // vtable+0xb4
-	void VTable0xb8() override;                                                                      // vtable+0xb8
-	void VTable0xbc() override;                                                                      // vtable+0xbc
-	void VTable0xc0() override;                                                                      // vtable+0xc0
+	void EnterBrowseMode() override;                                                                 // vtable+0xa4
+	void ExitBrowseMode() override;                                                                  // vtable+0xa8
+	void EnterCarViewMode() override;                                                                // vtable+0xac
+	void ExitCarViewMode() override;                                                                 // vtable+0xb0
+	void EnterPieceViewMode() override;                                                              // vtable+0xb4
+	void ExitPieceViewMode() override;                                                               // vtable+0xb8
+	void EnterBusyMode() override;                                                                   // vtable+0xbc
+	void ExitBusyMode() override;                                                                    // vtable+0xc0
 
 	// SYNTHETIC: LEGORACERS 0x00473790
 	// CarBuildScreen::`scalar deleting destructor'

@@ -170,15 +170,15 @@ public:
 	GolString* GetHelpString(undefined4) override = 0;                          // vtable+0x98
 	GolFont* GetHelpFont(undefined4) override = 0;                              // vtable+0x9c
 	void GetTooltipLayout(LegoS32*, LegoS32*, LegoS32*, LegoS32*) override = 0; // vtable+0xa0
-	virtual void VTable0xa4() = 0;                                              // vtable+0xa4
-	virtual void VTable0xa8() = 0;                                              // vtable+0xa8
-	virtual void VTable0xac() = 0;                                              // vtable+0xac
-	virtual void VTable0xb0() = 0;                                              // vtable+0xb0
-	virtual void VTable0xb4() = 0;                                              // vtable+0xb4
-	virtual void VTable0xb8() = 0;                                              // vtable+0xb8
-	virtual void VTable0xbc() = 0;                                              // vtable+0xbc
-	virtual void VTable0xc0() = 0;                                              // vtable+0xc0
-	virtual void VTable0xc4();                                                  // vtable+0xc4
+	virtual void EnterBrowseMode() = 0;                                         // vtable+0xa4
+	virtual void ExitBrowseMode() = 0;                                          // vtable+0xa8
+	virtual void EnterCarViewMode() = 0;                                        // vtable+0xac
+	virtual void ExitCarViewMode() = 0;                                         // vtable+0xb0
+	virtual void EnterPieceViewMode() = 0;                                      // vtable+0xb4
+	virtual void ExitPieceViewMode() = 0;                                       // vtable+0xb8
+	virtual void EnterBusyMode() = 0;                                           // vtable+0xbc
+	virtual void ExitBusyMode() = 0;                                            // vtable+0xc0
+	virtual void ShowPlacementError();                                          // vtable+0xc4
 
 	// SYNTHETIC: LEGORACERS 0x00476e60
 	// CarModelScreenBase::`scalar deleting destructor'
@@ -189,30 +189,30 @@ protected:
 	void FUN_00477290();
 	void FUN_004773a0();
 	LegoBool32 FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
-	void FUN_00477770();
+	void ApplyModeChange();
 
-	MenuImage m_unk0x3b4;                   // 0x3b4
-	MenuCarouselNavigator m_unk0x410;       // 0x410
-	MenuSelector m_unk0x4a4;                // 0x4a4
-	CarPartCarousel m_partCarousel;         // 0xe98
-	MenuSelector m_unk0xfec;                // 0xfec
-	MenuImage m_unk0x19e0[12];              // 0x19e0
-	MenuFramedSceneView m_unk0x1e30;        // 0x1e30
-	CarPartPlacement m_partPlacement;       // 0x2308
-	MenuTextButton m_unk0x25d8;             // 0x25d8
-	undefined4 m_unk0x28c8;                 // 0x28c8
-	undefined4 m_unk0x28cc;                 // 0x28cc
-	undefined4 m_unk0x28d0;                 // 0x28d0
-	LegoU8 m_carBuildSaveBuffer[0x202];     // 0x28d4
-	undefined m_unk0x2ad6[0x2ad8 - 0x2ad6]; // 0x2ad6
-	undefined4 m_unk0x2ad8;                 // 0x2ad8
-	undefined4 m_unk0x2adc;                 // 0x2adc
-	undefined4 m_unk0x2ae0;                 // 0x2ae0
-	undefined4 m_unk0x2ae4;                 // 0x2ae4
-	LegoU8 m_partCategoryUnlockFlags;       // 0x2ae8
-	undefined m_unk0x2ae9[0x2aec - 0x2ae9]; // 0x2ae9
-	LegoBool32 m_partCategoryAvailable[12]; // 0x2aec
-	undefined4 m_unk0x2b1c;                 // 0x2b1c
+	MenuImage m_unk0x3b4;                     // 0x3b4
+	MenuCarouselNavigator m_categoryCarousel; // 0x410
+	MenuSelector m_categorySelector;          // 0x4a4
+	CarPartCarousel m_partCarousel;           // 0xe98
+	MenuSelector m_pieceSelector;             // 0xfec
+	MenuImage m_categoryIcons[12];            // 0x19e0
+	MenuFramedSceneView m_sceneView;          // 0x1e30
+	CarPartPlacement m_partPlacement;         // 0x2308
+	MenuTextButton m_errorPopup;              // 0x25d8
+	undefined4 m_unk0x28c8;                   // 0x28c8
+	undefined4 m_unk0x28cc;                   // 0x28cc
+	undefined4 m_unk0x28d0;                   // 0x28d0
+	LegoU8 m_carBuildSaveBuffer[0x202];       // 0x28d4
+	undefined m_unk0x2ad6[0x2ad8 - 0x2ad6];   // 0x2ad6
+	undefined4 m_unk0x2ad8;                   // 0x2ad8
+	undefined4 m_carouselAction;              // 0x2adc
+	undefined4 m_mode;                        // 0x2ae0
+	undefined4 m_nextMode;                    // 0x2ae4
+	LegoU8 m_partCategoryUnlockFlags;         // 0x2ae8
+	undefined m_unk0x2ae9[0x2aec - 0x2ae9];   // 0x2ae9
+	LegoBool32 m_partCategoryAvailable[12];   // 0x2aec
+	undefined4 m_unk0x2b1c;                   // 0x2b1c
 };
 
 #endif // IMAGINARYSHAPE0X2B20

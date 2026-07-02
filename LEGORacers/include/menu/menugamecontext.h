@@ -29,7 +29,7 @@ public:
 	StackOfLegoU16 m_menuStack;                   // 0x04
 	MenuInputHandler m_inputBindings;             // 0x10
 	SaveSystem m_saveSystem;                      // 0x258
-	CarPartSet m_unk0x21a4;                       // 0x21a4
+	CarPartSet m_partSet;                         // 0x21a4
 	LegoPieceLibrary m_pieceLibrary;              // 0x21b8
 	CarBuildModel m_carBuildModel;                // 0x21f4
 	LegoColorTable m_colorTable;                  // 0x4224

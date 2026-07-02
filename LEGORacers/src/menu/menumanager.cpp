@@ -654,7 +654,7 @@ void MenuManager::PrepareRaceContext()
 	}
 
 	if (m_gameContext.m_carBuildModel.IsInitialized()) {
-		m_gameContext.m_unk0x21a4.Clear();
+		m_gameContext.m_partSet.Clear();
 		m_gameContext.m_carBuildModel.Destroy();
 		m_gameContext.m_colorTable.Destroy();
 		m_gameContext.m_pieceLibrary.Destroy();

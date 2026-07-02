@@ -546,7 +546,7 @@ void CarModelScreenBase::CarPartPlacement::CreateCarGroup()
 // FUNCTION: LEGORACERS 0x00477e40
 void CarModelScreenBase::CarPartPlacement::SelectPieceChoice(LegoS32 p_unk0x04)
 {
-	CarPartSet::Entry* entry = m_context->m_unk0x21a4.GetSelectedEntry();
+	CarPartSet::Entry* entry = m_context->m_partSet.GetSelectedEntry();
 	LegoS32 colorRecordIndex;
 	m_unk0x25c = p_unk0x04;
 	entry->GetChoice(p_unk0x04, &p_unk0x04, &colorRecordIndex);
@@ -874,7 +874,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::CommitPiece()
 			m_soundGroupBinding->PlaySoundByIndex(18);
 		}
 		else {
-			m_screen->VTable0xc4();
+			m_screen->ShowPlacementError();
 		}
 
 		return FALSE;
@@ -1267,14 +1267,14 @@ void CarModelScreenBase::CarPartPlacement::UpdateCommitFeedback(LegoS32 p_elapse
 			y,
 			rotation,
 			m_placement.GetColorRecordIndex(),
-			m_context->m_unk0x21a4.GetSelectedEntry()->GetPieceType()
+			m_context->m_partSet.GetSelectedEntry()->GetPieceType()
 		);
 		m_context->m_carBuildModel.FUN_0049b740(TRUE);
 		m_context->m_carBuildModel.FUN_0049b920(1, 127);
 		m_screen->OnCarouselSettled(m_sceneView);
 
 		if (m_context->m_carBuildModel.GetUnk0xdc()) {
-			m_screen->VTable0xc4();
+			m_screen->ShowPlacementError();
 			m_context->m_carBuildModel.FUN_0049bdc0();
 			m_context->m_carBuildModel.FUN_0049b740(TRUE);
 			m_context->m_carBuildModel.FUN_0049b920(1, 127);

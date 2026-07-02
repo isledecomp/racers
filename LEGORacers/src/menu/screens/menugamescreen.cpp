@@ -117,7 +117,7 @@ undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_unk0x04, undefined2 p
 	ApplyWidgetDefaults(&createParams);
 
 	MenuGameContext* context = m_context;
-	createParams.m_partSet = &context->m_unk0x21a4;
+	createParams.m_partSet = &context->m_partSet;
 	createParams.m_pieceLibrary = &context->m_pieceLibrary;
 	createParams.m_buildModel = &context->m_carBuildModel;
 	createParams.m_colorTable = &context->m_colorTable;
@@ -214,7 +214,7 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 	pieceResource->LoadColors("L_Colors.LEG", p_context->m_context->m_useBinaryFiles);
 	p_context->m_carBuildModel.Initialize(golExport, renderer, pieceLibrary, pieceResource);
 	p_context->m_carBuildModel.FindHighBasePiece();
-	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_useBinaryFiles);
+	p_context->m_partSet.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_useBinaryFiles);
 
 	ChassisModelTable::Params params;
 	params.m_golExport = golExport;
@@ -238,7 +238,7 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 		p_context = m_context;
 	}
 
-	p_context->m_unk0x21a4.Clear();
+	p_context->m_partSet.Clear();
 	p_context->m_carBuildModel.Destroy();
 	p_context->m_colorTable.Destroy();
 	p_context->m_pieceLibrary.Destroy();

@@ -72,7 +72,7 @@ LegoBool32 RacerPickScreenBase::VTable0xa0(
 // FUNCTION: LEGORACERS 0x00489050
 void RacerPickScreenBase::FUN_00489050(LegoS32 p_index)
 {
-	RacerUnlockState* modelState = &m_recordCyclers[p_index];
+	SaveRecordCursor* modelState = &m_recordCyclers[p_index];
 	modelState->SelectPrevious();
 	modelState->SelectPrevious();
 

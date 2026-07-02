@@ -9,7 +9,7 @@
 #include "menu/screens/awardcinematicscreen.h"
 #include "menu/screens/menugamescreen.h"
 #include "menu/screens/racermodelslot.h"
-#include "menu/screens/racerunlockstate.h"
+#include "menu/screens/saverecordcursor.h"
 #include "menu/widgets/menuframedsceneview.h"
 #include "menu/widgets/menutextlabel.h"
 
@@ -71,7 +71,7 @@ protected:
 	MenuTextLabel m_sourceLabels[2];                       // 0x1cec
 	RacerModelSlot m_unk0x1ddc[4];                         // 0x1ddc
 	RacerModelSlot m_modelSlots[4];                        // 0x205c
-	RacerUnlockState m_recordCyclers[2];                   // 0x22dc
+	SaveRecordCursor m_recordCyclers[2];                   // 0x22dc
 	GolAnimatedEntity m_driverEntities[4];                 // 0x232c
 	LegoS32 m_modelSlotCount;                              // 0x26fc
 	LegoS32 m_modelsPerSlot;                               // 0x2700

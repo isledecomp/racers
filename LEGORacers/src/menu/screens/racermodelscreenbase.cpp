@@ -96,11 +96,11 @@ void RacerModelScreenBase::FUN_00485c80(MenuGameContext* p_context, LegoU32 p_ma
 	SaveSystem* saveSystem = &p_context->m_saveSystem;
 
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
-		RacerUnlockState* modelState = &m_recordCyclers[i];
+		SaveRecordCursor* modelState = &m_recordCyclers[i];
 
-		modelState->FUN_00442e60(saveSystem);
-		modelState->FUN_00442ef0(p_mask);
-		m_unk0x2704[i] = modelState->FUN_00442e80(p_mask);
+		modelState->SetSaveSystem(saveSystem);
+		modelState->Begin(p_mask);
+		m_unk0x2704[i] = modelState->CountRecords(p_mask);
 
 		if (m_unk0x2704[i]) {
 			SaveRecordList::Record* firstRecord = modelState->GetSelectedRecord();
@@ -180,12 +180,12 @@ void RacerModelScreenBase::VTable0x98()
 			createParams.m_golExport = m_golExport;
 			createParams.m_renderer = m_renderer;
 			createParams.m_sceneView = &m_unk0x98c[i];
-			createParams.m_unk0x2c = slotPosition0;
-			m_unk0x1ddc[i].FUN_004875d0(&createParams);
+			createParams.m_position = slotPosition0;
+			m_unk0x1ddc[i].Create(&createParams);
 
-			createParams.m_unk0x2c = slotPosition1;
-			createParams.m_unk0x44 = TRUE;
-			m_modelSlots[i].FUN_004875d0(&createParams);
+			createParams.m_position = slotPosition1;
+			createParams.m_animate = TRUE;
+			m_modelSlots[i].Create(&createParams);
 
 			m_unk0x98c[i].AddElement(&m_unk0x1ddc[i]);
 			m_unk0x98c[i].AddElement(&m_modelSlots[i]);
@@ -404,7 +404,7 @@ void RacerModelScreenBase::SelectPreviousRecord(LegoS32 p_index)
 void RacerModelScreenBase::FUN_00486540()
 {
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
-		GolWorldEntity* entity = m_modelSlots[i].GetUnk0x68();
+		GolWorldEntity* entity = m_modelSlots[i].GetEntity();
 
 		GolVec3 direction;
 		direction.m_x = 0.963630974f;
@@ -426,7 +426,7 @@ void RacerModelScreenBase::FUN_00486540()
 void RacerModelScreenBase::FUN_004865c0()
 {
 	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
-		GolWorldEntity* target = m_unk0x1ddc[i].GetUnk0x68();
+		GolWorldEntity* target = m_unk0x1ddc[i].GetEntity();
 		if (target != NULL) {
 			GolWorldDatabase* database = m_unk0x98c[i].GetBlendedWorld();
 			GolAnimatedEntity* source;
@@ -457,8 +457,8 @@ void RacerModelScreenBase::FUN_004865c0()
 // FUNCTION: LEGORACERS 0x004866e0
 void RacerModelScreenBase::DetachSlotWidgets(LegoS32 p_index)
 {
-	m_unk0x1ddc[p_index].FUN_00487600(NULL);
-	m_modelSlots[p_index].FUN_00487600(NULL);
+	m_unk0x1ddc[p_index].SetEntity(NULL);
+	m_modelSlots[p_index].SetEntity(NULL);
 	m_slotDirty[p_index] = FALSE;
 	m_unk0x76c[p_index] = FALSE;
 }
@@ -550,8 +550,8 @@ LegoBool32 RacerModelScreenBase::VTable0x78(undefined4 p_elapsed)
 			break;
 		}
 		case TRUE:
-			m_unk0x1ddc[i].FUN_00487600(&m_carGroups[modelIndex]);
-			m_modelSlots[i].FUN_00487600(&m_driverEntities[modelIndex]);
+			m_unk0x1ddc[i].SetEntity(&m_carGroups[modelIndex]);
+			m_modelSlots[i].SetEntity(&m_driverEntities[modelIndex]);
 			FUN_00486540();
 			UpdateSourceLabel(i);
 			m_slotDirty[i] = FALSE;

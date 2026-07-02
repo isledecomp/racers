@@ -402,7 +402,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/screens/menuscenescreen.cpp
   LEGORacers/src/menu/screens/scenewidget.cpp
   LEGORacers/src/menu/screens/racermodelslot.cpp
-  LEGORacers/src/menu/screens/racerunlockstate.cpp
+  LEGORacers/src/menu/screens/saverecordcursor.cpp
   LEGORacers/src/menu/screens/racermodelscreenbase.cpp
   LEGORacers/src/menu/screens/racerpickscreenbase.cpp
   LEGORacers/src/menu/runtime/cutscenedefinition.cpp

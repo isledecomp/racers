@@ -184,10 +184,10 @@ public:
 	// CarModelScreenBase::`scalar deleting destructor'
 
 protected:
-	void FUN_00477050();
-	void FUN_00477130();
-	void FUN_00477290();
-	void FUN_004773a0();
+	void CreatePlacementScene();
+	void CreateCategoryCarousel();
+	void PopulateCategoryCarousel();
+	void SaveCarData();
 	LegoBool32 MovePieceByDrag(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
 	void ApplyModeChange();
 

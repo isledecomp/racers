@@ -23,63 +23,63 @@ RacerModelSlot::~RacerModelSlot()
 // STUB: LEGORACERS 0x00487570
 void RacerModelSlot::Reset()
 {
-	::memset(&m_unk0x1c, 0, sizeof(m_unk0x1c));
+	::memset(&m_createParams, 0, sizeof(m_createParams));
 
 	undefined4 zero = 0;
 	undefined4* values = m_unk0x88;
-	m_unk0x68 = NULL;
+	m_entity = NULL;
 	*values++ = zero;
-	m_unk0x6c = NULL;
-	m_unk0x64 = NULL;
-	m_unk0x70.m_y = 0.0f;
+	m_entityB = NULL;
+	m_entityA = NULL;
+	m_spinAxis.m_y = 0.0f;
 	*values++ = zero;
-	m_unk0x70.m_x = 0.0f;
-	m_unk0x70.m_z = 1.0f;
+	m_spinAxis.m_x = 0.0f;
+	m_spinAxis.m_z = 1.0f;
 	m_unk0x84 = 0;
 	*values = zero;
 	m_unk0x80 = 0;
 	m_unk0x7c = 0;
-	m_unk0x98 = 0;
-	m_unk0x94 = 0;
-	m_unk0x9c = TRUE;
+	m_timerBMs = 0;
+	m_timerAMs = 0;
+	m_promoteA = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x004875d0
-LegoBool32 RacerModelSlot::FUN_004875d0(CreateParams* p_createParams)
+LegoBool32 RacerModelSlot::Create(CreateParams* p_createParams)
 {
 	Destroy();
-	m_unk0x1c = *p_createParams;
+	m_createParams = *p_createParams;
 	return MenuSceneElement::Create(p_createParams);
 }
 
 // FUNCTION: LEGORACERS 0x00487600
-void RacerModelSlot::FUN_00487600(GolWorldEntity* p_entity)
+void RacerModelSlot::SetEntity(GolWorldEntity* p_entity)
 {
-	m_unk0x68 = p_entity;
+	m_entity = p_entity;
 	if (p_entity != NULL) {
-		p_entity->VTable0x08(m_unk0x1c.m_unk0x2c);
+		p_entity->VTable0x08(m_createParams.m_position);
 		p_entity->ClearVelocity();
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00487630
-LegoBool32 RacerModelSlot::FUN_00487630(LegoU32 p_elapsed)
+LegoBool32 RacerModelSlot::UpdateEntityA(LegoU32 p_elapsed)
 {
-	if (m_unk0x64 != NULL) {
+	if (m_entityA != NULL) {
 		LegoU32 elapsed = p_elapsed;
-		if (elapsed > m_unk0x94) {
-			elapsed = m_unk0x94;
+		if (elapsed > m_timerAMs) {
+			elapsed = m_timerAMs;
 		}
 
-		m_unk0x64->VTable0x10(elapsed);
-		m_unk0x94 -= elapsed;
+		m_entityA->VTable0x10(elapsed);
+		m_timerAMs -= elapsed;
 
-		if (m_unk0x94 == 0) {
-			if (m_unk0x9c) {
-				FUN_00487600(m_unk0x64);
+		if (m_timerAMs == 0) {
+			if (m_promoteA) {
+				SetEntity(m_entityA);
 			}
 
-			m_unk0x64 = NULL;
+			m_entityA = NULL;
 		}
 	}
 
@@ -87,23 +87,23 @@ LegoBool32 RacerModelSlot::FUN_00487630(LegoU32 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x00487690
-LegoBool32 RacerModelSlot::FUN_00487690(LegoU32 p_elapsed)
+LegoBool32 RacerModelSlot::UpdateEntityB(LegoU32 p_elapsed)
 {
-	if (m_unk0x6c != NULL) {
+	if (m_entityB != NULL) {
 		LegoU32 elapsed = p_elapsed;
-		if (elapsed > m_unk0x98) {
-			elapsed = m_unk0x98;
+		if (elapsed > m_timerBMs) {
+			elapsed = m_timerBMs;
 		}
 
-		m_unk0x6c->VTable0x10(elapsed);
-		m_unk0x98 -= elapsed;
+		m_entityB->VTable0x10(elapsed);
+		m_timerBMs -= elapsed;
 
-		if (m_unk0x98 == 0) {
-			if (!m_unk0x9c) {
-				FUN_00487600(m_unk0x6c);
+		if (m_timerBMs == 0) {
+			if (!m_promoteA) {
+				SetEntity(m_entityB);
 			}
 
-			m_unk0x6c = NULL;
+			m_entityB = NULL;
 		}
 	}
 
@@ -111,27 +111,27 @@ LegoBool32 RacerModelSlot::FUN_00487690(LegoU32 p_elapsed)
 }
 
 // FUNCTION: LEGORACERS 0x004876f0
-LegoBool32 RacerModelSlot::FUN_004876f0(LegoS32 p_elapsed)
+LegoBool32 RacerModelSlot::UpdateSpin(LegoS32 p_elapsed)
 {
-	if (m_unk0x68 == NULL) {
+	if (m_entity == NULL) {
 		return TRUE;
 	}
 
-	if (m_unk0x1c.m_unk0x44) {
-		m_unk0x68->VTable0x10(p_elapsed);
+	if (m_createParams.m_animate) {
+		m_entity->VTable0x10(p_elapsed);
 	}
 
-	if (m_unk0x1c.m_unk0x40 == 0.0f) {
+	if (m_createParams.m_spinSpeed == 0.0f) {
 		return TRUE;
 	}
 
-	LegoFloat angle = static_cast<LegoFloat>(p_elapsed) * m_unk0x1c.m_unk0x40;
+	LegoFloat angle = static_cast<LegoFloat>(p_elapsed) * m_createParams.m_spinSpeed;
 	GolVec3 right;
 	GolVec3 forward;
-	m_unk0x68->VTable0x48(&right, &forward);
+	m_entity->VTable0x48(&right, &forward);
 
-	GolMath::FUN_004496a0(&right, &forward, &m_unk0x70, angle);
-	m_unk0x68->VTable0x40(forward, m_unk0x70);
+	GolMath::FUN_004496a0(&right, &forward, &m_spinAxis, angle);
+	m_entity->VTable0x40(forward, m_spinAxis);
 
 	return TRUE;
 }
@@ -141,22 +141,22 @@ LegoBool32 RacerModelSlot::Draw()
 {
 	GolVec3 center;
 
-	if (m_unk0x64 != NULL) {
-		m_unk0x64->VTable0x04(&center);
-		m_unk0x64->VTable0x08(center);
-		m_unk0x64->VTable0x1c(*m_renderer);
+	if (m_entityA != NULL) {
+		m_entityA->VTable0x04(&center);
+		m_entityA->VTable0x08(center);
+		m_entityA->VTable0x1c(*m_renderer);
 	}
 
-	if (m_unk0x68 != NULL) {
-		m_unk0x68->VTable0x04(&center);
-		m_unk0x68->VTable0x08(center);
-		m_unk0x68->VTable0x1c(*m_renderer);
+	if (m_entity != NULL) {
+		m_entity->VTable0x04(&center);
+		m_entity->VTable0x08(center);
+		m_entity->VTable0x1c(*m_renderer);
 	}
 
-	if (m_unk0x6c != NULL) {
-		m_unk0x6c->VTable0x04(&center);
-		m_unk0x6c->VTable0x08(center);
-		m_unk0x6c->VTable0x1c(*m_renderer);
+	if (m_entityB != NULL) {
+		m_entityB->VTable0x04(&center);
+		m_entityB->VTable0x08(center);
+		m_entityB->VTable0x1c(*m_renderer);
 	}
 
 	return TRUE;
@@ -165,9 +165,9 @@ LegoBool32 RacerModelSlot::Draw()
 // FUNCTION: LEGORACERS 0x00487820
 LegoBool32 RacerModelSlot::Update(LegoU32 p_elapsed)
 {
-	FUN_00487630(p_elapsed);
-	FUN_004876f0(p_elapsed);
-	FUN_00487690(p_elapsed);
+	UpdateEntityA(p_elapsed);
+	UpdateSpin(p_elapsed);
+	UpdateEntityB(p_elapsed);
 
 	return TRUE;
 }

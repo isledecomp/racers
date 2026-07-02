@@ -48,7 +48,7 @@ void CarModelScreenBase::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00477050
-void CarModelScreenBase::FUN_00477050()
+void CarModelScreenBase::CreatePlacementScene()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\GARAGE");
@@ -80,7 +80,7 @@ void CarModelScreenBase::FUN_00477050()
 }
 
 // FUNCTION: LEGORACERS 0x00477130
-void CarModelScreenBase::FUN_00477130()
+void CarModelScreenBase::CreateCategoryCarousel()
 {
 	CreateCarousel(&m_categoryCarousel, 0x3e, 0xaf);
 	CreateSelector(&m_categorySelector, &m_categoryCarousel, 0xaa, 0x4d);
@@ -94,8 +94,8 @@ void CarModelScreenBase::FUN_00477130()
 void CarModelScreenBase::VTable0x4c()
 {
 	CreateImage(&m_unk0x3b4, 0x49, 0x49);
-	FUN_00477050();
-	FUN_00477130();
+	CreatePlacementScene();
+	CreateCategoryCarousel();
 	FUN_0047fcf0(&m_partCarousel, 0xae, 0x3b);
 	CreateSelector(&m_pieceSelector, &m_partCarousel, 0xac, 0xcc);
 
@@ -127,14 +127,14 @@ LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_unk0x04, MenuScreen
 		return FALSE;
 	}
 
-	FUN_00477290();
+	PopulateCategoryCarousel();
 	OnWidgetValueChanged(&m_pieceSelector);
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00477290
-void CarModelScreenBase::FUN_00477290()
+void CarModelScreenBase::PopulateCategoryCarousel()
 {
 	LegoS32 mask = 1;
 	SaveSystem* saveSystem = &m_context->m_saveSystem;
@@ -169,12 +169,12 @@ void CarModelScreenBase::FUN_00477290()
 // FUNCTION: LEGORACERS 0x00477380
 void CarModelScreenBase::VTable0x84()
 {
-	FUN_004773a0();
+	SaveCarData();
 	m_context->m_menuStack.Pop();
 }
 
 // FUNCTION: LEGORACERS 0x004773a0
-void CarModelScreenBase::FUN_004773a0()
+void CarModelScreenBase::SaveCarData()
 {
 	memset(m_carBuildSaveBuffer, 0, c_carBuildSaveBufferSize);
 	m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);

@@ -180,19 +180,19 @@ void GarageScreen::HideEditButtons()
 // FUNCTION: LEGORACERS 0x0047e9f0
 void GarageScreen::RefreshRecordAvailability(MenuGameContext* p_context)
 {
-	RacerUnlockState modelState;
+	SaveRecordCursor modelState;
 
-	modelState.FUN_00442e60(&p_context->m_saveSystem);
-	modelState.FUN_00442ef0(0xffff2);
-	m_unk0x2704[0] = modelState.FUN_00442e80(0xffff2);
-	modelState.FUN_00442e70();
+	modelState.SetSaveSystem(&p_context->m_saveSystem);
+	modelState.Begin(0xffff2);
+	m_unk0x2704[0] = modelState.CountRecords(0xffff2);
+	modelState.Close();
 }
 
 // FUNCTION: LEGORACERS 0x0047ea50
 void GarageScreen::DeleteSelectedRecord()
 {
 	SaveRecordList* records = NULL;
-	RacerUnlockState* modelState = &m_recordCyclers[0];
+	SaveRecordCursor* modelState = &m_recordCyclers[0];
 	SaveRecordList::Record* record = modelState->GetSelectedRecord();
 	SaveRecordList::Record* nextRecord = modelState->SelectNext();
 
@@ -208,10 +208,10 @@ void GarageScreen::DeleteSelectedRecord()
 	records->RemoveRecord(record);
 	m_unk0x364 = TRUE;
 	m_unk0x360 = c_menuGarage;
-	modelState->FUN_00442ef0(modelState->GetUnk0x24());
+	modelState->Begin(modelState->GetSourceMask());
 
 	if (nextRecord != NULL && nextRecord != record) {
-		modelState->FUN_004430e0(nextRecord);
+		modelState->SeekTo(nextRecord);
 	}
 
 	RefreshRecordAvailability(m_context);
@@ -276,7 +276,7 @@ void GarageScreen::VTable0x84()
 	case c_menuDriverLicense:
 	case c_menuEditCar: {
 		{
-			RacerUnlockState* modelState = &m_recordCyclers[0];
+			SaveRecordCursor* modelState = &m_recordCyclers[0];
 			SaveRecordList::Record* record = modelState->GetSelectedRecord();
 			m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
 			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->GetSelectedRecord());
@@ -397,7 +397,7 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		FUN_0047efe0();
 	}
 
-	RacerUnlockState* modelState = &m_recordCyclers[0];
+	SaveRecordCursor* modelState = &m_recordCyclers[0];
 	if (modelState->GetSelectedRecord() != NULL) {
 		if (modelState->GetSelectedRecord()->m_recordSource == 1) {
 			m_loadButton.SetTextByIndex(0x2b);

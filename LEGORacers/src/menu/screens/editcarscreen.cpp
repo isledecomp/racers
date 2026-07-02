@@ -42,26 +42,26 @@ EditCarScreen::~EditCarScreen()
 // FUNCTION: LEGORACERS 0x0047bf70
 void EditCarScreen::Reset()
 {
-	m_unk0x3678 = NULL;
-	m_unk0x35a4 = NULL;
-	m_unk0x35a8 = NULL;
-	m_unk0x3684 = 0;
+	m_activeRecord = NULL;
+	m_driverModel = NULL;
+	m_bodySceneNode = NULL;
+	m_partCategoryUnlockFlags = 0;
 
-	::memset(m_unk0x3688, 0, sizeof(m_unk0x3688));
-	::memset(m_unk0x325c, 0, sizeof(m_unk0x325c));
-	m_unk0x36c0 = FALSE;
+	::memset(m_partCategoryAvailable, 0, sizeof(m_partCategoryAvailable));
+	::memset(m_carBuildSaveBuffer, 0, sizeof(m_carBuildSaveBuffer));
+	m_savePending = FALSE;
 
 	MenuGameScreen::Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0047bfc0
-void EditCarScreen::FUN_0047bfc0()
+void EditCarScreen::CreateCarScene()
 {
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA\\GARAGE");
 	}
 
-	CreateFramedSceneView(&m_unk0x43c, 0, 3);
+	CreateFramedSceneView(&m_sceneView, 0, 3);
 
 	if (g_hashTable) {
 		g_hashTable->SetCurrentEntryFromString("MENUDATA");
@@ -71,49 +71,49 @@ void EditCarScreen::FUN_0047bfc0()
 	::memset(&createParams, 0, sizeof(createParams));
 	createParams.m_golExport = m_golExport;
 	createParams.m_renderer = m_renderer;
-	createParams.m_sceneView = &m_unk0x43c;
-	createParams.m_unk0x2c.m_x = 0.0f;
-	createParams.m_unk0x2c.m_y = 0.0f;
-	createParams.m_unk0x2c.m_z = 1.0f;
-	createParams.m_unk0x40 = 0.001f;
+	createParams.m_sceneView = &m_sceneView;
+	createParams.m_position.m_x = 0.0f;
+	createParams.m_position.m_y = 0.0f;
+	createParams.m_position.m_z = 1.0f;
+	createParams.m_spinSpeed = 0.001f;
 
-	m_unk0x35b0.FUN_004875d0(&createParams);
-	m_unk0x43c.AddElement(&m_unk0x35b0);
+	m_modelSlot.Create(&createParams);
+	m_sceneView.AddElement(&m_modelSlot);
 }
 
 // FUNCTION: LEGORACERS 0x0047c080
-void EditCarScreen::FUN_0047c080()
+void EditCarScreen::CreateCategoryCarousel()
 {
-	CreateCarousel(&m_unk0x2384, 0x3e, 0x3b);
-	CreateSelector(&m_unk0x2418, &m_unk0x2384, 0x95, 0x4d);
+	CreateCarousel(&m_categoryCarousel, 0x3e, 0x3b);
+	CreateSelector(&m_categorySelector, &m_categoryCarousel, 0x95, 0x4d);
 
-	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
-		CreateImage(&m_unk0x2e0c[i], 0x9d, static_cast<undefined2>(0x9e + i));
+	for (LegoU32 i = 0; i < sizeOfArray(m_categoryIcons); i++) {
+		CreateImage(&m_categoryIcons[i], 0x9d, static_cast<undefined2>(0x9e + i));
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c0e0
 void EditCarScreen::VTable0x4c()
 {
-	CreateImage(&m_unk0x368, 0x49, 0x49);
-	FUN_0047bfc0();
-	CreateTextLabel(&m_unk0x3c4, 0x3a, 0x3a, 0x0b);
-	m_unk0x3c4.WrapText(0x14);
+	CreateImage(&m_photoImage, 0x49, 0x49);
+	CreateCarScene();
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, 0x0b);
+	m_infoLabel.WrapText(0x14);
 
-	FUN_0047fdc0(&m_unk0x914, 0x9a, 0x42, 0x25);
-	FUN_0047fdc0(&m_unk0xef4, 0x9b, 0x42, 0x3c);
-	FUN_0047fdc0(&m_unk0xc04, 0x9c, 0x42, 0x3d);
+	FUN_0047fdc0(&m_buildButton, 0x9a, 0x42, 0x25);
+	FUN_0047fdc0(&m_newCarButton, 0x9b, 0x42, 0x3c);
+	FUN_0047fdc0(&m_quickBuildButton, 0x9c, 0x42, 0x3d);
 
 	if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
-		FUN_0047fdc0(&m_unk0x11e4, 0x40, 0x46, 0x1e);
-		FUN_0047fdc0(&m_unk0x14d4, 0x3f, 0x43, 0x0a);
+		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x1e);
+		FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 0x0a);
 	}
 	else {
-		FUN_0047fdc0(&m_unk0x11e4, 0x40, 0x46, 0x72);
-		FUN_0047fdc0(&m_unk0x14d4, 0x3f, 0x45, 0x1f);
+		FUN_0047fdc0(&m_doneButton, 0x40, 0x46, 0x72);
+		FUN_0047fdc0(&m_backButton, 0x3f, 0x45, 0x1f);
 	}
 
-	FUN_0047c080();
+	CreateCategoryCarousel();
 }
 
 // FUNCTION: LEGORACERS 0x0047c1d0
@@ -137,7 +137,7 @@ void EditCarScreen::VTable0x80()
 // FUNCTION: LEGORACERS 0x0047c210
 LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	FUN_0047c400(p_context, p_createParams);
+	LoadBuilderImages(p_context, p_createParams);
 
 	if (!p_context->m_carBuildModel.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
@@ -153,13 +153,13 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 		return FALSE;
 	}
 
-	FUN_0047c610();
-	FUN_0047c450();
-	FUN_0047c790();
+	CreateDriverModel();
+	LoadCarData();
+	UpdateButtonStates();
 
-	m_unk0x914.Select(5);
-	m_unk0x3650.FUN_00442e60(&p_context->m_saveSystem);
-	m_unk0x3650.FUN_00442ef0(4);
+	m_buildButton.Select(5);
+	m_recordCursor.SetSaveSystem(&p_context->m_saveSystem);
+	m_recordCursor.Begin(4);
 
 	return TRUE;
 }
@@ -171,53 +171,53 @@ LegoBool32 EditCarScreen::Destroy()
 		return TRUE;
 	}
 
-	m_unk0x34b0.VTable0x54();
+	m_driverEntity.VTable0x54();
 
-	if (m_unk0x35a8) {
-		m_golExport->VTable0x4c(m_unk0x35a8);
+	if (m_bodySceneNode) {
+		m_golExport->VTable0x4c(m_bodySceneNode);
 	}
 
-	if (m_unk0x35a4) {
-		m_golExport->VTable0x48(m_unk0x35a4);
+	if (m_driverModel) {
+		m_golExport->VTable0x48(m_driverModel);
 	}
 
 	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047c320
-void EditCarScreen::FUN_0047c320()
+void EditCarScreen::PopulateCategoryCarousel()
 {
 	LegoS32 i;
 	LegoU32 mask = 1;
 
 	SaveSystem* saveSystem = &m_context->m_saveSystem;
-	m_unk0x3684 = saveSystem->GetGameState().GetPartUnlockFlags();
+	m_partCategoryUnlockFlags = saveSystem->GetGameState().GetPartUnlockFlags();
 
 	for (i = 0; i < 4; i++) {
-		m_unk0x3688[i] = TRUE;
+		m_partCategoryAvailable[i] = TRUE;
 	}
 
 	for (i = 0; i < 8; i++) {
-		if (m_unk0x3684 & mask) {
-			m_unk0x3688[i + 4] = TRUE;
+		if (m_partCategoryUnlockFlags & mask) {
+			m_partCategoryAvailable[i + 4] = TRUE;
 		}
 		mask <<= 1;
 	}
 
 	for (i = 0; i < m_context->m_carBuildModel.GetPlacedPieceCount(); i++) {
 		LegoS32 index = m_context->m_partSet.FindEntryIndex(m_context->m_carBuildModel.FUN_0049bd50(i));
-		m_unk0x3688[index] = TRUE;
+		m_partCategoryAvailable[index] = TRUE;
 	}
 
 	for (i = 0; i < 12; i++) {
-		if (m_unk0x3688[i]) {
-			m_unk0x2384.AddItem(&m_unk0x2e0c[i]);
+		if (m_partCategoryAvailable[i]) {
+			m_categoryCarousel.AddItem(&m_categoryIcons[i]);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c400
-void EditCarScreen::FUN_0047c400(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
+void EditCarScreen::LoadBuilderImages(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
 	if (g_editCarImageList != NULL) {
 		return;
@@ -236,21 +236,21 @@ void EditCarScreen::FUN_0047c400(MenuGameContext* p_context, MenuScreenCreatePar
 }
 
 // FUNCTION: LEGORACERS 0x0047c450
-void EditCarScreen::FUN_0047c450()
+void EditCarScreen::LoadCarData()
 {
-	m_unk0x3678 = &m_context->m_saveSystem.GetActiveRecord();
-	m_unk0x3678->CopyCarData(m_unk0x325c);
-	m_context->m_carBuildModel.FUN_0049c7f0(m_unk0x325c);
-	FUN_0047c320();
+	m_activeRecord = &m_context->m_saveSystem.GetActiveRecord();
+	m_activeRecord->CopyCarData(m_carBuildSaveBuffer);
+	m_context->m_carBuildModel.FUN_0049c7f0(m_carBuildSaveBuffer);
+	PopulateCategoryCarousel();
 
 	if (m_context->m_carBuildModel.GetPlacedPieceCount()) {
 		LegoChar name[9];
 
 		m_context->m_carBuildModel.FUN_0049b740(0);
 		m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
-		m_context->m_saveSystem.GetActiveRecord().GetChassisName(m_unk0x367c);
+		m_context->m_saveSystem.GetActiveRecord().GetChassisName(m_chassisName);
 
-		::strncpy(name, m_unk0x367c, 8);
+		::strncpy(name, m_chassisName, 8);
 		name[8] = '\0';
 
 		LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
@@ -258,127 +258,127 @@ void EditCarScreen::FUN_0047c450()
 		m_context->m_partSet.SetSelectedEntry(m_context->m_partSet.FindEntry(pieceType));
 
 		LegoS32 index = m_context->m_partSet.GetSelectedEntry()->GetIndex();
-		if (m_unk0x3688[index]) {
-			m_unk0x2384.SelectChild(&m_unk0x2e0c[index]);
+		if (m_partCategoryAvailable[index]) {
+			m_categoryCarousel.SelectChild(&m_categoryIcons[index]);
 		}
 
-		FUN_0047c720();
+		CreateCarGroup();
 	}
 	else {
-		m_unk0x2384.SetSelection(0);
-		OnWidgetValueChanged(&m_unk0x2418);
+		m_categoryCarousel.SetSelection(0);
+		OnWidgetValueChanged(&m_categorySelector);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c5a0
-void EditCarScreen::FUN_0047c5a0()
+void EditCarScreen::SaveCarData()
 {
-	::memset(m_unk0x325c, 0, sizeof(m_unk0x325c));
-	m_context->m_carBuildModel.FUN_0049c820(m_unk0x325c);
-	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_unk0x325c);
+	::memset(m_carBuildSaveBuffer, 0, sizeof(m_carBuildSaveBuffer));
+	m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
+	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_carBuildSaveBuffer);
 	m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(&m_context->m_saveSystem.GetActiveRecord());
 
-	m_unk0x36c0 = TRUE;
+	m_savePending = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0047c610
-void EditCarScreen::FUN_0047c610()
+void EditCarScreen::CreateDriverModel()
 {
 	DriverCosmetics cosmetics;
 
 	m_context->m_modelBuilder.SetExpressionMask(0xffff);
 	m_context->m_saveSystem.GetActiveRecord().GetCosmetics(&cosmetics);
-	m_unk0x35a4 = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
-	if (m_unk0x35a4 == NULL) {
+	m_driverModel = m_context->m_modelBuilder.BuildDriverModel(&cosmetics, NULL, 0);
+	if (m_driverModel == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_context->m_modelBuilder.ApplyFaceExpression(m_unk0x35a4, &cosmetics);
+	m_context->m_modelBuilder.ApplyFaceExpression(m_driverModel, &cosmetics);
 
-	m_unk0x35a8 = m_golExport->VTable0x18();
-	m_unk0x35a8->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
-	if (m_unk0x35a8 == NULL) {
+	m_bodySceneNode = m_golExport->VTable0x18();
+	m_bodySceneNode->VTable0x10(m_context->m_modelBuilder.GetBodySceneNode(&cosmetics));
+	if (m_bodySceneNode == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x35ac = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
-	m_unk0x34b0.FUN_0040d550(m_unk0x35a4, m_unk0x35a8, m_unk0x35ac, g_editCarMaxFloat);
+	m_bodyModelPart = m_context->m_modelBuilder.GetBodyModelPart(&cosmetics);
+	m_driverEntity.FUN_0040d550(m_driverModel, m_bodySceneNode, m_bodyModelPart, g_editCarMaxFloat);
 }
 
 // FUNCTION: LEGORACERS 0x0047c720
-void EditCarScreen::FUN_0047c720()
+void EditCarScreen::CreateCarGroup()
 {
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
 	createParams.m_unk0x04 = &m_context->m_carBuildModel;
 	createParams.m_unk0x08 = m_context->m_carBuildModel.GetUnk0x0c();
-	createParams.m_unk0x0c = &m_unk0x34b0;
+	createParams.m_unk0x0c = &m_driverEntity;
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
-	m_unk0x3460.FUN_00479510(&createParams);
-	m_unk0x35b0.FUN_00487600(&m_unk0x3460);
+	m_carGroup.FUN_00479510(&createParams);
+	m_modelSlot.SetEntity(&m_carGroup);
 }
 
 // FUNCTION: LEGORACERS 0x0047c790
-void EditCarScreen::FUN_0047c790()
+void EditCarScreen::UpdateButtonStates()
 {
 	if (m_context->m_carBuildModel.GetPlacedPieceCount() > 1) {
-		if (!m_unk0x3678->IsCarSaved()) {
-			m_unk0x2418.Disable(5);
+		if (!m_activeRecord->IsCarSaved()) {
+			m_categorySelector.Disable(5);
 		}
 		else {
-			m_unk0x2418.Enable(5);
+			m_categorySelector.Enable(5);
 		}
 
-		m_unk0xef4.Enable(5);
+		m_newCarButton.Enable(5);
 	}
 	else {
-		m_unk0x2418.Enable(5);
-		m_unk0xef4.Disable(5);
+		m_categorySelector.Enable(5);
+		m_newCarButton.Disable(5);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c810
-void EditCarScreen::FUN_0047c810()
+void EditCarScreen::LoadQuickBuildCar()
 {
-	LegoS32 remaining = m_unk0x3650.FUN_00442e80(4);
+	LegoS32 remaining = m_recordCursor.CountRecords(4);
 	remaining += 5;
 
 	GolName name;
 	while (remaining != 0) {
-		SaveRecordList::Record* record = m_unk0x3650.SelectNext();
+		SaveRecordList::Record* record = m_recordCursor.SelectNext();
 		remaining--;
 		record->GetChassisName(name);
-		if (::strncmp(m_unk0x367c, name, sizeof(name)) == 0) {
-			record->CopyCarData(m_unk0x325c);
+		if (::strncmp(m_chassisName, name, sizeof(name)) == 0) {
+			record->CopyCarData(m_carBuildSaveBuffer);
 
 			CarBuildModel* model = &m_context->m_carBuildModel;
 			model->GetPieceList().FUN_0049fd60();
 			model->SetPlacedPieceCount(0);
-			m_context->m_carBuildModel.FUN_0049c7f0(m_unk0x325c);
+			m_context->m_carBuildModel.FUN_0049c7f0(m_carBuildSaveBuffer);
 			m_context->m_carBuildModel.FUN_0049b740(0);
 			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
-			m_unk0x3678->MarkCarSaved();
-			FUN_0047c790();
+			m_activeRecord->MarkCarSaved();
+			UpdateButtonStates();
 			return;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0047c900
-LegoBool32 EditCarScreen::FUN_0047c900()
+LegoBool32 EditCarScreen::HasUnsavedChanges()
 {
-	LegoU8* buffer = new LegoU8[sizeof(m_unk0x325c)];
+	LegoU8* buffer = new LegoU8[sizeof(m_carBuildSaveBuffer)];
 	if (buffer == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	::memset(buffer, 0, sizeof(m_unk0x325c));
+	::memset(buffer, 0, sizeof(m_carBuildSaveBuffer));
 	m_context->m_carBuildModel.FUN_0049c820(buffer);
-	m_unk0x3678->CopyCarData(m_unk0x325c);
+	m_activeRecord->CopyCarData(m_carBuildSaveBuffer);
 
-	LegoBool32 result = ::memcmp(buffer, m_unk0x325c, sizeof(m_unk0x325c));
+	LegoBool32 result = ::memcmp(buffer, m_carBuildSaveBuffer, sizeof(m_carBuildSaveBuffer));
 	delete[] buffer;
 	return result;
 }
@@ -386,70 +386,70 @@ LegoBool32 EditCarScreen::FUN_0047c900()
 // FUNCTION: LEGORACERS 0x0047c980
 void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x914) {
+	if (p_source == &m_buildButton) {
 		m_unk0x360 = c_menuCarBuild;
 	}
-	else if (p_source == &m_unk0xc04) {
-		if (m_unk0x3678->IsCarSaved()) {
-			OnIconUnfocused(&m_unk0x1da4);
+	else if (p_source == &m_quickBuildButton) {
+		if (m_activeRecord->IsCarSaved()) {
+			OnIconUnfocused(&m_quickBuildYesButton);
 		}
 		else {
-			FUN_0047fdc0(&m_unk0x1da4, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_unk0x1da4, &m_unk0x1ab4, 0x7b);
+			FUN_0047fdc0(&m_quickBuildYesButton, 0x99, 0x46, 0x20);
+			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			FUN_0046c6f0(&m_quickBuildYesButton, &m_confirmNoButton, 0x7b);
 		}
 	}
-	else if (p_source == &m_unk0xef4) {
-		if (m_unk0x3678->IsCarSaved()) {
-			OnIconUnfocused(&m_unk0x2094);
+	else if (p_source == &m_newCarButton) {
+		if (m_activeRecord->IsCarSaved()) {
+			OnIconUnfocused(&m_newCarYesButton);
 		}
 		else {
-			FUN_0047fdc0(&m_unk0x2094, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_unk0x2094, &m_unk0x1ab4, 0x7b);
+			FUN_0047fdc0(&m_newCarYesButton, 0x99, 0x46, 0x20);
+			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			FUN_0046c6f0(&m_newCarYesButton, &m_confirmNoButton, 0x7b);
 		}
-		FUN_0047c790();
+		UpdateButtonStates();
 	}
-	else if (p_source == &m_unk0x11e4) {
+	else if (p_source == &m_doneButton) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_context->m_modelBuilder.SetMenuFlowFlags(
 				m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowNewRacer
 			);
-			FUN_0047cde0();
+			SetPlayerOneRecord();
 		}
-		FUN_0047c5a0();
+		SaveCarData();
 		m_unk0x360 = c_menuGarage;
 	}
-	else if (p_source == &m_unk0x14d4) {
+	else if (p_source == &m_backButton) {
 		if (m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowNewRacer) {
 			m_unk0x360 = c_menuDriverLicense;
 		}
-		else if (FUN_0047c900()) {
-			FUN_0047fdc0(&m_unk0x17c4, 0x99, 0x46, 0x20);
-			FUN_0047fdc0(&m_unk0x1ab4, 0x99, 0x45, 0x1f);
-			FUN_0046c6f0(&m_unk0x17c4, &m_unk0x1ab4, 0x7b);
+		else if (HasUnsavedChanges()) {
+			FUN_0047fdc0(&m_discardYesButton, 0x99, 0x46, 0x20);
+			FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x1f);
+			FUN_0046c6f0(&m_discardYesButton, &m_confirmNoButton, 0x7b);
 		}
 		else {
-			OnIconUnfocused(&m_unk0x17c4);
+			OnIconUnfocused(&m_discardYesButton);
 		}
 	}
-	else if (p_source == &m_unk0x17c4) {
+	else if (p_source == &m_discardYesButton) {
 		m_unk0x360 = c_menuGarage;
 		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 	}
-	else if (p_source == &m_unk0x1ab4) {
+	else if (p_source == &m_confirmNoButton) {
 		m_unk0x284->FUN_00468cf0();
 	}
-	else if (p_source == &m_unk0x1da4) {
-		FUN_0047c810();
+	else if (p_source == &m_quickBuildYesButton) {
+		LoadQuickBuildCar();
 		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
 	}
-	else if (p_source == &m_unk0x2094) {
-		OnWidgetValueChanged(&m_unk0x2418);
+	else if (p_source == &m_newCarYesButton) {
+		OnWidgetValueChanged(&m_categorySelector);
 		if (m_unk0x284->GetUnk0x9c() > 0) {
 			m_unk0x284->FUN_00468cf0();
 		}
@@ -464,7 +464,7 @@ void EditCarScreen::OnIconUnfocused(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x0047cbc0
 void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	if (p_source != &m_unk0x2418) {
+	if (p_source != &m_categorySelector) {
 		return;
 	}
 
@@ -472,30 +472,30 @@ void EditCarScreen::OnWidgetValueChanged(MenuWidget* p_source)
 	model->GetPieceList().FUN_0049fd60();
 	model->SetPlacedPieceCount(0);
 
-	MenuWidget* selectedChild = m_unk0x2384.GetSelectedChild();
-	for (LegoU32 i = 0; i < sizeOfArray(m_unk0x2e0c); i++) {
-		if (selectedChild == &m_unk0x2e0c[i]) {
+	MenuWidget* selectedChild = m_categoryCarousel.GetSelectedChild();
+	for (LegoU32 i = 0; i < sizeOfArray(m_categoryIcons); i++) {
+		if (selectedChild == &m_categoryIcons[i]) {
 			m_context->m_partSet.SetSelectedEntry(&m_context->m_partSet.GetEntries()[i]);
 			break;
 		}
 	}
 
 	CarPartSet::Entry* entry = m_context->m_partSet.GetSelectedEntry();
-	::strncpy(m_unk0x367c, entry->GetName(), sizeof(m_unk0x367c));
+	::strncpy(m_chassisName, entry->GetName(), sizeof(m_chassisName));
 
 	LegoChar name[9];
-	::strncpy(name, m_unk0x367c, sizeof(m_unk0x367c));
+	::strncpy(name, m_chassisName, sizeof(m_chassisName));
 	name[8] = '\0';
 
-	m_context->m_saveSystem.GetActiveRecord().SetChassisName(m_unk0x367c);
+	m_context->m_saveSystem.GetActiveRecord().SetChassisName(m_chassisName);
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
 	m_context->m_carBuildModel.FUN_0049a160(pieceRecord, 0, 0, 0, 3, 0);
 	m_context->m_carBuildModel.FUN_0049b740(0);
 	m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
-	m_unk0x3678->MarkCarSaved();
-	FUN_0047c720();
-	FUN_0047c790();
+	m_activeRecord->MarkCarSaved();
+	CreateCarGroup();
+	UpdateButtonStates();
 }
 
 // FUNCTION: LEGORACERS 0x0047ccf0
@@ -509,8 +509,8 @@ void EditCarScreen::VTable0x84()
 			m_golExport->VTable0x68(g_editCarImageList);
 			g_editCarImageList = NULL;
 		}
-		m_context->m_carBuildModel.FUN_0049c820(m_unk0x325c);
-		m_unk0x3678->SetCarData(m_unk0x325c);
+		m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
+		m_activeRecord->SetCarData(m_carBuildSaveBuffer);
 		m_context->m_menuStack.Push(m_unk0x360);
 		break;
 	case c_menuCarBuild:
@@ -518,7 +518,7 @@ void EditCarScreen::VTable0x84()
 		break;
 	case c_menuGarage:
 		m_context->m_menuStack.Pop();
-		if (m_unk0x36c0) {
+		if (m_savePending) {
 			m_context->m_menuStack.Push(c_menuSaveAll);
 		}
 		m_context->m_partResources.SetResourceIndex(0);
@@ -531,7 +531,7 @@ void EditCarScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047cde0
-void EditCarScreen::FUN_0047cde0()
+void EditCarScreen::SetPlayerOneRecord()
 {
 	MenuGameContext* context = m_context;
 	SaveRecordList::Record* record = context->m_saveSystem.GetActiveRecord().GetSelectedRecord();

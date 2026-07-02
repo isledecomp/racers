@@ -89,14 +89,14 @@ void CircuitRaceScreen::OnWidgetValueChanged(MenuWidget*)
 	m_unk0x1bbc.SetStringByIndex(static_cast<undefined2>(m_unk0x221c + 0x61), 0);
 
 	if (m_unk0x221c < m_context->m_circuitList.GetEntryCount()) {
-		m_unk0x1904 = &m_context->m_circuitList.GetEntries()[m_unk0x221c];
+		m_circuitEntry = &m_context->m_circuitList.GetEntries()[m_unk0x221c];
 		LegoRacers::Context* context = m_context->m_context;
-		::memcpy(context->m_circuitName, m_unk0x1904->GetName(), sizeof(GolName));
+		::memcpy(context->m_circuitName, m_circuitEntry->GetName(), sizeof(GolName));
 
-		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_unk0x1904));
+		LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_circuitEntry));
 		for (LegoU32 i = 0; i < sizeOfArray(context->m_raceSlots); i++) {
 			LegoRacers::RaceSlot* slot = &context->m_raceSlots[i];
-			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
+			RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(i);
 			if (raceNameEntry) {
 				::memcpy(slot->m_raceName, raceNameEntry->GetName(), sizeof(GolName));
 				::memcpy(slot->m_folderName, raceNameEntry->GetFolderName(), sizeof(GolName));
@@ -151,7 +151,7 @@ void CircuitRaceScreen::FUN_0047a2b0()
 	GolName driverName;
 	driverName[0] = '\0';
 
-	RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x2220);
+	RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(m_unk0x2220);
 	if (raceNameEntry) {
 		::memcpy(frameName, raceNameEntry->GetThemeName(), sizeof(GolName));
 		::memcpy(driverName, raceNameEntry->GetMascotName(), sizeof(GolName));

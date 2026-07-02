@@ -27,7 +27,7 @@ static LegoU8 g_singleRaceVisualStateMap[] = {
 SingleRaceSelectBase::SingleRaceSelectBase()
 {
 	MenuGameScreen::Reset();
-	m_unk0x1904 = 0;
+	m_circuitEntry = 0;
 	m_unk0x754 = 0;
 	m_unk0x658[0] = '\0';
 }
@@ -55,7 +55,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 
 	FUN_004803a0();
 	m_unk0x658[0] = '\0';
-	m_unk0x1904 = NULL;
+	m_circuitEntry = NULL;
 
 	LegoBool32 result = MenuSceneScreen::Destroy();
 	context->m_carBuildModel.FUN_00499ee0();
@@ -106,7 +106,7 @@ void SingleRaceSelectBase::VTable0x4c()
 // FUNCTION: LEGORACERS 0x00488ac0
 LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScreenCreateParams* p_createParams)
 {
-	m_unk0x1904 = NULL;
+	m_circuitEntry = NULL;
 
 	p_context->m_carBuildModel.FUN_00499f00();
 	LegoBool32 result = MenuSceneScreen::VTable0x8c(p_context, p_createParams);

@@ -72,8 +72,8 @@ RaceModeSetupScreen::~RaceModeSetupScreen()
 void RaceModeSetupScreen::Reset()
 {
 	m_unk0x2e08 = 0;
-	m_unk0x2e0c = 0;
-	m_unk0x2e10 = 0;
+	m_selectedRaceIndex = 0;
+	m_previewPending = 0;
 	::memset(m_unk0x2e14, 0, sizeof(m_unk0x2e14));
 	::memset(m_unk0x2e32, 0, sizeof(m_unk0x2e32));
 	m_unk0x2e48.CopyFromBufSelection(m_unk0x2e14, sizeOfArray(m_unk0x2e14) - 1);
@@ -84,7 +84,7 @@ void RaceModeSetupScreen::Reset()
 // FUNCTION: LEGORACERS 0x00487b50
 void RaceModeSetupScreen::VTable0x4c()
 {
-	CreateImage(&m_unk0x1908, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 	SingleRaceSelectBase::VTable0x4c();
 
 	undefined4 textId;
@@ -95,22 +95,22 @@ void RaceModeSetupScreen::VTable0x4c()
 		textId = 0x0e + ((m_context->m_modelBuilder.GetUnk0x78() & 2) ? 0x0b : 0);
 	}
 
-	CreateTextLabel(&m_unk0x1964, 0x3a, 0x3a, textId);
-	m_unk0x1964.WrapText(0x14);
-	CreateCarousel(&m_unk0x1fc0, 0x3d, 0x3b);
-	CreateSelector(&m_unk0x2054, &m_unk0x1fc0, 0x69, 0x4c);
-	FUN_0047fdc0(&m_unk0x19dc, 0x40, 0x46, 0x72);
-	FUN_0047fdc0(&m_unk0x1ccc, 0x3f, 0x43, 2);
+	CreateTextLabel(&m_infoLabel, 0x3a, 0x3a, textId);
+	m_infoLabel.WrapText(0x14);
+	CreateCarousel(&m_raceCarousel, 0x3d, 0x3b);
+	CreateSelector(&m_raceSelector, &m_raceCarousel, 0x69, 0x4c);
+	FUN_0047fdc0(&m_startButton, 0x40, 0x46, 0x72);
+	FUN_0047fdc0(&m_backButton, 0x3f, 0x43, 2);
 
-	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
-		CreateTextLabel(&m_unk0x2a48[i], 0x96, 0x37, 0x70);
+	for (LegoS32 i = 0; i < sizeOfArray(m_raceLabels); i++) {
+		CreateTextLabel(&m_raceLabels[i], 0x96, 0x37, 0x70);
 	}
 
 	if (m_menuId == 0x1d) {
 		CreateTextLabel(&m_unk0x2c28, 0x6a, 0x37, 0x70);
 		CreateTextLabel(&m_unk0x2ca0, 0x6c, 0x37, 0x70);
 		CreateTextLabel(&m_unk0x2d18, 0x6b, 0x37, 0x70);
-		m_unk0x2e10 = 1;
+		m_previewPending = 1;
 		FUN_004881a0();
 		CreateTextLabel(&m_unk0x2d90, 0x6d, 0x37, 0x49);
 		m_unk0x2d90.ClearFlags(2);
@@ -130,7 +130,7 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 	}
 
 	OnWidgetValueChanged(&m_unk0xbe8);
-	m_unk0x19dc.Select(0);
+	m_startButton.Select(0);
 	m_unk0x2e08 = 2500;
 	return TRUE;
 }
@@ -139,20 +139,20 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_unk0x04)
 {
 	m_unk0x358 = p_unk0x04;
-	FUN_00488010();
+	UpdateRacePreview();
 }
 
 // FUNCTION: LEGORACERS 0x00487d40
 void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 {
 	MenuWidget* source = p_source;
-	if (source == &m_unk0x19dc) {
-		CircuitDefinitionList::CircuitDefinition* circuitDefinition = m_unk0x1904;
+	if (source == &m_startButton) {
+		CircuitDefinitionList::CircuitDefinition* circuitDefinition = m_circuitEntry;
 		if (circuitDefinition) {
 			LegoRacers::Context* context = m_context->m_context;
 			::memcpy(context->m_circuitName, circuitDefinition->GetName(), sizeof(GolName));
 
-			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(m_unk0x1fc0.GetSelectedIndex());
+			RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(m_raceCarousel.GetSelectedIndex());
 			if (raceNameEntry) {
 				::memcpy(context->m_raceSlots[0].m_raceName, raceNameEntry->GetName(), sizeof(GolName));
 				::memcpy(context->m_raceSlots[0].m_folderName, raceNameEntry->GetFolderName(), sizeof(GolName));
@@ -169,7 +169,7 @@ void RaceModeSetupScreen::OnIconUnfocused(MenuWidget* p_source)
 			}
 		}
 	}
-	else if (source == &m_unk0x1ccc) {
+	else if (source == &m_backButton) {
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() & ~2);
 		m_unk0x360 = 2;
 	}
@@ -189,38 +189,38 @@ void RaceModeSetupScreen::OnWidgetValueChanged(MenuWidget* p_source)
 
 	if (p_source == &m_unk0xbe8) {
 		LegoU32 circuitIndex = m_unk0xb54.GetSelectedIndex();
-		m_unk0x1904 = m_context->m_circuitList.GetEntry(circuitIndex);
+		m_circuitEntry = m_context->m_circuitList.GetEntry(circuitIndex);
 
-		if (m_unk0x1904) {
-			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_unk0x1904));
+		if (m_circuitEntry) {
+			LegoU8 mask = static_cast<LegoU8>(1 << m_context->m_circuitList.GetEntryIndex(m_circuitEntry));
 			LegoU8 flags = m_context->m_saveSystem.GetGameState().GetUnlockedCircuits();
 			if (flags & mask) {
 				isComplete = TRUE;
 			}
 		}
 
-		m_unk0x1fc0.RemoveAllItems();
-		for (LegoS32 i = 0; i < sizeOfArray(m_unk0x2a48); i++) {
-			RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(i);
+		m_raceCarousel.RemoveAllItems();
+		for (LegoS32 i = 0; i < sizeOfArray(m_raceLabels); i++) {
+			RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(i);
 			if (raceNameEntry) {
 				raceNameEntry->CopyDisplayString(&string);
-				m_unk0x2a48[i].SetString(&string, TRUE);
-				m_unk0x1fc0.AddItem(&m_unk0x2a48[i]);
+				m_raceLabels[i].SetString(&string, TRUE);
+				m_raceCarousel.AddItem(&m_raceLabels[i]);
 			}
 		}
-		m_unk0x1fc0.SetSelection(0);
+		m_raceCarousel.SetSelection(0);
 
 		if (isComplete) {
-			m_unk0x19dc.Enable(5);
+			m_startButton.Enable(5);
 			m_unk0x1860.ClearFlags(2);
 		}
 		else {
-			m_unk0x19dc.Disable(5);
+			m_startButton.Disable(5);
 			m_unk0x1860.SetFlags(2);
 		}
 	}
 
-	FUN_00488010();
+	UpdateRacePreview();
 }
 
 // FUNCTION: LEGORACERS 0x00487f90
@@ -244,15 +244,15 @@ void RaceModeSetupScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00488010
-void RaceModeSetupScreen::FUN_00488010()
+void RaceModeSetupScreen::UpdateRacePreview()
 {
 	GolName frameName;
 	GolName driverName;
 	GolName raceName;
 	driverName[0] = '\0';
 
-	LegoU32 selectedEntryIndex = m_unk0x1fc0.GetSelectedIndex();
-	RaceNameEntry* raceNameEntry = m_unk0x1904->GetRaceNameEntry(selectedEntryIndex);
+	LegoU32 selectedEntryIndex = m_raceCarousel.GetSelectedIndex();
+	RaceNameEntry* raceNameEntry = m_circuitEntry->GetRaceNameEntry(selectedEntryIndex);
 	if (!raceNameEntry) {
 		return;
 	}
@@ -276,15 +276,15 @@ void RaceModeSetupScreen::FUN_00488010()
 
 	LegoChar* raceNameSource = raceNameEntry->GetName();
 	::memcpy(raceName, raceNameSource, sizeof(GolName));
-	m_unk0x2e0c = m_context->m_raceNames.GetEntryIndexByName(raceName);
+	m_selectedRaceIndex = m_context->m_raceNames.GetEntryIndexByName(raceName);
 	if (frame && frame != m_unk0x368.m_unk0x2b0) {
 		m_unk0x368.FUN_00466d00(frame);
 		m_unk0x368.m_unk0x2b0->SetFlags(CutsceneDefinition::Frame::c_flagLoop);
-		m_unk0x2e10 = TRUE;
+		m_previewPending = TRUE;
 		FUN_004881a0();
 	}
 
-	LegoU32 circuitIndex = m_context->m_circuitList.GetEntryIndex(m_unk0x1904);
+	LegoU32 circuitIndex = m_context->m_circuitList.GetEntryIndex(m_circuitEntry);
 	LegoU32 visualStateIndex = circuitIndex * 4;
 	visualStateIndex += selectedEntryIndex;
 	FUN_00488cb0(visualStateIndex);
@@ -297,7 +297,7 @@ void RaceModeSetupScreen::FUN_00488010()
 LegoBool32 RaceModeSetupScreen::VTable0x78(undefined4 p_elapsed)
 {
 	if (p_elapsed > m_unk0x2e08) {
-		m_unk0x2e10 = (m_unk0x2e10 == 0);
+		m_previewPending = (m_previewPending == 0);
 		FUN_004881a0();
 	}
 	else {
@@ -324,15 +324,15 @@ void RaceModeSetupScreen::FUN_004881a0()
 	::memset(buffer, 0, sizeof(buffer));
 	string.CopyFromBufSelection(buffer, 14);
 
-	LegoBool32 raceTime = (m_unk0x2e10 == FALSE);
+	LegoBool32 raceTime = (m_previewPending == FALSE);
 	LegoU16 unlockedMask = m_context->m_saveSystem.GetGameState().GetUnlockedRaces();
-	LegoU32 time = m_context->m_saveSystem.GetGameState().GetBestTime(m_unk0x2e0c, raceTime, &string);
+	LegoU32 time = m_context->m_saveSystem.GetGameState().GetBestTime(m_selectedRaceIndex, raceTime, &string);
 	if (time && time < 0xffffffff) {
 		bestTime = time;
 		m_unk0x2e48.GolStrcpy(&string);
 	}
 
-	if (m_unk0x2e10) {
+	if (m_previewPending) {
 		m_unk0x2d18.SetStringByIndex(0x46, 0);
 	}
 	else {
@@ -345,7 +345,7 @@ void RaceModeSetupScreen::FUN_004881a0()
 		GolString::CopyStringToBuf16(time, m_unk0x2e32);
 		m_unk0x2ca0.SetString(&m_unk0x2e48, 0);
 	}
-	else if (m_unk0x2e10) {
+	else if (m_previewPending) {
 		m_unk0x2ca0.SetStringByIndex(0xbe, 0);
 	}
 	else {
@@ -355,7 +355,7 @@ void RaceModeSetupScreen::FUN_004881a0()
 	m_unk0x2c28.SetString(&m_unk0x2e54, 0);
 	m_unk0x2e08 = 2500;
 
-	if (static_cast<LegoU16>(unlockedMask & (1 << m_unk0x2e0c))) {
+	if (static_cast<LegoU16>(unlockedMask & (1 << m_selectedRaceIndex))) {
 		m_unk0x2d90.SetFlags(2);
 	}
 	else {

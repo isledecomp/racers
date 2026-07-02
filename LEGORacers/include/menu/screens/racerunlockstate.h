@@ -18,9 +18,9 @@ public:
 	void FUN_00442e70();
 	LegoU32 FUN_00442e80(LegoU32 p_mask) const;
 	SaveRecordList::Record* FUN_00442ef0(LegoU32 p_mask);
-	SaveRecordList::Record* FUN_00442fe0();
-	SaveRecordList::Record* FUN_00443050();
-	SaveRecordList::Record* FUN_004430b0();
+	SaveRecordList::Record* SelectNext();
+	SaveRecordList::Record* SelectPrevious();
+	SaveRecordList::Record* GetSelectedRecord();
 	SaveRecordList::Record* FUN_004430e0(SaveRecordList::Record* p_record);
 	undefined4 GetUnk0x24() const { return m_unk0x24; }
 

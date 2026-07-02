@@ -83,16 +83,16 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_unk0x360 = static_cast<LegoU16>(
 			m_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCountAsU16() + c_menuControl1
 		);
-		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+		m_driverEntities[0].SetFlags(m_driverEntities[0].GetFlags() & ~0x10000);
 	}
 	else if (p_source == &m_unk0x40c8) {
 		if (m_context->m_modelBuilder.GetUnk0x78() & 2) {
 			m_context->m_context->m_racerCount = 0;
 		}
 
-		FUN_00486890(0);
+		PlayRandomNamedAnimation(0);
 		MenuGameContext* context = m_context;
-		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
 			record
@@ -103,9 +103,9 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 		m_unk0x360 = 0x41;
 	}
 	else if (p_source == &m_unk0x43b8) {
-		FUN_00486890(0);
+		PlayRandomNamedAnimation(0);
 		MenuGameContext* context = m_context;
-		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
 			record
@@ -124,7 +124,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 			);
 		}
 
-		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+		m_driverEntities[0].SetFlags(m_driverEntities[0].GetFlags() & ~0x10000);
 	}
 
 	if (m_unk0x360 != 0xffff) {
@@ -148,11 +148,11 @@ void PickRacerScreen::VTable0x84()
 	case c_menuControl2:
 	case c_menuPickRacerP2:
 		m_context->m_menuStack.Push(m_unk0x360);
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	case 0x3f:
 		m_context->m_menuStack.Pop();
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	case 0x41:
 		if (m_context->m_context->m_raceMode == LegoRacers::Context::c_raceModeCircuit &&
@@ -181,5 +181,5 @@ void PickRacerScreen::VTable0x84()
 		break;
 	}
 
-	FUN_004861b0();
+	CommitRecordSelections();
 }

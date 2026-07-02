@@ -102,8 +102,8 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 	m_unk0x2b7c[0].CopyFromBufSelection(m_unk0x2b94[0], 0x10);
 	m_unk0x2b7c[1].CopyFromBufSelection(m_unk0x2b94[1], 0x10);
 	FUN_004803d0();
-	FUN_00486400(0);
-	FUN_00486400(1);
+	SwapSlotModel(0);
+	SwapSlotModel(1);
 	FUN_00481b10(0);
 	FUN_00481b10(1);
 	FUN_004819b0();
@@ -114,7 +114,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 // FUNCTION: LEGORACERS 0x00481b10
 void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
 {
-	SaveRecordList::Record* record = m_unk0x22dc[p_index].FUN_004430b0();
+	SaveRecordList::Record* record = m_recordCyclers[p_index].GetSelectedRecord();
 	GolString* string = &m_unk0x2b7c[p_index];
 
 	record->GetName(string);
@@ -179,7 +179,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 		return FALSE;
 	}
 
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (p_event->m_device == m_unk0x2b70[i]) {
 			SaveRecordList::Record* record = m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i);
 
@@ -191,8 +191,8 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 					FUN_00481bf0(i);
 				}
 				else {
-					LegoS32 modelIndex = m_unk0x780[i] + (m_unk0x2700 * i);
-					m_unk0x232c[modelIndex].SetFlags(m_unk0x232c[modelIndex].GetFlags() & ~0x10000);
+					LegoS32 modelIndex = m_slotModelToggle[i] + (m_modelsPerSlot * i);
+					m_driverEntities[modelIndex].SetFlags(m_driverEntities[modelIndex].GetFlags() & ~0x10000);
 					m_unk0x360 = 0x3f;
 				}
 				break;
@@ -200,10 +200,13 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x1000009c:
 			case 0x30000004:
 				if (record == NULL) {
-					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(i, m_unk0x22dc[i].FUN_004430b0());
+					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
+						i,
+						m_recordCyclers[i].GetSelectedRecord()
+					);
 					FUN_00481b60(i);
 					m_unk0x360 = 0x41;
-					FUN_00486890(i);
+					PlayRandomNamedAnimation(i);
 				}
 				break;
 			case 0x100000cb:
@@ -212,12 +215,12 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x40000001:
 				if (record == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
-					FUN_004864f0(i);
+					SelectPreviousRecord(i);
 					FUN_00481b10(i);
 
-					for (LegoS32 j = 0; j < m_unk0x26fc; j++) {
+					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
 						if (j != i) {
-							FUN_00486400(j);
+							SwapSlotModel(j);
 						}
 					}
 				}
@@ -228,12 +231,12 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 			case 0x40000000:
 				if (record == NULL) {
 					m_context->m_modelBuilder.RefreshMenuResources();
-					FUN_004864a0(i);
+					SelectNextRecord(i);
 					FUN_00481b10(i);
 
-					for (LegoS32 j = 0; j < m_unk0x26fc; j++) {
+					for (LegoS32 j = 0; j < m_modelSlotCount; j++) {
 						if (j != i) {
-							FUN_00486400(j);
+							SwapSlotModel(j);
 						}
 					}
 				}
@@ -249,7 +252,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 	}
 
 	if (m_unk0x360 == 0x41) {
-		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 			if (m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord(i) == NULL) {
 				m_unk0x360 = 0xffff;
 				break;
@@ -279,7 +282,7 @@ void MultiplayerPickScreen::VTable0x84()
 		break;
 	}
 
-	FUN_004861b0();
+	CommitRecordSelections();
 }
 
 // FUNCTION: LEGORACERS 0x00481fc0

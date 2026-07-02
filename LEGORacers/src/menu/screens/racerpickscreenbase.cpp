@@ -30,12 +30,12 @@ void RacerPickScreenBase::VTable0x4c()
 
 	LegoS32 i;
 
-	for (i = 0; i < m_unk0x26fc; i++) {
+	for (i = 0; i < m_modelSlotCount; i++) {
 		CreateCarousel(&m_unk0x270c[i], 0x3d, 0x3b);
 		CreateSelector(&m_unk0x2c0c[i], &m_unk0x270c[i], i + 0x70, 0x4c);
 	}
 
-	for (i = 0; i < m_unk0x26fc; i++) {
+	for (i = 0; i < m_modelSlotCount; i++) {
 		LegoS32 j;
 
 		for (j = 0; j < 3; j++) {
@@ -55,7 +55,7 @@ LegoBool32 RacerPickScreenBase::VTable0xa0(
 		return FALSE;
 	}
 
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		for (LegoS32 j = 0; j < 3; j++) {
 			m_unk0x2b04[i * 3 + j].CopyFromBufSelection(m_unk0x2b4c[i * 3 + j], sizeOfArray(m_unk0x2b4c[i * 3 + j]));
 		}
@@ -72,17 +72,17 @@ LegoBool32 RacerPickScreenBase::VTable0xa0(
 // FUNCTION: LEGORACERS 0x00489050
 void RacerPickScreenBase::FUN_00489050(LegoS32 p_index)
 {
-	RacerUnlockState* modelState = &m_unk0x22dc[p_index];
-	modelState->FUN_00443050();
-	modelState->FUN_00443050();
+	RacerUnlockState* modelState = &m_recordCyclers[p_index];
+	modelState->SelectPrevious();
+	modelState->SelectPrevious();
 
 	for (LegoS32 i = 0; i < 3; i++) {
 		LegoS32 widgetIndex = p_index * 3 + i;
-		modelState->FUN_00442fe0()->GetName(&m_unk0x2b04[widgetIndex]);
+		modelState->SelectNext()->GetName(&m_unk0x2b04[widgetIndex]);
 		m_unk0x2834[widgetIndex].SetString(&m_unk0x2b04[widgetIndex], 0);
 	}
 
-	modelState->FUN_00443050();
+	modelState->SelectPrevious();
 }
 
 // FUNCTION: LEGORACERS 0x004890c0
@@ -106,20 +106,20 @@ void RacerPickScreenBase::FUN_004890c0(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00489130
 void RacerPickScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (&m_unk0x2c0c[i] == p_source) {
 			undefined4 state = m_unk0x2c0c[i].GetUnk0x5e4();
 
 			if (state != -1) {
 				if (state != 1) {
-					FUN_00486400(i);
+					SwapSlotModel(i);
 				}
 				else {
-					FUN_004864a0(i);
+					SelectNextRecord(i);
 				}
 			}
 			else {
-				FUN_004864f0(i);
+				SelectPreviousRecord(i);
 			}
 		}
 	}
@@ -128,7 +128,7 @@ void RacerPickScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 // FUNCTION: LEGORACERS 0x004891a0
 void RacerPickScreenBase::OnCarouselSettled(MenuWidget* p_source)
 {
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		if (&m_unk0x270c[i] == p_source) {
 			FUN_004890c0(0);
 		}
@@ -143,7 +143,7 @@ void RacerPickScreenBase::FUN_004891f0(LegoS32 p_index)
 		return;
 	}
 
-	for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+	for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 		m_unk0x2c0c[i].SetFlags(2);
 	}
 }
@@ -162,7 +162,7 @@ void RacerPickScreenBase::FUN_00489250(LegoS32 p_index)
 		return;
 	}
 	else {
-		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 			m_unk0x2c0c[i].Enable(5);
 			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
 		}
@@ -183,7 +183,7 @@ void RacerPickScreenBase::FUN_00489320(LegoS32 p_index)
 		return;
 	}
 	else {
-		for (LegoS32 i = 0; i < m_unk0x26fc; i++) {
+		for (LegoS32 i = 0; i < m_modelSlotCount; i++) {
 			m_unk0x2c0c[i].Disable(5);
 			m_unk0x98c[i].SetUnk0x6c(m_unk0x2704[i] != 0);
 		}

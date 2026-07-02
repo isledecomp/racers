@@ -346,7 +346,7 @@ void EditCarScreen::FUN_0047c810()
 
 	GolName name;
 	while (remaining != 0) {
-		SaveRecordList::Record* record = m_unk0x3650.FUN_00442fe0();
+		SaveRecordList::Record* record = m_unk0x3650.SelectNext();
 		remaining--;
 		record->GetChassisName(name);
 		if (::strncmp(m_unk0x367c, name, sizeof(name)) == 0) {

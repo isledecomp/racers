@@ -121,12 +121,12 @@ void GarageScreen::FUN_0047e740()
 
 		if (static_cast<LegoS32>(m_unk0x2704[0]) > 1) {
 			FUN_00489250(0);
-			FUN_00486400(0);
+			SwapSlotModel(0);
 			FUN_004890c0(0);
 		}
 		else {
 			FUN_00489320(0);
-			FUN_00486400(0);
+			SwapSlotModel(0);
 			FUN_004890c0(0);
 		}
 	}
@@ -138,7 +138,7 @@ void GarageScreen::FUN_0047e740()
 		m_unk0x4c88.Disable(5);
 		m_unk0x40c8.Select(5);
 		FUN_00489320(0);
-		FUN_004866e0(0);
+		DetachSlotWidgets(0);
 		FUN_004890c0(0);
 	}
 }
@@ -189,9 +189,9 @@ void GarageScreen::FUN_0047e9f0(MenuGameContext* p_context)
 void GarageScreen::FUN_0047ea50()
 {
 	SaveRecordList* records = NULL;
-	RacerUnlockState* modelState = &m_unk0x22dc[0];
-	SaveRecordList::Record* record = modelState->FUN_004430b0();
-	SaveRecordList::Record* nextRecord = modelState->FUN_00442fe0();
+	RacerUnlockState* modelState = &m_recordCyclers[0];
+	SaveRecordList::Record* record = modelState->GetSelectedRecord();
+	SaveRecordList::Record* nextRecord = modelState->SelectNext();
 
 	switch (record->m_recordSource) {
 	case 1:
@@ -242,7 +242,7 @@ void GarageScreen::FUN_0047eb20()
 	undefined4 flags = m_context->m_modelBuilder.GetUnk0x78();
 	flags &= 0xfffffffd;
 	m_context->m_modelBuilder.SetUnk0x78(flags);
-	SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+	SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
 	m_unk0x360 = 0x41;
 }
@@ -259,43 +259,43 @@ void GarageScreen::VTable0x84()
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(1, NULL);
 		m_context->m_menuStack.Pop();
 		FUN_004804c0(m_context);
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
 		m_context->m_saveSystem.GetActiveRecord().FUN_0042b2f0(4, 0, 0, NULL);
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 1);
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	case c_menuEditDriver:
 	case c_menuDriverLicense:
 	case c_menuEditCar: {
 		{
-			RacerUnlockState* modelState = &m_unk0x22dc[0];
-			SaveRecordList::Record* record = modelState->FUN_004430b0();
+			RacerUnlockState* modelState = &m_recordCyclers[0];
+			SaveRecordList::Record* record = modelState->GetSelectedRecord();
 			m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
-			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->FUN_004430b0());
+			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->GetSelectedRecord());
 			m_context->m_menuStack.Push(m_unk0x360);
 		}
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	}
 	case 0x41:
 		m_context->m_menuStack.ResetSize();
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	case c_menuPickMem: {
 		m_context->m_menuStack.Push(c_menuPickMem);
-		SaveRecordList::Record* record = m_unk0x22dc[0].FUN_004430b0();
+		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
 		m_context->m_modelBuilder.SetUnk0x78(m_context->m_modelBuilder.GetUnk0x78() | 8);
-		FUN_004861b0();
+		CommitRecordSelections();
 		return;
 	}
 	}
 
 	m_context->m_menuStack.Push(m_unk0x360);
-	FUN_004861b0();
+	CommitRecordSelections();
 }
 
 // FUNCTION: LEGORACERS 0x0047ee50
@@ -353,7 +353,7 @@ void GarageScreen::OnIconUnfocused(MenuWidget* p_source)
 
 	if (m_unk0x360 != 0xffff) {
 		m_unk0x364 = TRUE;
-		m_unk0x232c[0].SetFlags(m_unk0x232c[0].GetFlags() & ~0x10000);
+		m_driverEntities[0].SetFlags(m_driverEntities[0].GetFlags() & ~0x10000);
 	}
 
 	m_unk0x35c = p_source;
@@ -390,9 +390,9 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		FUN_0047efe0();
 	}
 
-	RacerUnlockState* modelState = &m_unk0x22dc[0];
-	if (modelState->FUN_004430b0() != NULL) {
-		if (modelState->FUN_004430b0()->m_recordSource == 1) {
+	RacerUnlockState* modelState = &m_recordCyclers[0];
+	if (modelState->GetSelectedRecord() != NULL) {
+		if (modelState->GetSelectedRecord()->m_recordSource == 1) {
 			m_unk0x46a8.SetTextByIndex(0x2b);
 		}
 		else {

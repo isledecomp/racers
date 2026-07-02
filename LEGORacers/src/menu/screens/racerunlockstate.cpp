@@ -113,7 +113,7 @@ SaveRecordList::Record* RacerUnlockState::FUN_00442ef0(LegoU32 p_mask)
 }
 
 // FUNCTION: LEGORACERS 0x00442fe0
-SaveRecordList::Record* RacerUnlockState::FUN_00442fe0()
+SaveRecordList::Record* RacerUnlockState::SelectNext()
 {
 	LegoU32 count = m_unk0x20;
 	if (count == 0) {
@@ -146,7 +146,7 @@ SaveRecordList::Record* RacerUnlockState::FUN_00442fe0()
 }
 
 // FUNCTION: LEGORACERS 0x00443050
-SaveRecordList::Record* RacerUnlockState::FUN_00443050()
+SaveRecordList::Record* RacerUnlockState::SelectPrevious()
 {
 	LegoU32 count = m_unk0x20;
 	if (count == 0) {
@@ -177,7 +177,7 @@ SaveRecordList::Record* RacerUnlockState::FUN_00443050()
 }
 
 // FUNCTION: LEGORACERS 0x004430b0
-SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
+SaveRecordList::Record* RacerUnlockState::GetSelectedRecord()
 {
 	if (m_unk0x20 == 0) {
 		return NULL;
@@ -195,12 +195,12 @@ SaveRecordList::Record* RacerUnlockState::FUN_004430b0()
 SaveRecordList::Record* RacerUnlockState::FUN_004430e0(SaveRecordList::Record* p_record)
 {
 	if (m_unk0x20 != 0) {
-		SaveRecordList::Record* firstRecord = FUN_004430b0();
+		SaveRecordList::Record* firstRecord = GetSelectedRecord();
 		SaveRecordList::Record* targetRecord = p_record;
 		SaveRecordList::Record* record;
 
 		do {
-			record = FUN_00442fe0();
+			record = SelectNext();
 		} while (firstRecord != record && record != targetRecord);
 
 		if (record == targetRecord) {

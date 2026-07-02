@@ -611,7 +611,7 @@ LegoBool32 MenuScreen::CreateButton(MenuButton* p_source, undefined2 p_event, un
 		}
 	}
 
-	return p_source->FUN_004663d0(&createParams, styleEntry);
+	return p_source->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c1b0
@@ -631,7 +631,7 @@ LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_source, undefine
 		createParams.m_unk0x9c = styleEntry->m_image;
 	}
 
-	return p_source->FUN_004665f0(&createParams, styleEntry);
+	return p_source->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c240
@@ -744,7 +744,7 @@ LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_source, unde
 	createParams.m_unk0x7c = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = GetAspectScale();
-	return p_source->FUN_004661f0(&createParams, m_useBinaryFiles);
+	return p_source->Create(&createParams, m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0046c5b0
@@ -759,7 +759,7 @@ undefined4 MenuScreen::CreateRegion(MenuWidget* p_source, undefined2 p_event)
 	ApplyWidgetDefaults(&createParams);
 	createParams.m_unk0x50 = GetAspectScale();
 
-	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->FUN_00466b50(&createParams, m_useBinaryFiles);
+	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->Create(&createParams, m_useBinaryFiles);
 }
 
 // FUNCTION: LEGORACERS 0x0046c610

@@ -28,7 +28,7 @@ public:
 	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
 	void Unfocus(undefined4) override;                                               // vtable+0x58
 
-	LegoBool32 FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry);
+	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry);
 	LegoU32 GetHotspotIndex() const { return m_hotspotIndex; }
 
 	// SYNTHETIC: LEGORACERS 0x00466560

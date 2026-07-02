@@ -43,7 +43,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466b10()
 }
 
 // FUNCTION: LEGORACERS 0x00466b50
-undefined4 MenuSceneScreen::SceneWidget::FUN_00466b50(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
+undefined4 MenuSceneScreen::SceneWidget::Create(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
 {
 	if (m_flags & 1) {
 		Destroy();

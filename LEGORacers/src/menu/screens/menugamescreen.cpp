@@ -19,10 +19,10 @@ DECOMP_SIZE_ASSERT(CarPartCarousel, 0x154)
 DECOMP_SIZE_ASSERT(CarPartCarousel::CreateParams, 0x84)
 
 // GLOBAL: LEGORACERS 0x004b2a34
-static const LegoFloat g_unk0x004b2a34 = 6.2831855f;
+static const LegoFloat g_twoPiGame = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004c7660
-LegoFloat g_unk0x004c7660 = g_unk0x004b2a34 * 0.125f;
+LegoFloat g_viewStepAngle = g_twoPiGame * 0.125f;
 
 // FUNCTION: LEGORACERS 0x004164c0 FOLDED
 void MenuGameScreen::SetupLighting()

@@ -11,10 +11,10 @@
 DECOMP_SIZE_ASSERT(CarModelScreenBase, 0x2b20)
 
 // GLOBAL: LEGORACERS 0x004b2cf4
-static const LegoFloat g_unk0x004b2cf4 = 6.2831855f;
+static const LegoFloat g_twoPiCar = 6.2831855f;
 
 // GLOBAL: LEGORACERS 0x004c7664
-LegoFloat g_unk0x004c7664 = g_unk0x004b2cf4 * 0.125f;
+LegoFloat g_carViewStepAngle = g_twoPiCar * 0.125f;
 
 // FUNCTION: LEGORACERS 0x00476d50
 CarModelScreenBase::CarModelScreenBase()

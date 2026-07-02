@@ -45,7 +45,7 @@ LegoBool32 MenuButton::FUN_00466370(MenuImage* p_unk0x04, CreateParams* p_create
 }
 
 // FUNCTION: LEGORACERS 0x004663d0
-LegoBool32 MenuButton::FUN_004663d0(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
+LegoBool32 MenuButton::Create(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
 {
 	Destroy();
 
@@ -59,7 +59,7 @@ LegoBool32 MenuButton::FUN_004663d0(CreateParams* p_createParams, const MenuIcon
 		p_createParams->m_rect.m_bottom = p_createParams->m_rect.m_top + m_unk0x1a8[0]->GetHeight();
 	}
 
-	if (Create(p_createParams, p_createState)) {
+	if (MenuIcon::Create(p_createParams, p_createState)) {
 		return FUN_00466370(&m_unk0x1c0, p_createParams);
 	}
 

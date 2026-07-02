@@ -22,7 +22,7 @@ public:
 	LegoBool32 Destroy() override;               // vtable+0x08
 	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 
-	LegoBool32 FUN_004663d0(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState);
+	LegoBool32 Create(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState);
 
 	// SYNTHETIC: LEGORACERS 0x004662c0
 	// MenuButton::`scalar deleting destructor'

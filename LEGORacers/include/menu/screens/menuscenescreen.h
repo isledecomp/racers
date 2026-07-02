@@ -36,7 +36,7 @@ public:
 		// SYNTHETIC: LEGORACERS 0x00466a80
 		// MenuSceneScreen::SceneWidget::`scalar deleting destructor'
 
-		undefined4 FUN_00466b50(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
+		undefined4 Create(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);
 		void FUN_00466b10();
 		void FUN_00466b90();
 		void FUN_00466bf0(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08);

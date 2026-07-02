@@ -26,14 +26,14 @@ void MenuHotspotButton::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004665f0
-LegoBool32 MenuHotspotButton::FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry)
+LegoBool32 MenuHotspotButton::Create(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry)
 {
 	Destroy();
 
 	m_unk0x220 = p_createParams->m_unk0x9c;
 	m_unk0x21c = p_styleEntry;
 
-	return MenuButton::FUN_004663d0(p_createParams, p_styleEntry);
+	return MenuButton::Create(p_createParams, p_styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x00466620

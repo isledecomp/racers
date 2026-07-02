@@ -31,7 +31,7 @@ LegoBool32 MenuFramedSceneView::FUN_00466180(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x004661f0
-LegoBool32 MenuFramedSceneView::FUN_004661f0(CreateParams* p_createParams, undefined4 p_unk0x08)
+LegoBool32 MenuFramedSceneView::Create(CreateParams* p_createParams, undefined4 p_unk0x08)
 {
 	Destroy();
 

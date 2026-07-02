@@ -50,14 +50,14 @@ LegoBool32 PickRacerScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 		FUN_00480210(p_context, FALSE);
 	}
 
-	if (!RacerPickScreenBase::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerPickScreenBase::Initialize(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
 	VTable0x80();
 
 	if (p_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowVersus) {
-		m_unk0x2c0c[0].SetUnk0x9ec(TRUE);
+		m_nameSelectors[0].SetUnk0x9ec(TRUE);
 
 		if (p_context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount() == 0) {
 			m_unk0x40c8.ClearFlags(2);
@@ -92,7 +92,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 
 		PlayRandomNamedAnimation(0);
 		MenuGameContext* context = m_context;
-		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
+		SaveRecordList::Record* record = m_recordCursors[0].GetSelectedRecord();
 		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
 			record
@@ -105,7 +105,7 @@ void PickRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 	else if (p_source == &m_unk0x43b8) {
 		PlayRandomNamedAnimation(0);
 		MenuGameContext* context = m_context;
-		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
+		SaveRecordList::Record* record = m_recordCursors[0].GetSelectedRecord();
 		context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 			context->m_saveSystem.GetActiveRecord().GetSelectedRecordCount(),
 			record

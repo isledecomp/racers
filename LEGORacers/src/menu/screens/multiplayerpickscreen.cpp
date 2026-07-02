@@ -36,7 +36,7 @@ void MultiplayerPickScreen::Reset()
 // FUNCTION: LEGORACERS 0x00481830
 void MultiplayerPickScreen::VTable0x4c()
 {
-	CreateImage(&m_unk0x270c, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 	RacerModelScreenBase::VTable0x4c();
 	CreateTextLabel(&m_unk0x2990, 0xf0, 0x37, 0x56);
 	CreateTextLabel(&m_unk0x2a08, 0xf1, 0x37, 0x57);
@@ -94,7 +94,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 	p_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, NULL);
 	params[2] = 0xffff3;
 
-	if (!RacerModelScreenBase::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerModelScreenBase::Initialize(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
@@ -114,7 +114,7 @@ LegoBool32 MultiplayerPickScreen::VTable0x8c(MenuGameContext* p_context, MenuScr
 // FUNCTION: LEGORACERS 0x00481b10
 void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
 {
-	SaveRecordList::Record* record = m_recordCyclers[p_index].GetSelectedRecord();
+	SaveRecordList::Record* record = m_recordCursors[p_index].GetSelectedRecord();
 	GolString* string = &m_unk0x2b7c[p_index];
 
 	record->GetName(string);
@@ -124,7 +124,7 @@ void MultiplayerPickScreen::FUN_00481b10(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00481b60
 void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
 {
-	GolWorldDatabase** database = m_unk0x98c[p_index].GetWorldAddress();
+	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
 
 	ColorRGBA color = materialColor->GetColor();
@@ -144,7 +144,7 @@ void MultiplayerPickScreen::FUN_00481b60(LegoS32 p_index)
 // FUNCTION: LEGORACERS 0x00481bf0
 void MultiplayerPickScreen::FUN_00481bf0(LegoS32 p_index)
 {
-	GolWorldDatabase** database = m_unk0x98c[p_index].GetWorldAddress();
+	GolWorldDatabase** database = m_sceneViews[p_index].GetWorldAddress();
 	GolRenderDevice::MaterialColor* materialColor = (*database)->GetUnk0xac();
 
 	ColorRGBA color = materialColor->GetColor();
@@ -202,7 +202,7 @@ LegoBool32 MultiplayerPickScreen::HandleKeyDown(
 				if (record == NULL) {
 					m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(
 						i,
-						m_recordCyclers[i].GetSelectedRecord()
+						m_recordCursors[i].GetSelectedRecord()
 					);
 					FUN_00481b60(i);
 					m_unk0x360 = 0x41;

@@ -84,7 +84,7 @@ LegoBool32 GarageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreate
 	params[1] = 1;
 	params[2] = 0xffff2;
 
-	if (!RacerPickScreenBase::VTable0xa0(p_context, p_createParams, params)) {
+	if (!RacerPickScreenBase::Initialize(p_context, p_createParams, params)) {
 		return FALSE;
 	}
 
@@ -101,17 +101,17 @@ void GarageScreen::FUN_0047e740()
 	m_loadButton.SetFlags(2);
 	m_deleteButton.SetFlags(2);
 	m_testDriveButton.SetFlags(2);
-	FUN_004891f0(0);
+	ActivateNameSelectors(0);
 	m_backButton.SetTextByIndex(2);
 	m_infoLabel.SetStringByIndex(3, TRUE);
 	m_infoLabel.WrapText(0x14);
 
-	if (m_unk0x2704[0]) {
+	if (m_recordCounts[0]) {
 		m_editButton.Enable(5);
 		m_deleteButton.Enable(5);
 		m_testDriveButton.Enable(5);
 
-		if (m_unk0x2704[0] == 0xd1) {
+		if (m_recordCounts[0] == 0xd1) {
 			m_newRacerButton.Disable(5);
 			m_loadButton.Disable(5);
 			m_editButton.Select(4);
@@ -122,15 +122,15 @@ void GarageScreen::FUN_0047e740()
 			m_newRacerButton.Select(4);
 		}
 
-		if (static_cast<LegoS32>(m_unk0x2704[0]) > 1) {
-			FUN_00489250(0);
+		if (static_cast<LegoS32>(m_recordCounts[0]) > 1) {
+			EnableNameSelectors(0);
 			SwapSlotModel(0);
-			FUN_004890c0(0);
+			RebuildNameCarousel(0);
 		}
 		else {
-			FUN_00489320(0);
+			DisableNameSelectors(0);
 			SwapSlotModel(0);
-			FUN_004890c0(0);
+			RebuildNameCarousel(0);
 		}
 	}
 	else {
@@ -140,9 +140,9 @@ void GarageScreen::FUN_0047e740()
 		m_deleteButton.Disable(5);
 		m_testDriveButton.Disable(5);
 		m_newRacerButton.Select(5);
-		FUN_00489320(0);
+		DisableNameSelectors(0);
 		DetachSlotWidgets(0);
-		FUN_004890c0(0);
+		RebuildNameCarousel(0);
 	}
 }
 
@@ -154,7 +154,7 @@ void GarageScreen::HideMainButtons()
 	m_loadButton.ClearFlags(2);
 	m_deleteButton.ClearFlags(2);
 	m_testDriveButton.ClearFlags(2);
-	FUN_00489320(0);
+	DisableNameSelectors(0);
 }
 
 // FUNCTION: LEGORACERS 0x0047e950
@@ -184,7 +184,7 @@ void GarageScreen::RefreshRecordAvailability(MenuGameContext* p_context)
 
 	modelState.SetSaveSystem(&p_context->m_saveSystem);
 	modelState.Begin(0xffff2);
-	m_unk0x2704[0] = modelState.CountRecords(0xffff2);
+	m_recordCounts[0] = modelState.CountRecords(0xffff2);
 	modelState.Close();
 }
 
@@ -192,7 +192,7 @@ void GarageScreen::RefreshRecordAvailability(MenuGameContext* p_context)
 void GarageScreen::DeleteSelectedRecord()
 {
 	SaveRecordList* records = NULL;
-	SaveRecordCursor* modelState = &m_recordCyclers[0];
+	SaveRecordCursor* modelState = &m_recordCursors[0];
 	SaveRecordList::Record* record = modelState->GetSelectedRecord();
 	SaveRecordList::Record* nextRecord = modelState->SelectNext();
 
@@ -217,7 +217,7 @@ void GarageScreen::DeleteSelectedRecord()
 	RefreshRecordAvailability(m_context);
 	FUN_0047e740();
 
-	if (m_unk0x2704[0]) {
+	if (m_recordCounts[0]) {
 		m_deleteButton.Select(5);
 	}
 }
@@ -245,7 +245,7 @@ void GarageScreen::StartTestDrive()
 	undefined4 flags = m_context->m_modelBuilder.GetMenuFlowFlags();
 	flags &= 0xfffffffd;
 	m_context->m_modelBuilder.SetMenuFlowFlags(flags);
-	SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
+	SaveRecordList::Record* record = m_recordCursors[0].GetSelectedRecord();
 	m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(record);
 	m_unk0x360 = 0x41;
 }
@@ -276,7 +276,7 @@ void GarageScreen::VTable0x84()
 	case c_menuDriverLicense:
 	case c_menuEditCar: {
 		{
-			SaveRecordCursor* modelState = &m_recordCyclers[0];
+			SaveRecordCursor* modelState = &m_recordCursors[0];
 			SaveRecordList::Record* record = modelState->GetSelectedRecord();
 			m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
 			m_context->m_saveSystem.GetActiveRecord().CopyFrom(modelState->GetSelectedRecord());
@@ -291,7 +291,7 @@ void GarageScreen::VTable0x84()
 		return;
 	case c_menuPickMem: {
 		m_context->m_menuStack.Push(c_menuPickMem);
-		SaveRecordList::Record* record = m_recordCyclers[0].GetSelectedRecord();
+		SaveRecordList::Record* record = m_recordCursors[0].GetSelectedRecord();
 		m_context->m_saveSystem.GetActiveRecord().SetSelectedRecord(0, record);
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowLoadRacer
@@ -397,7 +397,7 @@ LegoBool32 GarageScreen::VTable0x78(undefined4 p_elapsed)
 		FUN_0047efe0();
 	}
 
-	SaveRecordCursor* modelState = &m_recordCyclers[0];
+	SaveRecordCursor* modelState = &m_recordCursors[0];
 	if (modelState->GetSelectedRecord() != NULL) {
 		if (modelState->GetSelectedRecord()->m_recordSource == 1) {
 			m_loadButton.SetTextByIndex(0x2b);

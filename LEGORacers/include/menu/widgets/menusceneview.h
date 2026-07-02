@@ -24,7 +24,7 @@ public:
 		GolVec3 m_cameraSettings;          // 0x50
 		LegoFloat m_worldScale;            // 0x5c
 		LegoChar m_worldName[0x70 - 0x60]; // 0x60
-		undefined4 m_unk0x70;              // 0x70
+		undefined4 m_drawWorld;            // 0x70
 		LegoBool32 m_hasBlendedWorld;      // 0x74
 		undefined4 m_unk0x78;              // 0x78
 		undefined4 m_unk0x7c;              // 0x7c
@@ -49,7 +49,7 @@ public:
 	GolWorldDatabase** GetWorldAddress() { return &m_world; }
 	GolWorldDatabase* GetBlendedWorld() const { return m_blendedWorld; }
 	GolCamera* GetCamera() const { return m_camera; }
-	void SetUnk0x6c(undefined4 p_unk0x6c) { m_unk0x6c = p_unk0x6c; }
+	void SetDrawWorld(undefined4 p_drawWorld) { m_drawWorld = p_drawWorld; }
 
 	// SYNTHETIC: LEGORACERS 0x00465730
 	// MenuSceneView::`scalar deleting destructor'
@@ -66,7 +66,7 @@ protected:
 	GolWorldDatabase* m_blendedWorld; // 0x60
 	GolCamera* m_camera;              // 0x64
 	GolCamera* m_savedCamera;         // 0x68
-	undefined4 m_unk0x6c;             // 0x6c
+	undefined4 m_drawWorld;           // 0x6c
 	GolVec3 m_cameraEye;              // 0x70
 	GolVec3 m_cameraTarget;           // 0x7c
 	undefined4 m_viewportClearMode;   // 0x88

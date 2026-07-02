@@ -33,7 +33,7 @@ void MenuSceneView::Reset()
 	m_blendedWorld = 0;
 	m_savedCamera = 0;
 	m_elements = NULL;
-	m_unk0x6c = 0;
+	m_drawWorld = 0;
 	m_targetForwardSpeed = 0;
 	m_forwardSpeed = 0;
 	m_targetStrafeSpeed = 0;
@@ -106,7 +106,7 @@ LegoBool32 MenuSceneView::Destroy()
 // FUNCTION: LEGORACERS 0x00465900
 void MenuSceneView::LoadWorlds(CreateParams* p_createParams, undefined4 p_binary)
 {
-	m_unk0x6c = p_createParams->m_unk0x70;
+	m_drawWorld = p_createParams->m_drawWorld;
 	m_worldScale = p_createParams->m_worldScale;
 
 	m_world = m_golExport->VTable0x08();
@@ -374,7 +374,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 	m_renderer->VTable0xec(m_viewportClearMode);
 	FUN_00465ea0();
 
-	if (m_unk0x6c || !m_elements) {
+	if (m_drawWorld || !m_elements) {
 		m_world->FUN_00416040();
 	}
 
@@ -382,7 +382,7 @@ MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 		link->Draw();
 	}
 
-	if (m_unk0x6c && m_blendedWorld) {
+	if (m_drawWorld && m_blendedWorld) {
 		m_blendedWorld->FUN_00416040();
 	}
 
@@ -421,7 +421,7 @@ undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 		link->Update(p_elapsedMs);
 	}
 
-	if (m_unk0x6c) {
+	if (m_drawWorld) {
 		m_world->FUN_00416090(p_elapsedMs);
 
 		if (m_blendedWorld) {

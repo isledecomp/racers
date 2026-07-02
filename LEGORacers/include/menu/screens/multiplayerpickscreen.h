@@ -35,7 +35,7 @@ protected:
 	void FUN_00481b60(LegoS32 p_index);
 	void FUN_00481bf0(LegoS32 p_index);
 
-	MenuImage m_unk0x270c;                 // 0x270c
+	MenuImage m_photoImage;                // 0x270c
 	MenuImage m_unk0x2768[6];              // 0x2768
 	MenuTextLabel m_unk0x2990;             // 0x2990
 	MenuTextLabel m_unk0x2a08;             // 0x2a08

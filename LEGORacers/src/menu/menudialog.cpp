@@ -159,7 +159,7 @@ MenuDialog::TextLine::TextLine()
 // FUNCTION: LEGORACERS 0x0046f880
 MenuDialog::TextLine::~TextLine()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046f8d0
@@ -171,10 +171,10 @@ void MenuDialog::TextLine::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 	LegoFloat heightFloat;
 
 	m_unk0x64.CopyFromGolString(originalString);
-	if (m_unk0x34.m_right) {
+	if (m_rect.m_right) {
 		m_unk0x60->MeasureString(&m_unk0x64, &width, &height);
 
-		if (width < m_unk0x34.m_right - m_unk0x34.m_left) {
+		if (width < m_rect.m_right - m_rect.m_left) {
 			m_unk0x74 = FALSE;
 			MenuTextLabel::VTable0x40(originalString, p_unk0x08);
 			return;
@@ -182,26 +182,26 @@ void MenuDialog::TextLine::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 	}
 
 	m_unk0x74 = TRUE;
-	m_unk0x60->FUN_00408d50(&m_unk0x64, m_unk0x70, 0, m_unk0x44, m_unk0x48, &width, &height);
+	m_unk0x60->FUN_00408d50(&m_unk0x64, m_unk0x70, 0, m_scaleX, m_scaleY, &width, &height);
 
-	if (m_unk0x34.m_right && m_unk0x34.m_bottom && !p_unk0x08) {
-		LegoS32 bottom = m_unk0x34.m_bottom - m_unk0x34.m_top;
+	if (m_rect.m_right && m_rect.m_bottom && !p_unk0x08) {
+		LegoS32 bottom = m_rect.m_bottom - m_rect.m_top;
 		if (static_cast<LegoU32>(height) > static_cast<LegoU32>(bottom)) {
 			heightFloat = static_cast<LegoFloat>(height);
-			m_unk0x48 = static_cast<LegoFloat>(bottom) / heightFloat;
+			m_scaleY = static_cast<LegoFloat>(bottom) / heightFloat;
 		}
 	}
 	else {
-		m_unk0x34.m_right = width + m_unk0x34.m_left;
-		m_unk0x34.m_bottom = height + m_unk0x34.m_top;
+		m_rect.m_right = width + m_rect.m_left;
+		m_rect.m_bottom = height + m_rect.m_top;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0046f9b0
-MenuWidget* MenuDialog::TextLine::VTable0x38(Rect* p_rect, Rect* p_arg)
+MenuWidget* MenuDialog::TextLine::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	if (!m_unk0x74) {
-		return MenuTextLabel::VTable0x38(p_rect, p_arg);
+		return MenuTextLabel::DrawSelf(p_rect, p_arg);
 	}
 
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
@@ -210,9 +210,9 @@ MenuWidget* MenuDialog::TextLine::VTable0x38(Rect* p_rect, Rect* p_arg)
 	m_unk0x64.FirstLine();
 
 	Rect source;
-	source.m_bottom = yOffset + m_unk0x34.m_bottom - m_unk0x34.m_top;
+	source.m_bottom = yOffset + m_rect.m_bottom - m_rect.m_top;
 	source.m_top = yOffset;
-	source.m_right = xOffset + m_unk0x34.m_right - m_unk0x34.m_left;
+	source.m_right = xOffset + m_rect.m_right - m_rect.m_left;
 	source.m_left = xOffset;
 
 	DrawString(&source, p_arg, m_unk0x60, &m_unk0x64, m_unk0x70, m_unk0x58->m_unk0x10);

@@ -14,7 +14,7 @@ MenuImage::MenuImage()
 // FUNCTION: LEGORACERS 0x0046f0f0
 MenuImage::~MenuImage()
 {
-	MenuWidget::VTable0x08();
+	MenuWidget::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046f140
@@ -27,7 +27,7 @@ void MenuImage::Reset()
 // FUNCTION: LEGORACERS 0x0046f150
 LegoBool32 MenuImage::FUN_0046f150(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 
 	m_unk0x58 = p_createParams->m_unk0x38;
 
@@ -43,7 +43,7 @@ LegoBool32 MenuImage::FUN_0046f150(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0046f1a0
-MenuWidget* MenuImage::VTable0x38(Rect* p_rect, Rect* p_arg)
+MenuWidget* MenuImage::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	Rect sourceRect;
 	sourceRect.m_top = 0;
@@ -51,7 +51,7 @@ MenuWidget* MenuImage::VTable0x38(Rect* p_rect, Rect* p_arg)
 	sourceRect.m_right = m_unk0x58->GetWidth();
 	sourceRect.m_bottom = m_unk0x58->GetHeight();
 
-	ComputeScale(&sourceRect, &m_unk0x34);
+	ComputeScale(&sourceRect, &m_rect);
 	ScaleRect(p_rect, &sourceRect);
 	DrawImage(p_arg, &sourceRect, m_unk0x58);
 

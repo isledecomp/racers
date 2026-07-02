@@ -26,20 +26,20 @@ public:
 	};
 
 	MenuSelectorBase();
-	void Reset() override;                                                                // vtable+0x00
-	~MenuSelectorBase() override;                                                         // vtable+0x04
-	LegoBool32 VTable0x20(MenuInputDispatcher::Cursor*, undefined4, undefined4) override; // vtable+0x20
-	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x24
-	LegoBool32 VTable0x28(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x28
-	void VTable0x44(undefined4) override;                                                 // vtable+0x44
-	void VTable0x48(undefined4) override;                                                 // vtable+0x48
-	void VTable0x4c(undefined4) override;                                                 // vtable+0x4c
-	void VTable0x50(undefined4) override;                                                 // vtable+0x50
-	void VTable0x58(undefined4) override;                                                 // vtable+0x58
-	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                    // vtable+0x70
-	virtual undefined4 VTable0x74(undefined4) = 0;                                        // vtable+0x74
-	virtual void VTable0x78() = 0;                                                        // vtable+0x78
-	virtual void VTable0x7c() = 0;                                                        // vtable+0x7c
+	void Reset() override;                                                                         // vtable+0x00
+	~MenuSelectorBase() override;                                                                  // vtable+0x04
+	LegoBool32 DispatchCursorEvent(MenuInputDispatcher::Cursor*, undefined4, undefined4) override; // vtable+0x20
+	LegoBool32 DispatchKeyDown(InputEventQueue::Event*, undefined4, undefined4) override;          // vtable+0x24
+	LegoBool32 DispatchKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;            // vtable+0x28
+	void VTable0x44(undefined4) override;                                                          // vtable+0x44
+	void VTable0x48(undefined4) override;                                                          // vtable+0x48
+	void VTable0x4c(undefined4) override;                                                          // vtable+0x4c
+	void VTable0x50(undefined4) override;                                                          // vtable+0x50
+	void VTable0x58(undefined4) override;                                                          // vtable+0x58
+	virtual undefined4 VTable0x70(undefined4, undefined4, undefined4);                             // vtable+0x70
+	virtual undefined4 VTable0x74(undefined4) = 0;                                                 // vtable+0x74
+	virtual void VTable0x78() = 0;                                                                 // vtable+0x78
+	virtual void VTable0x7c() = 0;                                                                 // vtable+0x7c
 	MenuButton& GetUnk0x1ac() { return m_unk0x1ac; }
 	MenuButton& GetUnk0x3c8() { return m_unk0x3c8; }
 	undefined4 GetUnk0x5e4() const { return m_unk0x5e4; }
@@ -75,17 +75,17 @@ public:
 	};
 
 	MenuSelector();
-	void Reset() override;                                                            // vtable+0x00
-	~MenuSelector() override;                                                         // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
-	LegoBool32 VTable0x24(InputEventQueue::Event*, undefined4, undefined4) override;  // vtable+0x24
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
-	undefined4 VTable0x74(undefined4) override;                                       // vtable+0x74
-	void VTable0x78() override;                                                       // vtable+0x78
-	void VTable0x7c() override;                                                       // vtable+0x7c
+	void Reset() override;                                                                // vtable+0x00
+	~MenuSelector() override;                                                             // vtable+0x04
+	LegoBool32 Destroy() override;                                                        // vtable+0x08
+	void SetColor(VisualStateColor*) override;                                            // vtable+0x14
+	LegoBool32 DispatchKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x24
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override;      // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;        // vtable+0x34
+	undefined4 OnEvent(undefined4) override;                                              // vtable+0x3c
+	undefined4 VTable0x74(undefined4) override;                                           // vtable+0x74
+	void VTable0x78() override;                                                           // vtable+0x78
+	void VTable0x7c() override;                                                           // vtable+0x7c
 
 	LegoBool32 FUN_00467800(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry);
 	void SetUnk0x9ec(undefined4 p_unk0x9ec) { m_unk0x9ec = p_unk0x9ec; }

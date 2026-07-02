@@ -42,15 +42,15 @@ public:
 
 	MenuTextField();
 
-	void Reset() override;                                                            // vtable+0x00
-	~MenuTextField() override;                                                        // vtable+0x04
-	MenuWidget* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	void VTable0x4c(undefined4) override;                                             // vtable+0x4c
-	void VTable0x50(undefined4) override;                                             // vtable+0x50
-	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);       // vtable+0x70
+	void Reset() override;                                                           // vtable+0x00
+	~MenuTextField() override;                                                       // vtable+0x04
+	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+	void VTable0x4c(undefined4) override;                                            // vtable+0x4c
+	void VTable0x50(undefined4) override;                                            // vtable+0x50
+	virtual LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*);      // vtable+0x70
 	void FUN_00471100(undefined4 p_unk0x04);
 	void FUN_004711f0(GolString* p_string);
 	undefined2* GetBuffer() { return m_buffer; }

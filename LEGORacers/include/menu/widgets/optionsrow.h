@@ -12,20 +12,20 @@
 class OptionsRowBase : public MenuSelectorBase {
 public:
 	OptionsRowBase();
-	void Reset() override;                                                            // vtable+0x00
-	~OptionsRowBase() override;                                                       // vtable+0x04
-	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
-	undefined4 VTable0x74(undefined4) override;                                       // vtable+0x74
-	void VTable0x78() override;                                                       // vtable+0x78
-	void VTable0x7c() override;                                                       // vtable+0x7c
-	virtual void VTable0x80() = 0;                                                    // vtable+0x80
-	virtual void VTable0x84() = 0;                                                    // vtable+0x84
-	virtual void VTable0x88() = 0;                                                    // vtable+0x88
-	virtual void VTable0x8c() = 0;                                                    // vtable+0x8c
-	virtual void VTable0x90(LegoS32) = 0;                                             // vtable+0x90
+	void Reset() override;                                                           // vtable+0x00
+	~OptionsRowBase() override;                                                      // vtable+0x04
+	void SetColor(VisualStateColor*) override;                                       // vtable+0x14
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
+	undefined4 VTable0x74(undefined4) override;                                      // vtable+0x74
+	void VTable0x78() override;                                                      // vtable+0x78
+	void VTable0x7c() override;                                                      // vtable+0x7c
+	virtual void VTable0x80() = 0;                                                   // vtable+0x80
+	virtual void VTable0x84() = 0;                                                   // vtable+0x84
+	virtual void VTable0x88() = 0;                                                   // vtable+0x88
+	virtual void VTable0x8c() = 0;                                                   // vtable+0x8c
+	virtual void VTable0x90(LegoS32) = 0;                                            // vtable+0x90
 
 	LegoS32 GetUnk0x6c0() const { return m_unk0x6c0; }
 
@@ -58,7 +58,7 @@ class OptionsRow : public OptionsRowBase {
 public:
 	OptionsRow();
 	~OptionsRow() override;                                             // vtable+0x04
-	MenuWidget* VTable0x2c(void*, undefined4, undefined4) override;     // vtable+0x2c
+	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;  // vtable+0x2c
 	undefined4 VTable0x70(undefined4, undefined4, undefined4) override; // vtable+0x70
 	void VTable0x80() override;                                         // vtable+0x80
 	void VTable0x84() override;                                         // vtable+0x84

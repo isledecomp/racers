@@ -25,7 +25,7 @@ LegoBool32 MenuIcon::VTable0x5c()
 
 // FUNCTION: LEGORACERS 0x004676c0
 #pragma code_seg(".text$obscureicon_vt38")
-MenuWidget* MenuIcon::VTable0x38(Rect*, Rect*)
+MenuWidget* MenuIcon::DrawSelf(Rect*, Rect*)
 {
 	return NULL;
 }
@@ -40,7 +40,7 @@ MenuIcon::MenuIcon()
 // FUNCTION: LEGORACERS 0x00471ca0
 MenuIcon::~MenuIcon()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00471cf0
@@ -96,7 +96,7 @@ void MenuIcon::FUN_00471d90(CreateParams* p_createParams, const CreateState* p_c
 // FUNCTION: LEGORACERS 0x00471e30
 LegoBool32 MenuIcon::FUN_00471e30(CreateParams* p_createParams, const CreateState* p_createState)
 {
-	VTable0x08();
+	Destroy();
 	FUN_00471d90(p_createParams, p_createState);
 
 	if (FUN_00472a60(p_createParams)) {
@@ -116,13 +116,13 @@ LegoBool32 MenuIcon::FUN_00471e30(CreateParams* p_createParams, const CreateStat
 }
 
 // FUNCTION: LEGORACERS 0x00471ea0
-LegoBool32 MenuIcon::VTable0x08()
+LegoBool32 MenuIcon::Destroy()
 {
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
 		DetachFromParent();
-		result = MenuWidget::VTable0x08();
+		result = MenuWidget::Destroy();
 	}
 
 	return result;
@@ -298,7 +298,7 @@ void MenuIcon::RefreshVisualState()
 		BeginRectTransition();
 	}
 
-	VTable0x14(&m_unk0x174[m_visualStateIndex]);
+	SetColor(&m_unk0x174[m_visualStateIndex]);
 }
 
 // FUNCTION: LEGORACERS 0x004720f0
@@ -580,14 +580,14 @@ void MenuIcon::BeginRectTransition()
 	LegoFloat countFloat = (LegoFloat) count;
 
 	if (count) {
-		m_rectDeltaTop = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_top - m_unk0x34.m_top) / countFloat;
-		m_rectTopF = (LegoFloat) m_unk0x34.m_top;
-		m_rectDeltaBottom = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_bottom - m_unk0x34.m_bottom) / countFloat;
-		m_rectBottomF = (LegoFloat) m_unk0x34.m_bottom;
-		m_rectDeltaLeft = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_left - m_unk0x34.m_left) / countFloat;
-		m_rectLeftF = (LegoFloat) m_unk0x34.m_left;
-		m_rectDeltaRight = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_right - m_unk0x34.m_right) / countFloat;
-		m_rectRightF = (LegoFloat) m_unk0x34.m_right;
+		m_rectDeltaTop = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_top - m_rect.m_top) / countFloat;
+		m_rectTopF = (LegoFloat) m_rect.m_top;
+		m_rectDeltaBottom = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_bottom - m_rect.m_bottom) / countFloat;
+		m_rectBottomF = (LegoFloat) m_rect.m_bottom;
+		m_rectDeltaLeft = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_left - m_rect.m_left) / countFloat;
+		m_rectLeftF = (LegoFloat) m_rect.m_left;
+		m_rectDeltaRight = (LegoFloat) (m_unk0xcc[m_visualStateIndex].m_right - m_rect.m_right) / countFloat;
+		m_rectRightF = (LegoFloat) m_rect.m_right;
 
 		if (m_rectDeltaTop != 0.0f || m_rectDeltaBottom != 0.0f || m_rectDeltaLeft != 0.0f ||
 			m_rectDeltaRight != 0.0f) {
@@ -597,7 +597,7 @@ void MenuIcon::BeginRectTransition()
 }
 
 // FUNCTION: LEGORACERS 0x00472680
-undefined4 MenuIcon::VTable0x3c(undefined4 p_elapsedMs)
+undefined4 MenuIcon::OnEvent(undefined4 p_elapsedMs)
 {
 	if (!(m_unk0x54 & 1)) {
 		return 0;
@@ -606,7 +606,7 @@ undefined4 MenuIcon::VTable0x3c(undefined4 p_elapsedMs)
 	if (!m_transitionRemainingMs) {
 		m_unk0x54 &= ~1;
 
-		m_unk0x34 = m_unk0xcc[m_visualStateIndex];
+		m_rect = m_unk0xcc[m_visualStateIndex];
 		m_rectDeltaTop = 0.0f;
 		return 0;
 	}
@@ -625,16 +625,16 @@ undefined4 MenuIcon::VTable0x3c(undefined4 p_elapsedMs)
 	m_rectLeftF += delta * elapsedFloat;
 	delta = m_rectDeltaRight;
 	m_rectRightF += delta * elapsedFloat;
-	m_unk0x34.m_top = (LegoS32) m_rectTopF;
-	m_unk0x34.m_bottom = (LegoS32) m_rectBottomF;
-	m_unk0x34.m_left = (LegoS32) m_rectLeftF;
-	m_unk0x34.m_right = (LegoS32) m_rectRightF;
+	m_rect.m_top = (LegoS32) m_rectTopF;
+	m_rect.m_bottom = (LegoS32) m_rectBottomF;
+	m_rect.m_left = (LegoS32) m_rectLeftF;
+	m_rect.m_right = (LegoS32) m_rectRightF;
 
 	return 0;
 }
 
 // FUNCTION: LEGORACERS 0x00472790
-MenuWidget* MenuIcon::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuIcon::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU8 flag = 8;
 
@@ -645,8 +645,8 @@ MenuWidget* MenuIcon::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 	}
 
 	if (flag & m_flags) {
-		if (m_unk0x28) {
-			m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
+		if (m_eventHandler) {
+			m_eventHandler->VTable0x28(this, p_item, p_x, p_y);
 		}
 
 		return this;
@@ -662,15 +662,15 @@ MenuWidget* MenuIcon::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 		return NULL;
 	}
 
-	if (m_unk0x28) {
-		m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
+	if (m_eventHandler) {
+		m_eventHandler->VTable0x14(this, p_item, p_x, p_y);
 	}
 
 	return this;
 }
 
 // FUNCTION: LEGORACERS 0x00472820
-MenuWidget* MenuIcon::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuIcon::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode & InputDevice::c_sourceMask;
@@ -717,7 +717,7 @@ MenuWidget* MenuIcon::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x,
 }
 
 // FUNCTION: LEGORACERS 0x004728e0
-MenuWidget* MenuIcon::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuIcon::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 eventType = keyCode;
@@ -745,9 +745,9 @@ MenuWidget* MenuIcon::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x,
 }
 
 // FUNCTION: LEGORACERS 0x00472950
-void MenuIcon::VTable0x10(Rect* p_rect)
+void MenuIcon::SetRect(Rect* p_rect)
 {
-	MenuWidget::VTable0x10(p_rect);
+	MenuWidget::SetRect(p_rect);
 
 	for (LegoS32 i = 0; i < sizeOfArray(m_unk0x6c); i++) {
 		m_unk0xcc[i].m_top = m_unk0x6c[i].m_top + p_rect->m_top;

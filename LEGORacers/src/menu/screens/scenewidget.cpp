@@ -10,7 +10,7 @@ DECOMP_SIZE_ASSERT(MenuSceneScreen::SceneWidget, 0x2d0)
 // Keep this fold pair out of the unrelated MenuWidget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuSceneScreen::SceneWidget::VTable0x2c(void*, undefined4, undefined4)
+MenuWidget* MenuSceneScreen::SceneWidget::OnCursorEvent(void*, undefined4, undefined4)
 {
 	return NULL;
 }
@@ -25,7 +25,7 @@ MenuSceneScreen::SceneWidget::SceneWidget()
 // FUNCTION: LEGORACERS 0x00466aa0
 MenuSceneScreen::SceneWidget::~SceneWidget()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00466b10
@@ -46,7 +46,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466b10()
 undefined4 MenuSceneScreen::SceneWidget::FUN_00466b50(MenuScreen::SceneRefBinding* p_createParams, undefined4 p_unk0x08)
 {
 	if (m_flags & 1) {
-		VTable0x08();
+		Destroy();
 	}
 
 	if (FUN_00472a60(p_createParams)) {
@@ -130,7 +130,7 @@ void MenuSceneScreen::SceneWidget::FUN_00466d00(CutsceneDefinition::Frame* p_fra
 }
 
 // FUNCTION: LEGORACERS 0x00466d60
-LegoBool32 MenuSceneScreen::SceneWidget::VTable0x08()
+LegoBool32 MenuSceneScreen::SceneWidget::Destroy()
 {
 	m_unk0x58.Clear();
 	m_unk0x84.Clear();
@@ -140,7 +140,7 @@ LegoBool32 MenuSceneScreen::SceneWidget::VTable0x08()
 }
 
 // FUNCTION: LEGORACERS 0x00466d90
-undefined4 MenuSceneScreen::SceneWidget::VTable0x3c(undefined4 p_elapsedMs)
+undefined4 MenuSceneScreen::SceneWidget::OnEvent(undefined4 p_elapsedMs)
 {
 	if (m_unk0x2c8) {
 		return FALSE;
@@ -165,7 +165,7 @@ undefined4 MenuSceneScreen::SceneWidget::VTable0x3c(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00466e40
-MenuWidget* MenuSceneScreen::SceneWidget::VTable0x38(Rect*, Rect*)
+MenuWidget* MenuSceneScreen::SceneWidget::DrawSelf(Rect*, Rect*)
 {
 	if (m_unk0x2c8) {
 		return NULL;
@@ -183,7 +183,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00466ec0
-MenuWidget* MenuSceneScreen::SceneWidget::VTable0x30(InputEventQueue::Event* p_item, undefined4, undefined4)
+MenuWidget* MenuSceneScreen::SceneWidget::OnKeyDown(InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	MenuWidget* result = this;
 
@@ -204,7 +204,7 @@ MenuWidget* MenuSceneScreen::SceneWidget::VTable0x30(InputEventQueue::Event* p_i
 }
 
 // FUNCTION: LEGORACERS 0x00466f20
-MenuWidget* MenuSceneScreen::SceneWidget::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
+MenuWidget* MenuSceneScreen::SceneWidget::OnKeyUp(InputEventQueue::Event*, undefined4, undefined4)
 {
 	MenuWidget* result = this;
 

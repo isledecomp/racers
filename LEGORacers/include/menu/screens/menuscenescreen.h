@@ -26,12 +26,12 @@ public:
 		SceneWidget();
 		~SceneWidget() override; // vtable+0x04
 
-		LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-		MenuWidget* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
-		MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-		MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-		MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-		undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
+		LegoBool32 Destroy() override;                                                   // vtable+0x08
+		MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
+		MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+		MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+		MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+		undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
 
 		// SYNTHETIC: LEGORACERS 0x00466a80
 		// MenuSceneScreen::SceneWidget::`scalar deleting destructor'

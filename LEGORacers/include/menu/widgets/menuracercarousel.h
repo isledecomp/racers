@@ -27,7 +27,7 @@ public:
 
 	void Reset() override;                // vtable+0x00
 	~MenuRacerCarousel() override;        // vtable+0x04
-	LegoBool32 VTable0x08() override;     // vtable+0x08
+	LegoBool32 Destroy() override;        // vtable+0x08
 	void VTable0x50(undefined4) override; // vtable+0x50
 	LegoS32 VTable0x54() override;        // vtable+0x54
 	LegoS32 VTable0x58() override;        // vtable+0x58

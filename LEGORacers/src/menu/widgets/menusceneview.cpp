@@ -21,7 +21,7 @@ MenuSceneView::MenuSceneView()
 // FUNCTION: LEGORACERS 0x00465750
 MenuSceneView::~MenuSceneView()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004657a0
@@ -54,7 +54,7 @@ void MenuSceneView::Reset()
 // FUNCTION: LEGORACERS 0x00465820
 LegoBool32 MenuSceneView::FUN_00465820(CreateParams* p_createParams, undefined4 p_unk0x08)
 {
-	VTable0x08();
+	Destroy();
 	m_unk0x88 = p_createParams->m_unk0x78;
 
 	if (p_createParams->m_parent) {
@@ -78,7 +78,7 @@ LegoBool32 MenuSceneView::FUN_00465820(CreateParams* p_createParams, undefined4 
 }
 
 // FUNCTION: LEGORACERS 0x00465890
-LegoBool32 MenuSceneView::VTable0x08()
+LegoBool32 MenuSceneView::Destroy()
 {
 	LegoBool32 result = TRUE;
 
@@ -97,7 +97,7 @@ LegoBool32 MenuSceneView::VTable0x08()
 			m_golExport->VTable0x3c(m_unk0x60);
 		}
 
-		result = MenuWidget::VTable0x08();
+		result = MenuWidget::Destroy();
 	}
 
 	return result;
@@ -365,7 +365,7 @@ void MenuSceneView::FUN_00465ea0()
 }
 
 // FUNCTION: LEGORACERS 0x00465f20
-MenuWidget* MenuSceneView::VTable0x38(Rect*, Rect*)
+MenuWidget* MenuSceneView::DrawSelf(Rect*, Rect*)
 {
 	m_renderer->VTable0xe4();
 	m_unk0x68 = m_renderer->GetUnk0x0c();
@@ -395,9 +395,9 @@ MenuWidget* MenuSceneView::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x00465fe0
-MenuWidget* MenuSceneView::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuSceneView::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
-	if (m_unk0x28 && m_unk0x28->VTable0x18(this, p_item, p_x, p_y)) {
+	if (m_eventHandler && m_eventHandler->VTable0x18(this, p_item, p_x, p_y)) {
 		return this;
 	}
 
@@ -405,9 +405,9 @@ MenuWidget* MenuSceneView::VTable0x30(InputEventQueue::Event* p_item, undefined4
 }
 
 // FUNCTION: LEGORACERS 0x00466010
-MenuWidget* MenuSceneView::VTable0x34(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuSceneView::OnKeyUp(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
-	if (m_unk0x28 && m_unk0x28->VTable0x1c(this, p_item, p_x, p_y)) {
+	if (m_eventHandler && m_eventHandler->VTable0x1c(this, p_item, p_x, p_y)) {
 		return this;
 	}
 
@@ -415,10 +415,10 @@ MenuWidget* MenuSceneView::VTable0x34(InputEventQueue::Event* p_item, undefined4
 }
 
 // FUNCTION: LEGORACERS 0x00466040
-undefined4 MenuSceneView::VTable0x3c(undefined4 p_elapsedMs)
+undefined4 MenuSceneView::OnEvent(undefined4 p_elapsedMs)
 {
 	for (MenuSceneElement* link = m_unk0x58; link; link = link->GetNext()) {
-		link->VTable0x10(p_elapsedMs);
+		link->SetRect(p_elapsedMs);
 	}
 
 	if (m_unk0x6c) {
@@ -436,7 +436,7 @@ undefined4 MenuSceneView::VTable0x3c(undefined4 p_elapsedMs)
 // Keep this fold pair out of the unrelated MenuWidget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuSceneView::VTable0x2c(void*, undefined4, undefined4)
+MenuWidget* MenuSceneView::OnCursorEvent(void*, undefined4, undefined4)
 {
 	return NULL;
 }

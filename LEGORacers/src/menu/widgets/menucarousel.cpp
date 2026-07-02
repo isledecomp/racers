@@ -16,7 +16,7 @@ MenuCarousel::MenuCarousel()
 // FUNCTION: LEGORACERS 0x0046c8f0
 MenuCarousel::~MenuCarousel()
 {
-	VTable0x08();
+	Destroy();
 	Reset();
 }
 
@@ -35,7 +35,7 @@ void MenuCarousel::Reset()
 // FUNCTION: LEGORACERS 0x0046c970
 LegoBool32 MenuCarousel::FUN_0046c970(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry)
 {
-	VTable0x08();
+	Destroy();
 	m_unk0x58 = p_styleEntry;
 	m_unk0x5c = p_createParams->m_soundGroupBinding;
 
@@ -53,19 +53,19 @@ LegoS32 MenuCarousel::FUN_0046c9a0(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9c0
-void MenuCarousel::VTable0x14(VisualStateColor* p_visualState)
+void MenuCarousel::SetColor(VisualStateColor* p_visualState)
 {
 	for (MenuWidget* child = m_firstChild; child; child = child->GetNextSibling()) {
-		child->VTable0x14(p_visualState);
+		child->SetColor(p_visualState);
 	}
 
-	MenuWidget::VTable0x14(p_visualState);
+	MenuWidget::SetColor(p_visualState);
 }
 
 // Keep this null-return override in the scene-widget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuCarousel::VTable0x30(InputEventQueue::Event*, undefined4, undefined4)
+MenuWidget* MenuCarousel::OnKeyDown(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
 }
@@ -90,7 +90,7 @@ MenuScrollCarousel::MenuScrollCarousel()
 // FUNCTION: LEGORACERS 0x0046d890
 MenuScrollCarousel::~MenuScrollCarousel()
 {
-	VTable0x08();
+	Destroy();
 	Reset();
 }
 
@@ -144,11 +144,11 @@ void MenuScrollCarousel::VTable0x50(undefined4 p_unk0x04)
 // FUNCTION: LEGORACERS 0x0046d990
 void MenuScrollCarousel::VTable0x40()
 {
-	m_unk0x4c = m_unk0x78->GetRect()->m_left;
+	m_offsetX = m_unk0x78->GetRect()->m_left;
 
 	if (m_unk0x58->m_unk0x10) {
-		LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
-		m_unk0x4c = (m_unk0x4c / width) * width;
+		LegoS32 width = m_rect.m_right - m_rect.m_left;
+		m_offsetX = (m_offsetX / width) * width;
 	}
 }
 
@@ -156,7 +156,7 @@ void MenuScrollCarousel::VTable0x40()
 void MenuScrollCarousel::FUN_0046d9c0(MenuWidget* p_unk0x04)
 {
 	p_unk0x04->SetParent(this);
-	p_unk0x04->VTable0x14(&m_visualState);
+	p_unk0x04->SetColor(&m_visualState);
 	m_unk0x68++;
 	VTable0x5c(p_unk0x04);
 
@@ -207,8 +207,8 @@ void MenuCarouselNavigator::VTable0x5c(MenuWidget* p_child)
 	MenuStyleTable::CarouselStyle* style = m_unk0x58;
 	LegoS32 width = rect.m_right;
 	if (style->m_unk0x10) {
-		width = m_unk0x34.m_right;
-		width -= m_unk0x34.m_left;
+		width = m_rect.m_right;
+		width -= m_rect.m_left;
 	}
 	else {
 		width -= rect.m_left;
@@ -238,7 +238,7 @@ void MenuCarouselNavigator::VTable0x5c(MenuWidget* p_child)
 		rect = slot;
 	}
 
-	p_child->VTable0x10(&rect);
+	p_child->SetRect(&rect);
 }
 
 // FUNCTION: LEGORACERS 0x0046db40
@@ -251,7 +251,7 @@ void MenuCarouselNavigator::VTable0x44(undefined4 p_unk0x04)
 	m_unk0x70 = 1;
 	LegoFloat divisor = (LegoFloat) count;
 	m_unk0x8c = (LegoFloat) (LegoS32) p_unk0x04 / divisor;
-	m_unk0x90 = (LegoFloat) m_unk0x4c;
+	m_unk0x90 = (LegoFloat) m_offsetX;
 }
 
 // FUNCTION: LEGORACERS 0x0046db80
@@ -267,7 +267,7 @@ LegoS32 MenuCarouselNavigator::VTable0x54()
 			return m_unk0x6c;
 		}
 
-		VTable0x44(m_unk0x34.m_right - m_unk0x34.m_left);
+		VTable0x44(m_rect.m_right - m_rect.m_left);
 		VTable0x50(FUN_0046c9a0(m_unk0x6c + 1));
 		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[0]);
 	}
@@ -288,7 +288,7 @@ LegoS32 MenuCarouselNavigator::VTable0x58()
 			return m_unk0x6c;
 		}
 
-		VTable0x44(m_unk0x34.m_left - m_unk0x34.m_right);
+		VTable0x44(m_rect.m_left - m_rect.m_right);
 		VTable0x50(FUN_0046c9a0(m_unk0x6c - 1));
 		m_unk0x5c->PlaySoundByIndex(m_unk0x58->m_unk0x00[1]);
 	}
@@ -297,7 +297,7 @@ LegoS32 MenuCarouselNavigator::VTable0x58()
 }
 
 // FUNCTION: LEGORACERS 0x0046dc70
-MenuWidget* MenuCarouselNavigator::VTable0x38(Rect* p_param1, Rect* p_param2)
+MenuWidget* MenuCarouselNavigator::DrawSelf(Rect* p_param1, Rect* p_param2)
 {
 	Rect* lastChildRect = m_lastChild->GetRect();
 	MenuWidget* child = m_firstChild;
@@ -307,23 +307,23 @@ MenuWidget* MenuCarouselNavigator::VTable0x38(Rect* p_param1, Rect* p_param2)
 	}
 
 	do {
-		child->VTable0x1c(p_param1, p_param2);
+		child->Draw(p_param1, p_param2);
 		child = child->GetNextSibling();
 	} while (child);
 
 	LegoS32 width;
 	if (m_unk0x58->m_unk0x10) {
-		width = m_unk0x34.m_right - m_unk0x34.m_left;
+		width = m_rect.m_right - m_rect.m_left;
 	}
 	else {
 		width = lastChildRect->m_right - lastChildRect->m_left;
 	}
 
-	LegoS32 savedLeft = m_unk0x4c;
+	LegoS32 savedLeft = m_offsetX;
 	LegoS32 roundedExtent = ((lastChildRect->m_right + width - 1) / width) * width;
 
 	if (width + savedLeft > roundedExtent) {
-		m_unk0x4c = 0;
+		m_offsetX = 0;
 
 		Rect local1 = *p_param1;
 		Rect local2;
@@ -336,17 +336,17 @@ MenuWidget* MenuCarouselNavigator::VTable0x38(Rect* p_param1, Rect* p_param2)
 		local1.m_right = p_param2->m_right - local2.m_left;
 
 		for (child = m_firstChild; child; child = child->GetNextSibling()) {
-			child->VTable0x1c(&local1, &local2);
+			child->Draw(&local1, &local2);
 		}
 
-		m_unk0x4c = savedLeft;
+		m_offsetX = savedLeft;
 	}
 
 	return this;
 }
 
 // FUNCTION: LEGORACERS 0x0046dd80
-undefined4 MenuCarouselNavigator::VTable0x3c(undefined4 p_unk0x04)
+undefined4 MenuCarouselNavigator::OnEvent(undefined4 p_unk0x04)
 {
 	if (m_unk0x70) {
 		LegoS32 remaining = m_unk0x74;
@@ -356,8 +356,8 @@ undefined4 MenuCarouselNavigator::VTable0x3c(undefined4 p_unk0x04)
 			m_unk0x54 &= 0xfe;
 			VTable0x40();
 
-			if (m_unk0x28) {
-				m_unk0x28->VTable0x10(this);
+			if (m_eventHandler) {
+				m_eventHandler->VTable0x10(this);
 			}
 
 			return 0;
@@ -377,9 +377,9 @@ undefined4 MenuCarouselNavigator::VTable0x3c(undefined4 p_unk0x04)
 		if (m_unk0x90 < 0.0f) {
 			LegoS32 extent;
 			if (m_unk0x58->m_unk0x10) {
-				LegoS32 left = m_unk0x34.m_left;
-				LegoS32 width = m_unk0x34.m_right - left;
-				extent = ((m_lastChild->GetRect()->m_right - left + m_unk0x34.m_right - 1) / width) * width;
+				LegoS32 left = m_rect.m_left;
+				LegoS32 width = m_rect.m_right - left;
+				extent = ((m_lastChild->GetRect()->m_right - left + m_rect.m_right - 1) / width) * width;
 			}
 			else {
 				extent = m_lastChild->GetRect()->m_right;
@@ -388,7 +388,7 @@ undefined4 MenuCarouselNavigator::VTable0x3c(undefined4 p_unk0x04)
 			m_unk0x90 = m_unk0x90 + (LegoFloat) extent;
 		}
 
-		m_unk0x4c = (LegoS32) m_unk0x90;
+		m_offsetX = (LegoS32) m_unk0x90;
 	}
 
 	return 0;

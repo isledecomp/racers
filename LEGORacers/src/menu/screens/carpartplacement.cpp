@@ -393,7 +393,7 @@ CarModelScreenBase::CarPartPlacement::CarPartPlacement()
 // FUNCTION: LEGORACERS 0x004779d0
 CarModelScreenBase::CarPartPlacement::~CarPartPlacement()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00477a40
@@ -430,7 +430,7 @@ void CarModelScreenBase::CarPartPlacement::Reset()
 // FUNCTION: LEGORACERS 0x00477ae0
 LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00477ae0(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 
 	m_unk0x1c = p_createParams->m_screen;
 	m_unk0x20 = p_createParams->m_soundGroupBinding;
@@ -453,7 +453,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::FUN_00477ae0(CreateParams* p_cr
 }
 
 // FUNCTION: LEGORACERS 0x00477b80
-LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x08()
+LegoBool32 CarModelScreenBase::CarPartPlacement::Destroy()
 {
 	if (!m_unk0x18) {
 		return TRUE;
@@ -473,7 +473,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x08()
 		m_unk0x0c->VTable0x48(m_unk0x238);
 	}
 
-	return MenuSceneElement::VTable0x08();
+	return MenuSceneElement::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00477bf0
@@ -1040,7 +1040,7 @@ LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00478be0
-LegoBool32 CarModelScreenBase::CarPartPlacement::VTable0x10(undefined4 p_elapsed)
+LegoBool32 CarModelScreenBase::CarPartPlacement::SetRect(undefined4 p_elapsed)
 {
 	FUN_00478c70(p_elapsed);
 

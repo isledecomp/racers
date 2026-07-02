@@ -19,8 +19,8 @@ MenuSelectorBase::~MenuSelectorBase()
 // FUNCTION: LEGORACERS 0x00467060
 void MenuSelectorBase::Reset()
 {
-	m_unk0x1ac.VTable0x08();
-	m_unk0x3c8.VTable0x08();
+	m_unk0x1ac.Destroy();
+	m_unk0x3c8.Destroy();
 	m_unk0x1a8 = 0;
 	m_unk0x5e4 = 0;
 	MenuIcon::Reset();
@@ -198,7 +198,7 @@ undefined4 MenuSelectorBase::VTable0x70(undefined4 p_event, undefined4 p_x, unde
 }
 
 // FUNCTION: LEGORACERS 0x00467450
-LegoBool32 MenuSelectorBase::VTable0x20(MenuInputDispatcher::Cursor* p_cursor, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuSelectorBase::DispatchCursorEvent(MenuInputDispatcher::Cursor* p_cursor, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -209,7 +209,7 @@ LegoBool32 MenuSelectorBase::VTable0x20(MenuInputDispatcher::Cursor* p_cursor, u
 
 	ScreenToLocal(x, y);
 
-	if (HitTest(x, y) && VTable0x2c(p_cursor, x, y)) {
+	if (HitTest(x, y) && OnCursorEvent(p_cursor, x, y)) {
 		return TRUE;
 	}
 
@@ -217,7 +217,7 @@ LegoBool32 MenuSelectorBase::VTable0x20(MenuInputDispatcher::Cursor* p_cursor, u
 }
 
 // FUNCTION: LEGORACERS 0x004674c0
-LegoBool32 MenuSelectorBase::VTable0x24(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuSelectorBase::DispatchKeyDown(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -228,11 +228,11 @@ LegoBool32 MenuSelectorBase::VTable0x24(InputEventQueue::Event* p_param1, undefi
 
 	ScreenToLocal(x, y);
 
-	return MenuEventResult(VTable0x30(p_param1, x, y));
+	return MenuEventResult(OnKeyDown(p_param1, x, y));
 }
 
 // FUNCTION: LEGORACERS 0x00467510
-LegoBool32 MenuSelectorBase::VTable0x28(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuSelectorBase::DispatchKeyUp(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -243,7 +243,7 @@ LegoBool32 MenuSelectorBase::VTable0x28(InputEventQueue::Event* p_param1, undefi
 
 	ScreenToLocal(x, y);
 
-	return MenuEventResult(VTable0x34(p_param1, x, y));
+	return MenuEventResult(OnKeyUp(p_param1, x, y));
 }
 
 // FUNCTION: LEGORACERS 0x00467560
@@ -324,13 +324,13 @@ MenuSelector::MenuSelector()
 // FUNCTION: LEGORACERS 0x00467750
 MenuSelector::~MenuSelector()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004677b0
 void MenuSelector::Reset()
 {
-	m_unk0x5ec.VTable0x08();
+	m_unk0x5ec.Destroy();
 	m_unk0x9e8 = NULL;
 	m_unk0x9f0 = 0;
 	m_unk0x9ec = 0;
@@ -347,12 +347,12 @@ LegoBool32 MenuSelectorBase::FUN_004677e0(CreateParamsWithCarousel* p_createPara
 // FUNCTION: LEGORACERS 0x00467800
 LegoBool32 MenuSelector::FUN_00467800(CreateParams* p_createParams, MenuStyleTable::SelectorStyle* p_styleEntry)
 {
-	VTable0x08();
+	Destroy();
 
 	if (FUN_00467150(p_createParams, p_styleEntry) && FUN_004677e0(p_createParams)) {
 		m_styleEntry = p_styleEntry;
 		m_unk0x9e8 = p_createParams->m_unk0x90;
-		m_unk0x9e8->VTable0x14(&m_unk0x174[m_visualStateIndex]);
+		m_unk0x9e8->SetColor(&m_unk0x174[m_visualStateIndex]);
 		m_unk0x9ec = p_createParams->m_unk0x94;
 		m_unk0x9e8->SetParent(this);
 		return TRUE;
@@ -362,33 +362,33 @@ LegoBool32 MenuSelector::FUN_00467800(CreateParams* p_createParams, MenuStyleTab
 }
 
 // FUNCTION: LEGORACERS 0x00467880
-LegoBool32 MenuSelector::VTable0x08()
+LegoBool32 MenuSelector::Destroy()
 {
 	LegoBool32 result = TRUE;
 
 	if (result & m_flags) {
 		if (m_unk0x9e8) {
-			m_unk0x9e8->VTable0x08();
+			m_unk0x9e8->Destroy();
 		}
 
-		result = MenuIcon::VTable0x08();
+		result = MenuIcon::Destroy();
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x004678b0
-void MenuSelector::VTable0x14(VisualStateColor* p_visualState)
+void MenuSelector::SetColor(VisualStateColor* p_visualState)
 {
 	if (m_unk0x9e8) {
-		m_unk0x9e8->VTable0x14(p_visualState);
+		m_unk0x9e8->SetColor(p_visualState);
 	}
 
-	MenuWidget::VTable0x14(p_visualState);
+	MenuWidget::SetColor(p_visualState);
 }
 
 // FUNCTION: LEGORACERS 0x004678e0
-LegoBool32 MenuSelector::VTable0x24(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
+LegoBool32 MenuSelector::DispatchKeyDown(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	undefined4 x = p_x;
 	undefined4 y = p_y;
@@ -399,11 +399,11 @@ LegoBool32 MenuSelector::VTable0x24(InputEventQueue::Event* p_param1, undefined4
 
 	ScreenToLocal(x, y);
 
-	if (VTable0x30(p_param1, x, y)) {
+	if (OnKeyDown(p_param1, x, y)) {
 		return TRUE;
 	}
 
-	return m_unk0x9e8->VTable0x24(p_param1, x, y);
+	return m_unk0x9e8->DispatchKeyDown(p_param1, x, y);
 }
 
 // FUNCTION: LEGORACERS 0x00467960
@@ -441,7 +441,7 @@ void MenuSelector::VTable0x7c()
 }
 
 // FUNCTION: LEGORACERS 0x00467a00
-undefined4 MenuSelector::VTable0x3c(undefined4)
+undefined4 MenuSelector::OnEvent(undefined4)
 {
 	LegoU32 index = m_stateFlags & c_flagBit1;
 
@@ -488,7 +488,7 @@ undefined4 MenuSelector::VTable0x74(undefined4 p_event)
 }
 
 // FUNCTION: LEGORACERS 0x00467b50
-MenuWidget* MenuSelector::VTable0x30(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuSelector::OnKeyDown(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	LegoU8 stateFlags = m_stateFlags;
 	LegoU32 keyCode = p_param1->m_keyCode;
@@ -510,7 +510,7 @@ MenuWidget* MenuSelector::VTable0x30(InputEventQueue::Event* p_param1, undefined
 }
 
 // FUNCTION: LEGORACERS 0x00467be0
-MenuWidget* MenuSelector::VTable0x34(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuSelector::OnKeyUp(InputEventQueue::Event* p_param1, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_param1->m_keyCode;
 

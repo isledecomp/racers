@@ -14,7 +14,7 @@ MenuFramedSceneView::MenuFramedSceneView()
 // FUNCTION: LEGORACERS 0x00466120
 MenuFramedSceneView::~MenuFramedSceneView()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00466180
@@ -33,7 +33,7 @@ LegoBool32 MenuFramedSceneView::FUN_00466180(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x004661f0
 LegoBool32 MenuFramedSceneView::FUN_004661f0(CreateParams* p_createParams, undefined4 p_unk0x08)
 {
-	VTable0x08();
+	Destroy();
 
 	if (FUN_00466180(p_createParams)) {
 		p_createParams->m_rect.m_left = 0;

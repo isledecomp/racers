@@ -77,15 +77,15 @@ public:
 	};
 
 	MenuIcon();
-	void Reset() override;                                                            // vtable+0x00
-	~MenuIcon() override;                                                             // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	void VTable0x10(Rect*) override;                                                  // vtable+0x10
-	MenuWidget* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
+	void Reset() override;                                                           // vtable+0x00
+	~MenuIcon() override;                                                            // vtable+0x04
+	LegoBool32 Destroy() override;                                                   // vtable+0x08
+	void SetRect(Rect*) override;                                                    // vtable+0x10
+	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
 	virtual void VTable0x40(MenuScreenInterface*);
 	virtual void VTable0x44(undefined4);
 	virtual void VTable0x48(undefined4);

@@ -20,13 +20,13 @@ public:
 
 	MenuHotspotButton();
 
-	void Reset() override;                                                            // vtable+0x00
-	~MenuHotspotButton() override;                                                    // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	void VTable0x58(undefined4) override;                                             // vtable+0x58
+	void Reset() override;                                                           // vtable+0x00
+	~MenuHotspotButton() override;                                                   // vtable+0x04
+	LegoBool32 Destroy() override;                                                   // vtable+0x08
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+	void VTable0x58(undefined4) override;                                            // vtable+0x58
 
 	LegoBool32 FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry);
 	LegoU32 GetUnk0x224() const { return m_unk0x224; }

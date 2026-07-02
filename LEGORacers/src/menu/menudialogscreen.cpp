@@ -40,8 +40,8 @@ void MenuDialog::DialogScreen::Reset()
 	m_unk0x2c4 = 0;
 	m_unk0x2c8 = 0;
 	m_unk0x2b8 = 1;
-	m_unk0x2cc.VTable0x08();
-	m_unk0x6c8.VTable0x08();
+	m_unk0x2cc.Destroy();
+	m_unk0x6c8.Destroy();
 	MenuScreen::Reset();
 }
 
@@ -93,7 +93,7 @@ void MenuDialog::DialogScreen::FUN_00468390()
 	rect.m_bottom = rectBottom;
 	rect.m_right = m_unk0x740->GetRect()->m_right + 0x19;
 
-	m_unk0x740->VTable0x10(&rect);
+	m_unk0x740->SetRect(&rect);
 	m_unk0x740->SetParent(&m_unk0x2cc);
 	m_unk0x740->AttachToParent(GetUnk0xd8());
 	m_unk0x740->VTable0x4c(5);
@@ -116,7 +116,7 @@ void MenuDialog::DialogScreen::FUN_00468430()
 	rect.m_bottom = rectBottom;
 	rect.m_right = m_unk0x744->GetRect()->m_right + 0x19;
 
-	m_unk0x744->VTable0x10(&rect);
+	m_unk0x744->SetRect(&rect);
 	m_unk0x744->SetParent(&m_unk0x2cc);
 	m_unk0x744->AttachToParent(GetUnk0xd8());
 
@@ -145,7 +145,7 @@ void MenuDialog::DialogScreen::FUN_004684e0()
 	rect.m_bottom = rectBottom;
 	rect.m_right = rectRight;
 
-	m_unk0x748->VTable0x10(&rect);
+	m_unk0x748->SetRect(&rect);
 	m_unk0x748->SetParent(&m_unk0x2cc);
 	m_unk0x748->AttachToParent(GetUnk0xd8());
 
@@ -166,7 +166,7 @@ void MenuDialog::DialogScreen::FUN_00468590()
 	rect.m_bottom = m_unk0x6c8.GetRect()->m_bottom + 0x14;
 	rect.m_left = m_unk0x6c8.GetRect()->m_left + 0x14;
 	rect.m_right = m_unk0x6c8.GetRect()->m_right + 0x14;
-	m_unk0x6c8.VTable0x10(&rect);
+	m_unk0x6c8.SetRect(&rect);
 
 	m_unk0x29c = m_unk0xd8.GetRect()->m_right >> 1;
 	m_unk0x2a0 = m_unk0xd8.GetRect()->m_bottom >> 1;
@@ -372,7 +372,7 @@ LegoBool32 MenuDialog::DialogScreen::VTable0x78(undefined4 p_elapsedMs)
 	top -= y;
 	rect.m_top = top;
 
-	m_unk0x2cc.VTable0x10(&rect);
+	m_unk0x2cc.SetRect(&rect);
 
 	return m_unk0x2c4 == 0;
 }

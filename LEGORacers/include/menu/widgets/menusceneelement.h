@@ -21,11 +21,11 @@ public:
 	};
 
 	MenuSceneElement();
-	virtual void Reset();                          // vtable+0x00
-	virtual ~MenuSceneElement();                   // vtable+0x04
-	virtual LegoBool32 VTable0x08();               // vtable+0x08
-	virtual LegoBool32 VTable0x0c() = 0;           // vtable+0x0c
-	virtual LegoBool32 VTable0x10(undefined4) = 0; // vtable+0x10
+	virtual void Reset();                       // vtable+0x00
+	virtual ~MenuSceneElement();                // vtable+0x04
+	virtual LegoBool32 Destroy();               // vtable+0x08
+	virtual LegoBool32 VTable0x0c() = 0;        // vtable+0x0c
+	virtual LegoBool32 SetRect(undefined4) = 0; // vtable+0x10
 
 	LegoBool32 FUN_0046b300(CreateParams* p_createParams);
 	MenuSceneElement* FUN_0046b350(MenuSceneElement* p_parent);

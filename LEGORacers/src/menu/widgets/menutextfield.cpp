@@ -20,7 +20,7 @@ MenuTextField::MenuTextField()
 // FUNCTION: LEGORACERS 0x00470f40
 MenuTextField::~MenuTextField()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00470fb0
@@ -41,7 +41,7 @@ void MenuTextField::Reset()
 // FUNCTION: LEGORACERS 0x00471040
 LegoBool32 MenuTextField::VTable0x70(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
 {
-	VTable0x08();
+	Destroy();
 
 	m_soundIds.m_idPairs[0] = p_createParams->m_soundIds.m_idPairs[0];
 	m_soundIds.m_idPairs[1] = p_createParams->m_soundIds.m_idPairs[1];
@@ -108,7 +108,7 @@ void MenuTextField::VTable0x50(undefined4 p_flags)
 }
 
 // FUNCTION: LEGORACERS 0x00471260
-MenuWidget* MenuTextField::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuTextField::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU8 flag = 8;
 
@@ -123,8 +123,8 @@ MenuWidget* MenuTextField::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p
 	}
 
 	if (flag & m_flags) {
-		if (m_unk0x28) {
-			m_unk0x28->VTable0x28(this, p_item, p_x, p_y);
+		if (m_eventHandler) {
+			m_eventHandler->VTable0x28(this, p_item, p_x, p_y);
 		}
 
 		return this;
@@ -140,15 +140,15 @@ MenuWidget* MenuTextField::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p
 		return NULL;
 	}
 
-	if (m_unk0x28) {
-		m_unk0x28->VTable0x14(this, p_item, p_x, p_y);
+	if (m_eventHandler) {
+		m_eventHandler->VTable0x14(this, p_item, p_x, p_y);
 	}
 
 	return this;
 }
 
 // STUB: LEGORACERS 0x00471300
-MenuWidget* MenuTextField::VTable0x38(Rect* p_rect, Rect* p_arg)
+MenuWidget* MenuTextField::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
@@ -306,7 +306,7 @@ MenuWidget* MenuTextField::FUN_00471560(InputEventQueue::Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x00471810
-MenuWidget* MenuTextField::VTable0x30(InputEventQueue::Event* p_event, undefined4, undefined4)
+MenuWidget* MenuTextField::OnKeyDown(InputEventQueue::Event* p_event, undefined4, undefined4)
 {
 	if (m_stateFlags & c_flagBit1) {
 		LegoU32 mode = m_unk0x1f8;
@@ -326,7 +326,7 @@ MenuWidget* MenuTextField::VTable0x30(InputEventQueue::Event* p_event, undefined
 // Keep this null-return override in the scene-widget null-return fold group.
 #pragma code_seg(".text$legoracers_00466090")
 // FUNCTION: LEGORACERS 0x00466090 FOLDED
-MenuWidget* MenuTextField::VTable0x34(InputEventQueue::Event*, undefined4, undefined4)
+MenuWidget* MenuTextField::OnKeyUp(InputEventQueue::Event*, undefined4, undefined4)
 {
 	return NULL;
 }

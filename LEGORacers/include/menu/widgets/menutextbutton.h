@@ -31,13 +31,13 @@ public:
 	};
 
 	MenuTextButton();
-	void Reset() override;                                                            // vtable+0x00
-	~MenuTextButton() override;                                                       // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	void VTable0x10(Rect*) override;                                                  // vtable+0x10
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	void VTable0x40(MenuScreenInterface*) override;                                   // vtable+0x40
+	void Reset() override;                                                         // vtable+0x00
+	~MenuTextButton() override;                                                    // vtable+0x04
+	LegoBool32 Destroy() override;                                                 // vtable+0x08
+	void SetRect(Rect*) override;                                                  // vtable+0x10
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                   // vtable+0x38
+	void VTable0x40(MenuScreenInterface*) override;                                // vtable+0x40
 	void FUN_00482790(undefined4);
 	void FUN_00482810(GolString* p_string);
 	LegoBool32 FUN_004826c0(CreateParams* p_createParams, MenuStyleTable::TextButtonStyle* p_styleEntry);

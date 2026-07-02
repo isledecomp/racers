@@ -250,7 +250,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 		if (active) {
 			Rect* rect = active->GetGlobalRect();
 
-			if (active->VTable0x30(p_item, x - rect->m_left, y - rect->m_top)) {
+			if (active->OnKeyDown(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;
 			}
 		}
@@ -262,7 +262,7 @@ LegoS32 MenuInputDispatcher::DispatchMouseButtonEvent(InputEventQueue::Event* p_
 		if (active) {
 			Rect* rect = active->GetGlobalRect();
 
-			if (active->VTable0x34(p_item, x - rect->m_left, y - rect->m_top)) {
+			if (active->OnKeyUp(p_item, x - rect->m_left, y - rect->m_top)) {
 				return TRUE;
 			}
 		}
@@ -292,12 +292,12 @@ void MenuInputDispatcher::DispatchMouseMove(MouseInputDevice* p_mouse)
 
 	if (!m_activeScreen->VTable0x14(icon, cursor, x, y)) {
 		if (active) {
-			if (active->VTable0x2c(cursor, (LegoS32) p_mouse->GetAxisValue(1), (LegoS32) p_mouse->GetAxisValue(2))) {
+			if (active->OnCursorEvent(cursor, (LegoS32) p_mouse->GetAxisValue(1), (LegoS32) p_mouse->GetAxisValue(2))) {
 				return;
 			}
 		}
 
-		icon->VTable0x20(cursor, x, y);
+		icon->DispatchCursorEvent(cursor, x, y);
 	}
 }
 
@@ -350,10 +350,10 @@ LegoS32 MenuInputDispatcher::ProcessInputEvents(MenuIcon*)
 				MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 				if (item->m_isPressed) {
-					icon->VTable0x24(item, x, y);
+					icon->DispatchKeyDown(item, x, y);
 				}
 				else {
-					icon->VTable0x28(item, x, y);
+					icon->DispatchKeyUp(item, x, y);
 				}
 				break;
 			}
@@ -369,7 +369,7 @@ LegoS32 MenuInputDispatcher::Update(undefined4 p_elapsedMs)
 	MenuIcon* icon = m_activeScreen->GetUnk0xd8();
 
 	if (icon) {
-		icon->VTable0x18(p_elapsedMs);
+		icon->BroadcastEvent(p_elapsedMs);
 		if (!ProcessInputEvents(icon)) {
 			return FALSE;
 		}

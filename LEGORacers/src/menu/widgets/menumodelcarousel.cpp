@@ -32,7 +32,7 @@ MenuModelCarousel::MenuModelCarousel()
 // FUNCTION: LEGORACERS 0x0046ca80
 MenuModelCarousel::~MenuModelCarousel()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046cad0
@@ -75,7 +75,7 @@ LegoBool32 MenuModelCarousel::FUN_0046cb10(CreateParams* p_createParams, MenuSty
 }
 
 // FUNCTION: LEGORACERS 0x0046cba0
-LegoBool32 MenuModelCarousel::VTable0x08()
+LegoBool32 MenuModelCarousel::Destroy()
 {
 	LegoBool32 result = TRUE;
 
@@ -94,7 +94,7 @@ LegoBool32 MenuModelCarousel::VTable0x08()
 			m_golExport->VTable0x54(m_unk0x80);
 		}
 
-		result = MenuWidget::VTable0x08();
+		result = MenuWidget::Destroy();
 	}
 
 	return result;
@@ -225,21 +225,21 @@ void MenuModelCarousel::FUN_0046ce10(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x0046cf20
 void MenuModelCarousel::FUN_0046cf20()
 {
-	LegoS32 left = m_unk0x34.m_left;
-	LegoS32 width = m_unk0x34.m_right - left;
-	LegoS32 top = m_unk0x34.m_top;
-	LegoS32 height = m_unk0x34.m_bottom - top;
+	LegoS32 left = m_rect.m_left;
+	LegoS32 width = m_rect.m_right - left;
+	LegoS32 top = m_rect.m_top;
+	LegoS32 height = m_rect.m_bottom - top;
 	LegoS32 halfWidth = -(width >> 1);
 	Item* item = m_unk0x7c;
 	LegoS32 zero = 0;
 	LegoS32 i = zero;
 
 	LegoFloat widthFloat = static_cast<LegoFloat>(width);
-	m_unk0x44 = (m_unk0x80->m_nearHalfWidth + m_unk0x80->m_nearHalfWidth) / widthFloat;
+	m_scaleX = (m_unk0x80->m_nearHalfWidth + m_unk0x80->m_nearHalfWidth) / widthFloat;
 	LegoFloat heightNumerator = m_unk0x80->m_nearHalfHeight;
 	heightNumerator += heightNumerator;
 	LegoFloat heightFloat = static_cast<LegoFloat>(height);
-	m_unk0x48 = heightNumerator / heightFloat;
+	m_scaleY = heightNumerator / heightFloat;
 
 	if (m_unk0x60 > zero) {
 		do {
@@ -247,9 +247,9 @@ void MenuModelCarousel::FUN_0046cf20()
 
 			LegoS32 rectLeft = rect->m_left;
 			rectLeft += halfWidth;
-			item->m_unk0x00 = static_cast<LegoFloat>(rectLeft) * m_unk0x44;
-			item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_unk0x44;
-			item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_unk0x48;
+			item->m_unk0x00 = static_cast<LegoFloat>(rectLeft) * m_scaleX;
+			item->m_unk0x08 = item->m_unk0x00 + static_cast<LegoFloat>(rect->m_right - rect->m_left) * m_scaleX;
+			item->m_unk0x04 = static_cast<LegoFloat>(rect->m_bottom - rect->m_top) * m_scaleY;
 			item->m_unk0x0c = 0.0f;
 			item->m_unk0x24 = 0.0f;
 
@@ -469,7 +469,7 @@ void MenuModelCarousel::SetParent(MenuWidget* p_parent)
 }
 
 // FUNCTION: LEGORACERS 0x0046d5c0
-MenuWidget* MenuModelCarousel::VTable0x30(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuModelCarousel::OnKeyDown(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
 {
 	if (!HitTest(p_x, p_y)) {
 		return NULL;
@@ -484,8 +484,8 @@ MenuWidget* MenuModelCarousel::VTable0x30(InputEventQueue::Event* p_event, undef
 			LegoS32 index = FUN_0046c9a0(i + m_unk0x6c - m_unk0x64);
 			VTable0x50(index);
 
-			if (m_unk0x28) {
-				m_unk0x28->VTable0x18(this, p_event, p_x, p_y);
+			if (m_eventHandler) {
+				m_eventHandler->VTable0x18(this, p_event, p_x, p_y);
 			}
 
 			return this;
@@ -496,7 +496,7 @@ MenuWidget* MenuModelCarousel::VTable0x30(InputEventQueue::Event* p_event, undef
 }
 
 // FUNCTION: LEGORACERS 0x0046d670
-MenuWidget* MenuModelCarousel::VTable0x38(Rect*, Rect*)
+MenuWidget* MenuModelCarousel::DrawSelf(Rect*, Rect*)
 {
 	Item* item = m_unk0x7c;
 
@@ -529,7 +529,7 @@ MenuWidget* MenuModelCarousel::VTable0x38(Rect*, Rect*)
 }
 
 // FUNCTION: LEGORACERS 0x0046d780
-undefined4 MenuModelCarousel::VTable0x3c(undefined4 p_elapsed)
+undefined4 MenuModelCarousel::OnEvent(undefined4 p_elapsed)
 {
 	undefined4 elapsed;
 

@@ -17,7 +17,7 @@ RacerModelSlot::RacerModelSlot()
 // FUNCTION: LEGORACERS 0x00487520
 RacerModelSlot::~RacerModelSlot()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // STUB: LEGORACERS 0x00487570
@@ -47,7 +47,7 @@ void RacerModelSlot::Reset()
 // FUNCTION: LEGORACERS 0x004875d0
 LegoBool32 RacerModelSlot::FUN_004875d0(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 	m_unk0x1c = *p_createParams;
 	return MenuSceneElement::FUN_0046b300(p_createParams);
 }
@@ -163,7 +163,7 @@ LegoBool32 RacerModelSlot::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x00487820
-LegoBool32 RacerModelSlot::VTable0x10(LegoU32 p_elapsed)
+LegoBool32 RacerModelSlot::SetRect(LegoU32 p_elapsed)
 {
 	FUN_00487630(p_elapsed);
 	FUN_004876f0(p_elapsed);

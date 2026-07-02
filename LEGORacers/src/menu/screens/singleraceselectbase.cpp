@@ -88,7 +88,7 @@ void SingleRaceSelectBase::VTable0x4c()
 	rect.m_top = 0;
 	rect.m_right = m_unk0x368.GetRect()->m_right - m_unk0x368.GetRect()->m_left;
 	rect.m_bottom = m_unk0x368.GetRect()->m_bottom - m_unk0x368.GetRect()->m_top;
-	m_unk0x1860.VTable0x10(&rect);
+	m_unk0x1860.SetRect(&rect);
 	m_unk0x1860.SetAlphaOverride(200);
 	m_unk0x1860.ClearFlags(2);
 

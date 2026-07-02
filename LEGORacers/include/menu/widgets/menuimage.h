@@ -19,9 +19,9 @@ public:
 
 	MenuImage();
 
-	void Reset() override;                         // vtable+0x00
-	~MenuImage() override;                         // vtable+0x04
-	MenuWidget* VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	void Reset() override;                       // vtable+0x00
+	~MenuImage() override;                       // vtable+0x04
+	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 	LegoBool32 FUN_0046f150(CreateParams* p_createParams);
 	void SetUnk0x58(UtopianPan0xa4* p_unk0x58) { m_unk0x58 = p_unk0x58; }
 

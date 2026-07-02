@@ -19,11 +19,11 @@ public:
 
 	MenuColorBox();
 
-	void Reset() override;                         // vtable+0x00
-	~MenuColorBox() override;                      // vtable+0x04
-	void VTable0x10(Rect*) override;               // vtable+0x10
-	MenuWidget* VTable0x38(Rect*, Rect*) override; // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;    // vtable+0x3c
+	void Reset() override;                       // vtable+0x00
+	~MenuColorBox() override;                    // vtable+0x04
+	void SetRect(Rect*) override;                // vtable+0x10
+	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
+	undefined4 OnEvent(undefined4) override;     // vtable+0x3c
 
 	LegoBool32 FUN_00467f70(CreateParams* p_createParams);
 	void FUN_00467fc0(LegoS32 p_x, LegoS32 p_y);

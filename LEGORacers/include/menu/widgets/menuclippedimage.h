@@ -12,8 +12,8 @@ class MenuClippedImage : public MenuImage {
 public:
 	MenuClippedImage();
 
-	~MenuClippedImage() override;                  // vtable+0x04
-	MenuWidget* VTable0x38(Rect*, Rect*) override; // vtable+0x38
+	~MenuClippedImage() override;                // vtable+0x04
+	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
 
 	// SYNTHETIC: LEGORACERS 0x0046f250
 	// MenuClippedImage::`scalar deleting destructor'

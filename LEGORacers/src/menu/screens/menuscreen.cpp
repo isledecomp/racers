@@ -153,7 +153,7 @@ void MenuScreen::Reset()
 	m_unk0x28c = 0;
 	m_unk0x08.Clear();
 	m_unk0x58.Clear();
-	m_unk0xd8.VTable0x08();
+	m_unk0xd8.Destroy();
 	m_initialized = FALSE;
 }
 
@@ -848,7 +848,7 @@ LegoBool32 MenuScreen::VTable0x78(undefined4)
 // FUNCTION: LEGORACERS 0x0046c7e0 FOLDED
 LegoBool32 MenuScreen::VTable0x7c(Rect* p_arg1, Rect* p_arg2)
 {
-	m_unk0xd8.VTable0x1c(p_arg1, p_arg2);
+	m_unk0xd8.Draw(p_arg1, p_arg2);
 	return TRUE;
 }
 

@@ -33,14 +33,14 @@ public:
 
 	MenuSceneView();
 
-	void Reset() override;                                                            // vtable+0x00
-	~MenuSceneView() override;                                                        // vtable+0x04
-	LegoBool32 VTable0x08() override;                                                 // vtable+0x08
-	MenuWidget* VTable0x2c(void*, undefined4, undefined4) override;                   // vtable+0x2c
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x34(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x34
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;                                       // vtable+0x3c
+	void Reset() override;                                                           // vtable+0x00
+	~MenuSceneView() override;                                                       // vtable+0x04
+	LegoBool32 Destroy() override;                                                   // vtable+0x08
+	MenuWidget* OnCursorEvent(void*, undefined4, undefined4) override;               // vtable+0x2c
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* OnKeyUp(InputEventQueue::Event*, undefined4, undefined4) override;   // vtable+0x34
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+	undefined4 OnEvent(undefined4) override;                                         // vtable+0x3c
 	LegoBool32 FUN_00465820(CreateParams* p_createParams, undefined4 p_unk0x08);
 	MenuSceneElement* FUN_00465b40(MenuSceneElement* p_unk0x04);
 	void FUN_00465ab0(GolVec3* p_unk0x04, GolVec3* p_unk0x08);

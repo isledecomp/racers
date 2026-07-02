@@ -33,8 +33,8 @@ public:
 
 	void Reset() override;                                 // vtable+0x00
 	~CarPartCarousel() override;                           // vtable+0x04
-	LegoBool32 VTable0x08() override;                      // vtable+0x08
-	undefined4 VTable0x3c(undefined4) override;            // vtable+0x3c
+	LegoBool32 Destroy() override;                         // vtable+0x08
+	undefined4 OnEvent(undefined4) override;               // vtable+0x3c
 	void VTable0x50(undefined4) override;                  // vtable+0x50
 	LegoS32 VTable0x54() override;                         // vtable+0x54
 	LegoS32 VTable0x58() override;                         // vtable+0x58

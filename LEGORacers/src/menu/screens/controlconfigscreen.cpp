@@ -173,7 +173,7 @@ void ControlConfigScreen::VTable0x44(MenuWidget* p_unk0x04)
 // FUNCTION: LEGORACERS 0x0047abd0
 void ControlConfigScreen::VTable0x34(MenuIcon* p_source)
 {
-	LegoS32 eventIndex = p_source->GetUnk0x30() - m_unk0x144c[0].GetUnk0x30();
+	LegoS32 eventIndex = p_source->GetId() - m_unk0x144c[0].GetId();
 
 	if (eventIndex >= 0 && static_cast<LegoU32>(eventIndex) <= 8) {
 		InputDevice* device = m_unk0x368[m_unk0x3a0];
@@ -224,7 +224,7 @@ LegoBool32 ControlConfigScreen::VTable0x18(MenuWidget*, InputEventQueue::Event* 
 				return TRUE;
 			}
 
-			state.SetInputEvent(entryIndex, m_unk0x390->GetUnk0x30() - m_unk0x144c[0].GetUnk0x30(), keyCode);
+			state.SetInputEvent(entryIndex, m_unk0x390->GetId() - m_unk0x144c[0].GetId(), keyCode);
 			device->SetEventMappings(m_unk0x394, m_unk0x398);
 			m_unk0x390->VTable0x58(0);
 			m_unk0x390 = NULL;

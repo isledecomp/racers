@@ -27,7 +27,7 @@ MenuRacerCarousel::MenuRacerCarousel()
 // FUNCTION: LEGORACERS 0x004839e0
 MenuRacerCarousel::~MenuRacerCarousel()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00483a30
@@ -60,7 +60,7 @@ LegoBool32 MenuRacerCarousel::FUN_00483a60(CreateParams* p_createParams, MenuSty
 }
 
 // FUNCTION: LEGORACERS 0x00483af0
-LegoBool32 MenuRacerCarousel::VTable0x08()
+LegoBool32 MenuRacerCarousel::Destroy()
 {
 	LegoBool32 result = TRUE;
 
@@ -73,7 +73,7 @@ LegoBool32 MenuRacerCarousel::VTable0x08()
 			delete[] m_materialTables;
 		}
 
-		result = MenuModelCarousel::VTable0x08();
+		result = MenuModelCarousel::Destroy();
 	}
 
 	return result;

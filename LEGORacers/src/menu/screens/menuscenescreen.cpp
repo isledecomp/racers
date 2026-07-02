@@ -108,7 +108,7 @@ LegoBool32 MenuSceneScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCre
 LegoBool32 MenuSceneScreen::Destroy()
 {
 	m_unk0x638.ReleaseOwnedBuffers();
-	m_unk0x368.VTable0x08();
+	m_unk0x368.Destroy();
 
 	if (m_renderer && m_unk0x650) {
 		m_renderer->VTable0x20(m_unk0x650);

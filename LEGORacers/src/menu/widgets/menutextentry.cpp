@@ -15,7 +15,7 @@ MenuTextEntry::MenuTextEntry()
 // FUNCTION: LEGORACERS 0x004718d0
 MenuTextEntry::~MenuTextEntry()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00471930
@@ -56,7 +56,7 @@ void MenuTextEntry::FUN_00471a30()
 	m_font->MeasureString(&m_text, &width, &height);
 
 	m_text.FirstLine();
-	m_unk0x23c.FUN_00467fc0(m_unk0x34.m_left + width, m_unk0x34.m_bottom - 6);
+	m_unk0x23c.FUN_00467fc0(m_rect.m_left + width, m_rect.m_bottom - 6);
 }
 
 // FUNCTION: LEGORACERS 0x00471aa0
@@ -80,14 +80,14 @@ LegoBool32 MenuTextEntry::FUN_00471aa0(CreateParams* p_createParams)
 // FUNCTION: LEGORACERS 0x00471b20
 LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIcon::CreateState* p_createState)
 {
-	VTable0x08();
+	Destroy();
 
 	if (MenuTextField::VTable0x70(p_createParams, p_createState)) {
 		if (FUN_00471aa0(p_createParams)) {
 			FUN_00471930(p_createParams);
 		}
 		else {
-			VTable0x08();
+			Destroy();
 		}
 	}
 
@@ -95,9 +95,9 @@ LegoBool32 MenuTextEntry::VTable0x70(CreateParams* p_createParams, const MenuIco
 }
 
 // FUNCTION: LEGORACERS 0x00471b70
-MenuWidget* MenuTextEntry::VTable0x38(Rect* p_param1, Rect* p_param2)
+MenuWidget* MenuTextEntry::DrawSelf(Rect* p_param1, Rect* p_param2)
 {
-	MenuWidget* result = MenuTextField::VTable0x38(p_param1, p_param2);
+	MenuWidget* result = MenuTextField::DrawSelf(p_param1, p_param2);
 	FUN_00471a30();
 
 	if (m_stateFlags & 2) {
@@ -120,9 +120,9 @@ MenuWidget* MenuTextEntry::VTable0x38(Rect* p_param1, Rect* p_param2)
 }
 
 // FUNCTION: LEGORACERS 0x00471c00
-MenuWidget* MenuTextEntry::VTable0x30(InputEventQueue::Event* p_param1, undefined4 p_param2, undefined4 p_param3)
+MenuWidget* MenuTextEntry::OnKeyDown(InputEventQueue::Event* p_param1, undefined4 p_param2, undefined4 p_param3)
 {
-	MenuWidget* result = MenuTextField::VTable0x30(p_param1, p_param2, p_param3);
+	MenuWidget* result = MenuTextField::OnKeyDown(p_param1, p_param2, p_param3);
 	FUN_00471a30();
 
 	return result;

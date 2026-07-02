@@ -13,7 +13,7 @@ MenuTriangle::MenuTriangle()
 // FUNCTION: LEGORACERS 0x00473510
 MenuTriangle::~MenuTriangle()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00473560
@@ -36,22 +36,22 @@ void MenuTriangle::Reset()
 // FUNCTION: LEGORACERS 0x004735a0
 LegoBool32 MenuTriangle::FUN_004735a0(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 	return FUN_00472a60(p_createParams);
 }
 
 // FUNCTION: LEGORACERS 0x004735c0
-void MenuTriangle::VTable0x14(VisualStateColor* p_param)
+void MenuTriangle::SetColor(VisualStateColor* p_param)
 {
 	m_vertices[0].m_color = p_param->m_color;
 	m_vertices[1].m_color = p_param->m_color;
 	m_vertices[2].m_color = p_param->m_color;
 
-	MenuWidget::VTable0x14(p_param);
+	MenuWidget::SetColor(p_param);
 }
 
 // FUNCTION: LEGORACERS 0x004735f0
-MenuWidget* MenuTriangle::VTable0x38(Rect*, Rect* p_rect)
+MenuWidget* MenuTriangle::DrawSelf(Rect*, Rect* p_rect)
 {
 	LegoU32 alphaFlags = 0;
 	LegoU32 alphaOverride = m_alphaOverride;

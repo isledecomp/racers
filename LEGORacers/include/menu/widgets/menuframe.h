@@ -23,8 +23,8 @@ public:
 	};
 
 	MenuFrame();
-	~MenuFrame() override;           // vtable+0x04
-	void VTable0x10(Rect*) override; // vtable+0x10
+	~MenuFrame() override;        // vtable+0x04
+	void SetRect(Rect*) override; // vtable+0x10
 
 	// SYNTHETIC: LEGORACERS 0x0046ec30
 	// MenuFrame::`scalar deleting destructor'

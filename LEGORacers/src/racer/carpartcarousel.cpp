@@ -33,7 +33,7 @@ CarPartCarousel::CarPartCarousel()
 // FUNCTION: LEGORACERS 0x00485270
 CarPartCarousel::~CarPartCarousel()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004852c0
@@ -64,7 +64,7 @@ LegoBool32 CarPartCarousel::Create(CreateParams* p_createParams, MenuStyleTable:
 }
 
 // FUNCTION: LEGORACERS 0x00485350
-LegoBool32 CarPartCarousel::VTable0x08()
+LegoBool32 CarPartCarousel::Destroy()
 {
 	LegoBool32 result = TRUE;
 
@@ -74,7 +74,7 @@ LegoBool32 CarPartCarousel::VTable0x08()
 			m_unk0x7c[i].m_model = NULL;
 		}
 
-		result = MenuModelCarousel::VTable0x08();
+		result = MenuModelCarousel::Destroy();
 	}
 
 	return result;
@@ -277,7 +277,7 @@ LegoS32 CarPartCarousel::VTable0x58()
 }
 
 // FUNCTION: LEGORACERS 0x00485840
-undefined4 CarPartCarousel::VTable0x3c(undefined4 p_elapsed)
+undefined4 CarPartCarousel::OnEvent(undefined4 p_elapsed)
 {
 	LegoFloat step = m_unk0xbc;
 	LegoFloat scaled = (LegoFloat) (LegoS32) p_elapsed;
@@ -285,5 +285,5 @@ undefined4 CarPartCarousel::VTable0x3c(undefined4 p_elapsed)
 		m_rotationAngle -= g_twoPi;
 	}
 
-	return MenuModelCarousel::VTable0x3c(p_elapsed);
+	return MenuModelCarousel::OnEvent(p_elapsed);
 }

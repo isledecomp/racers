@@ -13,10 +13,10 @@ class MenuTextEntry : public MenuTextField {
 public:
 	MenuTextEntry();
 
-	~MenuTextEntry() override;                                                        // vtable+0x04
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	MenuWidget* VTable0x38(Rect*, Rect*) override;                                    // vtable+0x38
-	LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*) override;      // vtable+0x70
+	~MenuTextEntry() override;                                                       // vtable+0x04
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	MenuWidget* DrawSelf(Rect*, Rect*) override;                                     // vtable+0x38
+	LegoBool32 VTable0x70(CreateParams*, const MenuIcon::CreateState*) override;     // vtable+0x70
 
 	undefined2* GetUnk0x300() { return m_unk0x300; }
 	DriverCosmetics* GetUnk0x328() { return &m_unk0x328; }

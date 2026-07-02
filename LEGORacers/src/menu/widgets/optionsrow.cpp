@@ -7,7 +7,7 @@ DECOMP_SIZE_ASSERT(OptionsRowBase, 0x6e4)
 DECOMP_SIZE_ASSERT(OptionsRow, 0x6ec)
 
 // FUNCTION: LEGORACERS 0x004113b0 FOLDED
-undefined4 OptionsRowBase::VTable0x3c(undefined4)
+undefined4 OptionsRowBase::OnEvent(undefined4)
 {
 	return 0;
 }
@@ -21,7 +21,7 @@ OptionsRowBase::OptionsRowBase()
 // FUNCTION: LEGORACERS 0x0046def0
 OptionsRowBase::~OptionsRowBase()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046df60
@@ -32,8 +32,8 @@ void OptionsRowBase::Reset()
 	m_unk0x6c4 = 0;
 	m_unk0x6cc = 0.0f;
 	m_styleEntry = NULL;
-	m_unk0x648.VTable0x08();
-	m_unk0x5ec.VTable0x08();
+	m_unk0x648.Destroy();
+	m_unk0x5ec.Destroy();
 	MenuIcon::Reset();
 }
 
@@ -43,7 +43,7 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 	MenuStyleTable::CompositeStyle* p_styleEntry
 )
 {
-	VTable0x08();
+	Destroy();
 
 	m_styleEntry = p_styleEntry;
 	m_unk0x6c0 = p_createParams->m_unk0xb0;
@@ -64,21 +64,21 @@ LegoBool32 OptionsRowBase::FUN_0046dfb0(
 			VTable0x80();
 			VTable0x84();
 			VTable0x88();
-			VTable0x14(&m_visualState);
+			SetColor(&m_visualState);
 			return TRUE;
 		}
 	}
 
-	VTable0x08();
+	Destroy();
 	return FALSE;
 }
 
 // FUNCTION: LEGORACERS 0x0046e090
-void OptionsRowBase::VTable0x14(VisualStateColor* p_visualState)
+void OptionsRowBase::SetColor(VisualStateColor* p_visualState)
 {
-	m_unk0x648.VTable0x14(p_visualState);
-	m_unk0x5ec.VTable0x14(p_visualState);
-	MenuWidget::VTable0x14(p_visualState);
+	m_unk0x648.SetColor(p_visualState);
+	m_unk0x5ec.SetColor(p_visualState);
+	MenuWidget::SetColor(p_visualState);
 }
 
 // FUNCTION: LEGORACERS 0x0046e0d0
@@ -137,7 +137,7 @@ undefined4 OptionsRowBase::VTable0x74(undefined4 p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0046e210
-MenuWidget* OptionsRowBase::VTable0x30(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
+MenuWidget* OptionsRowBase::OnKeyDown(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
 {
 	LegoU8 stateFlags = m_stateFlags;
 	LegoU32 keyCode = p_event->m_keyCode;
@@ -176,7 +176,7 @@ MenuWidget* OptionsRowBase::VTable0x30(InputEventQueue::Event* p_event, undefine
 }
 
 // FUNCTION: LEGORACERS 0x0046e340
-MenuWidget* OptionsRowBase::VTable0x34(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
+MenuWidget* OptionsRowBase::OnKeyUp(InputEventQueue::Event* p_event, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_event->m_keyCode;
 
@@ -214,7 +214,7 @@ OptionsRow::OptionsRow()
 // FUNCTION: LEGORACERS 0x0046e460
 OptionsRow::~OptionsRow()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046e4b0
@@ -235,13 +235,13 @@ void OptionsRow::VTable0x80()
 	Rect rect;
 	rect.m_top = 0;
 	rect.m_left = 0;
-	rect.m_bottom = m_unk0x34.m_bottom - m_unk0x34.m_top;
+	rect.m_bottom = m_rect.m_bottom - m_rect.m_top;
 	rect.m_right = m_unk0x1ac.GetRect()->m_right - m_unk0x1ac.GetRect()->m_left;
-	m_unk0x1ac.VTable0x10(&rect);
+	m_unk0x1ac.SetRect(&rect);
 
-	rect.m_right = m_unk0x34.m_right - m_unk0x34.m_left;
+	rect.m_right = m_rect.m_right - m_rect.m_left;
 	rect.m_left = rect.m_right + (m_unk0x3c8.GetRect()->m_left - m_unk0x3c8.GetRect()->m_right);
-	m_unk0x3c8.VTable0x10(&rect);
+	m_unk0x3c8.SetRect(&rect);
 }
 
 // FUNCTION: LEGORACERS 0x0046e5b0
@@ -252,10 +252,10 @@ void OptionsRow::VTable0x84()
 	rect.m_right = m_unk0x3c8.GetRect()->m_left - 1;
 
 	LegoS32 height = m_unk0x648.GetRect()->m_bottom - m_unk0x648.GetRect()->m_top;
-	rect.m_top = ((m_unk0x34.m_bottom - m_unk0x34.m_top) >> 1) - (height >> 1);
+	rect.m_top = ((m_rect.m_bottom - m_rect.m_top) >> 1) - (height >> 1);
 	rect.m_bottom = rect.m_top + height;
 
-	m_unk0x648.VTable0x10(&rect);
+	m_unk0x648.SetRect(&rect);
 	m_unk0x6d0 = *m_unk0x648.GetGlobalRect();
 }
 
@@ -267,10 +267,10 @@ void OptionsRow::VTable0x88()
 	rect.m_right = m_unk0x5ec.GetRect()->m_right + rect.m_left;
 
 	LegoS32 height = m_unk0x5ec.GetRect()->m_bottom - m_unk0x5ec.GetRect()->m_top;
-	rect.m_top = ((m_unk0x34.m_bottom - m_unk0x34.m_top) >> 1) - (height >> 1);
+	rect.m_top = ((m_rect.m_bottom - m_rect.m_top) >> 1) - (height >> 1);
 	rect.m_bottom = rect.m_top + height;
 
-	m_unk0x5ec.VTable0x10(&rect);
+	m_unk0x5ec.SetRect(&rect);
 	FUN_0046e4b0();
 	VTable0x90(m_unk0x6c0);
 }
@@ -295,7 +295,7 @@ void OptionsRow::VTable0x90(LegoS32 p_unk0x04)
 		LegoS32 width = rect.m_right - rect.m_left;
 		rect.m_left = m_unk0x6c4 + static_cast<LegoS32>(step * index) - (width >> 1);
 		rect.m_right = width + rect.m_left;
-		m_unk0x5ec.VTable0x10(&rect);
+		m_unk0x5ec.SetRect(&rect);
 
 		m_unk0x6c0 = p_unk0x04;
 		if (m_eventHandler) {
@@ -323,9 +323,9 @@ undefined4 OptionsRow::VTable0x70(undefined4 p_event, undefined4 p_x, undefined4
 }
 
 // STUB: LEGORACERS 0x0046e810
-MenuWidget* OptionsRow::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* OptionsRow::OnCursorEvent(void* p_item, undefined4 p_x, undefined4 p_y)
 {
-	MenuIcon::VTable0x2c(p_item, p_x, p_y);
+	MenuIcon::OnCursorEvent(p_item, p_x, p_y);
 
 	if (!(m_flags & 8)) {
 		return NULL;
@@ -350,7 +350,7 @@ MenuWidget* OptionsRow::VTable0x2c(void* p_item, undefined4 p_x, undefined4 p_y)
 			rect.m_left = rect.m_right - width;
 		}
 
-		m_unk0x5ec.VTable0x10(&rect);
+		m_unk0x5ec.SetRect(&rect);
 	}
 
 	return this;

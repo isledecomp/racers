@@ -25,7 +25,7 @@ MainMenuModelSlot::MainMenuModelSlot()
 // FUNCTION: LEGORACERS 0x0047df00
 MainMenuModelSlot::~MainMenuModelSlot()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047df60
@@ -72,7 +72,7 @@ void MainMenuModelSlot::FUN_0047df90()
 // FUNCTION: LEGORACERS 0x0047e0a0
 LegoBool32 MainMenuModelSlot::FUN_0047e0a0(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 	m_unk0x150 = p_createParams->m_unk0x0c;
 
 	if (MenuSceneElement::FUN_0046b300(p_createParams)) {
@@ -84,7 +84,7 @@ LegoBool32 MainMenuModelSlot::FUN_0047e0a0(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0047e0e0
-LegoBool32 MainMenuModelSlot::VTable0x08()
+LegoBool32 MainMenuModelSlot::Destroy()
 {
 	if (!m_unk0x18) {
 		return TRUE;
@@ -100,7 +100,7 @@ LegoBool32 MainMenuModelSlot::VTable0x08()
 		m_unk0x0c->VTable0x4c(m_unk0x114);
 	}
 
-	return MenuSceneElement::VTable0x08();
+	return MenuSceneElement::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0047e130
@@ -152,7 +152,7 @@ LegoBool32 MainMenuModelSlot::VTable0x0c()
 }
 
 // FUNCTION: LEGORACERS 0x0047e290
-LegoBool32 MainMenuModelSlot::VTable0x10(undefined4 p_unk0x04)
+LegoBool32 MainMenuModelSlot::SetRect(undefined4 p_unk0x04)
 {
 	m_unk0x1c.VTable0x10(p_unk0x04);
 	return TRUE;

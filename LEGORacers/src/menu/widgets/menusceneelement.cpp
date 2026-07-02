@@ -11,7 +11,7 @@ MenuSceneElement::MenuSceneElement()
 // FUNCTION: LEGORACERS 0x0046b2d0
 MenuSceneElement::~MenuSceneElement()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046b2e0
@@ -28,7 +28,7 @@ void MenuSceneElement::Reset()
 // FUNCTION: LEGORACERS 0x0046b300
 LegoBool32 MenuSceneElement::FUN_0046b300(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 	m_unk0x0c = p_createParams->m_golExport;
 	m_unk0x10 = p_createParams->m_renderer;
 	m_unk0x14 = p_createParams->m_unk0x08;
@@ -38,7 +38,7 @@ LegoBool32 MenuSceneElement::FUN_0046b300(CreateParams* p_createParams)
 }
 
 // FUNCTION: LEGORACERS 0x0046b330
-LegoBool32 MenuSceneElement::VTable0x08()
+LegoBool32 MenuSceneElement::Destroy()
 {
 	if (m_unk0x18) {
 		Reset();

@@ -13,7 +13,7 @@ MenuClippedImage::MenuClippedImage()
 // FUNCTION: LEGORACERS 0x0046f270
 MenuClippedImage::~MenuClippedImage()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046f2c0
@@ -45,7 +45,7 @@ void MenuClippedImage::FUN_0046f2c0(Rect* p_rect)
 }
 
 // FUNCTION: LEGORACERS 0x0046f330
-MenuWidget* MenuClippedImage::VTable0x38(Rect* p_rect, Rect* p_arg)
+MenuWidget* MenuClippedImage::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 imageWidth = m_unk0x58->GetWidth();
 	LegoS32 imageHeight = m_unk0x58->GetHeight();

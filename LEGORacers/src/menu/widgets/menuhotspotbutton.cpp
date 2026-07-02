@@ -14,7 +14,7 @@ MenuHotspotButton::MenuHotspotButton()
 // FUNCTION: LEGORACERS 0x00466580
 MenuHotspotButton::~MenuHotspotButton()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004665d0
@@ -28,7 +28,7 @@ void MenuHotspotButton::Reset()
 // FUNCTION: LEGORACERS 0x004665f0
 LegoBool32 MenuHotspotButton::FUN_004665f0(CreateParams* p_createParams, MenuStyleTable::HotspotStyle* p_styleEntry)
 {
-	VTable0x08();
+	Destroy();
 
 	m_unk0x220 = p_createParams->m_unk0x9c;
 	m_unk0x21c = p_styleEntry;
@@ -37,12 +37,12 @@ LegoBool32 MenuHotspotButton::FUN_004665f0(CreateParams* p_createParams, MenuSty
 }
 
 // FUNCTION: LEGORACERS 0x00466620
-LegoBool32 MenuHotspotButton::VTable0x08()
+LegoBool32 MenuHotspotButton::Destroy()
 {
 	LegoBool32 result = TRUE;
 
 	if (m_flags & 1) {
-		return MenuButton::VTable0x08();
+		return MenuButton::Destroy();
 	}
 
 	return result;
@@ -79,10 +79,10 @@ void MenuHotspotButton::FUN_00466690(LegoU32 p_code)
 }
 
 // FUNCTION: LEGORACERS 0x00466700
-MenuWidget* MenuHotspotButton::VTable0x38(Rect* p_arg1, Rect* p_arg2)
+MenuWidget* MenuHotspotButton::DrawSelf(Rect* p_arg1, Rect* p_arg2)
 {
-	MenuButton::VTable0x38(p_arg1, p_arg2);
-	m_unk0x1c0.VTable0x38(p_arg1, p_arg2);
+	MenuButton::DrawSelf(p_arg1, p_arg2);
+	m_unk0x1c0.DrawSelf(p_arg1, p_arg2);
 
 	if (m_unk0x224) {
 		LegoS32 index = 0;
@@ -124,7 +124,7 @@ MenuWidget* MenuHotspotButton::FUN_00466800(InputEventQueue::Event*, undefined4 
 }
 
 // FUNCTION: LEGORACERS 0x00466880
-MenuWidget* MenuHotspotButton::VTable0x30(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
+MenuWidget* MenuHotspotButton::OnKeyDown(InputEventQueue::Event* p_item, undefined4 p_x, undefined4 p_y)
 {
 	LegoU32 keyCode = p_item->m_keyCode;
 	LegoU32 source = keyCode & InputDevice::c_sourceMask;
@@ -175,7 +175,7 @@ MenuWidget* MenuHotspotButton::VTable0x30(InputEventQueue::Event* p_item, undefi
 }
 
 // FUNCTION: LEGORACERS 0x00466980
-MenuWidget* MenuHotspotButton::VTable0x34(InputEventQueue::Event* p_item, undefined4, undefined4)
+MenuWidget* MenuHotspotButton::OnKeyUp(InputEventQueue::Event* p_item, undefined4, undefined4)
 {
 	LegoU32 source = p_item->m_keyCode & InputDevice::c_sourceMask;
 	LegoU8 stateFlags = m_stateFlags;

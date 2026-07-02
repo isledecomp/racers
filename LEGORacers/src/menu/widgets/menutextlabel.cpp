@@ -15,7 +15,7 @@ MenuTextLabel::MenuTextLabel()
 // FUNCTION: LEGORACERS 0x0046f490
 MenuTextLabel::~MenuTextLabel()
 {
-	MenuWidget::VTable0x08();
+	MenuWidget::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046f4f0
@@ -33,7 +33,7 @@ void MenuTextLabel::Reset()
 // FUNCTION: LEGORACERS 0x0046f520
 LegoBool32 MenuTextLabel::FUN_0046f520(CreateParams* p_createParams, MenuStyleTable::TextStyle* p_unk0x08)
 {
-	VTable0x08();
+	Destroy();
 
 	m_unk0x60 = p_createParams->m_unk0x3c;
 	m_unk0x5c = p_createParams->m_unk0x38;
@@ -67,23 +67,23 @@ void MenuTextLabel::VTable0x40(GolString* p_string, LegoS32 p_unk0x08)
 	m_unk0x64.CopyFromGolString(p_string);
 	m_unk0x64.ToUpperCase();
 
-	if (!m_unk0x34.m_right || !m_unk0x34.m_bottom || p_unk0x08) {
+	if (!m_rect.m_right || !m_rect.m_bottom || p_unk0x08) {
 		LegoS32 height;
 
 		m_unk0x64.FirstLine();
-		m_unk0x34.m_bottom = m_unk0x34.m_top;
-		m_unk0x34.m_right = m_unk0x34.m_left;
+		m_rect.m_bottom = m_rect.m_top;
+		m_rect.m_right = m_rect.m_left;
 
 		for (LegoS32 i = 0; i < m_unk0x64.CountLines(); i++) {
 			m_unk0x60->MeasureString(&m_unk0x64, &p_unk0x08, &height);
 
-			LegoU32 right = m_unk0x34.m_left + p_unk0x08;
-			LegoU32 currentRight = m_unk0x34.m_right;
+			LegoU32 right = m_rect.m_left + p_unk0x08;
+			LegoU32 currentRight = m_rect.m_right;
 			if (right > currentRight) {
-				m_unk0x34.m_right = right;
+				m_rect.m_right = right;
 			}
 
-			m_unk0x34.m_bottom += height;
+			m_rect.m_bottom += height;
 			m_unk0x64.NextLine();
 		}
 
@@ -99,24 +99,24 @@ void MenuTextLabel::FUN_0046f6b0(LegoS32 p_rightMargin)
 
 	if (m_parent) {
 		right = m_parent->GetRect()->m_right - m_parent->GetRect()->m_left - p_rightMargin;
-		left = m_unk0x34.m_left;
+		left = m_rect.m_left;
 	}
 	else {
-		right = m_unk0x34.m_right;
-		left = m_unk0x34.m_left;
+		right = m_rect.m_right;
+		left = m_rect.m_left;
 	}
 
-	LegoS32 width = m_unk0x34.m_right - left;
-	m_unk0x34.m_right = right;
-	m_unk0x34.m_left = right - width;
+	LegoS32 width = m_rect.m_right - left;
+	m_rect.m_right = right;
+	m_rect.m_left = right - width;
 }
 
 // STUB: LEGORACERS 0x0046f6f0
-MenuWidget* MenuTextLabel::VTable0x38(Rect* p_rect, Rect* p_arg)
+MenuWidget* MenuTextLabel::DrawSelf(Rect* p_rect, Rect* p_arg)
 {
 	LegoS32 lineCount = m_unk0x64.CountLines();
 	LegoFloat lineCountFloat = static_cast<LegoFloat>(lineCount);
-	LegoFloat lineHeight = static_cast<LegoFloat>(m_unk0x34.m_bottom - m_unk0x34.m_top) / lineCountFloat;
+	LegoFloat lineHeight = static_cast<LegoFloat>(m_rect.m_bottom - m_rect.m_top) / lineCountFloat;
 	LegoS32 xOffset = p_arg->m_left - p_rect->m_left;
 	LegoS32 yOffset = p_arg->m_top - p_rect->m_top;
 	LegoFloat lineBottom = 0.0f;
@@ -132,7 +132,7 @@ MenuWidget* MenuTextLabel::VTable0x38(Rect* p_rect, Rect* p_arg)
 			lineBottom += lineHeight;
 			lineTop = (LegoS32) lineBottom;
 			source.m_bottom = lineTop;
-			source.m_right = m_unk0x34.m_right - m_unk0x34.m_left;
+			source.m_right = m_rect.m_right - m_rect.m_left;
 
 			Rect dest;
 			MeasureText(m_unk0x60, &m_unk0x64, &source, &dest, 0);

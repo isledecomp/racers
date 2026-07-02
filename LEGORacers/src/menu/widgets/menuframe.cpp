@@ -17,24 +17,24 @@ MenuFrame::MenuFrame()
 // FUNCTION: LEGORACERS 0x0046ec50
 MenuFrame::~MenuFrame()
 {
-	VTable0x08();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0046ecd0
 LegoBool32 MenuFrame::FUN_0046ecd0(CreateParams* p_createParams)
 {
-	VTable0x08();
+	Destroy();
 
 	if (FUN_00472a60(p_createParams) && FUN_0046edf0(p_createParams) && FUN_0046ed30(p_createParams)) {
 		if (!p_createParams->m_unk0x5c) {
 			m_unk0x58.ClearFlags(0x10);
 		}
 
-		VTable0x10(&p_createParams->m_rect);
+		SetRect(&p_createParams->m_rect);
 		return TRUE;
 	}
 
-	VTable0x08();
+	Destroy();
 	return FALSE;
 }
 
@@ -77,13 +77,13 @@ LegoBool32 MenuFrame::FUN_0046edf0(CreateParams* p_createParams)
 }
 
 // STUB: LEGORACERS 0x0046ee40
-void MenuFrame::VTable0x10(Rect* p_rect)
+void MenuFrame::SetRect(Rect* p_rect)
 {
-	MenuWidget::VTable0x10(p_rect);
+	MenuWidget::SetRect(p_rect);
 
 	if (m_flags & 1) {
-		LegoS32 width = m_unk0x34.m_right - m_unk0x34.m_left;
-		LegoS32 height = m_unk0x34.m_bottom - m_unk0x34.m_top;
+		LegoS32 width = m_rect.m_right - m_rect.m_left;
+		LegoS32 height = m_rect.m_bottom - m_rect.m_top;
 
 		Rect rect;
 		Rect rect2;
@@ -104,9 +104,9 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 		rect3.m_right = width;
 		rect3.m_bottom = m_images[0]->GetHeight();
 
-		m_unk0xfc[0].VTable0x10(&rect);
-		m_unk0xfc[1].VTable0x10(&rect2);
-		m_unk0xfc[2].VTable0x10(&rect3);
+		m_unk0xfc[0].SetRect(&rect);
+		m_unk0xfc[1].SetRect(&rect2);
+		m_unk0xfc[2].SetRect(&rect3);
 
 		rect2.m_left = width - m_images[3]->GetWidth();
 		rect2.m_top = m_images[0]->GetHeight();
@@ -118,8 +118,8 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 		rect.m_right = width;
 		rect.m_bottom = height;
 
-		m_unk0xfc[3].VTable0x10(&rect2);
-		m_unk0xfc[4].VTable0x10(&rect);
+		m_unk0xfc[3].SetRect(&rect2);
+		m_unk0xfc[4].SetRect(&rect);
 
 		rect2.m_left = m_images[6]->GetWidth();
 		rect2.m_top = height - m_images[5]->GetHeight();
@@ -131,8 +131,8 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 		rect3.m_right = m_images[6]->GetWidth();
 		rect3.m_bottom = height;
 
-		m_unk0xfc[5].VTable0x10(&rect2);
-		m_unk0xfc[6].VTable0x10(&rect3);
+		m_unk0xfc[5].SetRect(&rect2);
+		m_unk0xfc[6].SetRect(&rect3);
 
 		rect2.m_left = 0;
 		rect2.m_top = m_unk0xfc[0].GetRect()->m_bottom;
@@ -144,8 +144,8 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 		rect.m_right = m_unk0xfc[2].GetRect()->m_left;
 		rect.m_bottom = m_unk0xfc[6].GetRect()->m_top;
 
-		m_unk0xfc[7].VTable0x10(&rect2);
-		m_unk0x58.VTable0x10(&rect);
+		m_unk0xfc[7].SetRect(&rect2);
+		m_unk0x58.SetRect(&rect);
 	}
 }
 
@@ -153,6 +153,6 @@ void MenuFrame::VTable0x10(Rect* p_rect)
 void MenuFrame::FUN_0046f050(VisualStateColor* p_visualState)
 {
 	for (LegoS32 i = 0; i < 8; i++) {
-		m_unk0xfc[i].VTable0x14(p_visualState);
+		m_unk0xfc[i].SetColor(p_visualState);
 	}
 }

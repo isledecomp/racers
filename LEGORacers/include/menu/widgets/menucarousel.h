@@ -16,17 +16,17 @@ public:
 	class CreateParams : public MenuWidget::CreateParams {};
 
 	MenuCarousel();
-	void Reset() override;                                                            // vtable+0x00
-	~MenuCarousel() override;                                                         // vtable+0x04
-	void VTable0x14(VisualStateColor*) override;                                      // vtable+0x14
-	MenuWidget* VTable0x30(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
-	virtual void VTable0x40() = 0;                                                    // vtable+0x40
-	virtual void VTable0x44(undefined4) = 0;                                          // vtable+0x44
-	virtual void VTable0x48(VisualStateColor*, VisualStateColor*);                    // vtable+0x48
-	virtual void VTable0x4c(VisualStateColor*, VisualStateColor*);                    // vtable+0x4c
-	virtual void VTable0x50(undefined4) = 0;                                          // vtable+0x50
-	virtual LegoS32 VTable0x54() = 0;                                                 // vtable+0x54
-	virtual LegoS32 VTable0x58() = 0;                                                 // vtable+0x58
+	void Reset() override;                                                           // vtable+0x00
+	~MenuCarousel() override;                                                        // vtable+0x04
+	void SetColor(VisualStateColor*) override;                                       // vtable+0x14
+	MenuWidget* OnKeyDown(InputEventQueue::Event*, undefined4, undefined4) override; // vtable+0x30
+	virtual void VTable0x40() = 0;                                                   // vtable+0x40
+	virtual void VTable0x44(undefined4) = 0;                                         // vtable+0x44
+	virtual void VTable0x48(VisualStateColor*, VisualStateColor*);                   // vtable+0x48
+	virtual void VTable0x4c(VisualStateColor*, VisualStateColor*);                   // vtable+0x4c
+	virtual void VTable0x50(undefined4) = 0;                                         // vtable+0x50
+	virtual LegoS32 VTable0x54() = 0;                                                // vtable+0x54
+	virtual LegoS32 VTable0x58() = 0;                                                // vtable+0x58
 
 	LegoBool32 FUN_0046c970(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
 	LegoS32 FUN_0046c9a0(LegoS32 p_index);
@@ -81,12 +81,12 @@ public:
 	// FUNCTION: LEGORACERS 0x00488dd0
 	MenuCarouselNavigator() {}
 
-	MenuWidget* VTable0x38(Rect*, Rect*) override; // vtable+0x38
-	undefined4 VTable0x3c(undefined4) override;    // vtable+0x3c
-	void VTable0x44(undefined4) override;          // vtable+0x44
-	LegoS32 VTable0x54() override;                 // vtable+0x54
-	LegoS32 VTable0x58() override;                 // vtable+0x58
-	void VTable0x5c(MenuWidget*) override;         // vtable+0x5c
+	MenuWidget* DrawSelf(Rect*, Rect*) override; // vtable+0x38
+	undefined4 OnEvent(undefined4) override;     // vtable+0x3c
+	void VTable0x44(undefined4) override;        // vtable+0x44
+	LegoS32 VTable0x54() override;               // vtable+0x54
+	LegoS32 VTable0x58() override;               // vtable+0x58
+	void VTable0x5c(MenuWidget*) override;       // vtable+0x5c
 
 	// SYNTHETIC: LEGORACERS 0x0046c870
 	// MenuCarouselNavigator::~MenuCarouselNavigator

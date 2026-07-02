@@ -53,10 +53,10 @@ public:
 	};
 
 	MenuSceneScreen();
-	~MenuSceneScreen() override;                // vtable+0x68
-	LegoBool32 Destroy() override;              // vtable+0x74
+	~MenuSceneScreen() override;            // vtable+0x68
+	LegoBool32 Destroy() override;          // vtable+0x74
 	LegoBool32 Update(undefined4) override; // vtable+0x78
-	void Navigate() override;                 // vtable+0x84
+	void Navigate() override;               // vtable+0x84
 	LegoBool32 Initialize(MenuGameContext*,
 						  MenuScreenCreateParams*) override; // vtable+0x8c
 
@@ -64,11 +64,11 @@ public:
 	// MenuSceneScreen::`scalar deleting destructor'
 
 protected:
-	SceneWidget m_sceneWidget;      // 0x368
-	GolStringTable m_unk0x638;      // 0x638
-	GolD3DRenderDevice* m_renderer; // 0x64c
-	GolCamera* m_unk0x650;          // 0x650
-	undefined4 m_unk0x654;          // 0x654
+	SceneWidget m_sceneWidget;        // 0x368
+	GolStringTable m_languageStrings; // 0x638
+	GolD3DRenderDevice* m_renderer;   // 0x64c
+	GolCamera* m_savedCamera;         // 0x650
+	undefined4 m_firstUpdate;         // 0x654
 };
 
 #endif // MENUSCENESCREEN_H

@@ -25,7 +25,7 @@ MenuGameScreen::ButtonBindingTable::~ButtonBindingTable()
 // FUNCTION: LEGORACERS 0x0047f160
 void MenuGameScreen::ButtonBindingTable::Reset()
 {
-	m_unk0x5c = NULL;
+	m_entries = NULL;
 	MenuInputBindingTable::Clear();
 }
 
@@ -33,8 +33,8 @@ void MenuGameScreen::ButtonBindingTable::Reset()
 void MenuGameScreen::ButtonBindingTable::Clear()
 {
 	if (m_nameEntries) {
-		if (m_unk0x5c) {
-			delete[] m_unk0x5c;
+		if (m_entries) {
+			delete[] m_entries;
 		}
 
 		MenuInputBindingTable::Clear();
@@ -68,14 +68,14 @@ void MenuGameScreen::ButtonBindingTable::ParseSection(undefined4 p_arg1)
 		return;
 	}
 
-	FUN_0047f410();
+	ParseButtonSection();
 }
 
 // FUNCTION: LEGORACERS 0x0047f2b0
-void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
+void MenuGameScreen::ButtonBindingTable::ParseButtonBinding(ButtonBinding* p_entry)
 {
 	InitIconDefaults(p_entry);
-	::memset(p_entry->m_unk0xb4, 0xff, sizeof(p_entry->m_unk0xb4));
+	::memset(p_entry->m_stateColors, 0xff, sizeof(p_entry->m_stateColors));
 
 	if (m_parser->GetNextToken() != GolFileParser::e_leftCurly) {
 		m_parser->HandleUnexpectedToken(GolFileParser::e_leftCurly);
@@ -85,13 +85,13 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 		switch (m_parser->GetCurrentToken()) {
 		case GolFileParser::e_unknown0x29: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x84[i] = m_renderer->FindFontByName(m_parser->ReadString());
+				p_entry->m_stateFonts[i] = m_renderer->FindFontByName(m_parser->ReadString());
 			}
 			break;
 		}
 		case GolFileParser::e_unknown0x28: {
 			for (LegoS32 i = 0; i < 6; i++) {
-				p_entry->m_unk0x9c[i] = m_renderer->FindImageByName(m_parser->ReadString());
+				p_entry->m_stateImages[i] = m_renderer->FindImageByName(m_parser->ReadString());
 			}
 			break;
 		}
@@ -100,7 +100,7 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 
 			LegoS32 i;
 			for (i = 0; i < 6; i++) {
-				ReadVisualState(p_entry->m_unk0xb4[i].m_bytes);
+				ReadVisualState(p_entry->m_stateColors[i].m_bytes);
 			}
 
 			for (i = 0; i < 6; i++) {
@@ -111,8 +111,8 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 			break;
 		}
 		case GolFileParser::e_unknown0x33:
-			p_entry->m_unk0xd8 = m_parser->ReadInteger();
-			p_entry->m_unk0xdc = TRUE;
+			p_entry->m_maxTextWidth = m_parser->ReadInteger();
+			p_entry->m_hasMaxTextWidth = TRUE;
 			break;
 		default:
 			ParseIconField(p_entry);
@@ -122,11 +122,11 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f2b0(ButtonBinding* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0047f410
-void MenuGameScreen::ButtonBindingTable::FUN_0047f410()
+void MenuGameScreen::ButtonBindingTable::ParseButtonSection()
 {
 	LegoS32 entryCount = ReadSectionCount();
-	m_unk0x5c = new ButtonBinding[entryCount];
-	::memset(m_unk0x5c, 0, sizeof(ButtonBinding) * entryCount);
+	m_entries = new ButtonBinding[entryCount];
+	::memset(m_entries, 0, sizeof(ButtonBinding) * entryCount);
 
 	for (LegoS32 i = 0; i < entryCount; i++) {
 		if (m_parser->GetNextToken() != GolFileParser::e_unknown0x46) {
@@ -135,7 +135,7 @@ void MenuGameScreen::ButtonBindingTable::FUN_0047f410()
 
 		GolName name;
 		::strncpy(name, m_parser->ReadString(), sizeof(name));
-		AddName(name, &m_unk0x5c[i]);
-		FUN_0047f2b0(&m_unk0x5c[i]);
+		AddName(name, &m_entries[i]);
+		ParseButtonBinding(&m_entries[i]);
 	}
 }

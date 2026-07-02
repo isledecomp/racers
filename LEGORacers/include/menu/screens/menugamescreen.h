@@ -37,24 +37,24 @@ public:
 		// SIZE 0xe0
 		class ButtonBinding : public MenuInputBindingTable::IconBinding {
 		public:
-			GolFont* m_unk0x84[6];            // 0x84
-			UtopianPan0xa4* m_unk0x9c[6];     // 0x9c
-			VisualStateColor m_unk0xb4[6];    // 0xb4
-			undefined m_unk0xcc[0xd0 - 0xcc]; // 0xcc
-			VisualStateColor m_unk0xd0;       // 0xd0
-			undefined m_unk0xd4[0xd8 - 0xd4]; // 0xd4
-			undefined4 m_unk0xd8;             // 0xd8
-			undefined4 m_unk0xdc;             // 0xdc
+			GolFont* m_stateFonts[6];          // 0x84
+			UtopianPan0xa4* m_stateImages[6];  // 0x9c
+			VisualStateColor m_stateColors[6]; // 0xb4
+			undefined m_unk0xcc[0xd0 - 0xcc];  // 0xcc
+			VisualStateColor m_unk0xd0;        // 0xd0
+			undefined m_unk0xd4[0xd8 - 0xd4];  // 0xd4
+			undefined4 m_maxTextWidth;         // 0xd8
+			undefined4 m_hasMaxTextWidth;      // 0xdc
 		};
 
 		// SYNTHETIC: LEGORACERS 0x0047f0f0
 		// MenuGameScreen::ButtonBindingTable::`scalar deleting destructor'
 
 	private:
-		void FUN_0047f2b0(ButtonBinding* p_entry);
-		void FUN_0047f410();
+		void ParseButtonBinding(ButtonBinding* p_entry);
+		void ParseButtonSection();
 
-		ButtonBinding* m_unk0x5c; // 0x5c
+		ButtonBinding* m_entries; // 0x5c
 	};
 
 	MenuGameScreen();

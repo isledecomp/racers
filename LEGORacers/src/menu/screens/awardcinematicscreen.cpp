@@ -260,7 +260,7 @@ void AwardCinematicScreen::CreateWidgets()
 
 			carCreated = CreateWinnerCar(slotIndex);
 			ClearCosmeticTable();
-			m_context->m_chassisModels.FUN_0041dae0();
+			m_context->m_chassisModels.ReleaseInstances();
 			m_context->m_championDefinitions.ClearDefinitions();
 		}
 

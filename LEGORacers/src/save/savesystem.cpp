@@ -60,7 +60,7 @@ void SaveSystem::Initialize(InputManager* p_inputManager, LegoBool32 p_createIfM
 	LoadSaveFile(g_defaultSaveFileName, &m_defaultSave);
 	m_quickBuildSave.Initialize(36, 3, 0);
 	LoadSaveFile(g_quickBuildSaveFileName, &m_quickBuildSave);
-	m_activeRecord.FUN_0042b2f0(4, 0, 0, 0);
+	m_activeRecord.Initialize(4, 0, 0, 0);
 }
 
 // FUNCTION: LEGORACERS 0x00443420

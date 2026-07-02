@@ -353,14 +353,14 @@ void RaceState::CreateRacers(CreateRacersParams* p_params, RacerContext* p_conte
 	chassisParams.m_instantiateCount = m_roster.m_racerCount;
 	chassisParams.m_filename = g_racerDatabaseNames[2];
 	chassisParams.m_binary = p_binary;
-	m_chassisTable.FUN_0041db10(&chassisParams);
+	m_chassisTable.Load(&chassisParams);
 
 	for (LegoU32 i = 0; i < m_roster.m_racerCount; i++) {
 		p_context->m_routeRecord = p_params->m_racerRoutes[i];
 		CreateRacer(p_params->m_slots[i], p_context, i, p_params->m_splitScreen);
 	}
 
-	m_chassisTable.FUN_0041dae0();
+	m_chassisTable.ReleaseInstances();
 	m_championList.ClearDefinitions();
 	m_driverTable.ClearEntries();
 	m_setup.m_textureList->LoadTextures();

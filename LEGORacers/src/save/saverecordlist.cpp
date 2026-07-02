@@ -34,7 +34,7 @@ void SaveRecordList::Record::Initialize()
 }
 
 // FUNCTION: LEGORACERS 0x0042b2f0
-void SaveRecordList::Record::FUN_0042b2f0(
+void SaveRecordList::Record::Initialize(
 	LegoU32 p_recordSource,
 	LegoU32 p_saveIndex,
 	LegoU32 p_recordId,
@@ -203,7 +203,7 @@ void ActiveRecordBuffer::CopyStringToBuffer(GolString* p_string, LegoU8* p_dest,
 void SaveRecordList::Record::CopyFrom(const Record* p_source)
 {
 	if (m_recordSource == 0) {
-		FUN_0042b2f0(p_source->m_recordSource, p_source->m_saveIndex, 0, NULL);
+		Initialize(p_source->m_recordSource, p_source->m_saveIndex, 0, NULL);
 	}
 
 	::memcpy(m_data, p_source->m_data, sizeof(m_data));
@@ -301,13 +301,13 @@ void SaveRecordList::Initialize()
 	m_records = 0;
 	m_freeRecords = 0;
 	m_usedRecords = 0;
-	m_unk0x08 = 0;
-	m_unk0x0c = 0;
+	m_recordSource = 0;
+	m_saveIndex = 0;
 	m_unk0x10 = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042b720
-void SaveRecordList::AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c)
+void SaveRecordList::AllocateRecords(LegoU32 p_count, undefined4 p_recordSource, undefined4 p_saveIndex)
 {
 	if (m_records) {
 		FreeRecords();
@@ -320,8 +320,8 @@ void SaveRecordList::AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, unde
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
-	m_unk0x08 = p_unk0x08;
-	m_unk0x0c = p_unk0x0c;
+	m_recordSource = p_recordSource;
+	m_saveIndex = p_saveIndex;
 	RebuildFreeList();
 }
 
@@ -368,7 +368,7 @@ SaveRecordList::Record* SaveRecordList::AllocateRecord()
 	m_recordCount++;
 	m_dirty = 1;
 	m_freeRecords = record->m_next;
-	record->FUN_0042b2f0(m_unk0x08, m_unk0x0c, m_recordCount, this);
+	record->Initialize(m_recordSource, m_saveIndex, m_recordCount, this);
 	record->m_next = NULL;
 
 	if (m_usedRecords) {

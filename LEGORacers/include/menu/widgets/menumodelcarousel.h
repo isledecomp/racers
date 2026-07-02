@@ -90,8 +90,8 @@ protected:
 	LegoFloat m_unk0xa4;                            // 0xa4
 	undefined m_unk0xa8[0xb4 - 0xa8];               // 0xa8
 	LegoFloat m_cameraDistance;                     // 0xb4
-	undefined4 m_unk0xb8;                           // 0xb8
-	LegoFloat m_unk0xbc;                            // 0xbc
+	undefined4 m_ringBaseIndex;                     // 0xb8
+	LegoFloat m_scrollStep;                         // 0xbc
 };
 
 #endif // MENUMODELCAROUSEL_H

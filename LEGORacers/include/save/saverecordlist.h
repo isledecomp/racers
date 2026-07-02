@@ -19,7 +19,7 @@ public:
 		Record();
 		~Record();
 
-		void FUN_0042b2f0(LegoU32 p_recordSource, LegoU32 p_saveIndex, LegoU32 p_recordId, SaveRecordList* p_owner);
+		void Initialize(LegoU32 p_recordSource, LegoU32 p_saveIndex, LegoU32 p_recordId, SaveRecordList* p_owner);
 		void Destroy();
 		void MarkDirty();
 		void GetCosmetics(DriverCosmetics* p_cosmetics) const;
@@ -77,19 +77,19 @@ private:
 	friend class SaveGame;
 
 	void Initialize();
-	void AllocateRecords(LegoU32 p_count, undefined4 p_unk0x08, undefined4 p_unk0x0c);
+	void AllocateRecords(LegoU32 p_count, undefined4 p_recordSource, undefined4 p_saveIndex);
 	void FreeRecords();
 	void RebuildFreeList();
 
-	LegoU32 m_recordCount;    // 0x00
-	Record* m_records;        // 0x04
-	undefined4 m_unk0x08;     // 0x08
-	undefined4 m_unk0x0c;     // 0x0c
-	undefined4 m_unk0x10;     // 0x10
-	Record* m_freeRecords;    // 0x14
-	Record* m_usedRecords;    // 0x18
-	LegoU32 m_recordCapacity; // 0x1c
-	LegoBool32 m_dirty;       // 0x20
+	LegoU32 m_recordCount;     // 0x00
+	Record* m_records;         // 0x04
+	undefined4 m_recordSource; // 0x08
+	undefined4 m_saveIndex;    // 0x0c
+	undefined4 m_unk0x10;      // 0x10
+	Record* m_freeRecords;     // 0x14
+	Record* m_usedRecords;     // 0x18
+	LegoU32 m_recordCapacity;  // 0x1c
+	LegoBool32 m_dirty;        // 0x20
 };
 
 #endif // SAVERECORDLIST_H

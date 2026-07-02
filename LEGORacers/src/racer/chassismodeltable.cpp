@@ -52,7 +52,7 @@ void ChassisModelTable::Reset()
 // FUNCTION: LEGORACERS 0x0041d9b0
 void ChassisModelTable::Clear()
 {
-	FUN_0041dae0();
+	ReleaseInstances();
 
 	if (m_modelParts != NULL) {
 		delete[] m_modelParts;
@@ -104,7 +104,7 @@ void ChassisModelTable::Clear()
 }
 
 // FUNCTION: LEGORACERS 0x0041dae0 FOLDED
-void ChassisModelTable::FUN_0041dae0()
+void ChassisModelTable::ReleaseInstances()
 {
 	GolNameTable::Clear();
 
@@ -115,7 +115,7 @@ void ChassisModelTable::FUN_0041dae0()
 }
 
 // FUNCTION: LEGORACERS 0x0041db10
-LegoU32 ChassisModelTable::FUN_0041db10(const Params* p_params)
+LegoU32 ChassisModelTable::Load(const Params* p_params)
 {
 	if (m_items != NULL) {
 		Clear();

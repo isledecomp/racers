@@ -42,11 +42,11 @@ public:
 		LegoBool32 m_binary;            // 0x10
 	};
 
-	LegoU32 FUN_0041db10(const Params* p_params);
+	LegoU32 Load(const Params* p_params);
 	LegoU32 InstantiateModels(const LegoChar* p_name, GolAnimatedEntity** p_primary, GolAnimatedEntity** p_secondary);
 	void InstantiateAllModels();
 	GolAnimatedEntity* GetPrimaryModel(const LegoChar* p_name);
-	void FUN_0041dae0();
+	void ReleaseInstances();
 	LegoBool32 HasItems() const { return m_items != NULL; }
 
 	// SIZE 0x104

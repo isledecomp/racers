@@ -223,7 +223,7 @@ void MenuGameScreen::LoadPieceResources(MenuGameContext* p_context, undefined4 p
 	params.m_filename = "chassis.cmf";
 	params.m_binary = p_context->m_context->m_useBinaryFiles;
 
-	p_context->m_chassisModels.FUN_0041db10(&params);
+	p_context->m_chassisModels.Load(&params);
 	p_context->m_chassisModels.InstantiateAllModels();
 
 	if (g_hashTable) {
@@ -264,7 +264,7 @@ void MenuGameScreen::LoadChampionResources(LegoS32 p_entryCapacity)
 	chassisParams.m_instantiateCount = p_entryCapacity;
 	chassisParams.m_filename = "chassis.cmf";
 	chassisParams.m_binary = m_context->m_context->m_useBinaryFiles;
-	m_context->m_chassisModels.FUN_0041db10(&chassisParams);
+	m_context->m_chassisModels.Load(&chassisParams);
 
 	ChampionDefinitionList::LoadParams championParams;
 	championParams.m_golExport = golExport;

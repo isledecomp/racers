@@ -88,7 +88,7 @@ LegoS32 SaveGame::LoadFromFile(GolFile& p_file)
 
 	for (LegoU32 i = 0; i < recordCount; i++) {
 		Record* record = AllocateRecord();
-		record->FUN_0042b2f0(m_unk0x08, m_unk0x0c, i, NULL);
+		record->Initialize(m_recordSource, m_saveIndex, i, NULL);
 		result = ReadBlocks(p_file, record->m_data, sizeof(record->m_data));
 		if (result) {
 			return result;

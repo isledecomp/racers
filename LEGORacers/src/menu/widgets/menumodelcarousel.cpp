@@ -44,7 +44,7 @@ void MenuModelCarousel::Reset()
 	m_items = 0;
 	m_unk0xa0 = 0;
 	m_unk0x9c = 0;
-	m_unk0xbc = 0;
+	m_scrollStep = 0;
 	MenuCarousel::Reset();
 }
 
@@ -55,7 +55,7 @@ LegoBool32 MenuModelCarousel::Create(CreateParams* p_createParams, MenuStyleTabl
 		return FALSE;
 	}
 
-	m_unk0xbc = p_createParams->m_unk0x40;
+	m_scrollStep = p_createParams->m_unk0x40;
 	m_viewportIndex = p_createParams->m_viewportIndex;
 	SetupCamera(p_createParams);
 

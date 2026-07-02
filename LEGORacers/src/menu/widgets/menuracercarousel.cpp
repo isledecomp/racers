@@ -224,7 +224,7 @@ void MenuRacerCarousel::CollectItems()
 void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
-	LegoS32 modelIndex = m_itemValues[WrapIndex(m_unk0xb8 + p_index)];
+	LegoS32 modelIndex = m_itemValues[WrapIndex(m_ringBaseIndex + p_index)];
 	GolModelBase* model;
 	void* material;
 	LegoChar materialName[8];
@@ -259,7 +259,7 @@ void MenuRacerCarousel::VTable0x60(LegoS32 p_index)
 
 	entity->VTable0x50(model, g_maroonAtollMaxFloat);
 
-	GolBillboard::Field0x2c* materialTable = &m_materialTables[WrapIndex(m_unk0xb8 + p_index)];
+	GolBillboard::Field0x2c* materialTable = &m_materialTables[WrapIndex(m_ringBaseIndex + p_index)];
 	CopyModelMaterialTable(model, materialTable);
 
 	LegoS32 materialIndex = model->GetMaterialTable()->FindEntryIndexByName(materialName);
@@ -276,7 +276,7 @@ void MenuRacerCarousel::SetSelection(undefined4 p_index)
 {
 	if (m_itemCount) {
 		m_selectedIndex = p_index;
-		m_unk0xb8 = WrapIndex(p_index - m_focusedSlot);
+		m_ringBaseIndex = WrapIndex(p_index - m_focusedSlot);
 
 		if (!m_scrolling) {
 			if (!m_partType) {

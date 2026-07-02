@@ -42,7 +42,7 @@ public:
 	void VTable0x60(LegoS32) override;                     // vtable+0x60
 
 	LegoBool32 Create(CreateParams* p_createParams, MenuStyleTable::CarouselStyle* p_styleEntry);
-	LegoS32 FUN_004853a0();
+	LegoS32 InitializeItemModels();
 	void RefreshChoiceIndices();
 	void SelectPartByType(LegoS32 p_pieceType);
 	void SelectChoice(LegoS32 p_pieceType, LegoS32 p_colorRecordIndex);

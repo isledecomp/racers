@@ -266,7 +266,7 @@ void GarageScreen::Navigate()
 		return;
 	case c_menuNewRacer:
 		m_context->m_menuStack.Push(c_menuPickMem);
-		m_context->m_saveSystem.GetActiveRecord().FUN_0042b2f0(4, 0, 0, NULL);
+		m_context->m_saveSystem.GetActiveRecord().Initialize(4, 0, 0, NULL);
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowNewRacer
 		);

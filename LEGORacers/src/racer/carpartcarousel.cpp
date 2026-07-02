@@ -57,7 +57,7 @@ LegoBool32 CarPartCarousel::Create(CreateParams* p_createParams, MenuStyleTable:
 	m_buildModel = p_createParams->m_buildModel;
 	m_colorTable = p_createParams->m_colorTable;
 	if (MenuModelCarousel::Create(p_createParams, p_styleEntry)) {
-		FUN_004853a0();
+		InitializeItemModels();
 	}
 
 	return m_flags & 1;
@@ -81,7 +81,7 @@ LegoBool32 CarPartCarousel::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004853a0
-LegoS32 CarPartCarousel::FUN_004853a0()
+LegoS32 CarPartCarousel::InitializeItemModels()
 {
 	LegoS32 maxHighPieceOffset = m_pieceLibrary->GetMaxHighPieceOffset();
 	LegoS32 result = m_slotCount;
@@ -129,7 +129,7 @@ void CarPartCarousel::VTable0x60(LegoS32 p_index)
 {
 	GolModelEntity* entity = GetItemEntity(p_index);
 	GolModelBase* model = GetItemModel(p_index);
-	LegoS32 choiceIndex = m_choiceIndices[WrapIndex(m_unk0xb8 + p_index)];
+	LegoS32 choiceIndex = m_choiceIndices[WrapIndex(m_ringBaseIndex + p_index)];
 	LegoS32 pieceType;
 	LegoS32 colorRecordIndex;
 
@@ -161,7 +161,7 @@ void CarPartCarousel::SetSelection(undefined4 p_index)
 {
 	if (m_itemCount) {
 		m_selectedIndex = p_index;
-		m_unk0xb8 = WrapIndex(p_index - m_focusedSlot);
+		m_ringBaseIndex = WrapIndex(p_index - m_focusedSlot);
 
 		if (!m_scrolling) {
 			if (m_itemCount >= m_slotCount - 1) {
@@ -280,7 +280,7 @@ LegoS32 CarPartCarousel::ScrollPrevious()
 // FUNCTION: LEGORACERS 0x00485840
 undefined4 CarPartCarousel::OnEvent(undefined4 p_elapsed)
 {
-	LegoFloat step = m_unk0xbc;
+	LegoFloat step = m_scrollStep;
 	LegoFloat scaled = (LegoFloat) (LegoS32) p_elapsed;
 	if ((m_rotationAngle += step * scaled) > g_twoPi) {
 		m_rotationAngle -= g_twoPi;

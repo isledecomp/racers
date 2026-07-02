@@ -69,27 +69,27 @@ void RacePowerupManager::TetherProjectile::VTable0x20(const SetupParams* p_param
 	params.m_golExport = p_params->m_golExport;
 	params.m_renderer = renderer;
 	params.m_material = p_params->m_material;
-	params.m_unk0x0c = 5;
-	params.m_unk0x10 = p_params->m_unk0x0c == 0.0f ? 1 : 5;
-	params.m_unk0x14 = 2;
-	params.m_unk0x18[0].m_x = 0.0f;
-	params.m_unk0x18[0].m_y = p_params->m_unk0x08 * 0.5f;
-	params.m_unk0x18[0].m_z = -p_params->m_unk0x08;
-	params.m_unk0x18[1].m_x = 0.0f;
-	params.m_unk0x18[1].m_y = 0.0f;
-	params.m_unk0x18[1].m_z = 0.0f;
-	params.m_unk0x18[2].m_x = 0.0f;
-	params.m_unk0x18[2].m_y = 0.0f;
-	params.m_unk0x18[2].m_z = 0.0f;
-	params.m_unk0x54[0] = 0.0f;
-	params.m_unk0x54[1] = 0.5f;
-	params.m_unk0x54[2] = 1.0f;
-	params.m_unk0x68 = 3;
+	params.m_sectionCount = 5;
+	params.m_segmentCount = p_params->m_unk0x0c == 0.0f ? 1 : 5;
+	params.m_ringQuadCount = 2;
+	params.m_ringVertices[0].m_x = 0.0f;
+	params.m_ringVertices[0].m_y = p_params->m_unk0x08 * 0.5f;
+	params.m_ringVertices[0].m_z = -p_params->m_unk0x08;
+	params.m_ringVertices[1].m_x = 0.0f;
+	params.m_ringVertices[1].m_y = 0.0f;
+	params.m_ringVertices[1].m_z = 0.0f;
+	params.m_ringVertices[2].m_x = 0.0f;
+	params.m_ringVertices[2].m_y = 0.0f;
+	params.m_ringVertices[2].m_z = 0.0f;
+	params.m_ringTextureXs[0] = 0.0f;
+	params.m_ringTextureXs[1] = 0.5f;
+	params.m_ringTextureXs[2] = 1.0f;
+	params.m_textureColumnCount = 3;
 	params.m_modelDistance = 360000.0f;
-	params.m_unk0x70 = 0;
+	params.m_faceCamera = 0;
 
-	m_beam.FUN_00493c90(&params);
-	m_beam.FUN_00494820(&p_params->m_unk0x10, &p_params->m_unk0x14, &p_params->m_unk0x18);
+	m_beam.Initialize(&params);
+	m_beam.SetColors(&p_params->m_unk0x10, &p_params->m_unk0x14, &p_params->m_unk0x18);
 	m_unk0x234 = 0;
 }
 
@@ -97,7 +97,7 @@ void RacePowerupManager::TetherProjectile::VTable0x20(const SetupParams* p_param
 void RacePowerupManager::TetherProjectile::Deactivate()
 {
 	PowerupProjectile::Deactivate();
-	m_beam.FUN_00493e60();
+	m_beam.Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00444490
@@ -150,7 +150,7 @@ void RacePowerupManager::TetherProjectile::FUN_00444540(
 	step.m_x = deltaX * g_unk0x004b02e0;
 	step.m_y = deltaY * g_unk0x004b02e0;
 	step.m_z = p_position->m_z - origin.m_z;
-	m_beam.FUN_00493ea0(&origin, &step);
+	m_beam.Begin(&origin, &step);
 
 	LegoFloat elapsed = 0.0f;
 	GolVec3 position = origin;
@@ -159,18 +159,18 @@ void RacePowerupManager::TetherProjectile::FUN_00444540(
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
 		position.m_z = (m_gravity * 0.5f * elapsed * elapsed) + (m_velocityZ * elapsed) + m_startPosition.m_z;
-		m_beam.FUN_00494870(&position, p_amount);
+		m_beam.AppendSpan(&position, p_amount);
 		p_amount = -p_amount;
 	}
 
-	m_beam.FUN_00494870(p_position, p_amount);
-	m_beam.FUN_00494230();
+	m_beam.AppendSpan(p_position, p_amount);
+	m_beam.Finish();
 }
 
 // FUNCTION: LEGORACERS 0x00444670
 void RacePowerupManager::TetherProjectile::VTable0x24(GolD3DRenderDevice* p_renderer)
 {
-	m_beam.FUN_00494850(p_renderer);
+	m_beam.Draw(p_renderer);
 }
 
 // STUB: LEGORACERS 0x00444690
@@ -207,18 +207,18 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444690(LegoU32 p_elapsedMs)
 	step.m_x = delta.m_x * g_unk0x004b02e0;
 	step.m_y = delta.m_y * g_unk0x004b02e0;
 	step.m_z = delta.m_z * g_unk0x004b02e0;
-	m_beam.FUN_00493ea0(&position, &step);
+	m_beam.Begin(&position, &step);
 
 	for (LegoU32 i = 0; i < 4; i++) {
 		position.m_x += step.m_x;
 		position.m_y += step.m_y;
 		position.m_z += step.m_z;
-		m_beam.FUN_00494870(&position, amount);
+		m_beam.AppendSpan(&position, amount);
 		amount = -amount;
 	}
 
-	m_beam.FUN_00494870(target, amount);
-	m_beam.FUN_00494230();
+	m_beam.AppendSpan(target, amount);
+	m_beam.Finish();
 
 	return c_stateFlying;
 }
@@ -275,7 +275,7 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 	step.m_x = delta.m_x * 0.2f;
 	step.m_y = delta.m_y * 0.2f;
 	step.m_z = delta.m_z * 0.2f;
-	m_beam.FUN_00493ea0(&origin, &step);
+	m_beam.Begin(&origin, &step);
 
 	LegoFloat elapsedStep = static_cast<LegoFloat>(m_flightTimeMs) * 0.2f * 0.001f;
 	LegoFloat elapsed = 0.0f;
@@ -290,11 +290,11 @@ LegoS32 RacePowerupManager::TetherProjectile::FUN_00444820(LegoU32 p_elapsedMs)
 		blended.m_z = (((m_gravity * 0.5f * elapsed * elapsed) + (m_velocityZ * elapsed) + m_startPosition.m_z) *
 					   remainingAmount) +
 					  (m_unk0x224 * position.m_z);
-		m_beam.FUN_00494870(&blended, 0.0f);
+		m_beam.AppendSpan(&blended, 0.0f);
 	}
 
-	m_beam.FUN_00494870(&currentPosition, 0.0f);
-	m_beam.FUN_00494230();
+	m_beam.AppendSpan(&currentPosition, 0.0f);
+	m_beam.Finish();
 
 	return 2;
 }

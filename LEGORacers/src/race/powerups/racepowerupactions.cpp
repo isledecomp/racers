@@ -2064,28 +2064,28 @@ void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePo
 
 	BeamMesh::SetupParams params;
 	params.m_material = renderer->FindMaterialByName("lightng");
-	params.m_unk0x18[1].m_y = g_unk0x004b1558 * 0.5f;
-	params.m_unk0x18[2].m_x = -g_unk0x004b1558;
+	params.m_ringVertices[1].m_y = g_unk0x004b1558 * 0.5f;
+	params.m_ringVertices[2].m_x = -g_unk0x004b1558;
 	params.m_golExport = p_export;
 	params.m_renderer = renderer;
-	params.m_unk0x0c = 4;
-	params.m_unk0x10 = 5;
-	params.m_unk0x14 = 2;
-	params.m_unk0x18[0].m_x = 0.0f;
-	params.m_unk0x18[0].m_y = g_unk0x004b1558;
-	params.m_unk0x18[0].m_z = -0.25f;
-	params.m_unk0x18[1].m_x = 0.0f;
-	params.m_unk0x18[1].m_z = 0.0f;
-	params.m_unk0x18[2].m_y = -0.25f;
-	params.m_unk0x18[2].m_z = 0.0f;
-	params.m_unk0x54[0] = 0.0f;
-	params.m_unk0x54[1] = 0.5f;
-	params.m_unk0x54[2] = 1.0f;
-	params.m_unk0x68 = 3;
+	params.m_sectionCount = 4;
+	params.m_segmentCount = 5;
+	params.m_ringQuadCount = 2;
+	params.m_ringVertices[0].m_x = 0.0f;
+	params.m_ringVertices[0].m_y = g_unk0x004b1558;
+	params.m_ringVertices[0].m_z = -0.25f;
+	params.m_ringVertices[1].m_x = 0.0f;
+	params.m_ringVertices[1].m_z = 0.0f;
+	params.m_ringVertices[2].m_y = -0.25f;
+	params.m_ringVertices[2].m_z = 0.0f;
+	params.m_ringTextureXs[0] = 0.0f;
+	params.m_ringTextureXs[1] = 0.5f;
+	params.m_ringTextureXs[2] = 1.0f;
+	params.m_textureColumnCount = 3;
 	params.m_modelDistance = 360000.0f;
-	params.m_unk0x70 = 1;
-	m_beam.FUN_00493c90(&params);
-	m_beam.FUN_00494820(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
+	params.m_faceCamera = 1;
+	m_beam.Initialize(&params);
+	m_beam.SetColors(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
 
 	m_unk0x248 = static_cast<GolBillboard*>(p_export->VTable0x30());
 	DuskwindBananaRelic0x24* material = renderer->FindMaterialByName("ltflash");
@@ -2120,7 +2120,7 @@ void RacePowerupManager::LightningAction::FUN_00454ab0()
 		m_unk0x248 = NULL;
 	}
 
-	m_beam.FUN_00493e60();
+	m_beam.Destroy();
 	m_state = 0;
 	m_unk0x244 = 0;
 	m_unk0x23c = 0;
@@ -2164,7 +2164,7 @@ void RacePowerupManager::LightningAction::FUN_00454bb0()
 	direction.m_x = modelPosition[0].m_x - position.m_x;
 	direction.m_y = modelPosition[0].m_y - position.m_y;
 	direction.m_z = modelPosition[0].m_z - position.m_z;
-	field->FUN_00493ea0(&position, &direction);
+	field->Begin(&position, &direction);
 
 	for (LegoS32 i = 0; i < 4; i++) {
 		GolVec3* offset = g_unk0x004c7608;
@@ -2179,14 +2179,14 @@ void RacePowerupManager::LightningAction::FUN_00454bb0()
 			offset++;
 		}
 
-		field->FUN_00494be0(g_unk0x004c7608);
-		field->FUN_00494870(modelPosition, amount);
+		field->SetSegmentOffsets(g_unk0x004c7608);
+		field->AppendSpan(modelPosition, amount);
 
 		modelPosition++;
 		amount = -amount;
 	}
 
-	field->FUN_00494230();
+	field->Finish();
 }
 
 // FUNCTION: LEGORACERS 0x00454cb0
@@ -2223,7 +2223,7 @@ void RacePowerupManager::LightningAction::Deactivate()
 		m_unk0x244 = NULL;
 	}
 
-	m_beam.FUN_00494820(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
+	m_beam.SetColors(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
 	m_unk0x23c = NULL;
 	m_unk0x024 = NULL;
 	m_unk0x028 = NULL;
@@ -2258,7 +2258,7 @@ void RacePowerupManager::LightningAction::Update(LegoU32 p_elapsedMs)
 			m_unk0x028->FUN_004397b0();
 			m_unk0x028 = NULL;
 			m_unk0x240 = 0;
-			m_beam.FUN_00494820(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
+			m_beam.SetColors(&g_unk0x004b1568, &g_unk0x004b156c, &g_unk0x004b1570);
 		}
 	}
 
@@ -2330,7 +2330,7 @@ void RacePowerupManager::LightningAction::VTable0x10(GolD3DRenderDevice* p_rende
 		p_renderer->VTable0xb4(*m_unk0x248);
 	}
 
-	m_beam.FUN_00494850(p_renderer);
+	m_beam.Draw(p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00455060
@@ -2525,7 +2525,7 @@ void RacePowerupManager::LightningAction::VTable0x20(RaceState::Racer* p_racer)
 
 			m_unk0x240 = 0;
 			m_unk0x028 = racer;
-			m_beam.FUN_00494820(&g_unk0x004b1574, &g_unk0x004b1574, &g_unk0x004b1574);
+			m_beam.SetColors(&g_unk0x004b1574, &g_unk0x004b1574, &g_unk0x004b1574);
 
 			CutsceneAnimation* cutsceneAnimation = m_owner0x01c->m_cutsceneAnimation0x040;
 			if (m_unk0x244 != NULL) {

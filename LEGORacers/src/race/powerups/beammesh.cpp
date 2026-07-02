@@ -20,7 +20,7 @@ DECOMP_SIZE_ASSERT(RacePowerupManager::BeamMesh, 0x170)
 DECOMP_SIZE_ASSERT(RacePowerupManager::BeamEntity, 0x98)
 
 // GLOBAL: LEGORACERS 0x004b47a4
-extern const LegoFloat g_unk0x004b47a4 = 0.02f;
+extern const LegoFloat g_beamMinStepDistanceSquared = 0.02f;
 
 extern LegoFloat g_minSoundPan;
 
@@ -33,86 +33,86 @@ RacePowerupManager::BeamMesh::BeamMesh()
 // FUNCTION: LEGORACERS 0x00493b30
 RacePowerupManager::BeamMesh::~BeamMesh()
 {
-	FUN_00493e60();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00493b80
 void RacePowerupManager::BeamMesh::Reset()
 {
 	m_golExport = NULL;
-	m_unk0x004 = NULL;
-	m_unk0x008 = 0;
-	m_unk0x00c = 0;
-	m_unk0x010 = NULL;
-	m_unk0x014 = 0;
-	m_unk0x0b0 = 0;
-	m_unk0x0b4 = 0;
-	m_unk0x0b8 = 0;
-	m_unk0x0bc = 0;
-	m_unk0x0c0 = 0;
-	m_unk0x0c4 = 0;
-	m_unk0x0c8 = 0;
-	m_unk0x0cc = 0;
-	m_unk0x0d0 = 0;
-	m_unk0x0d4 = 0;
-	m_unk0x0dc = 0;
-	m_unk0x0e0 = 0;
-	m_unk0x0e4 = 0;
-	m_unk0x0e8 = 0;
-	::memset(m_unk0x0ec, 0, sizeof(m_unk0x0ec));
-	::memset(m_unk0x128, 0, sizeof(m_unk0x128));
-	m_unk0x160.m_alp = 0xff;
-	m_unk0x164.m_alp = 0xff;
-	m_unk0x168.m_alp = 0xff;
-	m_unk0x13c = 0;
-	m_unk0x140 = 0;
-	m_unk0x144 = NULL;
-	m_unk0x148.Clear();
-	m_unk0x160.m_red = 0;
-	m_unk0x160.m_grn = 0;
-	m_unk0x160.m_blu = 0;
-	m_unk0x164.m_red = 0;
-	m_unk0x164.m_grn = 0;
-	m_unk0x164.m_blu = 0;
-	m_unk0x168.m_red = 0;
-	m_unk0x168.m_grn = 0;
-	m_unk0x168.m_blu = 0;
-	m_unk0x16c = 0;
+	m_model = NULL;
+	m_vertices = 0;
+	m_indices = 0;
+	m_sceneNode = NULL;
+	m_material = 0;
+	m_windowBaseVertex = 0;
+	m_ringVertexIndex = 0;
+	m_previousRingVertexIndex = 0;
+	m_vertexCursor = 0;
+	m_runStartVertex = 0;
+	m_runStartIndex = 0;
+	m_indexCursor = 0;
+	m_groupCursor = 0;
+	m_sectionIndex = 0;
+	m_textureColumn = 0;
+	m_sectionCount = 0;
+	m_segmentCount = 0;
+	m_ringQuadCount = 0;
+	m_ringVertexCount = 0;
+	::memset(m_ringVertices, 0, sizeof(m_ringVertices));
+	::memset(m_ringTextureXs, 0, sizeof(m_ringTextureXs));
+	m_baseColor.m_alp = 0xff;
+	m_secondaryColor.m_alp = 0xff;
+	m_tertiaryColor.m_alp = 0xff;
+	m_textureColumnCount = 0;
+	m_flags = 0;
+	m_segmentOffsets = NULL;
+	m_startPosition.Clear();
+	m_baseColor.m_red = 0;
+	m_baseColor.m_grn = 0;
+	m_baseColor.m_blu = 0;
+	m_secondaryColor.m_red = 0;
+	m_secondaryColor.m_grn = 0;
+	m_secondaryColor.m_blu = 0;
+	m_tertiaryColor.m_red = 0;
+	m_tertiaryColor.m_grn = 0;
+	m_tertiaryColor.m_blu = 0;
+	m_vertexCapacity = 0;
 }
 
 // STUB: LEGORACERS 0x00493c90
-void RacePowerupManager::BeamMesh::FUN_00493c90(const SetupParams* p_params)
+void RacePowerupManager::BeamMesh::Initialize(const SetupParams* p_params)
 {
-	if (m_unk0x004 != NULL) {
-		FUN_00493e60();
+	if (m_model != NULL) {
+		Destroy();
 	}
 
 	const SetupParams* params = p_params;
 
 	m_golExport = params->m_golExport;
-	m_unk0x014 = params->m_material;
-	m_unk0x0dc = params->m_unk0x0c;
-	m_unk0x0e0 = params->m_unk0x10;
-	m_unk0x0e4 = params->m_unk0x14;
-	m_unk0x0e8 = m_unk0x0e4 + 1;
-	m_unk0x0d8 = 1.0f / (LegoS32) m_unk0x0e0;
+	m_material = params->m_material;
+	m_sectionCount = params->m_sectionCount;
+	m_segmentCount = params->m_segmentCount;
+	m_ringQuadCount = params->m_ringQuadCount;
+	m_ringVertexCount = m_ringQuadCount + 1;
+	m_segmentStep = 1.0f / (LegoS32) m_segmentCount;
 
 	LegoU32 i;
-	for (i = 0; i < m_unk0x0e8; i++) {
-		m_unk0x0ec[i] = params->m_unk0x18[i];
-		m_unk0x128[i] = params->m_unk0x54[i];
+	for (i = 0; i < m_ringVertexCount; i++) {
+		m_ringVertices[i] = params->m_ringVertices[i];
+		m_ringTextureXs[i] = params->m_ringTextureXs[i];
 	}
 
-	LegoU32 modelIndexCount = m_unk0x0e4 * m_unk0x0dc * m_unk0x0e0;
+	LegoU32 modelIndexCount = m_ringQuadCount * m_sectionCount * m_segmentCount;
 	LegoU32 doubledIndexCount = 2 * modelIndexCount;
-	LegoU32 segmentCount = m_unk0x0e0;
-	m_unk0x13c = params->m_unk0x68;
+	LegoU32 segmentCount = m_segmentCount;
+	m_textureColumnCount = params->m_textureColumnCount;
 
 	LegoU32 generatedPointCount;
-	if (m_unk0x014->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
 		generatedPointCount = 0;
-		if (m_unk0x13c <= segmentCount) {
-			generatedPointCount = segmentCount - m_unk0x13c;
+		if (m_textureColumnCount <= segmentCount) {
+			generatedPointCount = segmentCount - m_textureColumnCount;
 		}
 		generatedPointCount += segmentCount + 1;
 	}
@@ -120,34 +120,34 @@ void RacePowerupManager::BeamMesh::FUN_00493c90(const SetupParams* p_params)
 		generatedPointCount = segmentCount + 1;
 	}
 
-	m_unk0x16c = generatedPointCount * m_unk0x0dc * m_unk0x0e8;
-	if (segmentCount >= m_unk0x13c) {
-		segmentCount = 2 * segmentCount - m_unk0x13c + 1;
+	m_vertexCapacity = generatedPointCount * m_sectionCount * m_ringVertexCount;
+	if (segmentCount >= m_textureColumnCount) {
+		segmentCount = 2 * segmentCount - m_textureColumnCount + 1;
 	}
 
-	LegoU32 stride = segmentCount * m_unk0x0e8;
-	LegoU32 vertexCount = m_unk0x0dc * (2 * (0x40 / stride) + 5) + 2;
-	m_unk0x004 = m_golExport->VTable0x14();
-	m_unk0x004->VTable0x18(params->m_renderer, 1, m_unk0x16c, doubledIndexCount, vertexCount, 1);
+	LegoU32 stride = segmentCount * m_ringVertexCount;
+	LegoU32 vertexCount = m_sectionCount * (2 * (0x40 / stride) + 5) + 2;
+	m_model = m_golExport->VTable0x14();
+	m_model->VTable0x18(params->m_renderer, 1, m_vertexCapacity, doubledIndexCount, vertexCount, 1);
 
-	m_unk0x010 = m_golExport->VTable0x18();
-	m_unk0x010->Allocate(m_unk0x0dc);
-	m_unk0x018.FUN_00494c50(m_unk0x004, m_unk0x010, params->m_unk0x70, params->m_modelDistance);
-	m_unk0x004->GetMaterialTable()->SetPosition(0, params->m_material);
+	m_sceneNode = m_golExport->VTable0x18();
+	m_sceneNode->Allocate(m_sectionCount);
+	m_entity.Initialize(m_model, m_sceneNode, params->m_faceCamera, params->m_modelDistance);
+	m_model->GetMaterialTable()->SetPosition(0, params->m_material);
 }
 
 // FUNCTION: LEGORACERS 0x00493e60
-void RacePowerupManager::BeamMesh::FUN_00493e60()
+void RacePowerupManager::BeamMesh::Destroy()
 {
-	m_unk0x018.VTable0x54();
+	m_entity.VTable0x54();
 
 	if (m_golExport != NULL) {
-		if (m_unk0x010 != NULL) {
-			m_golExport->VTable0x4c(m_unk0x010);
+		if (m_sceneNode != NULL) {
+			m_golExport->VTable0x4c(m_sceneNode);
 		}
 
-		if (m_unk0x004 != NULL) {
-			m_golExport->VTable0x48(m_unk0x004);
+		if (m_model != NULL) {
+			m_golExport->VTable0x48(m_model);
 		}
 	}
 
@@ -155,41 +155,41 @@ void RacePowerupManager::BeamMesh::FUN_00493e60()
 }
 
 // FUNCTION: LEGORACERS 0x00493ea0
-void RacePowerupManager::BeamMesh::FUN_00493ea0(const GolVec3* p_position, const GolVec3* p_direction)
+void RacePowerupManager::BeamMesh::Begin(const GolVec3* p_position, const GolVec3* p_direction)
 {
 	GolVec3 up;
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	m_unk0x004->VTable0x28(&m_unk0x008);
+	m_model->VTable0x28(&m_vertices);
 
 	IGdbModelIndexArray0x8* indexArray;
-	m_unk0x004->VTable0x30(&indexArray);
-	m_unk0x00c = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
+	m_model->VTable0x30(&indexArray);
+	m_indices = static_cast<GdbModelIndexArray0xc*>(indexArray)->GetMutableIndices();
 
-	m_unk0x0b0 = 0;
-	m_unk0x0b4 = -static_cast<LegoS32>(m_unk0x0e8);
-	m_unk0x0b8 = 0;
-	m_unk0x0bc = 0;
-	m_unk0x0c0 = 0;
-	m_unk0x0c8 = 0;
-	m_unk0x0c4 = 0;
-	m_unk0x140 &= ~c_flags0x140Bit0;
-	m_unk0x0cc = 1;
+	m_windowBaseVertex = 0;
+	m_ringVertexIndex = -static_cast<LegoS32>(m_ringVertexCount);
+	m_previousRingVertexIndex = 0;
+	m_vertexCursor = 0;
+	m_runStartVertex = 0;
+	m_indexCursor = 0;
+	m_runStartIndex = 0;
+	m_flags &= ~c_flagVisible;
+	m_groupCursor = 1;
 
-	m_unk0x004->GetMutableGroups()[0] = c_group0x80000000;
-	m_unk0x148 = *p_position;
-	m_unk0x004->SetDirty(TRUE);
-	m_unk0x154 = *p_position;
-	m_unk0x0d0 = 0;
+	m_model->GetMutableGroups()[0] = c_groupBegin;
+	m_startPosition = *p_position;
+	m_model->SetDirty(TRUE);
+	m_lastPosition = *p_position;
+	m_sectionIndex = 0;
 
 	GolVec3 localPosition;
 	localPosition.Clear();
-	FUN_00494290(&localPosition, &m_unk0x160, 0, 0);
-	m_unk0x0d4 = 1;
+	EmitRing(&localPosition, &m_baseColor, 0, 0);
+	m_textureColumn = 1;
 
-	m_unk0x018.VTable0x08(*p_position);
+	m_entity.VTable0x08(*p_position);
 
 	GolVec3 direction;
 	GolMath::NormalizeVector3(*p_direction, &direction);
@@ -201,48 +201,48 @@ void RacePowerupManager::BeamMesh::FUN_00493ea0(const GolVec3* p_position, const
 		up.m_z = 0.0f;
 	}
 
-	m_unk0x018.VTable0x40(direction, up);
+	m_entity.VTable0x40(direction, up);
 }
 
 // FUNCTION: LEGORACERS 0x00494030
-void RacePowerupManager::BeamMesh::FUN_00494030(const GolVec3* p_position)
+void RacePowerupManager::BeamMesh::AdvanceSection(const GolVec3* p_position)
 {
-	GolTransformBase* transform = m_unk0x010->VTable0x18(m_unk0x0d0);
+	GolTransformBase* transform = m_sceneNode->VTable0x18(m_sectionIndex);
 
 	GolVec3 vector;
-	vector.m_x = m_unk0x154.m_x - m_unk0x148.m_x;
-	vector.m_y = m_unk0x154.m_y - m_unk0x148.m_y;
-	vector.m_z = m_unk0x154.m_z - m_unk0x148.m_z;
+	vector.m_x = m_lastPosition.m_x - m_startPosition.m_x;
+	vector.m_y = m_lastPosition.m_y - m_startPosition.m_y;
+	vector.m_z = m_lastPosition.m_z - m_startPosition.m_z;
 
 	GolVec3 transformed;
-	m_unk0x018.VTable0x38(vector, &transformed);
+	m_entity.VTable0x38(vector, &transformed);
 	transform->SetPosition(&transformed);
 
-	vector.m_x = p_position->m_x - m_unk0x154.m_x;
-	vector.m_y = p_position->m_y - m_unk0x154.m_y;
-	vector.m_z = p_position->m_z - m_unk0x154.m_z;
-	m_unk0x018.VTable0x38(vector, &transformed);
+	vector.m_x = p_position->m_x - m_lastPosition.m_x;
+	vector.m_y = p_position->m_y - m_lastPosition.m_y;
+	vector.m_z = p_position->m_z - m_lastPosition.m_z;
+	m_entity.VTable0x38(vector, &transformed);
 
 	vector.m_x = 0.0f;
 	vector.m_y = 0.0f;
 	vector.m_z = 1.0f;
 	transform->VTable0x28(&transformed, &vector);
 
-	m_unk0x0d0++;
-	m_unk0x154 = *p_position;
-	m_unk0x140 &= ~c_flags0x140Bit2;
+	m_sectionIndex++;
+	m_lastPosition = *p_position;
+	m_flags &= ~c_flagSectionAttached;
 }
 
 // FUNCTION: LEGORACERS 0x00494140
-void RacePowerupManager::BeamMesh::FUN_00494140(const GolVec3* p_position)
+void RacePowerupManager::BeamMesh::AppendPoint(const GolVec3* p_position)
 {
 	GolVec3 delta;
-	delta.m_x = p_position->m_x - m_unk0x154.m_x;
-	delta.m_y = p_position->m_y - m_unk0x154.m_y;
-	delta.m_z = p_position->m_z - m_unk0x154.m_z;
+	delta.m_x = p_position->m_x - m_lastPosition.m_x;
+	delta.m_y = p_position->m_y - m_lastPosition.m_y;
+	delta.m_z = p_position->m_z - m_lastPosition.m_z;
 
 	LegoFloat distanceSquared = GOLVECTOR3_DOT(delta, delta);
-	if (distanceSquared < g_unk0x004b47a4) {
+	if (distanceSquared < g_beamMinStepDistanceSquared) {
 		return;
 	}
 
@@ -251,40 +251,40 @@ void RacePowerupManager::BeamMesh::FUN_00494140(const GolVec3* p_position)
 	localPosition.m_y = 0.0f;
 	localPosition.m_z = 0.0f;
 
-	FUN_00494290(&localPosition, &m_unk0x160, m_unk0x0d4, 0);
-	FUN_00494480();
+	EmitRing(&localPosition, &m_baseColor, m_textureColumn, 0);
+	EmitQuads();
 
-	if (m_unk0x014->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
-		m_unk0x0d4++;
-		if (m_unk0x0d4 > m_unk0x13c) {
-			FUN_00494290(&localPosition, &m_unk0x160, 0, 0);
-			m_unk0x0d4 = 1;
+	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		m_textureColumn++;
+		if (m_textureColumn > m_textureColumnCount) {
+			EmitRing(&localPosition, &m_baseColor, 0, 0);
+			m_textureColumn = 1;
 		}
 	}
 
-	FUN_004946b0();
-	FUN_00494030(p_position);
+	FlushRuns();
+	AdvanceSection(p_position);
 }
 
 // FUNCTION: LEGORACERS 0x00494230
-void RacePowerupManager::BeamMesh::FUN_00494230()
+void RacePowerupManager::BeamMesh::Finish()
 {
-	if (m_unk0x0c8 != 0) {
-		FUN_004946b0();
+	if (m_indexCursor != 0) {
+		FlushRuns();
 
-		GolModelBase* model = m_unk0x004;
-		model->GetMutableGroups()[m_unk0x0cc] = c_group0xc0000000;
+		GolModelBase* model = m_model;
+		model->GetMutableGroups()[m_groupCursor] = c_groupClose;
 		LegoU32 dirty = TRUE;
 		model->SetDirty(dirty);
-		m_unk0x140 |= dirty;
+		m_flags |= dirty;
 	}
 
-	m_unk0x004->VTable0x34(FALSE);
-	m_unk0x004->VTable0x2c(FALSE, FALSE);
+	m_model->VTable0x34(FALSE);
+	m_model->VTable0x2c(FALSE, FALSE);
 }
 
 // FUNCTION: LEGORACERS 0x00494290
-void RacePowerupManager::BeamMesh::FUN_00494290(
+void RacePowerupManager::BeamMesh::EmitRing(
 	const GolVec3* p_position,
 	const ColorRGBA* p_color,
 	LegoU32 p_textureColumn,
@@ -294,55 +294,55 @@ void RacePowerupManager::BeamMesh::FUN_00494290(
 	GolVec2 texture;
 	texture.m_y = static_cast<LegoFloat>(static_cast<LegoS32>(p_textureColumn));
 
-	if (static_cast<LegoU32>(m_unk0x0b4) + m_unk0x0e8 * 2 >= 0x40) {
-		FUN_004944e0();
+	if (static_cast<LegoU32>(m_ringVertexIndex) + m_ringVertexCount * 2 >= 0x40) {
+		FlushWindow();
 	}
 	else {
-		m_unk0x0b8 = m_unk0x0b4;
-		m_unk0x0b4 += m_unk0x0e8;
+		m_previousRingVertexIndex = m_ringVertexIndex;
+		m_ringVertexIndex += m_ringVertexCount;
 	}
 
 	LegoU32 i;
-	if (m_unk0x140 & c_flags0x140Bit1) {
-		for (i = 0; i < m_unk0x0e8; i++) {
+	if (m_flags & c_flagUseSegmentOffsets) {
+		for (i = 0; i < m_ringVertexCount; i++) {
 			GolVec3 vertex;
-			vertex.m_x = m_unk0x0ec[i].m_x + p_position->m_x;
-			vertex.m_x += m_unk0x144[p_offsetIndex].m_x;
-			vertex.m_y = p_position->m_y + m_unk0x0ec[i].m_y + m_unk0x144[p_offsetIndex].m_y;
-			vertex.m_z = p_position->m_z + m_unk0x0ec[i].m_z + m_unk0x144[p_offsetIndex].m_z;
+			vertex.m_x = m_ringVertices[i].m_x + p_position->m_x;
+			vertex.m_x += m_segmentOffsets[p_offsetIndex].m_x;
+			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y + m_segmentOffsets[p_offsetIndex].m_y;
+			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z + m_segmentOffsets[p_offsetIndex].m_z;
 
-			m_unk0x008->VTable0x24(m_unk0x0bc, vertex);
-			m_unk0x008->VTable0x30(m_unk0x0bc, *p_color);
+			m_vertices->VTable0x24(m_vertexCursor, vertex);
+			m_vertices->VTable0x30(m_vertexCursor, *p_color);
 
-			texture.m_x = m_unk0x128[i];
-			m_unk0x008->VTable0x28(m_unk0x0bc++, texture);
+			texture.m_x = m_ringTextureXs[i];
+			m_vertices->VTable0x28(m_vertexCursor++, texture);
 		}
 	}
 	else {
-		for (i = 0; i < m_unk0x0e8; i++) {
+		for (i = 0; i < m_ringVertexCount; i++) {
 			GolVec3 vertex;
-			vertex.m_x = p_position->m_x + m_unk0x0ec[i].m_x;
-			vertex.m_y = p_position->m_y + m_unk0x0ec[i].m_y;
-			vertex.m_z = p_position->m_z + m_unk0x0ec[i].m_z;
+			vertex.m_x = p_position->m_x + m_ringVertices[i].m_x;
+			vertex.m_y = p_position->m_y + m_ringVertices[i].m_y;
+			vertex.m_z = p_position->m_z + m_ringVertices[i].m_z;
 
-			m_unk0x008->VTable0x24(m_unk0x0bc, vertex);
-			m_unk0x008->VTable0x30(m_unk0x0bc, *p_color);
+			m_vertices->VTable0x24(m_vertexCursor, vertex);
+			m_vertices->VTable0x30(m_vertexCursor, *p_color);
 
-			texture.m_x = m_unk0x128[i];
-			m_unk0x008->VTable0x28(m_unk0x0bc++, texture);
+			texture.m_x = m_ringTextureXs[i];
+			m_vertices->VTable0x28(m_vertexCursor++, texture);
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00494480
-void RacePowerupManager::BeamMesh::FUN_00494480()
+void RacePowerupManager::BeamMesh::EmitQuads()
 {
-	GdbModelIndexArray0xc::Indices* indices = &m_unk0x00c[m_unk0x0c8];
-	m_unk0x0c8 += m_unk0x0e4 * 2;
+	GdbModelIndexArray0xc::Indices* indices = &m_indices[m_indexCursor];
+	m_indexCursor += m_ringQuadCount * 2;
 
-	for (LegoU32 i = 0; i < m_unk0x0e4; i++) {
-		LegoU32 lower = m_unk0x0b4 + i;
-		LegoU32 upper = m_unk0x0b8 + i;
+	for (LegoU32 i = 0; i < m_ringQuadCount; i++) {
+		LegoU32 lower = m_ringVertexIndex + i;
+		LegoU32 upper = m_previousRingVertexIndex + i;
 
 		indices->m_c = static_cast<LegoU8>(lower);
 		indices->m_b = static_cast<LegoU8>(lower + 1);
@@ -357,119 +357,119 @@ void RacePowerupManager::BeamMesh::FUN_00494480()
 }
 
 // STUB: LEGORACERS 0x004944e0
-void RacePowerupManager::BeamMesh::FUN_004944e0()
+void RacePowerupManager::BeamMesh::FlushWindow()
 {
-	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
-	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
-	GolModelBase* model = m_unk0x004;
+	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;
+	LegoU32 triangleCount = m_indexCursor - m_runStartIndex;
+	GolModelBase* model = m_model;
 
 	if (vertexCount != 0 || triangleCount != 0) {
-		if (!(m_unk0x140 & c_flags0x140Bit2)) {
-			LegoU32 groupIndex = m_unk0x0cc++;
-			model->GetMutableGroups()[groupIndex] = c_group0xa0000000;
-			model->GetMutableGroups()[groupIndex] |= m_unk0x0d0 & 0x00ffffff;
+		if (!(m_flags & c_flagSectionAttached)) {
+			LegoU32 groupIndex = m_groupCursor++;
+			model->GetMutableGroups()[groupIndex] = c_groupAttachSection;
+			model->GetMutableGroups()[groupIndex] |= m_sectionIndex & 0x00ffffff;
 			model->SetDirty(TRUE);
-			m_unk0x140 |= c_flags0x140Bit2;
+			m_flags |= c_flagSectionAttached;
 		}
 
-		LegoU32 groupIndex = m_unk0x0cc++;
+		LegoU32 groupIndex = m_groupCursor++;
 		model->GetMutableGroups()[groupIndex] = 0;
-		model->GetMutableGroups()[groupIndex] |= (m_unk0x0b0 & 0x3f) << 22;
+		model->GetMutableGroups()[groupIndex] |= (m_windowBaseVertex & 0x3f) << 22;
 		model->GetMutableGroups()[groupIndex] |= ((vertexCount - 1) << 16) & 0x003f0000;
-		model->GetMutableGroups()[groupIndex] |= m_unk0x0c0 & 0xffff;
+		model->GetMutableGroups()[groupIndex] |= m_runStartVertex & 0xffff;
 		model->SetDirty(TRUE);
 
-		groupIndex = m_unk0x0cc++;
-		model->GetMutableGroups()[groupIndex] = c_group0x20000000;
+		groupIndex = m_groupCursor++;
+		model->GetMutableGroups()[groupIndex] = c_groupTriangleRun;
 		model->GetMutableGroups()[groupIndex] |= (triangleCount & 0x7f) << 16;
-		model->GetMutableGroups()[groupIndex] |= m_unk0x0c4 & 0xffff;
+		model->GetMutableGroups()[groupIndex] |= m_runStartIndex & 0xffff;
 		model->SetDirty(TRUE);
 	}
 
-	LegoU32 groupIndex = m_unk0x0cc++;
+	LegoU32 groupIndex = m_groupCursor++;
 	model->GetMutableGroups()[groupIndex] = 0;
-	model->GetMutableGroups()[groupIndex] |= ((m_unk0x0e8 - 1) << 16) & 0x003f0000;
-	model->GetMutableGroups()[groupIndex] |= (m_unk0x0bc - m_unk0x0e8) & 0xffff;
+	model->GetMutableGroups()[groupIndex] |= ((m_ringVertexCount - 1) << 16) & 0x003f0000;
+	model->GetMutableGroups()[groupIndex] |= (m_vertexCursor - m_ringVertexCount) & 0xffff;
 	model->SetDirty(TRUE);
 
-	m_unk0x0b4 = m_unk0x0e8;
-	m_unk0x0b0 = m_unk0x0e8;
-	m_unk0x0b8 = 0;
-	m_unk0x0c0 = m_unk0x0bc;
-	m_unk0x0c4 = m_unk0x0c8;
+	m_ringVertexIndex = m_ringVertexCount;
+	m_windowBaseVertex = m_ringVertexCount;
+	m_previousRingVertexIndex = 0;
+	m_runStartVertex = m_vertexCursor;
+	m_runStartIndex = m_indexCursor;
 }
 
 // STUB: LEGORACERS 0x004946b0
-void RacePowerupManager::BeamMesh::FUN_004946b0()
+void RacePowerupManager::BeamMesh::FlushRuns()
 {
-	LegoU32 vertexCount = m_unk0x0bc - m_unk0x0c0;
-	LegoU32 triangleCount = m_unk0x0c8 - m_unk0x0c4;
+	LegoU32 vertexCount = m_vertexCursor - m_runStartVertex;
+	LegoU32 triangleCount = m_indexCursor - m_runStartIndex;
 
 	if (vertexCount == 0 && triangleCount == 0) {
 		return;
 	}
 
-	if (!(m_unk0x140 & c_flags0x140Bit2)) {
-		LegoU32 groupIndex = m_unk0x0cc++;
-		m_unk0x004->GetMutableGroups()[groupIndex] = c_group0xa0000000;
-		m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0d0 & 0x00ffffff;
-		m_unk0x004->SetDirty(TRUE);
-		m_unk0x140 |= c_flags0x140Bit2;
+	if (!(m_flags & c_flagSectionAttached)) {
+		LegoU32 groupIndex = m_groupCursor++;
+		m_model->GetMutableGroups()[groupIndex] = c_groupAttachSection;
+		m_model->GetMutableGroups()[groupIndex] |= m_sectionIndex & 0x00ffffff;
+		m_model->SetDirty(TRUE);
+		m_flags |= c_flagSectionAttached;
 	}
 
-	LegoU32 groupIndex = m_unk0x0cc++;
-	m_unk0x004->GetMutableGroups()[groupIndex] = 0;
-	m_unk0x004->GetMutableGroups()[groupIndex] |= (m_unk0x0b0 & 0x3f) << 22;
-	m_unk0x004->GetMutableGroups()[groupIndex] |= ((vertexCount - 1) << 16) & 0x003f0000;
-	m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0c0 & 0xffff;
-	m_unk0x004->SetDirty(TRUE);
+	LegoU32 groupIndex = m_groupCursor++;
+	m_model->GetMutableGroups()[groupIndex] = 0;
+	m_model->GetMutableGroups()[groupIndex] |= (m_windowBaseVertex & 0x3f) << 22;
+	m_model->GetMutableGroups()[groupIndex] |= ((vertexCount - 1) << 16) & 0x003f0000;
+	m_model->GetMutableGroups()[groupIndex] |= m_runStartVertex & 0xffff;
+	m_model->SetDirty(TRUE);
 
-	groupIndex = m_unk0x0cc++;
-	m_unk0x004->GetMutableGroups()[groupIndex] = c_group0x20000000;
-	m_unk0x004->GetMutableGroups()[groupIndex] |= (triangleCount & 0x7f) << 16;
-	m_unk0x004->GetMutableGroups()[groupIndex] |= m_unk0x0c4 & 0xffff;
-	m_unk0x004->SetDirty(TRUE);
+	groupIndex = m_groupCursor++;
+	m_model->GetMutableGroups()[groupIndex] = c_groupTriangleRun;
+	m_model->GetMutableGroups()[groupIndex] |= (triangleCount & 0x7f) << 16;
+	m_model->GetMutableGroups()[groupIndex] |= m_runStartIndex & 0xffff;
+	m_model->SetDirty(TRUE);
 
-	m_unk0x0b0 += vertexCount;
-	m_unk0x0c0 = m_unk0x0bc;
-	m_unk0x0c4 = m_unk0x0c8;
+	m_windowBaseVertex += vertexCount;
+	m_runStartVertex = m_vertexCursor;
+	m_runStartIndex = m_indexCursor;
 }
 
 // FUNCTION: LEGORACERS 0x00494820
-void RacePowerupManager::BeamMesh::FUN_00494820(
-	const ColorRGBA* p_unk0x04,
-	const ColorRGBA* p_unk0x08,
-	const ColorRGBA* p_unk0x0c
+void RacePowerupManager::BeamMesh::SetColors(
+	const ColorRGBA* p_baseColor,
+	const ColorRGBA* p_secondaryColor,
+	const ColorRGBA* p_tertiaryColor
 )
 {
-	m_unk0x160 = *p_unk0x04;
-	m_unk0x164 = *p_unk0x08;
-	m_unk0x168 = *p_unk0x0c;
+	m_baseColor = *p_baseColor;
+	m_secondaryColor = *p_secondaryColor;
+	m_tertiaryColor = *p_tertiaryColor;
 }
 
 // FUNCTION: LEGORACERS 0x00494850
-void RacePowerupManager::BeamMesh::FUN_00494850(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::BeamMesh::Draw(GolD3DRenderDevice* p_renderer)
 {
-	if (m_unk0x140 & 1) {
-		m_unk0x018.VTable0x1c(*p_renderer);
+	if (m_flags & 1) {
+		m_entity.VTable0x1c(*p_renderer);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00494870
-void RacePowerupManager::BeamMesh::FUN_00494870(const GolVec3* p_position, LegoFloat p_amount)
+void RacePowerupManager::BeamMesh::AppendSpan(const GolVec3* p_position, LegoFloat p_amount)
 {
-	if (m_unk0x0e0 <= 1) {
-		FUN_00494140(p_position);
+	if (m_segmentCount <= 1) {
+		AppendPoint(p_position);
 		return;
 	}
 
 	GolVec3 delta;
-	delta.m_x = p_position->m_x - m_unk0x154.m_x;
-	delta.m_y = p_position->m_y - m_unk0x154.m_y;
-	delta.m_z = p_position->m_z - m_unk0x154.m_z;
+	delta.m_x = p_position->m_x - m_lastPosition.m_x;
+	delta.m_y = p_position->m_y - m_lastPosition.m_y;
+	delta.m_z = p_position->m_z - m_lastPosition.m_z;
 
 	LegoFloat distanceSquared = GOLVECTOR3_DOT(delta, delta);
-	if (distanceSquared < g_unk0x004b47a4) {
+	if (distanceSquared < g_beamMinStepDistanceSquared) {
 		return;
 	}
 
@@ -489,55 +489,55 @@ void RacePowerupManager::BeamMesh::FUN_00494870(const GolVec3* p_position, LegoF
 	middlePosition.m_y = 0.0f;
 	middlePosition.m_z = 0.0f;
 
-	ColorRGBA endColor = p_amount > 0.0f ? m_unk0x164 : m_unk0x168;
+	ColorRGBA endColor = p_amount > 0.0f ? m_secondaryColor : m_tertiaryColor;
 	LegoFloat amount = 0.0f;
 
 	LegoU32 offsetIndex = 0;
-	for (LegoU32 i = 0; i < m_unk0x0e0 - 1; i++) {
-		amount += m_unk0x0d8;
+	for (LegoU32 i = 0; i < m_segmentCount - 1; i++) {
+		amount += m_segmentStep;
 
 		GolVec3 firstPosition;
 		ColorRGBA firstColor;
-		FUN_00494ad0(&startPosition, &middlePosition, &m_unk0x160, &endColor, amount, &firstPosition, &firstColor);
+		Interpolate(&startPosition, &middlePosition, &m_baseColor, &endColor, amount, &firstPosition, &firstColor);
 
 		GolVec3 secondPosition;
 		ColorRGBA secondColor;
-		FUN_00494ad0(&middlePosition, &endPosition, &endColor, &m_unk0x160, amount, &secondPosition, &secondColor);
+		Interpolate(&middlePosition, &endPosition, &endColor, &m_baseColor, amount, &secondPosition, &secondColor);
 
 		GolVec3 localPosition;
 		ColorRGBA color;
-		FUN_00494ad0(&firstPosition, &secondPosition, &firstColor, &secondColor, amount, &localPosition, &color);
+		Interpolate(&firstPosition, &secondPosition, &firstColor, &secondColor, amount, &localPosition, &color);
 
-		FUN_00494290(&localPosition, &color, m_unk0x0d4, offsetIndex);
-		FUN_00494480();
+		EmitRing(&localPosition, &color, m_textureColumn, offsetIndex);
+		EmitQuads();
 
-		if (m_unk0x014->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
-			m_unk0x0d4++;
-			if (m_unk0x0d4 > m_unk0x13c) {
-				FUN_00494290(&localPosition, &color, 0, offsetIndex);
-				m_unk0x0d4 = 1;
+		if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+			m_textureColumn++;
+			if (m_textureColumn > m_textureColumnCount) {
+				EmitRing(&localPosition, &color, 0, offsetIndex);
+				m_textureColumn = 1;
 			}
 		}
 
 		offsetIndex++;
 	}
 
-	FUN_00494290(&endPosition, &m_unk0x160, m_unk0x0d4, offsetIndex);
-	FUN_00494480();
+	EmitRing(&endPosition, &m_baseColor, m_textureColumn, offsetIndex);
+	EmitQuads();
 
-	if (m_unk0x014->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
-		m_unk0x0d4++;
-		if (m_unk0x0d4 > m_unk0x13c) {
-			m_unk0x0d4 = 1;
+	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		m_textureColumn++;
+		if (m_textureColumn > m_textureColumnCount) {
+			m_textureColumn = 1;
 		}
 	}
 
-	FUN_004946b0();
-	FUN_00494030(p_position);
+	FlushRuns();
+	AdvanceSection(p_position);
 }
 
 // FUNCTION: LEGORACERS 0x00494ad0
-void RacePowerupManager::BeamMesh::FUN_00494ad0(
+void RacePowerupManager::BeamMesh::Interpolate(
 	const GolVec3* p_fromPosition,
 	const GolVec3* p_toPosition,
 	const ColorRGBA* p_fromColor,
@@ -575,21 +575,21 @@ void RacePowerupManager::BeamMesh::FUN_00494ad0(
 }
 
 // FUNCTION: LEGORACERS 0x00494be0
-void RacePowerupManager::BeamMesh::FUN_00494be0(const GolVec3* p_offsets)
+void RacePowerupManager::BeamMesh::SetSegmentOffsets(const GolVec3* p_offsets)
 {
-	m_unk0x144 = p_offsets;
-	m_unk0x140 |= c_flags0x140Bit1;
+	m_segmentOffsets = p_offsets;
+	m_flags |= c_flagUseSegmentOffsets;
 }
 
 // FUNCTION: LEGORACERS 0x00494c00
 RacePowerupManager::BeamEntity::BeamEntity()
 {
-	m_unk0x90 = 0;
-	m_unk0x94 = 0;
+	m_sceneNode = 0;
+	m_faceCamera = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c20
-RacePowerupManager::BeamEntity* RacePowerupManager::BeamEntity::FUN_00494c20(undefined4 p_flags)
+RacePowerupManager::BeamEntity* RacePowerupManager::BeamEntity::Destroy(undefined4 p_flags)
 {
 	BeamEntity* result = this;
 	this->~BeamEntity();
@@ -607,7 +607,7 @@ RacePowerupManager::BeamEntity::~BeamEntity()
 }
 
 // FUNCTION: LEGORACERS 0x00494c50
-void RacePowerupManager::BeamEntity::FUN_00494c50(
+void RacePowerupManager::BeamEntity::Initialize(
 	GolModelBase* p_model,
 	GolSceneNode* p_sceneNode,
 	undefined4 p_unk0x0c,
@@ -615,26 +615,26 @@ void RacePowerupManager::BeamEntity::FUN_00494c50(
 )
 {
 	GolModelEntity::VTable0x50(p_model, p_modelDistance);
-	m_unk0x90 = p_sceneNode;
-	m_unk0x94 = p_unk0x0c;
+	m_sceneNode = p_sceneNode;
+	m_faceCamera = p_unk0x0c;
 }
 
 // FUNCTION: LEGORACERS 0x00494c80
 void RacePowerupManager::BeamEntity::VTable0x54()
 {
-	m_unk0x90 = 0;
+	m_sceneNode = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00494c90
 GolSceneNode* RacePowerupManager::BeamEntity::VTable0x58(undefined4)
 {
-	return m_unk0x90;
+	return m_sceneNode;
 }
 
 // STUB: LEGORACERS 0x00494ca0
 void RacePowerupManager::BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
 {
-	if (m_unk0x94 != 0) {
+	if (m_faceCamera != 0) {
 		GolVec3 cameraRight;
 		p_renderer.GetUnk0x0c()->GetTransform()->GetRight(&cameraRight);
 		cameraRight.m_x = -cameraRight.m_x;
@@ -644,8 +644,8 @@ void RacePowerupManager::BeamEntity::VTable0x1c(GolRenderDevice& p_renderer)
 		GolVec3 localRight;
 		VTable0x38(cameraRight, &localRight);
 
-		for (LegoU32 i = 0; i < m_unk0x90->GetCapacity(); i++) {
-			GolTransformBase* transform = m_unk0x90->VTable0x18(i);
+		for (LegoU32 i = 0; i < m_sceneNode->GetCapacity(); i++) {
+			GolTransformBase* transform = m_sceneNode->VTable0x18(i);
 			GolVec3 right;
 			transform->VTable0x20(&cameraRight, &right);
 

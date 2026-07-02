@@ -353,7 +353,7 @@ void RacePowerupManager::HomingProjectile::ApplySpiral(
 	angleDelta *= p_elapsedSeconds;
 	p_elapsedSeconds = m_spiralAngle + angleDelta;
 	m_spiralAngle = p_elapsedSeconds;
-	GolMath::FUN_00449170(p_elapsedSeconds, &p_elapsedSeconds, &cosine);
+	GolMath::SinCos(p_elapsedSeconds, &p_elapsedSeconds, &cosine);
 
 	LegoFloat xSine = p_elapsedSeconds * p_direction->m_x;
 	LegoFloat ySine = p_direction->m_y;

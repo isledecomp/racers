@@ -219,7 +219,7 @@ LegoBool32 DriverModelBuilder::FitsOutputModel() const
 }
 
 // FUNCTION: LEGORACERS 0x0049d600
-void DriverModelBuilder::FUN_0049d600()
+void DriverModelBuilder::MergeHeadMaterials()
 {
 	LegoS32 outputIndex = m_bodySummary.m_materialCount;
 
@@ -241,7 +241,7 @@ void DriverModelBuilder::FUN_0049d600()
 }
 
 // FUNCTION: LEGORACERS 0x0049d670
-LegoBool32 DriverModelBuilder::FUN_0049d670(GolModelBase* p_model) const
+LegoBool32 DriverModelBuilder::NeedsNewOutputModel(GolModelBase* p_model) const
 {
 	GolModelBase* bodyModel = m_bodySummary.m_model;
 	LegoBool32 result = TRUE;
@@ -260,7 +260,7 @@ LegoBool32 DriverModelBuilder::FUN_0049d670(GolModelBase* p_model) const
 }
 
 // FUNCTION: LEGORACERS 0x0049d6e0
-GolModelBase* DriverModelBuilder::FUN_0049d6e0(undefined4 p_vertexType)
+GolModelBase* DriverModelBuilder::CreateOutputModel(undefined4 p_vertexType)
 {
 	GolModelBase* model = m_golExport->VTable0x14();
 	if (model == NULL) {
@@ -329,7 +329,7 @@ void DriverModelBuilder::CopyModelVertices(
 }
 
 // STUB: LEGORACERS 0x0049d880
-void DriverModelBuilder::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
+void DriverModelBuilder::CopyModelIndices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset)
 {
 	IGdbModelIndexArray0x8* sourceIndexArrayBase;
 	IGdbModelIndexArray0x8* destIndexArrayBase;
@@ -354,14 +354,14 @@ void DriverModelBuilder::FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase*
 }
 
 // FUNCTION: LEGORACERS 0x0049d920
-void DriverModelBuilder::FUN_0049d920()
+void DriverModelBuilder::CopyBodyIntoOutput()
 {
 	GolModelBase* bodyModel = m_bodySummary.m_model;
 	GolModelBase* outputModel = m_outputSummary.m_model;
 	GolModelMaterialTable* bodyMaterials = bodyModel->GetMaterialTable();
 	LegoS32 bodyMaterialCount = bodyMaterials->GetCount();
 	CopyModelVertices(bodyModel, outputModel, 0);
-	FUN_0049d880(bodyModel, outputModel, 0);
+	CopyModelIndices(bodyModel, outputModel, 0);
 
 	GolModelMaterialTable* outputMaterials = outputModel->GetMaterialTable();
 	for (LegoS32 i = 0; i < bodyMaterialCount; i++) {
@@ -373,12 +373,12 @@ void DriverModelBuilder::FUN_0049d920()
 void DriverModelBuilder::MergeHeadModel()
 {
 	CopyModelVertices(m_headSummary.m_model, m_outputSummary.m_model, m_bodySummary.m_vertexCount);
-	FUN_0049d880(m_headSummary.m_model, m_outputSummary.m_model, m_bodySummary.m_indexCount);
-	FUN_0049d600();
+	CopyModelIndices(m_headSummary.m_model, m_outputSummary.m_model, m_bodySummary.m_indexCount);
+	MergeHeadMaterials();
 }
 
 // FUNCTION: LEGORACERS 0x0049d9b0
-void DriverModelBuilder::FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
+void DriverModelBuilder::ReplaceMaterialTexture(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
 {
 	GolModelMaterialTable* materialTable = m_outputSummary.m_model->GetMaterialTable();
 	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
@@ -422,12 +422,12 @@ GolModelBase* DriverModelBuilder::MergeModels(
 	undefined4 p_vertexType
 )
 {
-	if (FUN_0049d670(p_model)) {
+	if (NeedsNewOutputModel(p_model)) {
 		if (p_model != NULL && p_model->GetGroups() != NULL) {
 			return NULL;
 		}
 
-		p_model = FUN_0049d6e0(p_vertexType);
+		p_model = CreateOutputModel(p_vertexType);
 	}
 
 	SummarizeModel(p_model, &m_outputSummary);
@@ -435,15 +435,15 @@ GolModelBase* DriverModelBuilder::MergeModels(
 		return NULL;
 	}
 
-	FUN_0049d920();
+	CopyBodyIntoOutput();
 	MergeHeadModel();
-	FUN_0049dd50();
+	CopyGroupsUntilFace();
 	LoadFaceExpressionMaterials(p_cosmetics->m_faceIndex);
 
 	p_model->SetScale(m_bodySummary.m_model->GetScale());
-	FUN_0049d9b0(m_partResources->FindFaceMaterial(p_cosmetics->m_faceIndex), "face");
-	FUN_0049d9b0(m_partResources->FindTorsoMaterial(p_cosmetics->m_torsoIndex), "torso");
-	FUN_0049d9b0(m_partResources->FindLegMaterial(p_cosmetics->m_legIndex), "legs");
+	ReplaceMaterialTexture(m_partResources->FindFaceMaterial(p_cosmetics->m_faceIndex), "face");
+	ReplaceMaterialTexture(m_partResources->FindTorsoMaterial(p_cosmetics->m_torsoIndex), "torso");
+	ReplaceMaterialTexture(m_partResources->FindLegMaterial(p_cosmetics->m_legIndex), "legs");
 
 	return p_model;
 }
@@ -506,7 +506,7 @@ void DriverModelBuilder::ApplyFaceExpression(GolModelBase* p_model, DriverCosmet
 }
 
 // STUB: LEGORACERS 0x0049dd50
-void DriverModelBuilder::FUN_0049dd50()
+void DriverModelBuilder::CopyGroupsUntilFace()
 {
 	GolName faceName;
 	::strncpy(faceName, "face", sizeof(GolName));

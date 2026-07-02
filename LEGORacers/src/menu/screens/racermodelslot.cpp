@@ -130,7 +130,7 @@ LegoBool32 RacerModelSlot::UpdateSpin(LegoS32 p_elapsed)
 	GolVec3 forward;
 	m_entity->VTable0x48(&right, &forward);
 
-	GolMath::FUN_004496a0(&right, &forward, &m_spinAxis, angle);
+	GolMath::RotateAboutAxis(&right, &forward, &m_spinAxis, angle);
 	m_entity->VTable0x40(forward, m_spinAxis);
 
 	return TRUE;

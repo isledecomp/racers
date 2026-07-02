@@ -152,7 +152,7 @@ void CarPartCarousel::LayoutItem(undefined4, GolModelEntity* p_entity)
 	GolVec3 axis = {1.0f, 0.0f, 0.0f};
 	GolVec3 vector = {vectorX, 0.0f, vectorZ};
 
-	GolMath::FUN_004496a0(&axis, &axis, &vector, m_rotationAngle);
+	GolMath::RotateAboutAxis(&axis, &axis, &vector, m_rotationAngle);
 	p_entity->FUN_00410b00(vector, axis);
 }
 

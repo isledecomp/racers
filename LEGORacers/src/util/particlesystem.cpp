@@ -41,8 +41,8 @@ void ParticleSystem::Reset()
 	m_model = NULL;
 	m_vertices = NULL;
 	m_indices = NULL;
-	m_unk0x0a0 = 0;
-	m_unk0x0a4 = 0;
+	m_triangleCapacity = 0;
+	m_materialCapacity = 0;
 	m_particleCapacity = 0;
 	m_particles = NULL;
 	m_flags = 0;
@@ -53,10 +53,10 @@ void ParticleSystem::Reset()
 	m_materialItems = NULL;
 	m_materialAnimation = NULL;
 	m_material = NULL;
-	m_unk0x0d8 = 0;
-	m_unk0x0dc = 0;
-	m_unk0x0e0 = 0;
-	m_unk0x0e4 = 0;
+	m_startSizeUp = 0;
+	m_startSizeForward = 0;
+	m_sizeGrowthUp = 0;
+	m_sizeGrowthForward = 0;
 	m_materialCount = 0;
 	m_groupCount = 0;
 	m_vertexCount = 0;
@@ -68,11 +68,11 @@ void ParticleSystem::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00412430
-void ParticleSystem::FUN_00412430(
+void ParticleSystem::Initialize(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
-	LegoU32 p_param3,
-	LegoU32 p_param4
+	LegoU32 p_materialCapacity,
+	LegoU32 p_particleCapacity
 )
 {
 	if (m_flags & c_flagInitialized) {
@@ -80,16 +80,16 @@ void ParticleSystem::FUN_00412430(
 	}
 
 	m_golExport = p_golExport;
-	m_unk0x0a0 = 2 * p_param4;
-	m_unk0x0a4 = p_param3;
-	m_particleCapacity = p_param4;
+	m_triangleCapacity = 2 * p_particleCapacity;
+	m_materialCapacity = p_materialCapacity;
+	m_particleCapacity = p_particleCapacity;
 
 	m_model = p_golExport->VTable0x14();
-	LegoU32 vertexCapacity = m_unk0x0a0;
-	LegoU32 triangleCapacity = m_unk0x0a4;
-	LegoU32 groupCapacity = triangleCapacity + 2 * (triangleCapacity + vertexCapacity / 10) + 1;
+	LegoU32 triangleCapacity = m_triangleCapacity;
+	LegoU32 materialCapacity = m_materialCapacity;
+	LegoU32 groupCapacity = materialCapacity + 2 * (materialCapacity + triangleCapacity / 10) + 1;
 
-	m_model->VTable0x18(p_renderer, 1, 3 * vertexCapacity, vertexCapacity, groupCapacity, triangleCapacity);
+	m_model->VTable0x18(p_renderer, 1, 3 * triangleCapacity, triangleCapacity, groupCapacity, materialCapacity);
 	// LINE: LEGORACERS 0x004124b5
 	m_modelEntity.VTable0x50(m_model, g_maxFloat);
 	// LINE: LEGORACERS 0x004124c8
@@ -128,10 +128,10 @@ void ParticleSystem::ConfigureMaterialAnimation(
 	MabMaterialAnimationItem0x18* p_animation,
 	MabMaterialAnimationItem0x8* p_items,
 	LegoU32 p_itemCount,
-	LegoFloat p_unk0x1c,
-	LegoFloat p_unk0x20,
-	LegoFloat p_unk0x24,
-	LegoFloat p_unk0x28,
+	LegoFloat p_startSizeUp,
+	LegoFloat p_startSizeForward,
+	LegoFloat p_sizeGrowthUp,
+	LegoFloat p_sizeGrowthForward,
 	LegoFloat p_radius,
 	const GolVec3* p_position
 )
@@ -139,16 +139,16 @@ void ParticleSystem::ConfigureMaterialAnimation(
 	m_materialAnimation = p_animation;
 	m_materialItemCount = p_itemCount;
 	m_materialItems = p_items;
-	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
+	ConfigureCommon(p_startSizeUp, p_startSizeForward, p_sizeGrowthUp, p_sizeGrowthForward, p_radius, p_position);
 }
 
 // FUNCTION: LEGORACERS 0x00412610
 void ParticleSystem::ConfigureMaterial(
 	DuskwindBananaRelic0x24* p_material,
-	LegoFloat p_unk0x1c,
-	LegoFloat p_unk0x20,
-	LegoFloat p_unk0x24,
-	LegoFloat p_unk0x28,
+	LegoFloat p_startSizeUp,
+	LegoFloat p_startSizeForward,
+	LegoFloat p_sizeGrowthUp,
+	LegoFloat p_sizeGrowthForward,
 	LegoFloat p_radius,
 	const GolVec3* p_position
 )
@@ -157,37 +157,37 @@ void ParticleSystem::ConfigureMaterial(
 	m_materialItemCount = 0;
 	m_materialItems = NULL;
 	m_material = p_material;
-	ConfigureCommon(p_unk0x1c, p_unk0x20, p_unk0x24, p_unk0x28, p_radius, p_position);
+	ConfigureCommon(p_startSizeUp, p_startSizeForward, p_sizeGrowthUp, p_sizeGrowthForward, p_radius, p_position);
 }
 
 // FUNCTION: LEGORACERS 0x00412660
 void ParticleSystem::ConfigureCommon(
-	LegoFloat p_unk0x1c,
-	LegoFloat p_unk0x20,
-	LegoFloat p_unk0x24,
-	LegoFloat p_unk0x28,
+	LegoFloat p_startSizeUp,
+	LegoFloat p_startSizeForward,
+	LegoFloat p_sizeGrowthUp,
+	LegoFloat p_sizeGrowthForward,
 	LegoFloat p_radius,
 	const GolVec3* p_position
 )
 {
-	m_unk0x0d8 = p_unk0x1c;
-	m_unk0x0dc = p_unk0x20;
-	m_unk0x0e0 = p_unk0x24;
+	m_startSizeUp = p_startSizeUp;
+	m_startSizeForward = p_startSizeForward;
+	m_sizeGrowthUp = p_sizeGrowthUp;
 
-	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
-		m_flags &= ~c_flagBit2;
+	if (m_sizeGrowthUp == 0.0f && m_sizeGrowthForward == 0.0f) {
+		m_flags &= ~c_flagSizeAnimated;
 	}
 	else {
-		m_flags |= c_flagBit2;
+		m_flags |= c_flagSizeAnimated;
 	}
 
-	m_unk0x0e4 = p_unk0x28;
+	m_sizeGrowthForward = p_sizeGrowthForward;
 
-	if (m_unk0x0e0 == 0.0f && m_unk0x0e4 == 0.0f) {
-		m_flags &= ~c_flagBit2;
+	if (m_sizeGrowthUp == 0.0f && m_sizeGrowthForward == 0.0f) {
+		m_flags &= ~c_flagSizeAnimated;
 	}
 	else {
-		m_flags |= c_flagBit2;
+		m_flags |= c_flagSizeAnimated;
 	}
 
 	m_acceleration = *p_position;
@@ -248,11 +248,11 @@ void ParticleSystem::Deactivate()
 		ResetParticlePool();
 		m_materialAnimation = NULL;
 		m_material = NULL;
-		m_unk0x0d8 = 0;
-		m_unk0x0dc = 0;
-		m_unk0x0e0 = 0;
-		m_unk0x0e4 = 0;
-		m_flags &= ~(c_flagActive | c_flagBit2 | c_flagBit3 | c_flagPendingReset);
+		m_startSizeUp = 0;
+		m_startSizeForward = 0;
+		m_sizeGrowthUp = 0;
+		m_sizeGrowthForward = 0;
+		m_flags &= ~(c_flagActive | c_flagSizeAnimated | c_flagBit3 | c_flagPendingReset);
 	}
 }
 
@@ -341,7 +341,7 @@ Particle* ParticleSystem::AllocateParticle()
 }
 
 // STUB: LEGORACERS 0x00412a50
-void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
+void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 {
 	LegoU32 flags = m_flags;
 
@@ -369,12 +369,12 @@ void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 					cameraTransform->GetUp(&m_cameraUp);
 					cameraTransform->GetForward(&m_cameraForward);
 
-					LegoFloat scale = m_unk0x0d8;
+					LegoFloat scale = m_startSizeUp;
 					m_scaledCameraUp.m_x = scale * m_cameraUp.m_x;
 					m_scaledCameraUp.m_y = scale * m_cameraUp.m_y;
 					m_scaledCameraUp.m_z = scale * m_cameraUp.m_z;
 
-					scale = m_unk0x0dc;
+					scale = m_startSizeForward;
 					m_scaledCameraForward.m_x = scale * m_cameraForward.m_x;
 					m_scaledCameraForward.m_y = scale * m_cameraForward.m_y;
 					m_scaledCameraForward.m_z = scale * m_cameraForward.m_z;
@@ -399,10 +399,10 @@ void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 						DuskwindBananaRelic0x24* material = particle->m_material;
 						Particle* next = particle->m_next;
 						if (material) {
-							FUN_00412c60(material);
+							BeginMaterialGroup(material);
 							do {
 								if (particle->m_material == material) {
-									FUN_00412ce0(particle);
+									EmitQuad(particle);
 									particle->m_material = NULL;
 								}
 
@@ -417,7 +417,7 @@ void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 					}
 
 					if (m_batchTriangleCount) {
-						FUN_00413090();
+						FlushBatch();
 					}
 
 					m_model->GetMutableGroups()[m_groupCount] = 0xc0000000;
@@ -432,10 +432,10 @@ void ParticleSystem::FUN_00412a50(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00412c60
-void ParticleSystem::FUN_00412c60(DuskwindBananaRelic0x24* p_material)
+void ParticleSystem::BeginMaterialGroup(DuskwindBananaRelic0x24* p_material)
 {
 	if (m_batchTriangleCount) {
-		FUN_00413090();
+		FlushBatch();
 	}
 
 	m_model->GetMaterialTable()->SetPosition(m_materialCount, p_material);
@@ -452,22 +452,22 @@ void ParticleSystem::FUN_00412c60(DuskwindBananaRelic0x24* p_material)
 }
 
 // FUNCTION: LEGORACERS 0x00412ce0
-void ParticleSystem::FUN_00412ce0(Particle* p_particle)
+void ParticleSystem::EmitQuad(Particle* p_particle)
 {
 	if (m_batchTriangleCount + 1 >= 10) {
-		if (m_triangleCount + 1 >= m_unk0x0a0) {
+		if (m_triangleCount + 1 >= m_triangleCapacity) {
 			return;
 		}
 
-		FUN_00413090();
+		FlushBatch();
 	}
 
-	if (m_flags & c_flagBit2) {
+	if (m_flags & c_flagSizeAnimated) {
 		LegoFloat ageMs = static_cast<LegoFloat>((LegoS32) p_particle->m_ageMs);
 		LegoFloat lifetimeMs = static_cast<LegoFloat>((LegoS32) p_particle->m_lifetimeMs);
 		LegoFloat amount = ageMs / lifetimeMs;
-		LegoFloat upScale = m_unk0x0e0 * amount + m_unk0x0d8;
-		LegoFloat forwardScale = m_unk0x0e4 * amount + m_unk0x0dc;
+		LegoFloat upScale = m_sizeGrowthUp * amount + m_startSizeUp;
+		LegoFloat forwardScale = m_sizeGrowthForward * amount + m_startSizeForward;
 		if (upScale <= 0.0f || forwardScale <= 0.0f) {
 			return;
 		}
@@ -533,7 +533,7 @@ void ParticleSystem::FUN_00412ce0(Particle* p_particle)
 }
 
 // FUNCTION: LEGORACERS 0x00413090
-LegoU32 ParticleSystem::FUN_00413090()
+LegoU32 ParticleSystem::FlushBatch()
 {
 	LegoU32 groupCount = m_groupCount;
 	LegoU32 batchVertexCount = m_batchVertexCount;

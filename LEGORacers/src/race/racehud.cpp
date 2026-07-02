@@ -884,13 +884,13 @@ void RaceHud::DrawSpeedometer()
 	}
 
 	LegoFloat angle0 = angle + 2.25f;
-	GolMath::FUN_00449170(angle0, &vertices[0].m_y, &vertices[0].m_x);
+	GolMath::SinCos(angle0, &vertices[0].m_y, &vertices[0].m_x);
 
 	LegoFloat angle1 = angle0 + 2.0943952f;
-	GolMath::FUN_00449170(angle1, &vertices[2].m_y, &vertices[2].m_x);
+	GolMath::SinCos(angle1, &vertices[2].m_y, &vertices[2].m_x);
 
 	LegoFloat angle2 = angle1 + 2.0943952f;
-	GolMath::FUN_00449170(angle2, &vertices[1].m_y, &vertices[1].m_x);
+	GolMath::SinCos(angle2, &vertices[1].m_y, &vertices[1].m_x);
 
 	vertices[0].m_x *= 45.0f;
 	vertices[1].m_color.m_red = 0x96;

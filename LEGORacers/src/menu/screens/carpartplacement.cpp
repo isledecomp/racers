@@ -586,7 +586,7 @@ void CarModelScreenBase::CarPartPlacement::ApplyViewAngle(LegoFloat p_unk0x04)
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
 
-	GolMath::FUN_004496a0(&direction, &direction, &up, p_unk0x04);
+	GolMath::RotateAboutAxis(&direction, &direction, &up, p_unk0x04);
 	m_carGroup.VTable0x40(direction, up);
 	m_pieceEntity.VTable0x40(direction, up);
 }

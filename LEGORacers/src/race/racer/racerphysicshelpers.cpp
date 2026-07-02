@@ -958,7 +958,7 @@ void RaceState::Racer::Physics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 		GolVec3 axis = orientation.m_rows[0];
 		GolVec3 forward = orientation.m_rows[2];
 		GolVec3 rotatedForward;
-		GolMath::FUN_004496a0(&forward, &rotatedForward, &axis, m_slideBankAngle);
+		GolMath::RotateAboutAxis(&forward, &rotatedForward, &axis, m_slideBankAngle);
 		m_carEntity->VTable0x40(axis, rotatedForward);
 	}
 
@@ -995,7 +995,7 @@ void RaceState::Racer::Physics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 			m_carEntity->VTable0x2c(m_anchorWheelOffset, &m_wheelProbes[1].m_wheelPosition);
 
 			GolVec3 rotatedForward;
-			GolMath::FUN_004496a0(&forward, &rotatedForward, &axis, m_routeTiltAngle);
+			GolMath::RotateAboutAxis(&forward, &rotatedForward, &axis, m_routeTiltAngle);
 			m_carEntity->VTable0x40(axis, rotatedForward);
 
 			GolVec3 transformed;
@@ -1023,7 +1023,7 @@ void RaceState::Racer::Physics::UpdateRouteRotation(LegoU32 p_elapsedMs)
 	m_routeSpinAngle += m_routeSpinRate * static_cast<LegoFloat>(static_cast<LegoS32>(elapsedMs));
 
 	GolVec3 rotatedRight;
-	GolMath::FUN_004496a0(&right, &rotatedRight, &forward, m_routeSpinAngle);
+	GolMath::RotateAboutAxis(&right, &rotatedRight, &forward, m_routeSpinAngle);
 	m_carEntity->VTable0x40(rotatedRight, forward);
 }
 
@@ -2261,7 +2261,7 @@ void RaceState::Racer::CarBody::UpdateVisualBank(LegoS32 p_elapsedMs)
 		m_physicsEntity.VTable0x04(&position);
 
 		LegoFloat offset = static_cast<LegoFloat>(tan(angleMagnitude)) * (m_trackWidth * 0.5f);
-		GolMath::FUN_004496a0(&forward, &rotatedForward, &right, m_visualBankAngle);
+		GolMath::RotateAboutAxis(&forward, &rotatedForward, &right, m_visualBankAngle);
 		position.m_z += offset;
 		m_carEntity->VTable0x40(right, rotatedForward);
 		m_carEntity->VTable0x08(position);
@@ -2577,7 +2577,7 @@ void RaceState::Racer::CarBody::LimitUprightTilt()
 
 		LegoFloat sine;
 		LegoFloat cosine;
-		GolMath::FUN_00449170(g_uprightTiltMaxAngle, &sine, &cosine);
+		GolMath::SinCos(g_uprightTiltMaxAngle, &sine, &cosine);
 
 		forward.m_x = -(sine * axis.m_y);
 		forward.m_y = sine * axis.m_x;
@@ -3276,12 +3276,12 @@ void RaceState::Racer::CarBody::UpdateFacingDirection(LegoU32 p_elapsedMs)
 						crossValue = current->m_y;
 						crossValue *= direction.m_x;
 						axis.m_z = value - crossValue;
-						GolMath::FUN_004496a0(&direction, current, &axis, m_facingLagMax);
+						GolMath::RotateAboutAxis(&direction, current, &axis, m_facingLagMax);
 						GolMath::NormalizeVector3(*current, current);
 						return;
 					}
 
-					GolMath::FUN_00449170(step, &cosine, &sine);
+					GolMath::SinCos(step, &cosine, &sine);
 					value = current->m_x;
 					value *= sine;
 					LegoFloat crossValue = m_facingDirection.m_y;
@@ -3354,7 +3354,7 @@ void RaceState::Racer::CarBody::RotateFacingToward(LegoS32 p_elapsedMs, GolVec3*
 	crossValue = target->m_y;
 	crossValue *= current->m_x;
 	axis.m_z = value - crossValue;
-	GolMath::FUN_004496a0(current, current, &axis, maxStep);
+	GolMath::RotateAboutAxis(current, current, &axis, maxStep);
 	GolMath::NormalizeVector3(*current, current);
 }
 

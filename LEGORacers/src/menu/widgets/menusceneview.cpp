@@ -287,10 +287,10 @@ void MenuSceneView::UpdateFreeCamera(undefined4 p_elapsedMs)
 	GolVec3 rotatedRight;
 	LegoFloat angle = m_yawRate;
 	angle *= elapsed;
-	GolMath::FUN_004496a0(right, &rotatedRight, axis, angle);
+	GolMath::RotateAboutAxis(right, &rotatedRight, axis, angle);
 	angle = m_pitchRate;
 	angle *= elapsed;
-	GolMath::FUN_004496a0(&rotatedRight, right, forward, angle);
+	GolMath::RotateAboutAxis(&rotatedRight, right, forward, angle);
 
 	GolVec3 position;
 	m_camera->GetTransform()->GetPosition(&position);

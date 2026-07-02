@@ -127,7 +127,7 @@ void CutsceneParticle::Reset()
 // FUNCTION: LEGORACERS 0x00489520
 void CutsceneParticle::Initialize(GolExport* p_golExport, GolD3DRenderDevice* p_renderer)
 {
-	m_particleSystem.FUN_00412430(p_golExport, p_renderer, 0xc, 0x10);
+	m_particleSystem.Initialize(p_golExport, p_renderer, 0xc, 0x10);
 }
 
 // FUNCTION: LEGORACERS 0x00489540
@@ -336,5 +336,5 @@ void CutsceneParticle::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00489960
 void CutsceneParticle::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
-	m_particleSystem.FUN_00412a50(p_renderer);
+	m_particleSystem.Draw(p_renderer);
 }

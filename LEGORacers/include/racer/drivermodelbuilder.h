@@ -87,16 +87,16 @@ private:
 	void LoadFaceExpressionMaterials(LegoS32 p_faceIndex);
 	void SummarizeModel(GolModelBase* p_model, ModelSummary* p_summary);
 	LegoBool32 FitsOutputModel() const;
-	void FUN_0049d600();
-	LegoBool32 FUN_0049d670(GolModelBase* p_model) const;
-	GolModelBase* FUN_0049d6e0(undefined4 p_vertexType);
+	void MergeHeadMaterials();
+	LegoBool32 NeedsNewOutputModel(GolModelBase* p_model) const;
+	GolModelBase* CreateOutputModel(undefined4 p_vertexType);
 	void CopyModelVertices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_vertexOffset);
-	void FUN_0049d880(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
-	void FUN_0049d920();
+	void CopyModelIndices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
+	void CopyBodyIntoOutput();
 	void MergeHeadModel();
-	void FUN_0049d9b0(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name);
+	void ReplaceMaterialTexture(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name);
 	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
-	void FUN_0049dd50();
+	void CopyGroupsUntilFace();
 
 	undefined4 m_menuId;                               // 0x00
 	undefined4 m_textureCount;                         // 0x04

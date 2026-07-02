@@ -145,7 +145,7 @@ public:
 
 	static void FUN_1002f3a0(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
 	static void FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, GolMatrix4* p_dest);
-	static void FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
+	static void SinCos(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos);
 	static void FUN_00449190(const LegoFloat* p_left, const LegoFloat* p_right, LegoFloat* p_dest);
 	static void __fastcall NormalizeVector2(const GolVec2& p_src, GolVec2* p_dest);
 	static void __fastcall NormalizeVector3(const GolVec3& p_src, GolVec3* p_dest);
@@ -153,7 +153,7 @@ public:
 	static void FUN_1002f5a0(const GolMatrix3& p_matrix, GolQuat* p_dest);
 	static void FUN_1002f720(const GolMatrix4& p_matrix, GolQuat* p_dest);
 	static void FUN_1002f890(const GolQuat& p_from, const GolQuat& p_to, LegoFloat p_amount, GolQuat* p_dest);
-	static void FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle);
+	static void RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle);
 	static LegoBool32 FUN_004497f0(const GolVec3* p_point, const LegoFloat* p_triangle);
 	static LegoBool32 FUN_00449a90(
 		GolVec3* p_target,

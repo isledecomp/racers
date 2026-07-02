@@ -54,7 +54,7 @@ void GolMath::FUN_1002f450(const GolMatrix4& p_left, const GolMatrix4& p_right, 
 }
 
 // STUB: LEGORACERS 0x00449170
-void GolMath::FUN_00449170(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
+void GolMath::SinCos(LegoFloat p_angle, LegoFloat* p_sin, LegoFloat* p_cos)
 {
 	*p_sin = static_cast<LegoFloat>(sin(p_angle));
 	*p_cos = static_cast<LegoFloat>(cos(p_angle));
@@ -306,7 +306,7 @@ void GolMath::FUN_1002f890(const GolQuat& p_from, const GolQuat& p_to, LegoFloat
 }
 
 // FUNCTION: LEGORACERS 0x004496a0
-void GolMath::FUN_004496a0(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle)
+void GolMath::RotateAboutAxis(const GolVec3* p_src, GolVec3* p_dest, const GolVec3* p_axis, LegoFloat p_angle)
 {
 	LegoFloat s = (LegoFloat) sin(p_angle);
 

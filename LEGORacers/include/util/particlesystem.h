@@ -27,24 +27,29 @@ public:
 
 	void Reset();
 
-	void FUN_00412430(GolExport* p_golExport, GolD3DRenderDevice* p_renderer, LegoU32 p_param3, LegoU32 p_param4);
+	void Initialize(
+		GolExport* p_golExport,
+		GolD3DRenderDevice* p_renderer,
+		LegoU32 p_materialCapacity,
+		LegoU32 p_particleCapacity
+	);
 	void ConfigureMaterialAnimation(
 		MabMaterialAnimationItem0x18* p_animation,
 		MabMaterialAnimationItem0x8* p_items,
 		LegoU32 p_itemCount,
-		LegoFloat p_unk0x1c,
-		LegoFloat p_unk0x20,
-		LegoFloat p_unk0x24,
-		LegoFloat p_unk0x28,
+		LegoFloat p_startSizeUp,
+		LegoFloat p_startSizeForward,
+		LegoFloat p_sizeGrowthUp,
+		LegoFloat p_sizeGrowthForward,
 		LegoFloat p_radius,
 		const GolVec3* p_position
 	);
 	void ConfigureMaterial(
 		DuskwindBananaRelic0x24* p_material,
-		LegoFloat p_unk0x1c,
-		LegoFloat p_unk0x20,
-		LegoFloat p_unk0x24,
-		LegoFloat p_unk0x28,
+		LegoFloat p_startSizeUp,
+		LegoFloat p_startSizeForward,
+		LegoFloat p_sizeGrowthUp,
+		LegoFloat p_sizeGrowthForward,
 		LegoFloat p_radius,
 		const GolVec3* p_position
 	);
@@ -55,36 +60,36 @@ public:
 	void Update(LegoS32 p_elapsedMs);
 	void ResetParticlePool();
 	Particle* AllocateParticle();
-	void FUN_00412a50(GolD3DRenderDevice* p_renderer);
+	void Draw(GolD3DRenderDevice* p_renderer);
 
 private:
 	enum {
 		c_flagInitialized = 0x1 << 0,
 		c_flagActive = 0x1 << 1,
-		c_flagBit2 = 0x1 << 2,
+		c_flagSizeAnimated = 0x1 << 2,
 		c_flagBit3 = 0x1 << 3,
 		c_flagPendingReset = 0x1 << 4,
 	};
 
 	void ConfigureCommon(
-		LegoFloat p_unk0x1c,
-		LegoFloat p_unk0x20,
-		LegoFloat p_unk0x24,
-		LegoFloat p_unk0x28,
+		LegoFloat p_startSizeUp,
+		LegoFloat p_startSizeForward,
+		LegoFloat p_sizeGrowthUp,
+		LegoFloat p_sizeGrowthForward,
 		LegoFloat p_radius,
 		const GolVec3* p_position
 	);
-	void FUN_00412c60(DuskwindBananaRelic0x24* p_material);
-	void FUN_00412ce0(Particle* p_particle);
-	LegoU32 FUN_00413090();
+	void BeginMaterialGroup(DuskwindBananaRelic0x24* p_material);
+	void EmitQuad(Particle* p_particle);
+	LegoU32 FlushBatch();
 
 	GolExport* m_golExport;                            // 0x000
 	GolModelBase* m_model;                             // 0x004
 	GdbVertexArray0xc* m_vertices;                     // 0x008
 	GdbModelIndexArray0xc::Indices* m_indices;         // 0x00c
 	GolModelEntity m_modelEntity;                      // 0x010
-	LegoU32 m_unk0x0a0;                                // 0x0a0
-	LegoU32 m_unk0x0a4;                                // 0x0a4
+	LegoU32 m_triangleCapacity;                        // 0x0a0
+	LegoU32 m_materialCapacity;                        // 0x0a4
 	LegoU32 m_particleCapacity;                        // 0x0a8
 	Particle* m_particles;                             // 0x0ac
 	Particle* m_freeList;                              // 0x0b0
@@ -95,10 +100,10 @@ private:
 	MabMaterialAnimationItem0x8* m_materialItems;      // 0x0cc
 	MabMaterialAnimationItem0x18* m_materialAnimation; // 0x0d0
 	DuskwindBananaRelic0x24* m_material;               // 0x0d4
-	LegoFloat m_unk0x0d8;                              // 0x0d8
-	LegoFloat m_unk0x0dc;                              // 0x0dc
-	LegoFloat m_unk0x0e0;                              // 0x0e0
-	LegoFloat m_unk0x0e4;                              // 0x0e4
+	LegoFloat m_startSizeUp;                           // 0x0d8
+	LegoFloat m_startSizeForward;                      // 0x0dc
+	LegoFloat m_sizeGrowthUp;                          // 0x0e0
+	LegoFloat m_sizeGrowthForward;                     // 0x0e4
 	LegoU32 m_spawnedCount;                            // 0x0e8
 	GolVec3 m_cameraForward;                           // 0x0ec
 	GolVec3 m_cameraUp;                                // 0x0f8

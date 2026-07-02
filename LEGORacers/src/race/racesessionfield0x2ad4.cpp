@@ -63,10 +63,10 @@ void RaceCameraController::FUN_00427c00()
 	GolVec3 velocity = m_unk0x0d4->m_unk0x3e8.m_unk0x008;
 	GolVec3 right;
 	GolVec3 forward;
-	m_unk0x0d4->m_unk0x018.m_unk0x044->VTable0x48(&right, &forward);
+	m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x48(&right, &forward);
 
 	GolVec3 position;
-	m_unk0x0d4->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 	{
 		SoundNode* soundNode = m_unk0x14c;
@@ -297,11 +297,11 @@ void RaceCameraController::FUN_00428230(RaceState::Racer* p_unk0x04)
 {
 	if (m_unk0x0d4 != p_unk0x04) {
 		m_unk0x0d4 = p_unk0x04;
-		m_unk0x0d4->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x0e4);
+		m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&m_unk0x0e4);
 		LegoU32 flags = m_unk0x0d4->m_unk0xc70.m_unk0x014;
 		m_unk0x120 = 1.0f;
 		m_unk0x11c = flags & 1;
-		GolAnimatedEntity* entity = m_unk0x0d4->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* entity = m_unk0x0d4->m_unk0x018.m_carEntity;
 		m_unk0x0d8.m_x = entity->GetOrientation().m_rows[0].m_x;
 		m_unk0x0d8.m_y = entity->GetOrientation().m_rows[0].m_y;
 		m_unk0x0d8.m_z = entity->GetOrientation().m_rows[0].m_z;
@@ -455,7 +455,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 
 	switch (m_unk0x002) {
 	case 0: {
-		m_unk0x0d4->m_unk0x018.m_unk0x044->VTable0x04(&m_unk0x0e4);
+		m_unk0x0d4->m_unk0x018.m_carEntity->VTable0x04(&m_unk0x0e4);
 
 		if (m_unk0x0c8 == 0.0f) {
 			GolMath::FUN_1002f5a0(m_unk0x088.m_orientation, &m_unk0x0b8);
@@ -487,7 +487,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 	case 1:
 	case 3: {
 		RaceState::Racer* racer = m_unk0x0d4;
-		GolAnimatedEntity* entity = racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* entity = racer->m_unk0x018.m_carEntity;
 		GolVec3 targetPosition;
 		entity->VTable0x04(&targetPosition);
 
@@ -698,7 +698,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 	}
 	case 2: {
 		RaceState::Racer* racer = m_unk0x0d4;
-		GolAnimatedEntity* entity = racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* entity = racer->m_unk0x018.m_carEntity;
 		entity->VTable0x04(&m_unk0x0e4);
 
 		GolVec3 right = entity->GetOrientation().m_rows[0];

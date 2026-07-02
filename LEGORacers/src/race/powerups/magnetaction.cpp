@@ -234,10 +234,10 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 	else {
 		GolAnimatedEntity* racerEntity;
 		if (m_heldRacer != NULL) {
-			racerEntity = m_heldRacer->m_unk0x018.m_unk0x044;
+			racerEntity = m_heldRacer->m_unk0x018.m_carEntity;
 		}
 		else {
-			racerEntity = m_pulledRacer->m_unk0x018.m_unk0x044;
+			racerEntity = m_pulledRacer->m_unk0x018.m_carEntity;
 		}
 
 		GolVec3 racerPosition;
@@ -397,7 +397,7 @@ void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
 		GolVec3 racerPosition;
 		m_magnetEntity->VTable0x04(&modelPosition);
 		modelPosition.m_z -= g_magnetHoldHeightOffset;
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&racerPosition);
+		p_racer->m_unk0x018.m_carEntity->VTable0x04(&racerPosition);
 
 		GolVec3 delta;
 		delta.m_x = modelPosition.m_x - racerPosition.m_x;

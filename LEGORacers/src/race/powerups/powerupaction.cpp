@@ -100,7 +100,7 @@ void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 )
 {
 	GolVec3 start;
-	p_racer->m_unk0x018.m_unk0x044->VTable0x04(&start);
+	p_racer->m_unk0x018.m_carEntity->VTable0x04(&start);
 
 	GolVec3 verticalOffset;
 	verticalOffset.Clear();

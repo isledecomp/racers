@@ -206,7 +206,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
 			RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
 			GolVec3 position;
-			racerField->m_unk0x044->VTable0x04(&position);
+			racerField->m_carEntity->VTable0x04(&position);
 
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_positionX =
 				static_cast<LegoS16>(32.0f * position.m_x);
@@ -216,7 +216,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 				static_cast<LegoS16>(32.0f * position.m_z);
 
 			GolQuat rotation;
-			GolMath::FUN_1002f5a0(m_racer->m_unk0x018.m_unk0x044->GetOrientation(), &rotation);
+			GolMath::FUN_1002f5a0(m_racer->m_unk0x018.m_carEntity->GetOrientation(), &rotation);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationX =
 				static_cast<LegoS8>(127.0f * rotation.m_x);
 			m_scratchRun->m_samples[m_scratchRun->m_sampleCount].m_rotationY =
@@ -434,7 +434,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 	}
 
 	if (m_flags0x3b4 & c_flag0x3b4Bit0) {
-		GolModelEntity* sourceModel = p_racer->m_unk0x018.m_unk0x03c;
+		GolModelEntity* sourceModel = p_racer->m_unk0x018.m_bodyModelEntity;
 		m_unk0x300.VTable0x50(sourceModel->GetModel(0), sourceModel->GetModelDistance(0));
 		LegoU32 i;
 		for (i = 1; i < 3; i++) {
@@ -443,7 +443,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		GolAnimatedEntity* sourceAnimated = p_racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* sourceAnimated = p_racer->m_unk0x018.m_carEntity;
 		m_unk0x1c.FUN_0040d550(
 			sourceAnimated->GetModel(0),
 			sourceAnimated->VTable0x58(0),
@@ -461,7 +461,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		sourceAnimated = p_racer->m_unk0x018.m_unk0x048;
+		sourceAnimated = p_racer->m_unk0x018.m_driverEntity;
 		m_unk0x114.FUN_0040d550(
 			sourceAnimated->GetModel(0),
 			sourceAnimated->VTable0x58(0),
@@ -499,7 +499,7 @@ void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
 			}
 		}
 
-		m_unk0x394 = p_racer->m_unk0x018.m_unk0x04c;
+		m_unk0x394 = p_racer->m_unk0x018.m_driverMountOffset;
 		m_unk0x114.FUN_0040dad0(13);
 	}
 }

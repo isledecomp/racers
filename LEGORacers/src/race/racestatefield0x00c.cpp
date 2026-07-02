@@ -23,7 +23,7 @@ RaceState::Racer* RaceState::FindRacerInCone(
 		Racer::Field0x018* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
-		racerField->m_unk0x044->VTable0x04(&position);
+		racerField->m_carEntity->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - origin->m_x;
 		LegoFloat deltaY = position.m_y - origin->m_y;
@@ -73,7 +73,7 @@ RaceState::Racer* RaceState::FindNextRacerInCone(
 		}
 
 		GolVec3 position;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -116,7 +116,7 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 		Racer::Field0x018* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
-		racerField->m_unk0x044->VTable0x04(&position);
+		racerField->m_carEntity->VTable0x04(&position);
 
 		LegoFloat distanceSquared = (position.m_x - p_position->m_x) * (position.m_x - p_position->m_x) +
 									(position.m_y - p_position->m_y) * (position.m_y - p_position->m_y) +
@@ -159,7 +159,7 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 		Racer::Field0x018* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
-		racerField->m_unk0x044->VTable0x04(&position);
+		racerField->m_carEntity->VTable0x04(&position);
 
 		LegoFloat distanceSquared = (position.m_x - p_position->m_x) * (position.m_x - p_position->m_x) +
 									(position.m_y - p_position->m_y) * (position.m_y - p_position->m_y) +
@@ -199,7 +199,7 @@ RaceState::Racer* RaceState::FindNearestRacerInRange(
 		Racer* racer = &m_unk0x0f0.m_racers[i];
 
 		GolVec3 position;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 		LegoFloat deltaX = position.m_x - p_position->m_x;
 		LegoFloat deltaY = position.m_y - p_position->m_y;
@@ -387,7 +387,7 @@ RaceState::Racer::Field0x00c::Entry* RaceState::FindNearestRouteRecord(Racer* p_
 	Racer::Field0x00c::Entry* result = NULL;
 
 	GolVec3 racerPosition;
-	p_racer->m_unk0x018.m_unk0x044->VTable0x04(&racerPosition);
+	p_racer->m_unk0x018.m_carEntity->VTable0x04(&racerPosition);
 
 	Racer::Field0x00c::Entry* entry = m_unk0x0f0.m_routeRecords;
 	for (LegoS32 i = 6; i; i--) {

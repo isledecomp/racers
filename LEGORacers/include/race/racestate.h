@@ -212,18 +212,18 @@ public:
 			// SIZE 0x68
 			class InitParams {
 			public:
-				GolModelEntity* m_unk0x00;    // 0x00
-				GolAnimatedEntity* m_unk0x04; // 0x04
-				GolAnimatedEntity* m_unk0x08; // 0x08
-				GolAnimatedEntity* m_unk0x0c; // 0x0c
-				GolVec3 m_unk0x10;            // 0x10
-				Racer* m_racer;               // 0x1c
-				LegoFloat m_unk0x20;          // 0x20
-				LegoFloat m_unk0x24;          // 0x24
-				LegoFloat m_unk0x28;          // 0x28
-				LegoFloat m_unk0x2c;          // 0x2c
-				GolName m_materialName;       // 0x30
-				GolVec3 m_unk0x38[4];         // 0x38
+				GolModelEntity* m_bodyModel;       // 0x00
+				GolAnimatedEntity* m_unk0x04;      // 0x04
+				GolAnimatedEntity* m_carEntity;    // 0x08
+				GolAnimatedEntity* m_driverEntity; // 0x0c
+				GolVec3 m_driverMountOffset;       // 0x10
+				Racer* m_racer;                    // 0x1c
+				LegoFloat m_shadowWidth;           // 0x20
+				LegoFloat m_shadowLength;          // 0x24
+				LegoFloat m_frontSkidWidth;        // 0x28
+				LegoFloat m_rearSkidWidth;         // 0x2c
+				GolName m_materialName;            // 0x30
+				GolVec3 m_wheelOffsets[4];         // 0x38
 			};
 
 			// SIZE 0x6c4
@@ -233,42 +233,42 @@ public:
 				class Field0x1a4 {
 				public:
 					enum {
-						c_flags0x03cBit0 = 1 << 0,
+						c_flagOnGround = 1 << 0,
 					};
 
-					GolVec3 m_unk0x000;                  // 0x00
+					GolVec3 m_contactPosition;           // 0x00
 					undefined m_unk0x00c[0x03c - 0x00c]; // 0x0c
 					LegoU32 m_flags0x03c;                // 0x3c
 					undefined m_unk0x040[0x70 - 0x040];  // 0x40
 				};
 
 				enum {
-					c_flags0x6c0Bit1 = 1 << 1,
+					c_flagAllWheelSlide = 1 << 1,
 				};
 
 				undefined m_unk0x000[0x008 - 0x000]; // 0x000
-				GolVec3 m_unk0x008;                  // 0x008
+				GolVec3 m_velocity;                  // 0x008
 				undefined m_unk0x014[0x1a4 - 0x014]; // 0x014
-				Field0x1a4 m_unk0x1a4[4];            // 0x1a4
+				Field0x1a4 m_wheels[4];              // 0x1a4
 				undefined m_unk0x364[0x5f8 - 0x364]; // 0x364
-				GolVec3 m_unk0x5f8;                  // 0x5f8
-				LegoFloat m_unk0x604;                // 0x604
+				GolVec3 m_slipDirection;             // 0x5f8
+				LegoFloat m_speed;                   // 0x604
 				undefined m_unk0x608[0x618 - 0x608]; // 0x608
-				LegoFloat m_unk0x618;                // 0x618
+				LegoFloat m_forwardSpeed;            // 0x618
 				undefined m_unk0x61c[0x6c0 - 0x61c]; // 0x61c
 				LegoU32 m_flags0x6c0;                // 0x6c0
 			};
 
 			enum {
-				c_flags0x000Bit1 = 1 << 1,
-				c_flags0x000Bit2 = 1 << 2,
-				c_flags0x000Bit3 = 1 << 3,
-				c_flags0x000Bit4 = 1 << 4,
-				c_flags0x000Bit8 = 1 << 8,
-				c_flags0x000Bit9 = 1 << 9,
-				c_flags0x000Bit10 = 1 << 10,
-				c_flags0x000Bit11 = 1 << 11,
-				c_flags0x000Bit12 = 1 << 12,
+				c_flagVisible = 1 << 1,
+				c_flagShadowEnabled = 1 << 2,
+				c_flagSkidding = 1 << 3,
+				c_flagShadowVisible = 1 << 4,
+				c_flagSliding = 1 << 8,
+				c_flagAirborne = 1 << 9,
+				c_flagVisible0 = 1 << 10,
+				c_flagVisible1 = 1 << 11,
+				c_flagVisible2 = 1 << 12,
 				c_alphaOverrideFlag = 1,
 				c_fadeAlphaMax = 0xbf,
 				c_racerFlags0xd04Bit3 = 1 << 3,
@@ -299,110 +299,110 @@ public:
 				c_avoidanceCooldownRangeMs = 1000,
 				c_flags0x384Bit0 = 1 << 0,
 				c_flags0x384Bit1 = 1 << 1,
-				c_slotFlagsBit0 = 1 << 0,
-				c_slotFlagsBit1 = 1 << 1,
-				c_slotFlagsBit2 = 1 << 2,
-				c_slotFlagsWithoutBit0 = 0xfe,
+				c_wheelSkidActive = 1 << 0,
+				c_wheelSkidGrounded = 1 << 1,
+				c_wheelSkidFading = 1 << 2,
+				c_wheelSkidAllButActive = 0xfe,
 			};
 
 			Field0x018();
 			void Reset();
-			void FUN_0043d7a0(InitParams* p_params, Field0x3b190Params0x08* p_context);
-			void FUN_0043d990(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
-			void FUN_0043d9f0();
-			void FUN_0043da10();
-			void FUN_0043da30();
+			void Initialize(InitParams* p_params, Field0x3b190Params0x08* p_context);
+			void InitializeVisuals(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
+			void RefreshCarMaterial();
+			void UseTurboSkidMaterial();
+			void UseNormalSkidMaterial();
 			void Destroy();
-			void FUN_0043db60();
-			void FUN_0043dbb0();
-			void FUN_0043dc00();
-			void FUN_0043dcd0();
-			void FUN_0043dd50(LegoU32 p_unk0x04, const LegoChar* p_unk0x08);
-			void FUN_0043de90(LegoU32 p_unk0x04);
-			void FUN_0043def0();
-			void FUN_0043df90();
-			void FUN_0043e070(LegoU32 p_elapsedMs);
-			void FUN_0043e620();
-			void FUN_0043e740(LegoS32 p_elapsedMs);
-			void FUN_0043ec10(LegoU32 p_elapsedMs);
-			void FUN_0043f1e0(LegoU32 p_elapsedMs);
-			void FUN_0043f530(LegoU32 p_elapsedMs);
-			void FUN_0043fa50(GolCamera* p_camera);
-			void FUN_0043fbc0(GolD3DRenderDevice* p_renderer);
-			void FUN_0043fc20(GolD3DRenderDevice* p_renderer);
-			void FUN_0043fd30();
-			void FUN_0043fd70();
-			void FUN_0043fd90();
-			void FUN_0043fdb0();
+			void ShowModels();
+			void HideModels();
+			void StartSkidEffects();
+			void StopSkidEffects();
+			void SetWheelParticle(LegoU32 p_unk0x04, const LegoChar* p_unk0x08);
+			void ClearWheelParticle(LegoU32 p_unk0x04);
+			void StartDust();
+			void StartCarSmoke();
+			void Update(LegoU32 p_elapsedMs);
+			void SnapVisuals();
+			void UpdateBodyLean(LegoS32 p_elapsedMs);
+			void UpdateDriver(LegoU32 p_elapsedMs);
+			void UpdateSkidMarks(LegoU32 p_elapsedMs);
+			void UpdateCurseEntity(LegoU32 p_elapsedMs);
+			void UpdateShadow(GolCamera* p_camera);
+			void Draw(GolD3DRenderDevice* p_renderer);
+			void DrawTransparent(GolD3DRenderDevice* p_renderer);
+			void StartTurboEffects();
+			void StopTurboEffects();
+			void StartSlideSkid();
+			void StopSlideSkid();
 			LegoBool32 IntersectSegment(const GolVec3* p_start, const GolVec3* p_end, GolVec3* p_hit);
-			void FUN_0043ff20(GolD3DRenderDevice* p_renderer);
-			void FUN_00440030();
-			void FUN_004400a0(ColorTransform0x20* p_unk0x04);
-			void FUN_004400e0();
+			void RenderImpostor(GolD3DRenderDevice* p_renderer);
+			void RebuildEntityGroup();
+			void SetColorTransform(ColorTransform0x20* p_unk0x04);
+			void ClearColorTransform();
 			void FlashColor(ColorTransform0x20* p_unk0x04, undefined4 p_unk0x08);
-			void FUN_00440130();
-			void FUN_00440160(LegoFloat p_unk0x04);
-			void FUN_004401a0();
-			void FUN_004401b0();
-			void FUN_004401e0();
+			void EndFlash();
+			void SetScale(LegoFloat p_unk0x04);
+			void ResetDriverAnimation();
+			void PlayForwardAnimation();
+			void PlayReverseAnimation();
 			~Field0x018();
 
-			GolAnimatedEntity* GetUnk0x044() const { return m_unk0x044; }
-			void SetFlags0x384(LegoU32 p_flags) { m_unk0x384 |= p_flags; }
+			GolAnimatedEntity* GetCarEntity() const { return m_carEntity; }
+			void SetReactionFlags(LegoU32 p_flags) { m_reactionFlags |= p_flags; }
 
-			LegoU32 m_unk0x000;                                  // 0x000
-			GolWorldEntityGroup0x38 m_unk0x004;                  // 0x004
-			GolModelEntity* m_unk0x03c;                          // 0x03c
-			GolAnimatedEntity* m_unk0x040;                       // 0x040
-			GolAnimatedEntity* m_unk0x044;                       // 0x044
-			GolAnimatedEntity* m_unk0x048;                       // 0x048
-			GolVec3 m_unk0x04c;                                  // 0x04c
-			GolVec3 m_unk0x058;                                  // 0x058
-			GolCollidableEntity* m_unk0x064;                     // 0x064
-			LegoFloat m_unk0x068[3];                             // 0x068
-			GolName m_unk0x074;                                  // 0x074
-			RaceSessionField0x27d4::Item::Field0x004 m_unk0x07c; // 0x07c
-			LegoFloat m_unk0x198;                                // 0x198
-			LegoFloat m_unk0x19c;                                // 0x19c
-			LegoFloat m_unk0x1a0;                                // 0x1a0
-			LegoFloat m_unk0x1a4;                                // 0x1a4
-			GolVec3 m_unk0x1a8[4];                               // 0x1a8
-			Racer* m_racer;                                      // 0x1d8
+			LegoU32 m_flags;                                        // 0x000
+			GolWorldEntityGroup0x38 m_entityGroup;                  // 0x004
+			GolModelEntity* m_bodyModelEntity;                      // 0x03c
+			GolAnimatedEntity* m_unk0x040;                          // 0x040
+			GolAnimatedEntity* m_carEntity;                         // 0x044
+			GolAnimatedEntity* m_driverEntity;                      // 0x048
+			GolVec3 m_driverMountOffset;                            // 0x04c
+			GolVec3 m_shadowDirection;                              // 0x058
+			GolCollidableEntity* m_trackCollidable;                 // 0x064
+			LegoFloat m_modelDistances[3];                          // 0x068
+			GolName m_carMaterialName;                              // 0x074
+			RaceSessionField0x27d4::Item::Field0x004 m_shadowDecal; // 0x07c
+			LegoFloat m_shadowWidth;                                // 0x198
+			LegoFloat m_shadowLength;                               // 0x19c
+			LegoFloat m_frontSkidWidth;                             // 0x1a0
+			LegoFloat m_rearSkidWidth;                              // 0x1a4
+			GolVec3 m_wheelOffsets[4];                              // 0x1a8
+			Racer* m_racer;                                         // 0x1d8
 			union {
 				Field0x1dc* m_unk0x1dc;        // 0x1dc
 				Field0x3e8* m_racerField0x3e8; // 0x1dc
 			};
-			RaceSessionField0x27d4* m_unk0x1e0;          // 0x1e0
-			RaceSessionField0x27d4::Item* m_unk0x1e4[4]; // 0x1e4
-			LegoU8 m_unk0x1f4[4];                        // 0x1f4
-			LegoU32 m_unk0x1f8[4];                       // 0x1f8
-			undefined4 m_unk0x208[4];                    // 0x208
-			GolBillboard::Field0x2c m_unk0x218;          // 0x218
-			GolBillboard::Field0x2c m_unk0x224;          // 0x224
-			CutsceneParticleRef* m_unk0x230[4];          // 0x230
-			GolName m_unk0x240[4];                       // 0x240
-			LegoU32 m_unk0x260[4];                       // 0x260
-			CutsceneParticleRef* m_unk0x270;             // 0x270
-			CutsceneParticleRef* m_unk0x274;             // 0x274
-			CutsceneParticleRef* m_unk0x278;             // 0x278
-			CutsceneAnimation* m_unk0x27c;               // 0x27c
-			CutsceneAnimation* m_unk0x280;               // 0x280
-			GolAnimatedEntity m_unk0x284;                // 0x284
-			LegoU32 m_unk0x378;                          // 0x378
-			LegoU32 m_unk0x37c;                          // 0x37c
-			Racer* m_unk0x380;                           // 0x380
-			LegoU32 m_unk0x384;                          // 0x384
-			LegoU32 m_unk0x388;                          // 0x388
-			LegoFloat m_unk0x38c;                        // 0x38c
-			undefined4 m_unk0x390;                       // 0x390
-			undefined4 m_unk0x394;                       // 0x394
-			LegoFloat m_unk0x398;                        // 0x398
-			LegoFloat m_unk0x39c;                        // 0x39c
-			ColorTransform0x20 m_unk0x3a0;               // 0x3a0
-			LegoU32 m_unk0x3c0;                          // 0x3c0
-			LegoU32 m_unk0x3c4;                          // 0x3c4
-			undefined4 m_unk0x3c8;                       // 0x3c8
-			LegoU32 m_unk0x3cc;                          // 0x3cc
+			RaceSessionField0x27d4* m_skidMarkManager;    // 0x1e0
+			RaceSessionField0x27d4::Item* m_skidMarks[4]; // 0x1e4
+			LegoU8 m_wheelSkidFlags[4];                   // 0x1f4
+			LegoU32 m_wheelAirTimers[4];                  // 0x1f8
+			undefined4 m_skidFadeTimers[4];               // 0x208
+			GolBillboard::Field0x2c m_carMaterialTable;   // 0x218
+			GolBillboard::Field0x2c m_skidMaterialTable;  // 0x224
+			CutsceneParticleRef* m_wheelParticles[4];     // 0x230
+			GolName m_wheelParticleNames[4];              // 0x240
+			LegoU32 m_wheelParticleFromRace[4];           // 0x260
+			CutsceneParticleRef* m_dustParticle;          // 0x270
+			CutsceneParticleRef* m_tireSmokeParticle;     // 0x274
+			CutsceneParticleRef* m_carSmokeParticle;      // 0x278
+			CutsceneAnimation* m_particleAnimation;       // 0x27c
+			CutsceneAnimation* m_sharedParticleAnimation; // 0x280
+			GolAnimatedEntity m_curseEntity;              // 0x284
+			LegoU32 m_cursePhaseMs;                       // 0x378
+			LegoU32 m_curseBlendMs;                       // 0x37c
+			Racer* m_nearbyRacer;                         // 0x380
+			LegoU32 m_reactionFlags;                      // 0x384
+			LegoU32 m_lookCooldownMs;                     // 0x388
+			LegoFloat m_lastSpeed;                        // 0x38c
+			undefined4 m_unk0x390;                        // 0x390
+			undefined4 m_unk0x394;                        // 0x394
+			LegoFloat m_pitchLean;                        // 0x398
+			LegoFloat m_rollLean;                         // 0x39c
+			ColorTransform0x20 m_baseColorTransform;      // 0x3a0
+			LegoU32 m_hasColorTransform;                  // 0x3c0
+			LegoU32 m_isFlashing;                         // 0x3c4
+			undefined4 m_flashTimerMs;                    // 0x3c8
+			LegoU32 m_lastGroundedWheelCount;             // 0x3cc
 		};
 
 		// VTABLE: LEGORACERS 0x004b0b78
@@ -1138,12 +1138,12 @@ public:
 		LegoBool32 CollectWhiteBrick(DroppableBrick* p_unk0x04);
 
 		union {
-			Field0x004* m_unk0x004;                    // 0x004
+			Field0x004* m_soundSource;                 // 0x004
 			RaceResourceManager* m_resourceManager004; // 0x004
 		};
 		RacePowerupManager* m_unk0x008; // 0x008
 		union {
-			RaceState* m_unk0x00c;     // 0x00c
+			RaceState* m_raceState;    // 0x00c
 			RaceState* m_raceState00c; // 0x00c
 		};
 		RaceSessionField0x27f4* m_unk0x010;        // 0x010

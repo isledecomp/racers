@@ -148,7 +148,7 @@ LegoU32 RacePowerupManager::WarpAction::Activate(
 		m_modelEntity.FUN_00411700(p_model->FUN_004116e0());
 		m_modelEntity.FUN_00411730(p_model->FUN_004116f0());
 
-		GolAnimatedEntity* racerEntity = p_racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* racerEntity = p_racer->m_unk0x018.m_carEntity;
 		GolVec3 position;
 		racerEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
@@ -223,11 +223,11 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 				}
 
 				RaceState::Racer::Field0x018* racerField0x018 = &m_racer->m_unk0x018;
-				racerField0x018->m_unk0x044->VTable0x04(&position);
+				racerField0x018->m_carEntity->VTable0x04(&position);
 				m_racer->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
 			}
 
-			m_racer->m_unk0x018.m_unk0x044->VTable0x08(position);
+			m_racer->m_unk0x018.m_carEntity->VTable0x08(position);
 			m_racer->m_unk0x3e8.m_unk0x0e4.VTable0x08(position);
 		} while (0);
 	}
@@ -259,7 +259,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	}
 
 	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
-	GolAnimatedEntity* entity = racerField->m_unk0x044;
+	GolAnimatedEntity* entity = racerField->m_carEntity;
 
 	GolVec3 savedPosition;
 	GolMatrix3 savedOrientation;
@@ -295,7 +295,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	camera->m_fov = fov;
 
 	p_renderer->VTable0x5c();
-	racerField->FUN_0043db60();
+	racerField->ShowModels();
 
 	GolAnimatedEntity* dbricks = m_manager->m_turbo3Database->FindUnk0xc0("dbricks");
 	dbricks->FUN_0040d650();
@@ -312,16 +312,16 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 	m_manager->m_turbo3Database->FUN_00416090(c_transitionDurationMs - m_stateTimerMs);
 	m_manager->m_turbo3Database->FUN_00416040();
 
-	racerField->FUN_0043e620();
+	racerField->SnapVisuals();
 	if (m_racer->m_unk0xdb8 != c_stateActive) {
-		racerField->FUN_0043fbc0(p_renderer);
+		racerField->Draw(p_renderer);
 	}
 
 	entity->VTable0x08(savedPosition);
 	entity->VTable0x3c(savedOrientation);
 	m_racer->FUN_0043a3e0();
 	animationList->Draw(p_renderer);
-	racerField->FUN_0043dbb0();
+	racerField->HideModels();
 
 	LegoFloat restoredFov = m_cameraFov;
 	camera->m_fov = restoredFov;
@@ -345,11 +345,11 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 	m_modelEntity.SetUnk0x58AndInvalidateRadius(scale);
 
 	if (m_stateTimerMs < 250) {
-		m_racer->m_unk0x018.FUN_00440160(scale);
+		m_racer->m_unk0x018.SetScale(scale);
 	}
 
 	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
-	GolAnimatedEntity* entity = racerField->m_unk0x044;
+	GolAnimatedEntity* entity = racerField->m_carEntity;
 	entity->VTable0x04(&position);
 	m_modelEntity.VTable0x08(position);
 	m_modelEntity.VTable0x1c(*p_renderer);
@@ -362,7 +362,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 	case c_stateStarting: {
 		m_racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
 		m_racer->FUN_004395d0();
-		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer->m_unk0x018.SetScale(1.0f);
 		m_racer->m_unk0x3e8.VTable0x44();
 		m_racer->m_unk0x3e8.VTable0x4c();
 
@@ -377,7 +377,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 		}
 
 		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
-		GolAnimatedEntity** entitySlot = &racerField->m_unk0x044;
+		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
 		GolAnimatedEntity* entity = *entitySlot;
 		entity->VTable0x04(&m_startPosition);
 
@@ -413,7 +413,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* entity = m_racer->m_unk0x018.m_carEntity;
 		TeleportEntity(entity);
 		m_racer->m_unk0x3e8.m_unk0x0e4.CopyPositionFrom(*entity);
 
@@ -487,7 +487,7 @@ void RacePowerupManager::WarpAction::Deactivate()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		m_racer->m_unk0x018.FUN_00440160(1.0f);
+		m_racer->m_unk0x018.SetScale(1.0f);
 		m_racer = NULL;
 	}
 

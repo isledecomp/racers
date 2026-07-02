@@ -1301,8 +1301,8 @@ void RaceSession::FUN_00434000()
 			RaceState::Racer** racer = m_raceState.m_unk0x318;
 			do {
 				if (*racer) {
-					(*racer)->m_unk0x018.FUN_00440130();
-					(*racer)->m_unk0x018.FUN_004400e0();
+					(*racer)->m_unk0x018.EndFlash();
+					(*racer)->m_unk0x018.ClearColorTransform();
 				}
 
 				i++;
@@ -2131,8 +2131,8 @@ void RaceSession::FUN_004354d0()
 	VTable0x34();
 
 	if (m_unk0x3354) {
-		m_raceState.m_unk0x318[0]->m_unk0x018.FUN_0043fa50(m_unk0x2acc[0]);
-		m_raceState.m_unk0x318[1]->m_unk0x018.FUN_0043fa50(m_unk0x2acc[1]);
+		m_raceState.m_unk0x318[0]->m_unk0x018.UpdateShadow(m_unk0x2acc[0]);
+		m_raceState.m_unk0x318[1]->m_unk0x018.UpdateShadow(m_unk0x2acc[1]);
 	}
 	else {
 		m_raceState.FUN_0043c6a0(m_unk0x2acc[0]);

@@ -170,7 +170,7 @@ void RacePowerupManager::ShieldAction::Activate(
 	m_shieldEntity->FUN_004116b0(p_shieldTemplate->FUN_00411660());
 	m_shieldEntity->FUN_00411700(p_shieldTemplate->FUN_004116e0());
 	m_shieldEntity->FUN_00411730(p_shieldTemplate->FUN_004116f0());
-	m_shieldEntity->CopyPositionFrom(*m_racer->m_unk0x018.m_unk0x044);
+	m_shieldEntity->CopyPositionFrom(*m_racer->m_unk0x018.m_carEntity);
 
 	m_innerShieldEntity->FUN_0040d550(
 		p_innerShieldTemplate->GetModel(0),
@@ -236,7 +236,7 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 
 	GolVec3 position;
 	RaceState::Racer::Field0x018* racerEntities = &m_racer->m_unk0x018;
-	racerEntities->m_unk0x044->VTable0x04(&position);
+	racerEntities->m_carEntity->VTable0x04(&position);
 
 	GolVec3 velocity = m_racer->m_unk0x3e8.m_unk0x008;
 	if (m_sound) {
@@ -256,7 +256,7 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 	}
 
 	GolVec3 position;
-	m_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	m_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 	LegoFloat positionZ = position.m_z;
 	positionZ += g_violetShoalTwo;
 	position.m_z = positionZ;
@@ -264,7 +264,7 @@ void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_ren
 
 	GolVec3 direction;
 	GolVec3 up;
-	m_racer->m_unk0x018.m_unk0x044->VTable0x48(&direction, &up);
+	m_racer->m_unk0x018.m_carEntity->VTable0x48(&direction, &up);
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
@@ -301,7 +301,7 @@ void RacePowerupManager::ShieldAction::AdvanceState()
 
 		SoundVector position;
 		RaceState::Racer::Field0x018* racerEntities = &m_racer->m_unk0x018;
-		racerEntities->m_unk0x044->VTable0x04(&position);
+		racerEntities->m_carEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
 		positionZ += g_homingProjectileCollisionStartOffset;
 		position.m_z = positionZ;

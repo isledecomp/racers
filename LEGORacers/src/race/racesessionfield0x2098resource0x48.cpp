@@ -70,7 +70,7 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x00(RaceState::Racer* p_race
 			entity->VTable0x28();
 		}
 		else if (p_racer) {
-			p_racer->m_unk0x018.FUN_004400e0();
+			p_racer->m_unk0x018.ClearColorTransform();
 		}
 
 		FUN_0045edd0(c_state0x18One, c_state0x18One);
@@ -81,7 +81,7 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x00(RaceState::Racer* p_race
 		entity->VTable0x24(&m_unk0x24);
 	}
 	else if (p_racer) {
-		p_racer->m_unk0x018.FUN_004400a0(&m_unk0x24);
+		p_racer->m_unk0x018.SetColorTransform(&m_unk0x24);
 	}
 
 	FUN_0045edd0(c_state0x18One, c_state0x18One);
@@ -96,7 +96,7 @@ void RaceSession::Field0x2098::Resource0x48::VTable0x08(RaceState::Racer* p_race
 			entity->VTable0x28();
 		}
 		else if (p_racer) {
-			p_racer->m_unk0x018.FUN_004400e0();
+			p_racer->m_unk0x018.ClearColorTransform();
 		}
 	}
 

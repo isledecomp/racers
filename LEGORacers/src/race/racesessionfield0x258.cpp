@@ -464,7 +464,7 @@ void RaceSession::Field0x258::FUN_00430790()
 			m_unk0x000->m_unk0x008->UseGreenPowerup(m_unk0x000, FALSE);
 		}
 
-		m_unk0x000->m_unk0x018.FUN_0043df90();
+		m_unk0x000->m_unk0x018.StartCarSmoke();
 		m_unk0x004.m_unk0x060 = 0;
 	}
 }

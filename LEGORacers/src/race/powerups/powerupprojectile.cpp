@@ -87,7 +87,7 @@ void PowerupProjectile::LaunchAtRacer(
 	m_targetRacer = targetRacer;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_startPosition);
+		p_racer->m_unk0x018.m_carEntity->VTable0x04(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
 		m_worldEntity->VTable0x08(m_startPosition);
 	}
@@ -97,7 +97,7 @@ void PowerupProjectile::LaunchAtRacer(
 
 	GolVec3* startPosition = &m_startPosition;
 	GolVec3* target = &m_targetPosition;
-	targetRacer->m_unk0x018.m_unk0x044->VTable0x04(target);
+	targetRacer->m_unk0x018.m_carEntity->VTable0x04(target);
 	target->m_z += 5.0f;
 
 	GolVec3 scaledVelocity;
@@ -186,7 +186,7 @@ void PowerupProjectile::LaunchAtPoint(
 	m_targetRacer = NULL;
 	m_ownerRacer = p_racer;
 	if (p_fromRacerPosition) {
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&m_startPosition);
+		p_racer->m_unk0x018.m_carEntity->VTable0x04(&m_startPosition);
 		m_startPosition.m_z += m_launchHeight;
 		m_worldEntity->VTable0x08(m_startPosition);
 	}
@@ -294,7 +294,7 @@ void PowerupProjectile::Deflect(RaceState::Racer* p_racer)
 	m_state = c_stateFlying;
 	m_targetRacer = m_ownerRacer;
 	if (m_targetRacer) {
-		m_targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&m_targetPosition);
+		m_targetRacer->m_unk0x018.m_carEntity->VTable0x04(&m_targetPosition);
 		m_targetPosition.m_z += 5.0f;
 		velocity = m_targetRacer->m_unk0x3e8.m_unk0x008;
 	}
@@ -427,7 +427,7 @@ void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
 		m_state = c_stateHitRacer;
 		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
 		m_hitRacer = racer;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&m_hitPosition);
+		racer->m_unk0x018.m_carEntity->VTable0x04(&m_hitPosition);
 	}
 }
 

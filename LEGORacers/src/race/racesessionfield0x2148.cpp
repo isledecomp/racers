@@ -1876,7 +1876,7 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData*
 	racer->PlayReaction(FALSE);
 
 	SoundVector position;
-	racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 	m_unk0x54->PlaySpatialSoundById(
 		c_soundId0xbc7,
 		&position,
@@ -2622,7 +2622,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 
 			GolVec3 racerPosition;
 			RaceState::Racer::Field0x018* racerField = &m_unk0x44->m_unk0x018;
-			racerField->m_unk0x044->VTable0x04(&racerPosition);
+			racerField->m_carEntity->VTable0x04(&racerPosition);
 
 			GolVec3 force;
 			force.m_x = position.m_x - racerPosition.m_x;
@@ -3063,7 +3063,7 @@ void RaceEventDispatcher0x08::Item0x2f::VTable0x14(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048eb70
 void RaceEventDispatcher0x08::Item0x2f::VTable0x18(GolCamera* p_camera, RaceState::Racer* p_racer)
 {
-	if (p_racer->m_unk0x018.m_unk0x3c0) {
+	if (p_racer->m_unk0x018.m_hasColorTransform) {
 		m_unk0x1c = 0;
 		if (m_unk0x14) {
 			m_unk0x10->FUN_00489f30(m_unk0x14);
@@ -3972,7 +3972,7 @@ void RaceEventDispatcher0x08::Item0x32::VTable0x00(LegoEventQueue::CallbackData*
 		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;
-		racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 		m_unk0x04->FUN_00462580(c_eventId0x15, c_eventId0x15, &position);
 	}
 }

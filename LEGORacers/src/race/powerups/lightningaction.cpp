@@ -480,7 +480,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 	GolCameraBase::FUN_00404550(&position, &scaledDirection, &end);
 
 	if (m_targetRacer != NULL) {
-		m_targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&end);
+		m_targetRacer->m_unk0x018.m_carEntity->VTable0x04(&end);
 
 		direction.m_x = end.m_x - position.m_x;
 		direction.m_y = end.m_y - position.m_y;
@@ -491,7 +491,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 			(position.m_z - end.m_z) * (position.m_z - end.m_z) + (position.m_y - end.m_y) * (position.m_y - end.m_y) +
 			(position.m_x - end.m_x) * (position.m_x - end.m_x)
 		));
-		LegoFloat radius = m_targetRacer->m_unk0x018.m_unk0x004.FUN_10028710();
+		LegoFloat radius = m_targetRacer->m_unk0x018.m_entityGroup.FUN_10028710();
 		if (distance > radius) {
 			distance -= radius;
 		}
@@ -613,7 +613,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 			racer->PlayReaction(FALSE);
 			racer->DropWhiteBrick();
-			racerField0x018->m_unk0x384 |= c_racerField0x018Flags0x384Bit1;
+			racerField0x018->m_reactionFlags |= c_racerField0x018Flags0x384Bit1;
 
 			m_shockTimerMs = 0;
 			m_targetRacer = racer;
@@ -627,7 +627,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 			m_hitParticle = cutsceneAnimation->FUN_00489d70("lghthit", NULL, NULL, NULL);
 
 			SoundVector position;
-			racerField0x018->m_unk0x044->VTable0x04(&position);
+			racerField0x018->m_carEntity->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundZap,
 				&position,

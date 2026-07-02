@@ -246,10 +246,10 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 		}
 		else {
 			RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
-			racerField->m_unk0x044->VTable0x04(&position);
+			racerField->m_carEntity->VTable0x04(&position);
 
 			RaceState::Racer* targetRacer = m_projectile.GetHitRacer();
-			targetRacer->m_unk0x018.m_unk0x044->VTable0x04(&targetPosition);
+			targetRacer->m_unk0x018.m_carEntity->VTable0x04(&targetPosition);
 
 			if (targetRacer->m_unk0xd04 & c_racerFlags0xd04Bit0) {
 				ReleaseHook(&targetPosition);
@@ -268,7 +268,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 				break;
 			}
 
-			m_ownerRacer->m_unk0x018.m_unk0x044->GetOrientationRow0(&forward);
+			m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&forward);
 
 			LegoFloat dot = direction.m_z;
 			dot *= forward.m_z;
@@ -382,9 +382,9 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 	m_state = c_stateFlying;
 	m_stateTimerMs = durationMs;
 
-	racerField->m_unk0x044->VTable0x04(&position);
+	racerField->m_carEntity->VTable0x04(&position);
 
-	m_ownerRacer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+	m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 
 	projectileParams.m_worldEntity = m_hookEntity;
 	projectileParams.m_collisionWorld = m_collisionWorld;
@@ -436,7 +436,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 		}
 	}
 
-	racerField->m_unk0x044->VTable0x04(&position);
+	racerField->m_carEntity->VTable0x04(&position);
 	m_soundSource
 		->PlaySpatialSoundById(c_soundFire, &position, g_hookSoundMinDistance, g_hookSoundMaxDistance, 1.0f, 1.0f);
 }
@@ -462,7 +462,7 @@ void RacePowerupManager::GrapplingHookAction::OnHitRacer(RaceState::Racer* p_rac
 			p_racer->DropWhiteBrick();
 
 			SoundVector position;
-			p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+			p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHitRacer,
 				&position,

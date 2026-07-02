@@ -223,7 +223,7 @@ LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 
 	RaceState::Racer* target = m_targetRacer;
 	if (target != NULL) {
-		target->m_unk0x018.m_unk0x044->VTable0x04(&m_targetPosition);
+		target->m_unk0x018.m_carEntity->VTable0x04(&m_targetPosition);
 		m_targetPosition.m_z += g_homingProjectileTargetHeightOffset;
 		m_direction.m_x = m_targetPosition.m_x - m_position.m_x;
 		m_direction.m_y = m_targetPosition.m_y - m_position.m_y;

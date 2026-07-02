@@ -534,7 +534,7 @@ void CobaltTrail0x140::FUN_004249b0()
 		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
 		if (racer != m_unk0x02c) {
 			GolVec3 position;
-			racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+			racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 			Rect destRect;
 			destRect.m_top = markerOriginY + static_cast<LegoS32>((referenceY - position.m_y) * scaleY);
@@ -611,10 +611,10 @@ void CobaltTrail0x140::FUN_004249b0()
 	}
 
 	GolVec3 currentPosition;
-	m_unk0x02c->m_unk0x018.m_unk0x044->VTable0x04(&currentPosition);
+	m_unk0x02c->m_unk0x018.m_carEntity->VTable0x04(&currentPosition);
 
 	GolVec3 direction;
-	m_unk0x02c->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+	m_unk0x02c->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 	LegoFloat directionScale =
 		1.0f / static_cast<LegoFloat>(sqrt(direction.m_y * direction.m_y + direction.m_x * direction.m_x));
 	LegoFloat directionX = direction.m_x * directionScale;
@@ -669,7 +669,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 	UtopianPan0xa4* markerResource = m_unk0x008->GetItem(10);
 
 	GolVec3 currentPosition;
-	m_unk0x02c->m_unk0x018.m_unk0x044->VTable0x04(&currentPosition);
+	m_unk0x02c->m_unk0x018.m_carEntity->VTable0x04(&currentPosition);
 
 	GolVec3 cameraDirection;
 	m_unk0x02c->m_cameraController->FUN_00428500(&cameraDirection);
@@ -735,7 +735,7 @@ void CobaltTrail0x140::FUN_00424fb0()
 	for (LegoS32 racerIndex = static_cast<LegoS32>(m_unk0x028->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
 		RaceState::Racer* racer = &m_unk0x028->GetRacers()[racerIndex];
 		if (racer != m_unk0x02c) {
-			racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+			racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 			LegoFloat deltaX = position.m_x - currentPosition.m_x;
 			LegoFloat deltaY = position.m_y - currentPosition.m_y;

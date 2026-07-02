@@ -1304,11 +1304,11 @@ void RaceState::Racer::Field0x3e8::FUN_0042aad0(Field0x198* p_unk0x04, RaceEvent
 		m_unk0x6f0->m_unk0xd08 != 2) {
 		GolName name;
 		::memcpy(name, p_unk0x08->m_unk0x40, sizeof(GolName));
-		m_unk0x6f0->m_unk0x018.FUN_0043dd50(p_unk0x04 - m_unk0x198, name);
+		m_unk0x6f0->m_unk0x018.SetWheelParticle(p_unk0x04 - m_unk0x198, name);
 		return;
 	}
 
-	m_unk0x6f0->m_unk0x018.FUN_0043de90(p_unk0x04 - m_unk0x198);
+	m_unk0x6f0->m_unk0x018.ClearWheelParticle(p_unk0x04 - m_unk0x198);
 }
 
 // FUNCTION: LEGORACERS 0x0042acb0
@@ -1324,7 +1324,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042acb0(Field0x198* p_unk0x04)
 	p_unk0x04->m_unk0x064.m_z = 0.0f;
 
 	LegoU32 index = p_unk0x04 - m_unk0x198;
-	m_unk0x6f0->m_unk0x018.FUN_0043de90(index);
+	m_unk0x6f0->m_unk0x018.ClearWheelParticle(index);
 	if (m_unk0x6f0->m_unk0x014) {
 		m_unk0x6f0->m_unk0x014->FUN_00421fe0(0.0f);
 	}

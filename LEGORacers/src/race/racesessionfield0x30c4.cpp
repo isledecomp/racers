@@ -101,25 +101,25 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		}
 
 		RaceState::Racer::Field0x018* field = &racer->m_unk0x018;
-		field->FUN_0043fdb0();
-		field->FUN_0043db60();
-		field->FUN_0043dcd0();
-		field->FUN_0043da30();
-		field->FUN_0043d9f0();
-		field->m_unk0x000 |= RaceState::Racer::Field0x018::c_flags0x000Bit2;
-		field->FUN_00440130();
-		field->FUN_004400e0();
-		field->FUN_00440160(1.0f);
+		field->StopSlideSkid();
+		field->ShowModels();
+		field->StopSkidEffects();
+		field->UseNormalSkidMaterial();
+		field->RefreshCarMaterial();
+		field->m_flags |= RaceState::Racer::Field0x018::c_flagShadowEnabled;
+		field->EndFlash();
+		field->ClearColorTransform();
+		field->SetScale(1.0f);
 
-		field->m_unk0x044->SetUnk0xb8(0.0f);
+		field->m_carEntity->SetUnk0xb8(0.0f);
 		if (field->m_unk0x040) {
 			field->m_unk0x040->SetUnk0xb8(0.0f);
 		}
 
-		field->FUN_004401a0();
+		field->ResetDriverAnimation();
 
 		for (LegoU32 particleIndex = 0; particleIndex < 4; particleIndex++) {
-			field->FUN_0043de90(particleIndex);
+			field->ClearWheelParticle(particleIndex);
 		}
 
 		LegoU32 startIndex = m_raceState->GetUnk0x17c(racerIndex);
@@ -127,9 +127,9 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		GolVec3 up;
 		GolVec3 direction = m_raceState->GetUnk0x0ec(startIndex);
 		up = m_raceState->GetUnk0x134(startIndex);
-		racer->m_unk0x018.m_unk0x044->VTable0x08(position);
-		racer->m_unk0x018.m_unk0x044->VTable0x40(direction, up);
-		field->FUN_0043e620();
+		racer->m_unk0x018.m_carEntity->VTable0x08(position);
+		racer->m_unk0x018.m_carEntity->VTable0x40(direction, up);
+		field->SnapVisuals();
 		racer->FUN_0043a3e0();
 
 		if (!m_context->m_playerSetupSlots[racerIndex].m_unk0x10) {

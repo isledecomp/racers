@@ -1811,10 +1811,10 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 
 	if (!m_aimTarget) {
 		GolVec3 position;
-		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+		p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 		GolVec3 direction;
-		p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+		p_racer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 
 		if (p_racer->m_unk0xd08 != 2) {
 			setup.m_targetPoint = m_targetPoints->FindTargetInCone(
@@ -1861,10 +1861,10 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	TargetPointList::Entry* entry = NULL;
 
 	GolVec3 position;
-	p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 	GolVec3 direction;
-	p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+	p_racer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 
 	RaceState::Racer* target = m_raceState->FindFarthestRacerInCone(
 		&position,
@@ -1962,10 +1962,10 @@ LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_l
 	m_activeActions = action;
 
 	GolVec3 position;
-	p_racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
+	p_racer->m_unk0x018.m_carEntity->VTable0x04(&position);
 
 	GolVec3 direction;
-	p_racer->m_unk0x018.m_unk0x044->GetOrientationRow0(&direction);
+	p_racer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 	direction.m_x = -direction.m_x;
 	direction.m_y = -direction.m_y;
 	direction.m_z = -direction.m_z;
@@ -2488,7 +2488,7 @@ void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource,
 	GolVec3 position;
 	GolVec3 direction;
 
-	racer->m_unk0x018.GetUnk0x044()->VTable0x04(&referencePosition);
+	racer->m_unk0x018.GetCarEntity()->VTable0x04(&referencePosition);
 
 	for (PowerupAction* node = m_activeActions; node != NULL; node = node->GetNext()) {
 		if (node->GetBrickColor() == 1 && node->GetLevel() == p_level && node->GetState() == p_state) {

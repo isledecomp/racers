@@ -257,7 +257,7 @@ void RacePowerupManager::TurboAction::StartBoost()
 
 	SoundVector position;
 	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
-	GolAnimatedEntity** racerEntity = &racerField->m_unk0x044;
+	GolAnimatedEntity** racerEntity = &racerField->m_carEntity;
 	(*racerEntity)->VTable0x04(&position);
 
 	m_soundSource->PlaySpatialSoundById(
@@ -294,7 +294,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 	}
 
 	if (m_smokeParticle != NULL) {
-		GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_unk0x044;
+		GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_carEntity;
 		GolVec3 velocity;
 		GolVec3 offset;
 		GolVec3 position;
@@ -331,7 +331,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 // STUB: LEGORACERS 0x0045cf90
 void RacePowerupManager::TurboAction::AnchorToRacer()
 {
-	GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_unk0x044;
+	GolAnimatedEntity* racerEntity = m_racer->m_unk0x018.m_carEntity;
 
 	GolVec3 position;
 	racerEntity->VTable0x04(&position);
@@ -404,7 +404,7 @@ void RacePowerupManager::TurboAction::AdvanceState()
 	case c_stateFade: {
 		SoundVector position;
 		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
-		GolAnimatedEntity* racerEntity = racerField->GetUnk0x044();
+		GolAnimatedEntity* racerEntity = racerField->GetCarEntity();
 		racerEntity->VTable0x04(&position);
 
 		LegoS32 state = m_level;

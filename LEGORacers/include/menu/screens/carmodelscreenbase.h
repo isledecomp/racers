@@ -88,7 +88,7 @@ public:
 		void FocusCar();
 		void FocusPiece();
 		void ClearFocusPane();
-		GolWorldEntity* GetUnk0x58() { return &m_unk0x58; }
+		GolWorldEntity* GetCarGroup() { return &m_carGroup; }
 		GolWorldEntity* GetPieceEntity() { return &m_pieceEntity; }
 		LegoS32 GetFocusedPane() const { return m_focusedPane; }
 		LegoS8 GetViewSlot() const { return m_viewSlot; }
@@ -97,12 +97,12 @@ public:
 		// CarModelScreenBase::CarPartPlacement::`scalar deleting destructor'
 
 	private:
-		void FUN_00477bf0();
-		void FUN_00477c50();
-		void FUN_00477cc0(undefined4 p_unk0x04);
-		void FUN_00477dc0();
-		void FUN_00477f00(LegoS32 p_unk0x04);
-		void FUN_00477f30(LegoFloat p_unk0x04);
+		void ResetCamera();
+		void CreatePieceModel();
+		void CreateDriverModel(undefined4 p_unk0x04);
+		void CreateCarGroup();
+		void SetViewSlot(LegoS32 p_unk0x04);
+		void ApplyViewAngle(LegoFloat p_unk0x04);
 		void FUN_00478c70(LegoS32 p_elapsed);
 		void FUN_00478e90(LegoS32 p_elapsed);
 		void FUN_00478ec0(LegoS32 p_elapsed);
@@ -112,46 +112,46 @@ public:
 		void FUN_00479250(LegoS32 p_elapsed);
 		void GetViewPosition(GolVec3* p_dest, LegoS32 p_index);
 
-		CarModelScreenBase* m_screen;                     // 0x1c
-		SoundGroupBinding* m_soundGroupBinding;           // 0x20
-		MenuGameContext* m_context;                       // 0x24
-		CarBuildModel::Placement m_placement;             // 0x28
-		AwardCinematicScreen::SceneEntityGroup m_unk0x58; // 0x58
-		GolAnimatedEntity m_unk0xa8;                      // 0xa8
-		GolSceneNode* m_unk0x19c;                         // 0x19c
-		CmbModelPart0x34* m_unk0x1a0;                     // 0x1a0
-		GolModelEntity m_pieceEntity;                     // 0x1a4
-		GolModelBase* m_unk0x234;                         // 0x234
-		GolModelBase* m_unk0x238;                         // 0x238
-		GolRenderDevice::MaterialColor m_unk0x23c;        // 0x23c
-		undefined4 m_previewDirty;                        // 0x240
-		undefined4 m_unk0x244;                            // 0x244
-		LegoU32 m_unk0x248;                               // 0x248
-		LegoU32 m_feedbackMs;                             // 0x24c
-		GolVec3 m_piecePosition;                          // 0x250
-		undefined4 m_unk0x25c;                            // 0x25c
-		undefined4 m_unk0x260;                            // 0x260
-		LegoU32 m_unk0x264;                               // 0x264
-		LegoU32 m_unk0x268;                               // 0x268
-		LegoFloat m_unk0x26c;                             // 0x26c
-		LegoFloat m_unk0x270;                             // 0x270
-		LegoFloat m_unk0x274;                             // 0x274
-		LegoU8 m_unk0x278;                                // 0x278
-		undefined m_unk0x279[0x27c - 0x279];              // 0x279
-		GolVec3 m_unk0x27c;                               // 0x27c
-		LegoFloat m_viewPitch;                            // 0x288
-		LegoS32 m_viewResetDelayMs;                       // 0x28c
-		LegoU8 m_unk0x290;                                // 0x290
-		undefined m_unk0x291[0x294 - 0x291];              // 0x291
-		LegoS32 m_focusedPane;                            // 0x294
-		LegoS8 m_viewSlot;                                // 0x298
-		undefined m_unk0x299[0x29c - 0x299];              // 0x299
-		LegoFloat m_viewAngle;                            // 0x29c
-		LegoS32 m_viewAnimMs;                             // 0x2a0
-		LegoS32 m_viewAnimRemainingMs;                    // 0x2a4
-		LegoFloat m_viewAngles[8];                        // 0x2a8
-		LegoFloat m_viewAngleF;                           // 0x2c8
-		LegoFloat m_unk0x2cc;                             // 0x2cc
+		CarModelScreenBase* m_screen;                      // 0x1c
+		SoundGroupBinding* m_soundGroupBinding;            // 0x20
+		MenuGameContext* m_context;                        // 0x24
+		CarBuildModel::Placement m_placement;              // 0x28
+		AwardCinematicScreen::SceneEntityGroup m_carGroup; // 0x58
+		GolAnimatedEntity m_driverEntity;                  // 0xa8
+		GolSceneNode* m_bodySceneNode;                     // 0x19c
+		CmbModelPart0x34* m_bodyModelPart;                 // 0x1a0
+		GolModelEntity m_pieceEntity;                      // 0x1a4
+		GolModelBase* m_pieceModel;                        // 0x234
+		GolModelBase* m_driverModel;                       // 0x238
+		GolRenderDevice::MaterialColor m_unk0x23c;         // 0x23c
+		undefined4 m_previewDirty;                         // 0x240
+		undefined4 m_unk0x244;                             // 0x244
+		LegoU32 m_unk0x248;                                // 0x248
+		LegoU32 m_feedbackMs;                              // 0x24c
+		GolVec3 m_piecePosition;                           // 0x250
+		undefined4 m_unk0x25c;                             // 0x25c
+		undefined4 m_unk0x260;                             // 0x260
+		LegoU32 m_unk0x264;                                // 0x264
+		LegoU32 m_unk0x268;                                // 0x268
+		LegoFloat m_unk0x26c;                              // 0x26c
+		LegoFloat m_unk0x270;                              // 0x270
+		LegoFloat m_unk0x274;                              // 0x274
+		LegoU8 m_unk0x278;                                 // 0x278
+		undefined m_unk0x279[0x27c - 0x279];               // 0x279
+		GolVec3 m_cameraEye;                               // 0x27c
+		LegoFloat m_viewPitch;                             // 0x288
+		LegoS32 m_viewResetDelayMs;                        // 0x28c
+		LegoU8 m_pitchTarget;                              // 0x290
+		undefined m_unk0x291[0x294 - 0x291];               // 0x291
+		LegoS32 m_focusedPane;                             // 0x294
+		LegoS8 m_viewSlot;                                 // 0x298
+		undefined m_unk0x299[0x29c - 0x299];               // 0x299
+		LegoFloat m_viewAngle;                             // 0x29c
+		LegoS32 m_viewAnimMs;                              // 0x2a0
+		LegoS32 m_viewAnimRemainingMs;                     // 0x2a4
+		LegoFloat m_viewAngles[8];                         // 0x2a8
+		LegoFloat m_viewAngleF;                            // 0x2c8
+		LegoFloat m_unk0x2cc;                              // 0x2cc
 	};
 
 	CarModelScreenBase();

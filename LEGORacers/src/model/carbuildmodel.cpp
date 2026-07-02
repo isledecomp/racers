@@ -1254,7 +1254,7 @@ void CarBuildModel::Placement::Rotate()
 }
 
 // FUNCTION: LEGORACERS 0x00499b40
-void CarBuildModel::Placement::FUN_00499b40()
+void CarBuildModel::Placement::MoveRight()
 {
 	if (m_rotation & 1) {
 		if (m_gridX + m_height < 10) {
@@ -1272,7 +1272,7 @@ void CarBuildModel::Placement::FUN_00499b40()
 }
 
 // FUNCTION: LEGORACERS 0x00499b90
-void CarBuildModel::Placement::FUN_00499b90()
+void CarBuildModel::Placement::MoveLeft()
 {
 	if (m_gridX > 0) {
 		m_gridX--;
@@ -1282,7 +1282,7 @@ void CarBuildModel::Placement::FUN_00499b90()
 }
 
 // FUNCTION: LEGORACERS 0x00499bb0
-void CarBuildModel::Placement::FUN_00499bb0()
+void CarBuildModel::Placement::MoveForward()
 {
 	if (m_rotation & 1) {
 		if (m_gridY + m_width < 6) {
@@ -1300,7 +1300,7 @@ void CarBuildModel::Placement::FUN_00499bb0()
 }
 
 // FUNCTION: LEGORACERS 0x00499c00
-void CarBuildModel::Placement::FUN_00499c00()
+void CarBuildModel::Placement::MoveBackward()
 {
 	if (m_gridY > 0) {
 		m_gridY--;
@@ -1310,33 +1310,33 @@ void CarBuildModel::Placement::FUN_00499c00()
 }
 
 // FUNCTION: LEGORACERS 0x00499c20
-void CarBuildModel::Placement::FUN_00499c20(LegoS32 p_delta)
+void CarBuildModel::Placement::MoveX(LegoS32 p_delta)
 {
 	if (p_delta > 0) {
 		for (LegoS32 i = p_delta; i != 0; i--) {
-			FUN_00499b40();
+			MoveRight();
 		}
 	}
 	else if (p_delta < 0) {
 		LegoS32 i = -p_delta;
 		do {
-			FUN_00499b90();
+			MoveLeft();
 		} while (--i != 0);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00499c60
-void CarBuildModel::Placement::FUN_00499c60(LegoS32 p_delta)
+void CarBuildModel::Placement::MoveY(LegoS32 p_delta)
 {
 	if (p_delta > 0) {
 		for (LegoS32 i = p_delta; i != 0; i--) {
-			FUN_00499bb0();
+			MoveForward();
 		}
 	}
 	else if (p_delta < 0) {
 		LegoS32 i = -p_delta;
 		do {
-			FUN_00499c00();
+			MoveBackward();
 		} while (--i != 0);
 	}
 }

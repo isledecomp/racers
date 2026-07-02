@@ -59,7 +59,7 @@ public:
 			SoundGroupBinding* m_soundGroupBinding; // 0x10
 			MenuGameContext* m_context;             // 0x14
 			CarModelScreenBase* m_screen;           // 0x18
-			GolVec3 m_unk0x1c;                      // 0x1c
+			GolVec3 m_piecePosition;                // 0x1c
 			LegoFloat m_unk0x28;                    // 0x28
 			undefined4 m_unk0x2c;                   // 0x2c
 		};
@@ -70,28 +70,28 @@ public:
 		LegoBool32 Destroy() override;          // vtable+0x08
 		LegoBool32 Draw() override;             // vtable+0x0c
 		LegoBool32 Update(undefined4) override; // vtable+0x10
-		LegoBool32 FUN_00477ae0(CreateParams* p_createParams);
-		void FUN_00477e40(LegoS32 p_unk0x04);
-		LegoBool32 FUN_00477fc0(LegoFloat p_delta);
-		LegoBool32 FUN_00478080(LegoS32 p_delta, LegoBool32 p_unk0x08);
-		void FUN_00478120();
-		LegoBool32 FUN_00478180(LegoFloat p_delta);
-		LegoBool32 FUN_004782f0(LegoS32 p_delta, LegoBool32 p_unk0x08);
-		void FUN_004783d0();
-		LegoBool32 FUN_004784d0(LegoBool32 p_unk0x04);
-		void FUN_00478560();
-		LegoBool32 FUN_004785b0(LegoS32 p_delta);
-		LegoBool32 FUN_00478670(LegoS32 p_delta);
-		LegoBool32 FUN_00478730();
-		LegoBool32 FUN_004787e0(LegoS32* p_unk0x04, LegoS32* p_unk0x08, LegoS32* p_unk0x0c);
-		void FUN_004792d0();
-		void FUN_00479300();
-		void FUN_00479310();
-		void FUN_00479320();
+		LegoBool32 Create(CreateParams* p_createParams);
+		void SelectPieceChoice(LegoS32 p_unk0x04);
+		LegoBool32 RotateViewAnalog(LegoFloat p_delta);
+		LegoBool32 RotateViewStep(LegoS32 p_delta, LegoBool32 p_unk0x08);
+		void SnapViewRotation();
+		LegoBool32 PitchViewAnalog(LegoFloat p_delta);
+		LegoBool32 PitchViewStep(LegoS32 p_delta, LegoBool32 p_unk0x08);
+		void SnapViewPitch();
+		LegoBool32 BeginViewReset(LegoBool32 p_unk0x04);
+		void RotatePiece();
+		LegoBool32 MovePieceX(LegoS32 p_delta);
+		LegoBool32 MovePieceY(LegoS32 p_delta);
+		LegoBool32 CommitPiece();
+		LegoBool32 UndoLastPiece(LegoS32* p_unk0x04, LegoS32* p_unk0x08, LegoS32* p_unk0x0c);
+		void BeginResetAnimation();
+		void FocusCar();
+		void FocusPiece();
+		void ClearFocusPane();
 		GolWorldEntity* GetUnk0x58() { return &m_unk0x58; }
-		GolWorldEntity* GetUnk0x1a4() { return &m_unk0x1a4; }
-		LegoS32 GetUnk0x294() const { return m_unk0x294; }
-		LegoS8 GetUnk0x298() const { return m_unk0x298; }
+		GolWorldEntity* GetPieceEntity() { return &m_pieceEntity; }
+		LegoS32 GetFocusedPane() const { return m_focusedPane; }
+		LegoS8 GetViewSlot() const { return m_viewSlot; }
 
 		// SYNTHETIC: LEGORACERS 0x004779b0
 		// CarModelScreenBase::CarPartPlacement::`scalar deleting destructor'
@@ -110,25 +110,25 @@ public:
 		void FUN_00478fd0(LegoU32 p_elapsed);
 		void FUN_004790f0(LegoS32 p_elapsed);
 		void FUN_00479250(LegoS32 p_elapsed);
-		void FUN_00479330(GolVec3* p_dest, LegoS32 p_index);
+		void GetViewPosition(GolVec3* p_dest, LegoS32 p_index);
 
-		CarModelScreenBase* m_unk0x1c;                    // 0x1c
-		SoundGroupBinding* m_unk0x20;                     // 0x20
-		MenuGameContext* m_unk0x24;                       // 0x24
-		CarBuildModel::Placement m_unk0x28;               // 0x28
+		CarModelScreenBase* m_screen;                     // 0x1c
+		SoundGroupBinding* m_soundGroupBinding;           // 0x20
+		MenuGameContext* m_context;                       // 0x24
+		CarBuildModel::Placement m_placement;             // 0x28
 		AwardCinematicScreen::SceneEntityGroup m_unk0x58; // 0x58
 		GolAnimatedEntity m_unk0xa8;                      // 0xa8
 		GolSceneNode* m_unk0x19c;                         // 0x19c
 		CmbModelPart0x34* m_unk0x1a0;                     // 0x1a0
-		GolModelEntity m_unk0x1a4;                        // 0x1a4
+		GolModelEntity m_pieceEntity;                     // 0x1a4
 		GolModelBase* m_unk0x234;                         // 0x234
 		GolModelBase* m_unk0x238;                         // 0x238
 		GolRenderDevice::MaterialColor m_unk0x23c;        // 0x23c
-		undefined4 m_unk0x240;                            // 0x240
+		undefined4 m_previewDirty;                        // 0x240
 		undefined4 m_unk0x244;                            // 0x244
 		LegoU32 m_unk0x248;                               // 0x248
-		LegoU32 m_unk0x24c;                               // 0x24c
-		GolVec3 m_unk0x250;                               // 0x250
+		LegoU32 m_feedbackMs;                             // 0x24c
+		GolVec3 m_piecePosition;                          // 0x250
 		undefined4 m_unk0x25c;                            // 0x25c
 		undefined4 m_unk0x260;                            // 0x260
 		LegoU32 m_unk0x264;                               // 0x264
@@ -139,18 +139,18 @@ public:
 		LegoU8 m_unk0x278;                                // 0x278
 		undefined m_unk0x279[0x27c - 0x279];              // 0x279
 		GolVec3 m_unk0x27c;                               // 0x27c
-		LegoFloat m_unk0x288;                             // 0x288
-		LegoS32 m_unk0x28c;                               // 0x28c
+		LegoFloat m_viewPitch;                            // 0x288
+		LegoS32 m_viewResetDelayMs;                       // 0x28c
 		LegoU8 m_unk0x290;                                // 0x290
 		undefined m_unk0x291[0x294 - 0x291];              // 0x291
-		LegoS32 m_unk0x294;                               // 0x294
-		LegoS8 m_unk0x298;                                // 0x298
+		LegoS32 m_focusedPane;                            // 0x294
+		LegoS8 m_viewSlot;                                // 0x298
 		undefined m_unk0x299[0x29c - 0x299];              // 0x299
-		LegoFloat m_unk0x29c;                             // 0x29c
-		LegoS32 m_unk0x2a0;                               // 0x2a0
-		LegoS32 m_unk0x2a4;                               // 0x2a4
-		LegoFloat m_unk0x2a8[8];                          // 0x2a8
-		LegoFloat m_unk0x2c8;                             // 0x2c8
+		LegoFloat m_viewAngle;                            // 0x29c
+		LegoS32 m_viewAnimMs;                             // 0x2a0
+		LegoS32 m_viewAnimRemainingMs;                    // 0x2a4
+		LegoFloat m_viewAngles[8];                        // 0x2a8
+		LegoFloat m_viewAngleF;                           // 0x2c8
 		LegoFloat m_unk0x2cc;                             // 0x2cc
 	};
 

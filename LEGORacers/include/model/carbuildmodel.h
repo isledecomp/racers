@@ -31,8 +31,8 @@ public:
 		void SetPiece(LegoPieceLibrary::PieceRecord* p_pieceRecord, LegoS32 p_colorRecordIndex, LegoS32 p_partType);
 		void FUN_00499a60();
 		void Rotate();
-		void FUN_00499c20(LegoS32 p_delta);
-		void FUN_00499c60(LegoS32 p_delta);
+		void MoveX(LegoS32 p_delta);
+		void MoveY(LegoS32 p_delta);
 		void GetPlacement(LegoS32* p_x, LegoS32* p_y, LegoS32* p_rotation);
 		void SetPlacement(LegoS32 p_x, LegoS32 p_y, LegoS32 p_rotation, LegoS32 p_anchor);
 		LegoPieceLibrary::PieceRecord* GetPieceRecord() const { return m_pieceRecord; }
@@ -44,10 +44,10 @@ public:
 		void FUN_00499640();
 		void SetAnchor(LegoS32 p_anchor);
 		void FUN_004997e0();
-		void FUN_00499b40();
-		void FUN_00499b90();
-		void FUN_00499bb0();
-		void FUN_00499c00();
+		void MoveRight();
+		void MoveLeft();
+		void MoveForward();
+		void MoveBackward();
 
 		undefined4 m_unk0x00;                         // 0x00
 		LegoS32 m_x;                                  // 0x04

@@ -68,15 +68,15 @@ void CarModelScreenBase::FUN_00477050()
 	params.m_soundGroupBinding = m_soundGroupBinding;
 	params.m_context = m_context;
 	params.m_screen = this;
-	params.m_unk0x1c.m_x = 0.0f;
-	params.m_unk0x1c.m_y = 0.0f;
-	params.m_unk0x1c.m_z = 1.0f;
+	params.m_piecePosition.m_x = 0.0f;
+	params.m_piecePosition.m_y = 0.0f;
+	params.m_piecePosition.m_z = 1.0f;
 	params.m_unk0x28 = 0.001f;
 	params.m_unk0x2c = m_context->m_context->m_useBinaryFiles;
-	m_unk0x2308.FUN_00477ae0(&params);
+	m_unk0x2308.Create(&params);
 
 	m_unk0x1e30.AddElement(&m_unk0x2308);
-	m_unk0x2308.FUN_00478180(0.0f);
+	m_unk0x2308.PitchViewAnalog(0.0f);
 }
 
 // FUNCTION: LEGORACERS 0x00477130
@@ -193,19 +193,19 @@ LegoBool32 CarModelScreenBase::FUN_004773e0(LegoS32 p_deltaX, LegoS32 p_deltaY, 
 	LegoS32 deltaX = p_deltaX;
 	if (deltaX && p_deltaY && !p_unk0x10) {
 		CarPartPlacement* placement = &m_unk0x2308;
-		if (placement->FUN_004785b0(deltaX) && placement->FUN_00478670(p_deltaY)) {
+		if (placement->MovePieceX(deltaX) && placement->MovePieceY(p_deltaY)) {
 			m_soundGroupBinding->PlaySoundByIndex(p_sound & 0xffff);
 			return TRUE;
 		}
 
-		placement->FUN_004785b0(-deltaX);
+		placement->MovePieceX(-deltaX);
 		m_soundGroupBinding->PlaySoundByIndex(fallbackSound & 0xffff);
 		return FALSE;
 	}
 
 	CarPartPlacement* placement = &m_unk0x2308;
-	LegoBool32 result = placement->FUN_004785b0(deltaX);
-	result |= placement->FUN_00478670(p_deltaY);
+	LegoBool32 result = placement->MovePieceX(deltaX);
+	result |= placement->MovePieceY(p_deltaY);
 	if (result) {
 		m_soundGroupBinding->PlaySoundByIndex(p_sound & 0xffff);
 	}
@@ -239,7 +239,7 @@ void CarModelScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 	}
 
 	if (p_source == &m_unk0xfec) {
-		m_unk0x2308.FUN_00477e40(m_partCarousel.GetChoiceIndex(m_partCarousel.GetSelectedIndex()));
+		m_unk0x2308.SelectPieceChoice(m_partCarousel.GetChoiceIndex(m_partCarousel.GetSelectedIndex()));
 		return;
 	}
 
@@ -250,7 +250,7 @@ void CarModelScreenBase::OnWidgetValueChanged(MenuWidget* p_source)
 			if (child == &m_unk0x19e0[i]) {
 				CarPartCarousel* partCarousel = &m_partCarousel;
 				partCarousel->SelectPartByType(m_context->m_unk0x21a4.GetEntries()[i].GetPieceType());
-				m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
+				m_unk0x2308.SelectPieceChoice(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 				return;
 			}
 		}
@@ -266,7 +266,7 @@ void CarModelScreenBase::OnCarouselSettled(MenuWidget* p_source)
 			CarPartCarousel* partCarousel = &m_partCarousel;
 			partCarousel->RefreshChoiceIndices();
 			partCarousel->SetSelection(partCarousel->WrapIndex(m_partCarousel.GetSelectedIndex()));
-			m_unk0x2308.FUN_00477e40(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
+			m_unk0x2308.SelectPieceChoice(partCarousel->GetChoiceIndex(partCarousel->GetSelectedIndex()));
 		}
 		case 5:
 			m_unk0x2ae4 = 1;
@@ -309,7 +309,7 @@ void CarModelScreenBase::FUN_00477770()
 	case 5:
 		m_unk0x2ae4 = 6;
 		m_unk0x2adc = 5;
-		m_unk0x2308.FUN_004792d0();
+		m_unk0x2308.BeginResetAnimation();
 		break;
 	case 6:
 		VTable0xbc();

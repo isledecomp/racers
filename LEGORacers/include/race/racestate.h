@@ -65,7 +65,15 @@ class RaceState {
 public:
 	// VTABLE: LEGORACERS 0x004b0a2c
 	// SIZE 0x1fc
-	class SpbTxtParser : public GolTxtParser {};
+	class SpbTxtParser : public GolTxtParser {
+	public:
+		// .spb token meanings
+		enum {
+			e_startPosition = 0x27,
+			e_position = 0x28,
+			e_orientation = 0x29,
+		};
+	};
 
 	// VTABLE: LEGORACERS 0x004b09b0
 	// SIZE 0xe34
@@ -1099,7 +1107,7 @@ public:
 			c_flagShoveActive = 1 << 8,
 			c_flagEngineSounds = 1 << 10,
 			c_flagCursed = 1 << 11,
-			c_flags0xd04Bit12 = 1 << 12,
+			c_flagFinished = 1 << 12,
 			c_flagFacingForwardPending = 1 << 13,
 			c_flagFacingForward = 1 << 14,
 			c_flagHasLookTarget = 1 << 15,
@@ -1183,7 +1191,7 @@ public:
 		undefined4 m_speedRampTimerMs;        // 0xd48
 		undefined4 m_scrapeSoundCooldownMs;   // 0xd4c
 		LegoU32 m_airborneMs;                 // 0xd50
-		LegoFloat m_unk0xd54;                 // 0xd54
+		LegoFloat m_enginePitchScale;         // 0xd54
 		LegoU32 m_whiteBrickCount;            // 0xd58
 		DroppableBrick* m_whiteBricks[3];     // 0xd5c
 		LegoU32 m_turboLevel;                 // 0xd68
@@ -1252,9 +1260,9 @@ public:
 	// SIZE 0x0c
 	class RacerProgressEntry {
 	public:
-		Racer* m_racer;      // 0x00
-		LegoFloat m_unk0x04; // 0x04
-		LegoFloat m_unk0x08; // 0x08
+		Racer* m_racer;               // 0x00
+		LegoFloat m_tieBreakDistance; // 0x04
+		LegoFloat m_progress;         // 0x08
 	};
 
 	// VTABLE: LEGORACERS 0x004b0aa8
@@ -1456,14 +1464,14 @@ private:
 		LegoU32 p_racerIndex,
 		undefined4 p_unk0x10
 	);
-	void FUN_0043bc10(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
-	void FUN_0043be60(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
-	void FUN_0043bff0(GolD3DRenderDevice* p_renderer);
-	void FUN_0043c030(LegoU32 p_elapsedMs);
-	void FUN_0043c1b0();
-	void FUN_0043c6a0(GolCamera* p_camera);
-	void FUN_0043ccb0();
-	void FUN_0043cd30(GolRenderDevice* p_renderer, Racer* p_racer);
+	void LoadStartPositions(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+	void InitializeRacerVisuals(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
+	void DrawRacersTransparent(GolD3DRenderDevice* p_renderer);
+	void UpdateRacers(LegoU32 p_elapsedMs);
+	void UpdateStandings();
+	void UpdateShadows(GolCamera* p_camera);
+	void StartRace();
+	void DrawRacerEntities(GolRenderDevice* p_renderer, Racer* p_racer);
 	void SetUnk0x080(Racer* p_racer) { m_unk0x0f0.m_racer080 = p_racer; }
 	void SetUnk0x284Unk0x0c(LegoFloat p_unk0x0c) { m_setup.m_unk0x0c = p_unk0x0c; }
 	void Reset();

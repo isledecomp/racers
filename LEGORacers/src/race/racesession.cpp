@@ -993,7 +993,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 
 	FUN_00435ba0(0.54f);
 
-	m_raceState.FUN_0043bc10(&m_unk0x194, m_context->m_useBinaryFiles, p_mirror);
+	m_raceState.LoadStartPositions(&m_unk0x194, m_context->m_useBinaryFiles, p_mirror);
 
 	FUN_00435ba0(0.56f);
 
@@ -1092,7 +1092,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		m_raceState.SetUnk0x080(NULL);
 	}
 
-	m_raceState.FUN_0043be60(m_renderer, m_golExport);
+	m_raceState.InitializeRacerVisuals(m_renderer, m_golExport);
 
 	FUN_00435ba0(0.7f);
 
@@ -1773,7 +1773,7 @@ void RaceSession::FUN_00434b00()
 
 	m_elapsedMs = 0;
 	m_state = 3;
-	m_raceState.FUN_0043ccb0();
+	m_raceState.StartRace();
 
 	LegoU32 i = 0;
 	if (m_context->m_playerCount > 0) {
@@ -2096,7 +2096,7 @@ void RaceSession::VTable0x30()
 				remainingMs = 0;
 			}
 
-			m_raceState.FUN_0043c030(stepMs);
+			m_raceState.UpdateRacers(stepMs);
 
 			for (i = 0; i < m_context->m_playerCount; i++) {
 				m_unk0x2ad4[i].FUN_00428540(static_cast<LegoFloat>(stepMs));
@@ -2135,7 +2135,7 @@ void RaceSession::FUN_004354d0()
 		m_raceState.m_unk0x318[1]->m_unk0x018.UpdateShadow(m_unk0x2acc[1]);
 	}
 	else {
-		m_raceState.FUN_0043c6a0(m_unk0x2acc[0]);
+		m_raceState.UpdateShadows(m_unk0x2acc[0]);
 	}
 
 	LegoU32 viewportIndex = 1;
@@ -2363,7 +2363,7 @@ void RaceSession::VTable0x34()
 // FUNCTION: LEGORACERS 0x00435960
 void RaceSession::VTable0x38(RaceState::Racer* p_racer)
 {
-	m_raceState.FUN_0043cd30(m_renderer, p_racer);
+	m_raceState.DrawRacerEntities(m_renderer, p_racer);
 	m_unk0x6dc.Draw(FALSE);
 	m_unk0x2150.FUN_00489ff0(m_renderer);
 	m_unk0x248c.FUN_00489ff0(m_renderer);
@@ -2381,7 +2381,7 @@ void RaceSession::VTable0x38(RaceState::Racer* p_racer)
 void RaceSession::VTable0x3c()
 {
 	m_unk0x398->FUN_00416040();
-	m_raceState.FUN_0043bff0(m_renderer);
+	m_raceState.DrawRacersTransparent(m_renderer);
 	m_unk0x2148.FUN_0048ae30(m_renderer);
 	m_unk0x6dc.DrawTransparent();
 	m_unk0x2150.FUN_0048a040(m_renderer);

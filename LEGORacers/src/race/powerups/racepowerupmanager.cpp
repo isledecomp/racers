@@ -2515,11 +2515,12 @@ void RacePowerupManager::ClearBricksAudible()
 }
 
 // FUNCTION: LEGORACERS 0x0045b9a0
-LegoBool32 RacePowerupManager::IsRacerTargeted(RaceState::Racer* p_racer)
+LegoBool32 RacePowerupManager::IsProjectileEntity(GolWorldEntity* p_entity)
 {
 	PowerupAction* node = m_activeActions;
 	while (node != NULL) {
-		if (node->GetBrickColor() == 1 && static_cast<ShieldAction*>(node)->FUN_0045bc40() == p_racer) {
+		if (node->GetBrickColor() == 1 &&
+			static_cast<WeaponActionBase*>(node)->GetProjectileWorldEntity() == p_entity) {
 			break;
 		}
 

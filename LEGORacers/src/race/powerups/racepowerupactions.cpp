@@ -4189,10 +4189,10 @@ void RacePowerupManager::WeaponActionBase::GetProjectileVelocity(GolVec3* p_velo
 }
 
 // FUNCTION: LEGORACERS 0x0045bc40
-RaceState::Racer* RacePowerupManager::ShieldAction::FUN_0045bc40()
+GolWorldEntity* RacePowerupManager::WeaponActionBase::GetProjectileWorldEntity()
 {
-	if (m_unk0x18) {
-		return m_unk0x18->m_unk0x08;
+	if (m_activeProjectile) {
+		return m_activeProjectile->GetWorldEntity();
 	}
 	else {
 		return NULL;
@@ -4202,7 +4202,7 @@ RaceState::Racer* RacePowerupManager::ShieldAction::FUN_0045bc40()
 // FUNCTION: LEGORACERS 0x0045bc50
 RacePowerupManager::ShieldAction::ShieldAction()
 {
-	m_unk0x18 = 0;
+	m_shieldEntity = 0;
 	m_innerShieldEntity = 0;
 	m_racer = 0;
 	m_manager = 0;

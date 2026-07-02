@@ -459,6 +459,8 @@ public:
 		virtual void GetProjectilePosition(GolVec3* p_position); // vtable+0x24
 		virtual void GetProjectileVelocity(GolVec3* p_velocity); // vtable+0x28
 
+		GolWorldEntity* GetProjectileWorldEntity();
+
 	protected:
 		PowerupProjectile* m_activeProjectile; // 0x018
 		union {
@@ -1025,7 +1027,6 @@ public:
 		void AdvanceState() override;                                  // vtable+0x14
 		LegoS32 GetBrickColor() override;                              // vtable+0x18
 		void Deactivate() override;                                    // vtable+0x1c
-		RaceState::Racer* FUN_0045bc40();
 		void Initialize(RacePowerupManager* p_unk0x04);
 		void Destroy();
 		void Activate(
@@ -1038,10 +1039,7 @@ public:
 	private:
 		friend class RacePowerupManager;
 
-		union {
-			Field0x18* m_unk0x18;              // 0x18
-			GolAnimatedEntity* m_shieldEntity; // 0x18
-		};
+		GolAnimatedEntity* m_shieldEntity;      // 0x18
 		GolAnimatedEntity* m_innerShieldEntity; // 0x1c
 		RaceState::Racer* m_racer;              // 0x20
 		RacePowerupManager* m_manager;          // 0x24
@@ -1349,7 +1347,7 @@ public:
 	void SpawnBrickDebris(const GolVec3* p_unk0x04, const GolVec3* p_position, RaceState::Racer* p_racer);
 	void CancelWarp(RaceState::Racer* p_racer);
 	void SetBricksAudible();
-	LegoBool32 IsRacerTargeted(RaceState::Racer* p_racer);
+	LegoBool32 IsProjectileEntity(GolWorldEntity* p_entity);
 	void ResetEffects();
 	LegoU32 GetUsedEffectEntityCount() const { return m_usedEffectEntityCount; }
 	undefined4 GetUnk0x19a0() const { return m_unk0x19a0; }

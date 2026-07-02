@@ -94,7 +94,7 @@ void RaceSession::Field0x2080::Entry::VTable0x00(LegoEventQueue::CallbackData* p
 {
 	RaceState::Racer* racer = NULL;
 	if (p_data->m_unk0x00 == 2) {
-		if (!m_unk0x48->IsRacerTargeted(static_cast<RaceState::Racer*>(p_data->m_data))) {
+		if (!m_unk0x48->IsProjectileEntity(static_cast<GolWorldEntity*>(p_data->m_data))) {
 			return;
 		}
 	}

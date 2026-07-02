@@ -297,7 +297,7 @@ void RaceCameraController::Initialize(GolCamera* p_camera, GolD3DRenderDevice* p
 }
 
 // FUNCTION: LEGORACERS 0x00428230
-void RaceCameraController::SetRacer(RaceState::Racer* p_unk0x04)
+void RaceCameraController::SetRacer(Racer* p_unk0x04)
 {
 	if (m_racer != p_unk0x04) {
 		m_racer = p_unk0x04;
@@ -493,7 +493,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 	}
 	case 1:
 	case 3: {
-		RaceState::Racer* racer = m_racer;
+		Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		GolVec3 targetPosition;
 		entity->VTable0x04(&targetPosition);
@@ -531,7 +531,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 			m_unk0x0d8 = desiredDirection;
 		}
 		else {
-			if (racer->m_physics.m_flags & RaceState::Racer::Physics::c_flagSpinning) {
+			if (racer->m_physics.m_flags & RacerPhysics::c_flagSpinning) {
 				desiredDirection = m_unk0x0d8;
 			}
 			else {
@@ -584,10 +584,10 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		m_lastRacerPosition = targetPosition;
 
 		if (m_unk0x11c) {
-			m_unk0x11c = racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo;
+			m_unk0x11c = racer->m_driveController.m_flags & DriveController::c_flagTurbo;
 		}
 		else {
-			m_unk0x11c = racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo;
+			m_unk0x11c = racer->m_driveController.m_flags & DriveController::c_flagTurbo;
 			if (m_unk0x11c) {
 				switch (racer->m_turboLevel) {
 				case 0:
@@ -708,7 +708,7 @@ void RaceCameraController::Update(LegoFloat p_unk0x04)
 		return;
 	}
 	case 2: {
-		RaceState::Racer* racer = m_racer;
+		Racer* racer = m_racer;
 		GolAnimatedEntity* entity = racer->m_visuals.m_carEntity;
 		entity->VTable0x04(&m_lastRacerPosition);
 

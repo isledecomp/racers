@@ -61,7 +61,7 @@ void RaceSession::PlayerControls::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x004300d0
-void RaceSession::PlayerControls::Initialize(RaceState::Racer* p_racer, InputDevice::Callback* p_fallback)
+void RaceSession::PlayerControls::Initialize(Racer* p_racer, InputDevice::Callback* p_fallback)
 {
 	m_racer = p_racer;
 	m_input.Initialize(this, p_fallback);
@@ -332,7 +332,7 @@ void RaceSession::PlayerControls::OnThrottle(LegoBool32 p_enabled)
 void RaceSession::PlayerControls::OnBrake(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
-		RaceState::Racer* racer = m_racer;
+		Racer* racer = m_racer;
 		if (racer->m_physics.m_flags & 2) {
 			racer->m_physics.FinishSpin();
 		}
@@ -415,7 +415,7 @@ void RaceSession::PlayerControls::TryStartBoost()
 
 	if (m_input.m_boostWindowMs > 0) {
 		LegoU32 duration = m_input.m_boostWindowMs;
-		RaceState::Racer* racer = m_racer;
+		Racer* racer = m_racer;
 		if (duration >= 60) {
 			racer->m_powerupManager->UseGreenPowerup(racer, TRUE);
 		}
@@ -435,7 +435,7 @@ void RaceSession::PlayerControls::EnterAiControl()
 	m_input.m_stateFlags |= 2;
 	m_racer->SwitchToAiControl();
 
-	RaceState::Racer* racer = m_racer;
+	Racer* racer = m_racer;
 	if (racer->m_flags & 0x80) {
 		racer->EndDrift();
 	}

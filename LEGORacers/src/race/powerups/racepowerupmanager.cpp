@@ -159,11 +159,11 @@ void RacePowerupManager::PowerupActionBase::Deactivate()
 	m_state = 1;
 }
 
-void RacePowerupManager::HazardActionBase::OnHitRacer(RaceState::Racer*)
+void RacePowerupManager::HazardActionBase::OnHitRacer(Racer*)
 {
 }
 
-void RacePowerupManager::WeaponActionBase::OnHitRacer(RaceState::Racer*)
+void RacePowerupManager::WeaponActionBase::OnHitRacer(Racer*)
 {
 }
 
@@ -356,11 +356,7 @@ void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, 
 }
 
 // FUNCTION: LEGORACERS 0x004517c0
-void RacePowerupManager::BrickDebris::Spawn(
-	const GolVec3* p_position,
-	const GolVec3* p_direction,
-	RaceState::Racer* p_racer
-)
+void RacePowerupManager::BrickDebris::Spawn(const GolVec3* p_position, const GolVec3* p_direction, Racer* p_racer)
 {
 	DuskwindBananaRelic0x24* material;
 	material = NULL;
@@ -1763,7 +1759,7 @@ void RacePowerupManager::DrawTransparent()
 }
 
 // FUNCTION: LEGORACERS 0x0045a950
-void RacePowerupManager::UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::UseRedPowerup(Racer* p_racer, LegoU32 p_level)
 {
 	switch (p_level) {
 	case 0:
@@ -1784,7 +1780,7 @@ void RacePowerupManager::UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_leve
 }
 
 // FUNCTION: LEGORACERS 0x0045a9b0
-void RacePowerupManager::UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::UseYellowPowerup(Racer* p_racer, LegoU32 p_level)
 {
 	switch (p_level) {
 	case 0:
@@ -1807,7 +1803,7 @@ void RacePowerupManager::UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_l
 }
 
 // FUNCTION: LEGORACERS 0x0045aa30
-LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_level)
+LegoU32 RacePowerupManager::FireCannonball(Racer* p_racer, LegoU32 p_level)
 {
 	ActionSetup setup;
 	setup.m_racer = p_racer;
@@ -1861,7 +1857,7 @@ LegoU32 RacePowerupManager::FireCannonball(RaceState::Racer* p_racer, LegoU32 p_
 }
 
 // FUNCTION: LEGORACERS 0x0045ab50
-LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32 p_level)
+LegoU32 RacePowerupManager::FireGrapplingHook(Racer* p_racer, LegoU32 p_level)
 {
 	TargetPointList::Entry* entry = NULL;
 
@@ -1871,7 +1867,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 	GolVec3 direction;
 	p_racer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 
-	RaceState::Racer* target = m_raceState->FindFarthestRacerInCone(
+	Racer* target = m_raceState->FindFarthestRacerInCone(
 		&position,
 		&direction,
 		g_hookAimMinDistanceSquared,
@@ -1924,7 +1920,7 @@ LegoU32 RacePowerupManager::FireGrapplingHook(RaceState::Racer* p_racer, LegoU32
 }
 
 // FUNCTION: LEGORACERS 0x0045ac80
-void RacePowerupManager::FireLightning(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::FireLightning(Racer* p_racer, LegoU32 p_level)
 {
 	LightningAction* action = static_cast<LightningAction*>(m_freeLightningActions);
 	if (!action) {
@@ -1941,7 +1937,7 @@ void RacePowerupManager::FireLightning(RaceState::Racer* p_racer, LegoU32 p_leve
 }
 
 // FUNCTION: LEGORACERS 0x0045ace0
-void RacePowerupManager::DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::DropOilSlick(Racer* p_racer, LegoU32 p_level)
 {
 	OilSlickAction* action = static_cast<OilSlickAction*>(m_freeOilSlickActions);
 	if (!action) {
@@ -1958,7 +1954,7 @@ void RacePowerupManager::DropOilSlick(RaceState::Racer* p_racer, LegoU32 p_level
 }
 
 // FUNCTION: LEGORACERS 0x0045ad30
-LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_level)
+LegoU32 RacePowerupManager::ThrowDynamite(Racer* p_racer, LegoU32 p_level)
 {
 	DynamiteAction* action = static_cast<DynamiteAction*>(m_freeDynamiteActions);
 	if (!action) {
@@ -1980,7 +1976,7 @@ LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_l
 	direction.m_y = -direction.m_y;
 	direction.m_z = -direction.m_z;
 
-	RaceState::Racer* target = m_raceState->FindNearestRacerInCone(
+	Racer* target = m_raceState->FindNearestRacerInCone(
 		&position,
 		&direction,
 		g_dynamiteAimMinDistanceSquared,
@@ -1993,7 +1989,7 @@ LegoU32 RacePowerupManager::ThrowDynamite(RaceState::Racer* p_racer, LegoU32 p_l
 }
 
 // FUNCTION: LEGORACERS 0x0045adf0
-void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::ActivateMagnet(Racer* p_racer, LegoU32 p_level)
 {
 	MagnetAction* action = static_cast<MagnetAction*>(m_freeMagnetActions);
 	if (!action) {
@@ -2035,7 +2031,7 @@ void RacePowerupManager::ActivateMagnet(RaceState::Racer* p_racer, LegoU32 p_lev
 }
 
 // FUNCTION: LEGORACERS 0x0045aeb0
-void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::CastCurse(Racer* p_racer, LegoU32 p_level)
 {
 	GolAnimatedEntity* model0;
 	GolAnimatedEntity* model1;
@@ -2078,7 +2074,7 @@ void RacePowerupManager::CastCurse(RaceState::Racer* p_racer, LegoU32 p_level)
 }
 
 // FUNCTION: LEGORACERS 0x0045af80
-void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::FireHomingMissiles(Racer* p_racer, LegoU32 p_level)
 {
 	for (LegoU32 i = 0; i < 3; i++) {
 		HomingMissileAction* action = static_cast<HomingMissileAction*>(m_freeHomingMissileActions);
@@ -2114,7 +2110,7 @@ void RacePowerupManager::FireHomingMissiles(RaceState::Racer* p_racer, LegoU32 p
 }
 
 // FUNCTION: LEGORACERS 0x0045b030
-void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::UseBluePowerup(Racer* p_racer, LegoU32 p_level)
 {
 	if (25 - m_usedEffectEntityCount >= 2) {
 		LegoU32 subtype = p_level;
@@ -2204,7 +2200,7 @@ void RacePowerupManager::UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_lev
 }
 
 // FUNCTION: LEGORACERS 0x0045b1e0
-void RacePowerupManager::UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::UseGreenPowerup(Racer* p_racer, LegoU32 p_level)
 {
 	if (p_level == 3) {
 		ActivateWarp(p_racer, 3);
@@ -2226,7 +2222,7 @@ void RacePowerupManager::UseGreenPowerup(RaceState::Racer* p_racer, LegoU32 p_le
 }
 
 // FUNCTION: LEGORACERS 0x0045b260
-LegoU32 RacePowerupManager::ActivateWarp(RaceState::Racer* p_racer, LegoU32 p_level)
+LegoU32 RacePowerupManager::ActivateWarp(Racer* p_racer, LegoU32 p_level)
 {
 	WarpAction* action = static_cast<WarpAction*>(m_freeWarpActions);
 	if (!action) {
@@ -2361,7 +2357,7 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 }
 
 // FUNCTION: LEGORACERS 0x0045b470
-void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_leavesScar, RaceState::Racer* p_racer)
+void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	Explosion* item = m_freeExplosions;
 	if (item == NULL) {
@@ -2377,17 +2373,13 @@ void RacePowerupManager::SpawnExplosion(const GolVec3* p_position, undefined4 p_
 }
 
 // FUNCTION: LEGORACERS 0x0045b4d0
-void RacePowerupManager::FUN_0045b4d0(const GolVec3* p_position, undefined4 p_leavesScar, RaceState::Racer* p_racer)
+void RacePowerupManager::FUN_0045b4d0(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	SpawnExplosion(p_position, p_leavesScar, p_racer);
 }
 
 // FUNCTION: LEGORACERS 0x0045b4f0
-void RacePowerupManager::SpawnSpikeExplosion(
-	const GolVec3* p_position,
-	undefined4 p_leavesScar,
-	RaceState::Racer* p_racer
-)
+void RacePowerupManager::SpawnSpikeExplosion(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	Explosion* item = m_freeSpikeExplosions;
 	if (item == NULL) {
@@ -2403,11 +2395,7 @@ void RacePowerupManager::SpawnSpikeExplosion(
 }
 
 // FUNCTION: LEGORACERS 0x0045b550
-void RacePowerupManager::SpawnBrickDebris(
-	const GolVec3* p_position,
-	const GolVec3* p_direction,
-	RaceState::Racer* p_racer
-)
+void RacePowerupManager::SpawnBrickDebris(const GolVec3* p_position, const GolVec3* p_direction, Racer* p_racer)
 {
 	GolVec3 position;
 
@@ -2433,7 +2421,7 @@ void RacePowerupManager::SpawnBrickDebris(
 }
 
 // FUNCTION: LEGORACERS 0x0045b640
-void RacePowerupManager::CancelShield(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelShield(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[8]; i++) {
 		ShieldAction* action = &m_shieldActions[i];
@@ -2444,7 +2432,7 @@ void RacePowerupManager::CancelShield(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b690 FOLDED
-void RacePowerupManager::CancelTurbo(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelTurbo(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[9]; i++) {
 		if (m_turboActions[i].m_state > 1 && m_turboActions[i].m_racer == p_racer) {
@@ -2455,7 +2443,7 @@ void RacePowerupManager::CancelTurbo(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b6f0
-void RacePowerupManager::CancelMagnetHold(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelMagnetHold(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[0]; i++) {
 		MagnetAction* action = &m_magnetActions[i];
@@ -2466,7 +2454,7 @@ void RacePowerupManager::CancelMagnetHold(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x0045b740
-void RacePowerupManager::CancelWarp(RaceState::Racer* p_racer)
+void RacePowerupManager::CancelWarp(Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[10]; i++) {
 		WarpAction* item = &m_warpActions[i];
@@ -2484,7 +2472,7 @@ void RacePowerupManager::CancelWarp(RaceState::Racer* p_racer)
 // FUNCTION: LEGORACERS 0x0045b7a0
 void RacePowerupManager::UpdateProjectileSound(SpatialSoundResource* p_resource, LegoU32 p_level, LegoS32 p_state)
 {
-	RaceState::Racer* racer = m_raceState->GetCurrentRacer();
+	Racer* racer = m_raceState->GetCurrentRacer();
 	if (racer == NULL) {
 		if (p_resource->VTable0x0c()) {
 			p_resource->VTable0x08();

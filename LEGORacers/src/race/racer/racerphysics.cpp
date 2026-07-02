@@ -16,7 +16,7 @@ extern const LegoS32 g_wheelLengthwiseIndices[] = {2, 3, 0, 1};
 extern const LegoS32 g_wheelSidewaysIndices[] = {1, 0, 3, 2};
 
 // FUNCTION: LEGORACERS 0x00448840
-void RaceState::Racer::CarBody::ComputeSlideBankTarget()
+void RacerCarBody::ComputeSlideBankTarget()
 {
 	if (m_turnRadius > 0.0f) {
 		LegoFloat value = m_turnRadius / g_maxTurnRadius;
@@ -40,7 +40,7 @@ void RaceState::Racer::CarBody::ComputeSlideBankTarget()
 }
 
 // FUNCTION: LEGORACERS 0x004488e0
-LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_world)
+LegoU32 RacerCarBody::AddCollisionWorld(GolBoundedEntity* p_world)
 {
 	LegoU32 result = m_collisionWorldCount;
 	LegoU32 i = 0;
@@ -60,7 +60,7 @@ LegoU32 RaceState::Racer::CarBody::AddCollisionWorld(GolBoundedEntity* p_world)
 }
 
 // FUNCTION: LEGORACERS 0x00448930
-void RaceState::Racer::CarBody::RemoveCollisionWorld(GolBoundedEntity* p_world)
+void RacerCarBody::RemoveCollisionWorld(GolBoundedEntity* p_world)
 {
 	LegoU32 count = m_collisionWorldCount;
 	LegoU32 index = 0;
@@ -85,7 +85,7 @@ void RaceState::Racer::CarBody::RemoveCollisionWorld(GolBoundedEntity* p_world)
 }
 
 // FUNCTION: LEGORACERS 0x00448990
-LegoFloat RaceState::Racer::CarBody::GetAverageSupportThreshold()
+LegoFloat RacerCarBody::GetAverageSupportThreshold()
 {
 	LegoFloat result = 0.0f;
 	WheelProbe* entry = m_wheelProbes;
@@ -98,7 +98,7 @@ LegoFloat RaceState::Racer::CarBody::GetAverageSupportThreshold()
 }
 
 // FUNCTION: LEGORACERS 0x004489c0
-LegoFloat RaceState::Racer::CarBody::GetAverageFriction()
+LegoFloat RacerCarBody::GetAverageFriction()
 {
 	LegoFloat result = 0.0f;
 	WheelProbe* entry = m_wheelProbes;
@@ -111,7 +111,7 @@ LegoFloat RaceState::Racer::CarBody::GetAverageFriction()
 }
 
 // FUNCTION: LEGORACERS 0x00448a50
-void RaceState::Racer::CarBody::AgePlaneCache()
+void RacerCarBody::AgePlaneCache()
 {
 	CollisionCacheRecord* entry = m_planeCache;
 	CollisionCacheRecord* end = &m_planeCache[sizeOfArray(m_planeCache)];
@@ -122,7 +122,7 @@ void RaceState::Racer::CarBody::AgePlaneCache()
 }
 
 // FUNCTION: LEGORACERS 0x00448a70
-RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::CarBody::CachePlane(
+RacerPhysics::CollisionCacheRecord* RacerCarBody::CachePlane(
 	GolBoundingVolume::Field0x0c* p_plane,
 	RaceEventRecord* p_record
 )
@@ -156,7 +156,7 @@ RaceState::Racer::Physics::CollisionCacheRecord* RaceState::Racer::CarBody::Cach
 }
 
 // FUNCTION: LEGORACERS 0x00448ae0
-LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_probe)
+LegoBool32 RacerCarBody::TestCachedPlanes(WheelProbe* p_probe)
 {
 	if (p_probe->m_cachedPlane != NULL) {
 		if (TestCachedPlane(p_probe, p_probe->m_cachedPlane)) {
@@ -185,7 +185,7 @@ LegoBool32 RaceState::Racer::CarBody::TestCachedPlanes(WheelProbe* p_probe)
 }
 
 // FUNCTION: LEGORACERS 0x00448b80
-LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_probe, CollisionCacheRecord* p_record)
+LegoBool32 RacerCarBody::TestCachedPlane(WheelProbe* p_probe, CollisionCacheRecord* p_record)
 {
 	GolVec3 scaled;
 	LegoFloat start = p_record->m_plane.m_normal.m_z * p_probe->m_rayStart.m_z;
@@ -230,7 +230,7 @@ LegoBool32 RaceState::Racer::CarBody::TestCachedPlane(WheelProbe* p_probe, Colli
 }
 
 // FUNCTION: LEGORACERS 0x00448c70
-void RaceState::Racer::CarBody::ComputeWheelPositions()
+void RacerCarBody::ComputeWheelPositions()
 {
 	GolOrientedEntity* entity = &m_physicsEntity;
 	WheelProbe* points = m_wheelProbes;
@@ -267,11 +267,7 @@ void RaceState::Racer::CarBody::ComputeWheelPositions()
 }
 
 // STUB: LEGORACERS 0x00448d90
-void RaceState::Racer::CarBody::ComputeWheelRaysLocal(
-	GolBoundedEntity* p_world,
-	LegoFloat p_sweepHeight,
-	LegoFloat p_sweepDistance
-)
+void RacerCarBody::ComputeWheelRaysLocal(GolBoundedEntity* p_world, LegoFloat p_sweepHeight, LegoFloat p_sweepDistance)
 {
 	const GolMatrix3& resourceOrientation = p_world->GetOrientation();
 	GolVec3 zHeight;

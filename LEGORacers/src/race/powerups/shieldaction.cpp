@@ -86,7 +86,7 @@ void RacePowerupManager::ShieldAction::Destroy()
 
 // FUNCTION: LEGORACERS 0x0045bd30
 void RacePowerupManager::ShieldAction::Activate(
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	LegoU32 p_level,
 	GolAnimatedEntity* p_shieldTemplate,
 	GolAnimatedEntity* p_innerShieldTemplate
@@ -235,7 +235,7 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 	PowerupActionBase::Update(p_elapsedMs);
 
 	GolVec3 position;
-	RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_visuals;
+	CarVisuals* racerEntities = &m_racer->m_visuals;
 	racerEntities->m_carEntity->VTable0x04(&position);
 
 	GolVec3 velocity = m_racer->m_physics.m_velocity;
@@ -300,7 +300,7 @@ void RacePowerupManager::ShieldAction::AdvanceState()
 		m_state = 6;
 
 		SoundVector position;
-		RaceState::Racer::CarVisuals* racerEntities = &m_racer->m_visuals;
+		CarVisuals* racerEntities = &m_racer->m_visuals;
 		racerEntities->m_carEntity->VTable0x04(&position);
 		LegoFloat positionZ = position.m_z;
 		positionZ += g_homingProjectileCollisionStartOffset;

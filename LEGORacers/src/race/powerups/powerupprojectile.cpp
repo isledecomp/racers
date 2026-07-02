@@ -2,6 +2,7 @@
 
 #include "decomp.h"
 #include "golconstants.h"
+#include "race/triggerworld.h"
 
 #include <math.h>
 
@@ -73,14 +74,14 @@ void PowerupProjectile::Initialize(Params* p_params)
 // STUB: LEGORACERS 0x00430d80
 void PowerupProjectile::LaunchAtRacer(
 	Params* p_params,
-	RaceState::Racer* p_racer,
-	RaceState::Racer* p_targetRacer,
+	Racer* p_racer,
+	Racer* p_targetRacer,
 	LegoBool32 p_fromRacerPosition,
 	LegoBool32 p_predictiveLead
 )
 {
 	Params* params = p_params;
-	RaceState::Racer* targetRacer = p_targetRacer;
+	Racer* targetRacer = p_targetRacer;
 	Initialize(params);
 
 	LegoFloat speed = params->m_speed;
@@ -118,7 +119,7 @@ void PowerupProjectile::LaunchAtRacer(
 	}
 
 	LegoFloat directionX = inverseDistance * delta.m_x;
-	RaceState::Racer* racer = p_racer;
+	Racer* racer = p_racer;
 	racerDirection = racer->m_physics.m_velocityDirection;
 	LegoFloat directionY = inverseDistance * deltaY;
 	LegoFloat dot = racerDirection.m_z * 0.0f + racerDirection.m_y * directionY + racerDirection.m_x * directionX;
@@ -172,7 +173,7 @@ void PowerupProjectile::LaunchAtRacer(
 // FUNCTION: LEGORACERS 0x00431050
 void PowerupProjectile::LaunchAtPoint(
 	Params* p_params,
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	GolVec3* p_targetPosition,
 	GolVec3* p_targetVelocity,
 	LegoBool32 p_fromRacerPosition
@@ -211,7 +212,7 @@ void PowerupProjectile::LaunchAtPoint(
 	}
 
 	LegoFloat directionX = inverseDistance * delta.m_x;
-	RaceState::Racer* racer = p_racer;
+	Racer* racer = p_racer;
 	GolVec3 racerDirection = racer->m_physics.m_velocityDirection;
 	GolVec3* racerDirectionPtr = &racerDirection;
 	LegoFloat directionY = inverseDistance * deltaY;
@@ -283,7 +284,7 @@ void PowerupProjectile::LaunchAtPosition(Params* p_params, GolVec3* p_position)
 }
 
 // STUB: LEGORACERS 0x00431310
-void PowerupProjectile::Deflect(RaceState::Racer* p_racer)
+void PowerupProjectile::Deflect(Racer* p_racer)
 {
 	GolVec3 velocity;
 	velocity.m_x = 0.0f;
@@ -422,10 +423,10 @@ LegoS32 PowerupProjectile::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00431660
 void PowerupProjectile::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* previousContext = m_ownerRacer;
+	Racer* previousContext = m_ownerRacer;
 	if (p_data->m_data != previousContext && m_state == c_stateFlying) {
 		m_state = c_stateHitRacer;
-		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+		Racer* racer = static_cast<Racer*>(p_data->m_data);
 		m_hitRacer = racer;
 		racer->m_visuals.m_carEntity->VTable0x04(&m_hitPosition);
 	}

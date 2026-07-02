@@ -81,7 +81,7 @@ void RacePowerupManager::MagnetAction::Initialize(
 
 // FUNCTION: LEGORACERS 0x00455830
 void RacePowerupManager::MagnetAction::Activate(
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	GolAnimatedEntity* p_magnetTemplate,
 	GolAnimatedEntity* p_ringTemplate,
 	GolAnimatedEntity* p_insideTemplate
@@ -381,7 +381,7 @@ void RacePowerupManager::MagnetAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00455fb0
-void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::MagnetAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == 4) {
 		return;

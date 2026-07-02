@@ -65,7 +65,7 @@ LegoS32 RacePowerupManager::PickupBrick::Reset()
 // FUNCTION: LEGORACERS 0x004539b0
 void RacePowerupManager::PickupBrick::Initialize(
 	RacePowerupManager* p_owner,
-	RaceState::Racer::SoundSource* p_soundResource,
+	RacerSoundSource* p_soundResource,
 	GolVec3* p_position,
 	GolModelEntity* p_model0,
 	GolModelEntity* p_model1
@@ -149,7 +149,7 @@ void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p
 	m_flags0x50 |= c_flagTouched;
 
 	if (m_state == c_stateIdle) {
-		RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+		Racer* racer = static_cast<Racer*>(p_data->m_data);
 		if (!(racer->GetFlags() & c_flagGhost)) {
 			if (!(m_flags0x50 & c_flagWasTouched) || racer->GetHeldPowerupColor() == 0) {
 				OnTouched(racer);

@@ -52,7 +52,7 @@ void RaceEventTable::Resource::OnEventEnd(GolVec3* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045eec0
-void RaceEventTable::Resource::ForceEventStart(RaceState::Racer* p_racer)
+void RaceEventTable::Resource::ForceEventStart(Racer* p_racer)
 {
 	if (!(m_flags0x1c & 4) && (m_state0x18 == 1 || m_state0x18 == 4)) {
 		OnStartForRacer(p_racer);
@@ -465,7 +465,7 @@ void RaceEventTable::FireEventsAt(undefined4 p_unk0x04, undefined4 p_unk0x08, Go
 }
 
 // FUNCTION: LEGORACERS 0x004628c0
-void RaceEventTable::StartEventsForRacer(undefined4 p_unk0x04, RaceState::Racer* p_unk0x08)
+void RaceEventTable::StartEventsForRacer(undefined4 p_unk0x04, Racer* p_unk0x08)
 {
 	if (m_colorTransforms) {
 		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {
@@ -505,7 +505,7 @@ void RaceEventTable::StartEventsForRacer(undefined4 p_unk0x04, RaceState::Racer*
 }
 
 // FUNCTION: LEGORACERS 0x004629d0
-void RaceEventTable::EndEventsForRacer(undefined4 p_unk0x04, RaceState::Racer* p_unk0x08)
+void RaceEventTable::EndEventsForRacer(undefined4 p_unk0x04, Racer* p_unk0x08)
 {
 	if (m_colorTransforms) {
 		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {
@@ -545,7 +545,7 @@ void RaceEventTable::EndEventsForRacer(undefined4 p_unk0x04, RaceState::Racer* p
 }
 
 // FUNCTION: LEGORACERS 0x00462ae0
-void RaceEventTable::FireEventsForRacer(undefined4 p_unk0x04, undefined4 p_unk0x08, RaceState::Racer* p_unk0x0c)
+void RaceEventTable::FireEventsForRacer(undefined4 p_unk0x04, undefined4 p_unk0x08, Racer* p_unk0x0c)
 {
 	if (m_colorTransforms) {
 		for (LegoU32 i = 0; i < m_colorTransformCount; i++) {

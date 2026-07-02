@@ -19,6 +19,7 @@
 #include "menu/runtime/cutsceneparticle.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/raceeventtable.h"
+#include "race/racer/racersoundsource.h"
 #include "race/racesession.h"
 #include "render/gold3drenderdevice.h"
 #include "world/golworlddatabase.h"
@@ -257,7 +258,7 @@ void HazardManager::Hazard::Deactivate(void* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0046c9f0 FOLDED
-void HazardManager::Hazard::UpdatePerRacer(GolCamera*, RaceState::Racer*)
+void HazardManager::Hazard::UpdatePerRacer(GolCamera*, Racer*)
 {
 }
 
@@ -581,7 +582,7 @@ void HazardManager::Update(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0048ae00
-void HazardManager::UpdatePerRacer(GolCamera* p_unk0x04, RaceState::Racer* p_unk0x08)
+void HazardManager::UpdatePerRacer(GolCamera* p_unk0x04, Racer* p_unk0x08)
 {
 	LegoU32 i;
 
@@ -650,7 +651,7 @@ LegoS32 HazardManager::WarpPadHazard::Reset()
 // FUNCTION: LEGORACERS 0x0048af80
 void HazardManager::WarpPadHazard::OnActivate(void* p_racer)
 {
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_racer);
+	Racer* racer = static_cast<Racer*>(p_racer);
 	if (racer && m_state != 2 && !(racer->GetFlags() & c_flagGhost)) {
 		RacePowerupManager::ActionTarget target;
 		target.m_direction.m_x = g_warpPadActionDirectionX;
@@ -1858,10 +1859,10 @@ void HazardManager::GhostHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048ce90
 void HazardManager::GhostHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
+	RacerPhysics* field0x3e8 = &racer->m_physics;
 
-	if ((field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) || field0x3e8->m_forwardSpeed == 0.0f ||
+	if ((field0x3e8->m_flags & RacerPhysics::c_flagSpinning) || field0x3e8->m_forwardSpeed == 0.0f ||
 		(racer->m_flags & c_racerFlags0xd04Bit0)) {
 		return;
 	}
@@ -2433,9 +2434,9 @@ void HazardManager::LavaGeyserHazard::Update(undefined4 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x0048dcd0
 void HazardManager::LavaGeyserHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
-	if (!(field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
+	RacerPhysics* field0x3e8 = &racer->m_physics;
+	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
 		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 		racer->PlayReaction(FALSE);
 	}
@@ -2598,8 +2599,8 @@ void HazardManager::GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_da
 		return;
 	}
 
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
+	RacerPhysics* field0x3e8 = &racer->m_physics;
 	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_flags & c_racerFlags0xd04Bit0)) {
 		if (m_racer == NULL || m_racer == racer) {
 			if (m_racer == NULL) {
@@ -2614,11 +2615,11 @@ void HazardManager::GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_da
 		m_racer = racer;
 		racer->m_flags |= c_racerFlags0xd04Bit29;
 
-		RaceState::Racer* currentRacer = m_racer;
+		Racer* currentRacer = m_racer;
 		if (currentRacer->m_physics.m_routeMode) {
 			LegoU32 flags = currentRacer->m_physics.m_flags;
 			currentRacer->m_physics.m_routeBaseSpeed = -0.4f;
-			if (!(flags & RaceState::Racer::Physics::c_flagRoutePushed)) {
+			if (!(flags & RacerPhysics::c_flagRoutePushed)) {
 				currentRacer->m_physics.m_routeTargetSpeed = -0.4f;
 				m_stateMs = c_restoreTimerMs;
 				return;
@@ -2629,7 +2630,7 @@ void HazardManager::GrabberHazard::VTable0x00(LegoEventQueue::CallbackData* p_da
 			GetGrabPosition(&position);
 
 			GolVec3 racerPosition;
-			RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+			CarVisuals* racerField = &m_racer->m_visuals;
 			racerField->m_carEntity->VTable0x04(&racerPosition);
 
 			GolVec3 force;
@@ -2671,12 +2672,12 @@ void HazardManager::GrabberHazard::ReleaseRacer()
 		m_racer->m_physics.EndExternalForce1();
 		m_racer->m_flags &= ~c_racerFlags0xd04Bit29;
 
-		RaceState::Racer* racer = m_racer;
+		Racer* racer = m_racer;
 		if (racer->m_physics.m_routeMode) {
 			LegoU32 flags = racer->m_physics.m_flags;
 			LegoFloat value = 1.0f;
 			racer->m_physics.m_routeBaseSpeed = value;
-			if (!(flags & RaceState::Racer::Physics::c_flagRoutePushed)) {
+			if (!(flags & RacerPhysics::c_flagRoutePushed)) {
 				racer->m_physics.m_routeTargetSpeed = value;
 			}
 		}
@@ -3071,7 +3072,7 @@ void HazardManager::SnowfallHazard::Update(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0048eb70
-void HazardManager::SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, RaceState::Racer* p_racer)
+void HazardManager::SnowfallHazard::UpdatePerRacer(GolCamera* p_camera, Racer* p_racer)
 {
 	if (p_racer->m_visuals.m_hasColorTransform) {
 		m_unk0x1c = 0;
@@ -3925,7 +3926,7 @@ void HazardManager::MovingObstacleHazard::Update(undefined4 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00490330
-void HazardManager::MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, RaceState::Racer*)
+void HazardManager::MovingObstacleHazard::UpdatePerRacer(GolCamera* p_camera, Racer*)
 {
 	if (m_state == 1 || (m_flags & c_flags0x178Bit0) != 0) {
 		return;
@@ -3977,9 +3978,9 @@ void HazardManager::MovingObstacleHazard::Draw(GolD3DRenderDevice* p_renderer)
 // FUNCTION: LEGORACERS 0x00490490
 void HazardManager::MovingObstacleHazard::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
-	if (!(field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
+	RacerPhysics* field0x3e8 = &racer->m_physics;
+	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning) && field0x3e8->m_forwardSpeed != 0.0f) {
 		field0x3e8->StartSpin(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;

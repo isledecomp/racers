@@ -125,8 +125,8 @@ void RacePowerupManager::GrapplingHookAction::Shutdown()
 // FUNCTION: LEGORACERS 0x00453de0
 LegoU32 RacePowerupManager::GrapplingHookAction::Activate(
 	GolModelEntity* p_hookEntity,
-	RaceState::Racer* p_racer,
-	RaceState::Racer* p_targetRacer,
+	Racer* p_racer,
+	Racer* p_targetRacer,
 	TargetPointList::Entry* p_targetPoint,
 	MabMaterialAnimationItem0x18* p_billboardAnimation,
 	LegoU32 p_delayMs
@@ -245,10 +245,10 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
-			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+			CarVisuals* racerField = &m_ownerRacer->m_visuals;
 			racerField->m_carEntity->VTable0x04(&position);
 
-			RaceState::Racer* targetRacer = m_projectile.GetHitRacer();
+			Racer* targetRacer = m_projectile.GetHitRacer();
 			targetRacer->m_visuals.m_carEntity->VTable0x04(&targetPosition);
 
 			if (targetRacer->m_flags & c_racerFlags0xd04Bit0) {
@@ -376,7 +376,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 	GolVec3 scaledDirection;
 	GolVec3 targetVelocity;
 	PowerupProjectile::Params projectileParams;
-	RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+	CarVisuals* racerField = &m_ownerRacer->m_visuals;
 	LegoU32 durationMs = 3000;
 
 	m_state = c_stateFlying;
@@ -442,7 +442,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x004545d0
-void RacePowerupManager::GrapplingHookAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::GrapplingHookAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {
@@ -481,7 +481,7 @@ void RacePowerupManager::GrapplingHookAction::OnHitRacer(RaceState::Racer* p_rac
 // FUNCTION: LEGORACERS 0x00454690
 void RacePowerupManager::GrapplingHookAction::ReleaseHook(SoundVector* p_position)
 {
-	RaceState::Racer* racer = m_projectile.GetHitRacer();
+	Racer* racer = m_projectile.GetHitRacer();
 	if (racer != NULL) {
 		racer->m_physics.EndExternalForce0();
 		m_ownerRacer->m_physics.EndExternalForce1();

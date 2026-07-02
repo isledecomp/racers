@@ -1,6 +1,6 @@
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::DroppableBrick, 0x68)
+DECOMP_SIZE_ASSERT(Racer::DroppableBrick, 0x68)
 
 // GLOBAL: LEGORACERS 0x004b1480
 extern const LegoFloat g_brickGroundOffset = 5.0f;
@@ -9,7 +9,7 @@ extern const LegoFloat g_brickGroundOffset = 5.0f;
 extern const LegoFloat g_brickProbeRange = 25.0f;
 
 // FUNCTION: LEGORACERS 0x00453790
-LegoU8 RaceState::Racer::DroppableBrick::DropAt(GolVec3 p_position)
+LegoU8 Racer::DroppableBrick::DropAt(GolVec3 p_position)
 {
 	GolVec3 position;
 
@@ -29,7 +29,7 @@ LegoU8 RaceState::Racer::DroppableBrick::DropAt(GolVec3 p_position)
 }
 
 // FUNCTION: LEGORACERS 0x004537f0
-void RaceState::Racer::DroppableBrick::ReturnHome()
+void Racer::DroppableBrick::ReturnHome()
 {
 	LegoU32 state = m_state;
 	LegoU8 flags = m_flags0x64;
@@ -51,7 +51,7 @@ void RaceState::Racer::DroppableBrick::ReturnHome()
 }
 
 // FUNCTION: LEGORACERS 0x00453840
-LegoS32 RaceState::Racer::DroppableBrick::SnapToGround(GolVec3* p_position)
+LegoS32 Racer::DroppableBrick::SnapToGround(GolVec3* p_position)
 {
 	GolVec3 start;
 	GolVec3 end;

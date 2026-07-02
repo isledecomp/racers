@@ -78,7 +78,7 @@ RacePowerupManager::HazardActionBase::HazardActionBase()
 // FUNCTION: LEGORACERS 0x00456320
 void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackData* p_param)
 {
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_param->m_data);
+	Racer* racer = static_cast<Racer*>(p_param->m_data);
 	if (racer != m_ownerRacer) {
 		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			racer->AbsorbShieldHit();
@@ -94,7 +94,7 @@ void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackDa
 
 // STUB: LEGORACERS 0x00456360
 void RacePowerupManager::HazardActionBase::ComputeDropPosition(
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	GolVec3* p_position,
 	GolBoundingVolume::Field0x0c* p_record
 )

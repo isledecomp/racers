@@ -89,8 +89,8 @@ void RacePowerupManager::HomingProjectile::UpdateTargeting(
 {
 	m_retargetTimerMs += p_elapsedMs;
 
-	RaceState::Racer* noTarget = NULL;
-	RaceState::Racer* target = m_targetRacer;
+	Racer* noTarget = NULL;
+	Racer* target = m_targetRacer;
 	if (target == noTarget || m_retargetTimerMs > c_targetRefreshMs ||
 		(target->m_physics.m_flags & c_racerFlags0xaa8Bit7) || (target->m_flags & c_racerFlags0xd04InvalidTargetMask)) {
 		m_retargetTimerMs = 0;
@@ -174,7 +174,7 @@ void RacePowerupManager::HomingProjectile::StartHoming()
 	m_worldEntity->VTable0x48(direction, &forward);
 	m_retargetTimerMs = 0;
 
-	RaceState::Racer* racer = m_ownerRacer;
+	Racer* racer = m_ownerRacer;
 	if (racer != NULL) {
 		CheckpointGraph::Entry* pathField = racer->m_checkpoint;
 		m_pathEntry = pathField;
@@ -220,7 +220,7 @@ LegoS32 RacePowerupManager::HomingProjectile::Update(LegoU32 p_elapsedMs)
 	GolVec3 end;
 	GolBoundingVolume::Field0x0c record;
 
-	RaceState::Racer* target = m_targetRacer;
+	Racer* target = m_targetRacer;
 	if (target != NULL) {
 		target->m_visuals.m_carEntity->VTable0x04(&m_targetPosition);
 		m_targetPosition.m_z += g_homingProjectileTargetHeightOffset;

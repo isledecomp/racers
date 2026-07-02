@@ -117,11 +117,7 @@ void RacePowerupManager::WarpAction::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045d560
-LegoU32 RacePowerupManager::WarpAction::Activate(
-	RaceState::Racer* p_racer,
-	GolModelEntity* p_model,
-	ActionTarget* p_target
-)
+LegoU32 RacePowerupManager::WarpAction::Activate(Racer* p_racer, GolModelEntity* p_model, ActionTarget* p_target)
 {
 	LegoU32 flags = p_racer->m_flags;
 	if (!(flags & c_flagGhost)) {
@@ -222,7 +218,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 					pathEntry = m_racer->m_checkpointGraph->GetCheckpoint(pathIndex);
 				}
 
-				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_visuals;
+				CarVisuals* racerCarVisuals = &m_racer->m_visuals;
 				racerCarVisuals->m_carEntity->VTable0x04(&position);
 				m_racer->m_checkpointGraph->AdvanceAlongGraph(&position, distance, pathEntry);
 			}
@@ -258,7 +254,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+	CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 
 	GolVec3 savedPosition;
@@ -348,7 +344,7 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 		m_racer->m_visuals.SetScale(scale);
 	}
 
-	RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+	CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 	entity->VTable0x04(&position);
 	m_modelEntity.VTable0x08(position);
@@ -360,7 +356,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 {
 	switch (m_state) {
 	case c_stateStarting: {
-		m_racer->m_flags &= ~RaceState::Racer::c_flagBit21;
+		m_racer->m_flags &= ~Racer::c_flagBit21;
 		m_racer->EnterGhostMode();
 		m_racer->m_visuals.SetScale(1.0f);
 		m_racer->m_physics.EndExternalForce0();
@@ -376,7 +372,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+		CarVisuals* racerField = &m_racer->m_visuals;
 		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
 		GolAnimatedEntity* entity = *entitySlot;
 		entity->VTable0x04(&m_startPosition);
@@ -450,7 +446,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			entity->VTable0x40(direction, up);
 			m_racer->m_physics.m_physicsEntity.CopyOrientationFrom(*entity);
 
-			RaceState::Racer::Physics* racerPhysics = &m_racer->m_physics;
+			RacerPhysics* racerPhysics = &m_racer->m_physics;
 			up.Clear();
 			racerPhysics->m_velocity.m_x = 0.0f;
 			racerPhysics->m_velocity.m_y = up.m_y;

@@ -95,7 +95,7 @@ void RacePowerupManager::DynamiteAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00452f60
-LegoU32 RacePowerupManager::DynamiteAction::Activate(RaceState::Racer* p_racer, RaceState::Racer* p_targetRacer)
+LegoU32 RacePowerupManager::DynamiteAction::Activate(Racer* p_racer, Racer* p_targetRacer)
 {
 	m_ownerRacer = p_racer;
 	LegoU32 result = 0;
@@ -232,7 +232,7 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		projectileParams.m_lifetimeMs = c_flightLifetimeMs;
 		projectileParams.m_launchHeight = g_dynamiteLaunchHeight;
 
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+		CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		GolVec3 racerPosition;
 		racerField->m_carEntity->VTable0x04(&racerPosition);
 

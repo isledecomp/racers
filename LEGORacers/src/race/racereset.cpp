@@ -78,7 +78,7 @@ void RaceSession::RaceReset::ResetRacers()
 	m_raceState->StopProximitySound();
 
 	for (LegoU32 racerIndex = 0; racerIndex < m_raceState->GetRacerCount(); racerIndex++) {
-		RaceState::Racer* racer = &m_raceState->GetRacers()[racerIndex];
+		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 
 		for (LegoU32 lapIndex = 0; lapIndex < racer->m_lapCount; lapIndex++) {
 			racer->m_lapTimes[lapIndex] = 0;
@@ -96,17 +96,17 @@ void RaceSession::RaceReset::ResetRacers()
 		racer->EndDrift();
 		racer->SetStandingsPosition(racerIndex + 1);
 
-		if (racer->m_flags & RaceState::Racer::c_flagBit21) {
-			racer->m_flags &= ~RaceState::Racer::c_flagBit21;
+		if (racer->m_flags & Racer::c_flagBit21) {
+			racer->m_flags &= ~Racer::c_flagBit21;
 		}
 
-		RaceState::Racer::CarVisuals* field = &racer->m_visuals;
+		CarVisuals* field = &racer->m_visuals;
 		field->StopSlideSkid();
 		field->ShowModels();
 		field->StopSkidEffects();
 		field->UseNormalSkidMaterial();
 		field->RefreshCarMaterial();
-		field->m_flags |= RaceState::Racer::CarVisuals::c_flagShadowEnabled;
+		field->m_flags |= CarVisuals::c_flagShadowEnabled;
 		field->EndFlash();
 		field->ClearColorTransform();
 		field->SetScale(1.0f);

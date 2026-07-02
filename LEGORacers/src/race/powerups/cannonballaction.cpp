@@ -183,7 +183,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 			LegoBool32 skipBurst = FALSE;
 
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
-				RaceState::Racer* target = m_projectile.GetHitRacer();
+				Racer* target = m_projectile.GetHitRacer();
 				if ((target->m_flags & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
@@ -328,7 +328,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	m_stateTimerMs = durationMs;
 
 	if (m_emplacement == NULL) {
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+		CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
 		m_ownerRacer->m_visuals.m_carEntity->GetOrientationRow0(&direction);
 	}
@@ -424,7 +424,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		positionBase = m_emplacement->m_position;
 	}
 	else {
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+		CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
 	}
 
@@ -439,7 +439,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00452370
-void RacePowerupManager::CannonballAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::CannonballAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == 3) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {

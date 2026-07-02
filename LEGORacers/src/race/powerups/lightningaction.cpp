@@ -260,7 +260,7 @@ void RacePowerupManager::LightningAction::RebuildBolt()
 }
 
 // FUNCTION: LEGORACERS 0x00454cb0
-void RacePowerupManager::LightningAction::Activate(RaceState::Racer* p_racer, ActionTarget* p_target)
+void RacePowerupManager::LightningAction::Activate(Racer* p_racer, ActionTarget* p_target)
 {
 	m_state = 2;
 	m_stateTimerMs = 500;
@@ -519,7 +519,7 @@ void RacePowerupManager::LightningAction::UpdateBoltPath()
 // FUNCTION: LEGORACERS 0x00455350
 void RacePowerupManager::LightningAction::FindVictim()
 {
-	RaceState::Racer* racer;
+	Racer* racer;
 
 	if (m_targetRacer != NULL) {
 		return;
@@ -567,12 +567,12 @@ void RacePowerupManager::LightningAction::FindVictim()
 }
 
 // FUNCTION: LEGORACERS 0x00455440
-void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::LightningAction::OnHitRacer(Racer* p_racer)
 {
 	LegoU32 state = m_state;
 
 	if (state == c_stateSustain) {
-		RaceState::Racer* racer = p_racer;
+		Racer* racer = p_racer;
 		if (racer->GetFlags() & c_racerFlags0xd04Bit0) {
 			racer->PlayReaction(TRUE);
 			racer->AbsorbShieldHit();
@@ -580,7 +580,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 		}
 
 		if (!(racer->m_physics.m_flags & c_racerFlags0xaa8Bit7)) {
-			RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+			RacerPhysics* field0x3e8 = &racer->m_physics;
 			GolVec3 direction = field0x3e8->m_facingDirection;
 			racer->StartSpinOut();
 
@@ -595,7 +595,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 			field0x3e8->ApplyImpulse(&impulse, &impulse);
 
-			RaceState::Racer::CarVisuals* racerCarVisuals = &racer->m_visuals;
+			CarVisuals* racerCarVisuals = &racer->m_visuals;
 			ColorTransform0x20 transform;
 			transform.m_redOffset = c_colorOffset0xe1;
 			transform.m_redShift = 0;

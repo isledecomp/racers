@@ -29,7 +29,7 @@ public:
 	RaceCameraController();
 	void Reset();
 	void Initialize(GolCamera* p_camera, GolD3DRenderDevice* p_renderer);
-	void SetRacer(RaceState::Racer* p_unk0x04);
+	void SetRacer(Racer* p_unk0x04);
 
 	void SetPositionLag(LegoFloat p_unk0x04);
 	void SetRotationLag(LegoFloat p_unk0x04);
@@ -67,7 +67,7 @@ public:
 	LegoFloat m_unk0x0c8;                // 0x0c8
 	LegoFloat m_elapsed;                 // 0x0cc
 	LegoS32 m_elapsedMs;                 // 0x0d0
-	RaceState::Racer* m_racer;           // 0x0d4
+	Racer* m_racer;                      // 0x0d4
 	GolVec3 m_unk0x0d8;                  // 0x0d8
 	GolVec3 m_lastRacerPosition;         // 0x0e4
 	LegoFloat m_unk0x0f0;                // 0x0f0

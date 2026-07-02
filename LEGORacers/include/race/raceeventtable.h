@@ -29,9 +29,9 @@ public:
 	LegoU32 StartEventsAt(undefined4 p_eventId, GolVec3* p_position);
 	void EndEventsAt(undefined4 p_eventId, GolVec3* p_position);
 	void FireEventsAt(undefined4 p_startId, undefined4 p_endId, GolVec3* p_position);
-	void StartEventsForRacer(undefined4 p_eventId, RaceState::Racer* p_racer);
-	void EndEventsForRacer(undefined4 p_eventId, RaceState::Racer* p_racer);
-	void FireEventsForRacer(undefined4 p_startId, undefined4 p_endId, RaceState::Racer* p_racer);
+	void StartEventsForRacer(undefined4 p_eventId, Racer* p_racer);
+	void EndEventsForRacer(undefined4 p_eventId, Racer* p_racer);
+	void FireEventsForRacer(undefined4 p_startId, undefined4 p_endId, Racer* p_racer);
 	void ForceEvents(undefined4 p_eventId);
 
 public:
@@ -51,7 +51,7 @@ public:
 		GolWorldDatabase* m_sharedDatabase;                  // 0x04
 		GolWorldDatabase* m_triggerDatabase;                 // 0x08
 		GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
-		RaceState::Racer::SoundSource* m_soundSource;        // 0x10
+		RacerSoundSource* m_soundSource;                     // 0x10
 		HazardManager* m_hazardManager;                      // 0x14
 		CutsceneAnimation* m_particleAnimation;              // 0x18
 		CutsceneAnimation* m_sharedParticleAnimation;        // 0x1c
@@ -78,15 +78,15 @@ public:
 		};
 
 		Resource();
-		virtual void OnStartForRacer(RaceState::Racer* p_racer); // vtable+0x00
-		virtual void OnStartAt(GolVec3* p_position);             // vtable+0x04
-		virtual void OnEndForRacer(RaceState::Racer* p_racer);   // vtable+0x08
-		virtual void OnEnd();                                    // vtable+0x0c
-		virtual ~Resource();                                     // vtable+0x10
-		virtual void Update(LegoU32 p_elapsedMs);                // vtable+0x14
+		virtual void OnStartForRacer(Racer* p_racer); // vtable+0x00
+		virtual void OnStartAt(GolVec3* p_position);  // vtable+0x04
+		virtual void OnEndForRacer(Racer* p_racer);   // vtable+0x08
+		virtual void OnEnd();                         // vtable+0x0c
+		virtual ~Resource();                          // vtable+0x10
+		virtual void Update(LegoU32 p_elapsedMs);     // vtable+0x14
 
-		void ForceEventStart(RaceState::Racer* p_racer);
-		void ForceEventEnd(RaceState::Racer* p_racer);
+		void ForceEventStart(Racer* p_racer);
+		void ForceEventEnd(Racer* p_racer);
 		void Reset();
 		void NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_unk0x08);
 		void OnEventStart(GolVec3* p_position);
@@ -119,8 +119,8 @@ public:
 
 		LapZoneResource();
 		~LapZoneResource() override;
-		void OnStartForRacer(RaceState::Racer* p_racer) override;
-		void OnEndForRacer(RaceState::Racer* p_racer) override;
+		void OnStartForRacer(Racer* p_racer) override;
+		void OnEndForRacer(Racer* p_racer) override;
 
 		void Initialize(InitParams* p_params);
 		void Destroy();
@@ -146,8 +146,8 @@ public:
 
 		LookTargetResource();
 		~LookTargetResource() override;
-		void OnStartForRacer(RaceState::Racer* p_racer) override;
-		void OnEndForRacer(RaceState::Racer* p_racer) override;
+		void OnStartForRacer(Racer* p_racer) override;
+		void OnEndForRacer(Racer* p_racer) override;
 		virtual LegoU32 GetKind(); // vtable+0x18
 
 		void FUN_004513d0(undefined4 p_unk0x04);
@@ -428,8 +428,8 @@ public:
 
 		ExternalForceResource();
 		~ExternalForceResource() override;
-		void OnStartForRacer(RaceState::Racer* p_racer) override;
-		void OnEndForRacer(RaceState::Racer* p_racer) override;
+		void OnStartForRacer(Racer* p_racer) override;
+		void OnEndForRacer(Racer* p_racer) override;
 		virtual LegoU32 GetKind(); // vtable+0x18
 
 		void ClearFields();
@@ -467,8 +467,8 @@ public:
 
 		ColorTransformResource();
 		~ColorTransformResource() override;
-		void OnStartForRacer(RaceState::Racer* p_racer) override;
-		void OnEndForRacer(RaceState::Racer* p_racer) override;
+		void OnStartForRacer(Racer* p_racer) override;
+		void OnEndForRacer(Racer* p_racer) override;
 		virtual LegoU32 GetKind(); // vtable+0x18
 
 		void FUN_00465560();
@@ -503,23 +503,23 @@ public:
 
 		// SIZE 0x4c
 		struct InitParams {
-			undefined4 m_eventId;                         // 0x00
-			undefined4 m_unk0x04;                         // 0x04
-			RaceState::Racer::SoundSource* m_soundSource; // 0x08
-			GolVec3 m_position;                           // 0x0c
-			LegoU32 m_soundId;                            // 0x18
-			LegoU32 m_unk0x1c;                            // 0x1c
-			LegoFloat m_volume;                           // 0x20
-			LegoFloat m_frequencyScale;                   // 0x24
-			LegoFloat m_minDistance;                      // 0x28
-			LegoFloat m_maxDistance;                      // 0x2c
-			LegoFloat m_probability;                      // 0x30
-			LegoBool32 m_unk0x34;                         // 0x34
-			LegoBool32 m_unk0x38;                         // 0x38
-			LegoBool32 m_unk0x3c;                         // 0x3c
-			LegoBool32 m_positional;                      // 0x40
-			GolModelEntity* m_entity;                     // 0x44
-			LegoU32 m_unk0x48;                            // 0x48
+			undefined4 m_eventId;            // 0x00
+			undefined4 m_unk0x04;            // 0x04
+			RacerSoundSource* m_soundSource; // 0x08
+			GolVec3 m_position;              // 0x0c
+			LegoU32 m_soundId;               // 0x18
+			LegoU32 m_unk0x1c;               // 0x1c
+			LegoFloat m_volume;              // 0x20
+			LegoFloat m_frequencyScale;      // 0x24
+			LegoFloat m_minDistance;         // 0x28
+			LegoFloat m_maxDistance;         // 0x2c
+			LegoFloat m_probability;         // 0x30
+			LegoBool32 m_unk0x34;            // 0x34
+			LegoBool32 m_unk0x38;            // 0x38
+			LegoBool32 m_unk0x3c;            // 0x3c
+			LegoBool32 m_positional;         // 0x40
+			GolModelEntity* m_entity;        // 0x44
+			LegoU32 m_unk0x48;               // 0x48
 		};
 
 		SoundResource();
@@ -541,19 +541,19 @@ public:
 			SpatialSoundInstance* m_sound;            // 0x20
 			RaceResourceManager::Resource* m_res0x20; // 0x20
 		};
-		RaceState::Racer::SoundSource* m_soundSource; // 0x24
-		GolModelEntity* m_unk0x28;                    // 0x28
-		LegoU32 m_unk0x2c;                            // 0x2c
-		SoundVector m_position;                       // 0x30
-		LegoU32 m_soundId;                            // 0x3c
-		LegoU32 m_unk0x40;                            // 0x40
-		LegoFloat m_volume;                           // 0x44
-		LegoFloat m_frequencyScale;                   // 0x48
-		LegoFloat m_minDistance;                      // 0x4c
-		LegoFloat m_maxDistance;                      // 0x50
-		LegoU8 m_probability;                         // 0x54
-		undefined m_unk0x55[0x58 - 0x55];             // 0x55
-		LegoU32 m_unk0x58;                            // 0x58
+		RacerSoundSource* m_soundSource;  // 0x24
+		GolModelEntity* m_unk0x28;        // 0x28
+		LegoU32 m_unk0x2c;                // 0x2c
+		SoundVector m_position;           // 0x30
+		LegoU32 m_soundId;                // 0x3c
+		LegoU32 m_unk0x40;                // 0x40
+		LegoFloat m_volume;               // 0x44
+		LegoFloat m_frequencyScale;       // 0x48
+		LegoFloat m_minDistance;          // 0x4c
+		LegoFloat m_maxDistance;          // 0x50
+		LegoU8 m_probability;             // 0x54
+		undefined m_unk0x55[0x58 - 0x55]; // 0x55
+		LegoU32 m_unk0x58;                // 0x58
 	};
 
 	// VTABLE: LEGORACERS 0x004b1b0c
@@ -617,7 +617,7 @@ public:
 	RaceEventTable* GetEventTable() { return this; }
 	void Update(LegoU32 p_elapsedMs);
 	void ForceAllEvents();
-	void EndAllForRacer(RaceState::Racer* p_racer);
+	void EndAllForRacer(Racer* p_racer);
 
 private:
 	friend class RaceSession;
@@ -642,7 +642,7 @@ private:
 	GolWorldDatabase* m_sharedDatabase;                  // 0x04
 	GolWorldDatabase* m_triggerDatabase;                 // 0x08
 	GolWorldDatabase* m_materialAnimationDatabase;       // 0x0c
-	RaceState::Racer::SoundSource* m_soundSource;        // 0x10
+	RacerSoundSource* m_soundSource;                     // 0x10
 	HazardManager* m_hazardManager;                      // 0x14
 	CutsceneAnimation* m_particleAnimation;              // 0x18
 	CutsceneAnimation* m_sharedParticleAnimation;        // 0x1c

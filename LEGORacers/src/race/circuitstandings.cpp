@@ -169,7 +169,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 	LegoChar timeBuffer[12];
 	LegoChar buffer[64];
 	LegoU32 selected[c_racerCount];
-	RaceState::Racer::StandingsDeltaEntry deltaEntries[c_racerCount];
+	Racer::StandingsDeltaEntry deltaEntries[c_racerCount];
 	GolD3DRenderDevice* renderer = m_context->m_golApp->GetRenderer();
 	const SlatePeak0x58* renderTargetInfo = renderer->GetRenderTargetInfo();
 
@@ -177,7 +177,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 		return;
 	}
 
-	RaceState::Racer* racers = m_raceState->GetRacers();
+	Racer* racers = m_raceState->GetRacers();
 
 	if (p_showCircuitPoints) {
 		string.CopyFromBufSelection(m_stringTable->GetStringBuffer(c_titleStringId), 0);
@@ -213,7 +213,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->VTable0x68(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 
-				RaceState::Racer* selectedRacer = &racers[selectedIndex];
+				Racer* selectedRacer = &racers[selectedIndex];
 				renderer->VTable0x64(&selectedRacer->m_displayName, m_font, c_racerNameX, y, 1.0f, 1.0f, NULL, 0);
 
 				::sprintf(buffer, "%ld", m_points[selectedIndex]);
@@ -234,7 +234,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 			}
 		}
 
-		RaceState::Racer* leaderRacer = &racers[leaderIndex];
+		Racer* leaderRacer = &racers[leaderIndex];
 		leaderRacer->ComputeStandingsDeltas(deltaEntries);
 
 		LegoS32 sign = 1;
@@ -256,7 +256,7 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 				::sprintf(buffer, "%ld", rank + 1);
 				renderer->VTable0x68(buffer, m_font, c_rankX, y, 1.0f, 1.0f, NULL, 0);
 
-				RaceState::Racer* selectedRacer = &racers[selectedIndex];
+				Racer* selectedRacer = &racers[selectedIndex];
 				renderer->VTable0x64(&selectedRacer->m_displayName, m_font, c_racerNameX, y, 1.0f, 1.0f, NULL, 0);
 
 				::sprintf(buffer, "%ld", m_roundPoints[selectedIndex]);
@@ -268,12 +268,12 @@ void CircuitStandings::Draw(LegoBool32 p_showCircuitPoints)
 				}
 
 				if (deltaIndex < c_racerCount) {
-					RaceState::Racer::StandingsDeltaEntry* deltaEntry = &deltaEntries[deltaIndex];
+					Racer::StandingsDeltaEntry* deltaEntry = &deltaEntries[deltaIndex];
 					if (deltaEntry->m_racer == leaderRacer) {
 						string.CopyFromBufSelection(m_stringTable->GetStringBuffer(c_leaderStringId), 0);
 						renderer->VTable0x64(&string, m_font, c_deltaSignX, y, 1.0f, 1.0f, NULL, 0);
 					}
-					else if (deltaEntry->m_racer->m_flags & RaceState::Racer::c_flagFinished) {
+					else if (deltaEntry->m_racer->m_flags & Racer::c_flagFinished) {
 						LegoS32 delta = deltaEntry->m_delta;
 						if (delta <= 0) {
 							if (delta < 0) {

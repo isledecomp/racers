@@ -41,15 +41,15 @@ public:
 	virtual void LaunchAtPosition(Params* p_params, GolVec3* p_position); // vtable+0x04
 	virtual void LaunchAtPoint(                                      // vtable+0x08
 		Params* p_params,
-		RaceState::Racer* p_racer,
+		Racer* p_racer,
 		GolVec3* p_targetPosition,
 		GolVec3* p_targetVelocity,
 		LegoBool32 p_fromRacerPosition
 	);
 	virtual void LaunchAtRacer(                                            // vtable+0x0c
 		Params* p_params,
-		RaceState::Racer* p_racer,
-		RaceState::Racer* p_targetRacer,
+		Racer* p_racer,
+		Racer* p_targetRacer,
 		LegoBool32 p_fromRacerPosition,
 		LegoBool32 p_predictiveLead
 	);
@@ -61,7 +61,7 @@ public:
 	void Reset();
 	void CancelCollisionEvent();
 	void Initialize(Params* p_params);
-	void Deflect(RaceState::Racer* p_racer);
+	void Deflect(Racer* p_racer);
 	void ComputeTrajectory(LegoFloat p_durationSeconds);
 	void RegisterCollisionEvent(LegoEventQueue* p_eventQueue);
 	LegoU32 GetState() const { return m_state; }
@@ -69,7 +69,7 @@ public:
 	const GolVec3& GetTargetPosition() const { return m_targetPosition; }
 	const GolVec3& GetHitPosition() const { return m_hitPosition; }
 	const GolVec3& GetHitNormal() const { return m_hitNormal; }
-	RaceState::Racer* GetHitRacer() const { return m_hitRacer; }
+	Racer* GetHitRacer() const { return m_hitRacer; }
 
 protected:
 	undefined4 m_state;                      // 0x004
@@ -90,9 +90,9 @@ protected:
 	LegoU32 m_lifetimeMs;                    // 0x058
 	GolVec3 m_hitNormal;                     // 0x05c
 	undefined m_unk0x068[0x09c - 0x068];     // 0x068
-	RaceState::Racer* m_ownerRacer;          // 0x09c
-	RaceState::Racer* m_targetRacer;         // 0x0a0
-	RaceState::Racer* m_hitRacer;            // 0x0a4
+	Racer* m_ownerRacer;                     // 0x09c
+	Racer* m_targetRacer;                    // 0x0a0
+	Racer* m_hitRacer;                       // 0x0a4
 };
 
 #endif // POWERUPPROJECTILE_H

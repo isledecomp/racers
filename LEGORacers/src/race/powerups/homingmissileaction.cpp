@@ -91,7 +91,7 @@ void RacePowerupManager::HomingMissileAction::Shutdown()
 void RacePowerupManager::HomingMissileAction::Activate(
 	GolAnimatedEntity* p_missileTemplate,
 	GolAnimatedEntity*,
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	LegoU32 p_missileIndex
 )
 {
@@ -110,7 +110,7 @@ void RacePowerupManager::HomingMissileAction::Activate(
 	);
 
 	SoundVector position;
-	RaceState::Racer::CarVisuals* racerEntities = &m_ownerRacer->m_visuals;
+	CarVisuals* racerEntities = &m_ownerRacer->m_visuals;
 	racerEntities->m_carEntity->VTable0x04(&position);
 	projectile->VTable0x08(position);
 
@@ -134,7 +134,7 @@ void RacePowerupManager::HomingMissileAction::LaunchProjectile()
 {
 	GolVec3 position;
 	{
-		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+		CarVisuals* racerField = &m_ownerRacer->m_visuals;
 		racerField->m_carEntity->VTable0x04(&position);
 	}
 
@@ -243,7 +243,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 		}
 		else {
 			GolVec3 position;
-			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_visuals;
+			CarVisuals* racerField = &m_ownerRacer->m_visuals;
 			racerField->m_carEntity->VTable0x04(&position);
 			m_missileEntity.VTable0x08(position);
 			m_missileEntity.CopyOrientationFrom(*m_ownerRacer->m_physics.m_carEntity);
@@ -269,7 +269,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 
 			LegoBool32 skipBurst = FALSE;
 			if (projectileState == PowerupProjectile::c_stateHitRacer) {
-				RaceState::Racer* target = m_projectile.GetHitRacer();
+				Racer* target = m_projectile.GetHitRacer();
 				if ((target->m_flags & c_racerFlags0xd04Bit0) && target->m_shieldLevel >= 2) {
 					skipBurst = TRUE;
 				}
@@ -463,7 +463,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00456fa0
-void RacePowerupManager::HomingMissileAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::HomingMissileAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateFlying) {
 		if (p_racer->GetFlags() & c_racerFlags0xd04Bit0) {

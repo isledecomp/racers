@@ -462,7 +462,7 @@ void RaceSession::Run()
 	m_renderer->VTable0x48();
 	m_raceState.RecordBestTimes(m_context);
 
-	RaceState::Racer* field = m_raceState.GetPlayerRacer();
+	Racer* field = m_raceState.GetPlayerRacer();
 	if (field) {
 		m_context->m_unk0x398 = field->m_cameraViewIndex;
 	}
@@ -972,7 +972,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	RaceReset::Params resetParams;
 	RaceEventTable::Params params;
 	HazardManager::Context dispatcherContext;
-	RaceState::RacerContext racerContext;
+	RacerContext racerContext;
 	RaceState::CreateRacersParams racerParams;
 
 	DrawLoadProgress(0.45f);
@@ -1071,7 +1071,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	for (racerIndex = 0; racerIndex < m_context->m_racerCount; racerIndex++) {
 		if (m_context->m_playerSetupSlots[racerIndex].m_slotState == 0) {
-			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
+			Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			RaceCameraController* cameraController = &m_cameraControllers[racerIndex];
 			m_raceState.m_playerRacers[racerIndex] = racer;
 
@@ -1088,7 +1088,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 	}
 
 	if (m_demoMode) {
-		RaceState::Racer* racer = m_raceState.GetRacers();
+		Racer* racer = m_raceState.GetRacers();
 		racer->SwitchToAiControl();
 		racer->m_flags |= c_racerFlags0xd04Bit23;
 	}
@@ -1300,7 +1300,7 @@ void RaceSession::DestroyRaceContent()
 		LegoU32 i = 0;
 
 		if (playerCount > 0) {
-			RaceState::Racer** racer = m_raceState.m_playerRacers;
+			Racer** racer = m_raceState.m_playerRacers;
 			do {
 				if (*racer) {
 					(*racer)->m_visuals.EndFlash();
@@ -1340,7 +1340,7 @@ void RaceSession::DestroyRaceContent()
 	m_particleAnimation.Clear();
 
 	RaceCameraController* cameraController = m_cameraControllers;
-	RaceState::Racer** racer = m_raceState.m_playerRacers;
+	Racer** racer = m_raceState.m_playerRacers;
 	LegoS32 remaining = sizeOfArray(m_cameraControllers);
 	do {
 		*racer = NULL;
@@ -1497,7 +1497,7 @@ void RaceSession::InitializeInput()
 
 	if (playerCount > 0) {
 		PlayerControls* controls = session->m_playerControls;
-		RaceState::Racer** racer = session->m_raceState.m_playerRacers;
+		Racer** racer = session->m_raceState.m_playerRacers;
 		LegoU32 playerIndex = 0;
 
 		do {
@@ -1740,7 +1740,7 @@ void RaceSession::UpdateIntroState()
 			if (m_context->m_playerCount > 0) {
 				RaceHud* cobaltTrail = m_huds;
 				RaceForceFeedback* forceFeedback = m_forceFeedback;
-				RaceState::Racer** racer = m_raceState.m_playerRacers;
+				Racer** racer = m_raceState.m_playerRacers;
 				do {
 					(*racer)->ReapplyCameraView();
 					if (!m_returnToGarage) {
@@ -1845,7 +1845,7 @@ void RaceSession::UpdateRacingState()
 	LegoU32 racerIndex = 0;
 	if (m_context->m_racerCount > 0) {
 		do {
-			RaceState::Racer* racer = &m_raceState.GetRacers()[racerIndex];
+			Racer* racer = &m_raceState.GetRacers()[racerIndex];
 			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
 				racer->m_flags |= 0x1000;
 
@@ -1858,7 +1858,7 @@ void RaceSession::UpdateRacingState()
 
 				if (racer->m_controlMode != 2 || (m_demoMode && racerIndex == 0)) {
 					LegoU32 playerIndex = 0;
-					RaceState::Racer** playerRacer = m_raceState.m_playerRacers;
+					Racer** playerRacer = m_raceState.m_playerRacers;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
 						playerRacer++;
 						playerIndex++;
@@ -1877,8 +1877,7 @@ void RaceSession::UpdateRacingState()
 
 					m_powerupManager.CancelWarp(racer);
 
-					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
-						!m_returnToGarage) {
+					if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & 0x200000) && !m_returnToGarage) {
 						m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
 					}
 
@@ -1942,7 +1941,7 @@ void RaceSession::UpdateFinishedState()
 
 		LegoU32 i = 0;
 		if (m_context->m_racerCount > 0) {
-			RaceState::Racer* racer = m_raceState.GetRacers();
+			Racer* racer = m_raceState.GetRacers();
 			do {
 				if (!(racer->m_flags & 0x1000)) {
 					if (m_standings) {
@@ -1965,7 +1964,7 @@ void RaceSession::UpdateFinishedState()
 
 	LegoU32 racerIndex = 0;
 	if (m_context->m_racerCount > 0) {
-		RaceState::Racer* racer = m_raceState.GetRacers();
+		Racer* racer = m_raceState.GetRacers();
 		do {
 			if (racer->m_lapsCompleted >= m_lapCount && !(racer->m_flags & 0x1000)) {
 				racer->m_flags |= 0x1000;
@@ -1979,7 +1978,7 @@ void RaceSession::UpdateFinishedState()
 
 				if (racer->m_controlMode != 2) {
 					LegoU32 playerIndex = 0;
-					RaceState::Racer** playerRacer = m_raceState.m_playerRacers;
+					Racer** playerRacer = m_raceState.m_playerRacers;
 					while (*playerRacer != racer && playerIndex < m_context->m_playerCount) {
 						playerRacer++;
 						playerIndex++;
@@ -1991,15 +1990,14 @@ void RaceSession::UpdateFinishedState()
 
 					m_powerupManager.CancelWarp(racer);
 
-					if (!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000)) {
+					if (!(racer->m_flags & Racer::c_flagGhost) && !(racer->m_flags & 0x200000)) {
 						m_cameraControllers[playerIndex].SetView(4, m_splitScreen);
 					}
 				}
 			}
 
-			if ((racer->m_flags & 0x1000) && racer->m_cameraController &&
-				!(racer->m_flags & RaceState::Racer::c_flagGhost) && !(racer->m_flags & 0x200000) &&
-				racer->m_cameraViewIndex != 4 && !m_returnToGarage) {
+			if ((racer->m_flags & 0x1000) && racer->m_cameraController && !(racer->m_flags & Racer::c_flagGhost) &&
+				!(racer->m_flags & 0x200000) && racer->m_cameraViewIndex != 4 && !m_returnToGarage) {
 				racer->m_cameraController->SetView(4, m_splitScreen);
 			}
 
@@ -2148,7 +2146,7 @@ void RaceSession::Draw()
 		m_renderer->VTable0xec(FALSE);
 	}
 
-	if (m_raceState.m_playerRacers[0]->m_flags & RaceState::Racer::c_flagGhost) {
+	if (m_raceState.m_playerRacers[0]->m_flags & Racer::c_flagGhost) {
 		m_powerupManager.Draw(viewportIndex);
 	}
 	else {
@@ -2184,7 +2182,7 @@ void RaceSession::Draw()
 		m_renderer->VTable0x5c();
 		m_renderer->VTable0xec(viewportIndex + 1);
 
-		if (m_raceState.m_playerRacers[viewportIndex]->m_flags & RaceState::Racer::c_flagGhost) {
+		if (m_raceState.m_playerRacers[viewportIndex]->m_flags & Racer::c_flagGhost) {
 			m_powerupManager.Draw(FALSE);
 		}
 		else {
@@ -2248,7 +2246,7 @@ void RaceSession::Draw()
 
 // Separate helpers keep MSVC from merging the identical switch arms in Draw; ICF folds the bodies.
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
-void RaceSession::DrawRacerViewportForState1(RaceState::Racer* p_racer)
+void RaceSession::DrawRacerViewportForState1(Racer* p_racer)
 {
 	m_skyState.Draw(m_renderer);
 	DrawScene(p_racer);
@@ -2256,7 +2254,7 @@ void RaceSession::DrawRacerViewportForState1(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
-void RaceSession::DrawRacerViewportForState2(RaceState::Racer* p_racer)
+void RaceSession::DrawRacerViewportForState2(Racer* p_racer)
 {
 	m_skyState.Draw(m_renderer);
 	DrawScene(p_racer);
@@ -2264,7 +2262,7 @@ void RaceSession::DrawRacerViewportForState2(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
-void RaceSession::DrawRacerViewportForState3(RaceState::Racer* p_racer)
+void RaceSession::DrawRacerViewportForState3(Racer* p_racer)
 {
 	m_skyState.Draw(m_renderer);
 	DrawScene(p_racer);
@@ -2272,7 +2270,7 @@ void RaceSession::DrawRacerViewportForState3(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
-void RaceSession::DrawRacerViewportForState4(RaceState::Racer* p_racer)
+void RaceSession::DrawRacerViewportForState4(Racer* p_racer)
 {
 	m_skyState.Draw(m_renderer);
 	DrawScene(p_racer);
@@ -2280,7 +2278,7 @@ void RaceSession::DrawRacerViewportForState4(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004357b0 FOLDED
-void RaceSession::DrawRacerViewportForState5(RaceState::Racer* p_racer)
+void RaceSession::DrawRacerViewportForState5(Racer* p_racer)
 {
 	m_skyState.Draw(m_renderer);
 	DrawScene(p_racer);
@@ -2363,7 +2361,7 @@ void RaceSession::ClearViewport()
 }
 
 // FUNCTION: LEGORACERS 0x00435960
-void RaceSession::DrawScene(RaceState::Racer* p_racer)
+void RaceSession::DrawScene(Racer* p_racer)
 {
 	m_raceState.DrawRacerEntities(m_renderer, p_racer);
 	m_powerupManager.Draw(FALSE);
@@ -2758,7 +2756,7 @@ void RaceSession::ProcessPauseDialog()
 // FUNCTION: LEGORACERS 0x004362e0
 void RaceSession::RestartRace()
 {
-	RaceState::Racer* racer = m_raceState.GetPlayerRacer();
+	Racer* racer = m_raceState.GetPlayerRacer();
 	if (racer) {
 		m_context->m_unk0x398 = racer->m_cameraViewIndex;
 	}

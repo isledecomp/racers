@@ -204,7 +204,7 @@ void TimeRaceManager::FUN_00422710(LegoU32 p_elapsedMs)
 	if (p_elapsedMs >= m_unk0x3ac) {
 		m_unk0x3ac += c_ghostSampleIntervalMs - p_elapsedMs;
 		if (m_scratchRun->m_sampleCount < GhostRunData::c_sampleCapacity) {
-			RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+			CarVisuals* racerField = &m_racer->m_visuals;
 			GolVec3 position;
 			racerField->m_carEntity->VTable0x04(&position);
 
@@ -425,7 +425,7 @@ void TimeRaceManager::FUN_00422de0()
 }
 
 // FUNCTION: LEGORACERS 0x00422eb0
-void TimeRaceManager::FUN_00422eb0(RaceState::Racer* p_racer)
+void TimeRaceManager::FUN_00422eb0(Racer* p_racer)
 {
 	m_racer = p_racer;
 	m_flags0x3b4 |= c_flag0x3b4Bit1;

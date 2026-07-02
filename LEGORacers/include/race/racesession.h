@@ -32,6 +32,7 @@
 #include "race/raceforcefeedback.h"
 #include "race/racehud.h"
 #include "race/racer/racerouterecord.h"
+#include "race/racer/racersoundsource.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesky.h"
 #include "race/racestate.h"
@@ -100,7 +101,7 @@ public:
 	void Run();
 	virtual void Update();                     // vtable+0x30
 	virtual void ClearViewport();              // vtable+0x34
-	virtual void DrawScene(RaceState::Racer*); // vtable+0x38
+	virtual void DrawScene(Racer*);            // vtable+0x38
 	virtual void DrawTransparent();            // vtable+0x3c
 	virtual void DrawHuds();                   // vtable+0x40
 	virtual void OnKeyDown(LegoU32 p_keyCode); // vtable+0x44
@@ -233,7 +234,7 @@ public:
 		friend class InputState;
 
 		void Destroy();
-		void Initialize(RaceState::Racer* p_racer, InputDevice::Callback* p_fallback);
+		void Initialize(Racer* p_racer, InputDevice::Callback* p_fallback);
 		void Reset();
 		void UpdateSteering(LegoU32 p_elapsedMs);
 		void UpdateThrottle();
@@ -252,8 +253,8 @@ public:
 		void TrackThrottleHold();
 		LegoS32 DetectAnalogDevice();
 
-		RaceState::Racer* m_racer; // 0x000
-		InputState m_input;        // 0x004
+		Racer* m_racer;     // 0x000
+		InputState m_input; // 0x004
 	};
 
 	// SIZE 0x1c
@@ -295,7 +296,7 @@ public:
 	};
 
 	// SIZE 0x14
-	class RaceSoundSource : public RaceState::Racer::SoundSource {
+	class RaceSoundSource : public RacerSoundSource {
 	public:
 		RaceSoundSource();
 		~RaceSoundSource();
@@ -752,7 +753,7 @@ public:
 		RacerCollisionWorlds();
 		virtual ~RacerCollisionWorlds(); // vtable+0x00
 		void Update(LegoU32 p_elapsedMs);
-		void ActivateWorld(RaceState::Racer* p_racer, LegoU32 p_worldIndex);
+		void ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex);
 		LegoU32 Reset();
 
 		// SYNTHETIC: LEGORACERS 0x0045e380
@@ -771,10 +772,10 @@ public:
 			c_activationTtl = 150,
 		};
 
-		RaceState::Racer* m_racers[c_racerCount]; // 0x04
-		GolWorldDatabase* m_worldDatabase;        // 0x1c
-		LegoU8* m_ttl[c_racerCount];              // 0x20
-		LegoU32 m_worldCount;                     // 0x38
+		Racer* m_racers[c_racerCount];     // 0x04
+		GolWorldDatabase* m_worldDatabase; // 0x1c
+		LegoU8* m_ttl[c_racerCount];       // 0x20
+		LegoU32 m_worldCount;              // 0x38
 	};
 
 private:
@@ -842,11 +843,11 @@ private:
 	void UpdateResultsState();
 	void UpdateHuds();
 	void Draw();
-	void DrawRacerViewportForState1(RaceState::Racer* p_racer);
-	void DrawRacerViewportForState2(RaceState::Racer* p_racer);
-	void DrawRacerViewportForState3(RaceState::Racer* p_racer);
-	void DrawRacerViewportForState4(RaceState::Racer* p_racer);
-	void DrawRacerViewportForState5(RaceState::Racer* p_racer);
+	void DrawRacerViewportForState1(Racer* p_racer);
+	void DrawRacerViewportForState2(Racer* p_racer);
+	void DrawRacerViewportForState3(Racer* p_racer);
+	void DrawRacerViewportForState4(Racer* p_racer);
+	void DrawRacerViewportForState5(Racer* p_racer);
 	void DrawOverlaysForState1();
 	void DrawOverlaysForState2();
 	void DrawOverlaysForState3();

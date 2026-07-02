@@ -41,7 +41,7 @@ void RaceEventTable::LapZoneResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00464680
-void RaceEventTable::LapZoneResource::OnStartForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::LapZoneResource::OnStartForRacer(Racer* p_racer)
 {
 	switch (m_zone) {
 	case 0:
@@ -61,7 +61,7 @@ void RaceEventTable::LapZoneResource::OnStartForRacer(RaceState::Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004646e0
-void RaceEventTable::LapZoneResource::OnEndForRacer(RaceState::Racer*)
+void RaceEventTable::LapZoneResource::OnEndForRacer(Racer*)
 {
 	NotifyStateChange(m_state0x18, 3);
 	m_state0x18 = c_state0x18Four;

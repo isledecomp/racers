@@ -142,7 +142,7 @@ void RacePowerupManager::Explosion::Destroy()
 }
 
 // STUB: LEGORACERS 0x00421520
-void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar, RaceState::Racer* p_racer)
+void RacePowerupManager::Explosion::Spawn(const GolVec3* p_position, undefined4 p_leavesScar, Racer* p_racer)
 {
 	LegoFloat negativeLimit = -2048.0f;
 	if (p_position->m_x > 2048.0f || p_position->m_x < negativeLimit || p_position->m_y > 2048.0f ||
@@ -390,13 +390,13 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 		return;
 	}
 
-	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
+	Racer* racer = static_cast<Racer*>(p_data->m_data);
 	if (racer == m_ownerRacer) {
 		return;
 	}
 
 	LegoU8 racerFlags = static_cast<LegoU8>(racer->m_flags);
-	RaceState::Racer::Physics* field0x3e8 = &racer->m_physics;
+	RacerPhysics* field0x3e8 = &racer->m_physics;
 	if (racerFlags & c_racerFlags0xd04Bit0) {
 		return;
 	}
@@ -407,7 +407,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 			return;
 		}
 
-		if ((racer->m_physics.m_flags & RaceState::Racer::Physics::c_flagSpinOut) && racer->m_controlMode != 2) {
+		if ((racer->m_physics.m_flags & RacerPhysics::c_flagSpinOut) && racer->m_controlMode != 2) {
 			return;
 		}
 
@@ -449,7 +449,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 		return;
 	}
 
-	if (!(field0x3e8->m_flags & RaceState::Racer::Physics::c_flagSpinning)) {
+	if (!(field0x3e8->m_flags & RacerPhysics::c_flagSpinning)) {
 		field0x3e8->StartSpin(2.0f, 0.007f, 0);
 	}
 }

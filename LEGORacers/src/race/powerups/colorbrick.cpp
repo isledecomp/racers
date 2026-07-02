@@ -112,7 +112,7 @@ void RacePowerupManager::ColorBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00457820
-void RacePowerupManager::ColorBrick::OnTouched(RaceState::Racer* p_racer)
+void RacePowerupManager::ColorBrick::OnTouched(Racer* p_racer)
 {
 	if (m_state == c_stateIdle) {
 		LegoU32 racerState = p_racer->GetHeldPowerupColor();

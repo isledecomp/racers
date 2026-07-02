@@ -108,14 +108,14 @@ void RaceSession::RacerCollisionWorlds::Update(LegoU32 p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x0045e520
-void RaceSession::RacerCollisionWorlds::ActivateWorld(RaceState::Racer* p_racer, LegoU32 p_worldIndex)
+void RaceSession::RacerCollisionWorlds::ActivateWorld(Racer* p_racer, LegoU32 p_worldIndex)
 {
-	RaceState::Racer* target = p_racer;
+	Racer* target = p_racer;
 	RacerCollisionWorlds* field = this;
 	LegoU32 racerIndex = 0;
 	if (field->m_racers[0] != target) {
-		RaceState::Racer** racer = field->m_racers;
-		RaceState::Racer* nextRacer;
+		Racer** racer = field->m_racers;
+		Racer* nextRacer;
 		while (racerIndex < sizeOfArray(m_racers)) {
 			nextRacer = racer[1];
 			racer++;
@@ -131,7 +131,7 @@ void RaceSession::RacerCollisionWorlds::ActivateWorld(RaceState::Racer* p_racer,
 	}
 
 	LegoU32 result = 0;
-	RaceState::Racer** racer = field->m_racers;
+	Racer** racer = field->m_racers;
 	for (; *racer != target; racer++) {
 		if (++result >= sizeOfArray(field->m_racers)) {
 			field->m_ttl[result][p_worldIndex] = c_activationTtl;

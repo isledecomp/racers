@@ -41,7 +41,7 @@ public:
 	void FUN_00422710(LegoU32 p_elapsedMs);
 	void FUN_00422960(GolD3DRenderDevice* p_renderer);
 	void FUN_00422de0();
-	void FUN_00422eb0(RaceState::Racer* p_racer);
+	void FUN_00422eb0(Racer* p_racer);
 	void UpdateBestRun();
 	LegoBool32 HasBeatenRecord();
 	GhostRunData* ResetRun();
@@ -116,7 +116,7 @@ private:
 	GhostRunData* m_recordRun;         // 0x0c
 	GhostRunData* m_bestRun;           // 0x10
 	GhostRunData* m_scratchRun;        // 0x14
-	RaceState::Racer* m_racer;         // 0x18
+	Racer* m_racer;                    // 0x18
 	GolAnimatedEntity m_unk0x1c;       // 0x1c
 	GolAnimatedEntity* m_unk0x110;     // 0x110
 	GolAnimatedEntity m_unk0x114;      // 0x114

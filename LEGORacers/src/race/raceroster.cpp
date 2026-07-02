@@ -1,14 +1,14 @@
 #include "race/racestate.h"
 
 // FUNCTION: LEGORACERS 0x0043d150
-RaceState::RaceRoster::RaceRoster()
+RaceRoster::RaceRoster()
 {
 	m_bodyEvents = NULL;
 	m_raceState = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0043d170
-void RaceState::RaceRoster::Destroy()
+void RaceRoster::Destroy()
 {
 	m_bodyEvents = NULL;
 	m_raceState = NULL;
@@ -16,7 +16,7 @@ void RaceState::RaceRoster::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0043d180
-void RaceState::RaceRoster::Update(LegoU32 p_elapsedMs)
+void RaceRoster::Update(LegoU32 p_elapsedMs)
 {
 	PruneBodyEvents();
 	LegoEventQueue::CollisionQueue::Update(p_elapsedMs);
@@ -26,7 +26,7 @@ void RaceState::RaceRoster::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0043d1b0
-LegoS32 RaceState::RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
+LegoS32 RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
 {
 	if (LegoEventQueue::CollisionQueue::AddEvent(p_event)) {
 		return 1;
@@ -48,7 +48,7 @@ LegoS32 RaceState::RaceRoster::AddEvent(LegoEventQueue::Event* p_event)
 }
 
 // FUNCTION: LEGORACERS 0x0043d200
-void RaceState::RaceRoster::PruneBodyEvents()
+void RaceRoster::PruneBodyEvents()
 {
 	LegoEventQueue::Event* previous = NULL;
 	LegoEventQueue::Event* event = m_bodyEvents;
@@ -85,13 +85,13 @@ void RaceState::RaceRoster::PruneBodyEvents()
 }
 
 // FUNCTION: LEGORACERS 0x0043d260 FOLDED
-GolWorldEntity* RaceState::RaceRoster::GetEventEntity(LegoEventQueue::Event* p_event)
+GolWorldEntity* RaceRoster::GetEventEntity(LegoEventQueue::Event* p_event)
 {
 	return p_event->m_descriptor.m_worldEntity;
 }
 
 // FUNCTION: LEGORACERS 0x0043d270
-void RaceState::RaceRoster::TestRacerCollisions()
+void RaceRoster::TestRacerCollisions()
 {
 	LegoEventQueue::Event* other;
 	LegoEventQueue::Descriptor::RigidBody::RacerView* target;
@@ -179,7 +179,7 @@ void RaceState::RaceRoster::TestRacerCollisions()
 }
 
 // FUNCTION: LEGORACERS 0x0043d3f0
-void RaceState::RaceRoster::SortBodyEvents()
+void RaceRoster::SortBodyEvents()
 {
 	LegoFloat eventMinX;
 	LegoEventQueue::Event* next;

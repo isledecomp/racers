@@ -54,25 +54,25 @@ extern const LegoFloat g_returnPathThrust = 18.0f;
 LegoFloat g_turboThrust = g_fullThrottleThrust * 8.0f;
 
 // FUNCTION: LEGORACERS 0x0041fb50
-RaceState::Racer::DriveController::DriveController()
+DriveController::DriveController()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb60
-RaceState::Racer::DriveController::~DriveController()
+DriveController::~DriveController()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb70
-void RaceState::Racer::DriveController::Destroy()
+void DriveController::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb80
-void RaceState::Racer::DriveController::Reset()
+void DriveController::Reset()
 {
 	m_physics = NULL;
 	m_returnRecord = NULL;
@@ -98,7 +98,7 @@ void RaceState::Racer::DriveController::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0041fbd0
-void RaceState::Racer::DriveController::Initialize(Physics* p_physics)
+void DriveController::Initialize(RacerPhysics* p_physics)
 {
 	if (m_physics) {
 		Destroy();
@@ -107,7 +107,7 @@ void RaceState::Racer::DriveController::Initialize(Physics* p_physics)
 }
 
 // FUNCTION: LEGORACERS 0x0041fc00
-void RaceState::Racer::DriveController::Update(LegoU32 p_elapsedMs)
+void DriveController::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 flags = m_flags;
 	m_previousTurnRadius = m_turnRadius;
@@ -167,7 +167,7 @@ void RaceState::Racer::DriveController::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0041fd60
-void RaceState::Racer::DriveController::UpdateBrakeToStop(LegoU32)
+void DriveController::UpdateBrakeToStop(LegoU32)
 {
 	if (m_physics->m_forwardSpeed > 0.0f) {
 		m_thrust = -(g_fullThrottleThrust + g_fullThrottleThrust);
@@ -181,12 +181,12 @@ void RaceState::Racer::DriveController::UpdateBrakeToStop(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0041fdb0
-void RaceState::Racer::DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
+void DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs)
 {
-	Physics* field0x000 = m_physics;
+	RacerPhysics* field0x000 = m_physics;
 	m_stuckMs += p_elapsedMs;
 
-	if (field0x000->m_flags & Physics::c_flagSpinning) {
+	if (field0x000->m_flags & RacerPhysics::c_flagSpinning) {
 		LegoU32 flags = m_flags;
 		m_stuckMs = 0;
 		m_flags = flags & ~c_flagReversing;
@@ -212,7 +212,7 @@ void RaceState::Racer::DriveController::UpdateStuckDetection(LegoU32 p_elapsedMs
 }
 
 // FUNCTION: LEGORACERS 0x0041fe60
-void RaceState::Racer::DriveController::SetSteeringInput(LegoFloat p_input)
+void DriveController::SetSteeringInput(LegoFloat p_input)
 {
 	if (m_flags & c_flagCursed) {
 		p_input = -p_input;
@@ -232,7 +232,7 @@ void RaceState::Racer::DriveController::SetSteeringInput(LegoFloat p_input)
 }
 
 // FUNCTION: LEGORACERS 0x0041fee0
-void RaceState::Racer::DriveController::ApplySteering()
+void DriveController::ApplySteering()
 {
 	if (m_turnRadius == 0.0f && m_previousTurnRadius == 0.0f) {
 		m_physics->SetTurnRadius(0.0f);
@@ -310,7 +310,7 @@ void RaceState::Racer::DriveController::ApplySteering()
 }
 
 // FUNCTION: LEGORACERS 0x00420130
-void RaceState::Racer::DriveController::SetThrottleInput(LegoFloat p_input)
+void DriveController::SetThrottleInput(LegoFloat p_input)
 {
 	if (m_flags & c_flagCursed) {
 		p_input += m_curseThrottleOffset;
@@ -333,7 +333,7 @@ void RaceState::Racer::DriveController::SetThrottleInput(LegoFloat p_input)
 }
 
 // FUNCTION: LEGORACERS 0x004201e0
-void RaceState::Racer::DriveController::ApplyThrust()
+void DriveController::ApplyThrust()
 {
 	LegoU32 flags = m_flags;
 
@@ -364,7 +364,7 @@ void RaceState::Racer::DriveController::ApplyThrust()
 }
 
 // FUNCTION: LEGORACERS 0x00420260
-void RaceState::Racer::DriveController::EngageSlide(LegoBool32 p_left)
+void DriveController::EngageSlide(LegoBool32 p_left)
 {
 	LegoU32 flags = m_flags;
 	m_flags = flags & ~c_flagSlideBoost;
@@ -384,7 +384,7 @@ void RaceState::Racer::DriveController::EngageSlide(LegoBool32 p_left)
 }
 
 // FUNCTION: LEGORACERS 0x004202c0
-undefined4 RaceState::Racer::DriveController::ReleaseSlide()
+undefined4 DriveController::ReleaseSlide()
 {
 	LegoU32 flags = m_flags;
 	flags &= ~4;
@@ -399,7 +399,7 @@ undefined4 RaceState::Racer::DriveController::ReleaseSlide()
 }
 
 // FUNCTION: LEGORACERS 0x004202f0
-GolQuat* RaceState::Racer::DriveController::StartReturnToPath(RaceRouteRecord* p_record)
+GolQuat* DriveController::StartReturnToPath(RaceRouteRecord* p_record)
 {
 	LegoU32 flags = m_flags;
 	m_returnPreviewMs = 1000;
@@ -416,7 +416,7 @@ GolQuat* RaceState::Racer::DriveController::StartReturnToPath(RaceRouteRecord* p
 	m_previewCursor->Advance(static_cast<LegoFloat>(m_returnPreviewMs));
 
 	GolQuat* basis = &m_returnRotation;
-	RaceState::Racer::Physics::RouteCursorInstance* field0x50 = m_previewCursor;
+	RacerPhysics::RouteCursorInstance* field0x50 = m_previewCursor;
 	m_returnPosition = field0x50->m_position;
 	GolQuat* result = &field0x50->m_rotation;
 	basis->m_x = result->m_x;
@@ -427,7 +427,7 @@ GolQuat* RaceState::Racer::DriveController::StartReturnToPath(RaceRouteRecord* p
 }
 
 // FUNCTION: LEGORACERS 0x00420380
-void RaceState::Racer::DriveController::EndReturnToPath()
+void DriveController::EndReturnToPath()
 {
 	LegoU32 flags = m_flags;
 	flags &= ~c_flagReturnToPath;
@@ -442,7 +442,7 @@ void RaceState::Racer::DriveController::EndReturnToPath()
 }
 
 // FUNCTION: LEGORACERS 0x004203b0
-void RaceState::Racer::DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
+void DriveController::UpdateReturnToPath(LegoU32 p_elapsedMs)
 {
 	GolVec3 delta;
 	GolVec3 pathDirection;

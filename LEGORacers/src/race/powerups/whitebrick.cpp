@@ -99,7 +99,7 @@ void RacePowerupManager::WhiteBrick::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453750
-void RacePowerupManager::WhiteBrick::OnTouched(RaceState::Racer* p_racer)
+void RacePowerupManager::WhiteBrick::OnTouched(Racer* p_racer)
 {
 	if (m_state == c_stateIdle && p_racer->CollectWhiteBrick(this)) {
 		m_nextState = c_stateWait;

@@ -192,7 +192,7 @@ void RaceEventTable::LookTargetResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0045e6c0
-void RaceEventTable::LookTargetResource::OnStartForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::LookTargetResource::OnStartForRacer(Racer* p_racer)
 {
 	NotifyStateChange(1, 1);
 	if (p_racer) {
@@ -201,7 +201,7 @@ void RaceEventTable::LookTargetResource::OnStartForRacer(RaceState::Racer* p_rac
 }
 
 // FUNCTION: LEGORACERS 0x0045e6f0
-void RaceEventTable::LookTargetResource::OnEndForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::LookTargetResource::OnEndForRacer(Racer* p_racer)
 {
 	NotifyStateChange(m_state0x18, 3);
 	if (p_racer) {
@@ -518,7 +518,7 @@ void RaceEventTable::ParticleResource::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::Resource::OnStartForRacer(RaceState::Racer*)
+void RaceEventTable::Resource::OnStartForRacer(Racer*)
 {
 }
 
@@ -528,7 +528,7 @@ void RaceEventTable::Resource::OnStartAt(GolVec3*)
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RaceEventTable::Resource::OnEndForRacer(RaceState::Racer*)
+void RaceEventTable::Resource::OnEndForRacer(Racer*)
 {
 }
 
@@ -617,7 +617,7 @@ void RaceEventTable::Resource::NotifyStateChange(LegoU32 p_unk0x04, LegoU32 p_un
 }
 
 // FUNCTION: LEGORACERS 0x0045eee0 FOLDED
-void RaceEventTable::Resource::ForceEventEnd(RaceState::Racer* p_racer)
+void RaceEventTable::Resource::ForceEventEnd(Racer* p_racer)
 {
 	LegoU8 flags = m_flags0x1c;
 	if (flags & c_flags0x1cBit2) {
@@ -2316,7 +2316,7 @@ void RaceEventTable::ForceAllEvents()
 }
 
 // FUNCTION: LEGORACERS 0x00462da0
-void RaceEventTable::EndAllForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::EndAllForRacer(Racer* p_racer)
 {
 	LegoU32 i;
 
@@ -2413,7 +2413,7 @@ void RaceEventTable::ExternalForceResource::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00462fe0
-void RaceEventTable::ExternalForceResource::OnStartForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::ExternalForceResource::OnStartForRacer(Racer* p_racer)
 {
 	if (m_flags0x34 & c_flags0x34Bit0) {
 		if (p_racer) {
@@ -2433,7 +2433,7 @@ void RaceEventTable::ExternalForceResource::OnStartForRacer(RaceState::Racer* p_
 }
 
 // FUNCTION: LEGORACERS 0x00463040
-void RaceEventTable::ExternalForceResource::OnEndForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::ExternalForceResource::OnEndForRacer(Racer* p_racer)
 {
 	if (p_racer) {
 		switch (m_channel) {

@@ -6,10 +6,10 @@
 #include <math.h>
 
 DECOMP_SIZE_ASSERT(RaceRouteRecord::PathPoint, 0x0c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::CarBody::WheelProbe, 0x70)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::CollisionCacheRecord, 0x3c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::RouteCursor, 0x78)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::RouteCursorInstance, 0x78)
+DECOMP_SIZE_ASSERT(RacerCarBody::WheelProbe, 0x70)
+DECOMP_SIZE_ASSERT(RacerPhysics::CollisionCacheRecord, 0x3c)
+DECOMP_SIZE_ASSERT(RacerPhysics::RouteCursor, 0x78)
+DECOMP_SIZE_ASSERT(RacerPhysics::RouteCursorInstance, 0x78)
 
 // GLOBAL: LEGORACERS 0x004b4bc8
 extern const LegoFloat g_pathMinSegmentLengthSquared = 0.001f;
@@ -27,19 +27,19 @@ extern const LegoFloat g_pathRotationScale = 0.007874016f;
 extern const LegoFloat g_pathWidthScale = 0.125f;
 
 // FUNCTION: LEGORACERS 0x004a5170 FOLDED
-RaceState::Racer::CarBody::RouteCursorInstance::RouteCursorInstance()
+RacerCarBody::RouteCursorInstance::RouteCursorInstance()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5180 FOLDED
-RaceState::Racer::CarBody::RouteCursorInstance::~RouteCursorInstance()
+RacerCarBody::RouteCursorInstance::~RouteCursorInstance()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004a5190 FOLDED
-void RaceState::Racer::Physics::RouteCursor::Reset()
+void RacerPhysics::RouteCursor::Reset()
 {
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
@@ -72,13 +72,13 @@ void RaceState::Racer::Physics::RouteCursor::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004a51f0 FOLDED
-void RaceState::Racer::Physics::RouteCursor::Destroy()
+void RacerPhysics::RouteCursor::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5200
-void RaceState::Racer::Physics::RouteCursor::Attach(RaceRouteRecord* p_entry)
+void RacerPhysics::RouteCursor::Attach(RaceRouteRecord* p_entry)
 {
 	m_startIndex = -1;
 	m_record = p_entry;
@@ -88,7 +88,7 @@ void RaceState::Racer::Physics::RouteCursor::Attach(RaceRouteRecord* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x004a5220
-void RaceState::Racer::Physics::RouteCursor::AttachAtLoop(RaceRouteRecord* p_entry)
+void RacerPhysics::RouteCursor::AttachAtLoop(RaceRouteRecord* p_entry)
 {
 	GolVec3* position = &p_entry->m_loopPosition;
 	GolVec3* currentPosition = &m_startPosition;
@@ -124,7 +124,7 @@ void RaceState::Racer::Physics::RouteCursor::AttachAtLoop(RaceRouteRecord* p_ent
 }
 
 // STUB: LEGORACERS 0x004a5320
-void RaceState::Racer::Physics::RouteCursor::Advance(LegoFloat p_elapsedMs)
+void RacerPhysics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 {
 	RaceRouteRecord* entry = m_record;
 	if (entry) {
@@ -294,7 +294,7 @@ void RaceState::Racer::Physics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x004a5750
-void RaceState::Racer::Physics::RouteCursor::SeekByDelta(GolVec3* p_delta)
+void RacerPhysics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 {
 	LegoS32 endIndex = m_endIndex;
 	RaceRouteRecord::PathPoint* endPoint = &m_record->m_pathPoints[endIndex];

@@ -31,8 +31,8 @@ extern LegoFloat g_minSoundPan;
 
 DECOMP_SIZE_ASSERT(RaceState, 0x320)
 DECOMP_SIZE_ASSERT(RaceState::RacerProgressEntry, 0x0c)
-DECOMP_SIZE_ASSERT(RaceState::RaceRoster, 0x194)
-DECOMP_SIZE_ASSERT(RaceState::RaceSetup, 0x1c)
+DECOMP_SIZE_ASSERT(RaceRoster, 0x194)
+DECOMP_SIZE_ASSERT(RaceSetup, 0x1c)
 
 extern const LegoFloat g_ghostAnimationRateScale;
 extern const LegoFloat g_ghostSampleFractionScale;
@@ -57,19 +57,19 @@ extern const LegoFloat g_proximitySoundMinDistance;
 extern const LegoFloat g_proximitySoundMaxDistance;
 
 // FUNCTION: LEGORACERS 0x0043a410
-RaceState::RaceSetup::RaceSetup()
+RaceSetup::RaceSetup()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a420
-RaceState::RaceSetup::~RaceSetup()
+RaceSetup::~RaceSetup()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0043a430
-void RaceState::RaceSetup::Reset()
+void RaceSetup::Reset()
 {
 	m_racers = NULL;
 	m_racerCount = 0;
@@ -78,13 +78,13 @@ void RaceState::RaceSetup::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0043a440
-void RaceState::RaceSetup::Destroy()
+void RaceSetup::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a450
-void RaceState::RaceSetup::Initialize(Racer* p_racers, LegoU32 p_racerCount)
+void RaceSetup::Initialize(Racer* p_racers, LegoU32 p_racerCount)
 {
 	if (m_racers) {
 		Destroy();
@@ -96,7 +96,7 @@ void RaceState::RaceSetup::Initialize(Racer* p_racers, LegoU32 p_racerCount)
 }
 
 // FUNCTION: LEGORACERS 0x0043a480
-LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
+LegoU32 RaceSetup::Update(LegoU32 p_elapsedMs)
 {
 	LegoU32 delayMs = m_updateDelayMs;
 	LegoFloat bestProgress = -1.0f;
@@ -128,7 +128,7 @@ LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
 			result = m_racerCount;
 			LegoU32 index = 0;
 			if (result > 0) {
-				LegoU32 flags0xaa8Mask = Racer::Physics::c_flagRoutePushed;
+				LegoU32 flags0xaa8Mask = RacerPhysics::c_flagRoutePushed;
 				do {
 					Racer* racer = &m_racers[index];
 					if (!(racer->m_flags & c_rubberBandFlags)) {
@@ -148,14 +148,14 @@ LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
 			result = m_racerCount;
 			racerIndex = 0;
 			if (result > 0) {
-				LegoU32 flags0xaa8Mask = Racer::Physics::c_flagRoutePushed;
+				LegoU32 flags0xaa8Mask = RacerPhysics::c_flagRoutePushed;
 				do {
 					if (racerIndex) {
 						if (!(m_racers[racerIndex].m_flags & c_rubberBandFlags)) {
 							if (m_racers[racerIndex].GetRaceProgress() > bestProgress) {
 								LegoFloat adjustment = 1.0f - g_rubberBandScale;
 								adjustment += m_rubberBandBoost;
-								Racer::Physics* field0x3e8 = &m_racers[racerIndex].m_physics;
+								RacerPhysics* field0x3e8 = &m_racers[racerIndex].m_physics;
 								LegoU32 flags0xaa8 = field0x3e8->m_flags;
 								field0x3e8->m_routeBaseSpeed = adjustment;
 								if (!(flags0xaa8Mask & flags0xaa8)) {
@@ -165,7 +165,7 @@ LegoU32 RaceState::RaceSetup::Update(LegoU32 p_elapsedMs)
 							else if (m_racers[racerIndex].GetRaceProgress() < bestProgress) {
 								LegoFloat adjustment = g_rubberBandScale + m_rubberBandBoost;
 								adjustment += 1.0f;
-								Racer::Physics* field0x3e8 = &m_racers[racerIndex].m_physics;
+								RacerPhysics* field0x3e8 = &m_racers[racerIndex].m_physics;
 								LegoU32 flags0xaa8 = field0x3e8->m_flags;
 								field0x3e8->m_routeBaseSpeed = adjustment;
 								if (!(flags0xaa8Mask & flags0xaa8)) {
@@ -377,7 +377,7 @@ void RaceState::CreateRacer(
 )
 {
 	Racer::SetupParams racerParams;
-	Racer::CarVisuals::InitParams initParams;
+	CarVisuals::InitParams initParams;
 	::memset(&racerParams, 0, sizeof(racerParams));
 	::memset(&initParams, 0, sizeof(initParams));
 
@@ -714,14 +714,14 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 	Racer* end = racer + m_roster.m_racerCount;
 
 	for (; racer < end; racer++) {
-		if (racer->m_driveController.m_flags & Racer::DriveController::c_flagBrakeToStop) {
+		if (racer->m_driveController.m_flags & DriveController::c_flagBrakeToStop) {
 			racer->m_driveController.UpdateBrakeToStop(p_elapsedMs);
 		}
 		else {
 			if (racer->m_controlMode != 2) {
 				racer->m_driveController.Update(p_elapsedMs);
 			}
-			else if (racer->m_driveController.m_flags & Racer::DriveController::c_flagReturnToPath) {
+			else if (racer->m_driveController.m_flags & DriveController::c_flagReturnToPath) {
 				racer->m_driveController.UpdateReturnToPath(p_elapsedMs);
 			}
 		}
@@ -760,7 +760,7 @@ void RaceState::UpdateRacers(LegoU32 p_elapsedMs)
 // STUB: LEGORACERS 0x0043c1b0
 void RaceState::UpdateStandings()
 {
-	RacerProgressEntry* entries = g_racerProgressEntries;
+	RaceState::RacerProgressEntry* entries = g_racerProgressEntries;
 	LegoU32 racerCount = m_roster.m_racerCount;
 
 	LegoU32 racerIndex;
@@ -840,7 +840,7 @@ void RaceState::UpdateStandings()
 				}
 
 				if (maxIndex > tiedSortIndex) {
-					RacerProgressEntry progressEntry = entries[tiedSortIndex];
+					RaceState::RacerProgressEntry progressEntry = entries[tiedSortIndex];
 					entries[tiedSortIndex] = entries[maxIndex];
 					entries[maxIndex] = progressEntry;
 				}

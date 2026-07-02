@@ -92,14 +92,14 @@ void RaceSession::RacerTriggerList::Entry::Update(LegoU32 p_elapsedMs)
 // FUNCTION: LEGORACERS 0x00463c70
 void RaceSession::RacerTriggerList::Entry::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	RaceState::Racer* racer = NULL;
+	Racer* racer = NULL;
 	if (p_data->m_type == 2) {
 		if (!m_powerupManager->IsProjectileEntity(static_cast<GolWorldEntity*>(p_data->m_data))) {
 			return;
 		}
 	}
 	else if (p_data->m_type == 4) {
-		racer = static_cast<RaceState::Racer*>(p_data->m_data);
+		racer = static_cast<Racer*>(p_data->m_data);
 		if ((m_flags0x38 & c_lapGated) && racer->m_lapsCompleted != m_lapNumber) {
 			return;
 		}

@@ -1,5 +1,6 @@
 #include "audio/spatialsoundinstance.h"
 #include "race/racer/racerouterecord.h"
+#include "race/racer/racersoundsource.h"
 #include "race/racestate.h"
 
 // GLOBAL: LEGORACERS 0x004b0d80
@@ -47,7 +48,7 @@ inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0042a730
-void RaceState::Racer::Physics::AttachRouteAtLoop(RaceRouteRecord* p_record)
+void RacerPhysics::AttachRouteAtLoop(RaceRouteRecord* p_record)
 {
 	m_routeMode = TRUE;
 	m_routeCursor.AttachAtLoop(p_record);
@@ -65,13 +66,13 @@ void RaceState::Racer::Physics::AttachRouteAtLoop(RaceRouteRecord* p_record)
 }
 
 // FUNCTION: LEGORACERS 0x0042ae10
-LegoFloat RaceState::Racer::Physics::GetMinTurnRadius()
+LegoFloat RacerPhysics::GetMinTurnRadius()
 {
 	return ComputeMinTurnRadius();
 }
 
 // FUNCTION: LEGORACERS 0x0042ae20
-LegoBool32 RaceState::Racer::Physics::CanPowerslide()
+LegoBool32 RacerPhysics::CanPowerslide()
 {
 	if (m_wallContact) {
 		return FALSE;
@@ -100,7 +101,7 @@ LegoBool32 RaceState::Racer::Physics::CanPowerslide()
 }
 
 // FUNCTION: LEGORACERS 0x0042aea0
-LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_turnRadius)
+LegoBool32 RacerPhysics::CanSteer(LegoFloat p_turnRadius)
 {
 	GolOrientedEntity* entity = m_carEntity;
 	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
@@ -136,7 +137,7 @@ LegoBool32 RaceState::Racer::Physics::CanSteer(LegoFloat p_turnRadius)
 }
 
 // FUNCTION: LEGORACERS 0x0042b0c0
-void RaceState::Racer::Physics::ResetRouteMotion()
+void RacerPhysics::ResetRouteMotion()
 {
 	GolVec3 direction;
 	direction.m_x = 0.0f;
@@ -154,7 +155,7 @@ void RaceState::Racer::Physics::ResetRouteMotion()
 }
 
 // FUNCTION: LEGORACERS 0x00445cb0
-LegoFloat RaceState::Racer::Physics::ComputeMinTurnRadius()
+LegoFloat RacerPhysics::ComputeMinTurnRadius()
 {
 	LegoFloat scale = GetAverageLateralGrip();
 	scale *= m_gravity * m_massScale;
@@ -173,7 +174,7 @@ LegoFloat RaceState::Racer::Physics::ComputeMinTurnRadius()
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
-void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_turnRadius)
+void RacerPhysics::SetTurnRadius(LegoFloat p_turnRadius)
 {
 	if (p_turnRadius > 0.0f) {
 		if (p_turnRadius < g_minTurnRadius) {
@@ -203,7 +204,7 @@ void RaceState::Racer::Physics::SetTurnRadius(LegoFloat p_turnRadius)
 }
 
 // FUNCTION: LEGORACERS 0x00447f30
-void RaceState::Racer::CarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slipRatio, LegoFloat p_maxAngle)
+void RacerCarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slipRatio, LegoFloat p_maxAngle)
 {
 	LegoU32 flags = m_flags;
 	LegoFloat angle = p_maxAngle;
@@ -255,7 +256,7 @@ void RaceState::Racer::CarBody::StartSteering(LegoFloat p_gain, LegoFloat p_slip
 }
 
 // FUNCTION: LEGORACERS 0x004489f0
-LegoFloat RaceState::Racer::Physics::GetAverageLateralGrip()
+LegoFloat RacerPhysics::GetAverageLateralGrip()
 {
 	LegoFloat total = 0.0f;
 	LegoS32 count = 0;
@@ -276,7 +277,7 @@ LegoFloat RaceState::Racer::Physics::GetAverageLateralGrip()
 }
 
 // FUNCTION: LEGORACERS 0x00449070
-undefined4 RaceState::Racer::Physics::StartPowerslide(undefined4 p_factorBits)
+undefined4 RacerPhysics::StartPowerslide(undefined4 p_factorBits)
 {
 	LegoU32 flags = m_flags;
 	flags |= c_flagPowerslide;
@@ -287,7 +288,7 @@ undefined4 RaceState::Racer::Physics::StartPowerslide(undefined4 p_factorBits)
 }
 
 // FUNCTION: LEGORACERS 0x00449090
-undefined4 RaceState::Racer::Physics::EndPowerslide()
+undefined4 RacerPhysics::EndPowerslide()
 {
 	LegoU32 flags = m_flags;
 	flags &= ~c_flagPowerslide;

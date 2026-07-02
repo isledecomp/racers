@@ -68,7 +68,7 @@ void RacePowerupManager::CurseAction::Initialize(
 
 // FUNCTION: LEGORACERS 0x00452550
 void RacePowerupManager::CurseAction::Activate(
-	RaceState::Racer* p_racer,
+	Racer* p_racer,
 	GolAnimatedEntity* p_curseTemplate,
 	GolAnimatedEntity* p_auraTemplate,
 	GolAnimatedEntity* p_innerAuraTemplate,
@@ -352,7 +352,7 @@ void RacePowerupManager::CurseAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x00452da0
-void RacePowerupManager::CurseAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::CurseAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state != c_stateExpiring && !(p_racer->GetFlags() & c_flagCursed)) {
 		p_racer->AttachCurse(m_curseEntity, c_curseDurationMs);

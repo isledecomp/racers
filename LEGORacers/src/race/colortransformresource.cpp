@@ -61,7 +61,7 @@ void RaceEventTable::ColorTransformResource::FUN_004655e0()
 }
 
 // FUNCTION: LEGORACERS 0x00465600
-void RaceEventTable::ColorTransformResource::OnStartForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::ColorTransformResource::OnStartForRacer(Racer* p_racer)
 {
 	LegoU8 flags = static_cast<LegoU8>(m_flags0x20);
 	GolWorldEntity* entity = m_unk0x44;
@@ -88,7 +88,7 @@ void RaceEventTable::ColorTransformResource::OnStartForRacer(RaceState::Racer* p
 }
 
 // FUNCTION: LEGORACERS 0x00465690
-void RaceEventTable::ColorTransformResource::OnEndForRacer(RaceState::Racer* p_racer)
+void RaceEventTable::ColorTransformResource::OnEndForRacer(Racer* p_racer)
 {
 	if (!(static_cast<LegoU8>(m_flags0x20) & c_flags0x20Bit1)) {
 		GolWorldEntity* entity = m_unk0x44;

@@ -5,10 +5,10 @@
 #include <float.h>
 
 DECOMP_SIZE_ASSERT(RaceRouteRecord, 0x48)
-DECOMP_SIZE_ASSERT(RaceState::Racer::StandingsDeltaEntry, 0x0c)
+DECOMP_SIZE_ASSERT(Racer::StandingsDeltaEntry, 0x0c)
 
 // FUNCTION: LEGORACERS 0x0043c6e0
-RaceState::Racer* RaceState::FindRacerInCone(
+Racer* RaceState::FindRacerInCone(
 	GolVec3* p_position,
 	GolVec3* p_direction,
 	LegoFloat p_minDistanceSquared,
@@ -20,7 +20,7 @@ RaceState::Racer* RaceState::FindRacerInCone(
 	for (i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount);) {
 		GolVec3* origin = p_position;
 		Racer* racer = &m_roster.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_visuals;
+		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -56,7 +56,7 @@ RaceState::Racer* RaceState::FindRacerInCone(
 }
 
 // FUNCTION: LEGORACERS 0x0043c7f0
-RaceState::Racer* RaceState::FindNextRacerInCone(
+Racer* RaceState::FindNextRacerInCone(
 	Racer* p_racer,
 	GolVec3* p_position,
 	GolVec3* p_direction,
@@ -100,7 +100,7 @@ RaceState::Racer* RaceState::FindNextRacerInCone(
 }
 
 // FUNCTION: LEGORACERS 0x0043c910
-RaceState::Racer* RaceState::FindFarthestRacerInCone(
+Racer* RaceState::FindFarthestRacerInCone(
 	GolVec3* p_position,
 	GolVec3* p_direction,
 	LegoFloat p_minDistanceSquared,
@@ -113,7 +113,7 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
 		Racer* racer = &m_roster.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_visuals;
+		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -143,7 +143,7 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 }
 
 // FUNCTION: LEGORACERS 0x0043ca60
-RaceState::Racer* RaceState::FindNearestRacerInCone(
+Racer* RaceState::FindNearestRacerInCone(
 	GolVec3* p_position,
 	GolVec3* p_direction,
 	LegoFloat p_minDistanceSquared,
@@ -156,7 +156,7 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_roster.m_racerCount); i++) {
 		Racer* racer = &m_roster.m_racers[i];
-		Racer::CarVisuals* racerField = &racer->m_visuals;
+		CarVisuals* racerField = &racer->m_visuals;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -186,7 +186,7 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 }
 
 // FUNCTION: LEGORACERS 0x0043cbb0
-RaceState::Racer* RaceState::FindNearestRacerInRange(
+Racer* RaceState::FindNearestRacerInRange(
 	GolVec3* p_position,
 	LegoFloat p_minDistanceSquared,
 	LegoFloat p_maxDistanceSquared

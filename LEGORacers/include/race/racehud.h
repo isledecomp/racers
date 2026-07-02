@@ -40,7 +40,7 @@ public:
 		LegoFloat p_minY,
 		LegoBool p_mirror
 	);
-	RaceState::Racer* SetRacer(RaceState::Racer* p_v0);
+	Racer* SetRacer(Racer* p_v0);
 	void ResetDisplay(LegoS32 p_lapCount);
 	void StartCountdown();
 	void ShowFinish();
@@ -48,7 +48,7 @@ public:
 
 private:
 	friend class RaceSession;
-	friend class RaceState::Racer;
+	friend class Racer;
 
 	void DrawFixedMap();
 	void DrawRotatingMap();
@@ -85,7 +85,7 @@ private:
 		RaceState* p_raceState,
 		TimeRaceManager* p_timeRaceManager,
 		GolStringTable* p_stringTable,
-		RaceState::Racer::SoundSource* p_soundSource,
+		RacerSoundSource* p_soundSource,
 		LegoBool p_isTimeRace,
 		undefined4 p_hideRaceInfo
 	);
@@ -94,77 +94,77 @@ private:
 
 	static undefined4 CopyToGolString(const LegoChar* p_text, GolString* p_string);
 
-	GolD3DRenderDevice* m_renderer;               // 0x000
-	RaceState::Racer::SoundSource* m_soundSource; // 0x004
-	AwakeKite0x20* m_images;                      // 0x008
-	GolStringTable* m_stringTable;                // 0x00c
-	GolString* m_scratchString;                   // 0x010
-	GolString m_labelString;                      // 0x014
-	GolFontBase* m_font;                          // 0x020
-	GolFontBase* m_numberFont;                    // 0x024
-	RaceState* m_raceState;                       // 0x028
-	RaceState::Racer* m_racer;                    // 0x02c
-	TimeRaceManager* m_timeRaceManager;           // 0x030
-	LegoU32 m_elapsedMs;                          // 0x034
-	LegoU8 m_layout;                              // 0x038
-	LegoBool m_hideRaceInfo;                      // 0x039
-	LegoBool m_isTimeRace;                        // 0x03a
-	LegoBool m_mirror;                            // 0x03b
-	LegoU8 m_gadgetMode;                          // 0x03c
-	TimeText m_lapTimeText;                       // 0x03d
-	TimeText m_bestLapText;                       // 0x046
-	TimeText m_timeBehindText;                    // 0x04f
-	TimeText m_totalTimeText;                     // 0x058
-	LegoChar m_lapText[0x070 - 0x061];            // 0x061
-	LegoS32 m_bannerMs;                           // 0x070
-	LegoU32 m_positionPulseMs;                    // 0x074
-	LegoFloat m_speedValue;                       // 0x078
-	LegoS32 m_lastLapIndex;                       // 0x07c
-	LegoS32 m_displayLapCount;                    // 0x080
-	LegoU32 m_lapTimeMs;                          // 0x084
-	LegoU32 m_bestLapMs;                          // 0x088
-	LegoS32 m_finalPosition;                      // 0x08c
-	LegoS32 m_position;                           // 0x090
-	Rect m_viewport;                              // 0x094
-	LegoS32 m_centerX;                            // 0x0a4
-	LegoS32 m_positionX;                          // 0x0a8
-	LegoS32 m_lapTimeX;                           // 0x0ac
-	LegoS32 m_bestLapX;                           // 0x0b0
-	LegoS32 m_timeBehindX;                        // 0x0b4
-	LegoS32 m_wrongWayX;                          // 0x0b8
-	LegoS32 m_totalTimeX;                         // 0x0bc
-	LegoS32 m_powerupX;                           // 0x0c0
-	LegoS32 m_bannerY;                            // 0x0c4
-	LegoS32 m_positionY;                          // 0x0c8
-	LegoS32 m_lapTimeY;                           // 0x0cc
-	LegoS32 m_bestLapY;                           // 0x0d0
-	LegoS32 m_timeBehindY;                        // 0x0d4
-	LegoS32 m_wrongWayY;                          // 0x0d8
-	LegoS32 m_totalTimeY;                         // 0x0dc
-	LegoS32 m_powerupY;                           // 0x0e0
-	LegoS32 m_shortTimeWidth;                     // 0x0e4
-	LegoS32 m_longTimeWidth;                      // 0x0e8
-	LegoFloat m_textScale;                        // 0x0ec
-	LegoFloat m_imageScale;                       // 0x0f0
-	LegoFloat m_mapScale;                         // 0x0f4
-	LegoFloat m_bannerScale;                      // 0x0f8
-	LegoS32 m_screenWidth;                        // 0x0fc
-	LegoS32 m_screenHeight;                       // 0x100
-	LegoFloat m_scaleX;                           // 0x104
-	LegoFloat m_aspectScale;                      // 0x108
-	LegoFloat m_textScaleX;                       // 0x10c
-	LegoFloat m_aspectRatio;                      // 0x110
-	LegoFloat m_scaleY;                           // 0x114
-	DuskwindBananaRelic0x24* m_mapMaterial;       // 0x118
-	LegoFloat m_mapMaxY;                          // 0x11c
-	LegoFloat m_mapMinX;                          // 0x120
-	LegoFloat m_mapMinY;                          // 0x124
-	LegoFloat m_mapMaxX;                          // 0x128
-	LegoFloat m_clipTop;                          // 0x12c
-	LegoFloat m_clipLeft;                         // 0x130
-	LegoFloat m_clipBottom;                       // 0x134
-	LegoFloat m_clipRight;                        // 0x138
-	LegoBool32 m_visible;                         // 0x13c
+	GolD3DRenderDevice* m_renderer;         // 0x000
+	RacerSoundSource* m_soundSource;        // 0x004
+	AwakeKite0x20* m_images;                // 0x008
+	GolStringTable* m_stringTable;          // 0x00c
+	GolString* m_scratchString;             // 0x010
+	GolString m_labelString;                // 0x014
+	GolFontBase* m_font;                    // 0x020
+	GolFontBase* m_numberFont;              // 0x024
+	RaceState* m_raceState;                 // 0x028
+	Racer* m_racer;                         // 0x02c
+	TimeRaceManager* m_timeRaceManager;     // 0x030
+	LegoU32 m_elapsedMs;                    // 0x034
+	LegoU8 m_layout;                        // 0x038
+	LegoBool m_hideRaceInfo;                // 0x039
+	LegoBool m_isTimeRace;                  // 0x03a
+	LegoBool m_mirror;                      // 0x03b
+	LegoU8 m_gadgetMode;                    // 0x03c
+	TimeText m_lapTimeText;                 // 0x03d
+	TimeText m_bestLapText;                 // 0x046
+	TimeText m_timeBehindText;              // 0x04f
+	TimeText m_totalTimeText;               // 0x058
+	LegoChar m_lapText[0x070 - 0x061];      // 0x061
+	LegoS32 m_bannerMs;                     // 0x070
+	LegoU32 m_positionPulseMs;              // 0x074
+	LegoFloat m_speedValue;                 // 0x078
+	LegoS32 m_lastLapIndex;                 // 0x07c
+	LegoS32 m_displayLapCount;              // 0x080
+	LegoU32 m_lapTimeMs;                    // 0x084
+	LegoU32 m_bestLapMs;                    // 0x088
+	LegoS32 m_finalPosition;                // 0x08c
+	LegoS32 m_position;                     // 0x090
+	Rect m_viewport;                        // 0x094
+	LegoS32 m_centerX;                      // 0x0a4
+	LegoS32 m_positionX;                    // 0x0a8
+	LegoS32 m_lapTimeX;                     // 0x0ac
+	LegoS32 m_bestLapX;                     // 0x0b0
+	LegoS32 m_timeBehindX;                  // 0x0b4
+	LegoS32 m_wrongWayX;                    // 0x0b8
+	LegoS32 m_totalTimeX;                   // 0x0bc
+	LegoS32 m_powerupX;                     // 0x0c0
+	LegoS32 m_bannerY;                      // 0x0c4
+	LegoS32 m_positionY;                    // 0x0c8
+	LegoS32 m_lapTimeY;                     // 0x0cc
+	LegoS32 m_bestLapY;                     // 0x0d0
+	LegoS32 m_timeBehindY;                  // 0x0d4
+	LegoS32 m_wrongWayY;                    // 0x0d8
+	LegoS32 m_totalTimeY;                   // 0x0dc
+	LegoS32 m_powerupY;                     // 0x0e0
+	LegoS32 m_shortTimeWidth;               // 0x0e4
+	LegoS32 m_longTimeWidth;                // 0x0e8
+	LegoFloat m_textScale;                  // 0x0ec
+	LegoFloat m_imageScale;                 // 0x0f0
+	LegoFloat m_mapScale;                   // 0x0f4
+	LegoFloat m_bannerScale;                // 0x0f8
+	LegoS32 m_screenWidth;                  // 0x0fc
+	LegoS32 m_screenHeight;                 // 0x100
+	LegoFloat m_scaleX;                     // 0x104
+	LegoFloat m_aspectScale;                // 0x108
+	LegoFloat m_textScaleX;                 // 0x10c
+	LegoFloat m_aspectRatio;                // 0x110
+	LegoFloat m_scaleY;                     // 0x114
+	DuskwindBananaRelic0x24* m_mapMaterial; // 0x118
+	LegoFloat m_mapMaxY;                    // 0x11c
+	LegoFloat m_mapMinX;                    // 0x120
+	LegoFloat m_mapMinY;                    // 0x124
+	LegoFloat m_mapMaxX;                    // 0x128
+	LegoFloat m_clipTop;                    // 0x12c
+	LegoFloat m_clipLeft;                   // 0x130
+	LegoFloat m_clipBottom;                 // 0x134
+	LegoFloat m_clipRight;                  // 0x138
+	LegoBool32 m_visible;                   // 0x13c
 };
 
 #endif // RACEHUD_H

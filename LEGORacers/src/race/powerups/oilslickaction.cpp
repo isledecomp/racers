@@ -91,7 +91,7 @@ void RacePowerupManager::OilSlickAction::Initialize(
 }
 
 // FUNCTION: LEGORACERS 0x00457230
-void RacePowerupManager::OilSlickAction::Activate(RaceState::Racer* p_racer)
+void RacePowerupManager::OilSlickAction::Activate(Racer* p_racer)
 {
 	m_state = 2;
 	m_ownerRacer = p_racer;
@@ -231,7 +231,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 }
 
 // FUNCTION: LEGORACERS 0x004575b0
-void RacePowerupManager::OilSlickAction::OnHitRacer(RaceState::Racer* p_racer)
+void RacePowerupManager::OilSlickAction::OnHitRacer(Racer* p_racer)
 {
 	if (m_state == c_stateExpiring || (p_racer->GetFlags() & c_flagHalted)) {
 		return;

@@ -7,6 +7,7 @@
 #include "image/utopianpan0xa4.h"
 #include "material/awakekite0x20.h"
 #include "race/racecameracontroller.h"
+#include "race/racer/racersoundsource.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
 #include "surface/slatepeak0x58.h"
@@ -533,7 +534,7 @@ void RaceHud::DrawFixedMap()
 	LegoS32 markerOriginY = mapOriginY - halfMarkerHeight;
 
 	for (LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
-		RaceState::Racer* racer = &m_raceState->GetRacers()[racerIndex];
+		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
 			GolVec3 position;
 			racer->m_visuals.m_carEntity->VTable0x04(&position);
@@ -737,7 +738,7 @@ void RaceHud::DrawRotatingMap()
 	Rect sourceRect;
 
 	for (LegoS32 racerIndex = static_cast<LegoS32>(m_raceState->GetRacerCount()) - 1; racerIndex >= 0; racerIndex--) {
-		RaceState::Racer* racer = &m_raceState->GetRacers()[racerIndex];
+		Racer* racer = &m_raceState->GetRacers()[racerIndex];
 		if (racer != m_racer) {
 			racer->m_visuals.m_carEntity->VTable0x04(&position);
 
@@ -1039,7 +1040,7 @@ LegoS32 RaceHud::Initialize(
 	RaceState* p_raceState,
 	TimeRaceManager* p_timeRaceManager,
 	GolStringTable* p_stringTable,
-	RaceState::Racer::SoundSource* p_soundSource,
+	RacerSoundSource* p_soundSource,
 	LegoBool p_isTimeRace,
 	undefined4 p_hideRaceInfo
 )
@@ -1223,7 +1224,7 @@ void RaceHud::SetMapInfo(
 }
 
 // FUNCTION: LEGORACERS 0x004262c0
-RaceState::Racer* RaceHud::SetRacer(RaceState::Racer* p_racer)
+Racer* RaceHud::SetRacer(Racer* p_racer)
 {
 	m_racer = p_racer;
 	p_racer->m_hud = this;
@@ -1391,7 +1392,7 @@ void RaceHud::Draw()
 		}
 	}
 
-	RaceState::Racer* racer = m_racer;
+	Racer* racer = m_racer;
 	if (racer->m_flags & 0x10) {
 		return;
 	}

@@ -106,7 +106,7 @@ void RacePowerupManager::TurboAction::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0045c8f0
-void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU32 p_level)
+void RacePowerupManager::TurboAction::Activate(Racer* p_racer, LegoU32 p_level)
 {
 	GolAnimatedEntity* model = NULL;
 	GolAnimatedEntity* effect0 = NULL;
@@ -131,7 +131,7 @@ void RacePowerupManager::TurboAction::Activate(RaceState::Racer* p_racer, LegoU3
 	}
 
 	m_racer = p_racer;
-	if (m_racer->m_driveController.m_flags & RaceState::Racer::DriveController::c_flagTurbo) {
+	if (m_racer->m_driveController.m_flags & DriveController::c_flagTurbo) {
 		m_manager->CancelTurbo(m_racer);
 		m_racer->ClearActiveAction();
 		if (m_racer->m_flags & c_flagHalted) {
@@ -247,7 +247,7 @@ void RacePowerupManager::TurboAction::StartBoost()
 	m_racer->StartTurbo(m_level);
 
 	SoundVector position;
-	RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+	CarVisuals* racerField = &m_racer->m_visuals;
 	GolAnimatedEntity** racerEntity = &racerField->m_carEntity;
 	(*racerEntity)->VTable0x04(&position);
 
@@ -303,7 +303,7 @@ void RacePowerupManager::TurboAction::Update(LegoU32 p_elapsedMs)
 			m_smokeParticle->m_particle->SetPosition(&position);
 		}
 
-		RaceState::Racer::Physics* racerPhysics = &m_racer->m_physics;
+		RacerPhysics* racerPhysics = &m_racer->m_physics;
 		velocity = racerPhysics->m_velocity;
 		CutsceneParticleRef* particleRef = m_smokeParticle;
 		velocity *= g_turboSmokeVelocityScale;
@@ -394,7 +394,7 @@ void RacePowerupManager::TurboAction::AdvanceState()
 	switch (m_state) {
 	case c_stateFade: {
 		SoundVector position;
-		RaceState::Racer::CarVisuals* racerField = &m_racer->m_visuals;
+		CarVisuals* racerField = &m_racer->m_visuals;
 		GolAnimatedEntity* racerEntity = racerField->GetCarEntity();
 		racerEntity->VTable0x04(&position);
 

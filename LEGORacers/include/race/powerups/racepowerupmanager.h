@@ -433,38 +433,38 @@ public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
 		void VTable0x14() override;                                      // vtable+0x14
 		LegoS32 GetBrickColor() override;                                // vtable+0x18
-		virtual void VTable0x20(RaceState::Racer* p_racer);              // vtable+0x20
+		virtual void OnHitRacer(RaceState::Racer* p_racer);              // vtable+0x20
 
 	protected:
 		void FUN_00456360(RaceState::Racer* p_racer, GolVec3* p_position, GolBoundingVolume::Field0x0c* p_record);
 
-		RaceState* m_raceState0x018;        // 0x018
-		LegoEventQueue::Event* m_unk0x01c;  // 0x01c
-		RaceSessionField0x32b4* m_unk0x020; // 0x020
-		undefined4 m_unk0x024;              // 0x024
-		RaceState::Racer* m_unk0x028;       // 0x028
+		RaceState* m_raceState0x018;              // 0x018
+		LegoEventQueue::Event* m_collisionEvent;  // 0x01c
+		RaceSessionField0x32b4* m_collisionWorld; // 0x020
+		undefined4 m_unk0x024;                    // 0x024
+		RaceState::Racer* m_ownerRacer;           // 0x028
 	};
 
 	// SIZE 0x30
 	class WeaponActionBase : public PowerupActionBase {
 	public:
 		WeaponActionBase();
-		void VTable0x14() override;                         // vtable+0x14
-		LegoS32 GetBrickColor() override;                   // vtable+0x18
-		virtual void VTable0x20(RaceState::Racer* p_racer); // vtable+0x20
-		virtual void VTable0x24(GolVec3* p_unk0x04);        // vtable+0x24
-		virtual void VTable0x28(GolVec3* p_unk0x04);        // vtable+0x28
+		void VTable0x14() override;                              // vtable+0x14
+		LegoS32 GetBrickColor() override;                        // vtable+0x18
+		virtual void OnHitRacer(RaceState::Racer* p_racer);      // vtable+0x20
+		virtual void GetProjectilePosition(GolVec3* p_position); // vtable+0x24
+		virtual void GetProjectileVelocity(GolVec3* p_velocity); // vtable+0x28
 
 	protected:
-		PowerupProjectile* m_unk0x018; // 0x018
+		PowerupProjectile* m_activeProjectile; // 0x018
 		union {
-			GolExport** m_unk0x01c;           // 0x01c
+			GolExport** m_golExportPtr;       // 0x01c
 			RacePowerupManager* m_owner0x01c; // 0x01c
 		};
-		RaceSessionField0x32b4* m_unk0x020; // 0x020
-		RaceState::Racer* m_unk0x024;       // 0x024
-		RaceState::Racer* m_unk0x028;       // 0x028
-		Field0x050::Entry* m_unk0x02c;      // 0x02c
+		RaceSessionField0x32b4* m_collisionWorld; // 0x020
+		RaceState::Racer* m_ownerRacer;           // 0x024
+		RaceState::Racer* m_targetRacer;          // 0x028
+		Field0x050::Entry* m_targetPoint;         // 0x02c
 	};
 
 	// VTABLE: LEGORACERS 0x004b14b0
@@ -585,7 +585,7 @@ public:
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 
 		void Initialize(
 			RacePowerupManager* p_unk0x04,
@@ -653,7 +653,7 @@ public:
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
@@ -667,8 +667,8 @@ public:
 		void Activate(RaceState::Racer* p_racer);
 
 	private:
-		RacePowerupManager* m_unk0x02c; // 0x02c
-		GolWorldEntity m_worldEntity;   // 0x030
+		RacePowerupManager* m_manager; // 0x02c
+		GolWorldEntity m_worldEntity;  // 0x030
 		union {
 			SpatialSoundInstance* m_unk0x058;          // 0x058
 			RaceResourceManager::Resource* m_sound058; // 0x058
@@ -759,7 +759,7 @@ public:
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_unk0x08, RacePowerupManager* p_unk0x0c);
 		void FUN_004524f0();
 		void FUN_00452510();
@@ -799,7 +799,7 @@ public:
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void FUN_00451a10();
 		LegoU32 Activate(ActionSetup* p_unk0x04);
@@ -842,7 +842,7 @@ public:
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(RacePowerupManager* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, undefined4 p_unk0x0c);
 		void FUN_00453d90();
 		LegoU32 Activate(
@@ -899,9 +899,9 @@ public:
 		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void VTable0x24(GolVec3* p_unk0x04) override;             // vtable+0x24
-		void VTable0x28(GolVec3* p_unk0x04) override;             // vtable+0x28
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void GetProjectilePosition(GolVec3* p_position) override; // vtable+0x24
+		void GetProjectileVelocity(GolVec3* p_velocity) override; // vtable+0x28
 
 		void Initialize(GolExport* p_export, RacePowerupManager* p_unk0x08);
 		void FUN_00454a70();
@@ -959,7 +959,7 @@ public:
 		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
 		void VTable0x14() override;                               // vtable+0x14
 		void Deactivate() override;                               // vtable+0x1c
-		void VTable0x20(RaceState::Racer* p_racer) override;      // vtable+0x20
+		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void FUN_00456540();
 		void Activate(

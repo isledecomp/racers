@@ -159,11 +159,11 @@ void RacePowerupManager::PowerupActionBase::Deactivate()
 	m_state = 1;
 }
 
-void RacePowerupManager::HazardActionBase::VTable0x20(RaceState::Racer*)
+void RacePowerupManager::HazardActionBase::OnHitRacer(RaceState::Racer*)
 {
 }
 
-void RacePowerupManager::WeaponActionBase::VTable0x20(RaceState::Racer*)
+void RacePowerupManager::WeaponActionBase::OnHitRacer(RaceState::Racer*)
 {
 }
 
@@ -2432,7 +2432,7 @@ void RacePowerupManager::FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p
 	for (PowerupAction* node = m_activeActions; node != NULL; node = node->GetNext()) {
 		if (node->GetBrickColor() == 1 && node->GetLevel() == p_unk0x08 && node->GetState() == p_unk0x0c) {
 			WeaponActionBase* resource = static_cast<WeaponActionBase*>(node);
-			resource->VTable0x24(&position);
+			resource->GetProjectilePosition(&position);
 
 			LegoFloat dx = referencePosition.m_x - position.m_x;
 			LegoFloat dy = referencePosition.m_y - position.m_y;
@@ -2450,8 +2450,8 @@ void RacePowerupManager::FUN_0045b7a0(Field0x1958Resource* p_resource, LegoU32 p
 			p_resource->VTable0x04(1);
 		}
 
-		nearest->VTable0x24(&referencePosition);
-		nearest->VTable0x28(&direction);
+		nearest->GetProjectilePosition(&referencePosition);
+		nearest->GetProjectileVelocity(&direction);
 
 		p_resource->m_unk0x18 = referencePosition;
 		p_resource->m_unk0x24.m_x = direction.m_x;

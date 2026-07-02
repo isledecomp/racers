@@ -238,7 +238,7 @@ void RacePowerupManager::OilSlickAction::OnHitRacer(RaceState::Racer* p_racer)
 	}
 
 	p_racer->m_unk0x3e8.VTable0x24(1.0f, 0.007f, 1.0f);
-	p_racer->m_unk0x018.m_reactionFlags |= c_racerField0x018Flags0x384Bit1;
+	p_racer->m_unk0x018.m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
 	m_state = c_stateDone;
 	m_stateTimerMs = 0;
 

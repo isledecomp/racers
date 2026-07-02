@@ -1,11 +1,11 @@
-#include "race/racerouterecord.h"
+#include "race/racer/racerouterecord.h"
 #include "race/racestate.h"
 #include "race/timeracemanager.h"
 
 #include <float.h>
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry, 0x48)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::StandingsDeltaEntry, 0x0c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Records::Entry, 0x48)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Records::StandingsDeltaEntry, 0x0c)
 
 // FUNCTION: LEGORACERS 0x0043c6e0
 RaceState::Racer* RaceState::FindRacerInCone(
@@ -20,7 +20,7 @@ RaceState::Racer* RaceState::FindRacerInCone(
 	for (i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount);) {
 		GolVec3* origin = p_position;
 		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::Field0x018* racerField = &racer->m_unk0x018;
+		Racer::CarVisuals* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -113,7 +113,7 @@ RaceState::Racer* RaceState::FindFarthestRacerInCone(
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
 		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::Field0x018* racerField = &racer->m_unk0x018;
+		Racer::CarVisuals* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -156,7 +156,7 @@ RaceState::Racer* RaceState::FindNearestRacerInCone(
 
 	for (LegoS32 i = 0; i < static_cast<LegoS32>(m_unk0x0f0.m_racerCount); i++) {
 		Racer* racer = &m_unk0x0f0.m_racers[i];
-		Racer::Field0x018* racerField = &racer->m_unk0x018;
+		Racer::CarVisuals* racerField = &racer->m_unk0x018;
 
 		GolVec3 position;
 		racerField->m_carEntity->VTable0x04(&position);
@@ -302,7 +302,7 @@ LegoU32 RaceState::GetTimeBehind(Racer* p_racer)
 }
 
 // STUB: LEGORACERS 0x0043cf30
-void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::StandingsDeltaEntry* p_entries)
+void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Records::StandingsDeltaEntry* p_entries)
 {
 	LegoU32 lapCount = m_unk0x284.m_lapCount;
 	LegoS32 racerTime = 0;
@@ -310,7 +310,7 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::Standi
 	if (lapCount > p_racer->m_lapsCompleted) {
 		if (m_unk0x0f0.m_racerCount > 0) {
 			LegoU32 racerIndex = 0;
-			Racer::Field0x00c::StandingsDeltaEntry* entry = p_entries;
+			Racer::Records::StandingsDeltaEntry* entry = p_entries;
 
 			do {
 				entry->m_racer = NULL;
@@ -335,7 +335,7 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::Standi
 
 	if (m_unk0x0f0.m_racerCount > 0) {
 		LegoU32 racerIndex = 0;
-		Racer::Field0x00c::StandingsDeltaEntry* entry = p_entries;
+		Racer::Records::StandingsDeltaEntry* entry = p_entries;
 
 		do {
 			entry->m_racer = &m_unk0x0f0.m_racers[racerIndex];
@@ -370,7 +370,7 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::Standi
 	}
 
 	if (m_unk0x0f0.m_racerCount < 6) {
-		Racer::Field0x00c::StandingsDeltaEntry* entry = &p_entries[m_unk0x0f0.m_racerCount];
+		Racer::Records::StandingsDeltaEntry* entry = &p_entries[m_unk0x0f0.m_racerCount];
 		LegoU32 remaining = 6 - m_unk0x0f0.m_racerCount;
 
 		do {
@@ -381,15 +381,15 @@ void RaceState::ComputeStandingsDeltas(Racer* p_racer, Racer::Field0x00c::Standi
 }
 
 // FUNCTION: LEGORACERS 0x0043d070
-RaceState::Racer::Field0x00c::Entry* RaceState::FindNearestRouteRecord(Racer* p_racer)
+RaceState::Racer::Records::Entry* RaceState::FindNearestRouteRecord(Racer* p_racer)
 {
 	LegoFloat nearestDistanceSquared = FLT_MAX;
-	Racer::Field0x00c::Entry* result = NULL;
+	Racer::Records::Entry* result = NULL;
 
 	GolVec3 racerPosition;
 	p_racer->m_unk0x018.m_carEntity->VTable0x04(&racerPosition);
 
-	Racer::Field0x00c::Entry* entry = m_unk0x0f0.m_routeRecords;
+	Racer::Records::Entry* entry = m_unk0x0f0.m_routeRecords;
 	for (LegoS32 i = 6; i; i--) {
 		if (entry->m_pathPoints) {
 			GolVec3 position = entry->m_loopPosition;

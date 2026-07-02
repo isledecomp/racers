@@ -222,8 +222,8 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 					pathEntry = m_racer->m_unk0x010->FUN_0041e940(pathIndex);
 				}
 
-				RaceState::Racer::Field0x018* racerField0x018 = &m_racer->m_unk0x018;
-				racerField0x018->m_carEntity->VTable0x04(&position);
+				RaceState::Racer::CarVisuals* racerCarVisuals = &m_racer->m_unk0x018;
+				racerCarVisuals->m_carEntity->VTable0x04(&position);
 				m_racer->m_unk0x010->FUN_0041eaf0(&position, distance, pathEntry);
 			}
 
@@ -258,7 +258,7 @@ void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 		return;
 	}
 
-	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 
 	GolVec3 savedPosition;
@@ -348,7 +348,7 @@ void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_rende
 		m_racer->m_unk0x018.SetScale(scale);
 	}
 
-	RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
 	GolAnimatedEntity* entity = racerField->m_carEntity;
 	entity->VTable0x04(&position);
 	m_modelEntity.VTable0x08(position);
@@ -376,7 +376,7 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			m_racer->m_cameraController->m_targetFov = fov;
 		}
 
-		RaceState::Racer::Field0x018* racerField = &m_racer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_racer->m_unk0x018;
 		GolAnimatedEntity** entitySlot = &racerField->m_carEntity;
 		GolAnimatedEntity* entity = *entitySlot;
 		entity->VTable0x04(&m_startPosition);
@@ -450,11 +450,11 @@ void RacePowerupManager::WarpAction::AdvanceState()
 			entity->VTable0x40(direction, up);
 			m_racer->m_unk0x3e8.m_unk0x0e4.CopyOrientationFrom(*entity);
 
-			RaceState::Racer::Field0x3e8* racerField0x3e8 = &m_racer->m_unk0x3e8;
+			RaceState::Racer::Physics* racerPhysics = &m_racer->m_unk0x3e8;
 			up.Clear();
-			racerField0x3e8->m_unk0x008.m_x = 0.0f;
-			racerField0x3e8->m_unk0x008.m_y = up.m_y;
-			racerField0x3e8->m_unk0x008.m_z = up.m_z;
+			racerPhysics->m_unk0x008.m_x = 0.0f;
+			racerPhysics->m_unk0x008.m_y = up.m_y;
+			racerPhysics->m_unk0x008.m_z = up.m_z;
 			m_racer->m_unk0x3e8.VTable0x20(&direction, g_warpLaunchSpeed);
 			m_racer->m_unk0x3e8.FUN_00446fa0();
 			m_racer->FUN_0043a3e0();

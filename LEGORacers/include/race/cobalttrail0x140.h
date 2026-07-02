@@ -85,7 +85,7 @@ private:
 		RaceState* p_unk0x14,
 		TimeRaceManager* p_unk0x18,
 		GolStringTable* p_stringTable,
-		RaceState::Racer::Field0x004* p_unk0x20,
+		RaceState::Racer::SoundSource* p_unk0x20,
 		LegoBool p_unk0x24,
 		undefined4 p_unk0x28
 	);
@@ -94,77 +94,77 @@ private:
 
 	static undefined4 FUN_00425c70(const LegoChar* p_text, GolString* p_string);
 
-	GolD3DRenderDevice* m_unk0x000;           // 0x000
-	RaceState::Racer::Field0x004* m_unk0x004; // 0x004
-	AwakeKite0x20* m_unk0x008;                // 0x008
-	GolStringTable* m_unk0x00c;               // 0x00c
-	GolString* m_unk0x010;                    // 0x010
-	GolString m_unk0x014;                     // 0x014
-	GolFontBase* m_unk0x020;                  // 0x020
-	GolFontBase* m_unk0x024;                  // 0x024
-	RaceState* m_unk0x028;                    // 0x028
-	RaceState::Racer* m_unk0x02c;             // 0x02c
-	TimeRaceManager* m_unk0x030;              // 0x030
-	LegoU32 m_unk0x034;                       // 0x034
-	LegoU8 m_unk0x038;                        // 0x038
-	LegoBool m_unk0x039;                      // 0x039
-	LegoBool m_unk0x03a;                      // 0x03a
-	LegoBool m_unk0x03b;                      // 0x03b
-	LegoU8 m_unk0x03c;                        // 0x03c
-	TimeText m_unk0x03d;                      // 0x03d
-	TimeText m_unk0x046;                      // 0x046
-	TimeText m_unk0x04f;                      // 0x04f
-	TimeText m_unk0x058;                      // 0x058
-	LegoChar m_unk0x061[0x070 - 0x061];       // 0x061
-	LegoS32 m_unk0x070;                       // 0x070
-	LegoU32 m_unk0x074;                       // 0x074
-	LegoFloat m_unk0x078;                     // 0x078
-	LegoS32 m_unk0x07c;                       // 0x07c
-	LegoS32 m_unk0x080;                       // 0x080
-	LegoU32 m_unk0x084;                       // 0x084
-	LegoU32 m_unk0x088;                       // 0x088
-	LegoS32 m_unk0x08c;                       // 0x08c
-	LegoS32 m_unk0x090;                       // 0x090
-	Rect m_unk0x094;                          // 0x094
-	LegoS32 m_unk0x0a4;                       // 0x0a4
-	LegoS32 m_unk0x0a8;                       // 0x0a8
-	LegoS32 m_unk0x0ac;                       // 0x0ac
-	LegoS32 m_unk0x0b0;                       // 0x0b0
-	LegoS32 m_unk0x0b4;                       // 0x0b4
-	LegoS32 m_unk0x0b8;                       // 0x0b8
-	LegoS32 m_unk0x0bc;                       // 0x0bc
-	LegoS32 m_unk0x0c0;                       // 0x0c0
-	LegoS32 m_unk0x0c4;                       // 0x0c4
-	LegoS32 m_unk0x0c8;                       // 0x0c8
-	LegoS32 m_unk0x0cc;                       // 0x0cc
-	LegoS32 m_unk0x0d0;                       // 0x0d0
-	LegoS32 m_unk0x0d4;                       // 0x0d4
-	LegoS32 m_unk0x0d8;                       // 0x0d8
-	LegoS32 m_unk0x0dc;                       // 0x0dc
-	LegoS32 m_unk0x0e0;                       // 0x0e0
-	LegoS32 m_unk0x0e4;                       // 0x0e4
-	LegoS32 m_unk0x0e8;                       // 0x0e8
-	LegoFloat m_unk0x0ec;                     // 0x0ec
-	LegoFloat m_unk0x0f0;                     // 0x0f0
-	LegoFloat m_unk0x0f4;                     // 0x0f4
-	LegoFloat m_unk0x0f8;                     // 0x0f8
-	LegoS32 m_unk0x0fc;                       // 0x0fc
-	LegoS32 m_unk0x100;                       // 0x100
-	LegoFloat m_unk0x104;                     // 0x104
-	LegoFloat m_unk0x108;                     // 0x108
-	LegoFloat m_unk0x10c;                     // 0x10c
-	LegoFloat m_unk0x110;                     // 0x110
-	LegoFloat m_unk0x114;                     // 0x114
-	DuskwindBananaRelic0x24* m_unk0x118;      // 0x118
-	LegoFloat m_unk0x11c;                     // 0x11c
-	LegoFloat m_unk0x120;                     // 0x120
-	LegoFloat m_unk0x124;                     // 0x124
-	LegoFloat m_unk0x128;                     // 0x128
-	LegoFloat m_unk0x12c;                     // 0x12c
-	LegoFloat m_unk0x130;                     // 0x130
-	LegoFloat m_unk0x134;                     // 0x134
-	LegoFloat m_unk0x138;                     // 0x138
-	LegoBool32 m_unk0x13c;                    // 0x13c
+	GolD3DRenderDevice* m_unk0x000;            // 0x000
+	RaceState::Racer::SoundSource* m_unk0x004; // 0x004
+	AwakeKite0x20* m_unk0x008;                 // 0x008
+	GolStringTable* m_unk0x00c;                // 0x00c
+	GolString* m_unk0x010;                     // 0x010
+	GolString m_unk0x014;                      // 0x014
+	GolFontBase* m_unk0x020;                   // 0x020
+	GolFontBase* m_unk0x024;                   // 0x024
+	RaceState* m_unk0x028;                     // 0x028
+	RaceState::Racer* m_unk0x02c;              // 0x02c
+	TimeRaceManager* m_unk0x030;               // 0x030
+	LegoU32 m_unk0x034;                        // 0x034
+	LegoU8 m_unk0x038;                         // 0x038
+	LegoBool m_unk0x039;                       // 0x039
+	LegoBool m_unk0x03a;                       // 0x03a
+	LegoBool m_unk0x03b;                       // 0x03b
+	LegoU8 m_unk0x03c;                         // 0x03c
+	TimeText m_unk0x03d;                       // 0x03d
+	TimeText m_unk0x046;                       // 0x046
+	TimeText m_unk0x04f;                       // 0x04f
+	TimeText m_unk0x058;                       // 0x058
+	LegoChar m_unk0x061[0x070 - 0x061];        // 0x061
+	LegoS32 m_unk0x070;                        // 0x070
+	LegoU32 m_unk0x074;                        // 0x074
+	LegoFloat m_unk0x078;                      // 0x078
+	LegoS32 m_unk0x07c;                        // 0x07c
+	LegoS32 m_unk0x080;                        // 0x080
+	LegoU32 m_unk0x084;                        // 0x084
+	LegoU32 m_unk0x088;                        // 0x088
+	LegoS32 m_unk0x08c;                        // 0x08c
+	LegoS32 m_unk0x090;                        // 0x090
+	Rect m_unk0x094;                           // 0x094
+	LegoS32 m_unk0x0a4;                        // 0x0a4
+	LegoS32 m_unk0x0a8;                        // 0x0a8
+	LegoS32 m_unk0x0ac;                        // 0x0ac
+	LegoS32 m_unk0x0b0;                        // 0x0b0
+	LegoS32 m_unk0x0b4;                        // 0x0b4
+	LegoS32 m_unk0x0b8;                        // 0x0b8
+	LegoS32 m_unk0x0bc;                        // 0x0bc
+	LegoS32 m_unk0x0c0;                        // 0x0c0
+	LegoS32 m_unk0x0c4;                        // 0x0c4
+	LegoS32 m_unk0x0c8;                        // 0x0c8
+	LegoS32 m_unk0x0cc;                        // 0x0cc
+	LegoS32 m_unk0x0d0;                        // 0x0d0
+	LegoS32 m_unk0x0d4;                        // 0x0d4
+	LegoS32 m_unk0x0d8;                        // 0x0d8
+	LegoS32 m_unk0x0dc;                        // 0x0dc
+	LegoS32 m_unk0x0e0;                        // 0x0e0
+	LegoS32 m_unk0x0e4;                        // 0x0e4
+	LegoS32 m_unk0x0e8;                        // 0x0e8
+	LegoFloat m_unk0x0ec;                      // 0x0ec
+	LegoFloat m_unk0x0f0;                      // 0x0f0
+	LegoFloat m_unk0x0f4;                      // 0x0f4
+	LegoFloat m_unk0x0f8;                      // 0x0f8
+	LegoS32 m_unk0x0fc;                        // 0x0fc
+	LegoS32 m_unk0x100;                        // 0x100
+	LegoFloat m_unk0x104;                      // 0x104
+	LegoFloat m_unk0x108;                      // 0x108
+	LegoFloat m_unk0x10c;                      // 0x10c
+	LegoFloat m_unk0x110;                      // 0x110
+	LegoFloat m_unk0x114;                      // 0x114
+	DuskwindBananaRelic0x24* m_unk0x118;       // 0x118
+	LegoFloat m_unk0x11c;                      // 0x11c
+	LegoFloat m_unk0x120;                      // 0x120
+	LegoFloat m_unk0x124;                      // 0x124
+	LegoFloat m_unk0x128;                      // 0x128
+	LegoFloat m_unk0x12c;                      // 0x12c
+	LegoFloat m_unk0x130;                      // 0x130
+	LegoFloat m_unk0x134;                      // 0x134
+	LegoFloat m_unk0x138;                      // 0x138
+	LegoBool32 m_unk0x13c;                     // 0x13c
 };
 
 #endif // COBALTTRAIL0X140_H

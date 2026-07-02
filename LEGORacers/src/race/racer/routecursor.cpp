@@ -4,11 +4,11 @@
 
 #include <math.h>
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x00c::Entry::PathPoint, 0x0c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::Field0x198, 0x70)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::CollisionCacheRecord, 0x3c)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::RouteCursor, 0x78)
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x3e8::RouteCursorInstance, 0x78)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Records::Entry::PathPoint, 0x0c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::Field0x198, 0x70)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::CollisionCacheRecord, 0x3c)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::RouteCursor, 0x78)
+DECOMP_SIZE_ASSERT(RaceState::Racer::Physics::RouteCursorInstance, 0x78)
 
 // GLOBAL: LEGORACERS 0x004b4bc8
 extern const LegoFloat g_pathMinSegmentLengthSquared = 0.001f;
@@ -26,19 +26,19 @@ extern const LegoFloat g_pathRotationScale = 0.007874016f;
 extern const LegoFloat g_pathWidthScale = 0.125f;
 
 // FUNCTION: LEGORACERS 0x004a5170 FOLDED
-RaceState::Racer::Field0x3e8Base0x74c::RouteCursorInstance::RouteCursorInstance()
+RaceState::Racer::PhysicsBase0x74c::RouteCursorInstance::RouteCursorInstance()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5180 FOLDED
-RaceState::Racer::Field0x3e8Base0x74c::RouteCursorInstance::~RouteCursorInstance()
+RaceState::Racer::PhysicsBase0x74c::RouteCursorInstance::~RouteCursorInstance()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004a5190 FOLDED
-void RaceState::Racer::Field0x3e8::RouteCursor::Reset()
+void RaceState::Racer::Physics::RouteCursor::Reset()
 {
 	m_position.m_x = 0.0f;
 	m_position.m_y = 0.0f;
@@ -71,13 +71,13 @@ void RaceState::Racer::Field0x3e8::RouteCursor::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x004a51f0 FOLDED
-void RaceState::Racer::Field0x3e8::RouteCursor::Destroy()
+void RaceState::Racer::Physics::RouteCursor::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004a5200
-void RaceState::Racer::Field0x3e8::RouteCursor::Attach(Racer::Field0x00c::Entry* p_entry)
+void RaceState::Racer::Physics::RouteCursor::Attach(Racer::Records::Entry* p_entry)
 {
 	m_startIndex = -1;
 	m_record = p_entry;
@@ -87,7 +87,7 @@ void RaceState::Racer::Field0x3e8::RouteCursor::Attach(Racer::Field0x00c::Entry*
 }
 
 // FUNCTION: LEGORACERS 0x004a5220
-void RaceState::Racer::Field0x3e8::RouteCursor::AttachAtLoop(Racer::Field0x00c::Entry* p_entry)
+void RaceState::Racer::Physics::RouteCursor::AttachAtLoop(Racer::Records::Entry* p_entry)
 {
 	GolVec3* position = &p_entry->m_loopPosition;
 	GolVec3* currentPosition = &m_startPosition;
@@ -108,7 +108,7 @@ void RaceState::Racer::Field0x3e8::RouteCursor::AttachAtLoop(Racer::Field0x00c::
 	m_startIndex = pointIndex;
 	m_endIndex = m_startIndex + 1;
 
-	Racer::Field0x00c::Entry::PathPoint* point = &p_entry->m_pathPoints[m_startIndex];
+	Racer::Records::Entry::PathPoint* point = &p_entry->m_pathPoints[m_startIndex];
 	m_pointType = point->GetType();
 	m_widthLeft = point->GetWidthLeft();
 	m_widthRight = point->GetWidthRight();
@@ -123,12 +123,12 @@ void RaceState::Racer::Field0x3e8::RouteCursor::AttachAtLoop(Racer::Field0x00c::
 }
 
 // STUB: LEGORACERS 0x004a5320
-void RaceState::Racer::Field0x3e8::RouteCursor::Advance(LegoFloat p_elapsedMs)
+void RaceState::Racer::Physics::RouteCursor::Advance(LegoFloat p_elapsedMs)
 {
-	Racer::Field0x00c::Entry* entry = m_record;
+	Racer::Records::Entry* entry = m_record;
 	if (entry) {
-		Racer::Field0x00c::Entry* wrapEntry;
-		Racer::Field0x00c::Entry::PathPoint* point;
+		Racer::Records::Entry* wrapEntry;
+		Racer::Records::Entry::PathPoint* point;
 		GolVec3* currentPosition;
 		GolVec3* endPosition;
 		GolVec3 offset;
@@ -293,10 +293,10 @@ void RaceState::Racer::Field0x3e8::RouteCursor::Advance(LegoFloat p_elapsedMs)
 }
 
 // STUB: LEGORACERS 0x004a5750
-void RaceState::Racer::Field0x3e8::RouteCursor::SeekByDelta(GolVec3* p_delta)
+void RaceState::Racer::Physics::RouteCursor::SeekByDelta(GolVec3* p_delta)
 {
 	LegoS32 endIndex = m_endIndex;
-	Racer::Field0x00c::Entry::PathPoint* endPoint = &m_record->m_pathPoints[endIndex];
+	Racer::Records::Entry::PathPoint* endPoint = &m_record->m_pathPoints[endIndex];
 	LegoS32 segmentStartTime = m_segmentStartTime;
 	LegoS32 startIndex = m_startIndex;
 	LegoS32 segmentEndTime = segmentStartTime + endPoint->GetLength();
@@ -323,7 +323,7 @@ void RaceState::Racer::Field0x3e8::RouteCursor::SeekByDelta(GolVec3* p_delta)
 		endPosition.m_z += offset.m_z;
 	}
 
-	Racer::Field0x00c::Entry::PathPoint* startPoint = &m_record->m_pathPoints[startIndex];
+	Racer::Records::Entry::PathPoint* startPoint = &m_record->m_pathPoints[startIndex];
 	GolVec3 segment;
 	GolVec3 unitSegment;
 	LegoFloat segmentLength;
@@ -502,7 +502,7 @@ void RaceState::Racer::Field0x3e8::RouteCursor::SeekByDelta(GolVec3* p_delta)
 }
 
 // FUNCTION: LEGORACERS 0x004a5e10
-void RaceState::Racer::Field0x00c::Entry::PathPoint::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
+void RaceState::Racer::Records::Entry::PathPoint::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	m_positionX = static_cast<LegoS16>(p_parser->ReadInteger());
 	m_positionY = static_cast<LegoS16>(p_parser->ReadInteger());
@@ -526,7 +526,7 @@ void RaceState::Racer::Field0x00c::Entry::PathPoint::Load(GolFileParser* p_parse
 }
 
 // FUNCTION: LEGORACERS 0x004a5ec0
-LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetType() const
+LegoU32 RaceState::Racer::Records::Entry::PathPoint::GetType() const
 {
 	LegoU32 type = m_packedTypeAndLength >> 6;
 	if (type >= 3) {
@@ -537,13 +537,13 @@ LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetType() const
 }
 
 // FUNCTION: LEGORACERS 0x004a5ee0
-LegoU32 RaceState::Racer::Field0x00c::Entry::PathPoint::GetLength() const
+LegoU32 RaceState::Racer::Records::Entry::PathPoint::GetLength() const
 {
 	return (m_packedTypeAndLength & 0x3f) << 5;
 }
 
 // FUNCTION: LEGORACERS 0x004a5ef0
-GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_position) const
+GolVec3* RaceState::Racer::Records::Entry::PathPoint::GetPosition(GolVec3* p_position) const
 {
 	p_position->m_x = static_cast<LegoFloat>(m_positionX) * g_pathPositionXYScale;
 	p_position->m_y = static_cast<LegoFloat>(m_positionY) * g_pathPositionXYScale;
@@ -553,7 +553,7 @@ GolVec3* RaceState::Racer::Field0x00c::Entry::PathPoint::GetPosition(GolVec3* p_
 }
 
 // FUNCTION: LEGORACERS 0x004a5f40
-GolQuat* RaceState::Racer::Field0x00c::Entry::PathPoint::GetRotation(GolQuat* p_rotation) const
+GolQuat* RaceState::Racer::Records::Entry::PathPoint::GetRotation(GolQuat* p_rotation) const
 {
 	p_rotation->m_x = static_cast<LegoFloat>(m_rotationX) * g_pathRotationScale;
 	p_rotation->m_y = static_cast<LegoFloat>(m_rotationY) * g_pathRotationScale;
@@ -564,13 +564,13 @@ GolQuat* RaceState::Racer::Field0x00c::Entry::PathPoint::GetRotation(GolQuat* p_
 }
 
 // FUNCTION: LEGORACERS 0x004a5fa0
-LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetWidthLeft() const
+LegoFloat RaceState::Racer::Records::Entry::PathPoint::GetWidthLeft() const
 {
 	return static_cast<LegoFloat>(m_widthLeft) * g_pathWidthScale;
 }
 
 // FUNCTION: LEGORACERS 0x004a5fc0
-LegoFloat RaceState::Racer::Field0x00c::Entry::PathPoint::GetWidthRight() const
+LegoFloat RaceState::Racer::Records::Entry::PathPoint::GetWidthRight() const
 {
 	return static_cast<LegoFloat>(m_widthRight) * g_pathWidthScale;
 }

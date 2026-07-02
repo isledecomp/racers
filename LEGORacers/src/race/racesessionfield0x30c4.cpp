@@ -100,13 +100,13 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 			racer->m_unk0xd04 &= ~RaceState::Racer::c_flags0xd04Bit21;
 		}
 
-		RaceState::Racer::Field0x018* field = &racer->m_unk0x018;
+		RaceState::Racer::CarVisuals* field = &racer->m_unk0x018;
 		field->StopSlideSkid();
 		field->ShowModels();
 		field->StopSkidEffects();
 		field->UseNormalSkidMaterial();
 		field->RefreshCarMaterial();
-		field->m_flags |= RaceState::Racer::Field0x018::c_flagShadowEnabled;
+		field->m_flags |= RaceState::Racer::CarVisuals::c_flagShadowEnabled;
 		field->EndFlash();
 		field->ClearColorTransform();
 		field->SetScale(1.0f);

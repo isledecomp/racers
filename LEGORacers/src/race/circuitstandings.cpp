@@ -169,7 +169,7 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 	LegoChar timeBuffer[12];
 	LegoChar buffer[64];
 	LegoU32 selected[c_racerCount];
-	RaceState::Racer::Field0x00c::StandingsDeltaEntry deltaEntries[c_racerCount];
+	RaceState::Racer::Records::StandingsDeltaEntry deltaEntries[c_racerCount];
 	GolD3DRenderDevice* renderer = m_context->m_golApp->GetRenderer();
 	const SlatePeak0x58* renderTargetInfo = renderer->GetRenderTargetInfo();
 
@@ -268,7 +268,7 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 				}
 
 				if (deltaIndex < c_racerCount) {
-					RaceState::Racer::Field0x00c::StandingsDeltaEntry* deltaEntry = &deltaEntries[deltaIndex];
+					RaceState::Racer::Records::StandingsDeltaEntry* deltaEntry = &deltaEntries[deltaIndex];
 					if (deltaEntry->m_racer == leaderRacer) {
 						string.CopyFromBufSelection(m_unk0x0c->GetStringBuffer(c_leaderStringId), 0);
 						renderer->VTable0x64(&string, m_unk0x00, c_deltaSignX, y, 1.0f, 1.0f, NULL, 0);

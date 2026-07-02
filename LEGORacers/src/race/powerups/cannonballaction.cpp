@@ -331,7 +331,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	m_stateTimerMs = durationMs;
 
 	if (m_emplacement == NULL) {
-		RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
 		racerField->m_carEntity->VTable0x04(&position);
 		m_ownerRacer->m_unk0x018.m_carEntity->GetOrientationRow0(&direction);
 	}
@@ -427,7 +427,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 		positionBase = m_emplacement->m_position;
 	}
 	else {
-		RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
 		racerField->m_carEntity->VTable0x04(&position);
 	}
 
@@ -461,7 +461,7 @@ void RacePowerupManager::CannonballAction::OnHitRacer(RaceState::Racer* p_racer)
 			p_racer->PlayReaction(FALSE);
 			p_racer->DropWhiteBrick();
 			SoundVector position;
-			p_racer->m_unk0x018.SetReactionFlags(c_racerField0x018Flags0x384Bit1);
+			p_racer->m_unk0x018.SetReactionFlags(c_racerCarVisualsFlags0x384Bit1);
 			p_racer->m_unk0x018.GetCarEntity()->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundHit,

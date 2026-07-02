@@ -245,7 +245,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 			ReleaseHook(&projectilePositionCopy);
 		}
 		else {
-			RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
 			racerField->m_carEntity->VTable0x04(&position);
 
 			RaceState::Racer* targetRacer = m_projectile.GetHitRacer();
@@ -376,7 +376,7 @@ void RacePowerupManager::GrapplingHookAction::AdvanceState()
 	GolVec3 scaledDirection;
 	GolVec3 targetVelocity;
 	PowerupProjectile::Params projectileParams;
-	RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
+	RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
 	LegoU32 durationMs = 3000;
 
 	m_state = c_stateFlying;

@@ -46,7 +46,7 @@ inline static LegoFloat GetCosineTableValue(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x0042a730
-void RaceState::Racer::Field0x3e8::FUN_0042a730(Field0x00c::Entry* p_entry)
+void RaceState::Racer::Physics::FUN_0042a730(Records::Entry* p_entry)
 {
 	m_unk0x744 = TRUE;
 	m_unk0x74c.AttachAtLoop(p_entry);
@@ -64,13 +64,13 @@ void RaceState::Racer::Field0x3e8::FUN_0042a730(Field0x00c::Entry* p_entry)
 }
 
 // FUNCTION: LEGORACERS 0x0042ae10
-LegoFloat RaceState::Racer::Field0x3e8::FUN_0042ae10()
+LegoFloat RaceState::Racer::Physics::FUN_0042ae10()
 {
 	return FUN_00445cb0();
 }
 
 // FUNCTION: LEGORACERS 0x0042ae20
-LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042ae20()
+LegoBool32 RaceState::Racer::Physics::FUN_0042ae20()
 {
 	if (m_unk0x3ec) {
 		return FALSE;
@@ -99,7 +99,7 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042ae20()
 }
 
 // FUNCTION: LEGORACERS 0x0042aea0
-LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042aea0(LegoFloat p_unk0x04)
+LegoBool32 RaceState::Racer::Physics::FUN_0042aea0(LegoFloat p_unk0x04)
 {
 	GolOrientedEntity* entity = m_unk0x13c;
 	LegoFloat dot = entity->m_orientation.m_rows[0].m_x;
@@ -135,7 +135,7 @@ LegoBool32 RaceState::Racer::Field0x3e8::FUN_0042aea0(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0042b0c0
-void RaceState::Racer::Field0x3e8::FUN_0042b0c0()
+void RaceState::Racer::Physics::FUN_0042b0c0()
 {
 	GolVec3 direction;
 	direction.m_x = 0.0f;
@@ -153,7 +153,7 @@ void RaceState::Racer::Field0x3e8::FUN_0042b0c0()
 }
 
 // FUNCTION: LEGORACERS 0x00445cb0
-LegoFloat RaceState::Racer::Field0x3e8::FUN_00445cb0()
+LegoFloat RaceState::Racer::Physics::FUN_00445cb0()
 {
 	LegoFloat scale = FUN_004489f0();
 	scale *= m_unk0x160 * m_unk0x15c;
@@ -172,7 +172,7 @@ LegoFloat RaceState::Racer::Field0x3e8::FUN_00445cb0()
 }
 
 // FUNCTION: LEGORACERS 0x00446ef0
-void RaceState::Racer::Field0x3e8::FUN_00446ef0(LegoFloat p_unk0x04)
+void RaceState::Racer::Physics::FUN_00446ef0(LegoFloat p_unk0x04)
 {
 	if (p_unk0x04 > 0.0f) {
 		if (p_unk0x04 < g_unk0x004b0cd0) {
@@ -202,7 +202,7 @@ void RaceState::Racer::Field0x3e8::FUN_00446ef0(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00447f30
-void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
+void RaceState::Racer::PhysicsBase0x74c::FUN_00447f30(LegoFloat p_unk0x04, LegoFloat p_unk0x08, LegoFloat p_unk0x0c)
 {
 	LegoU32 flags = m_flags0x6c0;
 	LegoFloat angle = p_unk0x0c;
@@ -250,7 +250,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, Le
 }
 
 // FUNCTION: LEGORACERS 0x004489f0
-LegoFloat RaceState::Racer::Field0x3e8::FUN_004489f0()
+LegoFloat RaceState::Racer::Physics::FUN_004489f0()
 {
 	LegoFloat total = 0.0f;
 	LegoS32 count = 0;
@@ -271,7 +271,7 @@ LegoFloat RaceState::Racer::Field0x3e8::FUN_004489f0()
 }
 
 // FUNCTION: LEGORACERS 0x00449070
-undefined4 RaceState::Racer::Field0x3e8::FUN_00449070(undefined4 p_unk0x04)
+undefined4 RaceState::Racer::Physics::FUN_00449070(undefined4 p_unk0x04)
 {
 	LegoU32 flags = m_flags0x6c0;
 	flags |= c_flags0x6c0Bit10;
@@ -282,7 +282,7 @@ undefined4 RaceState::Racer::Field0x3e8::FUN_00449070(undefined4 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00449090
-undefined4 RaceState::Racer::Field0x3e8::FUN_00449090()
+undefined4 RaceState::Racer::Physics::FUN_00449090()
 {
 	LegoU32 flags = m_flags0x6c0;
 	flags &= ~c_flags0x6c0Bit10;

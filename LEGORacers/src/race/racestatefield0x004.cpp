@@ -4,12 +4,12 @@
 #include "audio/streamingsoundinstance.h"
 #include "race/racestate.h"
 
-DECOMP_SIZE_ASSERT(RaceState::Racer::Field0x004, 0x14)
+DECOMP_SIZE_ASSERT(RaceState::Racer::SoundSource, 0x14)
 
 extern SpatialSoundInstance g_nullStreamingSoundInstance;
 
 // FUNCTION: LEGORACERS 0x00443b50
-void RaceState::Racer::Field0x004::PlaySoundById(LegoU32 p_unk0x04)
+void RaceState::Racer::SoundSource::PlaySoundById(LegoU32 p_unk0x04)
 {
 	if (m_soundManager) {
 		SoundGroup* soundGroup = NULL;
@@ -19,7 +19,7 @@ void RaceState::Racer::Field0x004::PlaySoundById(LegoU32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00443b80
-void RaceState::Racer::Field0x004::PlaySpatialSoundById(
+void RaceState::Racer::SoundSource::PlaySpatialSoundById(
 	LegoU32 p_unk0x04,
 	SoundVector* p_unk0x08,
 	LegoFloat p_unk0x0c,
@@ -36,7 +36,7 @@ void RaceState::Racer::Field0x004::PlaySpatialSoundById(
 }
 
 // FUNCTION: LEGORACERS 0x00443bd0
-SpatialSoundInstance* RaceState::Racer::Field0x004::AcquireSoundById(LegoU32 p_unk0x04)
+SpatialSoundInstance* RaceState::Racer::SoundSource::AcquireSoundById(LegoU32 p_unk0x04)
 {
 	if (!m_soundManager) {
 		return &g_nullStreamingSoundInstance;
@@ -48,7 +48,7 @@ SpatialSoundInstance* RaceState::Racer::Field0x004::AcquireSoundById(LegoU32 p_u
 }
 
 // FUNCTION: LEGORACERS 0x00443c30
-LegoU32 RaceState::Racer::Field0x004::FUN_00443c30(LegoU32 p_unk0x04, SoundGroup** p_soundGroup)
+LegoU32 RaceState::Racer::SoundSource::FUN_00443c30(LegoU32 p_unk0x04, SoundGroup** p_soundGroup)
 {
 	if (p_unk0x04 < 1000) {
 		*p_soundGroup = m_groups[0];

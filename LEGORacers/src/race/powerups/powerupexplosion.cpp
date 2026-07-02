@@ -396,7 +396,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 	}
 
 	LegoU8 racerFlags = static_cast<LegoU8>(racer->m_unk0xd04);
-	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
 	if (racerFlags & c_racerFlags0xd04Bit0) {
 		return;
 	}
@@ -407,8 +407,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 			return;
 		}
 
-		if ((racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit7) &&
-			racer->m_unk0xd08 != 2) {
+		if ((racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit7) && racer->m_unk0xd08 != 2) {
 			return;
 		}
 
@@ -450,7 +449,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 		return;
 	}
 
-	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1)) {
+	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1)) {
 		field0x3e8->VTable0x24(2.0f, 0.007f, 0);
 	}
 }

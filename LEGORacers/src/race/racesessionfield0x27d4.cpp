@@ -303,7 +303,7 @@ void RaceSessionField0x27d4::Item::FUN_00491fa0(LegoU32 p_elapsedMs, GolVec3 p_p
 	centerY -= p_position.m_y;
 	centerZ -= p_position.m_z;
 
-	Field0x004* field = &m_unk0x004;
+	Decal* field = &m_unk0x004;
 	field->m_unk0x104 = m_unk0x324;
 	field->m_unk0x108 = distance;
 	field->m_unk0x0e8.m_x = centerX;

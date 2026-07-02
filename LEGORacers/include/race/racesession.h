@@ -28,8 +28,8 @@
 #include "race/raceeventdispatcher0x08.h"
 #include "race/raceeventtable0x90.h"
 #include "race/raceforcefeedback.h"
+#include "race/racer/racerouterecord.h"
 #include "race/raceresourcemanager.h"
-#include "race/racerouterecord.h"
 #include "race/racesessionfield0x27d4.h"
 #include "race/racesessionfield0x27f4.h"
 #include "race/racesessionfield0x32b4.h"
@@ -296,7 +296,7 @@ public:
 	};
 
 	// SIZE 0x14
-	class Field0x3300 : public RaceState::Racer::Field0x004 {
+	class Field0x3300 : public RaceState::Racer::SoundSource {
 	public:
 		Field0x3300();
 		~Field0x3300();
@@ -493,19 +493,19 @@ public:
 
 		// SIZE 0x34
 		struct Params {
-			GolWorldDatabase* m_unk0x00;             // 0x00
-			GolWorldDatabase* m_unk0x04;             // 0x04
-			GolWorldDatabase* m_unk0x08;             // 0x08
-			GolWorldDatabase* m_unk0x0c;             // 0x0c
-			RaceState::Racer::Field0x004* m_unk0x10; // 0x10
-			RaceEventDispatcher0x08* m_unk0x14;      // 0x14
-			CutsceneAnimation* m_unk0x18;            // 0x18
-			CutsceneAnimation* m_unk0x1c;            // 0x1c
-			Field0x2f90* m_unk0x20;                  // 0x20
-			Field0x2804* m_unk0x24;                  // 0x24
-			const LegoChar* m_name;                  // 0x28
-			LegoBool32 m_binary;                     // 0x2c
-			LegoBool32 m_mirror;                     // 0x30
+			GolWorldDatabase* m_unk0x00;              // 0x00
+			GolWorldDatabase* m_unk0x04;              // 0x04
+			GolWorldDatabase* m_unk0x08;              // 0x08
+			GolWorldDatabase* m_unk0x0c;              // 0x0c
+			RaceState::Racer::SoundSource* m_unk0x10; // 0x10
+			RaceEventDispatcher0x08* m_unk0x14;       // 0x14
+			CutsceneAnimation* m_unk0x18;             // 0x18
+			CutsceneAnimation* m_unk0x1c;             // 0x1c
+			Field0x2f90* m_unk0x20;                   // 0x20
+			Field0x2804* m_unk0x24;                   // 0x24
+			const LegoChar* m_name;                   // 0x28
+			LegoBool32 m_binary;                      // 0x2c
+			LegoBool32 m_mirror;                      // 0x30
 		};
 
 		// VTABLE: LEGORACERS 0x004b1b28
@@ -946,23 +946,23 @@ public:
 
 			// SIZE 0x4c
 			struct InitParams {
-				undefined4 m_unk0x00;                    // 0x00
-				undefined4 m_unk0x04;                    // 0x04
-				RaceState::Racer::Field0x004* m_unk0x08; // 0x08
-				GolVec3 m_unk0x0c;                       // 0x0c
-				LegoU32 m_unk0x18;                       // 0x18
-				LegoU32 m_unk0x1c;                       // 0x1c
-				LegoFloat m_unk0x20;                     // 0x20
-				LegoFloat m_unk0x24;                     // 0x24
-				LegoFloat m_unk0x28;                     // 0x28
-				LegoFloat m_unk0x2c;                     // 0x2c
-				LegoFloat m_unk0x30;                     // 0x30
-				LegoBool32 m_unk0x34;                    // 0x34
-				LegoBool32 m_unk0x38;                    // 0x38
-				LegoBool32 m_unk0x3c;                    // 0x3c
-				LegoBool32 m_unk0x40;                    // 0x40
-				GolModelEntity* m_unk0x44;               // 0x44
-				LegoU32 m_unk0x48;                       // 0x48
+				undefined4 m_unk0x00;                     // 0x00
+				undefined4 m_unk0x04;                     // 0x04
+				RaceState::Racer::SoundSource* m_unk0x08; // 0x08
+				GolVec3 m_unk0x0c;                        // 0x0c
+				LegoU32 m_unk0x18;                        // 0x18
+				LegoU32 m_unk0x1c;                        // 0x1c
+				LegoFloat m_unk0x20;                      // 0x20
+				LegoFloat m_unk0x24;                      // 0x24
+				LegoFloat m_unk0x28;                      // 0x28
+				LegoFloat m_unk0x2c;                      // 0x2c
+				LegoFloat m_unk0x30;                      // 0x30
+				LegoBool32 m_unk0x34;                     // 0x34
+				LegoBool32 m_unk0x38;                     // 0x38
+				LegoBool32 m_unk0x3c;                     // 0x3c
+				LegoBool32 m_unk0x40;                     // 0x40
+				GolModelEntity* m_unk0x44;                // 0x44
+				LegoU32 m_unk0x48;                        // 0x48
 			};
 
 			Resource0x5c();
@@ -984,19 +984,19 @@ public:
 				SpatialSoundInstance* m_unk0x20;          // 0x20
 				RaceResourceManager::Resource* m_res0x20; // 0x20
 			};
-			RaceState::Racer::Field0x004* m_unk0x24; // 0x24
-			GolModelEntity* m_unk0x28;               // 0x28
-			LegoU32 m_unk0x2c;                       // 0x2c
-			SoundVector m_unk0x30;                   // 0x30
-			LegoU32 m_unk0x3c;                       // 0x3c
-			LegoU32 m_unk0x40;                       // 0x40
-			LegoFloat m_unk0x44;                     // 0x44
-			LegoFloat m_unk0x48;                     // 0x48
-			LegoFloat m_unk0x4c;                     // 0x4c
-			LegoFloat m_unk0x50;                     // 0x50
-			LegoU8 m_unk0x54;                        // 0x54
-			undefined m_unk0x55[0x58 - 0x55];        // 0x55
-			LegoU32 m_unk0x58;                       // 0x58
+			RaceState::Racer::SoundSource* m_unk0x24; // 0x24
+			GolModelEntity* m_unk0x28;                // 0x28
+			LegoU32 m_unk0x2c;                        // 0x2c
+			SoundVector m_unk0x30;                    // 0x30
+			LegoU32 m_unk0x3c;                        // 0x3c
+			LegoU32 m_unk0x40;                        // 0x40
+			LegoFloat m_unk0x44;                      // 0x44
+			LegoFloat m_unk0x48;                      // 0x48
+			LegoFloat m_unk0x4c;                      // 0x4c
+			LegoFloat m_unk0x50;                      // 0x50
+			LegoU8 m_unk0x54;                         // 0x54
+			undefined m_unk0x55[0x58 - 0x55];         // 0x55
+			LegoU32 m_unk0x58;                        // 0x58
 		};
 
 		// VTABLE: LEGORACERS 0x004b1b0c
@@ -1084,42 +1084,42 @@ public:
 		union {
 			RaceEventTable0x90 m_eventTable; // 0x00
 			struct {
-				GolWorldDatabase* m_unk0x00;             // 0x00
-				GolWorldDatabase* m_unk0x04;             // 0x04
-				GolWorldDatabase* m_unk0x08;             // 0x08
-				GolWorldDatabase* m_unk0x0c;             // 0x0c
-				RaceState::Racer::Field0x004* m_unk0x10; // 0x10
-				RaceEventDispatcher0x08* m_unk0x14;      // 0x14
-				CutsceneAnimation* m_unk0x18;            // 0x18
-				CutsceneAnimation* m_unk0x1c;            // 0x1c
-				Field0x2f90* m_unk0x20;                  // 0x20
-				Field0x2804* m_unk0x24;                  // 0x24
-				LegoU32 m_unk0x28;                       // 0x28
-				LegoU32 m_unk0x2c;                       // 0x2c
-				LegoU32 m_unk0x30;                       // 0x30
-				LegoU32 m_unk0x34;                       // 0x34
-				LegoU32 m_unk0x38;                       // 0x38
-				LegoU32 m_unk0x3c;                       // 0x3c
-				LegoU32 m_unk0x40;                       // 0x40
-				LegoU32 m_unk0x44;                       // 0x44
-				LegoU32 m_unk0x48;                       // 0x48
-				LegoU32 m_unk0x4c;                       // 0x4c
-				LegoU32 m_unk0x50;                       // 0x50
-				LegoU32 m_unk0x54;                       // 0x54
-				LegoU32 m_unk0x58;                       // 0x58
-				Resource0x5c* m_unk0x5c;                 // 0x5c
-				AnimatedPartResource0x34* m_unk0x60;     // 0x60
-				Resource0x34* m_unk0x64;                 // 0x64
-				Resource0x64* m_unk0x68;                 // 0x68
-				Field0x6c* m_unk0x6c;                    // 0x6c
-				SkyStateResource0x34* m_unk0x70;         // 0x70
-				Resource0x30* m_unk0x74;                 // 0x74
-				NodeTransformResource0x2c* m_unk0x78;    // 0x78
-				Resource0x48* m_unk0x7c;                 // 0x7c
-				Resource0x24* m_unk0x80;                 // 0x80
-				ModelDistanceResource0x34* m_unk0x84;    // 0x84
-				Resource0x2c* m_unk0x88;                 // 0x88
-				Resource0x38* m_unk0x8c;                 // 0x8c
+				GolWorldDatabase* m_unk0x00;              // 0x00
+				GolWorldDatabase* m_unk0x04;              // 0x04
+				GolWorldDatabase* m_unk0x08;              // 0x08
+				GolWorldDatabase* m_unk0x0c;              // 0x0c
+				RaceState::Racer::SoundSource* m_unk0x10; // 0x10
+				RaceEventDispatcher0x08* m_unk0x14;       // 0x14
+				CutsceneAnimation* m_unk0x18;             // 0x18
+				CutsceneAnimation* m_unk0x1c;             // 0x1c
+				Field0x2f90* m_unk0x20;                   // 0x20
+				Field0x2804* m_unk0x24;                   // 0x24
+				LegoU32 m_unk0x28;                        // 0x28
+				LegoU32 m_unk0x2c;                        // 0x2c
+				LegoU32 m_unk0x30;                        // 0x30
+				LegoU32 m_unk0x34;                        // 0x34
+				LegoU32 m_unk0x38;                        // 0x38
+				LegoU32 m_unk0x3c;                        // 0x3c
+				LegoU32 m_unk0x40;                        // 0x40
+				LegoU32 m_unk0x44;                        // 0x44
+				LegoU32 m_unk0x48;                        // 0x48
+				LegoU32 m_unk0x4c;                        // 0x4c
+				LegoU32 m_unk0x50;                        // 0x50
+				LegoU32 m_unk0x54;                        // 0x54
+				LegoU32 m_unk0x58;                        // 0x58
+				Resource0x5c* m_unk0x5c;                  // 0x5c
+				AnimatedPartResource0x34* m_unk0x60;      // 0x60
+				Resource0x34* m_unk0x64;                  // 0x64
+				Resource0x64* m_unk0x68;                  // 0x68
+				Field0x6c* m_unk0x6c;                     // 0x6c
+				SkyStateResource0x34* m_unk0x70;          // 0x70
+				Resource0x30* m_unk0x74;                  // 0x74
+				NodeTransformResource0x2c* m_unk0x78;     // 0x78
+				Resource0x48* m_unk0x7c;                  // 0x7c
+				Resource0x24* m_unk0x80;                  // 0x80
+				ModelDistanceResource0x34* m_unk0x84;     // 0x84
+				Resource0x2c* m_unk0x88;                  // 0x88
+				Resource0x38* m_unk0x8c;                  // 0x8c
 			};
 		};
 	};

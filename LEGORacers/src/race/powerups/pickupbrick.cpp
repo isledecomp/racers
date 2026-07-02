@@ -65,7 +65,7 @@ LegoS32 RacePowerupManager::PickupBrick::Reset()
 // FUNCTION: LEGORACERS 0x004539b0
 void RacePowerupManager::PickupBrick::Initialize(
 	RacePowerupManager* p_owner,
-	RaceState::Racer::Field0x004* p_soundResource,
+	RaceState::Racer::SoundSource* p_soundResource,
 	GolVec3* p_position,
 	GolModelEntity* p_model0,
 	GolModelEntity* p_model1

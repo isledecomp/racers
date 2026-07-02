@@ -524,7 +524,7 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 			m_unk0x0d8 = desiredDirection;
 		}
 		else {
-			if (racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1) {
+			if (racer->m_unk0x3e8.m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) {
 				desiredDirection = m_unk0x0d8;
 			}
 			else {
@@ -577,10 +577,10 @@ void RaceCameraController::FUN_00428540(LegoFloat p_unk0x04)
 		m_unk0x0e4 = targetPosition;
 
 		if (m_unk0x11c) {
-			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::Field0xc70::c_flags0x014Bit0;
+			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::DriveController::c_flags0x014Bit0;
 		}
 		else {
-			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::Field0xc70::c_flags0x014Bit0;
+			m_unk0x11c = racer->m_unk0xc70.m_unk0x014 & RaceState::Racer::DriveController::c_flags0x014Bit0;
 			if (m_unk0x11c) {
 				switch (racer->m_unk0xd68) {
 				case 0:

@@ -10,7 +10,7 @@ class GolFileParser;
 class RaceSession;
 
 // SIZE 0x48
-class RaceRouteRecord : public RaceState::Racer::Field0x00c::Entry {
+class RaceRouteRecord : public RaceState::Racer::Records::Entry {
 public:
 	// VTABLE: LEGORACERS 0x004b4b50
 	// SIZE 0x1fc

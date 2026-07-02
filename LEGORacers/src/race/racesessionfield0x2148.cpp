@@ -1850,9 +1850,9 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
 
-	if ((field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1) || field0x3e8->m_unk0x618 == 0.0f ||
+	if ((field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) || field0x3e8->m_unk0x618 == 0.0f ||
 		(racer->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
 		return;
 	}
@@ -2425,9 +2425,8 @@ void RaceEventDispatcher0x08::Item0x2c::VTable0x14(undefined4 p_elapsedMs)
 void RaceEventDispatcher0x08::Item0x2c::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
-	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1) &&
-		field0x3e8->m_unk0x618 != 0.0f) {
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
+	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) && field0x3e8->m_unk0x618 != 0.0f) {
 		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
 		racer->PlayReaction(FALSE);
 	}
@@ -2591,7 +2590,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 	}
 
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
 	if ((frame <= m_unk0x48 || frame >= m_unk0x4c) && !(racer->m_unk0xd04 & c_racerFlags0xd04Bit0)) {
 		if (m_unk0x44 == NULL || m_unk0x44 == racer) {
 			if (m_unk0x44 == NULL) {
@@ -2610,7 +2609,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 		if (currentRacer->m_unk0x3e8.m_unk0x744) {
 			LegoU32 flags = currentRacer->m_unk0x3e8.m_flags0x6c0;
 			currentRacer->m_unk0x3e8.m_unk0x7e8 = -0.4f;
-			if (!(flags & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit18)) {
+			if (!(flags & RaceState::Racer::Physics::c_flags0x6c0Bit18)) {
 				currentRacer->m_unk0x3e8.m_unk0x7ec = -0.4f;
 				m_unk0x54 = c_restoreTimerMs;
 				return;
@@ -2621,7 +2620,7 @@ void RaceEventDispatcher0x08::Item0x48::VTable0x00(LegoEventQueue::CallbackData*
 			FUN_0048e1c0(&position);
 
 			GolVec3 racerPosition;
-			RaceState::Racer::Field0x018* racerField = &m_unk0x44->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerField = &m_unk0x44->m_unk0x018;
 			racerField->m_carEntity->VTable0x04(&racerPosition);
 
 			GolVec3 force;
@@ -2668,7 +2667,7 @@ void RaceEventDispatcher0x08::Item0x48::FUN_0048e230()
 			LegoU32 flags = racer->m_unk0x3e8.m_flags0x6c0;
 			LegoFloat value = 1.0f;
 			racer->m_unk0x3e8.m_unk0x7e8 = value;
-			if (!(flags & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit18)) {
+			if (!(flags & RaceState::Racer::Physics::c_flags0x6c0Bit18)) {
 				racer->m_unk0x3e8.m_unk0x7ec = value;
 			}
 		}
@@ -3966,9 +3965,8 @@ void RaceEventDispatcher0x08::Item0x32::VTable0x1c(GolD3DRenderDevice* p_rendere
 void RaceEventDispatcher0x08::Item0x32::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
 	RaceState::Racer* racer = static_cast<RaceState::Racer*>(p_data->m_data);
-	RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
-	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1) &&
-		field0x3e8->m_unk0x618 != 0.0f) {
+	RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
+	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Physics::c_flags0x6c0Bit1) && field0x3e8->m_unk0x618 != 0.0f) {
 		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
 
 		GolVec3 position;

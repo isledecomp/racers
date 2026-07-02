@@ -232,7 +232,7 @@ void RacePowerupManager::DynamiteAction::AdvanceState()
 		projectileParams.m_lifetimeMs = c_flightLifetimeMs;
 		projectileParams.m_launchHeight = g_dynamiteLaunchHeight;
 
-		RaceState::Racer::Field0x018* racerField = &m_ownerRacer->m_unk0x018;
+		RaceState::Racer::CarVisuals* racerField = &m_ownerRacer->m_unk0x018;
 		GolVec3 racerPosition;
 		racerField->m_carEntity->VTable0x04(&racerPosition);
 

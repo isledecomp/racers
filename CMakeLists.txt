@@ -312,9 +312,9 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racesessionfield0x27d4.cpp
   LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
-  LEGORacers/src/race/racestatefield0xc70.cpp
+  LEGORacers/src/race/racer/drivecontroller.cpp
   LEGORacers/src/race/racesessionfield0x2ad4.cpp
-  LEGORacers/src/race/racestatefield0x3e8helpers.cpp
+  LEGORacers/src/race/racer/racerphysicshelpers.cpp
   LEGORacers/src/race/racesessionfield0x27e0.cpp
   LEGORacers/src/race/racesessionfield0x27f4.cpp
   LEGORacers/src/race/racestatefield0x010.cpp
@@ -322,7 +322,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racesessionfield0x2804.cpp
   LEGORacers/src/race/racesessionfield0x2f90.cpp
   LEGORacers/src/race/racesessionfield0x30c4.cpp
-  LEGORacers/src/race/racerouterecord.cpp
+  LEGORacers/src/race/racer/racerouterecord.cpp
   LEGORacers/src/race/racesessionfield0x32b4.cpp
   LEGORacers/src/race/racesessionfield0x32b4field0x004.cpp
   LEGORacers/src/race/racesessionfield0x32c4.cpp
@@ -353,15 +353,16 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/powerups/pickupbrick.cpp
   LEGORacers/src/race/powerups/colorbrick.cpp
   LEGORacers/src/race/powerups/whitebrick.cpp
+  LEGORacers/src/race/racer/racervisuals.cpp
   LEGORacers/src/race/racestate.cpp
   LEGORacers/src/race/racestatefield0x00c.cpp
   LEGORacers/src/race/racestatefield0x004.cpp
-  LEGORacers/src/race/racestatefield0x3e8.cpp
+  LEGORacers/src/race/racer/racerphysics.cpp
   LEGORacers/src/race/racestatefield0xadc.cpp
   LEGORacers/src/race/racestatefield0x0f0.cpp
-  LEGORacers/src/race/racestatefield0x2a0.cpp
+  LEGORacers/src/race/racer/routecursor.cpp
   LEGORacers/src/race/powerups/droppablebrick.cpp
-  LEGORacers/src/race/racestatefield0xc70field0x000.cpp
+  LEGORacers/src/race/racer/drivecontrollerfield0x000.cpp
   LEGORacers/src/race/cobalttrail0x140.cpp
   LEGORacers/src/race/slatebridge0x68.cpp
   LEGORacers/src/race/circuitracerunner.cpp

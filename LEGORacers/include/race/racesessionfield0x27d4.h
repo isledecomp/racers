@@ -31,7 +31,7 @@ public:
 	class Item {
 	public:
 		// SIZE 0x11c
-		class Field0x004 : public MarblePath0x114 {
+		class Decal : public MarblePath0x114 {
 		public:
 			enum {
 				c_commandMask = 0xe0000000,
@@ -151,7 +151,7 @@ public:
 
 		void FUN_00491c70(GolD3DRenderDevice* p_renderer, GolExport* p_golExport, GolCollidableEntity* p_params);
 
-		Field0x004 m_unk0x004;               // 0x004
+		Decal m_unk0x004;                    // 0x004
 		ModelSlot m_unk0x120[3];             // 0x120
 		GolExport* m_unk0x2f4;               // 0x2f4
 		GolCollidableEntity* m_unk0x2f8;     // 0x2f8

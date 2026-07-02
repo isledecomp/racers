@@ -54,25 +54,25 @@ extern const LegoFloat g_unk0x004b0094 = 18.0f;
 LegoFloat g_unk0x004c4810 = g_unk0x004b0064 * 8.0f;
 
 // FUNCTION: LEGORACERS 0x0041fb50
-RaceState::Racer::Field0xc70::Field0xc70()
+RaceState::Racer::DriveController::DriveController()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb60
-RaceState::Racer::Field0xc70::~Field0xc70()
+RaceState::Racer::DriveController::~DriveController()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb70
-void RaceState::Racer::Field0xc70::Destroy()
+void RaceState::Racer::DriveController::Destroy()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0041fb80
-void RaceState::Racer::Field0xc70::Reset()
+void RaceState::Racer::DriveController::Reset()
 {
 	m_unk0x000 = NULL;
 	m_unk0x004 = NULL;
@@ -98,7 +98,7 @@ void RaceState::Racer::Field0xc70::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x0041fbd0
-void RaceState::Racer::Field0xc70::FUN_0041fbd0(Field0x3e8* p_unk0x04)
+void RaceState::Racer::DriveController::FUN_0041fbd0(Physics* p_unk0x04)
 {
 	if (m_unk0x000) {
 		Destroy();
@@ -107,7 +107,7 @@ void RaceState::Racer::Field0xc70::FUN_0041fbd0(Field0x3e8* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0041fc00
-void RaceState::Racer::Field0xc70::FUN_0041fc00(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::FUN_0041fc00(LegoU32 p_elapsedMs)
 {
 	LegoU32 flags = m_unk0x014;
 	m_unk0x008 = m_unk0x00c;
@@ -167,7 +167,7 @@ void RaceState::Racer::Field0xc70::FUN_0041fc00(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0041fd60
-void RaceState::Racer::Field0xc70::FUN_0041fd60(LegoU32)
+void RaceState::Racer::DriveController::FUN_0041fd60(LegoU32)
 {
 	if (m_unk0x000->m_unk0x618 > 0.0f) {
 		m_unk0x010 = -(g_unk0x004b0064 + g_unk0x004b0064);
@@ -181,12 +181,12 @@ void RaceState::Racer::Field0xc70::FUN_0041fd60(LegoU32)
 }
 
 // FUNCTION: LEGORACERS 0x0041fdb0
-void RaceState::Racer::Field0xc70::FUN_0041fdb0(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::FUN_0041fdb0(LegoU32 p_elapsedMs)
 {
-	Field0x3e8* field0x000 = m_unk0x000;
+	Physics* field0x000 = m_unk0x000;
 	m_unk0x028 += p_elapsedMs;
 
-	if (field0x000->m_flags0x6c0 & Field0x3e8::c_flags0x6c0Bit1) {
+	if (field0x000->m_flags0x6c0 & Physics::c_flags0x6c0Bit1) {
 		LegoU32 flags = m_unk0x014;
 		m_unk0x028 = 0;
 		m_unk0x014 = flags & ~c_flags0x014Bit5;
@@ -212,7 +212,7 @@ void RaceState::Racer::Field0xc70::FUN_0041fdb0(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0041fe60
-void RaceState::Racer::Field0xc70::FUN_0041fe60(LegoFloat p_unk0x04)
+void RaceState::Racer::DriveController::FUN_0041fe60(LegoFloat p_unk0x04)
 {
 	if (m_unk0x014 & c_flags0x014Bit4) {
 		p_unk0x04 = -p_unk0x04;
@@ -232,7 +232,7 @@ void RaceState::Racer::Field0xc70::FUN_0041fe60(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0041fee0
-void RaceState::Racer::Field0xc70::FUN_0041fee0()
+void RaceState::Racer::DriveController::FUN_0041fee0()
 {
 	if (m_unk0x00c == 0.0f && m_unk0x008 == 0.0f) {
 		m_unk0x000->FUN_00446ef0(0.0f);
@@ -310,7 +310,7 @@ void RaceState::Racer::Field0xc70::FUN_0041fee0()
 }
 
 // FUNCTION: LEGORACERS 0x00420130
-void RaceState::Racer::Field0xc70::FUN_00420130(LegoFloat p_unk0x04)
+void RaceState::Racer::DriveController::FUN_00420130(LegoFloat p_unk0x04)
 {
 	if (m_unk0x014 & c_flags0x014Bit4) {
 		p_unk0x04 += m_unk0x01c;
@@ -333,7 +333,7 @@ void RaceState::Racer::Field0xc70::FUN_00420130(LegoFloat p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004201e0
-void RaceState::Racer::Field0xc70::FUN_004201e0()
+void RaceState::Racer::DriveController::FUN_004201e0()
 {
 	LegoU32 flags = m_unk0x014;
 
@@ -364,7 +364,7 @@ void RaceState::Racer::Field0xc70::FUN_004201e0()
 }
 
 // FUNCTION: LEGORACERS 0x00420260
-void RaceState::Racer::Field0xc70::FUN_00420260(LegoBool32 p_unk0x04)
+void RaceState::Racer::DriveController::FUN_00420260(LegoBool32 p_unk0x04)
 {
 	LegoU32 flags = m_unk0x014;
 	m_unk0x014 = flags & ~c_flags0x014Bit3;
@@ -384,7 +384,7 @@ void RaceState::Racer::Field0xc70::FUN_00420260(LegoBool32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x004202c0
-undefined4 RaceState::Racer::Field0xc70::FUN_004202c0()
+undefined4 RaceState::Racer::DriveController::FUN_004202c0()
 {
 	LegoU32 flags = m_unk0x014;
 	flags &= ~4;
@@ -399,7 +399,7 @@ undefined4 RaceState::Racer::Field0xc70::FUN_004202c0()
 }
 
 // FUNCTION: LEGORACERS 0x004202f0
-GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04)
+GolQuat* RaceState::Racer::DriveController::FUN_004202f0(Records::Entry* p_unk0x04)
 {
 	LegoU32 flags = m_unk0x014;
 	m_unk0x024 = 1000;
@@ -408,7 +408,7 @@ GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04
 	m_unk0x014 = flags;
 	FUN_004202c0();
 
-	Field0x00c::Entry* value = m_unk0x004;
+	Records::Entry* value = m_unk0x004;
 	m_unk0x00c = 0;
 	m_unk0x050->AttachAtLoop(value);
 
@@ -416,7 +416,7 @@ GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04
 	m_unk0x050->Advance(static_cast<LegoFloat>(m_unk0x024));
 
 	GolQuat* basis = &m_unk0x040;
-	RaceState::Racer::Field0x3e8::RouteCursorInstance* field0x50 = m_unk0x050;
+	RaceState::Racer::Physics::RouteCursorInstance* field0x50 = m_unk0x050;
 	m_unk0x034 = field0x50->m_position;
 	GolQuat* result = &field0x50->m_rotation;
 	basis->m_x = result->m_x;
@@ -427,7 +427,7 @@ GolQuat* RaceState::Racer::Field0xc70::FUN_004202f0(Field0x00c::Entry* p_unk0x04
 }
 
 // FUNCTION: LEGORACERS 0x00420380
-void RaceState::Racer::Field0xc70::FUN_00420380()
+void RaceState::Racer::DriveController::FUN_00420380()
 {
 	LegoU32 flags = m_unk0x014;
 	flags &= ~c_flags0x014Bit6;
@@ -442,7 +442,7 @@ void RaceState::Racer::Field0xc70::FUN_00420380()
 }
 
 // FUNCTION: LEGORACERS 0x004203b0
-void RaceState::Racer::Field0xc70::FUN_004203b0(LegoU32 p_elapsedMs)
+void RaceState::Racer::DriveController::FUN_004203b0(LegoU32 p_elapsedMs)
 {
 	GolVec3 delta;
 	GolVec3 pathDirection;

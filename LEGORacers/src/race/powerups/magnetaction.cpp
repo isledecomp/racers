@@ -300,7 +300,7 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 				}
 			}
 
-			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerField0xc70Flags0x014Bit0) {
+			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerDriveControllerFlags0x014Bit0) {
 				m_manager->CancelTurbo(m_heldRacer);
 				m_heldRacer->ClearActiveAction();
 			}

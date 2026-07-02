@@ -7,10 +7,10 @@
 #include "golmodelbase.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004, 0x11c)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::FloatBits, 0x04)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedCoordinates, 0x08)
-DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex, 0x20)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Decal, 0x11c)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Decal::FloatBits, 0x04)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Decal::ProjectedCoordinates, 0x08)
+DECOMP_SIZE_ASSERT(RaceSessionField0x27d4::Item::Decal::ProjectedVertex, 0x20)
 
 // GLOBAL: LEGORACERS 0x004c47a8
 GolVec3 g_unk0x004c47a8[5];
@@ -52,7 +52,7 @@ LegoFloat g_unk0x004c3e1c;
 LegoFloat g_unk0x004c3e24;
 
 // GLOBAL: LEGORACERS 0x004c3e28
-RaceSessionField0x27d4::Item::Field0x004::ProjectedVertex g_unk0x004c3e28[76];
+RaceSessionField0x27d4::Item::Decal::ProjectedVertex g_unk0x004c3e28[76];
 
 // FUNCTION: LEGORACERS 0x00403cc0
 void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
@@ -215,7 +215,7 @@ void GolBoundingShape::FUN_00403cc0(GolVec3* p_unk0x04, LegoU32 p_unk0x08)
 }
 
 // FUNCTION: LEGORACERS 0x00414a30
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a30(GolCollidableEntity* p_unk0x04)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414a30(GolCollidableEntity* p_unk0x04)
 {
 	FUN_00415a60();
 
@@ -234,7 +234,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a30(GolCollidableEntity*
 }
 
 // FUNCTION: LEGORACERS 0x00414a90
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a90(GolModelBase* p_unk0x04)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414a90(GolModelBase* p_unk0x04)
 {
 	FUN_00414d50();
 
@@ -266,11 +266,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414a90(GolModelBase* p_unk0
 }
 
 // FUNCTION: LEGORACERS 0x00414b30
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414b30(
-	GolModelBase* p_unk0x04,
-	LegoU32 p_unk0x08,
-	LegoU32 p_unk0x0c
-)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414b30(GolModelBase* p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c)
 {
 	LegoU32 start = p_unk0x08;
 	GolModelBase* model = p_unk0x04;
@@ -314,7 +310,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414b30(
 }
 
 // FUNCTION: LEGORACERS 0x00414c00
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414c00(GolModelBase* p_unk0x04)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414c00(GolModelBase* p_unk0x04)
 {
 	if (m_unk0x0c0) {
 		FUN_00415980();
@@ -338,7 +334,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414c00(GolModelBase* p_unk0
 }
 
 // FUNCTION: LEGORACERS 0x00414c90
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414c90(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414c90(GolVec3* p_unk0x04, GolVec3* p_unk0x08)
 {
 	GolVec3* normalized = &m_unk0x0dc;
 	GolMath::NormalizeVector3(*p_unk0x04, normalized);
@@ -363,7 +359,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414c90(GolVec3* p_unk0x04, 
 }
 
 // FUNCTION: LEGORACERS 0x00414d50
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414d50()
+void RaceSessionField0x27d4::Item::Decal::FUN_00414d50()
 {
 	LegoFloat scaleX = m_unk0x104;
 	scaleX = 0.99000001f / scaleX;
@@ -420,7 +416,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414d50()
 }
 
 // FUNCTION: LEGORACERS 0x00414e40
-LegoU32 RaceSessionField0x27d4::Item::Field0x004::FUN_00414e40(LegoU32 p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c)
+LegoU32 RaceSessionField0x27d4::Item::Decal::FUN_00414e40(LegoU32 p_unk0x04, LegoU32 p_unk0x08, LegoU32 p_unk0x0c)
 {
 	LegoU32 result = p_unk0x0c;
 	LegoU32 vertexIndex = p_unk0x08;
@@ -459,7 +455,7 @@ LegoU32 RaceSessionField0x27d4::Item::Field0x004::FUN_00414e40(LegoU32 p_unk0x04
 }
 
 // STUB: LEGORACERS 0x00414f40
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00414f40(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
+void RaceSessionField0x27d4::Item::Decal::FUN_00414f40(LegoU32 p_unk0x04, LegoU32 p_unk0x08)
 {
 	LegoU8* indices = m_unk0x118 + 4 * p_unk0x04;
 	LegoU8* end = m_unk0x118 + 4 * (p_unk0x04 + p_unk0x08);
@@ -737,7 +733,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00414f40(LegoU32 p_unk0x04, L
 }
 
 // FUNCTION: LEGORACERS 0x00415810
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00415810(
+void RaceSessionField0x27d4::Item::Decal::FUN_00415810(
 	ProjectedVertex* p_unk0x04,
 	ProjectedVertex* p_unk0x08,
 	ProjectedVertex* p_unk0x0c
@@ -792,7 +788,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00415810(
 }
 
 // FUNCTION: LEGORACERS 0x00415980
-void RaceSessionField0x27d4::Item::Field0x004::FUN_00415980()
+void RaceSessionField0x27d4::Item::Decal::FUN_00415980()
 {
 	LegoU32 groupIndex = m_unk0x0b8;
 	LegoU32 vertexCount = m_unk0x0bc;
@@ -818,7 +814,7 @@ void RaceSessionField0x27d4::Item::Field0x004::FUN_00415980()
 }
 
 // FUNCTION: LEGORACERS 0x00415a60
-GolVec3* RaceSessionField0x27d4::Item::Field0x004::FUN_00415a60()
+GolVec3* RaceSessionField0x27d4::Item::Decal::FUN_00415a60()
 {
 	LegoFloat scratch[13];
 

@@ -580,7 +580,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 		}
 
 		if (!(racer->m_unk0x3e8.m_flags0x6c0 & c_racerFlags0xaa8Bit7)) {
-			RaceState::Racer::Field0x3e8* field0x3e8 = &racer->m_unk0x3e8;
+			RaceState::Racer::Physics* field0x3e8 = &racer->m_unk0x3e8;
 			GolVec3 direction = field0x3e8->m_unk0x168;
 			racer->StartSpinOut();
 
@@ -595,7 +595,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 			field0x3e8->VTable0x1c(&impulse, &impulse);
 
-			RaceState::Racer::Field0x018* racerField0x018 = &racer->m_unk0x018;
+			RaceState::Racer::CarVisuals* racerCarVisuals = &racer->m_unk0x018;
 			ColorTransform0x20 transform;
 			transform.m_redOffset = c_colorOffset0xe1;
 			transform.m_redShift = 0;
@@ -605,7 +605,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 			transform.m_bluShift = 0;
 			transform.m_alpOffset = 0;
 			transform.m_alpShift = 0;
-			racerField0x018->FlashColor(&transform, c_flashDurationMs);
+			racerCarVisuals->FlashColor(&transform, c_flashDurationMs);
 
 			if (m_ownerRacer != NULL) {
 				m_ownerRacer->PlayReaction(TRUE);
@@ -613,7 +613,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 
 			racer->PlayReaction(FALSE);
 			racer->DropWhiteBrick();
-			racerField0x018->m_reactionFlags |= c_racerField0x018Flags0x384Bit1;
+			racerCarVisuals->m_reactionFlags |= c_racerCarVisualsFlags0x384Bit1;
 
 			m_shockTimerMs = 0;
 			m_targetRacer = racer;
@@ -627,7 +627,7 @@ void RacePowerupManager::LightningAction::OnHitRacer(RaceState::Racer* p_racer)
 			m_hitParticle = cutsceneAnimation->FUN_00489d70("lghthit", NULL, NULL, NULL);
 
 			SoundVector position;
-			racerField0x018->m_carEntity->VTable0x04(&position);
+			racerCarVisuals->m_carEntity->VTable0x04(&position);
 			m_soundSource->PlaySpatialSoundById(
 				c_soundZap,
 				&position,

@@ -11,12 +11,12 @@ DECOMP_SIZE_ASSERT(SaveLoadScreen, 0x1d7c)
 // FUNCTION: LEGORACERS 0x00486b30
 SaveLoadScreen::SaveLoadScreen()
 {
-	m_unk0x368 = 0;
-	m_unk0x36c = 0;
-	m_unk0x370 = 0;
-	m_unk0x374 = FALSE;
+	m_status = 0;
+	m_requestMenuId = 0;
+	m_saveIndex = 0;
+	m_widgetsDirty = FALSE;
 	m_unk0x1d78 = 0;
-	m_unk0x378 = TRUE;
+	m_skipFirstStatus = TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x00486ca0
@@ -32,10 +32,10 @@ LegoBool32 SaveLoadScreen::Initialize(MenuGameContext* p_context, MenuScreenCrea
 		Destroy();
 	}
 
-	m_unk0x36c = p_createParams->m_menuId;
+	m_requestMenuId = p_createParams->m_menuId;
 	p_createParams->m_menuId = 0x32;
-	m_unk0x370 = p_context->m_modelBuilder.GetUnk0x84();
-	FUN_00486e40(&p_context->m_saveSystem);
+	m_saveIndex = p_context->m_modelBuilder.GetUnk0x84();
+	ExecuteOperation(&p_context->m_saveSystem);
 
 	if (!MenuGameScreen::Initialize(p_context, p_createParams)) {
 		return FALSE;
@@ -46,19 +46,19 @@ LegoBool32 SaveLoadScreen::Initialize(MenuGameContext* p_context, MenuScreenCrea
 }
 
 // FUNCTION: LEGORACERS 0x00486e40
-void SaveLoadScreen::FUN_00486e40(SaveSystem* p_source)
+void SaveLoadScreen::ExecuteOperation(SaveSystem* p_source)
 {
 	LegoS32 emptyCount;
 	LegoS32 statusEightCount;
 
-	switch (m_unk0x36c) {
+	switch (m_requestMenuId) {
 	case c_menuLoadAll: {
 		emptyCount = 0;
 		statusEightCount = 0;
-		m_unk0x370 = p_source->GetMemoryCardSaveCount() - 1;
-		while (m_unk0x370 >= 0) {
-			LegoS32 status = p_source->FUN_00443420(m_unk0x370, TRUE);
-			m_unk0x368 = status;
+		m_saveIndex = p_source->GetMemoryCardSaveCount() - 1;
+		while (m_saveIndex >= 0) {
+			LegoS32 status = p_source->FUN_00443420(m_saveIndex, TRUE);
+			m_status = status;
 			if (!status) {
 				emptyCount++;
 			}
@@ -66,54 +66,54 @@ void SaveLoadScreen::FUN_00486e40(SaveSystem* p_source)
 				statusEightCount++;
 			}
 
-			m_unk0x370--;
+			m_saveIndex--;
 		}
 
 		LegoS32 status = 0;
-		m_unk0x370 = status;
+		m_saveIndex = status;
 		if (emptyCount != status) {
-			m_unk0x368 = status;
+			m_status = status;
 		}
 		else if (statusEightCount > status) {
-			m_unk0x368 = 8;
+			m_status = 8;
 		}
 		break;
 	}
 	case c_menuLoadCard:
-		m_unk0x368 = p_source->FUN_00443420(m_unk0x370, FALSE);
+		m_status = p_source->FUN_00443420(m_saveIndex, FALSE);
 		break;
 	case c_menuLcCreate: {
-		LegoU32 status = p_source->GetMemoryCardSaves()[m_unk0x370].GetRecordCount();
+		LegoU32 status = p_source->GetMemoryCardSaves()[m_saveIndex].GetRecordCount();
 		if (status > 0) {
-			m_unk0x368 = p_source->FUN_004434a0(m_unk0x370);
+			m_status = p_source->FUN_004434a0(m_saveIndex);
 		}
 		else {
-			m_unk0x368 = p_source->FUN_00443420(m_unk0x370, TRUE);
+			m_status = p_source->FUN_00443420(m_saveIndex, TRUE);
 		}
-		m_unk0x378 = FALSE;
+		m_skipFirstStatus = FALSE;
 		break;
 	}
 	case c_menuSaveAll: {
-		m_unk0x370 = p_source->GetMemoryCardSaveCount() - 1;
-		m_unk0x368 = 0;
-		while (m_unk0x370 >= 0) {
-			LegoS32 status = p_source->FUN_004434a0(m_unk0x370);
+		m_saveIndex = p_source->GetMemoryCardSaveCount() - 1;
+		m_status = 0;
+		while (m_saveIndex >= 0) {
+			LegoS32 status = p_source->FUN_004434a0(m_saveIndex);
 			if (status && status != 0x12 && status != 8) {
-				m_unk0x368 = status;
+				m_status = status;
 			}
 
-			m_unk0x370--;
+			m_saveIndex--;
 		}
 
-		m_unk0x370 = 0;
+		m_saveIndex = 0;
 		break;
 	}
 	case c_menuSaveCard:
-		m_unk0x368 = p_source->FUN_004434a0(m_unk0x370);
+		m_status = p_source->FUN_004434a0(m_saveIndex);
 		break;
 	}
 
-	m_unk0x368 = 0;
+	m_status = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00486ff0
@@ -124,20 +124,20 @@ LegoBool32 SaveLoadScreen::Destroy()
 	}
 
 	m_cursor->SetCursorEnabled(TRUE);
-	m_unk0x368 = 0;
+	m_status = 0;
 	return MenuGameScreen::Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00487020
 LegoBool32 SaveLoadScreen::Update(undefined4)
 {
-	if (m_unk0x374) {
+	if (m_widgetsDirty) {
 		DetachAllWidgets();
 		CreateWidgets();
-		m_unk0x374 = FALSE;
+		m_widgetsDirty = FALSE;
 	}
 
-	if (!m_unk0x368) {
+	if (!m_status) {
 		Navigate();
 	}
 
@@ -148,7 +148,7 @@ LegoBool32 SaveLoadScreen::Update(undefined4)
 void SaveLoadScreen::CreateWidgets()
 {
 	if (!(m_context->m_modelBuilder.GetMenuFlowFlags() & DriverModelBuilder::c_menuFlowSaveReminder)) {
-		CreateImage(&m_unk0x37c, 0x49, 0x49);
+		CreateImage(&m_photoImage, 0x49, 0x49);
 	}
 	else {
 		m_context->m_modelBuilder.SetMenuFlowFlags(
@@ -156,43 +156,43 @@ void SaveLoadScreen::CreateWidgets()
 		);
 	}
 
-	if (!m_unk0x368) {
+	if (!m_status) {
 		return;
 	}
 
-	if (m_unk0x378 == TRUE) {
-		m_unk0x368 = 8;
-		m_unk0x378 = FALSE;
+	if (m_skipFirstStatus == TRUE) {
+		m_status = 8;
+		m_skipFirstStatus = FALSE;
 	}
 
-	CreateImage(&m_unk0x3d8, 0x53, 0x53);
-	CreateImage(&m_unk0x434, 0x54, 0x54);
+	CreateImage(&m_statusPanelImage, 0x53, 0x53);
+	CreateImage(&m_statusIconImage, 0x54, 0x54);
 
-	switch (m_unk0x368) {
+	switch (m_status) {
 	case 8:
 	case 0x12:
 		return;
 	case 0x18:
-		CreateTextLabel(&m_unk0x490, 0x142, 0x37, 0x89);
-		CreateTextLabel(&m_unk0x508, 0x143, 0x37, 0x87);
-		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
-		CreateTextButton(&m_unk0x1a88, 0x40, 0x46, 0x72);
-		m_unk0x1a88.Select(0);
+		CreateTextLabel(&m_statusLine1, 0x142, 0x37, 0x89);
+		CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x87);
+		CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
+		CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
+		m_okButton.Select(0);
 		return;
 	default:
-		if (m_unk0x36c != c_menuSaveAll && m_unk0x36c != c_menuSaveCard) {
-			CreateTextLabel(&m_unk0x490, 0x145, 0x37, 0xa9);
+		if (m_requestMenuId != c_menuSaveAll && m_requestMenuId != c_menuSaveCard) {
+			CreateTextLabel(&m_statusLine1, 0x145, 0x37, 0xa9);
 		}
 
 	case 0x13:
-		CreateTextLabel(&m_unk0x508, 0x143, 0x37, 0x37);
+		CreateTextLabel(&m_statusLine2, 0x143, 0x37, 0x37);
 
 	case 0x14:
 	case 0x16:
 	case 0x17:
-		CreateTextLabel(&m_unk0x580, 0x144, 0x37, 0x37);
-		CreateTextButton(&m_unk0x1a88, 0x40, 0x46, 0x72);
-		m_unk0x1a88.Select(0);
+		CreateTextLabel(&m_statusLine3, 0x144, 0x37, 0x37);
+		CreateTextButton(&m_okButton, 0x40, 0x46, 0x72);
+		m_okButton.Select(0);
 		return;
 	}
 }
@@ -206,46 +206,46 @@ void SaveLoadScreen::Navigate()
 // FUNCTION: LEGORACERS 0x00487220
 void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_source == &m_unk0x1a88) {
-		switch (m_unk0x368) {
+	if (p_source == &m_okButton) {
+		switch (m_status) {
 		case 0x16:
 		case 0x17:
-			m_unk0x368 = 8;
+			m_status = 8;
 			break;
 		case 1:
 		case 0x13:
 		case 0x14:
 		case 0x18:
-			FUN_00486e40(&m_context->m_saveSystem);
+			ExecuteOperation(&m_context->m_saveSystem);
 			break;
 		}
 
-		m_unk0x374 = TRUE;
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0x14a8 && m_unk0x368 == 0x19) {
-		SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_unk0x370);
+	if (p_source == &m_yesButton && m_status == 0x19) {
+		SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_saveIndex);
 		LegoS32 status = entry->CreateDirectories();
-		m_unk0x368 = status;
+		m_status = status;
 		if (!status) {
-			m_unk0x368 = m_context->m_saveSystem.FUN_00443420(m_unk0x370, TRUE);
+			m_status = m_context->m_saveSystem.FUN_00443420(m_saveIndex, TRUE);
 		}
 
-		m_unk0x374 = TRUE;
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0x1798 && m_unk0x368 == 0x19) {
-		m_unk0x368 = 8;
-		m_unk0x374 = TRUE;
+	if (p_source == &m_noButton && m_status == 0x19) {
+		m_status = 8;
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0x14a8 || p_source == &m_unk0x11b8) {
-		if (m_unk0x368 == 0x15) {
-			FUN_00486e40(&m_context->m_saveSystem);
-			m_unk0x374 = TRUE;
+	if (p_source == &m_yesButton || p_source == &m_cancelButton) {
+		if (m_status == 0x15) {
+			ExecuteOperation(&m_context->m_saveSystem);
+			m_widgetsDirty = TRUE;
 			return;
 		}
 
@@ -253,50 +253,50 @@ void SaveLoadScreen::OnIconUnfocused(MenuWidget* p_source)
 		return;
 	}
 
-	if (p_source == &m_unk0x1798) {
-		if (m_unk0x368 == 0x15) {
-			SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_unk0x370);
+	if (p_source == &m_noButton) {
+		if (m_status == 0x15) {
+			SaveSlot* entry = m_context->m_saveSystem.GetDirectory().GetEntry(m_saveIndex);
 			entry->CreateDirectories();
-			m_unk0x374 = TRUE;
+			m_widgetsDirty = TRUE;
 			return;
 		}
 
-		FUN_00486e40(&m_context->m_saveSystem);
-		m_unk0x374 = TRUE;
+		ExecuteOperation(&m_context->m_saveSystem);
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0x5f8) {
-		m_unk0x370 = 0;
+	if (p_source == &m_slot0Button) {
+		m_saveIndex = 0;
 		m_context->m_saveSystem.GetDirectory().GetEntry(0)->EnsureDirectoryExists();
-		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(0, TRUE);
-		m_unk0x374 = TRUE;
+		m_status = m_context->m_saveSystem.FUN_00443420(0, TRUE);
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0x8e8) {
-		m_unk0x370 = 1;
+	if (p_source == &m_slot1Button) {
+		m_saveIndex = 1;
 		m_context->m_saveSystem.GetDirectory().GetEntry(1)->EnsureDirectoryExists();
-		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(1, TRUE);
-		m_unk0x374 = TRUE;
+		m_status = m_context->m_saveSystem.FUN_00443420(1, TRUE);
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0xbd8) {
-		m_unk0x370 = 2;
+	if (p_source == &m_slot2Button) {
+		m_saveIndex = 2;
 		m_context->m_saveSystem.GetDirectory().GetEntry(2)->EnsureDirectoryExists();
-		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(2, TRUE);
-		m_unk0x374 = TRUE;
+		m_status = m_context->m_saveSystem.FUN_00443420(2, TRUE);
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	if (p_source == &m_unk0xec8) {
-		m_unk0x370 = 3;
+	if (p_source == &m_slot3Button) {
+		m_saveIndex = 3;
 		m_context->m_saveSystem.GetDirectory().GetEntry(3)->EnsureDirectoryExists();
-		m_unk0x368 = m_context->m_saveSystem.FUN_00443420(3, TRUE);
-		m_unk0x374 = TRUE;
+		m_status = m_context->m_saveSystem.FUN_00443420(3, TRUE);
+		m_widgetsDirty = TRUE;
 		return;
 	}
 
-	m_unk0x374 = TRUE;
+	m_widgetsDirty = TRUE;
 }

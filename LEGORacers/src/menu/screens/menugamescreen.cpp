@@ -119,8 +119,8 @@ undefined4 MenuGameScreen::FUN_0047fcf0(CarPartCarousel* p_unk0x04, undefined2 p
 	MenuGameContext* context = m_context;
 	createParams.m_partSet = &context->m_unk0x21a4;
 	createParams.m_pieceLibrary = &context->m_pieceLibrary;
-	createParams.m_buildModel = &context->m_unk0x21f4;
-	createParams.m_colorTable = &context->m_unk0x4224;
+	createParams.m_buildModel = &context->m_carBuildModel;
+	createParams.m_colorTable = &context->m_colorTable;
 	createParams.m_unk0x70 = VTable0x6c();
 	createParams.m_unk0x6c = 5;
 
@@ -200,20 +200,20 @@ void MenuGameScreen::FUN_0047ff50(MenuGameContext* p_context, undefined4 p_binar
 
 	if (p_binary) {
 		pieceLibrary->FUN_0049ee30("LPieceHi.leg", p_context->m_context->m_useBinaryFiles);
-		pieceResource = &p_context->m_unk0x4224;
+		pieceResource = &p_context->m_colorTable;
 		pieceResource->Initialize(golExport, renderer);
 		pieceResource->LoadMaterials("LPieceHi.WDF", p_context->m_context->m_useBinaryFiles, TRUE);
 	}
 	else {
 		pieceLibrary->FUN_0049ee30("LPieceLo.leg", p_context->m_context->m_useBinaryFiles);
-		pieceResource = &p_context->m_unk0x4224;
+		pieceResource = &p_context->m_colorTable;
 		pieceResource->Initialize(golExport, renderer);
 		pieceResource->LoadMaterials("LPieceLo.WDF", p_context->m_context->m_useBinaryFiles, TRUE);
 	}
 
 	pieceResource->LoadColors("L_Colors.LEG", p_context->m_context->m_useBinaryFiles);
-	p_context->m_unk0x21f4.Initialize(golExport, renderer, pieceLibrary, pieceResource);
-	p_context->m_unk0x21f4.FindHighBasePiece();
+	p_context->m_carBuildModel.Initialize(golExport, renderer, pieceLibrary, pieceResource);
+	p_context->m_carBuildModel.FindHighBasePiece();
 	p_context->m_unk0x21a4.Load("crstmgr.leg", pieceLibrary, pieceResource, p_context->m_context->m_useBinaryFiles);
 
 	ChassisModelTable::Params params;
@@ -239,8 +239,8 @@ void MenuGameScreen::FUN_004800c0(MenuGameContext* p_context)
 	}
 
 	p_context->m_unk0x21a4.Clear();
-	p_context->m_unk0x21f4.Destroy();
-	p_context->m_unk0x4224.Destroy();
+	p_context->m_carBuildModel.Destroy();
+	p_context->m_colorTable.Destroy();
 	p_context->m_pieceLibrary.Destroy();
 
 	GolNameTable* chassisModels = &p_context->m_chassisModels;

@@ -139,7 +139,7 @@ LegoBool32 EditCarScreen::VTable0x8c(MenuGameContext* p_context, MenuScreenCreat
 {
 	FUN_0047c400(p_context, p_createParams);
 
-	if (!p_context->m_unk0x21f4.IsInitialized()) {
+	if (!p_context->m_carBuildModel.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
 	}
 
@@ -204,8 +204,8 @@ void EditCarScreen::FUN_0047c320()
 		mask <<= 1;
 	}
 
-	for (i = 0; i < m_context->m_unk0x21f4.GetPlacedPieceCount(); i++) {
-		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_unk0x21f4.FUN_0049bd50(i));
+	for (i = 0; i < m_context->m_carBuildModel.GetPlacedPieceCount(); i++) {
+		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_carBuildModel.FUN_0049bd50(i));
 		m_unk0x3688[index] = TRUE;
 	}
 
@@ -240,14 +240,14 @@ void EditCarScreen::FUN_0047c450()
 {
 	m_unk0x3678 = &m_context->m_saveSystem.GetActiveRecord();
 	m_unk0x3678->CopyCarData(m_unk0x325c);
-	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x325c);
+	m_context->m_carBuildModel.FUN_0049c7f0(m_unk0x325c);
 	FUN_0047c320();
 
-	if (m_context->m_unk0x21f4.GetPlacedPieceCount()) {
+	if (m_context->m_carBuildModel.GetPlacedPieceCount()) {
 		LegoChar name[9];
 
-		m_context->m_unk0x21f4.FUN_0049b740(0);
-		m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+		m_context->m_carBuildModel.FUN_0049b740(0);
+		m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 		m_context->m_saveSystem.GetActiveRecord().GetChassisName(m_unk0x367c);
 
 		::strncpy(name, m_unk0x367c, 8);
@@ -274,7 +274,7 @@ void EditCarScreen::FUN_0047c450()
 void EditCarScreen::FUN_0047c5a0()
 {
 	::memset(m_unk0x325c, 0, sizeof(m_unk0x325c));
-	m_context->m_unk0x21f4.FUN_0049c820(m_unk0x325c);
+	m_context->m_carBuildModel.FUN_0049c820(m_unk0x325c);
 	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_unk0x325c);
 	m_context->m_saveSystem.GetActiveRecord().GetSelectedRecord()->CopyFrom(&m_context->m_saveSystem.GetActiveRecord());
 
@@ -310,8 +310,8 @@ void EditCarScreen::FUN_0047c720()
 {
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
-	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
-	createParams.m_unk0x08 = m_context->m_unk0x21f4.GetUnk0x0c();
+	createParams.m_unk0x04 = &m_context->m_carBuildModel;
+	createParams.m_unk0x08 = m_context->m_carBuildModel.GetUnk0x0c();
 	createParams.m_unk0x0c = &m_unk0x34b0;
 	m_context->m_saveSystem.GetActiveRecord().GetChassisName(createParams.m_chassisName);
 
@@ -322,7 +322,7 @@ void EditCarScreen::FUN_0047c720()
 // FUNCTION: LEGORACERS 0x0047c790
 void EditCarScreen::FUN_0047c790()
 {
-	if (m_context->m_unk0x21f4.GetPlacedPieceCount() > 1) {
+	if (m_context->m_carBuildModel.GetPlacedPieceCount() > 1) {
 		if (!m_unk0x3678->IsCarSaved()) {
 			m_unk0x2418.VTable0x48(5);
 		}
@@ -352,12 +352,12 @@ void EditCarScreen::FUN_0047c810()
 		if (::strncmp(m_unk0x367c, name, sizeof(name)) == 0) {
 			record->CopyCarData(m_unk0x325c);
 
-			CarBuildModel* model = &m_context->m_unk0x21f4;
+			CarBuildModel* model = &m_context->m_carBuildModel;
 			model->GetPieceList().FUN_0049fd60();
 			model->SetPlacedPieceCount(0);
-			m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x325c);
-			m_context->m_unk0x21f4.FUN_0049b740(0);
-			m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+			m_context->m_carBuildModel.FUN_0049c7f0(m_unk0x325c);
+			m_context->m_carBuildModel.FUN_0049b740(0);
+			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
 			m_unk0x3678->MarkCarSaved();
 			FUN_0047c790();
@@ -375,7 +375,7 @@ LegoBool32 EditCarScreen::FUN_0047c900()
 	}
 
 	::memset(buffer, 0, sizeof(m_unk0x325c));
-	m_context->m_unk0x21f4.FUN_0049c820(buffer);
+	m_context->m_carBuildModel.FUN_0049c820(buffer);
 	m_unk0x3678->CopyCarData(m_unk0x325c);
 
 	LegoBool32 result = ::memcmp(buffer, m_unk0x325c, sizeof(m_unk0x325c));
@@ -466,7 +466,7 @@ void EditCarScreen::VTable0x44(MenuWidget* p_source)
 		return;
 	}
 
-	CarBuildModel* model = &m_context->m_unk0x21f4;
+	CarBuildModel* model = &m_context->m_carBuildModel;
 	model->GetPieceList().FUN_0049fd60();
 	model->SetPlacedPieceCount(0);
 
@@ -487,9 +487,9 @@ void EditCarScreen::VTable0x44(MenuWidget* p_source)
 
 	m_context->m_saveSystem.GetActiveRecord().SetChassisName(m_unk0x367c);
 	LegoPieceLibrary::PieceRecord* pieceRecord = m_context->m_pieceLibrary.FindPieceRecordByName(name);
-	m_context->m_unk0x21f4.FUN_0049a160(pieceRecord, 0, 0, 0, 3, 0);
-	m_context->m_unk0x21f4.FUN_0049b740(0);
-	m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+	m_context->m_carBuildModel.FUN_0049a160(pieceRecord, 0, 0, 0, 3, 0);
+	m_context->m_carBuildModel.FUN_0049b740(0);
+	m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
 	m_unk0x3678->MarkCarSaved();
 	FUN_0047c720();
@@ -507,7 +507,7 @@ void EditCarScreen::VTable0x84()
 			m_golExport->VTable0x68(g_editCarImageList);
 			g_editCarImageList = NULL;
 		}
-		m_context->m_unk0x21f4.FUN_0049c820(m_unk0x325c);
+		m_context->m_carBuildModel.FUN_0049c820(m_unk0x325c);
 		m_unk0x3678->SetCarData(m_unk0x325c);
 		m_context->m_menuStack.Push(m_unk0x360);
 		break;

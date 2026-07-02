@@ -44,8 +44,8 @@ LegoBool32 AwardCinematicScreen::VTable0x8c(MenuGameContext* p_context, MenuScre
 	m_unk0x7a8 = 0;
 	m_unk0x7a4 = 0;
 
-	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_unk0x21f4.IsInitialized()) {
-		p_context->m_unk0x21f4.FUN_00499f00();
+	if (p_createParams->m_menuId == c_menuWinRrCar && p_context->m_carBuildModel.IsInitialized()) {
+		p_context->m_carBuildModel.FUN_00499f00();
 	}
 
 	if (!MenuSceneScreen::VTable0x8c(p_context, p_createParams)) {
@@ -122,8 +122,8 @@ LegoBool32 AwardCinematicScreen::Destroy()
 	LegoBool32 result = MenuSceneScreen::Destroy();
 	if (m_unk0x28c == c_menuWinRrCar) {
 		MenuGameContext* context = m_context;
-		if (context->m_unk0x21f4.IsInitialized()) {
-			m_context->m_unk0x21f4.FUN_00499ee0();
+		if (context->m_carBuildModel.IsInitialized()) {
+			m_context->m_carBuildModel.FUN_00499ee0();
 		}
 	}
 
@@ -241,7 +241,7 @@ void AwardCinematicScreen::VTable0x4c()
 		);
 
 		if (carBodyEntity) {
-			if (!m_context->m_unk0x21f4.IsInitialized()) {
+			if (!m_context->m_carBuildModel.IsInitialized()) {
 				GolHashTable::Entry* currentEntry;
 				if (g_hashTable) {
 					currentEntry = g_hashTable->GetCurrentEntry();
@@ -620,16 +620,16 @@ LegoBool32 AwardCinematicScreen::FUN_00476b00(undefined4)
 		LegoU8 carData[sizeof(SaveRecordData) - 0x2b];
 		record->CopyCarData(carData);
 
-		m_context->m_unk0x21f4.FUN_0049c7f0(carData);
-		if (m_context->m_unk0x21f4.GetPlacedPieceCount()) {
-			m_context->m_unk0x21f4.FUN_0049b740(FALSE);
-			m_context->m_unk0x21f4.FUN_0049b920(1, 0x7f);
+		m_context->m_carBuildModel.FUN_0049c7f0(carData);
+		if (m_context->m_carBuildModel.GetPlacedPieceCount()) {
+			m_context->m_carBuildModel.FUN_0049b740(FALSE);
+			m_context->m_carBuildModel.FUN_0049b920(1, 0x7f);
 
 			SceneEntityGroup::CreateParams createParams;
 			createParams.m_unk0x0c = NULL;
 			createParams.m_chassisModels = &m_context->m_chassisModels;
-			createParams.m_unk0x04 = &m_context->m_unk0x21f4;
-			createParams.m_unk0x08 = m_context->m_unk0x21f4.GetUnk0x0c();
+			createParams.m_unk0x04 = &m_context->m_carBuildModel;
+			createParams.m_unk0x08 = m_context->m_carBuildModel.GetUnk0x0c();
 
 			record->GetChassisName(name);
 			::strncpy(createParams.m_chassisName, name, sizeof(GolName));

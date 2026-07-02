@@ -71,7 +71,7 @@ void RacerModelScreenBase::FUN_00485bb0()
 {
 	FUN_00485da0();
 
-	m_unk0x73c[0] = m_context->m_unk0x21f4.GetUnk0x84();
+	m_unk0x73c[0] = m_context->m_carBuildModel.GetUnk0x84();
 
 	for (LegoS32 i = 0; i < m_unk0x77c; i++) {
 		if (m_unk0x73c[i] == NULL) {
@@ -80,11 +80,11 @@ void RacerModelScreenBase::FUN_00485bb0()
 				GOL_FATALERROR(c_golErrorOutOfMemory);
 			}
 
-			m_context->m_unk0x21f4.FUN_00499eb0(m_unk0x73c[i]);
+			m_context->m_carBuildModel.FUN_00499eb0(m_unk0x73c[i]);
 		}
 
 		m_unk0x4fc[i].VTable0x50(m_unk0x73c[i], g_racerPickMaxFloat);
-		m_unk0x4fc[i].SetPrimaryMaterialTable(m_context->m_unk0x4224.GetMaterialTable());
+		m_unk0x4fc[i].SetPrimaryMaterialTable(m_context->m_colorTable.GetMaterialTable());
 	}
 
 	m_modelParts.VTable0x14("rsanim", m_context->m_context->m_useBinaryFiles);
@@ -246,7 +246,7 @@ LegoBool32 RacerModelScreenBase::VTable0xa0(
 	m_unk0x2700 = p_params[1];
 	m_unk0x77c = m_unk0x2700 * m_unk0x26fc;
 
-	if (!p_context->m_unk0x21f4.IsInitialized()) {
+	if (!p_context->m_carBuildModel.IsInitialized()) {
 		FUN_0047ff50(p_context, TRUE);
 	}
 
@@ -335,14 +335,14 @@ void RacerModelScreenBase::FUN_00486250(LegoS32 p_index)
 		.FUN_0040d550(m_unk0x4ec[modelIndex], m_unk0x4dc[modelIndex], &m_modelParts, g_racerPickMaxFloat);
 
 	record->CopyCarData(m_unk0x788);
-	m_context->m_unk0x21f4.FUN_0049c7f0(m_unk0x788);
-	m_context->m_unk0x21f4.FUN_0049b740(0);
-	m_context->m_unk0x21f4.FUN_0049bc60(m_unk0x73c[modelIndex], 1, 0x7f);
+	m_context->m_carBuildModel.FUN_0049c7f0(m_unk0x788);
+	m_context->m_carBuildModel.FUN_0049b740(0);
+	m_context->m_carBuildModel.FUN_0049bc60(m_unk0x73c[modelIndex], 1, 0x7f);
 
 	AwardCinematicScreen::SceneEntityGroup::CreateParams createParams;
 	createParams.m_unk0x0c = NULL;
 	createParams.m_chassisModels = &m_context->m_chassisModels;
-	createParams.m_unk0x04 = &m_context->m_unk0x21f4;
+	createParams.m_unk0x04 = &m_context->m_carBuildModel;
 	createParams.m_unk0x08 = &m_unk0x4fc[modelIndex];
 	record->GetChassisName(createParams.m_chassisName);
 

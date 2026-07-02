@@ -67,61 +67,61 @@ public:
 	LegoS32 Initialize(LegoRacers::Context* p_context);
 	LegoS32 Shutdown();
 	void InitializeInputDispatcher();
-	void FUN_0042cde0();
+	void SetupCamera();
 	void ReleaseRendererObject();
 	void InitializeInputBindings();
 	void InitializeAudio();
 	void LoadMenuImages();
-	void FUN_0042d0e0();
+	void InitializeSaveSystem();
 	void LoadMenuData();
 	void UnloadMenuData();
 	LegoBool32 LoadLocalizedMenuResources(LegoU32 p_languageIndex, LegoBool32 p_forceReload);
-	void FUN_0042d3e0(LegoU16 p_menuId);
+	void OpenScreen(LegoU16 p_menuId);
 	void Run();
-	void FUN_0042e1f0();
-	LegoBool32 FUN_0042e450();
-	LegoS32 FUN_0042e490();
-	LegoBool32 FUN_0042e680();
-	void FUN_0042e720();
+	void ApplySettings();
+	LegoBool32 HasPendingMemoryCardSaves();
+	LegoS32 CommitBestTimes();
+	LegoBool32 ProcessRecordBeaten();
+	void TakeScreenshot();
 
 private:
 	void ShutdownInputBindings();
 	void ShutdownAudio();
 	void UnloadMenuImages();
-	void FUN_0042d730();
-	void FUN_0042dcb0(
+	void PrepareRaceContext();
+	void BuildPlayerCarModel(
 		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
 		AmethystBreeze0x104* p_rendererState
 	);
-	void FUN_0042de90(LegoBool32 p_arg);
-	void FUN_0042df70();
-	void FUN_0042dfa0(
+	void LoadPartResources(LegoBool32 p_arg);
+	void ReleasePartResources();
+	void BuildPlayerDriverModel(
 		SaveRecordList::Record* p_record,
 		LegoRacers::Context::PlayerSetupSlot* p_slot,
 		AmethystBreeze0x104* p_rendererState
 	);
 
-	MenuGameContext m_unk0x04;             // 0x04
-	MenuScreenFactory m_unk0x4bcc;         // 0x4bcc
-	MenuDialog m_unk0x4bd0;                // 0x4bd0
-	MenuInputDispatcher m_inputDispatcher; // 0x4c74
-	GolExport* m_golExport;                // 0x4cd4
-	GolD3DRenderDevice* m_renderer;        // 0x4cd8
-	AwakeKite0x20* m_imageTable;           // 0x4cdc
-	GolFontTable* m_fontTable;             // 0x4ce0
-	GolStringTable m_menuNameStrings;      // 0x4ce4
-	GolStringTable m_menuTextStrings;      // 0x4cf8
-	GolStringTable m_raceStrings;          // 0x4d0c
-	SoundGroup* m_soundGroup;              // 0x4d20
-	GolString m_unk0x4d24;                 // 0x4d24
-	GolString m_unk0x4d30;                 // 0x4d30
-	SoundGroupBinding m_soundGroupBinding; // 0x4d3c
-	SharedMenuStyleTable m_menuStyles;     // 0x4d48
-	MenuScreenCreateParams m_unk0x4d98;    // 0x4d98
-	MenuGameScreen* m_unk0x4dc8;           // 0x4dc8
-	undefined4 m_unk0x4dcc;                // 0x4dcc
-	LegoBool32 m_running;                  // 0x4dd0
+	MenuGameContext m_gameContext;               // 0x04
+	MenuScreenFactory m_screenFactory;           // 0x4bcc
+	MenuDialog m_dialog;                         // 0x4bd0
+	MenuInputDispatcher m_inputDispatcher;       // 0x4c74
+	GolExport* m_golExport;                      // 0x4cd4
+	GolD3DRenderDevice* m_renderer;              // 0x4cd8
+	AwakeKite0x20* m_imageTable;                 // 0x4cdc
+	GolFontTable* m_fontTable;                   // 0x4ce0
+	GolStringTable m_menuNameStrings;            // 0x4ce4
+	GolStringTable m_menuTextStrings;            // 0x4cf8
+	GolStringTable m_raceStrings;                // 0x4d0c
+	SoundGroup* m_soundGroup;                    // 0x4d20
+	GolString m_cursorImageName;                 // 0x4d24
+	GolString m_screenName;                      // 0x4d30
+	SoundGroupBinding m_soundGroupBinding;       // 0x4d3c
+	SharedMenuStyleTable m_menuStyles;           // 0x4d48
+	MenuScreenCreateParams m_screenCreateParams; // 0x4d98
+	MenuGameScreen* m_activeScreen;              // 0x4dc8
+	undefined4 m_unk0x4dcc;                      // 0x4dcc
+	LegoBool32 m_running;                        // 0x4dd0
 };
 
 #endif // MENUMANAGER_H

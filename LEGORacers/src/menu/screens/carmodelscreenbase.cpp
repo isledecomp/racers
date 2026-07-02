@@ -152,8 +152,8 @@ void CarModelScreenBase::FUN_00477290()
 		mask <<= 1;
 	}
 
-	for (i = 0; i < m_context->m_unk0x21f4.GetPlacedPieceCount(); i++) {
-		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_unk0x21f4.FUN_0049bd50(i));
+	for (i = 0; i < m_context->m_carBuildModel.GetPlacedPieceCount(); i++) {
+		LegoS32 index = m_context->m_unk0x21a4.FindEntryIndex(m_context->m_carBuildModel.FUN_0049bd50(i));
 		m_partCategoryAvailable[index] = TRUE;
 	}
 
@@ -177,7 +177,7 @@ void CarModelScreenBase::VTable0x84()
 void CarModelScreenBase::FUN_004773a0()
 {
 	memset(m_carBuildSaveBuffer, 0, c_carBuildSaveBufferSize);
-	m_context->m_unk0x21f4.FUN_0049c820(m_carBuildSaveBuffer);
+	m_context->m_carBuildModel.FUN_0049c820(m_carBuildSaveBuffer);
 	m_context->m_saveSystem.GetActiveRecord().SetCarData(m_carBuildSaveBuffer);
 }
 

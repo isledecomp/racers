@@ -31,8 +31,8 @@ public:
 	SaveSystem m_saveSystem;                      // 0x258
 	CarPartSet m_unk0x21a4;                       // 0x21a4
 	LegoPieceLibrary m_pieceLibrary;              // 0x21b8
-	CarBuildModel m_unk0x21f4;                    // 0x21f4
-	LegoColorTable m_unk0x4224;                   // 0x4224
+	CarBuildModel m_carBuildModel;                // 0x21f4
+	LegoColorTable m_colorTable;                  // 0x4224
 	DriverCosmeticTable m_cosmeticTable;          // 0x425c
 	ChassisModelTable m_chassisModels;            // 0x42dc
 	ChampionDefinitionList m_championDefinitions; // 0x4318

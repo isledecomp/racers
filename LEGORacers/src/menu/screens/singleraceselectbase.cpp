@@ -58,7 +58,7 @@ LegoBool32 SingleRaceSelectBase::Destroy()
 	m_unk0x1904 = NULL;
 
 	LegoBool32 result = MenuSceneScreen::Destroy();
-	context->m_unk0x21f4.FUN_00499ee0();
+	context->m_carBuildModel.FUN_00499ee0();
 
 	return result;
 }
@@ -108,7 +108,7 @@ LegoBool32 SingleRaceSelectBase::VTable0x8c(MenuGameContext* p_context, MenuScre
 {
 	m_unk0x1904 = NULL;
 
-	p_context->m_unk0x21f4.FUN_00499f00();
+	p_context->m_carBuildModel.FUN_00499f00();
 	LegoBool32 result = MenuSceneScreen::VTable0x8c(p_context, p_createParams);
 	if (!result) {
 		return result;

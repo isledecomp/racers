@@ -15,7 +15,7 @@ DECOMP_SIZE_ASSERT(RaceModeSetupScreen, 0x2e60)
 LegoChar g_veronicaVoltageName[] = "VV";
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
-LegoU32 RaceModeSetupScreen::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
+LegoU32 RaceModeSetupScreen::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 {
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
@@ -341,7 +341,7 @@ void RaceModeSetupScreen::FUN_004881a0()
 
 	if (bestTime != 0xffffffff) {
 		LegoChar time[9];
-		FUN_004246d0(time, bestTime);
+		FormatTime(time, bestTime);
 		GolString::CopyStringToBuf16(time, m_unk0x2e32);
 		m_unk0x2ca0.VTable0x40(&m_unk0x2e48, 0);
 	}

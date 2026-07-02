@@ -225,7 +225,7 @@ void RacePowerupManager::HomingMissileAction::Deactivate()
 	m_stateTimerMs = 0;
 
 	if (m_owner0x01c != NULL && m_trail != NULL) {
-		m_owner0x01c->m_trailManager->FUN_00493a10(m_trail);
+		m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
 		m_trail = NULL;
 	}
 }
@@ -344,7 +344,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 				positions[3].m_y = positions[2].m_y;
 				positions[3].m_z = positions[1].m_z + 1.0f;
 
-				m_trail->FUN_00492ee0(p_elapsedMs, positions, position);
+				m_trail->AddSampleWithCenter(p_elapsedMs, positions, position);
 			}
 		}
 	}
@@ -426,22 +426,22 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 		LaunchProjectile();
 
 		RaceTrailManager::Trail::Params params;
-		params.m_unk0x04 = 4;
-		params.m_unk0x08 = 4;
+		params.m_sampleCount = 4;
+		params.m_pointCount = 4;
 		RacePowerupManager* owner = m_owner0x01c;
-		params.m_unk0x00 = 0x190;
+		params.m_durationMs = 0x190;
 		params.m_unk0x0c = 1;
 		params.m_unk0x10 = 0;
-		params.m_unk0x14 = 0.1f;
-		params.m_unk0x18 = 0.0f;
+		params.m_endScale = 0.1f;
+		params.m_endAlpha = 0.0f;
 
 		RaceTrailManager* trailManager = owner->m_trailManager;
-		m_trail = trailManager->FUN_004939b0(&params);
+		m_trail = trailManager->AcquireTrail(&params);
 		if (m_trail != NULL) {
-			m_trail->FUN_00492ab0(&g_missileTrailColor);
+			m_trail->SetColor(&g_missileTrailColor);
 			DuskwindBananaRelic0x24* material = m_owner0x01c->m_renderer->FindMaterialByName("mslstrk");
 			if (material != NULL) {
-				m_trail->FUN_00492a90(m_owner0x01c->m_renderer, material);
+				m_trail->SetMaterial(m_owner0x01c->m_renderer, material);
 			}
 		}
 		break;
@@ -451,7 +451,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 		m_stateTimerMs = 0;
 		m_projectile.CancelCollisionEvent();
 		if (m_trail != NULL) {
-			m_owner0x01c->m_trailManager->FUN_00493a10(m_trail);
+			m_owner0x01c->m_trailManager->ReleaseTrail(m_trail);
 			m_trail = NULL;
 		}
 		break;

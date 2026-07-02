@@ -44,7 +44,7 @@ class GolAnimatedEntity;
 class MabMaterialAnimationItem0x8;
 class DuskwindBananaRelic0x24;
 class CutsceneAnimation;
-class CobaltTrail0x140;
+class RaceHud;
 class RaceCameraController;
 class RaceEventTable;
 class TriggerWorld;
@@ -916,7 +916,7 @@ public:
 		void PlayReaction(LegoBool32 p_unk0x04);
 		DroppableBrick* DropWhiteBrick();
 		LegoFloat GetRaceProgress();
-		void FUN_0043a0c0();
+		void CycleHudGadget();
 		void SwitchToAiControl();
 		void StartMagnetHold();
 		void EndMagnetHold();
@@ -1108,7 +1108,7 @@ public:
 		LegoU32 m_materialIndex;                  // 0xe04
 		RaceActionSource m_actionSource;          // 0xe08
 		RaceRouteRecord* m_routeRecord;           // 0xe2c
-		CobaltTrail0x140* m_trail;                // 0xe30
+		RaceHud* m_hud;                           // 0xe30
 	};
 
 	// SIZE 0x0c

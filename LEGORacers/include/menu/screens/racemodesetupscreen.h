@@ -31,7 +31,7 @@ public:
 	// RaceModeSetupScreen::`scalar deleting destructor'
 
 protected:
-	LegoU32 FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time);
+	LegoU32 FormatTime(LegoChar* p_buffer, LegoU32 p_time);
 	void FUN_00488010();
 	void FUN_004881a0();
 

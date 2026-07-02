@@ -3666,19 +3666,19 @@ void HazardManager::LauncherHazard::OnActivate(void*)
 	m_projectile.LaunchAtPosition(&projectileParams, &m_targetPosition);
 
 	RaceTrailManager::Trail::Params trailParams;
-	trailParams.m_unk0x00 = 0x12c;
-	trailParams.m_unk0x04 = 4;
+	trailParams.m_durationMs = 0x12c;
+	trailParams.m_sampleCount = 4;
 	trailParams.m_unk0x0c = 1;
 	trailParams.m_unk0x10 = 0;
-	trailParams.m_unk0x14 = 0.1f;
-	trailParams.m_unk0x18 = 0.0f;
-	trailParams.m_unk0x08 = 4;
+	trailParams.m_endScale = 0.1f;
+	trailParams.m_endAlpha = 0.0f;
+	trailParams.m_pointCount = 4;
 
 	RaceTrailManager::Trail::Params* trailParamsPtr = &trailParams;
-	m_unk0x120 = static_cast<RaceTrailManager*>(m_unk0x11c)->FUN_004939b0(trailParamsPtr);
+	m_unk0x120 = static_cast<RaceTrailManager*>(m_unk0x11c)->AcquireTrail(trailParamsPtr);
 	if (m_unk0x120 != NULL) {
 		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
-		item->FUN_00492ab0(&g_launcherTrailColor);
+		item->SetColor(&g_launcherTrailColor);
 	}
 
 	m_eventTable->FireEventsAt(6, 6, &m_launchPosition);
@@ -3692,7 +3692,7 @@ void HazardManager::LauncherHazard::OnDeactivate(void*)
 	if (m_unk0x120 != NULL) {
 		RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
 		RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
-		manager->FUN_00493a10(item);
+		manager->ReleaseTrail(item);
 		m_unk0x120 = NULL;
 	}
 
@@ -3719,7 +3719,7 @@ void HazardManager::LauncherHazard::Update(undefined4 p_elapsedMs)
 			if (m_unk0x120 != NULL) {
 				RaceTrailManager* manager = static_cast<RaceTrailManager*>(m_unk0x11c);
 				RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
-				manager->FUN_00493a10(item);
+				manager->ReleaseTrail(item);
 				m_unk0x120 = NULL;
 			}
 		}
@@ -3765,7 +3765,7 @@ void HazardManager::LauncherHazard::Update(undefined4 p_elapsedMs)
 	positions[3].m_z = positions[1].m_z + 3.0f;
 
 	RaceTrailManager::Trail* item = static_cast<RaceTrailManager::Trail*>(m_unk0x120);
-	item->FUN_00492ee0(p_elapsedMs, positions, center);
+	item->AddSampleWithCenter(p_elapsedMs, positions, center);
 }
 
 // FUNCTION: LEGORACERS 0x0048fde0

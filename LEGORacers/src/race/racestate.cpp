@@ -9,10 +9,10 @@
 #include "material/goltexturelist.h"
 #include "menu/runtime/cutsceneparticle.h"
 #include "menu/runtime/cutsceneplayer.h"
-#include "race/cobalttrail0x140.h"
 #include "race/racecameracontroller.h"
 #include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
+#include "race/racehud.h"
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
 #include "render/gold3drenderdevice.h"
@@ -386,7 +386,7 @@ void RaceState::Racer::Reset()
 	m_checkpoint = 0;
 	m_checkpointForward = 1;
 	m_checkpointGraph = 0;
-	m_trail = NULL;
+	m_hud = NULL;
 	m_checkpointCount = 0xffffffff;
 	m_unk0xdb0 = 0;
 	m_whiteBrickCount = 0;
@@ -2440,9 +2440,9 @@ LegoFloat RaceState::Racer::GetRaceProgress()
 }
 
 // FUNCTION: LEGORACERS 0x0043a0c0
-void RaceState::Racer::FUN_0043a0c0()
+void RaceState::Racer::CycleHudGadget()
 {
-	m_trail->m_unk0x03c = (m_trail->m_unk0x03c + 1) & 3;
+	m_hud->m_gadgetMode = (m_hud->m_gadgetMode + 1) & 3;
 }
 
 // FUNCTION: LEGORACERS 0x0043a0e0

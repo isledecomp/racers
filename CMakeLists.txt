@@ -363,7 +363,7 @@ add_executable(legoracers WIN32
   LEGORacers/src/race/racer/routecursor.cpp
   LEGORacers/src/race/powerups/droppablebrick.cpp
   LEGORacers/src/race/racer/drivecontrollerfield0x000.cpp
-  LEGORacers/src/race/cobalttrail0x140.cpp
+  LEGORacers/src/race/racehud.cpp
   LEGORacers/src/race/racedialog.cpp
   LEGORacers/src/race/circuitracerunner.cpp
   LEGORacers/src/race/circuitstandings.cpp

@@ -22,7 +22,6 @@
 #include "menu/menuanimationlist.h"
 #include "menu/runtime/cutsceneplayer.h"
 #include "race/checkpointgraph.h"
-#include "race/cobalttrail0x140.h"
 #include "race/hazardmanager.h"
 #include "race/powerups/powerupprojectile.h"
 #include "race/powerups/racepowerupmanager.h"
@@ -31,6 +30,7 @@
 #include "race/racedialog.h"
 #include "race/raceeventtable.h"
 #include "race/raceforcefeedback.h"
+#include "race/racehud.h"
 #include "race/racer/racerouterecord.h"
 #include "race/raceresourcemanager.h"
 #include "race/racesky.h"
@@ -244,7 +244,7 @@ public:
 		void OnBrake(LegoBool32 p_enabled);
 		void OnUsePowerup(LegoBool32 p_enabled);
 		void OnCycleCamera(LegoBool32 p_enabled);
-		void OnCycleTrail(LegoBool32 p_enabled);
+		void OnCycleHud(LegoBool32 p_enabled);
 		void OnDrift(LegoBool32 p_enabled);
 		void OnLookBack(LegoBool32 p_enabled);
 		void TryStartBoost();
@@ -970,9 +970,9 @@ private:
 	MenuAnimationList m_animationList;             // 0x27fc
 	TargetPointList m_targetPoints;                // 0x2804
 	LoadingScreen m_loadingScreen;                 // 0x280c
-	CobaltTrail0x140 m_trails[2];                  // 0x283c
-	LegoFloat m_mapMaxX;                           // 0x2abc
-	LegoFloat m_mapMinX;                           // 0x2ac0
+	RaceHud m_huds[2];                             // 0x283c
+	LegoFloat m_mapMinX;                           // 0x2abc
+	LegoFloat m_mapMaxX;                           // 0x2ac0
 	LegoFloat m_mapMaxY;                           // 0x2ac4
 	LegoFloat m_mapMinY;                           // 0x2ac8
 	GolCamera* m_cameras[2];                       // 0x2acc
@@ -980,8 +980,8 @@ private:
 	GolFontTable* m_fontTable;                     // 0x2d74
 	GolFontBase* m_hudFont;                        // 0x2d78
 	GolFontBase* m_loadingFont;                    // 0x2d7c
-	GolString m_unk0x2d80;                         // 0x2d80
-	undefined2 m_unk0x2d8c[0x100];                 // 0x2d8c
+	GolString m_hudScratchString;                  // 0x2d80
+	undefined2 m_hudScratchBuffer[0x100];          // 0x2d8c
 	AwakeKite0x20* m_hudImages;                    // 0x2f8c
 	RaceSkyState m_skyState;                       // 0x2f90
 	RaceDialog m_dialog;                           // 0x3058

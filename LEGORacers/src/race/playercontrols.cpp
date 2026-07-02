@@ -371,10 +371,10 @@ void RaceSession::PlayerControls::OnCycleCamera(LegoBool32 p_enabled)
 }
 
 // FUNCTION: LEGORACERS 0x00430680
-void RaceSession::PlayerControls::OnCycleTrail(LegoBool32 p_enabled)
+void RaceSession::PlayerControls::OnCycleHud(LegoBool32 p_enabled)
 {
 	if (p_enabled) {
-		m_racer->FUN_0043a0c0();
+		m_racer->CycleHudGadget();
 		m_input.m_inputFlags |= 0x40;
 	}
 	else {
@@ -614,7 +614,7 @@ InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKe
 					m_controls->OnCycleCamera(TRUE);
 					return TRUE;
 				case 6:
-					m_controls->OnCycleTrail(TRUE);
+					m_controls->OnCycleHud(TRUE);
 					return TRUE;
 				case 7:
 					m_controls->OnDrift(TRUE);
@@ -666,7 +666,7 @@ InputDevice::Callback::ResultValue RaceSession::PlayerControls::InputState::OnKe
 					m_controls->OnCycleCamera(FALSE);
 					return TRUE;
 				case 6:
-					m_controls->OnCycleTrail(FALSE);
+					m_controls->OnCycleHud(FALSE);
 					return TRUE;
 				case 7:
 					m_controls->OnDrift(FALSE);
@@ -697,7 +697,7 @@ void RaceSession::PlayerControls::InputState::ReleaseAllInputs()
 	m_controls->OnBrake(FALSE);
 	m_controls->OnUsePowerup(FALSE);
 	m_controls->OnCycleCamera(FALSE);
-	m_controls->OnCycleTrail(FALSE);
+	m_controls->OnCycleHud(FALSE);
 	m_controls->OnDrift(FALSE);
 	m_controls->OnLookBack(FALSE);
 }

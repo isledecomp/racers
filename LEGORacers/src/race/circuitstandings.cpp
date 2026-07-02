@@ -121,7 +121,7 @@ void CircuitStandings::FUN_00440330(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004246d0 FOLDED
-LegoU32 CircuitStandings::FUN_004246d0(LegoChar* p_buffer, LegoU32 p_time)
+LegoU32 CircuitStandings::FormatTime(LegoChar* p_buffer, LegoU32 p_time)
 {
 	LegoU32 millisecondsPerHour = 3600000;
 	LegoS32 divisor = 10;
@@ -286,7 +286,7 @@ void CircuitStandings::FUN_00440350(LegoBool32 p_showCircuitPoints)
 							sign = 1;
 						}
 
-						FUN_004246d0(timeBuffer, delta);
+						FormatTime(timeBuffer, delta);
 						renderer->VTable0x68(timeBuffer, m_unk0x00, c_deltaTimeX, y, 1.0f, 1.0f, NULL, 0);
 
 						if (sign == 1) {

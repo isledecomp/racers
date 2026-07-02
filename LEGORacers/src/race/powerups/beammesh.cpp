@@ -610,13 +610,13 @@ RacePowerupManager::BeamEntity::~BeamEntity()
 void RacePowerupManager::BeamEntity::Initialize(
 	GolModelBase* p_model,
 	GolSceneNode* p_sceneNode,
-	undefined4 p_unk0x0c,
+	undefined4 p_faceCamera,
 	LegoFloat p_modelDistance
 )
 {
 	GolModelEntity::VTable0x50(p_model, p_modelDistance);
 	m_sceneNode = p_sceneNode;
-	m_faceCamera = p_unk0x0c;
+	m_faceCamera = p_faceCamera;
 }
 
 // FUNCTION: LEGORACERS 0x00494c80

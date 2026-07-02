@@ -1144,59 +1144,59 @@ void RacePowerupManager::CreateExplosionPools()
 {
 	Explosion::Params params;
 	params.m_golExport = m_golExport;
-	params.m_unk0x04 = m_unk0x06c;
+	params.m_collidable = m_unk0x06c;
 	params.m_model = m_unk0x05c->FindUnk0xb4("Explsn");
-	params.m_unk0x0c = NULL;
-	params.m_unk0x20 = NULL;
+	params.m_billboardMaterial = NULL;
+	params.m_billboardAnimation = NULL;
 	params.m_flashMaterial = m_renderer->FindMaterialByName("exflash");
 	params.m_scarMaterial = m_renderer->FindMaterialByName("exscar");
-	params.m_unk0x18 = m_raceState->GetEventQueue();
+	params.m_eventQueue = m_raceState->GetEventQueue();
 	params.m_manager = this;
-	params.m_unk0x28 = NULL;
-	params.m_unk0x2c = 1000;
-	params.m_unk0x30 = 5000;
-	params.m_unk0x34 = 1.0f;
-	params.m_unk0x38 = 15.0f;
-	params.m_unk0x3c = 15.0f;
-	params.m_unk0x40 = 5.0f;
-	params.m_unk0x44 = 2;
+	params.m_particleAnimation = NULL;
+	params.m_flashDurationMs = 1000;
+	params.m_scarDurationMs = 5000;
+	params.m_modelScale = 1.0f;
+	params.m_flashWidth = 15.0f;
+	params.m_flashHeight = 15.0f;
+	params.m_blastRadius = 5.0f;
+	params.m_blastMode = 2;
 
 	LegoU8 index = 0;
 	if (m_explosionPoolCount - 1 > 0) {
 		do {
 			m_explosionPool[index].SetNext(&m_explosionPool[index + 1]);
-			params.m_unk0x24 = 0;
+			params.m_billboardMaterialIndex = 0;
 			m_explosionPool[index].Initialize(&params);
 			index++;
 		} while (index < m_explosionPoolCount - 1);
 	}
 
 	m_explosionPool[m_explosionPoolCount - 1].SetNext(NULL);
-	params.m_unk0x24 = 0;
+	params.m_billboardMaterialIndex = 0;
 	m_explosionPool[m_explosionPoolCount - 1].Initialize(&params);
 	m_freeExplosions = m_explosionPool;
 	m_activeExplosions = NULL;
 
-	params.m_unk0x28 = NULL;
-	params.m_unk0x40 = 10.0f;
-	params.m_unk0x44 = 2;
+	params.m_particleAnimation = NULL;
+	params.m_blastRadius = 10.0f;
+	params.m_blastMode = 2;
 	params.m_model = m_unk0x05c->FindUnk0xb4("spikexp");
 	params.m_flashMaterial = NULL;
-	params.m_unk0x38 = 5.0f;
-	params.m_unk0x3c = 5.0f;
+	params.m_flashWidth = 5.0f;
+	params.m_flashHeight = 5.0f;
 
 	index = 0;
 	if (m_spikeExplosionPoolCount - 1 > 0) {
 		do {
 			m_spikeExplosionPool[index].SetNext(&m_spikeExplosionPool[index + 1]);
-			params.m_unk0x24 = 0;
+			params.m_billboardMaterialIndex = 0;
 			m_spikeExplosionPool[index].Initialize(&params);
 			index++;
 		} while (index < m_spikeExplosionPoolCount - 1);
 	}
 
 	m_spikeExplosionPool[m_spikeExplosionPoolCount - 1].SetNext(NULL);
-	params.m_unk0x24 = 0;
+	params.m_billboardMaterialIndex = 0;
 	m_spikeExplosionPool[m_spikeExplosionPoolCount - 1].Initialize(&params);
 	m_activeSpikeExplosions = NULL;
 	m_freeSpikeExplosions = m_spikeExplosionPool;
@@ -1231,7 +1231,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_spikeExplosionPoolCount; i++) {
-			m_spikeExplosionPool[i].FUN_004214b0();
+			m_spikeExplosionPool[i].Destroy();
 		}
 
 		if (m_spikeExplosionPool != NULL) {
@@ -1244,7 +1244,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_explosionPoolCount; i++) {
-			m_explosionPool[i].FUN_004214b0();
+			m_explosionPool[i].Destroy();
 		}
 
 		if (m_explosionPool != NULL) {
@@ -1512,11 +1512,11 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 
 	Explosion* node0x270;
 	for (node0x270 = m_activeExplosions; node0x270 != NULL; node0x270 = node0x270->GetNext()) {
-		node0x270->FUN_004217d0(p_elapsedMs);
+		node0x270->Update(p_elapsedMs);
 	}
 
 	for (node0x270 = m_activeSpikeExplosions; node0x270 != NULL; node0x270 = node0x270->GetNext()) {
-		node0x270->FUN_004217d0(p_elapsedMs);
+		node0x270->Update(p_elapsedMs);
 	}
 
 	m_unk0x18bc.FUN_00451860(p_elapsedMs);
@@ -1605,7 +1605,7 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 	Explosion* previous0x270 = NULL;
 	while (node0x270 != NULL) {
 		Explosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == 1) {
+		if (node0x270->GetState() == Explosion::c_stateIdle) {
 			if (previous0x270 == NULL) {
 				m_activeExplosions = next0x270;
 			}
@@ -1627,7 +1627,7 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 	previous0x270 = NULL;
 	while (node0x270 != NULL) {
 		Explosion* next0x270 = node0x270->GetNext();
-		if (node0x270->GetState() == 1) {
+		if (node0x270->GetState() == Explosion::c_stateIdle) {
 			if (previous0x270 == NULL) {
 				m_activeSpikeExplosions = next0x270;
 			}
@@ -1725,13 +1725,13 @@ void RacePowerupManager::FUN_0045a8a0()
 
 	Explosion* node0x193c = m_activeExplosions;
 	while (node0x193c != NULL) {
-		node0x193c->FUN_00421ae0(m_renderer);
+		node0x193c->Draw(m_renderer);
 		node0x193c = node0x193c->GetNext();
 	}
 
 	Explosion* node0x1940 = m_activeSpikeExplosions;
 	while (node0x1940 != NULL) {
-		node0x1940->FUN_00421ae0(m_renderer);
+		node0x1940->Draw(m_renderer);
 		node0x1940 = node0x1940->GetNext();
 	}
 }
@@ -2250,7 +2250,7 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 	Explosion* selected = NULL;
 	Explosion* selectedPrevious = NULL;
 	LegoU32 selectedRemaining = 0xffffffff;
-	LegoS32 targetState = 3;
+	LegoS32 targetState = Explosion::c_stateScarFading;
 	LegoU32 pass = 0;
 	Explosion* current = *p_head;
 	Explosion* head = current;
@@ -2259,8 +2259,8 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 		Explosion* previous = NULL;
 
 		while (current != NULL) {
-			if (current->GetState() == targetState && current->GetUnk0x238() < selectedRemaining) {
-				selectedRemaining = current->GetUnk0x238();
+			if (current->GetState() == targetState && current->GetRemainingMs() < selectedRemaining) {
+				selectedRemaining = current->GetRemainingMs();
 				selected = current;
 				selectedPrevious = previous;
 			}
@@ -2271,7 +2271,7 @@ RacePowerupManager::Explosion* __stdcall RacePowerupManager::ReclaimExplosion(Ex
 
 		if (selected == NULL) {
 			current = head;
-			targetState = 2;
+			targetState = Explosion::c_stateExploding;
 			pass++;
 			if (pass < 3) {
 				continue;
@@ -2594,13 +2594,13 @@ void RacePowerupManager::FUN_0045bb30()
 
 	Explosion* node0x193c = m_activeExplosions;
 	while (node0x193c != NULL) {
-		node0x193c->FUN_004217b0();
+		node0x193c->Deactivate();
 		node0x193c = node0x193c->GetNext();
 	}
 
 	Explosion* node0x1940 = m_activeSpikeExplosions;
 	while (node0x1940 != NULL) {
-		node0x1940->FUN_004217b0();
+		node0x1940->Deactivate();
 		node0x1940 = node0x1940->GetNext();
 	}
 

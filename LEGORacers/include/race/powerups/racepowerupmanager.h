@@ -1155,26 +1155,37 @@ public:
 	// SIZE 0x270
 	class Explosion : public LegoEventQueue::Callback {
 	public:
+		enum {
+			c_stateUninitialized = 0,
+			c_stateIdle = 1,
+			c_stateExploding = 2,
+			c_stateScarFading = 3,
+
+			c_blastNone = 0,
+			c_blastShake = 1,
+			c_blastLaunch = 2,
+		};
+
 		// SIZE 0x48
 		struct Params {
-			GolExport* m_golExport;                   // 0x00
-			GolCollidableEntity* m_unk0x04;           // 0x04
-			GolModelEntity* m_model;                  // 0x08
-			DuskwindBananaRelic0x24* m_unk0x0c;       // 0x0c
-			DuskwindBananaRelic0x24* m_flashMaterial; // 0x10
-			DuskwindBananaRelic0x24* m_scarMaterial;  // 0x14
-			LegoEventQueue* m_unk0x18;                // 0x18
-			RacePowerupManager* m_manager;            // 0x1c
-			MabMaterialAnimationItem0x18* m_unk0x20;  // 0x20
-			LegoU32 m_unk0x24;                        // 0x24
-			CutsceneAnimation* m_unk0x28;             // 0x28
-			LegoU32 m_unk0x2c;                        // 0x2c
-			LegoU32 m_unk0x30;                        // 0x30
-			LegoFloat m_unk0x34;                      // 0x34
-			LegoFloat m_unk0x38;                      // 0x38
-			LegoFloat m_unk0x3c;                      // 0x3c
-			LegoFloat m_unk0x40;                      // 0x40
-			LegoU32 m_unk0x44;                        // 0x44
+			GolExport* m_golExport;                             // 0x00
+			GolCollidableEntity* m_collidable;                  // 0x04
+			GolModelEntity* m_model;                            // 0x08
+			DuskwindBananaRelic0x24* m_billboardMaterial;       // 0x0c
+			DuskwindBananaRelic0x24* m_flashMaterial;           // 0x10
+			DuskwindBananaRelic0x24* m_scarMaterial;            // 0x14
+			LegoEventQueue* m_eventQueue;                       // 0x18
+			RacePowerupManager* m_manager;                      // 0x1c
+			MabMaterialAnimationItem0x18* m_billboardAnimation; // 0x20
+			LegoU32 m_billboardMaterialIndex;                   // 0x24
+			CutsceneAnimation* m_particleAnimation;             // 0x28
+			LegoU32 m_flashDurationMs;                          // 0x2c
+			LegoU32 m_scarDurationMs;                           // 0x30
+			LegoFloat m_modelScale;                             // 0x34
+			LegoFloat m_flashWidth;                             // 0x38
+			LegoFloat m_flashHeight;                            // 0x3c
+			LegoFloat m_blastRadius;                            // 0x40
+			LegoU32 m_blastMode;                                // 0x44
 		};
 
 		Explosion();
@@ -1184,15 +1195,15 @@ public:
 		~Explosion();
 		Explosion* GetNext() { return m_next; }
 		LegoS32 GetState() const { return m_state; }
-		LegoU32 GetUnk0x238() const { return m_unk0x238; }
+		LegoU32 GetRemainingMs() const { return m_remainingMs; }
 		void SetNext(Explosion* p_next) { m_next = p_next; }
 		void Initialize(const Params* p_params);
-		void FUN_004214b0();
+		void Destroy();
 		void Spawn(const GolVec3* p_position, undefined4 p_unk0x08, RaceState::Racer* p_racer);
-		void FUN_004217b0();
-		void FUN_004217d0(LegoU32 p_elapsedMs);
-		void FUN_00421850(LegoU32 p_elapsedMs);
-		void FUN_00421ae0(GolD3DRenderDevice* p_renderer);
+		void Deactivate();
+		void Update(LegoU32 p_elapsedMs);
+		void UpdateFlash(LegoU32 p_elapsedMs);
+		void Draw(GolD3DRenderDevice* p_renderer);
 		void FUN_004513d0(GolD3DRenderDevice* p_renderer);
 
 	private:
@@ -1200,40 +1211,40 @@ public:
 			c_racerFlags0xd04Bit0 = 1 << 0,
 		};
 
-		LegoS32 m_state;                                     // 0x004
-		GolWorldEntity m_unk0x008;                           // 0x008
-		GolExport* m_unk0x030;                               // 0x030
-		GolModelEntity m_unk0x034;                           // 0x034
-		GolBillboard* m_unk0x0c4;                            // 0x0c4
-		MabMaterialAnimationItem0x18 m_unk0x0c8;             // 0x0c8
-		LegoU32 m_unk0x0e0;                                  // 0x0e0
-		RaceSessionField0x27d4::Item::Field0x004 m_unk0x0e4; // 0x0e4
-		GolCollidableEntity* m_unk0x200;                     // 0x200
-		MaterialTable0x0c m_unk0x204;                        // 0x204
-		DuskwindBananaRelic0x24* m_unk0x210;                 // 0x210
-		DuskwindBananaRelic0x24* m_unk0x214;                 // 0x214
-		LegoEventQueue* m_unk0x218;                          // 0x218
-		RaceState::Racer* m_unk0x21c;                        // 0x21c
-		LegoEventQueue::Event* m_unk0x220;                   // 0x220
-		RacePowerupManager* m_unk0x224;                      // 0x224
-		CutsceneAnimation* m_unk0x228;                       // 0x228
-		LegoU32 m_unk0x22c;                                  // 0x22c
-		LegoU32 m_unk0x230;                                  // 0x230
-		LegoU32 m_unk0x234;                                  // 0x234
-		LegoU32 m_unk0x238;                                  // 0x238
-		LegoFloat m_unk0x23c;                                // 0x23c
-		LegoFloat m_unk0x240;                                // 0x240
-		LegoFloat m_unk0x244;                                // 0x244
-		LegoFloat m_unk0x248;                                // 0x248
-		LegoFloat m_unk0x24c;                                // 0x24c
-		LegoFloat m_unk0x250;                                // 0x250
-		LegoFloat m_unk0x254;                                // 0x254
-		LegoFloat m_unk0x258;                                // 0x258
-		LegoFloat m_unk0x25c;                                // 0x25c
-		LegoFloat m_unk0x260;                                // 0x260
-		LegoFloat m_unk0x264;                                // 0x264
-		LegoS32 m_unk0x268;                                  // 0x268
-		Explosion* m_next;                                   // 0x26c
+		LegoS32 m_state;                                      // 0x004
+		GolWorldEntity m_worldEntity;                         // 0x008
+		GolExport* m_golExport;                               // 0x030
+		GolModelEntity m_modelEntity;                         // 0x034
+		GolBillboard* m_billboard;                            // 0x0c4
+		MabMaterialAnimationItem0x18 m_billboardAnimation;    // 0x0c8
+		LegoU32 m_billboardMaterialIndex;                     // 0x0e0
+		RaceSessionField0x27d4::Item::Field0x004 m_scarDecal; // 0x0e4
+		GolCollidableEntity* m_collidable;                    // 0x200
+		MaterialTable0x0c m_materialTable;                    // 0x204
+		DuskwindBananaRelic0x24* m_flashMaterial;             // 0x210
+		DuskwindBananaRelic0x24* m_scarMaterial;              // 0x214
+		LegoEventQueue* m_eventQueue;                         // 0x218
+		RaceState::Racer* m_ownerRacer;                       // 0x21c
+		LegoEventQueue::Event* m_collisionEvent;              // 0x220
+		RacePowerupManager* m_manager;                        // 0x224
+		CutsceneAnimation* m_particleAnimation;               // 0x228
+		LegoU32 m_blastMode;                                  // 0x22c
+		LegoU32 m_flashDurationMs;                            // 0x230
+		LegoU32 m_scarDurationMs;                             // 0x234
+		LegoU32 m_remainingMs;                                // 0x238
+		LegoFloat m_alpha;                                    // 0x23c
+		LegoFloat m_modelAlpha;                               // 0x240
+		LegoFloat m_alphaRate;                                // 0x244
+		LegoFloat m_growth;                                   // 0x248
+		LegoFloat m_growthRate;                               // 0x24c
+		LegoFloat m_initialGrowthRate;                        // 0x250
+		LegoFloat m_growthAcceleration;                       // 0x254
+		LegoFloat m_modelScale;                               // 0x258
+		LegoFloat m_flashWidth;                               // 0x25c
+		LegoFloat m_flashHeight;                              // 0x260
+		LegoFloat m_blastRadius;                              // 0x264
+		LegoS32 m_leavesScar;                                 // 0x268
+		Explosion* m_next;                                    // 0x26c
 	};
 
 	// SIZE 0x80

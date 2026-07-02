@@ -1313,7 +1313,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x024->SetColor(0xff, 0xff, 0xff, 0xff);
 
 			if ((previousState == 1 || previousState / 1000 != countdownState) && m_unk0x004) {
-				m_unk0x004->FUN_00443b50(0);
+				m_unk0x004->PlaySoundById(0);
 			}
 		}
 		else if (countdownState < 5) {
@@ -1349,7 +1349,7 @@ void CobaltTrail0x140::FUN_004263a0()
 			m_unk0x024->SetColor(0xff, 0xff, 0xff, 0xff);
 
 			if (m_unk0x004 && countdownState == 3 && previousState / 1000 != 3) {
-				m_unk0x004->FUN_00443b50(0x0f);
+				m_unk0x004->PlaySoundById(0x0f);
 			}
 		}
 		else {

@@ -789,6 +789,8 @@ public:
 	public:
 		enum {
 			c_racerFlags0xd04Bit0 = 1 << 0,
+			c_soundHit = 5,
+			c_soundFire = 6,
 			c_racerField0x018Flags0x384Bit1 = 1 << 1,
 		};
 
@@ -801,29 +803,29 @@ public:
 		void Deactivate() override;                               // vtable+0x1c
 		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
 		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
-		void FUN_00451a10();
+		void Destroy();
 		LegoU32 Activate(ActionSetup* p_unk0x04);
 
 	private:
 		// SIZE 0x24
-		class Field0x0e0 {
+		class CannonEmplacement {
 		public:
 			undefined m_unk0x000[0x008 - 0x000]; // 0x000
-			GolVec3 m_unk0x008;                  // 0x008
-			GolVec3 m_unk0x014;                  // 0x014
-			LegoU32 m_unk0x020;                  // 0x020
+			GolVec3 m_targetPosition;            // 0x008
+			GolVec3 m_position;                  // 0x014
+			LegoU32 m_lifetimeMs;                // 0x020
 		};
 
-		PowerupProjectile m_projectile;  // 0x030
-		GolBillboard* m_unk0x0d8;        // 0x0d8
-		CutsceneParticleRef* m_unk0x0dc; // 0x0dc
+		PowerupProjectile m_projectile;       // 0x030
+		GolBillboard* m_billboard;            // 0x0d8
+		CutsceneParticleRef* m_smokeParticle; // 0x0dc
 		union {
-			Field0x0e0* m_unk0x0e0;              // 0x0e0
-			const LegoChar* m_materialName0x0e0; // 0x0e0
+			CannonEmplacement* m_emplacement; // 0x0e0
+			const LegoChar* m_materialName;   // 0x0e0
 		};
 		union {
-			CutsceneParticleRef* m_unk0x0e4;           // 0x0e4
-			RaceTrailManager::Trail* m_trailItem0x0e4; // 0x0e4
+			CutsceneParticleRef* m_trailParticle; // 0x0e4
+			RaceTrailManager::Trail* m_trail;     // 0x0e4
 		};
 	};
 

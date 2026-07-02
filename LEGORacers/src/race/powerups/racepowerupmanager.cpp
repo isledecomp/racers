@@ -740,22 +740,22 @@ void RacePowerupManager::FUN_00458940()
 	FUN_004590f0();
 	CreateExplosionPools();
 
-	m_sound0x1958 = m_soundSource->FUN_00443bd0(7);
+	m_sound0x1958 = m_soundSource->AcquireSoundById(7);
 	if (m_sound0x1958 != NULL) {
 		m_sound0x1958->SetDistanceRangeWithMinSquared(g_unk0x004b183c * g_unk0x004b183c, g_unk0x004b1870);
 	}
 
-	m_sound0x195c = m_soundSource->FUN_00443bd0(0x34);
+	m_sound0x195c = m_soundSource->AcquireSoundById(0x34);
 	if (m_sound0x195c != NULL) {
 		m_sound0x195c->SetDistanceRangeWithMinSquared(g_unk0x004b183c * g_unk0x004b183c, g_unk0x004b1870);
 	}
 
-	m_sound0x1960 = m_soundSource->FUN_00443bd0(0x17);
+	m_sound0x1960 = m_soundSource->AcquireSoundById(0x17);
 	if (m_sound0x1960 != NULL) {
 		m_sound0x1960->SetDistanceRangeWithMinSquared(g_unk0x004b183c * g_unk0x004b183c, g_unk0x004b1870);
 	}
 
-	m_sound0x1964 = m_soundSource->FUN_00443bd0(0x13);
+	m_sound0x1964 = m_soundSource->AcquireSoundById(0x13);
 	if (m_sound0x1964 != NULL) {
 		m_sound0x1964->SetDistanceRangeWithMinSquared(g_unk0x004b183c * g_unk0x004b183c, g_unk0x004b1870);
 	}
@@ -1335,7 +1335,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[4]; i++) {
-			m_cannonballActions[i].FUN_00451a10();
+			m_cannonballActions[i].Destroy();
 		}
 
 		if (m_cannonballActions != NULL) {

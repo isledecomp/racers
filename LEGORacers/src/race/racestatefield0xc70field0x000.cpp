@@ -239,7 +239,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::FUN_00447f30(LegoFloat p_unk0x04, Le
 	}
 
 	if (m_unk0x6ec) {
-		m_sound6e8 = m_unk0x158->FUN_00443bd0(0x3a);
+		m_sound6e8 = m_unk0x158->AcquireSoundById(0x3a);
 	}
 
 	if (m_sound6e8 != NULL) {

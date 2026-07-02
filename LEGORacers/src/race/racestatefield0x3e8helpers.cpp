@@ -1381,7 +1381,7 @@ SpatialSoundInstance* RaceState::Racer::Field0x3e8::FUN_0042af90(LegoS32 p_unk0x
 
 	m_unk0x738 = 0;
 	m_unk0x73c = p_unk0x04;
-	m_unk0x740 = m_unk0x158->FUN_00443bd0(static_cast<LegoU32>(p_unk0x04));
+	m_unk0x740 = m_unk0x158->AcquireSoundById(static_cast<LegoU32>(p_unk0x04));
 
 	if (m_unk0x740 != NULL) {
 		GolVec3 position;
@@ -3845,7 +3845,7 @@ void RaceState::Racer::Field0x3e8Base0x74c::VTable0x24(LegoFloat p_unk0x04, Lego
 
 	if (!m_unk0x6e4) {
 		if (m_unk0x6ec) {
-			m_sound6e4 = m_unk0x158->FUN_00443bd0(0x3c);
+			m_sound6e4 = m_unk0x158->AcquireSoundById(0x3c);
 		}
 
 		if (m_sound6e4) {

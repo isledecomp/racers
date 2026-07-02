@@ -1702,7 +1702,7 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x04(void*)
 	m_unk0x44 = m_unk0x40->FUN_0042fb50(this, &descriptor);
 	m_unk0x5c = 0;
 	m_unk0x64 = 0x1f4;
-	m_unk0x50 = m_unk0x54->FUN_00443bd0(0xbc4);
+	m_unk0x50 = m_unk0x54->AcquireSoundById(0xbc4);
 
 	if (m_unk0x50 != NULL) {
 		m_unk0x50->Play(TRUE);
@@ -1776,7 +1776,7 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x14(undefined4 p_elapsedMs)
 		if (m_unk0x6c > c_racerSearchIntervalMs) {
 			m_unk0x6c = 0;
 			if (m_unk0x58->FUN_0043cbb0(&position, 0.0f, g_item0x2bRacerSearchDistanceSquared) != NULL) {
-				m_unk0x54->FUN_00443b80(
+				m_unk0x54->PlaySpatialSoundById(
 					c_soundId0xbc5,
 					&position,
 					g_item0x2bOneShotSoundMinDistance,
@@ -1873,11 +1873,11 @@ void RaceEventDispatcher0x08::Item0x2b::VTable0x00(LegoEventQueue::CallbackData*
 	impulse.m_z = impulseZ;
 	field0x3e8->VTable0x1c(&impulse, &impulse);
 
-	racer->FUN_00439240(FALSE);
+	racer->PlayReaction(FALSE);
 
 	SoundVector position;
 	racer->m_unk0x018.m_unk0x044->VTable0x04(&position);
-	m_unk0x54->FUN_00443b80(
+	m_unk0x54->PlaySpatialSoundById(
 		c_soundId0xbc7,
 		&position,
 		g_item0x2bOneShotSoundMinDistance,
@@ -2402,7 +2402,7 @@ void RaceEventDispatcher0x08::Item0x2c::VTable0x14(undefined4 p_elapsedMs)
 
 				m_unk0x04->FUN_00462580(c_eventId, c_eventId, &effectPosition);
 				m_unk0x54 = c_eventCooldownMs;
-				m_unk0x48 = m_unk0x4c->FUN_00443bd0(c_soundId);
+				m_unk0x48 = m_unk0x4c->AcquireSoundById(c_soundId);
 				if (m_unk0x48) {
 					m_unk0x48->Play(TRUE);
 					LegoFloat maxDistance = g_item0x2cSoundMaxDistance;
@@ -2429,7 +2429,7 @@ void RaceEventDispatcher0x08::Item0x2c::VTable0x00(LegoEventQueue::CallbackData*
 	if (!(field0x3e8->m_flags0x6c0 & RaceState::Racer::Field0x3e8::c_flags0x6c0Bit1) &&
 		field0x3e8->m_unk0x618 != 0.0f) {
 		field0x3e8->VTable0x24(1.0f, 0.01f, 0.0f);
-		racer->FUN_00439240(FALSE);
+		racer->PlayReaction(FALSE);
 	}
 }
 
@@ -3836,7 +3836,7 @@ void RaceEventDispatcher0x08::Item0x32::VTable0x04(void*)
 	descriptor.m_worldEntity = &m_unk0x10;
 
 	m_unk0x3c = m_unk0x40->FUN_0042fb50(this, &descriptor);
-	m_sound0x170 = m_unk0x174->FUN_00443bd0(c_soundId);
+	m_sound0x170 = m_unk0x174->AcquireSoundById(c_soundId);
 	if (m_sound0x170 != NULL) {
 		GolVec3 position;
 		m_unk0x38->VTable0x04(&position);

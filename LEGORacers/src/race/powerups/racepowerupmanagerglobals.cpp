@@ -7,7 +7,7 @@
 extern const LegoFloat g_unk0x004b03f4 = 6.0f;
 
 // GLOBAL: LEGORACERS 0x004b1378
-extern const LegoFloat g_unk0x004b1378 = FLT_MAX;
+extern const LegoFloat g_unlimitedDrawDistance = FLT_MAX;
 
 // GLOBAL: LEGORACERS 0x004b14dc
 extern const LegoFloat g_unk0x004b14dc = FLT_MAX;

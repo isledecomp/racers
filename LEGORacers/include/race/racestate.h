@@ -141,8 +141,8 @@ public:
 		// SIZE 0x14
 		class Field0x004 : public RaceResourceManager {
 		public:
-			void FUN_00443b50(LegoU32 p_unk0x04);
-			void FUN_00443b80(
+			void PlaySoundById(LegoU32 p_unk0x04);
+			void PlaySpatialSoundById(
 				LegoU32 p_unk0x04,
 				SoundVector* p_unk0x08,
 				LegoFloat p_unk0x0c,
@@ -150,7 +150,7 @@ public:
 				LegoFloat p_unk0x14,
 				LegoFloat p_unk0x18
 			);
-			SpatialSoundInstance* FUN_00443bd0(LegoU32 p_unk0x04);
+			SpatialSoundInstance* AcquireSoundById(LegoU32 p_unk0x04);
 
 		private:
 			LegoU32 FUN_00443c30(LegoU32 p_unk0x04, SoundGroup** p_soundGroup);
@@ -1048,7 +1048,7 @@ public:
 		void FUN_004397a0();
 		void FUN_004397b0();
 		void FUN_004397c0(LegoBool32 p_unk0x04);
-		void FUN_00439240(LegoBool32 p_unk0x04);
+		void PlayReaction(LegoBool32 p_unk0x04);
 		DroppableBrick* DropWhiteBrick();
 		LegoFloat FUN_0043a0a0();
 		void FUN_0043a0c0();
@@ -1056,7 +1056,7 @@ public:
 		void FUN_0043a130();
 		void FUN_0043a1a0();
 		void FUN_0043a210(LegoU32 p_unk0x04);
-		void FUN_0043a270();
+		void AbsorbShieldHit();
 		void FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08);
 		void FUN_0043a360();
 		void FUN_0043a390();
@@ -1193,7 +1193,7 @@ public:
 		LegoU32 m_unk0xd58;                        // 0xd58
 		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
 		LegoU32 m_unk0xd68;                        // 0xd68
-		LegoU32 m_unk0xd6c;                        // 0xd6c
+		LegoU32 m_shieldLevel;                     // 0xd6c
 		undefined4 m_unk0xd70;                     // 0xd70
 		undefined4 m_unk0xd74;                     // 0xd74
 		LegoU32 m_unk0xd78;                        // 0xd78

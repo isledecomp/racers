@@ -2392,7 +2392,7 @@ void RaceState::Racer::FUN_0043a0e0()
 }
 
 // FUNCTION: LEGORACERS 0x0043a130
-void RaceState::Racer::FUN_0043a130()
+void RaceState::Racer::StartMagnetHold()
 {
 	m_unk0xd04 |= c_flags0xd04Bit20;
 
@@ -2412,7 +2412,7 @@ void RaceState::Racer::FUN_0043a130()
 }
 
 // FUNCTION: LEGORACERS 0x0043a1a0
-void RaceState::Racer::FUN_0043a1a0()
+void RaceState::Racer::EndMagnetHold()
 {
 	LegoU32 flags0xd04 = m_unk0xd04;
 	LegoU32 state = m_unk0xd08;

@@ -1053,8 +1053,8 @@ public:
 		LegoFloat FUN_0043a0a0();
 		void FUN_0043a0c0();
 		void FUN_0043a0e0();
-		void FUN_0043a130();
-		void FUN_0043a1a0();
+		void StartMagnetHold();
+		void EndMagnetHold();
 		void FUN_0043a210(LegoU32 p_unk0x04);
 		void AbsorbShieldHit();
 		void FUN_0043a300(LegoU32 p_unk0x04, LegoBool32 p_unk0x08);

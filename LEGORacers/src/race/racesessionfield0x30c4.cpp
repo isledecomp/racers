@@ -92,7 +92,7 @@ void RaceSession::Field0x30c4::FUN_0043a780()
 		racer->FUN_00439730();
 		racer->EndSpinOut();
 		racer->FUN_00439b00();
-		racer->FUN_0043a1a0();
+		racer->EndMagnetHold();
 		racer->FUN_00439870();
 		racer->FUN_0043a210(racerIndex + 1);
 

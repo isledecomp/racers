@@ -113,12 +113,12 @@ void RacePowerupManager::PowerupActionBase::VTable0x00(LegoEventQueue::CallbackD
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::VTable0x0c(GolD3DRenderDevice*)
+void RacePowerupManager::PowerupActionBase::Draw(GolD3DRenderDevice*)
 {
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::PowerupActionBase::VTable0x10(GolD3DRenderDevice*)
+void RacePowerupManager::PowerupActionBase::DrawTransparent(GolD3DRenderDevice*)
 {
 }
 
@@ -1387,7 +1387,7 @@ void RacePowerupManager::FUN_00459e20()
 		LegoU32 i;
 
 		for (i = 0; i < m_actionPoolCounts[0]; i++) {
-			m_magnetActions[i].FUN_004557c0();
+			m_magnetActions[i].Destroy();
 		}
 
 		if (m_magnetActions != NULL) {
@@ -1664,24 +1664,24 @@ void RacePowerupManager::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045a7b0
-void RacePowerupManager::FUN_0045a7b0(LegoBool32 p_unk0x04)
+void RacePowerupManager::Draw(LegoBool32 p_unk0x04)
 {
 	if (!p_unk0x04) {
 		LegoU32 i;
 
 		for (i = 0; i < m_colorBrickCount; i++) {
-			m_colorBricks[i].VTable0x10(m_renderer);
+			m_colorBricks[i].Draw(m_renderer);
 		}
 
 		for (i = 0; i < m_whiteBrickCount; i++) {
-			m_whiteBricks[i].VTable0x10(m_renderer);
+			m_whiteBricks[i].Draw(m_renderer);
 		}
 	}
 
 	PowerupAction* node0x1880 = m_activeActions;
 	while (node0x1880 != NULL) {
 		if (!p_unk0x04 || (node0x1880->GetBrickColor() == 3 && node0x1880->GetLevel() == 3)) {
-			node0x1880->VTable0x0c(m_renderer);
+			node0x1880->Draw(m_renderer);
 		}
 
 		node0x1880 = node0x1880->GetNext();
@@ -1690,13 +1690,13 @@ void RacePowerupManager::FUN_0045a7b0(LegoBool32 p_unk0x04)
 	if (!p_unk0x04) {
 		Explosion* node0x193c = m_activeExplosions;
 		while (node0x193c != NULL) {
-			node0x193c->FUN_004513d0(m_renderer);
+			node0x193c->Draw(m_renderer);
 			node0x193c = node0x193c->GetNext();
 		}
 
 		Explosion* node0x1940 = m_activeSpikeExplosions;
 		while (node0x1940 != NULL) {
-			node0x1940->FUN_004513d0(m_renderer);
+			node0x1940->Draw(m_renderer);
 			node0x1940 = node0x1940->GetNext();
 		}
 	}
@@ -1705,33 +1705,33 @@ void RacePowerupManager::FUN_0045a7b0(LegoBool32 p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x0045a8a0
-void RacePowerupManager::FUN_0045a8a0()
+void RacePowerupManager::DrawTransparent()
 {
 	LegoU32 i;
 
 	for (i = 0; i < m_colorBrickCount; i++) {
-		m_colorBricks[i].VTable0x14(m_renderer);
+		m_colorBricks[i].DrawTransparent(m_renderer);
 	}
 
 	for (i = 0; i < m_whiteBrickCount; i++) {
-		m_whiteBricks[i].VTable0x14(m_renderer);
+		m_whiteBricks[i].DrawTransparent(m_renderer);
 	}
 
 	PowerupAction* node0x1880 = m_activeActions;
 	while (node0x1880 != NULL) {
-		node0x1880->VTable0x10(m_renderer);
+		node0x1880->DrawTransparent(m_renderer);
 		node0x1880 = node0x1880->GetNext();
 	}
 
 	Explosion* node0x193c = m_activeExplosions;
 	while (node0x193c != NULL) {
-		node0x193c->Draw(m_renderer);
+		node0x193c->DrawTransparent(m_renderer);
 		node0x193c = node0x193c->GetNext();
 	}
 
 	Explosion* node0x1940 = m_activeSpikeExplosions;
 	while (node0x1940 != NULL) {
-		node0x1940->Draw(m_renderer);
+		node0x1940->DrawTransparent(m_renderer);
 		node0x1940 = node0x1940->GetNext();
 	}
 }
@@ -2388,7 +2388,7 @@ void RacePowerupManager::FUN_0045b6f0(RaceState::Racer* p_racer)
 {
 	for (LegoU32 i = 0; i < m_actionPoolCounts[0]; i++) {
 		MagnetAction* action = &m_magnetActions[i];
-		if (action->GetState() > 1 && action->m_unk0x78 == p_racer) {
+		if (action->GetState() > 1 && action->m_heldRacer == p_racer) {
 			action->SetState(6);
 		}
 	}

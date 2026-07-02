@@ -212,17 +212,17 @@ const LegoFloat g_lightningFlashHeight = 8.0f;
 // GLOBAL: LEGORACERS 0x004b15d4
 const LegoFloat g_lightningRandomScale = 0.00097751711f;
 
-const LegoFloat g_unk0x004b15dc = 30.0f;
+const LegoFloat g_magnetSoundMinDistance = 30.0f;
 
-const LegoFloat g_unk0x004b15e0 = 300.0f;
+const LegoFloat g_magnetSoundMaxDistance = 300.0f;
 
 const LegoFloat g_unk0x004b15e4 = 10.0f;
 
 const LegoFloat g_unk0x004b15e8 = 100.0f;
 
-const LegoFloat g_unk0x004b15ec = 81.0f;
+const LegoFloat g_magnetGrabDistanceSquared = 81.0f;
 
-const LegoFloat g_unk0x004b15f0 = 30.0f;
+const LegoFloat g_magnetHoldHeightOffset = 30.0f;
 
 const LegoFloat g_unk0x004b15f4 = 1.0f;
 
@@ -244,7 +244,7 @@ LegoFloat g_unk0x004c7604 = g_unk0x004c7600 * g_unk0x004c7600;
 GolVec3 g_beamSegmentOffsets[5];
 
 // GLOBAL: LEGORACERS 0x004b1620
-const LegoFloat g_unk0x004b1620 = 127.0f;
+const LegoFloat g_magnetFadeAlpha = 127.0f;
 
 // GLOBAL: LEGORACERS 0x004b1628
 const LegoFloat g_unk0x004b1628 = 1.0f;
@@ -573,7 +573,7 @@ void RacePowerupManager::CannonballAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00451f30
-void RacePowerupManager::CannonballAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::CannonballAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 3) {
 		p_renderer->VTable0xb4(*m_billboard);
@@ -987,7 +987,7 @@ void RacePowerupManager::CurseAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00452a40
-void RacePowerupManager::CurseAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::CurseAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_state0x06) {
 		return;
@@ -1001,7 +1001,7 @@ void RacePowerupManager::CurseAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00452a80
-void RacePowerupManager::CurseAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::CurseAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_state0x06) {
 		return;
@@ -1038,7 +1038,7 @@ void RacePowerupManager::CurseAction::AdvanceState()
 	GolVec3 position;
 	if (m_ownerRacer != NULL) {
 		GolBoundingVolume::Field0x0c record;
-		FUN_00456360(m_ownerRacer, &position, &record);
+		ComputeDropPosition(m_ownerRacer, &position, &record);
 
 		GolVec3 direction;
 		if (m_ownerRacer->m_unk0xcc4 != NULL) {
@@ -1260,7 +1260,7 @@ void RacePowerupManager::DynamiteAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00453210
-void RacePowerupManager::DynamiteAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::DynamiteAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_state0x06 && m_state != c_state0x04 && m_state != c_state0x05) {
 		p_renderer->VTable0x94(&m_unk0x02c);
@@ -1584,7 +1584,7 @@ void RacePowerupManager::PickupBrick::VTable0x00(LegoEventQueue::CallbackData* p
 }
 
 // FUNCTION: LEGORACERS 0x00453b30
-void RacePowerupManager::PickupBrick::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::PickupBrick::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
@@ -1597,7 +1597,7 @@ void RacePowerupManager::PickupBrick::VTable0x10(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00453b90
-void RacePowerupManager::PickupBrick::VTable0x14(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::PickupBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateInactive &&
 		(m_state == c_stateActive || m_state == c_stateIdle || m_state == c_stateTransition)) {
@@ -1884,7 +1884,7 @@ void RacePowerupManager::GrapplingHookAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x004542d0
-void RacePowerupManager::GrapplingHookAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::GrapplingHookAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	switch (m_state) {
 	case 3:
@@ -2357,7 +2357,7 @@ void RacePowerupManager::LightningAction::UpdateSound(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00455020
-void RacePowerupManager::LightningAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::LightningAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_targetRacer != NULL) {
 		m_flashBillboard->VTable0x08(m_boltPoints[3]);
@@ -2633,36 +2633,36 @@ void RacePowerupManager::LightningAction::UpdateHitParticle()
 // FUNCTION: LEGORACERS 0x00455710
 RacePowerupManager::MagnetAction::MagnetAction()
 {
-	FUN_004557e0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00455770
 RacePowerupManager::MagnetAction::~MagnetAction()
 {
-	FUN_004557c0();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x004557c0
-void RacePowerupManager::MagnetAction::FUN_004557c0()
+void RacePowerupManager::MagnetAction::Destroy()
 {
 	Deactivate();
-	FUN_004557e0();
+	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x004557e0
-void RacePowerupManager::MagnetAction::FUN_004557e0()
+void RacePowerupManager::MagnetAction::Reset()
 {
-	m_unk0x3c = 0;
-	m_unk0x40 = 0;
-	m_unk0x44 = 0;
-	m_unk0x38 = 0;
-	m_unk0x70 = 0;
-	m_unk0x78 = 0;
-	m_unk0x7c = 0;
+	m_magnetEntity = 0;
+	m_ringEntity = 0;
+	m_insideEntity = 0;
+	m_manager = 0;
+	m_sound = 0;
+	m_heldRacer = 0;
+	m_pulledRacer = 0;
 	m_flags0x80 = 0;
-	m_unk0x2c.m_x = 0.0f;
-	m_unk0x2c.m_y = 0.0f;
-	m_unk0x2c.m_z = 0.0f;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00455810
@@ -2676,7 +2676,7 @@ void RacePowerupManager::MagnetAction::Initialize(
 	undefined4
 )
 {
-	m_unk0x38 = p_unk0x04;
+	m_manager = p_unk0x04;
 	m_raceState0x018 = p_raceState;
 	m_collisionWorld = p_unk0x0c;
 	m_state = 1;
@@ -2690,29 +2690,29 @@ void RacePowerupManager::MagnetAction::Activate(
 	GolAnimatedEntity* p_unk0x10
 )
 {
-	m_unk0x3c = m_unk0x38->AllocateEffectEntity();
-	if (m_unk0x3c == NULL) {
+	m_magnetEntity = m_manager->AllocateEffectEntity();
+	if (m_magnetEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x40 = m_unk0x38->AllocateEffectEntity();
-	if (m_unk0x40 == NULL) {
+	m_ringEntity = m_manager->AllocateEffectEntity();
+	if (m_ringEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
-	m_unk0x44 = m_unk0x38->AllocateEffectEntity();
-	if (m_unk0x44 == NULL) {
+	m_insideEntity = m_manager->AllocateEffectEntity();
+	if (m_insideEntity == NULL) {
 		m_state = 6;
 		return;
 	}
 
 	m_ownerRacer = p_racer;
 	m_state = 2;
-	m_stateTimerMs = c_timer0x4e20;
+	m_stateTimerMs = c_armedDurationMs;
 
-	m_unk0x3c->FUN_0040d550(
+	m_magnetEntity->FUN_0040d550(
 		p_unk0x08->GetModel(0),
 		p_unk0x08->VTable0x58(0),
 		p_unk0x08->GetModelPart(0),
@@ -2725,11 +2725,11 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x08->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x08->GetModelPart(i);
-			m_unk0x3c->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
+			m_magnetEntity->FUN_10023940(model, p_unk0x08->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
 
-	m_unk0x40->FUN_0040d550(
+	m_ringEntity->FUN_0040d550(
 		p_unk0x0c->GetModel(0),
 		p_unk0x0c->VTable0x58(0),
 		p_unk0x0c->GetModelPart(0),
@@ -2740,15 +2740,15 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x0c->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x0c->GetModelPart(i);
-			m_unk0x40->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
+			m_ringEntity->FUN_10023940(model, p_unk0x0c->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_unk0x40->FUN_00411680(p_unk0x0c->FUN_00411640());
-	m_unk0x40->FUN_004116b0(p_unk0x0c->FUN_00411660());
-	m_unk0x40->FUN_00411700(p_unk0x0c->FUN_004116e0());
-	m_unk0x40->FUN_00411730(p_unk0x0c->FUN_004116f0());
+	m_ringEntity->FUN_00411680(p_unk0x0c->FUN_00411640());
+	m_ringEntity->FUN_004116b0(p_unk0x0c->FUN_00411660());
+	m_ringEntity->FUN_00411700(p_unk0x0c->FUN_004116e0());
+	m_ringEntity->FUN_00411730(p_unk0x0c->FUN_004116f0());
 
-	m_unk0x44->FUN_0040d550(
+	m_insideEntity->FUN_0040d550(
 		p_unk0x10->GetModel(0),
 		p_unk0x10->VTable0x58(0),
 		p_unk0x10->GetModelPart(0),
@@ -2759,39 +2759,39 @@ void RacePowerupManager::MagnetAction::Activate(
 		if (model != NULL) {
 			LegoFloat modelDistance = p_unk0x10->GetModelDistance(i);
 			CmbModelPart0x34* modelPart = p_unk0x10->GetModelPart(i);
-			m_unk0x44->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
+			m_insideEntity->FUN_10023940(model, p_unk0x10->VTable0x58(i), modelPart, modelDistance);
 		}
 	}
-	m_unk0x44->FUN_00411680(p_unk0x10->FUN_00411640());
-	m_unk0x44->FUN_004116b0(p_unk0x10->FUN_00411660());
-	m_unk0x44->FUN_00411700(p_unk0x10->FUN_004116e0());
-	m_unk0x44->FUN_00411730(p_unk0x10->FUN_004116f0());
+	m_insideEntity->FUN_00411680(p_unk0x10->FUN_00411640());
+	m_insideEntity->FUN_004116b0(p_unk0x10->FUN_00411660());
+	m_insideEntity->FUN_00411700(p_unk0x10->FUN_004116e0());
+	m_insideEntity->FUN_00411730(p_unk0x10->FUN_004116f0());
 }
 
 // FUNCTION: LEGORACERS 0x00455a90
 void RacePowerupManager::MagnetAction::Deactivate()
 {
-	if (m_unk0x70 != NULL) {
-		m_soundSource->ReleaseSound(m_soundResource70);
-		m_unk0x70 = NULL;
+	if (m_sound != NULL) {
+		m_soundSource->ReleaseSound(m_soundResource);
+		m_sound = NULL;
 	}
 
-	if (m_unk0x44 != NULL) {
-		m_unk0x44->VTable0x54();
-		m_unk0x38->ReleaseEffectEntity(m_unk0x44);
-		m_unk0x44 = NULL;
+	if (m_insideEntity != NULL) {
+		m_insideEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_insideEntity);
+		m_insideEntity = NULL;
 	}
 
-	if (m_unk0x40 != NULL) {
-		m_unk0x40->VTable0x54();
-		m_unk0x38->ReleaseEffectEntity(m_unk0x40);
-		m_unk0x40 = NULL;
+	if (m_ringEntity != NULL) {
+		m_ringEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_ringEntity);
+		m_ringEntity = NULL;
 	}
 
-	if (m_unk0x3c != NULL) {
-		m_unk0x3c->VTable0x54();
-		m_unk0x38->ReleaseEffectEntity(m_unk0x3c);
-		m_unk0x3c = NULL;
+	if (m_magnetEntity != NULL) {
+		m_magnetEntity->VTable0x54();
+		m_manager->ReleaseEffectEntity(m_magnetEntity);
+		m_magnetEntity = NULL;
 	}
 
 	if (m_collisionEvent != NULL) {
@@ -2801,16 +2801,16 @@ void RacePowerupManager::MagnetAction::Deactivate()
 
 	m_ownerRacer = NULL;
 
-	if (m_unk0x78 != NULL) {
-		m_unk0x78->FUN_0043a1a0();
-		m_unk0x78 = NULL;
+	if (m_heldRacer != NULL) {
+		m_heldRacer->EndMagnetHold();
+		m_heldRacer = NULL;
 	}
 
-	m_unk0x7c = NULL;
+	m_pulledRacer = NULL;
 	m_flags0x80 = 0;
-	m_unk0x2c.m_x = 0.0f;
-	m_unk0x2c.m_y = 0.0f;
-	m_unk0x2c.m_z = 0.0f;
+	m_direction.m_x = 0.0f;
+	m_direction.m_y = 0.0f;
+	m_direction.m_z = 0.0f;
 	m_state = 1;
 }
 
@@ -2821,33 +2821,33 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 		return;
 	}
 
-	if (m_state == 2 && m_stateTimerMs == c_timer0x4e20) {
-		FUN_004560b0();
+	if (m_state == 2 && m_stateTimerMs == c_armedDurationMs) {
+		Deploy();
 	}
 
 	PowerupActionBase::Update(p_elapsedMs);
 
-	if (m_unk0x78 == NULL && m_unk0x7c == NULL) {
+	if (m_heldRacer == NULL && m_pulledRacer == NULL) {
 		GolVec3 up;
 		up.m_x = 0.0f;
 		up.m_y = 0.0f;
 		up.m_z = 1.0f;
-		m_unk0x3c->VTable0x40(m_unk0x2c, up);
+		m_magnetEntity->VTable0x40(m_direction, up);
 	}
 	else {
 		GolAnimatedEntity* racerEntity;
-		if (m_unk0x78 != NULL) {
-			racerEntity = m_unk0x78->m_unk0x018.m_unk0x044;
+		if (m_heldRacer != NULL) {
+			racerEntity = m_heldRacer->m_unk0x018.m_unk0x044;
 		}
 		else {
-			racerEntity = m_unk0x7c->m_unk0x018.m_unk0x044;
+			racerEntity = m_pulledRacer->m_unk0x018.m_unk0x044;
 		}
 
 		GolVec3 racerPosition;
 		racerEntity->VTable0x04(&racerPosition);
 
 		GolVec3 modelPosition;
-		m_unk0x3c->VTable0x04(&modelPosition);
+		m_magnetEntity->VTable0x04(&modelPosition);
 
 		GolVec3 direction;
 		direction.m_x = modelPosition.m_x - racerPosition.m_x;
@@ -2865,32 +2865,32 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 		up.m_x = side.m_y * direction.m_z - side.m_z * direction.m_y;
 		up.m_y = side.m_z * direction.m_x - side.m_x * direction.m_z;
 		up.m_z = side.m_x * direction.m_y - side.m_y * direction.m_x;
-		m_unk0x3c->FUN_00410b00(direction, up);
+		m_magnetEntity->FUN_00410b00(direction, up);
 
-		if (m_unk0x78 != NULL) {
-			if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
-				m_flags0x80 |= c_flags0x80Bit0;
+		if (m_heldRacer != NULL) {
+			if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+				m_flags0x80 |= c_flagVictimStopped;
 
-				if (!(m_unk0x78->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
-					if (m_stateTimerMs > c_timer0x03e8) {
-						m_stateTimerMs = c_timer0x03e8;
+				if (!(m_heldRacer->m_unk0xd04 & c_racerFlags0xd04Bit3)) {
+					if (m_stateTimerMs > c_fadeDurationMs) {
+						m_stateTimerMs = c_fadeDurationMs;
 					}
 				}
 
-				m_unk0x78->FUN_00439570();
+				m_heldRacer->FUN_00439570();
 			}
 
-			if (m_unk0x78->m_unk0x3e8.m_unk0x744 == 0 && (m_flags0x80 & c_flags0x80Bit0) &&
-				!(m_flags0x80 & c_flags0x80Bit1)) {
+			if (m_heldRacer->m_unk0x3e8.m_unk0x744 == 0 && (m_flags0x80 & c_flagVictimStopped) &&
+				!(m_flags0x80 & c_flagVictimLifted)) {
 				modelPosition.m_z -= 30.0f;
 				direction.m_x = modelPosition.m_x - racerPosition.m_x;
 				direction.m_y = modelPosition.m_y - racerPosition.m_y;
 				direction.m_z = modelPosition.m_z - racerPosition.m_z;
 				GolMath::NormalizeVector3(direction, &direction);
 
-				m_unk0x78->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+				m_heldRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
 
-				if (m_unk0x78->m_unk0x3e8.m_unk0x604 <= 0.002f) {
+				if (m_heldRacer->m_unk0x3e8.m_unk0x604 <= 0.002f) {
 					direction.m_x = racerPosition.m_x - modelPosition.m_x;
 					direction.m_y = racerPosition.m_y - modelPosition.m_y;
 					direction.m_z = racerPosition.m_z - modelPosition.m_z;
@@ -2898,14 +2898,14 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 						direction.m_x * direction.m_x + direction.m_y * direction.m_y + direction.m_z * direction.m_z;
 
 					if (distanceSquared <= 100.0f) {
-						m_flags0x80 |= c_flags0x80Bit1;
+						m_flags0x80 |= c_flagVictimLifted;
 					}
 				}
 			}
 
-			if (m_unk0x78->m_unk0xc70.m_unk0x014 & c_racerField0xc70Flags0x014Bit0) {
-				m_unk0x38->FUN_0045b690(m_unk0x78);
-				m_unk0x78->FUN_00439730();
+			if (m_heldRacer->m_unk0xc70.m_unk0x014 & c_racerField0xc70Flags0x014Bit0) {
+				m_manager->FUN_0045b690(m_heldRacer);
+				m_heldRacer->FUN_00439730();
 			}
 		}
 		else {
@@ -2915,32 +2915,32 @@ void RacePowerupManager::MagnetAction::Update(LegoU32 p_elapsedMs)
 			direction.m_z = modelPosition.m_z - racerPosition.m_z;
 			GolMath::NormalizeVector3(direction, &direction);
 
-			m_unk0x7c->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
-			m_unk0x7c = NULL;
+			m_pulledRacer->m_unk0x3e8.VTable0x20(&direction, static_cast<LegoS32>(p_elapsedMs) * 1.0f);
+			m_pulledRacer = NULL;
 		}
 	}
 
 	if (m_state == 4) {
-		m_unk0x3c->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
+		m_magnetEntity->SetUnk0x58AndInvalidateRadius(static_cast<LegoS32>(m_stateTimerMs) * 0.001f);
 	}
 
-	m_unk0x40->CopyOrientationFrom(*m_unk0x3c);
-	m_unk0x44->CopyOrientationFrom(*m_unk0x3c);
-	m_unk0x3c->VTable0x10(p_elapsedMs);
-	m_unk0x40->VTable0x10(p_elapsedMs);
-	m_unk0x44->VTable0x10(p_elapsedMs);
+	m_ringEntity->CopyOrientationFrom(*m_magnetEntity);
+	m_insideEntity->CopyOrientationFrom(*m_magnetEntity);
+	m_magnetEntity->VTable0x10(p_elapsedMs);
+	m_ringEntity->VTable0x10(p_elapsedMs);
+	m_insideEntity->VTable0x10(p_elapsedMs);
 }
 
 // FUNCTION: LEGORACERS 0x00455ed0
-void RacePowerupManager::MagnetAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::MagnetAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != 6) {
-		p_renderer->VTable0x94(m_unk0x3c);
+		p_renderer->VTable0x94(m_magnetEntity);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00455ef0
-void RacePowerupManager::MagnetAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::MagnetAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 6) {
 		return;
@@ -2948,12 +2948,12 @@ void RacePowerupManager::MagnetAction::VTable0x10(GolD3DRenderDevice* p_renderer
 
 	if (m_state == 4) {
 		LegoFloat alphaScale = static_cast<LegoS32>(m_stateTimerMs) * 0.001f;
-		LegoS32 alpha = static_cast<LegoS32>(alphaScale * g_unk0x004b1620);
+		LegoS32 alpha = static_cast<LegoS32>(alphaScale * g_magnetFadeAlpha);
 		p_renderer->SetAlphaOverride(alpha, TRUE);
 	}
 
-	m_unk0x44->VTable0x1c(*p_renderer);
-	m_unk0x40->VTable0x1c(*p_renderer);
+	m_insideEntity->VTable0x1c(*p_renderer);
+	m_ringEntity->VTable0x1c(*p_renderer);
 
 	if (m_state == 4) {
 		p_renderer->ClearAlphaOverride();
@@ -2969,11 +2969,18 @@ void RacePowerupManager::MagnetAction::AdvanceState()
 	}
 
 	m_state = 4;
-	m_stateTimerMs = c_timer0x03e8;
+	m_stateTimerMs = c_fadeDurationMs;
 
 	SoundVector position;
-	m_unk0x3c->VTable0x04(&position);
-	m_soundSource->PlaySpatialSoundById(c_sound0x4a, &position, g_unk0x004b15dc, g_unk0x004b15e0, 1.0f, 1.0f);
+	m_magnetEntity->VTable0x04(&position);
+	m_soundSource->PlaySpatialSoundById(
+		c_soundRelease,
+		&position,
+		g_magnetSoundMinDistance,
+		g_magnetSoundMaxDistance,
+		1.0f,
+		1.0f
+	);
 }
 
 // FUNCTION: LEGORACERS 0x00455fb0
@@ -2985,14 +2992,14 @@ void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
 
 	if (m_state == 2) {
 		m_state = 3;
-		m_stateTimerMs = c_timer0x0fa0;
+		m_stateTimerMs = c_holdDurationMs;
 	}
 
 	if (m_state == 3) {
 		SoundVector modelPosition;
 		GolVec3 racerPosition;
-		m_unk0x3c->VTable0x04(&modelPosition);
-		modelPosition.m_z -= g_unk0x004b15f0;
+		m_magnetEntity->VTable0x04(&modelPosition);
+		modelPosition.m_z -= g_magnetHoldHeightOffset;
 		p_racer->m_unk0x018.m_unk0x044->VTable0x04(&racerPosition);
 
 		GolVec3 delta;
@@ -3001,76 +3008,82 @@ void RacePowerupManager::MagnetAction::OnHitRacer(RaceState::Racer* p_racer)
 		delta.m_z = modelPosition.m_z - racerPosition.m_z;
 		LegoFloat distanceSquared = delta.m_x * delta.m_x + delta.m_y * delta.m_y + delta.m_z * delta.m_z;
 
-		if (distanceSquared <= g_unk0x004b15ec) {
-			if (m_unk0x78 == NULL) {
-				m_unk0x78 = p_racer;
-				p_racer->FUN_0043a130();
-				m_unk0x7c = NULL;
-				m_soundSource
-					->PlaySpatialSoundById(c_sound0x23, &modelPosition, g_unk0x004b15dc, g_unk0x004b15e0, 1.0f, 1.0f);
+		if (distanceSquared <= g_magnetGrabDistanceSquared) {
+			if (m_heldRacer == NULL) {
+				m_heldRacer = p_racer;
+				p_racer->StartMagnetHold();
+				m_pulledRacer = NULL;
+				m_soundSource->PlaySpatialSoundById(
+					c_soundGrab,
+					&modelPosition,
+					g_magnetSoundMinDistance,
+					g_magnetSoundMaxDistance,
+					1.0f,
+					1.0f
+				);
 				p_racer->PlayReaction(FALSE);
 			}
 		}
-		else if (m_unk0x7c == NULL) {
-			m_unk0x7c = p_racer;
+		else if (m_pulledRacer == NULL) {
+			m_pulledRacer = p_racer;
 		}
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004560b0
-void RacePowerupManager::MagnetAction::FUN_004560b0()
+void RacePowerupManager::MagnetAction::Deploy()
 {
 	SoundVector position;
-	FUN_00456360(m_ownerRacer, &position, NULL);
+	ComputeDropPosition(m_ownerRacer, &position, NULL);
 
 	position.m_z += 30.0f;
-	m_unk0x3c->VTable0x08(position);
+	m_magnetEntity->VTable0x08(position);
 	position.m_z -= 30.0f;
-	m_unk0x40->CopyPositionFrom(*m_unk0x3c);
-	m_unk0x44->CopyPositionFrom(*m_unk0x3c);
+	m_ringEntity->CopyPositionFrom(*m_magnetEntity);
+	m_insideEntity->CopyPositionFrom(*m_magnetEntity);
 
-	m_unk0x3c->SetFlags(m_unk0x3c->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x3c->FUN_0040dad0(0);
-	m_unk0x40->SetFlags(m_unk0x40->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x40->FUN_0040dad0(0);
-	m_unk0x44->SetFlags(m_unk0x44->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
-	m_unk0x44->FUN_0040dad0(0);
+	m_magnetEntity->SetFlags(m_magnetEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_magnetEntity->FUN_0040dad0(0);
+	m_ringEntity->SetFlags(m_ringEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_ringEntity->FUN_0040dad0(0);
+	m_insideEntity->SetFlags(m_insideEntity->GetFlags() | GolAnimatedEntity::c_flagPartAnimation);
+	m_insideEntity->FUN_0040dad0(0);
 
 	if (m_ownerRacer->m_unk0xcc4 != NULL) {
-		m_unk0x2c = m_ownerRacer->m_unk0xcc4->m_unk0x00;
+		m_direction = m_ownerRacer->m_unk0xcc4->m_unk0x00;
 	}
 	else {
-		m_unk0x2c.m_x = 1.0f;
-		m_unk0x2c.m_y = 0.0f;
-		m_unk0x2c.m_z = 0.0f;
+		m_direction.m_x = 1.0f;
+		m_direction.m_y = 0.0f;
+		m_direction.m_z = 0.0f;
 	}
 
 	GolVec3 up;
 	up.m_x = 0.0f;
 	up.m_y = 0.0f;
 	up.m_z = 1.0f;
-	m_unk0x3c->VTable0x40(m_unk0x2c, up);
+	m_magnetEntity->VTable0x40(m_direction, up);
 
-	m_unk0x48.VTable0x08(position);
-	m_unk0x48.FUN_10026fa0(10.0f);
+	m_worldEntity.VTable0x08(position);
+	m_worldEntity.FUN_10026fa0(10.0f);
 	m_ownerRacer->m_unk0x3e8.FUN_00429cf0(0.0015f, 150);
-	m_soundSource->PlaySpatialSoundById(c_sound0x21, &position, 30.0f, 300.0f, 1.0f, 1.0f);
+	m_soundSource->PlaySpatialSoundById(c_soundDeploy, &position, 30.0f, 300.0f, 1.0f, 1.0f);
 
-	m_unk0x70 = m_soundSource->AcquireSoundById(c_sound0x22);
-	m_unk0x70->Play(TRUE);
-	m_unk0x70->SetDistanceRange(30.0f, 300.0f);
-	m_unk0x70->SetPosition(position);
-	m_unk0x70->ClearVelocity();
+	m_sound = m_soundSource->AcquireSoundById(c_soundLoop);
+	m_sound->Play(TRUE);
+	m_sound->SetDistanceRange(30.0f, 300.0f);
+	m_sound->SetPosition(position);
+	m_sound->ClearVelocity();
 
 	m_state = 2;
-	m_stateTimerMs = c_timer0x4e20;
+	m_stateTimerMs = c_armedDurationMs;
 
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_unk0x00 = 4;
 	descriptor.m_unk0x04 = 1;
 	descriptor.m_unk0x08 = 0;
 	descriptor.m_unk0x0c = 0;
-	descriptor.m_data = &m_unk0x48;
+	descriptor.m_data = &m_worldEntity;
 	m_collisionEvent = m_raceState0x018->GetEventQueue()->FUN_0042fb50(this, &descriptor);
 }
 
@@ -3102,7 +3115,7 @@ void RacePowerupManager::HazardActionBase::VTable0x00(LegoEventQueue::CallbackDa
 }
 
 // STUB: LEGORACERS 0x00456360
-void RacePowerupManager::HazardActionBase::FUN_00456360(
+void RacePowerupManager::HazardActionBase::ComputeDropPosition(
 	RaceState::Racer* p_racer,
 	GolVec3* p_position,
 	GolBoundingVolume::Field0x0c* p_record
@@ -3408,7 +3421,7 @@ void RacePowerupManager::HomingMissileAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00456ce0
-void RacePowerupManager::HomingMissileAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::HomingMissileAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_state0x02) {
 		p_renderer->VTable0x94(&m_unk0x128);
@@ -3662,7 +3675,7 @@ void RacePowerupManager::OilSlickAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00457380
-void RacePowerupManager::OilSlickAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::OilSlickAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_state0x03) {
 		m_unk0x064.FUN_00415a40(p_renderer);
@@ -3684,7 +3697,7 @@ void RacePowerupManager::OilSlickAction::AdvanceState()
 	}
 
 	SoundVector position;
-	FUN_00456360(m_ownerRacer, &position, NULL);
+	ComputeDropPosition(m_ownerRacer, &position, NULL);
 	m_worldEntity.VTable0x08(position);
 	m_worldEntity.FUN_10026fa0(3.0f);
 	m_ownerRacer->m_unk0x3e8.FUN_00429cf0(0.0015f, 150);
@@ -3891,25 +3904,25 @@ void RacePowerupManager::ColorBrick::SetMaterials(
 }
 
 // FUNCTION: LEGORACERS 0x00457900
-void RacePowerupManager::ColorBrick::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::ColorBrick::Draw(GolD3DRenderDevice* p_renderer)
 {
 	MaterialTable0x0c* materialTable = m_model->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {
 		materialTable = m_model->GetModel(0)->GetMaterialTable();
 	}
 	materialTable->SetPosition(0, m_brickMaterial);
-	PickupBrick::VTable0x10(p_renderer);
+	PickupBrick::Draw(p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00457930
-void RacePowerupManager::ColorBrick::VTable0x14(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::ColorBrick::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	MaterialTable0x0c* materialTable = m_blendModel->GetPrimaryMaterialTable();
 	if (materialTable == NULL) {
 		materialTable = m_blendModel->GetModel(0)->GetMaterialTable();
 	}
 	materialTable->SetPosition(0, m_trailMaterial);
-	PickupBrick::VTable0x14(p_renderer);
+	PickupBrick::DrawTransparent(p_renderer);
 }
 
 // FUNCTION: LEGORACERS 0x00458390
@@ -4365,7 +4378,7 @@ void RacePowerupManager::ShieldAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045c160 FOLDED
-void RacePowerupManager::ShieldAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::ShieldAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == 6) {
 		return;
@@ -4719,7 +4732,7 @@ void RacePowerupManager::TurboAction::FUN_0045cf90()
 }
 
 // FUNCTION: LEGORACERS 0x0045d120
-void RacePowerupManager::TurboAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::TurboAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_state0x06) {
 		FUN_0045cf90();
@@ -4728,7 +4741,7 @@ void RacePowerupManager::TurboAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0045d150
-void RacePowerupManager::TurboAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::TurboAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_state0x06) {
 		return;
@@ -5024,7 +5037,7 @@ void RacePowerupManager::WarpAction::Update(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x0045d940
-void RacePowerupManager::WarpAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::WarpAction::Draw(GolD3DRenderDevice* p_renderer)
 {
 	MenuAnimationList* animationList = m_unk0x0ac->m_unk0x04c;
 	if (m_state == c_stateDone) {
@@ -5116,7 +5129,7 @@ void RacePowerupManager::WarpAction::VTable0x0c(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x0045dbe0
-void RacePowerupManager::WarpAction::VTable0x10(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::WarpAction::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state != c_stateStarting) {
 		return;

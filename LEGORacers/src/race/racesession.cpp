@@ -2116,7 +2116,7 @@ void RaceSession::VTable0x30()
 void RaceSession::FUN_004354d0()
 {
 	if (m_unk0x6dc.GetUnk0x19a0()) {
-		m_unk0x6dc.FUN_0045a7b0(FALSE);
+		m_unk0x6dc.Draw(FALSE);
 		return;
 	}
 
@@ -2141,7 +2141,7 @@ void RaceSession::FUN_004354d0()
 	}
 
 	if (m_raceState.m_unk0x318[0]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
-		m_unk0x6dc.FUN_0045a7b0(viewportIndex);
+		m_unk0x6dc.Draw(viewportIndex);
 	}
 	else {
 		GolVec3 cameraPosition;
@@ -2177,7 +2177,7 @@ void RaceSession::FUN_004354d0()
 		m_renderer->VTable0xec(viewportIndex + 1);
 
 		if (m_raceState.m_unk0x318[viewportIndex]->m_unk0xd04 & c_racerFlags0xd04Bit4) {
-			m_unk0x6dc.FUN_0045a7b0(FALSE);
+			m_unk0x6dc.Draw(FALSE);
 		}
 		else {
 			GolVec3 cameraPosition;
@@ -2358,7 +2358,7 @@ void RaceSession::VTable0x34()
 void RaceSession::VTable0x38(RaceState::Racer* p_racer)
 {
 	m_raceState.FUN_0043cd30(m_renderer, p_racer);
-	m_unk0x6dc.FUN_0045a7b0(FALSE);
+	m_unk0x6dc.Draw(FALSE);
 	m_unk0x2150.FUN_00489ff0(m_renderer);
 	m_unk0x248c.FUN_00489ff0(m_renderer);
 	m_trailManager.FUN_00493a60(m_renderer);
@@ -2377,7 +2377,7 @@ void RaceSession::VTable0x3c()
 	m_unk0x398->FUN_00416040();
 	m_raceState.FUN_0043bff0(m_renderer);
 	m_unk0x2148.FUN_0048ae30(m_renderer);
-	m_unk0x6dc.FUN_0045a8a0();
+	m_unk0x6dc.DrawTransparent();
 	m_unk0x2150.FUN_0048a040(m_renderer);
 	m_unk0x248c.FUN_0048a040(m_renderer);
 	m_trailManager.FUN_00493aa0(m_renderer);

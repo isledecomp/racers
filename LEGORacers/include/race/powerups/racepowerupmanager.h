@@ -374,8 +374,8 @@ public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override = 0; // vtable+0x00
 		virtual PowerupAction* Destroy(undefined4 p_flags) = 0;              // vtable+0x04
 		virtual void Update(LegoU32 p_elapsedMs) = 0;                        // vtable+0x08
-		virtual void VTable0x0c(GolD3DRenderDevice*) = 0;                    // vtable+0x0c
-		virtual void VTable0x10(GolD3DRenderDevice*) = 0;                    // vtable+0x10
+		virtual void Draw(GolD3DRenderDevice*) = 0;                          // vtable+0x0c
+		virtual void DrawTransparent(GolD3DRenderDevice*) = 0;               // vtable+0x10
 		virtual void AdvanceState() = 0;                                     // vtable+0x14
 		virtual LegoS32 GetBrickColor() = 0;                                 // vtable+0x18
 		virtual void Deactivate() = 0;                                       // vtable+0x1c
@@ -408,8 +408,8 @@ public:
 		void VTable0x00(LegoEventQueue::CallbackData* p_param) override; // vtable+0x00
 		PowerupAction* Destroy(undefined4 p_flags) override;             // vtable+0x04
 		void Update(LegoU32) override;                                   // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice*) override;                   // vtable+0x0c
-		void VTable0x10(GolD3DRenderDevice*) override;                   // vtable+0x10
+		void Draw(GolD3DRenderDevice*) override;                         // vtable+0x0c
+		void DrawTransparent(GolD3DRenderDevice*) override;              // vtable+0x10
 		void AdvanceState() override = 0;                                // vtable+0x14
 		LegoS32 GetBrickColor() override = 0;                            // vtable+0x18
 		void Deactivate() override;                                      // vtable+0x1c
@@ -436,7 +436,11 @@ public:
 		virtual void OnHitRacer(RaceState::Racer* p_racer);              // vtable+0x20
 
 	protected:
-		void FUN_00456360(RaceState::Racer* p_racer, GolVec3* p_position, GolBoundingVolume::Field0x0c* p_record);
+		void ComputeDropPosition(
+			RaceState::Racer* p_racer,
+			GolVec3* p_position,
+			GolBoundingVolume::Field0x0c* p_record
+		);
 
 		RaceState* m_raceState0x018;              // 0x018
 		LegoEventQueue::Event* m_collisionEvent;  // 0x01c
@@ -475,8 +479,8 @@ public:
 		virtual void OnTouched(RaceState::Racer* p_racer) = 0;          // vtable+0x04
 		virtual ~PickupBrick();                                         // vtable+0x08
 		virtual void Respawn();                                         // vtable+0x0c
-		virtual void VTable0x10(GolD3DRenderDevice* p_renderer);        // vtable+0x10
-		virtual void VTable0x14(GolD3DRenderDevice* p_renderer);        // vtable+0x14
+		virtual void Draw(GolD3DRenderDevice* p_renderer);              // vtable+0x10
+		virtual void DrawTransparent(GolD3DRenderDevice* p_renderer);   // vtable+0x14
 
 		// SYNTHETIC: LEGORACERS 0x00453940
 		// RacePowerupManager::PickupBrick::`scalar deleting destructor'
@@ -537,8 +541,8 @@ public:
 		~ColorBrick() override;
 		void OnTouched(RaceState::Racer* p_racer) override;
 		void Respawn() override;
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override;
-		void VTable0x14(GolD3DRenderDevice* p_renderer) override;
+		void Draw(GolD3DRenderDevice* p_renderer) override;
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override;
 
 		// SYNTHETIC: LEGORACERS 0x00458e20
 		// RacePowerupManager::ColorBrick::`vector deleting destructor'
@@ -564,64 +568,64 @@ public:
 	class MagnetAction : public HazardActionBase {
 	public:
 		enum {
-			c_timer0x03e8 = 0x03e8,
-			c_timer0x0fa0 = 0x0fa0,
-			c_timer0x4e20 = 0x4e20,
-			c_sound0x21 = 0x21,
-			c_sound0x22 = 0x22,
-			c_sound0x23 = 0x23,
-			c_sound0x4a = 0x4a,
-			c_flags0x80Bit0 = 1 << 0,
-			c_flags0x80Bit1 = 1 << 1,
+			c_fadeDurationMs = 0x03e8,
+			c_holdDurationMs = 0x0fa0,
+			c_armedDurationMs = 0x4e20,
+			c_soundDeploy = 0x21,
+			c_soundLoop = 0x22,
+			c_soundGrab = 0x23,
+			c_soundRelease = 0x4a,
+			c_flagVictimStopped = 1 << 0,
+			c_flagVictimLifted = 1 << 1,
 			c_racerFlags0xd04Bit3 = 1 << 3,
 			c_racerField0xc70Flags0x014Bit0 = 1 << 0,
 		};
 
 		MagnetAction();
 		~MagnetAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		void Deactivate() override;                                    // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override;           // vtable+0x20
 
 		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
-			RaceSessionField0x32b4* p_unk0x0c,
+			RaceSessionField0x32b4* p_ringModel,
 			undefined4 p_unk0x10,
 			GolExport* p_unk0x14,
 			GolD3DRenderDevice* p_unk0x18,
 			undefined4 p_unk0x1c
 		);
-		void FUN_004557c0();
-		void FUN_004557e0();
+		void Destroy();
+		void Reset();
 		void Activate(
 			RaceState::Racer* p_racer,
-			GolAnimatedEntity* p_unk0x08,
-			GolAnimatedEntity* p_unk0x0c,
-			GolAnimatedEntity* p_unk0x10
+			GolAnimatedEntity* p_magnetModel,
+			GolAnimatedEntity* p_ringModel,
+			GolAnimatedEntity* p_insideModel
 		);
-		void FUN_004560b0();
+		void Deploy();
 
 	private:
 		friend class RacePowerupManager;
 
-		GolVec3 m_unk0x2c;             // 0x2c
-		RacePowerupManager* m_unk0x38; // 0x38
-		GolAnimatedEntity* m_unk0x3c;  // 0x3c
-		GolAnimatedEntity* m_unk0x40;  // 0x40
-		GolAnimatedEntity* m_unk0x44;  // 0x44
-		GolWorldEntity m_unk0x48;      // 0x48
+		GolVec3 m_direction;               // 0x2c
+		RacePowerupManager* m_manager;     // 0x38
+		GolAnimatedEntity* m_magnetEntity; // 0x3c
+		GolAnimatedEntity* m_ringEntity;   // 0x40
+		GolAnimatedEntity* m_insideEntity; // 0x44
+		GolWorldEntity m_worldEntity;      // 0x48
 		union {
-			SpatialSoundInstance* m_unk0x70;                  // 0x70
-			RaceResourceManager::Resource* m_soundResource70; // 0x70
+			SpatialSoundInstance* m_sound;                  // 0x70
+			RaceResourceManager::Resource* m_soundResource; // 0x70
 		};
 		undefined m_unk0x74[0x78 - 0x74]; // 0x74
-		RaceState::Racer* m_unk0x78;      // 0x78
-		RaceState::Racer* m_unk0x7c;      // 0x7c
+		RaceState::Racer* m_heldRacer;    // 0x78
+		RaceState::Racer* m_pulledRacer;  // 0x7c
 		LegoU8 m_flags0x80;               // 0x80
 		undefined m_unk0x81[0x84 - 0x81]; // 0x81
 	};
@@ -648,12 +652,12 @@ public:
 
 		OilSlickAction();
 		~OilSlickAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+		void AdvanceState() override;                        // vtable+0x14
+		void Deactivate() override;                          // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
 		void Initialize(
 			RacePowerupManager* p_unk0x04,
 			RaceState* p_raceState,
@@ -702,11 +706,11 @@ public:
 
 		DynamiteAction();
 		~DynamiteAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
+		PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+		void AdvanceState() override;                        // vtable+0x14
+		void Deactivate() override;                          // vtable+0x1c
 		void Initialize(
 			RaceState* p_raceState,
 			RaceSessionField0x32b4* p_unk0x08,
@@ -753,13 +757,13 @@ public:
 
 		CurseAction();
 		~CurseAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		void Deactivate() override;                                    // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override;           // vtable+0x20
 		void Initialize(RaceState* p_raceState, RaceSessionField0x32b4* p_unk0x08, RacePowerupManager* p_unk0x0c);
 		void FUN_004524f0();
 		void FUN_00452510();
@@ -796,12 +800,12 @@ public:
 
 		CannonballAction();
 		~CannonballAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+		void AdvanceState() override;                        // vtable+0x14
+		void Deactivate() override;                          // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
 		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void Destroy();
 		LegoU32 Activate(ActionSetup* p_unk0x04);
@@ -839,12 +843,12 @@ public:
 
 		GrapplingHookAction();
 		~GrapplingHookAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+		void AdvanceState() override;                        // vtable+0x14
+		void Deactivate() override;                          // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
 		void Initialize(RacePowerupManager* p_unk0x04, RaceSessionField0x32b4* p_unk0x08, undefined4 p_unk0x0c);
 		void FUN_00453d90();
 		LegoU32 Activate(
@@ -897,14 +901,14 @@ public:
 
 		LightningAction();
 		~LightningAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
-		void GetProjectilePosition(GolVec3* p_position) override; // vtable+0x24
-		void GetProjectileVelocity(GolVec3* p_velocity) override; // vtable+0x28
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		void Deactivate() override;                                    // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override;           // vtable+0x20
+		void GetProjectilePosition(GolVec3* p_position) override;      // vtable+0x24
+		void GetProjectileVelocity(GolVec3* p_velocity) override;      // vtable+0x28
 
 		void Initialize(GolExport* p_export, RacePowerupManager* p_unk0x08);
 		void AcquireSound();
@@ -957,12 +961,12 @@ public:
 
 		HomingMissileAction();
 		~HomingMissileAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void AdvanceState() override;                             // vtable+0x14
-		void Deactivate() override;                               // vtable+0x1c
-		void OnHitRacer(RaceState::Racer* p_racer) override;      // vtable+0x20
+		PowerupAction* Destroy(undefined4 p_flags) override; // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;           // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;  // vtable+0x0c
+		void AdvanceState() override;                        // vtable+0x14
+		void Deactivate() override;                          // vtable+0x1c
+		void OnHitRacer(RaceState::Racer* p_racer) override; // vtable+0x20
 		void Initialize(GolExport** p_unk0x04, RaceSessionField0x32b4* p_unk0x08);
 		void FUN_00456540();
 		void Activate(
@@ -1012,12 +1016,12 @@ public:
 
 		ShieldAction();
 		~ShieldAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		LegoS32 GetBrickColor() override;                         // vtable+0x18
-		void Deactivate() override;                               // vtable+0x1c
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		LegoS32 GetBrickColor() override;                              // vtable+0x18
+		void Deactivate() override;                                    // vtable+0x1c
 		RaceState::Racer* FUN_0045bc40();
 		void Initialize(RacePowerupManager* p_unk0x04);
 		void FUN_0045bd10();
@@ -1073,13 +1077,13 @@ public:
 
 		TurboAction();
 		~TurboAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		LegoS32 GetBrickColor() override;                         // vtable+0x18
-		void Deactivate() override;                               // vtable+0x1c
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		LegoS32 GetBrickColor() override;                              // vtable+0x18
+		void Deactivate() override;                                    // vtable+0x1c
 		void Initialize(RacePowerupManager* p_unk0x04, CutsceneAnimation* p_unk0x08);
 		void FUN_0045c8b0();
 		void FUN_0045c8d0();
@@ -1111,13 +1115,13 @@ public:
 
 		WarpAction();
 		~WarpAction();
-		PowerupAction* Destroy(undefined4 p_flags) override;      // vtable+0x04
-		void Update(LegoU32 p_elapsedMs) override;                // vtable+0x08
-		void VTable0x0c(GolD3DRenderDevice* p_renderer) override; // vtable+0x0c
-		void VTable0x10(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
-		void AdvanceState() override;                             // vtable+0x14
-		LegoS32 GetBrickColor() override;                         // vtable+0x18
-		void Deactivate() override;                               // vtable+0x1c
+		PowerupAction* Destroy(undefined4 p_flags) override;           // vtable+0x04
+		void Update(LegoU32 p_elapsedMs) override;                     // vtable+0x08
+		void Draw(GolD3DRenderDevice* p_renderer) override;            // vtable+0x0c
+		void DrawTransparent(GolD3DRenderDevice* p_renderer) override; // vtable+0x10
+		void AdvanceState() override;                                  // vtable+0x14
+		LegoS32 GetBrickColor() override;                              // vtable+0x18
+		void Deactivate() override;                                    // vtable+0x1c
 		void FUN_0045d4b0();
 		void Initialize(const SetupParams* p_params);
 		void FUN_0045d540();
@@ -1206,8 +1210,8 @@ public:
 		void Deactivate();
 		void Update(LegoU32 p_elapsedMs);
 		void UpdateFlash(LegoU32 p_elapsedMs);
+		void DrawTransparent(GolD3DRenderDevice* p_renderer);
 		void Draw(GolD3DRenderDevice* p_renderer);
-		void FUN_004513d0(GolD3DRenderDevice* p_renderer);
 
 	private:
 		enum {
@@ -1329,8 +1333,8 @@ public:
 	RacePowerupManager();
 	~RacePowerupManager();
 	void Update(LegoU32 p_elapsedMs);
-	void FUN_0045a7b0(LegoBool32 p_unk0x04);
-	void FUN_0045a8a0();
+	void Draw(LegoBool32 p_unk0x04);
+	void DrawTransparent();
 	void UseRedPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	void UseYellowPowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
 	void UseBluePowerup(RaceState::Racer* p_racer, LegoU32 p_unk0x08);

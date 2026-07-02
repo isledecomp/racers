@@ -348,7 +348,7 @@ void RacePowerupManager::Explosion::UpdateFlash(LegoU32 p_elapsedMs)
 }
 
 // FUNCTION: LEGORACERS 0x00421ae0
-void RacePowerupManager::Explosion::Draw(GolD3DRenderDevice* p_renderer)
+void RacePowerupManager::Explosion::DrawTransparent(GolD3DRenderDevice* p_renderer)
 {
 	if (m_state == c_stateUninitialized || m_state == c_stateIdle) {
 		return;
@@ -456,7 +456,7 @@ void RacePowerupManager::Explosion::VTable0x00(LegoEventQueue::CallbackData* p_d
 }
 
 // FUNCTION: LEGORACERS 0x004513d0 FOLDED
-void RacePowerupManager::Explosion::FUN_004513d0(GolD3DRenderDevice*)
+void RacePowerupManager::Explosion::Draw(GolD3DRenderDevice*)
 {
 }
 

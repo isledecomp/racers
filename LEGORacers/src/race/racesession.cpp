@@ -1048,7 +1048,7 @@ void RaceSession::FUN_00433480(LegoBool32 p_mirror)
 		);
 	}
 
-	m_raceState.FUN_0043b190(&racerParams, &racerContext, m_context->m_useBinaryFiles);
+	m_raceState.CreateRacers(&racerParams, &racerContext, m_context->m_useBinaryFiles);
 
 	if (p_mirror) {
 		m_raceState.SetUnk0x284Unk0x0c(g_mirroredRaceStateRouteScale);

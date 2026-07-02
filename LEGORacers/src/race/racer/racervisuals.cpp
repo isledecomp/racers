@@ -146,10 +146,10 @@ void RaceState::Racer::CarVisuals::Initialize(InitParams* p_params, RaceState::F
 	m_shadowLength = p_params->m_shadowLength;
 	m_frontSkidWidth = p_params->m_frontSkidWidth;
 	m_rearSkidWidth = p_params->m_rearSkidWidth;
-	::strncpy(m_carMaterialName, p_params->m_materialName, sizeof(m_carMaterialName));
+	::strncpy(m_shadowTextureName, p_params->m_materialName, sizeof(m_shadowTextureName));
 
-	m_carMaterialTable.Initialize(p_context->m_renderer, 1);
-	m_carMaterialTable.AssignEntryByName(0, m_carMaterialName);
+	m_shadowMaterialTable.Initialize(p_context->m_renderer, 1);
+	m_shadowMaterialTable.AssignEntryByName(0, m_shadowTextureName);
 	m_skidMaterialTable.Initialize(p_context->m_renderer, 1);
 	m_skidMaterialTable.AssignEntryByName(0, "skid");
 
@@ -200,7 +200,7 @@ void RaceState::Racer::CarVisuals::InitializeVisuals(GolD3DRenderDevice* p_rende
 // FUNCTION: LEGORACERS 0x0043d9f0
 void RaceState::Racer::CarVisuals::RefreshCarMaterial()
 {
-	m_carMaterialTable.AssignEntryByName(0, m_carMaterialName);
+	m_shadowMaterialTable.AssignEntryByName(0, m_shadowTextureName);
 }
 
 // FUNCTION: LEGORACERS 0x0043da10
@@ -221,7 +221,7 @@ void RaceState::Racer::CarVisuals::Destroy()
 	m_curseEntity.VTable0x54();
 	m_shadowDecal.FUN_004149f0();
 	m_skidMaterialTable.Clear();
-	m_carMaterialTable.Clear();
+	m_shadowMaterialTable.Clear();
 
 	if (m_tireSmokeParticle) {
 		m_particleAnimation->FUN_00489f00(m_tireSmokeParticle);
@@ -256,7 +256,7 @@ void RaceState::Racer::CarVisuals::Destroy()
 	m_particleAnimation = NULL;
 	m_shadowDecal.FUN_004149f0();
 	m_skidMaterialTable.Clear();
-	m_carMaterialTable.Clear();
+	m_shadowMaterialTable.Clear();
 	Reset();
 }
 
@@ -1307,7 +1307,7 @@ void RaceState::Racer::CarVisuals::UpdateShadow(GolCamera* p_camera)
 
 		up.m_x = -up.m_x;
 		up.m_y = -up.m_y;
-		MaterialTable0x0c* materialTable = &m_carMaterialTable;
+		MaterialTable0x0c* materialTable = &m_shadowMaterialTable;
 		GolVec3* upVector = &up;
 		GolVec3* vector = &m_shadowDirection;
 		m_shadowDecal.GetUnk0x010().SetPrimaryMaterialTable(materialTable);
@@ -1470,7 +1470,7 @@ LegoBool32 RaceState::Racer::CarVisuals::IntersectSegment(const GolVec3* p_start
 // FUNCTION: LEGORACERS 0x0043ff20
 void RaceState::Racer::CarVisuals::RenderImpostor(GolD3DRenderDevice* p_renderer)
 {
-	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(m_carMaterialName);
+	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(m_shadowTextureName);
 	g_racerBillboardRenderState0x33c.FUN_004097c0(p_renderer, material->GetUnk0x04());
 
 	GolVec3 position;

@@ -237,7 +237,7 @@ undefined4 g_unk0x004c67ac;
 RaceState::RacerProgressEntry RaceState::g_racerProgressEntries[RaceState::c_racerProgressEntryCount];
 
 // GLOBAL: LEGORACERS 0x004bef3c
-const LegoChar* g_unk0x004bef3c[3] = {"drivers", "champs", "chassis"};
+const LegoChar* g_racerDatabaseNames[3] = {"drivers", "champs", "chassis"};
 
 // GLOBAL: LEGORACERS 0x004bef70
 LegoU32 g_unk0x004bef70 = 3;
@@ -408,7 +408,7 @@ void RaceState::Racer::Reset()
 }
 
 // FUNCTION: LEGORACERS 0x00436df0
-void RaceState::Racer::FUN_00436df0(
+void RaceState::Racer::Initialize(
 	RaceState::Field0x3b190Params0x08* p_context,
 	CarVisuals::InitParams* p_field0x018Params,
 	Field0x36df0Params* p_params,
@@ -2878,19 +2878,19 @@ void RaceState::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x0043b190
-void RaceState::FUN_0043b190(Field0x3b190Params0x04* p_unk0x04, Field0x3b190Params0x08* p_unk0x08, LegoBool32 p_binary)
+void RaceState::CreateRacers(Field0x3b190Params0x04* p_params, Field0x3b190Params0x08* p_context, LegoBool32 p_binary)
 {
-	m_unk0x0f0.m_field0x010 = p_unk0x08->m_racerField0x010;
-	m_unk0x0f0.m_unk0x05c = p_unk0x08->m_resourceMgr;
-	m_unk0x0f0.m_unk0x060 = p_unk0x08->m_unk0x18;
-	m_unk0x0f0.m_golExport = p_unk0x08->m_golExport;
-	m_unk0x0f0.m_timeRaceManager = p_unk0x04->m_timeRaceManager;
-	m_unk0x0f0.m_routeRecords = p_unk0x04->m_routeRecords;
-	m_setup.m_lapCount = p_unk0x04->m_lapCount;
+	m_unk0x0f0.m_field0x010 = p_context->m_racerField0x010;
+	m_unk0x0f0.m_unk0x05c = p_context->m_resourceMgr;
+	m_unk0x0f0.m_unk0x060 = p_context->m_unk0x18;
+	m_unk0x0f0.m_golExport = p_context->m_golExport;
+	m_unk0x0f0.m_timeRaceManager = p_params->m_timeRaceManager;
+	m_unk0x0f0.m_routeRecords = p_params->m_routeRecords;
+	m_setup.m_lapCount = p_params->m_lapCount;
 	static_cast<LegoEventQueue*>(&m_unk0x0f0)->VTable0x08(100);
 
 	m_unk0x0f0.m_unk0x04c = this;
-	m_unk0x0f0.m_racerCount = p_unk0x04->m_racerCount;
+	m_unk0x0f0.m_racerCount = p_params->m_racerCount;
 	m_unk0x0f0.m_racers = new Racer[m_unk0x0f0.m_racerCount];
 	if (m_unk0x0f0.m_racers == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
@@ -2898,36 +2898,36 @@ void RaceState::FUN_0043b190(Field0x3b190Params0x04* p_unk0x04, Field0x3b190Para
 
 	m_setup.m_unk0x10 = m_unk0x0f0.m_golExport->CreateTextureList();
 	m_setup.m_unk0x14 = m_unk0x0f0.m_golExport->CreateMaterialList();
-	m_setup.m_unk0x10->VTable0x1c(p_unk0x08->m_renderer, m_unk0x0f0.m_racerCount);
-	m_setup.m_unk0x14->VTable0x1c(p_unk0x08->m_renderer, m_unk0x0f0.m_racerCount);
+	m_setup.m_unk0x10->VTable0x1c(p_context->m_renderer, m_unk0x0f0.m_racerCount);
+	m_setup.m_unk0x14->VTable0x1c(p_context->m_renderer, m_unk0x0f0.m_racerCount);
 
 	DriverCosmeticTable::LoadParams driverParams;
-	driverParams.m_golExport = p_unk0x08->m_golExport;
-	driverParams.m_renderer = p_unk0x08->m_renderer;
+	driverParams.m_golExport = p_context->m_golExport;
+	driverParams.m_renderer = p_context->m_renderer;
 	driverParams.m_entryCapacity = m_unk0x0f0.m_racerCount;
-	driverParams.m_filename = g_unk0x004bef3c[0];
+	driverParams.m_filename = g_racerDatabaseNames[0];
 	driverParams.m_binary = p_binary;
 	m_unk0x000.Load(&driverParams);
 
 	ChampionDefinitionList::LoadParams championParams;
-	championParams.m_golExport = p_unk0x08->m_golExport;
-	championParams.m_renderer = p_unk0x08->m_renderer;
+	championParams.m_golExport = p_context->m_golExport;
+	championParams.m_renderer = p_context->m_renderer;
 	championParams.m_entryCapacity = m_unk0x0f0.m_racerCount;
-	championParams.m_fileName = g_unk0x004bef3c[1];
+	championParams.m_fileName = g_racerDatabaseNames[1];
 	championParams.m_binary = p_binary;
 	m_unk0x080.FUN_0041d370(&championParams);
 
 	ChassisModelTable::Params chassisParams;
-	chassisParams.m_golExport = p_unk0x08->m_golExport;
-	chassisParams.m_renderer = p_unk0x08->m_renderer;
+	chassisParams.m_golExport = p_context->m_golExport;
+	chassisParams.m_renderer = p_context->m_renderer;
 	chassisParams.m_instantiateCount = m_unk0x0f0.m_racerCount;
-	chassisParams.m_filename = g_unk0x004bef3c[2];
+	chassisParams.m_filename = g_racerDatabaseNames[2];
 	chassisParams.m_binary = p_binary;
 	m_unk0x0b4.FUN_0041db10(&chassisParams);
 
 	for (LegoU32 i = 0; i < m_unk0x0f0.m_racerCount; i++) {
-		p_unk0x08->m_unk0x34 = p_unk0x04->m_unk0x20[i];
-		FUN_0043b480(p_unk0x04->m_unk0x04[i], p_unk0x08, i, p_unk0x04->m_unk0x3c);
+		p_context->m_unk0x34 = p_params->m_unk0x20[i];
+		CreateRacer(p_params->m_unk0x04[i], p_context, i, p_params->m_unk0x3c);
 	}
 
 	m_unk0x0b4.FUN_0041dae0();
@@ -2939,10 +2939,10 @@ void RaceState::FUN_0043b190(Field0x3b190Params0x04* p_unk0x04, Field0x3b190Para
 }
 
 // STUB: LEGORACERS 0x0043b480
-void RaceState::FUN_0043b480(
-	LegoRacers::Context::PlayerSetupSlot* p_unk0x04,
-	Field0x3b190Params0x08* p_unk0x08,
-	LegoU32 p_unk0x0c,
+void RaceState::CreateRacer(
+	LegoRacers::Context::PlayerSetupSlot* p_slot,
+	Field0x3b190Params0x08* p_context,
+	LegoU32 p_racerIndex,
 	undefined4 p_unk0x10
 )
 {
@@ -2953,11 +2953,11 @@ void RaceState::FUN_0043b480(
 
 	ChampionDefinitionList::ChampionDefinition* championDefinition = NULL;
 	ChassisModelTable::Item* chassisItem;
-	if (p_unk0x04->m_driverName[0]) {
+	if (p_slot->m_driverName[0]) {
 		DriverCosmeticTable::Entry* driverEntry =
-			static_cast<DriverCosmeticTable::Entry*>(m_unk0x000.GetName(p_unk0x04->m_driverName));
+			static_cast<DriverCosmeticTable::Entry*>(m_unk0x000.GetName(p_slot->m_driverName));
 
-		initParams.m_driverEntity = m_unk0x000.LoadEntry(p_unk0x04->m_driverName);
+		initParams.m_driverEntity = m_unk0x000.LoadEntry(p_slot->m_driverName);
 		championDefinition =
 			static_cast<ChampionDefinitionList::ChampionDefinition*>(m_unk0x080.GetName(driverEntry->m_unk0x1a));
 		initParams.m_bodyModel = m_unk0x080.FUN_0041d780(driverEntry->m_unk0x1a);
@@ -2988,7 +2988,7 @@ void RaceState::FUN_0043b480(
 		}
 
 		racerParams.m_unk0x80 = driverEntry->m_unk0x23;
-		racerParams.m_stringChars = m_unk0x000.GetStringBuffer(p_unk0x04->m_driverName);
+		racerParams.m_stringChars = m_unk0x000.GetStringBuffer(p_slot->m_driverName);
 	}
 	else {
 		LegoU32 customIndex = m_unk0x0f0.m_unk0x09c;
@@ -3002,12 +3002,12 @@ void RaceState::FUN_0043b480(
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		p_unk0x04->m_textures->LoadTextures();
-		p_unk0x04->m_materials->FUN_10026970();
+		p_slot->m_textures->LoadTextures();
+		p_slot->m_materials->FUN_10026970();
 		initParams.m_bodyModel = m_unk0x0f0.m_unk0x08c[customIndex];
-		initParams.m_bodyModel->VTable0x50(p_unk0x04->m_model, g_unk0x004b0a14);
+		initParams.m_bodyModel->VTable0x50(p_slot->m_model, g_unk0x004b0a14);
 
-		if (p_unk0x04->m_altModel == NULL) {
+		if (p_slot->m_altModel == NULL) {
 			LegoChar fallbackName[3];
 			fallbackName[0] = 'b';
 			fallbackName[1] = 'b';
@@ -3016,14 +3016,14 @@ void RaceState::FUN_0043b480(
 			initParams.m_driverEntity = m_unk0x000.LoadEntry(fallbackName);
 		}
 		else {
-			p_unk0x04->m_altTextures->LoadTextures();
-			p_unk0x04->m_altMaterials->FUN_10026970();
+			p_slot->m_altTextures->LoadTextures();
+			p_slot->m_altMaterials->FUN_10026970();
 			initParams.m_driverEntity = m_unk0x0f0.m_unk0x094[customIndex];
 			initParams.m_driverEntity
-				->FUN_0040d550(p_unk0x04->m_altModel, m_unk0x000.m_rootNode, &m_unk0x000.m_modelParts, g_unk0x004b0a14);
+				->FUN_0040d550(p_slot->m_altModel, m_unk0x000.m_rootNode, &m_unk0x000.m_modelParts, g_unk0x004b0a14);
 		}
 
-		chassisItem = static_cast<ChassisModelTable::Item*>(m_unk0x0b4.GetName(p_unk0x04->m_chassisName));
+		chassisItem = static_cast<ChassisModelTable::Item*>(m_unk0x0b4.GetName(p_slot->m_chassisName));
 		m_unk0x0b4.InstantiateModels(chassisItem, &initParams.m_carEntity, &initParams.m_unk0x04);
 		racerParams.m_vehicle.m_unk0x084 = chassisItem->m_unk0x100;
 		racerParams.m_vehicle.m_unk0x085 = chassisItem->m_unk0x101;
@@ -3033,19 +3033,19 @@ void RaceState::FUN_0043b480(
 			racerParams.m_unk0x6c[i] = 100;
 		}
 
-		racerParams.m_unk0x74 = p_unk0x0c * 100 + 1000;
-		::strcpy(racerParams.m_displayName, p_unk0x04->m_playerName);
+		racerParams.m_unk0x74 = p_racerIndex * 100 + 1000;
+		::strcpy(racerParams.m_displayName, p_slot->m_playerName);
 		m_unk0x0f0.m_unk0x09c = customIndex + 1;
 	}
 
 	initParams.m_driverMountOffset = chassisItem->m_unk0xc4;
-	initParams.m_racer = &m_unk0x0f0.m_racers[p_unk0x0c];
+	initParams.m_racer = &m_unk0x0f0.m_racers[p_racerIndex];
 	initParams.m_shadowWidth = chassisItem->m_unk0xdc.m_x;
 	initParams.m_shadowLength = chassisItem->m_unk0xdc.m_y;
 	initParams.m_frontSkidWidth = chassisItem->m_unk0xe4.m_x;
 	initParams.m_rearSkidWidth = chassisItem->m_unk0xe4.m_y;
 	::strncpy(initParams.m_materialName, "carshad", sizeof(initParams.m_materialName));
-	initParams.m_materialName[sizeof(initParams.m_materialName) - 1] = static_cast<LegoChar>('0' + p_unk0x0c);
+	initParams.m_materialName[sizeof(initParams.m_materialName) - 1] = static_cast<LegoChar>('0' + p_racerIndex);
 
 	for (LegoU32 i = 0; i < sizeOfArray(initParams.m_wheelOffsets); i++) {
 		initParams.m_wheelOffsets[i] = chassisItem->m_unk0x58[i];
@@ -3057,9 +3057,9 @@ void RaceState::FUN_0043b480(
 	racerParams.m_vehicle.m_unk0x044 = chassisItem->m_unk0x88[3].m_y;
 
 	racerParams.m_unk0x72 = m_setup.m_lapCount;
-	racerParams.m_vehicle.m_unk0x060 = p_unk0x08->m_unk0x28;
-	racerParams.m_vehicle.m_unk0x064 = p_unk0x08->m_unk0x2c;
-	racerParams.m_vehicle.m_unk0x068 = p_unk0x08->m_unk0x0c;
+	racerParams.m_vehicle.m_unk0x060 = p_context->m_unk0x28;
+	racerParams.m_vehicle.m_unk0x064 = p_context->m_unk0x2c;
+	racerParams.m_vehicle.m_unk0x068 = p_context->m_unk0x0c;
 	racerParams.m_unk0x78 = chassisItem->m_unk0xec;
 
 	if (championDefinition) {
@@ -3071,35 +3071,35 @@ void RaceState::FUN_0043b480(
 	}
 	else {
 		racerParams.m_vehicle.m_unk0x04c.m_x =
-			p_unk0x04->m_unk0x18 * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_x;
+			p_slot->m_unk0x18 * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_x;
 		racerParams.m_vehicle.m_unk0x04c.m_y =
-			p_unk0x04->m_unk0x1c * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_y;
+			p_slot->m_unk0x1c * g_carBuildModelTextureCoordinateScale + chassisItem->m_unk0xb8.m_y;
 		racerParams.m_vehicle.m_unk0x04c.m_z = chassisItem->m_unk0xb8.m_z;
-		racerParams.m_vehicle.m_unk0x058 = chassisItem->m_unk0xd0 + p_unk0x04->m_unk0x14;
-		racerParams.m_vehicle.m_unk0x05c = p_unk0x04->m_unk0x14;
+		racerParams.m_vehicle.m_unk0x058 = chassisItem->m_unk0xd0 + p_slot->m_unk0x14;
+		racerParams.m_vehicle.m_unk0x05c = p_slot->m_unk0x14;
 	}
 
-	m_unk0x0f0.m_unk0x17c[p_unk0x0c] = p_unk0x0c;
+	m_unk0x0f0.m_unk0x17c[p_racerIndex] = p_racerIndex;
 	if (m_unk0x0f0.m_timeRaceManager) {
 		if (m_unk0x0f0.m_timeRaceManager->HasRecordRunLapTimes()) {
-			m_unk0x0f0.m_unk0x17c[p_unk0x0c] = 2;
+			m_unk0x0f0.m_unk0x17c[p_racerIndex] = 2;
 		}
 		else {
-			m_unk0x0f0.m_unk0x17c[p_unk0x0c] = 1;
+			m_unk0x0f0.m_unk0x17c[p_racerIndex] = 1;
 		}
 	}
-	else if (p_unk0x10 && p_unk0x0c == 0) {
+	else if (p_unk0x10 && p_racerIndex == 0) {
 		m_unk0x0f0.m_unk0x17c[0] = 2;
 	}
 
-	LegoU32 placementIndex = m_unk0x0f0.m_unk0x17c[p_unk0x0c];
+	LegoU32 placementIndex = m_unk0x0f0.m_unk0x17c[p_racerIndex];
 	initParams.m_carEntity->VTable0x08(m_unk0x0f0.m_unk0x0a4[placementIndex]);
 	initParams.m_carEntity->VTable0x40(m_unk0x0f0.m_unk0x0ec[placementIndex], m_unk0x0f0.m_unk0x134[placementIndex]);
 
-	m_unk0x0f0.m_racers[p_unk0x0c].FUN_00436df0(p_unk0x08, &initParams, &racerParams, this, p_unk0x0c);
+	m_unk0x0f0.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
 
-	PurpleDune0x7c* shadowTexture = m_setup.m_unk0x10->GetItem(p_unk0x0c);
-	DuskwindBananaRelic0x24* shadowMaterial = m_setup.m_unk0x14->GetItem(p_unk0x0c);
+	PurpleDune0x7c* shadowTexture = m_setup.m_unk0x10->GetItem(p_racerIndex);
+	DuskwindBananaRelic0x24* shadowMaterial = m_setup.m_unk0x14->GetItem(p_racerIndex);
 	shadowTexture->SetNameFromBuffer(chassisItem->m_unk0x50);
 	shadowTexture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2 | GoldDune0x38::c_unk0x36Bit3);
 	shadowMaterial->SetName(chassisItem->m_unk0x50);
@@ -3113,9 +3113,9 @@ void RaceState::FUN_0043b480(
 		DuskwindBananaRelic0x24::c_flag0x08Bit13 | DuskwindBananaRelic0x24::c_flag0x08Bit15 |
 		DuskwindBananaRelic0x24::c_flag0x08Bit20 | DuskwindBananaRelic0x24::c_flag0x08Bit22;
 	shadowMaterialParams.m_unk0x04 = shadowTexture;
-	shadowMaterial->FUN_100257e0(p_unk0x08->m_renderer, shadowMaterialParams);
+	shadowMaterial->FUN_100257e0(p_context->m_renderer, shadowMaterialParams);
 
-	Racer* racer = &m_unk0x0f0.m_racers[p_unk0x0c];
+	Racer* racer = &m_unk0x0f0.m_racers[p_racerIndex];
 	racer->m_unk0xc70.m_unk0x050 = &m_unk0x2a0;
 
 	LegoEventQueue::Descriptor descriptor;
@@ -3125,7 +3125,7 @@ void RaceState::FUN_0043b480(
 	descriptor.m_unk0x0c = 0;
 	descriptor.m_data = &racer->m_unk0x3e8;
 	descriptor.m_unk0x14 = 0;
-	m_unk0x0f0.m_unk0x064[p_unk0x0c] = m_unk0x0f0.FUN_0042fb50(racer, &descriptor);
+	m_unk0x0f0.m_unk0x064[p_racerIndex] = m_unk0x0f0.FUN_0042fb50(racer, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x0043bc10

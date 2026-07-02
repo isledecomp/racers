@@ -346,14 +346,14 @@ void EditDriverScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047da50
-LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_unk0x04, InputEventQueue::Event*, undefined4, undefined4)
+LegoBool32 EditDriverScreen::HandleKeyDown(MenuWidget* p_source, InputEventQueue::Event*, undefined4, undefined4)
 {
 	if (m_unk0x364) {
 		return TRUE;
 	}
 
 	for (LegoS32 i = 0; i < 4; i++) {
-		if (p_unk0x04 == &m_cosmeticCarousels[i]) {
+		if (p_source == &m_cosmeticCarousels[i]) {
 			OnWidgetValueChanged(&m_cosmeticSelectors[i]);
 			return TRUE;
 		}
@@ -476,11 +476,11 @@ void EditDriverScreen::OnIconUnfocused(MenuWidget* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047de30
-LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 EditDriverScreen::VTable0x78(undefined4 p_source)
 {
 	if (!m_unk0x364 && m_modelSlot.GetDriverEntity()->FUN_0040e360()) {
 		PlayNextAnimation();
 	}
 
-	return MenuGameScreen::VTable0x78(p_unk0x04);
+	return MenuGameScreen::VTable0x78(p_source);
 }

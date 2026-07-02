@@ -163,9 +163,9 @@ void ControlConfigScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x0047abb0
-void ControlConfigScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
+void ControlConfigScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_unk0x814) {
+	if (p_source == &m_unk0x814) {
 		m_unk0x3a0 = m_unk0x780.GetSelectedIndex();
 	}
 }
@@ -186,14 +186,14 @@ void ControlConfigScreen::OnIconFocused(MenuIcon* p_source)
 }
 
 // FUNCTION: LEGORACERS 0x0047ac60
-void ControlConfigScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
+void ControlConfigScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_unk0x47c) {
+	if (p_source == &m_unk0x47c) {
 		m_unk0x360 = 8;
 		m_unk0x364 = TRUE;
 	}
 
-	m_unk0x35c = p_unk0x04;
+	m_unk0x35c = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x0047ac90
@@ -284,7 +284,7 @@ void ControlConfigScreen::FUN_0047adb0()
 }
 
 // FUNCTION: LEGORACERS 0x0047aeb0
-LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_source)
 {
 	FUN_0047adb0();
 
@@ -297,5 +297,5 @@ LegoBool32 ControlConfigScreen::VTable0x78(undefined4 p_unk0x04)
 		m_unk0x144c[1].Disable(0);
 	}
 
-	return MenuGameScreen::VTable0x78(p_unk0x04);
+	return MenuGameScreen::VTable0x78(p_source);
 }

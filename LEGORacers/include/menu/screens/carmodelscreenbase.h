@@ -191,7 +191,7 @@ protected:
 	LegoBool32 MovePieceByDrag(LegoS32 p_deltaX, LegoS32 p_deltaY, LegoU16 p_sound, LegoBool32 p_unk0x10);
 	void ApplyModeChange();
 
-	MenuImage m_unk0x3b4;                     // 0x3b4
+	MenuImage m_photoImage;                   // 0x3b4
 	MenuCarouselNavigator m_categoryCarousel; // 0x410
 	MenuSelector m_categorySelector;          // 0x4a4
 	CarPartCarousel m_partCarousel;           // 0xe98

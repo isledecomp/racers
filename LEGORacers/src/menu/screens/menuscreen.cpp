@@ -467,32 +467,32 @@ void MenuScreen::ApplyCompositeDefaults(
 }
 
 // FUNCTION: LEGORACERS 0x0046bd80
-void* MenuScreen::GetStyleEntry(undefined2 p_unk0x04)
+void* MenuScreen::GetStyleEntry(undefined2 p_source)
 {
 	GolString string;
 	GolName name;
 
-	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
+	m_menuNameStrings->CopyStringByIndex(&string, p_source);
 	string.CopyToBuf8(name);
 	return VTable0x60()->FindStyle(name);
 }
 
 // FUNCTION: LEGORACERS 0x0046be10
-void* MenuScreen::GetBindingEntry(undefined2 p_unk0x04)
+void* MenuScreen::GetBindingEntry(undefined2 p_source)
 {
 	GolString string;
 	GolName name;
 
-	m_menuNameStrings->CopyStringByIndex(&string, p_unk0x04);
+	m_menuNameStrings->CopyStringByIndex(&string, p_source);
 	string.CopyToBuf8(name);
 	return GetMenuInputBindings()->ResolveEntryByName(name);
 }
 
 // FUNCTION: LEGORACERS 0x0046bea0
-LegoBool32 MenuScreen::CreateTriangle(MenuTriangle* p_unk0x04, undefined2 p_unk0x08)
+LegoBool32 MenuScreen::CreateTriangle(MenuTriangle* p_source, undefined2 p_event)
 {
 	MenuInputBindingTable::RegionBinding* sourceParams =
-		static_cast<MenuInputBindingTable::RegionBinding*>(GetBindingEntry(p_unk0x08));
+		static_cast<MenuInputBindingTable::RegionBinding*>(GetBindingEntry(p_event));
 	if (sourceParams == NULL) {
 		return FALSE;
 	}
@@ -500,13 +500,13 @@ LegoBool32 MenuScreen::CreateTriangle(MenuTriangle* p_unk0x04, undefined2 p_unk0
 	MenuInputBindingTable::RegionBinding createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	return p_unk0x04->Create(&createParams);
+	return p_source->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bef0
-LegoBool32 MenuScreen::CreateImage(MenuImage* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateImage(MenuImage* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
-	MenuInputBindingTable::ImageBinding* sourceParams = GetImageBinding(p_unk0x08);
+	MenuInputBindingTable::ImageBinding* sourceParams = GetImageBinding(p_event);
 	MenuStyleTable::ImageStyle* styleEntry = GetImageStyle(p_unk0x0c);
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -523,18 +523,18 @@ LegoBool32 MenuScreen::CreateImage(MenuImage* p_unk0x04, undefined2 p_unk0x08, u
 		createParams.m_unk0x38 = styleEntry->m_image;
 	}
 
-	return p_unk0x04->Create(&createParams);
+	return p_source->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046bf80
 LegoBool32 MenuScreen::CreateTextLabel(
-	MenuTextLabel* p_unk0x04,
-	undefined2 p_unk0x08,
+	MenuTextLabel* p_source,
+	undefined2 p_event,
 	undefined2 p_unk0x0c,
 	undefined2 p_unk0x10
 )
 {
-	MenuTextLabel::CreateParams* sourceParams = static_cast<MenuTextLabel::CreateParams*>(GetBindingEntry(p_unk0x08));
+	MenuTextLabel::CreateParams* sourceParams = static_cast<MenuTextLabel::CreateParams*>(GetBindingEntry(p_event));
 	MenuStyleTable::TextStyle* styleEntry = static_cast<MenuStyleTable::TextStyle*>(GetStyleEntry(p_unk0x0c));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -560,14 +560,14 @@ LegoBool32 MenuScreen::CreateTextLabel(
 		createParams.m_unk0x22 = styleEntry->m_color;
 	}
 
-	return p_unk0x04->Create(&createParams, styleEntry);
+	return p_source->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c050
-LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
 	MenuInputBindingTable::FrameBinding* sourceParams =
-		static_cast<MenuInputBindingTable::FrameBinding*>(GetBindingEntry(p_unk0x08));
+		static_cast<MenuInputBindingTable::FrameBinding*>(GetBindingEntry(p_event));
 	MenuStyleTable::FrameStyle* styleEntry = static_cast<MenuStyleTable::FrameStyle*>(GetStyleEntry(p_unk0x0c));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -590,13 +590,13 @@ LegoBool32 MenuScreen::CreateFrame(MenuFrame* p_unk0x04, undefined2 p_unk0x08, u
 		createParams.m_fillColor = styleEntry->m_color1;
 	}
 
-	return p_unk0x04->Create(&createParams);
+	return p_source->Create(&createParams);
 }
 
 // FUNCTION: LEGORACERS 0x0046c110
-LegoBool32 MenuScreen::CreateButton(MenuButton* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateButton(MenuButton* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
-	MenuButton::CreateParams* sourceParams = static_cast<MenuButton::CreateParams*>(GetBindingEntry(p_unk0x08));
+	MenuButton::CreateParams* sourceParams = static_cast<MenuButton::CreateParams*>(GetBindingEntry(p_event));
 	MenuStyleTable::ButtonStyle* styleEntry = static_cast<MenuStyleTable::ButtonStyle*>(GetStyleEntry(p_unk0x0c));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -611,14 +611,14 @@ LegoBool32 MenuScreen::CreateButton(MenuButton* p_unk0x04, undefined2 p_unk0x08,
 		}
 	}
 
-	return p_unk0x04->FUN_004663d0(&createParams, styleEntry);
+	return p_source->FUN_004663d0(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c1b0
-LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
 	MenuHotspotButton::CreateParams* sourceParams =
-		static_cast<MenuHotspotButton::CreateParams*>(GetBindingEntry(p_unk0x08));
+		static_cast<MenuHotspotButton::CreateParams*>(GetBindingEntry(p_event));
 	MenuStyleTable::HotspotStyle* styleEntry = GetHotspotStyle(p_unk0x0c);
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -631,13 +631,13 @@ LegoBool32 MenuScreen::CreateHotspotButton(MenuHotspotButton* p_unk0x04, undefin
 		createParams.m_unk0x9c = styleEntry->m_image;
 	}
 
-	return p_unk0x04->FUN_004665f0(&createParams, styleEntry);
+	return p_source->FUN_004665f0(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c240
-LegoBool32 MenuScreen::CreateCarousel(MenuCarousel* p_unk0x04, undefined2 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateCarousel(MenuCarousel* p_source, undefined2 p_event, undefined2 p_unk0x0c)
 {
-	MenuCarousel::CreateParams* sourceParams = static_cast<MenuCarousel::CreateParams*>(GetBindingEntry(p_unk0x08));
+	MenuCarousel::CreateParams* sourceParams = static_cast<MenuCarousel::CreateParams*>(GetBindingEntry(p_event));
 	MenuStyleTable::CarouselStyle* styleEntry = static_cast<MenuStyleTable::CarouselStyle*>(GetStyleEntry(p_unk0x0c));
 	if (!sourceParams || !styleEntry) {
 		return FALSE;
@@ -646,7 +646,7 @@ LegoBool32 MenuScreen::CreateCarousel(MenuCarousel* p_unk0x04, undefined2 p_unk0
 	MenuCarousel::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
 
-	return p_unk0x04->Create(&createParams, styleEntry);
+	return p_source->Create(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c2b0
@@ -710,7 +710,7 @@ LegoBool32 MenuScreen::CreateOptionsRow(OptionsRowBase* p_widget, undefined2 p_c
 }
 
 // FUNCTION: LEGORACERS 0x0046c480
-LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_source, undefined4 p_event, undefined2 p_unk0x0c)
 {
 	MenuSceneView::CreateParams* sourceParams = static_cast<MenuSceneView::CreateParams*>(GetBindingEntry(p_unk0x0c));
 	if (!sourceParams) {
@@ -719,14 +719,14 @@ LegoBool32 MenuScreen::CreateSceneView(MenuSceneView* p_unk0x04, undefined4 p_un
 
 	MenuSceneView::CreateParams createParams = *sourceParams;
 	ApplyWidgetDefaults(&createParams);
-	createParams.m_unk0x7c = p_unk0x08;
+	createParams.m_unk0x7c = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = VTable0x6c();
-	return p_unk0x04->Create(&createParams, m_unk0x288);
+	return p_source->Create(&createParams, m_unk0x288);
 }
 
 // FUNCTION: LEGORACERS 0x0046c510
-LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_unk0x04, undefined4 p_unk0x08, undefined2 p_unk0x0c)
+LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_source, undefined4 p_event, undefined2 p_unk0x0c)
 {
 	MenuFramedSceneView::CreateParams* sourceParams =
 		static_cast<MenuFramedSceneView::CreateParams*>(GetBindingEntry(p_unk0x0c));
@@ -741,16 +741,16 @@ LegoBool32 MenuScreen::CreateFramedSceneView(MenuFramedSceneView* p_unk0x04, und
 		ApplyWidgetDefaults(createParams.m_unk0x84);
 	}
 
-	createParams.m_unk0x7c = p_unk0x08;
+	createParams.m_unk0x7c = p_event;
 	createParams.m_worldScale = 1.0f;
 	createParams.m_aspectScale = VTable0x6c();
-	return p_unk0x04->FUN_004661f0(&createParams, m_unk0x288);
+	return p_source->FUN_004661f0(&createParams, m_unk0x288);
 }
 
 // FUNCTION: LEGORACERS 0x0046c5b0
-undefined4 MenuScreen::CreateRegion(MenuWidget* p_unk0x04, undefined2 p_unk0x08)
+undefined4 MenuScreen::CreateRegion(MenuWidget* p_source, undefined2 p_event)
 {
-	SceneRefBinding* params = GetSceneRefBinding(p_unk0x08);
+	SceneRefBinding* params = GetSceneRefBinding(p_event);
 	if (!params) {
 		return 0;
 	}
@@ -759,19 +759,19 @@ undefined4 MenuScreen::CreateRegion(MenuWidget* p_unk0x04, undefined2 p_unk0x08)
 	ApplyWidgetDefaults(&createParams);
 	createParams.m_unk0x50 = VTable0x6c();
 
-	return static_cast<MenuSceneScreen::SceneWidget*>(p_unk0x04)->FUN_00466b50(&createParams, m_unk0x288);
+	return static_cast<MenuSceneScreen::SceneWidget*>(p_source)->FUN_00466b50(&createParams, m_unk0x288);
 }
 
 // FUNCTION: LEGORACERS 0x0046c610
 LegoBool32 MenuScreen::CreateTextField(
-	MenuTextField* p_unk0x04,
-	undefined2 p_unk0x08,
+	MenuTextField* p_source,
+	undefined2 p_event,
 	undefined2 p_unk0x0c,
 	undefined2 p_unk0x10,
 	GolString* p_unk0x14
 )
 {
-	MenuTextField::CreateParams* sourceParams = static_cast<MenuTextField::CreateParams*>(GetBindingEntry(p_unk0x08));
+	MenuTextField::CreateParams* sourceParams = static_cast<MenuTextField::CreateParams*>(GetBindingEntry(p_event));
 	MenuIcon::CreateState* styleEntry = static_cast<MenuIcon::CreateState*>(GetStyleEntry(p_unk0x0c));
 	if (!sourceParams || !styleEntry || !p_unk0x10) {
 		return FALSE;
@@ -788,25 +788,25 @@ LegoBool32 MenuScreen::CreateTextField(
 	createParams.m_unk0x90 = p_unk0x14;
 	createParams.m_font = sourceParams->m_font;
 
-	return p_unk0x04->VTable0x70(&createParams, styleEntry);
+	return p_source->VTable0x70(&createParams, styleEntry);
 }
 
 // FUNCTION: LEGORACERS 0x0046c6f0
-undefined4 MenuScreen::FUN_0046c6f0(MenuIcon* p_unk0x04, MenuIcon* p_unk0x08, undefined2 p_unk0x0c)
+undefined4 MenuScreen::FUN_0046c6f0(MenuIcon* p_yesIcon, MenuIcon* p_noIcon, undefined2 p_unk0x0c)
 {
 	MenuDialog::DialogScreen* entry = m_unk0x284->FUN_00468c50(2, p_unk0x0c, this, 0);
-	entry->SetUnk0x744(p_unk0x04);
-	entry->SetUnk0x748(p_unk0x08);
+	entry->SetUnk0x744(p_yesIcon);
+	entry->SetUnk0x748(p_noIcon);
 	entry->FUN_00468590();
 
 	return TRUE;
 }
 
 // FUNCTION: LEGORACERS 0x0046c730
-undefined4 MenuScreen::FUN_0046c730(MenuIcon* p_unk0x04, undefined2 p_unk0x08)
+undefined4 MenuScreen::FUN_0046c730(MenuIcon* p_icon, undefined2 p_notifyId)
 {
-	MenuDialog::DialogScreen* entry = m_unk0x284->FUN_00468c50(1, p_unk0x08, this, 0);
-	entry->SetUnk0x740(p_unk0x04);
+	MenuDialog::DialogScreen* entry = m_unk0x284->FUN_00468c50(1, p_notifyId, this, 0);
+	entry->SetUnk0x740(p_icon);
 	entry->FUN_00468590();
 
 	return TRUE;

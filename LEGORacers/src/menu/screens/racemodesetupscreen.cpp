@@ -137,9 +137,9 @@ LegoBool32 RaceModeSetupScreen::VTable0x8c(MenuGameContext* p_context, MenuScree
 }
 
 // FUNCTION: LEGORACERS 0x00487d10
-void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_unk0x04)
+void RaceModeSetupScreen::OnIconSelected(MenuIcon* p_icon)
 {
-	m_unk0x358 = p_unk0x04;
+	m_unk0x358 = p_icon;
 	UpdateRacePreview();
 }
 

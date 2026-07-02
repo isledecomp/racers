@@ -93,7 +93,7 @@ void CarModelScreenBase::CreateCategoryCarousel()
 // FUNCTION: LEGORACERS 0x00477190
 void CarModelScreenBase::VTable0x4c()
 {
-	CreateImage(&m_unk0x3b4, 0x49, 0x49);
+	CreateImage(&m_photoImage, 0x49, 0x49);
 	CreatePlacementScene();
 	CreateCategoryCarousel();
 	FUN_0047fcf0(&m_partCarousel, 0xae, 0x3b);
@@ -121,9 +121,9 @@ void CarModelScreenBase::VTable0x80()
 }
 
 // FUNCTION: LEGORACERS 0x00477250
-LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_unk0x04, MenuScreenCreateParams* p_unk0x08)
+LegoBool32 CarModelScreenBase::VTable0x8c(MenuGameContext* p_source, MenuScreenCreateParams* p_event)
 {
-	if (!MenuGameScreen::VTable0x8c(p_unk0x04, p_unk0x08)) {
+	if (!MenuGameScreen::VTable0x8c(p_source, p_event)) {
 		return FALSE;
 	}
 
@@ -229,9 +229,9 @@ void CarModelScreenBase::ShowPlacementError()
 }
 
 // FUNCTION: LEGORACERS 0x00477630
-void CarModelScreenBase::OnIconUnfocused(MenuWidget* p_unk0x04)
+void CarModelScreenBase::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_errorPopup) {
+	if (p_source == &m_errorPopup) {
 		m_unk0x284->FUN_00468cf0();
 	}
 }
@@ -326,7 +326,7 @@ void CarModelScreenBase::ApplyModeChange()
 }
 
 // FUNCTION: LEGORACERS 0x00477880
-LegoBool32 CarModelScreenBase::VTable0x78(undefined4 p_unk0x04)
+LegoBool32 CarModelScreenBase::VTable0x78(undefined4 p_source)
 {
 	if (m_mode != m_nextMode) {
 		if (m_unk0x35c == NULL || !(m_unk0x35c->GetUnk0x54() & 1)) {
@@ -334,5 +334,5 @@ LegoBool32 CarModelScreenBase::VTable0x78(undefined4 p_unk0x04)
 		}
 	}
 
-	return CarBuildScreenBase::VTable0x78(p_unk0x04);
+	return CarBuildScreenBase::VTable0x78(p_source);
 }

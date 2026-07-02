@@ -133,51 +133,51 @@ LegoBool32 MainMenuScreen::Destroy()
 }
 
 // FUNCTION: LEGORACERS 0x00481150
-void MainMenuScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
+void MainMenuScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_circuitRaceButton) {
+	if (p_source == &m_circuitRaceButton) {
 		m_unk0x360 = 5;
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowVersus
 		);
 	}
-	else if (p_unk0x04 == &m_singleRaceButton) {
+	else if (p_source == &m_singleRaceButton) {
 		m_unk0x360 = 6;
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() & ~DriverModelBuilder::c_menuFlowVersus
 		);
 	}
-	else if (p_unk0x04 == &m_versusRaceButton) {
+	else if (p_source == &m_versusRaceButton) {
 		m_unk0x360 = 6;
 		m_context->m_modelBuilder.SetMenuFlowFlags(
 			m_context->m_modelBuilder.GetMenuFlowFlags() | DriverModelBuilder::c_menuFlowVersus
 		);
 	}
-	else if (p_unk0x04 == &m_timeRaceButton) {
+	else if (p_source == &m_timeRaceButton) {
 		m_unk0x360 = 0x1d;
 	}
-	else if (p_unk0x04 == &m_garageButton) {
+	else if (p_source == &m_garageButton) {
 		m_unk0x360 = 3;
 		MenuGameScreen::FUN_004804c0(m_context);
 	}
-	else if (p_unk0x04 == &m_optionsButton) {
+	else if (p_source == &m_optionsButton) {
 		m_unk0x360 = 8;
 	}
-	else if (p_unk0x04 == &m_exitButton) {
+	else if (p_source == &m_exitButton) {
 		FUN_0047fdc0(&m_confirmYesButton, 0x99, 0x46, 0x73);
 		FUN_0047fdc0(&m_confirmNoButton, 0x99, 0x45, 0x74);
 		FUN_0046c6f0(&m_confirmYesButton, &m_confirmNoButton, 0x75);
 	}
-	else if (p_unk0x04 == &m_confirmYesButton) {
+	else if (p_source == &m_confirmYesButton) {
 		m_unk0x284->FUN_00468cf0();
 		m_unk0x360 = 0;
 	}
-	else if (p_unk0x04 == &m_confirmNoButton || p_unk0x04 == &m_noticePopup) {
+	else if (p_source == &m_confirmNoButton || p_source == &m_noticePopup) {
 		m_unk0x284->FUN_00468cf0();
 	}
 
 	if (m_unk0x360 != 0xffff) {
-		m_unk0x35c = p_unk0x04;
+		m_unk0x35c = p_source;
 		m_unk0x364 = TRUE;
 	}
 }

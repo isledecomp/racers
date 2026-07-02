@@ -97,9 +97,9 @@ void NewRacerScreen::VTable0x84()
 }
 
 // FUNCTION: LEGORACERS 0x00482350
-void NewRacerScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
+void NewRacerScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_unk0x47c) {
+	if (p_source == &m_unk0x47c) {
 		m_unk0x284->FUN_00468cf0();
 		m_unk0x364 = TRUE;
 		m_unk0x360 = c_menuGarage;

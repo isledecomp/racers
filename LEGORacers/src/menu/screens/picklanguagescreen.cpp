@@ -50,9 +50,9 @@ LegoBool32 PickLanguageScreen::VTable0x8c(MenuGameContext* p_context, MenuScreen
 }
 
 // FUNCTION: LEGORACERS 0x00484620
-void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
+void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_unk0x43c) {
+	if (p_source == &m_unk0x43c) {
 		GameState& state = m_context->m_saveSystem.GetGameState();
 		state.SetLanguageIndex((LegoU8) m_unk0xe30.GetSelectedIndex());
 		state.SetDirty(TRUE);
@@ -60,13 +60,13 @@ void PickLanguageScreen::OnWidgetValueChanged(MenuWidget* p_unk0x04)
 }
 
 // FUNCTION: LEGORACERS 0x00484650
-void PickLanguageScreen::OnIconUnfocused(MenuWidget* p_unk0x04)
+void PickLanguageScreen::OnIconUnfocused(MenuWidget* p_source)
 {
-	if (p_unk0x04 == &m_unk0x12fc) {
+	if (p_source == &m_unk0x12fc) {
 		m_unk0x364 = TRUE;
 	}
 
-	m_unk0x35c = p_unk0x04;
+	m_unk0x35c = p_source;
 }
 
 // FUNCTION: LEGORACERS 0x00484680

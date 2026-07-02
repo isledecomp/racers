@@ -3,103 +3,103 @@
 #include "golerror.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x213c, 0x0c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x213c::Resource, 0x24)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x213c::TibTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList, 0x0c)
+DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList::Resource, 0x24)
+DECOMP_SIZE_ASSERT(RaceSession::RaceTimerList::TibTxtParser, 0x1fc)
 
 extern LegoU16 g_randomTable[1024];
 extern LegoU32 g_randomTableIndex;
 
 // FUNCTION: LEGORACERS 0x00464700
-LegoU32 RaceSession::Field0x213c::FUN_00464700()
+LegoU32 RaceSession::RaceTimerList::FUN_00464700()
 {
 	return 8;
 }
 
 // FUNCTION: LEGORACERS 0x00464710
-RaceSession::Field0x213c::Resource::Resource()
+RaceSession::RaceTimerList::Resource::Resource()
 {
-	m_unk0x08 = NULL;
-	m_unk0x04 = NULL;
-	m_unk0x0c = NULL;
-	m_unk0x20 = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
+	m_eventTable = NULL;
+	m_event = NULL;
+	m_eventQueue = NULL;
+	m_eventId = 0;
+	m_onDurationMs = 0;
+	m_offDurationMs = 0;
+	m_delayMs = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00464740
-RaceSession::Field0x213c::Resource::~Resource()
+RaceSession::RaceTimerList::Resource::~Resource()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00464750
-void RaceSession::Field0x213c::Resource::FUN_00464750(
+void RaceSession::RaceTimerList::Resource::Initialize(
 	LegoEventQueue* p_eventQueue,
 	RaceEventTable* p_eventTable,
-	LegoU32 p_unk0x0c,
-	LegoU32 p_unk0x10,
-	LegoU32 p_unk0x14,
-	LegoS32 p_unk0x18,
+	LegoU32 p_onDurationMs,
+	LegoU32 p_offDurationMs,
+	LegoU32 p_delayMs,
+	LegoS32 p_eventId,
 	LegoU32 p_flags
 )
 {
 	LegoU32 flags = p_flags;
-	m_unk0x08 = p_eventTable;
-	m_unk0x10 = p_unk0x0c;
-	m_unk0x20 = p_unk0x18;
-	m_unk0x0c = p_eventQueue;
-	m_unk0x14 = p_unk0x10;
-	m_unk0x18 = p_unk0x14;
-	flags &= ~c_flags0x1cBit0;
-	m_unk0x1c = flags;
+	m_eventTable = p_eventTable;
+	m_onDurationMs = p_onDurationMs;
+	m_eventId = p_eventId;
+	m_eventQueue = p_eventQueue;
+	m_offDurationMs = p_offDurationMs;
+	m_delayMs = p_delayMs;
+	flags &= ~c_active;
+	m_flags = flags;
 
-	LegoU32 duration = p_unk0x10;
-	if (flags & c_flags0x1cBit2) {
-		if (p_unk0x10 > c_randomTableMask) {
+	LegoU32 duration = p_offDurationMs;
+	if (flags & c_randomizeOffDuration) {
+		if (p_offDurationMs > c_randomTableMask) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-			duration = g_randomTable[g_randomTableIndex] * (p_unk0x10 / c_randomTableMask);
+			duration = g_randomTable[g_randomTableIndex] * (p_offDurationMs / c_randomTableMask);
 		}
 		else {
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-			duration = g_randomTable[g_randomTableIndex] % p_unk0x10;
+			duration = g_randomTable[g_randomTableIndex] % p_offDurationMs;
 		}
 	}
 
-	if (!m_unk0x18) {
-		FUN_00464a40(duration);
+	if (!m_delayMs) {
+		Schedule(duration);
 	}
 }
 
 // FUNCTION: LEGORACERS 0x00464800
-void RaceSession::Field0x213c::Resource::Reset()
+void RaceSession::RaceTimerList::Resource::Reset()
 {
-	if (m_unk0x04) {
-		m_unk0x04->m_active = FALSE;
-		m_unk0x04 = NULL;
+	if (m_event) {
+		m_event->m_active = FALSE;
+		m_event = NULL;
 	}
 
-	m_unk0x08 = NULL;
-	m_unk0x0c = NULL;
-	m_unk0x20 = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
-	m_unk0x18 = 0;
-	m_unk0x1c = 0;
+	m_eventTable = NULL;
+	m_eventQueue = NULL;
+	m_eventId = 0;
+	m_onDurationMs = 0;
+	m_offDurationMs = 0;
+	m_delayMs = 0;
+	m_flags = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00464830
-void RaceSession::Field0x213c::Resource::FUN_00464830(LegoU32 p_elapsedMs)
+void RaceSession::RaceTimerList::Resource::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 remaining = m_unk0x18;
+	LegoU32 remaining = m_delayMs;
 	if (0 < remaining) {
 		if (p_elapsedMs >= remaining) {
-			LegoU32 duration = m_unk0x10;
-			m_unk0x18 = 0;
+			LegoU32 duration = m_onDurationMs;
+			m_delayMs = 0;
 
-			if (m_unk0x1c & c_flags0x1cBit1) {
+			if (m_flags & c_randomizeOnDuration) {
 				if (duration > c_randomTableMask) {
 					g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 					duration = g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask);
@@ -110,36 +110,36 @@ void RaceSession::Field0x213c::Resource::FUN_00464830(LegoU32 p_elapsedMs)
 				}
 			}
 
-			FUN_00464a40(duration);
+			Schedule(duration);
 			return;
 		}
 
 		remaining -= p_elapsedMs;
-		m_unk0x18 = remaining;
+		m_delayMs = remaining;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x004648d0
-void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData* p_data)
+void RaceSession::RaceTimerList::Resource::VTable0x00(LegoEventQueue::CallbackData* p_data)
 {
-	m_unk0x04 = NULL;
+	m_event = NULL;
 
-	if (m_unk0x1c & c_flags0x1cBit0) {
-		if (m_unk0x20 != -1) {
-			m_unk0x08->EndEventsAt(m_unk0x20, NULL);
+	if (m_flags & c_active) {
+		if (m_eventId != -1) {
+			m_eventTable->EndEventsAt(m_eventId, NULL);
 		}
 
-		LegoU32 duration = m_unk0x14;
-		LegoU32 elapsed = p_data->m_unk0x14 - m_unk0x10;
+		LegoU32 duration = m_offDurationMs;
+		LegoU32 elapsed = p_data->m_unk0x14 - m_onDurationMs;
 		if (elapsed < duration) {
 			duration -= elapsed;
 		}
 
-		if (m_unk0x1c & c_flags0x1cBit2) {
+		if (m_flags & c_randomizeOffDuration) {
 			if (duration > c_randomTableMask) {
 				g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
-				FUN_00464a40(g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask));
-				m_unk0x1c &= ~c_flags0x1cBit0;
+				Schedule(g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask));
+				m_flags &= ~c_active;
 				return;
 			}
 
@@ -147,22 +147,22 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 			duration = g_randomTable[g_randomTableIndex] % duration;
 		}
 
-		FUN_00464a40(duration);
-		m_unk0x1c &= ~c_flags0x1cBit0;
+		Schedule(duration);
+		m_flags &= ~c_active;
 		return;
 	}
 
-	if (m_unk0x20 != -1) {
-		m_unk0x08->StartEventsAt(m_unk0x20, NULL);
+	if (m_eventId != -1) {
+		m_eventTable->StartEventsAt(m_eventId, NULL);
 	}
 
-	LegoU32 duration = m_unk0x10;
-	LegoU32 elapsed = p_data->m_unk0x14 - m_unk0x14;
+	LegoU32 duration = m_onDurationMs;
+	LegoU32 elapsed = p_data->m_unk0x14 - m_offDurationMs;
 	if (elapsed < duration) {
 		duration -= elapsed;
 	}
 
-	if (m_unk0x1c & c_flags0x1cBit1) {
+	if (m_flags & c_randomizeOnDuration) {
 		if (duration > c_randomTableMask) {
 			g_randomTableIndex = (g_randomTableIndex + 1) & c_randomTableMask;
 			duration = g_randomTable[g_randomTableIndex] * (duration / c_randomTableMask);
@@ -173,50 +173,50 @@ void RaceSession::Field0x213c::Resource::VTable0x00(LegoEventQueue::CallbackData
 		}
 	}
 
-	FUN_00464a40(duration);
-	m_unk0x1c |= c_flags0x1cBit0;
+	Schedule(duration);
+	m_flags |= c_active;
 }
 
 // FUNCTION: LEGORACERS 0x00464a40
-LegoEventQueue::Event* RaceSession::Field0x213c::Resource::FUN_00464a40(LegoU32 p_unk0x04)
+LegoEventQueue::Event* RaceSession::RaceTimerList::Resource::Schedule(LegoU32 p_delayMs)
 {
 	LegoEventQueue::Callback* callback = this;
 	LegoEventQueue::Descriptor descriptor;
 	descriptor.m_unk0x08 = descriptor.m_unk0x00 = 1;
 	descriptor.m_unk0x04 = 0;
 	descriptor.m_unk0x0c = 0;
-	descriptor.m_unk0x10 = p_unk0x04;
+	descriptor.m_unk0x10 = p_delayMs;
 
-	return m_unk0x04 = m_unk0x0c->FUN_0042fb50(callback, &descriptor);
+	return m_event = m_eventQueue->FUN_0042fb50(callback, &descriptor);
 }
 
 // FUNCTION: LEGORACERS 0x00464a80
-RaceSession::Field0x213c::Field0x213c()
+RaceSession::RaceTimerList::RaceTimerList()
 {
-	m_unk0x08 = NULL;
-	m_unk0x00 = 0;
-	m_unk0x04 = 0;
+	m_timers = NULL;
+	m_eventTable = 0;
+	m_count = 0;
 }
 
 // FUNCTION: LEGORACERS 0x00464a90
-RaceSession::Field0x213c::~Field0x213c()
+RaceSession::RaceTimerList::~RaceTimerList()
 {
 	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x00464aa0
-void RaceSession::Field0x213c::FUN_00464aa0(
+void RaceSession::RaceTimerList::Load(
 	LegoEventQueue* p_eventQueue,
 	RaceEventTable* p_eventTable,
 	const LegoChar* p_name,
 	LegoBool32 p_binary
 )
 {
-	if (m_unk0x00) {
+	if (m_eventTable) {
 		Destroy();
 	}
 
-	m_unk0x00 = p_eventTable;
+	m_eventTable = p_eventTable;
 
 	GolFileParser* parser;
 	if (p_binary) {
@@ -237,23 +237,23 @@ void RaceSession::Field0x213c::FUN_00464aa0(
 	parser->OpenFileForRead(p_name);
 	parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 	parser->AssertNextTokenIs(GolFileParser::e_leftBracket);
-	m_unk0x04 = parser->ReadInteger();
+	m_count = parser->ReadInteger();
 
-	if (m_unk0x04) {
+	if (m_count) {
 		parser->AssertNextTokenIs(GolFileParser::e_rightBracket);
 		parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
-		m_unk0x08 = new Resource[m_unk0x04];
-		if (m_unk0x08 == NULL) {
+		m_timers = new Resource[m_count];
+		if (m_timers == NULL) {
 			GOL_FATALERROR(c_golErrorOutOfMemory);
 		}
 
-		for (LegoU32 i = 0; i < m_unk0x04; i++) {
+		for (LegoU32 i = 0; i < m_count; i++) {
 			parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
 			parser->AssertNextTokenIs(GolFileParser::e_leftCurly);
 
-			LegoU32 firstDuration = 0;
-			LegoU32 secondDuration = 0;
+			LegoU32 onDuration = 0;
+			LegoU32 offDuration = 0;
 			LegoU32 initialDelay = 0;
 			LegoS32 eventIndex = -1;
 			LegoU32 flags = 0;
@@ -263,20 +263,20 @@ void RaceSession::Field0x213c::FUN_00464aa0(
 				switch (token) {
 				case GolFileParser::e_unknown0x28:
 					if (parser->GetNextToken() == GolFileParser::e_unknown0x2b) {
-						flags |= Resource::c_flags0x1cBit1;
-						firstDuration = parser->ReadInteger();
+						flags |= Resource::c_randomizeOnDuration;
+						onDuration = parser->ReadInteger();
 					}
 					else {
-						firstDuration = parser->GetLastInt();
+						onDuration = parser->GetLastInt();
 					}
 					break;
 				case GolFileParser::e_unknown0x29:
 					if (parser->GetNextToken() == GolFileParser::e_unknown0x2b) {
-						flags |= Resource::c_flags0x1cBit2;
-						secondDuration = parser->ReadInteger();
+						flags |= Resource::c_randomizeOffDuration;
+						offDuration = parser->ReadInteger();
 					}
 					else {
-						secondDuration = parser->GetLastInt();
+						offDuration = parser->GetLastInt();
 					}
 					break;
 				case GolFileParser::e_unknown0x2a:
@@ -293,8 +293,8 @@ void RaceSession::Field0x213c::FUN_00464aa0(
 				token = parser->GetNextToken();
 			}
 
-			m_unk0x08[i]
-				.FUN_00464750(p_eventQueue, m_unk0x00, firstDuration, secondDuration, initialDelay, eventIndex, flags);
+			m_timers[i]
+				.Initialize(p_eventQueue, m_eventTable, onDuration, offDuration, initialDelay, eventIndex, flags);
 		}
 	}
 
@@ -303,26 +303,26 @@ void RaceSession::Field0x213c::FUN_00464aa0(
 }
 
 // FUNCTION: LEGORACERS 0x00464dd0
-LegoU32 RaceSession::Field0x213c::FUN_00464dd0(LegoU32 p_elapsedMs)
+LegoU32 RaceSession::RaceTimerList::Update(LegoU32 p_elapsedMs)
 {
-	LegoU32 result = m_unk0x04;
+	LegoU32 result = m_count;
 
 	for (LegoU32 i = 0; i < result; i++) {
-		m_unk0x08[i].FUN_00464830(p_elapsedMs);
-		result = m_unk0x04;
+		m_timers[i].Update(p_elapsedMs);
+		result = m_count;
 	}
 
 	return result;
 }
 
 // FUNCTION: LEGORACERS 0x00464e10
-void RaceSession::Field0x213c::Destroy()
+void RaceSession::RaceTimerList::Destroy()
 {
-	if (m_unk0x08) {
-		delete[] m_unk0x08;
-		m_unk0x08 = NULL;
+	if (m_timers) {
+		delete[] m_timers;
+		m_timers = NULL;
 	}
 
-	m_unk0x00 = NULL;
-	m_unk0x04 = 0;
+	m_eventTable = NULL;
+	m_count = 0;
 }

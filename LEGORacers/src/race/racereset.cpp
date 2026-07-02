@@ -1,79 +1,79 @@
 #include "race/racesession.h"
 #include "race/timeracemanager.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x30c4, 0x2c)
+DECOMP_SIZE_ASSERT(RaceSession::RaceReset, 0x2c)
 
 // FUNCTION: LEGORACERS 0x0043a640
-RaceSession::Field0x30c4::Field0x30c4()
+RaceSession::RaceReset::RaceReset()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a650
-RaceSession::Field0x30c4::~Field0x30c4()
+RaceSession::RaceReset::~RaceReset()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x0043a660
-void RaceSession::Field0x30c4::Reset()
+void RaceSession::RaceReset::Reset()
 {
 	m_context = NULL;
 	m_raceState = NULL;
-	m_unk0x08 = NULL;
-	m_unk0x0c = NULL;
-	m_unk0x10 = NULL;
-	m_unk0x14 = NULL;
+	m_powerupManager = NULL;
+	m_hazardManager = NULL;
+	m_particleAnimation = NULL;
+	m_sharedParticleAnimation = NULL;
 	m_timeRaceManager = NULL;
-	m_unk0x1c = NULL;
-	m_unk0x20 = NULL;
-	m_unk0x24 = NULL;
-	m_unk0x28 = NULL;
+	m_racerTriggers = NULL;
+	m_triggers = NULL;
+	m_collisionWorlds = NULL;
+	m_eventTable = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x0043a690
-void RaceSession::Field0x30c4::FUN_0043a690(const Params* p_source)
+void RaceSession::RaceReset::Initialize(const Params* p_source)
 {
 	m_context = p_source->m_context;
 	m_raceState = p_source->m_raceState;
-	m_unk0x08 = p_source->m_unk0x08;
-	m_unk0x0c = p_source->m_unk0x0c;
-	m_unk0x10 = p_source->m_unk0x10;
-	m_unk0x14 = p_source->m_unk0x14;
+	m_powerupManager = p_source->m_powerupManager;
+	m_hazardManager = p_source->m_hazardManager;
+	m_particleAnimation = p_source->m_particleAnimation;
+	m_sharedParticleAnimation = p_source->m_sharedParticleAnimation;
 	m_timeRaceManager = p_source->m_timeRaceManager;
-	m_unk0x1c = p_source->m_unk0x1c;
-	m_unk0x20 = p_source->m_unk0x20;
-	m_unk0x24 = p_source->m_unk0x24;
-	m_unk0x28 = p_source->m_unk0x28;
+	m_racerTriggers = p_source->m_racerTriggers;
+	m_triggers = p_source->m_triggers;
+	m_collisionWorlds = p_source->m_collisionWorlds;
+	m_eventTable = p_source->m_eventTable;
 }
 
 // FUNCTION: LEGORACERS 0x0043a6e0
-void RaceSession::Field0x30c4::FUN_0043a6e0()
+void RaceSession::RaceReset::FinishRace()
 {
 	m_raceState->RecordBestTimes(m_context);
-	m_unk0x28->ForceAllEvents();
+	m_eventTable->ForceAllEvents();
 
 	for (LegoU32 racerIndex = 0; racerIndex < m_raceState->GetRacerCount(); racerIndex++) {
-		m_unk0x28->EndAllForRacer(&m_raceState->GetRacers()[racerIndex]);
+		m_eventTable->EndAllForRacer(&m_raceState->GetRacers()[racerIndex]);
 	}
 
-	m_unk0x20->VTable0x0c();
-	m_unk0x1c->VTable0x0c();
-	m_unk0x24->FUN_0045e5b0();
-	m_unk0x0c->ResetAll();
-	m_unk0x08->ResetEffects();
+	m_triggers->Reset();
+	m_racerTriggers->Reset();
+	m_collisionWorlds->Reset();
+	m_hazardManager->ResetAll();
+	m_powerupManager->ResetEffects();
 
 	if (m_timeRaceManager) {
-		m_timeRaceManager->FUN_004234f0();
+		m_timeRaceManager->ResetRun();
 	}
 
-	FUN_0043a780();
-	m_unk0x10->FUN_00489f60();
-	m_unk0x14->FUN_00489f60();
+	ResetRacers();
+	m_particleAnimation->FUN_00489f60();
+	m_sharedParticleAnimation->FUN_00489f60();
 }
 
 // FUNCTION: LEGORACERS 0x0043a780
-void RaceSession::Field0x30c4::FUN_0043a780()
+void RaceSession::RaceReset::ResetRacers()
 {
 	m_raceState->StopProximitySound();
 

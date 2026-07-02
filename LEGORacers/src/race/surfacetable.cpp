@@ -5,47 +5,47 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27e0, 0x14)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27e0::Entry, 0x5c)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x27e0::TmbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable, 0x14)
+DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable::Entry, 0x5c)
+DECOMP_SIZE_ASSERT(RaceSession::SurfaceTable::TmbTxtParser, 0x1fc)
 
 // FUNCTION: LEGORACERS 0x00443c90
-RaceSession::Field0x27e0::Entry::Entry()
+RaceSession::SurfaceTable::Entry::Entry()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443ca0
-void RaceSession::Field0x27e0::Entry::Reset()
+void RaceSession::SurfaceTable::Entry::Reset()
 {
 	m_name[0] = '\0';
 	m_flags = 0;
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
+	m_enterEventId = 0;
+	m_leaveEventId = 0;
+	m_touchEventId = 0;
 	m_unk0x18 = 0;
 	m_unk0x1c.m_x = 0.0f;
 	m_unk0x1c.m_y = 0.0f;
 	m_unk0x1c.m_z = 0.0f;
-	m_unk0x28.m_x = 0.0f;
-	m_unk0x28.m_y = 0.0f;
-	m_unk0x28.m_z = 0.0f;
-	m_unk0x34 = 0;
+	m_surfaceForce.m_x = 0.0f;
+	m_surfaceForce.m_y = 0.0f;
+	m_surfaceForce.m_z = 0.0f;
+	m_surfaceSoundId = 0;
 	m_unk0x38 = 0;
 	m_unk0x3c = 0;
-	m_unk0x40[0] = '\0';
-	m_unk0x48 = 0.0f;
-	m_unk0x4c = 0.0f;
-	m_unk0x50 = 0.0f;
+	m_wheelParticleName[0] = '\0';
+	m_supportThreshold = 0.0f;
+	m_friction = 0.0f;
+	m_lateralGrip = 0.0f;
 	m_unk0x54 = 0.0f;
-	m_unk0x58 = 0.0f;
+	m_rollingResistance = 0.0f;
 }
 
 // FUNCTION: LEGORACERS 0x00443cf0
-void RaceSession::Field0x27e0::Entry::FUN_00443cf0(GolFileParser* p_parser, LegoBool32 p_mirror)
+void RaceSession::SurfaceTable::Entry::Load(GolFileParser* p_parser, LegoBool32 p_mirror)
 {
 	if (m_flags & c_flagLoaded) {
-		FUN_00443f90();
+		Unload();
 	}
 
 	p_parser->AssertNextTokenIs(GolFileParser::e_unknown0x27);
@@ -57,16 +57,16 @@ void RaceSession::Field0x27e0::Entry::FUN_00443cf0(GolFileParser* p_parser, Lego
 		do {
 			switch (token) {
 			case GolFileParser::e_unknown0x28:
-				m_unk0x0c = p_parser->ReadInteger();
-				m_flags |= c_flagUnk0x0c;
+				m_enterEventId = p_parser->ReadInteger();
+				m_flags |= c_flagEnterEventId;
 				break;
 			case GolFileParser::e_unknown0x29:
-				m_unk0x10 = p_parser->ReadInteger();
-				m_flags |= c_flagUnk0x10;
+				m_leaveEventId = p_parser->ReadInteger();
+				m_flags |= c_flagLeaveEventId;
 				break;
 			case GolFileParser::e_unknown0x2a:
-				m_unk0x14 = p_parser->ReadInteger();
-				m_flags |= c_flagUnk0x14;
+				m_touchEventId = p_parser->ReadInteger();
+				m_flags |= c_flagTouchEventId;
 				break;
 			case GolFileParser::e_unknown0x2b:
 				m_unk0x18 = p_parser->ReadInteger();
@@ -82,17 +82,17 @@ void RaceSession::Field0x27e0::Entry::FUN_00443cf0(GolFileParser* p_parser, Lego
 				}
 				break;
 			case GolFileParser::e_unknown0x2d:
-				m_unk0x28.m_x = p_parser->ReadFloat();
-				m_unk0x28.m_y = p_parser->ReadFloat();
-				m_unk0x28.m_z = p_parser->ReadFloat();
-				m_flags |= c_flagUnk0x28;
+				m_surfaceForce.m_x = p_parser->ReadFloat();
+				m_surfaceForce.m_y = p_parser->ReadFloat();
+				m_surfaceForce.m_z = p_parser->ReadFloat();
+				m_flags |= c_flagSurfaceForce;
 				if (p_mirror) {
-					m_unk0x28.m_y = -m_unk0x28.m_y;
+					m_surfaceForce.m_y = -m_surfaceForce.m_y;
 				}
 				break;
 			case GolFileParser::e_unknown0x2e:
-				m_unk0x34 = p_parser->ReadInteger();
-				m_flags |= c_flagUnk0x34;
+				m_surfaceSoundId = p_parser->ReadInteger();
+				m_flags |= c_flagSurfaceSoundId;
 				break;
 			case GolFileParser::e_unknown0x2f:
 				m_unk0x38 = p_parser->ReadInteger();
@@ -103,28 +103,28 @@ void RaceSession::Field0x27e0::Entry::FUN_00443cf0(GolFileParser* p_parser, Lego
 				m_flags |= c_flagUnk0x3c;
 				break;
 			case GolFileParser::e_unknown0x31:
-				::memcpy(m_unk0x40, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
-				m_flags |= c_flagUnk0x40;
+				::memcpy(m_wheelParticleName, p_parser->ReadStringWithMaxLength(sizeof(GolName)), sizeof(GolName));
+				m_flags |= c_flagWheelParticleName;
 				break;
 			case GolFileParser::e_unknown0x32:
-				m_unk0x48 = p_parser->ReadFloat();
-				m_flags |= c_flagUnk0x48;
+				m_supportThreshold = p_parser->ReadFloat();
+				m_flags |= c_flagSupportThreshold;
 				break;
 			case GolFileParser::e_unknown0x33:
-				m_unk0x4c = p_parser->ReadFloat();
-				m_flags |= c_flagUnk0x4c;
+				m_friction = p_parser->ReadFloat();
+				m_flags |= c_flagFriction;
 				break;
 			case GolFileParser::e_unknown0x34:
-				m_unk0x50 = p_parser->ReadFloat();
-				m_flags |= c_flagUnk0x50;
+				m_lateralGrip = p_parser->ReadFloat();
+				m_flags |= c_flagLateralGrip;
 				break;
 			case GolFileParser::e_unknown0x35:
 				m_unk0x54 = p_parser->ReadFloat();
 				m_flags |= c_flagUnk0x54;
 				break;
 			case GolFileParser::e_unknown0x36:
-				m_unk0x58 = p_parser->ReadFloat();
-				m_flags |= c_flagUnk0x58;
+				m_rollingResistance = p_parser->ReadFloat();
+				m_flags |= c_flagRollingResistance;
 				break;
 			case GolFileParser::e_unknown0x37:
 				m_flags |= c_flagBit16;
@@ -148,26 +148,26 @@ void RaceSession::Field0x27e0::Entry::FUN_00443cf0(GolFileParser* p_parser, Lego
 }
 
 // FUNCTION: LEGORACERS 0x00443f90
-void RaceSession::Field0x27e0::Entry::FUN_00443f90()
+void RaceSession::SurfaceTable::Entry::Unload()
 {
 	Reset();
 }
 
 // FUNCTION: LEGORACERS 0x00443fa0
-RaceSession::Field0x27e0::Field0x27e0()
+RaceSession::SurfaceTable::SurfaceTable()
 {
 	m_count = 0;
 	m_entries = NULL;
 }
 
 // FUNCTION: LEGORACERS 0x00443fe0
-RaceSession::Field0x27e0::~Field0x27e0()
+RaceSession::SurfaceTable::~SurfaceTable()
 {
 	Clear();
 }
 
 // FUNCTION: LEGORACERS 0x00444030
-void RaceSession::Field0x27e0::FUN_00444030(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
+void RaceSession::SurfaceTable::Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror)
 {
 	if (m_entries) {
 		Clear();
@@ -199,7 +199,7 @@ void RaceSession::Field0x27e0::FUN_00444030(const LegoChar* p_name, LegoBool32 p
 	}
 
 	for (LegoU32 i = 0; i < m_count; i++) {
-		m_entries[i].FUN_00443cf0(parser, p_mirror);
+		m_entries[i].Load(parser, p_mirror);
 
 		GolName name;
 		::memcpy(name, m_entries[i].GetName(), sizeof(GolName));
@@ -214,7 +214,7 @@ void RaceSession::Field0x27e0::FUN_00444030(const LegoChar* p_name, LegoBool32 p
 }
 
 // FUNCTION: LEGORACERS 0x00444210
-void RaceSession::Field0x27e0::Clear()
+void RaceSession::SurfaceTable::Clear()
 {
 	if (m_entries) {
 		delete[] m_entries;

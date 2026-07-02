@@ -136,9 +136,9 @@ private:
 
 public:
 	class PlayerControls;
-	class Field0x23c;
+	class RaceInputRouter;
 	class Field0x2804;
-	class Field0x32c4;
+	class RacerCollisionWorlds;
 
 	// SIZE 0x04
 	class InputEventSink : public InputDevice::Callback {
@@ -171,18 +171,18 @@ public:
 			c_inputFlagBrake = 1 << 3,
 			c_inputFlagDrift = 1 << 7,
 			c_inputFlagSteerMask = c_inputFlagSteerPositive | c_inputFlagSteerNegative,
-			c_stateFlagBit0 = 1 << 0,
-			c_stateFlagBit1 = 1 << 1,
+			c_statePreStart = 1 << 0,
+			c_stateAiControl = 1 << 1,
 			c_stateFlagThrottle = 1 << 3,
-			c_stateControlMask = c_stateFlagBit0 | c_stateFlagBit1,
+			c_stateControlMask = c_statePreStart | c_stateAiControl,
 			c_racerFlags0xd04Bit7 = 1 << 7,
 		};
 
 		// SIZE 0x70
 		// VTABLE: LEGORACERS 0x004b075c
-		class Field0x04 : public InputEventSink {
+		class InputState : public InputEventSink {
 		public:
-			Field0x04();
+			InputState();
 			InputDevice::Callback::ResultValue OnKeyDown(
 				InputDevice* p_source,
 				undefined4 p_input,
@@ -193,36 +193,36 @@ public:
 				undefined4 p_input,
 				undefined4 p_time
 			) override;
-			virtual ~Field0x04();
+			virtual ~InputState();
 
 			// SYNTHETIC: LEGORACERS 0x00430870
-			// RaceSession::PlayerControls::Field0x04::`scalar deleting destructor'
+			// RaceSession::PlayerControls::InputState::`scalar deleting destructor'
 
-			void FUN_00430c20();
+			void ReleaseAllInputs();
 
 		private:
 			friend class RaceSession;
 			friend class PlayerControls;
-			friend class Field0x23c;
+			friend class RaceInputRouter;
 
-			void FUN_004308a0();
-			PlayerControls* FUN_004308d0(PlayerControls* p_parent, InputDevice::Callback* p_fallback);
-			LegoU32 FUN_004308f0(DirectInputDevice* p_source, undefined4 p_input, LegoU32 p_index);
-			undefined4 FUN_00430910(DirectInputDevice** p_source, LegoU32 p_index);
-			void FUN_00430930();
-			void FUN_00430980();
+			void Destroy();
+			PlayerControls* Initialize(PlayerControls* p_parent, InputDevice::Callback* p_fallback);
+			LegoU32 SetBinding(DirectInputDevice* p_source, undefined4 p_input, LegoU32 p_index);
+			undefined4 GetBinding(DirectInputDevice** p_source, LegoU32 p_index);
+			void AcquireDevices();
+			void UnacquireDevices();
 
-			PlayerControls* m_unk0x004;                      // 0x004
-			undefined4 m_unk0x008[c_inputSlotCount];         // 0x008
-			DirectInputDevice* m_unk0x02c[c_inputSlotCount]; // 0x02c
-			InputDevice::Callback* m_unk0x050;               // 0x050
-			LegoBool32 m_unk0x054;                           // 0x054
-			LegoU32 m_unk0x058;                              // 0x058
-			LegoU32 m_unk0x05c;                              // 0x05c
-			LegoU32 m_unk0x060;                              // 0x060
-			LegoU32 m_unk0x064;                              // 0x064
-			LegoFloat m_unk0x068;                            // 0x068
-			LegoBool32 m_unk0x06c;                           // 0x06c
+			PlayerControls* m_controls;                     // 0x004
+			undefined4 m_inputs[c_inputSlotCount];          // 0x008
+			DirectInputDevice* m_devices[c_inputSlotCount]; // 0x02c
+			InputDevice::Callback* m_fallback;              // 0x050
+			LegoBool32 m_enabled;                           // 0x054
+			LegoU32 m_inputFlags;                           // 0x058
+			LegoU32 m_stateFlags;                           // 0x05c
+			LegoU32 m_boostWindowMs;                        // 0x060
+			LegoU32 m_throttleHoldMs;                       // 0x064
+			LegoFloat m_steering;                           // 0x068
+			LegoBool32 m_analogThrottle;                    // 0x06c
 		};
 
 		PlayerControls();
@@ -230,7 +230,7 @@ public:
 
 	private:
 		friend class RaceSession;
-		friend class Field0x04;
+		friend class InputState;
 
 		void Destroy();
 		void Initialize(RaceState::Racer* p_racer, InputDevice::Callback* p_fallback);
@@ -245,22 +245,22 @@ public:
 		void OnUsePowerup(LegoBool32 p_enabled);
 		void OnCycleCamera(LegoBool32 p_enabled);
 		void OnCycleTrail(LegoBool32 p_enabled);
-		void FUN_004306b0(LegoBool32 p_enabled);
+		void OnDrift(LegoBool32 p_enabled);
 		void OnLookBack(LegoBool32 p_enabled);
 		void TryStartBoost();
-		void FUN_00430760();
+		void EnterAiControl();
 		void TrackThrottleHold();
-		LegoS32 FUN_004307f0();
+		LegoS32 DetectAnalogDevice();
 
-		RaceState::Racer* m_unk0x000; // 0x000
-		Field0x04 m_unk0x004;         // 0x004
+		RaceState::Racer* m_racer; // 0x000
+		InputState m_input;        // 0x004
 	};
 
 	// SIZE 0x1c
 	// VTABLE: LEGORACERS 0x004b0300
-	class Field0x23c : public InputEventSink {
+	class RaceInputRouter : public InputEventSink {
 	public:
-		Field0x23c();
+		RaceInputRouter();
 		InputDevice::Callback::ResultValue OnKeyDown(
 			InputDevice* p_source,
 			undefined4 p_input,
@@ -271,53 +271,53 @@ public:
 			undefined4 p_input,
 			undefined4 p_time
 		) override;
-		virtual ~Field0x23c();
+		virtual ~RaceInputRouter();
 
 		// SYNTHETIC: LEGORACERS 0x00427930
-		// RaceSession::Field0x23c::`scalar deleting destructor'
+		// RaceSession::RaceInputRouter::`scalar deleting destructor'
 
-		void FUN_00427980(DirectInputDevice* p_source, InputDevice::Callback* p_fallback);
-		void FUN_004279a0(PlayerControls::Field0x04* p_sink);
-		void FUN_004279c0();
-		void FUN_004279f0();
-		void FUN_00427b40();
+		void Initialize(DirectInputDevice* p_source, InputDevice::Callback* p_fallback);
+		void AddSink(PlayerControls::InputState* p_sink);
+		void AcquireDevice();
+		void UnacquireDevice();
+		void ReleaseAllInputs();
 
 	private:
 		friend class RaceSession;
 
-		void FUN_00427960();
+		void Reset();
 
-		DirectInputDevice* m_unk0x04;            // 0x04
-		PlayerControls::Field0x04* m_unk0x08[2]; // 0x08
-		LegoU32 m_unk0x10;                       // 0x10
-		InputDevice::Callback* m_unk0x14;        // 0x14
-		LegoBool32 m_unk0x18;                    // 0x18
+		DirectInputDevice* m_device;            // 0x04
+		PlayerControls::InputState* m_sinks[2]; // 0x08
+		LegoU32 m_sinkCount;                    // 0x10
+		InputDevice::Callback* m_fallback;      // 0x14
+		LegoBool32 m_enabled;                   // 0x18
 	};
 
 	// SIZE 0x14
-	class Field0x3300 : public RaceState::Racer::SoundSource {
+	class RaceSoundSource : public RaceState::Racer::SoundSource {
 	public:
-		Field0x3300();
-		~Field0x3300();
-		void FUN_00443a80();
-		void FUN_00443ac0(SoundManager* p_soundManager);
-		void FUN_00443b00(const LegoChar* p_name);
-		void FUN_00443b10(const LegoChar* p_name1, const LegoChar* p_name2);
-		void FUN_00443b40(const LegoChar* p_name);
+		RaceSoundSource();
+		~RaceSoundSource();
+		void DestroyGroups();
+		void Initialize(SoundManager* p_soundManager);
+		void LoadSfxBank(const LegoChar* p_name);
+		void LoadVoiceBanks(const LegoChar* p_name1, const LegoChar* p_name2);
+		void LoadAmbientBank(const LegoChar* p_name);
 	};
 
 	// VTABLE: LEGORACERS 0x004b1d54
 	// SIZE 0x14
-	class Field0x2128 {
+	class TriggerList {
 	public:
 		// VTABLE: LEGORACERS 0x004b1d64
 		// SIZE 0x1fc
 		class TrbTxtParser : public GolTxtParser {
 			// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-			// RaceSession::Field0x2128::TrbTxtParser::`scalar deleting destructor'
+			// RaceSession::TriggerList::TrbTxtParser::`scalar deleting destructor'
 
 			// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-			// RaceSession::Field0x2128::TrbTxtParser::~TrbTxtParser
+			// RaceSession::TriggerList::TrbTxtParser::~TrbTxtParser
 		};
 
 		class EntryParams;
@@ -329,167 +329,168 @@ public:
 			Entry();
 			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
 			virtual ~Entry();                                               // vtable+0x04
-			virtual void VTable0x08();                                      // vtable+0x08
-			virtual void VTable0x0c(LegoU32 p_elapsedMs);                   // vtable+0x0c
-			virtual void VTable0x10();                                      // vtable+0x10
+			virtual void Destroy();                                         // vtable+0x08
+			virtual void Update(LegoU32 p_elapsedMs);                       // vtable+0x0c
+			virtual void Reset();                                           // vtable+0x10
 
 		protected:
-			friend class Field0x2128;
-			friend class Field0x2080;
+			friend class TriggerList;
+			friend class RacerTriggerList;
 
 			enum {
-				c_flags0x38Bit0 = 1 << 0,
-				c_flags0x38Bit1 = 1 << 1,
-				c_flags0x38Bit2 = 1 << 2,
+				c_touchedThisFrame = 1 << 0,
+				c_eventsActive = 1 << 1,
+				c_mirror = 1 << 2,
 			};
 
-			void FUN_00464e80(const EntryParams* p_params);
+			void Initialize(const EntryParams* p_params);
+			void CallBaseInitialize(const EntryParams* p_params) { Entry::Initialize(p_params); }
 			void CallBaseVTable0x00(LegoEventQueue::CallbackData* p_data) { Entry::VTable0x00(p_data); }
-			void CallBaseVTable0x08() { Entry::VTable0x08(); }
-			void CallBaseVTable0x0c(LegoU32 p_elapsedMs) { Entry::VTable0x0c(p_elapsedMs); }
-			void CallBaseVTable0x10() { Entry::VTable0x10(); }
+			void CallBaseDestroy() { Entry::Destroy(); }
+			void CallBaseUpdate(LegoU32 p_elapsedMs) { Entry::Update(p_elapsedMs); }
+			void CallBaseReset() { Entry::Reset(); }
 
-			GolWorldEntity m_unk0x04;         // 0x04
-			LegoEventQueue::Event* m_unk0x2c; // 0x2c
-			RaceEventTable* m_unk0x30;        // 0x30
-			LegoS32 m_unk0x34;                // 0x34
-			LegoU32 m_flags0x38;              // 0x38
+			GolWorldEntity m_body;          // 0x04
+			LegoEventQueue::Event* m_event; // 0x2c
+			RaceEventTable* m_eventTable;   // 0x30
+			LegoS32 m_eventId;              // 0x34
+			LegoU32 m_flags0x38;            // 0x38
 		};
 
 		// SIZE 0x1c
 		class EntryParams {
 		public:
-			RaceEventTable* m_unk0x00; // 0x00
-			LegoS32 m_unk0x04;         // 0x04
-			GolVec3 m_unk0x08;         // 0x08
-			LegoFloat m_unk0x14;       // 0x14
-			LegoBool32 m_unk0x18;      // 0x18
+			RaceEventTable* m_eventTable; // 0x00
+			LegoS32 m_eventId;            // 0x04
+			GolVec3 m_position;           // 0x08
+			LegoFloat m_radius;           // 0x14
+			LegoBool32 m_mirror;          // 0x18
 		};
 
-		Field0x2128();
-		virtual ~Field0x2128();                 // vtable+0x00
-		virtual void Destroy();                 // vtable+0x04
-		virtual LegoU32 VTable0x08(undefined4); // vtable+0x08
-		virtual LegoU32 VTable0x0c();           // vtable+0x0c
+		TriggerList();
+		virtual ~TriggerList();                      // vtable+0x00
+		virtual void Destroy();                      // vtable+0x04
+		virtual LegoU32 Update(LegoU32 p_elapsedMs); // vtable+0x08
+		virtual LegoU32 Reset();                     // vtable+0x0c
 
 		// SYNTHETIC: LEGORACERS 0x00464fc0
-		// RaceSession::Field0x2128::`scalar deleting destructor'
+		// RaceSession::TriggerList::`scalar deleting destructor'
 
 		// SYNTHETIC: LEGORACERS 0x00465180
-		// RaceSession::Field0x2128::Entry::`vector deleting destructor'
+		// RaceSession::TriggerList::Entry::`vector deleting destructor'
 
 	protected:
 		friend class RaceSession;
 
-		void FUN_00464ff0(
+		void Load(
 			LegoEventQueue* p_eventQueue,
-			RaceEventTable* p_unk0x08,
+			RaceEventTable* p_eventTable,
 			const LegoChar* p_name,
 			LegoBool32 p_binary,
 			LegoBool32 p_mirror
 		);
 
-		GolFileParser* FUN_00465210(const LegoChar* p_name, LegoBool32 p_binary);
-		void FUN_00465330(GolFileParser* p_parser);
-		void FUN_00465350(GolFileParser* p_parser, EntryParams* p_params);
-		LegoEventQueue::Event* FUN_004653f0(Entry* p_entry, LegoBool32 p_unk0x0c);
+		GolFileParser* CreateParser(const LegoChar* p_name, LegoBool32 p_binary);
+		void DestroyParser(GolFileParser* p_parser);
+		void ParseTrigger(GolFileParser* p_parser, EntryParams* p_params);
+		LegoEventQueue::Event* RegisterTrigger(Entry* p_entry, LegoBool32 p_projectiles);
 
 		LegoEventQueue* m_eventQueue; // 0x04
-		RaceEventTable* m_unk0x08;    // 0x08
+		RaceEventTable* m_eventTable; // 0x08
 		LegoU32 m_count;              // 0x0c
 		Entry* m_entries;             // 0x10
 	};
 
 	// VTABLE: LEGORACERS 0x004b1c74
 	// SIZE 0x18
-	class Field0x2080 : public Field0x2128 {
+	class RacerTriggerList : public TriggerList {
 	public:
 		class EntryParams;
 
 		// VTABLE: LEGORACERS 0x004b1c5c
 		// SIZE 0x58
-		class Entry : public Field0x2128::Entry {
+		class Entry : public TriggerList::Entry {
 		public:
 			Entry();
 			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
 			~Entry() override;                                              // vtable+0x04
-			void VTable0x08() override;                                     // vtable+0x08
-			void VTable0x0c(LegoU32 p_elapsedMs) override;                  // vtable+0x0c
-			void VTable0x10() override;                                     // vtable+0x10
+			void Destroy() override;                                        // vtable+0x08
+			void Update(LegoU32 p_elapsedMs) override;                      // vtable+0x0c
+			void Reset() override;                                          // vtable+0x10
 
-			void FUN_00463b60(const EntryParams* p_params);
+			void Initialize(const EntryParams* p_params);
 
 			// SYNTHETIC: LEGORACERS 0x00464040
-			// RaceSession::Field0x2080::Entry::`vector deleting destructor'
+			// RaceSession::RacerTriggerList::Entry::`vector deleting destructor'
 
 		private:
 			enum {
-				c_flags0x38Bit0x1000 = 1 << 12,
-				c_flags0x38Bit0x2000 = 1 << 13,
-				c_flags0x38Bit0x4000 = 1 << 14
+				c_triggerOnProjectiles = 1 << 12,
+				c_activatesCollisionWorld = 1 << 13,
+				c_lapGated = 1 << 14
 			};
 
-			LegoU32 m_unk0x3c;             // 0x3c
-			LegoU32 m_unk0x40;             // 0x40
-			RaceState* m_raceState;        // 0x44
-			RacePowerupManager* m_unk0x48; // 0x48
-			Field0x32c4* m_unk0x4c;        // 0x4c
-			LegoU32 m_unk0x50;             // 0x50
-			LegoU32 m_unk0x54;             // 0x54
+			LegoU32 m_insideMask;                    // 0x3c
+			LegoU32 m_previousInsideMask;            // 0x40
+			RaceState* m_raceState;                  // 0x44
+			RacePowerupManager* m_powerupManager;    // 0x48
+			RacerCollisionWorlds* m_collisionWorlds; // 0x4c
+			LegoU32 m_collisionWorldIndex;           // 0x50
+			LegoU32 m_lapNumber;                     // 0x54
 		};
 
 		// SIZE 0x3c
-		class EntryParams : public Field0x2128::EntryParams {
+		class EntryParams : public TriggerList::EntryParams {
 		public:
-			RaceState* m_raceState;        // 0x1c
-			RacePowerupManager* m_unk0x20; // 0x20
-			Field0x32c4* m_unk0x24;        // 0x24
-			LegoU32 m_unk0x28;             // 0x28
-			LegoBool32 m_unk0x2c;          // 0x2c
-			LegoBool32 m_unk0x30;          // 0x30
-			LegoBool32 m_unk0x34;          // 0x34
-			LegoU32 m_unk0x38;             // 0x38
+			RaceState* m_raceState;                  // 0x1c
+			RacePowerupManager* m_powerupManager;    // 0x20
+			RacerCollisionWorlds* m_collisionWorlds; // 0x24
+			LegoU32 m_lapNumber;                     // 0x28
+			LegoBool32 m_triggerOnProjectiles;       // 0x2c
+			LegoBool32 m_hasCollisionWorld;          // 0x30
+			LegoBool32 m_hasLapNumber;               // 0x34
+			LegoU32 m_collisionWorldIndex;           // 0x38
 		};
 
-		Field0x2080();
-		~Field0x2080() override;                 // vtable+0x00
-		void Destroy() override;                 // vtable+0x04
-		LegoU32 VTable0x08(undefined4) override; // vtable+0x08
-		LegoU32 VTable0x0c() override;           // vtable+0x0c
+		RacerTriggerList();
+		~RacerTriggerList() override;                 // vtable+0x00
+		void Destroy() override;                      // vtable+0x04
+		LegoU32 Update(LegoU32 p_elapsedMs) override; // vtable+0x08
+		LegoU32 Reset() override;                     // vtable+0x0c
 
 		// SYNTHETIC: LEGORACERS 0x00463d50
-		// RaceSession::Field0x2080::`scalar deleting destructor'
+		// RaceSession::RacerTriggerList::`scalar deleting destructor'
 
 	private:
 		friend class RaceSession;
 
-		void FUN_00463dc0(
+		void Load(
 			RaceState* p_raceState,
 			RaceEventTable* p_eventTable,
-			RacePowerupManager* p_field0x6dc,
+			RacePowerupManager* p_powerupManager,
 			GolWorldDatabase* p_worldDatabase,
-			Field0x32c4* p_field0x32c4,
+			RacerCollisionWorlds* p_collisionWorlds,
 			const LegoChar* p_name,
 			LegoBool32 p_binary,
 			LegoBool32 p_mirror
 		);
 
-		Entry* m_unk0x14; // 0x14
+		Entry* m_racerEntries; // 0x14
 	};
 
 	// SIZE 0x90
 
 	// SIZE 0x0c
-	class Field0x213c {
+	class RaceTimerList {
 	public:
 		// VTABLE: LEGORACERS 0x004b1cc8
 		// SIZE 0x1fc
 		class TibTxtParser : public GolTxtParser {
 			// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-			// RaceSession::Field0x213c::TibTxtParser::`scalar deleting destructor'
+			// RaceSession::RaceTimerList::TibTxtParser::`scalar deleting destructor'
 
 			// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-			// RaceSession::Field0x213c::TibTxtParser::~TibTxtParser
+			// RaceSession::RaceTimerList::TibTxtParser::~TibTxtParser
 		};
 
 		static LegoU32 FUN_00464700();
@@ -499,9 +500,9 @@ public:
 		class Resource : public LegoEventQueue::Callback {
 		public:
 			enum {
-				c_flags0x1cBit0 = 1 << 0,
-				c_flags0x1cBit1 = 1 << 1,
-				c_flags0x1cBit2 = 1 << 2,
+				c_active = 1 << 0,
+				c_randomizeOnDuration = 1 << 1,
+				c_randomizeOffDuration = 1 << 2,
 				c_randomTableMask = 0x3ff,
 			};
 
@@ -509,128 +510,128 @@ public:
 			void VTable0x00(LegoEventQueue::CallbackData* p_data) override; // vtable+0x00
 			virtual ~Resource();                                            // vtable+0x04
 
-			void FUN_00464750(
+			void Initialize(
 				LegoEventQueue* p_eventQueue,
 				RaceEventTable* p_eventTable,
-				LegoU32 p_unk0x0c,
-				LegoU32 p_unk0x10,
-				LegoU32 p_unk0x14,
-				LegoS32 p_unk0x18,
+				LegoU32 p_onDurationMs,
+				LegoU32 p_offDurationMs,
+				LegoU32 p_delayMs,
+				LegoS32 p_eventId,
 				LegoU32 p_flags
 			);
 			void Reset();
-			void FUN_00464830(LegoU32 p_elapsedMs);
-			LegoEventQueue::Event* FUN_00464a40(LegoU32 p_unk0x04);
+			void Update(LegoU32 p_elapsedMs);
+			LegoEventQueue::Event* Schedule(LegoU32 p_delayMs);
 
 			// SYNTHETIC: LEGORACERS 0x00464d70
-			// RaceSession::Field0x213c::Resource::`vector deleting destructor'
+			// RaceSession::RaceTimerList::Resource::`vector deleting destructor'
 
 		private:
-			LegoEventQueue::Event* m_unk0x04; // 0x04
-			RaceEventTable* m_unk0x08;        // 0x08
-			LegoEventQueue* m_unk0x0c;        // 0x0c
-			LegoU32 m_unk0x10;                // 0x10
-			LegoU32 m_unk0x14;                // 0x14
-			LegoU32 m_unk0x18;                // 0x18
-			LegoU32 m_unk0x1c;                // 0x1c
-			LegoS32 m_unk0x20;                // 0x20
+			LegoEventQueue::Event* m_event; // 0x04
+			RaceEventTable* m_eventTable;   // 0x08
+			LegoEventQueue* m_eventQueue;   // 0x0c
+			LegoU32 m_onDurationMs;         // 0x10
+			LegoU32 m_offDurationMs;        // 0x14
+			LegoU32 m_delayMs;              // 0x18
+			LegoU32 m_flags;                // 0x1c
+			LegoS32 m_eventId;              // 0x20
 		};
 
-		Field0x213c();
-		~Field0x213c();
-		LegoU32 FUN_00464dd0(LegoU32 p_elapsedMs);
+		RaceTimerList();
+		~RaceTimerList();
+		LegoU32 Update(LegoU32 p_elapsedMs);
 
 	private:
 		friend class RaceSession;
 
 		void Destroy();
-		void FUN_00464aa0(
+		void Load(
 			LegoEventQueue* p_eventQueue,
 			RaceEventTable* p_eventTable,
 			const LegoChar* p_name,
 			LegoBool32 p_binary
 		);
 
-		RaceEventTable* m_unk0x00; // 0x00
-		LegoU32 m_unk0x04;         // 0x04
-		Resource* m_unk0x08;       // 0x08
+		RaceEventTable* m_eventTable; // 0x00
+		LegoU32 m_count;              // 0x04
+		Resource* m_timers;           // 0x08
 	};
 
 	// SIZE 0x14
 	// VTABLE: LEGORACERS 0x004b0c04
-	class Field0x27e0 : public GolNameTable {
+	class SurfaceTable : public GolNameTable {
 	public:
 		// SIZE 0x5c
 		class Entry {
 		public:
 			Entry();
+			void Unload();
+			void Load(GolFileParser* p_parser, LegoBool32 p_mirror);
 			void Reset();
-			void FUN_00443cf0(GolFileParser* p_parser, LegoBool32 p_mirror);
-			void FUN_00443f90();
 
 			const LegoChar* GetName() const { return m_name; }
 
 		private:
-			friend class Field0x27e0;
+			friend class SurfaceTable;
 
 			enum {
 				c_flagLoaded = 1 << 0,
-				c_flagUnk0x0c = 1 << 1,
-				c_flagUnk0x10 = 1 << 2,
-				c_flagUnk0x14 = 1 << 3,
+				c_flagEnterEventId = 1 << 1,
+				c_flagLeaveEventId = 1 << 2,
+				c_flagTouchEventId = 1 << 3,
 				c_flagUnk0x18 = 1 << 4,
 				c_flagUnk0x1c = 1 << 5,
-				c_flagUnk0x28 = 1 << 6,
-				c_flagUnk0x34 = 1 << 7,
+				c_flagSurfaceForce = 1 << 6,
+				c_flagSurfaceSoundId = 1 << 7,
 				c_flagUnk0x38 = 1 << 8,
 				c_flagUnk0x3c = 1 << 9,
-				c_flagUnk0x40 = 1 << 10,
-				c_flagUnk0x48 = 1 << 11,
-				c_flagUnk0x4c = 1 << 12,
-				c_flagUnk0x50 = 1 << 13,
+				c_flagWheelParticleName = 1 << 10,
+				c_flagSupportThreshold = 1 << 11,
+				c_flagFriction = 1 << 12,
+				c_flagLateralGrip = 1 << 13,
 				c_flagUnk0x54 = 1 << 14,
-				c_flagUnk0x58 = 1 << 15,
+				c_flagRollingResistance = 1 << 15,
 				c_flagBit16 = 1 << 16,
 				c_flagBit17 = 1 << 17,
 				c_flagBit18 = 1 << 18
 			};
 
-			GolName m_name;      // 0x00
-			LegoU32 m_flags;     // 0x08
-			LegoS32 m_unk0x0c;   // 0x0c
-			LegoS32 m_unk0x10;   // 0x10
-			LegoS32 m_unk0x14;   // 0x14
-			LegoS32 m_unk0x18;   // 0x18
-			GolVec3 m_unk0x1c;   // 0x1c
-			GolVec3 m_unk0x28;   // 0x28
-			LegoS32 m_unk0x34;   // 0x34
-			LegoS32 m_unk0x38;   // 0x38
-			LegoS32 m_unk0x3c;   // 0x3c
-			GolName m_unk0x40;   // 0x40
-			LegoFloat m_unk0x48; // 0x48
-			LegoFloat m_unk0x4c; // 0x4c
-			LegoFloat m_unk0x50; // 0x50
-			LegoFloat m_unk0x54; // 0x54
-			LegoFloat m_unk0x58; // 0x58
+			GolName m_name;                // 0x00
+			LegoU32 m_flags;               // 0x08
+			LegoS32 m_enterEventId;        // 0x0c
+			LegoS32 m_leaveEventId;        // 0x10
+			LegoS32 m_touchEventId;        // 0x14
+			LegoS32 m_unk0x18;             // 0x18
+			GolVec3 m_unk0x1c;             // 0x1c
+			GolVec3 m_surfaceForce;        // 0x28
+			LegoS32 m_surfaceSoundId;      // 0x34
+			LegoS32 m_unk0x38;             // 0x38
+			LegoS32 m_unk0x3c;             // 0x3c
+			GolName m_wheelParticleName;   // 0x40
+			LegoFloat m_supportThreshold;  // 0x48
+			LegoFloat m_friction;          // 0x4c
+			LegoFloat m_lateralGrip;       // 0x50
+			LegoFloat m_unk0x54;           // 0x54
+			LegoFloat m_rollingResistance; // 0x58
 		};
 
 		// VTABLE: LEGORACERS 0x004b0c10
 		// SIZE 0x1fc
 		class TmbTxtParser : public GolTxtParser {
 			// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-			// RaceSession::Field0x27e0::TmbTxtParser::`scalar deleting destructor'
+			// RaceSession::SurfaceTable::TmbTxtParser::`scalar deleting destructor'
 
 			// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-			// RaceSession::Field0x27e0::TmbTxtParser::~TmbTxtParser
+			// RaceSession::SurfaceTable::TmbTxtParser::~TmbTxtParser
 		};
 
-		Field0x27e0();
-		~Field0x27e0() override;
+		SurfaceTable();
+		~SurfaceTable() override;
 		void Clear() override;
-		void FUN_00444030(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
+		void Load(const LegoChar* p_name, LegoBool32 p_binary, LegoBool32 p_mirror);
 
 		// SYNTHETIC: LEGORACERS 0x00443fc0
-		// RaceSession::Field0x27e0::`scalar deleting destructor'
+		// RaceSession::SurfaceTable::`scalar deleting destructor'
 
 	private:
 		LegoU32 m_count;  // 0x0c
@@ -638,42 +639,42 @@ public:
 	};
 
 	// SIZE 0x30
-	class Field0x280c {
+	class LoadingScreen {
 	public:
 		// VTABLE: LEGORACERS 0x004b0698
 		// SIZE 0x1fc
 		class LsbTxtParser : public GolTxtParser {
 			// SYNTHETIC: LEGORACERS 0x0041e920 FOLDED
-			// RaceSession::Field0x280c::LsbTxtParser::`scalar deleting destructor'
+			// RaceSession::LoadingScreen::LsbTxtParser::`scalar deleting destructor'
 
 			// SYNTHETIC: LEGORACERS 0x00498840 FOLDED
-			// RaceSession::Field0x280c::LsbTxtParser::~LsbTxtParser
+			// RaceSession::LoadingScreen::LsbTxtParser::~LsbTxtParser
 		};
 
-		Field0x280c();
-		~Field0x280c();
-		void FUN_0042f430();
-		void FUN_0042f480(
+		LoadingScreen();
+		~LoadingScreen();
+		void Destroy();
+		void Initialize(
 			GolExport* p_golExport,
 			GolD3DRenderDevice* p_renderer,
 			GolStringTable* p_stringTable,
 			GolFontBase* p_font,
 			LegoBool32 p_binary
 		);
-		void FUN_0042f790(LegoFloat p_unk0x04);
-		void FUN_0042f7a0();
+		void SetProgress(LegoFloat p_progress);
+		void Draw();
 
 	private:
 		GolD3DRenderDevice* m_renderer; // 0x00
-		GolExport* m_unk0x04;           // 0x04
-		AwakeKite0x20* m_unk0x08;       // 0x08
-		UtopianPan0xa4* m_unk0x0c;      // 0x0c
-		LegoFloat m_unk0x10;            // 0x10
-		LegoS32 m_unk0x14;              // 0x14
-		LegoS32* m_unk0x18;             // 0x18
-		GolString m_unk0x1c;            // 0x1c
-		GolFontBase* m_unk0x28;         // 0x28
-		LegoS32 m_unk0x2c;              // 0x2c
+		GolExport* m_golExport;         // 0x04
+		AwakeKite0x20* m_images;        // 0x08
+		UtopianPan0xa4* m_tickImage;    // 0x0c
+		LegoFloat m_progress;           // 0x10
+		LegoS32 m_dotCount;             // 0x14
+		LegoS32* m_dotPositions;        // 0x18
+		GolString m_text;               // 0x1c
+		GolFontBase* m_font;            // 0x28
+		LegoS32 m_textX;                // 0x2c
 	};
 
 	// SIZE 0x08
@@ -702,77 +703,78 @@ public:
 	};
 
 	// SIZE 0x2c
-	class Field0x30c4 {
+	class RaceReset {
 	public:
 		// SIZE 0x2c
 		class Params {
 		public:
-			LegoRacers::Context* m_context;     // 0x00
-			RaceState* m_raceState;             // 0x04
-			RacePowerupManager* m_unk0x08;      // 0x08
-			HazardManager* m_unk0x0c;           // 0x0c
-			CutsceneAnimation* m_unk0x10;       // 0x10
-			CutsceneAnimation* m_unk0x14;       // 0x14
-			TimeRaceManager* m_timeRaceManager; // 0x18
-			Field0x2080* m_unk0x1c;             // 0x1c
-			Field0x2128* m_unk0x20;             // 0x20
-			Field0x32c4* m_unk0x24;             // 0x24
-			RaceEventTable* m_unk0x28;          // 0x28
+			LegoRacers::Context* m_context;               // 0x00
+			RaceState* m_raceState;                       // 0x04
+			RacePowerupManager* m_powerupManager;         // 0x08
+			HazardManager* m_hazardManager;               // 0x0c
+			CutsceneAnimation* m_particleAnimation;       // 0x10
+			CutsceneAnimation* m_sharedParticleAnimation; // 0x14
+			TimeRaceManager* m_timeRaceManager;           // 0x18
+			RacerTriggerList* m_racerTriggers;            // 0x1c
+			TriggerList* m_triggers;                      // 0x20
+			RacerCollisionWorlds* m_collisionWorlds;      // 0x24
+			RaceEventTable* m_eventTable;                 // 0x28
 		};
 
-		Field0x30c4();
-		~Field0x30c4();
+		RaceReset();
+		~RaceReset();
 
 	private:
 		friend class RaceSession;
 
 		void Reset();
-		void FUN_0043a690(const Params* p_source);
-		void FUN_0043a6e0();
-		void FUN_0043a780();
+		void Initialize(const Params* p_source);
+		void FinishRace();
+		void ResetRacers();
 
-		LegoRacers::Context* m_context;     // 0x00
-		RaceState* m_raceState;             // 0x04
-		RacePowerupManager* m_unk0x08;      // 0x08
-		HazardManager* m_unk0x0c;           // 0x0c
-		CutsceneAnimation* m_unk0x10;       // 0x10
-		CutsceneAnimation* m_unk0x14;       // 0x14
-		TimeRaceManager* m_timeRaceManager; // 0x18
-		Field0x2080* m_unk0x1c;             // 0x1c
-		Field0x2128* m_unk0x20;             // 0x20
-		Field0x32c4* m_unk0x24;             // 0x24
-		RaceEventTable* m_unk0x28;          // 0x28
+		LegoRacers::Context* m_context;               // 0x00
+		RaceState* m_raceState;                       // 0x04
+		RacePowerupManager* m_powerupManager;         // 0x08
+		HazardManager* m_hazardManager;               // 0x0c
+		CutsceneAnimation* m_particleAnimation;       // 0x10
+		CutsceneAnimation* m_sharedParticleAnimation; // 0x14
+		TimeRaceManager* m_timeRaceManager;           // 0x18
+		RacerTriggerList* m_racerTriggers;            // 0x1c
+		TriggerList* m_triggers;                      // 0x20
+		RacerCollisionWorlds* m_collisionWorlds;      // 0x24
+		RaceEventTable* m_eventTable;                 // 0x28
 	};
 
 	// VTABLE: LEGORACERS 0x004b1acc
 	// SIZE 0x3c
-	class Field0x32c4 {
+	class RacerCollisionWorlds {
 	public:
-		Field0x32c4();
-		virtual ~Field0x32c4(); // vtable+0x00
-		void FUN_0045e470(LegoU32 p_elapsedMs);
-		void FUN_0045e520(RaceState::Racer* p_racer, LegoU32 p_unk0x08);
-		LegoU32 FUN_0045e5b0();
+		RacerCollisionWorlds();
+		virtual ~RacerCollisionWorlds(); // vtable+0x00
+		void Update(LegoU32 p_elapsedMs);
+		void ActivateWorld(RaceState::Racer* p_racer, LegoU32 p_worldIndex);
+		LegoU32 Reset();
 
 		// SYNTHETIC: LEGORACERS 0x0045e380
-		// RaceSession::Field0x32c4::`scalar deleting destructor'
+		// RaceSession::RacerCollisionWorlds::`scalar deleting destructor'
 
 	private:
 		friend class RaceSession;
 
-		void FUN_0045e3f0(GolWorldDatabase* p_unk0x04, RaceState* p_raceState);
+		void Initialize(GolWorldDatabase* p_worldDatabase, RaceState* p_raceState);
 		void Destroy();
 
 		enum {
 			c_racerCount = 6,
 			c_maxElapsedChunk = 0xff,
 			c_unk0x0a8Stride = 100,
+			c_activationTtl = 150,
 		};
 
-		RaceState::Racer* m_unk0x04[c_racerCount]; // 0x04
-		GolWorldDatabase* m_unk0x1c;               // 0x1c
-		LegoU8* m_unk0x20[c_racerCount];           // 0x20
-		LegoU32 m_unk0x38;                         // 0x38
+		RaceState::Racer* m_racers[c_racerCount]; // 0x04
+		GolWorldDatabase* m_worldDatabase;        // 0x1c
+		LegoU8* m_ttl[c_racerCount];              // 0x20
+		LegoU32 m_worldCount;                     // 0x38
 	};
 
 private:
@@ -938,7 +940,7 @@ private:
 	GolVec3 m_unk0x210;                          // 0x210
 	InputManager* m_inputManager;                // 0x21c
 	InputEventQueue m_inputEvents;               // 0x220
-	Field0x23c m_unk0x23c;                       // 0x23c
+	RaceInputRouter m_inputRouter;               // 0x23c
 	PlayerControls m_playerControls[2];          // 0x258
 	RaceForceFeedback m_forceFeedback[2];        // 0x340
 	GolWorldDatabase* m_trackDatabase;           // 0x390
@@ -954,20 +956,20 @@ private:
 	GolBoundedEntity* m_extraTriggerWorldEntity; // 0x3b8
 	RaceState m_raceState;                       // 0x3bc
 	RacePowerupManager m_powerupManager;         // 0x6dc
-	Field0x2080 m_unk0x2080;                     // 0x2080
+	RacerTriggerList m_racerTriggers;            // 0x2080
 	RaceEventTable m_eventTable;                 // 0x2098
-	Field0x2128 m_unk0x2128;                     // 0x2128
-	Field0x213c m_unk0x213c;                     // 0x213c
+	TriggerList m_triggers;                      // 0x2128
+	RaceTimerList m_timers;                      // 0x213c
 	HazardManager m_hazardManager;               // 0x2148
 	CutsceneAnimation m_particleAnimation;       // 0x2150
 	CutsceneAnimation m_sharedParticleAnimation; // 0x248c
 	RaceTrailManager m_trailManager;             // 0x27c8
 	RaceSessionField0x27d4 m_decalManager;       // 0x27d4
-	Field0x27e0 m_unk0x27e0;                     // 0x27e0
+	SurfaceTable m_surfaceTable;                 // 0x27e0
 	CheckpointGraph m_checkpointGraph;           // 0x27f4
 	MenuAnimationList m_animationList;           // 0x27fc
 	Field0x2804 m_targetPoints;                  // 0x2804
-	Field0x280c m_unk0x280c;                     // 0x280c
+	LoadingScreen m_unk0x280c;                   // 0x280c
 	CobaltTrail0x140 m_trails[2];                // 0x283c
 	LegoFloat m_unk0x2abc;                       // 0x2abc
 	LegoFloat m_unk0x2ac0;                       // 0x2ac0
@@ -984,12 +986,12 @@ private:
 	RaceSkyState m_skyState;                     // 0x2f90
 	SlateBridge0x68 m_unk0x3058;                 // 0x3058
 	undefined4 m_unk0x30c0;                      // 0x30c0
-	Field0x30c4 m_unk0x30c4;                     // 0x30c4
+	RaceReset m_unk0x30c4;                       // 0x30c4
 	GolStringTable m_stringTable;                // 0x30f0
 	RaceRouteRecord m_routeRecords[6];           // 0x3104
 	TriggerWorld m_triggerWorld;                 // 0x32b4
-	Field0x32c4 m_unk0x32c4;                     // 0x32c4
-	Field0x3300 m_soundSource;                   // 0x3300
+	RacerCollisionWorlds m_racerCollisionWorlds; // 0x32c4
+	RaceSoundSource m_soundSource;               // 0x3300
 	MusicGroup* m_musicGroup;                    // 0x3314
 	SoundNode* m_listenerNodes[2];               // 0x3318
 	MusicInstance* m_music;                      // 0x3320

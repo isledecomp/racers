@@ -44,7 +44,7 @@ public:
 	void FUN_00422eb0(RaceState::Racer* p_racer);
 	void UpdateBestRun();
 	LegoBool32 HasBeatenRecord();
-	GhostRunData* FUN_004234f0();
+	GhostRunData* ResetRun();
 	LegoU32* GetScratchLapTimes() { return m_scratchRun->m_lapTimes; }
 	const LegoU32* GetRecordLapTimes() const { return m_recordRun->m_lapTimes; }
 	const LegoU32* GetBestLapTimes() const { return m_bestRun->m_lapTimes; }

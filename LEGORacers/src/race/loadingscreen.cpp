@@ -13,59 +13,59 @@
 #include <stdlib.h>
 #include <string.h>
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x280c, 0x30)
-DECOMP_SIZE_ASSERT(RaceSession::Field0x280c::LsbTxtParser, 0x1fc)
+DECOMP_SIZE_ASSERT(RaceSession::LoadingScreen, 0x30)
+DECOMP_SIZE_ASSERT(RaceSession::LoadingScreen::LsbTxtParser, 0x1fc)
 
 // GLOBAL: LEGORACERS 0x004bed40
 const LegoChar* g_loadScreenName = "loadscrn";
 
 // FUNCTION: LEGORACERS 0x0042f3b0
-RaceSession::Field0x280c::Field0x280c()
+RaceSession::LoadingScreen::LoadingScreen()
 {
 	m_renderer = NULL;
-	m_unk0x04 = NULL;
-	m_unk0x08 = NULL;
-	m_unk0x0c = 0;
-	m_unk0x10 = 0.0f;
-	m_unk0x14 = 0;
-	m_unk0x18 = NULL;
-	m_unk0x28 = 0;
-	m_unk0x2c = 0;
+	m_golExport = NULL;
+	m_images = NULL;
+	m_tickImage = 0;
+	m_progress = 0.0f;
+	m_dotCount = 0;
+	m_dotPositions = NULL;
+	m_font = 0;
+	m_textX = 0;
 }
 
 // FUNCTION: LEGORACERS 0x0042f3e0
-RaceSession::Field0x280c::~Field0x280c()
+RaceSession::LoadingScreen::~LoadingScreen()
 {
-	FUN_0042f430();
+	Destroy();
 }
 
 // FUNCTION: LEGORACERS 0x0042f430
-void RaceSession::Field0x280c::FUN_0042f430()
+void RaceSession::LoadingScreen::Destroy()
 {
-	m_unk0x1c.Reset();
-	AwakeKite0x20* field0x08 = m_unk0x08;
+	m_text.Reset();
+	AwakeKite0x20* images = m_images;
 	m_renderer = NULL;
-	m_unk0x28 = 0;
+	m_font = 0;
 
-	if (field0x08) {
-		m_unk0x04->VTable0x68(field0x08);
-		m_unk0x08 = NULL;
+	if (images) {
+		m_golExport->VTable0x68(images);
+		m_images = NULL;
 	}
 
-	LegoS32* field0x18 = m_unk0x18;
-	m_unk0x04 = NULL;
-	m_unk0x0c = 0;
-	m_unk0x10 = 0;
-	m_unk0x14 = 0;
+	LegoS32* dotPositions = m_dotPositions;
+	m_golExport = NULL;
+	m_tickImage = 0;
+	m_progress = 0;
+	m_dotCount = 0;
 
-	if (field0x18) {
-		delete[] field0x18;
-		m_unk0x18 = NULL;
+	if (dotPositions) {
+		delete[] dotPositions;
+		m_dotPositions = NULL;
 	}
 }
 
 // FUNCTION: LEGORACERS 0x0042f480
-void RaceSession::Field0x280c::FUN_0042f480(
+void RaceSession::LoadingScreen::Initialize(
 	GolExport* p_golExport,
 	GolD3DRenderDevice* p_renderer,
 	GolStringTable* p_stringTable,
@@ -79,8 +79,8 @@ void RaceSession::Field0x280c::FUN_0042f480(
 	imageName[sizeof(imageName) - 1] = '\0';
 
 	m_renderer = p_renderer;
-	m_unk0x04 = p_golExport;
-	m_unk0x10 = 0.0f;
+	m_golExport = p_golExport;
+	m_progress = 0.0f;
 
 	LegoU32 stringIndex = 0;
 	SlatePeak0x58* renderTargetInfo = m_renderer->GetRenderTargetInfo();
@@ -117,17 +117,17 @@ void RaceSession::Field0x280c::FUN_0042f480(
 			stringIndex = parser->ReadInteger();
 			break;
 		case GolFileParser::e_unknown0x29: {
-			m_unk0x14 = parser->ReadBracketedCountAndLeftCurly();
-			if (m_unk0x14) {
-				m_unk0x18 = new LegoS32[m_unk0x14 << 1];
-				if (m_unk0x18 == NULL) {
+			m_dotCount = parser->ReadBracketedCountAndLeftCurly();
+			if (m_dotCount) {
+				m_dotPositions = new LegoS32[m_dotCount << 1];
+				if (m_dotPositions == NULL) {
 					GOL_FATALERROR(c_golErrorOutOfMemory);
 				}
 			}
 
-			for (LegoS32 i = 0; i < m_unk0x14; i++) {
-				m_unk0x18[i * 2] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetWidth);
-				m_unk0x18[i * 2 + 1] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetHeight);
+			for (LegoS32 i = 0; i < m_dotCount; i++) {
+				m_dotPositions[i * 2] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetWidth);
+				m_dotPositions[i * 2 + 1] = static_cast<LegoS32>(parser->ReadFloat() * renderTargetHeight);
 			}
 			parser->ReadRightCurly();
 			break;
@@ -153,44 +153,44 @@ void RaceSession::Field0x280c::FUN_0042f480(
 	renderTargetInfo->VTable0x14(TRUE);
 	renderTargetInfo->VTable0x2c();
 
-	m_unk0x1c.CopyFromBufSelection(p_stringTable->GetStringBuffer(static_cast<LegoU16>(stringIndex)), 0);
-	m_unk0x28 = p_font;
+	m_text.CopyFromBufSelection(p_stringTable->GetStringBuffer(static_cast<LegoU16>(stringIndex)), 0);
+	m_font = p_font;
 
 	LegoS32 textWidth;
 	LegoS32 textHeight;
-	p_font->MeasureString(&m_unk0x1c, &textWidth, &textHeight);
-	m_unk0x2c = (static_cast<LegoU32>(static_cast<LegoS32>(renderTargetWidth)) - textWidth) >> 1;
+	p_font->MeasureString(&m_text, &textWidth, &textHeight);
+	m_textX = (static_cast<LegoU32>(static_cast<LegoS32>(renderTargetWidth)) - textWidth) >> 1;
 
-	m_unk0x08 = m_unk0x04->VTable0x34();
-	m_unk0x08->LoadImageDefinitions(m_renderer, g_loadScreenName, p_binary);
+	m_images = m_golExport->VTable0x34();
+	m_images->LoadImageDefinitions(m_renderer, g_loadScreenName, p_binary);
 
 	UtopianPan0xa4* image = NULL;
-	GolNameTable::Entry* nameEntries = m_unk0x08->GetNameEntries();
+	GolNameTable::Entry* nameEntries = m_images->GetNameEntries();
 	if (nameEntries) {
-		image = static_cast<UtopianPan0xa4*>(m_unk0x08->GetName("tick"));
+		image = static_cast<UtopianPan0xa4*>(m_images->GetName("tick"));
 	}
-	m_unk0x0c = image;
+	m_tickImage = image;
 }
 
 // FUNCTION: LEGORACERS 0x0042f790
-void RaceSession::Field0x280c::FUN_0042f790(LegoFloat p_unk0x04)
+void RaceSession::LoadingScreen::SetProgress(LegoFloat p_progress)
 {
-	m_unk0x10 = p_unk0x04;
+	m_progress = p_progress;
 }
 
 // FUNCTION: LEGORACERS 0x0042f7a0
-void RaceSession::Field0x280c::FUN_0042f7a0()
+void RaceSession::LoadingScreen::Draw()
 {
-	m_renderer->VTable0x64(&m_unk0x1c, m_unk0x28, m_unk0x2c, 25, 1.0f, 1.0f, NULL, 0);
+	m_renderer->VTable0x64(&m_text, m_font, m_textX, 25, 1.0f, 1.0f, NULL, 0);
 
-	LegoU32 count = static_cast<LegoU32>(static_cast<LegoFloat>(m_unk0x14) * m_unk0x10);
+	LegoU32 count = static_cast<LegoU32>(static_cast<LegoFloat>(m_dotCount) * m_progress);
 	for (LegoU32 i = 0; i < count; i++) {
 		Rect destRect;
-		destRect.m_top = m_unk0x18[i * 2 + 1] - 8;
-		destRect.m_bottom = m_unk0x18[i * 2 + 1] + 8;
-		destRect.m_left = m_unk0x18[i * 2] - 8;
-		destRect.m_right = m_unk0x18[i * 2] + 8;
+		destRect.m_top = m_dotPositions[i * 2 + 1] - 8;
+		destRect.m_bottom = m_dotPositions[i * 2 + 1] + 8;
+		destRect.m_left = m_dotPositions[i * 2] - 8;
+		destRect.m_right = m_dotPositions[i * 2] + 8;
 
-		m_renderer->VTable0x78(m_unk0x0c, 0, &destRect, NULL);
+		m_renderer->VTable0x78(m_tickImage, 0, &destRect, NULL);
 	}
 }

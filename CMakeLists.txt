@@ -302,32 +302,32 @@ add_executable(legoracers WIN32
   LEGORacers/src/menu/menudialogscreen.cpp
   LEGORacers/src/menu/menudialog.cpp
   LEGORacers/src/race/racesession.cpp
-  LEGORacers/src/race/racesessionfield0x2080.cpp
+  LEGORacers/src/race/triggerlists.cpp
   LEGORacers/src/race/raceeventtable.cpp
   LEGORacers/src/race/lapzoneresource.cpp
   LEGORacers/src/race/colortransformresource.cpp
-  LEGORacers/src/race/racesessionfield0x213c.cpp
+  LEGORacers/src/race/racetimerlist.cpp
   LEGORacers/src/race/hazardmanager.cpp
-  LEGORacers/src/race/racesessionfield0x23c.cpp
+  LEGORacers/src/race/raceinputrouter.cpp
   LEGORacers/src/race/racetrailmanager.cpp
   LEGORacers/src/race/racesessionfield0x27d4.cpp
   LEGORacers/src/race/racesessionfield0x27d4field0x004.cpp
   LEGORacers/src/race/racer/drivecontroller.cpp
   LEGORacers/src/race/racecameracontroller.cpp
   LEGORacers/src/race/racer/racerphysicshelpers.cpp
-  LEGORacers/src/race/racesessionfield0x27e0.cpp
+  LEGORacers/src/race/surfacetable.cpp
   LEGORacers/src/race/checkpointgraph.cpp
   LEGORacers/src/race/checkpointgraphwalk.cpp
-  LEGORacers/src/race/racesessionfield0x280c.cpp
+  LEGORacers/src/race/loadingscreen.cpp
   LEGORacers/src/race/racesessionfield0x2804.cpp
   LEGORacers/src/race/racesessionfield0x2f90.cpp
-  LEGORacers/src/race/racesessionfield0x30c4.cpp
+  LEGORacers/src/race/racereset.cpp
   LEGORacers/src/race/racer/racerouterecord.cpp
   LEGORacers/src/race/triggerworld.cpp
   LEGORacers/src/race/raceeventtabledispatch.cpp
-  LEGORacers/src/race/racesessionfield0x32c4.cpp
+  LEGORacers/src/race/racercollisionworlds.cpp
   LEGORacers/src/race/playercontrols.cpp
-  LEGORacers/src/race/racesessionfield0x3300.cpp
+  LEGORacers/src/race/racesoundsource.cpp
   LEGORacers/src/race/raceforcefeedback.cpp
   LEGORacers/src/race/powerups/racepowerupmanager.cpp
   LEGORacers/src/race/powerups/racepowerupmanagerglobals.cpp

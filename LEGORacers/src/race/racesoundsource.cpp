@@ -2,10 +2,10 @@
 #include "audio/soundmanager.h"
 #include "race/racesession.h"
 
-DECOMP_SIZE_ASSERT(RaceSession::Field0x3300, 0x14)
+DECOMP_SIZE_ASSERT(RaceSession::RaceSoundSource, 0x14)
 
 // FUNCTION: LEGORACERS 0x00443a50
-RaceSession::Field0x3300::Field0x3300()
+RaceSession::RaceSoundSource::RaceSoundSource()
 {
 	m_groups[0] = NULL;
 	m_groups[1] = NULL;
@@ -15,13 +15,13 @@ RaceSession::Field0x3300::Field0x3300()
 }
 
 // FUNCTION: LEGORACERS 0x00443a70
-RaceSession::Field0x3300::~Field0x3300()
+RaceSession::RaceSoundSource::~RaceSoundSource()
 {
-	FUN_00443a80();
+	DestroyGroups();
 }
 
 // FUNCTION: LEGORACERS 0x00443a80
-void RaceSession::Field0x3300::FUN_00443a80()
+void RaceSession::RaceSoundSource::DestroyGroups()
 {
 	SoundGroup** current = m_groups;
 	LegoS32 remaining = sizeOfArray(m_groups);
@@ -39,10 +39,10 @@ void RaceSession::Field0x3300::FUN_00443a80()
 }
 
 // FUNCTION: LEGORACERS 0x00443ac0
-void RaceSession::Field0x3300::FUN_00443ac0(SoundManager* p_soundManager)
+void RaceSession::RaceSoundSource::Initialize(SoundManager* p_soundManager)
 {
 	if (m_soundManager) {
-		FUN_00443a80();
+		DestroyGroups();
 	}
 
 	m_soundManager = p_soundManager;
@@ -52,13 +52,13 @@ void RaceSession::Field0x3300::FUN_00443ac0(SoundManager* p_soundManager)
 }
 
 // FUNCTION: LEGORACERS 0x00443b00
-void RaceSession::Field0x3300::FUN_00443b00(const LegoChar* p_name)
+void RaceSession::RaceSoundSource::LoadSfxBank(const LegoChar* p_name)
 {
 	m_groups[0]->Load(p_name);
 }
 
 // FUNCTION: LEGORACERS 0x00443b10
-void RaceSession::Field0x3300::FUN_00443b10(const LegoChar* p_name1, const LegoChar* p_name2)
+void RaceSession::RaceSoundSource::LoadVoiceBanks(const LegoChar* p_name1, const LegoChar* p_name2)
 {
 	m_groups[1]->Load(p_name1);
 
@@ -68,7 +68,7 @@ void RaceSession::Field0x3300::FUN_00443b10(const LegoChar* p_name1, const LegoC
 }
 
 // FUNCTION: LEGORACERS 0x00443b40
-void RaceSession::Field0x3300::FUN_00443b40(const LegoChar* p_name)
+void RaceSession::RaceSoundSource::LoadAmbientBank(const LegoChar* p_name)
 {
 	m_groups[3]->Load(p_name);
 }

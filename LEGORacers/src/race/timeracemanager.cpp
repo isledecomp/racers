@@ -650,7 +650,7 @@ LegoBool32 TimeRaceManager::HasBeatenRecord()
 }
 
 // FUNCTION: LEGORACERS 0x004234f0
-TimeRaceManager::GhostRunData* TimeRaceManager::FUN_004234f0()
+TimeRaceManager::GhostRunData* TimeRaceManager::ResetRun()
 {
 	m_flags0x3b4 &= ~c_flag0x3b4Bit1;
 	m_unk0x3b0 = 0;

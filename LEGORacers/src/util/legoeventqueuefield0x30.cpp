@@ -99,13 +99,13 @@ void LegoEventQueue::Field0x30::FUN_0043ab10(Event* p_event, LegoEventQueue*, Ca
 	m_unk0x30.m_unk0x00 = 3;
 	if (target0->CalculateBoxContact(
 			target1,
-			&collisionData.m_unk0x1c,
-			&collisionData.m_unk0x10,
-			&collisionData.m_unk0x04
+			&collisionData.m_penetrationDepth,
+			&collisionData.m_normal,
+			&collisionData.m_contactPoint
 		)) {
-		if (collisionData.m_unk0x1c != 0.0f) {
+		if (collisionData.m_penetrationDepth != 0.0f) {
 			m_unk0x30.m_target0 = target0;
-			collisionData.m_unk0x20 = target1;
+			collisionData.m_secondTarget = target1;
 			collisionData.m_unk0x00 = 0;
 			m_unk0x30.m_data = &collisionData;
 			p_event->FUN_004408e0(this, &m_unk0x30);

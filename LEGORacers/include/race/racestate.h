@@ -1036,7 +1036,7 @@ public:
 		void UpdateDriftLean();
 		void UpdateSpatialSounds();
 		void UpdateEngineSound(LegoU32 p_elapsedMs);
-		void FUN_00438500();
+		void StopEngineSounds();
 		LegoU32 ReturnAllWhiteBricks();
 		void Halt();
 		void Resume();
@@ -1096,7 +1096,7 @@ public:
 			c_flagGhost = 1 << 4,
 			c_flagTurbo = 1 << 6,
 			c_flagDrifting = 1 << 7,
-			c_flags0xd04Bit8 = 1 << 8,
+			c_flagShoveActive = 1 << 8,
 			c_flagEngineSounds = 1 << 10,
 			c_flagCursed = 1 << 11,
 			c_flags0xd04Bit12 = 1 << 12,
@@ -1127,7 +1127,7 @@ public:
 			c_feedbackHighOffset = 6,
 		};
 
-		void FUN_00438e60(GolVec3* p_unk0x04);
+		void ApplyShove(GolVec3* p_impulse);
 		void FUN_00438f20();
 		void FUN_00439c90();
 		void FUN_00439cf0(LegoU32 p_elapsedMs);
@@ -1137,15 +1137,9 @@ public:
 	public:
 		LegoBool32 CollectWhiteBrick(DroppableBrick* p_unk0x04);
 
-		union {
-			SoundSource* m_soundSource;                // 0x004
-			RaceResourceManager* m_resourceManager004; // 0x004
-		};
-		RacePowerupManager* m_unk0x008; // 0x008
-		union {
-			RaceState* m_raceState;    // 0x00c
-			RaceState* m_raceState00c; // 0x00c
-		};
+		SoundSource* m_soundSource;                // 0x004
+		RacePowerupManager* m_unk0x008;            // 0x008
+		RaceState* m_raceState;                    // 0x00c
 		RaceSessionField0x27f4* m_unk0x010;        // 0x010
 		RaceForceFeedback* m_unk0x014;             // 0x014
 		CarVisuals m_unk0x018;                     // 0x018
@@ -1194,7 +1188,7 @@ public:
 		DroppableBrick* m_unk0xd5c[3];             // 0xd5c
 		LegoU32 m_turboLevel;                      // 0xd68
 		LegoU32 m_shieldLevel;                     // 0xd6c
-		undefined4 m_unk0xd70;                     // 0xd70
+		undefined4 m_shoveReleaseAction;           // 0xd70
 		undefined4 m_unk0xd74;                     // 0xd74
 		LegoU32 m_unk0xd78;                        // 0xd78
 		undefined4 m_curseTimerMs;                 // 0xd7c
@@ -1440,7 +1434,7 @@ private:
 				GolCollidableEntity* m_unk0x08;            // 0x08
 				GolBoundedEntity* m_unk0x0c;               // 0x0c
 				GolBoundedEntity* m_unk0x10;               // 0x10
-				RaceResourceManager* m_resourceMgr;        // 0x14
+				Racer::SoundSource* m_resourceMgr;         // 0x14
 				RacePowerupManager* m_unk0x18;             // 0x18
 				CutsceneAnimation* m_unk0x1c;              // 0x1c
 				CutsceneAnimation* m_unk0x20;              // 0x20

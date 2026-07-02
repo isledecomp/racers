@@ -47,7 +47,7 @@ public:
 			GolVec3 m_position;          // 0x020
 			GolMatrix3 m_unk0x02c;       // 0x02c
 			GolMatrix3 m_unk0x050;       // 0x050
-			GolMatrix3 m_unk0x074;       // 0x074
+			GolMatrix3 m_inverseInertia; // 0x074
 			GolVec3 m_unk0x098;          // 0x098
 			GolVec3 m_unk0x0a4;          // 0x0a4
 			GolVec3 m_unk0x0b0;          // 0x0b0
@@ -190,11 +190,11 @@ public:
 	// SIZE 0x24
 	class CollisionCallbackData {
 	public:
-		undefined4 m_unk0x00;             // 0x00
-		GolVec3 m_unk0x04;                // 0x04
-		GolVec3 m_unk0x10;                // 0x10
-		LegoFloat m_unk0x1c;              // 0x1c
-		Descriptor::Field0x10* m_unk0x20; // 0x20
+		undefined4 m_unk0x00;                  // 0x00
+		GolVec3 m_contactPoint;                // 0x04
+		GolVec3 m_normal;                      // 0x10
+		LegoFloat m_penetrationDepth;          // 0x1c
+		Descriptor::Field0x10* m_secondTarget; // 0x20
 	};
 
 protected:

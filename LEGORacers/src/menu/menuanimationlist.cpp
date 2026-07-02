@@ -52,7 +52,7 @@ void MenuAnimationList::Entry::Clear()
 void MenuAnimationList::Entry::Activate(
 	LegoU32 p_durationMs,
 	LegoBool32 p_fadeOut,
-	DuskwindBananaRelic0x24* p_material,
+	GolMaterial* p_material,
 	const GolCameraBase* p_rectSource
 )
 {
@@ -218,7 +218,7 @@ void MenuAnimationList::Allocate(LegoU32 p_count)
 MenuAnimationList::Entry* MenuAnimationList::Activate(
 	LegoU32 p_durationMs,
 	LegoBool32 p_fadeOut,
-	DuskwindBananaRelic0x24* p_material,
+	GolMaterial* p_material,
 	const GolCameraBase* p_rectSource
 )
 {

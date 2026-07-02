@@ -5,7 +5,7 @@
 class GolBillboardEx : public GolBillboard {
 public:
 	void VTable0x4c(
-		DuskwindBananaRelic0x24* p_position,
+		GolMaterial* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,
 		LegoFloat p_maxDistanceSquared

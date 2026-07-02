@@ -2,7 +2,7 @@
 #define DRIVERMODELBUILDER_H
 
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "types.h"
 
 class GolExport;
@@ -94,28 +94,28 @@ private:
 	void CopyModelIndices(GolModelBase* p_sourceModel, GolModelBase* p_destModel, LegoU32 p_indexOffset);
 	void CopyBodyIntoOutput();
 	void MergeHeadModel();
-	void ReplaceMaterialTexture(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name);
+	void ReplaceMaterialTexture(GolMaterial* p_material, const LegoChar* p_name);
 	GolModelBase* MergeModels(DriverCosmetics* p_cosmetics, GolModelBase* p_model, undefined4 p_unk0x0c);
 	void CopyGroupsUntilFace();
 
-	undefined4 m_menuId;                               // 0x00
-	undefined4 m_textureCount;                         // 0x04
-	undefined4 m_materialCount;                        // 0x08
-	undefined4 m_unk0x0c;                              // 0x0c
-	undefined4 m_expressionMask;                       // 0x10
-	GolExport* m_golExport;                            // 0x14
-	GolD3DRenderDevice* m_renderer;                    // 0x18
-	GolTextureList* m_textureList;                     // 0x1c
-	GolMaterialLibrary* m_materialList;                // 0x20
-	DuskWindBananaRelicParams m_defaultMaterialParams; // 0x24
-	DriverPartResources* m_partResources;              // 0x38
-	ModelSummary m_bodySummary;                        // 0x3c
-	ModelSummary m_headSummary;                        // 0x50
-	ModelSummary m_outputSummary;                      // 0x64
-	undefined4 m_menuFlowFlags;                        // 0x78
-	MusicGroup* m_musicGroup;                          // 0x7c
-	MusicInstance* m_musicInstance;                    // 0x80
-	LegoS32 m_saveSlot;                                // 0x84
+	undefined4 m_menuId;                       // 0x00
+	undefined4 m_textureCount;                 // 0x04
+	undefined4 m_materialCount;                // 0x08
+	undefined4 m_unk0x0c;                      // 0x0c
+	undefined4 m_expressionMask;               // 0x10
+	GolExport* m_golExport;                    // 0x14
+	GolD3DRenderDevice* m_renderer;            // 0x18
+	GolTextureList* m_textureList;             // 0x1c
+	GolMaterialLibrary* m_materialList;        // 0x20
+	GolMaterialParams m_defaultMaterialParams; // 0x24
+	DriverPartResources* m_partResources;      // 0x38
+	ModelSummary m_bodySummary;                // 0x3c
+	ModelSummary m_headSummary;                // 0x50
+	ModelSummary m_outputSummary;              // 0x64
+	undefined4 m_menuFlowFlags;                // 0x78
+	MusicGroup* m_musicGroup;                  // 0x7c
+	MusicInstance* m_musicInstance;            // 0x80
+	LegoS32 m_saveSlot;                        // 0x84
 };
 
 #endif // DRIVERMODELBUILDER_H

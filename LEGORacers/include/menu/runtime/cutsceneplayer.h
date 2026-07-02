@@ -37,7 +37,7 @@ class StreamingSoundInstance;
 class MenuAnimationList;
 class GolCamera;
 class AwakeKite0x20;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 struct Rect;
 
 // VTABLE: LEGORACERS 0x004b4954
@@ -282,7 +282,7 @@ public:
 
 private:
 	MenuAnimationList* m_animationList;      // 0x14
-	DuskwindBananaRelic0x24* m_material;     // 0x18
+	GolMaterial* m_material;                 // 0x18
 	MenuAnimationList::Entry* m_activeEntry; // 0x1c
 	union {
 		struct {
@@ -478,7 +478,7 @@ public:
 		LegoFloat GetRadius() const { return m_radius; }
 		MabMaterialAnimationItem0x18* GetMaterialAnimationItem() const { return m_materialAnimationItem; }
 		MabMaterialAnimation0x14* GetMaterialAnimation() const { return m_materialAnimation; }
-		DuskwindBananaRelic0x24* GetMaterial() const { return m_material; }
+		GolMaterial* GetMaterial() const { return m_material; }
 
 	private:
 		GolVec3* m_points;                                     // 0x00
@@ -498,7 +498,7 @@ public:
 		LegoS32 m_durationMs;                                  // 0x34
 		MabMaterialAnimationItem0x18* m_materialAnimationItem; // 0x38
 		MabMaterialAnimation0x14* m_materialAnimation;         // 0x3c
-		DuskwindBananaRelic0x24* m_material;                   // 0x40
+		GolMaterial* m_material;                               // 0x40
 	};
 
 	CutsceneAnimation();

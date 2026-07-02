@@ -52,7 +52,7 @@ void AmberHaze0x20::Clear()
 }
 
 // FUNCTION: GOLDP 0x10006800
-DuskwindBananaRelic0x24* AmberHaze0x20::GetItem(LegoU32 p_index) const
+GolMaterial* AmberHaze0x20::GetItem(LegoU32 p_index) const
 {
 	return &m_items[p_index];
 }

@@ -1,6 +1,6 @@
 #include "golmodelentity.h"
 
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "material/materialtable0x0c.h"
 #include "render/golrenderdevice.h"
@@ -370,9 +370,9 @@ LegoBool32 GolModelEntity::VTable0x20()
 	}
 
 	for (LegoU32 i = 0; i < materialTable->m_count; i++) {
-		DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(i));
-		if (material != NULL && (material->GetUnk0x08() & (DuskwindBananaRelic0x24::c_flag0x08Bit8 |
-														   DuskwindBananaRelic0x24::c_flag0x08Bit12))) {
+		GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetPosition(i));
+		if (material != NULL &&
+			(material->GetUnk0x08() & (GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit12))) {
 			return TRUE;
 		}
 	}

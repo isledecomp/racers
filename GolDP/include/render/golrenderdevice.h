@@ -14,7 +14,7 @@ class GolMaterialLibrary;
 class GolCamera;
 class GolD3DRenderDevice;
 class GolFontLibrary;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GolModelEntity;
 class GolWorldEntity;
 class GolSurfaceFormat;
@@ -180,7 +180,7 @@ public:
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,
 		const TexturedVertex* p_vertex2,
-		DuskwindBananaRelic0x24* p_material,
+		GolMaterial* p_material,
 		undefined4 p_flags
 	) = 0;                                                                                    // vtable+0x84
 	virtual void VTable0x88(GolModelEntity*, GolD3DRenderState*, undefined4);                 // vtable+0x88
@@ -230,7 +230,7 @@ public:
 	GoldDune0x38* FindTextureByName(const LegoChar* p_name);
 	void AddMaterialList(GolMaterialLibrary* p_param);
 	void RemoveMaterialList(GolMaterialLibrary* p_param);
-	DuskwindBananaRelic0x24* FindMaterialByName(const LegoChar* p_name);
+	GolMaterial* FindMaterialByName(const LegoChar* p_name);
 
 #ifdef BUILDING_LEGORACERS
 	GolFont* FindFontByName(const LegoChar* p_name);

@@ -2,9 +2,9 @@
 #include "camera/goltransform.h"
 #include "core/gol.h"
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
+#include "golmaterial.h"
 #include "golmath.h"
 #include "golmodelbase.h"
 #include "golscenenode.h"
@@ -109,7 +109,7 @@ void RacePowerupManager::BeamMesh::Initialize(const SetupParams* p_params)
 	m_textureColumnCount = params->m_textureColumnCount;
 
 	LegoU32 generatedPointCount;
-	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+	if (m_material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 		generatedPointCount = 0;
 		if (m_textureColumnCount <= segmentCount) {
 			generatedPointCount = segmentCount - m_textureColumnCount;
@@ -254,7 +254,7 @@ void RacePowerupManager::BeamMesh::AppendPoint(const GolVec3* p_position)
 	EmitRing(&localPosition, &m_baseColor, m_textureColumn, 0);
 	EmitQuads();
 
-	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+	if (m_material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 		m_textureColumn++;
 		if (m_textureColumn > m_textureColumnCount) {
 			EmitRing(&localPosition, &m_baseColor, 0, 0);
@@ -511,7 +511,7 @@ void RacePowerupManager::BeamMesh::AppendSpan(const GolVec3* p_position, LegoFlo
 		EmitRing(&localPosition, &color, m_textureColumn, offsetIndex);
 		EmitQuads();
 
-		if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		if (m_material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 			m_textureColumn++;
 			if (m_textureColumn > m_textureColumnCount) {
 				EmitRing(&localPosition, &color, 0, offsetIndex);
@@ -525,7 +525,7 @@ void RacePowerupManager::BeamMesh::AppendSpan(const GolVec3* p_position, LegoFlo
 	EmitRing(&endPosition, &m_baseColor, m_textureColumn, offsetIndex);
 	EmitQuads();
 
-	if (m_material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+	if (m_material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 		m_textureColumn++;
 		if (m_textureColumn > m_textureColumnCount) {
 			m_textureColumn = 1;

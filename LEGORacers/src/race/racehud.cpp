@@ -434,7 +434,7 @@ void RaceHud::DrawMapArrow(LegoS32 p_x, LegoS32 p_y, LegoFloat p_directionX, Leg
 		vertices[i].m_y = m_scaleY * vertices[i].m_y + originY;
 	}
 
-	DuskwindBananaRelic0x24* material = m_mapMaterial;
+	GolMaterial* material = m_mapMaterial;
 	m_mapMaterial = NULL;
 	vertices[3].m_color.m_grn = colorAlpha;
 	vertices[4].m_color.m_grn = colorAlpha;
@@ -1207,7 +1207,7 @@ LegoS32 RaceHud::SetResolution(LegoS32 p_width, LegoS32 p_height)
 
 // FUNCTION: LEGORACERS 0x00426280
 void RaceHud::SetMapInfo(
-	DuskwindBananaRelic0x24* p_material,
+	GolMaterial* p_material,
 	LegoFloat p_minX,
 	LegoFloat p_maxY,
 	LegoFloat p_maxX,

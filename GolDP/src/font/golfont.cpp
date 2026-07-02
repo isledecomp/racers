@@ -142,7 +142,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 
 		texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_maxTextureWidth, m_maxTextureHeight);
 
-		DuskWindBananaRelicParams params;
+		GolMaterialParams params;
 		params.m_unk0x00 = c_fontMaterialFlags;
 		params.m_unk0x04 = texture;
 		params.m_unk0x08.m_unk0x0 = 0xff;
@@ -176,7 +176,7 @@ void GolFont::VTable0x04(GolD3DRenderDevice* p_renderer, GolSurfaceFormat* p_tex
 	texture->FUN_10015d00(*p_renderer, *p_textureFormat, m_textureWidth, m_textureHeight);
 	texture->SetName(m_name);
 
-	DuskWindBananaRelicParams params;
+	GolMaterialParams params;
 	params.m_unk0x00 = c_fontMaterialFlags;
 	params.m_unk0x04 = texture;
 	params.m_unk0x08.m_unk0x0 = 0xff;

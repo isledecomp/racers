@@ -1,6 +1,6 @@
 #include "amethystbreeze0x104.h"
 
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"
 
@@ -84,7 +84,7 @@ void AmethystBreeze0x104::FUN_0040eba0(const GolRenderDevice::Light* p_light)
 // STUB: LEGORACERS 0x0040ec00
 void AmethystBreeze0x104::UpdateMaterialCaches()
 {
-	DuskwindBananaRelic0x24* activeMaterial = m_activeMaterial;
+	GolMaterial* activeMaterial = m_activeMaterial;
 	LegoU32 zero = 0;
 
 	if (activeMaterial == NULL) {

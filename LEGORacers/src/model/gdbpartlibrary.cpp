@@ -1,11 +1,11 @@
 #include "model/gdbpartlibrary.h"
 
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golbinparser.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "golmodelmaterialtable.h"
 #include "golname.h"
@@ -218,7 +218,7 @@ void GdbPartLibrary::CopyPartGroupStart(
 	const LegoChar* p_materialName
 )
 {
-	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(p_materialName);
+	GolMaterial* material = p_renderer->FindMaterialByName(p_materialName);
 	g_copyModel->GetMaterialTable()->SetPosition(p_groupIndex, material);
 
 	LegoU32 groupWrite = g_copyGroupWrite++;

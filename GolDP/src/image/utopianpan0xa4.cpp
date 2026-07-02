@@ -184,7 +184,7 @@ void UtopianPan0xa4::FUN_10005440(
 		flags |= c_flagBit5;
 	}
 
-	DuskWindBananaRelicParams params;
+	GolMaterialParams params;
 	params.m_unk0x04 = p_texture;
 	params.m_unk0x08.m_unk0x0 = 0xff;
 	params.m_unk0x08.m_unk0x1 = 0xff;

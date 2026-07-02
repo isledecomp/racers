@@ -2,9 +2,9 @@
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
-#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "menu/runtime/cutsceneparticle.h"
@@ -1473,7 +1473,7 @@ LegoBool32 CarVisuals::IntersectSegment(const GolVec3* p_start, const GolVec3* p
 // FUNCTION: LEGORACERS 0x0043ff20
 void CarVisuals::RenderShadowSilhouette(GolD3DRenderDevice* p_renderer)
 {
-	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName(m_shadowTextureName);
+	GolMaterial* material = p_renderer->FindMaterialByName(m_shadowTextureName);
 	g_carShadowRenderState.Initialize(p_renderer, material->GetUnk0x04());
 
 	GolVec3 position;

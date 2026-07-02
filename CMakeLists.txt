@@ -133,7 +133,7 @@ set(COMMON_SOURCES
   common/src/golanimatedentity.cpp
   common/src/mabmaterialanimationitem0x8.cpp
   common/src/mabmaterialanimationitem0x18.cpp
-  common/src/duskwindbananarelic0x24.cpp
+  common/src/golmaterial.cpp
   common/src/amethystbreeze0x104.cpp
   common/src/golmateriallibrary.cpp
 )

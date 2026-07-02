@@ -93,7 +93,7 @@ void GolModelMaterialTable::FUN_10025f90(GolRenderDevice* p_renderer, GolFilePar
 	for (i = 0; i < m_count; i++) {
 		GolName materialName;
 		::strncpy(materialName, p_parser.ReadString(), sizeof(materialName));
-		DuskwindBananaRelic0x24* material = m_renderer->FindMaterialByName(materialName);
+		GolMaterial* material = m_renderer->FindMaterialByName(materialName);
 		m_entries[i] = material;
 		if (m_entries[i] == NULL) {
 			char message[64];

@@ -1,8 +1,8 @@
 #include "material/materialtable0x0c.h"
 
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golname.h"
 #include "render/golrenderdevice.h"
 
@@ -68,7 +68,7 @@ LegoS32 MaterialTable0x0c::FindEntryIndexByName(const LegoChar* p_name) const
 	}
 
 	while (TRUE) {
-		DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(m_entries[index]);
+		GolMaterial* material = static_cast<GolMaterial*>(m_entries[index]);
 		if (material != NULL) {
 			DuskWindName0x8 materialName;
 			materialName = material->GetNameRecord();

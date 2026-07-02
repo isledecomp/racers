@@ -118,7 +118,7 @@ LegoU32 RacePowerupManager::CannonballAction::Activate(ActionSetup* p_setup)
 
 	GolD3DRenderDevice* renderDevice = m_owner0x01c->m_renderer;
 	const LegoChar* materialName = m_materialName;
-	DuskwindBananaRelic0x24* material;
+	GolMaterial* material;
 	if (materialName && materialName[0]) {
 		material = renderDevice->FindMaterialByName(materialName);
 	}
@@ -413,7 +413,7 @@ void RacePowerupManager::CannonballAction::AdvanceState()
 	if (m_trail != NULL) {
 		m_trail->SetColor(&g_cannonballTrailColor);
 
-		DuskwindBananaRelic0x24* material = m_owner0x01c->m_renderer->FindMaterialByName("canstrk");
+		GolMaterial* material = m_owner0x01c->m_renderer->FindMaterialByName("canstrk");
 		if (material != NULL) {
 			m_trail->SetMaterial(m_owner0x01c->m_renderer, material);
 		}

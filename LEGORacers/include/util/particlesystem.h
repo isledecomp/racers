@@ -8,7 +8,7 @@
 #include "surface/color.h"
 #include "types.h"
 
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GolExport;
 class GolD3DRenderDevice;
 class MabMaterialAnimationItem0x18;
@@ -45,7 +45,7 @@ public:
 		const GolVec3* p_position
 	);
 	void ConfigureMaterial(
-		DuskwindBananaRelic0x24* p_material,
+		GolMaterial* p_material,
 		LegoFloat p_startSizeUp,
 		LegoFloat p_startSizeForward,
 		LegoFloat p_sizeGrowthUp,
@@ -79,7 +79,7 @@ private:
 		LegoFloat p_radius,
 		const GolVec3* p_position
 	);
-	void BeginMaterialGroup(DuskwindBananaRelic0x24* p_material);
+	void BeginMaterialGroup(GolMaterial* p_material);
 	void EmitQuad(Particle* p_particle);
 	LegoU32 FlushBatch();
 
@@ -99,7 +99,7 @@ private:
 	LegoU32 m_materialItemCount;                       // 0x0c8
 	MabMaterialAnimationItem0x8* m_materialItems;      // 0x0cc
 	MabMaterialAnimationItem0x18* m_materialAnimation; // 0x0d0
-	DuskwindBananaRelic0x24* m_material;               // 0x0d4
+	GolMaterial* m_material;                           // 0x0d4
 	LegoFloat m_startSizeUp;                           // 0x0d8
 	LegoFloat m_startSizeForward;                      // 0x0dc
 	LegoFloat m_sizeGrowthUp;                          // 0x0e0

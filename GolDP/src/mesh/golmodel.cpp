@@ -1,10 +1,10 @@
 #include "mesh/golmodel.h"
 
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golerror.h"
 #include "golfileparser.h"
+#include "golmaterial.h"
 #include "mesh/gdbcommonvertexarray0x1c.h"
 #include "mesh/gdbvertexarraymistery0x1c.h"
 #include "mesh/gdbvertexarraytypeone0x1c.h"
@@ -202,9 +202,8 @@ void GolModel::FUN_10006c50(GolD3DRenderDevice* p_renderer, MaterialTable0x0c* p
 		LegoU32 groupType = groupData & c_groupTypeMask;
 		if (groupType <= c_groupTypeMaterial) {
 			if (groupType == c_groupTypeMaterial) {
-				DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(
-					p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask)
-				);
+				GolMaterial* material =
+					static_cast<GolMaterial*>(p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
 				p_renderer->FUN_1000ac00(material->GetUnk0x04());
 			}
@@ -302,9 +301,8 @@ void GolModel::FUN_10006e00(
 
 		if (groupType <= c_groupTypeMaterial) {
 			if (groupType == c_groupTypeMaterial) {
-				DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(
-					p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask)
-				);
+				GolMaterial* material =
+					static_cast<GolMaterial*>(p_materialTable->GetPosition(groupData & c_materialMatrixIndexMask));
 				(p_renderer->*p_renderer->m_unk0xc876c)(material);
 				p_renderer->FUN_1000ac00(material->GetUnk0x04());
 			}

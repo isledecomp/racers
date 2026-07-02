@@ -5,12 +5,12 @@
 #include "audio/musicinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golbmpwriterfile.h"
 #include "golddune0x38.h"
 #include "golhashtable.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "golmodelbase.h"
 #include "golmodelentity.h"
@@ -866,7 +866,7 @@ void MenuManager::BuildPlayerDriverModel(
 	DriverCosmetics cosmetics;
 	GolModelMaterialTable* materialTable;
 	LegoU32 materialCount;
-	DuskWindBananaRelicParams params;
+	GolMaterialParams params;
 
 	p_record->GetCosmetics(&cosmetics);
 
@@ -877,12 +877,12 @@ void MenuManager::BuildPlayerDriverModel(
 	textureCount = 0;
 
 	for (materialCount = 0; materialCount < materialTable->GetCount(); materialCount++) {
-		DuskwindBananaRelic0x24* material = materialTable->GetMaterial(materialCount);
+		GolMaterial* material = materialTable->GetMaterial(materialCount);
 		if (material == NULL) {
 			break;
 		}
 
-		if (material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 			textureCount++;
 		}
 	}
@@ -897,10 +897,10 @@ void MenuManager::BuildPlayerDriverModel(
 
 	textureCount = 0;
 	for (LegoU32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
-		DuskwindBananaRelic0x24* sourceMaterial = materialTable->GetMaterial(materialIndex);
+		GolMaterial* sourceMaterial = materialTable->GetMaterial(materialIndex);
 		sourceMaterial->CopyParamsTo(&params);
 
-		if (sourceMaterial->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		if (sourceMaterial->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 			PurpleDune0x7c* texture = p_slot->m_altTextures->GetItem(textureCount++);
 			texture->SetName(static_cast<PurpleDune0x7c*>(params.m_unk0x04)->GetName());
 			texture->SetSourceTextureDefinition(
@@ -914,8 +914,8 @@ void MenuManager::BuildPlayerDriverModel(
 			params.m_unk0x04 = NULL;
 		}
 
-		params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flagBit0;
-		DuskwindBananaRelic0x24* material = p_slot->m_altMaterials->GetItem(materialIndex);
+		params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
+		GolMaterial* material = p_slot->m_altMaterials->GetItem(materialIndex);
 		material->FUN_100257e0(renderer, params);
 		materialTable->SetPosition(materialIndex, material);
 	}

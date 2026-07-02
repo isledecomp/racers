@@ -115,7 +115,7 @@ void DriverModelBuilder::RefreshMenuResources()
 // FUNCTION: LEGORACERS 0x0049d2a0
 void DriverModelBuilder::InitializeDefaultMaterialParams()
 {
-	DuskwindBananaRelic0x24* material = m_partResources->FindFaceMaterial(0);
+	GolMaterial* material = m_partResources->FindFaceMaterial(0);
 	material->CopyParamsTo(&m_defaultMaterialParams);
 	m_defaultMaterialParams.m_unk0x08.m_unk0x3 = 0xff;
 	m_defaultMaterialParams.m_unk0x08.m_unk0x0 = 200;
@@ -148,11 +148,11 @@ void DriverModelBuilder::LoadFaceTexture(const LegoChar* p_name, GolBmpFile* p_i
 // FUNCTION: LEGORACERS 0x0049d3a0
 void DriverModelBuilder::CreateFaceMaterial(const LegoChar* p_name)
 {
-	DuskwindBananaRelic0x24* sourceMaterial = m_partResources->FindFaceMaterial(0);
-	DuskWindBananaRelicParams params;
+	GolMaterial* sourceMaterial = m_partResources->FindFaceMaterial(0);
+	GolMaterialParams params;
 	sourceMaterial->CopyParamsTo(&params);
 
-	DuskwindBananaRelic0x24* material = m_materialList->GetItem(m_materialCount++);
+	GolMaterial* material = m_materialList->GetItem(m_materialCount++);
 	params.m_unk0x04 = m_renderer->FindTextureByName(p_name);
 	material->SetName(p_name);
 	material->FUN_100257e0(m_renderer, params);
@@ -224,7 +224,7 @@ void DriverModelBuilder::MergeHeadMaterials()
 	LegoS32 outputIndex = m_bodySummary.m_materialCount;
 
 	for (LegoS32 i = 0; i < m_headSummary.m_materialCount; i++) {
-		DuskwindBananaRelic0x24* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(i);
+		GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(i);
 		if (material == NULL) {
 			continue;
 		}
@@ -378,17 +378,17 @@ void DriverModelBuilder::MergeHeadModel()
 }
 
 // FUNCTION: LEGORACERS 0x0049d9b0
-void DriverModelBuilder::ReplaceMaterialTexture(DuskwindBananaRelic0x24* p_material, const LegoChar* p_name)
+void DriverModelBuilder::ReplaceMaterialTexture(GolMaterial* p_material, const LegoChar* p_name)
 {
 	GolModelMaterialTable* materialTable = m_outputSummary.m_model->GetMaterialTable();
-	DuskWindBananaRelicParams* params = new DuskWindBananaRelicParams;
+	GolMaterialParams* params = new GolMaterialParams;
 	LegoS32 materialCount = materialTable->GetCount();
 	if (params == NULL) {
 		GOL_FATALERROR(c_golErrorOutOfMemory);
 	}
 
 	for (LegoS32 materialIndex = 0; materialIndex < materialCount; materialIndex++) {
-		DuskwindBananaRelic0x24* material = materialTable->GetMaterial(materialIndex);
+		GolMaterial* material = materialTable->GetMaterial(materialIndex);
 		if (material != NULL) {
 			DuskWindName0x8 materialName;
 			materialName = material->GetNameRecord();
@@ -546,8 +546,7 @@ void DriverModelBuilder::CopyGroupsUntilFace()
 				}
 			}
 			else if (groupType == GolModel::c_groupTypeMaterial) {
-				DuskwindBananaRelic0x24* material =
-					m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
+				GolMaterial* material = m_headSummary.m_model->GetMaterialTable()->GetMaterial(group & 0x0000ffff);
 				DuskWindName0x8 materialName;
 				materialName = material->GetNameRecord();
 				group = GolModel::c_groupTypeMaterial |

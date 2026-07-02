@@ -7,7 +7,7 @@
 #include "surface/color.h"
 #include "types.h"
 
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GolD3DRenderDevice;
 class GolExport;
 class GolModelBase;
@@ -62,7 +62,7 @@ public:
 		virtual Trail* VTable0x00(undefined4 p_flags); // vtable+0x00
 
 		void Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_golExport);
-		void SetMaterial(GolD3DRenderDevice* p_renderer, DuskwindBananaRelic0x24* p_material);
+		void SetMaterial(GolD3DRenderDevice* p_renderer, GolMaterial* p_material);
 		void SetColor(const ColorRGBA* p_color);
 		void Start(Params* p_params);
 		void Release();

@@ -1,8 +1,8 @@
 #include "golmateriallibrary.h"
 
-#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golname.h"
 #include "render/golrenderdevice.h"
 
@@ -83,10 +83,10 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 			parser->ReadStringWithMaxLength(sizeOfArray(name.m_unk0x0)),
 			sizeOfArray(name.m_unk0x0)
 		);
-		DuskwindBananaRelic0x24* material = GetItem(i);
+		GolMaterial* material = GetItem(i);
 		AddName(name.m_unk0x0, material);
 		parser->ReadLeftCurly();
-		DuskWindBananaRelicParams params(fullIntensity);
+		GolMaterialParams params(fullIntensity);
 
 		GolFileParser::ParserTokenType token = parser->GetNextToken();
 		while (token != GolFileParser::e_rightCurly) {
@@ -104,12 +104,12 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 				params.m_unk0x0c.m_unk0x3 = parser->ReadInteger();
 				break;
 			case GolFileParser::e_unknown0x2a:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit2;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit1;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit2;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit1;
 				break;
 			case GolFileParser::e_unknown0x2b:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit1;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit2;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit1;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit2;
 				break;
 			case GolFileParser::e_unknown0x2c:
 				::strncpy(textureName, parser->ReadStringWithMaxLength(sizeOfArray(textureName)), sizeof(textureName));
@@ -120,19 +120,19 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 					::strcat(message, textureName);
 					GOL_FATALERROR_MESSAGE(message);
 				}
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit3;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit3;
 				break;
 			case GolFileParser::e_unknown0x2d:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit4;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit5;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit4;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit5;
 				break;
 			case GolFileParser::e_unknown0x2e:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit5;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit4;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit5;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit4;
 				break;
 			case GolFileParser::e_unknown0x2f:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit7;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit6;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit7;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit6;
 				switch (parser->GetNextToken()) {
 				case GolFileParser::e_unknown0x30:
 					params.m_unk0x10 = 0;
@@ -173,9 +173,8 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 				break;
 			case GolFileParser::e_unknown0x38: {
 				undefined* ptr = &params.m_unk0x12;
-				params.m_unk0x00 &=
-					~(DuskwindBananaRelic0x24::c_flag0x08Bit12 | DuskwindBananaRelic0x24::c_flag0x08Bit9);
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13;
+				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit12 | GolMaterial::c_flag0x08Bit9);
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13;
 				for (j = 0; j < 2; j++) {
 					switch (parser->GetNextToken()) {
 					case GolFileParser::e_unknown0x39:
@@ -219,54 +218,51 @@ void GolMaterialLibrary::VTable0x24(GolRenderDevice* p_renderer, const LegoChar*
 				}
 			} break;
 			case GolFileParser::e_unknown0x44:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit11;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit10;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit11;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit10;
 				break;
 			case GolFileParser::e_unknown0x45:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit10;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit11;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit10;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit11;
 				break;
 			case GolFileParser::e_unknown0x47:
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit14;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit14;
 				break;
 			case GolFileParser::e_unknown0x48:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit16;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit15;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit16;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit15;
 				break;
 			case GolFileParser::e_unknown0x49:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit15;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit16;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit15;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit16;
 				break;
 			case GolFileParser::e_unknown0x4a:
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit17;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit17;
 				break;
 			case GolFileParser::e_unknown0x4b:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit20;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit19;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit20;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit19;
 				break;
 			case GolFileParser::e_unknown0x4c:
-				params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flag0x08Bit22;
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit21;
+				params.m_unk0x00 &= ~GolMaterial::c_flag0x08Bit22;
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit21;
 				break;
 			case GolFileParser::e_unknown0x46:
 			case GolFileParser::e_unknown0x4e:
 				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 &=
-					~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
+				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
 				break;
 			case GolFileParser::e_unknown0x4f:
 				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 = (params.m_unk0x00 & ~(DuskwindBananaRelic0x24::c_flag0x08Bit8 |
-														 DuskwindBananaRelic0x24::c_flag0x08Bit13)) |
-								   (DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12);
+				params.m_unk0x00 = (params.m_unk0x00 & ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13)) |
+								   (GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12);
 				break;
 			case GolFileParser::e_unknown0x4d:
 			case GolFileParser::e_unknown0x50:
 				params.m_unk0x13 = parser->ReadInteger();
-				params.m_unk0x00 &=
-					~(DuskwindBananaRelic0x24::c_flag0x08Bit8 | DuskwindBananaRelic0x24::c_flag0x08Bit13);
-				params.m_unk0x00 |= DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit12;
+				params.m_unk0x00 &= ~(GolMaterial::c_flag0x08Bit8 | GolMaterial::c_flag0x08Bit13);
+				params.m_unk0x00 |= GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit12;
 				break;
 			default:
 				parser->HandleUnexpectedToken(GolFileParser::e_syntaxerror);
@@ -292,9 +288,9 @@ void GolMaterialLibrary::FUN_10026970()
 
 	if (m_unk0x14 != NULL) {
 		for (i = 0; i < m_numItems; i++) {
-			DuskwindBananaRelic0x24* item = GetItem(i);
-			if (!(item->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit0)) {
-				DuskWindBananaRelicParams params;
+			GolMaterial* item = GetItem(i);
+			if (!(item->GetUnk0x08() & GolMaterial::c_flagBit0)) {
+				GolMaterialParams params;
 				m_unk0x14->VTable0x00(i, &params);
 				item->FUN_100257e0(m_renderer, params);
 				VTable0x18(i);
@@ -303,8 +299,8 @@ void GolMaterialLibrary::FUN_10026970()
 	}
 	else {
 		for (i = 0; i < m_numItems; i++) {
-			DuskwindBananaRelic0x24* item = GetItem(i);
-			if (!(item->GetUnk0x08() & DuskwindBananaRelic0x24::c_flagBit0)) {
+			GolMaterial* item = GetItem(i);
+			if (!(item->GetUnk0x08() & GolMaterial::c_flagBit0)) {
 				VTable0x18(i);
 			}
 		}

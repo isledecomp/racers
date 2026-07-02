@@ -98,7 +98,7 @@ void RaceTrailManager::Trail::Initialize(GolD3DRenderDevice* p_renderer, GolExpo
 }
 
 // FUNCTION: LEGORACERS 0x00492a90
-void RaceTrailManager::Trail::SetMaterial(GolD3DRenderDevice*, DuskwindBananaRelic0x24* p_material)
+void RaceTrailManager::Trail::SetMaterial(GolD3DRenderDevice*, GolMaterial* p_material)
 {
 	m_model->GetMaterialTable()->SetPosition(0, p_material);
 }
@@ -579,7 +579,7 @@ void RaceTrailManager::Initialize(GolD3DRenderDevice* p_renderer, GolExport* p_g
 	}
 
 	m_trailCount = p_trailCount;
-	DuskwindBananaRelic0x24* material = p_renderer->FindMaterialByName("streak");
+	GolMaterial* material = p_renderer->FindMaterialByName("streak");
 
 	LegoU32 i;
 	for (i = 0; i < m_trailCount; i++) {

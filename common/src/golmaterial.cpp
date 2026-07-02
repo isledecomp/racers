@@ -1,15 +1,14 @@
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 
 #include "golddune0x38.h"
 #include "render/golrenderdevice.h"
 
 DECOMP_SIZE_ASSERT(DuskWindName0x8, 0x8)
-DECOMP_SIZE_ASSERT(DuskwindBananaRelic0x24, 0x24)
-DECOMP_SIZE_ASSERT(DuskWindBananaRelicParams, 0x14)
+DECOMP_SIZE_ASSERT(GolMaterial, 0x24)
+DECOMP_SIZE_ASSERT(GolMaterialParams, 0x14)
 
 // FUNCTION: GOLDP 0x10025770
-DuskwindBananaRelic0x24::DuskwindBananaRelic0x24()
-	: m_unk0x0c(0xff, 0xff, 0xff, 0xff), m_unk0x10(0xff, 0xff, 0xff, 0xff)
+GolMaterial::GolMaterial() : m_unk0x0c(0xff, 0xff, 0xff, 0xff), m_unk0x10(0xff, 0xff, 0xff, 0xff)
 {
 	m_unk0x14 = NULL;
 	m_unk0x08 = 0x50a694;
@@ -21,13 +20,13 @@ DuskwindBananaRelic0x24::DuskwindBananaRelic0x24()
 }
 
 // FUNCTION: GOLDP 0x100257d0
-DuskwindBananaRelic0x24::~DuskwindBananaRelic0x24()
+GolMaterial::~GolMaterial()
 {
 }
 
 // FUNCTION: GOLDP 0x100257e0
 // FUNCTION: LEGORACERS 0x0040fda0
-void DuskwindBananaRelic0x24::FUN_100257e0(GolRenderDevice* p_renderer, const DuskWindBananaRelicParams& p_params)
+void GolMaterial::FUN_100257e0(GolRenderDevice* p_renderer, const GolMaterialParams& p_params)
 {
 	m_unk0x10 = p_params.m_unk0x08;
 	m_unk0x0c = p_params.m_unk0x0c;
@@ -64,7 +63,7 @@ void DuskwindBananaRelic0x24::FUN_100257e0(GolRenderDevice* p_renderer, const Du
 }
 
 // FUNCTION: LEGORACERS 0x0040fe50
-void DuskwindBananaRelic0x24::CopyParamsTo(DuskWindBananaRelicParams* p_params) const
+void GolMaterial::CopyParamsTo(GolMaterialParams* p_params) const
 {
 	p_params->m_unk0x00 = m_unk0x08;
 	p_params->m_unk0x04 = m_unk0x04;

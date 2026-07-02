@@ -1,7 +1,7 @@
 #include "render/golsoftwarerenderer.h"
 
-#include "duskwindbananarelic0x24.h"
 #include "golcpu.h"
+#include "golmaterial.h"
 #include "render/golrasterizers1.h"
 #include "render/golrasterizers2.h"
 #include "surface/purpledune0x7c.h"
@@ -187,11 +187,7 @@ static void SortCommandListBySortKey(GolSoftwareRenderer::Command0x14** p_head)
 }
 
 // FUNCTION: GOLDP 0x100411b0
-void GolSoftwareRenderer::FUN_100411b0(
-	RasterizerPipeline* p_buffer,
-	DuskwindBananaRelic0x24* p_material,
-	LegoU32 p_index
-)
+void GolSoftwareRenderer::FUN_100411b0(RasterizerPipeline* p_buffer, GolMaterial* p_material, LegoU32 p_index)
 {
 	LegoU32 flags = p_material->GetUnk0x08();
 	LegoU32 rasterizerMode;
@@ -203,7 +199,7 @@ void GolSoftwareRenderer::FUN_100411b0(
 		FUN_100330d0(this, &reinterpret_cast<PurpleDune0x7c*>(p_material->GetUnk0x04())->GetMipmaps()[p_index]);
 		rasterizerMode = c_flag0x2cBit8;
 
-		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit19) {
+		if (flags & GolMaterial::c_flag0x08Bit19) {
 			rasterizerMode = c_flag0x2cBit8 | c_flag0x2cBit9;
 		}
 
@@ -211,11 +207,11 @@ void GolSoftwareRenderer::FUN_100411b0(
 			rasterizerMode |= c_flag0x2cBit1;
 		}
 
-		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+		if (flags & GolMaterial::c_flag0x08Bit12) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
-		else if (!(flags & DuskwindBananaRelic0x24::c_flag0x08Bit4)) {
-			if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
+		else if (!(flags & GolMaterial::c_flag0x08Bit4)) {
+			if (flags & GolMaterial::c_flag0x08Bit8) {
 				if ((p_material->m_unk0x22 != 1) || (p_material->m_unk0x23 != 1)) {
 					rasterizerMode |= c_flag0x2cBit2;
 				}
@@ -224,7 +220,7 @@ void GolSoftwareRenderer::FUN_100411b0(
 				}
 			}
 			else {
-				if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit5) {
+				if (flags & GolMaterial::c_flag0x08Bit5) {
 					rasterizerMode |= c_flag0x2cBit3 | c_flag0x2cBit0;
 				}
 				else {
@@ -232,14 +228,14 @@ void GolSoftwareRenderer::FUN_100411b0(
 				}
 			}
 		}
-		else if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit8) {
+		else if (flags & GolMaterial::c_flag0x08Bit8) {
 			rasterizerMode |= c_flag0x2cBit2;
 		}
 	}
 	else {
 		FUN_100330d0(this, NULL);
 		// TODO: Can't get a `& 0xff` to appear
-		rasterizerMode = flags & DuskwindBananaRelic0x24::c_flag0x08Bit2 ? c_flag0x2cBit0 : 0;
+		rasterizerMode = flags & GolMaterial::c_flag0x08Bit2 ? c_flag0x2cBit0 : 0;
 	}
 
 	m_unk0x2c = rasterizerMode;
@@ -286,7 +282,7 @@ void GolSoftwareRenderer::FUN_100411b0(
 	}
 
 	if (m_unk0x34) {
-		if (flags & DuskwindBananaRelic0x24::c_flag0x08Bit21) {
+		if (flags & GolMaterial::c_flag0x08Bit21) {
 			if (m_unk0x34->m_paletteData) {
 				if ((rasterizerMode & c_flag0x2cBit1)) {
 					if (m_spanRasterizer == FUN_10034980) {

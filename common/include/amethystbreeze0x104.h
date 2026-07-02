@@ -6,7 +6,7 @@
 #include "render/gold3drenderdevice.h"
 #include "surface/color.h"
 
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GdbVertexArray0xc;
 class GolModelBase;
 class GolModelEntity;
@@ -104,7 +104,7 @@ private:
 	const GolRenderDevice::MaterialColor* m_materialColor; // 0x008
 	ColorRGBA m_materialColorValue;                        // 0x00c
 	const GolRenderDevice::Light* m_lights[7];             // 0x010
-	DuskwindBananaRelic0x24* m_activeMaterial;             // 0x02c
+	GolMaterial* m_activeMaterial;                         // 0x02c
 	ColorRGBA m_activeMaterialColor;                       // 0x030
 	GolModelBase* m_model;                                 // 0x034
 	GdbVertexArray0xc* m_vertexArray;                      // 0x038

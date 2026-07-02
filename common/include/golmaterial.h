@@ -27,9 +27,9 @@ struct DuskwindBananaRelicColor {
 };
 
 // SIZE 0x14
-struct DuskWindBananaRelicParams {
-	DuskWindBananaRelicParams() {}
-	DuskWindBananaRelicParams(LegoU8 p_fullIntensity);
+struct GolMaterialParams {
+	GolMaterialParams() {}
+	GolMaterialParams(LegoU8 p_fullIntensity);
 
 	LegoU32 m_unk0x00;
 	GoldDune0x38* m_unk0x04;
@@ -48,7 +48,7 @@ struct DuskWindName0x8 {
 
 // VTABLE: GOLDP 0x10057030
 // SIZE 0x24
-class DuskwindBananaRelic0x24 {
+class GolMaterial {
 public:
 	enum {
 		c_flagBit0 = 1 << 0,
@@ -85,8 +85,8 @@ public:
 		c_flag0x08Bit22 = 1 << 22,
 	};
 
-	DuskwindBananaRelic0x24();
-	virtual ~DuskwindBananaRelic0x24(); // vtable+0x00
+	GolMaterial();
+	virtual ~GolMaterial(); // vtable+0x00
 
 	GoldDune0x38* GetUnk0x04() const { return m_unk0x04; }
 	LegoU32 GetUnk0x08() const { return m_unk0x08; }
@@ -103,10 +103,10 @@ public:
 	void EnableFlag0x08Bit18() { m_unk0x08 |= c_flag0x08Bit18; }
 
 	// SYNTHETIC: GOLDP 0x100257b0
-	// DuskwindBananaRelic0x24::`scalar deleting destructor'
+	// GolMaterial::`scalar deleting destructor'
 
-	void CopyParamsTo(DuskWindBananaRelicParams* p_params) const;
-	void FUN_100257e0(GolRenderDevice*, const DuskWindBananaRelicParams&);
+	void CopyParamsTo(GolMaterialParams* p_params) const;
+	void FUN_100257e0(GolRenderDevice*, const GolMaterialParams&);
 
 	friend class GolMaterialLibrary;
 	friend class GolSoftwareRenderer;
@@ -124,7 +124,7 @@ protected:
 	undefined m_unk0x23;
 };
 
-inline DuskWindBananaRelicParams::DuskWindBananaRelicParams(LegoU8 p_fullIntensity)
+inline GolMaterialParams::GolMaterialParams(LegoU8 p_fullIntensity)
 {
 	m_unk0x0c.m_unk0x0 = p_fullIntensity;
 	m_unk0x0c.m_unk0x1 = p_fullIntensity;
@@ -134,11 +134,9 @@ inline DuskWindBananaRelicParams::DuskWindBananaRelicParams(LegoU8 p_fullIntensi
 	m_unk0x08.m_unk0x1 = p_fullIntensity;
 	m_unk0x08.m_unk0x2 = p_fullIntensity;
 	m_unk0x08.m_unk0x3 = p_fullIntensity;
-	m_unk0x00 = DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit4 |
-				DuskwindBananaRelic0x24::c_flag0x08Bit7 | DuskwindBananaRelic0x24::c_flag0x08Bit9 |
-				DuskwindBananaRelic0x24::c_flag0x08Bit10 | DuskwindBananaRelic0x24::c_flag0x08Bit13 |
-				DuskwindBananaRelic0x24::c_flag0x08Bit15 | DuskwindBananaRelic0x24::c_flag0x08Bit20 |
-				DuskwindBananaRelic0x24::c_flag0x08Bit22;
+	m_unk0x00 = GolMaterial::c_flag0x08Bit2 | GolMaterial::c_flag0x08Bit4 | GolMaterial::c_flag0x08Bit7 |
+				GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit10 | GolMaterial::c_flag0x08Bit13 |
+				GolMaterial::c_flag0x08Bit15 | GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;
 	m_unk0x04 = NULL;
 	m_unk0x10 = 2;
 	m_unk0x11 = 0;

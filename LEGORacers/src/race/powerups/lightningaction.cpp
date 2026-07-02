@@ -154,7 +154,7 @@ void RacePowerupManager::LightningAction::Initialize(GolExport* p_export, RacePo
 	m_beam.SetColors(&g_lightningBaseColor, &g_lightningSecondaryColor, &g_lightningTertiaryColor);
 
 	m_flashBillboard = static_cast<GolBillboard*>(p_export->VTable0x30());
-	DuskwindBananaRelic0x24* material = renderer->FindMaterialByName("ltflash");
+	GolMaterial* material = renderer->FindMaterialByName("ltflash");
 	m_flashBillboard->VTable0x4c(material, g_lightningFlashWidth, g_lightningFlashHeight, g_lightningFlashDrawDistance);
 
 	m_state = 1;

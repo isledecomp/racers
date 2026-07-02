@@ -6,7 +6,7 @@
 #include "types.h"
 
 class GolFileParser;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GolRenderDevice;
 
 // SIZE 0x0c
@@ -23,10 +23,7 @@ public:
 
 	GolRenderDevice* GetRenderer() const { return m_renderer; }
 	LegoU32 GetCount() const { return m_count; }
-	DuskwindBananaRelic0x24* GetMaterial(LegoU32 p_index) const
-	{
-		return static_cast<DuskwindBananaRelic0x24*>(m_entries[p_index]);
-	}
+	GolMaterial* GetMaterial(LegoU32 p_index) const { return static_cast<GolMaterial*>(m_entries[p_index]); }
 };
 
 #endif // GOLMODELMATERIALTABLE_H

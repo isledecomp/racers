@@ -3565,7 +3565,7 @@ void HazardManager::LauncherHazard::Load(Context* p_context, GolFileParser* p_pa
 	m_unk0x11c = p_context->GetTrailManager();
 
 	m_billboard = static_cast<GolBillboard*>(m_golExport->VTable0x30());
-	DuskwindBananaRelic0x24* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
+	GolMaterial* material = p_context->GetRenderer()->FindMaterialByName("cannonb");
 	m_billboard->VTable0x4c(material, 5.0f, 5.0f, g_launcherMaxDistanceSquared);
 
 	p_parser->ReadLeftCurly();

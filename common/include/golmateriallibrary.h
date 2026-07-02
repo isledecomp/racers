@@ -1,7 +1,7 @@
 #ifndef GOLMATERIALLIBRARY_H
 #define GOLMATERIALLIBRARY_H
 
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "golnametable.h"
 #include "goltxtparser.h"
 
@@ -10,7 +10,7 @@ class RaceState;
 
 class DuskwindBananaRelicProvider0x4 {
 public:
-	virtual void VTable0x00(LegoU32 p_index, DuskWindBananaRelicParams* p_params) = 0;
+	virtual void VTable0x00(LegoU32 p_index, GolMaterialParams* p_params) = 0;
 };
 
 // VTABLE: GOLDP 0x10057134
@@ -45,8 +45,8 @@ public:
 		GolRenderDevice* p_renderer,
 		const LegoChar* p_fileName,
 		LegoBool32 p_binary
-	);                                                                   // vtable+0x24
-	virtual DuskwindBananaRelic0x24* GetItem(LegoU32 p_index) const = 0; // vtable+0x28
+	);                                                       // vtable+0x24
+	virtual GolMaterial* GetItem(LegoU32 p_index) const = 0; // vtable+0x28
 
 	// SYNTHETIC: GOLDP 0x100261d0
 	// GolMaterialLibrary::`scalar deleting destructor'

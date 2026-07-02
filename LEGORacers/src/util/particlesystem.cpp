@@ -3,10 +3,10 @@
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
 #include "core/goldpexport.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "goltransformbase.h"
 #include "mabmaterialanimationitem0x18.h"
@@ -144,7 +144,7 @@ void ParticleSystem::ConfigureMaterialAnimation(
 
 // FUNCTION: LEGORACERS 0x00412610
 void ParticleSystem::ConfigureMaterial(
-	DuskwindBananaRelic0x24* p_material,
+	GolMaterial* p_material,
 	LegoFloat p_startSizeUp,
 	LegoFloat p_startSizeForward,
 	LegoFloat p_sizeGrowthUp,
@@ -396,7 +396,7 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 
 					Particle* particle = m_activeList;
 					while (particle) {
-						DuskwindBananaRelic0x24* material = particle->m_material;
+						GolMaterial* material = particle->m_material;
 						Particle* next = particle->m_next;
 						if (material) {
 							BeginMaterialGroup(material);
@@ -432,7 +432,7 @@ void ParticleSystem::Draw(GolD3DRenderDevice* p_renderer)
 }
 
 // FUNCTION: LEGORACERS 0x00412c60
-void ParticleSystem::BeginMaterialGroup(DuskwindBananaRelic0x24* p_material)
+void ParticleSystem::BeginMaterialGroup(GolMaterial* p_material)
 {
 	if (m_batchTriangleCount) {
 		FlushBatch();

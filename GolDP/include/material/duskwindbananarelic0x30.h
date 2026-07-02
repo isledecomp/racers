@@ -2,7 +2,7 @@
 #define DUSKWINDBANANARELIC0x30_H
 
 #include "compat.h"
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "render/golsoftwarerenderer.h"
 
 #include <d3d.h>
@@ -12,7 +12,7 @@ class GolD3DRenderDevice;
 
 // VTABLE: GOLDP 0x100563c4
 // SIZE 0x30
-class DuskwindBananaRelic0x30 : public DuskwindBananaRelic0x24 {
+class DuskwindBananaRelic0x30 : public GolMaterial {
 public:
 	DuskwindBananaRelic0x30();
 	~DuskwindBananaRelic0x30() override; // vtable+0x00

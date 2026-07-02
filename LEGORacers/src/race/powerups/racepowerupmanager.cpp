@@ -358,7 +358,7 @@ void RacePowerupManager::BrickDebris::Initialize(RacePowerupManager* p_manager, 
 // FUNCTION: LEGORACERS 0x004517c0
 void RacePowerupManager::BrickDebris::Spawn(const GolVec3* p_position, const GolVec3* p_direction, Racer* p_racer)
 {
-	DuskwindBananaRelic0x24* material;
+	GolMaterial* material;
 	material = NULL;
 	LegoS32 entryIndex;
 
@@ -524,7 +524,7 @@ void RacePowerupManager::Reset()
 	m_whiteBrickModel = 0;
 	m_whiteBrickBlendModel = 0;
 
-	DuskwindBananaRelic0x24** entry = m_brickMaterials;
+	GolMaterial** entry = m_brickMaterials;
 	LegoS32 count;
 	for (count = c_brickMaterialCount; count != 0; count--) {
 		*entry = NULL;
@@ -866,8 +866,8 @@ void RacePowerupManager::ParseColorBricks(GolFileParser* p_parser, LegoBool32 p_
 			position.m_y = -position.m_y;
 		}
 
-		DuskwindBananaRelic0x24* material0 = GetBrickMaterial(&state);
-		DuskwindBananaRelic0x24* material1 = GetTrailMaterial(&state);
+		GolMaterial* material0 = GetBrickMaterial(&state);
+		GolMaterial* material1 = GetTrailMaterial(&state);
 		m_colorBricks[i].Initialize(this, m_soundSource, &position, m_brickModel, m_brickBlendModel);
 		m_colorBricks[i].SetMaterials(material0, material1);
 		m_colorBricks[i].SetColor(state);
@@ -2606,7 +2606,7 @@ LegoU32 RacePowerupManager::ReleaseEffectEntity(GolAnimatedEntity* p_entity)
 }
 
 // FUNCTION: LEGORACERS 0x0045ba90
-DuskwindBananaRelic0x24* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickColor)
+GolMaterial* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickColor)
 {
 	switch (*p_brickColor) {
 	case c_brickColorRed:
@@ -2623,7 +2623,7 @@ DuskwindBananaRelic0x24* RacePowerupManager::GetBrickMaterial(LegoU32* p_brickCo
 }
 
 // FUNCTION: LEGORACERS 0x0045bae0
-DuskwindBananaRelic0x24* RacePowerupManager::GetTrailMaterial(LegoU32* p_brickColor)
+GolMaterial* RacePowerupManager::GetTrailMaterial(LegoU32* p_brickColor)
 {
 	switch (*p_brickColor) {
 	case c_brickColorRed:

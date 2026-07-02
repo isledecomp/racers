@@ -7,7 +7,7 @@
 #include "types.h"
 
 class GolD3DRenderDevice;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class GolExport;
 class GolWorldDatabase;
 
@@ -47,7 +47,7 @@ public:
 	LegoS32 GetTransparentMaterialCount() const { return m_transparentMaterialCount; }
 	LegoS32 GetMaterialCount() const { return m_materialCount; }
 	const MaterialUsage* GetMaterialUsage() const { return m_materialUsage; }
-	DuskwindBananaRelic0x24* GetMaterial(LegoU32 p_index) const
+	GolMaterial* GetMaterial(LegoU32 p_index) const
 	{
 		return m_materials != NULL ? m_materials->GetItem(p_index) : NULL;
 	}

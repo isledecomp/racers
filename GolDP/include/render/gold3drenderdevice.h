@@ -143,7 +143,7 @@ public:
 		const TexturedVertex* p_vertex0,
 		const TexturedVertex* p_vertex1,
 		const TexturedVertex* p_vertex2,
-		DuskwindBananaRelic0x24* p_material,
+		GolMaterial* p_material,
 		undefined4 p_flags
 	) override;                                                             // vtable+0x84
 	void VTable0x88(GolModelEntity*, Field0xc8524*, undefined4) override;   // vtable+0x88
@@ -209,8 +209,8 @@ private:
 
 	void FUN_100082e0();
 	void FUN_10009fd0(D3DTLVERTEX* p_vertices, LegoU32 p_count);
-	void FUN_1000a2c0(DuskwindBananaRelic0x24*);
-	void FUN_1000a950(DuskwindBananaRelic0x24*);
+	void FUN_1000a2c0(GolMaterial*);
+	void FUN_1000a950(GolMaterial*);
 	void FUN_1000ac00(GoldDune0x38*);
 	void FUN_1000acf0(LegoU32 p_index);
 	void FUN_1000add0(GolWorldEntity* p_model, GolModel* p_modelData);
@@ -352,7 +352,7 @@ private:
 	BronzeFalconDrawFunction m_drawTriangleFn0;                                    // 0xc8760
 	BronzeFalconDrawFunction m_drawTriangleFn1;                                    // 0xc8764
 	BronzeFalconDrawFunction m_drawTriangleFn2;                                    // 0xc8768
-	void (GolD3DRenderDevice::*m_unk0xc876c)(DuskwindBananaRelic0x24*);            // 0xc876c
+	void (GolD3DRenderDevice::*m_unk0xc876c)(GolMaterial*);                        // 0xc876c
 };
 
 #endif // GOLD3DRENDERDEVICE_H

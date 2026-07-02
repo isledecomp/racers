@@ -2,9 +2,9 @@
 #include "audio/spatialsoundinstance.h"
 #include "camera/golcamera.h"
 #include "cmbmodelpart0x34.h"
-#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "material/goltexturelist.h"
 #include "menu/runtime/cutsceneparticle.h"
@@ -530,19 +530,18 @@ void RaceState::CreateRacer(
 	m_roster.m_racers[p_racerIndex].Initialize(p_context, &initParams, &racerParams, this, p_racerIndex);
 
 	PurpleDune0x7c* shadowTexture = m_setup.m_textureList->GetItem(p_racerIndex);
-	DuskwindBananaRelic0x24* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
+	GolMaterial* shadowMaterial = m_setup.m_materialLibrary->GetItem(p_racerIndex);
 	shadowTexture->SetNameFromBuffer(chassisItem->m_shadowName);
 	shadowTexture->SetTextureFlags(GoldDune0x38::c_unk0x36Bit2 | GoldDune0x38::c_unk0x36Bit3);
 	shadowMaterial->SetName(chassisItem->m_shadowName);
 
-	DuskWindBananaRelicParams shadowMaterialParams;
+	GolMaterialParams shadowMaterialParams;
 	::memset(&shadowMaterialParams, 0, sizeof(shadowMaterialParams));
-	shadowMaterialParams.m_unk0x00 =
-		DuskwindBananaRelic0x24::c_flag0x08Bit2 | DuskwindBananaRelic0x24::c_flag0x08Bit3 |
-		DuskwindBananaRelic0x24::c_flag0x08Bit5 | DuskwindBananaRelic0x24::c_flag0x08Bit7 |
-		DuskwindBananaRelic0x24::c_flag0x08Bit9 | DuskwindBananaRelic0x24::c_flag0x08Bit10 |
-		DuskwindBananaRelic0x24::c_flag0x08Bit13 | DuskwindBananaRelic0x24::c_flag0x08Bit15 |
-		DuskwindBananaRelic0x24::c_flag0x08Bit20 | DuskwindBananaRelic0x24::c_flag0x08Bit22;
+	shadowMaterialParams.m_unk0x00 = GolMaterial::c_flag0x08Bit2 | GolMaterial::c_flag0x08Bit3 |
+									 GolMaterial::c_flag0x08Bit5 | GolMaterial::c_flag0x08Bit7 |
+									 GolMaterial::c_flag0x08Bit9 | GolMaterial::c_flag0x08Bit10 |
+									 GolMaterial::c_flag0x08Bit13 | GolMaterial::c_flag0x08Bit15 |
+									 GolMaterial::c_flag0x08Bit20 | GolMaterial::c_flag0x08Bit22;
 	shadowMaterialParams.m_unk0x04 = shadowTexture;
 	shadowMaterial->FUN_100257e0(p_context->m_renderer, shadowMaterialParams);
 

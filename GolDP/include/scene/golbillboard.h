@@ -9,7 +9,7 @@
 
 class GolD3DRenderDevice;
 class GolRenderDevice;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 
 typedef void(__cdecl* GolBillboardInitializerFunction)();
 extern GolBillboardInitializerFunction g_unk0x1005c010;
@@ -48,7 +48,7 @@ public:
 	void VTable0x1c(GolRenderDevice&) override;                                     // vtable+0x1c
 	LegoBool32 VTable0x20() override;                                               // vtable+0x20
 	virtual VTable0x4cReturn VTable0x4c(
-		DuskwindBananaRelic0x24* p_position,
+		GolMaterial* p_position,
 		LegoFloat p_width,
 		LegoFloat p_height,
 		LegoFloat p_maxDistanceSquared
@@ -66,7 +66,7 @@ public:
 		LegoFloat p_maxDistanceSquared
 	);
 	void FUN_10029fa0(const GolVec3& p_arg1, LegoBool32* p_result);
-	DuskwindBananaRelic0x24* FUN_1002a020();
+	GolMaterial* FUN_1002a020();
 	MaterialTable0x0c* GetPositionContainer() const { return m_positionContainer; }
 	LegoU16 GetFlags() const { return m_flags; }
 	void SetWidth(LegoFloat p_width) { m_width = p_width; }
@@ -80,7 +80,7 @@ private:
 	static LegoU32 g_billboardColors[4];
 	static LegoU8 g_billboardTriangleIndices[8];
 
-	DuskwindBananaRelic0x24* m_position;    // 0x28
+	GolMaterial* m_position;                // 0x28
 	MaterialTable0x0c* m_positionContainer; // 0x2c
 	GolVec3 m_unk0x30;                      // 0x30
 	LegoFloat m_width;                      // 0x3c

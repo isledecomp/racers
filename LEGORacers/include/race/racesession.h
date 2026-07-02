@@ -64,7 +64,7 @@ class GolCollidableEntity;
 class GdbVertexArray0xc;
 class AwakeKite0x20;
 class UtopianPan0xa4;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class MusicGroup;
 class MusicInstance;
 class SoundGroup;

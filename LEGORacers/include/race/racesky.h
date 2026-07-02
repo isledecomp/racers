@@ -17,7 +17,7 @@ class GolExport;
 class MabMaterialAnimation0x14;
 class MabMaterialAnimationItem0x18;
 class MaterialTable0x0c;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class RaceSession;
 
 // Sky/backdrop state for a race (sky model + material animation swaps

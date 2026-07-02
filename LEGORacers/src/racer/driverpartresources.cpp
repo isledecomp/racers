@@ -1,11 +1,11 @@
 #include "racer/driverpartresources.h"
 
 #include "core/gol.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golerror.h"
 #include "golhashtable.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "golmodelbase.h"
 #include "golmodelmaterialtable.h"
@@ -200,15 +200,13 @@ void DriverPartResources::NormalizeHeadGroupOrder()
 		LegoS32 materialCount = materialTable->m_count;
 		if (materialCount > 1) {
 			do {
-				DuskwindBananaRelic0x24* material =
-					static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(materialIndex));
+				GolMaterial* material = static_cast<GolMaterial*>(materialTable->GetPosition(materialIndex));
 				DuskWindName0x8 materialName;
 				materialName = material->GetNameRecord();
 
 				if (material != NULL) {
 					if (::strncmp(materialName.m_unk0x0, "face", sizeof(GolName)) == 0) {
-						DuskwindBananaRelic0x24* firstMaterial =
-							static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(0));
+						GolMaterial* firstMaterial = static_cast<GolMaterial*>(materialTable->GetPosition(0));
 						materialTable->SetPosition(0, material);
 						materialTable->SetPosition(materialIndex, firstMaterial);
 						ReplaceModelGroupMaterialIndex(resourceModel, materialIndex, 0xffff);
@@ -368,7 +366,7 @@ CmbModelPart0x34* DriverPartResources::GetBodyModelPart(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00498640
-DuskwindBananaRelic0x24* DriverPartResources::FindFaceMaterial(LegoS32 p_index)
+GolMaterial* DriverPartResources::FindFaceMaterial(LegoS32 p_index)
 {
 	GolName unusedName;
 	GolName materialName;
@@ -377,7 +375,7 @@ DuskwindBananaRelic0x24* DriverPartResources::FindFaceMaterial(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x00498680
-DuskwindBananaRelic0x24* DriverPartResources::FindTorsoMaterial(LegoS32 p_index)
+GolMaterial* DriverPartResources::FindTorsoMaterial(LegoS32 p_index)
 {
 	GolName unusedName;
 	GolName materialName;
@@ -386,7 +384,7 @@ DuskwindBananaRelic0x24* DriverPartResources::FindTorsoMaterial(LegoS32 p_index)
 }
 
 // FUNCTION: LEGORACERS 0x004986c0
-DuskwindBananaRelic0x24* DriverPartResources::FindLegMaterial(LegoS32 p_index)
+GolMaterial* DriverPartResources::FindLegMaterial(LegoS32 p_index)
 {
 	GolName unusedName;
 	GolName materialName;

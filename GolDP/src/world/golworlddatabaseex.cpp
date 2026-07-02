@@ -260,7 +260,7 @@ undefined4* GolWorldDatabaseEx::VTable0x0c()
 				GOL_FATALERROR_MESSAGE("Sprite is missing material name");
 			}
 
-			DuskwindBananaRelic0x24* material = m_unk0x04->FindMaterialByName(sprite->m_unk0x00);
+			GolMaterial* material = m_unk0x04->FindMaterialByName(sprite->m_unk0x00);
 			if (material == NULL) {
 				LegoChar message[64];
 				::memset(message, 0, sizeof(message));

@@ -66,13 +66,13 @@ GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 }
 
 // FUNCTION: LEGORACERS 0x00413200
-DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
+GolMaterial* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 {
 	GolMaterialLibrary* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			DuskwindBananaRelic0x24* value = static_cast<DuskwindBananaRelic0x24*>(node->GetName(p_name));
+			GolMaterial* value = static_cast<GolMaterial*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}
@@ -95,12 +95,8 @@ LegoU32 GolBillboard::FUN_10029e90(
 {
 	m_positionContainer = p_container;
 	m_positionIndex = static_cast<LegoU16>(p_index);
-	LegoU32 result = VTable0x4c(
-		static_cast<DuskwindBananaRelic0x24*>(p_container->m_entries[p_index]),
-		p_width,
-		p_height,
-		p_maxDistanceSquared
-	);
+	LegoU32 result =
+		VTable0x4c(static_cast<GolMaterial*>(p_container->m_entries[p_index]), p_width, p_height, p_maxDistanceSquared);
 	m_flags |= c_flagBit2;
 
 	return result;

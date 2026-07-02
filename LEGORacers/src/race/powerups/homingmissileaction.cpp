@@ -439,7 +439,7 @@ void RacePowerupManager::HomingMissileAction::AdvanceState()
 		m_trail = trailManager->AcquireTrail(&params);
 		if (m_trail != NULL) {
 			m_trail->SetColor(&g_missileTrailColor);
-			DuskwindBananaRelic0x24* material = m_owner0x01c->m_renderer->FindMaterialByName("mslstrk");
+			GolMaterial* material = m_owner0x01c->m_renderer->FindMaterialByName("mslstrk");
 			if (material != NULL) {
 				m_trail->SetMaterial(m_owner0x01c->m_renderer, material);
 			}

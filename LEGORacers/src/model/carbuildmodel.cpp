@@ -2,11 +2,11 @@
 
 #include "audio/directsoundconversions.h"
 #include "core/gol.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golanimatedentity.h"
 #include "golddune0x38.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "golmodelbase.h"
 #include "material/goltexturelist.h"
@@ -2922,20 +2922,19 @@ void CarBuildModel::ExportModel(GolModelBase* p_model, GolMaterialLibrary* p_mat
 	GolVec2 texCoord;
 	GolVec3 position;
 	GolVec3 normal;
-	DuskWindBananaRelicParams params;
+	GolMaterialParams params;
 
 	LegoS32 outputMaterialIndex = 0;
 	LegoS32 textureIndex = 0;
 	for (i = 0; i < materialCount; i++) {
 		if (materialUsage[i].m_used) {
-			DuskwindBananaRelic0x24* sourceMaterial =
-				static_cast<DuskwindBananaRelic0x24*>(materialTable->GetPosition(i));
+			GolMaterial* sourceMaterial = static_cast<GolMaterial*>(materialTable->GetPosition(i));
 
 			sourceMaterial->CopyParamsTo(&params);
-			params.m_unk0x00 &= ~DuskwindBananaRelic0x24::c_flagBit0;
+			params.m_unk0x00 &= ~GolMaterial::c_flagBit0;
 
-			DuskwindBananaRelic0x24* outputMaterial = p_materials->GetItem(outputMaterialIndex);
-			if (sourceMaterial->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+			GolMaterial* outputMaterial = p_materials->GetItem(outputMaterialIndex);
+			if (sourceMaterial->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 				PurpleDune0x7c* outputTexture = p_textures->GetItem(textureIndex);
 				PurpleDune0x7c* sourceTexture = static_cast<PurpleDune0x7c*>(sourceMaterial->GetUnk0x04());
 

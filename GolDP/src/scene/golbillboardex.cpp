@@ -1,6 +1,6 @@
 #include "scene/golbillboardex.h"
 
-#include "duskwindbananarelic0x24.h"
+#include "golmaterial.h"
 #include "render/gold3drenderdevice.h"
 
 // GLOBAL: GOLDP 0x10063570
@@ -112,7 +112,7 @@ LegoBool32 GolBillboard::FUN_10014e50(const GolVec3* p_arg1, const GolVec3* p_ar
 
 // FUNCTION: GOLDP 0x10014fd0
 void GolBillboardEx::VTable0x4c(
-	DuskwindBananaRelic0x24* p_position,
+	GolMaterial* p_position,
 	LegoFloat p_width,
 	LegoFloat p_height,
 	LegoFloat p_maxDistanceSquared
@@ -124,7 +124,7 @@ void GolBillboardEx::VTable0x4c(
 // FUNCTION: GOLDP 0x10014ff0
 void GolBillboard::FUN_10014ff0(GolD3DRenderDevice* p_renderer)
 {
-	DuskwindBananaRelic0x24* material = FUN_1002a020();
+	GolMaterial* material = FUN_1002a020();
 	(p_renderer->*p_renderer->m_unk0xc876c)(material);
 	p_renderer->FUN_1000ac00(material->GetUnk0x04());
 

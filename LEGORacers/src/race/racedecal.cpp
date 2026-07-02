@@ -1,9 +1,9 @@
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golboundingshape.h"
 #include "golcollidableentity.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "race/racesession.h"
 

@@ -1,10 +1,10 @@
 #include "core/gol.h"
 #include "decomp.h"
-#include "duskwindbananarelic0x24.h"
 #include "gdbmodelindexarray0xc.h"
 #include "gdbvertexarray0xc.h"
 #include "golcollidableentity.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "material/materialtable0x0c.h"
 #include "race/racesession.h"
@@ -143,8 +143,8 @@ void RaceDecalManager::Trail::SetMaterialTable(MaterialTable0x0c* p_materialTabl
 		m_slots[i].m_entry.m_entity.SetPrimaryMaterialTable(p_materialTable);
 	}
 
-	DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(p_materialTable->GetPosition(0));
-	if (material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit12) {
+	GolMaterial* material = static_cast<GolMaterial*>(p_materialTable->GetPosition(0));
+	if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit12) {
 		m_alphaScale = static_cast<LegoFloat>(material->GetDestBlend()) * g_inv255;
 	}
 	else {

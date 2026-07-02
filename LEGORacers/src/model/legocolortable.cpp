@@ -1,9 +1,9 @@
 #include "model/legocolortable.h"
 
 #include "core/gol.h"
-#include "duskwindbananarelic0x24.h"
 #include "golbinparser.h"
 #include "golerror.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "goltxtparser.h"
 #include "model/legopiecelibrary.h"
@@ -94,7 +94,7 @@ void LegoColorTable::RebuildColorMaterialLookup()
 	for (LegoS32 i = 0; i < m_colorRecordCount; i++) {
 		m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = -1;
 		for (LegoS32 j = 0; j < materialCount; j++) {
-			DuskwindBananaRelic0x24* material = static_cast<DuskwindBananaRelic0x24*>(m_materialTable.m_entries[j]);
+			GolMaterial* material = static_cast<GolMaterial*>(m_materialTable.m_entries[j]);
 			DuskWindName0x8 materialName = material->GetNameRecord();
 			if (::strncmp(materialName.m_unk0x0, m_colorRecords[i].m_name, sizeof(GolName)) == 0) {
 				m_colorMaterialIndices[m_colorRecords[i].m_materialIndex] = j;
@@ -233,9 +233,8 @@ void LegoColorTable::MarkMaterialUsed(LegoS32 p_materialIndex)
 		m_materialUsage[p_materialIndex].m_order = static_cast<LegoU16>(m_usedMaterialCount);
 		m_usedMaterialCount++;
 
-		DuskwindBananaRelic0x24* material =
-			static_cast<DuskwindBananaRelic0x24*>(m_materialTable.m_entries[p_materialIndex]);
-		if (material->GetUnk0x08() & DuskwindBananaRelic0x24::c_flag0x08Bit3) {
+		GolMaterial* material = static_cast<GolMaterial*>(m_materialTable.m_entries[p_materialIndex]);
+		if (material->GetUnk0x08() & GolMaterial::c_flag0x08Bit3) {
 			m_transparentMaterialCount++;
 		}
 	}

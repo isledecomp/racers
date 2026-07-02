@@ -424,13 +424,13 @@ GoldDune0x38* GolRenderDevice::FindTextureByName(const LegoChar* p_name)
 }
 
 // FUNCTION: GOLDP 0x10028c20
-DuskwindBananaRelic0x24* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
+GolMaterial* GolRenderDevice::FindMaterialByName(const LegoChar* p_name)
 {
 	GolMaterialLibrary* node = m_materialLists;
 
 	while (node != NULL) {
 		if (node->GetNameEntries() != NULL) {
-			DuskwindBananaRelic0x24* value = static_cast<DuskwindBananaRelic0x24*>(node->GetName(p_name));
+			GolMaterial* value = static_cast<GolMaterial*>(node->GetName(p_name));
 			if (value != NULL) {
 				return value;
 			}

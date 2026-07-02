@@ -3,8 +3,8 @@
 #include "audio/musicgroup.h"
 #include "audio/musicinstance.h"
 #include "core/gol.h"
-#include "duskwindbananarelic0x24.h"
 #include "golhashtable.h"
+#include "golmaterial.h"
 #include "golmodelbase.h"
 #include "golstring.h"
 #include "mabmaterialanimation0x14.h"
@@ -302,7 +302,7 @@ void AwardCinematicScreen::CreateWidgets()
 						LegoS32 endFrame = firstFrame + animationItem->GetFrameCount();
 
 						for (LegoS32 frameIndex = firstFrame; frameIndex < endFrame; frameIndex++) {
-							DuskwindBananaRelic0x24* material = animationItems[frameIndex].GetMaterial();
+							GolMaterial* material = animationItems[frameIndex].GetMaterial();
 							GolName expressionName;
 							::memcpy(expressionName, material->GetName(), sizeof(GolName));
 							LegoS32 expressionIndex = 0;

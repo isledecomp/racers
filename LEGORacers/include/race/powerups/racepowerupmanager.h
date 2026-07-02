@@ -29,7 +29,7 @@
 #include "util/legoeventqueue.h"
 
 class CutsceneAnimation;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class TargetPointList;
 class GolCollidableEntity;
 class GolD3DRenderDevice;
@@ -162,18 +162,18 @@ public:
 
 		// SIZE 0x74
 		struct SetupParams {
-			GolExport* m_golExport;              // 0x00
-			GolRenderDevice* m_renderer;         // 0x04
-			DuskwindBananaRelic0x24* m_material; // 0x08
-			LegoU32 m_sectionCount;              // 0x0c
-			LegoU32 m_segmentCount;              // 0x10
-			LegoU32 m_ringQuadCount;             // 0x14
-			GolVec3 m_ringVertices[3];           // 0x18
-			undefined4 m_unk0x3c[6];             // 0x3c
-			LegoFloat m_ringTextureXs[5];        // 0x54
-			LegoU32 m_textureColumnCount;        // 0x68
-			LegoFloat m_modelDistance;           // 0x6c
-			undefined4 m_faceCamera;             // 0x70
+			GolExport* m_golExport;       // 0x00
+			GolRenderDevice* m_renderer;  // 0x04
+			GolMaterial* m_material;      // 0x08
+			LegoU32 m_sectionCount;       // 0x0c
+			LegoU32 m_segmentCount;       // 0x10
+			LegoU32 m_ringQuadCount;      // 0x14
+			GolVec3 m_ringVertices[3];    // 0x18
+			undefined4 m_unk0x3c[6];      // 0x3c
+			LegoFloat m_ringTextureXs[5]; // 0x54
+			LegoU32 m_textureColumnCount; // 0x68
+			LegoFloat m_modelDistance;    // 0x6c
+			undefined4 m_faceCamera;      // 0x70
 		};
 
 		BeamMesh();
@@ -218,7 +218,7 @@ public:
 		GdbVertexArray0xc* m_vertices;             // 0x008
 		GdbModelIndexArray0xc::Indices* m_indices; // 0x00c
 		GolSceneNode* m_sceneNode;                 // 0x010
-		DuskwindBananaRelic0x24* m_material;       // 0x014
+		GolMaterial* m_material;                   // 0x014
 		BeamEntity m_entity;                       // 0x018
 		LegoS32 m_windowBaseVertex;                // 0x0b0
 		LegoS32 m_ringVertexIndex;                 // 0x0b4
@@ -298,14 +298,14 @@ public:
 	public:
 		// SIZE 0x20
 		struct SetupParams {
-			GolExport* m_golExport;              // 0x00
-			LegoFloat m_attachHeight;            // 0x04
-			LegoFloat m_ropeThickness;           // 0x08
-			LegoFloat m_waveAmplitude;           // 0x0c
-			ColorRGBA m_baseColor;               // 0x10
-			ColorRGBA m_secondaryColor;          // 0x14
-			ColorRGBA m_tertiaryColor;           // 0x18
-			DuskwindBananaRelic0x24* m_material; // 0x1c
+			GolExport* m_golExport;     // 0x00
+			LegoFloat m_attachHeight;   // 0x04
+			LegoFloat m_ropeThickness;  // 0x08
+			LegoFloat m_waveAmplitude;  // 0x0c
+			ColorRGBA m_baseColor;      // 0x10
+			ColorRGBA m_secondaryColor; // 0x14
+			ColorRGBA m_tertiaryColor;  // 0x18
+			GolMaterial* m_material;    // 0x1c
 		};
 
 		TetherProjectile();
@@ -528,15 +528,15 @@ public:
 		void SetColor(LegoU32 p_brickColor);
 		void Destroy();
 		void Update(LegoU32 p_elapsedMs);
-		void SetMaterials(DuskwindBananaRelic0x24* p_brickMaterial, DuskwindBananaRelic0x24* p_trailMaterial);
+		void SetMaterials(GolMaterial* p_brickMaterial, GolMaterial* p_trailMaterial);
 		void SetRespawnMs(LegoU32 p_respawnMs) { m_respawnMs = p_respawnMs; }
 
 	private:
-		DuskwindBananaRelic0x24* m_brickMaterial; // 0x54
-		DuskwindBananaRelic0x24* m_trailMaterial; // 0x58
-		LegoU32 m_assignedColor;                  // 0x5c
-		LegoU32 m_currentColor;                   // 0x60
-		LegoU32 m_nextColor;                      // 0x64
+		GolMaterial* m_brickMaterial; // 0x54
+		GolMaterial* m_trailMaterial; // 0x58
+		LegoU32 m_assignedColor;      // 0x5c
+		LegoU32 m_currentColor;       // 0x60
+		LegoU32 m_nextColor;          // 0x64
 	};
 
 	class WhiteBrick;
@@ -1160,9 +1160,9 @@ public:
 			GolExport* m_golExport;                             // 0x00
 			GolCollidableEntity* m_collidable;                  // 0x04
 			GolModelEntity* m_model;                            // 0x08
-			DuskwindBananaRelic0x24* m_billboardMaterial;       // 0x0c
-			DuskwindBananaRelic0x24* m_flashMaterial;           // 0x10
-			DuskwindBananaRelic0x24* m_scarMaterial;            // 0x14
+			GolMaterial* m_billboardMaterial;                   // 0x0c
+			GolMaterial* m_flashMaterial;                       // 0x10
+			GolMaterial* m_scarMaterial;                        // 0x14
 			LegoEventQueue* m_eventQueue;                       // 0x18
 			RacePowerupManager* m_manager;                      // 0x1c
 			MabMaterialAnimationItem0x18* m_billboardAnimation; // 0x20
@@ -1210,8 +1210,8 @@ public:
 		RaceDecalManager::Trail::Decal m_scarDecal;        // 0x0e4
 		GolCollidableEntity* m_collidable;                 // 0x200
 		MaterialTable0x0c m_materialTable;                 // 0x204
-		DuskwindBananaRelic0x24* m_flashMaterial;          // 0x210
-		DuskwindBananaRelic0x24* m_scarMaterial;           // 0x214
+		GolMaterial* m_flashMaterial;                      // 0x210
+		GolMaterial* m_scarMaterial;                       // 0x214
 		LegoEventQueue* m_eventQueue;                      // 0x218
 		Racer* m_ownerRacer;                               // 0x21c
 		LegoEventQueue::Event* m_collisionEvent;           // 0x220
@@ -1401,8 +1401,8 @@ private:
 	void ClearBricksAudible();
 	GolAnimatedEntity* AllocateEffectEntity();
 	LegoU32 ReleaseEffectEntity(GolAnimatedEntity* p_entity);
-	DuskwindBananaRelic0x24* GetBrickMaterial(LegoU32* p_brickColor);
-	DuskwindBananaRelic0x24* GetTrailMaterial(LegoU32* p_brickColor);
+	GolMaterial* GetBrickMaterial(LegoU32* p_brickColor);
+	GolMaterial* GetTrailMaterial(LegoU32* p_brickColor);
 	static Explosion* __stdcall ReclaimExplosion(Explosion** p_head);
 
 	enum {
@@ -1502,14 +1502,14 @@ private:
 		SpatialSoundInstance* m_grappleAttachedSoundInstance;          // 0x1964
 		RaceResourceManager::Resource* m_grappleAttachedSoundResource; // 0x1964
 	};
-	GolAnimatedEntity* m_brickModel;              // 0x1968
-	GolAnimatedEntity* m_brickBlendModel;         // 0x196c
-	GolAnimatedEntity* m_whiteBrickModel;         // 0x1970
-	GolAnimatedEntity* m_whiteBrickBlendModel;    // 0x1974
-	DuskwindBananaRelic0x24* m_brickMaterials[8]; // 0x1978
-	ActionTarget* m_aimTarget;                    // 0x1998
-	LegoFloat m_brickSpinAngle;                   // 0x199c
-	undefined4 m_unk0x19a0;                       // 0x19a0
+	GolAnimatedEntity* m_brickModel;           // 0x1968
+	GolAnimatedEntity* m_brickBlendModel;      // 0x196c
+	GolAnimatedEntity* m_whiteBrickModel;      // 0x1970
+	GolAnimatedEntity* m_whiteBrickBlendModel; // 0x1974
+	GolMaterial* m_brickMaterials[8];          // 0x1978
+	ActionTarget* m_aimTarget;                 // 0x1998
+	LegoFloat m_brickSpinAngle;                // 0x199c
+	undefined4 m_unk0x19a0;                    // 0x19a0
 };
 
 // SIZE 0x68

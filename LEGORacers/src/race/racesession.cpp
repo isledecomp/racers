@@ -8,7 +8,6 @@
 #include "camera/golcamera.h"
 #include "camera/goltransform.h"
 #include "core/gol.h"
-#include "duskwindbananarelic0x24.h"
 #include "font/golfonttable.h"
 #include "golbinparser.h"
 #include "golbmpwriterfile.h"
@@ -17,6 +16,7 @@
 #include "golerror.h"
 #include "golfontbase.h"
 #include "golhashtable.h"
+#include "golmaterial.h"
 #include "golmateriallibrary.h"
 #include "golmodelmaterialtable.h"
 #include "golstream.h"
@@ -1174,7 +1174,7 @@ void RaceSession::LoadRaceContent(LegoBool32 p_mirror)
 
 	DrawLoadProgress(0.88f);
 
-	DuskwindBananaRelic0x24* material = NULL;
+	GolMaterial* material = NULL;
 	if (m_materialAnimationDatabase != NULL && m_materialAnimationDatabase->GetUnk0x14() >= 2) {
 		GolMaterialLibrary* materialLibrary = m_materialAnimationDatabase->VTable0x30(1);
 		if (materialLibrary != NULL) {
@@ -2512,7 +2512,7 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 				raceSession->m_triggerDatabase->GetBoundedEntities()[i].GetMaterialTable();
 
 			for (LegoU32 j = zero; j < materials->m_count; j++) {
-				DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
+				GolMaterial* material = materials->GetMaterial(j);
 				material->EnableFlag0x08Bit18();
 				material->SetUnk0x14(NULL);
 			}
@@ -2527,7 +2527,7 @@ void RaceSession::BindSurfaceMaterials(LegoBool32 p_mirror)
 		GolModelMaterialTable* materials = raceSession->m_triggerDatabase->GetBoundedEntities()[i].GetMaterialTable();
 
 		for (LegoU32 j = 0; j < materials->m_count; j++) {
-			DuskwindBananaRelic0x24* material = materials->GetMaterial(j);
+			GolMaterial* material = materials->GetMaterial(j);
 			DuskWindName0x8 materialName = material->GetNameRecord();
 
 			void* materialPosition;
@@ -2556,7 +2556,7 @@ void RaceSession::BindCheckpointMaterials()
 
 		if (materials->GetCount() > 0) {
 			do {
-				DuskwindBananaRelic0x24* material = materials->GetMaterial(materialIndex);
+				GolMaterial* material = materials->GetMaterial(materialIndex);
 				DuskWindName0x8 materialName = material->GetNameRecord();
 				if (materialName.m_unk0x0[0] >= '0' && materialName.m_unk0x0[0] <= '9') {
 					material->SetUnk0x14(m_checkpointGraph.GetCheckpoint(checkpointIndex));

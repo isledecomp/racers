@@ -25,7 +25,7 @@ class GolBoundedEntity;
 class GolCollidableEntity;
 class GolAnimatedEntity;
 class MabMaterialAnimationItem0x8;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 class CutsceneAnimation;
 class RaceHud;
 class RaceCameraController;

@@ -144,10 +144,7 @@ void RacePowerupManager::ColorBrick::OnTouched(Racer* p_racer)
 }
 
 // FUNCTION: LEGORACERS 0x004578e0
-void RacePowerupManager::ColorBrick::SetMaterials(
-	DuskwindBananaRelic0x24* p_brickMaterial,
-	DuskwindBananaRelic0x24* p_trailMaterial
-)
+void RacePowerupManager::ColorBrick::SetMaterials(GolMaterial* p_brickMaterial, GolMaterial* p_trailMaterial)
 {
 	m_brickMaterial = p_brickMaterial;
 	m_trailMaterial = p_trailMaterial;

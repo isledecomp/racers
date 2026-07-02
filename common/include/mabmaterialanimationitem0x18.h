@@ -6,7 +6,7 @@
 #include "types.h"
 
 class MabMaterialAnimationItem0x8;
-class DuskwindBananaRelic0x24;
+class GolMaterial;
 
 // SIZE 0x18
 class MabMaterialAnimationItem0x18 {
@@ -27,11 +27,7 @@ public:
 	void FUN_00410480();
 	void FUN_00410490();
 	void FUN_004104c0(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32 p_itemCount);
-	DuskwindBananaRelic0x24* FUN_00410560(
-		LegoS32 p_elapsedMs,
-		MabMaterialAnimationItem0x8* p_items,
-		LegoU32 p_itemCount
-	);
+	GolMaterial* FUN_00410560(LegoS32 p_elapsedMs, MabMaterialAnimationItem0x8* p_items, LegoU32 p_itemCount);
 	MaterialTable0x0c* GetUnk0x00() const { return m_unk0x00; }
 	LegoU16 GetUnk0x04() const { return m_unk0x04; }
 	LegoU16 GetFirstFrame() const { return m_unk0x06; }
